@@ -4,120 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69504E74900
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 01:20:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D969E748FC
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 01:38:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A6826B0005; Tue, 23 Dec 2025 20:20:12 -0500 (EST)
+	id 9CA146B0005; Tue, 23 Dec 2025 20:38:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 729DD6B0088; Tue, 23 Dec 2025 20:20:12 -0500 (EST)
+	id 9792F6B0088; Tue, 23 Dec 2025 20:38:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60BD26B008A; Tue, 23 Dec 2025 20:20:12 -0500 (EST)
+	id 876976B008A; Tue, 23 Dec 2025 20:38:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E86B6B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:20:12 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4AA01405A0
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 01:20:11 +0000 (UTC)
-X-FDA: 84252608622.27.16B11C0
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 11B444000B
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 01:20:09 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tpin87oN;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 77F5A6B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:38:17 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDE84160584
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 01:38:16 +0000 (UTC)
+X-FDA: 84252654192.14.54B7517
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 57EAA1A0002
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 01:38:11 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766539210;
+	s=arc-20220608; t=1766540295;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mFObj5r7cwRvtCEi52qvIAAFXzZpppZhq6YoRYQI4aw=;
-	b=ZK1LU7i8XUOqHPlwulBLOTUyRB+RHUl/7pwBWm2h9hAPbjWaMwWpV0wqoo47AGfJtRWMgY
-	CZ3qqgsjumQvEOvNlJI6A5pGSrOrE5ZiZ+6Qr9yVY3IFg6zsAPi2j8QCcW+Ac2R/eWgZ8U
-	Bp9j7We5VUsNLE6/txuytScGeCT2bwE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766539210; a=rsa-sha256;
-	cv=none;
-	b=Dr0ptOxM2G0K7+ZY/KYGCqf56d8CV9ORuwBIVnWVdK3vvqslRr2rbm2dnW2UmtbFaLI/EC
-	znvSDOiW1t4nk2hdN4bAd/NhNHj3KVHPA0FBQsRka+KXqRfa2ubAhehwosEHj60t0XYHgq
-	fCbXxs0RdD3K1UgP6d3/Lnt5UGHLUdc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a0H/5L4cjCxNPuDapNyiObFAKiyy3Wa8aIU9Ie8pgAk=;
+	b=zI/oGNfZ5uZhsXF00GK1P8rQHOnqs/smf59GsRZeoyWB7erCVBh6Khues1o+RMAl8f3Zl1
+	CyPaiugklauNmpTgtoripNacr7ffNnQ6fCdRCDy/ZNqg/6ZNJiroXWhD/gGSDMHZl5eajj
+	/3Ni9018gA2S9g/PmEwx6muxdFe5bEM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tpin87oN;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of houtao@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=houtao@huaweicloud.com;
 	dmarc=none
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8bc53dae8c2so826648185a.2
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 17:20:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1766539209; x=1767144009; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mFObj5r7cwRvtCEi52qvIAAFXzZpppZhq6YoRYQI4aw=;
-        b=tpin87oNbCko9X9u6n8oATJ9jdvnvJAdW6xw9I2y2U/Dfzqm1UawpjvULgVUSQkN38
-         fNRiK5l8LM2b4aa1wFnNZHq4wEVcMe+T+xzH6uhHjuqMvkmYJDrjbgrUIeRVxD2I8Bpi
-         KUop9rEVDnnPShOOVQZ1iZNMQlkitNeY1dV71eJGwYfhckUPGwjluATRp4CIAYePHdEm
-         zZQLPaJ152c7bk89ggjMsvonYGY/KmTSAYLOpslqlPEiBwPfQEz5gtFZwTdb+Mssb0Kv
-         Lb66pXYQEPavL2HHWVgerK4rtUO1s89am2uatkCQzlsZWtkdv2XmWF7YLQ1n+q6X6m+3
-         7SUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766539209; x=1767144009;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mFObj5r7cwRvtCEi52qvIAAFXzZpppZhq6YoRYQI4aw=;
-        b=nkhbb0MHyrbtQM/XJtspwv5f+io6Ty1ZkwHLRvXpgryrLYbwvQgBUKO+p35qIgZLJ5
-         +QY0voacHY996JfRvDVds0qUc1XkFof6yxrkAxf2rv/s1QMmENKyusPxAKoWbXnEuPkf
-         o9xfH4flJJJAmJtHANER7wYPWoKicUYwbOxvjs92boL/+H0EU2D7Q2c6UQYU9w1cdSTD
-         WOXPVfxDlhMWXL/JcmTsnh6PTYI1ZWT0NJysHr0IookwCe+CVWyN5XBQ64FMjjJdBT+m
-         PYDvCTKEn6scPQZ7GQJMqKBiiOQzAVMdtRbYvvgfr483hssrsTGR4his4oq8R68JITJS
-         QgiQ==
-X-Gm-Message-State: AOJu0YwgPvETCjOo7JBrLwEePqsWaXA0p1ksTeWCB43QGAd43TPmVZjC
-	IRNxBOgLGEzV54ErkLRhrvJOI/SfsScrJTt+EGCgpq1h6Rrae1pj8JctkHAjsyRIFGM=
-X-Gm-Gg: AY/fxX5hY0i+NeHme9ZUUEj06mUvzp2oYqqY9HisJrMqgGuQ0of5iydAa/FUyYROvT6
-	aFv+co5IAsEAXZT/NFHil3GMApKp76rE0dGQ+AKl/GyRYmiEsOFDHxyt29vHkdo/CgDwAyrHK98
-	WlZyFPw1cXaH3Wj133dctMO1upJripBYem6ujCoA7trjt/IPchkHOnmlhiOAAmeUoyGDgb7BU9H
-	lM6cVxgCz2Q1BYAQXvTZBsEOGAQ70rRjFnCxeGyRz1LZzef2aDdF+7Z7dJF2CzlkJdxE6nqTQK6
-	hWyL3uP7/Xc5F/hWC07tqImOQ482sorh55Xr8bMkt8JGp80jxZ8B7HdxSXL6aCzLqGB60Xr1cap
-	cTkVOVRvBS9251q+64Zqg0DWEj5M6OBjBuQ167jNDVtmvGJQkNHqHlSAcJHDWY5ihxc/R/kETy7
-	5UrPQRXqtM2ED1GC7AzhApcfHZoGxsD+c9c+Ycy6OsWZXJojUPw/lw/x3IZyMiU6wWhPE/aIw/e
-	GwMf/tW
-X-Google-Smtp-Source: AGHT+IH83buBAwf70kUxOa87xFJIKSb6f+lCqy7gWQ1Yx6Bx1CKse53IrzVNP6DC3zlxCVvPSHTOaw==
-X-Received: by 2002:a05:620a:46ab:b0:8be:9050:8548 with SMTP id af79cd13be357-8c08fbba66cmr2422303085a.33.1766539209066;
-        Tue, 23 Dec 2025 17:20:09 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c0973f0807sm1195174785a.41.2025.12.23.17.20.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 17:20:08 -0800 (PST)
-Date: Tue, 23 Dec 2025 20:19:32 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Bing Jiao <bingjiao@google.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, longman@redhat.com, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com,
-	david@kernel.org, zhengqi.arch@bytedance.com,
-	lorenzo.stoakes@oracle.com, axelrasmussen@google.com,
-	chenridong@huaweicloud.com, yuanchu@google.com, weixugc@google.com,
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v3] mm/vmscan: fix demotion targets checks in
- reclaim/demotion
-Message-ID: <aUs_pLTcsVK8zf0g@gourry-fedora-PF4VCD3F>
-References: <20251221233635.3761887-1-bingjiao@google.com>
- <20251223212032.665731-1-bingjiao@google.com>
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766540295; a=rsa-sha256;
+	cv=none;
+	b=EBZsoSGyy5GKYz1nsfQ+aP8f7hNDU0hDDqBjXu2o/s8/KWBUsJHzw/5dZ0UNtgePc+lSql
+	a8UNGjP2g4uv074bEBV6TTDjhWh3xwueNm2UfF4M9ohf/EKRzwY+Z2O58uV3Tn460Ui5DT
+	pJrFWbBEHLNN/vcN3dEUmwjgz7WEh5Y=
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dbZHs62QBzYQtG3
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 09:37:29 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id B5B844058A
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 09:38:07 +0800 (CST)
+Received: from [10.174.179.156] (unknown [10.174.179.156])
+	by APP4 (Coremail) with SMTP id gCh0CgA3l_fjQ0tpM74RBQ--.51212S2;
+	Wed, 24 Dec 2025 09:38:03 +0800 (CST)
+Subject: Re: [PATCH 00/13] Enable compound page for p2pdma memory
+To: Leon Romanovsky <leon@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-mm@kvack.org, linux-nvme@lists.infradead.org,
+ Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tejun Heo <tj@kernel.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Keith Busch
+ <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+ houtao1@huawei.com
+References: <20251220040446.274991-1-houtao@huaweicloud.com>
+ <20251221121915.GJ13030@unreal>
+ <416b2575-f5e7-7faf-9e7c-6e9df170bf1a@huaweicloud.com>
+From: Hou Tao <houtao@huaweicloud.com>
+Message-ID: <996c64ca-8e97-2143-9227-ce65b89ae35e@huaweicloud.com>
+Date: Wed, 24 Dec 2025 09:37:39 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251223212032.665731-1-bingjiao@google.com>
-X-Stat-Signature: gierw4wbz3986rabrkp76f6kzj9prgu5
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 11B444000B
+In-Reply-To: <416b2575-f5e7-7faf-9e7c-6e9df170bf1a@huaweicloud.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID:gCh0CgA3l_fjQ0tpM74RBQ--.51212S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXFWUWw15XF15Zr4xZw4fKrg_yoWrAr4kpF
+	Z5KF1rJryDG342y3sIv3WDCF1avwn5KFWjqryxKry3AwnxtFn2vw4jyF15u34UXr47G3Wr
+	KF47ZFy3uwn5XaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9Ib4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7Mxk0xIA0c2IE
+	e2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4I
+	kC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWU
+	WwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr
+	0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWU
+	JVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJb
+	IYCTnIWIevJa73UjIFyTuYvjxUIa0PDUUUU
+X-CM-SenderInfo: xkrx3t3r6k3tpzhluzxrxghudrp/
+X-Stat-Signature: 8nmcpnwoa1oi4x8kgqyeae9h4zrr7zc8
 X-Rspam-User: 
-X-HE-Tag: 1766539209-48611
-X-HE-Meta: U2FsdGVkX1/xCZSzygq+zEC38foQgsTnkpEBgz+RFZJvMnz8osR2ekxl5wR4p27UrspCPnbNL4r7mSgY5EfDDYB3HGTxXy8YGf8Cnl/0N3LliByx1ZD2QhiVpbB1ZKvZmtuJSVAmF8lXCNxMQQHHy0UH/YQgfAYEnCfqXPC7mHztF9hRDSyXujkxBvIEplQz28PjT4LLT2bVgWtUGAWmvijLSFyjQz85Sgr86R4oRaQRi1UCobTs+/2wjO5AZIuZSY7uK5IHA0GqzX8XgYbaPKOyCoqnd4sp2U9YoPZxnWJLVRqDLWcZZB+Ap0vQ24TXOIRQ1GeP+Rh6YLfp48s+QqDGzpiVYZcvgADPAGIFbPovNPsNbu1DuT+c6+LRr3LGQphfnLCBcAa/Uv4V4oKgsk2MlrMN4YJfpUtIQohBe1WB4qKhHu+cXd1euas1oRArKVz3z7in7DsOVzhoi9MjeIWi+e9IDyitQ0U5wFy/eLzh8BokOIE/lIFFBmC26R8ISdsIpml4h5BC7SSe2u2EWRCcgB+cKTQKMcIbyPy3jOawCYP7VZHMUPs/L76uitPFt51FeAAS5PbZkKtcFA2a5ii5Nw7rekWzMnQdNt9aSBasRXXrBpepT+G6wITEmZRqOVo8v5LNiBZTtlB6hXU9lxZox+ua7vYRI5sWZVfnwWbIjX1y+cBgud2BY0SSD/rc1xkhxXIeN5bU47Dc6fWqi2/i2e66+TNMiSNTURKCa7vDFgMzGxewzXe2mFNZki41xMBnq0lKyNIliSLgHSXD7Ooy9ZkfWzYwP7nTqCx1Ia179mUtcGGz36h2cGcxGzSUwSPGRw0dmCTrsHMKGR7kEyT2XYZVbu8+qou4fSs9JaAysP7OB9VkfCAkM4yvNBfrfzw90n7NPqHtbfOdXqjFiHnXeU6KCNivN+HPXOlsfhgmJujBe+vD1ey4CQ3JCY7icYps9pVs/VCubqY6MZO
- 5Sd0bjXN
- CfXdE7LlAMfQk0qFkFx14xMDDRHimXtlKGKJPMvtm0aIaaVLzFAy/Iups2JbfPVcjq5bQFuXrCgSuzPDJspdx1kyT31Vlc5acrdpyXihUZhYglM42keQe+F8TfipkmqtpZAfe//aCgGrN2ou9PUzyrAlVuAEDOtu3oxRqJ86MA1dWA/qorgPzN825591spJr6fwlFeZw2HWNyWnaARDMEw2SnuIy1ik243t0DDTXpN14/SV/9cMDPdvpFqtnOWa78/a9WXydlurZSultwsa8J3DkoLJsyIs2ePXQjHGNt0XGCOjvH3dPZk0a+wcXM/uTUptxjW0+G8s4Ri8U=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 57EAA1A0002
+X-HE-Tag: 1766540291-312371
+X-HE-Meta: U2FsdGVkX19r3nL9lC07khKc7Dz9B7IomrHGTHfbNCLxJGCRCsss8sy9e0flD9gRMdgiLIQbOFiXUlLfhM+zbixvGVKd6bbF3ODKKsKwlPuhrRMuYu4y3LUynVUZePs+7A3kZAnj6XCX3z5O88DqglIZ9IZjIYmgKUiV/qMsBxzs9fbnvPLBR7MVvcAs/q966Fd1hj0BJlnsfxvZ9R/PeR4ICLTRG+BP8qglibMLhYBfW/Q6ePHu8E5B7YLqvgNqpkLp/I3MwSfATDPppb3RIJYx/PZqlHgxAHaDo1OXcCT4b3/UM9E7b6sF9gE4CIMBIVO8wFr8XLpl638ruvbx/63PrHhVnbClAxIXZcIg0A3OiTpecH0UYuI1QWNWzr+xIc7eZLguI8w87NrDUlO3LKMxy5nWLJMObGOnOldX+6d+nOE2zLBfN0eoTu0xZ8dWKo1XFSpf4sgwfJYXycEwZb2olv1CvR366cJwwfQSfSXSP/luKPc4P6T/LufXjSmJjFpA5PB9/VeKap4fQi1XjWa6kWR94Ej3O7jFZxgVUitfDvygPAwZ9OyJhkHiI6N/fiIM+sZjsEdR/lvZLvTAOWWRVXZ++dkC934seYZx1o4TZWTmmQdrcVoQL0Ckswmuobf233P5zN5FaXfHX6YN6iw93JtoTdIP2Wrw+TwCo1KJZfvlbu0T5+h+7Q0n40N+NseaUByqZ0TFMCU1f9o/81RlJgXFbx0SMSHpCne6XRVQayNTo/JFQjmgPW642Fqt65gRHW9zgpGAg1G9vGRTIq8jNWGT5mvK6Xpo3bcpAQf1SYS8PdftkpgmG+O9Ft68qdmuo142zsZnNRnjqpwUtT/L5nkMzxMSZNrNMlG7i/yBG8bmhthx4JnxASk8pgEcgiA6R2iwzfgZGvWHRhyyn3PeABIUnAtt1Pt+BUPKVkkTSmBbKtfgEokv9f7vwCvu6l//XZ4S7DYBjpgJcLt
+ 9HQBPA23
+ VEspAlIrc43iDvSsAoeYrsHq7XgUtxo1uqyVtUH0WtrF5SfyDE7agcDTucx/4vJxtj1usvT3dsYagjYZQHBW1aF7pZqEE2v12ag7ffchfckN9CkjGS07AGSzdTtXOSxK+1jihKUcWuMNFfQIXcc20WJ0774fJylOYtVpx74tw3e2QOJdpac4FqhRxWw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,67 +117,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 23, 2025 at 09:19:59PM +0000, Bing Jiao wrote:
-> -static inline bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
-> +static inline nodemask_t cpuset_node_get_allowed(struct cgroup *cgroup)
->  {
-> -	return true;
-> +	return node_possible_map;
-...
-> -static inline bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
-> +static inline nodemask_t mem_cgroup_node_get_allowed(struct mem_cgroup *memcg)
->  {
-> -	return true;
-> +	return node_possible_map;
->  }
-...
-> -bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
-> +nodemask_t cpuset_node_get_allowed(struct cgroup *cgroup)
->  {
-> +	nodemask_t nodes = node_possible_map;
-...
-> -bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
-> +nodemask_t mem_cgroup_node_get_allowed(struct mem_cgroup *memcg)
->  {
-> -	return memcg ? cpuset_node_allowed(memcg->css.cgroup, nid) : true;
-> +	if (memcg)
-> +		return cpuset_node_get_allowed(memcg->css.cgroup);
-> +	return node_possible_map;
->  }
 
 
-node_possible_map or node_states[N_MEMORY]?
+On 12/24/2025 9:18 AM, Hou Tao wrote:
+> Hi,
+>
+> On 12/21/2025 8:19 PM, Leon Romanovsky wrote:
+>> On Sat, Dec 20, 2025 at 12:04:33PM +0800, Hou Tao wrote:
+>>> From: Hou Tao <houtao1@huawei.com>
+>>>
+>>> Hi,
+>>>
+>>> device-dax has already supported compound page. It not only reduces the
+>>> cost of struct page significantly, it also improve the performance of
+>>> get_user_pages when 2MB or 1GB page size is used. We are experimenting
+>>> to use p2p dma to directly transfer the content of NVMe SSD into NPU.
+>> I’ll admit my understanding here is limited, and lately everything tends  
+>> to look like a DMABUF problem to me. Could you explain why DMABUF support 
+>> is not being used for this use case?
+> I have limited knowledge of dma-buf, so correct me if I am wrong. It
+> seems that as for now there is no available way to use the dma-buf to
+> read/write files. For the userspace vaddr backended by  the dma-buf, it
+> is a PFN mapping, get_user_pages() will reject such address.
 
-The latter seems more appropriate to me since node_possible_map will
-include offline nodes.
+Hit the send button too soon :) So In my understanding, the advantage of
+dma-buf is that it doesn't need struct page, and it also means that it
+needs special handling to support IO from/to dma-buf (e.g.,  [RFC v2
+00/11] Add dmabuf read/write via io_uring [1])
 
-> -	allowed = node_isset(nid, cs->effective_mems);
-> +	nodes_copy(nodes, cs->effective_mems);
->  	css_put(css);
-> -	return allowed;
-> +	return nodes;
->  }
+[1]
+https://lore.kernel.org/io-uring/cover.1763725387.git.asml.silence@gmail.com/
+>> Thanks
+>>
+>>> The size of NPU HBM is 32GB or larger and there are at most 8 NPUs in
+>>> the host. When using the base page, the memory overhead is about 4GB for
+>>> 128GB HBM, and the mapping of 32GB HBM into userspace takes about 0.8
+>>> second. Considering ZONE_DEVICE memory type has already supported the
+>>> compound page, enabling the compound page support for p2pdma memory as
+>>> well. After applying the patch set, when using the 1GB page, the memory
+>>> overhead is about 2MB and the mmap costs about 0.04 ms.
+>>>
+>>> The main difference between the compound page support of device-dax and
+>>> p2pdma is that p2pdma inserts the page into user vma during mmap instead
+>>> of page fault. The main reason is simplicity. The patch set is
+>>> structured as shown below:
+>>>
+>>> Patch #1~#2: tiny bug fixes for p2pdma
+>>> Patch #3~#5: add callbacks support in kernfs and sysfs, include
+>>> pagesize, may_split and get_unmapped_area. These callbacks are necessary
+>>> for the support of compound page when mmaping sysfs binary file.
+>>> Patch #6~#7: create compound page for p2pdma memory in the kernel. 
+>>> Patch #8~#10: support the mapping of compound page in userspace. 
+>>> Patch #11~#12: support the compound page for NVMe CMB.
+>>> Patch #13: enable the support for compound page for p2pdma memory.
+>>>
+>>> Please see individual patches for more details. Comments and
+>>> suggestions are always welcome.
+>>>
+>>> Hou Tao (13):
+>>>   PCI/P2PDMA: Release the per-cpu ref of pgmap when vm_insert_page()
+>>>     fails
+>>>   PCI/P2PDMA: Fix the warning condition in p2pmem_alloc_mmap()
+>>>   kernfs: add support for get_unmapped_area callback
+>>>   kernfs: add support for may_split and pagesize callbacks
+>>>   sysfs: support get_unmapped_area callback for binary file
+>>>   PCI/P2PDMA: add align parameter for pci_p2pdma_add_resource()
+>>>   PCI/P2PDMA: create compound page for aligned p2pdma memory
+>>>   mm/huge_memory: add helpers to insert huge page during mmap
+>>>   PCI/P2PDMA: support get_unmapped_area to return aligned vaddr
+>>>   PCI/P2PDMA: support compound page in p2pmem_alloc_mmap()
+>>>   PCI/P2PDMA: add helper pci_p2pdma_max_pagemap_align()
+>>>   nvme-pci: introduce cmb_devmap_align module parameter
+>>>   PCI/P2PDMA: enable compound page support for p2pdma memory
+>>>
+>>>  drivers/accel/habanalabs/common/hldio.c |   3 +-
+>>>  drivers/nvme/host/pci.c                 |  10 +-
+>>>  drivers/pci/p2pdma.c                    | 140 ++++++++++++++++++++++--
+>>>  fs/kernfs/file.c                        |  79 +++++++++++++
+>>>  fs/sysfs/file.c                         |  15 +++
+>>>  include/linux/huge_mm.h                 |   4 +
+>>>  include/linux/kernfs.h                  |   3 +
+>>>  include/linux/pci-p2pdma.h              |  30 ++++-
+>>>  include/linux/sysfs.h                   |   4 +
+>>>  mm/huge_memory.c                        |  66 +++++++++++
+>>>  10 files changed, 339 insertions(+), 15 deletions(-)
+>>>
+>>> -- 
+>>> 2.29.2
+>>>
+>>>
 
-I saw in vmscan you check for returning an empty nodemask, may want to
-at least add a comment to the function definition that says this needs
-to be checked.
-
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index a4b308a2f9ad..711a04baf258 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -345,18 +345,24 @@ static bool can_demote(int nid, struct scan_control *sc,
->  		       struct mem_cgroup *memcg)
->  {
->  	int demotion_nid;
-> +	struct pglist_data *pgdat = NODE_DATA(nid);
-> +	nodemask_t allowed_mask, allowed_mems;
-
-Only other concern i have is the number of nodemasks being added to the
-stack.  Should be <512 bytes, but I've run into situations where builds
-have screamed at me for adding one nodemask to the stack, let alone 3+.
-
-Have you run this through klp?
-
-~Gregory
 
