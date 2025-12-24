@@ -4,66 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 993BCE75453
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 13:48:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6F01E75453
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 13:48:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B2926B0088; Wed, 24 Dec 2025 08:48:34 -0500 (EST)
+	id 262FA6B008C; Wed, 24 Dec 2025 08:48:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08FBD6B00BB; Wed, 24 Dec 2025 08:48:34 -0500 (EST)
+	id 241726B00BB; Wed, 24 Dec 2025 08:48:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED4B16B00BD; Wed, 24 Dec 2025 08:48:33 -0500 (EST)
+	id 16DCE6B00BE; Wed, 24 Dec 2025 08:48:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DA1976B00BB
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 08:48:33 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A453A89881
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:48:33 +0000 (UTC)
-X-FDA: 84254494506.20.63C50C8
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 071996B008C
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 08:48:43 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D494E140228
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:48:42 +0000 (UTC)
+X-FDA: 84254494884.03.20813DC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0F0661C0004
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:48:31 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NTnApWWX;
-	spf=pass (imf20.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 442ACA000F
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:48:41 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jiua12K4;
+	spf=pass (imf25.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766584112;
+	s=arc-20220608; t=1766584121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EAqfyFkYxWQURn8MtHZJTlFTLli6VXWIVJyNhVe7Z5A=;
-	b=4ehNjcQWpqW4l7/LC+dwU3EqIOf2YnBc6aXZnSFd/XLy2pelMqGaFIYyBigYnDkDFlXkZJ
-	W30m9JxghdmZ7HjaRtqcntYWWz7yZ6Q1kYcBEUkqjXXEJyi21MRWlrByzzAuGNEGaEcuYA
-	UZj95AG6EvoOWqSWwlLNPGVyKjqcvPo=
+	bh=fqEYD4LjwJ7rhw5p4AZk4bVK7gQuvBVb7b4AGNVi+28=;
+	b=EG6pFak9d2lc5KDCBxJNtC8avQhnXd9Eefa4d9DI6YWGAvIZLlIVpmMPobJlBTr534CGEt
+	+1ybPX8R+YvcIg+HO7ZpPmKAOUFpZbVeGz61FxLGvDSxyjSfiaq7qdd+tIU1Q7z8VlWV0m
+	T1msC9W1m+lFk4M+E+Gvtq2GYg5JaTE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NTnApWWX;
-	spf=pass (imf20.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jiua12K4;
+	spf=pass (imf25.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766584112; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766584121; a=rsa-sha256;
 	cv=none;
-	b=34eb7sGMhZAKU7iaRWRr+3/T3gTNH5/h5Gh+6BnNtbHQyj8Z/4cFvw3iPg6KT9eFRzouGS
-	3MJwUvCHOrOReQVZ/+ghm0iKzU4L5HrWZzwBMBvolvP64SKAz3stgrDqjMMamIXNjpvxvq
-	6NtM1/W3vgeHXj9Ck081+ZojBeFvuUw=
+	b=Bg6nRPR74f29Wj+1KbwyEjoRNcQQUfukWTT/h/peRJpNC3XRL4Y+J4aGe2U5FvCFonMJ7P
+	22Zz5P8+qqW39Gc8S6XBT16ygnJPYa1h5M2vLHrGwy9vE8DiTjBErZqmW3kOlIhTSzhDfY
+	W/G9tiJGmHTbGXa+69FZEY7BUUU7HqA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8A94A6016C;
+	by tor.source.kernel.org (Postfix) with ESMTP id B20BA60136;
+	Wed, 24 Dec 2025 13:48:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE94DC116D0;
 	Wed, 24 Dec 2025 13:48:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE8CC4CEFB;
-	Wed, 24 Dec 2025 13:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766584111;
-	bh=n9XB9dCeDsXUL0E43Pc7dHYz3Tf4gkdsgPdoYnidBEo=;
+	s=k20201202; t=1766584120;
+	bh=Vd5zEgAm2uI/g+D2ywWrAdEOzwZScM14UO5N/4sNoXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NTnApWWXZalcit1DZtIrSv8YqGy/AEmuaJ1ytLbSOaQU1DGlwp+biEHefzJy/4Gr8
-	 u0Bi9AwumLMTn7DNXMDWk7PORMipAXsQ/Apt5dWRZBLC5MH1S4snhe4dO7FLifm5jF
-	 uj3v2ym/lu5ULC2Mnc7XbpMTRp7shSHNnyh6JMMTcjr6bqgSKPZaA8GLCFnJhbkx+k
-	 8VyVanmC6kvrjiM5tGk9aO3ks+bsgsHiYXd/li6Mq1Us1/Drr5efu46JOO9V1qAnQ+
-	 gQ78yMl9xL0xdnHFkYIyYGgHL7PQCR4qcwqnia7IWcK5mjoHZQjc6gu2UFjw4OPcaF
-	 Fyi7um4IAANIw==
+	b=Jiua12K4SprWh9L6H5HuFhCgLnOWGrMamurnMP0iGv6lVyZzVfsdZpVsgY5pAFARd
+	 zOkTEQXKgkY1l6oL0MKegz02DeSR4WDHP9J1nzugmwToT45MZOMwSQNQMv9ZOmhpdx
+	 BwmuatxKKh3I/JsIsABaiRNUp/mqAT58h/lgQ0L3007InYiU/2OYfVV7RkokDkFfDx
+	 emhqVW/4R7HT4Dq6UpXspH0tXVZq89SkAW2TKLbmb38xtrOhPvwKKMRG2lmJDRoU3V
+	 yNoIRcFSKEOW2mZt4rX1VAMTCuy9TZV8GFcYgxlTrZkn6IV8vdKKcLAHMwltvKX3pw
+	 zlG+rYwvcWtFg==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -103,23 +102,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 21/33] cpuset: Remove cpuset_cpu_is_isolated()
-Date: Wed, 24 Dec 2025 14:45:08 +0100
-Message-ID: <20251224134520.33231-22-frederic@kernel.org>
+Subject: [PATCH 22/33] sched/isolation: Remove HK_TYPE_TICK test from cpu_is_isolated()
+Date: Wed, 24 Dec 2025 14:45:09 +0100
+Message-ID: <20251224134520.33231-23-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251224134520.33231-1-frederic@kernel.org>
 References: <20251224134520.33231-1-frederic@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: hi5gsjkxaknzw7k33sjzwanrqt79gjt6
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0F0661C0004
-X-Stat-Signature: 1cbr5h594y166wfh1y5pyw17x6a7s766
-X-HE-Tag: 1766584111-85694
-X-HE-Meta: U2FsdGVkX1+DVVCh8v1NwlIdUw4acUkeXZHqfWfa/sHCTYzMD9B3Ufx7ciUFBVwxtj58oJk/Lvx+CABdPzelEfHQXxDkQl0/JonDUCa3NXzCDkafECyPkB2/wDCo2nAOGCNh7Nk4RLXnS81clI1Yi4eq21iUXTcuN1bkEOhGTmA6LS3aYrkTFQj3Ji6RW9pTxuMQ26oqkyiNohfylUB7ofK82W+wvzPtOuMSoEXp7JRvuoWkUqo4fwepHtZvNseBWKwg48pF9J3IeVxmczh+j4PhZ/kF4SRpTJkBXG3iex+u4d+lSe2AqOt0GYeV9g3pxNNyvhFkZVTkhS2jkrBRC7osu4mUEngNUZYltSsBXeRXgnxgAVfVz4SisLyXBXDx4kyFTdYesKuFR9ro/wdl4k47bWiLLRJVj5pcIw/qM1s+wRcGtIMd3Xm2e2O/DvOECUbqh2r4CeGcFhd1r4lXPqqJcXwpMaU+pREPj+SLOcvOpaN0AMhrfsiaD0vWkXLPMwhMLUPntjzG0GFIufXouG1+zwJdvl2PTWzFosTUQ7uzvS+6o+4llZ0bTx9xFA+M4XrelJ+Qai4jUsWMOJc2Q1Rrhy5rqYSPhFpt55iyH2bJBu9uZYbbK7QAXdr8qHLiPE5sG+1Zb8Yhdi0C7OWmXOX2sNJYVo32nTuHtKL6Op+j0Zi0F3HeGSGNWkHgo3EuPWQW2jvzKdgJHQDt3q1I8hsAbqIjaYeSwtPGF6lLJC3xHOE0OtA9XK7TFQjrb1FhctxMqstNedyZ7B2jwzgsAXW5c9M6vz9IzUh+pM7xooVruPGYmpTuIr/n+SOfnmoOA7vx9Svu11lR/Oze8s521HkjxTKj3kQF6E89Ayckeg3gBje3cBcoFwd8vbeKaWWXeW4a5HnwCh36M7QEKl3dnlBl8UdhX4uCcclXInZYxhaoEyD7GT+CJmRnIhgrb+3LXzDBxTexRU64ru/jnvR
- 3dILaU82
- 8vGxMgdeYPFrUl+cr4uKLKacFssTsP2dtT8nC8bqP8qaKMHmI9udMP3Kpv8hq8Lio5ZCpTfnkM040gR5oXBEbBBWmmobfLuAghCTBFDnhwR9KwoOvHual0yOnLJFPQAeIJJ9ZLRgjOX2sLNRMcSskChNWE9Onymr0aNK+lL2uhmNLGQjB67UWZ2WedYjoxb5Av5uIGHHX2xYd5Jzt5z7DplGs7a6lnDcdaN5iu09liafnNlyyGmJWP7dLPaY431MdTmGXP7hxA+RLWqt/IkfmSEyJF3P3FzxlalYTqd2+zu5lGPo8HApu71WcnlBklGUnsqM8y2UIYmajT6lVUuOIbjucU7EdSJxTadi4uI7T7mNniQw=
+X-Rspamd-Queue-Id: 442ACA000F
+X-HE-Tag: 1766584121-824268
+X-HE-Meta: U2FsdGVkX19m2yhc8TxGLlOAil+NG1egiW5I5o2F77OI5pn/ToPP0B0fgM7lz0XH7L7N2xNdH0mPKt6gQElJeiEjCvTUtkL3brURpz0FTGaRq91KXNP9SzkxTLTXAmJYznXCZQ8YSHpxDQO0ji3CWub0WY2MjnC2Arg8FgXjRyqJLQ34FlQlMoNIbobZCZOYsf6g0f7AgXmKexcknepgcb4YyGRG18nw2uFFG7nmcA6BcVdwm13N1b/XsjKZ7ga+4tNP7HsaldhdaySgYR827hwJvPW50gFL852s2FInBHZGki2+MFgbCV8eI8/6EEpHH2ZNJfZvOLpmTPGhHT96IH3BTx8Qp2t3r4dyWpRgmcb0g2NkJOZjCHViiP9CfWunGmqY1sXwZwnUGWwXj+joo9aXq/HX2Eh7DK4VWH1xY6p7vlwexd7C06Zbixm6AjWiRFN8VyzfIUPm2YqAIrsMm6UJ7MnLXuT+hYusMMLpRCHPrAjNwhW9PSuhbEfaAohDW7bzeoLwkG0rTZzJQ5WHl6OxR9kGXRQ5X0oe7CacKNLkHbApXTlbs0gDOcJ4BpYYW0jKLd7wlJOxpD4ETHqPRHnvVfFIfR3/BGqCvk/4vP3vpIApPBCE0zAtUUDNvc5Y+tCpKoJhLs4PI+HAfoveZA4wyQduZ3OpHXBmta7hFA1G1iGEvqaD3QfblDvFg8j9UHv6qq1EldUMAxo2kSoNh+reIMuGAHXtwbDBZ6AiMJU1I1hTx7+L60yqF7nofvCEHr6y+HQxukaDns2tzw/t5ps+UhrhI8B7tE3UaiOz2duqX8lAlZve4XJmrVn+42NE2c60n7vEGdkgKLVXSFKEVj0X7Mw4XINu/1xdTuR7pkQQKeqeGj7/iseX+2jFqiYzvxciYcsWNAuIxMhBri0kkZHS4R48WH28YA/CV08UQatZSi9daPdPC1067gYQjAQxbISL9W0nfUrdBII/aOm
+ PDUC1eTS
+ tsrDYy6txrvECa3AKxJwa/uNoWnYDOzS4GAn73GUCMy8urz4rcJGXJPj6mjolmnixJsRCZEk1nqs91IqdsENkw3pPyGc6stgSScz9R2mycVOc/NNsnH8BS/c+m7Yl/odCiOAj/2xcLFx1kM4s4Z97mcKoEvTgwlj4z1xAFdUTiCVGqsE4IBMnr9JGmGiQ7en07mUDtJ+3SKLMbunMFtEy7ko35XoxWeNfNADsAgco896rOeY1ZnipqvvIKC59GoQj2N5zFNE8YhILu6Wp7EzMaHe7gAX2dOWaEWW9dk/+37IAJfAxgf+cZnsjsM+sJ5w+uGoq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,94 +126,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The set of cpuset isolated CPUs is now included in HK_TYPE_DOMAIN
-housekeeping cpumask. There is no usecase left interested in just
-checking what is isolated by cpuset and not by the isolcpus= kernel
-boot parameter.
+It doesn't make sense to use nohz_full without also isolating the
+related CPUs from the domain topology, either through the use of
+isolcpus= or cpuset isolated partitions.
+
+And now HK_TYPE_DOMAIN includes all kinds of domain isolated CPUs.
+
+This means that HK_TYPE_KERNEL_NOISE (of which HK_TYPE_TICK is only an
+alias) should always be a subset of HK_TYPE_DOMAIN.
+
+Therefore if a CPU is not HK_TYPE_DOMAIN, it shouldn't be
+HK_TYPE_KERNEL_NOISE either. Testing the former is then enough.
+
+Simplify cpu_is_isolated() accordingly.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- include/linux/cpuset.h          |  6 ------
- include/linux/sched/isolation.h |  4 +---
- kernel/cgroup/cpuset.c          | 12 ------------
- 3 files changed, 1 insertion(+), 21 deletions(-)
+ include/linux/sched/isolation.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/cpuset.h b/include/linux/cpuset.h
-index 1c49ffd2ca9b..a4aa2f1767d0 100644
---- a/include/linux/cpuset.h
-+++ b/include/linux/cpuset.h
-@@ -79,7 +79,6 @@ extern void cpuset_unlock(void);
- extern void cpuset_cpus_allowed_locked(struct task_struct *p, struct cpumask *mask);
- extern void cpuset_cpus_allowed(struct task_struct *p, struct cpumask *mask);
- extern bool cpuset_cpus_allowed_fallback(struct task_struct *p);
--extern bool cpuset_cpu_is_isolated(int cpu);
- extern nodemask_t cpuset_mems_allowed(struct task_struct *p);
- #define cpuset_current_mems_allowed (current->mems_allowed)
- void cpuset_init_current_mems_allowed(void);
-@@ -215,11 +214,6 @@ static inline bool cpuset_cpus_allowed_fallback(struct task_struct *p)
- 	return false;
- }
- 
--static inline bool cpuset_cpu_is_isolated(int cpu)
--{
--	return false;
--}
--
- static inline nodemask_t cpuset_mems_allowed(struct task_struct *p)
- {
- 	return node_possible_map;
 diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
-index 6842a1ba4d13..19905adbb705 100644
+index 19905adbb705..cbb1d30f699a 100644
 --- a/include/linux/sched/isolation.h
 +++ b/include/linux/sched/isolation.h
-@@ -2,7 +2,6 @@
- #define _LINUX_SCHED_ISOLATION_H
+@@ -82,8 +82,7 @@ static inline bool housekeeping_cpu(int cpu, enum hk_type type)
  
- #include <linux/cpumask.h>
--#include <linux/cpuset.h>
- #include <linux/init.h>
- #include <linux/tick.h>
- 
-@@ -84,8 +83,7 @@ static inline bool housekeeping_cpu(int cpu, enum hk_type type)
  static inline bool cpu_is_isolated(int cpu)
  {
- 	return !housekeeping_test_cpu(cpu, HK_TYPE_DOMAIN) ||
--	       !housekeeping_test_cpu(cpu, HK_TYPE_TICK) ||
--	       cpuset_cpu_is_isolated(cpu);
-+	       !housekeeping_test_cpu(cpu, HK_TYPE_TICK);
+-	return !housekeeping_test_cpu(cpu, HK_TYPE_DOMAIN) ||
+-	       !housekeeping_test_cpu(cpu, HK_TYPE_TICK);
++	return !housekeeping_test_cpu(cpu, HK_TYPE_DOMAIN);
  }
  
  #endif /* _LINUX_SCHED_ISOLATION_H */
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 25ac6c98113c..cd6119c02beb 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -29,7 +29,6 @@
- #include <linux/mempolicy.h>
- #include <linux/mm.h>
- #include <linux/memory.h>
--#include <linux/export.h>
- #include <linux/rcupdate.h>
- #include <linux/sched.h>
- #include <linux/sched/deadline.h>
-@@ -1490,17 +1489,6 @@ static void update_isolation_cpumasks(void)
- 	isolated_cpus_updating = false;
- }
- 
--/**
-- * cpuset_cpu_is_isolated - Check if the given CPU is isolated
-- * @cpu: the CPU number to be checked
-- * Return: true if CPU is used in an isolated partition, false otherwise
-- */
--bool cpuset_cpu_is_isolated(int cpu)
--{
--	return cpumask_test_cpu(cpu, isolated_cpus);
--}
--EXPORT_SYMBOL_GPL(cpuset_cpu_is_isolated);
--
- /**
-  * rm_siblings_excl_cpus - Remove exclusive CPUs that are used by sibling cpusets
-  * @parent: Parent cpuset containing all siblings
 -- 
 2.51.1
 
