@@ -4,120 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ED63E7545D
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 13:50:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 422C6E75458
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 13:51:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB19D6B00CF; Wed, 24 Dec 2025 08:50:16 -0500 (EST)
+	id 8EB0A6B00D1; Wed, 24 Dec 2025 08:51:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A65126B00D1; Wed, 24 Dec 2025 08:50:16 -0500 (EST)
+	id 8C97B6B00D3; Wed, 24 Dec 2025 08:51:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 984CF6B00D2; Wed, 24 Dec 2025 08:50:16 -0500 (EST)
+	id 7D5F56B00D4; Wed, 24 Dec 2025 08:51:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 854F26B00CF
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 08:50:16 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 62495137339
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:50:16 +0000 (UTC)
-X-FDA: 84254498832.15.3755D7C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9B513100002
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:50:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ahi82J95;
-	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C20E6B00D1
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 08:51:30 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 18F31137339
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:51:30 +0000 (UTC)
+X-FDA: 84254501940.03.A878042
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5A19020004
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:51:28 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766584214;
+	s=arc-20220608; t=1766584288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1DzR/7++HQoBO8hfUtZdzGi5JYMWhENpMmrWTTSRkVk=;
-	b=QvvgX6LqrUhbbce4g/m+VlHSF+5qWdLrYn6BbLd/1JtY2F6yJiFmJhu/x97sE4/d3jj2Hs
-	EwONy2zPdRtL74L2ZFx46oKLrENRRd5CyQ+QHJebQBWe7h4Kr190hgQSGyPxzcprlyAjnE
-	vAcu2+oH2fmIIjspMdgAoyTJVW1hnCA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qlfSgkXrPPUfteCGen9BskymZlk+ZQwNku4KYIKs/xo=;
+	b=DcIDSmk1/FxaMwZ1l8La0cDVabA5e5PjWguaYGBmHbwMSU+zGJlTmxhwF+8QBHTUWoZeGO
+	cCNjyRoqLONtFn6OFtcr8xY2o6VehZAv0loh8I9dD2aUu2PWTa9yqX3Secfeb9dxbVuSBN
+	ZX5LoZNUYuxX485RXXPC8ebsvUPIqrY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ahi82J95;
-	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766584214; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766584288; a=rsa-sha256;
 	cv=none;
-	b=gJ7zeadC/DEOk2Zy+K9cIUCi1rxZy2KGmh5KUqs3M3glgcix7EBkrr5U8o2/EnOw/Fkah5
-	CyhhOc70oUVpfE2sUI93ARPjlQTynVbWuq3aDqd6kuI6IkMzZI8h2vQQA4mc+0b6AGredi
-	s805gOg+lTeyZPxydTV/SqTebLDedCs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C8618435D6;
-	Wed, 24 Dec 2025 13:50:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270F1C4CEF7;
-	Wed, 24 Dec 2025 13:50:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766584213;
-	bh=1ThumxDDgpI14i4xI2NJUZlN8OnswY2btiiSypM7sVI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahi82J95Ib/ppDRG2oGNZ9HCy4FO7NwJKzhKKQKG1+UUAadEdmqhM1slQjgCbxhV+
-	 /dcBOeXszn7WHt9ZEfzUfR2usAGjc5uAN/OK3ZHVMN6a/GtbA6m05cxKc30/svswW9
-	 lMaao3gqVfU1DJmnwW9fYJagoqE1abjZ+rGDbjrrUpMuwLIh6DIVlL9d2y7zHGdY30
-	 tfIgeKXtzkXkTpfedG0igUK8LV3+nv7+Y8XcfzegBKyVjUAwe8f8Df0/Q+XXlp1ix+
-	 v4BjeCOmS/tbEvleYYDEWcXyh76TNTsAYQ91xgEDVBUpifl3dY9W3RGxk+qIejrkj/
-	 y+oyfRg4KoKWA==
-From: Frederic Weisbecker <frederic@kernel.org>
-To: LKML <linux-kernel@vger.kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 33/33] doc: Add housekeeping documentation
-Date: Wed, 24 Dec 2025 14:45:20 +0100
-Message-ID: <20251224134520.33231-34-frederic@kernel.org>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251224134520.33231-1-frederic@kernel.org>
-References: <20251224134520.33231-1-frederic@kernel.org>
+	b=R/S6ZV+SUueDLcQ0rXQfQsIeMhjp3XvAc4iejeKeUtkoixHybvXl+8lPpVcP6HeHFnmS97
+	eiVHBIBzD6QGvFJU8aCoG66KHm8E+ELU2PYEZFeDA0rb+KNPXddHVrZrPOj90zWgh/2gih
+	v2R5izHE2nnnl317znN7mYNXITtcpbA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3E673339;
+	Wed, 24 Dec 2025 05:51:20 -0800 (PST)
+Received: from [10.57.93.190] (unknown [10.57.93.190])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A15DB3F694;
+	Wed, 24 Dec 2025 05:51:24 -0800 (PST)
+Message-ID: <6440050d-844b-4587-8531-038038d32f67@arm.com>
+Date: Wed, 24 Dec 2025 13:51:22 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9B513100002
-X-Stat-Signature: woz3i13cx1rz9wzhs8745mczsujhdxen
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/5] arm64: mm: factor out the address and ptep
+ alignment into a new helper
+Content-Language: en-GB
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ david@kernel.org, catalin.marinas@arm.com, will@kernel.org
+Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1766455377.git.baolin.wang@linux.alibaba.com>
+ <47e29030347c23ffce238ff5ed752da01a8cc7cb.1766455378.git.baolin.wang@linux.alibaba.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <47e29030347c23ffce238ff5ed752da01a8cc7cb.1766455378.git.baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: j3irtdf3xtk5y58qu3ap9ba1xa7k3o87
 X-Rspam-User: 
-X-HE-Tag: 1766584214-465084
-X-HE-Meta: U2FsdGVkX18r+CVR4N/L1okU2IlUMJ/7FE3ECh0H+cqDZZxA+xsnu43H5DHts8kzFLpTEOaxjAUw6y414VpYUwI0jbHjNYvXV7NasfKYKzK9dr66IXARV2RVkyFt95J/9GrdqQUFet7HFDHmy8cJmzQ2GTGUBYDKonT+J3wASNO7YF1krpPIszZZSvwPqKhJkeQCev+ZK6Fl1IM6mmd9iAi/IW6JICrg2MOBeCYxMp5QB1s/UAjl6AL6n89CXYVUnK1LeIozjzRWVtb5JPmnxY+1uA03//D/F0B0n6FOArDPLBghoSAUvlDGjtB6y4Dr4Hpw9I8gFtn7VcHoqADGHh3tMfRkhcevrEX4AhswXOwdwUk1qKpcYUmDlrJM3KERjcAEJf2NhuWxqjktUxftPjTZqA81Eg3ud/sc2TANDJqv+gd2NiOKb9ig07miIQmcRORUFEt9k84hunrqABhyMI6M2zpwIVZJ7Bppf/Oaghjms9O8CQWI/HhrdRlQP2mpxgQSTUbPjmAnZtAWjfjNmnZX6DHfwjPvsmb070NMMQ6Gobm8y0TrNjFBrZ3zI8l1oC1wVemqkQhSFNiuhrYREt8/Dp6PY5L+yS0yjDCDUzqQaS9Xc/CIWoF5fuBWQ7HNnzrimSD1NETFkzDhCMS86UOpfvWRvAKlhP5Ppi4rg5eoLtol1xiIfSQVxvF6T4i/1meE9vqmjGSaCkzRESlWlEEwPfV2syUBjNB6TGkh924gNLeuo8wiyl79QnpKPZR3MeQLS3xtuGtOi2ygcQjvwjAlx203G4o/+MzI8WeFSNijhMGHgWW4bYYFwZzDcNRz8rvm1GIZNiMWd55zHb8waF7x89qjrQZBkbdC5LDFSl8N8dJdPvJRU6Kq1eOLwEjJHW4xztbS2Xn3eFE0VdkrB+zgYQVqSHjGfNG14Js5sb9mv6dMZ4LDrRXpnfZJNKfDrFwId3SPXRlblgcve1b
- 4nQqJz9i
- vO2DHxruzvdAt2j6KR8lz2idEie2mjo7zW0f/YPc16rN0Zs1huay8vOdi/j1m7OVFm6kSWVd+EJkJNQnLJY3K11Bm/cNr7SK1XGrHrR9keawIEl8f3759G4d3Uf9fLkYcXa/xIntSHWJ+SZhJ+/lZZrjwHRwdKCAZlne6kWGf/J5u8HcSNYCnPaXT43tUArjn/NY80ShMfAJRM9fMJk5htzTkAqABw2+NL43XWuG2m2mnqCg=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5A19020004
+X-HE-Tag: 1766584288-636588
+X-HE-Meta: U2FsdGVkX1/1W2QvFQ52IdjmXAsAizAu2h7wUXYBdJ4DVoe9fATMjkgZP8W3dLreUNQOu2AZ206V8ku45UV+pF4RcgtE2Z+MzAGYaQZFAJtyQZo4qtAoLxkqjYKaPZyyWiHng78NeXi3D2oIk7uon0yvMUEXvfSjargvVcyZgomCKxOSiyHiRWgOZJWlbetedvxPl201UTT0R42LBuQKhwFXiJWSM2WGya4OxfpwBb4zhhu/FAhYPGcFkZzp0JjEoCgQic1h61cMVz4zXNaV/O5gEIO2R+9RXKKpSaKrRx8vMtTCJr/qG0/Wqu5Wsdxo2Q5X3J0glaFzWsICWLRL9UxJJHt4cSUdh7vx3KwVvHiKuY2Pu/q781FQFySwJduidB7UBVBsXvo/Aj6cYW+n3bRCgLcCjNCWJ6LcNGoY/ao2L9BxLkCx48p5LmKQFMKCbyEzMMLjBz8YuBD0JSQniu2oUi17M9ebjECe7ilRTHfMIi7g5zJWVrYSYBuPeNp3ZAoujjV/Ayv8V2Bj0ugHF/v7kIPm1UrwVjKBAz7jvoaXb0R96c/x3SxiUGrCCtEwvFtw+nyw4ofn4PgJvfPO8iuQsWBgDE29s9qV0LGYPvjXB3SKj+xrAuYkJOos/S70qQf8oncYdlMDGV2JtE6bUTCf63PmTF7bmqE9tGJtFJUlYWOrQKSelhX8Iz/WaOlii3XJ2//+JO0x5Iask7WpsazFsfXQoDrXTUUD9jL2a7lD0iCH0P9XnGuSfGqcAT/FuYvyHspSDNKgi7dJ91OvxQrORQqwbYGAXsBjVQ42xG8AogZqk7G55PAx3k2WzunThKp4OJfSpcEwUXMh03pJ9MILWRc09fLb+Zw6lL2et0+/iiLd7U9aiCnf2WJK7Rt8sSfGEAFwYb0tlzMqpCn9NKxo5HFlADoMRjkssAvQkPRe3ekp+TtZW29rOkP5XpnGRozL1c2YbXc17B1ahuR
+ If7SIeko
+ wvGQHlJzqpOfWgHwi4taVVq9hAYlRp9SOuunyI+PexcT07RvJ0jEL2tDsEogzBWWhvX+UZq94hfvJtfAW1OrsZAjeRX6mY+xApCI+5DCKP+qzJ5t0WmFTOwnnnsdfWwRhlH+Yt1eGzz3QJn/sRidctHEcHFq/U/4ZbaKCHrFTDnGk7NCeAHJ+5KEjekEfFIsoUFyroKknYpqW4mm7WgNa8q91q9iB+rylGndSXgOJO1acZYL3O7MmXIwld1u8CjxPjP/Z
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,143 +91,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
----
- Documentation/core-api/housekeeping.rst | 111 ++++++++++++++++++++++++
- Documentation/core-api/index.rst        |   1 +
- 2 files changed, 112 insertions(+)
- create mode 100644 Documentation/core-api/housekeeping.rst
+On 23/12/2025 05:48, Baolin Wang wrote:
+> Factor out the contpte block's address and ptep alignment into a new helper,
+> and will be reused in the following patch.
+> 
+> No functional changes.
+> 
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-diff --git a/Documentation/core-api/housekeeping.rst b/Documentation/core-api/housekeeping.rst
-new file mode 100644
-index 000000000000..e5417302774c
---- /dev/null
-+++ b/Documentation/core-api/housekeeping.rst
-@@ -0,0 +1,111 @@
-+======================================
-+Housekeeping
-+======================================
-+
-+
-+CPU Isolation moves away kernel work that may otherwise run on any CPU.
-+The purpose of its related features is to reduce the OS jitter that some
-+extreme workloads can't stand, such as in some DPDK usecases.
-+
-+The kernel work moved away by CPU isolation is commonly described as
-+"housekeeping" because it includes ground work that performs cleanups,
-+statistics maintainance and actions relying on them, memory release,
-+various deferrals etc...
-+
-+Sometimes housekeeping is just some unbound work (unbound workqueues,
-+unbound timers, ...) that gets easily assigned to non-isolated CPUs.
-+But sometimes housekeeping is tied to a specific CPU and requires
-+elaborated tricks to be offloaded to non-isolated CPUs (RCU_NOCB, remote
-+scheduler tick, etc...).
-+
-+Thus, a housekeeping CPU can be considered as the reverse of an isolated
-+CPU. It is simply a CPU that can execute housekeeping work. There must
-+always be at least one online housekeeping CPU at any time. The CPUs that
-+are not	isolated are automatically assigned as housekeeping.
-+
-+Housekeeping is currently divided in four features described
-+by the ``enum hk_type type``:
-+
-+1.	HK_TYPE_DOMAIN matches the work moved away by scheduler domain
-+	isolation performed through ``isolcpus=domain`` boot parameter or
-+	isolated cpuset partitions in cgroup v2. This includes scheduler
-+	load balancing, unbound workqueues and timers.
-+
-+2.	HK_TYPE_KERNEL_NOISE matches the work moved away by tick isolation
-+	performed through ``nohz_full=`` or ``isolcpus=nohz`` boot
-+	parameters. This includes remote scheduler tick, vmstat and lockup
-+	watchdog.
-+
-+3.	HK_TYPE_MANAGED_IRQ matches the IRQ handlers moved away by managed
-+	IRQ isolation performed through ``isolcpus=managed_irq``.
-+
-+4.	HK_TYPE_DOMAIN_BOOT matches the work moved away by scheduler domain
-+	isolation performed through ``isolcpus=domain`` only. It is similar
-+	to HK_TYPE_DOMAIN except it ignores the isolation performed by
-+	cpusets.
-+
-+
-+Housekeeping cpumasks
-+=================================
-+
-+Housekeeping cpumasks include the CPUs that can execute the work moved
-+away by the matching isolation feature. These cpumasks are returned by
-+the following function::
-+
-+	const struct cpumask *housekeeping_cpumask(enum hk_type type)
-+
-+By default, if neither ``nohz_full=``, nor ``isolcpus``, nor cpuset's
-+isolated partitions are used, which covers most usecases, this function
-+returns the cpu_possible_mask.
-+
-+Otherwise the function returns the cpumask complement of the isolation
-+feature. For example:
-+
-+With isolcpus=domain,7 the following will return a mask with all possible
-+CPUs except 7::
-+
-+	housekeeping_cpumask(HK_TYPE_DOMAIN)
-+
-+Similarly with nohz_full=5,6 the following will return a mask with all
-+possible CPUs except 5,6::
-+
-+	housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)
-+
-+
-+Synchronization against cpusets
-+=================================
-+
-+Cpuset can modify the HK_TYPE_DOMAIN housekeeping cpumask while creating,
-+modifying or deleting an isolated partition.
-+
-+The users of HK_TYPE_DOMAIN cpumask must then make sure to synchronize
-+properly against cpuset in order to make sure that:
-+
-+1.	The cpumask snapshot stays coherent.
-+
-+2.	No housekeeping work is queued on a newly made isolated CPU.
-+
-+3.	Pending housekeeping work that was queued to a non isolated
-+	CPU which just turned isolated through cpuset must be flushed
-+	before the related created/modified isolated partition is made
-+	available to userspace.
-+
-+This synchronization is maintained by an RCU based scheme. The cpuset update
-+side waits for an RCU grace period after updating the HK_TYPE_DOMAIN
-+cpumask and before flushing pending works. On the read side, care must be
-+taken to gather the housekeeping target election and the work enqueue within
-+the same RCU read side critical section.
-+
-+A typical layout example would look like this on the update side
-+(``housekeeping_update()``)::
-+
-+	rcu_assign_pointer(housekeeping_cpumasks[type], trial);
-+	synchronize_rcu();
-+	flush_workqueue(example_workqueue);
-+
-+And then on the read side::
-+
-+	rcu_read_lock();
-+	cpu = housekeeping_any_cpu(HK_TYPE_DOMAIN);
-+	queue_work_on(cpu, example_workqueue, work);
-+	rcu_read_unlock();
-diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
-index 5eb0fbbbc323..79fe7735692e 100644
---- a/Documentation/core-api/index.rst
-+++ b/Documentation/core-api/index.rst
-@@ -25,6 +25,7 @@ it.
-    symbol-namespaces
-    asm-annotations
-    real-time/index
-+   housekeeping.rst
- 
- Data structures and low-level utilities
- =======================================
--- 
-2.51.1
+LGTM:
+
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+
+> ---
+>  arch/arm64/mm/contpte.c | 29 +++++++++++++++++++++--------
+>  1 file changed, 21 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+> index 589bcf878938..e4ddeb46f25d 100644
+> --- a/arch/arm64/mm/contpte.c
+> +++ b/arch/arm64/mm/contpte.c
+> @@ -26,6 +26,26 @@ static inline pte_t *contpte_align_down(pte_t *ptep)
+>  	return PTR_ALIGN_DOWN(ptep, sizeof(*ptep) * CONT_PTES);
+>  }
+>  
+> +static inline pte_t *contpte_align_addr_ptep(unsigned long *start,
+> +					     unsigned long *end, pte_t *ptep,
+> +					     unsigned int nr)
+> +{
+> +	/*
+> +	 * Note: caller must ensure these nr PTEs are consecutive (present)
+> +	 * PTEs that map consecutive pages of the same large folio within a
+> +	 * single VMA and a single page table.
+> +	 */
+> +	if (pte_cont(__ptep_get(ptep + nr - 1)))
+> +		*end = ALIGN(*end, CONT_PTE_SIZE);
+> +
+> +	if (pte_cont(__ptep_get(ptep))) {
+> +		*start = ALIGN_DOWN(*start, CONT_PTE_SIZE);
+> +		ptep = contpte_align_down(ptep);
+> +	}
+> +
+> +	return ptep;
+> +}
+> +
+>  static void contpte_try_unfold_partial(struct mm_struct *mm, unsigned long addr,
+>  					pte_t *ptep, unsigned int nr)
+>  {
+> @@ -569,14 +589,7 @@ void contpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
+>  	unsigned long start = addr;
+>  	unsigned long end = start + nr * PAGE_SIZE;
+>  
+> -	if (pte_cont(__ptep_get(ptep + nr - 1)))
+> -		end = ALIGN(end, CONT_PTE_SIZE);
+> -
+> -	if (pte_cont(__ptep_get(ptep))) {
+> -		start = ALIGN_DOWN(start, CONT_PTE_SIZE);
+> -		ptep = contpte_align_down(ptep);
+> -	}
+> -
+> +	ptep = contpte_align_addr_ptep(&start, &end, ptep, nr);
+>  	__clear_young_dirty_ptes(vma, start, ptep, (end - start) / PAGE_SIZE, flags);
+>  }
+>  EXPORT_SYMBOL_GPL(contpte_clear_young_dirty_ptes);
 
 
