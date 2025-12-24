@@ -4,126 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B559E7490D
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 04:06:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 334ECE7490C
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 04:22:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA91A6B0005; Tue, 23 Dec 2025 23:06:32 -0500 (EST)
+	id 35D316B0005; Tue, 23 Dec 2025 23:22:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A56996B0088; Tue, 23 Dec 2025 23:06:32 -0500 (EST)
+	id 30B856B0088; Tue, 23 Dec 2025 23:22:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 958F06B008A; Tue, 23 Dec 2025 23:06:32 -0500 (EST)
+	id 2173A6B008A; Tue, 23 Dec 2025 23:22:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 868CF6B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:06:32 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 333161404EB
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 04:06:32 +0000 (UTC)
-X-FDA: 84253027824.19.69AADA7
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6ED2C100007
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 04:06:30 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=On4OwG1f;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766549190; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 0CDC26B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:22:18 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A51CC1405DF
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 04:22:17 +0000 (UTC)
+X-FDA: 84253067514.29.05BF24B
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E5C391A000A
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 04:22:15 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QZB4ecCq;
+	spf=pass (imf19.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766550136; a=rsa-sha256;
 	cv=none;
-	b=cxrFVLfi9e9jB4Yj8WFzTkWdgytyE2tQw7TeFpNsZWOPRQUuJ2lH8DueNSD84QdSiOHG9s
-	Hosvp/SN35gZNieRNrJBoElEFoOfKSvLs8I823kjvGBK4Jj/cpb9kz3VjiHL74Mo9iWB5D
-	8ymUx/ZEmhRuTbRy8AdDWrhzpOrlVF0=
+	b=GizLGYBaYs4ePkuOry1qbflPca8Zojm0HBD6qqjJmANP6G8sJAQRnDZNC/a5wCQqV7roPw
+	JnavUGc/m8v/dF9iwBW5/cQQOLF3A7oZhSG9qOP6ElhPPoqBCS0P/BhzGB+ttEq0A2SxRI
+	NEZg6O7YXJEtfhnq65NvgyQzsf0vBGk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=On4OwG1f;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QZB4ecCq;
+	spf=pass (imf19.hostedemail.com: domain of shu17az@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=shu17az@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766549190;
+	s=arc-20220608; t=1766550136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hXrYLXPtyADbkpCPhye6vwcYC3MDDrqUQyT/zKh32iM=;
-	b=Sa6ssIlU7bBWac9/Vr2zgmh8dWjCrrdwB6Efy3aHck5+s1gyhZ/1aR+aMKw3GeY8ernJ7V
-	YNK8GgnuHUzuXeejjIhm3WrnKNJc4k4lrNMPwqjvhMMdt8bWO+Cnwffl8EuJkOhR0fbx55
-	Lu0Ev9tv6weGNzFvEI2F/tQ6UzuRJeM=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4f1ab2ea5c1so74052341cf.3
-        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:06:30 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=+TGrPuT2v1cZj1mmHtKJ1nXyGxXS49Cs2xA/DQGK74o=;
+	b=3HZbj8Ng0Z6ba3wCTiZ68ze3QMLfQy7uXvo+KrDAuNRrSERjbHFZpPAJDQz/rFHkaLFyuk
+	FCCDa5vYg2ry6TIpWyHQoIpSK7OHyPlvyTFJJf5WahkLINMUdreiV65s9/OdFifw8pdb/O
+	uKGgouTgve11QMD2gSoieEuD7ARjmag=
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b4755f37c3eso3676008a12.3
+        for <linux-mm@kvack.org>; Tue, 23 Dec 2025 20:22:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766549189; x=1767153989; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hXrYLXPtyADbkpCPhye6vwcYC3MDDrqUQyT/zKh32iM=;
-        b=On4OwG1fPFm7IlhTyJ3sVLhRxLaaXbvgR0+m4Fd9Ps435JY45ynjg3YHU1QVsYBURO
-         pkX7H+OCFi/3UJlhP3PZwDKzvm95dgOGm8ut3lwMI1NpSEcY4GtRjWWieVOF5Lq07a6m
-         O1TYluuOyIfgyzA2MT8FdpmPUt5nMyhbpFJ5TLzMM54/nPA4uURWP8GkDGPv82m4loGw
-         jGv/7EYZSegbXWZ4OPzPFtTEnjCRYLTf1n7bTtJctY3Mt4Jtjohn3iYfPVdvHp7uY4BC
-         +1+URKxtr1f5Wbj4g/Bp67ryVPbxwpYPjZ2nFtjG4n4I1I1c650+WK+MepLeC3rWeQHI
-         gy2g==
+        d=gmail.com; s=20230601; t=1766550135; x=1767154935; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+TGrPuT2v1cZj1mmHtKJ1nXyGxXS49Cs2xA/DQGK74o=;
+        b=QZB4ecCqt7TM9xhCTqmD3iCGTr3gztVel6Sc6LS9m2M8AejwyuotexmYwKGr194r+K
+         KtWk3YIqn3X6EgaByNwJmbZAjFEF+3YDj1AkstN/JaueoZ+peVrN1TuefebICbLxEInS
+         y0Y3umFo8EQF0foMNFHuF+6j1rYhv/F7XL6bQkUQsGjjAvpkMAR3P3BCAOC/4v/P9PN/
+         wU8EZjwF7wDBQ0vxpVHK4O3whdiwkmoXLviQS0AmKeymnFz7r5QBU7CPSn1d7oriJ6xp
+         yubCFZ+7DHA3qeIzxYbCIWS+SO1ufOnn3IkUzCfdeGV2TmWQ11mFFto+cZmlOH/dujuw
+         36Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766549189; x=1767153989;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hXrYLXPtyADbkpCPhye6vwcYC3MDDrqUQyT/zKh32iM=;
-        b=u43kyhJASqA5kcGuIxVW0I8qW1AXD6kqWFfzyEVdPEv+cDYyzLeQv4lW7LRFmsHfCf
-         XU+KcmeNW1X1dcMbyjiciPWq+uQgnOXmMA6qV6gpZdhe8hfCk/Y+Ypd7EInL5tI+uAR8
-         GtkMHMzFyzsc4iLQSsgtJMUdpjXRVjr+OooKOP93Gl15aXBf6Y6kuTi8DoZenotI8hgY
-         FdanoXTWjDJRHn8e0sSghYisGbnpWZUqBRP7bt63rWTKg2g+42WfSe6IZXpIx1gXMNCW
-         x5Hw69cu0RDkk8zkKBsQOPcJ9VdzFKHXi3E8dVMZewKUm7yplDB/LFNysYUo02mY/FFR
-         eAbA==
-X-Forwarded-Encrypted: i=1; AJvYcCWzMAc+Wy0Z3Th5Z4jRC8lScljGNGpt/STLjV5Jdrh8lfct4lagMMtz1fRXRB1Sya5IV4zaVkh3tQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy3j69I0tz2kuxfQoi8pCFm0w8jbivxaUKk2yBpzNErG0CDTzF6
-	Zuc9VhTAq0CoszF8pjhrfAPbsTDbE+P+q1Cr7KugAZn5PH3V99VREw2EapEeo/pB
-X-Gm-Gg: AY/fxX4428VQ4XaIBU+pxe2uQ9mlDv0MKaNmMMCkJ/XkYvUDRmYsesuLp43g0SkBYAu
-	4fa3tdsbXINbjuwstY5KhUNkl06WpOhBchroOIxiejny7woR5DOiWLYsu/jRYyygPRvpL/wz/sm
-	7p4t8DgVwReHcYQai7KwwJXa1ycpDWxDrEZyNgBE6RxfPSVGGpZGTRG0gFQOudbFfRsqS638cgp
-	ANEOq2g7H7uPbQYFPW0KR6a4pT06icFE5x9LVuaAM8gsIivECgqD5mJXJqV0JV4ZKNB6eVkr3Ri
-	t7x4vpz8FgRiIB8icSfotII8a9/U+0m2CsUJr8Dlg+ScCKXfAuWRJDBJXMk/fi6HO6fYMSRILWw
-	ZkK5I+mz0L7Kl8G+pl6nnpvjOUdmHzfTLgdTGWbHhi9RpyvB4De5rfPpLNTaMpifzM4llc9Bk1P
-	M4xGOlNfgnMATc
-X-Google-Smtp-Source: AGHT+IGpzSIvzsx58mdl/niocf1lry49aUnkUvSKw/smczxKOj5NW9s7CL7SDZBEFPmEs/fVAONFmQ==
-X-Received: by 2002:a17:903:b90:b0:29f:301a:f6da with SMTP id d9443c01a7336-2a2f2a34f54mr156498915ad.43.1766541873732;
-        Tue, 23 Dec 2025 18:04:33 -0800 (PST)
-Received: from barry-desktop.hub ([47.72.129.29])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c8279esm136373295ad.28.2025.12.23.18.04.27
+        d=1e100.net; s=20230601; t=1766550135; x=1767154935;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+TGrPuT2v1cZj1mmHtKJ1nXyGxXS49Cs2xA/DQGK74o=;
+        b=McNJzb799KNm6ouaoABL/Q0t56oKcBr3eYyWY6H/TIH+91VfRMw4lMmxsojWv5Eihm
+         G4KwymcKtYRZQsi8wyBl+gJ1JqN7+q6X8qdNXdBCrVQt+Atv0+E2h9vsRlcGWx1RSsJ9
+         mh7PeUCCLA7fGSOBzpeb3HSkzkShzlSb/Z62/jjNXI7OniGgNNPVzxk8xp30fEvhdhoT
+         ipiw03smV4W3R23VUbKzdO1FUvrbXmQKojpzM0t68IPlUUXhwjEw6Kc4qXJDaZsjvo9Y
+         ZH4hPVsunuWZ7CbEDBdpZIyexrkH0PnzTAkwP7+nFgwplB3b6hz5v7e3C9XeWfqBoDlf
+         LsJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW9MJgyfvmHvR8zmfNQvQw1DA4lallXAaLiaL3sFYh2ZnfKo9Q8Xb2+1WYLvDyBPD7kRNMptedVqQ==@kvack.org
+X-Gm-Message-State: AOJu0YwhQQhM4T2NaQBIWC+MG2JQz+J7Xm1Xypkne45w2ESf9aVnBiDF
+	RrqJlqsApthxTwJJKJtNMaGx9sF6oXaikg7pc2/kDWByX4GzSqaEdjU+
+X-Gm-Gg: AY/fxX4dfUoXX7IbaEDnRkBuyLf8VjzLuYhlQ33CFYnbqk6kA9Np4+KQcF4ccFTn7Td
+	CbuoU8GWvIB+VXM1HKQT3wO5V/bkplBJQTNaYvCVr+ryTwi8Km1ZyyYcxCjLuNUZK7dQ5gCn7jM
+	DWpwpi6KNBsyRFGDyTn4S9lGp47xcbMlyc9WmWiZK213a3UPH3KQ0owfXNgKAsYz4hGeEs/k7B6
+	sWiJCqRb1CQM5aaZDVhs1OzocCdiYHdMLORrq9KFE3zQ2+Za2UQfbY/V8roTWvRl4wPG16BN1+Q
+	We/jCXElwVcJnnDeRerSfv+3YbHhMbIIAwEWPSw79OPlNSxf3qsp5rGNTzV0QDYGmReSaKaB8ec
+	Z/+Hsz7lD3xNfAAh0PfsNnMOBSP88lSbGflHmuzgZ3aqR1sIEwNdrx6s7GEMDgGNs8GxDfTMxd5
+	oy
+X-Google-Smtp-Source: AGHT+IHOv+s1tLvmzhpsyvu7LJTsUAsXFw9q7TcmS1xRa6GeikBeK5vKJ0t6dCFNR8dYeCrV/OJTzw==
+X-Received: by 2002:a05:7022:1719:b0:119:e569:f609 with SMTP id a92af1059eb24-121721ababfmr11396994c88.2.1766550134622;
+        Tue, 23 Dec 2025 20:22:14 -0800 (PST)
+Received: from dev.. ([208.184.112.130])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724de268sm48542031c88.8.2025.12.23.20.22.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 18:04:33 -0800 (PST)
-From: Barry Song <21cnbao@gmail.com>
-To: baolin.wang@linux.alibaba.com,
-	syzbot+178fff6149127421c2cc@syzkaller.appspotmail.com
-Cc: 21cnbao@gmail.com,
-	akpm@linux-foundation.org,
-	bhe@redhat.com,
-	chrisl@kernel.org,
-	hughd@google.com,
-	kasong@tencent.com,
-	linux-kernel@vger.kernel.org,
+        Tue, 23 Dec 2025 20:22:14 -0800 (PST)
+From: Shu Anzai <shu17az@gmail.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	nphamcs@gmail.com,
-	pfalcato@suse.de,
-	shikemeng@huaweicloud.com,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [mm?] KMSAN: uninit-value in swap_writeout
-Date: Wed, 24 Dec 2025 15:04:21 +1300
-Message-ID: <20251224020424.52976-1-21cnbao@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <9bbc1962-5f6f-4e3c-a672-d80565aa5157@linux.alibaba.com>
-References: <9bbc1962-5f6f-4e3c-a672-d80565aa5157@linux.alibaba.com>
+	linux-kernel@vger.kernel.org,
+	Shu Anzai <shu17az@gmail.com>
+Subject: [PATCH v2 0/5] mm/damon/tests/core-kunit: extend existing test scenarios
+Date: Wed, 24 Dec 2025 04:21:55 +0000
+Message-ID: <20251224042200.2061847-1-shu17az@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6ED2C100007
-X-Rspamd-Server: rspam10
-X-Stat-Signature: b35hysnr1rtfk585fmp87tacrtsi13ty
-X-HE-Tag: 1766549190-261493
-X-HE-Meta: U2FsdGVkX1+qqyntxJ66NrDZ5ScJrDtMFNUcHR0iWrbHFBNjEm4mxBx75s/TPMUtqpY3kRZ0YSVPPrawgX8hQlJ0e5YsidJPytHqHwgGU2/xGxuXqkTjdEkNTRf9W4kSD8bXhpDPfwn4+aw+bzHeuck8G1QygH2BvrqhlL9jHqSAFyx4olm8b9ksW1IwE79AndoGcl2r49P4oC77tq0zORCWodoSfUDhd5zwRHPzXgM7bsaGiaZDbEx+59JVpv2ZJCl4SEHkyBpahGXeeoSFE2/hH3EphxcLGMFA6HPPrffa8Bs23mD2W9Q4UVD61E7Tnstwq6bLrF7GyoIboKllppmF51SAGvHJMPaN1+OJb6ISJbHQuU1jEmsrTkXjGlRZTiGO0bTtlJnzksjNAMKml+YKi5vxjmGCKT0okZyMKzp3Rto1Fl8s20Hay3ea5tfGmpSK4ggiol2YWd0XBgMjh5VpCa7smg+inAp2RdsSIwWR9NcV4Kk0vYRPFA7eLqkrJz1LgMV7M4GVOLU+bWR1+XwqH2u1KviEx6Rtw+XErSGst3gKxs9cBmEegV5pPvnEU+uijDmZGDB1Oq90ARj8wsKbwNy5Vsw6TjMoGu0ji6aZFkVk9qmMnJVcF1NVG5M0LkBRF32PzNMZ626PTnL29pHd+hkQzfBuuczSQ/w5wwxBsGDbJorkOlspBpnrbbgEU/6N53LRIX6v39ONwj3XDueHDe1CiElxzo2532a66gnyC9K2vz6ppwyVzlPLR+nvntuPEz7XxGuKH/lCxj3CCGskShrl6ZLL94FdPLnplzcbqXWMzy6tfiEz/HQMviIQ2JjeqKVEygrvw7GVp/P2YjG7avxUJlh6c/SD12DAwa6G6JO+888kKtJOt8XD0s3isyjUbekIrTR6Fz65b1Dvsq7vZzgzWe+6M+cbPKyKTI7oy0xR7VCe5VYtSx3g+0z6gfmN62rWZvbfiHfwKP4
- sH31eUAN
- xro8Z4XScrDoxNv8/3E61Yh3yxptMgAdGGDVA9bOLqKJomQP61ac6TlfrAZmo9M49K1jVE3aiRdPeTelwMzrSq8mYCtRCevVQRy33K5G5M9ai+ov4xQFGEJ3XmIWy4+Kps2WGAX9PWE7U0YdYB6CywLaDm7gBGXlkFB30+6BHWmM+CLNpaFGB1DoK1EQxY1jPcxvoVQBEZU6qEJ4=
+X-Rspamd-Queue-Id: E5C391A000A
+X-Rspamd-Server: rspam04
+X-Stat-Signature: whqx5hmrz41tyctwxwmrmjp1gacrix87
+X-HE-Tag: 1766550135-445833
+X-HE-Meta: U2FsdGVkX19sHky+1UVhyYnIF7t9ZMZADcqI1bi1bYk9ZKsAjoLuCTcOBL38hpjgYgTiyk6k4c5M36v/1+UYg/p6VikIdUIg0JaGv0yiE32lpK/BHnQSAjNb2Rh4vlEVgRBGV/I+ERKdx3NP2q89oTZkRwnFc/j7dR11EcOb/iuZkjOsCBXuZzJsoYwXyOpHDY0OdjFa7yxzLxzNmn7P2NjkvILOz7vUeZ06mTb7T/KYYNpHk8htlePEoQNVoLhgcN5eUAvL2OVQv8xWvthjem9VtzCZy0cP1dQoGQXE8PgS+cZhsZ2QXqtYh6tWEEcxzGtdFCfuEX69jt71DDgA4Vb7MzfxiwVSTqBgLxG7a6/CnNWba+D2uPRR6CNsGstuXNLdM78rtumCz7rQ5UzJhO9Y2ojx6QBWf4Um7xg3/tWqhd2wz6BITUFnUv306u6seX02OHFhHhVN8pMm3JwD3A9B9f3lS8NBUl3YKdCzGA4ybE3hg8nJR9ttcBRYnot0hoY9zzA3rwhDM/E7Cf2ja9U9b5aHUFOd2LPFEHmRao5dHF7IGLTET8FOtU7CczbWqniN977Tt+2ZKiJ8Lc3RUZU6iizHcYa/05AXNtmWKLSerS/y2LovEttPRUBeudw4iZOMPCjrfQVipvxwtOFQGJejcvZIIt20eKPffXwmfv5uAOi9B4+EQ/qQP9SAXPzpx2mwLRaUbF2iv8DR2AkNRgIHNKqEv8qdp6+eFAy30Ruai0QQ66QTp2lenzrkFCiNYeGITYGtTULqsyT6eAavQ1YUQ3tD+JaRi1E8Y398Al5UMkEh+FhDH0ELgTaxdnuyeA97OU85H1YVf+4GFrhAo4NHmFshL3ff+f5SY6F5sXLtklArI2cs+VtIJleaIjzqLKGCPEU/uGzjzjPxpC5knO4edXZ7moBcpfBOYB2sFlvUm3IDW36iQWZkIUHfyRgLY65LsB9aWP4+upUVc1B
+ 8qE7l7R7
+ r5Xm1bL5xVTK4N0Vg/wLN7sP0fhZSuoRHl/I2DkUM/iSrZkSAnEGw46KyN5UUaLhL6yZbsVZKPYWJVnKVol4UurzZfw+QJUV7W5nwN87mlKp5JyM2Nj7AYGoNqIj8S3XfkU6iwhMYpAR6y1QDYRuHxlsI47AFJp85R5Iz3l/PfgBq/gdTONj6sGZRSjPF5E2v9rzIrMF3owLCo8x7sVtBndZDg6Ergb2kQYo4TCllZ/AHWHXrVo0Xlgd9tff7DbczDEK6aWacwRFb4gB5oTc9P3cQ7qgbKWAtEMUE+P/YSuRB9+cgAZHMb+DflSLciboiWFGrnpYCfks9mYZAIw77sHg3RC9dWV5Gy5FeTAspnelpIp9PVhZfpovS2SoYLFWXcDGy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,94 +119,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 24, 2025 at 2:43 PM Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
->
->
->
-> On 2025/12/24 08:16, Barry Song wrote:
-> > On Wed, Dec 24, 2025 at 12:43 PM Pedro Falcato <pfalcato@suse.de> wrote:
-> >>
-> >> On Wed, Dec 24, 2025 at 11:46:44AM +1300, Barry Song wrote:
-> >>>>
-> >>>> Uninit was created at:
-> >>>>   __alloc_frozen_pages_noprof+0x421/0xab0 mm/page_alloc.c:5233
-> >>>>   alloc_pages_mpol+0x328/0x860 mm/mempolicy.c:2486
-> >>>>   folio_alloc_mpol_noprof+0x56/0x1d0 mm/mempolicy.c:2505
-> >>>>   shmem_alloc_folio mm/shmem.c:1890 [inline]
-> >>>>   shmem_alloc_and_add_folio+0xc56/0x1bd0 mm/shmem.c:1932
-> >>>>   shmem_get_folio_gfp+0xad3/0x1fc0 mm/shmem.c:2556
-> >>>>   shmem_get_folio mm/shmem.c:2662 [inline]
-> >>>>   shmem_symlink+0x562/0xad0 mm/shmem.c:4129
-> >>>>   vfs_symlink+0x42f/0x4c0 fs/namei.c:5514
-> >>>>   do_symlinkat+0x2ae/0xbb0 fs/namei.c:5541
-> >>>
-> >>> +Hugh and Baolin.
->
-> Thanks for CCing me.
->
-> >>>
-> >>> This happens in the shmem symlink path, where newly allocated
-> >>> folios are not cleared for some reason. As a result,
-> >>> is_folio_zero_filled() ends up reading uninitialized data.
-> >>>
-> >>
-> >> I'm not Hugh nor Baolin, but I would guess that letting
-> >> is_folio_zero_filled() skip/disable KMSAN would also work. Since all we want
-> >> is to skip writeout if the folio is zero, whether it is incidentally zero, or not,
-> >> does not really matter, I think.
-> >
-> > Hi Pedro, thanks! You’re always welcome to chime in.
-> >
-> > You are probably right. However, I still prefer the remaining
-> > data to be zeroed, as it may be more compression-friendly.
-> >
-> > Random data could potentially lead to larger compressed output,
-> > whereas a large area of zeros would likely result in much smaller
-> > compressed data.
->
-> Thanks Pedro and Barry. I remember Hugh raised a similar issue before
-> (See [1], but I did not investigate further:(). I agree with Hugh's
-> point that the uninitialized parts should be zeroed before going the
-> outside world.
->
-> [1]
-> https://lore.kernel.org/all/02a21a55-8fe3-a9eb-f54b-051d75ae8335@google.com/
->
-> > Not quite sure if the below can fix the issue:
-> >
-> > diff --git a/mm/shmem.c b/mm/shmem.c
-> > index ec6c01378e9d..0ca2d4bffdb4 100644
-> > --- a/mm/shmem.c
-> > +++ b/mm/shmem.c
-> > @@ -4131,6 +4131,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, struct inode *dir,
-> >                       goto out_remove_offset;
-> >               inode->i_op = &shmem_symlink_inode_operations;
-> >               memcpy(folio_address(folio), symname, len);
-> > +             memset(folio_address(folio) + len, 0, folio_size(folio) - len);
-> >               folio_mark_uptodate(folio);
-> >               folio_mark_dirty(folio);
-> >               folio_unlock(folio);
->
-> That looks reasonable to me, though I prefer to use the more readable
-> helper: folio_zero_range(). Barry, could you send out a formal patch？
-> Thanks.
+Improve the KUnit test coverage for DAMON. 
 
-Thanks, Baolin. Let me request a bot test first.
+The five patches in this series respectively extend damon_test_split_at(), 
+damon_test_merge_two(), damon_test_merge_regions_of(), 
+damon_test_split_regions_of(), and damos_test_commit_quota_goal().
 
-#syz test
+Changes from v1:
+- Split the original patch into five smaller patches.
+- Remove a newly added region from damon_test_merge_regions_of() 
+  to avoid an obvious test case.
+- Restore the test case in damon_test_split_regions_of() 
+  that was previously removed.
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index ec6c01378e9d..835900a08f51 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -4131,6 +4131,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 			goto out_remove_offset;
- 		inode->i_op = &shmem_symlink_inode_operations;
- 		memcpy(folio_address(folio), symname, len);
-+		folio_zero_range(folio, len, folio_size(folio) - len);
- 		folio_mark_uptodate(folio);
- 		folio_mark_dirty(folio);
- 		folio_unlock(folio);
+Shu Anzai (5):
+  mm/damon/tests/core-kunit: verify the 'age' field in
+    damon_test_split_at()
+  mm/damon/tests/core-kunit: verify the 'age' and 'nr_accesses_bp'
+    fields in damon_test_merge_two()
+  mm/damon/tests/core-kunit: add a test case for region merge size limit
+    in damon_test_merge_regions_of()
+  mm/damon/tests/core-kunit: add test cases for multiple regions in
+    damon_test_split_regions_of()
+  mm/damon/tests/core-kunit: remove a redundant test case and add a new
+    test case in damos_test_commit_quota_goal()
+
+ mm/damon/tests/core-kunit.h | 50 +++++++++++++++++++++++++++++--------
+ 1 file changed, 39 insertions(+), 11 deletions(-)
+
 -- 
-2.48.1
+2.43.0
+
 
