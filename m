@@ -4,78 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CAB7E7491C
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 07:34:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C787E74ADE
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 07:45:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C92E6B0005; Wed, 24 Dec 2025 02:34:16 -0500 (EST)
+	id 7B2136B0005; Wed, 24 Dec 2025 02:45:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 146DB6B0088; Wed, 24 Dec 2025 02:34:16 -0500 (EST)
+	id 7357A6B0088; Wed, 24 Dec 2025 02:45:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07FF46B008A; Wed, 24 Dec 2025 02:34:16 -0500 (EST)
+	id 609406B008A; Wed, 24 Dec 2025 02:45:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E9E756B0005
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 02:34:15 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 465AB1388BF
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 07:34:15 +0000 (UTC)
-X-FDA: 84253551270.26.AD803F7
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 49E581C0005
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 07:34:13 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DD656B0005
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 02:45:44 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 00FE1133F4
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 07:45:43 +0000 (UTC)
+X-FDA: 84253580208.02.006B9CB
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6214F1C0005
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 07:45:39 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=Dy1ObVw1;
-	spf=pass (imf20.hostedemail.com: domain of fadouse@proton.me designates 185.70.43.22 as permitted sender) smtp.mailfrom=fadouse@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766561654; a=rsa-sha256;
+	spf=pass (imf20.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766562342; a=rsa-sha256;
 	cv=none;
-	b=3yH0j+ZLhjZR8LMGnG/s4wz7svkU0lnqxRwSa7eochjcTbnKHQmeQMm+s3AFjrOkTWFf12
-	hd+RT9DrlNcVqogMglQe/pY5pItgDQn/O7CWqTGBiQArCHd2pi7xN2MtyPcJIWOmxrAV5S
-	yq0/BFnJiMEndWtiQj03zkUmm645JP8=
+	b=8dPrhqVvbEPrCL5uFPRKn3M1JQeCTZFBYeMZfwSiLnIxhT7R6LAsYDwfASTB48pMW3Tvq1
+	Il479PCunp8w/p5jfB6pbbFIX0gpSd41yf7iY4p5bSR0EwGq0W6y5x7jZi15JUBiygcTU6
+	ZW+okPxYvbR3Y/C1kjdhmqiJQ+F92A8=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=Dy1ObVw1;
-	spf=pass (imf20.hostedemail.com: domain of fadouse@proton.me designates 185.70.43.22 as permitted sender) smtp.mailfrom=fadouse@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766561654;
+	s=arc-20220608; t=1766562342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=L7myHmzOMTw/2xm1kgAsRVeuED4ov4P3tQNk8d4OzlY=;
-	b=cy4+yNmT4AItbcZImG5k/LrNEMyhSjrUaFfsUKuNh3Curs5oXLvFRjehLJzNauxAg3TDij
-	Xcjf5PQDSxPO7Y7mskXPtRMQjFFt27PR1tqffoCnW8tAa+4aVLy1jf2yoLKwrdRiGKtOh2
-	ebRMmMTHgGgz/EcRFzWHe+B/bevNDmw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1766561650; x=1766820850;
-	bh=L7myHmzOMTw/2xm1kgAsRVeuED4ov4P3tQNk8d4OzlY=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Dy1ObVw1vbQ0Z06UiT8eeC6tyjrwcDCHZtkpovaAeL+BLn9TmGvlMnORIMYmJctYw
-	 jSrGbX3s8/k+YRoLJLjY0vS252GzLt3gAMZ5pD+Hf+MYorhfib9WhpGlEHQXUAwon6
-	 eOfzD6giXQ99U1wWb6XEPBlz9o4UWEm6fz5Y8h+FqCeFfuS71hNaRFtQ0DNYoBTEa0
-	 60I1rktrFF42LMHXg4NGOSGH+3mVCAoH20HpK6XlY9QpOKlAboa/rTWeAHPno97CqQ
-	 cOJyTgbYXslRIP09LGwl3K9nszXDmPGSykhyZurdowqn7vAkAAXfSu3D5AUt+qG6oe
-	 QN2aBy1MmuUfg==
-Date: Wed, 24 Dec 2025 07:34:04 +0000
-To: Evangelos Petrongonas <epetron@amazon.de>, Mike Rapoport <rppt@kernel.org>
-From: Fadouse <fadouse@proton.me>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, Jason Miu <jasonmiu@google.com>, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org, nh-open-source@amazon.com
-Subject: Re: [PATCH] kho: add support for deferred struct page init
-Message-ID: <7024cefd-bf27-430b-b8fa-04e1457e0eb8@proton.me>
-Feedback-ID: 105244773:user:proton
-X-Pm-Message-ID: 2dd8c5fc83aeca573f67212e6c86fd605a27696e
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6cUfqmEFnrq0YItbXJ14PLNpD5SI37XY0kYlZr87vX0=;
+	b=u5MkdYx3gAYSSH9DYh8x7vGiewnNdtsuL6xeqq/7e3Mu8mQ34mmxU7efbNakCqlnAKaZ4+
+	7Gw+hWzLG9PRYQXrY0WgcZSgBCHck8ld2DikhVHVNV8t3raCOHiJMPHi1nG+YkZgfeQJMg
+	ZUdTy3o6jMaQKCwDzOqpUN5nE1cCsBg=
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dbkSC5y5jzKHMNw
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 15:45:15 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 56BAC4058A
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 15:45:35 +0800 (CST)
+Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
+	by APP4 (Coremail) with SMTP id gCh0CgA3l_cMmktp9pcvBQ--.63051S9;
+	Wed, 24 Dec 2025 15:45:35 +0800 (CST)
+From: Chen Ridong <chenridong@huaweicloud.com>
+To: akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	hannes@cmpxchg.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	zhengqi.arch@bytedance.com,
+	mkoutny@suse.com
+Cc: linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	lujialin4@huawei.com,
+	chenridong@huaweicloud.com
+Subject: [PATCH -next v2 7/7] mm/mglru: remove memcg disable handling from lru_gen_shrink_node
+Date: Wed, 24 Dec 2025 07:30:32 +0000
+Message-Id: <20251224073032.161911-8-chenridong@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251224073032.161911-1-chenridong@huaweicloud.com>
+References: <20251224073032.161911-1-chenridong@huaweicloud.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha256; boundary="------2c35dbb789baa2eece3de1188c6281b855389a5f3da6cb9053721f6fa8184591"; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgA3l_cMmktp9pcvBQ--.63051S9
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ar4ruFW5Zr4UXr45JFW5KFg_yoW8Ww1rpF
+	ZxG3y2y3yrJ3Z0g3WSvFsrua43C3yxKr18JrWUJw1fCr1SqFyrKFyUCry8Wry5ArykZr13
+	Zr9Ivw1UW3y0qF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmS14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
+	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
+	z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
+	4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
+	3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
+	IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
+	M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2
+	kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkE
+	bVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
+	AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI
+	42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
+	4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBI
+	daVFxhVjvjDU0xZFpf9x0pRQJ5wUUUUU=
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Queue-Id: 6214F1C0005
+X-Stat-Signature: u1jthhp5iydd8g4tgtd3qpneuotdju4g
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 49E581C0005
-X-Rspamd-Server: rspam04
-X-Stat-Signature: imcs8ughmytsujuxfdtfdn3t5ppkms11
-X-HE-Tag: 1766561653-560988
-X-HE-Meta: U2FsdGVkX1+zP/hrgntZXRtNG83UMgqZ3s9U9j5AmKglH+iVRO5y7s/Ygi300TO21nTUsaIMN+gw0sSXq/wg8A9JkuGV/0E8xdRec3jcJJjf4uL3DpiWIcouj5uwsIfQvQDTRaFFBCyNOjLg/NKGysGO9qf/+WkdtjRI4pkbnNJmBrQaewO2GAXCVa47WNXULgOi94afsyg3GEI+4qWxed5rSHtI6HRl0jpO3Atx8MUva8+F9XOJwIxiKNeVe6sjbEz+TpklqOkSfVrInXDvwaPzElZ9+racWFFNvlnhYixJBi9EYvXbk/pE1aBPZcpD7DtscGEHceiuMNQNfDV07T9n/SInjBpxkFClyv/CxW8g9sFjemy2QaLvxQhSYc9HeNA73ohX+PnyUCjKGYyqp6bRN3UuU/FDDa91umordpsCwrSXiToCJPgwBKKvSG2wp3hzz0/vtLY7jqDMMy/99340lKonF/SPpjGhR5EGAjPt6ghG7nqf0V2qpVPgYMaf0I4E5d0YGhsBPJQaiFDt/D1JxLZRnbWaQcsjl18bkBo0d9iTeGpO2WBb6Piy7BKqGSvq1Ypw54Bcjay3yJwNW6MTHsxgYWhm0rUqPYHTOz7FQiG7ZnvPoy+LRHb3VzAKpoSaoTnCKommir4iTR+Mr0Lpm3sF26+7lMxZedPYCUZVSWGkiMh6aj5nPfminjSrdIHyYNiJrIe0Q3MsLWB4japQS9DjUUR/bTrxQFm5V+IIQX2ZGAQsp0rxNUB4p10lcA6xVDrYep2X5LOG1GhbvSyqUAjg03h3pceIK3pDHcerA3ZhTIBjpPKT6tdiSrwhod00oXd2jq9OJltW4rUyHBuyEEEJIGAvgd64qztWoc9NxwXh1Oxr7DBY4q4YloJhRYHSq+6kWN2BLDXsbVBQZR4sW8yo6PTNuzrN2O6TKdV5qRHSAiNwo6Arq9c3s4/xGZzGTHoYGiiK+PpgMsb
- mvs0XKG8
- CPWJm5PxHpB+bY1UeP2tbxtbqOdYD2ADTeiAj8W7bo5YRnbOU3EefWiPhW75yhuTNBJTZ8uq0/LEhgJU4uz7WUQn7IeCkd1WY1Rho6eTaHqR8QzcWEs9DLUK2kfpN5yzTNhvtC5Emg1MWI14=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766562339-875903
+X-HE-Meta: U2FsdGVkX1/LOHVrl9gYbxDWnTH04UMY+DmsWrpdAsugS66NqeHasbN53zfERssf5qhz32kgDFIK7jdSFngimOgvNurkZyUS4xAu5bcWTZrs4qLO12ltP7V6/zM2uXb/y0zoMOQQpSdBt0glSSMtQmg49lsJf7wg6gYsvzcA3Gxjhhsfr/wbLrpmDxsFCfNdsNe4ol+8Hg/pVQLvI5Ti/XZt2pZ+m1rHAvo+nVeqOoZL77qeVkxLv+iatZIklgwAobWpEhtEh4mGnOLFnZDZA7nHUySZyAVL21F/Fyf6Y1RHRM6bNVkrwd3u6xd7uhIq2Mqac2dvS87vfkf7aXGf1bdkBSlRuD9gXehMfMVwHqLw4Av970AwU0aG10PMEsZgXMiJpY2k4kFUeTXaYLQRIfc0VHciZOFVHbiqCoSPaoV1jfsHTORXpCCkaQLofIQd2jcpYNKQdaye7QH+p7wsa89dPVkNS2gXSr8d7+5CGqcpwZEtsmBYNemiNsj4pBvM0YvDqK2GmhgXhGqhm3J7pwLh/coqR2HyvhS89hVTuDoGJqzmAQiwCToRCjlS+rcd2XLWZk6GUTAdjagCkqd9YNEc3qDB4DA38H+GeUyv+WRBscLE2iv8O2RVQZ3gHAVVAazG7xrFRMJls9g5JlXHxdtIpmrBMSl51UkZwZgl1yLlHd2k/gq8VIJnHDFG/2MPHuEWO7pDsv7+9eWj/3HM7ICfTAgp9eaOzdaP/kblbIa/3q5RniOHztAsAOfaLLBMcakctja0jAu4iCd8hwpWjvJVQvfJOIqfahzy37Sb5F63rGJgLlI2A8n2dPkYLejynyUksKKQJ+w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -84,164 +121,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------2c35dbb789baa2eece3de1188c6281b855389a5f3da6cb9053721f6fa8184591
-Content-Type: multipart/mixed;
- boundary=c749eb314327cf0f04a30d9934ec9e45f7b59c6346bdeeb802cba5c25168
-Message-ID: <7024cefd-bf27-430b-b8fa-04e1457e0eb8@proton.me>
-Date: Wed, 24 Dec 2025 15:33:56 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] kho: add support for deferred struct page init
-To: Evangelos Petrongonas <epetron@amazon.de>, Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Miu <jasonmiu@google.com>,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org,
- nh-open-source@amazon.com
-References: <20251216084913.86342-1-epetron@amazon.de>
-Content-Language: en-US
-From: Fadouse <fadouse@proton.me>
-In-Reply-To: <20251216084913.86342-1-epetron@amazon.de>
+From: Chen Ridong <chenridong@huawei.com>
 
---c749eb314327cf0f04a30d9934ec9e45f7b59c6346bdeeb802cba5c25168
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Since shrink_node_memcgs already handles the memcg disabled case,
+this special-case logic in lru_gen_shrink_node is unnecessary.
+Remove it.
 
-SGkgRXZhbmdlbG9zLCBNaWtlLCBQYXNoYSwgUHJhdHl1c2gsDQoNCkkgaW5kZXBlbmRlbnRseSBo
-aXQgYSBjcmFzaCBpbiB0aGUgTFVPL21lbWZkIHJlc3RvcmUgcGF0aCB3aXRoDQpDT05GSUdfREVG
-RVJSRURfU1RSVUNUX1BBR0VfSU5JVD15LCBvbiBhIGxvY2FsIGJ1aWxkIGJhc2VkIG9uIGRkOWIw
-MDRiN2ZmMw0KKHg4Nl82NCBRRU1VLCA2LjE5LjAtcmMxIHRpbWVmcmFtZSkuDQoNCkluIG15IHJl
-cHJvZHVjZXIsIHN0YWdlMSBwcmVzZXJ2ZXMgYSBtZW1mZCB2aWEgTFVPIGFuZCBrZXhlY3MgaW50
-byBzdGFnZTI7DQpzdGFnZTIgY2FsbHMgTElWRVVQREFURV9TRVNTSU9OX0ZJTklTSCB3aXRob3V0
-IHJldHJpZXZpbmcgZmlsZXMuIEkgb2JzZXJ2ZWQNCmEgcmVsaWFibGUgY3Jhc2ggaW4gYWRqdXN0
-X21hbmFnZWRfcGFnZV9jb3VudCgpIGZyb20ga2hvX3Jlc3RvcmVfcGFnZSgpLg0KDQpNaW5pbWFs
-IGV4Y2VycHQ6DQoNCnN0YWdlMjogc3RhcnQNCnN0YWdlMjogcmV0cmlldmVkIHNlc3Npb24gZmQ9
-NA0KQlVHOiB1bmFibGUgdG8gaGFuZGxlIHBhZ2UgZmF1bHQgZm9yIGFkZHJlc3M6IDAwMDAwMDAw
-MDAwMDE0MTANClJJUDogYWRqdXN0X21hbmFnZWRfcGFnZV9jb3VudCsweDI5LzB4NDANCkNhbGwg
-VHJhY2U6DQogwqAga2hvX3Jlc3RvcmVfcGFnZSsweDE4YS8weDFjMA0KIMKgIGtob19yZXN0b3Jl
-X2ZvbGlvKzB4ZS8weDYwDQogwqAgbWVtZmRfbHVvX2ZpbmlzaCsweGU2LzB4MTYwDQogwqAgbHVv
-X2ZpbGVfZmluaXNoKzB4MTg4LzB4MjQwDQogwqAgbHVvX3Nlc3Npb25fZmluaXNoKzB4MmMvMHg4
-MA0KIMKgIGx1b19zZXNzaW9uX2lvY3RsKzB4ZjUvMHgxNzANCiDCoCBfX3g2NF9zeXNfaW9jdGwr
-MHg5MS8weGUwDQoNCkFwcGx5aW5nIHRoZSBwYXRjaCBpbiA8MjAyNTEyMTYwODQ5MTMuODYzNDIt
-MS1lcGV0cm9uQGFtYXpvbi5kZT4gbWFrZXMgdGhlDQppc3N1ZSBubyBsb25nZXIgcmVwcm9kdWNl
-IGZvciBtZS4NCg0KSSBjYW4gc2hhcmUgZnVsbCBsb2dzIGFuZCB0aGUgc21hbGwgdHdvLXN0YWdl
-IGluaXRyYW1mcyByZXByb2R1Y2VyIGlmIA0KbmVlZGVkLg0KDQpUaGFua3MsDQpZYW5YaW4gTGkN
-Cg0KVGVzdGVkLWJ5OiBZYW5YaW4gTGkgPGZhZG91c2VAcHJvdG9uLm1lPg0KDQpPbiAxMi8xNi8y
-MDI1IDQ6NDkgUE0sIEV2YW5nZWxvcyBQZXRyb25nb25hcyB3cm90ZToNCj4gV2hlbiBgQ09ORklH
-X0RFRkVSUkVEX1NUUlVDVF9QQUdFX0lOSVRgIGlzIGVuYWJsZWQsIHN0cnVjdCBwYWdlDQo+IGlu
-aXRpYWxpemF0aW9uIGlzIGRlZmVycmVkIHRvIHBhcmFsbGVsIGt0aHJlYWRzIHRoYXQgcnVuIGxh
-dGVyDQo+IGluIHRoZSBib290IHByb2Nlc3MuDQo+DQo+IER1cmluZyBLSE8gcmVzdG9yYXRpb24s
-IGBkZXNlcmlhbGl6ZV9iaXRtYXAoKWAgd3JpdGVzIG1ldGFkYXRhIGZvcg0KPiBlYWNoIHByZXNl
-cnZlZCBtZW1vcnkgcmVnaW9uLiBIb3dldmVyLCBpZiB0aGUgc3RydWN0IHBhZ2UgaGFzIG5vdCBi
-ZWVuDQo+IGluaXRpYWxpemVkLCB0aGlzIHdyaXRlIHRhcmdldHMgdW5pbml0aWFsaXplZCBtZW1v
-cnksIHBvdGVudGlhbGx5DQo+IGxlYWRpbmcgdG8gZXJyb3JzIGxpa2U6DQo+IGBgYA0KPiBCVUc6
-IHVuYWJsZSB0byBoYW5kbGUgcGFnZSBmYXVsdCBmb3IgYWRkcmVzczogLi4uDQo+IGBgYA0KPg0K
-PiBGaXggdGhpcyBieSBpbnRyb2R1Y2luZyBga2hvX2dldF9wcmVzZXJ2ZWRfcGFnZSgpYCwgIHdo
-aWNoIGVuc3VyZXMNCj4gYWxsIHN0cnVjdCBwYWdlcyBpbiBhIHByZXNlcnZlZCByZWdpb24gYXJl
-IGluaXRpYWxpemVkIGJ5IGNhbGxpbmcNCj4gYGluaXRfZGVmZXJyZWRfcGFnZSgpYCB3aGljaCBp
-cyBhIG5vLW9wIHdoZW4gZGVmZXJyZWQgaW5pdCBpcyBkaXNhYmxlZA0KPiBvciB3aGVuIHRoZSBz
-dHJ1Y3QgcGFnZSBpcyBhbHJlYWR5IGluaXRpYWxpemVkLg0KPg0KPiBGaXhlczogOGI2NmVkMmMz
-ZjQyICgia2hvOiBtbTogZG9uJ3QgYWxsb3cgZGVmZXJyZWQgc3RydWN0IHBhZ2Ugd2l0aCBLSE8i
-KQ0KPiBTaWduZWQtb2ZmLWJ5OiBFdmFuZ2Vsb3MgUGV0cm9uZ29uYXMgPGVwZXRyb25AYW1hem9u
-LmRlPg0KPiAtLS0NCj4gIyMjIE5vdGVzDQo+IEBKYXNvbiwgdGhpcyBwYXRjaCBzaG91bGQgYWN0
-IGFzIGEgdGVtcG9yYXJ5IGZpeCB0byBtYWtlIEtITyBwbGF5IG5pY2UNCj4gd2l0aCBkZWZlcnJl
-ZCBzdHJ1Y3QgcGFnZSBpbml0IHVudGlsIHlvdSBwb3N0IHlvdXIgaWRlYXMgYWJvdXQgc3BsaXR0
-aW5nDQo+ICJQaHlzaWNhbCBSZXNlcnZhdGlvbiIgZnJvbSAiTWV0YWRhdGEgUmVzdG9yYXRpb24i
-Lg0KPg0KPiAjIyMgVGVzdGluZw0KPiBJbiBvcmRlciB0byB0ZXN0IHRoZSBmaXgsIEkgbW9kaWZp
-ZWQgdGhlIEtITyBzZWxmdGVzdCwgdG8gYWxsb2NhdGUgbW9yZQ0KPiBtZW1vcnkgYW5kIGRvIHNv
-IGZyb20gaGlnaGVyIG1lbW9yeSB0byB0cmlnZ2VyIHRoZSBpbmNvbXBhdGliaWxpdHkuIFRoZQ0K
-PiBicmFuY2ggd2l0aCB0aG9zZSBjaGFuZ2VzIGNhbiBiZSBmb3VuZCBpbjoNCj4gaHR0cHM6Ly9n
-aXQuaW5mcmFkZWFkLm9yZy8/cD11c2Vycy92cGV0cm9nL2xpbnV4LmdpdDthPXNob3J0bG9nO2g9
-cmVmcy9oZWFkcy9raG8tZGVmZXJyZWQtc3RydWN0LXBhZ2UtaW5pdA0KPg0KPiBJbiBmdXR1cmUg
-cGF0Y2hlcywgd2UgbWlnaHQgd2FudCB0byBlbmhhbmNlIHRoZSBzZWxmdGVzdCB0byBjb3Zlcg0K
-PiB0aGlzIGNhc2UgYXMgd2VsbC4gSG93ZXZlciwgcHJvcGVybHkgYWRvcHRpbmcgdGhlIHRlc3Qg
-Zm9yIHRoaXMNCj4gaXMgbXVjaCBtb3JlIHdvcmsgdGhhbiB0aGUgYWN0dWFsIGZpeCwgdGhlcmVm
-b3JlIGl0IGNhbiBiZSBkZWZlcnJlZCB0byBhDQo+IGZvbGxvdy11cCBzZXJpZXMuDQo+DQo+IElu
-IGFkZGl0aW9uIGF0dGVtcHRpbmcgdG8gcnVuIHRoZSBzZWxmdGVzdCBmb3IgYXJtICh3aXRob3V0
-IG15IGNoYW5nZXMpDQo+IGZhaWxzIHdpdGg6DQo+IGBgYA0KPiBFUlJPUjp0YXJnZXQvYXJtL2lu
-dGVybmFscy5oOjc2NzpyZWdpbWVfaXNfdXNlcjogY29kZSBzaG91bGQgbm90IGJlIHJlYWNoZWQN
-Cj4gQmFpbCBvdXQhIEVSUk9SOnRhcmdldC9hcm0vaW50ZXJuYWxzLmg6NzY3OnJlZ2ltZV9pc191
-c2VyOiBjb2RlIHNob3VsZCBub3QgYmUgcmVhY2hlZA0KPiAuL3Rvb2xzL3Rlc3Rpbmcvc2VsZnRl
-c3RzL2toby92bXRlc3Quc2g6IGxpbmUgMTEzOiA2MTYwOSBBYm9ydGVkDQo+IGBgYA0KPiBJIGhh
-dmUgbm90IGxvb2tlZCBpdCB1cCBmdXJ0aGVyLCBidXQgY2FuIGFsc28gZG8gc28gYXMgcGFydCBv
-ZiBhDQo+IHNlbGZ0ZXN0IGZvbGxvdy11cC4NCj4NCj4gICBrZXJuZWwvbGl2ZXVwZGF0ZS9LY29u
-ZmlnICAgICAgICAgIHwgIDIgLS0NCj4gICBrZXJuZWwvbGl2ZXVwZGF0ZS9rZXhlY19oYW5kb3Zl
-ci5jIHwgMTkgKysrKysrKysrKysrKysrKysrLQ0KPiAgIDIgZmlsZXMgY2hhbmdlZCwgMTggaW5z
-ZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkNCj4NCj4gZGlmZiAtLWdpdCBhL2tlcm5lbC9saXZl
-dXBkYXRlL0tjb25maWcgYi9rZXJuZWwvbGl2ZXVwZGF0ZS9LY29uZmlnDQo+IGluZGV4IGQyYWVh
-ZjEzYzNhYy4uOTM5NGE2MDhmOTM5IDEwMDY0NA0KPiAtLS0gYS9rZXJuZWwvbGl2ZXVwZGF0ZS9L
-Y29uZmlnDQo+ICsrKyBiL2tlcm5lbC9saXZldXBkYXRlL0tjb25maWcNCj4gQEAgLTEsMTIgKzEs
-MTAgQEANCj4gICAjIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkNCj4gICAN
-Cj4gICBtZW51ICJMaXZlIFVwZGF0ZSBhbmQgS2V4ZWMgSGFuZE92ZXIiDQo+IC0JZGVwZW5kcyBv
-biAhREVGRVJSRURfU1RSVUNUX1BBR0VfSU5JVA0KPiAgIA0KPiAgIGNvbmZpZyBLRVhFQ19IQU5E
-T1ZFUg0KPiAgIAlib29sICJrZXhlYyBoYW5kb3ZlciINCj4gICAJZGVwZW5kcyBvbiBBUkNIX1NV
-UFBPUlRTX0tFWEVDX0hBTkRPVkVSICYmIEFSQ0hfU1VQUE9SVFNfS0VYRUNfRklMRQ0KPiAtCWRl
-cGVuZHMgb24gIURFRkVSUkVEX1NUUlVDVF9QQUdFX0lOSVQNCj4gICAJc2VsZWN0IE1FTUJMT0NL
-X0tIT19TQ1JBVENIDQo+ICAgCXNlbGVjdCBLRVhFQ19GSUxFDQo+ICAgCXNlbGVjdCBMSUJGRFQN
-Cj4gZGlmZiAtLWdpdCBhL2tlcm5lbC9saXZldXBkYXRlL2tleGVjX2hhbmRvdmVyLmMgYi9rZXJu
-ZWwvbGl2ZXVwZGF0ZS9rZXhlY19oYW5kb3Zlci5jDQo+IGluZGV4IDlkYzUxZmFiNjA0Zi4uNzhj
-ZmU3MWU2MTA3IDEwMDY0NA0KPiAtLS0gYS9rZXJuZWwvbGl2ZXVwZGF0ZS9rZXhlY19oYW5kb3Zl
-ci5jDQo+ICsrKyBiL2tlcm5lbC9saXZldXBkYXRlL2tleGVjX2hhbmRvdmVyLmMNCj4gQEAgLTQz
-OSw2ICs0MzksMjMgQEAgc3RhdGljIGludCBraG9fbWVtX3NlcmlhbGl6ZShzdHJ1Y3Qga2hvX291
-dCAqa2hvX291dCkNCj4gICAJcmV0dXJuIGVycjsNCj4gICB9DQo+ICAgDQo+ICsvKg0KPiArICog
-V2l0aCBDT05GSUdfREVGRVJSRURfU1RSVUNUX1BBR0VfSU5JVCwgc3RydWN0IHBhZ2VzIGluIGhp
-Z2hlciBtZW1vcnkNCj4gKyAqIHJlZ2lvbnMgbWF5IG5vdCBiZSBpbml0aWFsaXplZCB5ZXQgYXQg
-dGhlIHRpbWUgS0hPIGRlc2VyaWFsaXplcyBwcmVzZXJ2ZWQNCj4gKyAqIG1lbW9yeS4gVGhpcyBm
-dW5jdGlvbiBlbnN1cmVzIGFsbCBzdHJ1Y3QgcGFnZXMgaW4gdGhlIHJlZ2lvbiBhcmUgaW5pdGlh
-bGl6ZWQuDQo+ICsgKi8NCj4gK3N0YXRpYyBzdHJ1Y3QgcGFnZSAqX19pbml0IGtob19nZXRfcHJl
-c2VydmVkX3BhZ2UocGh5c19hZGRyX3QgcGh5cywNCj4gKwkJCQkJCSAgdW5zaWduZWQgaW50IG9y
-ZGVyKQ0KPiArew0KPiArCXVuc2lnbmVkIGxvbmcgcGZuID0gUEhZU19QRk4ocGh5cyk7DQo+ICsJ
-aW50IG5pZCA9IGVhcmx5X3Bmbl90b19uaWQocGZuKTsNCj4gKw0KPiArCWZvciAoaW50IGkgPSAw
-OyBpIDwgKDEgPDwgb3JkZXIpOyBpKyspDQo+ICsJCWluaXRfZGVmZXJyZWRfcGFnZShwZm4gKyBp
-LCBuaWQpOw0KPiArDQo+ICsJcmV0dXJuIHBmbl90b19wYWdlKHBmbik7DQo+ICt9DQo+ICsNCj4g
-ICBzdGF0aWMgdm9pZCBfX2luaXQgZGVzZXJpYWxpemVfYml0bWFwKHVuc2lnbmVkIGludCBvcmRl
-ciwNCj4gICAJCQkJICAgICAgc3RydWN0IGtob3Nlcl9tZW1fYml0bWFwX3B0ciAqZWxtKQ0KPiAg
-IHsNCj4gQEAgLTQ0OSw3ICs0NjYsNyBAQCBzdGF0aWMgdm9pZCBfX2luaXQgZGVzZXJpYWxpemVf
-Yml0bWFwKHVuc2lnbmVkIGludCBvcmRlciwNCj4gICAJCWludCBzeiA9IDEgPDwgKG9yZGVyICsg
-UEFHRV9TSElGVCk7DQo+ICAgCQlwaHlzX2FkZHJfdCBwaHlzID0NCj4gICAJCQllbG0tPnBoeXNf
-c3RhcnQgKyAoYml0IDw8IChvcmRlciArIFBBR0VfU0hJRlQpKTsNCj4gLQkJc3RydWN0IHBhZ2Ug
-KnBhZ2UgPSBwaHlzX3RvX3BhZ2UocGh5cyk7DQo+ICsJCXN0cnVjdCBwYWdlICpwYWdlID0ga2hv
-X2dldF9wcmVzZXJ2ZWRfcGFnZShwaHlzLCBvcmRlcik7DQo+ICAgCQl1bmlvbiBraG9fcGFnZV9p
-bmZvIGluZm87DQo+ICAgDQo+ICAgCQltZW1ibG9ja19yZXNlcnZlKHBoeXMsIHN6KTsNCg==
---c749eb314327cf0f04a30d9934ec9e45f7b59c6346bdeeb802cba5c25168
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="publickey - fadouse@proton.me -
- 0xFD2A1679.asc"; name="publickey - fadouse@proton.me - 0xFD2A1679.asc"
-Content-Type: application/pgp-keys; filename="publickey - fadouse@proton.me
- - 0xFD2A1679.asc"; name="publickey - fadouse@proton.me - 0xFD2A1679.asc"
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+---
+ mm/vmscan.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCkNvbW1lbnQ6IGh0dHBzOi8vZ29w
-ZW5wZ3Aub3JnClZlcnNpb246IEdvcGVuUEdQIDIuOC4yCgp4ak1FWmdOdThoWUpLd1lCQkFIYVJ3
-OEJBUWRBZWE0a2RKOFJOUU5vMjNQRW5FRzUveDBydnlKa1B1TlZMTG9ZCndTY2xLRzdOSldaaFpH
-OTFjMlZBY0hKdmRHOXVMbTFsSUR4bVlXUnZkWE5sUUhCeWIzUnZiaTV0WlQ3Q2pBUVEKRmdvQVBn
-V0NaZ051OGdRTENRY0lDWkFPcUxUYkhwdW01QU1WQ0FvRUZnQUNBUUlaQVFLYkF3SWVBUlloQlAw
-cQpGbmx2ZHNrSHB0SFFsZzZvdE5zZW02YmtBQUFmcGdFQWpMSmx3dmY5anIvOFRpUDZyZkxDZ1JG
-ZjlEZ0N3VUlCCnRmeWNyeDV0NzkwQkFMQlFXZnhzajVDN1FSTmpwbEpqQzJWOTdVZTh6OUd6TS9O
-TGxVMWxrdFFMempnRVpnTnUKOGhJS0t3WUJCQUdYVlFFRkFRRUhRTG94ZnhxTjgwSlZtUTY2OUY4
-QjdwMUQ2ci9zdThSUDZFZ3dUMkl2V0VnbApBd0VJQjhKNEJCZ1dDZ0FxQllKbUEyN3lDWkFPcUxU
-YkhwdW01QUtiREJZaEJQMHFGbmx2ZHNrSHB0SFFsZzZvCnROc2VtNmJrQUFBNm5nRUE0R25CT2J0
-bzZaaEtEWlh0TVhrdmlyZFlrVHh4cDFFaWZ3MEFGV3d3Q3FvQkFOM1kKTEZHT1lvdzVzRENIVTNr
-QzRKZzVnMG5PUnE3cHBZWmd4czNKM05FUAo9UnRVSQotLS0tLUVORCBQR1AgUFVCTElDIEtFWSBC
-TE9DSy0tLS0t
---c749eb314327cf0f04a30d9934ec9e45f7b59c6346bdeeb802cba5c25168--
-
---------2c35dbb789baa2eece3de1188c6281b855389a5f3da6cb9053721f6fa8184591
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: ProtonMail
-
-wqsEARYIAF0FgmlLl2kJkA6otNsem6bkNRQAAAAAABwAEHNhbHRAbm90YXRp
-b25zLm9wZW5wZ3Bqcy5vcmc67kEGs2G7V/tBuXO2hr7gFiEE/SoWeW92yQem
-0dCWDqi02x6bpuQAAOIDAP9zcdRmo8KQLbmVydTrHt0LtFHjASYm9cz/K3gr
-Uxyi8AEA3NZcjVmJbYmSDW0O2XVyinAq0H61GlV6/S26I2gbQQU=
-=+T4s
------END PGP SIGNATURE-----
-
-
---------2c35dbb789baa2eece3de1188c6281b855389a5f3da6cb9053721f6fa8184591--
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 1d13ce7338b4..5ea98bb94156 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4759,24 +4759,6 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 	return nr_to_scan < 0;
+ }
+ 
+-static void shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+-{
+-	unsigned long scanned = sc->nr_scanned;
+-	unsigned long reclaimed = sc->nr_reclaimed;
+-	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+-	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+-
+-	try_to_shrink_lruvec(lruvec, sc);
+-
+-	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
+-
+-	if (!sc->proactive)
+-		vmpressure(sc->gfp_mask, memcg, false, sc->nr_scanned - scanned,
+-			   sc->nr_reclaimed - reclaimed);
+-
+-	flush_reclaim_state(sc);
+-}
+-
+ static void lru_gen_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ {
+ 	struct blk_plug plug;
+@@ -4832,10 +4814,7 @@ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *
+ 	if (current_is_kswapd())
+ 		sc->nr_reclaimed = 0;
+ 
+-	if (mem_cgroup_disabled())
+-		shrink_one(&pgdat->__lruvec, sc);
+-	else
+-		shrink_node_memcgs(pgdat, sc);
++	shrink_node_memcgs(pgdat, sc);
+ 
+ 	if (current_is_kswapd())
+ 		sc->nr_reclaimed += reclaimed;
+-- 
+2.34.1
 
 
