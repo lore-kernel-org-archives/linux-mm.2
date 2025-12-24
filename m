@@ -4,171 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6983E748FC
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Dec 2025 23:47:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E318AE748FC
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 00:08:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DD8E6B0005; Tue, 23 Dec 2025 18:47:14 -0500 (EST)
+	id D6D256B0005; Tue, 23 Dec 2025 19:08:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28AB46B0088; Tue, 23 Dec 2025 18:47:14 -0500 (EST)
+	id CF0916B0088; Tue, 23 Dec 2025 19:08:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16B9C6B008A; Tue, 23 Dec 2025 18:47:14 -0500 (EST)
+	id C22A46B008A; Tue, 23 Dec 2025 19:08:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 02EA26B0005
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 18:47:14 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99229138835
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:47:13 +0000 (UTC)
-X-FDA: 84252374346.25.C9B1BF4
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2D6DAC000C
-	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 23:47:10 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uYtqOZKa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N1ertnlG;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PxeFE5Ou;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sXBvebV3;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766533631; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B34306B0005
+	for <linux-mm@kvack.org>; Tue, 23 Dec 2025 19:08:03 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4F4C8C0D87
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 00:08:03 +0000 (UTC)
+X-FDA: 84252426846.26.5381236
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 46EBB1C000F
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 00:08:01 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uQBNZcmM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766534881; a=rsa-sha256;
 	cv=none;
-	b=0ovrg9MjOveVR29ahK0cedlh3QPsBilJxJHE5IQi1Jfq9nFwS55K6q8PSRvEZf8jA1jTa7
-	G3iA4TI2NlflUKxITJ0G6fwYAF0ngHfIutyGE9iMaaRoHF4nq1O5QENzAQlWOMBA8r5Dec
-	Y9kIOWz9NE4AFssm6qNy8DYuRz6frek=
+	b=mim9GzodwOrq6pjRLdrkK6f+5kbK10od9lDiz/D7NaTzvnbbAdSsgwhjXDx3+mWiWz308Z
+	OQhfQebO6aS0XtqAmrzxbYfDuXXctRWxt4VDP2pHA3oqPXiLzLXrhyfWZ8+Q3cEYXIQPiw
+	227hDaZQWwliBImYJ/Gqf71Ob90hR0g=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uYtqOZKa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N1ertnlG;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PxeFE5Ou;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sXBvebV3;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uQBNZcmM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766533631;
+	s=arc-20220608; t=1766534881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0QoFJC5fJ27wzcTm+kDyJGI3Gu6MQAObPBLTfur+Urc=;
-	b=NyrPtPi2bmaes/zhM9BZPxlrglj9Gt2sU6TRXB1RbuLQdhdHyTAeuXbJCT7IynGgwCqIId
-	rH6c/1DDap3EiNZpSdMclFRavVOD1JRWED5LZqrZqGXZlO8Y9sf8I/c3LRNSysDErxlS+a
-	uZY+zsUPNenWAO+sv69E/xCBzlCLclQ=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B373433A03;
-	Tue, 23 Dec 2025 23:47:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1766533628; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0QoFJC5fJ27wzcTm+kDyJGI3Gu6MQAObPBLTfur+Urc=;
-	b=uYtqOZKasgcah56E6+C//qsZhCKY+K3Ge43W8e/6BNLAW8FGdrPqEMsCCt3J9CPzXNHioN
-	LBFeTXXe+NNkcWjticADKem/CJItlboeZIQuOQlp1QSUJvmn2UfCvkGyeoxsf0P5zoxqFU
-	JSs80ziPkNdinUtSmC5SnGvDX2WkP8o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1766533628;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0QoFJC5fJ27wzcTm+kDyJGI3Gu6MQAObPBLTfur+Urc=;
-	b=N1ertnlGiXSHQr3YfgV4qNBuiVCLwTd5VJ1NqS+hnDdV/twxcZIgJD6H1ppMLxG88H/sm4
-	2KYuVQ63lH7yEGBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1766533627; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0QoFJC5fJ27wzcTm+kDyJGI3Gu6MQAObPBLTfur+Urc=;
-	b=PxeFE5OuRDwy+Npu5QirNKJGNjUxM0hTbmcddEKNMQXV6Qw3b+F5ah81sbB4ZMbn0t9LRj
-	E+I1aY8SvWvttcOpoe/a5v4Zk743TJMgBxxL+U0fdY31DnXM9xeJ0i4zRUrn8kI3ZIt4Ma
-	JXzMCDu29ff/VCrI4n1g5n/1SvoKr9s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1766533627;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0QoFJC5fJ27wzcTm+kDyJGI3Gu6MQAObPBLTfur+Urc=;
-	b=sXBvebV3b3nN7kCSJuMlhNC/NDIOjicTapz+0z+fEFFc9/30Fk+nPBW4RqPP8BWFhWXOtT
-	dLZ+Ax24OC2/7GBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A0EB513A54;
-	Tue, 23 Dec 2025 23:47:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EXz0JvspS2kUXgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 23 Dec 2025 23:47:07 +0000
-Message-ID: <0b5f2c87-c180-4ada-9d37-f2e3d0071d9f@suse.cz>
-Date: Wed, 24 Dec 2025 00:47:07 +0100
+	bh=lmEUPOXFQHUKRBL8saI1yGmqhxI2AKWs0kYr4qwAz/A=;
+	b=kGAoDPCrWol7L12fCzILCQ6NC6d4wihaOzvo4P092mX10NEhWpDanTB+VpHk8+N6i0bOkl
+	dKRjQFi3iacz/QQ6smthiTlgGgnquTzAGxOLnSdOR0ZL7qrsfiCaTakT/dkFBSPP0Fy47a
+	CJ6IZNOtexHkqg0X2DVwc3yEAs5kXYs=
+Date: Wed, 24 Dec 2025 00:07:50 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766534878;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lmEUPOXFQHUKRBL8saI1yGmqhxI2AKWs0kYr4qwAz/A=;
+	b=uQBNZcmMo3PHK7yjyw6VaeKLm6C05h5U6T+64XaAtkAMhEBOGq0JVHlBrEKmDImocoYTnn
+	sYZ216HFcjJMLyD29iEGZed+EDYsnSi7oDtdTl/hXX2RuzG2iIbgEExiOUcasWwoOKNrYg
+	uH5cx/12EjF7EoFfPTjgi4W6co2wWxY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com, 
+	mhocko@suse.com, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, 
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
+	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 00/28] Eliminate Dying Memory Cgroup
+Message-ID: <utl6esq7jz5e4f7kwgrpwdjc2rm3yi33ljb6xkm5nxzufa4o7s@hblq2piu3vnz>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <5dsb6q2r4xsi24kk5gcnckljuvgvvp6nwifwvc4wuho5hsifeg@5ukg2dq6ini5>
+ <vsr4khfsp4unk73a75ky7i35nzdjqsbodyeeuxipu3arormfjr@awi2srdwawfu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mempool.c: set @elems slots to NULL once freed
-To: klourencodev@gmail.com, linux-mm@kvack.org,
- Christoph Hellwig <hch@infradead.org>
-Cc: akpm@linux-foundation.org
-References: <20251223231054.16061-1-klourencodev@gmail.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251223231054.16061-1-klourencodev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2D6DAC000C
-X-Stat-Signature: jxs69pgbe1fs4quk54x1qhdksirzt88a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <vsr4khfsp4unk73a75ky7i35nzdjqsbodyeeuxipu3arormfjr@awi2srdwawfu>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1766533630-189862
-X-HE-Meta: U2FsdGVkX1+1cFSXeMoS4GWwwtyXmK9y1t51fDoBYoatzWv5KgtQDanC4cE15Bgn5qWxUmJMfYO5aFGgsvM1uM0LtcHnkmvnC2nF5uU/JYg78PLYLLrbuerMra1/yQAvyV8XjASjXXNvaGr7Kdt1YuvySLZCQrJvQy4VTXrI1d+H2g6ziY/eoH+YyzdTpvGFseMsqSLrdPpCA4wK9cved9BoagCNVXfBPIshIHfnvIRcUxMXkwdNjDA/8Dq7BXokOEHX2/csTtzrYmUIOOonbGR06zwxbAWeD+wk4wrsX3YH5bKNH55kkbNWRW59SBD2M0eoVqte+ZqPOem/QUVx+P4yb2VR6+OjhpWeApr6kXSAO37QmBwjDjdtC5Nd0fxjKiKbN1KoWJbh3cAMyfUBZ+ryLvnx5UXaRDFIY1bMsK8w8C2wuktxdf7HDkQ0a5t4rRpjKDzpl7k1QO+kLVxDEeDFxPjnUzYNdhG0qUOjfD3tZUOMQYWANvTycuLD3Ua+K5STgS3gUsriku5xdNGq3/dfPJlKLND/Hh2Twuz92PXtxUvR2jDbWIeydTUJDi/NiRueiDJV+t1SkI0lja1qj2J3gEIkzAldesWjiT2dCc9VMPFS7UkSRhK4R+kwedyvM8SrKPMOJWgaiF/LP6D+kJQZDx+dJpA+dcjbbcoA9/14HdA4Tdukq3RogrXY2SCCmXSt7uFYsUsEmhWq8E6A5mqbnGtnSwXBK3GFG6GCKNf9qy7iV4GkWxLRmYsPVpeQFp15GXgZKl43CmXkSSAuLjOsbfrnzD6pihrO7w2A4TrtcFsAn0EnhxLv6qT83lm+LXaYZo9Dwx8l05ZM2au5T+Mrl7SDRtVByaZ1Q3TPycL3eqxNG52YfCakLzKgtXwLWmQtp77f1rmugbyBykWrgFfLaA3vK+wb5azy8xGyq0gh1CsOYzjUTtRl/e/+2ZDXnXOLGu7OrqLNj/RK2AO
- udleBjYd
- m2VjJ+IipkK6desDRNmh6j4SbFjf43t+mpdYgUPmFWsy4HrkhMaedTU0+USGdMMvxAWQE3sdODcDmnOJm2InN3aNFAJgZCW7vjCPA4+g3fYZPvfhMGYZNfPwDYLZHJxF3e8+kQPmuqkZcgu6unBacQGeRJsiFYKjHh6UTiFBFeKJaB/ospOwIwPnxO0ZPGfSlZsy9AhjGg8vwkXl/9aonP8SiV/Gze41PGOIW0mNUE+kH20tI9vSBTja/zJnt+8ZJjCTgF0eMtCJmgUhWKoFPBrwPsxcHpkKCbyVItOUlo//J2Kc8+yGI0AFaag==
+X-Rspamd-Queue-Id: 46EBB1C000F
+X-Rspamd-Server: rspam10
+X-Stat-Signature: iy4t7jgpxow5otimheeb85jexytaa1yy
+X-HE-Tag: 1766534881-668646
+X-HE-Meta: U2FsdGVkX19hRaPJZPg9ORjzlBzsmOAtNbGRCIAxtDo1g/Jbz7YLLiZDnsJZJJfrvEFNuXXpjWFponKiBFNqXHbQ1ZCyGr4urEjwIU7tQ2+b/8XY1sEX7OvPDPHVVcKzJzj1/WTxVZIFMgISq6vzO3aeHUPW4uxP63GPhkGEUi81YpA1ogaCkWxrB/2LnANrJwAemkjJJI7sMg8VHxSFaGfyciBmRsw9B42rRQtYDzP4mnhKX7Aa274oMXYCWPIcn0LFaTUhYmxD+DizvQqfd1MmqwXAL2ZjeICAA2XBxhOTNXXzjqzpLwGfpQ1BMnw7qEdXBw6Xi2FZ5CJuOCwMpedW4pxxQjooocxhZQAtriq8iE2oHnM20qd33kisWQ90I0D//7S8YX7SyId+JkBAMQhAidU2Zmc6BvoXJ/4I3cAVOtzY5i2pT/nHY8wPYorTnEp/TV7Dr8gwozYlBN59WrfORHsHXlMdgLiwjnAoX+P7Lur5yaeCCRP3STJAhZPP9mAzwjIzCiphkfiyrt9HaaKBLUxj14GnxnMCvnlNIXv33iEW8oP8RV6SFjmXxNjTP8bQH5epda84VwCiXwo0kb1YhAR2gknIAhiu3B25RsAToUwpeTR+dFXdnaFg30aIk7djjEgc8OfBIgj0MXcbq+HFdsoasHo5diRkQcLatHxcHuC9q82XBRdEZBzLjUkdlHgaFmAbSQpIf66iFD6L0sVpfMmPD6ga2hW4UVpmN4Fo2QMDB9ukiMT9LkaQcT+Vy1+UdF4VDebwY7eIe8kYTEXAROt7oTT53pKcxxpNUhVdPfvSSg5JmMCO+4wN3b+S1M7I9oZ3ucd8Ucqoh4gTwqRs+TRKCtRyg89lwx9HM8xrcB0fV4kccsaov9wkAAxAYOB7P56lpxqUmitaz01I34rsQgHpJrjnb9RUU26R2vpIWYWVSXE1lS3XEfBdXQ47hsN3Rr2oJcAxoKkkRIK
+ e1Uj87o1
+ quxOVkHNxmtvsE3TzpJlN8KFZYgf1Is6rVkfTno3pktvnQerDvbZvHKwoouIGT5oRDchZ9BaiDVyjhYZgsJrR/+ZIyUKk6gzUWylQDtDG6Obn6oCBHuGQtk94g9ujBYUhsfLLgP9QwZTYSlsNCsPs3sr7lSHAPI6Pm8t9vsAJavqIAmOBDcPgaC7KMpvg/hBaEzi8eJjpo372gMvhRVliRyhT2g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,45 +95,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc Christoph
+On Tue, Dec 23, 2025 at 03:20:47PM -0800, Shakeel Butt wrote:
+> On Tue, Dec 23, 2025 at 08:04:50PM +0000, Yosry Ahmed wrote:
+> [...]
+> > 
+> > I think there might be a problem with non-hierarchical stats on cgroup
+> > v1, I brought it up previously [*]. I am not sure if this was addressed
+> > but I couldn't immediately find anything.
+> 
+> Sigh, the curse of memcg-v1. Let's see what we can do to not break v1.
+> 
+> > 
+> > In short, if memory is charged to a dying cgroup 
+> 
+> Not sure why stats updates for dying cgroup is related. Isn't it simply
+> stat increase at the child memcg and then stat decrease at the parent
+> memcg would possibly show negative stat_local of the parent.
 
-On 12/24/25 00:10, klourencodev@gmail.com wrote:
-> From: Kevin Lourenco <klourencodev@gmail.com>
-> 
-> This is documented in the function comment as "...and sets their
-> slots in @elems to NULL.", but it was not followed.
-> 
-> We need to follow the NULL assignment, because elements newly returned
-> to the pool must not be touched under any circumstances by the user.
-> 
-> Signed-off-by: Kevin Lourenco <klourencodev@gmail.com>
-> ---
->  mm/mempool.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/mempool.c b/mm/mempool.c
-> index c290e5261b47..1a2060304fd4 100644
-> --- a/mm/mempool.c
-> +++ b/mm/mempool.c
-> @@ -674,7 +674,8 @@ unsigned int mempool_free_bulk(struct mempool *pool, void **elems,
->  	if (unlikely(READ_ONCE(pool->curr_nr) < pool->min_nr)) {
->  		spin_lock_irqsave(&pool->lock, flags);
->  		while (pool->curr_nr < pool->min_nr && freed < count) {
-> -			add_element(pool, elems[freed++]);
-> +			add_element(pool, elems[freed]);
-> +			elems[freed++] = NULL;
->  			added = true;
->  		}
->  		spin_unlock_irqrestore(&pool->lock, flags);
-> @@ -683,7 +684,8 @@ unsigned int mempool_free_bulk(struct mempool *pool, void **elems,
->  		/* Handle the min_nr = 0 edge case: */
->  		spin_lock_irqsave(&pool->lock, flags);
->  		if (likely(pool->curr_nr == 0)) {
-> -			add_element(pool, elems[freed++]);
-> +			add_element(pool, elems[freed]);
-> +			elems[freed++] = NULL;
->  			added = true;
->  		}
->  		spin_unlock_irqrestore(&pool->lock, flags);
+Hmm not sure I understand what you mean here. Normally an update to the
+child memcg should not update state_local of the parent. So outside the
+context of dying cgroups and reparenting I don't see how state_local of
+the parent can become negative.
 
+> 
+> > at the time of
+> > reparenting, when the memory gets uncharged the stats updates will occur
+> > at the parent. This will update both hierarchical and non-hierarchical
+> > stats of the parent, which would corrupt the parent's non-hierarchical
+> > stats (because those counters were never incremented when the memory was
+> > charged).
+> > 
+> > I didn't track down which stats are affected by this, but off the top of
+> > my head I think all stats tracking anon, file, etc.
+> 
+> Let's start with what specific stats might be effected. First the stats
+> which are monotonically increasing should be fine, like
+> WORKINGSET_REFAULT_[ANON|FILE], PGPG[IN|OUT], PG[MAJ]FAULT.
+> 
+> So, the following ones are the interesting ones:
+> 
+> NR_FILE_PAGES, NR_ANON_MAPPED, NR_ANON_THPS, NR_SHMEM, NR_FILE_MAPPED,
+> NR_FILE_DIRTY, NR_WRITEBACK, MEMCG_SWAP, NR_SWAPCACHE.
+> 
+> > 
+> > The obvious solution is to flush and reparent the stats of a dying memcg
+> > during reparenting,
+> 
+> Again not sure how flushing will help here and what do you mean by
+> 'reparent the stats'? Do you mean something like:
+
+Oh I meant we just need to do an rstat flush to aggregate per-CPU
+counters before moving the stats from child to parent.
+
+> 
+> parent->vmstats->state_local += child->vmstats->state_local;
+> 
+> Hmm this seems fine and I think it should work.
+
+Something like that, I didn't look too closely if there's anything else
+that needs to be reparented.
+
+> 
+> > but I don't think this entirely fixes the problem
+> > because the dying memcg stats can still be updated after its reparenting
+> > (e.g. if a ref to the memcg has been held since before reparenting).
+> 
+> How can dying memcg stats can still be updated after reparenting? The
+> stats which we care about are the anon & file memory and this series is
+> reparenting them, so dying memcg will not see stats updates unless there
+> is a concurrent update happening and I think it is very easy to avoid
+> such situation by putting a grace period between reparenting the
+> file/anon folios and reparenting dying chils'd stats_local. Am I missing
+> something?
+
+What prevents the code from obtaining a ref to a parent's memcg before
+reparenting, and using it to update the stats after reparenting? A grace
+period only works if the entire scope of using the memcg is within the
+RCU critical section.
+
+For example, __mem_cgroup_try_charge_swap() currently does this when
+incrementing MEMCG_SWAP. While this specific example isn't problematic
+because the reference won't be dropped until MEMCG_SWAP is decremented
+again, the pattern of grabbing a ref to the memcg then updating a stat
+could generally cause the problem.
+
+Most stats are updated using lruvec_stat_mod_folio(), which updates the
+stats in the same RCU critical section as obtaining the memcg pointer
+from the folio, so it can be fixed with a grace period. However, I think
+it can be easily missed in the future if other code paths update memcg
+stats in a different way. We should try to enforce that stat updates
+cannot only happen from the same RCU critical section where the memcg
+pointer is acquired.
 
