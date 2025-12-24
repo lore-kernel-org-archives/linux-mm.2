@@ -4,118 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25D38E75453
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 13:45:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF6F9E7545D
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Dec 2025 13:45:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E1F26B0005; Wed, 24 Dec 2025 08:45:36 -0500 (EST)
+	id 2A79F6B008A; Wed, 24 Dec 2025 08:45:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48EE36B0088; Wed, 24 Dec 2025 08:45:36 -0500 (EST)
+	id 23E6D6B008C; Wed, 24 Dec 2025 08:45:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3708C6B008A; Wed, 24 Dec 2025 08:45:36 -0500 (EST)
+	id 0FFC76B0092; Wed, 24 Dec 2025 08:45:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 25A886B0005
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 08:45:36 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE833B72BE
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:45:35 +0000 (UTC)
-X-FDA: 84254487030.01.187D161
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EC7A26B008A
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 08:45:43 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7478D1A01F7
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:45:43 +0000 (UTC)
+X-FDA: 84254487366.11.C154F29
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1ACCF2000B
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:45:33 +0000 (UTC)
+	by imf03.hostedemail.com (Postfix) with ESMTP id BBA7F20011
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 13:45:41 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uVp068q6;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EY/rxLVc";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf03.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766583934; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766583941; a=rsa-sha256;
 	cv=none;
-	b=62V4aD6M3YT5iTwGlKZ1Q8AjGybq6N8PN6pJOxSdVcQC4Ddp8dnP4y2fxFSZ5JonJmGf20
-	JzeWWTxApKDB7PfJsWCWAoBfVvL3GYo1wGKL59s5vRGh1/k5LKpNdtYUwnfr3fctsTqewD
-	k3CFTEHnQ0bn1PS5Lmq930UWrlBgADI=
+	b=YZumG7QDM9DAHammiZxoJV+Q/k/qIkTddD0iUaVqEekonWXXlaePeC5vTNYcAM5XQ/xiTp
+	NgXPx5xiTRLqeLJfSo52GdAJyrWeTgai2HG4p580bA2kdbMHK0OcL9PcbEWEuitvvP1E1K
+	tVROPk0g8L1wqlNWKPYM0u+RQC5j6+I=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uVp068q6;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EY/rxLVc";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf03.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766583934;
+	s=arc-20220608; t=1766583941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=iq1+jwMZ9tlCi0hkNsGw1dAsvEQiAfO+JMYot7TdvGo=;
-	b=FzdW/kFHagqxjjpSZJyb9zyTMzIbKlAUDjGzZq9pX/Qr7siSfCr+ygcK+S8J7fp4+pHsfL
-	pGTPyyix81Rfg1zOWPZYjoK4GOPxc35S2qnaBsE1gNgAORVEXqhq+7gilDP7hv59okmA1u
-	UalGeQ1JHPxqCnh0JlCKIAFadrx5LPU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mfr3Q+nYd5p+xvys9qoVKamvPwe3ggDuT8010b3TjmQ=;
+	b=I+FSsgb37bxy+o7CzT/AQue2oNgx4EjqzlviOrlae+/PaatIyUH+JEnB4rdUIy09RnTWie
+	QwzQ5vMZaAIlTjuGQtKEUBn0D6fF5v7D4bwxtQz6g75Ov3Zn6savhYYi7r6YamTAULN9+h
+	QLvEAmr8zZTHz/sh0/5z0wqjuLqbEIA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9BE2F4193F;
+	by sea.source.kernel.org (Postfix) with ESMTP id D1DB6435F8;
+	Wed, 24 Dec 2025 13:45:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AF5C19424;
 	Wed, 24 Dec 2025 13:45:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CBCC4CEFB;
-	Wed, 24 Dec 2025 13:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766583932;
-	bh=tK3Yaoy6unJ5tHzgM+8i6RExHWgxXGyyr5alAshg1RU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=uVp068q6+NoKI3AKxIIX51WZN2Jzi9fLoN+QB2SdXLQh+BvI82O1SnOAi1wUKysT8
-	 2Gx+3lcLrUemOtTJfD8eE18TmmMX6fiZpABw/ahwtYlpSgDTztcpI3oTtMB4pAiqNN
-	 m9kPVJBaJKsTFZhIULeXcmgaJ3C6o961eLzaKyONSEN2pM707fPKDmk4q+psrAQ1w4
-	 VZ5iQe3+kpmbe/0RT5cv6YrpbsRyyUv24PXxW7FHAa1lgeGs0QXk5XeA4+7uk5NxWG
-	 sViGJtbTDgVkVGUDDjT0nXcwqYbxz/XbwOshBOTOQxUIawvq7Ufnn7f1TTgRtyVqPN
-	 5Z2zHqnJrj31w==
+	s=k20201202; t=1766583940;
+	bh=gRRNdybTJoPf4zghu+FAESdALpfSWbcpUTc3hVg/iP0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EY/rxLVcj3XVGLfQuhfdznrcbQGy/9FTi8WQJ12o6Y5hVKy8WvRZ0Agl952OnUz6k
+	 6TNPt9uSgZozs75LFMvC52n3ieQK9fVy2u22y57DdM94PbvQQ1IFpwvO0bDlp+xFmC
+	 aSmxwYc+FbNjaiOHyrQPpz8lQBamXwUAHhJRFwQzz/2I7/+oS1Zmj+GW50lW58ODpl
+	 AS5Jtn30lL8p1JTfpgp0uc69XhfvWvVKMz0fxLizZEV7dGZOvfmTdxGr0QyqDmmbPH
+	 JVCvPO6v+S95bZ8qrY1TqoMKdINOLKCOtKOpyxXw7v/tm/9+ZsQsDpDGVxMVcpOb/g
+	 tHraobqMSYmbA==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Michal Koutny <mkoutny@suse.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org,
-	Ingo Molnar <mingo@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Peter Zijlstra <peterz@infradead.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
-	Phil Auld <pauld@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Waiman Long <longman@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	netdev@vger.kernel.org,
+	Chen Ridong <chenridong@huawei.com>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	linux-mm@kvack.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
 	Marco Crivellari <marco.crivellari@suse.com>,
-	Tejun Heo <tj@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Simon Horman <horms@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>,
 	cgroups@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH 00/33 v5] cpuset/isolation: Honour kthreads preferred affinity
-Date: Wed, 24 Dec 2025 14:44:47 +0100
-Message-ID: <20251224134520.33231-1-frederic@kernel.org>
+	linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH 01/33] PCI: Prepare to protect against concurrent isolated cpuset change
+Date: Wed, 24 Dec 2025 14:44:48 +0100
+Message-ID: <20251224134520.33231-2-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251224134520.33231-1-frederic@kernel.org>
+References: <20251224134520.33231-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1ACCF2000B
-X-Rspamd-Server: rspam10
-X-Stat-Signature: drc5amttdd1sy6cp8zj5pdizra9pay4u
-X-HE-Tag: 1766583933-232418
-X-HE-Meta: U2FsdGVkX1+Alj90x6cFYkT6coyiHlLVTlstu+XaylrfCjsKf8E0PNUO9NcpPSqptL9yk9vikP0bwMBHkDuih+7RLwx8EK0OToEvSIwqWdKPTZhvkhND0LoUzeF69fUAJKFo5oWeS4sllziZO9LEa/RD85GTdRp0wu9wjEAHpmL/sG350n9otjlKya4CwijqTiyp9wWbnUScbdXseCMAx0lZcYAevR6wQ04VQvVMiI8dt4q6MLpvi0aFNmpKuOrWLq3R7fZ9tNZ8xwSHomhcxC219ov/NZlhGS0oaylVZqoc3VQRmwSBhnXbbZ0mK+A8wmzs3cVML+HR96RKnpCCnopnyX7b4Kp7uy6XT9gxai0Xw1GoUr/BChJUkYRo2zO5NfKlrcXfZPqdl0cnXWizSKtBXOq65mpaLfEdeJQs8QCZArwZVW1kBWjK1gUHFdiFX4duG5hunNn6OM3Stm4El7K0bm+n03/04jCubSqhbXJ7HAPgI9cY6iSs8ItKDbVUAcyVXPImbF9/TzQ8dwbR2g7Do0ViHZ5uekqegYMn2pYD8wjThKQsv2f+zmz/7QXdI96x9fPEfnZ60v+AKNkNTBN7paUthkjN9hf9535z9+bTGczFqCqxeGGFJKF/RMF8DpEDJMX3fb34fjUOvpRiFS/paWOvYewSsqrt3OKzrPfFUv0AQHpaTfl7LXMGTPk8iNIxpIFnzvIKkK4+xWXdqjbr5jbVSU9yyuCz2irocL57/10IbAddLKqO5mU4oF4eopovEMeNe6OmaCSbbovybXmN/0OfVRlfbUzziIl8n8Iq04tRxG45BcWKEFaJgXEFKpM1zPA8pUixvp+cyvWh6nTjeo4BUK7UZqw8DTe1XH51OVNMmFeUuEfO0mRY8DdieszODRMLoD93tcVJHv5eByKFOzHKXywN4IpX3PSfTsi32PUuPs5vFihr5F96a75CpW9Y7GoFnuU+T0EKP1U
- VstU6RIC
- vMVPdAjD+jQU3Wwl7N5H+Y7Mv+hEp+UkciTlW0CR/GZZWKCUF1CA1S4p9PmKyjWtuWUoWaveJZX2Kvw3X2ciVkh2Wo+mD3fp0AujMWWZdSRjstEUnSNMl1D5GDbmhu0bOMAMfCkA3DPnPZv85zZEmqqAw4S2UOYnxFRkTCSj3UAx3vjH7avCqiD71LBmtPAXKiiqA2c0RU9iee9qcRVq7J8EXLF5FR6AYhgoybs3vj535cQo=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BBA7F20011
+X-Stat-Signature: gh9gud9yto5z8tzajkfdgq71xfz3b7n8
+X-HE-Tag: 1766583941-802944
+X-HE-Meta: U2FsdGVkX18zSTCBWTYBHvwKFc3Q0NiFhd5eNPb3YfblHEcgmfNuW1frB+1i+2Z4WIEgcbGiDUFqp5NGbBg8ax0XGE6071PSS020scv2YJZ9kI9jG7q3fi/TmDNypp+/tidKprkQ6fuEifjN05cInEesqQWi1HHcqwqV9PmC5BX3pCphF+ItEAjgvE2nBOLJaRaEVGFZ4JshCxvdK1/zJn0/5S8VlBctDCRYQGQ3bzJN3N07cmWw4zVcIiaPeStUu7P8hAQsZ5qypvG+H4zSU6YclwN86rMvvrnlmkgf7u4J/8u3HiyAf+8Dn8AfZjfrB+KanQ4OrGncs0s5BvsJQB25ZH/DUMyxZVi50HFbRScsVpaPj9zvwCp3wzXPKwxYJpFmNfT462mCXPy5ipaGDqbNUiDMPmY8btwXk9+Q/MMdSd1k3TZXFBAtXv8cIZfGtmqRwZXGm3OFI9Mr+owbYVntvK4hT1U1PBuzYsp/U7eNCCF3Y6NOc7FnuFMe+gb94eSzq9D069RmFmMQDIAG0y/R3TFHYsRuFla9wusEPaOlL/TNbKRh1mYk5G5mbJa6GQBqW7CpMTbYvCzxGQZwdBa6vNYnF3T1aZ1zRVBGxtjJmjkrZa9xqMJcnc62yaQC4DhurSXvZWq4lKhyplk5VVb24HPdhWVkWZUYzZExFZHbs3KwBvA2ZncAMkrAgwGlSqDlU6PP3fzXICbv3qNjbQLRC1qbR23HlFDRewjkGNlVGDhCVInSphPnYxKbjMl7DqHgGWvY1IVUqCGwCTQGiph9yp2NELq5NNnCEFCHlILE6+2yc55X//X6TrChycRBLGQ5Rq1y9ALWExqecj6rCgHJ4AhOkgVQuG57nJlyKBC7th/nBT7iYtEnkTqKppAtgB+QCqU4LHrTRrzGEUKzmsznPL1O1i+nR2AN/5Y59pKK/RsmDH+VgWclu85RK9HgtVuF8d+OrLN48suJEYb
+ 7zbXrkv/
+ HWfBqsdSYS+NKewHU4tnpGeMGHhkxUjCrN9PYsW9iC0MAcEfTnqCwk2Xzf3nBs8QgVpia5jEtKvbkv6PduP14EJqgFST4pgKkOKDIwQ7ioGyAoV5IYOypdJ31UjqCKiWu8AyHS1lLIpP1ouA+3J0rQg4m2AxarpX4GbP1pnnS5hKLUZoJdg1ZPsH8MYGc+wRbaRRyyUAmDlegWH2Heg/1B0WVfELeZ1ihW7nQb//dhNAgVW0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,112 +126,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+HK_TYPE_DOMAIN will soon integrate cpuset isolated partitions and
+therefore be made modifiable at runtime. Synchronize against the cpumask
+update using RCU.
 
-The kthread code was enhanced lately to provide an infrastructure which
-manages the preferred affinity of unbound kthreads (node or custom
-cpumask) against housekeeping constraints and CPU hotplug events.
+The RCU locked section includes both the housekeeping CPU target
+election for the PCI probe work and the work enqueue.
 
-One crucial missing piece is cpuset: when an isolated partition is
-created, deleted, or its CPUs updated, all the unbound kthreads in the
-top cpuset are affine to _all_ the non-isolated CPUs, possibly breaking
-their preferred affinity along the way
+This way the housekeeping update side will simply need to flush the
+pending related works after updating the housekeeping mask in order to
+make sure that no PCI work ever executes on an isolated CPU. This part
+will be handled in a subsequent patch.
 
-Solve this with performing the kthreads affinity update from cpuset to
-the kthreads consolidated relevant code instead so that preferred
-affinities are honoured.
-
-The dispatch of the new cpumasks to workqueues and kthreads is performed
-by housekeeping, as per the nice Tejun's suggestion.
-
-As a welcome side effect, HK_TYPE_DOMAIN then integrates both the set
-from isolcpus= and cpuset isolated partitions. Housekeeping cpumasks are
-now modifyable with specific synchronization. A big step toward making
-nohz_full= also mutable through cpuset in the future.
-
-Changes since v4:
-
-* Add more tags
-
-* Rebase on v6.19-rc2 with latest cpuset changes
-
-* Accomodate timers migration isolation
-
-* Rename housekeeping_update() parameter from mask to isol_mask (Chen Ridong)
-
-* Link housekeeping documentation to core-api
-
-git://git.kernel.org/pub/scm/linux/kernel/git/frederic/linux-dynticks.git
-	kthread/core-v5
-
-HEAD: 3c0ee047f05f361f215521424f5e789dfffcafc1
-
-Merry Christmas,
-	Frederic
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
+ drivers/pci/pci-driver.c | 47 ++++++++++++++++++++++++++++++++--------
+ 1 file changed, 38 insertions(+), 9 deletions(-)
 
-Frederic Weisbecker (33):
-      PCI: Prepare to protect against concurrent isolated cpuset change
-      cpu: Revert "cpu/hotplug: Prevent self deadlock on CPU hot-unplug"
-      memcg: Prepare to protect against concurrent isolated cpuset change
-      mm: vmstat: Prepare to protect against concurrent isolated cpuset change
-      sched/isolation: Save boot defined domain flags
-      cpuset: Convert boot_hk_cpus to use HK_TYPE_DOMAIN_BOOT
-      driver core: cpu: Convert /sys/devices/system/cpu/isolated to use HK_TYPE_DOMAIN_BOOT
-      net: Keep ignoring isolated cpuset change
-      block: Protect against concurrent isolated cpuset change
-      timers/migration: Prevent from lockdep false positive warning
-      cpu: Provide lockdep check for CPU hotplug lock write-held
-      cpuset: Provide lockdep check for cpuset lock held
-      sched/isolation: Convert housekeeping cpumasks to rcu pointers
-      cpuset: Update HK_TYPE_DOMAIN cpumask from cpuset
-      sched/isolation: Flush memcg workqueues on cpuset isolated partition change
-      sched/isolation: Flush vmstat workqueues on cpuset isolated partition change
-      PCI: Flush PCI probe workqueue on cpuset isolated partition change
-      cpuset: Propagate cpuset isolation update to workqueue through housekeeping
-      cpuset: Propagate cpuset isolation update to timers through housekeeping
-      timers/migration: Remove superfluous cpuset isolation test
-      cpuset: Remove cpuset_cpu_is_isolated()
-      sched/isolation: Remove HK_TYPE_TICK test from cpu_is_isolated()
-      PCI: Remove superfluous HK_TYPE_WQ check
-      kthread: Refine naming of affinity related fields
-      kthread: Include unbound kthreads in the managed affinity list
-      kthread: Include kthreadd to the managed affinity list
-      kthread: Rely on HK_TYPE_DOMAIN for preferred affinity management
-      sched: Switch the fallback task allowed cpumask to HK_TYPE_DOMAIN
-      sched/arm64: Move fallback task cpumask to HK_TYPE_DOMAIN
-      kthread: Honour kthreads preferred affinity after cpuset changes
-      kthread: Comment on the purpose and placement of kthread_affine_node() call
-      kthread: Document kthread_affine_preferred()
-      doc: Add housekeeping documentation
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 7c2d9d596258..786d6ce40999 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -302,9 +302,8 @@ struct drv_dev_and_id {
+ 	const struct pci_device_id *id;
+ };
+ 
+-static long local_pci_probe(void *_ddi)
++static int local_pci_probe(struct drv_dev_and_id *ddi)
+ {
+-	struct drv_dev_and_id *ddi = _ddi;
+ 	struct pci_dev *pci_dev = ddi->dev;
+ 	struct pci_driver *pci_drv = ddi->drv;
+ 	struct device *dev = &pci_dev->dev;
+@@ -338,6 +337,19 @@ static long local_pci_probe(void *_ddi)
+ 	return 0;
+ }
+ 
++struct pci_probe_arg {
++	struct drv_dev_and_id *ddi;
++	struct work_struct work;
++	int ret;
++};
++
++static void local_pci_probe_callback(struct work_struct *work)
++{
++	struct pci_probe_arg *arg = container_of(work, struct pci_probe_arg, work);
++
++	arg->ret = local_pci_probe(arg->ddi);
++}
++
+ static bool pci_physfn_is_probed(struct pci_dev *dev)
+ {
+ #ifdef CONFIG_PCI_IOV
+@@ -362,34 +374,51 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
+ 	dev->is_probed = 1;
+ 
+ 	cpu_hotplug_disable();
+-
+ 	/*
+ 	 * Prevent nesting work_on_cpu() for the case where a Virtual Function
+ 	 * device is probed from work_on_cpu() of the Physical device.
+ 	 */
+ 	if (node < 0 || node >= MAX_NUMNODES || !node_online(node) ||
+ 	    pci_physfn_is_probed(dev)) {
+-		cpu = nr_cpu_ids;
++		error = local_pci_probe(&ddi);
+ 	} else {
+ 		cpumask_var_t wq_domain_mask;
++		struct pci_probe_arg arg = { .ddi = &ddi };
++
++		INIT_WORK_ONSTACK(&arg.work, local_pci_probe_callback);
+ 
+ 		if (!zalloc_cpumask_var(&wq_domain_mask, GFP_KERNEL)) {
+ 			error = -ENOMEM;
+ 			goto out;
+ 		}
++
++		/*
++		 * The target election and the enqueue of the work must be within
++		 * the same RCU read side section so that when the workqueue pool
++		 * is flushed after a housekeeping cpumask update, further readers
++		 * are guaranteed to queue the probing work to the appropriate
++		 * targets.
++		 */
++		rcu_read_lock();
+ 		cpumask_and(wq_domain_mask,
+ 			    housekeeping_cpumask(HK_TYPE_WQ),
+ 			    housekeeping_cpumask(HK_TYPE_DOMAIN));
+ 
+ 		cpu = cpumask_any_and(cpumask_of_node(node),
+ 				      wq_domain_mask);
++		if (cpu < nr_cpu_ids) {
++			schedule_work_on(cpu, &arg.work);
++			rcu_read_unlock();
++			flush_work(&arg.work);
++			error = arg.ret;
++		} else {
++			rcu_read_unlock();
++			error = local_pci_probe(&ddi);
++		}
++
+ 		free_cpumask_var(wq_domain_mask);
++		destroy_work_on_stack(&arg.work);
+ 	}
+-
+-	if (cpu < nr_cpu_ids)
+-		error = work_on_cpu(cpu, local_pci_probe, &ddi);
+-	else
+-		error = local_pci_probe(&ddi);
+ out:
+ 	dev->is_probed = 0;
+ 	cpu_hotplug_enable();
+-- 
+2.51.1
 
- Documentation/core-api/housekeeping.rst | 111 ++++++++++++++++++++++
- Documentation/core-api/index.rst        |   1 +
- arch/arm64/kernel/cpufeature.c          |  18 +++-
- block/blk-mq.c                          |   6 +-
- drivers/base/cpu.c                      |   2 +-
- drivers/pci/pci-driver.c                |  71 ++++++++++----
- include/linux/cpu.h                     |   4 +
- include/linux/cpuhplock.h               |   1 +
- include/linux/cpuset.h                  |   8 +-
- include/linux/kthread.h                 |   1 +
- include/linux/memcontrol.h              |   4 +
- include/linux/mmu_context.h             |   2 +-
- include/linux/pci.h                     |   3 +
- include/linux/percpu-rwsem.h            |   1 +
- include/linux/sched/isolation.h         |  16 +++-
- include/linux/vmstat.h                  |   2 +
- include/linux/workqueue.h               |   2 +-
- init/Kconfig                            |   1 +
- kernel/cgroup/cpuset.c                  |  68 +++++++-------
- kernel/cpu.c                            |  42 ++++-----
- kernel/kthread.c                        | 160 +++++++++++++++++++++-----------
- kernel/sched/isolation.c                | 144 +++++++++++++++++++++++-----
- kernel/sched/sched.h                    |   4 +
- kernel/time/timer_migration.c           |  25 +++--
- kernel/workqueue.c                      |  17 ++--
- mm/memcontrol.c                         |  25 ++++-
- mm/vmstat.c                             |  15 ++-
- net/core/net-sysfs.c                    |   2 +-
- 28 files changed, 554 insertions(+), 202 deletions(-)
 
