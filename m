@@ -4,87 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B380EE784AC
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 02:48:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 401F8E784BE
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 03:10:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E5096B0088; Wed, 24 Dec 2025 21:48:51 -0500 (EST)
+	id 3BD1C6B0088; Wed, 24 Dec 2025 22:10:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 068956B0089; Wed, 24 Dec 2025 21:48:50 -0500 (EST)
+	id 36B7F6B0089; Wed, 24 Dec 2025 22:10:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAA026B008A; Wed, 24 Dec 2025 21:48:50 -0500 (EST)
+	id 26CCF6B008A; Wed, 24 Dec 2025 22:10:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DA8676B0088
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 21:48:50 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8CDC7138C39
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 02:48:50 +0000 (UTC)
-X-FDA: 84256460820.20.E5F4914
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 70DA41C0005
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 02:48:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FVzoLV8G;
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 136516B0088
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 22:10:44 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE6F91A0557
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 03:10:43 +0000 (UTC)
+X-FDA: 84256515966.25.29FCE1D
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1BE1E1A0015
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 03:10:41 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IqkH4iUO;
+	spf=pass (imf19.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766630928;
+	s=arc-20220608; t=1766632242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D5jiwUqQZpkFncIxj0w47U4jzh93+I75TVRu/PSNklQ=;
-	b=WvaCXtaNbXd2DmkeA2WkveyWeI1r6bfR2QEo4eLFKHzbYAk1a1QspqOSXQSRSu9VhGThZh
-	DWVepzyGRT4urxTofPKd1TxgkrT6rFBAM2OzGy6JAs3AbhA9BuPGu7jnorxh5BKP0l4lRh
-	JUt3LQOu21PzgyKwoRVbXzve+Ow6tCE=
+	bh=aQpZi4UJdiEoSRKQp+EJ/hQpHOcHhJkN7UpOORPmbrk=;
+	b=NTQdA9Gaa318PXISrnyx1eNddL3F1Gf6ZtIIDRCBAPsH65IL5dNVqtKa0LL7mdIuQbmdW6
+	Mox9RuZvEURSvwHzX16YORrWw8Ke8ca7B9JJI8927k3JsvXmTSHtaGuGhI1kwlfCoEwGgu
+	0NYSxONO7Q6vXxQBrgZFPVfPchmo2mg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FVzoLV8G;
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766630928; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IqkH4iUO;
+	spf=pass (imf19.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766632242; a=rsa-sha256;
 	cv=none;
-	b=LIutnWJahIKyfkz3/MObezZ7ivuYo76ZelQU2NuAb0dAf3O0UgZWUumcyFw9//Ddl/treD
-	nyFuDFSGVQS8WkursyxhIzFudsxYmZ3OEEkYTmASOyOuTMzy7w09/u/+u455lGuFqvGfun
-	xSTuqBxTPtvUEt5mYm0Met1dScWvcoE=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1766630924; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=D5jiwUqQZpkFncIxj0w47U4jzh93+I75TVRu/PSNklQ=;
-	b=FVzoLV8G87K52+ZNOdYJzDYStn34oNV5YW5JhmWHax6QNoyWqhcRNKJ7BR1S+2QWw5jtXws5bf8FUm9XJeXjDiYZd1RUjGtt7ybI+7Eml1bRCTHuyHEDGtZd6DFg4JGHUDPugoWgTh4VknPxrdQ1Xb/tK0ODoQA5la+mQrrTCWk=
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wvd.uPh_1766630922 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 25 Dec 2025 10:48:43 +0800
-Message-ID: <02239ca7-9701-4bfa-af0f-dcf0d05a3e89@linux.alibaba.com>
-Date: Thu, 25 Dec 2025 10:48:42 +0800
+	b=syQYYTaIaIChl6MCcekQsnaUH0GJGWlYfJKv9mVg/6jIDzwXtRXyQn0FBcuMu/MKBCH22o
+	NBIIIxLX97MX5G8n7qEasZgfBqmeTFfoHMs+o/0J4DJjYMZ+7m5TIMLbbrUvvdJLl4W4Qa
+	VzYMrQcBUKV74UW7K2CrFF+mtJEx43I=
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-644798bb299so5273607d50.3
+        for <linux-mm@kvack.org>; Wed, 24 Dec 2025 19:10:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766632241; x=1767237041; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=aQpZi4UJdiEoSRKQp+EJ/hQpHOcHhJkN7UpOORPmbrk=;
+        b=IqkH4iUOaDVwYC4QUCzJP5Fgk5UKGxKYz2KwuWJWQkqhxTJzfNWRut1vtySJgfnA7F
+         H+ORhrfwbzCD3HjsUck7SksBcVh2oD24R99PCtVYGSg9gEqBFWbuITfid4QqVLPLClMj
+         OhS9gBCVpvSEI9eMBDuBiI9/kedPr/FAFvFGKZiLUOBYP82fzwkXjO0DiBDlTQbzEvB3
+         BI3BmlRWbZ+5WWEcSkMZ/yb1Apju8x/UXamgh/uJDSB4+Lbs+MPVqdRDd2iI98UnvnrT
+         3bWLErbtpWUjrVDofM0vm9ojDye6M/iZGP7IsO7pn931SlwJBwFJZIAXQm3HrcwK5xhr
+         kB9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766632241; x=1767237041;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aQpZi4UJdiEoSRKQp+EJ/hQpHOcHhJkN7UpOORPmbrk=;
+        b=eX5qPV8EtqAnCSSZtMNghUpCczHt61kCAXjHSRgFWSW7C3AJagOfX68FAuSf2pNURL
+         3rPWv1WLNvVC2X/5t5V9ryOdus4K9HrImN8g33vTKe3usLUcHl+o+cEe9BnSSdIZqonG
+         Ea3y6w17qjtAK9thlx9oXiDVNXnbAuIKY6H/bP4h0gB07OX5GbLm1J+j2Pg58deQJ0og
+         9mOnrlmuufLR4HiizC377jxM4C3SpS0shX+8yVTDmX4EWyczIedvrWetZYS4xyStjoY5
+         B7LVoV18rXSytfHAxm5qn207WrVgFar/b7k4qw6myPT7SgRuUgf+bYJIj7sSfWW3Fxi+
+         6DDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3Hca6gLD9kFXLRkSSadvUByqxSlHVpQ3mIVxZC5m4QLnabz2hXPVH2LTlCFJahKUfgsuo+BwWaw==@kvack.org
+X-Gm-Message-State: AOJu0YzwDCOZ0GEnd4hd3X/DvqZrsxlbz6Hpzb/h/b6GpHh9PT7dd48i
+	kl1dTj242dHNigAnIs/2Js0R3MgFn4QE/DZAPXcqS8XthAy/J4EW8Guz1t/4tT+/McKpXdwy1WW
+	82MHM/ngrbEAu85sEAlnis3iQKP0MpUM=
+X-Gm-Gg: AY/fxX6/uLVvKfVjNhSfUmwQQAHOxcdSaGFA5kJQPppL1nLBuUr1bKQdsuULfwZlcG8
+	3qYlC4KJbF2caLYS9aWP4x74ImbEIBqRK4eamd5nluRxJUTQW2zq0l3gNf9HHlcMM5lRFRmXZX9
+	FRj1AqHn7rDjpvvjBnZKSoRzEPDKoMNsg9GoVGGgJigIEaj66BQCsjYuhf0dqj15n1TcdEpIS0O
+	WsJKazgqO+YFSsE8GIhn9gE0JUnRO3ynad4oe8KMRV/604h0HI4iyJogi8s9xllvDBZHVkcfY8g
+	Wbr1I8Q=
+X-Google-Smtp-Source: AGHT+IFI/4jYIrbnYLxGxYERk0hWCg/zYIwlO8H0PSAGU8doebIcVkjcpRIgVRxR9/d9/XaOOElXqzjwwAEBVgnfZT0=
+X-Received: by 2002:a05:690e:588:b0:63f:a399:3972 with SMTP id
+ 956f58d0204a3-6466a8afb75mr13151737d50.56.1766632241049; Wed, 24 Dec 2025
+ 19:10:41 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/5] arm64: mm: support batch clearing of the young
- flag for large folios
-To: Ryan Roberts <ryan.roberts@arm.com>, akpm@linux-foundation.org,
- david@kernel.org, catalin.marinas@arm.com, will@kernel.org
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- baohua@kernel.org, dev.jain@arm.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <cover.1766455377.git.baolin.wang@linux.alibaba.com>
- <3b427d9010a6d52f2b91342760f12be097d21cf6.1766455378.git.baolin.wang@linux.alibaba.com>
- <c5df1f9f-952a-4e83-9ae0-bd0a83dedd36@arm.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <c5df1f9f-952a-4e83-9ae0-bd0a83dedd36@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20251224124355.31667-1-rgbi3307@gmail.com> <20251225010722.14746-1-sj@kernel.org>
+In-Reply-To: <20251225010722.14746-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Thu, 25 Dec 2025 12:10:30 +0900
+X-Gm-Features: AQt7F2pSRmmDbIKVYa6sVJn212ElrKJ-ezt0GwJxsUDhXwpEW3IpcJ0OLS-hIGM
+Message-ID: <CAHOvCC4dYGqY2pMQktBbO-NWKGE2XXeA1e+6BrP2QtsjM2Dodg@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon/core: modified control->repeat loop at the kdamond_call()
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, rgbi3307@nate.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam02
-X-Stat-Signature: prb9afrcwzwhgn8e5yfhqid7hnp6odo9
+X-Stat-Signature: amcn6x51yuxbgfad7d9zgm3c4ghwbwwy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 70DA41C0005
-X-HE-Tag: 1766630927-758858
-X-HE-Meta: U2FsdGVkX1+8AvVs02km6c2gUjBMo94c1rOAhKchzYyHYQUs3O+uIJfZnJ3QxvaS/ZZynoUo46rJ63Z/6D+PNY1KFBORrWiCnAt3+1FhgBsBP2/FFMQ+Yrgu6R9uTSZiTes6mDY5dI9OrkvqH9zflFykOnTwdT1j7DDJqRZx62iUT4GqYgDdaTQNHOA0YY1nLUDRkUIQAB3wxuFu/8xGcN7B+KCNjuGYBfxBH2wFQLATryPtiO3B4nhJH3wOe1Mb+urX0B3UTWjAleLZAR0mTG2ob2N6Du1hTcglgTun2ItdXti6I+f4p0Ge8d4dNX2WZvYvuX1oz4A0G7Zt8B5ucEBH212h8CQj4Fvl1Eog0ycDV0NS18rB1Gz7JPnsu83rJa50pwTw02RvEeedVxAA8P/yPuajbRzBHc+BwWtNpQkG9WzoR5WZys4R7E40u8qzw+Oa99E73I1K6QbvuGNqfDpfC1WTjVPWOY02TTPFDlvqfxY4VDYsgaiTrNC52Qcjyg+F1RMGLNwM1sPGpjGh7hyzV9D9RybrDhteg17vEckE5ma7XH7nbwnQGLshFmibpW36pA7kVGh8o0IW0CMpOtphWl14osus9tKh1WCYotf+IWlVSH0BSsrZolEt4/gIxZHOxPJNPNfMlCHRdwOi3chzEWdeGij4ZPtw9R2xOXqvwOvAe9g7NkO3Ty1OIduqWcoedgjsnljr7HfJTW6Tg4NPzrUMtf1tKeWqb9EFNhzsFG1Kpmgs7J+RsaCP66eLzAH35HfitLMF+izQPBAI22/LcNpRKfiY6i4BaVLpsEghKMlZIgbDkAc5WZ8mvhTwLAhZ8Vdr+83D+42CpeH4moFCDLNAZKydOxYyIWnqiIHP+0iYBnzBcfVaIBza29VeKoYgXl4ABUP1/EUWNPdgIHdWpBPgAvE1+1ecz7GRkVvpXBEJf5zxzqjzM+kyu63CfPTSA4U2vRLLJ1FQCCM
- RlKbEIbd
- BcvccKbexccRe5GKBkgl9OM0/VFp9+eBjuthHh9n4pLBM+wQ1lb/eNsC4OyWWN1jcA35ugNJqLdXfw/ijweuwLDmgBWwD7v3tjCRwDB1XqSNSPg3m0c/cyaDBheYEKDnBLGojVPL1ASQcrtlMhDknBfHF1uH84PQK7gpYmU2DRPTyoj5+wDiyjVgUfpf9RZ6OtOLXD52+SfvIR7J3FFP0Zn0RpKnRi+QX2QJSoFKGPsECo3dkGeAjADkKHmsNGPvcTWZFawcNv9JiYL7EsDEsSVT/NfIhEe+r5k+avophKNCfEXo=
+X-Rspamd-Queue-Id: 1BE1E1A0015
+X-HE-Tag: 1766632241-261285
+X-HE-Meta: U2FsdGVkX190MwR0558y4rfJe2Ii9N5Lma/f484wIAuWvxKZADjFCW74mbtWddVNE7eIVia1lLEuacFQjxo4jrSIABAYq2L2s7d9rt4H6tBh+tpfoOmCSZgNGdlsMffaWB5kK5hlqZLfKMoCspREuYmEYunfk7I5Tbo6TN6c7czz3QGn7oftazznE9xhd+3Tb10HYSXJ9WXnMjW+MbTXqwhD1hcF9mLy7SN1ePehK0sMv2nJh4OW5ezBX8e1MVFeO3/reXKmrij1sEvAAtVpT4zN+gl5HJCGx+c5JM4GEgAtC/LHAd8JH60vBga4AbVa6Yb7A3eL4D+p6QSlu4o61Lnhm26+GUM0V4gZ2SiC8mZ7vxu4iZ08Do13WwyrKsFKKyq2xOtkxNBGgbB/gW+06/x42cgYi/jV91wAwAlVrw6pZnpvAMk7c6VrtCPqEJeHUmaTi/1HRf+dfb+cL5lyXNXZgr9n/oPEXacg5Tq8GoA0WiW8Eg8ByxcoVnFMCWjFQwsh6yVWld+sP0CUhdHxknpADHSQOeUN11INB93FC+eA3Zhvlty32lssIG//XQIbv/PhOS3Hw3N2K4j2K+0STiK/X6qYaFioe+pEtTKUW3uZoIb+uV/winwDl9fgckudB0ohtOmvKkfvmcjNwZyZG2m/PfKay8hLrCfM//+Mx/FkHTDDF0IFJmkLYXwklzKRAVQkyHWyYQHNSf9QKUbXQ5dMI84/FimRssReLTTPxo1jH5nEakjTVXNyknCAfo8OVY3Gb4WBKbEtLdiojdTw6sBYMD073W25Onii2AHDsfdCX/E20vH2eyiS2TMXC6YNyq2pQlMWMsCM7cJx57zyAzvt1MOOh/jqwGpmDjpaTkniGG7jglENBcDVS1QMKdEA0VakvTUsj1b+HeD1kgnSSZkAs9apO/suE7qooE5ILkTSo+eYD7M1S3TmeCcyN28iOzQ0LKeChKK1HHrJpzi
+ dKjVPrfy
+ 5R9Vnznw7GaMVylZ9sCq++xrjKX2onN2z8DXeXWX5F7iFAs4T2z4YTaxM4w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,164 +113,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 25 Dec 2025 at 10:07, SeongJae Park <sj@kernel.org> wrote:
+>
+> On Wed, 24 Dec 2025 21:43:54 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+>
+> > The kdamond_call() function is executed repeatedly in the kdamond_fn()
+> > kernel thread.  The kdamond_call() function is implemented as a while loop.
+> > Therefore, it is important to improve the list processing logic here to
+> > ensure faster execution of control->fn().
+>
+> That depends on how critical the performance is, and how much complexity the
+> optimization introduces.  I have no idea about if the performance of
+> kdamond_call() is really important.  If you have a realistic use case that
+> shows it, sharing it would be nice.
 
+This is because kdamond_call() is called repeatedly in kdamond_fn().
 
-On 2025/12/24 22:07, Ryan Roberts wrote:
-> On 23/12/2025 05:48, Baolin Wang wrote:
->> Currently, contpte_ptep_test_and_clear_young() and contpte_ptep_clear_flush_young()
->> only clear the young flag and flush TLBs for PTEs within the contiguous range.
->> To support batch PTE operations for other sized large folios in the following
->> patches, adding a new parameter to specify the number of PTEs that map consecutive
->> pages of the same large folio in a single VMA and a single page table.
->>
->> While we are at it, rename the functions to maintain consistency with other
->> contpte_*() functions.
->>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->>   arch/arm64/include/asm/pgtable.h | 12 ++++++------
->>   arch/arm64/mm/contpte.c          | 33 ++++++++++++++++++--------------
->>   2 files changed, 25 insertions(+), 20 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->> index 445e18e92221..d5fbe72e820a 100644
->> --- a/arch/arm64/include/asm/pgtable.h
->> +++ b/arch/arm64/include/asm/pgtable.h
->> @@ -1648,10 +1648,10 @@ extern void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
->>   extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
->>   				unsigned long addr, pte_t *ptep,
->>   				unsigned int nr, int full);
->> -extern int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
->> -				unsigned long addr, pte_t *ptep);
->> -extern int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
->> -				unsigned long addr, pte_t *ptep);
->> +int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
->> +				unsigned long addr, pte_t *ptep, unsigned int nr);
->> +int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
->> +				unsigned long addr, pte_t *ptep, unsigned int nr);
->>   extern void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
->>   				pte_t *ptep, unsigned int nr);
->>   extern int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
->> @@ -1823,7 +1823,7 @@ static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
->>   	if (likely(!pte_valid_cont(orig_pte)))
->>   		return __ptep_test_and_clear_young(vma, addr, ptep);
->>   
->> -	return contpte_ptep_test_and_clear_young(vma, addr, ptep);
->> +	return contpte_test_and_clear_young_ptes(vma, addr, ptep, CONT_PTES);
-> 
-> As per your fixup patch, I agree that nr should be 1 here, not CONT_PTES.
+>
+> > For ease of explanation,
+> > the data structure names will be abbreviated as follows:
+> >
+> > damon_call_control.list: C.list
+> > ctx->call_controls: CTX.head
+> > repeat_controls: R.head
+> >
+> > the execution flow of the while loop of the kdamond_call() function,
+> >
+> > Before modification:
+> > Old while loop:
+> >
+> >         CTX.head <-----> C.list <-----> C.list <----> C.list
+> >         ^                   |                           |
+> >         |               if (C.repeat)            if (!C.repeat)
+> >    restore: only one        |                           |
+> >    list_add_tail()        list_del()                  list_del()
+> >         |                   |                           |
+> >         +                   |                       complete()
+> >         R.head <------ list_add()
+> >
+> > To process C.repeat above, we use an additional list, repeat_controls.
+>
+> Your above abbreviation didn't explain what C.repeat is.  Maybe you mean
+> 'damon_call_control.repeat'?
 
-Yes.
+Yes, that's right.
 
->>   }
->>   
->>   #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
->> @@ -1835,7 +1835,7 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
->>   	if (likely(!pte_valid_cont(orig_pte)))
->>   		return __ptep_clear_flush_young(vma, addr, ptep);
->>   
->> -	return contpte_ptep_clear_flush_young(vma, addr, ptep);
->> +	return contpte_clear_flush_young_ptes(vma, addr, ptep, CONT_PTES);
-> 
-> And same here.
-> 
->>   }
->>   
->>   #define wrprotect_ptes wrprotect_ptes
->> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
->> index e4ddeb46f25d..b929a455103f 100644
->> --- a/arch/arm64/mm/contpte.c
->> +++ b/arch/arm64/mm/contpte.c
->> @@ -508,8 +508,9 @@ pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
->>   }
->>   EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
->>   
->> -int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
->> -					unsigned long addr, pte_t *ptep)
->> +int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
->> +					unsigned long addr, pte_t *ptep,
->> +					unsigned int nr)
->>   {
->>   	/*
->>   	 * ptep_clear_flush_young() technically requires us to clear the access
->> @@ -518,41 +519,45 @@ int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
->>   	 * contig range when the range is covered by a single folio, we can get
->>   	 * away with clearing young for the whole contig range here, so we avoid
->>   	 * having to unfold.
->> +	 *
->> +	 * The 'nr' means consecutive (present) PTEs that map consecutive pages
->> +	 * of the same large folio in a single VMA and a single page table.
->>   	 */
->>   
->> +	unsigned long end = addr + nr * PAGE_SIZE;
->>   	int young = 0;
->> -	int i;
->>   
->> -	ptep = contpte_align_down(ptep);
->> -	addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
->> -
->> -	for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
->> +	ptep = contpte_align_addr_ptep(&addr, &end, ptep, nr);
->> +	for (; addr != end; ptep++, addr += PAGE_SIZE)
->>   		young |= __ptep_test_and_clear_young(vma, addr, ptep);
->>   
->>   	return young;
->>   }
->> -EXPORT_SYMBOL_GPL(contpte_ptep_test_and_clear_young);
->> +EXPORT_SYMBOL_GPL(contpte_test_and_clear_young_ptes);
->>   
->> -int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
->> -					unsigned long addr, pte_t *ptep)
->> +int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
->> +				unsigned long addr, pte_t *ptep,
->> +				unsigned int nr)
->>   {
->>   	int young;
->>   
->> -	young = contpte_ptep_test_and_clear_young(vma, addr, ptep);
->> +	young = contpte_test_and_clear_young_ptes(vma, addr, ptep, nr);
->>   
->>   	if (young) {
->> +		unsigned long end = addr + nr * PAGE_SIZE;
->> +
->> +		contpte_align_addr_ptep(&addr, &end, ptep, nr);
->>   		/*
->>   		 * See comment in __ptep_clear_flush_young(); same rationale for
->>   		 * eliding the trailing DSB applies here.
->>   		 */
->> -		addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
->> -		__flush_tlb_range_nosync(vma->vm_mm, addr, addr + CONT_PTE_SIZE,
->> +		__flush_tlb_range_nosync(vma->vm_mm, addr, end,
->>   					 PAGE_SIZE, true, 3);
-> 
-> Hmm... The requirement is that we must flush the _page_ if clearing access for a
-> pte that does not have the contiguous bit set, or we must flush the _contpte
-> block_ if clearing access for a pte that does have the contiguous bit set.
-> 
-> With your changes, you may call for a large range that covers multiple contpte
-> blocks but only has a single pte in a single contpte block for which the access
-> bit was previously set. But that will cause flushing the TLB for the full range.
-> Could this cause a performance issue? Yes, no, maybe... I think it's unlikely
-> but I wouldn't rule it out in some edge case.
-> 
-> I wonder if it's better to track the sub-ranges where access was cleared and
-> only issue tlbi for those sub-ranges? Probably just keep it simple (the way you
-> have done it) until/unless we see an actual problem?
+>
+> > The process of adding C.list to repeat_controls and then restoring it back
+> > to CTX.head is complex and inefficient.
+>
+> I agree.
+>
+> > Furthermore, there's the problem
+> > of restoring only a single C.list to CTX.head.
+>
+> I had to take some time on understanding what this mean.  And it seems you are
+> working on an old version of the tree, and therefore saying about an issue that
+> already fixed by commit 592e5c5f8ec6 ("mm/damon/core: fix memory leak of repeat
+> mode damon_call_control objects").
+>
+> Please use mm-new as a baseline of DAMON patches, unless there are special
+> reasons.  If there are special reasons, please explicitly specify.
 
-Good question. Indeed, as you said, we flush the TLB per folio now, 
-which might increase the flush range. However, I think this approach is 
-relatively reasonable for now.
+This patch is based on v6.19-rc2.
+I will continue to refer to mm-new and damon-new.
 
-First, the mm-core also tracks the access status per folio, and it's 
-really unnecessary to add excessive complexity to track the access 
-status of sub-pages (or sub-ranges). I can already imagine that tracking 
-the access status for each cont-block range as well as for non-cont 
-pages across the entire large folio range, which can be too complicated.
+>
+> >
+> > Below, repeat_controls is removed and the existing CTX.head is modified to
+> > loop once(1st rotation).  This simplifies list processing and creates a
+> > more efficient structure.
+> >
+> > Modified while loop:
+> > Not used repeat_controls:
+> >
+> >         CTX.head <-----> C.list <-----> C.list <----> C.list <-------+
+> >                             |                           |            |
+> >                         if (C.repeat)            if (!C.repeat)      |
+> >                             |                           |            |
+> >                           list_del()                  list_del()     |
+> >                             |                           |            |
+> >                             |                       complete()       |
+> >                             |                                        |
+> >                           first --------> list_add_tail() -----------+
+> >
+> >         if (C.list == first) break;
+> >
+> > Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
+> > ---
+> >  mm/damon/core.c | 37 +++++++++++++++++++------------------
+> >  1 file changed, 19 insertions(+), 18 deletions(-)
+> >
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index 824aa8f22db3..babad37719b6 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -2554,42 +2554,43 @@ static void kdamond_usleep(unsigned long usecs)
+> >   */
+> >  static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+> >  {
+> > -     struct damon_call_control *control;
+> > -     LIST_HEAD(repeat_controls);
+> > -     int ret = 0;
+> > +     struct damon_call_control *control, *first = NULL;
+> > +     unsigned int idx = 0;
+> >
+> >       while (true) {
+> >               mutex_lock(&ctx->call_controls_lock);
+> >               control = list_first_entry_or_null(&ctx->call_controls,
+> >                               struct damon_call_control, list);
+> >               mutex_unlock(&ctx->call_controls_lock);
+> > -             if (!control)
+> > +
+> > +             /* check control empty or 1st rotation */
+> > +             if (!control || control == first)
+> >                       break;
+> > -             if (cancel) {
+> > +
+> > +             if (++idx == 1)
+> > +                     first = control;
+> > +
+> > +             if (cancel)
+> >                       control->canceled = true;
+> > -             } else {
+> > -                     ret = control->fn(control->data);
+> > -                     control->return_code = ret;
+> > -             }
+> > +             else
+> > +                     control->return_code = control->fn(control->data);
+> > +
+> >               mutex_lock(&ctx->call_controls_lock);
+> >               list_del(&control->list);
+> >               mutex_unlock(&ctx->call_controls_lock);
+> > +
+> >               if (!control->repeat) {
+> > +                     /* run control->fn() one time */
+> >                       complete(&control->completion);
+> >               } else if (control->canceled && control->dealloc_on_cancel) {
+> >                       kfree(control);
+> > -                     continue;
+> >               } else {
+> > -                     list_add(&control->list, &repeat_controls);
+> > +                     /* to repeat next time */
+> > +                     mutex_lock(&ctx->call_controls_lock);
+> > +                     list_add_tail(&control->list, &ctx->call_controls);
+> > +                     mutex_unlock(&ctx->call_controls_lock);
+> >               }
+> >       }
+>
+> Let's suppose there are two damon_call_control objects on the
+> ctx->call_controls.  The first one has ->repeat unset, while the second one
+> has.  Then, it seems the 'break' condition will never met and therefore this
+> loop will never finished.  Am I missing something?
 
-Second, __flush_tlb_range_nosync() is a lightweight flush. I quickly ran 
-a measurement on my machine and found that the overhead of 
-__flush_tlb_range_nosync() barely changes between nr=16 and nr=256 (both 
-are around 40 ns).
+You misjudged.
+If (!C.repeat), it will be removed with list_del() and disappear.
+If (C.repeat) loops through the loop once, and when it returns to the
+first, it breaks.
 
-Therefore, I would still prefer to keep the logic here simple.
+>
+> > -     control = list_first_entry_or_null(&repeat_controls,
+> > -                     struct damon_call_control, list);
+> > -     if (!control || cancel)
+> > -             return;
+> > -     mutex_lock(&ctx->call_controls_lock);
+> > -     list_add_tail(&control->list, &ctx->call_controls);
+> > -     mutex_unlock(&ctx->call_controls_lock);
+>
+> As I mentioned above, apparently you are using an old version of the tree that
+> not having commit 592e5c5f8ec6 ("mm/damon/core: fix memory leak of repeat mode
+> damon_call_control objects") that modified this part.  Please use mm-new as a
+> baseline, or specify reasons why you cannot do so.
+
+I'll look into what you said.
+I'll also continue to look at the mm-new version.
+
+Thanks,
+JaeJoon
+
+>
+> >  }
+> >
+> >  /* Returns negative error code if it's not activated but should return */
+> > --
+> > 2.43.0
+>
+>
+> Thanks,
+> SJ
 
