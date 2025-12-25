@@ -4,115 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3319E784A6
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 09:41:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A0C6E784A6
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 09:47:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AA5B6B0088; Thu, 25 Dec 2025 04:41:28 -0500 (EST)
+	id 598146B0088; Thu, 25 Dec 2025 04:47:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4586D6B0089; Thu, 25 Dec 2025 04:41:28 -0500 (EST)
+	id 545F86B0089; Thu, 25 Dec 2025 04:47:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 339946B008A; Thu, 25 Dec 2025 04:41:28 -0500 (EST)
+	id 451A16B008A; Thu, 25 Dec 2025 04:47:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 244B56B0088
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 04:41:28 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A3CF960A3F
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 09:41:27 +0000 (UTC)
-X-FDA: 84257500614.20.6188B96
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D63631C0005
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 09:41:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cIlHeufL;
-	spf=pass (imf20.hostedemail.com: domain of wale.zhang.ftd@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=wale.zhang.ftd@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 33A776B0088
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 04:47:44 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D14CF8B9BF
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 09:47:43 +0000 (UTC)
+X-FDA: 84257516406.30.169C2AE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0B397180005
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 09:47:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sy3CW1cl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766656062; a=rsa-sha256;
+	cv=none;
+	b=yGSaBaqgsqr1aO3o0r9D8zw8H0PLZPoE/X4lAnC5K9NSUNoHPJAyfuTn+MQ6eXlkPdfWRR
+	hAlpnen9+4Gyol6x15MWve32HVJwuYXIM9VJyExzCIUrEBaopt+Ah6esxN9bMqY5V1CoG1
+	x4BylNTYm7WQuxqJFVrWJvYlxkVGtH4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sy3CW1cl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766655685;
+	s=arc-20220608; t=1766656062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=taHYriZyJqrb06FJIXQ9lPxs5LOD7T/AS3erG0rvuQA=;
-	b=oX9O3TYOEUd1rRMSS8es4t6OYZcnMlM5TFgn3RmSVlmbzjHdAnZ7nKwrZR+m03n6wc67Mx
-	knz1mb4jiNqZpJe2UAUkiQbuMV9sPUwFdy97gfYB4VJX4RF88EfJuZnbJJMWYDLTaJibAH
-	2d9eGEa0KsWByU7HBjbAM2etCnkB4/U=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cIlHeufL;
-	spf=pass (imf20.hostedemail.com: domain of wale.zhang.ftd@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=wale.zhang.ftd@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766655685; a=rsa-sha256;
-	cv=none;
-	b=uIOyIQPuCPCsCqgAqF7eJYjxj/CIYTP1gAwdjoEskA6LZ+CUSrfIris0IjFR6CgLRrb80k
-	/G0VSAQ5/3mMbYicF5rG7Y1ezytULk4cKrkwTH7zYjCB48AcIhErw2aIKueXcFXZeoiLUZ
-	5fTWejWtuqBDRQ7aXKK1PVzeJXmtZZo=
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-34ab8e0df53so6262694a91.3
-        for <linux-mm@kvack.org>; Thu, 25 Dec 2025 01:41:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766655685; x=1767260485; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=taHYriZyJqrb06FJIXQ9lPxs5LOD7T/AS3erG0rvuQA=;
-        b=cIlHeufLx3CO/+a+iieGH8Uh4YaFyyiYIL5rPC5TIhuKwrmnmv1lHvbvy7Y0ahkQ0n
-         ToTrRS/NVTWR22ccOh2727Uaj2iUIKr5xlLm00TFVrLj+ohmo+wT8hWVwLs12L4uym6/
-         OdqDYX0hoG7KDlzMHltnos2N2KCAvsR15LttIwAqRhEqAcy56DZ6Upp0ALUBmXf9gYJ2
-         SYsZsvMn0EgnhRgNK/G9KSD5xrcdh88VxwXUi09fspl5hmp78taHAJj515QvnhrDde2f
-         RfTdZo23CYXMOpV4eS7kG9YX5OToMajS+3tHUi9O6JPYQqdC4P1rVIGvfCsPWBpO9GfM
-         q9GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766655685; x=1767260485;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=taHYriZyJqrb06FJIXQ9lPxs5LOD7T/AS3erG0rvuQA=;
-        b=NiA2YNeWhwFqOaUhz1zvu8fQGi3bUj3IbeILhOLki1oBN8y4Sok+hsCCi4+6xA1S7m
-         YSk3mPHH7GhxjU7FGdloJUaYoS5JXqZsZLlSj19/m9GnB9ofv8uwOKwyxnJ/SmXNLiPn
-         rlrEIAtKzX9dUxDd1CTYcEf/EnQsCObQqHo5cnk4hGhTMrfJZne8RSR1eaTlRBVbon9x
-         KZ7DWx7/lByIS9siW7wk5yZyiQv0LQfwfawdtA4JH2ikRZiI26iYCfXXUXOzCxnvWVhG
-         8+SFGP44QE1vwjxZ5q1VMa0j0ZlMTdiVsvQ8t4Xs0TCRGawItKVYyQHtKcBXMq6SErFY
-         EE6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUqtETCWabBND1LRNPswSilbSw2fAVUk4M1V3LN7Y091m6u9KZy6em6biRyvmvwK0TICP2WCkQCbA==@kvack.org
-X-Gm-Message-State: AOJu0Yx9+OOIqO6xTZ13j0+6rnOqMRzn17695YIQqQViVtTyuHP0bJUN
-	I0drMU5OnLs1Z27sZGre5z497dfv8BZqdtB6jJpqvh6MAlIMYVV2WBIL
-X-Gm-Gg: AY/fxX54eBscl9Cg4Vmyd1wQ/EQKGvZ0rAGjvStC6ffb3UiMlzQ2QVSXZCkioRkLStx
-	5AD8pnTr3AYdPkIeSJdoKWJXsvy0SYUrWVW/d1zLnJeWwlRkRN65zjSwgW9HRTPpSDJEv4rzoR2
-	KwMlbjYT6gK1c1q7knZHryWfz7nLKKa1gcHof9SLPespt7vIyZWif6ilp/gkS2oNIn8aUX+Sf66
-	UBhwLySDqHESfVzZcUoP1MFJ1KiUhF91iLcKaftsB2e22EYbU7+0bPahW4rBCCg88H9ANQxpgKJ
-	aOeqjow2va3KKupKyDaf/4GVbnEQz/+3WDqEnjIyBvw6UgWRUZ2XRc9jNjKYnF2qpjFNGu/zSMa
-	KHKhLhAdecY8krmTXXltZzsipzk7EELERllrCjZClfphcYIz+XKgEx3oL+GUtCoAmeWiJDlGZWp
-	zywGNunzb+atvXNYMiqhqlAWCDwXb0NKJumAwKbs0=
-X-Google-Smtp-Source: AGHT+IGrqIle5cdI6z84baeLzzXnwVkIIWKcs1QdFdPCQ67SMYvyYgcBa0IqJ8b+0pqT2JepSg7pFQ==
-X-Received: by 2002:a17:90a:c885:b0:341:8ae5:fde5 with SMTP id 98e67ed59e1d1-34e921bec27mr15691054a91.18.1766655684598;
-        Thu, 25 Dec 2025 01:41:24 -0800 (PST)
-Received: from DESKTOP-LBGNL84.ugreendc.com ([209.146.12.194])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e772ac1basm8865105a91.10.2025.12.25.01.41.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Dec 2025 01:41:24 -0800 (PST)
-From: Wale Zhang <wale.zhang.ftd@gmail.com>
-To: akpm@linux-foundation.org
-Cc: lorenzo.stoakes@oracle.com,
-	baohua@kernel.org,
-	chrisl@kernel.org,
-	linux-mm@kvack.org,
-	Wale Zhang <wale.zhang.ftd@gmail.com>
-Subject: [PATCH 1/1] mm,swapops: Fix compile error on set_pmd_migration_entry.
-Date: Thu, 25 Dec 2025 17:40:57 +0800
-Message-ID: <20251225094057.286954-1-wale.zhang.ftd@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zZXTP2ZUk4arfREjkMm6Q4PS3AP5arrYTzHbTKPmO8w=;
+	b=ECr6wQbAYyUFWJuz6sz2N+VfiNw81dE7Uzbmpd0RrOkd8v6WCXVGgQhHG1p6cXAApvy+U+
+	zMx/hEjdYlvu6GHvyN4aI0AdRO31+KrBU95rbnuJTj5nYCKX0JCU8U9MdvTimGLiYtZ55v
+	3A78/mNo8E8ruBc7o7EzryDbL/tcTiw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2ADC740612;
+	Thu, 25 Dec 2025 09:47:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31718C4CEFB;
+	Thu, 25 Dec 2025 09:47:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766656061;
+	bh=4iBf9Ig+t1xZ4dvyb20eBO6tby258MpacRjtRiuO0x0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Sy3CW1cl1V3JPg70g8bQsB4iA48x8OjbpxmQgLkgWCBxjDa/fzZujnEiktu0asc8W
+	 EgJNXpxsQNA3GmAva2xgyf7XtosKOHAm5KVaHeZLxbhBCra2qoZBHXy8+zRehzGgVJ
+	 ybiG8m1WcwgntsV43LgQmro+YiovZx4zqyM7TFiDdNScPYSRLKmcqe1QROJ/NTDn0T
+	 5UAZS4Z6cv6d4irIbm5f5d2u2UAzRef6Y3nLoFGCTDFsLEXvhzVk87CuErhbuokTe9
+	 WxtgpfE1EZT8EnaSKuVUwcBIsm2et6EEIWuvoqYu+zdLJL23l33c9NGF4yKnfkF7b4
+	 EHU5dKggAUUhg==
+Message-ID: <f223dd74-331c-412d-93fc-69e360a5006c@kernel.org>
+Date: Thu, 25 Dec 2025 10:47:32 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: sfhuhjkd6tks9g4ebfdjpaomfwg1wt4m
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v3 4/4] mm/hugetlb: fix excessive IPI broadcasts
+ when unsharing PMD tables using mmu_gather
+To: linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Laurence Oberman <loberman@redhat.com>,
+ Prakash Sangappa <prakash.sangappa@oracle.com>,
+ Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org
+References: <20251223214037.580860-1-david@kernel.org>
+ <20251223214037.580860-5-david@kernel.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251223214037.580860-5-david@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D63631C0005
-X-HE-Tag: 1766655685-95724
-X-HE-Meta: U2FsdGVkX193n1idqNd9TBzgCVgK2+mEPA8hGtlh9TfPPMHIRxhM7fWaF7w9JUsgiPYtfg4INW9o9hvLUTuMzWvfJtmflu/yhb+rv/vh8nWx1tLizOW0qefi5y9eG4wcw43g24FcOnyOIQKrHMERYMdIe4iYCum0s3v7KN/nRrFDbdbLVaQeFsKgNXpt36ysL27ZTS5COHFazZ1Fr3Vo8vC/m6+Z3QHejQdIXDdQi5TTzZRAIzg5WwMb8W8VPdtKWKGTq+r/D/Z830FlBtT9xKFlsafTLkODbS2siIlg7kx8B+R4H+F9qUyAE5M5QTJRxAK4dTM2zFhbBolCh4lcq8WesISRFL6PKLyaNeFtOaUIswHa9kSMhSR1tPF9RmALyovLzhjQ1BuVENx4xFLzMF8QB3alszXz+Kj7yD5/M6QiH07sjDFsUXwnXdicHGVr/jf2yMGTWkKmT/AXiFO124v2EBEcTw2qvcnAlefBozDPzvjFY+H4WuqodeXhnheaYeR92k5I+LoOowQBetjuBQvdiHv3Tz9ncedZaFPBl5o1IcNXVIChKadsiLMHx8iNqkAUD0aYHBoKn8zdGwOeIA6OBaBpubD1Y348q7wTTWEKDLUH5FfYBu6WSprsAjcZ1YHH8nszWHH9XliXklBl5F1HTRlZpHAVpOPIK2Qk/p8AP6/XxqJJ/DYRcUyLah0iQ12AWeJ9keLMKqVU2XgaBiZy1Dm545s7h7tXp6BjAIAGsVzOSkxGAP8QJ3eAU14z4+RHPN7vvWENn/bt4GQGi0vOHmA83fY0q63+DxvyBhLgrgkcsGOZKL5nJ7J1EslOQEoIp9AWy6zVgpyqGQf0lBire2/ax2bNO49daVPa8A8Om8S7rR0Y0URjVnVIGlfyU2Ast7Uw+pn52wObIbOb5qj2m6KoQJEah4Fv55HCVw5LhPzzr3RXrLR4cpENYtY4XXCMhwYQu6fa+mtfbqn
- O35Vkch9
- CDZLI+0g+EpXncgJK+9WmKHFyE3Y5TUpTcQs7sxTxXUGb2E6M0OaOSFLSKRH85b5CZEiLwdP5RR+nLS4GKIbx0joZ8AErYOPh23U6dtOerWL83w9aY9UDIanZuVNEBAbik4EcdDCn2M0gssp9PF85SN2icDKqNseevEoSqm9EppBNz5CWX2CZ2H1BY0fgfuZhBF88NgHdRyy3kehBtOpLLqQuYKK+rgyR+8S8viQPTusJV4z/Mf8SH9BQR1WGiVhGiuoAuwo67/Twu974WOnzhejzze2eHcf7MXiyrfFlMzmF7ixreBz7Zx3US3xOyHL6ML4+ZW+qi0Bwr9zwpfZkFjt2RlkbfQfDuABy74HmcG47qdCQWPmXAQYZ6o7AI1wgXKNf/S02QQxQYfAyZcZLw9VUY7wdkhNQ2C+CLzD4rNR6IqEXB56P53NF0OreqgEX1kJQIZgE2CyXLKhvy9d3EZu2gxGTfTJ0n5zonIT438S+f9LPS80Ima5tSpUeqTy+JY+lD4hjQ5m5+i6HLO4MGRJCQzpCJYdTyos661ysmXFIjpWjUjPuvvaVAhpXea/p4wZB8Ah9xv+k4G3VxA+KghLhAcA1duNIkKNMXv2ahGLqeRxRNFsvRUjfng==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0B397180005
+X-Stat-Signature: ssbammf7ac991gmun9mdannwn4y8t8yw
+X-HE-Tag: 1766656061-300012
+X-HE-Meta: U2FsdGVkX1+N0m34PyzNN18Subdlu6y6y2olOtWgDdlLg7ZD/Fg0w+P1l3NU7oa4mMi1GWwbNSwCvl0lOUY/Zo9p4vytPiMZZSoLNirip6Pw79j6NL9F+JeWRkf8imr7vwdfRIXgCWcntu5TrMG4PW4W8KMYwbfz0/AORYt8N2sT/is0BCOFeEwZs5baGfCVAGZjy/8lW7NhK38dHmze7FnBF2P7gRbuftLhw5H8rUOq9KBglj325pXuGPXQM3eq2DzBTRI0W9YsWeCdpGYg4PQ4mJCROochB/1etQ3/7U+sVDhqacInzP9+GyDysdY609OH6manKLHcGjuqLknYvq/wv6CuQ9b0n+vfix/47NEeOCcfgx1oPvPpYC4n/dhrIWUQFMCalfel5hbTN7CYvF1fUB1ZEXzKz+mGUnhRzfRkrEUD/DW+17ltUNfAI/JhV0aZneG9pEpp35H2v67mNvg57H1tVAuDMy2+8fhE3kUKAzwyfSGV2AkQAOu1ogwC/mUw7DLsxMGKXreayO/Q7MHQ35wjBMJD+aw4JObj5hx8z7cQ5hA5LOJFkP1qI5n6OQORzFViDzXK7Qj8KvSmt/hVmQsk4kTw/h4HxTd6knKAnoWcBT0cabmGBkEes0ctY5S3NkGWk0K2gUl0T5bLklR5LB8GCdvs1KCK7SgPZ5Xcq6DGD3GIsXlvnYSzctdXcwro7HpINCBMRF/Ayc1RELMt5M01qBsLO9pc5q82DUfp6NRReSG3lSeplbOyMhaUpElh7mYU2y02k/bKAvuLNBGL4Nk6TIwHHiZpkdK+mieU+P8q3m0ipMGQiJlkCrtHRASMmDHVoBC0btCCTP3X4yPcJH9tKe9++jaGHmsu8IJ3wOTUHJjn7sfgmMse/2KiegFYiMd9CvxkSaxnHBqIyDDGftrtPSBtRtU78fMoHezIuWGBKZBPCTvvVr3Imvv9oGYmWzcnfgYYv5bGANi
+ YvT/eUdf
+ 2M1hxHSIYuo9JJt+2yZQhD/IykhxMPvtzh24wlkCTfDfFG48n5cD4ImbIsClCSwUyVPCqy91vpHyH0ZLZLBNvI0JzpygESCM3Pe/SJCKVMiNDWHkOpbzvqCBzTw0jw+EoG0L2yLMjmutl486876Bp4rJM3BLarcaa3bji3XmWTueGJ9+Squ2y9f0RcT/5wbOkPAyk1s3qKM9/K9EppXkgdCkeJicXbaJ75caeN1gY49a1vCxcKz+jSM9L9mte13eICT5z89bzpgTWugczEc8Z2HOPXMUX4xPFGEfHU6uk9eBQX+BhgJjeJoSkcq4isPpJa/FkK4eyITOOFraH/lhNGpWT92O699AKkVuh3mCtQAK7YhqOknmRiIMpEuJdBIu6WJcBcYd3BhlLqpvIhAg+YOYPkCJxsjL2YVgyRfeTwKHIKdg=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,30 +106,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-../include/linux/swapops.h: In function ‘set_pmd_migration_entry’:
-../include/linux/swapops.h:346:1: error: no return statement in function returning non-void [-Werror=return-type]
-  346 | }
-      | ^
-cc1: some warnings being treated as errors
+On 12/23/25 22:40, David Hildenbrand (Red Hat) wrote:
+> As reported, ever since commit 1013af4f585f ("mm/hugetlb: fix
+> huge_pmd_unshare() vs GUP-fast race") we can end up in some situations
+> where we perform so many IPI broadcasts when unsharing hugetlb PMD page
+> tables that it severely regresses some workloads.
+> 
+> In particular, when we fork()+exit(), or when we munmap() a large
+> area backed by many shared PMD tables, we perform one IPI broadcast per
+> unshared PMD table.
+> 
+> There are two optimizations to be had:
+> 
+> (1) When we process (unshare) multiple such PMD tables, such as during
+>      exit(), it is sufficient to send a single IPI broadcast (as long as
+>      we respect locking rules) instead of one per PMD table.
+> 
+>      Locking prevents that any of these PMD tables could get reused before
+>      we drop the lock.
+> 
+> (2) When we are not the last sharer (> 2 users including us), there is
+>      no need to send the IPI broadcast. The shared PMD tables cannot
+>      become exclusive (fully unshared) before an IPI will be broadcasted
+>      by the last sharer.
+> 
+>      Concurrent GUP-fast could walk into a PMD table just before we
+>      unshared it. It could then succeed in grabbing a page from the
+>      shared page table even after munmap() etc succeeded (and supressed
+>      an IPI). But there is not difference compared to GUP-fast just
+>      sleeping for a while after grabbing the page and re-enabling IRQs.
+> 
+>      Most importantly, GUP-fast will never walk into page tables that are
+>      no-longer shared, because the last sharer will issue an IPI
+>      broadcast.
+> 
+>      (if ever required, checking whether the PUD changed in GUP-fast
+>       after grabbing the page like we do in the PTE case could handle
+>       this)
+> 
+> So let's rework PMD sharing TLB flushing + IPI sync to use the mmu_gather
+> infrastructure so we can implement these optimizations and demystify the
+> code at least a bit. Extend the mmu_gather infrastructure to be able to
+> deal with our special hugetlb PMD table sharing implementation.
+> 
+> To make initialization of the mmu_gather easier when working on a single
+> VMA (in particular, when dealing with hugetlb), provide
+> tlb_gather_mmu_vma().
+> 
+> We'll consolidate the handling for (full) unsharing of PMD tables in
+> tlb_unshare_pmd_ptdesc() and tlb_flush_unshared_tables(), and track
+> in "struct mmu_gather" whether we had (full) unsharing of PMD tables.
+> 
+> Because locking is very special (concurrent unsharing+reuse must be
+> prevented), we disallow deferring flushing to tlb_finish_mmu() and instead
+> require an explicit earlier call to tlb_flush_unshared_tables().
+> 
+>  From hugetlb code, we call huge_pmd_unshare_flush() where we make sure
+> that the expected lock protecting us from concurrent unsharing+reuse is
+> still held.
+> 
+> Check with a VM_WARN_ON_ONCE() in tlb_finish_mmu() that
+> tlb_flush_unshared_tables() was properly called earlier.
+> 
+> Document it all properly.
+> 
+> Notes about tlb_remove_table_sync_one() interaction with unsharing:
+> 
+> There are two fairly tricky things:
+> 
+> (1) tlb_remove_table_sync_one() is a NOP on architectures without
+>      CONFIG_MMU_GATHER_RCU_TABLE_FREE.
+> 
+>      Here, the assumption is that the previous TLB flush would send an
+>      IPI to all relevant CPUs. Careful: some architectures like x86 only
+>      send IPIs to all relevant CPUs when tlb->freed_tables is set.
+> 
+>      The relevant architectures should be selecting
+>      MMU_GATHER_RCU_TABLE_FREE, but x86 might not do that in stable
+>      kernels and it might have been problematic before this patch.
+> 
+>      Also, the arch flushing behavior (independent of IPIs) is different
+>      when tlb->freed_tables is set. Do we have to enlighten them to also
+>      take care of tlb->unshared_tables? So far we didn't care, so
+>      hopefully we are fine. Of course, we could be setting
+>      tlb->freed_tables as well, but that might then unnecessarily flush
+>      too much, because the semantics of tlb->freed_tables are a bit
+>      fuzzy.
+> 
+>      This patch changes nothing in this regard.
+> 
+> (2) tlb_remove_table_sync_one() is not a NOP on architectures with
+>      CONFIG_MMU_GATHER_RCU_TABLE_FREE that actually don't need a sync.
+> 
+>      Take x86 as an example: in the common case (!pv, !X86_FEATURE_INVLPGB)
+>      we still issue IPIs during TLB flushes and don't actually need the
+>      second tlb_remove_table_sync_one().
+> 
+>      This optimized can be implemented on top of this, by checking e.g., in
+>      tlb_remove_table_sync_one() whether we really need IPIs. But as
+>      described in (1), it really must honor tlb->freed_tables then to
+>      send IPIs to all relevant CPUs.
+> 
+> Notes on TLB flushing changes:
+> 
+> (1) Flushing for non-shared PMD tables
+> 
+>      We're converting from flush_hugetlb_tlb_range() to
+>      tlb_remove_huge_tlb_entry(). Given that we properly initialize the
+>      MMU gather in tlb_gather_mmu_vma() to be hugetlb aware, similar to
+>      __unmap_hugepage_range(), that should be fine.
+> 
+> (2) Flushing for shared PMD tables
+> 
+>      We're converting from various things (flush_hugetlb_tlb_range(),
+>      tlb_flush_pmd_range(), flush_tlb_range()) to tlb_flush_pmd_range().
+> 
+>      tlb_flush_pmd_range() achieves the same that
+>      tlb_remove_huge_tlb_entry() would achieve in these scenarios.
+>      Note that tlb_remove_huge_tlb_entry() also calls
+>      __tlb_remove_tlb_entry(), however that is only implemented on
+>      powerpc, which does not support PMD table sharing.
+> 
+>      Similar to (1), tlb_gather_mmu_vma() should make sure that TLB
+>      flushing keeps on working as expected.
+> 
+> Further, note that the ptdesc_pmd_pts_dec() in huge_pmd_share() is not a
+> concern, as we are holding the i_mmap_lock the whole time, preventing
+> concurrent unsharing. That ptdesc_pmd_pts_dec() usage will be removed
+> separately as a cleanup later.
+> 
+> There are plenty more cleanups to be had, but they have to wait until
+> this is fixed.
+> 
+> Fixes: 1013af4f585f ("mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race")
+> Reported-by: Uschakow, Stanislav" <suschako@amazon.de>
+> Closes: https://lore.kernel.org/all/4d3878531c76479d9f8ca9789dc6485d@amazon.de/
+> Tested-by: Laurence Oberman <loberman@redhat.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> ---
 
-Signed-off-by: Wale Zhang <wale.zhang.ftd@gmail.com>
+The following doc fixup on top, reported by buildbots on my private branch:
+
+
+ From 3556c4ce6b645f680be8040c8512beadb5f84d38 Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Date: Thu, 25 Dec 2025 10:41:55 +0100
+Subject: [PATCH] fixup
+
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 ---
- include/linux/swapops.h | 1 +
- 1 file changed, 1 insertion(+)
+  mm/mmu_gather.c | 4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index 8cfc966eae48..84eb36d97212 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -343,6 +343,7 @@ static inline int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
- 		struct page *page)
- {
- 	BUILD_BUG();
-+	return 0;
- }
- 
- static inline void remove_migration_pmd(struct page_vma_mapped_walk *pvmw,
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index cd32c2dbf501b..7468ec3884555 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -462,8 +462,8 @@ void tlb_gather_mmu_fullmm(struct mmu_gather *tlb, struct mm_struct *mm)
+  }
+  
+  /**
+- * tlb_gather_mmu - initialize an mmu_gather structure for operating on a single
+- *		    VMA
++ * tlb_gather_mmu_vma - initialize an mmu_gather structure for operating on a
++ *			single VMA
+   * @tlb: the mmu_gather structure to initialize
+   * @vma: the vm_area_struct
+   *
 -- 
-2.43.0
+2.52.0
 
+
+-- 
+Cheers
+
+David
 
