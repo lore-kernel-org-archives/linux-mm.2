@@ -4,108 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0275DE7AD40
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 06:23:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB112E784A6
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 07:52:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 958046B0088; Thu, 25 Dec 2025 01:23:58 -0500 (EST)
+	id 9C3186B0088; Thu, 25 Dec 2025 02:52:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 905496B0089; Thu, 25 Dec 2025 01:23:58 -0500 (EST)
+	id 970EC6B0089; Thu, 25 Dec 2025 02:52:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E7956B008A; Thu, 25 Dec 2025 01:23:58 -0500 (EST)
+	id 87D186B008A; Thu, 25 Dec 2025 02:52:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F5B96B0088
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 01:23:58 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFFA8C1966
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 06:23:57 +0000 (UTC)
-X-FDA: 84257002914.10.C0EAD54
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E61324000A
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 06:23:49 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	spf=pass (imf04.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 73BCC6B0088
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 02:52:24 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9D01A138A1A
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 07:52:23 +0000 (UTC)
+X-FDA: 84257225766.18.BE6E817
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CB5AC100004
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 07:52:21 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="C7FQV/EO";
+	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766649141; a=rsa-sha256;
+	cv=none;
+	b=YJVa0Ja2mkEaJ4YXxlYX928TerDY5NxCFZTlUDQ89+h74M/d3VdxfqFPNPs82n5luKfW97
+	YSuN3VdbNssj3cslXASXrNsEfemuXOvhcYZB4vofW/U1bbvjXGYQyyNzHxfOraFtdkbX6z
+	VF+7ClLbmaW7GAw2MYW1GhA72qdI5cE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="C7FQV/EO";
+	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766643836;
+	s=arc-20220608; t=1766649141;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IbP2f/R12TjaQBuX1hHYDesZu4tjuOgvj8f+46cIh+s=;
-	b=8dnbmSQFeEQ+pjTM/Lfhl8H6Hj2WRy9z9GjuwCJtGhg8tOWkrUk7Iw4NQc6ChgIKHLIV9j
-	03/9ahovy8snRsKksVGtv1/6t/DM+N1JfXe9qH/ILspy59K0a27GsCU36KAAdyyb41e9d1
-	5+fG5jmnL41GrZB0qa7Qteu//qz8aMA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766643836; a=rsa-sha256;
-	cv=none;
-	b=T2mz1WpyIBEfchupNE0++4n1LWaU3W4kzDFlzV8xeEgWLgPJarMIqVJELy5eyxltJ8142G
-	70HxY6rc1z9IhW4D2bBF/87dsicGDMhOY0QoZ7Mrhv4q2KxUx2x2MRJocZpXZk1nc0cuOU
-	EMMCOSwJQ1lJuwzh+/JAjI6CQ3k0TRg=
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dcJbH616hzKHLxb
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 14:23:23 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id C2EC640590
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 14:23:44 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgAn1vZv2Exp596fBQ--.65098S2;
-	Thu, 25 Dec 2025 14:23:44 +0800 (CST)
-Message-ID: <644493f5-46df-45f7-a071-9ae7faae1f5c@huaweicloud.com>
-Date: Thu, 25 Dec 2025 14:23:42 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EJMk3We4wenG5+4u01UJ7E/ZHg5vbest+jb4fQJ6qWo=;
+	b=cAQvHLhq1Nu7RBhsMoQ+wCrEqRRiBVF8pUmKiEWEgzyJGeb6pLr58wS9U9jlL58A3klGbW
+	dU70SXwgcv/bx66f5zILkTDCPFKJnovvbo4XqLtm0hES6JwbzX7/gS//r9X9kSi7qvCluT
+	6/I+doyoIt5qRMeR/4F7Rn/nxIfWPnI=
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7900ab67562so5024167b3.0
+        for <linux-mm@kvack.org>; Wed, 24 Dec 2025 23:52:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766649141; x=1767253941; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EJMk3We4wenG5+4u01UJ7E/ZHg5vbest+jb4fQJ6qWo=;
+        b=C7FQV/EOKUrqSyMQWo8SmpzEGbeqPCCDOShzER7GC+9fYj9xG7xbwodA3uQNQBZmGn
+         CjJqYW/WvpBozFqjVAokV+6GoTF/sFErWx6ADJYs8rqDKI5Pjxmh0pp5dMZf8k03JQXm
+         kkNpBah3v5y2pVcfbyBYTN5cBCwKC/9cgkOPPO1HfuGX5xwrbTcmEKgH2ThOrGjJG0im
+         lVTpAJetIWfI2dg63XAmUod707rI7AYSBY0ABeZbP79nXcDZFkkPz8P+c2l+G6UIgeTd
+         icBYwVKxI2BRgaUeosvcmaAAIm2bGjEjOkK3LRceNyGczva1Wze6+MuKpqZvriyg9n4b
+         6xgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766649141; x=1767253941;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EJMk3We4wenG5+4u01UJ7E/ZHg5vbest+jb4fQJ6qWo=;
+        b=HNtLcum/HKIgecbPxTB6VeJmUrmFLlGeEP/rLMM4mXXw71U6nwXwggfdcNTgGryCHm
+         FXjaBslNG6LZZcBjR2E5QygdNam7GUXubyTfZM8LoPM8aBWL5npZChPrTYq18mtf4ZP7
+         jnB5U4uak5Sz15A69igxmGSc+5F0IAfQoPETo2i5K4u8450RVk1zxA5xSsb3VNpJAfr6
+         aZd7RnPoS6DL5Va3oScCOk2oPePsCZJfY3uSPunr/1jQ9N+6WEj2XkbSseNZHD3cUdfY
+         zAgwaSvg7v3Q8wUOveI8ZCRnzuVdLcCYzpBY0TD8l1cUratJszmVlIs75EH0nfTDxp78
+         Z25g==
+X-Forwarded-Encrypted: i=1; AJvYcCU+WNDOaXqtkSGq4CA3e3NAS1Ak3XZgoPORSdpOTORiqfDMT2wo53pC6fOJx33sr03vHs3OfH4y0A==@kvack.org
+X-Gm-Message-State: AOJu0Yzxc+fYXV/MENRXMG6Alo6//wCcW553wveskPxsdF+BZeGflU6X
+	/UuywrnuoQ3G3tbTFSCkRp5gZgIhcISjVAEFaLHLfR53ZZHtCPu0sdg9
+X-Gm-Gg: AY/fxX4ojnpCIF5xBrkng8F+1mHSiuR+4EgXyyhSmz3TAYnbQFjtEJN4KASQeFfOil+
+	SKbA6BMwV073DozVxcd+F3BH9vtgvrHFeuPht7rllL8eN3fVPPkDk+1Wa/U7WW5JXfbeSNQuRXd
+	CRUhIloco38nBI8vzrY/JmpZxheCEA0lR0YpMxvknLd4QV8t3QV+QTZB3v93ZcIqBMo2+HIws/l
+	z5ha+i0Sv5rAjwGA1S/+oMmJw7nA/v55mnaJRkzP2QWAUVgrvgBae5nC9E721IPCNquezqlDFIH
+	gLOBw/Y6g4XpIl1VK4KyDoYbLB2Owg4ZAV0hhclHnDhTBUSiJZgsEyoA4eND0x1CGDnYPEan2VS
+	MMQO/xGfE3l2ru8XUerKhrBa8gu1x9Jpr72iY2rGg3us+OtHPsdZJQA/FdD79CbDGB/SDTwywyQ
+	Ip3QYA4TuddVk52UTAOGac
+X-Google-Smtp-Source: AGHT+IE1yw+T7Ywo9wfnwG4FkPlzgN1eey9sqMVh+DrQy62zIGBtNmSZbr8vl5ofKBXPeRnA+0TX3A==
+X-Received: by 2002:a05:690c:7244:b0:78c:6572:6e5 with SMTP id 00721157ae682-78fb3ed510cmr146961707b3.6.1766649140840;
+        Wed, 24 Dec 2025 23:52:20 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:5::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fb43b2690sm72594127b3.18.2025.12.24.23.52.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Dec 2025 23:52:19 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm: remove unused function inc_node_state()
+Date: Wed, 24 Dec 2025 23:52:17 -0800
+Message-ID: <20251225075217.1298303-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251225015445.16727-1-richard.weiyang@gmail.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/28] mm: memcontrol: allocate object cgroup for
- non-kmem case
-To: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
- mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, mkoutny@suse.com, akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <897be76398cb2027d08d1bcda05260ede54dc134.1765956025.git.zhengqi.arch@bytedance.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <897be76398cb2027d08d1bcda05260ede54dc134.1765956025.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgAn1vZv2Exp596fBQ--.65098S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3Ary3CFyrJw4rGryfZF4kCrg_yoW7Ar1kpF
-	sxGFy3Aw4rArWUGr1Ska9FvFyFka18XrW5K34xGw1xZrsIqw15tr12kw1UAFyrAFyfGr1x
-	Jrs0yw1kGa1Yya7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
-	s2-5UUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Stat-Signature: 9n6da3ib3jjzwiif9nb88cmkzxr3g4gg
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E61324000A
-X-HE-Tag: 1766643829-381140
-X-HE-Meta: U2FsdGVkX18s4ODwOQYNNsJHa5iVQTYzsjG+JZfTzTp8bMOJSffTuLvdruCZ4fXfbivTRRLtE4c+hoVMepOpreX1JcmGjlP0HzXuztUr2DHbMv9hyZ1AyNs+ZrIDOKD4LSidvs9yG8ZygpluLECTCfrbtMbqfBL+fAWH2QHfhHPYH/qrBWBJGS+TI8ZGr/NKoVw0m7JJCzaYd+5obDLLLBk2pToxnvA6yT8sAXf1uT1n7TZnvwlh3yHsdrF6+vIdZ9vwTQzY3eO+4IALEVjc2r5YGjvP/AsehQVSRgTG6pJ9jzHGt2ECKGKjdLuSP92nvwI6OeYIIXBg8gEP2ZBC/2O0MhzZg2v+2OS4oVk+KwvNhEw6hXW6cgH17BMP+ZEVK3Pe+FsOLU1mpT4yt0AGQT7sW/crX6K7mHnWCyeTlxOMfEV3ZrjugBzf0W9Ax/E5AJvccDgsXDHj4vQECTIuPlMOZR0q9HWVzF7kkRWpdVZYMnjnkdj+yNKsixpZifzyrB9ZdR7cmXf8i5QvhDGutOYJ+Vu00biSGivhLq2bz7uWM1KgDFAuZMbWpzsyzw3cIjTcF/0rHYfGq18EgWcdB0QzQRkziilyhtb4sZ49QjFRSr+H5P+O+6rSUY5RnHLBAPLCDe+OfdacF3jGXU88W8wAcYP1vGn4YIdojae9eLZjjwFrYgXI5D2OSgLgmni6UmjsygYpfQnZdAjZikSWS+Pg8s2qHyN1a+oOAIy12oQhtPQ3RxonicN0HRqhINmkszw0tg7iE9f7/FdG5zc2e96Ow8LMYqVNwknG8Ae+DqhI0StWyKMw4Uc10NY8+xaU7CjOdFLwbaLtFdrKBNNbZafg+m4wKV7dDrdHOLhM+0GrFEwxspP5uWQXWfe49FI7gTpyTSGqXtxgE8tFYeW7K1cLkPHOI2nUVpOt0Es9y6RdnKLyF/WBFcri8tkcEKA30s/tcure65wm8INhll/
- BAU8+g9g
- M+z0SM+710HbSfcDOWpHiRtNlECUbdBxamqrM3llpvZ8BIeXC6+ZJwf5FeD8hRwWL5FbQjjvAqJmZRVN15+2RMAbS99/VQGzttwMxa0Bu/FOnEH2lbsiVMZSu4SRPtXZLd/X3EIZzU0EMc2FRupNukzIl+4Hdm3VZUAA7RArA6v23H5+ay0Cl/1fEKl+JPYqtXOIs
+X-Rspamd-Queue-Id: CB5AC100004
+X-Rspamd-Server: rspam04
+X-Stat-Signature: z3yx4zjzgibe9oc778djg1wn48rt5rps
+X-HE-Tag: 1766649141-75992
+X-HE-Meta: U2FsdGVkX18OnupwvuKuAVeVSLeegSy95o93WgQAz3Gvr14m32BD7yOztv+NizGt3OFjNTIkrQa2dIObIjzYoOIsf9H9H34YRoFtYuJKcRS5ojkc1WC2Uy/6uu3LcxqyxHDbGjEQq/17sgysf3n3T8FXryYXlq+hbjF6Ze0kr3Lm0AuBZyn8kUr1H7C4fiUkbjeGMCIdTDaK27E0BYvqMsxBjcOvd6l1vKJsWIMPFk2LtCHD5eYKYwrR1vxriRAcigNkL7pa9sQGLCxNM2K3rVYawnFeul2TwaW7PZttt0BH81ivgnnWt0+cfihgx2Ea1fdecAIcvaWzMuid2vvWx4Fa0tjhYFnciCos8slm+BZPlQa6x61ZLUtgsINgjv2gTJW+7pVVB5N2ZHTP8OEfOxwsi3sH8QDjViu+5Q0DsgowKutynqCp6r3ty/qGRwbp5tCqxY8wMSuH45QaQx4EMgnUeXGZhdWv0QcGtvWNGZ+pB2guwHTkNMAQYNlwjL79Z7Vcx1B8+t/x7sQ+n6a3DR/kqY/SO4ZBByoiJCDeGWyua8lhhwaAgou1eNWcjGo20USSmiYl3QwBbL4GjUgtnhZCrH4bGwKHvo0XIh8aGpptOT+Z9pquc1nLXOAsIYaaMbYorBHnhdHGxzNu3kigBZvMTZv686Nf+b2HGd28q3B60j8nZb8uAzdn9izs4kxRf6aF1rv6z41I1HPGuGYPXkutOMGGda9YK6v8QSqLbokCwEIcj/gAea4HJgHvXPhJBHGDw1VHxAx400KG5Rrz984nONxsIFVg7hvVZIGNLdf2fLu4iEMFNqW+DCsCXuIagX3Njae3AmJZY9NlXlQv4gsPIN3wottTnGkyuoktJHPr7gjbbpuWRcioUljCy022dnMRh9Ta6pvn8spUkvlILYLuwj5VJ6mVZka1SxG3iueJFJrFkfLSBUJLbjjJ3dbq34hKorDqYd0VUg+1lZl
+ WY8wmmZ/
+ rzUNZQMVS44GcCxFR53Venj+mG8e8usPJ6nJR3B45qimCi/POAULaUzMXxDzi7pucCqUrbWHYrgyiT9RCBQVedguX3H1PIglreNXIQzGH1zs35S+mc8zfl7KU+8Al+wh1rye8gG5z+18oTzRd2nq5WKxLYdPkc1m9k3hoTiZ3dYt3nMLmuygrgVTGHYWeLRMaE7Ou6j1PLSRJAyrxkcFnr+h4/OSGk6TBAiskQVZEOyrbp++rboY8V3/0kwhicect8351rmGRzhh+yaSgnoQ6JJTPO+lxwLY8dfqCJgC2Wjl2RAX6W124attGAOJfvhFYile6Q8UhZ7bNmY7OvM8OJvt6cfu0+dAh80Wi5bOglBJxp/PzfF5qrmBszrG465h3eRtULu/1XQRKeQh+1dYxTYumLPj/HW+vfO5Ym5tk/nNrs/f6UMYSx/j09mWYys+Csgn8gkohBGd9ULgXGHDTifa9ryZZGClFcn0ku1jYnRbMYd9LudQJQvzdWRthtw5bWBXTwwewJz7DNDstFiJPA6d+Rdg3Yjnp4mUCfHPay1YjCnMeZPdiZ6G2yGkNXu3chgHa5E2v6oukhYcP/W6VI1LXsSNOjMCG46z9K+6hVf1NgLM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,167 +126,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 25 Dec 2025 01:54:45 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
 
+> The function inc_node_state() is no longer utilized by any part of the
+> kernel.
+> 
+> This commit removes the dead code.
+> 
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 
-On 2025/12/17 15:27, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> Pagecache pages are charged at allocation time and hold a reference
-> to the original memory cgroup until reclaimed. Depending on memory
-> pressure, page sharing patterns between different cgroups and cgroup
-> creation/destruction rates, many dying memory cgroups can be pinned
-> by pagecache pages, reducing page reclaim efficiency and wasting
-> memory. Converting LRU folios and most other raw memory cgroup pins
-> to the object cgroup direction can fix this long-living problem.
-> 
-> As a result, the objcg infrastructure is no longer solely applicable
-> to the kmem case. In this patch, we extend the scope of the objcg
-> infrastructure beyond the kmem case, enabling LRU folios to reuse
-> it for folio charging purposes.
-> 
-> It should be noted that LRU folios are not accounted for at the root
-> level, yet the folio->memcg_data points to the root_mem_cgroup. Hence,
-> the folio->memcg_data of LRU folios always points to a valid pointer.
-> However, the root_mem_cgroup does not possess an object cgroup.
-> Therefore, we also allocate an object cgroup for the root_mem_cgroup.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Hello Wei,
+
+Thank you for this patch! AFAICT it seems like the last users were removed
+all the way back in 2017, in 00f3ca2c2d66 ("mm: memcontrol: per-lruvec stats
+infrastructure"). 
+
+Maybe outside of the scope of this patch, but I think it might be a good
+opportunity to also remove dec_zone_state and inc_zone_state as well since
+they are right next to the functions you just remoted : -)
+
+(Interestingly, dec_node_state does not exist already).
+
+Thanks again! This patch looks good to me as-is, but please feel free to
+also remove the two functions above if that sounds reasonable to you.
+
+Have a great day!
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+
 > ---
->  mm/memcontrol.c | 51 +++++++++++++++++++++++--------------------------
->  1 file changed, 24 insertions(+), 27 deletions(-)
+>  include/linux/vmstat.h |  2 --
+>  mm/vmstat.c            | 15 ---------------
+>  2 files changed, 17 deletions(-)
 > 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index ae234518d023c..544b3200db12d 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -204,10 +204,10 @@ static struct obj_cgroup *obj_cgroup_alloc(void)
->  	return objcg;
->  }
+> diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+> index 3398a345bda8..864a78287371 100644
+> --- a/include/linux/vmstat.h
+> +++ b/include/linux/vmstat.h
+> @@ -286,7 +286,6 @@ void mod_node_page_state(struct pglist_data *, enum node_stat_item, long);
+>  void inc_node_page_state(struct page *, enum node_stat_item);
+>  void dec_node_page_state(struct page *, enum node_stat_item);
 >  
-> -static void memcg_reparent_objcgs(struct mem_cgroup *memcg,
-> -				  struct mem_cgroup *parent)
-> +static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
+> -extern void inc_node_state(struct pglist_data *, enum node_stat_item);
+>  extern void __inc_zone_state(struct zone *, enum zone_stat_item);
+>  extern void __inc_node_state(struct pglist_data *, enum node_stat_item);
+>  extern void dec_zone_state(struct zone *, enum zone_stat_item);
+> @@ -395,7 +394,6 @@ static inline void __dec_node_page_state(struct page *page,
+>  #define mod_node_page_state __mod_node_page_state
+>  
+>  #define inc_zone_state __inc_zone_state
+> -#define inc_node_state __inc_node_state
+>  #define dec_zone_state __dec_zone_state
+>  
+>  #define set_pgdat_percpu_threshold(pgdat, callback) { }
+> diff --git a/mm/vmstat.c b/mm/vmstat.c
+> index 090b5c5294b9..16b7cb24d411 100644
+> --- a/mm/vmstat.c
+> +++ b/mm/vmstat.c
+> @@ -671,11 +671,6 @@ void mod_node_page_state(struct pglist_data *pgdat, enum node_stat_item item,
+>  }
+>  EXPORT_SYMBOL(mod_node_page_state);
+>  
+> -void inc_node_state(struct pglist_data *pgdat, enum node_stat_item item)
+> -{
+> -	mod_node_state(pgdat, item, 1, 1);
+> -}
+> -
+>  void inc_node_page_state(struct page *page, enum node_stat_item item)
 >  {
->  	struct obj_cgroup *objcg, *iter;
-> +	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
->  
->  	objcg = rcu_replace_pointer(memcg->objcg, NULL, true);
->  
-> @@ -3294,30 +3294,17 @@ unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap)
->  	return val;
+>  	mod_node_state(page_pgdat(page), item, 1, 1);
+> @@ -724,16 +719,6 @@ void dec_zone_page_state(struct page *page, enum zone_stat_item item)
 >  }
+>  EXPORT_SYMBOL(dec_zone_page_state);
 >  
-> -static int memcg_online_kmem(struct mem_cgroup *memcg)
-> +static void memcg_online_kmem(struct mem_cgroup *memcg)
+> -void inc_node_state(struct pglist_data *pgdat, enum node_stat_item item)
+> -{
+> -	unsigned long flags;
+> -
+> -	local_irq_save(flags);
+> -	__inc_node_state(pgdat, item);
+> -	local_irq_restore(flags);
+> -}
+> -EXPORT_SYMBOL(inc_node_state);
+> -
+>  void mod_node_page_state(struct pglist_data *pgdat, enum node_stat_item item,
+>  					long delta)
 >  {
-> -	struct obj_cgroup *objcg;
-> -
->  	if (mem_cgroup_kmem_disabled())
-> -		return 0;
-> +		return;
->  
->  	if (unlikely(mem_cgroup_is_root(memcg)))
-> -		return 0;
-> -
-> -	objcg = obj_cgroup_alloc();
-> -	if (!objcg)
-> -		return -ENOMEM;
-> -
-> -	objcg->memcg = memcg;
-> -	rcu_assign_pointer(memcg->objcg, objcg);
-> -	obj_cgroup_get(objcg);
-> -	memcg->orig_objcg = objcg;
-> +		return;
->  
->  	static_branch_enable(&memcg_kmem_online_key);
->  
-
-Not about this patch.
-
-Should we add?
-	if (!memcg_kmem_online())
-		static_branch_enable(&memcg_kmem_online_key);
-
->  	memcg->kmemcg_id = memcg->id.id;
-> -
-> -	return 0;
->  }
->  
->  static void memcg_offline_kmem(struct mem_cgroup *memcg)
-> @@ -3332,12 +3319,6 @@ static void memcg_offline_kmem(struct mem_cgroup *memcg)
->  
->  	parent = parent_mem_cgroup(memcg);
->  	memcg_reparent_list_lrus(memcg, parent);
-> -
-> -	/*
-> -	 * Objcg's reparenting must be after list_lru's, make sure list_lru
-> -	 * helpers won't use parent's list_lru until child is drained.
-> -	 */
-> -	memcg_reparent_objcgs(memcg, parent);
->  }
->  
->  #ifdef CONFIG_CGROUP_WRITEBACK
-> @@ -3854,9 +3835,9 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
->  static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
->  {
->  	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
-> +	struct obj_cgroup *objcg;
->  
-> -	if (memcg_online_kmem(memcg))
-> -		goto remove_id;
-> +	memcg_online_kmem(memcg);
->  
->  	/*
->  	 * A memcg must be visible for expand_shrinker_info()
-> @@ -3866,6 +3847,15 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
->  	if (alloc_shrinker_info(memcg))
->  		goto offline_kmem;
->  
-> +	objcg = obj_cgroup_alloc();
-> +	if (!objcg)
-> +		goto free_shrinker;
-> +
-> +	objcg->memcg = memcg;
-> +	rcu_assign_pointer(memcg->objcg, objcg);
-> +	obj_cgroup_get(objcg);
-> +	memcg->orig_objcg = objcg;
-> +
->  	if (unlikely(mem_cgroup_is_root(memcg)) && !mem_cgroup_disabled())
->  		queue_delayed_work(system_unbound_wq, &stats_flush_dwork,
->  				   FLUSH_TIME);
-> @@ -3888,9 +3878,10 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
->  	xa_store(&mem_cgroup_ids, memcg->id.id, memcg, GFP_KERNEL);
->  
->  	return 0;
-> +free_shrinker:
-> +	free_shrinker_info(memcg);
->  offline_kmem:
->  	memcg_offline_kmem(memcg);
-> -remove_id:
->  	mem_cgroup_id_remove(memcg);
->  	return -ENOMEM;
->  }
-> @@ -3908,6 +3899,12 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
->  
->  	memcg_offline_kmem(memcg);
->  	reparent_deferred_split_queue(memcg);
-> +	/*
-> +	 * The reparenting of objcg must be after the reparenting of the
-> +	 * list_lru and deferred_split_queue above, which ensures that they will
-> +	 * not mistakenly get the parent list_lru and deferred_split_queue.
-> +	 */
-> +	memcg_reparent_objcgs(memcg);
->  	reparent_shrinker_deferred(memcg);
->  	wb_memcg_offline(memcg);
->  	lru_gen_offline_memcg(memcg);
-
-
-Reviewed-by: Chen Ridong <chenridong@huawei.com>
-
--- 
-Best regards,
-Ridong
-
+> -- 
+> 2.34.1
 
