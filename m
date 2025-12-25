@@ -4,113 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6F52E776FC
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 00:20:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5FB3E784A8
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 00:29:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 001626B0088; Wed, 24 Dec 2025 19:20:53 -0500 (EST)
+	id 348CF6B0088; Wed, 24 Dec 2025 19:29:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF1A76B0089; Wed, 24 Dec 2025 19:20:52 -0500 (EST)
+	id 2CCD46B0089; Wed, 24 Dec 2025 19:29:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD3816B008A; Wed, 24 Dec 2025 19:20:52 -0500 (EST)
+	id 1CE4E6B008A; Wed, 24 Dec 2025 19:29:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CAC896B0088
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 19:20:52 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E39A6B0088
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 19:29:25 -0500 (EST)
 Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6A180B95F3
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 00:20:52 +0000 (UTC)
-X-FDA: 84256087944.14.B1AC227
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5FFFC40005
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 00:20:50 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=nxfZLen6
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766622050; a=rsa-sha256;
-	cv=none;
-	b=Md2WNDJY5eNvBA6v62ZBtExUFbmhSR+YjflzYZCDkVqAn2OOPk1rgYYAxT36ooCo8w580I
-	hnG+qcIhwm2VteJxyncywMBSTaN7LnNQcefy3icXaMH2P23esHc416M34hixNiz83UZO/c
-	5jTWOCFyfi9WWQsqESsx7qxq4P5WUdo=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=nxfZLen6;
-	dmarc=none;
-	spf=none (imf01.hostedemail.com: domain of fthain@linux-m68k.org has no SPF policy when checking 202.12.124.145) smtp.mailfrom=fthain@linux-m68k.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8EB6813B11D
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 00:29:24 +0000 (UTC)
+X-FDA: 84256109448.14.6EEA508
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BB5F2C0008
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 00:29:22 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="u0/s1HHP";
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766622050;
+	s=arc-20220608; t=1766622563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GqLER5/He2ATZFOr47hO2xqlE5rJXmXQubwaLbaCipw=;
-	b=fblfa6Mn7vlm80tnkWsV0m86UlGSTUpZWznCjiw8+0Wvtuj84hWxj3A5hmr3iYV8jHWoFb
-	8h1AwMEyowSMrO0qZq3K1Mvz2sKDpQ4TZEmQ6izhqJLJwgIG3Ey26M5S/KQ58Eg2XsXbU2
-	wtQqgoTX1ky7Er6SLmA4+9HvZd7Eue8=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 443621D00119;
-	Wed, 24 Dec 2025 19:20:49 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 24 Dec 2025 19:20:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1766622049; x=1766708449; bh=GqLER5/He2ATZFOr47hO2xqlE5rJXmXQubw
-	aLbaCipw=; b=nxfZLen60ZujHlXgIEDOxUgmUTYfrfcywayX4kxqwOdHuj8/9ex
-	xmyAFnsioLUSB5uBE2273n8o1+ZJtalbxSxPhWYX5uOsUCAVodW0C0pVoNrRgytT
-	LVo2JO3GCHXzq+nSjnMSxr1e/RgpupXqcz+9GTFyy4FvWu3Qrz0vpk1Z5606p97a
-	13X9vZyJBnA5ImCCLm/KYU5ktFETmT6vh8XPfG90xJPstrupm5nlFI5aC1guwwuT
-	NJ/t0N45RQfvP3MIe6CZ7cRHTxg9Lp2ZOnjX7lE0nd2n8xAyqC2fONSpCWGvCk3t
-	cKQBm5SMNFrYSvMmG8tr4h/fkzajeh0ldsQ==
-X-ME-Sender: <xms:X4NMaXn6Uj9rebLZkmMIy8fJR8Ojn3lAFb3LDvYhLTC7LyKW4txxkw>
-    <xme:X4NMaeicWlDY25IZqOCJw--YEjbp8WCdgGRi4SLwkJ6v8H0Ud86a6hUcZJ9shT-Jr
-    YSPtKrI7XVcMarpg7rEjXNZAhSqo8z_AM8yiwy5EPbjVXgTGYKfSYA>
-X-ME-Received: <xmr:X4NMaXeZML4F5GGOfiyi0Nx-fDgTw6RjaSJsdr-wvc0abA8SplyAtKedKOvoS6FofBn4pGpkIOUCEXWRtDujW5v3FW4_gr9osOk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeigedufecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefujgfkfhggtgesthdtredttddtvdenucfhrhhomhephfhinhhnucfvhhgr
-    ihhnuceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhephffhtdehjeelgfeifffhhfeffffgjeefleeuudefuefhvedtieehheduhfegheeu
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghdptddurdhorhhgnecuvehluhhsthgvrh
-    fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfhhthhgrihhnsehlihhnuhig
-    qdhmieekkhdrohhrghdpnhgspghrtghpthhtohepiedpmhhouggvpehsmhhtphhouhhtpd
-    hrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohep
-    lhhkphesihhnthgvlhdrtghomhdprhgtphhtthhopehovgdqkhgsuhhilhguqdgrlhhlse
-    hlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdroh
-    hrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrgh
-X-ME-Proxy: <xmx:X4NMaWixMzSV9KkcJ5LNMJ2fU0iS_h95QjBhLEUlkaDh2KhV1fSYtQ>
-    <xmx:X4NMaXzIu83omezfAWmNS8lrjVMIgdnhyIWDo70afWyVXbdxxW-D_A>
-    <xmx:X4NMaaPjkzjq2yP9YFmDTaLwGy-gGlF73b0RH21kMziw1gFljCBRoQ>
-    <xmx:X4NMaQXVyDcwssCwOy-H1SngGiuV8sTbhV-7TSyfKK5sxqkJKkrbdQ>
-    <xmx:YYNMaYDGIyyfRLLw6y1A1BLRh1_2x30ChV0UWHEvYU9CU2jph8i6l92C>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 24 Dec 2025 19:20:44 -0500 (EST)
-Date: Thu, 25 Dec 2025 11:21:56 +1100 (AEDT)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Peter Zijlstra <peterz@infradead.org>
-cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev, 
-    David Hildenbrand <david@kernel.org>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [akpm-mm:mm-nonmm-unstable 68/96] arm-linux-gnueabi-ld: error:
- zImage file size is incorrect
-In-Reply-To: <202512241835.avmTEP6X-lkp@intel.com>
-Message-ID: <b59bbd77-7e5a-b0ca-cf39-ae34bda80267@linux-m68k.org>
-References: <202512241835.avmTEP6X-lkp@intel.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=a6/TuFgHDhkQPqtZC3cXUeXixV3IdjP9zJRQmDjzS7I=;
+	b=jUQvisymNI8RHsPAo0H8Jfl4kWJoxRyWAYjSWPdJ2x4QONpBOuQ+HYrI0X5gtaQn6ya8kQ
+	ey+v1KJC4GTcBxEMASmSFLQtvnNDb94aASh40D+/gFu4XNMDggjXv8HMIzaShI9FL2dRzJ
+	xBWGqaXiQfhVBAvzIG8J3D8PBkNr7MY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="u0/s1HHP";
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766622563; a=rsa-sha256;
+	cv=none;
+	b=kJMdpwA02kZHQV7o/DaC9QAd2+bMdE03i4QwiYhqhJaFGEq+GlNk3Hz64h7dbSwA/PcUx5
+	/NfJlnn2fHxe8MF5RxL5JOgNo6igz4BaKIcuggtDI0A1R/sq9KmgtOzM6QTzviP2RqbupZ
+	EkemW/WmU0BOVTrmNu+0v0Ufr18AeuI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766622560;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=a6/TuFgHDhkQPqtZC3cXUeXixV3IdjP9zJRQmDjzS7I=;
+	b=u0/s1HHPacfKvQQHZLVvK3I8siddC98FD4MUpujV9KIwdGqDxzF+xqMNUFlJXs+Gtbvp1y
+	XwvgQ/kDtVyG+BNBAtdFHUVBC21vcrcWZbpjMBG9DbaIvaDCWcmuab0iX1O7s3CVDvarSG
+	WN2LsF682W2XPgFKuH+W7pR1o7RNxbs=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Meta kernel team <kernel-team@meta.com>
+Subject: [PATCH v2] mm/damon/core: get memcg reference before access
+Date: Wed, 24 Dec 2025 16:29:04 -0800
+Message-ID: <20251225002904.139543-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Stat-Signature: dycu18sbhg8d7t8f5h15nktrngkr8c9z
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5FFFC40005
-X-Rspamd-Server: rspam10
-X-Stat-Signature: k4gdq4g46xux8o4ytiy9sdwhktp6145d
-X-HE-Tag: 1766622050-653106
-X-HE-Meta: U2FsdGVkX18PREd5xkDm4UcxPqI7+oqxFGkSTj7i/kY4cABgQxZGZEq/4VVwlPSG2AAoYEQd22CorhPp/zdt4DT13aiqMpP/MZB7G9vPB+1t/bpLTrN+uzTSBlcay821GWnh2lMBzXa5p8GJomMeSGGXrDjm7pSH6FPgIs7sLECeK2+zNT7wI0gCkhBHstWD+lMLNwG38u4LzsxPAWPxedQToWNpMpCSNYrBAYHV+dxMCSL1HFedvW351zkleJ31+6cBl5J1Tpk+LyET22CrAjj7CN5zYL+KpvvH4cJb02hubdLnML+asW/WAuOutODEUahf1eyA6U7J0l8Hdftw8ifofLxwUvWKmnFfh6pWRcWyw7Tb6g1mS91Ar73lcgzQsOpe37u78Qx3krrmFymRG7bcJIpc/7uja6zEDUpF9Rf2hiMrQVrh5NYUNhLYJd/RWJRLlQA7GShyTNYCVYpvjzBPTvGQKGs0HVcTTvPLx5w6L1N9kTGX3Pov2aDk/qxMRkjzqf5rGzwThq4VSoJFXf8741zFCbmH7YMrZ4uFuUmLkOff8WSt2QLu2yy1yMbXC/Ehwl/vBtTR/0k+RdWZnZlr2OyivI9mhOLBedLwOZDwm3DbV2XIJsXFOOwoXfK3bEbQKhLvwQ399qHwjsV1e8Q/OlY5FGg0nZRqkN/eMs7jx70/bIY0q7AOZQSait2CatcVlyYf90UjDIv0smI/flq8yEev1FPY91Fsq4V471X1ti/qlZKT23TGZAgOOZ/riZ0RnFrT+RqGTRpmVFRbBqBASQShG7DOG3ewfKm3dhrjeus9F+izCDq/Vhd3uwLRnQ9/9BZndaaFwMJ75PKKcANOn7S5j0VgueyhzAJU4PcstoninZ9+TiYeWRx1txlYB7OnwYu1CW07qckdIiC0ZB7EWkqXMLPOVTXc5D6lQJlLeoTFz86xTSqDucg3GPGtvDnrAVX5+7ToM6UTRy9
- 9I+mRwPp
- bYToa5Wej8vUWZnJ0TQtxa7muYS7rAZI2/3XumsSU2n/Ks9W845/3ZCD2cOu7CRv3Oqedj3ZunCIfKx3DCZdsNRUPW/C9/p3VXkRKty9+4eRgy4QhNybeFk9ako8AyT86OJ3zLWju/fIL5rqMsS6ZFd35RyUriVGmv4NJuo6fm8vk/K6E5+L4Krhzeo/8eYajvgn4whbKJ1OYWbRgrepOYdK9EIkAIASsX7SP4fQgaQRfsaASDPRlbVu6yuTH9A0b2ZIHwS5aeqil9xS66+B2iNJ7GOjRfoF2yTGNNbMbmTrtLdpfsRgOJu5NU9KCxqjEdWA5aYRKXjtC/G2IZNNGf/B8psu7p9Ps4vbrcvune42DsLK3ZmBTDAB/6g==
+X-Rspamd-Queue-Id: BB5F2C0008
+X-HE-Tag: 1766622562-724339
+X-HE-Meta: U2FsdGVkX18N+cy3kW06NZ9SJkX6TX9PvVP9P05Zaaz44UbGkWfmq1wMN9xiKM0eNjDbh4FoKz0pdp+T6foL+Gdgr3vhvd1ECyo3F8Ae12lsfb9ZIHqk4WNeHY0R9Nt85MP2fKAEega0k6Mo4yDxIYO579gZyyiLUoYcAwK8wZDb/98BXmoxVM0OjVebEkT22/+H2/HVaBdsivvBDTQtPavAdfONJTXWsYHg+zD/GCOaVDp8DSJ8HiJBFknigRjtBxcNj/AM0LQGdg2gvrhzTWphDYWZUaZJSVtSAjkPONvAqyrHIAG7KRUfhHavbg88asXRXaqeHw8tVjxqXb4N7b3ZRH/8QhCHKyepeKHUISTeI02AsYAi3nLNdjUrfIxpsYNN9UAzuI3JLVXug3uXZOjYH99Xn5F4LeVCTV5qozrk+17oq0jPPRpNOSE84zrcM7b+NXYCayts3NGhJdRYkgd6z4EGqYguU3J9+2BZtTu+90pCOmN25sosLlbk2plx/w3q4iatc0wIblbtPf7qykKzNCTgePkf2fzXphexb3Fij7dNekUzqXFboMeRGsSwVyhqB0Q/v7Hc2dmLGP8C9YJ/7y0B1kjQuuU22L9xMF32ouBWJ8EZ0y/ptLzlqgZwN6O55OPDMVRpbB/E60pjTM71Hqd91eqqVFyz0e4VqAH11Ef4GkCJfdMuP69C4m/CN4JRinEQ5/bi8j4cmYz9tSR0NpnP2fVPyoIp7mRi7Yx9rxccmimiL7cXRNX+5DH4/xW0q9DIm2IXgcCoFqct2VcYPWL1v1384HWxiFG8BHzeMGQbm3/qpYN/TxUc7WcD+QCtgQh9GPCSYtWbrr2UQY8EhzLSAdjUdZyC3qbnTd24WyZr8I6mcCaxeVmrq6ogRzNTYZIZLGCsP6UxJyZnisal1bSBlFgXJO86wpwNw+jFtAE18gHXhxVbENgt91rJ7PAVV/0CmswuoSYqrpU
+ 6hxqAQUf
+ SfGI0Ra8upvEoLpVsbVpdUQaAkMeIRJByQ76BbZRQK3IFlpNoN4sQBqd7D7I+h3hcXTI2k3nEheLjKs1UwZcMcVPvbOhAV1CqqbGMt0RBmpjrOhvV8pca4EcfzKXuetJfCX+Y+CrgIFyJH2RnLNua85qf4Q0xjYVqGHCAv2tvJSoaNxPNoZUbnX9W/z699zBSlfaX4hcdn8RFtCVZxUtJ9Ks6U9Otdejy0mo6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,39 +88,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The commit b74a120bcf507 ("mm/damon/core: implement
+DAMOS_QUOTA_NODE_MEMCG_USED_BP") added accesses to memcg structure
+without getting reference to it. This is unsafe. Let's get the reference
+before accessing the memcg.
 
-I've reproduced this failure and it is basically the same as the one seen 
-in linux-next (which also involved CONFIG_EFI_STUB). The same changes 
-which resolved that for x86 also resolved this new error:
+Fixes: b74a120bcf507 ("mm/damon/core: implement DAMOS_QUOTA_NODE_MEMCG_USED_BP")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+---
+Changes since v1:
+- Changed the subject as requested by SJ.
 
-https://lore.kernel.org/lkml/fcc9ca3e-8c04-43c0-606c-e798bc0cf9ce@linux-m68k.org/
+ mm/damon/core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Peter, this patch has your name on it, so I wonder if you have any 
-comment. Would you prefer that I submit my version under my name instead 
-of yours?
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 4ad5f290d382..89982e0229f0 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2051,13 +2051,15 @@ static unsigned long damos_get_node_memcg_used_bp(
+ 
+ 	rcu_read_lock();
+ 	memcg = mem_cgroup_from_id(goal->memcg_id);
+-	rcu_read_unlock();
+-	if (!memcg) {
++	if (!memcg || !mem_cgroup_tryget(memcg)) {
++		rcu_read_unlock();
+ 		if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
+ 			return 0;
+ 		else	/* DAMOS_QUOTA_NODE_MEMCG_FREE_BP */
+ 			return 10000;
+ 	}
++	rcu_read_unlock();
++
+ 	mem_cgroup_flush_stats(memcg);
+ 	lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(goal->nid));
+ 	used_pages = lruvec_page_state(lruvec, NR_ACTIVE_ANON);
+@@ -2065,6 +2067,8 @@ static unsigned long damos_get_node_memcg_used_bp(
+ 	used_pages += lruvec_page_state(lruvec, NR_ACTIVE_FILE);
+ 	used_pages += lruvec_page_state(lruvec, NR_INACTIVE_FILE);
+ 
++	mem_cgroup_put(memcg);
++
+ 	si_meminfo_node(&i, goal->nid);
+ 	if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
+ 		numerator = used_pages;
+-- 
+2.47.3
 
-On Wed, 24 Dec 2025, kernel test robot wrote:
-
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-> head:   c40f0b9f72a08d208c7793090ae98faaf6a58719
-> commit: 613bf373e660523dbb3f2567fceb6cbd8bc2a469 [68/96] atomic: add alignment check to instrumented atomic operations
-> config: arm-allyesconfig (https://download.01.org/0day-ci/archive/20251224/202512241835.avmTEP6X-lkp@intel.com/config)
-> compiler: arm-linux-gnueabi-gcc (GCC) 15.1.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251224/202512241835.avmTEP6X-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202512241835.avmTEP6X-lkp@intel.com/
-> 
-> All error/warnings (new ones prefixed by >>):
-> 
-> >> arm-linux-gnueabi-ld: warning: orphan section `.data..once' from `drivers/firmware/efi/libstub/efi-stub.stub.o' being placed in section `.data..once'
-> >> arm-linux-gnueabi-ld: error: zImage file size is incorrect
->    arm-linux-gnueabi-ld: drivers/firmware/efi/libstub/efi-stub.stub.o: in function `efi_stub_common':
-> >> efi-stub.c:(.text.efi_stub_common+0x190): undefined reference to `warn_slowpath_fmt'
->    arm-linux-gnueabi-ld: arch/arm/boot/compressed/vmlinux: hidden symbol `warn_slowpath_fmt' isn't defined
->    arm-linux-gnueabi-ld: final link failed: bad value
-> 
-> 
 
