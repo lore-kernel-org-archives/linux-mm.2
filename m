@@ -4,112 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2A5CD68BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 04:04:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF44CD68BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 04:15:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE5586B0088; Wed, 24 Dec 2025 23:04:52 -0500 (EST)
+	id EAF736B0088; Wed, 24 Dec 2025 23:15:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D93546B0089; Wed, 24 Dec 2025 23:04:52 -0500 (EST)
+	id E58EB6B0089; Wed, 24 Dec 2025 23:15:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C74946B008A; Wed, 24 Dec 2025 23:04:52 -0500 (EST)
+	id D30986B008A; Wed, 24 Dec 2025 23:15:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B68B46B0088
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 23:04:52 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 452AD137950
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 04:04:52 +0000 (UTC)
-X-FDA: 84256652424.22.C495EEA
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 70E8F1C0012
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 04:04:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Qzy9Jz7E;
-	spf=pass (imf20.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766635490; a=rsa-sha256;
-	cv=none;
-	b=v32y/ViK4WC/Mb2LiwfXkwa8mLPNzTX4cxWRycJ6/iDtf9J/hcrUfRZLPkOBnc3t6sWxZj
-	QDDnGkWFT7gwkwsi/Qr4nAi9sFc9J1faOzcos3ChsSbhw8oh4640+eZ1TxBgyy57rHlDQS
-	VfMfUhpFkaTsT/P9eergq2Rwj3wpjdM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Qzy9Jz7E;
-	spf=pass (imf20.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766635490;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BD6BF6B0088
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 23:15:45 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1F429B9E01
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 04:15:45 +0000 (UTC)
+X-FDA: 84256679850.02.343F655
+Received: from sender4-of-o52.zoho.com (sender4-of-o52.zoho.com [136.143.188.52])
+	by imf14.hostedemail.com (Postfix) with ESMTP id F2B48100003
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 04:15:42 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=mpiricsoftware.com header.s=mpiric header.b=VtPP2esm;
+	dmarc=pass (policy=quarantine) header.from=mpiricsoftware.com;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf14.hostedemail.com: domain of shardul.b@mpiricsoftware.com designates 136.143.188.52 as permitted sender) smtp.mailfrom=shardul.b@mpiricsoftware.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1766636143; a=rsa-sha256;
+	cv=pass;
+	b=3VF/hTv6AIgR71jr5Ucp0Q+i4anwQ23sSO57zT/MYY13oY+qocRUblYZl+gv18EyIDFVvg
+	TKlLzOGjQAWHiU2TWcCYBNGGDh9LwjoMAcmJv4rle6Z92pb6swcDR3869xka/du+4OFuiw
+	SEQaFFFUo/qZZw0+miOQwmDBVZOHGq8=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=mpiricsoftware.com header.s=mpiric header.b=VtPP2esm;
+	dmarc=pass (policy=quarantine) header.from=mpiricsoftware.com;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf14.hostedemail.com: domain of shardul.b@mpiricsoftware.com designates 136.143.188.52 as permitted sender) smtp.mailfrom=shardul.b@mpiricsoftware.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766636143;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kl00HqMx4VaazQgD9Bff2Tl2HFE7SDfvTomj0ahbP0k=;
-	b=em2FdXaEJ/dOGrUNh0MHKZP2+fwYJOEmSOS1wbVtxVgvSVfL0Y3CWdSOGsUmWOTHTWn34b
-	h8mOzG3qoW2T361jdl0zh03MKuyYwUbxjkHVOLIq1Mf0qqwdEYvqLY9dlHmOt926rwYlfR
-	Z8hnSZCw2z3a4CVrvl6OC66q0kcCVA4=
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8888a444300so68700556d6.1
-        for <linux-mm@kvack.org>; Wed, 24 Dec 2025 20:04:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766635489; x=1767240289; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kl00HqMx4VaazQgD9Bff2Tl2HFE7SDfvTomj0ahbP0k=;
-        b=Qzy9Jz7Ex5T5BI370n9QOMhyv/7Wty9O/maMJJBFubMdvUV8vER4NMqManc121Aqtx
-         986bdlflhQTiwKXpGODt7ZTpS4t9K7CFTag5+X+QJOUG+pFMcsRDo0NRwLyYxonPaiZH
-         HaqsNI4dqAGKIMZD2jaP+GQOcvcwA5A8PdT+HsmWQWubpgQZdpcf+IVLgKGGZuEqEjII
-         LobPe86OB4jF6ZYgBqkNIYrh7ydeQT4dSiUytkfdMsOydSC8eR4gU3FQumDzhQxW48BH
-         3Gq40bKMY3zX4rx/VqJgm2btU3cPox5esc/nIe9GkAiXDfxE8YCLV31N2KY5Hb3baXh+
-         3HBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766635489; x=1767240289;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Kl00HqMx4VaazQgD9Bff2Tl2HFE7SDfvTomj0ahbP0k=;
-        b=YLlAWBC8SHCfGHeI6GSgRHJMrvjMy87s5NyBF1hnfXN+4x31lWMIo2TlIJfRT35iYG
-         0SrTDymYYwZ1tKHh0rZps0wG4NoW2+2F+gSiPCVafH0ZJUGOJJcP5SWCdE+MORc9U+0k
-         +ts7xEn6ZEw4l/t4Piwmuw/JLb0nSp0ytMKbM54lE4cos+mcjhYChFyF5jDPdrvSAYFF
-         EzeeB6Y5zem8/2HVLOUCprUwe4+grrUsc/wv1lNy0Aq4QdYoubgZatv81jEssjednoFL
-         +ggjgWoJJ9DD3ujCu/UoUMzFtIm9aIaFGZ2Ml6Oh5WCOwXc4uVvij3yC6bGYJ3xHmZDU
-         gQCg==
-X-Forwarded-Encrypted: i=1; AJvYcCVCBCLLqHESEAotIHIsV5EfrzUTiRiBYfQkkZ6Y6EPAs6oM806oFe0d/Geq2eKFNtSw5Bk20bZybw==@kvack.org
-X-Gm-Message-State: AOJu0YxpHtd8RhnU0Esxu3qGw8PAynZgQm0BPP3/Cyx+7+BRjEZUBm9h
-	JEVAFsLhus540q1DtwfIlTEBhh/KubHr8nvGQErh8SW524c+bkrz5EOlIo8GrsTDnP3VDgzmu9m
-	pdmF7X1zGiJmuItuf5ipeodufxXOT1FM=
-X-Gm-Gg: AY/fxX4sKTl9y8MEdmxxMBRfzBGe3mWeXLSM0CVLSQafhLb9qGimazZ21KBnHOZr3pD
-	iLH9gGljUoESHbNmogVKhhfSvIHxbYeK/N7DdzYM5/YNkHTVGW2xFr88DU1BjV4KQblZH5tBSab
-	hd9rzRRE6s6XF5f+K28Wcq2nDnC1Cz/poJc611mj3XBtjiSpQkZzh+rONLvLdFPby9Lai7TFXke
-	lZYc7tSplhGRvLTstEwD30wLYrShPrt1HaimklVa3vLV3n7REMaZ+KvpZDM96GA1kaAGQ==
-X-Google-Smtp-Source: AGHT+IEAFQ7eLg5leUSGDjbFiw7W16I4Ceck70tfbHwtYPuN5XQBIq1LCLMzyV25FDVPJfs6H7piw9xt5u/U3Och6pk=
-X-Received: by 2002:ad4:4585:0:b0:880:53e3:3a2 with SMTP id
- 6a1803df08f44-88d820415demr206322816d6.11.1766635489334; Wed, 24 Dec 2025
- 20:04:49 -0800 (PST)
-MIME-Version: 1.0
-References: <20251224094027.65842-1-21cnbao@gmail.com> <aUwcV2HhtdiXXxfJ@casper.infradead.org>
-In-Reply-To: <aUwcV2HhtdiXXxfJ@casper.infradead.org>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 25 Dec 2025 17:04:38 +1300
-X-Gm-Features: AQt7F2rfYhGdFsxGZs3T_CSjHFfq3NpN8zqC1DCPy1Tq7UqBRQRvROTaKOrgerI
-Message-ID: <CAGsJ_4whKLWiw6LNexFPHTFWB1QbSrAwrBtspuc=c8fM2=WnvQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/shmem: fix uninitialized folio in shmem_symlink
-To: Matthew Wilcox <willy@infradead.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	syzbot+178fff6149127421c2cc@syzkaller.appspotmail.com
+	bh=En56k355+h6jvrDLlFr7qoTzHrfLKklZe97f8ari3Rs=;
+	b=T4383hMJYt86rcPepVLrmdkOOwf0C8OVP/ZUBVcGbHTeswyRnly6FJ4lBDF/jGU/DnHuLP
+	0bIT3dp1eTgm25izIBB9JCcG6DoNMA7FG5Je7tr8tMnrIaQKOo146detY1ckPQKfe8fcVW
+	yf62JjlqEOEbUiBSc9RimUrqwlwIfT4=
+ARC-Seal: i=1; a=rsa-sha256; t=1766636127; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ZTAoD8k3e5x54K2r3e6I4xg7TJj+5JxUrAp/MNkDuF7LkUpLGGP9EjBq1sGQxOFiO7DvM3g0dPiKruZk7Wx7UBSev6MRUfdUupmFgAVDncV/wSwp+Fj6g0C4Ha4SCQYmXMCd98ZSjTp7QjTrRuN+AKUsYBKW1MnlSs0PhEJhuzs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1766636127; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=En56k355+h6jvrDLlFr7qoTzHrfLKklZe97f8ari3Rs=; 
+	b=gLg8MdjYhYyvcrjhd9rzBeLAnInKK6bK7uiSKYwPjJdectsuQpu5mSro/t2GLMNBLXNwFjrJuEX42/L7gnDz2QgPxBm7A26x/vq7ToVA6ZQV1LH1T0IU4JLSyHYsWDA2WGRrvv57+1Aav7Mh+rP6/28Y+Ps29tc3tqq4LSL6MBg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=mpiricsoftware.com;
+	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
+	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766636126;
+	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+	bh=En56k355+h6jvrDLlFr7qoTzHrfLKklZe97f8ari3Rs=;
+	b=VtPP2esmCZun/qqTOpz/+Z4su++uOmrG0ldjJNWaO1XcISlU1wLDnr7bgx91f0xd
+	BXTaDXFFP5Kre+FkJXw+3V0BjPRs2RgffLkhPuVCjOZMqRyjXuLAbhly7v/hVfjeoc8
+	x1fE6IJwykqkSrpTNv1n4oPHCznmWs0dXrn+ub4s=
+Received: by mx.zohomail.com with SMTPS id 17666361239511021.7792756869057;
+	Wed, 24 Dec 2025 20:15:23 -0800 (PST)
+Message-ID: <308b7b3c4f6c74c46906e25d6069049c70222ed8.camel@mpiricsoftware.com>
+Subject: Re: [bug report] memory leak of xa_node in collapse_file() when
+ rollbacks
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+To: Jinjiang Tu <tujinjiang@huawei.com>, "David Hildenbrand (Red Hat)"
+ <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Matthew
+ Wilcox <willy@infradead.org>, ziy@nvidia.com, lorenzo.stoakes@oracle.com, 
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev,  linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, shardulsb08@gmail.com
+Date: Thu, 25 Dec 2025 09:45:16 +0530
+In-Reply-To: <a629d3bb-c7e2-41e0-87e0-7a7a6367c1b6@huawei.com>
+References: <86834731-02ba-43ea-9def-8b8ca156ec4a@huawei.com>
+	 <32e4658f-d23b-4bae-9053-acdd5277bb17@kernel.org>
+	 <4b129453-97d1-4da4-9472-21c1634032d0@huawei.com>
+	 <05bbe26e-e71a-4a49-95d2-47373b828145@kernel.org>
+	 <a629d3bb-c7e2-41e0-87e0-7a7a6367c1b6@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2.1 
+MIME-Version: 1.0
+X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 70E8F1C0012
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 1mzx564chtuhf5k3adaxuxqnjgetnqu7
-X-HE-Tag: 1766635490-955873
-X-HE-Meta: U2FsdGVkX1+9NDfqkrPoPF/azad/ZPM8UivBiKjGue0JvrXBBA9PM05FTDl3mkVTDmbuBZl1yClPsFV4bqthXgD/NBFELEffkKATQ9QBSq8rEPsvo/u3bR854VGiKiSdNWlZsN4nn+Jk43KpfuANQY/xgBofhTXHyC73NoViQkhWBUy1UEbDU71C77QhvJs8BRtGGn2N57llGwBhpNjX920wPQfIiq3rxoM3ZBnDjd+tO6hxl/0SbK86zvP2+Yhf4NNtUkXlHm8J2T2o959Bm2da8e6E6lb4TfXnHXfpybhup3XPczjps7eHPGRdwV+5zdjmGRPd3lPu4ZNOMXn1kz51koQOhShPe233vWm3MVvXovr3gOi0eUzKYaImrefeZ6Km4Bu78XnIeWsDbpS85hGWywgbXLwn3GYaHVl+hM2yXdIbfLX0/+SWhcbmhMyk3h+WCDgfy3XNbsEcWdoGufjH8DowNIMEUWOF6oS+uZN6LWWlJAi/i9ts9Cmus0pFYIenq3M2bWPlaF1BJ+GB25Bzdp2BdXCjCShTVsd9iSzoXeRSUUphoosNGbHhh4PGnvzYbM0eSYZftzmCJDF5MyP6IQuvnWJiTJrHBk5/2eUcxMBL/D/7c9AM883QBnksQTtXNJl427MGT41frG6QrReODi3IFWDaOswJz7UdQNFpMQ+OUhzqA9QKq7hJ46z0rmfF0pLzFGWKYfDGR35XzvQzEqeeUMlY4bNEk/5Gcnyj/YPTYXuKNzzD86DkJEQVKagDE7VWKwg3VSEiZJt+qCtrTvh+K+25MwOaQzTf5yFxw3S7EcQNZLU/GFRvUUN+LvDDtlnsRcBP0xUlPk0tmnfBqv1Q1Zp+Uc95i1CXBJYVnOPwUQDw0ZfjXqhrXCUzaatLMBRdM3YkVlplWLebYs5nqydgYAMTeLn41fkGDTpbLHql8I5d/I55joKhclcp80svEP4KHO+akPwIIZg
- fSE57caJ
- /kV47x7Lqwi0cIcl7VTo2pHRsoQeVal8M9Rftx1Ow6MpTCvlOuP1CiiNPDiaspWn2P/SF6Ax8BrijERhAhWz7/XT3uQlDQ8PY+5XNG/2OktiK1Xl6pKptbjTms77X1KQ9cyNi4l5SRHwodCVSDVI3PhdF12jeewPW6Zhfr9ENcvODyxSD748gSXlSxc2wlGmE934Qlx/AKCcsTxpyGV+eAfkC67nSVWgMsVXxGCNYRniBNzCBJrKwws7kIjxr+5ea8yYyyJJk/fZqlkZks0oe5UQSEZEdHy43+6T3KTo4CRLSawui6h7wM1mWbRRD73UXl/p2+2b0By20/2mVpljZEELkkeER1cr/fOXOvAD7keEDfGHbgmL39rdpskIJ4AaqQm2x5y69E5q1H3PedV5OaBQ5DiEd/o8QH100lJ8etLcoqrukH3xQ29fFvNQhffBBVpzT0qrUajXQxBdNf2ZIDSVZXMEvWvocSB1ckdcvZSUsQi6JrKqgAlmY5plyFpCJTFxog1d32N4PcWmFnY1ftJzog2Vwm47fHCCAu3zcAWg6R7LoMW3MV0drMpUhPg9BA6mHfMd9AFGUHKY=
+X-Rspamd-Queue-Id: F2B48100003
+X-Rspamd-Server: rspam10
+X-Stat-Signature: g4yu9d16ujzagyw5qoxirh49zti39ccn
+X-HE-Tag: 1766636142-935969
+X-HE-Meta: U2FsdGVkX1+cpMdLrUmUYUYUsaRamtuD0cSH/7mjb3iarnV3yNT9ccMib/gLjZkUTNCy0NdEmTbhjBp+ZNIZOUji/SLcE7ne99is2RP52nWbK7L/z55aeQdB/leAuIdb8YGK+r6BIyggJ9PThDOrwVIMUzYjWubxZml4mkPFxf7LlCPMCcfZPv7pVT1mxnlzEFrTfYmPTjy7WCeDgIXKc1Ur7XUwCk9s1Bf7rNOkEKVawpjGhggejuPcAyUxvwiT8yVsqdcHIFv7z4ojMV5JW5lntzFe1r6BXQhMJ7nHsiwPkGA2jEeJQOJe3riZcXeukdgrrTTSV8NJnEV+9R63z+3GoZeu4xVQShUaG5QAcFca0kGhx2Vi5ZRJVDTku6puxDf6+KJI0R1uY+lwRwwtkUryulxS5AVjY6egoHmeWN4HrBh94vTWkX1qAqCLDKlu9kr17u+Km/n9G4Wx/ZEnXCMFg62xzFSH5jWObyXrrw+9N3Ld4sWt+lNsl2HZz+Y4CjRXouZm73XdnjV/BJDD5ZFZzdzSsEBoc1/YC1VWHB+meGMwQceOPmHXzSXsyHoV4ePUwwyp9ujST9gADH6RuoL4U1fIkoKMoH1GfgG+/n+5KzvM12N6u0eEKup0sVUBHAYTNXvzYFtj611AihXrZ4ERJBUK4/NRpJPIBR6wR1OVyMRVyHMM0fgI9oY8rENQybbRuDbUi8Yhoijlcg8flu6JcURc32sCzQQVIpc8T+4xsBMFUFXb/jgnlAvcPalMJprMBR8DWesBBawoBEBFi4zddpmn8ooCvbYdfI0wsrxbTFlkeV07TLmUGAHWTo9sJ65VwRodC4ogRdCbBdl0/EICHEYUkqP0Ltkz88uyhQJ5sMchbheIAiSki4AHAlbZrXcE1l6EUgyrDlnHsqY33FjSf+N59ZdRJmFRKr8cGPq8+fphtmXnx/Ql2ytBYkzphveaXiftYR5FY2gmrjA
+ 3YEr+E0Q
+ 9Hj8wdd6mnF1585U7kFL8mRDMYflZ4nO99Xox3tshK+pK7yDAf1ES3P99P/EjS2SqvNqqY+KEPeG2eTgbzD8dqY+hLJIig8Em5LHf/y1FlntfcASBYF9yp5YUNbtcPjGeSDcLai04j+vC1mYXWx6dP+PYScLpEU5ks4OFLN9AnDjFkCnt2h1dPTczgv3a+j/+zNE6+MTnEfF8PLrYGSca+u04Wdm8++HjtSYlZs3lE0++SggEDExmT6XpRwzmD09DY6RIXR2paTIyDbG4iOyy8CckEBhOAB/vfzk0w4OS7PLKk0EhRdO0GL1JwgwNVJxpz4dMSLasTb51PTc5skqFyLhrjwN+qBQy3W3vAaEXzLWDUO5J3zuetfUox9M8mXR3LF0ulIn1zWxM2KdU5pbBQD2X6yBEE/FaYrNtsfVLB175af/dOBjUPgDIOOFKfmh2euEIYHJ3xh0Wz3i7yXUmkw+uhe9+dj0thllQYU4RF3t/WLGfx/w35hkPj9OhE4B6Z7g6HosPa5N072LRiKfytcoRQFJxE/kLnN68XeNt2vGu+zSNv2i2nfbpyJ3Qe+YbpSfA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,65 +110,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 25, 2025 at 6:01=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
-> wrote:
->
-> On Wed, Dec 24, 2025 at 10:40:27PM +1300, Barry Song wrote:
-> > From: Barry Song <baohua@kernel.org>
-> >
-> > Uninitialized folio allocated in shmem_symlink() may be accessed
-> > during swap-out, causing KMSAN BUG:
->
-> This would be an unfortunate way to fix it.  The vast majority of
-> symlinks are short, and we'll never access past the \0 in normal
-> operation, so we'll be dirtying a lot of cachelines essentially to (1)
-> shut up an automated tool and (2) optimise a corner case.
->
-> How about this instead which delays zeroing to swapout?
+On Thu, 2025-12-18 at 21:11 +0800, Jinjiang Tu wrote:
+>=20
+> =E5=9C=A8 2025/12/18 20:49, David Hildenbrand (Red Hat) =E5=86=99=E9=81=
+=93:
+> =C2=A0
+> > >=20
+> >=20
+> > =C2=A0Thanks for checking. I thought that was also discussed as part of
+> > the other fix.=20
+> > =C2=A0
+> > =C2=A0See [2] where we have=20
+> > =C2=A0
+> > =C2=A0"Note: This fixes the leak of pre-allocated nodes. A separate fix
+> > will=20
+> > =C2=A0be needed to clean up empty nodes that were inserted into the tre=
+e
+> > by=20
+> > =C2=A0xas_create_range() but never populated."=20
+> > =C2=A0
+> > =C2=A0Is that the issue you are describing? (sounds like it, but I only
+> > skimmed over the details).=20
+> > =C2=A0
+> > =C2=A0CCing Shardul.=C2=A0
+> Yes, the same issue. As I descirbed in the first email:
+> "
+> At first, I tried to destory the empty nodes when collapse_file()
+> goes to rollback path. However,
+> collapse_file() only holds xarray lock and may release the lock, so
+> we couldn't prevent concurrent
+> call of collapse_file(), so the deleted empty nodes may be needed by
+> other collapse_file() calls.=20
+> "
 
-Matthew, thank you very much for your review, even during Christmas.
-I would like to wish you a happy holiday!
+Hi David, Jinjiang,
 
-I am not quite sure, as shm symlinks do not seem very common. Since
-allocating a folio requires a symname longer than 128 bytes (where
-128 =3D=3D SHORT_SYMLINK_LEN), such cases appear even rarer.
+As Jinjiang mentioned, this appears to address what I had originally
+referred to in the "Note:" in [1].
 
-BTW, do we need to migrate the owner_2 flag in folio_migrate_flags()?
-If so, I am not quite sure it is worth changing the hotpath to
-accommodate this.
+Just to clarify the context of the "Note:", that was based on my
+assumption at the time that such empty nodes would be considered leaks.
+After Dev=E2=80=99s feedback in [2]:
+"No "fix" is needed in this case, the empty nodes are there in the tree
+and there is no leak."
 
->
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index ec6c01378e9d..f3b3be1b50fe 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1636,6 +1636,13 @@ int shmem_writeout(struct folio *folio, struct swa=
-p_iocb **plug,
->                 folio_mark_uptodate(folio);
->         }
->
-> +       /* Zero out symlink tails to help with compression */
-> +       if (folio_test_owner_2(folio)) {
-> +               struct inode *inode =3D folio->mapping->host;
-> +               folio_zero_segment(folio, inode->i_size, folio_size(folio=
-));
-> +               folio_clear_owner_2(folio);
-> +       }
-> +
->         if (!folio_alloc_swap(folio)) {
->                 bool first_swapped =3D shmem_recalc_inode(inode, 0, nr_pa=
-ges);
->                 int error;
-> @@ -4133,6 +4140,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, s=
-truct inode *dir,
->                 memcpy(folio_address(folio), symname, len);
->                 folio_mark_uptodate(folio);
->                 folio_mark_dirty(folio);
-> +               folio_set_owner_2(folio);
->                 folio_unlock(folio);
->                 folio_put(folio);
->         }
+and looking at the older discussion in [3]:
+"There's nothing to free; if a node is allocated, then it's stored in
+the tree where it can later be found and reused. "
 
-Thanks
-Barry
+my updated understanding is that there is no leak in this case- the
+nodes remain valid and reusable, and therefore do not require a
+separate fix.
+
+David could you correct me if I am mistaken?
+
+[1]
+https://lore.kernel.org/linux-mm/20251123132727.3262731-1-shardul.b@mpirics=
+oftware.com/
+
+[2]
+https://lore.kernel.org/linux-mm/57cbf887-d181-418b-a6c7-9f3eff5d632a@arm.c=
+om/
+
+[3]
+https://lore.kernel.org/all/Ys1r06szkVi3QEai@casper.infradead.org/
+
+Thanks,
+Shardul
 
