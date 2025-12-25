@@ -4,107 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC31E784BB
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 03:45:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2A5CD68BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 04:04:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED7456B0088; Wed, 24 Dec 2025 22:45:29 -0500 (EST)
+	id DE5586B0088; Wed, 24 Dec 2025 23:04:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E86BF6B0089; Wed, 24 Dec 2025 22:45:29 -0500 (EST)
+	id D93546B0089; Wed, 24 Dec 2025 23:04:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8A356B008A; Wed, 24 Dec 2025 22:45:29 -0500 (EST)
+	id C74946B008A; Wed, 24 Dec 2025 23:04:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C655D6B0088
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 22:45:29 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 30D28138C7A
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 03:45:29 +0000 (UTC)
-X-FDA: 84256603578.21.608EE40
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 84133100002
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 03:45:23 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	spf=pass (imf05.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B68B46B0088
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 23:04:52 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 452AD137950
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 04:04:52 +0000 (UTC)
+X-FDA: 84256652424.22.C495EEA
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 70E8F1C0012
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 04:04:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Qzy9Jz7E;
+	spf=pass (imf20.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766635490; a=rsa-sha256;
+	cv=none;
+	b=v32y/ViK4WC/Mb2LiwfXkwa8mLPNzTX4cxWRycJ6/iDtf9J/hcrUfRZLPkOBnc3t6sWxZj
+	QDDnGkWFT7gwkwsi/Qr4nAi9sFc9J1faOzcos3ChsSbhw8oh4640+eZ1TxBgyy57rHlDQS
+	VfMfUhpFkaTsT/P9eergq2Rwj3wpjdM=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Qzy9Jz7E;
+	spf=pass (imf20.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766634327;
+	s=arc-20220608; t=1766635490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I3LGe94tFyDw5TBs96I9+rE74L0gcXmr2AirwOtZN0w=;
-	b=wIon3mcP221QfY1UftmCNXsWfS3ua0tRiGBD5Iu0Vf6aFsWSGU+aIc9IwzbtLW6SK8JZUv
-	eJns/6/2ADfbVX/VLnIwqUiKCUuQaoE41/hzKk8QIv5/I72qNB9pCihJIM8zNl8QQ07ewD
-	bXEehGEUP1cOM+CvJt5irjao1GXGKtA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766634327; a=rsa-sha256;
-	cv=none;
-	b=vl/EvWAGwJH1Pzq6Fg1uAUYjTk+TmbxXh22vfL+y/jcLL8k2f2X/CL+BY4Rj+r/VUCsnFN
-	mO4yXZGjESktxpCYytvSyHN/WMbMVOYl+X1Zfrh1OJlugA9ZVr5ge4Iz/1NjpyxtpDfwGp
-	1k+VJtfIpAvjR1LCV9sePuSYIrqS3qk=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dcF4T6GRhzKHM00
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 11:44:57 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id A379E4057D
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 11:45:18 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgBXBvdNs0xpIrWSBQ--.52398S2;
-	Thu, 25 Dec 2025 11:45:18 +0800 (CST)
-Message-ID: <9c0be55d-0b02-4f39-a871-3ce495e32a87@huaweicloud.com>
-Date: Thu, 25 Dec 2025 11:45:16 +0800
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Kl00HqMx4VaazQgD9Bff2Tl2HFE7SDfvTomj0ahbP0k=;
+	b=em2FdXaEJ/dOGrUNh0MHKZP2+fwYJOEmSOS1wbVtxVgvSVfL0Y3CWdSOGsUmWOTHTWn34b
+	h8mOzG3qoW2T361jdl0zh03MKuyYwUbxjkHVOLIq1Mf0qqwdEYvqLY9dlHmOt926rwYlfR
+	Z8hnSZCw2z3a4CVrvl6OC66q0kcCVA4=
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8888a444300so68700556d6.1
+        for <linux-mm@kvack.org>; Wed, 24 Dec 2025 20:04:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766635489; x=1767240289; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kl00HqMx4VaazQgD9Bff2Tl2HFE7SDfvTomj0ahbP0k=;
+        b=Qzy9Jz7Ex5T5BI370n9QOMhyv/7Wty9O/maMJJBFubMdvUV8vER4NMqManc121Aqtx
+         986bdlflhQTiwKXpGODt7ZTpS4t9K7CFTag5+X+QJOUG+pFMcsRDo0NRwLyYxonPaiZH
+         HaqsNI4dqAGKIMZD2jaP+GQOcvcwA5A8PdT+HsmWQWubpgQZdpcf+IVLgKGGZuEqEjII
+         LobPe86OB4jF6ZYgBqkNIYrh7ydeQT4dSiUytkfdMsOydSC8eR4gU3FQumDzhQxW48BH
+         3Gq40bKMY3zX4rx/VqJgm2btU3cPox5esc/nIe9GkAiXDfxE8YCLV31N2KY5Hb3baXh+
+         3HBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766635489; x=1767240289;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Kl00HqMx4VaazQgD9Bff2Tl2HFE7SDfvTomj0ahbP0k=;
+        b=YLlAWBC8SHCfGHeI6GSgRHJMrvjMy87s5NyBF1hnfXN+4x31lWMIo2TlIJfRT35iYG
+         0SrTDymYYwZ1tKHh0rZps0wG4NoW2+2F+gSiPCVafH0ZJUGOJJcP5SWCdE+MORc9U+0k
+         +ts7xEn6ZEw4l/t4Piwmuw/JLb0nSp0ytMKbM54lE4cos+mcjhYChFyF5jDPdrvSAYFF
+         EzeeB6Y5zem8/2HVLOUCprUwe4+grrUsc/wv1lNy0Aq4QdYoubgZatv81jEssjednoFL
+         +ggjgWoJJ9DD3ujCu/UoUMzFtIm9aIaFGZ2Ml6Oh5WCOwXc4uVvij3yC6bGYJ3xHmZDU
+         gQCg==
+X-Forwarded-Encrypted: i=1; AJvYcCVCBCLLqHESEAotIHIsV5EfrzUTiRiBYfQkkZ6Y6EPAs6oM806oFe0d/Geq2eKFNtSw5Bk20bZybw==@kvack.org
+X-Gm-Message-State: AOJu0YxpHtd8RhnU0Esxu3qGw8PAynZgQm0BPP3/Cyx+7+BRjEZUBm9h
+	JEVAFsLhus540q1DtwfIlTEBhh/KubHr8nvGQErh8SW524c+bkrz5EOlIo8GrsTDnP3VDgzmu9m
+	pdmF7X1zGiJmuItuf5ipeodufxXOT1FM=
+X-Gm-Gg: AY/fxX4sKTl9y8MEdmxxMBRfzBGe3mWeXLSM0CVLSQafhLb9qGimazZ21KBnHOZr3pD
+	iLH9gGljUoESHbNmogVKhhfSvIHxbYeK/N7DdzYM5/YNkHTVGW2xFr88DU1BjV4KQblZH5tBSab
+	hd9rzRRE6s6XF5f+K28Wcq2nDnC1Cz/poJc611mj3XBtjiSpQkZzh+rONLvLdFPby9Lai7TFXke
+	lZYc7tSplhGRvLTstEwD30wLYrShPrt1HaimklVa3vLV3n7REMaZ+KvpZDM96GA1kaAGQ==
+X-Google-Smtp-Source: AGHT+IEAFQ7eLg5leUSGDjbFiw7W16I4Ceck70tfbHwtYPuN5XQBIq1LCLMzyV25FDVPJfs6H7piw9xt5u/U3Och6pk=
+X-Received: by 2002:ad4:4585:0:b0:880:53e3:3a2 with SMTP id
+ 6a1803df08f44-88d820415demr206322816d6.11.1766635489334; Wed, 24 Dec 2025
+ 20:04:49 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/28] mm: vmscan: prepare for the refactoring the
- move_folios_to_lru()
-To: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
- mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, mkoutny@suse.com, akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <4a7ca63e3d872b7e4d117cf4e2696486772facb6.1765956025.git.zhengqi.arch@bytedance.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <4a7ca63e3d872b7e4d117cf4e2696486772facb6.1765956025.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgBXBvdNs0xpIrWSBQ--.52398S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxGw45tF43Ar47GFy5ur43GFg_yoW5CFWfpa
-	nrWryakr4rJw4agrZrWw4DW343Ga4DKFW3trW7uF4ft3WfWr13K3WYkr1YgrW3J348Zr13
-	ZwnIgrn7Zay0qaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
-	s2-5UUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Stat-Signature: r9eky7z4cxp13ttgitmidr3qopawq47q
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 84133100002
+References: <20251224094027.65842-1-21cnbao@gmail.com> <aUwcV2HhtdiXXxfJ@casper.infradead.org>
+In-Reply-To: <aUwcV2HhtdiXXxfJ@casper.infradead.org>
+From: Barry Song <21cnbao@gmail.com>
+Date: Thu, 25 Dec 2025 17:04:38 +1300
+X-Gm-Features: AQt7F2rfYhGdFsxGZs3T_CSjHFfq3NpN8zqC1DCPy1Tq7UqBRQRvROTaKOrgerI
+Message-ID: <CAGsJ_4whKLWiw6LNexFPHTFWB1QbSrAwrBtspuc=c8fM2=WnvQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/shmem: fix uninitialized folio in shmem_symlink
+To: Matthew Wilcox <willy@infradead.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	syzbot+178fff6149127421c2cc@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1766634323-685978
-X-HE-Meta: U2FsdGVkX19YNT5yk3ZqHdIJaSYh0fPdLPV7hgHBYV9ZHKyNev8AqS00ePTX+uOkroF1JiUFKyW1wupO2/2joJ7gqJjLwSXwjdOvfN6KPKKaf1Tqf+6Ea9fHOFYnpEzWKRLbY2o4g6rkt+il8jbb9dA6n1UbH38Rp+kCL6GziRjofmI5EaVaXoEblagX7uku/2bVSkd1TpkB9ZUjAJ7tK+zV/S2ga8kGc9s45n+TjiJiGoT4cOajE8EvH1FHms6JDetw50WlbCDv5lBhSjW8g25RcstnZDNE98cxgU+1crzonb7w3ZZUgxPYV2XSJByFmsXm1y7YgM5vIZSGdO7Jz6IkozR0r94xqPTlSlD7JDfHPMwuqJN0KosGyGBmytYgFqM2DL7I+TrC7emg1wnhi/LA4txUIHPjWxl0awoz5oBramcH0sGusWjGpWGnUshPK7mUOKbSBAIahEPT5X+UMPRj7VDq2X2hRM8rJlQYSXMf04iUTuznkG2ItoARzbmu0rZtacBTUMN1sb5eglhHK9qWPyFmzTvRkgkEdzBLASZnxCCmiL76PFK2MwsMqJhtppYmOB2ZyDa2WwrWkhKN3fykegtA7ccZowLsUTfLTB6KhZMzp+9+zmO6TMaUlWSkgIksEggLs1JxHCRax/78gr7/um06BAnSwPbSqfX59MVLFcwDgGApuIHLRqqIvDQA7ZB1vmNPl6OkAz+82HLGsNfLCPVSpKO+s2yPQieWwcaVIlQf4glhLR68O7yXaHxoZIbf+e1JcshitY9RHstc/yUaKFlEljyAzp+P4tedEq/QVB/RWd8A6rUnC+PLDCTv4MaDhNle2nVo++ZsXMRwkbqNZfhNU7et+WIJo4a+sxgs9sO2OvDfppsqCSnnPy+8hU3c2O2XTVFNKVZb8KUW6oNUjJgQDiEliJ7vjBjIBh16F3ekAMegMKxhq12xaBa7W7tKPOfzxqZzkfVav8h
- AY2r75mo
- gtndWoctCzpr+Shaxlhr9KwkRVDXpzXuvQIdFArC/3hq2izKtQsCCgi0jON9JZ4vTBGLzKvJRzalZAB4Zgj+i9xi8ln8djgVt6wTDSEVAUaMvrWGH8LmI/VyWFSv0xtu852ebfy8aiKyJRpU7w4bzO6EUlCwT57kaEa+lMPbxIBDg+5EP5eg/DREtwYwTfxU1RIQKcovggSQg5/N89WM3RG4rNw==
+X-Rspamd-Queue-Id: 70E8F1C0012
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 1mzx564chtuhf5k3adaxuxqnjgetnqu7
+X-HE-Tag: 1766635490-955873
+X-HE-Meta: U2FsdGVkX1+9NDfqkrPoPF/azad/ZPM8UivBiKjGue0JvrXBBA9PM05FTDl3mkVTDmbuBZl1yClPsFV4bqthXgD/NBFELEffkKATQ9QBSq8rEPsvo/u3bR854VGiKiSdNWlZsN4nn+Jk43KpfuANQY/xgBofhTXHyC73NoViQkhWBUy1UEbDU71C77QhvJs8BRtGGn2N57llGwBhpNjX920wPQfIiq3rxoM3ZBnDjd+tO6hxl/0SbK86zvP2+Yhf4NNtUkXlHm8J2T2o959Bm2da8e6E6lb4TfXnHXfpybhup3XPczjps7eHPGRdwV+5zdjmGRPd3lPu4ZNOMXn1kz51koQOhShPe233vWm3MVvXovr3gOi0eUzKYaImrefeZ6Km4Bu78XnIeWsDbpS85hGWywgbXLwn3GYaHVl+hM2yXdIbfLX0/+SWhcbmhMyk3h+WCDgfy3XNbsEcWdoGufjH8DowNIMEUWOF6oS+uZN6LWWlJAi/i9ts9Cmus0pFYIenq3M2bWPlaF1BJ+GB25Bzdp2BdXCjCShTVsd9iSzoXeRSUUphoosNGbHhh4PGnvzYbM0eSYZftzmCJDF5MyP6IQuvnWJiTJrHBk5/2eUcxMBL/D/7c9AM883QBnksQTtXNJl427MGT41frG6QrReODi3IFWDaOswJz7UdQNFpMQ+OUhzqA9QKq7hJ46z0rmfF0pLzFGWKYfDGR35XzvQzEqeeUMlY4bNEk/5Gcnyj/YPTYXuKNzzD86DkJEQVKagDE7VWKwg3VSEiZJt+qCtrTvh+K+25MwOaQzTf5yFxw3S7EcQNZLU/GFRvUUN+LvDDtlnsRcBP0xUlPk0tmnfBqv1Q1Zp+Uc95i1CXBJYVnOPwUQDw0ZfjXqhrXCUzaatLMBRdM3YkVlplWLebYs5nqydgYAMTeLn41fkGDTpbLHql8I5d/I55joKhclcp80svEP4KHO+akPwIIZg
+ fSE57caJ
+ /kV47x7Lqwi0cIcl7VTo2pHRsoQeVal8M9Rftx1Ow6MpTCvlOuP1CiiNPDiaspWn2P/SF6Ax8BrijERhAhWz7/XT3uQlDQ8PY+5XNG/2OktiK1Xl6pKptbjTms77X1KQ9cyNi4l5SRHwodCVSDVI3PhdF12jeewPW6Zhfr9ENcvODyxSD748gSXlSxc2wlGmE934Qlx/AKCcsTxpyGV+eAfkC67nSVWgMsVXxGCNYRniBNzCBJrKwws7kIjxr+5ea8yYyyJJk/fZqlkZks0oe5UQSEZEdHy43+6T3KTo4CRLSawui6h7wM1mWbRRD73UXl/p2+2b0By20/2mVpljZEELkkeER1cr/fOXOvAD7keEDfGHbgmL39rdpskIJ4AaqQm2x5y69E5q1H3PedV5OaBQ5DiEd/o8QH100lJ8etLcoqrukH3xQ29fFvNQhffBBVpzT0qrUajXQxBdNf2ZIDSVZXMEvWvocSB1ckdcvZSUsQi6JrKqgAlmY5plyFpCJTFxog1d32N4PcWmFnY1ftJzog2Vwm47fHCCAu3zcAWg6R7LoMW3MV0drMpUhPg9BA6mHfMd9AFGUHKY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,82 +118,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Dec 25, 2025 at 6:01=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
+> wrote:
+>
+> On Wed, Dec 24, 2025 at 10:40:27PM +1300, Barry Song wrote:
+> > From: Barry Song <baohua@kernel.org>
+> >
+> > Uninitialized folio allocated in shmem_symlink() may be accessed
+> > during swap-out, causing KMSAN BUG:
+>
+> This would be an unfortunate way to fix it.  The vast majority of
+> symlinks are short, and we'll never access past the \0 in normal
+> operation, so we'll be dirtying a lot of cachelines essentially to (1)
+> shut up an automated tool and (2) optimise a corner case.
+>
+> How about this instead which delays zeroing to swapout?
 
+Matthew, thank you very much for your review, even during Christmas.
+I would like to wish you a happy holiday!
 
-On 2025/12/17 15:27, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> After refactoring the move_folios_to_lru(), its caller no longer needs to
-> hold the lruvec lock, the disabling IRQ is only for __count_vm_events()
-> and __mod_node_page_state().
-> 
+I am not quite sure, as shm symlinks do not seem very common. Since
+allocating a folio requires a symname longer than 128 bytes (where
+128 =3D=3D SHORT_SYMLINK_LEN), such cases appear even rarer.
 
-nit:
-For shrink_inactive_list(), shrink_active_list() and evict_folios(), IRQ disabling is only needed
-for __count_vm_events() and __mod_node_page_state().
+BTW, do we need to migrate the owner_2 flag in folio_migrate_flags()?
+If so, I am not quite sure it is worth changing the hotpath to
+accommodate this.
 
-I think it can be clearer.
+>
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index ec6c01378e9d..f3b3be1b50fe 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1636,6 +1636,13 @@ int shmem_writeout(struct folio *folio, struct swa=
+p_iocb **plug,
+>                 folio_mark_uptodate(folio);
+>         }
+>
+> +       /* Zero out symlink tails to help with compression */
+> +       if (folio_test_owner_2(folio)) {
+> +               struct inode *inode =3D folio->mapping->host;
+> +               folio_zero_segment(folio, inode->i_size, folio_size(folio=
+));
+> +               folio_clear_owner_2(folio);
+> +       }
+> +
+>         if (!folio_alloc_swap(folio)) {
+>                 bool first_swapped =3D shmem_recalc_inode(inode, 0, nr_pa=
+ges);
+>                 int error;
+> @@ -4133,6 +4140,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, s=
+truct inode *dir,
+>                 memcpy(folio_address(folio), symname, len);
+>                 folio_mark_uptodate(folio);
+>                 folio_mark_dirty(folio);
+> +               folio_set_owner_2(folio);
+>                 folio_unlock(folio);
+>                 folio_put(folio);
+>         }
 
-> On the PREEMPT_RT kernel, the local_irq_disable() cannot be used. To
-> avoid using local_irq_disable() and reduce the critical section of
-> disabling IRQ, make all callers of move_folios_to_lru() use IRQ-safed
-> count_vm_events() and mod_node_page_state().
-> 
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> ---
->  mm/vmscan.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 28d9b3af47130..49e5661746213 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -2021,12 +2021,12 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
->  
->  	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
->  					stat.nr_demoted);
-> -	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
-> +	mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
->  	item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
->  	if (!cgroup_reclaim(sc))
-> -		__count_vm_events(item, nr_reclaimed);
-> +		count_vm_events(item, nr_reclaimed);
->  	count_memcg_events(lruvec_memcg(lruvec), item, nr_reclaimed);
-> -	__count_vm_events(PGSTEAL_ANON + file, nr_reclaimed);
-> +	count_vm_events(PGSTEAL_ANON + file, nr_reclaimed);
->  
->  	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
->  					nr_scanned - nr_reclaimed);
-> @@ -2171,10 +2171,10 @@ static void shrink_active_list(unsigned long nr_to_scan,
->  	nr_activate = move_folios_to_lru(lruvec, &l_active);
->  	nr_deactivate = move_folios_to_lru(lruvec, &l_inactive);
->  
-> -	__count_vm_events(PGDEACTIVATE, nr_deactivate);
-> +	count_vm_events(PGDEACTIVATE, nr_deactivate);
->  	count_memcg_events(lruvec_memcg(lruvec), PGDEACTIVATE, nr_deactivate);
->  
-> -	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
-> +	mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
->  
->  	lru_note_cost_unlock_irq(lruvec, file, 0, nr_rotated);
->  	trace_mm_vmscan_lru_shrink_active(pgdat->node_id, nr_taken, nr_activate,
-> @@ -4751,9 +4751,9 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->  
->  	item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
->  	if (!cgroup_reclaim(sc))
-> -		__count_vm_events(item, reclaimed);
-> +		count_vm_events(item, reclaimed);
->  	count_memcg_events(memcg, item, reclaimed);
-> -	__count_vm_events(PGSTEAL_ANON + type, reclaimed);
-> +	count_vm_events(PGSTEAL_ANON + type, reclaimed);
->  
->  	spin_unlock_irq(&lruvec->lru_lock);
->  
-
-Reviewed-by: Chen Ridong <chenridong@huawei.com>
-
--- 
-Best regards,
-Ridong
-
+Thanks
+Barry
 
