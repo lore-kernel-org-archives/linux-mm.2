@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80257E78498
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 00:32:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEC82E776FC
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 01:01:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8E156B0088; Wed, 24 Dec 2025 19:32:11 -0500 (EST)
+	id 2D59E6B0088; Wed, 24 Dec 2025 20:01:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3BB16B0089; Wed, 24 Dec 2025 19:32:11 -0500 (EST)
+	id 29D4D6B0089; Wed, 24 Dec 2025 20:01:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A68716B008A; Wed, 24 Dec 2025 19:32:11 -0500 (EST)
+	id 188D86B008A; Wed, 24 Dec 2025 20:01:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 975D66B0088
-	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 19:32:11 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36B008B5A4
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 00:32:11 +0000 (UTC)
-X-FDA: 84256116462.13.AC9B5A1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 99E33160004
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 00:32:09 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oTqV4BMT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766622729; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0788B6B0088
+	for <linux-mm@kvack.org>; Wed, 24 Dec 2025 20:01:56 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5407260615
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 01:01:55 +0000 (UTC)
+X-FDA: 84256191390.27.C3E79CC
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4ED1180007
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 01:01:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=tMLkseGI;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766624513; a=rsa-sha256;
 	cv=none;
-	b=iXAa2o1ilkhiB65f33mwZiMGAmyzyaqzAnGmd6RXYJwnlEgokkGS1ZLdonNxLGLtoaAS1y
-	+O3v59MHnlwgDag6H2ynnsI0uOyX0UhfQWIOIx1cBcM18x2MBUYae4GtiXzfX6IKOOKILG
-	WXb2R6TbBR7MBDzm8ioUyt7ZCZj17Qs=
+	b=BwDAYQNm6oPRbmVdEjKecUntARXv8zGG8/XpJRYYi+EOrhFyBiB+WI7YbhmfzXnIGP9CFW
+	Nlr4gFBGHXUmkGLS06lyBy1NcaJKsRJV6qqRgVMqu9vRUrrCXQQoPvdYufGkMYptrKo6HX
+	5VtTsE+iuLnqm/a96y4dMguMmrQ0A1Q=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oTqV4BMT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=tMLkseGI;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766622729;
+	s=arc-20220608; t=1766624513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mqnCvAApKbHjDZGFAj0/XZl1T5t1pTAnTJ6VDKZw3YA=;
-	b=gfKjOp8DPipZyDEDJuGX1sP6hbaH5+57U9JW61ivYzX7Q/a89Yw/mORLrZCtnvlsIxHIkS
-	fTwuBHqgbvFSrKMlBCtq5ZhlyWyoKBoXOkaaDr6ZwQuPD3Q1pxTxxPbONEk5b6KEG3pLtV
-	+j3vU7DKUVR87EugDFCywz3c6u8ikSo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C574560010;
-	Thu, 25 Dec 2025 00:32:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C7FC4CEF7;
-	Thu, 25 Dec 2025 00:32:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766622728;
-	bh=DMNb9i/SFEwVpqNQgZUPgGw3Co+PDnxW1tSpBKvAxVI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTqV4BMT01S/DYK+zeEapEb9gaRIR94SZfxKYI7ZrjWnf+IJWS1z/gJVy4atUkm3E
-	 8jZejl6IjdA7Kz/JAiY3+ZBocgQMwGS95L4yKdcftKz226koQIDikRFLylYPuQjboW
-	 Ngw7C7V5UR9k5/1deF5UOnX3Ap7KR03AMKbJFLyIsO2qV/1wOlN5eaVVphYqhQb1gC
-	 zTaL6WCp9rBsoNBVS3uhv1TZ/owf8Nzxw7BpFtZv2nW2QI7naHG1lWDbHEGnnEYt9W
-	 EBptmq+szFRYZOga39JOgc/EUOmBmagEHrEbVpDC3+3A+1tO/UBVZha9CJZ5WeIs5u
-	 KJfbAlaQ1CCrg==
-From: SeongJae Park <sj@kernel.org>
-To: JaeJoon Jung <rgbi3307@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	rgbi3307@nate.com
-Subject: Re: [PATCH] mm/damon/sysfs: preventing duplicated list_add_tail() at the damon_call()
-Date: Wed, 24 Dec 2025 16:32:04 -0800
-Message-ID: <20251225003205.14522-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251224094401.20384-1-rgbi3307@gmail.com>
-References: 
+	bh=2fy7EXMdCyEH27NzJMvO2tdqkUATW53yXrUXnni0WAs=;
+	b=k/xssVFHukY+gu+15w/3k7st+7+WcKPihDIVL27k9phg+5m5d4r8WQzJIC6VvjSdNVv9dy
+	ykpcK4IOxpVi5E8R+Fn5v41Tu7hOslpxgEfh2UCPhSqf3OTMFq7pEp5gqXTOhL8NNgYuDM
+	xLV4Iz9f3E1C4SJYNr/vzfilUDVfeGg=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1766624509; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=2fy7EXMdCyEH27NzJMvO2tdqkUATW53yXrUXnni0WAs=;
+	b=tMLkseGIapPUs6MMj3V/MMkcUxYOIwiypM8y1icvH/kbDszEtwkkcS6X3on18Q5bE5+DLYWdIiFhxZKZJ7N0QObPwE5AEFzaC5CHnjM0WccDJkwCGwVFSSDusmPvG5m8cxQSOnh/SLT2bfA6ZdcPtI+HXr62x1nD0fOGg8/+to4=
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wvci210_1766624507 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 25 Dec 2025 09:01:48 +0800
+Message-ID: <43b6ef51-c88f-4b0c-b512-c7195afdd31b@linux.alibaba.com>
+Date: Thu, 25 Dec 2025 09:01:47 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 99E33160004
-X-Stat-Signature: 7i5utzkfhbg3puxbygp1rb9kaebkfrd1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/5] mm: rmap: support batched checks of the references
+ for large folios
+To: Ryan Roberts <ryan.roberts@arm.com>, akpm@linux-foundation.org,
+ david@kernel.org, catalin.marinas@arm.com, will@kernel.org
+Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1766455377.git.baolin.wang@linux.alibaba.com>
+ <e9ff5fa689740f3b6f3ed1c1ec0e3244f20c1f06.1766455378.git.baolin.wang@linux.alibaba.com>
+ <ec49f0fe-9df8-4762-b315-240cbb1ed3ce@arm.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <ec49f0fe-9df8-4762-b315-240cbb1ed3ce@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1766622729-798706
-X-HE-Meta: U2FsdGVkX18yjAa6d0+bMXmmAwdiJm/0Qp3QBiXVuz6CU4CE0GN7FlWAnqcbKWp+Dex/Rnm9U3BNDpNpno4pH9f8bbNRMj7+ANriGMBoOR++FapNKEGC/1O+f6oajOl16e+ojGLJFdUAHXQ9PZdd9IChJtMcmcfJX5HSDa87jFl0SuaraRJ2aMOczMHKyZA7X6t9NgZR/dtv1ytNXec0PSy//qSxhaCllmuJnJYrjxSh9IXuObkEunscpg/JQE+zkm3i77cFVzzNoGP09eDlvUjRZhcNKlB+evFH31xa7x2CCO0IUwZ+RcQ5/sMmudvgYjSx99wlfKDAyww+9GqPFKEGvi1xJTcOtqzdbI4R88IDLwl5qVw/1aMTQvqY1NcMhaaYs80OhRG6BRhs50Jl8kVgo0qSiXX5m1QfCTE9KWXmQMHfbLr6TKTf+HqvMS5h9nh6J6kyGtE2Ta/5H6UNC56V1U0fSjmm8KLSK+qnfi89prnxU3+/mIP7EWUiewRfLVooip+pvcW5E0QElA8CJBYoljGtvk3DhgAJnMCpdGP0kXy4PaFP8W6pwy+1CtA7rIiQo1PGkPV7OrbMPwKPxSbH32wmwnPAR6/enNxVmHnvuY58bV7S/1Gqq/movmWKLA93x9oNfz8hBJ2ueXBAHVmo8GwTw/RS6SeabMZrYg4AfMzhOvzgHMvQcCdQL1vVTyi/9T1eu0TxJcFB0cLvmf1o8XqZ0Wh/ato1X2ruBhmErlt4DeeH+jjVdMGW7f2Dm1WpI43cbi37S3Vx27TKjRedX3vB16lwGuzz2pDNMRF9p/7ys+05i8CS86aa4Dt8/6PaceQ+LWmjrQxWenYAgizCmk0ouKKKrwmHfebDQwrgIVuyqfCJQbge+OSMYFMf7ij4TiD1UIxJ5Q0JZLtfdr6teX8rIwvAC0mBtcItkY2Ox5ij7WgpBjFF39KsJpiBT4vl9TT1JyAaAX7J/nz
- 2mD1fTxU
- FSYIy6exFTn4o4xQz7a06KlL3VkfrmwLs1t4pHuxtCGBjaGwFiMlBgDQI0j7+O8U68xuDZOYL7VECrHBqsMQOLfeb7uwD6C4d+uGKp2oHCoQtu51RdP6NVpgw89qvTCaK2hNNZ8GpZRHSHd4pq5Iu3xpS2TlrK17egmwIxTmtkGCiHM5C51fSBGpR8rCFj6q9uiPS1Yh1/1diHGAO7ggGaaUTaOtcyC7hRnU+uukH4z0Hdcm2jvN6wqzy8QlC8gTCrl90BBe9gWpAzTSWA6gkDSH+fA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4ED1180007
+X-Stat-Signature: o747atqhfqx448yujyr8bq6weryowxp4
+X-HE-Tag: 1766624511-248301
+X-HE-Meta: U2FsdGVkX1+L9z4VrFSIyKtQWzUNoDmTYKs4kSst3YUDN8u2PYMG1htQK60dYpxglgfMdzSvKeFw1qaCeMxO2IrM7e4oYawlnxiVx8/Qp8sGjnbc8ICa89CxPGp36AREKAdWaK4KRZmb3QvmXDDvBCb810xxWiPra9CUcF6co9nfUvqj1Lw2oJKAJnHgMJ/HD5DTw3YGNUqhfJ7MrSntIz7Hc/eAciq5RGTOf/VReM+kl1+yQpTI2DI4FV2eO3XKyWUvqK2uNUnJueYktC8k2EuDi1/tCLYbi2hBOuqafw3F7nsUMmqhgOaidPE6qQiscuEk7WqkhaFqrmUXVrqzCLE9dscSfEyG1P/3E1dDZdABYUs/ZtvgYIHRmQTVCLsyFGpJFOOK9LPHh/glZjb4jmg/7e6gKczSEZkQggaPm6S7VsjM1IP0JNoT5TjCJgaZGRUyVbMI0uPamaeO/XizNNvnXUzFJaUhBfKHbh8Sk7XNqY6HLowumy9AF51TIGSeuRZ7X1nqgFuuUfLIxFwjfHiEAwPn9kitxPl6e5j81Neuj4voLYVpkV2FdhmllMQV/HNFwD+Xov8nw0BKOBeNGragwXSeSb2XB6OjpSRcykqSNyjBLj8L6slAf+bvortKAe1eWlPCu0NYO+naG1OFwyLQZfgEXzmKED78Z5GQeyw3CGOPnJVd7CRfewoUU6xO2FE9jqNJQYJGiUxjhizt1lm2CFjrRGcmNEsgC1gq0g5j8eJSN4zRgWL9lnS5DUEp4fy42HMVqbSbsu3SwpMYqAVeWTqCDUCb/3gFovqvcMu6udv3HuE+IVZXuxSp7vl1TF6maerfw8JXM0BUSL8IPpjlQUbUtonp8hFXdwN88uF7ot+O5Gucw5vLQ8XdbLymbIQ5/c7V14PxoR70jXGxU04dFLKJVSBuUPQTL5CKnEk/tB2z2ieh7qMHkAQ2ojvEuEWtYzIwIgAKTNvlaBA
+ yNRyyvFk
+ hY51T4rpjI1lBq86ude8jjakFOk/UqcmumtyHAyFeb1ONVDTbBI68CK7XgM4E8jfR/uxYMGz8eL7OS7E4HyXV/ptfJcbEYhyDCzdZuMlU+eY21PLNYbKDfsPrJh98qAr1hLpzJ2R85Kx7VipGxNSAV6tq8jn6sOa7bYtRfovcC3/PxmIl3oKa51lfrOcXhGkL7ojoK5oEfolSD8+xVMjRHWYwDI5HpMek5Nskt/IQ+uD3IFfGkdheRSQrauDTBPICwEX9KwnG1qRdfmeP05zeKZkVT+bfjrPBCpAkLOsmayXBQg71FKISG2r+UOzBZ+WbPF4Qu/KJhOxCH1RFHnHuseGhZzo8eOd5vvunCkapSHXRSj6Zq0gWLWxJ6cXAvHw/JJXjiqNECYbkmHM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,98 +93,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello JaeJoon,
+Hi Ryan,
 
-On Wed, 24 Dec 2025 18:43:58 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-
->  cd /sys/kernel/mm/damon/admin
->  echo "off" > kdamonds/0/state
+On 2025/12/24 21:24, Ryan Roberts wrote:
+> On 23/12/2025 05:48, Baolin Wang wrote:
+>> Currently, folio_referenced_one() always checks the young flag for each PTE
+>> sequentially, which is inefficient for large folios. This inefficiency is
+>> especially noticeable when reclaiming clean file-backed large folios, where
+>> folio_referenced() is observed as a significant performance hotspot.
+>>
+>> Moreover, on Arm64 architecture, which supports contiguous PTEs, there is already
+>> an optimization to clear the young flags for PTEs within a contiguous range.
+>> However, this is not sufficient. We can extend this to perform batched operations
+>> for the entire large folio (which might exceed the contiguous range: CONT_PTE_SIZE).
+>>
+>> Introduce a new API: clear_flush_young_ptes() to facilitate batched checking
+>> of the young flags and flushing TLB entries, thereby improving performance
+>> during large folio reclamation. And it will be overridden by the architecture
+>> that implements a more efficient batch operation in the following patches.
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > 
->  echo "commit" > kdamonds/0/state
->  echo "commit" > kdamonds/0/state
+> With the 2 niggles below addressed:
 > 
-> If you repeat "commit" twice with the kdamonds/0/state set to "off"
-> with the above command, list_add corruption error occurs as follows:
+> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+
+Thanks.
+
+>> ---
+>>   include/linux/mmu_notifier.h |  9 +++++----
+>>   include/linux/pgtable.h      | 35 +++++++++++++++++++++++++++++++++++
+>>   mm/rmap.c                    | 29 +++++++++++++++++++++++++++--
+>>   3 files changed, 67 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
+>> index d1094c2d5fb6..dbbdcef4abf1 100644
+>> --- a/include/linux/mmu_notifier.h
+>> +++ b/include/linux/mmu_notifier.h
+>> @@ -515,16 +515,17 @@ static inline void mmu_notifier_range_init_owner(
+>>   	range->owner = owner;
+>>   }
+>>   
+>> -#define ptep_clear_flush_young_notify(__vma, __address, __ptep)		\
+>> +#define ptep_clear_flush_young_notify(__vma, __address, __ptep, __nr)	\
 > 
-> 4-page vmalloc region starting at 0xffffffc600a38000 allocated at
-> kernel_clone+0x44/0x41e
-> ------------[ cut here ]------------
-> list_add corruption. prev->next should be next (ffffffd6c7c5a6a8),
->          but was ffffffc600a3bcc8. (prev=ffffffc600a3bcc8).
-> WARNING: lib/list_debug.c:32 at __list_add_valid_or_report+
-> 0xd8/0xe2, CPU#0: bash/466
-> Modules linked in: dwmac_starfive stmmac_platform stmmac pcs_xpcs phylink
-> CPU: 0 UID: 0 PID: 466 Comm: bash Tainted: G W 6.19.0-rc2+ #1 PREEMPTLAZY
-> Tainted: [W]=WARN
-> Hardware name: StarFive VisionFive 2 v1.3B (DT)
->  epc : __list_add_valid_or_report+0xd8/0xe2
->  ra : __list_add_valid_or_report+0xd8/0xe2
->  epc : ffffffff80540bce ra : ffffffff80540bce sp : ffffffc600a3bc00
->  gp : ffffffff81caec40 tp : ffffffd6c036f080 t0 : 0000000000000000
->  t1 : 0000000000006000 t2 : 0000000000000002 s0 : ffffffc600a3bc30
->  s1 : ffffffc600a3bcc8 a0 : ffffffd6fbf49a40 a1 : ffffffd6c036f080
->  a2 : 0000000000000000 a3 : 0000000000000001 a4 : 0000000000000000
->  a5 : 0000000000000000 a6 : 0000000020000000 a7 : 0000000000000001
->  s2 : ffffffd6c7c5a6a8 s3 : ffffffc600a3bcc8 s4 : ffffffc600a3bcc8
->  s5 : ffffffd6c7c5a6b8 s6 : ffffffd6c7c5a6a8 s7 : 0000003ff3f32794
->  s8 : 0000002ab38c9118 s9 : 0000000000000065 s10: 0000003f823a5cb8
->  s11: 0000003f823264e8 t3 : 0000000000000001 t4 : 0000000000000000
->  t5 : 00000000fa83b2da t6 : 000000000051df90
-> status: 0000000200000120 badaddr: 0000000000000000 cause: 0000000000000003
-> [<ffffffff80540bce>] __list_add_valid_or_report+0xd8/0xe2
-> [<ffffffff80255c86>] damon_call+0x52/0xe8
-> [<ffffffff8025c9a8>] damon_sysfs_damon_call+0x60/0x8a
-> [<ffffffff8025daf4>] state_store+0xfc/0x294
-> [<ffffffff80dbf1fa>] kobj_attr_store+0xe/0x1a
-> [<ffffffff802f070c>] sysfs_kf_write+0x42/0x56
-> [<ffffffff802eef4e>] kernfs_fop_write_iter+0xf4/0x178
-> [<ffffffff8026545c>] vfs_write+0x1b6/0x3b2
-> [<ffffffff80265782>] ksys_write+0x52/0xbc
-> [<ffffffff80265800>] __riscv_sys_write+0x14/0x1c
-> [<ffffffff80ddf124>] do_trap_ecall_u+0x19c/0x26e
-> [<ffffffff80deaa38>] handle_exception+0x150/0x15c
-> ---[ end trace 0000000000000000 ]---
-> -bash: echo: write error: Invalid argument
+> I think I previously suggested that this should be renamed to
+> clear_flush_young_ptes_notify() given that it is now a batch operation. Were
+> others against that or did you forget?
 
-Thank you for finding issue!
+Sorry, I missed this comment. Yes, sounds reasonable to me. Will do in 
+the next version.
 
-Also appreciate for sharing your detailed reproducer.  Nevertheless, I think
-the reproducer can be more detailed.  E.g., you could explicitly explain the
-fact that the reproduction step should be executed only after starting DAMON
-with the kdamond, and the kernel should run with CONFIG_lIST_HARDENED to get
-the output from the kernel log.
-
+>>   ({									\
+>>   	int __young;							\
+>>   	struct vm_area_struct *___vma = __vma;				\
+>>   	unsigned long ___address = __address;				\
+>> -	__young = ptep_clear_flush_young(___vma, ___address, __ptep);	\
+>> +	unsigned int ___nr = __nr;					\
+>> +	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
+>>   	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
+>>   						  ___address,		\
+>>   						  ___address +		\
+>> -							PAGE_SIZE);	\
+>> +						  ___nr * PAGE_SIZE);	\
+>>   	__young;							\
+>>   })
+>>   
+>> @@ -650,7 +651,7 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
+>>   
+>>   #define mmu_notifier_range_update_to_read_only(r) false
+>>   
+>> -#define ptep_clear_flush_young_notify ptep_clear_flush_young
+>> +#define ptep_clear_flush_young_notify clear_flush_young_ptes
+>>   #define pmdp_clear_flush_young_notify pmdp_clear_flush_young
+>>   #define ptep_clear_young_notify ptep_test_and_clear_young
+>>   #define pmdp_clear_young_notify pmdp_test_and_clear_young
+>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>> index 2f0dd3a4ace1..fcf7a7820061 100644
+>> --- a/include/linux/pgtable.h
+>> +++ b/include/linux/pgtable.h
+>> @@ -1087,6 +1087,41 @@ static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
+>>   }
+>>   #endif
+>>   
+>> +#ifndef clear_flush_young_ptes
+>> +/**
+>> + * clear_flush_young_ptes - Clear the access bit and perform a TLB flush for PTEs
+>> + *			    that map consecutive pages of the same folio.
+>> + * @vma: The virtual memory area the pages are mapped into.
+>> + * @addr: Address the first page is mapped at.
+>> + * @ptep: Page table pointer for the first entry.
+>> + * @nr: Number of entries to clear access bit.
+>> + *
+>> + * May be overridden by the architecture; otherwise, implemented as a simple
+>> + * loop over ptep_clear_flush_young().
+>> + *
+>> + * Note that PTE bits in the PTE range besides the PFN can differ. For example,
+>> + * some PTEs might be write-protected.
+>> + *
+>> + * Context: The caller holds the page table lock.  The PTEs map consecutive
+>> + * pages that belong to the same folio.  The PTEs are all in the same PMD.
+>> + */
+>> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
+>> +					 unsigned long addr, pte_t *ptep,
+>> +					 unsigned int nr)
+>> +{
+>> +	int young;
+>> +
+>> +	young = ptep_clear_flush_young(vma, addr, ptep);
+>> +	while (--nr) {
+>> +		ptep++;
+>> +		addr += PAGE_SIZE;
+>> +		young |= ptep_clear_flush_young(vma, addr, ptep);
+>> +	}
 > 
-> The cause of the above error is that list_add_tail() is executed
-> repeatedly while executing damon_call(ctx, control)
-> in damon_sysfs_damon_call().  The execution flow is summarized below:
+> I think it's better to avoid the two ptep_clear_flush_young() calls if we can.
+> Personally I think we should just go for the simple:
 > 
-> damon_sysfs_damon_call()
->         --> damon_call(ctx, control)
->                 list_add_tail(control, ctx->call_contols);
->                         --> /* list_add corruption error */
->                 if (!damon_is_running)
->                         return -EINVAL;
-> 
-> If you execute damon_call() when damon_sysfs_kdamond_running() is true,
-> you can prevent the error of duplicate execution of list_add_tail().
+> 	for (i = 0; i < nr; ++i, ++ptep, addr += PAGE_SIZE)
+> 		young |= ptep_clear_flush_young(vma, addr, ptep);
 
-The kdamond might be terminated between the damon_call() call and the
-damon_is_running() check inside the damon_call() execution.  In the case, the
-problem may still happen.
-
-The problem happens because damon_call() is not removing the damon_call_control
-object before returning the error, right?  What about removing the object
-before returning the error?
-
-> 
-> Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
-
-Could you please also add Fixes: and Cc: stable@ ?
-
-
-Thanks,
-SJ
-
-[...]
+ACK. Thanks for reviewing.
 
