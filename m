@@ -4,118 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89D01E7AD5E
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 14:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89B06E7AD44
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 15:12:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E2A16B0088; Thu, 25 Dec 2025 09:24:33 -0500 (EST)
+	id A8AA56B0088; Thu, 25 Dec 2025 10:12:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C3C86B0089; Thu, 25 Dec 2025 09:24:33 -0500 (EST)
+	id A6B766B0089; Thu, 25 Dec 2025 10:12:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C5F86B008A; Thu, 25 Dec 2025 09:24:33 -0500 (EST)
+	id 96A496B008A; Thu, 25 Dec 2025 10:12:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 19C246B0088
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 09:24:33 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9C3F91404AE
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 14:24:32 +0000 (UTC)
-X-FDA: 84258213984.30.6750035
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9C96E100002
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 14:24:30 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=EGWPahYv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766672670; a=rsa-sha256;
-	cv=none;
-	b=j7Hn29PMQ4REyOJ7qdaciD9ayDgECl44nA3rf+IksJW3yJf/YiJ7Q3P8FsvI2oDsNQ/Slf
-	1+lN8lhOVlg6HFdpQWRlQbiRz2NzANgYL8PUwxgibODECp0yx51jDhjvSBQiYlE7IWPDhQ
-	eEHI7jyaZplzhaSzONK1g2sWVDAsh/E=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=EGWPahYv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 877E36B0088
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 10:12:33 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3329514078D
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 15:12:33 +0000 (UTC)
+X-FDA: 84258334986.12.3DE0477
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4389D1A000B
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 15:12:31 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RLHahGpB;
+	spf=pass (imf19.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766672670;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1766675551;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TYLFNJEHTSWA/rTg/7WAiD/Mb4jLY5XsAYJsDyTHIHk=;
-	b=6noUeaOYqA6edAXtMT8c+z9rPfUIvwjBtBeHF1pskxtlzhbJQh1aCKuUiChl0KHhOO11AN
-	tiaBr2oh0TT+iJnmWFO0c29TYbU4+ipBpNewb73ueSpHXSx7jzG/mpkh18t/nObRqYBytl
-	OP61uXKSwiKMGTyta+tMJX88PXSe3ao=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-64b4f730a02so10852479a12.0
-        for <linux-mm@kvack.org>; Thu, 25 Dec 2025 06:24:30 -0800 (PST)
+	bh=JlsBA+r0UDWqlBb8SdU5iMkX6C1yfhf/TMrFhFO1YhE=;
+	b=kuTjNCd7mFbL0JWm1FND5qozVWk/MGZe3mrLP05/9Jv16vDrCyBX2QlyLZnxpuasxwiNBu
+	p9XtgsjxVeLJQTfA9scbA7Gsu+GT/NS08EzgEDcpZmWDJ2pMJ6l1oOtadqDRrobPR/Zi15
+	Wr6+09JwCN2PTsRoekTL+ggcGfB6d9Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766675551; a=rsa-sha256;
+	cv=none;
+	b=gi/jL4VdlEzskXJ/k31cD4LVsCg/OK2hrZvCMKhpkZCAFVasHctFKoaLXq/3poA9ePrVUP
+	cQrcmjEg/ITWafRFoC9xyztX1RMtdv3M9Wph/eZHJkRGN4IwnRfu18ZyUiUkyRDn6pOjr2
+	9RcEoWNQBsZ3jMdzwPguM5gSVyAy4UQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RLHahGpB;
+	spf=pass (imf19.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a0d5c365ceso85458575ad.3
+        for <linux-mm@kvack.org>; Thu, 25 Dec 2025 07:12:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766672669; x=1767277469; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TYLFNJEHTSWA/rTg/7WAiD/Mb4jLY5XsAYJsDyTHIHk=;
-        b=EGWPahYvc+GHgBmkGVqHiCmq9iAryorbpe3p67CiFSmfMUy/ZIRMMhV2r/zqJWGfO1
-         n8AoRZ1qcx93TZhbYAXZzPLr8t70HGZPPqKhUlIMutVnNtTjpDXo7NiHMnBzvB8FkaMW
-         06GHvxKFNe9Z32oi1Iu5G3t7RyxHW116XIwkRDHyO34FDgtldBIlLQzda8pXghNAsSnd
-         6zJApwFnUWHG/5gMeWIIdzu3msYfWpNbBMZB3NI9EoIOHsJqta3QOtI0phqBN5lNCdN/
-         Lpq4KWWRsx1ZtMjlZJ2ZRYaTI7TdSWSynri1q4QaMrV0eHR9uPozeM+NylaFtnC+T1dz
-         m4oA==
+        d=gmail.com; s=20230601; t=1766675550; x=1767280350; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=JlsBA+r0UDWqlBb8SdU5iMkX6C1yfhf/TMrFhFO1YhE=;
+        b=RLHahGpBDrestU6KzcFeLehzLktVhx9+xqU9kS6GSqcRLDfkQqccHK8lT4YSj//iXC
+         X0k5HVONY881KUgD8DssV1Cq+JKi71bbgiIxvgTgNMIfQk6ghqupGXi7zvXy5ozbYGIe
+         YGt8h25p9ThULyXiWG7s/KW/Cd5m9u8mqTd3P6V9/goHlGFabRWn7uko6v8qJf4UEii5
+         yn3dmQ7nEoVF8IfXCAAUTqfMlvHJjLfALSFKYvKNHt0ViysxLfDr+Ui1zrly2iO203bu
+         LKP5ID/9iBBgG1Vqj8cxHEYvxZteiydh2KFjmk/Wk6RQ2Lid/b7lqttXb0ogQJ9ZcrpR
+         s6vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766672669; x=1767277469;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20230601; t=1766675550; x=1767280350;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TYLFNJEHTSWA/rTg/7WAiD/Mb4jLY5XsAYJsDyTHIHk=;
-        b=PP6AvpqRZenOzMgQBV4XMe712VgI7XM5FqqAD1f1dsAC7yXDY/R8Me92i11/zYsz4e
-         7bTBAGf/t+2V+YECXq3thIJqpQTyhBWAF94CnuXy34stNwBjLeSGY2vdu9UsGZq5gsNm
-         3LRpmQdfn4BKiKMiIg99pFjvB5o5kN0HUoHbpw86Qi0R6r1Z6G6kkVuO206urjL3RgjF
-         pJqVWQhMWr3taHgsBudJaNzVuA6qcMpUxVrpQaTDcjDcWQknvRQKy2RSG8bm5Q5S4JFE
-         dB8K8gHhrbFYCN0BEaZ5Rm39pXyk9W0NdiyKBjk/GHiNLUBu4x55SMeA9MjtpHj3M9sl
-         /zGg==
-X-Forwarded-Encrypted: i=1; AJvYcCXgeV3GBSKUuRwqvOItYgFXWJBDQGGw6x/tA5D52eE8nfRS8N9u7jyl9fLAxqUFxgWZGD6vQShVHw==@kvack.org
-X-Gm-Message-State: AOJu0YxYuBts1w4Z6X461XYueMA2JOufBmicNyxQxzFOPj4iBggcJR33
-	T/9fO+a2u9wpP9hgklyOLFkdxgEWiwO9Ln3Fm6autqDnH/JI65Z+CSba
-X-Gm-Gg: AY/fxX4gJ+5eFmT2t7hbxW7TxXuVgNdHNsH/xVRFpvlL9jKWN8ig65Gvz35DrxRd4gA
-	6q3ZHUOsCAzciNX3SPsU6QGUGWQYTVFvlSzckczPVcDSn9J1y9Uz+MuNRu8YwNlpN1oDKAA87Ht
-	z9ja54jx0OSj0ShXi6uwtbRi6QWoWNS4TqHd1YNYIVwKhDkbbJ1xykCpHDXTn/ADp3pDfMr1mbF
-	7z2bXlIU1WfWxyDgNUG4xLjHhJvBqM21AsMKQ1a/J6acGpqJvxaNBV9KIe/n/TKjx+xu0nFHe40
-	U45CCrqHGRSnp7Qx2TwSmplafzP32bptf/uDoCzWm8cUQcIPsYZP3QWZvH8fKOekKP6TwaGY/mW
-	RJSZ3yz4k4QT0zITqK9iMQpXYNMZ9os1jxjWFhu8WKBfElgp0vSQlCQdBqoSl/i8bTOQrLLx6NB
-	57XMKuBK9XaQ==
-X-Google-Smtp-Source: AGHT+IFco2ZSS1k/XWSKYY0R8AjYGyeFBM+ARahghc7zBTZoamAt6Q0hV8iYR6hU94s+s5EkzQ+z7A==
-X-Received: by 2002:a05:6402:5248:b0:649:2347:e15f with SMTP id 4fb4d7f45d1cf-64b8f02987fmr17060473a12.31.1766672668897;
-        Thu, 25 Dec 2025 06:24:28 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b91056726sm19393276a12.10.2025.12.25.06.24.27
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 25 Dec 2025 06:24:27 -0800 (PST)
-Date: Thu, 25 Dec 2025 14:24:27 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org
-Subject: Re: [PATCH] mm: remove unused function inc_node_state()
-Message-ID: <20251225142427.3hsby5q26mwka4ib@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251225015445.16727-1-richard.weiyang@gmail.com>
- <20251225075217.1298303-1-joshua.hahnjy@gmail.com>
+        bh=JlsBA+r0UDWqlBb8SdU5iMkX6C1yfhf/TMrFhFO1YhE=;
+        b=Ayw5PINGGul1S3mdl+9ZbdofEvt0DylfveT3R9PN+ikxldI54cRGbQnerbGiH6jjyA
+         RaE4CFSbrxLArGVZ54YLSp0nxWawuh8nxjlPWZGyF3glvkLwiWD3f39s2MkNKOBw1sWP
+         bq2HpkGzU/nIVgsnP+VbU76s70A5GfySgRphJTVfKSnP4gdZB8aTAqSZNBktjE7QlsDd
+         DX0boI6yk7CWdTlq2PDgLaNnJmGZzGGF5YcZZDRUv0JXO6pisXvddlwJN4oAiVG6lq19
+         PuN4QPpnfZn4Xsc9v7nHOD6MLVJPTpRrhuluTWTT+OMnyhyVhdQY74YePdDpvOBAkSV1
+         ysBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUeyfiJTISkjFnm6Ibt/mTrjzVTDx/G7QBV51mEleHtjfpim7v6NFHOteIiuHCu6j8H0eVA6CnGXQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy+Om9PmRanWe6Ms5umh+JEg2c0zQXWxVcHi1fVvyuLLAhqnyxJ
+	N45IZ4dQPa9hKfqF5F4dqCiFk0f7NlF3UsKeIOqqu9TMHipbx5HEcWCK8Hw2OJRN
+X-Gm-Gg: AY/fxX6jc3PzG/i0nUSG6gNUeee9R7t2xq2MPKTF5yxU/n1fyE5YJ2Z0UamNR93juEL
+	oV6+W3u9Z/rLYlEes3SLpWoNFl7JPWVosgo51TGDoNlJjdJnnAKnqCSRdEVds0yVDPsOo39kNnr
+	2j7HkFL0Pms3izUJWbsOrTpPTzW3kbUicYhcoH9HcmdJ1HHJX83APyIS95V41wMlbsEnQxmc1Dm
+	FFvLsI4LwdZsYAcmzCmMfGXpP6oqcEGcCj4NiTUoGNA3M9ogVNKJ3oTl8xOs3Ft4JTZAyReI4UB
+	oFjlh4APj3/RjNMFGhvWbye8AjeAkKPOvuEtW0e2yNvO8VoOhBqQkRE7Q57kIw9lEKrnWq4/GoI
+	0xQSj/8anDudIZVErqy2SQN4LdxebIL4UvxEvfj6Uk3sfip0Rl0ptIbn2OaCpKUJGmZKS6FHYwP
+	oerBiSku29jFLB4f5QJS5iu5m53GzsNGqwtQ==
+X-Google-Smtp-Source: AGHT+IED3BkMJ4gM5OrE+WfCVcLgsi6XbRfk4W/0ALJH+XfkQF6ENvsE77YFXShpZRZ0cruAB6REmg==
+X-Received: by 2002:a17:903:8d0:b0:269:8d1b:40c3 with SMTP id d9443c01a7336-2a2f21fb43amr206274075ad.12.1766675549712;
+        Thu, 25 Dec 2025 07:12:29 -0800 (PST)
+Received: from localhost.localdomain ([121.232.80.251])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d776c1sm181472835ad.102.2025.12.25.07.12.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Dec 2025 07:12:29 -0800 (PST)
+Date: Thu, 25 Dec 2025 23:12:18 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, baohua@kernel.org, lance.yang@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH 3/4] mm: khugepaged: move mm to list tail when
+ MADV_COLD/MADV_FREE
+Message-ID: <6sciluv3ylow6frheij6imhhsglaez6d6vsbtyndwlfuetzwmf@tbs6ivsitehm>
+References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
+ <20251215090419.174418-4-yanglincheng@kylinos.cn>
+ <3c75d915-5d7f-4e80-975f-4479393e7139@kernel.org>
+ <tnvhnikpfxyjassrdsnqmpxlem3hnoepwxmp4hysfzqzl3wltw@7utx5hxc52th>
+ <6e8684a5-1f71-4be6-8805-9b047a2bcb78@kernel.org>
+ <20251221021044.2r5fhepiyyhvuo7h@master>
+ <mcf4mydmyz6e5ioeseaawhfro2snox4hyfr2irpx4kxkagx2k7@uszrm24ulffg>
+ <5af0e0ae-0472-45b8-a249-44b4e5239d33@kernel.org>
+ <ck5nkriyqdvy7ftu3xeu6cn4aj3s3cpefbga55vkzblnoywrpi@2sw5oh3saixt>
+ <ad2c1355-be13-45d9-8474-a32a4b710aa5@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251225075217.1298303-1-joshua.hahnjy@gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ad2c1355-be13-45d9-8474-a32a4b710aa5@kernel.org>
+X-Stat-Signature: 99zcfxmtxqegfgb3yaxco14us35fry97
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4389D1A000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9C96E100002
-X-Rspamd-Server: rspam10
-X-Stat-Signature: xgnxaajk39zx4xaokwj9rktdjncysc3w
-X-HE-Tag: 1766672670-211667
-X-HE-Meta: U2FsdGVkX18qSXs3trA5quA9g2WXf+N/1SzabRAXBACivb6s0UxZRwkwj5o6gHDsdZpciAoT12JzH5MsPMNtEUuLPtgqz+0xppfOlBUH6eyN1g+/N7Fm6pc6h1Oh4szhyx580jSWCEdr2PHJHeyTJYBw6e0aNEurKn4oGpwPS8R3iU5DzaAfk1/i0dcssEizE68rWQhfXEm0lOX4gGvfUegPwRxnvZiAmyeVTZsv5PrHV072B0igKnl61Rkp7GfeyFtSOomKnKIw+3NWXtIPcXP9nLNB5mmL3IAdlwMfb61mUZTgzDV+GHzdh/OWdrXdQLlQJ7rTXby0gd3rOj5UVUNr5EMtR4lpDZ7Bm1ago190yNM2o+HrDi6D31meCREWVENj/+UlNxt017vqVc+UkwbQk0DCSr2yClYpNdpizcRubsBArxBCkp7F0nA96DsowHsfBMhn6vgZq8quXPCIxZdQSM0znMGUT77lK/9NpG79+oAhwxaQLD2AT84v4mXal7BQhef/iMwxKQwdNo77YsPOPLuaYiNDhfW324cXmPperjRe9FVkB7pb7isj7qdjiPmPmMANZ5vDTrc2V33SUL8+t87t2fkuVOUUHjdwle3WHzBASIZ88i7THGolG19j0JAxas2T6PDhOXLszK5UYMw9rClF2vjWdsfaIvH2c05G++LcFXIV9flVGYFufNdtrJGOA1krmw0iOv3DVUlV3TScX9yHazGbrTuUrcoh61HxYZeYHq0l5cwVfnxO+XzjIv5/HxZCfBDN2dn4AQZeNi/Oz4fUO+y8UG062jf93Za7XaR4moci/rfC7J9sXIlrjBkHD4wn+M3q1aUgO58iH7kjGLo44mffM8HQiRHMkffhVilScwPl0lz1lRXG3WRwp4rlOSA8oRsWDtxQB0gsL4mSSHpqVFetGksax2O5tybAYmSKlkAQjsiNk7oHN2fYZSDQM2cWeUP+FcSfnhr
- SSRPUm1C
- LbC0KLBwFecq2bAr0CzV+k87yg0gTXdSenchVpcyAYZMzwFzE3IDfxyZqVJzpTMN6fF0v6tRLWQ1PsBwRctyXJ6hCig7JWgXok4CU/FW9kHrgNREwZl53CQD/+1UvS1n3CB0NNh+2LkRxSOd6N6Kvpfg2uGAc6wAQqzg2xczVoQUOJv6OKcigLRzuroc8C8/6/FalbJenjRi5tB1Hw1Rsa7zB4GEkHh+SbyV4AvTbRVjatPLPUI7VNhpanDpAw6ZZ6eJj04vxCsFTBGC1J/wpvyhutyLaB8oR8ame6w2EzXuyenHpL08JOQYBdzUrFGZJmiK6uxZtGUIC6fk+uviN/EXpRROUJmBKiroTCsMDoeL9yOYakGOUPR0T6CDgTZe50IZ/CTfEpFCjhsytqU7pB4gznTk6uxXat1CM5IVAJjVqt2W3+qzn7yyBjnMza8CeOzSZwEjr4SdiFruMmMmheRTr+6UEOClQW0ZLF+isN5QvniMR8o64s753VMDrhyWqncx2v2Yh/kN9w5liQz++/jwddWnEuQ9kz7qIirKimsDSdwNXuyTl42CvmqcvFcT8LGVrIcUJywA9IJ0fbgoOA3qhHfsbojj9Lj9sVOYsalV0uIKgPQGzdx7gTJj+EQcaU7yLzeKzMb5fFQU6L8Xb+SBvIkS90EqSeCU3yBIfOmnRfzYwDRtamlFrJzMduTdxCV6WVdQmLYSf0YDmQ+FuvEaSooIhbBqychsB65tMTX1FBZcf6rE+ov2cgzeM6zzEKKQgTYYXH9I4AZqowQoSNE4UA+cdFeYWuwc5T73q9kJQFcvFYxcLJCsX0w==
+X-HE-Tag: 1766675551-391783
+X-HE-Meta: U2FsdGVkX18/sV570GE+anO321goCPRCMOtHMyNsFOveW0pSUHAcc8F5hxKlyH47NpiG6QA2pQuq2TYBVltF22zkbVC9vKLtZ6n1BzryF6MRLAdxH3RtJ8EUEenJze/7owS6gr7mIxLKWfCUaxrfG93sWn5zjUsegq9OQgzund+UKGMjwSW/6/GXv9KeG8LwOlugYLItCJXppTuqDl5wAnXYZha6UKZ1XsMKwtqi5UXPkxEROV+4yBy/EVZe6qBPVCgFB2G5NesCI0qaexdZU/nC5Donkyvnf2Tt41q3w1D9BImUH++a8TFaXLV6+GucSnasNuPRGkQpqTD1k/W6a5uT4ARva0K4NZJ8i8q5kgbwNqJQ1qeU+4fAJa2Of3Pe6rgr/HoYQXIGIv/GUgpmO5zKa59z7yLU+35WChs4s0Y/zyIQmJVpkKbZoDf44+TEzubQEPN0pOAU9SpVf6Y73HfQ3acP0Qux8MCUVoppOx/SkBN+50dVA64x6Y8AP7sJSuo+pQ6504utnQ+gfQlUq+3Pi6eCCMRbtFH26qhvbkcGF9ndQ0oVme6B9XeZvE0OHWK2F0JPDPug7TTD+QBMcZnBirD1RwiqJy2Jd6pVIv9Mn0ESPzsdrBda06kw7M9oyCwSWCyZcefrev7gN/zXc98RZFgnBsCh9BJXEBFg08cvD7CfRxBNg5TkwSGgsZp0cHuKmr6qSGdl1a8NmVJXhzF+WRpcx1/yxivnz3zaesh8Uncjmi99943glyFFCPetJLYR+EyiV0Sg9yoHjLNfcBX8ybiO0ZpFVLIfC8ASw4HAiQVWHkJXmFsIagpNIqsMqV4xyRgs0CnPat6gUeCR5JiIKbtoOMp6jZwMVv1FRTrLIPoBJst3d9OPdyuLwZGdSa48InpX7LjvaisXaUL0XTvgP2aDLYySXViibJwwDQb3lxX5l97pP4W/Aipl35jxK6LBNDUxzaneH3Q2dx6
+ znKYY3ov
+ Lf3XkSQ05y1SENoYh6r6/hRIbrvp5o9eJr0sS9c2LhiqZQe7mkO3Gdj2uFfOg36W+MaUoPkzCCfB9XQJNsqInQLziSCXaWduZP7Kw2cizmxxfQOGYSKdq/vPeLQ50gQdC4DodRUeO/pHvLUfb2Fj1w1G90QVsC9B1Zhkmz7VH3magkbnBE52Q1jeojFsE+pWFhn2LWIUNxAm88JGlmgOUqVJN2XzBubVK8obI3+DL5fkTc90lN386Hfp2jnhZh+GsJZlrv4//kfTs7zdCWxk1VGV17dqKMIgx1OvZHWDTDvchAvlpZp3NzI3VEzT2S9b6W2HPRJJfU6aWJzegAI5rumFv2OvuUvUNbZX0Fi1fRLaQyDnN2n4wwzNUT7DsIdhUOwNamXp/7jiQ3IV51x94IIZKYq9hycQOLZLJP1852oMh3yxTmdn05aoVia+wvHd/HUXu5+hKRSOpJlZ4y2qFshdytZVuY3498DimQEjkzXI9fKo7J4yMDzjmrdn5pJYuIG9MoEi4FK2gsSAzXP0JG0QDtsPiocdWHL+ct6vncy0kWqgbxXfhIKdq9h63YBrWNaWzof074iNe6MO7+v3TaKK6XQ9e0eLCICP9+VAtpjGbuPjFp3n2rp/pyIQRqgm22l3c1Kc25lrYf+NvRcAc/KGZdGyynkUvOSJ9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,102 +133,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 24, 2025 at 11:52:17PM -0800, Joshua Hahn wrote:
->On Thu, 25 Dec 2025 01:54:45 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
+On Tue, Dec 23, 2025 at 10:59:29AM +0100, David Hildenbrand (Red Hat) wrote:
+> On 12/21/25 13:34, Vernon Yang wrote:
+> > On Sun, Dec 21, 2025 at 10:24:11AM +0100, David Hildenbrand (Red Hat) wrote:
+> > > On 12/21/25 05:25, Vernon Yang wrote:
+> > > > On Sun, Dec 21, 2025 at 02:10:44AM +0000, Wei Yang wrote:
+> > > > > On Fri, Dec 19, 2025 at 09:58:17AM +0100, David Hildenbrand (Red Hat) wrote:
+> > > > > > On 12/19/25 06:29, Vernon Yang wrote:
+> > > > > > > On Thu, Dec 18, 2025 at 10:31:58AM +0100, David Hildenbrand (Red Hat) wrote:
+> > > > > > > > On 12/15/25 10:04, Vernon Yang wrote:
+> > > > > > > > > For example, create three task: hot1 -> cold -> hot2. After all three
+> > > > > > > > > task are created, each allocate memory 128MB. the hot1/hot2 task
+> > > > > > > > > continuously access 128 MB memory, while the cold task only accesses
+> > > > > > > > > its memory briefly andthen call madvise(MADV_COLD). However, khugepaged
+> > > > > > > > > still prioritizes scanning the cold task and only scans the hot2 task
+> > > > > > > > > after completing the scan of the cold task.
+> > > > > > > > >
+> > > > > > > > > So if the user has explicitly informed us via MADV_COLD/FREE that this
+> > > > > > > > > memory is cold or will be freed, it is appropriate for khugepaged to
+> > > > > > > > > scan it only at the latest possible moment, thereby avoiding unnecessary
+> > > > > > > > > scan and collapse operations to reducing CPU wastage.
+> > > > > > > > >
+> > > > > > > > > Here are the performance test results:
+> > > > > > > > > (Throughput bigger is better, other smaller is better)
+> > > > > > > > >
+> > > > > > > > > Testing on x86_64 machine:
+> > > > > > > > >
+> > > > > > > > > | task hot2           | without patch | with patch    |  delta  |
+> > > > > > > > > |---------------------|---------------|---------------|---------|
+> > > > > > > > > | total accesses time |  3.14 sec     |  2.92 sec     | -7.01%  |
+> > > > > > > > > | cycles per access   |  4.91         |  2.07         | -57.84% |
+> > > > > > > > > | Throughput          |  104.38 M/sec |  112.12 M/sec | +7.42%  |
+> > > > > > > > > | dTLB-load-misses    |  288966432    |  1292908      | -99.55% |
+> > > > > > > > >
+> > > > > > > > > Testing on qemu-system-x86_64 -enable-kvm:
+> > > > > > > > >
+> > > > > > > > > | task hot2           | without patch | with patch    |  delta  |
+> > > > > > > > > |---------------------|---------------|---------------|---------|
+> > > > > > > > > | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
+> > > > > > > > > | cycles per access   |  7.23         |  2.12         | -70.68% |
+> > > > > > > > > | Throughput          |  97.88 M/sec  |  110.76 M/sec | +13.16% |
+> > > > > > > > > | dTLB-load-misses    |  237406497    |  3189194      | -98.66% |
+> > > > > > > >
+> > > > > > > > Again, I also don't like that because you make assumptions on a full process
+> > > > > > > > based on some part of it's address space.
+> > > > > > > >
+> > > > > > > > E.g., if a library issues a MADV_COLD on some part of the memory the library
+> > > > > > > > manages, why should the remaining part of the process suffer as well?
+> > > > > > >
+> > > > > > > Yes, you make a good point, thanks!
+> > > > > > >
+> > > > > > > > This seems to be an heuristic focused on some specific workloads, no?
+> > > > > > >
+> > > > > > > Right.
+> > > > > > >
+> > > > > > > Could we use the VM_NOHUGEPAGE flag to indicate that this region should
+> > > > > > > not be collapsed, so that khugepaged can simply skip this VMA during
+> > > > > > > scanning? This way, it won't affect the remaining part of the task's
+> > > > > > > memory regions.
+> > > > > >
+> > > > > > I thought we would skip these regions already properly in khugeapged, or
+> > > > > > maybe I misunderstood your question.
+> > > > > >
+> > > > >
+> > > > > I think we should, but seems we didn't do this for anonymous memory during
+> > > > > khugepaged.
+> > > > >
+> > > > > We check the vma with thp_vma_allowable_order() during scan.
+> > > > >
+> > > > >     * For anonymous memory during khugepaged, if we always enable 2M collapse,
+> > > > >       we will scan this vma. Even VM_NOHUGEPAGE is set.
+> > > > >
+> > > > >     * For other cases, it looks good since __thp_vma_allowable_order() will skip
+> > > > >       this vma with vma_thp_disabled().
+> > > >
+> > > > Hi David, Wei,
+> > > >
+> > > > The khugepaged has already checked the VM_NOHUGEPAGE flag for anonymous
+> > > > memory during scan, as below:
+> > > >
+> > > > khugepaged_scan_mm_slot()
+> > > >       thp_vma_allowable_order()
+> > > >           thp_vma_allowable_orders()
+> > > >               __thp_vma_allowable_orders()
+> > > >                   vma_thp_disabled() {
+> > > >                        if (vm_flags & VM_NOHUGEPAGE)
+> > > >                            return true;
+> > > >                   }
+> > > >
+> > > > REAL ISSUE: when madvise(MADV_COLD)，not set VM_NOHUGEPAGE flag to vma,
+> > > > so the khugepaged will continue scan this vma.
+> > > >
+> > > > I set VM_NOHUGEPAGE flag to vma when madvise(MADV_COLD), the test has
+> > > > been successful. I will send it in the next version.
+> > >
+> > > No we must not do that. That's a user-space visible change. :/
+> >
+> > David, what good ideas do you have to achieve this goal? let me know
+> > please, thank!
 >
->> The function inc_node_state() is no longer utilized by any part of the
->> kernel.
->> 
->> This commit removes the dead code.
->> 
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Your idea would be to skip a VMA when we issues madvise(MADV_COLD).
 >
->Hello Wei,
+> That sounds like yet another heuristic that can easily be wrong? :/
 >
->Thank you for this patch! AFAICT it seems like the last users were removed
->all the way back in 2017, in 00f3ca2c2d66 ("mm: memcontrol: per-lruvec stats
->infrastructure"). 
+> In particular, imagine if the VMA is much larger than the madvise'd region
+> (other parts used for something else) or if the previously cold memory area
+> is used for something that is now hot.
 >
->Maybe outside of the scope of this patch, but I think it might be a good
->opportunity to also remove dec_zone_state and inc_zone_state as well since
->they are right next to the functions you just remoted : -)
->
+> With memory allocators that manage most of the memory in a single large VMA,
+> it's rather easy to see how such a heuristic would be bad, no?
 
-Thanks for pointing out. I will take a look into it.
+Thanks for your explain, but I current approach is as follows, the large
+VMA will split at this case.
 
->(Interestingly, dec_node_state does not exist already).
+madvise_vma_behavior
+    madvise_cold
+    madvise_update_vma
 
-If I am correct, we don't create it at the first place.
+Maybe I'll send v2 first, and we'll discuss it more clearly :)
 
->
->Thanks again! This patch looks good to me as-is, but please feel free to
->also remove the two functions above if that sounds reasonable to you.
->
->Have a great day!
->Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
->
->> ---
->>  include/linux/vmstat.h |  2 --
->>  mm/vmstat.c            | 15 ---------------
->>  2 files changed, 17 deletions(-)
->> 
->> diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
->> index 3398a345bda8..864a78287371 100644
->> --- a/include/linux/vmstat.h
->> +++ b/include/linux/vmstat.h
->> @@ -286,7 +286,6 @@ void mod_node_page_state(struct pglist_data *, enum node_stat_item, long);
->>  void inc_node_page_state(struct page *, enum node_stat_item);
->>  void dec_node_page_state(struct page *, enum node_stat_item);
->>  
->> -extern void inc_node_state(struct pglist_data *, enum node_stat_item);
->>  extern void __inc_zone_state(struct zone *, enum zone_stat_item);
->>  extern void __inc_node_state(struct pglist_data *, enum node_stat_item);
->>  extern void dec_zone_state(struct zone *, enum zone_stat_item);
->> @@ -395,7 +394,6 @@ static inline void __dec_node_page_state(struct page *page,
->>  #define mod_node_page_state __mod_node_page_state
->>  
->>  #define inc_zone_state __inc_zone_state
->> -#define inc_node_state __inc_node_state
->>  #define dec_zone_state __dec_zone_state
->>  
->>  #define set_pgdat_percpu_threshold(pgdat, callback) { }
->> diff --git a/mm/vmstat.c b/mm/vmstat.c
->> index 090b5c5294b9..16b7cb24d411 100644
->> --- a/mm/vmstat.c
->> +++ b/mm/vmstat.c
->> @@ -671,11 +671,6 @@ void mod_node_page_state(struct pglist_data *pgdat, enum node_stat_item item,
->>  }
->>  EXPORT_SYMBOL(mod_node_page_state);
->>  
->> -void inc_node_state(struct pglist_data *pgdat, enum node_stat_item item)
->> -{
->> -	mod_node_state(pgdat, item, 1, 1);
->> -}
->> -
->>  void inc_node_page_state(struct page *page, enum node_stat_item item)
->>  {
->>  	mod_node_state(page_pgdat(page), item, 1, 1);
->> @@ -724,16 +719,6 @@ void dec_zone_page_state(struct page *page, enum zone_stat_item item)
->>  }
->>  EXPORT_SYMBOL(dec_zone_page_state);
->>  
->> -void inc_node_state(struct pglist_data *pgdat, enum node_stat_item item)
->> -{
->> -	unsigned long flags;
->> -
->> -	local_irq_save(flags);
->> -	__inc_node_state(pgdat, item);
->> -	local_irq_restore(flags);
->> -}
->> -EXPORT_SYMBOL(inc_node_state);
->> -
->>  void mod_node_page_state(struct pglist_data *pgdat, enum node_stat_item item,
->>  					long delta)
->>  {
->> -- 
->> 2.34.1
-
--- 
-Wei Yang
-Help you, Help me
+--
+Merry Christmas,
+Vernon
 
