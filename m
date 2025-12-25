@@ -4,113 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8377DE7AD67
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 21:02:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D231E7AD6C
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 21:20:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 313096B0088; Thu, 25 Dec 2025 16:02:20 -0500 (EST)
+	id D0EB46B0088; Thu, 25 Dec 2025 16:20:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C11F6B0089; Thu, 25 Dec 2025 16:02:20 -0500 (EST)
+	id CBC8A6B0089; Thu, 25 Dec 2025 16:20:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BFC76B008A; Thu, 25 Dec 2025 16:02:20 -0500 (EST)
+	id BBB0F6B008A; Thu, 25 Dec 2025 16:20:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 05F036B0088
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 16:02:20 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9A6318B9BF
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 21:02:19 +0000 (UTC)
-X-FDA: 84259216398.22.9B8B322
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E783216000A
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 21:02:17 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bDYUj5ye;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766696538; a=rsa-sha256;
-	cv=none;
-	b=06oBeJGAmjjyjCo5bArCR/bWm9ZKjlem7frpNGpSZMBEna/Gw/Xk9bUuCYrnCM8cISXxWw
-	3KmDzWXfYdlSJe2zvyFyWaezw+1GJzJJtD8v6NN4KgoovId0tFp3RmjjmWkVewZ/1WLWO9
-	rxD2HxytKNup6MPquSu+82gNKQ5eGU0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bDYUj5ye;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A848E6B0088
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 16:20:18 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53EDD134D4
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 21:20:18 +0000 (UTC)
+X-FDA: 84259261716.06.D702827
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CF8A440004
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 21:20:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Bu+KqdXR;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766696538;
+	s=arc-20220608; t=1766697616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=HK1KFsrSoLjAVDLeBhBRTR0A1gSVuCCD04dju2KsICs=;
-	b=SrHC4N9wChbLQghC5bzlAVuWmvsoujXjwp8KpdTjmst6Hgxyfq+PFLjzIf2m2vQSRx1LiH
-	UIhJ7hU/DIEK3KcHCzHHumzMGKCzwLt754+lAKNGLq4epqNZKj2cI+bggXUNzjaHamR4NC
-	pOBkKhVBV1rG4s5w6fXtNSYmzxnZ5vc=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b8010b8f078so933814366b.0
-        for <linux-mm@kvack.org>; Thu, 25 Dec 2025 13:02:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766696536; x=1767301336; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HK1KFsrSoLjAVDLeBhBRTR0A1gSVuCCD04dju2KsICs=;
-        b=bDYUj5ye6bMcSSjnY71mkIby9obP0xKvb45fMoiM52zjj97gkF7/5sam9hcLe7Aat/
-         RKGhdyxH+txWotOU1N0zvaqWyK43bRW4MUwNy9CPdyQ/XwXa2vXZdll3yZAL5ywd9eLk
-         03KjE5UpgDrKjWowJ2e5iAgX0g/oQP/IdKLrlfGKrqxGf7I9wMzkC0r4+nsJ3D3GDmDl
-         QzQ4UvzRFz/BnGNjmcFyk8hHg0zz2giXlCs8uyjwqFVeiGnMNeQB/Z4NcPD9KB1zal+P
-         CLZ4BzOGQJpTSafUMEykZ0Zf2SYlaCrcVNvUgXC26IOUGjzK7Oj/bTqc09uQflE3CfBV
-         l75Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766696536; x=1767301336;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HK1KFsrSoLjAVDLeBhBRTR0A1gSVuCCD04dju2KsICs=;
-        b=LO8IGxwV3Nv2b2OAj/3umXKgPP0LeRgBMCMfYxnYNUKOWI2BIsCfqSQuM/kOZuVwlY
-         aZFElnX9mujM31gQg5LbGY9hHEpAb1KJ1DV4Dn8hNCGZacaYNx7IIFpl0trcbq3fGulF
-         sjRLJ7Hvja7sZTia8s993g4PSiw1HxL/XQKmT2HxBB0XJxYOK5Ww0KBIBDFEn0eQiSif
-         Z8i+YzZeyJRNqwc/hTuRr3Lz7LWff776fUOzITpwDXIrQQVFNnotWbGoJxPalCK7l5dy
-         aqu/XPVNJOz8zVLlIq2nUlJGney+Fd9gG315HqtPtvBu7FLVluF9YqQoMmpFqonZzkec
-         OqNg==
-X-Gm-Message-State: AOJu0Yz6czOX4edZclTxBPo4MyM4oqT9ouYGMmJBAPabzyRmZSL2vv0b
-	7I3hrSwcPXM4ZWL3J5gnQxxZ0Fk9Uh/f07/QP9HKdY7WkyElETxUI7Pe
-X-Gm-Gg: AY/fxX7GnV6WiF4bijMTGsvGcsqmDuzqoBSrLtd8hh+gXU5+VxNGknQzb0t/62pdtkh
-	TE0NDizZ2lj+YEfQtrOEEeWapANqLr6CtPB/2cWElc2vNFjGZIKoO6wO2efkGSmM+pCYQlj1/y3
-	OyuExQFNoIeGrRTnQdZaWKigpoCwSUoxHzk5c3g1mmYsIObu4DTIi99sUgz5uq1b1SmUAi+u3LG
-	QnXWoypVwl0JP6EzmuGcLI3hfZ5wcuCHKIgXJU58ou9lO6y2g2uFR2tRMwsG91hr6Q3mDv3we/0
-	1PnG2qAEpXNdlnlA7Nmz0AwXBoL5Bq44WPzCU9EpiCbioXQZ4uQy45b+90BrxBouOFzyLbV+8uA
-	5PlJaZUJWV3iqO6+8KV0d6foMZugCefljK/t8Nz8F4ssmXa793k81d6+zL3Jrj6XEO2K3ZNIasJ
-	7MsA1At5PxGQ==
-X-Google-Smtp-Source: AGHT+IFE0fXZSfsGedKKzTyPaJyBe64lfAtcsceZQxR/L6ZmPQRO40nimOumzUnhr3GoK7GgI2xcSQ==
-X-Received: by 2002:a17:907:db03:b0:b7c:fe7c:e383 with SMTP id a640c23a62f3a-b8036f5ad65mr2229450566b.22.1766696535923;
-        Thu, 25 Dec 2025 13:02:15 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037ae2de9sm2219117666b.26.2025.12.25.13.02.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 25 Dec 2025 13:02:15 -0800 (PST)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: [Patch v2] mm/vmstat: remove unused node and zone state helpers
-Date: Thu, 25 Dec 2025 21:02:13 +0000
-Message-Id: <20251225210213.2553-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
+	bh=+nbSVUcoCP1a1bMcl9oQvtHsR3R/BuJCtR83gWRL4Ps=;
+	b=8ickqHvkr48OIutks4WVQjB8UiDywlYajylX6mTGTb95xRWKGeF3Q53jIAihRsbZeeSCoO
+	k9XW3S/WPgJ2X3gbA7x1FkaFo7eJKmcXSUzsUhnRzqnvd8YPtaDTqXq33a7MRUe/WPUpqz
+	g6uoLc7mu4z3UocibtJHo6HtACtGB98=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Bu+KqdXR;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766697616; a=rsa-sha256;
+	cv=none;
+	b=QqWzEZ5Z601PUQMgtaXzr4Q+yMbPrEQo5mLJf+/M1GvqUQU+BSDYNWyf7FKlZzmb0XfXJX
+	CfYBJJ0q4bIK+9RPXu4xahl83KQ8XUHOWZ1rrml+5K1fw0pYs7Fmn5tN+Zmd6WWVn/p+8y
+	clvXgn/2fcl9HmNKnO4/EfNts9XBlzU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766697616; x=1798233616;
+  h=date:from:to:cc:subject:message-id;
+  bh=XaLM7os6e5UXE+tpZnDkhWR1TqzpCT/i5KWbI59rm8s=;
+  b=Bu+KqdXRUPbGfOZVlhEE6ciRSxBOvt7uYbwwvqeaEjkPdVnt8PEWb5AN
+   WD8k1WkcIQiKLWlkXL2fbLr54I8V5zk063+b3GbdHODz5+FyYiQEtvID2
+   ewlmft2G7LeUwfmr5Y1J2iWnzQQzWow91Qua5o4MshWMGA08dCVDu487j
+   i2smNbUUms+bBfCOZaavDfmvGKJFtx6WNXIuPonDCSznyYdqOpy0r9Hz+
+   itpuC0bZckHXBIvMq8l3H4XNVZEg6GMdi/R3AYE8l+jitJl2THaUWx3VM
+   uhpYIGFuwW/Poh5+TPn23NL0Pn6oFpxIzQv6UA8LpFVeLk7D/5uT0Ziuq
+   g==;
+X-CSE-ConnectionGUID: Obwplrf2QcirV+N/0BtEQA==
+X-CSE-MsgGUID: G9JvuuawTm6nIx6o+Q952g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11652"; a="68555807"
+X-IronPort-AV: E=Sophos;i="6.21,177,1763452800"; 
+   d="scan'208";a="68555807"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Dec 2025 13:20:14 -0800
+X-CSE-ConnectionGUID: 5kqHLiiYSoCwfFkG7l7pog==
+X-CSE-MsgGUID: J8krOrRnTOmqkU33RcSirQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,177,1763452800"; 
+   d="scan'208";a="200759224"
+Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
+  by fmviesa009.fm.intel.com with ESMTP; 25 Dec 2025 13:20:13 -0800
+Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vYske-000000004TB-1Te3;
+	Thu, 25 Dec 2025 21:20:06 +0000
+Date: Fri, 26 Dec 2025 05:19:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Finn Thain <fthain@linux-m68k.org>
+Subject: [akpm-mm:mm-nonmm-unstable 71/99]
+ include/linux/instrumented.h:86:(.text.efi_stub_common+0x198): undefined
+ reference to `warn_slowpath_fmt'
+Message-ID: <202512260552.mJWvYIYi-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CF8A440004
+X-Stat-Signature: uhbjf5qweq8mb3dkriz1rxt15gmx1m3j
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E783216000A
-X-Stat-Signature: dbdh4bkn3dnzranqie3hsx58439rhgfx
-X-HE-Tag: 1766696537-582866
-X-HE-Meta: U2FsdGVkX18mt94qj5EFvp6JfA9iI3iDuqaSLlw5QJDE166vVsApazZUU4bHdlaE3FwW+I/zcNXTZyj5qTOhgWbiAYMGzqDYW3goBOZT9JtYWqRGZQ+zj5L43irUnTFpbljyTaOYqgTY9a/56765X3HZJ83NrJ8ZAtlA6EZW0hKzC9N4zyV/CPpNduZb5oF4sXwhjLapjlai8sOWajllXC6v+VcBnsandaFVLU1hU0b5JHXoIZJ1Jmyv25GOQZtq69xB3kXxm0lvPurwXjxJk2jZW4ar2rKTMiU1BoflxKF7kZj/wjUfcg5FDJpM+fj+oc2d2efruCwycFSp8NHpMeOLyxWn42NbxcjgWxJwq/YpJWAOHzln+Wseg2PZ2a62xrnbJCSgQ6vu/WLBrHEP1VLbrxS06MEorLOuky0QT+cgm7LJnXTKkC+1fBK5/3ruWzAMWI2HKtwHGrX7JmhpJ/Tyn6tQDcE8QcgktMRtbF1abRAebkaBU7f05yG8sf0BMCN38kpc++HmXDrmYsGxaTfKPejVd1r7NCSkiG3oHjxrYoCtwMUm1/wai516T579M/P1ZHoqeNu1Gks+bAWe+PhQ/9l6S4bXQQamO5AFMoyU47GnUPGb/OKS5kdbLb/fw1fWXkulbB5LHPq7DBznAvR8RmQ1RSajxPLGgUWhX/HXunHeB6Ghl8XHWlI5V4SKvHi+bB0+eqpYpwpTm1dz5/VKCI22jyeBtxBczIEIGoGklLqP3W0EPJu+bJBqpfRW10PHhIxSNXf9AkQ7Or5729c1frpeAQvVhrp0f0L7K17nVkZx6QhBIp6/9kYUBpy3TKNoc3pzCQgXIR4ooPwbTsMCi7OFjR3J0oQkpwnslhHhvYJKVBqN6x0HmT+hPS/DWdVGues1/vTwMxfdwPgd9edPX85d7q7C9vu2/cWcDs449OmnalelXQFMp2VbG7di6KhgMS9Vgnh7SYym6g1
- vwabjsss
- SQNRCN7rBFMbadft+f/Yn7854jVzXFYff18FjG+STSTxgG+gejfWi3XOVKPQCllKxjgLM/bfIhtiRPwmOvSWHXuZbO414eymZXVwsiaIhpcdb744gSNnG/DR84s2LWYElEa0AGKqkgT7AQax0mKmIgwHCaPuYwywVYaVXRPZRmMpYB8z55fmfMslU/n4pwdZrpmoLHkwtIYZSVlm6pZmf46Klhgf5FpRyLY+wIqIy+3WE8/+WeWHJHiguYsECruR6bw5EGV1vNyeSxzP/xoKG1WI6gOzyoLEeDVpSzMOEvPBOQVG5sPKA3H0rA8u7DGyagqjpHKEodgWC1puZqgmVSEEqXk2IFVC7tYRog7PhEO0QfKYgHGrYaF6eyorq2AQppHktQPvfhzhhoIXvWx9D2Q5FPXPzEWGtXqI8Pe9radQMYzwS0SvzgmOjtkU9EVgKglQDBapVvHX4ZC6vp1KWZbWgwtgmxsar58+Z74gpH/AKDK2uF6Qo/8ZIxIwhRb8EnI8dYf3zRuwoWZTcZbn9zeThoSZKI5LH9HCsh/WlQw2ph5mvSFk1JB8uEw==
+X-HE-Tag: 1766697615-36805
+X-HE-Meta: U2FsdGVkX184QDUDM2oPiynhgYw7F+LprGGYWyY7dY2BrAJYq9WVqC4s39e0qZA4smhU6qGrnNNAhVB1I315L5NN8sOHrctWcaS/QExZKOy6L0H+9Q959jDDmZdFYTGaXH7R1ZaV9p2ukTVKtjIMll1wx24lv3trzSzL4m/lRSh4U8b86KZr4ND5NPx/GSYc3Fb28GQAc+F+Tlk29T1TyrHETCgjBDp5vIdyJWgJJdFGuFDz2VWQKMPUp5RwMRLPW3HG1ebvwXgrIqd/yL+2IKFvYckvT4yGioz2u12LD+6ef9Uqn3fOvf497RwCUP6gXTIwzNyazzxJtD2S0gp0XkoI1AAiyF7mjR9mSE8vBGXkfAQ8pV+8Oo+APz8AM/vuFr5MNn8sGEqXvmQ32CMOwpI2eYGkzlZHiZ7pXuM/VbCsne1gJyy0d8NTIcvAwcnWkPaNtrBlkktDpii5V/FwI2n3mCBeGzqTbUy1ayUa4dyp6tbNUltIsB8jfa0JbRGCVuseOTJMXTLKQATQEsVvr2DFcCnCBJdHvRLmgM6qr6g5ipj+ULRWR19LmGflIm75HlfQd4fkL+KXtdsLLe0+4mxEBjz2K8dI1EDKoxUSCbcdu43tVxXCGbh1ylNGDcrI08RMN4hISTQwHjeqXfb3LVIrX72JUovxftyjNDYAghO1E55EDcI0/hCTF26pozGQkLEEIsLukE0PAak2jQBSkr18MGVP8ZIxJO2z/meppT8DFjyganXLdRFtXRFdBCNHOHCK7C2f7QkERKWHfNqnI0mrjdhH3bqH5SPVRwbOI7ftC1IpSfID8D2ATyyysDNMxprBZVWYipDNMmXR9EC8yOBrtl0PlG5R7/CXNQjUhx/A8NhcByTBDGD/n+xbH467aNiUaRpC8l7X6YfgpuGBM7a4L098IybiVOMW3cygS1fZodauZQdYbMWqhXcKvEgMQ+3aIur0+6iIGD6Jtkc
+ Vir3kbZk
+ QBjWqJLa+nCd14dI70+53AdHWV9kOhP2M5hXJJgmKi3WYCO3G0303jTtRPYdt0qmbcEJOaiBrSbcBKzIC3H3k6QE8f6VvfOzjgN7ku4TVNpVHAed/N8uUSv4bb/KIUV4/iAvngt6cspil6cR48o5iHqjhrDyFAZ89GWVSzp9iBOV+FF6/2pQ2emiresJQoRhTBoxmYNjb1qj5z7oOgsWC/d5Jt6u3EgQ5wTu0QlcuLdFf+m0J43q5AFo/w4S2cBEvXyLhNXyJ1UpY9vRTHYkfToTXDuRnEZ1hVaRw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,82 +105,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Several helper functions for managing node and zone states have become
-obsolete and no longer have any callers within the kernel.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+head:   c40f0b9f72a08d208c7793090ae98faaf6a58719
+commit: 472d1f40d1f7db592e9fef39a813c7e8cf95359d [71/99] atomic: add alignment check to instrumented atomic operations
+config: arm-randconfig-r072-20251225 (https://download.01.org/0day-ci/archive/20251226/202512260552.mJWvYIYi-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 14.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251226/202512260552.mJWvYIYi-lkp@intel.com/reproduce)
 
-  inc_node_state()
-  inc_zone_state()
-  dec_zone_state()
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512260552.mJWvYIYi-lkp@intel.com/
 
-This commit removes the dead code.
+All errors (new ones prefixed by >>):
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- include/linux/vmstat.h |  6 ------
- mm/vmstat.c            | 15 ---------------
- 2 files changed, 21 deletions(-)
+   arm-linux-gnueabi-ld: warning: orphan section `.data..once' from `drivers/firmware/efi/libstub/efi-stub.stub.o' being placed in section `.data..once'
+   arm-linux-gnueabi-ld: error: zImage file size is incorrect
+   arm-linux-gnueabi-ld: drivers/firmware/efi/libstub/efi-stub.stub.o: in function `instrument_atomic_write':
+>> include/linux/instrumented.h:86:(.text.efi_stub_common+0x198): undefined reference to `warn_slowpath_fmt'
+   arm-linux-gnueabi-ld: arch/arm/boot/compressed/vmlinux: hidden symbol `warn_slowpath_fmt' isn't defined
+   arm-linux-gnueabi-ld: final link failed: bad value
 
-diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-index 3398a345bda8..cf559e2ce1d4 100644
---- a/include/linux/vmstat.h
-+++ b/include/linux/vmstat.h
-@@ -286,10 +286,8 @@ void mod_node_page_state(struct pglist_data *, enum node_stat_item, long);
- void inc_node_page_state(struct page *, enum node_stat_item);
- void dec_node_page_state(struct page *, enum node_stat_item);
- 
--extern void inc_node_state(struct pglist_data *, enum node_stat_item);
- extern void __inc_zone_state(struct zone *, enum zone_stat_item);
- extern void __inc_node_state(struct pglist_data *, enum node_stat_item);
--extern void dec_zone_state(struct zone *, enum zone_stat_item);
- extern void __dec_zone_state(struct zone *, enum zone_stat_item);
- extern void __dec_node_state(struct pglist_data *, enum node_stat_item);
- 
-@@ -394,10 +392,6 @@ static inline void __dec_node_page_state(struct page *page,
- #define dec_node_page_state __dec_node_page_state
- #define mod_node_page_state __mod_node_page_state
- 
--#define inc_zone_state __inc_zone_state
--#define inc_node_state __inc_node_state
--#define dec_zone_state __dec_zone_state
--
- #define set_pgdat_percpu_threshold(pgdat, callback) { }
- 
- static inline void refresh_zone_stat_thresholds(void) { }
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index 090b5c5294b9..16b7cb24d411 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -671,11 +671,6 @@ void mod_node_page_state(struct pglist_data *pgdat, enum node_stat_item item,
- }
- EXPORT_SYMBOL(mod_node_page_state);
- 
--void inc_node_state(struct pglist_data *pgdat, enum node_stat_item item)
--{
--	mod_node_state(pgdat, item, 1, 1);
--}
--
- void inc_node_page_state(struct page *page, enum node_stat_item item)
- {
- 	mod_node_state(page_pgdat(page), item, 1, 1);
-@@ -724,16 +719,6 @@ void dec_zone_page_state(struct page *page, enum zone_stat_item item)
- }
- EXPORT_SYMBOL(dec_zone_page_state);
- 
--void inc_node_state(struct pglist_data *pgdat, enum node_stat_item item)
--{
--	unsigned long flags;
--
--	local_irq_save(flags);
--	__inc_node_state(pgdat, item);
--	local_irq_restore(flags);
--}
--EXPORT_SYMBOL(inc_node_state);
--
- void mod_node_page_state(struct pglist_data *pgdat, enum node_stat_item item,
- 					long delta)
- {
+
+vim +86 include/linux/instrumented.h
+
+    73	
+    74	/**
+    75	 * instrument_atomic_write - instrument atomic write access
+    76	 * @v: address of access
+    77	 * @size: size of access
+    78	 *
+    79	 * Instrument an atomic write access. The instrumentation should be inserted
+    80	 * before the actual write happens.
+    81	 */
+    82	static __always_inline void instrument_atomic_write(const volatile void *v, size_t size)
+    83	{
+    84		kasan_check_write(v, size);
+    85		kcsan_check_atomic_write(v, size);
+  > 86		WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ATOMIC) && ((unsigned long)v & (size - 1)));
+    87	}
+    88	
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
