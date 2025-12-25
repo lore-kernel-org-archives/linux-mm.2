@@ -4,101 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0317E7AD42
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 09:49:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EA38E7AD42
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Dec 2025 10:08:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A6B86B0088; Thu, 25 Dec 2025 04:49:54 -0500 (EST)
+	id 4C7C36B0088; Thu, 25 Dec 2025 05:08:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 054806B0089; Thu, 25 Dec 2025 04:49:53 -0500 (EST)
+	id 475FD6B0089; Thu, 25 Dec 2025 05:08:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC90F6B008A; Thu, 25 Dec 2025 04:49:53 -0500 (EST)
+	id 378266B008A; Thu, 25 Dec 2025 05:08:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DA6316B0088
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 04:49:53 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 742748B9E7
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 09:49:53 +0000 (UTC)
-X-FDA: 84257521866.07.B7DE22D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9FA1640002
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 09:49:51 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="sdZVzdq/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766656191; a=rsa-sha256;
-	cv=none;
-	b=mgfOHNGFq/FfbNBPXsEStHq9gk6D9BVzDkBSwucMGsaaZXqRrX288Rh57qNO3700SeyNuB
-	655UKCl9g/nbxzjxd6ZeAoP+TImTL5Meo0pjGYm8m4uvK3+RvxF1UQnP6IRZb+IJMkBuG9
-	9080v14xzIaSV3s+zhb1xUt+gA7mOa0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="sdZVzdq/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 25AAB6B0088
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 05:08:16 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CBA33138BED
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 10:08:15 +0000 (UTC)
+X-FDA: 84257568150.17.8956CAA
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0564B1C000A
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 10:08:12 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Tu/z/cIv";
+	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766656191;
+	s=arc-20220608; t=1766657294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y/FS+3DnMOtidopCd0UXbT8AK2kb+AjCRo4jPdKBJmE=;
-	b=mlr6kSl7TiF40QhekISCVldRqIo749PLBOnWfVwC+tfoaP8i62JDVBZUUqMpjGI7tHtxC/
-	4uRHglHOJrilWxHKg4RRrZeg+iM6TXjYlpNvfrGn46rH+nNbYZPF99HqUt4Sd5OcLz9pAG
-	krFJUMn/hUHqu9WshDAczjXzpfiCjHo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 80C2342E19;
-	Thu, 25 Dec 2025 09:49:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D7CC4CEF1;
-	Thu, 25 Dec 2025 09:49:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766656190;
-	bh=3nIYuigXWekDPMa/zo4CI26ZDqoA5RIjVHToKBdAf9w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sdZVzdq/stOlui6Ricvxhc/BJbaDZdptSo4jseuRj+KgI2kmb7KBfsajwuPAy4PSj
-	 VKJxG9qvJ75m7svZj0wEjuv+5ZPptS9/op0WlFbDKCCS3okTvVtr0UQIMuQQxa7ig2
-	 VK2eC1wVYbq8Ewn8DO8KzR3qJV6RtN/IxOu5gLOhfvYDla2ysPFW2kqKyjXhs1Ceqn
-	 mTA7KNtJGCk76w/4WIxo7481Qkfes0IQnZD0GfPKTTCIZ+4QvpUIjn1SJ1nTA3swOU
-	 qn0uwRcRs9Q5rB+02Od76vriLXOBGC6PWyhQWcZWOVQ/xRxxE5HHWjgrdBtKeR/Kwe
-	 FoxpoX3sNRznA==
-Message-ID: <520e6f26-4624-4145-b959-ccde466dfda2@kernel.org>
-Date: Thu, 25 Dec 2025 10:49:41 +0100
+	bh=bgFMQJIl6IU/hL8mMn/JPwDrQ4dql3AhRFfIkIc6/O8=;
+	b=UM8GdBQpHL88HcVb/PrwSoLYDv4/lx8BXp+M3dF6YAVzGTNViqgjDqj0HX7wS4UCn6gJTz
+	fPeRYfX0Ptldphw+hSsB4CNk/sPzJNENzgMndmInr2/orybe0+uP7F/1N7xNaDWfYKCxAN
+	FAIVA7MoohPLoyuBEttc8RJXmCBICcA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Tu/z/cIv";
+	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766657294; a=rsa-sha256;
+	cv=none;
+	b=vm5Yw09vYLU4e70qwiWc5XvLCEZe1d7dzI4gJJXYW6tyeVLgsFcnZ43O/AXw3OqLytcVES
+	Xmi9nQXlizks+F/Si7TEM6Lyde2QH61ckpaHcH+eQ1nKDGScO2/WSCbT+eeheXfYqNgIWh
+	pJ18JOsk8rm5UaIj0QvlAxt4eWC8Up8=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1766657290; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=bgFMQJIl6IU/hL8mMn/JPwDrQ4dql3AhRFfIkIc6/O8=;
+	b=Tu/z/cIvqd6qIe/fvMYIoTbomBHL8lYpR77CTdS6Ny49+5x8wLsC39Hg7FjbZXLmr7vWasGZmam18PmZdov3diiijTSCvhsxyh9N+2VcUaIhTaGc3HYilG/JvnucDIiHmQGTWEXSCxZkyFJpK5LQOO/aiX+RiUN8UdRZqm2k4/s=
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WveUWeH_1766657288 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 25 Dec 2025 18:08:09 +0800
+Message-ID: <bdb7f7c6-ecf5-4da1-a11a-cc19c77fe4f2@linux.alibaba.com>
+Date: Thu, 25 Dec 2025 18:08:08 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v3 0/4] mm/hugetlb: fixes for PMD table sharing
- (incl. using mmu_gather)
-To: Laurence Oberman <loberman@redhat.com>, linux-kernel@vger.kernel.org
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry.yoo@oracle.com>,
- Prakash Sangappa <prakash.sangappa@oracle.com>,
- Nadav Amit <nadav.amit@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20251223214037.580860-1-david@kernel.org>
- <11ab64528debf3b3515e863610fc8b679a39189c.camel@redhat.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <11ab64528debf3b3515e863610fc8b679a39189c.camel@redhat.com>
+Subject: Re: [PATCH] mm/shmem: fix uninitialized folio in shmem_symlink
+To: Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>,
+ syzbot+178fff6149127421c2cc@syzkaller.appspotmail.com
+References: <20251224094027.65842-1-21cnbao@gmail.com>
+ <aUwcV2HhtdiXXxfJ@casper.infradead.org>
+ <CAGsJ_4whKLWiw6LNexFPHTFWB1QbSrAwrBtspuc=c8fM2=WnvQ@mail.gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <CAGsJ_4whKLWiw6LNexFPHTFWB1QbSrAwrBtspuc=c8fM2=WnvQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9FA1640002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: tjan8hbukp7oyr18qqj7mes9jmcd8r7e
 X-Rspam-User: 
-X-HE-Tag: 1766656191-411247
-X-HE-Meta: U2FsdGVkX1/ykk3QkcCXPYZ/+xyDGwDTajaI44qciUcZc8P1vdBgtJA6bxsKImAJLDsJsb1cUBiwzNh52w9XSFpnvQ/oxCblJMVSqPeZqnUliByK+JbnUG9Y87eb1SBpnt1hgUosUJZrNBjwQdRCWOq3Vp1PuHIoK7CJ2jP0orl62z1IEYThQiUK+njeFe6OgSEIRmxTzgOA2YYN4ldp9eiOq4Hh32m/dYD4GbI0r6Ww9XEcX6NzR5+J8T8ccc7sI3As1zfWM9Nhk4tWWG+rrc9b/BM2FDt3qG5BGaEpNm0gxDqWPQdxVZMx/HAz1su0+y+1czVyGU4t3aVPqQB2f6v5pMUAlfed7DXeU8gLFYnOLE51G5Bq/6S2ROJRfzshinE7d115YbaIGUyozd5olNNxQfVN276hxAV2ANUoqJzJbc+fUnb2l9F8F/Yur1MRVmZodYrkmAePTPetSP8jcfbEXUkxexE9JsT2jrhWYULSo4Ie1H7pXfQHi/teEaM6sfWBAM9hNHBdDif5Cc8iklXKbJH3stGrxUPfUfO3iILWaX9scC6F3yauuDoZ5fEESHvJbMJ7y2TGtQK/k2yPE6Jx27ET8XMiDfT3mg8v7vFw5a7dcrJFLnLhSQ0mZlBCODpvlwteUrQ1PWqjRnF4LwazUaXwDQE4Kz19C/ETUCNF7QvCHdgUAaDr8U9DFMW3I0Q2qqIMko4btwN/nXAR92w25X617uydfCDztjPELbu4C9kgI9zALugJ7FosTlpW/iqrc8XLVRSFtn2+iZFZFiuf4hd7pwfgol8Fp8Vsyoq7jQ8Ccsj0naK7vqcI690zmsP3vavJjQxLE4suONRY1zkrKkAyV2ePVZ7G9GqBnqVaBGMZVdCRj9HQuLFkllnzTMm4EvEAVduHl01zRaPnXQR8irWtKeSL1MXLe2tqXcOFVzMzU/PBdebQEB8XwMLC8+0Lb5lw/lMI4j+1LpB
- kSA6YhbK
- Q1ionoEsJq/mR6S0Eo27YiFcQi8vpNJqyYyP+5tCm5qsLQ6fqvhN9MmwPu+kC5PcZxleo5qznsQ9F3T0Ve+KJpOoHFcTg08d3QAfukL+7HPT0F1irUcV966I+QSpWUzzuOB4BxowAIzzyqJWMq9i6CtMNofUPonl7FxDRTbsTs8qkPg8fsNg98aKDykNPWaoeBKg4Fmdd9fA0BAI0qwnbUGtOvC2mZMNO2iyUF+sBDcekZ5xTh6BJDyvV3QLhIJ+GP7dB7LEmDObT9pEV6t7WcqGTe3nQ3ABZdCmIOOZKp17C1rQqr9OVwmeyIopk+dJENkoyQtLfO4Q4PX1122Yv/nV07YVlvGZIgsmHeS9OSc/nSXs4qye2SyXdtfMQnN0BQtB5shOA9IQEwqtvxrEkzUdpBsl1da0vaJrUzA8e/J4r9wXMkcqOf2h4KrKCTfhj9jaib/2JU/BcNTnbdlsXcOrqPqeQaOwNTfXKzk061ODdEGDegvXkBC81JK1AwCTMAFNAPy6W4VThZmbUODQDlob0cR7Zq2SdfgopjopbveulyHi0A7mdQCUCUAfkLTLRYFHldkqWnGzLdibnZVa1EHxrXn4HuYgz/xWTLzEO/my2ha8zig1l6TUGJFqO2/dAuF+xEMdPKH2SZhw3lUoPxKRuK3cTXekNaBYx0+uD4D81uo1M/O6N6NHpboj0k16TuxOq
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0564B1C000A
+X-Stat-Signature: u1cmpjhtjidttkut8w74wkto5ipgt66x
+X-HE-Tag: 1766657292-232141
+X-HE-Meta: U2FsdGVkX18RqtNLFfQBxE+U2TOsFf5TxLKglunhAifssY9XdTFJwM85DgoQpWx4zk+IR2voKi4ulPJZUl3adhGgeQllrnRgoiPe4BMyOVGUa0CDO5b4BPg88sX1vgU0/8iYjtlJI0vw0FACeuaWtFDLZouiH0MVcb2g0dFoTT07sfN+C6+ItmPVHvI8Zpom5lsKZPSIi1u6lr93MJ2wrxogwxOLUzlZWUO8MMNsnsFG85ZWAMRy2EsBxmGsYeCdmu0r5GHBxnTZhbyneEcGiBIk1XBnkt1n1MGkHV644XlUGdB8FDvzlUwM1MgUNz094XeRbxXw/8IltrpKUQ7GF4nkBrY5dmGyL0vISIZkBhoy5HDrGRGQH3pP6M6YeJ3v/e90g7z0e2zkvo9MJtdh81tl0SkTSJENlpfZWdWxF0ZekpOxgFqZ6vs33Skoat7+s7joZ6uXjimUfeUGadIbGmt1WMvT/JjdkwkLgRvzs+26/HpPfnwZWRg0dyfBsbRj2I6tNL0k7xq2LU6G6fGqmWZFCL2HeJftFKoqxrC2hw05P4xbCb1s+NqMxcZ+89644mR6Q46uf+lHUg5M1SSmVCyY3z5rEhzj/RmDNoMXi89KSqRugP9IIzUi5YAmwf6j3w4vMBWxibnFwjxSxVfoJIJ6U1EF+BMRJY75MijYtiuI/Vhq3Q0P2Vcj5D+ao4DOWmwJl27MlT4xSLltU7MJfor9QQc4wtE2wFFJWv6leWgIwEoO+bdSd3AY3YoHpRbPENoaycHJhx3KQu0FBN2VFDCIKbKr6AqqRYi30n3kNdD98yg7ETqkWIDimsd+9Gk/zrwQ81HvnAd6CNKdwFfeQfZMVJF/xrLukNjLJA7Bf7gn/NFbEifzt2M/yPz3Sa5FdFyolQ6iS0Phh4e+lT19hivtciBmd+WmQ7sI4QROOZwGvEjEaFkyYlItmzcpfoZ9uqRn2HZ3V9CexMSocDu
+ SKpB7CzW
+ y3Zo3lC6ENGwNAc9rQcQQ8rjrBuHhIcPJbg2GhkUE/cqbzQhiUgZWSIvyLTwsldXBpvsDI4FY74Q4vK4ncPHdFbN3PrLsS/bq9xQ7Wv0sqrpeV7ZLqBitrbUgLYuDpeCR/SrW6SfjR0sEfmCR7HSXaDjczAKMp35lG755MSkoIy6K6ojwa3iLbRFW507dprTJ682oFgBapded8nAKHlTXMtAjN+L4Yg1UFoH6gFW+1FSLmRFQb6NB1EY2jYkemI+bXiC1TjCSRBm6WoDOEcwmiIgP3NKKzJW25ZS3xgiJNZG3oakEiPL22xWlRHAe+plrZBNHhsQFMyQp2RfnQBpen0szsxveBQr81QMHlSQnrPg6jqbWIKtL2SfFh37Io8ZeGsHiqRQZhAmr8Dw5EW/hffKVA1YkUWdsNOtC9LoS5ML5QHKuaCAacgW2CbppEYlk1Xvmqf76R34+JjIDIDCcrT+u4IJwh0Y8bhRofxyCHPrlSXHdHCNEhUGAigbvrmcrZrg6ezk5iE379Pab1QrXC6NK1Obd8HAod8Ah6rodYZO5u5yCM51bFJUXIQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,136 +89,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/24/25 00:23, Laurence Oberman wrote:
-> On Tue, 2025-12-23 at 22:40 +0100, David Hildenbrand (Red Hat) wrote:
->> One functional fix, one performance regression fix, and two related
->> comment fixes.
->>
->> I cleaned up my prototype I recently shared [1] for the performance
->> fix,
->> deferring most of the cleanups I had in the prototype to a later
->> point.
->> While doing that I identified the other things.
->>
->> The goal of this patch set is to be backported to stable trees
->> "fairly"
->> easily. At least patch #1 and #4.
->>
->> Patch #1 fixes hugetlb_pmd_shared() not detecting any sharing
->> Patch #2 + #3 are simple comment fixes that patch #4 interacts with.
->> Patch #4 is a fix for the reported performance regression due to
->> excessive
->> IPI broadcasts during fork()+exit().
->>
->> The last patch is all about TLB flushes, IPIs and mmu_gather.
->> Read: complicated
->>
->> I added as much comments + description that I possibly could, and I
->> am
->> hoping for review from Jann.
->>
->> There are plenty of cleanups in the future to be had + one reasonable
->> optimization on x86. But that's all out of scope for this series.
->>
->> Compile tested on plenty of architectures.
->>
->> Runtime tested, with a focus on fixing the performance regression
->> using
->> the original reproducer [2] on x86.
->>
->> [1]
->> https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/
->> [2]
->> https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/
->>
->> --
->>
->> v2 -> v3:
->> * Rebased to 6.19-rc2 and retested on x86
->> * Changes on last patch:
->>   * Introduce and use tlb_gather_mmu_vma() for properly setting up
->> mmu_gather
->>     for hugetlb -- thanks to Harry for pointing me once again at the
->> nasty
->>     hugetlb integration in mmu_gather
->>   * Move tlb_remove_huge_tlb_entry() after move_huge_pte()
->>   * For consistency, always call tlb_gather_mmu_vma() after
->>     flush_cache_range()
->>   * Don't pass mmu_gather to hugetlb_change_protection(), simply use
->>     a local one for now. (avoids messing with tlb_start_vma() /
->>     tlb_start_end())
->>   * Dropped Lorenzo's RB due to the changes
->>
->> v1 -> v2:
->> * Picked RB's/ACK's, hopefully I didn't miss any
->> * Added the initialization of fully_unshared_tables in
->> __tlb_gather_mmu()
->>    (Thanks Nadav!)
->> * Refined some comments based on Lorenzo's feedback.
->>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Nick Piggin <npiggin@gmail.com>
->> Cc: Peter Zijlstra <peterz@infradead.org>
->> Cc: Arnd Bergmann <arnd@arndb.de>
->> Cc: Muchun Song <muchun.song@linux.dev>
->> Cc: Oscar Salvador <osalvador@suse.de>
->> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
->> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Cc: Vlastimil Babka <vbabka@suse.cz>
->> Cc: Jann Horn <jannh@google.com>
->> Cc: Pedro Falcato <pfalcato@suse.de>
->> Cc: Rik van Riel <riel@surriel.com>
->> Cc: Harry Yoo <harry.yoo@oracle.com>
->> Cc: Uschakow, Stanislav" <suschako@amazon.de>
->> Cc: Laurence Oberman <loberman@redhat.com>
->> Cc: Prakash Sangappa <prakash.sangappa@oracle.com>
->> Cc: Nadav Amit <nadav.amit@gmail.com>
->>
->> David Hildenbrand (Red Hat) (4):
->>    mm/hugetlb: fix hugetlb_pmd_shared()
->>    mm/hugetlb: fix two comments related to huge_pmd_unshare()
->>    mm/rmap: fix two comments related to huge_pmd_unshare()
->>    mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables
->>      using mmu_gather
->>
->>   include/asm-generic/tlb.h |  77 +++++++++++++++++++++-
->>   include/linux/hugetlb.h   |  17 +++--
->>   include/linux/mm_types.h  |   1 +
->>   mm/hugetlb.c              | 131 +++++++++++++++++++++---------------
->> --
->>   mm/mmu_gather.c           |  33 ++++++++++
->>   mm/rmap.c                 |  45 ++++++-------
->>   6 files changed, 213 insertions(+), 91 deletions(-)
->>
->>
->> base-commit: b927546677c876e26eba308550207c2ddf812a43
-> Hello David
-> 
-> For the V3 series, I re-ran the tests and the original reproducer and
-> its clean. I see the same almost 6x improvement for the original
-> reproducer
-> 
-> # uname -r
-> 6.19.0-rc2-hugetlbv3+
-> 
-> Un-patched Result of reproducer Iteration completed in 3436 ms
-> V3 Patched Result of reproducer Iteration completed in 639 ms
-> 
-> I also ran a test to map every hugepage I could access (460GB of them)
-> then fill and validate and had no issues.
-> 
-> Tested-by: Laurence Oberman <loberman@redhat.com>
 
-Thanks a lot for the quick retest Laurence! I'd love to get some generic 
-hugetlb testing on arm64 and powerpc, that do hugetlb TLB flushing stuff 
-a bit more special.
 
-I'll try doing some arm64 testing early in the new year myself.
+On 2025/12/25 12:04, Barry Song wrote:
+> On Thu, Dec 25, 2025 at 6:01 AM Matthew Wilcox <willy@infradead.org> wrote:
+>>
+>> On Wed, Dec 24, 2025 at 10:40:27PM +1300, Barry Song wrote:
+>>> From: Barry Song <baohua@kernel.org>
+>>>
+>>> Uninitialized folio allocated in shmem_symlink() may be accessed
+>>> during swap-out, causing KMSAN BUG:
+>>
+>> This would be an unfortunate way to fix it.  The vast majority of
+>> symlinks are short, and we'll never access past the \0 in normal
+>> operation, so we'll be dirtying a lot of cachelines essentially to (1)
+>> shut up an automated tool and (2) optimise a corner case.
+>>
+>> How about this instead which delays zeroing to swapout?
+> 
+> Matthew, thank you very much for your review, even during Christmas.
+> I would like to wish you a happy holiday!
+> 
+> I am not quite sure, as shm symlinks do not seem very common. Since
+> allocating a folio requires a symname longer than 128 bytes (where
+> 128 == SHORT_SYMLINK_LEN), such cases appear even rarer.
+> 
+> BTW, do we need to migrate the owner_2 flag in folio_migrate_flags()?
+> If so, I am not quite sure it is worth changing the hotpath to
+> accommodate this.
 
--- 
-Cheers
++1. At least for me, using the 'PG_owner_2' flag alone to mark this 
+uncommon case doesn't seem quite worthwhile.
 
-David
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index ec6c01378e9d..f3b3be1b50fe 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -1636,6 +1636,13 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+>>                  folio_mark_uptodate(folio);
+>>          }
+>>
+>> +       /* Zero out symlink tails to help with compression */
+>> +       if (folio_test_owner_2(folio)) {
+>> +               struct inode *inode = folio->mapping->host;
+>> +               folio_zero_segment(folio, inode->i_size, folio_size(folio));
+>> +               folio_clear_owner_2(folio);
+>> +       }
+>> +
+>>          if (!folio_alloc_swap(folio)) {
+>>                  bool first_swapped = shmem_recalc_inode(inode, 0, nr_pages);
+>>                  int error;
+>> @@ -4133,6 +4140,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, struct inode *dir,
+>>                  memcpy(folio_address(folio), symname, len);
+>>                  folio_mark_uptodate(folio);
+>>                  folio_mark_dirty(folio);
+>> +               folio_set_owner_2(folio);
+>>                  folio_unlock(folio);
+>>                  folio_put(folio);
+>>          }
+> 
+> Thanks
+> Barry
+
 
