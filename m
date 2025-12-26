@@ -4,108 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8329BE7AD73
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 01:03:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D149AE7AD4B
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 01:48:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C8F86B0088; Thu, 25 Dec 2025 20:03:58 -0500 (EST)
+	id CD9226B0088; Thu, 25 Dec 2025 20:48:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 076CF6B0089; Thu, 25 Dec 2025 20:03:58 -0500 (EST)
+	id C86926B0089; Thu, 25 Dec 2025 20:48:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E916E6B008A; Thu, 25 Dec 2025 20:03:57 -0500 (EST)
+	id B933B6B008A; Thu, 25 Dec 2025 20:48:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DAAA26B0088
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 20:03:57 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6EFCF14052F
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 01:03:57 +0000 (UTC)
-X-FDA: 84259825314.09.43ECD2E
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 260E8120008
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 01:03:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766711035; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A65ED6B0088
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 20:48:45 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6246FC1D60
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 01:48:45 +0000 (UTC)
+X-FDA: 84259938210.28.C21BC36
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 92DFD180010
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 01:48:43 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PbItOxs6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766713723; a=rsa-sha256;
 	cv=none;
-	b=ofvlV2M38H97+gK0IiX3rANzNcaKRW/3kzA27aIi36oGXKWMyT4nc/ogkM94MPgXKhj3+f
-	mI/BviSwijFXBIUaReS9kRxwMjnzQIBpfE3Z2jwPNuycxbiJok25nDabPJrZy4C78Q8opI
-	ign1Tkp4yBWNbxUxb2GcsgT//460ebY=
+	b=FwlOH8bXDeWL9ivQnOUMyt1jYr9+ZOpAE1fpiER4UNfPhXcynecXlyIMXQ6965z0jIt2G8
+	KEz9CPHkyvz1suzc3yY0hzZv5ru3hADmnmUK0+lrP/yQ4q+tB1QvDU5+4K/h2UeyKswmGO
+	nq4woIeyVgTbkwOw9O76zGGN1Ov0U5k=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PbItOxs6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766711035;
+	s=arc-20220608; t=1766713723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3rWlKv5fVrsG4lz40Se77amdc29b1YUBcV0wk9U6eSs=;
-	b=1p4qIe7bEG2c9UHZxp2o+yB/asii9Z5uKuDFv7gNAU246x5YCGOSBWe9ysuFHn7V0mA1+M
-	elSvAPQxs+p3s5JMHEMM8CnBv/zZolqsbyxOv6QWx01ht+4UlHTcRQBiCCNWMDYjf053ml
-	urylKlmv+5fCMHS5ChdG/NBPYOSozPQ=
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dcnRc36d6zKHMWw
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 09:03:24 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 8FECC4058D
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 09:03:46 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgAXefnx3k1pTD79BQ--.36305S2;
-	Fri, 26 Dec 2025 09:03:46 +0800 (CST)
-Message-ID: <05500a05-aa90-4b60-a324-2819dc2c5805@huaweicloud.com>
-Date: Fri, 26 Dec 2025 09:03:44 +0800
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=L0ep1z35kb4XqhwawCGHg9stDipapmGII2XgTZosfBE=;
+	b=sxh15Z3nIthBE0rrwe5hKaueAzvvGIMp++UAUg1tj+P1RikrkrOtqUHqOO60IfBa8e23iv
+	qgtS9Lq7QkeURZuiWy/Ho8soNOFHMMl7H4Zw/5Vj7I8VPIQ9h0hTDvXODVcpPh7zQ92OLO
+	PcYfetxSIKadt3ACvkUrE3ZahOMrw3o=
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-78fcb465733so42321347b3.3
+        for <linux-mm@kvack.org>; Thu, 25 Dec 2025 17:48:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766713723; x=1767318523; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=L0ep1z35kb4XqhwawCGHg9stDipapmGII2XgTZosfBE=;
+        b=PbItOxs66zVS+EU8dnp59mq/PEiLVzOZgZKcCUede8XDb4yexJrpQC0caUTZOTWVqN
+         Qhy7EvmjxxXfGPmPpIsm6y2EzhgZb8fy6CkEpNkgf5WaIkRukV3HT16oR5HEeamrjGWa
+         TmCfv8dEuvUv4VnmzlfLTNdO8ylEgoWViUmGq+dKHjVE2193tLHoZQ4PaLES1QvyM1oM
+         jMatAT6FQB2apDeKxOoIwUsleJn1kqq2J9G143HY7dZlHcEaDqhbKqXNViIgH+Ly1ket
+         8p2Y12JtX6ba9xDGP+IFH5X+0Lz5C3ESLF2vkVB2OQOXptdWumd5lPnJ3HPTEJYj6pgf
+         P/wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766713723; x=1767318523;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L0ep1z35kb4XqhwawCGHg9stDipapmGII2XgTZosfBE=;
+        b=pIFAOxFeQVFyLh29+1D7H1/sD5qeAAyk4cQ5d6jFMwS8iVnYT2pJX7QJpkziUaoy1H
+         0oQvh61Jq1DmWZGg9/p+sHP9O6E5JnHAd55s4Cuhpq1VcjbnXV9mA1RcPyaVp8+uq7Mz
+         62MbVFdeluIgWti+yZinhhV84FkPHUNZgumofp5pGrwS1VWWtqdIuRktM8jUpYracIgG
+         q4QOhVD8uHIvVW6yo5/LfyY/+BeZUM5UjOfo1AWRWhlfVcbp1nKsq6izm5hQa8NsAgcW
+         WotihNi9WCBDd9AnIhW1ji88c74I0JDkh8YMr4kD8gQkxv2noYvodw5F6IJOcssK8z6k
+         aCfg==
+X-Forwarded-Encrypted: i=1; AJvYcCWPWKxALMnC7aALor43583UV5oVgudZ8a5P/HMYEL5inierRN3r2OB1xkeaB3mB2jC90xbbDnVHBA==@kvack.org
+X-Gm-Message-State: AOJu0YyI07pWoNILjDQyh9t0C8b42SRGCcKf7SEk4IsrjGO3No42QHRn
+	me236B+czTvXTyimnjE2NiZkrmbxqzqqJB5DkExkSV4SuSRVvt3PqR+J49MJdLBraKX+2+oW/gQ
+	EmyPEVR4mxyXsui7y+j96PAZwgyv2zew=
+X-Gm-Gg: AY/fxX7Qmwjwe38hZPvoRNulrkWMwYf+2qYPMhPejkCdkvIoMyXusXZ1FniUv2bH94J
+	ehNNU3otKVh1gB1b6wc7EE5q8AkMV/at4Ex+PBm7OvjIXOGHQB5P4jI4t1Qw9UCoGeHsUmpF1iv
+	wHxydj9Vti3BtDGdJnHnfHl5WklxknCihuSgkd1O1WRNpROwrAzso2aLz4g2ew2Cdv7cu5OxotI
+	vzK8OAEmxK0CfCpUR6NJ0srjzaYIQ5DWM+yGaUTlSB22QoVo0I7ViVeO8BkROBywHnqkwxZ
+X-Google-Smtp-Source: AGHT+IFNGh+EhBl5YKWIccHNZjnVnlz9LeE/BAUD/ku8d3EKlnra6wOjAaLjvI1k6A0RAHKbL7wcOwKeI7dwj6eJuLQ=
+X-Received: by 2002:a05:690c:600e:b0:78c:5dfe:1b57 with SMTP id
+ 00721157ae682-78fb4144855mr191337757b3.38.1766713722643; Thu, 25 Dec 2025
+ 17:48:42 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/28] mm: memcontrol: return root object cgroup for
- root memory cgroup
-To: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
- mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, mkoutny@suse.com, akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <3e454b151f3926dbd67d5df6dc2b129edd927101.1765956025.git.zhengqi.arch@bytedance.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <3e454b151f3926dbd67d5df6dc2b129edd927101.1765956025.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgAXefnx3k1pTD79BQ--.36305S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3Xr4DWry7KF1xuF13Cw4DArb_yoW3Zw1DpF
-	srCF9xtw4Fy3yUGrsagayqva4rZa18Xr45JryxGwn7JF4aq3ZxJr1ayr1jyFyrAFZxGry7
-	Jrs0yF43CFWjyFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
-	s2-5UUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 260E8120008
-X-Stat-Signature: g7oueoi4gbkmxd44ngp3zucdggy44g75
+References: <CAHOvCC4zwbiLXRTHav67GcngiVZ-5GESqkY9juLtqAfWQW1UQg@mail.gmail.com>
+ <20251225194959.937-1-sj@kernel.org>
+In-Reply-To: <20251225194959.937-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Fri, 26 Dec 2025 10:48:31 +0900
+X-Gm-Features: AQt7F2oTYniRPCSfdt7CQ8r-hSgU5_yIqPxO-RpmUG-RrdVNJtAYkSSbx8YfbGQ
+Message-ID: <CAHOvCC6PQKAK5WojmVFqBw0V-TZ+11CM_2uq4z8TxsyEu3gLVQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon/sysfs: preventing duplicated list_add_tail() at
+ the damon_call()
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, rgbi3307@nate.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1766711031-394763
-X-HE-Meta: U2FsdGVkX18V25MaSOgWZdgZfchFfdTXM83LGMgAfSAlbQiAfaqbHQQrY1k79BwiF4zBnJ3v0aESp8mcExwTiHN/j5AEghyl4vcliCWfe4KJ9Y4FWCayef03BObLRv+HKaceB8x30uJWVbkBsJ9S236EUmXunpWJR2b4fwINLbs38V8mb7R/y0Pnxe4ARmcuReSAHimxhE+r0MteIgg1hg70kyWCc/9O+sj/NiNqUjomNvUoYolbCxYpurkVuJCFwsB3tjccnBHhpUkUDoep7ob9aaJgjiicn16+mZoCjJyzx+rc35dgKn5DjBx61kcEBoT0uQPoDH9KCDOFs3yeLhdGWbt1bVyMZmigyHVMUr2qMqF1mqQXnv0kCWwLmJO8XqJpPV6h3nz942hdAZ1tYTJ9a0DMCrs+CSdD08AoVmSlMcHn2U9sPIJouoO6l/RbKGMXNpemPdcCq4wyhyp4FlmZeX2mUvgX0tihLvBeJcrHXB9p8I6/FQxb1Bw+uMSHLMCd+HCI/R22O4gytAS+LCwJ7bB1g5sJfjBYcJH9XtoblU99gDtrucDfJa6OHcbX19ihGEkHkwqVDjKJ+k9fzukktswFEguQDKuotcoTxyXtH9tjsVF3KFUy9E8XCalBHdFnQB3MWvzOgA3vcuUgfssXl/s6ynemrsVWpEN9z9Y0sb31GZ7T2hXIBfKFyXPmSYAcXFr27sfpit3k9Z36pH/WNMZNnvR4tQ/r8xGP8OPuMdtDtR+1mLhRd5LHUFJUcuZxWlUswBIpKiPoCLt0FAUGCC6Z3htdTwhnPkSe1cPxa8Vl03cHDMNp4fy/zo1dzmLNH0ghlPhqbr+yF7d2mnKwE02lhIGufU2nOOv286m7wZLTPyKWDKXMgxGMK4YrUpyHvWtpt12Cgp6SJaWNu8307kiwWFKwP9Zo4FMyI2KPTxw5Zxp2DkNTjIKy893IgIOZ1D/M9UDo/iKxUA6
- gmoMry3Z
- IGFmV3KcgITlAU2TnPPP7+dR85KLrwnPnRIZIaXXgf8WnUT5HbTGBXuiOp5wMOXCWFWo8GRddrvzCZle/I5pKHBobwVDPzTLerOn228Wy77l90p+hh6pJlAUAeLTMDraisP+Ixg/INOVutaNXdbG2S/3kXdlPVXPuJQNv4zsQIXbZyCfSd+XBRDsnwQ==
+X-Rspamd-Queue-Id: 92DFD180010
+X-Rspamd-Server: rspam10
+X-Stat-Signature: knt9omu7xtq4pjm1ywm7h6egr4jmgqi7
+X-HE-Tag: 1766713723-801817
+X-HE-Meta: U2FsdGVkX18tUw73QlrznnJNbKykAwTWVa+FHWtdQhBJVb9lHUDfoWpYC19w0xkbjd0dx7YxNgs3rq+buKKY8PPr6r52eHwIvgwHNjNiXqATSVqIIqPrP9jcpAvYQHtkw5m9EimdUdc92O28Z2vkoiAdcwgZ4qhFoelcsAS7a6740ohvo44fCzoqtPU60TWQb8eNGzKJ7rLjs3qUbsbHCGU0btELiQq98tTLGR9jZAIxDVMIabaaBNsHaps+OVzESK2EQXKF6ilEwwfKtH7Hq/qIt1Mlm0sB0ltpcwY+Tgwhv+/H312Ztun0bxWLKosAfOka+JII8zTeforH6P+CUmFugQI0HSna5cetBzsaGSbYPHY6sHyiVhC/ayaSbv+vPimtJfl5Bdl3jY7FPowj6HWA1RqC9Pxw3IdEqYFW9LvMNF5MHRxtG/06zi5vUoDElStFuMyPWGRGiuzBrLOUVTrgJ1MtYL5qTUzjmGnlBiZypGSLFw7uI/TUY0IDqrNJN+CoEUvYMPwqwhPGyQqUjunygLC75fcCvNsBOfbZRks0ySyUBR1TNuHejnVPDpVm5Os89QgjZjqvOg0Gvb1vq9lXFv/e9rMeoVrmOTkFvRbj1vPi0FVKeESJqPBUiS1wskHdOHwpDqHc1SJODK2JcezXR6iOjcKuOGS3pPt4CqK4avYSLFO6LyYYxt6RSjhA5wfdlauXgydMHFyuhAfI7w1XbGhdOZgS+syjJ8vmgBo8mkH7wLJbHAiRVFd/gTCbauhBKh9bXVjkMqDURyPvTPDlOTqLuTLDkjQhRJ/yycXyKiKUlds7D8aP6x0c4rhu3VrwSnhfe1z7fn9kT5JqTGl7QIWNfjYnOev21ydVpqMQv4DtNDOgQuGmPfYrlp8eb0joXthqfqnoRtDF3ykCmTMhB2N5WDDkgwItjsr/7wZRhd1N8NAu6nTu1+++/ENlXBHWworWXipXibvLNqW
+ CWrCV8uJ
+ aaFdyCGHRi2NzqKRrqbPChZbwwd0UCz94kSJaoyuPFltlipYxZVa/KsMNGIcdvJHenTCkXyaAXfNqljcggOcmULbNIVTny5LlRUzhAhZ+6o38LpGEKpzEkiXAUYXhujO8TqbsxQesbrfa25GDx5K2Q7UHPOcyqPETdJK0r6EL4QSOGGIzA7PmEpfQwSel4G3gI9sEe+TGEMSJSh0Rk9KiRuEirAq7mldun5NPzsFtTUWnvIo8zXrmN14THZTwdBcdU57QGuS3KbEIrO2QxNsH7q91B/+X8hMDVggKVd5KJ67nnnU+q8DUBpnAR+8pAwqkFpRSBfU7sCq06ku+XkE7TkSIsZBkis4DMCG/Cc4icQAkj3FY5+FfExIiszV5109nA+KtduxVoJpe5Upwng3YwihwQYevX20TRdxJBSyduBReNIkb6K58JhNnB2pQwNxWhdPeE+LpXrDr30rqzpJblVshJQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,253 +114,257 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, 26 Dec 2025 at 04:50, SeongJae Park <sj@kernel.org> wrote:
+>
+> On Thu, 25 Dec 2025 11:35:33 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+>
+> > On Thu, 25 Dec 2025 at 09:32, SeongJae Park <sj@kernel.org> wrote:
+> > >
+> > > Hello JaeJoon,
+> > >
+> > > On Wed, 24 Dec 2025 18:43:58 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > >
+> > > >  cd /sys/kernel/mm/damon/admin
+> > > >  echo "off" > kdamonds/0/state
+> > > >
+> > > >  echo "commit" > kdamonds/0/state
+> > > >  echo "commit" > kdamonds/0/state
+> > > >
+> > > > If you repeat "commit" twice with the kdamonds/0/state set to "off"
+> > > > with the above command, list_add corruption error occurs as follows:
+> > > >
+> > > > 4-page vmalloc region starting at 0xffffffc600a38000 allocated at
+> > > > kernel_clone+0x44/0x41e
+> > > > ------------[ cut here ]------------
+> > > > list_add corruption. prev->next should be next (ffffffd6c7c5a6a8),
+> > > >          but was ffffffc600a3bcc8. (prev=ffffffc600a3bcc8).
+> > > > WARNING: lib/list_debug.c:32 at __list_add_valid_or_report+
+> > > > 0xd8/0xe2, CPU#0: bash/466
+> > > > Modules linked in: dwmac_starfive stmmac_platform stmmac pcs_xpcs phylink
+> > > > CPU: 0 UID: 0 PID: 466 Comm: bash Tainted: G W 6.19.0-rc2+ #1 PREEMPTLAZY
+> > > > Tainted: [W]=WARN
+> > > > Hardware name: StarFive VisionFive 2 v1.3B (DT)
+> > > >  epc : __list_add_valid_or_report+0xd8/0xe2
+> > > >  ra : __list_add_valid_or_report+0xd8/0xe2
+> > > >  epc : ffffffff80540bce ra : ffffffff80540bce sp : ffffffc600a3bc00
+> > > >  gp : ffffffff81caec40 tp : ffffffd6c036f080 t0 : 0000000000000000
+> > > >  t1 : 0000000000006000 t2 : 0000000000000002 s0 : ffffffc600a3bc30
+> > > >  s1 : ffffffc600a3bcc8 a0 : ffffffd6fbf49a40 a1 : ffffffd6c036f080
+> > > >  a2 : 0000000000000000 a3 : 0000000000000001 a4 : 0000000000000000
+> > > >  a5 : 0000000000000000 a6 : 0000000020000000 a7 : 0000000000000001
+> > > >  s2 : ffffffd6c7c5a6a8 s3 : ffffffc600a3bcc8 s4 : ffffffc600a3bcc8
+> > > >  s5 : ffffffd6c7c5a6b8 s6 : ffffffd6c7c5a6a8 s7 : 0000003ff3f32794
+> > > >  s8 : 0000002ab38c9118 s9 : 0000000000000065 s10: 0000003f823a5cb8
+> > > >  s11: 0000003f823264e8 t3 : 0000000000000001 t4 : 0000000000000000
+> > > >  t5 : 00000000fa83b2da t6 : 000000000051df90
+> > > > status: 0000000200000120 badaddr: 0000000000000000 cause: 0000000000000003
+> > > > [<ffffffff80540bce>] __list_add_valid_or_report+0xd8/0xe2
+> > > > [<ffffffff80255c86>] damon_call+0x52/0xe8
+> > > > [<ffffffff8025c9a8>] damon_sysfs_damon_call+0x60/0x8a
+> > > > [<ffffffff8025daf4>] state_store+0xfc/0x294
+> > > > [<ffffffff80dbf1fa>] kobj_attr_store+0xe/0x1a
+> > > > [<ffffffff802f070c>] sysfs_kf_write+0x42/0x56
+> > > > [<ffffffff802eef4e>] kernfs_fop_write_iter+0xf4/0x178
+> > > > [<ffffffff8026545c>] vfs_write+0x1b6/0x3b2
+> > > > [<ffffffff80265782>] ksys_write+0x52/0xbc
+> > > > [<ffffffff80265800>] __riscv_sys_write+0x14/0x1c
+> > > > [<ffffffff80ddf124>] do_trap_ecall_u+0x19c/0x26e
+> > > > [<ffffffff80deaa38>] handle_exception+0x150/0x15c
+> > > > ---[ end trace 0000000000000000 ]---
+> > > > -bash: echo: write error: Invalid argument
+> > >
+> > > Thank you for finding issue!
+> > >
+> > > Also appreciate for sharing your detailed reproducer.  Nevertheless, I think
+> > > the reproducer can be more detailed.  E.g., you could explicitly explain the
+> > > fact that the reproduction step should be executed only after starting DAMON
+> > > with the kdamond, and the kernel should run with CONFIG_lIST_HARDENED to get
+> > > the output from the kernel log.
+> >
+> > Yes, as you said, I ran it under CONFIG_LIST_HARDENED=y condition.
+>
+> Thank you for confirming.
+>
+> >
+> > >
+> > > >
+> > > > The cause of the above error is that list_add_tail() is executed
+> > > > repeatedly while executing damon_call(ctx, control)
+> > > > in damon_sysfs_damon_call().  The execution flow is summarized below:
+> > > >
+> > > > damon_sysfs_damon_call()
+> > > >         --> damon_call(ctx, control)
+> > > >                 list_add_tail(control, ctx->call_contols);
+> > > >                         --> /* list_add corruption error */
+> > > >                 if (!damon_is_running)
+> > > >                         return -EINVAL;
+> > > >
+> > > > If you execute damon_call() when damon_sysfs_kdamond_running() is true,
+> > > > you can prevent the error of duplicate execution of list_add_tail().
+> > >
+> > > The kdamond might be terminated between the damon_call() call and the
+> > > damon_is_running() check inside the damon_call() execution.  In the case, the
+> > > problem may still happen.
+> > >
+> > > The problem happens because damon_call() is not removing the damon_call_control
+> > > object before returning the error, right?  What about removing the object
+> > > before returning the error?
+> >
+> > damon_call() is called after damon_start() --> kdamond_fn() is executed,
+> > This is a problem because damon_call() also occurs when kdamond is "off"
+> > only in damon/sysfs.  So, my first patch solved the problem, but the
+> > following also worked. I tested it.
+> >
+> > And it seems better to keep the existing method of releasing
+> > damon_call_control.  Since the damon_call_control structure uses both
+> > static and kmalloc(),  it's appropriate to release it in kdamond_fn() according
+> > to the condition control->canceled && control->dealloc_on_cancel.
+> >
+> > My previous suggestion regarding this:
+> > https://lore.kernel.org/damon/20251206224724.13832-1-rgbi3307@gmail.com/
+> >
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index babad37719b6..2ead0bb3c462 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -1462,6 +1462,9 @@ bool damon_is_running(struct damon_ctx *ctx)
+> >   */
+> >  int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+> >  {
+> > +       if (!damon_is_running(ctx))
+> > +               return -EINVAL;
+> > +
+> >         if (!control->repeat)
+> >                 init_completion(&control->completion);
+> >         control->canceled = false;
+> > @@ -1470,8 +1473,6 @@ int damon_call(struct damon_ctx *ctx, struct
+> > damon_call_control *control)
+> >         mutex_lock(&ctx->call_controls_lock);
+> >         list_add_tail(&control->list, &ctx->call_controls);
+> >         mutex_unlock(&ctx->call_controls_lock);
+> > -       if (!damon_is_running(ctx))
+> > -               return -EINVAL;
+> >         if (control->repeat)
+> >                 return 0;
+> >         wait_for_completion(&control->completion);
+>
+> Let's assume DAMON is terminated between the damon_is_running() and
+> list_add_tail().  In the case, the control->fn() will never be called back.  If
+> control->repeat is false, this function will even inifnitely wait.
 
+As you said, there are cases where kdamond is terminated(stopped) in
+damon_is_running() and list_add_tail().  It may be a very rare case, but
+I missed this case.
 
-On 2025/12/17 15:27, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> Memory cgroup functions such as get_mem_cgroup_from_folio() and
-> get_mem_cgroup_from_mm() return a valid memory cgroup pointer,
-> even for the root memory cgroup. In contrast, the situation for
-> object cgroups has been different.
-> 
-> Previously, the root object cgroup couldn't be returned because
-> it didn't exist. Now that a valid root object cgroup exists, for
-> the sake of consistency, it's necessary to align the behavior of
-> object-cgroup-related operations with that of memory cgroup APIs.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> ---
->  include/linux/memcontrol.h | 26 +++++++++++++++++-----
->  mm/memcontrol.c            | 45 ++++++++++++++++++++------------------
->  mm/percpu.c                |  2 +-
->  3 files changed, 45 insertions(+), 28 deletions(-)
-> 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 288dd6337f80f..776d9be1f446a 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -332,6 +332,7 @@ struct mem_cgroup {
->  #define MEMCG_CHARGE_BATCH 64U
->  
->  extern struct mem_cgroup *root_mem_cgroup;
-> +extern struct obj_cgroup *root_obj_cgroup;
->  
->  enum page_memcg_data_flags {
->  	/* page->memcg_data is a pointer to an slabobj_ext vector */
-> @@ -549,6 +550,11 @@ static inline bool mem_cgroup_is_root(struct mem_cgroup *memcg)
->  	return (memcg == root_mem_cgroup);
+>
+> I think we should keep the damon_is_running() as is, but further check if it
+> was terminated without handling the control object, and remove it from the list
+> in the case.  Like below.
+>
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index c3ae55b940cc..23d8602f5a49 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -1649,6 +1649,35 @@ bool damon_is_running(struct damon_ctx *ctx)
+>         return running;
 >  }
->  
-> +static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
+>
+> +/*
+> + * damon_call_handle_inactive_ctx() - handle DAMON call request that added to
+> + *                                   an inactive context.
+> + * @ctx:       The inactive DAMON context.
+> + * @control:   Control variable of the call request.
+> + *
+> + * This function is called in a case that @control is added to @ctx but @ctx is
+> + * not running (inactive).  See if @ctx handled @control or not, and cleanup
+> + * @control if it was not handled.
+> + *
+> + * Returns 0 if @control was handled by @ctx, negative error code otherwise.
+> + */
+> +static int damon_call_handle_inactive_ctx(
+> +               struct damon_ctx *ctx, struct damon_call_control *control)
 > +{
-> +	return objcg == root_obj_cgroup;
+> +       struct damon_call_control *c;
+> +
+> +       mutex_lock(&ctx->call_controls_lock);
+> +       list_for_each_entry(c, &ctx->call_controls, list) {
+> +               if (c == control) {
+> +                       list_del(&control->list);
+> +                       mutex_unlock(&ctx->call_controls_lock);
+> +                       return -EINVAL;
+> +               }
+> +       }
+> +       mutex_unlock(&ctx->call_controls_lock);
+> +       return 0;
 > +}
 > +
->  static inline bool mem_cgroup_disabled(void)
->  {
->  	return !cgroup_subsys_enabled(memory_cgrp_subsys);
-> @@ -773,23 +779,26 @@ struct mem_cgroup *mem_cgroup_from_css(struct cgroup_subsys_state *css){
->  
->  static inline bool obj_cgroup_tryget(struct obj_cgroup *objcg)
->  {
-> +	if (obj_cgroup_is_root(objcg))
-> +		return true;
->  	return percpu_ref_tryget(&objcg->refcnt);
->  }
->  
-> -static inline void obj_cgroup_get(struct obj_cgroup *objcg)
-> +static inline void obj_cgroup_get_many(struct obj_cgroup *objcg,
-> +				       unsigned long nr)
->  {
-> -	percpu_ref_get(&objcg->refcnt);
-> +	if (!obj_cgroup_is_root(objcg))
-> +		percpu_ref_get_many(&objcg->refcnt, nr);
->  }
->  
-> -static inline void obj_cgroup_get_many(struct obj_cgroup *objcg,
-> -				       unsigned long nr)
-> +static inline void obj_cgroup_get(struct obj_cgroup *objcg)
->  {
-> -	percpu_ref_get_many(&objcg->refcnt, nr);
-> +	obj_cgroup_get_many(objcg, 1);
->  }
->  
->  static inline void obj_cgroup_put(struct obj_cgroup *objcg)
->  {
-> -	if (objcg)
-> +	if (objcg && !obj_cgroup_is_root(objcg))
->  		percpu_ref_put(&objcg->refcnt);
->  }
->  
-> @@ -1084,6 +1093,11 @@ static inline bool mem_cgroup_is_root(struct mem_cgroup *memcg)
->  	return true;
->  }
->  
-> +static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
-> +{
-> +	return true;
-> +}
-> +
->  static inline bool mem_cgroup_disabled(void)
->  {
->  	return true;
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 544b3200db12d..21b5aad34cae7 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -83,6 +83,8 @@ EXPORT_SYMBOL(memory_cgrp_subsys);
->  struct mem_cgroup *root_mem_cgroup __read_mostly;
->  EXPORT_SYMBOL(root_mem_cgroup);
->  
-> +struct obj_cgroup *root_obj_cgroup __read_mostly;
-> +
->  /* Active memory cgroup to use from an interrupt context */
->  DEFINE_PER_CPU(struct mem_cgroup *, int_active_memcg);
->  EXPORT_PER_CPU_SYMBOL_GPL(int_active_memcg);
-> @@ -2634,15 +2636,14 @@ struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
->  
->  static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
->  {
-> -	struct obj_cgroup *objcg = NULL;
-> +	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
-> +		struct obj_cgroup *objcg = rcu_dereference(memcg->objcg);
->  
-> -	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
-> -		objcg = rcu_dereference(memcg->objcg);
->  		if (likely(objcg && obj_cgroup_tryget(objcg)))
-> -			break;
-> -		objcg = NULL;
-> +			return objcg;
->  	}
-> -	return objcg;
-> +
-> +	return NULL;
->  }
->  
->  static struct obj_cgroup *current_objcg_update(void)
-> @@ -2716,18 +2717,17 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
->  		 * Objcg reference is kept by the task, so it's safe
->  		 * to use the objcg by the current task.
->  		 */
-> -		return objcg;
-> +		return objcg ? : root_obj_cgroup;
->  	}
->  
->  	memcg = this_cpu_read(int_active_memcg);
->  	if (unlikely(memcg))
->  		goto from_memcg;
->  
-> -	return NULL;
-> +	return root_obj_cgroup;
->  
->  from_memcg:
-> -	objcg = NULL;
-> -	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
-> +	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
->  		/*
->  		 * Memcg pointer is protected by scope (see set_active_memcg())
->  		 * and is pinning the corresponding objcg, so objcg can't go
-> @@ -2736,10 +2736,10 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
->  		 */
->  		objcg = rcu_dereference_check(memcg->objcg, 1);
->  		if (likely(objcg))
-> -			break;
-> +			return objcg;
->  	}
->  
-> -	return objcg;
-> +	return root_obj_cgroup;
->  }
->  
->  struct obj_cgroup *get_obj_cgroup_from_folio(struct folio *folio)
-> @@ -2753,14 +2753,8 @@ struct obj_cgroup *get_obj_cgroup_from_folio(struct folio *folio)
->  		objcg = __folio_objcg(folio);
->  		obj_cgroup_get(objcg);
->  	} else {
-> -		struct mem_cgroup *memcg;
-> -
->  		rcu_read_lock();
-> -		memcg = __folio_memcg(folio);
-> -		if (memcg)
-> -			objcg = __get_obj_cgroup_from_memcg(memcg);
-> -		else
-> -			objcg = NULL;
-> +		objcg = __get_obj_cgroup_from_memcg(__folio_memcg(folio));
->  		rcu_read_unlock();
->  	}
->  	return objcg;
-> @@ -2863,7 +2857,7 @@ int __memcg_kmem_charge_page(struct page *page, gfp_t gfp, int order)
->  	int ret = 0;
->  
->  	objcg = current_obj_cgroup();
-> -	if (objcg) {
-> +	if (objcg && !obj_cgroup_is_root(objcg)) {
->  		ret = obj_cgroup_charge_pages(objcg, gfp, 1 << order);
->  		if (!ret) {
->  			obj_cgroup_get(objcg);
-> @@ -3164,7 +3158,7 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
->  	 * obj_cgroup_get() is used to get a permanent reference.
->  	 */
->  	objcg = current_obj_cgroup();
-> -	if (!objcg)
-> +	if (!objcg || obj_cgroup_is_root(objcg))
->  		return true;
->  
->  	/*
-> @@ -3851,6 +3845,9 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
->  	if (!objcg)
->  		goto free_shrinker;
->  
-> +	if (unlikely(mem_cgroup_is_root(memcg)))
-> +		root_obj_cgroup = objcg;
-> +
->  	objcg->memcg = memcg;
->  	rcu_assign_pointer(memcg->objcg, objcg);
->  	obj_cgroup_get(objcg);
-> @@ -5471,6 +5468,9 @@ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
->  	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
->  		return;
->  
-> +	if (obj_cgroup_is_root(objcg))
-> +		return;
-> +
->  	VM_WARN_ON_ONCE(!(current->flags & PF_MEMALLOC));
->  
->  	/* PF_MEMALLOC context, charging must succeed */
-> @@ -5498,6 +5498,9 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
->  	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
->  		return;
->  
-> +	if (obj_cgroup_is_root(objcg))
-> +		return;
-> +
->  	obj_cgroup_uncharge(objcg, size);
->  
+>  /**
+>   * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
+>   * @ctx:       DAMON context to call the function for.
+> @@ -1679,7 +1708,7 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+>         list_add_tail(&control->list, &ctx->call_controls);
+>         mutex_unlock(&ctx->call_controls_lock);
+>         if (!damon_is_running(ctx))
+> -               return -EINVAL;
+> +               return damon_call_handle_inactive_ctx(ctx, control);
+>         if (control->repeat)
+>                 return 0;
+>         wait_for_completion(&control->completion);
+>
 
-If we modify zswap by adding MEMCG_ZSWAP_B and MEMCG_ZSWAPPED with obj_cgroup_charge_zswap , then
-remove a control group (via rmdir) and reparent its objects to the root cgroup, then for the root
-cgroup, obj_cgroup_uncharge_zswap will return directly due to the obj_cgroup_is_root check. Would
-this cause us to miss decrementing MEMCG_ZSWAP_B and MEMCG_ZSWAPPED?
+However, the damon_call_handle_inactive_ctx() function is to post-process
+the duplicate addition of control->list.  Rather, it is more efficient to
+prevent duplicate additions in advance, as follows:
+I have tested the following and it works fine.
 
->  	rcu_read_lock();
-> diff --git a/mm/percpu.c b/mm/percpu.c
-> index 81462ce5866e1..5c1a9b77d6b93 100644
-> --- a/mm/percpu.c
-> +++ b/mm/percpu.c
-> @@ -1616,7 +1616,7 @@ static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
->  		return true;
->  
->  	objcg = current_obj_cgroup();
-> -	if (!objcg)
-> +	if (!objcg || obj_cgroup_is_root(objcg))
->  		return true;
->  
->  	if (obj_cgroup_charge(objcg, gfp, pcpu_obj_full_size(size)))
+@@ -1467,11 +1496,14 @@ int damon_call(struct damon_ctx *ctx, struct
+damon_call_control *control)
+        control->canceled = false;
+        INIT_LIST_HEAD(&control->list);
 
--- 
-Best regards,
-Ridong
+-       mutex_lock(&ctx->call_controls_lock);
+-       list_add_tail(&control->list, &ctx->call_controls);
+-       mutex_unlock(&ctx->call_controls_lock);
+-       if (!damon_is_running(ctx))
++       if (damon_is_running(ctx)) {
++               mutex_lock(&ctx->call_controls_lock);
++               list_add_tail(&control->list, &ctx->call_controls);
++               mutex_unlock(&ctx->call_controls_lock);
++       } else {
++               /* return damon_call_handle_inactive_ctx(ctx, control); */
+                return -EINVAL;
++       }
+        if (control->repeat)
+                return 0;
+        wait_for_completion(&control->completion);
 
+> If you don't mind, I'll post the above diff as a patch, adding a 'Reported-by:'
+> tag for you.
+
+'Reported-by:' is OK.  However, please check the above again.
+
+>
+> >
+> > >
+> > > >
+> > > > Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
+> > >
+> > > Could you please also add Fixes: and Cc: stable@ ?
+> >
+> > I don't have much experience with this, so I'm sorry,
+> > but could you please give me an example about this?
+>
+> No problem.
+>
+> Please refer to https://docs.kernel.org/process/stable-kernel-rules.html
+
+Thanks,
+JaeJoon
+
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
