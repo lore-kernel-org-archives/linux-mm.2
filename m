@@ -4,114 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE7BAE8FDB8
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 20:51:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C314E8FDB9
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 21:27:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FF276B008A; Fri, 26 Dec 2025 15:51:36 -0500 (EST)
+	id 75ADE6B0005; Fri, 26 Dec 2025 16:27:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D69C6B008C; Fri, 26 Dec 2025 15:51:36 -0500 (EST)
+	id 708796B0089; Fri, 26 Dec 2025 16:27:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E33E6B0092; Fri, 26 Dec 2025 15:51:36 -0500 (EST)
+	id 5C0B26B008A; Fri, 26 Dec 2025 16:27:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1757D6B008A
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 15:51:36 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AD35913AE3C
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 20:51:35 +0000 (UTC)
-X-FDA: 84262818150.15.A863892
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 31A96A0009
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 20:51:33 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kGKb5FZg;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 47EC36B0005
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 16:27:06 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 85C3F59358
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 21:27:05 +0000 (UTC)
+X-FDA: 84262907610.27.330B73D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1B89040005
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 21:27:02 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dK9qEbZ1;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766784423; a=rsa-sha256;
+	cv=none;
+	b=45hwGhTOiRYFKht9ARVCg9wdL2OsSLXL7a46fR2v8iagaOXkH3eSRBUEd9QHHKe+qHrnvv
+	eivydWCQwknQTUMiS3lVyzCHjlSunD+LCitHJaVXr/AOqAskMVWWbMtGsYfEsrGEZTYRyZ
+	KOdKdIJ0bvEogfELNgtIfD7R0hTRd34=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dK9qEbZ1;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766782293;
+	s=arc-20220608; t=1766784423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YaRayuL/JsLheaa0A6HWQKq33YpmaANx2VpUvioFZYo=;
-	b=R+p9c5+acXp6sLJnhgxjFKdievvF2Hzg9KpCcs1xc+lAxqep6wc3r60GYcUhetR75wm9jW
-	lxm7fPgMPmlITmwrofYoz9jLtExXPHjhPwNjjRtGdE3xUAIGVC07kOeKv9sisjXbRz3eBm
-	zi7h0/D46KjUpxITnMiAnkVQk+EDf+g=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kGKb5FZg;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766782293; a=rsa-sha256;
-	cv=none;
-	b=JkDMZx3+6RPHq3GBu7hGkwnrgtXUBwXjCgca/WC8y2gFHxPGltc1mbCoQewOGCw4aP2nxO
-	Km81BTtyKME//S8oZ8qa93STueG8HTCL3VGgeeE5Q7f9vLaIZzlQiLRAaqhQieJUkJkuuA
-	tz9hJ9sCB1RS3oCDm5QyKIHaHNo7W6o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766782293; x=1798318293;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cIai1HhnCTdXbz4D4yQFoHY8vOuTPp1/oRc27ajVe+E=;
-  b=kGKb5FZgGGkV1R480tQRoYU1qJd6/Bv4HROKwNW3oVkCBz47jMWxbrvu
-   HE7btpIQ5/B+sIAIx724XjUmnETmLyvBd/SubILNOy95q5wfVmsPJSAno
-   rD/BZchwzxGnAe43cbeAulZ+dC1r6mqh7IG3C2lC9ht1ylR9G91x77eRS
-   1F1aP64PfLPFMktZYt/K55n9L/jg/vYxflCRhkX7SeOZxlwvic6DMEc1h
-   kWszOqF1eP5Fru+uVDp+GFNJJPcvmIU++NtOv6khynqtb6RF61koDdq7I
-   ByoUBPVSzAWdurHhI/LPnGWcG4wSQX29UrZtdWXyiC/KENTKMt0Q8eurC
-   Q==;
-X-CSE-ConnectionGUID: 10Q9bYMTTvG5EYHl3dG+iw==
-X-CSE-MsgGUID: arg4r8x1RkGhFEUKfsH5Uw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11653"; a="79246674"
-X-IronPort-AV: E=Sophos;i="6.21,178,1763452800"; 
-   d="scan'208";a="79246674"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2025 12:51:32 -0800
-X-CSE-ConnectionGUID: YqE5d6ZPQYO0wJ3eYfLzyQ==
-X-CSE-MsgGUID: xXoAATubQzuBV+NEBEv4tQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,178,1763452800"; 
-   d="scan'208";a="201371819"
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 26 Dec 2025 12:51:27 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vZEmT-000000005Ld-1ea1;
-	Fri, 26 Dec 2025 20:51:25 +0000
-Date: Sat, 27 Dec 2025 04:51:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org,
-	akpm@linux-foundation.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm/memcg: scale memory.high penalty based on refault
- recency
-Message-ID: <202512270405.sx7TY5MG-lkp@intel.com>
-References: <20251226064257.245581-1-jiayuan.chen@linux.dev>
+	bh=hl0E323tW0AxgEnWj1OLKxpboSYa7xNjNvCKjrDAdIc=;
+	b=ZKQh50rszs1GRpR+daqjA1DscQ/YkfZ2EoVCWLeGYN/9one54up2b6WG6E5u+LxKQ5H11p
+	Q9wIjfDET5o6qSkF47T+J49Q1guadmTb/Dw+6OVAScmiahu1ew3xTXc4Hi2laoOo2fTPxU
+	2StQqu1rZFXZWtGYi+W14X865e/jrCs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766784422;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hl0E323tW0AxgEnWj1OLKxpboSYa7xNjNvCKjrDAdIc=;
+	b=dK9qEbZ1EOkXSDnsFlpLv/nhmy10vJX+UZmjZO8Ndo83KfSQj8qEUINl2F8hMX5V/5EWeE
+	VtdBHHLBS/04hkXtRvML6XpjPyl3aWg8GEDFGB0nneS3pPEt+sqrqW9o2kTp6jflYP1orR
+	dRXnzWbhzhgp79Nrgim124m6Rt/7cQo=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-543-4u9Jt7azNdeD2L5uPhJz2w-1; Fri, 26 Dec 2025 16:27:01 -0500
+X-MC-Unique: 4u9Jt7azNdeD2L5uPhJz2w-1
+X-Mimecast-MFC-AGG-ID: 4u9Jt7azNdeD2L5uPhJz2w_1766784421
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-88888397482so229350356d6.1
+        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 13:27:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766784421; x=1767389221;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hl0E323tW0AxgEnWj1OLKxpboSYa7xNjNvCKjrDAdIc=;
+        b=EH3qXV4aJ9ZB3fIYtATSAQ+sWVvt1a49fHZJDolw+UGCjWTPzmSuion5T6ktO9GeKX
+         F+3Tfrn8viSoaKYyXMwKkjVZK60cisbdfvvlcxGm2+o6xQcnOIb6ZTT6pMIFDYWe9woX
+         X2zb7a+MYjlvh+2R6pFo4Bj0v30YLHLnedV5kynQ9d2ir21xbWha92lLT9eQM9eny3Lx
+         j0YdkxCqbQTg2KwnRMBHi/lZ3igJKOiK57SkuIWLNIls3NL2FSP4y6h5QcOJQ/JzvxLh
+         Al60XbJotVA8JG+2jC97hxC69OH0fQLEJbATka3zwczlaG4aCJOjwpLhKGZFFF4eD/gV
+         9ESw==
+X-Forwarded-Encrypted: i=1; AJvYcCUaGZ+3GpAbUkr8leMu8/O3ATf99nUqgotrWYM7LJ7ojoAlUGEJsVDr/2eQLLcozchDKeZ18QnJeA==@kvack.org
+X-Gm-Message-State: AOJu0Yx9+U4jTj0RLa03QHU9iO+w1XFhn9vNH8JMBHoiLX8H+uCX/1KS
+	qLEAjMJ+Vuyrsgwfi7fvfn/lx0KxM47aEeDiWQLHDafxjyk/uou0J505SsVq/e6BQYMtnOYi3GI
+	2PR5QwGl3L+kfQCs/qlAFOkumvDjnjLKfGwckNHzT1Y4NDmEEcczN
+X-Gm-Gg: AY/fxX5qftAUsDU5UkrR4Nj4y1iOG7BNRnAJKwZuHzqmDtSf3WMFOL8848Lpb30yCUD
+	fbAcsV2R/qDK/eVYZmCN0WwSq60yih6O07o7vT3EjDKQwzh5mkQ0/QFCrBEIIOW8pC0jFUk0eQm
+	U+S0XnlAVbDDcJ9iBeAak5Af6QpIShyj3Hck8M3AeQ6ugtdgyxXscx5Pai0g6qAr1XzhB1wTn4Y
+	/kI4DVrbBB7yFp846KaYwM9tA5+9/v5EwMuOKRzfFYWunAj9kS9/0XVDlQ1lgbRO1rvSJ+Tz2A8
+	2V8ViefqWyv/WChVU0cwSq/cI1X3Otj6DhkMIjPEbaliSdIE1T2NR+m5Mn6+Dw5Czn3vgiHAiPw
+	O50FoZo77NcYMJIRt52DiS2+Q/8+hRjsaAfnMCVtWU/COOZaaZV0E+h6I
+X-Received: by 2002:a0c:fb45:0:b0:88a:529a:a530 with SMTP id 6a1803df08f44-88d82041773mr328948006d6.23.1766784420887;
+        Fri, 26 Dec 2025 13:27:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEfZAYYIQ2fUbZyPMB45iQArY9ihsQ/fJKmBvKtaCb5+ZXeC6tWw3vCNx5szpnr8D6LkXzAiQ==
+X-Received: by 2002:a0c:fb45:0:b0:88a:529a:a530 with SMTP id 6a1803df08f44-88d82041773mr328947536d6.23.1766784420468;
+        Fri, 26 Dec 2025 13:27:00 -0800 (PST)
+Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9aa3ac8fsm175993226d6.56.2025.12.26.13.26.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Dec 2025 13:26:59 -0800 (PST)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <bc573163-c5a8-4bb9-a280-45ca48431999@redhat.com>
+Date: Fri, 26 Dec 2025 16:26:55 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251226064257.245581-1-jiayuan.chen@linux.dev>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 7zu1zd7sft1dk35iazbg6kp7epw4dgtw
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 22/33] sched/isolation: Remove HK_TYPE_TICK test from
+ cpu_is_isolated()
+To: Frederic Weisbecker <frederic@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>,
+ Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20251224134520.33231-1-frederic@kernel.org>
+ <20251224134520.33231-23-frederic@kernel.org>
+In-Reply-To: <20251224134520.33231-23-frederic@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 4Y2RNHU6P_wXSs7uyrzLdCOh8sDNytUjMYo9A_iXulI_1766784421
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1B89040005
+X-Stat-Signature: z8s9anrc4dboyh5brejmraqqoc594icw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 31A96A0009
-X-HE-Tag: 1766782293-48832
-X-HE-Meta: U2FsdGVkX1/w43Vg6q7hLJdiWZQEprvHzy2PDWZ6/QXek3BPJhG8/6PNUZC+lRnkBssjiXC8dP/eng4ydsJnSct8R+Dax9uyFtclfM+L+cQTg4JgrnwgC7yKDzhULiq38Dt1/YMSRSlAJAd79llKByz3NEW4adsfZsOyn5aqeRerpFzfS8aemGgYGy9UAvkunnqIRnNiDDeANdapT5PMFQCk09oIU6Lfov8ldUFhjk0mQqFV3Q0WG0X6d3jD4Q/Dt/a4jRZVbA/m35zU3fJQ/BoMPGk2fL0w84/gLG8UC4zsCGzAU1W2eKiXQK7n8gnJu+bj1xyN8fpkozq6sS3BuPi/OhQWp3FYEN9pY2QVVAhs5qZRkQWxpk/vC+aDf7tLEmwXwO0gwHrhKyoUaoVJLb0zySrh24oYdQEbhwaBunlKMy/75MdybSg8Jgshd5bq98SC+EZv5CLm1axirPLFIiV0Y0o/AoeOQ1EPrLRDlj6VxKwYYkUft6yvbRXISr7KBx8cuIm++Pi2/vuzjh+ruU5YPMISBvQILX5JWfMw9b99lCcQ7dbmDvZLxo6QhqEmieYCx0CQ7MAeLreelbrO7YLZp3r6Y5gYr1z0soXTL+iv3+i8KxMrXF5mRvmumCcyr5pUf4dyDU1Is3fwr1OiGvqdHE9VvpRBpl1sEXL6BPldlwSgo6KxNSKQQdKPPUZUAE911YdrNFsf6dVFMjlL4DgO9waE+bsJ0eBL25XUfCFCoTN2yNPkRYWEUimJWgElozbqFmwFwLKcoCtNwo4WHcnqyfz1t1kBaz/fTQDG+MM6Mq5y9s1Wn8nZvvmRfT8yuEdlHhe/RmXr+6PwrsONd+2qlwwM4jW74ZfV4R2769mtIARMvmQHdzkWvjx8CjC0aV1IO8mMUnTMQ5GZ0V1a9NmjU65qEFg0eW5yPhJWtSJI4xvla0RhHLHveMwR6Ru9hRkDxcuEPiTtqCeYGv+
- FjTkKyHX
- I3rxEs/VvG3EI9uBgFsHfPWDXAFPFLwGIBM7BjCAnZfpyFSA84xT6y32oNwsN1KSRAIQTSNttYRcCV0U+LfAdpqmLLtIlqKcC6ZM3N0PRmr4m4OKSHoJXEfYBTRvWoHxBdpzbCR2ifIfhbTLYB7l9NJwIinI/nm21yDPVlH0N05KiHGI+KDAZ1sMGWC4J8v/B4DNExyRrPAjJPMpUbUNPTCuS4/rnaE2H8i5lGkOqGcQNViGcptvK2NIK5mtW8jlvQjW+3fXnjD277yssIToZQQ3/iYXPVoKrflVryDTcGzrfRyp3iC3V4RUCj/sV+cEVX12/0KBBpMP+WcBswRTi2MKgJwDpGZ9/dHEj1Zo7Sg7wpRQ=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1766784422-103440
+X-HE-Meta: U2FsdGVkX19t5/kPfFJO2W4psNL6lhKrv2O/SqO8IowLq0REEAOWu4IgdGfnbqRjQGw6A+4G3ccf2b9Y+p6CGhkhbJVWmRSnDvaNT0hA8/tVlwTF2AWIY4dGMhNXcVOpqEZOr1fT41WPEEltiLAfQN6U+da/xaZTjO9AE14DWIuPLbj934DtIXUaGwe1iZ46CnnH4M8P8+E05uEiPF2slsAVpESSwi0isxHNKmr5pxqFHZYFj3TMZptOVMHCZc3yAYluzNIlAkLEpSZKiROGuv0LI7QIdZs5E4VcvfYcJRAD20vfgbDD3a6m6i/F0GETNxYG3hcWzJs3CMHBlfB2nUWSwklMP0EqGdXeT9E0dJrG+JkXxn0BfXhX3SFFzm5rVMbl1WW70VJ14LPgNV0qwC8zVFWhgYX+ierYHVgLmrdfE2CELrP3VbCyFx+72JoBiHxC5hBOVLPIKXFv/JcVzxT+qQMVVQK/0qiLtAQgwo/HraQhzIOtnuiQQX5voUBpew0v1O0+eo/eAb1QuK2qGc6eLomw1JbPwh4R4gBq2tw1SOzCkM94on5QEkySdlnxt1povBVld63yOn5dwQfTmF2fi0dXj7YMlPMZecvlq0UGRzxcOrCwaXOu9xOQHQll92esn08uogwfGCbNo2Xn9qTQfpxLUIgnMhz+tnatW0WOofCr2tJE0TkH2AhLzYTtcBSEyjM0pLZKSntB1Xijc+7MQ1P+RXfw8Ykm3EivwUJEqPy8J3aC2soI4E4WGX44pXqdwmxB+HwUt8b59bkIcl2Z9ppYVhPnnxrVSTdq9wfNi4HydFFhY6V41NvoOnIW3mrvpwfGGb6t6Yygb1yBENFhsE5sZVqSfK+H2cZLX/1VK8Ko8az+bA0mrxgKvPmPYXyTFjN0jn3nbJfh1QWO9BgJW6XrLt8gS5IBJbDFQHyMs7bz2wBydIW10s23Q5S+b3vNiV1lAm6JhcHqa1m
+ sbYh33g4
+ QRW8qPD5zZ04Wjk9q5cC5zJO3/mpYcmj0yUVoHiW8lRHUVWxCa5/E/LDikfas/sl6NHhtxNcCYQE4epikv0+VZe1axpgtqWn9LCVny/vPrOo7D/KBBK/ZziwB0XqpN+jaYOIyWVecU4Xfvj9g/AxzfA6OEFdq1JlODU//DHLr7+foobIVeMKqGrbeAQa3nidM01gzF4lhuawvPvegqKdQfja2MzRGlNTDw1xQzgsTf4nT1KU+/pIzhPUaWn0hyjiMKUOiVhRyJX2qHDjG2YwkTT/rkCcuuns9IJ5NIUTxJFunOSkgWn7RfzZLxAVfhMWBPhaHYRakAQSgYR+vY6uMqc9LqrwLX0Min1W+gcVrETjfuNaAUbQgJSRuJa4kPpJfA74Qa2O+CUh3QB5eBfHGgrQ3dIJkeZDDAfxscno8G4bF2fC7JJaEPgnysQUs78tBjh3V9+eM8I4GkwfPkdsbjl9+4DnZbPQbwWEoyBSgC3MrBoY3XZlN3nNCgqyGBs9O7LSb6SniZt1UyJVX3Z+rPw5fZoRUVlR4U2yR4XrDFjAjHGUOVJp8jdTvj3YX86HCa06asjEHZPEM1ok=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,239 +155,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jiayuan,
+On 12/24/25 8:45 AM, Frederic Weisbecker wrote:
+> It doesn't make sense to use nohz_full without also isolating the
+> related CPUs from the domain topology, either through the use of
+> isolcpus= or cpuset isolated partitions.
+>
+> And now HK_TYPE_DOMAIN includes all kinds of domain isolated CPUs.
+>
+> This means that HK_TYPE_KERNEL_NOISE (of which HK_TYPE_TICK is only an
+> alias) should always be a subset of HK_TYPE_DOMAIN.
+>
+> Therefore if a CPU is not HK_TYPE_DOMAIN, it shouldn't be
+> HK_TYPE_KERNEL_NOISE either. Testing the former is then enough.
+>
+> Simplify cpu_is_isolated() accordingly.
+>
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> ---
+>   include/linux/sched/isolation.h | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
+> index 19905adbb705..cbb1d30f699a 100644
+> --- a/include/linux/sched/isolation.h
+> +++ b/include/linux/sched/isolation.h
+> @@ -82,8 +82,7 @@ static inline bool housekeeping_cpu(int cpu, enum hk_type type)
+>   
+>   static inline bool cpu_is_isolated(int cpu)
+>   {
+> -	return !housekeeping_test_cpu(cpu, HK_TYPE_DOMAIN) ||
+> -	       !housekeeping_test_cpu(cpu, HK_TYPE_TICK);
+> +	return !housekeeping_test_cpu(cpu, HK_TYPE_DOMAIN);
+>   }
+>   
+>   #endif /* _LINUX_SCHED_ISOLATION_H */
+Acked-by: Waiman Long <longman@redhat.com>
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on akpm-mm/mm-everything]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Jiayuan-Chen/mm-memcg-scale-memory-high-penalty-based-on-refault-recency/20251226-144331
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251226064257.245581-1-jiayuan.chen%40linux.dev
-patch subject: [PATCH v1] mm/memcg: scale memory.high penalty based on refault recency
-config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20251227/202512270405.sx7TY5MG-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251227/202512270405.sx7TY5MG-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512270405.sx7TY5MG-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> mm/workingset.c:570:19: error: incomplete definition of type 'struct mem_cgroup'
-     570 |                 WRITE_ONCE(memcg->last_refault, jiffies);
-         |                            ~~~~~^
-   include/asm-generic/rwonce.h:60:33: note: expanded from macro 'WRITE_ONCE'
-      60 |         compiletime_assert_rwonce_type(x);                              \
-         |                                        ^
-   include/asm-generic/rwonce.h:36:35: note: expanded from macro 'compiletime_assert_rwonce_type'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |                                          ^
-   include/linux/compiler_types.h:592:10: note: expanded from macro '__native_word'
-     592 |         (sizeof(t) == sizeof(char) || sizeof(t) == sizeof(short) || \
-         |                 ^
-   include/linux/compiler_types.h:631:22: note: expanded from macro 'compiletime_assert'
-     631 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                             ^~~~~~~~~
-   include/linux/compiler_types.h:619:23: note: expanded from macro '_compiletime_assert'
-     619 |         __compiletime_assert(condition, msg, prefix, suffix)
-         |                              ^~~~~~~~~
-   include/linux/compiler_types.h:611:9: note: expanded from macro '__compiletime_assert'
-     611 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
-   include/linux/shrinker.h:55:9: note: forward declaration of 'struct mem_cgroup'
-      55 |         struct mem_cgroup *memcg;
-         |                ^
->> mm/workingset.c:570:19: error: incomplete definition of type 'struct mem_cgroup'
-     570 |                 WRITE_ONCE(memcg->last_refault, jiffies);
-         |                            ~~~~~^
-   include/asm-generic/rwonce.h:60:33: note: expanded from macro 'WRITE_ONCE'
-      60 |         compiletime_assert_rwonce_type(x);                              \
-         |                                        ^
-   include/asm-generic/rwonce.h:36:35: note: expanded from macro 'compiletime_assert_rwonce_type'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |                                          ^
-   include/linux/compiler_types.h:592:39: note: expanded from macro '__native_word'
-     592 |         (sizeof(t) == sizeof(char) || sizeof(t) == sizeof(short) || \
-         |                                              ^
-   include/linux/compiler_types.h:631:22: note: expanded from macro 'compiletime_assert'
-     631 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                             ^~~~~~~~~
-   include/linux/compiler_types.h:619:23: note: expanded from macro '_compiletime_assert'
-     619 |         __compiletime_assert(condition, msg, prefix, suffix)
-         |                              ^~~~~~~~~
-   include/linux/compiler_types.h:611:9: note: expanded from macro '__compiletime_assert'
-     611 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
-   include/linux/shrinker.h:55:9: note: forward declaration of 'struct mem_cgroup'
-      55 |         struct mem_cgroup *memcg;
-         |                ^
->> mm/workingset.c:570:19: error: incomplete definition of type 'struct mem_cgroup'
-     570 |                 WRITE_ONCE(memcg->last_refault, jiffies);
-         |                            ~~~~~^
-   include/asm-generic/rwonce.h:60:33: note: expanded from macro 'WRITE_ONCE'
-      60 |         compiletime_assert_rwonce_type(x);                              \
-         |                                        ^
-   include/asm-generic/rwonce.h:36:35: note: expanded from macro 'compiletime_assert_rwonce_type'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |                                          ^
-   include/linux/compiler_types.h:593:10: note: expanded from macro '__native_word'
-     593 |          sizeof(t) == sizeof(int) || sizeof(t) == sizeof(long))
-         |                 ^
-   include/linux/compiler_types.h:631:22: note: expanded from macro 'compiletime_assert'
-     631 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                             ^~~~~~~~~
-   include/linux/compiler_types.h:619:23: note: expanded from macro '_compiletime_assert'
-     619 |         __compiletime_assert(condition, msg, prefix, suffix)
-         |                              ^~~~~~~~~
-   include/linux/compiler_types.h:611:9: note: expanded from macro '__compiletime_assert'
-     611 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
-   include/linux/shrinker.h:55:9: note: forward declaration of 'struct mem_cgroup'
-      55 |         struct mem_cgroup *memcg;
-         |                ^
->> mm/workingset.c:570:19: error: incomplete definition of type 'struct mem_cgroup'
-     570 |                 WRITE_ONCE(memcg->last_refault, jiffies);
-         |                            ~~~~~^
-   include/asm-generic/rwonce.h:60:33: note: expanded from macro 'WRITE_ONCE'
-      60 |         compiletime_assert_rwonce_type(x);                              \
-         |                                        ^
-   include/asm-generic/rwonce.h:36:35: note: expanded from macro 'compiletime_assert_rwonce_type'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |                                          ^
-   include/linux/compiler_types.h:593:38: note: expanded from macro '__native_word'
-     593 |          sizeof(t) == sizeof(int) || sizeof(t) == sizeof(long))
-         |                                             ^
-   include/linux/compiler_types.h:631:22: note: expanded from macro 'compiletime_assert'
-     631 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                             ^~~~~~~~~
-   include/linux/compiler_types.h:619:23: note: expanded from macro '_compiletime_assert'
-     619 |         __compiletime_assert(condition, msg, prefix, suffix)
-         |                              ^~~~~~~~~
-   include/linux/compiler_types.h:611:9: note: expanded from macro '__compiletime_assert'
-     611 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
-   include/linux/shrinker.h:55:9: note: forward declaration of 'struct mem_cgroup'
-      55 |         struct mem_cgroup *memcg;
-         |                ^
->> mm/workingset.c:570:19: error: incomplete definition of type 'struct mem_cgroup'
-     570 |                 WRITE_ONCE(memcg->last_refault, jiffies);
-         |                            ~~~~~^
-   include/asm-generic/rwonce.h:60:33: note: expanded from macro 'WRITE_ONCE'
-      60 |         compiletime_assert_rwonce_type(x);                              \
-         |                                        ^
-   include/asm-generic/rwonce.h:36:48: note: expanded from macro 'compiletime_assert_rwonce_type'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |                                                       ^
-   include/linux/compiler_types.h:631:22: note: expanded from macro 'compiletime_assert'
-     631 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                             ^~~~~~~~~
-   include/linux/compiler_types.h:619:23: note: expanded from macro '_compiletime_assert'
-     619 |         __compiletime_assert(condition, msg, prefix, suffix)
-         |                              ^~~~~~~~~
-   include/linux/compiler_types.h:611:9: note: expanded from macro '__compiletime_assert'
-     611 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
-   include/linux/shrinker.h:55:9: note: forward declaration of 'struct mem_cgroup'
-      55 |         struct mem_cgroup *memcg;
-         |                ^
->> mm/workingset.c:570:19: error: incomplete definition of type 'struct mem_cgroup'
-     570 |                 WRITE_ONCE(memcg->last_refault, jiffies);
-         |                            ~~~~~^
-   include/asm-generic/rwonce.h:61:15: note: expanded from macro 'WRITE_ONCE'
-      61 |         __WRITE_ONCE(x, val);                                           \
-         |                      ^
-   include/asm-generic/rwonce.h:55:20: note: expanded from macro '__WRITE_ONCE'
-      55 |         *(volatile typeof(x) *)&(x) = (val);                            \
-         |                           ^
-   include/linux/shrinker.h:55:9: note: forward declaration of 'struct mem_cgroup'
-      55 |         struct mem_cgroup *memcg;
-         |                ^
->> mm/workingset.c:570:19: error: incomplete definition of type 'struct mem_cgroup'
-     570 |                 WRITE_ONCE(memcg->last_refault, jiffies);
-         |                            ~~~~~^
-   include/asm-generic/rwonce.h:61:15: note: expanded from macro 'WRITE_ONCE'
-      61 |         __WRITE_ONCE(x, val);                                           \
-         |                      ^
-   include/asm-generic/rwonce.h:55:27: note: expanded from macro '__WRITE_ONCE'
-      55 |         *(volatile typeof(x) *)&(x) = (val);                            \
-         |                                  ^
-   include/linux/shrinker.h:55:9: note: forward declaration of 'struct mem_cgroup'
-      55 |         struct mem_cgroup *memcg;
-         |                ^
-   7 errors generated.
-
-
-vim +570 mm/workingset.c
-
-   529	
-   530	/**
-   531	 * workingset_refault - Evaluate the refault of a previously evicted folio.
-   532	 * @folio: The freshly allocated replacement folio.
-   533	 * @shadow: Shadow entry of the evicted folio.
-   534	 *
-   535	 * Calculates and evaluates the refault distance of the previously
-   536	 * evicted folio in the context of the node and the memcg whose memory
-   537	 * pressure caused the eviction.
-   538	 */
-   539	void workingset_refault(struct folio *folio, void *shadow)
-   540	{
-   541		bool file = folio_is_file_lru(folio);
-   542		struct pglist_data *pgdat;
-   543		struct mem_cgroup *memcg;
-   544		struct lruvec *lruvec;
-   545		bool workingset;
-   546		long nr;
-   547	
-   548		VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-   549	
-   550		if (lru_gen_enabled()) {
-   551			lru_gen_refault(folio, shadow);
-   552			return;
-   553		}
-   554	
-   555		/*
-   556		 * The activation decision for this folio is made at the level
-   557		 * where the eviction occurred, as that is where the LRU order
-   558		 * during folio reclaim is being determined.
-   559		 *
-   560		 * However, the cgroup that will own the folio is the one that
-   561		 * is actually experiencing the refault event. Make sure the folio is
-   562		 * locked to guarantee folio_memcg() stability throughout.
-   563		 */
-   564		nr = folio_nr_pages(folio);
-   565		memcg = folio_memcg(folio);
-   566		pgdat = folio_pgdat(folio);
-   567		lruvec = mem_cgroup_lruvec(memcg, pgdat);
-   568	
-   569		if (memcg)
- > 570			WRITE_ONCE(memcg->last_refault, jiffies);
-   571	
-   572		mod_lruvec_state(lruvec, WORKINGSET_REFAULT_BASE + file, nr);
-   573	
-   574		if (!workingset_test_recent(shadow, file, &workingset, true))
-   575			return;
-   576	
-   577		folio_set_active(folio);
-   578		workingset_age_nonresident(lruvec, nr);
-   579		mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + file, nr);
-   580	
-   581		/* Folio was active prior to eviction */
-   582		if (workingset) {
-   583			folio_set_workingset(folio);
-   584			/*
-   585			 * XXX: Move to folio_add_lru() when it supports new vs
-   586			 * putback
-   587			 */
-   588			lru_note_cost_refault(folio);
-   589			mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + file, nr);
-   590		}
-   591	}
-   592	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
