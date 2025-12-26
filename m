@@ -4,111 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84379E8FDAC
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 18:43:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF8EDE8FDA7
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 18:48:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E16C56B0005; Fri, 26 Dec 2025 13:43:52 -0500 (EST)
+	id EEC286B0005; Fri, 26 Dec 2025 13:48:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC4AE6B0089; Fri, 26 Dec 2025 13:43:52 -0500 (EST)
+	id E6F666B0089; Fri, 26 Dec 2025 13:48:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC7326B008A; Fri, 26 Dec 2025 13:43:52 -0500 (EST)
+	id D52696B008A; Fri, 26 Dec 2025 13:48:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BE5E66B0005
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 13:43:52 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BFFC46B0005
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 13:48:29 -0500 (EST)
 Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6666656983
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:43:52 +0000 (UTC)
-X-FDA: 84262496304.16.D9FE89C
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8DFD780007
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:43:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AWbAny1i;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.44 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766774630; a=rsa-sha256;
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68882B6CE4
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:48:29 +0000 (UTC)
+X-FDA: 84262507938.16.7EA27C1
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8E2DE4000A
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:48:27 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IEw4Wm7a;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=bingjiao@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766774907; a=rsa-sha256;
 	cv=none;
-	b=4zYhURvh0hBQchdCWMkE3RfmzpEgkMmL/7DQFWaOqdF2E81WBBPtLUiltqajjtDHn2V8dE
-	fxPjDRIeAQIjV4pihmg/4D7H/CtOvg1qtJNjWQxG0fsucgYos8gZvNe7l0q9wa7k/HazPx
-	kfjSFvwvl19M3FOTKJg5wtlfpM6ErZo=
+	b=ILC+OZe6L2tgQKodQ5xm0BHFSO/1GGgTUgV9J+o8RMd1Sw1KRNWxn5fDU9wPbVTx+Rq7BI
+	y3ezRUKlDrILVFitkZjCNtaN+49z84sKBBwBrifMyYnWhvqAqGoWIGQWRFZmmwHMJzZDAv
+	9tAr3cCvygnuzukbx3kIdiZA3JtmTDU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AWbAny1i;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.44 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IEw4Wm7a;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=bingjiao@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766774630;
+	s=arc-20220608; t=1766774907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AJjsXKscziHjL5G8tly5miUEYllllBSBDsQmSPlk9iY=;
-	b=JGpDslHA+4MBqL+yp7H4VNf3yEBJxWljhNo4+rHv3ySS4qH26/m+2BX7jAB/aN9TvvxJv3
-	pUnLxMe62SQQP4aa3fTx3hzvugy/G9M5IEOfPMTFnYz9EYf4lOhRf7uNfjczFlbQUNoxDV
-	YfoHZK2hGGUlCfGW3NYjdeWOqwxHIVE=
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-5dfc6be7df3so2646105137.0
-        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 10:43:50 -0800 (PST)
+	bh=djYExfQ2m4DSgDlbkjbYXQXDI3fF2Fqxya+fA5npzyY=;
+	b=1e8JCZxoOdhOwqxjEtr450GpTYwl67FsUVfPcGQFpS5HCmiI+DkmEVAs3VmxnzxFL08GUb
+	mJvIGXLIA4yvCb4r8k7sM1XMvxF1uipynApK0d0SWEq9QB3KTePqWDoYnVPkVuj12IUJ5H
+	l6F1H/48T2HMDx7YuM2vom5PVNyeusM=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a35ae38bdfso250145ad.1
+        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 10:48:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766774629; x=1767379429; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AJjsXKscziHjL5G8tly5miUEYllllBSBDsQmSPlk9iY=;
-        b=AWbAny1ihr5NOKKif7p9Mxv9MfVQLQZo9mijEyq4uFY3QJIdrUNGWh9hHcjKhPtQiF
-         P1rYeOIMRit8rKEY3/IdzXoXWFAUlWHSvuW25wSobDKx6wXoKVj7urR/xFo9Wv+1BRzS
-         IyCOsnIWvihcQMpUdRcAV7vDN8Ha+SIhNy4SANR1Wd2//CoM9CYd0UtFtj+wxZM9miXp
-         Wp1IRZGyny0ME/k2bqeLraau7N6WnFRA8zJJJh9tECevg8q3HFzlxTFlnK6CT7HiJ8IE
-         X93+OMxNgseEuzjPxf2I48S57N16qyKncq3woqJ/Anjkw4MbogUU+c7BLZUo2cbwdwHX
-         gzgw==
+        d=google.com; s=20230601; t=1766774906; x=1767379706; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=djYExfQ2m4DSgDlbkjbYXQXDI3fF2Fqxya+fA5npzyY=;
+        b=IEw4Wm7aQLay2IGdBbIiv4bOiqruAUw61lwsOw4mln6Itvh83NQv63hlEPBT3xnaK1
+         9NrK087NKBl2xEoUdCDUbVHDNFYDXjHwH6efF6pfKwmdw4sp/hwn/KYQiX48XPh409eo
+         +L1DTMFufCG6D9vUpB3NXEDrUs2cRBd/cPwO91CqIE8DM7RKGZiCvClbdx071U9ELVoH
+         nDI3bxmS3GIFGp7/PTITkv6vCtsrST5qHBhfY+moS84kBPyNBv2okrVXP6uLuQ+OOeH7
+         QwPuqun4shDzwgrqr5q4SWG5nSSsKEh2Y8NLO7kUly8q2GZGV+hZ8zpyv4izMkrN6PAB
+         cZSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766774630; x=1767379430;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AJjsXKscziHjL5G8tly5miUEYllllBSBDsQmSPlk9iY=;
-        b=gk6W5+0TLx9ipGJYjM2NeRXxMpZFvExhrV2WDANU4UTJA4hm+AP6ojF/zcJa0lDDJG
-         IFCmEJAZrVXEoOJVPoy6yiBLiA4bUahQlZDgdE71eeXdJgZblQgGUUmcWCqiYhkmSi/Q
-         82EFOWVa6sAIxinX01fZwSLyw6/CzpJDnK7OX/8ViPnFAsVnEt/OqD7o9Y1WWf1aiTeb
-         u66gAU6y5+kuodVI8nwLHrxPLn1J1ITfnkrXT4fveEnyHtiOtQ1VGcshPF8ossL7HWWi
-         oZeZEorOp00GzGOLXB0CHGImxzUgopRwnCLeCf0xcxCrqDzEuGPa5oMz90BVNnaY/I21
-         ZpKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUoAnG3/LE0tJ3FbkdvktgTO7oe7pS2EDsgpwWFhL+vppy/oGrCYI19CCthz4c5eG9LJI01zpgXVw==@kvack.org
-X-Gm-Message-State: AOJu0YxM9Vx5SqgeDIWjOxeHBAcUATRZVScNSgSNHQn3ICLgqhflUFf7
-	jFQJkBBam3oZKcNWdgqG5DEJ3MxaHpWj1P4kEzhmdQqSDU6NLXl6sIh4pfsk7UfR2ucEU53wn7M
-	6Vxmhz+pvyyvf0b5h6N/VZ1rfUCb6mew=
-X-Gm-Gg: AY/fxX6kP+l79jKj4SD9QqNCR92W6bSM01v6brmdY/Zpot7jZxkzMcmYzFMx7WFlQGw
-	9jtqznwtGFqYP4+1Vrb1TDoWEVG7qxh2ICP6z4cD3FeQvmVoMNIwR4NyP3gisFPhpl3RIJc2MPl
-	uVM50fv22y8NIyBk5uSb8aiU8x56GSfoAqwPAFmdayXUoKkprCRtCN+kckTdCaAEXOtD52qR81Y
-	rFeT1f+Qeqs/sehACN8MuvtDSsT1un/AtFA3tfl109JCA9lyoL2Bnq5PAxCSLcDfvs+xw==
-X-Google-Smtp-Source: AGHT+IFWm1BHVCgCz2zTsLBhD7w/jnavaf615z1Cg8E3jCFm6C0snGNtsrbsTf+upqBpfzQeQlKsbB0atGIBTB7JvCQ=
-X-Received: by 2002:a05:6102:442c:b0:5db:cfb2:e602 with SMTP id
- ada2fe7eead31-5eb1a656c43mr6743668137.11.1766774629497; Fri, 26 Dec 2025
- 10:43:49 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766774906; x=1767379706;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=djYExfQ2m4DSgDlbkjbYXQXDI3fF2Fqxya+fA5npzyY=;
+        b=xATFj7PZ6EMkSxw42to2euVML/7vL/xDCfHMHcKRwAodvcryYEtJKbNTmUOnMLUUxq
+         XhG0I9vOiXA9AyrXLfGr/338yHAtOWSTHfdPSJP6HW3ZmeIEJ9CefhTvGESnf9KZQyae
+         JO8YgtEDIlyNq+smYPRfUkbyGAcTp0dPnzgUt2s1pSXjBARjTzozkE1I9waPwu+XcK27
+         sBczpjyFb89pLzy6+j2i5yrlPNVc+ITUYhG6lkGEQKG9bwx9+eE1jmjLGlDIskxBvbYa
+         3aKF9IS+Aum7sYSYNcY8pmRjBKk7QxVyrK/RzxVNvfX59h9ojTaPo7hVbp5NtC3QOsg/
+         DLoA==
+X-Gm-Message-State: AOJu0Ywpty2ZSv/pLA3EZW+g+YXIXJkMy/AymNLcvG9vm4XWj+5aoGRQ
+	6Jx3M5Hsx/J1JaDcbg4LjJUzRu/sG57ZkR7d4g1SLh2HX3Tnow/lyjGrTr7THu4ixA==
+X-Gm-Gg: AY/fxX4mN7jdgMXwfq1PfqgNQCbv3TSCN+XvpNQZgZZ+i9Csi2Y/Z2+3uV2t8EFWRXh
+	+ksLd8TrOQS3s49wCr+HKVCAhSd15G9M7tpSVjeEoogvolzSzDbFnkGMZ7JP/WQ5KkMN6XiP2da
+	cVqz5Q9sVGCjJ1Iy2rxscL7+adPyxvfY8L42dl4v9zeUcJXJW2DuMHK+h9hk0mXOxNfB9OY2g0t
+	jFTK55v7MVgB2xSbhTuD/JQGcGygkTVU4qukxCR9OrwTHLj8MbOZiNEUXNRhAKtAC6ZI+//XHIW
+	fnlzINYFjERagcLvgt4pGjiph+8XV7ulHASokE9ZrHQlQwVEu6t89T9UMx0KYVHGl69sWZruJaz
+	csRPpRTcP+9LkOMStJUJcTeJzJt/cUvcR/qEiJZ4fXLnYVXrT4NOvpD7A6Kh1LWFREv2G2dmMX7
+	wcD+wOmfaLTzn+jCva/Qs8rIVBXKPI8MEyJDlJCkOMno9r348Q1CfV9M9Qn/eMvsY=
+X-Google-Smtp-Source: AGHT+IHmIPSPLMo1hA02PAzK6JQzto61+CEQElBIyOOAThagpL/yC/1XBoIoO0pQxTmfbDSihk3IEw==
+X-Received: by 2002:a17:903:2a8e:b0:295:3f35:a315 with SMTP id d9443c01a7336-2a353a370demr3454615ad.5.1766774905999;
+        Fri, 26 Dec 2025 10:48:25 -0800 (PST)
+Received: from google.com (248.132.125.34.bc.googleusercontent.com. [34.125.132.248])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c828dbsm208456505ad.22.2025.12.26.10.48.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Dec 2025 10:48:25 -0800 (PST)
+Date: Fri, 26 Dec 2025 18:48:20 +0000
+From: Bing Jiao <bingjiao@google.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, longman@redhat.com, hannes@cmpxchg.org,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com,
+	david@kernel.org, zhengqi.arch@bytedance.com,
+	lorenzo.stoakes@oracle.com, axelrasmussen@google.com,
+	chenridong@huaweicloud.com, yuanchu@google.com, weixugc@google.com,
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH v3] mm/vmscan: fix demotion targets checks in
+ reclaim/demotion
+Message-ID: <aU7YSXnoBTFRy-KF@google.com>
+References: <20251221233635.3761887-1-bingjiao@google.com>
+ <20251223212032.665731-1-bingjiao@google.com>
+ <aUs_pLTcsVK8zf0g@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-References: <20251225094057.286954-1-wale.zhang.ftd@gmail.com>
- <CAGsJ_4yEAOxUmrPvca3Nzc-OB0+xXk5Y5gzszsY5TPqHCGvgcQ@mail.gmail.com> <CAHrEdetNrGJbogkhMKY-25fgtxupPxKKLkwFGuenV8p5EwzZVQ@mail.gmail.com>
-In-Reply-To: <CAHrEdetNrGJbogkhMKY-25fgtxupPxKKLkwFGuenV8p5EwzZVQ@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Sat, 27 Dec 2025 07:43:37 +1300
-X-Gm-Features: AQt7F2qeAC7SiLMrBSchjbEF6oNKpYWhGFiPxdC477fZ9SuDsudhVPpMbYu_0bY
-Message-ID: <CAGsJ_4wcovpuNKPTfS0STBOHrNREjP-4wam8Oe4e7_ctKsbAcA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] mm,swapops: Fix compile error on set_pmd_migration_entry.
-To: wale zhang <wale.zhang.ftd@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, chrisl@kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8DFD780007
-X-Stat-Signature: z56w7o79yrai3whqrykmtbsootujzfas
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aUs_pLTcsVK8zf0g@gourry-fedora-PF4VCD3F>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8E2DE4000A
+X-Stat-Signature: kajacsz8asoof348jx6a35weh7khzzz6
 X-Rspam-User: 
-X-HE-Tag: 1766774630-387180
-X-HE-Meta: U2FsdGVkX1/MT6g9DL/tibifXfJbd/a6moxHE3gFAJI5Cwsug4imvjEirqCgPmo1AFugHFlILYD26OAT7IUHl9/5MqU0hlMStuUHrKDBTiN6h8AAYlwitejNqsA9ENBmMgp1ZJhU3ffNlpgkRPKGKSmTZPZeOj/klll6rGuLoxtqI1PKsjfsUdtJqltgrMEVQ66ZyhvHvB14jvmArH1FJM1hKyrK4k//RQM3o4P0CU+bqjnkt/ALzRAhPtUox+CMSHhNVDPdUfJD/n6ZjLnNKX//NvpYCF444wT7ZPKVGdTtADJDA7ka/mSUTyNHTrU7ww3tqQjNyME82q0kAlmNnrp8ND38BXs+v6eFzS93rsGC0ICORClHBfEQtKW6D/drZGfQ5X2hUnwS29M8sJUc6QuLuW/EGEHEOQXmafCu4EkkWqhjSG/2V1ZBpnzyApLJ9Ms5Ni4eXIKq3yyqAHAFa6NUFqYi0hG/BhcnolmDYnLJmYWwYKLNQSrmq0Wgs2RN0Hn/c5nWJgQALFPBPBlyGz+r2fYgJ7BTf2NYYxSWIN7XnIWkcNAmLPs+m9aPb8hSJc033DfVhx+orU41XbNHnEEcqtvrVio8U4HK0ZS1y4C2GCd+qnlD3dhgHCRHif2nr/j8m+elOMInRjoiu0hNPf5bT7dXi0SorzH1rjt1h8FHf/g0m4IymR3tld9D2DTqgmnvFZPHjnDLzqRAIfpq6xeX2q7AXaryh1+9XG/6zviFfmjVcHHzyHEgwyyPgbVoejJqYBFJ80PxdJfLhH71Vndl6u8y2kgpc14ZLgZE6ACN4St/D9qaxc7AxBq3Xfbj+sdXPUUcajG1jWjg0Jgf7KYSx+wbS9vsGhuci4w5u20shIWyh3ukNCNhEUUuty6TvodUegiVlBOETD9/6bu1YAJckA9WMv2VPoQACPyuNd2IuUalN0f1pbbjoFm3k8mIEFlSvkKrmwg53g+NQwH
- Jlah3KS0
- 4CBtARu3IT3g45YVYqkb3hEH3TMXyDOJ8d3C8VJkSBCFp+HsjAeUg2u9nl7hBvSE00Z8EIX9p8LRI3OUiUO6RfLvtB1CCseRZQhaj2sFkca6KTDcNtfYL1+qXZRWrKwVZzq0GMY5A8AHUgB68tvJ/gzdno9i6IwJIfNEUru63PqXiBate//aiYtv0EjwK1QgXlm3RqGlJvobrcJpThJBFBK6kCxvmqTySTzxxYnBNTOMl6rWxTCBeXv3xyVjzCiWTH9lKFpWkBZygJJ+5nv1z0IeV0VOCobxi0VCGls1mCQx72hx/1SXifXFZUXnUi4BvTizHhV+fJ+3caFv+siL0cz81Yy8ANj6bn8EUgHDnEqYfv+Y1qwSM5s6J/eOuPiqw7qlAX2pq7aEJl0QaAlZ43tNEvRLbqud3/T9la43rAPI7kS0QYc6E/PnB/f1/OQem3P0zVnlqcE2q6U4y7FZUBom9Nv6dS+b8mHlunGsQdS+iFcJbE/OIKLaAqkcffYBTrgsf9i9gQIKlpeE=
+X-HE-Tag: 1766774907-987388
+X-HE-Meta: U2FsdGVkX18Y0pV/AWX9sMn+xkWrFs7jrIwk6gN3/wouBf/Ee6qfpMNwz97Bpp4G5Tnm+VIysiXgodyPd+b9WYqFpJDyl46xmKno7zciwvu26gMyS5+heMjdjAT+e7mFb3HitQOjH+X2Xi17N+fgmDgF4GwBZ9FrgWiK6tAnquuqKIG62EpvGBHwueB/rK6Y4lVeR/r/fHTjqr1I9PBK/JeVlpKVQmUqzU7hxSRWkldnPXspSpfkbk1d+2IdE+c908bM3lL2G3YnnxMbOm8YkNGRPYuE/8c7+nRpr32pjnzGB7nIO6REJ3TNtb2YDEmuV9D9eCTG7Zc9u6WVcw9gHoHNSfs2ohw1Jjg6nxmKoxkyHO6Qevpqajne6SutxmuQkZs5zKm7qx4hB6QeolmhwWpw63xQVVSpSllSIsRoooZxkc6I0nr2ZkObnqCA8daPzWcD4a8R5AHktRssGXUSUrKQ3yRoh1qG+EaDZRlFePAKUsJZXCAno9iwgOGyvkOEJ0MdL1bKHlx8EpcmJGtyVE9JBekUTds1vGpJQR8c4cRhB+AKxRi2LV0HH0WVx9E9V5S7vjNRW8c3VyHyv7quGGP22nOIiO2YtLB/2F333jLmZAaprCnh1p8oyOdWH9IIi2GOAQBm2UJD+rjS2itJ3rxtq7hLVWT4SeFhVum2aaYwJEmezm3BqGOQxvWaUz/1GnxeKMlGCzItIk0v2TJ9h9OhXhdYxeH70abL9tavXXxtx0732z0hUB04R3TuQtyXFWLbrYcyrcUgY9cJhM6qUyfoOTSc6hlln6VaGSQdpn+prNGS6KH0qqsMbi6OcgIBcnEGl70o7XpbOLh+GLhd8m2XTvK1J7UE+rtDUBMq7e5KaYk5NXIwGhGd7TZSoISUCOytu6ngSc2ToBt0EBFDvu6vcS29FY6ExXnyZhpY3ic07qEkWY4EnZHe3/5cancq4EYKbd6YAv3VD2cUWYS
+ 2swie67y
+ +MIMhNrDiRH2rc75Sx20GktD/+0UqCEiAUv8heWl1JuwZs51pyx9BDrjCM9M2AJbhiirRBQ62rgUZpmOdQbmG2vrJZ0T3vUimY7ZYjKya1rMfyXqOMvw5XlsrB3Gj4kwrcOPl67JQR1IlqatUqliao13yqJSvRVKeRyJmujDNLJJxGYGYgDS83mDHBuMXtq3cO+sfdjKzlh1fv1mIlOJ/WJmZWmab+o23C5Ahr5hOc/G4WTMlpXnOi9EV2DHJIsv8khNg3EoscwEZ5iFpDngu6FNMCgl0sme4qQ7zA2PZBoF3ZWE7wI89KmrLJg2y+2bzJF3cKMz4MKh5XSZXNumeax4hEU/iXCMF3cwF90/Ogre+mow=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,80 +126,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Dec 27, 2025 at 12:46=E2=80=AFAM wale zhang <wale.zhang.ftd@gmail.c=
-om> wrote:
+On Tue, Dec 23, 2025 at 08:19:32PM -0500, Gregory Price wrote:
+> On Tue, Dec 23, 2025 at 09:19:59PM +0000, Bing Jiao wrote:
+> > -bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
+> > +nodemask_t mem_cgroup_node_get_allowed(struct mem_cgroup *memcg)
+> >  {
+> > -	return memcg ? cpuset_node_allowed(memcg->css.cgroup, nid) : true;
+> > +	if (memcg)
+> > +		return cpuset_node_get_allowed(memcg->css.cgroup);
+> > +	return node_possible_map;
+> >  }
 >
-> On Thu, Dec 25, 2025 at 6:22=E2=80=AFPM Barry Song <21cnbao@gmail.com> wr=
-ote:
-> >
-> > On Thu, Dec 25, 2025 at 10:41=E2=80=AFPM Wale Zhang <wale.zhang.ftd@gma=
-il.com> wrote:
-> > >
-> > > ../include/linux/swapops.h: In function =E2=80=98set_pmd_migration_en=
-try=E2=80=99:
-> > > ../include/linux/swapops.h:346:1: error: no return statement in funct=
-ion returning non-void [-Werror=3Dreturn-type]
-> > >   346 | }
-> > >       | ^
-> > > cc1: some warnings being treated as errors
-> > >
-> > > Signed-off-by: Wale Zhang <wale.zhang.ftd@gmail.com>
-> >
-> > Sorry. NAK.
-> >
-> > This looks odd. We already have a BUILD_BUG(), so no fix is needed.
-> >
-> > we should already have:
-> > ././include/linux/compiler_types.h:631:45: error: call to
-> > =E2=80=98__compiletime_assert_907=E2=80=99 declared with attribute erro=
-r: BUILD_BUG
-> > failed
-> >   631 |         _compiletime_assert(condition, msg,
-> > __compiletime_assert_, __COUNTER__)
-> >       |                                             ^
-> > ././include/linux/compiler_types.h:612:25: note: in definition of
-> > macro =E2=80=98__compiletime_assert=E2=80=99
-> >   612 |                         prefix ## suffix();
-> >          \
-> >       |                         ^~~~~~
-> >
-> > Do you actually see this being built? If so, please help identify why i=
-t
-> > gets built.
 >
-> Hello Barry,
+> node_possible_map or node_states[N_MEMORY]?
 >
-> I compile the 6.19-rc2 for arm64 with -O0, this kind of error log will ap=
-pear.
-> In file included from /home/wale/repo/linux/master/include/linux/leafops.=
-h:11,
->                  from
-> /home/wale/repo/linux/master/include/linux/userfaultfd_k.h:19,
->                  from /home/wale/repo/linux/master/include/linux/mm_inlin=
-e.h:10,
->                  from /home/wale/repo/linux/master/mm/internal.h:13,
->                  from /home/wale/repo/linux/master/mm/fadvise.c:24:
-> /home/wale/repo/linux/master/include/linux/swapops.h: In function
-> =E2=80=98set_pmd_migration_entry=E2=80=99:
-> /home/wale/repo/linux/master/include/linux/swapops.h:346:1: error: no
-> return statement in function returning non-void [-Werror=3Dreturn-type]
->   346 | }
->       | ^
-> cc1: some warnings being treated as errors
-> make[4]: *** [/home/wale/repo/linux/master/scripts/Makefile.build:287:
-> mm/fadvise.o] Error 1
-> make[4]: *** Waiting for unfinished jobs....
->
-> There is an example on my
-> github(https://github.com/wale-ftd/linux/commits/linux-6.12/) that
-> used -O0 to compile the 6.12 kernel. If you're interested, you can
-> check them out.
+> The latter seems more appropriate to me since node_possible_map will
+> include offline nodes.
 
-This is not my question. The BUILD_BUG here means this code
-should never be built. If it is built, then that indicates a bug.
-So my question is: under what kernel configuration would this
-code actually get built?
+Yes, I agree that node_states[N_MEMORY] would be better.
 
-Thanks
-Barry
+> > -	allowed = node_isset(nid, cs->effective_mems);
+> > +	nodes_copy(nodes, cs->effective_mems);
+> >  	css_put(css);
+> > -	return allowed;
+> > +	return nodes;
+> >  }
+>
+> I saw in vmscan you check for returning an empty nodemask, may want to
+> at least add a comment to the function definition that says this needs
+> to be checked.
+
+Will add a comment to say that it may return an empty nodemask.
+
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index a4b308a2f9ad..711a04baf258 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -345,18 +345,24 @@ static bool can_demote(int nid, struct scan_control *sc,
+> >  		       struct mem_cgroup *memcg)
+> >  {
+> >  	int demotion_nid;
+> > +	struct pglist_data *pgdat = NODE_DATA(nid);
+> > +	nodemask_t allowed_mask, allowed_mems;
+>
+> Only other concern i have is the number of nodemasks being added to the
+> stack.  Should be <512 bytes, but I've run into situations where builds
+> have screamed at me for adding one nodemask to the stack, let alone 3+.
+
+While having 3+ nodemasks presents a risk, utilizing two nodemasks
+should be acceptable. Given that the maximum number of nodes is
+1024 (2^10), two nodemasks would require 256 bytes, which should be okay.
+
+Otherwise, we can keep to use mem_node_filter_allowed().
+Only update it to return a nodemask when subsequent features need.
+
+> Have you run this through klp?
+
+I have not run it through klp. Will do it then.
+
+Thanks,
+Bing
+
 
