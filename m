@@ -4,120 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5E46E8FDA0
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 08:08:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93A54E8FDA0
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 08:18:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD6C76B0088; Fri, 26 Dec 2025 03:08:17 -0500 (EST)
+	id BBA336B0088; Fri, 26 Dec 2025 03:18:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C85966B0089; Fri, 26 Dec 2025 03:08:17 -0500 (EST)
+	id B3E016B0089; Fri, 26 Dec 2025 03:18:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B83CF6B008A; Fri, 26 Dec 2025 03:08:17 -0500 (EST)
+	id A49A26B008A; Fri, 26 Dec 2025 03:18:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A7E626B0088
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 03:08:17 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 532CC140D0F
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 08:08:17 +0000 (UTC)
-X-FDA: 84260894634.24.BEADBEE
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6B98416000D
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 08:08:12 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	spf=pass (imf08.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 902196B0088
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 03:18:16 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E1BF561676
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 08:18:15 +0000 (UTC)
+X-FDA: 84260919750.08.4E8720C
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2302F140008
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 08:18:12 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZpJ+9k2Z;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf09.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766737094; a=rsa-sha256;
+	cv=none;
+	b=oce6TtKjEqFXyhS57TsRFSh9s5qx7fkyqvkveWQluZFdCpl4f9Z4pThG/rXWEuHU1O9g/v
+	GkbB5GPSoM11wgWe4UqkfozAUI95fczBnIXnTc6iqYXLEtorybyMOGyovyqc9jj0nTiMEL
+	gThydWGo3zf6VQg6jr9Al4b4T8l6YUM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZpJ+9k2Z;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf09.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766736495;
+	s=arc-20220608; t=1766737094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MpJckKNv2j56gJFGymtcEtW3GfgdYb7KZdYSWwFtx7c=;
-	b=0064qa7CnUmiHEMAnJmTwfpkDTWLs95XX6xuNSwb4jVVhkt8tNOap65qROgU6m++XSkKVG
-	79TjqAfRQ1ijz+OY8P1JVaYOrrRekZsM56olaaOC6MjAVQr4V7zRC49/s4dGbD30Gydxdw
-	4b9d8rWbpWmcs9QfLHe9vYojyG/oPWQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766736495; a=rsa-sha256;
-	cv=none;
-	b=gZt+XEdNNmC9o4G63wsbxiusIuSSwssb1hHGfp2jhRPOupf0krbhuDbre456uj37IdtEV2
-	rkMvwDYZDvpjC4HpGinWJb9+QqvsR6MsYTEEOZVf5vmQUXw2HrlDhnIDpwh/6MVrCYo8oQ
-	eGYDS+9q5TxeoMmmv/jbxciXV+t96lc=
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dcysC53RZzKHMS0
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 16:07:43 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 4272D40573
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 16:08:06 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgC3F_hkQk5pH4QgBg--.51308S2;
-	Fri, 26 Dec 2025 16:08:06 +0800 (CST)
-Message-ID: <8ecb22ab-d719-44b4-ad40-5af0a185682a@huaweicloud.com>
-Date: Fri, 26 Dec 2025 16:08:04 +0800
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JH36Jd26SVBlEkAhzI6oalKPXgcV6AAodm3CS0hr3WQ=;
+	b=qXqcLY4z5jMpSU6zTxcGY1FXtbUesnxj2yiKYdZNrlnFTNlXKTmh8GvqkMkkjT6v2hyg5l
+	xFrceuHNMby6PGve89kNKeUYyNUzhOEp58yagOor72PZLa00nUgTnJCWgRLkpxSFV3Zft3
+	uRN/DMuULNMDqKCN26AIeXjJRqt3zQM=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1766737090; h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:From;
+	bh=JH36Jd26SVBlEkAhzI6oalKPXgcV6AAodm3CS0hr3WQ=;
+	b=ZpJ+9k2Z+YgWMehdRDRUdctvWqKMs/pmLGsWASqS3DSsQnjWRsOdw5JJfi6jJxJEKv/w/yRrpygpYNNiauWBs+ZQ3pIj5b9Li1FUfVhqto1qUDR9ewERCxI49ddnSi9hHv0r/q50vkdBf/vtP7ziGlO/8CiM0PzLkeo3mtuJh3k=
+Received: from 30.74.129.66(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0Wvgx7kD_1766737088 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 26 Dec 2025 16:18:09 +0800
+Content-Type: multipart/alternative;
+ boundary="------------AERpyX8l517h3WNYUREJdZEf"
+Message-ID: <915dc88b-9131-4520-a2f2-facadc887bbd@linux.alibaba.com>
+Date: Fri, 26 Dec 2025 16:18:08 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/33] cpuset: Update HK_TYPE_DOMAIN cpumask from cpuset
-To: Frederic Weisbecker <frederic@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+Subject: Re: [RFC PATCH] arm64: Kconfig: enable ARCH_WANTS_THP_SWAP for all
+ pagesizes
+To: Barry Song <21cnbao@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
- Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
- Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org, netdev@vger.kernel.org
-References: <20251224134520.33231-1-frederic@kernel.org>
- <20251224134520.33231-15-frederic@kernel.org>
+ David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+ baolin.wang@linux.alibaba.com
+References: <20251226063759.4020782-2-tongweilin@linux.alibaba.com>
+ <CAGsJ_4zd+SMa4Mj23tjF5OwsP3LQyvYTrwN4y81=k8FSFgbH3Q@mail.gmail.com>
 Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <20251224134520.33231-15-frederic@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgC3F_hkQk5pH4QgBg--.51308S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3WrW7Gw15Xr43ury3Gr4rXwb_yoWxKw4fpF
-	WDWrWfGF4DJr13G3s8Zw1DAr4rWwn3Cr1kK3sxWw4rJFyIg3Wvvry09FnxXr1ku3s7Cry7
-	ZFWY9w4S93WjyrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26rWY6Fy7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8
-	Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
-	CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
-	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvj
-	xUVZ2-UUUUU
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Server: rspam02
-X-Stat-Signature: d5drqbkjc3yfmar3d5pwzbq18o1i55s8
+From: Weilin Tong <tongweilin@linux.alibaba.com>
+In-Reply-To: <CAGsJ_4zd+SMa4Mj23tjF5OwsP3LQyvYTrwN4y81=k8FSFgbH3Q@mail.gmail.com>
+X-Rspamd-Queue-Id: 2302F140008
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 6quitzobdrwdxdp9f5uo1uqrn9h3db1m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6B98416000D
-X-HE-Tag: 1766736492-64609
-X-HE-Meta: U2FsdGVkX1/tWUYcGnCue+L49tVlpYs4gONx35Q3qlV9DCf7c0NxIFk16q9fOSQ55TrDdQQtJosrFKSFbNpJ6XZzgztNqGgpUd8oFXpNLlzWuRQovdqYysp6OxEqB1sZCqr5tt7DVl0EqILkp4zc+nVelNV2ddXwJUhIoMZSVWJhE2a2wy0MT8SNAmkWA3QU8OMrB4i+PmZKEI1EKOcnNHmGBBvqMpS/cK6nOJwijcrzQ+oWeWEqmKIBDU+JH74igQ/kxYmz0nuf3LI8yH1njYL74/tEekrZbmp/bECgs+6UO6R+VIDz9fPDPh55auXsW+GPYa96oGmjJ2av4aZRj1sV7BtzTg1iJ6dJr1JqcqFRxLwFDEBw1KTL3snwIvvNEAAjzgoTgSvnJaGBhOLseJMsKVkqehySJlTTwXGTseN8+yroMmTzrCpoYrIC3WXkRhSgXGR+u/YlOuJgPYQpqrDcDa1IF9MZsvIHNn+qZ1w39yRAb3j/+Jn05rB6PC5ctKJ0LA25r4VRJMHNa5Eeo/TOH8gier/h9KMQ8ej1x2l7aHKCUAi5zvDfLxa5ToxdoY5B5jkgGxdhzgsuC/3lp/AqTrd/S0EwKPHf186XJnjnD1qKtAKA7Bq2FTyI8TarMj1/MVfU69GV97zuD3aMxP+qG6qGvuF/tmn+zTsbsTRbkmbls66OElJgnL03mNqXQ1TJPGV55Vdjvf1JgUdPfxvTViY/0Lujtrj6tCIztSiIFKBNCQ3g2oJMlRqVDEgyvKA3SmN9YKTV6PKxsQ4f01lurPT0M4w14K48cCSiDRC5StSzSYIDqr6fbRGY76NscOr5cTcC1IVIHiUlm2UPjYylNNY9s+8Y79tdDaIUFDibjnPg4CweWMIF77RAQWOC66dGeMKYbAHOFqX74lA+YiSoMccTVWQ5bzdyyBysmjDsRClMNxE/F7xb5S/sQ11axPUgdoc+6rvdEjfjPtV
- 1Aa+mqX8
- KSzQqA5uKEFtGwxO6CE0JG7QUdLvC+RuKq+l8Ek4SDn3HL7KcZSwWgDYxHm6yjdMhAq/4FuaEwxdsbNCX0vcfBB2iSysZPR+FYYWnNfPrfi1ZYgEiKgdAfXZkLDi48G+xmH3tsBPs9os//AyBqPR5dK+lIwO0DGWm+vZoq0J/y3wwsdnTgc1cpZElDh0cPNyjzqh6YPXoEMZPEgSlovJgBhQTgXsIDHQ1l9ykBBvcRHJdldZkFtRfiU3GwehabL1W9YNb
+X-HE-Tag: 1766737092-660937
+X-HE-Meta: U2FsdGVkX1+CdX1Jp3JbF2UPv2GbjPvAC48omJww5i6/SSkH5/GWZwO2hIN0N8U5c6XNC678FiauHWSOy16WNW5N0R49AHAaACfkAJwnJ1j+yLAiDhV1tkr+kcsyvuzCZhdRc6CyTQ747soorsibGDX81KJoPAVzdis/gaefr8Q+xfp/iczUcP8zAHjxMueGWWTr+1jcNYjVSuYiMmeRj+rNoATHec5etx4K1h0glJvvIHRsBEUVNAwVxJ8/paLGsqk58pWA/IehMaSY+s2GEiAshcoFTsRmdnCFjsptcCCZovBQbGUYxtSeRCbFlSwycv2U9FnkeV1HePSEadltSNvKagDai/OmCCmUjmJYDfJfgYKtmgQntaixbRR4Ag0EenLu4iLw9Ew/wMLB0efV1d8QnQb4aqoyMW5U43u859XGw9FF/2+7RInbZoAVd7D+Lvk+a2Biwv21hT6K5jwxFG+goTGaCz4hUX3U6MNfAJR6dOz4Y0wGO3VYe19XmFLMy6g4ohDOZFkSZAKW8eJ3PZCkRF7oamdk+iCcprHcLtOlvLrGwUY7HGdvD+jCS8rnq1Tucwawp0pWpywqqHudN6mOVE6TIWx6i1+D2NPwjlmHTcaj+NdlYmQOJYsZ5KZymtVNIj5WGaa84aTi1DDJCSdrquP9iav3ks7o2CElNbL3KaMkZ7LN4I+ahayc7OhfG8w9SNn4aAmnOiCGwM2Y/m8OIp3lXI4EVZ+4UcskWwtAVPtQfcfwBI7xXygmvN9cmnhhvhmy+ZxHzMOCDAIRo1wtijZ9djsJ/dKWL0C4kmUbg5jan11WuQNMIZCZCaA+39VhDQfKW5/ysE2PWxpmzwGxuSVGaqxegiNav/GLqoU86HPekdfFMjTjaZ3rdrdrdFbH5Zq8dkUGRVX81eNsT++N+tVGsX/Tt//chfBlpshMltsYWGdQ9KIPuOG7/CB7MSntmn5+ANpQz+IBz4x
+ rfF625U7
+ SIGLI8ppMfLKBmErNgUWxNSZkedru8kC6iTNsEiZezps4h1Dbp4gRZZ/LrKXsH8Wrb0MdTXqLHJexliwaJTfRHHf5+f0ydEsSo+aCAGxiFVbApXXUdMXZufippPq1OSDKnLBIZbclxh9/4JZUZ0XMIwyZ4wFEqjnmcM1c02nDv0z5OA0Kj++dzIqRvT87hpT4HuKBvXTUDKvc62LSKTVsLi7LUJsmaP0JYtK+VNzZGyMvC8aUO+jugt1FUa3JQ17t3lE/LBDmOQvaKzSTZjUvCXwlKM6q9rTb2yhtzyC95x2NIx7shIcXYg1pgNlmTE09GkpTkgG3PWtKR1si7a+m6BdAbgrOkr3uAv/af7bCZPFWjK8NHtG1YCFWKCnZuOHUSTzidtPtanh6x65NDV4YFYKmKkkd5tcBLlbNENTO7QCFtRcWBNhDC7rR4CqtNqdgOaOzZ/KWtEDMddJoyOrmq0C++QIKPRoJFlsYzJcSO+1hFqn/qdLJhQ+KHZ8mgZCqlILGWK1paTCCaYN7SLRKLUCGh9ZcGQE12wBZ81LmiVc4DIlX6Ug6SUFbLg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,218 +91,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is a multi-part message in MIME format.
+--------------AERpyX8l517h3WNYUREJdZEf
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-On 2025/12/24 21:45, Frederic Weisbecker wrote:
-> Until now, HK_TYPE_DOMAIN used to only include boot defined isolated
-> CPUs passed through isolcpus= boot option. Users interested in also
-> knowing the runtime defined isolated CPUs through cpuset must use
-> different APIs: cpuset_cpu_is_isolated(), cpu_is_isolated(), etc...
-> 
-> There are many drawbacks to that approach:
-> 
-> 1) Most interested subsystems want to know about all isolated CPUs, not
->   just those defined on boot time.
-> 
-> 2) cpuset_cpu_is_isolated() / cpu_is_isolated() are not synchronized with
->   concurrent cpuset changes.
-> 
-> 3) Further cpuset modifications are not propagated to subsystems
-> 
-> Solve 1) and 2) and centralize all isolated CPUs within the
-> HK_TYPE_DOMAIN housekeeping cpumask.
-> 
-> Subsystems can rely on RCU to synchronize against concurrent changes.
-> 
-> The propagation mentioned in 3) will be handled in further patches.
-> 
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> ---
->  include/linux/sched/isolation.h |  7 +++
->  kernel/cgroup/cpuset.c          |  3 ++
->  kernel/sched/isolation.c        | 76 ++++++++++++++++++++++++++++++---
->  kernel/sched/sched.h            |  1 +
->  4 files changed, 81 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
-> index 109a2149e21a..6842a1ba4d13 100644
-> --- a/include/linux/sched/isolation.h
-> +++ b/include/linux/sched/isolation.h
-> @@ -9,6 +9,11 @@
->  enum hk_type {
->  	/* Revert of boot-time isolcpus= argument */
->  	HK_TYPE_DOMAIN_BOOT,
-> +	/*
-> +	 * Same as HK_TYPE_DOMAIN_BOOT but also includes the
-> +	 * revert of cpuset isolated partitions. As such it
-> +	 * is always a subset of HK_TYPE_DOMAIN_BOOT.
-> +	 */
->  	HK_TYPE_DOMAIN,
->  	/* Revert of boot-time isolcpus=managed_irq argument */
->  	HK_TYPE_MANAGED_IRQ,
-> @@ -35,6 +40,7 @@ extern const struct cpumask *housekeeping_cpumask(enum hk_type type);
->  extern bool housekeeping_enabled(enum hk_type type);
->  extern void housekeeping_affine(struct task_struct *t, enum hk_type type);
->  extern bool housekeeping_test_cpu(int cpu, enum hk_type type);
-> +extern int housekeeping_update(struct cpumask *isol_mask, enum hk_type type);
->  extern void __init housekeeping_init(void);
->  
->  #else
-> @@ -62,6 +68,7 @@ static inline bool housekeeping_test_cpu(int cpu, enum hk_type type)
->  	return true;
->  }
->  
-> +static inline int housekeeping_update(struct cpumask *isol_mask, enum hk_type type) { return 0; }
->  static inline void housekeeping_init(void) { }
->  #endif /* CONFIG_CPU_ISOLATION */
->  
-> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-> index 5e2e3514c22e..e13e32491ebf 100644
-> --- a/kernel/cgroup/cpuset.c
-> +++ b/kernel/cgroup/cpuset.c
-> @@ -1490,6 +1490,9 @@ static void update_isolation_cpumasks(void)
->  	ret = tmigr_isolated_exclude_cpumask(isolated_cpus);
->  	WARN_ON_ONCE(ret < 0);
->  
-> +	ret = housekeeping_update(isolated_cpus, HK_TYPE_DOMAIN);
-> +	WARN_ON_ONCE(ret < 0);
-> +
->  	isolated_cpus_updating = false;
->  }
->  
-> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-> index 83be49ec2b06..a124f1119f2e 100644
-> --- a/kernel/sched/isolation.c
-> +++ b/kernel/sched/isolation.c
-> @@ -29,18 +29,48 @@ static struct housekeeping housekeeping;
->  
->  bool housekeeping_enabled(enum hk_type type)
->  {
-> -	return !!(housekeeping.flags & BIT(type));
-> +	return !!(READ_ONCE(housekeeping.flags) & BIT(type));
->  }
->  EXPORT_SYMBOL_GPL(housekeeping_enabled);
->  
-> +static bool housekeeping_dereference_check(enum hk_type type)
-> +{
-> +	if (IS_ENABLED(CONFIG_LOCKDEP) && type == HK_TYPE_DOMAIN) {
-> +		/* Cpuset isn't even writable yet? */
-> +		if (system_state <= SYSTEM_SCHEDULING)
-> +			return true;
-> +
-> +		/* CPU hotplug write locked, so cpuset partition can't be overwritten */
-> +		if (IS_ENABLED(CONFIG_HOTPLUG_CPU) && lockdep_is_cpus_write_held())
-> +			return true;
-> +
-> +		/* Cpuset lock held, partitions not writable */
-> +		if (IS_ENABLED(CONFIG_CPUSETS) && lockdep_is_cpuset_held())
-> +			return true;
-> +
-> +		return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
-> +static inline struct cpumask *housekeeping_cpumask_dereference(enum hk_type type)
-> +{
-> +	return rcu_dereference_all_check(housekeeping.cpumasks[type],
-> +					 housekeeping_dereference_check(type));
-> +}
-> +
->  const struct cpumask *housekeeping_cpumask(enum hk_type type)
->  {
-> +	const struct cpumask *mask = NULL;
-> +
->  	if (static_branch_unlikely(&housekeeping_overridden)) {
-> -		if (housekeeping.flags & BIT(type)) {
-> -			return rcu_dereference_check(housekeeping.cpumasks[type], 1);
-> -		}
-> +		if (READ_ONCE(housekeeping.flags) & BIT(type))
-> +			mask = housekeeping_cpumask_dereference(type);
->  	}
-> -	return cpu_possible_mask;
-> +	if (!mask)
-> +		mask = cpu_possible_mask;
-> +	return mask;
->  }
->  EXPORT_SYMBOL_GPL(housekeeping_cpumask);
->  
-> @@ -80,12 +110,46 @@ EXPORT_SYMBOL_GPL(housekeeping_affine);
->  
->  bool housekeeping_test_cpu(int cpu, enum hk_type type)
->  {
-> -	if (static_branch_unlikely(&housekeeping_overridden) && housekeeping.flags & BIT(type))
-> +	if (static_branch_unlikely(&housekeeping_overridden) &&
-> +	    READ_ONCE(housekeeping.flags) & BIT(type))
->  		return cpumask_test_cpu(cpu, housekeeping_cpumask(type));
->  	return true;
->  }
->  EXPORT_SYMBOL_GPL(housekeeping_test_cpu);
->  
-> +int housekeeping_update(struct cpumask *isol_mask, enum hk_type type)
-> +{
-> +	struct cpumask *trial, *old = NULL;
-> +
-> +	if (type != HK_TYPE_DOMAIN)
-> +		return -ENOTSUPP;
-> +
+在 2025/12/26 14:52, Barry Song 写道:
+> On Fri, Dec 26, 2025 at 7:39 PM Weilin Tong
+> <tongweilin@linux.alibaba.com> wrote:
+>> Currently, ARCH_WANTS_THP_SWAP was limited to 4K page size ARM64 kernels, but
+>> large folios requiring swapping also exist in other page size configurations
+>> (e.g. 64K). Without this config, large folios in these kernels cannot be swapped
+>> out.
+>>
+>> Here we enable ARCH_WANTS_THP_SWAP for all ARM64 page sizes.
+> I no longer recall why this was not enabled for sizes other than
+> 4 KB in commit d0637c505f8a ("arm64: enable THP_SWAP for arm64"), but
+> it appears to be fine, and the swap cluster size should also be
+> more friendly to PMD alignment.
+>
+>
+> #ifdef CONFIG_THP_SWAP
+> #define SWAPFILE_CLUSTER        HPAGE_PMD_NR
+> #define swap_entry_order(order) (order)
+> #else
+> #define SWAPFILE_CLUSTER        256
+> #define swap_entry_order(order) 0
+> #endif
+>
 
-Nit:
+Thank you very much for taking the time to review this patch during the holiday. Wishing you a happy holiday as well!
 
-The current if statement indicates that we only support modifying the cpumask for HK_TYPE_DOMAIN,
-which makes the type argument seem unnecessary. This seems to be designed for better scalability.
-However, when a new type needs to be supported in the future, this statement would have to be
-removed. Also, the use of cpumask_andnot below is not a general operation.
+I appreciate you pointing out this optimization. 
+We initially noticed the issue because, on ARM64 kernels with 64K page size, 
+if large folios are used in shmem, they cannot be swapped out as a whole during shmem_writeout() 
+due to the config limitation,
+and are forced to split instead—which is something we wanted to avoid.
 
-Anyway, looks good to me.
+It seems that this change will help enable better swap operations for large folios. Thank you again for your feedback!
 
-> +	trial = kmalloc(cpumask_size(), GFP_KERNEL);
-> +	if (!trial)
-> +		return -ENOMEM;
-> +
-> +	cpumask_andnot(trial, housekeeping_cpumask(HK_TYPE_DOMAIN_BOOT), isol_mask);
-> +	if (!cpumask_intersects(trial, cpu_online_mask)) {
-> +		kfree(trial);
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!housekeeping.flags)
-> +		static_branch_enable(&housekeeping_overridden);
-> +
-> +	if (housekeeping.flags & BIT(type))
-> +		old = housekeeping_cpumask_dereference(type);
-> +	else
-> +		WRITE_ONCE(housekeeping.flags, housekeeping.flags | BIT(type));
-> +	rcu_assign_pointer(housekeeping.cpumasks[type], trial);
-> +
-> +	synchronize_rcu();
-> +
-> +	kfree(old);
-> +
-> +	return 0;
-> +}
-> +
->  void __init housekeeping_init(void)
->  {
->  	enum hk_type type;
-> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-> index 475bdab3b8db..653e898a996a 100644
-> --- a/kernel/sched/sched.h
-> +++ b/kernel/sched/sched.h
-> @@ -30,6 +30,7 @@
->  #include <linux/context_tracking.h>
->  #include <linux/cpufreq.h>
->  #include <linux/cpumask_api.h>
-> +#include <linux/cpuset.h>
->  #include <linux/ctype.h>
->  #include <linux/file.h>
->  #include <linux/fs_api.h>
 
-Reviewed-by: Chen Ridong <chenridong@huawei.com>
+>> Signed-off-by: Weilin Tong<tongweilin@linux.alibaba.com>
+>> ---
+>>   arch/arm64/Kconfig | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+>> index 93173f0a09c7..58f7b4405f81 100644
+>> --- a/arch/arm64/Kconfig
+>> +++ b/arch/arm64/Kconfig
+>> @@ -120,7 +120,7 @@ config ARM64
+>>          select ARCH_WANT_LD_ORPHAN_WARN
+>>          select ARCH_WANTS_EXECMEM_LATE
+>>          select ARCH_WANTS_NO_INSTR
+>> -       select ARCH_WANTS_THP_SWAP if ARM64_4K_PAGES
+>> +       select ARCH_WANTS_THP_SWAP
+>>          select ARCH_HAS_UBSAN
+>>          select ARM_AMBA
+>>          select ARM_ARCH_TIMER
+>> --
+>> 2.43.7
+> Thanks
+> Barry
+--------------AERpyX8l517h3WNYUREJdZEf
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
--- 
-Best regards,
-Ridong
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF=
+-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class=3D"moz-cite-prefix">=E5=9C=A8 2025/12/26 14:52, Barry Song=
+ =E5=86=99=E9=81=93:<br>
+    </div>
+    <blockquote type=3D"cite"
+cite=3D"mid:CAGsJ_4zd+SMa4Mj23tjF5OwsP3LQyvYTrwN4y81=3Dk8FSFgbH3Q@mail.gm=
+ail.com">
+      <pre wrap=3D"" class=3D"moz-quote-pre">On Fri, Dec 26, 2025 at 7:39=
+=E2=80=AFPM Weilin Tong
+<a class=3D"moz-txt-link-rfc2396E" href=3D"mailto:tongweilin@linux.alibab=
+a.com">&lt;tongweilin@linux.alibaba.com&gt;</a> wrote:
+</pre>
+      <blockquote type=3D"cite">
+        <pre wrap=3D"" class=3D"moz-quote-pre">
+Currently, ARCH_WANTS_THP_SWAP was limited to 4K page size ARM64 kernels,=
+ but
+large folios requiring swapping also exist in other page size configurati=
+ons
+(e.g. 64K). Without this config, large folios in these kernels cannot be =
+swapped
+out.
 
+Here we enable ARCH_WANTS_THP_SWAP for all ARM64 page sizes.
+</pre>
+      </blockquote>
+      <pre wrap=3D"" class=3D"moz-quote-pre">
+I no longer recall why this was not enabled for sizes other than
+4 KB in commit d0637c505f8a ("arm64: enable THP_SWAP for arm64"), but
+it appears to be fine, and the swap cluster size should also be
+more friendly to PMD alignment.
+
+
+#ifdef CONFIG_THP_SWAP
+#define SWAPFILE_CLUSTER        HPAGE_PMD_NR
+#define swap_entry_order(order) (order)
+#else
+#define SWAPFILE_CLUSTER        256
+#define swap_entry_order(order) 0
+#endif
+
+</pre>
+    </blockquote>
+    <br>
+    <div align=3D"left">
+      <article class=3D"4ever-article"
+data-clipboard-cangjie=3D"[&quot;root&quot;,{&quot;copyFrom&quot;:&quot;i=
+m-native&quot;},[&quot;p&quot;,{},[&quot;span&quot;,{&quot;data-type&quot=
+;:&quot;text&quot;},[&quot;span&quot;,{&quot;data-type&quot;:&quot;leaf&q=
+uot;},&quot;Thank you very much for taking the time to review this patch =
+during the holiday season. Wishing you a happy holiday as well!&quot;]]],=
+[&quot;p&quot;,{}],[&quot;p&quot;,{},[&quot;span&quot;,{&quot;data-type&q=
+uot;:&quot;text&quot;},[&quot;span&quot;,{&quot;data-type&quot;:&quot;lea=
+f&quot;},&quot;I appreciate you pointing out this optimization. We initia=
+lly noticed the issue because, on ARM64 kernels with 64K page size, if la=
+rge folios are used in shmem, they cannot be swapped out as a whole durin=
+g shmem_writeout due to the config limitation, and are forced to split in=
+stead=E2=80=94which is something we wanted to avoid.&quot;]]],[&quot;p&qu=
+ot;,{}],[&quot;p&quot;,{},[&quot;span&quot;,{&quot;data-type&quot;:&quot;=
+text&quot;},[&quot;span&quot;,{&quot;data-type&quot;:&quot;leaf&quot;},&q=
+uot;It seems that this change will help enable better swap operations for=
+ large folios. Thank you again for your feedback!&quot;]]]]"><font
+          face=3D"monospace">Thank=C2=A0you=C2=A0very=C2=A0much=C2=A0for=C2=
+=A0taking=C2=A0the=C2=A0time=C2=A0to=C2=A0review=C2=A0this=C2=A0patch=C2=A0=
+during=C2=A0the=C2=A0holiday.=C2=A0Wishing=C2=A0you=C2=A0a=C2=A0happy=C2=A0=
+holiday=C2=A0as=C2=A0well!</font><br>
+        <br>
+        <font face=3D"monospace">I=C2=A0appreciate=C2=A0you=C2=A0pointing=
+=C2=A0out=C2=A0this=C2=A0optimization.
+We=C2=A0initially=C2=A0noticed=C2=A0the=C2=A0issue=C2=A0because,=C2=A0on=C2=
+=A0ARM64=C2=A0kernels=C2=A0with=C2=A064K=C2=A0page=C2=A0size,
+          if=C2=A0large=C2=A0folios=C2=A0are=C2=A0used=C2=A0in=C2=A0shmem=
+,</font><font
+          face=3D"monospace">=C2=A0they=C2=A0cannot=C2=A0be=C2=A0swapped=C2=
+=A0out=C2=A0as=C2=A0a=C2=A0whole=C2=A0during=C2=A0shmem_writeout()
+          due=C2=A0to the config=C2=A0limitation,<br>
+and=C2=A0are=C2=A0forced=C2=A0to=C2=A0split=C2=A0instead=E2=80=94which=C2=
+=A0is=C2=A0something=C2=A0we=C2=A0wanted=C2=A0to=C2=A0avoid.</font><br>
+        <br>
+        <font face=3D"monospace">It=C2=A0seems=C2=A0that=C2=A0this=C2=A0c=
+hange=C2=A0will=C2=A0help=C2=A0enable=C2=A0better=C2=A0swap=C2=A0operatio=
+ns=C2=A0for=C2=A0large=C2=A0folios.=C2=A0Thank=C2=A0you=C2=A0again=C2=A0f=
+or=C2=A0your=C2=A0feedback!</font><br>
+      </article>
+    </div>
+    <br>
+    <blockquote type=3D"cite"
+cite=3D"mid:CAGsJ_4zd+SMa4Mj23tjF5OwsP3LQyvYTrwN4y81=3Dk8FSFgbH3Q@mail.gm=
+ail.com">
+      <pre wrap=3D"" class=3D"moz-quote-pre">
+</pre>
+      <blockquote type=3D"cite">
+        <pre wrap=3D"" class=3D"moz-quote-pre">
+Signed-off-by: Weilin Tong <a class=3D"moz-txt-link-rfc2396E" href=3D"mai=
+lto:tongweilin@linux.alibaba.com">&lt;tongweilin@linux.alibaba.com&gt;</a=
+>
+---
+ arch/arm64/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 93173f0a09c7..58f7b4405f81 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -120,7 +120,7 @@ config ARM64
+        select ARCH_WANT_LD_ORPHAN_WARN
+        select ARCH_WANTS_EXECMEM_LATE
+        select ARCH_WANTS_NO_INSTR
+-       select ARCH_WANTS_THP_SWAP if ARM64_4K_PAGES
++       select ARCH_WANTS_THP_SWAP
+        select ARCH_HAS_UBSAN
+        select ARM_AMBA
+        select ARM_ARCH_TIMER
+--
+2.43.7
+</pre>
+      </blockquote>
+      <pre wrap=3D"" class=3D"moz-quote-pre">
+Thanks
+Barry
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------AERpyX8l517h3WNYUREJdZEf--
 
