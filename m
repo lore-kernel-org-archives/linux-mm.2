@@ -4,107 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA85FE7AD78
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 02:19:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75672E7AD79
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 02:25:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E59556B0088; Thu, 25 Dec 2025 21:19:42 -0500 (EST)
+	id C4AEF6B0088; Thu, 25 Dec 2025 21:25:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E069B6B0089; Thu, 25 Dec 2025 21:19:42 -0500 (EST)
+	id C01CE6B0089; Thu, 25 Dec 2025 21:25:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D09476B008A; Thu, 25 Dec 2025 21:19:42 -0500 (EST)
+	id B0DD66B008A; Thu, 25 Dec 2025 21:25:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BCE026B0088
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 21:19:42 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3F28159FFA
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 02:19:42 +0000 (UTC)
-X-FDA: 84260016204.20.42C691E
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 70C5E140002
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 02:19:40 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=j0SCatQX;
-	spf=pass (imf09.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DDF66B0088
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 21:25:02 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 498328BC23
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 02:25:02 +0000 (UTC)
+X-FDA: 84260029644.04.6F73D9C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A1CC12000B
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 02:24:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hOwfFZ71;
+	spf=pass (imf03.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766715580;
+	s=arc-20220608; t=1766715899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t7MwV7wnomdpUA3QvJZeGbNIM+Niz71u03D9NfQ2Qt4=;
-	b=lf7xfAdSzy4bH0orZR+cAVIWWWx/CAxo5tIoki0WLbIGEWKYcpIScUWYE84ypT/WysgsQb
-	Pre2UgMmNpRtX+41MFSJv6d9Rj2YCV5KZiLjvGu1Af3HYNy59tC3SH9NjE6hIpEEQjvwVt
-	+peH7snYiAbY3x+NgjgQR1sI/BsxVfY=
+	bh=0Qsz5WPFD/uExCJQBnyZrl3TgkdgAhutxKnz59++5sE=;
+	b=kZ3DMiScZDfYTg2c8fJjvHn6GTz0Ys6eS59XwRV1SinYSzeJ563lTRYmTfKyml4gQ4LFF9
+	Zk4Usx/RT9os1MCGxfktMCqctSiwWdCmlkCL0xP4ftPzwLfW9P70sWi8Kji9fzGgtq7REg
+	V0xxcno2MYmpTiZ3YT7Btr/Q2rocZVg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=j0SCatQX;
-	spf=pass (imf09.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766715580; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hOwfFZ71;
+	spf=pass (imf03.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766715899; a=rsa-sha256;
 	cv=none;
-	b=23ag4w5tiJ1eIHM1z+Yn10TDpvnKMkmxYYnJeU/MrUVA3v17BdO6u9JpRWnufu0wFTj9Qr
-	3pQMBWQINN6GHjEvVWlEku4VoMXMoptHlSCeGHs5I40ERvkvVCCH+yYvy2IKrY4MiBTbhM
-	mHYXob82jl11ZisBvNkIzeUlOtcvm3I=
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-78fc0f33998so41461487b3.0
-        for <linux-mm@kvack.org>; Thu, 25 Dec 2025 18:19:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766715579; x=1767320379; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=t7MwV7wnomdpUA3QvJZeGbNIM+Niz71u03D9NfQ2Qt4=;
-        b=j0SCatQXPhOy20WoejcubhADXRMGyeGmQrlinKDIFLLwNd/dwdsI0Qp4aMgyvUgkE+
-         dpVW2GNRMQ167J2BMS7XVlCqo8lF2n7K7Y4QQY+1Qi10NN3QtpBe+6w8dQNLJh8AkiIs
-         yqz0rFJFLzJCM+CALaCo7KCoFGz784e3xsgHZIvtJ3LPF9PJfrh1SgzOccwr3xh44G3n
-         IHGUt2cBdWri4mSebi7GBaQ2uhGM4SZdsaMuFsD5TLY8EPyDvG83ImpL2+TlIDQxEAB8
-         Bgih76Y27ygUcSFxlT+3u+LDIJD4wy1LYWrZmH3X6fPqPnCT9fLOxS96FJzis3lTs8U5
-         HY6A==
+	b=FypL/+wlMveeFAGw5aZ9o0SEkOPRtaVD3jaDxoT9E5BWqatTClPAKEtaq5W70ckcb+Ei+G
+	u+qmdSpQ8lIFVv3R7PCm7zC1Mv4UWxTPz8zMCclijqpEJmgQsYjSHN6Y6WtibsGFhhhgjY
+	F40H1uZMtoBouviL+R1AkbJF2Bw8xj0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766715899;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0Qsz5WPFD/uExCJQBnyZrl3TgkdgAhutxKnz59++5sE=;
+	b=hOwfFZ710VPjketZu6BcT4FTzJihP8HWqg/bEK12ffUbnuOtlDn7F61S+drIcBvfayJQiO
+	uPy0yhHcM91k1GV2F+M763QrXGRwYmf+LWEV70nvqdRGZ8sqHgZDdM9/DyyMUzRO0B+5+j
+	Ulw5E/AE8OgX604RaBBQKKgGs5fV6ec=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-392-KazZ5KJPP9OvHnNoQlgE4Q-1; Thu, 25 Dec 2025 21:24:57 -0500
+X-MC-Unique: KazZ5KJPP9OvHnNoQlgE4Q-1
+X-Mimecast-MFC-AGG-ID: KazZ5KJPP9OvHnNoQlgE4Q_1766715897
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b62da7602a0so7128704a12.2
+        for <linux-mm@kvack.org>; Thu, 25 Dec 2025 18:24:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766715579; x=1767320379;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t7MwV7wnomdpUA3QvJZeGbNIM+Niz71u03D9NfQ2Qt4=;
-        b=WFq9xj/Wj5oh2gFjHSAZwrnMziblDtgbYdrY0CRLdj81RkZdB5JzbjRe/476j6cr4/
-         PcesM5FF4hRIqez9eVgd8ClnyZGLLKlvzCW9adlCK6xMOLNMpRZLRQZsvrasE1Y81fYG
-         0Mif1ZLRJ6QXkE8kdbb0S7P8C32MT1X3GDvyb+mhVVus6+x9ea8UY6ocVyjdoduurawC
-         kuHv+aCj7Z5n+BX4jMCaEOv1TvK8zzgoLNBZI1UvsWQVpk8Pae4NZQDuIIbL0pF6hg8T
-         Unws8GKHb/ClVPr1fTdlN0ASpswiKVwEkwHRneNwrRdg61VS+l/AhODFxvhmssdxlgRV
-         yHzg==
-X-Forwarded-Encrypted: i=1; AJvYcCXartWefGqqzTQ6Ejg6cXghU20LvOoKHaF5hdd1sLtIPbXC4+mS5hXpAxm2tQ7Qk4AWvWXZPgCHPg==@kvack.org
-X-Gm-Message-State: AOJu0Yw27TvoKJ7uMiuRjEl2snIFos0j1TcvLspQjt5t+MiLh412fcpg
-	lcJ3+0YaiVuHq+zNe4jzcYbnHjM4pnp3EE0i57TeH59GluNkH/iHgG8t5TnLlhw9dqlapTDGStC
-	MAXrUIQxW4klPkKZH6GeEhjBUARDmcoM=
-X-Gm-Gg: AY/fxX63OLlE8Pjz/vuZ4tt3d2MVmNILmmNtAAIsqXZ1kfj+WJHvzvi5QqeOBAk7FY3
-	PMrJgPpFjrvFHx39FZQvfnBInPAAitWLZ4bsxmjPMR8G11cItG2b6WTUOm15p45IhfsjRZTIcd7
-	EKIMmuh8I9aLpejxaM72xU9S9B5tggvA9qkqfj0E0toPHXg22QOjir/dhgWXul0d4EJ6+Z7QhzL
-	40xP4f47XbAilkSqDkdnqty0jUglNyo29WcjMGmuhy5RI5ulOWGAuoTFHHMDa92zYTlImKi
-X-Google-Smtp-Source: AGHT+IH2ZFQ8GgZ8BOanNglgLtEm635duvNuVsF9Wfc8H6UNreiOxRUqdz6IgbwI87pzbFD1cL2acGM0/OKe7xcIPlc=
-X-Received: by 2002:a05:690c:7409:b0:78f:ac82:51e7 with SMTP id
- 00721157ae682-78fb403c2d2mr349347387b3.40.1766715579436; Thu, 25 Dec 2025
- 18:19:39 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766715897; x=1767320697;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Qsz5WPFD/uExCJQBnyZrl3TgkdgAhutxKnz59++5sE=;
+        b=epgOThHtv6Q0sFE+Iq4AbD3uJ7dsVeQhzaVZ/9NpKwUt36kDnc+xfJNB47Uk/lija7
+         ksVFCklX3/FF0rDJjeDRN1RJiuewT2199AmhUKVrtbJNzG5XWzme05+ERQxai2A1Cy+7
+         Oq6/2ZLNjVoDKyZOe7AaFoK9P3P6e4xiIEmtS98pce9V0PPFgm8HeJZm8DgipykhEuKF
+         jMXB5UFvcSTr7TLgfT/y71a2K7r3TC/TutHHC8RWUPFzBP2kOgmCb32IK1lwxPhxpWx7
+         sm8nqo9OlwicL9nL10jRQBWnS0exakQzDQ4bji4ytO63jnQ1W7rQMz1N5GG7w0CWHzVW
+         Th2A==
+X-Forwarded-Encrypted: i=1; AJvYcCWiOOqy/NiKHCVC66JmKkdYRevh71O5uCOdKp0ZuN4JrMJxf7L/kryyixKItQ0uvOwJ2y3NDOityQ==@kvack.org
+X-Gm-Message-State: AOJu0YwwF8kxhm9CdB1qjRtX+V/BLqGcEonA8w8ux3Ak1dGImuZhxIkF
+	AeQkvoEd67Xbv+iRWraj0LDHEuk2iqFOwgtZtt6MvgZnAtEJb21h97Mek3nJn0yw5v9KbNZHy2/
+	Ljq6LadfSYoA8wuEeXTTXm065YjJADO2cF13z1Ww87RlnOscbiFFl
+X-Gm-Gg: AY/fxX70JiYDn6zIxHVnZLb7gkZLyYFIkEkX1R7GFwzKP05CutzDEC3gPp95IF7fIaV
+	idzauFWcozsp+YCcDxFa2yu0Lg3X5U0RZgbnkug/iphjL4odBOlIv4hq3KrtIpo6qLvZyhegiPQ
+	5wDxYeG7nQqLjDVuQP0c2lLwvQ8nDLRHCOummhjT7+BdNxDa9FFYwIWKakHbX7wsV/dpGMMsbL+
+	J+R2l00+W4bD8JnDQKB5l9aSyatjjLo/LCR4H9kmvdiarbHxAgIeV7uUDzSXHSi/6rojyFFvHu5
+	0azCnoQC20mzQwVFDW6YuwqrbvZReKOIbJTio32SnUcKhkDSEX6Vmm3W2nqqCntrhZVINgeONBc
+	gUPiZfANCO0678rXtHRSqxFTjiLEQdZ3nYOo3zWGYV+ntRq+9T97CfHvJ
+X-Received: by 2002:a05:7301:7d16:b0:2ae:526a:961d with SMTP id 5a478bee46e88-2b05ec8642fmr15215246eec.40.1766715896420;
+        Thu, 25 Dec 2025 18:24:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGXdA8ClkjU6K261gUhCEsY/UDJEEfrrLSdJplFZD7gmyleR6jxqLs3c/WeMtHejh420lmUqA==
+X-Received: by 2002:a05:7301:7d16:b0:2ae:526a:961d with SMTP id 5a478bee46e88-2b05ec8642fmr15215216eec.40.1766715895871;
+        Thu, 25 Dec 2025 18:24:55 -0800 (PST)
+Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b05ffad66fsm49761798eec.4.2025.12.25.18.24.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Dec 2025 18:24:55 -0800 (PST)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <17aadc7e-7dd6-4335-a748-e66f0239df85@redhat.com>
+Date: Thu, 25 Dec 2025 21:24:41 -0500
 MIME-Version: 1.0
-References: <CAHOvCC4dYGqY2pMQktBbO-NWKGE2XXeA1e+6BrP2QtsjM2Dodg@mail.gmail.com>
- <20251225200051.1069-1-sj@kernel.org>
-In-Reply-To: <20251225200051.1069-1-sj@kernel.org>
-From: JaeJoon Jung <rgbi3307@gmail.com>
-Date: Fri, 26 Dec 2025 11:19:28 +0900
-X-Gm-Features: AQt7F2pXT0e-4_oBLK6sV7pkwmAOSOx89g1eFse8oF9DsLlLzTCpYPnqVGTG6DM
-Message-ID: <CAHOvCC4f2xPK_LwFoisdqr_wX-RbdW9KUq48+82CMC=5ViF=ag@mail.gmail.com>
-Subject: Re: [PATCH] mm/damon/core: modified control->repeat loop at the kdamond_call()
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org, rgbi3307@nate.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 70C5E140002
-X-Stat-Signature: ydj8yon5kdpamoydiqo7cibkzqpjp56m
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/33] cpuset: Update HK_TYPE_DOMAIN cpumask from cpuset
+To: Frederic Weisbecker <frederic@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>,
+ Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20251224134520.33231-1-frederic@kernel.org>
+ <20251224134520.33231-15-frederic@kernel.org>
+In-Reply-To: <20251224134520.33231-15-frederic@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: kbBwhzMBSv7Dbpab8FsC9NE60cRLavEWmT5ijKVm9uU_1766715897
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1766715580-15105
-X-HE-Meta: U2FsdGVkX1+3gGqeU4PSyLYPGpJjSz2fscDAgt5+vCl1UI90lsi0h8o+ENbEAh1S7WMMDsR55hpjwQryRUBeuh+ORwQjeViG3aklII7tGVPnTKat7f6aqGUpFm3jhpmUkR1+er6R7Fyqg6ikVBk7FPtP0A1BECXkhx33637TGd1R/5H3nkvbuATNRsAYNGeT3xR0zqD/VXRvyz794o+6AOK74iOP2GRgMsmrAJ53vLuo1kQXQrGbpZ+kIhR0EbDkx4s0GpJgmevnqwQq3pzsAkfUVztWebfAlJpZHg3SBXfbiVpBu24AFrCG9oS0e3qR0ft59sTXdW0oVxtHtuIW36+9l8662wytrjWn2I37CLNDGd2kaKCKy1yy4ZfQ+I+wgxdN8Vf+yBXzaKd42GFCdu5jWlRKVmtXeaIAqNb+oH+9o6ahAAVDxVfOt8wCMYZomLlCD2+gwVsYua/HhbuLoIEEgYA/hTj6OwvAIyAJwf7gilQKxckcQbbXZgV/Eyu6J/ipmVDqzwIke1ONXYKLTzI6X4FYYii9jTSlbqSyxizNltRQj80m4h2881OwfBZtodLGx4riPKkpu3/KgKNYDhfMtXmbx+8pSPSVT7oN3FuJyCgBCITBpYxtCraYe5K4YcA+JrG+QiJIvnXHJYNWGhelMGHa6rbR483aQwrOrjWIHh04KQzHq/5E/5sHxoAkmS0g+81wq2invHTrwnyfSCfkeFzjkDvOirnbIVmvmhD6vqq5RJ06mtpqbcCyRWwfPFWe00qbzy4oR+SkB3cxH0Y2T5TmLt89s1sr4IOU0ZyUwPuiK8TNDm+ZawkG86ykA4ybLY8ui/d3MjD0XvcPJvFQswisFPUeLO5WLsKxrVGvLzu9UAbdk4SpI7E/2AgopPjZqh7uT6+huEPJfvxMR4/BS+CO+sJORCSqoWV3FpaWZALNLcqi/C6Qp6lz3ETO2grd29ZqeaOVQgJd2Ov
- 6txbaP4/
- gDlj1u8zPHdrmUGBMBPy/wlmzP5he7TDlcrqYcgBSsvIIuatwul94DCRmjuPdR3TB8QgdvuZMwZFWBavX70/Y0mJcx1I4fshwB8zEkbuDO0DB0x/B9cDEUbnQESlnI7Xket+T5czgQ//X2ac+6Cop4+LHI3Wndx6Gk4gNMwaC0L+aCVSvMPZcru/6+i0WtSYQGB1DebgkR56m0yP5Olw+3FYJz8I2yroZ4L8o9HLOa+oltf3nlsFTjWQAcw9o1IXc8yzg9Z5ufgL4YJ0Uuna48UUaaL+4Zgm/+2mWshsV5X5206fvY5M8u8RLIcj8ZcDhRpu1DTdPriTnjpIBkrNmVocEg9FdQ6L2Hm3KlSPSy8I0ySxNmOyM7+tbSVFvwCUrQkDsn88vZfIQBxmrocjaPZ0HtzyBdLa1FlO2mS6u+REE0b3gqXXtxOUfuHYjMYacL0DJ
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A1CC12000B
+X-Stat-Signature: g3wqr76nqff9s1f1mjmitq8h7riikz6u
+X-HE-Tag: 1766715899-476276
+X-HE-Meta: U2FsdGVkX1/zX697NisrKceIGfsc/uEODXPR4rolGtjkE1Whjl0xLr9HkDBlNjI9TuZSp2ooaI1a45KHEP6FeOi3wrOKlcsLFKwcNij7os0P7WUQPhePfRQdfdbpwry7DfhnEFocOt1FKGd6/TR9u0/H0g2yDwQSBIwVTNVtnQ3CFe0LJ6tG1WKMAFsmeNp7ZZ42tdB2VXSC9B3iv24Ea26I2GTGD56DPv4yEoZIiCwnNJpviuvWuAwzSbOtp5aGJqM9zekYAR9Qayrjt7lwblfjSKbt5Ha46oiEYIV6HEPrxmk71xuBqDQ7+pjvm0nQSHBgd7mshY16Ssya/IsZgHHhmRkWLNmNv33YTiNMwYsxZR/kKHC6OersJ1fEO1apYWKvuLPZEb50fexsk7Dr7gh9NR3/iPR0a2JT6kvQwRPu/5b3xPw/0LmBoNxqKkQV5FkrtyzUL1AJDm9WvketWYvXczWlxuPIqnqvl75r93GT4Y66HOwAOlOXxdU/BlfkDCsB6n9Ld0Aggw0gobWcjHHP5Hbp9d311QOmhJs2CDnUyMIRqfpWAwjn5hAuoSaC0grfDFYexvathfh9aDfA70mIRumuPhLKjaVBEFK3YYeksaqhMxUzfwnYJ+pJhWYqpcBJ0yKnxxDsGZno08Ekzh9PNa41nnXYew/jMzUUWeDsaVIHP/pUqlthGb7MlOUbRPwt0A6+YjRB4dk2UB4zBnOOPHX6McsqZ3OXyzVPAB7ZzLSiglOp3MeiKXJmyt0hBsANH/jqwDEoDagGtnBQDZrmfgGzz18RX6u136ecPM1ZqifAgbWs7hRu0qGb5QeOml0bgDQwQww9hft5h6RMBcp/E7JDYBwQmNP5simpsDrEGGSL132w5m2FFV560vYPYym1veGNbRzoz29hh9Oh0/I0y2YZccSd645Od8drZKPUWWt9mSo4TnWOh6AFvfkJsifQTaroDHE/f4PlXe+
+ 0hg39Q1b
+ l+sckr8tSJtFrfdTfwLxzpDZKT3GrWirpYl0eN1PneuQQajwvPGbmJkv8j2wCVit+ehkkOlmUae1CO0SKmWuF1e7g9v9olH7YQUyXkQ32Bm53UqofRIvIpmg8I+1xH65czAgU2nI98B3czu95kSnR7NPsSTU7sVQ+rCPxLbn61AT6YVjyqz7AWXM8IaVPK5oUXLkQNMvbxoPXNtrR4Xeheny3VxyLWf3zzgxY+BGrrEvpLEu65clXm3KgYn1ytPCaKC9jPcbWL/uoFMEucUPj3vmeKgJlW8NWVVxsGqL4rwuRC2rQEWcNMh+6/kcWAwVetAeK4gxdvzD7SZdb4R27pTfprp7EkVikIMF6qka8ydtCdZSO/nkwUt2hf+3gxxmGKb9TAZ3bXvkzMbxUthopls4FX0f32Grx2p8GySG/F6HEf7PrE+9c+tMq8AgGKfwegFwu542wUpoWa97ZyNWRC6WvFDYE5/GTcyaDTqqTihukjY8uo3kk2gYmwThBHohYySejGhDFMtl1X31CPZMmm4epRg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,224 +154,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 26 Dec 2025 at 05:01, SeongJae Park <sj@kernel.org> wrote:
+On 12/24/25 8:45 AM, Frederic Weisbecker wrote:
+> Until now, HK_TYPE_DOMAIN used to only include boot defined isolated
+> CPUs passed through isolcpus= boot option. Users interested in also
+> knowing the runtime defined isolated CPUs through cpuset must use
+> different APIs: cpuset_cpu_is_isolated(), cpu_is_isolated(), etc...
 >
-> On Thu, 25 Dec 2025 12:10:30 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> There are many drawbacks to that approach:
 >
-> > On Thu, 25 Dec 2025 at 10:07, SeongJae Park <sj@kernel.org> wrote:
-> > >
-> > > On Wed, 24 Dec 2025 21:43:54 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-> > >
-> > > > The kdamond_call() function is executed repeatedly in the kdamond_fn()
-> > > > kernel thread.  The kdamond_call() function is implemented as a while loop.
-> > > > Therefore, it is important to improve the list processing logic here to
-> > > > ensure faster execution of control->fn().
-> > >
-> > > That depends on how critical the performance is, and how much complexity the
-> > > optimization introduces.  I have no idea about if the performance of
-> > > kdamond_call() is really important.  If you have a realistic use case that
-> > > shows it, sharing it would be nice.
-> >
-> > This is because kdamond_call() is called repeatedly in kdamond_fn().
+> 1) Most interested subsystems want to know about all isolated CPUs, not
+>    just those defined on boot time.
 >
-> Yes, it is repeatedly called.  But, my question is, does it impose overhead
-> that great enough to make a negative impact to the real world.
+> 2) cpuset_cpu_is_isolated() / cpu_is_isolated() are not synchronized with
+>    concurrent cpuset changes.
+>
+> 3) Further cpuset modifications are not propagated to subsystems
+>
+> Solve 1) and 2) and centralize all isolated CPUs within the
+> HK_TYPE_DOMAIN housekeeping cpumask.
+>
+> Subsystems can rely on RCU to synchronize against concurrent changes.
+>
+> The propagation mentioned in 3) will be handled in further patches.
+>
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> ---
+>   include/linux/sched/isolation.h |  7 +++
+>   kernel/cgroup/cpuset.c          |  3 ++
+>   kernel/sched/isolation.c        | 76 ++++++++++++++++++++++++++++++---
+>   kernel/sched/sched.h            |  1 +
+>   4 files changed, 81 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
+> index 109a2149e21a..6842a1ba4d13 100644
+> --- a/include/linux/sched/isolation.h
+> +++ b/include/linux/sched/isolation.h
+> @@ -9,6 +9,11 @@
+>   enum hk_type {
+>   	/* Revert of boot-time isolcpus= argument */
+>   	HK_TYPE_DOMAIN_BOOT,
+> +	/*
+> +	 * Same as HK_TYPE_DOMAIN_BOOT but also includes the
+> +	 * revert of cpuset isolated partitions. As such it
+> +	 * is always a subset of HK_TYPE_DOMAIN_BOOT.
+> +	 */
+>   	HK_TYPE_DOMAIN,
+>   	/* Revert of boot-time isolcpus=managed_irq argument */
+>   	HK_TYPE_MANAGED_IRQ,
+> @@ -35,6 +40,7 @@ extern const struct cpumask *housekeeping_cpumask(enum hk_type type);
+>   extern bool housekeeping_enabled(enum hk_type type);
+>   extern void housekeeping_affine(struct task_struct *t, enum hk_type type);
+>   extern bool housekeeping_test_cpu(int cpu, enum hk_type type);
+> +extern int housekeeping_update(struct cpumask *isol_mask, enum hk_type type);
+>   extern void __init housekeeping_init(void);
+>   
+>   #else
+> @@ -62,6 +68,7 @@ static inline bool housekeeping_test_cpu(int cpu, enum hk_type type)
+>   	return true;
+>   }
+>   
+> +static inline int housekeeping_update(struct cpumask *isol_mask, enum hk_type type) { return 0; }
+>   static inline void housekeeping_init(void) { }
+>   #endif /* CONFIG_CPU_ISOLATION */
+>   
+> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> index 5e2e3514c22e..e13e32491ebf 100644
+> --- a/kernel/cgroup/cpuset.c
+> +++ b/kernel/cgroup/cpuset.c
+> @@ -1490,6 +1490,9 @@ static void update_isolation_cpumasks(void)
+>   	ret = tmigr_isolated_exclude_cpumask(isolated_cpus);
+>   	WARN_ON_ONCE(ret < 0);
+>   
+> +	ret = housekeeping_update(isolated_cpus, HK_TYPE_DOMAIN);
+> +	WARN_ON_ONCE(ret < 0);
+> +
+>   	isolated_cpus_updating = false;
+>   }
+>   
+> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+> index 83be49ec2b06..a124f1119f2e 100644
+> --- a/kernel/sched/isolation.c
+> +++ b/kernel/sched/isolation.c
+> @@ -29,18 +29,48 @@ static struct housekeeping housekeeping;
+>   
+>   bool housekeeping_enabled(enum hk_type type)
+>   {
+> -	return !!(housekeeping.flags & BIT(type));
+> +	return !!(READ_ONCE(housekeeping.flags) & BIT(type));
+>   }
+>   EXPORT_SYMBOL_GPL(housekeeping_enabled);
+>   
+> +static bool housekeeping_dereference_check(enum hk_type type)
+> +{
+> +	if (IS_ENABLED(CONFIG_LOCKDEP) && type == HK_TYPE_DOMAIN) {
 
-I agree that the overhead is not that much since there are only a few lists
-added to ctx->call_controls(CTX.head).
+To be more correct, we should use IS_ENABLED(CONFIG_PROVE_LOCKING) as 
+this is the real kconfig that enables most of the lockdep checking. 
+PROVE_LOCKING selects LOCKDEP but not vice versa. So for some weird 
+configs that set LOCKDEP but not PROVE_LOCKING, it can cause compilation 
+problem.
 
->
-> >
-> > >
-> > > > For ease of explanation,
-> > > > the data structure names will be abbreviated as follows:
-> > > >
-> > > > damon_call_control.list: C.list
-> > > > ctx->call_controls: CTX.head
-> > > > repeat_controls: R.head
-> > > >
-> > > > the execution flow of the while loop of the kdamond_call() function,
-> > > >
-> > > > Before modification:
-> > > > Old while loop:
-> > > >
-> > > >         CTX.head <-----> C.list <-----> C.list <----> C.list
-> > > >         ^                   |                           |
-> > > >         |               if (C.repeat)            if (!C.repeat)
-> > > >    restore: only one        |                           |
-> > > >    list_add_tail()        list_del()                  list_del()
-> > > >         |                   |                           |
-> > > >         +                   |                       complete()
-> > > >         R.head <------ list_add()
-> > > >
-> > > > To process C.repeat above, we use an additional list, repeat_controls.
-> > >
-> > > Your above abbreviation didn't explain what C.repeat is.  Maybe you mean
-> > > 'damon_call_control.repeat'?
-> >
-> > Yes, that's right.
->
-> Thank you for confirming.
->
-> >
-> > >
-> > > > The process of adding C.list to repeat_controls and then restoring it back
-> > > > to CTX.head is complex and inefficient.
-> > >
-> > > I agree.
-> > >
-> > > > Furthermore, there's the problem
-> > > > of restoring only a single C.list to CTX.head.
-> > >
-> > > I had to take some time on understanding what this mean.  And it seems you are
-> > > working on an old version of the tree, and therefore saying about an issue that
-> > > already fixed by commit 592e5c5f8ec6 ("mm/damon/core: fix memory leak of repeat
-> > > mode damon_call_control objects").
-> > >
-> > > Please use mm-new as a baseline of DAMON patches, unless there are special
-> > > reasons.  If there are special reasons, please explicitly specify.
-> >
-> > This patch is based on v6.19-rc2.
-> > I will continue to refer to mm-new and damon-new.
-> >
-> > >
-> > > >
-> > > > Below, repeat_controls is removed and the existing CTX.head is modified to
-> > > > loop once(1st rotation).  This simplifies list processing and creates a
-> > > > more efficient structure.
-> > > >
-> > > > Modified while loop:
-> > > > Not used repeat_controls:
-> > > >
-> > > >         CTX.head <-----> C.list <-----> C.list <----> C.list <-------+
-> > > >                             |                           |            |
-> > > >                         if (C.repeat)            if (!C.repeat)      |
-> > > >                             |                           |            |
-> > > >                           list_del()                  list_del()     |
-> > > >                             |                           |            |
-> > > >                             |                       complete()       |
-> > > >                             |                                        |
-> > > >                           first --------> list_add_tail() -----------+
-> > > >
-> > > >         if (C.list == first) break;
-> > > >
-> > > > Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
-> > > > ---
-> > > >  mm/damon/core.c | 37 +++++++++++++++++++------------------
-> > > >  1 file changed, 19 insertions(+), 18 deletions(-)
-> > > >
-> > > > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > > > index 824aa8f22db3..babad37719b6 100644
-> > > > --- a/mm/damon/core.c
-> > > > +++ b/mm/damon/core.c
-> > > > @@ -2554,42 +2554,43 @@ static void kdamond_usleep(unsigned long usecs)
-> > > >   */
-> > > >  static void kdamond_call(struct damon_ctx *ctx, bool cancel)
-> > > >  {
-> > > > -     struct damon_call_control *control;
-> > > > -     LIST_HEAD(repeat_controls);
-> > > > -     int ret = 0;
-> > > > +     struct damon_call_control *control, *first = NULL;
-> > > > +     unsigned int idx = 0;
-> > > >
-> > > >       while (true) {
-> > > >               mutex_lock(&ctx->call_controls_lock);
-> > > >               control = list_first_entry_or_null(&ctx->call_controls,
-> > > >                               struct damon_call_control, list);
-> > > >               mutex_unlock(&ctx->call_controls_lock);
-> > > > -             if (!control)
-> > > > +
-> > > > +             /* check control empty or 1st rotation */
-> > > > +             if (!control || control == first)
-> > > >                       break;
-> > > > -             if (cancel) {
-> > > > +
-> > > > +             if (++idx == 1)
-> > > > +                     first = control;
-> > > > +
-> > > > +             if (cancel)
-> > > >                       control->canceled = true;
-> > > > -             } else {
-> > > > -                     ret = control->fn(control->data);
-> > > > -                     control->return_code = ret;
-> > > > -             }
-> > > > +             else
-> > > > +                     control->return_code = control->fn(control->data);
-> > > > +
-> > > >               mutex_lock(&ctx->call_controls_lock);
-> > > >               list_del(&control->list);
-> > > >               mutex_unlock(&ctx->call_controls_lock);
-> > > > +
-> > > >               if (!control->repeat) {
-> > > > +                     /* run control->fn() one time */
-> > > >                       complete(&control->completion);
-> > > >               } else if (control->canceled && control->dealloc_on_cancel) {
-> > > >                       kfree(control);
-> > > > -                     continue;
-> > > >               } else {
-> > > > -                     list_add(&control->list, &repeat_controls);
-> > > > +                     /* to repeat next time */
-> > > > +                     mutex_lock(&ctx->call_controls_lock);
-> > > > +                     list_add_tail(&control->list, &ctx->call_controls);
-> > > > +                     mutex_unlock(&ctx->call_controls_lock);
-> > > >               }
-> > > >       }
-> > >
-> > > Let's suppose there are two damon_call_control objects on the
-> > > ctx->call_controls.  The first one has ->repeat unset, while the second one
-> > > has.  Then, it seems the 'break' condition will never met and therefore this
-> > > loop will never finished.  Am I missing something?
-> >
-> > You misjudged.
-> > If (!C.repeat), it will be removed with list_del() and disappear.
-> > If (C.repeat) loops through the loop once, and when it returns to the
-> > first, it breaks.
->
-> Maybe my explanation was not enough.  Let me explain a bit in more detail.
->
-> In the scenario I mentioned, at the first iteration of the loop, 'first' will
-> be the first control object, which has ->repeat unset.  The object will be
-> removed from the list.  In the second iteration of the loop, it handles the
-> second object, which has ->repeat set.  The object is added to the list again.
-> In the third iteration, the loop runs for the second object again.  Because it
-> is not same to 'first', the 'break' statement is not reached.  The loop
-> continues forever.
->
-> Am I missing something?
+Other than that, the rest looks good to me.
 
-Thank you for your detailed review.
-There may be cases where C->repeat=false is the first control.
-This can also be solved simply as follows:
+Cheers,
+Longman
 
-@@ -2567,9 +2599,6 @@ static void kdamond_call(struct damon_ctx *ctx,
-bool cancel)
-                if (!control || control == first)
-                        break;
-
--               if (++idx == 1)
--                       first = control;
--
-                if (cancel)
-                        control->canceled = true;
-                else
-@@ -2589,6 +2618,8 @@ static void kdamond_call(struct damon_ctx *ctx,
-bool cancel)
-                        mutex_lock(&ctx->call_controls_lock);
-                        list_add_tail(&control->list, &ctx->call_controls);
-                        mutex_unlock(&ctx->call_controls_lock);
-+                       if (++idx == 1)
-+                               first = control;
-                }
-        }
- }
-
-Thanks,
-JaeJoon
-
->
->
-> Thanks,
-> SJ
->
-> [...]
 
