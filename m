@@ -4,119 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3159EE8FDAA
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 18:58:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9288E8FDAC
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 19:32:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9203A6B0005; Fri, 26 Dec 2025 13:58:52 -0500 (EST)
+	id AF9A46B0005; Fri, 26 Dec 2025 14:32:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A4246B0089; Fri, 26 Dec 2025 13:58:52 -0500 (EST)
+	id A7D016B0089; Fri, 26 Dec 2025 14:32:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 785FB6B008A; Fri, 26 Dec 2025 13:58:52 -0500 (EST)
+	id 955516B008A; Fri, 26 Dec 2025 14:32:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6449B6B0005
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 13:58:52 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EC3E21A0202
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:58:51 +0000 (UTC)
-X-FDA: 84262534062.06.6E74269
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 20E38100006
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:58:49 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DaDZV1ur;
-	spf=pass (imf14.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=bingjiao@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 81FC36B0005
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 14:32:32 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0FA4CB7FCB
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 19:32:32 +0000 (UTC)
+X-FDA: 84262618944.12.5FECBE9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7B6A7140013
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 19:32:29 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Sqm7d53k;
+	spf=pass (imf09.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766775530;
+	s=arc-20220608; t=1766777549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uhlrA5UD6vYZ+x3JcTWZGMJmIRFbEcfDotqJPwZRBT4=;
-	b=itkYdv9jWUbeSLUDxZ6pdYxC9GcJLrLmOrrEYK5iB0vKKrr7PzsqkH+uAgCGVapCUSjnSi
-	lTWcBqA4NSFsIRhQaAxfGScnNkyPGhSdQy9cB9vBSHraPfHEEFrAdf3eq+IJVL68KhxUWf
-	PrAuiSpd0ALCisC1SRdeWwIFl6eVT1s=
+	bh=exrylgbBHUfG9Ezs8wURYm14g4G1+zNQOsDbopt4dSY=;
+	b=PeMZzbg1ycGnJQ+TSFnTc1JQ4nfW/kXzXsPvTvkm4RJnmmzG67jQQpwC/sd4v7GBVObN9/
+	ossiS14ZBeJK7H7rmBCMK640nvV50IvNnd0HVXjaqHCv60YamCguliKGNw0DU8c7on2UKP
+	LKrcVxg3MOhjKpQFFH1+Z8oCo01iPXc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DaDZV1ur;
-	spf=pass (imf14.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=bingjiao@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766775530; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Sqm7d53k;
+	spf=pass (imf09.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766777549; a=rsa-sha256;
 	cv=none;
-	b=W60lz7zpx5XKFeku87l8uKy2j2x6PQSHPb4B+uhuUwUs/NqhyBf7HZFBqiJPCbB33JypTh
-	W3CHylmWmGIDt/eTCDyWJaTpPxMEuv4XkQJIOVsgqN5CLPvX2pEMYyj5G5iESoMUzSOsBd
-	blgmGr0TCOsX4tbt2eTwKXmYpGd+M0s=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a0d06cfa93so1097375ad.1
-        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 10:58:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766775529; x=1767380329; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uhlrA5UD6vYZ+x3JcTWZGMJmIRFbEcfDotqJPwZRBT4=;
-        b=DaDZV1ur4cLRqF0LhVjBQWdJvNFa0fXikly76677v+zUrRG8O2G7exWR28DTbufojm
-         0xaFVeGCSHAjLKBYDqQujq+XmZwjXFI2PVabK5cM2nEmCBMeo24VpJAfRUtGxZNiErZr
-         MNHkjwRaa9H5uWbCvRi+gqCXQbb2GGcGuQ/cNYWEbAbFqjlasJRGgZiFFoe2xTpniL8N
-         dybx+IwZ/g5ot8S+apLO5I6tJUqPw3zmBY+0bk0STjYdf5qJBldArDv/fHd7gSmLq4hs
-         ol1KoJv8v0Sr5HLcAnufn9w4I957T5Wa30GrwsL/cFd7+K6oIIjWZZiLuS3AvhzCvqMW
-         Nk+w==
+	b=NmLdZGtwcey1qSnbq2964su6iRDytvxyAD29WUC3qnmKt4s6bnOTrgP4YN6CuZ60Opeslt
+	bcU1ZLQKKJqjQYkDJbUMOAI5DdFIN0DU7atzs0s1+/5nZMEHieFC+zL/Az6I7Jt7fGVSdS
+	mD3tB+MMHEST3FZBnvUjYt+U7UwG9QE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766777548;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=exrylgbBHUfG9Ezs8wURYm14g4G1+zNQOsDbopt4dSY=;
+	b=Sqm7d53kmLVHp6SDbXDIqP41bMS1o2Ww05vO9R2HbV0ghrrovdlokqWwCjE3uvJN7shG1E
+	7+a/dn+EkLRXYJfmrh1vMx8OYqYauRxtwvJNdXveyuMndPdVusqGfLgMC9qxogYeDY98gk
+	5rn63escA23vNtlabCsCnPmeVxE42+E=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-125-vexmhbjyOEa6FSpXA0OTkg-1; Fri, 26 Dec 2025 14:32:27 -0500
+X-MC-Unique: vexmhbjyOEa6FSpXA0OTkg-1
+X-Mimecast-MFC-AGG-ID: vexmhbjyOEa6FSpXA0OTkg_1766777547
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4ee0c1c57bcso271871971cf.2
+        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 11:32:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766775529; x=1767380329;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uhlrA5UD6vYZ+x3JcTWZGMJmIRFbEcfDotqJPwZRBT4=;
-        b=opXGfnYWuFx+WKv0+EX09SlzCaACXM4MsQocZPiwMsb3ZszantXmvMXEkKDOiEqwhi
-         bZWJRyTGY8ZD9rOgdtEUGjHpshUjZHa0Y1enjp9q7mDTTikWdlbIAMh0XbTpxTPpDYYx
-         tDJhiJqA7Yf0H1wavOAKUS0mDC1POUJHyrn7aaJLPWCHwIj+ZIpXYPKItMaStTETqq8C
-         riuNQ44seF7YKeyeuFcjzFKQHKAvW9DMf3A/V1lhqNlmliaVUb0/ACD/X9NTA8K3z2Nq
-         7MFpAaK0a2+duOEF3QcM4le/I2TI5ue/keX1jsS5SAWaLcqmG7jnDFOO1y5y5XiBfLwB
-         himg==
-X-Gm-Message-State: AOJu0Yzm9KTtHZ30CxgZYGA/MNIOnkcRvRkgai+HlRLEoSQ5ZtcHk+nT
-	FWqqPgAsTB3Swjq6veq9OVO0gDf1baBTBircQOhrug57yv8ztvvU3b8vdBAQ+FMkig==
-X-Gm-Gg: AY/fxX4+7eCBeteWFFdrjLj+/Wp+CkUVgnc3bzES2ClxXm+6eUYx0NV7D5wPKu9xwms
-	ChIcY+PdB7dvcMZGKaa1J4LrjQ5w7aUwBLjn7jfp2u5jrxVAzbVHuCmSRfN3mNjoGX5UgM2Zhgh
-	HSKN8GDMMkKvq5t33M7ysbWU5ZX2ZH/1+VPKTib06tnlzfpTkKHqjTOozxLgiIhkChjwQb3GYoe
-	UyALUl0zFFZFYtePJKjm8PepL4ZKKEtyet7v55p2d3SthLI22IynTE9X5P4QELbO0Xr6MuxC3ov
-	mfeQeJJijp+jsGoIeXTeRM54t8z0msuisKSzmugNmZDttNk+QyqOY5jWwQUlzUnvLFPVpcBf4pv
-	YJKOcJXehDUx75KD/KFRq18iQKcEKGOtbkS/LJNGj9/eDR79fQaAAZ3XVcHrli+VRO7dBGbhLbK
-	zCutTei9sy2ZU05cUwAq/oHF5ckaLuCUGFyDmUbdzCFfQgIzF4UJiv
-X-Google-Smtp-Source: AGHT+IGQFAd8PfbkonRWK/eILNYIR1fN8cIZOU37eemTt6WBkj4X56w0kou5ks+d/BcUYUIqHdofxw==
-X-Received: by 2002:a17:903:2c06:b0:290:cd63:e922 with SMTP id d9443c01a7336-2a353a4e3fcmr4253275ad.15.1766775528500;
-        Fri, 26 Dec 2025 10:58:48 -0800 (PST)
-Received: from google.com (248.132.125.34.bc.googleusercontent.com. [34.125.132.248])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c87845sm214750925ad.39.2025.12.26.10.58.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Dec 2025 10:58:47 -0800 (PST)
-Date: Fri, 26 Dec 2025 18:58:42 +0000
-From: Bing Jiao <bingjiao@google.com>
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, gourry@gourry.net, longman@redhat.com,
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev, tj@kernel.org,
-	mkoutny@suse.com, david@kernel.org, zhengqi.arch@bytedance.com,
-	lorenzo.stoakes@oracle.com, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, cgroups@vger.kernel.org
+        d=1e100.net; s=20230601; t=1766777547; x=1767382347;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=exrylgbBHUfG9Ezs8wURYm14g4G1+zNQOsDbopt4dSY=;
+        b=KVvPjv4YkDPDsHUO+JpNJbt0Ny7H9ky7Vl9XIGdStH5UUVMyccmnusgA5qV8mmnsQa
+         YzIINuwvQcVX8FysJhdmrmm9i0wvdYfM3On6eTJWePVg5K9Gx2rNFwQ8pWFE7J5W6PSj
+         krrvInYB50gKHPSatTtlfzDAl/YqYJgIonpbQzycBHGn3Q17/fojbAwnI1Elik4lsAxY
+         17mx1D0ds6kOrKoVxztYn9BHl7L5Gj8hge5KLV8BIaaUBvethx4B6fu2TEC2tpwQ6piN
+         fIXbd2i2/hqX8g6YrVDe/0TliE+PJRNOkPi8f7jW1w5hKT2Qp56YPhwlPPZ65+DS2ilu
+         XoqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXmQR7erHbSa6syMmpGIy7LJ7BXMEq3p9OZG+psEhJi1jhzyJMct/khC82tYT9p9klL8QKffzIJ1Q==@kvack.org
+X-Gm-Message-State: AOJu0YzTXY0IV63UmR6zTXZW04uiZBe5/pw+ZIGWcoOMFcCPGZrAoANS
+	//dFm2Vkve1NzSjm6+rE6qjg3vibBkNPPUoHgoyOJhva/VrQryY09AkFvTb+DwQroZ0c+44i5WC
+	lnFFpNXQfh3tBs+VYRAKNNozi+Jt+FczeQb8W9cVjovebCUQ7IQuM
+X-Gm-Gg: AY/fxX5imCgbgHG2GW3YZYMo6p8K+cs1faarDaMPBS4F897aK2Z34nE1Tv8S4LwtVoU
+	7dKxWMgDJoCDICDQUJe9gaVN/J54WintfK3YPpUNlVjYLTjHIvsh12YhqUkQNJmNZ7FhDc5uMjJ
+	1/EYeJpfsp8QA44wgR+E8yD6j6y+q9AcOuMLS1t5C18tNom7kZfuF4A096GyenEnNS3C/HUmGgP
+	CRB7dEV2WhVzemyfJ02kiIaIfjQ3KRunKb46vAsZmOp2R5JUwsEBor/178ISs12pxe41y1SoXrX
+	IEwhv9kDn1zNTs/KP4/F5HOkV/69rGakGTOwcullSxiAcVKAVwBdVMD+Y4PHxrHaa1kMsLT2ifr
+	cqx6rriRs0Mr4B5bUByRwAZwguEGPyTDXe99nD+Yb0WQW4nhGbUFf2xi+
+X-Received: by 2002:ac8:7f92:0:b0:4ee:24e8:c9ae with SMTP id d75a77b69052e-4f4abd80862mr370555311cf.53.1766777547176;
+        Fri, 26 Dec 2025 11:32:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFrrgKjEllT+0HCpBK+Top+NtVALAkZu7cvx+lq0ZkwXiENCiRd2VvX3Yv+fGt1maICEZ/q4g==
+X-Received: by 2002:ac8:7f92:0:b0:4ee:24e8:c9ae with SMTP id d75a77b69052e-4f4abd80862mr370555061cf.53.1766777546776;
+        Fri, 26 Dec 2025 11:32:26 -0800 (PST)
+Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d997aeff4sm186021866d6.29.2025.12.26.11.32.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Dec 2025 11:32:26 -0800 (PST)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <24a480ec-c7b3-4e0d-9895-f9c2ad88dc47@redhat.com>
+Date: Fri, 26 Dec 2025 14:32:23 -0500
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3] mm/vmscan: fix demotion targets checks in
  reclaim/demotion
-Message-ID: <aU7a4t8ncmBAqjSf@google.com>
+To: Bing Jiao <bingjiao@google.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ gourry@gourry.net, hannes@cmpxchg.org, mhocko@kernel.org,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ tj@kernel.org, mkoutny@suse.com, david@kernel.org,
+ zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com,
+ axelrasmussen@google.com, chenridong@huaweicloud.com, yuanchu@google.com,
+ weixugc@google.com, cgroups@vger.kernel.org
 References: <20251221233635.3761887-1-bingjiao@google.com>
  <20251223212032.665731-1-bingjiao@google.com>
- <646ee1fa-edd1-4588-9720-c3c1df8ebce5@huaweicloud.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <646ee1fa-edd1-4588-9720-c3c1df8ebce5@huaweicloud.com>
+In-Reply-To: <20251223212032.665731-1-bingjiao@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: TbNXDWpIXSm166BRVEHaam14u4Qzn3-pCF8MUSobKFc_1766777547
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7B6A7140013
+X-Stat-Signature: u9dcjzsy96c6jxnpfczi778hzngqdjcb
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 20E38100006
-X-Stat-Signature: aawzbdpdjd71hmepdyk74ahm34rt7tnz
-X-HE-Tag: 1766775529-29769
-X-HE-Meta: U2FsdGVkX19zdgHd6ynU2cCAgpvbTXmtg2LpZ4RVZbiLsp69WPzT14U5efuhM8QjoOG0+29vAeXYlV0xCxLlT3VWJhOI6lXd49Gf34lKfuq0YeuKM5rrINuGn+O77FveQPMPWSdfkvJc/x43fw1JGCbFqQrc+ZYOlcBl1j4d0ld76Fe3gRMiZskmczO1gHHmBRmffKTqLuoQWiqzsk2EmzVNw377wA1iZaKUDOoHuzbZPasQhzaXs/3xt6OSIG+rVjFYvHuJ4uue6DaO/etq6j+RiP5KV/4UBaED7sNmTwkAgfsyd2HZTsWlLg5IOvL0AWRq8Rtl2Fp+Z1BcpBddM516HTvtk3e+S6QLLBcpt5g3GuJEQN2XyBG7Cg13aEYhl6toML5ZrLpr6uPHWt8UfbJz96fRbDbPVwjFmYOw0TDVu9/kNpPqqSdTcTbGNvrSAbkTcEzms97mo3xzAjiTL+iJWTGn6ixZgj194Mmgly/QEFBYejzR/sMhR0k/8Jaq21v/tajwwPH0n0VbF25+BeWqYTF8zHQJQExW82PiAZiKr3n/mzMi4ZFV4hZrqD0JS+4Bxn1cRiAGLlR33NgxxFJILtlWEuqPOe//SZ25ZuTs8rcIJUWlnchBs2BwCIDoq/x+0IKYo/PBvPHsKV0OujwGHRnaFEMz7NoJQ2OwyYyTO92U5r+g4sKayNwH8CjBknzcfo71Co8twUD7kOH2NPSDUxPJX5HAlKmKGBK8Y3MX1nUszqIMicvgS05IOYljsjCmR8oZZ9Q2orHOAb1CrGQ5PbsrlLJCuRVUD+GfQqlV3bIIWYAiRyvIfUEeXUrTqM+ABQTzfWbgg90/yPL64s2h98B+GTWGBhrNK+heExuiF3gnJvDteG1l1aREOfkmDffnR1dEBZ9Cj+gkfphpKYhMAoHzJfi7B1B0SL2YPX/soxw/uAEoe2WtT3/1e5AjIyB6Rj+2I4FbAOX7lAm
- HeWc20H6
- pmgPZjT1Flp6YipnXa9cdD0oxQslS4k637tasCPOLwjq7FrAf5IN0WYWYPYVFokvnRHcsbSMEhtzzM3Amvv3osH54xeaDwyBsCWodpVyZZSJ6BSj3awgm6AR5F4dtaS4JxLB0dwXBLmrk3nAhsgecnuxn1jt2TR4xguvEVBr79ml6Vgzm5qBROQ+iMnJVG3GdlreUKstnYsPwigk/2ROZOn9uQwu+i9cmeWe1o0ZXRODdjI2MDdSAGTIwfxvkTuF/xxJtuayLw1RQtrSxrUI5qhXXCB1nSIZOFfqBFQqz+7mtu/ZOvClyCzcrB/NWQCXLMWi725qhiAf435Z6p9OMRIfBVGgL2Mq262EuohjZgQ7wGWU=
+X-HE-Tag: 1766777549-289944
+X-HE-Meta: U2FsdGVkX19xuVCfGMhaas6auQ16RziAY+N9uUJln12V96B2mem3VNfbiw6nSKTbHcJRHcwpEteXMi/WuyXBl6sApN74o4jdHUN0NfeQHrawOMoATRs82PYPY+tTc0n74xISLSvS013KiCj5FKbLd6ZfwG7b6gCXkvcbR/pGmwo3plIgPHTyScchkfoVywZQQ38f5Ytx6hc4fQDRBqPJHI7cL+WROshKbGiozsKVsdUTpz+s2VBGGP4VilmAHtPng4gD/ED5iSHsPWQiZCU0gMVG6bKL7R9JqrmQSJnf7bdADNEFD+xLONbbMj052Gf0fP3ZlBWmFsAQqH8KhbzGU/YY3ZUmKZyqGiDvHxTf9PThvwnfIcuYEbFmPB6y02nRrTSyS8qdpSjXHlDi2Zv4DfHdro84jjDCP1bt9s2Tcn/RIU0BOHCpx9MdP5MRvuJqOD5cot9cyxdcSUDmB3QPAmAX4y6i8TEs/8Jc3s6/XpSSsc9AIjOyYqSC8WUBXdA/d62PzHpNzzPXpLTZsXFRWTLZzY1mRIv+eG1Xig7krgwW3nlyLs0wIgF7qelIZPmbJbfW7Z0ME/BAMzFocbrWnCW+1YMmehb1Lrf6zoBWpLvtIDn57xK9hBq3bGJ/dmO8vW9LiY+ZYSWPcfCz7BRrhPpvjso6CJiDI3byHzmbFY4lBLPoF2CH8Dy68Nywh0oPJX1/T6DYKjBW4B2ucHKFSddw5Yq1h1h/CkXrXD89hZeDdQmC6a4BF3PERNFmxRAUdqxbUWj2lOJbHylqGZ/F4hq6JkDuD6kmdBU37wRrS+07z1/W5r02PfYAnc2pRWGx6HnSO5Ap4nvE4bFV04u3cJGPhPdTetyS1AEz0yeIGxnASjjUR2buHIy0OTSwtq1FFxNyA4F1QPCH3FpnV/tgPjbADlIlaX8uGJ8KyHeW0/mBq8goqsKc2wFKlQk7vpv1Ax9q2ZvyxzKiFffQtvE
+ MDktl57/
+ BKVP1qg1dXuvpouznxbetURsyZwO+V03kwfQl7vXHrCamleTsGhra+ppn6cupixnqwRDLmWrJCg6G1p1ClWrtpu4zxff65thoXZE4vgtATV1DvmuqDfBom2qQ1t/O84+zvsronmsIIjYutuzQUWYpdvxEg2l1RoY+F52fGClFPljM1M8+4PSHa0rCO1L4a0V8KJZOZTsu6S8bxkIX56JP7cGtoyFJyDJGQkG8nG1MHAStvmnxRUL0qtIZxY5rSYIpq+CJv9Om/PuuGKc/r2/uUOES6tVkqWOWS74l5fUMlRBI1B7hxmzbbqEBWbjPqZ6gXzuCd8VqS4DhgCdzTtXXEuPqW6gL7yy8vFAD9Ik2Sk0ksPGURsBIDldq0nxUazzHYcjKWxoIy4dC/zbzguxeGw4+KU6Si6xGY3Zn0zRjS+FindEUoTjr3wb46pqOagFp9j17RaqaRU2EgagxB5Ll5dPA7XBqj2zkxnw1csfUfimCYrsS4znNxTvF3KqJPTw2dWDPzkYvWMQloMU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,54 +139,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 24, 2025 at 09:49:38AM +0800, Chen Ridong wrote:
-> > +nodemask_t cpuset_node_get_allowed(struct cgroup *cgroup)
-> >  {
+
+On 12/23/25 4:19 PM, Bing Jiao wrote:
+> Fix two bugs in demote_folio_list() and can_demote() due to incorrect
+> demotion target checks in reclaim/demotion.
 >
-> Could we define it as:
+> Commit 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+> introduces the cpuset.mems_effective check and applies it to
+> can_demote(). However:
 >
-> void cpuset_node_get_allowed(struct cgroup *cgroup, nodemask_t *node)
+>    1. It does not apply this check in demote_folio_list(), which leads
+>       to situations where pages are demoted to nodes that are
+>       explicitly excluded from the task's cpuset.mems.
 >
-> to align with the naming style of node_get_allowed_targets?
+>    2. It checks only the nodes in the immediate next demotion hierarchy
+>       and does not check all allowed demotion targets in can_demote().
+>       This can cause pages to never be demoted if the nodes in the next
+>       demotion hierarchy are not set in mems_effective.
 >
-> > -bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
-> > +nodemask_t mem_cgroup_node_get_allowed(struct mem_cgroup *memcg)
+> These bugs break resource isolation provided by cpuset.mems.
+> This is visible from userspace because pages can either fail to be
+> demoted entirely or are demoted to nodes that are not allowed
+> in multi-tier memory systems.
 >
-> void mem_cgroup_node_get_allowed(struct mem_cgroup *memcg, nodemask_t *node)
-
-Thanks for the suggestion. Pass a pointer is better.
-
-Also, Gregory mentioned that the stack size may be an issue if
-systems have many nodes.
-Do you think it is better to use mem_cgroup_node_filter_allowed()
-to keep the stack size smaller?
-
-> > -	demotion_nid = next_demotion_node(nid);
-> > -	if (demotion_nid == NUMA_NO_NODE)
-> > +	node_get_allowed_targets(pgdat, &allowed_mask);
-> > +	if (nodes_empty(allowed_mask))
-> > +		return false;
-
-This is a fast-fail path. When the queried node is the farthest node,
-allowed_mask will be empty. Thus, I would like to keep this check
-before mem_cgroup_node_get_allowed().
-
-> > +
-> > +	allowed_mems = mem_cgroup_node_get_allowed(memcg);
-> > +	nodes_and(allowed_mask, allowed_mask, allowed_mems);
-> > +	if (nodes_empty(allowed_mask))
-> >  		return false;
-> >
-> 	node_get_allowed_targets(pgdat, &allowed_mask);
-> 	mem_cgroup_node_get_allowed(memcg, allowed_mems);
-> 	if (!nodes_intersects(allowed_mask, allowed_mems))
-> 		return false;
+> To address these bugs, update cpuset_node_allowed() and
+> mem_cgroup_node_allowed() to return effective_mems, allowing directly
+> logic-and operation against demotion targets. Also update can_demote()
+> and demote_folio_list() accordingly.
 >
-> 	Would it look better?
+> Reproduct Bug 1:
 
-Yes, nodes_intersects() is better than logic-and.
-Will update in v3.
+"Reproduct" is not an English word. Use either "Reproduce" or 
+"Reproduction".
 
-Best,
-Bing
+Cheers,
+Longman
+
 
