@@ -4,149 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52781E7AD77
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 03:21:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC674E6B26F
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 03:51:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FFDB6B0088; Thu, 25 Dec 2025 22:21:21 -0500 (EST)
+	id E96066B0088; Thu, 25 Dec 2025 22:51:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AA226B0089; Thu, 25 Dec 2025 22:21:21 -0500 (EST)
+	id E43756B0089; Thu, 25 Dec 2025 22:51:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B1CB6B008A; Thu, 25 Dec 2025 22:21:21 -0500 (EST)
+	id D25386B008A; Thu, 25 Dec 2025 22:51:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C3EA6B0088
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 22:21:21 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AB5A8134C1
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 03:21:20 +0000 (UTC)
-X-FDA: 84260171520.06.C2773F3
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2518B140003
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 03:21:17 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SQKBLgM6;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766719278; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C0D246B0088
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 22:51:07 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 485BE8B9C0
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 03:51:07 +0000 (UTC)
+X-FDA: 84260246574.23.447A4C6
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0FA301A000A
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 03:51:01 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766721065; a=rsa-sha256;
 	cv=none;
-	b=k/KobfuxCqxAkPCJO+Cssb7MzODXwEWkDxAqGza6m293GOAXx1D3NjndjN9/nDOcOzb+Tm
-	taSiEU+dmwATLSU4zbTahiwHZj2S9XaorDloK1OGL4LlBkMkJ3RBrv64ZiAkKOc1QZRN3q
-	kKeZBJeGG2Lpnz2SgPogSia0qBxXeoU=
+	b=aLyvHXusoZYR64QAzXkrCKlHVgetYN82NCGOw+EKSJyGG0CdSdxWsA5mcA2KiShR9d+4ba
+	8WZ7bLKWnBmDomZk4OXsp6z4BVusahOAF3HwDbOnbwEx7L7wBN53rsMfJRrz0wJ0vmzV/4
+	/PBLUUJn+kGJ/mbAbLl7rqdh2xLF9FY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SQKBLgM6;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766719278;
+	s=arc-20220608; t=1766721065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dKHp6uC5zNb3gZSMB9BQPFV3o9H0iVs2RJyYgnJbrKc=;
-	b=LFna5QR3xH4GBhnLJfNJ+k86RfTXkP2/gC9PuFhk1Wh0OQNPBg4Jzn71vHo6OzCySH0aiO
-	L7Mb4HemvAmUR1UxIJP8ZMZ4e6jbKomR2fFJVrEC1a7ZhaRKUpeqrqq5d4czYA9yn8wR/q
-	0qOvG5kIQEeOqkNdd0HND0RL2x/5Amc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766719277;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dKHp6uC5zNb3gZSMB9BQPFV3o9H0iVs2RJyYgnJbrKc=;
-	b=SQKBLgM6bKLYePxUlnJJS61R+Ob/e76i8C5+xTjJmXm43xJ1Ohx/HBC/iP7t9KBJTWTXhl
-	U2ARbSZrwzh5kLIN6xxb+UO6Ezo8mGlWOvU1xCX5GhaEgDAVQVZOlye5xkHuGUITtJ2iNN
-	2q3cjoDHQnzUv4I+XW4ougj1IICB3yE=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-163-XHhbJsgPPqCQZxv-PXjh0Q-1; Thu, 25 Dec 2025 22:21:15 -0500
-X-MC-Unique: XHhbJsgPPqCQZxv-PXjh0Q-1
-X-Mimecast-MFC-AGG-ID: XHhbJsgPPqCQZxv-PXjh0Q_1766719274
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2a0d43fcb2fso227697075ad.3
-        for <linux-mm@kvack.org>; Thu, 25 Dec 2025 19:21:15 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766719274; x=1767324074;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dKHp6uC5zNb3gZSMB9BQPFV3o9H0iVs2RJyYgnJbrKc=;
-        b=KpNJJ2d7J0/EHRdWIAJT5syprtjucfgfhBB9wcb1KPGhdold9cqptvxeygKoytcwYx
-         S8FKCF+YqonootrTCOynC6ojw5XCSxROoswAsWtSf2bEvaKSmH+K6h+gCectvtkf2JBn
-         measm6SCuPXx853yCu5kGFVJsUkXN76km7ZhDHsgCqxh7+S0v/fBMfmfGPvT4bgGdGKS
-         nvWfrKY8KNA18UsONa+3rzfcv7FxW0U2A9z470nUu94AAkvmXqcrraUPMFWRMN4J/9XB
-         Rna2Y7J2uG+l3ckJeHBWJiOR2HTIjyBrfjMQQDVw7TapLduW1MnYxsArd7dosvLyXKts
-         XJuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUoKsj+J9V7r2/18StVuBQ3nFkMQBP1qEzG7vFay72snFDcnGx8hi+TB7Y/7Iju/MXIvkVrscHtFQ==@kvack.org
-X-Gm-Message-State: AOJu0YyaNdT1exYHRlFPu1HNBgYw6r7GQ+lLDaL8oJuy4r0VBz2WDRyO
-	02WnBWlwNqYf7zhb3XiZXrfh2kWYDToJqf5Rv95OT9xvwiIWyITyPnKWr2plzOta/j9r2abIKmi
-	A1zp41mjfPL5HWgfU0KLkUvHryHm3oFGTHSFqGGZGxcgtQk1bMKi7
-X-Gm-Gg: AY/fxX7QR/DiuZYL7fKauKhkEadzKFOFatEEIFvNvC+dV4oVFP37HAQSWnRnYUTGsQ6
-	IvopISgqLI4eb7XopYQwujq9eW44g4d8bbXIPrDti0pZQR1GkDma0r/tpb+pPe4gApi5yXQF9/W
-	kOjyZbVTyUc8NOXyACOMR9/87dcWn5QchX8D0jmpqSQ+pIQJQgU6dGIQjYlA99pKlrakJuH0n+y
-	ivvn/gDreyyKwNowj//FpfBJkfSv6KTs61+c9L/9JPdiRXIUW5CWQYNB8NhgpiOw8xiK1+gU/ab
-	Fl2LAn8fcAldfhz4drNAUFLNlQP6TIODjuHm+VkCa1DjBUmFSvOczmkeJGx/iUTEWHVFaxnL+IW
-	5P9VE/2sf+7+YjRkNVDfMQkwp9qjFBgAjllrrUXEdg9vhpHLObk0nqTiF
-X-Received: by 2002:a05:7022:f902:20b0:11c:b3ad:1fe1 with SMTP id a92af1059eb24-121722b1a7bmr20901018c88.11.1766719274282;
-        Thu, 25 Dec 2025 19:21:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFrRbO/uTv2AgLdwLaHgNpsWrHMXpzUWqpTKYvMicj4UtKVHtP6aAiwD9wbO4xGgVHronC7tQ==
-X-Received: by 2002:a05:7022:f902:20b0:11c:b3ad:1fe1 with SMTP id a92af1059eb24-121722b1a7bmr20900963c88.11.1766719273695;
-        Thu, 25 Dec 2025 19:21:13 -0800 (PST)
-Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfd95sm80252105c88.1.2025.12.25.19.21.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Dec 2025 19:21:13 -0800 (PST)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <5b019a5c-1db4-41d9-aca9-2e3eaf1cece9@redhat.com>
-Date: Thu, 25 Dec 2025 22:20:59 -0500
+	bh=owNVvGwk67QyEUqkFdQrr0g6hAIHSRi9FuZEkpj3w10=;
+	b=qzeulBDRYN55NFsj5ODntxB4I6e7Cy59Mj02lrC3lzzwOHuZm+Wvl87iiXiRrkOnJml7f5
+	W2L542t8YbwUvS2ttbKJGYtOeberHNdAZiPxf/a8Gwt4AnMUClnnNuq7vsik8KSeRAdbHS
+	5ZRmhg5Awkh0gyfc2Rzas6a4bsqgiJ8=
+Received: from mail.maildlp.com (unknown [172.19.163.198])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dcs8T2qwQzKHLx8
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 11:50:33 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id B05D640574
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 11:50:55 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgDHKPkeBk5pkUALBg--.62157S2;
+	Fri, 26 Dec 2025 11:50:55 +0800 (CST)
+Message-ID: <447de988-5f20-4dca-92f4-5c4266e839ec@huaweicloud.com>
+Date: Fri, 26 Dec 2025 11:50:54 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/33] cpuset: Update HK_TYPE_DOMAIN cpumask from cpuset
-To: Frederic Weisbecker <frederic@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
- Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20251224134520.33231-1-frederic@kernel.org>
- <20251224134520.33231-15-frederic@kernel.org>
- <17aadc7e-7dd6-4335-a748-e66f0239df85@redhat.com>
-In-Reply-To: <17aadc7e-7dd6-4335-a748-e66f0239df85@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: NF2bDgNDp-rRrhIchRoD0u7JsQrx4LadhZJq4pxHBkk_1766719274
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v2 07/28] mm: memcontrol: return root object cgroup for
+ root memory cgroup
+To: Muchun Song <muchun.song@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Qi Zheng <qi.zheng@linux.dev>,
+ hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, david@kernel.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
+ imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ mkoutny@suse.com, akpm@linux-foundation.org,
+ hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+ lance.yang@linux.dev
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <3e454b151f3926dbd67d5df6dc2b129edd927101.1765956025.git.zhengqi.arch@bytedance.com>
+ <05500a05-aa90-4b60-a324-2819dc2c5805@huaweicloud.com>
+ <a055507f-9c4d-4fb1-b5a6-bda9c2dc20ac@linux.dev>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <a055507f-9c4d-4fb1-b5a6-bda9c2dc20ac@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2518B140003
-X-Rspamd-Server: rspam03
-X-Stat-Signature: i4gxauiipybx5t4yaf5aa4x3ao89cgds
+X-CM-TRANSID:gCh0CgDHKPkeBk5pkUALBg--.62157S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3ur1kJry7tF4fCFy7Aw1xGrg_yoWkGw43pF
+	n7JFyUJryrC34kGr4Yg34qqryrAw48X3WDJryxJF1xJF43trnFgr17Zr1qgFyUAFs3Jr17
+	Jrn8ArsxuFWUJr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07
+	jIksgUUUUU=
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspam-User: 
-X-HE-Tag: 1766719277-589777
-X-HE-Meta: U2FsdGVkX1+MacpOBmbDBiI69RSXgx60jocWHzUjvaAtT+bASQ2AYjvUzSWq3Kj6Mb7LiENE9SlZ0dqcCTa+wvks0AHv1MTdQ9yg+w/CLK+4SrFMydHImN3w2L+2vmQNsLSMOapp2cLbHqfmf2AxZ393tKMxxkgtkQKxWhLOdkSwlkidzQfH9Xsmno/xgMHoQ+C53FHdYWfgW1+Rg3go9U2XEk87EET7LOh1bErzleHKIMtlW646bkzySR8xLDk1L4Xwc9Fgh67bDwnnpGdHwHLSawCyNggfR+1ZZ7c7o0LQJDgTS6lbV5iFISjaFCCofIYEcutA1LfXIYxFrZXJun2si8alLuE+aeDPEiqzVa3XV8/lMP7NGaxkW6GhfO2+W0jRKRzN4OoLvSKPYdqWlDrOqSHvRLI7GBxEm0U5PU2gGwylHcqXvlQD3Xd+3kYityqbrz0CyVLed27wnnboddgrhdhhlTLTaBpM/Yk8U44wFrU5AjQTysySqc5qc6Ishr8qOfx86OZOiyfHawRoAP2Ptq+NBGap7eyl2vSEYK9to1eWPaJo3sHZvXWYxyg15KY4mIeYfhL3F3ppEef+L3QursycLbWeVZV6BS/kovJtaJ+dH4UYxhJ9Aa33Y4gY6xzuEiCqLwEycQybGjJrNec1BJFsRXzx9fUg7sNcIcTxgcTPPFQSyGIsDSSltVsRbU8ZKGYw3ZVdRvQZnDaBVFmj9qC7zhXcDJqotKzK0LehO6W9rW765ikyMu9yoYl36rkRt4JNCjiuYO0extHqOS2oTByCPKvzcNgXUhKzHqSZkyMPazi4XJgboum0VxcPgfYl/Feu6PLRhBq/dyPpTGtV6aWvkPgxoz988t9+USMfdXq3flQhoZwkCN1UgCU8p4gqwMrYpHO/nWyYhdi9xBpfyN5M7BvNgZ81q3HYPT5+eziR0wIIMlux5yWYGdaVQ2SuDPkjjDAN8bdnTaS
- 7FH1ibNw
- yL9Wa8yyiS0C+AklGNYUYlo492saW6wRvC1L6lzWmRHiTzkq8ZCvwaIZBICmTI5c1eisRxbaV0CMzx5gYnx6zeQhvzfydrloLupX7/wnWJ5aXKMbVjiFlrSoH0yjM3Jfdv+CEut2d2tu6J50aS0ZPkZu2pWud1wEMDbGULbC5pDhOC0eppYKaFDnrVMjIFrXyKQQ8fe56aNtDcgspTV2RrkZz0fJ+jN8WyMGUEYlpM2k3AbdPWLij5lgawS4mNDXwflv74hp/ftbOEyCJOQxTefTSES5pt9z2zwon/35ursECKkAU1sFOWpHuwE6XQt7Wb/tsth37TbVRWRjLO11J0r+pCP8l29pg4YpuQEQ9jI5tStjl4lmXKjYDf5iAaOgO0+jaNsNFE4HkspnvYtjcCT99WHW+L2wNYG6hyPIt95jIqOZISRt1lBYEbMbNuIOYyE0vYz2DeyCNmjw/Mxdj/4owhU8cim6Wut/2ZwpwjP/en7ZyBPzyL5+Q/8enwqgGW83zjxaZ/zHjLiNm6JscHXQ3Ou4f1i0rWCz8XzZkwF3YP+Fn7wsLKEqucD422srW3h6eSTQFnmtpSsivol6PAFyHcdCM/QhoSh0H
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0FA301A000A
+X-Stat-Signature: x3m81jpbzp9xbxau4odopoui18wndij3
+X-HE-Tag: 1766721061-577787
+X-HE-Meta: U2FsdGVkX1+dPXewqAmmf/2KF6IwYDU3As+3MxX9kiR/POK3/aV4cpfk7w1icc54sn+ISelPejAePkp4pxZweWfMsq1T/ACEgyoKI8VnpXAkyM+Q+XHFxRpm+SKts+jjFt8JldkxFt9sofPrqy2JL1TjnAhFZTJuvGK3vyEjLM2q1MfbHOdLxRoTlu7LjjmdOpXX7Bhv+Gr3OpdklXtiiMRXBpYXwlMWnysLYgA+ttmmXEtra56zkaswRQU3DWoiL40HjVF+DDw54aumef2fyS76ajU8QjB8KkinOYjVELO06BIGkGXEHFtbKLdhm+I9l+6Ioj/wHhPEr+6ycgwr161CZ7iUpMRy0vkfHspPJ8ZCuCIhI6ys5v/drCqT1HOoIb8iahFX7Q3z+y7g6bFD14T+mzhs3dArbFhvkOWi+unt4pzDmplG1fD6+7JFj05CschH3SF42RlQFGys59W8j2JIVxU/cWy5vleidWx9p3j42hbZbUDUHqNzBDRRde9j2ovcdQzxFDWKN2qu0Fh76ohNiYy9WAvsCmm5yckO0WATji3stB1vua0m0/CHKyz4pEChKEAQnOWNPSA8FXhxOccZ5gAivDGaomF/ohN39S83r0zIEVIkI9IQb7p7NTQX4RWtYd88e87/Wg40nx9QFXCUY1DoZYMuxjw6e/J/G13tk0JFUMmCim45LhUXsam93FQzECAhEdzniw8z2yDBMSv7muJdjMBC4eTf022XbN5XGcLeW4SB532DrKJIAvGbj8J4W0ooxMPzzaQRiPryNJ2HlVLF09o2eCc51fXE5OM1LkXpwjer+da/ngL8V53DELalpNpqdt+OGuQGkWZkHBpJiu6IYb03KHO9kN3Vl33rfhMBB0UQHdzLyy7mAHYp2wTRgNLCZhFk4w64Do1fIBZLsgJdc4NW05pJNPTi9GJ0/pC+1n9W3TYQruRwg3CiwyCSAwiMGZBAivEDwE6
+ KV8R4UFH
+ W2HmTs0hG1jsSCt7WohPsfijuV8/LtaJ85fj+IXkWUYRzjpBqhIcoRIe6rvSyRxOWK6T6z1lyr4kDHYIaGaX8bhvTPo0CGzRWn9Wnvn3UBWoaofeQgq0vrc/KGh+GFEpmg00nYZDpunH97Yj/QaclyoOct3zEuoidqZQTthnygkzNrPI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,112 +117,249 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/25/25 9:24 PM, Waiman Long wrote:
-> On 12/24/25 8:45 AM, Frederic Weisbecker wrote:
->> Until now, HK_TYPE_DOMAIN used to only include boot defined isolated
->> CPUs passed through isolcpus= boot option. Users interested in also
->> knowing the runtime defined isolated CPUs through cpuset must use
->> different APIs: cpuset_cpu_is_isolated(), cpu_is_isolated(), etc...
->>
->> There are many drawbacks to that approach:
->>
->> 1) Most interested subsystems want to know about all isolated CPUs, not
->>    just those defined on boot time.
->>
->> 2) cpuset_cpu_is_isolated() / cpu_is_isolated() are not synchronized 
->> with
->>    concurrent cpuset changes.
->>
->> 3) Further cpuset modifications are not propagated to subsystems
->>
->> Solve 1) and 2) and centralize all isolated CPUs within the
->> HK_TYPE_DOMAIN housekeeping cpumask.
->>
->> Subsystems can rely on RCU to synchronize against concurrent changes.
->>
->> The propagation mentioned in 3) will be handled in further patches.
->>
->> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
->> ---
->>   include/linux/sched/isolation.h |  7 +++
->>   kernel/cgroup/cpuset.c          |  3 ++
->>   kernel/sched/isolation.c        | 76 ++++++++++++++++++++++++++++++---
->>   kernel/sched/sched.h            |  1 +
->>   4 files changed, 81 insertions(+), 6 deletions(-)
->>
->> diff --git a/include/linux/sched/isolation.h 
->> b/include/linux/sched/isolation.h
->> index 109a2149e21a..6842a1ba4d13 100644
->> --- a/include/linux/sched/isolation.h
->> +++ b/include/linux/sched/isolation.h
->> @@ -9,6 +9,11 @@
->>   enum hk_type {
->>       /* Revert of boot-time isolcpus= argument */
->>       HK_TYPE_DOMAIN_BOOT,
->> +    /*
->> +     * Same as HK_TYPE_DOMAIN_BOOT but also includes the
->> +     * revert of cpuset isolated partitions. As such it
->> +     * is always a subset of HK_TYPE_DOMAIN_BOOT.
->> +     */
->>       HK_TYPE_DOMAIN,
->>       /* Revert of boot-time isolcpus=managed_irq argument */
->>       HK_TYPE_MANAGED_IRQ,
->> @@ -35,6 +40,7 @@ extern const struct cpumask 
->> *housekeeping_cpumask(enum hk_type type);
->>   extern bool housekeeping_enabled(enum hk_type type);
->>   extern void housekeeping_affine(struct task_struct *t, enum hk_type 
->> type);
->>   extern bool housekeeping_test_cpu(int cpu, enum hk_type type);
->> +extern int housekeeping_update(struct cpumask *isol_mask, enum 
->> hk_type type);
->>   extern void __init housekeeping_init(void);
->>     #else
->> @@ -62,6 +68,7 @@ static inline bool housekeeping_test_cpu(int cpu, 
->> enum hk_type type)
->>       return true;
->>   }
->>   +static inline int housekeeping_update(struct cpumask *isol_mask, 
->> enum hk_type type) { return 0; }
->>   static inline void housekeeping_init(void) { }
->>   #endif /* CONFIG_CPU_ISOLATION */
->>   diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
->> index 5e2e3514c22e..e13e32491ebf 100644
->> --- a/kernel/cgroup/cpuset.c
->> +++ b/kernel/cgroup/cpuset.c
->> @@ -1490,6 +1490,9 @@ static void update_isolation_cpumasks(void)
->>       ret = tmigr_isolated_exclude_cpumask(isolated_cpus);
->>       WARN_ON_ONCE(ret < 0);
->>   +    ret = housekeeping_update(isolated_cpus, HK_TYPE_DOMAIN);
->> +    WARN_ON_ONCE(ret < 0);
->> +
->>       isolated_cpus_updating = false;
->>   }
->>   diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
->> index 83be49ec2b06..a124f1119f2e 100644
->> --- a/kernel/sched/isolation.c
->> +++ b/kernel/sched/isolation.c
->> @@ -29,18 +29,48 @@ static struct housekeeping housekeeping;
->>     bool housekeeping_enabled(enum hk_type type)
->>   {
->> -    return !!(housekeeping.flags & BIT(type));
->> +    return !!(READ_ONCE(housekeeping.flags) & BIT(type));
->>   }
->>   EXPORT_SYMBOL_GPL(housekeeping_enabled);
->>   +static bool housekeeping_dereference_check(enum hk_type type)
->> +{
->> +    if (IS_ENABLED(CONFIG_LOCKDEP) && type == HK_TYPE_DOMAIN) {
->
-> To be more correct, we should use IS_ENABLED(CONFIG_PROVE_LOCKING) as 
-> this is the real kconfig that enables most of the lockdep checking. 
-> PROVE_LOCKING selects LOCKDEP but not vice versa. So for some weird 
-> configs that set LOCKDEP but not PROVE_LOCKING, it can cause 
-> compilation problem. 
 
-I think I get confused too. The various lockdep* helpers should be 
-defined when CONFIG_LOCKDEP is enabled even if they may not do anything 
-useful. So using IS_ENABLED(CONFIG_LOCKDEP) should be fine. Sorry for 
-the noise.
 
-Reviewed-by: Waiman Long <longman@redhat.com>
+On 2025/12/26 11:10, Muchun Song wrote:
+> 
+> 
+> On 2025/12/26 09:03, Chen Ridong wrote:
+>>
+>> On 2025/12/17 15:27, Qi Zheng wrote:
+>>> From: Muchun Song <songmuchun@bytedance.com>
+>>>
+>>> Memory cgroup functions such as get_mem_cgroup_from_folio() and
+>>> get_mem_cgroup_from_mm() return a valid memory cgroup pointer,
+>>> even for the root memory cgroup. In contrast, the situation for
+>>> object cgroups has been different.
+>>>
+>>> Previously, the root object cgroup couldn't be returned because
+>>> it didn't exist. Now that a valid root object cgroup exists, for
+>>> the sake of consistency, it's necessary to align the behavior of
+>>> object-cgroup-related operations with that of memory cgroup APIs.
+>>>
+>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>> ---
+>>>   include/linux/memcontrol.h | 26 +++++++++++++++++-----
+>>>   mm/memcontrol.c            | 45 ++++++++++++++++++++------------------
+>>>   mm/percpu.c                |  2 +-
+>>>   3 files changed, 45 insertions(+), 28 deletions(-)
+>>>
+>>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>>> index 288dd6337f80f..776d9be1f446a 100644
+>>> --- a/include/linux/memcontrol.h
+>>> +++ b/include/linux/memcontrol.h
+>>> @@ -332,6 +332,7 @@ struct mem_cgroup {
+>>>   #define MEMCG_CHARGE_BATCH 64U
+>>>     extern struct mem_cgroup *root_mem_cgroup;
+>>> +extern struct obj_cgroup *root_obj_cgroup;
+>>>     enum page_memcg_data_flags {
+>>>       /* page->memcg_data is a pointer to an slabobj_ext vector */
+>>> @@ -549,6 +550,11 @@ static inline bool mem_cgroup_is_root(struct mem_cgroup *memcg)
+>>>       return (memcg == root_mem_cgroup);
+>>>   }
+>>>   +static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
+>>> +{
+>>> +    return objcg == root_obj_cgroup;
+>>> +}
+>>> +
+>>>   static inline bool mem_cgroup_disabled(void)
+>>>   {
+>>>       return !cgroup_subsys_enabled(memory_cgrp_subsys);
+>>> @@ -773,23 +779,26 @@ struct mem_cgroup *mem_cgroup_from_css(struct cgroup_subsys_state *css){
+>>>     static inline bool obj_cgroup_tryget(struct obj_cgroup *objcg)
+>>>   {
+>>> +    if (obj_cgroup_is_root(objcg))
+>>> +        return true;
+>>>       return percpu_ref_tryget(&objcg->refcnt);
+>>>   }
+>>>   -static inline void obj_cgroup_get(struct obj_cgroup *objcg)
+>>> +static inline void obj_cgroup_get_many(struct obj_cgroup *objcg,
+>>> +                       unsigned long nr)
+>>>   {
+>>> -    percpu_ref_get(&objcg->refcnt);
+>>> +    if (!obj_cgroup_is_root(objcg))
+>>> +        percpu_ref_get_many(&objcg->refcnt, nr);
+>>>   }
+>>>   -static inline void obj_cgroup_get_many(struct obj_cgroup *objcg,
+>>> -                       unsigned long nr)
+>>> +static inline void obj_cgroup_get(struct obj_cgroup *objcg)
+>>>   {
+>>> -    percpu_ref_get_many(&objcg->refcnt, nr);
+>>> +    obj_cgroup_get_many(objcg, 1);
+>>>   }
+>>>     static inline void obj_cgroup_put(struct obj_cgroup *objcg)
+>>>   {
+>>> -    if (objcg)
+>>> +    if (objcg && !obj_cgroup_is_root(objcg))
+>>>           percpu_ref_put(&objcg->refcnt);
+>>>   }
+>>>   @@ -1084,6 +1093,11 @@ static inline bool mem_cgroup_is_root(struct mem_cgroup *memcg)
+>>>       return true;
+>>>   }
+>>>   +static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
+>>> +{
+>>> +    return true;
+>>> +}
+>>> +
+>>>   static inline bool mem_cgroup_disabled(void)
+>>>   {
+>>>       return true;
+>>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>>> index 544b3200db12d..21b5aad34cae7 100644
+>>> --- a/mm/memcontrol.c
+>>> +++ b/mm/memcontrol.c
+>>> @@ -83,6 +83,8 @@ EXPORT_SYMBOL(memory_cgrp_subsys);
+>>>   struct mem_cgroup *root_mem_cgroup __read_mostly;
+>>>   EXPORT_SYMBOL(root_mem_cgroup);
+>>>   +struct obj_cgroup *root_obj_cgroup __read_mostly;
+>>> +
+>>>   /* Active memory cgroup to use from an interrupt context */
+>>>   DEFINE_PER_CPU(struct mem_cgroup *, int_active_memcg);
+>>>   EXPORT_PER_CPU_SYMBOL_GPL(int_active_memcg);
+>>> @@ -2634,15 +2636,14 @@ struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
+>>>     static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
+>>>   {
+>>> -    struct obj_cgroup *objcg = NULL;
+>>> +    for (; memcg; memcg = parent_mem_cgroup(memcg)) {
+>>> +        struct obj_cgroup *objcg = rcu_dereference(memcg->objcg);
+>>>   -    for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
+>>> -        objcg = rcu_dereference(memcg->objcg);
+>>>           if (likely(objcg && obj_cgroup_tryget(objcg)))
+>>> -            break;
+>>> -        objcg = NULL;
+>>> +            return objcg;
+>>>       }
+>>> -    return objcg;
+>>> +
+>>> +    return NULL;
+>>>   }
+>>>     static struct obj_cgroup *current_objcg_update(void)
+>>> @@ -2716,18 +2717,17 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
+>>>            * Objcg reference is kept by the task, so it's safe
+>>>            * to use the objcg by the current task.
+>>>            */
+>>> -        return objcg;
+>>> +        return objcg ? : root_obj_cgroup;
+>>>       }
+>>>         memcg = this_cpu_read(int_active_memcg);
+>>>       if (unlikely(memcg))
+>>>           goto from_memcg;
+>>>   -    return NULL;
+>>> +    return root_obj_cgroup;
+>>>     from_memcg:
+>>> -    objcg = NULL;
+>>> -    for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
+>>> +    for (; memcg; memcg = parent_mem_cgroup(memcg)) {
+>>>           /*
+>>>            * Memcg pointer is protected by scope (see set_active_memcg())
+>>>            * and is pinning the corresponding objcg, so objcg can't go
+>>> @@ -2736,10 +2736,10 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
+>>>            */
+>>>           objcg = rcu_dereference_check(memcg->objcg, 1);
+>>>           if (likely(objcg))
+>>> -            break;
+>>> +            return objcg;
+>>>       }
+>>>   -    return objcg;
+>>> +    return root_obj_cgroup;
+>>>   }
+>>>     struct obj_cgroup *get_obj_cgroup_from_folio(struct folio *folio)
+>>> @@ -2753,14 +2753,8 @@ struct obj_cgroup *get_obj_cgroup_from_folio(struct folio *folio)
+>>>           objcg = __folio_objcg(folio);
+>>>           obj_cgroup_get(objcg);
+>>>       } else {
+>>> -        struct mem_cgroup *memcg;
+>>> -
+>>>           rcu_read_lock();
+>>> -        memcg = __folio_memcg(folio);
+>>> -        if (memcg)
+>>> -            objcg = __get_obj_cgroup_from_memcg(memcg);
+>>> -        else
+>>> -            objcg = NULL;
+>>> +        objcg = __get_obj_cgroup_from_memcg(__folio_memcg(folio));
+>>>           rcu_read_unlock();
+>>>       }
+>>>       return objcg;
+>>> @@ -2863,7 +2857,7 @@ int __memcg_kmem_charge_page(struct page *page, gfp_t gfp, int order)
+>>>       int ret = 0;
+>>>         objcg = current_obj_cgroup();
+>>> -    if (objcg) {
+>>> +    if (objcg && !obj_cgroup_is_root(objcg)) {
+>>>           ret = obj_cgroup_charge_pages(objcg, gfp, 1 << order);
+>>>           if (!ret) {
+>>>               obj_cgroup_get(objcg);
+>>> @@ -3164,7 +3158,7 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+>>>        * obj_cgroup_get() is used to get a permanent reference.
+>>>        */
+>>>       objcg = current_obj_cgroup();
+>>> -    if (!objcg)
+>>> +    if (!objcg || obj_cgroup_is_root(objcg))
+>>>           return true;
+>>>         /*
+>>> @@ -3851,6 +3845,9 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+>>>       if (!objcg)
+>>>           goto free_shrinker;
+>>>   +    if (unlikely(mem_cgroup_is_root(memcg)))
+>>> +        root_obj_cgroup = objcg;
+>>> +
+>>>       objcg->memcg = memcg;
+>>>       rcu_assign_pointer(memcg->objcg, objcg);
+>>>       obj_cgroup_get(objcg);
+>>> @@ -5471,6 +5468,9 @@ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
+>>>       if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+>>>           return;
+>>>   +    if (obj_cgroup_is_root(objcg))
+>>> +        return;
+>>> +
+>>>       VM_WARN_ON_ONCE(!(current->flags & PF_MEMALLOC));
+>>>         /* PF_MEMALLOC context, charging must succeed */
+>>> @@ -5498,6 +5498,9 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
+>>>       if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+>>>           return;
+>>>   +    if (obj_cgroup_is_root(objcg))
+>>> +        return;
+>>> +
+>>>       obj_cgroup_uncharge(objcg, size);
+>>>   
+>> If we modify zswap by adding MEMCG_ZSWAP_B and MEMCG_ZSWAPPED with obj_cgroup_charge_zswap , then
+>> remove a control group (via rmdir) and reparent its objects to the root cgroup, then for the root
+>> cgroup, obj_cgroup_uncharge_zswap will return directly due to the obj_cgroup_is_root check. Would
+>> this cause us to miss decrementing MEMCG_ZSWAP_B and MEMCG_ZSWAPPED?
+> 
+> I'm not sure I fully understand the problem—how could this happen, given that
+> obj_cgroup_charge_zswap also checks for the root objcg?
+> 
+> Muchun,
+> Thanks.
+
+That is:
+
+1. memcg A is under the root memcg.
+2. obj_cgroup_charge_zswap charges memcg A.
+3. After rmdir A, the obj of A is reparented to the root memcg.
+4. obj_cgroup_uncharge_zswap does nothing and returns, since the object is now associated with the root.
+
+Thus, the root memcg will miss decrementing MEMCG_ZSWAP_B and MEMCG_ZSWAPPED, correct? Or am I
+missing something?
+
+>>
+>>>       rcu_read_lock();
+>>> diff --git a/mm/percpu.c b/mm/percpu.c
+>>> index 81462ce5866e1..5c1a9b77d6b93 100644
+>>> --- a/mm/percpu.c
+>>> +++ b/mm/percpu.c
+>>> @@ -1616,7 +1616,7 @@ static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
+>>>           return true;
+>>>         objcg = current_obj_cgroup();
+>>> -    if (!objcg)
+>>> +    if (!objcg || obj_cgroup_is_root(objcg))
+>>>           return true;
+>>>         if (obj_cgroup_charge(objcg, gfp, pcpu_obj_full_size(size)))
+> 
+
+-- 
+Best regards,
+Ridong
 
 
