@@ -4,149 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA28CE8FDB8
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 23:08:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 975CBE8FDBA
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 23:42:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A38DA6B0005; Fri, 26 Dec 2025 18:08:57 -0500 (EST)
+	id BD62A6B0005; Fri, 26 Dec 2025 18:42:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E6A66B0089; Fri, 26 Dec 2025 18:08:57 -0500 (EST)
+	id B84426B0089; Fri, 26 Dec 2025 18:42:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89F4E6B008A; Fri, 26 Dec 2025 18:08:57 -0500 (EST)
+	id A904F6B008A; Fri, 26 Dec 2025 18:42:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 79CB06B0005
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:08:57 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0EAA11A076A
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 23:08:57 +0000 (UTC)
-X-FDA: 84263164314.21.17BEBF4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6D32316000C
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 23:08:54 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N5ULQChj;
-	spf=pass (imf08.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 965696B0005
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:42:26 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 23D55138C16
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 23:42:26 +0000 (UTC)
+X-FDA: 84263248692.27.A141569
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 539A380006
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 23:42:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HEU5uGji;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766792544; a=rsa-sha256;
+	cv=none;
+	b=uEGorEa1OCR2suh8/ep8iWm5SvufxqhNzZ/RmxcXEKvZ3el82edzuP5dRxu6+k5U9pD3xD
+	e0D2VeHochQBUrziAi/wKGYUP3qZX2yioJ/EPWg0QBqbTYTCqPj3nzuc3C8uprfUzagPes
+	cHscyoiaMrXibpxOHWTrZuGKrgx+lE4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HEU5uGji;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766790534;
+	s=arc-20220608; t=1766792544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hPVYyOhmWYyUzd26KqEqEx9SiJ2wqcstK13CbukMaus=;
-	b=aMq5RC2kgSDkEMLpzS2iuETbTGkV9dHJVcWtHWIfJlhTk7erpf0zCR6I0Y4TZ0gs8JelYc
-	7D3uD6IT92lJS9oSYYAS1DU3OBTItFlETHjPYLSTA2qDw/zSikv01hVOBHN5jtOVeuxeaE
-	4RUK+mfOPSxY4xK/BpA1SiZscepOd9c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766790534; a=rsa-sha256;
-	cv=none;
-	b=fw+1OEllXtT+SnghWk7z/MZ2lafK/8p7wgTrH4Bv3PG+lZuHi3c9/eH0w/K1YXXNkHuXs/
-	c+gKk2h0/QA5wuhuwOJJsgWLOdQXATlPu5+yjQH48lZPVrQGTZ+JCSESK9c5HcPTfi0FkB
-	sQQxrnZ23h7Ac2wfZ+KnJaCa3EkTHL4=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N5ULQChj;
-	spf=pass (imf08.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766790533;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hPVYyOhmWYyUzd26KqEqEx9SiJ2wqcstK13CbukMaus=;
-	b=N5ULQChj3waHbp5JqOilPGouwqSvFnriOeVsIcIceHVuRNFf+tQ3+oRsuiOqgBXlJ//H94
-	vAKxXsupdXBy363SM/u6u7X9NWKbGjvZozmeJjg3GksuMzqVFkFx130Oz0j/ViDgIlTSdx
-	PNe3kVV9U2QuHVm3T1ndtjdTyNW8Dqw=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-480-mFEjFD1nN423GWYgXB_ztw-1; Fri, 26 Dec 2025 18:08:52 -0500
-X-MC-Unique: mFEjFD1nN423GWYgXB_ztw-1
-X-Mimecast-MFC-AGG-ID: mFEjFD1nN423GWYgXB_ztw_1766790532
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-888825e6423so172575976d6.3
-        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 15:08:52 -0800 (PST)
+	bh=fAZppyva63DEjptZqcQdtviylUco9oD9YcVtJdE6l+o=;
+	b=56zqglQGf4Nne2r8aGViOeOZvFvxsUkbZt+Ke2hwVYASJDrHW06Ngvp4qHd+BUoCQvRUff
+	WzZhWh1H2y+e+uqZqR2qE7CdSO0VsoXJ7J3+SlmNumNyOz1OFSfplwv+hilZMiRINKsVP9
+	OXCrDkubDclx8liR72NVegKCzvgAQlw=
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-641e9422473so6174209d50.2
+        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 15:42:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766792543; x=1767397343; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fAZppyva63DEjptZqcQdtviylUco9oD9YcVtJdE6l+o=;
+        b=HEU5uGjiJT7ZT3vYXio2def3BtlbKVNLy7+5ru/Ypj4zv5UQzDolHy4o2gqMFvVSb3
+         rwIoDLb2gd0NDC2dtINQ3bUjGcALQ0DNcT7aWHwx5Jyln8FL8mDRJJ/m+tK0pn90GIS3
+         jaot35sVP0MiRNuYKUCUfINFjAnRkQ70LCspOmpLBt2YzJDkIG2ZOBBLZfvI5lBUODhY
+         y5Bd9A/y1ooDKiBIQasVFIeLcpq31scHd/rbYQUu0S8aBrXOmIxkyimTekOZS4XKZ6np
+         47dzh/3Fj8QRKF3pFHyoWXTxqoMN7c7mbEAf4SJJ6ZJKckPYojcMtYiuSKQFGU+1Hn9+
+         R3SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766790532; x=1767395332;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hPVYyOhmWYyUzd26KqEqEx9SiJ2wqcstK13CbukMaus=;
-        b=wjRyp1qegcjc7zdsNOV8NZe58JAdq8paPTY74ZFSaZjNz7d2GFBV21I4bYVaYXTCmt
-         pG5FR8C1lcf8fSUtkSVTEZBu1VEg3QYY9n1zye56apSGaAR0wTCYEFbdzDXYh9Sv+tQy
-         p2AH0F6164PCcUuJfsOX9lx8Gp93VMR3sCcBVevNXj8kTzHZkmE71D+Vm9uGXivSK3+v
-         FysXGKJ6z0sZqEXPAzx8I4oXJF4luIlwIxQbWDcAkJyz+u+DS11y1UUcQHmH9ork6hlF
-         q09ZElXHFzg2cbDUJ7tkrRfUww4HzODQwMkJ/FVi4WhtUNv2VLxFH7eNRL6WLfylBwES
-         IFfA==
-X-Forwarded-Encrypted: i=1; AJvYcCUJkmnxzLiHzlZgUSISnEoRDxwb7KpTvCoxwadkHU6gZolHJ55Gtdu4quISzeA0zJnvjLLUsM4cew==@kvack.org
-X-Gm-Message-State: AOJu0YxKq/IQOJ1lZBDDApJyE5beXWRwVuqMy/f+PNkD9HuVkcs9miAf
-	W2073vOmLcRcz1K7JmiG35p3/MME3EeM5rYJyayZd8ZTRz3eNTFpxpCxLVFSmjtNqqcgqK12SDI
-	+hecIYcRpzUWWcKMoJ+N/bKZueFWdPM6pZkx8KCFHC0gUiD2F9asM
-X-Gm-Gg: AY/fxX7/qaHmSwE5RRJKbVw1B3/KHySAxfUYlWICRLvx+PjFTxHMRNIPXcRN5nFpHvR
-	MI8HkPO1E1HuO9VUfL+hmOMQ6Gb8yuUJAFmra/GfkVXLXIgraHYE2QT2JyednIivB9MLzN1E6zo
-	HQxbxx/MHljTO0ALPa6YWHtTZbIHIizIwi3Vr4v3JIFsr0wCCiIcgKpC8l83zgFGKYjvLsjJzl1
-	iYFNdbOSp1DMdXNPoWPCywTnkG7r1jqcxvYHMQJVxHj9SOCN9I9XwkUUKORgoXX863j0ri61DeT
-	li3T/05aGXBvTlyMRTGoEKTRZVedc3ECUTzgg61tKxXGy62mDjgseMic59kj8pKD1mYOv4FyTtx
-	I7FPBJGMrfvHRiqy4CVPPZ2KjVBjVzz2q3LDa9hpmPaRNz6kOSuDKwTop
-X-Received: by 2002:a05:6214:48b:b0:890:e31:9685 with SMTP id 6a1803df08f44-8900e319a28mr37823646d6.69.1766790532041;
-        Fri, 26 Dec 2025 15:08:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEpv55vF+vDJeT6imxDEvVCM6zgRYx4B3T4/k2S1vjNooJ5kJOtFWemCi2nC+rcnjO9pXNW8Q==
-X-Received: by 2002:a05:6214:48b:b0:890:e31:9685 with SMTP id 6a1803df08f44-8900e319a28mr37823076d6.69.1766790531561;
-        Fri, 26 Dec 2025 15:08:51 -0800 (PST)
-Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d99d7dc1esm173664886d6.39.2025.12.26.15.08.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Dec 2025 15:08:50 -0800 (PST)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <2f892ef9-1965-486d-beab-eacf0b6b0386@redhat.com>
-Date: Fri, 26 Dec 2025 18:08:43 -0500
+        d=1e100.net; s=20230601; t=1766792543; x=1767397343;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fAZppyva63DEjptZqcQdtviylUco9oD9YcVtJdE6l+o=;
+        b=FfQDM0ng1CXB79oP/RESsm7f3AlVNIzsVgqVzIEGZwvVQYb3kD3DDK5HHtaiZuu+Ob
+         KsfaurQzyLgKqFdR5W7QQ1pkEI8hCjfELDDGZui6/CQC4f5yP9xiSr0ASDdCCxuu1BSS
+         yGGpnAmdKgKNPXHqAlz7lQhvYa0IPcgRtM4BVGNs47kFEvVsrS4DqLlUCmyrQmlAq+v7
+         bWPRZJQ4EYyQRNunHaG3ZlHimqIkIJCLdEX8Nb3g5ynMUkhmkYN13qXrm/XNnB9U1zz+
+         4gGpt6zL1QS7x6wU22Z864QZRDuDaLTtG2wD1ltwTW9/3FIlhdWbKsfwREJZ0dCl99tx
+         qiIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVyqafA/Pm8/2SvsL54j7a0+4Ji1aayDVQ0jJ59djcfigR8+/pMBReQj2heYlb6FqC3ZOUY6ocybQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxpmjnq+32s/mq66Kt/QoC1j4t1LEhZy8p9V+c1KEqK1epqXQbC
+	tOAvlBbjr0BSXs3xIBi1J7n+8UmYjxssps+XfsopeVBQYxU4pf8EXIDQbdTVzAM5RILnxDG13zm
+	qFCEm6gQ/JWmcS7pwLGg089ZhZ30ALrA=
+X-Gm-Gg: AY/fxX60kNeS6JRfPLvHebpAOlCAjVgNX+NoZlmzJAqXb2Olv0LtdE0NqJrDh/5lzP4
+	18NU9U69Nd24jCTDbpyu04uIlEkeRpUrSp54ivhGgV8Z24zBwqwtk2sGU69iR9BjiUsBsTyPBCM
+	coL33OqgpXJRu8uPUsZNMS8Lt9k2UaVGMbKlrbyDwMLqs0pJvZCdtE8Jd03g1oFxstbGoUXdNB1
+	3xBDy5UtF1TQFDKP9KTIPWTeGcHExhbf19xRkD5YvgcJ7DrqxOOzKgeCRBrfR4+16Ie7WzG
+X-Google-Smtp-Source: AGHT+IHWXW3HAQ2IWb0fPDByyES6LykAonpabAqCQdmat1G1q6oNNSUa6z5qQifEQZr99TfRO77TdqFM0nr2FQzcz10=
+X-Received: by 2002:a05:690c:c4ce:b0:78f:bc2b:83f5 with SMTP id
+ 00721157ae682-78fbc2b8fd3mr421701197b3.20.1766792543250; Fri, 26 Dec 2025
+ 15:42:23 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 28/33] sched: Switch the fallback task allowed cpumask to
- HK_TYPE_DOMAIN
-To: Frederic Weisbecker <frederic@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
- Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20251224134520.33231-1-frederic@kernel.org>
- <20251224134520.33231-29-frederic@kernel.org>
-In-Reply-To: <20251224134520.33231-29-frederic@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: O-NQt2QVK9LAmfIh1f-WkWUQlXgJ1W0Lx-vHtBcNXeU_1766790532
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fqz67ayphtdesu7pnf6xawdwcg8fgtas
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6D32316000C
+References: <CAHOvCC4f2xPK_LwFoisdqr_wX-RbdW9KUq48+82CMC=5ViF=ag@mail.gmail.com>
+ <20251226183122.254549-1-sj@kernel.org>
+In-Reply-To: <20251226183122.254549-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Sat, 27 Dec 2025 08:42:12 +0900
+X-Gm-Features: AQt7F2qXA2NW8S6__pIPvLxhHe9J8Tr2XiSGV87pAHvpagp774VRSyEShoAx2fo
+Message-ID: <CAHOvCC6L7TAX5Pu4pLVvYBsGc7tVYexgqJmiZ7UEhu7N4_jubw@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon/core: modified control->repeat loop at the kdamond_call()
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, rgbi3307@nate.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1766790534-409914
-X-HE-Meta: U2FsdGVkX197qCCk9n26Wk2byGEMQXZJ+bIWGGtUYe/LxOuw72DYI7fZUW74SJk7nO3D2P2Gdqx7CsHGARc1BWZnNjZgrnzZt7iy2+hUNBl0obeqc+SJGlFL0FFGLAe+JLcEESqNkkuwMDQ31RgU36Q/HpHCsM4mpLKgPzO3QBNh5+ekAd8mMDZldZzKAWkbbdeEb5o58yw2FGmrfXhJ1xQiVcWpgc4EVU4Z0f6SvhPvBVWWeuH8jJmvleqTMVnysqV4T0uzIY6R2Edi0HiBvVWmHCyUQNI3J0aSFa1wo3femJdarQw09K2ad6n+Zu6peL1j5WNK6TFdJzh1ZdmDzxiV+/zcnUC7NAE6ZV1zPp8M3qdYagz3VeQs50FlI8Yu/AMR7bI/uGVTOH4NVw5SC7e3mFkohSaqdxJnHFsFGRXOr9675EXkZbgbiCQ4c2pffrjgGG708qA9B1+qa0eKuYzICWpdyFYRaafF4UtWo29mUDc3XUuuWca8oRaPj0Sbq7mrj5ptpoDXePWB+mWAvkB94qCzSSIk6XQ3PTlAnB+hB0xeX+r0PcoQH73KCNFfHFNuZiOb/IyVK6yKIhTSyaNESy7Lw8LvkOSk6ow85e+gk9h/VFTRq3jSf/3EDsI74DvKT/VVerhIxG9DF1jtLPPE+e0udMbYFEqLZ7u7EZHaFLmFXluRwKkG/GyTZb2aV9OuOozS9Qy27NSoBtmzPHj82F68RXLTStfK0PlJTZFnH7xOhzSU6uXMVRXro2aXe6THVMEF5v4O/xejCpTDtdtBO7vAaDD3ZJekKmu0dbqz6NFTsHbgqAm6oHwy8c9fggRwwAaGxmAhlifxGd/gkBL3LQitB7J2696AYyS4XbXo0R0E2MWG+4R+10wITrRBqm4tFsLhGW4mV0MTPDELByHNkvZG0wzZDpNwelLEYCqfrgTD68gE90QgJfiQx9vdIawnp1/TXr449Gujgkb
- LHgMVihe
- 6Up4jxN+OlC2f39QW226ekraXQQ1Jus5OJMyJ1ILAdtnJOfIgcRmbXvt6w1BFSMBXNd0AzUmPfqqHgu02qaeYUrXkIQH5A5ACW7EM5/nDCZvnfK1zdNs3chbt61iVNWnbpaBFjLg9sI+QpaZPNgUsDtyhWUeudzlFf+IeHuO4VGAX1+cRVtGar3Rmpm2OAJf05vPg6jGI1wmOM1Ez3Y4RFpIXFTzXNaRGrr+gvQ4o7DTSwSgoiGWhrBA30CDcF4z9u6Cb+HJW1ymwzZ/rtMiLxL9QF3h5Ep+9WuEhBDdy+gfmAfpOIL+eVV6AoiCUJn5ipuKRGLeoGOPcDn9mkRSFdYHPA6KARedn++FDmc5XWate0BH+oJuL80UHPcjNG+BnaPC6gVzeaIe/53D/K8KNH6gdy9PJZXEakFUBMQUsO+HBrNgcAsL0RMFyo80uo64kiz4GXjmhXQtdDGj0G4u1Agp8g0FiQgJz7oqfG6DNZ8+kZKmKaX7Adh3FSHVn+pBZziSveVoaD4lEKaksWKNBnE7HDoyF+vJfG6EYRx9AXP3ZWLO4FgyULdrAsqoN084bpb2GazJgWCoVC5k=
+X-Rspamd-Queue-Id: 539A380006
+X-Rspamd-Server: rspam10
+X-Stat-Signature: rqimfiaxzsemhxsswriu58uo8nsruzh7
+X-HE-Tag: 1766792544-169815
+X-HE-Meta: U2FsdGVkX1+TTbqw/yK6gYiK6ZoVfI9nsUgHZnjq/2fETTCKnAIHvE2hoAlKYP5Wi5hICAAECqpl7RLKBS1cO0aMEQI0Hn/P/EH1T/7lEwQartFQl6S5XvL5i7pERMcx6hgXwJtbc2kxEaCwBeSW0Dd9CxRr/yrVtgxhq97nrBtMmOvZEM6XdHyAioJeWW42X2JCfk0B5vqeu1hWYU6xW4ShhD4q11PuEfJBQKUHJ4oS/67vK/0a0+bzdVZayJDP4qm/uLPd3pB5DxMZVzV2ElM62eOquwu8mLvlzJhNjwSzhy419dv7j15xFxV1hhxUXEnzX69N1PpsiFyiv56whX6jEwXyqMq1cUg3SS618vQBqhuEQc7hwnXAl4c0fPiFE7iGk/mB9JGjXoyhXHcrYHnj1xnDZn3Z7Y73uBCVGFkPchCNCTiGG+TsYcKMrurI8jZnv9fNbSYcwbw6f9qjkeHc+T6pgz8OJHfc2sNyHm7xhtwQhanq4KT4n/J8AMvjm9lcVeKDzS5+5VY4dDaouPhrnSJ/ypwDzddKFTpXBpj4WihIjbodWjMRn1axbA9TdqCewlR/IrSIiRlpuFGEQlZodMNLsIe0H6HTPBiCQfxMI9oqhEaKpghsJN+SnFotU/pAFkYrlMuM1TtQeDNhqkwWgmNRD+vqxkk/LH0Vn2+kebtzf3Dpm2hr1zFYsCo60FmgaAy9X+jXNqANSjYrN6BVo4r8ujLK/zKvgyJOMbYveHBlcKVYkOMM/v3HAJymbqUlNM2LK/3ZyNSKUdnmmQKgcI+NGMxUD8meWYU/LZeExMlM+5PGVjVGgLxx+12eP7Wwrlg0r8Z8qeNSfDOvSyFnUPopNB8SOXcipW8SDfho9ZwuU/onhQz+zkrOeUfgDe/nhwJbuLsZCkSg/TJBCkhVFqqLDVQOuCf1EBig4ymyK/cEHgnlzoLJQlXm6dE5lzraiNZu0cYMl9KwL99
+ +X0sl8JJ
+ juX0ZqUTlCMxvwasKiS5RoetkUCrqVIy4YK/CX8vH/6IXFOP7Xt2fEU5VFNNOpf744KlE2RsHfkiFCrZkE3GhfKozsM6c8C5rz78sM29DoVrSgFRcRUe8ezji0oVOHTjHDUC2y8cGr2t5ceBaoOGg52X5Naq9sR5QuvgDI/R+AyYm0lixHTpwVO5fhCjFmok1G6Ilb0Te87yOdpFIn8RxKEKUNASglAYheGeKBn6l/Wdfo5LYaF5NPnzL6EGVai9gXoeGkiC+r+o6LLCUFiihl+bdCnxvSj2wY7Xu2j/v+BoFoAEB1+20MT+KuDV2ZY4MFtQ/vk78V72E53WRBPnisn5Rg8OObX2VSf8/yknIgnjmdCYl7f1bCdfZtxUqICECH0vD0ReapLNX6td1QkMX/U/6XwU9CMSw7OVY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,32 +113,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/24/25 8:45 AM, Frederic Weisbecker wrote:
-> Tasks that have all their allowed CPUs offline don't want their affinity
-> to fallback on either nohz_full CPUs or on domain isolated CPUs. And
-> since nohz_full implies domain isolation, checking the latter is enough
-> to verify both.
+On Sat, 27 Dec 2025 at 03:31, SeongJae Park <sj@kernel.org> wrote:
 >
-> Therefore exclude domain isolation from fallback task affinity.
+> On Fri, 26 Dec 2025 11:19:28 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
 >
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> ---
->   include/linux/mmu_context.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> > On Fri, 26 Dec 2025 at 05:01, SeongJae Park <sj@kernel.org> wrote:
+> > >
+> > > On Thu, 25 Dec 2025 12:10:30 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > >
+> > > > On Thu, 25 Dec 2025 at 10:07, SeongJae Park <sj@kernel.org> wrote:
+> > > > >
+> > > > > On Wed, 24 Dec 2025 21:43:54 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > > > >
+> > > > > > The kdamond_call() function is executed repeatedly in the kdamond_fn()
+> > > > > > kernel thread.  The kdamond_call() function is implemented as a while loop.
+> > > > > > Therefore, it is important to improve the list processing logic here to
+> > > > > > ensure faster execution of control->fn().
+> > > > >
+> > > > > That depends on how critical the performance is, and how much complexity the
+> > > > > optimization introduces.  I have no idea about if the performance of
+> > > > > kdamond_call() is really important.  If you have a realistic use case that
+> > > > > shows it, sharing it would be nice.
+> > > >
+> > > > This is because kdamond_call() is called repeatedly in kdamond_fn().
+> > >
+> > > Yes, it is repeatedly called.  But, my question is, does it impose overhead
+> > > that great enough to make a negative impact to the real world.
+> >
+> > I agree that the overhead is not that much since there are only a few lists
+> > added to ctx->call_controls(CTX.head).
+> [...]
+> > > > > > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > > > > > index 824aa8f22db3..babad37719b6 100644
+> > > > > > --- a/mm/damon/core.c
+> > > > > > +++ b/mm/damon/core.c
+> > > > > > @@ -2554,42 +2554,43 @@ static void kdamond_usleep(unsigned long usecs)
+> > > > > >   */
+> > > > > >  static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+> > > > > >  {
+> > > > > > -     struct damon_call_control *control;
+> > > > > > -     LIST_HEAD(repeat_controls);
+> > > > > > -     int ret = 0;
+> > > > > > +     struct damon_call_control *control, *first = NULL;
+> > > > > > +     unsigned int idx = 0;
+> > > > > >
+> > > > > >       while (true) {
+> > > > > >               mutex_lock(&ctx->call_controls_lock);
+> > > > > >               control = list_first_entry_or_null(&ctx->call_controls,
+> > > > > >                               struct damon_call_control, list);
+> > > > > >               mutex_unlock(&ctx->call_controls_lock);
+> > > > > > -             if (!control)
+> > > > > > +
+> > > > > > +             /* check control empty or 1st rotation */
+> > > > > > +             if (!control || control == first)
+> > > > > >                       break;
+> > > > > > -             if (cancel) {
+> > > > > > +
+> > > > > > +             if (++idx == 1)
+> > > > > > +                     first = control;
+> > > > > > +
+> > > > > > +             if (cancel)
+> > > > > >                       control->canceled = true;
+> > > > > > -             } else {
+> > > > > > -                     ret = control->fn(control->data);
+> > > > > > -                     control->return_code = ret;
+> > > > > > -             }
+> > > > > > +             else
+> > > > > > +                     control->return_code = control->fn(control->data);
+> > > > > > +
+> > > > > >               mutex_lock(&ctx->call_controls_lock);
+> > > > > >               list_del(&control->list);
+> > > > > >               mutex_unlock(&ctx->call_controls_lock);
+> > > > > > +
+> > > > > >               if (!control->repeat) {
+> > > > > > +                     /* run control->fn() one time */
+> > > > > >                       complete(&control->completion);
+> > > > > >               } else if (control->canceled && control->dealloc_on_cancel) {
+> > > > > >                       kfree(control);
+> > > > > > -                     continue;
+> > > > > >               } else {
+> > > > > > -                     list_add(&control->list, &repeat_controls);
+> > > > > > +                     /* to repeat next time */
+> > > > > > +                     mutex_lock(&ctx->call_controls_lock);
+> > > > > > +                     list_add_tail(&control->list, &ctx->call_controls);
+> > > > > > +                     mutex_unlock(&ctx->call_controls_lock);
+> > > > > >               }
+> > > > > >       }
+> > > > >
+> > > > > Let's suppose there are two damon_call_control objects on the
+> > > > > ctx->call_controls.  The first one has ->repeat unset, while the second one
+> > > > > has.  Then, it seems the 'break' condition will never met and therefore this
+> > > > > loop will never finished.  Am I missing something?
+> > > >
+> > > > You misjudged.
+> > > > If (!C.repeat), it will be removed with list_del() and disappear.
+> > > > If (C.repeat) loops through the loop once, and when it returns to the
+> > > > first, it breaks.
+> > >
+> > > Maybe my explanation was not enough.  Let me explain a bit in more detail.
+> > >
+> > > In the scenario I mentioned, at the first iteration of the loop, 'first' will
+> > > be the first control object, which has ->repeat unset.  The object will be
+> > > removed from the list.  In the second iteration of the loop, it handles the
+> > > second object, which has ->repeat set.  The object is added to the list again.
+> > > In the third iteration, the loop runs for the second object again.  Because it
+> > > is not same to 'first', the 'break' statement is not reached.  The loop
+> > > continues forever.
+> > >
+> > > Am I missing something?
+> >
+> > Thank you for your detailed review.
+> > There may be cases where C->repeat=false is the first control.
+> > This can also be solved simply as follows:
+> >
+> > @@ -2567,9 +2599,6 @@ static void kdamond_call(struct damon_ctx *ctx,
+> > bool cancel)
+> >                 if (!control || control == first)
+> >                         break;
+> >
+> > -               if (++idx == 1)
+> > -                       first = control;
+> > -
+> >                 if (cancel)
+> >                         control->canceled = true;
+> >                 else
+> > @@ -2589,6 +2618,8 @@ static void kdamond_call(struct damon_ctx *ctx,
+> > bool cancel)
+> >                         mutex_lock(&ctx->call_controls_lock);
+> >                         list_add_tail(&control->list, &ctx->call_controls);
+> >                         mutex_unlock(&ctx->call_controls_lock);
+> > +                       if (++idx == 1)
+> > +                               first = control;
+> >                 }
+> >         }
+> >  }
 >
-> diff --git a/include/linux/mmu_context.h b/include/linux/mmu_context.h
-> index ac01dc4eb2ce..ed3dd0f3fe19 100644
-> --- a/include/linux/mmu_context.h
-> +++ b/include/linux/mmu_context.h
-> @@ -24,7 +24,7 @@ static inline void leave_mm(void) { }
->   #ifndef task_cpu_possible_mask
->   # define task_cpu_possible_mask(p)	cpu_possible_mask
->   # define task_cpu_possible(cpu, p)	true
-> -# define task_cpu_fallback_mask(p)	housekeeping_cpumask(HK_TYPE_TICK)
-> +# define task_cpu_fallback_mask(p)	housekeeping_cpumask(HK_TYPE_DOMAIN)
->   #else
->   # define task_cpu_possible(cpu, p)	cpumask_test_cpu((cpu), task_cpu_possible_mask(p))
->   #endif
-Acked-by: Waiman Long <longman@redhat.com>
+> Yes, that should fix the issue.
+>
+> And it seems 'idx' is being used for only this?  If I'm not wrong, I think it
+> may be easier to read if you do something like 'first = first ? first :
+> control' and drop 'idx'.
 
+It's better removing idx.
+Thanks.
+JaeJoon
+
+@@ -2587,7 +2587,6 @@ static void kdamond_usleep(unsigned long usecs)
+ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+ {
+        struct damon_call_control *control, *first = NULL;
+-       unsigned int idx = 0;
+
+        while (true) {
+                mutex_lock(&ctx->call_controls_lock);
+@@ -2618,8 +2617,8 @@ static void kdamond_call(struct damon_ctx *ctx,
+bool cancel)
+                        mutex_lock(&ctx->call_controls_lock);
+                        list_add_tail(&control->list,
+&ctx->call_controls);
+                        mutex_unlock(&ctx->call_controls_lock);
+-                       if (++idx == 1)
+-                               first = control;
++
++                       first = (first) ? first : control;
+                }
+        }
+ }
+
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
