@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C20E82CDE
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 06:08:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F02FE8FDA1
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 06:08:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D90AF6B0088; Fri, 26 Dec 2025 01:08:14 -0500 (EST)
+	id 02A3C6B0089; Fri, 26 Dec 2025 01:08:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D68626B008C; Fri, 26 Dec 2025 01:08:14 -0500 (EST)
+	id F1D4A6B008A; Fri, 26 Dec 2025 01:08:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7BCA6B0088; Fri, 26 Dec 2025 01:08:14 -0500 (EST)
+	id E4F2F6B0092; Fri, 26 Dec 2025 01:08:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B51E56B0088
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C1C916B0089
 	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 01:08:14 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C57B5C46B
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 87AFD1A0B5C
 	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 06:08:14 +0000 (UTC)
-X-FDA: 84260592108.30.4ED6239
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1A211180003
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 06:08:10 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vnS+3iCv;
+X-FDA: 84260592108.27.50455EB
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4316B80010
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 06:08:11 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hApe8sxZ;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766729292; a=rsa-sha256;
+	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766729293; a=rsa-sha256;
 	cv=none;
-	b=ULX9EFQHsn4Tvz/e6qJWloZ/S5WmrqknIhylSeleSau72tmMkcrhI/VzWG7bAuWDp64SNJ
-	tZAKqDY+lggcJDNmmQNMm1oOcUfEUQa4v9hWgSiLNNWJq4Aa988jHWt70ugJijCqQPaqwh
-	GHbcw2nxc3uJIhvHzs50hkt/2uvQWyY=
+	b=L+mr0dzxd4jpCAXG3yB7eC7G2H6sh1pz0mC2/BHD7smHtIvWFsod9Y8V4RpZ8EtyC6Z2Pd
+	mwScFZ35Dz0yZRNVrEtvLGu9Bi2qAEY8O+EGwK8KNDGICc45ymO3Ggf08XqdNHQeWH+j5P
+	MOroNiZXU2leYKhd5Skc/jqjjtcOBRo=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vnS+3iCv;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hApe8sxZ;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766729292;
+	s=arc-20220608; t=1766729293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nQOblmo1Xq9Mi6sOjwcZDMqeM3HaJgfSORShcGuHoSU=;
-	b=zmc7Yxo+l1cfyNcIw0FGLYwcrRliRPO4xJLwO5cVeCqXcJ3v9+VFoKdSLKq9aBxhxT0mTh
-	8I7WNc3LwT1vw64h6DoOLvq+67Xi+q6NG+Ck4LtxQXGxyv2MI9ZkGjr3NH4dMRhK54SPPG
-	Xn1q9omYVBLa06TO42iG38ipI5TaZwQ=
+	 in-reply-to:references:dkim-signature;
+	bh=2dDam6/A7wKLN/SEOzZ9mYQr/Agu3pyZVWIzX0An9W4=;
+	b=u76UVC0w7X0fbkXjOpHsgBfiPmOL3NyU7FBT5NfjcWBijh/4vHmpmkIqDwJFTyrXGgoAu7
+	Rmztmb/JBFYbK6KbvLhKNmd3tMKByppE0XHG/yRLkoRDrIOUyI5FATlqhMK8+DkWH+fH/2
+	iwAFhmP6nFMPyczMRXVd6g0n9RlvLSU=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
 	t=1766729288; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=nQOblmo1Xq9Mi6sOjwcZDMqeM3HaJgfSORShcGuHoSU=;
-	b=vnS+3iCvjs3clh6XTawuuD4lIJTLS7pDaqG5A5AZTg5ebZkf4W0ncmLcnbHQxm4UWkwnb22ZIot/GseB0htrHEkgKN9E+5uJDiNHU3MsCaZvlAM5OSXCxZNLLDcUvVbrIxkrGbmd0Qrn7Qd37IaYgCrO0n949cedMpmO67UiOXc=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WvgaV0W_1766729286 cluster:ay36)
+	bh=2dDam6/A7wKLN/SEOzZ9mYQr/Agu3pyZVWIzX0An9W4=;
+	b=hApe8sxZw20wfr7EDf5qRJ5qaAPA9yO45g2ygo/oA1KmYMojB2B+4RP3EIsukyY6m5xyw/6mtftNxzbR2asDf5vEQMBkfufh9izcZIFn7OjArGCpq4KGkJGSy59xTLAX5Ief8cX6bh5vRuU/tu/YjwYg5EykGzbuF0ajcEcF/nM=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WvgaV-U_1766729284 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 26 Dec 2025 14:08:07 +0800
+          Fri, 26 Dec 2025 14:08:05 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -78,22 +78,20 @@ Cc: lorenzo.stoakes@oracle.com,
 	linux-mm@kvack.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 1/5] mm: rmap: support batched checks of the references for large folios
-Date: Fri, 26 Dec 2025 14:07:55 +0800
-Message-ID: <18b3eb9c730d16756e5d23c7be22efe2f6219911.1766631066.git.baolin.wang@linux.alibaba.com>
+Subject: [PATCH v5 0/5] support batch checking of references and unmapping for large folios
+Date: Fri, 26 Dec 2025 14:07:54 +0800
+Message-ID: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
-References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1A211180003
-X-Rspamd-Server: rspam03
-X-Stat-Signature: iehukuxjnuoetsj118umc3494h1oznjs
 X-Rspam-User: 
-X-HE-Tag: 1766729290-370250
-X-HE-Meta: U2FsdGVkX19+gbCZwFZIUL8zC+8Y53tyWZKDynvgttwaRhISWuedAP2wa20cguWPBLRvfC7656dyQGlYZZAsl0MSd5vL+i6Hcj8lACP6dC4GUFR1sQSbQWjtvq8M04CWrmM0QYwZ+HUzD5FHgKwj/0CY/iCLTvNFGlh+9HFA/31CZOJQu28ABsE+Op5CoHCK9CigxRXebLKDFMdpqE93FiIQzu8KSf28DuJRWXTSYIUfskBbedCdAbCHw7HWOjvlGIPfT1dXbeu8LdyZ0x0kS8wUOwN+5QtbqsQQ1V36xG0AbliaGOE8YL39mVq4ShCql1uWz2UJomBR+IGVo3GvGaqlCkZ3FAJ2nU5RiOc/YUwSmEVdwWH+DJaDSj+Pt32TskL2jJ3J62tmY2uywAdXceDTdBWlWRK2QOaqL8htpHmh7WdzAq5fof15eY06+CHG5y5w+oNTYdbfQFL0MxmspGYHW/svwGnBGGfS4FlwcHZ/ORQ4ycuwPfyjaqbJKul+mzerQxm/qCNs7aJB/amKPp25JV7IjKfP+GbfRnaV7B3tnCgIdVK0HyAYyN4mnnSggQGj+CGBNmROcrZbXyZbfEP70ubo61cFPs4qDzT+WzfDXDpRXgf1KVJq8it+8j6J553MYoeapM7pCJ/iXDhKaRQZSS7V0vz+RS+rhDlYrUVSZfGV+Hh5RyABds8GiT05brUKYpPedCb6SLuEw5doYMos4T9eDGsMinB6fY2YGBdmqP5YjyDoZ2CQ6Zef+oGg/VOcXRmC9EhmYvVrqMso+lcf6NRAwpR4M7FQ8FLzkK9biRz2BtgnJjlxaOWt2KE7LOLNvBgjy5o4pqw405fqsSF73TsQGziycDEQavgWiGrizHIxDCGOz1iBl6/OyzhWCbOIzr/TvvM9UfG7afLcydlbapshxXf66iTsu+1hE2C8XUxhetsimWwpfjDiemKiAH1B6OwI48KyOgFRigD
- nIo3wPgr
- RF7u2JULQWx3Yzhv4KccD/XHvjS30L5CGucsDDKgDgcC1Gja2vD5SGrgMBZzQiJ9hLKquDnqhSGiVWl+Wogms6tysb+DGluBwGwEmVAE9kuzDB4NA1/Goq8AzunnkgrB4ymdGOkhvTIyJDZPpEAKYY1mj/kG6+WgN8YeMt2GPlAWSLR7EUiePCupgRo1hm6CRkSmiHV08Z4Xp8wJ8/JNHf1Y79s2XIGMj6tqiSi9Q0QwxoCEdHAe6/Uw+BSmlbdw3snJqa+yLhOgWRONdgpiDTKc5aZEHu08RXRcnwoKMg8tM084LAfeCF1zohJj4W6DOXvzO0HDDozDXyNTsi0qT1LDeS1Yc/gpC5EwN
+X-Rspamd-Queue-Id: 4316B80010
+X-Rspamd-Server: rspam10
+X-Stat-Signature: x8dzoic91jhwnrawqiwnthi3uihbwprx
+X-HE-Tag: 1766729291-925454
+X-HE-Meta: U2FsdGVkX1+8yfXJCZRN+41XnZZLaG+ITOYzOHwval/THdYMlBf6N4zY5wUfmsEQF1JNWpXixX8XJsjwEszy/L/6eZpgeTyRL0QwYYCXx+L0vBM0WElKpp8iFHjT8n4KIx6COF+XVlp4EDTdoW/8wXQZCf8ig13OZQvbM+Dr2jTCHXVmgchcjztDwMY3AAgi+rSZxqOmBHVg565hpRf750T9fKIOccOUMvXHJl5lyCIBm6/pfOHuzzlNGf+fydMU25UBufrHjMrmte9n19bHqtYggeDeu0EuaCGCZhYDKKcaH54g6ofMOQHlJr8UY8XhtS1hWDGiq9Qwb22kc9czPmqNzTAmlenBD3DGfrU1QkxfmP6rdtlY8ZourMnpYfyKHQMAEgsqaajqJJnP0HqQq01ARlDXwkrKaBpWHPU4fOIu8zzSI/6hRrofbuRvLHwRNrEbmBUnEfgVtkyuhoiJnK+Mi609e/YdavbZyd1QT49qufcH3rVm4948OJN4T0bsK1K+AmR5qQzIurz8S/yBJCAT3j56yGulR8Y1u0Uw8NSb4yWSIU+pEBpOdQkxcXFia5OD+3yu8waXNKkjwJ4Ve6Hrp+1b7e2ST2CpywiNB1WC/JW6FNLxf6/TKty2jvcLMxnA7z+Ljmb9JPBG6ukoIB7xqYRD/TerwEUo9yjGLs3oBlF3g55V7N5utUlxzysySmwJI07PGuxgMzz/tTf/d6LWuT/fpeHsfa+w+Fdo0IMKhKNx2qqcAgWxpsOm4t7pLkygv5PLOAGWSoq9lL2PVf+8FH0k+5/2Axzqp99I7FyZqV09vqXS3r0Vm2KjStR81gijoIloUJOJBfenMcy4CkP/2l45ersVE/UmtGifIuj03vA3dldWeMwS76vich+NOdIRiHrziLiE3MUhj2QMNS3XoO8Tw7agjEkzKPhwoIsUZ/CA6VgQzGRFzGyYNU7LyEzUmxircb0LJ/AKThf
+ +bGI0Z1a
+ ftEX+RJD6fNc42yg56/4d3E4sfRybziv1++MaQ4THaXxDGhvfDfoyI0bvB86cWunNnZ+E15AS3RR2rQAiywdyOlTr+pXCM9rVAJh4RgcfXwAXZNi6/RdOr2udoHF7sTdyK6UA6GZiLf2rvMtwtmZcInTsR+FT5g+kSbpZeEpbdMKkHnzyWWQeaP8mSQV6M36fSU2uDxpHfFqDBUGzVgYd0XGKf0GLF9PA6LucTtGwctEoSQ7p19YUP3oAfWOwSOK2TEMtklP/pjgUkS0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,163 +105,63 @@ sequentially, which is inefficient for large folios. This inefficiency is
 especially noticeable when reclaiming clean file-backed large folios, where
 folio_referenced() is observed as a significant performance hotspot.
 
-Moreover, on Arm64 architecture, which supports contiguous PTEs, there is already
+Moreover, on Arm architecture, which supports contiguous PTEs, there is already
 an optimization to clear the young flags for PTEs within a contiguous range.
 However, this is not sufficient. We can extend this to perform batched operations
 for the entire large folio (which might exceed the contiguous range: CONT_PTE_SIZE).
 
-Introduce a new API: clear_flush_young_ptes() to facilitate batched checking
-of the young flags and flushing TLB entries, thereby improving performance
-during large folio reclamation. And it will be overridden by the architecture
-that implements a more efficient batch operation in the following patches.
+Similar to folio_referenced_one(), we can also apply batched unmapping for large
+file folios to optimize the performance of file folio reclamation. By supporting
+batched checking of the young flags, flushing TLB entries, and unmapping, I can
+observed a significant performance improvements in my performance tests for file
+folios reclamation. Please check the performance data in the commit message of
+each patch.
 
-While we are at it, rename ptep_clear_flush_young_notify() to
-clear_flush_young_ptes_notify() to indicate that this is a batch operation.
+Run stress-ng and mm selftests, no issues were found.
 
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- include/linux/mmu_notifier.h |  9 +++++----
- include/linux/pgtable.h      | 31 +++++++++++++++++++++++++++++++
- mm/rmap.c                    | 31 ++++++++++++++++++++++++++++---
- 3 files changed, 64 insertions(+), 7 deletions(-)
+Patch 1: Add a new generic batched PTE helper that supports batched checks of
+the references for large folios.
+Patch 2 - 3: Preparation patches.
+patch 4: Implement the Arm64 arch-specific clear_flush_young_ptes().
+Patch 5: Support batched unmapping for file large folios.
 
-diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-index d1094c2d5fb6..07a2bbaf86e9 100644
---- a/include/linux/mmu_notifier.h
-+++ b/include/linux/mmu_notifier.h
-@@ -515,16 +515,17 @@ static inline void mmu_notifier_range_init_owner(
- 	range->owner = owner;
- }
- 
--#define ptep_clear_flush_young_notify(__vma, __address, __ptep)		\
-+#define clear_flush_young_ptes_notify(__vma, __address, __ptep, __nr)	\
- ({									\
- 	int __young;							\
- 	struct vm_area_struct *___vma = __vma;				\
- 	unsigned long ___address = __address;				\
--	__young = ptep_clear_flush_young(___vma, ___address, __ptep);	\
-+	unsigned int ___nr = __nr;					\
-+	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
- 	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
- 						  ___address,		\
- 						  ___address +		\
--							PAGE_SIZE);	\
-+						  ___nr * PAGE_SIZE);	\
- 	__young;							\
- })
- 
-@@ -650,7 +651,7 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
- 
- #define mmu_notifier_range_update_to_read_only(r) false
- 
--#define ptep_clear_flush_young_notify ptep_clear_flush_young
-+#define clear_flush_young_ptes_notify clear_flush_young_ptes
- #define pmdp_clear_flush_young_notify pmdp_clear_flush_young
- #define ptep_clear_young_notify ptep_test_and_clear_young
- #define pmdp_clear_young_notify pmdp_test_and_clear_young
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 2f0dd3a4ace1..eb8aacba3698 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1087,6 +1087,37 @@ static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
- }
- #endif
- 
-+#ifndef clear_flush_young_ptes
-+/**
-+ * clear_flush_young_ptes - Clear the access bit and perform a TLB flush for PTEs
-+ *			    that map consecutive pages of the same folio.
-+ * @vma: The virtual memory area the pages are mapped into.
-+ * @addr: Address the first page is mapped at.
-+ * @ptep: Page table pointer for the first entry.
-+ * @nr: Number of entries to clear access bit.
-+ *
-+ * May be overridden by the architecture; otherwise, implemented as a simple
-+ * loop over ptep_clear_flush_young().
-+ *
-+ * Note that PTE bits in the PTE range besides the PFN can differ. For example,
-+ * some PTEs might be write-protected.
-+ *
-+ * Context: The caller holds the page table lock.  The PTEs map consecutive
-+ * pages that belong to the same folio.  The PTEs are all in the same PMD.
-+ */
-+static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
-+					 unsigned long addr, pte_t *ptep,
-+					 unsigned int nr)
-+{
-+	int i, young = 0;
-+
-+	for (i = 0; i < nr; ++i, ++ptep, addr += PAGE_SIZE)
-+		young |= ptep_clear_flush_young(vma, addr, ptep);
-+
-+	return young;
-+}
-+#endif
-+
- /*
-  * On some architectures hardware does not set page access bit when accessing
-  * memory page, it is responsibility of software setting this bit. It brings
-diff --git a/mm/rmap.c b/mm/rmap.c
-index e805ddc5a27b..985ab0b085ba 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -828,9 +828,11 @@ static bool folio_referenced_one(struct folio *folio,
- 	struct folio_referenced_arg *pra = arg;
- 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
- 	int ptes = 0, referenced = 0;
-+	unsigned int nr;
- 
- 	while (page_vma_mapped_walk(&pvmw)) {
- 		address = pvmw.address;
-+		nr = 1;
- 
- 		if (vma->vm_flags & VM_LOCKED) {
- 			ptes++;
-@@ -875,9 +877,24 @@ static bool folio_referenced_one(struct folio *folio,
- 			if (lru_gen_look_around(&pvmw))
- 				referenced++;
- 		} else if (pvmw.pte) {
--			if (ptep_clear_flush_young_notify(vma, address,
--						pvmw.pte))
-+			if (folio_test_large(folio)) {
-+				unsigned long end_addr =
-+					pmd_addr_end(address, vma->vm_end);
-+				unsigned int max_nr =
-+					(end_addr - address) >> PAGE_SHIFT;
-+				pte_t pteval = ptep_get(pvmw.pte);
-+
-+				nr = folio_pte_batch(folio, pvmw.pte,
-+						     pteval, max_nr);
-+			}
-+
-+			ptes += nr;
-+			if (clear_flush_young_ptes_notify(vma, address,
-+						pvmw.pte, nr))
- 				referenced++;
-+			/* Skip the batched PTEs */
-+			pvmw.pte += nr - 1;
-+			pvmw.address += (nr - 1) * PAGE_SIZE;
- 		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
- 			if (pmdp_clear_flush_young_notify(vma, address,
- 						pvmw.pmd))
-@@ -887,7 +904,15 @@ static bool folio_referenced_one(struct folio *folio,
- 			WARN_ON_ONCE(1);
- 		}
- 
--		pra->mapcount--;
-+		pra->mapcount -= nr;
-+		/*
-+		 * If we are sure that we batched the entire folio,
-+		 * we can just optimize and stop right here.
-+		 */
-+		if (ptes == pvmw.nr_pages) {
-+			page_vma_mapped_walk_done(&pvmw);
-+			break;
-+		}
- 	}
- 
- 	if (referenced)
+Changes from v4:
+ - Fix passing the incorrect 'CONT_PTES' for non-batched APIs.
+ - Rename ptep_clear_flush_young_notify() to clear_flush_young_ptes_notify() (per Ryan).
+ - Fix some coding style issues (per Ryan).
+ - Add reviewed tag from Ryan. Thanks.
+
+Changes from v3:
+ - Fix using an incorrect parameter in ptep_clear_flush_young_notify()
+   (per Liam).
+
+Changes from v2:
+ - Rearrange the patch set (per Ryan).
+ - Add pte_cont() check in clear_flush_young_ptes() (per Ryan).
+ - Add a helper to do contpte block alignment (per Ryan).
+ - Fix some coding style issues (per Lorenzo and Ryan).
+ - Add more comments and update the commit message (per Lorenzo and Ryan).
+ - Add acked tag from Barry. Thanks. 
+
+Changes from v1:
+ - Add a new patch to support batched unmapping for file large folios.
+ - Update the cover letter
+
+Baolin Wang (5):
+  mm: rmap: support batched checks of the references for large folios
+  arm64: mm: factor out the address and ptep alignment into a new helper
+  arm64: mm: support batch clearing of the young flag for large folios
+  arm64: mm: implement the architecture-specific
+    clear_flush_young_ptes()
+  mm: rmap: support batched unmapping for file large folios
+
+ arch/arm64/include/asm/pgtable.h | 23 ++++++++----
+ arch/arm64/mm/contpte.c          | 62 ++++++++++++++++++++------------
+ include/linux/mmu_notifier.h     |  9 ++---
+ include/linux/pgtable.h          | 31 ++++++++++++++++
+ mm/rmap.c                        | 38 ++++++++++++++++----
+ 5 files changed, 125 insertions(+), 38 deletions(-)
+
 -- 
 2.47.3
 
