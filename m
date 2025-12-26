@@ -4,108 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05DC3E8FDAC
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 20:31:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 382CEE8FDB5
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 20:40:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6824B6B0005; Fri, 26 Dec 2025 15:31:39 -0500 (EST)
+	id 620396B0005; Fri, 26 Dec 2025 15:40:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 605CA6B0089; Fri, 26 Dec 2025 15:31:39 -0500 (EST)
+	id 5CF096B0089; Fri, 26 Dec 2025 15:40:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E7206B008A; Fri, 26 Dec 2025 15:31:39 -0500 (EST)
+	id 4855F6B008A; Fri, 26 Dec 2025 15:40:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 395DD6B0005
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 15:31:39 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D60A789951
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 20:31:38 +0000 (UTC)
-X-FDA: 84262767876.19.9AA9546
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 36C8B6B0005
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 15:40:38 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DE81B58D95
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 20:40:37 +0000 (UTC)
+X-FDA: 84262790514.28.880CE09
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4659C40004
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 20:31:36 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="RWXKu/Y9";
-	spf=pass (imf27.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by imf06.hostedemail.com (Postfix) with ESMTP id 67D9D180002
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 20:40:35 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B9LY35OG;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766781635; a=rsa-sha256;
+	cv=none;
+	b=NEAOzR6abdGAcUSFVOzet8VI0u8YFNvxhu50CdHMZspUB/QL4PNcH51WqOBJVYlTmU4z+x
+	jNIcYE+oUOK0zOK45gw/sPG5Flfdly3EJ2h5UrDkeCCIPOW/dYqiLg/Da1IavoBrQJdQjM
+	Olv75mtfZgMB7vILSJDL9tKUjQyrBkg=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B9LY35OG;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766781096;
+	s=arc-20220608; t=1766781635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w4Pa3h61jDk0Wr5hXqPBHwFAVT2TML944c0BxtSWzHU=;
-	b=Smpoc3qbD8BEC3NkUeB4PO82liht8HEph1QMczXHP275lEV9w6alRhhEIFywc5CXgK8j1C
-	dDb7VwE9JPRoS9b16p21sP/VAw0m0WaOWiljlyQYMQG9T71eNwtFJ3pFC0VYMWFAnmtA52
-	iZ0eA+Nl2+3MYR4L/p/BqH2NzObJLvM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="RWXKu/Y9";
-	spf=pass (imf27.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766781096; a=rsa-sha256;
-	cv=none;
-	b=wKyZfRDLzWRwSi+cdOLj4WmYOzSmJuoFuS2rPuxakJFSU1CIfrQjEaVry0r9Pwd1tBXQF4
-	4MVzfFr5OW2A952/euxRZVBE2zjh3uVX/Ox1HXfv3JeVRwjuYJLhFkl9Qz+NbrawN+T5qJ
-	6ddpzS0Y7n+j2PEIFpebLIv3M6h9rGA=
+	bh=GeIq5WeBjJr0pHEJInnCdQac0Dvo9bQqS7LrqRILVDY=;
+	b=Uc6JCUjfdzdtqreDgPe74pjOYOrUBrUJhw6m4zJWEA0o8L8gERgxIk8AJraHu0BM2qgzBg
+	5FqtoWfzMa/iLvbQsnS/pn1AkuHmd/3IS/kmu4FjBtBsMX4hr4d62XMhsKlK6ggP39eZcI
+	sW6RAsu8OpSYa2z0+edM2hpsjWQwlF0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766781095;
+	s=mimecast20190719; t=1766781634;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=w4Pa3h61jDk0Wr5hXqPBHwFAVT2TML944c0BxtSWzHU=;
-	b=RWXKu/Y9W8D4LntEoXwgv89QOeggZ6JD8fpTQwOsg8Bdvf7hx2Z6MldAJ3z1hGZKBZn5u+
-	GmY2gQzEr9mzfRAZegJ1cw+f5qh5wM+5zAnyjBvV6Vk2sMGG2/Q2KtuY5iwz+WBVO4Bb2Y
-	raqkoPMBzFeN/5vcbPxcNMALZ0PFNMg=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=GeIq5WeBjJr0pHEJInnCdQac0Dvo9bQqS7LrqRILVDY=;
+	b=B9LY35OG6gVDjLUBrb+D8xq1zI8bADGP9mvqiBHyvLOf8w89T1ZJt9voYX9WVNIJgqLyHY
+	yBfea8ZxYcCe5XM1a6kf+kiK3a3P/tp5dWcukNRznNJiv0fcmHDgAS9mIAszQvxj3hP4Nm
+	qT28DIGiXTF9jUHGKVpz4aVPapYiXPg=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-175-q2w0q7xdNYi-tone9StcfA-1; Fri, 26 Dec 2025 15:31:34 -0500
-X-MC-Unique: q2w0q7xdNYi-tone9StcfA-1
-X-Mimecast-MFC-AGG-ID: q2w0q7xdNYi-tone9StcfA_1766781094
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8bb9f029f31so1986979485a.2
-        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 12:31:34 -0800 (PST)
+ us-mta-47-LSowyyArPH62kx60pZ87Nw-1; Fri, 26 Dec 2025 15:40:31 -0500
+X-MC-Unique: LSowyyArPH62kx60pZ87Nw-1
+X-Mimecast-MFC-AGG-ID: LSowyyArPH62kx60pZ87Nw_1766781630
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-88a2f8e7d8dso201443726d6.1
+        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 12:40:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766781093; x=1767385893;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w4Pa3h61jDk0Wr5hXqPBHwFAVT2TML944c0BxtSWzHU=;
-        b=CXu3IvWwsde2iSMMd06/nJilWnzBJJxZqaDHvDOf24mlIk+qtOC853BEsVGLNPOtIw
-         MTWUBTY8rGO4l3xoZ+ZHr/PU2vleWkBn9Gtysb5UaEdmAJzjeZf2KkC8ykH7gfLGwQYL
-         Em8dbC5+RoyO9VD9HmE4yEePPT0kCOFvzp7rBcmmvFM34pmb97tWPtwZtniGySK4Qs0u
-         0zqsBK9MzUu7belH/xa7ePvwBIPPoPLKw7Fb7Jqi26Zw+MYf9RvtbZS1yLr7TssBNe5I
-         0QrHzBdnSNMmMgP61yH1WBZD0BJJqWXXw4JlAVctIkSSCm9Ej0JXJzboebAkZWRqbgxJ
-         yc3g==
-X-Forwarded-Encrypted: i=1; AJvYcCWcWk2BTVXv5L0JFrqzAjkl0EWoEGyxv+MfYUovLNJZTiw9Si16jzqS9vDiRkBFMrXoqpy53d/nqQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw2FGSjH1TmS0R0Jlt8dche7HkSW8/1dGVh8CpQaaVJnKynIl5o
-	pw3ze3kuIpbobTokBD6xrp6xANxgtf75j/FMqGORP7w8bHpWppk5ldqEMXNzxnkOJ3mK/0JJnAB
-	mY5Qj4OFy04QnZ7p2Tl1AUv/qWS0fV3Yu2MMam8egppMhT2KJ4e9v
-X-Gm-Gg: AY/fxX5XT4vkGfF//MN9664PqZQjqAnD/uZCi/tSRXus0eVJaTOszHyaeLoy0FIDCn+
-	9WC6P2wHGIEp6YVBKBA7/6Gbv1XMoGSoU3GR0OORQ3vttibrcewS0XpDEVIHXP93fVSKAZ4VeJz
-	fKS37mz2zEPt4wjn2xX807WxjFM7yDeD0EpH34F6380Wv/+oi+PzUH2GxakMczydBxcxU7FbsPF
-	WY2lP9LmaBJe4IueJsdbbdRT2aFxZSGucyZzvatUWM/Wno4ACFDyKhHvB+81/8yXkH24o3G4jXR
-	+vuOy9WMA97r8F32ZVL3xkKxUHm3QH2L+iHuVDzyCn4SOQhCvYF1FVL2LxkC87DFrz98xQPjr28
-	ruLeGMFPi3UgsEY3Ez16D7yQJjErD+eEbIvgkk+X7/BN91IRY8MWOzOC7
-X-Received: by 2002:a05:620a:269c:b0:8c0:d341:9cef with SMTP id af79cd13be357-8c0d341a826mr2546757485a.73.1766781093497;
-        Fri, 26 Dec 2025 12:31:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFNP3JRzuVA9e5lA05jSGh3cLVd3H4bpw8DYevvFoq9EfnIojwqlL0tzjDHUY8cAliBoVsvtA==
-X-Received: by 2002:a05:620a:269c:b0:8c0:d341:9cef with SMTP id af79cd13be357-8c0d341a826mr2546753385a.73.1766781092994;
-        Fri, 26 Dec 2025 12:31:32 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766781630; x=1767386430;
+        h=in-reply-to:content-language:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GeIq5WeBjJr0pHEJInnCdQac0Dvo9bQqS7LrqRILVDY=;
+        b=dGqzxzKlyMvndNROnF8NCv3SR92ryVTxQdXODAYbzvplm+JZbOFbxhWK99yY9EKiP4
+         dtOXeZ5pak+6Qj5SynPWh7mOFB5qpmseVRF+iFtUKrFq1ooSCFzcHmeH/lXvIDclACK+
+         CDfTLvDDcGMRL+rdRNn4Iz/JngXy7s0HXv6emTgbBR7wCCOqSGxTFmfkv0cfiwcmIjX+
+         MDO47j1ENJO3XMTyiViXK5E+ZafMJgFlb1K0qAx8fdjCTgiRNgQopshSBhnXkzFoUsXP
+         3B8UmIKrE7QfzS7ZL2GpGn1XYfS22RBVm8UwxXYPbfJQUaZhg8lRflVw9YnMU8qF26sP
+         3lGA==
+X-Forwarded-Encrypted: i=1; AJvYcCVjBWxhWmNuLqD8QaRfYAK7QKdNtvX7Acm361B/N+SWSDgxpar+uVx3AcUU9BHCWIuwvOXnv5uXrQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw/lPm5cJOHZZpqQew1/xScjJ7/2JBTQb9KcjkuVoV/V3Y5s40o
+	8WrsQwhRDbNEOAXk5MBmHeM3+iQTwfJvbCwZfod3+WbTH8G94hNg7BoltouGBj/D+3dWFi4p0Ek
+	orkpsqdXzHsVbKab7K9jWY9SEYTXq7noCUoh0rbKwVzExVwucO+VN
+X-Gm-Gg: AY/fxX5FlfjDXsoH4Ml57zRottgAzJtXOabo2o2ksJff1qBGlpOW9UkujF4rrppPoy6
+	KQdqzBzNWgbJ2al1HmarNxZl7t3bSd/loiE4YQ7kpr2aqnqFcxjwj5ugFD15DUgMEKosQ0goETh
+	F/pRjO9UpBhm+N3s7Z2h0AJWEBi0n9gF2pnECnFgVuCqq8mtiiXFyqNvByZgi7xcUb5sOc7G/qu
+	GedwutxFNBYudFIblOK7NTkc3ByPm+q+lBkiMz2ZPjbXNIj7Tq4Eccx8UoGVN6y7luTUuOdXzv/
+	LfSTyVrsS2b4jyW/9L97b7MEZfjtLd6FNnMyJna3MoymDeFtfW5WmAZ+J/PH1NPGiyvuJwrWMbN
+	a0k0P4J2vRLc69XVyDbElDZuPST3sSZ7bQS9Y1ucRxeUkxGIR9+LQmZPA
+X-Received: by 2002:a05:6214:5707:b0:888:80be:5104 with SMTP id 6a1803df08f44-88d819558cfmr377291606d6.16.1766781630567;
+        Fri, 26 Dec 2025 12:40:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFJdkq+u1ZRrQHYShSOBtqa9hySrWHwPD0xQGmptftUFkBE3/xQzVpQVqAYXeMkq1K1V+nQKg==
+X-Received: by 2002:a05:6214:5707:b0:888:80be:5104 with SMTP id 6a1803df08f44-88d819558cfmr377291416d6.16.1766781630178;
+        Fri, 26 Dec 2025 12:40:30 -0800 (PST)
 Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c0970f5fa6sm1797460785a.28.2025.12.26.12.31.27
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c0973f28e3sm1899806685a.45.2025.12.26.12.40.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Dec 2025 12:31:32 -0800 (PST)
+        Fri, 26 Dec 2025 12:40:29 -0800 (PST)
 From: Waiman Long <llong@redhat.com>
 X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <a9aa92b5-5e5a-4e9f-bfa3-31033d190457@redhat.com>
-Date: Fri, 26 Dec 2025 15:31:26 -0500
+Message-ID: <a8262eaf-169d-415d-949e-70f1a17b1e38@redhat.com>
+Date: Fri, 26 Dec 2025 15:40:25 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 18/33] cpuset: Propagate cpuset isolation update to
- workqueue through housekeeping
+Subject: Re: [PATCH 19/33] cpuset: Propagate cpuset isolation update to timers
+ through housekeeping
 To: Frederic Weisbecker <frederic@kernel.org>,
  LKML <linux-kernel@vger.kernel.org>
 Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
@@ -131,22 +129,22 @@ Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
  linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
  netdev@vger.kernel.org
 References: <20251224134520.33231-1-frederic@kernel.org>
- <20251224134520.33231-19-frederic@kernel.org>
-In-Reply-To: <20251224134520.33231-19-frederic@kernel.org>
+ <20251224134520.33231-20-frederic@kernel.org>
+In-Reply-To: <20251224134520.33231-20-frederic@kernel.org>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6sWWJTQxa_Hxyej0xMx6uIhVO-ibShscgbvLfOGPmSU_1766781094
+X-Mimecast-MFC-PROC-ID: PtxHA4qIVSiMgTgRB0LC4FRW_PhWqfXe86stontddvw_1766781630
 X-Mimecast-Originator: redhat.com
+Content-Type: multipart/alternative;
+ boundary="------------00BKB7bc43BQak71rKhHRgpD"
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 67D9D180002
+X-Rspamd-Server: rspam03
+X-Stat-Signature: buw4h1jx5sphu3netoqypeopq78415qt
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4659C40004
-X-Stat-Signature: 115uzcgq18cuo3rosonu1tqggyp1x1ns
-X-HE-Tag: 1766781096-393436
-X-HE-Meta: U2FsdGVkX1+t/O6UCU2biZsYmDCT0e16OZ7k0RxCg6yZHv0Vo9rusF7y5WDO+RFF45UtImV7Z50vfC6GLVHIOIhPDE4Cw2Fkk+cWhkqDPDDuNZ6u8DCOcF44Ic1mtOcEjKCnjMago6EfCr8FQ9gHVzongQaSVOAEsJ09sR6IsUScOWZi/tAbCE39V0gHNevLQXKB6pvDgOP0HKTHoQIbaso5Yl7FBOMqzuWDVLHZ+gr01oISrVCkegdWPanQbiglBfgdA4ADnm8sEu+wMr+ThFP59y2NQcgUGbN3u4MwrMqOYQ2A5zg0aiwp9sC9cYEhYjeJwh6xFjvsO1N+pGmORjx7JuJSWQfEUU4Ym1b7Hnr/Z81QlIZwd8DzPfw+KuPX8VtPeBflB1UgHbvn+ZyUz+Lw3LFNuf1NDtUPfcMEGtS3XAGP6YRjjY7dXA7oGShEYGofx9CcyzZOLK1YOWRdTVrFjQeN/N17CZPy2A8k3XxbYc17bnu3hvp3gz6wcjI7lTflPwhlM+wHlX1XFA0zPvoUSziiQohNa7I44+KNSR14IrVOfF/KoZ9WOZZlvnE9Q6IiysfJChMJvGdFRO/hsA3QU9xbdMjTETR3BNQylh7OnWmKbHrax/FW1m/GhKs4vS4lBxrmLFmS6PkXN6Z3MKN21OuA3nSdW+TL0OxXAZ7oxuSkBeGqOJfonEAzYNt679eeMgVQ4tPeu09VGh+ibtUHorFe5BbUCuS7/+SkqFw+cP01Q4uRGXUZkpQ/hGbDs2zxluz4z+OuLAfxMxKcUNpLAmE/ovwxY6fDvvBsYpndFrvtHdsASMwCxybpXNy34C1aQMCbuSe1knlc1jdgvpZD3XHOHx0Cu3horkn65OPlEI0OVRlztYi6hYOgCYxk8xJy//8M8igKDDYDnNFSLz6A940uoF9BX8EFphgnROPh5hKnc9bdcEkHJsXBwMp044g8sJvKj9wHouyP8tM
- VmPVnSqr
- BI5nbEPyTxozu+rgS5rsg/UmWzfPruNvBz07KbP4ua8DWkABUzFHz0DBqJfQ9D5Siv413D6V9s/VW1LV78r2JKecQu+LxMWSAnVHsFayKH27gE2oyZYxcUBr6eufd0u0aLNQAVmj3P4DQfzqvH2YF/byaLhbtSVx7dRnSf+zEgHm0kopuUzQokd1a3z3rtfJSwmWMlNmNb8u3AGHLayn9KunQml6HM3hnml2gL6uxGiAgWFNXRZpHvQXG81hCcMwzGIpL2VdnD3HDAQP3V+4KxFRFvF9NkL9ll+qtcCCw1SSmlf4qoIqqPbUdksO1u6B1fjpe9L4i7Gepqc+jtTv39diW/ezki1k9bGdVp0O1Qb1AhSQ18wbO7JvYepMGGV7yaBq+bfoo4n7RjJ3Sd2Ll5QkM6ZW66LyAF7FUNvVKzuwEHaKgAFrPL+ljDJ0DtQxxSpHmepN45g/Lxc2R1Hk8bCjj+HFPkQX1Y75HXEkbIZTqOvUX4gHe0CCF/4utCYchRGr+0pZqljL3XCv+Q0N6PjHHv8XXu0hixIAlqGU0K2qqgjhH5YIcsa3zOg==
+X-HE-Tag: 1766781635-467640
+X-HE-Meta: U2FsdGVkX18pwni1N9Sag3COpNSs4TL5l6NnUuKYDWrWS02hzzMQ1239odbodIRuGHztKTd6gvPt1lXHgoRf3p4i2/zMRcrrYqDP1SiJ6Q5xgvYQBNkLcjSLgPmlMVPeATtjulKhREwc/kuafqE8z/Yj5aG6kFruZz+E4aLMHfhKmC+/b7u3Uu05dJBTVDdLxuo3tRmXYd6hVsQs75YdP2Gn2YqhTBiOM8r6yDNzjiX/NXUGpf/0HrbuNw5GosvkICvpmhgrko108Ig4UPMxc4dPuLLaNdW1l7AncOdOZ7bS6aHRBpEr1YhG8QshQetD5XF0VY4TgGkP9k7fzhAeBseJUaHEPnnzEmDxzmOezqBew2R8kDHj2JQX2CYBS1Dww2wkc6mvi89GqV6UtZbbe0LHD00HwgwTZNeLXbjaGNFY0bDwmmAv/rSIIyLDP6Xjml0PKr9Xd/1P+o8P2P7zU26yycw54XKEDKFxIAzdFQocJLicbyZATH7ZPTMIKloKY+r5EOknakxiIW1rLefU8HDpQvFtaS94A6QCyUOYVWSUpPQ4EBjVShIWZmbTeWXmVHC9wP1SrkRQeEUyWfqyl1sEIpj/v/NFAgS6ZRAHSMA7fDppk8m1i+rOHuMMgX8EyP7ruC/h4B5eF8yQGwXncXJgsFNWtFZgo6jSD5/6Op3ck/WmV6ra3v7DpYIFh28DYwLH4vRIP2bmoNSjmDHQv+G337ePHtwz6qkEo0DlOMwsnMaMAMihaWEIOhuujblQuY3azf/5K6YWP4fZMHAlCyCV8FDVwbLK48XHteaRvGfAG/Pal1iXsFo2/ZpqLVSET2DqhkD1sUb7CzHhlXYt2CrawPfLgsJEuOhS42gpZxaRNWjALTRvz4OLnC453ibfRQb/NxbrnCNY3M32RGxVIbWiu8XJ4s0KuPbbvD33H4zVWCS50MSUroGRNZvWRAtSBl6iI+PM7H++2a/hv+N
+ ga0kWs+a
+ dgw99Ahh40KNZ2ltDG1I4p695obAOfX4tvPmTISpp2dmSxM8+A3Y6VlZrqrIe7TC9MUQ+is2rtQYHnGN9N8Jmtiu0onzBb2meSe3Q+05xYD07bC638g8uMqbFASjbFBJHWyljG7mfnlNptoueaqgmALx+e/7kp9I6VCkS+GUHtuummnIIjdGxfipbxMj6HAoKrbyMiU3V6WJAhEoz1jJnGRcISQ7QYLVCHeYUeLxXcogEdP/A462GnAWW71UShceIwKd1EXGX1HgFJ1xCxoKhPH3FhHmdx9LdyfXm2ht0b5THjMCt6M90Whna7iHqMYdJnDAVCchzQbSHSi17jGcMLk7Xwl7SEP7r7mjpwHDn2gy4Z9swsfdz9MAxq2UgLokGhIj2BoC9qWIpQJ6rB6x+grfquC9ISawXOdUrgG/41SWn1xGum26VQh2BkFHod64nISFvNOqsUpQ8tgpe7K++NEMCf5txmDR+n7Ov2LZv6e16CSuZEX6T68TmbDCdfaY0MHNV5+6X9EE1pjPA/2ZlX+u89giAiPV8Aoxp6mOiGwbiFy12mpwHYpxFvA9HgYtoqj3PmULu2hHKWhtnffAj5p8gVmhFPzKCZwBpcQQebvGe5md2Qsh/HAf9RhwOOFl9HgnjsfN2WjialLiF3l0THsm3ual+fU9GNvGJPKaJIlFfJhDaIezbwDsbU0sF0o2saMNarArhRvOrK9DZY+QPjNXH2MZHEnOSPIcG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,143 +153,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is a multi-part message in MIME format.
+--------------00BKB7bc43BQak71rKhHRgpD
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
 On 12/24/25 8:45 AM, Frederic Weisbecker wrote:
 > Until now, cpuset would propagate isolated partition changes to
-> workqueues so that unbound workers get properly reaffined.
+> timer migration so that unbound timers don't get migrated to isolated
+> CPUs.
 >
 > Since housekeeping now centralizes, synchronize and propagates isolation
 > cpumask changes, perform the work from that subsystem for consolidation
 > and consistency purposes.
 >
-> For simplification purpose, the target function is adapted to take the
-> new housekeeping mask instead of the isolated mask.
->
-> Suggested-by: Tejun Heo <tj@kernel.org>
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> Signed-off-by: Frederic Weisbecker<frederic@kernel.org>
 > ---
->   include/linux/workqueue.h |  2 +-
->   init/Kconfig              |  1 +
->   kernel/cgroup/cpuset.c    |  9 +++------
->   kernel/sched/isolation.c  |  4 +++-
->   kernel/workqueue.c        | 17 ++++++++++-------
->   5 files changed, 18 insertions(+), 15 deletions(-)
+>   kernel/cgroup/cpuset.c   | 3 ---
+>   kernel/sched/isolation.c | 5 +++++
+>   2 files changed, 5 insertions(+), 3 deletions(-)
 >
-> diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
-> index dabc351cc127..a4749f56398f 100644
-> --- a/include/linux/workqueue.h
-> +++ b/include/linux/workqueue.h
-> @@ -588,7 +588,7 @@ struct workqueue_attrs *alloc_workqueue_attrs_noprof(void);
->   void free_workqueue_attrs(struct workqueue_attrs *attrs);
->   int apply_workqueue_attrs(struct workqueue_struct *wq,
->   			  const struct workqueue_attrs *attrs);
-> -extern int workqueue_unbound_exclude_cpumask(cpumask_var_t cpumask);
-> +extern int workqueue_unbound_housekeeping_update(const struct cpumask *hk);
->   
->   extern bool queue_work_on(int cpu, struct workqueue_struct *wq,
->   			struct work_struct *work);
-> diff --git a/init/Kconfig b/init/Kconfig
-> index fa79feb8fe57..518830fb812f 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -1254,6 +1254,7 @@ config CPUSETS
->   	bool "Cpuset controller"
->   	depends on SMP
->   	select UNION_FIND
-> +	select CPU_ISOLATION
->   	help
->   	  This option will let you create and manage CPUSETs which
->   	  allow dynamically partitioning a system into sets of CPUs and
 > diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-> index e13e32491ebf..a492d23dd622 100644
+> index a492d23dd622..25ac6c98113c 100644
 > --- a/kernel/cgroup/cpuset.c
 > +++ b/kernel/cgroup/cpuset.c
-> @@ -1484,15 +1484,12 @@ static void update_isolation_cpumasks(void)
->   
->   	lockdep_assert_cpus_held();
->   
-> -	ret = workqueue_unbound_exclude_cpumask(isolated_cpus);
-> -	WARN_ON_ONCE(ret < 0);
-> -
-> -	ret = tmigr_isolated_exclude_cpumask(isolated_cpus);
-> -	WARN_ON_ONCE(ret < 0);
-> -
+> @@ -1487,9 +1487,6 @@ static void update_isolation_cpumasks(void)
 >   	ret = housekeeping_update(isolated_cpus, HK_TYPE_DOMAIN);
 >   	WARN_ON_ONCE(ret < 0);
 >   
-> +	ret = tmigr_isolated_exclude_cpumask(isolated_cpus);
-> +	WARN_ON_ONCE(ret < 0);
-> +
+> -	ret = tmigr_isolated_exclude_cpumask(isolated_cpus);
+> -	WARN_ON_ONCE(ret < 0);
+> -
 >   	isolated_cpus_updating = false;
 >   }
 >   
 > diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-> index 7dbe037ea8df..d224bca299ed 100644
+> index d224bca299ed..84a257d05918 100644
 > --- a/kernel/sched/isolation.c
 > +++ b/kernel/sched/isolation.c
-> @@ -121,6 +121,7 @@ EXPORT_SYMBOL_GPL(housekeeping_test_cpu);
->   int housekeeping_update(struct cpumask *isol_mask, enum hk_type type)
->   {
->   	struct cpumask *trial, *old = NULL;
-> +	int err;
->   
->   	if (type != HK_TYPE_DOMAIN)
->   		return -ENOTSUPP;
-> @@ -149,10 +150,11 @@ int housekeeping_update(struct cpumask *isol_mask, enum hk_type type)
+> @@ -150,7 +150,12 @@ int housekeeping_update(struct cpumask *isol_mask, enum hk_type type)
 >   	pci_probe_flush_workqueue();
 >   	mem_cgroup_flush_workqueue();
 >   	vmstat_flush_workqueue();
-> +	err = workqueue_unbound_housekeeping_update(housekeeping_cpumask(type));
+> +
+>   	err = workqueue_unbound_housekeeping_update(housekeeping_cpumask(type));
+> +	WARN_ON_ONCE(err < 0);
+> +
+> +	err = tmigr_isolated_exclude_cpumask(isol_mask);
+> +	WARN_ON_ONCE(err < 0);
 >   
 >   	kfree(old);
 >   
-> -	return 0;
-> +	return err;
->   }
->   
->   void __init housekeeping_init(void)
-> diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-> index 253311af47c6..eb5660013222 100644
-> --- a/kernel/workqueue.c
-> +++ b/kernel/workqueue.c
-> @@ -6959,13 +6959,16 @@ static int workqueue_apply_unbound_cpumask(const cpumask_var_t unbound_cpumask)
->   }
->   
->   /**
-> - * workqueue_unbound_exclude_cpumask - Exclude given CPUs from unbound cpumask
-> - * @exclude_cpumask: the cpumask to be excluded from wq_unbound_cpumask
-> + * workqueue_unbound_housekeeping_update - Propagate housekeeping cpumask update
-> + * @hk: the new housekeeping cpumask
->    *
-> - * This function can be called from cpuset code to provide a set of isolated
-> - * CPUs that should be excluded from wq_unbound_cpumask.
-> + * Update the unbound workqueue cpumask on top of the new housekeeping cpumask such
-> + * that the effective unbound affinity is the intersection of the new housekeeping
-> + * with the requested affinity set via nohz_full=/isolcpus= or sysfs.
-> + *
-> + * Return: 0 on success and -errno on failure.
->    */
-> -int workqueue_unbound_exclude_cpumask(cpumask_var_t exclude_cpumask)
-> +int workqueue_unbound_housekeeping_update(const struct cpumask *hk)
->   {
->   	cpumask_var_t cpumask;
->   	int ret = 0;
-> @@ -6981,14 +6984,14 @@ int workqueue_unbound_exclude_cpumask(cpumask_var_t exclude_cpumask)
->   	 * (HK_TYPE_WQ ∩ HK_TYPE_DOMAIN) house keeping mask and rewritten
->   	 * by any subsequent write to workqueue/cpumask sysfs file.
->   	 */
-> -	if (!cpumask_andnot(cpumask, wq_requested_unbound_cpumask, exclude_cpumask))
-> +	if (!cpumask_and(cpumask, wq_requested_unbound_cpumask, hk))
->   		cpumask_copy(cpumask, wq_requested_unbound_cpumask);
->   	if (!cpumask_equal(cpumask, wq_unbound_cpumask))
->   		ret = workqueue_apply_unbound_cpumask(cpumask);
->   
->   	/* Save the current isolated cpumask & export it via sysfs */
->   	if (!ret)
-> -		cpumask_copy(wq_isolated_cpumask, exclude_cpumask);
-> +		cpumask_andnot(wq_isolated_cpumask, cpu_possible_mask, hk);
->   
->   	mutex_unlock(&wq_pool_mutex);
->   	free_cpumask_var(cpumask);
-Reviewed-by: Waiman Long <longman@redhat.com>
+
+If you are doing "WARN_ON_ONCE() in housekeeping_update(), you don't 
+need to do it in update_isolation_cpumask() to avoid double warnings. 
+Actually, you don't need to return an error code from 
+housekeeping_update() at all.
+
+Cheers, Longman
+
+--------------00BKB7bc43BQak71rKhHRgpD
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">On 12/24/25 8:45 AM, Frederic
+      Weisbecker wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20251224134520.33231-20-frederic@kernel.org">
+      <pre wrap="" class="moz-quote-pre">Until now, cpuset would propagate isolated partition changes to
+timer migration so that unbound timers don't get migrated to isolated
+CPUs.
+
+Since housekeeping now centralizes, synchronize and propagates isolation
+cpumask changes, perform the work from that subsystem for consolidation
+and consistency purposes.
+
+Signed-off-by: Frederic Weisbecker <a class="moz-txt-link-rfc2396E" href="mailto:frederic@kernel.org">&lt;frederic@kernel.org&gt;</a>
+---
+ kernel/cgroup/cpuset.c   | 3 ---
+ kernel/sched/isolation.c | 5 +++++
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index a492d23dd622..25ac6c98113c 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1487,9 +1487,6 @@ static void update_isolation_cpumasks(void)
+ 	ret = housekeeping_update(isolated_cpus, HK_TYPE_DOMAIN);
+ 	WARN_ON_ONCE(ret &lt; 0);
+ 
+-	ret = tmigr_isolated_exclude_cpumask(isolated_cpus);
+-	WARN_ON_ONCE(ret &lt; 0);
+-
+ 	isolated_cpus_updating = false;
+ }
+ 
+diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+index d224bca299ed..84a257d05918 100644
+--- a/kernel/sched/isolation.c
++++ b/kernel/sched/isolation.c
+@@ -150,7 +150,12 @@ int housekeeping_update(struct cpumask *isol_mask, enum hk_type type)
+ 	pci_probe_flush_workqueue();
+ 	mem_cgroup_flush_workqueue();
+ 	vmstat_flush_workqueue();
++
+ 	err = workqueue_unbound_housekeeping_update(housekeeping_cpumask(type));
++	WARN_ON_ONCE(err &lt; 0);
++
++	err = tmigr_isolated_exclude_cpumask(isol_mask);
++	WARN_ON_ONCE(err &lt; 0);
+ 
+ 	kfree(old);
+ 
+</pre>
+    </blockquote>
+    <p>If you are doing "WARN_ON_ONCE() in housekeeping_update(), you
+      don't need to do it in <span style="white-space: pre-wrap">update_isolation_cpumask() to avoid double warnings. Actually, you don't need to return an error code from housekeeping_update() at all.</span></p>
+    <p><span style="white-space: pre-wrap">Cheers,
+Longman</span></p>
+  </body>
+</html>
+
+--------------00BKB7bc43BQak71rKhHRgpD--
 
 
