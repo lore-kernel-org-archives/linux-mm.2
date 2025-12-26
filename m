@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1868CE8FDA3
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 12:32:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E42BEE8FDA2
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 13:23:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA2CD6B0088; Fri, 26 Dec 2025 07:32:25 -0500 (EST)
+	id CEEAC6B0088; Fri, 26 Dec 2025 08:23:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E50516B0089; Fri, 26 Dec 2025 07:32:25 -0500 (EST)
+	id CAF266B0089; Fri, 26 Dec 2025 08:23:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5C536B008A; Fri, 26 Dec 2025 07:32:25 -0500 (EST)
+	id BC5396B008A; Fri, 26 Dec 2025 08:23:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C22846B0088
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 07:32:25 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 75989161352
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 12:32:25 +0000 (UTC)
-X-FDA: 84261560250.11.B7FAC91
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CD3D9A0002
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 12:32:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="H7/kv7wr";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766752343; a=rsa-sha256;
-	cv=none;
-	b=W5JcmmNKTsyPhIc5PC+qCJ27+brDSYNyCra/VTRZGXInvBMewV1ymsftP5lTRi1rcmXdQ9
-	TspAPrQRXf4GGXEpDJ3RWVkMZIJw81fUqTuAfnzO8m1rXtIebliyUPwst2oOhwsMxK+R2I
-	XZwys+cGyWXpze4/o54lowiwKm9N8HQ=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="H7/kv7wr";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AB2206B0088
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 08:23:37 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 390C2BEDA5
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 13:23:37 +0000 (UTC)
+X-FDA: 84261689274.04.BE3C7B0
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 753BE40009
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 13:23:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=koxoUSg8;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766752343;
+	s=arc-20220608; t=1766755415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h2hh1LAryb01YODI7DsA02mqlaejmGKbAXOcxMK6bkU=;
-	b=mDg7Or/HF/2sIUPA8hdJ/21dQgMMb8cZEkIsE9ljWU7oMZtNKNJ1QyxP34eg6oRnUoSVxu
-	qVORBG0BNTUOFnOlEKWNdJXJ6ercgaFZ6cZcnETvMc4hm71XENd56WNzkHAyGrFOhstKc7
-	fgEb1Tl2gwLAXEZCh2wc0KoSg8Pe5Ms=
+	bh=GvwgJxfG8RoxlM+nHj4J50KIiHMDNM+uecPJER8vIBM=;
+	b=xoVx1dBPDq8p56qkVp1V32VEncTavUNh+gnow0oAD2+mI7ivKM3eOihJvyeJsJWlgXeMVJ
+	w2SnoxQC4QJiE2g46T12tE5ypjv5wzg84Bo5JmcRumFRx1QDuREObn5tCIYKo/Tsm4Yghs
+	vWWhm0Rd7yQPv3D/UeG/pz/VV5KE+pk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766755415; a=rsa-sha256;
+	cv=none;
+	b=TPVyW72nCF1x3kybZtETZggymzalppTsle8fn+xqGlV18NtTxMGyGpykJtPvlKre5gAhXI
+	s++dLrdVI3VYE0NSvgKe9IqpPEoCsUoyO1CKS/cXo7JzSomvbqG7e6ptCnLxOM7t7d33cL
+	SbFdzkK/RGf48UR3kPkmqSooohojxPk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=koxoUSg8;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766752343; x=1798288343;
+  t=1766755415; x=1798291415;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=FbaYoFfToe6pPkt1KOkYwSAmsyLcTdfKga88xlj7jTE=;
-  b=H7/kv7wr/TOTuS94eL+AN/c5bg0DnL3E6m11c/kb6QzXAsVPMhlWz3IP
-   b0Rk7eyxdQwnHlEJva3+LfGExI+ZTw9mc666zUjBn2T5bUsnUANc6ioqs
-   LNtYNPam0KqgjvvCMmLoRPAe7L+bi0WIcTzuYTRMSMaPEXOTKazz05QVF
-   UgSNd2Ga3bguUlxYxK6O1pAKnl+No+Am0ukbXlVPoORlTeqsZJjOIvHXx
-   ivHNZoL7qv7ttuTxBeAyMKBDOuWRP0iOnUZhZ1ShV+4xwLEQ78KjL2F9z
-   /YZfHnhPSriX7ZiX3GY0GzSRMc9zWWIOmkEbJWBlsNXENc+ovuUg39q+i
-   Q==;
-X-CSE-ConnectionGUID: +AU1PUNLRoOY2eiM5CcsUw==
-X-CSE-MsgGUID: KX9XzbalQCCE7k17g6m05g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11653"; a="68264045"
-X-IronPort-AV: E=Sophos;i="6.21,177,1763452800"; 
-   d="scan'208";a="68264045"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2025 04:32:21 -0800
-X-CSE-ConnectionGUID: BX3uOhXuRGCixMQLyS9NUA==
-X-CSE-MsgGUID: dxhpSzVyTHanhs2eBN8uAA==
+  bh=kYn0/jK2orN0CbLrDQMs5+dFtIP9GLMhhA/ko+U2UKE=;
+  b=koxoUSg80QifTGJ78+2OeV7F5Qhgu+aC/2iDGN5U0/B2BkrTENJ44YHd
+   WxpwUHXj8lAKj1C2fqcWqD+BTfLXJTME9po/fei865ypBBNZgjDVRb4Vp
+   z38wUcWtqa0//bvoloW0ZYzkb5F1P1N3IGMxJ+NqG0cgh2R+/DwjjeO8H
+   4tFi5ULyZpIv9fdLhIjKb5DdBKp5lPZqlF1oeUQLQhBph7i4K9RWUxL6f
+   /mZ9gl+2/2CwbS47OON3nhqCOl0WAd/Sung7gQOqd8FNSkMVdExZVEcRH
+   il9kInNBpyLWQG1T+gtbPb7SGP8avG4BF0y6fhYffo62e8eYjEqXBsVoc
+   A==;
+X-CSE-ConnectionGUID: vZh2x642RXucBFx0IBde/w==
+X-CSE-MsgGUID: wE7s8nXVQ/G4EG/0+JsSxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11653"; a="72365585"
+X-IronPort-AV: E=Sophos;i="6.21,178,1763452800"; 
+   d="scan'208";a="72365585"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2025 05:23:33 -0800
+X-CSE-ConnectionGUID: sMaK0WugQFSQyyqBCrCHgQ==
+X-CSE-MsgGUID: SYbRYuy0TaqPlTD/iFOvsw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,177,1763452800"; 
-   d="scan'208";a="205298179"
+X-IronPort-AV: E=Sophos;i="6.21,178,1763452800"; 
+   d="scan'208";a="204522834"
 Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by fmviesa004.fm.intel.com with ESMTP; 26 Dec 2025 04:32:18 -0800
+  by orviesa003.jf.intel.com with ESMTP; 26 Dec 2025 05:23:29 -0800
 Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vZ6zP-00000000529-3gjE;
-	Fri, 26 Dec 2025 12:32:15 +0000
-Date: Fri, 26 Dec 2025 20:31:38 +0800
+	id 1vZ7mw-0000000053J-3fOD;
+	Fri, 26 Dec 2025 13:23:26 +0000
+Date: Fri, 26 Dec 2025 21:23:04 +0800
 From: kernel test robot <lkp@intel.com>
 To: Shakeel Butt <shakeel.butt@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+Cc: oe-kbuild-all@lists.linux.dev,
 	Linux Memory Management List <linux-mm@kvack.org>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>,
@@ -92,20 +92,20 @@ Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org,
 	damon@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 8/8] memcg: rename mem_cgroup_ino() to mem_cgroup_id()
-Message-ID: <202512262045.CkWwCNp7-lkp@intel.com>
+Message-ID: <202512262017.v77XZpwk-lkp@intel.com>
 References: <20251225232116.294540-9-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20251225232116.294540-9-shakeel.butt@linux.dev>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CD3D9A0002
-X-Stat-Signature: qb8zid8i1ewjmj8sbz5qcy7hym61458f
+X-Stat-Signature: z8b3erh5a5dgx6d1tptbtfafhs7uppdb
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 753BE40009
 X-Rspam-User: 
-X-HE-Tag: 1766752342-812306
-X-HE-Meta: U2FsdGVkX18C/r04B+c4Dg61yfE7n+YZkvVRjLEVP5LBZpozrW+CwunF4tOEOC0s0I3qOm9HgH4H4I7ovqG70v48xykxBx10RIY7fw+Vw0bzTLElMZdtK8ahpi4cNb7lasUjkErsKY8ul/HayyjYtdgmxQ1IEoyCA8SUtX1IIjVYyFyAAonFkG8BuuaSgZmTVaCKIoY9odlt36T6vNXj2ahseVmNhXp6Dxnqrhmw0XLLqRJzppwXMZuO+9gdIgkeKrykxFDixS2NDIYRasUv3Q715ahWQ+m+D6pj8BFBdCgKwbu4xcox0OYlcNbNbwP944g3M4PBGEq9RgZYqizFxJEbFhEYrY+W6zHu96yofg9+yocnwzQSDUfTo9MY3gyYsBXoMoYL/tUm0/lEDbUvKsuuE9uBw3Q2aOe7d2sN0kdp/hZlFDs6wS9mNpmejo2PWVXPOC4NBC+q30WdUMrxKzjAPVQl7mGqxN0ikQqAHgPfgkXbYBLz5er3kpGITkqDEvo+vS8tX9bFlojYso1Csb0lNOG7DEfSVUL1maFgSLJDmbhEG0v40ZIp/5p1bqwbrm2cVy/QzzyE2feiSbZQsNosTEwzWU/5yVKAMQkCDEFGOM4V7iIkrA1ds6LEwQT6X+H0Fw6KsoW/VYDfEAd9KNDtEFfPRJy21oipBlQC5C7oW3Wfopxsvd/iGKhMTd/R5LUbozRQitDbhCMUzNhnnbCYm/RnDyzWXuPVdrphQfzMDKtxWexDDOt74tpInLgC0oxx9l3IFnubIPhTutrBcLqUOqnzLsc98bXPLmShqFIsLn1ZA6IfZeDqHv0j++kXLsLIMnHJ4e8H/SSGx6lzckIj9FJzuxmRLe4vf5MKGWYrFy8dpWdHoNNV6Bk2co/IYcfbpY30BLovGsxSrp5b/JiDYfPwTw5fzmWvTOB4BU9EyVl+HsVXmJ3H5QqG1vBr7MNLb905wRM9c1QPIx+
- xUddRseb
- 5MFPQPncrhHcLwNuzcMGxJyY0jVs6JtY9uxLJYyOJGWrsq/6xV4vHWWo/0NGA2xBbXslBbTWTSes7WdtMNRDqqYwjxM8cy3N7AWNxD/01WseUF6PapvEjK9QjgyTlcNg8JuIjtoioPYUbHHmKAh5c/JsyzqUKBfU3BUR+A8ECWj98vNONlHw/1BIqxPNCeGxqv5SrShQ3gdDJ2qX6Un7/1PmLt3nk/GzkSk2fhmyrKp4c0X7B5OsaOUAK5Ve+RsFEK4O7pEDQpXNjfqYKhn+tOPYsTtPWL9BqgXf6kH9o9r4URGxVbhnqjZcBSpmSguATDUwPHoR2+4YasK8nLch85CA4a/F8mvPG05tUpBYxbYdIx3vN+ePRPMg1JmcVm9TWLAIM47RjrTYGiPxw6YoxrkQAWr05XAiPT13xgYfVLM3RXbO3azurWCNdxQ==
+X-HE-Tag: 1766755414-84638
+X-HE-Meta: U2FsdGVkX1+06CdBo58GSDB/8GYqkke6AxgDaOukfLXEhEJ5xpt0UUiGxu02wGszHlUkGQzl3RBkhWcDKk7+zne/Yt5WijXJHYvlmNDhK+SviOIrylbGhOnyrK4p7Wig4bm/ZughwSrdTd70tl9lR4Y+J84oUu3pnKSunhMzTY4a6AkztCLuvEcZ+cx4109jBiZdyZq/3q5ppMuMUSEPQzim3BXtI5muRQ8SIWPXeBw1CQJS6YvjX/ZaFp2pZEIQ+eXw4nhdzbRRWgW/SbStv2tWGYSP8T/IHiQNJlT8PEZydKPWnxJA/OVMSHvQnvsueWoGvryAhJG9XptZ2B4Hx01hkAMhz2p2B+tByy/9po/IAPKzKXdQm0ezD8ESNV8meAtkNjctbJdex+ZNX/jBPmXBaW9p41pzVVSMOh+/Zbrb5zwzp+N2h7iZeFD8aOF0pJgDkcUyg0kTwscGl8kQl+lLoYPKkooGA22MpFtVHEegU6sAwIeKJVt5dKkzgOx0lww/A1hZ2jsTm9zIB2aLjZ6wAMuNd2i3nzwKYHQrWSkPCZ8y73eW3Vj96qS+dq9DLKIeCfwd4LdKl8JNoQJPB5MlHbHSdt9Sp8GdkHgo00zl2aYpbrq9T2fsm6/a3UsS9PQklVP38yxG0HyFSNdRYMNir57twEofGv/UQHom8dyjMoTan6SG77eIgdxlowVFk6n2p9P4eBJBQmQShaxiBmQtYYbtyW2JLgzZReXv5xZKWsqsL5TlHmRdK8PzqIEKntWxtGFdFBxJ+R+Ys4NA/+qnKQtm662IotgtlqLzSwmDtIGNoCSj9DM2PEwjqAEhTBRsuuwjD8ggxsiIZQHnymlo6UtNKJFHBqZT063YlEO5vOYc+kj0vElCWXEBweREh3nbz5ejW9DrOf8MyoXczmqtRI69tTuy7lq44jbp1wKDBLS+4jnanLlCMKIP8Ps8tnTTd8Z3Pn8y0WUmFOj
+ FcvoeXIP
+ z3mvdRWqyGtVYc3Iqf4GuNZo9cLZUYRGth7CdZZN674PxhdeOEaE/u9SbQUtZabM0Qnlwa57U/OTwOG5hVLkYSIS7fF5v3Ez5Jj/KtqhiyuUUWwpmGIMdH+gRIzOpRoqKKo5WmYFanRiV/XhAQCnNlAOw/syXWax2+hBxEMWKCKhvwqdwHTPOBiXzgA0rcWf4dNcM7RpHgBpBFod7MULToLNEOXfwcNHPFWdY88qDzfOON6aheXvWdRkbP4sCKqMezWLloLGoRxmlSz6G6B8IiZVgAAFbhfBZTQB58oihT3x68uDBlqcf9FT77w4EzMbI21UYsdVDtY8JuJFstWV3wZEYFdIJ9cd4CnNj+RCXvZRZ+nYUgsMtWWw1oRY36JTWeWGmFmC314DgQnk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,58 +128,55 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Shakeel-Butt/memcg-introd
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/sj/linux.git damon/next
 patch link:    https://lore.kernel.org/r/20251225232116.294540-9-shakeel.butt%40linux.dev
 patch subject: [PATCH 8/8] memcg: rename mem_cgroup_ino() to mem_cgroup_id()
-config: arm64-randconfig-001-20251226 (https://download.01.org/0day-ci/archive/20251226/202512262045.CkWwCNp7-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251226/202512262045.CkWwCNp7-lkp@intel.com/reproduce)
+config: openrisc-allmodconfig (https://download.01.org/0day-ci/archive/20251226/202512262017.v77XZpwk-lkp@intel.com/config)
+compiler: or1k-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251226/202512262017.v77XZpwk-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512262045.CkWwCNp7-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512262017.v77XZpwk-lkp@intel.com/
 
 All warnings (new ones prefixed by >>):
 
->> mm/damon/sysfs.c:2704:33: warning: format specifies type 'unsigned int' but the argument has type 'u64' (aka 'unsigned long long') [-Wformat]
-    2704 |                 pr_info("id: %u, path: %s\n", mem_cgroup_id(memcg), path);
-         |                              ~~               ^~~~~~~~~~~~~~~~~~~~
-         |                              %llu
-   include/linux/printk.h:585:34: note: expanded from macro 'pr_info'
-     585 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
-         |                                 ~~~     ^~~~~~~~~~~
-   include/linux/printk.h:512:60: note: expanded from macro 'printk'
-     512 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
-         |                                                     ~~~    ^~~~~~~~~~~
-   include/linux/printk.h:484:19: note: expanded from macro 'printk_index_wrap'
+   In file included from include/asm-generic/bug.h:31,
+                    from arch/openrisc/include/asm/bug.h:5,
+                    from include/linux/bug.h:5,
+                    from include/linux/thread_info.h:13,
+                    from include/asm-generic/current.h:6,
+                    from ./arch/openrisc/include/generated/asm/current.h:1,
+                    from include/linux/sched.h:12,
+                    from include/linux/rcupdate.h:27,
+                    from include/linux/rculist.h:11,
+                    from include/linux/pid.h:6,
+                    from mm/damon/sysfs.c:8:
+   mm/damon/sysfs.c: In function 'debug_show':
+>> include/linux/kern_levels.h:5:25: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'u64' {aka 'long long unsigned int'} [-Wformat=]
+       5 | #define KERN_SOH        "\001"          /* ASCII Start Of Header */
+         |                         ^~~~~~
+   include/linux/printk.h:484:25: note: in definition of macro 'printk_index_wrap'
      484 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
-         |                         ~~~~    ^~~~~~~~~~~
-   1 warning generated.
+         |                         ^~~~
+   include/linux/printk.h:585:9: note: in expansion of macro 'printk'
+     585 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
+         |         ^~~~~~
+   include/linux/kern_levels.h:14:25: note: in expansion of macro 'KERN_SOH'
+      14 | #define KERN_INFO       KERN_SOH "6"    /* informational */
+         |                         ^~~~~~~~
+   include/linux/printk.h:585:16: note: in expansion of macro 'KERN_INFO'
+     585 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
+         |                ^~~~~~~~~
+   mm/damon/sysfs.c:2704:17: note: in expansion of macro 'pr_info'
+    2704 |                 pr_info("id: %u, path: %s\n", mem_cgroup_id(memcg), path);
+         |                 ^~~~~~~
 
 
-vim +2704 mm/damon/sysfs.c
+vim +5 include/linux/kern_levels.h
 
-c951cd3b89010c SeongJae Park 2022-03-22  2690  
-a25dadf8af8ddc SeongJae Park 2022-11-18  2691  static ssize_t debug_show(struct kobject *kobj,
-a25dadf8af8ddc SeongJae Park 2022-11-18  2692  		struct kobj_attribute *attr, char *buf)
-a25dadf8af8ddc SeongJae Park 2022-11-18  2693  {
-a25dadf8af8ddc SeongJae Park 2022-11-18  2694  #ifdef CONFIG_MEMCG
-a25dadf8af8ddc SeongJae Park 2022-11-18  2695  	struct mem_cgroup *memcg;
-a25dadf8af8ddc SeongJae Park 2022-11-18  2696  	char *path = kmalloc(sizeof(*path) * PATH_MAX, GFP_KERNEL);
-a25dadf8af8ddc SeongJae Park 2022-11-18  2697  
-a25dadf8af8ddc SeongJae Park 2022-11-18  2698  	if (!path)
-a25dadf8af8ddc SeongJae Park 2022-11-18  2699  		return -ENOMEM;
-a25dadf8af8ddc SeongJae Park 2022-11-18  2700  
-a25dadf8af8ddc SeongJae Park 2022-11-18  2701  	for (memcg = mem_cgroup_iter(NULL, NULL, NULL); memcg; memcg =
-a25dadf8af8ddc SeongJae Park 2022-11-18  2702  			mem_cgroup_iter(NULL, memcg, NULL)) {
-a25dadf8af8ddc SeongJae Park 2022-11-18  2703  		cgroup_path(memcg->css.cgroup, path, PATH_MAX);
-a25dadf8af8ddc SeongJae Park 2022-11-18 @2704  		pr_info("id: %u, path: %s\n", mem_cgroup_id(memcg), path);
-a25dadf8af8ddc SeongJae Park 2022-11-18  2705  	}
-a25dadf8af8ddc SeongJae Park 2022-11-18  2706  
-a25dadf8af8ddc SeongJae Park 2022-11-18  2707  	kfree(path);
-a25dadf8af8ddc SeongJae Park 2022-11-18  2708  #endif
-a25dadf8af8ddc SeongJae Park 2022-11-18  2709  
-a25dadf8af8ddc SeongJae Park 2022-11-18  2710  	return 0;
-a25dadf8af8ddc SeongJae Park 2022-11-18  2711  }
-a25dadf8af8ddc SeongJae Park 2022-11-18  2712  
+314ba3520e513a Joe Perches 2012-07-30  4  
+04d2c8c83d0e3a Joe Perches 2012-07-30 @5  #define KERN_SOH	"\001"		/* ASCII Start Of Header */
+04d2c8c83d0e3a Joe Perches 2012-07-30  6  #define KERN_SOH_ASCII	'\001'
+04d2c8c83d0e3a Joe Perches 2012-07-30  7  
 
 -- 
 0-DAY CI Kernel Test Service
