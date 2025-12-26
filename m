@@ -4,108 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E42BEE8FDA2
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 13:23:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44164E8FDA8
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 16:43:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEEAC6B0088; Fri, 26 Dec 2025 08:23:37 -0500 (EST)
+	id 067E56B0005; Fri, 26 Dec 2025 11:43:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAF266B0089; Fri, 26 Dec 2025 08:23:37 -0500 (EST)
+	id F2D776B0089; Fri, 26 Dec 2025 11:43:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC5396B008A; Fri, 26 Dec 2025 08:23:37 -0500 (EST)
+	id E39D46B008A; Fri, 26 Dec 2025 11:43:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AB2206B0088
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 08:23:37 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 390C2BEDA5
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 13:23:37 +0000 (UTC)
-X-FDA: 84261689274.04.BE3C7B0
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 753BE40009
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 13:23:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=koxoUSg8;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766755415;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GvwgJxfG8RoxlM+nHj4J50KIiHMDNM+uecPJER8vIBM=;
-	b=xoVx1dBPDq8p56qkVp1V32VEncTavUNh+gnow0oAD2+mI7ivKM3eOihJvyeJsJWlgXeMVJ
-	w2SnoxQC4QJiE2g46T12tE5ypjv5wzg84Bo5JmcRumFRx1QDuREObn5tCIYKo/Tsm4Yghs
-	vWWhm0Rd7yQPv3D/UeG/pz/VV5KE+pk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766755415; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id D17826B0005
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 11:43:04 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7D484C33E3
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 16:43:04 +0000 (UTC)
+X-FDA: 84262191888.14.42CDE39
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C2F4E1C000E
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 16:43:02 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of 3FbtOaQkbABgGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3FbtOaQkbABgGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766767382; a=rsa-sha256;
 	cv=none;
-	b=TPVyW72nCF1x3kybZtETZggymzalppTsle8fn+xqGlV18NtTxMGyGpykJtPvlKre5gAhXI
-	s++dLrdVI3VYE0NSvgKe9IqpPEoCsUoyO1CKS/cXo7JzSomvbqG7e6ptCnLxOM7t7d33cL
-	SbFdzkK/RGf48UR3kPkmqSooohojxPk=
+	b=mZMawNxS2xJyGRLZmB97LeSH/1XaiOlLlgTCl5738M7Ot9gIyK0FyJWnszVmcAoFCikGM0
+	3M5HS3SzY6sUB4bumL3VS4X5yMyt1z6TVmEV9dIQm9vwfOrUwnNoU8htsSt9CvLN2V5S9g
+	cYhtHGh7NOqF1waOEw+oc8hdTB7v6Ts=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=koxoUSg8;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766755415; x=1798291415;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kYn0/jK2orN0CbLrDQMs5+dFtIP9GLMhhA/ko+U2UKE=;
-  b=koxoUSg80QifTGJ78+2OeV7F5Qhgu+aC/2iDGN5U0/B2BkrTENJ44YHd
-   WxpwUHXj8lAKj1C2fqcWqD+BTfLXJTME9po/fei865ypBBNZgjDVRb4Vp
-   z38wUcWtqa0//bvoloW0ZYzkb5F1P1N3IGMxJ+NqG0cgh2R+/DwjjeO8H
-   4tFi5ULyZpIv9fdLhIjKb5DdBKp5lPZqlF1oeUQLQhBph7i4K9RWUxL6f
-   /mZ9gl+2/2CwbS47OON3nhqCOl0WAd/Sung7gQOqd8FNSkMVdExZVEcRH
-   il9kInNBpyLWQG1T+gtbPb7SGP8avG4BF0y6fhYffo62e8eYjEqXBsVoc
-   A==;
-X-CSE-ConnectionGUID: vZh2x642RXucBFx0IBde/w==
-X-CSE-MsgGUID: wE7s8nXVQ/G4EG/0+JsSxw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11653"; a="72365585"
-X-IronPort-AV: E=Sophos;i="6.21,178,1763452800"; 
-   d="scan'208";a="72365585"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2025 05:23:33 -0800
-X-CSE-ConnectionGUID: sMaK0WugQFSQyyqBCrCHgQ==
-X-CSE-MsgGUID: SYbRYuy0TaqPlTD/iFOvsw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,178,1763452800"; 
-   d="scan'208";a="204522834"
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 26 Dec 2025 05:23:29 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vZ7mw-0000000053J-3fOD;
-	Fri, 26 Dec 2025 13:23:26 +0000
-Date: Fri, 26 Dec 2025 21:23:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, SeongJae Park <sj@kernel.org>,
-	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org,
-	damon@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 8/8] memcg: rename mem_cgroup_ino() to mem_cgroup_id()
-Message-ID: <202512262017.v77XZpwk-lkp@intel.com>
-References: <20251225232116.294540-9-shakeel.butt@linux.dev>
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of 3FbtOaQkbABgGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3FbtOaQkbABgGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1766767382;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=53SAgSKsIJEqDYV+s2VQZXX0ij5NAJJbDSc4ix7LheQ=;
+	b=MJJAJqZNWApSmWhfm+Z2poL3yQcCTfIYluSPDGCrRrDnAWfauNo3CL+Pen3Tbcp0K5QJVF
+	YaKcXRywfbQe0aym8qLTDwC0beYdab2bf8E1UUfv9Aw/fpBSONkjmosQjT/255JmXl49xN
+	SHuqNyIVRJhnC2D2rDAVj4urTlMFyuo=
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-65b26eca9c7so13448014eaf.0
+        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 08:43:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766767382; x=1767372182;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=53SAgSKsIJEqDYV+s2VQZXX0ij5NAJJbDSc4ix7LheQ=;
+        b=fjN9tqOOmi/ViCkdhoAk4rq0jwZ7mftYpBXgxPVATnSuMhJ5zP+BwM0PTYUdaJLh9h
+         4kbAr2rQLNqEUxkJUSnayt/SH5YzYqYkU40Ge6FmCOHK/kqXB0Kai/xRyRTxWQw2oah3
+         3BbB4W83o3LRPKnZZMzE6HtUiSpHzKoj1Pc8oa02ho7AmwGOURx/EiUw9LkuXLzivfjp
+         GEwijelo+EcyDk8dcVNMsq51szvEGow91sOCSDsRxM4c7Ij9y1IudSIAGRpDFqFIIIhw
+         wgISTV5OULO35rJR2Q3fxtS7lT8ym81gcb+pc9TPGL+coRwqq0+mQHDERtRoRocECKUW
+         WsSg==
+X-Forwarded-Encrypted: i=1; AJvYcCX/VQhNWRP/se2ri5Leup0JEaTa89F3yclM1QL/Kv2GFQAUD064W+XC6L7vMD5hbiGhJyC8sh6e3A==@kvack.org
+X-Gm-Message-State: AOJu0YyYh1SeRfGOH73J7x4SIHyeW7H85SK43tP483wdVbb3r8SvPW3A
+	Sp8ezVcfz1nNeYFYhdk79YI72vm16kBZHjZhXryswSkPTqqqs6CktPrj7iAeiA9nP4kGCaP07Xk
+	zh8EAwiYnQIXIBSCOnfN3VnXCa4M8DNbizI8DTpen8QhID93ZvIiHok5bQHg=
+X-Google-Smtp-Source: AGHT+IGQPSV7JiVQmAQqG+OQX04xZJqT0KUjhT9g4KHv4Ml5V72eS98RZ9upgzLfwU+miUGHK3gQTCEITzja2y9xosWteVUkes0P
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251225232116.294540-9-shakeel.butt@linux.dev>
-X-Stat-Signature: z8b3erh5a5dgx6d1tptbtfafhs7uppdb
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 753BE40009
+X-Received: by 2002:a4a:e252:0:b0:65c:fe8b:53c6 with SMTP id
+ 006d021491bc7-65d0ea9932dmr6960121eaf.43.1766767381887; Fri, 26 Dec 2025
+ 08:43:01 -0800 (PST)
+Date: Fri, 26 Dec 2025 08:43:01 -0800
+In-Reply-To: <6730d6bd.050a0220.1fb99c.0139.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <694ebb15.050a0220.35954c.0076.GAE@google.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in sys_pipe2 (2)
+From: syzbot <syzbot+693a483dd6ac06c62b09@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, bigeasy@linutronix.de, bsegall@google.com, 
+	dietmar.eggemann@arm.com, edumazet@google.com, juri.lelli@redhat.com, 
+	kerneljasonxing@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, mgorman@suse.de, mingo@redhat.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, peterz@infradead.org, rostedt@goodmis.org, 
+	syzkaller-bugs@googlegroups.com, tglx@linutronix.de, 
+	vincent.guittot@linaro.org, vschneid@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C2F4E1C000E
+X-Stat-Signature: 9qxsktwquy4gbj7ignsawrm1f13ys45e
 X-Rspam-User: 
-X-HE-Tag: 1766755414-84638
-X-HE-Meta: U2FsdGVkX1+06CdBo58GSDB/8GYqkke6AxgDaOukfLXEhEJ5xpt0UUiGxu02wGszHlUkGQzl3RBkhWcDKk7+zne/Yt5WijXJHYvlmNDhK+SviOIrylbGhOnyrK4p7Wig4bm/ZughwSrdTd70tl9lR4Y+J84oUu3pnKSunhMzTY4a6AkztCLuvEcZ+cx4109jBiZdyZq/3q5ppMuMUSEPQzim3BXtI5muRQ8SIWPXeBw1CQJS6YvjX/ZaFp2pZEIQ+eXw4nhdzbRRWgW/SbStv2tWGYSP8T/IHiQNJlT8PEZydKPWnxJA/OVMSHvQnvsueWoGvryAhJG9XptZ2B4Hx01hkAMhz2p2B+tByy/9po/IAPKzKXdQm0ezD8ESNV8meAtkNjctbJdex+ZNX/jBPmXBaW9p41pzVVSMOh+/Zbrb5zwzp+N2h7iZeFD8aOF0pJgDkcUyg0kTwscGl8kQl+lLoYPKkooGA22MpFtVHEegU6sAwIeKJVt5dKkzgOx0lww/A1hZ2jsTm9zIB2aLjZ6wAMuNd2i3nzwKYHQrWSkPCZ8y73eW3Vj96qS+dq9DLKIeCfwd4LdKl8JNoQJPB5MlHbHSdt9Sp8GdkHgo00zl2aYpbrq9T2fsm6/a3UsS9PQklVP38yxG0HyFSNdRYMNir57twEofGv/UQHom8dyjMoTan6SG77eIgdxlowVFk6n2p9P4eBJBQmQShaxiBmQtYYbtyW2JLgzZReXv5xZKWsqsL5TlHmRdK8PzqIEKntWxtGFdFBxJ+R+Ys4NA/+qnKQtm662IotgtlqLzSwmDtIGNoCSj9DM2PEwjqAEhTBRsuuwjD8ggxsiIZQHnymlo6UtNKJFHBqZT063YlEO5vOYc+kj0vElCWXEBweREh3nbz5ejW9DrOf8MyoXczmqtRI69tTuy7lq44jbp1wKDBLS+4jnanLlCMKIP8Ps8tnTTd8Z3Pn8y0WUmFOj
- FcvoeXIP
- z3mvdRWqyGtVYc3Iqf4GuNZo9cLZUYRGth7CdZZN674PxhdeOEaE/u9SbQUtZabM0Qnlwa57U/OTwOG5hVLkYSIS7fF5v3Ez5Jj/KtqhiyuUUWwpmGIMdH+gRIzOpRoqKKo5WmYFanRiV/XhAQCnNlAOw/syXWax2+hBxEMWKCKhvwqdwHTPOBiXzgA0rcWf4dNcM7RpHgBpBFod7MULToLNEOXfwcNHPFWdY88qDzfOON6aheXvWdRkbP4sCKqMezWLloLGoRxmlSz6G6B8IiZVgAAFbhfBZTQB58oihT3x68uDBlqcf9FT77w4EzMbI21UYsdVDtY8JuJFstWV3wZEYFdIJ9cd4CnNj+RCXvZRZ+nYUgsMtWWw1oRY36JTWeWGmFmC314DgQnk=
+X-HE-Tag: 1766767382-852176
+X-HE-Meta: U2FsdGVkX1/7J2wHuqV+w56L1VMUKJA6LGIN5mrwmE4rkDwbKctLE2wHlv4ogZ9EaMtRRcd1J4V3/OeFLto86ZU2sg872lSEpt+svf4E61Z0pkHZL+FdbAycKMrpMf8f6CLL6UytN6gJMbt9SNMgXl48EJdBasrzSxXWOiWA+eWnR7pvGhuzjltL+aQ9gZZtwYuvXyGW/LHMcQXFn04Mz7HWMyUB2vHbZqMy9I8vI9HbC0wQARFLThTTQ9zOP6COxvznmIbpj64Wa/MZ9+o9CrwKjHhaVfxd2Iktg/nJ5k+DZWZsIhpXBDmVIWx2NGMZIsja05pyeDOvV2PvtEH2NUYtZZ9C9ohTy//3oSGifvY6/L2sW7v/yB6LnaG9/K+Ecxlwy9ElskCpHRAtCXZzA5TyE81FK7mS60Wnky3hJHyomnjnb2eYlrGw3QhoEE3QZ5IK0Z19/5Q0T/Cpk1PXXwOf6KP0nAuK/h+tQVz3puAf3v3jc+buMU1XMzacfM9+ATO6YZW8TtSjh/fiOBOg9bG8JSybLj8TAtM43JPSN5jrd0HzMlRzDFO+rgGBUb7qI1MAFXv3fS0nC3/940T6vPmgDA0cnU8pU6+sw49OZdgpwMcFMTF7TkHuXhphi1EbWAjk78+k1PbyiRfKZRGijl9jslEmJM6NlqZ3Up/Dz/nwEeqNbLSagTMsCdJiQ6cD1nXm5TEzYI6x/r/hLejkSBeGUVa7QhdZMNqf+Kk55QAKM8tBfXsz9RrxaFWt6kAnT1kDLcaM5EzR0VRhXegYkUaPMqAMVflxjQ+D+Gq17D2EPRRr1Pby1kZKZQ16uJnEt6EwUKJsdaZ5xcxI7TgL/jxKe183b49AaXmj6zqiUwB9MXlPJskSmjVlo7jzruRvjBR04Nm52Ly2r0C6S2+PbJNWOcAOyimxcGDWaUVM2VySbQnCKO9d4XOxOT/ToA6W7ImtEOx07VeUzzsK4ms
+ WCkNyKUD
+ 51r2cUmEYMpzF4J6YDCut/REUHZG9y7kqLrbZmKZ6JE1+pngPr+CTt8vo9My0uLu2OE+zFGuguUClBeuOD36xYXf3C+JMfvrKPY11NQJJmwYeTN2by5w+O/3Vco+HGTIxwNxs4S+LgXggHkOcB41M+xCE6eXk7lsPm/9ZXnn6srRps0Vzd5snEED9fnVheSTI7S0QMbZihYYu5KwHuDBODlYhgtRAOCgpXl35X8qG+jir0WmIKCjvuljPrt+JSUAA3+HGYlwUayj7GOhxEn8Az5dmkXWKHTbZFeGCYoeqZ+k5sYZCoU3o2z7no+t1atuGQT16a++DnyUryXRDkpiOb1L5E1/TfASYaBcnTZu6ggiZ9j2PrvAwGyx+hd+INROdThvI6mw+T/cfYIpxDnqM7IzOQzT0fTXl9u+SA4UL5XGuvtsXM2IICvzAZ2un646g4R53XERC4sL+9lg7+YXd8vuiGGi1G4TbHoI/h6+blJf5l8hp8eDQpbmp7AyC7z+J+h+XdkcGxY4Gh5Qmpn1lglWj2p4MoztvFn6JFY+nCZDJGZ/TiZtUXxLEUgCaU3Vs3ZUiPPQSUe0TKn0trDD5Fvw9fZAZ2NXxWVU1OAp/xeetBGZE/Ju7UKOkvMA2yOMLVKfyW6GlzGEGoNKv8g0q6DqNkgz3MABFOa/Yb+j8AWvDagJQlOVetGzqXIVRO6By6a3Yce6ic+HEOA/UbUsB1ysmmWZSYNedfbCVbuFi2ZmpSSKaCeh1GKJc7MWFXLC+Zzpdy+Yd/d/tglpH5nnI6tszzsShtAuwSIMfYckXGvomzziedxaIt3B6S/nAu6Z4JwEE0AJCjdJeAu/2rbIsad8HDXvcNFuCbH1TK9Bi6eAdpFhZI0VR1fJa7CaLJ8t0CKGNPY5sFEkSnL8WADovMNOfUOZK8GSYwZVgVGWpq/h3T0AChMnG5wBD8cqL/WfpVDR1UDpWQ5oW8vv5LVgv1H4zy3Nb
+ 2LtZOPMS
+ Ub4I1RYt+xwPMQ/ZKLjnRLdIo7Om9zIHI/wc7iMWZkSNLa6QxHdcCGt42m5R+PM9/sNu7ct1cTXQOHo5j2P5Ng9rimRMsulr0wzrZEjtN0xrK8tIDVcB2tZ7DWkw6j1MVu8hVZIAuLBkt03kvJC2GXTliIFa9cqFyc0f5KcNkw3/UakT6Y+9Xg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,71 +103,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Shakeel,
+syzbot suspects this issue was fixed by commit:
 
-kernel test robot noticed the following build warnings:
+commit 66951e4860d3c688bfa550ea4a19635b57e00eca
+Author: Peter Zijlstra <peterz@infradead.org>
+Date:   Mon Jan 13 12:50:11 2025 +0000
 
-[auto build test WARNING on sj/damon/next]
-[cannot apply to akpm-mm/mm-everything tj-cgroup/for-next linus/master v6.19-rc2 next-20251219]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+    sched/fair: Fix update_cfs_group() vs DELAY_DEQUEUE
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Shakeel-Butt/memcg-introduce-private-id-API-for-in-kernel-users/20251226-072954
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/sj/linux.git damon/next
-patch link:    https://lore.kernel.org/r/20251225232116.294540-9-shakeel.butt%40linux.dev
-patch subject: [PATCH 8/8] memcg: rename mem_cgroup_ino() to mem_cgroup_id()
-config: openrisc-allmodconfig (https://download.01.org/0day-ci/archive/20251226/202512262017.v77XZpwk-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251226/202512262017.v77XZpwk-lkp@intel.com/reproduce)
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=16c6eb92580000
+start commit:   9268abe611b0 Merge branch 'net-lan969x-add-rgmii-support'
+git tree:       net-next
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b087c24b921cdc16
+dashboard link: https://syzkaller.appspot.com/bug?extid=693a483dd6ac06c62b09
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16e7c2f8580000
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512262017.v77XZpwk-lkp@intel.com/
+If the result looks correct, please mark the issue as fixed by replying with:
 
-All warnings (new ones prefixed by >>):
+#syz fix: sched/fair: Fix update_cfs_group() vs DELAY_DEQUEUE
 
-   In file included from include/asm-generic/bug.h:31,
-                    from arch/openrisc/include/asm/bug.h:5,
-                    from include/linux/bug.h:5,
-                    from include/linux/thread_info.h:13,
-                    from include/asm-generic/current.h:6,
-                    from ./arch/openrisc/include/generated/asm/current.h:1,
-                    from include/linux/sched.h:12,
-                    from include/linux/rcupdate.h:27,
-                    from include/linux/rculist.h:11,
-                    from include/linux/pid.h:6,
-                    from mm/damon/sysfs.c:8:
-   mm/damon/sysfs.c: In function 'debug_show':
->> include/linux/kern_levels.h:5:25: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'u64' {aka 'long long unsigned int'} [-Wformat=]
-       5 | #define KERN_SOH        "\001"          /* ASCII Start Of Header */
-         |                         ^~~~~~
-   include/linux/printk.h:484:25: note: in definition of macro 'printk_index_wrap'
-     484 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
-         |                         ^~~~
-   include/linux/printk.h:585:9: note: in expansion of macro 'printk'
-     585 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
-         |         ^~~~~~
-   include/linux/kern_levels.h:14:25: note: in expansion of macro 'KERN_SOH'
-      14 | #define KERN_INFO       KERN_SOH "6"    /* informational */
-         |                         ^~~~~~~~
-   include/linux/printk.h:585:16: note: in expansion of macro 'KERN_INFO'
-     585 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
-         |                ^~~~~~~~~
-   mm/damon/sysfs.c:2704:17: note: in expansion of macro 'pr_info'
-    2704 |                 pr_info("id: %u, path: %s\n", mem_cgroup_id(memcg), path);
-         |                 ^~~~~~~
-
-
-vim +5 include/linux/kern_levels.h
-
-314ba3520e513a Joe Perches 2012-07-30  4  
-04d2c8c83d0e3a Joe Perches 2012-07-30 @5  #define KERN_SOH	"\001"		/* ASCII Start Of Header */
-04d2c8c83d0e3a Joe Perches 2012-07-30  6  #define KERN_SOH_ASCII	'\001'
-04d2c8c83d0e3a Joe Perches 2012-07-30  7  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
