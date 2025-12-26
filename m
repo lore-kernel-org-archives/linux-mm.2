@@ -4,149 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A294E8FDB8
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 23:46:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C043FE8FDBE
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 23:53:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 864DF6B0005; Fri, 26 Dec 2025 18:46:16 -0500 (EST)
+	id 2C4116B0005; Fri, 26 Dec 2025 18:53:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81BED6B0089; Fri, 26 Dec 2025 18:46:16 -0500 (EST)
+	id 2A5BF6B0089; Fri, 26 Dec 2025 18:53:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 745A56B008A; Fri, 26 Dec 2025 18:46:16 -0500 (EST)
+	id 1A7446B008A; Fri, 26 Dec 2025 18:53:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 620D96B0005
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:46:16 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E1BAF5B5B8
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 23:46:15 +0000 (UTC)
-X-FDA: 84263258310.14.5942DF0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 48AAC1A0018
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 23:46:13 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GlHf+eut;
-	spf=pass (imf19.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A9FE6B0005
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:53:36 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3805BA977
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 23:53:35 +0000 (UTC)
+X-FDA: 84263276790.18.5F7531B
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DFD4440005
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 23:53:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=A8GykLRa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766793213; a=rsa-sha256;
+	cv=none;
+	b=fKe8dfRY6ra4gm4BnsUxH/CVkFG7ur9LUDLFIdG5m60XqgHu5GgUapUH/kuc5efXNhTeQ5
+	2vbThdiyWm9rDh9XbCnzrlUj/po76+oaltP8u9/YZsuP4tGlFRVL46mCuX8Mooml2ZmIzq
+	L97aHpTx5u4Bn5o9KrOhB7ttIE6iQAY=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=A8GykLRa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766792773;
+	s=arc-20220608; t=1766793213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ShTe7n4oL4bSFMstIf8qKgFQ8pgH2Te4INGSKID7CCk=;
-	b=MMt9aCZ13ouCmowqkIvRnXJ2gVUXSiO5emFV+yYHvkjpTMICFThbUUKzGfrFGZ6C6LeLQc
-	T54QBbm7Z6Nmv6H2iHv3EhO4FwKgHBZgvIot5zNGj846ffv81eZDH7aT4dSJgIq6ftDEpb
-	6oqIsbrZbfN1SMkUnxRkl3MS/3oiBUA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GlHf+eut;
-	spf=pass (imf19.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766792773; a=rsa-sha256;
-	cv=none;
-	b=HkdFExEa//ret8rYWpk5YJjXWeO86iGxI/QoWxMkW89+Ib3+VklhQAH4Px1jubeUCRTxqf
-	Yq0LzkC5jN/bCV6jtew7RFB6eHH9kcXz/aFAbvm/0NvqlfBYKq16bX2hmq4E7AnHllHhS3
-	DQk/IiO+cubZq9ECyoSyjG8Piz/uoI0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766792772;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ShTe7n4oL4bSFMstIf8qKgFQ8pgH2Te4INGSKID7CCk=;
-	b=GlHf+eutlOjxN3/ITV2c+2mgU9hRwZu/aPJkOBi/RfAlUz3ExmJRuZHc/D/gm8U4vLuIWl
-	nSPTXMw2/yVYHgOGUYW/nqWImJxzMlH9tcnIRXOKdChBmt9dzWISqT6bIbro9/M9lR9SKt
-	kagMaXe2vJFXo9ESVHEj7t37GgBiM4I=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-487-TPbe4jKLNXmFjMnsL1VAdg-1; Fri, 26 Dec 2025 18:46:08 -0500
-X-MC-Unique: TPbe4jKLNXmFjMnsL1VAdg-1
-X-Mimecast-MFC-AGG-ID: TPbe4jKLNXmFjMnsL1VAdg_1766792768
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8823f4666abso184530856d6.0
-        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 15:46:08 -0800 (PST)
+	bh=5JTcSmilid40WVSQLI0qecHKHI64cGOCVGN86fIcYR8=;
+	b=B8e+M5G66dYZT20l/cyndhMN5VPXabyV+dx2N/IloIZ1r+YuYyG9dm3shCNI689fQFg+9w
+	AgLiNZYDcyPQYcs8ch/HBsfzd83GYdBWIrAQ81N3k32MzPUjRZUWhJzBYwQwxkSsiQEWzw
+	sU6CYdZ2eGQWMnxmMD2qa3Q0t38101A=
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-64472ea7d18so4943838d50.2
+        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 15:53:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766793213; x=1767398013; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5JTcSmilid40WVSQLI0qecHKHI64cGOCVGN86fIcYR8=;
+        b=A8GykLRatc+smN2TAKVm3Xm/kRUJZ2meWQNTZ82dwwt1UsZDt1Rc9KcfLVWBoUdqg5
+         aLtzXDeBsiH4La7VckfFMQGEKZYpnd9au4N+7TiVjlZc9dAdJgNfw7x1sLWD9D5kWKkY
+         v8LwNMPO6EiOqZvH3O4Gfv+jjYB39/JqeMm3+Gl2/HlN2KLHpXOWw93C6Kd3ptPVhCQL
+         O6VSqjNil+uLG4EFOmNapgrYMCuiwkUf+xUSvsVIa6kgwDQv+bJhYBTXhyCvUGDgAHS0
+         WPhgzYfVkONjpnShjmJg6XzJfxaqVAphqo9sETEfMIcb4/HfwUp2+/58x7sLCcipKsvJ
+         0X2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766792768; x=1767397568;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ShTe7n4oL4bSFMstIf8qKgFQ8pgH2Te4INGSKID7CCk=;
-        b=n9S4EOmvCa6Xnye2Dbs3MQS6TGqilKfuWEYUiKngck3oYEH9e05/2QxxfLisGMk2T7
-         kvqf8zhqXEAC27SsIxX9OI1GXLITzvwZxIJNDnaWht4JLiVJmhJSUxdhJ/Q9XInll2SK
-         vpuuNLexKKVtp1iHWEnxnabEac7crcxtP1NHxqEZaMml9ebzRoS9DkuKiWfFK53EZQc5
-         ght0LbubAOOZhvKFS1GTDGyy7MZkAEfdD8jCI9D6KiSpsLziZca9cF1ePhWeM4FKiQKj
-         fjqrqvtzMf9zQmOdv1W+6ZV/d3fh6MsV+H09Dkrc0lNaGnZ0qglOphPNt+gsdgvOB2iV
-         KJ+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWG+qFHmUd8+NKvwRs+9eUY4FNjwOaP7j9kxMsJ6cxNmtMgDOJITFqsQmq1tMXZWeWUx/uLhwAEfw==@kvack.org
-X-Gm-Message-State: AOJu0Yz6GIsVj8gMWr+bVjvTbxepiBosRWqaVo0XBjvdQ8td39ivBduc
-	zbqctYkT8DvX0X/xoxEDGhTzC1LhqcMLYEF3ldOmyu1axUrexG3WsuZKWfDI0bEVikSQJsKiG41
-	2YBc3D3i9VJubvKZe0U1rAap5JWnsRknN0WJEIeIM2BfPMzuw0Hp1
-X-Gm-Gg: AY/fxX7GovZEFNp2Kgw0fFb5imL2auFyjwaglIT+E7UzXKYvAV0MI7kiRdRgXu1TVL/
-	vJ7QgZHGGM5vTo+xVNzzZq4ml6hBWzINRT4i08FFKvxt1omZFmV/xhPLOopaYIIpSVN4A08UaVG
-	bxCWN0aw18H1sSYVAo2iY3H8Bc1glECCiR9jGiozVwobS2OGeI/aDvbvs7RemnHJkGlhVaQZlDJ
-	w3LrJGIy0/p6VDSGZD3roN2IeNrdga1SQww311X0NI3o9Dctajcjvuk69BXTo6wTvXGz52YkKxu
-	3Ug0vTtjv7IzAa7had/Zir5M2YByrUGG0MaqaVvM2zTnozzenhwUxYlu1OO2DKXQGa93kEjqrqy
-	CHM4LHwSntjEysUoxheY+pd89EH8aXXCCu+XgEifPmxWed6jkQydh7Q5D
-X-Received: by 2002:a0c:d783:0:b0:88a:28b0:9192 with SMTP id 6a1803df08f44-88d8379509fmr260893986d6.33.1766792768268;
-        Fri, 26 Dec 2025 15:46:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHI+6C/nsqBk+pm7eqUDmS5eTPjEpCYiybmbNsgHAySbpZ0KGnAPETFvs9s0xhCfd6CKDIFSA==
-X-Received: by 2002:a0c:d783:0:b0:88a:28b0:9192 with SMTP id 6a1803df08f44-88d8379509fmr260893766d6.33.1766792767734;
-        Fri, 26 Dec 2025 15:46:07 -0800 (PST)
-Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d997aedafsm176932106d6.31.2025.12.26.15.46.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Dec 2025 15:46:06 -0800 (PST)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <19b001a4-0696-4efd-aaa3-902ffa42ff9e@redhat.com>
-Date: Fri, 26 Dec 2025 18:46:02 -0500
+        d=1e100.net; s=20230601; t=1766793213; x=1767398013;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5JTcSmilid40WVSQLI0qecHKHI64cGOCVGN86fIcYR8=;
+        b=u686E/m8Atg4nyu15vDOxWUeDXtK9LQxH48rvGUAsZbDWeTXPlHX+sIEbb/7wXzLpi
+         dUF0fHNZF347EsoJKS0W1n+e8ModS60ttqx3KDSLmjj5OuTIAOyOBVZPCBRfz8sCqBBE
+         IsMY3pmwcMjmMPvMVHkbmoJ80Lu85yHpd8tI020E9sgNJhUVw+w6AYxtYlJya9a61Mu9
+         2XQSrvBnijFT8FgvpOCtYymi6B0krCo06uqp2oemYai5LrYhuNXMz91KZQFAoaQvIDT7
+         VtAYkGFEUB569c5IvM66y8nuXr3Z0pXZaxocSIthF4f5nk1EL0asg58042EOs7PxL1vj
+         t2Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWwyA5Yavxxae6fOfH1OvvocoVK7kEM9qh4ZMGuw6tmNv/iwVKyQdrvkGXM009+NKLQies3yFp8w==@kvack.org
+X-Gm-Message-State: AOJu0YxgmtmDvs8cdeZ8L3UFPvcMgb8GQbosZn44HcJo+U4fZPIFO/Sw
+	z0GfTyJ+LvxVEpp5uSUnrX4vOCTZKeHJEI+eH8d8xBrTqjLQRtZ0trFPO/AurAhgHcK2W2Lm3De
+	bDwgKwCf9Agt+I+tfb6J+vHSSPkvbJUEz2TVgDXE=
+X-Gm-Gg: AY/fxX6NPxUIUlSPdJoLKxcaXarK0y+wqOHSthgGAd3VjqJIP1qXxeL20P+1Co0OtcI
+	tOFqTqCQx96FuxKrJhSejYcQ8P1bqRf6aOjL6O+iVkyze1bamV7PizvuPxyeabKvEuA39C0NMrR
+	XHWD0TQ/t7io77gbHBmkzGgkGkaF/iD9/0ZHzD/VkW2rMd7Nfk9PYRni9xCmj0Eqo152WXefZ1M
+	puZ3efGvpuAdIAp2vIZ2gjI0bJsmy3+/ObZQEt6J+T4kZNpdAPtznSTt1ZWrNQFxV3JywwDzvfG
+	SKUavE4=
+X-Google-Smtp-Source: AGHT+IEAZAGqF9F6MxR1VLl7olkR5UmCPFUFao00Law/8wX3U6qC8XMgr6p+96BB+k6/+ca/7seKX62CnzUkAcpJmvg=
+X-Received: by 2002:a53:adc3:0:b0:641:f5bc:6983 with SMTP id
+ 956f58d0204a3-6466a8c568amr15091028d50.79.1766793212876; Fri, 26 Dec 2025
+ 15:53:32 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 29/33] sched/arm64: Move fallback task cpumask to
- HK_TYPE_DOMAIN
-To: Frederic Weisbecker <frederic@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
- Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20251224134520.33231-1-frederic@kernel.org>
- <20251224134520.33231-30-frederic@kernel.org>
-In-Reply-To: <20251224134520.33231-30-frederic@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: fsA50UDoUR8PaDhoVUcOdXv5iaAM9u-NU6WxHKnXJOQ_1766792768
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: cabfmqqggzdhdj3hs3t4ad1s85pbyb1f
+References: <CAHOvCC6PQKAK5WojmVFqBw0V-TZ+11CM_2uq4z8TxsyEu3gLVQ@mail.gmail.com>
+ <20251226184111.254674-1-sj@kernel.org>
+In-Reply-To: <20251226184111.254674-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Sat, 27 Dec 2025 08:53:21 +0900
+X-Gm-Features: AQt7F2qKCfyxqagV7UlDOzpbncHuGGXw7tVVuiMUC6LDgDSt7Cv44S0l7SIN9po
+Message-ID: <CAHOvCC7HqeGY1uxy7FxLKTFHAJPcWWbKJRjZ06W9bC4oAejOsw@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon/sysfs: preventing duplicated list_add_tail() at
+ the damon_call()
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, rgbi3307@nate.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DFD4440005
+X-Stat-Signature: ifn53yquezkoyunde3j4osi3o811hh1g
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 48AAC1A0018
-X-HE-Tag: 1766792773-205393
-X-HE-Meta: U2FsdGVkX1/Eq33za0tLINzev4c1omql1ZPGwzNgTo4ltNm2QvIEu6jLPyq4KIvGXypb0oKZp3+ubtSF1SAdyhuHXdVZHhJ+0u6ipWVUBjQT/3TM6uvNVoeEwqy1uLL9whsBxWZTtOC5w/jlMgFoNEGpoiQpUpxPKEw8aiNJFevUeq5u8CnCYFvL+Cf8G/XomDUVK87of9CNP3fFHTaN9vF+TXFcdo1p17ZLTFMUtvLVI2qmVkSNranQGyMdDTsdmxegEFqMiuy6gnk8JO0Ftea9P/+TL27ix8c7zLMb1s1YBv2HFCQ5KlOVDHPJKiyjdlqwDhqGo/F+iLoiUZNQ0wtxbVBqG9V0zkNjCxD7JHgKur/sbZ8LuSA/9tgNwFusAXOJW2RMwaawTRj1WF11+SyC7jBcqIefhnaAzU2dNheGSfXpdyxu5mG8zMB53G5qYGgLe2W3FFNdjoPGLNm5JQ2p28XTP3Y4+6V85JaUd+L78m4UZ/0J/ZCTqpWrKf/VgUiY3tfJntNgfpEHc6KHId3ejozey8Dqhi5lM6Tmc28yQ4j1GWaJZF6UMF25wDWbLzV/TKQrUtcV+47RsdO5Ce34NjD0rDuUHKQjlur+UrVmfJVVCMRHwX8ULWZX15a91mu6Ez5qBhJPjUa6d8D8hy+TmTSB5f1bVWierlbTOTsZU8JHGfR6d2kH07DtUmvZd08zZYchGVBI+sZAaiMN3xZYFmg5aCjUy2SxC4MLgUDRd+TFEKF9B6/JoRYZiBcYpdjKgIA2/4sMppf/itXyNNWaFPUh/jvM6tOJS+PkResfBCbHgW9HQTVzR95tzUNAMr9xBv3HrYv/LKFi60OrA9WfaeTHWgmx9QpGP4vU7Ec3GCyAdVMyQBtJ41wV9sU//vdUUw5AeTpbxPj8IxLT3ZAyzFLEWkN2KHAJ1J4Z2y4SHShKXN8u3HnCp5Fq2ex0ebZe/nZOLprJcFYeusQ
- OcQliLij
- oXqxPJP4o4AYZwMaOEzkdjn4oP83wBPk8k1aepDygsHtaOFF0Jd9nxch/edlrDpDTmmMAwW/0JJ9JPT/irnndYEG0rrnikci3r7EDCbvmqu8hFIkpiKQUq+QVgXvK0BZ6AYYEHcn5mj3DfRfHqjyfyZ6DMBSthtaksimj7bSVvhQ7jqr+38+VcdjA/I3tVGckupbzIIzCTdn5MwvFgjkr7NUhn4yZKlAYv/nkIBxjKpYjhPiSDfBbRfP5u9aO780RdXu75wC5ga1qmf2boOVkruSz1DEXWdwqj7STtrCfDBTcrooie/d/gRta2f1k9U7CD/jK1hDvA/cNycmzHU7PjdVkmZ/5MuefwPPkcALpQaRojuTNo+koiU9gbyPCUlYl2EgrwaJURG9Kf/FUcnwasYgT2uRZ/IH24daBsu/AqrDeZT5wmoJCVDzVAflpTqhVyZdy8kOVG4ZS7LjHgKzPrvzqdfjaPrh0RjCjNhI3cRG6M5RS3mwS1dhyxWhBXhIcAGGq5k5CeU+0qPjjW4QFr5tQSA6QYa+GWnSHFR9NfxQZGMnMXc6wRwAo4Ix/ZJcMsT1KqRtqo+LZ8m9tP0sUHfMt4hUe7aUA4JiGZvoDb5L0HWCHUhl41bsm3A==
+X-HE-Tag: 1766793213-120292
+X-HE-Meta: U2FsdGVkX18lCYSvH+FpvT1YnY4uK4gYKEK7HyLAJTgglE19F7kdOY3JxcL29ZiBkY+ds/LZsLO+LCDFpnHhhwVEKafDIb6NwzpNAb3GBLlZlPMWCnm6F1YzowWXW1sLZzUewNG1BYY//szBuGwvYCdL2W5u+2qTIwqUrhzkYrKXjaPOJHXAf4Y9pd7SBsPbBdtXdXnAFU1AFygrlqh5FiqFO2tPdG1zMAAJr7wOctc3+Xhgpoh0+hnkZxt63e3fXUOxGPD5qsuFHcQpoqncDVJNQ72DV0uSxSvSyiHqygr15JELrpyQQYBFtFRrdxnLwlr4MP3pLK9lgcVlVDo3hCLaYeyLfRxpVSuFHXq4EmEW0odHur4WrcZogcTGelcOTiZjVMyKrwCA8Pit8wPwl0xwilsyKWtgI9d8PYeVuZ21VjU9UYo3wyBOy10YUM5yt+mdSct8hnUfwEzwloN/LGt20YHpDs7m/Mv0g66rJ1kpQyYd68qhubWaQCokr6/ERmdfWy5Kjp35or0n+AJpMDWajJK5+2Q0sJKfh4vxrFah9R6kQoKZfdZstEBZscf8uLLa7Yvvoz2rU9GiA0isTSrvBGPUyOUiSP2g/zhDBnyZ0Sg/NFggZVcqgveNd0sGnZtGJFBb1Un7qRWMSAWtuL8Pf6M/a2FJdpfjTnvGLKfBW7eVYkz95NJVxjeXNGh0ryb4STFzuYch6a+F1Ub8f7LHD2l8WRbXlwb4uYbkPupxP+PTdp8IdOzSXND3g3VJPx3YM2Ji/6f2m78FCfNOoR5dfTEG6oUKxbsDF1NTrGdjVqwj0GRdJy4vE1YFDkxCaXf9lKV4vF6he6nuQ78byrh8q2NCqUnl6bHJNbpIcGoghmDbXFpQmnzlH0cMQs28Af+XqHO7dy3ywQa5uIPhxT8aRUs1hMHXm0GI6TeVh6zmdDkn2jyms73Lz42brMti9D6PSDuSAWeoy92NBR2
+ y5FKKg2j
+ jqMuWYzvcv4U39VIzuoOwfiGXj9OltQwsYCbI+dgdVJeNcEsqu+EH+LRMYvW0sWMckap/nkIgd8jXeo5/czEXT8rMu/6E1eXcy9UbBVJRzRUodl/Lu3pxTE2BEarvNMOUix36hJ0NRM/s+oweAtj9xiYDKUgd2axkYMwRtWFQtmtg69WL6Zwm9BKuxzeaPxXhbUqGZumrpFiibiIPm9YKOlv0yLdeW1LfsaF94DdqvzYSn7wD5tpw/pLCKVFp2828ElbUskTeNvgoc9420U0EZ58UOIQsLpb0NbBTIzXqtXAp4VJ+u2M6CnpbyTrPtSVkOM8E/uh3lNjTEJcEqlFlunbVBLNVJeWJUxbfMyNKvnMjP9yCUNCg1toz3VzwRe8CFqVsqZDOWaK+CmxlcBvLEDwWkuMdTiFdeACYccwZB8OaDcOxOZ2EhUcMLVxGJaWah672
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,129 +115,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/24/25 8:45 AM, Frederic Weisbecker wrote:
-> When none of the allowed CPUs of a task are online, it gets migrated
-> to the fallback cpumask which is all the non nohz_full CPUs.
+On Sat, 27 Dec 2025 at 03:41, SeongJae Park <sj@kernel.org> wrote:
 >
-> However just like nohz_full CPUs, domain isolated CPUs don't want to be
-> disturbed by tasks that have lost their CPU affinities.
+> On Fri, 26 Dec 2025 10:48:31 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
 >
-> And since nohz_full rely on domain isolation to work correctly, the
-> housekeeping mask of domain isolated CPUs should always be a superset of
-> the housekeeping mask of nohz_full CPUs (there can be CPUs that are
-> domain isolated but not nohz_full, OTOH there shouldn't be nohz_full
-> CPUs that are not domain isolated):
+> > On Fri, 26 Dec 2025 at 04:50, SeongJae Park <sj@kernel.org> wrote:
+> > >
+> > > On Thu, 25 Dec 2025 11:35:33 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > >
+> > > > On Thu, 25 Dec 2025 at 09:32, SeongJae Park <sj@kernel.org> wrote:
+> > > > >
+> > > > > Hello JaeJoon,
+> > > > >
+> > > > > On Wed, 24 Dec 2025 18:43:58 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> [...]
+> > > > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > > > index babad37719b6..2ead0bb3c462 100644
+> > > > --- a/mm/damon/core.c
+> > > > +++ b/mm/damon/core.c
+> > > > @@ -1462,6 +1462,9 @@ bool damon_is_running(struct damon_ctx *ctx)
+> > > >   */
+> > > >  int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+> > > >  {
+> > > > +       if (!damon_is_running(ctx))
+> > > > +               return -EINVAL;
+> > > > +
+> > > >         if (!control->repeat)
+> > > >                 init_completion(&control->completion);
+> > > >         control->canceled = false;
+> > > > @@ -1470,8 +1473,6 @@ int damon_call(struct damon_ctx *ctx, struct
+> > > > damon_call_control *control)
+> > > >         mutex_lock(&ctx->call_controls_lock);
+> > > >         list_add_tail(&control->list, &ctx->call_controls);
+> > > >         mutex_unlock(&ctx->call_controls_lock);
+> > > > -       if (!damon_is_running(ctx))
+> > > > -               return -EINVAL;
+> > > >         if (control->repeat)
+> > > >                 return 0;
+> > > >         wait_for_completion(&control->completion);
+> > >
+> > > Let's assume DAMON is terminated between the damon_is_running() and
+> > > list_add_tail().  In the case, the control->fn() will never be called back.  If
+> > > control->repeat is false, this function will even inifnitely wait.
+> >
+> > As you said, there are cases where kdamond is terminated(stopped) in
+> > damon_is_running() and list_add_tail().  It may be a very rare case, but
+> > I missed this case.
+> >
+> > >
+> > > I think we should keep the damon_is_running() as is, but further check if it
+> > > was terminated without handling the control object, and remove it from the list
+> > > in the case.  Like below.
+> [...]
+> > However, the damon_call_handle_inactive_ctx() function is to post-process
+> > the duplicate addition of control->list.  Rather, it is more efficient to
+> > prevent duplicate additions in advance, as follows:
+> > I have tested the following and it works fine.
+> >
+> > @@ -1467,11 +1496,14 @@ int damon_call(struct damon_ctx *ctx, struct
+> > damon_call_control *control)
+> >         control->canceled = false;
+> >         INIT_LIST_HEAD(&control->list);
+> >
+> > -       mutex_lock(&ctx->call_controls_lock);
+> > -       list_add_tail(&control->list, &ctx->call_controls);
+> > -       mutex_unlock(&ctx->call_controls_lock);
+> > -       if (!damon_is_running(ctx))
+> > +       if (damon_is_running(ctx)) {
+> > +               mutex_lock(&ctx->call_controls_lock);
+> > +               list_add_tail(&control->list, &ctx->call_controls);
+> > +               mutex_unlock(&ctx->call_controls_lock);
+> > +       } else {
+> > +               /* return damon_call_handle_inactive_ctx(ctx, control); */
+> >                 return -EINVAL;
+> > +       }
+> >         if (control->repeat)
+> >                 return 0;
+> >         wait_for_completion(&control->completion);
 >
-> 	HK_TYPE_DOMAIN | HK_TYPE_KERNEL_NOISE == HK_TYPE_DOMAIN
->
-> Therefore use HK_TYPE_DOMAIN as the appropriate fallback target for
-> tasks and since this cpumask can be modified at runtime, make sure
-> that 32 bits support CPUs on ARM64 mismatched systems are not isolated
-> by cpusets.
->
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> ---
->   arch/arm64/kernel/cpufeature.c | 18 +++++++++++++++---
->   include/linux/cpu.h            |  4 ++++
->   kernel/cgroup/cpuset.c         | 17 ++++++++++++++---
->   3 files changed, 33 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> index c840a93b9ef9..70b0e45e299a 100644
-> --- a/arch/arm64/kernel/cpufeature.c
-> +++ b/arch/arm64/kernel/cpufeature.c
-> @@ -1656,6 +1656,18 @@ has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
->   	return feature_matches(val, entry);
->   }
->   
-> +/*
-> + * 32 bits support CPUs can't be isolated because tasks may be
-> + * arbitrarily affine to them, defeating the purpose of isolation.
-> + */
-> +bool arch_isolated_cpus_can_update(struct cpumask *new_cpus)
-> +{
-> +	if (static_branch_unlikely(&arm64_mismatched_32bit_el0))
-> +		return !cpumask_intersects(cpu_32bit_el0_mask, new_cpus);
-> +	else
-> +		return true;
-> +}
-> +
->   const struct cpumask *system_32bit_el0_cpumask(void)
->   {
->   	if (!system_supports_32bit_el0())
-> @@ -1669,7 +1681,7 @@ const struct cpumask *system_32bit_el0_cpumask(void)
->   
->   const struct cpumask *task_cpu_fallback_mask(struct task_struct *p)
->   {
-> -	return __task_cpu_possible_mask(p, housekeeping_cpumask(HK_TYPE_TICK));
-> +	return __task_cpu_possible_mask(p, housekeeping_cpumask(HK_TYPE_DOMAIN));
->   }
->   
->   static int __init parse_32bit_el0_param(char *str)
-> @@ -3987,8 +3999,8 @@ static int enable_mismatched_32bit_el0(unsigned int cpu)
->   	bool cpu_32bit = false;
->   
->   	if (id_aa64pfr0_32bit_el0(info->reg_id_aa64pfr0)) {
-> -		if (!housekeeping_cpu(cpu, HK_TYPE_TICK))
-> -			pr_info("Treating adaptive-ticks CPU %u as 64-bit only\n", cpu);
-> +		if (!housekeeping_cpu(cpu, HK_TYPE_DOMAIN))
-> +			pr_info("Treating domain isolated CPU %u as 64-bit only\n", cpu);
->   		else
->   			cpu_32bit = true;
->   	}
-> diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-> index 487b3bf2e1ea..0b48af25ab5c 100644
-> --- a/include/linux/cpu.h
-> +++ b/include/linux/cpu.h
-> @@ -229,4 +229,8 @@ static inline bool cpu_attack_vector_mitigated(enum cpu_attack_vectors v)
->   #define smt_mitigations SMT_MITIGATIONS_OFF
->   #endif
->   
-> +struct cpumask;
-> +
-> +bool arch_isolated_cpus_can_update(struct cpumask *new_cpus);
-> +
->   #endif /* _LINUX_CPU_H_ */
-> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-> index cd6119c02beb..1cc83a3c25f6 100644
-> --- a/kernel/cgroup/cpuset.c
-> +++ b/kernel/cgroup/cpuset.c
-> @@ -1408,14 +1408,22 @@ static void partition_xcpus_del(int old_prs, struct cpuset *parent,
->   	cpumask_or(parent->effective_cpus, parent->effective_cpus, xcpus);
->   }
->   
-> +bool __weak arch_isolated_cpus_can_update(struct cpumask *new_cpus)
-> +{
-> +	return true;
-> +}
-> +
->   /*
-> - * isolated_cpus_can_update - check for isolated & nohz_full conflicts
-> + * isolated_cpus_can_update - check for conflicts against housekeeping and
-> + *                            CPUs capabilities.
->    * @add_cpus: cpu mask for cpus that are going to be isolated
->    * @del_cpus: cpu mask for cpus that are no longer isolated, can be NULL
->    * Return: false if there is conflict, true otherwise
->    *
-> - * If nohz_full is enabled and we have isolated CPUs, their combination must
-> - * still leave housekeeping CPUs.
-> + * Check for conflicts:
-> + * - If nohz_full is enabled and there are isolated CPUs, their combination must
-> + *   still leave housekeeping CPUs.
-> + * - Architecture has CPU capabilities incompatible with being isolated
->    *
->    * TBD: Should consider merging this function into
->    *      prstate_housekeeping_conflict().
-> @@ -1426,6 +1434,9 @@ static bool isolated_cpus_can_update(struct cpumask *add_cpus,
->   	cpumask_var_t full_hk_cpus;
->   	int res = true;
->   
-> +	if (!arch_isolated_cpus_can_update(add_cpus))
-> +		return false;
-> +
->   	if (!housekeeping_enabled(HK_TYPE_KERNEL_NOISE))
->   		return true;
->   
-Reviewed-by: Waiman Long <longman@redhat.com>
+> I think this is not differnt from your previous suggestion, and thus it has the
+> same issue.  What if DAMON is terminated between damon_is_running() and
+> list_add_tail() call?  Please let me know if I'm missing something.
 
+I think it is good idea to insert a barrier() between damon_is_running()
+and list_add_tail() to prevent context-switching.  What do you think this?
+
+Thanks,
+JaeJoon
+
+>
+> >
+> > > If you don't mind, I'll post the above diff as a patch, adding a 'Reported-by:'
+> > > tag for you.
+> >
+> > 'Reported-by:' is OK.  However, please check the above again.
+>
+> Thank you!
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
