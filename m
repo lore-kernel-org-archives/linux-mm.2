@@ -4,97 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44164E8FDA8
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 16:43:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D28CE8FDAC
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 18:17:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 067E56B0005; Fri, 26 Dec 2025 11:43:05 -0500 (EST)
+	id 191466B0005; Fri, 26 Dec 2025 13:17:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2D776B0089; Fri, 26 Dec 2025 11:43:04 -0500 (EST)
+	id 13EE26B0089; Fri, 26 Dec 2025 13:17:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E39D46B008A; Fri, 26 Dec 2025 11:43:04 -0500 (EST)
+	id 03CEA6B008A; Fri, 26 Dec 2025 13:17:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D17826B0005
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 11:43:04 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7D484C33E3
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 16:43:04 +0000 (UTC)
-X-FDA: 84262191888.14.42CDE39
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C2F4E1C000E
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 16:43:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of 3FbtOaQkbABgGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3FbtOaQkbABgGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766767382; a=rsa-sha256;
-	cv=none;
-	b=mZMawNxS2xJyGRLZmB97LeSH/1XaiOlLlgTCl5738M7Ot9gIyK0FyJWnszVmcAoFCikGM0
-	3M5HS3SzY6sUB4bumL3VS4X5yMyt1z6TVmEV9dIQm9vwfOrUwnNoU8htsSt9CvLN2V5S9g
-	cYhtHGh7NOqF1waOEw+oc8hdTB7v6Ts=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of 3FbtOaQkbABgGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3FbtOaQkbABgGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E3EF66B0005
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 13:17:42 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5959C8D717
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:17:42 +0000 (UTC)
+X-FDA: 84262430364.06.05B19BE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B0849A000E
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:17:40 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dsbjGumL;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766767382;
+	s=arc-20220608; t=1766773060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=53SAgSKsIJEqDYV+s2VQZXX0ij5NAJJbDSc4ix7LheQ=;
-	b=MJJAJqZNWApSmWhfm+Z2poL3yQcCTfIYluSPDGCrRrDnAWfauNo3CL+Pen3Tbcp0K5QJVF
-	YaKcXRywfbQe0aym8qLTDwC0beYdab2bf8E1UUfv9Aw/fpBSONkjmosQjT/255JmXl49xN
-	SHuqNyIVRJhnC2D2rDAVj4urTlMFyuo=
-Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-65b26eca9c7so13448014eaf.0
-        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 08:43:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766767382; x=1767372182;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=53SAgSKsIJEqDYV+s2VQZXX0ij5NAJJbDSc4ix7LheQ=;
-        b=fjN9tqOOmi/ViCkdhoAk4rq0jwZ7mftYpBXgxPVATnSuMhJ5zP+BwM0PTYUdaJLh9h
-         4kbAr2rQLNqEUxkJUSnayt/SH5YzYqYkU40Ge6FmCOHK/kqXB0Kai/xRyRTxWQw2oah3
-         3BbB4W83o3LRPKnZZMzE6HtUiSpHzKoj1Pc8oa02ho7AmwGOURx/EiUw9LkuXLzivfjp
-         GEwijelo+EcyDk8dcVNMsq51szvEGow91sOCSDsRxM4c7Ij9y1IudSIAGRpDFqFIIIhw
-         wgISTV5OULO35rJR2Q3fxtS7lT8ym81gcb+pc9TPGL+coRwqq0+mQHDERtRoRocECKUW
-         WsSg==
-X-Forwarded-Encrypted: i=1; AJvYcCX/VQhNWRP/se2ri5Leup0JEaTa89F3yclM1QL/Kv2GFQAUD064W+XC6L7vMD5hbiGhJyC8sh6e3A==@kvack.org
-X-Gm-Message-State: AOJu0YyYh1SeRfGOH73J7x4SIHyeW7H85SK43tP483wdVbb3r8SvPW3A
-	Sp8ezVcfz1nNeYFYhdk79YI72vm16kBZHjZhXryswSkPTqqqs6CktPrj7iAeiA9nP4kGCaP07Xk
-	zh8EAwiYnQIXIBSCOnfN3VnXCa4M8DNbizI8DTpen8QhID93ZvIiHok5bQHg=
-X-Google-Smtp-Source: AGHT+IGQPSV7JiVQmAQqG+OQX04xZJqT0KUjhT9g4KHv4Ml5V72eS98RZ9upgzLfwU+miUGHK3gQTCEITzja2y9xosWteVUkes0P
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Vl17TlHAKr+9kfudvhf2FS+k6gEqUUoBDzgrBADj76Q=;
+	b=zAwsIbH7Hv5R3wz4tFeE8Qa4yav7IMK+Qts6EWSHjpSr1s5/dn/4klVtxfEHqjsTtKeNCc
+	VzWWWoUSV/1UvztfcFOdx/gRsb7dzg8UdWUHHaVkGKubrFC60ZiK3lYGmJqK2pZ8FokBsn
+	EF885nYEajRC16Fxnj4EFi7fVYcBz2M=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dsbjGumL;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766773060; a=rsa-sha256;
+	cv=none;
+	b=p1RpPuMe+MyAHLh44rvv14wfnz6s5dnoC+Y+Cn2+xLDhYSjRYtguCDIHSCIYUD8FOSoQdu
+	XIL/fUiwusXv/tWuua+Pgmj3uOr5xWN9awHdM5IU7ngUZpGLnYzrzez91vnRSmJskNfZj5
+	FvdIGQsufe0kwBeuV/+PEClib5qtsMg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8265443594;
+	Fri, 26 Dec 2025 18:17:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B29DC4CEF7;
+	Fri, 26 Dec 2025 18:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766773059;
+	bh=I4DtpAEe9pLppwYfVT/mO+qel169pwrd/tfT2MBTRxY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dsbjGumLVwJc/4y9+ZeaZREUs6T3ZyxF0vAA9oRakEDJrE1taq9E2XyZYoxCNiYN6
+	 8aguJVVAYLswk80lVNBnQ1KDLKR6uaYRFXDS+XqZP0zaS4O1iv6h8JLShxL3e+3bMi
+	 psMF2SkEGAo0WWYvRoR/oX96tG0j7GQjK/HpnaUaaGyjn3gMpCRBhWhUjgfxdPTEAn
+	 USQKrxjnTJLSBad6O/ch22wjErppSbJJUwn4K5m8N+MuZlkhDNdW1TUfwRGgO/2/7h
+	 +uWJt72gBTZS92uyZC52AMfllMur92wE3WbeGn+PdYlp/xWSYOYOPs0yhV6TO4oxK3
+	 lVa7lxXUXUSDg==
+From: SeongJae Park <sj@kernel.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/8] memcg: separate private and public ID namespaces
+Date: Fri, 26 Dec 2025 10:17:36 -0800
+Message-ID: <20251226181737.254305-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251225232116.294540-1-shakeel.butt@linux.dev>
+References: 
 MIME-Version: 1.0
-X-Received: by 2002:a4a:e252:0:b0:65c:fe8b:53c6 with SMTP id
- 006d021491bc7-65d0ea9932dmr6960121eaf.43.1766767381887; Fri, 26 Dec 2025
- 08:43:01 -0800 (PST)
-Date: Fri, 26 Dec 2025 08:43:01 -0800
-In-Reply-To: <6730d6bd.050a0220.1fb99c.0139.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <694ebb15.050a0220.35954c.0076.GAE@google.com>
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in sys_pipe2 (2)
-From: syzbot <syzbot+693a483dd6ac06c62b09@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, bigeasy@linutronix.de, bsegall@google.com, 
-	dietmar.eggemann@arm.com, edumazet@google.com, juri.lelli@redhat.com, 
-	kerneljasonxing@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, mgorman@suse.de, mingo@redhat.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, peterz@infradead.org, rostedt@goodmis.org, 
-	syzkaller-bugs@googlegroups.com, tglx@linutronix.de, 
-	vincent.guittot@linaro.org, vschneid@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C2F4E1C000E
-X-Stat-Signature: 9qxsktwquy4gbj7ignsawrm1f13ys45e
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1766767382-852176
-X-HE-Meta: U2FsdGVkX1/7J2wHuqV+w56L1VMUKJA6LGIN5mrwmE4rkDwbKctLE2wHlv4ogZ9EaMtRRcd1J4V3/OeFLto86ZU2sg872lSEpt+svf4E61Z0pkHZL+FdbAycKMrpMf8f6CLL6UytN6gJMbt9SNMgXl48EJdBasrzSxXWOiWA+eWnR7pvGhuzjltL+aQ9gZZtwYuvXyGW/LHMcQXFn04Mz7HWMyUB2vHbZqMy9I8vI9HbC0wQARFLThTTQ9zOP6COxvznmIbpj64Wa/MZ9+o9CrwKjHhaVfxd2Iktg/nJ5k+DZWZsIhpXBDmVIWx2NGMZIsja05pyeDOvV2PvtEH2NUYtZZ9C9ohTy//3oSGifvY6/L2sW7v/yB6LnaG9/K+Ecxlwy9ElskCpHRAtCXZzA5TyE81FK7mS60Wnky3hJHyomnjnb2eYlrGw3QhoEE3QZ5IK0Z19/5Q0T/Cpk1PXXwOf6KP0nAuK/h+tQVz3puAf3v3jc+buMU1XMzacfM9+ATO6YZW8TtSjh/fiOBOg9bG8JSybLj8TAtM43JPSN5jrd0HzMlRzDFO+rgGBUb7qI1MAFXv3fS0nC3/940T6vPmgDA0cnU8pU6+sw49OZdgpwMcFMTF7TkHuXhphi1EbWAjk78+k1PbyiRfKZRGijl9jslEmJM6NlqZ3Up/Dz/nwEeqNbLSagTMsCdJiQ6cD1nXm5TEzYI6x/r/hLejkSBeGUVa7QhdZMNqf+Kk55QAKM8tBfXsz9RrxaFWt6kAnT1kDLcaM5EzR0VRhXegYkUaPMqAMVflxjQ+D+Gq17D2EPRRr1Pby1kZKZQ16uJnEt6EwUKJsdaZ5xcxI7TgL/jxKe183b49AaXmj6zqiUwB9MXlPJskSmjVlo7jzruRvjBR04Nm52Ly2r0C6S2+PbJNWOcAOyimxcGDWaUVM2VySbQnCKO9d4XOxOT/ToA6W7ImtEOx07VeUzzsK4ms
- WCkNyKUD
- 51r2cUmEYMpzF4J6YDCut/REUHZG9y7kqLrbZmKZ6JE1+pngPr+CTt8vo9My0uLu2OE+zFGuguUClBeuOD36xYXf3C+JMfvrKPY11NQJJmwYeTN2by5w+O/3Vco+HGTIxwNxs4S+LgXggHkOcB41M+xCE6eXk7lsPm/9ZXnn6srRps0Vzd5snEED9fnVheSTI7S0QMbZihYYu5KwHuDBODlYhgtRAOCgpXl35X8qG+jir0WmIKCjvuljPrt+JSUAA3+HGYlwUayj7GOhxEn8Az5dmkXWKHTbZFeGCYoeqZ+k5sYZCoU3o2z7no+t1atuGQT16a++DnyUryXRDkpiOb1L5E1/TfASYaBcnTZu6ggiZ9j2PrvAwGyx+hd+INROdThvI6mw+T/cfYIpxDnqM7IzOQzT0fTXl9u+SA4UL5XGuvtsXM2IICvzAZ2un646g4R53XERC4sL+9lg7+YXd8vuiGGi1G4TbHoI/h6+blJf5l8hp8eDQpbmp7AyC7z+J+h+XdkcGxY4Gh5Qmpn1lglWj2p4MoztvFn6JFY+nCZDJGZ/TiZtUXxLEUgCaU3Vs3ZUiPPQSUe0TKn0trDD5Fvw9fZAZ2NXxWVU1OAp/xeetBGZE/Ju7UKOkvMA2yOMLVKfyW6GlzGEGoNKv8g0q6DqNkgz3MABFOa/Yb+j8AWvDagJQlOVetGzqXIVRO6By6a3Yce6ic+HEOA/UbUsB1ysmmWZSYNedfbCVbuFi2ZmpSSKaCeh1GKJc7MWFXLC+Zzpdy+Yd/d/tglpH5nnI6tszzsShtAuwSIMfYckXGvomzziedxaIt3B6S/nAu6Z4JwEE0AJCjdJeAu/2rbIsad8HDXvcNFuCbH1TK9Bi6eAdpFhZI0VR1fJa7CaLJ8t0CKGNPY5sFEkSnL8WADovMNOfUOZK8GSYwZVgVGWpq/h3T0AChMnG5wBD8cqL/WfpVDR1UDpWQ5oW8vv5LVgv1H4zy3Nb
- 2LtZOPMS
- Ub4I1RYt+xwPMQ/ZKLjnRLdIo7Om9zIHI/wc7iMWZkSNLa6QxHdcCGt42m5R+PM9/sNu7ct1cTXQOHo5j2P5Ng9rimRMsulr0wzrZEjtN0xrK8tIDVcB2tZ7DWkw6j1MVu8hVZIAuLBkt03kvJC2GXTliIFa9cqFyc0f5KcNkw3/UakT6Y+9Xg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B0849A000E
+X-Stat-Signature: ro9rhmotci3diixc5e1ioqgji5pwzddm
+X-HE-Tag: 1766773060-966294
+X-HE-Meta: U2FsdGVkX18MKFOZIwiKl4Mqt+5ZI8lgI6l/cajZ9r6izGE5api3zEDeuiseJmHIiiEQkI8XfXHF/MqC6emc6o3LkDjoENIhW51WMMKm7nbo+A6Kj/ddE5EyUb8PsqXhBShNO8A1LN+MyqwsmiBA+Eb2EeNpMuMpcVt6tMi79Rd1Z2sEl0eApYvdROZ56h6JCz7DuavlAd1zjGCQqBuqgCLmeMYeNmMwvHehK+YGGJ4z2i47WnrPViQuUwBUMCxnCzurqHCAZc95RbFxucg/3DiCRh+xN899TnWJOwNEasUCtQ5pKpCs9QIqemPhW+gKn2LBSyKjK03JGYkHj4a0WaGen085oY7/bzz2URQhBUjp19ZsiKSY74LEFRDzjWrjrqIKKvpZUMO0bLKlaLYs1g8UKkB+cGR3SsrPDlNB+j1bKV/ifOeyu/4Z7vvnyXOBfioCy0buOQt9HqIt4mlAZVRafeLoY8c7jryCS0OGBVCfdO0U2bKONCvMz85shkLDduZbHxWaM67UeEWlE39/D+28/bmW4sljADor6XWfIDe3euB9glDOc1Ied9D+SageLRgTsqhawVQn2yvFp+uqXkmFHkn94EoUAB78YeWjGg+RWVA697QOKTkSjC/+wlm8ONtOSt8rmbY9w+hGLEEOAy/8LsLPgJwNFuYgAXV8pxxvgqLk+SYbavayqySQSr5ZY5EnSVN/uVIUwi5nQ97h8dPgFkA7DYzDSCmS7TO2I6TSAJYjjQS3a8vcBJWSBS4HkmW6bsSPqfP3uD9DdrqL6NKAOdK/WCs2ADarzr0PdHtdlTOIv0y2w8Nw+r0d7MIH67MPV1uafJlWrMUkqr1tryCvjfWfaIJs9dgN41+IpWLUULLDuqjjjU8HBwjJ0uFv058Nt7u1LXRMEFj3EKOSuxR+7M1WjIswuaRlsKkHhsvO6zsdIgZNZDW/6V5SuuJjNMtDekNwgdUDE0sbMD0
+ 5kBM00TH
+ 5WGHGPPqlDTI9Q18rMFYGlMdvECxT4MgWPD8L5ZuY/TppfbLzkT7MBRUCj/n+1riviRSnup4r+x35wtz0v6LGYt3On7QVlGGoZ8OGJOAkV/tLgpWeweaQN/AvOuMD9t6AVRUdOMhx8hhEE3HuqFyr8e6SKpq3T3xzAkc/j0ofZddoif6q24KgKHPHFss+zfKLbfVu5arghIF2P+Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,24 +100,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot suspects this issue was fixed by commit:
+On Thu, 25 Dec 2025 15:21:08 -0800 Shakeel Butt <shakeel.butt@linux.dev> wrote:
 
-commit 66951e4860d3c688bfa550ea4a19635b57e00eca
-Author: Peter Zijlstra <peterz@infradead.org>
-Date:   Mon Jan 13 12:50:11 2025 +0000
+> The memory cgroup subsystem maintains a private ID infrastructure that
+> is decoupled from the cgroup IDs. This private ID system exists because
+> some kernel objects (like swap entries and shadow entries in the
+> workingset code) can outlive the cgroup they were associated with.
+> The motivation is best described in commit 73f576c04b941 ("mm:
+> memcontrol: fix cgroup creation failure after many small jobs").
+> 
+> Unfortunately, some in-kernel users (DAMON, LRU gen debugfs interface,
+> shrinker debugfs) started exposing these private IDs to userspace.
 
-    sched/fair: Fix update_cfs_group() vs DELAY_DEQUEUE
+Technically speaking, DAMON is not exposing the private IDs to userspace.  It
+does use the ids to specify the memory cgroups in kernel space.  But, when it
+communicates with the user space, it uses the paths of the cgroups, not the
+ids.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=16c6eb92580000
-start commit:   9268abe611b0 Merge branch 'net-lan969x-add-rgmii-support'
-git tree:       net-next
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b087c24b921cdc16
-dashboard link: https://syzkaller.appspot.com/bug?extid=693a483dd6ac06c62b09
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16e7c2f8580000
+> This is problematic because:
+> 
+> 1. The private IDs are internal implementation details that could change
+> 2. Userspace already has access to cgroup IDs through the cgroup
+>    filesystem
+> 3. Using different ID namespaces in different interfaces is confusing
 
-If the result looks correct, please mark the issue as fixed by replying with:
+Though DAMON is not exposing the IDs to the userspace, I agree it is better to
+use public id, mainly because DAMON doesn't really care about the
+cgroup-outlive objects.  Also, it would allow easier change of the
+implementation details and make more consistent kernel-space API usages.
 
-#syz fix: sched/fair: Fix update_cfs_group() vs DELAY_DEQUEUE
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Thanks,
+SJ
+
+[...]
 
