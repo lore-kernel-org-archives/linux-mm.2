@@ -4,96 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 245FBE8FDA1
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 06:08:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC8E3E7AD74
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 06:39:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C7BD6B0093; Fri, 26 Dec 2025 01:08:20 -0500 (EST)
+	id E21196B0088; Fri, 26 Dec 2025 01:39:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BBCF6B0095; Fri, 26 Dec 2025 01:08:20 -0500 (EST)
+	id DCECB6B0089; Fri, 26 Dec 2025 01:39:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F16EF6B0096; Fri, 26 Dec 2025 01:08:19 -0500 (EST)
+	id CDB166B008A; Fri, 26 Dec 2025 01:39:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF70D6B0093
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 01:08:19 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A5CB013527
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 06:08:19 +0000 (UTC)
-X-FDA: 84260592318.30.B48AE82
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 829D880007
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 06:08:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=U7CnAZJt;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BE6B46B0088
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 01:39:02 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4C2438C21F
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 06:39:02 +0000 (UTC)
+X-FDA: 84260669724.12.AC0603C
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D8DD6C0004
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 06:38:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=CD8TlUev;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766729298; a=rsa-sha256;
+	spf=pass (imf22.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766731140; a=rsa-sha256;
 	cv=none;
-	b=vTkAKlJxdcriDVThf2SX2vHhlQ/9cVWAX9KqedJNLwZPVvSVg1sbsW2M8NjIkbX4zAINBP
-	ZjzmdiV7xs90QameL7NvIVOqwjA+J/tWUxvayvD4yK8Y2hcO/ECGqN7JWb7eOom2I1CZx7
-	67BDzUZvm+lMTWcl5NkxrXkUZhRDfnY=
+	b=N561XVUnIElcokXOmMoWinGVBdRJb0iWxXvPKNcGrDFKN0FqTCJI1YVq7BhoMnxW7P6oIX
+	2Hx1oOvZgOAEaZt3OmP5L8UYMxph3TFJQdYuB6Q0M0JIR56ivlU4Wkh4SMc5cIwaLlLVBu
+	ONXnDmkNRcO13mok60PivxU3aIHD4Ag=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=U7CnAZJt;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=CD8TlUev;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	spf=pass (imf22.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766729298;
+	s=arc-20220608; t=1766731140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AZ9WfEpVe/JlQetyc2ZwVRBQF0W+yj98KQzc8zM0fSE=;
-	b=8ak2CA9TObcYZcpy8fpt3F3c42GukyyJpBr1rBaV+JiWNemD0eUbTMtOs33fsjGKdsqvur
-	YiZItj/4uEcVw8HO3aHcg/XMgtUFQri4YOdPaUX+ygSHOBIv+USv5TekllOjg7qQiQUBFj
-	hqzvY+jhOTWLGaEYS1MUFwyNgRI0wP4=
+	 in-reply-to:references:dkim-signature;
+	bh=7W6lTO5HqhdsUdqMUK0JVCIeu7zAS4i6K6mEqBoWdOw=;
+	b=G8lEv8S/zzdmIs7FVMolopufp8cWd0oyNjBGZ+Jn7MniHzZSUagkI1F3kSNjN5LztaZFyF
+	QAHckjqs3GWscQOrOY3Px/dh52IkSiK4WTVfOfqtRbFbfR3saHNqxuqXZaYxIhC8sEZNeS
+	e4T5nXj28xP0thJyegzRf54sbAjVo7o=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1766729294; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=AZ9WfEpVe/JlQetyc2ZwVRBQF0W+yj98KQzc8zM0fSE=;
-	b=U7CnAZJtOGVsgKAQwOK/JTMEdGW2WgePc/U6iwIQzN/g4mHMepLlS3io52YOrS9hD/3FA6bETB7LRmZTd5UP6HOZ8bBONjhtGmiZL4t1PuYchnPxfLU+aF8oTepySL8rpEUecAtJSpCgUgZZzaVFcyGdhtjjMeWyySGTUB4/1Vs=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WvgZmTZ_1766729292 cluster:ay36)
+	t=1766731136; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=7W6lTO5HqhdsUdqMUK0JVCIeu7zAS4i6K6mEqBoWdOw=;
+	b=CD8TlUev+TLWHv3DpGXzCaimcmdx6BevOAOUhW8Aj7XtCPBOs14ivT2mFl4k6v6yPB46X5JRX+6sYSH6TAn0Y6LDd5bmIbFA3MTDgVeY24BxkQVJo+HeVAXAeUyJjlb9DblieyA8AltDJaUlKe4qOn/CJOvk5BvSI/9YsVF0UM8=
+Received: from localhost.localdomain(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0WvgaM6Q_1766731125 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 26 Dec 2025 14:08:13 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org
-Cc: lorenzo.stoakes@oracle.com,
-	ryan.roberts@arm.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	riel@surriel.com,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	willy@infradead.org,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
+          Fri, 26 Dec 2025 14:38:55 +0800
+From: Weilin Tong <tongweilin@linux.alibaba.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
 	linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 5/5] mm: rmap: support batched unmapping for file large folios
-Date: Fri, 26 Dec 2025 14:07:59 +0800
-Message-ID: <142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
-References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
+	baolin.wang@linux.alibaba.com,
+	Weilin Tong <tongweilin@linux.alibaba.com>
+Subject: [RFC PATCH] arm64: Kconfig: enable ARCH_WANTS_THP_SWAP for all pagesizes
+Date: Fri, 26 Dec 2025 14:38:00 +0800
+Message-ID: <20251226063759.4020782-2-tongweilin@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 829D880007
-X-Stat-Signature: 354jojnxcz7i9kghxma9pkw6he68d6o4
 X-Rspam-User: 
-X-HE-Tag: 1766729297-159595
-X-HE-Meta: U2FsdGVkX18jVPl5J+iASrKNFrOW6nC+Og1bLOpBAXuTbfYvjr6VWVog754DWj69DIF62PGP4pFJ/tzcVxetFVdwARiXQ/9+JsDBSEFh7lToBXecgK/fl32mm2Zqi7BhmY1uXcIa9RjHhB90OfzxDDe6qHuBtjiWjc+hf4oRTe/Ld0/GkPIozkG8Jj6jMAsIPc72fF67+aH3zD6NRInl/feLG+qHwXojuRECFZvevWhX3XLx0Sb+wOlh21VzfB1UsEd72gO9ATvrwjILAOpPMy465xciD5oraerAaqg8qhd7tVh3lOGN3zCxAfA77oJC2/IoxxF2q6nfRMiIBiTt8cxCkobqkYj5MMIEi6xSxczWc4vUU096j/O6O+D7VQce57dpi7kxV8+oquzPvIBQxFO2sn57d93BOWsqpOtKDfFpxNJROT09yIBQ1dr+QSn4pzOq4g4d+EL3XyseGjdXq9CoKb3RbRIzpVEoE/Ftb1R7Cc0fJaJEmceOO83kRQhUNGV6ZN4AWFhKAEMh9IulYEkR+HexwbNmep4WsqC027nuKcs3V6bf+VOVBgE2vJm8wDj3gwjoe7wL6qRkyHb3aAS5XpbBTaDKHbvxCOqIm3gaiCWugy9uejnWkw/sItTsDkResF9LtfiB3kUb6uHnvbio2mum/bXKe4k5URhw6hF0pgqBRPBJjzsA95fcI8m5cJQ3RwIoj0UpMWMMIHAmZKKWhuKy3gZwPUef87ehzrP56fsvUPE63GhVn7XCEQZf6bD64yBEfXHxKZqISiqGdRw1V7JvnHA4/QYBlXgZm9Dkbv69+LcJmbp5o9XuaoWPmM2Q7kR+Pi/+9YSLTELstvm229NwTdjl+4TsBJxIKYBnZOUxFLlnCTsvUUM1gRW6H7UWX4CvbOLQQODnoP1OBocWFiJsbnv8T+K6hl1KRU0k0h/zp9fwaWi086Mh/zoxq2HJ65UEFpZ9rf1zxPG
- MQegLrxE
- oE9Y2pd1gaLR0OL3rkxfArI8DEVwJtXcdB2hsLbroO2d7qSbR6xe2RoEL8rAHr10mcXaYbqixr2FWWTgez90WjoOXkUaWfAXZKw+tkTeQQmuIXwi1ssQgKsuZk4dPnFtFL/WjlSsQOicTKhozoQqAY6tRoQ5ZrKYjUD6JLIv3HHP6it7D42YTOpi8jcP+sL6fRP+JD2Hledzw4RQ7udhqsB5yBVpAVUaLXkg8zry84yB9YVT1Os0e+A7I+MnnsyfOtsxn82pmotd0e8n1eZeGSviYMiDQ4VtdivwUVVaTGekyeIfji98DPn0lyma001LXPQZ+WFJqSZRs8KDZm6EJklDLrtJhFMfI/XGwYXRnuZICgpw=
+X-Rspamd-Queue-Id: D8DD6C0004
+X-Rspamd-Server: rspam10
+X-Stat-Signature: hgbdocgp3z3kzp6kbbeen3gmmg9ijwei
+X-HE-Tag: 1766731139-941429
+X-HE-Meta: U2FsdGVkX18UBsCEolQAoUl6oMrpNg5Ys7f0xICmBRK2btrx8RlvNNeb41oQ6IsLsce40IzW+qrpquHSogXnwSKqpUSLhQeeoXcAJ1Lun94G9E49Thehd3JmdaPpmV3zIwmbSZIhtyNOTucXE26Nq5PteTAIkSGvhB5jOVpfj+geFVDWY5nkrdSZ9+tOqSMq7cFjfUlX8Tk6akdZZ8X18d5zVb5tDISz7QnHl5FMrq91ES+HLauA5vitRBhW9XDkrkfT/2efQ2lpFajbhBZT9jp5rcC0M5dQZwDJ+8MQ+s5rK5+J5IU0HlUh5JZ18+pztq9fGupChqpTSoyTdf9lRv57eGC/zaTurayNhxTG22ZWm04IxNIkJQdMS3CQAZl+9mHFTatRyN+/D81lFJXBIthn5xh0pMR5EaZt3PFhBhsb+n+F8NwbSbAcjJ3QMKGl7kZa1Z2ADaF9DASmQi/CAiUh0tBtyLy6GdG/f+OemNpHTfdrzGjAdvn2tep205b26aviT9dYwnFCzObLnD9vfpxyMpQNy7nNmEJlwZzw9tXS/6cPAn54NZTHteBQrtD0RgS7K36iPsxYHbV2FWA3mfmyyFY4G2HSVb4JR46rlwb823a02i25R8qASCSMFgjRf+dZYpUiXgqCBkGTRkvO05fh8fTQKDExDVh0dOSwm6km8BJAgdFXvBz83XeUvnW7IJVpMhFz4fWWmoF3YgKHXUqpyhYTs3Ev7H8RCBo3mCZZa36aqk4jtcqTNA/5ATsnkeoGV3odX7+uxvKa38gFdzfEzDSLuCOfwSetbIxsqBmtCggYo8MCkcr/mhZwUwNCcVMZy5+SgfUB6Z0WNAHnvGlMET6PHt0bWdgqalwzeBkh81DAnOGWrWtbFTMzOudfrEqwSDEx91eIKb2OG6JZ+mOuXmeFK+JjIC/JjqzE9NaQs+racN8cKY1WQGvWUVdiv+GOpOXTDmhERKtz7FR
+ XWkFdP7S
+ 1sy+g9b32cqeUxsIAUlWgKdbDY1jporqzW8AAAGGH+iW86dPLisNEo5Q15tA/YuMeBTDSEGTt5gjTqQnS1p39+QqLc74WXfYzzP2P7EojGy+f3wn8BUpBzHLLPRdHFJtPZql7sRbWcv5sDwLUwWs9CZQGcK6UbekhyBbRu8xui52zB39qz/DAhB7YzqnQPSbijJqRJ/V65GuZDlx1k8Gm3/IxbnT5AtqE6KMTo63PDy+yDau7ZGFK5VXX0Q61VuAcVQFMt3phEHYu4kY8Y1aqXe6eHeo0CEmDkYZP3LXW3QikzDod+mhEXB5cVtCi21m7H0JYi7S+VB3htX/cn/c0TrEGKfY+1heOiEMv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,66 +88,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Similar to folio_referenced_one(), we can apply batched unmapping for file
-large folios to optimize the performance of file folios reclamation.
+Currently, ARCH_WANTS_THP_SWAP was limited to 4K page size ARM64 kernels, but
+large folios requiring swapping also exist in other page size configurations
+(e.g. 64K). Without this config, large folios in these kernels cannot be swapped
+out.
 
-Barry previously implemented batched unmapping for lazyfree anonymous large
-folios[1] and did not further optimize anonymous large folios or file-backed
-large folios at that stage. As for file-backed large folios, the batched
-unmapping support is relatively straightforward, as we only need to clear
-the consecutive (present) PTE entries for file-backed large folios.
+Here we enable ARCH_WANTS_THP_SWAP for all ARM64 page sizes.
 
-Performance testing:
-Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
-reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
-75% performance improvement on my Arm64 32-core server (and 50%+ improvement
-on my X86 machine) with this patch.
-
-W/o patch:
-real    0m1.018s
-user    0m0.000s
-sys     0m1.018s
-
-W/ patch:
-real	0m0.249s
-user	0m0.000s
-sys	0m0.249s
-
-[1] https://lore.kernel.org/all/20250214093015.51024-4-21cnbao@gmail.com/T/#u
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: Barry Song <baohua@kernel.org>
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
 ---
- mm/rmap.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 985ab0b085ba..e1d16003c514 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1863,9 +1863,10 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
- 	end_addr = pmd_addr_end(addr, vma->vm_end);
- 	max_nr = (end_addr - addr) >> PAGE_SHIFT;
- 
--	/* We only support lazyfree batching for now ... */
--	if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
-+	/* We only support lazyfree or file folios batching for now ... */
-+	if (folio_test_anon(folio) && folio_test_swapbacked(folio))
- 		return 1;
-+
- 	if (pte_unused(pte))
- 		return 1;
- 
-@@ -2231,7 +2232,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			 *
- 			 * See Documentation/mm/mmu_notifier.rst
- 			 */
--			dec_mm_counter(mm, mm_counter_file(folio));
-+			add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
- 		}
- discard:
- 		if (unlikely(folio_test_hugetlb(folio))) {
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 93173f0a09c7..58f7b4405f81 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -120,7 +120,7 @@ config ARM64
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+ 	select ARCH_WANTS_EXECMEM_LATE
+ 	select ARCH_WANTS_NO_INSTR
+-	select ARCH_WANTS_THP_SWAP if ARM64_4K_PAGES
++	select ARCH_WANTS_THP_SWAP
+ 	select ARCH_HAS_UBSAN
+ 	select ARM_AMBA
+ 	select ARM_ARCH_TIMER
 -- 
-2.47.3
+2.43.7
 
 
