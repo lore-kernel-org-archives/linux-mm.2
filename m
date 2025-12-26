@@ -4,108 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9D4DE7AD79
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 02:12:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA85FE7AD78
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 02:19:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 060496B0088; Thu, 25 Dec 2025 21:12:14 -0500 (EST)
+	id E59556B0088; Thu, 25 Dec 2025 21:19:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00DE96B0089; Thu, 25 Dec 2025 21:12:13 -0500 (EST)
+	id E069B6B0089; Thu, 25 Dec 2025 21:19:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5CA96B008A; Thu, 25 Dec 2025 21:12:13 -0500 (EST)
+	id D09476B008A; Thu, 25 Dec 2025 21:19:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D152B6B0088
-	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 21:12:13 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5A3408C127
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 02:12:13 +0000 (UTC)
-X-FDA: 84259997346.02.97D8B9A
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 75EFE80008
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 02:12:08 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766715131; a=rsa-sha256;
-	cv=none;
-	b=ojgqIuKXRINEpWaqpE4onF9Z8eIfaAdlAqddRfuVe/SEke3TB+mVPtOdGxR7JGwRJgfy1A
-	6m3fSA4FqmlfFLaCtW4/HvB1SOxBVzgBffc++0y3yRJPyg1a1MSXcZWmZfLrz+SX2Rn/Ux
-	2CY+kCRnSDrC6+szot3DFwu6w1ylRlg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BCE026B0088
+	for <linux-mm@kvack.org>; Thu, 25 Dec 2025 21:19:42 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3F28159FFA
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 02:19:42 +0000 (UTC)
+X-FDA: 84260016204.20.42C691E
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 70C5E140002
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 02:19:40 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=j0SCatQX;
+	spf=pass (imf09.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766715131;
+	s=arc-20220608; t=1766715580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EC9PlpSlHlSGM8vUpGB7O9CFtRBGbGwH+yCe/FQZv30=;
-	b=zRkkZ8w5QuPJL0Y5nnG7eri4zaCsn9azlTu1YqsXPmSU7a9gO02gkIU4mvvz0kudAMDXjD
-	2dzKEtxn0QEGrbNW56vaxtt/VfyhW6RBfBLMkUcu13Xa9t3eUV/SLUOtpAGLevibRIrAHX
-	CypjBkxYY6Z55BFpTBgRPrfya8dje/4=
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dcpyN4nkhzKHMLL
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 10:11:40 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id DB47B40590
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 10:12:02 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgA35vbx7k1p_fwCBg--.54121S2;
-	Fri, 26 Dec 2025 10:12:02 +0800 (CST)
-Message-ID: <8354b8b7-2d94-431b-b60a-6a744ab7ca06@huaweicloud.com>
-Date: Fri, 26 Dec 2025 10:12:01 +0800
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=t7MwV7wnomdpUA3QvJZeGbNIM+Niz71u03D9NfQ2Qt4=;
+	b=lf7xfAdSzy4bH0orZR+cAVIWWWx/CAxo5tIoki0WLbIGEWKYcpIScUWYE84ypT/WysgsQb
+	Pre2UgMmNpRtX+41MFSJv6d9Rj2YCV5KZiLjvGu1Af3HYNy59tC3SH9NjE6hIpEEQjvwVt
+	+peH7snYiAbY3x+NgjgQR1sI/BsxVfY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=j0SCatQX;
+	spf=pass (imf09.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766715580; a=rsa-sha256;
+	cv=none;
+	b=23ag4w5tiJ1eIHM1z+Yn10TDpvnKMkmxYYnJeU/MrUVA3v17BdO6u9JpRWnufu0wFTj9Qr
+	3pQMBWQINN6GHjEvVWlEku4VoMXMoptHlSCeGHs5I40ERvkvVCCH+yYvy2IKrY4MiBTbhM
+	mHYXob82jl11ZisBvNkIzeUlOtcvm3I=
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-78fc0f33998so41461487b3.0
+        for <linux-mm@kvack.org>; Thu, 25 Dec 2025 18:19:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766715579; x=1767320379; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=t7MwV7wnomdpUA3QvJZeGbNIM+Niz71u03D9NfQ2Qt4=;
+        b=j0SCatQXPhOy20WoejcubhADXRMGyeGmQrlinKDIFLLwNd/dwdsI0Qp4aMgyvUgkE+
+         dpVW2GNRMQ167J2BMS7XVlCqo8lF2n7K7Y4QQY+1Qi10NN3QtpBe+6w8dQNLJh8AkiIs
+         yqz0rFJFLzJCM+CALaCo7KCoFGz784e3xsgHZIvtJ3LPF9PJfrh1SgzOccwr3xh44G3n
+         IHGUt2cBdWri4mSebi7GBaQ2uhGM4SZdsaMuFsD5TLY8EPyDvG83ImpL2+TlIDQxEAB8
+         Bgih76Y27ygUcSFxlT+3u+LDIJD4wy1LYWrZmH3X6fPqPnCT9fLOxS96FJzis3lTs8U5
+         HY6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766715579; x=1767320379;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t7MwV7wnomdpUA3QvJZeGbNIM+Niz71u03D9NfQ2Qt4=;
+        b=WFq9xj/Wj5oh2gFjHSAZwrnMziblDtgbYdrY0CRLdj81RkZdB5JzbjRe/476j6cr4/
+         PcesM5FF4hRIqez9eVgd8ClnyZGLLKlvzCW9adlCK6xMOLNMpRZLRQZsvrasE1Y81fYG
+         0Mif1ZLRJ6QXkE8kdbb0S7P8C32MT1X3GDvyb+mhVVus6+x9ea8UY6ocVyjdoduurawC
+         kuHv+aCj7Z5n+BX4jMCaEOv1TvK8zzgoLNBZI1UvsWQVpk8Pae4NZQDuIIbL0pF6hg8T
+         Unws8GKHb/ClVPr1fTdlN0ASpswiKVwEkwHRneNwrRdg61VS+l/AhODFxvhmssdxlgRV
+         yHzg==
+X-Forwarded-Encrypted: i=1; AJvYcCXartWefGqqzTQ6Ejg6cXghU20LvOoKHaF5hdd1sLtIPbXC4+mS5hXpAxm2tQ7Qk4AWvWXZPgCHPg==@kvack.org
+X-Gm-Message-State: AOJu0Yw27TvoKJ7uMiuRjEl2snIFos0j1TcvLspQjt5t+MiLh412fcpg
+	lcJ3+0YaiVuHq+zNe4jzcYbnHjM4pnp3EE0i57TeH59GluNkH/iHgG8t5TnLlhw9dqlapTDGStC
+	MAXrUIQxW4klPkKZH6GeEhjBUARDmcoM=
+X-Gm-Gg: AY/fxX63OLlE8Pjz/vuZ4tt3d2MVmNILmmNtAAIsqXZ1kfj+WJHvzvi5QqeOBAk7FY3
+	PMrJgPpFjrvFHx39FZQvfnBInPAAitWLZ4bsxmjPMR8G11cItG2b6WTUOm15p45IhfsjRZTIcd7
+	EKIMmuh8I9aLpejxaM72xU9S9B5tggvA9qkqfj0E0toPHXg22QOjir/dhgWXul0d4EJ6+Z7QhzL
+	40xP4f47XbAilkSqDkdnqty0jUglNyo29WcjMGmuhy5RI5ulOWGAuoTFHHMDa92zYTlImKi
+X-Google-Smtp-Source: AGHT+IH2ZFQ8GgZ8BOanNglgLtEm635duvNuVsF9Wfc8H6UNreiOxRUqdz6IgbwI87pzbFD1cL2acGM0/OKe7xcIPlc=
+X-Received: by 2002:a05:690c:7409:b0:78f:ac82:51e7 with SMTP id
+ 00721157ae682-78fb403c2d2mr349347387b3.40.1766715579436; Thu, 25 Dec 2025
+ 18:19:39 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/28] mm: memcontrol: prevent memory cgroup release in
- count_memcg_folio_events()
-To: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
- mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, mkoutny@suse.com, akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <5f8032bc300b7c12e61446ba4f3d28fba5a7d9d5.1765956025.git.zhengqi.arch@bytedance.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <5f8032bc300b7c12e61446ba4f3d28fba5a7d9d5.1765956025.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgA35vbx7k1p_fwCBg--.54121S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFWrWw45WFW3WFyDXryftFb_yoW8AF4fpF
-	sxGwn8Ar48JrW7urnxK3W7Z3yfZ3yvgrsIyFWIkw1fZFyaqw1UGay7Kw1Yq3y5ArWIkF1x
-	Xa1Y9rnrWayjqa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
-	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
-	j7l19UUUUU=
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Queue-Id: 75EFE80008
-X-Rspamd-Server: rspam03
-X-Stat-Signature: kifqksxwd7ekmapcegc9yeb1piq6fwb5
+References: <CAHOvCC4dYGqY2pMQktBbO-NWKGE2XXeA1e+6BrP2QtsjM2Dodg@mail.gmail.com>
+ <20251225200051.1069-1-sj@kernel.org>
+In-Reply-To: <20251225200051.1069-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Fri, 26 Dec 2025 11:19:28 +0900
+X-Gm-Features: AQt7F2pXT0e-4_oBLK6sV7pkwmAOSOx89g1eFse8oF9DsLlLzTCpYPnqVGTG6DM
+Message-ID: <CAHOvCC4f2xPK_LwFoisdqr_wX-RbdW9KUq48+82CMC=5ViF=ag@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon/core: modified control->repeat loop at the kdamond_call()
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, rgbi3307@nate.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 70C5E140002
+X-Stat-Signature: ydj8yon5kdpamoydiqo7cibkzqpjp56m
 X-Rspam-User: 
-X-HE-Tag: 1766715128-740931
-X-HE-Meta: U2FsdGVkX188/Avq0ATqi7uIadhruurNEDLPjmK5Cju6OnnAZzMEzIP4Vlw7f51fnc1vdyaC+NFhSq4783WZsxQN3ag2BECFtktVTpoB7UnetznGzTfsOLYQBMjUAem0SjclacwodvPm8s41gJdH+lc/KXLDWmikyT0alcHdG3YmPnWLSK/vi4XE3/3a2ywSzfRIA2e4WmLFLgt3QaWZ4hP+GqIcAmT/6crJOph+sF5b0T+OXQpcKiTRnznNNGsYkwnD5FYo59yaOivoDx2k5b7LgAHDyf3frYIfCXq7AW/+7kBEPdWQJC9PA7Rcy7LGlHQzb2ubAnA2O9/OfYoPJ1GCo33eHYQccw2Urgt/++pNxdA+GsOV8mT1Wr7ITEb+y6r4KQ5Bz/N78K1wbxKfTMiSaOQhtavsBEoOeHby2dZWt1g/U8LpkXlIs5mOaHMjMuqHyUXbaQ9kW5AqlLMYSue0y8MFSvDzZM+BqRwA1kxXyP0htLtPYktzKZUhuJL/fQvSD2Xxpr2kLzYA3tUt5cxIL2TNpqCTtKpTOxyx/acfdW8NRS+IfamAS6PQJ5+AItTwgEjXtcoKikZ5N15NeiYbCC0h0DC6eRYH+Fw0N57LCCqXC1tW5SprBDCO2UQAPoUj6PmpkqXtLF+kl76E4pQktYZLXtYN2XyzdwRhlSMX3iL0pkhEam6eIS2qDyc/7raojjgHYXmTQj+nguMJLMPzscfRYyMrNvgCSL5zhY8o+37KkxdMF6cffowXln6Fw/w4qumKrWktQ5df2GWuMZ5cQFcg46CaEVmzcv9nrH19/qtnew32wo6f7sQrMK+6gZ6triTfm1jwnZ/Skc8PMaQOuUGU3t7wxBKxETCzVJfEt2BXMNnaCUuKXoUrSF4tiyPEMRAKKHKvaMUAszTTfRB2UWR8CDdYNux6BpQ+V5oAGmZWuc488nivxiXAszMisXo1cSxbRFV61L+fS1h
- iDwR92Y1
- eVYkJ5gzPTo/FWvyHvzkXQmhplyc8E3P39PzKeD0gikVkKIuHrfLOvCOsL1pYsjxmskh3uIZq+s9/xUR4GrKq6dimmG81L4xd+TVL7+6K8ntMAUovjMREEHHfOKpxH4LPllgM5NG4/l705nyCri/I8alkPatDHo5cl1EFtgGP144QfABVYSXXwgQ9L9of/x9JHGnKuJ7jku8WkpX2+LbqztUPgdUqTyJB712wKrnscI3N7Zlc9bKhxjbXyUkG/iTNqDv7Eja5WGAlnE1mTmaF93GK1A==
+X-HE-Tag: 1766715580-15105
+X-HE-Meta: U2FsdGVkX1+3gGqeU4PSyLYPGpJjSz2fscDAgt5+vCl1UI90lsi0h8o+ENbEAh1S7WMMDsR55hpjwQryRUBeuh+ORwQjeViG3aklII7tGVPnTKat7f6aqGUpFm3jhpmUkR1+er6R7Fyqg6ikVBk7FPtP0A1BECXkhx33637TGd1R/5H3nkvbuATNRsAYNGeT3xR0zqD/VXRvyz794o+6AOK74iOP2GRgMsmrAJ53vLuo1kQXQrGbpZ+kIhR0EbDkx4s0GpJgmevnqwQq3pzsAkfUVztWebfAlJpZHg3SBXfbiVpBu24AFrCG9oS0e3qR0ft59sTXdW0oVxtHtuIW36+9l8662wytrjWn2I37CLNDGd2kaKCKy1yy4ZfQ+I+wgxdN8Vf+yBXzaKd42GFCdu5jWlRKVmtXeaIAqNb+oH+9o6ahAAVDxVfOt8wCMYZomLlCD2+gwVsYua/HhbuLoIEEgYA/hTj6OwvAIyAJwf7gilQKxckcQbbXZgV/Eyu6J/ipmVDqzwIke1ONXYKLTzI6X4FYYii9jTSlbqSyxizNltRQj80m4h2881OwfBZtodLGx4riPKkpu3/KgKNYDhfMtXmbx+8pSPSVT7oN3FuJyCgBCITBpYxtCraYe5K4YcA+JrG+QiJIvnXHJYNWGhelMGHa6rbR483aQwrOrjWIHh04KQzHq/5E/5sHxoAkmS0g+81wq2invHTrwnyfSCfkeFzjkDvOirnbIVmvmhD6vqq5RJ06mtpqbcCyRWwfPFWe00qbzy4oR+SkB3cxH0Y2T5TmLt89s1sr4IOU0ZyUwPuiK8TNDm+ZawkG86ykA4ybLY8ui/d3MjD0XvcPJvFQswisFPUeLO5WLsKxrVGvLzu9UAbdk4SpI7E/2AgopPjZqh7uT6+huEPJfvxMR4/BS+CO+sJORCSqoWV3FpaWZALNLcqi/C6Qp6lz3ETO2grd29ZqeaOVQgJd2Ov
+ 6txbaP4/
+ gDlj1u8zPHdrmUGBMBPy/wlmzP5he7TDlcrqYcgBSsvIIuatwul94DCRmjuPdR3TB8QgdvuZMwZFWBavX70/Y0mJcx1I4fshwB8zEkbuDO0DB0x/B9cDEUbnQESlnI7Xket+T5czgQ//X2ac+6Cop4+LHI3Wndx6Gk4gNMwaC0L+aCVSvMPZcru/6+i0WtSYQGB1DebgkR56m0yP5Olw+3FYJz8I2yroZ4L8o9HLOa+oltf3nlsFTjWQAcw9o1IXc8yzg9Z5ufgL4YJ0Uuna48UUaaL+4Zgm/+2mWshsV5X5206fvY5M8u8RLIcj8ZcDhRpu1DTdPriTnjpIBkrNmVocEg9FdQ6L2Hm3KlSPSy8I0ySxNmOyM7+tbSVFvwCUrQkDsn88vZfIQBxmrocjaPZ0HtzyBdLa1FlO2mS6u+REE0b3gqXXtxOUfuHYjMYacL0DJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,57 +113,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, 26 Dec 2025 at 05:01, SeongJae Park <sj@kernel.org> wrote:
+>
+> On Thu, 25 Dec 2025 12:10:30 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+>
+> > On Thu, 25 Dec 2025 at 10:07, SeongJae Park <sj@kernel.org> wrote:
+> > >
+> > > On Wed, 24 Dec 2025 21:43:54 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > >
+> > > > The kdamond_call() function is executed repeatedly in the kdamond_fn()
+> > > > kernel thread.  The kdamond_call() function is implemented as a while loop.
+> > > > Therefore, it is important to improve the list processing logic here to
+> > > > ensure faster execution of control->fn().
+> > >
+> > > That depends on how critical the performance is, and how much complexity the
+> > > optimization introduces.  I have no idea about if the performance of
+> > > kdamond_call() is really important.  If you have a realistic use case that
+> > > shows it, sharing it would be nice.
+> >
+> > This is because kdamond_call() is called repeatedly in kdamond_fn().
+>
+> Yes, it is repeatedly called.  But, my question is, does it impose overhead
+> that great enough to make a negative impact to the real world.
 
+I agree that the overhead is not that much since there are only a few lists
+added to ctx->call_controls(CTX.head).
 
-On 2025/12/17 15:27, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> In the near future, a folio will no longer pin its corresponding
-> memory cgroup. To ensure safety, it will only be appropriate to
-> hold the rcu read lock or acquire a reference to the memory cgroup
-> returned by folio_memcg(), thereby preventing it from being released.
-> 
-> In the current patch, the rcu read lock is employed to safeguard
-> against the release of the memory cgroup in count_memcg_folio_events().
-> 
-> This serves as a preparatory measure for the reparenting of the
-> LRU pages.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  include/linux/memcontrol.h | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index bc526e0d37e0b..69c4bcfb3c3cd 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -974,10 +974,15 @@ void count_memcg_events(struct mem_cgroup *memcg, enum vm_event_item idx,
->  static inline void count_memcg_folio_events(struct folio *folio,
->  		enum vm_event_item idx, unsigned long nr)
->  {
-> -	struct mem_cgroup *memcg = folio_memcg(folio);
-> +	struct mem_cgroup *memcg;
->  
-> -	if (memcg)
-> -		count_memcg_events(memcg, idx, nr);
-> +	if (!folio_memcg_charged(folio))
-> +		return;
-> +
-> +	rcu_read_lock();
-> +	memcg = folio_memcg(folio);
-> +	count_memcg_events(memcg, idx, nr);
-> +	rcu_read_unlock();
->  }
->  
->  static inline void count_memcg_events_mm(struct mm_struct *mm,
+>
+> >
+> > >
+> > > > For ease of explanation,
+> > > > the data structure names will be abbreviated as follows:
+> > > >
+> > > > damon_call_control.list: C.list
+> > > > ctx->call_controls: CTX.head
+> > > > repeat_controls: R.head
+> > > >
+> > > > the execution flow of the while loop of the kdamond_call() function,
+> > > >
+> > > > Before modification:
+> > > > Old while loop:
+> > > >
+> > > >         CTX.head <-----> C.list <-----> C.list <----> C.list
+> > > >         ^                   |                           |
+> > > >         |               if (C.repeat)            if (!C.repeat)
+> > > >    restore: only one        |                           |
+> > > >    list_add_tail()        list_del()                  list_del()
+> > > >         |                   |                           |
+> > > >         +                   |                       complete()
+> > > >         R.head <------ list_add()
+> > > >
+> > > > To process C.repeat above, we use an additional list, repeat_controls.
+> > >
+> > > Your above abbreviation didn't explain what C.repeat is.  Maybe you mean
+> > > 'damon_call_control.repeat'?
+> >
+> > Yes, that's right.
+>
+> Thank you for confirming.
+>
+> >
+> > >
+> > > > The process of adding C.list to repeat_controls and then restoring it back
+> > > > to CTX.head is complex and inefficient.
+> > >
+> > > I agree.
+> > >
+> > > > Furthermore, there's the problem
+> > > > of restoring only a single C.list to CTX.head.
+> > >
+> > > I had to take some time on understanding what this mean.  And it seems you are
+> > > working on an old version of the tree, and therefore saying about an issue that
+> > > already fixed by commit 592e5c5f8ec6 ("mm/damon/core: fix memory leak of repeat
+> > > mode damon_call_control objects").
+> > >
+> > > Please use mm-new as a baseline of DAMON patches, unless there are special
+> > > reasons.  If there are special reasons, please explicitly specify.
+> >
+> > This patch is based on v6.19-rc2.
+> > I will continue to refer to mm-new and damon-new.
+> >
+> > >
+> > > >
+> > > > Below, repeat_controls is removed and the existing CTX.head is modified to
+> > > > loop once(1st rotation).  This simplifies list processing and creates a
+> > > > more efficient structure.
+> > > >
+> > > > Modified while loop:
+> > > > Not used repeat_controls:
+> > > >
+> > > >         CTX.head <-----> C.list <-----> C.list <----> C.list <-------+
+> > > >                             |                           |            |
+> > > >                         if (C.repeat)            if (!C.repeat)      |
+> > > >                             |                           |            |
+> > > >                           list_del()                  list_del()     |
+> > > >                             |                           |            |
+> > > >                             |                       complete()       |
+> > > >                             |                                        |
+> > > >                           first --------> list_add_tail() -----------+
+> > > >
+> > > >         if (C.list == first) break;
+> > > >
+> > > > Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
+> > > > ---
+> > > >  mm/damon/core.c | 37 +++++++++++++++++++------------------
+> > > >  1 file changed, 19 insertions(+), 18 deletions(-)
+> > > >
+> > > > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > > > index 824aa8f22db3..babad37719b6 100644
+> > > > --- a/mm/damon/core.c
+> > > > +++ b/mm/damon/core.c
+> > > > @@ -2554,42 +2554,43 @@ static void kdamond_usleep(unsigned long usecs)
+> > > >   */
+> > > >  static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+> > > >  {
+> > > > -     struct damon_call_control *control;
+> > > > -     LIST_HEAD(repeat_controls);
+> > > > -     int ret = 0;
+> > > > +     struct damon_call_control *control, *first = NULL;
+> > > > +     unsigned int idx = 0;
+> > > >
+> > > >       while (true) {
+> > > >               mutex_lock(&ctx->call_controls_lock);
+> > > >               control = list_first_entry_or_null(&ctx->call_controls,
+> > > >                               struct damon_call_control, list);
+> > > >               mutex_unlock(&ctx->call_controls_lock);
+> > > > -             if (!control)
+> > > > +
+> > > > +             /* check control empty or 1st rotation */
+> > > > +             if (!control || control == first)
+> > > >                       break;
+> > > > -             if (cancel) {
+> > > > +
+> > > > +             if (++idx == 1)
+> > > > +                     first = control;
+> > > > +
+> > > > +             if (cancel)
+> > > >                       control->canceled = true;
+> > > > -             } else {
+> > > > -                     ret = control->fn(control->data);
+> > > > -                     control->return_code = ret;
+> > > > -             }
+> > > > +             else
+> > > > +                     control->return_code = control->fn(control->data);
+> > > > +
+> > > >               mutex_lock(&ctx->call_controls_lock);
+> > > >               list_del(&control->list);
+> > > >               mutex_unlock(&ctx->call_controls_lock);
+> > > > +
+> > > >               if (!control->repeat) {
+> > > > +                     /* run control->fn() one time */
+> > > >                       complete(&control->completion);
+> > > >               } else if (control->canceled && control->dealloc_on_cancel) {
+> > > >                       kfree(control);
+> > > > -                     continue;
+> > > >               } else {
+> > > > -                     list_add(&control->list, &repeat_controls);
+> > > > +                     /* to repeat next time */
+> > > > +                     mutex_lock(&ctx->call_controls_lock);
+> > > > +                     list_add_tail(&control->list, &ctx->call_controls);
+> > > > +                     mutex_unlock(&ctx->call_controls_lock);
+> > > >               }
+> > > >       }
+> > >
+> > > Let's suppose there are two damon_call_control objects on the
+> > > ctx->call_controls.  The first one has ->repeat unset, while the second one
+> > > has.  Then, it seems the 'break' condition will never met and therefore this
+> > > loop will never finished.  Am I missing something?
+> >
+> > You misjudged.
+> > If (!C.repeat), it will be removed with list_del() and disappear.
+> > If (C.repeat) loops through the loop once, and when it returns to the
+> > first, it breaks.
+>
+> Maybe my explanation was not enough.  Let me explain a bit in more detail.
+>
+> In the scenario I mentioned, at the first iteration of the loop, 'first' will
+> be the first control object, which has ->repeat unset.  The object will be
+> removed from the list.  In the second iteration of the loop, it handles the
+> second object, which has ->repeat set.  The object is added to the list again.
+> In the third iteration, the loop runs for the second object again.  Because it
+> is not same to 'first', the 'break' statement is not reached.  The loop
+> continues forever.
+>
+> Am I missing something?
 
-Reviewed-by: Chen Ridong <chenridong@huawei.com>
+Thank you for your detailed review.
+There may be cases where C->repeat=false is the first control.
+This can also be solved simply as follows:
 
--- 
-Best regards,
-Ridong
+@@ -2567,9 +2599,6 @@ static void kdamond_call(struct damon_ctx *ctx,
+bool cancel)
+                if (!control || control == first)
+                        break;
 
+-               if (++idx == 1)
+-                       first = control;
+-
+                if (cancel)
+                        control->canceled = true;
+                else
+@@ -2589,6 +2618,8 @@ static void kdamond_call(struct damon_ctx *ctx,
+bool cancel)
+                        mutex_lock(&ctx->call_controls_lock);
+                        list_add_tail(&control->list, &ctx->call_controls);
+                        mutex_unlock(&ctx->call_controls_lock);
++                       if (++idx == 1)
++                               first = control;
+                }
+        }
+ }
+
+Thanks,
+JaeJoon
+
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
