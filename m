@@ -4,87 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB7ABE8FDA7
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 18:41:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84379E8FDAC
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Dec 2025 18:43:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1089E6B0005; Fri, 26 Dec 2025 13:41:22 -0500 (EST)
+	id E16C56B0005; Fri, 26 Dec 2025 13:43:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B52F6B0089; Fri, 26 Dec 2025 13:41:22 -0500 (EST)
+	id DC4AE6B0089; Fri, 26 Dec 2025 13:43:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F24616B008A; Fri, 26 Dec 2025 13:41:21 -0500 (EST)
+	id CC7326B008A; Fri, 26 Dec 2025 13:43:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DE8F46B0005
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 13:41:21 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 644F812CFB
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:41:21 +0000 (UTC)
-X-FDA: 84262489962.22.A3DDCF1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D235AC0009
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:41:19 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qUiWm749;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766774479; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BE5E66B0005
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 13:43:52 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6666656983
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:43:52 +0000 (UTC)
+X-FDA: 84262496304.16.D9FE89C
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8DFD780007
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 18:43:50 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AWbAny1i;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.44 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766774630; a=rsa-sha256;
 	cv=none;
-	b=pmbauQK/9BSqSDJnbWrHnmv5jaGdsoUOwYEQXXhnQ5b5RkkMoBjqY6SZiOYcc0XUe66Kuj
-	mBUWAUUcnr2qf/AqAe/KuX5nxzXXTzkbdjwWNVTSVhLrkmhC/Yq7ncFFrReFMQL7yYrffR
-	u19ahvWM4oq891Dy4AiHdTzyKTMnS3w=
+	b=4zYhURvh0hBQchdCWMkE3RfmzpEgkMmL/7DQFWaOqdF2E81WBBPtLUiltqajjtDHn2V8dE
+	fxPjDRIeAQIjV4pihmg/4D7H/CtOvg1qtJNjWQxG0fsucgYos8gZvNe7l0q9wa7k/HazPx
+	kfjSFvwvl19M3FOTKJg5wtlfpM6ErZo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qUiWm749;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AWbAny1i;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.44 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766774479;
+	s=arc-20220608; t=1766774630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kufkVggCItsGJHP1AE0yn84AKp16zM+JHO96dRvTPa4=;
-	b=gGIThJWZPJ8kfE+1bUY2TS1XdH1xN53nwg9zJ4ootgifsmmu/TIuWTYVFap6bVeGWsjTph
-	HtnfCENfsJz2hu0kPS0BCpmxSjFGMFdwQmKY5P4pxAB9RcchwYPmRHyNpzQ8XFji2Njkbd
-	v/r9BbnNn9vKplO1PU68ZbbmqfK1Tnc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 180BF6000A;
-	Fri, 26 Dec 2025 18:41:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E943C4CEF7;
-	Fri, 26 Dec 2025 18:41:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766774478;
-	bh=mEp6J4yadIUdsHFqxS1/gcxPf7v5MNQ8+PlP8jNRAUY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qUiWm7497uoFIXzelm48+mbsYVw9oIQlO3ejG39jnW1uy6FFEP4gle7ZApnB0K/Rt
-	 kek3fMRUveNxzBRP+z8/3FPYgo3s4oLZ070PItPv3/kuwa7iOGFKLplh6vlVvUx368
-	 gvOJo4ZkZzKoob5LkVeOrqBiExXuI3XqK1CT3KelDZ97Yjv6D21qHqvtZwXxu/n8MN
-	 E2UXshFHT3KCrEF4b5e9vvODgtodLlHrwzFabVAgK8FO8CWk83ER5bTbaxcKPhsJI/
-	 gyuNOi7GsMvJ5hnMaxus7BbPDjQXTrVe7zR88titGy31wEfo9nCBcmeuAFgawbyGY1
-	 Qz02b1O8YlZmA==
-From: SeongJae Park <sj@kernel.org>
-To: JaeJoon Jung <rgbi3307@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	rgbi3307@nate.com
-Subject: Re: [PATCH] mm/damon/sysfs: preventing duplicated list_add_tail() at the damon_call()
-Date: Fri, 26 Dec 2025 10:41:09 -0800
-Message-ID: <20251226184111.254674-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAHOvCC6PQKAK5WojmVFqBw0V-TZ+11CM_2uq4z8TxsyEu3gLVQ@mail.gmail.com>
-References: 
+	bh=AJjsXKscziHjL5G8tly5miUEYllllBSBDsQmSPlk9iY=;
+	b=JGpDslHA+4MBqL+yp7H4VNf3yEBJxWljhNo4+rHv3ySS4qH26/m+2BX7jAB/aN9TvvxJv3
+	pUnLxMe62SQQP4aa3fTx3hzvugy/G9M5IEOfPMTFnYz9EYf4lOhRf7uNfjczFlbQUNoxDV
+	YfoHZK2hGGUlCfGW3NYjdeWOqwxHIVE=
+Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-5dfc6be7df3so2646105137.0
+        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 10:43:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766774629; x=1767379429; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AJjsXKscziHjL5G8tly5miUEYllllBSBDsQmSPlk9iY=;
+        b=AWbAny1ihr5NOKKif7p9Mxv9MfVQLQZo9mijEyq4uFY3QJIdrUNGWh9hHcjKhPtQiF
+         P1rYeOIMRit8rKEY3/IdzXoXWFAUlWHSvuW25wSobDKx6wXoKVj7urR/xFo9Wv+1BRzS
+         IyCOsnIWvihcQMpUdRcAV7vDN8Ha+SIhNy4SANR1Wd2//CoM9CYd0UtFtj+wxZM9miXp
+         Wp1IRZGyny0ME/k2bqeLraau7N6WnFRA8zJJJh9tECevg8q3HFzlxTFlnK6CT7HiJ8IE
+         X93+OMxNgseEuzjPxf2I48S57N16qyKncq3woqJ/Anjkw4MbogUU+c7BLZUo2cbwdwHX
+         gzgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766774630; x=1767379430;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AJjsXKscziHjL5G8tly5miUEYllllBSBDsQmSPlk9iY=;
+        b=gk6W5+0TLx9ipGJYjM2NeRXxMpZFvExhrV2WDANU4UTJA4hm+AP6ojF/zcJa0lDDJG
+         IFCmEJAZrVXEoOJVPoy6yiBLiA4bUahQlZDgdE71eeXdJgZblQgGUUmcWCqiYhkmSi/Q
+         82EFOWVa6sAIxinX01fZwSLyw6/CzpJDnK7OX/8ViPnFAsVnEt/OqD7o9Y1WWf1aiTeb
+         u66gAU6y5+kuodVI8nwLHrxPLn1J1ITfnkrXT4fveEnyHtiOtQ1VGcshPF8ossL7HWWi
+         oZeZEorOp00GzGOLXB0CHGImxzUgopRwnCLeCf0xcxCrqDzEuGPa5oMz90BVNnaY/I21
+         ZpKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUoAnG3/LE0tJ3FbkdvktgTO7oe7pS2EDsgpwWFhL+vppy/oGrCYI19CCthz4c5eG9LJI01zpgXVw==@kvack.org
+X-Gm-Message-State: AOJu0YxM9Vx5SqgeDIWjOxeHBAcUATRZVScNSgSNHQn3ICLgqhflUFf7
+	jFQJkBBam3oZKcNWdgqG5DEJ3MxaHpWj1P4kEzhmdQqSDU6NLXl6sIh4pfsk7UfR2ucEU53wn7M
+	6Vxmhz+pvyyvf0b5h6N/VZ1rfUCb6mew=
+X-Gm-Gg: AY/fxX6kP+l79jKj4SD9QqNCR92W6bSM01v6brmdY/Zpot7jZxkzMcmYzFMx7WFlQGw
+	9jtqznwtGFqYP4+1Vrb1TDoWEVG7qxh2ICP6z4cD3FeQvmVoMNIwR4NyP3gisFPhpl3RIJc2MPl
+	uVM50fv22y8NIyBk5uSb8aiU8x56GSfoAqwPAFmdayXUoKkprCRtCN+kckTdCaAEXOtD52qR81Y
+	rFeT1f+Qeqs/sehACN8MuvtDSsT1un/AtFA3tfl109JCA9lyoL2Bnq5PAxCSLcDfvs+xw==
+X-Google-Smtp-Source: AGHT+IFWm1BHVCgCz2zTsLBhD7w/jnavaf615z1Cg8E3jCFm6C0snGNtsrbsTf+upqBpfzQeQlKsbB0atGIBTB7JvCQ=
+X-Received: by 2002:a05:6102:442c:b0:5db:cfb2:e602 with SMTP id
+ ada2fe7eead31-5eb1a656c43mr6743668137.11.1766774629497; Fri, 26 Dec 2025
+ 10:43:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D235AC0009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: jiouxo4gyfqyyx31qs3ta46qqw4o3prm
+References: <20251225094057.286954-1-wale.zhang.ftd@gmail.com>
+ <CAGsJ_4yEAOxUmrPvca3Nzc-OB0+xXk5Y5gzszsY5TPqHCGvgcQ@mail.gmail.com> <CAHrEdetNrGJbogkhMKY-25fgtxupPxKKLkwFGuenV8p5EwzZVQ@mail.gmail.com>
+In-Reply-To: <CAHrEdetNrGJbogkhMKY-25fgtxupPxKKLkwFGuenV8p5EwzZVQ@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Sat, 27 Dec 2025 07:43:37 +1300
+X-Gm-Features: AQt7F2qeAC7SiLMrBSchjbEF6oNKpYWhGFiPxdC477fZ9SuDsudhVPpMbYu_0bY
+Message-ID: <CAGsJ_4wcovpuNKPTfS0STBOHrNREjP-4wam8Oe4e7_ctKsbAcA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] mm,swapops: Fix compile error on set_pmd_migration_entry.
+To: wale zhang <wale.zhang.ftd@gmail.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, chrisl@kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8DFD780007
+X-Stat-Signature: z56w7o79yrai3whqrykmtbsootujzfas
 X-Rspam-User: 
-X-HE-Tag: 1766774479-569925
-X-HE-Meta: U2FsdGVkX1/QrYW4Gt4VL4UWByrFD8Smpw5Bidv/wYlRDVmoR9jHiTJhDtnRZrPHi93EWe7U7nFy0vHxfkQrzmxRkA2m7imYiPXnS2XuU1mjiycfkNrMrAd+UqVkdq5tIPQ7/Xfzk/lsxr8IiDrGYO4atp70Q8n3Wa1kCMp/RYIiBuGSbi9+eeuzmeAMWJO2YJ0g2R9GivEF/fwUxFvW8GvlWLO0LXmeliK1B+fV2OGdKAnYdFFoeR5BoSHRZjQ+fgaNWmr8IDtrBCtWnXB5jzsi3ZfxFS1HLNMv+/oIa51+LTqaBf6Vs4HWuKFTPWKlU3mRkmLfuVaXAGiw+iM63iUN5/LKyl9EBO8ughy9Ohy/cryPQxJGDBG0AtPGicaPBB3Hp/7BaqXYdKI61o0ZkMO/1uhuFNGRRX5wdAjzHLRWEzoCBAZK+9Ark7WRL6DPC8fKY0SAYOkL4PQGLRe8Uh8e/5U3pjJmqBx6ek9k1XaWjagCR9KR4S3Co8V/E8mzD500EilUDuKYf7kJq2tgBzq+FfZuVgEh7sXPvbOuQ2R1qAaSx5FxJOJFe9lLuNOg3VUCdUev1pOA41WzDqW5lmUvPiEaPCh3Xr0fnDb+5hHD4y6VU65SfUiIyTH41wQp/YITP6Xdeh4IjYSPqwzi8upd2xqmWMqdj/+JlywTW+oYkMBwJDV3cwvobdLdulsQ/NXyHSCdrdyXADYueD92rKWhB3kAnZEpIc8/Q1/l9+xN/goSTyMXO83N6PCFZxUuyuWNmQ3+8SnKGU8zy9sxENVDVud/s2q6S/iiGCeWD+yvYd+Q/pmc+jCtoQOLL/kHQIycmW8+Wl2zIyloKfHXkTpq8B7hh+wtoQgiyMeeQzjzA+NrG5EjPqzLqUbcacwvERfRF608jpCiDCHpTjxq6zIdtMqcN/JZRsBpYVXsLa4KTJbhcBEwPg7yHjW8ooCfoe/atsff+GbQ8Mld0IL
- lCnGTyyb
- XFjPTqDf9EAEOJ0fWLXiLCwiMBWmCuU19vKz4o+GM553HetRhALJ89OaqYSx8tVPQNjkIAvuMDu72lPedlbuxvQmuyFAUaJbG+nd8QeI1tTkTAgN8mAVvmDpoS9OqbNsPS3UpJef/A5xVz1/Fl5QI8YdOBHKxVfQzBNUi2Yn7ZcdTGYY/G8EMZcM0q2Kbms+c8FhwcDuOU+4eNj4Pu3Id5CWmknmcBTgAbKPBz43jw+x0Rt0zXUIRs8r+ePT4dFMplXJvHEC+JiflmwaHiwnsq876+nju47QwduD9WQtBfCKosYM=
+X-HE-Tag: 1766774630-387180
+X-HE-Meta: U2FsdGVkX1/MT6g9DL/tibifXfJbd/a6moxHE3gFAJI5Cwsug4imvjEirqCgPmo1AFugHFlILYD26OAT7IUHl9/5MqU0hlMStuUHrKDBTiN6h8AAYlwitejNqsA9ENBmMgp1ZJhU3ffNlpgkRPKGKSmTZPZeOj/klll6rGuLoxtqI1PKsjfsUdtJqltgrMEVQ66ZyhvHvB14jvmArH1FJM1hKyrK4k//RQM3o4P0CU+bqjnkt/ALzRAhPtUox+CMSHhNVDPdUfJD/n6ZjLnNKX//NvpYCF444wT7ZPKVGdTtADJDA7ka/mSUTyNHTrU7ww3tqQjNyME82q0kAlmNnrp8ND38BXs+v6eFzS93rsGC0ICORClHBfEQtKW6D/drZGfQ5X2hUnwS29M8sJUc6QuLuW/EGEHEOQXmafCu4EkkWqhjSG/2V1ZBpnzyApLJ9Ms5Ni4eXIKq3yyqAHAFa6NUFqYi0hG/BhcnolmDYnLJmYWwYKLNQSrmq0Wgs2RN0Hn/c5nWJgQALFPBPBlyGz+r2fYgJ7BTf2NYYxSWIN7XnIWkcNAmLPs+m9aPb8hSJc033DfVhx+orU41XbNHnEEcqtvrVio8U4HK0ZS1y4C2GCd+qnlD3dhgHCRHif2nr/j8m+elOMInRjoiu0hNPf5bT7dXi0SorzH1rjt1h8FHf/g0m4IymR3tld9D2DTqgmnvFZPHjnDLzqRAIfpq6xeX2q7AXaryh1+9XG/6zviFfmjVcHHzyHEgwyyPgbVoejJqYBFJ80PxdJfLhH71Vndl6u8y2kgpc14ZLgZE6ACN4St/D9qaxc7AxBq3Xfbj+sdXPUUcajG1jWjg0Jgf7KYSx+wbS9vsGhuci4w5u20shIWyh3ukNCNhEUUuty6TvodUegiVlBOETD9/6bu1YAJckA9WMv2VPoQACPyuNd2IuUalN0f1pbbjoFm3k8mIEFlSvkKrmwg53g+NQwH
+ Jlah3KS0
+ 4CBtARu3IT3g45YVYqkb3hEH3TMXyDOJ8d3C8VJkSBCFp+HsjAeUg2u9nl7hBvSE00Z8EIX9p8LRI3OUiUO6RfLvtB1CCseRZQhaj2sFkca6KTDcNtfYL1+qXZRWrKwVZzq0GMY5A8AHUgB68tvJ/gzdno9i6IwJIfNEUru63PqXiBate//aiYtv0EjwK1QgXlm3RqGlJvobrcJpThJBFBK6kCxvmqTySTzxxYnBNTOMl6rWxTCBeXv3xyVjzCiWTH9lKFpWkBZygJJ+5nv1z0IeV0VOCobxi0VCGls1mCQx72hx/1SXifXFZUXnUi4BvTizHhV+fJ+3caFv+siL0cz81Yy8ANj6bn8EUgHDnEqYfv+Y1qwSM5s6J/eOuPiqw7qlAX2pq7aEJl0QaAlZ43tNEvRLbqud3/T9la43rAPI7kS0QYc6E/PnB/f1/OQem3P0zVnlqcE2q6U4y7FZUBom9Nv6dS+b8mHlunGsQdS+iFcJbE/OIKLaAqkcffYBTrgsf9i9gQIKlpeE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,97 +117,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 26 Dec 2025 10:48:31 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-
-> On Fri, 26 Dec 2025 at 04:50, SeongJae Park <sj@kernel.org> wrote:
+On Sat, Dec 27, 2025 at 12:46=E2=80=AFAM wale zhang <wale.zhang.ftd@gmail.c=
+om> wrote:
+>
+> On Thu, Dec 25, 2025 at 6:22=E2=80=AFPM Barry Song <21cnbao@gmail.com> wr=
+ote:
 > >
-> > On Thu, 25 Dec 2025 11:35:33 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > On Thu, Dec 25, 2025 at 10:41=E2=80=AFPM Wale Zhang <wale.zhang.ftd@gma=
+il.com> wrote:
+> > >
+> > > ../include/linux/swapops.h: In function =E2=80=98set_pmd_migration_en=
+try=E2=80=99:
+> > > ../include/linux/swapops.h:346:1: error: no return statement in funct=
+ion returning non-void [-Werror=3Dreturn-type]
+> > >   346 | }
+> > >       | ^
+> > > cc1: some warnings being treated as errors
+> > >
+> > > Signed-off-by: Wale Zhang <wale.zhang.ftd@gmail.com>
 > >
-> > > On Thu, 25 Dec 2025 at 09:32, SeongJae Park <sj@kernel.org> wrote:
-> > > >
-> > > > Hello JaeJoon,
-> > > >
-> > > > On Wed, 24 Dec 2025 18:43:58 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-[...]
-> > > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > > index babad37719b6..2ead0bb3c462 100644
-> > > --- a/mm/damon/core.c
-> > > +++ b/mm/damon/core.c
-> > > @@ -1462,6 +1462,9 @@ bool damon_is_running(struct damon_ctx *ctx)
-> > >   */
-> > >  int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
-> > >  {
-> > > +       if (!damon_is_running(ctx))
-> > > +               return -EINVAL;
-> > > +
-> > >         if (!control->repeat)
-> > >                 init_completion(&control->completion);
-> > >         control->canceled = false;
-> > > @@ -1470,8 +1473,6 @@ int damon_call(struct damon_ctx *ctx, struct
-> > > damon_call_control *control)
-> > >         mutex_lock(&ctx->call_controls_lock);
-> > >         list_add_tail(&control->list, &ctx->call_controls);
-> > >         mutex_unlock(&ctx->call_controls_lock);
-> > > -       if (!damon_is_running(ctx))
-> > > -               return -EINVAL;
-> > >         if (control->repeat)
-> > >                 return 0;
-> > >         wait_for_completion(&control->completion);
+> > Sorry. NAK.
 > >
-> > Let's assume DAMON is terminated between the damon_is_running() and
-> > list_add_tail().  In the case, the control->fn() will never be called back.  If
-> > control->repeat is false, this function will even inifnitely wait.
-> 
-> As you said, there are cases where kdamond is terminated(stopped) in
-> damon_is_running() and list_add_tail().  It may be a very rare case, but
-> I missed this case.
-> 
+> > This looks odd. We already have a BUILD_BUG(), so no fix is needed.
 > >
-> > I think we should keep the damon_is_running() as is, but further check if it
-> > was terminated without handling the control object, and remove it from the list
-> > in the case.  Like below.
-[...]
-> However, the damon_call_handle_inactive_ctx() function is to post-process
-> the duplicate addition of control->list.  Rather, it is more efficient to
-> prevent duplicate additions in advance, as follows:
-> I have tested the following and it works fine.
-> 
-> @@ -1467,11 +1496,14 @@ int damon_call(struct damon_ctx *ctx, struct
-> damon_call_control *control)
->         control->canceled = false;
->         INIT_LIST_HEAD(&control->list);
-> 
-> -       mutex_lock(&ctx->call_controls_lock);
-> -       list_add_tail(&control->list, &ctx->call_controls);
-> -       mutex_unlock(&ctx->call_controls_lock);
-> -       if (!damon_is_running(ctx))
-> +       if (damon_is_running(ctx)) {
-> +               mutex_lock(&ctx->call_controls_lock);
-> +               list_add_tail(&control->list, &ctx->call_controls);
-> +               mutex_unlock(&ctx->call_controls_lock);
-> +       } else {
-> +               /* return damon_call_handle_inactive_ctx(ctx, control); */
->                 return -EINVAL;
-> +       }
->         if (control->repeat)
->                 return 0;
->         wait_for_completion(&control->completion);
+> > we should already have:
+> > ././include/linux/compiler_types.h:631:45: error: call to
+> > =E2=80=98__compiletime_assert_907=E2=80=99 declared with attribute erro=
+r: BUILD_BUG
+> > failed
+> >   631 |         _compiletime_assert(condition, msg,
+> > __compiletime_assert_, __COUNTER__)
+> >       |                                             ^
+> > ././include/linux/compiler_types.h:612:25: note: in definition of
+> > macro =E2=80=98__compiletime_assert=E2=80=99
+> >   612 |                         prefix ## suffix();
+> >          \
+> >       |                         ^~~~~~
+> >
+> > Do you actually see this being built? If so, please help identify why i=
+t
+> > gets built.
+>
+> Hello Barry,
+>
+> I compile the 6.19-rc2 for arm64 with -O0, this kind of error log will ap=
+pear.
+> In file included from /home/wale/repo/linux/master/include/linux/leafops.=
+h:11,
+>                  from
+> /home/wale/repo/linux/master/include/linux/userfaultfd_k.h:19,
+>                  from /home/wale/repo/linux/master/include/linux/mm_inlin=
+e.h:10,
+>                  from /home/wale/repo/linux/master/mm/internal.h:13,
+>                  from /home/wale/repo/linux/master/mm/fadvise.c:24:
+> /home/wale/repo/linux/master/include/linux/swapops.h: In function
+> =E2=80=98set_pmd_migration_entry=E2=80=99:
+> /home/wale/repo/linux/master/include/linux/swapops.h:346:1: error: no
+> return statement in function returning non-void [-Werror=3Dreturn-type]
+>   346 | }
+>       | ^
+> cc1: some warnings being treated as errors
+> make[4]: *** [/home/wale/repo/linux/master/scripts/Makefile.build:287:
+> mm/fadvise.o] Error 1
+> make[4]: *** Waiting for unfinished jobs....
+>
+> There is an example on my
+> github(https://github.com/wale-ftd/linux/commits/linux-6.12/) that
+> used -O0 to compile the 6.12 kernel. If you're interested, you can
+> check them out.
 
-I think this is not differnt from your previous suggestion, and thus it has the
-same issue.  What if DAMON is terminated between damon_is_running() and
-list_add_tail() call?  Please let me know if I'm missing something.
+This is not my question. The BUILD_BUG here means this code
+should never be built. If it is built, then that indicates a bug.
+So my question is: under what kernel configuration would this
+code actually get built?
 
-> 
-> > If you don't mind, I'll post the above diff as a patch, adding a 'Reported-by:'
-> > tag for you.
-> 
-> 'Reported-by:' is OK.  However, please check the above again.
-
-Thank you!
-
-
-Thanks,
-SJ
-
-[...]
+Thanks
+Barry
 
