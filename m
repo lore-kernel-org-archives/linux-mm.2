@@ -4,148 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59931E8FDBE
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Dec 2025 00:39:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A24BE8FDB0
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Dec 2025 01:24:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5DB46B0005; Fri, 26 Dec 2025 19:39:47 -0500 (EST)
+	id 455616B0005; Fri, 26 Dec 2025 20:24:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A149A6B0089; Fri, 26 Dec 2025 19:39:47 -0500 (EST)
+	id 3D8BF6B0089; Fri, 26 Dec 2025 20:24:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9168A6B008A; Fri, 26 Dec 2025 19:39:47 -0500 (EST)
+	id 2E4AC6B008A; Fri, 26 Dec 2025 20:24:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EC3C6B0005
-	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 19:39:47 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2ACE016085F
-	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 00:39:47 +0000 (UTC)
-X-FDA: 84263393214.24.75371E3
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 95364140003
-	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 00:39:44 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CALR7v4X;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766795984; a=rsa-sha256;
-	cv=none;
-	b=MX1coOSkfHBQixCq3ReK5aOgLG63FFsxKglrHh54edJiyCF4qlv9GHu4wMzULv64J1NLTY
-	pZnI9hJXfjpVPgTex+qkd41yzCOSbLaGiEJFbZRim8VNedBmS9tj5G2pcDhfmuuu0eQ2md
-	mN6uBaTaFV2fnLs0TxdvZAh+VcqEo7Q=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CALR7v4X;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CCD96B0005
+	for <linux-mm@kvack.org>; Fri, 26 Dec 2025 20:24:38 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8CECF1394E3
+	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 01:24:37 +0000 (UTC)
+X-FDA: 84263506194.06.1A56E4A
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0309F120008
+	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 01:24:33 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=GMn49GJq;
+	spf=pass (imf29.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766795984;
+	s=arc-20220608; t=1766798675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pERT9koOQ435TwRjMEJhS6iFHKSf3ugdix7KpFMpVgE=;
-	b=aO4tqnwcwpIhi/XAm8lu8vgla+78zEm4JANLdlovoA830eydgta8WP4wXMbsPNsHmWE9C8
-	bRqaY56SV59o+jHx+IGBgrh07cCCNrgbAoNlM+QQZFVrBMGkLC965OxeaOhX9a/wQriGDG
-	nZYc4X8smbDNlxzQtK3LMg/ZyC1666A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766795984;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pERT9koOQ435TwRjMEJhS6iFHKSf3ugdix7KpFMpVgE=;
-	b=CALR7v4XUscPCQ8bYSOzM680vVtmAlbCmMZTMn3C6UPLBFhGQ1OJgt/tF+92D6fISZ5yRz
-	WczxCvDzIzajFAMcXLUy40smos4wCufAIrcTwzY4lG1LmuU29u1D7fHiaF4SclDzRjBi//
-	HPlEne4pq1KjVdEKTZSoJ5Lw1Db1cz0=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-454-GuGVNmdEOhS0nB00TR7lEA-1; Fri, 26 Dec 2025 19:39:43 -0500
-X-MC-Unique: GuGVNmdEOhS0nB00TR7lEA-1
-X-Mimecast-MFC-AGG-ID: GuGVNmdEOhS0nB00TR7lEA_1766795982
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8888447ffebso186222286d6.1
-        for <linux-mm@kvack.org>; Fri, 26 Dec 2025 16:39:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766795974; x=1767400774;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pERT9koOQ435TwRjMEJhS6iFHKSf3ugdix7KpFMpVgE=;
-        b=DixOScr2P/05gICKTXX3nCKK5zwlFFDGN+oUR+2FV4UY73Pq2lJ5U+bVkSguX6/+6z
-         SzoN0I82grHWk8IKGEf6n39iOAh0GKfDGS7/2RxqMqxDLhAWgAplAK6RoBmtr//r80o3
-         leR9DIN17hZkaFleEL0CKlklNukTHnrYc0Ao7WRL4XxJf0V/B9iUWJo8R+vXFpgedWpa
-         2JvBaj22rjyZKjFmkqXKRzxLHbbtbc/gpUnHABiVm/ryPXYMwG665xMEyRfKb0vytO7y
-         1ZsdHrNQI0bqZYiNHwBe657fPtX9kG11erpwMWPG7V3cIYFgjuvY/0hOTRSATpys/Jfl
-         +1tg==
-X-Forwarded-Encrypted: i=1; AJvYcCVzKnI7EpPWpAIfhafsQgFhjlJPmr8QbVV50o/xz5w/ugrYERlbL54H+30pc+LT5XzL+RwXpVU08w==@kvack.org
-X-Gm-Message-State: AOJu0YwtvMEUoqQZKuJ3S0A50gl03U86nIueziliGEcyZkvDGmbgviR6
-	IQk8WimlLbK0iXN1+IaCk+HaWDDw9MZfqqsIeLOR0gPtFYuZ9ansh9wFXhIX+wEOicwm7JvvPSB
-	yxYQ36TV5RIc5hPTL2y2/bM0vjbUqp341TT99o0awnFI1BvZ2K+kL
-X-Gm-Gg: AY/fxX5rA2sDOFwCi43OSh2mvP1bfcY7XtzvDOc1R8VOa5is3KaDIL7R2TAXnqK9Lyv
-	dVx8FcaDfb+Q/CsJOaBojeELZphuTurGD6DdTgzPsd+c/xTt2xjRTgNVdamRjxCG/xRuOECRCz5
-	aKzoA4RHWZYkZBd4WuoN7zMSsV9N8bSDCp+NN8qJ2yL3JFdxuZOUs/uN/QbM8EVfbtlmTD0k8lp
-	+80uxitFaVjAbkApafxJXBceRLmfnnHD4Hxhkezuih1Cs0o+CUyeUI/UTNO3cXxGbIwgjbaY03F
-	Tv9J3jDo93dYi8PX9B3vK8fD+qiQPvZGICJtMiFQj987+TD4HeT1f9M3TAq5lY9B9Xc3rBVL106
-	+BAS/L9jqPlVQkEeJClKiWSspJFHBEvCxYAVu8Hw9w9wUsr8Ajhs2RSPy
-X-Received: by 2002:ac8:1283:0:b0:4ed:43fe:f51e with SMTP id d75a77b69052e-4f4d96611cbmr138083441cf.39.1766795974381;
-        Fri, 26 Dec 2025 16:39:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHxBDI7wuXFeJvOL182RfGJ72MAWyQzGy7wYDnXaQodt5PgGkJkP10V4g9eH2qnu2LfLMUFPQ==
-X-Received: by 2002:ac8:1283:0:b0:4ed:43fe:f51e with SMTP id d75a77b69052e-4f4d96611cbmr138083091cf.39.1766795973951;
-        Fri, 26 Dec 2025 16:39:33 -0800 (PST)
-Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4d5b4c975sm118077431cf.1.2025.12.26.16.39.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Dec 2025 16:39:33 -0800 (PST)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <370149fc-1624-4a16-ac47-dd9b2dd0ed29@redhat.com>
-Date: Fri, 26 Dec 2025 19:39:28 -0500
+	bh=Ho5QV9/TnOp2NE1FOM+sYQerAf2ACztkwBtddDPusaI=;
+	b=qEXtCM4JAWl82vSOLRHzxGEywmHORp/8UozzjNWY8t5gbvqKqZz4CI6SdyYcBFa8EE6f2i
+	xpFT739NkNsubvuw0Pkss9lOJg9xBtOVWkP85fzsQ9haJs3/660jGGWqt4NvRTYzSyIB8m
+	VEZnPgetcLrIPBK5Y5sfVEFhTsbaRdo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=GMn49GJq;
+	spf=pass (imf29.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766798675; a=rsa-sha256;
+	cv=none;
+	b=SLauKV0ebJaaZEZc6EA3lhTLgBlYbtS6WBRA3h7X57FT/aFVBxwjMdoSeJwAE0RDMcUhJh
+	U1sd6bgBYZi2Y3zOIpj5HSHZH1br8uf9XjLgpM2jVqhL2c/IwltQtVZNPU6/9nQk0cFC+c
+	kb2hT27BHduZpX4g98qpLhGW7Ff3pTE=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Ho5QV9/TnOp2NE1FOM+sYQerAf2ACztkwBtddDPusaI=;
+	b=GMn49GJq/1bIXUv9aQ3x6KUZkCIcE0ds2NorFN8VczLqYae8LYkCnpR4F3AABmGX71AIT+wTz
+	/UeqZwVF3ZhPzZk5cYWjgPFWk/oUDxte1kYR1O3FIlvf7PU1EOjRwlWAkJpuel1OviNSQj4gMez
+	SCRvf8TPL7UaVrdSwQAYYy0=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4ddPns1fP5z1cySw;
+	Sat, 27 Dec 2025 09:21:21 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4817740565;
+	Sat, 27 Dec 2025 09:24:29 +0800 (CST)
+Received: from [10.174.179.179] (10.174.179.179) by
+ kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 27 Dec 2025 09:24:28 +0800
+Message-ID: <eefae4cc-ec75-4378-a153-c190fdc230c1@huawei.com>
+Date: Sat, 27 Dec 2025 09:24:27 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 33/33] doc: Add housekeeping documentation
-To: Frederic Weisbecker <frederic@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
- Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20251224134520.33231-1-frederic@kernel.org>
- <20251224134520.33231-34-frederic@kernel.org>
-In-Reply-To: <20251224134520.33231-34-frederic@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: A7j5s0F69Y2ms3oRWuP8oRfGGDXTH0vkOuAVDFyUodY_1766795982
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 95364140003
-X-Stat-Signature: hnzctqeernefc868e9zj533zcoyxenbe
+Subject: Re: [bug report] memory leak of xa_node in collapse_file() when
+ rollbacks
+To: Shardul Bankar <shardul.b@mpiricsoftware.com>, "David Hildenbrand (Red
+ Hat)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Matthew
+ Wilcox <willy@infradead.org>, <ziy@nvidia.com>, <lorenzo.stoakes@oracle.com>,
+	<baolin.wang@linux.alibaba.com>, <Liam.Howlett@oracle.com>,
+	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>,
+	<baohua@kernel.org>, <lance.yang@linux.dev>, <linux-mm@kvack.org>,
+	<linux-fsdevel@vger.kernel.org>
+CC: Kefeng Wang <wangkefeng.wang@huawei.com>, <shardulsb08@gmail.com>
+References: <86834731-02ba-43ea-9def-8b8ca156ec4a@huawei.com>
+ <32e4658f-d23b-4bae-9053-acdd5277bb17@kernel.org>
+ <4b129453-97d1-4da4-9472-21c1634032d0@huawei.com>
+ <05bbe26e-e71a-4a49-95d2-47373b828145@kernel.org>
+ <a629d3bb-c7e2-41e0-87e0-7a7a6367c1b6@huawei.com>
+ <308b7b3c4f6c74c46906e25d6069049c70222ed8.camel@mpiricsoftware.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <308b7b3c4f6c74c46906e25d6069049c70222ed8.camel@mpiricsoftware.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.179]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
 X-Rspam-User: 
-X-HE-Tag: 1766795984-814476
-X-HE-Meta: U2FsdGVkX19xDjG2SlzNX4LnLGdIJVyh27tUOe0IzNcIJyhvqnwZR94dJ8PfeN7dMvTjcV3dNZe2OOh3Jo9uqdvu/WgF3/u5hOfdGk0vdnkBVcpaSpJTV4FZxRcB6TslSn2rENt7cauN4Q15LGWvdn6EKcV0cuWjZw+IABU8mdA1crDcs96irbRZV6BgOHxPCEKTu8O//WmaFOXxyBvg5X4qtdXFawuEQlZR49yb8WJA9lIXtI9IXCzcfQvtR/uvFo3lyC0LIocVsU8FSQ/F9SJsLA2zP+WjIuOMJ0TX2wGkovzfz2VE9kKpI9tO1ab9Ll72N0EsXifIdemsZ+3cxGQplSxmKmukQNjlQ0fz86i0GgAyCpqeUuvpbxtACqD63wgME6wyy64ZwntNak1uFCgxvxELsV1iTgRIZKzmfNvUH4lGzUgjv1GVtihw4K3CU49BjxXzDALXlQIHrYfxPL/WkJQfSL1RXi1uFwXh/CHcYY/ZP5+Ow4d1olHEnDjNrX1XNkqhvUCv0uPmvldY9h6HXEfojfjGdoI4fKFI1Tni/lugFixGJTnLZSdv71ktXJu16/ORn/e5jRpfcQo9B/9HgTTlgAk2gUWUAPImGf6871K5E+/N99ynTBAKbOhh5HUWvnvPsHnXxDIGoXf5uScqTZRmR0QP0JmHqxzUPUEadQQP+0hq0MUQ4zdk1YTNla1R5F7bMxF7ZQWVh0cBXGNNZ1VFCjP0kc5ihTO3z7ZseNGdUYJZWv0BkS/57UN/xqHK6A8Cl/M5UWIPF/uAtB6uQX9zwZBvgTi7xmaHE/iyco4kKFelp1xvRdunVecw2ANKtLYJdIpekP6myYG2CTRoFxWg44KBTbPiuy8aHhrdWaewjWrgvnmVfx/UWZ19E7nuI6AiJmmKyUYWKht8dtt7omriwreeBz3WQmHmt+dj07g9YRnZo+Yuq/QDXo3NPT/NXuXX77jHTIBxftj
- gbSype6X
- ilcWHiZ9wn49Gbuo9Zh6D3sk2kcI3rOC5ESMxEVkyKOM/d/+iQH3T7U94Ui5AYYQ4A+/0sn+mwmAMz8i+JM+Vqdr99VdepVcQqvQakJE+aIwwsKRlZ+E2/jFhjvUzjSpAcKOd+pUBeFrGsnN5XY6U81WWf5jUv8p8Cd5CLXwuN/JRPlEKFoMDdQLzO531cKqwsbKCUZMo7bTIAGfI2Gc+tZPBvU3xxFT6ywedzA40KoNET1yxmGYolVfFuSQot7dmRrjEbm81baAg8NY9w/zVZkLjsAsRHlos9O8Zs7kfJwZco+rJ/bHHhfKH3V8Rhdi9dCxjm6zIsE70iDu4o7dwNRSqzOsROdX0r9rH3LvEuKR3qd1IrEiGSCM4ciivrP+XKQgPmLCrne5MWTv7KFFhpbezixYO3+4DVz9NDskK62/G7dd3N1UGejwZboWS7ylvGbpCaZFGKe7a2K6DQFZxeyd+6A5nGHjhcZtnImzF4QPaihNsvJUWHQL1Bz/UN+OmbNIe9Wmsbs8oasan5n2nCU+4Rw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0309F120008
+X-Stat-Signature: wt6ahscyt6pdstyq41mzgh91yzic4p9f
+X-HE-Tag: 1766798673-585422
+X-HE-Meta: U2FsdGVkX1/dSJBUK8tiGq7IDRLov01FtoaG24AvY89E5cB8DoXK19fwKTnZXFEBX4mssLnlyF8a7lTDbWa8SuWjnepzSgZ4aKKwyWuJy2NSb/3bBYMYKDYDBe8psD2NHwjO5la72//sLJ3AJavegl2/a+8cC/05H3qW09CyMBGeswTmsSGs2F1WAjOHvmR/eBAGXJ0HX+ebHCODd0wKif0PCUJZmVPBGi9q/d3rsjfB1tFo9FA5c+rMc1kb2trmqQV9zmRYp1qM151AhtcWckqAEoxfGr2kW1dSFobWvpPqXr40dwsfN72UztM/00mItXb9Pu1doIi760yRRPrtfVp7wJB6OTJmIsUszE5us0i5W/6/WoJgRWVoSewsFE27myC7RXjfAfkKaj8gIQLDome6arRlTSA2zV3f6KTDqqi585Rk+mY2+Y/cuXLIwJYGC0guZOio7JCnI3D+hCl0D8roI+ZFIiUG8LsVZkV3QMB+WJ5c1kVAX6NXxgi8DyoRLk1nsWyDPYRjCosfDJOp58BvkVDxPcJM5mRl+9AO7xLtAmHQOCggTLnzyXH5vPmPz5sp5NQOuvPxs5mkIOYnhcTvXD8+o5YOOwZpt4hBnudhNCeiuMElr/Ewqczp7ppyY5v0WE+oXJSrpT4f+XCEePbgekf+82Ml0RwIrADhpcigtM1QCGBBOu4nouSkU/FY1qD6WQI1iPnqSWd8G15S4Bh3aRrMOPOXB4zuuUZw4LwbH4ZkH62yIyJi44Aq/fNc5bUcaZ+NziDbIKhtKVPbCN/mOxg/HSY7T76rEWsY4IaT09i5bFXwVa1lz04qupvwKBAk7WINGhpyA4BKpH+394lcz+8hc/7SAkEq/9Mg0lz7PyQAsdTksLG6uRmNKWyPefpt77xo5/0uZ5MIecMQNY8BEaIZLuaINAnJOp8xD7d46VIMMjXJsK0ITasQ59K/BJB0rHEWFNUEM4kyER8
+ vtWskj5X
+ FTx5qX5CLzsrf1Gt9rlBHiGd6wQqUngSO9VioKoIYQlvevennGcksw9OGQtaZIfUHUQWrTk4U9lLvBg6RYr3BN8fwGih4HhiKq2Uh/S6kmwRsWvWUW3JLFgWgzlAICQtTyZl92CO1kExQ6xjL+3L9joniTibcBC7hFP6+GaI3FOT4WcQVaeO9aJQYivIRMmXjIElUfoNGByOy0XAVAGKPV/MS3jvpUVB9PDLL34xByjX+hpPleJ8e0JdZLNI8h4E78Z764xWJzsYPkFTCJBrtKcjGx1ajJunVutiR8a4wD3Q0bOn+s6NUfJuyXAuc/gRj2XoNj7HpK8FnGwnxIM+GnPn7aSf2hVc18ic6+3WRoBckABz5+/6hRTuanHIh59p22yxM5jCzOgMAfCWKfUA11SN9HZQmTslQo0YeBZ75ru7E9Seffm7CNNGsyXUgkH/lJPFYkYP7nIKKYVvmZv+yvJVUp/lDdpfYdwsdCuAtT4yj8wXbXjR4v1czsF0oDvbn6RYxNUKVIssr3tAlRavkhX8O52zp0wGhIqnO6bBJLKMJl11JwhFlW529igXov0CnY4BIGS4pfguCsKZhc2GtSBXnKA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,145 +109,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/24/25 8:45 AM, Frederic Weisbecker wrote:
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> ---
->   Documentation/core-api/housekeeping.rst | 111 ++++++++++++++++++++++++
->   Documentation/core-api/index.rst        |   1 +
->   2 files changed, 112 insertions(+)
->   create mode 100644 Documentation/core-api/housekeeping.rst
->
-> diff --git a/Documentation/core-api/housekeeping.rst b/Documentation/core-api/housekeeping.rst
-> new file mode 100644
-> index 000000000000..e5417302774c
-> --- /dev/null
-> +++ b/Documentation/core-api/housekeeping.rst
-> @@ -0,0 +1,111 @@
-> +======================================
-> +Housekeeping
-> +======================================
-> +
-> +
-> +CPU Isolation moves away kernel work that may otherwise run on any CPU.
-> +The purpose of its related features is to reduce the OS jitter that some
-> +extreme workloads can't stand, such as in some DPDK usecases.
-Nit: "usecases" => "use cases"
-> +
-> +The kernel work moved away by CPU isolation is commonly described as
-> +"housekeeping" because it includes ground work that performs cleanups,
-> +statistics maintainance and actions relying on them, memory release,
-> +various deferrals etc...
-> +
-> +Sometimes housekeeping is just some unbound work (unbound workqueues,
-> +unbound timers, ...) that gets easily assigned to non-isolated CPUs.
-> +But sometimes housekeeping is tied to a specific CPU and requires
-> +elaborated tricks to be offloaded to non-isolated CPUs (RCU_NOCB, remote
-> +scheduler tick, etc...).
-> +
-> +Thus, a housekeeping CPU can be considered as the reverse of an isolated
-> +CPU. It is simply a CPU that can execute housekeeping work. There must
-> +always be at least one online housekeeping CPU at any time. The CPUs that
-> +are not	isolated are automatically assigned as housekeeping.
-Nit: extra white spaces between "not" and "isolated".
-> +
-> +Housekeeping is currently divided in four features described
-> +by the ``enum hk_type type``:
-> +
-> +1.	HK_TYPE_DOMAIN matches the work moved away by scheduler domain
-> +	isolation performed through ``isolcpus=domain`` boot parameter or
-> +	isolated cpuset partitions in cgroup v2. This includes scheduler
-> +	load balancing, unbound workqueues and timers.
-> +
-> +2.	HK_TYPE_KERNEL_NOISE matches the work moved away by tick isolation
-> +	performed through ``nohz_full=`` or ``isolcpus=nohz`` boot
-> +	parameters. This includes remote scheduler tick, vmstat and lockup
-> +	watchdog.
-> +
-> +3.	HK_TYPE_MANAGED_IRQ matches the IRQ handlers moved away by managed
-> +	IRQ isolation performed through ``isolcpus=managed_irq``.
-> +
-> +4.	HK_TYPE_DOMAIN_BOOT matches the work moved away by scheduler domain
-> +	isolation performed through ``isolcpus=domain`` only. It is similar
-> +	to HK_TYPE_DOMAIN except it ignores the isolation performed by
-> +	cpusets.
-> +
-> +
-> +Housekeeping cpumasks
-> +=================================
-> +
-> +Housekeeping cpumasks include the CPUs that can execute the work moved
-> +away by the matching isolation feature. These cpumasks are returned by
-> +the following function::
-> +
-> +	const struct cpumask *housekeeping_cpumask(enum hk_type type)
-> +
-> +By default, if neither ``nohz_full=``, nor ``isolcpus``, nor cpuset's
-> +isolated partitions are used, which covers most usecases, this function
-> +returns the cpu_possible_mask.
-> +
-> +Otherwise the function returns the cpumask complement of the isolation
-> +feature. For example:
-> +
-> +With isolcpus=domain,7 the following will return a mask with all possible
-> +CPUs except 7::
-> +
-> +	housekeeping_cpumask(HK_TYPE_DOMAIN)
-> +
-> +Similarly with nohz_full=5,6 the following will return a mask with all
-> +possible CPUs except 5,6::
-> +
-> +	housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)
-> +
-> +
-> +Synchronization against cpusets
-> +=================================
-> +
-> +Cpuset can modify the HK_TYPE_DOMAIN housekeeping cpumask while creating,
-> +modifying or deleting an isolated partition.
-> +
-> +The users of HK_TYPE_DOMAIN cpumask must then make sure to synchronize
-> +properly against cpuset in order to make sure that:
-> +
-> +1.	The cpumask snapshot stays coherent.
-> +
-> +2.	No housekeeping work is queued on a newly made isolated CPU.
-> +
-> +3.	Pending housekeeping work that was queued to a non isolated
-> +	CPU which just turned isolated through cpuset must be flushed
-> +	before the related created/modified isolated partition is made
-> +	available to userspace.
-> +
-> +This synchronization is maintained by an RCU based scheme. The cpuset update
-> +side waits for an RCU grace period after updating the HK_TYPE_DOMAIN
-> +cpumask and before flushing pending works. On the read side, care must be
-> +taken to gather the housekeeping target election and the work enqueue within
-> +the same RCU read side critical section.
-> +
-> +A typical layout example would look like this on the update side
-> +(``housekeeping_update()``)::
-> +
-> +	rcu_assign_pointer(housekeeping_cpumasks[type], trial);
-> +	synchronize_rcu();
-> +	flush_workqueue(example_workqueue);
-> +
-> +And then on the read side::
-> +
-> +	rcu_read_lock();
-> +	cpu = housekeeping_any_cpu(HK_TYPE_DOMAIN);
-> +	queue_work_on(cpu, example_workqueue, work);
-> +	rcu_read_unlock();
-> diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
-> index 5eb0fbbbc323..79fe7735692e 100644
-> --- a/Documentation/core-api/index.rst
-> +++ b/Documentation/core-api/index.rst
-> @@ -25,6 +25,7 @@ it.
->      symbol-namespaces
->      asm-annotations
->      real-time/index
-> +   housekeeping.rst
->   
->   Data structures and low-level utilities
->   =======================================
-Acked-by: Waiman Long <longman@redhat.com>
 
+在 2025/12/25 12:15, Shardul Bankar 写道:
+> On Thu, 2025-12-18 at 21:11 +0800, Jinjiang Tu wrote:
+>> 在 2025/12/18 20:49, David Hildenbrand (Red Hat) 写道:
+>>   
+>>>   Thanks for checking. I thought that was also discussed as part of
+>>> the other fix.
+>>>   
+>>>   See [2] where we have
+>>>   
+>>>   "Note: This fixes the leak of pre-allocated nodes. A separate fix
+>>> will
+>>>   be needed to clean up empty nodes that were inserted into the tree
+>>> by
+>>>   xas_create_range() but never populated."
+>>>   
+>>>   Is that the issue you are describing? (sounds like it, but I only
+>>> skimmed over the details).
+>>>   
+>>>   CCing Shardul.
+>> Yes, the same issue. As I descirbed in the first email:
+>> "
+>> At first, I tried to destory the empty nodes when collapse_file()
+>> goes to rollback path. However,
+>> collapse_file() only holds xarray lock and may release the lock, so
+>> we couldn't prevent concurrent
+>> call of collapse_file(), so the deleted empty nodes may be needed by
+>> other collapse_file() calls.
+>> "
+> Hi David, Jinjiang,
+>
+> As Jinjiang mentioned, this appears to address what I had originally
+> referred to in the "Note:" in [1].
+>
+> Just to clarify the context of the "Note:", that was based on my
+> assumption at the time that such empty nodes would be considered leaks.
+> After Dev’s feedback in [2]:
+> "No "fix" is needed in this case, the empty nodes are there in the tree
+> and there is no leak."
+>
+> and looking at the older discussion in [3]:
+> "There's nothing to free; if a node is allocated, then it's stored in
+> the tree where it can later be found and reused. "
+
+However, if the empty nodes aren't reused, When the file is deleted,
+shmem_evict_inode()->shmem_truncate_range() traverses all entries and
+calls xas_store(xas, NULL) to delete, if the leaf xa_node that stores
+deleted entry becomes empty, xas_store() will automatically delete the
+empty node and delete it's parent is empty too, until parent node isn't
+empty. shmem_evict_inode() won't traverse the empty nodes created by
+xas_create_range() due to these nodes doesn't store any entries.
+
+>
+> my updated understanding is that there is no leak in this case- the
+> nodes remain valid and reusable, and therefore do not require a
+> separate fix.
+>
+> David could you correct me if I am mistaken?
+>
+> [1]
+> https://lore.kernel.org/linux-mm/20251123132727.3262731-1-shardul.b@mpiricsoftware.com/
+>
+> [2]
+> https://lore.kernel.org/linux-mm/57cbf887-d181-418b-a6c7-9f3eff5d632a@arm.com/
+>
+> [3]
+> https://lore.kernel.org/all/Ys1r06szkVi3QEai@casper.infradead.org/
+>
+> Thanks,
+> Shardul
+>
 
