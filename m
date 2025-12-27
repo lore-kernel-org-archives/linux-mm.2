@@ -4,116 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C0A3E8FDD0
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Dec 2025 11:25:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 926C6E8FDCD
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Dec 2025 14:36:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA7246B0005; Sat, 27 Dec 2025 06:25:32 -0500 (EST)
+	id 33CBD6B0005; Sat, 27 Dec 2025 09:36:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D545C6B0089; Sat, 27 Dec 2025 06:25:32 -0500 (EST)
+	id 2EAB46B0089; Sat, 27 Dec 2025 09:36:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C609C6B008A; Sat, 27 Dec 2025 06:25:32 -0500 (EST)
+	id 1CEBE6B008A; Sat, 27 Dec 2025 09:36:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B36EF6B0005
-	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 06:25:32 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 515A913AACD
-	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 11:25:32 +0000 (UTC)
-X-FDA: 84265020504.29.CF80345
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A9547C000C
-	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 11:25:30 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=b5dkIrX2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.54 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766834730; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 05E1A6B0005
+	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 09:36:17 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C6A713B4A7
+	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 14:36:16 +0000 (UTC)
+X-FDA: 84265501152.19.C85AF34
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf22.hostedemail.com (Postfix) with ESMTP id CE6D6C0002
+	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 14:36:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZuQgI0tL;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766846174; a=rsa-sha256;
 	cv=none;
-	b=LrgQiu8R+vUozHnFl2NTmlepqqVn2yuBXiSoUTbw46xnDjAjMTHnzWSchTU4luf1ZCeVL6
-	cRmvG/BgvDRacar1raK94FtpziQmxwfyoyXIYxDUhFiNMU2fBmLYbU9mhaaSyKER+z5lMr
-	bPopFzS835WmbKq4nh4lycwt72ylp3s=
+	b=4+mTA1tW9kAiHEy5a72QeQ9y2Q8MfCPZ/9mNIlsIb061n0+z2WSxgFGV5TwR/B00Nx8EwW
+	gZKfpOJLCcMCJzNLTL188jRB6BPldjcMJrRB9EbjIdZybdstKW0GBQP8zi7LWsTsAELn+y
+	GgF6rOvYGouUneYX7MzYLay2VeWXWwM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=b5dkIrX2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.54 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZuQgI0tL;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766834730;
+	s=arc-20220608; t=1766846174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jU96kxHK8UBwX44kLdo1fXEX2IjFku/uBhX2drbYBY4=;
-	b=mEcQWrQqEGrvkGsOpoYZbh1RNRB6Pf0EVNCaSuJOpHsSaZCb2+6yNDpYhikeb4Ka9w8WSg
-	9H3Wgt/7VHylJGwHSq4C8ZH0FUbDseSJigEmyJ0QeTBru/f12iK+E4clto2uMVK+hjrvZ+
-	E7v8S9GCmm83QNcHxJ73iTOtrVR+otA=
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-88a347c424aso106141656d6.0
-        for <linux-mm@kvack.org>; Sat, 27 Dec 2025 03:25:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766834730; x=1767439530; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jU96kxHK8UBwX44kLdo1fXEX2IjFku/uBhX2drbYBY4=;
-        b=b5dkIrX2HmdKgl5ioIlkqLixkVXHdxABaQN8T3bqPtyaJSR9fnY6KE9/UvWFqlZ9ci
-         JkkMARw1hl/mLox/sJN9mDtP25bEuyiWmEuRaRAPVIXGZ3bB8J90AVWbQUin+XeeyWTU
-         8idtRv/P2mywHozJqeTHTAVny26mUd9asHXtl07Ok2P34BdYL7qe41u5SUy3EPY8fH7l
-         wqjXZJCtwYruS6aabaAGjosuX9O3BRIN4EaHP5F6ZiPSEjqMc/PrHNB9AFIyBnLarmI8
-         SZPJ3vxzfPF3SlGuI/cXeouHZFYdBkYgqALZXTXQRqYX4+2bfqIzhFNnpXAMLO+u+vJm
-         0Q/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766834730; x=1767439530;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jU96kxHK8UBwX44kLdo1fXEX2IjFku/uBhX2drbYBY4=;
-        b=pnwdwotLU8INTcogz7SQkGV02Jj5H0zYFPfqXHCL6DT0fXZ3R0hQKnz6xDfF+8k1GQ
-         AfQYs2a0DHtvfcXk1MbfIi4aZYwIDGcDxCoBVAjtcO3ZTqgJN7GcFP4oR0gi6rjIVyal
-         +agctNFpbbU4YDBXJbYslrH7zWSFJbJl7ZNoQhSrZ/gGRgO7VeIZupzkHN/b5Vse66vR
-         +Q9/QrdQpagYBoALlRfwgCamDeS+En6Q8xZNnr5o22H7Wk4PsvgrrAkexf8UBzJ0zhn3
-         X37v218QdC5IoEnVG+yEsmaaQVpEpq4JQh682aFGBT/gDWYJbJLLyvp3+VtnHaYiWARG
-         I3nw==
-X-Forwarded-Encrypted: i=1; AJvYcCUTE2YMhIWMKjQnMstaz/ys+9KkdcxiMSxzDogO4Fc4Nc7nAHU9dyKt6pQgeXM9YiPvMJb4VDsIyw==@kvack.org
-X-Gm-Message-State: AOJu0YzAlrxgSzZz0YAz9wZVdVK3wheaT09ZjaAjZrXXyypy2VXxCWbN
-	O7Furu1EYZiK9Qn4pe1lO2ZXQMiAR5S+pQpwDbLtYPvIs/+P44zuTQ1XWm9xrewEaT4j8VHSmvQ
-	zxdW6GAFqZHrG+V0rhHibbEZIT6pByi8=
-X-Gm-Gg: AY/fxX6kEOU3rMnQSuZL1BvweMsEFdC5pYG3oQqz12jCXrllC1s98NHHU/0ZFDAVWUr
-	hKEF7vxs4SB7tplSzcCm6RIOGVT9USymI72WYgqrLiBBZj/b+rdrxQzYjm0u9/UxzIZrErXEI9k
-	Lo3N6HfT14gzKirLNPyXF9rTvtyXFuqo2zNxI+tjsPcnDXGzUqq8QdZDVFxV1N1tmN5P2ABHTdM
-	yxBU5vX47YKAg9N5Q6zXmoJwa8yAUNVNnugyLCX9ITFdK99f5aCqi6/mKSHXcV/PUMRfLHDPJya
-	7PLN
-X-Google-Smtp-Source: AGHT+IF7DHqp7ovz8RxBf5iD2/uFONnTI3+LkmbGdXdITb5Ng0lNW4tjGv1D1DagKsF5cWOlu4pfVLlnwQ4Tcoy8G9k=
-X-Received: by 2002:a05:6214:8084:b0:888:626c:c06b with SMTP id
- 6a1803df08f44-88d8369eb18mr352627696d6.40.1766834729551; Sat, 27 Dec 2025
- 03:25:29 -0800 (PST)
+	bh=IYNG2JvwQp7/xyTUlwApxfFOMKfMS7rsdQ2y5vNt3yA=;
+	b=kgIbx4WM95Z6+xbUD2GEXrpci8aMrPlvr2TZ+5f9aAuBj7Awil7FZkGA8ic7dP0AUMapFx
+	0aCyXPbD5SICRHVDHr8O2oF+LW39as///Hyq+TgRIB3xdv3n4R8BV9lOO2KcHmtZBjRIGX
+	qvr1X/YkSHSnPNF44l5Q/HLvVMQQxF4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766846174; x=1798382174;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XruNjXDQ+pLSmZykNsY99NzSIdjR9hrgODcg6kqeGpQ=;
+  b=ZuQgI0tL6FrT6aj+jHWf7DK9Laji6okSBRUOt9aNv7MaZ+5ofV72qNQ+
+   LInzhZ5pP2j3Ghk7K8+VLtBqAyFzyXu1aeoQGaFTsYBe3C71y03ylRrzA
+   39mVjg8u/yG2+oHgwmImjgUsINmeQmcBE9cLIR0b/SW1VuS+Bzr4M4U5L
+   IHLfrCnR+uF/txLYbSagCb7xRaDcjTUC1iTXcWfNd2lZj3UWzOVKPqSUu
+   Jgmj76fW3Gma+TU2C18vLHgbGMuJJ0hTa0guqtq5Ff8x2Qa6oqft8hdfi
+   IVTiKiUZuNFrWRO9Vuwe2OhKg9ZFCqCLkdDR2o21iW970raxDWvbkmrOZ
+   g==;
+X-CSE-ConnectionGUID: mF18ObIoT3qsSiPka2OBAQ==
+X-CSE-MsgGUID: kphntdr4Sk6XnWeEH3DAOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11654"; a="94014690"
+X-IronPort-AV: E=Sophos;i="6.21,180,1763452800"; 
+   d="scan'208";a="94014690"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2025 06:36:12 -0800
+X-CSE-ConnectionGUID: ytWJBh5gQ0SgHankNUyK4Q==
+X-CSE-MsgGUID: Lzx5E9MqRXeniwUYM6lSQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,180,1763452800"; 
+   d="scan'208";a="200581167"
+Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 27 Dec 2025 06:36:08 -0800
+Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vZVOn-000000005sn-1JCs;
+	Sat, 27 Dec 2025 14:36:05 +0000
+Date: Sat, 27 Dec 2025 22:35:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Coiby Xu <coxu@redhat.com>, kexec@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Thomas Staudt <tstaudt@de.ibm.com>,
+	Arnaud Lefebvre <arnaud.lefebvre@clever-cloud.com>,
+	Baoquan he <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
+	Kairui Song <ryncsn@gmail.com>, Pingfan Liu <kernelfans@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc/kdump: pass dm-crypt keys to kdump kernel
+Message-ID: <202512272218.ghBaSjzO-lkp@intel.com>
+References: <20251226140636.1378505-1-coxu@redhat.com>
 MIME-Version: 1.0
-References: <20251225094057.286954-1-wale.zhang.ftd@gmail.com>
- <CAGsJ_4yEAOxUmrPvca3Nzc-OB0+xXk5Y5gzszsY5TPqHCGvgcQ@mail.gmail.com>
- <CAHrEdetNrGJbogkhMKY-25fgtxupPxKKLkwFGuenV8p5EwzZVQ@mail.gmail.com>
- <CAGsJ_4wcovpuNKPTfS0STBOHrNREjP-4wam8Oe4e7_ctKsbAcA@mail.gmail.com>
- <CAHrEdeuBk_MoPj1jWdtdLODK0JOWrb2orTZ77Cbp1vZ3PM3x9g@mail.gmail.com>
- <CAGsJ_4zg_DgQnQthTqWOnwUrhm-MygVB6mOwmgK=ey2dYogb+Q@mail.gmail.com> <CAHrEdeuRtROkAN0zNdaYG_GBkSeW=-3kP3xBiQV1w51vGSc6Ew@mail.gmail.com>
-In-Reply-To: <CAHrEdeuRtROkAN0zNdaYG_GBkSeW=-3kP3xBiQV1w51vGSc6Ew@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Sat, 27 Dec 2025 19:25:18 +0800
-X-Gm-Features: AQt7F2o1PSCKXAPxciijstziZc_dRXLEi3BVZm7OWsGUIfq4Fn9g39EjbboPjsY
-Message-ID: <CAGsJ_4xC=Fi+mHQ-e8H5f2pBYk2e54fuuqxdLmd7ZJicR2a37w@mail.gmail.com>
-Subject: Re: [PATCH 1/1] mm,swapops: Fix compile error on set_pmd_migration_entry.
-To: wale zhang <wale.zhang.ftd@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, chrisl@kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251226140636.1378505-1-coxu@redhat.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CE6D6C0002
+X-Stat-Signature: 567ef6sk9rpmdbx8wxka7jfeiiqyg1if
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A9547C000C
-X-Rspamd-Server: rspam10
-X-Stat-Signature: c5wxmoo9juy6afohif1qc3ywonfykk1j
-X-HE-Tag: 1766834730-863792
-X-HE-Meta: U2FsdGVkX18xnNYD7kis9ttyCC2JbnsiklonL5Rj07m1LZnqbCIwX39jsTnGxGdjbioXj/kVzHpabtD9gGabH+BOiJVtKeEKdEKd4lXxDgFo+ZbCyDOZTTtXZmDhppKSvM8R9oWpiNv0mZUlpAPToN653rJ4uCE3MZ0nVuDWTx2EsT+PRX4G15D1siqVSchgwHYBTHhC8fRXeZABT+o9TEYc0LdnVqYRK2Qbi3RBXauNkIn2oFBN9XxVKK31dq4sOkJclqpKpZiXFkL6SZxHBErgiot+y3K2vrLVthG7j9zr1xuviMg3NG5ob3z/JruIH82NqnJumuAr49GtWRjRpu39/x6WJv1KH6JdxhbnJnYx71L1AUBcH+UOieiMNb1bHXa3z3MHD/Mc4jJ7sFjphdgFHZwvDFTheZ/jZrkzF9B9hpFHOC+nYoWU7mZOnF/iDunoQwPJj0K3eFjagIhLNPmY7D6Ve4EvpaPYPf+xxIBggqOi3LckQIlWh7r49oGOWs6sjmlTD8bd83X9mO/VjYciJJfK6Qu0Xrp7WfROpYoh7ZeDG7q/Fbx2WfN0QxNDVEFBLRj3TlI31bGSh7Uuhv561CjIecqg0UJ9ehFGkULw1tw2NsISKCAQ8UykHGP3b4yXOVaUV+PQr4fLwdzItt7ZTvqbsfL4pptgsu9aJhHce4p3poo+3PMqnbEiOT39Y/HyauRVgVKnP2UWrRRvGtKryImpxcf0N1uPFI1QTVR+8TIEQyiH0LCVRbQTCyaDBWxO7sc+qgfa3nY9kGWnc73You50BrNh7PPiovnaLaXT3gi+G1TNb5wO2HqVKiMT82YXaiBWtSbJc1CgQpjHXQvjZO3UxjKFa4myevfB+Va7/7pZXwn95XXXtZxfDcDtHN92CwVVDjlG8MOKrZuCuKjt0O36p0nwgixJp8KdQCWrs3eJ3jR2SAPm1EWzkWxNjjUNDY5r/768YnRQePQ
- k+JgFRmf
- L3G3LVoG7Ek+oO16MYlRQl8RL3Yqo9rqvqrzxd19+mCT381mJjilHJQbBvEGo3cv89Bc34vAWCn5b4HA+BCA/4aT80XdbFtv1M93SFrd7l7deoSeM49FdcpBdmRUenROpU6AJJdDdR/6/p83DGYs/T2bm6IuRSCux6A3Q
+X-HE-Tag: 1766846173-699061
+X-HE-Meta: U2FsdGVkX1/hLlewNjjwgXqbgjMuVsOTyJv5koGgQSTHrqeDkLQmggpPSpsG9io5PQJ7F5cDsFnotn1gKuxKwP96F8+1tokQBW0CpFjxznLWUP0TnONnanUus5STES4Y0HGppNMvS6deSoaz0zN3CyrPZfu2Jt5LpzASvjOqVuemkYAnhmT0sPAfHuftNKAIouh0i7JI4qTsQbP5ofZe4AEhEEpY6GYwTmRulpTNtJU623l6F+QJWEaT8HjDSbK4heczupLGaACFH5J0+PMwyI1CCKbpuDnPDymm0K1XoVfQgeaxn3f97Fh6Yh0DTjOn1D6C4oQkhrgGM34KYFEnFtE4Q5wyHxmHgCxf5XinuyCGEwH2XoV6dnWJMMdAS5Ci4DFzIcOQsYJgSS0iM8BH0gIJXqRv+14Qdl2EEXTW84Mbe4/MuXVMTzy39QF0yAjlt9okS5BiewZXE12Fi3eLHddoqKYmntJguz3pQPdLO/Wu47UEs8+Fvv9hubrPS2alCsQpQY2BW4Q2eiF2eK32sjZ0tpE75JWFxa4u7inoo7tuf7Bl2bKjWDrRtPxhVu+tGMTHRFIXqVVSj54OkVJ8kLL05sTJcOp55hKJw4aXXsKjSLHouZnHarqd5TFDLPV1TXf14rbatEyCPcs9ifbGqLhwt1RugM2LtYBlweOMQxJaDfXulEWDewI4ye/B+zDeGi0Bau7XUTyh8R97NpQHrcITJYaoK5MRDDSDBDp+Rmaov4haCAXsi2W9XJA9ICbMtzqKmnL8opkZpSZNgOP0ZQcfpVdSjkh344pgk9U7j/5qEBC/Wz4vdUNJ9Hf5VNQMkm9UqAUiPeCzE6iZoeq6Z6H/pexH0734UQLXqNLd+Wc9KIWnRDXTPwMxEFqcw2Cr15XbuHBkyqeC1E+luyEFkSozvfcGKWnplGLLgHiW42Qz6SaJFH0xR31om0aSQZX9i1XTfIdTD1aGWfM09to
+ wI8xUgXM
+ LJ0P6XiCutbNUQs2977S3O/PEPgaxC6LH7wjp+OYRj+bydCS+ArfrfOa0LDW7Muf4oMXPTervK7vbWsKcQAbYYPA3U0IBtm4ETE8WCc0daDilJ+Br4olCVt6/cGoqTYrYIkZwiKgppBDRAXqNjylXqAD5oiCbLdo2Ups71bHEXeo3RB8aGo8xrc7wPlIOslsT6yaeeLU01ceMdvuMdoUr3MeeYEVBJXJhkKTC0Bka9G9xufvem7xZbwTmtAbrMjHoEyWu2quBcep6ZWmoQvEZsSjMhxTH+CqU5oxv/UJENu0EIwivE66OLU7HvCm5d+MLIHs4UNseueu8DJy3U+9Wm7Bzp/wQAgOZs7Vp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,122 +118,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Dec 27, 2025 at 5:58=E2=80=AFPM wale zhang <wale.zhang.ftd@gmail.co=
-m> wrote:
->
-> On Sat, Dec 27, 2025 at 4:16=E2=80=AFPM Barry Song <21cnbao@gmail.com> wr=
-ote:
-> >
-> > On Sat, Dec 27, 2025 at 8:51=E2=80=AFPM wale zhang <wale.zhang.ftd@gmai=
-l.com> wrote:
-> > >
-> > > On Sat, Dec 27, 2025 at 2:43=E2=80=AFAM Barry Song <21cnbao@gmail.com=
-> wrote:
-> > > >
-> > > > On Sat, Dec 27, 2025 at 12:46=E2=80=AFAM wale zhang <wale.zhang.ftd=
-@gmail.com> wrote:
-> > > > >
-> > > > > On Thu, Dec 25, 2025 at 6:22=E2=80=AFPM Barry Song <21cnbao@gmail=
-.com> wrote:
-> > > > > >
-> > > > > > On Thu, Dec 25, 2025 at 10:41=E2=80=AFPM Wale Zhang <wale.zhang=
-.ftd@gmail.com> wrote:
-> > > > > > >
-> > > > > > > ../include/linux/swapops.h: In function =E2=80=98set_pmd_migr=
-ation_entry=E2=80=99:
-> > > > > > > ../include/linux/swapops.h:346:1: error: no return statement =
-in function returning non-void [-Werror=3Dreturn-type]
-> > > > > > >   346 | }
-> > > > > > >       | ^
-> > > > > > > cc1: some warnings being treated as errors
-> > > > > > >
-> > > > > > > Signed-off-by: Wale Zhang <wale.zhang.ftd@gmail.com>
-> > > > > >
-> > > > > > Sorry. NAK.
-> > > > > >
-> > > > > > This looks odd. We already have a BUILD_BUG(), so no fix is nee=
-ded.
-> > > > > >
-> > > > > > we should already have:
-> > > > > > ././include/linux/compiler_types.h:631:45: error: call to
-> > > > > > =E2=80=98__compiletime_assert_907=E2=80=99 declared with attrib=
-ute error: BUILD_BUG
-> > > > > > failed
-> > > > > >   631 |         _compiletime_assert(condition, msg,
-> > > > > > __compiletime_assert_, __COUNTER__)
-> > > > > >       |                                             ^
-> > > > > > ././include/linux/compiler_types.h:612:25: note: in definition =
-of
-> > > > > > macro =E2=80=98__compiletime_assert=E2=80=99
-> > > > > >   612 |                         prefix ## suffix();
-> > > > > >          \
-> > > > > >       |                         ^~~~~~
-> > > > > >
-> > > > > > Do you actually see this being built? If so, please help identi=
-fy why it
-> > > > > > gets built.
-> > > > >
-> > > > > Hello Barry,
-> > > > >
-> > > > > I compile the 6.19-rc2 for arm64 with -O0, this kind of error log=
- will appear.
-> > > > > In file included from /home/wale/repo/linux/master/include/linux/=
-leafops.h:11,
-> > > > >                  from
-> > > > > /home/wale/repo/linux/master/include/linux/userfaultfd_k.h:19,
-> > > > >                  from /home/wale/repo/linux/master/include/linux/=
-mm_inline.h:10,
-> > > > >                  from /home/wale/repo/linux/master/mm/internal.h:=
-13,
-> > > > >                  from /home/wale/repo/linux/master/mm/fadvise.c:2=
-4:
-> > > > > /home/wale/repo/linux/master/include/linux/swapops.h: In function
-> > > > > =E2=80=98set_pmd_migration_entry=E2=80=99:
-> > > > > /home/wale/repo/linux/master/include/linux/swapops.h:346:1: error=
-: no
-> > > > > return statement in function returning non-void [-Werror=3Dreturn=
--type]
-> > > > >   346 | }
-> > > > >       | ^
-> > > > > cc1: some warnings being treated as errors
-> > > > > make[4]: *** [/home/wale/repo/linux/master/scripts/Makefile.build=
-:287:
-> > > > > mm/fadvise.o] Error 1
-> > > > > make[4]: *** Waiting for unfinished jobs....
-> > > > >
-> > > > > There is an example on my
-> > > > > github(https://github.com/wale-ftd/linux/commits/linux-6.12/) tha=
-t
-> > > > > used -O0 to compile the 6.12 kernel. If you're interested, you ca=
-n
-> > > > > check them out.
-> > > >
-> > > > This is not my question. The BUILD_BUG here means this code
-> > > > should never be built. If it is built, then that indicates a bug.
-> > > > So my question is: under what kernel configuration would this
-> > > > code actually get built?
-> > >
-> > > Hello Barry,
-> > >
-> > > I'm very sorry for misunderstanding your meaning.
-> >
-> > No. You still don=E2=80=99t understand my point. The BUILD_BUG means th=
-is
-> > code will never have a chance to be compiled under any possible
-> > kernel configuration. That makes it dead code. If there is any
-> > kernel .config in which it can be built, then we should fix it.
-> >
-> > This set_pmd_migration_entry() has no chance of ever being built.
->
-> Hello Barry,
->
-> set_pmd_migration_entry() is defined in include/linux/swapops.h.
-> For not defining CONFIG_ARCH_ENABLE_THP_MIGRATION, line 342~346 will
-> be built as long as *.c file includes swapops.h.
-> There are many .c files including the header file directly or
-> indirectly, such as fadvise.c, shm.c ...
+Hi Coiby,
 
-As far as I understand, set_pmd_migration_entry is never
-called unless CONFIG_ARCH_ENABLE_THP_MIGRATION is enabled.
-If that is correct, no fix is required.
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on ccd1cdca5cd433c8a5dff78b69a79b31d9b77ee1]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Coiby-Xu/powerpc-kdump-pass-dm-crypt-keys-to-kdump-kernel/20251226-220726
+base:   ccd1cdca5cd433c8a5dff78b69a79b31d9b77ee1
+patch link:    https://lore.kernel.org/r/20251226140636.1378505-1-coxu%40redhat.com
+patch subject: [PATCH] powerpc/kdump: pass dm-crypt keys to kdump kernel
+config: powerpc64-randconfig-001-20251227 (https://download.01.org/0day-ci/archive/20251227/202512272218.ghBaSjzO-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 4ef602d446057dabf5f61fb221669ecbeda49279)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251227/202512272218.ghBaSjzO-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512272218.ghBaSjzO-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> arch/powerpc/kexec/elf_64.c:95:9: error: call to undeclared function 'crash_load_dm_crypt_keys'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+      95 |                 ret = crash_load_dm_crypt_keys(image);
+         |                       ^
+   1 error generated.
+
+
+vim +/crash_load_dm_crypt_keys +95 arch/powerpc/kexec/elf_64.c
+
+    27	
+    28	static void *elf64_load(struct kimage *image, char *kernel_buf,
+    29				unsigned long kernel_len, char *initrd,
+    30				unsigned long initrd_len, char *cmdline,
+    31				unsigned long cmdline_len)
+    32	{
+    33		int ret;
+    34		unsigned long kernel_load_addr;
+    35		unsigned long initrd_load_addr = 0, fdt_load_addr;
+    36		void *fdt;
+    37		const void *slave_code;
+    38		struct elfhdr ehdr;
+    39		char *modified_cmdline = NULL;
+    40		struct crash_mem *rmem = NULL;
+    41		struct kexec_elf_info elf_info;
+    42		struct kexec_buf kbuf = { .image = image, .buf_min = 0,
+    43					  .buf_max = ppc64_rma_size };
+    44		struct kexec_buf pbuf = { .image = image, .buf_min = 0,
+    45					  .buf_max = ppc64_rma_size, .top_down = true,
+    46					  .mem = KEXEC_BUF_MEM_UNKNOWN };
+    47	
+    48		ret = kexec_build_elf_info(kernel_buf, kernel_len, &ehdr, &elf_info);
+    49		if (ret)
+    50			return ERR_PTR(ret);
+    51	
+    52		if (IS_ENABLED(CONFIG_CRASH_DUMP) && image->type == KEXEC_TYPE_CRASH) {
+    53			/* min & max buffer values for kdump case */
+    54			kbuf.buf_min = pbuf.buf_min = crashk_res.start;
+    55			kbuf.buf_max = pbuf.buf_max =
+    56					((crashk_res.end < ppc64_rma_size) ?
+    57					 crashk_res.end : (ppc64_rma_size - 1));
+    58		}
+    59	
+    60		ret = kexec_elf_load(image, &ehdr, &elf_info, &kbuf, &kernel_load_addr);
+    61		if (ret)
+    62			goto out;
+    63	
+    64		kexec_dprintk("Loaded the kernel at 0x%lx\n", kernel_load_addr);
+    65	
+    66		ret = kexec_load_purgatory(image, &pbuf);
+    67		if (ret) {
+    68			pr_err("Loading purgatory failed.\n");
+    69			goto out;
+    70		}
+    71	
+    72		kexec_dprintk("Loaded purgatory at 0x%lx\n", pbuf.mem);
+    73	
+    74		/* Load additional segments needed for panic kernel */
+    75		if (IS_ENABLED(CONFIG_CRASH_DUMP) && image->type == KEXEC_TYPE_CRASH) {
+    76			ret = load_crashdump_segments_ppc64(image, &kbuf);
+    77			if (ret) {
+    78				pr_err("Failed to load kdump kernel segments\n");
+    79				goto out;
+    80			}
+    81	
+    82			/* Setup cmdline for kdump kernel case */
+    83			modified_cmdline = setup_kdump_cmdline(image, cmdline,
+    84							       cmdline_len,
+    85							       "elfcorehdr",
+    86							       image->elf_load_addr);
+    87			if (!modified_cmdline) {
+    88				pr_err("Setting up cmdline for kdump kernel failed\n");
+    89				ret = -EINVAL;
+    90				goto out;
+    91			}
+    92			cmdline = modified_cmdline;
+    93			cmdline_len = strlen(cmdline) + 1;
+    94	
+  > 95			ret = crash_load_dm_crypt_keys(image);
+    96			if (ret == -ENOENT) {
+    97				kexec_dprintk("No dm crypt key to load\n");
+    98			} else if (ret) {
+    99				pr_err("Failed to load dm crypt keys\n");
+   100				return ERR_PTR(ret);
+   101			}
+   102	
+   103			if (image->dm_crypt_keys_addr != 0) {
+   104				modified_cmdline = setup_kdump_cmdline(image, cmdline,
+   105								       cmdline_len,
+   106								       "dmcryptkeys",
+   107								       image->dm_crypt_keys_addr);
+   108				if (!modified_cmdline) {
+   109					pr_err("Setting up cmdline for kdump kernel failed\n");
+   110					ret = -EINVAL;
+   111					goto out;
+   112				}
+   113				cmdline = modified_cmdline;
+   114			}
+   115		}
+   116	
+   117		if (initrd != NULL) {
+   118			kbuf.buffer = initrd;
+   119			kbuf.bufsz = kbuf.memsz = initrd_len;
+   120			kbuf.buf_align = PAGE_SIZE;
+   121			kbuf.top_down = false;
+   122			kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+   123			ret = kexec_add_buffer(&kbuf);
+   124			if (ret)
+   125				goto out;
+   126			initrd_load_addr = kbuf.mem;
+   127	
+   128			kexec_dprintk("Loaded initrd at 0x%lx\n", initrd_load_addr);
+   129		}
+   130	
+   131		ret = get_reserved_memory_ranges(&rmem);
+   132		if (ret)
+   133			goto out;
+   134	
+   135		fdt = of_kexec_alloc_and_setup_fdt(image, initrd_load_addr,
+   136						   initrd_len, cmdline,
+   137						   kexec_extra_fdt_size_ppc64(image, rmem));
+   138		if (!fdt) {
+   139			pr_err("Error setting up the new device tree.\n");
+   140			ret = -EINVAL;
+   141			goto out;
+   142		}
+   143	
+   144		ret = setup_new_fdt_ppc64(image, fdt, rmem);
+   145		if (ret)
+   146			goto out_free_fdt;
+   147	
+   148		if (!IS_ENABLED(CONFIG_CRASH_HOTPLUG) || image->type != KEXEC_TYPE_CRASH)
+   149			fdt_pack(fdt);
+   150	
+   151		kbuf.buffer = fdt;
+   152		kbuf.bufsz = kbuf.memsz = fdt_totalsize(fdt);
+   153		kbuf.buf_align = PAGE_SIZE;
+   154		kbuf.top_down = true;
+   155		kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+   156		ret = kexec_add_buffer(&kbuf);
+   157		if (ret)
+   158			goto out_free_fdt;
+   159	
+   160		/* FDT will be freed in arch_kimage_file_post_load_cleanup */
+   161		image->arch.fdt = fdt;
+   162	
+   163		fdt_load_addr = kbuf.mem;
+   164	
+   165		kexec_dprintk("Loaded device tree at 0x%lx\n", fdt_load_addr);
+   166	
+   167		slave_code = elf_info.buffer + elf_info.proghdrs[0].p_offset;
+   168		ret = setup_purgatory_ppc64(image, slave_code, fdt, kernel_load_addr,
+   169					    fdt_load_addr);
+   170		if (ret)
+   171			pr_err("Error setting up the purgatory.\n");
+   172	
+   173		goto out;
+   174	
+   175	out_free_fdt:
+   176		kvfree(fdt);
+   177	out:
+   178		kfree(rmem);
+   179		kfree(modified_cmdline);
+   180		kexec_free_elf_info(&elf_info);
+   181	
+   182		return ret ? ERR_PTR(ret) : NULL;
+   183	}
+   184	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
