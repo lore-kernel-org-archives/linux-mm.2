@@ -4,87 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D67DEE784BE
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 09:54:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF586D3B7E5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 11:39:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5D166B0005; Sun, 28 Dec 2025 04:54:28 -0500 (EST)
+	id C49F96B0005; Sun, 28 Dec 2025 06:39:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0B176B0089; Sun, 28 Dec 2025 04:54:28 -0500 (EST)
+	id BF76D6B0089; Sun, 28 Dec 2025 06:39:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 909D06B008A; Sun, 28 Dec 2025 04:54:28 -0500 (EST)
+	id AF6996B008A; Sun, 28 Dec 2025 06:39:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FFFD6B0005
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 04:54:28 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0CE7A1420FE
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 09:54:28 +0000 (UTC)
-X-FDA: 84268419816.25.C41CB77
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 77EB640002
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 09:54:25 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S2ph8a/f";
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CA9A6B0005
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 06:39:04 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 80512117D5E
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 11:38:59 +0000 (UTC)
+X-FDA: 84268683198.26.3B777B3
+Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 006AD20005
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 11:38:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=YS6sbKSr;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf03.hostedemail.com: domain of shengminghu512@qq.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=shengminghu512@qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766921937; a=rsa-sha256;
+	cv=none;
+	b=Kbjftw68yCXcbtNnU6y4Vp6EzaczsZ5kGx0WXw5GQ2UQBrSiIxwRuisaTtZdCjXlXTZ0FC
+	svlXGMHXMYBQQ88tL2r9yX/vlOSDPWv3Z+UJzDif/cVExxjI8qffo8U74OT9V8LihHdKom
+	ELjwnM53v5V+tXT6sRFNX0ue+lkgemM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=YS6sbKSr;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf03.hostedemail.com: domain of shengminghu512@qq.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=shengminghu512@qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766915665;
+	s=arc-20220608; t=1766921937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k1JZaRUR7Zyb3+2+LPH4+g8vgPM6twkfCu2GKUIxxtU=;
-	b=WlKKoekA4sEZXdoQugX033bZfz/bkYssNj2YxqqncjQuT0RSdp7ed967Gp1SbMbLj/8aYg
-	fSrNKcE/qJzDN78iTnVEq3p97my5okrWIgFI7zeOOBKYXOycv2OL7niMomYJbXPaeHkSaT
-	JVCNYDOiTaRtbz9G9iIkeYROIimaibs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S2ph8a/f";
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766915665; a=rsa-sha256;
-	cv=none;
-	b=iGKjBH/8LMYwaTfyfRMsYJjUV/us6DKeHffzu9ewAOC1obG53BeyZNSOr562R8TpFzoDBT
-	CCwqqu3jYIFwQRMnLWTINVxHoupN5Vv2Qcl5fZn2WZRgI2UOkMuv6eBSExxZXRi5+f67hb
-	ZYGKsH8W/AHqUnlCA1J8baOK/k5+bas=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7FC2260055;
-	Sun, 28 Dec 2025 09:54:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397ECC4CEFB;
-	Sun, 28 Dec 2025 09:54:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766915663;
-	bh=d1HWZ/gra3XXbf0pSMqW8Xa2iv1be8XgnIpd86Sciu8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S2ph8a/fJAc0B+NhCYlZUvwtKpNEb86xETF+DEYN/ePGkRtbnyFHSSRtsbNuMUpUN
-	 mlEmKNBxtFukASa1Gn4h0UHnkv0Fjaf8MraIitOIAF1I7gSNpiBNEzHD9O+Rn5L7+1
-	 MwYl18Qfq24Hed1kWmbD8VuQiTqblZcpkIlPtsQWMP+ERZLPmQzlhwy/qCDblJi57J
-	 LDqqKw3VdO437xnP+6aixjn/7iL9IyZXq+ho1aL3ffovZO7GTjpvZ0R/ykifDE6Lki
-	 Z6danE2z94A4ZabQG6omWIlwQEhU5hGB7VaSCGZ+EXw3bNHYhDrjKhXsfr62tmttbb
-	 n4Y/HYbursIxA==
-Date: Sun, 28 Dec 2025 11:54:17 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: markus.stockhausen@gmx.de
-Cc: tglx@linutronix.de, linux-mm@kvack.org, linux-mips@vger.kernel.org,
-	jelonek.jonas@gmail.com,
-	'Chris Packham' <Chris.Packham@alliedtelesis.co.nz>,
-	hauke@hauke-m.de
-Subject: Re: HIGHMEM freeing patch breaks Realtek RTL930x builds
-Message-ID: <aVD-SaGkj7lG91pT@kernel.org>
-References: <00bc01dc718e$b4108af0$1c31a0d0$@gmx.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <00bc01dc718e$b4108af0$1c31a0d0$@gmx.de>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: cqkcfzjgeybgfu3nb9x67n1q563b67dm
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=JBiEhZG23nF7rzr99o5QrN66XJYyhdsq5looOF7JCQc=;
+	b=npXeXJbmbPCo5UPZkLWQjjmUpic6wsoYYcT/+DmMe+UCNI7AOvpvcQqUICMBkf6pkyfNZK
+	Mny+s+p3UEk5nOhsbwCXEBxZTcjIevWMFcaNGxzy+NxXqnpKLVAHqK7S0LgavoG0hV+8Pl
+	OJfWalOrSgUqWPrrS/E1BlJRnmnl+B4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1766921931; bh=JBiEhZG23nF7rzr99o5QrN66XJYyhdsq5looOF7JCQc=;
+	h=From:To:Cc:Subject:Date;
+	b=YS6sbKSrGQfcf03dLzLa71lxGCncjkCyx1tT8d+rYsAvGMcoQVx0fZS6iGG9VkO9n
+	 VHC8cC9Yl9zFjOXs9EgYzbwLVU6mzo4rdC4o7KECSMbO/NTskJFKaJi7PyocIXsJC1
+	 TbHjMpwJI9JNryDxCj19DRKGonN5HHVeLyFjdWpg=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-XMAILINFO: NWDimQkHKFPbycjKJXGP9kqLJa0gSkvOigl5hTQJ9KEjwJ9VxRTYFbrIr2n11m
+	 0khQ+ahtYdkcu7eKobY0VAqFo5A68PD/ugaDZBLXI6N70I5S+QELSdz7VTaxuuCTmRBhV/bvWHOsE
+	 2Zavv35NNsUiQaPeqq8qavLkp4vVzbJ2LH96DCozqGSCj6vU01Qgln6OPNdDTkh/xFoUOYyiP39vr
+	 xZnmQiyDPM/6mkd6h/aicd8e0PRQDitm4nIrZB+2DYKJJ+exnw3jRgKabbgGsRrLXVqrr+xaBV824
+	 wks3FIFD1CSsfrkCmp8Zhx/wPL0IOMMafDkVg26XHBCiASmjD8wfUmsfam3dWrfIe40zx3ix5hnO+
+	 ke5vAK/vbwXI2B56JjOY3pIlo8Qw8cdwM6iTQVArJ/ErJX33rU1hDhQ2HVyFFNNXSCYG067Empq5H
+	 lZ2OqN4xwbS1k0ul2+pHblCalxDGwu3tjLfQQsTtfr7Jm4zslny0nRWl6B5I1Sga3j+3G6b9ZjhYy
+	 6bUgE5oEFcB47u01bsjHrpBG+zQhOnD8uwde69JzKCawvrmRORBSDEPeymmG64AFrpwNqgerE24Pc
+	 hg4+tPAvGlG4gJsOwW8ZAWBDldVDjtGLln1fouDCzJFWIGLnRiUc3bHVHQ/84lAugo9Nc/edOjlqT
+	 huIFOryPqa6173uKSFK+kzj4F4vtaz2uCgiAkUz7J4h4Y+fuHupe3jtSHOKxsgkjGDcmL2Za9yvln
+	 rUvj1plMCTkt3yaKWnUe5it4/YwCWZO33PG46v/Oalg0ck4oSfcE+yPD/qapsGIQMhax5uB4U+Ijs
+	 I7wKdt8vA4UnQYuypMxQsUNR0t308sb2tkEfL2HZUtIxzz2Gq2tI2/wvAIvCw7DCqt1yT3FmbjYG5
+	 hbgpXMnlb02zGOmBJb/w1QbGNr5Nhh5MlPag+NP9AIJ7JUbT1FqJ3pM41m1TsJDaSupPZwH7RzndZ
+	 NEpLVVHyShghFueBocKNO0+c5xqL3J3SHKkKB7T4imq5ez72b/XvA1+oWK4mhaP6uFMorV76KUuQ4
+	 VBuIP0KEKbAQGoX3JLhyr9HwXFh3pgD+vodmNyIiBoX50mVPj1kU7SMChHqBIkf+h8AcfbD2PeH2l
+	 2Ri1RHNaP+ruMA==
+From: "=?utf-8?B?c2hlbmdtaW5naHU1MTI=?=" <shengminghu512@qq.com>
+To: "=?utf-8?B?YWtwbQ==?=" <akpm@linux-foundation.org>, "=?utf-8?B?ZGF2aWQ=?=" <david@kernel.org>
+Cc: "=?utf-8?B?bG9yZW56by5zdG9ha2Vz?=" <lorenzo.stoakes@oracle.com>, "=?utf-8?B?TGlhbS5Ib3dsZXR0?=" <Liam.Howlett@oracle.com>, "=?utf-8?B?dmJhYmth?=" <vbabka@suse.cz>, "=?utf-8?B?cnBwdA==?=" <rppt@kernel.org>, "=?utf-8?B?c3VyZW5i?=" <surenb@google.com>, "=?utf-8?B?bWhvY2tv?=" <mhocko@suse.com>, "=?utf-8?B?bGludXgtbW0=?=" <linux-mm@kvack.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?aHUuc2hlbmdtaW5n?=" <hu.shengming@zte.com.cn>, "=?utf-8?B?emhhbmcucnVu?=" <zhang.run@zte.com.cn>
+Subject: [PATCH] mm/memblock: drop redundant 'struct page *' argument from memblock_free_pages()
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Sun, 28 Dec 2025 19:38:50 +0800
+X-Priority: 3
+Message-ID: <tencent_600D1BCC5E1B5DB4DDD98679DA7DC3123C06@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+X-QQ-mid: xmsepub7-0t1766921930t1ujyp4gm
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 006AD20005
+X-Stat-Signature: sytmypd6zcsozei71wjnup8homowoqq6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 77EB640002
-X-HE-Tag: 1766915665-768105
-X-HE-Meta: U2FsdGVkX18CC9et2bTZ7ebOmoKigITiqrClpJFExAzs3nHkNay3aS3KUT/9lyQrc5P6vtDWViIwW22/zozeuXC/nG2WoeDDplYxuyUR0kz0Pdr10QelSTtCkjhhJAaCQ3GvNA5OY+o7w5d6V+/j1KNLGchbolcwTAKePizwW2YLSt/1r+Uw42d0CsQNoWMADtwiK8NIgDuUqkXxB7FKqLKXvY4XQ8DeResLnfXTSsoF6CFJf4sAZY5kLPTfSf84YxvwubPQtrrUSOBU87K9nSot5+0tZs1Rbei0gWLkY1UaRnH/kScbi3mIjw7ZOEtT569kzRveeSuL0EzeSSSDH5SbLvR/IRzyABVRHnwN0LLY5pJk8dNsfRSO2Ur88D8+kbvNWgktzm2TiU2Ak8NwsJAvaVjjoo0tvFwqSjnwncBQzkD9MEP0oXI1fbCcNisotMg9hEpZ9ThCEiADuqB3zfPmGB7cbcmQg0uZPKUzo4PZ6vmhqfOOS+YkUVgiL4aaRcwYysHMJVkBbstOyQsle5sXcQm6/DJ5T2yIncmgYp9dpBkeQg8gkwGn5Q6B8Nm1lbpTAVEd+B6DgxlVjSdNAR91tl0fc93Et77mSy6W5GKsgllhosBBv0aO+QNxVHkm3K8fQKHIoUFqHXKDo2RnPmFUQ/nfHxqhnR0U2/MXJJ6mP8T7jQAkA+KVXX1N1NbaOpyhEENr82QETFXCAYBhffU82v9OLfduvPYJ4k/IRzPuouhBXGTNlvV0VZKyhaf2QNy5X3bpYPZZiB34sHF+g1OOqM2w5g+7l8AlmKKIkir5HoeMIfHEVtZUE4BrqyKamFgTXUUTFt/rQS3eV1keB+cs5hzfpEsoZUyzpQcYl95Wf5JfxFhAw7SmwXFRUmj3U3nPFxi0H6ifjWBM+Vlx/Js+A1ubzK+CNN/KS11dtm5bPXMjcn1Ra8g5Agw74flq9R1RNApEcl7MSuPfOX0
- IJLnE4uB
- jo79h0c76/UAcc+DxZTTMEzbTDHnh9/dwWdqEEnKLiH8+hzvH2tV6nvhW86hyJ6WBoUXn3M9T5x2ZBumqVVbRCi488eLcQqlzk5W4ZuEGq5O2X+4lm0UbIVRm8aUnGlLXM+OXU/WjijqX81hIZsgRkJrTl56U1uXrDUDIegimfeqmE0c6JTWzgoHJ2IqoDP/WF9D2an0zEOgKZcxx/+/C+3FHHCfKDv2aSOrlj2LZYz46PHqH+YZHx0vfOB2S7f8/KKQIneoUg/KhFX0FUidyRAMLhNzKQRXsOWC+p31eN4VY4riuzT8GtB6KWFJ/zqOsWV5LjDxosDeNKuHOSkfcsYeBdyLAJed0NOV98u1iHJzXuhbUWCcEl4VXv1uQ1XViEcuQUr9jReTmTtMsq+onfus8JiYmRgS/NJ2JycyJb4K2xWs=
+X-HE-Tag: 1766921936-689981
+X-HE-Meta: U2FsdGVkX1+uEgAzVBzJUM3HH2EkP0M13Rt1C3bBk8orZ3Yq0wzldRP9phMMH0PFumPgQo8+Gom4VHuxfz6fHfbtnHeg3d9dHHwjqZJ7g8y1LLLMm5SknQcPl0DXCWAbGVnwI3opiTCe2NEIu9GAke7/08L/K2u2S6MqLFzkMQZLmq3V+Vld2XWjG/r38SykpsoQ3wJGn8eu/ba8Vs7D3/GeZh1EtBwUGUXw1kGtFpibDCHGdK/uvx+gyKNUgICZXxu6yRw1EZ0I/Tb5a2GzIpnZ59XDr1SU+ebi+FoOLs2+KE7kB9evJz1DRQQaz0J2QqejXfQb64pj6+3ExXMqK7s0dN+n3akr4rrDfRxt0+gQG0IrInotbtg1XrXMxshglN3Zc7HAEMYc3HqB0Py+rTyCEyfM1ViTlJdEjkI2lRdakSPFC12ZxS5yJ8bsraBChSqnVFDSWBJ/PzfVVMoNny2juIBX4kK7TBTRZDwi+1xvzwKW9U6buQNMShzPl6dvAJ3fQUZrHcHD8ZPBIgBcCm+CQOecEgmmvQaeKisfjAqlK6DXIztLMOvxnt9almxw6i3ByhFThsZ6W5IsjnyYFmlJM135VHyXhSVBLPnXMH33J76SBWbfZWPF471EyCYB63alRhlCIChlGqtkJCpW5Fed5lwQ4KuJPe9/syZS5eiIpV1g28CtpUMAF5dzo2iyK868QYJlkdET6gEIkzpQDtUqXEimp7j+dxqGy7CvjQ2M9W8nEQFr39LTVWbySKd5gb20vj76ENzbVWCLIyMFPZb/FnZely4VZ59PBtrWaUkB2briyRCikeGOraPqMRCvmSCtljRCRljmYXIsXgdk9i/5K58sOIHXI+xbaxIGT3wrJyYUcBVsk+Me1h1rZRd49JJSM6IjIf+8UgKkFrPuBPhRtJVnAnltsoSwul8onts4g0T/1xTXY9LfejzeynyUK+/gPI/tn6a5zpo+/RS
+ 9kt9fLiH
+ TsggqmsSxDq7SQ9V4FrI2+scXF4ntCVvC4ZWYiA3ivmFXrb+v0eZQlSLHQqiKSbvgghRBIgHE7v3qJpL3rolnb8yBz2UgD59BfFag2s2nRu4QOdU3FQ0joE6N5d0LTfqwfP1VU34wF02P21XEjWGWWPnDPb2zlShYlYWs3hMYAWzo2L+AgrxnljECAjiYjH0/zTUW8KMo2i7hOYYMOLrq5YbfHGoMuC5wmpxXZx8EhEXYECO0NedKXg4YBdS+s+Uey3SD3JObqcTIZYsV8PPMIhXjSZjE3/gU+mz/axWeNVCRNn3M7Qiu8ekuhwnjRkccgTtSbeA6uEEm1f/Y32spTUOPm1fuRlEan98by5bE0U9DkUu3nKpPJJOFlvZgjxh06vThOayWTpxgWBHOzS9phsSdPw3DqsYQHxSG1tiy0KyuNeHrO5e8m/udYAn549zCGNVRVD1C9ZZAQon20QNP+azZXoIF5IyF3Jrp0OwzEqD+0LGEUQBy0OVLZFIWFUYTkSoODfwFhNt3R+GVN4A4eHK+/z3l/Hsp1Gj8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,88 +102,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Markus,
+RnJvbTogU2hlbmdtaW5nIEh1IDxodS5zaGVuZ21pbmdAenRlLmNvbS5jbj4NCg0KbWVtYmxv
+Y2tfZnJlZV9wYWdlcygpIGN1cnJlbnRseSB0YWtlcyBib3RoIGEgc3RydWN0IHBhZ2UgKiBh
+bmQgdGhlDQpjb3JyZXNwb25kaW5nIFBGTi4gVGhlIHBhZ2UgcG9pbnRlciBpcyBhbHdheXMg
+ZGVyaXZlZCBmcm9tIHRoZSBQRk4gYXQNCmNhbGwgc2l0ZXMgKHBmbl90b19wYWdlKHBmbikp
+LCBtYWtpbmcgdGhlIHBhcmFtZXRlciByZWR1bmRhbnQgYW5kIGFsc28NCmFsbG93aW5nIGFj
+Y2lkZW50YWwgbWlzbWF0Y2hlcyBiZXR3ZWVuIHRoZSB0d28gYXJndW1lbnRzLg0KDQpTaW1w
+bGlmeSB0aGUgaW50ZXJmYWNlIGJ5IHJlbW92aW5nIHRoZSBzdHJ1Y3QgcGFnZSAqIGFyZ3Vt
+ZW50IGFuZA0KZGVyaXZpbmcgdGhlIHBhZ2UgbG9jYWxseSBmcm9tIHRoZSBQRk4sIGFmdGVy
+IHRoZSBkZWZlcnJlZCBzdHJ1Y3QgcGFnZQ0KaW5pdGlhbGl6YXRpb24gY2hlY2suIFRoaXMg
+a2VlcHMgdGhlIGJlaGF2aW9yIHVuY2hhbmdlZCB3aGlsZSBtYWtpbmcNCnRoZSBoZWxwZXIg
+aGFyZGVyIHRvIG1pc3VzZS4NCg0KU2lnbmVkLW9mZi1ieTogU2hlbmdtaW5nIEh1IDxodS5z
+aGVuZ21pbmdAenRlLmNvbS5jbj4NCi0tLQ0KIG1tL2ludGVybmFsLmggICAgICAgICAgICAg
+ICAgICAgICB8IDMgKy0tDQogbW0vbWVtYmxvY2suYyAgICAgICAgICAgICAgICAgICAgIHwg
+NCArKy0tDQogbW0vbW1faW5pdC5jICAgICAgICAgICAgICAgICAgICAgIHwgNyArKysrKy0t
+DQogdG9vbHMvdGVzdGluZy9tZW1ibG9jay9pbnRlcm5hbC5oIHwgMyArLS0NCiA0IGZpbGVz
+IGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKSwgOCBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdp
+dCBhL21tL2ludGVybmFsLmggYi9tbS9pbnRlcm5hbC5oDQppbmRleCBlNDMwZGE5MDAuLjVm
+OTNlZTE0NSAxMDA2NDQNCi0tLSBhL21tL2ludGVybmFsLmgNCisrKyBiL21tL2ludGVybmFs
+LmgNCkBAIC03NDIsOCArNzQyLDcgQEAgc3RhdGljIGlubGluZSB2b2lkIGNsZWFyX3pvbmVf
+Y29udGlndW91cyhzdHJ1Y3Qgem9uZSAqem9uZSkNCiBleHRlcm4gaW50IF9faXNvbGF0ZV9m
+cmVlX3BhZ2Uoc3RydWN0IHBhZ2UgKnBhZ2UsIHVuc2lnbmVkIGludCBvcmRlcik7DQogZXh0
+ZXJuIHZvaWQgX19wdXRiYWNrX2lzb2xhdGVkX3BhZ2Uoc3RydWN0IHBhZ2UgKnBhZ2UsIHVu
+c2lnbmVkIGludCBvcmRlciwNCiAJCQkJICAgIGludCBtdCk7DQotZXh0ZXJuIHZvaWQgbWVt
+YmxvY2tfZnJlZV9wYWdlcyhzdHJ1Y3QgcGFnZSAqcGFnZSwgdW5zaWduZWQgbG9uZyBwZm4s
+DQotCQkJCQl1bnNpZ25lZCBpbnQgb3JkZXIpOw0KK2V4dGVybiB2b2lkIG1lbWJsb2NrX2Zy
+ZWVfcGFnZXModW5zaWduZWQgbG9uZyBwZm4sIHVuc2lnbmVkIGludCBvcmRlcik7DQogZXh0
+ZXJuIHZvaWQgX19mcmVlX3BhZ2VzX2NvcmUoc3RydWN0IHBhZ2UgKnBhZ2UsIHVuc2lnbmVk
+IGludCBvcmRlciwNCiAJCWVudW0gbWVtaW5pdF9jb250ZXh0IGNvbnRleHQpOw0KIA0KZGlm
+ZiAtLWdpdCBhL21tL21lbWJsb2NrLmMgYi9tbS9tZW1ibG9jay5jDQppbmRleCA5MDVkMDZi
+MTYuLjZlMTFmODFjNCAxMDA2NDQNCi0tLSBhL21tL21lbWJsb2NrLmMNCisrKyBiL21tL21l
+bWJsb2NrLmMNCkBAIC0xNzcxLDcgKzE3NzEsNyBAQCB2b2lkIF9faW5pdCBtZW1ibG9ja19m
+cmVlX2xhdGUocGh5c19hZGRyX3QgYmFzZSwgcGh5c19hZGRyX3Qgc2l6ZSkNCiAJZW5kID0g
+UEZOX0RPV04oYmFzZSArIHNpemUpOw0KIA0KIAlmb3IgKDsgY3Vyc29yIDwgZW5kOyBjdXJz
+b3IrKykgew0KLQkJbWVtYmxvY2tfZnJlZV9wYWdlcyhwZm5fdG9fcGFnZShjdXJzb3IpLCBj
+dXJzb3IsIDApOw0KKwkJbWVtYmxvY2tfZnJlZV9wYWdlcyhjdXJzb3IsIDApOw0KIAkJdG90
+YWxyYW1fcGFnZXNfaW5jKCk7DQogCX0NCiB9DQpAQCAtMjIxNiw3ICsyMjE2LDcgQEAgc3Rh
+dGljIHZvaWQgX19pbml0IF9fZnJlZV9wYWdlc19tZW1vcnkodW5zaWduZWQgbG9uZyBzdGFy
+dCwgdW5zaWduZWQgbG9uZyBlbmQpDQogCQl3aGlsZSAoc3RhcnQgKyAoMVVMIDw8IG9yZGVy
+KSA+IGVuZCkNCiAJCQlvcmRlci0tOw0KIA0KLQkJbWVtYmxvY2tfZnJlZV9wYWdlcyhwZm5f
+dG9fcGFnZShzdGFydCksIHN0YXJ0LCBvcmRlcik7DQorCQltZW1ibG9ja19mcmVlX3BhZ2Vz
+KHN0YXJ0LCBvcmRlcik7DQogDQogCQlzdGFydCArPSAoMVVMIDw8IG9yZGVyKTsNCiAJfQ0K
+ZGlmZiAtLWdpdCBhL21tL21tX2luaXQuYyBiL21tL21tX2luaXQuYw0KaW5kZXggZmMyYTZm
+MWU1Li44ZTk1ZDY1Y2YgMTAwNjQ0DQotLS0gYS9tbS9tbV9pbml0LmMNCisrKyBiL21tL21t
+X2luaXQuYw0KQEAgLTI0ODAsOSArMjQ4MCwxMCBAQCB2b2lkICpfX2luaXQgYWxsb2NfbGFy
+Z2Vfc3lzdGVtX2hhc2goY29uc3QgY2hhciAqdGFibGVuYW1lLA0KIAlyZXR1cm4gdGFibGU7
+DQogfQ0KIA0KLXZvaWQgX19pbml0IG1lbWJsb2NrX2ZyZWVfcGFnZXMoc3RydWN0IHBhZ2Ug
+KnBhZ2UsIHVuc2lnbmVkIGxvbmcgcGZuLA0KLQkJCQkJCQl1bnNpZ25lZCBpbnQgb3JkZXIp
+DQordm9pZCBfX2luaXQgbWVtYmxvY2tfZnJlZV9wYWdlcyh1bnNpZ25lZCBsb25nIHBmbiwg
+dW5zaWduZWQgaW50IG9yZGVyKQ0KIHsNCisJc3RydWN0IHBhZ2UgKnBhZ2U7DQorDQogCWlm
+IChJU19FTkFCTEVEKENPTkZJR19ERUZFUlJFRF9TVFJVQ1RfUEFHRV9JTklUKSkgew0KIAkJ
+aW50IG5pZCA9IGVhcmx5X3Bmbl90b19uaWQocGZuKTsNCiANCkBAIC0yNDkwLDYgKzI0OTEs
+OCBAQCB2b2lkIF9faW5pdCBtZW1ibG9ja19mcmVlX3BhZ2VzKHN0cnVjdCBwYWdlICpwYWdl
+LCB1bnNpZ25lZCBsb25nIHBmbiwNCiAJCQlyZXR1cm47DQogCX0NCiANCisJcGFnZSA9IHBm
+bl90b19wYWdlKHBmbik7DQorDQogCWlmICgha21zYW5fbWVtYmxvY2tfZnJlZV9wYWdlcyhw
+YWdlLCBvcmRlcikpIHsNCiAJCS8qIEtNU0FOIHdpbGwgdGFrZSBjYXJlIG9mIHRoZXNlIHBh
+Z2VzLiAqLw0KIAkJcmV0dXJuOw0KZGlmZiAtLWdpdCBhL3Rvb2xzL3Rlc3RpbmcvbWVtYmxv
+Y2svaW50ZXJuYWwuaCBiL3Rvb2xzL3Rlc3RpbmcvbWVtYmxvY2svaW50ZXJuYWwuaA0KaW5k
+ZXggMGFiNGI1M2JiLi4wMDliOTdiYmQgMTAwNjQ0DQotLS0gYS90b29scy90ZXN0aW5nL21l
+bWJsb2NrL2ludGVybmFsLmgNCisrKyBiL3Rvb2xzL3Rlc3RpbmcvbWVtYmxvY2svaW50ZXJu
+YWwuaA0KQEAgLTE1LDggKzE1LDcgQEAgYm9vbCBtaXJyb3JlZF9rZXJuZWxjb3JlID0gZmFs
+c2U7DQogDQogc3RydWN0IHBhZ2Uge307DQogDQotdm9pZCBtZW1ibG9ja19mcmVlX3BhZ2Vz
+KHN0cnVjdCBwYWdlICpwYWdlLCB1bnNpZ25lZCBsb25nIHBmbiwNCi0JCQkgdW5zaWduZWQg
+aW50IG9yZGVyKQ0KK3ZvaWQgbWVtYmxvY2tfZnJlZV9wYWdlcyh1bnNpZ25lZCBsb25nIHBm
+biwgdW5zaWduZWQgaW50IG9yZGVyKQ0KIHsNCiB9DQogDQotLSANCjIuMjUuMQ0K
 
-On Sat, Dec 20, 2025 at 09:57:40AM +0100, markus.stockhausen@gmx.de wrote:
-> Hi,
-> 
-> sorry for being late on this topic but downstream OpenWrt just started
-> kernel
-> conversion from 6.12 to 6.18 these days. During preparation of the PR
-> https://github.com/openwrt/openwrt/pull/21181 we noticed that Realtek 
-> RTL930x soc based devices with more than 256MB (highmem) do not boot 
-> any longer. 
-> 
-> These are MIPS 34k 32bit multithreaded SoC with layout 
-> <0x00000000 0x10000000>, /* 256 MiB lowmem */
-> <0x20000000 0x10000000>; /* 256 MiB highmem */
-> 
-> Bisecting the issue gave " arch, mm: streamline HIGHMEM freeing" 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/
-> ?h=v6.15-rc1&id=6faea3422e3b4e8de44a55aa3e6e843320da66d2
-> as the first bad commit. This is back from the 6.15 times.
-> 
-> I have no real idea why removing mem_init_free_highmem() and letting
-> __free_memory_core() work on the whole memory range gives issues.
-> 
-> We are aligning to upstream very slowly and are still in need of 
-> downstream patches so here some additional info.
-> 
-> - Until now we never cared about FLATMEM/SPARSEMEM configs
-> 
-> - We are still using dedicated prom.c/setup.c for the devices
-> https://git.openwrt.org/?p=openwrt/openwrt.git;a=tree;f=target/linux/
-> realtek/files-6.12/arch/mips/rtl838x;hb=HEAD
-> 
-> Any idea or hint is appreciated.
-
-Can you please send logs from a working kernel and a failing kernel with
-"memblock=debug" added to the kernel command line?
-
-Another thing I think worth checking is will the system boot with a partial
-revert of 6faea3422e3b ("arch, mm: streamline HIGHMEM freeing") for mips:
-
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index cd04200d0573..be5985155509 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -419,6 +419,23 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
- static struct kcore_list kcore_kseg0;
- #endif
- 
-+static inline void __init mem_init_free_highmem(void)
-+{
-+#ifdef CONFIG_HIGHMEM
-+	unsigned long tmp;
-+
-+	if (cpu_has_dc_aliases)
-+		return;
-+
-+	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
-+		struct page *page = pfn_to_page(tmp);
-+
-+		if (!memblock_is_memory(PFN_PHYS(tmp)))
-+			SetPageReserved(page);
-+	}
-+#endif
-+}
-+
- void __init arch_mm_preinit(void)
- {
- 	/*
-@@ -429,6 +446,7 @@ void __init arch_mm_preinit(void)
- 
- 	maar_init();
- 	setup_zero_pages();	/* Setup zeroed pages.  */
-+	mem_init_free_highmem();
- 
- #ifdef CONFIG_64BIT
- 	if ((unsigned long) &_text > (unsigned long) CKSEG0)
- 
-> Thanks in advance.
-> Markus
-
--- 
-Sincerely yours,
-Mike.
 
