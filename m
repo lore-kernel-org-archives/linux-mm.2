@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56368E784BE
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 04:30:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D67DEE784BE
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 09:54:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14F956B0005; Sat, 27 Dec 2025 23:30:04 -0500 (EST)
+	id A5D166B0005; Sun, 28 Dec 2025 04:54:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FD7C6B0089; Sat, 27 Dec 2025 23:30:04 -0500 (EST)
+	id A0B176B0089; Sun, 28 Dec 2025 04:54:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0097A6B008A; Sat, 27 Dec 2025 23:30:03 -0500 (EST)
+	id 909D06B008A; Sun, 28 Dec 2025 04:54:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E4CC86B0005
-	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 23:30:03 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E791F140C89
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 04:30:02 +0000 (UTC)
-X-FDA: 84267602244.22.22C635A
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4E9B3140007
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 04:30:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=obfBILue;
-	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FFFD6B0005
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 04:54:28 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0CE7A1420FE
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 09:54:28 +0000 (UTC)
+X-FDA: 84268419816.25.C41CB77
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 77EB640002
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 09:54:25 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S2ph8a/f";
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766896201;
+	s=arc-20220608; t=1766915665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=guYBHUk/ndUNWh1unmJUqc4oNCVqRI+bMw9D/2jhg0I=;
-	b=oqvL8jJozcqho5uBvHDFFp5o+EzgZOIjXg/W8voWMomTmM/4OBwai7susdnKI9MKY3yn5v
-	1doANVti+LNz6xo/IdFrvqC+5NgVH3SQGz4lH2g7nHl8hCLz4R2BCCSK7yafRrVJ68RZD7
-	ZNLNhVheNpgbsqdhyd+ATEzWEcLYw3I=
+	bh=k1JZaRUR7Zyb3+2+LPH4+g8vgPM6twkfCu2GKUIxxtU=;
+	b=WlKKoekA4sEZXdoQugX033bZfz/bkYssNj2YxqqncjQuT0RSdp7ed967Gp1SbMbLj/8aYg
+	fSrNKcE/qJzDN78iTnVEq3p97my5okrWIgFI7zeOOBKYXOycv2OL7niMomYJbXPaeHkSaT
+	JVCNYDOiTaRtbz9G9iIkeYROIimaibs=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=obfBILue;
-	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766896201; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S2ph8a/f";
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766915665; a=rsa-sha256;
 	cv=none;
-	b=zjc7gXeAxXXogVgtVpDBBrSeEYk03JJjiwH+IRlBYRbRSQrMcjBVEIWgCoACGn6PNOng+Y
-	5WO+HMoCAsHtpQT/6z4UvwxahuMG7QfiXYqLymDYWdCkytIlthZYgvWCjFWZaXwYfj43f0
-	le9agdW7cJKreyziPHX1uEGMUprV2PI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=guYBHUk/ndUNWh1unmJUqc4oNCVqRI+bMw9D/2jhg0I=; b=obfBILuenXzX3+gnVzwNfLnTav
-	tXVWryAsSLp9oLJQtxRCpaYetM/bEEAPaNmKc4x7ms/f9rgcX6xEU9kd2KlKB2OdlhjMjODpRf/Ye
-	h3wzr3lOmNTSBt5Nazqs4OXcNARVMO2G1tio7MraN5un6UQ2cihzu4eXGMH5KiTc/wi+WK0qIsuZa
-	YWPkjSaIpivUavbqzcOQ+Bn9YnsJt9X+ImIN1i/h44FR26hIc0nSuQ4mdoMVg26amf92TBoL8/MeU
-	W+yuh9rkobZsdcEbJP/KhY15HV6UxEuBXFKhD5kd/GFZfoJNadWoo3W8OXSh+ZgipO5PyUA0rxH4+
-	b8TDRCuw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vZiPk-00000000SDO-25lI;
-	Sun, 28 Dec 2025 04:29:56 +0000
-Date: Sun, 28 Dec 2025 04:29:56 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	syzbot+178fff6149127421c2cc@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/shmem: fix uninitialized folio in shmem_symlink
-Message-ID: <aVCyRNQ37oGVu4Lj@casper.infradead.org>
-References: <20251224094027.65842-1-21cnbao@gmail.com>
- <aUwcV2HhtdiXXxfJ@casper.infradead.org>
- <CAGsJ_4whKLWiw6LNexFPHTFWB1QbSrAwrBtspuc=c8fM2=WnvQ@mail.gmail.com>
+	b=iGKjBH/8LMYwaTfyfRMsYJjUV/us6DKeHffzu9ewAOC1obG53BeyZNSOr562R8TpFzoDBT
+	CCwqqu3jYIFwQRMnLWTINVxHoupN5Vv2Qcl5fZn2WZRgI2UOkMuv6eBSExxZXRi5+f67hb
+	ZYGKsH8W/AHqUnlCA1J8baOK/k5+bas=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7FC2260055;
+	Sun, 28 Dec 2025 09:54:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397ECC4CEFB;
+	Sun, 28 Dec 2025 09:54:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766915663;
+	bh=d1HWZ/gra3XXbf0pSMqW8Xa2iv1be8XgnIpd86Sciu8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S2ph8a/fJAc0B+NhCYlZUvwtKpNEb86xETF+DEYN/ePGkRtbnyFHSSRtsbNuMUpUN
+	 mlEmKNBxtFukASa1Gn4h0UHnkv0Fjaf8MraIitOIAF1I7gSNpiBNEzHD9O+Rn5L7+1
+	 MwYl18Qfq24Hed1kWmbD8VuQiTqblZcpkIlPtsQWMP+ERZLPmQzlhwy/qCDblJi57J
+	 LDqqKw3VdO437xnP+6aixjn/7iL9IyZXq+ho1aL3ffovZO7GTjpvZ0R/ykifDE6Lki
+	 Z6danE2z94A4ZabQG6omWIlwQEhU5hGB7VaSCGZ+EXw3bNHYhDrjKhXsfr62tmttbb
+	 n4Y/HYbursIxA==
+Date: Sun, 28 Dec 2025 11:54:17 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: markus.stockhausen@gmx.de
+Cc: tglx@linutronix.de, linux-mm@kvack.org, linux-mips@vger.kernel.org,
+	jelonek.jonas@gmail.com,
+	'Chris Packham' <Chris.Packham@alliedtelesis.co.nz>,
+	hauke@hauke-m.de
+Subject: Re: HIGHMEM freeing patch breaks Realtek RTL930x builds
+Message-ID: <aVD-SaGkj7lG91pT@kernel.org>
+References: <00bc01dc718e$b4108af0$1c31a0d0$@gmx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4whKLWiw6LNexFPHTFWB1QbSrAwrBtspuc=c8fM2=WnvQ@mail.gmail.com>
+In-Reply-To: <00bc01dc718e$b4108af0$1c31a0d0$@gmx.de>
 X-Rspamd-Server: rspam02
-X-Stat-Signature: mn3rxkbq9746ia9ebjje5r1ewx3ee5nq
+X-Stat-Signature: cqkcfzjgeybgfu3nb9x67n1q563b67dm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4E9B3140007
-X-HE-Tag: 1766896201-374935
-X-HE-Meta: U2FsdGVkX1+mhRTcdQHdGHT+Kc+b4yHMIEtrjYaJRRvzk+yPvTRa8yJY+ELqyYYJpb9rFKGAwug7Lk9HmtNM8y9ZdJvosqt7A09dsaJ2bjp/Ww5FQUmEkQ5ss3JgRdvwC3HoJsV6jj5ke1OqhJ4p4eEByB9JSB7irMfR7TMeroNIOoKayOxNPxJ1krWFyEjfbqyu2wmIH0xIP+9etkdj2LteBu2CbBi76ZdbvFr8bLkRt7xpOSTIHY7JJDwsUApt26csI2O6bngsd7RJ9hTlhUmp9eo3MNF0wq5g1LQkFlxD1erhkn4ITY4uvCL/QqORJGgTFhMBCwU5joxLulwXP8zfV1YCnld1wmJ1AblaOBdHeoFC205o8l9jc1A9UoP3m7PizHJozLe+4+hFrhMWOHqz2w6D2PsD72JEZdQY+FCcjkjhpQ8r6ncCUm+TTTu0nj49Au9f42qN4kMM6BeR/FH5GGs1uqAb0DGjkhdZyXIjdBleG06iayySRvZUOMpwZaPbCwPgp9CmpvHSD2wev/E6kWXGNEMYpkIp/0HPGwRh14chkn3saLFXiLGnsecQTy4QY01taf4UedigejuLkBHB8aX22VG6D9UkYrpYyr//I4+g9kryXnyFoQcLPEG8da//bmeHYc3AoTfMnz/VB0tKpUAo16SSFebsq/gC1WpE3AG72OKSqIN+xtxFEuR0ghET4N905EhB9eHarXI1HcFm1PWU7CFHZfMMqj4r9tjjxQgLiDafxcMgn8QWxkUjMyppCzdQeGLS3O1HfY+pM1Mv2EG8bGwCq2TjSn88bRunZ97rYvwxABYhTbsSw6bDDi4zLNZpK2yKcmjEoyL7CHvvloLjcQPT23UXSxPImQPo3cxqO418gbs7cd3Ge2Su2gwWogZdIxBGEZg5whr33Dkc+tM236f8zvZpf6v28ohfkXYkBcc+C5LB0MjOu4D+rJV4KJ7xzHfBxTtJnnZ
- EZBh8vPd
- 8Amb7DZcsr1RGmy6iAIq9T9JJP8DIhx7OEleJoKccdHr6DOirI4dICd40t4FaTeIUQv273wEv64oZuIa0AZlTt4e8xNF/Z/L9ryg1
+X-Rspamd-Queue-Id: 77EB640002
+X-HE-Tag: 1766915665-768105
+X-HE-Meta: U2FsdGVkX18CC9et2bTZ7ebOmoKigITiqrClpJFExAzs3nHkNay3aS3KUT/9lyQrc5P6vtDWViIwW22/zozeuXC/nG2WoeDDplYxuyUR0kz0Pdr10QelSTtCkjhhJAaCQ3GvNA5OY+o7w5d6V+/j1KNLGchbolcwTAKePizwW2YLSt/1r+Uw42d0CsQNoWMADtwiK8NIgDuUqkXxB7FKqLKXvY4XQ8DeResLnfXTSsoF6CFJf4sAZY5kLPTfSf84YxvwubPQtrrUSOBU87K9nSot5+0tZs1Rbei0gWLkY1UaRnH/kScbi3mIjw7ZOEtT569kzRveeSuL0EzeSSSDH5SbLvR/IRzyABVRHnwN0LLY5pJk8dNsfRSO2Ur88D8+kbvNWgktzm2TiU2Ak8NwsJAvaVjjoo0tvFwqSjnwncBQzkD9MEP0oXI1fbCcNisotMg9hEpZ9ThCEiADuqB3zfPmGB7cbcmQg0uZPKUzo4PZ6vmhqfOOS+YkUVgiL4aaRcwYysHMJVkBbstOyQsle5sXcQm6/DJ5T2yIncmgYp9dpBkeQg8gkwGn5Q6B8Nm1lbpTAVEd+B6DgxlVjSdNAR91tl0fc93Et77mSy6W5GKsgllhosBBv0aO+QNxVHkm3K8fQKHIoUFqHXKDo2RnPmFUQ/nfHxqhnR0U2/MXJJ6mP8T7jQAkA+KVXX1N1NbaOpyhEENr82QETFXCAYBhffU82v9OLfduvPYJ4k/IRzPuouhBXGTNlvV0VZKyhaf2QNy5X3bpYPZZiB34sHF+g1OOqM2w5g+7l8AlmKKIkir5HoeMIfHEVtZUE4BrqyKamFgTXUUTFt/rQS3eV1keB+cs5hzfpEsoZUyzpQcYl95Wf5JfxFhAw7SmwXFRUmj3U3nPFxi0H6ifjWBM+Vlx/Js+A1ubzK+CNN/KS11dtm5bPXMjcn1Ra8g5Agw74flq9R1RNApEcl7MSuPfOX0
+ IJLnE4uB
+ jo79h0c76/UAcc+DxZTTMEzbTDHnh9/dwWdqEEnKLiH8+hzvH2tV6nvhW86hyJ6WBoUXn3M9T5x2ZBumqVVbRCi488eLcQqlzk5W4ZuEGq5O2X+4lm0UbIVRm8aUnGlLXM+OXU/WjijqX81hIZsgRkJrTl56U1uXrDUDIegimfeqmE0c6JTWzgoHJ2IqoDP/WF9D2an0zEOgKZcxx/+/C+3FHHCfKDv2aSOrlj2LZYz46PHqH+YZHx0vfOB2S7f8/KKQIneoUg/KhFX0FUidyRAMLhNzKQRXsOWC+p31eN4VY4riuzT8GtB6KWFJ/zqOsWV5LjDxosDeNKuHOSkfcsYeBdyLAJed0NOV98u1iHJzXuhbUWCcEl4VXv1uQ1XViEcuQUr9jReTmTtMsq+onfus8JiYmRgS/NJ2JycyJb4K2xWs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,41 +93,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 25, 2025 at 05:04:38PM +1300, Barry Song wrote:
-> On Thu, Dec 25, 2025 at 6:01 AM Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > On Wed, Dec 24, 2025 at 10:40:27PM +1300, Barry Song wrote:
-> > > From: Barry Song <baohua@kernel.org>
-> > >
-> > > Uninitialized folio allocated in shmem_symlink() may be accessed
-> > > during swap-out, causing KMSAN BUG:
-> >
-> > This would be an unfortunate way to fix it.  The vast majority of
-> > symlinks are short, and we'll never access past the \0 in normal
-> > operation, so we'll be dirtying a lot of cachelines essentially to (1)
-> > shut up an automated tool and (2) optimise a corner case.
-> >
-> > How about this instead which delays zeroing to swapout?
+Hi Markus,
+
+On Sat, Dec 20, 2025 at 09:57:40AM +0100, markus.stockhausen@gmx.de wrote:
+> Hi,
 > 
-> Matthew, thank you very much for your review, even during Christmas.
-> I would like to wish you a happy holiday!
+> sorry for being late on this topic but downstream OpenWrt just started
+> kernel
+> conversion from 6.12 to 6.18 these days. During preparation of the PR
+> https://github.com/openwrt/openwrt/pull/21181 we noticed that Realtek 
+> RTL930x soc based devices with more than 256MB (highmem) do not boot 
+> any longer. 
+> 
+> These are MIPS 34k 32bit multithreaded SoC with layout 
+> <0x00000000 0x10000000>, /* 256 MiB lowmem */
+> <0x20000000 0x10000000>; /* 256 MiB highmem */
+> 
+> Bisecting the issue gave " arch, mm: streamline HIGHMEM freeing" 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/
+> ?h=v6.15-rc1&id=6faea3422e3b4e8de44a55aa3e6e843320da66d2
+> as the first bad commit. This is back from the 6.15 times.
+> 
+> I have no real idea why removing mem_init_free_highmem() and letting
+> __free_memory_core() work on the whole memory range gives issues.
+> 
+> We are aligning to upstream very slowly and are still in need of 
+> downstream patches so here some additional info.
+> 
+> - Until now we never cared about FLATMEM/SPARSEMEM configs
+> 
+> - We are still using dedicated prom.c/setup.c for the devices
+> https://git.openwrt.org/?p=openwrt/openwrt.git;a=tree;f=target/linux/
+> realtek/files-6.12/arch/mips/rtl838x;hb=HEAD
+> 
+> Any idea or hint is appreciated.
 
-Heh, thanks.  My mailserver is actually in a different timezone from me,
-so it was still the 24th when I sent it ;-)
+Can you please send logs from a working kernel and a failing kernel with
+"memblock=debug" added to the kernel command line?
 
-> I am not quite sure, as shm symlinks do not seem very common. Since
-> allocating a folio requires a symname longer than 128 bytes (where
-> 128 == SHORT_SYMLINK_LEN), such cases appear even rarer.
+Another thing I think worth checking is will the system boot with a partial
+revert of 6faea3422e3b ("arch, mm: streamline HIGHMEM freeing") for mips:
 
-Fair enough.  I hadn't noticed the SHORT_SYMLINK_LEN case when I
-wrote this.  That does change things somewhat, but still for a 160 byte
-symlink, we have 5 cachelines of data and 59 cachelines of zeroes.
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index cd04200d0573..be5985155509 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -419,6 +419,23 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+ static struct kcore_list kcore_kseg0;
+ #endif
+ 
++static inline void __init mem_init_free_highmem(void)
++{
++#ifdef CONFIG_HIGHMEM
++	unsigned long tmp;
++
++	if (cpu_has_dc_aliases)
++		return;
++
++	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
++		struct page *page = pfn_to_page(tmp);
++
++		if (!memblock_is_memory(PFN_PHYS(tmp)))
++			SetPageReserved(page);
++	}
++#endif
++}
++
+ void __init arch_mm_preinit(void)
+ {
+ 	/*
+@@ -429,6 +446,7 @@ void __init arch_mm_preinit(void)
+ 
+ 	maar_init();
+ 	setup_zero_pages();	/* Setup zeroed pages.  */
++	mem_init_free_highmem();
+ 
+ #ifdef CONFIG_64BIT
+ 	if ((unsigned long) &_text > (unsigned long) CKSEG0)
+ 
+> Thanks in advance.
+> Markus
 
-> BTW, do we need to migrate the owner_2 flag in folio_migrate_flags()?
-> If so, I am not quite sure it is worth changing the hotpath to
-> accommodate this.
-
-It already happens, it's just camouflaged.  owner_2 is the same bit as
-mappedtodisk.
-
+-- 
+Sincerely yours,
+Mike.
 
