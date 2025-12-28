@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B4F3D3B7E5
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 21:01:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D72D5D3B7E5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 21:37:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A38AE6B0089; Sun, 28 Dec 2025 16:01:36 -0500 (EST)
+	id 2756B6B0088; Sun, 28 Dec 2025 16:37:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E28D6B008A; Sun, 28 Dec 2025 16:01:36 -0500 (EST)
+	id 22C386B0089; Sun, 28 Dec 2025 16:37:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90FD06B008C; Sun, 28 Dec 2025 16:01:36 -0500 (EST)
+	id 15F2C6B008A; Sun, 28 Dec 2025 16:37:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 804F16B0089
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 16:01:36 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3802F1A010F
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 21:01:36 +0000 (UTC)
-X-FDA: 84270100992.12.88021B4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 58FBC40018
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 21:01:34 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bFWZMLhh;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 02D7C6B0088
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 16:37:45 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 74B96C011D
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 21:37:45 +0000 (UTC)
+X-FDA: 84270192090.24.A8819D4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D06F64000B
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 21:37:43 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D3LuM5ph;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766955694;
+	s=arc-20220608; t=1766957864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8mLN4jy8raEgHuh738HphvOpBbQlCM4mbdVw99D6NfM=;
-	b=4mGl0x3xeKdCYiJj4vDTnq+hFg8kkkg64MDj32FW+D9FKKX/ybGVvK21ARtoHzSJhlkPgE
-	w56GhK+8jCzxXhFqYQTZUGsujexva5qoOAD8HzS9J9RKo92qU7/RAMhUMjspYJ17qWpn6p
-	ZESm2ySFs6rDs57sTP5Z5Pigs/7wMb4=
+	bh=DXxhIcAHppCB49IrD+IjMQK4iR8EQaYY7zqGjWK2Gjk=;
+	b=R7aP5ll6ZJlV1ASCySjfOJsx4iatqs8uSVvinIuNDzCEAwOfomPitBF6UX5zsuU3IPsX56
+	/who4DD/XtovVD5b5S+B6uajz4/gv6+iiEwGkZKYtP2zIFcYCTG2V3mgQt6XelMoaXP3ZQ
+	iNmofkp6xrFYU4foY5yq2PRMrfMGY8k=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bFWZMLhh;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766955694; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D3LuM5ph;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766957864; a=rsa-sha256;
 	cv=none;
-	b=wt/lhyKAWsh2V/7IMbzw26DucyoPc6rjqGrB/pUqz/InhsCkXK9l/4Zp+EsW8+ewm/BS9b
-	qKfqFwyPWj+wSjiXD4TMytVhv3Dv4oyCJOkXONckydfrawC8j91E9YGFD4uQj9po5Ay73Z
-	shVDh4fUJL/aGng5abPs5YfoX5xF5pg=
+	b=NLWWRPBHceN4S5jjt1TJLNR12IZySIsi6w49OkElicDEmttkCHcsgT6G6wZkv3nHkmPpRc
+	G1UzZkjiP3+7l2yaBey6R0rTiab4XbYCtlhefrxZiiBCB4u9S5J6TDif0Dy834VSbXhvug
+	xWvabovNfEIB9wEVy96qUsawX4IcdJ0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6563543FAB;
-	Sun, 28 Dec 2025 21:01:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9092CC4CEFB;
-	Sun, 28 Dec 2025 21:01:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766955693;
-	bh=E40TfozfMTRWLVhTkV2adBCHelIThaQvQ1777er0xX4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bFWZMLhhI3RJJiSLADl8BpMm0BnLpwhbEOOJBd3TJEaErP26PcymDPdJB8E0wNQGX
-	 LQri8Y9MhXUjljPf8CBpX8MYh0c305UBBWQaKV/8DNAk0siTJYEH5X5l/qa4PuAB4J
-	 g3Ywaj8l911WWFB9uSVchXMVdsIOLCgQUjy4vv8kN/EOHlg1NGKb3AQUcim4Kq54s8
-	 hBRaWcdK0VCiBVDWTtafozyrIn+fbNeuJxqZDC8kjakUY2n9h4AqMwjg42eOCxiRdZ
-	 zQSGSrm9UG+tKzprdCJgRPZbV2//qkUbJ4jtY/WivRUzbqP4nQlVvubZ//5oP32m1I
-	 xgF1E7r3+kc7Q==
-Date: Sun, 28 Dec 2025 23:01:23 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: chengkaitao <pilgrimtao@gmail.com>
-Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org,
-	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, kevin.brodsky@arm.com, dave.hansen@linux.intel.com,
-	ziy@nvidia.com, chengkaitao@kylinos.cn, willy@infradead.org,
-	zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 1/3] sparc: Use vmemmap_populate_hugepages for
- vmemmap_populate
-Message-ID: <aVGao3KAyKxXrIo6@kernel.org>
-References: <20251219115812.65855-1-pilgrimtao@gmail.com>
- <20251219115812.65855-2-pilgrimtao@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251219115812.65855-2-pilgrimtao@gmail.com>
+	by tor.source.kernel.org (Postfix) with ESMTP id 11B2460010;
+	Sun, 28 Dec 2025 21:37:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE2DC4CEFB;
+	Sun, 28 Dec 2025 21:37:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1766957862;
+	bh=OEiTLDq5pxx8gFQzlcv+46cmEbe3o13ABCccyCSt4Yw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=D3LuM5phuTyCEEKnOIhrb/GrSAiYa39LTJQzwIutcMI81u3uYnlZG7O8MtX7lVs9g
+	 9idq1c3sEeLYttwVEBIoimtZw306MswYvIe+kqMCDzjVf52iHCevtoURoG7wYtNU9L
+	 aQn+/6aBlgnPLvCtXrh09ZitS9tZY25/nRiliTJc=
+Date: Sun, 28 Dec 2025 13:37:42 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: wale zhang <wale.zhang.ftd@gmail.com>
+Cc: Barry Song <21cnbao@gmail.com>, lorenzo.stoakes@oracle.com,
+ chrisl@kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/1] mm,swapops: Fix compile error on
+ set_pmd_migration_entry.
+Message-Id: <20251228133742.a1f90fc552d346c4c43aad8b@linux-foundation.org>
+In-Reply-To: <CAHrEdeuRtROkAN0zNdaYG_GBkSeW=-3kP3xBiQV1w51vGSc6Ew@mail.gmail.com>
+References: <20251225094057.286954-1-wale.zhang.ftd@gmail.com>
+	<CAGsJ_4yEAOxUmrPvca3Nzc-OB0+xXk5Y5gzszsY5TPqHCGvgcQ@mail.gmail.com>
+	<CAHrEdetNrGJbogkhMKY-25fgtxupPxKKLkwFGuenV8p5EwzZVQ@mail.gmail.com>
+	<CAGsJ_4wcovpuNKPTfS0STBOHrNREjP-4wam8Oe4e7_ctKsbAcA@mail.gmail.com>
+	<CAHrEdeuBk_MoPj1jWdtdLODK0JOWrb2orTZ77Cbp1vZ3PM3x9g@mail.gmail.com>
+	<CAGsJ_4zg_DgQnQthTqWOnwUrhm-MygVB6mOwmgK=ey2dYogb+Q@mail.gmail.com>
+	<CAHrEdeuRtROkAN0zNdaYG_GBkSeW=-3kP3xBiQV1w51vGSc6Ew@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 58FBC40018
-X-Stat-Signature: ya9zdomdgkfsddsi84kaznukrytynixp
+X-Rspamd-Queue-Id: D06F64000B
+X-Stat-Signature: ys977muptfs6obx673g96hsdrrxmh1yq
 X-Rspam-User: 
-X-HE-Tag: 1766955694-999732
-X-HE-Meta: U2FsdGVkX1/RbwDitCS+KzdytWvJHRdhYCIkq6+jDnDsGXKVfHy1cVNehBrmZ8ZCalOXimyp/B5jJA3fOfCxAeGQTb+Zw0hLB7xFVxVV4QTkSQW1/JK2JbOVBFaubrW6exP5VqCI81C5f10k2s6Kr+mP8x2G+fgP3hbxpZq/DpWYamDmBA2cN0gz7py+bOYC0CMZU4rGOHQsp602ZeM23x7pUlALkMZxg7VsZtphnK/dmEn33wdPUAaaZXue+eMqBveFSONYTyO+7J/l+PP7cC+EZG1Wmf/tYoTC7XZuq2uEWn1Wv+fPe8ONZfxwwxtkMPP/Siyvayv6yzTVAU2pp9toUQ29guoamy9Tdkzp87R0uKtU3Ph6wUshgUOBchhxL3bLT0fg5DD7OB15xT89959O80EnAmMtm0WdhtIU9ZqzOCqHzxcFJNAfnp4Ym9Vo+4pTnsz9VEcpyQYfTYC4tVhzIzHDZxj4eInuiQV1gtMKZZaJlOSGFVOm6ZZxKytEXg+Qs+JbgrpRBnMDAY4x2+YBZOm7K94PHwFrqCvRVnVO2R+YQxhzdDsJKeX9OAqI+vSpEicHm+DEnDYNCrfOgX84UOtnw2/mEyhOruUXc2R/pUsTd4UXxn5TJw0l5lv0MfC412UTFv0TKVlqlLex+7lwWXJ3qzyMcj3GBI4bOEGFUWPER+dP9l2LglZugMlaabh9klHFkFCjjC4Ff8qsHDBocxNqSM247cgCVtCi2wA+YUVpeUBbvR9Oo19RaA8VNIt6MeaPSjBIuSlD1gniH1jB23vsmlUa3BeGgLAAaa/a6UCKaBSmm8T26Ak+QZ0lASZW9yEeadj8XS8L49/9l8WMgcgSlfojCVzrXayydfIIL1+FKO35de+WBMCjd8Idry+eWkWYuJefN7q6KxzIgI2i9/M6w2N4V6hPBLBWE6ZJIi8OxIbIkbDyQQVQKMGWN6yy5J+2GS/gOeXjmPF
- xp+V8pQ5
- f8SISTEcH2ibfSHOZlXQZuqDqswJ5Nk2mNq407zuWZm8IAkjSriq2CZXe/apX1WEs8w+G704E4V94tGHUHBJIiktHzf36TFUb7lmB1M13i2ZigJbepPx6jTKeorYZv6KhHhvfh3d5/FfQv41HdWe1W1h0ShnL0OsBCt2aDS5HzrrtNUaHq95jL1EUnpEQNgAsIwUZAeRwammMRiNvuh0YWbRxREnqmXzNEZELjPSqb3eOJRUSWqH4TFTvqUruz21lAw+pKPniioHGnWapNQL6jSXf3OfHBirqYlGzvhBTf56bYT21seBpBHexUib+wtjZtdFNw/Lam1S6PVscIeFsPToS0Cg23+qyG52IyymMgHi9c/I=
+X-HE-Tag: 1766957863-787247
+X-HE-Meta: U2FsdGVkX18AKTuMWvqfb1iOhgDj5h9I3UuE/ao/Ki6TVCpRRzEC4Gga6RWShGQ1Gt85H/l4u0JZ3ZXCv2r0UXyjFsDWHdHvGBiHn4hzmt5Zp4rKjP48W9bQx4v70F7VN1gmzyakclYy0mymhf9J+nOEOfuq5U0H3H1izoFJNLKwLBjpiCcXsnYL8FkaKx+SlgfAv/iw5BBHVEezXKaIi9nbdSzPfxXoR59GmjUz9gl2/GrlVhGPfL2EIoNHCsXH17SVNbMdnP705SqKpVeZ7ikF4cb9Ub6Yyd1URsJxSTtzNzK4lQMmq4fA9H3n8auUsDtnJb8dPWWuNPOYrA1DXiq8C/9pgsufHUvWpOshgEar7QuKiS/SSdisutxKs+mdjWc93CL1eZGjzh/Lv8ZytVULgRoNaP3o84twTBcP4y2n5ob4Nb5Ets45bBp9u0GeBWoc7+Fi7nRRJGq3Uja7ZYG0xVj42/mT38SooiCvih4VmZ8/BDBarAgxTONtt/1IoKT1bl/IciZnpocCPvSp1I04Fl29fFDY40KA42pCn+zAFXEXuD9PScQ2ukXZ4a/WNYr6DN5GFNN8KrgJtd/4jEamNd96GEx5KdFcxSEMFmNbvDDhxAawJfo3KhZ3LIHAFOzJ5+h2/byknApACXaO3bZe6uipyUagkFZt6gHDnCfT34Encuyna95xR4dFZlRAmD+ziCXlj+pt1ThqA9S21sOcv67bnmmWdPRK5zw3b9e1t91QoRnilGarK6NtCIVItpRtm7EQxw4ugpLlPajpO7kuzflX6rABU8SDZ7lNo3DFanwy2uV1CKB1LheAaQF4NO9oKhwW0Ksg1lEtbtTEz3evtbrWXQQ/0/Bh9US3rJ9F9/aSOnIOHdCZrvLIv4LsnQVlxFCj+aPFlIePlPQdASzSliG78l8atgOr/6TuiofQZbirG8LpVVPS9PXI1ViOsOvAhl/uxWrOi5I/3gp
+ 313aT29U
+ wtrRTCcSnm/6/WQsfDYpTqhZ3jAvH4uK3ETJKuv5WidNWRXqmfClZIjDKmCoQOa0TbY4Z
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,96 +97,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 07:58:10PM +0800, chengkaitao wrote:
-> From: Chengkaitao <chengkaitao@kylinos.cn>
-> 
-> 1. In the SPARC architecture, reimplemented vmemmap_populate using
-> vmemmap_populate_hugepages.
-> 2. Allow the SPARC arch to fallback to vmemmap_populate_basepages(),
-> when vmemmap_alloc_block returns NULL.
-> 
-> Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
+On Sat, 27 Dec 2025 17:58:40 +0800 wale zhang <wale.zhang.ftd@gmail.com> wrote:
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
->  arch/sparc/mm/init_64.c | 47 ++++++++++++++---------------------------
->  1 file changed, 16 insertions(+), 31 deletions(-)
+> > No. You still don’t understand my point. The BUILD_BUG means this
+> > code will never have a chance to be compiled under any possible
+> > kernel configuration. That makes it dead code. If there is any
+> > kernel .config in which it can be built, then we should fix it.
+> >
+> > This set_pmd_migration_entry() has no chance of ever being built.
 > 
-> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> index df9f7c444c39..858eaa6615ea 100644
-> --- a/arch/sparc/mm/init_64.c
-> +++ b/arch/sparc/mm/init_64.c
-> @@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
->  EXPORT_SYMBOL(_PAGE_CACHE);
->  
->  #ifdef CONFIG_SPARSEMEM_VMEMMAP
-> -int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
-> -			       int node, struct vmem_altmap *altmap)
-> +void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
-> +			       unsigned long addr, unsigned long next)
->  {
->  	unsigned long pte_base;
->  
-> @@ -2595,39 +2595,24 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
->  
->  	pte_base |= _PAGE_PMD_HUGE;
->  
-> -	vstart = vstart & PMD_MASK;
-> -	vend = ALIGN(vend, PMD_SIZE);
-> -	for (; vstart < vend; vstart += PMD_SIZE) {
-> -		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
-> -		unsigned long pte;
-> -		p4d_t *p4d;
-> -		pud_t *pud;
-> -		pmd_t *pmd;
-> -
-> -		if (!pgd)
-> -			return -ENOMEM;
-> -
-> -		p4d = vmemmap_p4d_populate(pgd, vstart, node);
-> -		if (!p4d)
-> -			return -ENOMEM;
-> -
-> -		pud = vmemmap_pud_populate(p4d, vstart, node);
-> -		if (!pud)
-> -			return -ENOMEM;
-> +	pmd_val(*pmd) = pte_base | __pa(p);
-> +}
->  
-> -		pmd = pmd_offset(pud, vstart);
-> -		pte = pmd_val(*pmd);
-> -		if (!(pte & _PAGE_VALID)) {
-> -			void *block = vmemmap_alloc_block(PMD_SIZE, node);
-> +int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
-> +				unsigned long addr, unsigned long next)
-> +{
-> +	int large = pmd_leaf(*pmdp);
->  
-> -			if (!block)
-> -				return -ENOMEM;
-> +	if (large)
-> +		vmemmap_verify((pte_t *)pmdp, node, addr, next);
->  
-> -			pmd_val(*pmd) = pte_base | __pa(block);
-> -		}
-> -	}
-> +	return large;
-> +}
->  
-> -	return 0;
-> +int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
-> +			       int node, struct vmem_altmap *altmap)
-> +{
-> +	return vmemmap_populate_hugepages(vstart, vend, node, altmap);
->  }
->  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
->  
-> -- 
-> 2.50.1 (Apple Git-155)
+> Hello Barry,
 > 
 
--- 
-Sincerely yours,
-Mike.
+Please share the .config which was used to trigger this build error.
+
+(It is strange to have this should-never-be-compiled code.  Why not just
+delete it and let the compiler/linker report the error.)
+
 
