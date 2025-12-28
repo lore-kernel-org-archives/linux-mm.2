@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DAE8D3B7E5
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 03:43:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56368E784BE
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 04:30:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EACCF6B0005; Sat, 27 Dec 2025 22:43:05 -0500 (EST)
+	id 14F956B0005; Sat, 27 Dec 2025 23:30:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E84BE6B0089; Sat, 27 Dec 2025 22:43:05 -0500 (EST)
+	id 0FD7C6B0089; Sat, 27 Dec 2025 23:30:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAE136B008A; Sat, 27 Dec 2025 22:43:05 -0500 (EST)
+	id 0097A6B008A; Sat, 27 Dec 2025 23:30:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CC7C56B0005
-	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 22:43:05 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6E75814053C
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 03:43:05 +0000 (UTC)
-X-FDA: 84267483930.06.336BFC7
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E4CC86B0005
+	for <linux-mm@kvack.org>; Sat, 27 Dec 2025 23:30:03 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E791F140C89
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 04:30:02 +0000 (UTC)
+X-FDA: 84267602244.22.22C635A
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 11C00C0008
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 03:43:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OVugtFUe;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766893383; a=rsa-sha256;
-	cv=none;
-	b=zob4jPKKnWmtyGLJk2r+tDADk574viEul1ggWDuRjwo/a2hKHctz3080/bBm814MZi3I5V
-	HwdUsAJdoL6Dmu5OlVJF0MQNRMutN4ypfQwIrmi55iMDkBu3SHzaYM2dsWGnlw04/TahXi
-	Vo0fd67Zyli2nSVGkcMABS8hjZCdRxc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OVugtFUe;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4E9B3140007
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 04:30:01 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=obfBILue;
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766893383;
+	s=arc-20220608; t=1766896201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7E1czr0P4bYeP4gGirjw5YdD3fjfTZRnF0cs94CurKM=;
-	b=JYs2icTrjyLfZItJWQQ4IZnpA+W80N62ONEkTvwuupKZHQAV+thpNIityutHG3KIVRMzIh
-	fK5aJ88nSL6cyn+kHAZjpBgbtqLNk3rq/jDxJ5epShuQEQD+XKLoc3RX1C5+Z9Ma2lDx1i
-	jK8kcxWc8CQgD2uc1XJus5iOfc9TH2s=
+	bh=guYBHUk/ndUNWh1unmJUqc4oNCVqRI+bMw9D/2jhg0I=;
+	b=oqvL8jJozcqho5uBvHDFFp5o+EzgZOIjXg/W8voWMomTmM/4OBwai7susdnKI9MKY3yn5v
+	1doANVti+LNz6xo/IdFrvqC+5NgVH3SQGz4lH2g7nHl8hCLz4R2BCCSK7yafRrVJ68RZD7
+	ZNLNhVheNpgbsqdhyd+ATEzWEcLYw3I=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=obfBILue;
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766896201; a=rsa-sha256;
+	cv=none;
+	b=zjc7gXeAxXXogVgtVpDBBrSeEYk03JJjiwH+IRlBYRbRSQrMcjBVEIWgCoACGn6PNOng+Y
+	5WO+HMoCAsHtpQT/6z4UvwxahuMG7QfiXYqLymDYWdCkytIlthZYgvWCjFWZaXwYfj43f0
+	le9agdW7cJKreyziPHX1uEGMUprV2PI=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7E1czr0P4bYeP4gGirjw5YdD3fjfTZRnF0cs94CurKM=; b=OVugtFUeIzxtlINiiivlJQDWaD
-	6t5oR/Ij0oueQkr69KPvNFnUxDbCQm28tVHsjOSR9H4yuACaa4aV9h0nPWHFAnJRsKqZVZHrfw7sa
-	ZKBYd7w0g8nsjkI0aB5fKUsZ2m1DzOHwFrW5SODcxk6fj2gpflXD9Ir8O8cCGTcG4cyqRbmYnYDIS
-	2nIHDRY1meTRPWr1b7PCfTKtDcHxogm2sPKnJObx73FLpOROP/X+Fea3v+nUITNUXhMuFojP5N1Cq
-	d7rvH85M5S6OyK1njbZWHbN6H3XvuIq5Op8gv3+YYZWfVYcsoxWpkwMBP4KnHVV6mSJxBbcflKSnc
-	eaTxdlWA==;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=guYBHUk/ndUNWh1unmJUqc4oNCVqRI+bMw9D/2jhg0I=; b=obfBILuenXzX3+gnVzwNfLnTav
+	tXVWryAsSLp9oLJQtxRCpaYetM/bEEAPaNmKc4x7ms/f9rgcX6xEU9kd2KlKB2OdlhjMjODpRf/Ye
+	h3wzr3lOmNTSBt5Nazqs4OXcNARVMO2G1tio7MraN5un6UQ2cihzu4eXGMH5KiTc/wi+WK0qIsuZa
+	YWPkjSaIpivUavbqzcOQ+Bn9YnsJt9X+ImIN1i/h44FR26hIc0nSuQ4mdoMVg26amf92TBoL8/MeU
+	W+yuh9rkobZsdcEbJP/KhY15HV6UxEuBXFKhD5kd/GFZfoJNadWoo3W8OXSh+ZgipO5PyUA0rxH4+
+	b8TDRCuw==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vZhg0-00000000PJF-30dK;
-	Sun, 28 Dec 2025 03:42:40 +0000
-Date: Sun, 28 Dec 2025 03:42:40 +0000
+	id 1vZiPk-00000000SDO-25lI;
+	Sun, 28 Dec 2025 04:29:56 +0000
+Date: Sun, 28 Dec 2025 04:29:56 +0000
 From: Matthew Wilcox <willy@infradead.org>
-To: Zhang Qilong <zhangqilong3@huawei.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
-	corbet@lwn.net, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	wangkefeng.wang@huawei.com, sunnanyong@huawei.com,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lianux.mm@gmail.com
-Subject: Re: [PATCH next v2 0/2] THP COW support for private executable file
- mmap
-Message-ID: <aVCnMI5gFLTB9UCe@casper.infradead.org>
-References: <20251226100337.4171191-1-zhangqilong3@huawei.com>
+To: Barry Song <21cnbao@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	syzbot+178fff6149127421c2cc@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/shmem: fix uninitialized folio in shmem_symlink
+Message-ID: <aVCyRNQ37oGVu4Lj@casper.infradead.org>
+References: <20251224094027.65842-1-21cnbao@gmail.com>
+ <aUwcV2HhtdiXXxfJ@casper.infradead.org>
+ <CAGsJ_4whKLWiw6LNexFPHTFWB1QbSrAwrBtspuc=c8fM2=WnvQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251226100337.4171191-1-zhangqilong3@huawei.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 11C00C0008
-X-Stat-Signature: pc6ydhsadw1797pnnox7fow8cahngmj5
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4whKLWiw6LNexFPHTFWB1QbSrAwrBtspuc=c8fM2=WnvQ@mail.gmail.com>
+X-Rspamd-Server: rspam02
+X-Stat-Signature: mn3rxkbq9746ia9ebjje5r1ewx3ee5nq
 X-Rspam-User: 
-X-HE-Tag: 1766893382-687177
-X-HE-Meta: U2FsdGVkX1+igpcUWH0QjYEAIP10kzWMyqFA4ZJjYRLoP7xznbkcNX6uu/OfQrlKB2fYFQELkmB+Ja5PUFIyhiZhXujLUu5kVV+viA4c90BXIJKjS4r3r8FZuqSW0LBZC9AQ6VDvAbopMXyILWAX4LXc2Vbz2FSeHIWCMN0x8wYguaPFYAtW6djTpHRexjyH2RJfhuhNb81F+MBi52wRtaB11uNUF21Mh05P5yx5tVRQALsuh9+XO6CrH2DP23QahaWJVFNcJ5jnjerPin6DNZ+3dR5JBFvRtWWElGaEkm+vhfzGQBANe4hjqb5ZbmU0Et5aJ2bGW4M4mtyyuloTLrkML/BEkKuZ83SIOjEePNNL9SQw5Tr5Y9ATUwLOE6RTTphkSrme0vM9hBMM46fQoom//moTlfeizgYIahLcf0UNHJz7+mcGNNyRZjaNwb9r4qHbKyggiLPCObetMD93NqHQHSpwL44aOAtujfdATdQ5LViVVjUV6fhtExbDehxAbtiwGxwsFidNC0VuQlW9R6hwAMtvhZniXMYMdsvElK3i7fpOh+caPbD4PeQEo+3XydR/677gM5QCo/Icua/wNOyjlVtWijfJBFTHUrtK0jPiYr6Xiw1tEqZa6uG3ytJo0TPlrXAAyvhwxS+OBHPg3oFNJie6wPsbzacZuprFxrpp7+hsZ2LSjbyDOe64Kt059PB2sYE7wPORbIH+vKZZDbYs171E/skUIu7o2eel6qP8C2m/GxsgsWDrN8VddE09vkvSwWrNSkC/OrWZXvenU6oZ1Rm0RNCUoherAmvSkyOtmgSwgvx8jX4663j132CNpqZ+Iv5PX8PfX48OC5W5Vk67svJqcRQPAcnVXrnMSjSrLEhS+Yycix1fjTX37qNRBEHt4Mb+qLjPQEZSWZo34H3K3c64mVOIOuYRz1bhiauYqbKgyb3fKtw8TsrTfSLWUNItU9+auoO19nGoj0h
- g8VGTGda
- FykYr0pRfUiuuMn0BBdFE9CIiZ+n7YmXmAacJQixQ9GfpUj4MGAUKXiJ353SQrXDBvFLCsKEzllkpvZQDWFFPHUfrcSMDV34rSTGst8dhmJfryLGlsmwoTG1VQqdM6pPpAkayUxMjeUcjUUZrq0yrA6d7w4ScGLv4Q8HJwZWZpjCih9QdpSUGZK2FNT3ml6f9cs2Z1Hsdm+9/bT3euEXfdBtsROxihnYqKDXux8zJZao/vel4YaU+m/LwBhXhgSeFEQeRudXUHkrsQvzv1s1gunljC/TmjUxOwK/mIS8HNICsIDzEmAY5yTqaQ3VJXeo+yIPk
+X-Rspamd-Queue-Id: 4E9B3140007
+X-HE-Tag: 1766896201-374935
+X-HE-Meta: U2FsdGVkX1+mhRTcdQHdGHT+Kc+b4yHMIEtrjYaJRRvzk+yPvTRa8yJY+ELqyYYJpb9rFKGAwug7Lk9HmtNM8y9ZdJvosqt7A09dsaJ2bjp/Ww5FQUmEkQ5ss3JgRdvwC3HoJsV6jj5ke1OqhJ4p4eEByB9JSB7irMfR7TMeroNIOoKayOxNPxJ1krWFyEjfbqyu2wmIH0xIP+9etkdj2LteBu2CbBi76ZdbvFr8bLkRt7xpOSTIHY7JJDwsUApt26csI2O6bngsd7RJ9hTlhUmp9eo3MNF0wq5g1LQkFlxD1erhkn4ITY4uvCL/QqORJGgTFhMBCwU5joxLulwXP8zfV1YCnld1wmJ1AblaOBdHeoFC205o8l9jc1A9UoP3m7PizHJozLe+4+hFrhMWOHqz2w6D2PsD72JEZdQY+FCcjkjhpQ8r6ncCUm+TTTu0nj49Au9f42qN4kMM6BeR/FH5GGs1uqAb0DGjkhdZyXIjdBleG06iayySRvZUOMpwZaPbCwPgp9CmpvHSD2wev/E6kWXGNEMYpkIp/0HPGwRh14chkn3saLFXiLGnsecQTy4QY01taf4UedigejuLkBHB8aX22VG6D9UkYrpYyr//I4+g9kryXnyFoQcLPEG8da//bmeHYc3AoTfMnz/VB0tKpUAo16SSFebsq/gC1WpE3AG72OKSqIN+xtxFEuR0ghET4N905EhB9eHarXI1HcFm1PWU7CFHZfMMqj4r9tjjxQgLiDafxcMgn8QWxkUjMyppCzdQeGLS3O1HfY+pM1Mv2EG8bGwCq2TjSn88bRunZ97rYvwxABYhTbsSw6bDDi4zLNZpK2yKcmjEoyL7CHvvloLjcQPT23UXSxPImQPo3cxqO418gbs7cd3Ge2Su2gwWogZdIxBGEZg5whr33Dkc+tM236f8zvZpf6v28ohfkXYkBcc+C5LB0MjOu4D+rJV4KJ7xzHfBxTtJnnZ
+ EZBh8vPd
+ 8Amb7DZcsr1RGmy6iAIq9T9JJP8DIhx7OEleJoKccdHr6DOirI4dICd40t4FaTeIUQv273wEv64oZuIa0AZlTt4e8xNF/Z/L9ryg1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,30 +95,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 26, 2025 at 06:03:35PM +0800, Zhang Qilong wrote:
-> The MySQL (Ver 8.0.25) test results on AMD are as follows:
+On Thu, Dec 25, 2025 at 05:04:38PM +1300, Barry Song wrote:
+> On Thu, Dec 25, 2025 at 6:01 AM Matthew Wilcox <willy@infradead.org> wrote:
+> >
+> > On Wed, Dec 24, 2025 at 10:40:27PM +1300, Barry Song wrote:
+> > > From: Barry Song <baohua@kernel.org>
+> > >
+> > > Uninitialized folio allocated in shmem_symlink() may be accessed
+> > > during swap-out, causing KMSAN BUG:
+> >
+> > This would be an unfortunate way to fix it.  The vast majority of
+> > symlinks are short, and we'll never access past the \0 in normal
+> > operation, so we'll be dirtying a lot of cachelines essentially to (1)
+> > shut up an automated tool and (2) optimise a corner case.
+> >
+> > How about this instead which delays zeroing to swapout?
 > 
-> -------------------------------------------------------------------
->                  | Exec mmap Rss(kB)  | Measured tpmC (NewOrders) |
-> -----------------|--------------------|---------------------------|
->  base(page COW)  |       32868        |        339686             |
-> -----------------|--------------------|---------------------------|
->  exec THP COW    |       43516        |        371324             |
-> -------------------------------------------------------------------
-> 
-> The MySQL using exec THP COW consumes an additional 10648 kB of memory
-> but achieves 9.3% performance improvement in the scenario of hotpatch.
-> Additionally, another our internal program achieves approximately a 5%
-> performance improvement as well.
-> 
-> As result, using exec THP COW will consume additional memory. The
-> additional memory consumption may be negligible for the current system.
-> It's necessary to balance the memory consumption with the performance
-> impact.
+> Matthew, thank you very much for your review, even during Christmas.
+> I would like to wish you a happy holiday!
 
-I mean ... you say "negligible", I saay "32% extra".  9% performance
-gain is certainly nothing to sneer at (and is consistent with measured
-performance gains from using large folios for, eg, kernel compiles).
-But wow, that's a lot of extra memory.  My feeling is that we shouldn't
-add this functionality, but I'd welcome other opinions.
+Heh, thanks.  My mailserver is actually in a different timezone from me,
+so it was still the 24th when I sent it ;-)
+
+> I am not quite sure, as shm symlinks do not seem very common. Since
+> allocating a folio requires a symname longer than 128 bytes (where
+> 128 == SHORT_SYMLINK_LEN), such cases appear even rarer.
+
+Fair enough.  I hadn't noticed the SHORT_SYMLINK_LEN case when I
+wrote this.  That does change things somewhat, but still for a 160 byte
+symlink, we have 5 cachelines of data and 59 cachelines of zeroes.
+
+> BTW, do we need to migrate the owner_2 flag in folio_migrate_flags()?
+> If so, I am not quite sure it is worth changing the hotpath to
+> accommodate this.
+
+It already happens, it's just camouflaged.  owner_2 is the same bit as
+mappedtodisk.
+
 
