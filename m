@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D339D3B7E5
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 21:00:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B4F3D3B7E5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 21:01:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBF676B0088; Sun, 28 Dec 2025 16:00:49 -0500 (EST)
+	id A38AE6B0089; Sun, 28 Dec 2025 16:01:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6D6F6B0089; Sun, 28 Dec 2025 16:00:49 -0500 (EST)
+	id 9E28D6B008A; Sun, 28 Dec 2025 16:01:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6FA96B008A; Sun, 28 Dec 2025 16:00:49 -0500 (EST)
+	id 90FD06B008C; Sun, 28 Dec 2025 16:01:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B631C6B0088
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 16:00:49 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 513541A0100
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 21:00:49 +0000 (UTC)
-X-FDA: 84270099018.15.A99A651
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 804F16B0089
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 16:01:36 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3802F1A010F
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 21:01:36 +0000 (UTC)
+X-FDA: 84270100992.12.88021B4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 86F6020005
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 21:00:47 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Pz/cWfeG";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766955647; a=rsa-sha256;
-	cv=none;
-	b=MFmsyrtwWrfvLUJSRnANwcQTL2jSSVZnmdMCmlX/kBvpn7ScuQHPElKJlEYkyY2KZ16LfI
-	f7Fv8hXSH5NfRnz4iqWg0fKGIAbH/kJoWG8SZWuwyOywYgCeUmJLN3/Bi71Z54LKskUq3c
-	xkeZDsiHZ2vjOYFpeyaP/MIlyiSjsNM=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Pz/cWfeG";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 58FBC40018
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 21:01:34 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bFWZMLhh;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766955647;
+	s=arc-20220608; t=1766955694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FL/ttYVsXIfy/l6B8REAWwQ+ehHvYv3s5r8rlHYbqOg=;
-	b=QEPKzGF/mPWGOwz7Glxh6bEdn/FwuF7kkK3ivldhU6uNRX/veTK3nPJHj0qOA1UxUw/Avw
-	NIgJyAYvWo1tKlJ0w3TpHnyECXo3cfWhufvnmnwY9b4phoLzQ3763dLfSoGyBivlhImaJg
-	ccb/DYpzk4AlYssjlB5/3tfDzJWLMyE=
+	bh=8mLN4jy8raEgHuh738HphvOpBbQlCM4mbdVw99D6NfM=;
+	b=4mGl0x3xeKdCYiJj4vDTnq+hFg8kkkg64MDj32FW+D9FKKX/ybGVvK21ARtoHzSJhlkPgE
+	w56GhK+8jCzxXhFqYQTZUGsujexva5qoOAD8HzS9J9RKo92qU7/RAMhUMjspYJ17qWpn6p
+	ZESm2ySFs6rDs57sTP5Z5Pigs/7wMb4=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bFWZMLhh;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766955694; a=rsa-sha256;
+	cv=none;
+	b=wt/lhyKAWsh2V/7IMbzw26DucyoPc6rjqGrB/pUqz/InhsCkXK9l/4Zp+EsW8+ewm/BS9b
+	qKfqFwyPWj+wSjiXD4TMytVhv3Dv4oyCJOkXONckydfrawC8j91E9YGFD4uQj9po5Ay73Z
+	shVDh4fUJL/aGng5abPs5YfoX5xF5pg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3212044393;
-	Sun, 28 Dec 2025 21:00:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC60C4CEFB;
-	Sun, 28 Dec 2025 21:00:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6563543FAB;
+	Sun, 28 Dec 2025 21:01:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9092CC4CEFB;
+	Sun, 28 Dec 2025 21:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766955646;
-	bh=D9/7cYqcpU72WPvnsrQXQKGY0dbbqapVo4LdFuNSb08=;
+	s=k20201202; t=1766955693;
+	bh=E40TfozfMTRWLVhTkV2adBCHelIThaQvQ1777er0xX4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pz/cWfeGaOlqPEHlhhXG6Lhj7deT0Ud3PVeSR++oVG9RaxfSe/r9CBg21L+ZJX9fV
-	 XD/HLmJ1qAMgMZZTYDr7uAq0zlTAViAAOki//bTr89HHkLv7xq3gHkIgnYIzcXpA9h
-	 Rh89PbVbTYFRainlKrNqWQmW5eWLqzSPH58V+EQEeILIaDf+h6mvlnVUnMn/X/fGs7
-	 DXfUZNpk8756GqH+F9viNvqnMyWCLIJTML+MJv+/8jnNTUq/bdLQa77F+ZUI4L5Ixf
-	 RHzeGLjDaIVdoGo2bNcsobT/N9AjN3ELRmMstIE/hZAxSGtvfmFKnwdhfF1D9lZOlV
-	 Ng5tRyZKD/uaA==
-Date: Sun, 28 Dec 2025 23:00:36 +0200
+	b=bFWZMLhhI3RJJiSLADl8BpMm0BnLpwhbEOOJBd3TJEaErP26PcymDPdJB8E0wNQGX
+	 LQri8Y9MhXUjljPf8CBpX8MYh0c305UBBWQaKV/8DNAk0siTJYEH5X5l/qa4PuAB4J
+	 g3Ywaj8l911WWFB9uSVchXMVdsIOLCgQUjy4vv8kN/EOHlg1NGKb3AQUcim4Kq54s8
+	 hBRaWcdK0VCiBVDWTtafozyrIn+fbNeuJxqZDC8kjakUY2n9h4AqMwjg42eOCxiRdZ
+	 zQSGSrm9UG+tKzprdCJgRPZbV2//qkUbJ4jtY/WivRUzbqP4nQlVvubZ//5oP32m1I
+	 xgF1E7r3+kc7Q==
+Date: Sun, 28 Dec 2025 23:01:23 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: chengkaitao <pilgrimtao@gmail.com>
 Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org,
@@ -73,23 +73,23 @@ Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org,
 	ziy@nvidia.com, chengkaitao@kylinos.cn, willy@infradead.org,
 	zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 2/3] mm: Convert vmemmap_p?d_populate() to static
- functions
-Message-ID: <aVGadJAlS0Z6LLEl@kernel.org>
+Subject: Re: [PATCH v4 1/3] sparc: Use vmemmap_populate_hugepages for
+ vmemmap_populate
+Message-ID: <aVGao3KAyKxXrIo6@kernel.org>
 References: <20251219115812.65855-1-pilgrimtao@gmail.com>
- <20251219115812.65855-3-pilgrimtao@gmail.com>
+ <20251219115812.65855-2-pilgrimtao@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251219115812.65855-3-pilgrimtao@gmail.com>
-X-Rspamd-Queue-Id: 86F6020005
-X-Stat-Signature: o73oppqcugwh5ufonatgmdxu7geqqhhs
+In-Reply-To: <20251219115812.65855-2-pilgrimtao@gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 58FBC40018
+X-Stat-Signature: ya9zdomdgkfsddsi84kaznukrytynixp
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1766955647-421748
-X-HE-Meta: U2FsdGVkX189nrcZE/KuUwP0vKLDRr5ir82coZUNxW0ecNQsZN9+F8zUhWDYGJh2FP4unktfS2516MNH668Jd8ALhI+JNSf7n3Cvpcn2XAbLZ3O2C6huSeyv8hZipsZAwdcb6D4N9OzOcT2xr6MhOS8r26shSiseGaz/FQpdCq/IO/G4ZYikZywlGaHhFJ2DzIPbxovOc4h/6r4lPBec+4tJs03IDg6fpihaV0TGZbbqLSgQvjqLPSxV46Ma19lydZJ5LNm7nWhxK2rGDf7Olxn1nsqAqAuk3t1LGh2nkUqUuqcsYCSLrkZPt143QF3f9GqwZeinn7qGOUGSdqV3fzrgNV9RkHIHabEBmquRJ7AsR6xE9YWi0+v7uKgC4w273wDnPudF+cT3j5kAg8gMKoO6Pz5HfF023R9nXQXxkgCA9g3sASpjFmCRMD/qLhRPf2l90JiOqALSwG0rsDfN2uvrGTCq9NOUxlTvo1DjZislXOrS5GdIIlUyATPYY5ecrlsCoBDWWDjHYxP5/dmfl1QtCTd87CoIyRKlfhFxzpDUu0lxTK+d8Ii6kMF2OFciZ7TNGNj6qg3B+9fUdBDJP7SI/eNZJ0CPrsRIllC7N8bf7qeAKHESnsejbBZe0B3sm7dpfXVZS5IyFrdMGw//bqqQoITuxSk0Kd78Klk/xjHJudCXig+LF3YYnYqERdEzIVJfO57UFki6BTqcODe5+do8v4Rf2cQGylbeGuh3EEXTVqUqESQEj3BcDUD0eJdaGg+TgVa0fT3oW5ckg9h3kke8tKviJ2k7b6jNovy4EhJ412bIZVDx+uIf1U2lUSOtsu/ZBPW/m8cUvg/A8+OHaUsJcT9N2iBrDhgOlsCn5xk/usejPriTAEcxKf0sT+0GPJIcYEzGWJZ2aOp+vV7hZNKlvNWmLIyTSBjrecGRZ1rgRouh165oi15D2jvnZUFAF6zAlAKuI474lSF3ZkZ
- Use3pDuT
- krT/yapHEuKCiFELMZgyEqP9TwquHeBA5f5T9pENyb6hdW3tEldI9GuDkPcD8MWWoRm9nzIDPfene6UmjZrdKOxm7VjLsxT5N1D2mn9/bnxsmDJd0Z/FhxqjQ53+OFU3UZdKKVNUmbkLVeYHqcV+BItVe9xYcDei0dsX1bRTSBhX7ZcvnZnlclvFsjAKBi3LK/x0ubB4z3z8XYZPcrNHXnzM5/nnm7R569hKtdgwAiZRe3hN50uEJeRfbK7H7hHijV+dc50bUylINPNBbqKg9hwttoppviQO0dm7Uaby9FBBm7wTNzISiRGPjWY2U144p86HFNM83y1w7nGtZIPUtnL3gouZ2SUYCZmBF1f9GQU25cB3e+n0xsH4Xn/dP+kbGPQn9VMiHBiUr/reg9h96+39jwxi3NdU5sfcC
+X-HE-Tag: 1766955694-999732
+X-HE-Meta: U2FsdGVkX1/RbwDitCS+KzdytWvJHRdhYCIkq6+jDnDsGXKVfHy1cVNehBrmZ8ZCalOXimyp/B5jJA3fOfCxAeGQTb+Zw0hLB7xFVxVV4QTkSQW1/JK2JbOVBFaubrW6exP5VqCI81C5f10k2s6Kr+mP8x2G+fgP3hbxpZq/DpWYamDmBA2cN0gz7py+bOYC0CMZU4rGOHQsp602ZeM23x7pUlALkMZxg7VsZtphnK/dmEn33wdPUAaaZXue+eMqBveFSONYTyO+7J/l+PP7cC+EZG1Wmf/tYoTC7XZuq2uEWn1Wv+fPe8ONZfxwwxtkMPP/Siyvayv6yzTVAU2pp9toUQ29guoamy9Tdkzp87R0uKtU3Ph6wUshgUOBchhxL3bLT0fg5DD7OB15xT89959O80EnAmMtm0WdhtIU9ZqzOCqHzxcFJNAfnp4Ym9Vo+4pTnsz9VEcpyQYfTYC4tVhzIzHDZxj4eInuiQV1gtMKZZaJlOSGFVOm6ZZxKytEXg+Qs+JbgrpRBnMDAY4x2+YBZOm7K94PHwFrqCvRVnVO2R+YQxhzdDsJKeX9OAqI+vSpEicHm+DEnDYNCrfOgX84UOtnw2/mEyhOruUXc2R/pUsTd4UXxn5TJw0l5lv0MfC412UTFv0TKVlqlLex+7lwWXJ3qzyMcj3GBI4bOEGFUWPER+dP9l2LglZugMlaabh9klHFkFCjjC4Ff8qsHDBocxNqSM247cgCVtCi2wA+YUVpeUBbvR9Oo19RaA8VNIt6MeaPSjBIuSlD1gniH1jB23vsmlUa3BeGgLAAaa/a6UCKaBSmm8T26Ak+QZ0lASZW9yEeadj8XS8L49/9l8WMgcgSlfojCVzrXayydfIIL1+FKO35de+WBMCjd8Idry+eWkWYuJefN7q6KxzIgI2i9/M6w2N4V6hPBLBWE6ZJIi8OxIbIkbDyQQVQKMGWN6yy5J+2GS/gOeXjmPF
+ xp+V8pQ5
+ f8SISTEcH2ibfSHOZlXQZuqDqswJ5Nk2mNq407zuWZm8IAkjSriq2CZXe/apX1WEs8w+G704E4V94tGHUHBJIiktHzf36TFUb7lmB1M13i2ZigJbepPx6jTKeorYZv6KhHhvfh3d5/FfQv41HdWe1W1h0ShnL0OsBCt2aDS5HzrrtNUaHq95jL1EUnpEQNgAsIwUZAeRwammMRiNvuh0YWbRxREnqmXzNEZELjPSqb3eOJRUSWqH4TFTvqUruz21lAw+pKPniioHGnWapNQL6jSXf3OfHBirqYlGzvhBTf56bYT21seBpBHexUib+wtjZtdFNw/Lam1S6PVscIeFsPToS0Cg23+qyG52IyymMgHi9c/I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,89 +98,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 07:58:11PM +0800, chengkaitao wrote:
+On Fri, Dec 19, 2025 at 07:58:10PM +0800, chengkaitao wrote:
 > From: Chengkaitao <chengkaitao@kylinos.cn>
 > 
-> Since the vmemmap_p?d_populate functions are unused outside the mm
-> subsystem, we can remove their external declarations and convert
-> them to static functions.
+> 1. In the SPARC architecture, reimplemented vmemmap_populate using
+> vmemmap_populate_hugepages.
+> 2. Allow the SPARC arch to fallback to vmemmap_populate_basepages(),
+> when vmemmap_alloc_block returns NULL.
 > 
 > Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
 
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  include/linux/mm.h  |  7 -------
->  mm/sparse-vmemmap.c | 10 +++++-----
->  2 files changed, 5 insertions(+), 12 deletions(-)
+>  arch/sparc/mm/init_64.c | 47 ++++++++++++++---------------------------
+>  1 file changed, 16 insertions(+), 31 deletions(-)
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 15076261d0c2..d98a38a6ac0e 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4234,13 +4234,6 @@ unsigned long section_map_size(void);
->  struct page * __populate_section_memmap(unsigned long pfn,
->  		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
->  		struct dev_pagemap *pgmap);
-> -pgd_t *vmemmap_pgd_populate(unsigned long addr, int node);
-> -p4d_t *vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node);
-> -pud_t *vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node);
-> -pmd_t *vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node);
-> -pte_t *vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
-> -			    struct vmem_altmap *altmap, unsigned long ptpfn,
-> -			    unsigned long flags);
->  void *vmemmap_alloc_block(unsigned long size, int node);
->  struct vmem_altmap;
->  void *vmemmap_alloc_block_buf(unsigned long size, int node,
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 37522d6cb398..67f9a08c2376 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -151,7 +151,7 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
->  			start, end - 1);
->  }
+> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> index df9f7c444c39..858eaa6615ea 100644
+> --- a/arch/sparc/mm/init_64.c
+> +++ b/arch/sparc/mm/init_64.c
+> @@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
+>  EXPORT_SYMBOL(_PAGE_CACHE);
 >  
-> -pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
-> +static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
->  				       struct vmem_altmap *altmap,
->  				       unsigned long ptpfn, unsigned long flags)
+>  #ifdef CONFIG_SPARSEMEM_VMEMMAP
+> -int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+> -			       int node, struct vmem_altmap *altmap)
+> +void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+> +			       unsigned long addr, unsigned long next)
 >  {
-> @@ -195,7 +195,7 @@ static void * __meminit vmemmap_alloc_block_zero(unsigned long size, int node)
->  	return p;
->  }
+>  	unsigned long pte_base;
 >  
-> -pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
-> +static pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
->  {
->  	pmd_t *pmd = pmd_offset(pud, addr);
->  	if (pmd_none(*pmd)) {
-> @@ -208,7 +208,7 @@ pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
->  	return pmd;
->  }
+> @@ -2595,39 +2595,24 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
 >  
-> -pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
-> +static pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
->  {
->  	pud_t *pud = pud_offset(p4d, addr);
->  	if (pud_none(*pud)) {
-> @@ -221,7 +221,7 @@ pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
->  	return pud;
->  }
+>  	pte_base |= _PAGE_PMD_HUGE;
 >  
-> -p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
-> +static p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
->  {
->  	p4d_t *p4d = p4d_offset(pgd, addr);
->  	if (p4d_none(*p4d)) {
-> @@ -234,7 +234,7 @@ p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
->  	return p4d;
->  }
+> -	vstart = vstart & PMD_MASK;
+> -	vend = ALIGN(vend, PMD_SIZE);
+> -	for (; vstart < vend; vstart += PMD_SIZE) {
+> -		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
+> -		unsigned long pte;
+> -		p4d_t *p4d;
+> -		pud_t *pud;
+> -		pmd_t *pmd;
+> -
+> -		if (!pgd)
+> -			return -ENOMEM;
+> -
+> -		p4d = vmemmap_p4d_populate(pgd, vstart, node);
+> -		if (!p4d)
+> -			return -ENOMEM;
+> -
+> -		pud = vmemmap_pud_populate(p4d, vstart, node);
+> -		if (!pud)
+> -			return -ENOMEM;
+> +	pmd_val(*pmd) = pte_base | __pa(p);
+> +}
 >  
-> -pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
-> +static pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
->  {
->  	pgd_t *pgd = pgd_offset_k(addr);
->  	if (pgd_none(*pgd)) {
+> -		pmd = pmd_offset(pud, vstart);
+> -		pte = pmd_val(*pmd);
+> -		if (!(pte & _PAGE_VALID)) {
+> -			void *block = vmemmap_alloc_block(PMD_SIZE, node);
+> +int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
+> +				unsigned long addr, unsigned long next)
+> +{
+> +	int large = pmd_leaf(*pmdp);
+>  
+> -			if (!block)
+> -				return -ENOMEM;
+> +	if (large)
+> +		vmemmap_verify((pte_t *)pmdp, node, addr, next);
+>  
+> -			pmd_val(*pmd) = pte_base | __pa(block);
+> -		}
+> -	}
+> +	return large;
+> +}
+>  
+> -	return 0;
+> +int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+> +			       int node, struct vmem_altmap *altmap)
+> +{
+> +	return vmemmap_populate_hugepages(vstart, vend, node, altmap);
+>  }
+>  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+>  
 > -- 
 > 2.50.1 (Apple Git-155)
 > 
