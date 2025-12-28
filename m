@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E865E8FDBE
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 12:46:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05796D3B7E5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 12:46:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 716696B00BD; Sun, 28 Dec 2025 07:46:03 -0500 (EST)
+	id 67E9D6B00BF; Sun, 28 Dec 2025 07:46:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CA316B00BF; Sun, 28 Dec 2025 07:46:03 -0500 (EST)
+	id 6527B6B00C1; Sun, 28 Dec 2025 07:46:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5576D6B00C0; Sun, 28 Dec 2025 07:46:03 -0500 (EST)
+	id 55F2C6B00C2; Sun, 28 Dec 2025 07:46:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F43C6B00BD
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 07:46:03 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D684D13C503
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 12:46:02 +0000 (UTC)
-X-FDA: 84268852164.13.0618321
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 454606B00BF
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 07:46:22 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D6376A55FA
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 12:46:16 +0000 (UTC)
+X-FDA: 84268852752.08.50CBF07
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3C5C44000A
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 12:46:01 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sfjQZ4Ma;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2AD99100003
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 12:46:14 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HP+mA+BZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766925961; a=rsa-sha256;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766925975; a=rsa-sha256;
 	cv=none;
-	b=4XKoI4nQHtVOb4hiMk0sbaZRdCGexyEAvRy3385b+RxJ1dnm/cF427B+V0ZEOBidwcdNjJ
-	P5z2a3LNAm83FaxzrUtMsnstUso7JPhlVaZffh1UGxrY2LxOltrU/bU8KtcxJSc19sb3rd
-	9ONwTDMaK1Kb6R/C09vy4jiyWfFIwRE=
+	b=nsgwH+jizLWMxpi2fPQZlvOv6lf+34QVRI2vF2sqOv/gKntqP94ne0wESILAqCx34ZG4rv
+	jbou7bdU0vVXNWyxqoKxImViNE9vji4OnImgq/ME2R9c/WX//qS1hgKr1qvtPyb6XQJnM7
+	1dSLo9nl7vlBl8cjsU9SzNhgv+bco6s=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sfjQZ4Ma;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HP+mA+BZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766925961;
+	s=arc-20220608; t=1766925975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kBBKJwrcTjhhjxH1pyy/2Lv9SOwm9YyMZRAlSFGYa0Q=;
-	b=M/Sikr8AdoabgZahgGaXX+LH0U18u7pZ/astfNmow6x85Uo3Sj9roUtzjP8ImFmNHNwEmD
-	5/jmh9nr38uzyNQlogAUQ1j2dojAQcmzkFcJi080uv6UdyN8yFgxCXDVdk47dWzhNGe8SY
-	MKwe8FdNi0TU43NEhsWkSn7GDDfv7GE=
+	bh=73LcqBz5hQi6w1FzgSf/p3pFdTXCprVbcEbfxhngyDE=;
+	b=hknkgD+5d47byf2E2ZarTnTaUwIstz4m1L1WScuDXBVnlGMbAvrRqRh+jqwhozv1y2TE74
+	9Wgg2N+2pA8V3FrHrfaybb8W+zHIRYxgb5qfH9pXmFjpnuROlk5ee8FIWQV12QvO4/Mal1
+	k8z6rQ3RZ4ihw7dXsPK+n85jChtYEIo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59337435FE;
+	by sea.source.kernel.org (Postfix) with ESMTP id 546DE43EBE;
+	Sun, 28 Dec 2025 12:46:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19A2C4CEFB;
 	Sun, 28 Dec 2025 12:46:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37A8C19422;
-	Sun, 28 Dec 2025 12:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766925960;
-	bh=zd5p0i2OlJkjqXnS1oV6Bjn1onLoj8/4tNSvugcI3Wg=;
+	s=k20201202; t=1766925974;
+	bh=RZ/DiLSy5d6B26KkgahmhRPqqfwFfapSaWjdzs9zbh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sfjQZ4MaJbYdgWueLdXcBmDVU38OdK56kgVm+DeDe8fqmqjt1fCb6ErJZO9P1rIEt
-	 GRJeqLqBy0TlDwsKktTLsNK6umjRi12aUfepLg+2ZgTGR4HU1zTAT8cadFa1bbcPqk
-	 Hq02jezoVzB3ovYJaouQxYn4EhXEyd4p42VaB8FalDOHjiuDHtBmE8SXFzsb3Qybvs
-	 zT2EI02+yjpeL+u6PNj5jGcA5nKlMhyKwQknu5W+D7x1RuSUvncx+6LFSDf0i+7zI2
-	 faRLXte7BWgSIT3A3h5I1dHTU7z2ib/JULlm1VMjgFv4M9KdIUcHy4u9xMyfE/W3EK
-	 7OoAMM9Lvwh6Q==
+	b=HP+mA+BZahH8JKqMnF569bvDW7aEOc3ZV2OzZ8CeJV0pYGatK4hGWAcTJZtJKMc1l
+	 zQa5VLTkCrBWM5fbpERPbQ1eZnpBZhfcIVKsdvya2ruS9g4VKsLOvR4muWleMIXdla
+	 N4/GhIBuMW0Jb4/krptZ6sXqeyLQQT0F8Ku6SldAUhjleZjmJZC7Jv3LxQ7CPEH24Z
+	 z9gWkCFCTS/wqOBx+z47sRhJJDJM0wnI33NNyzKaPRXEoRxTuQveIyJMBXpW7feKtO
+	 92D+nORg+iwZw37Q98hv9ae8aJIO4Z062T9I/ZK+PBtq9Bt9jycEry4Sf1W/NPPXcE
+	 GjRe8TOVu5LkQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -129,9 +129,9 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH 24/28] mips: drop paging_init()
-Date: Sun, 28 Dec 2025 14:39:54 +0200
-Message-ID: <20251228124001.3624742-25-rppt@kernel.org>
+Subject: [PATCH 25/28] x86: don't reserve hugetlb memory in setup_arch()
+Date: Sun, 28 Dec 2025 14:39:55 +0200
+Message-ID: <20251228124001.3624742-26-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251228124001.3624742-1-rppt@kernel.org>
 References: <20251228124001.3624742-1-rppt@kernel.org>
@@ -139,12 +139,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3C5C44000A
-X-Stat-Signature: skkr9rq5sq5unp5sy56u9mwmpaks4doq
-X-HE-Tag: 1766925961-436732
-X-HE-Meta: U2FsdGVkX183HC3uzRCb+1whQUTe8d0Pw7Hnkoo4B3Nqs3UbaVUT8xdsNxaX3P+cs4PskBdDpttkYcN7NvexiUTJITG/eGfYTqE23QxsedYUDkqyzJYEtlUcmYJprvhUspzi/V7F8mXm71Kc7IRCFaATKVHx6BIblnhdTT4Wq30dDFwGW795FCIsZRo11SFoIORFXtZktNyF8ZYrctBAh7Tk1jRUbZ8IzK8FgBsDIaVJ6BXTJ7bIPj0rBrAd3S7nkMQO9TG+QqxtGnvlk9KRWzKwsiUc/VAQVrpNrNoe6DmdBU9VnHownMkmCJXOSnb/czLu0+kTg02LsBTstBIuWbAcxj7PubeqQs74jlzkQONHg5eiLTErcixU2N6TIm916LxePFrJVeWFv9bKdXIUvHIQ8hP/GUOFGChzD01agXYhYAfmtsoNelbdJ4JGa1cn+UfUXFR+2nI/5MhiHtqym3bc73PN4pbyE4vCUnayymrHcflkAYdw1MeqXZJdq5AVKttlVe4FLnM8F+FciAhwUVPOyxVkzwlrC/aECf+YXGmyBI/HNl7J8no7uoTFXWczMzbf/SkHsxMnFITJI0Z6k46F06P+sbefxoz2kQi2sl8TMTb+/jJ/kgNpjZa7/dMHYnAcL0/F0RmasSs2Srn1jFy3IJqz5mRYixPUcq1Yx0cylazGXyaf2vDeToeqP5JEnjkCD/cL+vyoCg3vFKwEfaonEoWCKKwqgcn9S9bo1Bk8v2uK1JN4uLPrTw0DTXaCEfBwOi/ZRaY7u+qQNfcAbHjtu3v2FXWA5ahLt9sfrG/b25YcggUWyGy6rV7XuJoU83gwPGR/tIq1kRUsSRdzFuNpt0F/uVuzcAatfYuaSUJyqspxi+h1Xq5dfgCz6dMyIaN/nim6TfMNKZCdDXTeQw1XDkKuTZVZqT6I0pRb3U3WWQMR5tu8pPbJtZhQ6ottgGXU2+Gsmc4yOSCR0Dy
- 2ugzpkX6
- OxbpXY3rvE2l0HeI=
+X-Rspamd-Queue-Id: 2AD99100003
+X-Stat-Signature: hhske9ikfej7xsxg66cfsee8rxt7p5od
+X-HE-Tag: 1766925974-727742
+X-HE-Meta: U2FsdGVkX1+0HsV46uB7fsnHPPb+jOCTJKCx/fFJobviep7GNStt8esvVxTFzCsUU7qdgxhbLAJLhON98RXDdPbkmozaH7DuTwri/FAJ40RQu4i7uWRav2jQmj5fdWjfC2QqtqyovqwCrGyRkMLujdXfXysqropc0b7tq5eFsb8SrvxwULP3acAF8YcHeQnKQYuaclBQ/tsENLsYMq8PHr3n+DUqCMMglO1Qi79spIc3Wa8GKQ5D7H1TB7IJYAs+r3XVGmBUndQ28onYZWpirTRXKHhdUJM39jmhI5qR7o8Ybj0m2x6v0mgpW+Z1nr3T52uvR4rJCWi688X0XYqdI92MPRP6tJ02EudPz3czz+5NyJ+W9oydgWm4le/9f5OTTOdmOQXv8XJeKDsxXe0ykCS1t9JTyFPfHXqU+1K1ESXkFVEGSwnIsuro21KAIX7bUXAegfTlxPHQQx1H6Ed8Fqou7dGu+6y1XXB5qRZFepfIXByPgfEvyYx2HDBVe2z4UiMvTr3DpDiBPp16cRmQMIFgkRaWgHMatbrXbzezjgbqGv4J5BtXeCxrhSbHn1vEsBZkCgwSHlN4KTFtt4bLgqBwqo8c/UAS3SwJl43XnEgFmzM/UMNBJvOdIwJOdLTq6q+akqq6dh7YaSDbmB5+ajKfoV76L+n19M2j0jBkGiiQCu0/F73iswuQqO5hJSGK3Uwy15UMKZxFGKJJm63LwXXQTpeU8lLVViNXkdi6GZq1uf8UTZPk2x4d3VO5mL6EHMIMzHyfPNbS8nblNuP/dd949bAJ/n6qxi4oQ7/9ZfV/YoLsb7iC6D9QCKiNyghcRlzjrqwmoeoBMI2P2H3rZFrshgDS8lN2/qE1jcN4Rh8iCDZe7aKqPnwRIAy05MWKONyI1R8aGShjI77KvcMJ/LgWm5Mcm7gO/eZEYJZHOIcWIXH2kGvq2C7Rz3CyOiNVp99rOZ5J6zT/skmZvz5
+ XZYJN3eP
+ 1iwZ6oQSlAWvaTkrsmkt1krS5NLfY91fOEcTtjCAa2JSun9t9UnUqPXARLfabr+H6W0j2tZlSZM+irFV3Yhn+7YTMA85qVlYu4qsuYFISBeTvrF2Jb98V9vICd8yqF5H/x9vM+JTl6IN9lFN//sZiwwkjaMrYRglRY0MaVv2B+qbqUyX5TtvIuaq7l68wbvE73+Ha273LMhrs8GjRRo0v2S1OluEWPCn32j0q8MnwxujxJmscDCSjUu/hMnshlLEV6qw6mS5zTsrejurQ5l0jg93NbQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,113 +155,33 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-All three variants of paging_init() on MIPS are wrappers for
-pagetable_init().
+Commit 665eaf313314 ("x86/setup: call hugetlb_bootmem_alloc early")
+added an early call to hugetlb_bootmem_alloc() to setup_arch() to allow
+HVO style pre-initialization of vmemmap on x86.
 
-Instead of having three identical wrappers, call pagetable_init() directly
-from setup_arch() and remove the unnecessary paging_init() functions.
+With the ordering of hugetlb reservation vs memory map initiaization
+sorted out in core MM this no longer needs to be an architecture specific
+quirk.
+
+Drop the call to hugetlb_bootmem_alloc() from x86::setup_arch().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/mips/include/asm/pgalloc.h  | 2 --
- arch/mips/include/asm/pgtable.h  | 2 +-
- arch/mips/kernel/setup.c         | 4 ++--
- arch/mips/loongson64/numa.c      | 5 -----
- arch/mips/mm/init.c              | 5 -----
- arch/mips/sgi-ip27/ip27-memory.c | 5 -----
- 6 files changed, 3 insertions(+), 20 deletions(-)
+ arch/x86/kernel/setup.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/pgalloc.h b/arch/mips/include/asm/pgalloc.h
-index 7a04381efa0b..6efd4a58bf10 100644
---- a/arch/mips/include/asm/pgalloc.h
-+++ b/arch/mips/include/asm/pgalloc.h
-@@ -101,6 +101,4 @@ static inline void p4d_populate(struct mm_struct *mm, p4d_t *p4d, pud_t *pud)
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 1b2edd07a3e1..e2318fa9b1bb 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1191,7 +1191,6 @@ void __init setup_arch(char **cmdline_p)
  
- #endif /* __PAGETABLE_PUD_FOLDED */
+ 	if (boot_cpu_has(X86_FEATURE_GBPAGES)) {
+ 		hugetlb_cma_reserve(PUD_SHIFT - PAGE_SHIFT);
+-		hugetlb_bootmem_alloc();
+ 	}
  
--extern void pagetable_init(void);
--
- #endif /* _ASM_PGALLOC_H */
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index 9c06a612d33a..fa7b935f947c 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -56,7 +56,7 @@ extern unsigned long zero_page_mask;
- 	(virt_to_page((void *)(empty_zero_page + (((unsigned long)(vaddr)) & zero_page_mask))))
- #define __HAVE_COLOR_ZERO_PAGE
- 
--extern void paging_init(void);
-+extern void pagetable_init(void);
- 
- /*
-  * Conversion functions: convert a page and protection to a page entry,
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index d36d89d01fa4..7622aad0f0b3 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -614,7 +614,7 @@ static void __init bootcmdline_init(void)
-  * kernel but generic memory management system is still entirely uninitialized.
-  *
-  *  o bootmem_init()
-- *  o paging_init()
-+ *  o pagetable_init()
-  *  o dma_contiguous_reserve()
-  *
-  * At this stage the bootmem allocator is ready to use.
-@@ -778,7 +778,7 @@ void __init setup_arch(char **cmdline_p)
- 	prefill_possible_map();
- 
- 	cpu_cache_init();
--	paging_init();
-+	pagetable_init();
- 
- 	memblock_dump_all();
- 
-diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
-index 2cd95020df08..16ffb32cca50 100644
---- a/arch/mips/loongson64/numa.c
-+++ b/arch/mips/loongson64/numa.c
-@@ -160,11 +160,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
- 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
- }
- 
--void __init paging_init(void)
--{
--	pagetable_init();
--}
--
- /* All PCI device belongs to logical Node-0 */
- int pcibus_to_node(struct pci_bus *bus)
- {
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index c479c42141c3..cd04200d0573 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -415,11 +415,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
- #endif
- }
- 
--void __init paging_init(void)
--{
--	pagetable_init();
--}
--
- #ifdef CONFIG_64BIT
- static struct kcore_list kcore_kseg0;
- #endif
-diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-index 082651facf4f..4317f5ae1fd1 100644
---- a/arch/mips/sgi-ip27/ip27-memory.c
-+++ b/arch/mips/sgi-ip27/ip27-memory.c
-@@ -410,8 +410,3 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
- {
- 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
- }
--
--void __init paging_init(void)
--{
--	pagetable_init();
--}
+ 	/*
 -- 
 2.51.0
 
