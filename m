@@ -4,84 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD472D3B7E5
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 18:39:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FC6CD3B7E5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Dec 2025 19:20:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF2A76B0005; Sun, 28 Dec 2025 13:39:53 -0500 (EST)
+	id 296C56B0005; Sun, 28 Dec 2025 14:20:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9FE86B0089; Sun, 28 Dec 2025 13:39:53 -0500 (EST)
+	id 244416B0089; Sun, 28 Dec 2025 14:20:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAC086B008A; Sun, 28 Dec 2025 13:39:53 -0500 (EST)
+	id 1265D6B008A; Sun, 28 Dec 2025 14:20:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA8EC6B0005
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 13:39:53 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56B19C147C
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 18:39:53 +0000 (UTC)
-X-FDA: 84269743866.09.EE0DA26
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B68C2120011
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 18:39:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LUXibuFv;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 02B756B0005
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 14:20:46 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 935CCBD321
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 19:20:46 +0000 (UTC)
+X-FDA: 84269846892.18.9AED1B4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id CFE9280007
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 19:20:44 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ccOhWjzz;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766947191;
+	s=arc-20220608; t=1766949645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=TMfUVMvvq7EbCICMBIGTvOSyYGcC69m4w9fJt+SkX08=;
-	b=K594Cuxu0xiLNX/xMzooyi8pNXXTiJT+MFVTpb0s2rF8JJXq1x/gaU/jB5zuf1XcK+Mpp+
-	QIIvA6f1a0MeNDQv08hjiWp8w876DbcRpf7rD089o0z9nVlgN5Qh5W1fvIpNCT5zWvTEY+
-	5jynLHAJFgs09Gq4rGrh8LOvjMXnXV8=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cS4PEkXRekfNrMN0zaxa5vqhNj1MA4ODvoK3bHEYmZs=;
+	b=S9V3/lKwZlg/09u0tlajj1kHow2hZs3ImOwcQSN26k1hgRQepN/DIGxXhY5GGXKQ9j069X
+	SQhx0kdIUiRL0gr2p4wDD90am6ypL3IuOgI4ruL/sn3MxWK9dWzcd6Ok0ZMQL7gr3Heo78
+	VL/KAoQXzuzUffTR8I4Liu8cqD4PadM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LUXibuFv;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ccOhWjzz;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766947191; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766949645; a=rsa-sha256;
 	cv=none;
-	b=MMDzzWMmlSDlPg+i2aqlbOBLtAiFPQt0jCZwnJwSIJecwd2IYGHiocLfzw3W13DFA1v4sh
-	M4RJPMolA9zzVt2IIZAgBCd7peCRK3Hid0N1Ucjn1V8IWfBUWmiYfBjS7CEk96lyY2dc0C
-	ESzicceU5fDWkCfTfLq58v83v8PP00o=
+	b=3rU1Yvy9JwbDe8MUzb4FoqRBeoh8SL24RAOUX14Ahq3gE56IEU5f6VrJS2PduIneUppZZQ
+	nKJdFLTv3PgirtkKxRrRilAmqkjpdxzNTqq1pIIassnYFNXqgs9cFXmNmlgndNOnKLkPL5
+	CRF6fpblOgO5WMNr9susvnlPtixUI6Y=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0836860055
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 18:39:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874EAC4CEFB;
-	Sun, 28 Dec 2025 18:39:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8E75640E20;
+	Sun, 28 Dec 2025 19:20:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C05C4CEFB;
+	Sun, 28 Dec 2025 19:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766947190;
-	bh=ciQXy86RgfhF/JwMoiPRFmXrwDhJWLlPq9Q8wigsJuU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=LUXibuFvSETnIIK49egmoOsK9bw6dIOXm5jtZhwG7qSzLSGvIiJXdcF0Y2XUG8OqR
-	 73G6VTNJDGRi5fN9j8aphgX5acotMb/tbl+EApGC56QZFzaAPW+AyiTQw+FHpDwI+O
-	 Hne3foc7BXtsqKhHmKBUpkfghTf3pp1hqgU63Co6h4iQMXGYy9smUHXuqqQU2GySH7
-	 mCD/xl9FUZl6lAs93SDdHY2v3HytR3Ye+zV8W1ZgsU2a4DAJgok/82XzZLXf4jF+CG
-	 k56td36Cq8r7Twc2ga0LlprykzfPmKL9uHeW/0R6ge93FOOBlZhOMk7le+Ux3mkSee
-	 uvkM0FHOU2aWA==
+	s=k20201202; t=1766949643;
+	bh=IhyMm2V7Mz+czGr4Iy5eh9IjUPja8iB0XGAF1orLhiw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ccOhWjzzblKGls3obvK88De2u73Btq8NicABADZf0Ujq52o6NfnybpWNuTXIEwxSU
+	 Z2vWIVoVq0l42B/MEU6QJXiNcS0tCoCCPwK5ENqzdrRZBYw6jKa5TsDuedb3Yn2aRq
+	 KpmVih3KacttyKTLbkn3713nS7nNHO5c0OHtdbFWK8OyV51a6dcGDAixn5Gj4Z67ep
+	 BTY0z1JmMiYldzSeUg58+jFjLYFXIBPDGnmB8EtsHJSCG1yEjRVxT4LBIcTs8zpapP
+	 Dq4DY9MNwmg13BA3rkI9W0BTXODAsWyuaUNAbi5EP/bPtpi0pUk9Gbfbu+DUENm/L1
+	 7utVDHlnpXWhA==
+Date: Sun, 28 Dec 2025 21:20:35 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: linux-mm@kvack.org
-Cc: Mike Rapoport <rppt@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] memblock test: include <linux/sizes.h> from tools mm.h stub
-Date: Sun, 28 Dec 2025 20:39:42 +0200
-Message-ID: <20251228183942.3628918-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.51.0
+To: shengminghu512 <shengminghu512@qq.com>
+Cc: akpm <akpm@linux-foundation.org>, david <david@kernel.org>,
+	"lorenzo.stoakes" <lorenzo.stoakes@oracle.com>,
+	"Liam.Howlett" <Liam.Howlett@oracle.com>, vbabka <vbabka@suse.cz>,
+	surenb <surenb@google.com>, mhocko <mhocko@suse.com>,
+	linux-mm <linux-mm@kvack.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	"hu.shengming" <hu.shengming@zte.com.cn>,
+	"zhang.run" <zhang.run@zte.com.cn>
+Subject: Re: [PATCH] mm/memblock: drop redundant 'struct page *' argument
+ from memblock_free_pages()
+Message-ID: <aVGDA8Vydmh6bT6u@kernel.org>
+References: <tencent_600D1BCC5E1B5DB4DDD98679DA7DC3123C06@qq.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: ew9c7cqo4qftwfgoqhn1hhbooefjtb5r
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tencent_600D1BCC5E1B5DB4DDD98679DA7DC3123C06@qq.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B68C2120011
-X-HE-Tag: 1766947191-792933
-X-HE-Meta: U2FsdGVkX1/myU/yB9lzYuFaOYMzRbo6onRFp6/B9J/iBZJtZpCD9M+aRvq/Po0E2LFV/32x+ksdVxmSOqqVQ8oXezJiey6aEVPw8dCdEYhSaBywWfL+QJy3Q/pg9JSArejnglGUkSovw/16i1uVPJJpCG0f5lCluMC5pCwwPSM6tDj++E3Xt1cw2w9D+5UaqFgiUpu/fzcre5kaKxcM5TcpUpNHCNOLt0APQBDpkvhbq5WAzNN24ihxanRuYchSx/68OPZpbARL8IcQlzJ4n4di0Ce6M2uoW5dNF23qGak5T+ZVHF0lbWy42X+uuydgp2Si1QwDoQVGojbK7Yw77Rr7F7Y3CkPt3HfVsVjKXcn4Dtgs+Uj1EVHou+x9PRaYvfPxLvAhyxPUJwiR+v6YVSmAGlZVuqIs+EAuM8qyw2fuXscvNaYdiKSSkZa7b4O26VW2VgOfrX2P8F67AucjrArljNZfHNrcoLMCIwCjFFpvvbxEjXr6FdY7jrpg2v8jK2zx0NaHPFrPhbX+T7WD3EgAG5vtGQsE3B8Ep2wS6PX89d2HYhdyGh+qFdff9Hqb10qYWhDjcObzKrAuhvMlKlOEESPoCAoOl0Cy9Kx4d63UA61/dZPzry9WqQeD52LkhmXOcwb1Wa7+H00b7gi3BCg/6UUE3FP4JFfibcV4qQ08nPC2tHyMhXUIjEsfcSgLVq6N+E4HSukwE5V+4BNmbn/HKl151jdEydTF42RAfFXcLj67rVci+Es3hY84DdDDr2xAhv5x+U3MhxQTvZ6XDv52N0+8W0zQDYb76zOh8ar++KjZszzzvIvImusERnUCXG54qdgDpTXeBZsj/K096oBZYSjhaCVXPPYAJ2tkkzDgce+cZ/myZyV8WJLCQlDeA9imMK0sd9DTL+WEMhcCq9Enw7h9o0gmnl01Akkxe4UO6tNxQSmiXokY9/sK2uxjaAd8tjJr05Wuz1utxes
- 7dN5gZ+i
- fpkTqi4pC9Jyen/4Mtrbq8Q6o2h7o4gX5zsavDZbdfxZkMLreROWKPoasNz9CSbndVAHPbLgXKfjClcAu5QfF+kvAA84XHmfNtTlmqu0Pe39ehXxGU90QCX2Jai2MoJhBAtfyJXdIKxzqSgJvVCp5gBU5jNfWLW3cl52LqRDV6D52seUiMf4n02vVBoiJkTTQ0P090lw6qjyB9V7r7U2JTlhtzoCOctQbmIV0RNDeYkRs2TJ+h8tRwzaeQlDa8VmgZHUY5RLX9XuFlbmtdykVxQeYZXhgKNZuKmF0qkswUQ7HG+bgUXJMm0VJCGTj+5/AX8BSqE75TPpHLLRPBySSk3iSgIeuk/la+SmmCohCyAEuiz4=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CFE9280007
+X-Stat-Signature: gaoytmng146zfr3orzu57iucupnhcars
+X-HE-Tag: 1766949644-205206
+X-HE-Meta: U2FsdGVkX1+er/yc8R+lbYYNKgRHXRIVnichDDXxNf++2DmGQ7zeM64oesd47XoDLT9lMJZQ08e+fe15AZ8fZiQJlWgVSeSWlMI70TL+Ljaeh079O6xwz9pR7Xmt/WnSqv0lAbEDOYyJgDhGCD4nGx9yzfC47fbmAl3hGwnUAGtYJvMlZxJuGMEQUT1WBFmMFnLacd34QM3Cm0mG5qtUjYkwC7+6PvD7CTFUcoF+0MU1u3oYrrsvVlpXBF++82eAQJCPpbvS5uGr/cpDf2NBJ9G8CXVvREQ6OKonIbNy83NG6angTM9iTv4wKZqqgot7lCrV8rLoB4Ji9HJRXjAeDZ6DXaLlzzbEvFsJ3hHXC9hlUov3kD35kmPMpuOmBJ0b6uOHkd+8LzEuy+ewqUBXi2LfxQyuIybqGmCtIuezJhUxi1WDwzNne0E+MRdLGbTHzQjKGeV1WlTzRz8qcGZY3rCrmO9qyzg1F5k773O6+fCSikUiOxFHesN794CG6QF1NbZlQw119ZqF+wiJYopmrNYVY20YWrgfW2KZVXKvP6mRc2xy6YgioYKh6vOQZ0dm1e5UcmYANgACiJFuB0TtwyFKOpHwiTwpHxWP2Z/ZC9dPcu6BFFf9JioNg3yD8Sdvy7/uzG0cjQXOwAU6c9woEV+IIcvoaupblNqOX1PCMswWyJua9SuGmyruX/lCrt6NJz2YfZLEi85xwblxOavucHhNDmyW0InQtnPm/V6H27FjByfmwMdMQfgqv2tGZsD0hUtKmFEbIBe81w2WbzG5zxgY3C1twwtUAoDu85cNGU26J/NPZPMZh1LMxd2R+LWUYPA31Rj0wwqVzjattQwFjqpWlbN86jWOnOhiSvCHRjHWziLzZGPONJ4Cs+aO708FuaSJqpeq3bFWJkl5qn4BLy7ttiYZY7OMVuAaRdXKZFMobCigQMZBKiL003zhZhUsiFL6PKyQt/0U6skWpx7
+ SBFGlS7A
+ erPgNRT5NgJXhM1EDIAtetDqzdvI7JqZ+2idTxfS33Sl2AHOORf49oco6fgbNB3YOdZKpfPGZqRIfCN6wDYNG9AbqH286TIS+Do0RYcZ9j4QGXImP3XIAclXRqhymukJBkUOnxwLdqBXi/m/IFPlm6XN2cV6HCjHPwVDqcSUBMUq7PXnc0bNCwN9hLhqFG7hACxS+uOCQh7cxu4UUWD2EHmQF9Xo7losVvBKE5v9Ud1EM7/2E3IxFX80d+QwbqpgN1f9HpO9+0K0KgXR3eIAp+d0QUiihLCi4nqgSs08wwJZqVQHNM2hwuGC1jpL3MA0NOtSs0uMFAiRzpQG836UjBzpCsuIkVpSQQ6kaSeMZNJ38hB8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,39 +98,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On Sun, Dec 28, 2025 at 07:38:50PM +0800, shengminghu512 wrote:
+> From: Shengming Hu <hu.shengming@zte.com.cn>
+> 
+> memblock_free_pages() currently takes both a struct page * and the
+> corresponding PFN. The page pointer is always derived from the PFN at
+> call sites (pfn_to_page(pfn)), making the parameter redundant and also
+> allowing accidental mismatches between the two arguments.
+> 
+> Simplify the interface by removing the struct page * argument and
+> deriving the page locally from the PFN, after the deferred struct page
+> initialization check. This keeps the behavior unchanged while making
+> the helper harder to misuse.
+> 
+> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+> ---
+>  mm/internal.h                     | 3 +--
+>  mm/memblock.c                     | 4 ++--
+>  mm/mm_init.c                      | 7 +++++--
+>  tools/testing/memblock/internal.h | 3 +--
+>  4 files changed, 9 insertions(+), 8 deletions(-)
+> 
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -2480,9 +2480,10 @@ void *__init alloc_large_system_hash(const char *tablename,
+>  	return table;
+>  }
+>  
+> -void __init memblock_free_pages(struct page *page, unsigned long pfn,
+> -							unsigned int order)
+> +void __init memblock_free_pages(unsigned long pfn, unsigned int order)
+>  {
+> +	struct page *page;
 
-memblock test compilation fails:
+page can be initialized here, the compiler should figure out how to avoid
+extra instructions.
 
-memblock.c: In function ‘memblock_validate_numa_coverage’:
-memblock.c:784:58: error: ‘SZ_1M’ undeclared (first use in this function)
-  784 |                 mem_size_mb = memblock_phys_mem_size() / SZ_1M;
-      |                                                          ^~~~~
+> +
+>  	if (IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT)) {
+>  		int nid = early_pfn_to_nid(pfn);
+>  
+> @@ -2490,6 +2491,8 @@ void __init memblock_free_pages(struct page *page, unsigned long pfn,
+>  			return;
+>  	}
+>  
+> +	page = pfn_to_page(pfn);
+> +
+>  	if (!kmsan_memblock_free_pages(page, order)) {
+>  		/* KMSAN will take care of these pages. */
+>  		return;
 
-The SZ_1M is defined in sizes.h, but it is not included by stub version of
-mm.h in tools/include/linux.
-
-Add include of sizes.h to tools/include/linux/mm.h to fix the compilation
-of memblock tests.
-
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- tools/include/linux/mm.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tools/include/linux/mm.h b/tools/include/linux/mm.h
-index 677c37e4a18c..028f3faf46e7 100644
---- a/tools/include/linux/mm.h
-+++ b/tools/include/linux/mm.h
-@@ -4,6 +4,7 @@
- 
- #include <linux/align.h>
- #include <linux/mmzone.h>
-+#include <linux/sizes.h>
- 
- #define PAGE_SHIFT		12
- #define PAGE_SIZE		(_AC(1, UL) << PAGE_SHIFT)
 -- 
-2.51.0
-
+Sincerely yours,
+Mike.
 
