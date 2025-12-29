@@ -4,124 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5AD7E92FE2
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 21:41:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 874EBE92FE4
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 22:18:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F93F6B0088; Mon, 29 Dec 2025 16:41:28 -0500 (EST)
+	id 6F51E6B0088; Mon, 29 Dec 2025 17:18:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A71E6B0089; Mon, 29 Dec 2025 16:41:28 -0500 (EST)
+	id 6A2C16B0089; Mon, 29 Dec 2025 17:18:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECAA66B008A; Mon, 29 Dec 2025 16:41:27 -0500 (EST)
+	id 5848D6B008A; Mon, 29 Dec 2025 17:18:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DA2E36B0088
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 16:41:27 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 44D7C6B0088
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 17:18:08 -0500 (EST)
 Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 91CB11A63A3
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 21:41:27 +0000 (UTC)
-X-FDA: 84273830214.07.3074B3B
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B1E8440002
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 21:41:25 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Xd6l/A8S";
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EA2D0C330F
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 22:18:07 +0000 (UTC)
+X-FDA: 84273922614.07.922E335
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E71134000A
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 22:18:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xSn4eJQ4;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767044485; a=rsa-sha256;
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767046686; a=rsa-sha256;
 	cv=pass;
-	b=Y2NtOtRj3EKkFm8lQIpIZRWQCQ6nfi+BNivkDw2m++oT0OVEA9c8J1ybX8UCFmw2LSINJX
-	FJvKLfCx5sFk1mGKRJhKVe3SYLHGQIdHpRjk/rgiqdAuJglFcaglST2jBrO6yeS4fati5h
-	2XyHEMoslzW3wXDE9Xy0at7xykDD9DE=
+	b=RV58Fe5afVFMctJ5xmYTf++yZ0977H7zZvCEqdCpxhzXh2jU/eqooV82aICdfWqwu8F8vt
+	5FqTllifN02WU2Z8v4kWyq0REjbeVTG6ATs0uXNB3lZdGxvu8L1n6EAJWs0IDgdP0ht8wM
+	QTucZz9QecnaF2k58ikKCmTVD345LwI=
 ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Xd6l/A8S";
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xSn4eJQ4;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=surenb@google.com
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767044485;
+	s=arc-20220608; t=1767046686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4wANueRz4jeCmGSNAgX7AeqCQxL6uQceED615CNCJFw=;
-	b=Z9TUgMx7rZjP4cvsFX8u7Bzf/xthHmQR6lWiqjM+6fjB3uoQcjainbs9iCyt08oXSrIsxb
-	omXP+J0XkUzHMXoXYfflIYzzwu2Mmjb5h3QN2WqrCsXrnbbu5yMiKnvMTABBHhn26W23bQ
-	6ge/JkNqhlARuCL/ieV6PvSB30l3TVY=
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-64b72793544so481a12.1
-        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 13:41:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1767044484; cv=none;
+	bh=VeChDKeFNuym6T0vKimesxWC0M98diDBtB6Ij7wnrHQ=;
+	b=loNaLsAbdzZCWYOQ25Qeoo7f3RowXSqd+ytS3v6Ut43eHEbvdA6XZwkX5D27RmqZ0s/QaW
+	0Iptw9atE46he4IevWjbdfJIh+5ZmgMZxpUhUdSjhMGb3nis8MXkIHZ+iBFk01hbVWbKA/
+	WRZhutmeaEOGpbx3aoN95m1Eu8DYUhY=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ee243b98caso37421cf.1
+        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 14:18:05 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767046685; cv=none;
         d=google.com; s=arc-20240605;
-        b=PqjX4/a9Pg0LvCw9DrS8K58GHaTH7DpJKsrqqZfA4/B1LRMH3C3gF81PCtarNIUBa0
-         +012oQWuAxcltJNbU1RS3GL8s9t/igFCVeY5822Z1euAQFUhpVXKJWoGrncc2JZOm5S8
-         PQTY+Hc5SFQLfo4kWDorqZoddNLR2R8x2rHn4vtelirm2cc4o+AA3/eCSBqT2I8Xz/hq
-         AX0NMruIXcOFlIHjMcSuylZFb8kdsTBRgjGo4uUUrjocGbhZ8cJlcVK3mBmu4XK+fYp3
-         +YFn+mLEnh/ukk1C6WblRxJ3PFFdNtl7RjQHg9KWiEDC0jeW6++38POJSXRPDuSyLgzp
-         348g==
+        b=X5IzxwC+79BtXFFRKL5UJFnjlfJ8haZloGmV7H4QLn/OCKyKyyjGcWd9ThGbKRPQO3
+         VbcLMChKDQutF32tq8VC4UjPYC7ElwjYv+wyOWfnKC1eY9NH77OxAfhqH2P1cjqjC0GP
+         Owt5N4+dMR/9olfnj5isC2enJ6pcGTPEPCq7bVXDpDiIVbzYP5M5UBQ5C45IwmUqnT/D
+         747hTps3cyHLohIymQVOYoAd3dufWt2CtKKdrxO5DgAmwPkTwUvu5yQm68pmN1oJ2/kq
+         07si8VMtlZNve9y0yzev7Sn4i/oEwg0n77B8yLCodnbTlQCaTwKkPYIxTEnAQCLM2ehZ
+         n6JA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:to:subject:message-id:date:from
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=4wANueRz4jeCmGSNAgX7AeqCQxL6uQceED615CNCJFw=;
-        fh=0a8mBNZ/gfEhGhrMr9OYQnc3B/k7QVszgcdHP+F/IUs=;
-        b=fwFcR6d7LuOkK6hQxxr51yIaOTLSteJx/2kiHPcJftK44vW8XFpUt0PXvDRD6ejl+N
-         depUYIzh7xTh+hpljy/QDPWZ2vaxBCTmGXUPXZ+a0andS9woSq+dHj9WuNlOUn6CCGg/
-         McBLGaZEtdVai6XJvZIfeyG7ujQWalKyr91aOzqFrAk40cOAUSyh41Wyw3qEet7/wfj3
-         q17r7zqn46sJHqkEirH5jgLTRPP/8VaDZQnYUBp+6qoNL7i2ztOM42LcXqbhYIu2WJIA
-         iyIl+K44Q+5kF2RoN3ADeziMCdLBMAtUPEY46ndSM3UJrQaxCaY6tHxJddVV1w3bJeFr
-         IOPQ==;
+        bh=VeChDKeFNuym6T0vKimesxWC0M98diDBtB6Ij7wnrHQ=;
+        fh=jDAB8qzU1p4qM93wNlJtiV8EbzI7vBFDzIq8t8DaslI=;
+        b=VtwDMTx0uHbTG7CPX6p9VNXaHHEfW9nFOZqaListEDzLtcDeCweW7C2u2S1qxJHpNF
+         ij/P9s8zdnHdOIta6ryeNU0mDS105352/z/oLmSiAzCJmGiaqhKZUQxmwL9mj8Hdt0xa
+         0yt1ntelwqBGMj91E7MtdIUc6F0NiDbfytDvt+aAY4F4E1sW77ediEdP4S3bm/Fwn8oj
+         7Z89rPf19OdgQoNgDfsd2m8yHPVDYUCUgOYC2tlyyJrRtIGfm/Go9lOZs669Y0cQrOXS
+         HkFjdKZgBXSsa6EEYLR2sy8OIsooTLcj2EV7H32/DOUjVsDAhO7S19yxZIkLWtFPCSM4
+         UEIw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767044484; x=1767649284; darn=kvack.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
+        d=google.com; s=20230601; t=1767046685; x=1767651485; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4wANueRz4jeCmGSNAgX7AeqCQxL6uQceED615CNCJFw=;
-        b=Xd6l/A8SMKCqOaNN8hEqbqpSFIvXWw9hYVkh9casBEztkZMHgI2kBGHoU3q71BFVeY
-         NKJ2rkeTBOAYEHz0dTC3dnatgANIbldF6l4qgchB8K9rbdlo0l4/y0RmlFn3t6FQI92j
-         OcwKywwJ3ytkvWw2oRkAqrQgjXhDDG8481+IfTZubkwfnFXsp1VeHXFlApzAcPKAGbEn
-         tkkjM5WpHmQKk8kuIr7j+GFvfoE7jEwzsmIaSSq9ZKs7bWjL9oVtbNrh0p9AOvCl5xJL
-         SXEJG3kyWw/0whtChpHK2oAoQo5Vhy9nyACL1UzSrb14Xey0qE41aGf2ziuYBn5ePs8M
-         zcRg==
+        bh=VeChDKeFNuym6T0vKimesxWC0M98diDBtB6Ij7wnrHQ=;
+        b=xSn4eJQ4Oe6OGnomcMxuraeVk3lBDlWWqtltLVqYH8bqC908duLQUKPdRvrevPxxEv
+         nPGYE15qsLfvmldVi+MsjTFJYM7dneuMP4a4gf8EEl+sQrEoDPRFbxYF1zBkHVGVH3Et
+         8AHjNHXcEHODe3UXdapdzCBs11qPck9UPqarfoHZR1ooAIdvySN7ldQouorGC1hnSZ6X
+         AsTSbj2u7Hawe4bFFtrqVKCfwVcg+WX/NiktWnKXdFjc/cwu5U9DS58Qb8ShkUL5jetu
+         zMuj835ovOKlS72cHu9egTyTq7BgAus/+cya7q3JqNA684QcNleHB06jXcAaXnn0nt2j
+         v9Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767044484; x=1767649284;
-        h=content-transfer-encoding:to:subject:message-id:date:from
+        d=1e100.net; s=20230601; t=1767046685; x=1767651485;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=4wANueRz4jeCmGSNAgX7AeqCQxL6uQceED615CNCJFw=;
-        b=Rxf0y3VKr7BUodNxmLXNPHhvwHiC+Md/AZrN4qAWa6m9e1LUKM/GVeD6u1NNZi9PUe
-         IWU3XPUdbc9wd6tsxUHZzM8tyvP2D0mW8CGx/DzVzL51U2GvNUfA+zH7dAxdA1Qdv6TS
-         epEiokyZ72aPx4DhG+SB4LEPoXXnR3bizjmkS2uOZDTP+Ovqkvc0u2q4EoK7e+ji6drP
-         tBaKbBUfQfBa+So00/l6hbk3gtgo3UETPxrnjq6TmMl1W5h6FA/AK1oNHhcLnlXaIfdH
-         4PeKlkFPeGP8Acrm1mMfik8W925e3+dJCwngRAUCNHY50pt/uXzkI6XhSg29WyjQFkD0
-         k60w==
-X-Forwarded-Encrypted: i=1; AJvYcCXwMKtGAMMwW5m98DEHVtqKVrAMoGtl8CmHhkJb25viRYvcp+znCnHijQnDe99tQEZgmrhdkwHDDw==@kvack.org
-X-Gm-Message-State: AOJu0YzxFa3xJ1pcVgTyxy6/OqHNKULoZkFd8sIb6/2Oiao6KFRNNq7k
-	WNE+RmjbzrUmVjRzJCjrvQ+wURTQ8y+Amc/PL7UZsxn926CKMaWz3FVxYze917f4cJ5Vu/sqRSf
-	cG9jxmsOGR+8QWPgqVjgGlGAjC9oJ1aEaUfb4vJMT
-X-Gm-Gg: AY/fxX4cz4We978D/NaUxgnSxUYUyAx0B82dDERmFWYDUy+k6cXHbWutkdVSJbSd9S8
-	VmUwv65IFUiugLzzw+7cD25M4gzdJpXZFjM5WWs94O8LMF6DQ6sUd9781Z4SMweDLoxYgP+7B8R
-	wKh3nge29SNQoDn/kMvBaUtzQZCm0JYzlE/RB4UB6B0ayXWj2Q/2Y6R/W5pWhnxMNiqQd51z7MA
-	ZuspzpNy7S1JTwqO2URKcgwKmDPyQQzO3Z3qqB7HTlPWq4xSmfX6P+7RpkwseavVM40XQ==
-X-Google-Smtp-Source: AGHT+IEKTKoGKuUZ6XstoTPGgSzgEMULnsqvcatZXTwtzVGO48aRQNNbhscqov80SCkAfkEwVMw9e1KkO3IYXz8rHSM=
-X-Received: by 2002:a05:6402:2293:b0:643:bfa:62ca with SMTP id
- 4fb4d7f45d1cf-64f1999a03amr1144a12.8.1767044483908; Mon, 29 Dec 2025 13:41:23
- -0800 (PST)
+        bh=VeChDKeFNuym6T0vKimesxWC0M98diDBtB6Ij7wnrHQ=;
+        b=wytgEmjbP69IPjSS8YyGkbtpD9U7sOn0ykrUMMCYPvtNsmiKZ09WsY4uXevae1AN4u
+         z/oWvCIwQCzV3nJPeNyehpl56EKGJxGnjw2/+25IqBFlCvxLioa2Ld8rzemg2eVqIghq
+         3nTzRmVKOpIwg/MTB9K3Qphim4TP7UCO87z8LXT60Nr2czejpniYoPfOP1Zx3x0Tw9FF
+         CaaBGSbCWh2DTvUvTJ1Wr8EhN3OvqaMaQXQAh8O8ZtTwoDQM6axcI4J+nxtgAn1WtZXn
+         M0oDC41YDz/OWzilcPbJZaNr6nF4uH39iy9hWlhbKusYTOLm4rcXM4WZzbxzMKMXdRHB
+         wyRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWipQSh5m0U39cYUIRymLS/FAO0AXP5E63J2kXjf4a9QwL4euA0ZcfY9dox38lmvY7RetVEKl1TVw==@kvack.org
+X-Gm-Message-State: AOJu0Yza2vToJOQEOqszULylrmNXHvk97y4dKKlnEvkl2up5s+G2t14/
+	S4UpVYWeg0QlkPlRzoe2QPgwejrofxgW+Bn4nOlpLnmVxlDKT65XLMefdt0LruHF9gIhEr5E0Pu
+	QqeBtjRdfvj2pus6mei6iBG7YZvSxZomzPi3lzOpr
+X-Gm-Gg: AY/fxX5jW/7LBHMxGJnM5Lq3g4EYjw1+GtyGOkoIoKVzrjRZXJ3V9+F3WMrcKNV2NwB
+	4B+MVPhQaznwrnCVMsLfjWw6dI6bizVH6QkhGl5djqs0bpfDxDKj0ivSI0jbPtHPl41S2dfNSm1
+	ipyAHnPj4zt4iwZ1mDtyf+OsV+bfGSWJg3b21RmSQR4JVtT1+GphYajGY4jhQOIiWIo2eM3g62e
+	Ejk04ktmwmh8Dg9TQGqrRbjfwCBvA3fwxq4SgvbcVRCBsF0GIRyYcLBCJ8xhD5h0ZJlfQ==
+X-Google-Smtp-Source: AGHT+IGrh/zGjbLTv/VIfMgWVgpRyBaqC7hZ8qe+2twz82jtZWhmuMNm8CaNqtWo9LVdFPVajM04hkI8GRJlzkmuzxc=
+X-Received: by 2002:ac8:7d47:0:b0:4f1:b421:1afd with SMTP id
+ d75a77b69052e-4fab52274ffmr508671cf.3.1767046684497; Mon, 29 Dec 2025
+ 14:18:04 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1765970117.git.lorenzo.stoakes@oracle.com>
- <b2b22973f761a97751487144f7726bb0cf868305.1765970117.git.lorenzo.stoakes@oracle.com>
- <nmflwd25h3zz3vrdpfgaztko2dcascl3bbfyk6slml7n472kms@ysxtp4xlxf6r>
-In-Reply-To: <nmflwd25h3zz3vrdpfgaztko2dcascl3bbfyk6slml7n472kms@ysxtp4xlxf6r>
+References: <cover.1765970117.git.lorenzo.stoakes@oracle.com> <454c0680d4fdd5504b1e90b2fdaa098bd70d4d2d.1765970117.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <454c0680d4fdd5504b1e90b2fdaa098bd70d4d2d.1765970117.git.lorenzo.stoakes@oracle.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 29 Dec 2025 13:41:10 -0800
-X-Gm-Features: AQt7F2rPeL5rndOONNQixFF0S70XVIIJAFBT-b0uXfLanUEd0xpb6P4JU-MCmQo
-Message-ID: <CAJuCfpHq0G=kLBD=_0cgujT0Qu6yQ-EDB1uyXQJPGWmpSQGYGQ@mail.gmail.com>
-Subject: Re: [PATCH 2/8] mm/rmap: skip unfaulted VMAs on anon_vma clone, unlink
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
+Date: Mon, 29 Dec 2025 14:17:53 -0800
+X-Gm-Features: AQt7F2peCSXa47f7IbROJV1mVx1HDMKhgHDy5YyFHUfSCbLemXplRQe0ecPjQZ4
+Message-ID: <CAJuCfpEWwdnNs458wSb__C0eHSEvbvJ9nK3ryQWLTjA3+b3BmQ@mail.gmail.com>
+Subject: Re: [PATCH 3/8] mm/rmap: remove unnecessary root lock dance in
+ anon_vma clone, unmap
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
 	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
 	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
 	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
@@ -129,14 +128,14 @@ To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoake
 	Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B1E8440002
+X-Rspamd-Queue-Id: E71134000A
 X-Rspamd-Server: rspam03
-X-Stat-Signature: iad6be5jz669a6fn4xyqkm4fazq7u53x
+X-Stat-Signature: ryuhnpzz97bsncbc17y6inrege4rgc5y
 X-Rspam-User: 
-X-HE-Tag: 1767044485-136208
-X-HE-Meta: U2FsdGVkX1/gRBJxAysr6LDhcNXRYCymfG7OZFrbHXIn7qtWmM/d9NApeL7X8oGTABilKgeB7qc8PwVr2jnlwBhDHrJogzzrbLqfa6DLUiccBpeGbvwdc2VXfCMHmR6ZAPNCxKh4BQGzs/qpxNLDwL7jtHfj+2w1E/+ubtMPpxNp2El5HfdvWkSrtY58RyuVNUWKupqDJXw/IGBPuu0CatG5VU3iTT9f8u8xQQW7L7J5Sl5eLSXYFnm6SKRu5Cbl+mgUOehdUGiWXf/Pe+v1gd9l7CX/3zbOS9B5ghyuAbpAZ47JsZ0QtGLvNQUXcZbsRbPaaGmme5MKsL5AaahvIMFnwg2qOHOltHQTQqXeCfFoQfC4dYwYTWNMjjQmzgKXwtJKQhPGM2rbwk/D9+lU64GS0+37k7HMM3A+/rfn1hm+daerj5JVIdRZSYtvjbXXeI9jpQVk80cjPzvNDaKzlPSMq3XyAprlbeAwXGNlAGPkXjd5oPptNGgmpt/HQ8t/cjhF/QMn/MJ4q1MeS5jeKjT+WzVNvGU7G1aprql7LZBtPFRiip2Dhi3Cm9/BgDRIhhRg1kvvZNn0ob4QOgoVtR4fw38BERF9KkdQvqQZwxzJEkmjaAc7NNcDRFTW+PXHGUdE4/Jw14XcIwsoSmKgYAeXRek/lAe9JyCELrxvcDS8g2s32pHk0tjc/3MC/zmFciAcRNprJZlcJKJBuN/RSz8vyoKhCdNBUdlnaeE4KUK8+k/UwSpcafeYaop0GJBveiLKyXreke8UgJlu9XtXCKawT4PbV2MF7CsR0jiUZaIPYltxL7t9TYes+7LpOWiFXr4xM/TjCsiLz5IGv6SljaGTpcUBHpVFm6SaYeT2je7CHDrp9mV4sdS3K/pw8IFHl7zjAn50p2fJr7ZTjuOKAKdahMnsqwHrWQhIGg0C79tvP73YyS/G5cwerlO5sskboMpCSaoIwOouR1G6YpW
- cL6X8fa+
- MSyVgVgVMdY9/cir98uex0ILD/Qwdu1xfYhiKCpRtd1PwU2HqYgtvd2ZPbWzBvCOVZZhvWlBG+DMKs27/PMuRjtEs98HuS44D1BE8Cx/F4cFe0EXE3nfmyalDQA==
+X-HE-Tag: 1767046685-973762
+X-HE-Meta: U2FsdGVkX18lSmZTSQFl5Qp+Vem1FMuU3IFR3p75JbD25a+fYYKgQdOWyDuUpm2/wO6/KR+HBKHRTqFH7OOwT+66fKw0uVQfRvEtGDbAOFNeMU+2NqHAfF/92zX55BphAGxYBGf/c081x7aqn9/v6jeZK2ubiiedrRlki4e5gZ0Un7BN7tL3dIp7Fa1gcjgBrjoOze3n9eHhIfVgkSJ2t+rETEe3nv35HyCyU5rKHoZp2BaMBkte2cO9fEnwM0HP7YIz23SRALjPZtofanwI4KGGCQsd9P38LwXx3tQXPIO/cDOWMBhAjwSmRTHkpJ54/PfzmMCL2BtZLWslR1blJaSvjvAj7mzZVb78Btlp1G2XCs3n7+vCMWS/VdfW76kBhaO9bXgaP9B3gL5UPrY1ak7yp2VsPgp/hvhiplioZLR5grvq8/o/Mrl/moYSFiXuZB3jJyiMcYqHcvr3bCd0cJwL6j2qATxuLLoNv5lpvuZem8CACeuMuncII7zuYoyAubsBTV1J7c3OGqzGsQeTJntq4Mcqdr/Q3zFk9Kqwg6+wfsrBPp6gDfqejVgnxIvQxK5uoO8h1sWrYOZ9a8eyPFODHdsngngjD1h7GaNS+6zuUTYv5iJ5xJal9wlQIDtjai8XNIciflEMrhIQAQoaUvnA+vwab0UvVfVzEXjYgBzvfHoud91loecCsvXDYPFYQoWeJbMElXx3aaFHWxEM5OBdkOIVxvIJXn/sZCMZpZ07eMjmbFF8gtjSlDW+j+BkZ6/mQsKdByOVPjAlqFh2soHVnAwZTEV6MOfVUJlI77IKedVnLfvg0YUymuyW/KG0BXdVYjaymHyZeZQucHrIWu9492Z1+WgImkecuPnU0nOnZctOjoKxDpyGfucDRhZlvGtQHUNH+KJUQNVuS/rg7xbp7jcUkGUkLnWZD8dmlmgw/fcPUvxVGOgatkyJWctmkUJMmnxXglUHgGwTS+Y
+ w9tqxzab
+ GqLkNqzFISUXUMY1KzSa9M3+VnQBVdpGTUpd8wW061KIE2IQQd6b2JnsXjU653mydQXbJ2KRczqMWbV8SW0ZSK39z5fdifyXvwVYBRVQ6Rd+9EVk0RGfTmuj2f/bORxzbmiAhvT9bbE5K5NzPMX0dy3VA7R+aedGWx6fjnPP2KR3a1106Qddt6iRsAWm/9gvkjqwJJbgqdsUeD+cHhHHTKV6jBd6Ajg1vSJ3IiCOzrp8gQxNlfqCKKZ5cvQtQhREDDGcrEbup+8WY1U99hgkfCH+Eaw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,89 +144,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 10:28=E2=80=AFAM Liam R. Howlett
-<Liam.Howlett@oracle.com> wrote:
+On Wed, Dec 17, 2025 at 4:27=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
 >
-> * Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [251217 07:27]:
-> > For both anon_vma_clone() and unlink_anon_vmas(), if the source VMA or =
-the
-> > VMA to be linked are unfaulted (e.g. !vma->anon_vma), then the function=
-s do
-> > nothing. Simply exit early in these cases.
-> >
-> > In the unlink_anon_vmas() case we can also remove a conditional that ch=
-ecks
-> > whether vma->anon_vma is set.
-> >
-> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > ---
-> >  mm/rmap.c | 20 +++++++++++---------
-> >  1 file changed, 11 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/mm/rmap.c b/mm/rmap.c
-> > index 0e34c0a69fbc..9332d1cbc643 100644
-> > --- a/mm/rmap.c
-> > +++ b/mm/rmap.c
-> > @@ -309,6 +309,9 @@ int anon_vma_clone(struct vm_area_struct *dst, stru=
-ct vm_area_struct *src)
-> >       struct anon_vma_chain *avc, *pavc;
-> >       struct anon_vma *root =3D NULL;
-> >
-> > +     if (!src->anon_vma)
-> > +             return 0;
-> > +
-> >       check_anon_vma_clone(dst, src);
-
-check_anon_vma_clone() is used only here and contains a couple of
-warnings with "!src->anon_vma && ..." conditions, which now will never
-be triggered even if the second part of those conditions was true.
-This seems like a regression (you are not checking conditions you were
-checking before this change). To avoid that, you can place this early
-exit after the call to check_anon_vma_clone(dst, src).
-
-> >
-> >       list_for_each_entry_reverse(pavc, &src->anon_vma_chain, same_vma)=
+> The root anon_vma of all anon_vma's linked to a VMA must by definition be
+> the same - a VMA and all of its descendants/ancestors must exist in the
+> same CoW chain.
+>
+> Commit bb4aa39676f7 ("mm: avoid repeated anon_vma lock/unlock sequences i=
+n
+> anon_vma_clone()") introduced paranoid checking of the root anon_vma
+> remaining the same throughout all AVC's in 2011.
+>
+> I think 15 years later we can safely assume that this is always the case.
+>
+> Additionally, since unfaulted VMAs being cloned from or unlinked are
+> no-op's, we can simply lock the anon_vma's associated with this rather th=
+an
+> doing any specific dance around this.
+>
+> This removes unnecessary checks and makes it clear that the root anon_vma
+> is shared between all anon_vma's in a given VMA's anon_vma_chain.
+>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  mm/rmap.c | 48 ++++++++++++------------------------------------
+>  1 file changed, 12 insertions(+), 36 deletions(-)
+>
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 9332d1cbc643..60134a566073 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -231,32 +231,6 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
+>         return -ENOMEM;
+>  }
+>
+> -/*
+> - * This is a useful helper function for locking the anon_vma root as
+> - * we traverse the vma->anon_vma_chain, looping over anon_vma's that
+> - * have the same vma.
+> - *
+> - * Such anon_vma's should have the same root, so you'd expect to see
+> - * just a single mutex_lock for the whole traversal.
+> - */
+> -static inline struct anon_vma *lock_anon_vma_root(struct anon_vma *root,=
+ struct anon_vma *anon_vma)
+> -{
+> -       struct anon_vma *new_root =3D anon_vma->root;
+> -       if (new_root !=3D root) {
+> -               if (WARN_ON_ONCE(root))
+> -                       up_write(&root->rwsem);
+> -               root =3D new_root;
+> -               down_write(&root->rwsem);
+> -       }
+> -       return root;
+> -}
+> -
+> -static inline void unlock_anon_vma_root(struct anon_vma *root)
+> -{
+> -       if (root)
+> -               up_write(&root->rwsem);
+> -}
+> -
+>  static void check_anon_vma_clone(struct vm_area_struct *dst,
+>                                  struct vm_area_struct *src)
+>  {
+> @@ -307,26 +281,25 @@ static void check_anon_vma_clone(struct vm_area_str=
+uct *dst,
+>  int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *sr=
+c)
+>  {
+>         struct anon_vma_chain *avc, *pavc;
+> -       struct anon_vma *root =3D NULL;
+>
+>         if (!src->anon_vma)
+>                 return 0;
+>
+>         check_anon_vma_clone(dst, src);
+>
+> +       anon_vma_lock_write(src->anon_vma);
+>         list_for_each_entry_reverse(pavc, &src->anon_vma_chain, same_vma)=
  {
-> > @@ -441,7 +444,8 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
-> >       mmap_assert_locked(vma->vm_mm);
-> >
-> >       /* Unfaulted is a no-op. */
-> > -     VM_WARN_ON_ONCE(!vma->anon_vma && !list_empty(&vma->anon_vma_chai=
-n));
-> > +     if (!vma->anon_vma)
-> > +             return;
+>                 struct anon_vma *anon_vma;
 >
-> I guess it doesn't matter because you just added the !list_empty()
-> check, but did you mean to drop that part?
+>                 avc =3D anon_vma_chain_alloc(GFP_NOWAIT);
+>                 if (unlikely(!avc)) {
+> -                       unlock_anon_vma_root(root);
+> -                       root =3D NULL;
+> +                       anon_vma_unlock_write(src->anon_vma);
+>                         avc =3D anon_vma_chain_alloc(GFP_KERNEL);
+>                         if (!avc)
+>                                 goto enomem_failure;
+> +                       anon_vma_lock_write(src->anon_vma);
+
+So, we drop and then reacquire src->anon_vma->root->rwsem, expecting
+src->anon_vma and src->anon_vma->root to be the same. And IIUC
+src->vm_mm's mmap lock is what guarantees all this. If so, could you
+please add a clarifying comment here?
+
+>                 }
+>                 anon_vma =3D pavc->anon_vma;
+> -               root =3D lock_anon_vma_root(root, anon_vma);
+>                 anon_vma_chain_link(dst, avc, anon_vma);
 >
-> >
-> >       /*
-> >        * Unlink each anon_vma chained to the VMA.  This list is ordered
-> > @@ -465,15 +469,13 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
-> >               list_del(&avc->same_vma);
-> >               anon_vma_chain_free(avc);
-> >       }
-> > -     if (vma->anon_vma) {
-> > -             vma->anon_vma->num_active_vmas--;
-> >
-> > -             /*
-> > -              * vma would still be needed after unlink, and anon_vma w=
-ill be prepared
-> > -              * when handle fault.
-> > -              */
-> > -             vma->anon_vma =3D NULL;
-> > -     }
-> > +     vma->anon_vma->num_active_vmas--;
-> > +     /*
-> > +      * vma would still be needed after unlink, and anon_vma will be p=
+>                 /*
+> @@ -343,7 +316,8 @@ int anon_vma_clone(struct vm_area_struct *dst, struct=
+ vm_area_struct *src)
+>         }
+>         if (dst->anon_vma)
+>                 dst->anon_vma->num_active_vmas++;
+> -       unlock_anon_vma_root(root);
+> +
+> +       anon_vma_unlock_write(src->anon_vma);
+>         return 0;
+>
+>   enomem_failure:
+> @@ -438,15 +412,17 @@ int anon_vma_fork(struct vm_area_struct *vma, struc=
+t vm_area_struct *pvma)
+>  void unlink_anon_vmas(struct vm_area_struct *vma)
+>  {
+>         struct anon_vma_chain *avc, *next;
+> -       struct anon_vma *root =3D NULL;
+> +       struct anon_vma *active_anon_vma =3D vma->anon_vma;
+>
+>         /* Always hold mmap lock, read-lock on unmap possibly. */
+>         mmap_assert_locked(vma->vm_mm);
+>
+>         /* Unfaulted is a no-op. */
+> -       if (!vma->anon_vma)
+> +       if (!active_anon_vma)
+>                 return;
+>
+> +       anon_vma_lock_write(active_anon_vma);
+> +
+>         /*
+>          * Unlink each anon_vma chained to the VMA.  This list is ordered
+>          * from newest to oldest, ensuring the root anon_vma gets freed l=
+ast.
+> @@ -454,7 +430,6 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
+>         list_for_each_entry_safe(avc, next, &vma->anon_vma_chain, same_vm=
+a) {
+>                 struct anon_vma *anon_vma =3D avc->anon_vma;
+>
+> -               root =3D lock_anon_vma_root(root, anon_vma);
+>                 anon_vma_interval_tree_remove(avc, &anon_vma->rb_root);
+>
+>                 /*
+> @@ -470,13 +445,14 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
+>                 anon_vma_chain_free(avc);
+>         }
+>
+> -       vma->anon_vma->num_active_vmas--;
+> +       active_anon_vma->num_active_vmas--;
+>         /*
+>          * vma would still be needed after unlink, and anon_vma will be p=
 repared
-> > +      * when handle fault.
-> > +      */
-> > +     vma->anon_vma =3D NULL;
-> >       unlock_anon_vma_root(root);
-> >
-> >       /*
-> > --
-> > 2.52.0
-> >
+>          * when handle fault.
+>          */
+>         vma->anon_vma =3D NULL;
+> -       unlock_anon_vma_root(root);
+> +       anon_vma_unlock_write(active_anon_vma);
+> +
+>
+>         /*
+>          * Iterate the list once more, it now only contains empty and unl=
+inked
+> --
+> 2.52.0
+>
 
