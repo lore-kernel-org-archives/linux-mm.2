@@ -4,91 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 800C2E8FDBE
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 15:23:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E186DE9273A
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 15:40:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2CE16B0088; Mon, 29 Dec 2025 10:23:05 -0500 (EST)
+	id 30F1D6B0088; Mon, 29 Dec 2025 10:40:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDAF56B0089; Mon, 29 Dec 2025 10:23:05 -0500 (EST)
+	id 2BC946B0089; Mon, 29 Dec 2025 10:40:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE6906B008A; Mon, 29 Dec 2025 10:23:05 -0500 (EST)
+	id 1C8DE6B008A; Mon, 29 Dec 2025 10:40:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BA7896B0088
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 10:23:05 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5CD401414E3
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 15:23:05 +0000 (UTC)
-X-FDA: 84272876730.07.33A7CD1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C93B1C0011
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 15:23:03 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gasBn2fW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767021783; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BC0F6B0088
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 10:40:35 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9CDB252501
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 15:40:34 +0000 (UTC)
+X-FDA: 84272920788.28.012F134
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 818591C0016
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 15:40:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767022833; a=rsa-sha256;
 	cv=none;
-	b=NH2mRa0cj0gFswjO80ZMG+U+SZlHaAjnrRJNMq9UQlk2z4xlkJkPrvr+F/LhHOiHIhSf7f
-	Vw76FpZ6vqMcFoFvqkATRk7ArbV2D3u5aRjPXYNwvQ2ERLwGy+f3MhjIVIrH6ZBHbrO5P8
-	jVscl7vUlJnISFB8UMWgw3y4tE/Tzyo=
+	b=rjnBgMls0pBrQfj/QXUzyXY7MmOa1q3Ln8qe6QZS3G5f4+WJpNjV3iAs/SKjO5LzfTkG/N
+	Ui5mUKHnerv1n6vx/k27TsOxe3l+P6afNte3sfsTcNnS7VsUfdxg466OZcIiV1xDsdkhW1
+	GA66r1Brih/M6gVUdPjCmw4v5jCKwhQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gasBn2fW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767021783;
+	s=arc-20220608; t=1767022833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q/9spkLa1neyXuVGt9odCPKJe2oeoUVnuY/oPfFqFrY=;
-	b=nAt/BGvbgZCJuqzUNjygDlP1+HstAyVB9E1NLpng6JQRfDrADoRlN3Exm3R9DJcEjQsdiQ
-	9PC7iM2PM03ubQnOv7iJNqlIwL1eyjXDNg72PAIDG2JEMzzrPczPHZbcQQ2Yq11XerZOWe
-	XSNeBpPdc2lhvsb64P1Xd8k4KL6u26Q=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 420B76000A;
-	Mon, 29 Dec 2025 15:23:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7EEC4CEF7;
-	Mon, 29 Dec 2025 15:23:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767021782;
-	bh=hjLy/PceNw58V9dV1arMQA3XkITKYMDJEG7qcaYiXd0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gasBn2fWJ//NUxKL9tbdOzF2iOSzTNPiq5/m0pGiDe93U97Scwv8eD+9RETnfvY0O
-	 iuBi3UjXjvaEtfc63eKCkUcmLedLEFvXR5LG9JqmtusXEVqSiqbiKljn4YEjktnb6t
-	 5gFWJ0txmmGVWitITkJJcCtmyqMDf56SELo8VTG8U0qqOVk39cnPO+MzCTb51nFEQD
-	 HikzV64qn7+vpXjI9Oj2oQAgiQj9mrA9+qa9MDmHNpTUdaZQo7JcfizQP0ov3cC7cP
-	 FKFM4sXj8GwVPFb7bKU/JpBr2Uju+jdPO2Mik+ceDzAhnUw84MhboGKReIV5liJ+x0
-	 dH7xIrExMdh+w==
-From: SeongJae Park <sj@kernel.org>
-To: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	wangkefeng.wang@huawei.com,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com
-Subject: Re: [RFC PATCH v1] mm: improve call_controls_lock
-Date: Mon, 29 Dec 2025 07:22:49 -0800
-Message-ID: <20251229152250.78975-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251229145533.2437293-1-gutierrez.asier@huawei-partners.com>
-References: 
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qP90zDFo9BKMdlo9pIMMMfB8HDUBQY7Slkz0vaQwzqY=;
+	b=wB9UIANflyk8HdVryXVjnJf7o7fMwXgQNPTh61Lzk+TZA2FmXzwAvN9nvckFdn0EU/s8j3
+	nNkW1pn7V2BXk2dB2cPvhxH37iLBjCsodd5pRb/3eBsA3G6dtZL4eMdsaCGy0Rnw8WqbV/
+	AigKp/CbF88wBTNducOrslrur0plgBE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7A886339;
+	Mon, 29 Dec 2025 07:40:24 -0800 (PST)
+Received: from [10.57.45.222] (unknown [10.57.45.222])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3DBE13F5A1;
+	Mon, 29 Dec 2025 07:40:29 -0800 (PST)
+Message-ID: <9c97ac9c-b0df-42e7-84fc-7e0d986c7324@arm.com>
+Date: Mon, 29 Dec 2025 16:40:26 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C93B1C0011
-X-Stat-Signature: j31fjqepsah1o3jh9j31fhdy93a6dyr8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] selftests/mm: remove flaky header check
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Yunsheng Lin <linyunsheng@huawei.com>
+References: <20251216142633.2401447-1-kevin.brodsky@arm.com>
+ <20251216142633.2401447-2-kevin.brodsky@arm.com>
+ <5f866c1a-c8cd-4dc6-b312-9017cef89920@sirena.org.uk>
+ <e971e44e-5539-4fc4-8128-0ce9c3d10a38@arm.com>
+ <682f64d0-353c-47bb-808b-eacc2d4d6c00@sirena.org.uk>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <682f64d0-353c-47bb-808b-eacc2d4d6c00@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1767021783-568731
-X-HE-Meta: U2FsdGVkX1+drGYNsCkPKN3liZGRffT9q3ePEHEyWdWrGatehQMQMyvzh68sXgBGy2p9IszWtRQEON5Tn8dLrUJ5xNfxTHJqsOiXdqHCrv/leuKZQ0f3O7kWVC2/Yg0fMed9TciZLELOseopMONfn5QwVxSE0vkrAZNqO5ryWmrYuRdPwHuWQzkRMndZf3ZbOkiBfAu23xruUR209O98WI4f0REDZIi/iDDXUNaXAiFvh/wO7DkW+9HPTyP4lb6ASnh6Hvw40MZVoTPX2M20NgHkPGsaTJ94PlNq+gtzEkKuM8Ubshydg58HwkwPOG793xB1lucUOGt58hNX9TP3beEs5jwamP219MidzfvNFX9zzBs861D2aNzICQBmqKS+F8FikrFs4Qi3HTUBSTCeBAd24y1JogPpN82BzIBpd3Ws09Q6YxuvmDaU+PMbG9B34Lvix6HvJD+79S2m+M0M6TW7xlFBuC7pKFgJQV5lZ8cQQq9EpXaSJccWWGMfD5ja78EZWEmQplIeBOi/H1NM94HA4qu98j/tmIFFCdICO0tOeLZCXIm5zbdTLSrr4AsCXLtGhEw/eElp7Lr+qeyvUwQ+KtyD49J1Ip2UVGX9YJ6/3K3Stn94BQrBOFTS19xu0ZueABAEklKTYY/bS6fG2ctlGHYYZhTqjOnwzmqFTDaR4T1JvAArI6VKmqHWn3i7rszqCNTpBw3tbBIKomMdbq5e+7PuLu7TVLs/F5Rd4ckD6JxKlKWkMpLcQPQYF57z8++dyr00IHYcz5qL74f3KCeboNi4nwo/HrUvU1HFULd4XX1R3USkSJIbJ6ZQjGOYl+iYxZGp2Jz3PzTEpaqF9kw1tUZR83WTnPMX0SOEMvQyqrE4XfuLBUMVRT37muca2ka+m+1++piIhrBXhBsoOTUoS19Vt8swkggj4kbF1UzY+esk8K+hv8PlI1mDbHexHo5VjtlIW4OVL/QpAVh
- Z48ZBpgp
- NsLj2MRG7uLfp1373HrptSJqG/qzfgU7VksxQ4kA9tSsKN5VKEtGAXxdYKmX6j8vFIe+HS0s8RUFCR0h7oYnLBfJ4uhCjT1OfibNrPqYom4EOenWm5Vrez6FYDNapxlXcdAmICaIgqZvUnN0PJ05jsNEIxpG/0d6oHxWCBi+yFrUfZYNLzkzfFt4V+0kSpsRzp1qtA43jJAe0f+t2p0J0LgH9vIXbf8NdlJRieJbKm8Yv2n6MWk/OJWYOovAI47b9OQKKj9nrqjQIlj+4QNsvkPz5aw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 818591C0016
+X-Stat-Signature: 1sfpyx8r5g4kkwj6359feu4y3hwertxs
+X-HE-Tag: 1767022832-519880
+X-HE-Meta: U2FsdGVkX194suf59pJE0sabfCCZ8WZN1UG9KTQOp1vWU8EjpOmr/E36nqz7S+jjW3gdT9Um7kkN8o8A1FzoezBTc0TLIAkgYs5tRNjsE14PGB66G9fXMilLZaAiE0agzzEEvfOBvcXytdeRzdeiBIG5pMm4t72uDWF5kJa4jUl3SboggrAHJjb7f2xPBK8yQ0ipGILGcIcGOXscnOehClFDcxRze2uB5XvKybUTBBTELf9pr9CywOrLcEQQaDhBkFRKvVDqLHlr3cIL55aTFaGTajy7zsNuseEYeXYsdizM/URh4FFWrCcC/Go69JTWxAFC3sd2lTNbyELWgDR+eMFxabrPHSVxrk72ajkmvPhAagb9xCeocOwf/Yfpp0+OU4GDy5SoOTGJVWa+XLvNnStskUMUEydZ7VeZWQJhjG/MJo8hHEq1HTDmBJ89zwTFrE7KMteRMci7oGSNRoO40tK/OFHNT/NVgDwKIxmp/sn3x84pFcvjA/G07olXi9do7x/9ekStFcoa5ysEQACFfOnc4bqCm3owA65Q7N16XEiRzt1urU8rWsv22388SkNu7xlz09IrmJRIwo8Q5vHWmTUMW+CKDcE6h1VDZ+MOMtq0KlQUFG+B3x6bYZTs+fgk7mg4zZPl3B1I4hoSIcGbFVNDx/VNAOx2Pn+DHQL+/8jIkX5V/rBqY6Py3BTJPyGTy5gsZx5RJHFXMVIVpoip3pAUaYJ6m3pkL6p8FdIcaHm8uRN3qU9StLGnTCYNgbbMtEpsqiWLCKceRmwXFE+RD9tyQRPabyFmsIEUKNognIswiY1/kBM//l48LK4yefK6bxUivktSWlYTMCAaANqg1+ntqJC+AA7BJ98QfrYW8/6p6c8AZqyypsEuWnXrX+bmu8zpgNFU3hW6bLy2JdKgtaPBAvYtA7GLf5i6gJOvH9Sr3nYSjMz/ZIqYvZyknvGnXF4oKX3w1QIzgPadjFw
+ bY74kdgw
+ QDyP8X7EQFl7YnpOS28VYw27v3TZT2TE+oe6cxidowcyea4qkUaabmqeHH8zUb4Ou+TOOA7IrZeYwuOwSwRnftmcwKgrYmDht4vK57WKLAMiRRdeKDKfoh+O391j/Djs5qowWPq9ix4n5GTY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,38 +93,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Asier,
+On 18/12/2025 15:25, Mark Brown wrote:
+> On Thu, Dec 18, 2025 at 02:24:10PM +0100, Kevin Brodsky wrote:
+>> On 17/12/2025 11:04, Mark Brown wrote:
+>>> More generally building selftests with random older kernel versions
+>>> isn't really something that's expected to be robust:
+>> I suppose that Documentation/dev-tools/kselftest.rst talks about
+>> *running* against older kernels, not *building* against them. That said,
+> Yeah, running is fairly normal but huge swathes of the selftests won't
+> build without current kernel headers and it's not an especially useful
+> use of time to support that.
+>
+>> we are dealing with an out-of-tree kernel module here, so the two are
+>> essentially the same... Yunsheng suggested an updated check that I think
+>> is reasonable, maybe it is a reasonable compromise?
+> Well, there's also the selection of KDIR which for some reason defaults
+> to the installed kernel so we get:
 
+Overall the kselftests tend to assume that we're building on the same
+machine we'll run them, so at least that feels consistent. The same
+default is used for most other out-of-tree kselftests modules
+(livepatch, net/bench).
 
-Thank you for sending this patch!
+>   $ make -C tools/testing/selftests LLVM=1 ARCH=arm64 TARGETS=mm
+>
+>   Warning: missing page_frag_cache.h, please use a newer kernel. page_frag test will be skipped.
 
-On Mon, 29 Dec 2025 14:55:32 +0000 Asier Gutierrez <gutierrez.asier@huawei-partners.com> wrote:
+But yes if cross-compiling the default makes no sense and KDIR has to be
+set explicitly.
 
-> This is a minor patch set for a call_controls_lock synchronization improvement.
+> Your changelog says it'll work for an in tree build but I can't figure
+> out how to do that (using the top level Makefile to recurse doesn't seem
+> to DTRT either).  Having looked at this more I think the problem here is
+> that the selection of KDIR is wrong, not the check.
 
-Please break description lines to not exceed 75 characters per line.
+I use KBUILD_OUTPUT=out and KDIR needs to be absolute, so:
+KDIR=$PWD/out. I suppose for an in-tree build KDIR=$PWD would do the
+right thing. But yes it's all very wonky.
 
-> 
-> Spinlocks are faster than mutexes, even when the mutex takes the fast
-> path. Hence, this patch replaces the mutex call_controls_lock with a spinlock.
+Maybe the documentation should be updated to recommend setting KDIR
+explicitly? Or maybe it could default to KDIR=$PWD or $(abspath
+$(KBUILD_OUTPUT)) when cross-compiling?
 
-But call_controls_lock is not being used on performance critical part.
-Actually, most of DAMON code is not performance critical.  I really appreciate
-your patch, but I have to say I don't think this change is really needed now.
-Please let me know if I'm missing something.
-
-> 
-> Initial benchmarking shows the following results
-> 
-> 
-> # bpftrace -e 'kprobe:kdamond_call { @start[tid] = nsecs; }
-
-Commit log shouldn't start with '#'.  Please consider indenting the above
-command and below outputs of it.
-
-
-Thanks,
-SJ
-
-[...]
+- Kevin
 
