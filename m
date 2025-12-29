@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3683D3B7E5
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 12:32:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E208E8FDB1
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 12:34:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 290A66B0088; Mon, 29 Dec 2025 07:32:27 -0500 (EST)
+	id B57996B0088; Mon, 29 Dec 2025 07:34:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 247856B0089; Mon, 29 Dec 2025 07:32:27 -0500 (EST)
+	id ADBB66B0089; Mon, 29 Dec 2025 07:34:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 174446B008A; Mon, 29 Dec 2025 07:32:27 -0500 (EST)
+	id 9D9FD6B008A; Mon, 29 Dec 2025 07:34:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 048F86B0088
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 07:32:27 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B18971A6536
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 12:32:26 +0000 (UTC)
-X-FDA: 84272446692.03.16346FF
-Received: from sg-1-102.ptr.blmpb.com (sg-1-102.ptr.blmpb.com [118.26.132.102])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2745CA000F
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 12:32:23 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=WuZqxcWs;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F0606B0088
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 07:34:41 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 356B85F0E6
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 12:34:41 +0000 (UTC)
+X-FDA: 84272452362.09.891E4EB
+Received: from sg-1-104.ptr.blmpb.com (sg-1-104.ptr.blmpb.com [118.26.132.104])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9E60B140008
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 12:34:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=oaGtEelx;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf15.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.102 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767011544; a=rsa-sha256;
+	spf=pass (imf09.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.104 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767011679; a=rsa-sha256;
 	cv=none;
-	b=sfsiufKfJcwIQRE1JyWMSlPz0E+15thr3Szue9MWAof62XZ+qwOZKfN+fzZAbR2OuSsTQ6
-	mv1i9Wrm7ZNm+mFpXkskRL/OFslxr3t/iNQ+MM2CJXdwqZQKpe0BN//dRwfvfBHYPBsPWL
-	/QJhZyv/2/c5yUel4tEuMr8RvmRAbQU=
+	b=AuUb/Oxi3jmSoRmS7d42Xjpx8IO/lP5WY0xCRqPi74VTZ+LlF4HR0GQPb+iQ70PvY/Wo/N
+	D01yZHJuiPPZj2Yx2vw68qZTyKeKx0BxxWuqXej2zqmej8bYGCpZ9PlstkvM8G3b941kAC
+	g+/zSE8O6QjO/ZLN428l3Ov4Uj4nWM4=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=WuZqxcWs;
+	imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=oaGtEelx;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf15.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.102 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	spf=pass (imf09.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.104 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767011544;
+	s=arc-20220608; t=1767011679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M4ciCLYxJpkt0+6+Q4lY4Pw69hjdYqXiZ08i183ZErc=;
-	b=baCW2rzH3UP99tuCUW4fx5KKBypVwSTfD9XhJHw2Gd4X21trKS5i3fpVGP/VSSmGYRdNTP
-	xm9nfBg5NUtGRz+b7sVTNyhf1WN36nGm8o8nCkhGmQFoOuYsYiHfLszUwSQb+vtFLNFFCj
-	svm1f6R2vHFyfB6+hXW4h0+Gea3ZIT8=
+	bh=UGCjPv294ftgpzkPBae93iouuOvwdl6RovdFpV1TG8w=;
+	b=oa2/e9quyhhroZZLVm5XF7HWMd0aHie8O1/q3O8EPfPISHBUAHv7SyX5OMT+BdECPVgJCY
+	sHT2HdYD6ZE2y8lDIPw52I5qMxPN6iybyvzYCN3xyxtV4otJA8IiDi6dUbct4fDw8IAYjC
+	yC9P++3naZGrY7giLZJPyy4OPfKo/Rc=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1767011537; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1767011667; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=M4ciCLYxJpkt0+6+Q4lY4Pw69hjdYqXiZ08i183ZErc=;
- b=WuZqxcWsXgpmxVtQHA088Bbz9tDw7fu1cwxx+6AuU0koAN/FROHqKZKFgX62gJvwmkQkfL
- R3nTzNO6EL9dTTTcQQpioMxQj2cY8ykg+l+hK4Ehy1TARtSNJ5FmLaUXBFcyzIYFmLkXty
- CKPH9oaa1kqsIzE1FZ7gtGhU1DlPds4ZZN2GJzcmFcOZrpN0Ji8rmjQ6WX5UjMiGS68RQy
- o1zHuvsn/SKBchhrqI+h0suUvthX53vcqQSmbH86Z5ln93lmXCFzhZ0pw3Tczq9C1Yqgv/
- eiRKfK/0BW+u4rHZOahbGjLq+shnclkK26oRmXlnXogFEu2mo1tP9t9g5T7S5w==
-Message-Id: <20251229123153.7578-1-lizhe.67@bytedance.com>
-Mime-Version: 1.0
+ bh=UGCjPv294ftgpzkPBae93iouuOvwdl6RovdFpV1TG8w=;
+ b=oaGtEelxI+g/ne++wCICpTQk5vcRIrpb7osSO3pjZWMZC5hAxxqU82kNqDQ/S/QIpCAUdk
+ K+ka+kZSj57thx1JwMEFe6wmbu2228/Eh8119OXje8UKM2mMDDfWouCyACX4pQLtOpzGR9
+ hoouWasGz5Qu0RnVNZXee4KDBgOm6ifHlsaCxOtDfo+Pn1och6RIV6RgrnY9hcCorgqz9V
+ sM2EQHtq8RvDVSIiSR6EG+P5LDyrTpbFTyRw7nGAUWR26IFNC+fRygFEM4rtw2hh5b1U1K
+ +d/aCWEeIy28bU8ukE8SD+SrK6kY4heULxFFoztJ53dk9kJtIOWEyE1EgjJgqQ==
+Content-Type: text/plain; charset=UTF-8
+To: <akpm@linux-foundation.org>
+Subject: Re: [PATCH 0/8] Introduce a huge-page pre-zeroing mechanism
+Date: Mon, 29 Dec 2025 20:34:07 +0800
 X-Mailer: git-send-email 2.45.2
-X-Lms-Return-Path: <lba+2695274cf+5210e0+kvack.org+lizhe.67@bytedance.com>
-In-Reply-To: <fmuw35nyxafum22ni7ozhybjaarf77baqq774czok4k6y6eqqb@4oabqflx7ryz>
-Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <fvdl@google.com>, 
+Cc: <ankur.a.arora@oracle.com>, <david@kernel.org>, <fvdl@google.com>, 
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
 	<lizhe.67@bytedance.com>, <muchun.song@linux.dev>, <osalvador@suse.de>
 From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: Re: [PATCH 0/8] Introduce a huge-page pre-zeroing mechanism
-References: <fmuw35nyxafum22ni7ozhybjaarf77baqq774czok4k6y6eqqb@4oabqflx7ryz>
+X-Lms-Return-Path: <lba+269527551+cd7664+kvack.org+lizhe.67@bytedance.com>
+References: <20251228134454.89617c004a6625556f7ca9f3@linux-foundation.org>
+Message-Id: <20251229123407.7669-1-lizhe.67@bytedance.com>
+Mime-Version: 1.0
 X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-To: <mjguzik@gmail.com>
-Date: Mon, 29 Dec 2025 20:31:53 +0800
+In-Reply-To: <20251228134454.89617c004a6625556f7ca9f3@linux-foundation.org>
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=UTF-8
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9E60B140008
+X-Stat-Signature: 6ujaej8zk65q89nh5drb6tqtrzsgwg49
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2745CA000F
-X-Stat-Signature: cm4433oyibokw496krbpwhdfzfzd8f79
-X-HE-Tag: 1767011543-805409
-X-HE-Meta: U2FsdGVkX18FFZgJGXTfFL5+Wz3ckBHNIAd1YRchnIT+/2vfcrUrVBjn6j4GuDoU62MmVsGqQfAZ4IQjt8zr0xNzgAcax1vOsrhhIUl8Sb3q9oGgQPFtJyUr7SMYBJPEewSxYNFYgeTi3muHlVaxOQ7Y42PQz4CnzXPRBk2z/sJZj0Gy9fUqyOq602OuJ9ewxtnSds4FpSvSUh5bMAhS9f66mY+tRlMkBzaUTJtBhubH7BKAOO+i2+VAM8370OhQ7ksWceMuwmVWqTmAjueQUjYaNvNsVaNYce8VUe1h0Ive36SghWxFom/Fj+bhq5oPS3aXHtpn9pzbMNnOKRVTMfPNxA1KmxpgJCgAFzSXlSwKF8qxHpXxxpgCnfUEkebbCRU47g3vxQiAjZHWgg2KhSY/WArK7xdgVRDWqomrjhiGmQ4Piz6wDHGo2XxcYDsxIyH0ehpzl852V5rUc0seDGN2Hjf0j4F6/7U8zIkOEG0+GfmXNv72+S/TvccXomoq70omn0c50gD6tszs8GjKWjTWoWWc9VKIlmcRHJlOFX+5QUHHR6jGqxvUEPFKztEI+UzROzmebD8Z4FvIaqm9mJSW5QYWhFHIphRU8KepxQFwZlYJpRcbrQdkSbD+kpzUVKmpS5jevuBTG+AG+ZNGSpCO/SSFutCeKxlCRedQo3VQZUUXxauYm53RfhrHg0Eslh5q6EsSu3xop427HAcs1tRETgSlBicbmqSWcgccY3aMkr1Ono1f8nqPrIDQtmn1BB6RiLkY4vUn75jMXZYG951BzN3/DSFQ0UjKWfm/PWb5ClKd7VR3HE98uGNsdyim9Rh2z4VKmDORHtdBKnLVZc+cowwq5aYqi+HKF0Dy4MVTLLr5ZX3z40GZqLIrnblCzyCraX9Gy92aWZ2IMDW5jqwx8Mz5KYzluMGlnAIZfWhYBuO5HodpR8YcxXV4Np7AUwPsCe3C2bS3YWZ/6tz
- bheCb9ot
- +MYIgBfazY3pS6MDzaMKzAl38lYsEEMPfw+e9eXeRUsJsdHa7kf3ZiZbEhnBWFRhtG0bFYlghrwGdGnj3UIjf6hFvVyEi1No+HKNr1jNJmvpdRzZVdsUNkUQHzcYRjJGNxJcNs/JU1rfamSA8FYRH+twBXa3RPcXEq+iKP0EVQsPQuPkqPAaJR/P4ZIaxVYe0XoQlvbRRmnwNRMsNPSHrCXku6GZyrEinWnywowOrp6SN+AF+sWwPgFPBE/Eid6U3LaQU
+X-HE-Tag: 1767011678-802937
+X-HE-Meta: U2FsdGVkX189tKsj2qOGdLUbfJdIFPeKVjNimHR/YHgyL1Jnld8GUhmg1f0UYyq9uWc1X1zIow4tx78F49F8VKE5HI3Bb5BDFUeU2PCOErK436t59dgBDxMDZ+6QRQ0+L/V1fsIpt55M+jJgvk20J44G4DlIC6Dudcj3ArXMR/fNWdeZGDyRbdSwsr/8hh4L71LMnpjrd2oUoAa21BvfUtVqgEcG3mUKF76zspMcg+DsIx8EzBpLW9nSKcmnHZTcUyHjaKzxHU5f9YIOqAocKPsv3mg+jraXdXY/SYRAc4q/3ccE66WQ1p/ICXynsfwiq0EmNE5+kp9I2yI6hnd3pKQifq740UQM9dOVBdF4uA4cYUBA1Xpqm8Dmc8p60cQnSpVGLgPES8SXpDkWPXaI72PfApOEmX+krq0xJf9E3vME9ppy57stHewQSLKM16Xr38VqmJwhJX0QvsFXjDYyqA2ieD8uPS70SrCovy6FPh4+ZvytJ8Ts4hJOmV0gcGZiG32C/Cs8Mfaq4mxr4i7pCuAf8NcE7t7fieKLvHxp0oQAtBKMwaZVo1q1Gz3VpVxY/NK9r4LuOY6GhY/ZPr3b+r/2tOa17paG6dhINL1+YbAxwKOGyijE9kZWoACn6NDFCi1qoAlD13rQE+VjSXhLq41j3bQwqJ5Ce1nnlQS0gJHV9QXJ0OoyUc6Il93zeN6V/4UMxbTvH0QcqzBSwxvn9Eu4ffHlDITGavR6gJe56PGChvLBhJsebHjDajeXegJNXQyssEgmrKvXZuT5Vc8Ym4c3Fjo7pkXVq6dXV8QyYuIRFLlXSFChadE+t/NkSlXmEllxA1YNsGh9q23hj1ES4InNVkRF/pEY/CjCRx/UwsqpRQnDVulAXqiWKtaYpOUtGE8f8RfxDlurvTzNUL1ckULpyU36RLH4yPOnk7SDTTiZ0VejPRxd0OGdMyiwVF/oI4NihlWgvR/9g1gSBHy
+ cX1Vcjki
+ 3UlQJV9PMDoOldfMIDzouS8bSp6KqKYmFchWXZ8gvOaIYsc+uM9i3h0nNkv8kHpTNAcoo+lxr1M+KnHRNpLl6c9c4vLEH2mc0Neo3D7hPOoNWYO2ZGirx3HffE3jzEnb3cQudQVxgDRB/FqTPvqwpQjaAlzfSwoXbzolWOQW6Ao8cRsB6aQk0hvFzRalwqvO8JYlZfx+hiEUsrxCkNGBK9e9uln7sAJQoEp3c811gyEgYhSCs3vNyRQzFZrF/xnxSFJ3wxEBtWVsxmThlmoy+kJ+u2adf4ESpX0znqCQyeMiOo1fJGEgZLMjJJA0P0lULuF2HYXXfWodnW5BwiSfitzMqnQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,47 +91,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 27 Dec 2025 08:21:16 +0100, mjguzik@gmail.com wrote:
+On Sun, 28 Dec 2025 13:44:54 -0800, akpm@linux-foundation.org wrote:
 
-> In the name of "provide tools, not policy" making userspace call the
-> shots is the right approach, which I advocated for in the original
-> thread.
+> > Fresh hugetlb pages are zeroed out when they are faulted in,
+> > just like with all other page types. This can take up a good
+> > amount of time for larger page sizes (e.g. around 40
+> > milliseconds for a 1G page on a recent AMD-based system).
+> > 
+> > This normally isn't a problem, since hugetlb pages are typically
+> > mapped by the application for a long time, and the initial
+> > delay when touching them isn't much of an issue.
+> > 
+> > However, there are some use cases where a large number of hugetlb
+> > pages are touched when an application (such as a VM backed by these
+> > pages) starts. For 256 1G pages and 40ms per page, this would take
+> > 10 seconds, a noticeable delay.
+> 
+> Ankur's contiguous page clearing work
+> (https://lkml.kernel.org/r/20251215204922.475324-1-ankur.a.arora@oracle.com)
+> will hopefully result in significant changes to the timing observations
+> in your changelogs?
 
-Thank you for your endorsement!
+I conducted the experiment on my Skylake machine; below are the 64-GiB
+huge-page fault latencies measured with 1-GiB page size.
 
-> I do have concerns about the specific interface as I think it is a
-> little too limited.
-> 
-> Suppose vastly different deployments with different needs. For example
-> one may want to keep at least n pages ready to use, RAM permitting.
-> 
-> At the same time it perhaps would like to balance CPU usage vs other
-> tasks, so for example it would control parallelism based on observed
-> churn rate.
-> 
-> So a toolset I would consider viable would need to provide an extensible
-> interface to future-proof it.
-> 
-> As for an immediate need not met with the current patchset, there is no
-> configurable threshold for free zeroed page count to generate a wake up.
-> 
-> I suspect a bunch of ioctls would be needed here.
-> 
-> I don't know if sysfs is viable at all for this. Worst case a device (or
-> a set of per-node devices) can be created with the same goal.
+Without Ankur's optimization:
 
-In my view, the present kernel framework does not allow an ioctl
-interface to be placed under the per-node huge-page directories.
+	Total time: 15.989429 seconds
+	Avg time per 1GB page: 0.249835 seconds
 
-The functionality you describe appears to align closely with that
-offered by the cgroup.event_control interface in the memory
-controller.
+With Ankur's optimization:
 
-We could therefore introduce a new event_control file for huge-page
-events, following the same pattern. Given that all huge-page
-attributes already live in sysfs, such an addition would keep the
-interface consistent and avoid the extra indirection of a new
-/dev/hugepagectl file.
+	Total time: 12.931696 seconds
+	Avg time per 1GB page: 0.202058 seconds
+
+For comparison, when the same 64 GiB of memory was pre-zeroed in
+advance by the pre-zeroing mechanism, the test completed in negligible
+time.
+
+I will incorporate these findings into the V2 description.
 
 Thanks,
 Zhe
