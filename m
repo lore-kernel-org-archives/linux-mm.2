@@ -4,123 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C29A2E92733
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 16:46:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4349E92FCB
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 18:29:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 319D46B0092; Mon, 29 Dec 2025 11:46:19 -0500 (EST)
+	id 815266B0088; Mon, 29 Dec 2025 13:29:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 304D56B0093; Mon, 29 Dec 2025 11:46:19 -0500 (EST)
+	id 7988F6B0089; Mon, 29 Dec 2025 13:29:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 207576B0095; Mon, 29 Dec 2025 11:46:19 -0500 (EST)
+	id 6C1FD6B008A; Mon, 29 Dec 2025 13:29:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EDFC6B0092
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 11:46:19 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BFD0F58438
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 16:46:18 +0000 (UTC)
-X-FDA: 84273086436.09.C5B580A
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1737540005
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 16:46:16 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf07.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 57DE76B0088
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 13:29:41 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C98D2C20F1
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 18:29:40 +0000 (UTC)
+X-FDA: 84273346920.27.8D0EAE9
+Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 18F23C000D
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 18:29:38 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767032979; a=rsa-sha256;
+	cv=none;
+	b=DDU4OI+SgxT05LGgiMhuKW2OteIzvDwy0o5qN48m1ZvFHVnO7PWjX+rdwQGSzHgfjzWcFj
+	0Wc6FWFdh1rw0BOGa9lEntiZzKpvuspY3umrajqDgXEIgpdH8ZwEs5iti7qHIZ0Z++NiKv
+	DxVFqNTT6oV9KuCiax6h/ter7Wv9Ft4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767026777;
+	s=arc-20220608; t=1767032979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=tYC2KycL3rfVSFqLvotaH1KEwy8YCG3oD0jwMS4kfPg=;
-	b=aOeYK8Fnn1slDgEWGLNgszJS4AOmng1BeXxGQRlEPpoCn17E6CB4CGwRV1LUxPrS4icDaV
-	FE0A45DGLb1oPkyQ6qtLhsj079rlxLOxEt7Xb9PCkmPb60WoR/8/gpLMfwP1he/2+Cl+fH
-	ACB0R24OM7Ogxwvxqw1dwKBkMfGJtPs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf07.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767026777; a=rsa-sha256;
-	cv=none;
-	b=skNGekxPyDExFIvXxkgZJiLc/cngQwKuf/DKx/kAp5l7LmK7AdfHPnRdN8YqifSImnOY83
-	fqu87eUGd8bEww2Pab5ARhhvw76+lo72yHfw9MiY8c6SZPy0RZ/IGU8U8nqUxEX2SPsRh0
-	xl3TZWzgTlcgNsNTpY/ck9kAm4TBj74=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4f8a6b37b2dso14475961cf.0
-        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 08:46:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767026776; x=1767631576;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tYC2KycL3rfVSFqLvotaH1KEwy8YCG3oD0jwMS4kfPg=;
-        b=COybQwJTvDQon7jZBxfkhIuOrP0eNBJczlzPgmTkH11caucFN3ZLAiSVI1jYSuKIAd
-         NE2xT88NCNUW/DFy8p5HIIOK0e3tHSMVs7o9I36s2k76Tp05Mx9T67AOK+w7U0Y4swSB
-         CUdC1nUqWMzvS3e+e8lT4gLXqlwQqr7SDZR3kj5VcwZUk8LWtkNSI0GLxB7ij9KN5kmG
-         zhHNFDyCPMbdEEiSS6Okr6VtwmCQJwss/7j7ck8dcelAluEDWsBPUuhAtEWM9R9mQcC6
-         YBjdAAejf59GsN/6Uxza3T6Eqbtdb/1Xg/KpESjDJzuy2lcCqQxG/t2OT554G0KvLoY3
-         cZlg==
-X-Forwarded-Encrypted: i=1; AJvYcCWri3OVKBW4AhFTvCmBMKHu8DCUoaJOR+7vX1FgVli7WSnOngYZyt45wFijOcJGqa9BuL0bcRdKYA==@kvack.org
-X-Gm-Message-State: AOJu0YzwPDn678BY4d4dwXT85hDA0rbyIL7Ej//caxfjlk6jC03+jUbq
-	XJDiDIehwS7uqcMvBQp5HKiXqqyBDWN7yAB8CvuxEQNgEHJf21eYEAQ3sMcjIuU7Yes=
-X-Gm-Gg: AY/fxX7KOOitAs977DSiThBukKoehZ8nhEnoDIaWn8QIZ4Ot4P95NeQxpTdbj+Qx/iz
-	dzcLJH4gc8f5AUgoxkhBherlCNjFNx0Q5WDJRHfak+E9rOdYanMGbJ20lTzO2/B4IwifbdKfFZh
-	7BYt65j2xHHuig5gZrf1GrSkcLPWQkAT2y1MbBbhSGmwXU99u31g+YOlsYSUP8otyIUdSWFw5BB
-	GhejTmyb4+tGTjkJZsGqt4plchJiRbMswqBuTA8ZrwDRL5M5gzDX+nGCarUQP7t0dSWhYDXt78g
-	TZJFQsHfdi2M9n1fId5D/3DKomkHN78EvEz/ZpO8CoT76OjGGOUEBpuzFQzFA/lKRGuJEJVjpbH
-	1811K1h13NjsTwN4wqUlLJJ0Qi67RHISQ/G7XtQlize9odkEwoPZ0DMDfMXa0O+n5nRNdGZCXJq
-	21O63qtInc201R9aDhHUpZEtKOXVq6hQw=
-X-Google-Smtp-Source: AGHT+IFhUxr5n8VZRZbKH7W82fTkxc2RP8kajse/6MgRobffbByIorFltc6WUeCvU41oKdSH/PT+mQ==
-X-Received: by 2002:a17:902:cf08:b0:2a2:ecb6:55ac with SMTP id d9443c01a7336-2a2f220cbf6mr353927325ad.7.1767019032156;
-        Mon, 29 Dec 2025 06:37:12 -0800 (PST)
-Received: from EBJ9932692.tcent.cn ([45.8.220.167])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d7736fsm279669625ad.92.2025.12.29.06.37.01
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 29 Dec 2025 06:37:11 -0800 (PST)
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	peterz@infradead.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	arnd@arndb.de,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	ioworker0@gmail.com,
-	shy828301@gmail.com,
-	riel@surriel.com,
-	jannh@google.com,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH RESEND v1 0/3] skip redundant TLB sync IPIs
-Date: Mon, 29 Dec 2025 22:36:54 +0800
-Message-ID: <20251229143657.76968-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PrXXPGTpWnxmPp0AsZ60fslGBCDmDlkCFxqGz2l1IXU=;
+	b=bC9wVZuGTrtGXMfqvmHVWc1R8yrZ9AQLYAEKGFz9ac2hfl6/zSAYGGEot0LFmpZoTMXBwV
+	O/iOU43//k74wNWhTi54wLS63B783dgz+VPvLFzgGi2bc+xbm/nHpwJ54+7mDj6GJPhZVs
+	XdvPKScBx03zHDuLBRszPe/m2aCbv/g=
+Received: from omf14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 303EE59A0C;
+	Mon, 29 Dec 2025 18:29:38 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id 7A3832F;
+	Mon, 29 Dec 2025 18:29:36 +0000 (UTC)
+Date: Mon, 29 Dec 2025 13:29:42 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Thomas Ballasi <tballasi@linux.microsoft.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, mhiramat@kernel.org
+Subject: Re: [PATCH v2 2/2] mm: vmscan: add PIDs to vmscan tracepoints
+Message-ID: <20251229132942.31a2b583@gandalf.local.home>
+In-Reply-To: <20251229105427.14720-1-tballasi@linux.microsoft.com>
+References: <20251216130302.5202ca81@gandalf.local.home>
+	<20251229105427.14720-1-tballasi@linux.microsoft.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18X0yaxY/nuYiParjAbf7uR2X56SJVmoqE=
+X-HE-Meta: U2FsdGVkX19+vMrYqJreb8g9AH/d7iocmx6izFefRJgUMGcZ6pRpl0T0gATfc3vgSaHQvZuwrgZFi81dwYrPPgkXujotpa/+Y7OlN37CpG2XlT/ADsBhOFP6CpKwmdPn8m1w4XqD7hRovBP0Ymnk3DkGm07XLbBCg7JgqGPExuZJz1kZcjROtwAoSjFaq5b5AlejqUZkh92hSnppLxVlfvGZShcGBCKkk0CQ7+//J4ii0hhHwEVVI6bs/LgqSGibLQbbzGygz82kueaURx05JpKBpPdO6XjRXfPha2SXldO7XlZCJYFJ6z86LJOmF1p7cgHjLNyv2BooB4U5UtftN8642ywAPV79
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 67i4cwq3smkgtxebiitjw3tg5d747mm9
+X-Rspamd-Queue-Id: 18F23C000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1737540005
-X-Stat-Signature: a3zc3f45sipzmf9u8axjw8qsqmeujmts
-X-HE-Tag: 1767026776-152394
-X-HE-Meta: U2FsdGVkX19XZMiwbZQ/eTm1RzZcp86iQPrEbOnY9qwMl+SZn7vh2wkEArlK/eITdztEbqzzedYfgFqVU5hHz3B7aVNQ/RtZW6+hqPHnMf+bxvvUwDHl/Tyt3FDdyFSk/XKMpUuckUlUQQTZh9lfxgomB8a07griurdU43lOIL05tK297dFil81uLCb84leyXLoUdJA/jYea1SaB76aSnCgCTgl3sdv8D/8QquZ1eT9WLbooDwksG123X/0sCdp/hcfaBLBH+jlJTCTToDHY35POl3dCyCAaVrN9EF8OUS6k6xIIBgek33Zwn9C749SDDEefkTfrXTbP80l68Tkam2r1WerWpjesyj5pgpB/S9zycPYNAmBS0MTrYj/9PqZbRYuvsSWTiett0eZeGXOIIMdXZhcs69GHcgv3AZYqXMxoNh0ztykfN0uAzzuVvaFIuvaFoSBsQbLgkAjTr8iB0OyBfwzuLD3gkWihbhw+nTak4a/BPeVmlScGm4p0Pui3rBzkYf+/LzOvAkInd4iz9hHn+JfB/h2z5so5vyjWyKhzSlhPX8uZqpg6hz8U2h0k8/K9GrYNskaagiP5RWrzdLjXvbOG+QSDukZqOq5sqBCFif8v1FhAuIe7f2FKJ7n4wUnUZRJ4iZY6mWAwTlBenvhRp394o711rMI4Lnr7Auvrst243tVKtAeOQm5iqu9NGWgW2IKPJyNZWle48zCKRU8CX2gZulWuS2hK5DKnjHBVrlPwojKFUT9Cb1wuUfwNofBMGSLdTyLMJ8z2YKwJxCDVKySyPLLK2yD26seds9BvO1kmA7yV1qRcY39uBgZHByP4jXy/clR+9avoCUV71DvwaUOZ+snXc+cmA04qQF+E6rZM8PXVyshNSruNQCqFdU9SZ9qxcjD+jYPdPYq6OpQAmTAz/Jz48z3Qb9fMcWW7hD4iXVw5qYUJaAwthy021wf4YzYIsy609pQxCiV
- haGPC9iD
- uMgnhC0iTLuxP1KrQslxf908o2VdBpNvbuviEVX43rRb94gkY5Cr+vfKoYyUVIRuo0a4/6q33ECnLVt997ECpPvwEXi9bGpYRwkSPsDtDW2G/KszbZQzH8NVpyPa6A6/k3AP4LV7IGoiPCWsrPQOCuvDn4/WlqnbCVdz2ugw15YLi7jKD+gH/yphuiNETcgl8rj12XKi0XhCpHjTWex37CKDwrkZG3yDs0PGerSGlIJdbM2Y8doanfUuUHOJr6cmSiEEFZpp/CNupcNa5YA6u3Y5kHvE8i4/xMQQc4Z+mYY0Ev3JSnwCxSGVkAeRka0DLSZXAO6fLx2BK1falV60V/nzfH+Sp81vXKeioL82OLZsVeLyivCnzbb05rfuzI6ov+b9RRkuhNiwAWPujMgfPU1X6ZvDcYUtYD69ojTSMYcTBz5JyJ0qCFkrlsfqMWVdHo6cKMhsHMcLfbak=
+X-HE-Tag-Orig: 1767032976-144404
+X-HE-Tag: 1767032978-750333
+X-HE-Meta: U2FsdGVkX191Q86DHtAFs3BilHji+VMq5XCqzl67i3kCzCYrBIU9dY/ODe5Jgs+X99GVrIZ7QA50yeOXuRt0s2FtVkr5wr6LVO+M4pN7WHr4SEFDWFIxXeWShVcF5qC9+LdOBq3un3sYUOrpGHzxV+cK8gMbtZkrecCx9cX83b5WkiPVhrAzzyRWf6H/BoBTRO3DXwG+8w6dJwDeBoc7NVoiPjfwvKOIsf7gB201MzRo9VjXWsn8C6uKhpyix3cSWSeT8X8ja0Dv6c3heJy9pd0dIxOJ27fFw9RvOTuCEDvIdH9GtH7tNhuxsH9GHerTw0C9p+RFBqiG41jAcSb/tQTRbXxxZzWgnrSeyFAn5pGTc3qe/G/9Lw8BWwA30Wb6CqO1N1QJzC6PFnQsCpawAuvgGS06m77WhC2aAqe0QyxnrfdsibsFh5LTmwNrkr0eDAUdEWHPzR9ciftiJ2Iw37MNfzwQrBTV91HeT5LK+OjAGYGFY0M/7OpzbXm7Af2H2lvM+OQM8pUunFA1EpjTqb68NwWBl/4RGfomiDYqb6izJZQ7I9Y+y0/1nKgdjTboS45DsVyOgPZyiSDfRyIjIyCuyhcNN7AjacfoLfSlC/W0L2YS1A9fVuSCzaoKT8DrOkeMlkAepP9/+LlkDrpdBAeLbYQiY9UrrrDsh2DdcRN+eaI3QS0QP+0NzZNRxUpZXVh9BnyItooQ1KKA7cHM5vwhsMRlRG6KkSubZIBZCfoeElwUwY3QtdF5FSG7/sLgVM3v3dokPOPZdzjKR5jKtQMCOpYwW62PQ9kUDP3fvDp30Jtoajha0Karv+DiG93o4BaM2+PkxJyThHxByF9ZdgwzjmImguXQeDHT/rFEHFcdOIln5b+MtiGt9swHwmCZpuz2HGJxoq7cu6LxoV30JscwdeaKLpvR5LZZuUFhGcy7vbDOHFeGLll0KPRX9cI3KCJKIf9iomg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,49 +82,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
+On Mon, 29 Dec 2025 02:54:27 -0800
+Thomas Ballasi <tballasi@linux.microsoft.com> wrote:
 
-Hi all,
+> It indeed shows whether or not we're in an IRQ, but I believe the
+> kernel shouldn't show erronous debugging values. Even though it can be
+> obvious that we're in an interrupt, some people might look directly at
+> the garbage PID value without having second thoughts and taking it for
+> granted. On the other hand, it takes just a small check to mark the
+> debugging information as clearly invalid, which complements the IRQ
+> context flag.
+> 
+> If we shouldn't put that check there, I'd happily remove it, but I'd
+> tend to think it's a trivial addition that can only be for the best.
 
-When unsharing hugetlb PMD page tables or collapsing pages in khugepaged,
-we send two IPIs: one for TLB invalidation, and another to synchronize
-with concurrent GUP-fast walkers. However, if the TLB flush already
-reaches all CPUs, the second IPI is redundant. GUP-fast runs with IRQs
-disabled, so when the TLB flush IPI completes, any concurrent GUP-fast
-must have finished.
+I just don't like wasting valuable ring buffer space for something that can
+be easily determined without it.
 
-This series introduces a way for architectures to indicate their TLB flush
-already provides full synchronization, allowing the redundant IPI to be
-skipped. For now, the optimization is implemented for x86 first and applied
-to all page table operations that free or unshare tables.
+How about this. I just wrote up this patch, and it could be something you
+use. I tested it against the sched waking events, by adding:
 
-David Hildenbrand did the initial implementation. I built on his work and
-relied on off-list discussions to push it further - thanks a lot David!
+ 		__entry->target_cpu	= task_cpu(p);
+ 	),
+ 
+-	TP_printk("comm=%s pid=%d prio=%d target_cpu=%03d",
++	TP_printk("comm=%s pid=%d prio=%d target_cpu=%03d %s",
+ 		  __entry->comm, __entry->pid, __entry->prio,
+-		  __entry->target_cpu)
++		  __entry->target_cpu,
++		  __event_in_irq() ? "(in-irq)" : "")
+ );
+ 
+Which produces:
 
-RFC -> v1:
-- Use a callback function in pv_mmu_ops instead of comparing function
-  pointers (per David)
-- Embed the check directly in tlb_remove_table_sync_one() instead of
-  requiring every caller to check explicitly (per David)
-- Move tlb_table_flush_implies_ipi_broadcast() outside of
-  CONFIG_MMU_GATHER_RCU_TABLE_FREE to fix build error on architectures
-  that don't enable this config.
-  https://lore.kernel.org/oe-kbuild-all/202512142156.cShiu6PU-lkp@intel.com/
-- https://lore.kernel.org/linux-mm/20251213080038.10917-1-lance.yang@linux.dev/
+          <idle>-0     [003] d.h4.    44.832126: sched_waking:         comm=in:imklog pid=619 prio=120 target_cpu=006 (in-irq)
+          <idle>-0     [003] d.s3.    44.832180: sched_waking:         comm=rcu_preempt pid=15 prio=120 target_cpu=001 (in-irq)
+       in:imklog-619   [006] d..2.    44.832393: sched_waking:         comm=rs:main Q:Reg pid=620 prio=120 target_cpu=003 
 
-Lance Yang (3):
-  mm/tlb: allow architectures to skip redundant TLB sync IPIs
-  x86/mm: implement redundant IPI elimination for page table operations
-  mm: embed TLB flush IPI check in tlb_remove_table_sync_one()
+You can see it adds "(in-irq)" when the even is executed from IRQ context
+(soft or hard irq). But I also added __event_in_hardirq() and
+__event_in_softirq() if you wanted to distinguish them.
 
- arch/x86/include/asm/paravirt_types.h |  6 ++++++
- arch/x86/include/asm/tlb.h            | 19 ++++++++++++++++++-
- arch/x86/kernel/paravirt.c            | 10 ++++++++++
- include/asm-generic/tlb.h             | 14 ++++++++++++++
- mm/mmu_gather.c                       |  4 ++++
- 5 files changed, 52 insertions(+), 1 deletion(-)
+Now you don't need to update what goes into the ring buffer (and waste its
+space), but only update the output format that makes it obvious that the
+task was in interrupt context or not.
 
--- 
-2.49.0
+I also used trace-cmd to record the events, and it still parses properly
+with no updates to libtraceevent needed.
 
+Would this work for you?
+
+Below is the patch that allows for this:
+
+-- Steve
+
+
+diff --git a/include/trace/stages/stage3_trace_output.h b/include/trace/stages/stage3_trace_output.h
+index 1e7b0bef95f5..53a23988a3b8 100644
+--- a/include/trace/stages/stage3_trace_output.h
++++ b/include/trace/stages/stage3_trace_output.h
+@@ -150,3 +150,11 @@
+ 
+ #undef __get_buf
+ #define __get_buf(len)		trace_seq_acquire(p, (len))
++
++#undef __event_in_hardirq
++#undef __event_in_softirq
++#undef __event_in_irq
++
++#define __event_in_hardirq()	(__entry->ent.flags & TRACE_FLAG_HARDIRQ)
++#define __event_in_softirq()	(__entry->ent.flags & TRACE_FLAG_SOFTIRQ)
++#define __event_in_irq()	(__entry->ent.flags & (TRACE_FLAG_HARDIRQ | TRACE_FLAG_SOFTIRQ))
+diff --git a/include/trace/stages/stage7_class_define.h b/include/trace/stages/stage7_class_define.h
+index fcd564a590f4..47008897a795 100644
+--- a/include/trace/stages/stage7_class_define.h
++++ b/include/trace/stages/stage7_class_define.h
+@@ -26,6 +26,25 @@
+ #undef __print_hex_dump
+ #undef __get_buf
+ 
++#undef __event_in_hardirq
++#undef __event_in_softirq
++#undef __event_in_irq
++
++/*
++ * The TRACE_FLAG_* are enums. Instead of using TRACE_DEFINE_ENUM(),
++ * use their hardcoded values. These values are parsed by user space
++ * tooling elsewhere so they will never change.
++ *
++ * See "enum trace_flag_type" in linux/trace_events.h:
++ *   TRACE_FLAG_HARDIRQ
++ *   TRACE_FLAG_SOFTIRQ
++ */
++
++/* This is what is displayed in the format files */
++#define __event_in_hardirq()	(REC->common_flags & 0x8)
++#define __event_in_softirq()	(REC->common_flags & 0x10)
++#define __event_in_irq()	(REC->common_flags & 0x18)
++
+ /*
+  * The below is not executed in the kernel. It is only what is
+  * displayed in the print format for userspace to parse.
 
