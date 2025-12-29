@@ -4,81 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A689FE92734
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 16:13:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47CDDE9273E
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 16:35:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 000A56B0089; Mon, 29 Dec 2025 11:13:52 -0500 (EST)
+	id 6F1BB6B0088; Mon, 29 Dec 2025 11:35:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF9B16B008A; Mon, 29 Dec 2025 11:13:51 -0500 (EST)
+	id 6C8A16B0089; Mon, 29 Dec 2025 11:35:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E26D46B008C; Mon, 29 Dec 2025 11:13:51 -0500 (EST)
+	id 5D4B46B008A; Mon, 29 Dec 2025 11:35:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D1EB56B0089
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 11:13:51 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9B84856C07
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 16:13:51 +0000 (UTC)
-X-FDA: 84273004662.09.687D388
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0D3BA80018
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 16:13:49 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FE8B6B0088
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 11:35:23 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED7DE160287
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 16:35:22 +0000 (UTC)
+X-FDA: 84273058884.11.E20B206
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 23CFC4000B
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 16:35:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
 	dkim=none;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf30.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.160.44 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767024830; a=rsa-sha256;
+	spf=pass (imf01.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.167.180 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767026121; a=rsa-sha256;
 	cv=none;
-	b=yeyfeOsqp1xr7mrZsOiUadnuHNtk5RkvkqVfS9r+xX9n2ipR7RgSZek2Wlebss2mxZ1YTj
-	/8jaiUXw9tGqEbkASigpU5G+e8KnjHZtADrDjDssjebBIm74XBzjBQvd6fdlRWaHK/zOaz
-	rKw8rqgcv6TK9olGEHoPSRiCNL6doxU=
+	b=q/n/vFpJMz70sjAPvIwCnKZnYMzQLa8QAKhC8egD+vAi0RrdFRS7/dQml03knytd6xWfwo
+	ioceMgA4+7wJmjmHDYOUL0d9+hNWTUuMWYBRyeXm/X9aut08n5UQWGRoTNt+9jp1Mi6uaC
+	B2CAA9F6NL7i3QLnFzwemnNX1JPecIs=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
+	imf01.hostedemail.com;
 	dkim=none;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf30.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.160.44 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+	spf=pass (imf01.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.167.180 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767024830;
+	s=arc-20220608; t=1767026121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=6lnYMzB+dCUz+mkORGwbpkYC+kll7m3t+mAqWOhKrD8=;
-	b=zQrn3n+q3/3YEFlIfS2YIO6fjfsA7csH0VZI5rlSpTEO6TF6MdurBPD3mGAEWVJh7BfKGJ
-	9YqHVz5QVh0sqXCzAC/ybMrv89pVN2GIwQ44JycKDDlNs/OXMUHJCLdBHPaq1htBQv4fkd
-	SkT9/uDSzkWNJmXNAmSDjxRgqzDftv0=
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-3ed15120e55so6542351fac.2
-        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 08:13:49 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=rSXDsPw9SWpPdwz0G6LJLeCgBG0923yYOTzxWibmOZo=;
+	b=vJxQll4z/g0NDDCmI/YjNNnoC4yxMfRYjadv5CVN1At5jUWTm+QwuzIsheJxQS/oKEqapk
+	JJOHzk/Q739+t3M2SbnNAittqJ7vTvOybswKz0lG59z/nDj23eGGBZlIuqwS6N65vG6blX
+	66WAUcwpfppsHDsgfi3lNyImPBu3xz0=
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-459ac606f0bso1933114b6e.0
+        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 08:35:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767024829; x=1767629629;
+        d=1e100.net; s=20230601; t=1767026120; x=1767630920;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6lnYMzB+dCUz+mkORGwbpkYC+kll7m3t+mAqWOhKrD8=;
-        b=t14bvgnooh+2ZAMGfgcODqagN0g8qvrH+kvDvCekXd/6UqaXzFCmL/Vzl7HORTSgXx
-         t50gmuxdgLbpTkwgtwWoPsYRD+TzPEaI6591459VGHExu6GyOnxud+DwIzTtl+bPXdh+
-         SP/dlWmpl7uK4X77sYxZ+domRIwTub4eON4EP8WogALA0TWe3n2LVRv2kr3OE5UY2A3f
-         NyUOytin2ZahMDO1eJ6Dn/8iXTkhwWYrs65FzCKRuzGGAmr0dnbkPMjtlImdsZbBEs3l
-         Jnba7Yu5unTvW1HPeJ0ITf8zIEOz+M4EeKdHy/Abn/iukScfC3bObOs/wXNRW5DiVo+Q
-         ggHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVo6gidLBLqBBiJLyPV3s/Own8cZAKYHmgt05PKIvrDm5sqJD2nA4+WvZ3eVqotV3FWkjOWslrcVw==@kvack.org
-X-Gm-Message-State: AOJu0Yz41LMQVyEH2tc4SsVMUDtW+rK1UlKIj5/ceUE5kswmUYnktA9+
-	Q3gQKEO72HYzDz6HSp51/erqOXbAJFg7JQIzdTwodqX8nIXh/5G8n51cvEbgVkYLc78=
-X-Gm-Gg: AY/fxX7ATaBls8yKDk18KZ9GO372GoqihgMieq97fk+Op81gu8QyLpyw54XtnT7F1+s
-	JAZPx/O0xa6Z8mlzX0/odNPu4V7knMVsrB9F2+li6EvuIbpgkAdN0kZPtHbsNC9KmGG/GwTJvbu
-	7kpdfeDVacMqv7FesYsvoRlbX5VMwYUXahaufvM9ieYemR6G77apyZhvf2beJeF6DSs9aZm6HLU
-	HcivRmoc6UWh8hQvNqQLhEGz9JG5R+5WQPkz38h0cJWnMcZJ1JEnrcX9kjCJnzmHIC0YPeI6Y7E
-	gu+7AV00DbQTkVpU0p9wKMsEhUhgW9BK7J1386MmU+TAWKYAfx10vfE5MfXnqpOhHagBu0vdvDT
-	4bpT7pZS4G5C3ZA5HhZ9jRM4lFsOIwG92+JwK/VNSe49Tt1qy0RIcY4PhFmOltgBW+NFPJqpbkv
-	DXorcn58rLTCE+hQ6b0188
-X-Google-Smtp-Source: AGHT+IHg6byxM/xkxubE4jTDVkQ4ULmMFOY4QfJYQWgFM4sIg4d8O/EzQKPsy5ALE1+u/Z3o6zsA5w==
-X-Received: by 2002:a05:6a00:9089:b0:781:be:277e with SMTP id d2e1a72fcca58-7ff64401115mr28062284b3a.4.1767017579562;
-        Mon, 29 Dec 2025 06:12:59 -0800 (PST)
+        bh=rSXDsPw9SWpPdwz0G6LJLeCgBG0923yYOTzxWibmOZo=;
+        b=c04miE+5DrCgQjruzw3CXmYIiZulHuu/UzBLUHWkLkY52WKSy0+eXIKuF+tnYIfuFt
+         /RC9y3qutkeunrTSdlB74Fojm64ibwLIjXMOUSjPa0As1qEXcAqMH5k8TSwZIYqVLGUU
+         fK4/ViQdUdFtjCXf8tNjYiNP8CcE47zX/tXDx49HRh5S6BzSy00N+kXzQ4nL/fbyygoS
+         J/drjjdAfDIHCtKEENrBhIV52ZK2FM1bu2m3Amy6Vmv7t5b9jZjEckkQgQojZpmy0ISM
+         LnQRgvFt2grBxKfcUJ2DLQQJy0jsS6QaR27Dak7vpaie9r1vNIubE+7fJe0F/qZMmbsb
+         lvJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXtJ9ZgXWLIzt7XqnTD8NDOdOQzSSVwpH4nGVhwSF7tRKxWdakDfT92EuB8BKcuFux/uV58E1YfoQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywrzhdziqy2DGrb59WUatf+bZRKtd5zXh+a2b3NFFgo5mTtMoQi
+	v3Ua6as1OgZuCj3fm9AiTvimrOTuvx6MTHxWWdOkCZUl1S/S/cpS4hPv
+X-Gm-Gg: AY/fxX4dCar88CF1kw3fypFUSc2JNZKM4HMJL32rxZyhp91hD6PWzZQ4l5sERqJ8dov
+	JYyEPC42NP6VgeHbO1Y9bR7PMRMN++atgLUtXBH3lvO5wwRokH43lE/8xghHcgJu8x7fARpiSto
+	B9dGyzgnG1xBMfzNh558H/nKP5nOpQ8e7W3doYxgBar7dgqHdP7SHh5XP+uYS5g0hmJ6fk4WXAa
+	Qpx4I9+SeinZ2atbr1h/0GTNdQ9ySb7DK8B05ZmbNox+Jj3Sguf/RBr8reX03gXMJgEYiqDQvHB
+	s0/jPt7WR2IPo/xXFJSlXi7Tp1RX2GnrcNZOHLQEULEsJ3ao8iJFKnd0nlw7YdJye5FWCaMd9VA
+	TRl9nM327TDwMNMY0QWxlfBTqSUG1sb3yvTjqhUiZOpdLYhSb9tqwYaOpb0jyxE3MSKpL7ly8bs
+	FAi0gtxWMbPTDpvJ1c7hC6
+X-Google-Smtp-Source: AGHT+IELTW1f0I8nau1FRdD8kDyAYgeeHou3baqoPeRrgIvEnjXylw0MJkmOP3DRvYb3odQ78YmLmw==
+X-Received: by 2002:a17:90b:1e51:b0:341:8ac7:24d3 with SMTP id 98e67ed59e1d1-34e921f6c8cmr23662117a91.34.1767019978519;
+        Mon, 29 Dec 2025 06:52:58 -0800 (PST)
 Received: from EBJ9932692.tcent.cn ([103.88.46.167])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7a93ab3csm29472636b3a.7.2025.12.29.06.12.50
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e70dbcb6esm31557603a91.9.2025.12.29.06.52.49
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 29 Dec 2025 06:12:59 -0800 (PST)
+        Mon, 29 Dec 2025 06:52:58 -0800 (PST)
 From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org
 Cc: will@kernel.org,
@@ -108,21 +107,20 @@ Cc: will@kernel.org,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 0/3] skip redundant TLB sync IPIs
-Date: Mon, 29 Dec 2025 22:12:42 +0800
-Message-ID: <20251229141246.63435-1-lance.yang@linux.dev>
+Subject: [PATCH v2 0/3] skip redundant TLB sync IPIs
+Date: Mon, 29 Dec 2025 22:52:42 +0800
+Message-ID: <20251229145245.85452-1-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0D3BA80018
-X-Stat-Signature: dyaqaukapp66w8ukieydhyj3ozzi6a71
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767024829-887733
-X-HE-Meta: U2FsdGVkX18O/0j+H7uPsSDoUDKeWtt0w+I0cb9bJdtuHYsofd15VlZNXOvCb053o+FoZBcx3luazBLt7ElK119lTt/PPZHFVy0GJi6Reb3DTGZ6pAdF8ii4Dk7SCYx9a4spGwT3C5TJI0/cSfG2cWpQiMWGOmiHBkCmKW7/nQoxgznhos55yv1nYCYN8NM7bir5aJgu2+qw/dcBSyBohxfHXMqw9bhfaWCpN8LEUfnHYmsurh0RW1aJJ8nJraZcqVgDrcAnnyOz74XnnoSZKVusN4uClr+3cBKla8vUFSs/yN2JfkaajahIOzk5WT/Ta+eJKf47gNAqtKv07hTq1A5k2YchrPP86XQoSO84BiIRQeT/PMgj7OeW17/RxNoa2fiyZtmO4JeYQt51cgqoqJ8SHZT5iU7nNKkDboIjb4EFLhBr5GXH1NfNq6y3dH8S6NJT28kFG3xhqXgU+poMmQ+6xYOYxYFnycikgRtTEwpMkbl37ribUzUe80I78OfncVbHQRXoVKwbVRcejCnQVh/6vpnnjxU93D7WNSfGN/fEUY4J6V/719eL5eijjnYIW1rTmBLYAfCLw04AyD0asQI6bYhjUSp0ovljD5nrWUf9F5L8aQbS5TqXAsy8aujlGPG9brt2qKIEnKhVsKOO0i0NxnJbjnUkXTGqYYoSvL2V6te0js263tE93nULm9wt+96ZTG/OnhZ8vukul+SG5yRzqRUJOYI0bjLxsfg3igCILxLO70mi0YzSeLrPnH6d6xA66VFD1cq5FS6dm+7YxHn0TfRSvsLzn/Z7cglb/KHts+rnfh+t9EKBEVEHjQQw+2XcdUxl0TFpRYvh+Cd4FkaQxB8ctWkTynvwsVbWpfzPK27m8gWPW744DO2+TpWMXNmi63m+qEDLyPRy7pMQ7LZY1xeVEZh9fz64ZCnrogPj4q0YGbZk+BZdSiXjhRkUH9ZsUJJN1zMCO6tU17x
- ZJL3efv+
- 4CFM18lV5NEWz57XP6vSJtuWDn+y1+8gJQqUuR8ExwR/HIn+Rrd1UUn4fGcJgDR6kUlUiYGhuTPlNr/ri0vdWfrrLFaAc6sib1H/1W6uKf+5SBh1jDAJHLWHh6V2b3S5LjaBh2SO8uTzZRe8=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 23CFC4000B
+X-Stat-Signature: qsyo4hssy1ffjcdipb7imq3yaym3bwqs
+X-HE-Tag: 1767026120-502641
+X-HE-Meta: U2FsdGVkX1+Rbn4Eo5OzvWRr1cKAeTs2nZ1Afz41DnS+rqMfU67HMZx9Y50xepKGHXKW0XBhP0/CvEcHM66oVtVTzKVniXGmcrdR4NxJf/HKgE9Z36dB08zNKJ6vtKSTNnCDUj3DcWYnHyGm71WLF1YMRRySWUJdiBL8pEsYpOE8j1i52EbJiJpOaYriiz+UE7VObuyvJBHEmsmXzZm8QmQKePnvN8kkmbAcYg1xUJKCZWZJoRRa4642eDvZjt1yQLaG+KCr1l8NFobBbnby7BvkoizDwGA718HMXT6OKsaOzP5bbZYBL6IIMSN9rTiGWdS7PbISPQp+AJGWnXKdHvIgXR7ENG+LxUYXfHoAUsUFI0j9Dnbd50Ol+8OhBhsU28AIRE5oloC9MocKGidrQNM4ysxUh1SzuANYIdyKyAiHFzj1A88+16Bh04a5HAprSADNhAW7RjLapet1AWzZo6b1+ugyG1s6Mprlb+Huz5S0fSNPerEpuKCqU5Vb4tnISBpyppNkR83VlUUQaQPBUrDuv+M8Wa0wsh1NOh5fjV/EXHZY28Y7pDNG9CNY84lCKSpcHKbJRAmQDcmK5ZE51o9/uBebYItqSb7e/Hi0q+P1TzBCKVFZZkBnmzQZEX+CvjrTfab4UMGwWA5wqnnRq27LFFCC82Qy+nWCrs98gvlNfeArSNK5ivNU+Ow1GaaxY3gEOaIkkIco7lfObJ0LfdL4z7eD/rkDUvP7mwlVdFsePfh+k1Tres9qPcz4NyvF0b80WRIJRoLYfzd18QcMF+B1cVo6HNmumpyy38z/1wbL9HqV6z6uu/fkggB7D9+z4l+c7gd2SIljOvvFpCci+wI6B0HvB7UWyIouhz2gEsLt/UQh02muUxXDxCRnL/WQQkqHYR/llAjYURrqW5yUoX7LaXSRC+XJOs4RmjjLYmnFVfk4hqtYskz86PWGhmFGQMANcWdk/7DdzNiWTx5
+ oY8LNFV3
+ cGD/zIqmuxZlGklUkcWtDfUATSKUqFv/MCuekGdJmF56k3YxnXnEcki1uw7sxwUOtQP4aDJooQs5iY831/hObCr+/MRnjAooBk9rSDtoYe1d+KbeFwVP8LJ+Tp/VraD5X21cALZ4ISB/qBGYBYUNdbw/neFjIv842WfbjjvcYTIVA5G210Ki4G0LQZ9h6c5kTY8ivo+XnuzhukCOUNcSUGtzbMS8CRgk5rltjdqn1UHH9Rz14M0xIqXR89Yf3LwowVv5OcUQAJqhj80og2KNv/fUhFfhjNBZ7cdxN+R9zJ2b0jC0Uf4y8WPP44XW6Yr05Zg+pJyK5yLA385N9Rn86nDD+SSlgB2JCQgXAEHvEWme/bgfYhw4PVzI1AJnD0TGU/SXo9mA6vjks/JV4HoY7cXh1udU9V0HnkFlNjS36eCyuoZOg2JmnfT+J5FvoWaZ3ORpLR/mqYEksl6E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,6 +128,8 @@ X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
+
+From: Lance Yang <lance.yang@linux.dev>
 
 Hi all,
 
@@ -146,7 +146,11 @@ skipped. For now, the optimization is implemented for x86 first and applied
 to all page table operations that free or unshare tables.
 
 David Hildenbrand did the initial implementation. I built on his work and
-relied on off-list discussions to push it further — thanks a lot David!
+relied on off-list discussions to push it further - thanks a lot David!
+
+v1 -> v2:
+- Fix cover letter encoding to resolve send-email issues. Apologies for
+  any email flood caused by the failed send attempts :(
 
 RFC -> v1:
 - Use a callback function in pv_mmu_ops instead of comparing function
@@ -158,6 +162,7 @@ RFC -> v1:
   that don't enable this config.
   https://lore.kernel.org/oe-kbuild-all/202512142156.cShiu6PU-lkp@intel.com/
 - https://lore.kernel.org/linux-mm/20251213080038.10917-1-lance.yang@linux.dev/
+
 
 Lance Yang (3):
   mm/tlb: allow architectures to skip redundant TLB sync IPIs
