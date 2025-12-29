@@ -4,114 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC987D3B7E5
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 03:24:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58545E8FDB1
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 03:39:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BC166B0088; Sun, 28 Dec 2025 22:24:08 -0500 (EST)
+	id A89ED6B0088; Sun, 28 Dec 2025 22:39:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 169F36B0089; Sun, 28 Dec 2025 22:24:08 -0500 (EST)
+	id A4B246B0089; Sun, 28 Dec 2025 22:39:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 075CF6B008A; Sun, 28 Dec 2025 22:24:08 -0500 (EST)
+	id 9565B6B008A; Sun, 28 Dec 2025 22:39:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E77AF6B0088
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 22:24:07 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 912151A1601
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 03:24:07 +0000 (UTC)
-X-FDA: 84271064934.18.6638EB6
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B76D28000D
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 03:24:04 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=S5oznL7E;
-	spf=pass (imf02.hostedemail.com: domain of zhangqiao22@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=zhangqiao22@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 863BC6B0088
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 22:39:12 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EB71D1A0850
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 03:39:11 +0000 (UTC)
+X-FDA: 84271102902.25.13CAC7B
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2BD291C0002
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 03:39:10 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cXcqBvTi;
+	spf=pass (imf21.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766978645;
+	s=arc-20220608; t=1766979550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+BDGPe6Wz623mn9DQDdS+J7GvS2xhqJ99bp8antJarY=;
-	b=BOVoIu4NGYjzcZwKIZBJgVN6w8TdeXW14zvjaOU1dvJ2wTM5SZM+9xmGYafm5KoHJYWPvs
-	KHV5Pw6yXI+xKeFps1NCYRFxoVh430BAPCSjk2UcWsJjMSdzK2HleUOpV0KhHP/4voOvjq
-	bK2odhaWa6/nnQvB62Ks70m6LTyasFA=
+	bh=Ec38jWe/KrrUFJROzDPN7mPmD+4inQ2VXMt0xla13TE=;
+	b=2zSz1WOEn+1kjM4uzt68VNydqyRgwCWu/ouhaYW68vkKdaK8FaS1Ge20GXCneMRVGSQ15o
+	Bd/O6KmuJ8AxQ/WmHAUmbP+Djis41EgxHY77KT/gt4qvAHxc1NRBsOlwfyk3feHuMvbaQq
+	uVLKFzJmkAkhyNDQjGl4M1v64cqTZF0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=S5oznL7E;
-	spf=pass (imf02.hostedemail.com: domain of zhangqiao22@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=zhangqiao22@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766978645; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cXcqBvTi;
+	spf=pass (imf21.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766979550; a=rsa-sha256;
 	cv=none;
-	b=kjzjbIcwZYeJ5nlyCZjdCIf+DpzYWX1m8UkLqSIBjA/g1OjLmwcOHl9lRGE6czTUw+v3LN
-	1bsRLGaIO+cpRNgUnUpTwbsMvg1Cm4xNsCN31RVN8r5gJSF22Bqj9Km4SxPDw5ev02AfYn
-	3xxI01Iiw25M5uMafXBVrcJm8S1pRsM=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=+BDGPe6Wz623mn9DQDdS+J7GvS2xhqJ99bp8antJarY=;
-	b=S5oznL7E1P+omaU+fUcM+wvPVZ/3cp/IsoQKCRwXkrHP4luHaqG+eOUxh9smTTkbEqw7uNvL0
-	c4F1Wz+fPO5F6LWQgHy3huRbvjOsFw6aJ5tzPzxeXifnT01IAPtQc9PeSF0XS6pqphA89L2jlAL
-	eTXaNu0tOj/1OwY7Cqz7TxY=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4dfhLm6PbPzmVYJ;
-	Mon, 29 Dec 2025 11:20:48 +0800 (CST)
-Received: from dggpemf100017.china.huawei.com (unknown [7.185.36.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5B2D440565;
-	Mon, 29 Dec 2025 11:23:59 +0800 (CST)
-Received: from [10.67.111.186] (10.67.111.186) by
- dggpemf100017.china.huawei.com (7.185.36.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 29 Dec 2025 11:23:57 +0800
-Message-ID: <e01189e1-d8ef-2791-632c-90d4d897859b@huawei.com>
-Date: Mon, 29 Dec 2025 11:23:56 +0800
+	b=Zedya5jbEsLzYWVroSeSA8CLBgBFZMKp6iVLiYCdGdgxG+nDFcwwak6QovYGvyG8q7yFsp
+	pD6YdsKJsMDNF68+6CjgQzZo74XmagfunypnZWQVUXPCelVArqwVWOA8CSsrvc+JxKO/Ca
+	eVq6lvrsV5c2dJMO6c3VCBR+JD3u0Pk=
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-644798bb299so6785230d50.3
+        for <linux-mm@kvack.org>; Sun, 28 Dec 2025 19:39:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766979549; x=1767584349; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ec38jWe/KrrUFJROzDPN7mPmD+4inQ2VXMt0xla13TE=;
+        b=cXcqBvTivE4mmzQfzP0WTsJ1FalsL4yj9XEzTY2nDqdfYUUxIvOWYDlZUlxZ7tXjzO
+         yFtN6Lk5Jd2W88rc/bt2TXc/IztN754CpRADjD4F3hqrVcBaj38+2M0KLca69BgHhXMk
+         PRUSoteoyfHbhimweFEt/f6KVdh+bVqdLdKvIgpe2hIOS8rZ/5/cJc2SNiE41Vyi6413
+         MvTq4nB6MIlm5cACo8p1fK6ukveNeJhfpzZglmHtkHV6+VqakPnR7IbCNeCM6SsI8f1A
+         CCxF95y+/O8CKGQncNZvzfc/6Mr4KdKJwUJM9govXrr+i/r48ycqH3aGAi6sN5VINZgV
+         Mq0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766979549; x=1767584349;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ec38jWe/KrrUFJROzDPN7mPmD+4inQ2VXMt0xla13TE=;
+        b=TYjFEhKyPVjr9Ke3thWhX+VjClMMzmYXWbUIbh8tl8iuS1j2PiqGvLS0UwRH8+iyyF
+         FAkTWowEGx3lfRvKEIJT1wJty4ZP1I/XIAs1M2cCl9ZtuCboODPIJ/JJZwMfvvwRqmeJ
+         5aLdsRT1l2K6DTXiSJRJOr3L0uJ7UGYPXGg/stfbXOTw2HNUZLdM2VTMIQWijr+AUtxO
+         bbs3ApvFpXYcAhNVA3OczH63i7/A8hoVevoLVjcfRqXQC4aPCxrwRZp2t3tIFxqagRo/
+         LeM7YCWpWf0fu55VxI+ugsrlw964ry42uanWUMIw/xl3BvaW1X3OGE+vi6/Y9OrgkU+T
+         P6Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCVT5ZT1EE34ipFj5THlhWCOpJeY9ev6dYhFlio8Y5c6CpQpUSUZPx5h5EZXCA1lID2+Ve5N7D4kQA==@kvack.org
+X-Gm-Message-State: AOJu0Yxw9d0xF1gw1389mpDPp6M11BUuC8hlcFVIaxXJjcYKHIAlPHkw
+	BJB/roI215dnCBAkrMIqNDRVISeqfQ/5A3YHUd/A4wGeMNArqgERyKAhhSC8k1+F8GYmxmHzASx
+	RBwObgjymyHW8ucWWVvMb/bcf9HKYt88=
+X-Gm-Gg: AY/fxX53PVk8Jh18qOaFK9YvLVgY5pHZDMEXTGw+9AAWVIOa+xykSaYTofxRzYcH+f9
+	46emopt3WrCAbk+oy1qKJV1fzANw5Djus8PAaqYCsJGDuAnGrD/foM+oHHxBJYsZh5crHhTm/Cv
+	9tQmWl56Vj14suXR+XoU5PZzJrvgDdHKAj0tifvhXdJyx4qtxiia70Vo/g7nhqjWvBQh4pGL0IP
+	g9HjwMApH99tGkK463ZXgl54jOhwtjgIqqDulx5hzwsq18mT9GUaKZLmOXfcYSjO9wyeGzq
+X-Google-Smtp-Source: AGHT+IGMny9fg2k7Qgju0UYglg0kRUQjni0y2DiDufbvlgIlQAJlK2OlV8/96K2ETe8W7aLi49b3kLRDvZ1JRDHcJ+c=
+X-Received: by 2002:a53:b549:0:b0:645:6c99:bf17 with SMTP id
+ 956f58d0204a3-6466a8afe74mr19566506d50.52.1766979549111; Sun, 28 Dec 2025
+ 19:39:09 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.1
-Subject: Re: [PATCH 01/33] PCI: Prepare to protect against concurrent isolated
- cpuset change
-To: Frederic Weisbecker <frederic@kernel.org>, LKML
-	<linux-kernel@vger.kernel.org>
-CC: =?UTF-8?Q?Michal_Koutn=c3=bd?= <mkoutny@suse.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Bjorn Helgaas <bhelgaas@google.com>, Catalin
- Marinas <catalin.marinas@arm.com>, Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>, "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Ingo Molnar
-	<mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Jens Axboe
-	<axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>, Lai Jiangshan
-	<jiangshanlai@gmail.com>, Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, Paolo
- Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Phil Auld
-	<pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Roman Gushchin
-	<roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Simon
- Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>, Thomas Gleixner
-	<tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Waiman Long
-	<longman@redhat.com>, Will Deacon <will@kernel.org>,
-	<cgroups@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-block@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-pci@vger.kernel.org>, <netdev@vger.kernel.org>
-References: <20251224134520.33231-1-frederic@kernel.org>
- <20251224134520.33231-2-frederic@kernel.org>
-From: Zhang Qiao <zhangqiao22@huawei.com>
-In-Reply-To: <20251224134520.33231-2-frederic@kernel.org>
+References: <CAHOvCC7HqeGY1uxy7FxLKTFHAJPcWWbKJRjZ06W9bC4oAejOsw@mail.gmail.com>
+ <20251227174239.273581-1-sj@kernel.org>
+In-Reply-To: <20251227174239.273581-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Mon, 29 Dec 2025 12:38:58 +0900
+X-Gm-Features: AQt7F2osd3IZrYaArYmRyOWBHGQGj20PD3b4hoISM9vUO7_MR3MY1NQLMXu3mg0
+Message-ID: <CAHOvCC7KAmj8hb8GtTJ+P_GUGqjP1WO8uqnpFjMPQmKFrc1oZw@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon/sysfs: preventing duplicated list_add_tail() at
+ the damon_call()
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, rgbi3307@nate.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.111.186]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf100017.china.huawei.com (7.185.36.74)
+X-Stat-Signature: uxet4dk1pma7bnf94skmkyczp6zzizc7
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B76D28000D
-X-Stat-Signature: 3cjtdwk1zu9g41s6bk7uii4wqcpz4eby
-X-HE-Tag: 1766978644-569646
-X-HE-Meta: U2FsdGVkX19a59JiXYqyw4uyPOBs0wUsnSRx7y2WCic8joN3Fhy9qykIK33c2ybgMlpnnGS0/NSD8kTNL4YGMEl/DzOZxr1kg5Kz+3xfrnbSvXRzVKjOOQXBKR79tdzuj1tUAR7Sfk8oB+FfkO7cGBdnEp8LLpJUB9+TK4QGJfEROOe6DKVopdt3sXQSiFtF0UdCqNQn3mwfJvpoQAEBRRHhkDwUYbIk42mzO3kmUj8osLscJ9AqVC9PCbScyi3z9BTjdkQk8SLL6g3q1PpzSUWt9TETbpokGgVe0C0cNTMzf0d+ja9bX1Wy4WpUylT5x2kGl1ke2M3F+aGKAsLP0/7JWBVuqZ6wGLqkdrUIKPMUOBWXLadO7lG/B705Q73KPWBwGsSaKqbfk4vRrtzfzPmxJFGwhOYkkmYvA81vp/JC6aDwI7u+HTs6NKiVZXTFPukuB10KzD1aDKSNXe5hUK+5FuNAk1tuB4ZuTtnh3IkGnPvfVPbeENUe0yn6tYdSz+s4SBsHsGqH5CxEwFM3UV//9BkrnUiVXMdBdkLTImTHWE4noc0OhWnwVkukiiV7pfEgp9uG/+oQE2zWZvmY1Omm6Gzv4b+5QZ7YTRBoWSzpMkctDWBi8OF/xIjeL+XV1W6htXRajZ10uRIUImStA5O+ZpX0VZkzmFWLZpXwP1G6w89sTKY/T7y1sJhPpma7OKcxRF9SeQezNcyO629X0XN8ZDLH+OBWJD9xfG7NVgIQ+Ey1IVEQBMSRl3uTNvmvudzmG/IxOC2PEEYDRzFTCWIMK2R0lxEUUOSP2LFSJn0DoFzXCplThBmj05mzW7lD7xi6pV/3zmIF5hJICp4CgdnL5ZeKc6XmCTeY29m04afXxksHmS6XAEq22cGViV433cbzPFlkb3c1IsIgnddOFONQk2/A15Qaix6X/m4nuUNpDYVI9zj/hH9yFK0pbB6iCH1YoZWJTuDSEAGjwwj
- hnSZEgKp
- jkvR9wTO6JQXTMr8VM4FFz0SWjlXk8aJMa5sIfBe9E84rPr9gVq/8oLOoPmrFH/O2QoWRDnx74geSTHFnteimLzlxTTGdO80pY9ouID7D+sbBz+ElecplqJcJ2n3vHI0w4u71SdaXuqy9LopDaw941WmVM6eb7N3vSyNx21Olg6RJXj9ddaSAE/tAzzercX9EXlcc6iPWT/m9qGmi2x68I6BJXEdCrEVGG+eRvkN6mvtBsD66x5/IPRa0qJOx/YrTYRx3vTlGgOXnzppNOtnbVO86+bX30mPRLX6Y0yTZhZotaPBzd1RAGvhtvhjm0nCsU0p8mLKf8GwvpQ0=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2BD291C0002
+X-HE-Tag: 1766979550-433080
+X-HE-Meta: U2FsdGVkX18/01iT9eBtHeGCmLvvmaKwKTQiomRbDk6hHoolUdxSZ4xkHycL6/RHr/M3NEWBWOb4NoGbGwqu+gL/C3Yx9oZK679fu+0QhJ2hr0Keh74J04KA5TTGFmmYIQEvzIS72bY89oxu3jDpVujbMMdn4O8gnVBLFSUecIbUGZp7/XIMS/aW0ImxSw5izwo4kZPwD2glvuFgJ6HkiLaMWHLK6Pffj4TmH4hZDZXzIWNI9cAWwsTgTTd/lNO7kAXXoEd1d1+iVzAzx/2AjwODH4+AOGjwCm/pYCTTP96hilBUUHm5x5CkGzkH/phFIqUU3cLKbnSNfGoKrvASJFyPNftqH1/1FqWTE62qWn2VafIasWtBuAIzjgV28vkh11uYefgM/MTY2NN5gC+fGDRCTnYaUvQfpMejwJkIVLMJ9+UsWvJjXoxdQtvZXsQ/lbpxIO8TqCCeeS/1Sd9b8Yndg7rou8r87UplmNdRTET0B0Ua484GU0+3Gn81Gw/vGQptGm7IJEzON6k464PcgpS9jUZk3mv7krEHNU2FuHT5HH/l/6xfw8nwCDrqtcgcv+33HUUPXDetbymlw+svDcQrivatn7zjmrCcfMIxoJIHzrKnpY4GCa1ibT9Q3WQNAeFX+kT7E1GboOtNKRiuuWgfQ3Sa7AOQHwoSR18xFxLtv7aPcBRul51uDrIO8YfNTRN4XAEAvXY+pYk2AvSC3SjEIkuVAhpBirq8jKHQw5VVf06FjWaQnuCXpzBvReN2lyhlyvzPByTZB3pDRajnj9AKVTpOcgbgkHTlz1EJ8VIrHD5NfudZqpandMpvvrpHkI8LwSrhNE6+DdC75UXMZ2rIp+YnBkD2e19hVwW3qzRMZrq8NcXEmkB5esHRQgEfsji6O7/iUVeUIrxZYtA+H4fQu2dSJDDvuNSiYh6/RE0O4DefZKI2Gcvg/foiUPzC5gMkp2Et0Et1hcJTJDf
+ CweDU1Vx
+ a8LH0GcgE1URH/RGJD3v9GA0GN00h2v+051cxQnknJh1/5h42eGJH5qiqqGtTqP1gYONae5qapysEya8hxqXckOTcuItO/7bo7degxD1Bdxa0fzlP/DXlLN4+GD/4yH1XgKCJiB6gR1sJ94Gfx88/Uk2wMB1fuQ7376AI5ojOOq3vbVK/h9ZPwVt6uf5UPawXx8aWw4w2hu2HZ1c+Pgj/rDWwUNjB3BvPZuvQjYthB8RXdcpQy0eIoMPwrZ/EAE6gwqEM1xLJK8xdkIFSnq01sHCAJytsUEFSa900LfeJ5r4jpjP1KC1vHh8P66JZFe11ixqI6DWbRCt3PmwZlLrwbrkGlVUBbnz9BPIhQVo9BAzPM0zqrl8bbu3OkYLUPW0CPrva5dGv3Oh0ROzRyYNSopYDY0wSr3pEWWOUibru8MkbR0O/tdthKYYVGSWbPcXyDC+F
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000026, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,124 +114,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Weisbecker，
+On Sun, 28 Dec 2025 at 02:42, SeongJae Park <sj@kernel.org> wrote:
+>
+> On Sat, 27 Dec 2025 08:53:21 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+>
+> > On Sat, 27 Dec 2025 at 03:41, SeongJae Park <sj@kernel.org> wrote:
+> > >
+> > > On Fri, 26 Dec 2025 10:48:31 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > >
+> > > > On Fri, 26 Dec 2025 at 04:50, SeongJae Park <sj@kernel.org> wrote:
+> > > > >
+> > > > > On Thu, 25 Dec 2025 11:35:33 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > > > >
+> > > > > > On Thu, 25 Dec 2025 at 09:32, SeongJae Park <sj@kernel.org> wrote:
+> > > > > > >
+> > > > > > > Hello JaeJoon,
+> > > > > > >
+> > > > > > > On Wed, 24 Dec 2025 18:43:58 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > > [...]
+> > > > > > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > > > > > index babad37719b6..2ead0bb3c462 100644
+> > > > > > --- a/mm/damon/core.c
+> > > > > > +++ b/mm/damon/core.c
+> > > > > > @@ -1462,6 +1462,9 @@ bool damon_is_running(struct damon_ctx *ctx)
+> > > > > >   */
+> > > > > >  int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+> > > > > >  {
+> > > > > > +       if (!damon_is_running(ctx))
+> > > > > > +               return -EINVAL;
+> > > > > > +
+> > > > > >         if (!control->repeat)
+> > > > > >                 init_completion(&control->completion);
+> > > > > >         control->canceled = false;
+> > > > > > @@ -1470,8 +1473,6 @@ int damon_call(struct damon_ctx *ctx, struct
+> > > > > > damon_call_control *control)
+> > > > > >         mutex_lock(&ctx->call_controls_lock);
+> > > > > >         list_add_tail(&control->list, &ctx->call_controls);
+> > > > > >         mutex_unlock(&ctx->call_controls_lock);
+> > > > > > -       if (!damon_is_running(ctx))
+> > > > > > -               return -EINVAL;
+> > > > > >         if (control->repeat)
+> > > > > >                 return 0;
+> > > > > >         wait_for_completion(&control->completion);
+> > > > >
+> > > > > Let's assume DAMON is terminated between the damon_is_running() and
+> > > > > list_add_tail().  In the case, the control->fn() will never be called back.  If
+> > > > > control->repeat is false, this function will even inifnitely wait.
+> > > >
+> > > > As you said, there are cases where kdamond is terminated(stopped) in
+> > > > damon_is_running() and list_add_tail().  It may be a very rare case, but
+> > > > I missed this case.
+> > > >
+> > > > >
+> > > > > I think we should keep the damon_is_running() as is, but further check if it
+> > > > > was terminated without handling the control object, and remove it from the list
+> > > > > in the case.  Like below.
+> > > [...]
+> > > > However, the damon_call_handle_inactive_ctx() function is to post-process
+> > > > the duplicate addition of control->list.  Rather, it is more efficient to
+> > > > prevent duplicate additions in advance, as follows:
+> > > > I have tested the following and it works fine.
+> > > >
+> > > > @@ -1467,11 +1496,14 @@ int damon_call(struct damon_ctx *ctx, struct
+> > > > damon_call_control *control)
+> > > >         control->canceled = false;
+> > > >         INIT_LIST_HEAD(&control->list);
+> > > >
+> > > > -       mutex_lock(&ctx->call_controls_lock);
+> > > > -       list_add_tail(&control->list, &ctx->call_controls);
+> > > > -       mutex_unlock(&ctx->call_controls_lock);
+> > > > -       if (!damon_is_running(ctx))
+> > > > +       if (damon_is_running(ctx)) {
+> > > > +               mutex_lock(&ctx->call_controls_lock);
+> > > > +               list_add_tail(&control->list, &ctx->call_controls);
+> > > > +               mutex_unlock(&ctx->call_controls_lock);
+> > > > +       } else {
+> > > > +               /* return damon_call_handle_inactive_ctx(ctx, control); */
+> > > >                 return -EINVAL;
+> > > > +       }
+> > > >         if (control->repeat)
+> > > >                 return 0;
+> > > >         wait_for_completion(&control->completion);
+> > >
+> > > I think this is not differnt from your previous suggestion, and thus it has the
+> > > same issue.  What if DAMON is terminated between damon_is_running() and
+> > > list_add_tail() call?  Please let me know if I'm missing something.
+> >
+> > I think it is good idea to insert a barrier() between damon_is_running()
+> > and list_add_tail() to prevent context-switching.  What do you think this?
+>
+> I don't think barrier() works in the way.  Please correct me if I'm wrong.
 
-在 2025/12/24 21:44, Frederic Weisbecker 写道:
-> HK_TYPE_DOMAIN will soon integrate cpuset isolated partitions and
-> therefore be made modifiable at runtime. Synchronize against the cpumask
-> update using RCU.
-> 
-> The RCU locked section includes both the housekeeping CPU target
-> election for the PCI probe work and the work enqueue.
-> 
-> This way the housekeeping update side will simply need to flush the
-> pending related works after updating the housekeeping mask in order to
-> make sure that no PCI work ever executes on an isolated CPU. This part
-> will be handled in a subsequent patch.
-> 
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> ---
->  drivers/pci/pci-driver.c | 47 ++++++++++++++++++++++++++++++++--------
->  1 file changed, 38 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-> index 7c2d9d596258..786d6ce40999 100644
-> --- a/drivers/pci/pci-driver.c
-> +++ b/drivers/pci/pci-driver.c
-> @@ -302,9 +302,8 @@ struct drv_dev_and_id {
->  	const struct pci_device_id *id;
->  };
->  
-> -static long local_pci_probe(void *_ddi)
-> +static int local_pci_probe(struct drv_dev_and_id *ddi)
->  {
-> -	struct drv_dev_and_id *ddi = _ddi;
->  	struct pci_dev *pci_dev = ddi->dev;
->  	struct pci_driver *pci_drv = ddi->drv;
->  	struct device *dev = &pci_dev->dev;
-> @@ -338,6 +337,19 @@ static long local_pci_probe(void *_ddi)
->  	return 0;
->  }
->  
-> +struct pci_probe_arg {
-> +	struct drv_dev_and_id *ddi;
-> +	struct work_struct work;
-> +	int ret;
-> +};
-> +
-> +static void local_pci_probe_callback(struct work_struct *work)
-> +{
-> +	struct pci_probe_arg *arg = container_of(work, struct pci_probe_arg, work);
-> +
-> +	arg->ret = local_pci_probe(arg->ddi);
-> +}
-> +
->  static bool pci_physfn_is_probed(struct pci_dev *dev)
->  {
->  #ifdef CONFIG_PCI_IOV
-> @@ -362,34 +374,51 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
->  	dev->is_probed = 1;
->  
->  	cpu_hotplug_disable();
-> -
->  	/*
->  	 * Prevent nesting work_on_cpu() for the case where a Virtual Function
->  	 * device is probed from work_on_cpu() of the Physical device.
->  	 */
->  	if (node < 0 || node >= MAX_NUMNODES || !node_online(node) ||
->  	    pci_physfn_is_probed(dev)) {
-> -		cpu = nr_cpu_ids;
-> +		error = local_pci_probe(&ddi);
->  	} else {
->  		cpumask_var_t wq_domain_mask;
-> +		struct pci_probe_arg arg = { .ddi = &ddi };
-> +
-> +		INIT_WORK_ONSTACK(&arg.work, local_pci_probe_callback);
->  
->  		if (!zalloc_cpumask_var(&wq_domain_mask, GFP_KERNEL)) {
->  			error = -ENOMEM;
+Yes, there is no need to use memory barriers.  Since each kdamond runs
+its
+own damon_ctx, the concurrent access problem can be sufficiently
+solved with
+mutext_lock.  The problem discussed so far can be solved by applying
+mutex_lock to both ctx->kdamond and ctx->call_controls.
+Please refer to the modified code below:
 
-If we return from here, arg.work will not be destroyed.
+@@ -1496,14 +1502,15 @@ int damon_call(struct damon_ctx *ctx, struct
+damon_call_control *control)
+        control->canceled = false;
+        INIT_LIST_HEAD(&control->list);
 
+-       if (damon_is_running(ctx)) {
+-               mutex_lock(&ctx->call_controls_lock);
++       mutex_lock(&ctx->call_controls_lock);
++       if (ctx->kdamond) {
+                list_add_tail(&control->list, &ctx->call_controls);
+-               mutex_unlock(&ctx->call_controls_lock);
+        } else {
+-               /* return damon_call_handle_inactive_ctx(ctx, control); */
++               mutex_unlock(&ctx->call_controls_lock);
+                return -EINVAL;
+        }
++       mutex_unlock(&ctx->call_controls_lock);
++
+        if (control->repeat)
+                return 0;
+        wait_for_completion(&control->completion);
 
-
->  			goto out;
->  		}
-> +
-> +		/*
-> +		 * The target election and the enqueue of the work must be within
-> +		 * the same RCU read side section so that when the workqueue pool
-> +		 * is flushed after a housekeeping cpumask update, further readers
-> +		 * are guaranteed to queue the probing work to the appropriate
-> +		 * targets.
-> +		 */
-> +		rcu_read_lock();
->  		cpumask_and(wq_domain_mask,
->  			    housekeeping_cpumask(HK_TYPE_WQ),
->  			    housekeeping_cpumask(HK_TYPE_DOMAIN));
->  
->  		cpu = cpumask_any_and(cpumask_of_node(node),
->  				      wq_domain_mask);
-> +		if (cpu < nr_cpu_ids) {
-> +			schedule_work_on(cpu, &arg.work);
-> +			rcu_read_unlock();
-> +			flush_work(&arg.work);
-> +			error = arg.ret;
-> +		} else {
-> +			rcu_read_unlock();
-> +			error = local_pci_probe(&ddi);
-> +		}
-> +
->  		free_cpumask_var(wq_domain_mask);
-> +		destroy_work_on_stack(&arg.work);
->  	}
-> -
-> -	if (cpu < nr_cpu_ids)
-> -		error = work_on_cpu(cpu, local_pci_probe, &ddi);
-> -	else
-> -		error = local_pci_probe(&ddi);
->  out:
->  	dev->is_probed = 0;
->  	cpu_hotplug_enable();
-> 
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
