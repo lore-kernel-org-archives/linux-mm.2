@@ -4,92 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54379E92FDA
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 21:09:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1C3FE92FDE
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 21:15:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1D256B0088; Mon, 29 Dec 2025 16:09:30 -0500 (EST)
+	id 45DEF6B0088; Mon, 29 Dec 2025 16:15:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CB806B0089; Mon, 29 Dec 2025 16:09:30 -0500 (EST)
+	id 401B46B0089; Mon, 29 Dec 2025 16:15:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D6E36B008A; Mon, 29 Dec 2025 16:09:30 -0500 (EST)
+	id 30D9F6B008A; Mon, 29 Dec 2025 16:15:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AAAD6B0088
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 16:09:30 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 281E91A6129
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 21:09:30 +0000 (UTC)
-X-FDA: 84273749700.27.AAF0589
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 81ACCA0003
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 21:09:28 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N9e8bCrV;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1C7096B0088
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 16:15:05 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB8B2C2EF2
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 21:15:04 +0000 (UTC)
+X-FDA: 84273763728.12.5341003
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 23FE61C0010
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 21:15:03 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jKY9UZls;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767042903; a=rsa-sha256;
+	cv=none;
+	b=3ipaFyBOVWsPFiQHIxuC1C8RDNWiweyAXgfNNOTbU/9E4V/HJW1WB4a5o6PCYWspMQfR8C
+	vecEtJp5USJY1QHzZu2vjhnTruCt+vYwvD3lfZRI/npGmHUqrVPc6Kf6qKKzKOSSmXrdTM
+	Zcok4J9QpxSQm3ut3O4/kR9sYToTH38=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jKY9UZls;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767042568;
+	s=arc-20220608; t=1767042903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VUVk1CmbFBfYMnd+onKI6dHabioivTyCBsvilOrGEbo=;
-	b=Ql11F+85O72q17OFOv+le58+stbP7F77OZMGV+nJoYY/952lwrrcRh1ypcCYyUYX8k6ZUr
-	7HiocGu3Bajvp3rvBxJvEbGeEtzgEeGqbltW5nUwWmumHCTE+11zCBkH1GdIDPVd+D5WVL
-	gOlvpnb5SxqSg3/TpB0t9TA23fEdoYE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N9e8bCrV;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767042568; a=rsa-sha256;
-	cv=none;
-	b=M7vQOXEIVi0KVH86809+FcKXC4tMb3wB3i1l0TFBYEWFNtcykOLzvgJiRSB1xcq18NGEwk
-	oEquVS9TIidFmZ4TpUuazIEd4sJKsWAd7CgRhb7cUlEXz6k22D2kmAsmQeVukI3O8Op5+e
-	oRHKxHNyCkAP8ZEnoeaPw8biwn328M4=
+	bh=+0hKzidYvfWG+s9TtusbziTKi6XLXUnZ4Y1pxbN7Jvc=;
+	b=z101GSft9pixJXqTNGQSo6WwdhDWYyC+ef/52DBJnQ2JVHfG4WmzzEd4U/grvUAnevLy6/
+	L5hLWkJrBItHghOZb0zePAdhrI5Wpv3UFMnDQXSP46rF79RPMmaCV2wwKB9bc1JmTuTWQO
+	4KM60qaGny7tb/F6DJWaiIgYE9+6HG4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7FD78440B1;
-	Mon, 29 Dec 2025 21:09:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4386CC116D0;
-	Mon, 29 Dec 2025 21:09:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 58F116000A;
+	Mon, 29 Dec 2025 21:15:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E38C4CEF7;
+	Mon, 29 Dec 2025 21:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767042567;
-	bh=VUVk1CmbFBfYMnd+onKI6dHabioivTyCBsvilOrGEbo=;
+	s=k20201202; t=1767042902;
+	bh=+0hKzidYvfWG+s9TtusbziTKi6XLXUnZ4Y1pxbN7Jvc=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=N9e8bCrVuBEncQY6DY/pq7L587pcxnuZNkUiX7jAH7g7gNTO0y0pXZPeInuYaf0m9
-	 812ZhsV0+TyJogWbd9NPmIeqMpvofs98qURaj9WiG48AwIN7WvvmvCmSzSWgXie0KA
-	 CCAy5b26YL9gzrOmAo6bPMUaYRtYNsuJiVy5YWpxZpJRA+eh0vBVaHHKkn+5dTKB9q
-	 XCga1hD5U5zBXosGvPjHHU92N6xxbsFtWsf+67cUv/sWP/Ntbxl5dUA7cPwVE3XsMH
-	 a77CArbgngll92iBlUHc4ILjqjWsepe7/hqHpU9yHYBS6tEI+xdWwAPg1YhKoLEg35
-	 nTP6Pz7wt0lBQ==
+	b=jKY9UZlsTOJCp8mrSaW/YOoqI/r+yyNyFf2huGx4VFftVsJRCMpS4UchEWmSNJU2+
+	 mmW/SR65hRZs3p/IS7waf1NjQ9aTDSyuxztBD1pNzRqCoQF95mGqFK75bOE8qiOsTh
+	 r/34jl6+cJGesKLtTSrG0wiDLX0xjY3kxFF0yDM8QokptRaq8I7jRQ4niRqABeII49
+	 A8Rz7bg+1ZrAHDw6vrD56WZ/IhNI7SrXFPMEOUt9GgTg5RArbxf9AqMyAQ0D8X7rC8
+	 ZOtaBzMp1jsL14bwuklPgimM0VCDonLAQ3ZKPaY9/XbQn4TXWFX/cGXEO9V0n2jsnv
+	 Kjh2IexLkouyA==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: Fadouse <fadouse@proton.me>
-Cc: Evangelos Petrongonas <epetron@amazon.de>,  Mike Rapoport
- <rppt@kernel.org>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
- Yadav <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,  Andrew
- Morton <akpm@linux-foundation.org>,  Jason Miu <jasonmiu@google.com>,
-  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  nh-open-source@amazon.com
-Subject: Re: [PATCH] kho: add support for deferred struct page init
-In-Reply-To: <7024cefd-bf27-430b-b8fa-04e1457e0eb8@proton.me>
-	(fadouse@proton.me's message of "Wed, 24 Dec 2025 07:34:04 +0000")
-References: <7024cefd-bf27-430b-b8fa-04e1457e0eb8@proton.me>
-Date: Mon, 29 Dec 2025 22:09:21 +0100
-Message-ID: <86zf718072.fsf@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
+ <david@kernel.org>,  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,  "Liam
+ R. Howlett" <Liam.Howlett@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,
+  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,
+  Jonathan Corbet <corbet@lwn.net>,  Thomas Gleixner <tglx@linutronix.de>,
+  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov <bp@alien8.de>,  Dave
+ Hansen <dave.hansen@linux.intel.com>,  x86@kernel.org,  "H. Peter Anvin"
+ <hpa@zytor.com>,  Muchun Song <muchun.song@linux.dev>,  Oscar Salvador
+ <osalvador@suse.de>,  Alexander Graf <graf@amazon.com>,  David Matlack
+ <dmatlack@google.com>,  David Rientjes <rientjes@google.com>,  Jason
+ Gunthorpe <jgg@nvidia.com>,  Samiullah Khawaja <skhawaja@google.com>,
+  Vipin Sharma <vipinsh@google.com>,  Zhu Yanjun <yanjun.zhu@linux.dev>,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  linux-doc@vger.kernel.org,  kexec@lists.infradead.org
+Subject: Re: [RFC PATCH 08/10] mm: hugetlb: disable CMA if liveupdate is
+ enabled
+In-Reply-To: <CA+CK2bBeJwACBiKsuXLcbzC4m0zLhu0yNg2HDGR=AQGeEVCJjg@mail.gmail.com>
+	(Pasha Tatashin's message of "Tue, 23 Dec 2025 13:16:57 -0500")
+References: <20251206230222.853493-1-pratyush@kernel.org>
+	<20251206230222.853493-9-pratyush@kernel.org>
+	<CA+CK2bBeJwACBiKsuXLcbzC4m0zLhu0yNg2HDGR=AQGeEVCJjg@mail.gmail.com>
+Date: Mon, 29 Dec 2025 22:14:50 +0100
+Message-ID: <86v7hp7zxx.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Stat-Signature: n7f1nkxgoi3bqdbs7gcpx6k44tmd3koo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 81ACCA0003
-X-HE-Tag: 1767042568-418864
-X-HE-Meta: U2FsdGVkX1/k9zIlO8lG2N2J5gbhqABogWhHN2+nd9wr45wJrWy1D9l5ZPrf4cRtElLzNs4+zeC5QuU7lomyXrq3B5TKlbMUhTUd7RcYdd/UTsmMB3ooskjOF3/WVCFplYu274jHDFn0jlIvneG48+vO1njx4mSctiCpmR0WpNeQmG4Xvo7hHoPdYg8GBgGwPebHdy3WyVKGWIY50L5pbiv1amef1vchCTis8pK8tMIuh1ignJvR3+vHY6CvBCJ+ZHipI6AJWP0zTusxH/J9SkO/9fWwa5uVN+xc5mtSR7FIGKLdLkTTCvOsItzr7bzaEBERfeg4vJ7jSIO5Jq4G4WBChMcAF9afy1Aeuiynbrr031xX9YISIO+QmJlBlrowe4urYh79cb8UKfE+tDBcDOUKa24XUj9F5pEtryw10suodnE3qEdHN7pnHMHryqWAgwWzTT3SHeeq8aWfKhMEP789z0lFoO1qiegKGlzrLPs4j/l7tyGc80Nn4SheC8QShrq1RTGBqlKj//Z4FwivtJqrNSFfZXqjEMQ1LIOQcSpH3izOqrw8385BPBb6Z0NnBU89fdPyr+Dt3+rJg5T8qOxlpNvpTdPlWPtZfZJTbVQVpNpmvoOww4ukZb13w/TRpd5moQAgWeoJfQlTlWvLJmbCFVkQYawwDvdNvScs+CnHPlJePLtbKb+I4osfplUSzcYTYHC7QPuTSeYwAmcGK9QTUerUmX6oBoWlhRRc6gJMNyVByisqaElvs4hWejH5/J/VzNbNG9DoR/zDSgCqcmEiSjRdqkZJLXtjcTqBVjnukc/cYcVQCofNp/TOxIoVZS4Qs2PPKisV+G4sTGohf4wUmHrQrsJnVIrmArAIRF90S19Vh2GK5qVSC/dKeK2lJSyvw/7rRrptN/6lm/wo7ocxiTAPjhdt0Lo4yani70B/8UmyxvN2DXOAIQaeEcV0ilNeCamFVy17X1Oqnif
- W0wt+Z12
- 5QkTl+dwsyWg0/sEMyDXklUqI586nAYzM9JsLGFh4Nuve6vG6x6W4Mx7VWGCMnkiUiOIpWPckMCP1GaqMXxXBmPJhaM88Vln52Z3Yn1dJQXlww98rLI79S9Sdp1f1KtKFIzvnDv2a+bVrlT3xXYycYafDJm1QpQJnPmO9wFTb5GjmqDJXr9WVm5aozDbicyw1p7ipi6Ba5HiBfA7bZGIEBqEtEdaM8LtItvlt
+X-Rspamd-Queue-Id: 23FE61C0010
+X-Rspamd-Server: rspam10
+X-Stat-Signature: yprag96wwmhnpzppufdgphjeyuj1nbb6
+X-HE-Tag: 1767042902-769858
+X-HE-Meta: U2FsdGVkX1/fJ0NTxPGg1pUsYKUjDu+omTr2fRTjICEKesGoPhOTeuChXPzsoE1esA4ilbTcd4ndVN5DfLirisFdEEIMc9r2YVmcnOso8aqOWn4mOfkYh6QsBS1GJYjRjvUpUaTgmjjyswhrdujrYv1MvOv3Pkm0yDJbpTTfHwpV2NVk6NiOHFTHr+6RqpHOPh6BHU7eRrISWe/iqTAf86pA9pgZqQ4gj/xWsaKWj3vzMhjLmDrMAXLEuBvsIo3oOfMFxdm4K37qp0QNcg9G6cGnTSjyQjzdDH75M6DHymFEpiaJZgCYjuFtV+5bQS8wk84AdyXfZNpPQ/+HrZLEMKhZ5BwfnaZegAIi59XIJNRnya17vuA6QZ0/z9Adu/IzVVe21JSFcv8z/V5A1tpzDWdA2C/asJJdqln/ptEmmtcXgYSWB8r+xKHQBMr74HATfOhaMdpEAyCv+G4i0BK67M8T4bBnW/rJkmOeN5jYmGCNWeEoenTGOZkebtc9iURQ47tCyyyDx+YDoC2R5R1c4JW4Nssx/fkTgpX6Ry2JfLSMraMOyAmCyxzqfEcS3vvOdZDujgXAj3QlhtJvPnMBp4L0ULL8KDtD71p01BOEhDfjbYyT6AFcLq6kSB6FdlA9qAqStY91kjByCvTANAN8wnwG9Iaqs+RzqyRedGwAtzNEXD53sX3AxITU2PzikYSmFlRdPYtyq+zJyzUe15Tyu3g60PTnZ75Gb0ZCYlcHkdOJrcPNBTSZKzIxY5eerdqiwBB4VvGthQgO3raK5czrKMXbRTVj6nOMLUW0RAobrM9t/wiq8hUf3mIOzpruPkmDkbCAXpXBdUD4FFXo9/R6mWSpqKVoXEo9vOK6WiMWjvjI3C+5KM9ni9sS7W7dhte+VrDmumMp74tlu+Tp+A0a6aXoIuE7o1KJprffpcSp6WyRYMDBeYUWGeEOjAdQgOEq2aG1oSpZbf2K3fQcoyH
+ ZK6cFqJg
+ sxpF7v3djnK/h2QlSkYes+s7AJVzvvtP2fFGLPt9PxyobHK5oAP8C9mtXiWGsbe5Cj0n5n6OQdfjwSWeSwo8i5QRGHRtTY+7UYLanaC/dXGN6vE9Jstf7FvzGz9qx9OaSyGdM8zG8j12I/qNxlAzN+GLSRIkomnpytxbUxFnwKgMyWi9mDLbChMSqP5uZiXApJD/nomdIEQsQ6IA8c/GiT87z9+OXaVldUBrgvq5pVQtGTgirTSS5zIxTiw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,52 +110,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 24 2025, Fadouse wrote:
+On Tue, Dec 23 2025, Pasha Tatashin wrote:
 
-> Hi Evangelos, Mike, Pasha, Pratyush,
+> On Sat, Dec 6, 2025 at 6:03=E2=80=AFPM Pratyush Yadav <pratyush@kernel.or=
+g> wrote:
+>>
+>> Hugetlb live update support does not yet work with CMA. Print a warning
+>> and disable CMA if the config for live updating hugetlb is enabled, and
+>> liveupdate is enabled at runtime.
 >
-> I independently hit a crash in the LUO/memfd restore path with
-> CONFIG_DEFERRED_STRUCT_PAGE_INIT=3Dy, on a local build based on dd9b004b7=
-ff3
-> (x86_64 QEMU, 6.19.0-rc1 timeframe).
+> Could you please elaborate this commit to explain why it is not
+> supported, and what it would take to support CMA.
 
-How? config KEXEC_HANDOVER depends on !DEFERRED_STRUCT_PAGE_INIT. So you
-shouldn't even be able to enable KHO or LUO with
-CONFIG_DEFERRED_STRUCT_PAGE_INIT=3Dy. Are you sure it is enabled?
+The main reason is that when HugeTLB CMA is enabled, the huge pages come
+from CMA. If we have preserved pages, we would need to "insert" those
+pages into the CMA when they are restored.
 
->
-> In my reproducer, stage1 preserves a memfd via LUO and kexecs into stage2;
-> stage2 calls LIVEUPDATE_SESSION_FINISH without retrieving files. I observ=
-ed
-> a reliable crash in adjust_managed_page_count() from kho_restore_page().
->
-> Minimal excerpt:
->
-> stage2: start
-> stage2: retrieved session fd=3D4
-> BUG: unable to handle page fault for address: 0000000000001410
-> RIP: adjust_managed_page_count+0x29/0x40
-> Call Trace:
-> =C2=A0 kho_restore_page+0x18a/0x1c0
-> =C2=A0 kho_restore_folio+0xe/0x60
-> =C2=A0 memfd_luo_finish+0xe6/0x160
-> =C2=A0 luo_file_finish+0x188/0x240
-> =C2=A0 luo_session_finish+0x2c/0x80
-> =C2=A0 luo_session_ioctl+0xf5/0x170
-> =C2=A0 __x64_sys_ioctl+0x91/0xe0
->
-> Applying the patch in <20251216084913.86342-1-epetron@amazon.de> makes the
-> issue no longer reproduce for me.
->
-> I can share full logs and the small two-stage initramfs reproducer if nee=
-ded.
->
-> Thanks,
-> YanXin Li
->
-> Tested-by: YanXin Li <fadouse@proton.me>
->
-[...]
+CMA does support multiple ranges, so I suppose it can be done, but it
+needs some plumbing to work properly.
+
+Will add this in the next revision.
 
 --=20
 Regards,
