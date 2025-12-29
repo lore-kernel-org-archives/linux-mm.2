@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67897E8FDBE
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 15:00:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39421E92733
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 15:14:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD27E6B009B; Mon, 29 Dec 2025 10:00:53 -0500 (EST)
+	id 64C996B0088; Mon, 29 Dec 2025 10:14:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C89CC6B009D; Mon, 29 Dec 2025 10:00:53 -0500 (EST)
+	id 5FA1B6B0089; Mon, 29 Dec 2025 10:14:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB7026B009E; Mon, 29 Dec 2025 10:00:53 -0500 (EST)
+	id 527886B008A; Mon, 29 Dec 2025 10:14:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ACA526B009B
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 10:00:53 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F8D01616D3
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 15:00:53 +0000 (UTC)
-X-FDA: 84272820786.08.C017F2E
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 115CA4001D
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 15:00:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="HEt/wjs1";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767020451; a=rsa-sha256;
-	cv=none;
-	b=7cn5mrR+cMMNdofNjlOC9q1FZN9eHJ1ifVr+CM7xlMZQxgnQCDfcY+rY4TlL66DStuu+XZ
-	rw/vvJhD2c7F03aUQh0DDBD3vvrEPNzbyjoasJBE0ifOuGO1nE62NaaDtcr0XajrRLuK6n
-	5xs7OXMl6g109JqOd+BryeLfNCB0BUU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="HEt/wjs1";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 443B36B0088
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 10:14:52 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6181F912F6
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 15:14:51 +0000 (UTC)
+X-FDA: 84272855982.07.0E09527
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9E334180012
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 15:14:49 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SwCRwJlL;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767020451;
+	s=arc-20220608; t=1767021289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PPBVcYcgdOP0Js4PkjcKCsAb8PlbkiKIG7/mKprLRtI=;
-	b=iokdZHOnpgQnUMfNfEk4NALAvGtAJJIQXH0SScv9i4kWoVTVh9ZPdG/VBbi2VJOQEyZ8bT
-	GdhtEv+OE3cAQmJ5KtyP4aR2jRPfoX4cVPhUvtE+ueF1xBiXPuPiDnKQPWRDqA9wGPdYdd
-	qjyVKZXc7Cr3fxjBi+UGhpsY3km7kbQ=
-Message-ID: <17a56acb-4e2c-4b14-bdb7-f64b105a3b4f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767020448;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PPBVcYcgdOP0Js4PkjcKCsAb8PlbkiKIG7/mKprLRtI=;
-	b=HEt/wjs1YBKqKSus5tbBwvjX5/EHdRZRtrWNmZLJtPQPKYh8VxQxwyZKjxk/IiPk+IiQfR
-	0R/8Z0NMLDbV0LUfV73yZjG+6z8CBV/X6O8CLPV1lRHweDi2MpuzlmBauHs738b+JQswrm
-	Y0+EAtI1oN6mMB13vLOWvOc1fE7nht8=
-Date: Mon, 29 Dec 2025 23:00:34 +0800
+	bh=7mE1OzZ0/nBD6aGtt9XWKOgg7vhGKV4i9O8OLs0uKko=;
+	b=XQcrQN7WQKljc/IRn3e2xjMuYdfQRtpFtojCD/Pf3lGrhNxBxjPzLgGGW9qKEQZEH/FXlU
+	bODKNBTWgj0pOVpPuwV9qe+OOrnGKwkxZycOmwq1aQv5RQ0VUYZ76+lOyWQcDfTBZOoYGg
+	nsYrxElykKyxfbmEEPfFhh4u0StZQ30=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SwCRwJlL;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767021289; a=rsa-sha256;
+	cv=none;
+	b=UyvGEO+OR+0Awg0yG4MvF48uRy8+tjY2nAW6/gPXBu7x0IVSlmy+nK4S65M8uEtHv79p0O
+	HkoDzg1vg4Z+R0onjU2v8p7HsOnDgDIK3Ms3xjjjt5QQ/LVx5nw8fi0GYrOK6nYAp2y733
+	e1BO0GwAbjM5yDsIch2xKiJFwYKj+SY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 56DA1415B7;
+	Mon, 29 Dec 2025 15:14:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C4CC4CEF7;
+	Mon, 29 Dec 2025 15:14:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767021288;
+	bh=Xs1tmf9C7xo6l4OgdflDuYGdhYDMGIBEbJwdPqxALW8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SwCRwJlL6HQFPm5wxDbBdS7qlRBSIirtH9eKhS4LOK8Hub+XN2GMIxyGQebL/85vD
+	 SpFhWQ4ynQyPWv2XANaScssiu405qVIZCc8jjNEF91eDH4lMans2OtOAoPLyU+UYWM
+	 98dO+2UmXkf64lkxb9FfWt18TV8ZCzXSUNdL5UgXd3GSPxxGv62vCvZzPQFFLaRXVJ
+	 RxrWzkbKErnw0KFwwoumTCHXViTKA+TDEXDdAo2yBlKc3iovPWe5O2KYSWzL0w+hUr
+	 kZuOhmniOhry9U7+l8AC2eNJ/I5HH1U/yfJtzesnoCoG93n17SobVQf0uxnoFiUMxc
+	 aSsX7I0Vo9s1A==
+From: SeongJae Park <sj@kernel.org>
+To: JaeJoon Jung <rgbi3307@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	rgbi3307@nate.com
+Subject: Re: [PATCH] mm/damon/sysfs: preventing duplicated list_add_tail() at the damon_call()
+Date: Mon, 29 Dec 2025 07:14:39 -0800
+Message-ID: <20251229151440.78818-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CAHOvCC7KAmj8hb8GtTJ+P_GUGqjP1WO8uqnpFjMPQmKFrc1oZw@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/3] mm/tlb: allow architectures to skip redundant TLB
- sync IPIs
-Content-Language: en-US
-To: akpm@linux-foundation.org
-Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, arnd@arndb.de,
- david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- ioworker0@gmail.com, shy828301@gmail.com, riel@surriel.com,
- jannh@google.com, linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20251229145245.85452-1-lance.yang@linux.dev>
- <20251229145245.85452-2-lance.yang@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20251229145245.85452-2-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 115CA4001D
-X-Stat-Signature: 578mqyqze6rbmk6s8op4wrnpe1uqfqcm
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 19i8ohc48wzi7yien9ebogdjqr8ygtjb
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767020450-399992
-X-HE-Meta: U2FsdGVkX19h44asguQgN6dNc8pXYOzubM/zi4QZ2tGh+reb1mgWOOwMWn29kgEOk8pT7Zl13/2nJk3qJ9rxJXcNmr8SalhmINfCR69Qsg6fiLYWXzzSghB0zzHRauJxRddapm681qjDAnima2TCTh3ZyzrV6O0Bq0yAG+cG9sisusahHMDt3s7MhSGqA5TS9lGYSWe4KQv4vsBTcxihf4m7dExDIsS/fB8iF114n+PXQQXHDYnHUYcaIiUbBQa3h8Qjq0tV3ChzBb3+yTwolzNVlMztTJM4nq4oUTtyG4E+0V8boJybApkbsCzkiczZAiOkppInP3ITsL5dZIZCOkGQlxpMzJ+imI4Gzub8lMMLsobyIC0xg9A44uhFe5b+XWNnol0qjGq+90IGv00zf0kMy492jZWPRfqlJqULfHu6TyxfQ2bZjJOLsGaWi63+GBkiTUkGSaSy06vWJiuORHr253Q5fVFybwysnV/CyG9+ltY28IKKrTFAZPQeE0KSb629jz8gw55ze4qYIXJ3/wszJz+7Ia7rHdgVItyqrwUCqLSo4e3EymJWSkwCQwKf6UsxHYJS1wq+s+qCWgW7Y97FKm3iH2IY8Nn0lAASxU8fspGFzZwomE6Q3D8Poyw8oOeONfPLLa0NBCQD9nr24oE2NYTZSX29I5fLXVTf+rPBM4L1DbdBRiDPVaRLyEgzk0i9DW8L5W3YMW6s+e3yb/zg4bBx9O6/4ewxnPOEI1BTAcsqvRwGQbvaKfRSEUT+BD/XFHHhgLsFkU8kR2rDmYGgh6M73tCESonBF5hNFRWtBOIWBTW+FeUxR3RvM8j9fMl0/J1JAqGrMiGVJ2wLLMKROY3p1horGGhJmQWLOvKzqVswj4ybMcR9ssgLyf5KzWIJdtVTEsNaE1PewrE4k00z9cPhPWNUZejhdKzNsMZMGexQ+miCHkPR2NSm8gafkFVBl8yf/nRZXDCGeoB
- WZWSI6JN
- yUsX+oHjmikmySgUxcADIA4i/o8gS19KvgN0gXA0LbWCpQmaGUwpnZXpbGm/YS46QWWJtrmo11pCxdCpFUZVa2mkwsHq4ooF+qqmwGMm5oTUVD/mqv6Z8QNTQ4LrBjUGjQSDfhUi839pX3Zhcs0m7v35QU0S2J8EeeQu08hblR8EwfsYbor6SIwNJ+AYY1xuNHe4AQoW8csVE8DTP1S5YNI/f7dyINqA6S+9VzmnggNS7bI4m35whlkiWMA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9E334180012
+X-HE-Tag: 1767021289-289836
+X-HE-Meta: U2FsdGVkX1+9+Aisk7myp+E0FMmuQV/UjJQUPX2L7xI5yTqy6qReEs18Wp8uCnSakLKt+7qRKHl+hKp3f945UwY8xcl4LEdZLSDKUTDxALzWShMAHduv5zNOcZnj+VRNx3PdxJD1U0HArazNNCwz8LYw4V6aGS2FWwOtmmkzEXfML1h7sABO9ZcFUm4L4aAun7Cy4FbWmC0vxZPcAtV/NE9rXZUuSABj+OgzBEtNk9IStelMLQ7Ff0ZQxrSQC6JkNY8PKXZ4HhsJC5PiOL/YUBYDOqxE1iUca+ayMTY/hgtUF9g/a9VFuyR0pQ4M24kYvLOG/VZ8wPGDfSbE5bxG1FwaqRvz3gM0hhseOqbU7BFOrp02Y2+3pY393jDrT9xvqCKPynE0a8blyxD6O1IHwjAk8HPIDPPy3eZTP3DK0q9AdoTyacuqT5C1t8RQ1P9xeSxONSxInsImMhbbCkmk6WtZD8zoSBTf7PFCKbIh6GrJk/zj/4Ze0k1gTUajBT3+47iws4Rrpop8oFCyetX+QzN13PNnFsYgZz6mY+bAl7DoJRwtz0gj0RFYNVqouxij+BNaCNM+zbyITQoFAPm1ITdIYOJMXKDNVV9FIN0pQHxqoyuYKWCorhhmlXGPZbXGof8WTu1pyL2aLSBXhfpqsGz7MXL960QkoeBjkySHLsUgn53VkBEuV1h6zCdmmlhErMOSSJ1fBnInKLsjNBy3XTnfHmvh9uWRop3MvkPIu/UAQmx6U1BsL1UfyEJ7tXtTVF41QA4A/KguQTOK0Nb9DLJR9mbNGxZE0kS6zTSAYTjK0bB9FvnzXsEITZWwPTVxL/L3NOH33IZ9o1dvtZtsCB7AXrq4Ne+6yHzdRxr/rpy1eb94zFwb1r2r2nxyZLuTcgj8A7PYTxlz91Sf499nW8BGZwYHP7GlQsh4pRPoyVgiZA8PkdmQnOy6mi2DvaeGFA8kIBJzovluQaqcCqX
+ 7gvLwjVP
+ MkHhMyiStXzAjT5HY1Yar7Pedv4nGi5hexI9vz1hMR9Z9IhONwORb+RuStYgONh0j/NCOY8RuGNPeTzwKBv6h9QYYt2llmDQLtvjnS+MiKcUvR2o2BB8GUvBuQFKQUljv8pNLYAsUvr+Rm7VwHlub0R4rgmXK/XSXBtkgOpcE1piD6yuml3vzQQJuekYUR/acfTKXJNHXKC0+ISxcU6jALEDJ7tGaikOO9WRMQ/75zFCNzhMjKDQoma3sWjVyM8RL1DCEnOvJ7kHAjD4L6kp4A7L5kxwWgdxTzu1wY+Ak4twZ0NI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,6 +93,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Confusingly, I'm still unable to send the cover letter, but there's no
-error message. I'll post it here instead ...
+On Mon, 29 Dec 2025 12:38:58 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+
+> On Sun, 28 Dec 2025 at 02:42, SeongJae Park <sj@kernel.org> wrote:
+> >
+> > On Sat, 27 Dec 2025 08:53:21 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> >
+> > > On Sat, 27 Dec 2025 at 03:41, SeongJae Park <sj@kernel.org> wrote:
+> > > >
+> > > > On Fri, 26 Dec 2025 10:48:31 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > > >
+> > > > > On Fri, 26 Dec 2025 at 04:50, SeongJae Park <sj@kernel.org> wrote:
+> > > > > >
+> > > > > > On Thu, 25 Dec 2025 11:35:33 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > > > > >
+> > > > > > > On Thu, 25 Dec 2025 at 09:32, SeongJae Park <sj@kernel.org> wrote:
+> > > > > > > >
+> > > > > > > > Hello JaeJoon,
+> > > > > > > >
+> > > > > > > > On Wed, 24 Dec 2025 18:43:58 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > > > [...]
+> > > > > > > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > > > > > > index babad37719b6..2ead0bb3c462 100644
+> > > > > > > --- a/mm/damon/core.c
+> > > > > > > +++ b/mm/damon/core.c
+> > > > > > > @@ -1462,6 +1462,9 @@ bool damon_is_running(struct damon_ctx *ctx)
+> > > > > > >   */
+> > > > > > >  int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+> > > > > > >  {
+> > > > > > > +       if (!damon_is_running(ctx))
+> > > > > > > +               return -EINVAL;
+> > > > > > > +
+> > > > > > >         if (!control->repeat)
+> > > > > > >                 init_completion(&control->completion);
+> > > > > > >         control->canceled = false;
+> > > > > > > @@ -1470,8 +1473,6 @@ int damon_call(struct damon_ctx *ctx, struct
+> > > > > > > damon_call_control *control)
+> > > > > > >         mutex_lock(&ctx->call_controls_lock);
+> > > > > > >         list_add_tail(&control->list, &ctx->call_controls);
+> > > > > > >         mutex_unlock(&ctx->call_controls_lock);
+> > > > > > > -       if (!damon_is_running(ctx))
+> > > > > > > -               return -EINVAL;
+> > > > > > >         if (control->repeat)
+> > > > > > >                 return 0;
+> > > > > > >         wait_for_completion(&control->completion);
+> > > > > >
+> > > > > > Let's assume DAMON is terminated between the damon_is_running() and
+> > > > > > list_add_tail().  In the case, the control->fn() will never be called back.  If
+> > > > > > control->repeat is false, this function will even inifnitely wait.
+> > > > >
+> > > > > As you said, there are cases where kdamond is terminated(stopped) in
+> > > > > damon_is_running() and list_add_tail().  It may be a very rare case, but
+> > > > > I missed this case.
+> > > > >
+> > > > > >
+> > > > > > I think we should keep the damon_is_running() as is, but further check if it
+> > > > > > was terminated without handling the control object, and remove it from the list
+> > > > > > in the case.  Like below.
+> > > > [...]
+> > > > > However, the damon_call_handle_inactive_ctx() function is to post-process
+> > > > > the duplicate addition of control->list.  Rather, it is more efficient to
+> > > > > prevent duplicate additions in advance, as follows:
+> > > > > I have tested the following and it works fine.
+> > > > >
+> > > > > @@ -1467,11 +1496,14 @@ int damon_call(struct damon_ctx *ctx, struct
+> > > > > damon_call_control *control)
+> > > > >         control->canceled = false;
+> > > > >         INIT_LIST_HEAD(&control->list);
+> > > > >
+> > > > > -       mutex_lock(&ctx->call_controls_lock);
+> > > > > -       list_add_tail(&control->list, &ctx->call_controls);
+> > > > > -       mutex_unlock(&ctx->call_controls_lock);
+> > > > > -       if (!damon_is_running(ctx))
+> > > > > +       if (damon_is_running(ctx)) {
+> > > > > +               mutex_lock(&ctx->call_controls_lock);
+> > > > > +               list_add_tail(&control->list, &ctx->call_controls);
+> > > > > +               mutex_unlock(&ctx->call_controls_lock);
+> > > > > +       } else {
+> > > > > +               /* return damon_call_handle_inactive_ctx(ctx, control); */
+> > > > >                 return -EINVAL;
+> > > > > +       }
+> > > > >         if (control->repeat)
+> > > > >                 return 0;
+> > > > >         wait_for_completion(&control->completion);
+> > > >
+> > > > I think this is not differnt from your previous suggestion, and thus it has the
+> > > > same issue.  What if DAMON is terminated between damon_is_running() and
+> > > > list_add_tail() call?  Please let me know if I'm missing something.
+> > >
+> > > I think it is good idea to insert a barrier() between damon_is_running()
+> > > and list_add_tail() to prevent context-switching.  What do you think this?
+> >
+> > I don't think barrier() works in the way.  Please correct me if I'm wrong.
+> 
+> Yes, there is no need to use memory barriers.  Since each kdamond runs
+> its
+> own damon_ctx, the concurrent access problem can be sufficiently
+> solved with
+> mutext_lock.  The problem discussed so far can be solved by applying
+> mutex_lock to both ctx->kdamond and ctx->call_controls.
+> Please refer to the modified code below:
+> 
+> @@ -1496,14 +1502,15 @@ int damon_call(struct damon_ctx *ctx, struct
+> damon_call_control *control)
+>         control->canceled = false;
+>         INIT_LIST_HEAD(&control->list);
+> 
+> -       if (damon_is_running(ctx)) {
+> -               mutex_lock(&ctx->call_controls_lock);
+> +       mutex_lock(&ctx->call_controls_lock);
+> +       if (ctx->kdamond) {
+>                 list_add_tail(&control->list, &ctx->call_controls);
+> -               mutex_unlock(&ctx->call_controls_lock);
+>         } else {
+> -               /* return damon_call_handle_inactive_ctx(ctx, control); */
+> +               mutex_unlock(&ctx->call_controls_lock);
+>                 return -EINVAL;
+>         }
+> +       mutex_unlock(&ctx->call_controls_lock);
+> +
+>         if (control->repeat)
+>                 return 0;
+>         wait_for_completion(&control->completion);
+
+This diff assumes holding ctx->call_controls_lock will avoid the context be
+terminated, right?  But there is no such guarantees.
+
+
+Thanks,
+SJ
+
+[...]
 
