@@ -4,81 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B734AD3B7E5
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 05:52:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BC1ED3B7E5
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 06:02:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A7526B00A1; Mon, 29 Dec 2025 00:52:48 -0500 (EST)
+	id E02846B0089; Mon, 29 Dec 2025 01:02:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 288756B00A2; Mon, 29 Dec 2025 00:52:48 -0500 (EST)
+	id D85BF6B008A; Mon, 29 Dec 2025 01:02:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 153356B00A3; Mon, 29 Dec 2025 00:52:48 -0500 (EST)
+	id C67486B008C; Mon, 29 Dec 2025 01:02:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F3BE46B00A1
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 00:52:47 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1EEDC3563
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 05:52:47 +0000 (UTC)
-X-FDA: 84271439574.07.5E69A31
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3027D160004
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 05:52:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sn2tvNPJ;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B473A6B0089
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 01:02:55 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 424ED1409ED
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 06:02:55 +0000 (UTC)
+X-FDA: 84271465110.24.21625D7
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5DA0EC0004
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 06:02:53 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fKvB3y3U;
+	spf=pass (imf22.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766988173; a=rsa-sha256;
+	cv=none;
+	b=ObIXnEnvVbdQKC8nEEdpmuw0lZRN4T6r+vuODUvS9ES8lSV8VK+XDXFApAMUUGgQzfen6S
+	682BDVdx3Z8yXLkfn7Hdx+uWBPDIKzLML9XgmiMpzM4neP1GXXgyG+OWvkOIhGYuuds/O9
+	1+rZPPqichRl5D3OShkUGi4wgvGmWF8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fKvB3y3U;
+	spf=pass (imf22.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766987566;
+	s=arc-20220608; t=1766988173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=j0jd1cBLkGi6iww+RLrfDA4cviJE8BMPue7dlfne20s=;
-	b=S6DDvonEhtuncr3JugJYuvgJVCcR653SNik+2xUtkxv6oRdfKBQK6n50khuRZgHQ8+ONsi
-	z+KOKvtvseu22pQ27BHPF6g0v0jG9EbSdj6sKGFWM9a8lK2LLkSHRzl5AodB/NFyA9eKkC
-	fAEidr2C7KKarPJMfCpO8agNbYMf/No=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sn2tvNPJ;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766987566; a=rsa-sha256;
-	cv=none;
-	b=vLGQOkp9QiSewRri513l6fL8ne6Hp+jRes1fGmlThJFk4NUm00r4cvGGppJ3FOsW2D61Pf
-	KyXW2C2+Cut0ovAPljDzDgHjGolwNbX5sUg9FjjdElfFyh42Q+1PZll05Y4J81B1I2b0Qs
-	3ujvP4vhWu7toqPqg0kpgRTH7UIt2NQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 712C16000A;
-	Mon, 29 Dec 2025 05:52:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09064C4CEF7;
-	Mon, 29 Dec 2025 05:52:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766987565;
-	bh=IP8O/3R0xQrKZ7hzXFyKNUrmFs/ElScw+GMdLuR2NLc=;
-	h=Date:From:To:Cc:Subject:From;
-	b=sn2tvNPJ8FUY96at4KCMkSusHjrdWHZxmSzppGJOCyPGa7Av9eu1JQcjg5GBQrxDz
-	 Sin8enhNTm3oPVCgahN9IzMWOg7P4TcvfW9L3Hpo6pcG+y5vZwIpGyNSeJc3jkpOrC
-	 famVX/C8LfKAKSZ4x2PXEJswuXX70f6LzjWfNSqM=
-Date: Sun, 28 Dec 2025 21:52:44 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hotfixes for 6.19-rc4
-Message-Id: <20251228215244.10e9ec389dcadcbcb336c98b@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3027D160004
-X-Stat-Signature: ifssynk4i8wpzeiakx8j9ey3tbuyg5sh
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=I9z7dAcGdGLyR7vtraJhuT9FmCukGfeyiWnjfPxJfB8=;
+	b=39we3JD6TaRGM6v8v8yzV63mOlcy3MQcgmAUKQafb2F+GEt5I0I2qPjrvCOJm3uF1TCAod
+	+XkV8c7Fcf+HFDcBw8ifEhz6HWUdH+c1ZrbNH/yfBDiVuRvvvRYZ0aIW9lhxtisgAOLsNe
+	x/XmKUGJrhWd5qauDWhqrTtvbh66HZw=
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7f0da2dfeaeso9380277b3a.1
+        for <linux-mm@kvack.org>; Sun, 28 Dec 2025 22:02:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766988172; x=1767592972; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=I9z7dAcGdGLyR7vtraJhuT9FmCukGfeyiWnjfPxJfB8=;
+        b=fKvB3y3UfLcTJkNhXcSTrdoKXMcGAmgnGrOGP6PHKvLBR13hW6OjfTbWdjVGefmWzA
+         aIUou2nWxSxAP2Zcdz1+GsUYvEI3VdSVkvg/NlxGYAa6JCOKmsIopZJ8LmFEmUnchcUq
+         ASMPlsaYu1YIsnffN/enhDqXGCe/zFNtNxo74OtivogWaTa2ASU/gYeornBBOS6Ty7wm
+         p1zjhasJRk+h2tN+DKoQBqBh0ZTkl8pu8r7KCQ5Pg8PdczXpqdbAC8bL+XV5yL1bpqJ/
+         lgbQPEOQ415Rdd5qNKe0fFwH3JLvEXqrQr9Bc/t+dELcHWhKzEuIMoHWOob287TINB8H
+         aCIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766988172; x=1767592972;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=I9z7dAcGdGLyR7vtraJhuT9FmCukGfeyiWnjfPxJfB8=;
+        b=PgPa641AyeNy2mMAQipv1HqcFX38+v2plOl32P0j1u5e+XY/rzueNdZqmcbdBy4vrN
+         tU+cXmtpu4hB7vnKnj1d8k9beCaAT2zlUl1j7qIoZOQ68GynTvh5oEaLKPOC7kYRHFU6
+         hvmiWK6KEK7oYA29cGoUWcoBFH0vK60AIAAq3TlJJ766ZAZVianMSYL0O1WHWrDEB1hO
+         kY4XthIi7CiHDoMh3tn5IgyK9GpqPRYmGPzPOxYb+7qm5w+Vhn7Tv6EAqxCBHqRXtRzd
+         GwY56vuXBI161qBRotIUu8FBSgoB8UWzLY9yPjC523sPr1JeLe3C/bdKhby6ANUwA0f8
+         khog==
+X-Forwarded-Encrypted: i=1; AJvYcCXfExr7UgvwhacZzCo1y1Z3iVFWueGrfQCUpYvC3wUw+NZueljMuGBMcjFATK/e5IF83bYJ7uVyWg==@kvack.org
+X-Gm-Message-State: AOJu0YxlmZc5UGtsz8CUQKXolrEIS28Trc7w82zcA6jpeUDyx1KBY2ce
+	Ji3SLEjnOS7DgJ26OBRgLWP9ILvRrUGIT8BSfn2wAoSYs0hMnhoHnnCH
+X-Gm-Gg: AY/fxX77ydBvwMYYRt2uBuJ59/LfEAlz2JsXys8Ha47xm7tD2rrd3CiMFp8HdVkv98p
+	SUoB9/0VcZ5//1N4UJOFOl+pxR/S46doW89uFh9DzvIkhrigEiHU1xFVC76VyzFyIbx/k4u7I9m
+	HrdLAXrZlLRx3IJ+2HBpm/qNE3WxpxGFDhn6Gb1yGVXyFBhuu6sc6/vFjcE1ws1IbMnGtEOXRrk
+	W1IJPXrhC7A67SWp0Gj0HeNog2tSR2g3bwOKdYxWqNMHvMPTKi10fCqPJz766DtrLuT05324Qt8
+	bAhL9x5y84fh1s8taZc6xInchuKVirdWM0n0zwdhoMfw8788Kt/QNhuF7Agl88wpMN4iTdqqaQo
+	tJLNF0e5PmJ8UXwH775/KUg0wO5pggrxwOvvpJIgkO7wEgBmNFIfwzWYr+AX8WOiU82Ecj8b5wR
+	gE/g2/wzH9UTPrAQy+WNqnH4A3Wp6LKIGEDA==
+X-Google-Smtp-Source: AGHT+IGoepxRgYIF7g4fnLW1GuKco392J3Bx/eHz2velvIsKZktG5Tct0qgk+XSzDqTr+wWagp/6Sw==
+X-Received: by 2002:a05:6a00:2c86:b0:7e8:43f5:bd19 with SMTP id d2e1a72fcca58-7ff6735e594mr24067262b3a.46.1766988172166;
+        Sun, 28 Dec 2025 22:02:52 -0800 (PST)
+Received: from localhost.localdomain ([121.232.80.251])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48e1d6sm25491914b3a.53.2025.12.28.22.02.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Dec 2025 22:02:51 -0800 (PST)
+Date: Mon, 29 Dec 2025 14:02:45 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, 
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, baohua@kernel.org, 
+	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH 2/4] mm: khugepaged: remove mm when all memory has been
+ collapsed
+Message-ID: <lxb772vmath36ytqqllvszsiltv6ntd4pwmkjv77dvf3zxxhrg@qc7372lkqo5o>
+References: <20251215090419.174418-1-yanglincheng@kylinos.cn>
+ <20251215090419.174418-3-yanglincheng@kylinos.cn>
+ <26e65878-f214-4890-8bcb-24a45122bfd6@kernel.org>
+ <djh6xaia56grmgxdok23kp6ly3oe3ugsinxdp6jie3k2tzwaml@57gbrcr75jng>
+ <52174c05-e9ed-4049-ac05-d0d0b3228f2a@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <52174c05-e9ed-4049-ac05-d0d0b3228f2a@arm.com>
 X-Rspam-User: 
-X-HE-Tag: 1766987566-134643
-X-HE-Meta: U2FsdGVkX1+jjDQNK8ojXNdQao9FlS/fp28ZgyBSGqpr4JuEsHFjjkxRqxDViV/EhFQiCOGKJcjyaiXZx5n9eHsefhVrpj3uufCzv7xyW4P33MNdEKyXlKWGc4Cxusb0f8Z4yQk7AhHROEyAmssP3o2nELxPnsAFffOj+Jxt9kZWSIpU//sxSA7RkdZG+A6M3NE9wOyQ73/I9rul76vPn3+W7SE6jeh0PjbLGRo/2s1iiQb+6MF482bwipK6SsklZHb6E1o7/o5KMA16rNmHQi/LWuyBr3Ld+pa9ACv3NiRtZhKXNZzZ+Xkl3ls6o0htBgFHsl1SpGil7I8s0Zfi4qAGhGZDgPU3adCBQ23c5LUZLQuVqcRO9EFBtaRilWZqoWilu20hvdNXkvnzYS1dsKSPsJTwWM+VZY7zCWRjLZ4QzlIM+sxSfcGzyoAInoN2YTT/o/fIPDZgSkVcKWmM2CFYMLMmJLK19khjrRLh8nhT0z2WnqMjMV/sTnF4CC6Kysg9fbbEpM+PJJmKYD69ShLYRFMCGG2YnNlLKC4pze6fNigpIq7PnDjtyYvWYlNYtZql4uOx2bR4WKr5v0Fk2Dl1O4DFzhFQMHUZImOHp5HUSsbfG4GUTTQwZG7vBiUK6/hiSq7x1+T5rAmW6670OOQF94JSjh9rGOIZe92Vv1nl1mgCG33cLU0Cr3NKxq5Qey/BwvC5/N5TH6Bvv0yzxPcBT31yjPRvU6eDSfXXycnQJrN5n6Ji+G8jBb3oO0cBroujHH+yMErL3v9StSkHwqmPOwJzKzdMpY88RokQR8v/7VyAeYL4atk+94TFvK3Nhpr0sGsFTnvXk9z2sb9fwx8MYhyV43tyPpYp4I6P/2cWgDeVprYiNNPRHLZMgYAXVZ9zK9kzUM+LDm56MNJT5A0D9JjvEGHWIJOzjON5boVcSu5r3RJL9nQ776SyAylWMGrJWUN1v1WUmysVRNe
- YUo7twsX
- MO2R0z3vVcXjkR8BeWx/xaSZvEKb7WYJ6hXa2GHRR+Cij4Hq3yWyfCBjR45RpQ/VBR0/HWJaC4bTQrE8Gi3We+27Xkz2X+ZIVOOJS72do1IrH2LPr4HlfE96I1t5lZsRbB4UG5Tx6AnSkZglOKSHD0uzeSRq7z4CRqtYpYe/g1vqW09o5stH9S1aIlZJC5OMV/pQOEDBBEMajZWq9wOJSR9tfb4Sm78XreI9bWqR+L4my3GauW0/2TdM5Cv68NU300psiDTpUlHFQ+ZE=
+X-Rspamd-Queue-Id: 5DA0EC0004
+X-Rspamd-Server: rspam04
+X-Stat-Signature: oqt3p5g6x7zkupkqihz3zpxjd78zh6jm
+X-HE-Tag: 1766988173-205867
+X-HE-Meta: U2FsdGVkX1/koHODPBb/t0aYtLpVGSckJ7/JAnydltvUnyoaAAFwthnjMzucOu0Ihtix291Mu/cILgeWE+DDuYMPHpdHxkjBIaWsiA+Pm+elxuV5OJocsdjJ5Ee0ZW+SYCqIEFRiB+GRLF6NgQQhNzMWM42/XEdu6ZORgMIPB4AxQ0dRuRyPY7gxUV0wBwSNlpQDQbRgaFjpqYmn3/jGmMv9tsJj0ZYUhgsE0TJ7DXbhzd6DyV5UF8ncn7zeW5MWBN71Uq0WjwFOno/9CouegEnvMqZVsO60X/etl+fAIDDXJh0n4nxjeNgdLmHPiLyb8h9eqxj1+MGF8d1IcAZ4KJoo1zmaW0jBTXlQvkyGyfcC5o4T03I/QyM5T+Jfs393GVc06nN6cB6CBKyMK6+N2fMu52sQ5ZYlrr5h6jch5ffnIC0nq6UCiG4r6QUAuMGQHZ1+LOexFZqGYUeLvJnoZH2pg7XDw6XtABHjxXAsiEy6WrPh+oo/zcRNoZFmIGJhfVXMC6dlCOFnOTcIzHlQTxX4a5DyaaV4GenTbdjq0Q3WFrjvO03xYDesAu83Ds3eI1xBo46KJ9Ttiy7dUy4ZWDBsDYJ+VEhItZVgfE1rOTlGuh51XiUO5U/1yPrwvLV8alNnzKiWzuLt76oAIaO9Qm1ta5k6F7SR6nRgwbYGyxR11lUO6Cx8JZ61cokGaPeMuKyJUPjC1jQiK9rSwRWqocmNGUHhLPRXPePKuHNfxSRWb5EUzTVNbyqYPxmIPsvXI939B6p60BcjoAgCm3sQQFkDEKqA0IsHQr31pMR5KQXRbFg4rUpqriWdncXqLtHkWCVrv2R3ZATjghynbO86PHF4XeIkC1AJKobjVELeLoB5TyutSmTY08FH910PyvFJ/wpMgaFGC42MyIsuBNqOZatr++5ll4+EfW5Slmg2VGlY2UVT3qyfMrBReN0ILQJsvkwgEJ5zkokvscFljm/
+ E2YVMCGT
+ 84thxg25OMVODDYRc1uGq57RdUSt52MlbfZCFEQx25yIGVmOEecWjqwL1Bxvhj0kVCsnpUycX4fMyHwd/w/LTLyVNakLlYdnatO9K6/v3nt8Cz9kG5OP/rpKzgiNMdAqXdc7YTFG2OclHOyeKEd7aaqQSl5k7YKACZbw6a1zlVvKE8huTC7cLd4aydMNnNTCaEEDrEkloMJKxadj5vI3+iN4M7BZ2qnZSuzK5WcjLvaEk0gIwxIjJF0CkSSB/YL7wcr1uxbVSBx17HhEutblTmm7z1QOeXQw8x/RHYGg1iVNGmWhu/68N4gp9X4q9VzTSskL2B15NgxmfgaQIe5P07YaWXstSFBXbzasSLVLrxYq6c81KQbaGzBWp64sHx2WCJMq/CejJaeGtVq8mGQmTzf7vx3Hcn8yZoOyPT8fY9egapdJNjQpkJMJ5nobGGbgqAeEqhoga0ieTKsU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,129 +125,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Dec 23, 2025 at 04:48:57PM +0530, Dev Jain wrote:
+>
+> On 19/12/25 2:05 pm, Vernon Yang wrote:
+> > On Thu, Dec 18, 2025 at 10:29:18AM +0100, David Hildenbrand (Red Hat) wrote:
+> >> On 12/15/25 10:04, Vernon Yang wrote:
+> >>> The following data is traced by bpftrace on a desktop system. After
+> >>> the system has been left idle for 10 minutes upon booting, a lot of
+> >>> SCAN_PMD_MAPPED or SCAN_PMD_NONE are observed during a full scan by
+> >>> khugepaged.
+> >>>
+> >>> @scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+> >>> @scan_pmd_status[4]: 158         ## SCAN_PMD_MAPPED
+> >>> @scan_pmd_status[3]: 174         ## SCAN_PMD_NONE
+> >>> total progress size: 701 MB
+> >>> Total time         : 440 seconds ## include khugepaged_scan_sleep_millisecs
+> >>>
+> >>> The khugepaged_scan list save all task that support collapse into hugepage,
+> >>> as long as the take is not destroyed, khugepaged will not remove it from
+> >>> the khugepaged_scan list. This exist a phenomenon where task has already
+> >>> collapsed all memory regions into hugepage, but khugepaged continues to
+> >>> scan it, which wastes CPU time and invalid, and due to
+> >>> khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
+> >>> scanning a large number of invalid task, so scanning really valid task
+> >>> is later.
+> >>>
+> >>> After applying this patch, when all memory is either SCAN_PMD_MAPPED or
+> >>> SCAN_PMD_NONE, the mm is automatically removed from khugepaged's scan
+> >>> list. If the page fault or MADV_HUGEPAGE again, it is added back to
+> >>> khugepaged.
+> >> I don't like that, as it assumes that memory within such a process would be
+> >> rather static, which is easily not the case (e.g., allocators just doing
+> >> MADV_DONTNEED to free memory).
+> >>
+> >> If most stuff is collapsed to PMDs already, can't we just skip over these
+> >> regions a bit faster?
+> > I have a flash of inspiration and came up with a good idea.
+> >
+> > If these regions have already been collapsed into hugepage, rechecking
+> > them would be very fast. Due to the khugepaged_pages_to_scan can also
+> > represent the number of VMAs to skip, we can extend its semantics as
+> > follows:
+> >
+> > 	/*
+> > 	 * default scan 8*HPAGE_PMD_NR ptes, pmd_mapped, no_pte_table or vmas
+> > 	 * every 10 second.
+> > 	 */
+> > 	static unsigned int khugepaged_pages_to_scan __read_mostly;
+> >
+> > 	switch (*result) {
+> > 	case SCAN_NO_PTE_TABLE:
+> > 	case SCAN_PMD_MAPPED:
+> > 	case SCAN_PTE_MAPPED_HUGEPAGE:
+> > 		progress++; // here
+> > 		break;
+> > 	case SCAN_SUCCEED:
+> > 		++khugepaged_pages_collapsed;
+> > 		fallthrough;
+> > 	default:
+> > 		progress += HPAGE_PMD_NR;
+> > 	}
+> >
+> > This way can achieve our goal. David, do you like it?
+>
+> This looks good, can you formally test this and see if it comes close to the optimizations
+> yielded by the current version of the patchset?
 
-Linus, please merge this batch of hotfixes, thanks.
+Either has same performance. For detailed data, you can see the v2[1].
 
+[1] https://lore.kernel.org/linux-mm/20251229055151.54887-1-yanglincheng@kylinos.cn/
 
-The following changes since commit 9448598b22c50c8a5bb77a9103e2d49f134c9578:
-
-  Linux 6.19-rc2 (2025-12-21 15:52:04 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2025-12-28-21-50
-
-for you to fetch changes up to d6b5a8d6f142ad0a8e45181f06e70b4746c4abc3:
-
-  mm/ksm: fix pte_unmap_unlock of wrong address in break_ksm_pmd_entry (2025-12-23 11:23:17 -0800)
-
-----------------------------------------------------------------
-27 hotfixes.  12 are cc:stable, 18 are MM.
-
-There's a three patch series from Jiayuan Chen which fixes some issues
-with KASAN and vmalloc.  Apart from that it's the usual shower of
-singletons - please see the respective changelogs for details.
-
-----------------------------------------------------------------
-Akinobu Mita (1):
-      mm/damon/vaddr: fix missing pte_unmap_unlock in damos_va_migrate_pmd_entry()
-
-Alexander Gordeev (1):
-      mm/page_alloc: change all pageblocks migrate type on coalescing
-
-Alice Ryhl (1):
-      rust: maple_tree: rcu_read_lock() in destructor to silence lockdep
-
-Andrew Morton (1):
-      genalloc.h: fix htmldocs warning
-
-Ankit Agrawal (1):
-      mm: fixup pfnmap memory failure handling to use pgoff
-
-Bartosz Golaszewski (2):
-      mailmap: update entry for Bartosz Golaszewski
-      MAINTAINERS: update one straggling entry for Bartosz Golaszewski
-
-Bijan Tabatabai (1):
-      mm: consider non-anon swap cache folios in folio_expected_ref_count()
-
-Dan Williams (1):
-      MAINTAINERS: notify the "Device Memory" community of memory hotplug changes
-
-Jiayuan Chen (1):
-      mm/kasan: fix incorrect unpoisoning in vrealloc for KASAN
-
-John Groves (1):
-      mm/memremap: fix spurious large folio warning for FS-DAX
-
-Joshua Hahn (1):
-      mm/page_alloc: report 1 as zone_batchsize for !CONFIG_MMU
-
-Kaushlendra Kumar (1):
-      tools/mm/page_owner_sort: fix timestamp comparison for stable sorting
-
-Maciej Wieczor-Retman (2):
-      kasan: refactor pcpu kasan vmalloc unpoison
-      kasan: unpoison vms[area] addresses with a common tag
-
-Matthew Wilcox (Oracle) (1):
-      idr: fix idr_alloc() returning an ID out of range
-
-Mike Rapoport (Microsoft) (1):
-      MAINTAINERS: add Mike Rapoport as maintainer for userfaultfd
-
-Pingfan Liu (2):
-      kernel/kexec: change the prototype of kimage_map_segment()
-      kernel/kexec: fix IMA when allocation happens in CMA area
-
-Pratyush Yadav (1):
-      MAINTAINERS: add ABI headers to KHO and LIVE UPDATE
-
-Ran Xiaokai (1):
-      mm/page_owner: fix memory leak in page_owner_stack_fops->release()
-
-Randy Dunlap (2):
-      mm: leafops.h: correct kernel-doc function param. names
-      sparse: update MAINTAINERS info
-
-Sasha Levin (1):
-      mm/ksm: fix pte_unmap_unlock of wrong address in break_ksm_pmd_entry
-
-Shakeel Butt (1):
-      mm: memcg: fix unit conversion for K() macro in OOM log
-
-Wake Liu (1):
-      selftests/mm: fix thread state check in uffd-unit-tests
-
-WangYuli (1):
-      .mailmap: remove one of the entries for WangYuli
-
- .mailmap                                     |  4 ++--
- MAINTAINERS                                  |  8 +++++--
- include/linux/genalloc.h                     |  1 +
- include/linux/kasan.h                        | 16 ++++++++++++++
- include/linux/kexec.h                        |  4 ++--
- include/linux/leafops.h                      |  4 ++--
- include/linux/memory-failure.h               |  2 ++
- include/linux/mm.h                           |  8 +++----
- kernel/kexec_core.c                          | 16 ++++++++++----
- lib/idr.c                                    |  2 ++
- mm/damon/vaddr.c                             |  2 +-
- mm/kasan/common.c                            | 32 ++++++++++++++++++++++++++++
- mm/kasan/hw_tags.c                           |  2 +-
- mm/kasan/shadow.c                            |  4 +++-
- mm/ksm.c                                     |  2 +-
- mm/memcontrol.c                              |  4 ++--
- mm/memory-failure.c                          | 29 +++++++++++++++----------
- mm/memremap.c                                |  2 --
- mm/page_alloc.c                              | 26 +++++++++++-----------
- mm/page_owner.c                              |  2 +-
- mm/vmalloc.c                                 |  8 +++----
- rust/kernel/maple_tree.rs                    | 11 +++++++++-
- security/integrity/ima/ima_kexec.c           |  4 +---
- tools/mm/page_owner_sort.c                   |  6 +++++-
- tools/testing/radix-tree/idr-test.c          | 21 ++++++++++++++++++
- tools/testing/selftests/mm/uffd-unit-tests.c |  2 +-
- 26 files changed, 163 insertions(+), 59 deletions(-)
-
+--
+Thanks,
+Vernon
 
