@@ -4,69 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96F75D3B7E5
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 03:14:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF591D3B7E5
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 03:14:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63E326B0088; Sun, 28 Dec 2025 22:14:04 -0500 (EST)
+	id 46D896B008A; Sun, 28 Dec 2025 22:14:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EBAD6B0089; Sun, 28 Dec 2025 22:14:04 -0500 (EST)
+	id 442076B008C; Sun, 28 Dec 2025 22:14:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CD426B008A; Sun, 28 Dec 2025 22:14:04 -0500 (EST)
+	id 33AC06B0092; Sun, 28 Dec 2025 22:14:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D0A16B0088
-	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 22:14:04 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D3EA2C2A4A
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 03:14:03 +0000 (UTC)
-X-FDA: 84271039566.20.299B75C
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BE39D140004
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 03:14:01 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=V7SNNNpB;
-	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 24C4C6B008A
+	for <linux-mm@kvack.org>; Sun, 28 Dec 2025 22:14:30 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C9F121607C6
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 03:14:29 +0000 (UTC)
+X-FDA: 84271040658.24.A0A8FB7
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 02F2240002
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 03:14:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CsTctdZ8;
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1766978042;
+	s=arc-20220608; t=1766978068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F1afDEBzhkrjAza00g4g2aJTxEIGJdJZw63+C1Fb5ZI=;
-	b=XvgLmYegsgMq/5riWoG/zwRZFmQyacGboXuoj+dj1yAX5DQQGHfgVTwZQ2MC6h77ItJMLp
-	cyuulsqzef2dFOoIk/VaR1FlB6GIZdnXzWz01SvyCMmts3TpxvxcNS54Bl/ch4YIXg+A4m
-	zfY61aWzGp3R5Nuh/Krt3Yq5ZZF9PeQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766978042; a=rsa-sha256;
+	bh=23WFVh4QD8EwOyb+DiEjMorTSabGcCdF0HCkzTj5UcI=;
+	b=4LZrxBQtcvS/mlbq7H/FO/wDrpz2nr6j0kIAd1cBz/YAmOBZlqbUlarkcMcsGTFFKuiJ80
+	CHS097eLDCCBzNM7swYhgOGoeBlUnIbVtBNz87RwJMPDuWIi10LEQVw/ocii8YZMOBour0
+	ZQT8defJhkplk6FY1cPm3TiXgFWw0e4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1766978068; a=rsa-sha256;
 	cv=none;
-	b=0Y0u+Jnvzs7Mq2RMUKi8q1v7Z+G89RtkXS/TC0QhabYrjq51v8lePOz/F2Q7auG9dNOQ3u
-	OxqtqMN52hvo8pMEluKKGZ4eU8n+HHZgD4NVd8Sc2CVlMSDA8YXnrCQZMyx0yoel2liLGg
-	ekortBh1nS2OGT0Dq0ypF5MMrykOzfo=
+	b=5eSgh9vlRNyuwceCMm43fqTnoYEMC30L60e/PxXqXO7kYxTBsoguW+om8n/UXnvFCwK1V+
+	5tdpFtenlj4GylV32AdJIV/BkN7RIfeOACYg40i5xPMh1glUklAJvmUegSdsbnMJlQhrUX
+	Kc5EN0srl81iQlYiXGTMDGXqGdNTh6Y=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=V7SNNNpB;
-	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CsTctdZ8;
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766978038;
+	t=1766978065;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=F1afDEBzhkrjAza00g4g2aJTxEIGJdJZw63+C1Fb5ZI=;
-	b=V7SNNNpBsYGA2qklZzdBaZNfC7/nBKX/4NyOPO1tnNJx5hQM9QLpkQX9kzLFRSuM3ibIwq
-	7jR2aveNyt5Zfsuz/R/iMbQL/x1sWvs2mbkhedncCx0OsNKVL/RASXUSpXQaMsdDanbQM/
-	J0REW/LMX1QgauBNDsImcrNeSpymDUQ=
+	bh=23WFVh4QD8EwOyb+DiEjMorTSabGcCdF0HCkzTj5UcI=;
+	b=CsTctdZ8U9pUZlVucTzftHHmp2gnI1r0CzZFlnpRDH9PaP1qXa4UPAYSva2HLine9CfV90
+	9W72CV4/QFwNiVWLYQ5mHLAgZrQcKb5qzwdX5woVQVU6YQn8JsHteRlat/Z+Spad7CIWaS
+	h++GDN5U6j2LdFzXpT0UvZYdzjPHOv4=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
-Subject: Re: [PATCH 27/28] mm/hugetlb: drop hugetlb_cma_check()
+Subject: Re: [PATCH 28/28] Revert "mm/hugetlb: deal with multiple calls to
+ hugetlb_bootmem_alloc"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20251228124001.3624742-28-rppt@kernel.org>
-Date: Mon, 29 Dec 2025 11:13:03 +0800
+In-Reply-To: <20251228124001.3624742-29-rppt@kernel.org>
+Date: Mon, 29 Dec 2025 11:13:26 +0800
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Alex Shi <alexs@kernel.org>,
  Alexander Gordeev <agordeev@linux.ibm.com>,
@@ -131,19 +132,19 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  loongarch@lists.linux.dev,
  sparclinux@vger.kernel.org
 Content-Transfer-Encoding: 7bit
-Message-Id: <2F5422EB-495E-4BC7-8174-13BED1147382@linux.dev>
+Message-Id: <C8C5C80F-BA99-445D-9711-2665B1262C66@linux.dev>
 References: <20251228124001.3624742-1-rppt@kernel.org>
- <20251228124001.3624742-28-rppt@kernel.org>
+ <20251228124001.3624742-29-rppt@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 8tbeip3x5fm9jqzrfs161k58jrzmkq3z
+X-Stat-Signature: r8nw497dfdwx1t5ogw6epnpfeu1cmi5x
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BE39D140004
+X-Rspamd-Queue-Id: 02F2240002
 X-Rspam-User: 
-X-HE-Tag: 1766978041-649741
-X-HE-Meta: U2FsdGVkX1/8bt/mBYn2+z+jOZ6KiraRjPO/oeNKE4URfIlvJGIiTHCfitWNFfGuhEdBSrcY/EBe/dx11wTy6DI3O30JRT8+UoiRlKvbXcITUe56FupKNQK2l4aGd1T0aUP4Qgx4UzdW+x7R1ZT1rdd9jgq+XA2ZXMp49+3p8FvEaUe8C3ZhxuPQ4fr5NQ1x/qYkLGdSkySASa83XoY5OPlazZ5lzeIrt5NHYBad0awpAPbRAFPSn3tWnG/sZDqgCP8vd7DxOg8dNDw+YcV1uXLxOsMEpiHiCvfS8HtTveRAcAtFxpyPHNAhAwIFo35SMwa+/y6Sz+7qUvUsUtGeyrWaBqkmPffZKToZoO6rWC+ZS+dIrRhEoDvNQief3CMkamIp7hIPjUhwUPRP0T5YiONsnWhaKtw973qYaIWn3O8eFK5l/jAy8Z6dHsoBxWtmCvmty0tJCZsrl09ZhWikYiRJIBowDM5AP/nnn59Hg0mQSRY/SoJUayCUfR3NdN/IJgCyGccdAMkehLi9KrseGBlsp8wk53oLf/7kmzK69f8zrQ+Yh5aZz3OoAYuB5+UnR5dl9PavVf9TyDQZzTpd4bjRxfCJj+8bqqtsViL5lLNKwX2cvdIVmSpTrNvS77D4+1xYHpzssHIF4JG01oLtMHXW+tjhHIWqGgxWxpqWOhHLe3A2+QwmETVYOrS+/LUoHGqJoqpF655OTFuGG1lkdjkw2f/d9ZapVu2RSzv98dlRDMl6DHOC2EUTAKthKZraagc4couuP6fTBgAYvLqq1727vqrygTO1Fp1OkpvwyYbUtHkguB2dVUka4xdQEq9DLC02bYozQ7VVjas6BBohIHBXzHXfZ6SoGH5u6LfXCmT+rgNAm8Ze0u7BTvIuZ2H0K5KRTpnxuSeEbKP6PM/tp6o4cP9d2Y/k1cQG5iki7FguF2Zaw2jC0vejsNnknM9OBtpFSBV9TRxhZqefJmx
- HdIRaZjc
- 0wEAHRa2UvjKUSp2cjkbhhur5fdLV4y0gHwLJBa5YIzu8o3nPTuc5jl8pyGlMqRsQ9ePus8yVuaTZ4cq2d+IRVpXLamu2KeFeNxksJlCqmisIAUenpPD+iMGF1g1r+MT5HxaDSZNGxLVlfa3BbEXjgpTsZLBID1LMGyrRC+mQXKXB3Eu6ieuH5cfelPd8qTcFoc31G6dgkGe3oF/FK7SJt4egQLojShB3x5VgYxGANxqCZugoJv+x3oGHK8IbP4qPZCKkoz6dhUaY8bB1M5vgEGAD5Bf82DcVugwjsaUGrd+px6m/9Sfx1yBcnQ==
+X-HE-Tag: 1766978067-513421
+X-HE-Meta: U2FsdGVkX1/+M4IUGRINK2zfrWTaPNmj6kB6CefWEsGrykVjX8jtA2oXa5Dn3PvgYtsouYaIX+QkQf8Cqvq3yrv5gxZhSewy60Ys4mYii6A6uXm5M4RpdZanlqEc6HM5ZDEMvAMNKTtHqqkHeMkT8mZyOgiBbgJzNv5iUNM70GKxkb0EgJEjVJNX+XSv6btTkZTOErV4DQw5ir5UqXv0YBVCg1a/IoOQ+/VtVADA5R0isJQSiFndP247vg4FIW3YGrJ1PtAgoM7WSinm/pkrrJdy+CiljqqlLrQO9tUc9EseJM+8kSvkW/9+qwr16eEtE+a4wzcYqobcF40zOIZnrW9EzBPktztu3/Ur+OvkrZ9eMtPyABNqe5SRvO41WOjhHrEV36+E1MCxraKCiHFzt+Pu7JkpiyR3Q++PkWHaa02dwfOxkQ6ZVscNxY2Rm+7aF0F0beuAYdGon3VvZHSPRv6f05h0E1V+kXfNo2aP/4OzhVbQejWG22fbJlLG9sZts7YeDIgFcOQ8uHg6aHh7784j4PU2qenQ/1aWt9lQ9LxMVLau9pQSbXP0HeEOavCkm6RWLL0chGCKg9sI9VaPL5s4WHKbmqCE1qa9teg7SQEmJnIq9C7sn33be8gudad1Bs5kLpov48YZ5hbIA+9UMwuGHXjMX25Yf7hMEPplBcWXJDJgJ1JujDB6LEf7j7HhssWzcdRKHQhVPKKU2DLViUkBsiOX2O3lTtfkJimAs916hbovXh+eMKhmzSLrKott/S1QuIeDpRHVeKB0Lwjzth54s4cgikjTW2NtBJVgRQB1F3uzK3srqgIRdjBE0tbNgSeu1/CT+KHrMxaaxDFOSpiNlHOkvxDJGPCP9M2OrWy7A60pLNEbca/5o7TnJPpYJD4edSRjOplsUpC/3nBhWBnZIkcVx/f1aHc0qW0iw6G+2ejRAT8FVqQ3dFM/2pII4II82H8/70Tn7S+8lIS
+ vJxNg8xb
+ 0RJVI6W2a0NrN7h+X8p7APIN2B0KZu40Ed/3HGw0TzADtPHf1WeSQ2uoLqEmeFBC5O1kLD9QeE/dcu4jOB/+TYez7tfwZUi2OsJLwHioSs4M71h5SkYH9jkUQYowYVLvRofWJ7ZSr4TNS9os+Yf+F33JS4iiVogPS5wjMYjgTSxoSnaATI39FkEK4hZzbTRkEKquIrrzsnRrcMrBC3dgtaYFhdlge7kjeEKVGhsVBxtF803dhbBvmXlTKMWf21wv7YcjUfqxZzViA3LDsYOmTZ+SW1mEmEHVfnX4NrsrvGmg58yVN3BBxRrrt7Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -158,13 +159,15 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 > 
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> hugetlb_cma_check() was required when the ordering of hugetlb_cma_reserve()
-> and hugetlb_bootmem_alloc() was architecture depended.
+> hugetlb_bootmem_alloc() is called only once, no need to check if it was
+> called aready at its entry.
 > 
-> Since hugetlb_cma_reserve() is always called before hugetlb_bootmem_alloc()
-> there is no need to check whether hugetlb_cma_reserve() was already called.
+> Other checks performed during HVO initialization are also no longer
+> necessary because sparse_init() that calls hugetlb_vmemmap_init_early()
+> and hugetlb_vmemmap_init_late() is alaways called after
+> hugetlb_bootmem_alloc().
 > 
-> Drop unneeded hugetlb_cma_check() function.
+> This reverts commit d58b2498200724e4f8c12d71a5953da03c8c8bdf.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
