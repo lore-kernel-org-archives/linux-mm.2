@@ -4,81 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89AB9E92733
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 14:55:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF4C1E92733
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 15:00:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E22666B0095; Mon, 29 Dec 2025 09:55:50 -0500 (EST)
+	id 399376B0098; Mon, 29 Dec 2025 10:00:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE3536B0096; Mon, 29 Dec 2025 09:55:50 -0500 (EST)
+	id 347456B0099; Mon, 29 Dec 2025 10:00:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1DC76B0098; Mon, 29 Dec 2025 09:55:50 -0500 (EST)
+	id 245ED6B009B; Mon, 29 Dec 2025 10:00:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C243F6B0095
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 09:55:50 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 61A6A1413FD
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 14:55:50 +0000 (UTC)
-X-FDA: 84272808060.10.9D741A2
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 220A9140007
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 14:55:47 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 133816B0098
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 10:00:23 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B4B355F9A4
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 15:00:22 +0000 (UTC)
+X-FDA: 84272819484.23.8B0943F
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	by imf14.hostedemail.com (Postfix) with ESMTP id EEA5C100023
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 15:00:20 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
 	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
+	spf=pass (imf14.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767020149;
+	s=arc-20220608; t=1767020421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=5x9c8EeesffbZC8AwsXH9JiWTAJOcy7qdkzfj48Zf/A=;
-	b=U+CX/9mvjGUgFzFI2InGEVYvwh/um3h9S4AfEEsFhKDqkzZ/5ERJIswYoJkZHwvLfikD9n
-	+85/DsttACCYOhS/18Sz41Y1Q46UzkFsMwv02/OhGjJwUqNtX+g53Wv8pBVOi6XC3MJfiD
-	qzLQtWjrdzQc7/Axwi7CGsGFsP71fbY=
+	 references; bh=DI/SttekhGDiQM1tlGP5eL+usMVrVsg1suNc61YphTc=;
+	b=qjTgAPfLFewmrgKO/Hd60jH72r4wDqEp19kq9UltIvB9phvu+FoaaLRFdviCR+J6gGdxKh
+	Gta51tpnYXTOh03G+SaCE3ifVW25ijOZbBoROy+vG9JnlD4+jmeKvi2h7UHoZBtU9K4bVX
+	7ZAiz+tQ+43D7qeUL4rzlui233Hitt8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
+	imf14.hostedemail.com;
 	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767020149; a=rsa-sha256;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
+	spf=pass (imf14.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767020421; a=rsa-sha256;
 	cv=none;
-	b=nKi5WfDBxcSsHkfTVcPcgDU5FXzOSOsRLEIgo3oCjvg354hPrU4ukxt7mVZ9dvNzWumPzK
-	Uy08VjwzN9zULYXLF33B0K+P4gnG0PF7WpH7woK/NMd8k6OaEbHLSn5CKMFgeecT3vLM67
-	XH8hLj9FgcmUIWTi05z5JtAUI5soVSs=
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dfzlg1dy2zJ46DY;
-	Mon, 29 Dec 2025 22:54:55 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4A3DD40570;
-	Mon, 29 Dec 2025 22:55:44 +0800 (CST)
-Received: from mscphis01197.huawei.com (10.123.65.218) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 29 Dec 2025 17:55:43 +0300
-From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-To: <gutierrez.asier@huawei-partners.com>, <sj@kernel.org>,
-	<akpm@linux-foundation.org>, <damon@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <wangkefeng.wang@huawei.com>,
-	<artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>
-Subject: [RFC PATCH v1] mm: improve call_controls_lock
-Date: Mon, 29 Dec 2025 14:55:32 +0000
-Message-ID: <20251229145533.2437293-1-gutierrez.asier@huawei-partners.com>
-X-Mailer: git-send-email 2.43.0
+	b=zcPmRwlOQDN+2oLVP7OTGloRBR5VdDb2YIl5fZ+bHDHn/+56lP16O2f2NW0+cNUSTgVq1u
+	t4FBHnI6x7hu7pwYqgKcrnX6jACzB26bz3rNwS4JRlFfotgvnBdYwam6wmKgIiJ3vQ1OWt
+	j8vwqW51h3U7o5cUVxt98Kz2Mh8kBQ0=
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7cdf7529bb2so1010663a34.2
+        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 07:00:20 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767020420; x=1767625220;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DI/SttekhGDiQM1tlGP5eL+usMVrVsg1suNc61YphTc=;
+        b=Iy66b61txM26gchR7MqfOPNRXSTiWNGbsmx1jeClmrmmnRLQQzi4r9t8GaEvTfBpaR
+         8d/AWyDgoqaxdpq29xqu2hpANsUFQhFixMJUOSNHb32atJtDb9Uyww1Bm6cpyLy1dO58
+         QmhdgS2p0428MeMFM+gX9cMYfTnRuVcQysE6KZPyMWRh8AjX9ld315LQ5yxqGtbfmNnq
+         7HAFV9i9Jq6WIP8Nc6KRbQJCUjCZK2PJTmhUf1qNP1kuKQWWXE+GOUMKWPUK24SegEa3
+         WnWR/XanxacwZpMsTPSBbT9RMcjHo7S9ydphAVTcWRdH9M3Zq9jrQFz+BtxBw9tJw9d5
+         Wsvg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0OG8teP0co/lzjkl8/8yxj8bnr/tLIydzc95zmPzbA+uPl5hPcj+adUO88lHz2s88P18Qygrx0A==@kvack.org
+X-Gm-Message-State: AOJu0YxioQVKJlsPpq3w07rh9swGoQ4hD9FiO3xNQW7HGeha+PCmMsDf
+	hle5ff86fhKqiN2zuISSC3Uj5JJG/NNtBnUUvrjSFcnllFl2bx66cRIISobP8g==
+X-Gm-Gg: AY/fxX4/q+UTQzUFBDyMb5CBZ8yETE1LhKCAVeVb6po6Se/vtJk1UXFKdu+j2dKzhnG
+	8xv/O4E7OTYIqzUkWR7LQFXTu54yPma7CJXkOEsH4gYjvM3V8pK4mrPclojtOAztJDW5B/Atf8Y
+	N7sXZTqh6O2UESRBO2FHsmJcroAKXogvS+nIwy9r6MHQxfKPhARA+pifAawjHhjAuBwiQWFs/+K
+	tUqxrta+U+BVm1S0LkgpLXaW4XhVhZyke9PzYU3o32fh+OPesEN6NDbWzYRTUbUxA3eoa1kAIe+
+	wFvEAmo3WVUwyj70+0HYc/8sUd/UradZuN5keR+vpoTGTd1ts+UGE68wRwFdp1qfOeTvZRWqrVP
+	oCY6jROUCUrEwBAxdNnZpZcL26rruG2qhlbho2/6uz77Cn3mvemkK2tV48Ox4Y+4pwDypDlY6sT
+	ePJQPf+qxdDvaVEyiYoIZO
+X-Google-Smtp-Source: AGHT+IF8h2vXgJODZ7JZMxunWbJsYMMr6g5hSF24Ns6SSSKowIEhxB0xTevh9xlGxdP/5/5wrf4fPA==
+X-Received: by 2002:a05:6a00:f99:b0:7e8:43f5:bd55 with SMTP id d2e1a72fcca58-7ff67759f24mr24454290b3a.65.1767018650539;
+        Mon, 29 Dec 2025 06:30:50 -0800 (PST)
+Received: from EBJ9932692.tcent.cn ([103.88.46.167])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7dfac28fsm29705159b3a.32.2025.12.29.06.30.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 29 Dec 2025 06:30:49 -0800 (PST)
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	ioworker0@gmail.com,
+	shy828301@gmail.com,
+	riel@surriel.com,
+	jannh@google.com,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RESEND v1 0/3] skip redundant TLB sync IPIs
+Date: Mon, 29 Dec 2025 22:30:30 +0800
+Message-ID: <20251229143038.73315-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.65.218]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Server: rspam02
-X-Stat-Signature: wujhbntmym37y5mq4abzzpg6fhgno671
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 220A9140007
-X-HE-Tag: 1767020147-749500
-X-HE-Meta: U2FsdGVkX18S/TZ3Lwkcat15nVby5gymLud0uHnHPM8Q6sWyHj0G4pWilm2F+Yuo7UaXXBO2g0LINBJG74vdK021ruO54i1j8Dt+BzvasKrJASHS+BtoB4QMweyRRDl5lg9wlihTHcsMNha425XrEc8+vtoicfJxpb15EXGHQ+Vjvw1IwkQfPeHFdsgtigJaXVI7eX02mYWYLjX3Rn4CfeYoj+/ELGUg8gbZgRbNWexIwiSpC4FwS4LsUDeosxGjcrp0DZDQUhRMjiangfvqEgh+IoRYBG3oi8RSoUG5lIJfYFfN8W6FHvbqCXKLGi9WQiQcgFDtg14kTnau7Xvzp9fwdgbwDKkFxh0xV93I/Mea95syDygSt8UKXHmOUIEYnehP7tXmphCxW6xKkS9S/Vk9MtNhS2l2ZMnnSU5SO9nDcVmr+q4ccCuLDGIOqQmKQtV5xU/3bv9KN3dtAzilDoGlWCf0JeMWgtRoy1WBBe5Iq6UVg2qImE1aKw3/11Tg/JqY5UCvAebqzBbs/uTzq7l4YG7Ij38C3HrkLV4x1CtLCNrgkdgNBF3yDnJ+1HTxKmsfm3jIG47aq0eEz+BKhBHElePM5a5Rf826RruqvjUt6BAjPE+oFy3GTe8e99vfO+qzCH08DMelzOjhDBnMURV4KFM/y2iW4stMsQVBVOdnPjb55fpwf4RMm3sHulOMhAbgmOlCuxZkwHg2R9v8dCJSqXwvNeVhsm9gA09EVYPHZVrnQVQYABcfkN11OaswQ9xhYwGc0d5sD8MOd1Kht/+YkEbFnsHY2JoqZXTem0KqmruGSzVHnmKLIfrd+7P7ntOyHk+f0L/DSgoYBKp0m/vVGoh7COgqHIeZfjoMINhZvc+tIErxpm0p5/8zgb0Cw7cgd+N9LCz39j1s/T0Igg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EEA5C100023
+X-Stat-Signature: pbzt6tjkc8p86u3ri3pz5sfu6xtr9hpj
+X-HE-Tag: 1767020420-504218
+X-HE-Meta: U2FsdGVkX1/p+MKzpDai+CIboxoa4f5Pe3n+tk8vr2oglFm+8FpdwckMQ8zqsxrp8PDTfdeKA8LA40ShGRSriio/Oc52IUVnWAXsdvkUfzAIKfstD1/Y5S2LH+0CHu9x0C0xGjeZtoG7J75cQNtyzompSgyEVJF54y4V/mbkPuJrL+S4QhcBmWDodJLy4r9J1bs0ziKUHXnewlXGlRjTTzS4zL+4WQ+5qOK9+QBXg8dn8fTGa3vlAM8A+5aWN6yXsBRRcDZv8oXNmTDt7BbtYAWSs0XHBM+yD7b7gzAf5PfRqUjIQctbnCiTIrY0ilkLL/rJ4ZGJqJCeemua6/5AUMnajD7B1JjQKJqUSlHV8w4Bl2FYW5SyIYnVbt6sHBr0ioAv8ejp4f7LdgFQ/jb33zy7QQWMSawN/rwHJs82pheq0itO/60puSDK6rxFg8/P03Tck9p9G11lZh0/zJn+EUpgZP1D08cLzsgxWy5dwpn40SJUNwzATYCjasGNBWRnf2ZyMawjbhCg5ie0rsoAFm7h29gk6h2l1258p4qU0C/DCm7Z59wMOcW/08Y1TWSHGI5MjYCzCO5fRE05b8lEzQGN9wwVFMFKCsbmvBPL/QWy7Tl9LWAyFFe8qxR0PKwKH0BdcWPIZEBawYnvjT3c2nIrSK62i5BjXBPQQ7uCiLQvQP0wg5DO+jPBAxMGs06vLVvz4DyyRcZpMP7mTlEsrOVvpllLD2rQ0YtBfOqF2KKSwZqcwJ26Yuw2nGQwtm+fvG6Bb5kOb+C3pQmhes0QzZjrKIBQhDZjx8oekWSueuSDopa0H43WRmx3dp9BZAQlWl2PiKdVcQdC18DD8OBkXwqVvFVRkiXDS6Gqd++9H4HeaZgx5vgGXuhOgDi2F3fykmdMaQdXl1AzBRDzbxQ6NeouFh59bJRxgiEK6CxsVt5fB7i5Ne43E3rvyZQjypP7zJBLhMSAGJFlNVvzEbb
+ IbI2EJbF
+ teonIAd02aHoenx51b8rPob/zEKFFndTST6VWEpyUQJreVG3gcQ8bkRjrk4KHUisqr4ZUAl3bEjillINF3khrzP8UppR+TYvb7GTWQxiwm8A5lOtOh5UVQZYWt/ygX8tbhIncMVFr7daK8+I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,112 +131,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a minor patch set for a call_controls_lock synchronization improvement.
+From: Lance Yang <lance.yang@linux.dev>
 
-Spinlocks are faster than mutexes, even when the mutex takes the fast
-path. Hence, this patch replaces the mutex call_controls_lock with a spinlock.
+Hi all,
 
-Initial benchmarking shows the following results
+When unsharing hugetlb PMD page tables or collapsing pages in khugepaged,
+we send two IPIs: one for TLB invalidation, and another to synchronize
+with concurrent GUP-fast walkers. However, if the TLB flush already
+reaches all CPUs, the second IPI is redundant. GUP-fast runs with IRQs
+disabled, so when the TLB flush IPI completes, any concurrent GUP-fast
+must have finished.
 
+This series introduces a way for architectures to indicate their TLB flush
+already provides full synchronization, allowing the redundant IPI to be
+skipped. For now, the optimization is implemented for x86 first and applied
+to all page table operations that free or unshare tables.
 
-# bpftrace -e 'kprobe:kdamond_call { @start[tid] = nsecs; }
-    kretprobe:kdamond_call /@start[tid]/
-    { @ns[comm] = hist(nsecs - @start[tid]); delete(@start[tid]); }'
+David Hildenbrand did the initial implementation. I built on his work and
+relied on off-list discussions to push it further — thanks a lot David!
 
-@ns[kdamond.0]:
-[16K, 32K)            22 |@@@@@@@@@@@@                                        |
-[32K, 64K)            90 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
-[64K, 128K)            0 |                                                    |
-[128K, 256K)           1 |                                                    |
+RFC -> v1:
+- Use a callback function in pv_mmu_ops instead of comparing function
+  pointers (per David)
+- Embed the check directly in tlb_remove_table_sync_one() instead of
+  requiring every caller to check explicitly (per David)
+- Move tlb_table_flush_implies_ipi_broadcast() outside of
+  CONFIG_MMU_GATHER_RCU_TABLE_FREE to fix build error on architectures
+  that don't enable this config.
+  https://lore.kernel.org/oe-kbuild-all/202512142156.cShiu6PU-lkp@intel.com/
+- https://lore.kernel.org/linux-mm/20251213080038.10917-1-lance.yang@linux.dev/
 
-@ns[kdamond.0]:
-[16K, 32K)            19 |@@@@@@@@                                            |
-[32K, 64K)           118 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
-[64K, 128K)            0 |                                                    |
-[128K, 256K)           1 |
+Lance Yang (3):
+  mm/tlb: allow architectures to skip redundant TLB sync IPIs
+  x86/mm: implement redundant IPI elimination for page table operations
+  mm: embed TLB flush IPI check in tlb_remove_table_sync_one()
 
-Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
----
- include/linux/damon.h |  2 +-
- mm/damon/core.c       | 17 ++++++++---------
- 2 files changed, 9 insertions(+), 10 deletions(-)
+ arch/x86/include/asm/paravirt_types.h |  6 ++++++
+ arch/x86/include/asm/tlb.h            | 19 ++++++++++++++++++-
+ arch/x86/kernel/paravirt.c            | 10 ++++++++++
+ include/asm-generic/tlb.h             | 14 ++++++++++++++
+ mm/mmu_gather.c                       |  4 ++++
+ 5 files changed, 52 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 3813373a9200..43665e63a498 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -801,7 +801,7 @@ struct damon_ctx {
- 
- 	/* lists of &struct damon_call_control */
- 	struct list_head call_controls;
--	struct mutex call_controls_lock;
-+	spinlock_t call_controls_lock;
- 
- 	struct damos_walk_control *walk_control;
- 	struct mutex walk_control_lock;
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index f9fc0375890a..a929bdf3bc7b 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -539,7 +539,6 @@ struct damon_ctx *damon_new_ctx(void)
- 
- 	mutex_init(&ctx->kdamond_lock);
- 	INIT_LIST_HEAD(&ctx->call_controls);
--	mutex_init(&ctx->call_controls_lock);
- 	mutex_init(&ctx->walk_control_lock);
- 
- 	ctx->attrs.min_nr_regions = 10;
-@@ -1457,9 +1456,9 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
- 	control->canceled = false;
- 	INIT_LIST_HEAD(&control->list);
- 
--	mutex_lock(&ctx->call_controls_lock);
-+	spin_lock(&ctx->call_controls_lock);
- 	list_add_tail(&control->list, &ctx->call_controls);
--	mutex_unlock(&ctx->call_controls_lock);
-+	spin_unlock(&ctx->call_controls_lock);
- 	if (!damon_is_running(ctx))
- 		return -EINVAL;
- 	if (control->repeat)
-@@ -2549,10 +2548,10 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
- 	int ret = 0;
- 
- 	while (true) {
--		mutex_lock(&ctx->call_controls_lock);
-+		spin_lock(&ctx->call_controls_lock);
- 		control = list_first_entry_or_null(&ctx->call_controls,
- 				struct damon_call_control, list);
--		mutex_unlock(&ctx->call_controls_lock);
-+		spin_unlock(&ctx->call_controls_lock);
- 		if (!control)
- 			break;
- 		if (cancel) {
-@@ -2561,9 +2560,9 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
- 			ret = control->fn(control->data);
- 			control->return_code = ret;
- 		}
--		mutex_lock(&ctx->call_controls_lock);
-+		spin_lock(&ctx->call_controls_lock);
- 		list_del(&control->list);
--		mutex_unlock(&ctx->call_controls_lock);
-+		spin_unlock(&ctx->call_controls_lock);
- 		if (!control->repeat) {
- 			complete(&control->completion);
- 		} else if (control->canceled && control->dealloc_on_cancel) {
-@@ -2577,9 +2576,9 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
- 			struct damon_call_control, list);
- 	if (!control || cancel)
- 		return;
--	mutex_lock(&ctx->call_controls_lock);
-+	spin_lock(&ctx->call_controls_lock);
- 	list_add_tail(&control->list, &ctx->call_controls);
--	mutex_unlock(&ctx->call_controls_lock);
-+	spin_unlock(&ctx->call_controls_lock);
- }
- 
- /* Returns negative error code if it's not activated but should return */
 -- 
-2.43.0
-
+2.49.0
 
 
