@@ -4,123 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A33FD3B7E5
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 10:53:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 189B3D3B7E5
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 10:54:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06B1F6B0089; Mon, 29 Dec 2025 05:53:22 -0500 (EST)
+	id 628916B0088; Mon, 29 Dec 2025 05:54:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 015B76B008A; Mon, 29 Dec 2025 05:53:21 -0500 (EST)
+	id 5E87E6B0089; Mon, 29 Dec 2025 05:54:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E472F6B008C; Mon, 29 Dec 2025 05:53:21 -0500 (EST)
+	id 4EB276B008A; Mon, 29 Dec 2025 05:54:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D72096B0089
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 05:53:21 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 65E155E980
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 10:53:21 +0000 (UTC)
-X-FDA: 84272197002.01.6DD43B2
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 784BE1C0002
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 10:53:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=LOjXQKxl;
-	spf=pass (imf21.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 419866B0088
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 05:54:38 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0E77CBE999
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 10:54:38 +0000 (UTC)
+X-FDA: 84272200236.19.3CE780B
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 378EC40002
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 10:54:36 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=Xl3mYaqY;
+	spf=pass (imf04.hostedemail.com: domain of tballasi@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=tballasi@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767005599;
+	s=arc-20220608; t=1767005676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gkwE6228mnRy5innvr4FWjSNZPYoF0wgLDMAwQ6QHo8=;
-	b=7FDEEoELdnjOToXwP466djhZMkeFQyMFL2rk1SmnLyPa/nYKAr8iVbuCMLsF7w2DAO6fDe
-	3Hy/mqkTrMA7/0kI26zIbUG3WncBsMKSf2+WVRGEpVn1yffTyzr7eSetZcmbFRoKHqCV+9
-	tg3/5EBd7cc+vsHXzSfNIbbEDTPvMo4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=LOjXQKxl;
-	spf=pass (imf21.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767005599; a=rsa-sha256;
+	bh=yJlbbI284/D8x4Ik/0uEnuc7Flo2SmmRKYLOMZleia0=;
+	b=M6BFVB1nz3EPmFCYx+UX98BUGEE3AKnxzG4YkjYyqlcDysO6asP3Si9n/Mc0KZVZKlEMdU
+	3wSMpeoiEnQj0u6Y3GaEhYwGmSW/IuHSOql/+837hn2kekJNmda1esgIs6fG+/BXDVxYdH
+	RinHuLGl/m++wk+RF9dWGlQ1ELx5HdY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767005676; a=rsa-sha256;
 	cv=none;
-	b=bcMBP4f5PolM2anR9HyUBM1yLY1pCMBf30gW5YaXNnCO/Xoh4XvsFE/qRFldUeu6De0pgL
-	8IjtiPmVwWkDKlEo2knfuRD8mjx4xKbwGaZK6wyjt7c4up8NnJoI9/dstb5ga1jJjhJe8g
-	xOeu4KruTfq91r5GZP+YtUI4IC0+h1A=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4308d81fdf6so4164176f8f.2
-        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 02:53:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1767005598; x=1767610398; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gkwE6228mnRy5innvr4FWjSNZPYoF0wgLDMAwQ6QHo8=;
-        b=LOjXQKxl9wJGkg4jU91Ty6cSVjkQ8aEezuPkKvVdRgVpZRPlJpVNyrzvMbWdnSMpP0
-         2lGWBvp5aok2l9JzQFsDGopVBA7GnUg0jI/ynyyYwnIGZeCIaxZAFxUSjMAnn81zFQtH
-         No9mmXtqHbefKKESMbXVJJRebxgrARHd70GYhQfBOvLOip6HQ+h8cYgWXUYRTVafiThv
-         hC3qlMxFRHI7NdWXA3pzSHRdY8SJnwzhASuCPkiepHEHjq7fLJPfT6Ldnnwgg5jwGT6Q
-         B2+fTLQd8wJQL2pRZ8QEN9HMO0Z/gvtt6G6J+xmEcZ6p+W6rsyNMfU2jiZgBZsibd3h5
-         ERNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767005598; x=1767610398;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gkwE6228mnRy5innvr4FWjSNZPYoF0wgLDMAwQ6QHo8=;
-        b=D6OLjeBlZYRMA+s31YmUCPG9E9Nv1QBm7BOMqemUOP/ppnQOm9kpdAS+rNxgYJ8Iyi
-         4ocGBMafno+Fm22Z6MmSd9e3GrIi132V6CyrI5i9Weu9SuGCO2vwd8dgdGILuttTb742
-         sDd1MQ8eJb4HqTtc8sGWwfhekOi+NBq7PJC2X5UKdAt4Rtld4Fyfa3P1QuEMMUFGk87C
-         NVRUep5bidLogUDe7/zcS2DjhkPW5w7senlTfPpCaGvbYmPMdRTLPH6YjVECvTQJ+G7y
-         N67jqlssU4AL8Qixg+bC10NquM9EgIiulSOtRGyoFrwCVRqVilQTFHEP8S3cCjv60ikh
-         3y5g==
-X-Forwarded-Encrypted: i=1; AJvYcCWYWV/aTFwkHGKnFlN+z/G0lWF7XNPNFnh1U9YryVJUSuJ17Z5nEJ57E25Y5z7rMEw5rRUiuuVHfQ==@kvack.org
-X-Gm-Message-State: AOJu0YzlZ5y4DXlCAhFGYJ8115n9tnpbMIpmPJukR/oz4ZIyAR4JbZGj
-	g2KXxBwDXZVKpjH1kTtGIsR6F9AfDUQ8rvQjNTABHEFNaplnUWA7Xl+XjvBOY4PkwaA=
-X-Gm-Gg: AY/fxX48bNaNNwqfC+frm8wYSyl9UaOoIptvc3zz9HCTVdZw8WOMe8OAipPO67cwWyU
-	lSIbg5MRvWKiF1LvIcKO3Lz4Mf15msEjlgivakl0zmnT22vVMUkFm6ZJAE7bw5cQEw/0+S1WkrK
-	VgX1XnFaCHegz3QWHhZvzS/Thn+OE7zAkS0M8LqNsOgVnfJvAoxPnD3dfGk8OpHgOs8WFGo4rY/
-	z3JMT1crlMGCJ3tABtKtoYssmf9CGZPiEaBtFnUWsxlmrQf7Dwo44tnAVXu036SpXj0eBlY41j5
-	Hv/hgExaPZJ7GLz8jhSc6PUBAQpw8xA9R7F0nt7UtQSbDCyf0azUqPEH/cbMk7yc3UKeMiAxu4o
-	Hfmh5+YYlp14N79e0t7weK5n7uUyAhHqKLoZcdgUOuyu5NS3S8KIn0WCvdaGrhjV48odEGHznRo
-	AV+TtM5lLcqWp1/icSkod1T/5x5ecE9oA=
-X-Google-Smtp-Source: AGHT+IHEnj09VtCvhEI1Mnpju384PM/PFXJ6IVisB8INMmaBJgtKDDRSEQKzdcjFHiZGq8ztnAkNxw==
-X-Received: by 2002:a05:6000:240d:b0:432:86f2:791b with SMTP id ffacd0b85a97d-43286f27a87mr8136274f8f.63.1767005597667;
-        Mon, 29 Dec 2025 02:53:17 -0800 (PST)
-Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea2278dsm62489855f8f.18.2025.12.29.02.53.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Dec 2025 02:53:17 -0800 (PST)
-Date: Mon, 29 Dec 2025 11:53:15 +0100
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, imran.f.khan@oracle.com, 
-	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	chenridong@huaweicloud.com, akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, 
-	apais@linux.microsoft.com, lance.yang@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 00/28] Eliminate Dying Memory Cgroup
-Message-ID: <a4fzkz4lznq5hrf3mmrhpt723rb2sl7puo6ziwg32ye6jh7rwk@baexbljj3duu>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <5dsb6q2r4xsi24kk5gcnckljuvgvvp6nwifwvc4wuho5hsifeg@5ukg2dq6ini5>
- <vsr4khfsp4unk73a75ky7i35nzdjqsbodyeeuxipu3arormfjr@awi2srdwawfu>
- <1264fd2b-e9bd-4a3b-86ad-eb919941f0a4@linux.dev>
- <aVJDuObeV2Y99em-@hyeyoo>
+	b=m/Rv6nD6AsList5CCPK/zxN6OsNeyGigkncyUXJwujHcABffeHIcLYq2Wj2P8hUYixIp+y
+	VWl0V8ogYk2i+u1/Kw3QjUVWcGRt8gASuJk/vBSQHoBtVbGICGXE6neHor6fHJKLnqbqQm
+	Xhw18DWXhCCHzpbeLmfA25be8XUcAQ4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=Xl3mYaqY;
+	spf=pass (imf04.hostedemail.com: domain of tballasi@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=tballasi@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
+Received: from LAPTOP-U3CCR7C6.corp.microsoft.com (unknown [108.143.43.187])
+	by linux.microsoft.com (Postfix) with ESMTPSA id DC65A200D65A;
+	Mon, 29 Dec 2025 02:54:32 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DC65A200D65A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1767005674;
+	bh=yJlbbI284/D8x4Ik/0uEnuc7Flo2SmmRKYLOMZleia0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Xl3mYaqYJ2gM2xqPep/sY7XF3o6JNO92pGmbiB4Cd1QxH5OUhy7TDzMPHxs8udkH2
+	 /ezSr32QYnhPLslrzhFOzyQKS7lwx3naEcyU0blqMwJe/JYk3aQ2GUSQc+jfey3890
+	 37ZsECY9rpop0J7J8gL5LTc5OZLPB+C7pUxIq2jc=
+From: Thomas Ballasi <tballasi@linux.microsoft.com>
+To: rostedt@goodmis.org
+Cc: akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	mhiramat@kernel.org,
+	tballasi@linux.microsoft.com
+Subject: Re: [PATCH v2 2/2] mm: vmscan: add PIDs to vmscan tracepoints
+Date: Mon, 29 Dec 2025 02:54:27 -0800
+Message-Id: <20251229105427.14720-1-tballasi@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251216130302.5202ca81@gandalf.local.home>
+References: <20251216130302.5202ca81@gandalf.local.home>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qya2ibtxqvkulq4p"
-Content-Disposition: inline
-In-Reply-To: <aVJDuObeV2Y99em-@hyeyoo>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 784BE1C0002
-X-Stat-Signature: 951yaud1hcza7cfr6kiwrk7cktwyo9qn
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9isum93jo6txud9cww73iyphc71b3ky6
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 378EC40002
 X-Rspam-User: 
-X-HE-Tag: 1767005599-564003
-X-HE-Meta: U2FsdGVkX18HtGx31lHAevjgVQ4oGu4X7kz25DoOMiKDBd8yuUVsYFDx7peax+1OGmWn2JcDT+o1QCGkAaTKqeSnHPlBsA8A4fYm3UsZ3eofH+2eOI3Bz+sE/K/qtRvtaxgcFD9Hl/HF3z6xrwJC0P8rs5k+rILJJjswZ5yJxvwAIVllGrQnjh4jdZduAcp39rVd0PfuFQZlcJRTKTl6Vn5gbAFlabD7y3Ik34xw8C3Jelv7DBYoq6gcMLqmD/mN0ujL4cJ9vgs22MN2Q9UqcmK5nm+f3vJjMo/2hoa2bX+R7elNkSTMvZiMaKa3YGTE7vkZ+37330gTg5XwTlgfvnRx2ltlqFPvRKRNpa/iTe5/v8NtL4vhgi6xg4GewF807OFax6NOQOreCGc3/hWez3/rq625qxlN2Tk6hHb/XrMK+Zyx1qVoRGCNmvGAIqZ2krVxCRu9am+YGIGH3ySBlpTZqCYMijqDDEYNMpinO9QUJisnr65kHx8mskw8XftXIX+Ihy1RR1FG+pdd+KuEMSoc1Ly0gRT9zo0o5NGX7zCWLvaE5qWdmcEu5dMVDEhHMIIkwUD5iQC87K2hBUDDR38EayAjgKwf+fpt0NpKFq3ngHIyFTz65aFC/2sNWb3hCoOiaxLcgqHlBRCIa0kwV6ZQyP65iwejEMkamt9a17vqo8JAjlK/9YZp1o75Crzwx1g19cU2adsJIQf1kNVu4VfnM/1ewZVqB2N13vNNjdsTQZ1I5/7v0dY5s8DtN+N5ZPn4DTExpv6Nw1zN/u+oDQfNlD6ny58oXAI0xbluYol8BD+vTjaTzoyjrcGjlRZo3LgvjLQo4SSEQnWpO8FXZnP5xa44wYJLggJzTov3ybVgytn98XgzI2pBFt2+vjDiT8f7KqmNooLKJxqaQzFm3F+s2C2oLsVfnC/O1CXSIKPCtwov6HVAJ4iwst3ln83WK/MWV0LS1CLujwkbacx
- Pxg/gYA1
- kIZGlzQERN0E88+qNhyzRKD4BNIXoPdzqqIebp2Tg9igRiAs7sphiBo0bo0/I4JirdK8pEf0JkkgItx952C3c4kWk6nLkk5AIeAwFt4QRCcYzPQOYcIGeCbvJDqXsFrXUQjyD/bmEGQs7onJzKAOajAslKcLMrRWzVkJdZ8TEN7yYahOsN7nf1f7qAbjXZY6pNk3Rtrh7L1Tr+uQoMKiNA833d7pKd4Gd/Qt9GaIOvIr2cvb/U+TTomm3lG+7qJcE6uKABFbFFuFGrAzO9QSyMv86O+Ai4YxoQJxGWAP563zTzcdvZ7tJIaUtNud5IrgaN9S3DA+j05xOK+/80s8T6oEenIZ/OXtyKpcdUtYtWuf2bmuIYLn8QLjLF97yAZrgUuhXAiw9aOifrNFkni2FJvuGXyvYzR+xq8rlhuxyE3QCLYYUQh+K8NNvSeVOuAiTN4VP8Wj60gPLiMs=
+X-HE-Tag: 1767005676-151798
+X-HE-Meta: U2FsdGVkX1+OCDFPdKmJbkLvu+bW6mtm1r9Gu8MJj8CfAP5InPIN8F0tkNi2JX0a/h8GIWZ41ey77k65uE2rQd6AYj4JABzBZ6m05Li12/upJgvYFf8zAh6oSvVYMzHeizROrr2pKJ18oB9RGUoIKNoK1Z9r3tW5I0EQeDRiv4If/bAmtDmdVP6ssuuDD+ncQ8OQHejErMkbPIyt/cxqrW7bdUQYoy5Gaiu9QnzxNDjXMNdZp1uPMiRpHFRAWXa2S4pmClrDE/AfkGTeHweRl0SvPj4pcUBpGeatKjaKwpUna0+xyN1HsiUwQbt/eKdBJKzt1SCWsYWwUPe8Nx5kMHGk5TGK5OcIohvm8n9sPbAuPQo3x731tu1MUmwokOfyjGgHD7gAG9CCYJMCrRY7pDWZuuvO7ti7dig2aU8uIrBH2X1mHce1x6S9Gas+KiwB9M58/gutcI7Z6d/m/Ph8gdF+hR6MY3RG53wPhEBluDAk8VySefm4hHM9g4YN5bbO3rQ0aIJ9UA6Qo+4Rc2sZt2a2LGSzWbFn/A2r1U73G7sXpeSSk9+PcQNsJCTHf7piZUWCOqluo96WXce9OgOKIHL2eygcAAn9UnLPgoNN8QZgGxHT6M3xwAQMY11g22Ky6QhhLyW6mxpiTCAx6DvDdkSvxF0zdJdmAEqjkc951eDhrjKTSELpV7GlAQsrKFPzugclE5RYHRDSjbWKNqpnQ9iA3y3HpII1wO951ttOQVVa+xLkYb3MjE+njPnzoUN4dKHb6+bZjYJ+qtqcKlFWlKBjhZGWWsg//GCM0RliWh66VHoHna85pS3FPqk3uYFLrTUYyRWzPFNukbbESCfdvQAf68+vonNjhbRoZgmdfyj4E+8+BmURX9NbGUJcG8cqP9t9wThQ6oOXcXkA/nBsj7UC2EYrXBpmSbVM7OV+4nUSTrw+idmA3cJUIplMN/i+dPImgFvfoX3ZICq1BaV
+ f7TawOKn
+ 0JAXq9uQQe9jSE29WsdqGNcsXejGjp39LyejObpwIQ804nm5RGTd5u2xhs2X8ef3tj8PiJ8UGSxHegi5yzL+2QCvuzmRQOUrDld/G8T47x2Fbc1115SqnPmN7wm7dT92wm59ywxtgRasdukYrEDkYMuu1wPwreGDKmm/LextFUV0YR34zjSDUVZgqS15dYFfLC6LpEmhMDswMcd1PLC8qq8BzHYG3GmeieGho4WMIbuuML3q6guJW9K4vm/EJN6boYsVp1O8i23yGOHCUjPdUx/roTyYUT90j5HVK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,43 +90,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Dec 16, 2025 at 01:03:02PM -0500, Steven Rostedt wrote:
+> On Tue, 16 Dec 2025 06:02:52 -0800
+> Thomas Ballasi <tballasi@linux.microsoft.com> wrote:
+> 
+> > The changes aims at adding additionnal tracepoints variables to help
+> > debuggers attribute them to specific processes.
+> > 
+> > The PID field uses in_task() to reliably detect when we're in process
+> > context and can safely access current->pid.  When not in process
+> > context (such as in interrupt or in an asynchronous RCU context), the
+> > field is set to -1 as a sentinel value.
+> > 
+> > Signed-off-by: Thomas Ballasi <tballasi@linux.microsoft.com>
+> 
+> Is this really needed? The trace events already show if you are in
+> interrupt context or not.
+> 
+> # tracer: nop
+> #
+> # entries-in-buffer/entries-written: 25817/25817   #P:8
+> #
+> #                                _-----=> irqs-off/BH-disabled
+> #                               / _----=> need-resched
+> #                              | / _---=> hardirq/softirq   <<<<------ Shows irq context
+> #                              || / _--=> preempt-depth
+> #                              ||| / _-=> migrate-disable
+> #                              |||| /     delay
+> #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+> #              | |         |   |||||     |         |
+>           <idle>-0       [002] d..1. 11429.293552: rcu_watching: Startirq 0 1 0x74c
+>           <idle>-0       [000] d.H1. 11429.293564: rcu_utilization: Start scheduler-tick
+>           <idle>-0       [000] d.H1. 11429.293566: rcu_utilization: End scheduler-tick
+>           <idle>-0       [002] dN.1. 11429.293567: rcu_watching: Endirq 1 0 0x74c
+>           <idle>-0       [002] dN.1. 11429.293568: rcu_watching: Start 0 1 0x754
+>           <idle>-0       [000] d.s1. 11429.293577: rcu_watching: --= 3 1 0xdf4
+>           <idle>-0       [002] dN.1. 11429.293579: rcu_utilization: Start context switch
+>           <idle>-0       [002] dN.1. 11429.293580: rcu_utilization: End context switch
+>        rcu_sched-15      [002] d..1. 11429.293589: rcu_grace_period: rcu_sched 132685 start
+>           <idle>-0       [000] dN.1. 11429.293592: rcu_watching: Endirq 1 0 0xdf4
+>        rcu_sched-15      [002] d..1. 11429.293592: rcu_grace_period: rcu_sched 132685 cpustart
+>        rcu_sched-15      [002] d..1. 11429.293592: rcu_grace_period_init: rcu_sched 132685 0 0 7 ff
+>           <idle>-0       [000] dN.1. 11429.293593: rcu_watching: Start 0 1 0xdfc
+> 
+> Thus, you can already tell if you are in interrupt context or not, and you
+> always get the current pid. The 'H', 'h' or 's' means you are in a
+> interrupt type context. ('H' for hard interrupt interrupting a softirq, 'h'
+> for just a hard interrupt, and 's' for a softirq).
+> 
+> What's the point of adding another field to cover the same information
+> that's already available?
+> 
+> -- Steve
 
---qya2ibtxqvkulq4p
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 00/28] Eliminate Dying Memory Cgroup
-MIME-Version: 1.0
+(re-sending the reply as I believe I missed the reply all)
 
-On Mon, Dec 29, 2025 at 06:35:22PM +0900, Harry Yoo <harry.yoo@oracle.com> =
-wrote:
-> > The memcg-v1 was originally planned to be removed, could we skip
-> > supporting v1?
->=20
-> You mean not reparenting LRU pages if CONFIG_MEMCG_V1 is set?
+It indeed shows whether or not we're in an IRQ, but I believe the
+kernel shouldn't show erronous debugging values. Even though it can be
+obvious that we're in an interrupt, some people might look directly at
+the garbage PID value without having second thoughts and taking it for
+granted. On the other hand, it takes just a small check to mark the
+debugging information as clearly invalid, which complements the IRQ
+context flag.
 
-More precisely it should be dynamic
-	!cgroup_subsys_on_dfl(memory_cgrp_subsys)
+If we shouldn't put that check there, I'd happily remove it, but I'd
+tend to think it's a trivial addition that can only be for the best.
 
-> That may work,
+Thomas
 
-But would it make the code actually simpler? (Keeping two versions at
-multiple places vs transferring local stats at the right moment.)
-
-Thanks,
-Michal
-
---qya2ibtxqvkulq4p
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaVJdmRsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+AjcmwEA40zUj0sp6cAAd3bXgrQF
-sR0AqL6ydZGZfdd4i1DDccAA/0xU+vWaUPKB0gC3zq4HkdYA+8vTysTe6W9hZxPW
-eCII
-=A4Sk
------END PGP SIGNATURE-----
-
---qya2ibtxqvkulq4p--
 
