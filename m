@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11A8EE8FDBE
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 14:31:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C6E8E8FDBE
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 14:31:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34E4B6B0088; Mon, 29 Dec 2025 09:31:05 -0500 (EST)
+	id E096F6B0089; Mon, 29 Dec 2025 09:31:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 325E76B0089; Mon, 29 Dec 2025 09:31:05 -0500 (EST)
+	id DB3BD6B008A; Mon, 29 Dec 2025 09:31:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25C426B008A; Mon, 29 Dec 2025 09:31:05 -0500 (EST)
+	id C622F6B008C; Mon, 29 Dec 2025 09:31:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 17A4E6B0088
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 09:31:05 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BB427CA785
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 14:31:04 +0000 (UTC)
-X-FDA: 84272745648.27.5E70BD2
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D5A03180019
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 14:31:02 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B3CEC6B0089
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 09:31:15 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4C73C1A1528
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 14:31:15 +0000 (UTC)
+X-FDA: 84272746110.21.1B7D1A3
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 63E66C001E
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 14:31:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
 	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
+	spf=pass (imf28.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767018662;
+	s=arc-20220608; t=1767018673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=foHDr6tTVVg2N+oq2ubI3TwM6NJy7Osy+6nFP/DCYQ8=;
-	b=719J3lLkscTzn6lNckVtBugrPP9c3MyocbTLhnEO1Y6/8Q3p7qgKRRxrYe5kl1G207AS9s
-	dtNgiXQrO9COdU7KTF3LxCyT0A2znOaYoCoJAwE3kdmfb1f5gYcytvuxE6cEFEG5kNBZOQ
-	nN1fSb3HE56l4a9ot11p5qeUYulgC5o=
+	bh=ZldRDJqtH1ig79a3NbAjYulmXt3x4GlRPqkLpWEwBdc=;
+	b=JnB99+6QveIb4atVBovlqYrLypxXqEuPktf/k8WNOaQ9KwX5tRWBfS/GH0WhXeA0ZzTkA2
+	VpMzyDXbA0uNfg17WPU/5S/Wdavgr6sjGI8+HEQdxEoJZdj5ujMBe1zoKt0sOAYd6OW+0s
+	IxLmWs2TpfEsjBmY8sDMfkU8DyaPYHg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
+	imf28.hostedemail.com;
 	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767018662; a=rsa-sha256;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
+	spf=pass (imf28.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767018673; a=rsa-sha256;
 	cv=none;
-	b=S4Irrn+3ssJ/MAcHA8iVk+FvZRuWEmLnGD9fYKRE42dMBvbnvZMEr4nKnBB9uUaoF+etgH
-	2po5RUaNtJPOM0oL2Y1ilDjx46rsIPfsrFALeQ6czXtL5j9wjV1csSm4sJzZgsGRrZRCK+
-	22sBdJObWOsxCuhgszdoBaDhoQNqq7E=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7f121c00dedso12340606b3a.0
-        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 06:31:02 -0800 (PST)
+	b=ALL4ChOTAJIDMOq/bA/qWnMHdRF7tZjAozqbRxxgte+5Rj6ZTePwibwxA4/SL7kFrpfLpJ
+	zG6WH232WBiWejpzieUyz2LpPVskOziAMJZ9hBPxKHQVJyFUA0P4JVeP8I9W/naQsZXpwD
+	1tXxJhNDMtxb/Go+s0UcTTtq0omYLl8=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7b9387df58cso14624362b3a.3
+        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 06:31:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767018662; x=1767623462;
+        d=1e100.net; s=20230601; t=1767018672; x=1767623472;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=foHDr6tTVVg2N+oq2ubI3TwM6NJy7Osy+6nFP/DCYQ8=;
-        b=uKa4cdWuDCUE6neyPe020bMLCGS3xuC7xqoOTCSnKtLDwEXALJhFZE8ai6nfEWMkyV
-         tfNvpF/UB6No9em+qcEgfLCOJhSYTLftQI+03GC0S55eNUB0kdnfj0NTaWt7pVhCN+xd
-         k8DJY42OYzkajfur84eRrcjMvkPTpa6o2RVrdi6o7iGuISznSPzxgKxpfV4/pTNCqCK/
-         UFPWmm/S/AMh8a+4gbtRPr46tdmVSfzkGuO8AQUrNuM7JHVxj7BDJRF0gTOuMppRZXvl
-         ++zLyEvjBLVc8Y72vujbj+lr1b44RmxZWxozfInaKyMRbUp/gAv4FmXb0y1xNH8Uevbo
-         ofrg==
-X-Forwarded-Encrypted: i=1; AJvYcCWnOn6Y9HH7a6+NxxJQ1R3w2ljJTvd87EcvEN2GCEEV7ZPq5N/roiSg2F6E+EaNxYMnIPWwN6XBXQ==@kvack.org
-X-Gm-Message-State: AOJu0YwNSffCRL/z6ylg7fZk0YDSapIwCl7C8DWN9StX6nFBeOzk2o7U
-	fdYVHCv+5M2iClmezo5/JpXmD8ioWTwSXsiHUMe41rKSe1h/sYQu9DlUvxS4fg==
-X-Gm-Gg: AY/fxX5/xjVODMPpV5/SVJiOePvv0lt6hNMwWzAaB6kOHjALu6zT9/VItgWY1VrJutv
-	B4oqKhBMN/R78Ni5SNpooxim85E5JV2oSsnaPEzD1IOiFy8itw2pW77Z8R6UQ+KXg10meTNiszR
-	oZ/V27M+l0qL0rirBTSJLS40JORBOSCLrZRZwDnrF5EEg5/9QRsUHVrIMpDNKpsXWI6fXUfaMny
-	sF33L3RkFrdxiIxzamuNmnaBkMXwVbf+u2bLD4/jgLmNvdfjpvQgv7/EJd4oM8jxVXsMPKa32sb
-	R+mMlZjpgdBeYBbLVRhbuvi0TpGbwQR9O7J4vHxrCRsuzKPYm9NcHD5ggFjKjW8Z3XuwAm5KQ2z
-	53bjkduj8gjxr9t6Jd4pHnE/WNgfOR+9XhotJ90NZm3rhUYvOJiQMdVJ2VGpPIUEn/6JcFB7Bf0
-	sGWjX4MbdyCls2bnfHC3j9
-X-Google-Smtp-Source: AGHT+IEcRpszq5Kq79VNLMGams7x9wFNNmMmBbYeukt6SbJFbwCYZtO3VxeJZmswaHVyyAPRvGA8Bg==
-X-Received: by 2002:a05:6a00:4514:b0:7f7:4a39:55cd with SMTP id d2e1a72fcca58-7ff6178be74mr27982951b3a.0.1767018661690;
-        Mon, 29 Dec 2025 06:31:01 -0800 (PST)
+        bh=ZldRDJqtH1ig79a3NbAjYulmXt3x4GlRPqkLpWEwBdc=;
+        b=EesxHQ2ICpflQZ7bQn++xvU4mxKfPujMuCIkH3lxULmCKokO1meRtrdHFWXHb0WQSb
+         2MdtNQv/8wajkrmgebUhQ1QYn2sFotPM3XE24l802dS/eeEjlMZubg28V9N8P5oxkXgv
+         iUXz4ox0+yaqfYmLOfgQG2BmeZrhAt5+3nNStR6KL84tlDeG27RQYlDsDmbZW+7e7482
+         09zzXUPnvDQE/UpMCq0zX58PhdjnTUnJgHkEn/giEusO6ZDUzJycqkyxVO1mgTu6GfjY
+         TO6PzDFpjfn6jhqQbBAx1woMLFWkEOrwmnj/U9U/PvIjA0/T+xbWXLD89WEWrv6y33UV
+         3agQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUyAtxMZO1BFp6Ub4qFnWo0RnwoUAdSpdNkgLToWSxV/Wc6gFJAZRZ2FL1dr81AhRbm/v9PlBXPxw==@kvack.org
+X-Gm-Message-State: AOJu0YyqnqoH6LfLdHnj7WJS9UKsgQmlEr3zVOH1s2VG+EdIRygWTTyK
+	UG+o4JKVnT4kHxcfHAIAAtzzy13jB2g5duEzBmdSA0Ff0TwRszlJqYl6
+X-Gm-Gg: AY/fxX5eIeyDzPQp3AFisT1YXPxd0S73ddeZRInw3haWaLlJ65DyBE6l4MzEaBhiR+T
+	wwwI1mpgfe7a8myXLtLmHHZw4Nt7krlw3yQkBgRJOMwRUiOw9CsNnDpcaQoKUZahjrZS253N5dg
+	z4e16Jrr49aU1Y3pv5QlHeFM1JPBW84ThmVEabRbjBo82QHaDIqyIyA/4ViUmoCrgNXyZ8uQBCh
+	8FhzX3GSjjm14f+zQ1BxV2twPXgmeB/OKlsnWk8JxOqnP2i3S57vMIcqDedMp2sgdXucmar5IfY
+	zoAbX5Fe7i+chKXon/rSN2mRsz3suK4BHKhDMXrIAhty0185uhp8RVEdfRLIPgO5KJndWYHd3FX
+	wKyQ0yF2K0wcPTTds9GShA3fwlhCIBtwJrg/1kfI9+xV+rBwJ0rkKRXeD2C8iLZ1uMxFMczzkJP
+	nJ8hgmWi5BZJkCE1jKRTAe
+X-Google-Smtp-Source: AGHT+IFcZGgxztN2EeAun4quNpAXXOKNWX6LSnFOxrijtlTfhRDRGQK0tPKQ/9UZzDdFUSs+EvX5Jw==
+X-Received: by 2002:aa7:9a85:0:b0:7f7:5d81:172b with SMTP id d2e1a72fcca58-7ff664807a0mr29842840b3a.42.1767018672206;
+        Mon, 29 Dec 2025 06:31:12 -0800 (PST)
 Received: from EBJ9932692.tcent.cn ([103.88.46.167])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7dfac28fsm29705159b3a.32.2025.12.29.06.30.52
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7dfac28fsm29705159b3a.32.2025.12.29.06.31.02
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 29 Dec 2025 06:31:01 -0800 (PST)
+        Mon, 29 Dec 2025 06:31:11 -0800 (PST)
 From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org
 Cc: will@kernel.org,
@@ -109,22 +109,22 @@ Cc: will@kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH RESEND v1 1/3] mm/tlb: allow architectures to skip redundant TLB sync IPIs
-Date: Mon, 29 Dec 2025 22:30:31 +0800
-Message-ID: <20251229143038.73315-2-lance.yang@linux.dev>
+Subject: [PATCH RESEND v1 2/3] x86/mm: implement redundant IPI elimination for page table operations
+Date: Mon, 29 Dec 2025 22:30:32 +0800
+Message-ID: <20251229143038.73315-3-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251229143038.73315-1-lance.yang@linux.dev>
 References: <20251229143038.73315-1-lance.yang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D5A03180019
-X-Stat-Signature: 51diczge5nhaskua3b1tqgaoe6djek55
 X-Rspam-User: 
-X-HE-Tag: 1767018662-238499
-X-HE-Meta: U2FsdGVkX1/SnCvUyeCgyH2Ntw6uk2H7bep1P+xxIBlOeWSkfUy9HYUhCVhpEyXaRDlPlJE2T3zsq/kD2MnOoGaNaD0Ydxe1GnLD6oU4d9PmJ9sR98DeUPq0acsHZnhdFJN28YyY5lLsqn4ATKxZp2st4fchTCPoZPYP9dDL69BveuZKslj3XxTLOMwM+ajEI2BO/XV/jLr7iX9ZTOnNYZFoUbozDVDEw/6tVlCk1lE8+OmxFxqSUDMez8JuNZ8lxTz4xn8hFyQDW6yPtlkIKG0TavtE7ZTGdUyFNrRr3KuxPQ5Zeutrx3CB19LiZB/wQKt1sp6l/9+ygsqmcXWWPXgQ71vvwBPhQSJC6pfraUDKyE8e2/6518KcOZQzgFRAlCMxXjyPdYRlXM0kL1/njshKOrbJTTQ7gAqTNHLT5obokVXkjPiqP4paYGTJKCHA4Jc8Vi/Q443w3ZUkyNzT8+V5B0/rZSg5DjRhaXrJMV53f1MHaWYEBXOCGU/BPml0ozjmQ2PElOmot2PIiK+pdyr1RaA025bPcULSEM5E9X5p0+PPgsr0Nngqx15OyPCc9bver6MziurLwM60nE/hoaA3yWG6O68EqLKgH3dnQVX6IMa1tGzOrYgEHhAn2BLdQtxmjSaZxg3yQs4bS+iLklqXcXGv03Svka4EIk+XMaEi7r4Rv2jkHsKFNDNy/3xlTwKr7F0ifYxnMZ8GL+QDZatnKuO7Jpkezn77ZJpODxExxs/wFX6VqKGd+24sBV9OJPLQJykIHCCH70n6P6/lDglyZe537zo7rh7wwQGLF3gtzkjjopaEnAtZ0FCXxRCA6017RFFilWqJ8iUxHeJPL/5tvffH1SxPMEIp3qjp1zlkNWAbE23wLuZOHTXA1vHAEVXzIYwUmEnIOWzHs9htWj2YRBAC44udVo64FYf7B7iOjN3mWUBuZn9U91uLtlnWKti7CNsetuZhuqrCCZC
- +D8bv69B
- 3rxO6a12UPejZHxD4QwjlzbykNewBfvKlU824DV++mevzJDpp6TaMQvjccBEvo1KjLa4pld+XgideI6pKDt+X3KWux2PZYl0fr6Nx9v1gVsZlueR/x8NQ7Gf7gBrZzNQKod4nGl/omlY2oSVktKVAuY6Tulv9TBoci+y5VSmNF1nlgOwESG4Km8InTe614sQqFMl660dCRA1gTCkgqnGSMAfXgkj5FWbVdOMsU2qGTTBYLJ17xSY1fZ1doIUooXDfzkc+7//w6k4emxBcufWtXmnVJ98tzsdnFuM3xAQUu4PKKsy+159o6GSIJIV7FISB8Wj1K/h4bD3qlbx8QsP9f+kJVJSYPBIPnEOBg0XleKETPDnW0N3BfX9HdYvg7yuUygZKgbHutklkIn0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 63E66C001E
+X-Stat-Signature: jbf14apdjrj1ypk17d6nuguimf9mjobp
+X-HE-Tag: 1767018673-995862
+X-HE-Meta: U2FsdGVkX19zkEVhM+TFE4UoP6t/LbqBnr2daR/qOu5RCteH2Y+omb1YgbYzDOLOsLwCIvU+CfQjo1X9ryDPw5slLSLVvILxhBkQdixMhICQ6PDmm3GEDrypj1PSBwQWqz0KwxKqwnQ5NGVhzeLN1l0NF/M6RjG9+hRnMSu4Sh64s+lC2phNQiFJHoZriynT68qqnLXoCoKRPkIVBlMYc1ybFKIdf0raeeYKJra9jCzLm3l4qbtqcy+3Zs/9D0tQNvrkXmVXLHLBvRNn26WnU0yMcVEyJ2WGK/DOxLw+hCzrE0WH3QLeyXLv+t2LpfnkNcX2/huXtWv1ruExRZZoaCND+ChkBaRbvRdtvbnqprEaNylBfw5ctyfPmQCvMmaQDuXY7i5t+CChm2sygbHjpth/s3I+8CAmbwjUmZ5dBCpKaqFuECq0+fMUhbzsPywhXexa18KOBixefRMBfoVB8uc3Fm3bHCD+zxhjLSV531tCWY8ROEATf4tFgW5e1Six3VqT+EDv3O+g91OHlS55G+Ba2mvmU7W2/3VBbiLoWoj1tSjMd+XGp6aUDluMHjYfGMgFWyLzlJOVowiRx+F1QEr3rgAm4YrVhDaZrsV3RYIJg5A7coQSJKBjPXtPBoCNp5eEtGv84uw+2MnLJdgVuChJvJjPvwYaM0iTByDmNrgL5uzLxVXaZF5NmNh/mTfToHDV06jxQOOk4JXpEog9JYuuh0dz4XxMaWxEZq23UEAD7NJbHEIg6o/ZVVrT0HC3UgEa/h799Av5Q+ZiI0iEx2USCibhQdz5gI04Z1FP1awJD+ZjIyL6sdjIhQxSsmwyLzo/aCNUvoMCFqv+EQY/IIbNdj9X5B9YfkyUbxkRCUJZIGLXOYnW9z5+5H4XH3FmlmXQx+1yyepgd73NOnPOD2MKbnN7f6cbh/uoCoW963NIOhA6yt0v90mADjuHQ7mC/qV7TYXGKZUgaXD+nGb
+ +u6G1uho
+ Vyy122+/bdXSSRA22xLpEiHXhiMQiLWVXlUjlcPwHIiZunvGGwhbeEq/7/Z3fBfO77A2HthTaCKTg96hT53n/w/dMBHtwikr9TqJ9CO2FD+LnD5VHbULgiPm37qbUcQ2TJ2NVUUdaffIjgBKz2sgPD0Ne+U3WprSpcbuZU+zxKxdiAJLqvnIAAaXK8Mrhpy4G0YB0Lhm1QPPjutxKrW0JpsFI3Qh6q032NZLJKtG7ng+Lkps8fQ8ynchsCcHFSgRoJRmuAthuB4mXqTkgd3gCjic33pVRFeUobW6q+tnwmOuhpy8sq3cnpDthsmghRbz1s4xbNH83mp6JhptD3SyHnPiALLaBBqGazBgd7EnWvzt7JXYzI9uqkeJ+VZgNknoU4+cCMBsBsj48FpvGsjydrg+c8Qp9Gnw5BO7jm46E5o4LM5w1EI5wzkW2LFGckB5HVJMTbktBzog42NjJ8nUksq95vQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,49 +135,108 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Lance Yang <lance.yang@linux.dev>
 
-When unsharing hugetlb PMD page tables, we currently send two IPIs: one
-for TLB invalidation, and another to synchronize with concurrent GUP-fast
-walkers.
+Add a callback function flush_tlb_multi_implies_ipi_broadcast to pv_mmu_ops
+to explicitly track whether flush_tlb_multi IPIs provide sufficient
+synchronization for GUP-fast when freeing or unsharing page tables.
 
-However, if the TLB flush already reaches all CPUs, the second IPI is
-redundant. GUP-fast runs with IRQs disabled, so when the TLB flush IPI
-completes, any concurrent GUP-fast must have finished.
-
-Add tlb_table_flush_implies_ipi_broadcast() to let architectures indicate
-their TLB flush provides full synchronization, enabling the redundant IPI
-to be skipped.
+Pass both freed_tables and unshared_tables to flush_tlb_mm_range() to
+ensure lazy-TLB CPUs receive IPIs and flush their paging-structure caches:
+	flush_tlb_mm_range(..., freed_tables || unshared_tables);
 
 Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
 Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
- include/asm-generic/tlb.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/x86/include/asm/paravirt_types.h |  6 ++++++
+ arch/x86/include/asm/tlb.h            | 19 ++++++++++++++++++-
+ arch/x86/kernel/paravirt.c            | 10 ++++++++++
+ 3 files changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index 4d679d2a206b..e8d99b5e831f 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -261,6 +261,20 @@ static inline void tlb_remove_table_sync_one(void) { }
+diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
+index 3502939415ad..a5bd0983da1f 100644
+--- a/arch/x86/include/asm/paravirt_types.h
++++ b/arch/x86/include/asm/paravirt_types.h
+@@ -133,6 +133,12 @@ struct pv_mmu_ops {
+ 	void (*flush_tlb_multi)(const struct cpumask *cpus,
+ 				const struct flush_tlb_info *info);
  
- #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
++	/*
++	 * Indicates whether flush_tlb_multi IPIs provide sufficient
++	 * synchronization for GUP-fast when freeing or unsharing page tables.
++	 */
++	bool (*flush_tlb_multi_implies_ipi_broadcast)(void);
++
+ 	/* Hook for intercepting the destruction of an mm_struct. */
+ 	void (*exit_mmap)(struct mm_struct *mm);
+ 	void (*notify_page_enc_status_changed)(unsigned long pfn, int npages, bool enc);
+diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
+index 866ea78ba156..3a7cdfdcea8e 100644
+--- a/arch/x86/include/asm/tlb.h
++++ b/arch/x86/include/asm/tlb.h
+@@ -5,10 +5,26 @@
+ #define tlb_flush tlb_flush
+ static inline void tlb_flush(struct mmu_gather *tlb);
  
-+/*
-+ * Architectures can override if their TLB flush already broadcasts IPIs to all
-+ * CPUs when freeing or unsharing page tables.
-+ *
-+ * Return true only when the flush guarantees:
-+ * - IPIs reach all CPUs with potentially stale paging-structure cache entries
-+ * - Synchronization with IRQ-disabled code like GUP-fast
-+ */
-+#ifndef tlb_table_flush_implies_ipi_broadcast
++#define tlb_table_flush_implies_ipi_broadcast tlb_table_flush_implies_ipi_broadcast
++static inline bool tlb_table_flush_implies_ipi_broadcast(void);
++
+ #include <asm-generic/tlb.h>
+ #include <linux/kernel.h>
+ #include <vdso/bits.h>
+ #include <vdso/page.h>
++#include <asm/paravirt.h>
++
 +static inline bool tlb_table_flush_implies_ipi_broadcast(void)
 +{
++#ifdef CONFIG_PARAVIRT
++	if (pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast)
++		return pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast();
++
 +	return false;
-+}
++#else
++	return !cpu_feature_enabled(X86_FEATURE_INVLPGB);
 +#endif
++}
  
- #ifndef CONFIG_MMU_GATHER_NO_GATHER
- /*
+ static inline void tlb_flush(struct mmu_gather *tlb)
+ {
+@@ -20,7 +36,8 @@ static inline void tlb_flush(struct mmu_gather *tlb)
+ 		end = tlb->end;
+ 	}
+ 
+-	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
++	flush_tlb_mm_range(tlb->mm, start, end, stride_shift,
++			   tlb->freed_tables || tlb->unshared_tables);
+ }
+ 
+ static inline void invlpg(unsigned long addr)
+diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
+index ab3e172dcc69..4eaa44800b39 100644
+--- a/arch/x86/kernel/paravirt.c
++++ b/arch/x86/kernel/paravirt.c
+@@ -60,6 +60,15 @@ void __init native_pv_lock_init(void)
+ 		static_branch_enable(&virt_spin_lock_key);
+ }
+ 
++static bool native_flush_tlb_multi_implies_ipi_broadcast(void)
++{
++	/* Paravirt may use hypercalls that don't send real IPIs. */
++	if (pv_ops.mmu.flush_tlb_multi != native_flush_tlb_multi)
++		return false;
++
++	return !cpu_feature_enabled(X86_FEATURE_INVLPGB);
++}
++
+ struct static_key paravirt_steal_enabled;
+ struct static_key paravirt_steal_rq_enabled;
+ 
+@@ -173,6 +182,7 @@ struct paravirt_patch_template pv_ops = {
+ 	.mmu.flush_tlb_kernel	= native_flush_tlb_global,
+ 	.mmu.flush_tlb_one_user	= native_flush_tlb_one_user,
+ 	.mmu.flush_tlb_multi	= native_flush_tlb_multi,
++	.mmu.flush_tlb_multi_implies_ipi_broadcast = native_flush_tlb_multi_implies_ipi_broadcast,
+ 
+ 	.mmu.exit_mmap		= paravirt_nop,
+ 	.mmu.notify_page_enc_status_changed	= paravirt_nop,
 -- 
 2.49.0
 
