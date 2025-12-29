@@ -4,79 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F87FE8FDB1
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 12:25:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10A92D3B7E5
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 12:26:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 439646B0088; Mon, 29 Dec 2025 07:25:08 -0500 (EST)
+	id 759A66B0089; Mon, 29 Dec 2025 07:26:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E02C6B0089; Mon, 29 Dec 2025 07:25:08 -0500 (EST)
+	id 6F6BD6B008A; Mon, 29 Dec 2025 07:26:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EBCB6B008A; Mon, 29 Dec 2025 07:25:08 -0500 (EST)
+	id 62A236B008C; Mon, 29 Dec 2025 07:26:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C70D6B0088
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 07:25:08 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BF1E559CC4
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 12:25:07 +0000 (UTC)
-X-FDA: 84272428254.09.0E2D016
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CC5B0A0003
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 12:25:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fgRPatP5;
-	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 516986B0089
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 07:26:13 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E63A3C9FC8
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 12:26:12 +0000 (UTC)
+X-FDA: 84272430984.21.495C8F6
+Received: from sg-1-104.ptr.blmpb.com (sg-1-104.ptr.blmpb.com [118.26.132.104])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 564951A0006
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 12:26:08 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=DB4Mq7z8;
+	spf=pass (imf19.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.104 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767011106;
+	s=arc-20220608; t=1767011171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=rgD96VXLpwPca73tk8XcXo8AuLjoIr0us/dYXAVju8I=;
-	b=zciuvOdDUGFg3U95PXIFu3ZOi3+oo6Ql89+Z/1ivSMZQIlPvZY7HN/XEbtIrN/VJMCyH4C
-	CwO2oFVAfUQFyIGqoEMRgbPnSramwEJ9UUXWVd85b2Ev3sdEymSTwlayoNNYkaZo9yYmMs
-	ejh37SfzjhpCD+G3J5VQifiRZMmFEb4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+W6DGY7qIcPDVlcv8bt7iI6QjbF6AUeFe1xm8LEWDtY=;
+	b=EWV9Qp2yZ0DMUCAj36krz2jq/NcxsjYAh+ObXfxNBNHSsmKazCA8uV5mHPn1dingKVGpT+
+	W38mr7eXMboDZiDoEwCsyIk4T1BSDTp+/WTZbXLRWrV37t5/jyPYz+6CFAHLtTAhWvLZLG
+	JQYZ+cqQ1GDWdhCwiNHqrZiWxwxfRLc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fgRPatP5;
-	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767011106; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=DB4Mq7z8;
+	spf=pass (imf19.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.104 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767011171; a=rsa-sha256;
 	cv=none;
-	b=3cw0WUV03G//LPdZCyjym3oERzSgMulIdGh1Nc3PozUqvEXXHAU8WUd/r56UqS5D+f0zIU
-	r44kHR0by6WnaYvclyZtqjBpFRzZvGqhum/2kBA5Eg8U1kk/0jKKJUcUXkt9ML/9SWsPef
-	+wZubG7YRo2o6ClHkAHjevt9nDjyNew=
-Date: Mon, 29 Dec 2025 20:24:39 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767011103;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=rgD96VXLpwPca73tk8XcXo8AuLjoIr0us/dYXAVju8I=;
-	b=fgRPatP5VKCbyIM9xkP9bbGPhYmZYLjlEp2Dl61XOrRtgEixli4mCxGdHcTCzbFgnGtU8h
-	mWo4UghuiuNUo1Y40HSQUB5dxgNFNW13tWBTkoT1a+T7eYZhEXJ5XoTyaDrhlgHvp8G3/C
-	GMqEFZSXcws4CC2UkxGZhG5tbAdYCIY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: vbabka@suse.cz, akpm@linux-foundation.org, harry.yoo@oracle.com, 
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, hao.li@linux.dev
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hao Li <hao.li@linux.dev>
-Subject: [PATCH v2] slub: clarify object field layout comments
-Message-ID: <20251229122415.192377-1-hao.li@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: id5r9s6oow9cohpbd8qe7yjb9u1gjtk5
+	b=d40mdtBcq0MhzDp1+kCEayDPteOyl8rwGIwh3gl4o2gXbP4GdxNZk7byEGi41r2/UpH6kp
+	A75/YYenzieIFbMwAnLBIXpjsaUBzLwx0aPcZw24Reys6VMb5/Zu1mPFONkshMlpJ4OGDm
+	VEvc3xf8vcw6unOPCrlSkbf1bV3nxG0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1767011161; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=+W6DGY7qIcPDVlcv8bt7iI6QjbF6AUeFe1xm8LEWDtY=;
+ b=DB4Mq7z8+o8OzcpUo48XK0VHzln1/I+kYCEMhl5Se6Zb8wjKI9i61lvccRcqZMDQbwy4HF
+ +ZK3SwIeOZYwKBJTLx1ZxpV9rqJGGb1BOyO8uOq2lJO2H940KRYh4vhGzg2yQoEqN9+k4M
+ Kj69DktgMeSlLRhxUzJ5CNPO4g75D1WjNW3L7W9HKzh4zF/pUx6l3phFmYckEF8IbQpw2L
+ 3F7npi3wVIo7PsnV8rFbekvDtKWXupvt15fgzr69sUZKcJn01nr7VLo0PxG1j9qpW0d115
+ frj2QQFzoUqUjXdAavfLNYjl1XMFGVE9L4kp/SVn0q4HAy/x2EExLYkXknCYIQ==
+To: <fvdl@google.com>
+Mime-Version: 1.0
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <CAPTztWZPGAijX2eAt_tKfF=XDnN2nXHRBXPzh0xsE5Czfw+FAg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Cc: <akpm@linux-foundation.org>, <david@kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<lizhe.67@bytedance.com>, <muchun.song@linux.dev>, <osalvador@suse.de>
+Date: Mon, 29 Dec 2025 20:25:37 +0800
+X-Lms-Return-Path: <lba+269527357+5bbae6+kvack.org+lizhe.67@bytedance.com>
+Subject: Re: [PATCH 4/8] mm/hugetlb: introduce per-node sysfs interface "zeroable_hugepages"
+Message-Id: <20251229122537.6903-1-lizhe.67@bytedance.com>
+References: <CAPTztWZPGAijX2eAt_tKfF=XDnN2nXHRBXPzh0xsE5Czfw+FAg@mail.gmail.com>
+X-Mailer: git-send-email 2.45.2
+X-Stat-Signature: aij9t5a4cjtg48fdbn76sw7if3mrpif9
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CC5B0A0003
-X-HE-Tag: 1767011105-164652
-X-HE-Meta: U2FsdGVkX18xemJA/B59IvDO2RUp7I+VPS1UKSG8nzBKG2EYCt0fbjFt79xBDwdWDB17MecT8Ez4Vj4qBeNyrXBfnuAW6Iths7x1HN9+ia9oEZysSCBUSR7A0riF1RGV0kWnqlj9YNNmVJoT4kxOR/F5N+24mGJ+rZnMugFnCKuxmQqsUadtNo+zRYAI5MXUocM2JnB5LsnRODGVancfSJWjqjnPx++FLBYtXCNXJGY7s5UISKM5wh18l86CZ6quIeQJsOU/DLLhc2cY6UTuBBPaB/xzG5X+Fi5WT+S435BPY8t1EZwya2Runm6ex1VjS7acPWfkoOTMo186pPDN1ZFLVKkaRSu8TkuaEEozL/+o5uexxhtq9ajnwqmKZP02iKKAkjfEbUj/wJ8TeYLSa4QBRb7PTuMqD2UsJqmU+6GpPd03kbU2hc0/4/OfYPjIf9PmJ++/NAA5DNGJRVrxN1UX+Ku6l4o1M0vLgPbw6IbHUuvc7oEIrzw4V9iRVbnaX5mRL6/es6/WqEx5KBtXyvAzp9Y1MpkKD09GlxUUpvPXaI6P7CPPs0pSd3zIZpOkUK9XoiNpa2WFAi7TUYuI+jGCTD7F5DMdDYsr4SiqX2Tl/JU75ITYFXAfgPeAPFxY8FgVAJWzIHVMc0XA3JsrwRyVMm65cRSudkPx02Js6C1vGt4z55N60UTFtAgnXIxBLx9zQw4MTvu8r8bXWyQuII7xfIU71p2rNTz36CUIoLcXMVwLsrHJI2mzIPnASvTtfQrsb8Kghc4a0AsjQMfy6CFISUGpUz0o5OyDACyQENNAnP6QUGO5vC2P2tOc6ImQg1hz46ilOxHHjyrhPYn9TmtmKbeTYxIiDRDHE+38LhEKFkgEg7tuM1tboak4v4uOQZnwZko+nhC5c54niQ5n7TKQ+sd0xPMgDCZpQRcVop8zktsgbbQVDgidNYWAkeshxgMI4+wSSoB0mUO8n7G
- T4lwPdER
- DJcfTl/VdBWwRZq8UeRuDBVcqIPOmIWZSmvxiurZjW/Ne+4+Je+Pzqqi55b7Qq6ESkFHFaKST0gEfT10ckm7n2rSWmW6Uph724XqDnCHkkYPC6FH1EBijjRbGP5Jek21hI22HnXpFsVt6BblXkfkN+sKP4Nq9lloXuFL5tJcnQRRgo4CZVtf7W+Ye79aALnY9Tyx9rNcoad+GVx9cV6QSJtqxc/8b89TUr4PMJGwFPlQeFaSQNxE/8AdKVgCcj2jX1zGbatnUUMH16ym3JjGXSeIVrDyhiyQglzCO5OQbiTEM+AIyjzX3G9ytgA==
+X-Rspamd-Queue-Id: 564951A0006
+X-HE-Tag: 1767011168-163707
+X-HE-Meta: U2FsdGVkX18k1UVamoDyMoVRpFPB01nErxK4/wq4FYwirMVYvyqwbvn5uJ1nUPKrwoAy+ujt4ABBhb7nJVEEbIMbnq5d5j10bg6NcjB4Rpbr0DkBaaqw4i0MPuhHKdc+KUZ5F+yoeLs/TNmik3B3jct97vV+azWkuXQW0lWK46qJHBkNCPD3b128Tf6tsmGgFIXGoRRYEr5feuiUpTwKgRghCiYN6GGng/EhZEQqqtnJNOr2BIYkwlcItEE9c0ftwkdm1Mu5f4Z4GDRm1Oi1rBgjusIoWrVYiWuzD3N2vUIfHRaGLXhvoVXb2wUXk6LR/ssLSXid2dpz6GCLFx2XG/vEtSD6VG8fS5Su69eYQS4BbMqGoHUqaN042q5U4DiVu3Sc5khzfeUq9V7Twfnx5JiXjg/YIAWC5pSmRNWcOGGwac8EySGm3KAqIFP4ibuNGN7p6ypcVOip7xY2m1l8Dqz+x4ItpmerNyvryhfiafMqJnLHNSehW2PSTlVd1BF3laETV1M/wi0W2H63OD95qGHd1M1ccxR4M2x2jjjL6csexaPquKVaVllXdgvpQ/gPuxiNnIWz+5zmt7N0H0cQUnklr6FhcXpoQ06L27H50nG5qgICWRx7iel9YH/jthmckmw+fgLMAFunBr1ykpV0ep21XriyXbEQOc/Yk05l+4i1k34hpnwmnmKTBceaOK68WEXYmhWw40tquhaWTp2KYBuaLfz2A3m/a0ADaDlSkdTsr6WfcE7EsCSVdQOqLe4G92ganT876GtjIsAoVSHns9z/dAM78yKKWaGiixwPaBB52X+8lsEegrkwFBBubIYi0KnineMG+Qu/2Xx/05yFDVsj2ODYydmtIv0IDTa9tYJFLiPwa0pCJT19E4sEs8W42cu6xuSNCG4kwog8C3+oXuUUNqq9PnJeAEalCs30GurMzGDT5s/r0+8/PusNYD3LxeuxjtEooxTdcGxp+Gv
+ nqqW7xWG
+ HOlRefiXk6NZsFimgOQ3SGDFJ3NmmEHNNCMSy+6G5ESO+l5O3+so8kL7E3+gsuHIyKi7PWDNJtQcXqKhVapOfftG79uoNbxuo843nFUbHKGuOAsrndf6MwP8ZGiCVtIK8u0Ts+CQYdZpClt3lLg/VKCl/5v6a6a2/L6Cyh15rI4nB2PvxgRs3ydIzOf48Aa3xN9GDgkp7bB3anqEIn/ThOkwkYPf7YvvAwoAA4cbb8PHU9j7ZUm52tZPfw3pn2RygbBHoVmn4A+YviRvWPsc/prgOUcPweJsuaO9fzFdWTX685yU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -85,140 +91,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The comments above check_pad_bytes() document the field layout of a
-single object. Rewrite them to improve clarity and precision.
+On Fri, 26 Dec 2025 10:51:01 -0800, fvdl@google.com wrote:
 
-Also update an outdated comment in calculate_sizes().
+> > +static ssize_t zeroable_hugepages_show(struct kobject *kobj,
+> > +                                       struct kobj_attribute *attr, char *buf)
+> > +{
+> > +       struct hstate *h;
+> > +       unsigned long free_huge_pages_zero;
+> > +       int nid;
+> > +
+> > +       h = kobj_to_hstate(kobj, &nid);
+> > +       if (WARN_ON(nid == NUMA_NO_NODE))
+> > +               return -EPERM;
+> > +
+> > +       free_huge_pages_zero = h->free_huge_pages_node[nid] -
+> > +                              h->free_huge_pages_zero_node[nid];
+> > +
+> > +       return sprintf(buf, "%lu\n", free_huge_pages_zero);
+> > +}
+> > +
+> > +static inline bool zero_should_abort(struct hstate *h, int nid)
+> > +{
+> > +       return (h->free_huge_pages_zero_node[nid] ==
+> > +               h->free_huge_pages_node[nid]) ||
+> > +               list_empty(&h->hugepage_freelists[nid]);
+> > +}
+> > +
+> > +static void zero_free_hugepages_nid(struct hstate *h,
+> > +                                  int nid, unsigned int nr_zero)
+> > +{
+> > +       struct list_head *freelist = &h->hugepage_freelists[nid];
+> > +       unsigned int nr_zerod = 0;
+> > +       struct folio *folio;
+> > +
+> > +       if (zero_should_abort(h, nid))
+> > +               return;
+> > +
+> > +       spin_lock_irq(&hugetlb_lock);
+> > +
+> > +       while (nr_zerod < nr_zero) {
+> > +
+> > +               if (zero_should_abort(h, nid) || fatal_signal_pending(current))
+> > +                       break;
+> > +
+> > +               freelist = freelist->prev;
+> > +               if (unlikely(list_is_head(freelist, &h->hugepage_freelists[nid])))
+> > +                       break;
+> > +               folio = list_entry(freelist, struct folio, lru);
+> > +
+> > +               if (folio_test_hugetlb_zeroed(folio) ||
+> > +                   folio_test_hugetlb_zeroing(folio))
+> > +                       continue;
+> > +
+> > +               folio_set_hugetlb_zeroing(folio);
+> > +
+> > +               /*
+> > +                * Incrementing this here is a bit of a fib, since
+> > +                * the page hasn't been cleared yet (it will be done
+> > +                * immediately after dropping the lock below). But
+> > +                * it keeps the count consistent with the overall
+> > +                * free count in case the page gets taken off the
+> > +                * freelist while we're working on it.
+> > +                */
+> > +               h->free_huge_pages_zero_node[nid]++;
+> > +               spin_unlock_irq(&hugetlb_lock);
+> > +
+> > +               /*
+> > +                * HWPoison pages may show up on the freelist.
+> > +                * Don't try to zero it out, but do set the flag
+> > +                * and counts, so that we don't consider it again.
+> > +                */
+> > +               if (!folio_test_hwpoison(folio))
+> > +                       folio_zero_user(folio, 0);
+> > +
+> > +               cond_resched();
+> > +
+> > +               spin_lock_irq(&hugetlb_lock);
+> > +               folio_set_hugetlb_zeroed(folio);
+> > +               folio_clear_hugetlb_zeroing(folio);
+> > +
+> > +               /*
+> > +                * If the page is still on the free list, move
+> > +                * it to the head.
+> > +                */
+> > +               if (folio_test_hugetlb_freed(folio))
+> > +                       list_move(&folio->lru, &h->hugepage_freelists[nid]);
+> > +
+> > +               /*
+> > +                * If someone was waiting for the zero to
+> > +                * finish, wake them up.
+> > +                */
+> > +               if (waitqueue_active(&h->dqzero_wait[nid]))
+> > +                       wake_up(&h->dqzero_wait[nid]);
+> > +               nr_zerod++;
+> > +               freelist = &h->hugepage_freelists[nid];
+> > +       }
+> > +       spin_unlock_irq(&hugetlb_lock);
+> > +}
+> 
+> Nit: s/nr_zerod/nr_zeroed/
 
-Suggested-by: Harry Yoo <harry.yoo@oracle.com>
-Acked-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Hao Li <hao.li@linux.dev>
----
-Changes from v1:
-[Left redzone padding]: Clarify that the left redzone immediately
-precedes each object.
-[Object bytes]: Clarify that the object starts at the address immediately
-after the left redzone.
+Thank you for the reminder. I will address this issue in v2.
 
- mm/slub.c | 96 ++++++++++++++++++++++++++++++++-----------------------
- 1 file changed, 56 insertions(+), 40 deletions(-)
+> Feels like the list logic can be cleaned up a bit here. Since the
+> zeroed folios are at the head of the list, and the dirty ones at the
+> tail, and you start walking from the tail, you don't need to check if
+> you circled back to the head - just stop if you encounter a prezeroed
+> folio. If you encounter a prezeroed folio while walking from the tail,
+> that means that all other folios from that one to the head will also
+> be prezeroed already.
 
-diff --git a/mm/slub.c b/mm/slub.c
-index a94c64f56504..fa08c932db70 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -1211,44 +1211,60 @@ check_bytes_and_report(struct kmem_cache *s, struct slab *slab,
- }
- 
- /*
-- * Object layout:
-- *
-- * object address
-- * 	Bytes of the object to be managed.
-- * 	If the freepointer may overlay the object then the free
-- *	pointer is at the middle of the object.
-- *
-- * 	Poisoning uses 0x6b (POISON_FREE) and the last byte is
-- * 	0xa5 (POISON_END)
-- *
-- * object + s->object_size
-- * 	Padding to reach word boundary. This is also used for Redzoning.
-- * 	Padding is extended by another word if Redzoning is enabled and
-- * 	object_size == inuse.
-- *
-- * 	We fill with 0xbb (SLUB_RED_INACTIVE) for inactive objects and with
-- * 	0xcc (SLUB_RED_ACTIVE) for objects in use.
-- *
-- * object + s->inuse
-- * 	Meta data starts here.
-- *
-- * 	A. Free pointer (if we cannot overwrite object on free)
-- * 	B. Tracking data for SLAB_STORE_USER
-- *	C. Original request size for kmalloc object (SLAB_STORE_USER enabled)
-- *	D. Padding to reach required alignment boundary or at minimum
-- * 		one word if debugging is on to be able to detect writes
-- * 		before the word boundary.
-- *
-- *	Padding is done using 0x5a (POISON_INUSE)
-- *
-- * object + s->size
-- * 	Nothing is used beyond s->size.
-- *
-- * If slabcaches are merged then the object_size and inuse boundaries are mostly
-- * ignored. And therefore no slab options that rely on these boundaries
-- * may be used with merged slabcaches.
-+ * Object field layout:
-+ *
-+ * [Left redzone padding] (if SLAB_RED_ZONE)
-+ *   - Field size: s->red_left_pad
-+ *   - Immediately precedes each object when SLAB_RED_ZONE is set.
-+ *   - Filled with 0xbb (SLUB_RED_INACTIVE) for inactive objects and
-+ *     0xcc (SLUB_RED_ACTIVE) for objects in use when SLAB_RED_ZONE.
-+ *
-+ * [Object bytes] (object address starts here)
-+ *   - Field size: s->object_size
-+ *   - Object payload bytes.
-+ *   - If the freepointer may overlap the object, it is stored inside
-+ *     the object (typically near the middle).
-+ *   - Poisoning uses 0x6b (POISON_FREE) and the last byte is
-+ *     0xa5 (POISON_END) when __OBJECT_POISON is enabled.
-+ *
-+ * [Word-align padding] (right redzone when SLAB_RED_ZONE is set)
-+ *   - Field size: s->inuse - s->object_size
-+ *   - If redzoning is enabled and ALIGN(size, sizeof(void *)) adds no
-+ *     padding, explicitly extend by one word so the right redzone is
-+ *     non-empty.
-+ *   - Filled with 0xbb (SLUB_RED_INACTIVE) for inactive objects and
-+ *     0xcc (SLUB_RED_ACTIVE) for objects in use when SLAB_RED_ZONE.
-+ *
-+ * [Metadata starts at object + s->inuse]
-+ *   - A. freelist pointer (if freeptr_outside_object)
-+ *   - B. alloc tracking (SLAB_STORE_USER)
-+ *   - C. free tracking (SLAB_STORE_USER)
-+ *   - D. original request size (SLAB_KMALLOC && SLAB_STORE_USER)
-+ *   - E. KASAN metadata (if enabled)
-+ *
-+ * [Mandatory padding] (if CONFIG_SLUB_DEBUG && SLAB_RED_ZONE)
-+ *   - One mandatory debug word to guarantee a minimum poisoned gap
-+ *     between metadata and the next object, independent of alignment.
-+ *   - Filled with 0x5a (POISON_INUSE) when SLAB_POISON is set.
-+ * [Final alignment padding]
-+ *   - Any bytes added by ALIGN(size, s->align) to reach s->size.
-+ *   - Filled with 0x5a (POISON_INUSE) when SLAB_POISON is set.
-+ *
-+ * Notes:
-+ * - Redzones are filled by init_object() with SLUB_RED_ACTIVE/INACTIVE.
-+ * - Object contents are poisoned with POISON_FREE/END when __OBJECT_POISON.
-+ * - The trailing padding is pre-filled with POISON_INUSE by
-+ *   setup_slab_debug() when SLAB_POISON is set, and is validated by
-+ *   check_pad_bytes().
-+ * - The first object pointer is slab_address(slab) +
-+ *   (s->red_left_pad if redzoning); subsequent objects are reached by
-+ *   adding s->size each time.
-+ *
-+ * If a slab cache flag relies on specific metadata to exist at a fixed
-+ * offset, the flag must be included in SLAB_NEVER_MERGE to prevent merging.
-+ * Otherwise, the cache would misbehave as s->object_size and s->inuse are
-+ * adjusted during cache merging (see __kmem_cache_alias()).
-  */
--
- static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
- {
- 	unsigned long off = get_info_end(s);	/* The end of info */
-@@ -7103,9 +7119,9 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
- 
- 
- 	/*
--	 * If we are Redzoning then check if there is some space between the
--	 * end of the object and the free pointer. If not then add an
--	 * additional word to have some bytes to store Redzone information.
-+	 * If we are Redzoning and there is no space between the end of the
-+	 * object and the following fields, add one word so the right Redzone
-+	 * is non-empty.
- 	 */
- 	if ((flags & SLAB_RED_ZONE) && size == s->object_size)
- 		size += sizeof(void *);
--- 
-2.50.1
+Thank you for the thoughtful suggestion. Your line of reasoning is,
+in most situations, perfectly valid. Under extreme concurrency,
+however, a corner case can still appear. Imagine two processes
+simultaneously zeroing huge pages: Process A enters
+zero_free_hugepages_nid(), completes the zeroing of one huge page,
+and marks the folio in the list as pre-zeroed. Should Process B enter
+the same function moments later and decide to exit as soon as it
+meets a prezeroed folio, the intended parallel zeroing would quietly
+fall back to a single-threaded pace.
 
+Thanks,
+Zhe
 
