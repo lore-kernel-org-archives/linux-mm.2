@@ -4,128 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFCA9E95A69
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 09:49:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2DA0E9413E
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 09:55:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 464756B0089; Tue, 30 Dec 2025 04:49:33 -0500 (EST)
+	id 280F96B0005; Tue, 30 Dec 2025 04:55:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44F506B008A; Tue, 30 Dec 2025 04:49:33 -0500 (EST)
+	id 22E4E6B0089; Tue, 30 Dec 2025 04:55:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34E916B008C; Tue, 30 Dec 2025 04:49:33 -0500 (EST)
+	id 13B026B008A; Tue, 30 Dec 2025 04:55:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 277276B0089
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 04:49:33 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD3539239F
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:49:32 +0000 (UTC)
-X-FDA: 84275664984.09.47A2489
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 84406C0007
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:49:30 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Cev52j3u;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf10.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mkoutny@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767088170; a=rsa-sha256;
-	cv=none;
-	b=BehTqS08dNv5C1sqHeijdK6NQ7P/cpMOKru8NWsn/BR5Y10K+11OHPd0DgX34h9hA/ftAJ
-	QkJkbkOGx691xJnpxE4QlDG48/EV9y3/BM1ZR1KuNGTaACMJvdyJPwomNPVQc2yDgqdFV5
-	mSVTxkbZEaqXsNS4oVRx50eptPjkvdo=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Cev52j3u;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf10.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mkoutny@suse.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F1A366B0005
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 04:55:27 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9833A5FC18
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:55:27 +0000 (UTC)
+X-FDA: 84275679894.18.06F8D9E
+Received: from outbound.st.icloud.com (p-east2-cluster3-host3-snip4-4.eps.apple.com [57.103.77.155])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 947A2A0004
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:55:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=bne-home.net header.s=sig1 header.b=ArpKY1wu;
+	spf=pass (imf25.hostedemail.com: domain of bshephar@bne-home.net designates 57.103.77.155 as permitted sender) smtp.mailfrom=bshephar@bne-home.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767088170;
+	s=arc-20220608; t=1767088525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4eaz+1wTZP7cgGZagXDHTekg6d8pOXeESnOgAUpsxzY=;
-	b=OmV4LFfwWO+G0Q0KY4MLY4WmVW6aNCT6AlUnkNTq1jSfRTQ/QQyXgT8GkOv7etUrzMJoUe
-	35DrN2oCJuqSr0ziI7b1MCGyPdyZz2MJDf5W7rKiqshzRVTN/dhxzs5DVEHFmWhebte30H
-	qJ6bSW/ZrZVNH0B6xjrjswj9wer1cMI=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4779adb38d3so64125825e9.2
-        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 01:49:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1767088169; x=1767692969; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4eaz+1wTZP7cgGZagXDHTekg6d8pOXeESnOgAUpsxzY=;
-        b=Cev52j3ua1fVUNNTevDM7LZGFWcMIpiJHPq9JAxlrR/pIvzl4jUSicK1NQXaYQO3+6
-         cNxoRJiH+8OgAS7fF/bUSw1x3Sjy0yF4NL3C2Z6jT12evgeK7SmruDJAs22SsiOhalIh
-         cftHQ6EpAYafl59baLolVh9ia3aojqj8SEzn0um3zMzvEVfE2thKZ89CZr4E5gO2IgiO
-         RUN8nAs1CtlOjNfE5k1VXQqbe5MgTivkKMR8PfU3yYKIdVhLXHfQPoUhyG/XSNCJoHt1
-         beXcA29011+Tkh0eK/ZKtMw/A3cPeJv/u9nn3sr0Uf8vETy5b/cNbtFmeMGZ60z1cFXB
-         dQYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767088169; x=1767692969;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4eaz+1wTZP7cgGZagXDHTekg6d8pOXeESnOgAUpsxzY=;
-        b=azpJ3u6gDpeZ2nNRRlSJwEg3220c2oJ8hxoEMbxDyINJ0cqUdbzW3loFUD6pupu9wk
-         APFMfNsRq9ZjynGNq+CzhVH38gtS6g0OvGezrBpnmsSTRZ5FYe4IKSMNIY5Z+oXVp/Sr
-         fm7f26GM4zyIcSQm6cufUnGVOXroBmrUE027b8NaOckm4E3Hbnw4I5dHSugZWh0Pd/E+
-         zB9G4fD/nbshAqfGpJ4rg3/io3iCt4M2voq0+TqvMs1dp9csw9T47PQBnwqzhzIBbcBA
-         Vj3SbsREU8i15Xi4TsKrtSTeh5wVWaizR9PCD74c43JUdd0KJtXSudZKGJul3XHnAv29
-         HwbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXoZgSQyk4NOptKU40emY0tlP6FUoqWaaoLM2WpL+BeWYjzOud6dqUWPmuXTrTYkQqlbWseV2kXKQ==@kvack.org
-X-Gm-Message-State: AOJu0YxQKtk7teIPxtaCaOcEq+Tw/l8kiWoMOHUHTEL86U2EPxClyOy6
-	qnqezKYvPrMZPfq0v3RzJbR1sSLrhEDLEX8aG+bSjFChrh3IrvTFXQkZeJ3lAlrwEfo=
-X-Gm-Gg: AY/fxX5m82wMNGjEVfUEy+ZXU31Nc9WE3BxvhY68+ZMhk8+GsTMpOvPoI61Ov8e7Y5V
-	5I7Q+IOfD7ksczr3oRQcwZ2KBaKusRqXZ2SSYgFN9Mb1KbvsoYeU8vi8xsanoaMzpL04662KRvV
-	hGo8K/cdJGE14qH7CRCArtI92RhanVynV/urJDUrVy6uC+Hr3eOHTZyY3MalDwdSQ1C3SXQHKBH
-	KCf4oPmxpCRqXPNIi6U/px8hX97zG+pqm5i5LFDcaUmhjXqjlk97zQSfD7T3GWIhlASbmvCyin7
-	uppep7Zf5/Jp6By7nUW3PcelweXPr+l/oRTYAcMbEW0bbQ36KjE2wRGqGUQQPIioc9Kzo1HsgkW
-	ggCDQk7jy5ytmf0jkUxEWDhAADiAg8LbbgfavIxJqW9bmC4wkYFvJ65LXkIN3HuQ5yj4fXzCbfY
-	eUaIARzxPvqljadbaoFmv4eAJPl/yM35fwb9dcIuWzbQ==
-X-Google-Smtp-Source: AGHT+IEN/UHYtedJC5gNScUIjciAIBz4WtImq8j9JAVWa7kOqzOpjNxabiVdwQI/0HAatQaCg3ghcQ==
-X-Received: by 2002:a05:600c:1d0b:b0:479:2a0b:180d with SMTP id 5b1f17b1804b1-47d1954a5f7mr386619925e9.11.1767088168725;
-        Tue, 30 Dec 2025 01:49:28 -0800 (PST)
-Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be26a81b6sm657711035e9.0.2025.12.30.01.49.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Dec 2025 01:49:28 -0800 (PST)
-Date: Tue, 30 Dec 2025 10:49:25 +0100
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Jeff Xu <jeffxu@chromium.org>, Jan Hendrik Farr <kernel@jfarr.cc>, 
-	Christian Brauner <brauner@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Brian Gerst <brgerst@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, davem@davemloft.net, 
-	Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH v2 0/3] Memory Controller eBPF support
-Message-ID: <enlefo5mmoha2htsrvv76tdmj6yum4jan6hgym76adtpxuhvrp@aug6qh3ocde5>
-References: <cover.1767012332.git.zhuhui@kylinos.cn>
+	bh=jmDYq0sZYNfRXKy7F8dDdYiishtx63bWrkF4Fhf00DU=;
+	b=grbkdlKNRBkxIG3NXRaYdyi8XHnq1RHCwdIBiRzn66Kq6tk+64W0FZWv5xtkVCugX4M+8p
+	7c1gPCdhBkQATlL4Fm2rXyUz0QA7PQhqWXL/lyY6yCIpufrs5S1s/8XqZ95Bl64aCq/Tti
+	xCB7m5UcXuXTasUA9iJhVK1KthHIaas=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=bne-home.net header.s=sig1 header.b=ArpKY1wu;
+	spf=pass (imf25.hostedemail.com: domain of bshephar@bne-home.net designates 57.103.77.155 as permitted sender) smtp.mailfrom=bshephar@bne-home.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767088525; a=rsa-sha256;
+	cv=none;
+	b=pOrq8bQDkcagufRtD5gz4dFAM6j/bDIwG6NB0cdlwQL6DjgCPTgTE2ksJX6ujKME0IjVlX
+	6noYHc8VfWcQ668byqGfUrjz3jqeBbhiV6T9ydIEPwhZcS3wnZ7Ly2mC+ENo4mN/6wx0ER
+	IWXdQ1h8/f2IeCVJ2/Tfs6VIQdgKW4g=
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-100-percent-4 (Postfix) with ESMTPS id A129D180055A;
+	Tue, 30 Dec 2025 09:55:20 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=jmDYq0sZYNfRXKy7F8dDdYiishtx63bWrkF4Fhf00DU=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=ArpKY1wumRPypHpgTLEa0HKDKnByOEgxXG3bYfOEDNSpEJUsm2v/VPKDWfMHWjP3E/dawYhWE6vFwWkPwppg1AOb7V9QxMFs0Do8upBqFen1n/nMKBGRx5fwLXFeJsnZZw4PFhz9YvrnWXcGJ9LkQwYfcoWI/nBzX5FgRuf8nzP4YuuS6Gr48TF3vqNP8YUYo2XWKUr6sfpBnPMbIKXCX8eEq56hOnBOjNRR+EcrvDHkUFDgwI00JUaoj6UdRuAUo6dAkQ0R2yORRL9Q6x9lEwdjtu7c44DXVFaTTH/QiJg48laP0FkQUeiixrHboyOJW133yZrdevlByB4o/mgyBg==
+mail-alias-created-date: 1746336505199
+Received: from fedora-g16.bne-home.net (unknown [17.42.251.67])
+	by p00-icloudmta-asmtp-us-east-1a-100-percent-4 (Postfix) with ESMTPSA id 3532A1800543;
+	Tue, 30 Dec 2025 09:55:14 +0000 (UTC)
+Date: Tue, 30 Dec 2025 19:55:09 +1000
+From: Brendan Shephard <bshephar@bne-home.net>
+To: aliceryhl@google.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, ojeda@kernel.org, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org
+Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: Test page_align usize::MAX boundary edges
+Message-ID: <aVOhfWmyJBxD4SUa@fedora-g16.bne-home.net>
+References: <20251230094841.76830-1-bshephar@bne-home.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nav7xplzwe6tizdp"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1767012332.git.zhuhui@kylinos.cn>
+In-Reply-To: <20251230094841.76830-1-bshephar@bne-home.net>
+X-Proofpoint-ORIG-GUID: eDq-KvX5c89fLpQ15zl4qfk3YuBty3Qi
+X-Authority-Info: v=2.4 cv=OZuVzxTY c=1 sm=1 tr=0 ts=6953a18a cx=c_apl:c_pps
+ a=YrL12D//S6tul8v/L+6tKg==:117 a=YrL12D//S6tul8v/L+6tKg==:17
+ a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=JppZAXPjAAAA:8 a=v0bcC3016m_wzupuhzUA:9
+ a=CjuIK1q_8ugA:10 a=mTXuAFqUwmiQvsSFmwXH:22
+X-Proofpoint-GUID: eDq-KvX5c89fLpQ15zl4qfk3YuBty3Qi
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMwMDA4OSBTYWx0ZWRfX5PILfIQ/g32F
+ JWSRAWTyPOXs0NZtxB/go/D0LAxZqCLnGkMsFOeaJkTbBzpbXeuNdccsgpiVlzNino5EzfuXsd/
+ UbyLVKqdtLeKbOTQAQF/AvXuqwwQGgg8DLQbX1aFKosBa2t96U2rWorMPvA+gy8RbX575en/E9v
+ hzBmcN0UgnSlSLTq+DlvtO5MXbPBKKx4prFozEkOA/EsV3PjGy1J08YvWjA4rA0rr2FDEr8y6qb
+ 6NkeW17Cq8wueRyY/JDJ53jgpvfafOd4Lj6lMvlwLcixhtJJJAea29bIXqwNcT7PyFLVsEMm04k
+ Ed8LhP7yi7mgu4xORFF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-29_07,2025-12-30_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ mlxscore=0 adultscore=0 bulkscore=0 spamscore=0 malwarescore=0 clxscore=1030
+ suspectscore=0 phishscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2510240001 definitions=main-2512300089
+X-JNJ: AAAAAAABYN/C2DwERd3qtqUnOxp39Bc6oM1b3Y6SSCL/RzFDy3YqA8swtbyNXxSSFR9dsT30sy8sYRm/clpCUMylsCVQ8Z2oV28mdBXYIDhBCiJZF8fCzeIQxm8Lv0IbwHFJahlwL4LmUZP5IKtLQUXw3aOcgCGoH389Mnvgylvt0gntGyuZlZxhgbRzRIt3uGf6YJsKL+0LUXPPiG0MyKjANVarOsM7+Q/deOa0Xa5TBFaoAKNN6OioYnp/+i7esyQGFnLQOF7L5k6WndA6lKrdmK8sNem0I+Wvg3zX9M/vsK9fuAXIKtsm3YBLLooAi/iT0mo+2ECLMchqaGnTTvMpmLhmY0wvuA+Oj4g2Yu02tcdBnJepqUMKKDNmNZVeOc/6M/AL8fYwBZqIWCUtGOog6/snC2+gMY3zx8sNuInFvA6SbEQvkTIqBV1wfzrvup6/Z9wFWQK4Hi+uUYoW+e/kI9L2aAH1IkKZgVktcUZKmUM5g2YNWp9qSbSTODHfwopJ0IdTwW6vLYTsF9HFn+Z6z+VCPA1Ldwy9X20iF2YP2tIhig3B3jIiFbeySmKByI7gSMb5GRHKV+f26ofk7lclVI44C9rlqtkmOQ1jKDUDYeaVFGJuMZYdYduWdl4YTeAjIkuYI0Hb+fsOG88TbUejyjJ6wjO1DcvzQJ41vjEaKFLexbe1lDEolaR362jVwfFqf5d7x4WYdAxijrhj43ghZwhovASa2o8d9HjljvMONGmNQnxte+RG5bTL2SEtTXtAuvwj/8QvVcwYwdNVQnUWjQvWE5Kg07asgsHW60DhZA==
+X-Rspamd-Server: rspam02
+X-Stat-Signature: xy5j63ksi68runtx1azt8xze8n6kazrf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 84406C0007
-X-Rspamd-Server: rspam10
-X-Stat-Signature: frihemgsx61nhun4rcxkbyb3i7durzmp
-X-HE-Tag: 1767088170-884942
-X-HE-Meta: U2FsdGVkX18p9llM/KW8aUvOJf01ILA722UwbLDt1kCTM3EVg1DDngFa/i8upcrJ4IIpltFP2I/i9agSD5HiQG5RRL120542F8gbdF7VbIgOWtGCRipqov95hUW69ZxDofKA4GRDGPyJ4JW8W2+1uw8XraIOTYl/ZlmcW6HwCJs28LPY5jRpO6gtDhI6ZU3z6sVTf+a3JKh9D+BkbSsKMEzmEVdGozQReRKNZmIUpIJjZLjaO8jADb7ZvSXuCfclTqKx/3GIINXmN8+JuWXr/d7Yqm6ZiNsIiaQ9nJWvFZE1CxmrrrdSYP74VJBS9qet+LXNCDq6Ei4Ee8dmbmmuBnjkpLF+ef6PTA/WvYwuWKjAWenkBEtUwkQmTqzha31xx7H0b0O8fT5qRk7m1Q+2o/eHWMy4DGKTBvQq4SH2iBD3TYI7JoVPbKmGTOBJ1ylFoToL5gFmJr4GLJluXpnuVD7IGRAKanaHCI0YjoHgMSlRQ+w3HmS9wPAToDAUJwizqZKEbJnGkKSDe8g0htabGYRCu0DfhN9U170UiCfpX4/8uI1YttGJ4iGqWeQ6t2ZSQ+UJURJTeNDKbWMP0VTZLucXbS+a5xIVzgqliDxFzLiPKYaWrXslycNa5K+qZ2FblcQiNXmRcixu13QYVG8f1nRgjxm+AFMx3QQmZOL18h3Aq7JqpbhLI50y2lWTgED0mvhPHWa4/97GK4T3if0BwszfWfZjAdOZv5WQByJmsYp9IboCZiFICca99Y+wh9Wwkm7KFD/fpQQImxUc+MP1lyNNkVWAImcHje2TxEiKNAe5eD1fQfmOnRisOIpW2dfIVCaoEoZ7h1bHZwy+KnXYNZ/jgGsHKrfCjCxo4cqSw0Ydj6oDmnJR6SgLdbS0SlDDCX40xpZnyIkr49X06wVN9/650zsgsckNPkgmJbKgsx0grRiRVOuYfX00CNd1PWOVOWC1Biakew1VGUGWkcO
- qLgUf+qs
- qnbvcM4RAvE2BO4GBphBN8PdsBMN+8INUJOCAJWI0U8dIMT2IAxQBJXcpMWags+blbIPoDbFzkAmICHYwBX33c4VCb7LiqlqGuoJPG26zs7Xotmchgvg5HrngbmpwJQMEGWI7sH91qWTXehDD/HYv6Tsx33MA38Dj3wpz/QDAjTHB/t3R7Nt/FZlTpl1iSsjmGlBQxxjkH4vw1d4mHe4S0Jep/FIpCRVmq5w+3eh+gT0aa05+fqxVK0tmAruyPLyuR5L526Llq9S3sYQMSfcDqADKhDO6ymlp/6gXotYJ/r56FHkXOa2OBtwcHGSj9UtQQXdqH3QglX55WBPxK//VBFBIYHpWrYwuzx9MrCSY8qGZIeyrlgpF11azoaaaA16BzpUoRgRS7kdvZJwjqQW3YnuMmAkF9A8WLbt0CIt+L+qFA5trMvPPfcaZoFHA7PdRPrKZCGuBDvTJ+UBAX72yEChBUlCU0ZsiENBq9n0k+J0w0YDP9bJIhTZat29suWVjIUVd
+X-Rspamd-Queue-Id: 947A2A0004
+X-HE-Tag: 1767088525-913288
+X-HE-Meta: U2FsdGVkX18Mp2DljIG1wGGnNUoD0HS3l2W06PBcuwMrYaZySbDIVmoJZkUCe8YE7f+cdvVyZI8bY9ZOZJMsNpM/8Davg8t1KUhNka+8Rkza0dvzbgU83SipYMkXFynBwAorPo3pA9PCWZyw0/JBLs6y4H1mrVMKIIrFv1ce0yGz/qKxma5ZU805uJg72wIlfONXfjjrSiiFkJdro3G0J1xd/2NIpAUufYljPAIKL19X8IfOQc34LdP1LVFppMjDboT9wuJPgAg0qf4VcaLVg0h3owht9RDwYRSWJSU0KM/SVHU37rqd+r/5nkY+XKUVgBZWwatqdBKqmYwi4+9YcMqwUbIKAve2z6n/9KXmiFXk2O8SCUVUmOb4YuwtfW93O8KKAGm33WWE9SMzYpXqQhH1AbRqPBn4/MVbdneDc5eEpZcmjOGufSRv7OwaPGkMpaPjW+2+BW3gcNCio4XbcU4qyh4OT1yRv877deS8u8xsYq0jE7LEKf67L3wsb/wLh3fIEh7b+mlLZWcR6JWnZ0xbrmTinkDUa3xxMzeiD/kRd4gVLtYzdrMWi0z9hzakmJFIEMnbL0yqBr0+NM4xCXHWuoYzSgSyTprTekQ7X+Sm8ik7fsWwfnX49KPPvuSHZ/P80DH9y7OdCe9g9D/6KLlcLn73sCF75ynviskzGdl5JQoob4clLEGpUM+udc6iwkyIGqp8ZjT2NfcasGj56qMOmp0wqj1rzQqAapCpxNv94uMfEcdXu9enVGfCJBhpLd6bSCUa1kBYEMIYEnx9De/Lz/YhS2y/ktA7tY6FzQw7gPjLlQ1TCzFol/474ztrdDoLL+uHOM65wh9fQ+39dnvDkN6tnCdq0D4JdDNNW291cn54mNaT6N0+BPZcV1KGxBYg/YBkZjVZPjlMNDWdE9LLh4purlM1QZMtyxf0sOi5X0PI0elbdru+YKqifKdDNZxMkccLaoN71LO6Zt1
+ vjq35pJi
+ bvhry/pup4xeAmgbEsRNaSZvpk590hAwp9e0UYMPE4tm799LXXeLO6mB/ZJIGkq1zb/NS3dJzQBwq8NqT+tdWTcsmEE7+USh0ps/UGZvc69yex9jZRtWR8CNepZgQL/B1Fg3YFYR5WllMW5bACN/aMLB4+lgfgdY2+sw3x3M+EBWKn3nQisOyhpRDKhkVHsmMjIK6U8T8nflaNIMsBgMV5PSAWnWKplpo5rWVZNVrTgPlJcNmlFV4UWMrVa8Pf2b1wNA1osG0DzoRKy8Si4wupVGKFKCOQ8Keul122NEA1yu0e7ylshME6T1RktCNtieaY0FreYOwGmjcoa+3cx10c2Hc949QRtKZqXD6+ejm/8hpSMHoGo+1uTiRp+UY0I6k47U2mzEEhGW+PS4MB2ZTyfZse2zSLr3SNWrtc3Rg5wi4O3dMbYedgzQFW+54R9p2t5J6nYn0yICl2YWxp3g/a9srjVrMiO3XddAiCCCZJ7n7YYmQlwqtv22+R6UfSHIJWL30tEZRwe3bAbHlw03YvfbU0OA1D/48dzc7Y83bUN9HPao=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,76 +108,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Dec 30, 2025 at 07:48:41PM +1000, bshephar@bne-home.net wrote:
+> From: Brendan Shephard <bshephar@bne-home.net>
+> 
+> Update `page_align` doc tests to test `usize::MAX` boundaries
+> rather than arbitrary middle of `PAGE_SIZE`.
+> 
+> This patch is a follow-up of:
+> "[PATCH v8] rust: Return Option from page_align and ensure no usize overflow"
+> 
+> Signed-off-by: Brendan Shephard <bshephar@bne-home.net>
+> ---
+>  rust/kernel/page.rs | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+> index adecb200c654..d602d4231f56 100644
+> --- a/rust/kernel/page.rs
+> +++ b/rust/kernel/page.rs
+> @@ -45,9 +45,10 @@
+>  /// assert_eq!(page_align(0x1), Some(PAGE_SIZE));
+>  /// assert_eq!(page_align(PAGE_SIZE + 1), Some(2 * PAGE_SIZE));
+>  ///
+> -/// // Requested address causes overflow (returns `None`).
+> -/// let overflow_addr = usize::MAX - (PAGE_SIZE / 2);
+> -/// assert_eq!(page_align(overflow_addr), None);
+> +/// // Testing boundary conditions at the end of the address space.
+> +/// assert_eq!(page_align(usize::MAX - PAGE_SIZE + 1), Some(usize::MAX - PAGE_SIZE + 1));
+> +/// assert_eq!(page_align(usize::MAX - PAGE_SIZE + 2), None);
+> +/// assert_eq!(page_align(usize::MAX), None);
+>  /// ```
+>  #[inline(always)]
+>  pub const fn page_align(addr: usize) -> Option<usize> {
+> 
+> base-commit: 7acc70476f14661149774ab88d3fe23d83ba4249
+> -- 
+> 2.52.0
+> 
+@miguel, Thanks for the pointers in:
+https://lore.kernel.org/all/CANiq72kcMLXz=xyZeKC0=j_e0BzJEY3wGpBTTxfJsc6EZhCnXA@mail.gmail.com/
+https://lore.kernel.org/rust-for-linux/CANiq72mLPvB_6Ow3bW5-V4-km=RyA59chQ1g1x9qUt2P-zZweg@mail.gmail.com/
 
---nav7xplzwe6tizdp
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [RFC PATCH v2 0/3] Memory Controller eBPF support
-MIME-Version: 1.0
-
-Hi Hui.
-
-On Tue, Dec 30, 2025 at 11:01:58AM +0800, Hui Zhu <hui.zhu@linux.dev> wrote:
-> This allows administrators to suppress low-priority cgroups' memory
-> usage based on custom policies implemented in BPF programs.
-
-BTW memory.low was conceived as a work-conserving mechanism for
-prioritization of different workloads. Have you tried that? No need to
-go directly to (high) limits. (<- Main question, below are some
-secondary implementation questions/remarks.)
-
-=2E..
-> This series introduces a BPF hook that allows reporting
-> additional "pages over high" for specific cgroups, effectively
-> increasing memory pressure and throttling for lower-priority
-> workloads when higher-priority cgroups need resources.
-
-Have you considered hooking into calculate_high_delay() instead? (That
-function has undergone some evolution so it'd seem like the candidate
-for BPFication.)
-
-=2E..
-> 3. Cgroup hierarchy management (inheritance during online/offline)
-
-I see you're copying the program upon memcg creation.
-Configuration copies aren't such a good way to properly handle
-hierarchical behavior.
-I wonder if this could follow the more generic pattern of how BPF progs
-are evaluated in hierarchies, see BPF_F_ALLOW_OVERRIDE and
-BPF_F_ALLOW_MULTI.
-
-
-> Example Results
-=2E..
-> Results show the low-priority cgroup (/sys/fs/cgroup/low) was
-> significantly throttled:
-> - High-priority cgroup: 21,033,377 bogo ops at 347,825 ops/s
-> - Low-priority cgroup: 11,568 bogo ops at 177 ops/s
->=20
-> The stress-ng process in the low-priority cgroup experienced a
-> ~99.9% slowdown in memory operations compared to the
-> high-priority cgroup, demonstrating effective priority
-> enforcement through BPF-controlled memory pressure.
-
-As a demonstrator, it'd be good to compare this with a baseline without
-any extra progs, e.g. show that high-prio performed better and low-prio
-wasn't throttled for nothing.
-
-Thanks,
-Michal
-
---nav7xplzwe6tizdp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaVOgEhsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+AjqkwEAsnaDJnUrbpBZvRNgWKP5
-6Sa4JrRHis7FmRcVhJPNvUUA/1AnWVzTnXOrXQlAm2C1hsfhl2QuvaTzWc6hD0j/
-y5wD
-=OLWl
------END PGP SIGNATURE-----
-
---nav7xplzwe6tizdp--
+Let me know if this addresses the points you were raising in those.
+Maybe you just wanted usize::MAX and then one over? The first test
+case might be unnecessary. The last two do a fine job of illustrating the
+point I think.
 
