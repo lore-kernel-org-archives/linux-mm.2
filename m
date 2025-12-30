@@ -4,97 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84D8BEE57C2
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 21:42:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C305BEE57C2
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 21:59:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E42516B0088; Tue, 30 Dec 2025 16:42:45 -0500 (EST)
+	id 187996B0088; Tue, 30 Dec 2025 16:59:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEFE76B0089; Tue, 30 Dec 2025 16:42:45 -0500 (EST)
+	id 15F536B0089; Tue, 30 Dec 2025 16:59:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFC666B008A; Tue, 30 Dec 2025 16:42:45 -0500 (EST)
+	id 05E546B008A; Tue, 30 Dec 2025 16:59:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BB9FE6B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:42:45 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5FE541A14A4
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:42:45 +0000 (UTC)
-X-FDA: 84277462290.17.C7E53F6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B783F20009
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:42:43 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aKKAzT0A;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E77356B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:59:47 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7747B58860
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:59:47 +0000 (UTC)
+X-FDA: 84277505214.03.DC05CD5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 52B6880004
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:59:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mhJvAejN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767130963; a=rsa-sha256;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767131985; a=rsa-sha256;
 	cv=none;
-	b=NVeRPLM2UCiikc3iZpdzQi0Vu6slMNFLVI6AgsNQ2RlHxHcaze1/vnCpt0b+//lFeHP/Xv
-	1RYCKy7mjqwIRTZ7WCO2vq7xfUOZpfv+08jot1XgAZikQ4EMZJhq+CKgciJxqkKFAMNYG1
-	srbiH7l3zeZvk0TEq5b1tAlpf4iJoPA=
+	b=1uzZXyzQXKrawx4dq7j0Q544+Ivu99lP81qbJLjVKIIEI6fKh1VELIurrUKpfIa1B8mJId
+	dRAPn7ahtE7tqVl386Lnv1brZjXk+cjuopqygaYY0qEfylKH3B6VsYMHVby1hyuUqYe2hh
+	R+3cZc4+GJe7WXLRC13sODmKB3tQApk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aKKAzT0A;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mhJvAejN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767130963;
+	s=arc-20220608; t=1767131985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5ugkGUV8DVqj0lkKmaWCPrtJ+lFCpgnk2N5eSdDf3Lg=;
-	b=Hi/qC0Lz7kefcC8UYzStjcIfcJcKBL+hGNCGX4+jPvkrDy97p+ISkRneocYYg6PWiEwrcd
-	k8W0Jl+LAlZZa5HqtLX8F8KGpAf9uC1o6KTghEJ06IzVwqyObyVXCQk6RiDShlbo9J2eGi
-	gI1+Q2/9NUB2z1nUXEx5qN8/Pcy8Mng=
+	bh=8JWoOLuCTZoNd9Q1C2OQ9XFwTbb8UOHvzsa/yAPINKo=;
+	b=vtfflz2grjszKaWs+Jt02+/BZ0ncYIOPYtamUJ0tHuRijPm1wO7ojBQFoprx60uGId2756
+	0sppkqRU+quUgluSQHg7f0YTPUw3fxz13jFO5rI6rVQ0DN0aA106Ubw7CrB9QD0UcXRoNM
+	/hTCP7xV3HuuaCncgMec4voifrc4IvQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9BB0443BBB;
-	Tue, 30 Dec 2025 21:42:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC5EC4CEFB;
-	Tue, 30 Dec 2025 21:42:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6F58860008;
+	Tue, 30 Dec 2025 21:59:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECA2C4CEFB;
+	Tue, 30 Dec 2025 21:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767130962;
-	bh=vDD527Oy8Bm4F8rGqeZpgVak3XxpV3M7Dw51XP6Clpg=;
+	s=k20201202; t=1767131984;
+	bh=GfelE0fYdJif1BRobQUoz+HvvPFp6oiAH1Y1e0bAXDI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aKKAzT0AOHTF3wCukkrR5NQA3T+2n0I4882tBgClDuVnnveE8wT0QEV9WJgB3A8pf
-	 5RWyZQUB+eIi6dbF3pM0E9YACVo7rg8vbCn6U0Fcuaac7+PS6a1Aeajnyj5WjX44Zu
-	 zcxBuZ67DffcdsMdkOx4mobUwGke5XYjtZzavqdo8JrbNm02sOfICDifAz2G/E5Ln6
-	 yQkBBzc0RNYAjMLKTKOKURwINam7LNU4kO4V5Pkjxly/S6ndVgMPLMB4IWA6w3aa1z
-	 dUMzJqH0SVYoKNNt5RgV7BLxvYyNNsMUunkPyjqog5i9OywImEd9UvB2NfGiuKGvLt
-	 oGPN/9m8s4gsw==
-Message-ID: <a083a5ca-bac8-44b5-8604-638c5eb4102a@kernel.org>
-Date: Tue, 30 Dec 2025 22:42:34 +0100
+	b=mhJvAejNJCYCDHaE0JYN1bwqqVI0Ob9DB8xO+w+dtAkl8np75Tau5elZ22GsVVGon
+	 jU3rjEP7VUdjPCX6zuofPWqUgRb1dtGWsOdSfWyp6qcz9JHsBS9MY6/dUbiZt+0fQQ
+	 gbj2xpFLHvE1v2RgXtuICYjW6+XliC4OB2g58mwqs67ZnEkfWxD4E+kMrLlnzlHuJQ
+	 ZlnISOZ6VA+LWEOPUFkYxDeEfcjAKcsElTDWx6fMyh243m4FSJYLHNAF5pbTBDLTky
+	 3xWHWVntY/nxM8VREBmA6TBicfSz8tCgGfQ1lbYzsxFN+YGoKCnfJtp6TnJxGPSw1+
+	 WghU801wEetNg==
+Message-ID: <4029d13c-3bfc-4ace-8da0-3895dfc001b1@kernel.org>
+Date: Tue, 30 Dec 2025 22:59:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH next v2 0/2] THP COW support for private executable file
- mmap
-To: Matthew Wilcox <willy@infradead.org>,
- Zhang Qilong <zhangqilong3@huawei.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, corbet@lwn.net,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, wangkefeng.wang@huawei.com,
- sunnanyong@huawei.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, lianux.mm@gmail.com,
- Nadav Amit <namit@vmware.com>
-References: <20251226100337.4171191-1-zhangqilong3@huawei.com>
- <aVCnMI5gFLTB9UCe@casper.infradead.org>
+Subject: Re: [PATCH v2] mm/swapops,rmap: remove should-never-be-compiled
+ codes.
+To: Andrew Morton <akpm@linux-foundation.org>, Barry Song <21cnbao@gmail.com>
+Cc: Wale Zhang <wale.zhang.ftd@gmail.com>, chrisl@kernel.org, ziy@nvidia.com,
+ lorenzo.stoakes@oracle.com, matthew.brost@intel.com, linux-mm@kvack.org
+References: <20251230130110.1366374-1-wale.zhang.ftd@gmail.com>
+ <cb69a1e7-e836-4115-8733-12d2de879f51@kernel.org>
+ <CAGsJ_4w=KuVs5+p+3gZ=L7=rzA3qgnMVQOBJNBEPnMDWx2N+dg@mail.gmail.com>
+ <20251230133522.e15135c3a17826428f472a2e@linux-foundation.org>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <aVCnMI5gFLTB9UCe@casper.infradead.org>
+In-Reply-To: <20251230133522.e15135c3a17826428f472a2e@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B783F20009
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 52B6880004
 X-Rspamd-Server: rspam03
-X-Stat-Signature: ktjingprayiidukeiu8n6kz8hcjh5xb6
+X-Stat-Signature: 461kdaaj86araaxtj37kf9yww6yxqwhf
 X-Rspam-User: 
-X-HE-Tag: 1767130963-860342
-X-HE-Meta: U2FsdGVkX19vmr6m/a+hPVZG8yp1pMeZTHhr8eME51WeHuv/xfujJ9E8iLw/pqd17JRG7Nd+S4CEIYK0Zhkvu5bWwa8MTMKl8Cs+qe3Nm807TWYtMzgjUTg6S1evwP7NS1oesd9v5Tiojm+1xK5u9f4NQvvnEd7daO12MJH0iMWVl5NxgHov51x1T+IvJG+S38dfgyRosFywRkY5R0k9wi1e7M5tJo/PDynGVxHKDkmTpCD2XJiqiSLGdBzLG8UyFvaMHSVsarkZSz8iZ/+IIZw10/IpYohLJ03pgdLyKhByueMetbve03ikbeuGw0s3bbhi/Wau6Yga5XqPEvGQC+WIHtgWzY/oOg8iaIQXLo0CDCsHpHG8/XWPCRJ3aiB4ODatwiF1VCpNrH9FEzUkUSdNNi0Ip77SbaoLAqHHIs/tTRr5XBw/UTwEgZtqiQfpdCjMLD/e4qrpiukBnaF7RG3t97Y1kaM2rCaLZRCcZQAS3HxQWfXlOTh0ditbWFaiXUd+TsfT4ll21+Pq6yMOJXPLZZNWI5lKccAYy1g/CtndfmYM+iAvOpD1VhyQjxBi5Kb3NSn4KrbyThR7Ez1jAlxwl/IiG9N1r5N1/NL+QD6c7CEu8Gm3h+HV2/Eptmx2yGaHxe67uHRwIacDMV+fAXpOz/+Fxr2itF5KlrKDbjjMe3hHtHv+M0DHr4P3+Il09GuinQ8EbbBSX4XuqtvS7cSUU+plUgiTGqLcfOx/il8MJBnYMKgIZrNa4baE17aGvFUeMXcBXJ554e1aku6nNb8+W/vE81urlr9to3JGvnVeHbUkTc3bClUsaVdFwkg46EKL4gleBDJW5q5ieYZdkkq12EzrFQ/X+AbDtl8lB+ZJfwj0u0/q/ZzQEgFCFKbjguEzv29muIEUh6M1kxPWuPOmka1/1zQmC9Y5TuG8hz4JVCBznXejPCYkBGSUSWU2zG3RsfQPzsrd0JGI+CB
- bKhXy8v2
- K2BhxsIIz4bKUDacCiK2tJmlKbt15zDAUvMm+
+X-HE-Tag: 1767131985-544521
+X-HE-Meta: U2FsdGVkX18uqMC7PPBBT82gt/CH7UzV96pQh7xd4rUeFbWAWrmpQf8EVX7kRW7wGiNBPZJiJ0BXLhHJ6Gfx8Y6IsFA/RUdHX2+DNzGLZfIaLTVH8FyfTIUgKirqTCilZ/MFHFjNpXSgrmd703nMXLJpbq2/e/DJvU5vpi+uhZ1cPsY+nojtHrmYrN/JF+k9muj30b7ek4jDR3VPhGydyMFqPFA7rBVCf5Gi3GFSgjNxxh3CClQfPK2ArGa/k1xOFL9wjPxD64X4qsGkFEABfaPv1s9lOwsQv4mm72IfzWraEePHiaGAhVRkqcrKH7AO/Eb1kZ4/Hx8xmhFC+EJpIBEH8gZfEJKbTNH1TnGPidcR2uhE6wTaGJCAGuL3rnlZAaMp/E+cLbMknMhXG0klmwwUPbz2B1JzYIYuR72tl1BurqzAhVVSUztYFgP57ebtsAgMj0vktEQsRi7E57nZFohcYhmryF/YDiUZ16AbJuJfoCfCOpAc6ZuImMxLjnAETkBCeVBkYPJepyS8ANNjrNWW2g8CQC7yLpl+0s+cQmHU3w++aSuIzuZIM5Om+Rk9DM9BGISSDK7RIi4/U2wlLOfpSMbwgG1DuUGQG87BdX5VX3mpOuMva5pc3kRUv1hgVjm+13LeSW52BUeEeP83jw6d9Nz8oaPO4tb/S/Z94mHQj6Mxq1Tv/j4ugHeQe5MkA3cwXI0iQM87BOoXk9zVCz2l87qhwGBMAXujmXFl56nRO7uF3bpF30AMe1EemqoV7HnzNCX+lhobNI4QEaR5tOaZ1Ucay3epYlSCQsYVV6C+JzteIy7ykAs8OCRBItd584nzBmmwdCbEGnTcFGL1kaS5Qb7O1BSIXL3BNeDbmzsNOgKceonQR7n9n/A9xo5uCnYaPEP8o6zHx6MBkrF2PjJbgHhHkyyP9ERrPlY8sVzLXyHzqwoFJ0qjF5d3ma2WfAh4CcBUTUXSNqWFH8W
+ Qag+xY6M
+ tEdJpVfBetc5bCsLz+B3q1LsLw5Ir/Xq7bz/n80dZeiUIPB4vmAJCp/dJSm70ZT3bNrZc2k+EDFmMW+60w/bzlzPK73ebkvrrST6LLuLZK9bziYvb9eTWXKyJO/MY9EKNeZbx3cldpT3YD5S3Nx4752goxXkf81JeBRKepSDCBoDTb+zSLgd9PkEmLRvF7QgNTkwxBh0Llwh0E5Aeie1UMj9sO5wf3+5xItrt7gbHnAbmR95WEmi5m1uTapRzAvBF8on6QVPWHDXc5EfGclZ2IoNS/GA9I1UZbSvGv/shBUq/39Y3y7TmfmqlOApLZhad8fZlrqYNXLY3WPm0D9N6Qr9f25weszG0l4MKnlZdzIdg/pPhsprpQZhazcN7J8WenyPvbCbaIfM2wjG2B+uRUIHeNA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,43 +98,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/28/25 04:42, Matthew Wilcox wrote:
-> On Fri, Dec 26, 2025 at 06:03:35PM +0800, Zhang Qilong wrote:
->> The MySQL (Ver 8.0.25) test results on AMD are as follows:
->>
->> -------------------------------------------------------------------
->>                   | Exec mmap Rss(kB)  | Measured tpmC (NewOrders) |
->> -----------------|--------------------|---------------------------|
->>   base(page COW)  |       32868        |        339686             |
->> -----------------|--------------------|---------------------------|
->>   exec THP COW    |       43516        |        371324             |
->> -------------------------------------------------------------------
->>
->> The MySQL using exec THP COW consumes an additional 10648 kB of memory
->> but achieves 9.3% performance improvement in the scenario of hotpatch.
->> Additionally, another our internal program achieves approximately a 5%
->> performance improvement as well.
->>
->> As result, using exec THP COW will consume additional memory. The
->> additional memory consumption may be negligible for the current system.
->> It's necessary to balance the memory consumption with the performance
->> impact.
+On 12/30/25 22:35, Andrew Morton wrote:
+> On Wed, 31 Dec 2025 10:28:25 +1300 Barry Song <21cnbao@gmail.com> wrote:
 > 
-> I mean ... you say "negligible", I saay "32% extra".  9% performance
-> gain is certainly nothing to sneer at (and is consistent with measured
-> performance gains from using large folios for, eg, kernel compiles).
-> But wow, that's a lot of extra memory.  My feeling is that we shouldn't
-> add this functionality, but I'd welcome other opinions.
+>> On Wed, Dec 31, 2025 at 8:50 AM David Hildenbrand (Red Hat)
+>> <david@kernel.org> wrote:
+>>>
+>>>
+>>>> -                     break;
+>>>> +#ifdef CONFIG_NO_PAGE_MAPCOUNT
+>>>> +             last = atomic_add_negative(-1, &folio->_entire_mapcount);
+>>>> +             if (level == PGTABLE_LEVEL_PMD && last)
+>>>> +                     nr_pmdmapped = folio_large_nr_pages(folio);
+>>>> +             nr = folio_dec_return_large_mapcount(folio, vma);
+>>>> +             if (!nr) {
+>>>> +                     /* Now completely unmapped. */
+>>>> +                     nr = folio_large_nr_pages(folio);
+>>>> +             } else {
+>>>> +                     partially_mapped = last &&
+>>>> +                             nr < folio_large_nr_pages(folio);
+>>>> +                     nr = 0;
+>>>
+>>> The whole code was written to avoid ifdefs.
+>>
+>> The #ifdefs are only for -O0 builds, which are never a
+>> mainline requirement. However, dropping functions that
+>> contain nothing but a BUILD_BUG() seems reasonable?
+> 
+> Let's not make -O0 an objective, please.  We often make assumptions
+> about dead code elimination in order to keep kernel code more pleasing
+> to read and to maintain.
+> 
+>> If those functions were actually required, the compiler
+>> would fail anyway. In that case, there doesn’t seem to be
+>> much value in keeping wrapper functions whose sole purpose
+>> is to contain a single BUILD_BUG().
+> 
+> I agree with that part of the patch - if the thing only does a
+> BUILD_BUG() then let's simply remove it.  If somehow the compiler tries
+> to reference the now-not-present function then we'll get an error message
+> anyway.
+> 
 
-Also, I wonder whether there aren't other approaches for such code 
-patching where user space is able to create THPs more effectively? 
-Handling creation of a patched file version etc in user space.
+The change
 
-E.g., I'd assume that a single "patched" version (with a single THP) for 
-multiple program instances could be beneficial over one patched version 
-per program instance.
+	+#ifdef CONFIG_NO_PAGE_MAPCOUNT
+	+#define folio_inc_return_large_mapcount(folio, vma) \
+	+	folio_add_return_large_mapcount(folio, 1, vma)
+	 #define folio_dec_return_large_mapcount(folio, vma) \
+	 	folio_sub_return_large_mapcount(folio, 1, vma)
+	+#endif
 
-Which type of code patching does hotpatch perform?
+In the patch is wrong. It must be CONFIG_MM_ID.
+
+
+
+So if the following makes compilers happy, fine with me:
+
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index daa92a58585d9..9d782826e8579 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -336,6 +336,11 @@ static __always_inline int folio_sub_return_large_mapcount(struct folio *folio,
+         return new_mapcount_val + 1;
+  }
+  #define folio_sub_large_mapcount folio_sub_return_large_mapcount
++
++#define folio_inc_return_large_mapcount(folio, vma) \
++       folio_add_return_large_mapcount(folio, 1, vma)
++#define folio_dec_return_large_mapcount(folio, vma) \
++       folio_sub_return_large_mapcount(folio, 1, vma)
+  #else /* !CONFIG_MM_ID */
+  /*
+   * See __folio_rmap_sanity_checks(), we might map large folios even without
+@@ -354,33 +359,17 @@ static inline void folio_add_large_mapcount(struct folio *folio,
+         atomic_add(diff, &folio->_large_mapcount);
+  }
+  
+-static inline int folio_add_return_large_mapcount(struct folio *folio,
+-               int diff, struct vm_area_struct *vma)
+-{
+-       BUILD_BUG();
+-}
+-
+  static inline void folio_sub_large_mapcount(struct folio *folio,
+                 int diff, struct vm_area_struct *vma)
+  {
+         atomic_sub(diff, &folio->_large_mapcount);
+  }
+-
+-static inline int folio_sub_return_large_mapcount(struct folio *folio,
+-               int diff, struct vm_area_struct *vma)
+-{
+-       BUILD_BUG();
+-}
+  #endif /* CONFIG_MM_ID */
+  
+  #define folio_inc_large_mapcount(folio, vma) \
+         folio_add_large_mapcount(folio, 1, vma)
+-#define folio_inc_return_large_mapcount(folio, vma) \
+-       folio_add_return_large_mapcount(folio, 1, vma)
+  #define folio_dec_large_mapcount(folio, vma) \
+         folio_sub_large_mapcount(folio, 1, vma)
+-#define folio_dec_return_large_mapcount(folio, vma) \
+-       folio_sub_return_large_mapcount(folio, 1, vma)
+  
+  /* RMAP flags, currently only relevant for some anon rmap operations. */
+  typedef int __bitwise rmap_t;
+
+
+
+Use a config with !CONFIG_TRANSPARENT_HUGEPAGE:
+
+  $ LANG=C make mm/rmap.o
+   CALL    scripts/checksyscalls.sh
+   DESCEND objtool
+   INSTALL libsubcmd_headers
+   DESCEND bpf/resolve_btfids
+   INSTALL libsubcmd_headers
+   CC      mm/rmap.o
+mm/rmap.c: In function '__folio_add_rmap':
+mm/rmap.c:1249:30: error: implicit declaration of function 'folio_add_return_large_mapcount'; did you mean 'folio_add_large_mapcount'? [-Wimplicit-function-declaration]
+  1249 |                         nr = folio_add_return_large_mapcount(folio, orig_nr_pages, vma);
+       |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       |                              folio_add_large_mapcount
+mm/rmap.c:1274:30: error: implicit declaration of function 'folio_inc_return_large_mapcount'; did you mean 'folio_inc_large_mapcount'? [-Wimplicit-function-declaration]
+  1274 |                         nr = folio_inc_return_large_mapcount(folio, vma);
+       |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       |                              folio_inc_large_mapcount
+mm/rmap.c: In function '__folio_remove_rmap':
+mm/rmap.c:1673:30: error: implicit declaration of function 'folio_sub_return_large_mapcount'; did you mean 'folio_sub_large_mapcount'? [-Wimplicit-function-declaration]
+  1673 |                         nr = folio_sub_return_large_mapcount(folio, nr_pages, vma);
+       |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       |                              folio_sub_large_mapcount
+mm/rmap.c:1702:30: error: implicit declaration of function 'folio_dec_return_large_mapcount'; did you mean 'folio_dec_large_mapcount'? [-Wimplicit-function-declaration]
+  1702 |                         nr = folio_dec_return_large_mapcount(folio, vma);
+       |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       |                              folio_dec_large_mapcount
+make[3]: *** [scripts/Makefile.build:287: mm/rmap.o] Error 1
+make[2]: *** [scripts/Makefile.build:556: mm] Error 2
+make[1]: *** [/home/dhildenb/git/linux/Makefile:2054: .] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
+
+
 
 -- 
 Cheers
