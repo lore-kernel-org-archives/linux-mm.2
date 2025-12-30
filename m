@@ -4,86 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B118EE4983
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 16:27:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6638EE498B
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 16:38:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93E186B0088; Tue, 30 Dec 2025 11:27:14 -0500 (EST)
+	id 1E5396B0088; Tue, 30 Dec 2025 11:38:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E8626B0089; Tue, 30 Dec 2025 11:27:14 -0500 (EST)
+	id 193B16B0089; Tue, 30 Dec 2025 11:38:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EAED6B008A; Tue, 30 Dec 2025 11:27:14 -0500 (EST)
+	id 095736B008A; Tue, 30 Dec 2025 11:38:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 703EB6B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:27:14 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A6C31ABED
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:27:14 +0000 (UTC)
-X-FDA: 84276667188.02.D2AF46E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7AD844000C
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:27:12 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nJFe4Uey;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EE2996B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:38:00 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 909C356EB4
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:38:00 +0000 (UTC)
+X-FDA: 84276694320.30.5A2376A
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 830C5100003
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:37:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Rn5uit59;
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767112032;
+	s=arc-20220608; t=1767112678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cc7YiftCyK4iK6kMX/CRY41z53S9XjUdaMgEdWd8gxU=;
-	b=mOIOZMJKVOAzsp/7en8Ln/hO7659uC6pOIBHA5zF4dLigt2B2WMqY81u+8owDFAFMMbzRn
-	KpqNX3e8/azF8pIO56MGjgA+4+WNW3DDRUtNLD7nWCYO4nf3sg9/2JOZM3nS26MNna/GF0
-	Po4d7CU6Yp6arCm09+hN7UmkfG3EsJA=
+	bh=KRg6CrcJkBXZs3BQb5XRdbXuKq3vmzU1zmho9EhETiQ=;
+	b=vZK1qn2PwcGJMJod/4qSUKsQMyfLm9iUcr3nYay7F8ILjTRDx6VRifUTErl/WCstBhcbkN
+	iFeuzox7qj0AOFHHTLh8ngtYsXXsi5WlDmnkgVPVhzXIAk39fPldDZjPaYMwyCMa/+995+
+	hTN8JQvw22AfpnV8FNPZ/WRj/MNJXRI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nJFe4Uey;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767112032; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Rn5uit59;
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767112678; a=rsa-sha256;
 	cv=none;
-	b=8lkAiITeR3XGIYtkvyA7OFFxBBEamWhaGWQBoum5TTNOf9yFnAg/CxZSgXeHu00uW9rTBJ
-	fkHsDi5wVwvNsZScVDOUuWM9jB2O1MTbzYYIMlihcKVf7olNSOCc8zU2othKd9YYmCGZ/9
-	EBweNCx5YtcvquorTdgbOC0FH/8s7XI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00E406000A;
-	Tue, 30 Dec 2025 16:27:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB010C19421;
-	Tue, 30 Dec 2025 16:27:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767112031;
-	bh=URTkQfEAZsZH5uYz347syQqM6OdY1oUoieji2FfUxl8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nJFe4UeyWaKz9zZyFi8M/Yl+ti0cC3DNxJmjnyVILaLigSgcAWjL8c1z9/GRVLeg+
-	 KZ53Fb9hyXY9X8B4D4oq9cfhoPbHE6j6+UnCLGPZGmog29rqEGZdXHartFEUbkbP6c
-	 Hq+A4VymM2CId3nuCPUst9T+/SdYG7s4dO5p3zKgL4Vojbt4N3hrv37CiWXplVVDFo
-	 JwLMQfLGxq+H5HjIp2z/mYIoGmdyuMCe2Au9ISc+X1FcVN3Ls3MHz7RhctN4ZDPCD6
-	 yL8mTOaZDUe2CV8+esu8STEotLp4kP0s9FdYSHzDiXPYc862olBt1Hid09o2F33bfg
-	 jUiE0Oq3Az5cg==
-Date: Tue, 30 Dec 2025 18:27:06 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, pratyush@kernel.org
-Subject: Re: [PATCH v3] liveupdate: separate memfd support into
- LIVEUPDATE_MEMFD
-Message-ID: <aVP9Wr65uJtq35wR@kernel.org>
-References: <20251230161402.1542099-1-pasha.tatashin@soleen.com>
+	b=DZ/3hzQiKEguskX2DAmegWy4XyscuDWZMTE/yH2aYhpAwR1sFxpqwE8sS9JDDynNTUMCz+
+	iO6DFLk96qQOYyJL61BD1f1N2HxnoRxp7nRXY9pZT9sk5rc0E/hF5VQS7yOzyyw+mCw35s
+	/E2uNWN+9Q66RJuKlgbh+X9XlD/BP0o=
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64b61f82b5fso13543480a12.0
+        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 08:37:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1767112677; x=1767717477; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KRg6CrcJkBXZs3BQb5XRdbXuKq3vmzU1zmho9EhETiQ=;
+        b=Rn5uit595dGC23SZnVAH+KNWQCrjIIlbxnKg3c9DNQbh7tho5UZiusHasYoBRruGpQ
+         S2iGsMXdtE0o5VGz+JtXnn9EXgrQ/j+9eRA6s+MDozz135i57Vr/Z8AFyq3l4WHKCUoC
+         pFE/Pe5j5pdThnlLw4evQV+f/hOqW3VX6O87Oos+IPb9ZQMYp1msml72i3vvVl5gPgYJ
+         plLa40PFifIRysvTGeU9OvOADsZ6J6/bI4vyId45BIW1ijET1Yn/K0WthwgUOZnr1PbB
+         544HxRUWHaaK1Qdhy7Qw13bxlaiXtD9NQrpsTrLQtgA9LxyIKBbO4C0uzBL3waE+b5YY
+         ni8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767112677; x=1767717477;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KRg6CrcJkBXZs3BQb5XRdbXuKq3vmzU1zmho9EhETiQ=;
+        b=UWzen9acUpjji7WYC16emTHN3TEeRxMiUfRKfSkeJJxhzVxfMVyizqRAIX63y0VaVD
+         RrzdikQOb53ezRjaVRJgnx6SsmFzbte4Uk5JgYx01E+P9eGyWdudb/etDBin8TGnKoyo
+         l9qMwuhYzBQgAWoyQ8GmL9DMDqyGmyUPwuKRUe7f1PXc+VlPfVTEf2QQJaVlRst0jqGF
+         NWAm9aiufywy3QdXu3zfWgH9DezNp2MBNq2tJsd4lPgfaUiY9lKv5VJmf4EAxLhSuDLe
+         CKLV6Vi4CxdToc2YnevoMrRkcHP5X8p5Etduplhko2XiyacN/Cy/Rh3ioXtrSdRc4zqn
+         xzzA==
+X-Forwarded-Encrypted: i=1; AJvYcCWWiGnfVsAIszqserSIZH50YRqZA5ARkQLFZaPFT13By6RdFMDmKJW77zVpZ1xsghVBGwhdSTAiTg==@kvack.org
+X-Gm-Message-State: AOJu0YxRyX7mRRcnUjXPwiyX96QgAbjpH3oWWTgibo73FgswPPxfi2TQ
+	98n53wdePkSzitS5/yHkLTrDgCfCgt8DHDGLdVYXhM6T4g3LI3a8bp7rKcoWc1Z/Ly9EwuUPbnY
+	ZAo1Yi2Bcr011DH/XneNwdS3dr10ZJR6BWIRcZMvtAg==
+X-Gm-Gg: AY/fxX4P+h5oQma/5kXkL/KHirTkQwH06xFsmOIpbtCy1928VoUnRk2ePBKIOGk7UIL
+	u7cmVLa8bzfyp0JTrgPF4wdtlitIaethyQJWDzlJesO1QYL1ng2jJo7H/jZ+7/zd54qwB7Ff8xU
+	eYnnvYrDr5dVSYIEcF9B1ORyPAJ90tDDV4qHDBCPM82C38IHeImBvcbmDYmpHmieUoTGIwxcYoZ
+	7wo9/BOj7d4t3+oDAv05dFW6tlWhe/kxb5iAxdcF6BkRL6kwb+157Ro+S8HXvhJH+FbW7J8s+9j
+	qqxfjDqjsMuWGuRaIllKtVT9Tw==
+X-Google-Smtp-Source: AGHT+IGt84JqyxLT4FVa1NK9x43gWi2TvpGddBi/ddcId92JOTd0e+vB9z2i06mYaiwFTk4rPI2jpbCaXF0BnPuhN5Q=
+X-Received: by 2002:a05:6402:2713:b0:637:dfb1:33a8 with SMTP id
+ 4fb4d7f45d1cf-64b8e944eddmr31901439a12.3.1767112676868; Tue, 30 Dec 2025
+ 08:37:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251230161402.1542099-1-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: ao54y874qne9399fy5jd17kzppy7f5pm
+References: <20251206230222.853493-1-pratyush@kernel.org> <20251206230222.853493-7-pratyush@kernel.org>
+ <CA+CK2bAVuHG1cVPQz8Wafe8o2TtitrqJjqfHOT7Xun=zWMoo2Q@mail.gmail.com> <86qzsd7zmu.fsf@kernel.org>
+In-Reply-To: <86qzsd7zmu.fsf@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 30 Dec 2025 11:37:19 -0500
+X-Gm-Features: AQt7F2pvBnnd5fD8grNsYPQ7hitVBz_yujsMM_6ymMYxKOIzOHac-8gxUv2SYKE
+Message-ID: <CA+CK2bDQDsjBkYabH5DVzSr_kuut-XHKb+JFTA=PLa+8gcCVLw@mail.gmail.com>
+Subject: Re: [RFC PATCH 06/10] liveupdate: hugetlb subsystem FLB state preservation
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Alexander Graf <graf@amazon.com>, David Matlack <dmatlack@google.com>, 
+	David Rientjes <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, Vipin Sharma <vipinsh@google.com>, 
+	Zhu Yanjun <yanjun.zhu@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, kexec@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7AD844000C
-X-HE-Tag: 1767112032-749794
-X-HE-Meta: U2FsdGVkX1/+ULIAIZPV6YDl51p3CM7H81EnfWx52g6qefr3hcAdRoCqZVyrzJa/JeC/h+JkiYJ++nUCHNsSxAyo7FyejKs6dnZ8Mnu+56yAVNlHj57h5R1H5RC+5wlOHSYIwwQUgox2S5Lrjwm/Ktmd9fBAxfgoi4cIqp+wKiixfr73DmbVgD5FGi7MQrBOs9GltV6yG6I1F5kgWOuFn9G0Kwb99NJoUGhtyC2PSyf6E6575m53rS/i62FEJ8IW+RSzF2rs3umzbVAPAYeAL97WyiT/PfVtUQ30ePp2Ok1SLRstoYL5PFI7DrHKOX6KoKHRgO3h3UV6suv3WjbF3mzItu9kuORmcPIROhJjtZ3KqpEj5n1vyb+xAKqM6rNQoFRmX+oSt50g+LX3N2Y/k3k5SN53DMRkzE66vJ+dYCPU8OaqjO4k9sEawASVN3CXOb9vdjIAoRJPCtYmhz6ewjitbm8i8q2r5pOK6GR+6FGsnYD9qM7amo4QXaEOLkEYEBttdmA+YNoXrVUEuIOLQD8bPc3Ar3sXGVl9u6WELEryHxcr8faFuNJD7q6bDVMS7gAhH5eXf4wuJ+2ElG8f0l1AleIcS9mDPEpq4dBmA0GZDsokPtlp8DNm3RFNuudjHOhLvdHQeqUYY+q4jFW5TGH66V2+TSUnnFQF8W7Oib9Iz3T/EPYre4P09nYJXGa9hBPCfQfEeW0ZLyYWgUoVuftpk7gJnQ4O4zoSWYzMcb3efvjD9Nz9MfAoQOzp+u9cPisdMsw4g3JKI5+itUh+2glzbfp0IsUeZcccZ5Tan5FNImw/Ru/lUfDF2kq0Uejp8gzPtnNOxgQPgoNvxq3xtPDH8pHMDPgv3z1wrvYIeTbpzWO65YffEXn2nzfKYgJPUAwVoyK7uNkuSj14sAHexWhp0J0UnH7BDgnBrMQcXEhfHsB/MIx7+jPywfJzIKVXp31MTPwPFruMPMPi56e
- Syba2TkM
- 31Siuyay05kEmkAVLl0DRMopWiAE4e7o1AdZmbqL4a/jHiZxF22mXRiy3g6jFWL1KsqPIjOnYxQoMWkIy3QmzWOA7PjvtOTsu+E/YAxzmMoOwT5sR9i6TKBdG5fVu32Mk5WkD+pdkoNhj50GGbhuxGI0kLrMm34tiVWJ2ppTEAmtX3ojvCD8poreDiBT1vTK/wWojoSaBXIp1Z91WIg43SBah5eBAXkI3nuuaBvWMc6KWIXjQZclL2H3bfXZFPlccIiwZeEbCVd9PNtc12xFGO7jtUG5c7mAYu/cyhVxlP3xkT3/qdhCH8RSKsrc/7VHae4vmrG7C94Hs4HU6iT8XSkRQhSHNlrRIk7w/uGlIgt+buWZ0CWHpvHKWMALCXi++NNx0
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 830C5100003
+X-Stat-Signature: xbunh4ajygq8paszx4nuwkpa9mxpeekh
+X-HE-Tag: 1767112678-320364
+X-HE-Meta: U2FsdGVkX1/fF6wYolnpU+OE/jpjI4lV7O3WvaLlmOuuBKqcUMVGzTpbBU/KckdUrvd5H/YbrzT3GT2vUuC66UiQiT9tiqSDY11nTtSCOaoTDltJYoGOQc2ztHUab14SRjWCHMNi/YkZ0mFp6oqDVkCwLZHLVCTv5o1bcXIMFBeVYaaUMIvve/otttJmq/nDB3fmWwj5kPlBWPL50drbyRJl6CP2jYgQGDkFEnfuAsZRtxdwlCPasYQsJoi24WSGQ/e+Q9V7vzL0LAziFYwEE/RdgIl4ZXhRJ9aoVuNjOr9+TdsssTgO/R5mFllVglfF3ljvwp9ZNt/op/qynKAAV6JMf2jx3P3ioyQPCn9t9ZtGGvNrSoBfdbsnZ1Qmordtr5mIUBZbbbRQXyLfhz9cBGiF4Noz2fBTR6luuwdUm8XWseqtSLgPe33x04NfmbJhF06bWaMOmk+984rSEC/RhXombEdQJN4Dm33yesc63wSXY5M5mTTGFqNUXFnzhLMwneQeaJIodHUuwPRgo3fs6A4kOWgC5A3x3OYWE04GkW52aVLX5Ps/syqTcHxbp3bt9Ilza9N5hyAynGdJDCMtRSctwhDUwv6wbmMFoC7/S/4FVyCCRfitHUyH1g281aEHBC9lDS/qrxnyz5+Ze1XGzhGfsf3sLFajxv3VYqk0GImiU+cKQB9OWmhWYOBXWbt62iSSqW7q2qLbY/7J89uzudqzXXYOFei1lS9tEBR2ZBDhCylVrnRLoEhCt4V1VYfXHrFUXOPTuwW7AfA7U6R1RhZhih/ae0oKIyKiL8pPcZyasfeacL3ujVksL2sT/KL2zqKcfoQllZUlU6nOPGZXKtjqzm77Sh60CFLjHwefadqjq0oa1H3NU0HvWhJukiABjmqfCaZW9szP8l0JCeBv9prlDX5QrMt3XMqhOPOZmRmsyjPkZO/TENk81xrgCViJppcZcVm30TEVvsI0jN2
+ NQHkn9IF
+ TO3MsbKKJLCu7LfbeX4mtUjegk9OTIHakFNJrbfA+Uo3wdK4mynpTh0f/qIeBgKE/MkHN3awTBEys/jU4Ti5Zo48ipQfVwStunCG6IX4mf8T4uduVIVAfghcn/dEy/oDRciNHynPz97ZSbjqWcEkSBmlCA2M4bFhvMRd0WCP3w3BbhRLF59Os8lL4AP+hGAQ1arsinC+KFfPSOqJUQOkUPo4VFA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,85 +128,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 30, 2025 at 11:14:02AM -0500, Pasha Tatashin wrote:
-> Decouple memfd preservation support from the core Live Update
-> Orchestrator configuration.
-> 
-> Previously, enabling CONFIG_LIVEUPDATE forced a dependency on
-> CONFIG_SHMEM and unconditionally compiled memfd_luo.o. However, Live
-> Update may be used for purposes that do not require memfd-backed memory
-> preservation.
-> 
-> Introduce CONFIG_LIVEUPDATE_MEMFD to gate memfd_luo.o. This moves the
-> SHMEM and MEMFD_CREATE dependencies to the specific feature that needs
-> them, allowing the base LIVEUPDATE option to be selected independently
-> of shared memory support.
-> 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+On Mon, Dec 29, 2025 at 4:21=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
+> wrote:
+>
+> On Tue, Dec 23 2025, Pasha Tatashin wrote:
+>
+> > On Sat, Dec 6, 2025 at 6:03=E2=80=AFPM Pratyush Yadav <pratyush@kernel.=
+org> wrote:
+> >>
+> >> HugeTLB manages its own pages. It allocates them on boot and uses thos=
+e
+> >> to fulfill hugepage requests.
+> >>
+> >> To support live update for a hugetlb-backed memfd, it is necessary to
+> >> track how many pages of each hstate are coming from live update. This =
+is
+> >> needed to ensure the boot time allocations don't over-allocate huge
+> >> pages, causing the rest of the system unexpected memory pressure.
+> >>
+> >> For example, say the system has 100G memory and it uses 90 1G huge
+> >> pages, with 10G put aside for other processes. Now say 5 of those page=
+s
+> >> are preserved via KHO for live updating a huge memfd.
+> >>
+> >> But during boot, the system will still see that it needs 90 huge pages=
+,
+> >> so it will attempt to allocate those. When the file is later retrieved=
+,
+> >> those 5 pages also get added to the huge page pool, resulting in 95
+> >> total huge pages. This exceeds the original expectation of 90 pages, a=
+nd
+> >> ends up wasting memory.
+> >>
+> >> LUO has file-lifecycle-bound (FLB) data to keep track of global state =
+of
+> >> a subsystem. Use it to track how many huge pages are used up for each
+> >> hstate. When a file is preserved, it will increment to the counter, an=
+d
+> >> when it is unpreserved, it will decrement it. During boot time
+> >> allocations, this data can be used to calculate how many hugepages
+> >> actually need to be allocated.
+> >>
+> >> Design note: another way of doing this would be to preserve the entire
+> >> set of hugepages using the FLB, skip boot time allocation, and restore
+> >> them all on FLB retrieve. The pain problem with that approach is that =
+it
+> >> would need to freeze all hstates after serializing them. This will nee=
+d
+> >> a lot more invasive changes in hugetlb since there are many ways folio=
+s
+> >> can be added to or removed from a hstate. Doing it this way is simpler
+> >> and less invasive.
+> >>
+> >> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+> >> ---
+> >>  Documentation/mm/memfd_preservation.rst |   9 ++
+> >>  MAINTAINERS                             |   1 +
+> >>  include/linux/kho/abi/hugetlb.h         |  66 +++++++++
+> >>  kernel/liveupdate/Kconfig               |  12 ++
+> >>  mm/Makefile                             |   1 +
+> >>  mm/hugetlb.c                            |   1 +
+> >>  mm/hugetlb_internal.h                   |  15 ++
+> >>  mm/hugetlb_luo.c                        | 179 +++++++++++++++++++++++=
++
+> >>  8 files changed, 284 insertions(+)
+> >>  create mode 100644 include/linux/kho/abi/hugetlb.h
+> >>  create mode 100644 mm/hugetlb_luo.c
+> >>
+> [...]
+> >> +static int hugetlb_flb_retrieve(struct liveupdate_flb_op_args *args)
+> >> +{
+> >> +       /*
+> >> +        * The FLB is only needed for boot-time calculation of how man=
+y
+> >> +        * hugepages are needed. This is done by early boot handlers a=
+lready.
+> >> +        * Free the serialized state now.
+> >> +        */
+> >
+> > It should be done in this function.
+>
+> The calculations can't be done in retrieve. Retrieve happens only once
+> and for the whole FLB. They will need to come from
+> hugetlb_hstate_alloc_pages().
+>
+> Maybe you mean getting rid of liveupdate_flb_incoming_early()? Yeah,
+> that I can do. It will make this function a no-op once we move the
+> kho_restore_free() to finish().
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Yeah, this is what I meant.
 
-> ---
-> Changes v3
-> - Addressed Mike's suggestion: added default LIVEUPDATE, and removed
->   config from selftests.
-> 
->  kernel/liveupdate/Kconfig | 17 ++++++++++++++++-
->  mm/Makefile               |  2 +-
->  2 files changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-> index d2aeaf13c3ac..1a8513f16ef7 100644
-> --- a/kernel/liveupdate/Kconfig
-> +++ b/kernel/liveupdate/Kconfig
-> @@ -54,7 +54,6 @@ config KEXEC_HANDOVER_ENABLE_DEFAULT
->  config LIVEUPDATE
->  	bool "Live Update Orchestrator"
->  	depends on KEXEC_HANDOVER
-> -	depends on SHMEM
->  	help
->  	  Enable the Live Update Orchestrator. Live Update is a mechanism,
->  	  typically based on kexec, that allows the kernel to be updated
-> @@ -73,4 +72,20 @@ config LIVEUPDATE
->  
->  	  If unsure, say N.
->  
-> +config LIVEUPDATE_MEMFD
-> +	bool "Live update support for memfd"
-> +	depends on LIVEUPDATE
-> +	depends on MEMFD_CREATE
-> +	depends on SHMEM
-> +	default LIVEUPDATE
-> +	help
-> +	  Enable live update support for memfd regions. This allows preserving
-> +	  memfd-backed memory across kernel live updates.
-> +
-> +	  This can be used to back VM memory with memfds, allowing the guest
-> +	  memory to persist, or for other user workloads needing to preserve
-> +	  pages.
-> +
-> +	  If unsure, say N.
-> +
->  endmenu
-> diff --git a/mm/Makefile b/mm/Makefile
-> index 9175f8cc6565..798f04233d71 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -100,7 +100,7 @@ obj-$(CONFIG_NUMA) += memory-tiers.o
->  obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
->  obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
->  obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
-> -obj-$(CONFIG_LIVEUPDATE) += memfd_luo.o
-> +obj-$(CONFIG_LIVEUPDATE_MEMFD) += memfd_luo.o
->  obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
->  obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
->  ifdef CONFIG_SWAP
-> -- 
-> 2.52.0.351.gbe84eed79e-goog
-> 
+Thanks,
+Pasha
 
--- 
-Sincerely yours,
-Mike.
+>
+> >
+> >> +       kho_restore_free(phys_to_virt(args->data));
+> >
+> > This should be moved to finish() after blackout.
+>
+> Sure.
+>
+> >
+> >> +
+> >> +       /*
+> >> +        * HACK: But since LUO FLB still needs an obj, use ZERO_SIZE_P=
+TR to
+> >> +        * satisfy it.
+> >> +        */
+> >> +       args->obj =3D ZERO_SIZE_PTR;
+> >
+> > Hopefully this is not needed any more with the updated FLB, please chec=
+k :-)
+>
+> Yep. IIRC when I sent this series the older version of FLB was in
+> mm-nonmm-unstable.
+>
+> >
+> >> +       return 0;
+> >> +}
+> >> +
+> [...]
+>
+> --
+> Regards,
+> Pratyush Yadav
 
