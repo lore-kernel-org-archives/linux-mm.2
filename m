@@ -4,107 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF6FE95A69
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 09:48:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFCA9E95A69
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 09:49:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C68626B0005; Tue, 30 Dec 2025 04:48:57 -0500 (EST)
+	id 464756B0089; Tue, 30 Dec 2025 04:49:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C16716B0089; Tue, 30 Dec 2025 04:48:57 -0500 (EST)
+	id 44F506B008A; Tue, 30 Dec 2025 04:49:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B212F6B008A; Tue, 30 Dec 2025 04:48:57 -0500 (EST)
+	id 34E916B008C; Tue, 30 Dec 2025 04:49:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FAAD6B0005
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 04:48:57 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2EACD141685
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:48:57 +0000 (UTC)
-X-FDA: 84275663514.10.0CFDCAE
-Received: from outbound.ms.icloud.com (p-west3-cluster4-host4-snip4-1.eps.apple.com [57.103.74.162])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0A60880003
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:48:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=bne-home.net header.s=sig1 header.b=IYwuKCvJ;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of bshephar@bne-home.net designates 57.103.74.162 as permitted sender) smtp.mailfrom=bshephar@bne-home.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767088135; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 277276B0089
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 04:49:33 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD3539239F
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:49:32 +0000 (UTC)
+X-FDA: 84275664984.09.47A2489
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 84406C0007
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:49:30 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Cev52j3u;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf10.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mkoutny@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767088170; a=rsa-sha256;
 	cv=none;
-	b=fKJRQYFT+Fhz0F4gyzxz9HJGuSVnDXmVu6/Zqor+O9aK1Gn5k74ZpOXVU6S3XuH5C5gyPh
-	94bNgaWEFD1BstHq3faoikAeh3mEhuqBrbnMLDXSlc9hgy59d3QoFWFV19rGzFX57VEXXu
-	2Xh271Yta571lH1XX25rRBaOwEARaH0=
+	b=BehTqS08dNv5C1sqHeijdK6NQ7P/cpMOKru8NWsn/BR5Y10K+11OHPd0DgX34h9hA/ftAJ
+	QkJkbkOGx691xJnpxE4QlDG48/EV9y3/BM1ZR1KuNGTaACMJvdyJPwomNPVQc2yDgqdFV5
+	mSVTxkbZEaqXsNS4oVRx50eptPjkvdo=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=bne-home.net header.s=sig1 header.b=IYwuKCvJ;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of bshephar@bne-home.net designates 57.103.74.162 as permitted sender) smtp.mailfrom=bshephar@bne-home.net
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Cev52j3u;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf10.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mkoutny@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767088135;
+	s=arc-20220608; t=1767088170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=WAfqurt205UYSsUGKAjfPC2uLje6kUlWJNEl16+9wTc=;
-	b=1PULbTiNuToAgKrIhmqM/3Z07PsphQdxfQHSXd7uPlmZij43G6KcwOv02D1b2h865wCMm2
-	3tZgQjvJreeKVoyobQA/023mjEH26JMhF5Jhr8ZylvuPLwbXwJFPHWmAOoMDdQXAve/A4K
-	EQHxZCCK3wCaedjH/+Tlqi0gDxXIVw0=
-Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-3a-10-percent-0 (Postfix) with ESMTPS id 7750B1800100;
-	Tue, 30 Dec 2025 09:48:52 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=WAfqurt205UYSsUGKAjfPC2uLje6kUlWJNEl16+9wTc=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=IYwuKCvJPyt3JmjSQMlIg7r2weXGdKOAX/L/WlHDJZmw+2UENFntDIiCvBzsaVCTYr/PntlizFSYsi+S2TuwGydGJNFD24LzugXJeR81GAqu/ncRSqo9mm2rmVhY95O1KQX2CqmBKe5JYGXKLMqyrCaqlp1Ya7h2MLjt22D6eBIABe4eEm+03jgNqHP89AqllaJ3zTLyjjfJUeGHBbcChrt81l9h8WqnzU/G0u2mMSrxd5j97VbxBxsUxIIPPzIEsIHbdXP9xN79Cz6UigrFAS4sK5xxJgSe5As8rtbtD8CxmzM/Zm000DZxEYO5scQSCBjTa9X0897R+hnw0fao4Q==
-mail-alias-created-date: 1746336505199
-Received: from fedora-g16.bne-home.net (unknown [17.57.154.37])
-	by p00-icloudmta-asmtp-us-west-3a-10-percent-0 (Postfix) with ESMTPSA id 42E13180011B;
-	Tue, 30 Dec 2025 09:48:48 +0000 (UTC)
-From: bshephar@bne-home.net
-To: aliceryhl@google.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	ojeda@kernel.org,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	dakr@kernel.org
-Cc: linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Brendan Shephard <bshephar@bne-home.net>
-Subject: [PATCH] rust: Test page_align usize::MAX boundary edges
-Date: Tue, 30 Dec 2025 19:48:41 +1000
-Message-ID: <20251230094841.76830-1-bshephar@bne-home.net>
-X-Mailer: git-send-email 2.52.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4eaz+1wTZP7cgGZagXDHTekg6d8pOXeESnOgAUpsxzY=;
+	b=OmV4LFfwWO+G0Q0KY4MLY4WmVW6aNCT6AlUnkNTq1jSfRTQ/QQyXgT8GkOv7etUrzMJoUe
+	35DrN2oCJuqSr0ziI7b1MCGyPdyZz2MJDf5W7rKiqshzRVTN/dhxzs5DVEHFmWhebte30H
+	qJ6bSW/ZrZVNH0B6xjrjswj9wer1cMI=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4779adb38d3so64125825e9.2
+        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 01:49:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1767088169; x=1767692969; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4eaz+1wTZP7cgGZagXDHTekg6d8pOXeESnOgAUpsxzY=;
+        b=Cev52j3ua1fVUNNTevDM7LZGFWcMIpiJHPq9JAxlrR/pIvzl4jUSicK1NQXaYQO3+6
+         cNxoRJiH+8OgAS7fF/bUSw1x3Sjy0yF4NL3C2Z6jT12evgeK7SmruDJAs22SsiOhalIh
+         cftHQ6EpAYafl59baLolVh9ia3aojqj8SEzn0um3zMzvEVfE2thKZ89CZr4E5gO2IgiO
+         RUN8nAs1CtlOjNfE5k1VXQqbe5MgTivkKMR8PfU3yYKIdVhLXHfQPoUhyG/XSNCJoHt1
+         beXcA29011+Tkh0eK/ZKtMw/A3cPeJv/u9nn3sr0Uf8vETy5b/cNbtFmeMGZ60z1cFXB
+         dQYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767088169; x=1767692969;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4eaz+1wTZP7cgGZagXDHTekg6d8pOXeESnOgAUpsxzY=;
+        b=azpJ3u6gDpeZ2nNRRlSJwEg3220c2oJ8hxoEMbxDyINJ0cqUdbzW3loFUD6pupu9wk
+         APFMfNsRq9ZjynGNq+CzhVH38gtS6g0OvGezrBpnmsSTRZ5FYe4IKSMNIY5Z+oXVp/Sr
+         fm7f26GM4zyIcSQm6cufUnGVOXroBmrUE027b8NaOckm4E3Hbnw4I5dHSugZWh0Pd/E+
+         zB9G4fD/nbshAqfGpJ4rg3/io3iCt4M2voq0+TqvMs1dp9csw9T47PQBnwqzhzIBbcBA
+         Vj3SbsREU8i15Xi4TsKrtSTeh5wVWaizR9PCD74c43JUdd0KJtXSudZKGJul3XHnAv29
+         HwbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXoZgSQyk4NOptKU40emY0tlP6FUoqWaaoLM2WpL+BeWYjzOud6dqUWPmuXTrTYkQqlbWseV2kXKQ==@kvack.org
+X-Gm-Message-State: AOJu0YxQKtk7teIPxtaCaOcEq+Tw/l8kiWoMOHUHTEL86U2EPxClyOy6
+	qnqezKYvPrMZPfq0v3RzJbR1sSLrhEDLEX8aG+bSjFChrh3IrvTFXQkZeJ3lAlrwEfo=
+X-Gm-Gg: AY/fxX5m82wMNGjEVfUEy+ZXU31Nc9WE3BxvhY68+ZMhk8+GsTMpOvPoI61Ov8e7Y5V
+	5I7Q+IOfD7ksczr3oRQcwZ2KBaKusRqXZ2SSYgFN9Mb1KbvsoYeU8vi8xsanoaMzpL04662KRvV
+	hGo8K/cdJGE14qH7CRCArtI92RhanVynV/urJDUrVy6uC+Hr3eOHTZyY3MalDwdSQ1C3SXQHKBH
+	KCf4oPmxpCRqXPNIi6U/px8hX97zG+pqm5i5LFDcaUmhjXqjlk97zQSfD7T3GWIhlASbmvCyin7
+	uppep7Zf5/Jp6By7nUW3PcelweXPr+l/oRTYAcMbEW0bbQ36KjE2wRGqGUQQPIioc9Kzo1HsgkW
+	ggCDQk7jy5ytmf0jkUxEWDhAADiAg8LbbgfavIxJqW9bmC4wkYFvJ65LXkIN3HuQ5yj4fXzCbfY
+	eUaIARzxPvqljadbaoFmv4eAJPl/yM35fwb9dcIuWzbQ==
+X-Google-Smtp-Source: AGHT+IEN/UHYtedJC5gNScUIjciAIBz4WtImq8j9JAVWa7kOqzOpjNxabiVdwQI/0HAatQaCg3ghcQ==
+X-Received: by 2002:a05:600c:1d0b:b0:479:2a0b:180d with SMTP id 5b1f17b1804b1-47d1954a5f7mr386619925e9.11.1767088168725;
+        Tue, 30 Dec 2025 01:49:28 -0800 (PST)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be26a81b6sm657711035e9.0.2025.12.30.01.49.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Dec 2025 01:49:28 -0800 (PST)
+Date: Tue, 30 Dec 2025 10:49:25 +0100
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Jeff Xu <jeffxu@chromium.org>, Jan Hendrik Farr <kernel@jfarr.cc>, 
+	Christian Brauner <brauner@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Brian Gerst <brgerst@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, davem@davemloft.net, 
+	Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [RFC PATCH v2 0/3] Memory Controller eBPF support
+Message-ID: <enlefo5mmoha2htsrvv76tdmj6yum4jan6hgym76adtpxuhvrp@aug6qh3ocde5>
+References: <cover.1767012332.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMwMDA4OCBTYWx0ZWRfX7dVSLQn+9RZQ
- 30zkexKtcWsMBWMzg69DaeLoGRcZwnDBIRSXwZErNQIMTJ3LJEV2mOmdDW0TziL0WvX4vdTR/yn
- XGSAZqp/FKhqLe6h6427f2FtvzAF578pbZ47ytqMrgoGkVajdm8MhvFKU+rnFDK2PiEn2BqHuK+
- WQgAvZ/K1+7aMJV6w6Ci9gHHvDecZI8qigTaA108FUhdJeW3vTGU5IyzaxsRguuixwKruhNpf+l
- 1ruku0OmS+CrtnIOhRP7iSh3Bo+kZ69hEmmfRLMt6RVyz5ibb1fmj/TyKe8bfzKQyO0kaslcPpd
- OcvEDMLX8UmZXcEQdq3
-X-Proofpoint-GUID: Gf5ONyvWc2ShQi0c-_67pPfwp-V5Evjb
-X-Authority-Info: v=2.4 cv=a8A9NESF c=1 sm=1 tr=0 ts=6953a005 cx=c_apl:c_pps
- a=qkKslKyYc0ctBTeLUVfTFg==:117 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=JppZAXPjAAAA:8 a=W2ZBZt_SNlrk6TKUfwYA:9 a=mTXuAFqUwmiQvsSFmwXH:22
-X-Proofpoint-ORIG-GUID: Gf5ONyvWc2ShQi0c-_67pPfwp-V5Evjb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-29_07,2025-12-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- suspectscore=0 phishscore=0 mlxscore=0 bulkscore=0 clxscore=1030
- mlxlogscore=842 adultscore=0 spamscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512300088
-X-JNJ: AAAAAAABKJKhbGoIelncA6EOSHZHcUcxh2qqXKGgbJay4xmp8vxSDf7sFd40wI1VU1lCSy3jdlENrGiQhUDUti9/JbtjagR7zJihMbTX6ynj36XjijVgzAZXKG+bLA9tMvadJkRWovtkXrWhLNYtSl0JrytwfxVh0afrUuqhoc/w2wj8pAF3I4RkkguUHn0Sc4bM3G1jGyHQNNryA8HwhLNC7xtL2p2BLAbRypLnSBlfRKZOkxvvqVEe/3016CAze0YeRbTbhHcR81zmBCU0JzaCpmDAAyE/Kk29EVFoodTyrxxbWOCtMJkXPT1bCXcSVoEwAQdGLfd1LVuwTDstQ8434aoaax9jWHIw7qXx8GyuVrrZ7do4wdDTe32xMjl1VuIBW28sdM+2mHbF/1r0sV42W9VvG/z4iv1Ckcf2rDH5YyCJt0dD+QfOgu4nhgWlDaZ75I+z68yF5NBRjLUipzXSwmsqzNB+iToTaA/REEKNYCxMURLrM19FLhzkmSWdIDQasfK6m+w5xqfjnXHJ9ELrnFH0fxdYhy4AE8kd9/nBik2mDPRaAwY6twe8zp39ktzQkk9FOLW6O7HFEvmj35LHcSrC3yVGwB/YrMNcnOon/KYCBNWSfEJlMyRJ/B1//2RMRrAueBTHGRfBrOZhxbrHinYsWKRYu8NaNuH9O4fqqM06Rc+iNEbcqVBD9Ges3kyhn5etfagn+dvXLRo6FMFqpTKNzLuh0yPwT4gqAtVZmq/lpxQmWKCYsc4rcKZMrMYUJsg4SWDKl37P0agVtpaOqAqtvGLZ8mQ=
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="nav7xplzwe6tizdp"
+Content-Disposition: inline
+In-Reply-To: <cover.1767012332.git.zhuhui@kylinos.cn>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0A60880003
+X-Rspamd-Queue-Id: 84406C0007
 X-Rspamd-Server: rspam10
-X-Stat-Signature: xddpxb83zu4ywgnz3788nxkupcsx1etc
-X-HE-Tag: 1767088134-141441
-X-HE-Meta: U2FsdGVkX18Q7LLjI45ZkQFJloWlKA9RoT9yUYK6BLGethFbyW5zkvq3thUIqUIeCYfgFs4OL28feZ5VDfXblh8BO6CFb7xwUo6Cqva3e2ENtKnFcdR0CIMp/bhJfrtBjs4LuSAoNKvNMg3YqGZrl4VQgI4baqKY8n7ApWGt1kTHxOoK+z++T3gKXn4cIzrm9IApkkfot8pebXmVTtj2H4qe9y12SxAD+u85GxuBLNF7aKkPviMRdgsIDTpft7U5Aub7R9gm9c3X6+exEczEpxbMZiZ+IlRO18uLnHz+pc5Tx2A3zkAsNcBWfyfq/0+BqSJcZfDOx2oOJHM0pJgnWg1QzoGIpHMfce/gKpDT7fLRz5MxHRyD8y5xGtaR8bItwcA8L+d8JYxIGzrcs9rg9cGXqK7CgHjz5RELA/eF8V0eHhNfep9UPTyOCOUjWk51ISPCsWoXDlM7dkHdMlPTqy4hhCYiutYLvuGeckCPc/TPg22RNrjSqRN1v3UVmvczKCukG/MdCwmQ9e8MEw0nw1qHuShsmLkRZ8rGsqLeXNLTwVlHQfNiDCjT6fPoU0mvyMmObkpRBLQnwutNxhF0sGczfnSDyMsTrW/ifZSvPET12N0Rnlqdq+dqFVxY6TGd48m0FWPaDSm6SKLZ8tlchxGf6WxfJ+wurVQs3M6g/yaV67mMMsatC8VYdI+lhhqm+aNgpHPHyMJob5lGFkDYD44BcKe6tTHHFF9uX9uZi5GkGgmXm/YDzCTO3ST/pBs0z0FvbtgKcNjIU45/G5GhxRrOJ5br3mUSQUI1ybKUTrRnTaN3tkWtXX4XJ5+PtMp4DlvgoJvebO/175yYsVO6OzFscnJFfkRMRp02NSoIMd384UjD7xxTCrW587krzYEmtjVq6zktc0qzyvFZfE/n5AlxiVfg7QhE/Fk72nZIkcsh5cPFFa+/P3AXLdKdLatwu4UQLQfzTlDRkoLBjC7
- tn4GWSvf
- xx7lzxpwbtnNoLncG887SsLOGLsCHerOrVn5lVwsti2gNHtyAjk7VdYAOxjcSGlcGWx0Z/oowFvKBGA17AYyJOa870xji7PK1SnXgJSuKZXCYJgyHkGcTTC2/LNb6ul+hhlPyyOxq/x7ofeKqgaYDEJNPvsGHBpE4g+1XPDo6+Kw5gMMbSHZup5ZyqCJxILG5PCRG1NLAOGghyUqia7viJToI9vJ8V+12+BlB4BFSmyAyJtKF5GahTM338kRTWRdl2fkVtIBs5QfcKHxml51vqkErzoPp3CymMa084Ib3Y250RbOf0q3nKs6QFIQrgXbWkZji
+X-Stat-Signature: frihemgsx61nhun4rcxkbyb3i7durzmp
+X-HE-Tag: 1767088170-884942
+X-HE-Meta: U2FsdGVkX18p9llM/KW8aUvOJf01ILA722UwbLDt1kCTM3EVg1DDngFa/i8upcrJ4IIpltFP2I/i9agSD5HiQG5RRL120542F8gbdF7VbIgOWtGCRipqov95hUW69ZxDofKA4GRDGPyJ4JW8W2+1uw8XraIOTYl/ZlmcW6HwCJs28LPY5jRpO6gtDhI6ZU3z6sVTf+a3JKh9D+BkbSsKMEzmEVdGozQReRKNZmIUpIJjZLjaO8jADb7ZvSXuCfclTqKx/3GIINXmN8+JuWXr/d7Yqm6ZiNsIiaQ9nJWvFZE1CxmrrrdSYP74VJBS9qet+LXNCDq6Ei4Ee8dmbmmuBnjkpLF+ef6PTA/WvYwuWKjAWenkBEtUwkQmTqzha31xx7H0b0O8fT5qRk7m1Q+2o/eHWMy4DGKTBvQq4SH2iBD3TYI7JoVPbKmGTOBJ1ylFoToL5gFmJr4GLJluXpnuVD7IGRAKanaHCI0YjoHgMSlRQ+w3HmS9wPAToDAUJwizqZKEbJnGkKSDe8g0htabGYRCu0DfhN9U170UiCfpX4/8uI1YttGJ4iGqWeQ6t2ZSQ+UJURJTeNDKbWMP0VTZLucXbS+a5xIVzgqliDxFzLiPKYaWrXslycNa5K+qZ2FblcQiNXmRcixu13QYVG8f1nRgjxm+AFMx3QQmZOL18h3Aq7JqpbhLI50y2lWTgED0mvhPHWa4/97GK4T3if0BwszfWfZjAdOZv5WQByJmsYp9IboCZiFICca99Y+wh9Wwkm7KFD/fpQQImxUc+MP1lyNNkVWAImcHje2TxEiKNAe5eD1fQfmOnRisOIpW2dfIVCaoEoZ7h1bHZwy+KnXYNZ/jgGsHKrfCjCxo4cqSw0Ydj6oDmnJR6SgLdbS0SlDDCX40xpZnyIkr49X06wVN9/650zsgsckNPkgmJbKgsx0grRiRVOuYfX00CNd1PWOVOWC1Biakew1VGUGWkcO
+ qLgUf+qs
+ qnbvcM4RAvE2BO4GBphBN8PdsBMN+8INUJOCAJWI0U8dIMT2IAxQBJXcpMWags+blbIPoDbFzkAmICHYwBX33c4VCb7LiqlqGuoJPG26zs7Xotmchgvg5HrngbmpwJQMEGWI7sH91qWTXehDD/HYv6Tsx33MA38Dj3wpz/QDAjTHB/t3R7Nt/FZlTpl1iSsjmGlBQxxjkH4vw1d4mHe4S0Jep/FIpCRVmq5w+3eh+gT0aa05+fqxVK0tmAruyPLyuR5L526Llq9S3sYQMSfcDqADKhDO6ymlp/6gXotYJ/r56FHkXOa2OBtwcHGSj9UtQQXdqH3QglX55WBPxK//VBFBIYHpWrYwuzx9MrCSY8qGZIeyrlgpF11azoaaaA16BzpUoRgRS7kdvZJwjqQW3YnuMmAkF9A8WLbt0CIt+L+qFA5trMvPPfcaZoFHA7PdRPrKZCGuBDvTJ+UBAX72yEChBUlCU0ZsiENBq9n0k+J0w0YDP9bJIhTZat29suWVjIUVd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,40 +134,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Brendan Shephard <bshephar@bne-home.net>
 
-Update `page_align` doc tests to test `usize::MAX` boundaries
-rather than arbitrary middle of `PAGE_SIZE`.
+--nav7xplzwe6tizdp
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [RFC PATCH v2 0/3] Memory Controller eBPF support
+MIME-Version: 1.0
 
-This patch is a follow-up of:
-"[PATCH v8] rust: Return Option from page_align and ensure no usize overflow"
+Hi Hui.
 
-Signed-off-by: Brendan Shephard <bshephar@bne-home.net>
----
- rust/kernel/page.rs | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+On Tue, Dec 30, 2025 at 11:01:58AM +0800, Hui Zhu <hui.zhu@linux.dev> wrote:
+> This allows administrators to suppress low-priority cgroups' memory
+> usage based on custom policies implemented in BPF programs.
 
-diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index adecb200c654..d602d4231f56 100644
---- a/rust/kernel/page.rs
-+++ b/rust/kernel/page.rs
-@@ -45,9 +45,10 @@
- /// assert_eq!(page_align(0x1), Some(PAGE_SIZE));
- /// assert_eq!(page_align(PAGE_SIZE + 1), Some(2 * PAGE_SIZE));
- ///
--/// // Requested address causes overflow (returns `None`).
--/// let overflow_addr = usize::MAX - (PAGE_SIZE / 2);
--/// assert_eq!(page_align(overflow_addr), None);
-+/// // Testing boundary conditions at the end of the address space.
-+/// assert_eq!(page_align(usize::MAX - PAGE_SIZE + 1), Some(usize::MAX - PAGE_SIZE + 1));
-+/// assert_eq!(page_align(usize::MAX - PAGE_SIZE + 2), None);
-+/// assert_eq!(page_align(usize::MAX), None);
- /// ```
- #[inline(always)]
- pub const fn page_align(addr: usize) -> Option<usize> {
+BTW memory.low was conceived as a work-conserving mechanism for
+prioritization of different workloads. Have you tried that? No need to
+go directly to (high) limits. (<- Main question, below are some
+secondary implementation questions/remarks.)
 
-base-commit: 7acc70476f14661149774ab88d3fe23d83ba4249
--- 
-2.52.0
+=2E..
+> This series introduces a BPF hook that allows reporting
+> additional "pages over high" for specific cgroups, effectively
+> increasing memory pressure and throttling for lower-priority
+> workloads when higher-priority cgroups need resources.
 
+Have you considered hooking into calculate_high_delay() instead? (That
+function has undergone some evolution so it'd seem like the candidate
+for BPFication.)
+
+=2E..
+> 3. Cgroup hierarchy management (inheritance during online/offline)
+
+I see you're copying the program upon memcg creation.
+Configuration copies aren't such a good way to properly handle
+hierarchical behavior.
+I wonder if this could follow the more generic pattern of how BPF progs
+are evaluated in hierarchies, see BPF_F_ALLOW_OVERRIDE and
+BPF_F_ALLOW_MULTI.
+
+
+> Example Results
+=2E..
+> Results show the low-priority cgroup (/sys/fs/cgroup/low) was
+> significantly throttled:
+> - High-priority cgroup: 21,033,377 bogo ops at 347,825 ops/s
+> - Low-priority cgroup: 11,568 bogo ops at 177 ops/s
+>=20
+> The stress-ng process in the low-priority cgroup experienced a
+> ~99.9% slowdown in memory operations compared to the
+> high-priority cgroup, demonstrating effective priority
+> enforcement through BPF-controlled memory pressure.
+
+As a demonstrator, it'd be good to compare this with a baseline without
+any extra progs, e.g. show that high-prio performed better and low-prio
+wasn't throttled for nothing.
+
+Thanks,
+Michal
+
+--nav7xplzwe6tizdp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaVOgEhsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+AjqkwEAsnaDJnUrbpBZvRNgWKP5
+6Sa4JrRHis7FmRcVhJPNvUUA/1AnWVzTnXOrXQlAm2C1hsfhl2QuvaTzWc6hD0j/
+y5wD
+=OLWl
+-----END PGP SIGNATURE-----
+
+--nav7xplzwe6tizdp--
 
