@@ -4,107 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 802D0E95A77
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 11:40:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF1B4E95A6C
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 11:41:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA4856B008A; Tue, 30 Dec 2025 06:40:30 -0500 (EST)
+	id 3619C6B0005; Tue, 30 Dec 2025 06:41:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D27D36B008C; Tue, 30 Dec 2025 06:40:30 -0500 (EST)
+	id 31EB56B0089; Tue, 30 Dec 2025 06:41:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C31286B0092; Tue, 30 Dec 2025 06:40:30 -0500 (EST)
+	id 255D76B0092; Tue, 30 Dec 2025 06:41:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AE1F06B008A
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 06:40:30 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 558321CE1C
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:40:30 +0000 (UTC)
-X-FDA: 84275944620.22.0019798
-Received: from outbound.mr.icloud.com (p-west2-cluster2-host4-snip4-9.eps.apple.com [57.103.68.162])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2367C180006
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:40:27 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=bne-home.net header.s=sig1 header.b=YHn+NP5E;
-	spf=pass (imf16.hostedemail.com: domain of bshephar@bne-home.net designates 57.103.68.162 as permitted sender) smtp.mailfrom=bshephar@bne-home.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 10E816B0005
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 06:41:30 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A27FD1A8BC9
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:41:29 +0000 (UTC)
+X-FDA: 84275947098.16.3ABFFE0
+Received: from outbound.mr.icloud.com (p-west2-cluster6-host4-snip4-2.eps.apple.com [57.103.70.15])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E89991C0003
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:41:27 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=bne-home.net header.s=sig1 header.b=jaZyhkgm;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of bshephar@bne-home.net designates 57.103.70.15 as permitted sender) smtp.mailfrom=bshephar@bne-home.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767094888; a=rsa-sha256;
+	cv=none;
+	b=2s5gOsz6pc8hapQqG3WE8Vso77IuJXm+galizxAtoVdHTrc63HGqWfdodScb9vLH2DBsI/
+	ISIsAFxFmzyMGmET+dY2CncCRE0BaE+n4p/u/jAOKrJa1gZ8xzWJbU47XXpt/MudGAlGCZ
+	NKOjArm/rCmwMN3nm/fCwCOFvP1wG7E=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=bne-home.net header.s=sig1 header.b=jaZyhkgm;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of bshephar@bne-home.net designates 57.103.70.15 as permitted sender) smtp.mailfrom=bshephar@bne-home.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767094828;
+	s=arc-20220608; t=1767094888;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rACcEN+epuIthxdvgF0dC9KzjjSyrOZmhlIZhCJHJrw=;
-	b=OvUF8rFKdjJrifjqoFyJV0AJOaWPCAeDcO7GDOntNU93sn9Kpr/IZ45NNRsRLTt7uymD5h
-	a+3jD0e4xtz/T3uhPAJGOgH8jd5/aMnSZDC/QACNBrjFDzSFC7ccddbqae5N/n4Miw1RzR
-	3Bzor5OlStJpH4ShRG/eFPXGHC9/kaw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=bne-home.net header.s=sig1 header.b=YHn+NP5E;
-	spf=pass (imf16.hostedemail.com: domain of bshephar@bne-home.net designates 57.103.68.162 as permitted sender) smtp.mailfrom=bshephar@bne-home.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767094828; a=rsa-sha256;
-	cv=none;
-	b=zVFf4pz8SUgGI71lVN8kubs7rcBFRxRcLvujsVRWuQyMqt99n1wZCWrbAmajVd9KLoYtye
-	0yXAtD8bg/Qk+1d3FNxnckEy0TMkuSUo7q7sSnkepElR7T5eQOmnAwHmgh23kwLUqEa9Ay
-	Cix/EkdX95+5cp4bwCwjdIkgK3b+0mg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ggYLBMvaykf4rMZdqtcloQRFZz5xZPrUJndHsUSseU0=;
+	b=yAlYs8VlwSTnHVrgf9qlSZX8DVY3XkD05G/DtSg1iCjh4FKW60u/SsjQsJ/aC0JJ2HWkHq
+	+gvtmAYokOOMXkqpfbYnQqok4NN7zCKkOOlpB442z657Okb8fpca5tQIzBNMtQMSxDdeaT
+	vxkO6LXeS4Ov/H++BLGbb+S+k/FsUNQ=
 Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-5 (Postfix) with ESMTPS id 7487D1800113;
-	Tue, 30 Dec 2025 11:40:25 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=rACcEN+epuIthxdvgF0dC9KzjjSyrOZmhlIZhCJHJrw=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=YHn+NP5EOqNJNEjV9K8t5iWH5X0sCT3buiKP5yCCKSnUKBWyXZKpZa0y81131XfW/Rpjw2ZfUb9ODnKNA2t4lllX1zgJilf9anOpzsgvWxAcbVeLIv5ll99xbaTK0QKaEMXMGqzRr/ETJQttQRkjHJ1RvoU/S0D8d51YTwwPPXSvqEq6IB5V2d1WRUowkkU0XjA973+bAx8Ae+/ORl5SK9yB9ouNavkp7xgJyOvlCGTY0q4HyvpY/pqYgEmm8yX+u6KnGtCFs3LxWIDTXXUl6TmZfViQbNuiU+myjvrtBRpLm5rdEV7IF3ZkFYKfO4m9crLGYflRcGYUBxu7oEYzXg==
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-8 (Postfix) with ESMTPS id 1622918001DB;
+	Tue, 30 Dec 2025 11:41:23 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=ggYLBMvaykf4rMZdqtcloQRFZz5xZPrUJndHsUSseU0=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=jaZyhkgmbPY0rkEcB+J3fnaE/68FjNM6TwQxhmPIWSCRlbgsnkQqraFSQX4qNGu2v3XpxfowonTQvKb3TpmRRXoJkms0jmL9RdcCiooc1zd2TXa1KA1cp6hgavN3ZTgf7uqr5f528eZ49m4yyVOc0OQM3M13ewACR2z/1d0PdWs0fni8JEa8c92iDe0Y6Y5zEIwEFOjQ32/JCd+zQ2LpCF8JFdJoMdwJC3Mh41POjVE/59jSC8B4CyhGFvswj0bQg2CV9dY8gR9T5k/X+povQOm8UfY2lvxNNLWWVf7XyaK+Xamah8RWxwWV05ZfLs7gk7wLTJfSAXX0zufdCIZLag==
 mail-alias-created-date: 1746336505199
 Received: from fedora-g16.bne-home.net (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-5 (Postfix) with ESMTPSA id 647B51800605;
-	Tue, 30 Dec 2025 11:40:21 +0000 (UTC)
-Date: Tue, 30 Dec 2025 21:40:17 +1000
-From: Brendan Shephard <bshephar@bne-home.net>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: aliceryhl@google.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, ojeda@kernel.org, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org,
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: Test page_align usize::MAX boundary edges
-Message-ID: <aVO6ISXoEV-43AY2@fedora-g16.bne-home.net>
-References: <20251230094841.76830-1-bshephar@bne-home.net>
- <aVOhfWmyJBxD4SUa@fedora-g16.bne-home.net>
- <CANiq72mdkb6A82oy0DoUWn=jv75-R7EHTNvJRW7o=JeNa3eeHg@mail.gmail.com>
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-8 (Postfix) with ESMTPSA id D25D2180032E;
+	Tue, 30 Dec 2025 11:41:18 +0000 (UTC)
+From: bshephar@bne-home.net
+To: aliceryhl@google.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	ojeda@kernel.org,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	dakr@kernel.org
+Cc: linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Brendan Shephard <bshephar@bne-home.net>
+Subject: [PATCH v2] rust: Test page_align usize::MAX boundary edges
+Date: Tue, 30 Dec 2025 21:35:50 +1000
+Message-ID: <20251230113550.82666-1-bshephar@bne-home.net>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mdkb6A82oy0DoUWn=jv75-R7EHTNvJRW7o=JeNa3eeHg@mail.gmail.com>
-X-Authority-Info: v=2.4 cv=SJRPlevH c=1 sm=1 tr=0 ts=6953ba2a cx=c_apl:c_pps
+X-Proofpoint-ORIG-GUID: carxnywWYml8JtP_bfebN58g1FgHtMvd
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMwMDEwNSBTYWx0ZWRfX8M7cBbS5dK2P
+ gJu8b2V3TqPP+ktUMmg1gwzZE80Av7a/qyNoK4dDqyGGie3n/sIlpSIBuRc/HU0AE6uGVMfhrU+
+ s853APhVDHnLVEQIgfgoKB4HODKqv1Wgj4T/c0bwT4iZi9CmMnxgE32GrRngvML9lZ4eXTsDQ7n
+ h6K1GBww9HBsc/gwAexk8LKTIg6eXijRT3to/CV++QXqsGIUWzqPxbisqiurhQWnS3y5Bu79eK/
+ vtOar+d2KWM3TV9Ni0ujFrHDTu5vibsyhdNdgWNqbyaR+JeIFXUoOtePzp6WlRZEMS+OpA0Uyxw
+ HCMLYMlhacuawRf/uJ5
+X-Authority-Info: v=2.4 cv=DJ+CIiNb c=1 sm=1 tr=0 ts=6953ba65 cx=c_apl:c_pps
  a=9OgfyREA4BUYbbCgc0Y0oA==:117 a=9OgfyREA4BUYbbCgc0Y0oA==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=JppZAXPjAAAA:8 a=KjuJQINMKESoCGrhKMMA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=mTXuAFqUwmiQvsSFmwXH:22
-X-Proofpoint-ORIG-GUID: vho5jMJbJ3Iu9FhNZOQDabgr1nQBFRdF
-X-Proofpoint-GUID: vho5jMJbJ3Iu9FhNZOQDabgr1nQBFRdF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMwMDEwNSBTYWx0ZWRfXz/cVO6yBSkgP
- FMthBgfTlo3eypm0FD2K6BkCaaSipphS4lPhZiFwqnQ7iJ8vUPRXEB4/e/I1mYez17uAas6Snex
- yg3qXN534a9n/PRmdZHbYQunNvgGnLpiKXNKU1J2J2mVJ/zbzAMuBJhqlr/DVmoOfyXHrhpBXuo
- /lcstEfla6rji+80Idiydam7aVI0GqR5IcrbRgDv/JMnZJ8FD6exGPpJqvxLDbzVxLmL67ZJdKQ
- 3SVzPcaeFGcCdfGfQqeAi86rMH+Y8Rn04eyuvqJjGuXeXZJXpZRRNvOKRjb9V9rj8R/H4kiqh+D
- WJ3pJ8LM1NtOUI9fEbX
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+ a=JppZAXPjAAAA:8 a=b_JMli5UIlt5Tm9dsTYA:9 a=mTXuAFqUwmiQvsSFmwXH:22
+X-Proofpoint-GUID: carxnywWYml8JtP_bfebN58g1FgHtMvd
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-29_07,2025-12-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- mlxscore=0 phishscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0
- spamscore=0 clxscore=1030 suspectscore=0 classifier=spam authscore=0 adjust=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ mlxlogscore=942 phishscore=0 spamscore=0 suspectscore=0 clxscore=1030
+ bulkscore=0 adultscore=0 mlxscore=0 classifier=spam authscore=0 adjust=0
  reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512300105
-X-JNJ: AAAAAAABFWRGzDXrD9N47VQlOiCFXOKL0P79vIoQewS0CJ65F+Rmbp61IVkboV6sGgBUyqjOhE/hsH1Z/wxHqkq9giM+vRpIa7evVxpz+Qd3jCcHAqqT6/SLMRHNLq66VVDQ7HkC7CrBLO8qMMLOKCUp4zHTDfjGIHBJNNzO+kYbGmAeI+x5Rlk3Tw5fLvM7O9uEHoY8RnF7URR2mtw/3522vxdvDiGt8bQLfNEN96+O3xnTW1a4DMwIb22VhGOZtxat20opb7I8ITAH/GUme/UM9/k8/emXZtxcnhlXcxKcEvFAte/YN0vm1lYF+mL+wCceLB7LleMK1Q7SDboWJPMo63bI4+aFyowKTk3DVW1WVV1Ow9Z2Naxq5jDxAFfsY0u8HeW/GOjjtD3FThNc3ntjvWTg/mG9vVUCog9PBvsPLM0AxciRTKOjXApzyGK096yEQEuiQu7Q4UuetxS1xYfCPuCBitcvPDPbSx/nE6QdKtpM0WQYaaIxD8neGjYYflZF0e9xAo2+yoC1jrAr1wV+gK99b5PcUVWR6+Faoca0CTacgbosndliXSG9sGM5cIAtTb73fcbYZE1Mc9YvO0rsJYqEmQYWX2VEpbPJUO7hZelkc4rve0NJ6DCC8oYS79ZvQuSKLBTWGWK2ilP+nguQK68Kg28Yb19eaKf/oVCCggBTaVxCX8/9DKpkEmhSQPSlm7Js/LK/sjbwxluJMtMJ0v8vsXdoBSXz4qqIRG6geaQXUGQt1sUS2WbVdHFATSLlz5oVLPa82gNRgFfQq1g1kEJKdLYC4VnyWAteO2uolRoVsrpk7XkuVkrCXJdSdmYKS+KuXiaVtk1HqQ==
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 864ph5it4sqcrnmqq4zsr5j3zj185gsd
+X-JNJ: AAAAAAAB16aefhdp9z/pkituRZI4nAfgWhi3MOouJuVIdITiC4iSSb14pKOKsU7JVkNdt2jFdPMClFVciE8dXljuGNANzrh0H3qYYo7Sz3SXhyxBaEdqn06GAmhlfljLrZyf64ImjQGHPrB5aTCoy7rSHKAVXGaZrt+0dWQlAdHpODfq+WUV05UZ5QYDsX7gy1QX6ebczLqqQ97+KRY77FXpzG3YsrVC8V76V5wy91MWcLHo/fI88lmwsGjab6FrnMvBJD5fuHjcW3tBXUMBFwdjSGkznHdkRz9dti9tOFhqgtAr3XX2H7aCzHtmPy3SpBgR2XjJTtefZ6gOA/qxP/67II0qg/PrQA+61N1xIyydH7C1pWAB88IqMvFMoAnv8nu4NcIhB+GkFBMuIWAdO+YIBWQOZz+uu0+aqI6zamUw0wM06/82MbRq8yAUm+YV9QUHEPYdBvRTcISgV3y52BiwXQ6bVIpvoVs6Z+/Icjc9vzzkO6BYVMHxkc6t8TN5H3jlOXP4ZS+3gv0Svd+h2meJtuN3+z7fa6F4yOXIr9ImGhanCqurBuqqBS+DC860qT0B+X4u2txsUuEf8tSEAyH+8YEOxp29Oj6iW0CFzO/faMj8UswfjtBP6keDSBbQ+Bb4eEcsSbsLRAxG4LgxcmqQQOdxkEJeFlaT7SJkaeSGEZEKGB0/qdy5eetrc4DTcs5UncI2YA53d6bej3TGq/HRJ1DRSU7fI4iqMzM7ab5TTjdps/uBMBxtDG6YWZXNfieH4jePC31cQy/mekfoq8lBuew5np01VGLjPxDHeFbKgnwtmSDS
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E89991C0003
+X-Stat-Signature: b3qiqx98kguuenm8khodx9tjg7rqu5h5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2367C180006
-X-HE-Tag: 1767094827-55977
-X-HE-Meta: U2FsdGVkX19L0eFdlUOw59PxV3t0B8UFr+W6MTVTwlq84WdsbPumvYZckGtgkEFml3Q55K1gEh6W85Jtq4FvC/S1MYX47won4t7+fBZVPrhB+duw/NtNRq4utFAr/YV1oGPBXyQFnmTeKXnAGd0kf3F9o/EADauPfbRAVoZGSLT9WL4RssQMlS4EqR3RlYU44mt1XDIitfDMf1Ft85HCuHWbL7cQYpZz3MKIRuNAL7YzqVKJMqYX59mG6O6gLQyQLa2/mqWDC8YRjh5WhzdI9wBA4UXrpeAlVW9a+N6PvlSlnQtX9kGLacv/q2iKf1pz47RC8BRLLum2fAAeirACiJmibV4hUKtYmq5visBGykpRQ27ngT2KI723GOUaFURaWGshytZ7/c8vcUp/pMfLs8aY+VW+Os1TVXGzAD5oHtn7yjDih/YPDfOf+gZMLfuNebZoDI9I5QlV9+wHt/pf5B7fTIerVjJVtXxYPjfcxQHUYWHIQ3XqsGYD7Caze921Qp94ND0JRvM9x+4i6BFuEw7hl7t9E71SL71dIntmPJmCu+2dcmye93IBKO+F3PldIx8WnPMJsoGBzw+0U27B7iv8Ggns7MWRf1zP/hlLqbYiIyX7Be7S9+diu8v9Dq9lfM7BtfoDXimpoMcxMGYqqGC8fDteuxlDeyz+2A0fOrCCCFWvw9ZgJ7D+bRyqAHtwulTExI1IoECFEIdAWY8d/9uDea8AjosEDpSgESrrt1WUiGD+Wff/qMxALvUQp9P8bF80vN9Zq6st8WFRVTCV2JDagyLQafQibwW7xbHfekT78HXrv0oL2teSGOdybbJtrUdMuMxkWv0lBuCkOUR3Ltl0Z5JyxE7p/df9nVoWHHJ5phb3572biU9xzoEiMSw0VpHweZrh2E5KLPKY0+1bxeovav+QzUfNMKqmC7qnw5f8wHPAWCQEhR0CZHfrDkGBzuQABBSwwFC0Q7Sggtw
- cVsFKse/
- Cr56AJ0rAdN1oL5DEpQNd+lvSfv7G3q5T372BRjHMxV+9l+LhlD4sLEvHiAt7+QIU246omq9ZLCYiguNUGZWeHSFHArX4EndgqV291mP5byuiMpyl4gFehUZHbGLAZnJviAqY+t2IryzCQqJHAZRWotYmLVg446c9XssdDrssvNbWrxfuLjq5hRMNH8gIe75wH/CaX8XBu4GqsFjAxq0o0F+GefUtN6vABe2WaXnFw0w4m/oU+BcyuziKUkfR+Vc/4Q2wVRRmcta2nbVVQ9SGB4nrWBl3iGNQArfRUrFQTBv0e1Ss8I0mpIrdohIJtM/H0jc7x3eLfowoKAraUs9GKPAbG5qfoTtmT4z+oYV7zJkjJjbFPCdYwt9nsGBMH0GqfIyH/xWs2r8mubx/Hu39AnCKZUDAQbBTXkpIO9vJvwE8A1+lXSWgT06SY0/dsrhQEFuJeZ13G79xKSI7Akof8FINEU3M3L56khqCy0rIQrLiJLGRFaygfuF6VZXgfvFvRSuBUWI+DfaBhkp/VHtEYk4MZEO3120pDoKA8IKuIgp3itbCs9a2oennSu+HMiPbvPU7
+X-HE-Tag: 1767094887-160928
+X-HE-Meta: U2FsdGVkX1+LJn4uC9aQQiL0e0XI630vL3gEVIrcmMoKPnr1+lIQJ2eJOuL2egOrcSbix3VuPny1MlW8ldwOjuDxNOSfK/KWzSmRArYOHbySbCTroXyXfJ/xqIr1Y76fX6v3bVUx97O4ORU4THQLcwBkGzyOpvlvZ/Y1CLnukdQEYbCej8wDw/18ZYnxQCyukUVmOq6JduADsIffw+PwYjxK8bxo5y7SHn9rTTQeKUR2/sG0oqA5zbfIfTTd5HwGW5UjU4g5bjTwUjnjW5e4couL/dTNhRqNzoArXY9kskmgzPXFjFwq2myoyQAqsKFYiDJfdD+TfioYf52DDYWXUyapEomc8Ktn8huEUprtCiK8JDUoAEetvOX/5kY+AeqrwCNDLfXAGpD/eY7GkwBw4RYEr6GEcDGRXHZP4S8ut3yQwCmFXVGVWcP50I2YP9esRxzaDOYqmDJccPEdYRk+h0kA0Aw8RwKR921j3vtcg9xFBVtBgDOWN4S4w9lqVYOj4CK9ZR+9znB65fqhlAMR6mrNpY5hA8njKP2xM68xau3QgWGqpfBduZGo50wGG+iXcmbC7pEEGDrvhqjBCZ7s6R6/EMUYbUrDpWAeiPRgpfR/nW7/8K0zKbDTTGXn6VoaufVltOvAOUEAo8uvhtHXkf2fYoKiYdlDnaRc5GEy7UdWJzn+5nQrPqJ2W+n7StZQXCcLYYb/eY1IJoqOauAIElMMlQWIHUj/YRHRBeev9MFg7YG/pSMurygypU/y7AEi2cwuzP9/nS1B2W036WLz+o5qb42OuN/A71JlAB0cKLavar3Ls557K9gngXUD2beRdSPIx15jqv4F1mJNTERmEd8lVW8NV5G0AxBBeQKZ2GJg2jQ+3g59u7nfINcwTYJkWyEZ93W7jDLYLIc06HwlLcaq47Xq8Blbe/nO6mBO4c5LbtbVoSBRQaPAAPw6vpXVPEgopH020fIMEeTka+S
+ 2d3hooyh
+ 6jc/qemr1k5FuzpRglD0fw9dKx8yof2+IpqaH6NJzz4GhoX2KmVLcJWumfsGHGxyq5r4kb6S5lAo1dShmLuW3/gHvjeyErVZhLRtimMLVKR+TLfDC7Ujne7WXY+MB/HBdrfeh7b0ty1c90OQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,55 +114,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 30, 2025 at 11:14:37AM +0100, Miguel Ojeda wrote:
-> On Tue, Dec 30, 2025 at 10:55 AM Brendan Shephard <bshephar@bne-home.net> wrote:
-> >
-> > @miguel, Thanks for the pointers in:
-> > https://lore.kernel.org/all/CANiq72kcMLXz=xyZeKC0=j_e0BzJEY3wGpBTTxfJsc6EZhCnXA@mail.gmail.com/
-> > https://lore.kernel.org/rust-for-linux/CANiq72mLPvB_6Ow3bW5-V4-km=RyA59chQ1g1x9qUt2P-zZweg@mail.gmail.com/
-> >
-> > Let me know if this addresses the points you were raising in those.
-> > Maybe you just wanted usize::MAX and then one over? The first test
-> > case might be unnecessary. The last two do a fine job of illustrating the
-> > point I think.
-> 
-> Thanks! Yeah, either way looks good to me. Personally, I tend to like
-> tests that check both edges.
-> 
-> By the way, the original comment mentioned "overflow" explicitly,
-> which was good since it conceptually links to the main docs which also
-> mention it. It also seemed more aligned with the other two comments.
-> Perhaps you changed it since now one of them doesn't return `None`? In
-> that case, I would just remove that bit e.g.
-> 
->     // Requested address causes overflow.
-> 
-Yeah ok, I agree. I like the explicit mention of overflow, and you are
-indeed correct in your assumption for why I changed it. I'll change it
-back to the original comment.
+From: Brendan Shephard <bshephar@bne-home.net>
 
-> i.e. I think it is clear that the first case is not the overflow one.
-> But it is not a big deal either way.
-> 
-> By the way, in commit messages, we normally don't use paragraphs like:
-> 
->     This patch is a follow-up of: "[PATCH v8] rust: Return Option from
-> page_align and ensure no usize overflow"
-> 
-Ack. I'll remove this. I found a similar commit message in the history,
-but it did feel like an awkward way to handle it. Noted for future
-reference.
-> Instead, it is better to provide a lore.kernel.org permalink to the
-> patch or, if the patch was already applied, refer directly to the
-> commit with the hash and title. However, in cases like this where it
-> is not really important for the change itself, I would just move that
-> line below the `---` line so that it is not part of the commit
-> message.
-> 
-> I hope that helps!
-> 
-> Cheers,
-> Miguel
+Update `page_align` doc tests to test `usize::MAX` boundaries
+rather than arbitrary middle of `PAGE_SIZE`.
 
-Thanks, I'll send a new revision.
+Signed-off-by: Brendan Shephard <bshephar@bne-home.net>
+---
+This change is a follow-up to:
+https://lore.kernel.org/rust-for-linux/CANiq72mLPvB_6Ow3bW5-V4-km=RyA59chQ1g1x9qUt2P-zZweg@mail.gmail.com/
+
+Changes in v2:
+- Change test comment back to explicitly mentioning overflow condition
+- Updated commit message to remove follow-up comment.
+
+ rust/kernel/page.rs | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index adecb200c654..c8dafdd843d7 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -45,9 +45,10 @@
+ /// assert_eq!(page_align(0x1), Some(PAGE_SIZE));
+ /// assert_eq!(page_align(PAGE_SIZE + 1), Some(2 * PAGE_SIZE));
+ ///
+-/// // Requested address causes overflow (returns `None`).
+-/// let overflow_addr = usize::MAX - (PAGE_SIZE / 2);
+-/// assert_eq!(page_align(overflow_addr), None);
++/// // Requested address causes overflow.
++/// assert_eq!(page_align(usize::MAX - PAGE_SIZE + 1), Some(usize::MAX - PAGE_SIZE + 1));
++/// assert_eq!(page_align(usize::MAX - PAGE_SIZE + 2), None);
++/// assert_eq!(page_align(usize::MAX), None);
+ /// ```
+ #[inline(always)]
+ pub const fn page_align(addr: usize) -> Option<usize> {
+
+base-commit: 7acc70476f14661149774ab88d3fe23d83ba4249
+-- 
+2.52.0
+
 
