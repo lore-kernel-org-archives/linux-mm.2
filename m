@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67769E92722
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 03:45:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08211E92722
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 04:01:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DE066B0088; Mon, 29 Dec 2025 22:45:28 -0500 (EST)
+	id 685E06B0088; Mon, 29 Dec 2025 23:01:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88B5E6B0089; Mon, 29 Dec 2025 22:45:28 -0500 (EST)
+	id 6341B6B0089; Mon, 29 Dec 2025 23:01:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 797406B008A; Mon, 29 Dec 2025 22:45:28 -0500 (EST)
+	id 560286B008A; Mon, 29 Dec 2025 23:01:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 68ABB6B0088
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 22:45:28 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D61355EAEF
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 03:45:27 +0000 (UTC)
-X-FDA: 84274747494.20.F870384
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6F8AD1C0005
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 03:45:26 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Pkyu2x1y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767066326; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 469B26B0088
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 23:01:53 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DF32FC75E6
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 04:01:52 +0000 (UTC)
+X-FDA: 84274788864.28.9CA3513
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf15.hostedemail.com (Postfix) with ESMTP id EABC0A000C
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 04:01:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HMtpIgPT;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767067311; a=rsa-sha256;
 	cv=none;
-	b=la8YLAd7RktU7EPbFpu8cQoVzrmeWROjXnM0vVCYZkTyyUVPT1uhOGxNmoY+0zga3P5TDG
-	63Kzx4Gtg7ACDKs8TgfHP0R9qB3bLJRbxhtBIa7oIteY66e4tNb/vNqRLzOSCIvYy0NY/+
-	27EZwf1Eb6kDQOuthqnGJmyAVjvUzoo=
+	b=8fs4oQVT1wZjWnaBHvl+UB7mjYp/3dwAZM01lulo1/Tv6i7KcOxGS/jpkjIk5i1xt7Efj7
+	RSGxbGHkhbfOFtS4AY4DgqXNQhh8oCphA1Fhm6CkPSbcpWkIdvV8NFdhoMu7yCbzuU7kyu
+	gsubevtO9YuWZgVJ3iOLobmi9fqoMy0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Pkyu2x1y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HMtpIgPT;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767066326;
+	s=arc-20220608; t=1767067311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wGp3Bm+rKhLvcibGU2NW97+oqzSfeITpi3OLxq27JNo=;
-	b=LdrEh7MtHyCV94HKq3YxS7bNpMZuyszeI2L+1PU5Smc3EmIMLBliVy73KIley3TBK5jGD/
-	Fk/dORHSYQJZtmFCtOX2CvhxvRZclGn43GkYSkD70GXZQ6cQpOIySOW4biKV6+G0RhLT8C
-	SdQ7NiYNRBU0tIIz9XJc/98luYFYGHU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7E0246000A;
-	Tue, 30 Dec 2025 03:45:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F02DC4CEFB;
-	Tue, 30 Dec 2025 03:45:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767066325;
-	bh=7hTn6XLuotVM0ay7KF0gp/Y77dKrAK/9QRLqPA4o/Q8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pkyu2x1yY9ChEhz+A4uqDHEzEsGSRK9WjQecxK+ot1Vv8kvrDikE1/PzUq8kPtOMj
-	 MAE5AA4UPEtxFHCevYUprh32lc/34a6Ss1S6ZU2daY/gIHSVq7SgtAoe5kA6QoCb2M
-	 SJfGy51DO4zPdPl5twfcpPcI06Q9OsUeOnZER5yvv6d/lvmo4s/eGjZ4ce8p16fluq
-	 a2R4tiBycE3ekeAJoum69QIx67GLz82TuSH6TuzveCQQ5JsqNyWPhnHDBDw6+QGtKl
-	 EW4VOzBGHZnzm1OARpZ8yZsVcpciM8ofoBI7g5zLPSOSspMRMZDfe+sppChQrBk9eJ
-	 v5pVAM9vCXOdw==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"# 6 . 14 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	JaeJoon Jung <rgbi3307@gmail.com>
-Subject: Re: [PATCH] mm/damon/core: remove call_control in inactive contexts
-Date: Mon, 29 Dec 2025 19:45:14 -0800
-Message-ID: <20251230034516.48129-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251230024129.47591-1-sj@kernel.org>
-References: 
+	bh=wh1jdyymTeALV9AMOvPpN1wNV02zTapRbpXJU8VX2gM=;
+	b=me4XYlGWsGasqR/C36RNIrVKR+c8/xGjhxladCRNKm0be6cefOJysXujvu9IqwpHRayE/9
+	jp8b1VHQKL6e5zIqDLw0vO5gkcbrpeZ8inivGB9V+z2JQw4M80bRgoeoFKF3BNQoIeq6dB
+	SivO+lBn6ht2A4lWFvqTcX+U+zXzv74=
+Date: Mon, 29 Dec 2025 20:01:30 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767067308;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wh1jdyymTeALV9AMOvPpN1wNV02zTapRbpXJU8VX2gM=;
+	b=HMtpIgPTp6+vmVC3Zw63bq/TJXIqO0pBSV/nDK5lfkbZSxCDWmJKOiXzFU/KuQGc43LtOI
+	qmo9bthNashfG8yBi0zVQGQ8pOgP4VdG5ejT+MTgGLw8ANxikcTqCgcnUOYBcXKosMEPrn
+	RBYjYfspdvI9HQ2hT0vvIMkCOqzfPmw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com, 
+	mhocko@suse.com, muchun.song@linux.dev, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com, 
+	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org, 
+	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 00/28] Eliminate Dying Memory Cgroup
+Message-ID: <423puqc6tesx7y6l4oqmslbby2rfjenfnw5pn5mgi63aq74jwj@jwgorel2uj3m>
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+ <7ia4ldikrbsj.fsf@castle.c.googlers.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6F8AD1C0005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7ia4ldikrbsj.fsf@castle.c.googlers.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: EABC0A000C
 X-Rspamd-Server: rspam03
-X-Stat-Signature: r7co4jigux8hpbhmauq5srcza4yoj6y6
+X-Stat-Signature: a9epnh98bpe9x1hg748cwyp6ant1gg36
 X-Rspam-User: 
-X-HE-Tag: 1767066326-741355
-X-HE-Meta: U2FsdGVkX184VlGrqpkJKNeSKBS5wC53UKGkuL9HXih19QEZ3FAsnsoQE7aRq9/FgnOwyU/QOzbWG2af+2O8ISYWFu/5GYczUczIllkw6UJdkvT/VHlUerxuF6WfIXBSeVL6sb1BlEf3VlNG2JSV3f2Eyy8PZL/oAMgDP9YUAFr/ashyxlVEXfHeev3JkFSN3ypDZjqcf3nrZL4LA4a4LQuEmuWccfY0c3P62Q2Nm1AVBmkKlokwf6RVdmKSzGEk/T7fWrBvEhnJ0cA+VIjGTE0mHdv/h9HlxH+eYJ+CgJmaHRpJInt9eTAOclzqJFS+Ouii24p/ga186UAkIHG2NDxH1m2KAjJb494ogQUlNAIGBRBe8wbWJGiOSWyyrki4pui0K7LVp/sDg9JfI8TTpWkEvFqn8eTGazQhZz1Umn4LHSwSZs/LEZgjC8MyKeWYcLJv+6V2ab+wLPdt1GlvyUzrnDb7Ybi6trPWBCrAs2XvNd+pmXik99LLPcNqETJhC2RtqzGL6FbfIbua/vtmvO3DPasg/154SHcbCl9rL8/udfx2BPSCHmNO+0oJt0RfO39hbgB1k1N+Wrrnwe+zeb086Rn9u/DiVskfYEvhpqRWU7o2Il0XgBJh/hDaG0fr4EeqzfNhUpn9/XhrbNig5KSUKvFXwA+EVdc+fJ95YzGXwTArZrqKe1WW06GSfY7ek8NnAGO8f6+lMxwsvHLdVjXk7GZXgaMOcU9sNwjrf9x05FCSKOS0TG6odoJ+8GO5xqyUsj2LtJx7/SkqOgENnk8VxTWsgX+xDPzzag4sjkw0ZMWnFkGudMEnUOzQFiN0PguAi/hVx7TsSaFgRHl5ZovXoI1pPGRrsD30hc4L3f0vXIvnAJ10p0pHnM81vktcs6ZS5MAcfUrWJQ0Z4+eXeFgPrYSsyG11VRzN7pYSoJgSs2XevxHie80DySWL1QcV
+X-HE-Tag: 1767067310-516731
+X-HE-Meta: U2FsdGVkX1+Zxnou6fHN5GDHlsF9ihAKSnOcwZqPSlk6krLcAT8hPnG4hTw1iAnoWyOySqorM4QuGwWoThlIpIQQguHQFbQHHstnKlWM1fQFicNDqH+sb30GguOIcBcLweOPCj4taR2wTNvVurVkU+246plGvpsMJLg9XyxDczT+IVTlRzdtX5hly4Up4w3AiTk01e5vLoWOAk9eckgPfBOxGikNQq99S1Ytuxer87FQk4mJm6ciahmSuU0KAf+Yrg2y03iBNmaB/p8mG6lcSlFrvZA777oObpDuH4WdYMaZsWjkhNUzK3iV4wYua2NIypvOiWju6q+q2slyyAWqk97lEfS8rKg9WUdR95KED9SN6BcbdKPWrpg3ZRWE7oO0FO5D438Sl/L0bXOTo9/EP/sCRtBGUuG0wOMo3w+A3h1G7JG3loArhxIm8DLpM5DKz9ANwovM4Z8EOzA+/ufNXEDsKyGvlZaZcLu1pKUppudY+QE+pmu40pqLCgBwk7dOu6DqhYMaNl4RwGa3ysnw5PGhaA2wXXQOSNR/p2h1cVAg7oCc3vXcukt8AGzosD5bJrV0vGKTm6Bg5tIOs7JCyTev8VJMzuvGVyFOKS4xDRZo/owpPnXT2+C5e/od/J7obpvxzz/WA4mL7o7PZVZokk2QaSFhqJz19TaWJEFiwJGwwFCZDN58D52rIUn/oJcZlPsSnM5uWSqT3e2waa7PoB3887t9poZmPGgYW9hemkygj3MtzHotxXrRbmvJ49GT7jyberEWTUdeqWFhBW1dOMdaBIfNary2KEICFQnTHcPhkUjgp1w5Qi0gj3ujLBxRl42FOVLxu2sGZkPI3CAqagnPjBeDLs6XSjr0yZDzlQS4lQRUQUNxbXt0U6xmhaDVTGyjR3D/kLR7qJQuHqYGM0fiq6NZzX6uTOgSpdOJ7VG9XLAwfo6FBRJYcrIA1Q+vd7MsFixsBh8NAHGOru7
+ l2AoFJyN
+ fGmRGSkQS9unI8eLQ/DzO3Kqu+LKSt1JACgriEDtdJHmiMsyGDlaSFH/5ByE99M+CE6IBnJp4Dg1Yt+TINQP1xmtS+FPHlv2uAzWdBcsRsxJckatX/vH7GTbcTmvijPXkEF88moMHGDVi4VkzonIea/Niz3YoojNHcmonY7TRjTqCo1gRSeKxua42XhzW54iC1I6Yquf/uXv/zOE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,42 +94,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 29 Dec 2025 18:41:28 -0800 SeongJae Park <sj@kernel.org> wrote:
-
-> On Mon, 29 Dec 2025 17:45:30 -0800 SeongJae Park <sj@kernel.org> wrote:
+On Tue, Dec 30, 2025 at 01:36:12AM +0000, Roman Gushchin wrote:
+> Qi Zheng <qi.zheng@linux.dev> writes:
 > 
-> > On Sun, 28 Dec 2025 10:31:01 -0800 SeongJae Park <sj@kernel.org> wrote:
-> > 
-[...]
-> > I will send a new version of this fix soon.
+> Hey!
 > 
-> So far, I got two fixup ideas.
+> I ran this patchset through AI review and it found few regression (which
+> can of course be false positives). When you'll have time, can you,
+> please, take a look and comment on which are real and which are not?
 > 
-> The first one is keeping the current code as is, and additionally modifying
-> kdamond_call() to protect all call_control object accesses under
-> ctx->call_controls_lock protection.
-> 
-> The second one is reverting this patch, and doing the DAMON running status
-> check before adding the damon_call_control object, but releasing the
-> kdamond_lock after the object insertion is done.
-> 
-> I'm in favor of the second one at the moment, as it seems more simple.
+> Thank you!
 
-I don't really like both approaches because those implicitly add locking rules.
-If the first approach is taken, damon_call() callers should aware they should
-not register callback functions that can hold call_controls_lock.  If the
-second approach is taken, we should avoid holding kdamond_lock while holding
-damon_call_control lock.  The second implicit rule seems easier to keep to me,
-but I want to avoid that if possible.
+Hi Roman, this is really good. I assume this is Gemini model. I see BPF
+and networking folks have automated the AI review process which is
+really good. I think MM should also adopt that model. Are you looking
+into automating MM review bot?
 
-The third idea I just got is, keeping this patch as is, and moving the final
-kdamond_call() invocation to be made _before_ the ctx->kdamond reset.  That
-removes the race condition between the final kdamond_call() and
-damon_call_handle_inactive_ctx(), without introducing new locking rules.
-
-
-Thanks,
-SJ
-
-[...]
+thanks,
+Shakeel
 
