@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EF8AE92722
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 04:10:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC52AE9410E
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 04:11:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC63E6B0088; Mon, 29 Dec 2025 23:10:52 -0500 (EST)
+	id 3EC716B0089; Mon, 29 Dec 2025 23:11:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A731C6B0089; Mon, 29 Dec 2025 23:10:52 -0500 (EST)
+	id 396C66B008A; Mon, 29 Dec 2025 23:11:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97E726B008A; Mon, 29 Dec 2025 23:10:52 -0500 (EST)
+	id 2D9DA6B008C; Mon, 29 Dec 2025 23:11:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 88D996B0088
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 23:10:52 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 163D2C7794
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 04:10:52 +0000 (UTC)
-X-FDA: 84274811544.29.122D4B5
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4103B40005
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 04:10:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jCpcN6ws;
-	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 1ED7E6B0089
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 23:11:39 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E1073141002
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 04:11:38 +0000 (UTC)
+X-FDA: 84274813476.06.9E498E8
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B890AA000E
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 04:11:35 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ccobxUBT;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767067895; a=rsa-sha256;
+	cv=none;
+	b=gU31HoP1Yy+U+w55mDwFJqr20Nx8GRdNioGQOBC6+Rj8IXDZtY3KqvQWpJxooIZ4sB1IO3
+	Lvj0aTWtw99vk3XNfOZHk3B1YaA2QZ37setpfCYXImngw3DQAOpt4DzQD27AtLYRfBA6Cx
+	9A0og35gmdY1hF5dfasZ3QGQXW3YP5I=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ccobxUBT;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767067850;
+	s=arc-20220608; t=1767067895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VusSe/i/yPDqDglZQQDshQcEKXLbvkHCx5to32uFCEI=;
-	b=qg69ujZGx09thLodRQJUV3Q5hPSLYzYTsVYvaJgQz1l4JsJh17/I7+PoRY5Pa7gxA8z5g3
-	KTUtpdJH2ge+sm02yMrY4NNyBttTgUtt0LgQ+DU+LUxBucgrNFkjJ9buAdGwtqQlkeHpsP
-	a+z8KI1tfwcM5hH3yBh4Gz0HQ605IjY=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jCpcN6ws;
-	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767067850; a=rsa-sha256;
-	cv=none;
-	b=b0bMlbw9TWLoO6MzOlFN3wuhWtJCBmApKG99X/y1bgIRELJK5B7JZaEH9E9WLE0mwTQH6y
-	k8Xtw2AQ/sHNauvbYj7QKuWwZJM59uPTkScGbciVRYZ8RqhA1By0S1imMRgbn/Y2fpuJ5b
-	samY33MXRcnjGoKFbw3URWO0pN0qX9E=
-Date: Mon, 29 Dec 2025 20:10:39 -0800
+	bh=r8Gvt0xBPaqEQHpjlZBewh20jN1+cqjtxMqmPyTRtzI=;
+	b=5nBsKAPH1m69EjpCNj6lzTe4kTW0KFMuwtli55keZ16J1+NuCOlNQuZHSOLWqpiudqtves
+	Vk+dZaxKsz24V21i6QvXJQ5m2Mpg3YqekRltWAY04lpjS84WqP857U+/T+HZZDMTX8w6b4
+	8iOZ5gdjRU+hANKfRJtZWe68QoXLwCY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767067848;
+	t=1767067891;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VusSe/i/yPDqDglZQQDshQcEKXLbvkHCx5to32uFCEI=;
-	b=jCpcN6ws4VqurtwDp1F2n2heKylMiWZbTuOiUPvHZmn6UjLnVSG/qA0PtGkgWnnDIqJ8l5
-	nLl/k2btzg9tBHvZGCHXIpaJdmt6fwtdquLNxOn6T8obKwsbnpsyvE3aIA1ucy+jcNg5Gm
-	MdZwfkOBoLVvWLx7Skd/5ueQAnphsmg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org, 
-	Jiayuan Chen <jiayuan.chen@shopee.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/vmscan: mitigate spurious kswapd_failures reset
- from direct reclaim
-Message-ID: <hgknetkzqpunmtj2ui7kednwrrc6gu4z6ooxgfzoogqijdxxqe@njfmrkrwpkg2>
-References: <20251226080042.291657-1-jiayuan.chen@linux.dev>
- <20251228114622.9a8534ede47866c42322b0b3@linux-foundation.org>
+	bh=r8Gvt0xBPaqEQHpjlZBewh20jN1+cqjtxMqmPyTRtzI=;
+	b=ccobxUBTuMWM7EGfjZbZGfYYmluDNpGprUkUsrrUwOgE1A/0Jz4Rd+dAiIV4sGNn8VaHsJ
+	LU8ikPNPEIYA7HBVPiySWJff/Q74rwDsVFPPEHvuES3vY8x0NVc/ABFvlE5wYSEGnNEDQE
+	d1lAn+7A+D0JdjkMw2ii8kU8IzBfZmA=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Qi Zheng <qi.zheng@linux.dev>,  hannes@cmpxchg.org,  hughd@google.com,
+  mhocko@suse.com,  muchun.song@linux.dev,  david@kernel.org,
+  lorenzo.stoakes@oracle.com,  ziy@nvidia.com,  harry.yoo@oracle.com,
+  imran.f.khan@oracle.com,  kamalesh.babulal@oracle.com,
+  axelrasmussen@google.com,  yuanchu@google.com,  weixugc@google.com,
+  chenridong@huaweicloud.com,  mkoutny@suse.com,
+  akpm@linux-foundation.org,  hamzamahfooz@linux.microsoft.com,
+  apais@linux.microsoft.com,  lance.yang@linux.dev,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org,  cgroups@vger.kernel.org,  Qi Zheng
+ <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 00/28] Eliminate Dying Memory Cgroup
+In-Reply-To: <423puqc6tesx7y6l4oqmslbby2rfjenfnw5pn5mgi63aq74jwj@jwgorel2uj3m>
+	(Shakeel Butt's message of "Mon, 29 Dec 2025 20:01:30 -0800")
+References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
+	<7ia4ldikrbsj.fsf@castle.c.googlers.com>
+	<423puqc6tesx7y6l4oqmslbby2rfjenfnw5pn5mgi63aq74jwj@jwgorel2uj3m>
+Date: Mon, 29 Dec 2025 20:11:22 -0800
+Message-ID: <87ecoc7gnp.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251228114622.9a8534ede47866c42322b0b3@linux-foundation.org>
+Content-Type: text/plain
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4103B40005
-X-Stat-Signature: xnez5gyzzuaekntry5knhgnfx8yqoa3k
+X-Rspamd-Queue-Id: B890AA000E
+X-Stat-Signature: rbq5zwkq11u1so49bn69iyjnaq46uj8z
 X-Rspam-User: 
-X-HE-Tag: 1767067849-573018
-X-HE-Meta: U2FsdGVkX1/9uqQaT8p0UgEssAklyLqDf+/o7NHMOCDHwa+vQB6E0x3/tITHNWv/HWYsa5bk4SGYc6Qoj4CoHuqEWZypFFA2AkZ5p5AkcLbNGaUBDOqt2M+e0sNTsUnnxMIRWhCQL+NWlVMhVQZ6piU0BxR1g9GlGpzydIpX99rVmGZsXeVgzHO8bbyF/HKQhQcab+T9nDagFYlYuX5uMX2aaZwSvm/plq6klsMNtRgvkRFaJ0OnbGaNwkUdrH61FPGMWferFXv2pcYFQcdu+fLaJwp6Zdq2Jqc/McMzRYsTpkg4y/+abmgsZ3crZF/Qe4arpQEkj6hRfIc6pJyZjfyMZFODDS7RgykL50726816r+a9DLclvS+lpubaaYw3shS+wO7QKaLB/ShbHqsEufLTdrP8AGqbYHgCRLrH1CFRDxMZPOa6FD1MWEY1shfLjwOZbqnv+i7SgjqJtzK7htOhhoySRzypVxTbShT4r0zfjt5UqrKjpZYR/z3s/eVlLcSGMNA+fpv/ZCIgBMT0d03Mc2tEb+pS5+ZB3dAjN4WwCXExyKNA/ASnP1RjpfXXLLz9KGc86v/5CTyDGgvGyp8V3s0sFmkHuSZ+h5EiuugXDVL/NqqSm9ho/JQGcDW09CGuu1XCzW52i8i4rsYD1FbnhEadmvJmP4L+gv1Cx4Ly4GcQbHdMuPIeCGhyhUu+7H2ULoRFoliUTK73G3wyZbiFmDyel+uaCoKRaKv51s/zSdXlO5tYupJQ7nPtXQ2IRm2mjGKF5ENrWAvKxVIJnYJli/+QIls0qoyCTyNpzKrLSFmpRhjj/uZIbo99RHNMmUnmNTpvphjto40OLt4vKlikS4rOJDxK4UWglGBtaTXkBZbGrEhPGbcnNSJQhCT9q50MflCIbLWSx5DfD0g4hYGgjzHXVhtgkrJY2X8doqEdY8mNFviVX4eVb5uvBsaS/cs+wEF+pzvikVh2M0p
- 5tDqjrAx
- ugzi0XVqc2txzbHaBqtbAluRu4i8Z1c+xjPgFduL3ISs64dHPPz42wplWcf3abiPUZNNjttZkWNfkH+n1tPVMZflhwmKGiDS4PCnvWYuFkvm32nDSeskBndWqvOsLv82Nx+fQVGIL+7YGkmJpmanKZWgagPEzyNgxc358AEhGFb3Mb91QNiiAaQoqGrj0JGB/v7P7ib/6CLzwhvVTohPpLPPT329PQ7jTKPfzGNdDWWEMOUxpWIlQJziFxW+48vze4v/J
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767067895-129917
+X-HE-Meta: U2FsdGVkX19P6PNF3SkvtLJxv827eeys5da2EuFVvPRobzNJ4dWGQM6PxROCSz70agHV2LnPbhNjl/FmHqbryva+Wp/PtB66dcyOPMcvVvZKLfWInR3fQrkfdFbQAgrp4x6SrIcF4OJybt5u2Q6z8FtoLuW8PLSWgbBYA8yTttamtLvLnraeMU+Nk4s+03VgR2qpT1LG+I1l4nqF3iqPXQUI3/H7TZeCgkjgZEi2+vYvX24deydfV/IV9Wj7DPPuv36ZSUMEzNx0vS9NrNoftysag5+C+lja+0H5z6gYICFJyzNC9mhywinReBx7F/HFR0Fm8ncMgQDMFXeKUWJlCqSGzIca0oBKuqeyZMNA6YcPAYfflU1Kp7mE28oGrfHxFSrcR1RIbXu1xoKoa209yh608axu3ITztybMpDFNf5GjkYg7Bj1En3Gki0fLnrfQPPYzyu3outyprhxONWrzZ1HTNaku/80OTmAWVuQlX4C8Qbymtt0cuXQp+7sFOZHO3alAdNrWrrWfFQDlHz+iRKl36+lRVOk+6+Ngtf1yBye8K/vwl8kuvKqRkHLxdXAxr+A2qfOkb11qJcCWiKLVMG32w3GwpT+T3ljOb8PuFZEvcwunwOnke5mfQKg+7XMgjlbxta66qMsF7OLW5wlx790jsd825O/vm3Y6XQ+LHrdgrdE1QopJyIOKpyyxR65WspeBauLpTaLc4J/SOz/qjkhlpZ0hbkZpcgHruIWfHClKq0xfbDnoJJqO23kh/+TSO4Rkh9H7IfTh2slIEpdXbwxO6s5cbI6nHzLJDNBoMcn/XWvfJG0XrMn5KM7QAdfw78hdITrt4h436eKeoAHr25ltvnOgx3hTRygDcCzKyJy3M8MVBlDPJQ1QEu8zE36afLzVwAmIcjttDfTDrzZpPCPfH6rLa/aElTf7DysivjIXBZFcvFqWz4GPKpuPkavgU8ffTX2e5tf0mcAKMJE
+ NP4KuEja
+ pK1sFyN9Vy//kPEKZX1hXSXYVhgPfw+ss42BPSXRRe+xUM3c0Or5mHGG6o9TM999NxjGfiOvEB5kzKARoGU+tFnvDcAXpnyqRYYIXr10wWTvW9+8Te6B/5Fxwm/Jz0Yf1FHexlSIRME5ncr0BipIfltkQqQrUHgZBBJp4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,18 +97,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Dec 28, 2025 at 11:46:22AM -0800, Andrew Morton wrote:
-> On Fri, 26 Dec 2025 16:00:42 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
-> 
-> > This is v2 of this patch series. For v1, see [1].
-> 
-> This isn't significantly different from v1.  You appear to be
-> mid-discussion with Shakeel on v1.
+Shakeel Butt <shakeel.butt@linux.dev> writes:
 
-Yes, the discussion will continue.
+> On Tue, Dec 30, 2025 at 01:36:12AM +0000, Roman Gushchin wrote:
+>> Qi Zheng <qi.zheng@linux.dev> writes:
+>> 
+>> Hey!
+>> 
+>> I ran this patchset through AI review and it found few regression (which
+>> can of course be false positives). When you'll have time, can you,
+>> please, take a look and comment on which are real and which are not?
+>> 
+>> Thank you!
+>
+> Hi Roman, this is really good. I assume this is Gemini model. I see BPF
+> and networking folks have automated the AI review process which is
+> really good. I think MM should also adopt that model. Are you looking
+> into automating MM review bot?
 
-Jiayuan, please don't send a new version until the discussion is
-concluded. If there is slow response, just ping on the same email chain.
-I will respond on v1 to keep the context of the discussion at the same
-place.
+Yes, absolutely. We're working on it, hopefully in January/February we
+can have something reasonably solid.
+
+Thanks
 
