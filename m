@@ -4,113 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14EC6EE0205
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 14:53:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B76FDEE020A
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 14:54:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48FC86B0005; Tue, 30 Dec 2025 09:53:29 -0500 (EST)
+	id 2A2356B0089; Tue, 30 Dec 2025 09:54:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43D366B0089; Tue, 30 Dec 2025 09:53:29 -0500 (EST)
+	id 28CFE6B008A; Tue, 30 Dec 2025 09:54:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 302956B008A; Tue, 30 Dec 2025 09:53:29 -0500 (EST)
+	id 185F66B008C; Tue, 30 Dec 2025 09:54:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D4E46B0005
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:53:29 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B153C1A01B8
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 14:53:28 +0000 (UTC)
-X-FDA: 84276430896.13.E05F56A
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E20972000F
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 14:53:26 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=QgROTmHd;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767106407; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A9B16B0089
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:54:56 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9DFCE1A01AF
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 14:54:55 +0000 (UTC)
+X-FDA: 84276434550.14.9AEA50F
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A872380003
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 14:54:53 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=HivXNJnJ;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767106493; a=rsa-sha256;
 	cv=none;
-	b=4i0AvcJdKIkUojLh+k0u8jK6gyCyFCyqZhvHRKrhEpu2UBu1s6uZsJlRrHaStz4ljWx7kU
-	m9WwoJn33jIV5fZytVEEu/jX8Za96xuGrkFkHkUStMwomWK4Gt3u3haIb6JdTnhwCcjSaw
-	9ma5kAGGgDU+q8eEZmhc1YZgS/daAPc=
+	b=ABmzadxF2ftvoIDfgBkYaEW9whO2gkVpf7b3ZPCTZpdQJLUxM367yJdAuiLawLKCLKZOpG
+	/p/isLuPeNleTdEKZJ7VHWpFDI7c8L/aFhMwLNs57NzYJH7v6kS15y00inHVaK6ku0KcYI
+	vzwhH4N/UUxZ+cfpayGC5YjnITHZmbM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=QgROTmHd;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=HivXNJnJ;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767106407;
+	s=arc-20220608; t=1767106493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=riYaqi0lArqEgWhtCeLrj3Qec2cHmyBPX4D058N2sx0=;
-	b=Wdx2CHreTg5IlCsGKSMcGqKY/+1U+WSGXe/sh7d5Of/dHDOQIzRpi7AtFQUREPF3hgOoA/
-	2BVwDLERfjPCC9RsTakIXVkKbYVPvo2PV71WlpVrXwMPNI+X0pB0c0kHhHaHEpt+U2rra3
-	3DOdecjSZ5p8HUfqo6KItPw39p79250=
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-786a822e73aso88833867b3.3
-        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 06:53:26 -0800 (PST)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iPtqrJDx2LN6WVicurIDrVxMqrl3W4SxYvYgfkqo6hQ=;
+	b=rIsdGecfXX/MOzksrx+aw4MwBF4/7lBsab2eS4rj+61FCpSaRxuRSouOEI8F26f3E2htd8
+	L+B5v7y3nv+PRQLF+/KyUqcnL3po1zvbWsaUZv1WF3hHuHLnZw8rwNlZEDj1EV3DuoFTpS
+	3M7u8WcqByqk+cM6Hcrw0KQkGiK1LTY=
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64b9d01e473so14098277a12.2
+        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 06:54:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1767106406; x=1767711206; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=riYaqi0lArqEgWhtCeLrj3Qec2cHmyBPX4D058N2sx0=;
-        b=QgROTmHdDA+S6ITnnpBu8Jmu6vAI1mk18tL155QOsvDW+yuGu038kUwyi4oNiM54kD
-         UNF/hCiQoBKpsneZrk8slFAOSHBFScrt+CLdzvmdsxfNFrcQSlxHhf+VyRTDd9lBqZi8
-         gJxHXiEJZPAcz+rwP2tX8Iva4ZJJ12TgtOCPUs4bx+qcdwDgNp/VGHB/VMjeJPcwaEXo
-         GKz9cmtSZmi3BQz74YWERBHM0AO0kWO/ptciD8VriCKcDW3as92MsNT8WeGLyyRfiXcA
-         vR3YeJMRVuy9/ZkMQY7C9jGAyUSVOh0cMC2YZ/kJCrdmiahBTAg1g7I6OHS+ixkre4+j
-         vhdw==
+        d=soleen.com; s=google; t=1767106492; x=1767711292; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iPtqrJDx2LN6WVicurIDrVxMqrl3W4SxYvYgfkqo6hQ=;
+        b=HivXNJnJk76OUUKBlMwYrfoWv0kaMo/6dRqkQzjgNJltSsM6BirtD+wdCj3ImJPVtP
+         ZiHtnTcCw5E/vEnXXO2OUbaYQbDHTJAxw5PmMOkkvQwTvkPzynJPB18pSkghsI+WaONJ
+         s8p/0TWs2ZwRZlBPiUcVzejGcTKTZIDvJOhIlLkb1/biWDJLRe+n/UoXfyNY9vMQi3H0
+         F+dvaRSZMq08tY1O0QmUtR58pnPyKNxn+pv1FWpM62smUwDaFgC8Xq7pYu6E26a4ZQFd
+         y686ciiYXye1NPbks1iiNtDAczmw9A2oJjXwgS4ac79BnSYUUk+VH2Xb6fFLmiYqXnb2
+         Eb2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767106406; x=1767711206;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=riYaqi0lArqEgWhtCeLrj3Qec2cHmyBPX4D058N2sx0=;
-        b=asqUukQQP196FvbI22wU3Vj29BCNZCEdsrb8VBkgdsUdLexDjdp6gvmL0uuPgusi7t
-         uDnLtF3wmGslJkFsjWKi2y6WAjhsoajvFEkSyncdMZKDwdMbCoFPhFOBmtKG12V5Achu
-         jf0ULW4pTAzJ6+YQavcy8MsxyLbeWcFSra3QbpXOfodPwlpJgZzLRryhzq6tgRCqHKZw
-         Jq27E4fBFP2USylnOuQ7ofPm8etmuZXFL9sI8Fx4mZL8nKev76ys26snifONdWrf4+7B
-         WagkmIdQPWKaqLn6bIxdGzNvvZmcF/gZyRd45Zm03tYKobDR07n+l0ZBDxV4+AGHcwzf
-         9j0w==
-X-Forwarded-Encrypted: i=1; AJvYcCVUefOdt/aKRhE21F9MwyMbXdImVez3ySyZOYLPlbDr/JAFASsThiOCThTp/XwMRm1FqbcTCYbWuA==@kvack.org
-X-Gm-Message-State: AOJu0YzGd7BoYfCLbjT4pu99eHRWbDTuXDBLfJNh6lQCeh5snfqz1CYq
-	jvXEf24uoQkbMJgYS5tbOETO5KMQiRXit2OonBOcvwYr+jtuCpuRcs/ssDl2vGnqUuM=
-X-Gm-Gg: AY/fxX6/m0YsJU5YBl/J8iffsa/Yj/dWm9TLUtXNkuLVhcYrKnajE2NTTbMpJ17OM2b
-	72V4h8GTrp8N6eiHolqAvIoHBCNNRMYpHALy6K6XKD6mXxX38WbrGNOs0u2TdTTRLc7a9Ubw1Qm
-	EtM80nKE+yxvfncLu47lxuv2aH0Q9cAiUdJMuvH3BOEP3QjtOvmjg5irpUKmTKZ8v3U7Z8oK/Ce
-	NMG4fL3yKj1yBxxGbNJI/Qtti0Ds66o+Xuq9gE1NMXnny/v+lNmsPxBa6LIPmUbbUtAjhBlI03e
-	RVukYtZXbDwx5Ocgt5kcR+ooBlzpaiDrOVcFgjHPMYixcyeCrUfBR3ZWZGQ6CZAjODc/wG3aGma
-	xo8d07TbPTUSpBe3zyhLqe62PD/1q87L0KQvkjJMgbAQapnizXc0Aa4JO3OlyGQ/ASzHf+0gl9k
-	ClbAh3GGTW2Xaqo4PSL1HQtsdFUpg1Nkwa6PwVIYhz9QaYWi6foiuHyPdwhcHsQgwAhtJdhFIaH
-	iVtGPx2QGzutMwdU5wISod3zsmvB/eNZaXTqw==
-X-Google-Smtp-Source: AGHT+IG6aQUJXEtDcs/28NN3mbhDEeScCWUs9mOeS4mE4fbbBXX0Rzx0eSQVRgAfm6s+Ib5qJwPIPQ==
-X-Received: by 2002:a53:b549:0:b0:645:6c99:bf17 with SMTP id 956f58d0204a3-6466a8afe74mr22491541d50.52.1767106405631;
-        Tue, 30 Dec 2025 06:53:25 -0800 (PST)
-Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6466a8bd6ffsm16306220d50.9.2025.12.30.06.53.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Dec 2025 06:53:25 -0800 (PST)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: akpm@linux-foundation.org,
-	pasha.tatashin@soleen.com,
-	rppt@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	pratyush@kernel.org
-Subject: [PATCH v2] liveupdate: separate memfd support into LIVEUPDATE_MEMFD
-Date: Tue, 30 Dec 2025 09:53:21 -0500
-Message-ID: <20251230145321.1512630-1-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+        d=1e100.net; s=20230601; t=1767106492; x=1767711292;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=iPtqrJDx2LN6WVicurIDrVxMqrl3W4SxYvYgfkqo6hQ=;
+        b=PbufuUUVmiABpyaTbh7TtJsVHx+pKvdv5+2LyeMjc4FhwDEQjHbcFC5R26tO4DTkQ9
+         yPXwXFvhG8MyRoIyA0SXWSuG6TWK29jdWSrawCiATmPlHeuauGlnJI4xL7nHjz1o+7P9
+         BGyIVxkPM5niBdoGUeg+aggG7ogRTZTKmD0nOA1FC6WnVHQgyRHLUuJzNVvt9GesFuW+
+         E3LUKiSMkWW5+Tq88Gi46L/YVmrq6LOxETeonyTYc97GurLgLNkf5nC1HB1AwQaUW20R
+         v0T3Eg9WcVGe5tdpUJHHI9sKXTXeU7kR3WkOGAqj1zj6P0fCJTQG+i2Nbv/pvhwTt9cN
+         guHg==
+X-Forwarded-Encrypted: i=1; AJvYcCVf95SDuAO90Pjncz2FdWsndlVUACGL44WQFOBr+2h1Qatg2lADcM8Lly3QVhpjz15NGLBqdFEw0A==@kvack.org
+X-Gm-Message-State: AOJu0YxYQXfoCWUTg8LPtcBz9hRpFphGuHx3tVv2QRN5XY+Y0GPTN0tN
+	CRi/uYMapKDcSDoiqA71V9Oj+vcKEZgY5LdZWCNaFGQhcc10VQqCCKYcAMKtBE9zC7zytTEXYOP
+	S1fMQ7PysCRwMxojdFbMsgJU+VkMAmCHCTmFjh4Yp0w==
+X-Gm-Gg: AY/fxX4p2BY59BgR+Yr9wpLRMNVkZg0u49dig3ELIGiRYma8kqdiCUqwX8nQ5XdxHMQ
+	D77aP4tMYJhIsbxsCA5Gtt3QU+8gc/k51K5HTR8v/3o+nfq9r80+4gbQ6St2anD6yz6IpohCVp4
+	NJJO4rWfGcHCjSlWGwmOhoZ/7E7RIAcdDUGpzz8QYqno4UaTb5BAxEQSqFjgaLkLdBL1lcP2zSf
+	nbyClElrbYiEdg2KXj0IAL2Brwh3GdyXd7aPzhxlTVsXMTLOg4mrFYEhKHy3R3z7dfRvVvOKGEv
+	YVhNG3G9L3PxtMlYIDX0L/KQnA==
+X-Google-Smtp-Source: AGHT+IH80ajjJWOaxcjGtpMhq2PVrxdNN/j3le0q5PDwI3wE9afEkM7XXrFvUS0ZiRI+ut8Ssexxvc+Ly344fi7D0p4=
+X-Received: by 2002:a05:6402:2807:b0:641:3d64:b120 with SMTP id
+ 4fb4d7f45d1cf-64b8ec6c4e5mr34741660a12.18.1767106491852; Tue, 30 Dec 2025
+ 06:54:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251223201506.2334991-1-pasha.tatashin@soleen.com> <86cy3x9fkj.fsf@kernel.org>
+In-Reply-To: <86cy3x9fkj.fsf@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 30 Dec 2025 09:54:14 -0500
+X-Gm-Features: AQt7F2qBBsnUSEYYrHnGNDVj_bU3ZxSfGPZ3QMIYdTCnkeg8TzTXkH1FuX1IcYU
+Message-ID: <CA+CK2bA6qr8C-EtpprDZKZP9-VJyoOdZ4XHndd+GcQ66OqBVbg@mail.gmail.com>
+Subject: Re: [PATCH v1] liveupdate: separate memfd support into LIVEUPDATE_MEMFD
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E20972000F
-X-Rspamd-Server: rspam04
-X-Stat-Signature: h96mbhwrfxsse1it85oz85mj86cgjjnc
-X-HE-Tag: 1767106406-342702
-X-HE-Meta: U2FsdGVkX19wMMGqHPRSRKWs/+StosiCKO+EOB1ktrPIdKSiTzWwtLFse5pswF14aJUz/R0ZsxqBJX3i2DkObgdKKNrl4bw8PIZtv4ygV70o3F8pac/J9+EbPumTVzcM3n8bLBU5hIJwPk9/PamCLtb86VURHDSMcyDHBnvoa8GR99ol+xJMR0/1wqpum133mm846pjdZ4g0TcppJ+5UX6XT2yw94KulMRKoRwi0/03Kkhm8nEtCwfWyLmjehRhDIi7mxnkSrE2fFTS0WtBBB6rJv2DwHHwK6omOCWZ5KfgqxGDMii6qh2LXMxCtLbEP7HbJx5z4gnhz5Y/pFzQ0SXzswKhcGCb7AAL5KWnUqD54xLLpVvvgBp2wLkjTMl++5Sx4VoSOP+mAcU/Xj7LlHrE+tZdjD7coiBx4XQuF0k6y2s2heirsLMLS7LcTHkjNFnm564mxF56n7l6cu0BqYR8yped+0yzt/VMlcozueSUwIcdqa7nvydGvmhNvlUMA+fuLYi3w8MSR3y7rvNZcM00XEOcBpPIm7fMKEkK8Ca7vr75ARSsLdeCWl9eW26j7/B/iMoRX4BM8Qh5+dMUUc3Ia9V9Y6FvN4joD9ow689sGL/ybeX2HrikS6+pnW0zqbainvn2ckr73Luo/g2iWhTj9kyqKwvmm0gIcyP4Qya+iKZK8zDDAeD5w0S/6j4bSsyTPIW/fVproQ5vZJ4oymTkqKMfyAdfyLIlFT6XPyKZrJvabKotloo7KMh3/NzpZTejE1lC7PVJtIZpz5Clund6EkEnXRsAVSk2wMJtn1N+wAX7hTlLrH46hku9xmkhjl/Xbuk82mEL07n3HOQONhilO+psxlVKPJb4/YB9pkmVEjlKMgpqP8BP3coG1X5H9OgTIPlW9O4uhWuq9iBjsJ/byWQ4yBoqinrC8Bn8+9jkc09p0coy+hOoFfbR4C34EGgM0yIKr9kQ7qNRglfn
- bhv0tVth
- 9dciVJh21+gSWugx1h8DS+wv/VWdkVYL/yH+iCJKV2STpxtBvLn+VfuG8dLyWkzovxnivM5hiZ4Lr75Wp+BQPU/dvdIvB/9UkR57CWowgI4fINijh45DiFM/fagk/TP8F8hmcoJNpqL1S0GYnYYJkZ5kNtYjdui/DY3K02OonNEUXUPUODq/9c76LTbLtGB6HxHcP94PFE1v8JR+YB9KGM8KOfmN4i4aXxGCWfHYUwYkix7WdJsvwwoZhOYPw0aZJ1JmefPBgKzZ/S/6nYUjduDr9UCqlk/tCRwqE8JdtdG2STxiXUdGg4qMa+N2vRnxNuo575lH1zBinJ8jbBTbnDNhH9GR+0Kh6sGjlSPmuzQ/TDcY3/ABwXU8qpX6B3TUR8uewN7M0Kibtb6U=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A872380003
+X-Stat-Signature: ig9r7s85osczgi7mphd9jetrbmzsyf4a
+X-HE-Tag: 1767106493-88062
+X-HE-Meta: U2FsdGVkX1+eIEVB1PnSWeXn99dw+nZyHkUaYU1/o3ZMu6IEb4HHq6dgxnl1rMJbUzb6idMJHyhz2bjdfIGKp0VDwwoDoMCde+4JD5YiB+8i8QaKQCpXRo5E2w1W8ZikBtmaVWIF5UrSepO4kpplikUvenF/ka4Q280/8fKW+UWayaGII2UV7O/4WcWO4z9xr/lj4ILXgbFQY1N2D/qCcUJWeK+Vd5FqZ9YvgmdbD6XFVUuGeQg1Ru/VUp0ttr1U40KiARGep4j/Xacn7ntqAQlJx9koeP13VKuw8HrbQj/v3d1fAJCLzNj5A7/1NJfT5jolTe2OZbijHLM4G4nlwEu15eGl0Ci4X4KpXjpnoPL+vForZ0VOu3sZb2HiLbx0yZknAB7MDTGW08ISPNILSILy2uyt14VOGDbz4dmAjh2r2NkbHoSY2qdK9z0/tpeQe26eGo8XihHyEQ6Y81Mu1XEQxTLSYnm9Z6N0FowtW+SQJRDdQE0lLPd7D1k5XU5krpOm+WVFixqoNQK3Fh3qEwDX/rXKb82MziYAlxoJWrUZfPXk8xykDYv3l6QpbaHeCuhx59JAd1umnyQCAlj1SJr6J6pOEBzfMWmiOU0iy5mc6/XpAMobs1BwhQrO0+5H5yrGFc8O/fr0Xd6g0l2zGsGXVwUdAuYNZdWQlcy+BVuHHaiVSn+cRhv7Z4lZikrXNZ2dFcUIShtd7AxAKjusNbYq9lZVGSFkHy/Uk14U415LYKVUYXdzu0BhkYMdksZTDy6dJoGBTRvNI0BUT0Hkv9s2+eTa4aHkSD5d29WFdK+s692djw7UrSnK/Y1eYXLpkcj0lWAbsnpffDzzTEgxgTstgVCk1XgyiPBIcMed01YJ2/SnWW3xGEY4C64ocqGa28r2Y4NQ+ONwuDgUdwf8cZ2fMK63w7n2jtO+L5ODkdVjmk63y2WXlVhgMLHRZ6h2w72njFe24saSwVe+eLl
+ 1pNyHFZf
+ nfpq17+gCeZyrcbsFuzQd2CCnyUckgso0q+RznYENW8gZJcBFjOrG2JlQW7NmgrRiyxr8HpVM+2nzhAfyNpTsQSw41jJexYh0kmcWLBtL/diUYHVHC77vaTI9KehcOijFpP16j0/KKJVLffZJww76DXVdakFEehz3LhwbpK6NWslfFNq/5fceEZXWmzHPV1KTZkkzEH0liVysmxenW2wxi7lG5shuc3F+g22aOmaAZyEIGofb38ZQ++yC8qk1MxaL/taJRBZVlvFaczU+2lDNKdv1+yFRyNeKcFUDGcqe8dJbOFIsBz+sxx+GFCa8bNA4Chb/vaDYk8ZAzj9G1TXi8YeoGP4T3pinDteaqtOhyKQX1MZagbrAQNp5I5L8PSNtKNkaZxk+hWxieA58Fqgkk8DKQw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,89 +117,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Decouple memfd preservation support from the core Live Update
-Orchestrator configuration.
+On Mon, Dec 29, 2025 at 3:52=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
+> wrote:
+>
+> Hi Pasha,
+>
+> On Tue, Dec 23 2025, Pasha Tatashin wrote:
+>
+> > Decouple memfd preservation support from the core Live Update
+> > Orchestrator configuration.
+> >
+> > Previously, enabling CONFIG_LIVEUPDATE forced a dependency on
+> > CONFIG_SHMEM and unconditionally compiled memfd_luo.o. However, Live
+> > Update may be used for purposes that do not require memfd-backed memory
+> > preservation.
+>
+> I initially didn't add a new config mainly because there was no other
+> user of LUO. So disabling LIVEUPDATE_MEMFD makes LUO entirely useless.
+>
+> Anyway, we will eventually get other subsystems and this config will
+> start making sense then. Might as well do it now.
+>
+> >
+> > Introduce CONFIG_LIVEUPDATE_MEMFD to gate memfd_luo.o. This moves the
+> > SHMEM and MEMFD_CREATE dependencies to the specific feature that needs
+> > them, allowing the base LIVEUPDATE option to be selected independently
+> > of shared memory support.
+> >
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > ---
+> >  kernel/liveupdate/Kconfig | 16 +++++++++++++++-
+> >  mm/Makefile               |  2 +-
+>
+> I think you should also update tools/testing/selftests/liveupdate/config
+> to enable this config.
 
-Previously, enabling CONFIG_LIVEUPDATE forced a dependency on
-CONFIG_SHMEM and unconditionally compiled memfd_luo.o. However, Live
-Update may be used for purposes that do not require memfd-backed memory
-preservation.
+Done
 
-Introduce CONFIG_LIVEUPDATE_MEMFD to gate memfd_luo.o. This moves the
-SHMEM and MEMFD_CREATE dependencies to the specific feature that needs
-them, allowing the base LIVEUPDATE option to be selected independently
-of shared memory support.
+>
+> With that,
+>
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
----
-Changes v2:
-- Updated testing config
-- Added review-by
+Thanks.
 
- kernel/liveupdate/Kconfig                 | 16 +++++++++++++++-
- mm/Makefile                               |  2 +-
- tools/testing/selftests/liveupdate/config |  1 +
- 3 files changed, 17 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-index d2aeaf13c3ac..9a1a8cdcf16c 100644
---- a/kernel/liveupdate/Kconfig
-+++ b/kernel/liveupdate/Kconfig
-@@ -54,7 +54,6 @@ config KEXEC_HANDOVER_ENABLE_DEFAULT
- config LIVEUPDATE
- 	bool "Live Update Orchestrator"
- 	depends on KEXEC_HANDOVER
--	depends on SHMEM
- 	help
- 	  Enable the Live Update Orchestrator. Live Update is a mechanism,
- 	  typically based on kexec, that allows the kernel to be updated
-@@ -73,4 +72,19 @@ config LIVEUPDATE
- 
- 	  If unsure, say N.
- 
-+config LIVEUPDATE_MEMFD
-+	bool "Live update support for memfd"
-+	depends on LIVEUPDATE
-+	depends on MEMFD_CREATE
-+	depends on SHMEM
-+	help
-+	  Enable live update support for memfd regions. This allows preserving
-+	  memfd-backed memory across kernel live updates.
-+
-+	  This can be used to back VM memory with memfds, allowing the guest
-+	  memory to persist, or for other user workloads needing to preserve
-+	  pages.
-+
-+	  If unsure, say N.
-+
- endmenu
-diff --git a/mm/Makefile b/mm/Makefile
-index 9175f8cc6565..798f04233d71 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -100,7 +100,7 @@ obj-$(CONFIG_NUMA) += memory-tiers.o
- obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
- obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
- obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
--obj-$(CONFIG_LIVEUPDATE) += memfd_luo.o
-+obj-$(CONFIG_LIVEUPDATE_MEMFD) += memfd_luo.o
- obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
- obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
- ifdef CONFIG_SWAP
-diff --git a/tools/testing/selftests/liveupdate/config b/tools/testing/selftests/liveupdate/config
-index 91d03f9a6a39..1bfc708041bd 100644
---- a/tools/testing/selftests/liveupdate/config
-+++ b/tools/testing/selftests/liveupdate/config
-@@ -5,6 +5,7 @@ CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
- CONFIG_KEXEC_HANDOVER_DEBUGFS=y
- CONFIG_KEXEC_HANDOVER_DEBUG=y
- CONFIG_LIVEUPDATE=y
-+CONFIG_LIVEUPDATE_MEMFD=y
- CONFIG_LIVEUPDATE_TEST=y
- CONFIG_MEMFD_CREATE=y
- CONFIG_TMPFS=y
--- 
-2.52.0.351.gbe84eed79e-goog
-
+Pasha
 
