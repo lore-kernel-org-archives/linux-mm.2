@@ -4,107 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BA32E92FE3
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 00:14:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44E34E94107
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 00:37:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CF9A6B0088; Mon, 29 Dec 2025 19:14:52 -0500 (EST)
+	id 619F96B0088; Mon, 29 Dec 2025 19:37:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67C1E6B0089; Mon, 29 Dec 2025 19:14:52 -0500 (EST)
+	id 5C3ED6B0089; Mon, 29 Dec 2025 19:37:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5888D6B008A; Mon, 29 Dec 2025 19:14:52 -0500 (EST)
+	id 49C766B008A; Mon, 29 Dec 2025 19:37:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 43F836B0088
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 19:14:52 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A12128D0B1
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 00:14:51 +0000 (UTC)
-X-FDA: 84274216782.22.93E527D
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C11081C0003
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 00:14:49 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eT4GB83F;
-	spf=pass (imf20.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 36A2C6B0088
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 19:37:36 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CE88F5D6AF
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 00:37:35 +0000 (UTC)
+X-FDA: 84274274070.11.415814D
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	by imf03.hostedemail.com (Postfix) with ESMTP id AE0BC20005
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 00:37:33 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=lQfhg6um;
+	spf=pass (imf03.hostedemail.com: domain of axboe@kernel.dk designates 209.85.210.49 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767053689;
+	s=arc-20220608; t=1767055053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HbsM/e9eqvn9ArPBzYyguMVBWmbdWJHQH9hQHEYPUeQ=;
-	b=D2jUEj9sb11EROXJbj+iES2zO8hrncwQ0XWBPozQTUkZIMTuXIOqXM/GdazpcF24Uqan3B
-	9lQEaBMqntdXIZh/InFhKfzV7Y4P6HZK2UOA5aNgbKsKMxwtmGNTn/4ZwKIWKRGJXfk3UN
-	j3hS1WtFzv3Sd3plSCchbWuEAkApiwA=
+	bh=IheJhIQLOL+uGWt6XQ0zIC5UxYwT55m5ifEVRi78ko8=;
+	b=OklAH325WBBpv4RXwt06QcZQKZ1zQot90Q1sWTSxdx7PR6iNqiydbENSDiQGugMAm4OPvQ
+	I/YKWN2yGA4ErUE8zg8EIL6Ixm9xAqazmNad4QOQtw01GldUBE2hPL9J3v5LqyZvMc+xOC
+	1OGFl+7TobhgeEhLDp9CtofWvowNodI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eT4GB83F;
-	spf=pass (imf20.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767053689; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=lQfhg6um;
+	spf=pass (imf03.hostedemail.com: domain of axboe@kernel.dk designates 209.85.210.49 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767055053; a=rsa-sha256;
 	cv=none;
-	b=EqM799fUQXmngJ9wG00AyvpMfK/YVrZv6KwhvWy8QULM0JiDzGadYImzn5DnHiXOmX2bSq
-	8PiHMBvehCEgM/3mH8Huddv5wTALKGeBPRuoBEHA3uaJpA0rdYM+MV1fuF/JZYm7rnjpZm
-	8yGZKdZPf/kxNtWwGgvlqWdEelnjdVI=
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-78e7ba9fc29so84335187b3.2
-        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 16:14:49 -0800 (PST)
+	b=OVu7Cz8vTA7cJbGBJlywbObe6DnGG59NqON32sw2ykphyiYWesqpbfneXi4fpbp/sjK2LM
+	6j53MRWROT9henh7aUEqwfp9+tLtaVxX58pdUSzf8yA/jxgFfLxnWBWfbboSmNEmoHvfiT
+	rpwbmrmpnZxLSewsgaWf8rZ/0v0+tAk=
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7c6da42fbd4so5180995a34.1
+        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 16:37:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767053689; x=1767658489; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HbsM/e9eqvn9ArPBzYyguMVBWmbdWJHQH9hQHEYPUeQ=;
-        b=eT4GB83FR/7vIz/dgPn/qLt/njHybgzWo21UTHfGslX/iKJp3MzzBJGxuKLfwpGWge
-         A/a2eelhN7ZdaRYU33BxdJvbz1coGmhT9uN4HSwo4v3gEBE2EQF9xzphovcuA4TMEPVr
-         UhdP66M0hAwtW+7oiKud4/rmz+ihKnCVHuUyPHsCJVnnsNWQeq3f5uplgSdfzYCesyDc
-         SGLarmMepRHEKWaRstan6vJJnay3gpDIKxS3Qn8AEJhrgDIQQPnv5RznHO8JJjXA9MXz
-         wxXNwDkkbMCOYj9Rhk6y57GTvPYulsJ/3mT/sUMDrrsG6fpEvgX+XnBIxze5UVwIhwLR
-         vPdg==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1767055052; x=1767659852; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IheJhIQLOL+uGWt6XQ0zIC5UxYwT55m5ifEVRi78ko8=;
+        b=lQfhg6umqV4yK3K0qpBY+St4tn8+N3+lvq97u+RccLT4+MT8kvQhFU+GW0v8qMpgjN
+         unbKQzqPPTzd2FOsRrrZN+aPh30cmbSFB/qvvB/J4n70uS7pL2dWtoGAzuT6Q3/qbaTN
+         f+yEdFOJdRyWFR0Sp4gqc+tvysybCUH9wML4Q+qGoeO07Z5cx9JAK3fnav/4ct7os/ZQ
+         CdnVl3FHx9w+njzXKOFUh5q68DsVyYt3cFGv0LUnlJyc40w6C2XHbaFssOAcajKlNRnX
+         M9kcliwojWw5TL8PIpHn1EyWXBHBmM1TXoRstKSbdwFQuUgTKEIezyI7DAjn5fJk73mf
+         2Qmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767053689; x=1767658489;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HbsM/e9eqvn9ArPBzYyguMVBWmbdWJHQH9hQHEYPUeQ=;
-        b=i9dNnlN/0ACYKN5wu0hIe5szTdchpEyO1Igo6/Zp/5EWVnOiFd5HrmkFZN3irfZyRW
-         Vfr3gmBwnzsdq3wCLSrCwerCbzfNuxfyrD3MXph1lSI/Fgt6I7wNjdiqECgJ3POFXGZJ
-         SGXzf4rVUROeYG0Y6ipSy1cg1y/dAEamLhIrM6ctFh72w2cMvScsSKwFesDk1BkxaVQX
-         Seu30sO0eIMdh7s5N4tUg9icTxuitKpacj7y4YWhpb+/pJBkzQICb3B+ub2HodongoDN
-         2HsQamyf11biOVntOYv/f2yF8SnDwia1uoiJsXJjq/IoO5KKqhB2bIX2kFXyOnjT+Xgx
-         GXCw==
-X-Forwarded-Encrypted: i=1; AJvYcCVmyNFBdJmlUaSBtQMeQkew4IAjCX2aM6rZhgS/SCWv2pYsx+yqMo9YFs/d6bAodhbQ01JUTsn5qA==@kvack.org
-X-Gm-Message-State: AOJu0YzBJOF3KSKVmMcnN4mQhFxYjZ96YU++smZbbmtgCXGTR/YwkA/x
-	PlkkP7OTuytYAEs0TUrjdf2abeVje2vqr/RhU9+pfaaguqBo7QRH04Sfnjx5htHiE0cBSZUJdnQ
-	sRKv2E6CiQR3PXlU98kKzAs/DKn4bEMA=
-X-Gm-Gg: AY/fxX5vzGgm3eIzFaK3pYEFtZkee39NuE3XcdqN/1Lk0UxcdclXTpynNIvioIOmczd
-	aemIrPoJFOPIbKkfIqRWYi0rBeQUZvSPCbjmFv9FA91VI+ETBxr/dX8OKEp4DAErp98dyKDznvI
-	qrEXX6PDWak4zkI96+Z4mLyHNpHiNdyU3UF2zfAMCK85gqfBhy1m96Y9bqzG1sj2f4hKhAp9RxI
-	E+JrAoMlyVDo7DEv8Qy+9aqFEFbQrhTdVhjKVmlGBOjsVRMSmChn4VgjUIi0RZD3vpm+NVK
-X-Google-Smtp-Source: AGHT+IGWDE5Zp4wjstAjn/bJPigaugwDh5nqHV4zC8agPZgz4iwoP/AoWWwMZiCLso7z9MaoOtDG74GvqD3NmLEfrlU=
-X-Received: by 2002:a05:690c:6c87:b0:78c:10d6:1e8b with SMTP id
- 00721157ae682-78fb3f28e07mr271445467b3.26.1767053688721; Mon, 29 Dec 2025
- 16:14:48 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767055052; x=1767659852;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IheJhIQLOL+uGWt6XQ0zIC5UxYwT55m5ifEVRi78ko8=;
+        b=Pmb61m29PO+M5n90nEFlRFV0lL6pPViJuky4io/gChE4Qh9KTN6VJKMJevm5btiSfJ
+         q7Jaxk6PkAcK//3SFb8DCYL1GnR9Y2unOItqNFngGX97iOb+pfnjdaTV5sHiENuE5KzL
+         Jx0nIwiOlK+DJQPjvIeLzfx0yyUkw7DcUnAsWqEoY0Xs014xjJlaTi3BAn13sc/su/ZI
+         iSKIp8ydqblh+tBGtHh0hxE8Ln0xhudHS0Spf87boZf678UCLaVDEbJ0oV8J5UMvVrZb
+         Nn7tAdMK6yY9lg4UvM/fXwtoArq5iLw9USCMmCZ8YEj0IDoeAYAqMoWlsLx24/MhHDhw
+         6rrg==
+X-Forwarded-Encrypted: i=1; AJvYcCXBnnj/81Zot4Nf78/2QldvzNg8VosjEyXTKZHfmFTyCtnKhHNzHLjy18uOI8rLP80LZXxkupcotQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx6oso15M5iVSj8f/Un4mU9OjExTK1LpyeX2MA7YRSO/7qyG2Bm
+	YCVBEthYGC/ozm85YlUW+1a5w7HeXSRnFxVv2e0ebrKgtLDs9q3DmbYIGM5kfgSP6f0=
+X-Gm-Gg: AY/fxX4YzVjiMieY0oaHVF07RwbvGtIlO9kjuiL2ZC4fc2WFumJXWClvi+PY3M3iCHI
+	LcfGC3ozNGAlGCMKg94E3zWNJ3svcj38HX1FfuAyxThIL0aRGpMrn0PP81fJWXhuvyukhK5LrLM
+	24oeH43w47GTWQOrRK0shOkYOWgMF/9lxKmDFeRDMfshhW+W+Jow174rrbpDDV5LDcMP4TDrYkO
+	yIVXgtixynQVE2Wroz75aQMWsxrwCwXElzfxKW2lAKWOYyhQsjURjyDq98jqUSrE2AdV3y3ySld
+	JGKWrAi1WZUFpLoV6dZwXzs+5AApcH0GQ6xHGmH6ng5yfuyYwI1m3XS9OPozCcqAt5jmwdm7ez+
+	/s4QsIFHhp54ydxiYNVjvTyb2lZp+Ko1AnLS1hnAjqo2PGhXCdH/H4jjrEUX/FFHZtoQ0x3at9Q
+	EGZIudCaEg
+X-Google-Smtp-Source: AGHT+IFl9yxlJpaq7sZYozgWoQTaTewr4cBUOiverIAjbR/CmqFwp/DL9X0O2bEGHsivPH5Emtcv9g==
+X-Received: by 2002:a05:6830:2642:b0:7c7:6217:5c60 with SMTP id 46e09a7af769-7cc66a603d6mr14529090a34.25.1767055052471;
+        Mon, 29 Dec 2025 16:37:32 -0800 (PST)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667d4f62sm21773347a34.19.2025.12.29.16.37.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Dec 2025 16:37:31 -0800 (PST)
+Message-ID: <0f65c4fe-8b10-403d-b5b6-ed33fc4eb69c@kernel.dk>
+Date: Mon, 29 Dec 2025 17:37:29 -0700
 MIME-Version: 1.0
-References: <CAHOvCC4f2xPK_LwFoisdqr_wX-RbdW9KUq48+82CMC=5ViF=ag@mail.gmail.com>
- <20251226183122.254549-1-sj@kernel.org> <CAHOvCC6L7TAX5Pu4pLVvYBsGc7tVYexgqJmiZ7UEhu7N4_jubw@mail.gmail.com>
-In-Reply-To: <CAHOvCC6L7TAX5Pu4pLVvYBsGc7tVYexgqJmiZ7UEhu7N4_jubw@mail.gmail.com>
-From: JaeJoon Jung <rgbi3307@gmail.com>
-Date: Tue, 30 Dec 2025 09:14:37 +0900
-X-Gm-Features: AQt7F2pifKyEAF_NYMZ2gSwBpLyyKdjYsBNwTOXlgNDEAHSZnzjBiki3Rp1xTEU
-Message-ID: <CAHOvCC7ondk_Gjhetb7Wtsz60c1dRmt_h9MwT8uwh0vwaktDLw@mail.gmail.com>
-Subject: Re: [PATCH] mm/damon/core: modified control->repeat loop at the kdamond_call()
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org, rgbi3307@nate.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C11081C0003
-X-Stat-Signature: rt7r9gobn9cac4neo3eo9jgf9xnfj5gs
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/33] block: Protect against concurrent isolated cpuset
+ change
+To: Frederic Weisbecker <frederic@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Lai Jiangshan
+ <jiangshanlai@gmail.com>, Marco Crivellari <marco.crivellari@suse.com>,
+ Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+ Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org, netdev@vger.kernel.org
+References: <20251224134520.33231-1-frederic@kernel.org>
+ <20251224134520.33231-10-frederic@kernel.org>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20251224134520.33231-10-frederic@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: o865abmd7zqbebipncyk1y5nk6wfz83n
 X-Rspam-User: 
-X-HE-Tag: 1767053689-505062
-X-HE-Meta: U2FsdGVkX1/J9041C+DhU04TQxj0hC5va9qqn2QqixSQxP6BMntjt5h4iDhZDx+V/EXlXe6GaCxI8rtW05mfqZwwps3gVRr3gXA8e/HarLOz31aaC4nOxrkV/8frSDuaTNe9RYxVasH80eTxnpqzD4gsxgIe/cyG0dOjqSYkHtjM+Tn2e0272GLR2vaUIfDh4Tai8pq0ZCsjuXkOu7BXLOdIvB3yBlPJ/43Wfnmc+/JqoChPofSuvuy5vbfbuar6OVS3eubCwlM4IhO+YZ+cN14pUh8H/iE2j24Nj21u0tI65SY7DHGU1Gi0S/XWOQRDeDOuXpiQYOEC/BQxpAXubbxsCKD9fHIfoS12rhDvwH1MGvgC/kkS3/d1vrVW/bG8ycF7T+GvTb8qU53OdO5KNymeFpAc/4JH14+KHR7rzdNruD8rmdABGrCPiAEd9RWeIAvszfujVa5netzDtXWAphCfOZtyHjmz+IHtrQSSiDbZCBeVWqARb8PB/vlQm4kcerLMf7unktdCEK7qyt4i1TJ1x9gXk8+q5JHhCx3x95MyNrrha6cB/LrsIfXevDAusfJ6OD6wc1I2nzawgu0r9xAWYW2wqJOJD442fxtzrMgh9lLaW8dolTsNX0xw5Nph+fROuRGUERDiN20fPyKOzd7qQxUUpmuHMMGtPqMRkBUXrRlSFl8KGxlT+NpjWuGmia6eQLnVL3nV1j+cFBTRHDXbYKQyDar5PcSOJYWKcwhHfHwoOnrDWa55+C2XOA/WZUuw0D8xoo4Rsn3RoPc+IrmL0Nw4tnEjyrKzrKyLxXcnG1Erv47HdslQA7NH4hQ+3A6SAWFVApwfDHAmcyxaTU3/K24xb3uJOzZ/2JuOEb7hBS1Pk6ihVGF9eZyqKqm7dCYpWRJcXD1gro71Fj0pwHAkuQF0rokS7ehrZMoDp2d7JA1NZksHLiD2ovHFLQdt0AmfXKLeDU55TWIviFI
- STUFLG2p
- HM/ElyKZPNGGcDkvzq4lx4o2lRUK4g+SJekaMDw8aYnOWU9BHhUCrWncqtAWMEbpgx774tjGRT/wrFFbSy+ix+0SfRjfp3OuSPBlUO2tgpIZCMRCXTqn6AKVP1Yyk/AjkxQBT9Lw3wb48N5pNHY+HjGRVZdJ8j9IMuRsuwR9qjYikgSLmQ6AbFLj4ygbNec2ov6bQn1GBlIcWtaTZgf47Th+1takT3EsPL/aLlm04Shech/K8rfE9g0d7U4AAbtmOWck5I7/WMYJFqb6ybU3T+sOiFm45bN6/V7fsHzBUuytWCtCg+w0MdoBqc8hWhn+0+yBRKUTj+0yb9DqlfinVXbolVeVhdUrqCBSCu2ecXDvdoDqzRJR4ItSZj2tLcxaW/efka9hYmACs1iqd/g713erNoAAOL1D50SX2
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: AE0BC20005
+X-HE-Tag: 1767055053-688522
+X-HE-Meta: U2FsdGVkX1+KaWxQ5SIEO++OJLq/psWWAua/gPI77VyyRJIQXFdBkf+00H9Q6IT1qBWNCr5qxLHw9QbZGnhIv++2ZmXJljrllyOUtL6+XJnxP9AFln1GyylLEPXMqqGlfrKlaCWkpxpbLAUHWvVwaSTTpd+w6RCp09/DL9ygC+NsLh0fc8bgHtIlpmA0HlcPamuw75YDu9GIbXDmXyLN0lpa0K3clQjv4yEVhw3LDKqcaCUnEPQlow/WG6u6QxUq9Sepi03iT0Xhk3U7MbWdfJKfSUjrO6NsFDHoeKbRLpTIt0NFgvz0s85WY5soiACwJYWFNpU5EZHiFVR4bWkKcbYXdLJ6NFZBPajaSUaYKFWPv+VM+x2VBBu0KgfrBu4ZXdfXEc6qxn5588MTQFTqNY2G2yrbj3+Wa+P/6TukAFpZ7kmosBMC6fj18GtpOIlUk3KIASvanefR7eMk2ztuuNqbuBkWCNpARZB+WNS1KSbtqNrdq2eRFIVRXxBylzqmuyRc7gitQ7eVooi5IiGQm1y3EHLh9HMNrH2dbGo2BfQ7Hq8XBwjh9Zq8sB5HKK4Snn7simcJKq1ZmBruZhswlx/2ctr1mJzrR2xsbpJ+Y3uLlofyCHP8w3Dlqtnbw4PtR32L+aTZIbOpK6Mkdger/sBhdy5WupbWxUQuyPRaNZnxWdsBVOaP1RPccbVHFE9XilCF2i2IDUa62bUaIdjcqA6x3W1EeKNFdjMlGr/cMPsmTdYtnarFQ0W1UeLlHHt5UHTT18nogUqnOiI1e4vIEJdnsrOBhz9a46Gn/dA1lz4BkL+0cKUGKvYiT05ScDVdqA4wupU8Q28CVQsASDtjRq/eRUSy5mVi0BGzZJx8b8pxM54UqHK8+KDEFry3BsKInKxbiLFmypF5MZGXhU83yMIZOuCe9wTZsYLr8Sn866jEEgTQd5KZcY/NkchpZMeMcFX7fVi/EZmEdGrurb7
+ elFm2RlK
+ R7mEYgGq5YM9I6mapkE7bPZ044G5pvWt8GlSRnPjcQeOIf65S80MEzD06nTGMq+ZtaD2I3W9tBrUkpQLxP7XhY29M5r/hlWBvTdAL16YW/k+9OtRIhGfO+T93kTvgqvSbCoIx3UBnZkbQcJBTz4oZ+P+PRKg0CWkbb8Ee0ogZylYqvF5trmQ1X60rkoajP8Zbel8GHDs33F5qV2xeK2I1bGq/V8d2GAyg2WTujUBOkd4ZafPvwxYi5vGzNRUqff50jChJy8BCszAQcEG5G3b0cXgbuL0C8sJWA+KccqwY5jlbPse4v/EnKrd3px4o5TrXLc8ZXiP0LGZT1Lbe/AvgO4w3Gpuj1E1y1zfGwtfVcgEEa6Ter0uQdMh61cEkMvbzPT2iEfV6BrlxeGOn1o+D+xY3A3aJGqajXox+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,182 +145,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I will reflect the above in patch v2.
-Would you like me to resend patch v2 ?
+On 12/24/25 6:44 AM, Frederic Weisbecker wrote:
+> The block subsystem prevents running the workqueue to isolated CPUs,
+> including those defined by cpuset isolated partitions. Since
+> HK_TYPE_DOMAIN will soon contain both and be subject to runtime
+> modifications, synchronize against housekeeping using the relevant lock.
+> 
+> For full support of cpuset changes, the block subsystem may need to
+> propagate changes to isolated cpumask through the workqueue in the
+> future.
+> 
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> ---
+>  block/blk-mq.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/block/blk-mq.c b/block/blk-mq.c
+> index 1978eef95dca..0037af1216f3 100644
+> --- a/block/blk-mq.c
+> +++ b/block/blk-mq.c
+> @@ -4257,12 +4257,16 @@ static void blk_mq_map_swqueue(struct request_queue *q)
+>  
+>  		/*
+>  		 * Rule out isolated CPUs from hctx->cpumask to avoid
+> -		 * running block kworker on isolated CPUs
+> +		 * running block kworker on isolated CPUs.
+> +		 * FIXME: cpuset should propagate further changes to isolated CPUs
+> +		 * here.
+>  		 */
+> +		rcu_read_lock();
+>  		for_each_cpu(cpu, hctx->cpumask) {
+>  			if (cpu_is_isolated(cpu))
+>  				cpumask_clear_cpu(cpu, hctx->cpumask);
+>  		}
+> +		rcu_read_unlock();
 
-On Sat, 27 Dec 2025 at 08:42, JaeJoon Jung <rgbi3307@gmail.com> wrote:
->
-> On Sat, 27 Dec 2025 at 03:31, SeongJae Park <sj@kernel.org> wrote:
-> >
-> > On Fri, 26 Dec 2025 11:19:28 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-> >
-> > > On Fri, 26 Dec 2025 at 05:01, SeongJae Park <sj@kernel.org> wrote:
-> > > >
-> > > > On Thu, 25 Dec 2025 12:10:30 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-> > > >
-> > > > > On Thu, 25 Dec 2025 at 10:07, SeongJae Park <sj@kernel.org> wrote:
-> > > > > >
-> > > > > > On Wed, 24 Dec 2025 21:43:54 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-> > > > > >
-> > > > > > > The kdamond_call() function is executed repeatedly in the kdamond_fn()
-> > > > > > > kernel thread.  The kdamond_call() function is implemented as a while loop.
-> > > > > > > Therefore, it is important to improve the list processing logic here to
-> > > > > > > ensure faster execution of control->fn().
-> > > > > >
-> > > > > > That depends on how critical the performance is, and how much complexity the
-> > > > > > optimization introduces.  I have no idea about if the performance of
-> > > > > > kdamond_call() is really important.  If you have a realistic use case that
-> > > > > > shows it, sharing it would be nice.
-> > > > >
-> > > > > This is because kdamond_call() is called repeatedly in kdamond_fn().
-> > > >
-> > > > Yes, it is repeatedly called.  But, my question is, does it impose overhead
-> > > > that great enough to make a negative impact to the real world.
-> > >
-> > > I agree that the overhead is not that much since there are only a few lists
-> > > added to ctx->call_controls(CTX.head).
-> > [...]
-> > > > > > > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > > > > > > index 824aa8f22db3..babad37719b6 100644
-> > > > > > > --- a/mm/damon/core.c
-> > > > > > > +++ b/mm/damon/core.c
-> > > > > > > @@ -2554,42 +2554,43 @@ static void kdamond_usleep(unsigned long usecs)
-> > > > > > >   */
-> > > > > > >  static void kdamond_call(struct damon_ctx *ctx, bool cancel)
-> > > > > > >  {
-> > > > > > > -     struct damon_call_control *control;
-> > > > > > > -     LIST_HEAD(repeat_controls);
-> > > > > > > -     int ret = 0;
-> > > > > > > +     struct damon_call_control *control, *first = NULL;
-> > > > > > > +     unsigned int idx = 0;
-> > > > > > >
-> > > > > > >       while (true) {
-> > > > > > >               mutex_lock(&ctx->call_controls_lock);
-> > > > > > >               control = list_first_entry_or_null(&ctx->call_controls,
-> > > > > > >                               struct damon_call_control, list);
-> > > > > > >               mutex_unlock(&ctx->call_controls_lock);
-> > > > > > > -             if (!control)
-> > > > > > > +
-> > > > > > > +             /* check control empty or 1st rotation */
-> > > > > > > +             if (!control || control == first)
-> > > > > > >                       break;
-> > > > > > > -             if (cancel) {
-> > > > > > > +
-> > > > > > > +             if (++idx == 1)
-> > > > > > > +                     first = control;
-> > > > > > > +
-> > > > > > > +             if (cancel)
-> > > > > > >                       control->canceled = true;
-> > > > > > > -             } else {
-> > > > > > > -                     ret = control->fn(control->data);
-> > > > > > > -                     control->return_code = ret;
-> > > > > > > -             }
-> > > > > > > +             else
-> > > > > > > +                     control->return_code = control->fn(control->data);
-> > > > > > > +
-> > > > > > >               mutex_lock(&ctx->call_controls_lock);
-> > > > > > >               list_del(&control->list);
-> > > > > > >               mutex_unlock(&ctx->call_controls_lock);
-> > > > > > > +
-> > > > > > >               if (!control->repeat) {
-> > > > > > > +                     /* run control->fn() one time */
-> > > > > > >                       complete(&control->completion);
-> > > > > > >               } else if (control->canceled && control->dealloc_on_cancel) {
-> > > > > > >                       kfree(control);
-> > > > > > > -                     continue;
-> > > > > > >               } else {
-> > > > > > > -                     list_add(&control->list, &repeat_controls);
-> > > > > > > +                     /* to repeat next time */
-> > > > > > > +                     mutex_lock(&ctx->call_controls_lock);
-> > > > > > > +                     list_add_tail(&control->list, &ctx->call_controls);
-> > > > > > > +                     mutex_unlock(&ctx->call_controls_lock);
-> > > > > > >               }
-> > > > > > >       }
-> > > > > >
-> > > > > > Let's suppose there are two damon_call_control objects on the
-> > > > > > ctx->call_controls.  The first one has ->repeat unset, while the second one
-> > > > > > has.  Then, it seems the 'break' condition will never met and therefore this
-> > > > > > loop will never finished.  Am I missing something?
-> > > > >
-> > > > > You misjudged.
-> > > > > If (!C.repeat), it will be removed with list_del() and disappear.
-> > > > > If (C.repeat) loops through the loop once, and when it returns to the
-> > > > > first, it breaks.
-> > > >
-> > > > Maybe my explanation was not enough.  Let me explain a bit in more detail.
-> > > >
-> > > > In the scenario I mentioned, at the first iteration of the loop, 'first' will
-> > > > be the first control object, which has ->repeat unset.  The object will be
-> > > > removed from the list.  In the second iteration of the loop, it handles the
-> > > > second object, which has ->repeat set.  The object is added to the list again.
-> > > > In the third iteration, the loop runs for the second object again.  Because it
-> > > > is not same to 'first', the 'break' statement is not reached.  The loop
-> > > > continues forever.
-> > > >
-> > > > Am I missing something?
-> > >
-> > > Thank you for your detailed review.
-> > > There may be cases where C->repeat=false is the first control.
-> > > This can also be solved simply as follows:
-> > >
-> > > @@ -2567,9 +2599,6 @@ static void kdamond_call(struct damon_ctx *ctx,
-> > > bool cancel)
-> > >                 if (!control || control == first)
-> > >                         break;
-> > >
-> > > -               if (++idx == 1)
-> > > -                       first = control;
-> > > -
-> > >                 if (cancel)
-> > >                         control->canceled = true;
-> > >                 else
-> > > @@ -2589,6 +2618,8 @@ static void kdamond_call(struct damon_ctx *ctx,
-> > > bool cancel)
-> > >                         mutex_lock(&ctx->call_controls_lock);
-> > >                         list_add_tail(&control->list, &ctx->call_controls);
-> > >                         mutex_unlock(&ctx->call_controls_lock);
-> > > +                       if (++idx == 1)
-> > > +                               first = control;
-> > >                 }
-> > >         }
-> > >  }
-> >
-> > Yes, that should fix the issue.
-> >
-> > And it seems 'idx' is being used for only this?  If I'm not wrong, I think it
-> > may be easier to read if you do something like 'first = first ? first :
-> > control' and drop 'idx'.
->
-> It's better removing idx.
-> Thanks.
-> JaeJoon
->
-> @@ -2587,7 +2587,6 @@ static void kdamond_usleep(unsigned long usecs)
->  static void kdamond_call(struct damon_ctx *ctx, bool cancel)
->  {
->         struct damon_call_control *control, *first = NULL;
-> -       unsigned int idx = 0;
->
->         while (true) {
->                 mutex_lock(&ctx->call_controls_lock);
-> @@ -2618,8 +2617,8 @@ static void kdamond_call(struct damon_ctx *ctx,
-> bool cancel)
->                         mutex_lock(&ctx->call_controls_lock);
->                         list_add_tail(&control->list,
-> &ctx->call_controls);
->                         mutex_unlock(&ctx->call_controls_lock);
-> -                       if (++idx == 1)
-> -                               first = control;
-> +
-> +                       first = (first) ? first : control;
->                 }
->         }
->  }
->
-> >
-> >
-> > Thanks,
-> > SJ
-> >
-> > [...]
+Want me to just take this one separately and get it out of your hair?
+Doesn't seem to have any dependencies.
+
+-- 
+Jens Axboe
 
