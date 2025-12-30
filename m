@@ -4,118 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 387FDEE4983
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 16:18:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32490EE4983
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 16:26:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E91B6B0088; Tue, 30 Dec 2025 11:18:55 -0500 (EST)
+	id 9775E6B0088; Tue, 30 Dec 2025 11:26:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96C666B0089; Tue, 30 Dec 2025 11:18:55 -0500 (EST)
+	id 924FD6B0089; Tue, 30 Dec 2025 11:26:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8415B6B008A; Tue, 30 Dec 2025 11:18:55 -0500 (EST)
+	id 830DA6B008A; Tue, 30 Dec 2025 11:26:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 70F306B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:18:55 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E4B231A0263
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:18:54 +0000 (UTC)
-X-FDA: 84276646188.09.0F66334
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 062F82000B
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:18:52 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XLZkiv46;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767111533; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 740BC6B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:26:37 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1B3321A0AE1
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:26:37 +0000 (UTC)
+X-FDA: 84276665634.12.2DDCF4D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id AB715A0007
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:26:35 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lwbfIitK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767111995; a=rsa-sha256;
 	cv=none;
-	b=REYlNYxflEqEGJNarkdRd4zITspzD8tvz298LrWE8Om0lC64tgQ+9H8RCEUNIfWvIESfmK
-	0BIQ1d9GgoLHcPyYaEGBxrrNsAJnJnoiyDyh32M2tOcZWu1sq7wTB7PNDPk1iEHpVCA9Z1
-	1mDRG+1GfGdBePTiyY1dP55V5BUN8BQ=
+	b=qbCK85IKlPwm1kaZtEjP2GMk/aG8B9yMI46TvTilSZWBIWGRQ+XkbtDBCCN3uryPBCk5dg
+	S1L81Jq03aIQlkRr86F8F6/wqnjW0+0s8ULO4nWVIMHeBGaWlKR+cJ86dGi3b9slyFxffZ
+	L+y46InRD6dp7Ftn7f+ddppqkMgrEgk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XLZkiv46;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lwbfIitK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767111533;
+	s=arc-20220608; t=1767111995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OL50/gZnO2VMMSC973/UKorxrP/7cJIiMBsmZ6LNx7g=;
-	b=eWU7pbNZEg/tQLDZlnPD3B045t1GYM1O1wr5QHLj78UBNWNkdL91/tm16XkTqLVfjUXCgz
-	d8D52Uq5kUmsfFfs0w86UGs+xk2K60ExHp6qUr2y+fTUPboDZaLp0P9qwI4mOK3eOAQSB5
-	y2pVlRzialL1WzeJFiZiLeut5OHFcdo=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64b83949fdaso13774648a12.2
-        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 08:18:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1767111531; x=1767716331; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OL50/gZnO2VMMSC973/UKorxrP/7cJIiMBsmZ6LNx7g=;
-        b=XLZkiv46qszJN1njtAxkkbxNmhNLIH9ZyCHSJ3jB7y1Tjv7pFosoBNC+tsv3h6MAQ5
-         BsTeJr518aRPCyo3Ygkva+VWIeSAm+VjzLaA5uGbP49HnsZN5Y0eppA36dhogSOU+pfY
-         rsiE/f4untbjfK3s/ZqBdEtEowN7jePhXgFy+Iuc5jbAz7KNwyxaPwN/jR8fjJdqVIQX
-         mk3Gp5wqtwpOY3IL60aRg4b6h0KtA/OcjKWQyMN8bu+gxfDepBC4qI8p0uBhfF9IVd6a
-         44ZJn/3+t5qu4v41cnd5TCJvqUS741r4Radf/fBCsuXSStezd008w9qt75OTpARHCgcl
-         TTqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767111531; x=1767716331;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OL50/gZnO2VMMSC973/UKorxrP/7cJIiMBsmZ6LNx7g=;
-        b=CVMWwJVi/BiYz+gNya/AgJmusVqXWSPWkTLSkRkxSS6WrvROcwNxre4QIkZ6YOwnqA
-         9K10vtOOiE5lHFbU0Kc4AYV6Ruxf5hL/cR0sk4aJUv6MxP57LqcUQAyigzBLKuxES1wO
-         us8LeLIfVvHZYYIVFKdfN9cnAX8M+O9M5/qoY6JTfNnOWMNj0DLk4wD6sC8yDLvrIuzQ
-         lwATPGegt2y0kfx4mkJftEJPpl635/ydzmPfjAwk61gIx/VpV9X/cSLyyAGpEnU+a8Qk
-         T0UHp93yLhiKIGWOJ/iS1ICF4PiqUbCusx61i+Mozsmqx3TcPwhdIy8RZgYijZ44xqba
-         FoeA==
-X-Forwarded-Encrypted: i=1; AJvYcCUuE5zc5usk/tsCBx6Thgn+/U+oUltckOqep8cqzFdPsoWNRKRZkuK+3dM2lQCqtYXkenL1W+wsEg==@kvack.org
-X-Gm-Message-State: AOJu0YyixZw7/2PshWbGSaJNCyfcAYWohZwPsCfMQyuOosYlO6JP4jf6
-	dybrFzltAhE7lBPqLTJ+fr2ZYWVLSD8osg7leawu5NR+yXmC2yxJRgMPFFsrsFXKMNbP1Y1c43k
-	EIYdMCbf8yqLu13Yy5nlrWj5mICfCIbmfzijPF0xYHg==
-X-Gm-Gg: AY/fxX7+RF2r+BMfTHSdz7QqNPQYrKc/4MryrhhS9qWhsn6S3KELCUUhxnau4vR8VIP
-	IRTYVWFBFokEqRnZXsfLEnHKt7VKZc+tF+0ioITrEtOSK+AWMKESSSDf3XgHvVk5X8+wBXfN2kb
-	CdaiRSvGCCHiUZOCprVbk5KcmgahqHaelAYNa30mYTEexOLTVmoOJ95E5fnY/sgCeqPevZEivu5
-	KdMkEzCKt4Ns8RFcvqqAw/ycmImNTfb5ZfhxCaVwTv1LO3LAj0UcrAWwrL+YA9cpbsM9JVYy1pc
-	LuhH8nSiC7XzRyIZuSeDWCGcpw==
-X-Google-Smtp-Source: AGHT+IFeLw7u44MQZgbjsQFGA12sP1qdi+5HsRmBGCX/BEXK6I9KYbtNSPfAQW5/lttSum6QUrCoLo8izwyidq6kWdA=
-X-Received: by 2002:a17:907:97cf:b0:b7a:72bd:ac65 with SMTP id
- a640c23a62f3a-b8036ec9e68mr3510206766b.9.1767111529979; Tue, 30 Dec 2025
- 08:18:49 -0800 (PST)
+	bh=6KKUSWFo7Iwo2TJWGYzI0ssRSkagMbg2+GN8e6KU050=;
+	b=Q3wKe7iLTg8K25VkmiiWV5AuCoHvNywH1Ke3Ic9cZl1ZVr6/T+YYfDGeWOoKfHWXSVbeCd
+	CtY+vDAYPT5VXehfwRxE8xFwZ4Jt8zx0nuGXsAZs/KFUkpMShu3rbdOR5nIEU3NYsCwMci
+	mTyFhMgu5Wz8j6CURqI9a3YHlH6fscs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1FE4A6000A;
+	Tue, 30 Dec 2025 16:26:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B83C4CEFB;
+	Tue, 30 Dec 2025 16:26:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767111994;
+	bh=noWdpEVhxGi5t7Nr2JIuYUNiO+HkVoYB8qZqkKLGh80=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lwbfIitKUR2wkcqXy01+kxMaclJdqpjxOALjcpGS2TQK4eUvbWl4a4Yek/XeHrSbq
+	 V+CU3h+womQ1ItZTcAiQayJhr6HDRDmcKjiORQaGbhBaiztT3sNkMcetEuqpnkVe0h
+	 U1A+lI0ODDuBF06GqvB8d6MpkNEYFWlysJ9z5ZPp49meUdJG0evxGILRPYkNP/fHnd
+	 h9eC3JtLXfBRkWEGCzoseFllk9Uy9w5KJ3rAioh3FPItq5Kqz/htqNwYVMf+IZsXlU
+	 X20SLREp144bOoce4aWRAlbQXzBetQ1L3WrtOhO9ILQqoFiFXuSdh+ZwMhZgR4bPFG
+	 7dioiwzG/qcNw==
+Date: Tue, 30 Dec 2025 18:26:28 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Li Chen <me@linux.beauty>
+Cc: Alexander Graf <graf@amazon.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] liveupdate/kho: Warn when kho_scratch is insufficient
+ for sparsemem
+Message-ID: <aVP9NHDn0WFtkMNP@kernel.org>
+References: <20251230055345.70035-1-me@linux.beauty>
 MIME-Version: 1.0
-References: <aUUYprAotKYMiEs0@kernel.org> <CA+CK2bD101cSC_7+OWkMei2QvUVjSaRLy+LboLe8Sz7KS3by4g@mail.gmail.com>
- <861pkpkffh.fsf@kernel.org> <CA+CK2bA1kYCf0BwhX3Sg9Ur82nK-7HPzs0sg6xbVWFAJaZLhpw@mail.gmail.com>
- <86jyyecyzh.fsf@kernel.org> <CA+CK2bDxnTEe9Ohq5zLuyF-jqgD0DPhfdq6z=yztUsXU5p5fSQ@mail.gmail.com>
- <863452cwns.fsf@kernel.org> <CA+CK2bCjJWZG_rPoPsHWSxirmUCTOuFQzTCss2AKf9UqpThrdw@mail.gmail.com>
- <864ip99f1a.fsf@kernel.org> <CA+CK2bDDEZ5a+LJNDVMtKFtQ1D9rP6rJqU064eoru=a9eHpaAQ@mail.gmail.com>
- <aVP6wBYoHJQsplIl@kernel.org>
-In-Reply-To: <aVP6wBYoHJQsplIl@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 30 Dec 2025 11:18:12 -0500
-X-Gm-Features: AQt7F2rRyBAWSRSVw8tyvBNQJKwYnaZAfvLVHz2DyBAssxNNcP1N6GpP7-FmoGk
-Message-ID: <CA+CK2bDZPwYpUhksDLSbfVdVm5TYbh0XrOKRV=q4YjGpqH+Fwg@mail.gmail.com>
-Subject: Re: [PATCH] kho: add support for deferred struct page init
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Evangelos Petrongonas <epetron@amazon.de>, 
-	Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jason Miu <jasonmiu@google.com>, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, nh-open-source@amazon.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 062F82000B
-X-Stat-Signature: 83pwb8za45oiojnowd84eo13ayw7o6u7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251230055345.70035-1-me@linux.beauty>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767111532-468565
-X-HE-Meta: U2FsdGVkX1+GGPrV04VyvukyrLieuG6F8zFn7CYZVfopN7p2Tgbs/rkKa5OC++qJL4QGgon1yNv7cSRR1p16UfJFQBH3xuqZS9fhG9zUvgnJLP/HwN8EnATivBuFNa6QzdFh+8yFHk8kjvObO5Scq4tuI4akND0M0bD8YItprHKLH7RLlK6iVZ9RI0JtzYRIVAlzTAeBHXBF/wAJdnnE+BKpIQAra5wGLmyQ2WFMqMemm7Xsbjwhe3i6ESqeaoIcdDVyv5ghEZxryT7Om6W1IeNzBDy/KHQh6xjk24Z4DHwCe2hXJM/kxkK2RgIctMwxeiGyT5oQUxv53zz44h+8SD+15MMAYSnfPH1kkmNDhVQDf66Rmsm4HoGa0fIJ3HwSzDsYHtLo4+s6C4nWUf0PHXN0izeiR4LMvTx7STTotN/36dd6DOXfqH04ag2LR2vq9s+//YIIjpT55/EcqHwJyPPTZuQ1lOd3f1MAtg5PGCRS3qmbrnoJVDN2pvqch0hdyaHvBZuh4vMBfnFul7Ku0e48VUQKgHGBh4Fx/2M7jzlnIXpY7Zo1ib7z5N0H66WWbdMMMk9LLnNS5y5b89iHFtgHn9j3bcJfJeAuT2i5nDAOijRS2YBaAAmez0hhg41sEKKaaipLLVMjnx/9JlI9jodxpjQGt2f60uMLjUy35TGYDhkknsRIC1kNi4tGQf4hiGWJp6lH2HSTIQQP/w6SWVUPdmLET2NJnnBlv9iIzZpVkvc87YJrQyok+Estmi7CvXgjzrV1RHgYsVpUsSbVQYLtlNb9Q/8lUXfmEtAhHUzA+vhMRO0yIWdulB+vC4p4v70HOfMQGgAqjFXgbi8akau50T+pXRgIAxP8d/FPIwa1lPXT3cwVUg+zIKGdjisNtMrhuQ900BfO9e6Th1fCrCMvTWnzZXQAABRaY3CogwunKlsl0e+JyThlqQGmd543GlbKLlKnHJCDpY9J8wd
- OikObJfe
- 9W9tsWXXs9dsDPrN4vdqJ4LnrpxjBKUf926QH5iX+xaeYjajCMH/pl6F/63GiGUdNO82dwj5CVZyoJ+gRw3q8TjSkf2lMoFYXt0PpMRsNX/NAKgNejbMiLO1rfz68+1qPXbR79snBpsZgV/Axx3MSe40ZfXxYvIsWjLoK+Tvj5sPHIXyNVSmtB5Bjm8ZLkPmZRkiPHZfZCbk7tlz/KNLOI3bB1g==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AB715A0007
+X-Stat-Signature: kiwnsbe8jfwhcibxjknm6gfk9tw6gdp8
+X-HE-Tag: 1767111995-799529
+X-HE-Meta: U2FsdGVkX19ijTVcTs9pOY1PvQH0U+e9FxiMyJh/LvtrbdB4DjKi7YohAv0UXLZ3u/KEzIFfdFhwLx/O157BR4rXPII0VtCxC/Btp/rQuACg3r1kEKvKTzN8/HmJYrWPFrEFjJYvFZMAmGzohhpTL81J6fjzjIw6nXOOEvM3ftAZXL+zLZ3gW3y9+ErKCGA2uVyo8sc0W+an98dRjPEpKVjWi2Z8KpOVLV9wu5eOcHL49FFOFggzgDiH3WAXsaTox7XRpscEHg+LjwXVVbzTmwMraTDA1L363sMzLzfFcLWDwtcUJrNnon6gbBWtWIfBBdj0rv44j2jfHFB2DlboLxO6QT+RLuzANs3QzEEyRkPa1qurplzK0G55J8kOI75U2NVkFFNb5vMQaNd/mm5ZRp7M0rt/ky4BSqJCLOuHG9fx49GTSNfpl7PkBRM7Tw/44ZNnXGjSP/53UHl+Fe8Mll32He8iQZCmO1J7L4UlsuHDDMwPZj3CuDrYPDfn/ZTpAo83+Np2AhEuFzrwsDxdUw0ThdgTMXx9Q6fgVU15Scs1sHQhK3ewnmcOhsUbN8x5mVieZgmUqITt+K8aR1NFdgIK9qqVluzKUlbwcxzDCojDUj94EFynxxyo7vtBTt1EyGyFnzfXyr3sxYr7eEXSAbKadie01aDRN1KJcYw1PadD4a7/7nNVM1UbttX7fphR9V0/Qk59Tm5xJ0z1uKUlKAseRYLuVbRJCxNi/4VCS5+WypMGQ3AT6hp0W6F2JNhoV8zv83d0iPafyGohAvTuGFKLA/J6cu/k1UQZfml38LBE+/XxtL0DWI1rJlRnX/tMfmAXvjIiqtCG8jEB/juAQB4+tYP8iqEUgsyj57J+cSMBS6/3Da9YiVTuqyQqY5p4gd3BIPPbIls2Ij+i56wOyYdI1RDPSEcceRCsM3d+8nhIB2UvQtttxXmWn6Ib6pXa2ZceSA9TH+1wogNyOVi
+ Cvy7bd9s
+ W1hxy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,34 +94,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 30, 2025 at 11:16=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wr=
-ote:
->
-> On Tue, Dec 30, 2025 at 11:05:05AM -0500, Pasha Tatashin wrote:
-> > On Mon, Dec 29, 2025 at 4:03=E2=80=AFPM Pratyush Yadav <pratyush@kernel=
-.org> wrote:
-> > >
-> > > The magic is purely sanity checking. It is not used to decide anythin=
-g
-> > > other than to make sure this is actually a KHO page. I don't intend t=
-o
-> > > change that. My point is, if we make sure the KHO pages are properly
-> > > initialized during MM init, then restoring can actually be a very che=
-ap
-> > > operation, where you only do the sanity checking. You can even put th=
-e
-> > > magic check behind CONFIG_KEXEC_HANDOVER_DEBUG if you want, but I thi=
-nk
-> > > it is useful enough to keep in production systems too.
-> >
-> > It is part of a critical hotpath during blackout, should really be
-> > behind CONFIG_KEXEC_HANDOVER_DEBUG
->
-> Do you have the numbers? ;-)
+Hi,
 
-The fastest reboot we can achieve is ~0.4s on ARM
-(shutdown+purgatory+boot), let's not add anything to regress, as every
-microsecond counts during blackout.
+On Tue, Dec 30, 2025 at 01:53:45PM +0800, Li Chen wrote:
+> With KHO enabled, the successor kernel can temporarily run memblock in
+> scratch-only mode during early boot. In that mode, SPARSEMEM may allocate
+> a per-node scratch buffer via sparse_buffer_init(map_count *
+> section_map_size()), which requires a single contiguous, aligned memblock
+> allocation.
+> 
+> If the maximum usable scratch range in a node is smaller than the
+> estimated buffer size, kexec handover can hang very early in the
+> successor kernel, and we may even have no chance to see the error on
+> the console.
+> 
+> Estimate the worst-case per-node requirement from the running kernel's
+> sparsemem layout and compare it against the reserved scratch list by
+> splitting scratch ranges per nid, sorting and merging them, and applying
+> the section_map_size() alignment constraint. Warn once when scratch
+> appears too small.
+> 
+> This check is a heuristic based on the running kernel's sparsemem layout
+> and cannot account for all differences in a successor kernel. Keep it as
+> a warning instead of rejecting kexec loads to avoid false positives
+> causing unexpected regressions. Users can adjust kho_scratch accordingly
+> before attempting a handover.
+> 
+> To reduce boot-time overhead(particularly on large NUMA servers), run
+> the check from a late initcall via system_long_wq instead of in
+> kho_reserve_scratch().
+> 
+> Signed-off-by: Li Chen <me@linux.beauty>
+> ---
+>  kernel/liveupdate/kexec_handover.c | 396 +++++++++++++++++++++++++++++
+>  1 file changed, 396 insertions(+)
 
-Pasha
+This is an overkill for something that a pr_err() or a panic() would be
+sufficient.
+
+-- 
+Sincerely yours,
+Mike.
 
