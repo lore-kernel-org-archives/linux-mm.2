@@ -4,103 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25318EE01F6
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 21:29:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BB8FEE01F6
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 21:35:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C23F6B0088; Tue, 30 Dec 2025 16:29:57 -0500 (EST)
+	id 916D06B0088; Tue, 30 Dec 2025 16:35:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86D736B0089; Tue, 30 Dec 2025 16:29:57 -0500 (EST)
+	id 8C45B6B0089; Tue, 30 Dec 2025 16:35:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 799166B008A; Tue, 30 Dec 2025 16:29:57 -0500 (EST)
+	id 7F0ED6B008A; Tue, 30 Dec 2025 16:35:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 696D66B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:29:57 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1AA3D13A904
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:29:57 +0000 (UTC)
-X-FDA: 84277430034.15.4641F56
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D7AE6B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:35:26 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D71981AE80
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:35:25 +0000 (UTC)
+X-FDA: 84277443810.24.CCB6F41
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7DF3610000E
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:29:55 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PdwRUS/m";
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 24ABAC000B
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:35:23 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=j+EKvvDe;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767130524; a=rsa-sha256;
+	cv=none;
+	b=2fy4KufKCtpsbRpYkdqI7IhGhLb9IMH3COIWt3D2l96xLJhbbhxbWEOS0UFZCgQo4Hm5gh
+	Ex1zbptpTYQmUGvAoATDN4/2thJi2tLfbsVfSnXROsP2PKr+qnz2/6MjF9h0mAQ4BAlmv0
+	ZnGXHmTLPpvpIoQ/8MQ4/HphxpV2w+g=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=j+EKvvDe;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767130195;
+	s=arc-20220608; t=1767130524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9VfDCGALhIwXfIoTID0Yhj/5lOKXW0UtEP5GdII7c3A=;
-	b=YToMUwPUhtRH4G0N81w4m6qwviG/BNZt4KykIUfMG4je2RMl9zEMxFxkzE5sYy1Di70ak5
-	kOCzTJZskSYz0hQTJAolei8gViBqqnwqVU8Rypx3sulATlNB8f2RthZO0BHxh7G14P5EYV
-	j8GBDfrZ99i78RhS6ZmuIqIo4oWRDtQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767130195; a=rsa-sha256;
-	cv=none;
-	b=atphhUuLNnexwVid/z353J2/MDGuy7DKmIlmu2vtfEIhI1NDJsCp6Uy3enZiKqMv0v2n7b
-	wc7x/X04F01OaCq65nl2xcQlouFG5g9bt6FMBSYiswkJQyGwUMsir/Tpuf2doqO8Dr5Bct
-	/4u6aKVAlQ7xLmQI1q3F9VfH56z3DdU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PdwRUS/m";
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=PWf1IC4Nj4zdgRawq4E0v6+GwxqbEd/T1wyrzGFB96E=;
+	b=ID8HhK6K4zTNVUcyd4MB8yCne2wKuKTqVCZ+dBy7l3d3Cqjywn+smU/+2NdG44Hq/LxD1P
+	dux34Sgy8ECdktqBheuA6MK4K0jInYy6SXGWu+FwEY0RgHnAP5hwLRKyc0mzOVYlyGDhY+
+	XVxGEjNtudVD/NlAl4uK260QvcbLHt4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7767B4068C;
-	Tue, 30 Dec 2025 21:29:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57DCC4CEFB;
-	Tue, 30 Dec 2025 21:29:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767130194;
-	bh=IxI611ewVn3TkXYsfQGaKWr165GjWawy7PB3qyN3Nns=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PdwRUS/mjSsVSh4CCh7bLteLWXUnNX4QT8VbygtGfUnwnXMBxY0ueLUakEtJu4Q1t
-	 FGXA4oUgSUNPAtwY8enqcaiqjMYs3/Sczx9pb4GCnqvKPjfMEs9XTjN1DGFXwBEQ/z
-	 MwmlkZO5EJ/O4Lb6Yd++MefsClQnVUL+zSwSg7A/7L8kXo/Yv8ex9uFVpJ2f9cS6xP
-	 sT0Dp6lZHzFE2rPC3mL9ukeplETs1yOiA0/s18aTq5rbRoJSuw5IsQOjCexd9fY6Ae
-	 BB7sdogG80sVMJ8lQc8jtSqKI5U54R5lu/V0wXn7z0qct1woG0EFJzzNv2CAZTtTyM
-	 xmynp1euIy9Pw==
-Message-ID: <46d418f9-74ae-4801-99da-2e31c019bc79@kernel.org>
-Date: Tue, 30 Dec 2025 22:29:45 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH next 0/2] THP COW support for private executable file mmap
-To: zhangqilong <zhangqilong3@huawei.com>,
- Matthew Wilcox <willy@infradead.org>
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "corbet@lwn.net" <corbet@lwn.net>, "ziy@nvidia.com" <ziy@nvidia.com>,
- "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "npache@redhat.com" <npache@redhat.com>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
- "dev.jain@arm.com" <dev.jain@arm.com>, "baohua@kernel.org"
- <baohua@kernel.org>, "lance.yang@linux.dev" <lance.yang@linux.dev>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
- "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
- <mhocko@suse.com>, "Wangkefeng (OS Kernel Lab)"
- <wangkefeng.wang@huawei.com>, Sunnanyong <sunnanyong@huawei.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <0ce50058e6254a29baee1271ae0ef31c@huawei.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <0ce50058e6254a29baee1271ae0ef31c@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: kz45gpe3iiced8tkmhyueejuhft9hxej
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7DF3610000E
+	by sea.source.kernel.org (Postfix) with ESMTP id 29990409E2;
+	Tue, 30 Dec 2025 21:35:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA395C4CEFB;
+	Tue, 30 Dec 2025 21:35:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767130523;
+	bh=shiEpaQwRae9DsyfW9au1TJgLhz/UKe1CIW2dkA29WE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=j+EKvvDe36Ovgd0cm2WGImRVqYOpoNmSz1Zg9LELcrGwr7X48ZZO+cc3rREGRc/3p
+	 DPOfOtgFBpK3vqxiUHyIgTKBr/1qXPE+VlF57T1V2WJ21PwNXYl354rjQotN54UzbW
+	 iBeDHJfFH3wUdD/qrPc4Thzkw/1jma3WwoZJHtyE=
+Date: Tue, 30 Dec 2025 13:35:22 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Barry Song <21cnbao@gmail.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, Wale Zhang
+ <wale.zhang.ftd@gmail.com>, chrisl@kernel.org, ziy@nvidia.com,
+ lorenzo.stoakes@oracle.com, matthew.brost@intel.com, linux-mm@kvack.org
+Subject: Re: [PATCH v2] mm/swapops,rmap: remove should-never-be-compiled
+ codes.
+Message-Id: <20251230133522.e15135c3a17826428f472a2e@linux-foundation.org>
+In-Reply-To: <CAGsJ_4w=KuVs5+p+3gZ=L7=rzA3qgnMVQOBJNBEPnMDWx2N+dg@mail.gmail.com>
+References: <20251230130110.1366374-1-wale.zhang.ftd@gmail.com>
+	<cb69a1e7-e836-4115-8733-12d2de879f51@kernel.org>
+	<CAGsJ_4w=KuVs5+p+3gZ=L7=rzA3qgnMVQOBJNBEPnMDWx2N+dg@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1767130195-771611
-X-HE-Meta: U2FsdGVkX1/D+hCEBDX4vIQRxo5Lli/C6PXfQViNDWiIytihEeojH4kX71g4VjQVa4TUyLt5aCgUOKq9dzMx/0+AADrnzuoCZ2z4QNuTyfurGc4/R7ctnLQviXDg/vV1Sf6wvGCXd89bn2qieGo6yMtYWQ/W28eD666Ypz00cyfkC489EFP6ElkHbY6ezjABOGUL/M7eb8tmcIkUBcc9k5gjDsqE/Ut5WUG6yQhc3FwAY5Y5HKK6biALDXXHtok7jEl4ulZmWep3l1Cbi2WpOjsvHWpDt13IDKD5NkwmYtp8j16G18dDeVN9CqFthikipi4vXTGIYaYogpMKaQAHCNvunRTyPMSUUW2LGYA0XFz7D+TRu3cOSVrCu9gmXUm1Z9twSvFEDGwbg6TfaBETmPEQwaQLE1rVbpAe0wbNsBsoYp2tT6QHcu+/DvFKuea9DVC3WzzuSPzkb1kEhmoPE/xUwekdQtpKhKA6z3mpFSa4ehfHY4G0VprKzrP1rXjxUSmovRPF81I38+JrmbIIDBAFu6uaeeitM0wMCKUzi/zdz0/5AUvrl80eFLSME7NxZIaKCb7+bnbeGGLJd9m9rdL1ucWfrk6G/hs+NoioJLByNWoIO4Bd72TOIR933yTzGvf9HkiIfIHVZu6WRJv0VJsn0bQEKefSaBMwET006ffoAhpuxuU+fpbuInJmKhdEX1q6JXosgy5+gdMse6+RtgEtJHhnJecZUKt4lUWkW3p+8cnYSOlvssLCzZO+y3CWtSHjSv69fg0aYz7Rf5C0M/NpNWNteMdGgw6pmlpFr8zflFaLC2eyZzFUylzUOET7t+lqQJq89GfJBPqlENuu1yFoqmgoBzRWp3syvVj30xKapVDzcNgankYSC816zIQsgv5UavNKjzgAABBM7fjdKYWeLtuoONQ1RDapZ86EI86sBJacwRbH6+Xw6X93TpR/AnJN9/Jzsek5BNXt+lL
- 2QMz4hPP
- YtFP/
+X-Rspamd-Queue-Id: 24ABAC000B
+X-Rspamd-Server: rspam10
+X-Stat-Signature: yrr1tcgyk338gfns9th3wercb6poxoyt
+X-HE-Tag: 1767130523-960296
+X-HE-Meta: U2FsdGVkX1857D4+z+4KZhoA6vSMo+UxitPrPdfnFTVpRuWIqdxFBINUwID5MYhHw98pWHAal13Ues2NMcT2Wb9U29grzpDJh37SESQEsa6d0W/8ayBfZUO0bwDNFvvz1sK4k5lOgNYGlLaoTd0ZTBGVlO+xKdH+FY9m/TzoIYZfxLCd/efrraszHlzjSh9F8rmdlK7jAqOx6QM4CYtzEOCgIjjT4Rl0bsKHpe9Vddy7hQzDiSZBzmWR1nMAD/ywYSR7PyHcZ6grGUHMJ1VR8HsPVo4qnuvqGMF3OYkFWpjbjBdBJOXDejHKVED/BiDnCPR145+LnHMHeZ93OjzfCPHUYhnTErdyA1vTGxrWocC+8vcJIQr4gOiw2flYhXtThQkvdGohju7zMtjMbemwFOKQiBLpVk0zR/F5kGwguPFXVXb1BVEURNJ9LxUH/+Yz53DkZ26HukBYTUauRJiZi6itBPKC1I/togbCHwP4xArbouPhm2a39IRCHepJhqm0M4Ns/MKAZrKOpj3tQsAc4HGiyNr1S/WxlU5GtaSyhNjuTDGTvTrq5b4yVuX/QolUnQKK/xJSNrjgvCHRjtQSKo3h894vMciMvXCaTSWiqo6vCciiKU36wlggasZfDhmxGEGTfv2UJCv4I6uFi/9DRVXnPNd/Uj0ZfMWFQDnvHKzJm5xeamecf+xGqFRAhaB/c0dwywiGbEfvTsdS+GGWmZNWHOV3NC93Su6sIbyNmXRSuQMxRwJX/jULHlJKZZoHS4RGJHcrxrBguepHWfKPR68UwkgcDXeNCwrZUzmFeBnkzSPM6ymXYX0KaP+Qwz9v3w+Ef5X2QSOZGUXkM/4Z/ZZ9nZdD7kEDB6t1wtKG4rbLfECEra/+vGL4ScpWvc3bRL9VIUE94ZUv50/d/q6Gil4/OL3PBQz7S4eT92lF5lqaIsTW2hWh4Gk/i0kqxnyo8NSnv/G1N9PqzVg/r6P
+ WYZ2ryDP
+ pEb3zt4EyX0xnsSxGLI2nlIqTsOn0m+HoQom0yD5AN4HAZg6girMOaFAXwnFieTTo3620ynNwm3ZAMFlKG8x+X5+alTY5VbFneeh/j2BnihQzyZebsEIXXRVpDaB+0wzFwAQPNhrWMJUT0yeP4L+0KDUQGx9ABD4ydRcP8p1uSBlf8ARlzGTqvwIMvzpMwZCFRknPbK/UtLIVJWOUXwVDNf22B7jfyl+wVYkTEinLeL+BL4ayUzzhQCscrmU4fH5sia/tDIQOwQ2GX90yrgcJJg+/yio8nxuiyJdJg2zfBtD0E95dPO7IlEPkPrEGov6CBGLc/HFTTtCEjB86wTt/cb2t5mEpjux4Y9dz8dikCil7FQIkm6bozoOIXRBzeTQgaKw3bQ8pGOoZpSI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,54 +94,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/16/25 08:42, zhangqilong wrote:
->> On 12/16/25 03:24, zhangqilong wrote:
->>>    > On 12/15/25 15:00, Matthew Wilcox wrote:
->>>>> On Mon, Dec 15, 2025 at 08:34:05PM +0800, Zhang Qilong wrote:
->>>>>> This patch series implementate THP COW for private executable file
->>>>>> mmap. It's major designed to increase the iTLB cache hit rate for
->>>>>> hot patching application, and we add a new sysfs knob to disable or
->>>>>> enable it.
->>>>>
->>>>> You're going to have to provide data to get this patch in.  We've
->>>>> deliberately not done this in the past due to memory consumption
->>>> overhead.
->>>>> So you need to prove that's now the wrong decision to make.
->>>>>
->>>>> Microbenchmarks would be a bare minimum, but what are really
->> needed
->>>>> are numbers from actual workloads.
->>>>
->>>> In addition, the sysfs toggle is rather horrible. It's rather clear
->>>> that this is not a system-wide setting to be made, as you likely only
->>>> want that behavior (if at all ...) for a handful of special processes I assume?
->>>
->>> Year, it's not a system-wide setting. We consider enabling this option
->>> only when applying hot patches to special processes. If the sysfs
->>> toggle is unavailable, we will evaluate the overall memory impact on
->>> the system after removing it. Thanks very much for your suggestion.
->>
->> I don't think we want this as any kind of default behavior. But the system
->> toggle is really also not what we want. Could we use some per-VMA or per-
->> file hints to affect the policy?
-> 
-> It's really a good idea. Maybe could setting a xx flag to VMA, but it need hold write
-> lock and touch VMA. let me have a think how to implement per-VMA or per-file policy
-> or other better hints.
-> 
-> I have a thought that, how about adding a new flag(in ptrace, uprobes...) and passing
-> to faultin_page() to mark the exec PMD COW policy?
-> 
->>
->> Note that your proposal will likely interact in bad ways with uprobes, after
->> removing uprobes again.
-> 
-> Year, good catch here, it's really need be seriously considered.
+On Wed, 31 Dec 2025 10:28:25 +1300 Barry Song <21cnbao@gmail.com> wrote:
 
-I'll reply on v2 with the issue I have in mind.
+> On Wed, Dec 31, 2025 at 8:50 AM David Hildenbrand (Red Hat)
+> <david@kernel.org> wrote:
+> >
+> >
+> > > -                     break;
+> > > +#ifdef CONFIG_NO_PAGE_MAPCOUNT
+> > > +             last = atomic_add_negative(-1, &folio->_entire_mapcount);
+> > > +             if (level == PGTABLE_LEVEL_PMD && last)
+> > > +                     nr_pmdmapped = folio_large_nr_pages(folio);
+> > > +             nr = folio_dec_return_large_mapcount(folio, vma);
+> > > +             if (!nr) {
+> > > +                     /* Now completely unmapped. */
+> > > +                     nr = folio_large_nr_pages(folio);
+> > > +             } else {
+> > > +                     partially_mapped = last &&
+> > > +                             nr < folio_large_nr_pages(folio);
+> > > +                     nr = 0;
+> >
+> > The whole code was written to avoid ifdefs.
+> 
+> The #ifdefs are only for -O0 builds, which are never a
+> mainline requirement. However, dropping functions that
+> contain nothing but a BUILD_BUG() seems reasonable?
 
--- 
-Cheers
+Let's not make -O0 an objective, please.  We often make assumptions
+about dead code elimination in order to keep kernel code more pleasing
+to read and to maintain.
 
-David
+> If those functions were actually required, the compiler
+> would fail anyway. In that case, there doesn’t seem to be
+> much value in keeping wrapper functions whose sole purpose
+> is to contain a single BUILD_BUG().
+
+I agree with that part of the patch - if the thing only does a
+BUILD_BUG() then let's simply remove it.  If somehow the compiler tries
+to reference the now-not-present function then we'll get an error message
+anyway.
+
 
