@@ -4,121 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED528EE499C
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 19:35:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C67D6EE499A
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 19:39:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E6FC6B0089; Tue, 30 Dec 2025 14:35:20 -0500 (EST)
+	id 310806B0088; Tue, 30 Dec 2025 14:39:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A7F26B008A; Tue, 30 Dec 2025 14:35:20 -0500 (EST)
+	id 2BD6D6B0089; Tue, 30 Dec 2025 14:39:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 289BF6B008C; Tue, 30 Dec 2025 14:35:20 -0500 (EST)
+	id 1BFB56B008A; Tue, 30 Dec 2025 14:39:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1546F6B0089
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 14:35:20 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BB24A8A8FF
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 19:35:19 +0000 (UTC)
-X-FDA: 84277141158.30.FEB39F9
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A17904000A
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 19:35:17 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="oOesI/vn";
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 085886B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 14:39:02 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A1A28B8061
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 19:39:01 +0000 (UTC)
+X-FDA: 84277150482.11.23C05FB
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 86C1E120010
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 19:38:59 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=t+BxswAQ;
+	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of surenb@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767123317; a=rsa-sha256;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767123539; a=rsa-sha256;
 	cv=pass;
-	b=5SPDw0iMvGjSZUq99vQHKyPtBeAzLTrjVGHA6NueGCPycLI4xI6QtR4FT/TVykt5xOw0PV
-	KxELvTS286fxXH2R7OkCP44mFC0hK7LUEuFXK7uBBFyQ6BfvWsUg/cQ3HTFVcIvlnZcOxc
-	hi4n+y9cHuTYxU1k5dLllrdArTmDlbM=
+	b=kjl+QWe3tmRs5PtD0CozIUBxa+JCv40Zgtq56ftHojJa6ZHQ65B3VyPjkd5HQ2zlwPSGJx
+	RYEyd0biJJxITwXPPzNpAMkd+GYLsSso3y/ITPnpodKwVpEIYgwTCEPMdB60J30ExxiLMH
+	33F41FgOQ023JTSShMQiMazZDNmF4Bs=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="oOesI/vn";
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=t+BxswAQ;
+	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of surenb@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=surenb@google.com
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767123317;
+	s=arc-20220608; t=1767123539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DgvRjsZOGyKSe/knuwAYxqkyWhzvXXHljajOPYFJW0U=;
-	b=0EhQMTQ56PIYCFCOOHviniM95BvoIo6dLrnHoXHPTxyzL7SiR5Uxyf455TflDXnbwwAVfW
-	iD6DvqwTSCYu/GrzYv28qamgSUtHrwiaGSLJlmHIJxEvJqWJmrKhJVgk34vXw1p5pMTgod
-	98lN3btIRWaNKBg6oRiUutqHLMagJVk=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64baa44df99so915a12.0
-        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:35:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1767123316; cv=none;
+	bh=gvznMYyZGNxGgUAqPXCv41E4K6pkv8m0/5R0C4P9Z9c=;
+	b=hYoHilVFNx322I7iuvNw1w3BSDlliq6aGzglr1i3tdhk98q3ACU/PIX4/snte9F++SoJfV
+	AaNdbNajiaNo854M6lqIWOJo7MW0tKx6/3PrDGmCgwnb0eEb7OuigBQdzZjHG/YIbNT8ap
+	94mUwxBnmoMkgb8MTVmVx8yZslXj+9g=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64baa44df99so941a12.0
+        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:38:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767123538; cv=none;
         d=google.com; s=arc-20240605;
-        b=hJuJwE3kpcDylTg1ALj5vXTo2X4AOE63RXnSsKiXlepBOCaJsO020Tg/c0cNsDdefP
-         PRPPeEvdqbDWd4mPwaqm/ethdu42q6dRAuDsOH1ClKs5Wxpr1wNlFPNF4t8DE0oB60+W
-         wiqHLg9M7AkiMM38bEAYOXHlou6IZVmBMY+TsfCKxkYgMWsXIiB1k4m+qPFi6+QFENj4
-         8siC6umTsVXiGA1bhXBojJBrtoLJqy0HWm7163on1Eqt3boMy8mQzNcerC3iJTQ8ocC8
-         TDli4bhE5o68S8SHjQIrhMJW6EGwoFu9qnjAmHpTGCOqU9hWqQBWCvax/42swwcppQGF
-         JN3Q==
+        b=Vhf1ywSaKASvFJuv1XGI1ux3Yu4b7S7BqtTnBgue0JQmcV5StQTvSQBOpBQ8TwTdwN
+         tCImEbEF4x2tWprMV3BvkitxBnVJLoScuFJuH0VEyzTgPIcwbvnIF5Tqy5cMb+kn5eQ5
+         fpZUoLprRe+d/q/46fw6f1FPWQM53uZArrpyPdeX4rfJtn2X2o0jhuIQPHSv9+rEeOSk
+         lxi9R8ZM2o1t174SAkQiTELr/kSlVLh5WwOCSDknq/bBzHGtayaUm1J2Q1dua1zK+g5v
+         b7LsGKRfCQpXoyWJl6Vt6GL9WhFRFQLXpPmSVezM5grgKRJSCyMm0gWDZbRyl2o9LIcL
+         xQCA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=DgvRjsZOGyKSe/knuwAYxqkyWhzvXXHljajOPYFJW0U=;
-        fh=WVukIM8gLfgjfYfzDms+7pD4J2WFNXD9/IIbo3Rd85c=;
-        b=ENS7kla+eo+7G0ZU8FFL9Ey8NteHvU7sHNmUsqJYfu8LM4m2IcwyUyNSczz1qynvB7
-         ASl9vX8HYFsPDBykpPJErFCHzDK8Se5kxudWlprtP01hA4gqsvR/JfeMwfR+7sWZcWRc
-         mf6/6U+e7QjFNBpbY7ihC/NN04LInPeWkKHrijqZV0rNToex/kTDG0emhhmqmGqy/iwE
-         3OHAvSRtXauwozCz1WOfqkFMQrhCAC0Y3vD6Rf33XfUXODlcz0lbduesXbKo/NmcIiMR
-         q7bf+TWW5pUyNgnVm2Y4Pxrf0fRyC4t9/ZxSdNPjEKo8Oy4fphs4aZDx8FoS16+YIlTx
-         Xghw==;
+        bh=gvznMYyZGNxGgUAqPXCv41E4K6pkv8m0/5R0C4P9Z9c=;
+        fh=LY6SIDMjUvqtIwsRV+W7f5fFOnO0FzGvOQ6fUDZ75X0=;
+        b=bZ9qqdFehKtu8mpanrOPD0O/+54uwliyEXyG4qQgXKwtDVOHACC34MAfqN+NEsnsd7
+         L2Y1Z39xaPRKoB33occkTovo9d2YDYzdQv4vt7YCVCNhcdzl8zkAs8sw8XXppkJ1EWSA
+         w0fYiCXk3okHBUSTnsG0rCY42/z58umWYAIXPYRlPaJp8ApKz7S6nUG3Lmg7vmBkAver
+         XFKMQDaZ8/j0OLrHc7YWWX1WqWJ190IpiaXmxf36si+nBecCbgv9itvPrAKBH80+oMbY
+         nYjt6teWPanHyouOTmxgNCyd6L5r3wynR9DDZqJbwhNzIMSFZYlmoYNVS1KZC31Ei7zt
+         jXpw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767123316; x=1767728116; darn=kvack.org;
+        d=google.com; s=20230601; t=1767123538; x=1767728338; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DgvRjsZOGyKSe/knuwAYxqkyWhzvXXHljajOPYFJW0U=;
-        b=oOesI/vnV2guxVjMPSa/TSQ+jAck0rKUE/1BD7juCdigabWeI3V2A2t7spM7rDYqJj
-         dI/Jj7Q0QPnjJiW0PnXUUzg3AOEskoXfgm+iut5/ycCSLfhQWmNm+C4tDeQrcGg10lCx
-         xb5TuTKPVdgKLQiFpWX0JysHnzq2OwIZuA0z/ZGtZIALiGODAr2d4OYVGOxXNW4Dkjh+
-         BhzMUvAD3+gt70dzX1znFEZbYiEFwPSXPvJ/ggACico+4+YLjO86cSiohBtZaMkaf1/B
-         y6LwvXIX+HQwPtsYthCEC81GSJPIUimdMwDRa7f5GCDutkEuFfXENx2T0DDT+PtDK82G
-         SfEw==
+        bh=gvznMYyZGNxGgUAqPXCv41E4K6pkv8m0/5R0C4P9Z9c=;
+        b=t+BxswAQ65YmPyOov4xDW3ZIPfWMLHp26fYwO+oOgoDpCSc6tM4NWspI8O4SHRFNUj
+         pW2gP4SE+yG0ym9svZp0wM6j5jbz3Ypb2sDqKHiIMo3tKc0L8UpOlvN/gZ5dNwUINrei
+         FLcRQFKZ5lSt/ecf1N8S/dfHvMiRj6SYLfvAEUhkfUkAYZyB/ButSAJOgiVYkRy8p3gL
+         ZgbvJWTrVdS+7QwpKMlujWmjtzmsPqsUr3c+A2ucuNDkwJtiN4rS7p9XQpINLnLMt+pB
+         ah3IHeMw0wc68Ux8hPzNAhIiMZUEj6l2YH1jU5O3Hj2Uh2JnHQ1rjqwarZvJ98r2JkO2
+         OzAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767123316; x=1767728116;
+        d=1e100.net; s=20230601; t=1767123538; x=1767728338;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=DgvRjsZOGyKSe/knuwAYxqkyWhzvXXHljajOPYFJW0U=;
-        b=kkWUbAPfkji8OFqHlnEsNr4VVPcu3Ku3FtqSMDAAK8TUYICfz/Umj4l3fel+bRtKrO
-         8e9kSYFiRwHgfNRXOGVI+9FFRZqiEzS4f3dZVccOeoron6/55Ep1BbBNQ/y3w8j8p977
-         mtKum9Z0s+x5hs00G/t8HUcp09VeIGR+tkhVtiF++cea2hBLIvgLzDmXC6Mt/3qV3VJB
-         MwfjqOFuButmTr+8YaNpkTWfsYdJi1Incj5c7/d4OF9YGC1kOorTVdsWHtsrS2ZLyHRN
-         9Ln7s+SJOHwewAT+i0JX4L5wffSCgfObNaKzxqE5UBWqcFuYQn3clvmwi+HA758GJl3c
-         BlRA==
-X-Forwarded-Encrypted: i=1; AJvYcCXIBuImw1js760iN0pCwFNx+/EW+p2Y5ZYevmvA7Rx1UbVuKBmFVwxeMCrhe3o2On3ZPzGlP6FmGQ==@kvack.org
-X-Gm-Message-State: AOJu0YzXm2tQecvrkRWNiwKC/Jj5CdaXTYe/x0rCeIJPbQvSyGSfS3m7
-	1gFs0cxMdXF7YG9MhpgcYUdoA72ePjHSyT0jH6Y6PJEFCk8AEx+nmUyJmdzvwWhx5NPiab4ka8i
-	uocQ/5lG/lZLcuXr69NxZd/eqHY2dA1RIEqJCva3h
-X-Gm-Gg: AY/fxX7CgczmEZY/6/D906MQjERuVSKFDmJW+D/FRH1QBPp5G/HF4aUY1y7lCBsTwJo
-	5kqy3u+WWMXdxtruqlIZSSg+iaHLpYLU1Rk6K5s7ofGVJliOVbkoORSSV+XJPzBgO1awewVOfPk
-	ffAjRfO4JbmtNZ5ENqoXucVhozgQY93uxOFgqpMUKI0lt+6MP9ymRUZS0pQcbRM+kbanrLpXEim
-	z8DA//04b/iN/kG66aGu1pOt6MmLoM6md8y2ZCyzrLNy+KvIy+orI21xG6xIPYrh2JEEvbvHz1C
-	4aPF4vlguAu3FfMyrMercZCAnw==
-X-Google-Smtp-Source: AGHT+IGvOANmbwtY5S7RjObO12ig817h9MWuJBPtde2I9vjPx3BIWer2hLNdxtREijh/OKt25yNq16l/38a8DlGuVL8=
-X-Received: by 2002:a05:6402:d6:b0:643:6984:cee9 with SMTP id
- 4fb4d7f45d1cf-64f41c62ab0mr3829a12.12.1767123315826; Tue, 30 Dec 2025
- 11:35:15 -0800 (PST)
+        bh=gvznMYyZGNxGgUAqPXCv41E4K6pkv8m0/5R0C4P9Z9c=;
+        b=UnpWiloCqRxN2u6VOqzmUaR7L4NtDwXKegy3/ZdknqVoFUozkKBGd3nKLL5cUl0cuL
+         /bXU8v8xm7eiCNZHVHq83Jsha8e4q+cQtg5FTIC/JIHJehiy+nUIqDYRUj88yLrBDzib
+         HNjpQ+VskoPUgtiFHBiQMZ5GG/Z9Y0nsQoibvUwNhRFLe6g/58CpTJquZRqZNsE5wnf+
+         X3gpCpDmLZ/6U+NfdifKGEHzFP8v6XY3SGbV5QZIUU+rsZ8/huKBAV71uoCl1/5xKdcV
+         Fq7rm6Ydj5HDOlnZl1jX3IABN8ND2KH7egusVy3JHd7XsNUgHmZ94rvS60m8M8sn3HTk
+         pEfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWDAtz2EZBePAPwhvuqDcJcuXWD5ck8n/3nloZsl1ExtG2LaZzzrGiaN0Pf+ctmP9a91SjxoLMoqA==@kvack.org
+X-Gm-Message-State: AOJu0YxuansFqs3/hTpj9sKniqt3Pk9YQqqNCWd3bBVRIMEMCxeVYa/1
+	Y0kXIBnTKyAIYDP/fkYB34tafbEj8EJjmlXqlVCk99XQDhKl/tsVBTTgyGoX62ZqcXrcxNCBLD1
+	MmSS0pKbe17eWGUZgq7ODl11mVdgsYL9XnoQ8TElj
+X-Gm-Gg: AY/fxX63WeHPBiaU2EmUPDM3sWBCyyUOoEUiopRhZeK4Lsf0WNeCNLGmyjtdoPAQPPR
+	Ir42XUVZp7KG010Oj3/m9GO67Fonht4+fOZjS3/hR7ahBw7cc9VOArl84EsK5KzZg5w01nlJN+A
+	hlhaQLvv2KsQEkYYBkJZ/jBEXZb5RrLZ+PzO+P5GOdDVxq5B365xJgsSa4zZqXEuPowMra7za/I
+	4gMkr0Trjb39i4dnlw3Gr7lGCm++edvY2u3Fn8mG34r/Oj7EcbtmkTXtUdV8s1sXLuBhKRWnzoU
+	CEKGNzaYxbg/LakeIxJh+OmSPg==
+X-Google-Smtp-Source: AGHT+IEpEHj/xGYoKYzyOgvcBfL8Gjau4mxkTywLRH4b01bUVl4hCqDkfFX6kzWpwAgT2dSNReSSyrc6kbm0YsGvEOI=
+X-Received: by 2002:a05:6402:8c7:b0:647:be8d:d67d with SMTP id
+ 4fb4d7f45d1cf-64f4192c041mr4020a12.2.1767123537836; Tue, 30 Dec 2025 11:38:57
+ -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1765970117.git.lorenzo.stoakes@oracle.com> <ea57e3ee7b4d2d40cb7f77703baf0c3ef34bc304.1765970117.git.lorenzo.stoakes@oracle.com>
-In-Reply-To: <ea57e3ee7b4d2d40cb7f77703baf0c3ef34bc304.1765970117.git.lorenzo.stoakes@oracle.com>
+References: <cover.1765970117.git.lorenzo.stoakes@oracle.com> <ff68a8f703701c8e626f0cb190c845c5d883c88e.1765970117.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <ff68a8f703701c8e626f0cb190c845c5d883c88e.1765970117.git.lorenzo.stoakes@oracle.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 30 Dec 2025 11:35:02 -0800
-X-Gm-Features: AQt7F2rTiGdk8z3mFql8ITVHBHZdk4WPi8pPIj7u6qb8I1T2E1oSs_19lApPC1E
-Message-ID: <CAJuCfpFTSAyzHBiz3u599td_A9DrcTjhTi94vE+=V_V0Bkawrg@mail.gmail.com>
-Subject: Re: [PATCH 4/8] mm/rmap: remove anon_vma_merge() function
+Date: Tue, 30 Dec 2025 11:38:44 -0800
+X-Gm-Features: AQt7F2pNZwwSc-1Nyq5uGObM8k-tavap238rloZSrFlJxt1Cu9f1S41KL1tcW6I
+Message-ID: <CAJuCfpHZ=SESegi=M4MxX7gfxiWN=Fmn38XwqVszGoveZp9gUg@mail.gmail.com>
+Subject: Re: [PATCH 5/8] mm/rmap: make anon_vma functions internal
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
 	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
@@ -128,14 +128,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@
 	Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A17904000A
-X-Stat-Signature: 1d3w8yhpyafb6n5xpbkjqhm59jdw6qjd
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767123317-649136
-X-HE-Meta: U2FsdGVkX1/UoP1seqrMo7JGEhUrNZoSDOcXcv1lLyatx1SvfenOEm8Bnn37rlMZJAeKcwWBZLEhAGd6E3c5OSeNVGPCA1FDdq07itiXSyE92ScoXc5BjvV2xOIN1MNdsrxuzvgvKu2kmv0JT4Gde0IC6kzTPOow4D9q8yEZOl9JJv8LgWWT9iS01MnnDjd98EFPS/mfc+f/1d7wFLvjPFveJsJ1+OGcSgJUxvKD+lCyNL8lrTyRMyqWu0+uF9fWiscxjNpFDX+n6bbWbypOX5JowOz0uotBBV/NQ9TDMmVwU+LGCYe9jQWON4FMEM0um8XryV5hM3AL4nyrj+uZ5IhsL+gjO+85zIe1EV3vXeIvLLVo+pHZWDigXMhR8i5874RLljltlH04HW48ig7nTuAeqkojv3bfWEAlpakPk03qxRtoSXMhnlfbOEAjE6vNf7hyrapGMsgRQw08B+pLay4iL4BhGa9SXJyjUeMAPf+ermddIG9bSXv3hq5av0xiM4vUQn1NSP+TdAQR94yvI4okkDDGCVra0P9Ld25psbTuPM8r7qkZOqKBg1NYms7JRPrQY6a6pfKmvJgRCqTSy0aP5Egz2K6LsM4HvG/bHHX1sIZqaR+g1HJMWCNUMfeceNaVpR4/MyI+GNe/7eh+kWkvVywQuB49QTjJc1PmK4Yp2vD1LqrXYp8bMfNUVEo8VGFp2ewPIb5pCTUrOFjkYazHnaKmf8k5D7Jh2U+2FSPcfJs6dCYZSVP0uAvtlFmN3UVH5PPzIOZuMRabIrKGdaHTRBJYkmwkb+nAdITg9h/ejQXdj080bTH7BLhFyUZfxO7xYJbw1ILBQv2TNDtIqasgO25GmeXO0VGepJaypM7L1RWK/VjV3PR6YLhYcMgF6ZIRThg3laVsi1wWTrg8LUjIK0exx/cCik2xYPNRJZlPIZKeA0IGoZwZEUHimSlIgLmzH72T2BQuxNiod8v
- 0XCXd+Et
- J4MNQ6Ce5Yr0WhlDNcXmrhqqz7lklgOU9qDbLQ5TfMvS1aoRpM6iD9aYfIbqsrXgme16wPk6BYgV9B9T59pm9cNEDicSxEKt3hfiyxaVcazJRdaTXVNUS+xoFNVuvjF8s7DQwtKX5/G9bP/kDGaS45grgYMMZz0Yuuk4VltXup1c7ja+fi4x2BfQhWHs7GzEG4EgmuzhZzvfz2byB0wYmb00oUDe8zBdwxb3Q+yi1eGv4/Ma45tRKPNRM25RUmro9KlbueNOVuljp/+A/LoxBDAOOnYqf8qs6JYFVG0FO6h6CON67r3HmVjRfHOtunwSI2XmUIdGLOunio1M=
+X-Rspamd-Queue-Id: 86C1E120010
+X-Rspamd-Server: rspam04
+X-Stat-Signature: co1y9cbma75ob6rwio57syoke6z566r4
+X-HE-Tag: 1767123539-273684
+X-HE-Meta: U2FsdGVkX194yPK/5ZJzMqgbFt9pEBMW/jcM34FKKguUPuu2vCG72Foepc4gnuRdAw8AGG4vSowmIyWsMDw4E3pKEYeLQzwVUY/vvtQqgD+wSLudqg4g0kVkAL/k5cEuf08Ff9a1FG6FZX/1EA+qFFiGH2UksZwNLPWIF97oRO8tp9sEvg8vJicex6aeGjQCgiBM/dk+7u1+TFUeLkhuhIAf6vQ23xl0Q1N6Eo1CpuaunKcpdnQYSl22qQe0+noDqp1LqB34oIiHs7xcOfIOYIVGS2SsBSrNjSjLpqT/s7HJqNtIzbArSk2H7UZGhgua5cPknlMDDj+2otz7B/+Qf8w1z7zXyBfdEsURXDdriPfoukvh1rjHBV+mHvV6nj97o65URDHvS/zYi5CdHYtfPmMxBWDYIIDDYGFwZm+pFPOlkC5NpY9DKZgchZ0GgBzZ5WNqA6gtsr/pPqEX3J4BRiWz5O1k8DvPa7SheTnIMeqUG7u/qeHP2mda6nhZQjl5jEnFO8qGVVC3VWTcpPM4wGW3SAeN9d35VJ3AfK4WqiVFmYYooCWck+v5pZDW+wVWaKI0DdTis4v+wjGOlrDaVP40lJFhWEokzKCKocSobCiPyuYp2iTarxX2jL8FXkSeIL08UcjXl6+MD4JyGUNVtQ+aFrnqM0+VWl/sno67bIrMxLOeihDmGWB8T31LTfHWLva+FpNzSzYxX8BvPqPgG9aD9f0wA5zet+8fVmKFoJV1sUB5leqZ3/YnNnfnKKpAWupVm9/5HKz8CKnhsIuzE3uhUnbPJhrZ6seYA1zz7B5mSjQJcgL8/ihuFgLU/hA3b6/JsaxLocPrTdTRAGL+wPn8iOkrsZF8yk+37A6touByb9Nl30AYWDZLcfr6fVMK5P1oEgJUmifnST/yQz87geUnX47rFc6Vg0pN70RhSWhfOIS6sh68SfG+OjR7NVPhgVE3q11Ar7l3hDFUfr7
+ E18hdCBy
+ Rc2CH2i8kg3V137IQXF5pqvCo+opwiya1ehRKr7wH9F1X0AcIL3JTT3yMtsXpgKHwD1UgEQuZ9bsgbuFwB2DJpvV6NlIFvfdMmEz31oLIn8AxnUP4SCFq3HdH9+YsS35P8/+tDQOrjbZYXEZn9eTd7ubDv/TMV5ONJ5xE/M9UWSu85Etvqwz6oVmKYt7HuEMYvfowE5uWInmTkVtQwPx/WLEap+NZqjlfNDMZav8J16Do3bKpIrQ9DZTfxbxLQAyT8siHOnN4JD2EfuNlqu3yRaITb4YMs/t8z154e7Zybfudb6iXy3pt3wVuasCxAtobo/Rgo35uL5LPOBjHRzVnCqH6tvMiWJiYoxn98G4f7zDDvyI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,81 +147,168 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Wed, Dec 17, 2025 at 4:27=E2=80=AFAM Lorenzo Stoakes
 <lorenzo.stoakes@oracle.com> wrote:
 >
-> This function is confusing, we already have the concept of anon_vma merge
-> to adjacent VMA's anon_vma's to increase probability of anon_vma
-> compatibility and therefore VMA merge (see is_mergeable_anon_vma() etc.),
-> as well as anon_vma reuse, along side the usual VMA merge logic.
->
-> We can remove the anon_vma check as it is redundant - a merge would not
-> have been permitted with removal if the anon_vma's were not the same (and
-> in the case of an unfaulted/faulted merge, we would have already set the
-> unfaulted VMA's anon_vma to vp->remove->anon_vma in dup_anon_vma()).
->
-> Avoid overloading this term when we're very simply unlinking anon_vma sta=
-te
-> from a removed VMA upon merge.
+> The bulk of the anon_vma operations are only used by mm, so formalise thi=
+s
+> by putting the function prototypes and inlines in mm/internal.h. This
+> allows us to make changes without having to worry about the rest of the
+> kernel.
 >
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
 > ---
->  include/linux/rmap.h             | 7 -------
->  mm/vma.c                         | 2 +-
->  tools/testing/vma/vma_internal.h | 5 -----
->  3 files changed, 1 insertion(+), 13 deletions(-)
+>  include/linux/rmap.h | 60 --------------------------------------------
+>  mm/internal.h        | 58 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 58 insertions(+), 60 deletions(-)
 >
 > diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-> index daa92a58585d..832bfc0ccfc6 100644
+> index 832bfc0ccfc6..dd764951b03d 100644
 > --- a/include/linux/rmap.h
 > +++ b/include/linux/rmap.h
-> @@ -165,13 +165,6 @@ static inline int anon_vma_prepare(struct vm_area_st=
-ruct *vma)
->         return __anon_vma_prepare(vma);
->  }
+> @@ -104,68 +104,8 @@ enum ttu_flags {
+>  };
 >
-> -static inline void anon_vma_merge(struct vm_area_struct *vma,
-> -                                 struct vm_area_struct *next)
+>  #ifdef CONFIG_MMU
+> -static inline void get_anon_vma(struct anon_vma *anon_vma)
 > -{
-> -       VM_BUG_ON_VMA(vma->anon_vma !=3D next->anon_vma, vma);
-> -       unlink_anon_vmas(next);
+> -       atomic_inc(&anon_vma->refcount);
 > -}
 > -
->  struct anon_vma *folio_get_anon_vma(const struct folio *folio);
+> -void __put_anon_vma(struct anon_vma *anon_vma);
+> -
+> -static inline void put_anon_vma(struct anon_vma *anon_vma)
+> -{
+> -       if (atomic_dec_and_test(&anon_vma->refcount))
+> -               __put_anon_vma(anon_vma);
+> -}
+> -
+> -static inline void anon_vma_lock_write(struct anon_vma *anon_vma)
+> -{
+> -       down_write(&anon_vma->root->rwsem);
+> -}
+>
+> -static inline int anon_vma_trylock_write(struct anon_vma *anon_vma)
+> -{
+> -       return down_write_trylock(&anon_vma->root->rwsem);
+> -}
+> -
+> -static inline void anon_vma_unlock_write(struct anon_vma *anon_vma)
+> -{
+> -       up_write(&anon_vma->root->rwsem);
+> -}
+> -
+> -static inline void anon_vma_lock_read(struct anon_vma *anon_vma)
+> -{
+> -       down_read(&anon_vma->root->rwsem);
+> -}
+> -
+> -static inline int anon_vma_trylock_read(struct anon_vma *anon_vma)
+> -{
+> -       return down_read_trylock(&anon_vma->root->rwsem);
+> -}
+> -
+> -static inline void anon_vma_unlock_read(struct anon_vma *anon_vma)
+> -{
+> -       up_read(&anon_vma->root->rwsem);
+> -}
+> -
+> -
+> -/*
+> - * anon_vma helper functions.
+> - */
+>  void anon_vma_init(void);      /* create anon_vma_cachep */
+> -int  __anon_vma_prepare(struct vm_area_struct *);
+> -void unlink_anon_vmas(struct vm_area_struct *);
+> -int anon_vma_clone(struct vm_area_struct *, struct vm_area_struct *);
+> -int anon_vma_fork(struct vm_area_struct *, struct vm_area_struct *);
+> -
+> -static inline int anon_vma_prepare(struct vm_area_struct *vma)
+> -{
+> -       if (likely(vma->anon_vma))
+> -               return 0;
+> -
+> -       return __anon_vma_prepare(vma);
+> -}
+> -
+> -struct anon_vma *folio_get_anon_vma(const struct folio *folio);
 >
 >  #ifdef CONFIG_MM_ID
-> diff --git a/mm/vma.c b/mm/vma.c
-> index fc90befd162f..feb4bbd3b259 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -376,7 +376,7 @@ static void vma_complete(struct vma_prepare *vp, stru=
-ct vma_iterator *vmi,
->                         fput(vp->file);
->                 }
->                 if (vp->remove->anon_vma)
-> -                       anon_vma_merge(vp->vma, vp->remove);
-> +                       unlink_anon_vmas(vp->remove);
->                 mm->map_count--;
->                 mpol_put(vma_policy(vp->remove));
->                 if (!vp->remove2)
-> diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_int=
-ernal.h
-> index 9f0a9f5ed0fe..93e5792306d9 100644
-> --- a/tools/testing/vma/vma_internal.h
-> +++ b/tools/testing/vma/vma_internal.h
-> @@ -1265,11 +1265,6 @@ static inline void i_mmap_unlock_write(struct addr=
-ess_space *mapping)
->  {
->  }
+>  static __always_inline void folio_lock_large_mapcount(struct folio *foli=
+o)
+> diff --git a/mm/internal.h b/mm/internal.h
+> index e430da900430..469d4ef1ccc5 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -199,6 +199,64 @@ static inline void vma_close(struct vm_area_struct *=
+vma)
 >
-> -static inline void anon_vma_merge(struct vm_area_struct *vma,
-> -                                 struct vm_area_struct *next)
-> -{
-> -}
-> -
->  static inline int userfaultfd_unmap_prep(struct vm_area_struct *vma,
->                                          unsigned long start,
->                                          unsigned long end,
+>  #ifdef CONFIG_MMU
+>
+> +static inline void get_anon_vma(struct anon_vma *anon_vma)
+> +{
+> +       atomic_inc(&anon_vma->refcount);
+> +}
+> +
+> +void __put_anon_vma(struct anon_vma *anon_vma);
+> +
+> +static inline void put_anon_vma(struct anon_vma *anon_vma)
+> +{
+> +       if (atomic_dec_and_test(&anon_vma->refcount))
+> +               __put_anon_vma(anon_vma);
+> +}
+> +
+> +static inline void anon_vma_lock_write(struct anon_vma *anon_vma)
+> +{
+> +       down_write(&anon_vma->root->rwsem);
+> +}
+> +
+> +static inline int anon_vma_trylock_write(struct anon_vma *anon_vma)
+> +{
+> +       return down_write_trylock(&anon_vma->root->rwsem);
+> +}
+> +
+> +static inline void anon_vma_unlock_write(struct anon_vma *anon_vma)
+> +{
+> +       up_write(&anon_vma->root->rwsem);
+> +}
+> +
+> +static inline void anon_vma_lock_read(struct anon_vma *anon_vma)
+> +{
+> +       down_read(&anon_vma->root->rwsem);
+> +}
+> +
+> +static inline int anon_vma_trylock_read(struct anon_vma *anon_vma)
+> +{
+> +       return down_read_trylock(&anon_vma->root->rwsem);
+> +}
+> +
+> +static inline void anon_vma_unlock_read(struct anon_vma *anon_vma)
+> +{
+> +       up_read(&anon_vma->root->rwsem);
+> +}
+> +
+> +struct anon_vma *folio_get_anon_vma(const struct folio *folio);
+> +
+> +int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *sr=
+c);
+> +int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvm=
+a);
+> +int  __anon_vma_prepare(struct vm_area_struct *vma);
+> +void unlink_anon_vmas(struct vm_area_struct *vma);
+> +
+> +static inline int anon_vma_prepare(struct vm_area_struct *vma)
+> +{
+> +       if (likely(vma->anon_vma))
+> +               return 0;
+> +
+> +       return __anon_vma_prepare(vma);
+> +}
+> +
+>  /* Flags for folio_pte_batch(). */
+>  typedef int __bitwise fpb_t;
+>
 > --
 > 2.52.0
+>
 
