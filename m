@@ -4,208 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8830BEE0203
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 21:13:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9192EE01F6
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 21:22:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E41D66B0088; Tue, 30 Dec 2025 16:13:25 -0500 (EST)
+	id 4185D6B0088; Tue, 30 Dec 2025 16:22:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DED066B0089; Tue, 30 Dec 2025 16:13:25 -0500 (EST)
+	id 3C5986B0089; Tue, 30 Dec 2025 16:22:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA7866B008A; Tue, 30 Dec 2025 16:13:25 -0500 (EST)
+	id 29A5F6B008A; Tue, 30 Dec 2025 16:22:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B5F8C6B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:13:25 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 69F301AEED
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:13:25 +0000 (UTC)
-X-FDA: 84277388370.30.5FDBB00
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012022.outbound.protection.outlook.com [40.107.200.22])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 96C794000D
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:13:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EUXw8xfE;
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.22 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767129202; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 134726B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:22:05 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B30921AF0B
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:22:04 +0000 (UTC)
+X-FDA: 84277410168.05.7436F7D
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C24131A0004
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:22:02 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=PlJ3KxBQ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767129722; a=rsa-sha256;
 	cv=pass;
-	b=f55G+GnqjsWdZRED5q0MPDctwMfrjsjj7oBC8c59sJuWgoKt9OdY27Xn/pFJQETNw6p50W
-	hY3mUr7fNbp2UhKeSY1xLtzWkMMiBYVZihtznIIwSGOWx8fJrDcueopUWL5uZUHJ8f/0IQ
-	7R1nux/U9sFPLI9/TT2zocXjrSoMfXI=
+	b=2BiWr29EVSTJHyBKIzccjFqYvVwGVoVQyCvXkXntdQOnjt4eowXcSHzgrFcpwgtE2wVpL/
+	+hgR1kN/TG+H23I9WKpaPkXmpU6AyYwjgLH6PMwx00XY+Aw7UQDpQH79KQQ5iGxoYS3kgt
+	/eAxcmqm0IedwS0otI9BewgDnMV/t28=
 ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EUXw8xfE;
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.22 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=PlJ3KxBQ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767129202;
+	s=arc-20220608; t=1767129722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0PcILKFRq/rOfIBUEky3a+xKmU8zZxmEkzp6gC9QtSw=;
-	b=aodtMXuYlVGYOLG3m12xdjwbPDgm/ZC1nBeuRqXNOb3ytVvuSdKv2fXNzjW8bVpSkeN3Nm
-	qPXFfY9VnKgRZWLk2t1DGjsGxyN25rpZjYHAqGiqNkOPJyjStMQoSOVeAa+Pe6HvOJPd7M
-	IQHMHnDH7F82jSJDPTOEpb5duMDFDjo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S3zPdYW9fKi18+EioUFo2JUTUkFfOPVHxHrDhHn3UKwOMVnzUvHANOzMIXcomDG6w4vX9GvEH1pG6UAtSxgz2582MweRUr6c1QWaTn5yTLg+QXIn3cXFWpgJ7q6DYmCyYmdnwGoP/MY4uXjE+g33FSIyCJ5yTTd9e+2P99aRwBrMhyq80PX9fltBg8G3VbIXadUbj2zJKq35FzCeq/gx2S9GcP5r1RcK+NDH5syhBGUTEuJtVQyyl+eNx7sPu+j+8igmf7i2pS1m6k7dfv7bMJmz3LwnsSljZEAS7xIQMiKvIOLuR0n3cSitwiFonfIa571D5F8dtQjyp2GNtF1Gzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0PcILKFRq/rOfIBUEky3a+xKmU8zZxmEkzp6gC9QtSw=;
- b=Jjnm2ObbKjzyt+AO6ufvVCR8Kj896uQ14600efc1IRMgGs9dN9lu7Uv4RFAoP8yKAEstYa0QIAmgLgL7N9nfDgV3dZDs/yogWWelKMOHAM56y71CELFt/G0RRsY1eYJJCUC+qpUKTVVnhOfVQ1weU1KtmhbrhrrG2pJVngMB6eiE1oWwHvDj0OhqIVt0MCfU+rY+cl53bISRfV0TUYO+MR3qDdOIAuEzstgX9T8vuB+CG66JNNCG6mEPCAw4wNkuEKPt8NiqiL+BJHJRqwoPY/em0YuXC7bDXGtjO7YH/NdaW4GOKXihGuTm8ioM2yIyQDMjTFYcHIAtCYx+aWrcVQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0PcILKFRq/rOfIBUEky3a+xKmU8zZxmEkzp6gC9QtSw=;
- b=EUXw8xfELuZay9VzGCr2NIrP3LdaNvcmlNDwxxfPqiZAnOskF2GSt+X8qBgBEntGop5RzwtMWTsyvTjx+i9tL17zQfBWUOONopaW5HR2GqzbDyQWiHbSY+HWa4749H0uRbgEzhXIvKzvBjvsfnAI6IwcFHL6EGv04DZj6cD+Y0Uco15ltGHvUOtqJyeKe1ludC3xNWSP1OOkz6SDpfUFptGOK56KWZLJC+luldCkWxJhIZ7Hx78c8KJcrAYCwHxqR3+ZzXe9FgrFwls1DLvICQ+QYcLNqu3qKK4asn+CjFizbjtwiy76eMiFBmnmpBKd7EF7H65WZUH7mHJ1RUlNDg==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- CH2PR12MB9494.namprd12.prod.outlook.com (2603:10b6:610:27f::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9478.4; Tue, 30 Dec 2025 21:13:19 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9478.004; Tue, 30 Dec 2025
- 21:13:19 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
- hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, muchun.song@linux.dev,
- david@kernel.org, lorenzo.stoakes@oracle.com, harry.yoo@oracle.com,
- imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 00/28] Eliminate Dying Memory Cgroup
-Date: Tue, 30 Dec 2025 16:13:16 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <4D71B0D1-B7A5-4C29-BBA2-2E055E19A4C9@nvidia.com>
-In-Reply-To: <7ia44ip7227h.fsf@castle.c.googlers.com>
-References: <cover.1765956025.git.zhengqi.arch@bytedance.com>
- <7ia4ldikrbsj.fsf@castle.c.googlers.com>
- <1fe35038-abe1-4103-b5de-81e2b422bd21@linux.dev> <87tsx861o5.fsf@linux.dev>
- <c3ee4091-b50c-449e-bc93-9b7893094082@linux.dev>
- <krpcb6uc5yu75eje7ypq46oamkobmd5maqfbn266vbroyltika@td6kecoz4lzu>
- <03C3C4D4-DC37-4A2F-AFFA-AACC32BAEBEF@nvidia.com>
- <7ia44ip7227h.fsf@castle.c.googlers.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BL0PR1501CA0018.namprd15.prod.outlook.com
- (2603:10b6:207:17::31) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=IQrN+2rB3cWiVGcIG4F54rzpIEXG5AUtmz8WZOEiK4k=;
+	b=XeO5pT9+4VOwbcAvc6FdS/xZRbPRR1Foa4Ndy1Z5w1avmnk197F2zluxK8eSrp8IlOQ0X9
+	kZZTPgosjbk4RkUGw/dxdiJun+Jq/GmMuvNp8cyYypYsF3dxbmn17FyLqaNGlOV5znQl2j
+	sIL9CuGmackhUdNF8xarlUWC8IrhVqA=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4f34f257a1bso59571cf.0
+        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 13:22:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767129722; cv=none;
+        d=google.com; s=arc-20240605;
+        b=WxPa3thUnWLk7ADGet/Ob6I9QH9PMjZdSObCfF7GtL0V0l/yXxml1++TRcLltc+7aN
+         PpaTy52fyDXy7ywK2m/5iSEz8C72kQghaRB+EME33XaSIdksp1TTqzfhQgWYcekGP9h0
+         vmOVdgz7npc3gv+xP4iOn+9I3+GNAkd8jYGrsv8fAejNeuxKSwJiEMi4s9QC1x2BNf8M
+         Rav/LGZ3o5SEiyIuM417MV7itopNRwg7PZ4KBZLLjkgUwJ/ENwqtdFO3oEv0pKx92QAk
+         Uu2VNlGpjbjTEGGANdfBzO+7fdfGhVfXW1+9Y8jqUZuvRWgBfW9M4+PDliNF2vvEc/4j
+         89JA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IQrN+2rB3cWiVGcIG4F54rzpIEXG5AUtmz8WZOEiK4k=;
+        fh=zeK9ktROIFftn8qmyL1rZuxTTqZ5AfF0QvPnhTO9PTE=;
+        b=bnaRmrg1ub1gHrOpz5B+tFGBfSC/KagyrIBpN5TvzvWQxBHXJ9wolqPSDQFU3Ug7iX
+         mIcEUeGF+EKCBPTek7aCT0H4N1oZ2gtc+F5T16pDqt4FICNhlXkEDZWtK4XAv7YARw3k
+         7ureI/+JMIgtxogKoDUxObguFc+sGj36q63d1doqW5ts1jovafgyNUTBNAbld2LxaM1j
+         yGjc4CO/C+3mde/S4/UyHLAjLznVP5m7sJWuVYAXKrxouo1PONrzKU5CT+BbuBg+6h5T
+         Fhw1N7zK43QKv/35JswZjbzWeFqqnfaIOC5Y83Rvv+3jo67IfeIl4NWV7OoJzGNDSuqE
+         gfnA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767129722; x=1767734522; darn=kvack.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IQrN+2rB3cWiVGcIG4F54rzpIEXG5AUtmz8WZOEiK4k=;
+        b=PlJ3KxBQ+PE41py8H5M8mgaYg9Wmvo7nJUdXEzCYGH8Yvl3GMSVGcl2RyR8sGgpUF3
+         WrZWCYrTUEvsEZKL8i+mljINwU4WKqdNrQACG7fy/9xvE6rrixJUZ4ntOZL8cnyz1XmZ
+         aCZzOaDD/XC8sPc1b2m5RXW0GlB8KRVoYdF1a8upHwKFbVG1f+a7QN+wF+MLe1U7YNoh
+         xkl97aOj/QoOtAJaXbLev3IX9KaBPL7sDGA6pry1KjhiWUxTsMD/zNlOJHTMCYNj5BRh
+         wG2gEcfXbMbwww6K8ccx4hJ+ThFvSI4E97B9tgGymMWBZ3egQKAytIFveUtgGNhMrni5
+         zYKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767129722; x=1767734522;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IQrN+2rB3cWiVGcIG4F54rzpIEXG5AUtmz8WZOEiK4k=;
+        b=gh/359BeKL342NQwTJtnf2bsjWoqdyh6rXsIAVsn5aWPuRnwh7wnakGpQdWInUn80m
+         DEV9rQjODFVfMhFBLH76JtcaxONZewwDSMIUGn6dLpjba/McrcUGG3u2thUVwOvdU+ty
+         4XdbL44XEPcgPZv6fVcejRJBVFg0FI+MnaOuwLKa4Ys2AXA8efcp3ZhjjZNPWFo2gUXG
+         R4WFN2B/SeVwZ9Ma8vsniFSqBU52Ud5tBARSDcKxqTb3Kk76d+/fIKHDrCOnKo6sw1hD
+         xgSktjwM/i+7p3YyeWunsvoDXKPPh9w7cBV/Z7uHrbRenjS/Yf9hsLuKHEGVO93buJKn
+         3m1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWs/aA81T/xWJbaTvBMR1OCdoKdVMwkoYuKVuCMtEbIgV5z0LTD8c7KP9z6KQhH8rPZC7smDJMr8w==@kvack.org
+X-Gm-Message-State: AOJu0YxpMInxpQyRpJPXSHWoZiskVAF2Oi8VHX/a3sAkwqA4VxRikEz+
+	IUOuvMGMGPuCZzJB2VM58fPJb7mlvGorLTVx87waW7ojakdUlJe6SWERUb40yYTnnLEw9SSDtns
+	Bs8e0qjkY/v4AzCPriFrdFxLQ8eWmu6fmg9Y3H3Ku
+X-Gm-Gg: AY/fxX4vvYKisgDyMMYUQv40mHkz2IARBby72tOL3b+wPbT/stQkWerPgAyBGjHKgyd
+	BgusoOqkmpe9AIW5CvpqR194VXfTW/wSFl0jUOPCFSfKFnaqa2cKUjOUg/g1WjvBKvpz5VQskCh
+	sKacUwpz3xPWnbmm38YDWt402rci5POO2VXx8z+7U3f4tlxwfydF0tQW0U70GlmPmCvET8cAliJ
+	THVkjQxJjoscx8TklXOLSgX7fvYt9ORg4AXKDmCyxEopWurkkhVsVqMMOIosTIt9ivYkopKZAWl
+	unaKDfjZl0rq9H34h3nnGYDjnQ==
+X-Google-Smtp-Source: AGHT+IGHo1RLWSWmLv2BBFK2cH5G1jrblcoFzel3R5Jg+cTq/s6H7omOzURLKmUdNx+rI0F2B1inZ1idc0z6e8SnRl0=
+X-Received: by 2002:ac8:57d6:0:b0:4ed:ff79:e679 with SMTP id
+ d75a77b69052e-4fbd687b731mr824201cf.19.1767129721485; Tue, 30 Dec 2025
+ 13:22:01 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH2PR12MB9494:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee6e9ca7-14e6-4ec2-26db-08de47e841d0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZHdrWlZBSlcwUzg3MFRRNFl2QXpHMENXb1c2SVZKV2pKRXR6N0xkVU8wYzV0?=
- =?utf-8?B?YVNnWU8rL3FwZFY2M0xnazdhYjc2MWJrY2F3V0NQcitkZ1dUbm1zVG1Nc2g2?=
- =?utf-8?B?NUJSRkFnR1ErRXI0K25QQzZqUW1ydExRVEdGQ3ZTdlFlK1JsM0xuQ2hwbFVB?=
- =?utf-8?B?aVNTK1NldjFsRHlKOVRIRHRkeldqbjVMQTFNOWkwMFFqaXRVMWo4dzMwSUhk?=
- =?utf-8?B?Q1ZDTFlFZXdXS0Z0dFJNbVI4aXdqVytCcFdOQjV1bjdJRktnRlJIcDBDUDZp?=
- =?utf-8?B?eEJYK0xOb3dQYUs0MWZKcENLd09CV1NpQmVzMEpOSzZFY2hPcFF0dk9FT0dK?=
- =?utf-8?B?bXZndWZjNGFiTlg4VW8vbmtQNENBU2M3REUrbysra1hBYXNKVjM0aEp5WXd6?=
- =?utf-8?B?ZEhwbGh3TEdKWmJBbGxLRlhoYllsbzNWaXg1Vm9NRXE4S3dOQzM4WWpOem0y?=
- =?utf-8?B?TXdWSE5SS1YxdEZMR1lrdnU2TUJqbW9NZStWNkV5RHRQREhYOXJ6VkwrbG5u?=
- =?utf-8?B?OEhzNjNERGIwcUtPOFhPVVVIRFYrZGdSWjBvOUluOWdDUDdXWG9QV29VbEwv?=
- =?utf-8?B?d00zNWppVklhS0x2cjVWeDhoUXVvL3ZHWGszZ3hSMVZhNS91RFEzUnovRXlh?=
- =?utf-8?B?ZFpENnRCWDhYVEdHR0VmcnlUMExzY0xHTWdtY0NhTnZJSzlqL01UY0VlRWpN?=
- =?utf-8?B?NWxZK2pNVGptd2lvNmN5S2RhTjRIR0dBZTZsRVJGMStZRVJ0eitobFJ1NmNu?=
- =?utf-8?B?TUNZZXc1UUJ0OUsrWlZTSnZyeDlCRDJScUhtTnc5RXJOWnIxU3JncEhzYU91?=
- =?utf-8?B?aFllY2UrcXJraU9iZlF0MkpwVWdXL2NMMW5vOFlNMGpDS3d0TEswb2xkWVhO?=
- =?utf-8?B?RXZKQ3J5U0hDNW8wbnl0MUNDeWtBUVIreGk0K3BVQW1yYk9WemhSakJHb2sz?=
- =?utf-8?B?bldlWlZtUjNtenJTemppd01LSlowQ0hvYlcrOUlacFBNUGpGbWZkVENhWjdZ?=
- =?utf-8?B?OFBRcm5wcmJadm8zZHZDUHhIYmNnWXh5R0J5bjlKZ2tUNmI5cGEyOFRncTc3?=
- =?utf-8?B?N2kzTWtGYXY3MGllY1Q0R3I2cjZMODNXSGJMSm9GRUF0QUhCQm9TS25NTWxQ?=
- =?utf-8?B?UTdaYzNQbU5vRHJOSjdBb09QR0czcjlCTTMwY3BuempUd0ZtRGc0SURHMmlE?=
- =?utf-8?B?a1YvQVJhMlJJZENLdEdHQkdkRkR3cU0zb2R2SlhEZ0x2Y1RERENMcGRzSXBK?=
- =?utf-8?B?Q0ZIUGRmMkFWa3BGNThsdWMvYzdHOTNXSE5uRmFHK1dXR1B0dmdQaHljRTl0?=
- =?utf-8?B?Y1l3aTdpVjI5TEk3aURIMFBKcmhVdzdzNFZ4NTl0bWdnc0s3ZWc0d0lrczlG?=
- =?utf-8?B?WXd4WGlpdmpZNUhTbkp0RnFPdnFlVW1YMXNPbWpoL1RZYzFZNFd4NW5SRXhS?=
- =?utf-8?B?NVVlWlVObUJDWU1wYk5FNHpVbm9ZQlhyV2ROSnhzaStqS0FnTVE3L3ppMXNx?=
- =?utf-8?B?QURNeFh6cFZWVGZkNVM1Z3JXN2NBUFFLTkU3TXVJeUhOQ0RsNHhaZTRJOWpF?=
- =?utf-8?B?R1lXS1hwSzZyRUsvdmJ0MjJTaVRBa3FGNy9INitDTlhqTEpaSkZXbk1yaWR4?=
- =?utf-8?B?NUo5RnRiMm5ERmNEUHNuV3VFR0F2aXhPTmZLZStmK1ZWaFIyYVN0WVRYdE5s?=
- =?utf-8?B?b0JuemhNZ3dHbXhWdzBmZ2l1d2lITHVma1FmTG4wWSttOVFqdlFwVEozaUo3?=
- =?utf-8?B?dkx2bEd3SHgxN2grWTV6VlpjcXBNWSs2S3BIMzc1RFVhVFhDeVN2ckxiTkFw?=
- =?utf-8?B?UDkvemxNenFlbHpoeUQzcEptOCtWTXpGL1RCS0I2VHMrTXJEZ3NZdEpJWE14?=
- =?utf-8?B?aUd5ejlUckdBMk01dTRrWFdiUjlxSVJWZU5Wa2tBb2pWeS9qRzJ3T0M1RUN1?=
- =?utf-8?B?aTRpK0QvTC9SWkxndkpkT0RqY1BhWDJrYkZGcXpETjVNWmJWSEVVa1hKR3kw?=
- =?utf-8?B?REVuSTN0TUNRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MnpXWGRLT1Jhc3FjL2MvK3JYMDcxSG5RV3BVckFhOHlxYXRkYTVaTkpCVm0z?=
- =?utf-8?B?V1lDOTBxQmN0bWJSNXV1OFU3Ylk4cUdxSjd4aU9OTjhBYWZBekVWUFU3WDRx?=
- =?utf-8?B?NTVJekR3NEpZcWkvVW9Ua1lNSTNXa0oxY3dWU2xvRTRJQXJrRHp5NUU2VDZz?=
- =?utf-8?B?QkZzUllzSExMS0FrY2V1bWk4MjNLbUtpWUZLSHZGN1VITFRxMjk2ZU96Z25E?=
- =?utf-8?B?M2twZVY4bmZJc0liTlFsa2dVNzJmbU9RUnQ4WU5WVUVsUEVxb3VQTERxclM0?=
- =?utf-8?B?dnNOa1hQWDl6MlI0Z0ZGTUxJQVFlZWtVRFhhTzN3UjVzMmh6eXRDOHhiNytH?=
- =?utf-8?B?d253MWZ2ZlE2NThsL0NiaTg0S0xlb05nbldwMHpxaWJTSDFTOWpsMlBXWjY5?=
- =?utf-8?B?ZmkxTmJ3TlozSXRQUE8vemV4a1NNN1kwRG9zQjBYZ2ltTVAvdTVGbTkwbjJo?=
- =?utf-8?B?ODA1aXdGbmlseWVvUGo2ODY1ZXBsM05TZzgrNFBhQ01mSW1iazhVbnF5RkRJ?=
- =?utf-8?B?eEQ4VGRBRWU3YVR0alBYU2t3cUZIZzgzY2R1bzNzV09LYkJoMmsxSEdGaGgy?=
- =?utf-8?B?bjNObTFqK202VTh6N1NFTlJtbGJTblJQRTlvbnBzZ2U2V1NtQjkvYmJwdlBV?=
- =?utf-8?B?R0NKNlE2bmFaZXNWcVNGd2hyaVJ4Z1JFQndvSFRkdEVra1E3V0Z4WVU1eE9z?=
- =?utf-8?B?WDF6TUR6Zks2c2FmWEZYY055OW1FclZzQ1QrcGZHK3lJZHkwMTVoTXkxU3pQ?=
- =?utf-8?B?MC9jeFNZYWFMQlRQWGhTYXN4d2kwTm9ZVGxadTl2K1hkWk54RXk2QjdMVnpq?=
- =?utf-8?B?YW5Yc3E3aTl3b1JJdFhWb2x1VTIweW50VjJRaTliejRPdHhIWGRkdlZONTZz?=
- =?utf-8?B?M0pyM2dMMFo0OGxjeEEzQ2x1a2xYL3RpYnlVYlZpK2ljamxmS0FWYms0a0kr?=
- =?utf-8?B?U3lsMmdGblJyaks5dGFvTFVRU0tNNGhZdnpuOWxrbmE5ZTkvTzYvSmpCc3p5?=
- =?utf-8?B?M0ZGZE5UTG9GN1RReDJ0WGp0eDFwZUpWTUs2K3EwdklXUld4N2hvNStEQ1dS?=
- =?utf-8?B?ZDlGUHhSV1dwNzBaWTZzVCsrcXRtUkpCUWlGT2Yva0VKYm1HKzFyTkxPd2J5?=
- =?utf-8?B?a0JTUFBDV1FjSzRlcE9NWlhrcEpxTE9LK0ROcUJWQUJEUFhjNi8zZTh5Q0hC?=
- =?utf-8?B?MFVmSXBJRE9adkE4ZmNLLy8rTFNpcnRBeUZNbUdXOExqVTJ0RkRnRk1nNXky?=
- =?utf-8?B?Y1hjcDJyNTExaXdNRkFoV1FVL2szcVBiMUs2RkVyWTY1d2xsQ1EvbVU4K3JQ?=
- =?utf-8?B?TXlrMjZiU2NLckZGMU5ZN042RjdaRzQzSjdyYk40eWhEV1RyKyt5ZkVVRk4r?=
- =?utf-8?B?b0tndGVwVGhSNFNJVlRPZitoc3MrMlBaY09CZ2JDSzNNZ2JGekJueDVtL3FP?=
- =?utf-8?B?bFpwZVZFTnlLN0hoUGp3VDNjejhSZ2RnUklwSElqeGV4UkFaNEJuL0w3c2JE?=
- =?utf-8?B?SXFuK2dsdi96M0hVaXFiYnVSMElkVlpVb3BnYytxakZGdUk4SkNLaSt4Undn?=
- =?utf-8?B?WEREYUhGSnZ6TnRVbitGdC9kYVpCTDBVS3RIWTN6NDNtNnEvemJuOEtDSWQ2?=
- =?utf-8?B?b2s2eHpQUys1TXEzUERPUXpiM2dPVWNCN2J2Y3BNSWlVWnhJRXJmbWR2VFZw?=
- =?utf-8?B?bXRDeW5IcTRSSS8vR3VTQlVsSVExZ1ViZE5BdXFlTUV0K3NwRzJsdG5uSERS?=
- =?utf-8?B?THVGQnFnSXFKcitQc3cvS0V5Z1ZZR25hNTFyazNTVDd4alRJZVZ1ckpXOUlQ?=
- =?utf-8?B?RkpYUkMya3F3UXBXS21NUDFKMnBzTjFtU3hhcklYSXhUZzFjY01maWloMTVW?=
- =?utf-8?B?enFibS9SUXN3S0MvbkV4WEN4UEJ3THpHaHp5dGh0dElCWk5Md3B2bzZBODFr?=
- =?utf-8?B?WDR0YWVNRm45T2VhTzROZWdoNzNleUFCSnM4YUVLeGZ6V01zMWliaDcvbldn?=
- =?utf-8?B?dnczSzc2YW5YZXJaTzZwRUZiMEtJZHo3ZDFXNzJodDVlMlRjcWoyOWZIUG8y?=
- =?utf-8?B?TmRKdWhUanhYSmZycUJmc3pqS0RHaTFTVGtJckg0MThLVXZKMFBNdlJyZmJH?=
- =?utf-8?B?c1NlZllSMjlHSjJITFdNaVFJZ0QwcEZjU3A2eTd5blF4d3FDSWVlYzJYK1RR?=
- =?utf-8?B?WG8za09EbjlCN0hid1dXS3BrMjBZTTVwRmEwc1lGa0VxUTJkUlZKRFpjRkQw?=
- =?utf-8?B?MkpZVUVpUXcrN1F4aVlGS29BRzJNVXhNZXRpaXZPcHNlQUNlSzBsL1hDN3Js?=
- =?utf-8?Q?b6GBSIkB7VgK0d3iUG?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee6e9ca7-14e6-4ec2-26db-08de47e841d0
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Dec 2025 21:13:19.6144
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ujrtgz8/MtYbQaclCu/lOVDSgzuQi7Uk8NldgrfPy4WwnMmCUbyaaP0PpEIdPNRT
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB9494
+References: <cover.1765970117.git.lorenzo.stoakes@oracle.com>
+ <3acc90a8613d5e2ea8882d60b5677228e6fe624d.1765970117.git.lorenzo.stoakes@oracle.com>
+ <fkgm4eqdwymljueszhsfyvm2zksc6x4vagca2mlnpl7vtawap4@d7obev7d5hce> <CAJuCfpFYQasYVb3ds_-55aqhnjBaX2oH7fJ_wJSPZQybiSrAPg@mail.gmail.com>
+In-Reply-To: <CAJuCfpFYQasYVb3ds_-55aqhnjBaX2oH7fJ_wJSPZQybiSrAPg@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 30 Dec 2025 13:21:49 -0800
+X-Gm-Features: AQt7F2qbFtKydtQ52uNm8uz2mDtojpMSCpcNV9YoryPz7xCcMe1Hsus75yD7G9U
+Message-ID: <CAJuCfpEsGcLikHyXeqG5NnRLy9+A66--=3XPbhR1qMxUY5kywQ@mail.gmail.com>
+Subject: Re: [PATCH 1/8] mm/rmap: improve anon_vma_clone(), unlink_anon_vmas()
+ comments, add asserts
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96C794000D
-X-Rspamd-Server: rspam04
-X-Stat-Signature: m1itcsqpb6huwmjcg77yqcodui8xy8sg
-X-HE-Tag: 1767129202-522585
-X-HE-Meta: U2FsdGVkX1+ffk+I9AJsw0w2gcYb0Hoe0wmkYIoZ3mpCQ5BEM5sYHKfy8awTBqaneZgcPL8MsjZJpV/6YFEnYPQnnZ3ueCl2rL8Xz0HRtMtk9HL6s7n/2MpfNq3lm2ZWDf3k3Z1QK97B+r1xdSu7xPeB/BTqbQpcbAiDo/RhlAYJdNd6kJ1Ls8PGlcOA1jPhvwRc1dHmiT70oZ+2jUR+FOn/de1wN/15G5hhQm06pC/i6mfJ1GhgA4YyGyQHxZ4ENAUY8i1w4krSUYik0HHnroWmUgtUY29Bu6+/UuHzRz3c2pkECj7AbO0nugKgzRkBmfMMQVukN6u4kk/RBYVCwb2Lqg7pE1oaWiNZYXsv0qCeyHU5wP85ewv/T0xIeSzur6gVYq3j97wRJ/xF3AX3KulU25/FhC5yBGUac2QhBOxCOv+dZhZM90ksEnCuaO/ozkbTscJOlmiKv3kWT+tAK6/IdK7lFWbP2NxsF8mvan2n5Asx0nIQWbSBndneW1ip5W6susc3YpX08p655At8/+K+SJ2OX2dMXBbDeGOEyNaSH8dWXl3HiQyKDBdqcoXJO8gViR79yQR+M5UePvcAR/MPptReCMJuLqzMs76o9RGDvmhZw5p6c5OaZMBI5OGSaneJxNFueY8i5ENWu6+Q/hc1WeDQv2pp9NmoFMj8r/bXZhFBFKyeT1ZdNW9n9dx3lL0Wp2ncMIbubDfCVQZ7bHgFrAQgssOC9sVosGTAzsW65AA29MxL1ZTQa5fKhQU1d2jblWFO+qOBz3M4+OpVKkTcAXTKDTBDZb9Y6ZQHVPEP51D50thhO3dpLg2/Pp82l9618RiAX+Ls+lA+ETbDGJRBdxqrFN/yQo7lfCJRTd5LLNzhg98YF/0+4aYqNLxNCVL4CnVWMKjp6lvD7M3dbMVA3CBDv94I/8jkffQm+aoQ/f7bINL0sU41+/kpBBqAlmENxCxO6qquzrufoW+
- dA2Upe1a
- AM3KM5F/Ay9SscV9qqyV6RIbA3NHVwk5PBUuu/ioRTjCWjJ3tRdugaDMCZeG5YDGh3GRSV3gNL+QURmpaFNHKA+2uUDkAL5ql5YzuO8DYB2NLVlD/IZxVd2Sg52r+Es5r18IP4wZZNmgYcI/EW7ZAhmnBlYUiG5kRYoacOWf/24tnqmx22KJO6ksG9Alu1BanqL67DTG2Rqpi9sVDddN6mfvlJvVx9QN/FBFbZPydGidPAVffy07HiZa0UcPSEVLaj0wHnkgPEav/E5UDv5VeUdF08FOUE9LstbuNJmjVzGYs/yP62bSncZsvq485eznvo0NlBhnZUnvoFmBiKnlAHoGsIOyb5wh6gN0SxJ3olzt2Uk5LhBib1T9TPtR4jsFxfhSwglnXYPir6CW64koM7qFkoXr6DOyPnoPqAyInBMJMuvI1b8AakETCAsijM9r0uyQEZIAjnNFsfIbKJ0wd9ps8qmuN6QGFIVU4
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C24131A0004
+X-Stat-Signature: fowu4iya5a197nteik1mapmzt5g1wsr3
+X-HE-Tag: 1767129722-190643
+X-HE-Meta: U2FsdGVkX1/DTtyoUC9a90v91F0AQR5VvHoIdhkaUfm+penDL6iq1YiKFSCQYfIZUeP5NW8+1hxdSiA60dYhYnrj/3WKbzqM9NEpq+nyQyc6JYPqWvHknIGHeoFHcb5uVOBL998nE8IEv4+WuJsEqqY4lcaR+BRLnSF6Gpg/p5WJApemuar6/YcJuSxVgixzQ+JkIxXyaBPt8gyLPTyAyPL3pANey/xx30IDFjD7NqbCc0ow+tXPCPwBeMXSDHhEbxyhigumQ2tX6zNRR4dQa12olwjq5G6l7MMcfFma6nylU0GKi5gyznITAE1iuTv9eqKt5mRznR41cIEOK12bMo8BmVazgXJBgwtPxi5MdEyVou2/K7ui06oNFyCB+YufbQ5AxrRizCE21z5wY+Rkyk+ii9nDaWZhcd6zWbaG+3KqfmfefJG9+4GV8rOJzGlZzdqU4g4SuLQNsBP2aY5wmrZT2ZuzfPDg+DBG86bWfCosSAt1qmtJB4TOoLsRxahf4vakwpyXYzxNKJfgE7IkafXsdPmytZHf4L3N7eIEFsA6t0//fQEfIkUGZtVMC2LoUqAWRELCL3UQk/P+dSbrhlf6j7+AL184fGZsMCzDW0+4VjvF6mWetwLF2/i8T+08ViYLB9bF8sztHpSEw4RamBvo5zwHbj09+zN0s+6pkqRBqIJOYNHduzFw96clqOlOM2OvUNPGA0BESZ0crJp5M8mrA/3QMpq5fpVVozskVmPeEXGkJ0hCklWxqep2ARgfBetu9vpFBRV07TMy0w2Ymt/U0ptRy68jDxzJ6jW6nILCi3++Oa6XtSGevoGGMS4Ot7t7BF2DEriwRtKCtJVFppsGDyLfLrES5wsAxjLRvuRubpq9t4akiSFAL6FfsPRerxBvdsAWxI3OtvwhZmFQw46azsZaQw8E9N/xQtDokiZkiEOmN/KuWUxpMXnHrMHxY8fpfxfWwYoiPYz/2iT
+ 7cxEcl+r
+ MLwkL0W2rTkDbGY7CJtYCwFzds2PnMgaSdW65lGbmckiJboouB2bOcKHjdw8eTxrqAeSdSkbG6y5qmUWTxHNgC0rWzLKhqBQuO0SLtKMJSKd6ArNWqDWcxMpk2C8EIRrt++x72zYBmnK5yUCT9x0Z/pIhA0tWBOqJKO1LwsYAZGZXcURsOikJejLJLfriiy+QVfbpzPqENRJKOyA6buwJDBgaCmOhHvoyA87HEIuu2Wa/RNj66cfYsUcL8vGq1OvKRxnomjJdkSYGwZZiwoPoxHYIO1wrer4Y5k8vGwEdy3WQmCHoEMgkN/u6mP2gtg79GfwfOZJHXL6TPVugqxQRHyizeKqI/cTFNW35Gj7szsBZfxy0pZmMtvV3kkKqsqXf4aq8Q0dlWvase7o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -214,119 +147,241 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30 Dec 2025, at 14:34, Roman Gushchin wrote:
+On Mon, Dec 29, 2025 at 1:18=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Fri, Dec 19, 2025 at 10:22=E2=80=AFAM Liam R. Howlett
+> <Liam.Howlett@oracle.com> wrote:
+> >
+> > * Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [251217 07:27]:
+> > > Add kdoc comments, describe exactly what these functinos are used for=
+ in
+> > > detail, pointing out importantly that the anon_vma_clone() !dst->anon=
+_vma
+> > > && src->anon_vma dance is ONLY for fork.
+> > >
+> > > Both are confusing functions that will be refactored in a subsequent =
+patch
+> > > but the first stage is establishing documentation and some invariatns=
+.
+> > >
+> > > Add some basic CONFIG_DEBUG_VM asserts that help document expected st=
+ate,
+> > > specifically:
+> > >
+> > > anon_vma_clone()
+> > > - mmap write lock held.
+> > > - We do nothing if src VMA is not faulted.
+> > > - The destination VMA has no anon_vma_chain yet.
+> > > - We are always operating on the same active VMA (i.e. vma->anon-vma)=
+.
+>
+> nit: s/vma->anon-vma/vma->anon_vma
+>
+> > > - If not forking, must operate on the same mm_struct.
+> > >
+> > > unlink_anon_vmas()
+> > > - mmap lock held (read on unmap downgraded).
+>
+> Out of curiosity I looked for the place where unlink_anon_vmas() is
+> called with mmap_lock downgraded to read but could not find it. Could
+> you please point me to it?
+>
+> > > - That unfaulted VMAs are no-ops.
+> > >
+> > > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> >
+> > Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> >
+> > > ---
+> > >  mm/rmap.c | 82 +++++++++++++++++++++++++++++++++++++++++++----------=
+--
+> > >  1 file changed, 64 insertions(+), 18 deletions(-)
+> > >
+> > > diff --git a/mm/rmap.c b/mm/rmap.c
+> > > index d6799afe1114..0e34c0a69fbc 100644
+> > > --- a/mm/rmap.c
+> > > +++ b/mm/rmap.c
+> > > @@ -257,30 +257,60 @@ static inline void unlock_anon_vma_root(struct =
+anon_vma *root)
+> > >               up_write(&root->rwsem);
+> > >  }
+> > >
+> > > -/*
+> > > - * Attach the anon_vmas from src to dst.
+> > > - * Returns 0 on success, -ENOMEM on failure.
+> > > - *
+> > > - * anon_vma_clone() is called by vma_expand(), vma_merge(), __split_=
+vma(),
+> > > - * copy_vma() and anon_vma_fork(). The first four want an exact copy=
+ of src,
+> > > - * while the last one, anon_vma_fork(), may try to reuse an existing=
+ anon_vma to
+> > > - * prevent endless growth of anon_vma. Since dst->anon_vma is set to=
+ NULL before
+> > > - * call, we can identify this case by checking (!dst->anon_vma &&
+> > > - * src->anon_vma).
+> > > - *
+> > > - * If (!dst->anon_vma && src->anon_vma) is true, this function tries=
+ to find
+> > > - * and reuse existing anon_vma which has no vmas and only one child =
+anon_vma.
+> > > - * This prevents degradation of anon_vma hierarchy to endless linear=
+ chain in
+> > > - * case of constantly forking task. On the other hand, an anon_vma w=
+ith more
+> > > - * than one child isn't reused even if there was no alive vma, thus =
+rmap
+> > > - * walker has a good chance of avoiding scanning the whole hierarchy=
+ when it
+> > > - * searches where page is mapped.
+> > > +static void check_anon_vma_clone(struct vm_area_struct *dst,
+> > > +                              struct vm_area_struct *src)
+> > > +{
+> > > +     /* The write lock must be held. */
+> > > +     mmap_assert_write_locked(src->vm_mm);
 
-> Zi Yan <ziy@nvidia.com> writes:
+As a side-note, I think we might be able to claim
+vma_assert_locked(src) here if we move vma_start_write(vma) at
+https://elixir.bootlin.com/linux/v6.19-rc3/source/mm/vma.c#L538 to
+line 527. I looked over other places where we call anon_vma_clone()
+and they seem to write-lock src VMA before cloning anon_vma.
+mmap_assert_write_locked() is sufficient here because we do not change
+anon_vma under VMA lock (see __vmf_anon_prepare() upgrading to mmap
+lock if a new anon_vma has to be established during page fault) but I
+think we can be more strict here.
+
+> > > +     /* If not a fork (implied by dst->anon_vma) then must be on sam=
+e mm. */
+> > > +     VM_WARN_ON_ONCE(dst->anon_vma && dst->vm_mm !=3D src->vm_mm);
+> > > +
+> > > +     /* No source anon_vma is a no-op. */
 >
->> On 29 Dec 2025, at 23:48, Shakeel Butt wrote:
->>
->>> On Tue, Dec 30, 2025 at 12:25:31PM +0800, Qi Zheng wrote:
->>>>
->>>>
->>> [...]
->>>>>>
->>>>>> Thank you for running the AI review for this patchset, but please do=
- not
->>>>>> directly send the raw data from the AI review to the community, as t=
-his
->>>>>> is no different from automated review by a robot.
->>>>>
->>>>> Hi Qi,
->>>>>
->>>>> I don't know why you're so negative towards it. It's been great at
->>>>
->>>> No, I don't object to having a dedicated robot to do this.
->>>>
->>>>> finding pretty tricky bugs often missed by human reviewers. In no way
->>>>> it's a replacement for human reviews, but if a robot can find real
->>>>> issues and make the kernel more reliable and safe, I'm in.
->>>>
->>>> I just think you should do a preliminary review of the AI =E2=80=8B=E2=
-=80=8Breview results
->>>> instead of sending them out directly. Otherwise, if everyone does this=
-,
->>>> the community will be full of bots.
->>>>
->>>> No?
+> I'm confused about the above comment. Do you mean that if
+> !src->anon_vma then it's a no-op and therefore this function shouldn't
+> be called? If so, we could simply have VM_WARN_ON_ONCE(!src->anon_vma)
+> but checks below have more conditions. Can this comment be perhaps
+> expanded please so that the reader clearly understands what is allowed
+> and what is not. For example, combination (!src->anon_vma &&
+> !dst->anon_vma) is allowed and we correctly not triggering a warning
+> here, however that's still a no-op IIUC.
 >
-> The problem is that it works only when AI is obviously wrong,
-> which is not a large percentage of cases with latest models.
-> In my practice with Gemini 3 and Chris Mason's prompts, it almost
-> never dead wrong: it's either a real issue or some gray zone.
-> And you really often need a deep expertise and a significant amount
-> of time to decide if it's real or not, so it's not like you can
-> assign a single person who can review all ai reviews.
+> > > +     VM_WARN_ON_ONCE(!src->anon_vma && !list_empty(&src->anon_vma_ch=
+ain));
+> > > +     VM_WARN_ON_ONCE(!src->anon_vma && dst->anon_vma);
+> > > +     /* We are establishing a new anon_vma_chain. */
+> > > +     VM_WARN_ON_ONCE(!list_empty(&dst->anon_vma_chain));
+> > > +     /*
+> > > +      * On fork, dst->anon_vma is set NULL (temporarily). Otherwise,=
+ anon_vma
+> > > +      * must be the same across dst and src.
 >
->>>>
->>>
->>> We don't want too many bots but we definitely want at least one AI
->>> review bot. Now we have precedence of BPF and networking subsystem and
->>> the results I have seen are really good. I think the MM community needs
->>> to come together and decide on the formalities of AI review process and
->>> I see Roman is doing some early experimentation and result looks great.
->>
->> Do you mind explaining why the result looks great? Does it mean you agre=
+> This is the second time in this small function where we have to remind
+> that dst->anon_vma=3D=3DNULL means that we are forking. Maybe it's better
+> to introduce a `bool forking =3D dst->anon_vma=3D=3DNULL;` variable at th=
 e
->> the regressions pointed out by the AI review?
->>
->> If we want to do AI reviews, the process should be improved instead of
->> just pasting the output from AI. In the initial stage, I think some huma=
-n
->> intervention is needed, at least adding some comment on AI reviews would
->> be helpful. Otherwise, it looks like you agree completely with AI review=
+> beginning and use it in all these checks?
+>
+> I know, I'm nitpicking but as you said, anon_vma code is very
+> compicated, so the more clarity we can bring to it the better.
+>
+> > > +      */
+> > > +     VM_WARN_ON_ONCE(dst->anon_vma && dst->anon_vma !=3D src->anon_v=
+ma);
+> > > +}
+> > > +
+> > > +/**
+> > > + * anon_vma_clone - Establishes new anon_vma_chain objects in @dst l=
+inking to
+> > > + * all of the anon_vma objects contained within @src anon_vma_chain'=
 s.
->> In addition, =E2=80=9C50% of the reported issues are real=E2=80=9D, is t=
-he AI tossing
->> a coin when reporting issues?
+> > > + * @dst: The destination VMA with an empty anon_vma_chain.
+> > > + * @src: The source VMA we wish to duplicate.
+> > > + *
+> > > + * This is the heart of the VMA side of the anon_vma implementation =
+- we invoke
+> > > + * this function whenever we need to set up a new VMA's anon_vma sta=
+te.
+> > > + *
+> > > + * This is invoked for:
+> > > + *
+> > > + * - VMA Merge, but only when @dst is unfaulted and @src is faulted =
+- meaning we
+> > > + *   clone @src into @dst.
+> > > + * - VMA split.
+> > > + * - VMA (m)remap.
+> > > + * - Fork of faulted VMA.
+> > > + *
+> > > + * In all cases other than fork this is simply a duplication. Fork a=
+dditionally
+> > > + * adds a new active anon_vma.
+> > > + *
+> > > + * ONLY in the case of fork do we try to 'reuse' existing anon_vma's=
+ in an
+> > > + * anon_vma hierarchy, reusing anon_vma's which have no VMA associat=
+ed with them
+> > > + * but do have a single child. This is to avoid waste of memory when=
+ repeatedly
+> > > + * forking.
+> > > + *
+> > > + * Returns: 0 on success, -ENOMEM on failure.
+> > >   */
+> > >  int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct=
+ *src)
+> > >  {
+> > >       struct anon_vma_chain *avc, *pavc;
+> > >       struct anon_vma *root =3D NULL;
+> > >
+> > > +     check_anon_vma_clone(dst, src);
+> > > +
+> > >       list_for_each_entry_reverse(pavc, &src->anon_vma_chain, same_vm=
+a) {
+> > >               struct anon_vma *anon_vma;
+> > >
+> > > @@ -392,11 +422,27 @@ int anon_vma_fork(struct vm_area_struct *vma, s=
+truct vm_area_struct *pvma)
+> > >       return -ENOMEM;
+> > >  }
+> > >
+> > > +/**
+> > > + * unlink_anon_vmas() - remove all links between a VMA and anon_vma'=
+s, freeing
+> > > + * anon_vma_chain objects.
+> > > + * @vma: The VMA whose links to anon_vma objects is to be severed.
+> > > + *
+> > > + * As part of the process anon_vma_chain's are freed,
+> > > + * anon_vma->num_children,num_active_vmas is updated as required and=
+, if the
+> > > + * relevant anon_vma references no further VMAs, its reference count=
+ is
+> > > + * decremented.
+> > > + */
+> > >  void unlink_anon_vmas(struct vm_area_struct *vma)
+> > >  {
+> > >       struct anon_vma_chain *avc, *next;
+> > >       struct anon_vma *root =3D NULL;
+> > >
+> > > +     /* Always hold mmap lock, read-lock on unmap possibly. */
+> > > +     mmap_assert_locked(vma->vm_mm);
+> > > +
+> > > +     /* Unfaulted is a no-op. */
+> > > +     VM_WARN_ON_ONCE(!vma->anon_vma && !list_empty(&vma->anon_vma_ch=
+ain));
 >
-> I said at least 50% in my experience. If there is a 50% chance that
-> someone is pointing at a real issue in my code, I'd rather look into it
-> and fix or explain why it's not an issue. Btw, this is exactly how I
-> learned about this stuff - sent some bpf patches (bpf oom) and got
-> excited about a number of real issues discovered by ai review.
+> Hmm. anon_vma_clone() calls unlink_anon_vmas() after setting
+> dst->anon_vma=3DNULL in the enomem_failure path. This warning would
+> imply that in such case dst->anon_vma_chain is always non-empty. But I
+> don't think we can always expect that... What if the very first call
+> to anon_vma_chain_alloc() in anon_vma_clone()'s loop failed, I think
+> this would result in dst->anon_vma_chain being empty, no?
 >
-> I agree though that we should not pollute email threads with a number of
-> AI-generated reports with a similar context.
->
->> When I am looking into the prompt part, I have the following questions:
->>
->> 1. What is =E2=80=9CPrompts SHA: 192922ae6bf4 ("bpf.md: adjust the docum=
-entation
->> about bpf kfunc parameter validation=E2=80=9D)=E2=80=9D? I got the actua=
-l prompts
->> from irc: https://github.com/masoncl/review-prompts/tree/main, but it
->> should be provided along with the review for others to reproduce.
->
-> It's a significant amount of text, way too much to directly include into
-> emails. SHA from the prompts git should be enough, no?
-
-I mean at least the GitHub link should be provided, otherwise, how can peop=
-le
-know the exact prompts?
-
->
->> 2. Looking at the mm prompt: https://github.com/masoncl/review-prompts/b=
-lob/main/mm.md, are you sure the patterns are all right?
->> 	a. Page/Folio States, Large folios require per-page state tracking for
->> 		Reference counts. I thought we want to get rid of per page refcount.
->>     b. Migration Invariants, NUMA balancing expects valid PTE combinatio=
-ns.
->> 		PROTNONE PTEs are hardware invalid to trigger fault.
->> 	c. TLB flushes required after PTE modifications. How about spurious fau=
-lt
->> 		handling?
->>
->> 3. For a cgroup patchset, I was expecting some cgroup specific prompt ru=
-les,
->> 	but could not find any. What am I missing?
->
-> MM and cgroups-specific prompts are definitely in a very early stage.
-> But to develop/improve them we need data.
-
-Not just data. You are a maintainer of cgroup, so at least you could add
-more cgroup specific rules to improve the quality of AI reviews.
-
-
-Best Regards,
-Yan, Zi
+> > > +
+> > >       /*
+> > >        * Unlink each anon_vma chained to the VMA.  This list is order=
+ed
+> > >        * from newest to oldest, ensuring the root anon_vma gets freed=
+ last.
+> > > --
+> > > 2.52.0
+> > >
 
