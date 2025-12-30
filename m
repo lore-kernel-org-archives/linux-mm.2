@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95007E92FC0
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 15:11:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89862EE0205
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 15:18:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04B106B0005; Tue, 30 Dec 2025 10:11:31 -0500 (EST)
+	id D09E26B0005; Tue, 30 Dec 2025 10:18:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3AC46B0089; Tue, 30 Dec 2025 10:11:30 -0500 (EST)
+	id CAD986B0089; Tue, 30 Dec 2025 10:18:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E47546B008A; Tue, 30 Dec 2025 10:11:30 -0500 (EST)
+	id B99E06B008A; Tue, 30 Dec 2025 10:18:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D28936B0005
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 10:11:30 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6CAEF56ABC
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:11:30 +0000 (UTC)
-X-FDA: 84276476340.14.0020044
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 992DB160002
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:11:28 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ugBg6T3I
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767107488; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id A95EC6B0005
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 10:18:41 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 489B31A06C8
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:18:41 +0000 (UTC)
+X-FDA: 84276494442.07.31FB8D6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A26CBC000D
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:18:39 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mLdb+2NT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767107919; a=rsa-sha256;
 	cv=none;
-	b=pF7C8K8zmKKkcxw0OrHQWxwdInuPaJEy0Yz5YwobSiMw+NU/IT3zOxu+SMp9aLwxr9+52t
-	5xoIT0qCT1XM2+WNHfyfrnffI/X06bVq/I/HdlEdB2rD7Hy4aD/8EhUpKI1oeoHZ+a6jdc
-	zO5QZeBe0jZDxxo7AgfH5Nev3ssyZgM=
+	b=j8sRnlFc5jF+7BjZlC95+t7jwlW84UC3L6y+EUaH2U+SMil0+KGhykKErOaf6qvVRDy8U3
+	3VyIr8ix38lgE7V1n8HCaasK47yplUVpijLAVHwBEH1nD+b5KUi6/cbIlU9TwbsjeP2XMi
+	ARZ9zZpTTlS086EYE+CKid2RUIxIWS8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ugBg6T3I;
-	dmarc=none;
-	spf=none (imf08.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mLdb+2NT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767107488;
+	s=arc-20220608; t=1767107919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GR1QVe+wka/wbm96OjOQm9NYaPe6PscdIySk4u41LOE=;
-	b=ifnLvaw4eDSB2DNl43oulASj6LM7hfHaUKPgbuJsP8y+xaK5iWIRlPU8QJ7ZpsTsMdOp5X
-	bSX+rWAKhJCtZn3dTS46nfYFUiMGPpYYTF+B32AGcRIAGaJEdmEWwM7n33RTNbktr5fas8
-	SSad6M1S352NTGKnLN0QR6k4GFf7za8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=GR1QVe+wka/wbm96OjOQm9NYaPe6PscdIySk4u41LOE=; b=ugBg6T3I+BJ3MKYUEKnspUJTSy
-	rbxtMwx/LPQ5E1SqEBZPlflmiwgZshPbBc7lJHejMx2jG3mLrN0fEIZmnvOOR7nPzSG/K4pH0wGyi
-	/ZfB4v8wclmZ9mr6xcnPzQjhOh4Oww3BeOUKkr/VFWumIGbaL5/OByBRWnRSW4khQ9+5w3JLprLdz
-	C+e2d4D471R28NNE6Ctm2S2eKZYDskKAg8IctqCmgg8WUVuBVcfRMi1/fC6tEPAirfmof/ki3gJPE
-	DntY+B8OVrLNJ/01m4lvrOEapGeFSGWP8+8cHu3x5dZVJOf79/E/KEwZDpK41u1cmUherlzNU9S5e
-	GKcfyS/Q==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vabNU-00C85X-AV; Tue, 30 Dec 2025 15:11:16 +0000
-Date: Tue, 30 Dec 2025 07:11:10 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, usamaarif642@gmail.com, rmikey@meta.com, clm@fb.com, 
-	riel@surriel.com, kernel-team@meta.com
-Subject: Re: [PATCH RFC] kexec: add option to print previous kernel release
- after kexec
-Message-ID: <ljo3xdbpwa2kzx5thlki6fc74mpswuwtfqzdl4qyatqi3qjbwm@4prhagytf2ja>
-References: <20251230-kho-v1-1-4d795a24da9e@debian.org>
- <CA+CK2bDCKQrK3+6832Lxw8fZx_yt+8z0fFPdugC59p1zdSeSZQ@mail.gmail.com>
+	bh=6ms+rcxBbLHJ8ERXzksY6iYPwJAOkwmTKub3fjs8U8k=;
+	b=xUxU55EVyANaXeMiZj2O8/vRQ8RJL3nb3ky/urqcugBUYNhwiUXUJZxTQHtROj62dojVLf
+	Rry0uRHTVUgbGgHQbOpT/JLL1T4LO3UfSIUP4NutKhb6ox04/eBDQ3nh/oBkHFVLgWmMOk
+	nGAZtOGlbbXVqLB+vXP3TgOXc1ZYJOA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 77737409EB;
+	Tue, 30 Dec 2025 15:18:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA475C4CEFB;
+	Tue, 30 Dec 2025 15:18:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767107918;
+	bh=uP8nasKdKb+PcbMkId6b5sqiArUgja3MgEI2FVs12Bk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mLdb+2NToBkKVWysIBrQpyfhVJUmL8h9Av8kP4Ley9L96/tQ1OvfdzmuBdhyiM+m3
+	 +xTkxMT5J5eJelVHORyKLnhKqE3t+pZJosEs+OhVg1neZDGGG0REwHNls03ojtP4nf
+	 dFs5bXs+dDi9w/wYuJOlNKBQ0usyi8OywOWEcP8XppZ5Irggp2XqiOgTtggafWPjJJ
+	 Da7vWfalVl335nOyIpAG7jbnzqzj41I1ENXrGka+usCiCfPLkRblQWHjCAMg+o82HR
+	 hQJuszsMjHNv1PRZF0wSSV6J9/ffWOpBXkm6CNahuRla5vErajaIDjSIu3SbaPaRCy
+	 ioE6arj6UzMBA==
+Date: Tue, 30 Dec 2025 17:18:32 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Cui Chao <cuichao1753@phytium.com.cn>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	wangyinfeng@phytium.com.cn, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
+Message-ID: <aVPtSNKRnnI88Euk@kernel.org>
+References: <20251230092750.856060-1-cuichao1753@phytium.com.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+CK2bDCKQrK3+6832Lxw8fZx_yt+8z0fFPdugC59p1zdSeSZQ@mail.gmail.com>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 992DB160002
-X-Stat-Signature: cgk1375z54m5h4hspedkufnggngu6qed
+In-Reply-To: <20251230092750.856060-1-cuichao1753@phytium.com.cn>
+X-Rspamd-Queue-Id: A26CBC000D
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 7smdcx1p8p4rge5qdjh4qhrm7wjyp9jb
 X-Rspam-User: 
-X-HE-Tag: 1767107488-335956
-X-HE-Meta: U2FsdGVkX18rrHThMB1eQGlugV4avx+DVCEO4ecnBThCMjwdr53Gb+sbcJt35zOaz6ibKEJOz3lnUVKjzNJ97c5enLCKCuVyjlypDrDIloh3He1zcWi2J32sO4YAdFjHCjrZ7wXF0yNyPYNRO+owhnxOZm0ieMPsgeZWBr8v9TooCVz2d691EuCDZXq3+QbpqhhOMUWMKaLpDDHu5podW9OLlsmfm3QlUjv+g1yM/9VG1WynHVNXQUxtF7AXx+1fPi6Wo/V+ievk0Cp/TepLXNVRbjD+/pqjcDzgwVqfJqeQZNnU/8WBRjuUwmRJzBowCLTKkNFlTg56GOWwan7vOc4cETtgd75soJy2i7fa4MkX0F0bN0uvOD3gQ5bsFlSl5KNncO5Smn81VOnxy5HyDzoZVZcZ4jVgMVxoEE7B4FWNGgSPb/tA+KWA6MDwDdw2JkdIPbjRmHoSMHCB6/MrsIvo90caZn0fgf7ztE1JD/IKHSuQi7KoYWW2dWRpFGh2OKXxcSWVGwEM2EWoCm9g0vLXyB/W979S5vc60X5Efwl5KeUv2WJE70oOejX/5/biv6/nmuN/Lo80P10eYOX73OBSFqq+cNepgmm7NRELr2IxC8+6pqKfOsLXqPfJ2Ew2tp7npeZ9erV6d8bByl+ji+9skTgYEANmzzlIyVyb8/XSc2vXRpOWLB9gtXCZZntRirOKlsykXO1HmHkrscKfCPX9FaoS7/Q8tyisrI7wV5GtqTbgCLwuW/sKLZeLNdxDmuw1aMFYPZwUOeQ1/Volksxt9fEJmm8zQR78HEXsS4oWosTzjLZzHRj0YKf7OWsRQMYNV8CTjUD667sV8myrRfZczxMFk2kVNKqbl/WNYSdRx5nIehYbLE+zkJ/hRG9xa0dPiTIgpVf4tVhh8oYs7wsVis+7/j3Y/sCBIyPkGxNp9mHiIQwXC89sy0nt+xehBwOl5uJ6XO4DvIiXyPT
- +dF9Rd2e
- 5149IQGxZ//ggShGSP7Bm9wUtmpgSkAO7C5gYKQiBbiOfY0yt68h9UNrU48sKyqnokr61BM7m38zmwOjpMvPVKMInizwwgN4YyTfqIbls7pYiJBujrk1RQdInXloR8AtwK8AoTA1EAIz8YnkgaAV5lQZGZq6/XEZwwPJfaqLCDpFRWJBcc32GCuJeSxnLeP1AtKUbqE2DZIp4H/EUPOuaf34wUg==
+X-HE-Tag: 1767107919-90416
+X-HE-Meta: U2FsdGVkX184MJo7mhJqBzLgkdQTULjvVPq1q1j42SVdw42GDv+H7oeJJ6bgGZAy2/j7oA+NVJvbGZFb3W4CTag5QDKvv7v4enzrAoemOgfOJoODhm5RdKNI+mFfDkf5zrxXeq2eq2Z55S6YYlz71OiOp0Hm+eufOIb8HSvBkG4wdVn+JuuZd8cUjPCIroXDVsVPB1GdEq72HCFoN838WfOh5Th2UznNMmc5yOkBKqbjRc1YNk/6omBvbNpGbQyjz36saFDYVbOZh4Ujb+XL30o7R03sbnq5yjoC7ye+pPoIPp3iroNX2NCTmhAP9AoIAK7+G+z7UojDQR7/XJFav0DvLzf1A06heyoSqAuqPwCkJwFJbYRdqCIc7bnwxzUcv/M4SMd9fPLHmTnx6EISqnL4+EoTpeSaHW/vn3gG+AHzMDsM3yz3+J4Hjv6yYziH8n+dci20fbnJq2msnRRkP5Wbsn/80Z43aEOwvjZqh8g3gr4cG8N4hBtLJFuxmFeAzuaxDkLk2HP9DsfkTdMbWZplqVmRHjAHmci6Q2hGZ8628RuQvq/GVpjiYan208f02yqiR5Y2JQqFvJ60OSI960k8zhbhCl5ck/Kr5dvPRrdYgWPuq5QxGBoEusfVeYpcScm6IsaHjhQu2kbA2dc/nUsG8+4XFsumxGL4dA29ld1jgI6cBGix56dogm+OIDrfU9S3/3LDn9c/igDITcZ3Wr4cMW8BNehyJbNEJVNolFcmlJnZDwA5qsiCJXZtmnQ7zp3414CCR3e/eHN3/YU7vd4Ik1bycRJTNkIJ9l2KztM92XddOnNfyScyL4aYOR5z7pANLoCtUszG5P11LVEFkA1/Ar80uqCxY0UNhMPEatclPhyuoBf9O50ZGUEJ94eQVHq3yxBKazJiWIPsQsEly1OcyqIoKOq7dFGx+hBkxqkSr+psS8FGfPk+iPk+mblgRV/EhKgl67fCbN17Ahy
+ smRJapYA
+ 1BY2yeQtJVrgWLHeuyz6zM6EDzLPrzyJX2hR2HxTb4DxpcAnBbn8mDkxoNOfLm8I4vI2qF2/0knKI+KuP8+QMbBpgNO62UbiCii+GzEHRVB2QWvkilaf0vP4NyO1IZH/ajCEyUNFKqVEA+wM9ZOBn9nvqf8LKUzMLKtsVlH7knfHTDLDS+JIL4keBNf8+0Vb6CWX5AxlkanMrT/BBsfHb+wAQx8I9OQFciVw3GJuxKKh2O734lIvBWktIRiuRXx/NtPiCPTSbRFUhNRNO0KiD07O/5QTwl+y6wu7clkfXfjNIfl6FZGQCThR0iiRXCQ9OguXPYEnblfgVAdOpA8sg5O8t7y5llEVRwhq2zcoVHAXkl5k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,60 +93,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Pasha,
+Hi,
 
+On Tue, Dec 30, 2025 at 05:27:50PM +0800, Cui Chao wrote:
+> In some physical memory layout designs, the address space of CFMW
+> resides between multiple segments of system memory belonging to
+> the same NUMA node. In numa_cleanup_meminfo, these multiple segments
+> of system memory are merged into a larger numa_memblk. When
+> identifying which NUMA node the CFMW belongs to, it may be incorrectly
+> assigned to the NUMA node of the merged system memory. To address this
 
-On Tue, Dec 30, 2025 at 10:03:38AM -0500, Pasha Tatashin wrote:
-> On Tue, Dec 30, 2025 at 9:13 AM Breno Leitao <leitao@debian.org> wrote:
-> >
-> > Introduce a new Kconfig option, CONFIG_KEXEC_SHOW_PREVIOUS_RELEASE,
+Can you please provide an example of such memory layout?
+
+> scenario, accurately identifying the correct NUMA node can be achieved
+> by checking whether the region belongs to both numa_meminfo and
+> numa_reserved_meminfo.
 > 
-> I don't think we need a config for this. Let's just show the previous
-> kernel version unconditionally when KHO is enabled.
+> Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+> ---
+>  mm/numa_memblks.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> > which enables the storage and display of the previous kernel's release
-> > version across kexec boots when using Kexec Handover (KHO).
-> >
-> > Motivation
-> > ==========
-> >
-> > Kernel bugs that depend on the version of the previously running kernel
-> > are not uncommon, especially in scenarios where a buggy kernel kexecs
-> > into a new one and the issue only manifests in the subsequent kernel.
-> >
-> > Recent examples include:
-> >
-> >  * eb2266312507 ("x86/boot: Fix page table access in 5-level to 4-level paging transition")
-> >  * 77d48d39e991 ("efistub/tpm: Use ACPI reclaim memory for event log to avoid corruption")
-> >  * 64b45dd46e15 ("x86/efi: skip memattr table on kexec boot")
-> >
-> > As kexec-based reboots become more widespread among Linux users, these
-> > issues are becoming increasingly prominent.
-> >
-> > When such crashes occur, correlating them to the previous kernel version
-> > is challenging, especially at scale, where the problem may only appear in
-> > specific cases and it is hard to correlate.
-> >
-> > With the introduction of Kexec Handover (KHO), we now have a reliable
-> > mechanism to pass information between kernels. This presents an
-> > opportunity to address the problem by carrying the previous kernel's
-> > release version to the next kernel and printing it at boot time.
+> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+> index 5b009a9cd8b4..1ef037f0e0e0 100644
+> --- a/mm/numa_memblks.c
+> +++ b/mm/numa_memblks.c
+> @@ -573,7 +573,8 @@ int phys_to_target_node(u64 start)
+>  	 * Prefer online nodes, but if reserved memory might be
+>  	 * hot-added continue the search with reserved ranges.
+>  	 */
+> -	if (nid != NUMA_NO_NODE)
+> +	if (nid != NUMA_NO_NODE &&
+> +		meminfo_to_nid(&numa_reserved_meminfo, start) == NUMA_NO_NODE)
+
+I'd suggest assigning the result of meminfo_to_nid(&numa_reserved_meminfo,
+start) to a local variable and using that in if and return statements.
+
+>  		return nid;
+>  
+>  	return meminfo_to_nid(&numa_reserved_meminfo, start);
+> -- 
+> 2.33.0
 > 
-> LUO added the number of times a machine has been live updated to help
-> debugging problems that are related to live update, perhaps, in
-> addition to the previous kernel version, we should also add a number
-> of times the machine has been kexec'd. It is useful when a bug
-> manifests only after a number of kexec's which is also sometimes a
-> case.
+> 
 
-Thanks for bringing this up, I am on the same page as you here.
-
-In fact, this was on my TODO list, but I didn't want to send in this RFC
-to avoid too much changes/code.
-
-I will wait a bit more and add the number of kexec'ed kernels in the
-next revision.
-
-Thanks for your input,
---breno
+-- 
+Sincerely yours,
+Mike.
 
