@@ -4,138 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 874EBE92FE4
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Dec 2025 22:18:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BA32E92FE3
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 00:14:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F51E6B0088; Mon, 29 Dec 2025 17:18:08 -0500 (EST)
+	id 6CF9A6B0088; Mon, 29 Dec 2025 19:14:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A2C16B0089; Mon, 29 Dec 2025 17:18:08 -0500 (EST)
+	id 67C1E6B0089; Mon, 29 Dec 2025 19:14:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5848D6B008A; Mon, 29 Dec 2025 17:18:08 -0500 (EST)
+	id 5888D6B008A; Mon, 29 Dec 2025 19:14:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 44D7C6B0088
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 17:18:08 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EA2D0C330F
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 22:18:07 +0000 (UTC)
-X-FDA: 84273922614.07.922E335
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E71134000A
-	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 22:18:05 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xSn4eJQ4;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767046686; a=rsa-sha256;
-	cv=pass;
-	b=RV58Fe5afVFMctJ5xmYTf++yZ0977H7zZvCEqdCpxhzXh2jU/eqooV82aICdfWqwu8F8vt
-	5FqTllifN02WU2Z8v4kWyq0REjbeVTG6ATs0uXNB3lZdGxvu8L1n6EAJWs0IDgdP0ht8wM
-	QTucZz9QecnaF2k58ikKCmTVD345LwI=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xSn4eJQ4;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767046686;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 43F836B0088
+	for <linux-mm@kvack.org>; Mon, 29 Dec 2025 19:14:52 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A12128D0B1
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 00:14:51 +0000 (UTC)
+X-FDA: 84274216782.22.93E527D
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C11081C0003
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 00:14:49 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eT4GB83F;
+	spf=pass (imf20.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767053689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VeChDKeFNuym6T0vKimesxWC0M98diDBtB6Ij7wnrHQ=;
-	b=loNaLsAbdzZCWYOQ25Qeoo7f3RowXSqd+ytS3v6Ut43eHEbvdA6XZwkX5D27RmqZ0s/QaW
-	0Iptw9atE46he4IevWjbdfJIh+5ZmgMZxpUhUdSjhMGb3nis8MXkIHZ+iBFk01hbVWbKA/
-	WRZhutmeaEOGpbx3aoN95m1Eu8DYUhY=
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ee243b98caso37421cf.1
-        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 14:18:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1767046685; cv=none;
-        d=google.com; s=arc-20240605;
-        b=X5IzxwC+79BtXFFRKL5UJFnjlfJ8haZloGmV7H4QLn/OCKyKyyjGcWd9ThGbKRPQO3
-         VbcLMChKDQutF32tq8VC4UjPYC7ElwjYv+wyOWfnKC1eY9NH77OxAfhqH2P1cjqjC0GP
-         Owt5N4+dMR/9olfnj5isC2enJ6pcGTPEPCq7bVXDpDiIVbzYP5M5UBQ5C45IwmUqnT/D
-         747hTps3cyHLohIymQVOYoAd3dufWt2CtKKdrxO5DgAmwPkTwUvu5yQm68pmN1oJ2/kq
-         07si8VMtlZNve9y0yzev7Sn4i/oEwg0n77B8yLCodnbTlQCaTwKkPYIxTEnAQCLM2ehZ
-         n6JA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VeChDKeFNuym6T0vKimesxWC0M98diDBtB6Ij7wnrHQ=;
-        fh=jDAB8qzU1p4qM93wNlJtiV8EbzI7vBFDzIq8t8DaslI=;
-        b=VtwDMTx0uHbTG7CPX6p9VNXaHHEfW9nFOZqaListEDzLtcDeCweW7C2u2S1qxJHpNF
-         ij/P9s8zdnHdOIta6ryeNU0mDS105352/z/oLmSiAzCJmGiaqhKZUQxmwL9mj8Hdt0xa
-         0yt1ntelwqBGMj91E7MtdIUc6F0NiDbfytDvt+aAY4F4E1sW77ediEdP4S3bm/Fwn8oj
-         7Z89rPf19OdgQoNgDfsd2m8yHPVDYUCUgOYC2tlyyJrRtIGfm/Go9lOZs669Y0cQrOXS
-         HkFjdKZgBXSsa6EEYLR2sy8OIsooTLcj2EV7H32/DOUjVsDAhO7S19yxZIkLWtFPCSM4
-         UEIw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=HbsM/e9eqvn9ArPBzYyguMVBWmbdWJHQH9hQHEYPUeQ=;
+	b=D2jUEj9sb11EROXJbj+iES2zO8hrncwQ0XWBPozQTUkZIMTuXIOqXM/GdazpcF24Uqan3B
+	9lQEaBMqntdXIZh/InFhKfzV7Y4P6HZK2UOA5aNgbKsKMxwtmGNTn/4ZwKIWKRGJXfk3UN
+	j3hS1WtFzv3Sd3plSCchbWuEAkApiwA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eT4GB83F;
+	spf=pass (imf20.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767053689; a=rsa-sha256;
+	cv=none;
+	b=EqM799fUQXmngJ9wG00AyvpMfK/YVrZv6KwhvWy8QULM0JiDzGadYImzn5DnHiXOmX2bSq
+	8PiHMBvehCEgM/3mH8Huddv5wTALKGeBPRuoBEHA3uaJpA0rdYM+MV1fuF/JZYm7rnjpZm
+	8yGZKdZPf/kxNtWwGgvlqWdEelnjdVI=
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-78e7ba9fc29so84335187b3.2
+        for <linux-mm@kvack.org>; Mon, 29 Dec 2025 16:14:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767046685; x=1767651485; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VeChDKeFNuym6T0vKimesxWC0M98diDBtB6Ij7wnrHQ=;
-        b=xSn4eJQ4Oe6OGnomcMxuraeVk3lBDlWWqtltLVqYH8bqC908duLQUKPdRvrevPxxEv
-         nPGYE15qsLfvmldVi+MsjTFJYM7dneuMP4a4gf8EEl+sQrEoDPRFbxYF1zBkHVGVH3Et
-         8AHjNHXcEHODe3UXdapdzCBs11qPck9UPqarfoHZR1ooAIdvySN7ldQouorGC1hnSZ6X
-         AsTSbj2u7Hawe4bFFtrqVKCfwVcg+WX/NiktWnKXdFjc/cwu5U9DS58Qb8ShkUL5jetu
-         zMuj835ovOKlS72cHu9egTyTq7BgAus/+cya7q3JqNA684QcNleHB06jXcAaXnn0nt2j
-         v9Iw==
+        d=gmail.com; s=20230601; t=1767053689; x=1767658489; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=HbsM/e9eqvn9ArPBzYyguMVBWmbdWJHQH9hQHEYPUeQ=;
+        b=eT4GB83FR/7vIz/dgPn/qLt/njHybgzWo21UTHfGslX/iKJp3MzzBJGxuKLfwpGWge
+         A/a2eelhN7ZdaRYU33BxdJvbz1coGmhT9uN4HSwo4v3gEBE2EQF9xzphovcuA4TMEPVr
+         UhdP66M0hAwtW+7oiKud4/rmz+ihKnCVHuUyPHsCJVnnsNWQeq3f5uplgSdfzYCesyDc
+         SGLarmMepRHEKWaRstan6vJJnay3gpDIKxS3Qn8AEJhrgDIQQPnv5RznHO8JJjXA9MXz
+         wxXNwDkkbMCOYj9Rhk6y57GTvPYulsJ/3mT/sUMDrrsG6fpEvgX+XnBIxze5UVwIhwLR
+         vPdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767046685; x=1767651485;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VeChDKeFNuym6T0vKimesxWC0M98diDBtB6Ij7wnrHQ=;
-        b=wytgEmjbP69IPjSS8YyGkbtpD9U7sOn0ykrUMMCYPvtNsmiKZ09WsY4uXevae1AN4u
-         z/oWvCIwQCzV3nJPeNyehpl56EKGJxGnjw2/+25IqBFlCvxLioa2Ld8rzemg2eVqIghq
-         3nTzRmVKOpIwg/MTB9K3Qphim4TP7UCO87z8LXT60Nr2czejpniYoPfOP1Zx3x0Tw9FF
-         CaaBGSbCWh2DTvUvTJ1Wr8EhN3OvqaMaQXQAh8O8ZtTwoDQM6axcI4J+nxtgAn1WtZXn
-         M0oDC41YDz/OWzilcPbJZaNr6nF4uH39iy9hWlhbKusYTOLm4rcXM4WZzbxzMKMXdRHB
-         wyRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWipQSh5m0U39cYUIRymLS/FAO0AXP5E63J2kXjf4a9QwL4euA0ZcfY9dox38lmvY7RetVEKl1TVw==@kvack.org
-X-Gm-Message-State: AOJu0Yza2vToJOQEOqszULylrmNXHvk97y4dKKlnEvkl2up5s+G2t14/
-	S4UpVYWeg0QlkPlRzoe2QPgwejrofxgW+Bn4nOlpLnmVxlDKT65XLMefdt0LruHF9gIhEr5E0Pu
-	QqeBtjRdfvj2pus6mei6iBG7YZvSxZomzPi3lzOpr
-X-Gm-Gg: AY/fxX5jW/7LBHMxGJnM5Lq3g4EYjw1+GtyGOkoIoKVzrjRZXJ3V9+F3WMrcKNV2NwB
-	4B+MVPhQaznwrnCVMsLfjWw6dI6bizVH6QkhGl5djqs0bpfDxDKj0ivSI0jbPtHPl41S2dfNSm1
-	ipyAHnPj4zt4iwZ1mDtyf+OsV+bfGSWJg3b21RmSQR4JVtT1+GphYajGY4jhQOIiWIo2eM3g62e
-	Ejk04ktmwmh8Dg9TQGqrRbjfwCBvA3fwxq4SgvbcVRCBsF0GIRyYcLBCJ8xhD5h0ZJlfQ==
-X-Google-Smtp-Source: AGHT+IGrh/zGjbLTv/VIfMgWVgpRyBaqC7hZ8qe+2twz82jtZWhmuMNm8CaNqtWo9LVdFPVajM04hkI8GRJlzkmuzxc=
-X-Received: by 2002:ac8:7d47:0:b0:4f1:b421:1afd with SMTP id
- d75a77b69052e-4fab52274ffmr508671cf.3.1767046684497; Mon, 29 Dec 2025
- 14:18:04 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767053689; x=1767658489;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HbsM/e9eqvn9ArPBzYyguMVBWmbdWJHQH9hQHEYPUeQ=;
+        b=i9dNnlN/0ACYKN5wu0hIe5szTdchpEyO1Igo6/Zp/5EWVnOiFd5HrmkFZN3irfZyRW
+         Vfr3gmBwnzsdq3wCLSrCwerCbzfNuxfyrD3MXph1lSI/Fgt6I7wNjdiqECgJ3POFXGZJ
+         SGXzf4rVUROeYG0Y6ipSy1cg1y/dAEamLhIrM6ctFh72w2cMvScsSKwFesDk1BkxaVQX
+         Seu30sO0eIMdh7s5N4tUg9icTxuitKpacj7y4YWhpb+/pJBkzQICb3B+ub2HodongoDN
+         2HsQamyf11biOVntOYv/f2yF8SnDwia1uoiJsXJjq/IoO5KKqhB2bIX2kFXyOnjT+Xgx
+         GXCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVmyNFBdJmlUaSBtQMeQkew4IAjCX2aM6rZhgS/SCWv2pYsx+yqMo9YFs/d6bAodhbQ01JUTsn5qA==@kvack.org
+X-Gm-Message-State: AOJu0YzBJOF3KSKVmMcnN4mQhFxYjZ96YU++smZbbmtgCXGTR/YwkA/x
+	PlkkP7OTuytYAEs0TUrjdf2abeVje2vqr/RhU9+pfaaguqBo7QRH04Sfnjx5htHiE0cBSZUJdnQ
+	sRKv2E6CiQR3PXlU98kKzAs/DKn4bEMA=
+X-Gm-Gg: AY/fxX5vzGgm3eIzFaK3pYEFtZkee39NuE3XcdqN/1Lk0UxcdclXTpynNIvioIOmczd
+	aemIrPoJFOPIbKkfIqRWYi0rBeQUZvSPCbjmFv9FA91VI+ETBxr/dX8OKEp4DAErp98dyKDznvI
+	qrEXX6PDWak4zkI96+Z4mLyHNpHiNdyU3UF2zfAMCK85gqfBhy1m96Y9bqzG1sj2f4hKhAp9RxI
+	E+JrAoMlyVDo7DEv8Qy+9aqFEFbQrhTdVhjKVmlGBOjsVRMSmChn4VgjUIi0RZD3vpm+NVK
+X-Google-Smtp-Source: AGHT+IGWDE5Zp4wjstAjn/bJPigaugwDh5nqHV4zC8agPZgz4iwoP/AoWWwMZiCLso7z9MaoOtDG74GvqD3NmLEfrlU=
+X-Received: by 2002:a05:690c:6c87:b0:78c:10d6:1e8b with SMTP id
+ 00721157ae682-78fb3f28e07mr271445467b3.26.1767053688721; Mon, 29 Dec 2025
+ 16:14:48 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1765970117.git.lorenzo.stoakes@oracle.com> <454c0680d4fdd5504b1e90b2fdaa098bd70d4d2d.1765970117.git.lorenzo.stoakes@oracle.com>
-In-Reply-To: <454c0680d4fdd5504b1e90b2fdaa098bd70d4d2d.1765970117.git.lorenzo.stoakes@oracle.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 29 Dec 2025 14:17:53 -0800
-X-Gm-Features: AQt7F2peCSXa47f7IbROJV1mVx1HDMKhgHDy5YyFHUfSCbLemXplRQe0ecPjQZ4
-Message-ID: <CAJuCfpEWwdnNs458wSb__C0eHSEvbvJ9nK3ryQWLTjA3+b3BmQ@mail.gmail.com>
-Subject: Re: [PATCH 3/8] mm/rmap: remove unnecessary root lock dance in
- anon_vma clone, unmap
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>, 
-	Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <CAHOvCC4f2xPK_LwFoisdqr_wX-RbdW9KUq48+82CMC=5ViF=ag@mail.gmail.com>
+ <20251226183122.254549-1-sj@kernel.org> <CAHOvCC6L7TAX5Pu4pLVvYBsGc7tVYexgqJmiZ7UEhu7N4_jubw@mail.gmail.com>
+In-Reply-To: <CAHOvCC6L7TAX5Pu4pLVvYBsGc7tVYexgqJmiZ7UEhu7N4_jubw@mail.gmail.com>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Tue, 30 Dec 2025 09:14:37 +0900
+X-Gm-Features: AQt7F2pifKyEAF_NYMZ2gSwBpLyyKdjYsBNwTOXlgNDEAHSZnzjBiki3Rp1xTEU
+Message-ID: <CAHOvCC7ondk_Gjhetb7Wtsz60c1dRmt_h9MwT8uwh0vwaktDLw@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon/core: modified control->repeat loop at the kdamond_call()
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, rgbi3307@nate.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E71134000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ryuhnpzz97bsncbc17y6inrege4rgc5y
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C11081C0003
+X-Stat-Signature: rt7r9gobn9cac4neo3eo9jgf9xnfj5gs
 X-Rspam-User: 
-X-HE-Tag: 1767046685-973762
-X-HE-Meta: U2FsdGVkX18lSmZTSQFl5Qp+Vem1FMuU3IFR3p75JbD25a+fYYKgQdOWyDuUpm2/wO6/KR+HBKHRTqFH7OOwT+66fKw0uVQfRvEtGDbAOFNeMU+2NqHAfF/92zX55BphAGxYBGf/c081x7aqn9/v6jeZK2ubiiedrRlki4e5gZ0Un7BN7tL3dIp7Fa1gcjgBrjoOze3n9eHhIfVgkSJ2t+rETEe3nv35HyCyU5rKHoZp2BaMBkte2cO9fEnwM0HP7YIz23SRALjPZtofanwI4KGGCQsd9P38LwXx3tQXPIO/cDOWMBhAjwSmRTHkpJ54/PfzmMCL2BtZLWslR1blJaSvjvAj7mzZVb78Btlp1G2XCs3n7+vCMWS/VdfW76kBhaO9bXgaP9B3gL5UPrY1ak7yp2VsPgp/hvhiplioZLR5grvq8/o/Mrl/moYSFiXuZB3jJyiMcYqHcvr3bCd0cJwL6j2qATxuLLoNv5lpvuZem8CACeuMuncII7zuYoyAubsBTV1J7c3OGqzGsQeTJntq4Mcqdr/Q3zFk9Kqwg6+wfsrBPp6gDfqejVgnxIvQxK5uoO8h1sWrYOZ9a8eyPFODHdsngngjD1h7GaNS+6zuUTYv5iJ5xJal9wlQIDtjai8XNIciflEMrhIQAQoaUvnA+vwab0UvVfVzEXjYgBzvfHoud91loecCsvXDYPFYQoWeJbMElXx3aaFHWxEM5OBdkOIVxvIJXn/sZCMZpZ07eMjmbFF8gtjSlDW+j+BkZ6/mQsKdByOVPjAlqFh2soHVnAwZTEV6MOfVUJlI77IKedVnLfvg0YUymuyW/KG0BXdVYjaymHyZeZQucHrIWu9492Z1+WgImkecuPnU0nOnZctOjoKxDpyGfucDRhZlvGtQHUNH+KJUQNVuS/rg7xbp7jcUkGUkLnWZD8dmlmgw/fcPUvxVGOgatkyJWctmkUJMmnxXglUHgGwTS+Y
- w9tqxzab
- GqLkNqzFISUXUMY1KzSa9M3+VnQBVdpGTUpd8wW061KIE2IQQd6b2JnsXjU653mydQXbJ2KRczqMWbV8SW0ZSK39z5fdifyXvwVYBRVQ6Rd+9EVk0RGfTmuj2f/bORxzbmiAhvT9bbE5K5NzPMX0dy3VA7R+aedGWx6fjnPP2KR3a1106Qddt6iRsAWm/9gvkjqwJJbgqdsUeD+cHhHHTKV6jBd6Ajg1vSJ3IiCOzrp8gQxNlfqCKKZ5cvQtQhREDDGcrEbup+8WY1U99hgkfCH+Eaw==
+X-HE-Tag: 1767053689-505062
+X-HE-Meta: U2FsdGVkX1/J9041C+DhU04TQxj0hC5va9qqn2QqixSQxP6BMntjt5h4iDhZDx+V/EXlXe6GaCxI8rtW05mfqZwwps3gVRr3gXA8e/HarLOz31aaC4nOxrkV/8frSDuaTNe9RYxVasH80eTxnpqzD4gsxgIe/cyG0dOjqSYkHtjM+Tn2e0272GLR2vaUIfDh4Tai8pq0ZCsjuXkOu7BXLOdIvB3yBlPJ/43Wfnmc+/JqoChPofSuvuy5vbfbuar6OVS3eubCwlM4IhO+YZ+cN14pUh8H/iE2j24Nj21u0tI65SY7DHGU1Gi0S/XWOQRDeDOuXpiQYOEC/BQxpAXubbxsCKD9fHIfoS12rhDvwH1MGvgC/kkS3/d1vrVW/bG8ycF7T+GvTb8qU53OdO5KNymeFpAc/4JH14+KHR7rzdNruD8rmdABGrCPiAEd9RWeIAvszfujVa5netzDtXWAphCfOZtyHjmz+IHtrQSSiDbZCBeVWqARb8PB/vlQm4kcerLMf7unktdCEK7qyt4i1TJ1x9gXk8+q5JHhCx3x95MyNrrha6cB/LrsIfXevDAusfJ6OD6wc1I2nzawgu0r9xAWYW2wqJOJD442fxtzrMgh9lLaW8dolTsNX0xw5Nph+fROuRGUERDiN20fPyKOzd7qQxUUpmuHMMGtPqMRkBUXrRlSFl8KGxlT+NpjWuGmia6eQLnVL3nV1j+cFBTRHDXbYKQyDar5PcSOJYWKcwhHfHwoOnrDWa55+C2XOA/WZUuw0D8xoo4Rsn3RoPc+IrmL0Nw4tnEjyrKzrKyLxXcnG1Erv47HdslQA7NH4hQ+3A6SAWFVApwfDHAmcyxaTU3/K24xb3uJOzZ/2JuOEb7hBS1Pk6ihVGF9eZyqKqm7dCYpWRJcXD1gro71Fj0pwHAkuQF0rokS7ehrZMoDp2d7JA1NZksHLiD2ovHFLQdt0AmfXKLeDU55TWIviFI
+ STUFLG2p
+ HM/ElyKZPNGGcDkvzq4lx4o2lRUK4g+SJekaMDw8aYnOWU9BHhUCrWncqtAWMEbpgx774tjGRT/wrFFbSy+ix+0SfRjfp3OuSPBlUO2tgpIZCMRCXTqn6AKVP1Yyk/AjkxQBT9Lw3wb48N5pNHY+HjGRVZdJ8j9IMuRsuwR9qjYikgSLmQ6AbFLj4ygbNec2ov6bQn1GBlIcWtaTZgf47Th+1takT3EsPL/aLlm04Shech/K8rfE9g0d7U4AAbtmOWck5I7/WMYJFqb6ybU3T+sOiFm45bN6/V7fsHzBUuytWCtCg+w0MdoBqc8hWhn+0+yBRKUTj+0yb9DqlfinVXbolVeVhdUrqCBSCu2ecXDvdoDqzRJR4ItSZj2tLcxaW/efka9hYmACs1iqd/g713erNoAAOL1D50SX2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,172 +113,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 17, 2025 at 4:27=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
+I will reflect the above in patch v2.
+Would you like me to resend patch v2 ?
+
+On Sat, 27 Dec 2025 at 08:42, JaeJoon Jung <rgbi3307@gmail.com> wrote:
 >
-> The root anon_vma of all anon_vma's linked to a VMA must by definition be
-> the same - a VMA and all of its descendants/ancestors must exist in the
-> same CoW chain.
+> On Sat, 27 Dec 2025 at 03:31, SeongJae Park <sj@kernel.org> wrote:
+> >
+> > On Fri, 26 Dec 2025 11:19:28 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> >
+> > > On Fri, 26 Dec 2025 at 05:01, SeongJae Park <sj@kernel.org> wrote:
+> > > >
+> > > > On Thu, 25 Dec 2025 12:10:30 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > > >
+> > > > > On Thu, 25 Dec 2025 at 10:07, SeongJae Park <sj@kernel.org> wrote:
+> > > > > >
+> > > > > > On Wed, 24 Dec 2025 21:43:54 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > > > > >
+> > > > > > > The kdamond_call() function is executed repeatedly in the kdamond_fn()
+> > > > > > > kernel thread.  The kdamond_call() function is implemented as a while loop.
+> > > > > > > Therefore, it is important to improve the list processing logic here to
+> > > > > > > ensure faster execution of control->fn().
+> > > > > >
+> > > > > > That depends on how critical the performance is, and how much complexity the
+> > > > > > optimization introduces.  I have no idea about if the performance of
+> > > > > > kdamond_call() is really important.  If you have a realistic use case that
+> > > > > > shows it, sharing it would be nice.
+> > > > >
+> > > > > This is because kdamond_call() is called repeatedly in kdamond_fn().
+> > > >
+> > > > Yes, it is repeatedly called.  But, my question is, does it impose overhead
+> > > > that great enough to make a negative impact to the real world.
+> > >
+> > > I agree that the overhead is not that much since there are only a few lists
+> > > added to ctx->call_controls(CTX.head).
+> > [...]
+> > > > > > > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > > > > > > index 824aa8f22db3..babad37719b6 100644
+> > > > > > > --- a/mm/damon/core.c
+> > > > > > > +++ b/mm/damon/core.c
+> > > > > > > @@ -2554,42 +2554,43 @@ static void kdamond_usleep(unsigned long usecs)
+> > > > > > >   */
+> > > > > > >  static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+> > > > > > >  {
+> > > > > > > -     struct damon_call_control *control;
+> > > > > > > -     LIST_HEAD(repeat_controls);
+> > > > > > > -     int ret = 0;
+> > > > > > > +     struct damon_call_control *control, *first = NULL;
+> > > > > > > +     unsigned int idx = 0;
+> > > > > > >
+> > > > > > >       while (true) {
+> > > > > > >               mutex_lock(&ctx->call_controls_lock);
+> > > > > > >               control = list_first_entry_or_null(&ctx->call_controls,
+> > > > > > >                               struct damon_call_control, list);
+> > > > > > >               mutex_unlock(&ctx->call_controls_lock);
+> > > > > > > -             if (!control)
+> > > > > > > +
+> > > > > > > +             /* check control empty or 1st rotation */
+> > > > > > > +             if (!control || control == first)
+> > > > > > >                       break;
+> > > > > > > -             if (cancel) {
+> > > > > > > +
+> > > > > > > +             if (++idx == 1)
+> > > > > > > +                     first = control;
+> > > > > > > +
+> > > > > > > +             if (cancel)
+> > > > > > >                       control->canceled = true;
+> > > > > > > -             } else {
+> > > > > > > -                     ret = control->fn(control->data);
+> > > > > > > -                     control->return_code = ret;
+> > > > > > > -             }
+> > > > > > > +             else
+> > > > > > > +                     control->return_code = control->fn(control->data);
+> > > > > > > +
+> > > > > > >               mutex_lock(&ctx->call_controls_lock);
+> > > > > > >               list_del(&control->list);
+> > > > > > >               mutex_unlock(&ctx->call_controls_lock);
+> > > > > > > +
+> > > > > > >               if (!control->repeat) {
+> > > > > > > +                     /* run control->fn() one time */
+> > > > > > >                       complete(&control->completion);
+> > > > > > >               } else if (control->canceled && control->dealloc_on_cancel) {
+> > > > > > >                       kfree(control);
+> > > > > > > -                     continue;
+> > > > > > >               } else {
+> > > > > > > -                     list_add(&control->list, &repeat_controls);
+> > > > > > > +                     /* to repeat next time */
+> > > > > > > +                     mutex_lock(&ctx->call_controls_lock);
+> > > > > > > +                     list_add_tail(&control->list, &ctx->call_controls);
+> > > > > > > +                     mutex_unlock(&ctx->call_controls_lock);
+> > > > > > >               }
+> > > > > > >       }
+> > > > > >
+> > > > > > Let's suppose there are two damon_call_control objects on the
+> > > > > > ctx->call_controls.  The first one has ->repeat unset, while the second one
+> > > > > > has.  Then, it seems the 'break' condition will never met and therefore this
+> > > > > > loop will never finished.  Am I missing something?
+> > > > >
+> > > > > You misjudged.
+> > > > > If (!C.repeat), it will be removed with list_del() and disappear.
+> > > > > If (C.repeat) loops through the loop once, and when it returns to the
+> > > > > first, it breaks.
+> > > >
+> > > > Maybe my explanation was not enough.  Let me explain a bit in more detail.
+> > > >
+> > > > In the scenario I mentioned, at the first iteration of the loop, 'first' will
+> > > > be the first control object, which has ->repeat unset.  The object will be
+> > > > removed from the list.  In the second iteration of the loop, it handles the
+> > > > second object, which has ->repeat set.  The object is added to the list again.
+> > > > In the third iteration, the loop runs for the second object again.  Because it
+> > > > is not same to 'first', the 'break' statement is not reached.  The loop
+> > > > continues forever.
+> > > >
+> > > > Am I missing something?
+> > >
+> > > Thank you for your detailed review.
+> > > There may be cases where C->repeat=false is the first control.
+> > > This can also be solved simply as follows:
+> > >
+> > > @@ -2567,9 +2599,6 @@ static void kdamond_call(struct damon_ctx *ctx,
+> > > bool cancel)
+> > >                 if (!control || control == first)
+> > >                         break;
+> > >
+> > > -               if (++idx == 1)
+> > > -                       first = control;
+> > > -
+> > >                 if (cancel)
+> > >                         control->canceled = true;
+> > >                 else
+> > > @@ -2589,6 +2618,8 @@ static void kdamond_call(struct damon_ctx *ctx,
+> > > bool cancel)
+> > >                         mutex_lock(&ctx->call_controls_lock);
+> > >                         list_add_tail(&control->list, &ctx->call_controls);
+> > >                         mutex_unlock(&ctx->call_controls_lock);
+> > > +                       if (++idx == 1)
+> > > +                               first = control;
+> > >                 }
+> > >         }
+> > >  }
+> >
+> > Yes, that should fix the issue.
+> >
+> > And it seems 'idx' is being used for only this?  If I'm not wrong, I think it
+> > may be easier to read if you do something like 'first = first ? first :
+> > control' and drop 'idx'.
 >
-> Commit bb4aa39676f7 ("mm: avoid repeated anon_vma lock/unlock sequences i=
-n
-> anon_vma_clone()") introduced paranoid checking of the root anon_vma
-> remaining the same throughout all AVC's in 2011.
+> It's better removing idx.
+> Thanks.
+> JaeJoon
 >
-> I think 15 years later we can safely assume that this is always the case.
+> @@ -2587,7 +2587,6 @@ static void kdamond_usleep(unsigned long usecs)
+>  static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+>  {
+>         struct damon_call_control *control, *first = NULL;
+> -       unsigned int idx = 0;
 >
-> Additionally, since unfaulted VMAs being cloned from or unlinked are
-> no-op's, we can simply lock the anon_vma's associated with this rather th=
-an
-> doing any specific dance around this.
->
-> This removes unnecessary checks and makes it clear that the root anon_vma
-> is shared between all anon_vma's in a given VMA's anon_vma_chain.
->
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  mm/rmap.c | 48 ++++++++++++------------------------------------
->  1 file changed, 12 insertions(+), 36 deletions(-)
->
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 9332d1cbc643..60134a566073 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -231,32 +231,6 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
->         return -ENOMEM;
+>         while (true) {
+>                 mutex_lock(&ctx->call_controls_lock);
+> @@ -2618,8 +2617,8 @@ static void kdamond_call(struct damon_ctx *ctx,
+> bool cancel)
+>                         mutex_lock(&ctx->call_controls_lock);
+>                         list_add_tail(&control->list,
+> &ctx->call_controls);
+>                         mutex_unlock(&ctx->call_controls_lock);
+> -                       if (++idx == 1)
+> -                               first = control;
+> +
+> +                       first = (first) ? first : control;
+>                 }
+>         }
 >  }
 >
-> -/*
-> - * This is a useful helper function for locking the anon_vma root as
-> - * we traverse the vma->anon_vma_chain, looping over anon_vma's that
-> - * have the same vma.
-> - *
-> - * Such anon_vma's should have the same root, so you'd expect to see
-> - * just a single mutex_lock for the whole traversal.
-> - */
-> -static inline struct anon_vma *lock_anon_vma_root(struct anon_vma *root,=
- struct anon_vma *anon_vma)
-> -{
-> -       struct anon_vma *new_root =3D anon_vma->root;
-> -       if (new_root !=3D root) {
-> -               if (WARN_ON_ONCE(root))
-> -                       up_write(&root->rwsem);
-> -               root =3D new_root;
-> -               down_write(&root->rwsem);
-> -       }
-> -       return root;
-> -}
-> -
-> -static inline void unlock_anon_vma_root(struct anon_vma *root)
-> -{
-> -       if (root)
-> -               up_write(&root->rwsem);
-> -}
-> -
->  static void check_anon_vma_clone(struct vm_area_struct *dst,
->                                  struct vm_area_struct *src)
->  {
-> @@ -307,26 +281,25 @@ static void check_anon_vma_clone(struct vm_area_str=
-uct *dst,
->  int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *sr=
-c)
->  {
->         struct anon_vma_chain *avc, *pavc;
-> -       struct anon_vma *root =3D NULL;
->
->         if (!src->anon_vma)
->                 return 0;
->
->         check_anon_vma_clone(dst, src);
->
-> +       anon_vma_lock_write(src->anon_vma);
->         list_for_each_entry_reverse(pavc, &src->anon_vma_chain, same_vma)=
- {
->                 struct anon_vma *anon_vma;
->
->                 avc =3D anon_vma_chain_alloc(GFP_NOWAIT);
->                 if (unlikely(!avc)) {
-> -                       unlock_anon_vma_root(root);
-> -                       root =3D NULL;
-> +                       anon_vma_unlock_write(src->anon_vma);
->                         avc =3D anon_vma_chain_alloc(GFP_KERNEL);
->                         if (!avc)
->                                 goto enomem_failure;
-> +                       anon_vma_lock_write(src->anon_vma);
-
-So, we drop and then reacquire src->anon_vma->root->rwsem, expecting
-src->anon_vma and src->anon_vma->root to be the same. And IIUC
-src->vm_mm's mmap lock is what guarantees all this. If so, could you
-please add a clarifying comment here?
-
->                 }
->                 anon_vma =3D pavc->anon_vma;
-> -               root =3D lock_anon_vma_root(root, anon_vma);
->                 anon_vma_chain_link(dst, avc, anon_vma);
->
->                 /*
-> @@ -343,7 +316,8 @@ int anon_vma_clone(struct vm_area_struct *dst, struct=
- vm_area_struct *src)
->         }
->         if (dst->anon_vma)
->                 dst->anon_vma->num_active_vmas++;
-> -       unlock_anon_vma_root(root);
-> +
-> +       anon_vma_unlock_write(src->anon_vma);
->         return 0;
->
->   enomem_failure:
-> @@ -438,15 +412,17 @@ int anon_vma_fork(struct vm_area_struct *vma, struc=
-t vm_area_struct *pvma)
->  void unlink_anon_vmas(struct vm_area_struct *vma)
->  {
->         struct anon_vma_chain *avc, *next;
-> -       struct anon_vma *root =3D NULL;
-> +       struct anon_vma *active_anon_vma =3D vma->anon_vma;
->
->         /* Always hold mmap lock, read-lock on unmap possibly. */
->         mmap_assert_locked(vma->vm_mm);
->
->         /* Unfaulted is a no-op. */
-> -       if (!vma->anon_vma)
-> +       if (!active_anon_vma)
->                 return;
->
-> +       anon_vma_lock_write(active_anon_vma);
-> +
->         /*
->          * Unlink each anon_vma chained to the VMA.  This list is ordered
->          * from newest to oldest, ensuring the root anon_vma gets freed l=
-ast.
-> @@ -454,7 +430,6 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
->         list_for_each_entry_safe(avc, next, &vma->anon_vma_chain, same_vm=
-a) {
->                 struct anon_vma *anon_vma =3D avc->anon_vma;
->
-> -               root =3D lock_anon_vma_root(root, anon_vma);
->                 anon_vma_interval_tree_remove(avc, &anon_vma->rb_root);
->
->                 /*
-> @@ -470,13 +445,14 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
->                 anon_vma_chain_free(avc);
->         }
->
-> -       vma->anon_vma->num_active_vmas--;
-> +       active_anon_vma->num_active_vmas--;
->         /*
->          * vma would still be needed after unlink, and anon_vma will be p=
-repared
->          * when handle fault.
->          */
->         vma->anon_vma =3D NULL;
-> -       unlock_anon_vma_root(root);
-> +       anon_vma_unlock_write(active_anon_vma);
-> +
->
->         /*
->          * Iterate the list once more, it now only contains empty and unl=
-inked
-> --
-> 2.52.0
->
+> >
+> >
+> > Thanks,
+> > SJ
+> >
+> > [...]
 
