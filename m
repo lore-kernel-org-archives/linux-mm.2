@@ -4,113 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 345F5E94120
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 08:05:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA198E9412D
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 08:54:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F1366B0005; Tue, 30 Dec 2025 03:05:21 -0500 (EST)
+	id AEFAA6B0005; Tue, 30 Dec 2025 03:54:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49EDB6B0089; Tue, 30 Dec 2025 03:05:21 -0500 (EST)
+	id A72F96B0089; Tue, 30 Dec 2025 03:54:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AAF96B008A; Tue, 30 Dec 2025 03:05:21 -0500 (EST)
+	id 97E9D6B008A; Tue, 30 Dec 2025 03:54:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 266996B0005
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 03:05:21 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3481CF0FF
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 08:05:20 +0000 (UTC)
-X-FDA: 84275402400.01.6C8D7CE
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D799640017
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 08:05:18 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Nho+QAyK;
-	spf=pass (imf04.hostedemail.com: domain of wale.zhang.ftd@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=wale.zhang.ftd@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767081918; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 87F746B0005
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 03:54:18 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01C6A1A8371
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 08:54:17 +0000 (UTC)
+X-FDA: 84275525796.15.381109A
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id F280940002
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 08:54:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZhetyhhN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767084856; a=rsa-sha256;
 	cv=none;
-	b=CKkJlecopbA5/MVpuWI4dvjMI1/6EoUDSbGWA5yxXZKPK5J4V0CqQdXIOA3ZQaGGPm+bGT
-	PZGzVsmbXat6l23+XUeX4y1eDMJPTpdCKxcN2JGvVzFgDuXqGo22Av8/DsAGLMqIypAsIx
-	Y3b7SDOXJl8qwpa9tFZIvUBLtt+2hyA=
+	b=j5yG/+bMPwOlmFuvSoHoN2wux2lbIoJ/I6y/2CYB2+zajzkythgwlP7EsSQ62FvR9yRKhU
+	ClcnK6Zd7M8oAnQ2GGuJ1HsQ0vjKaYFKSF6WVQeF/4geQTsP8Z4VOn5w72+4jUIxHSfcRy
+	92CRvAnuX+bhv3BS0guX5ksWiXOmer0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Nho+QAyK;
-	spf=pass (imf04.hostedemail.com: domain of wale.zhang.ftd@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=wale.zhang.ftd@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZhetyhhN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767081918;
+	s=arc-20220608; t=1767084856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SIbXKdPrLAVqz0MWdKLpFgImpBb3x9UQKjRYKI7ZRNw=;
-	b=XYCG4eKbr0U2NQq3NMs8udM+kQ47ESOmXRJu1FrDmFRzO+WacBOpaf1JN6WVeDADYFX7IW
-	0b0OiNNR9HfInhVZ7Erj4a1lJ/tm4lvajcDQcicPT3l6fqh4ExKdspiTO6npeB90K8bz1m
-	z1CBBe1wqt9GvmxBSzddz9k2Ii4JNaI=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b736ffc531fso1770331766b.1
-        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 00:05:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767081917; x=1767686717; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SIbXKdPrLAVqz0MWdKLpFgImpBb3x9UQKjRYKI7ZRNw=;
-        b=Nho+QAyK2rMPf+zO2DVLDaMu70kQ9d6O8buSLlTUKPlOgk4/tY6MaUraJ5ZwZKTQEd
-         +/x9SexhqHBvMr176NbtPUZG9JVv2aXwUkj65/IdpJE/kE+PK5ICa6888n2EYrAkZtlK
-         wgOFtFICND/dVI3jQaXbgLt7e4Ogzf8E6P0du0Kwkv1gbWYcFQQjv3Tv35t/LRh6vLmt
-         kBM+61v7cl0J8g1nlOgOuqiuc6O+J4SUbzPF+PP/hi/m7jnMbR0LxXtvJarcarT+Yanj
-         GNkeBHbtHV5b8lGlo+mG7DRm6uLFALf1IpGTH+yXch0GyAfwIhwP53KmKsNS68CiSBEs
-         xOHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767081917; x=1767686717;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SIbXKdPrLAVqz0MWdKLpFgImpBb3x9UQKjRYKI7ZRNw=;
-        b=Nce3e6Wy+3wfKFUAhXvHIz6UN9lxnhLPj8slTLmIPGv/MIpfgnMzj/SVWFbzIREbpm
-         6FUZWSoNSwz7bsZoDG8M5lEa7tGo/Xh85BcnfXEGb2k+xSb7MdpKtqbOD0yOE1uoIn07
-         XHCPOgyjJ5bW8emaEDxERV1e8fXCuccmgtkZ2GNCs6cRVKtjGy4G25gGpDFTY4fUsE+m
-         5sDT5sEGCiZ3n2I7/yYVe8gYGOrShnzef2Idn9gIKTVcN0hzeSGPusK72KTWBDiWdiD2
-         J8p3H29VeLM2AL1FSQh//I4kOdrQiF8dzC963BIMJbmUHOErRF4xRuVyreklLjuj/psI
-         PKzg==
-X-Forwarded-Encrypted: i=1; AJvYcCVhKWBr9eUTGNplubilH4sKtKzUlsQeOLcpKTD9JqaBkALCiC1Qc8k4oRy+VKYVQ/owvJJqz349Ug==@kvack.org
-X-Gm-Message-State: AOJu0Yxgr80IjVvE/9yk2QOCvUdHmqL6+GYF+LLs8ZbADIRqPiLjx6Nc
-	zQipT7MauENspK3axn3h1KnkqEa8DbnqIc0YGh/Pu4BmwTQ/1keupn78Ioi6JsheqmLsW4qTtU4
-	buatHI1gLkqG7n9qsN6mSy3fGm20Oy7o=
-X-Gm-Gg: AY/fxX7j/iwpLjtZJuxoPIbJ8jBJGgSERGzaUJolNhMJU+JshR4PMmicP881r64VmtM
-	Kz8I6FjxZxb7QJmgh+dZXOu8Y44CgWNAPANlapuTfOZLlOuTPGwWi0RbKTPQH1SpHagP5y2zi17
-	NnVHpgEOi0pVvQnCrNJaNCJkhAS7bp8PqOc1qMMHIRv/2RhFCIX/dPkCK9+3xPnB/oIS17WE8Zm
-	4HbFH8nf47c4tU3WsI+sylYCBmO7Sx3cGpe5/90XwI3Nn7AcPFUxXI84o82iJCpRxP9GmElv2ZH
-	N2GVJrM=
-X-Google-Smtp-Source: AGHT+IF4cUwUcAv2slzqJcuj/I6eRah1Eq40JyNFo5eIt+T/iEHNR/b7lKndSa7QV1+mko7uZ5hDHO1628GB6HSba4g=
-X-Received: by 2002:a17:907:962a:b0:b83:2af7:372a with SMTP id
- a640c23a62f3a-b832af73869mr1428183366b.41.1767081916908; Tue, 30 Dec 2025
- 00:05:16 -0800 (PST)
+	bh=aFQ1B7f3jdUQJv/G4p3v4Or/bwoQHErH3VgRPq8vePw=;
+	b=jQ4HGpyrEPhLmmMmWjvbKo+rcgL6KN+EvseYgFWDYy8330R9z+kjoSh4nrEu7bTEVsQef1
+	Du+0TTzZp9GJnApk1j9nyN98RB7sluS7Focsbin5EGNj5zCecFLgISS0B0nTDmcgYuzcAa
+	8QFqZwWS6W1z/rf92alzu2GjOGP+jLE=
+Date: Tue, 30 Dec 2025 16:54:03 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767084853;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aFQ1B7f3jdUQJv/G4p3v4Or/bwoQHErH3VgRPq8vePw=;
+	b=ZhetyhhNbz0ZQJ0nLazfs2RkkKQpHKojBVKfyKa3LJ1f7XmNJ/QA0MBasfWvWo7I/jgFLA
+	vudU0RbFjHioUSoDY6EQkExJa6ttuGb/hNtMst9/A4GTs+fq+tQ2Decv8wtaoINpM6nUbu
+	+rzG/WQzYg4jHhtRqf0HeQg3tq9AMh8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
+	cl@gentwo.org, dvyukov@google.com, glider@google.com, hannes@cmpxchg.org, 
+	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com, 
+	roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev, 
+	surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, tytso@mit.edu, 
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH V4 8/8] mm/slab: place slabobj_ext metadata in unused
+ space within s->size
+Message-ID: <tyc35ufouc6uskxthnnm37aatzffy3lw3qtguqjsgtkscs4d54@cupdpbhjd64y>
+References: <20251222110843.980347-1-harry.yoo@oracle.com>
+ <20251222110843.980347-9-harry.yoo@oracle.com>
+ <l2xww4mysued3fjc2jzzy6cjrq5guygsxesmfqrhv2laxigpaq@ghj7xitfq7fh>
+ <aUuKgRlI60Hw3-Et@hyeyoo>
+ <hofqvftaj7ofgdvzb56hvjgk7chxkb5gfsj3324e7wal72mjll@7m4s7adnk35j>
+ <aVNcTVKmz9N6bOfF@hyeyoo>
 MIME-Version: 1.0
-References: <20251225094057.286954-1-wale.zhang.ftd@gmail.com>
- <CAGsJ_4yEAOxUmrPvca3Nzc-OB0+xXk5Y5gzszsY5TPqHCGvgcQ@mail.gmail.com>
- <CAHrEdetNrGJbogkhMKY-25fgtxupPxKKLkwFGuenV8p5EwzZVQ@mail.gmail.com> <aVNccyCxjCPRjJiS@casper.infradead.org>
-In-Reply-To: <aVNccyCxjCPRjJiS@casper.infradead.org>
-From: wale zhang <wale.zhang.ftd@gmail.com>
-Date: Tue, 30 Dec 2025 16:05:04 +0800
-X-Gm-Features: AQt7F2ogVOs76D0YXE_GIhC7pYhD1LHahrzZOO57-qjHBviaosudg0-kBbayvnA
-Message-ID: <CAHrEdes6Usi0Amc0mf_1ZZ4MLbTxWYor9bjNOm9v7GNx8DMMxA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] mm,swapops: Fix compile error on set_pmd_migration_entry.
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org, 
-	lorenzo.stoakes@oracle.com, chrisl@kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aVNcTVKmz9N6bOfF@hyeyoo>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D799640017
-X-Rspamd-Server: rspam04
-X-Stat-Signature: reonk7fxbi391isy9c1b34qkm6qcb75n
-X-HE-Tag: 1767081918-664926
-X-HE-Meta: U2FsdGVkX1/SSKPoljx7f1cb4LgFIAp4rXY4b9ZJnw512VAym1J0L9aBi9JzZ1MYFn87v/arSjq3045q7H+0sJC3qbJFbTmRftLdVqfroyQkGoXoMIF94KOGWA3jJpK6njk5In+nBKqgS+ESy5Pqkzvoi0yQB8KHtKCUzkXaVAdpgIvphV9dfMB51inbTYJooONpRwqx+mAb6t2QWKpG+61KSA3szCTo01liDhEyTIbejv+LzL0YShF0XgctnB1Rmm+jev0BJkDOyFxZCeBIYQhINajNxP0GEwoYUqJyWvYy6RtOPgBhtrJQrpDxEyknyKeVQzS7GK1ayF6dNgTJFwLxBYNwym4ZWvPl749QxYNqRb7lMJlio5udAUhgiNDX7cwUQZO0oLEvEQcf4toeS1T9LSw6z2j9D6P6fE+hhw7WJwzM257U8Ziu4HpgMJF1Um3eguWFg/cQ1nd2spc5m0X6Cgx6uGwdpX91+xC0Mm+64AcEZYazVsjKFQgrojlJCZo8MGFISL71aQn09g9dndRZOfaKReA6JC3ZC+p4EJXOEFK1f0+P18KHGq+bg1+cUPzyUtmC6ocXH9th1l3CtagStyV1wotlCAq3LggN5knyzCQyMlUPddp23RS6kO/mUK1+XnX1GYRfdVxydQ7nknxyy1ch+VutIceDsg9f1OYyhAj5nECchbKZtMEY5rphv3VlIt3gsi1onZdEHppcxfr8ezoZdBIluhDdXg+XRTDPGd5XcPwzmLysbOml2xbKIwHAesfnUrlZykBSaAYxSVVKzBPdrb4yt7Y4F4RcllMQKk9WxFMEHpk8ev7En298yqS4uobMtiub5xnk8T84wuF9/39sx+PeumGr3yvpIf245sQROe2qnqu9bQWcGmcSO3lyhJurYZyAI5F1nh1NlcSk5I9V/7m0JzcYswwB0YUfa4KVDGAmdX7gYU44WHAEtKKGWs+zJzvQcthBmmf
- IJ0qMZma
- mpCIGwancro0ReHyymPJFb7/yvJ6vGf7DzbFrNrItCGlw2zAi7IRGNKYz3Brtzu9oVMSpYH9oyTzYIQR2YLB71AJKvbtUAtxlFNz3WO/4V+a/E3KecG7S6/mwntISXeV2Al40FnYm/+SO55LJ91vjPaPqieLrDAhQY7VMEy129r0C5wBpAhyWmVUJlJcaf6FjuKGgHDvbu2mVcvZ494JgpIxxi35wflwhWrzIyiuOo+9IsGD27JnjP9kuEQqtWbYe6KAwXKsdMi1YMz/gX1/DiZ79emWgVH3SXFYtNvaTB1QLXL3I6DVFzPSD0Vw6dzdfOT5y7SSB4WxVZabH7DWjWkRft8KZV8PgrPsNoC3a2Al6h3i04+RZ9vUqPHxU6digDlbuu8coHL5BTkBJnQR+GqrUTvVE9nFQtZSEL6XzLYajzU3J6B2OaJC3W9Wysf1gyixdKwmVq0K1VnxZkgtAtZ7ls/4XRwRyAuUVEn56bSPUpWg=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F280940002
+X-Stat-Signature: epemgjcorqbr1yzjjwsi6p4x6hhn6tey
+X-HE-Tag: 1767084855-89656
+X-HE-Meta: U2FsdGVkX19CwKy3NnRhcvHS8sb0gj+sg1QKpPvlh9otiM57GxI/GC/OY7DHTrhBbkryLBW0VVhAnDtBAD4R9cxVtwOVRNhr/4d1/JPpw7V90DYKsjnukA71hPwGwWVcsiySHmUr4vd1ySQIAYLo0geUZA1c1IX84VOmTC94gtcg3INdgEDvQTXsyl4hLTyXYe5VOmlUFdttql+gUSbWwj+1vc5ARxmu0t3YYFDeZNECUgHf0eCD3/hovdBR5m1eW4blmWk4vhRK2qOoC4Oxtq81IxdjsfRH3tg1+TTeKag0OopV8KleUJYunWNeehvjxhbF12idr1FaoPo3EIlUQBO/FyZVMvJ+AuGi/GUy8KxmsUOFyg800CO1KKrVGzK6kIIxcaaNgsKI3A5NnYhurIulQQJ2rsDpmMXwEAR57Ghy11GFFAL826Ydeom6pfTZUrnmKrjIMm026DBZUG1j2Ja0nayTij0m4rDJtSu9XKIFI76qtk+o1FQGK2JVEZ+zkMGhw2cb59+2DtarkFCKnuAXy/wBPofCkm45dIUz22VFabS/o1owRtdFVlKg4AS68mps3ECoKWRTUXN+mAdrfqsFwWe6D4zvPGyo098t3oIIBZ/4wySO9lhCM9ibRMRx3tHF0Qu7qziXnKtmHT3ONtPUZPA1pIXT/EmK56YHH+m34Svu2Eu0lTA98lyCbU6s+p5yt9VkTO2rWpDmc43YfWe2RbQgqrqskJZxNgtRLQ3fT8gbcSCdnVcndnX1oe5aOwJ2gRfWQnDaTJnNTUWAb3xEkCDQtewG15lUBCNI4WlslM8woFAyJtogX9WAh19WrXY6oSS6rFkfBBjcHHeHNQkZ1e9+Iqju1Ewv1/BGxVu7NAtsAivgtYe0wb9wawW3R8dHmFE1klznzRG8UZ9oyR1kXpNTUY3Naxx+cqbdDlW6/5q0z+zVptIMS0AUf6NSNJn+r/SqYTQ8NK4b8+5
+ ImJdzjT3
+ cPwkjm+FUc3LotR4BwDve0Q2khUt1maWbYY8zVk7myV0BhRXMFVot/Af/AYNKDfwWWd+HIxpIKLRJzwptzDlz63RhdwPdAQP78ReIVmCCEbkVKj017lthSHAfRnMgCFOoILZR9WSUIklmgno6+vYg7r8sJQJCKzPjddNu1Q6fPH9d4fO77USFt/HWe1lNSb0CwYDOvmU4MzowhtlVtLL4fXH0fVVwSdv1PXFu8ovgPpb1FLceUkaa0lvBqrKBn1nHADYUjnnhazybr9WDfpWkKM4p+Wo3w2QFlWH/KAEVVhg6dLZYLvwhWDtWs4R+2JP7+e4iU5BdMBudeqbspvBy434wVxjRnut36m7t
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,33 +101,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 30, 2025 at 1:00=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
-> wrote:
->
-> On Fri, Dec 26, 2025 at 07:45:48PM +0800, wale zhang wrote:
-> > I compile the 6.19-rc2 for arm64 with -O0, this kind of error log will =
-appear.
->
-> I don't think we support compilation with -O0.  Why did you think this
-> would work, and why did you think this was a good idea?
+On Tue, Dec 30, 2025 at 01:59:57PM +0900, Harry Yoo wrote:
+> On Wed, Dec 24, 2025 at 08:43:17PM +0800, Hao Li wrote:
+> > On Wed, Dec 24, 2025 at 03:38:57PM +0900, Harry Yoo wrote:
+> > > On Wed, Dec 24, 2025 at 01:33:59PM +0800, Hao Li wrote:
+> > > > One more thought: in calculate_sizes() we add some extra padding when
+> > > > SLAB_RED_ZONE is enabled:
+> > > > 
+> > > > if (flags & SLAB_RED_ZONE) {
+> > > > 	/*
+> > > > 	 * Add some empty padding so that we can catch
+> > > > 	 * overwrites from earlier objects rather than let
+> > > > 	 * tracking information or the free pointer be
+> > > > 	 * corrupted if a user writes before the start
+> > > > 	 * of the object.
+> > > > 	 */
+> > > > 	size += sizeof(void *);
+> > > > 	...
+> > > > }
+> > > > 
+> > > > 
+> > > > From what I understand, this additional padding ends up being placed
+> > > > after the KASAN allocation metadata.
+> > > 
+> > > Right.
+> > > 
+> > > > Since it’s only "extra" padding (i.e., it doesn’t seem strictly required
+> > > > for the layout), and your patch would reuse this area — together with
+> > > > the final padding introduced by `size = ALIGN(size, s->align);`
+> > > 
+> > > Very good point!
+> > > Nah, it wasn't intentional to reuse the extra padding.
+> 
+> Waaaait, now I'm looking into it again to write V5...
+> 
+> It may reduce (or remove) the space for the final padding but not the
+> mandatory padding because the mandatory padding is already included
+> in the size before `aligned_size = ALIGN(size, s->align)`
 
-Hello Matthew,
+Ah, right - I double-checked as well. `aligned_size - size` is exactly the
+space reserved for the final padding, so slabobj_ext won't eat into the
+mandatory padding.
 
-Compilation with -O0 is mainly for beginners to learn and debug.
-I don't want to encounter the same problems every time I pull the
-latest code. Perhaps other people will also encounter the same
-problem.
+> 
+> > > > for objext, it seems like this padding may no longer provide much benefit.
+> > > > Do you think it would make sense to remove this extra padding
+> > > > altogether?
+> > > 
+> > > I think when debugging flags are enabled it'd still be useful to have,
+> > 
+> > Absolutely — I’m with you on this.
+> > 
+> > After thinking about it again, I agree it’s better to keep it.
+> > 
+> > Without that mandatory extra word, we could end up with "no trailing
+> > padding at all" in cases where ALIGN(size, s->align) doesn’t actually
+> > add any bytes.
+> > 
+> > > I'll try to keep the padding area after obj_ext (so that overwrites from
+> > > the previous object won't overwrite the metadata).
+> > 
+> > Agree — we should make sure there is at least sizeof(void *) of extra
+> > space after obj_exts when SLAB_RED_ZONE is enabled, so POISON_INUSE has
+> > somewhere to go.
+> 
+> I think V4 of the patchset is already doing that, no?
+> 
+> The mandatory padding exists after obj_ext if SLAB_RED_ZONE is enabled
+> and the final padding may or may not exist. check_pad_bytes() already knows
+> that the padding(s) exist after obj_ext.
 
-And I see that include/linux/pgtable.h has the same usage.
- 320 static inline int pmdp_set_access_flags(struct vm_area_struct *vma,
- 321                                         unsigned long address, pmd_t *=
-pmdp,
- 322                                         pmd_t entry, int dirty)
- 323 {
- 324         BUILD_BUG();
- 325         return 0;
- 326 }
+Yes, you are right, V4 already does this — I just hadn't noticed it earlier...
 
-Thanks
-Wale
+> 
+> By the way, thanks for fixing the comment once again,
+> it's easier to think about the layout now.
+
+Glad it helped. The object layout is really subtle — missing even a
+small detail was enough to throw us off. Glad we finally got it all
+straightened out.
+
+-- 
+Thanks,
+Hao
 
