@@ -4,116 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7548E95A8B
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 13:01:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1CE2E95A8C
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 13:25:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B26D6B0005; Tue, 30 Dec 2025 08:01:34 -0500 (EST)
+	id F41836B0005; Tue, 30 Dec 2025 08:25:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75FF76B0089; Tue, 30 Dec 2025 08:01:34 -0500 (EST)
+	id EEFB86B0089; Tue, 30 Dec 2025 08:25:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65E9D6B008A; Tue, 30 Dec 2025 08:01:34 -0500 (EST)
+	id DEDB16B008A; Tue, 30 Dec 2025 08:25:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 525F26B0005
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 08:01:34 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B3742BFC4B
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 13:01:33 +0000 (UTC)
-X-FDA: 84276148866.12.448FE7C
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 06FCCA0013
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 13:01:29 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CD70F6B0005
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 08:25:10 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 76021953CC
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 13:25:10 +0000 (UTC)
+X-FDA: 84276208380.11.B375A21
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 40C35A0007
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 13:25:04 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UZVvWOqT;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of wale.zhang.ftd@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=wale.zhang.ftd@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767099690; a=rsa-sha256;
+	spf=pass (imf15.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767101108; a=rsa-sha256;
 	cv=none;
-	b=NcMUveOPDS3I837VEmWCXcrZenxHKEJMScGLMfFLK2k9p/PTOW0Ic1cnViy/Xj4OzAOtUW
-	s0H3UprkiN9kbY3K3lKCCqdWMEpKm6KWgZpsl4X06A666ExyLZFs/mGRWhOqO6tJcTocQx
-	gb5mryxQjbtkPHrXhaikdHUSdAmBlDE=
+	b=iDJPNJLc3f5msMcuvP60Ezds5Xi507txl6IdqfRtNHBByzOzUNjvYFBw9X+JdNRhZaoZiV
+	EYERCifJq5FgzwApM0MMv/sSXirsEoHjPIHxGWh5gxIkrfjdGfa/QJrclHeuA7PyFw64r7
+	4XjMZ0SiSYmj1Mnmd+q/0b3j2KkPRTY=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UZVvWOqT;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of wale.zhang.ftd@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=wale.zhang.ftd@gmail.com
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767099690;
+	s=arc-20220608; t=1767101108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=sd6r7fFYzeNfF/OtYPN8O9blmmF0Dui4bhsgnnT2woQ=;
-	b=LyhkmyCX98rqjDxE6h7/gnGR/L6m8jbYAEDWbEzIhqIGKdRnH0W2GBJ4LUHYNSTEIA/c0l
-	Uzt+Y5o4Fski1qHCOl6l7OcOYHYYXmnXHj05MXvysVTKXZ8DjXMDjEUGpwYFayro4c+Hzk
-	T/3uBu4vsHTHsUvksKyZtfxHjGVGDV4=
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-34c84dc332cso8552292a91.0
-        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 05:01:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767099689; x=1767704489; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sd6r7fFYzeNfF/OtYPN8O9blmmF0Dui4bhsgnnT2woQ=;
-        b=UZVvWOqTgD0Ts7XUKk4mJl1QcB4qYtmwmCb4J5um1deHwjYQ4Q4QdxKQZK5HUJDlcz
-         PYF4lPIa9I6nDAwPwZchsHiVkRy/+5Kjif5ZA40JTDEANGbn/PG1j7qKt+CSwPR28Oxg
-         scjkq3FF61kA757N/n1cnUVIa97H+81q1yeKl7f+fF2jyIiCIhWTnK2kQ433Ao5H6KwD
-         nwXwMG+aN3mybHzw4330usr1y2E+pSzugx6pHk/1cRKNXO1KIcnqBrVIFTFyas7x0xFU
-         Sdunq7y3RMFfGltAVwGRtOo7OtCxT/a22vcmPTiBTdSWShNlW30TVwGtc1gB3f4c3TeC
-         ScSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767099689; x=1767704489;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sd6r7fFYzeNfF/OtYPN8O9blmmF0Dui4bhsgnnT2woQ=;
-        b=laxeKlPrHfssWVAUWs0eKrLlcdVw9EdMUXsZjFE14DbEiauF3e4kcTsuSN/aoEnvZ6
-         9XXvyTOepxdGP11yNsg3PbJ4JCPrEXSHA44UrABUFJgavy8tV9daaZlWc0q6nyy0I6Wr
-         XhvQFXUhlt05IcPRFIxBiDFmwnkJ9UKkwqbDW/WOgaShpynMkP/DSjSn12/mc3xLXuqj
-         j3b5ptP640DNdNlNF4v0/drKb0mVGN9VEUUW3hIS+BbN6BqUhAd0VAmMhsvQRMYzcgo/
-         ZNI8D5Qk988SUuCsf9BXNu7GaUWHc0Eeu5y0DGTYKUCV+MZ2by9KvzGnAThbIRsyISLP
-         /aAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUeD+2ODxVXdjhUI2dIEU6rteHyUJnpoO8220Tf/BYfbdQ/74+9Tm0n1PhkgKHa4nG2mFTxkoNr5g==@kvack.org
-X-Gm-Message-State: AOJu0Yz2GcBcfvRPhlZk4l91q99EB6/X/lFODXpHhzPlL0mpcFEPe8YI
-	QO+cC0ByykqDVi4k8JtIqZN4dFfq4/XVqCg3P6penjmg+IhBCbwH8hVj
-X-Gm-Gg: AY/fxX7t0O2rkJWIVUq/rWjB1goLJg4DT4tiiTIejokoUJt6C795Z2bCl/ZuPnZ3pYP
-	FGekGZiJOyeYaamOHZtXyjWoxwn0XMl4XrdMNoOIzkmAuV9TQAtwkVZCUnveBxCHHtxNn/ARe5J
-	C3kIBvREWBbRrlVcp3Slj7QjH7MTZ61AZ9L7ec/MVVVQYMato8GRifZmdpuQA7Rlsk70itMFZUX
-	NE8BLQJvjO9SjyuQot1nIeR9U2uow3u3EpbGQRSB1X9laB7A0XOUANjQ80dFZPCSoaUZUtIb29x
-	tXJJeN5b4btSKf5wdflchlGnUsoAFQ0x60A4ogiBfpb6pElQzRVwnhS9fBaL6ho1TudzIau2yHy
-	8mp+VMbFtkyexnGLB5I9udOIuPWnLktgw8Td4T9Z47W+hbcMS9KLi8Cs7WY0kBhrcJAzNTyYaYq
-	DV0E8CJCxkHGExyRgEa31+2RwRTM1wM2jt/gXQ/1SLRQI44ttEAA==
-X-Google-Smtp-Source: AGHT+IFBhVfd3ImkbRQ1IloGsWBUgFU5Df7h5cqnuIbTMvarMUXtsFQQeUiFKUC5r40L8daNYaG13Q==
-X-Received: by 2002:a17:90b:1d83:b0:341:2b78:61b8 with SMTP id 98e67ed59e1d1-34e921a3cb5mr28705610a91.20.1767099688601;
-        Tue, 30 Dec 2025 05:01:28 -0800 (PST)
-Received: from DESKTOP-LBGNL84.ugreendc.com ([209.146.12.194])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e70d4f887sm33584130a91.3.2025.12.30.05.01.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Dec 2025 05:01:28 -0800 (PST)
-From: Wale Zhang <wale.zhang.ftd@gmail.com>
-To: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	ziy@nvidia.com
-Cc: lorenzo.stoakes@oracle.com,
-	david@kernel.org,
-	baohua@kernel.org,
-	matthew.brost@intel.com,
-	linux-mm@kvack.org,
-	Wale Zhang <wale.zhang.ftd@gmail.com>
-Subject: [PATCH v2] mm/swapops,rmap: remove should-never-be-compiled codes.
-Date: Tue, 30 Dec 2025 21:01:10 +0800
-Message-ID: <20251230130110.1366374-1-wale.zhang.ftd@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PXJDmpjXWca0v7gUPR7ngrX+Kf+HJ+gV7pJXFGSYVvo=;
+	b=uMTk1Er9uPQo6eqPjjfLcdO7FxbQEbRxOkK0XiMVO9BjnEl9HzEGkviwaGaN9wLs33ytP+
+	+imKHRCiepwxUigNEJmswtRkVTUCDdpc5lCLwNPVTwtt8z9wZMihyF/ThPLuvlxqWaEHXq
+	kXGVqh/UXos2VuOyEoqqSSuLJ9lh6to=
+Received: from mail.maildlp.com (unknown [172.19.163.198])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dgYhT5MqKzYQtjp
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:24:09 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 869AC4056B
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:24:58 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgAniPim0lNpM+wYCA--.38240S2;
+	Tue, 30 Dec 2025 21:24:56 +0800 (CST)
+Message-ID: <31d3fdfa-799e-426b-bb64-42e06392f0b4@huaweicloud.com>
+Date: Tue, 30 Dec 2025 21:24:53 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 0/3] Memory Controller eBPF support
+To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Hui Zhu <hui.zhu@linux.dev>, jiayuan.chen@linux.dev
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Jeff Xu <jeffxu@chromium.org>,
+ Jan Hendrik Farr <kernel@jfarr.cc>, Christian Brauner <brauner@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Brian Gerst <brgerst@gmail.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, davem@davemloft.net,
+ Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Hui Zhu <zhuhui@kylinos.cn>
+References: <cover.1767012332.git.zhuhui@kylinos.cn>
+ <enlefo5mmoha2htsrvv76tdmj6yum4jan6hgym76adtpxuhvrp@aug6qh3ocde5>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <enlefo5mmoha2htsrvv76tdmj6yum4jan6hgym76adtpxuhvrp@aug6qh3ocde5>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgAniPim0lNpM+wYCA--.38240S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJr4kAFW7Zw4xJr18tryxXwb_yoW8tw17pF
+	WkKFy8WFWkXw17tw4kZ39F9a1Iv395Gr43KFn3Jry7K3ZFqr12vr4Iyr4UuFZrZFnxtr10
+	vryY9w4ku3Z0v3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26rWY6Fy7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8
+	Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
+	CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
+	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
+	j6a0PUUUUU=
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Queue-Id: 40C35A0007
+X-Stat-Signature: nto713y1795ndkq3kq83ke7hjfyfnmmi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 06FCCA0013
-X-Rspamd-Server: rspam10
-X-Stat-Signature: uqokzi3dwmkxy9gpirwyezt1csrpmk8q
-X-HE-Tag: 1767099689-246274
-X-HE-Meta: U2FsdGVkX18UE7IKUESHtalw6oJ6R6whl1on55m23O1MunqSFNU+UNARbcOikPwW8XmRRN1xvIIh7kLztUEVmjChKY5Xy32+BmIgISOJRgqLJG4NRbyOl4WLpPSmzPAfti1OgfzTL4GmxTs2sZoEnmq9P+hFdAq4vmB17OzmPBIwowijaQLNobmDUDilfZ8i/CQeiLJEZ8Yc2LJBwBU/bWhPONomzoq4trtImmzBZ2YagcYHFSF4hEVcZjsK2Df+x5GHnTk64JM/3ClyhqyH6TdgWmnSQhm+F2UsUE66F+OcYHdThsXftC3k9zpwaNco+nb1aD81r8qvm6qa4bMaKaROYgPRO36KSAKifOeePiY1N0LvlNUIdkflP43p1lHoYgmr6ekBcvKd1GIxujvlhF8JOnEttJQp3Lu1bBqa75FcUbT5e+KmzgJerRtBIrAge5ufoJbBKR+9E9NNLB/hJWNzDRVErfjiJf9nPWn8cyjxFZvkMc++iokLtbYTQSJp+X0pEB+vBvMvdstIYYlwGWDhgRid7C2WFguvqrUqkJyWInS0N0Pz8z8jyfNcbDfAynoNYW5AYxLafDVxkcKWrXx/8GXkr/9KNBW4gtd9xfCXrzAee4MTMFm99THcF+MWe7kQRzs1p12rH9snqMvI38+QXuUpPZf/J2YhMiVqQHoKQcEvrXtyCjZ8l015G7aVa1zLDq0IoLobvjQI2jrshBn3TSm1D8W2Fw0bZurcL+fXiLi2HMaPiJth3pgOz4ASnhmTK+h1nhlUXDDQyg8RCh7sR4oTCcqi1FRmr92dHMzGl4mvsBZNXAzePdjNCP2l0BTdSZCjHg69ltMUgkJ1xxWPqwutS2dB5z4EDzFd2pz0duyF6Oj67HfbhF2fdMlTtFM7QOEa2OsEG0/RG8dmPQPAYQbk+1Vb2NNq5mq10SwCbv8lp3W8UMJYN/lbXsg6H/1cPHz9FF0CmD2oMJG
- Jf2eRS3L
- jCJQIgWu4FL9AqL4aeIag4XbtAbyhyUoXN9Up/zL0C7/XgrEcqRjG2laws01Un275PzNkKGDwRmZBxuIUxgdTyu7REyKy6Z4rrW7e5YUzwlqlQ+D6AsAANur6aWaOFmygFtSeHOj21ltGl0zJ+INTqi+Bvcc+hpewlGT/Awyb/ZFducvwp8TrhL5DZt5vCsIwuWTGdnjogpQnWciDGPolqBo0AN1oE5eHLNRTonIzC0ziQSTugr/2G2ZX5RDA2q8biiK6W/LnkGuRGCPulUyEApiaIRJFkA1sQfvHkVSxxXq3f3EjVdSkVdwz3BRlpr+eeF/Ki7Y7VnKqpw7mIC/c2quLqU4vnwG2wxBxzKAh5apGPgICTKMPuSMEDx9Qmw0vLSIpX5xM7F9yHH51sMdvsLhmBY2mwO9D+5oPfCPP9e6OPePHgqwbqWQKtZ/2jrno7DJlxU66xjcHAvkuc3ljGDtfQFMNkabnghrRxtr4BsMW8dcKjA6MsbW6gi89VFN73Z5m9S4hYV8MfgY4bEpYsOPTHTcoCHmTHouWX9m42kkh8InXu7gk6FrBm6Ik2nReTHX0
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767101104-489344
+X-HE-Meta: U2FsdGVkX19nc1a2bWcI7O74+bbiqrYjZjy+I9Sv4J/duDOq2Mf1RQDRh5HbvRf37QyoIdY17I9gDrRYdOM7Eg9+shG9NaLI33+j+7ek/HpKs5igw929rKOmacDUlk1/oKVSFpPy5WBc3TaUrn2U1x+QhGbhS+2km4w9tcNyKvW+UTpc08rMszKK0u1DPwmHFQwSXpApXvb0utDi7/gkpf2RCAJ3GkgEUdC5EXrzZadfJkb4lkqhNQHj6tXliC1YErElDdduVlJ3Bh5SaFClqEkJTVMANsraOpDCv4vswbvrCBlntOcl+3YPilXCkb7ry3cDbSFPwLVCI8KIijMRwgkncjEYnvWUF6p6sJZpyMUeYyLW9OzV/VexNY/7IxlZt0lFwspaCABFN3z7CoaJpBX79BuOTmd6oaC3zqA93C56AwVCQ7GpbFg5iUGXtzH7yAqbO0so1Go19qINXkv3MN4o80mmkhgXg19CAgWhBfV8Mx4585olzGtx1wfVtTozT7UM4zLFX/Z3IzSh0JKilukR3BiWS2kmUI60stx7TEne6xPiw/ZYwQqk0GTLtRXxGxJ9Wt6p5abEH/gnUddSy2hb8oAOttyJewgPyBA6CQVewuQcCm+/q1I4dAz7gClHn2qeo3ClrRa1tUq339Il9sJiXE8jXSzP7QjMb45+9jN6ACLtj8L6AmhmJFADCJyisLHzTQv04Shk5SlmXCCDnkta/Sp711Qbi+eC40z9S11pTlqjvm7v3VV+IkIyjoXHCjvipnw7peMC0AjhAbzL/ifOPWlrJHFe2GsmIS7bijR/sl7Bh8X5XJkVCpsd4JMKwpO5Zfdo71aE9+E2amjoBNTXdtLPGknV11fn31CMzo5BePu6wYVgaQxFoyIhN4l/DZng6fXB//0V68oEA0/sHn3aDat1cSXlHtCFGG3TyvK3d7LjEMzTof+fKGCgeCvn3qjkc9EgXjGG13j1esR
+ RzBCGXl4
+ Dyr+kBvAiXu+cbD3WHgbGUH05+frTnDDw9c06M4n7Z5Gm/9h+YMCAOz5o3lW1f+RwrDX4ICpPPEblH2XUK6Wt1rNv4y+IQ9AW0CKZpqbW9s08q082QyO0xGLOsYviw/NKKwuAjIgPLOo2bXL464R3j9qlsSiC8xfDaJsF2NS8yZpwU011UDCI/haK6h+Z7qXvyfPwaPwhzZHgFllbyp7ledbOkKUY7H/PzisRO3L6mcvUkNY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,276 +125,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mm/swapops,rmap: remove should-never-be-compiled codes, included
-folio_add_return_large_mapcount(), folio_sub_return_large_mapcount(),
-set_pmd_migration_entry() and remove_migration_pmd().
 
-Link: https://lore.kernel.org/linux-mm/CAHrEdeunY-YpDC7AoTFcppAvHCJpEJRp=GTQ4psRKRi_3fhB0Q@mail.gmail.com/
 
-Signed-off-by: Wale Zhang <wale.zhang.ftd@gmail.com>
----
- include/linux/rmap.h    | 17 ++-----
- include/linux/swapops.h | 12 -----
- mm/migrate_device.c     |  5 ++-
- mm/rmap.c               | 98 ++++++++++++++++++++---------------------
- 4 files changed, 54 insertions(+), 78 deletions(-)
+On 2025/12/30 17:49, Michal Koutný wrote:
+> Hi Hui.
+> 
+> On Tue, Dec 30, 2025 at 11:01:58AM +0800, Hui Zhu <hui.zhu@linux.dev> wrote:
+>> This allows administrators to suppress low-priority cgroups' memory
+>> usage based on custom policies implemented in BPF programs.
+> 
+> BTW memory.low was conceived as a work-conserving mechanism for
+> prioritization of different workloads. Have you tried that? No need to
+> go directly to (high) limits. (<- Main question, below are some
+> secondary implementation questions/remarks.)
+> 
+> ...
+>> This series introduces a BPF hook that allows reporting
+>> additional "pages over high" for specific cgroups, effectively
+>> increasing memory pressure and throttling for lower-priority
+>> workloads when higher-priority cgroups need resources.
+> 
+> Have you considered hooking into calculate_high_delay() instead? (That
+> function has undergone some evolution so it'd seem like the candidate
+> for BPFication.)
+> 
 
-diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-index daa92a58585d..44dccd1821eb 100644
---- a/include/linux/rmap.h
-+++ b/include/linux/rmap.h
-@@ -354,33 +354,24 @@ static inline void folio_add_large_mapcount(struct folio *folio,
- 	atomic_add(diff, &folio->_large_mapcount);
- }
- 
--static inline int folio_add_return_large_mapcount(struct folio *folio,
--		int diff, struct vm_area_struct *vma)
--{
--	BUILD_BUG();
--}
--
- static inline void folio_sub_large_mapcount(struct folio *folio,
- 		int diff, struct vm_area_struct *vma)
- {
- 	atomic_sub(diff, &folio->_large_mapcount);
- }
- 
--static inline int folio_sub_return_large_mapcount(struct folio *folio,
--		int diff, struct vm_area_struct *vma)
--{
--	BUILD_BUG();
--}
- #endif /* CONFIG_MM_ID */
- 
- #define folio_inc_large_mapcount(folio, vma) \
- 	folio_add_large_mapcount(folio, 1, vma)
--#define folio_inc_return_large_mapcount(folio, vma) \
--	folio_add_return_large_mapcount(folio, 1, vma)
- #define folio_dec_large_mapcount(folio, vma) \
- 	folio_sub_large_mapcount(folio, 1, vma)
-+#ifdef CONFIG_NO_PAGE_MAPCOUNT
-+#define folio_inc_return_large_mapcount(folio, vma) \
-+	folio_add_return_large_mapcount(folio, 1, vma)
- #define folio_dec_return_large_mapcount(folio, vma) \
- 	folio_sub_return_large_mapcount(folio, 1, vma)
-+#endif
- 
- /* RMAP flags, currently only relevant for some anon rmap operations. */
- typedef int __bitwise rmap_t;
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index 8cfc966eae48..d6ca56efc489 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -339,18 +339,6 @@ static inline pmd_t swp_entry_to_pmd(swp_entry_t entry)
- }
- 
- #else  /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
--static inline int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
--		struct page *page)
--{
--	BUILD_BUG();
--}
--
--static inline void remove_migration_pmd(struct page_vma_mapped_walk *pvmw,
--		struct page *new)
--{
--	BUILD_BUG();
--}
--
- static inline void pmd_migration_entry_wait(struct mm_struct *m, pmd_t *p) { }
- 
- static inline pmd_t swp_entry_to_pmd(swp_entry_t entry)
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 23379663b1e1..13b2cd12e612 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -195,8 +195,8 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
- 		return migrate_vma_collect_skip(start, end, walk);
- 	}
- 
--	if (thp_migration_supported() &&
--		(migrate->flags & MIGRATE_VMA_SELECT_COMPOUND) &&
-+#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
-+	if ((migrate->flags & MIGRATE_VMA_SELECT_COMPOUND) &&
- 		(IS_ALIGNED(start, HPAGE_PMD_SIZE) &&
- 		 IS_ALIGNED(end, HPAGE_PMD_SIZE))) {
- 
-@@ -228,6 +228,7 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
- 	}
- 
- fallback:
-+#endif
- 	spin_unlock(ptl);
- 	if (!folio_test_large(folio))
- 		goto done;
-diff --git a/mm/rmap.c b/mm/rmap.c
-index f955f02d570e..81c7f2becc21 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1232,7 +1232,7 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *vma,
- 		enum pgtable_level level)
- {
--	atomic_t *mapped = &folio->_nr_pages_mapped;
-+	__maybe_unused atomic_t *mapped = &folio->_nr_pages_mapped;
- 	const int orig_nr_pages = nr_pages;
- 	int first = 0, nr = 0, nr_pmdmapped = 0;
- 
-@@ -1245,16 +1245,14 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
- 			break;
- 		}
- 
--		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
--			nr = folio_add_return_large_mapcount(folio, orig_nr_pages, vma);
--			if (nr == orig_nr_pages)
--				/* Was completely unmapped. */
--				nr = folio_large_nr_pages(folio);
--			else
--				nr = 0;
--			break;
--		}
--
-+#ifdef CONFIG_NO_PAGE_MAPCOUNT
-+		nr = folio_add_return_large_mapcount(folio, orig_nr_pages, vma);
-+		if (nr == orig_nr_pages)
-+			/* Was completely unmapped. */
-+			nr = folio_large_nr_pages(folio);
-+		else
-+			nr = 0;
-+#else
- 		do {
- 			first += atomic_inc_and_test(&page->_mapcount);
- 		} while (page++, --nr_pages > 0);
-@@ -1264,22 +1262,21 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
- 			nr = first;
- 
- 		folio_add_large_mapcount(folio, orig_nr_pages, vma);
-+#endif
- 		break;
- 	case PGTABLE_LEVEL_PMD:
- 	case PGTABLE_LEVEL_PUD:
- 		first = atomic_inc_and_test(&folio->_entire_mapcount);
--		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
--			if (level == PGTABLE_LEVEL_PMD && first)
--				nr_pmdmapped = folio_large_nr_pages(folio);
--			nr = folio_inc_return_large_mapcount(folio, vma);
--			if (nr == 1)
--				/* Was completely unmapped. */
--				nr = folio_large_nr_pages(folio);
--			else
--				nr = 0;
--			break;
--		}
--
-+#ifdef CONFIG_NO_PAGE_MAPCOUNT
-+		if (level == PGTABLE_LEVEL_PMD && first)
-+			nr_pmdmapped = folio_large_nr_pages(folio);
-+		nr = folio_inc_return_large_mapcount(folio, vma);
-+		if (nr == 1)
-+			/* Was completely unmapped. */
-+			nr = folio_large_nr_pages(folio);
-+		else
-+			nr = 0;
-+#else
- 		if (first) {
- 			nr = atomic_add_return_relaxed(ENTIRELY_MAPPED, mapped);
- 			if (likely(nr < ENTIRELY_MAPPED + ENTIRELY_MAPPED)) {
-@@ -1300,6 +1297,7 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
- 			}
- 		}
- 		folio_inc_large_mapcount(folio, vma);
-+#endif
- 		break;
- 	default:
- 		BUILD_BUG();
-@@ -1656,7 +1654,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *vma,
- 		enum pgtable_level level)
- {
--	atomic_t *mapped = &folio->_nr_pages_mapped;
-+	__maybe_unused atomic_t *mapped = &folio->_nr_pages_mapped;
- 	int last = 0, nr = 0, nr_pmdmapped = 0;
- 	bool partially_mapped = false;
- 
-@@ -1669,19 +1667,17 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- 			break;
- 		}
- 
--		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
--			nr = folio_sub_return_large_mapcount(folio, nr_pages, vma);
--			if (!nr) {
--				/* Now completely unmapped. */
--				nr = folio_large_nr_pages(folio);
--			} else {
--				partially_mapped = nr < folio_large_nr_pages(folio) &&
--						   !folio_entire_mapcount(folio);
--				nr = 0;
--			}
--			break;
-+#ifdef CONFIG_NO_PAGE_MAPCOUNT
-+		nr = folio_sub_return_large_mapcount(folio, nr_pages, vma);
-+		if (!nr) {
-+			/* Now completely unmapped. */
-+			nr = folio_large_nr_pages(folio);
-+		} else {
-+			partially_mapped = nr < folio_large_nr_pages(folio) &&
-+				!folio_entire_mapcount(folio);
-+			nr = 0;
- 		}
--
-+#else
- 		folio_sub_large_mapcount(folio, nr_pages, vma);
- 		do {
- 			last += atomic_add_negative(-1, &page->_mapcount);
-@@ -1692,25 +1688,24 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- 			nr = last;
- 
- 		partially_mapped = nr && atomic_read(mapped);
-+#endif
- 		break;
- 	case PGTABLE_LEVEL_PMD:
- 	case PGTABLE_LEVEL_PUD:
--		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
--			last = atomic_add_negative(-1, &folio->_entire_mapcount);
--			if (level == PGTABLE_LEVEL_PMD && last)
--				nr_pmdmapped = folio_large_nr_pages(folio);
--			nr = folio_dec_return_large_mapcount(folio, vma);
--			if (!nr) {
--				/* Now completely unmapped. */
--				nr = folio_large_nr_pages(folio);
--			} else {
--				partially_mapped = last &&
--						   nr < folio_large_nr_pages(folio);
--				nr = 0;
--			}
--			break;
-+#ifdef CONFIG_NO_PAGE_MAPCOUNT
-+		last = atomic_add_negative(-1, &folio->_entire_mapcount);
-+		if (level == PGTABLE_LEVEL_PMD && last)
-+			nr_pmdmapped = folio_large_nr_pages(folio);
-+		nr = folio_dec_return_large_mapcount(folio, vma);
-+		if (!nr) {
-+			/* Now completely unmapped. */
-+			nr = folio_large_nr_pages(folio);
-+		} else {
-+			partially_mapped = last &&
-+				nr < folio_large_nr_pages(folio);
-+			nr = 0;
- 		}
--
-+#else
- 		folio_dec_large_mapcount(folio, vma);
- 		last = atomic_add_negative(-1, &folio->_entire_mapcount);
- 		if (last) {
-@@ -1730,6 +1725,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- 		}
- 
- 		partially_mapped = nr && nr < nr_pmdmapped;
-+#endif
- 		break;
- 	default:
- 		BUILD_BUG();
++1
+
+This issue[1] might be resolved by hooking into calculate_high_delay().
+
+[1] https://lore.kernel.org/cgroups/4txrfjc5lqkmydmsesfq3l5drmzdio6pkmtfb64sk3ld6bwkhs@w4dkn76s4dbo/T/#t
+
+> ...
+>> 3. Cgroup hierarchy management (inheritance during online/offline)
+> 
+> I see you're copying the program upon memcg creation.
+> Configuration copies aren't such a good way to properly handle
+> hierarchical behavior.
+> I wonder if this could follow the more generic pattern of how BPF progs
+> are evaluated in hierarchies, see BPF_F_ALLOW_OVERRIDE and
+> BPF_F_ALLOW_MULTI.
+> 
+> 
+>> Example Results
+> ...
+>> Results show the low-priority cgroup (/sys/fs/cgroup/low) was
+>> significantly throttled:
+>> - High-priority cgroup: 21,033,377 bogo ops at 347,825 ops/s
+>> - Low-priority cgroup: 11,568 bogo ops at 177 ops/s
+>>
+>> The stress-ng process in the low-priority cgroup experienced a
+>> ~99.9% slowdown in memory operations compared to the
+>> high-priority cgroup, demonstrating effective priority
+>> enforcement through BPF-controlled memory pressure.
+> 
+> As a demonstrator, it'd be good to compare this with a baseline without
+> any extra progs, e.g. show that high-prio performed better and low-prio
+> wasn't throttled for nothing.
+> 
+> Thanks,
+> Michal
+
 -- 
-2.43.0
+Best regards,
+Ridong
 
 
