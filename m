@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12F7CEE4999
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 19:54:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32264E95A8E
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 20:03:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 786296B0088; Tue, 30 Dec 2025 14:54:41 -0500 (EST)
+	id 846756B0088; Tue, 30 Dec 2025 15:03:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7346C6B0089; Tue, 30 Dec 2025 14:54:41 -0500 (EST)
+	id 7F4236B0089; Tue, 30 Dec 2025 15:03:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66A746B008A; Tue, 30 Dec 2025 14:54:41 -0500 (EST)
+	id 700596B008A; Tue, 30 Dec 2025 15:03:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5213A6B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 14:54:41 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2AE02C1766
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 19:54:41 +0000 (UTC)
-X-FDA: 84277189962.03.424460C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D7036B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:03:33 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D8FD05867F
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 20:03:32 +0000 (UTC)
+X-FDA: 84277212264.09.1348AE7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 795C214000A
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 19:54:39 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HO+3Px2R;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0DC6D16000E
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 20:03:30 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T5Yy14uU;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767124479; a=rsa-sha256;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767125011; a=rsa-sha256;
 	cv=none;
-	b=YVAb5kM9kI2jl00vrRGhixAo5t46QEraG8gv6XuJKHaoJUODhFeufzihZc7//L/qxTShlw
-	Q2DSmhrU4fvlmhjmJQeJSas8yMipvqne1mVdmUhiMYmV5CB5lJdy6ZdNgsi6Pk0lQe1j7Q
-	mvKt2dUtssqBSLvoKuDx0S7cJawxRwM=
+	b=6fbKVE48/rzCnv9kQyGcOQITvVrAE1pqogm7pVgRk8LJ6KQiw7gil8/Es6coL06tx7bgo9
+	jfW3GAaDPTsK2EjCNBBB6zXVg4G3eJ+UMmWujhkblFQAuDr4dJyuV8rNwWNebqlxM8NTUZ
+	1it1hvbXLAKB0tV7RCLHB54qyGXbPkQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HO+3Px2R;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T5Yy14uU;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767124479;
+	s=arc-20220608; t=1767125011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KXEZHAfIEv/h8eZhRtvFNUHCSaBdusqhSLf9TvIpztA=;
-	b=HjNeiGFChbggyWFgDvitO9W7R2rr9e6crFMVAGKJLu831gewU74lReONSBsgXumHaq7i6d
-	LRSkkXUv1JmbM6kmwfp5+Ws2JE3ls0cxjZGTWsRD/IqcmGiZsv+W+uAnbW1MLh6Z6UVyoV
-	PLr86TEO7pGCjrlJ5s2BJcw4DTSlId4=
+	bh=ctDtZSn4FSVNJvdKcxW0l/G62OR9jzVRl84PV6BGZ6w=;
+	b=3aLkmHfUrFqCxXtw8qerHatTfWxIVR9K9SNvhOsae+GgFA0y+RFA8hhxciKkacdJdJRrD/
+	rwPr3PN53QCy+ZcKJ3Brdc5WgvQOMVtjoG7E1L8wgS6CSUn4l3xTUfB9/3t2U0OAeIl27z
+	8kTdOeOC3goSx0ofjCWl2xP8M/JE50E=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9FAEB60017;
-	Tue, 30 Dec 2025 19:54:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AA9C4CEFB;
-	Tue, 30 Dec 2025 19:54:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7364A60017;
+	Tue, 30 Dec 2025 20:03:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8953EC4CEFB;
+	Tue, 30 Dec 2025 20:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767124478;
-	bh=mP5UTgwdP2k6KvELLsX/RxuLJoDdzwwydVxjz1Sy+Ag=;
+	s=k20201202; t=1767125010;
+	bh=YNrIbUP7Yffo+oKA8DDjbWGcIaKo1esvkxdt3/Xo/rQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HO+3Px2RDeFfzJo25kvQ0u9KpB7y1cI4cxEb23zkcoNQCG4pJaCN8mIv9zLQUN1vZ
-	 MaOL4V5Ck2h6GgWQp19R6oMoX4knrIdubIaAbjgzJyzcPT6sfYjU791IOk/clgJS0W
-	 LR/NKfgjGBpr8vLYTr6EefWg9b6J6Hdz156g1HwqA7VqMh7j9zb3cDbVt4YlLIeU7G
-	 LamKLrptxh6zo0fgEZf7RuyAL/DDM8sivmK1oJ+u05nP3Xizdd35zkO5LWWoMICnB5
-	 L3kCzi+FtHQ2sDgG5twQi67qT/G9vg06jqQ2FB9xndp45foXiSl8FEv2GeD8XwesW/
-	 DF2dV4mVojBdQ==
-Message-ID: <084eee6b-6c9e-454b-a563-b2babb76b099@kernel.org>
-Date: Tue, 30 Dec 2025 20:54:33 +0100
+	b=T5Yy14uUiNSsjiuB+9o3RPsKtquQhXgDfEMhk+ej9eErBOlvcxx22btCUTR3XjYDS
+	 Hdqc2pfYqgRU/OGN8CprBtdjhzSVvyEv75PAX19+L00BiN4Z0+V0Fe/7I0DqlejP3G
+	 RKIm6MUDGRvsK260R7dZDnlDKi056bYlCuidXK55vWwsm0PegOlP3hiDJih4NeP+5D
+	 6atO6yffLPRR1Dqj9lJljukEKNHAp4H1IKrpPi7l2ejVGO2DU115RaiEZlroMCz8Ug
+	 Iwmv7e+WHsAmiv6gCQBiUXcjs8h4jLt03n0vQStZnbWNstw6NytwToJZoTWpltSISD
+	 qAqVqMeyDvcJg==
+Message-ID: <f47b6192-2115-4f4b-82ae-dd66e65f4340@kernel.org>
+Date: Tue, 30 Dec 2025 21:03:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] mm: khugepaged: set VM_NOHUGEPAGE flag when
- MADV_COLD/MADV_FREE
+Subject: Re: [PATCH v2 4/4] mm: khugepaged: set to next mm direct when mm has
+ MMF_DISABLE_THP_COMPLETELY
 To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
  lorenzo.stoakes@oracle.com
 Cc: ziy@nvidia.com, dev.jain@arm.com, baohua@kernel.org,
  lance.yang@linux.dev, richard.weiyang@gmail.com, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
 References: <20251229055151.54887-1-yanglincheng@kylinos.cn>
- <20251229055151.54887-4-yanglincheng@kylinos.cn>
+ <20251229055151.54887-5-yanglincheng@kylinos.cn>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251229055151.54887-4-yanglincheng@kylinos.cn>
+In-Reply-To: <20251229055151.54887-5-yanglincheng@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 795C214000A
-X-Stat-Signature: xgzyp41m1xw9ufawacqokfgz7qicxa9k
+X-Rspamd-Queue-Id: 0DC6D16000E
+X-Rspamd-Server: rspam03
+X-Stat-Signature: sgf7ch9i7hgyzyqgosq7g1q3xr4jjob8
 X-Rspam-User: 
-X-HE-Tag: 1767124479-494034
-X-HE-Meta: U2FsdGVkX1+/7Pdq20a3em2sbHnhWG4phUx8gFvf03OwaAZYrxi4DvH0vZpfR3UX0c4KXf4NM8aFQ221pto6dDAh2I5UKgLqSpPf3o5StFd0od/waD6HI54jNupZJeRm8tfsUKKBg7WNVGiM9fiTgRvkRiz9INaMMVbwNGriWpcMbCMtHGaRM3qqm77yjzGiqb/b3Sg7APBFBLlt/IA33wDhivVh762QKJdnfbk5kZ11zrhMdnBix4EME1ZjK2US9kSAm6PBoCdlGnsMgmp1nGz4KoA+l9yoR/oGnpRgeHj2Bb+Sdqb9y2iP88Ku6DiXSS4+Y2R+UGk+pc8Io2VEIKGhoKNtGp6DCMC0DkF5/adDtwH6ccofXI/WC/RX665NVO9qyQ447TJ8hIuVh+Y6aWXYapdALgo+8SO5b+ikWGK7knP3svqoT9vT7AIPJFnb0lUReyMBdS5VlWkc/rjAq9O/jHDHQ2GZkriwMWNiQ1mv7SUs2SwXxerb1eSXpN7f+76PWJ7ZJz+dKADopOaw3GFGbW0DehRn/I2M7KfAAfW0ELUtgYlKSQL7nGQVXenkQgAXQf4cB3dueO5xs9cQP78G/6pwfsu0+QYYyrGstt9oHoAM7u+vXrspzw/t+TDVKGipktDjAfrHtWEqDaaaSH0c6s4tgh/r1XF7p+ZK31b+zRKNpAJ52pgIXkV8PW6YXRSkD47+sDM08tcqp5/+74ia9NjB+anTqYO7LG+WatlxF+9GIvqWFCKHLaQ2o3Ntd/m7GI0smk1Jh4gLLKh+lqJtZeWVv5vA5Mfnhnh3VGipbhZ4uEkonvqQ5oCU6FrZtjjpft6KtQgIoVZhU3UV+ROdgwKfDRcCS+DT+6A4CCY9D5YocKentdrpfFVyDn4wv2aU1aOZC4jcnGmHbP4xcsb8XPNza8rFDfxH5uWZE37ptPEmpOa13qjETYY9nNBpkKGO1KgZ63TaGVeRRqT
- 754OgZJM
- uWwmij5YGLY4ufTW0nbGxqEHdGGifVR8Aqs04Xq8F8ngbfgjStqVi9rxOroC4kwOTio0L42CcJVMdvaTxYb4yUwB0vytgJ9xCBdaaenrp0njk9ip4YkEivGeImG0Nslorybgxo2RK5Sy9qRIdrRzIBF1YDCnXjIsRiTdI8nPkvjyUer6pO+dymwaoPDJD9SRyS4xPq7ZO7mJvEpBMvu86Fxt+qSYQHA27yexNc5r59Ww2MyYH7WDsHDkGp0QO5aZqxPXNilNZQ3oAfbSm8LJ9X/3+CzHpmBpNIY7vHWpdezNk02dohyrbfOq3GMdKH77J0YHtm14bEhwACsmsIIUmwYZ8CTKWKPph0KA5oktPDqgp1tz6A9g4yi9SzA==
+X-HE-Tag: 1767125010-871873
+X-HE-Meta: U2FsdGVkX19FqsaVhWGO8xNesEWO5zCZ7FBup2HqYbgo434JaWjbnpNyxiT7muLHwrUehaPUQdXzOCfLWQIqn33RW89hH1GlMhx3VxF0niAyZsS8pK4yVYS2qOmHO+yfk7AtWPSSTBs4wyBqzPdrJCl3iPmdpGPGAEDWBjYZOWM667hVAI0/ZdGcr/PQmnjdPWNAjibCa/y84dQ4aOdFRYZDueWAKzXQr/+kfcCZ8n5+hIEqcgsxLRXUKluo+zyxQJT76H3QGZShpjDeGjgKl9nfE+svhFYUtEVs1VppTZjDGA+Nb0FHaUKhOTveZWkrNxO7IhtxBjv8GjfMbJcH/3rttiFBs2Lomp6KTLnuxFK9I3Q5AotJOOWLzqhbiuCEoQPf46cyolIItLlLVf/7ccNM8sEohEOmzi7/csGM9UlMhTseg4NXhTTeu22kbQvVFOrG7vvljcHRhRo5njFiKfAJ+PjJMIfeiboymx/ClXH4HBDCh2UcEiKdyIDA2UCvo9KSH0gpoQYcfjkbtCBp+xssHG4QJScyeFkXABKdlpXYn/Y3E7j3GJfHwnjm4Afhf0Mcd/ngyT0gbNpK4oXJss8eXK9+dncXKI6pI3B7DH+9/1TyAQZ5UeNuqDuR7bbI9PCkiBoZRJF0k0ys2jehFRdf48I073RbVtxtqjv6wXWqCrY5cbqLtJtbxWE9KMUgY75fdMciM7TYJ1xNiq2qlAapTxrZUU7qojE0eFfWGF1wO7CsoSx4Z7oiryualxlZTxj14BAdJz7HV07mGliynvOL/A0Y7T2o6d3xjUTnqJXIwN0Sp7NuBG+xcMPyiMwJV1UuQALGlOyeLHWk3OsnH4WYqyWRmqVs1ejvJDr4fqULtotawZZfy59LG1XRI0/CqVoIUwTnvgI7U1DGriqZQGjrEKX6/lyaeRGe3Ald2F4w/3UfJx1Je1Rpyw7JdxcOZk5nIDbjbDpaw24a96t
+ mTUOQW/U
+ g+PL1ZzQ2Cz5jPkGh62S+M8mqrc1MUbzvWRbMJXEmQhm3FbzO70F9/wtx1on0Ka082AJ82Cs90PpL19C7ga2jw2zafnjdgZ+GAmnQJesiMUyztQji7KFhLucVDbmuPnLrm1dnUlKo1L2GtVqptcAGWR+muooPFg+lkLuKcJ8cJpADlAB0TrIem7FmkeIQB7j2CPs0Ie5BhA2Eqehzp9arVEcGrcvj3j0AhNk4xrxYb9n9KrNPLY1PyG3u2A9Z5xt6WHh6n4XJBuyzYnyBFGAJl/o57TOuewxamCm/+JbscxcZsSWJYdZZf2D4mhk5szV21k0WwNWhZav46bzE26/sG1fMXA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,60 +99,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 12/29/25 06:51, Vernon Yang wrote:
-> For example, create three task: hot1 -> cold -> hot2. After all three
-> task are created, each allocate memory 128MB. the hot1/hot2 task
-> continuously access 128 MB memory, while the cold task only accesses
-> its memory briefly andthen call madvise(MADV_COLD). However, khugepaged
-> still prioritizes scanning the cold task and only scans the hot2 task
-> after completing the scan of the cold task.
-> 
-> So if the user has explicitly informed us via MADV_COLD/FREE that this
-> memory is cold or will be freed, it is appropriate for khugepaged to
-> skip it only, thereby avoiding unnecessary scan and collapse operations
-> to reducing CPU wastage.
-> 
-> Here are the performance test results:
-> (Throughput bigger is better, other smaller is better)
-> 
-> Testing on x86_64 machine:
-> 
-> | task hot2           | without patch | with patch    |  delta  |
-> |---------------------|---------------|---------------|---------|
-> | total accesses time |  3.14 sec     |  2.93 sec     | -6.69%  |
-> | cycles per access   |  4.96         |  2.21         | -55.44% |
-> | Throughput          |  104.38 M/sec |  111.89 M/sec | +7.19%  |
-> | dTLB-load-misses    |  284814532    |  69597236     | -75.56% |
-> 
-> Testing on qemu-system-x86_64 -enable-kvm:
-> 
-> | task hot2           | without patch | with patch    |  delta  |
-> |---------------------|---------------|---------------|---------|
-> | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
-> | cycles per access   |  7.29         |  2.07         | -71.60% |
-> | Throughput          |  97.67 M/sec  |  110.77 M/sec | +13.41% |
-> | dTLB-load-misses    |  241600871    |  3216108      | -98.67% |
+> When an mm with the MMF_DISABLE_THP_COMPLETELY flag is detected during
+> scanning, directly set khugepaged_scan.mm_slot to the next mm_slot,
+> reduce redundant operation.
 > 
 > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
 > ---
+>   mm/khugepaged.c | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 2b3685b195f5..72be87ef384b 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2439,6 +2439,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+>   
+>   		cond_resched();
+>   		if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
+> +			vma = NULL;
+>   			progress++;
+>   			break;
+>   		}
 
-As raised in v1, this is not the way to go. Just because something was 
-once indicated to be cold does not meant that it will stay like that 
-forever.
+I don't understand why we need changes at all.
 
-Also,
+The code is
 
-(1) You are turning this into an operation that will perform VMA
-     modifications and require the mmap lock in write mode, bad.
+	mm = slot->mm;
+	/*
+	 * Don't wait for semaphore (to avoid long wait times).  Just move to
+	 * the next mm on the list.
+	 */
+	vma = NULL;
+	if (unlikely(!mmap_read_trylock(mm)))
+		goto breakouterloop_mmap_lock;
 
-(2) You might now create many VMAs, possibly breaking user space, bad.
+	progress++;
+	if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+		goto breakouterloop;
 
-If user space knows that memory will stay cold, it can use madvise() to 
-indicate that these regions are not a good fit for THPs.
+	...
 
-But are they really not a good fit? What about smaller-order THPs?
+So we'll go straight to breakouterloop with vma=NULL.
 
-Nobody knows, but changing the behavior like you suggest is definetly 
-bad. :)
+Do you want to optimize for skipping the MM if the flag gets toggled
+while we are scanning that MM?
+
+Is that really something we should be worrying about?
+
+Also, why can't we simply do a
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 97d1b2824386f..af8481d4b0f4e 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2516,7 +2516,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+          * Release the current mm_slot if this mm is about to die, or
+          * if we scanned all vmas of this mm.
+          */
+-       if (hpage_collapse_test_exit(mm) || !vma) {
++       if (hpage_collapse_test_exit_or_disable(mm) || !vma) {
+                 /*
+                  * Make sure that if mm_users is reaching zero while
+                  * khugepaged runs here, khugepaged_exit will find
+
 
 -- 
 Cheers
