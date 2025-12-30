@@ -4,87 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 648A3EE0203
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 21:00:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14166EE01F6
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 21:03:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D7CE6B0088; Tue, 30 Dec 2025 16:00:51 -0500 (EST)
+	id 5946D6B0088; Tue, 30 Dec 2025 16:03:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8857C6B0089; Tue, 30 Dec 2025 16:00:51 -0500 (EST)
+	id 568E86B0089; Tue, 30 Dec 2025 16:03:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 791FB6B008A; Tue, 30 Dec 2025 16:00:51 -0500 (EST)
+	id 474686B008A; Tue, 30 Dec 2025 16:03:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 64A566B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:00:51 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C26BC1992
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:00:51 +0000 (UTC)
-X-FDA: 84277356702.04.6E202D5
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2ABCB4000D
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:00:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jcgg3koN;
-	spf=pass (imf12.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 38F676B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:03:31 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E7ADC139F40
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:03:30 +0000 (UTC)
+X-FDA: 84277363380.20.13C06CA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 226D5A000B
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:03:28 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U+JawV1p;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767128449;
+	s=arc-20220608; t=1767128609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tRIHEk0dRJ5d7qN6JdXfLwTI0SjQwuqnSM6RZ2ji4I0=;
-	b=Gxn9lqyj8ov6yqD9ryhJwR+fNR6VDHsjjUghr8ydV9ovEcUntfrXj7+7Wnes5WDjuaKS53
-	BcHQCqHN5jXV3e2eJ5qwywhMTVeRXu0TLZhawxZTBlxII5cDcy8Xr9RxyKadvMhSlIZY2y
-	Z2+nyQYdP04zn7sr05tBmoAERjfkwDw=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jcgg3koN;
-	spf=pass (imf12.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767128449; a=rsa-sha256;
+	bh=ENj7zWMVhsX7QNtMSEtUhiyLAQ1BD8Z9P82tvTPN6cA=;
+	b=AGj7hu19UzIi7biigrM3ow/tELwvI+IIBKqEQV30DOHB4SUH30Ksu2eR9dzPugEN5ihf14
+	OZDqzOBY2tUNWDIreaY9N4LoYfd8grCS+p3gk88GR6h+PxyeYv5EgQarMVDycUZkUi1fOr
+	RzHyuIQ3ESRpWhZi2sKe6hGOyCtbDPQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767128609; a=rsa-sha256;
 	cv=none;
-	b=E3joEIeP/X4gOMVVskagQe2ctPuaS3UJrUrs8wKRy2DCXEuIhX5HLl7reR2TGJWT1j0RY1
-	tZi8hnASjAIDOE2NDcgLnrj+dTQYsmOqxEMmw+sXfnMYlLWeUbVtbWKwpx3W9XRxR9p2VC
-	AKBpp3Jqx7/nG5F6012gzqJRtLsPTIQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767128443;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tRIHEk0dRJ5d7qN6JdXfLwTI0SjQwuqnSM6RZ2ji4I0=;
-	b=jcgg3koNkQo7ZKi4SR5FHC6HWg81ZfOljZo3eST1XZvTvfO/oiXaYQ7Q+SL33fi1A8xrwl
-	k5aWAU8mm93npTJU2oGM4EJbtSFNVxstrD9How00yt51w0t46olSWtRJ2QQT5eEPHLvdXa
-	ud3k5VybY7LYIiN+gOgczUKpUf7Okcs=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Matt Bobrowski <mattbobrowski@google.com>
-Cc: bpf@vger.kernel.org,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
-  JP Kobryn <inwardvessel@gmail.com>,  Alexei Starovoitov <ast@kernel.org>,
-  Daniel Borkmann <daniel@iogearbox.net>,  Shakeel Butt
- <shakeel.butt@linux.dev>,  Michal Hocko <mhocko@kernel.org>,  Johannes
- Weiner <hannes@cmpxchg.org>
-Subject: Re: [PATCH bpf-next v4 3/6] mm: introduce bpf_get_root_mem_cgroup()
- BPF kfunc
-In-Reply-To: <aVQ1zvBE9csQYffT@google.com> (Matt Bobrowski's message of "Tue,
-	30 Dec 2025 20:27:58 +0000")
-References: <20251223044156.208250-1-roman.gushchin@linux.dev>
-	<20251223044156.208250-4-roman.gushchin@linux.dev>
-	<aVQ1zvBE9csQYffT@google.com>
-Date: Tue, 30 Dec 2025 21:00:28 +0000
-Message-ID: <7ia4ms2zwuqb.fsf@castle.c.googlers.com>
+	b=WqnQiQG5kOdH8G1WvJkei7HTB1kn1pZwU6mcIFv0hy5h8bI6x/CKTQZ4IspqqaBFnDNI3I
+	JnGq/JxiDl9h4g2iAM5BvKhXjLR22kaOZjPdufOOAKWGlPJMdw7NULP5OlBSPcQUx29Puh
+	YkjT9PoUio5CldfB9OGwAblEtd3Zb3g=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U+JawV1p;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id F3DC04429A;
+	Tue, 30 Dec 2025 21:03:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329B0C4CEFB;
+	Tue, 30 Dec 2025 21:03:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767128607;
+	bh=bgT10EkK03Svs5fHkTLULngDPsGQUnaYXxpVT6Mb6PI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=U+JawV1p69DJMmJH/Z1+xqQnMTK0Yrgs1k//1yynBy33zml61E9GcZcjClkq0F/92
+	 zp93yXLLkoQ99qKtUrUpUaZU9jMM23DUk0ugJSFXKF8Pi9oBufClSK6GsM7xSGHHLA
+	 uquCXqY0NYnJhlCwKXQPyE3QTf8qMs6N/eGVzItMvn3F4j4gQokEd3L3vTimz/lJGR
+	 MIQL2vDQz6ETlcdfR4oe6DizESV81g1yg5Jv4GAEQfFmybryzSWORe20zADLLV6OWQ
+	 gdFN/OgSvml37LQSQOuynk9LiF4/sJywgdXOlAFNVgT0xn7JjFHzHz+anBszo/Ar9U
+	 fTH5g+UDfA7Jg==
+Message-ID: <fc73a7a4-c66b-4437-b581-43bd7e5fae8d@kernel.org>
+Date: Tue, 30 Dec 2025 22:03:20 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 4jy83k55bpjt9bh1dgcaoi9jg16h98sh
+User-Agent: Mozilla Thunderbird
+Subject: Re: [bug report] memory leak of xa_node in collapse_file() when
+ rollbacks
+To: Jinjiang Tu <tujinjiang@huawei.com>,
+ Shardul Bankar <shardul.b@mpiricsoftware.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, ziy@nvidia.com,
+ lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, shardulsb08@gmail.com
+References: <86834731-02ba-43ea-9def-8b8ca156ec4a@huawei.com>
+ <32e4658f-d23b-4bae-9053-acdd5277bb17@kernel.org>
+ <4b129453-97d1-4da4-9472-21c1634032d0@huawei.com>
+ <05bbe26e-e71a-4a49-95d2-47373b828145@kernel.org>
+ <a629d3bb-c7e2-41e0-87e0-7a7a6367c1b6@huawei.com>
+ <308b7b3c4f6c74c46906e25d6069049c70222ed8.camel@mpiricsoftware.com>
+ <eefae4cc-ec75-4378-a153-c190fdc230c1@huawei.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <eefae4cc-ec75-4378-a153-c190fdc230c1@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: z4rypzwz7t43ijmowicyu47hfa1w7165
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 226D5A000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2ABCB4000D
-X-HE-Tag: 1767128448-607138
-X-HE-Meta: U2FsdGVkX18QHB+RdZhVxGTFM8ESatsnSDHr4Do8mq6reV4Spuw9TYNRIJRkHyZq0h6F+/HTZ3CA683gDBRf6bKf9m1ELeqilfwR/kU/2iyVZ64LTfq6G2YWUN6Nhgrnx+eaqsbV2hfwKAB4qrlnvtf1NlxpH1JuiDBUH5IcXOJMDoMYX2V9lBNDV/f+8Z9/JfArh2tlBgSw7At0T8Bm/at2vzbVPjOyocdY7hgXE51CPZf6N319OlmvmaIbwTW47QLaJ3VxU4vSyXi0MWg3evidpTZr8AHNASZPfmIQs0Zi0noo4hyKAcgqza5zsB+BMz2zVD96efcqz23Lr+BzNyzVB3LnQDv/WES3jx/M/SmHRZvomzmxE2ePtl2J+tnyaRjekzUYXzWfHyLxARHuz2yaqgTf5Or3H3KD2eMEjFTQVHkJz5F6f+52hJGtIHOlxRGIzcGw3LRRFdnOvEaYQy342n5CE6X6oOAHK/iuc3OZ+dv2nkGIwPvITDKntOUWmeqFVOvRq3BZre2ALDywHDMDpN3d3hy+4PHf5bztUa+QjrEq+400bt5Cqvrjwtt7uvp3/bymAkpfcg/pQOGquNjZg8V3RmembTN56hnnHeBOkZe+c1GX/TAavjudKnRKCOzt0eHawHCGaxA7xf0BYmEk/XfeDzqktKe0ea58abq3rlCwMTHV4nfu5PG7edOkkzv64cpHcthXPfwkIAeanWkQTakfD02R5WxTEpQr9/TezvkBx0e/jHaGtSpTtdfXWTR4NOR2GjFlxwTPE+w+1q3sIpIpwyj8V3rVY4bJud5LymLdP064L69Sl8mfXOPYclFlTEo7wGwCxTAPMVqxLDicymtkg70cPc5UNvlgS/gL2KYohNHFPm347eqq0EWVO60CP7RDWO7rVqCbO/LEm+VAIXY+jMA1SC5kYz/bq8r3rqJRAo0FpbwsMBOXkOlNTAevZmF+FZgsmkgR7j3
- fRgWS2jI
- WeWU1OMCb7SMHkEqAnoGrzxVNN60B3eQ6EVYmz3q/9N5Xfos0FJxc5vBdviQSElckYilCALJdsTou78EA5SzvqaYMvqhAcszOlagAiO0o4FdayeIOO3S9433H5K2NSkcNz/Dl93IuJdMQ6EppAdWFkfZfKOa4vsXBgvXmRseGHKuZg6cuJQd37H0osN7S+Ddm6UMW
+X-HE-Tag: 1767128608-936866
+X-HE-Meta: U2FsdGVkX19qezjyeXVwWlUci9RldYvb9Yusfm4LG2Z6YbVOrBgPNZTLQIhfswEJ/nd0Ci+/9Gw0hZUD7xERjX5UUjod5oNipprODIr0oXE0XOmegGPkMXjT3hGqZPH/4VZ+Ozsm7jxfGt+PvCVhMKJeEN5ah6P9gl3ROa/ornIwbKxRrUZBcjvRwv/o/8IBS/f4eAcYw1xxYMDubiwZXSTPHy/zYLD0mwrxXeM1b+o9l5xekFPcPS++W5cpL8FRNvY4/FcvgzHCffFgnuKG8dxfQ4e6cPU/zQTvpgSh0mlfQm6AFu8rhnS3uWTnV08j8Mg7Zmn5+1tH4uz7jJ0cRHRjskCu8aCs+i+7VfVaOwlBjvl07nBcjMX/c3vn0y4JgMqwD5+oekpbURWl4mB3LKgjkm6b1RY3J4u3rkDJHqpyL3wTh3Klc7heSEBHOMink68HBgFTGNN2/eaNdbMW9XPdnWXlgiG1YscE0d4QXuiiA/nGX4vS8o1+JwhClzbf2SGwgbNSyx1G4/3+pqGstaZ4Hdcg7igXJjIh2CBZndp8Ugj5XaBN+3G8qGCZK0PM27lZAX1AYjw3sTTK4Mkj2vkFeIujEvd1riMhuxucZC6rCjiKIYQ+M8UK1mNtWwdch4w6nCsm4RbOR1w4Szg5rHOBrf2MtNPDY9EnhRC7BrQX0WovRxUAOXy/W31145m6vdLmNGmnAQ779H6qrYa1bE/CSE09x/zj46K8A7SnY+rmt/9+fnCq+Veg6ia77AfyAF0vVySU6K0WT/EfI+VIRCXEnzMIdf8EpjqlWORzFlGMWE178rR7nzCMLFQ2xGaK0mViay8FZQIHfBvBkqDqu96Biw1x5CngGeKMcTX+JYsO1ZqG7Wk/vU8GaC54qM6KgfFfpB14sYiYE/3a8QQ/X5TvG5f19sgeWs21/N2wABHFl8g38Pcvv+jWGNx48+hSm5IWPag2ltwoQtq+e3+
+ dOoD4J7z
+ Yn5ICYFf1msnyNAJlNowixFJZ1ufTKNCNlkbCg2Y7TpX0nXWWZLgQ87QU6FF7+xwazlOSv/SoU4XjlbRwrEk9CC7TvMNGhSogzBu8RijJKDxfN5qJ6nJi84E/Hh6g66jF1RZmuVMhYK0uB3+nxCNcwZPz/IDZMGZhUKu+Lagq0eiCgGTFPcIT9+wozQlPAMZ9HCzrpnwv9NtZt4lV1vFe6tU/iMidoL0EhGvdsfT+abg+w0VCxcF8MBeqp8yfJvtJOcEuyDSe4j993DA8RVIJEqE4FSThemQtrBPK2TjojxpacxU0F9IXgJK4HHGGSHQcnMm8OQwQCqzEbrI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,78 +107,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Matt Bobrowski <mattbobrowski@google.com> writes:
+On 12/27/25 02:24, Jinjiang Tu wrote:
+> 
+> 在 2025/12/25 12:15, Shardul Bankar 写道:
+>> On Thu, 2025-12-18 at 21:11 +0800, Jinjiang Tu wrote:
+>>> 在 2025/12/18 20:49, David Hildenbrand (Red Hat) 写道:
+>>>    
+>>>>    Thanks for checking. I thought that was also discussed as part of
+>>>> the other fix.
+>>>>    
+>>>>    See [2] where we have
+>>>>    
+>>>>    "Note: This fixes the leak of pre-allocated nodes. A separate fix
+>>>> will
+>>>>    be needed to clean up empty nodes that were inserted into the tree
+>>>> by
+>>>>    xas_create_range() but never populated."
+>>>>    
+>>>>    Is that the issue you are describing? (sounds like it, but I only
+>>>> skimmed over the details).
+>>>>    
+>>>>    CCing Shardul.
+>>> Yes, the same issue. As I descirbed in the first email:
+>>> "
+>>> At first, I tried to destory the empty nodes when collapse_file()
+>>> goes to rollback path. However,
+>>> collapse_file() only holds xarray lock and may release the lock, so
+>>> we couldn't prevent concurrent
+>>> call of collapse_file(), so the deleted empty nodes may be needed by
+>>> other collapse_file() calls.
+>>> "
+>> Hi David, Jinjiang,
+>>
+>> As Jinjiang mentioned, this appears to address what I had originally
+>> referred to in the "Note:" in [1].
+>>
+>> Just to clarify the context of the "Note:", that was based on my
+>> assumption at the time that such empty nodes would be considered leaks.
+>> After Dev’s feedback in [2]:
+>> "No "fix" is needed in this case, the empty nodes are there in the tree
+>> and there is no leak."
+>>
+>> and looking at the older discussion in [3]:
+>> "There's nothing to free; if a node is allocated, then it's stored in
+>> the tree where it can later be found and reused. "
+> 
+> However, if the empty nodes aren't reused, When the file is deleted,
+> shmem_evict_inode()->shmem_truncate_range() traverses all entries and
+> calls xas_store(xas, NULL) to delete, if the leaf xa_node that stores
+> deleted entry becomes empty, xas_store() will automatically delete the
+> empty node and delete it's parent is empty too, until parent node isn't
+> empty. shmem_evict_inode() won't traverse the empty nodes created by
+> xas_create_range() due to these nodes doesn't store any entries.
 
-> On Mon, Dec 22, 2025 at 08:41:53PM -0800, Roman Gushchin wrote:
->> Introduce a BPF kfunc to get a trusted pointer to the root memory
->> cgroup. It's very handy to traverse the full memcg tree, e.g.
->> for handling a system-wide OOM.
->> 
->> It's possible to obtain this pointer by traversing the memcg tree
->> up from any known memcg, but it's sub-optimal and makes BPF programs
->> more complex and less efficient.
->> 
->> bpf_get_root_mem_cgroup() has a KF_ACQUIRE | KF_RET_NULL semantics,
->> however in reality it's not necessary to bump the corresponding
->> reference counter - root memory cgroup is immortal, reference counting
->> is skipped, see css_get(). Once set, root_mem_cgroup is always a valid
->> memcg pointer. It's safe to call bpf_put_mem_cgroup() for the pointer
->> obtained with bpf_get_root_mem_cgroup(), it's effectively a no-op.
->> 
->> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
->> ---
->>  mm/bpf_memcontrol.c | 20 ++++++++++++++++++++
->>  1 file changed, 20 insertions(+)
->> 
->> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
->> index 82eb95de77b7..187919eb2fe2 100644
->> --- a/mm/bpf_memcontrol.c
->> +++ b/mm/bpf_memcontrol.c
->> @@ -10,6 +10,25 @@
->>  
->>  __bpf_kfunc_start_defs();
->>  
->> +/**
->> + * bpf_get_root_mem_cgroup - Returns a pointer to the root memory cgroup
->> + *
->> + * The function has KF_ACQUIRE semantics, even though the root memory
->> + * cgroup is never destroyed after being created and doesn't require
->> + * reference counting. And it's perfectly safe to pass it to
->> + * bpf_put_mem_cgroup()
->> + *
->> + * Return: A pointer to the root memory cgroup.
->> + */
->> +__bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
->> +{
->> +	if (mem_cgroup_disabled())
->> +		return NULL;
->> +
->> +	/* css_get() is not needed */
->> +	return root_mem_cgroup;
->> +}
->> +
->>  /**
->>   * bpf_get_mem_cgroup - Get a reference to a memory cgroup
->>   * @css: pointer to the css structure
->> @@ -64,6 +83,7 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
->>  __bpf_kfunc_end_defs();
->>  
->>  BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
->> +BTF_ID_FLAGS(func, bpf_get_root_mem_cgroup, KF_ACQUIRE | KF_RET_NULL)
->
-> I feel as though relying on KF_ACQUIRE semantics here is somewhat
-> odd. Users of this BPF kfunc will now be forced to call
-> bpf_put_mem_cgroup() on the returned root_mem_cgroup, despite it being
-> completely unnecessary.
+So you're saying that nothing/nobody would clean up these xarray entries 
+and we'd be leaking them?
 
-A agree that it's annoying, but I doubt this extra call makes any
-difference in the real world.
+"struct xarray" documents "If all of the entries in the array are NULL, 
+@xa_head is a NULL pointer.". So we depend on all entries being set to 
+NULL in order to properly cleanup/free the xarray automatically.
 
-Also, the corresponding kernel code designed to hide the special
-handling of the root cgroup. css_get()/css_put() are simple no-ops for
-the root cgroup, but are totally valid. So in most places the root
-cgroup is handled as any other, which simplifies the code. I guess
-the same will be true for many bpf programs.
+-- 
+Cheers
 
-Thanks!
+David
 
