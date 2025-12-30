@@ -4,92 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2439EE57C2
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 22:02:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52535EE57C2
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 22:02:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 435CB6B0088; Tue, 30 Dec 2025 17:02:27 -0500 (EST)
+	id B71BE6B0089; Tue, 30 Dec 2025 17:02:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40CD86B0089; Tue, 30 Dec 2025 17:02:27 -0500 (EST)
+	id B536A6B008A; Tue, 30 Dec 2025 17:02:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 319846B008A; Tue, 30 Dec 2025 17:02:27 -0500 (EST)
+	id A1ED36B008C; Tue, 30 Dec 2025 17:02:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F9616B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 17:02:27 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BDBDC1A080B
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 22:02:26 +0000 (UTC)
-X-FDA: 84277511892.01.D4B8513
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DB561A001C
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 22:02:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RpkbdY7T;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767132145; a=rsa-sha256;
-	cv=none;
-	b=gFkLyaPycpKIofhgkix94OP9DRXw/RqpPHluVd0O58khwhiFe/Ypq5FR68vQLLT62QC7x0
-	WCzHzebGCQ49dhYF21Tt4tBzRN4vL2i55EX3Mi5FAbQjaeqGYInoUBDyJI251rKkAAkmV6
-	s6mhIkihUTkl9uQSIXJ24gkoQ6WemaQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RpkbdY7T;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767132145;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 911036B0089
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 17:02:44 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A9A616038E
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 22:02:44 +0000 (UTC)
+X-FDA: 84277512648.13.E2FA8FD
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 14FEA100003
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 22:02:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=B99gJspz;
+	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767132162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zYun/YeddNnYvSiBalp5RAIdD8quOD/DFu8uj7yME4I=;
-	b=1cWGH51kTFPHTO9SWYPL6RSDtNuIO43mG/ANJwhzDn5BYwHlw6L+wCOn1hF7J9f5qGcS+6
-	a3PRGIUmzhpI93s211qtheYfIjVwDmF0TIuFofD5ezjF5u7v+unAzJSNuUAr1rbu7tRiZP
-	jEeSfL4aYHGHy3Q6TPepByG1KAkGrUI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02FBC43D1C;
-	Tue, 30 Dec 2025 22:02:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E765C4CEFB;
-	Tue, 30 Dec 2025 22:02:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767132143;
-	bh=qMZnY2LPlhyNsR3ghVPr24HRKEYMR+wHAj9eT5hWNlQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RpkbdY7T4rPeO9v4fRt+LnxZo7qvgP8wuOEgu/M0zb2g41avE0vp/uLctG6x0H85A
-	 +CqM7cqHii/g93EkuvLax/8XwytlRrmMW+/F3AlDBsxSEG/L/nNQWt4FjB4Awmb4I5
-	 WXAXyHJSvCUbZ625ZOUdjTYj0no7uIB8IBQTaKOAOT+PxzL1GpBJa/2kAzzoX2K0M9
-	 3FKbd2MrSUq7xs6SezJQHx2iBgIC5smO8bkDWB0LT+Np7ci2NY2favGDY0ohkjR0y7
-	 muylK8yqEmNfajAZl7J4g6d6xn/nhHkxarENPj3/lHrc3WJyoBlY5kI9FY3OSHrBeN
-	 MMfPvxs94h7MQ==
-Message-ID: <5f05de8e-04e5-490b-ab5b-0260d17d3b3a@kernel.org>
-Date: Tue, 30 Dec 2025 23:02:18 +0100
+	bh=UJ/l/wlWS+0kxIZklYFazzTNR6Pw7JlS9BZA/0ah4k4=;
+	b=akBv3EtXnweJhRHXe470MPCvHelCxZiHwqYTYMyYI59GmSijs1tFrwzyNktlb8XocTF2NC
+	BDeIDP6g97pmOIqluss/VYWLFocNjhhWOAQkL+5xYRThdbNLC33LmCzlM7gzm2YdlQkE2R
+	oLhrGCzM4sBjW5utYJC4r/+jrDKifeM=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=B99gJspz;
+	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767132162; a=rsa-sha256;
+	cv=pass;
+	b=7ewI4bAHPxh75TCpVJCmHgYign6OZXW4F7lIEvB3LbjWT7hDgZNv6ynDUTqyDym6Vwf5+y
+	JgYPQizPjZ4RatkHmb7VjLsMRXvtqHLaiRMLcDpLpkp5zUeAGqdmgRvjsyU7GlG4SJEBj+
+	6ErH8xUSaSlediaSD2Gju242kbfKlL4=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4f34f257a1bso72581cf.0
+        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 14:02:41 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767132161; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Wi9Ylw1pS1lh946aTvm+zC7nLt2QkMX1DIyQcFtkrfTIqmD+qWObifSm4oAiKIrq34
+         eJpyUE9zv3c7c1A510o5S+LjhNc8DsWHE/g/TvxvphDvFyZ4GIZ7nlDBXQopYrPQsla/
+         fB930tsYHgSt3nma9gAGF5GGw1JDkuCpgiMNW3j1VNHvS+7dScCoNrb+BF0e2SbQLyr3
+         BxktT0mm8HK5pRv4MCBUOGT0FKJAdrU1Q+qlSXMkjICPLFuHkEUDajsCLWkcT4oIW0Qf
+         QhsIduJWPOryYde8D/L/AOjX6CQuYNKXubPbdFEQj2cHNgN96XyxnGm/vylGbuJB6cTd
+         OAkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UJ/l/wlWS+0kxIZklYFazzTNR6Pw7JlS9BZA/0ah4k4=;
+        fh=X37/J/dARL5ICCrHSHNFlVdgJWDJlo6kC6Jyb9Ddu+s=;
+        b=ZOHXVau434jmmyDNBzfPfKbduCJ464puAcPE/7Y7yTEwbrsHdtO2WpXu+9mdOZfdWw
+         /Pd6CeFKc7FLORnZ5PC7f0q82bczkna8DkTjtp2pgPo10PF5Aomrd/UPUW6jLKMEsEtS
+         O8j5tR4yxZGH2QvdCvZ0KF4sewCBa0/OmyP/F7E8QHm4BdQtmFRQ9ROdGUtTTHmxLkYX
+         QWNa+HLNuUR/c+gqnmSrn/VIeRjnRYzPT2hBEQGUA3X3+pAjAlLBUdpyNqjfOwYoi8ek
+         ZX7DywszgNhJqoQjv4SyhYoFUy/MWpnlRHXClF16RHHOZ0TlvBvVozya8HaHn4B61HmA
+         MdJQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767132161; x=1767736961; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UJ/l/wlWS+0kxIZklYFazzTNR6Pw7JlS9BZA/0ah4k4=;
+        b=B99gJspzF5s3pYOt+56t3gYgz3Mcwcx+cdBcNbEkfXLKzFH4BDmu88KTcumo4oyCQ8
+         PgUt6yGoQHDsTH6USLOeIhJR903HDgmR3g3rZC9c/G9nmTRxNeLhrody0wuR6eRl7sRx
+         AwvkR5AfQQ3+1fPmPeSr+2C53L6xctoxJelGa9q4CvewuD+gdwRZEl4t5Ou3aN5cdVpg
+         QVaZxgtEHXKrx3rgS4n0hUj6V4j6c1li1UNCkMCus8Kg93Yum401vS9/bFVmonp9yCiq
+         J/bZ8zcdzFhsdBGqEsjImbHfp++1O83GoRILjf+xFl+iBnuG/cXhwz8XU3ZLozz+opTo
+         EQJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767132161; x=1767736961;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UJ/l/wlWS+0kxIZklYFazzTNR6Pw7JlS9BZA/0ah4k4=;
+        b=TNpr2JWZIuAY0vJDAxqkXUDfzrr2I7Hax+9HAeQO6APrAVb59jhbQzQmcw8oADHhuU
+         XZcOX3V82gbEpIacpvD8vCYzHuz5alMeC70/rqu8hoeHlGJx8nAXsuH4tALCDTXQcyzz
+         HLozZ/NkwMZlWoshQJu+fMJSnwC3yURVhVjtZ8M3Kg9n/ulaxL42JnJ05lpmfOP7c4PR
+         BdF8wJyGtZG7d0Fjx18+4/DZOLR8vXWy7V5hx4Sc/NPGPcYZN18TyesSLkr17yd16q5Q
+         Cj+YLleoRQf+nFZuOfbtTVrkNfOS5Myoza+nUGYzmPFpGDQKI7LN63QeixqhQ2hS+tQz
+         ky3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVBS6iLZHh4q9wjOX6mFo8DwVPtx3B8BZVz9glGO9MHDjUCf0c+miwHjXMCvjNO0poooVBUsz2Jtg==@kvack.org
+X-Gm-Message-State: AOJu0YwKiL63DgZIVpzlmx+0dXs59pX80qgDYuB2yhpFlTzKpIdctm5W
+	80otIK38OwiUC7PjnTt835OGW94Bpw5uQHkp/vXMiTDw+uVYNj2R0I5cFjGmhvxCSF4yMb7gYuF
+	a0g5UNrqLluqEFHJScDPkXL/LJYbg07G+mlq1u0+U
+X-Gm-Gg: AY/fxX6clHOlspo8J/K0QALWatJaI6hMXnNAMjntxDGBqzA/4780QMUs6nR4W/seM3s
+	DU56wAzZTRAE8PrzvozBIZNjUYyMOY20fpuSUTwfmi+tU/hwNVpJgr0L+U5WfgwRKbzrqOX/0yG
+	IgmdIaRYqd1HcKQqgyanorDhTrsQPIDoTwvVERjFcKqC8fMWwtXCcK4RaKu9mdAetHvxz5Gcx3Q
+	J5eFpRtHJQLeCILRe2zo1HVRRB4Tx0P9uvKIc6OqWVyyvpifIDGDpvZQPxf8ysJw6322mOm7iZG
+	td/J5dS1XjrwDZ4Nk+c3A4hmNg==
+X-Google-Smtp-Source: AGHT+IHcJZ/CgiBHI0uw3DSz+NboPPhVZGtuPXH9XLcSTcwODP7wlUTGlCPNy0f5CgxzPfgnhOKBCbAeqVJLjnM6sGQ=
+X-Received: by 2002:a05:622a:2cc:b0:4eb:7681:d90 with SMTP id
+ d75a77b69052e-4fbb2bd2056mr2322591cf.16.1767132160807; Tue, 30 Dec 2025
+ 14:02:40 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [mm?] WARNING in folio_remove_rmap_ptes
-To: Harry Yoo <harry.yoo@oracle.com>,
- syzbot <syzbot+b165fc2e11771c66d8ba@syzkaller.appspotmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, jannh@google.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, riel@surriel.com,
- syzkaller-bugs@googlegroups.com, vbabka@suse.cz
-References: <694a2745.050a0220.19928e.0017.GAE@google.com>
- <aUt7jbCP_KQtjSbH@hyeyoo>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <aUt7jbCP_KQtjSbH@hyeyoo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: DB561A001C
-X-Stat-Signature: f4nnjqyz17xnzu93ey57gnj8z1hn8ojm
+References: <cover.1765970117.git.lorenzo.stoakes@oracle.com> <175d29b48f7e49ce9a1b19e3a6c72cc80c0c5bb4.1765970117.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <175d29b48f7e49ce9a1b19e3a6c72cc80c0c5bb4.1765970117.git.lorenzo.stoakes@oracle.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 30 Dec 2025 14:02:29 -0800
+X-Gm-Features: AQt7F2o-b0QytHXeqjdwnTIdqHnMF2MMdjSfLexXHgFPCLAqMIi-zxt2R1Y0MNc
+Message-ID: <CAJuCfpG=D_MbZyauk2WJZ4evvoUQ0XEXwhwYpqS8rXqCGfVEng@mail.gmail.com>
+Subject: Re: [PATCH 8/8] mm/rmap: separate out fork-only logic on anon_vma_clone()
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Stat-Signature: i7u74g8rcgpi3a7z3zkud7zzkk6paa7o
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767132144-392901
-X-HE-Meta: U2FsdGVkX187y1dcVmZJExiSUiYQR6XvVADZ6VyWCvh7NPzmji+UEMKVXRrs/7T1vm/u6dRo/ZJm3igDOaQc26xQ+NJWRxoRYPzE9CW7lVIOnaAHmpKtKOaWT6wqUtOtuXAAI2291CoCdV1zy4JuNYPT4BcTbD1rkWAftUf37OyJWtdTMklpfxoI05m5uhMVr0smbuBdeYUB5ait8farzqePzgFm9lYOT5EnWtm1nJLcMUPrbAGvGh6OS343TwZ4Mza+hswgaWfbjEZqkmf6JBECFG25De20mIrinUqDUjQCyL0GCyKyDZ1DCXujvPoWMOVys+KCKq5+8QW/igrgLI4r4wgDqYuhvEa70l12jESMwCCd2Nu+2DEF2Cel2EFd7/60xzTFdF4l383Fct52KgNw+xG8bLIV7V+VQ/u8Y9cJsqa0PN45DMdlIOTl/XgCTgGoS6os9gqcpnzQyCkjWkW49yDApFfrctmp9bgHjvJGdlj+YxzWgPo4ggK9htiQwLxnsQzezQBeO7SZPZRCF7udG6H+O/i6sWqb48sLpOizWlZ8Ri8qRUeBzZjAF1V4W9gYc4bhmyYheCiIGvJVMd8wRi6Idl5y+ngl4kC3ILQwQFgZgA2K3SMmx6MQ2uSHHrTNwHXp829AkWXVGCScF0pEGt8+Aru8TmiQJxfw/Zl81r86UpZ66SKWPm2MZQl+lxlaptYPdFAZUfg7iILHadJhVqO518lFUyUc4MO008aVy5OP/woPBfLml3zPRTW2AMSAgiAevJgbamHVlJ+5JEFsBeImJOTQo8L4e251+xomcrA/7sgab7BDbuXdJtz/Y6LoJxcS59ZCA6WgHzQZ1Yo1g8JKLOTJAD2jlMOsFrG1dcKcVAxgRp7hUJw79nHgn3VmDy6VL+Nwfqn8NUWyX9gekEEQsQZR8MRW6W/A/4KKkbo/gGQsndQDZEN1oj90kT8yJrGuigkKiRoYJg7
- ELf0K/t3
- NjvBqUd2ok6Jj1tA0mpNEWPgJ+luAZLIvSQC4rg0aaYiLpDTRVRdAOrMDr6/gigrEXrufsq2/IS4VosDWyp3Tc24ZYYJ489ghC0cSWSa10a3ZTYf866BYbY6GdaViXWHT/TMmKzkKml7BfbXfLYNUzawl2oCj+eBF3y99Z7N06nLW9jDdZkInC9CebqmG15nuAeWr41H36AtYolzExfHB5/6mLpEeVplByN0Xe4udHcrJ+iNEHwo8e6UNtM7WFEDjkh7NJGwyNoaDVe15/TQ5XdPm1IPz0mnw8VjKJ1da4/SMXhq7bjrRKrAqNRTndUgQZYj14huRCc0v8RKcIfMqtO3FbxVWUnO9znHpRSC9mRzYMpPpk/+6H89N1AeIfCe9fjHV8QVdVR2GdukNxsn+5ln1oJaCEmSPrQKiJvVQY1vnarK5KizrUt5IS7uiq1GJiOFwKVmJcsSKOgRkAdWw8wr4ZSwGqx8mkjb/z0KEGkW2RlEGVTjHEQ9Ae+rbOkL50uvp7Z2JtKtY6epo23SMgMeyYxEh2j8piJtq0beiU7G47roXglrMygCs88P5wof2fyZnsY3pb58Bc0K0sceZlcbgN7Rym3rSYdO+zGfSLcNvnj3HRhBB2BloSPIjpx2m2vrbV/LvkZqLa83brcFZrxotLmJv+J5qbDYALsyyeaEqlhLr7dbof6kEAU1M89bepWPSNoCgPHbiJqJS7vO5ekoI14685ZV1kVxYGfIoyw+OO+Mq5TmjOfUAvqgmbUTdDW4YWx49GD288bugbuq/018oGd8hApHevLGT0SwrnQTUXznRANPG99r7bMZ7JGy/hMks3zByBSKMd5rK/RTz+aISEAZ7G/Pxm2RFfLQrtXO5dry0Lu//bim2/2ATY1izqVpoypXd581IdoXamfB8dPi+ZsI2jEhVK6Rpe0OSDcMjHqmjRNg5oCeHAgpnEYcIRH7z
+X-Rspamd-Queue-Id: 14FEA100003
+X-HE-Tag: 1767132161-896685
+X-HE-Meta: U2FsdGVkX1/qdnl8c4+UbQjIkDA0sS2xJcTWDgtQeNHu4ljTj5isaQg2B3crR1aDl2ny04Y721MLS8WEf3/ZHWotQHH1yOR3+Ls7BcTf4nY//AoFjJ18Hpac0wmFOTXjV+uvKeGMwJ32E4dClXtdJTlXjNUMm4vWR6qjUNR/GklSmLPWG/+uhcMfIDXTETXHq3tLHDYseNCQmkJPp7+jpcKNJd0OR86VEH1vA9dRLj95Hi9dgshUq/3SG4GgWhFq0MJcI2rsTNbZtcWCLu56CCvfH532R6Pvr9Qbjpb6r9VaG18VCHJBpwPuadUHtqKJFggYEsZ8CZrc8bEmLAwjPxRtdVWHAqGPmVHVdAFmIKh9RVPLxR0O4LK2zy+JvCTyMP/lvH7ucjns5utFamVX+Dbzv3/UhTCsjvFpdOAjsIV2wpvHD1xgX99Et7xfBkUETCU7oxo9ySfKntkhcF/EQK3ohKqM9Nj37n+WB6GCqJoKFboFiUMLSCcz+aIabsiY4Lp1uAV2zL/bZW8JYysrEZUldigN1Gt+GORUDIr87CZTYnJK0xW/yS2rNmVGa3LaX+vCc1bduNHSHUvvmN/2oLeiuqqu0NS+GlsRG5RZKbUrhl5m72SK8LnZbTyI9AQHFdM/zvZfDIdvfviM4ljHAwi2ltfxIl0C+JFKcSjwOMeJWx6xmnvWLTdzeHDoLQhnVWpW5Ck43JCpLXhZwNj9icknDoGcjdx+7WSRJQrLMly7qVeuzcwjGMo8mLC51dW3fffzOqQxe+HufREPXp0BLvea7pWEkqikexEAQGSwsHE9ZQpTNkrwPsm82q3NoBv5laRko3ruIT83ZPS8/w+Ke8ljaDEwjODhA2BLN002/l3FefO0IfdkQ67zyAp6BJAC1USjMG0MvoObq6KXN13viCsAbK47YNGs8/itm67oMwIj495zN+D+h7OmKeYPgrbgm4Mc8l0r9W/JIxZyPZw
+ Aq7Y9EBn
+ WAmEHcsUZY2ZYaeE2r5EF8UG7Q1wOc4/CqIl149yZLwL7nlg/tuxTja7BYKxet+x330LP60g6K0xxKBvi9ykGfN9lKC/bqOONoCPEUhWcYD4yaiRBN3j+tkE/5B3LSywtnQ5RKW3h8NQUNhnkxHEt8AGjfKFf3mW7gikzdfkqkrOfsjh1ApVBgs01U1iE8W7L9fgYwZDjYxDoog0ZwFgLF7aVZqfHcfSe3M2Y3T/0e4NiY3tW/6+2No0dU7Aoj80pRs2uJEO6AULV6Ua81KhD61vwpaTRFMeb0Jsb6KxEp+puRvSYI8MJHjE3dQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,133 +144,275 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/24/25 06:35, Harry Yoo wrote:
-> On Mon, Dec 22, 2025 at 09:23:17PM -0800, syzbot wrote:
->> Hello,
->>
->> syzbot found the following issue on:
->>
->> HEAD commit:    9094662f6707 Merge tag 'ata-6.19-rc2' of git://git.kernel...
->> git tree:       upstream
->> console output: https://syzkaller.appspot.com/x/log.txt?x=1411f77c580000
->> kernel config:  https://syzkaller.appspot.com/x/.config?x=a11e0f726bfb6765
->> dashboard link: https://syzkaller.appspot.com/bug?extid=b165fc2e11771c66d8ba
->> compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
->> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11998b1a580000
->> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=128cdb1a580000
->>
->> Downloadable assets:
->> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-9094662f.raw.xz
->> vmlinux: https://storage.googleapis.com/syzbot-assets/5bec9d32a91c/vmlinux-9094662f.xz
->> kernel image: https://storage.googleapis.com/syzbot-assets/3df82e1a3cec/bzImage-9094662f.xz
->>
->> IMPORTANT: if you fix the issue, please add the following tag to the commit:
->> Reported-by: syzbot+b165fc2e11771c66d8ba@syzkaller.appspotmail.com
->>
->>   handle_mm_fault+0x3fe/0xad0 mm/memory.c:6580
->>   do_user_addr_fault+0x60c/0x1370 arch/x86/mm/fault.c:1336
->>   handle_page_fault arch/x86/mm/fault.c:1476 [inline]
->>   exc_page_fault+0x64/0xc0 arch/x86/mm/fault.c:1532
->>   asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
->> ------------[ cut here ]------------
->> WARNING: ./include/linux/rmap.h:462 at __folio_rmap_sanity_checks include/linux/rmap.h:462 [inline], CPU#1: syz.0.18/6090
->> WARNING: ./include/linux/rmap.h:462 at __folio_remove_rmap mm/rmap.c:1663 [inline], CPU#1: syz.0.18/6090
->> WARNING: ./include/linux/rmap.h:462 at folio_remove_rmap_ptes+0xc27/0xfb0 mm/rmap.c:1779, CPU#1: syz.0.18/6090
->> Modules linked in:
->> CPU: 1 UID: 0 PID: 6090 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full)
->> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
->> RIP: 0010:__folio_rmap_sanity_checks include/linux/rmap.h:462 [inline]
->> RIP: 0010:__folio_remove_rmap mm/rmap.c:1663 [inline]
->> RIP: 0010:folio_remove_rmap_ptes+0xc27/0xfb0 mm/rmap.c:1779
->> Code: 00 e9 49 f4 ff ff e8 a8 35 aa ff e8 c3 55 17 ff e9 98 fc ff ff e8 99 35 aa ff 48 c7 c6 80 b7 9c 8b 4c 89 e7 e8 8a 12 f5 ff 90 <0f> 0b 90 e9 5a f6 ff ff e8 7c 35 aa ff 48 8b 54 24 10 48 b8 00 00
->> RSP: 0018:ffffc90003f5f260 EFLAGS: 00010293
->> RAX: 0000000000000000 RBX: ffffea0001417f80 RCX: ffffc90003f5f144
->> RDX: ffff88803368c980 RSI: ffffffff8214b106 RDI: ffff88803368ce04
->> RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
->> R10: 0000000000000001 R11: ffff88803368d4b0 R12: ffffea0001417f80
->> R13: ffff888030c90500 R14: 0000000000000000 R15: ffff888012660660
->> FS:  00007f98fd3fe6c0(0000) GS:ffff8880d69f5000(0000) knlGS:0000000000000000
->> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> CR2: 00007f98fd3ddd58 CR3: 000000003661c000 CR4: 0000000000352ef0
->> Call Trace:
->>   <TASK>
->>   zap_present_folio_ptes mm/memory.c:1650 [inline]
->>   zap_present_ptes mm/memory.c:1708 [inline]
->>   do_zap_pte_range mm/memory.c:1810 [inline]
->>   zap_pte_range mm/memory.c:1854 [inline]
->>   zap_pmd_range mm/memory.c:1946 [inline]
->>   zap_pud_range mm/memory.c:1975 [inline]
->>   zap_p4d_range mm/memory.c:1996 [inline]
->>   unmap_page_range+0x1b7d/0x43c0 mm/memory.c:2017
->>   unmap_single_vma+0x153/0x240 mm/memory.c:2059
->>   unmap_vmas+0x218/0x470 mm/memory.c:2101
-> 
-> So this is unmapping VMAs, and it observed an anon_vma with refcount == 0.
-> anon_vma's refcount isn't supposed to be zero as long as there's
-> any anonymous memory mapped to a VMA (that's associated with the anon_vma).
-> 
->  From the page dump below, we know that it's been allocated to a file VMA
-> that has anon_vma (due to CoW, I think).
-> 
->> [   64.399049][ T6090] page: refcount:2 mapcount:1 mapping:0000000000000000 index:0x0 pfn:0x505fe
->> [   64.402037][ T6090] memcg:ffff888100078d40
->> [   64.403522][ T6090] anon flags: 0xfff0800002090c(referenced|uptodate|active|owner_2|swapbacked|node=0|zone=1|lastcpupid=0x7ff)
->> [   64.407140][ T6090] raw: 00fff0800002090c 0000000000000000 dead000000000122 ffff888012660661
->> [   64.409851][ T6090] raw: 0000000000000000 0000000000000000 0000000200000000 ffff888100078d40
->> [   64.412578][ T6090] page dumped because: VM_WARN_ON_FOLIO(atomic_read(&anon_vma->refcount) == 0)
->> [   64.415320][ T6090] page_owner tracks the page as allocated
->> [   64.417353][ T6090] page last allocated via order 0, migratetype Movable, gfp_mask 0x140cca(GFP_HIGHUSER_MOVABLE|__GFP_COMP), pid 6091, tgid 6089 (syz.0.18), ts 64395709171, free_ts 64007663612
->> [   64.422891][ T6090]  post_alloc_hook+0x1af/0x220
->> [   64.424399][ T6090]  get_page_from_freelist+0xd0b/0x31a0
->> [   64.426135][ T6090]  __alloc_frozen_pages_noprof+0x25f/0x2430
->> [   64.427958][ T6090]  alloc_pages_mpol+0x1fb/0x550
->> [   64.429506][ T6090]  folio_alloc_mpol_noprof+0x36/0x2f0
->> [   64.431157][ T6090]  vma_alloc_folio_noprof+0xed/0x1e0
->> [   64.433173][ T6090]  do_fault+0x219/0x1ad0
->> [   64.434586][ T6090]  __handle_mm_fault+0x1919/0x2bb0
->> [   64.436396][ T6090]  handle_mm_fault+0x3fe/0xad0
->> [   64.437985][ T6090]  __get_user_pages+0x54e/0x3590
->> [   64.439679][ T6090]  get_user_pages_remote+0x243/0xab0
-> 
-> woohoo, this is faulted via GUP from another process...
-> 
->> [   64.441359][ T6090]  uprobe_write+0x22b/0x24f0
->> [   64.442887][ T6090]  uprobe_write_opcode+0x99/0x1a0
->> [   64.444496][ T6090]  set_swbp+0x112/0x200
->> [   64.445793][ T6090]  install_breakpoint+0x14b/0xa20
->> [   64.447382][ T6090]  uprobe_mmap+0x512/0x10e0
->> [   64.448874][ T6090] page last free pid 6082 tgid 6082 stack trace:
->> [   64.450887][ T6090]  free_unref_folios+0xa22/0x1610
->> [   64.452536][ T6090]  folios_put_refs+0x4be/0x750
->> [   64.454064][ T6090]  folio_batch_move_lru+0x278/0x3a0
->> [   64.455714][ T6090]  __folio_batch_add_and_move+0x318/0xc30
->> [   64.457810][ T6090]  folio_add_lru_vma+0xb0/0x100
->> [   64.459416][ T6090]  do_anonymous_page+0x12cf/0x2190
->> [   64.461066][ T6090]  __handle_mm_fault+0x1ecf/0x2bb0
->> [   64.462706][ T6090]  handle_mm_fault+0x3fe/0xad0
->> [   64.464562][ T6090]  do_user_addr_fault+0x60c/0x1370
->> [   64.466676][ T6090]  exc_page_fault+0x64/0xc0
->> [   64.468067][ T6090]  asm_exc_page_fault+0x26/0x30
->> [   64.469661][ T6090] ------------[ cut here ]------------
-> 
-> BUT unfortunately the report doesn't have any information regarding
-> _when_ the refcount has been dropped to zero.
-> 
-> Perhaps we want yet another DEBUG_VM feature to record when it's been
-> dropped to zero and report it in the sanity check, or... imagine harder
-> how a file VMA that has anon_vma involving CoW / GUP / migration /
-> reclamation could somehow drop the refcount to zero?
-> 
-> Sounds fun ;)
-> 
+On Wed, Dec 17, 2025 at 4:27=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> Specify which operation is being performed to anon_vma_clone(), which
+> allows us to do checks specific to each operation type, as well as to
+> separate out and make clear that the anon_vma reuse logic is absolutely
+> specific to fork only.
+>
+> This opens the door to further refactorings and refinements later as we
+> have more information to work with.
+>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  mm/internal.h                    | 11 +++++-
+>  mm/rmap.c                        | 67 ++++++++++++++++++++++----------
+>  mm/vma.c                         |  6 +--
+>  tools/testing/vma/vma_internal.h | 11 +++++-
+>  4 files changed, 69 insertions(+), 26 deletions(-)
+>
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 469d4ef1ccc5..b4d4bca0f9a7 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -244,7 +244,16 @@ static inline void anon_vma_unlock_read(struct anon_=
+vma *anon_vma)
+>
+>  struct anon_vma *folio_get_anon_vma(const struct folio *folio);
+>
+> -int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *sr=
+c);
+> +/* Operations which modify VMAs. */
+> +enum vma_operation {
+> +       VMA_OP_SPLIT,
+> +       VMA_OP_MERGE_UNFAULTED,
+> +       VMA_OP_REMAP,
+> +       VMA_OP_FORK,
+> +};
+> +
+> +int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *sr=
+c,
+> +       enum vma_operation operation);
+>  int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvm=
+a);
+>  int  __anon_vma_prepare(struct vm_area_struct *vma);
+>  void unlink_anon_vmas(struct vm_area_struct *vma);
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index de9de6d71c23..f08e6bc57379 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -232,12 +232,13 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
+>  }
+>
+>  static void check_anon_vma_clone(struct vm_area_struct *dst,
+> -                                struct vm_area_struct *src)
+> +                                struct vm_area_struct *src,
+> +                                enum vma_operation operation)
+>  {
+>         /* The write lock must be held. */
+>         mmap_assert_write_locked(src->vm_mm);
+> -       /* If not a fork (implied by dst->anon_vma) then must be on same =
+mm. */
+> -       VM_WARN_ON_ONCE(dst->anon_vma && dst->vm_mm !=3D src->vm_mm);
+> +       /* If not a fork then must be on same mm. */
+> +       VM_WARN_ON_ONCE(operation !=3D VMA_OP_FORK && dst->vm_mm !=3D src=
+->vm_mm);
+>
+>         /* No source anon_vma is a no-op. */
+>         VM_WARN_ON_ONCE(!src->anon_vma && !list_empty(&src->anon_vma_chai=
+n));
+> @@ -249,6 +250,35 @@ static void check_anon_vma_clone(struct vm_area_stru=
+ct *dst,
+>          * must be the same across dst and src.
+>          */
+>         VM_WARN_ON_ONCE(dst->anon_vma && dst->anon_vma !=3D src->anon_vma=
+);
+> +
+> +       /* For the anon_vma to be compatible, it can only be singular. */
+> +       VM_WARN_ON_ONCE(operation =3D=3D VMA_OP_MERGE_UNFAULTED &&
+> +                       !list_is_singular(&src->anon_vma_chain));
+> +#ifdef CONFIG_PER_VMA_LOCK
+> +       /* Only merging an unfaulted VMA leaves the destination attached.=
+ */
 
-Can we bisect the issue given that we have a reproducer?
+Do you mean to say that for all other operations dst should not be yet
+attached? If so, "leaves the destination attached" is a bit confusing
+choice of words to indicate that attaching the VMA in other cases has
+not yet happened. Maybe reword as: "For cases other than merging an
+unfaulted VMA, the VMA should not be attached yet."
 
-This only popped up just now, so I would assume it's actually something 
-that went into this release that makes it trigger.
+> +       VM_WARN_ON_ONCE(operation !=3D VMA_OP_MERGE_UNFAULTED &&
+> +                       vma_is_attached(dst));
+> +#endif
+> +}
+> +
+> +static void find_reusable_anon_vma(struct vm_area_struct *vma,
+> +                                  struct anon_vma *anon_vma)
 
--- 
-Cheers
+Naming is hard but a function that assigns vma->anon_vma and
+increments num_active_vmas should not be called
+"find_reusable_anon_vma". I would suggest keeping the name but making
+it return the anon_vma (or NULL if it's not reusable), letting the
+caller do the assignment and the increment.
 
-David
+> +{
+> +       /* If already populated, nothing to do.*/
+> +       if (vma->anon_vma)
+> +               return;
+> +
+> +       /*
+> +        * We reuse an anon_vma if any linking VMAs were unmapped and it =
+has
+> +        * only a single child at most.
+> +        */
+> +       if (anon_vma->num_active_vmas > 0)
+> +               return;
+> +       if (anon_vma->num_children > 1)
+> +               return;
+> +
+> +       vma->anon_vma =3D anon_vma;
+> +       anon_vma->num_active_vmas++;
+
+You moved num_active_vmas++ here to fix the accounting later... Sneaky
+but correct AFAICT :)
+
+>  }
+>
+>  /**
+> @@ -256,6 +286,7 @@ static void check_anon_vma_clone(struct vm_area_struc=
+t *dst,
+>   * all of the anon_vma objects contained within @src anon_vma_chain's.
+>   * @dst: The destination VMA with an empty anon_vma_chain.
+>   * @src: The source VMA we wish to duplicate.
+> + * @operation: The type of operation which resulted in the clone.
+>   *
+>   * This is the heart of the VMA side of the anon_vma implementation - we=
+ invoke
+>   * this function whenever we need to set up a new VMA's anon_vma state.
+> @@ -278,14 +309,16 @@ static void check_anon_vma_clone(struct vm_area_str=
+uct *dst,
+>   *
+>   * Returns: 0 on success, -ENOMEM on failure.
+>   */
+> -int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *sr=
+c)
+> +int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *sr=
+c,
+> +                  enum vma_operation operation)
+>  {
+>         struct anon_vma_chain *avc, *pavc;
+> +       struct anon_vma *active_anon_vma =3D src->anon_vma;
+>
+> -       if (!src->anon_vma)
+> +       if (!active_anon_vma)
+>                 return 0;
+>
+> -       check_anon_vma_clone(dst, src);
+> +       check_anon_vma_clone(dst, src, operation);
+>
+>         /*
+>          * Allocate AVCs. We don't need an anon_vma lock for this as we
+> @@ -309,22 +342,14 @@ int anon_vma_clone(struct vm_area_struct *dst, stru=
+ct vm_area_struct *src)
+>                 struct anon_vma *anon_vma =3D avc->anon_vma;
+>
+>                 anon_vma_interval_tree_insert(avc, &anon_vma->rb_root);
+> -
+> -               /*
+> -                * Reuse existing anon_vma if it has no vma and only one
+> -                * anon_vma child.
+> -                *
+> -                * Root anon_vma is never reused:
+> -                * it has self-parent reference and at least one child.
+> -                */
+> -               if (!dst->anon_vma && src->anon_vma &&
+> -                   anon_vma->num_children < 2 &&
+> -                   anon_vma->num_active_vmas =3D=3D 0)
+> -                       dst->anon_vma =3D anon_vma;
+> +               if (operation =3D=3D VMA_OP_FORK)
+> +                       find_reusable_anon_vma(dst, anon_vma);
+>         }
+> -       if (dst->anon_vma)
+> +
+> +       if (operation !=3D VMA_OP_FORK)
+>                 dst->anon_vma->num_active_vmas++;
+> -       anon_vma_unlock_write(src->anon_vma);
+> +
+> +       anon_vma_unlock_write(active_anon_vma);
+>         return 0;
+>
+>   enomem_failure:
+> @@ -361,7 +386,7 @@ int anon_vma_fork(struct vm_area_struct *vma, struct =
+vm_area_struct *pvma)
+>          * First, attach the new VMA to the parent VMA's anon_vmas,
+>          * so rmap can find non-COWed pages in child processes.
+>          */
+> -       error =3D anon_vma_clone(vma, pvma);
+> +       error =3D anon_vma_clone(vma, pvma, VMA_OP_FORK);
+>         if (error)
+>                 return error;
+>
+> diff --git a/mm/vma.c b/mm/vma.c
+> index feb4bbd3b259..e297c3a94133 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -525,7 +525,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_=
+struct *vma,
+>         if (err)
+>                 goto out_free_vmi;
+>
+> -       err =3D anon_vma_clone(new, vma);
+> +       err =3D anon_vma_clone(new, vma, VMA_OP_SPLIT);
+>         if (err)
+>                 goto out_free_mpol;
+>
+> @@ -623,7 +623,7 @@ static int dup_anon_vma(struct vm_area_struct *dst,
+>
+>                 vma_assert_write_locked(dst);
+>                 dst->anon_vma =3D src->anon_vma;
+> -               ret =3D anon_vma_clone(dst, src);
+> +               ret =3D anon_vma_clone(dst, src, VMA_OP_MERGE_UNFAULTED);
+>                 if (ret)
+>                         return ret;
+>
+> @@ -1862,7 +1862,7 @@ struct vm_area_struct *copy_vma(struct vm_area_stru=
+ct **vmap,
+>                 vma_set_range(new_vma, addr, addr + len, pgoff);
+>                 if (vma_dup_policy(vma, new_vma))
+>                         goto out_free_vma;
+> -               if (anon_vma_clone(new_vma, vma))
+> +               if (anon_vma_clone(new_vma, vma, VMA_OP_REMAP))
+>                         goto out_free_mempol;
+>                 if (new_vma->vm_file)
+>                         get_file(new_vma->vm_file);
+> diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_int=
+ernal.h
+> index 93e5792306d9..7fa56dcc53a6 100644
+> --- a/tools/testing/vma/vma_internal.h
+> +++ b/tools/testing/vma/vma_internal.h
+> @@ -600,6 +600,14 @@ struct mmap_action {
+>         bool hide_from_rmap_until_complete :1;
+>  };
+>
+> +/* Operations which modify VMAs. */
+> +enum vma_operation {
+> +       VMA_OP_SPLIT,
+> +       VMA_OP_MERGE_UNFAULTED,
+> +       VMA_OP_REMAP,
+> +       VMA_OP_FORK,
+> +};
+> +
+>  /*
+>   * Describes a VMA that is about to be mmap()'ed. Drivers may choose to
+>   * manipulate mutable fields which will cause those fields to be updated=
+ in the
+> @@ -1157,7 +1165,8 @@ static inline int vma_dup_policy(struct vm_area_str=
+uct *src, struct vm_area_stru
+>         return 0;
+>  }
+>
+> -static inline int anon_vma_clone(struct vm_area_struct *dst, struct vm_a=
+rea_struct *src)
+> +static inline int anon_vma_clone(struct vm_area_struct *dst, struct vm_a=
+rea_struct *src,
+> +                                enum vma_operation operation)
+>  {
+>         /* For testing purposes. We indicate that an anon_vma has been cl=
+oned. */
+>         if (src->anon_vma !=3D NULL) {
+> --
+> 2.52.0
+>
 
