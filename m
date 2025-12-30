@@ -4,113 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5502EE4983
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 16:14:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 537F8EE4988
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 16:14:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 388BC6B0088; Tue, 30 Dec 2025 11:14:10 -0500 (EST)
+	id AB1D16B0089; Tue, 30 Dec 2025 11:14:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 332B46B0089; Tue, 30 Dec 2025 11:14:10 -0500 (EST)
+	id A5F7E6B008A; Tue, 30 Dec 2025 11:14:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 263AC6B008A; Tue, 30 Dec 2025 11:14:10 -0500 (EST)
+	id 96BE96B008C; Tue, 30 Dec 2025 11:14:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 170836B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:14:10 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ABA721A024E
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:14:09 +0000 (UTC)
-X-FDA: 84276634218.17.AB2FD88
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E409B100009
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:14:07 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=htlMo5ze;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767111247; a=rsa-sha256;
-	cv=none;
-	b=b3Jo2FZq2i2E6VF3KOjr6Q1eD1qvPIZg+Df98FAv3AHTCnYAIy2J9Bv3AbuGdJKJG3qVmQ
-	HHYFE8VHZ3r5uRsj3nV3L4PhdXU2sA3f9DYS7oaYmnjd4chgWMWbiwwDVvlp+YeeSeKBPs
-	x4Q5bpSSVXjV/bzdnFRfl6r6JaSa47U=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=htlMo5ze;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8772F6B0089
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:14:22 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 390C38A8FF
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:14:22 +0000 (UTC)
+X-FDA: 84276634764.15.019E914
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8D1994000D
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 16:14:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="IXuWam/Q";
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767111247;
+	s=arc-20220608; t=1767111260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=qBSp9AXI3X6i7hNQ7Mlk32H2Pu+uKCzB5Jzlrojwp1Y=;
-	b=XOqhMz/t8abIWzEFXQAM9u67awcZThAT9vEAAww1RqOCAkliQGd6cQV1DmGj0uDbqRiIqS
-	0uFSwnriYgcwE9luhNwFAMrpX2/BhN2LpOaf1SOSZ/nOzFyMYRbPssNkmLxeIYA1pGFxgo
-	w/Ji9nOrSx/yuJZ7vOoml+p8waGhtFs=
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-640d4f2f13dso8610197d50.1
-        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 08:14:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1767111247; x=1767716047; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qBSp9AXI3X6i7hNQ7Mlk32H2Pu+uKCzB5Jzlrojwp1Y=;
-        b=htlMo5zevfO72J1qPiPSbM2fmOFl0M2okaVSx9xjWXEl7PHJEHE4IKMSmF/+u53La1
-         9INxsXHyiqQAAhGhQVtj1woxSaZAyV5oMzZ0n5yKrorCv4Om3l1bPrWkGesqKGcDmARP
-         h40Q8Qr5UupRbYtwBj8zio9zyHreKnXQcS692pbvXpbRAISwZF0vQv+7OBuVAYedv+aJ
-         m8KnhgcTkOnEptwQKZ6/e/FnPxhR0JEeNCxQ5U5VO5QB59R13456+jRFJMY2PcuQEw0H
-         +Kj9bVeAfEZmCGKTiIckfDdGQvEDKzkoFWLQ8y7jWerxBZ/yRsN2ilH5Wyvpu2WL9bDK
-         VYTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767111247; x=1767716047;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qBSp9AXI3X6i7hNQ7Mlk32H2Pu+uKCzB5Jzlrojwp1Y=;
-        b=aWRwXvtoB4I+/dRmvbBcDL0RxHQXLhBfQcWz3h67rwlcmcv7Rc2mwf/hnVBbEBrAVN
-         2FGQDGOqO/NMepz//bd4z4MjzJx1G0RBMwMOcDSeYIYu3er/oSh0S+LcqD4bEoc9PUyb
-         oJJxU7KqCrzLkQLflnRsNtaEN9QGpWUsjZRHvEqbpTgYlazBEV6miFVJ2kJsJpb0YpX7
-         NK03WKDnY/xzeBPIgY7g9PjT6BkkAIlzDAK9gCiBc1WdtV7ktbn486Z1FdQSXnBSo2mm
-         CyAUki3H/hTEFw+IwwiYbg23WMkZCFUdIRWjSm2dt6svyJ/NdYkgXProlCWH8u2qWFp3
-         kpww==
-X-Forwarded-Encrypted: i=1; AJvYcCUey7Qoub+G0oZ4qrFUNXyb5NR0S2dhBOlO+gReRo3eYMyRw5+yhRq+DWGVvOP7r3GbX1IjiJOHow==@kvack.org
-X-Gm-Message-State: AOJu0YyIKK+lc3mzA/PQd4splDWM3RqrZWryahBL0qtI0MTDzV/U4VWO
-	2zp2TlF3mRvmzbLtwgLsxECJPM+WlUGAnfuahztGCoRFYU5Wt+2mWvM1V4dlCQUpKXE=
-X-Gm-Gg: AY/fxX6cosYnmn5OzQeYNwHw8wJSuhwCsyWO/tVbA1x3uaBRNixAREXN/HJCYdrhx0H
-	mjs8Bc5ZeZQ+LmQxN3H9qpiBQoZgvTm0/q+KAjY4ZU3Hlh2WWYuZWCjR+0yhzgaKUi56DRJclTh
-	29o5jTlZNqYWqKOgc8v8m9UnBT35aytaTTurOAupogEvVNJF1HVE9jGTnuFkt3ssCk21WbYa0NM
-	CBczbjAUGI89PPD2ob+dRtDKUm+CP/bfB6euLi2YypSOKje+VJyUWMtipOvW6UU5bMRn0K8UVyM
-	+az9ELcQGXgS3TknzEjwxSxUkceF07nPQi1It7gyznUukhJb3vhhMoPlARuEY0+MKPUcckVZAFp
-	4XF9YjkvvN1TJY2QKPXtbHjBoVSk24IVSwCgHbch1Cuf+bXHRRyVTSrCLrGCjJuCgb+YFwm9t3q
-	Ubyl3WvmfH3S/rBqBoVPMEAwiOFl1W1clsWBIlFB36Bsrr+9RGs8R5yeWxnrym2lK17psIDCGvC
-	eL4e+oRSTm3fHSLMIHJYkymEueQPMuqBWdXOHnnnDxzxUuH
-X-Google-Smtp-Source: AGHT+IFCkJ/94XhZ+S3+kkzp+I2JnWXbfqB3JEIBTRCYeZzta8NQCJ6sPLCqEJdsH7tumGFTzabCWQ==
-X-Received: by 2002:a05:690e:86:b0:645:53eb:a100 with SMTP id 956f58d0204a3-6466a845f30mr21103903d50.26.1767111246712;
-        Tue, 30 Dec 2025 08:14:06 -0800 (PST)
-Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fb44f0e3csm127690847b3.28.2025.12.30.08.14.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Dec 2025 08:14:06 -0800 (PST)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: akpm@linux-foundation.org,
-	pasha.tatashin@soleen.com,
-	rppt@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	pratyush@kernel.org
-Subject: [PATCH v3] liveupdate: separate memfd support into LIVEUPDATE_MEMFD
-Date: Tue, 30 Dec 2025 11:14:02 -0500
-Message-ID: <20251230161402.1542099-1-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nVrdMXUw00hgV69sSSBMiYwuTELWJbA+S6oR8mm1axQ=;
+	b=OyQqVYFDsX/PqgN7YT3YoHUxqEa33FfBK2pZOTJYIIaWWjeJ16pQSMSVQOVsLEeFvRjT/V
+	z2bJ/hNZwtVM58yo/yXKonUV9PRP0ApHnOpqPNk8ONLMiAXARL/qnvE8ekNvV0ZlaU6oV/
+	EJTIJPA7hfAJlNiYsFuwKlsKjXypGxc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767111260; a=rsa-sha256;
+	cv=none;
+	b=3vRvD+NlDH7bR7mNLrVXkQ0M0Jxxl1M0Lo1lqzvplSG/uIcW1Yb19sbJMqxrGRrZs/Ucig
+	8fsQJuUyGcjgF7BJUkIEZqEnUlf4q0XY5fY/8+HhTPiGyG7qCT+E1CPzBfZgbYmjzZhMIK
+	2kzZNhU5ytNMWkq7u+5Zc8z6nYheUYg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="IXuWam/Q";
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D457E60010;
+	Tue, 30 Dec 2025 16:14:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D5EC4CEFB;
+	Tue, 30 Dec 2025 16:14:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767111259;
+	bh=v6ym8j7jR1OnzDUiF+SxHOJ0RzBeUWzfVU7NjEmGKwg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IXuWam/Q60CMdaUb9LOVyCAv/k+xdqrez982rFsuoRV51Hsfrnw/yKmWktD1qTXl3
+	 P3oqkVSHmJQtlQA940ReBDH4okDLq4fWwHP97Nf3NO1MxC7ArNmOuCiZAS5Tdccqie
+	 vhAuknkHy0FizIBpyyTqB06XRtHc0m7TQYm+VZ+anGZB9rvL4wGRMXfgOpHhOJtRzw
+	 5MZRGIpfyt3feaBb4NyNme2I8oIgWeLDz4WbOKbnmPZMH6pM0rhjVK/pPGKLDN7soQ
+	 8arfwuwNWh9169+K28yHTHYtVwKehZZKVl+Kk1J21YRDgoZyWKqy25ZtOjKCvB9ZJ9
+	 fmqNqVSyGxuiA==
+Date: Tue, 30 Dec 2025 18:14:12 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Evangelos Petrongonas <epetron@amazon.de>,
+	Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	nh-open-source@amazon.com
+Subject: Re: [PATCH] kho: add support for deferred struct page init
+Message-ID: <aVP6VO5Ycr5xynwj@kernel.org>
+References: <CA+CK2bB2mn5b0N9gs1UavYLUQhbpVvdo702oHZa15E9OaZkKWg@mail.gmail.com>
+ <aUUYprAotKYMiEs0@kernel.org>
+ <CA+CK2bD101cSC_7+OWkMei2QvUVjSaRLy+LboLe8Sz7KS3by4g@mail.gmail.com>
+ <861pkpkffh.fsf@kernel.org>
+ <CA+CK2bA1kYCf0BwhX3Sg9Ur82nK-7HPzs0sg6xbVWFAJaZLhpw@mail.gmail.com>
+ <86jyyecyzh.fsf@kernel.org>
+ <CA+CK2bDxnTEe9Ohq5zLuyF-jqgD0DPhfdq6z=yztUsXU5p5fSQ@mail.gmail.com>
+ <863452cwns.fsf@kernel.org>
+ <CA+CK2bCjJWZG_rPoPsHWSxirmUCTOuFQzTCss2AKf9UqpThrdw@mail.gmail.com>
+ <864ip99f1a.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <864ip99f1a.fsf@kernel.org>
+X-Stat-Signature: 6ib5x9q4en8tm1zdrwk99ezp64z5mk9h
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8D1994000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E409B100009
-X-Rspamd-Server: rspam10
-X-Stat-Signature: qjcbbot16fxpd88kt93a7pyneadqw9i7
-X-HE-Tag: 1767111247-34460
-X-HE-Meta: U2FsdGVkX18t/IHf1P/uV/TRLbaziZxnGReOA1+s6KTL2peguEExvUgmqz7dlwa3C6KfzQ1z5zRvvVla/GS6Gj/t2v6dHxWFdYdi3/6I3x9HJ2FsoWlfBFcvz6bNkrym1UIZ6wRop7jawB4k2dvslMxefHATj4V1C5fqdxOty1cezt2FyPTJ6vsJbqf7elWhh9klDDH6tlYh+29oF8vocwx35Vflfsc1t1ZkerIe31OnsTbEBg/uWPcNyqWhvT/0wm5oAh235jR8S1fpjcrubK53PaEmv1sUDS+K0Tex9+Gkx586j2Y5wn+eUoYKrUTL5WaDzTqNFL6oVtvpni3udQIOWkF0OZxMN7lYnYL4w8sgrBrwpPoI+9ILBQRZjEagiQvqJc+LI7PtufVJot7a42fUh1T4kXsXnla8k0PYMHnyf3rD6ZcP0Jj3TjVgkkxuWkomSkQAYGTXPhtzsAu2ceeLM5JXrb1zrG3EsBXW7KBfAJb4/OgXp2Vo/ACsUqbuKXVID9B/Kqt4wiu1l/wWtxy/wej+mv/4r5UaDf7F/KbESuR12lv9NbmQPuYW6GCL8hAvj14uWPpyym+DLFJUQMrwrpewI/CABqGW99/4TsWhgB+PwoDznljiRB/y/rroC7kb6+BMuxj/CZDkpdD3fKBIuX1M6ogexgpAXd+VXhnhmpWsZjs4X0FN7jsxuIFd7iHp+Af3xPyWRFzEhKjKwVXgehRLwyJkCL58G1WoLhjXMgcWu70cGSaO8tl5PYG5CGGSMiRaajwtZdBY59IAZxQf3oux7YYfBFf6Hi0i5kkhJ6yer8OnOU+H6UENNnlvBzyyCYnsqesEpwNCZNjNFJHpFxiSHNodNm4AOfi/UkSar57uBvBmYoqpWmRH7BrP7E6dIfFbF+wQsXfVxeff7+uqHn6jtdNydtwZZZqnFhzu9TvtYwDLeBcdKonoLN0kYLzBZVSp1ssSmFFXaSq
- Pq0Se1Ud
- LLfxX5nNYDltSSEPiC0xl2qZCrDMPtM4ASdoOdNJkZ32bDaqh+kpGM1VP03hm5aiENv3MpSwweOaCgAl2NMDiY5KL4RrgU7F3rLFK7vUsh26igGQA1FlyoJ9bRj0MucszmrOzv5j6DSRVlTiR/p5SO6Jjm30vZefXg5b+qClO91ToAoVa5QA2RcZ8gVL1H17J3XnRGhg2nmirC0CMynaMMAAJrV1IczUmFgOvvB2NEXqTSt23U5cLqVk9QbR+1jLWwNO+r4PAyQLt8rfHkTLk7Cx3bmqlKyFW1/TgUnQ1N6LRFidOPmbsn4EpBeQuvqJMmOESBA/mB125jGLN3sRueVka46AvEg6EaQGJlf9IhL/41O1NYOoNPqPUkVHjZupH+ileHg7QG79U9M0=
+X-HE-Tag: 1767111260-17214
+X-HE-Meta: U2FsdGVkX1+OZk5/L4EtpKLwhmZvPdWvJlfmjjtL5NXHaBqqgamETyA079dKxb0DBNOwHlrgNY8a1+HhI7+mVpCQcnI2i0JUazZHtwx6dakniRDVvJB+cEZOswcNzZGpeKedbinTYkLqgeif3WAoG1BlieTT+H8EodC23GJx/hZhIm2zU7qdT8Dh8gUaXk60fHOkiJokkhP9hNJsjDe2OwUq7HuitGMX0ExkEfva28grPeyGr7EYxnmgbRTgZlT8Lb1xz1S83f7mTE2QjPC4MTQUouykM5eJvvEY9xqkxLt4PASgBKHgjsPNzNx5elHzqaAO4pDZkEw3+lr5mHYqU1UGNC7iVhaxKsOnIK4v17UPkuFKPvIWyn7kGltvMJRljZVzQtce0LfKfKruGyXybtSZS4hq+mgB4Zo8uDMq0dOvSQm/jJAArnB/FCEHqyLRpvzTLjMXJTx/HXFqMNQPhewmXW6MyAhks0O64J/9ukG8lZXDUuVeNDdQ852ITutZpW8lR4i7CgbtirBorb7As8CzgD7bsEhDuBZYbzNfTjJct/xdQhnkBXbuiVosD5MwsqN8CLHhQ55a1z1mPETLL8YGKr6V0QHchhLW1XVa+lv4kXjMEbw4dDSzoWr/JFC+P9C/qYkNT2bonjE1LDMShh7uE5pdoqMfP9pFM1uBQJH6jeftEDuQRnnu8+FR0XoUHTzIpL3IuburtJ0muJDP0db5HjTfIt5AcB+MH37MVZnvS5KsX8VlQtPOKGNSXLGLIOJDCtahHB1gs562PI+4KOTyDUaehZXlg3i9OhNMyyKdA67V7UKBV8ykQ1ux5Tn54YKqeBQF0ABPBpDy4yWbwwavnYb8VyWKI8fQmzfujSaaT4ar4KwpuAdl2PfT0yehku+pvpF6Jul9UEHR70OE7SNJW3ZNa483M2J+gD90RpYxriWHR11qGx3l3TDeKf44ud96UZlfugeUVJJzqVX
+ WoDTawV4
+ iq0bkTk0dKrxsxc682yU8rPI9LUm9Ib84UG0yZ+EUWrn0WYAK4qkyn+eu2QENiGIFxio7PE3+Jc7tA0KdiCLICH2RF4UQWhhapRkzS3aLGOtUirydBxTrwHuV7h7Gl8CyCXGVzA+jeZAkHfZkIRsm964adF2WzbIa6cEMJlA4Y+hbnj0RhFInVez/nHUHtcqPESV1vyfZ/4VFrI2O4oYBbZBu4CB0jG2MWkh5FocmiKjIrW6i7pIks5tevZWC7G8gHO5KS500hvSL4WJqVz2T/qpFPg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,77 +105,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Decouple memfd preservation support from the core Live Update
-Orchestrator configuration.
+On Mon, Dec 29, 2025 at 10:03:29PM +0100, Pratyush Yadav wrote:
+> On Tue, Dec 23 2025, Pasha Tatashin wrote:
+> 
+> >> > if (WARN_ON_ONCE(info.magic != KHO_PAGE_MAGIC || info.order > MAX_PAGE_ORDER))
+> >> > return NULL;
+> >>
+> >> See my patch that drops this restriction:
+> >> https://lore.kernel.org/linux-mm/20251206230222.853493-2-pratyush@kernel.org/
+> >>
+> >> I think it was wrong to add it in the first place.
+> >
+> > Agree, the restriction can be removed. Indeed, it is wrong as it is
+> > not enforced during preservation.
+> >
+> > However, I think we are going to be in a world of pain if we allow
+> > preserving memory from different topologies within the same order. In
+> > kho_preserve_pages(), we have to check if the first and last page are
+> > from the same nid; if not, reduce the order by 1 and repeat until they
+> > are. It is just wrong to intermix different memory into the same
+> > order, so in addition to removing that restriction, I think we should
+> > implement this enforcement.
+> 
+> Sure, makes sense.
+> >
+> > Also, perhaps we should pass the NID in the Jason's radix tree
+> > together with the order. We could have a single tree that encodes both
+> > order and NID information in the top level, or we can have one tree
+> > per NID. It does not really matter to me, but that should help us with
+> > faster struct page initialization.
 
-Previously, enabling CONFIG_LIVEUPDATE forced a dependency on
-CONFIG_SHMEM and unconditionally compiled memfd_luo.o. However, Live
-Update may be used for purposes that do not require memfd-backed memory
-preservation.
-
-Introduce CONFIG_LIVEUPDATE_MEMFD to gate memfd_luo.o. This moves the
-SHMEM and MEMFD_CREATE dependencies to the specific feature that needs
-them, allowing the base LIVEUPDATE option to be selected independently
-of shared memory support.
-
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
----
-Changes v3
-- Addressed Mike's suggestion: added default LIVEUPDATE, and removed
-  config from selftests.
-
- kernel/liveupdate/Kconfig | 17 ++++++++++++++++-
- mm/Makefile               |  2 +-
- 2 files changed, 17 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-index d2aeaf13c3ac..1a8513f16ef7 100644
---- a/kernel/liveupdate/Kconfig
-+++ b/kernel/liveupdate/Kconfig
-@@ -54,7 +54,6 @@ config KEXEC_HANDOVER_ENABLE_DEFAULT
- config LIVEUPDATE
- 	bool "Live Update Orchestrator"
- 	depends on KEXEC_HANDOVER
--	depends on SHMEM
- 	help
- 	  Enable the Live Update Orchestrator. Live Update is a mechanism,
- 	  typically based on kexec, that allows the kernel to be updated
-@@ -73,4 +72,20 @@ config LIVEUPDATE
+To setup page links we need nid and zone. AFAIR we have 7 or 8 upper bits
+free in the radix tree, so to support the general case of up to 3 bits per
+zone and up to 10 bits per node we'll need to implement two versions of
+detection of zone and node for a page.
+I'd wait with this optimization for a while.
  
- 	  If unsure, say N.
+> Can we use NIDs in ABI? Do they stay stable across reboots? I never
+> looked at how NIDs actually get assigned.
+
+Node ids are assigned by the firmware, so unless firmware changes or there
+are hotplugged/hotremoved memory they are stable.
+And we can't really do hotplug/hotremove with KHO/LUO anyway :)
  
-+config LIVEUPDATE_MEMFD
-+	bool "Live update support for memfd"
-+	depends on LIVEUPDATE
-+	depends on MEMFD_CREATE
-+	depends on SHMEM
-+	default LIVEUPDATE
-+	help
-+	  Enable live update support for memfd regions. This allows preserving
-+	  memfd-backed memory across kernel live updates.
-+
-+	  This can be used to back VM memory with memfds, allowing the guest
-+	  memory to persist, or for other user workloads needing to preserve
-+	  pages.
-+
-+	  If unsure, say N.
-+
- endmenu
-diff --git a/mm/Makefile b/mm/Makefile
-index 9175f8cc6565..798f04233d71 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -100,7 +100,7 @@ obj-$(CONFIG_NUMA) += memory-tiers.o
- obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
- obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
- obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
--obj-$(CONFIG_LIVEUPDATE) += memfd_luo.o
-+obj-$(CONFIG_LIVEUPDATE_MEMFD) += memfd_luo.o
- obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
- obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
- ifdef CONFIG_SWAP
+> Not sure if we should target it for the initial merge of the radix tree,
+> but I think this is something we can try to figure out later down the
+> line.
+> 
+> >
+> >> >> To get the nid, you would need to call early_pfn_to_nid(). This takes a
+> >> >> spinlock and searches through all memblock memory regions. I don't think
+> >> >> it is too expensive, but it isn't free either. And all this would be
+> >> >> done serially. With the zone search, you at least have some room for
+> >> >> concurrency.
+> >> >>
+> >> >> I think either approach only makes a difference when we have a large
+> >> >> number of low-order preservations. If we have a handful of high-order
+> >> >> preservations, I suppose the overhead of nid search would be negligible.
+> >> >
+> >> > We should be targeting a situation where the vast majority of the
+> >> > preserved memory is HugeTLB, but I am still worried about lower order
+> >> > preservation efficiency for IOMMU page tables, etc.
+> >>
+> >> Yep. Plus we might get VMMs stashing some of their state in a memfd too.
+> >
+> > Yes, that is true, but hopefully those are tiny compared to everything else.
+> >
+> >> >> Long term, I think we should hook this into page_alloc_init_late() so
+> >> >> that all the KHO pages also get initalized along with all the other
+> >> >> pages. This will result in better integration of KHO with rest of MM
+> >> >> init, and also have more consistent page restore performance.
+> >> >
+> >> > But we keep KHO as reserved memory, and hooking it up into
+> >> > page_alloc_init_late() would make it very different, since that memory
+> >> > is part of the buddy allocator memory...
+> >>
+> >> The idea I have is to have a separate call in page_alloc_init_late()
+> >> that initalizes KHO pages. It would traverse the radix tree (probably in
+> >> parallel by distributing the address space across multiple threads?) and
+> >> initialize all the pages. Then kho_restore_page() would only have to
+> >> double-check the magic and it can directly return the page.
+
+page_alloc_init_late() is probably too late and some subsystems might need
+to call kho_restore_*() before it.
+
+> > I kind of do not like relying on magic to decide whether to initialize
+> > the struct page. I would prefer to avoid this magic marker altogether:
+> > i.e. struct page is either initialized or not, not halfway
+> > initialized, etc.
+> 
+> The magic is purely sanity checking. It is not used to decide anything
+> other than to make sure this is actually a KHO page. I don't intend to
+> change that. My point is, if we make sure the KHO pages are properly
+> initialized during MM init, then restoring can actually be a very cheap
+> operation, where you only do the sanity checking. You can even put the
+> magic check behind CONFIG_KEXEC_HANDOVER_DEBUG if you want, but I think
+> it is useful enough to keep in production systems too.
+> 
+> >
+> > Magic is not reliable. During machine reset in many firmware
+> > implementations, and in every kexec reboot, memory is not zeroed. The
+> > kernel usually allocates vmemmap using exactly the same pages, so
+> > there is just too high a chance of getting magic values accidentally
+> > inherited from the previous boot.
+> 
+> I don't think that can happen. All the pages are zeroed when
+> initialized, which will clear the magic. We should only be setting the
+> magic on an initialized struct page.
+ 
+Currently we set the magic on an initialized struct page because we don't
+support deferred struct page initialization. If we want to enable it, lots
+of struct pages are uninitialized by the time kho_mem_deserialize() runs.
+
+To ensure there are no concerns with the stale data in the memory map we
+either need to initialize struct pages in kho_mem_deserialize() before
+setting page->private or let memmap_init_reserved_pages() initialize them
+(e.g by splitting memblock_reserve() out of kho_mem_deserialize() and
+calling it before memmap_init_reserved_pages())
+
+It seems that hugetlb support anyway requires moving of memblock_reserve()
+earlier, so maybe we can do it as a part of deferred initialization work.
+
+> -- 
+> Regards,
+> Pratyush Yadav
+
 -- 
-2.52.0.351.gbe84eed79e-goog
-
+Sincerely yours,
+Mike.
 
