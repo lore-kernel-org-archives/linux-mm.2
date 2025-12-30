@@ -4,88 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB06E94108
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 09:02:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BE2DE9413E
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 09:28:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 316C46B0089; Tue, 30 Dec 2025 04:02:40 -0500 (EST)
+	id 8D1526B0005; Tue, 30 Dec 2025 04:28:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CE4A6B008A; Tue, 30 Dec 2025 04:02:40 -0500 (EST)
+	id 888A96B0089; Tue, 30 Dec 2025 04:28:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ED3F6B008C; Tue, 30 Dec 2025 04:02:40 -0500 (EST)
+	id 787496B008A; Tue, 30 Dec 2025 04:28:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E87416B0089
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 04:02:39 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8DF4A1415BD
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:02:39 +0000 (UTC)
-X-FDA: 84275546838.28.22117A0
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 40926120004
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:02:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf29.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767085357; a=rsa-sha256;
-	cv=none;
-	b=l7alMoITGBWnkScDT5uI9PEeeipgqvGY4VmKZU0Ei25+vH9F0PUFij8cvKuEfNnnrZSXst
-	AkxN6UA7G891IQmx3c+FUnD8quMoWVadP5kYkcRp1/OQhUJXE/Wj26O5y3v36cyFgJHpLj
-	JmgseXip1eV8yxeaYADHCTEidhBbK4U=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf29.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 670826B0005
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 04:28:00 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E87551A84ED
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:27:59 +0000 (UTC)
+X-FDA: 84275610678.19.0763DD5
+Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9FC2A40004
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 09:27:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	spf=pass (imf17.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 129.150.39.64 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767085357;
+	s=arc-20220608; t=1767086878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U8pnGbdI3FC5ujzfJVPgKc3rjeGx6tBIL6eudgqEYzE=;
-	b=BlTNhiM+fTzGkGCGLKywGM/62qjUMDTKq+pipNubu8B8tvgbxZsD71EwGql1vzqI5901Xb
-	HkHAh7BZEXQoj13hhtGfmW5wXbFJwPMuEylTIbvF5ph3HUHi7OHw9PIeuSsN0OHFVJBQFg
-	twv0HPCXYKOPKuEeuA+H+kuZ7LlcdvE=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dgRsd6mtDzJ46fG;
-	Tue, 30 Dec 2025 17:01:41 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4021940565;
-	Tue, 30 Dec 2025 17:02:32 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 30 Dec 2025 12:02:31 +0300
-Message-ID: <4b367446-2248-4936-99b6-e9ee93298eb5@huawei-partners.com>
-Date: Tue, 30 Dec 2025 12:02:31 +0300
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=ynZYan+u4IBN11WW4RnZgtO0kWhmB52Ee+Kvaf/4voA=;
+	b=6/gps6WwPVYyeMNAsmAQWC0HRMrFJcW45pDqV+TwxcGSXPqNW2mimGT60b49m6zTBtUFAp
+	um869D50DuArrJM8i3iGY06I1M97bvdfk3EX0k9A8YYq033IC+yvQhcRFFkI6/86KmMqEV
+	y9ExQTdQDn6SIRF24WIsLYH/o84na9g=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 129.150.39.64 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767086878; a=rsa-sha256;
+	cv=none;
+	b=zrPoyhUwFVXZo83jQPyWCeRpRz/I6jtzaaqaAh0JZZtbwDYyzpMCtlKpB3XxCjUZdQr/ZC
+	F0NRf9ovpBozQ5ys/4os2wSQfIcTnY4NLDpmVWX/zw0nEbTCYSRHr+zO6kZRF1ubYAbJV3
+	5v+BaxpIk1HLxmFUnBUYanrqyOOvEqw=
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwCHjmIXm1NpMxX9BA--.334S2;
+	Tue, 30 Dec 2025 17:27:51 +0800 (CST)
+Received: from localhost.localdomain (unknown [218.76.62.144])
+	by mail (Coremail) with SMTP id AQAAfwC3DuwWm1NpEL8PAA--.14076S2;
+	Tue, 30 Dec 2025 17:27:51 +0800 (CST)
+From: Cui Chao <cuichao1753@phytium.com.cn>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	wangyinfeng@phytium.com.cn,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
+Date: Tue, 30 Dec 2025 17:27:50 +0800
+Message-Id: <20251230092750.856060-1-cuichao1753@phytium.com.cn>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1] mm: improve call_controls_lock
-To: SeongJae Park <sj@kernel.org>
-CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<wangkefeng.wang@huawei.com>, <artem.kuzin@huawei.com>,
-	<stepanov.anatoly@huawei.com>
-References: <20251229152250.78975-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20251229152250.78975-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAfwC3DuwWm1NpEL8PAA--.14076S2
+X-CM-SenderInfo: pfxlux1drrlkut6sx5pwlxzhxfrphubq/1tbiAQAAAGlS4KwHiQAHs-
+X-Coremail-Antispam: 1Uk129KBjvJXoW7Jr4DWw18trW5uFy3tFW3GFg_yoW8JrW8pa
+	13XFy8XFWkGr17G3Z29w1DGw1IgF1fKF4YgFZrCws8ZF4Fgr18ZrWSqrn2vr4ktrWrA3ZY
+	qF4Dta15Zw1kZFDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+	UUUUU
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9FC2A40004
+X-Stat-Signature: s7te7q9qhdnmihi45nsufuyyw14cmzuw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 40926120004
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 69f86cbuszmaumu4xneemch5yaptnqen
-X-HE-Tag: 1767085356-666181
-X-HE-Meta: U2FsdGVkX19hbaLAMgd9QuevqD56tuu5yOhTlD3my0bsLdML7ZJokhV5TgNsXwnw/dZvi7jnlZsaJmall1nmallFSo9b8fN5XlSaZ/GMIe62/ZwRCQ9AbHA9FqXejoCzD7CtSDbhtwVQIEeuCkM6bVp3jEifoThx0r8NCdMQVBkJUvoue/DvaV8bghkxle7YkknSkkh79uq8o/YoOjcSewY7ewam97nUFk1KTUYn6ulqQzEEh2IhxbGsPfrpDuK6zKcGamD8zlbRRXV+b6pt4qLvhonvi3CcB7fJ5dBtdBgtYclOaPUoSiaFqUZw9iccLCidm7iWtlrf5OBYxsr4x9rcggs+k/6qZPcOSV2GV3U+tOwYskPp+NqcIO3B5Zd/R1yE4TNCSyBw12qTbI524Sn9WzpyUPM/F5BM8afAtAgWuyBwRPVrY0wN5g+VZWoxTe8HJjorywjGl++c7zW17OoLBckgLDdvsGbcdZtvq+332jkad0Y6dGcCgwMsXgeSyEUP3ZYwKbEdxi1S60fMjRdJK1/OidawNahcrg8CFl2TbKC2K/xaM7sWn+MJmViFIgkvosqUoSVangCftU/8KllGexnaIY0e5haV8BD/DkT3WwqanZjPeLMBQsJNCM7xMgfs3IXbDqFwxULxZxHJZYnHiDMThOgJTvdt2Qv5rTgPq46PT33pUhgxubzR+0cdJZYhXLBUa8lWoiwk1u8LxunWDynUN4zeA2MQm2MRn2yV7BXmN8lAS7MPLz150d8cNyMYoFnYB8pagPbjA8+KB+ACCHMe82KBEV3Ophhb7Wc4KaYh6K8T+sMoEXnztKtE5nYhRY289H/W5zl5L7VhMrSggIfT0TttaSnW3A1cagJCWctjikzf3W6g7QoAgrjmm7VJ3JCp5pMnT+S3HKT428iGF6CD+T1Sb5fMIrDqIan8TvFHj//H0GvhIKvija+YYLG3SV7kNaBXyJVSn7q
- OOiqzg2k
- CAoejiWbHaJ2xkP43bsGxxwrqsYmtTq+1G4b4EsdVj49XJsOHWb+/FKjF2xS+yRAuT+PfBFkkaLS1lmCQUzg33HOvQDmx/cqwYEZHC/Hw1RIPKS26/Ker2QnL8tyYokN0GDB7V9xgvrEbY+iwP+zR+nV+Y4V5QUpdMDm/Y35dQcI3+s1iTfByMEWXF/PaZD6fwWV2pTEHtSfrZ3H855oOvsTCeRtA5xnmfLlBYrXOXrweFm56V00GyggxxAWlblx7STF9GZz9vTkVjhxcBvPuvIwbntLzSnZH1C7hwnx41GPo6KXwGHKw137jrZBgw8fgg3C7kzwyZLCGm0I=
+X-HE-Tag: 1767086876-965816
+X-HE-Meta: U2FsdGVkX1/wN7mt0xzzh6ZqMVew0wjbomcm+Mus7u5jVtl8tty80e+wYR/BQaKc+oyRbtJvcg66WOatfEc7WIzB++JPdKW9BfNTCc8T8VuprCSLk9S1xCmxqjb3Us+/wNuFc+eT7KPs+P/v9AsYDAEijC3hoBoN4Bt8I5FG9RSXlCF38yr8jidJw1Vh+dVor+qXif+a6fzCxo0WuaT6FJJnEs+2Vpbylj+PII15yrjgZQJoJRb16BMc+8Sj29YffoRd03B2K/JhtaMJaYGAQQp1qgzU7vIMpgVhZ59xIp61LnIEm7B1pFgV9ZX1w6xM1cypqzD6nT7qD4UKpEUDQdhFVX8A1AD5JUlaTLRhCpNcdHzNoyYgfsrCJcl75z3bHNT1KeU3MOgByxlmul1GtKiTyQPCMByvb/uiky6o2R82ExOyqF5RUJJD2JqREN5ANuO1c80fKI1sl75lgETG4xUFvpAkFOVtLaSZAZS2W03Qzf4TQpnOY7DfpfzuaGSv7Y0ArYp6wcx/awNsu4jQXjpGgq/mKYI8hYQhHy/Pa4AXuu463d8/knDDz0lXEonr4PXiXx0Hd0n2DNQSf6qzVX48GX1hyadgzfOtWQuruRFDgkrTdWB6qjbLwPikWlphtKux2dvFZsbMACMl81EzteYgLzhDD5evZQsWpGp63xF0ElPUT4lmaORr28RHk3FQoBwQ9u4ghMpjsGUKBqTR87GRG1YLP21J/q0qL714Rgwq9e9xASM1CAtRBpjIPMJIpNrtEnpHZnD96PLfnoCsp/xNU0djOgiqpE2pgEC3OajEi+B67OxkA/xjJ2k3Dwz/8HxKN0yxORA2h3iIgP/R7T3oGuJkrrotAdnT9Ul+/JlXXg7G4CAJtgUHgjRVOw7R0d0zCyrnGMyxlDJPbn75kb5+5dbMsXlCAVqfJr8d8j1hrkf6GdP/vv22p+AYt6HkziwvTUn5qQU8aE0Xijn
+ G58AaiW5
+ N9yZwUWjH3U9ciU6catSzHl4cUclsQKAYBsenYc50CWUrDum1HeRV4d35JYX2Kj1VhuJTVnY4RCg8e+zTlkHM5vXXpNn6BheuglY3AlDBwcS3yYNuqupuh/+s93F4TiIyBpXArh0lHDGHjcGDlPrtOWNy7OWxi0NLl+aLR6foDGXqc5mVnenCcnVNkuqDgR4ozJOg3zEuL+FfEgU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,54 +87,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+In some physical memory layout designs, the address space of CFMW
+resides between multiple segments of system memory belonging to
+the same NUMA node. In numa_cleanup_meminfo, these multiple segments
+of system memory are merged into a larger numa_memblk. When
+identifying which NUMA node the CFMW belongs to, it may be incorrectly
+assigned to the NUMA node of the merged system memory. To address this
+scenario, accurately identifying the correct NUMA node can be achieved
+by checking whether the region belongs to both numa_meminfo and
+numa_reserved_meminfo.
 
+Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+---
+ mm/numa_memblks.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-On 12/29/2025 6:22 PM, SeongJae Park wrote:
-> Hello Asier,
-
-Hi SeongJae,
-
-> 
-> Thank you for sending this patch!
-> 
-> On Mon, 29 Dec 2025 14:55:32 +0000 Asier Gutierrez <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> This is a minor patch set for a call_controls_lock synchronization improvement.
-> 
-> Please break description lines to not exceed 75 characters per line.
-> 
->>
->> Spinlocks are faster than mutexes, even when the mutex takes the fast
->> path. Hence, this patch replaces the mutex call_controls_lock with a spinlock.
-> 
-> But call_controls_lock is not being used on performance critical part.
-> Actually, most of DAMON code is not performance critical.  I really appreciate
-> your patch, but I have to say I don't think this change is really needed now.
-> Please let me know if I'm missing something.
-
-I was just reviewing the code and I noticed this. Yes, you are right, the performance 
-is not critical.
-
->>
->> Initial benchmarking shows the following results
->>
->>
->> # bpftrace -e 'kprobe:kdamond_call { @start[tid] = nsecs; }
-> 
-> Commit log shouldn't start with '#'.  Please consider indenting the above
-> command and below outputs of it.
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
-> 
-
-Thanks a lot for the review!
-
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index 5b009a9cd8b4..1ef037f0e0e0 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -573,7 +573,8 @@ int phys_to_target_node(u64 start)
+ 	 * Prefer online nodes, but if reserved memory might be
+ 	 * hot-added continue the search with reserved ranges.
+ 	 */
+-	if (nid != NUMA_NO_NODE)
++	if (nid != NUMA_NO_NODE &&
++		meminfo_to_nid(&numa_reserved_meminfo, start) == NUMA_NO_NODE)
+ 		return nid;
+ 
+ 	return meminfo_to_nid(&numa_reserved_meminfo, start);
 -- 
-Asier Gutierrez
-Huawei
+2.33.0
 
 
