@@ -4,118 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26291EE4992
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 18:22:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32D25EE4997
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 18:24:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 619776B0088; Tue, 30 Dec 2025 13:22:12 -0500 (EST)
+	id 971DE6B0088; Tue, 30 Dec 2025 13:24:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59CD56B0089; Tue, 30 Dec 2025 13:22:12 -0500 (EST)
+	id 91FB46B0089; Tue, 30 Dec 2025 13:24:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47F036B008A; Tue, 30 Dec 2025 13:22:12 -0500 (EST)
+	id 81DA26B008A; Tue, 30 Dec 2025 13:24:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 378E06B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 13:22:12 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CEC011602A5
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 18:22:11 +0000 (UTC)
-X-FDA: 84276956862.01.B02F3EE
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C7988C0004
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 18:22:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Edy924B9;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767118930; a=rsa-sha256;
-	cv=none;
-	b=i1ouCCvdVjye0dB4b6+QONkVgXPp47xWYrYywL44g6KowPaH2PrvsjsleSNn9UGdSmA+Zp
-	WwbgdyLj5YKLbvCl1qFVwLoH/m04PgsMh0oBp8txi9v+5nTeJZTKEp5LXbZbr0iJoDCn9E
-	tZs59BmEyQeqin5epEF7Yl0BC9l68TI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Edy924B9;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EBF06B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 13:24:51 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01526140184
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 18:24:50 +0000 (UTC)
+X-FDA: 84276963582.08.C2D9339
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5EDEE100002
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 18:24:48 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JSpKrliv;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767118930;
+	s=arc-20220608; t=1767119089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SbX4+3prQedbYohaWCzcG8i2LaKGHYsnZgkzeM93RSw=;
-	b=2mPwEo6fhZFTYI4KFxfW1/q/3IhT8FsdwPpvjUXYJlj7bJCGIwXUYqaUlx/KlOUJcKYAHp
-	bLIV9DEJJSisdPleFZbAu6XjS53hsYK/vTglzTSZEV1TKww++JMa4HNcUONHSYY5LrJgJ/
-	6YRCftiHZ8ge1oLbbfaMdpHYs5UN6/U=
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b7a02592efaso1552720566b.1
-        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 10:22:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1767118928; x=1767723728; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SbX4+3prQedbYohaWCzcG8i2LaKGHYsnZgkzeM93RSw=;
-        b=Edy924B9pn1hoJjzHeWO6Hc0XouqN2YT0idnk8wEJRZOdMY/l6cJaHHAm2iXJdi5ix
-         6nBSYJuXBP4PlcjTAxWzSPaz3BNc+Ik+l2YISzWGHTSQotqKOuqny+E1qavytIQUckmT
-         UdbUa68Ve3sGmSW9PwcnB7GO2go+oNwWr5cSOrCEIXSCmtbIAbikAakeR64p66SHlqaK
-         ZQgea5OOrV2RrF75aPWHOtCp6NlcumvUaw+UvS81g+CaJTYFWklcqOug1Ji2wyth36vT
-         1R9e0Vd+OZBQzAltf9Tkc8rewCw5N+Pt0ieL5dZtFfPA/pvGnzpVWpgeMH+WyXQf1zRd
-         XD+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767118928; x=1767723728;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SbX4+3prQedbYohaWCzcG8i2LaKGHYsnZgkzeM93RSw=;
-        b=MH1C5P85jS6VmU1xSCoqBD/Q09y4pxzndjPL+SwIAa1+qhEYnpLZNWu1DHj2Rm6Gwb
-         5+8dcrsdsOUADmcjHdEHeza00ILB8gePuNc1ifSHL3sjCaFUu9ygGfAigUv36Wuk5j/U
-         nZWRu/nPxhTgfBvEsX4oGfiK53DYnc3eKqULRJt3cbJBFcyMF0rFU8lWjqYdiWEVp8Pl
-         vKVSw+kFW4JZqlfrIxYLsEb9W8G58Qd96vGsRg4kLRVWdpeHyX0zvgUxKVXuiFPTcFLu
-         sG2OjjFv3S5GH6z7Y+28Rbxp8p3KafYsdpu0plKmB/Trq2TMMYWmo0M+SSTnv+1UdVXK
-         nfng==
-X-Forwarded-Encrypted: i=1; AJvYcCVtYgI9ntrWXUBj/3oog+XdBcEbM7J+uCB7Lde+HuyeOOz+eWN2jsJMIjhymcV/oycMzUENUsq6kQ==@kvack.org
-X-Gm-Message-State: AOJu0YzyjT6TMmCN7lyBdLIUE0pcul3egpGpnFCrZaZr18uXj49NTSrK
-	W1Y53Bx3yt7lYq0H+RXxBbOVLhO1kH5kdTWJzmb4lHsYu972BKrI2k5ZaVpNT3TmeZSUrd4up6Y
-	hnhNAmXcr80EMSBW2br949WehA6hFP1LhE2np5u+Ccw==
-X-Gm-Gg: AY/fxX78JefmwlobwUz7z+qGmFJ3ZuDJKkSRp9JkTcVf1diNKy9tLGrqO7Pt4fTZKLx
-	mh9pcR69fNXjHmPKhAJ1WEAbR5I+RI7qdpDHVJn8mt55hwYKWkdPi48+BWSp6mbeuT6PNYgFAsZ
-	NhiXstlW8dq5VuPlla4f5XI2XmYEIiBMra/dwIgSl1rezAS5szSswbLoiB7gN6yDxEzOvRhR5mb
-	Mjd9sM62hVB14i8qaJYTB76pt0RY48liBlHYWR2f2Olt1GLGkOJxtYYKf6r2uIxTrCu9oS2OnPD
-	X5VZWz4F8D/sqJeyH6dTbqIG51HakHsmMMyd
-X-Google-Smtp-Source: AGHT+IE+NvY3nTwJty4csE57PDC23CsYYgYnBf8uXu6yTmkVwhlkaOlD6ryEaJ7e/qlHwQjSX1HDyhcouW9OYEj26Qo=
-X-Received: by 2002:a17:907:28d6:b0:b83:1344:4872 with SMTP id
- a640c23a62f3a-b8313444da9mr1518310166b.32.1767118927990; Tue, 30 Dec 2025
- 10:22:07 -0800 (PST)
-MIME-Version: 1.0
-References: <861pkpkffh.fsf@kernel.org> <CA+CK2bA1kYCf0BwhX3Sg9Ur82nK-7HPzs0sg6xbVWFAJaZLhpw@mail.gmail.com>
- <86jyyecyzh.fsf@kernel.org> <CA+CK2bDxnTEe9Ohq5zLuyF-jqgD0DPhfdq6z=yztUsXU5p5fSQ@mail.gmail.com>
- <863452cwns.fsf@kernel.org> <CA+CK2bCjJWZG_rPoPsHWSxirmUCTOuFQzTCss2AKf9UqpThrdw@mail.gmail.com>
- <864ip99f1a.fsf@kernel.org> <CA+CK2bDDEZ5a+LJNDVMtKFtQ1D9rP6rJqU064eoru=a9eHpaAQ@mail.gmail.com>
- <aVP6wBYoHJQsplIl@kernel.org> <CA+CK2bDZPwYpUhksDLSbfVdVm5TYbh0XrOKRV=q4YjGpqH+Fwg@mail.gmail.com>
- <aVQJUPOn85WlJaM9@kernel.org>
-In-Reply-To: <aVQJUPOn85WlJaM9@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 30 Dec 2025 13:21:31 -0500
-X-Gm-Features: AQt7F2qfaFW5jYlhg6zDjPkXHhj6hFsRttMeIx54YfGgD6WpInICzEQbwDgmzGw
-Message-ID: <CA+CK2bCm=AGDSLTbs6etbqveFUHU80okE-bCT2zg20nrHXgHRQ@mail.gmail.com>
-Subject: Re: [PATCH] kho: add support for deferred struct page init
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Evangelos Petrongonas <epetron@amazon.de>, 
-	Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jason Miu <jasonmiu@google.com>, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, nh-open-source@amazon.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C7988C0004
-X-Stat-Signature: 7jkeym1155qduwp5xqcjs9zmszjp8ub9
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=uQFrgilGBJORL2w9N4rhn7kj5Jinb1a9MlRGqRI3Pk0=;
+	b=TiE+vQT7Pt+ppWhkyAXZmKEY/jDflYOnyFJ+2Sl5aJ3FpsFxQKQdbjLGXSMn8DBTGsGGP2
+	hOWpMKUgE5tWTZn6V8VAsw5Wik2gULphMLzqm+qCMmfODwd+e2szXvv/2IVs3Gad+OfCnm
+	3Rb/tvBgx+wCMJm7Ush3AG/qsayvGMg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JSpKrliv;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767119089; a=rsa-sha256;
+	cv=none;
+	b=5FPlfUMsIjdLCLS9pGHgGwQx7BVGDcLNaT0XxZFaCqcDSH4kD6cr3uDBzuhzJYvwr1fpiT
+	zhytd065zvqdkYLfpc55pu3avRnob5Q+x9vXpeN4bNf0P7hO3qU7D5d2S1j/+sVuW/FyRC
+	rKUYR1XRpAF9KBqPzFINRpKSHxO1318=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767119088; x=1798655088;
+  h=date:from:to:cc:subject:message-id;
+  bh=cHvRSZlVUMr+b2MgusEI/XFX3df8wkSK6guuRDpNxsY=;
+  b=JSpKrliv0uHPkDrPYQ7MZRiBp//1DwFgo/9hDV42chY3Dtq/KSCPskkm
+   0DMLXibp7A1/locW192barqMyR/RHC7B3/405UU6f4cHnctC33HK+3Qm3
+   Ih/QPVWplo8zP8g7v1EGWwPVuhx1t9HYJbxwwcZP8jg5NqL1727dzlyB5
+   rf+GDXSeP6QB+ZGk2BxFmnAAWIfaO6xgz5JhM+3AaYeJZDj5Puvcz24lU
+   9y8/rSGtEgiv/ZEicJr/0yVZoQKwWms6qZn8elsZrYNi95VpuQGmbNC5n
+   Tx77vbCuxGwyo6Z0aj97Ry14BIiwzTPtnBtNzv0Y2kYB9LOFNzetHYDLh
+   Q==;
+X-CSE-ConnectionGUID: zS/8GnCwTX2bplc7tSQn1g==
+X-CSE-MsgGUID: J+8zQMK6T5+At4iqOVGzmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11657"; a="80158483"
+X-IronPort-AV: E=Sophos;i="6.21,189,1763452800"; 
+   d="scan'208";a="80158483"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2025 10:24:47 -0800
+X-CSE-ConnectionGUID: UPWkG/5hSmCS4Mzd0gDgkQ==
+X-CSE-MsgGUID: oIIV1CvYSv24V1a+Jpw2rg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,189,1763452800"; 
+   d="scan'208";a="201151764"
+Received: from lkp-server01.sh.intel.com (HELO c9aa31daaa89) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 30 Dec 2025 10:24:45 -0800
+Received: from kbuild by c9aa31daaa89 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vaeOg-000000000c1-3e5q;
+	Tue, 30 Dec 2025 18:24:42 +0000
+Date: Wed, 31 Dec 2025 02:24:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [linux-next:master 2254/2671] ERROR: modpost:
+ "arch_enter_lazy_mmu_mode" [mm/tests/lazy_mmu_mode_kunit.ko] undefined!
+Message-ID: <202512310238.ViLCpEnx-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767118929-80646
-X-HE-Meta: U2FsdGVkX1+gxeW9ZsnNOV+9BzF4tR3blq6EllVKC47HOMRsZzMQXHdwxkrCXH6JJHS5HNTia8vu/OmuJaaYr9jN/72WMxwTYkBTsAofmYeeMAn7ZPb+p9bRvSWHXgkWnlWjhx8jr+ReLRfwBd6sZywNZzj6TKgx92zXVhNum4a/cuGKu9sj92NqYF6h/fLufC05v96XJkyp4hI0A+0ololTDbA/jloxl9JNySJd8MifRHJncW8F7F9eAJoc3wVVqryWIpL+ZFA1U70+hlxF9B5/Fh1j/PjNI4ui9+T18oNcoKwKAoCyDw+wYHNZtWgIxDJz++2DR8cuE12mcaInLzaLMvzwgNGwPpeoJiyceYlQoAWBTq3ZUSTpIq35Pc3XrjxibuhplXCxL+xj7wnMoaR77pspAIQcaLUFoewqaCz43CWv/Q5xUvXsIWyATRVGBd45TH2zFXHkPPe0AdB9yjFFGMaMmlg0evpjF79drSFEHvy1yoCrNdW4fscEU9Ysgs+QcpqNOD0h4mvoXXNKpbX4MQRNOqB/cNSjKyhkeTsrfLE/Vf+cgHe73gkHZy/zzU43S0WUvWahUEXG1HMzj5hdSyWzSj1A2elZ7kM1bmQSpnzwwTIRE83m8RxvCJYGqMkqENjyyGzgELaY+JqyoantKflTG56EryYDOVbkGozzYNYj7GbWTISJVCmvrrIDfY2BcyDLvh+KMJC04e9e633JT1q0eYS6sDl+dkKoFOMkXFQvyw+5o+46D+Tcji9bF9ImMdQsP0+xpIHBF4JhSldZbcBZqs5sl16nNa7ujRQZdqEG5QhRLs6k9Z74FuvxbaREi0NmYCkwu91LifJyUn/Irix5zBoWGg4lzYXtqFWhfuzUhHSXV7s/tqBGhlOh+kl4pxm//8/KyJyk4q3nvH32+3ReF4PQy3jnpuAs3f1C+s4u7oWf/s9n52/nUy35od6MT/o4CbtF9iA9B+R
- mTb+PvUI
- LV6EyfxtM5az1z/qrb9DKVswbWQ46H13VlBgTaGuhev9WbJqAvHlRWx7pu/FxiQD4sligm+n4IzUKqcOOzXANCBFkaj6SJApXeZS9sN27PXywX8eKHAwcD8zYTSIcwUrJo4wiW3mXfufmArZgupY4X/qEHqsslOLJSST/kaQnfBtLISHV9zmKlNU94y8bc+8OCyOyt196ZRiw5KRBHVNHJDg9/w==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5EDEE100002
+X-Stat-Signature: a63d3ah1scz4ckft96fca8i3kke8f7aw
+X-HE-Tag: 1767119088-511604
+X-HE-Meta: U2FsdGVkX18Dnu6YdSQ2MGiQBJcQKWLL71plKxbgVvt0rHCW/+pUuKHlGeGWFVuaa/XO4VkXqTwHm2soVVN6BbkVKaq0Tt+dd5f4DN7AnBLyvqu5hxtZon3vA6qxfQ5uY2HOFHLdlAzZvzhBIe9cEy3wXLeuFQLUMNAbdwiGNMucRbZuY/WvbUtsIXFXjWIgJlHgezVlns1JxNfXpCPZwr1M+GKyfpfKWa/p+4i9G06hR62NPvHmSYihIX2eHBwQ3g4PKHqgkLklWu4H1D2pEm/TdpYH68GaICCtLhVzQNL1fdDCW+KU0tYTEKj8jiwETVcVQ2ebaH0GoFTIDFUIvfaMYxet8GTLKcqKL+gSz+1mqzmqmlzSxDZC7nd3uuz/5vjMh6okvNLG+hBYohKv9AHq8UR3gvKjM81HS0mxq3qNYS1dAnaac9bmD/E6EYrTzUd5RyJYb3NpJ5j5/J5+pU9fv+iDzTPAItkhua5CGHysgZGo+6768cNjGKfejsSPmkSW1R3ihKtSNQIqWZdhIok569vF90iOR3gScC3g5IxunuhM7gjV8ulTdg+GO53hoSD5bMOy9TPfxIRaCn4lRCA3i94PFKEyv7XgqzfCQ7CbQq858hHKxjmU5HZ4jl8DzEVU4W1VepBge90UW2Hq+mrKCOkXw2qIPact5bsBAc4M03KXg6IEtkP4shUQmPQHsDQyP6LuEjH+586Sk9ZqtCbvHvBGNIfVRO7qTUaHsh4sCQ51wcg/lsUp8IKURUIpwtflsTEccxTjqoOfN5O0KVdc2JhQhKiBYewjYlOXgcIWkIORsPTdPPCutgfr8E1VeoXzeGpSoK43re8CgK2kx3iLTGhu4cjZZ4uC31OC6+aNaDnAqVCiAbtxz+LHnzQT9JMBh4xQgX1/9KUyfZFtTVtfXgf6bH2bGnLHlHq+L9QPeZUqf/RKu1O8ubsbahr6NrOuqlabV8nKHWMG0kG
+ hcyWIPmb
+ NiVaZAqp8WSDVyxVff2FCzcKQ7vsUo01UF0xu/RVbFowuztFKgKc4l5ofk82sIqvsVRJjmKh72WCPc9OVf3lFG4/AZOQNzJL8hn2+jvNDYId2G88Jku5PXJCHE0mv2qZtx1SWQJZJ6p3glHwWD3eqKTWQvUIaZten5BhjVkCo5Or7pt7ZKS9fQkWU07tmMnceadmQpXHRM7E6CQtq+Eeo3H70YUBR3dA6sHbBCerixt9vZxYNccsHIZ5Ch2Dx6Hi31YLBXZGEreyABlq3ZR+aupYyoJv8+SucQBoFDbGRvFmzY9rDmogdlI+i/NUhTbRCvqBq4dMnQQUDQaApTuDxEJKHymlLYjOD240pA4ybjWWj2qCHMzhVz8ADIQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,76 +104,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 30, 2025 at 12:18=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wr=
-ote:
->
-> On Tue, Dec 30, 2025 at 11:18:12AM -0500, Pasha Tatashin wrote:
-> > On Tue, Dec 30, 2025 at 11:16=E2=80=AFAM Mike Rapoport <rppt@kernel.org=
-> wrote:
-> > >
-> > > On Tue, Dec 30, 2025 at 11:05:05AM -0500, Pasha Tatashin wrote:
-> > > > On Mon, Dec 29, 2025 at 4:03=E2=80=AFPM Pratyush Yadav <pratyush@ke=
-rnel.org> wrote:
-> > > > >
-> > > > > The magic is purely sanity checking. It is not used to decide any=
-thing
-> > > > > other than to make sure this is actually a KHO page. I don't inte=
-nd to
-> > > > > change that. My point is, if we make sure the KHO pages are prope=
-rly
-> > > > > initialized during MM init, then restoring can actually be a very=
- cheap
-> > > > > operation, where you only do the sanity checking. You can even pu=
-t the
-> > > > > magic check behind CONFIG_KEXEC_HANDOVER_DEBUG if you want, but I=
- think
-> > > > > it is useful enough to keep in production systems too.
-> > > >
-> > > > It is part of a critical hotpath during blackout, should really be
-> > > > behind CONFIG_KEXEC_HANDOVER_DEBUG
-> > >
-> > > Do you have the numbers? ;-)
-> >
-> > The fastest reboot we can achieve is ~0.4s on ARM
->
-> I meant the difference between assigning info.magic and skipping it.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+head:   cc3aa43b44bdb43dfbac0fcb51c56594a11338a8
+commit: a525b83d913f000bed66b69f6d9c05c0c04551dd [2254/2671] mm: add basic tests for lazy_mmu
+config: sparc-randconfig-r073-20251230 (https://download.01.org/0day-ci/archive/20251231/202512310238.ViLCpEnx-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251231/202512310238.ViLCpEnx-lkp@intel.com/reproduce)
 
-It is proportional to the amount of preserved memory. Extra assignment
-for each page. In our fleet we have observed IOMMU page tables to be
-20G in size. So, let's just assume it is 20G. That is: 20 * 1024^3 /
-4096 =3D 5.24 million pages. If we access "struct page" only for the
-magic purpose, we fetch full 64-byte cacheline, which is 5.24 million
-* 64 bytes =3D 335 M, that is ~13ms with ~25G/s DRAM; and also each TLB
-miss will add some latency, 5.2M * 10ns =3D ~50ms. In total we can get
-15ms ~ 50ms regression compared to 400ms, that is 4-12%. It will be
-less if we also access "struct page" for another reason at the same
-time, but still it adds up.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512310238.ViLCpEnx-lkp@intel.com/
 
->
-> > (shutdown+purgatory+boot), let's not add anything to regress, as every
-> > microsecond counts during blackout.
->
-> Any added functionality adds cycles, this is inevitable. And neither KHO
-> nor LUO are near the completion, so we'll have to add functionality to bo=
-th
-> of them. And the added functionality should be correct first and foremost=
-.
-> And magic sanity check seems pretty useful and presumably cheap enough to
-> always keep it unless you see a real slowdown because of it.
+All errors (new ones prefixed by >>, old ones prefixed by <<):
 
-Magic check is proportional to the amount of preserved memory. It is
-not a required functionality, only a sanity checking. I really do not
-see a reason to enable it in production. All other sanity struct page,
-and pg_flags related sanity checking are usually enabled with
-CONFIG_DEBUG_VM, so enabling it only with CONFIG_KEXEC_HANDOVER_DEBUG
-is better.
+>> ERROR: modpost: "arch_enter_lazy_mmu_mode" [mm/tests/lazy_mmu_mode_kunit.ko] undefined!
+>> ERROR: modpost: "arch_leave_lazy_mmu_mode" [mm/tests/lazy_mmu_mode_kunit.ko] undefined!
+>> ERROR: modpost: "arch_flush_lazy_mmu_mode" [mm/tests/lazy_mmu_mode_kunit.ko] undefined!
 
-Pasha
-
->
-> > Pasha
->
-> --
-> Sincerely yours,
-> Mike.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
