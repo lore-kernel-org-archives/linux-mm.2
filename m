@@ -4,120 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60D2EE020B
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 15:30:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1396EE020B
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 15:30:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 060776B0088; Tue, 30 Dec 2025 10:30:17 -0500 (EST)
+	id 25E0E6B008C; Tue, 30 Dec 2025 10:30:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00DCD6B0089; Tue, 30 Dec 2025 10:30:16 -0500 (EST)
+	id 235236B0092; Tue, 30 Dec 2025 10:30:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E52BD6B008A; Tue, 30 Dec 2025 10:30:16 -0500 (EST)
+	id 15ED56B0093; Tue, 30 Dec 2025 10:30:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D59F36B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 10:30:16 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8BF2E57343
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:30:16 +0000 (UTC)
-X-FDA: 84276523632.03.A7F48DA
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 992B4140017
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:30:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XrsZvELC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767108614; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 03DDD6B008C
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 10:30:30 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C4D6C1A0659
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:30:29 +0000 (UTC)
+X-FDA: 84276524178.07.642B0FF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 234F64000B
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:30:27 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B6pLAvqJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767108628; a=rsa-sha256;
 	cv=none;
-	b=LvqFyV1tl3Hh0CBENeQ0dMfPE5w/t2IwGj/+eQpcIvcn1GX1m7EU0YZ6v3/+2OpkBjDJFO
-	NgX/4ExzQBqUcrD7OWchltb6XlL0T6FwcdlSdNGUoB2SEGQ2Xhh1XNqEliqU9xBntk9a9c
-	whcoMomAVgrYL29SpwAm3sA0gYQbp0A=
+	b=eFkJOLvxmkjayU8Fa4todwjatYhxmeEElu9kTYYiOBS0jeTZ0CUJ0DPH4QqEu76EJqDQiH
+	zMCzmz6qYRTWyiTRwH+btGs1/oDZ7xDPhYUV0Qy0/mtFDOXx8FAxB86abVXn3J1h8BEN5Q
+	R/S9lxXB5nZCAtvVewSxv6v6cwaY828=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XrsZvELC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B6pLAvqJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767108614;
+	s=arc-20220608; t=1767108628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n8Waek7m5OPDxNGPkUlVwnne3lwalLyO9Fw6TFHyHJg=;
-	b=PVeV/0NIOTgK098CRwi1vLTP2lJWpMGmY0TkOQPlmBhWPLLLmYyfyvSIDB7qvuPB04jxo8
-	vH3YVXfHiJLaJEDH2uQ4/HAIVVWh3b6pOtX/A7+lwgwflneUfQ6KWg7l1MgtTrfMbxHfwl
-	DdLjPxEmLKarzhs64LFwxKduOGz8Rr0=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a0b4320665so153649525ad.1
-        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 07:30:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767108613; x=1767713413; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=n8Waek7m5OPDxNGPkUlVwnne3lwalLyO9Fw6TFHyHJg=;
-        b=XrsZvELCj0CURmtt1NLFJDy97OdQxKmti7XLra1rBVenHek8rU7kAI3ozm263ZLlWc
-         LO0LuNgz7/QO521GEc4P7wHIPZ8HNjqJF9ZDGrd9YvWy+7ZUy0jKCUjVTibKLC+jHIvA
-         NdZLeYZQmCiC8g825W5vz9VV3VmqMaYqpn04giSnfCNFreVjTDm9FZXKazeJ19hRvQkc
-         wssk8HmvGrjJ8Slx4RFjJfi/xigz3bwLD1d+uazUQtQWp0Zbkr51xFP5HR9KIocb4HAW
-         /8gT7ZcNtl15CuM0OO67wE/O3qo8IPCZL+4HZ3GCxgb1h/4QIVhRstmY3ZV5CTVCxcLc
-         wruA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767108613; x=1767713413;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=n8Waek7m5OPDxNGPkUlVwnne3lwalLyO9Fw6TFHyHJg=;
-        b=i+Y0hUGsAT3B/xJWLbfKF64shPfyRhZ0A1UhPVWRQstsqHrywd0ULYv4tuPJJaRgrX
-         ymFc9fQF6Er2CA2dL2dFBrP7yKukMzfK32dzgoNP6ToqkpWw/2Ymg7OAEOv9aPO9YywE
-         Dns8RrY9XHULiSIISAeiIcTiwcvcLYudAxKnQ4imKDca0iI7zUofzrXB2ieEZsnQ/U6f
-         KVw+LA4o5u32l5+51KD41XoqPFTup8ZZaag+qP09vmyI0gjgeNGGFqnVoWq18kRBMnsy
-         rcQteunctFX9Iw+bHu2obf1XR9P4P2DrkSOMvRw6yVsfGs3dZntW2v6HWBHGnb8t9+V0
-         Lw9w==
-X-Forwarded-Encrypted: i=1; AJvYcCUI83+EQUXosMlMT42JX+4av0kBrOOUwcvPUIWYbBnYsUe9dAK8yDBLYROF/NJ7tUHpfL0wXEv3rg==@kvack.org
-X-Gm-Message-State: AOJu0Ywj/xH00E5gSNbdNlbGdCbDG10uXdY6RRg7AR6J3r80F4ZAVbnV
-	CKfSxQjxkzBXNkxARSzELepRmcvgICrhOZNIChnh+1arifFAGLB+Mqc1
-X-Gm-Gg: AY/fxX6yjQSgfCJP/l/2OATBmvkxHCnP3V2eYVQaDL15nMs3wPzLqLJ7dV31X8JQRrj
-	6JeAKQ5Dj9QC3i2OnOZI0g5+pZOloLU0S3qc+K5xGNhzOLdWlJ0biMUQj2ZOhq2WNzRmQtrFqRt
-	vfEnNc71MUSzBkI8Tl/kLNayZsDrRKXGFmPIceSiIKDpMNOqhjqQMX0hvjQbb5QNYUq4U9ssYZs
-	z7YvUH+Dpkd0ansl96mYWlfH4eadjsoyObFFB3LuIQXoO8cOCeu3B6bfho2fMhdIxkPZlsCI+Iw
-	73u/zMWImk2F0orw3xvN9LSEqixoV8lKLEljpaf0Mru0lGzVH0G6zf4aFqhxJ3SZyPaauiSn38l
-	+pY9yk4S8dEyvWGt1NOnOB1gcj2xsC27J6IFsOUvFQEcjA3NL/FIJtRE8E/7ppscNCxYvJMENcg
-	p38P+6G68sN4u6oAowOFktx2s=
-X-Google-Smtp-Source: AGHT+IF2yfGAQaMoIdAwWSh3x/5KCIntoGPDVnTc/GiZCDdlJGOBbZUTGrpwldsS37RDV3/o0Zok4A==
-X-Received: by 2002:a17:903:2a8b:b0:2a0:d403:a2e3 with SMTP id d9443c01a7336-2a2f2a3584cmr336697875ad.37.1767108613198;
-        Tue, 30 Dec 2025 07:30:13 -0800 (PST)
-Received: from localhost.localdomain ([121.232.80.251])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d76ce3sm307298585ad.90.2025.12.30.07.30.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Dec 2025 07:30:12 -0800 (PST)
-Date: Tue, 30 Dec 2025 23:30:06 +0800
-From: Vernon Yang <vernon2gm@gmail.com>
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com, lance.yang@linux.dev, 
-	richard.weiyang@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH v2 3/4] mm: khugepaged: set VM_NOHUGEPAGE flag when
- MADV_COLD/MADV_FREE
-Message-ID: <fbb6uaquaxfu2cfycsamfwvxw2h64bn5tbqbqe33jqikmxpdcg@oqgaejcsvyuj>
-References: <20251229055151.54887-1-yanglincheng@kylinos.cn>
- <20251229055151.54887-4-yanglincheng@kylinos.cn>
- <CAGsJ_4yLocY3c0oi022b=2Eq2CoxttQMn-XeWuSrjbKPmt5QPA@mail.gmail.com>
+	bh=y4vStQySbnFbRSc3fL5cUUesJh1Q9sJH3CZFhqbQfcI=;
+	b=dteTUtDNa5YizehyMX+vtIbhxkkXzn2xLEk0G74WiZsVM+7FwMp/ab4XafX++hpwlWQyAu
+	aDq1NMJUf7rs15ftp62IWmfeM91kPNwPuIlUek9ygQwmK+LETfH40wR6pgpINK9nOxskxR
+	vVHVdlW8T+Iys+6nSH+6yD4t7k2P5HQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 445C76000A;
+	Tue, 30 Dec 2025 15:30:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6F1C4CEFB;
+	Tue, 30 Dec 2025 15:30:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767108627;
+	bh=0dE68WcD60xA8yJuQhucOpbV5dnLhWL8/6hmbXn+bXY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B6pLAvqJoD2wkhHEwaUeuV+6xL06aIliQcnWlG9oU1oj25ZNAGaHe5rWYLCgXpLDW
+	 uGFVrQviJPfhgjNIKlrW/m13muQqTcV+GswjaxkP2P2ybi9YBQwTC9TUYuObN/4y/J
+	 +aQGP+OLr5YiU3UEh8mmXz8uNVzMS10agnfuvaGmJhOQ70q76bzpTdJx6cDyNvGGSk
+	 O/xPfislK8xkeC31BvDqZcpPr4mZguZ+RVmVrJSyLZfDCgEMSeKUE2tY/jNEn84sIq
+	 /Tw2aI4CLTzBxyERKIFIBg4ZgiozidmfdbRBgErhUdsJVVmdTPvdQFVgzYl4edpz98
+	 +wMvmhvQXjrDw==
+Date: Tue, 30 Dec 2025 17:30:21 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, pratyush@kernel.org
+Subject: Re: [PATCH v2] liveupdate: separate memfd support into
+ LIVEUPDATE_MEMFD
+Message-ID: <aVPwDdUpNTZ7gUT7@kernel.org>
+References: <20251230145321.1512630-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4yLocY3c0oi022b=2Eq2CoxttQMn-XeWuSrjbKPmt5QPA@mail.gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 992B4140017
-X-Stat-Signature: h87buejm7yk5k6yxw5gt6cizu17stex3
+In-Reply-To: <20251230145321.1512630-1-pasha.tatashin@soleen.com>
 X-Rspam-User: 
-X-HE-Tag: 1767108614-47528
-X-HE-Meta: U2FsdGVkX1+RKvJkc4Kuo3NkldAxX2q2ONTkvlqSuEITjjxdWv0FtoDpsvqOphv88zDHbP4F+cGjKjJ8BE0wm6lWPOGhSzj1Qorndfp8KKV/Tu3ap1q1eVdB0GRFRSovQphln5T0k+0P0Ypcb/48fL1uFCff3JnRKl9DwR59llYQb+uDb4OEAznmmv0nrs4z7uTNmVyAxX9l+t6Llqcnisg7BjmgZDasOLGoZftYqCTz+ASCtk5JZlIp5JvyindJUuQcvkgKTrNvOaa9sOAyGkECTs5xisGCF2lB+Ehzrhblc9Y4BBNXBhx/1puFE/QBfn8Raj6z8bRTkzXlNTAkOrIExn76Yw33woXx40cl+Rbalf/EbEAHUo3GUC1fOHvWOUub9XbPPoPpZJnHXrddTJZACy5WVVLH55EIiqAwHtcL3ABaCKpI9DqzmtlZsiHBusaByz4BY1KITpV+wJJYwTOMQFpWPjWg+rCeB9HLUIr0YzJVTQxe8Zl5LOg2fwJ98plWhevHazM1DBWe6fGcB+3rRTYyqHQV58rvWb89/MWaG6VtD8FpiJxCjRLM8XBijIntmU2N0gByiKxt3UlIPbBVo9llwWtuug4u3YQnrWdB4oN/60JjIEIy6yVH9cbuvpPDCIbwweB83rYAJo5IiP2Zg9AhW4BUyOojeA59iNDW7kdUzUvZIdnHU8MMp+SMntx+iyCConsRzpvK4uvuS/eZLSPZColD8EztQJcT6F4rjg149ykIFCrwHP5t4hvwigKbQoRgyae2qbWiQIylkpylpg43DGgGYTS/IICrEenIyvaqb1NHyNeFW2E4wj2BoVXUA5sMDMq9ZV/12MzD3smumLAcjoI9ynTmJaJh7j9rGpIpXgIQ+efImXwcL/zn9khQcUMQ5g8Hd7v3gnIhc7r9GB5z14xctPYjQSSKzsFxJPleNU38knasHROKqVJoNWkBMQKL2D3wA3gxd7u
- MGNhZSzM
- NsQY4SKIDOtJZDHKtnoIIMD4oMu4bB1ylY8A0txWZduwq4lAJesNXGkSjwz8ssy7SJW7DRXZ+tw4FnWxjk9/IL0aDjTi7HWS6By0tBK5s8pRCkXpo1Mgqy7xyo1L3+WZjWhgD0lTK5S9w7jNdaz3m+IhnyF0NfOhwQDFdn/PD7UIPIpN3kdAmGw4Y8de6739bs0WJMfKVz9+rSpG8IuhFHXogMowIwudmHbqIZgMwyEWIvOXj8GqgqEsUV4Cf5zBGDqK4ftHMK4os/XTEmiUJGGX7zuxxgPCI+Wey0DufWjRMxqzXTal+OjNWWJmTd3xYOUec6ybvQ9DRaJXDZHcOlSZKrXBxjLoNgVPO3ZUg6phwQ83InqGhDSHHzmrCcZ66LzsHVrr4cjWcuA0GAc4i16lOXExK/fexL4DHGlFdoO52GCMQHNTkehJpxQV1j8HPOKwIvMbu/BR+JklmybsDRlAdO1HdiLu/fZ4hJ1c7d8Ma1BuzFAOKknlcWZVBz8Q66Idg7cXwGxsqFl3sXkwHcSwJ2c8VPsNDS7U9gaJ3z+ThUa9XMkkInfLepi3xRCgDj2o04Oz85ugLkfOy4kqJ4O3Zgg1mdvBDYdbavM63HkdfmtMSkkCaXZ+lVMvJnl5dnbRm
+X-Rspamd-Queue-Id: 234F64000B
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 4yyp9ccs4ofj1ju5jtx7wyzb1a8ok9yd
+X-HE-Tag: 1767108627-824925
+X-HE-Meta: U2FsdGVkX1+gNueteHv078iZTFQYVVGTbZFXMhROAnpucly9dtp4gQ6w5j5HfKm3e2gM1gYwLj5Q5eMZVFVOLlbdbh+VHW/mvkWZ4ZEGax0oD1sOBWSv4CrFyk7mUvF16AAWJxhTIBnV+A0dKoTrRqM6SFsD4NNppkfm754/OljSYW2P/Hi7JWJeMLLvx+K7yVfr0m3VdFqu2xhJCRgrcQFvZ3ANWsu+JXZEmuPlrW+kQO7//EP/CqIuivFv+ZqsXumXOJ3Do6s97TQBlKBhOEuRqAmURNFcis9SUpzcrkjFxIcaFo2jpXj50TZOCHUnxbnVvHSbs9cPiv6oehINdXSGbMLnksV6MiRCWyv2DRT7xp/P7FwjHje1IL5/5xuY8dRqNUPRJ5ZH7Ax14iuNy9KKu7PcjrmmJe/3WMRmFKAGQsmOmXT5RfZvCtvuqdF7097bGQDFMoTmKnnH6nB6wAci8YjwG3D6q7ZMGUyeAxsBbKAcuFNFB/NkF+NWDeLVCBjVH60aYpslB6xVqR6U7mzBNwdw9me8+T1w8ZY/SjXQgUOUtKQrl3SgR5A7kybK1KVPoh+vS+4Ogqx7uy+Ck8a2ZG6nMYf5ejh8Fktl1eZ6pIZ0meTEFh28Q4+bcwRpBTjqZaxbYfGBbXr0TlZ+WGebLiP0kpjbsSF+qjS9w4KdaQr5lVW0kI1NxgBq/pgqIpdeo4NdvXc7KeYi2FwT2ZkhWQVAYh3FwGeQsED2ZjhUfDPWAjh1HOrj2phcOYdbcBf4OyKTDeZvqpoVp8q3VxbQpRMaf5F3ofBdOEw7ugzBsla808z4vAeoU+0kw9Ew6xnzTfZ9kwvrZMZlyH8v0dLPTv3vBU2zekxl6qfz2X70jYz51R4Yv8Cau86lafsszMESQOh9bRfO7h8VwZPV9YASEouW3iViwd0rdPlKkE5Cg2dHBoCSOT7C498EAOUN9i+yV78ODpj/wa0uUsO
+ +z61TY23
+ N6j2nS7RbZuA34MbooFKH0tx6rn5mLul5MxhLGb8lSCO37+AnRceF9EGDmUwdZt2AeUDfEKFjyuRqxqNhzK5ofUCxlB/LMmT3iUFq3DJTxqChnZN+1eWOF1KXS6oNnF7OXcfhXwon4DOudJCZMzwtN7nBqXkpV2QbKLosHqjvUpPawbb9xsrOjFNtxyM3XmKxfWr0yAyEy4RpP52W7z0LImJbX+/whz/T3tkdxETNRwXIJUMoYbtRXp6fOHvFIWE2xI032+FOihPBQVV5X3jvEIep5eHwohXjbWS43ipINXCuYk0feSKvBirFBEcxHb0ChCMuGGa3U2LoC6imYUAVqx7ppWVd4orrV/Z9bPNgYFGPbTCMTxLbrjTSrQMWws8KDMsn
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,118 +92,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 29, 2025 at 09:20:12PM +1300, Barry Song wrote:
-> On Mon, Dec 29, 2025 at 6:52 PM Vernon Yang <vernon2gm@gmail.com> wrote:
-> >
-> > For example, create three task: hot1 -> cold -> hot2. After all three
-> > task are created, each allocate memory 128MB. the hot1/hot2 task
-> > continuously access 128 MB memory, while the cold task only accesses
-> > its memory briefly andthen call madvise(MADV_COLD). However, khugepaged
-> > still prioritizes scanning the cold task and only scans the hot2 task
-> > after completing the scan of the cold task.
-> >
-> > So if the user has explicitly informed us via MADV_COLD/FREE that this
-> > memory is cold or will be freed, it is appropriate for khugepaged to
-> > skip it only, thereby avoiding unnecessary scan and collapse operations
-> > to reducing CPU wastage.
-> >
-> > Here are the performance test results:
-> > (Throughput bigger is better, other smaller is better)
-> >
-> > Testing on x86_64 machine:
-> >
-> > | task hot2           | without patch | with patch    |  delta  |
-> > |---------------------|---------------|---------------|---------|
-> > | total accesses time |  3.14 sec     |  2.93 sec     | -6.69%  |
-> > | cycles per access   |  4.96         |  2.21         | -55.44% |
-> > | Throughput          |  104.38 M/sec |  111.89 M/sec | +7.19%  |
-> > | dTLB-load-misses    |  284814532    |  69597236     | -75.56% |
-> >
-> > Testing on qemu-system-x86_64 -enable-kvm:
-> >
-> > | task hot2           | without patch | with patch    |  delta  |
-> > |---------------------|---------------|---------------|---------|
-> > | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
-> > | cycles per access   |  7.29         |  2.07         | -71.60% |
-> > | Throughput          |  97.67 M/sec  |  110.77 M/sec | +13.41% |
-> > | dTLB-load-misses    |  241600871    |  3216108      | -98.67% |
-> >
-> > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-> > ---
-> >  mm/madvise.c | 17 ++++++++++++-----
-> >  1 file changed, 12 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/mm/madvise.c b/mm/madvise.c
-> > index b617b1be0f53..3a48d725a3fc 100644
-> > --- a/mm/madvise.c
-> > +++ b/mm/madvise.c
-> > @@ -1360,11 +1360,8 @@ static int madvise_vma_behavior(struct madvise_behavior *madv_behavior)
-> >                 return madvise_remove(madv_behavior);
-> >         case MADV_WILLNEED:
-> >                 return madvise_willneed(madv_behavior);
-> > -       case MADV_COLD:
-> > -               return madvise_cold(madv_behavior);
-> >         case MADV_PAGEOUT:
-> >                 return madvise_pageout(madv_behavior);
-> > -       case MADV_FREE:
-> >         case MADV_DONTNEED:
-> >         case MADV_DONTNEED_LOCKED:
-> >                 return madvise_dontneed_free(madv_behavior);
-> > @@ -1378,6 +1375,18 @@ static int madvise_vma_behavior(struct madvise_behavior *madv_behavior)
-> >
-> >         /* The below behaviours update VMAs via madvise_update_vma(). */
-> >
-> > +       case MADV_COLD:
-> > +               error = madvise_cold(madv_behavior);
-> > +               if (error)
-> > +                       goto out;
-> > +               new_flags = (new_flags & ~VM_HUGEPAGE) | VM_NOHUGEPAGE;
-> > +               break;
-> > +       case MADV_FREE:
-> > +               error = madvise_dontneed_free(madv_behavior);
-> > +               if (error)
-> > +                       goto out;
-> > +               new_flags = (new_flags & ~VM_HUGEPAGE) | VM_NOHUGEPAGE;
-> > +               break;
->
-> I am not convinced this is the right patch for MADV_FREE. Userspace
-> heaps may call MADV_FREE on free(), which does not mean they no longer
-> want huge pages; it only indicates that the old contents are no longer
-> needed. New allocations may still occur in the same region.
->
-> The same concern applies to MADV_COLD. MADV_COLD may only indicate
-> that the VMA is cold at the moment and for the near future, but it
-> can become hot again. For example, MADV_COLD may be issued when an
-> app moves to the background, but the memory can become hot again
-> once the app returns to the foreground.
->
-> In short, MADV_FREE and MADV_COLD only indicate that the memory is cold
-> or may be freed for a period of time; they are not permanent states.
-> Changing the VMA flags implies that the VMA is permanently free or
-> cold, which is not true in either case.
->
-> Your patch also prevents potential per-VMA lock optimizations.
+On Tue, Dec 30, 2025 at 09:53:21AM -0500, Pasha Tatashin wrote:
+> Decouple memfd preservation support from the core Live Update
+> Orchestrator configuration.
+> 
+> Previously, enabling CONFIG_LIVEUPDATE forced a dependency on
+> CONFIG_SHMEM and unconditionally compiled memfd_luo.o. However, Live
+> Update may be used for purposes that do not require memfd-backed memory
+> preservation.
+> 
+> Introduce CONFIG_LIVEUPDATE_MEMFD to gate memfd_luo.o. This moves the
+> SHMEM and MEMFD_CREATE dependencies to the specific feature that needs
+> them, allowing the base LIVEUPDATE option to be selected independently
+> of shared memory support.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+> ---
+> Changes v2:
+> - Updated testing config
+> - Added review-by
+> 
+>  kernel/liveupdate/Kconfig                 | 16 +++++++++++++++-
+>  mm/Makefile                               |  2 +-
+>  tools/testing/selftests/liveupdate/config |  1 +
+>  3 files changed, 17 insertions(+), 2 deletions(-)
+> 
+> diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+> index d2aeaf13c3ac..9a1a8cdcf16c 100644
+> --- a/kernel/liveupdate/Kconfig
+> +++ b/kernel/liveupdate/Kconfig
+> @@ -54,7 +54,6 @@ config KEXEC_HANDOVER_ENABLE_DEFAULT
+>  config LIVEUPDATE
+>  	bool "Live Update Orchestrator"
+>  	depends on KEXEC_HANDOVER
+> -	depends on SHMEM
+>  	help
+>  	  Enable the Live Update Orchestrator. Live Update is a mechanism,
+>  	  typically based on kexec, that allows the kernel to be updated
+> @@ -73,4 +72,19 @@ config LIVEUPDATE
+>  
+>  	  If unsure, say N.
+>  
+> +config LIVEUPDATE_MEMFD
+> +	bool "Live update support for memfd"
+> +	depends on LIVEUPDATE
+> +	depends on MEMFD_CREATE
+> +	depends on SHMEM
 
-Thank you for review and explanation.
+Maybe also
 
-> However, if the intent is to treat folios hinted by MADV_FREE or
-> MADV_COLD as candidates not to be collapsed, I agree that this makes sense.
->
-> For MADV_FREE, could we simply skip the lazy-free folios instead?
+	default LIVEUPDATE 
 
-It is nice that skiping lazy-free folios simply, it has the same
-performance. Thanks for your suggestions, I will send it at the next
-version.
+> +	help
+> +	  Enable live update support for memfd regions. This allows preserving
+> +	  memfd-backed memory across kernel live updates.
+> +
+> +	  This can be used to back VM memory with memfds, allowing the guest
+> +	  memory to persist, or for other user workloads needing to preserve
+> +	  pages.
+> +
+> +	  If unsure, say N.
+> +
+>  endmenu
+> diff --git a/mm/Makefile b/mm/Makefile
+> index 9175f8cc6565..798f04233d71 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -100,7 +100,7 @@ obj-$(CONFIG_NUMA) += memory-tiers.o
+>  obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
+>  obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
+>  obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
+> -obj-$(CONFIG_LIVEUPDATE) += memfd_luo.o
+> +obj-$(CONFIG_LIVEUPDATE_MEMFD) += memfd_luo.o
+>  obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
+>  obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
+>  ifdef CONFIG_SWAP
+> diff --git a/tools/testing/selftests/liveupdate/config b/tools/testing/selftests/liveupdate/config
+> index 91d03f9a6a39..1bfc708041bd 100644
+> --- a/tools/testing/selftests/liveupdate/config
+> +++ b/tools/testing/selftests/liveupdate/config
+> @@ -5,6 +5,7 @@ CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
+>  CONFIG_KEXEC_HANDOVER_DEBUGFS=y
+>  CONFIG_KEXEC_HANDOVER_DEBUG=y
+>  CONFIG_LIVEUPDATE=y
+> +CONFIG_LIVEUPDATE_MEMFD=y
 
-> For MADV_COLD, I am not sure how we can determine which folios
-> have actually been madvised as cold.
+then this is not needed :)
 
-It is a tricky problem, I don't have a good solution for at the moment :(
+>  CONFIG_LIVEUPDATE_TEST=y
+>  CONFIG_MEMFD_CREATE=y
+>  CONFIG_TMPFS=y
+> -- 
+> 2.52.0.351.gbe84eed79e-goog
+> 
 
-Does anyone have any good ideas? please let me know, thanks!
-If not, it might be removed in the next version.
-
---
-Thanks,
-Vernon
+-- 
+Sincerely yours,
+Mike.
 
