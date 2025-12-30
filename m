@@ -4,90 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33414EE4999
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 19:50:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC802EE4999
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 19:50:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 842AC6B0088; Tue, 30 Dec 2025 14:50:22 -0500 (EST)
+	id 3EA576B0088; Tue, 30 Dec 2025 14:50:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EFF16B0089; Tue, 30 Dec 2025 14:50:22 -0500 (EST)
+	id 3947E6B0089; Tue, 30 Dec 2025 14:50:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FBB86B008A; Tue, 30 Dec 2025 14:50:22 -0500 (EST)
+	id 297446B008A; Tue, 30 Dec 2025 14:50:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D8A06B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 14:50:22 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1424114028F
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 19:50:22 +0000 (UTC)
-X-FDA: 84277179084.05.32E8006
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4D46E40007
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 19:50:20 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LctxVuP+;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767124220;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A33D6B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 14:50:49 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C064213A3E4
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 19:50:48 +0000 (UTC)
+X-FDA: 84277180176.06.F062778
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C01D980008
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 19:50:46 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=pQZps75D;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767124246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JgKiXrd3O1ADwnEAOpQmDjzAv2Fil3aPwM3FQ2NOb3o=;
-	b=6O+Dq667+ZZJp681nBirqzicbGF898DAgrMbjhWdDRyG6p4velDaLa8WslTyLX3VTVjbxV
-	Yz530dUnem9RJFY8lCQltzwFMOSXETCu4+4XhbP+uA+J/bvBv+aTde0+pqE8/noxDAP2/g
-	1bgQSgxioWopSnRUuvbLNqOt2lzUe98=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LctxVuP+;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767124220; a=rsa-sha256;
-	cv=none;
-	b=FukTsFGYyVuet96wrCydG5qfoidsdDne6BnSFJfaEsLPsHYLpnUEkVbn8TFk3R+Ghb7v4p
-	Fnr/+bf5ksR9QplfFquJQQ6O9e5LKGIWM9KrBqNiz72p6wBDjdP9YXXuyQyrvAVDeTg3Ff
-	P/6EYbRpBEwvfJl38avfky9v/hq03Wo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F1C1B41844;
-	Tue, 30 Dec 2025 19:50:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA735C4CEFB;
-	Tue, 30 Dec 2025 19:50:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767124218;
-	bh=6/uuccFi8B5P+mwhXwtQ7m967pcf1JVoQNog8D4H3Ic=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LctxVuP+edtIZ4IxW/HuJMuZen7QzAstVgsd1GcvRKEeq4EmDBZDMkksyZ+4chiX6
-	 5UeplLB87siQPH8XOdTmF2yBQ6+bwQBA/ndq3E3pR7ik/DdIss74eagMQPEBu+VhOA
-	 ioUNMoP8nP5LWd7xRoUsisaU/qbspUy6S2T5Tr29Vwnihnh26K0rCdcPjqn4kLPQEV
-	 B1Ki8UxgFP221L1GuGbGA3z4+lX9Tmf2PR5F10cwNgikq/ExoT5hk1thKS1hdVWoTV
-	 fpVam8nK4FFNAJhqBU+xjpQIrVc4FghvO9nqMDcq5ASyCSubXc/66hxedkHL6TbvG3
-	 RFsdQZs4h+G0Q==
-Message-ID: <cb69a1e7-e836-4115-8733-12d2de879f51@kernel.org>
-Date: Tue, 30 Dec 2025 20:50:13 +0100
+	bh=mU0dvOJy1s4p1s5ON6BETu9CliPlU/FD1RY1WBFa4II=;
+	b=IMpNTvfkaXIRcNblVJ9aH5CQaPsyXZkgOlVcudqWltfIAW/mAenv4oaW2Ns0HcrRrWGbDu
+	iQMek3o2+t78zaQN7G2WwjTPcrYrRbi8RXKV8ZERYR7OdiYulxgAEEyqgYlljqiJKODKtT
+	0kYvGLMPT8xzIF2qFDGKi6Ib9NG9bLM=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767124246; a=rsa-sha256;
+	cv=pass;
+	b=VVUjvK31eiVfhhoRlmYmw57z6TlvEEY44kVv1aolo51tr8xmc/GtyDuQDVrOgNBFRscIHm
+	U6DrS+CsHjtWyl6mdICDMxmgZ/hEmQgj2m2mZDzRzehl5njwyEyaGJttQB8V0goOYjfBxg
+	+l7u/RcQz2kx7BeAz9zbk+GMYyJpEI0=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=pQZps75D;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ee243b98caso32791cf.1
+        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 11:50:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767124246; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JV6kzya7LOgXGNTBZcD8Mu0YT8aH03zIBHM86sPvCqot0Bp4ElD47YaUlZo4LeU9lE
+         /pAElQNutp5DnBZC2F+ksp7RB/LpSRcdad5uDPmAXXnx6FSo/Fwf0C/PKynvL4VvaIc+
+         FJ1WdUR+hrn09wY+HmwCrgygp2flWhX3tt6/BMz2eYOeka8uiDKaIhyywB7zN3lcnSIA
+         aJH6iKYRNG/8+FnKm9xe61g6bJJ97nmskq0VrhF+hCud0HmNt3v05Xj2Z3yfq5SbPgws
+         XORWXUlZonbognkAU1jUyNaEs8vUTd2HsjK5oQVY5DGJXHm9FQEfxfbPDuKxmJF9M5u5
+         JpeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mU0dvOJy1s4p1s5ON6BETu9CliPlU/FD1RY1WBFa4II=;
+        fh=q4ntysiekT4V+Ej7s8ZPAQuFmjQEzswS23VCGZWDA28=;
+        b=ADwYsk0qswADxWdwx7RJ3qnvCrGCz547IQ6FSWdPUbmmqo7FbeLYPhgMAJ221YTbRR
+         /XKKgqVHlTkskoNJB8h/DWeuks9R7e+7PODzrxsfrlDlBCn7X+omAdz77J1C9PJ3W31l
+         i7s/BwEfCs8jaylFp3Wog1hnvmujx7C/WwdZLMB1XPbsAGl6omx53kLsesg3DWQXmSnY
+         a4ABOenBfmJS19VQ5/gIArBx3FaI+k0lDtX2vM+pO+k3XTFdBwZJnAx9DDAtWBfqTQRA
+         TMmjBqg4uNLAgrT34DV1LG7nl3ZugLUrsfQk9QPdFp3FcpaL1QszS9aobMInicbqEf33
+         50Og==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767124246; x=1767729046; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mU0dvOJy1s4p1s5ON6BETu9CliPlU/FD1RY1WBFa4II=;
+        b=pQZps75D1DSBSaLMC4cmxovzlW15z+IsTLZM6WCwG/7EG2WXFvqZAAQqbA8ex22+Jd
+         pN3f0JJrL1o5oEb779LmWCVSjHqkMo7LnlmeklmC9BUPSrP0OJL3YUrJcSXDIonKPjZk
+         TqA+eQqSh2C4d6zqeG1K8uC9JsCHh9DFIpEMTcB7rT6zDHuRSIHoaGFjqrAocNZW47TJ
+         s6kgpavZZuSukkDrjZttJHlDANCVUFuSPz6yQxFtXypvwpPErzl0Z0SQs+YaiF4V6uiA
+         AjiaUZkk7Y0THFQkmoCNKlg13EGTC3WhtQTvDRrjYT6vMkO9vEPDuJfBeCUo1vydBKiQ
+         7nvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767124246; x=1767729046;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mU0dvOJy1s4p1s5ON6BETu9CliPlU/FD1RY1WBFa4II=;
+        b=rNJjdB/ExrphvCXP2wJI0V/0YeHjWT0ZrtkUnAXJ9ZE91n0fvYw56fttr70noO4Juk
+         uNgpYfg59Au8HoGJLugYhGaDAC/rapIWnBq2HTGAEu83s4IjQxFv4gjUdfvy2a8MJdDs
+         MDlD/7B8OhNRCSudFOuDHjq6MXXu70pASDXiUARfL9gO0/ngZilnJ+tpSxesSZBlsIBw
+         wz4FkxlgisBgAzy+9/j2ENrf+qbv1t8bMi2HqkiVwEKFFp6+Tj+zpGNY/ikkLqnt1wU2
+         ByLNdBlcUyYAwTd1BpYUzYEH5ge73YxinV5ZtbAXlto3Cmo0zBVxWDY1SQRREELW5gvv
+         Dh2w==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ1iclys2M1kAmWH/RtMpSHDzZL/iTi444W1GNybBlb3YgLEumdlBHW3CnMv73tmZw5kzMXyvP4g==@kvack.org
+X-Gm-Message-State: AOJu0YyMZOgG/uW+fY4pPf5uJiFPhEy8CBn+EsBUXvE0UbnFls5HteUa
+	6etdTMKFbCyKTTQksHW1fJPUh1cGTbVxXXSbwQyc9ngFhA8bSVm73uH2ekajOJ3aTgeeW/r7Q5J
+	22zhsA5C1dgXFR2Cz0cTEjiAhCq5tHmtRVhwh25Wz
+X-Gm-Gg: AY/fxX5qbJOHgblylfeiWX4rpyFUZATOOrdezeRpRUUKNpj1ZPotI3ZC+0iWslLly8b
+	508I+F6lLgeL2WHBi/zHCzvlW893bYli2q26IuK2fNZ7wjI6Onhg3BFpoTZ/Y3dMk5vN7kqYkJJ
+	3bmoz4Wi2wVnh8gUVjFr4OqwSjqKASTQ8sy2IVSFIBYS9juHcujSt4zvPnwpfyd4qu8U7TkQiMb
+	wXUmcFW9M8PB7fP39pUtdRzZj8whYIVd389CNk+DhXi5dqOwVvDDfJTMNedFcbaKbwHzk8V3p/p
+	ZEtjF8FPHkJKY7aEA+dEQ1xYwIc4SjkdnM1y
+X-Google-Smtp-Source: AGHT+IHRYPgKvRztM6n8rO8cOVTiE720Du1IeDCA3YUPor5YUNjwNYwqgnCrnK7P6wP3jpC9vqTsaUZcGaOSi4gR0H4=
+X-Received: by 2002:ac8:7f8c:0:b0:4ed:18ef:4060 with SMTP id
+ d75a77b69052e-4fbb3ba1a00mr1518361cf.8.1767124245556; Tue, 30 Dec 2025
+ 11:50:45 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/swapops,rmap: remove should-never-be-compiled
- codes.
-To: Wale Zhang <wale.zhang.ftd@gmail.com>, akpm@linux-foundation.org,
- chrisl@kernel.org, ziy@nvidia.com
-Cc: lorenzo.stoakes@oracle.com, baohua@kernel.org, matthew.brost@intel.com,
- linux-mm@kvack.org
-References: <20251230130110.1366374-1-wale.zhang.ftd@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251230130110.1366374-1-wale.zhang.ftd@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4D46E40007
-X-Stat-Signature: ghiswnoarabygggshxzti6bwonfy8wb3
+References: <cover.1765970117.git.lorenzo.stoakes@oracle.com> <d3d98a5fe9ecd0b17acfc359d0c92b9e929cf34c.1765970117.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <d3d98a5fe9ecd0b17acfc359d0c92b9e929cf34c.1765970117.git.lorenzo.stoakes@oracle.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 30 Dec 2025 11:50:34 -0800
+X-Gm-Features: AQt7F2rHRS6rqWuHla8VYDGoV9dSY--r1_wddPvgtwAdA6fFSSn0VSUpfgOL4L4
+Message-ID: <CAJuCfpHuv44yisSaaiv6F4MnVYvOdRyjSfsXZkwvWYmKvZ3VhQ@mail.gmail.com>
+Subject: Re: [PATCH 6/8] mm/mmap_lock: add vma_is_attached() helper
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 8wm4dm78yifhruj9i8jyodskbb36qw4r
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C01D980008
 X-Rspam-User: 
-X-HE-Tag: 1767124220-252367
-X-HE-Meta: U2FsdGVkX1+ppfR9D1/Op3IcxjdvjQn+B2uEtOzjVF1EsoFDy/adqJcSsYSiBrjvjVF2u+Ml+X2sKi9Wy4gfgkRqyABRj2EjgR9ye0NRY1r+IbK/dRiuitTJSMss5OeUN2XY6SJ/rLXbB/AiDHBz0ECQwMHXZdJRWY2ov7NK7ThUe6d7BaXd+pGQSvaoRrChhlWg1R/VcSBqL0bUqWWYvPQIprRKJ9DhImPFQuBuHM+o9GUDsFfot+apx6xaDdTMFiM1bxnKpV0XPNbRFV372XGaAl+Tg231Ojhu7VbT4RO5OU7Ypplm+ErOJv2qUJEPe7QXbCAiKs8IiQRsSf47d1cRk3oQIA0FpRdb2dYYg0xRcocwXHS0SA3wJeaNdV9auahT4VoP3AUzi9DI83Uk6at7wGNAOL+xT9EjuQroeU3YyhT5CeRq3II6Tiq4vaca4owpo2Qs32GfPX+GGBrbPbYnHc63MdqsbaOQjh7TAVn/JXHcUB6G13oWyWcBPksX7I4pHQ6GaUrkh3x9YVjYmiFxxRqGz3j3Bf5DZLxc+UAuG3lcqIZ92jDL2fz82LwFRhhiSghbhLPU7U9FTFNvFKnZjKB97HwBwwoA1Y6UMJhBLYQBKMyIfvTmnUqTRznlniEtCbrxr+fXNpJsKs8/ZRr/HBVGmbmccXHCMwvPoB41RRBdEp8MgQd7FucYBDaqJmawlRDfqlohxxBBha7apMuvnzH7qWaiI4INI0u7BGD8k0b8KEj1rE6y0b8pvkLorFbuS4wkoK0d/nt7hsM/PrpTT6jCS+TjDclFP781+700K5sBZN6ruzQK8zcWcB+2B5P16ilaWOkaFro8VO8xAHw3RnxzQE7wNgQhkJAswec7/HyIepc4GVtnoMvOXawa4YFAhR1afvOA1BUOck493+WWVLSE44BXOLMbPsPbSNmQP15ejxkCL+6/AD08zLjAhv8ZCM2J97ApTclElaf
- qKTRGua6
- ina5D55ngKezztLIlfDPSuwluUg9BaeRcZ0o7L6sefRjzbJqM+jiGf58IRB28DzasyMaOneU6z2bk+cQlGYUmtj17+jknTd7Ebg5DfITZ0GMnMeDFYQyEoG1KEIvHg7KnI6zBN5hReZWSns80Tj7P3+hkiipyg+M1uipALt59XS2F2VPJZoMFtKcTM4BeFxmC6F+3JVTm3GSETqx+re6rjOjKi6H4LyGPWZTdrdaFP8ZNB/Z5HWzZCBkPtiHs9qJysjZbWkUMcqZEAVAJYPdjgUaxoewyFpzF64i/aVvcv15wKOHgUAxAC6DEqq2U/BoDV+dop0Uet8jz+vy5iHpjky12KBJ77+1YoAHv
+X-HE-Tag: 1767124246-128263
+X-HE-Meta: U2FsdGVkX1+oyjU0YBLVzYXraCNLWHXclzOwh9gD/Z9hB40DK+A1D/D1VS3o5aLXP8eYlbwUJTv4cSaQy5GM/emMuKCk2KomBAJJ9f9My/pdULjmWToJXwgzqka1T4s3iSrHyBxaOgak6OENHQn8TjVPQD2+hswmI8gt+F+iczIQ1S8xsq3f/ZAZpqsjZKOVyI8i7SWSpSgXt4mTWpytRYRx64lHiEs1agoArC4K9/phcsia+G5II4irRvfFdg98/Ne1lfvkCAcGTsKwswNGVUojclCX/aNOG7eYouOslMjyi0Dx4+Ybl4NOJ6a18sl2f3fVTFd51Vv+zNOvebV6FlbSoBBIzgEYbQwIAY/1wV4Emkfj2g8RScIeK0pqYEnvXus6ot9QAL3pkOEPPGAbU0f1rifPI5WKhQiqSWAHlzLhgbG3ScjWZMXlmxKoqV1NOuASiFK2bfFuRahjYcDDi1jgfvNWZep3tX70BaPOTk/qB0rRtTeJDZraMUZWf2/qJ2xb4n47wOKuxwC9ONpxRta81bwsTMgjY9Ud4FPgd/VDpAoP+QQ8U8ybrIwBmoeV/uisKchiQkvDB+WioWyOBn7yFE6IXRpBWYLW+015nBJxfpPaS1TzKDRt7blS1rG1p5dkZYYeMmCpZKEIPtvHprOwU0tN8nDLkjput5cIOduSnKV0t2y7fBv28khvenr9ZywtLu7vzpYQIXYr4s+R+noHP7eY+Pwc/dFgWCtoOS/n2UEetyQkiRscyJYx8boXYz5yTuxQyk8laJRNjttrN0FS+NuJTU6LNrtGYezh7F49uY/fJzWkxlLwyxEjM2NCcyZiTagaPGNJNp1W6BQbNDyuX2WFfWTJasePUSHFjL3een8j0g0G3RgDdWEVs1VKAL9nu86Qpi5f5MriFnccsH6gaRL9ir64D9RE4OzEIxWxu16Bdnsrz7j28f/l+/bsEkhM3Q1T/WTVHOwhcAr
+ juRHRqq2
+ 2jcjbdGWqu9TkmkNDk2yRyyds6nsYVZEEJ6LUy/VANc8CbWq8UXJf26WnNbJEW3Z43hQIIWIL3TuYzYdv+K6BpyYWeVf+CEbhOH0rE8/TkFxkQ6PWCLnqEpVhhUQDnm7bSW8KAXZhhC8GL7zygEBSLCzvmwNv/AMF7vKbDFTxFmtYi+NRf8Cr9wAYKRKwA7SwQfdgQGJQsXwY60grC8NqOkdRn0rB+74ixpFdqo9yY6qjTaOJVvOmXDXzoAJLEFd895hZ8bIs/yi5EUcGx1SSpIBygwOhflpbJDGe4GXOhNYkEaB3EZ/xfdze6zFqbMEO8LYg8vJCsS0t3+dY/6uRVfnSAsl+jc6nP/Cjeb3YbK1ZpUo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,27 +144,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Dec 17, 2025 at 4:27=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> This makes it easy to explicitly check for VMA detachment, which is usefu=
+l
+> for things like asserts.
+>
+> Note that we intentionally do not allow this function to be available
+> should CONFIG_PER_VMA_LOCK be set - this is because vma_assert_attached()
+> and vma_assert_detached() are no-ops if !CONFIG_PER_VMA_LOCK, so there is
+> no correct state for vma_is_attached() to be in if this configuration
+> option is not specified.
+>
+> Therefore users elsewhere must invoke this function only after checking f=
+or
+> CONFIG_PER_VMA_LOCK.
+>
+> We rework the assert functions to utilise this.
 
-> -			break;
-> +#ifdef CONFIG_NO_PAGE_MAPCOUNT
-> +		last = atomic_add_negative(-1, &folio->_entire_mapcount);
-> +		if (level == PGTABLE_LEVEL_PMD && last)
-> +			nr_pmdmapped = folio_large_nr_pages(folio);
-> +		nr = folio_dec_return_large_mapcount(folio, vma);
-> +		if (!nr) {
-> +			/* Now completely unmapped. */
-> +			nr = folio_large_nr_pages(folio);
-> +		} else {
-> +			partially_mapped = last &&
-> +				nr < folio_large_nr_pages(folio);
-> +			nr = 0;
+Thank you! This nicely documents vm_refcnt attached state. Another
+step in this direction is adding:
 
-The whole code was written to avoid ifdefs.
+static inline bool vma_is_read_locked(struct vm_area_struct *vma)
+{
+        return refcount_read(&vma->vm_refcnt) > 1;
+}
 
-Sorry, no.
+and changing vma_assert_locked() to use it.
+But I can do that in a separate patch, so LGTM.
 
--- 
-Cheers
+>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-David
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+
+> ---
+>  include/linux/mmap_lock.h | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> index d53f72dba7fe..b50416fbba20 100644
+> --- a/include/linux/mmap_lock.h
+> +++ b/include/linux/mmap_lock.h
+> @@ -251,6 +251,11 @@ static inline void vma_assert_locked(struct vm_area_=
+struct *vma)
+>                       !__is_vma_write_locked(vma, &mm_lock_seq), vma);
+>  }
+>
+> +static inline bool vma_is_attached(struct vm_area_struct *vma)
+> +{
+> +       return refcount_read(&vma->vm_refcnt);
+> +}
+> +
+>  /*
+>   * WARNING: to avoid racing with vma_mark_attached()/vma_mark_detached()=
+, these
+>   * assertions should be made either under mmap_write_lock or when the ob=
+ject
+> @@ -258,12 +263,12 @@ static inline void vma_assert_locked(struct vm_area=
+_struct *vma)
+>   */
+>  static inline void vma_assert_attached(struct vm_area_struct *vma)
+>  {
+> -       WARN_ON_ONCE(!refcount_read(&vma->vm_refcnt));
+> +       WARN_ON_ONCE(!vma_is_attached(vma));
+>  }
+>
+>  static inline void vma_assert_detached(struct vm_area_struct *vma)
+>  {
+> -       WARN_ON_ONCE(refcount_read(&vma->vm_refcnt));
+> +       WARN_ON_ONCE(vma_is_attached(vma));
+>  }
+>
+>  static inline void vma_mark_attached(struct vm_area_struct *vma)
+> --
+> 2.52.0
 
