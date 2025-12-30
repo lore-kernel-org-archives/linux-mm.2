@@ -4,87 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1396EE020B
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 15:30:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EFF2EE020B
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 15:31:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25E0E6B008C; Tue, 30 Dec 2025 10:30:30 -0500 (EST)
+	id E6E036B0089; Tue, 30 Dec 2025 10:31:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 235236B0092; Tue, 30 Dec 2025 10:30:30 -0500 (EST)
+	id E44C36B0093; Tue, 30 Dec 2025 10:31:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15ED56B0093; Tue, 30 Dec 2025 10:30:30 -0500 (EST)
+	id D1A466B0095; Tue, 30 Dec 2025 10:31:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 03DDD6B008C
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 10:30:30 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C4D6C1A0659
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:30:29 +0000 (UTC)
-X-FDA: 84276524178.07.642B0FF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 234F64000B
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:30:27 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B6pLAvqJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767108628; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C0FDD6B0089
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 10:31:45 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C23A139A93
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:31:45 +0000 (UTC)
+X-FDA: 84276527370.09.7671E5C
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	by imf20.hostedemail.com (Postfix) with ESMTP id F2DD01C001D
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:31:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmx.de header.s=s31663417 header.b=GOm5IQq7;
+	dmarc=pass (policy=quarantine) header.from=gmx.de;
+	spf=pass (imf20.hostedemail.com: domain of markus.stockhausen@gmx.de designates 212.227.17.20 as permitted sender) smtp.mailfrom=markus.stockhausen@gmx.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767108703; a=rsa-sha256;
 	cv=none;
-	b=eFkJOLvxmkjayU8Fa4todwjatYhxmeEElu9kTYYiOBS0jeTZ0CUJ0DPH4QqEu76EJqDQiH
-	zMCzmz6qYRTWyiTRwH+btGs1/oDZ7xDPhYUV0Qy0/mtFDOXx8FAxB86abVXn3J1h8BEN5Q
-	R/S9lxXB5nZCAtvVewSxv6v6cwaY828=
+	b=xJjyqA8s/Opg4ENw7fhYONjCMMpnHBUViERkkebK+Wf9utgGIcuvVkGnZn4uVGu0t6c2/0
+	tCZE7G/hFDpAI+hdUK6ONjiRLqdQkPORa3YVYb2hLmOskblVmsv453y8jr7t3AnXr1q27u
+	O40gGCAcCdyfr/tZrPzrVKWR8FPmDU8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B6pLAvqJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmx.de header.s=s31663417 header.b=GOm5IQq7;
+	dmarc=pass (policy=quarantine) header.from=gmx.de;
+	spf=pass (imf20.hostedemail.com: domain of markus.stockhausen@gmx.de designates 212.227.17.20 as permitted sender) smtp.mailfrom=markus.stockhausen@gmx.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767108628;
+	s=arc-20220608; t=1767108703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y4vStQySbnFbRSc3fL5cUUesJh1Q9sJH3CZFhqbQfcI=;
-	b=dteTUtDNa5YizehyMX+vtIbhxkkXzn2xLEk0G74WiZsVM+7FwMp/ab4XafX++hpwlWQyAu
-	aDq1NMJUf7rs15ftp62IWmfeM91kPNwPuIlUek9ygQwmK+LETfH40wR6pgpINK9nOxskxR
-	vVHVdlW8T+Iys+6nSH+6yD4t7k2P5HQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 445C76000A;
-	Tue, 30 Dec 2025 15:30:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6F1C4CEFB;
-	Tue, 30 Dec 2025 15:30:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767108627;
-	bh=0dE68WcD60xA8yJuQhucOpbV5dnLhWL8/6hmbXn+bXY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B6pLAvqJoD2wkhHEwaUeuV+6xL06aIliQcnWlG9oU1oj25ZNAGaHe5rWYLCgXpLDW
-	 uGFVrQviJPfhgjNIKlrW/m13muQqTcV+GswjaxkP2P2ybi9YBQwTC9TUYuObN/4y/J
-	 +aQGP+OLr5YiU3UEh8mmXz8uNVzMS10agnfuvaGmJhOQ70q76bzpTdJx6cDyNvGGSk
-	 O/xPfislK8xkeC31BvDqZcpPr4mZguZ+RVmVrJSyLZfDCgEMSeKUE2tY/jNEn84sIq
-	 /Tw2aI4CLTzBxyERKIFIBg4ZgiozidmfdbRBgErhUdsJVVmdTPvdQFVgzYl4edpz98
-	 +wMvmhvQXjrDw==
-Date: Tue, 30 Dec 2025 17:30:21 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, pratyush@kernel.org
-Subject: Re: [PATCH v2] liveupdate: separate memfd support into
- LIVEUPDATE_MEMFD
-Message-ID: <aVPwDdUpNTZ7gUT7@kernel.org>
-References: <20251230145321.1512630-1-pasha.tatashin@soleen.com>
+	bh=O/89BOIA7sIM7yjNnltto5wNvtoEALIrG/XCyyRaxZI=;
+	b=P9o9f2XLoKQQrVkxZ2mVx3zvG8+y9XCE+idxRHnuICSYZr/HXBn7vQDMyRdbnVe78VJ2BN
+	8TsfHYYoKKjccQR3Br2Q85wDTtjnzFHkEjDCq/yNqXhrj1uqFt0trSHEb8uka+wl7YrLbZ
+	7rs8wAt0yecWIRtKQU6dwMD35znz8zQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1767108676; x=1767713476;
+	i=markus.stockhausen@gmx.de;
+	bh=O/89BOIA7sIM7yjNnltto5wNvtoEALIrG/XCyyRaxZI=;
+	h=X-UI-Sender-Class:From:To:Cc:References:In-Reply-To:Subject:Date:
+	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=GOm5IQq7PXpv7FJwoQ8ZBIMDigAlgYNje+xQ/pAT70yZJVOnGMsUOFiJ7/baTF2A
+	 YDGh1jkKU2xuyhJNv5hvQqIcDToRUGY6gXabVHDa0dAriHrTi41559sfxL/Z72dQ+
+	 PsvMOPTOX7ShHCLQT91kFqjOkkNxdlk419X6MpmFuGUFGKNfTsxys1hnNw/4I464C
+	 b51jJSCEsGmu7gNqZoX+48qiGZZ+zWWlbO0u8w2JfLT+gcOmkNxttVSXN4qk5dJ/m
+	 o/TKXG+Yu20n3UfdZYWUoWA3U2EltedTS10BGXpzPQfScsn04Nfdl5EoeSW0KTAnW
+	 oxnp/DCbwAQQixlu2A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from colnote55 ([94.31.93.28]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M7sHy-1vVdsf40Pa-001Ven; Tue, 30
+ Dec 2025 16:31:16 +0100
+From: <markus.stockhausen@gmx.de>
+To: "'Mike Rapoport'" <rppt@kernel.org>
+Cc: <tglx@linutronix.de>,
+	<linux-mm@kvack.org>,
+	<linux-mips@vger.kernel.org>,
+	<jelonek.jonas@gmail.com>,
+	"'Chris Packham'" <Chris.Packham@alliedtelesis.co.nz>,
+	<hauke@hauke-m.de>
+References: <007d01dc78f2$1ca4bf90$55ee3eb0$@gmx.de> <aVLX9yLmIBPzI0MQ@kernel.org> 
+In-Reply-To: 
+Subject: AW: HIGHMEM freeing patch breaks Realtek RTL930x builds
+Date: Tue, 30 Dec 2025 16:31:08 +0100
+Message-ID: <005101dc79a1$562a4aa0$027edfe0$@gmx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251230145321.1512630-1-pasha.tatashin@soleen.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQFaCkT/QJ6/mAqkcN3Pcnid9AcWCwK/dj1KAq3vqrq2E8GN8A==
+Content-Language: de
+X-Provags-ID: V03:K1:hk7HES/IDHwzVpxE2GUcbmUrEMMTVf4tUWwB9YeHVhX5I1j/UOh
+ mSIZLVpsYOt72yJZxHQhNW+Fim5TFtCb5v9VPy7/Wnz7sPCd3XDgDFGvFTDUYIkPNQej73Q
+ 877wTcLa5Ke52OycXDjcuWy/QzTCzOmnxr3coolhwiww/5Z+0yVi1zE0/vS2GvoDwchi0eA
+ Iw0BvqHWHYHErBxgDsvnA==
+UI-OutboundReport: notjunk:1;M01:P0:MS2RU0lruz8=;SKQQgNUikQZ95Tc0HfzMfWcN5rN
+ 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
+ cWkas2p+MuGyxqbcdqF4Nef336A3LsHezmltdp
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: F2DD01C001D
+X-Stat-Signature: 1g7j6kosxu1gbbwgyxru5kks1obmdb1d
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 234F64000B
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 4yyp9ccs4ofj1ju5jtx7wyzb1a8ok9yd
-X-HE-Tag: 1767108627-824925
-X-HE-Meta: U2FsdGVkX1+gNueteHv078iZTFQYVVGTbZFXMhROAnpucly9dtp4gQ6w5j5HfKm3e2gM1gYwLj5Q5eMZVFVOLlbdbh+VHW/mvkWZ4ZEGax0oD1sOBWSv4CrFyk7mUvF16AAWJxhTIBnV+A0dKoTrRqM6SFsD4NNppkfm754/OljSYW2P/Hi7JWJeMLLvx+K7yVfr0m3VdFqu2xhJCRgrcQFvZ3ANWsu+JXZEmuPlrW+kQO7//EP/CqIuivFv+ZqsXumXOJ3Do6s97TQBlKBhOEuRqAmURNFcis9SUpzcrkjFxIcaFo2jpXj50TZOCHUnxbnVvHSbs9cPiv6oehINdXSGbMLnksV6MiRCWyv2DRT7xp/P7FwjHje1IL5/5xuY8dRqNUPRJ5ZH7Ax14iuNy9KKu7PcjrmmJe/3WMRmFKAGQsmOmXT5RfZvCtvuqdF7097bGQDFMoTmKnnH6nB6wAci8YjwG3D6q7ZMGUyeAxsBbKAcuFNFB/NkF+NWDeLVCBjVH60aYpslB6xVqR6U7mzBNwdw9me8+T1w8ZY/SjXQgUOUtKQrl3SgR5A7kybK1KVPoh+vS+4Ogqx7uy+Ck8a2ZG6nMYf5ejh8Fktl1eZ6pIZ0meTEFh28Q4+bcwRpBTjqZaxbYfGBbXr0TlZ+WGebLiP0kpjbsSF+qjS9w4KdaQr5lVW0kI1NxgBq/pgqIpdeo4NdvXc7KeYi2FwT2ZkhWQVAYh3FwGeQsED2ZjhUfDPWAjh1HOrj2phcOYdbcBf4OyKTDeZvqpoVp8q3VxbQpRMaf5F3ofBdOEw7ugzBsla808z4vAeoU+0kw9Ew6xnzTfZ9kwvrZMZlyH8v0dLPTv3vBU2zekxl6qfz2X70jYz51R4Yv8Cau86lafsszMESQOh9bRfO7h8VwZPV9YASEouW3iViwd0rdPlKkE5Cg2dHBoCSOT7C498EAOUN9i+yV78ODpj/wa0uUsO
- +z61TY23
- N6j2nS7RbZuA34MbooFKH0tx6rn5mLul5MxhLGb8lSCO37+AnRceF9EGDmUwdZt2AeUDfEKFjyuRqxqNhzK5ofUCxlB/LMmT3iUFq3DJTxqChnZN+1eWOF1KXS6oNnF7OXcfhXwon4DOudJCZMzwtN7nBqXkpV2QbKLosHqjvUpPawbb9xsrOjFNtxyM3XmKxfWr0yAyEy4RpP52W7z0LImJbX+/whz/T3tkdxETNRwXIJUMoYbtRXp6fOHvFIWE2xI032+FOihPBQVV5X3jvEIep5eHwohXjbWS43ipINXCuYk0feSKvBirFBEcxHb0ChCMuGGa3U2LoC6imYUAVqx7ppWVd4orrV/Z9bPNgYFGPbTCMTxLbrjTSrQMWws8KDMsn
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1767108702-804913
+X-HE-Meta: U2FsdGVkX19uyJDtFCXZ6JNnw4ZM26fF2NmblDeuqNSct3i80T9IAp54duHGcKgZm3vN9DxvGL9L8R/FGCySsPbU63lLD3w7GFsW3il6BHkBPlETLfSPLOjEjAgUibdcR3t8d2ZOqMGSMOqgWj2BptX0NWxUodhj3cUrAkuJejyYpZiEv/N2KtFfejuWX6qo5M4FSU+RtmNPT5SNeZg7J0duzFSWboebN2stoexZaGFBfHYqv1XGol4K/0xEbjxxTMVKsceAkmka9IxJtnn3GNvtNCn9ND05MIRMIPFkJYXjNoBIJjBYHSJHVMsp0h3pdnjoyTbeueF+0V+hFXzKod93Ca54Z90FYjB4i0AcEMb7iID+lKMOXZBCkLq59uHXb/4iG4ZBS6nxvOHhmY8rlU/jgg9ZXUdl1TPWFcLSNxoqKAOmtxYKM9QNDJ53fx6ISgn1+WM/jMZz3SkgdcGzbA8z8D4Wl6usX/PIO/c4c7iW86uNcjzB4XUYuYI700RSoB4Jum7i3+zYB6RCrLUoAoHEvq+kjobY1Bs0h+Lvx/noM9eNNAWDvDLGaXgJ/1zCg9K52Uaib3L86YEvh16fSiTCa+3hA0hHwa0VNx6I7ueZUCgWk8+3P4yFKDDLYsWCF4v6QauFUzOs+qzO3VFabDD8mav9Hq8WCTv5YWV96ZOXym7Q1Nqn90jtc/QW6EtI2AncvhHoKMHGzHSp55N07QYKMYiqWyrNKcy7s5snZRd0iL3xldBJ8O8RmWaVOmDmomKiwAB60WR4v4SYQfrbRNF6pZEwje6Z+LiuHs0Kbj995q0z5uZDzxCuwaE9PewqIYh06ZXHSwCm0NKB2WzKMRYfGvxifehRxqzukyxB4/JSgpD65Vmr1haMoR6gymjZTTCKcW1tlL5u3iF1DJf2PYvH53Qomj3yz4TCQaNdAYo8K79Kk0Qxwt8wOmoS4cnsjyc0yuVAYwg/GFcRfl7
+ DB7C47xu
+ /uG63h5UiHofVTV5Lfp3KZ4A2+7poL5wDO6TwfdEQiNp0jPtjdncvczg2B/EHQfaIg38vbPt5zVFHqsqkcW86oUVVZGeq/bpbbMV4MJIPSNbJnpOmMpfq17xdbmcpf2lBYqvQ6eWWYVM5PSRRjgh9rDFs04ri/mJ7P8reuSFTwkVOSiZqD3CdGHFF1NpEfja6hTmTea7xS+0L5WQtdKL7FzzyP/nLZKWKdedNUy/UXHXOeRF00CoW5KkZyflbI60R/MiELaT7Nk1ISzPIOaU4Z4IMDakRwLq4siOT6vuSZGY6ZDU7l7xxi6CZPiXJV0LZFg4Wnf+ANa5VsFGiQeFyRDfIikHidB5ARmRxMaR9PmpSL2110eo8AV/LTyk/oJX05uh4zArLKgl6Mi/F7o5iNYqLZwCLr1/GlqJPEXRNAdiBbsJ7FOz228HlMw==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000134, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,102 +180,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 30, 2025 at 09:53:21AM -0500, Pasha Tatashin wrote:
-> Decouple memfd preservation support from the core Live Update
-> Orchestrator configuration.
-> 
-> Previously, enabling CONFIG_LIVEUPDATE forced a dependency on
-> CONFIG_SHMEM and unconditionally compiled memfd_luo.o. However, Live
-> Update may be used for purposes that do not require memfd-backed memory
-> preservation.
-> 
-> Introduce CONFIG_LIVEUPDATE_MEMFD to gate memfd_luo.o. This moves the
-> SHMEM and MEMFD_CREATE dependencies to the specific feature that needs
-> them, allowing the base LIVEUPDATE option to be selected independently
-> of shared memory support.
-> 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-> ---
-> Changes v2:
-> - Updated testing config
-> - Added review-by
-> 
->  kernel/liveupdate/Kconfig                 | 16 +++++++++++++++-
->  mm/Makefile                               |  2 +-
->  tools/testing/selftests/liveupdate/config |  1 +
->  3 files changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-> index d2aeaf13c3ac..9a1a8cdcf16c 100644
-> --- a/kernel/liveupdate/Kconfig
-> +++ b/kernel/liveupdate/Kconfig
-> @@ -54,7 +54,6 @@ config KEXEC_HANDOVER_ENABLE_DEFAULT
->  config LIVEUPDATE
->  	bool "Live Update Orchestrator"
->  	depends on KEXEC_HANDOVER
-> -	depends on SHMEM
->  	help
->  	  Enable the Live Update Orchestrator. Live Update is a mechanism,
->  	  typically based on kexec, that allows the kernel to be updated
-> @@ -73,4 +72,19 @@ config LIVEUPDATE
->  
->  	  If unsure, say N.
->  
-> +config LIVEUPDATE_MEMFD
-> +	bool "Live update support for memfd"
-> +	depends on LIVEUPDATE
-> +	depends on MEMFD_CREATE
-> +	depends on SHMEM
+Hi Mike,
 
-Maybe also
+> Additionally I identified some spooky highmem=20
+> initialization in vendors SDK prom.c. We never
+> used that before. I added bootlog+code snippet=20
+> to the github issue [1].
 
-	default LIVEUPDATE 
+After checking and testing the vendor prom coding
+I finally found a solution to the highmem issue. A
+special mapping register needs to be setup prior to
+memory initialization. Fixed with [1].
 
-> +	help
-> +	  Enable live update support for memfd regions. This allows preserving
-> +	  memfd-backed memory across kernel live updates.
-> +
-> +	  This can be used to back VM memory with memfds, allowing the guest
-> +	  memory to persist, or for other user workloads needing to preserve
-> +	  pages.
-> +
-> +	  If unsure, say N.
-> +
->  endmenu
-> diff --git a/mm/Makefile b/mm/Makefile
-> index 9175f8cc6565..798f04233d71 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -100,7 +100,7 @@ obj-$(CONFIG_NUMA) += memory-tiers.o
->  obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
->  obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
->  obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
-> -obj-$(CONFIG_LIVEUPDATE) += memfd_luo.o
-> +obj-$(CONFIG_LIVEUPDATE_MEMFD) += memfd_luo.o
->  obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
->  obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
->  ifdef CONFIG_SWAP
-> diff --git a/tools/testing/selftests/liveupdate/config b/tools/testing/selftests/liveupdate/config
-> index 91d03f9a6a39..1bfc708041bd 100644
-> --- a/tools/testing/selftests/liveupdate/config
-> +++ b/tools/testing/selftests/liveupdate/config
-> @@ -5,6 +5,7 @@ CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
->  CONFIG_KEXEC_HANDOVER_DEBUGFS=y
->  CONFIG_KEXEC_HANDOVER_DEBUG=y
->  CONFIG_LIVEUPDATE=y
-> +CONFIG_LIVEUPDATE_MEMFD=y
+Thanks for helping out here.
 
-then this is not needed :)
+Markus
 
->  CONFIG_LIVEUPDATE_TEST=y
->  CONFIG_MEMFD_CREATE=y
->  CONFIG_TMPFS=y
-> -- 
-> 2.52.0.351.gbe84eed79e-goog
-> 
+[1]
+https://github.com/openwrt/openwrt/pull/21327/commits/02117c1e971b86244178=
+43
+7400ab8b2f6a81d2e8
 
--- 
-Sincerely yours,
-Mike.
+
 
