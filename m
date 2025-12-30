@@ -4,96 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11986EE49B4
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 20:34:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA872EE49B4
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Dec 2025 20:45:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71B136B0089; Tue, 30 Dec 2025 15:34:05 -0500 (EST)
+	id 008B06B0088; Tue, 30 Dec 2025 15:45:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C6526B008A; Tue, 30 Dec 2025 15:34:05 -0500 (EST)
+	id EF9726B0089; Tue, 30 Dec 2025 15:45:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FF616B008C; Tue, 30 Dec 2025 15:34:05 -0500 (EST)
+	id E046B6B008A; Tue, 30 Dec 2025 15:45:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 505ED6B0089
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:34:05 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A3821A02D6
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 20:34:05 +0000 (UTC)
-X-FDA: 84277289250.02.DA01138
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6C069A0012
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 20:34:03 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PrAmyVvE;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CE0E06B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 15:45:51 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 643A2B8622
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 20:45:51 +0000 (UTC)
+X-FDA: 84277318902.25.D12CFF7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 90B00C0007
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 20:45:49 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N4RsNigq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767126843; a=rsa-sha256;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767127549; a=rsa-sha256;
 	cv=none;
-	b=MJ3ffsjfwKmPYIr25PjL1F6kuwUzR1REsi2WxgD/OWziUcJeVJxc8VoSUXjMv+JmULBPm+
-	ghYfqWfoaVo/FnhyKNl6G/WcEQqXiE+FGimJG2XPF7TdRLknqbOC5abHzqQLDI8gCKPFnr
-	MkKgVN4Yr+S20d20+jgBA9wNwKAVL1o=
+	b=F0bqt2sZNnNH1iF1iTkmSWx+XXZt4+nX/EvkQ0uV3pcuoAL14+ky8u5j27Ec6euDh/xztR
+	k/aWoMwYI50g5y/PaMt+Qp+hKeW22H57JBLBCcFgD6WimvgY3K5tPXcLmLRRmH68uEsQVa
+	jzNUIxAAuipE24SQu4lGYNY3lzf7LHQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PrAmyVvE;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N4RsNigq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767126843;
+	s=arc-20220608; t=1767127549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vd5GVVA+b01dqeU3K3JWb3U+hMT3fCcsxq5twwrCu0E=;
-	b=4drt3EUX/L4uG4iyBNJNBhl7BDAVvQmBDMnbTx7rogVha4LYjBRTJk+DnkGy99YB3WaldF
-	pa54X6IQHBvcKaeERgK09T3eUtBPLzKIt6scjxtk9tMkeWiV1AByUl+RxbExkyBPbyOtkz
-	ZzZ12+bVLtsECIZXWcu23+VRbLBOva4=
+	bh=klxCa0pdzPEQYO9Sq/Y3W7OnpSSPcEK30qEOnatjHMQ=;
+	b=eBnc8wKAzpIjEiMylKiDP84emtkNNHwMAzlre2hnFEJ5HWezttqbXDCpRyZUZm3jrlNnGO
+	L/97P/8rJnpI4fn5ulZpapaxNYlCZ4JZUTXwIDm5FEDFVSAxTvs50WNXldCCbxw1cL+/kn
+	fn8fX+0amFJodKRXiBUveajoLKLN1zQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9E2DA60017;
-	Tue, 30 Dec 2025 20:34:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E9BC4CEFB;
-	Tue, 30 Dec 2025 20:33:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A274540818;
+	Tue, 30 Dec 2025 20:45:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACD4C4CEFB;
+	Tue, 30 Dec 2025 20:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767126842;
-	bh=4IHtShbZ7SkTOAYLBZj9TSKXtSMlwo4nI5tswNsLZWI=;
+	s=k20201202; t=1767127548;
+	bh=UZsxGvZ+4JAWjJhxgm5CHH5Xv2jjLHsLwK/ptj39AjQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PrAmyVvEnpZ4yRI0wUa+185Y7q0FM/Tw3glVvKO5aACCa44jDc+P3QXzXw4+OfTfo
-	 gOr9uPnI9cTfK7MH1w1F81H84Ygc0l7FXK2cLSASh6Q2r8VSoz07W59zj3BUPoCN2D
-	 BPalls68LBODQR68nQJuK+fPOz9D9ZAuJKLlPwctvqVEefMmhTueXozTyHCpOMRbQz
-	 NqXfiidlc2SnQsUfOKDlVwSYUVdhxWXlrSkUjpKnT/GMUcIPbYL/lbgpXZ6188Gs8G
-	 nMoCTTrrsk7d+STX9wdSJ7qliax3KSJGjlULX2X/L8zszSXrBY+P4cg+HUh1eMVQzC
-	 k4LOD1usLY82A==
-Message-ID: <f4d5548d-6045-47a3-b233-0a67702bb477@kernel.org>
-Date: Tue, 30 Dec 2025 21:33:52 +0100
+	b=N4RsNigqIpyrHvH2Go7d/fXUTzZzeV6odSQlpMtwHY0z5xEoc8wvjYjBKz7IrskKr
+	 NC1XBEHHyv2g/IKEJqxf6kzLy3bfpCchtfaVO4VPWuPYuSr1Cse36m5n6Q8q6O5uW6
+	 mt/0jOWFt3El80n51SmcP9r9/4ccMKkHjUXmZVIsUsLIGlWL1cWWk186Rdg+K0VebG
+	 Z9fypQ+PBbTxDwWj2OusHsilY31ecdTz3ihJkKyvJ0NdBUvrAnqp48/tRk67GzCO7U
+	 BN4q8DHAh05IztgwMOl2xLvLzmZ/xsxvRyq3eAeG90iQ2nsBNQdGwqQO59bKluPuzm
+	 xgT7OueLoY5Mw==
+Message-ID: <530cf16c-ce1b-4ec7-b76e-23b184965501@kernel.org>
+Date: Tue, 30 Dec 2025 21:45:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] mm: embed TLB flush IPI check in
- tlb_remove_table_sync_one()
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
-Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, arnd@arndb.de,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251229145245.85452-1-lance.yang@linux.dev>
- <20251229145245.85452-4-lance.yang@linux.dev>
+Subject: Re: [PATCH] mm/page_owner: fix prematurely released rcu_read_lock()
+To: ranxiaokai627@163.com
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com,
+ linux-mm@kvack.org, luizcap@redhat.com, mhocko@suse.com,
+ ran.xiaokai@zte.com.cn, surenb@google.com, vbabka@suse.cz, ziy@nvidia.com
+References: <c6b766bf-0f05-47c3-bcc6-2f0e1961a864@kernel.org>
+ <20251225081753.142479-1-ranxiaokai627@163.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251229145245.85452-4-lance.yang@linux.dev>
+In-Reply-To: <20251225081753.142479-1-ranxiaokai627@163.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 90B00C0007
+X-Stat-Signature: j9muoq1juhgks3fw3gur6yg6ycikcpbu
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6C069A0012
-X-Stat-Signature: ugsd1ru3erczt6hdfk3kyaa39p8316jo
-X-HE-Tag: 1767126843-999716
-X-HE-Meta: U2FsdGVkX1+GZK7XzCwx2Qk3M/fHWB6ugvqP1M7E6WQndEu5QhiZKb6CF9ETWd9AvRer5k9BXRkuRWaMWgqTJDS+siXsqMcJCC9cQ8wItPlB3p+AtvHaidTO5E+q1KvqIXTBqtwPHhNBuukRHoDKCLaqAzJNlQNKZN4xtrj3vNOjRyT3XLAFfa3r+wJFeXV3xmZzpoJZtviIPOfXlaVO2qpoJXvQPMcq5EV5vG9eND8lcvYi6sdE5BwpUC4eR9HJA0OaP6EGbxxWnPlfnveDXAlfYhLiz00XRz3xqAvwawlUeW27ua7AF65pDnLrINKqfWbBA1ldZJGWRcWrnASNhZmed4x06mjf82U429DsArWZuTui05EQ8dP6qhAIc7UKxH6/HoaKmJFnSn9Bxpk5+aUMZq04OULirpYHstnxjed9qkcolc4zqLqSGV8rrirdQLljG8rlUsR/CQUalKsK/KJgO5zIRNyvdKEusurHLhpVJtpWKFRZhCJp7uA6aD5t8tJaqszz8FdU0L5gUmx66EdMyAEDxS8HcJnsQyzp2CDE5N00iCjZOefd8nRvrNJWpAt5HsIiDd9t11bh+qIqgjyiDi2xZYKF5fGwa2v9qtsu0rxtTharm7Uf/fXCA7ZAouJ+1hICzo8h73//h339aERLX00/0MJFQIBW8ZxW3dntwIRe5FVvuZ4RptNM+6t5SyAHjPNAvfU4N2fO5dOfB3t5VuaAzmNpUokYOBhSnYuGhKhMinD+ptfy2sSEK1zpdOiAGkIcwV3F3DRnY6E1QFAN40+d3G7MN6lU1u72bGv+HMKJxc/ae+kvD2542FBAFQ3rxqVfuQ7y6c+bIzkagxkJ++kpbxVWAfzZfxGliIC4i6ms8I+UmQnbBhHlcNurfJrVKcxk669SO03Dvdyq8WOTuwQxbEIu4Ft/eYh+8rKpJ5Gx6e5tzSHxD+b9dNS1zu3rnxpIgxhw8OH19cQ
- EKHblqwm
- k/6LOgHhDHMSrFhNvznTaGE+nVtlZBLerGipnTiqH4F0dEhHhR9LQJoRvkovryn/zSMEuxa61J+DKDEuGgoYuRn1H7PjPOVJ6+vW6u7hqw37Fa+OnYCdgH1tVdwPewEQhYBtdAq8EYRIuemx0WzzbsPl9cXJBsGY/NsB4YX5BparfdBG+g5ebIXv76m/E32ng+rADKu3OWDQGEZt+YrHm6y1okrgdt6m4UAxR227mlUQx/DW05B0q7rYgiPYru0Xgv1/EFEisquUmDJ8z1vXj1fJ+s0Z6PAE8AvLB
+X-HE-Tag: 1767127549-239249
+X-HE-Meta: U2FsdGVkX18wpZuS7xCRsSHBjvOQAKrr+KFTpqqKhldaG9200HnJcWwKQSS0Bf4MtKztfs7vAlI7do9yo6C7QHebca9poobQQij3FkauaNv1sbqObOM8gYmJomupTYz7n9L7MtGE7H4sl7DG2Uf5BFPCY7Hq+Zw7YD3nlZEHnxpF63NQaEXP4u3mqIgaK29RVVU/+6H71fwLDLYiXZWKQP8VVsuDQeL013p7kZn74NRy2ezQNyjyggXevAFnMOGGGXtwae/v50E2X07bt0HjbWKWbeOHWwL19lYQkSkLfuVO0veuIlZAyIaboya0kOV7YOQUXQtLvpKhr4nH5g97Qz3Mo2eSe/ytAbDpo7msCfFZRYL/PwpJ2jbwCChTdDUuVjNutNrOO6SOnZmCn14r47NCHJ/mA7nosoVatP5CTYGqb22vMDVIBCmPRN03gUgSvo2jDuDA2JZGWpdSV7+kEum/Ct1BxWt8hdAvgGf5MWt9cgpd7/+acHk3S2ithFCK8ncgmevB+S7VQ1K36cLmy0XVjdZMbdzaP6CKnJWWUU1awMrObvwWQPD98MUTz4bvPWeKUqq1sKiuBLjgEozhINyTbsupaGjnV2Ey1Hvx7lW3lAySbyoCUMuDMDZ/4CTXcibh+XmL2HxaXfUgafT+mWxdkk4IZUpG26q5RNbwLwl1YMduub9THOzJHp2ZAu1LrhjZ7YpD+DguxAGdr4w4h41N3n1JaTVGqlrpStpzqXd7+N+9SB9oLHJyMyEc5feuVgRwLlmICGMGuQdErVDAhC3YL/jHPfn3bw037ls5PSl62mem50UlgUxyFHlC8uOm8nIYNFD9DP1EvNz3JOiYbRaHTwYmiQAalrvwwbehqR+leTfg07XGOticYae4eYZ5Hljd7skHvtPHhdvLExoyLdewc/6RvOs0zaLsq9GyQmsXiewck83S9CiDvRoKX6uAlGsymlhOMAJFbbbcvT6
+ 96SpiKgZ
+ yuS1lDAIHCBdOcW+ajS3av+6xAKNlq63pghAVBWYqEx0bbr1hoFC14kChMvZM+XR64SX32Vz2z1Cb2ibxG+5TxdvO4d3AIl7FIXNkXjuuW1knhsm1iGCWHfBybB583MraUAzUIyXQjEcw8hcosXunaeu7XXBI3cEq0JvKI9+qGsYPWQqhuszzLf6AI0E7AQYJeLQroSQl8tC26k6JxBgQNmUcS+t+e09DIQbsKf6NGl6G+NNA3zapTUv3F6ZelIrM2dUwHyRBDauPLgO41aiG631Pcx+0M4qFTMvz/cECIFcd1WXmUKI6c6iG3OoNnRAGL7dOLs7CNQ3ss0mGARGZkukqtYWIEUqsEqtswinIMU1/29ZFPwlxaJAAoj7aQ7+y9cHbIHDn+Ccpgn5HSG8O6MUormkMHk/iS6VQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,91 +96,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/29/25 15:52, Lance Yang wrote:
-> From: Lance Yang <lance.yang@linux.dev>
+On 12/25/25 09:17, ranxiaokai627@163.com wrote:
+> Hi, David
 > 
-> Embed the tlb_table_flush_implies_ipi_broadcast() check directly inside
-> tlb_remove_table_sync_one() instead of requiring every caller to check
-> it explicitly. This relies on callers to do the right thing: flush with
-> freed_tables=true or unshared_tables=true beforehand.
+>> On 12/23/25 10:25, ranxiaokai627@163.com wrote:
+>>> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>>> --- a/mm/page_owner.c
+>>> +++ b/mm/page_owner.c
+>>> @@ -375,24 +375,25 @@ void __split_page_owner(struct page *page, int old_order, int new_order)
+>>>    void __folio_copy_owner(struct folio *newfolio, struct folio *old)
+>>>    {
+>>>    	struct page_ext *page_ext;
+>>> +	struct page_ext *old_page_ext, *new_page_ext;
+>>>    	struct page_ext_iter iter;
+>>>    	struct page_owner *old_page_owner;
+>>>    	struct page_owner *new_page_owner;
+>>>    	depot_stack_handle_t migrate_handle;
+>>>    
+>>> -	page_ext = page_ext_get(&old->page);
+>>> -	if (unlikely(!page_ext))
+>>> +	old_page_ext = page_ext_get(&old->page);
+>>> +	if (unlikely(!old_page_ext))
+>>>    		return;
+>>>    
+>>> -	old_page_owner = get_page_owner(page_ext);
+>>> -	page_ext_put(page_ext);
+>>> +	old_page_owner = get_page_owner(old_page_ext);
+>>>    
+>>> -	page_ext = page_ext_get(&newfolio->page);
+>>> -	if (unlikely(!page_ext))
+>>> +	new_page_ext = page_ext_get(&newfolio->page);
+>>> +	if (unlikely(!new_page_ext)) {
+>>> +		page_ext_put(old_page_ext);
+>>>    		return;
+>>> +	}
+>>>    
+>>> -	new_page_owner = get_page_owner(page_ext);
+>>> -	page_ext_put(page_ext);
+>>> +	new_page_owner = get_page_owner(new_page_ext);
+>>>    
+>>>    	migrate_handle = new_page_owner->handle;
+>>>    	__update_page_owner_handle(&newfolio->page, old_page_owner->handle,
+>>> @@ -414,12 +415,12 @@ void __folio_copy_owner(struct folio *newfolio, struct folio *old)
+>>>    	 * for the new one and the old folio otherwise there will be an imbalance
+>>>    	 * when subtracting those pages from the stack.
+>>>    	 */
+>>> -	rcu_read_lock();
+>>>    	for_each_page_ext(&old->page, 1 << new_page_owner->order, page_ext, iter) {
+>>>    		old_page_owner = get_page_owner(page_ext);
+>>>    		old_page_owner->handle = migrate_handle;
+>>>    	}
+>>> -	rcu_read_unlock();
+>>> +	page_ext_put(new_page_ext);
+>>> +	page_ext_put(old_page_ext);
+>>>    }
+>>
+>> How are you possibly able to call into __split_page_owner() while
+>> concurrently we are already finished with offlining the memory (-> all
+>> memory freed and isolated in the buddy) and triggering the notifier?
 > 
-> All existing callers satisfy this requirement:
-> 
-> 1. mm/khugepaged.c:1188 (collapse_huge_page):
-> 
->     pmdp_collapse_flush(vma, address, pmd)
->     -> flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE)
->        -> flush_tlb_mm_range(mm, ..., freed_tables = true)
->           -> flush_tlb_multi(mm_cpumask(mm), info)
-> 
->     So freed_tables=true before calling tlb_remove_table_sync_one().
-> 
-> 2. include/asm-generic/tlb.h:861 (tlb_flush_unshared_tables):
-> 
->     tlb_flush_mmu_tlbonly(tlb)
->     -> tlb_flush(tlb)
->        -> flush_tlb_mm_range(mm, ..., unshared_tables = true)
->           -> flush_tlb_multi(mm_cpumask(mm), info)
-> 
->     unshared_tables=true (equivalent to freed_tables for sending IPIs).
-> 
-> 3. mm/mmu_gather.c:341 (__tlb_remove_table_one):
-> 
->     When we can't allocate a batch page in tlb_remove_table(), we do:
-> 
->     tlb_table_invalidate(tlb)
->     -> tlb_flush_mmu_tlbonly(tlb)
->        -> flush_tlb_mm_range(mm, ..., freed_tables = true)
->           -> flush_tlb_multi(mm_cpumask(mm), info)
-> 
->     Then:
->     tlb_remove_table_one(table)
->     -> __tlb_remove_table_one(table) // if !CONFIG_PT_RECLAIM
->        -> tlb_remove_table_sync_one()
-> 
->     freed_tables=true, and this should work too.
-> 
->     Why is tlb->freed_tables guaranteed? Because callers like
->     pte_free_tlb() (via free_pte_range) set freed_tables=true before
->     calling __pte_free_tlb(), which then calls tlb_remove_table().
->     We cannot free page tables without freed_tables=true.
-> 
->     Note that tlb_remove_table_sync_one() was a NOP on bare metal x86
->     (CONFIG_MMU_GATHER_RCU_TABLE_FREE=n) before commit a37259732a7d
->     ("x86/mm: Make MMU_GATHER_RCU_TABLE_FREE unconditional").
-> 
-> 4-5. mm/khugepaged.c:1683,1819 (pmdp_get_lockless_sync macro):
-> 
->     Same as #1. These also use pmdp_collapse_flush() beforehand.
-> 
-> Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> This patch does not involve __split_page_owner() – did you perhaps
+> mean __folio_copy_owner()?
 
-LGTM. I think we should document that somewhere. Can we add some 
-kerneldoc for tlb_remove_table_sync_one() where we document that it 
-doesn't to any sync if a previous TLB flush when removing/unsharing page 
-tables would have already performed an IPI?
+Yes, any kind of folio operation.
 
-> ---
->   mm/mmu_gather.c | 4 ++++
->   1 file changed, 4 insertions(+)
+Once memory is offline any operation on the page/folio itself would 
+already be fatal.
+
+So if we would ever reach this code while memory is already offline we 
+would be having a bad time, even without any page_ext magic.
+
 > 
-> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-> index 7468ec388455..7b588643cbae 100644
-> --- a/mm/mmu_gather.c
-> +++ b/mm/mmu_gather.c
-> @@ -276,6 +276,10 @@ static void tlb_remove_table_smp_sync(void *arg)
->   
->   void tlb_remove_table_sync_one(void)
->   {
-> +	/* Skip the IPI if the TLB flush already synchronized with other CPUs. */
-> +	if (tlb_table_flush_implies_ipi_broadcast())
-> +		return;
-> +
->   	/*
->   	 * This isn't an RCU grace period and hence the page-tables cannot be
->   	 * assumed to be actually RCU-freed.
+> You are right: when memory_notify(MEM_OFFLINE, &mem_arg)
+> is called, memory hot-remove has already completed.
+> At this stage, all memory in the mem_section has been fully freed
+> and removed from zone->free_area[], making them impossible
+> to be allocated.
+> 
+> Currently, only read_page_owner() and pagetypeinfo_showmixedcount_print()
+> genuinely require RCU locks to handle concurrency with MEM_OFFLINE events.
+> This is because during traversal of page frames across the system/zone,
+> we cannot pre-determine the hotplug/remove state of these PFNs.
+> In other functions, RCU locks are merely used to satisfy the assertion
+> WARN_ON_ONCE(!rcu_read_lock_held()) within lookup_page_ext(). right ?
 
+Exactly.
+
+> 
+> Regarding page_ext, I have a question: Semantically, page_ext should
+> correspond to one structure per folio, not per 4K base page. In x86_64,
+> page_ext consumes 88 bytes—more memory than struct page itself.
+> As mTHP adoption grows, avoiding page owner metadata setup/cleanup
+> for tail pages would yield performance gains.
+> Moreover, with folio gradually replacing struct page, will struct page
+> eventually be superseded by dynamically allocated all kinds of memdesc_xxx_t?
+> 
+> If so, wouldn’t it be more reasonable to dynamically allocate a
+> corresponding page_ext structure after folio allocation?
+
+Most (but not all ...) page_ext data will be per folio, yes. Some is per 
+allocation (which might not be a folio in the future ...), which is 
+where it gets tricky.
+
+But yes, Willy already thought about simply placing some of the page_ext 
+stuff into "struct folio" once we dynamically allocate "struct folio".
+
+The question is how we will handle this for other allocations that will 
+not be folios (e.g., where to store page owner).
 
 -- 
 Cheers
