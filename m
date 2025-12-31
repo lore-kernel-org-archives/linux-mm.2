@@ -4,113 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1779AEE6428
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 16:08:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B058EEB565
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 17:02:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 392326B0088; Wed, 31 Dec 2025 11:08:04 -0500 (EST)
+	id D43D26B0088; Wed, 31 Dec 2025 12:02:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 360696B0089; Wed, 31 Dec 2025 11:08:04 -0500 (EST)
+	id CF1336B0089; Wed, 31 Dec 2025 12:02:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 262FE6B008A; Wed, 31 Dec 2025 11:08:04 -0500 (EST)
+	id BC91B6B008A; Wed, 31 Dec 2025 12:02:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 15CA66B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 11:08:04 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 97D5FBA242
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 16:08:03 +0000 (UTC)
-X-FDA: 84280247646.15.10535AB
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 092C8C0008
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 16:08:00 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=DDJplSYz;
-	spf=pass (imf10.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767197281; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AB3376B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:02:18 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01A611A847A
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 17:02:17 +0000 (UTC)
+X-FDA: 84280384356.04.214ACAE
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf26.hostedemail.com (Postfix) with ESMTP id F2DD814000E
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 17:02:15 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Oo8vQsKc;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767200536; a=rsa-sha256;
 	cv=none;
-	b=SfIlj8Wg4y1uUasng5dsLXaJAJIWVojo/LIbrgZYZBAfVaLTsBHaHAGxOX+yXyQj78p+Q3
-	JvjWv8oMk+saHPotueFagWyhm2vOs2EmDzXzgU7kQCRl3dIKDDRVz3QmvJD1P+tx78jcSj
-	ZmlMw3spueMOPZBoV1wbIKliL2QdZms=
+	b=xHzjtoj64F63fvpDC4XdpHcIfuego1a4MCCbNv7ZjKBOXpEhQ4vws+VKrb1F/7852zoIRz
+	T1vExqhhK75J2wtsT5+45htvWqyb+OZpvfVyOv+/oY5DCDLlKImTzCTGZ+8UYe6P1mrK5G
+	1DPFX/VsgA3CFjVzm/oCUdMtdi1VOfw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=DDJplSYz;
-	spf=pass (imf10.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Oo8vQsKc;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767197281;
+	s=arc-20220608; t=1767200536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HWouBMiF1EMh2+jI6GLE3S/Gvu5KjkPQi5L7cekMJZg=;
-	b=CEUbxs4EjtRPhfEtA2QwM9ziPH88pJWc1vP4Yx+UHG8o0aLF3CyIyFESmBd5PxJFrlQk5T
-	QUyB5UaSysCK05ck1NzzRIpL+3gnnpTip6z9a+apj3fsHAdvSZg+1vcBMgBjylBRKq6OjA
-	NPLPEH55XtDb1fFl8Pmc7LYrDSfyt6k=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DBD4040E0281;
-	Wed, 31 Dec 2025 16:07:56 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id IljZNyQjQjEF; Wed, 31 Dec 2025 16:07:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1767197270; bh=HWouBMiF1EMh2+jI6GLE3S/Gvu5KjkPQi5L7cekMJZg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DDJplSYzrglhEEbmZ0mRfZaOt3zwvpzuTwYLPVsof6rsoCbpVLSC96nBSs6sJZ53F
-	 r4KdoaeGF4/+LewLHoiieG87nkutk8JbgcIJYbdXTwTkXTyFvfxZXuGIleyn9sZcc9
-	 BcAs8YbvqWAggpP2XlY7M5l+gQpaX06Ltgg6LIIgvK+aPyjsUBKvkd+7SqenAP5IPW
-	 AJWKodYRTVpNPr6bHQ4n75QwNuePw8LzroHCs9KLIWkz67rNuJ1hjGkYC46/VSNutn
-	 ZEOBz90ZJbzZIQaiOhPx8p7xfOJUPgeNC8mnv0mXpV4MhUbC8ObjRd7t5iRvOFhRRa
-	 ftxIcIDJYrLyaxkZ97E962kB6unDyW3gd9M7b6WyEnmDyF4//KX7HY6iTS0et3P+F3
-	 MrxHpd42tAcWAnv7ERLij6+t52a3vzHiCjCgOMAFtHI0kmHp+2slxNsQPhjlzk7jqM
-	 uvRewEESpB50jqP0hNOQ6Eh5u0UC+A45J6ciabtIvac6Y+68ksTzztgD5VJW28BOtp
-	 89JbFQNRqBGCR2xNJz0DbYOav2IS0By8QBHilsLBzyo1mqrXsaLG41S9IrlB6I9o1h
-	 xoSOWpgt36LbBIzAzRaVtQRday/5HW2zr2ygP2DaEHZL6BBd5KiUTYbKvtj5a2HTj5
-	 GWhUmofThhIi+lD1MA4yZEy4=
-Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id E824240E01AD;
-	Wed, 31 Dec 2025 16:07:13 +0000 (UTC)
-Date: Wed, 31 Dec 2025 17:07:05 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: shiju.jose@huawei.com, rafael@kernel.org, akpm@linux-foundation.org,
-	rppt@kernel.org, dferguson@amperecomputing.com,
-	linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, tony.luck@intel.com,
-	lenb@kernel.org, leo.duran@amd.com, Yazen.Ghannam@amd.com,
-	mchehab@kernel.org, linuxarm@huawei.com, rientjes@google.com,
-	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
-	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
-	duenwen@google.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, wbs@os.amperecomputing.com,
-	nifan.cxl@gmail.com, tanxiaofei@huawei.com,
-	prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
-	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
-Subject: Re: [PATCH v13 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
- table
-Message-ID: <20251231160705.GAaVVKKfj5o-s7xLv6@fat_crate.local>
-References: <20251121182825.237-1-shiju.jose@huawei.com>
- <20251121182825.237-2-shiju.jose@huawei.com>
- <20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local>
- <20251208162924.00004a38@huawei.com>
+	bh=e6I0h3kezoKxK3IDpc47mY2gwi29RX44rQplizDpRGo=;
+	b=S6lIgMtSN4wcdv0M/w2QeBRbtgY9icZ8UIMhHDGLukDms3QxBhrFxzlYEGRHMXQ9X/ny70
+	7WU4og2W82M66QnbuCZAa/4R9VrQ1AeVV3zERuMCUm6p47cm3+XNSDUZWmcbDSz1rV1CaU
+	1TecN+9L4O/8AnaeJCrh3Bpx7/25qko=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767200533;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e6I0h3kezoKxK3IDpc47mY2gwi29RX44rQplizDpRGo=;
+	b=Oo8vQsKc6quUCd98ROWFbf+fWzFq8lj/cuYDwgh1BY3HtZGuM6BSf0E/nhEVf/mcBVfrCA
+	M8FyzK0R16mXX2PIbI6IeZpJLOZDinkySZf26rVKzHwYIie4yq7qwMWtNVB/X7NnSfv4eU
+	2RqCs5Fjk0SrJboZA6l8A8HgzfWAFkg=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Matt Bobrowski <mattbobrowski@google.com>
+Cc: bpf@vger.kernel.org,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
+  JP Kobryn <inwardvessel@gmail.com>,  Alexei Starovoitov <ast@kernel.org>,
+  Daniel Borkmann <daniel@iogearbox.net>,  Shakeel Butt
+ <shakeel.butt@linux.dev>,  Michal Hocko <mhocko@kernel.org>,  Johannes
+ Weiner <hannes@cmpxchg.org>
+Subject: Re: [PATCH bpf-next v4 3/6] mm: introduce bpf_get_root_mem_cgroup()
+ BPF kfunc
+In-Reply-To: <aVTTxjwgNgWMF-9Q@google.com> (Matt Bobrowski's message of "Wed,
+	31 Dec 2025 07:41:58 +0000")
+References: <20251223044156.208250-1-roman.gushchin@linux.dev>
+	<20251223044156.208250-4-roman.gushchin@linux.dev>
+	<aVQ1zvBE9csQYffT@google.com> <7ia4ms2zwuqb.fsf@castle.c.googlers.com>
+	<aVTTxjwgNgWMF-9Q@google.com>
+Date: Wed, 31 Dec 2025 09:02:03 -0800
+Message-ID: <87qzsaoa9g.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251208162924.00004a38@huawei.com>
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 092C8C0008
-X-Rspamd-Server: rspam04
-X-Stat-Signature: hqejs8m8nrdd8c181495rqaf75ij757q
-X-HE-Tag: 1767197280-106039
-X-HE-Meta: U2FsdGVkX1+Ypt7ZGsi1q/UxlV+B5RiYm3xt8iAPiYtWXIVqBajtsJx3GC6v77yAXm9W13KO7rIEMEJl1PiaoU1QVbrTh5tA0jnnrblnlLkdJIDUVUXq6AR9iJF9ABdPk6gfSgwU8DNz1/x4eGSkiR715a26kYIp/MMeJzptl/8xZBooZCyLLCqTMrXAzt1eoVDqTJosV2vTCrgssSt1aUeYhM0kkTLlZ6A4MdHsfDD3egwyadoeXPSWyWetGumLFUVNZ7fhDMLsMb315EgBnANO30v9tQOXjq2+gFyEwUJgZxQaSdeL/Eb+tdXOs9fP3e+y/6EUJbALXMb88g5111BFaiQoNRUUVao1oXxNXoNBBIOb2++VcRujQ5wy/Uosrtf2rh7RSGcWOqkyvRcdRxXRlUtQ0DsUm8BH9Z0hSPIPpsiZuOx+ECdP3X39tatTubayDiOjbaf1l8yhlr7hw8RxIabq9muMWP57Xnam7EQt4bwJBYN+U/h+k5mphEXtYGNhRIcMetRMcUsim1hVxluphztnEjvwijiiCAedWvzbJ5W24I3iRfuLtMGGpxKa3Iu3U+tF1fv8lr09O+iGM8/vaxKsewizD9qN9m3PP0Cs/hWIUEkMulkq/4ntp3U4p8ApGYMDsaauDOmDmJODwcfOBHMhwnR5mDXCmZ+nvDKU3NLRQXtFpH39lTqDbiSyZXrW/XOFJYSX2Nge8EK09oF0A+ZNxx0TW2mTnMtgwVWeRGKMIth/frRS//rDCeUosoZIjTs9cUB4cjVcL8Ta2SDY0gYc4+KgtMBYxm6h3IQ4wtedTPUp+ImD1Q1mNs1Ot5L8Ku2bs2tydn0zlFEAkk78rd7212Vdz+lIDwYPioSXpyveXZDpTmuOCy/S0MFkktFNTYRamsPbvW8M5Qs2qLY/tHKU76/G3Hfz6j5TkkxpBID0p9keE/seKg2qgdjV98ny2Kgc3dyykzr3Kas
- 7+2/5MZP
- 0UDJvAHOxVbh3zL2SZopxfgAkmOCJzcI1NuLOFz+dBQF/WUw/gpiVqORsoWK4rl3tEk+zI1euoY63HYoMLu54cx9lX+z5YHlQHHr+bFfBcOm5SMFGq5ITCd3dOZcMp4zv+L+4+MPImSZu4SJ2Y0Ms67JuGd1/cXMv46DfF/Aai87hZhvmeqfcUDoP1mAU95/nbXDcnskv0XUG0OxvwhaaIPAwzOMKrUwyelqoRWbAQUYa/OdwBfhYlbXP5WWHfX4Nuw3LeUfZQ4013juYt4MQxooLIEIriiXpblCARKdunuf2ESk=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F2DD814000E
+X-Stat-Signature: sm5536eud9qykpsqhkp7m1umpk6c5bhx
+X-HE-Tag: 1767200535-621917
+X-HE-Meta: U2FsdGVkX1/DWTWMkptzAJ0TAFBsDuuY0kU+vZnKuvvOdj1QPHw8fIn7ByWGB8DYUPxKYDT3l93ONH1TLy/nR8c7Wf8JV1KJnhb1cIve+q6DgYxadspr5X/Wz7ugBdAfIPPkVupsVQj+seotXOvn29kFy+Er2+xwZrBFpyWvmZZANRwXne/sk3D60Cb99Xj4hkz/AYIDXL8jrNvdK5nRMQK8sGj9TKT+9H3l1J+nK94e1UtmZricFWsgA5Pp6R2bfyzYguPbtHR+TCi62rknS5ZVBwvf+mn8g3RGNmgTbA7dCfsfkKcUt34b+FbteWjcJMruT8ll7OFoGXLsgoMpzu5e3ugexeIY6DzQkZ7xfQKCGsjCStjhMgg27slj3uR3kVySpKJgzHLYka7KwO+SgNz+8IteLPFP8U3yFug5mhHmu0bw5+WAufwS/mSWYNhgUNHk3OM32NvBge+scs+/iuJ49Aq6xgT5ct7Wzy2p2rf41CTacWxaLuhdne2Eh00sjOb+rI7DaR01sDygVyvnknTFT13npmrZtJqM6Hjp7bgCMeD+n1nEMh6lUJ+NZ2ktG6yOg0QlFQQBNzie4pMgmz7Ptug2X3YCv8OEajDoYp21o6OH2u8/Ex717uJzU2pgPPeQxbUhOXprwXvRL4EJiS8v1TWOWUHmxuUwiTWL6CTlQjfrA4twdvP1gJC6D+dFLj8W7gHqILKiqhi6bOux8NeBzbgfW0WXj12+Qfop04tjno7EniiNoK8y4IPd8b4woXNuCXMpaRl76aJauW4BSmKrAVbQi8SCjy1lkDMo6hduwrcylQ9mP+LncHYFMPlKPU0h6VeQjaci0XmjKV/WdUu5t3u8ufA8OTCjy3QbWgGL5kZgslM320s/AuAgod/4oonQpD4rRzbniGfY7ISASpP+rPISYxSMKLAuJuXLrJvWW7xrP8tK8ogfDYW8YppfL6QqVocVWq1/08oUzfm
+ DMXEk+Dh
+ E7W/SrHnsXLKmPhuFLYcEARQA3WgwWbHmoHGzISzYAxfMFNpHJ+kTKJ9+cm9LpE/g+0OFEJERbQf8VDl8UY+V0rkUNv9KL/dqOcaTKdbxSwRyX3mCyRHxE4bqGXzKFKEfDPQFGFkXCLyJFo1Y2zNCs4GtLBOWjbbR4kpoizF+uIb4hsvTfdE7PgDL4e6A06z0CIYHZd43ck9pqw08wCf0Dx7w/iDlFtEZ4SEIUS+DS7t3aL0MlkUAR9YpQwxaUnMgjcB1NLyR7ro3SkM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,20 +94,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 08, 2025 at 04:29:24PM +0000, Jonathan Cameron wrote:
-> No to this suggestion.  Doing so breaks the rules that Linus has laid
-> out for use of __free. Constructor and destructor must be next to each
-> other. See guidance in cleanup.h.
+Matt Bobrowski <mattbobrowski@google.com> writes:
 
-/me goes and reads...
+> On Tue, Dec 30, 2025 at 09:00:28PM +0000, Roman Gushchin wrote:
+>> Matt Bobrowski <mattbobrowski@google.com> writes:
+>> 
+>> > On Mon, Dec 22, 2025 at 08:41:53PM -0800, Roman Gushchin wrote:
+>> >> Introduce a BPF kfunc to get a trusted pointer to the root memory
+>> >> cgroup. It's very handy to traverse the full memcg tree, e.g.
+>> >> for handling a system-wide OOM.
+>> >> 
+>> >> It's possible to obtain this pointer by traversing the memcg tree
+>> >> up from any known memcg, but it's sub-optimal and makes BPF programs
+>> >> more complex and less efficient.
+>> >> 
+>> >> bpf_get_root_mem_cgroup() has a KF_ACQUIRE | KF_RET_NULL semantics,
+>> >> however in reality it's not necessary to bump the corresponding
+>> >> reference counter - root memory cgroup is immortal, reference counting
+>> >> is skipped, see css_get(). Once set, root_mem_cgroup is always a valid
+>> >> memcg pointer. It's safe to call bpf_put_mem_cgroup() for the pointer
+>> >> obtained with bpf_get_root_mem_cgroup(), it's effectively a no-op.
+>> >> 
+>> >> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+>> >> ---
+>> >>  mm/bpf_memcontrol.c | 20 ++++++++++++++++++++
+>> >>  1 file changed, 20 insertions(+)
+>> >> 
+>> >> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+>> >> index 82eb95de77b7..187919eb2fe2 100644
+>> >> --- a/mm/bpf_memcontrol.c
+>> >> +++ b/mm/bpf_memcontrol.c
+>> >> @@ -10,6 +10,25 @@
+>> >>  
+>> >>  __bpf_kfunc_start_defs();
+>> >>  
+>> >> +/**
+>> >> + * bpf_get_root_mem_cgroup - Returns a pointer to the root memory cgroup
+>> >> + *
+>> >> + * The function has KF_ACQUIRE semantics, even though the root memory
+>> >> + * cgroup is never destroyed after being created and doesn't require
+>> >> + * reference counting. And it's perfectly safe to pass it to
+>> >> + * bpf_put_mem_cgroup()
+>> >> + *
+>> >> + * Return: A pointer to the root memory cgroup.
+>> >> + */
+>> >> +__bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
+>> >> +{
+>> >> +	if (mem_cgroup_disabled())
+>> >> +		return NULL;
+>> >> +
+>> >> +	/* css_get() is not needed */
+>> >> +	return root_mem_cgroup;
+>> >> +}
+>> >> +
+>> >>  /**
+>> >>   * bpf_get_mem_cgroup - Get a reference to a memory cgroup
+>> >>   * @css: pointer to the css structure
+>> >> @@ -64,6 +83,7 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
+>> >>  __bpf_kfunc_end_defs();
+>> >>  
+>> >>  BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
+>> >> +BTF_ID_FLAGS(func, bpf_get_root_mem_cgroup, KF_ACQUIRE | KF_RET_NULL)
+>> >
+>> > I feel as though relying on KF_ACQUIRE semantics here is somewhat
+>> > odd. Users of this BPF kfunc will now be forced to call
+>> > bpf_put_mem_cgroup() on the returned root_mem_cgroup, despite it being
+>> > completely unnecessary.
+>> 
+>> A agree that it's annoying, but I doubt this extra call makes any
+>> difference in the real world.
+>
+> Sure, that certainly holds true.
+>
+>> Also, the corresponding kernel code designed to hide the special
+>> handling of the root cgroup. css_get()/css_put() are simple no-ops for
+>> the root cgroup, but are totally valid.
+>
+> Yes, I do see that.
+>
+>> So in most places the root cgroup is handled as any other, which
+>> simplifies the code. I guess the same will be true for many bpf
+>> programs.
+>
+> I see, however the same might not necessarily hold for all other
+> global pointers which end up being handed out by a BPF kfunc (not
+> necessarily bpf_get_root_mem_cgroup()). This is why I was wondering
+> whether there's some sense to introducing another KF flag (or
+> something similar) which allows returned values from BPF kfuncs to be
+> implicitly treated as trusted.
 
-Ah, ok, makes sense.
-
-Thanks for pointing it out.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Agree. It sounds like a good idea to me.
 
