@@ -4,95 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC398EE57CE
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 02:50:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1305EE57C8
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 02:51:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0F4E6B0088; Tue, 30 Dec 2025 21:50:51 -0500 (EST)
+	id 145416B0089; Tue, 30 Dec 2025 21:51:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBCED6B0089; Tue, 30 Dec 2025 21:50:51 -0500 (EST)
+	id 127046B008A; Tue, 30 Dec 2025 21:51:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC9B66B008A; Tue, 30 Dec 2025 21:50:51 -0500 (EST)
+	id 0324B6B008C; Tue, 30 Dec 2025 21:51:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9914D6B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:50:51 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3B2A0CB820
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 02:50:51 +0000 (UTC)
-X-FDA: 84278238702.19.C59A094
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 47EDD140009
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 02:50:49 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WucivJ5O;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767149449; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id E5C4E6B0089
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:51:17 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AF3EDC1D84
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 02:51:17 +0000 (UTC)
+X-FDA: 84278239794.29.3F3A94D
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B26FE100002
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 02:51:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=G53L+2We;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767149475; a=rsa-sha256;
 	cv=none;
-	b=plBvl/aFW7tS0p5UA2L4I3dWt2hlh48wgdxMBseJMrleH47yk/sbcj62PLTyaF4C+gfm2w
-	Ge/rxgPS82b+ERYa0cy4PpGcxCQFus/royN4rvvd/Kr2gof5OcDqIcvJzl49m/yldy8Gyv
-	bPgc8uVrGHPWUjYEC2SbZtDEzi1zS2c=
+	b=Y7XZti3U68zmfQ9Wk22BQoCbGJCr9AYAkWZ9lvMZ18UznkraEuu3sb9Sk5ci3F8y1k0t11
+	Nt7Ehh5fLY+Al/G86+UbjLPuqnPR6Y/YaB+yuCvBqNqS2H6VJtoIqkaBFx/ULyNs2KAbJh
+	0Dk4jidamvpTBx3Jvc2sM9KWje0ZuVI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WucivJ5O;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=G53L+2We;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767149449;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1767149475;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mnekp8j1WxTQ4hJG3hWSmIW7URQ749K4JNBDhqyh+Qs=;
-	b=sGKw0fw+Ph7w5z4lTd8QzPe1Y0dcy7J3/y/cdO2Yr0upBoJObhO4s/y22f5j0pdUOGrkzP
-	dU5mKKA7F7Qwz0kyEdDtXtDO71A3UJ9HgQpJ0RafRi6l4VqKR5/M6VKGLkRgYaHgVgTpCV
-	BSbfJeXEGhLeiV/RPcNQfA6WW9L4yGs=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767149447;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Mnekp8j1WxTQ4hJG3hWSmIW7URQ749K4JNBDhqyh+Qs=;
-	b=WucivJ5OUG8aNye7276oRlIOZp91/no3ZbB5yODJnY6Ye26wyp7WTnniMuj9O7CbC96wOW
-	XVGWrbyio5YpIRfU+FXVNhgJ4ASpzCXYE9bbJ6sw6ewRBgVWccglLABIERv9yz9Vg5A7u6
-	0O+sLxyWZnqZ/7hnj3L9UHRt1d8An08=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
-Subject: Re: [PATCH v5 6/6] mm: hugetlb: allocate frozen pages for gigantic
- allocation
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20251230072422.265265-7-wangkefeng.wang@huawei.com>
-Date: Wed, 31 Dec 2025 10:50:08 +0800
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Oscar Salvador <osalvador@suse.de>,
- linux-mm@kvack.org,
- sidhartha.kumar@oracle.com,
- jane.chu@oracle.com,
- Zi Yan <ziy@nvidia.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Matthew Wilcox <willy@infradead.org>
-Content-Transfer-Encoding: 7bit
-Message-Id: <4C12581C-30F4-4BE3-AB30-CAC98697414A@linux.dev>
-References: <20251230072422.265265-1-wangkefeng.wang@huawei.com>
- <20251230072422.265265-7-wangkefeng.wang@huawei.com>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 47EDD140009
-X-Stat-Signature: dy1bhsewcitkp7s4ucs5pqybemz38mje
+	bh=EmlhgLzDihwQXJKjPLEsbonM6eB7pTCajPhK6zvZfAY=;
+	b=Bbpt3SgQ86I+Cq7MuKiLWCadvqsF7v9d+uk9C5IoyFoYtERSoN3U4yJBf/P2o113QsE8Fm
+	ru+KMmfmB7KRYVjvOfJTrnrr50yRRjwgsxUqVYPTpirvyeKeCSrrqdQ/sPOXSkNvY5SuFX
+	nc/2WDBOtUgv7EFjNx6LMirX51T8G8Y=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b76b5afdf04so1575932566b.1
+        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 18:51:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767149474; x=1767754274; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EmlhgLzDihwQXJKjPLEsbonM6eB7pTCajPhK6zvZfAY=;
+        b=G53L+2Wesktw8eKyz+bNGOe4OxXIfgcAkmwPbN0bYri+dLnVxUDLc8mFmS39W6yGUv
+         natEO19TqWbbJK61C3iD/hY1sxzhWeZhC4SQPfrr5FgqpX3QcpuE4H0xm1dSV6QX4mwp
+         mhA0r9azsWZ2+/IQYiVa7SlEgSW5o1Ks3FcudvyBAjQw1azCX/807/8fr2j9EnMYim/c
+         MzQ7d4YpuUYp4j8oP/RhywuWsVhavTA/O3SG9c7bTQj8yXa6VzyyhmBC8/mHb7uyXSfQ
+         5VAK/i7s6+za8UkvqjRAGHA9b/Lx2buQHHTF789sitXYs8vDNlPGm8/zCamNPo3eIjbu
+         rBLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767149474; x=1767754274;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EmlhgLzDihwQXJKjPLEsbonM6eB7pTCajPhK6zvZfAY=;
+        b=sC4DSimDCTpqSjbHEPJe/rNYzMnDao7Cn0qUe+mkDsjmmkYsIq+mTD8bR1HyFUCU7W
+         w5SNKR+et/RoLud8IL58VuedyaXwBFAWksitOIN6LOV146pmf50fvqEJ9HqSnb5c/9pH
+         xO6PTh83d20QxFzZklIvEyYqIzDORRNc6azh9KG6KAecyHEWYWNK4Mmspx2rgHEPInOw
+         i8FAKAOTqOiX0Hrgij5Apr/V1e1bv8kiLtymjcalw7ojA6uXbbCzBsZV/VlJhSv4vA0S
+         7NZSYqIMoYbzpxCfI8GFkl9sRfJOBmLbuWH2piqdCnN6afFJUxSvVN9xkg78YoFNxey8
+         OPQA==
+X-Forwarded-Encrypted: i=1; AJvYcCWMdbi5jbCtwSjLsA6iq8BrZwmLiX2vViGlK96MRKvvwX00Z3jW+v/YPbE2Kp6bHm/qYTr+UzkORA==@kvack.org
+X-Gm-Message-State: AOJu0YwK6ovERKe4HbhW2/C8PGpHQnG6wvMX+SfgnVS9T6o0AHmycnWE
+	s7b6OpmsYOEiV0Ss8RXFUwUk4zZLVRQixj7OjKccozeao3+WioMw8EoC
+X-Gm-Gg: AY/fxX4cWf21mNwutP3ywFBAJDUivjT3arx+svNA+gNdtD+4NgfcJhHEFBfNC5fQvm4
+	dftAKMs2CMnIXTXbiCsINDVfT1fY7y9UOVMijSFk6fE+Vf9t4Ot1FflREUDNtVuoKEzT9IxiOrL
+	ByP/50IhmXFzw1tpfmLaai3TCJPmiIT+OMgVsQnBaex7YMyeVoUFLpEkvLq+YwCnaPx1fg8DFiR
+	wAIImRgMmfWtG3WzS5lc/oVVPndMZQP03k73ml4bWsGWXBOVemCPY3Zap3tHUO1BQjWs9DWTqjE
+	m7GvaXZ1E/RJSIsczFhKEV+j4fBeV//wT+JrNR8xz02q3sCcd78omcg5rMTNMgOwSh3Y8xhqLZ9
+	/uXqF0Io9neHKDHF0jFgT+ir+sniEAjPnniAlFwN6hz+TwLudrfkDGLCxgMyrgCqALHDTdj/HiN
+	Hfi9l4QD3CGZe8HDcifeK/
+X-Google-Smtp-Source: AGHT+IGVcLZdqj6eNaasrn746ipTYI7fDfRCvu0V+Z1Q5bofYsJUvEoTAObsuEDApPDu/anBTFxEKA==
+X-Received: by 2002:a17:906:5a68:b0:b83:9751:4334 with SMTP id a640c23a62f3a-b839751755fmr285999566b.50.1767149473783;
+        Tue, 30 Dec 2025 18:51:13 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037f511fesm3867530466b.65.2025.12.30.18.51.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 30 Dec 2025 18:51:13 -0800 (PST)
+Date: Wed, 31 Dec 2025 02:51:12 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, richard.weiyang@gmail.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH v2 4/4] mm: khugepaged: set to next mm direct when mm has
+ MMF_DISABLE_THP_COMPLETELY
+Message-ID: <20251231025112.uzlgrs3dgbyzul2x@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251229055151.54887-1-yanglincheng@kylinos.cn>
+ <20251229055151.54887-5-yanglincheng@kylinos.cn>
+ <f47b6192-2115-4f4b-82ae-dd66e65f4340@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f47b6192-2115-4f4b-82ae-dd66e65f4340@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-HE-Tag: 1767149449-778797
-X-HE-Meta: U2FsdGVkX1/86UQSawkuz5MEByH+C/US7sBfdaIRqouC+ODt8se5PyehVJA+POe0gZDB+ZrLclriLuGZE6CbQ8Rlb6tEqY9cyUROen//3nc6fcDAF9lWSpXmJGajMEW9CRnTO0W2Ix0tPe1i1lhTvis7UEye0YvJMgwgtpud8HZWHm+MG2ZWCeB/LrGDOUJ6evFnP4sCUigeIowPU9x/gAIEBjVbhQfabiPDqgdQVObnRzz7theWLcal+2p1rwls5I1Y/Fr2m7zcoWDBcfdHCfZcCu13s+bz4sVCKusItqost2AU11qi2k0+Sq/nVqM5JOHeSKcQIV0khR3o7AGF0NqmUsjcYr1kPoJzaaT4eb2pfSdg2TYojBKTKukPgfY4aS59gx9jjabyxZVf7MeIe1bf3TtXRWHPS/Ot2CPwZjtL2ezwIx0bCoo/NxL1hoNzlfpCL0PcnHSqOs5CFvXOqkiVmJtaZAsZyTmtHg63ahzX1swCqDLiC2n9MFXfzls13AAmPXBgi8oYvJS1/oWwUjPmimBnGSahGlRRj8baKmW3q/BTkRhJbOPREsfSw4YudFE522ChRYFXTEvAVUGrnhmwy+4nXL0Sps+5eeWyxLXSPeqXA7zdnseTwVlQLjU/CfbMkn4L3a4XHGxuhfxv5aYkQi6GUoJsTKbn1k1itgr9j3anRV94Ywj6TWcwieeBH2kVG6qQZBF2kYwLfd3b03p1e4JkDaHIGq6zfSX9chkGvdIs+gtSGqMsEQysp3xY3+Yb6IWfCE5sEFzh7oL6rdp4imVzVAoEJ4HfIKy/l15BdVSDvP7tPxzgGdtivkOsE11lNfH6q3iKu3LS64mkIIWvHrQZVQQi6PYpjjnb6WNhuzFTm6Z6AUo9r/Qzok8e8J5UG7NioB7PKF8D7dSLNEkGc7hWvzwUoJjgX4RtInL4ko6llNyJjqP7lnjuVPlZ4a+Npxcre+/wZ2Mq/BH
- 6lNKgKxg
- 1ZpUesaBiRMKv1XppagegWx6PbIh09phQARdbJYqSrkTQmicSUIgZGpRzhcxMkenFQ7/LnIieiuEujY/U22ovWX6fcz0sKp89frANzitdHHS1mCbyp3tzc2irtiTXnCESn0uVo3u7A3kr/A8TZjjzZIX5olz9U3LwQLXhsqRtBiv0juElfPuTm+k+DDtVVWS3xyIcm/SN0mWA4YavQ5v4JBfaHU6UANuCytJkh1N7kOMgQC0NFf13f6GZMTht98YPoZPnc5m9bcUXpHmOTJgzeoEZIxZysS2QlIRZX+i1AxmxOyA=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B26FE100002
+X-Stat-Signature: f5ayetztcy1ysgnrnz4hcps4nqrqykhy
+X-HE-Tag: 1767149475-871028
+X-HE-Meta: U2FsdGVkX1+s4IGtLgdI/1Khvi5of/XslCkvqXuiuherPPR2rZo0i6rJRpJAW9rMeTOZ4fNp1n5zW4ioZeJhJTttbmdKHSkpn1jGAASeatwpDHCgUozIeSPGxoWsc6KpqqAPbxiOaDFTSeanerU/LAoW0cxfJcnHt5SzDpvNIsRtCzSZ5kS62/OYmhdf6HQ/JB6d6O3SVFhDpD9p1gHJo7ZbgD75/LdeMCRPKUW3e3J8aneUy8IkCPNvuj8e5yEY0ebDJcb0Drl4WTJGkHd1V7RPHSTcb9utsiSd+nXr0ZcdlVFEzponHCnrapSADdlxacdvsvQz9Vbdx7NjJVibg0UR2Xry+DV6m47PgWABWouYjlrCZljRfUruZ9SiphXkty8kN2O8jtMAttlnEisHTKzGAwxBlDJZ8KhMe6/87sP/5TJ8iX00AZi1Y1yndl5ZIcMQaNXt9Bu/kR4GoaROgPe1O9dnDHzJFWcGZ45pwG4Spmqa+MLmq94CMdZFuiUUhEJ3xKXVS2+e+cIsRS1NyP6fRSFiwRylSl1XQe5gDJ718Mo5eZdkIqUEiqtQ6gESlhHHFLOqNjGh9c4mDrTWA5hW9PuVhCHp6FZ8bvvxHZV3PMuyhUj4eyyZuU3wAQh+EcTy20TgztFLSNjz84rdR40eHpkwBS41a4wtLyUWKUadVoJ/oOlN7hjEFPi84kVCApcED9icxG3NRqpkrqNMn02/M61FB/gWwQTcMKAKAyMkbSRcZC2bUkrGy4vGSpRw0HC9Vs1yuiU3MwuOcsLpuiqHjXM3GblJxq0LKnmGA45KtyUV5u7+gtLHhhA0I8LtUYqhOIkjd4WEKX4zYm8232lsj79Vzha9AEfsOgDhnVgNJY7c9T6wtqmpVp5y2gaW7G8wfcA+SWIWXFT75K0a+sjch/B8e07PiV7xjiMIhDybbckxYVt/n4t8MLqCK4Z/X4QOQ7Qv0wow1gBn8Dx
+ UWapcu8s
+ g/Js1NykZCtjCezcaKiob3Ph4RD7FU+DrCbmE2U3HAcqw9dmLytwD1080rkSurqztKg+uoYeoYWJP5puVw1L0ZV3pB7GXgIGFQs8V3lheW/puXl08rXISBLgj8pJ5D98lBULt4pEv46M0rDAWcM8FerBbuvSpfed9JgBVumg1jtYsS1RfuxcFUDSJFrznrJ/f8/PafFfJsvE0PYW+a/3YFcLb5mhwjPtZm35qzSp+L+XwNug2/k+FAwy3FMuw3d9d6gnUB0s0StKooFXOc5Ng/57sA/ZYb3XJoFMdZP85LE2eHyNFJ/5OkeruOyDx6BPCge4z/PIfYBp2XytMOR0SwZ+m4F9wdNS0vVBNmqa3DTFDqJWAP6QWRHeKkv+I41ta5XlIFAqrX3AekuypHkabOG4IvzRDjNE4GtnwrM5TeVBWmByjTN5wnMSjNTIvhomLwoA0hb885SMZlw1+eXn9zbVQZqZgO/YSQ6c/QmWtA4VlmdubytaB0aLciF7rbmyDevcqWei9PJGOIpORzxrlC/q94HzyiblLMJHlHHXUJxjYAvaTTDjLXSd2b34H6Gk4rlG9S0+eY2ZR+pYuLU2ezrLoSuFMbi13/EQnY+rTM+6FWggdfP2Ac6WRKTvNNfCVU89iHM1ZADyeHK2FC/l6KGgwzZ843Wa40/dMYKD6ve4XrFg6lU90tlKo9II4kmoFn3wtcd/TD9IclZMXfrpAZTkNOSdecG/HyMdawA4qYWysA0GBk5s3EOX/zxwCPFNIfeuc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,23 +127,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Dec 30, 2025 at 09:03:23PM +0100, David Hildenbrand (Red Hat) wrote:
+>On 12/29/25 06:51, Vernon Yang wrote:
+>> When an mm with the MMF_DISABLE_THP_COMPLETELY flag is detected during
+>> scanning, directly set khugepaged_scan.mm_slot to the next mm_slot,
+>> reduce redundant operation.
+>> 
+>> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+>> ---
+>>   mm/khugepaged.c | 9 +++++++--
+>>   1 file changed, 7 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 2b3685b195f5..72be87ef384b 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -2439,6 +2439,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+>>   		cond_resched();
+>>   		if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
+>> +			vma = NULL;
+>>   			progress++;
+>>   			break;
+>>   		}
+>
+>I don't understand why we need changes at all.
+>
+>The code is
+>
+>	mm = slot->mm;
+>	/*
+>	 * Don't wait for semaphore (to avoid long wait times).  Just move to
+>	 * the next mm on the list.
+>	 */
+>	vma = NULL;
+>	if (unlikely(!mmap_read_trylock(mm)))
+>		goto breakouterloop_mmap_lock;
+>
+>	progress++;
+>	if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+>		goto breakouterloop;
+>
+>	...
+>
+>So we'll go straight to breakouterloop with vma=NULL.
+>
+>Do you want to optimize for skipping the MM if the flag gets toggled
+>while we are scanning that MM?
+>
+>Is that really something we should be worrying about?
+>
+>Also, why can't we simply do a
+>
+>diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>index 97d1b2824386f..af8481d4b0f4e 100644
+>--- a/mm/khugepaged.c
+>+++ b/mm/khugepaged.c
+>@@ -2516,7 +2516,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+>         * Release the current mm_slot if this mm is about to die, or
+>         * if we scanned all vmas of this mm.
+>         */
+>-       if (hpage_collapse_test_exit(mm) || !vma) {
+>+       if (hpage_collapse_test_exit_or_disable(mm) || !vma) {
+>                /*
+>                 * Make sure that if mm_users is reaching zero while
+>                 * khugepaged runs here, khugepaged_exit will find
+>
 
+This one looks better.
 
-> On Dec 30, 2025, at 15:24, Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
-> 
-> The alloc_gigantic_folio() allocates a folio with refcount increated
-> and then freeze it, convert to allocate a frozen folio to remove the
-> atomic operation about folio refcount, and saving atomic operation
-> during __update_and_free_hugetlb_folio() too.
-> 
-> Besides, rename hugetlb_cma_{alloc,free}_folio(), alloc_gigantic_folio()
-> and alloc_buddy_hugetlb_folio() with frozen which make them more
-> self-explanatory.
-> 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+But the sad thing is we can't remove this mm from scan list, since user may
+toggle this flag later.
 
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
+>
+>-- 
+>Cheers
+>
+>David
 
-Thanks.
-
+-- 
+Wei Yang
+Help you, Help me
 
