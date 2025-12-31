@@ -4,89 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB8AAEE57D3
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 07:00:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE2E9EE57D6
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 07:42:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D15C06B0089; Wed, 31 Dec 2025 02:00:35 -0500 (EST)
+	id 8DDD36B0088; Wed, 31 Dec 2025 02:42:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEA1F6B008A; Wed, 31 Dec 2025 02:00:35 -0500 (EST)
+	id 861736B0089; Wed, 31 Dec 2025 02:42:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C17276B008C; Wed, 31 Dec 2025 02:00:35 -0500 (EST)
+	id 7394B6B008A; Wed, 31 Dec 2025 02:42:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B33366B0089
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 02:00:35 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 72A1BB9E6A
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:00:35 +0000 (UTC)
-X-FDA: 84278868030.13.9ABF341
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C1C5140009
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:00:33 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h9aWocLP;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 619036B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 02:42:07 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B24121405A1
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:42:06 +0000 (UTC)
+X-FDA: 84278972652.15.66EBADB
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DEA3980008
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:42:04 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=HjwTxlhK;
+	spf=pass (imf30.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767164433;
+	s=arc-20220608; t=1767166925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9wVM57awAwWRB+/66TwPMmKCevmMRfaBgEiC/p7DALE=;
-	b=V+JfKK84JwPDs5WufclPNdJKO6BcvxFbDoVtpLbjtzZ/YENMj6JftcZZQRB+2zDcMU3lBv
-	Ggyqix8WNkBo3D5WL8TzAWVKKtcu+4om+hG9OpUB7JAb7nZVZndeBMLyrQVnrrEYzwzXVw
-	IAGKaGGkdjNNdZ5cVRmW7VaaJ8MvwmU=
+	bh=sBxwhR+DOUWySSn1nkmmHXTpgGimoEMqTlfeKUVI3Ic=;
+	b=q7ujnD0GEQYe4SVrOMF99qW4hdikkWaAN//5jkp1jw0Kd8NbkeH4Qc9P8terOhLMkjH+nk
+	oiAlD/ZfgxYDDdEPcpek/BcX2zfd3w+D+E1RrjD0sbJa6mvhK5cpJieNTgFFOvkokwgFBc
+	9ow7yWsSsAz245rrM0SB7vDZ0Z8TWCA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h9aWocLP;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767164433; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=HjwTxlhK;
+	spf=pass (imf30.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767166925; a=rsa-sha256;
 	cv=none;
-	b=H5ARtVWWG6/9sWEdCy5fd5bkZpHgku3xwRaohnElhEuUOShhFpzJSE/Fx79dwgttfOT6o1
-	peRbbozPNnDZ2QFidht0Rod3FOnPPhZOB6Y0ciE1663+Z9VvJyHnY+fHb4OCqlSjNdNklw
-	itGVmK/gOsEO5XNiMZWTjd+Ec3mFroA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 92368409DD;
-	Wed, 31 Dec 2025 07:00:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5995AC113D0;
-	Wed, 31 Dec 2025 07:00:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767164432;
-	bh=GRl8HN9W9HzovY12xOzZB+f3LxGN0RkT8HznAkWFPpE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h9aWocLP+0z9gvjhjUEv0sQJbAiGUI+QAynX/EHARB2EQSbaAdco1FtEREO59jn3I
-	 HjUlfXhL6GlpW4iaXvavWU8cQcidhrCWrMUmViUp6e/ur8jDvtoRHyk7p7d6zqEVCy
-	 OyoGkF4xISpoF7NpL+KHQLJglJ/9057krvQ2nkB1GGrm+6JL5csEBEJ9rwT0wiNE6x
-	 o2hKcgIyXKd6Sv9k+uqhc5rJkXkY4NiWeQmGe+FMZ2TRZEiSV8aYglSw1Tj3Ck1WHs
-	 aBlIQuVXxm6sseVNa/dKimyRudnoIIvjs94XrF3qG62qEzxHmPK26JKvt6WSAMAvDT
-	 /8B8lQppy6kcg==
-From: SeongJae Park <sj@kernel.org>
-To: Aaron Yang <yangqixiao@inspur.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v1] mm/damon/pa: initialize 'folio' to NULL to prevent use of uninitialized value
-Date: Tue, 30 Dec 2025 23:00:22 -0800
-Message-ID: <20251231070029.79682-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251231055737.73325-1-yangqixiao@inspur.com>
-References: 
+	b=yEAdEh4dW4XI3YkzDZIMMdqxMcZE/uGf//sUNzT88RNDrr9o013hsPn1J7e/px7XR3zlqz
+	Mq+bf6s4jaqg/TfgUQiwkDvcn268h604P0sUBirju9JfQXWmlpJC5ke50UYT+Sm0FBQN6Q
+	hhiez6/PV1O/PVxJCg/B1RCwJ6TM4Ns=
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-64b58553449so13138642a12.1
+        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 23:42:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767166923; x=1767771723; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sBxwhR+DOUWySSn1nkmmHXTpgGimoEMqTlfeKUVI3Ic=;
+        b=HjwTxlhKnnycgXGiJnvhvur9ESXysJ86kjeM/vv7dSSW0nzMURnmlJYLiEDdVlkCpN
+         ZIiGntfUFzJMY7rd8Hm0Mw410bRP8DMPR/U1f9nJMkYn0wNg1NS4bhX2PR/Ft9Qj1Imy
+         vDYBbi8EAOVF+/5r2WQGZdsdx+UPZrOne6QGHc/TiD21dAfbjZjYKIxnKszK+j02tnYB
+         W+jmFxYHarcFPRLkq/chAy1A5CrQ8h4MX8FjTpIzMpcV90odwpt2BJ7uojAbUt11JRN5
+         keifiRjVTMl7YNZkpeC5jTIpKNBjrfJaY3cw0tuLm+CrBdvUJBVgCAAMXq0djOoO4udP
+         9DMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767166923; x=1767771723;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sBxwhR+DOUWySSn1nkmmHXTpgGimoEMqTlfeKUVI3Ic=;
+        b=GzTOe1C3qH+I69zLKtErhVidVp0DVVMJ+FbjwpqxwOn5noEz5G3k0/B+lxKt08b+b7
+         LaA/B8iM1eVjX54ktL3wmIHTSoTlswt9Pr2Q66iFtvsVH3UKuqekzB4ql6NO0/YxIdf0
+         iNiP692mvN2FHtLDnxYmIJWGoiFdKBcOxBcG5zt2empBaARKvSSUQJKnf748vupF/2dj
+         goEEG625xuX+7el6ovwGGlfqnE3GyKreQmYuHrlmkL0tzJ0RZtq0pfSwzzFNUm577MXd
+         fSuPGmAW5RSiFfsH+4CBFoDo5p+h3D5UxiHJpeP9qCrRY9bdfNASWfvoAEeJTXb4p0rK
+         3JEw==
+X-Forwarded-Encrypted: i=1; AJvYcCXAyrZy7sQ7MKCrVIGhzv/Zagc46XBCikLG02NtN66QDMUi80dYoUCvMTBRSYxctYH1yAF0wZYU/g==@kvack.org
+X-Gm-Message-State: AOJu0YyLu4CCaEanI+Ol7jXLh/Z5qCKbsgNRalcD47x9oJf5KwED+Hn9
+	2369vg2X7+5vX85nddD4rEsZCcEnym9A3pIMRGdfNLXNHumqij5QAKOjXjqbk9LNtg==
+X-Gm-Gg: AY/fxX5/hU0VworZ3PVdwT+LADObDAgJUk40N8Cpt7/oznv4Ikf1Fv4XfQ0bSrTKKIN
+	cS3ZknYGoxsnZG5UI7kjizZMJ2krvDRe7nGfsipfy9dgYSX+lhwZqzFGRydhW4+hvSBz2nw14Me
+	l5/LcUgJwnmwH72NPPuG+/Ua/VZcbp/c1526vB77G0mFZeXESRLcESyIf89OvnuoGuhcffdy6c0
+	XyQEI4yMymW3rHpcEG0DXEjgXfKaLwNbfXtKgLj6IUpPFhgYdM8TUI8KEf6mnB1QntGmku55e6C
+	zQ6kikacE/+Q+H4NSz4KMqVvvXpO17ra+FtAmy8M7bUOdVPNoqw7CZRDsuyGjZ1yC/85+I5I3zw
+	vp7iVa8wK9/9Ol9fChjZ5IhMt6v4Odik5Dx15ntm2ehys5/k78l65SZTQ7sE25Kr9lnWiYQ3CFn
+	+F48Y3m0DOHERpDfzMiGZT98JKyH2d9nkD8trAAs1oZ+Ee5AKRy5LXDQ==
+X-Google-Smtp-Source: AGHT+IG1aRB+d3WsL8zwpg57El7FgfpDZaQb4jebLM9i908vaeSLRjskbvtS5lkEflNe6+T45D2gZg==
+X-Received: by 2002:a05:6402:5188:b0:64b:83cb:d93e with SMTP id 4fb4d7f45d1cf-64b8eb6194bmr32320732a12.20.1767166922985;
+        Tue, 30 Dec 2025 23:42:02 -0800 (PST)
+Received: from google.com (14.59.147.34.bc.googleusercontent.com. [34.147.59.14])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b9ef904bcsm36693514a12.22.2025.12.30.23.42.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Dec 2025 23:42:01 -0800 (PST)
+Date: Wed, 31 Dec 2025 07:41:58 +0000
+From: Matt Bobrowski <mattbobrowski@google.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Subject: Re: [PATCH bpf-next v4 3/6] mm: introduce bpf_get_root_mem_cgroup()
+ BPF kfunc
+Message-ID: <aVTTxjwgNgWMF-9Q@google.com>
+References: <20251223044156.208250-1-roman.gushchin@linux.dev>
+ <20251223044156.208250-4-roman.gushchin@linux.dev>
+ <aVQ1zvBE9csQYffT@google.com>
+ <7ia4ms2zwuqb.fsf@castle.c.googlers.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: dgakgcgn7yh6u189wz5g8r8tg345k5sn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7ia4ms2zwuqb.fsf@castle.c.googlers.com>
+X-Stat-Signature: st1c846ymmb9sy3hxzdiyzfbu6xx3cgs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C1C5140009
-X-HE-Tag: 1767164433-670034
-X-HE-Meta: U2FsdGVkX19KQNlCZTDn1+blSyIXP3GYgo2bkxYETn9DGkSGPo+rToS5n851KX4247Lv+Y41AmfpSlIejjVrEcK6co3zOMrclo09hYz+2ZKHZnQ8MJTPhJoPSIkgcC4XfugZ8fOczjv5wm8yVDzkqCryERNdZyh8SI5e+OsNfnsAEKtpkVdMN15dplgserARiwkpTpbkcm0nH0kpdS3m0xdFriOaDVJVLNXrOxCE0pJWiBg3AL/hCb8P0bxEUrjheCJG0wbXelSFHhbxJl7R6V+FBmHQLfv8V6lQgwXZ0VdRowx2SCU2lEkWL1ARysV+nTpusVU2XI9+c6CmK+o8o3QWMkmpxBl8/wpOVo6xcgu9ciANtDHfbXcxltZlCKWDTb0AgVZ0qIV3G0bX80NQiViUGcaQFLQREKKiugFXF6gWiIi7JonAC/FurO4WONdaeC8KRtpqAekIgH9eNPn87KlMDM0ieJavERZ423h2E6cIQuSV5+rxkOjFVbHwUpQs50GF1yzVWmaUD0ouBRbi4Sd0PBPzoYING5LJzS5RqlQFNcPdolZFd0t3Psd1cQEexgo2nv00tZ9aonHp/DMuq4OnUFtMN8zGQHedH6u0tZGvQgy0vB2TBE4nMNkxcxnNnNFdWGzCdPfEvPN5Y6TwW9PiWWtNHpaFw/J2zakkh05HI2GrJ3Cecae1N4RWR92VgRZPol0waBvORadWEMdjvRe3IX3+vfRcaK44lm/i7/T6UA0zIv4tmK8mToL21/M4pAcfbd788AivDiV7Yt6fO8jiIIcDezbkaRB1E9ZFz7N4KENFOKRyS14rEzH/Hdhjr1BW3IL28hqdGLItTRMIjMou8MemTSZqThlTsg305Zciovh4ueC5YfDwdccvCXDoh1Zhr1IYdE61gyGvRX0a18laxtovg0q2ZAh8Gv6PFRWjnzBSqH7/hVNFLtLCjRls0s0eKjupBJ9LfqHUZ4G
- dt/OZJv5
- xayWd6IHZZg/ATtUu/2E73OYKJ5EqcWmH+clqUSdDiPJblanWjsUluPAaSlReZXnve1dmTXyPDR20IQXrWlh3qpwdA0mwvrGgjAhDEkv5G8Ymqt2K+OM1SXTOP5cZtK/vFcHJTjTKBiuwRDiNj5aOu4kADdmHD4ZlIiVsiia+ZBIKycDIbFSsJine+LtuOD2JKWjdko7NgZmKiYCzUaFfOCmECgFE1ZmVR0KKCmwIudJu3vGTNUyY6LAGu+5PiX52yaz/t0yNnCqSEOBHc/cVY8kThmZBnBFZ6xW67RMnHhFeAyE=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DEA3980008
+X-HE-Tag: 1767166924-274396
+X-HE-Meta: U2FsdGVkX1+NfuJ2C2LqPEtzimp8FLuFiiZS705d6wluj+/V59x0jQIYQxCTyt0z09Jo2EFs3VNxc3bRxvCeW03bZUJ6pyHEXFachOB7e/U41mmGLQvVRmDbfHtzFDruLLv9jkHF8GtFqev2hTSY9NAi/Ll1jjPWtdZJ2zsLaFgcjXfFIishvb/RrGIhnX+zeAdHJhai2CnJdROL0bHeJ9fkVzcrcZM6P93LIKL0VMPb3h/jXS2Qhz/KNUxJH2Ia6TgBPag6AwTpcSr1bKWWYNkJWHAKoWXi6vyD432qqoewB0esNzaK70YLJTZm8zWMGkVS0b0m2k3gJDXcWTs4bMDnKwqAtAEArtz8OuQnYqqTiWcHaCHL7lhABTamJZhZfv/99XYyMuwo3fprLi93GN00Qg+XLLPauilVdcilcrXsiJ4os12j8aY98r92DslUPasYQrhhO3s2nAr/dfFAjdUuFnct70sy0prab/42PBlXbQD+pxRcpGsjnOFhZqukZZfenMnavW8RgoUWwfgElrLpF8QYJA0mQbJHFxi+tbSCu6lQ1p9wYjVsKGCZ/zm81VpT3bSyN7EnUoidwk2ycW3aaH/n0FbFbxycqmy6YjH4BpSe3JTzIhsceHuNy0jk5LARx+1L0AEPo5T8M+KEhxdAPfsC5QsFXeNE+ZlMrEuypukpkdlOy6NsCLmW18hnKtH8K0jtMgteUC4FqfyFMzljp3f3VlhEaK2nlCcT6an34i8c8n1P8Yz9A4sc/YRmYkG0BB5xIIJ8ZdzlIacQwebGHxnEUuuERjDY4YR2LoORyTTDo2wOJ0MIiwXxMQfAuaOsqHsg8jT8yFNvtz/00inGBb22tmXj13qilnZ3Ye2dsi8tFQ+e1gQHtu5cz0ZjXquI9DH0K3KsoX3qGukR7C+a1p2RkCMsbW57h1NwV6kjTZ8klQSf4XVXNqirQ8OmwdYCXwBbD+R5lm+H6Vh
+ JIaxDupo
+ MyX/4OJfW/LMLmb9AsKTD34b8jsox6U6L1rU85U82+Yt9ELFhwteXGBMpEYLhZwSiG8Pn
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,62 +127,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Aaron,
-
-
-Thank you for sending this patch!
-
-For the patch subject, let's use 'mm/damon/paddr:' as the prefix of the
-subject, for making it consistent with other past commits for the paddr.c file.
-
-On Wed, 31 Dec 2025 13:57:37 +0800 Aaron Yang <yangqixiao@inspur.com> wrote:
-
-> In damon_pa_mark_accessed_or_deactivate(), the local variable 'folio'
-> is declared but not initialized. If the region [r->ar.start, r->ar.end)
-> is empty or invalid such that the while-loop body is never entered,
-> 'folio' retains an indeterminate (garbage) value. The function then
-> unconditionally assigns this uninitialized pointer to s->last_applied
-> (line 239), resulting in undefined behavior. Subsequent dereference or
-> folio_put() on s->last_applied may cause crashes or memory corruption.
-
-Nice finding!
-
+On Tue, Dec 30, 2025 at 09:00:28PM +0000, Roman Gushchin wrote:
+> Matt Bobrowski <mattbobrowski@google.com> writes:
 > 
-> Although DAMON regions are typically non-empty, zero-length regions
-> can arise during region merging/splitting or due to address unit
-> alignment — making this path reachable in practice.
-
-But, can zero-length regions be made in real?  damon_ctx->min_sz_region
-disallows DAMON having regions of size less that it, and all DAMON API callers
-set it at least 1.  That is, DAMON code is at least intentionally designed to
-prohibit zero-length regions.  And many parts of DAMON including
-damon_pa_mark_accessed_or_deactivate() are written under the assumption that
-there is no zero-length regions.  If there is a case that allows zero-length
-regions, all such parts could trigger problems.
-
+> > On Mon, Dec 22, 2025 at 08:41:53PM -0800, Roman Gushchin wrote:
+> >> Introduce a BPF kfunc to get a trusted pointer to the root memory
+> >> cgroup. It's very handy to traverse the full memcg tree, e.g.
+> >> for handling a system-wide OOM.
+> >> 
+> >> It's possible to obtain this pointer by traversing the memcg tree
+> >> up from any known memcg, but it's sub-optimal and makes BPF programs
+> >> more complex and less efficient.
+> >> 
+> >> bpf_get_root_mem_cgroup() has a KF_ACQUIRE | KF_RET_NULL semantics,
+> >> however in reality it's not necessary to bump the corresponding
+> >> reference counter - root memory cgroup is immortal, reference counting
+> >> is skipped, see css_get(). Once set, root_mem_cgroup is always a valid
+> >> memcg pointer. It's safe to call bpf_put_mem_cgroup() for the pointer
+> >> obtained with bpf_get_root_mem_cgroup(), it's effectively a no-op.
+> >> 
+> >> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> >> ---
+> >>  mm/bpf_memcontrol.c | 20 ++++++++++++++++++++
+> >>  1 file changed, 20 insertions(+)
+> >> 
+> >> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+> >> index 82eb95de77b7..187919eb2fe2 100644
+> >> --- a/mm/bpf_memcontrol.c
+> >> +++ b/mm/bpf_memcontrol.c
+> >> @@ -10,6 +10,25 @@
+> >>  
+> >>  __bpf_kfunc_start_defs();
+> >>  
+> >> +/**
+> >> + * bpf_get_root_mem_cgroup - Returns a pointer to the root memory cgroup
+> >> + *
+> >> + * The function has KF_ACQUIRE semantics, even though the root memory
+> >> + * cgroup is never destroyed after being created and doesn't require
+> >> + * reference counting. And it's perfectly safe to pass it to
+> >> + * bpf_put_mem_cgroup()
+> >> + *
+> >> + * Return: A pointer to the root memory cgroup.
+> >> + */
+> >> +__bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
+> >> +{
+> >> +	if (mem_cgroup_disabled())
+> >> +		return NULL;
+> >> +
+> >> +	/* css_get() is not needed */
+> >> +	return root_mem_cgroup;
+> >> +}
+> >> +
+> >>  /**
+> >>   * bpf_get_mem_cgroup - Get a reference to a memory cgroup
+> >>   * @css: pointer to the css structure
+> >> @@ -64,6 +83,7 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
+> >>  __bpf_kfunc_end_defs();
+> >>  
+> >>  BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
+> >> +BTF_ID_FLAGS(func, bpf_get_root_mem_cgroup, KF_ACQUIRE | KF_RET_NULL)
+> >
+> > I feel as though relying on KF_ACQUIRE semantics here is somewhat
+> > odd. Users of this BPF kfunc will now be forced to call
+> > bpf_put_mem_cgroup() on the returned root_mem_cgroup, despite it being
+> > completely unnecessary.
 > 
-> Fix by initializing 'folio' to NULL. Assigning NULL to s->last_applied
-> is safe and semantically correct: it cleanly indicates "no folio was
-> processed in this invocation", and callers are expected to check for
-> NULL before use (as per common kernel practice).
+> A agree that it's annoying, but I doubt this extra call makes any
+> difference in the real world.
 
-For the above mentioned reason, I'd like to fix the code that allows
-zero-length regions, rather than making only this single function safe from the
-bug.
+Sure, that certainly holds true.
 
-So, if you found a case that allows zero-length DAMON regions, could you please
-share the reproduction steps of it, or fix of it?
+> Also, the corresponding kernel code designed to hide the special
+> handling of the root cgroup. css_get()/css_put() are simple no-ops for
+> the root cgroup, but are totally valid.
 
-If you didn't find a real case that allows zero-length DAMON regions but was
-thinking it might be theoretically possible, maybe the poor documentation of
-DAMON has confused you to believe so.  If that's the case, how about making it
-clear on the documentation?  Specifically, I think damon_region kernel-doc
-comment in include/linux/damon.h could be a good place to make this explicitly
-explained.
+Yes, I do see that.
 
+> So in most places the root cgroup is handled as any other, which
+> simplifies the code. I guess the same will be true for many bpf
+> programs.
 
-Thanks,
-SJ
-
-[...]
+I see, however the same might not necessarily hold for all other
+global pointers which end up being handed out by a BPF kfunc (not
+necessarily bpf_get_root_mem_cgroup()). This is why I was wondering
+whether there's some sense to introducing another KF flag (or
+something similar) which allows returned values from BPF kfuncs to be
+implicitly treated as trusted.
 
