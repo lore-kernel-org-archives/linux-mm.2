@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42F58EE57FA
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 09:53:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B4BDEE6429
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 10:57:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 792FD6B0088; Wed, 31 Dec 2025 04:53:12 -0500 (EST)
+	id 9F7FE6B0088; Wed, 31 Dec 2025 05:57:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7166D6B0089; Wed, 31 Dec 2025 04:53:12 -0500 (EST)
+	id 9A64A6B0089; Wed, 31 Dec 2025 05:57:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 622726B008A; Wed, 31 Dec 2025 04:53:12 -0500 (EST)
+	id 8B1DB6B008A; Wed, 31 Dec 2025 05:57:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 524E46B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 04:53:12 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D095FC2C93
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 09:53:11 +0000 (UTC)
-X-FDA: 84279302982.08.0DEF3EB
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D7CE51C0003
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 09:53:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kA0qCy5s;
-	spf=pass (imf20.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 731BC6B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 05:57:10 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D40B31609F6
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 10:57:09 +0000 (UTC)
+X-FDA: 84279464178.23.AF34B4E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8D33540006
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 10:57:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kn8DAoue;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767174790;
+	s=arc-20220608; t=1767178628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wl7HEoZMUzGsbQepWMVSfO0JV4YjBapS0e5mq4W7b+4=;
-	b=K1sK9smldBShtXf000EQNmhBNgxOfFC3qZKoYLLo8HhsJd3G+awsitJPeX9IDvgHUyYF4B
-	GBesQuHoBTabYCpl9arlp6y0hSICYq3/jtlgPYgeFZcabooEA9QT4oALjq9In8lnQYRcYI
-	k/8c0OJ2yHh10fay00RXJBytBdk5JK4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=q7mAJA/uizHiRyT1NRXXi4nDKUV3moR/EtSIypc37NI=;
+	b=X40iBWvTVdfKrhuImzbcA4s9Gr9jWuMqOMG4OWglz1DkFnsOGHOmQI4hC8gUHD3arzTkBY
+	E0otQ3LTyDk6GvOhwx4qMZj1tvH3iN8CLrVAKYn0X+tEJ3O5zyfvDhbyDFk8CAU5ABW/rz
+	r6LUDHB1G/lUl9rGQ1OGAg6o6j3lQAU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kA0qCy5s;
-	spf=pass (imf20.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767174790; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kn8DAoue;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767178628; a=rsa-sha256;
 	cv=none;
-	b=heLyEPu0nZ9SQGjhcrG0y7igEGgbMf+JVqJmHusXsx7paXJdRmRLvA41zjxyq0I28NCz6E
-	ONLH3VGahFmSyid9jZ3toaqz3wKD8UFLUQnu2X+pgjPXOOdlM2JRiPpp4APHsIdYXFh0Bs
-	gpCMMtIT1IkBzcUcqH76zC+htKr+ttU=
-Message-ID: <a3a60bbb-70b7-49ed-abc6-937e6c13d681@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767174787;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Wl7HEoZMUzGsbQepWMVSfO0JV4YjBapS0e5mq4W7b+4=;
-	b=kA0qCy5swxT9/bUHnpErzkaTUIfgXxao85n1AotjzFLMJUomMkCAQjLXpZ4B+KRO9Tbq2L
-	WU+1OAl5FxBAuCo1I3+CkOeCjPhLEPbag/rozOxh+CRn8kHOwBSKIYK4ige8l1o+gK7jtK
-	Vz5BljGIGicYjbCKFeIBggxM5nn/wOQ=
-Date: Wed, 31 Dec 2025 17:52:57 +0800
+	b=rW2+9Zel9hxRBtInPxjxaBmEsMIrFc+DsXhJCMRDvbr7y3KrbZGdM+oV5WLgjVJBfZm9hb
+	0OTK+0WHMshxWTo1ZkSHPzWSvWLVQUN10wFQiiWGZOYx5P4R+Wp2zxkriQyuj9lr1ZKW3N
+	zn3GlBlYTtSF57oiJ3wo28094POttPw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E7C5860008;
+	Wed, 31 Dec 2025 10:57:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF07C113D0;
+	Wed, 31 Dec 2025 10:57:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767178627;
+	bh=Md5yS/VxEgsDtseFUiUdjBGwg71pDr/MrKSVCAcacM4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kn8DAouex1gbnLOc/2JeogKfAy+YJMlixd9i4X0NdW1V1EKL9tsFSSbVBkp6r6ytS
+	 XLYk9J0tVZ6HXH3qdy/V/gm7NDXgehDYZwTBFKwDKuDNwxh/EfePwil12YVbH+itN0
+	 Li5neF9ODRvdhDmMmhkHO06LEWd8/d+n6knh7g1f6Zuivd4uD7TM+MWyzriCKMuAF8
+	 sMK5MECbz3RfpruLY9l902Kf6ne8FzdrG47/s5gDeZTgEd0aV9leLEJOHZf8lb/RR7
+	 O+UBGfY0pAoM1IKj2T3htNvgK+yMhA2X6oqleYSh3JPVIjCStO9zJY6G/kh30q34Ms
+	 6SYZazAr5ZTRw==
+From: Mike Rapoport <rppt@kernel.org>
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	hauke@hauke-m.de,
+	jelonek.jonas@gmail.com,
+	markus.stockhausen@gmx.de,
+	linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mips: fix HIGHMEM initialization
+Date: Wed, 31 Dec 2025 12:57:01 +0200
+Message-ID: <20251231105701.519711-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 7/7] mm: make PT_RECLAIM depends on
- MMU_GATHER_RCU_TABLE_FREE
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- peterz@infradead.org, dev.jain@arm.com, akpm@linux-foundation.org,
- david@kernel.org, ioworker0@gmail.com, linmag7@gmail.com,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
- <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
- <20251231094243.zmjs7kgflm7q6k73@master>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20251231094243.zmjs7kgflm7q6k73@master>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: nykufjhkg9ifg9ydfqqzhjgpbdiyeawn
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: csroxjh87acntaqgsh5it1hsoijy31b7
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D7CE51C0003
-X-HE-Tag: 1767174789-456259
-X-HE-Meta: U2FsdGVkX1+GFa7AxTs2kcuErBGXPi+RhzGNhYwNIS2si8K7uldOwGPCmbDkkjRqH3rWw4j/4smLgGz1E+XKzsckahtu4wDQY/qL3bzfaPM+c7skOjDD+Y6j/LWyANKo2pPB1pC2LRLD2Yu2rQFq4oHR++mqEXZZ+hKwxoz8rnnKhRno671TUbh6VCcCIYF0Pxy8u6FhpUk5NQGy5+Mz0YYi4yjURA/7eKMEGibN1HrQzYELa/sX5PGYBhrS+Jk56RXNvcHq/j1tf1gs2PAjgyAyHm6F1sGKGTFoZqW2CZs+22QwFtr8RtcVczlbwTODobTZteyBY9b7KEx+crrT3qKDpK2cwK0mxCA/ewawShCRTCl7OfmvhezWQEx1r1pc9sE5b2Y/yFpuV7o5brEsElubBl3gFamFKtjJZW3xFm3mDanR/FBDnOqotq7PDHksBnpR6K+jRQK2K1VA61EOh5KzMwTm2JBiCrSFJ/ubur2O/WXTdLqTynDvrgYziUkw31OtkZg2YLKs400GbbY9PTVjvyDBsAvEVEj1NHosfM0Uq7O0h6m6qESojizm73yuneZGdY1qYlYyCd276oN83+ccI07TnGCHH8WMsymNZpPR1m0ND4WDKUH6sMCMlpLQfzef0aCHXlbfZr9uW7hL9KW1lBXrwelUCs82dQnn8GEPUQ5vxVTMJdzPCIUzVLM81nVKcZeETYqvxK7vk8eO5LJOJnQZW5kar1sHkQ2PSCBoTbHUwNg0NPBa0uh1B+ukjkmmyMap0g6z/+ky+5UZeCQogKTBVUeVWFngpySFStgpdDHMWCyFMbR+Ab5Tz5W+2h/sBqriY4uVKRh/jIPBirAwb2QSCEotfdF8c7Mf0yWC59UTVtpLJEFQ9FX5naBnu3eoX4rkuY70SJL6WXU5gm6swn0REF03bM/AhB7pGwhQ7kbugOO0JyOue0k0/HNDi7iZOiDreHqQwCsw/kW
- PpBKj65b
- LL/hFMXQzFidxyfQ=
+X-Rspamd-Queue-Id: 8D33540006
+X-HE-Tag: 1767178628-391124
+X-HE-Meta: U2FsdGVkX1+F49Nnb3AclnTdae6F6LeQdXPNpRRqdlGmB0sgy1NnDFk7PMFerZiuX7x0qTb4+hdrzzyhhMasBbqZAMButlTIt/isFB3JpmnB5p3RqybWZjmCQvIAQZ7J6mns1OfyqKTmFqbg1Rey18pjFey4qb73lj0ej39V1r08cX16V33Z6Kd0fZK+kXPM8CRiJ8OA6e1CG5OoFBJWXQ0P6UXhbhxNuk8/QImVKHZWeEmCKYKUFZjxj2h9jy1VH4RLGPsPs+hdaujFbZQdnVbVkaF2uski8+QaZv4frSx37xzufE75u1rV6AGjzjR+2UYPBKsajDxJXw/1v3EQvadOPYOV8A5NBFefv5g37skTE875AACkNrF2RGvqgNeM+J+zAi54yqO+noSNYAoLVIs6bAYJSA2Q2jHzXI0ApsIgybmISgdTOvxqlyU9XLRWeZG6Gbt/z3fQxHPAdjGdZyYzs9ZZooG+c34cG0QfBxtF6jHTnvGVajuKn1aT3e5o3nHPXOEqOVsQOtF4OCgXvd98qg3zQ7a7YshLIf2cKEBEpqJLcMoTKozdLD1FWRgnFcx8TKAlAWP43MVZbIphYUi7E97cthzm6E3G3OLQHb25MxvPF0OOKIq090cmoz9OYQAvs/G4yq9NP5KMmOFijOhgqj19u5kgxCPDZOe5jsm1rmCQaBlAfQscI6PTc9A8kOexCscUG7hTQFlbtlyA62K5XqdWXGaRBXUonLqUZBWWlVK22fPcaZ6NNqpd26N3AU8IqYawMvh+ddsMN9Ji+VfIoUktthWnIS3rrpBAI0GdPtv2KBtL2WcSPrQCAOH3bngPSFcSH69KKEWBEPLiuUUUaNYMB70pVQuXWan6WSKbneRbqMn5ylXO1mB3m0gNcvaiRzmlN/5ADXaENI58SkivVwrjCLnOqTNRX7YvPEc1iX62/cge4o1LaseBc/DEHF+5sj9Suc9ZKvo+4oo
+ 64co3MON
+ vGiS8jPjk19zG0mdD+ZtL67zMNbv3wsP6Q5lS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,80 +97,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
+Commit 6faea3422e3b ("arch, mm: streamline HIGHMEM freeing") overzealously
+removed mem_init_free_highmem() function that beside freeing high memory
+pages checked for CPU support for high memory as a prerequisite.
 
-On 12/31/25 5:42 PM, Wei Yang wrote:
-> On Wed, Dec 17, 2025 at 05:45:48PM +0800, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> The PT_RECLAIM can work on all architectures that support
->> MMU_GATHER_RCU_TABLE_FREE, so make PT_RECLAIM depends on
->> MMU_GATHER_RCU_TABLE_FREE.
->>
->> BTW, change PT_RECLAIM to be enabled by default, since nobody should want
->> to turn it off.
->>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
->> arch/x86/Kconfig | 1 -
->> mm/Kconfig       | 9 ++-------
->> 2 files changed, 2 insertions(+), 8 deletions(-)
->>
->> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->> index 80527299f859a..0d22da56a71b0 100644
->> --- a/arch/x86/Kconfig
->> +++ b/arch/x86/Kconfig
->> @@ -331,7 +331,6 @@ config X86
->> 	select FUNCTION_ALIGNMENT_4B
->> 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->> 	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->> -	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
->> 	select ARCH_SUPPORTS_SCHED_SMT		if SMP
->> 	select SCHED_SMT			if SMP
->> 	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
->> diff --git a/mm/Kconfig b/mm/Kconfig
->> index bd0ea5454af82..fc00b429b7129 100644
->> --- a/mm/Kconfig
->> +++ b/mm/Kconfig
->> @@ -1447,14 +1447,9 @@ config ARCH_HAS_USER_SHADOW_STACK
->> 	  The architecture has hardware support for userspace shadow call
->>            stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->>
->> -config ARCH_SUPPORTS_PT_RECLAIM
->> -	def_bool n
->> -
->> config PT_RECLAIM
->> -	bool "reclaim empty user page table pages"
->> -	default y
->> -	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->> -	select MMU_GATHER_RCU_TABLE_FREE
->> +	def_bool y
->> +	depends on MMU_GATHER_RCU_TABLE_FREE
->> 	help
->> 	  Try to reclaim empty user page table pages in paths other than munmap
->> 	  and exit_mmap path.
-> 
-> Hi, Qi
-> 
-> I am new to PT_RECLAIM, when reading related code I got one question.
-> 
-> Before this patch,  we could have this config combination:
-> 
->      CONFIG_MMU_GATHER_RCU_TABLE_FREE & !CONFIG_PT_RECLAIM
-> 
-> This means tlb_remove_table_free() is rcu version while tlb_remove_table_one()
-> is semi rcu version.
-> 
-> I am curious could we use rcu version tlb_remove_table_one() for this case?
-> Use rcu version tlb_remove_table_one() if CONFIG_MMU_GATHER_RCU_TABLE_FREE. Is
-> there some limitation here?
+Partially restore mem_init_free_highmem() with a new highmem_init() name
+and make it discard high memory in case there is no CPU support for it.
 
-I think there's no problem. The rcu version can also ensure that the
-fast GUP works well.
+Reported-by: markus.stockhausen@gmx.de
+Fixes: 6faea3422e3b ("arch, mm: streamline HIGHMEM freeing")
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ arch/mips/mm/init.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-> 
-> Thanks in advance for your explanation.
-> 
-> 
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index a673d3d68254..8986048f9b11 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -425,6 +425,28 @@ void __init paging_init(void)
+ static struct kcore_list kcore_kseg0;
+ #endif
+ 
++static inline void __init highmem_init(void)
++{
++#ifdef CONFIG_HIGHMEM
++	unsigned long tmp;
++
++	/*
++	 * If CPU cannot support HIGHMEM discard the memory above highstart_pfn
++	 */
++	if (cpu_has_dc_aliases) {
++		memblock_remove(PFN_PHYS(highstart_pfn), -1);
++		return;
++	}
++
++	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
++		struct page *page = pfn_to_page(tmp);
++
++		if (!memblock_is_memory(PFN_PHYS(tmp)))
++			SetPageReserved(page);
++	}
++#endif
++}
++
+ void __init arch_mm_preinit(void)
+ {
+ 	/*
+@@ -435,6 +457,7 @@ void __init arch_mm_preinit(void)
+ 
+ 	maar_init();
+ 	setup_zero_pages();	/* Setup zeroed pages.  */
++	highmem_init();
+ 
+ #ifdef CONFIG_64BIT
+ 	if ((unsigned long) &_text > (unsigned long) CKSEG0)
+-- 
+2.51.0
 
 
