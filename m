@@ -4,203 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C91DEEE645E
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 17:03:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C708EEEB565
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 17:32:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2336B6B0088; Wed, 31 Dec 2025 12:03:49 -0500 (EST)
+	id E04FE6B0088; Wed, 31 Dec 2025 12:32:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FDA36B0089; Wed, 31 Dec 2025 12:03:49 -0500 (EST)
+	id DB2DD6B0089; Wed, 31 Dec 2025 12:32:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E0486B008A; Wed, 31 Dec 2025 12:03:49 -0500 (EST)
+	id CBE3E6B008A; Wed, 31 Dec 2025 12:32:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EF1DC6B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:03:48 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 73CBFC264D
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 17:03:48 +0000 (UTC)
-X-FDA: 84280388136.28.2BD4FD3
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011060.outbound.protection.outlook.com [52.101.62.60])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 82C07A0011
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 17:03:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=fo+Vhx8j;
-	spf=pass (imf15.hostedemail.com: domain of Felix.Kuehling@amd.com designates 52.101.62.60 as permitted sender) smtp.mailfrom=Felix.Kuehling@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767200625;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B91D36B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:32:32 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 467458C518
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 17:32:32 +0000 (UTC)
+X-FDA: 84280460544.27.F903302
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5D65840009
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 17:32:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NOrYELuO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767202350; a=rsa-sha256;
+	cv=none;
+	b=XgC4/4NExUwbS6k/UGrOMvBnUdlY2zDQTNCsQ8I4HHb4+IYmbFL7ySPTG6W3JE2MnmtBx3
+	wX/1SlQ1vL9jsVnNPkq7drD75sOiZzjx+XouuerjznpYRJ78E0K82TfF/1SoeKwayD6DZd
+	5eNyblYW2vHgfETAWgHwX8w/UmoPAls=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NOrYELuO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767202350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iS8t6yKIjPtbhakV7RG7h6kXVh/HaGNDnuA9vrFFUAc=;
-	b=psAYmxW2A6BGlYq5hxJnuKpRl8eUAGNaad/R9Yh79Qr1g6cKRWFrhMiW6prH4+Y8PJjt8L
-	KRDTtw1xtNkrDkQN1WSqIXm7J1XU5Yc/WI/yaIxAXbos1grWbvxBtLQ5+CXiBGxGMptnna
-	DIfE8xrwEf7C2QlG5527tTLT/k5PkI0=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=fo+Vhx8j;
-	spf=pass (imf15.hostedemail.com: domain of Felix.Kuehling@amd.com designates 52.101.62.60 as permitted sender) smtp.mailfrom=Felix.Kuehling@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767200625; a=rsa-sha256;
-	cv=pass;
-	b=oOyruAgy7CuO9+ZnJmR3ucdv0Ir2vcuMgHcEZ65kZ652Nl0fxfDqd/J9dHXnvOvCGCfis4
-	WvzDuvfhW4TPVVRYZSMTurASkKs7YhpLr6KsWQ3fvge/I1IYZLV067/iDK73y4NA81AWri
-	maH7ji8qVz+c6Y6hjEhRo0Naz3sRFtE=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kQtv3rfVJMW8QGoDHsHuf5f+Bf5FuAxexALyhVV1H/4PyPTfmktNhursZRfK72yaTJKWN1eVRSOy7YzyLRwe+2myLfBfaisN+2Q2Lom2HVV/39c5eORhiTR36CJgakeoVRvQVLaMyxq9aveKZ1GNL71lMuRugxd0NcXOZn0tCTaIxrMf9ITKqtR4KR/FpwFuwHkxHTarWXIALFuWJw5NFHWD4HnsYIMOA1hmoxSYLvtIjjPNN8uBFwMvmDvrd3Ns93LLPCa+bO8O+mmpNRNAvE4YVcoyE0mvg6EnNz0C9MRkZ3AgClfemyXEEsSYfpgbVklWh6wpiT1wPvoGKQEgNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iS8t6yKIjPtbhakV7RG7h6kXVh/HaGNDnuA9vrFFUAc=;
- b=CMYpzR8Xdo/OALg1PVHTK19T4+MPNUPUCaSRxKt6pMxtevBQmPUhFf6u6YWDBJsfebJcXHfQlXph10Aef2i0p7AsXsPtrYf9srqBZp6M2mMFAPxFCmWRlB9gqty6ZDhIntQsK0gJ5QyA6e4kFR4tbOoG30PrjMj4v+nS7TISU6uTSeyEkRIT7JAhDIR67FyV4TKFL2tgbqZvW0XpLZNQaqZNj9+fM3s90a6wS5LoCxZk31OFAW+8y953qxYSSJj8UObNXD9xoLWj7pdniA2YcUOVzfHggAZvUPr9Xr1i+VCqssXKJoHkgxTncrevtxvUE3Mqvtj1Zup7D2/hY2BIcg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iS8t6yKIjPtbhakV7RG7h6kXVh/HaGNDnuA9vrFFUAc=;
- b=fo+Vhx8jzmwIc6QadjpYERhRbncc3QdHEv7xiN1rCimOBHa6KUokBV/kny8g9SbvSimd/Ws1RZoKXbS/CbWvtVDVSv+nqHwd4BU4uFWYR1DuToSEVppHSloqVsY9OhbUppCXPaIG6IpAbk+rmbkphtFFeAvQGj6OthEsut9Pbgs=
-Received: from BN9PR12MB5115.namprd12.prod.outlook.com (2603:10b6:408:118::14)
- by SA3PR12MB8045.namprd12.prod.outlook.com (2603:10b6:806:31d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Wed, 31 Dec
- 2025 17:03:41 +0000
-Received: from BN9PR12MB5115.namprd12.prod.outlook.com
- ([fe80::9269:317f:e85:cf81]) by BN9PR12MB5115.namprd12.prod.outlook.com
- ([fe80::9269:317f:e85:cf81%7]) with mapi id 15.20.9478.004; Wed, 31 Dec 2025
- 17:03:40 +0000
-Message-ID: <d489ebb2-89c7-44e7-80eb-53b5fde8cd39@amd.com>
-Date: Wed, 31 Dec 2025 12:03:37 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/8] mm/migrate_device: Add migrate PFN flag to track
- device private pages
-To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
-Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- david@redhat.com, ziy@nvidia.com, apopple@nvidia.com,
- lorenzo.stoakes@oracle.com, lyude@redhat.com, dakr@kernel.org,
- airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com,
- mpenttil@redhat.com, jgg@nvidia.com, willy@infradead.org,
- linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org, jgg@ziepe.ca
-References: <20251231043154.42931-1-jniethe@nvidia.com>
- <20251231043154.42931-2-jniethe@nvidia.com>
-Content-Language: en-US
-From: "Kuehling, Felix" <felix.kuehling@amd.com>
-In-Reply-To: <20251231043154.42931-2-jniethe@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YT3PR01CA0061.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:84::31) To BN9PR12MB5115.namprd12.prod.outlook.com
- (2603:10b6:408:118::14)
+	bh=U5VuiLn3dVAn40uBcT/YeDlX15d0jLQo0ZWVzvFA7PA=;
+	b=jYpBB3n8Qwm/WLV/PhmKPjFcmZ9QjI9Z8smLE/wVYu9KtgNXMMY2l0ih2n3epoJPb5eAEF
+	wz+fUffdD6wIl6Vqt5Sl4pvkuMxw7E2CRDGuRqGg+RX4u5qHvVXcUSqbT6axH5IW3uwMq4
+	lfIlTFN59oQkI+8zy9wVeW481VBHJOo=
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42fbbc3df8fso5450376f8f.2
+        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 09:32:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767202349; x=1767807149; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U5VuiLn3dVAn40uBcT/YeDlX15d0jLQo0ZWVzvFA7PA=;
+        b=NOrYELuO7lkMNlXC6JG9FYTmc4wsA8W5tYbotVKm4sAS4aPPGZvWjsLMDEfqgCqfkx
+         KirloJAOCbgx5EWVcHOcctopqzBYvp0TPlyvQOvZQI74/9OU+aKkuMmONiNI8my1JaKw
+         R+iUFHpm6OeSC9HaxaKiLaBhLGaP0s2ufxDXbfXzypesAWm6a1ZU4XU0MlLQU1n+JixK
+         Wqr2IAlJWv3dL388CE/MA2LnbjhnCXfUVKBZ/+iMkMNK8vWuQwXy9UBvtDAfT5p9Ipod
+         ivwgtDkVpeFEGx2MMt1laFXUKA/SD81ZIaL2fy3wPmE1IrxqGshyDfazljp8eGBgeZrl
+         0IWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767202349; x=1767807149;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=U5VuiLn3dVAn40uBcT/YeDlX15d0jLQo0ZWVzvFA7PA=;
+        b=O0sGg10sPYzidFvMXMtzYFkJtedc0OY/Svpw2jWi++d0gwU/CNwy8MswH1BH9P0YV7
+         zOXgB3OH2agfLKdtdXmcAV+aVHfVAB6Q5O21e7OpK+zKWSYj4mnofLYIHrn/dQyusx3c
+         QBYmYUGf8yTS1MjA3qFIhAV7AO2evscPAzejP8xrF/16UjmZrluPRT/68gOQ7eSWGxk8
+         Bd9osl+Rees/lo703YGNPD1QM0rRQ0jWbC7QLz863Pje86KrxGRR9D54i1ny7UqqKXbx
+         AOUj6cYX6Lyhe+OGuDGa4OWViV9WuFPdD9ehV9Io7In1Iry4Q6TQDkE9PJnxVr8sA28G
+         RQow==
+X-Forwarded-Encrypted: i=1; AJvYcCXcHZGDIJ8ifgg63XaatH5mwHZiG+v3lRH57RLvhWv/lei+CPB4/7T0YkDLMJqBAXvespblp1vZ2g==@kvack.org
+X-Gm-Message-State: AOJu0YyrCJDgdK0NKzykgKtsde1h9IX544RGG/HomjSk5XBSbtvN89Bd
+	WteL5VN2+fOYvHr5aAdjrZHlglXV1E7jOZmQ7t759hgpvSdjjARiDHqHFbRfhpiVCyi8VxfHVF1
+	HNbvoFnrqSrcsiQ+4ubmOqPoEs22gUH8=
+X-Gm-Gg: AY/fxX5oxw5Wf8dzGAC5qZoQY/uUopUAnHZ5UndbDgOe7zW88dsnYXRuOD2QpmQIlq9
+	B+kISHijFSkOptCyYRTvEHn54OHXKY1TE/AP/HV67aVLrT4Ubh5bc93qIjSATgG5eNUsFuwxBRN
+	Cq/5HanPQTetDZJB9lnXJWiUNpLwS2EUvjujD26amKCSWJ6u5SO2WBzp244YcDtmIuL2n7JM01n
+	8S9M/BzKRfLvMY/hZbg2t4uEYrWd57gUES+kaHgZXkGEdLU7OLLDMs1oFENUdeXuH9iDyxWSELH
+	i14NsUFx97dfEfkyjXQz8g4YGVhJ
+X-Google-Smtp-Source: AGHT+IF7HyxxRbtC84cXSMOHnJT4OH6Sl+m5edZ7DMni0hLzLRwsRYANm/mz1DDpTK4ecNOoY4W/98DOOm3T/bFVH4o=
+X-Received: by 2002:a05:6000:3104:b0:431:9d7:5c2e with SMTP id
+ ffacd0b85a97d-4324e501694mr44836005f8f.35.1767202348661; Wed, 31 Dec 2025
+ 09:32:28 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR12MB5115:EE_|SA3PR12MB8045:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0dcd6cd1-136e-449d-cef9-08de488e8c22
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Sm11QWZWRTlDU2dKcmluQWMwNmplNmxZQXNGYWJrZkY3MXlHdmFnbXhpOW41?=
- =?utf-8?B?TzV5aWNxd2d4ZFhmalBPSGdiakhlWEE5d2NmcnVJSEJ3TGo4UlJZWUhtYW9G?=
- =?utf-8?B?RGZqVEJwQWtYSWkzbnFFNDduRzNHQlZZOVdUY0FpdlZXbTR4bmZHS1NWUmlH?=
- =?utf-8?B?cThuTGZsYWVUeEhJUHFDQkJLWHZ6eWtYdW05b0ZUOXRzVzRicnJxQ24xMVVQ?=
- =?utf-8?B?dUltL0dzb3dTZFUxbUtBdGZEd2lVOGNKQmlFN3YwWDFXVmJuYUhMRmtEZjNX?=
- =?utf-8?B?M2NLTFFENlQrbFcxVGVGaVdPaDVSd2VYcS96UTNDWHJWWjUzNGRVd1cra01O?=
- =?utf-8?B?TEhVUHNKRUtpazNuZmVZdXQ5SVRiemtOK0w0Z3VjMnpacUdEOFZEaUI2alMx?=
- =?utf-8?B?MVI4ck9sWVpqNDdMNXp5aDFOVnZIeG1zdmJTK244NDlEQmROblJUcTBUR1lM?=
- =?utf-8?B?OU5laU4ya1lTVHJPNll3dkdxQ2xZcm9hR2FzYzNhblRPM0hkVWhCQzF6aVpq?=
- =?utf-8?B?akVlV2w3dUZabnRENVVhZ0MrWlNRYjFUb0lRVFBKODZxelZjSE44eWEwdVpB?=
- =?utf-8?B?c05kbThRWVRJMGxJNVZqcFdjaFNNVGJrd0Mra2w4UUxML1A1Z2wwbTMwRzhk?=
- =?utf-8?B?TllPeWUwRCtFaGpFZlZtSUtndTdVUDY2OW1Wa3ozUDNNYnlvWVNqTVpVRmZB?=
- =?utf-8?B?UDF0RzV6dTlEODkrU0g2SkVxNmJXYUw0cUNQeHA1WmE3d3pWMUNrVXFrMEFZ?=
- =?utf-8?B?TVlGTUJBUEIzUG1UZDlRenBDNmdSd3lsSGdDcVV5TjJ6czNwYkRVZEFDaUtw?=
- =?utf-8?B?TlRrelk1VlVIa1AvUlhTQXA5Wi9XeUIva3VnaHh5NFpiR0lUMko5elFHcTls?=
- =?utf-8?B?NGhtMFJFU21xUTU1Znk4N29qY3dqK1hyc2JVbk5jUUJmY0QzTUozK2w5bnVM?=
- =?utf-8?B?QU1YVGFyUVNJUHBQa3JnYjhPUk1pbnRGUGRsMzNGcFgwWVl6TVo2VG8rUktF?=
- =?utf-8?B?djdqUUJtMkRxc3Fwb2JFRUZRTDFBc1NZRHdJRUh3ZEpUQlVkU0pRQmc4dEFQ?=
- =?utf-8?B?NmZjYU9YNFdsandlN20wZ0NjUkhGY0IvOUlFbnpjS0JSZmhLT09xNW5vcy9Y?=
- =?utf-8?B?WGE1V2hVdXRIcmg3eWlOOVlHRUs2VVljd3A4VVA4UVBUTDVST2xMYll2VCsy?=
- =?utf-8?B?MGhoNDhLRWNkOHZKbHkwZ3BZMjNKYlFHaSt3aTdqYXdNNGRKRE9IcFE4cWh2?=
- =?utf-8?B?d2h4SmJpaWZ4eW5IalNHT1BkYVd6VW9EQTA0R3NTMEcwc3VQZSs5ZEFpOVRa?=
- =?utf-8?B?QWJpbDRoWHAzTjBmSzdjWUk2aEdMRlh0d3VCSURnZTRXTEVGcDY4R3h6ZHln?=
- =?utf-8?B?MG0vdmtpSGhNdGE0Y0NNMmJUV3VQcnp1RGVkb0ZwMEhibnNGTzBPbkNJc0RX?=
- =?utf-8?B?K01FTkQ4R3dSTVB0ZWdBV0Y5Wjc5NXc3U1U4aXdUQTAvZWVhYUU2cG5LYS9M?=
- =?utf-8?B?dElMUEZCK1MydGJQNmJzQVl0UVk5MVp2TzQzeVJEVkRXOUJsT1pTWjAzQTh3?=
- =?utf-8?B?NWdNL2t2cWltb2F3ZFc1M1Z0UlhiM2ZjN0swakFCd284ZEY5U0c0NWtjQndu?=
- =?utf-8?B?bEdhTE5jd2NsZm81ZDZwdStGeDJQZGZPbWxxL2lpeW50TklpL0hLWHNXWHZn?=
- =?utf-8?B?eUx2MWl6WUQzY083bXhja2w3M1ViK1dsSGQxdldzNnRvOXpHeXpoSVdFb2RZ?=
- =?utf-8?B?cDBJem42QzNXQTBxMzMybjNzL2YwaGpUekJNN3VadDVLeFliUVJWMStsS2NM?=
- =?utf-8?B?blArenlzZlZraStvNzhBajl2ZmlIdEowbU4vS1MrQUFCeTZFek9NbUNGY01Y?=
- =?utf-8?B?TWxvMlpsWXp0NVpQYlNCaFFHRC9JNVduYlRWampMZ29nemlwZFpsS251aEVO?=
- =?utf-8?Q?x4KMwFowRX1C7iK7pCiTo5liOn3ae5XK?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5115.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S3FWYU5GbXJBQ0ZZbll4UnpSS3JZSjI3SmpVNm14S3pzSkZPSDhIenRzQWwv?=
- =?utf-8?B?VWY4T2dPYW4yVVB0ckp1NFZuaTkvMHJGUml5bTFUOHFhYkpuRUhCV09FNEcr?=
- =?utf-8?B?eHpnN2s4ZnpFaEQwSHNhdE8yRkhSSnp0bStybU9tQitEUlpzUWFDSjdVdSsr?=
- =?utf-8?B?ZzRwdXpFL3M5c3g1aVpHam9acnIyd1NGcjR6OTdpd3ZkVFB0NGZQMytibG54?=
- =?utf-8?B?REVNcXp5ZTFNeEZ1amppWlJtZ2tua0lleThMNVczbk51Z3ZhSDgvaHErTmc4?=
- =?utf-8?B?NmxLajBxT2VFZjEyS1UzMDc1cy9haURBUHFVQnpYbHJLM1pRaGFXQ2FGb3ND?=
- =?utf-8?B?TUdGTWNjeWRmbHhnVS94RXNzd1ZnUmRxek9GNzZxRGNENW51YUZGVnFOY05I?=
- =?utf-8?B?VmNvREVjNDgyNWZZZU5VWk0xNUh1L3o1VWZ0OEE2bG5kRktmbUliRmxuZlZB?=
- =?utf-8?B?ZGhKWkFHVG5jS1IwNXVtK0JuQUl2cGpQTDFacmpNU3RaQkFhZHUvMjRqczVE?=
- =?utf-8?B?WTg4L0cwRDRTRUhFY1BPYkhzVmRsekFJQTlWa0hoVnZ3R0pVVkJYaHQwV0E0?=
- =?utf-8?B?M29aQXFTbHJNUTljVzRLTlo2QzJmTFFPbzIvZG5rZjA0b0FwejEzWlMvOCtU?=
- =?utf-8?B?eDkrT0FHM1ZiUm1zc0ZwVDZiR1BYRGhaNWRvakp1YXJnTUY4dTR5dm9ocWh2?=
- =?utf-8?B?UGxjVE8ySm4wSjJJcmpkWWpuYVFtVmF4a1N0eERCTStKZFFVNVc5WmJhSEdB?=
- =?utf-8?B?VHlEQlp2cjBiUStuTE1ya2d6dXRyR3lxT1NFTnFqUlFER0NTeUd1Q3FnZDFP?=
- =?utf-8?B?WmZKQ3FEVjV3OFUrQW5WQkJFYURYajJ2UWpOMFZpUC9DTDlWdHRKWDd4Ukpp?=
- =?utf-8?B?dWNrYjVsMGFmMFcwWmJEZG5rOUlNcHlVYTVlVk52c2hDNnE3VmQvWCt3YUZQ?=
- =?utf-8?B?a043b2dVb1BWajkyOUtjRGdOUkxBWFNYclFNUmhiN0k3V3M2c2JtMG5RaEpI?=
- =?utf-8?B?NDh2TnMzZzBKc0NpOTF2ZUZnMmZFSlpPT0VyRWpYOFZJTDd4UkpRc1V5QlFQ?=
- =?utf-8?B?UVhhRFd3T3Z1bmwzWjQ5eElULzV3SVJBVWxXZ1hXbHZ1L1dUdHJRZDJsZm1H?=
- =?utf-8?B?Mk5wOXR1T2ZucmVZUmRQbzd3Q0tvTnN3Q3dzTGlJN2JpdHo4eVBFYXF3cjl3?=
- =?utf-8?B?d1M0YXpvaU41RE12Tm5QVDBOVHhCOVFpODFnd0FjYWxXOU9Mcm9Gdm9VOWZp?=
- =?utf-8?B?ZVRDalFCUkV3YWY2dWE3OUlPMlVvY3JGUUJaR0E0Sk9hemZDV1NjZjFpNkhz?=
- =?utf-8?B?bjFBN1I4b2U1NDVaUXJNTmhLZjVDWE54NFZJdGhsYVBxWU1mYXBQT0c2Y1l2?=
- =?utf-8?B?QXRUS1VQRWhyZmxJZnpmOHR3Yy84clJBOFRQMm5EWFU0WExEVUc3bmZreDM0?=
- =?utf-8?B?YzlKRFZoVnBjTWdkdTFGVVFlSGpUaTJMajJQUkJ5Wml1WDV3eU9jVFZVUFYr?=
- =?utf-8?B?amNFYVZoSHVESno5QVg5MSs1SmNuNm1XWjY4djlpanYyeVltbVRmLzFSVmNo?=
- =?utf-8?B?YnVMWFh6NW81UUxiWUlaSWg0OVVnWUxSdjY2TzYzL05PK0dCZCs2S3AxTlVB?=
- =?utf-8?B?SUt0cUJieHE2Qk9kTWtvNVVLS04ydExFL1NudFB3RDhXekpZSDRQdDIvb0My?=
- =?utf-8?B?Y1pncnEweTlETjJONnVwcFlqWTZOdzQ4OGh6NjY0NXpzTFBqdmduUU5BV0Vl?=
- =?utf-8?B?Y0ZacHVkelZzQ0djbUwwQVlLOFdCMXhWOWpuOVloOGw3dURsOE5MeWRqWnd4?=
- =?utf-8?B?MmJaQmQraS9QSkxTNUdSb3ZzVDJJY0dud3N1ekt6aHlCc2xHdHY1c1F5aUkr?=
- =?utf-8?B?VDdYa3VJRldzVWVFZkh0Z2YwVmIyVFFmQ0Vub3dlMjFtTWZZak4yc2pQVWlu?=
- =?utf-8?B?bW42cjhXTS82dWZKZzhsZU5SRVhyQ2VIazl0R3h4NEd6N1pnMG5sanVKc2xM?=
- =?utf-8?B?K2k5QjdUd3NaWFRqS3F1dzVjRVgyRy9Ua2QzNkFmZ1RNYXNCbU52Vjg2L2N0?=
- =?utf-8?B?NnJLRTFMMFM4bkN1M3FvWWFCaUFUS0w2eEt0K09FMUZDNENncmVPNlo3TEhk?=
- =?utf-8?B?ZStRVXBuY1lsNlorOVVmdFA4VTFWdHdQZGZtREpLQUI4RjFmTkpsbmZBbnZH?=
- =?utf-8?B?SmRIakp1Q2JraGtONyt0NTdFclZYSXF5RXRwTU9ZWlpZd2dsejdCL3Y0YjlK?=
- =?utf-8?B?QWlrTjZHQ3ZFaFE5WFhnbWVRYWtjMlBGQ1dwK0lwbUlNVTY1N2FhZW41eFVQ?=
- =?utf-8?B?ZUljeFJOZ3E4K0g4U0VNQVdpZTdYQmh3cVVISkVTRHhkbGNBdG8ydz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0dcd6cd1-136e-449d-cef9-08de488e8c22
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5115.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2025 17:03:40.8415
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YvCsX6rSjwOcBLxMpX4p7yLWhNZl87j91oe2HaRLZS0kX7d7NLaUHCyjhs9Vzm6/No6EK+VKLtpcJoRdlecCrQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8045
+References: <20251223044156.208250-1-roman.gushchin@linux.dev>
+ <20251223044156.208250-4-roman.gushchin@linux.dev> <aVQ1zvBE9csQYffT@google.com>
+ <7ia4ms2zwuqb.fsf@castle.c.googlers.com> <aVTTxjwgNgWMF-9Q@google.com>
+In-Reply-To: <aVTTxjwgNgWMF-9Q@google.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Wed, 31 Dec 2025 09:32:17 -0800
+X-Gm-Features: AQt7F2oadTXea_Sik1GVA2Fk1q8JBbDHb41lLkyeYrVxdpyCyv7zsIwArp1KPOg
+Message-ID: <CAADnVQLNiMTG5=BCMHQZcPC-+=owFvRW+DDNdSKFdF8RPHGrqQ@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v4 3/6] mm: introduce bpf_get_root_mem_cgroup()
+ BPF kfunc
+To: Matt Bobrowski <mattbobrowski@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
+	JP Kobryn <inwardvessel@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 82C07A0011
-X-Stat-Signature: 7jb988ki6piogruezgmrrey98fyqqdmh
-X-HE-Tag: 1767200625-377375
-X-HE-Meta: U2FsdGVkX19Pbkx7niX6x/eg/m3B2IqeX+vILr4ueshjSpx2/nGRW+HIIOp7Qv4LkjxRTUT1MZtpbLDooiDtCJXUwYBA2as8y+YXN8nIjtk6CSDHw4iJDqxohWI1tCKmRA2dnoYbKlUZIh8rZoPLR3zz1Iq+ytzeSM8yQmD+rXhu6oibeU9HFFphjKFptIUjWkyycKXUafo5u0vvoKHnWr7/ZoUGn2Ej0+0z0iLjjHvUIVAOYHSu+xKik6UNZGmrY66+lfN/dTV6vg1unP/St6yCMip8LK0Y1jnw0BXg98ECI42qMHbL1cIvYdt9mlHR91gme3XH4hSF8B5xHTdyo4BuJ/FUI6x5cK3Ec1/PdEjf7zJNBsLXmt3NaFvZAWCJBcQCtBL5YELCcRWCp7jC9mb7vQZBXWTojYJocL9j3AtwT6Dgvfh343xBrfGEMNWq3ljlZ9nd0Fi6t48+CyGRITNlN+G6SVUGsccKYWqx4AtUL2ymqIkpZJpZ0MUG72Z89SO8aMz008bdvbi3lN0S+5AIkmA96bIBehCfl+wXL77wcIdyfbT0zEJDXxcuraNqA3Ikaix5mcdKU/3O+srhjVH2sKag6e7JhfdSGg2tN05MiZBpTKywYU3l4wi8JNMDK9onEsANXFrb4IZ+WNDcUwAS/GDpAg/ppmcXN0S5eI/C1FCaCdCwiWQ3ViLn4twtcP1yM1rt9k/Ua3fgajRe0yT/invJmKQLnRu7XdL2zV3M0v3waP/TwbNqFOod250tHay4Ruo595cKAOVQnN2uJw2/mv4yrmM7yjavHXBNri9tNjQRamyBRIkFTHcb64CkFsQ/VSQOJeUj7TVu0dxEpwHetFhF/OwESfZ6Vp/H/wOOoDoXaUawqxY3z53+/81MVqPWoNPD1Fl+KL6FYpVP/pVrhPc5ECJouMR6AGVKxzecdbD/nRLg617TidC875/Rt/WwjK5QStjmzz2X0mG
- Ra5lcGAc
- k69Z+uXvb9ZlM2YvHOrRtkPbGMYGCHMsKVm2GHYM5DrzpfOCT9Ch2w4DpOvODrcxqrdcIoRYQ0QNZ3VZOolEg1U8nUIGUid38WIo0Vdo0qnKYIAXxqCwLe6tTqOxxK4is9UzIJV1oS6DrG1znFv/ZQ9IZNE6cK3253YBS3IODnqZ8rDEGuW8kigK8RLhNYcg+MGwk+unzV3s0b4843i00+umdnm9eURLkH81QRwfxsqsFaU3pG7HR3gUfr+ShUWA23ry1sQfCajhWYd/hBEouClM+GdcqKe3AwfyryMwUKgGCJW5nblU2LStD5RNn80Al5uZ15xeinIMI7KCFMoTtruRagdIQJmhsqgoKHf3DKmmWQEob/vVk4PFgPisiXBGlAykY+vY8wWM4yMzrN/86GKlg7aQb0BdRlBqHGGXeajrQjqjRCwGzurdAHsHLW5E2eDm57T60+i9mWboIioQzi2Z8uWQO9TBzmu6KnD5rc3AB72RtKaJPfiqb0Q==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5D65840009
+X-Stat-Signature: cq4hp44yuy3ehu4za8dkk3czk5ys5x6j
+X-HE-Tag: 1767202350-369332
+X-HE-Meta: U2FsdGVkX19coXFtI9w4DAn+ujWovSQ3BLDH88MjRmkHzD5fBscnDjEnC68FFLHc/acazSc0eTN4PSI1KZlhQ8is88KHURSXXE11Lg05WDrSpYWzHx+CBuSfSwlW3zS1TqkA8iDe1owzPm45HbEBuYOzf3anX7RJTlwpKU6RKvzLJx3cT38KtfQ8AKWxOs30r0Rmb9sW8LvIEjO3CIXbZlaH6Hx/wW49IbcemGPeaDnpNpbdnThqHr7OOPA4ugz0z598HT7grsZryM5UZe/jMsra6PA3IzC2CJMHIJb9A2JxLMInJ5cDSeZ7QZOwxT26cuIveSznDdaYGSk0jUQnkKlfq+7OrtqAHgI9uM34hfk5aMUxLFLF2SRrXu7h/Qf8uTtIGqXWorZDNr6cZPv02B3N7I1tm4Frhyj7yi8VtsczFJU50TpySfIjjRKuIHqh/nsONoBTryYy50cip+RsNtUI/xfd4EGaR7N60TrxpoUyRynkwCZb86k1w5y+gl2/MB1ZB/GVtXe2LIVfKgvrV1lkeUKOoTORrLmtnVByQ6+dABg80Khhli80Jwom7OpZ0yUA6IzFu52EWzh+5ZNsEQlrqB9NWH+FyaVe5dTjYjqizBBaA/C+mQ7wqAVPmkrLaG5SEQwgH7rsCaWChyFoFa4EYk8h3CnzyFJhs2DZv0LwT5g03PP6UtVZtKewheDa08CNFuq5/cLiM0UKt2R2VFwFLpjsp+agzF7ylvn/vVbl4MsW74yeN5SDxAMlUIesIpFLOY+qkyAWpkZ0YlTF4HpfJBk/Ukgn70wZtlY6GWyj1R8SZP0jyi58h80swln/DBMnU+kYXi4zTYdTGVhCwyiUpLL3SboSmltojnU/KluKFYBeG2zpdM5sa9MJSparJislAHJaAFTNGs2CBi3vRea2TDQ2b0aSgx9qST0YpvDPezMYl1wYUeFlqMJ4AHLrn5OhOO/F/eOfqTfeMlk
+ bFHTf3ZI
+ k4GYd8P2ar9KVBg0tdAx9VgsP2QMDXTdpXMKGnlOVrgn6cO3vohyXxcnwkv2tMIin6ikTcmHXRQQV/j7KFK07pAptrRWHAjGS0zDm83ZlPAy++erIvaYe0gcNbmRIbwL/kzgTB3lMRZJboSYTTSN6H6oaUXBF8Yr+RbRbSUeXOAMs+kqtYaFplSKyGXYF+Gd4KM5fyvK03FyoiPyiVPyC283KmcZOSTmqPcgMoaNrI8jgV0MiPJ6Gk49R20Uz7AXHkiU9+fY9lpSZgbIT/vIHNmoV0PtQAPAEaybnQHLicDqyRQHiyVZntIcIQQ6QcLC69XRoRrtvn/T3zIwFb87ePb/kA/7+3oG4DQNZsH8RxcglGevG3yETEnW3CWkQusOQ3Rjix7e/5GhWDL+9/CklZxu5YSTp2mEgFIF8SnEBSg8X4aB7wn5Bm/0mq9EljjEiQRzOP1wLc3ETMu4gBWbi6FXfkx8pVvHoH0uAQtkEwYToenU0C5QOvkCFdg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -209,197 +123,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-12-30 23:31, Jordan Niethe wrote:
-> A future change will remove device private pages from the physical
-> address space. This will mean that device private pages no longer have
-> normal PFN and must be handled separately.
+On Tue, Dec 30, 2025 at 11:42=E2=80=AFPM Matt Bobrowski
+<mattbobrowski@google.com> wrote:
 >
-> Prepare for this by adding a MIGRATE_PFN_DEVICE flag to indicate
-> that a migrate pfn contains a PFN for a device private page.
-
-Thanks for doing this. Some comments inline regarding DEVICE_COHERENT 
-pages. I suspect this will have ripple effects on the rest of the patch 
-series, at least in patch 8, but I haven't looked at that in detail yet.
-
-
+> On Tue, Dec 30, 2025 at 09:00:28PM +0000, Roman Gushchin wrote:
+> > Matt Bobrowski <mattbobrowski@google.com> writes:
+> >
+> > > On Mon, Dec 22, 2025 at 08:41:53PM -0800, Roman Gushchin wrote:
+> > >> Introduce a BPF kfunc to get a trusted pointer to the root memory
+> > >> cgroup. It's very handy to traverse the full memcg tree, e.g.
+> > >> for handling a system-wide OOM.
+> > >>
+> > >> It's possible to obtain this pointer by traversing the memcg tree
+> > >> up from any known memcg, but it's sub-optimal and makes BPF programs
+> > >> more complex and less efficient.
+> > >>
+> > >> bpf_get_root_mem_cgroup() has a KF_ACQUIRE | KF_RET_NULL semantics,
+> > >> however in reality it's not necessary to bump the corresponding
+> > >> reference counter - root memory cgroup is immortal, reference counti=
+ng
+> > >> is skipped, see css_get(). Once set, root_mem_cgroup is always a val=
+id
+> > >> memcg pointer. It's safe to call bpf_put_mem_cgroup() for the pointe=
+r
+> > >> obtained with bpf_get_root_mem_cgroup(), it's effectively a no-op.
+> > >>
+> > >> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> > >> ---
+> > >>  mm/bpf_memcontrol.c | 20 ++++++++++++++++++++
+> > >>  1 file changed, 20 insertions(+)
+> > >>
+> > >> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+> > >> index 82eb95de77b7..187919eb2fe2 100644
+> > >> --- a/mm/bpf_memcontrol.c
+> > >> +++ b/mm/bpf_memcontrol.c
+> > >> @@ -10,6 +10,25 @@
+> > >>
+> > >>  __bpf_kfunc_start_defs();
+> > >>
+> > >> +/**
+> > >> + * bpf_get_root_mem_cgroup - Returns a pointer to the root memory c=
+group
+> > >> + *
+> > >> + * The function has KF_ACQUIRE semantics, even though the root memo=
+ry
+> > >> + * cgroup is never destroyed after being created and doesn't requir=
+e
+> > >> + * reference counting. And it's perfectly safe to pass it to
+> > >> + * bpf_put_mem_cgroup()
+> > >> + *
+> > >> + * Return: A pointer to the root memory cgroup.
+> > >> + */
+> > >> +__bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
+> > >> +{
+> > >> +  if (mem_cgroup_disabled())
+> > >> +          return NULL;
+> > >> +
+> > >> +  /* css_get() is not needed */
+> > >> +  return root_mem_cgroup;
+> > >> +}
+> > >> +
+> > >>  /**
+> > >>   * bpf_get_mem_cgroup - Get a reference to a memory cgroup
+> > >>   * @css: pointer to the css structure
+> > >> @@ -64,6 +83,7 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgr=
+oup *memcg)
+> > >>  __bpf_kfunc_end_defs();
+> > >>
+> > >>  BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
+> > >> +BTF_ID_FLAGS(func, bpf_get_root_mem_cgroup, KF_ACQUIRE | KF_RET_NUL=
+L)
+> > >
+> > > I feel as though relying on KF_ACQUIRE semantics here is somewhat
+> > > odd. Users of this BPF kfunc will now be forced to call
+> > > bpf_put_mem_cgroup() on the returned root_mem_cgroup, despite it bein=
+g
+> > > completely unnecessary.
+> >
+> > A agree that it's annoying, but I doubt this extra call makes any
+> > difference in the real world.
 >
-> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Sure, that certainly holds true.
 >
-> ---
-> v1:
-> - Update for HMM huge page support
-> - Update existing drivers to use MIGRATE_PFN_DEVICE
-> ---
->   arch/powerpc/kvm/book3s_hv_uvmem.c       |  2 +-
->   drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  3 ++-
->   drivers/gpu/drm/drm_pagemap.c            |  2 +-
->   drivers/gpu/drm/nouveau/nouveau_dmem.c   |  2 +-
->   include/linux/migrate.h                  |  1 +
->   lib/test_hmm.c                           |  4 ++--
->   mm/migrate_device.c                      | 11 ++++++++---
->   7 files changed, 16 insertions(+), 9 deletions(-)
+> > Also, the corresponding kernel code designed to hide the special
+> > handling of the root cgroup. css_get()/css_put() are simple no-ops for
+> > the root cgroup, but are totally valid.
 >
-> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> index e5000bef90f2..dac5d6454920 100644
-> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> @@ -784,7 +784,7 @@ static int kvmppc_svm_page_in(struct vm_area_struct *vma,
->   		}
->   	}
->   
-> -	*mig.dst = migrate_pfn(page_to_pfn(dpage));
-> +	*mig.dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_DEVICE;
->   	migrate_vma_pages(&mig);
->   out_finalize:
->   	migrate_vma_finalize(&mig);
-> diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-> index af53e796ea1b..0257c6e7f680 100644
-> --- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-> @@ -303,7 +303,8 @@ svm_migrate_copy_to_vram(struct kfd_node *node, struct svm_range *prange,
->   			dst[i] = cursor.start + (j << PAGE_SHIFT);
->   			migrate->dst[i] = svm_migrate_addr_to_pfn(adev, dst[i]);
->   			svm_migrate_get_vram_page(prange, migrate->dst[i]);
-> -			migrate->dst[i] = migrate_pfn(migrate->dst[i]);
-> +			migrate->dst[i] = migrate_pfn(migrate->dst[i]) |
-> +					  MIGRATE_PFN_DEVICE;
+> Yes, I do see that.
+>
+> > So in most places the root cgroup is handled as any other, which
+> > simplifies the code. I guess the same will be true for many bpf
+> > programs.
+>
+> I see, however the same might not necessarily hold for all other
+> global pointers which end up being handed out by a BPF kfunc (not
+> necessarily bpf_get_root_mem_cgroup()). This is why I was wondering
+> whether there's some sense to introducing another KF flag (or
+> something similar) which allows returned values from BPF kfuncs to be
+> implicitly treated as trusted.
 
-On some of our GPUs we use DEVICE_COHERENT pages. These are pages that 
-are coherently accessible by the CPU and peer devices in the system 
-physical address space. Therefore, this needs to be conditional. Maybe 
-add something like adev->kfd.migrate_pfn_flag that gets initialized 
-conditionally in kgd2kfd_init_zone_device. Then add ... | 
-adev->kfd.migrate_pfn_flag here.
-
-
->   			mpages++;
->   		}
->   		spage = migrate_pfn_to_page(migrate->src[i]);
-> diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
-> index 37d7cfbbb3e8..0c756d73419f 100644
-> --- a/drivers/gpu/drm/drm_pagemap.c
-> +++ b/drivers/gpu/drm/drm_pagemap.c
-> @@ -404,7 +404,7 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
->   		struct page *page = pfn_to_page(migrate.dst[i]);
->   
->   		pages[i] = page;
-> -		migrate.dst[i] = migrate_pfn(migrate.dst[i]);
-> +		migrate.dst[i] = migrate_pfn(migrate.dst[i]) | MIGRATE_PFN_DEVICE;
->   		drm_pagemap_get_devmem_page(page, zdd);
->   	}
->   
-> diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-> index 58071652679d..2bd80c6f5bcd 100644
-> --- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
-> +++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-> @@ -766,7 +766,7 @@ static unsigned long nouveau_dmem_migrate_copy_one(struct nouveau_drm *drm,
->   		((paddr >> PAGE_SHIFT) << NVIF_VMM_PFNMAP_V0_ADDR_SHIFT);
->   	if (src & MIGRATE_PFN_WRITE)
->   		*pfn |= NVIF_VMM_PFNMAP_V0_W;
-> -	mpfn = migrate_pfn(page_to_pfn(dpage));
-> +	mpfn = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_DEVICE;
->   	if (folio_order(page_folio(dpage)))
->   		mpfn |= MIGRATE_PFN_COMPOUND;
->   	return mpfn;
-> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-> index 26ca00c325d9..52f65cd5c932 100644
-> --- a/include/linux/migrate.h
-> +++ b/include/linux/migrate.h
-> @@ -126,6 +126,7 @@ static inline int migrate_misplaced_folio(struct folio *folio, int node)
->   #define MIGRATE_PFN_MIGRATE	(1UL << 1)
->   #define MIGRATE_PFN_WRITE	(1UL << 3)
->   #define MIGRATE_PFN_COMPOUND	(1UL << 4)
-> +#define MIGRATE_PFN_DEVICE	(1UL << 5)
->   #define MIGRATE_PFN_SHIFT	6
->   
->   static inline struct page *migrate_pfn_to_page(unsigned long mpfn)
-> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-> index 8af169d3873a..19681904a666 100644
-> --- a/lib/test_hmm.c
-> +++ b/lib/test_hmm.c
-> @@ -727,7 +727,7 @@ static void dmirror_migrate_alloc_and_copy(struct migrate_vma *args,
->   				rpage = BACKING_PAGE(dpage);
->   				rpage->zone_device_data = dmirror;
->   
-> -				*dst = migrate_pfn(page_to_pfn(dpage)) | write;
-> +				*dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_DEVICE | write;
-
-This needs to be conditional on dmirror->mdevice->zone_device_type.
-
-
->   				src_page = pfn_to_page(spfn + i);
->   
->   				if (spage)
-> @@ -754,7 +754,7 @@ static void dmirror_migrate_alloc_and_copy(struct migrate_vma *args,
->   		pr_debug("migrating from sys to dev pfn src: 0x%lx pfn dst: 0x%lx\n",
->   			 page_to_pfn(spage), page_to_pfn(dpage));
->   
-> -		*dst = migrate_pfn(page_to_pfn(dpage)) | write;
-> +		*dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_DEVICE | write;
-
-Same here.
-
-
->   
->   		if (is_large) {
->   			int i;
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 23379663b1e1..5d108ddf1a97 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -199,6 +199,7 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
->   		(migrate->flags & MIGRATE_VMA_SELECT_COMPOUND) &&
->   		(IS_ALIGNED(start, HPAGE_PMD_SIZE) &&
->   		 IS_ALIGNED(end, HPAGE_PMD_SIZE))) {
-> +		unsigned long device_private = 0;
->   
->   		struct page_vma_mapped_walk pvmw = {
->   			.ptl = ptl,
-> @@ -208,10 +209,13 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
->   		};
->   
->   		unsigned long pfn = page_to_pfn(folio_page(folio, 0));
-> +		if (folio_is_device_private(folio))
-> +			device_private = MIGRATE_PFN_DEVICE;
->   
->   		migrate->src[migrate->npages] = migrate_pfn(pfn) | write
->   						| MIGRATE_PFN_MIGRATE
-> -						| MIGRATE_PFN_COMPOUND;
-> +						| MIGRATE_PFN_COMPOUND
-> +						| device_private;
->   		migrate->dst[migrate->npages++] = 0;
->   		migrate->cpages++;
->   		ret = set_pmd_migration_entry(&pvmw, folio_page(folio, 0));
-> @@ -329,7 +333,8 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->   			}
->   
->   			mpfn = migrate_pfn(page_to_pfn(page)) |
-> -					MIGRATE_PFN_MIGRATE;
-> +					MIGRATE_PFN_MIGRATE |
-> +					MIGRATE_PFN_DEVICE;
-
-I think this also needs to be conditional to distinguish DEVICE_COHERENT 
-pages.
-
-
->   			if (softleaf_is_device_private_write(entry))
->   				mpfn |= MIGRATE_PFN_WRITE;
->   		} else {
-> @@ -1368,7 +1373,7 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
->   		return 0;
->   	}
->   
-> -	return migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
-> +	return migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE | MIGRATE_PFN_DEVICE;
-
-Same here.
-
-Regards,
-   Felix
-
-
->   }
->   
->   /**
+No need for a new KF flag. Any struct returned by kfunc should be
+trusted or trusted_or_null if KF_RET_NULL was specified.
+I don't remember off the top of my head, but this behavior
+is already implemented or we discussed making it this way.
 
