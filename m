@@ -4,140 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED8D2EE6428
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 15:30:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F0AFEE57D7
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 15:32:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 613956B0088; Wed, 31 Dec 2025 10:30:46 -0500 (EST)
+	id E6A436B0088; Wed, 31 Dec 2025 10:32:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F18A6B0089; Wed, 31 Dec 2025 10:30:46 -0500 (EST)
+	id E00886B0089; Wed, 31 Dec 2025 10:32:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50AE36B008A; Wed, 31 Dec 2025 10:30:46 -0500 (EST)
+	id D0C756B008A; Wed, 31 Dec 2025 10:32:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 41E846B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 10:30:46 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F31438BA88
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 15:30:45 +0000 (UTC)
-X-FDA: 84280153650.05.666CBBB
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C770F16000B
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 15:30:43 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b="Yn6KkKz/";
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of axboe@kernel.dk designates 209.85.210.46 as permitted sender) smtp.mailfrom=axboe@kernel.dk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767195044; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C13026B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 10:32:32 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9690A1A04AC
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 15:32:32 +0000 (UTC)
+X-FDA: 84280158144.14.458544F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0F05C1C0019
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 15:32:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p5pdPmm6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767195151; a=rsa-sha256;
 	cv=none;
-	b=WxVWXsK5ku/pym1MLm/VtBYiUITLJ2O6qnnSmwm4CrRPLdijSGSdrhDq9dBpnB5HtB3sG2
-	Foe5nR+TP8ewG9WHPBOpVwSA8AV9kbapIZ7ovnLji4xPad4K1FAvBaNOFFcRA6tkZFo2Hy
-	TSS4aHKw+USKSrGlLdgHXvxwwaRS79Y=
+	b=YeN2HmbX/sNXszuhgUINj2UrdSEJXtEhK5oYmNSffrCDhz/N5ka4L/NIfsFA3R+geSoWWg
+	RY8FJUzZJmNNYyzMDJJsdEvHBb71POiphOvppg/DJ1sbh9utUqXnS6OGBYPwuAUrnvadgN
+	GOR4eZy9lQv8xxS+oNIwzfwg3yuhU1w=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b="Yn6KkKz/";
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of axboe@kernel.dk designates 209.85.210.46 as permitted sender) smtp.mailfrom=axboe@kernel.dk
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p5pdPmm6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767195044;
+	s=arc-20220608; t=1767195151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7QzVSYweQj11hd6fs/gbMsc1XDMFllelUQ/hmQuDpYw=;
-	b=TlB6p4iYIl8JlX7XuOHUSrGv89WGm5GdZ7pPsjaAwdWUH710ONqprixILcc0sd1QXv0LXV
-	OAJd2n3afXqrVyerLyJlXo5SfBDd9pigUn71oq843xzqav8adFm8Q/gbebaMnSRKtUD6H5
-	kg6z/dA0u5r4m7VRI22zvFAPX0oXiO0=
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7c75b829eb6so6911665a34.1
-        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:30:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1767195042; x=1767799842; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7QzVSYweQj11hd6fs/gbMsc1XDMFllelUQ/hmQuDpYw=;
-        b=Yn6KkKz/xQn1rbUSPjcE0dzVmwand6Uz/R7lMr6RXQOcLlqBq1Ap6B3zVT62hZNYOb
-         1Yp2AwOXecv1IOgzcj+cOSTkUMFce29OsQ1nUv5uuwHaNF0jDDpEGtFYYB2pID/hAxz2
-         /P8umYWOn/u/c1a31nHkL2EFOzIDtXnBUT4wJec9mIOQNxD9+BzGRkghXaEpe4PFavjd
-         /hKjSQebSo3BgvuzpI76qk3D37e3TIRv4APnMWuyW7SJs3oszhhhMXEpsrmv1eFfZ+KA
-         09dxwhOy9a1+bMo4haIiWyphYYWL+30fXnQyLVKUrbYmpLzqRwx3r4i9cIT/1KmKy1gY
-         PIXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767195042; x=1767799842;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7QzVSYweQj11hd6fs/gbMsc1XDMFllelUQ/hmQuDpYw=;
-        b=gcdUbFOsBMDK6FkMTSS1N1nnhOX/5Ut+PocRoC6PygCffk4s8r7aScYgGzgicbBzV8
-         0Ba2PkF9apgQiJp3k7QzTsGPgVIZHiSUQZFpWYJTj+uXvB7zyiYuEJvL7ZsetvMppIqi
-         NX8BA9cYDi7BrgH7plDltH6YU4zwQ6OERzgz6Jtnh2C+fIYqUY6Dzx2h7LK6q3+viNJ2
-         yu+SfNc+NhX99iKZyGlupR8jDDdo3znXbhZkQ96yE+p99lKGugOvUMx/ohctzz3ipX5F
-         mFIlWLqxHHQS5E/o5ORPe8Sauq4AUXsFnkjkZi0mYWuNBa3cZrV28Ua+JK9ogMwx9p9H
-         i9hQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV1wd/Rir2L6kk8j6nw6jlzcC1bcuLW7k/mYTRtCfqQb5ntOIvijWoK/Bn/b8xkJeEbVsZbYm5b/A==@kvack.org
-X-Gm-Message-State: AOJu0YwhTZ8ZGBg/EUUJ+o+iw17zvvUHE9pvJq/0Mwj3dLxtHtfysmkP
-	+28HysreELAPd0XF86X7hYByI/uP2WDkVS1xuU0WTmC/Yk5xxltHUmQxSkrdiss12w4=
-X-Gm-Gg: AY/fxX4EnO+5wdq1FvTmphI/QQr7XTltCHeXuvK6jV54N+ppRUhUyDTEbhayh2PH4/X
-	YUwXEYQ58C6At+nDcMoEoM1XfMUUCbu72NK3AkzJLnLBoFJvm+cP5GXnWoLgv3WrMTd8hBeuscy
-	PVzby7pDBW/oTagY1k3j0NEi2ktMr4AbsBZ/x1nCS3y8sDzhldgVLxLADUmy6JgZZj6VaqJQUuX
-	4sxi+BTpjGruS7WsWWnjvdxvRvkia8Tu5VuMPgVgM4ZIt7jomCdAOwI1NhD7DkIn+zjGTb/zPOE
-	m48spLwmml4n1eUQA9fuW8g2MmDnFmcvtyl61BJLHQWgWr3RlNG5MqjJOW7OpiU3OchGJk0Nq3z
-	j+9GJKCmphoATQhUAniqwzscWD5Cq/EKakEXty0IEeLT153BFyezt5q93nfDd6b6IpxWf6SbxCu
-	mjOrxWly1o
-X-Google-Smtp-Source: AGHT+IFQ7Da3Vy7sb0sZ+gCFV6iNdLzjxsj+GHoPQqPF4ECDqs6GBYGgCjzmLYkOn7cGzscuabT/Ag==
-X-Received: by 2002:a4a:e252:0:b0:659:9a49:8fcc with SMTP id 006d021491bc7-65d0ebdd6e8mr11816060eaf.69.1767195042368;
-        Wed, 31 Dec 2025 07:30:42 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65d0f4cd66csm20954575eaf.7.2025.12.31.07.30.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Dec 2025 07:30:41 -0800 (PST)
-Message-ID: <4156bbde-754b-470e-9dfb-a1e45bee81fb@kernel.dk>
-Date: Wed, 31 Dec 2025 08:30:39 -0700
+	bh=//crt95N/7Ddi2TC2G9WkNtDjayFpNENxg96NEAI6EY=;
+	b=UTPfdgbQahB9nQ0ZKiakOvqO/RrqAVO/6lFVFFAxkWG4mMBFSIt11xbjm+Z88Z1a+3mHQA
+	u4L+qVw7aM9lPboa/VfInLYCggONDYCrjIHm2UTScxPT6CFAR3/FsQTuLz9tRdtwcqfPf6
+	gyaAENmH1qvZKt2H8Q2O5QEvfeUZhJs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6800D60008;
+	Wed, 31 Dec 2025 15:32:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3752C113D0;
+	Wed, 31 Dec 2025 15:32:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767195150;
+	bh=wZSt7/UMXpEBgJcZocMzNkrHh9oTHPi1H+DWNxUfbIM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=p5pdPmm6tf16Z03/jVsx9PPzuhDvh0wSBsMhQqPhXgmWs8F9OXA8R/VATda/W+b+D
+	 dt4oXj1tWSYiGZ9V3+1TKSx7DLyI+LatmVKvzOlaWaL826Vqn/+rUWsZiMCEzD9XAd
+	 55ao3aCn9ULX+Q+bz7tTPeVx+MSuFapxwsy5rz77WPNoecxlNa0aKE07f1XGKsx8bT
+	 dtfZ5S89xPLQbcUS9B1KlVCLXAK/4oZH25VuNJX9XO4VvFDnxHOeVm7rJaeaJ2756f
+	 zHOkN2gTJVSAJSBWrvq+0N0wHGgKrLvtELfmAov8AW/ae+ICP1lc9JN/AtYpVp0x3S
+	 a7T2MY8uoqZXA==
+From: SeongJae Park <sj@kernel.org>
+To: JaeJoon Jung <rgbi3307@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Asier Gutierrez <gutierrez.asier@huawei-partners.com>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	wangkefeng.wang@huawei.com,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com
+Subject: Re: [RFC PATCH v1] mm: improve call_controls_lock
+Date: Wed, 31 Dec 2025 07:32:15 -0800
+Message-ID: <20251231153216.82343-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CAHOvCC6ZPyi=tMK9YhcuWPEzdnTje1ADCWzhs7uJCwHh3SMHpg@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/33] block: Protect against concurrent isolated cpuset
- change
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Lai Jiangshan
- <jiangshanlai@gmail.com>, Marco Crivellari <marco.crivellari@suse.com>,
- Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
- Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
- Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org, netdev@vger.kernel.org
-References: <20251224134520.33231-1-frederic@kernel.org>
- <20251224134520.33231-10-frederic@kernel.org>
- <0f65c4fe-8b10-403d-b5b6-ed33fc4eb69c@kernel.dk>
- <aVUs-mFYCO2qGmqT@localhost.localdomain>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <aVUs-mFYCO2qGmqT@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C770F16000B
-X-Stat-Signature: mikj64shzme7dgpjms9n5ewnxjzaed48
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0F05C1C0019
+X-Stat-Signature: 56k6obdwp3zssf5hopupkq3yfu4qxjki
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767195043-243005
-X-HE-Meta: U2FsdGVkX19Edpg7Xjotu+u1L0JT0bNthTBFj1SkKWgLhkfOZhimLcxhHuVqqDU9L2CX5CrUWE997/6ius48ashnYgACBj/1E6/Tfa2Yzwj3CViQDRcBgKdzYQCBiB1/6zQgYPdhRswTPpf8mZUkAbgErz0TqfCGr/YZJlUtl19x024V+/pQ7D83i5+Hett4cmkeR0EplyQZ6esSe9doOuhIetUomdeaYKSTF/dqufDwdVInxheJpgY2T/NBQuU55x0G05HT8aLJ4YfoXQigodEw3+wvbJ/NYIJIAap5/YjK1wupiD3VXEK9yYsRdQLA4X2qjFzhwhyVRctXNqE/mCybTU8cs7dU4EBc3gjCvF/DsERoPNCHWCeGvm8ZSN4oBqmGLOVo1Per2D6Ah6RpWXC8B6o/QfwBKQF1CXi5WcxBMuAhRKKYb5bmOYaKL/tFWuskjqD1k4XK4prIBvet2vW3IDZINnw2DrchTvCjHAlwyNeGTW+0WiabxA7NubYaUtOrMN/TKhlBBeXfW2iz58HdaXGfNsWaE9bQ22l5WasCfA5VnEpELeIJDqhqslCOYQ2jKdyp3mMU1p3SjKh9IhLFoR06X6ieQqqyYsNEVVX9g01EfhlNwz5WWGb5i8h/sl6G8c9KT4/0s+4wGPjj8M8QIBytC4Br/Eoz13BqRM/6bozG6e+QCenztV3Q+GUD2bHagoqJwh4IPnthZcAty4j1YFMXEH8lGb7GX/4fM1wRPc9kSdA3IvScvFADODA6t9qNUz71s9tVOaFjX+3Fwt2nkJhH3rXzGYJq35mdrVbrIKw+XuthN+hxD8xlhzd2SgrHROuv1SnvrC4C9PJVrazJFdqGRdiqghHtNeMabhUqZqAjwLYMMaG9SBdLZCO1WTYNUgLqX4rnDMgK526dvXh5zOXQjnvVO5oD4EY7cKhGR7QEu89S6tANpuAA5FVFXxDwmwP8AFiqHZIVp92
- a58U3B04
- Sgci/YdPGCh0iprhGJgPmHBCRwYt3UE9K8eOqDSvlDpC7kLK+sy+gwzu6LHHIDfSATtZqQROt/mejModQM6D3GMbS264CN3QphzW0uohBdsrlnXEP1vGaJ0yW7PoPsg+WKRpwyWrSQjX5syC5iaAQOfd5T5hDm0tMPyWfbJssdjGFrhYcQj1fN+YpUxBCkKZzyuvuVWNt6L4HIYr+4atr5eEJVh1+OznCSUnMP0BOaCpl7wsF48AVyQKOV/xjnA0KKfq/TaG8FWdNLD5qbdcfwjHnwQHuoRqC+ceUe+NVyu1GFPFg1ea7PXWtGbICAlli944n9JPWufbLE2LkTL7Lpy/nOoxfi0spotTq8wwIMrN5mxolJiqxaold7c1fvxSaALDC3Zq4CW/jqlCjQ8DLNRH0pk2mfY6lDIai
+X-HE-Tag: 1767195150-327213
+X-HE-Meta: U2FsdGVkX1+LhGRatNcLJn7Q/OOLK6+V7SwsR4mu6M+YZ/G/px4bibF3Sud5asFw3N5v88gJiqGmD1507JWpbv94P0PYBKgnvljufn3xPW9cl/qTF0W1587Z12bdFJDsacgoF2uTAUgeR9tfSZv9i2SlIq2t8ZOnZGcWHRjgrYDFRtKBFJSF/mrKuFezl0pBzuhJ3ZndGdGBiNmRE0lFfIDV88ce63BhRzseiXgk1CP25G3oaEKoJRipoA3a4yjU6FcnJ6aWYgx5NGebAtTcC7SUMAcNe6VamxWc/TWiIVv0appB7Z7gqMOzHs2Ap7u8KzPYmhaNVOFw7aN+fSjAjeX5ahvxFznMYdQGWdlHDfoIyKi75cus/zIDYlkGBRLKYN1E7d2y+H8pfcYvRZd83EM2VUDQX9sE9KeR0OmajU6fw8nHthXsZlwGX8MMf679gjmc3lLJ3f/9ITKUU5RoPBgE8dALvnYphrlQQEelee3S49cCmpoE+KZ79UpiVxdDc/McCkM1CDvU7apymfmk176ztBZkklOhsTK80Xo4BtsUIX7s+jhOsPN9Pi/KdoDM7FAUJGOkZAK6tL2lNPB2mUziAe28T8r8U3oz4nqXxPhly+2kuMSvFitIUYOfG6mWjWBAN01qSq+mfm6pujkgzJ/qJuMal1HTNBCe4u5KDZJEHys1rB8a73+FJ1uV26kXo+tvpfr4aDFWZWt0IzcDjblPyGr0TCM/WBYe8tWDGtB5BaEdcBaiwZrL1P2stEYi74ybRb8aJFkh9Pk5ZZhmhhS5ILX3eD9W1yNq+MmvNUtJGQ9rbGVr7OHoYSXtRlSPbtG9KML3w/Y0FCmyxyWaLRC+FWTPZ1/d6SVcGluRFn4glWfFxdnQiJs7QoNPpOpKkf5IcLZOM/eRa4+WUI6ghEGSRL29Ze6t4YkNJNn0fmHPcvTWwLZGhxQKqog1nI9W773g8IdDJ4jTMrceEeA
+ r6Bxrjp8
+ z7RVbifUJ5xueqtbMrQ3O+PGQim7xOHwHTpVURNCVwft8iTiw8dAvpTZWrZ8+XvOSNUGtm894VluVkF2/FiheReqVcr3DstBC5NAtl9i5ZZrCzSzhhYB19U/Rn36MQhgHUi7rgeUx8zJVGK0sTENR23SEdoFMhVIhyoLnYcegp/FkICmHrLsGR3wL3u6QT0M21QSI8GafngFeVfIP3/hQ7bHr5HuNdIbMWfCmbByEmUzMBgmsxKgh6MF7VO7gZblekzZK32m9Yhdx4xTM4mT0HU5ZO+IbpaGQ4WYu4UV6O4cK00duevms1oathj8NwPSr+/B3qswNtJOZ3WCmBXTQ5/HvJPJellPTM8Bu8pCGVQPEdZk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,66 +98,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/31/25 7:02 AM, Frederic Weisbecker wrote:
-> Le Mon, Dec 29, 2025 at 05:37:29PM -0700, Jens Axboe a ?crit :
->> On 12/24/25 6:44 AM, Frederic Weisbecker wrote:
->>> The block subsystem prevents running the workqueue to isolated CPUs,
->>> including those defined by cpuset isolated partitions. Since
->>> HK_TYPE_DOMAIN will soon contain both and be subject to runtime
->>> modifications, synchronize against housekeeping using the relevant lock.
->>>
->>> For full support of cpuset changes, the block subsystem may need to
->>> propagate changes to isolated cpumask through the workqueue in the
->>> future.
->>>
->>> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
->>> ---
->>>  block/blk-mq.c | 6 +++++-
->>>  1 file changed, 5 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/block/blk-mq.c b/block/blk-mq.c
->>> index 1978eef95dca..0037af1216f3 100644
->>> --- a/block/blk-mq.c
->>> +++ b/block/blk-mq.c
->>> @@ -4257,12 +4257,16 @@ static void blk_mq_map_swqueue(struct request_queue *q)
->>>  
->>>  		/*
->>>  		 * Rule out isolated CPUs from hctx->cpumask to avoid
->>> -		 * running block kworker on isolated CPUs
->>> +		 * running block kworker on isolated CPUs.
->>> +		 * FIXME: cpuset should propagate further changes to isolated CPUs
->>> +		 * here.
->>>  		 */
->>> +		rcu_read_lock();
->>>  		for_each_cpu(cpu, hctx->cpumask) {
->>>  			if (cpu_is_isolated(cpu))
->>>  				cpumask_clear_cpu(cpu, hctx->cpumask);
->>>  		}
->>> +		rcu_read_unlock();
->>
->> Want me to just take this one separately and get it out of your hair?
->> Doesn't seem to have any dependencies.
+On Wed, 31 Dec 2025 15:10:12 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+
+> On Wed, 31 Dec 2025 at 13:59, SeongJae Park <sj@kernel.org> wrote:
+> >
+> > On Wed, 31 Dec 2025 11:15:00 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> >
+> > > On Tue, 30 Dec 2025 at 00:23, SeongJae Park <sj@kernel.org> wrote:
+> > > >
+> > > > Hello Asier,
+> > > >
+> > > >
+> > > > Thank you for sending this patch!
+> > > >
+> > > > On Mon, 29 Dec 2025 14:55:32 +0000 Asier Gutierrez <gutierrez.asier@huawei-partners.com> wrote:
+> > > >
+> > > > > This is a minor patch set for a call_controls_lock synchronization improvement.
+> > > >
+> > > > Please break description lines to not exceed 75 characters per line.
+> > > >
+> > > > >
+> > > > > Spinlocks are faster than mutexes, even when the mutex takes the fast
+> > > > > path. Hence, this patch replaces the mutex call_controls_lock with a spinlock.
+> > > >
+> > > > But call_controls_lock is not being used on performance critical part.
+> > > > Actually, most of DAMON code is not performance critical.  I really appreciate
+> > > > your patch, but I have to say I don't think this change is really needed now.
+> > > > Please let me know if I'm missing something.
+> > >
+> > > Paradoxically, when it comes to locking, spin_lock is better than
+> > > mutex_lock
+> > > because "most of DAMON code is not performance critical."
+> > >
+> > > DAMON code only accesses the ctx belonging to kdamond itself. For
+> > > example:
+> > > kdamond.0 --> ctx.0
+> > > kdamond.1 --> ctx.1
+> > > kdamond.2 --> ctx.2
+> > > kdamond.# --> ctx.#
+> > >
+> > > There is no cross-approach as shown below:
+> > > kdamond.0 --> ctx.1
+> > > kdamond.1 --> ctx.2
+> > > kdamond.2 --> ctx.0
+> > >
+> > > Only the data belonging to kdamond needs to be resolved for concurrent access.
+> > > most DAMON code needs to lock/unlock briefly when add/del linked
+> > > lists,
+> > > so spin_lock is effective.
+> >
+> > I don't disagree this.  Both spinlock and mutex effectively work for DAMON's
+> > locking usages.
+> >
+> > > If you handle it with a mutex, it becomes
+> > > more
+> > > complicated because the rescheduling occurs as a context switch occurs
+> > > inside the kernel.
+> >
+> > Can you please elaborate what kind of complexities you are saying about?
+> > Adding some examples would be nice.
+> >
+> > > Moreover, since the call_controls_lock that is
+> > > currently
+> > > being raised as a problem only occurs in two places, the kdamon_call()
+> > > loop
+> > > and the damon_call() function, it is effective to handle it with a
+> > > spin_lock
+> > > as shown below.
+> > >
+> > > @@ -1502,14 +1501,15 @@ int damon_call(struct damon_ctx *ctx, struct
+> > > damon_call_control *control)
+> > >         control->canceled = false;
+> > >         INIT_LIST_HEAD(&control->list);
+> > >
+> > > -       mutex_lock(&ctx->call_controls_lock);
+> > > +       spin_lock(&ctx->call_controls_lock);
+> > > +       /* damon_is_running */
+> > >         if (ctx->kdamond) {
+> > >                 list_add_tail(&control->list, &ctx->call_controls);
+> > >         } else {
+> > > -               mutex_unlock(&ctx->call_controls_lock);
+> > > +               spin_unlock(&ctx->call_controls_lock);
+> > >                 return -EINVAL;
+> > >         }
+> > > -       mutex_unlock(&ctx->call_controls_lock);
+> > > +       spin_unlock(&ctx->call_controls_lock);
+> > >
+> > >         if (control->repeat)
+> > >                 return 0;
+> >
+> > Are you saying the above diff can fix the damon_call() use-after-free bug [1]?
+> > Can you please elaborate why you think so?
+> >
+> > [1] https://lore.kernel.org/20251231012315.75835-1-sj@kernel.org
+> >
 > 
-> The patch could be applied alone but the rest of the patchset needs it,
-> otherwise it may dereference freed memory. So I fear it needs to stay
-> within the lot.
-> 
-> I appreciate the offer though. But an ack would help, even if I must admit
-> this single patch (which doesn't change current behaviour) leaves a
-> bitter taste because complete handling of cpuset isolated partition change
-> will require more work.
+> The above code works fine with spin_lock.  However, when booting the kernel,
+> the spin_lock call trace from damon_call() is output as follows:
+> If you have any experience with the following, please share it.
 
-That's fine too:
+Can you please reply to my questions above, first?
 
-Acked-by: Jens Axboe <axboe@kernel.dk>
 
-> Speaking of, is there a way that I missed to define/overwrite the above
-> hctx->cpumask on runtime?
+Thanks,
+SJ
 
-Only spot where it's set/manipulated right now is as part of setting up
-the hctx <-> ctx queue mappings, when the queue is configured (or
-reconfigured).
-
--- 
-Jens Axboe
+[...]
 
