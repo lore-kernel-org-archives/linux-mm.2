@@ -4,138 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DF95EE644C
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 15:49:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F4A6EE6428
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 15:53:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C0116B0088; Wed, 31 Dec 2025 10:49:47 -0500 (EST)
+	id 694446B0088; Wed, 31 Dec 2025 10:53:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 677286B0089; Wed, 31 Dec 2025 10:49:47 -0500 (EST)
+	id 641C36B0089; Wed, 31 Dec 2025 10:53:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 575786B008A; Wed, 31 Dec 2025 10:49:47 -0500 (EST)
+	id 524186B008A; Wed, 31 Dec 2025 10:53:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 426566B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 10:49:47 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E9D9C1A764B
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 15:49:46 +0000 (UTC)
-X-FDA: 84280201572.04.15AF647
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 039F2C000E
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 15:49:44 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V5+8zPMK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of linmag7@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=linmag7@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767196185; a=rsa-sha256;
-	cv=none;
-	b=G/1gYcpCITP98sXTn40s3ISQHBZreAhVZVEPdI2Q+cv+KqLy8KpGtbthbiJeEJv7YwKD9k
-	28NU4HaxCIasBb9jIZs83hlgZI9DS+0TJYMMoFyQEyTr4EnU16ebc6FF48qs1BwI6FtAYz
-	Z81hYWa/TXfxyFIlHZcj5iwMXmdh5tc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V5+8zPMK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of linmag7@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=linmag7@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 428D36B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 10:53:10 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E71D48BDE9
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 15:53:09 +0000 (UTC)
+X-FDA: 84280210098.22.4E5522D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 281554000E
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 15:53:07 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VxDab8BY;
+	spf=pass (imf04.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767196185;
+	s=arc-20220608; t=1767196388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H6r7yw9l553CBnZ0Oq6/Kvj3e3aIbXAlTRdm8Qc8sow=;
-	b=VAX5U37IDiKwhZO+uX/HXkR9mQ+PyKIqTInCl+QCQGV0WvqQa1Iw+EFKwoDvnvZ1dHfmu4
-	Xv2xTMkc2wQMwSZZXCGfoDbwtGDJQRNcjXc2ov4vdxn/zKJs2HMJmVC/VB0r4ytRk6Ui67
-	cumgnzUi624AIXGEx/NxRJ6JkBKUiGQ=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-649e28dccadso18458985a12.3
-        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:49:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767196183; x=1767800983; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H6r7yw9l553CBnZ0Oq6/Kvj3e3aIbXAlTRdm8Qc8sow=;
-        b=V5+8zPMKetgfI/fFH4vBRMqiEI1Jic5u5CNgvrfWicz0vmenH4NbyJ7pesDj4I/KZI
-         X/6tSADcFoSKvCp9rX3kiFe0XwjjSJFQoh5hRNb2hbYSe6vj5GoP37XDDmPW/XHaqHnA
-         PYb4RL/w4CvZ3XKN7uS5GF7Nxomtu22CTmQJJ3Ew5y4S6mqFICrf56qKzXap3YaDJKT3
-         aFtveWGmN59jPpeCZ++bzE2JKRHNns/6X9oyOFMhI+86RpA38qFZNrZRd/xpIYWX20Ry
-         4xwmEoYogF2VXdzJbjEPAkWJYOllIhDi0mk75635TiX/a9hS8a4HzYmiDUAp2gryEPCm
-         rssA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767196183; x=1767800983;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=H6r7yw9l553CBnZ0Oq6/Kvj3e3aIbXAlTRdm8Qc8sow=;
-        b=rCAZuh9nTHWp+rNEJCvNj1GK081oWEqExOjETEt9zdtq79oA9aBpWzMvH5xTDQzzOc
-         fRLWDI8ASERVFtP5fDgstrbVJMgq5yTvtul3JCEGT4cE8vpKpYP4lCp1TLVLBPz0ZN+B
-         d9YVyFiFGSup9LPUu+ieXCQbQ5ft1gqZDoOPaOdZTHHDuXHl2M6Gp+Rss00g+nf2DYXj
-         uEVRaR2JYdNzxBkYIUEjwyjakqT+NTmxx4hvY41IO9dk6n4atZqitYVjRdyv6wfGhDVN
-         bz4QWzJINw1TGLettwFKP4s6F+RChGtx/ZcPt50DBLtMWdReFC9ciIwRplBoBGaaPTTM
-         P16w==
-X-Forwarded-Encrypted: i=1; AJvYcCUrAH8mPuyJKbFFxCCggSJk12R6CMmiYnL0EJBnzyfFwvld1TIY5fga056r0fnC1y/r0n7lL+rsaw==@kvack.org
-X-Gm-Message-State: AOJu0YxtNQMrcGMX04glsvs9ozEhThRpnOKwSP5CQ1/da9iwvhzF4C2c
-	7fclAGm9uluMWGJ/+yiEBN1cPRZ9RLWLgHJgapQKnGL3VN1tJtylLwEpqGvB+aaccemB233C6kk
-	ANU5eqMMzdhcTZUV9YU2gzb1fv8OfUCk=
-X-Gm-Gg: AY/fxX5Yopz795IlAmaSVM+JXAWtlaMswrt6pQn29Bvs0qlxo2It0Bic4avLi+0F6Zz
-	GOL7j6tSQxbx8O/9G9Z5FS3o8m16arx23G431FkS5yS30hWso4LG0/Y4Xr2z47A6oCbj75gs2FO
-	7Unr05jB7p+ZD9Zn16Ooy4Dk2BHmEZfmOuX4drO8jqybqOOVHNE7Vwz2Sxw+sQpUPNdE+B/SuoK
-	MRyhmiyDvR06Lzlvp5SXBLcEvHAKvss4RMk17+2tNKYn2ti67dx0SXIRnzKvur1PCfDR8NJ
-X-Google-Smtp-Source: AGHT+IFWPXcZKnGq0Krk9SV9S7c2h0pNtpTmEWv1Brc1vDiv5zIRm5JUQPWxix5qBNEZM9fT8eFcchz/mGnlgfTZ7QQ=
-X-Received: by 2002:a05:6402:430d:b0:64d:170:7976 with SMTP id
- 4fb4d7f45d1cf-64d01707bacmr33060451a12.16.1767196183052; Wed, 31 Dec 2025
- 07:49:43 -0800 (PST)
+	bh=VCjFp+pDGdRxDrsKK6M4AzYjr8nKeM2d1aD4T1BGjPU=;
+	b=161bJFoyxXeTk1MvO34PNz0V/uVAOV1jb7TBG4H1URAcZg1l9agTPfa56eMcn7LLl4WUqA
+	upl3lEFX5vHL+iBf06K9YeBMnBBV9SSJw5qSfeWTj3fnDa1HNHsFtsmp5gFbN3iPGh69ws
+	XYabVZKhfd1Dcz0l26O3LMZBclsk9o4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VxDab8BY;
+	spf=pass (imf04.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767196388; a=rsa-sha256;
+	cv=none;
+	b=GaRpYPivfBSJBHW58EtltRIZx3DSW3VIPT588FtfeMyrqRPB0OiZJqI9NRTt7MRo9XyF1k
+	OS+zn/Q92fosaSwTNfVoSVvQ2zup78f9RZ3pHRncoOLPS4skX/4/90TX/TVuuQZWYPWsrz
+	xzA8ig9DibqEMo2Ch9tN+cH9u0YWxVw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CA2EF405A3;
+	Wed, 31 Dec 2025 15:53:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1961DC113D0;
+	Wed, 31 Dec 2025 15:53:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767196386;
+	bh=WuZtOdVS5pt77HE6C/4UqSC04WxBcGthdWDuudQRYgg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VxDab8BYNIAerqtNV5zwvbjoskp/SPlehgZo8EmzUsqwfpTjb+PHLvjB3/Qja0h31
+	 UULkJOtXQH1SfmAb7vyAh6oIHb0OjR053QxyQL9jp1E2EPXisgst2fDkb6Pwm1biyT
+	 VWmvvozz2gG6CzWs1cAr3cftru801On2WHgnh2PLITLRtRFg3votB3ExybxAyD/TCc
+	 E9pfkXScaZOYlT/k3gRfSRJG9ofOzMXgcL5MwRQUb7FcyRsFHUs49yU5OMxzP78nXN
+	 a9Vs6QnYfGFU1BHGsY59xWhfGdN5QneBF7NTvxT2/ddwqD5zYUeX9DP8WxIh0e0M9/
+	 Gody5xZN6Kx0w==
+Date: Wed, 31 Dec 2025 16:53:03 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Waiman Long <llong@redhat.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+	cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 19/33] cpuset: Propagate cpuset isolation update to
+ timers through housekeeping
+Message-ID: <aVVG3-NBYIhJmVsk@localhost.localdomain>
+References: <20251224134520.33231-1-frederic@kernel.org>
+ <20251224134520.33231-20-frederic@kernel.org>
+ <a8262eaf-169d-415d-949e-70f1a17b1e38@redhat.com>
 MIME-Version: 1.0
-References: <20251228124001.3624742-1-rppt@kernel.org> <20251228124001.3624742-2-rppt@kernel.org>
-In-Reply-To: <20251228124001.3624742-2-rppt@kernel.org>
-From: Magnus Lindholm <linmag7@gmail.com>
-Date: Wed, 31 Dec 2025 16:49:31 +0100
-X-Gm-Features: AQt7F2rayRHt2K_8t_heYN2h4Fxse0t-QPEGBzoKWlAlrWu2fr6sWsAyLE9oYEU
-Message-ID: <CA+=Fv5TDfwnu7Qf2y=PLWWN1EvNpNbr8habnTO7R4_caAySDzw@mail.gmail.com>
-Subject: Re: [PATCH 01/28] alpha: introduce arch_zone_limits_init()
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, 
-	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	"David S. Miller" <davem@davemloft.net>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Jonathan Corbet <corbet@lwn.net>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, 
-	Stafford Horne <shorne@gmail.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Will Deacon <will@kernel.org>, x86@kernel.org, linux-alpha@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-mm@kvack.org, linux-openrisc@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
-	sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 039F2C000E
-X-Stat-Signature: 9xziuw3tsowbkyuef75yxax58jjd35fw
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a8262eaf-169d-415d-949e-70f1a17b1e38@redhat.com>
+X-Rspamd-Server: rspam02
+X-Stat-Signature: we9c6o3kp3gfoo9udqtpkq8mj1xc8auc
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767196184-519492
-X-HE-Meta: U2FsdGVkX19D7s0ZFjqKhiIONDsYpulzuf57MVjYRH1gHAzAaZS5SsvIXeFU37QDbxy81G6FDbR6mbZbhlsxSZJNcXXdcZHLPdmK++zsrPJb7hzIHVUKmEzQoC/EYzwDoB16wrwZ7oCIIHvvEUc9gYSvS09jNG8cyMUeMR3Fq+1JI4Wv2brTQ9ZKQjBxvV6LRP7F0os50oHaozFGTN5WvRoSV3QYnxNTi1vdpIo1vD2GrjsLlVoxz9XVzfwLrTvvaqn4NZTRNMRFMHubZXEH3Y6APRqZRMSEUA+FkCsnrl8l1BiRXeb/BKpImcGGV6S7JQsmroE+RQTsLYBBgUHL1OvV1Ur4+fTIcnJM4THjkCLkHxpoBMx5maCGdVDSxv+e7OOcvL140c5+a2OBh9QLEJUU2F3Gd6gGa1jUerH/jaqeN9ZsQJVcWddt7WyW4c22W9cIsZzYYwujc6/+MHQeP+zniRLgarQeLnl53kKrigKmH82oL8R6TCru3ncW2oIzvxP5siFSIkiUkpWC0Dsyd77s1iwj/bFqYs2yOkGAc1j0MBXD366qRkp3XPjyBmjdHCENvFt0W/F9prs/2ii+b/nKOBYk7lhyIOiDUFGlrjIYa19zpVUxgHuW1TS7nqkIF2Vmtzda4SSX9EVRjnpsCZ5l490jyYEz3Rnv2gDcvJuVfHq8Uee9L5nEN62D40FeUoJkZfjmJ0mnifLr0myALuuMhYrHlYFZjwr3Py/83msQxwJTSs0m2CFUAW2BVPT6FZj6wnjXwUV+cS5t/Jr7Xc/j5kqszf+mU5UXNb2PSH0D54R6zJiuz9ikwEq1dPAIc8f/sb1EVnZekBg+JXmRg/IBCfRJB6PswIm7Iih5jTE87gaqTgRGoVJkuVslN/51Ms72tiSftzXdTjOnMF55F2N2d1xF5mET7W1TqNPrceCBJKqz0BGrCjvx417NHz9tNmqiYqHEocBMACtns6i
- zXu0q1Wd
- hGFLFO9RCAIZhNbJkuwBAT18PvaiYdYTGzOppTIydwWMPc+6t/KT7AAdrTXyK4Xi2cklRA//pSBHUbi0aMTcAIKNqpiLSFKAd3qdTbb19TEmThgHrXaPiIxwHWnKTVCcq3eWWQ4mI4oEL7tFY7r+lgWOw1Mo5A5s1RY3hvCPT/tjsDsydTjw/qEZKackk2PaONPjXjxTtb/ge6g5cjbu8cjUDeNa96UIgeKFiHHNN9sTg3bdJC3Nmef7+9ph/RBUY6khqvMxXyfaIo3dM039PoOzh05DKkXbGVpvsCtcTI4H1vMkyoLOa6UK1ra5GD10QOy7LfyIu3+luuLEIbOMJzM92YYFtVhZzhD5+9LSaV4NUTNGyvNKov2SuwetDnNrD/yL8d/Zt1K7k9bZhPivvJZ8KDmT49U1aj1GewlzYYbQ78rTVdqvQgEd85qB9NkqRlNmUbMd7DbcR7NwSFzYF9fV3oj0NDqQL+NhHI80X5jG1svU=
+X-Rspamd-Queue-Id: 281554000E
+X-HE-Tag: 1767196387-526123
+X-HE-Meta: U2FsdGVkX1+CLPHI97RPNHjs9q/knHj4SgrS5nIyUFz9KBQ7s7bazn11b9028DDeDfGhmXNOoHzbnWNwLsqJEbhBmhuUY6VkuxyTN/r/wl1mSbojgd4AxxEWMmAH8EOgfBGRafTMpEKGgTglBxXOvNe/ofxAlbB99wMGmY65N8wJwR3tGq1U4GjSYKJbB6VJOGSAlFHINiTvjuIsMr4mdhmhfK7x6japqXVymnP+ngqxfOjKWDbSoQIf/XZHjY9VrsGOk4rg71ur2tFBX26xxf9VyG7X87i5sY2uEu8YAqIsBx6NBhAwtAg2aau0SI4q7/ejwesC1AUWkUfFz2kSlH7SnTYQqBaE+bC5SnRwMwvWUPf+GwhpOywYBoe1heUCxER3o/8EFs1DMm1873G4888KvdTZxasXe8d+skQpUl8k2OYNM45Nco12ee9x8TtYeN0Es+24rLjoSQTmA93etOziJ/poTQlB9dlL4D8Pxg34NKpwbZrSpsUA+q7ebKNQJHUBVlTbNtbM+3B4jqDKd+6mzaSrQtRZAUwr0Kogilz4vM2m6/1mrZyVEq34YKFWDZyDIVoNk+54+ZW2UnafFybHVQhCnIZF0TOwMFXKa+dnX29U7BRS+rmSPO4UMNW83DNWh7Y53kPft1L8JXKrmtiz946Tmu3Z3c8rhBoI24wHzqGI4bCBgG4eEEttZgGT6iTNiI+20voD7h/ByvK5fGtEV+19o+VcBKBWxzfSYRcvdyYRxLEO5U4Xlh9KKL5GS+e44NNTAhAKCFbA2yUgVAuv+z1iGfGDRS66dbvbNCBbDwyN1qFOi8kQYweK5fLqoqhOAXvjELmxCTd1yQr/A8JNSajOMR0xYeTkJRW/L5Wgg2qEwMqYhwM7gvvR7VlzKjObj+lDY12W9hoZd78h1i3IUcIa/VmWtwdCWRWfq4x9LjZjLy+RJhZuqgpMTbKg5C5ECaJeoVoQZYpApxw
+ FbOCzM9E
+ ZjomcBeqDTMabDlpImQNKN79pig90JiRaRzhsTYFZ/uQmSZqJNgVxam5Jeu5fsfZxblfckYll+eHvBdhx6RpnF0n1gIxRQHYlXO9BTVkHAmquXBv/RynCLi8+bxh9aisOy/yebqBcxH3rYkoHl43ghOn8RuTGSPatSEVF+WhTNf0TjsKcryboLyJk+0eGmA+4CO6S7Mcxmp/p3DYdjySKPd7w1Sbmoq2NlLDs70F2pBfgOrMr1rVffSQqjBmVpbbqbjXaeFNlNR/wwGg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,77 +121,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Dec 28, 2025 at 1:40=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> Move calculations of zone limits to a dedicated arch_zone_limits_init()
-> function.
->
-> Later MM core will use this function as an architecture specific callback
-> during nodes and zones initialization and thus there won't be a need to
-> call free_area_init() from every architecture.
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  arch/alpha/mm/init.c | 15 ++++++++++-----
->  include/linux/mm.h   |  1 +
->  2 files changed, 11 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/alpha/mm/init.c b/arch/alpha/mm/init.c
-> index 4c5ab9cd8a0a..cd0cb1abde5f 100644
-> --- a/arch/alpha/mm/init.c
-> +++ b/arch/alpha/mm/init.c
-> @@ -208,12 +208,8 @@ callback_init(void * kernel_end)
->         return kernel_end;
->  }
->
-> -/*
-> - * paging_init() sets up the memory map.
-> - */
-> -void __init paging_init(void)
-> +void __init arch_zone_limits_init(unsigned long *max_zone_pfn)
->  {
-> -       unsigned long max_zone_pfn[MAX_NR_ZONES] =3D {0, };
->         unsigned long dma_pfn;
->
->         dma_pfn =3D virt_to_phys((char *)MAX_DMA_ADDRESS) >> PAGE_SHIFT;
-> @@ -221,8 +217,17 @@ void __init paging_init(void)
->
->         max_zone_pfn[ZONE_DMA] =3D dma_pfn;
->         max_zone_pfn[ZONE_NORMAL] =3D max_pfn;
-> +}
-> +
-> +/*
-> + * paging_init() sets up the memory map.
-> + */
-> +void __init paging_init(void)
-> +{
-> +       unsigned long max_zone_pfn[MAX_NR_ZONES] =3D {0, };
->
->         /* Initialize mem_map[].  */
-> +       arch_zone_limits_init(max_zone_pfn);
->         free_area_init(max_zone_pfn);
->
->         /* Initialize the kernel's ZERO_PGE. */
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 15076261d0c2..628c0e0ac313 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3552,6 +3552,7 @@ static inline unsigned long get_num_physpages(void)
->   * free_area_init(max_zone_pfns);
->   */
->  void free_area_init(unsigned long *max_zone_pfn);
-> +void arch_zone_limits_init(unsigned long *max_zone_pfn);
->  unsigned long node_map_pfn_alignment(void);
->  extern unsigned long absent_pages_in_range(unsigned long start_pfn,
->                                                 unsigned long end_pfn);
-> --
-> 2.51.0
->
+Le Fri, Dec 26, 2025 at 03:40:25PM -0500, Waiman Long a écrit :
+> On 12/24/25 8:45 AM, Frederic Weisbecker wrote:
+> > Until now, cpuset would propagate isolated partition changes to
+> > timer migration so that unbound timers don't get migrated to isolated
+> > CPUs.
+> > 
+> > Since housekeeping now centralizes, synchronize and propagates isolation
+> > cpumask changes, perform the work from that subsystem for consolidation
+> > and consistency purposes.
+> > 
+> > Signed-off-by: Frederic Weisbecker<frederic@kernel.org>
+> > ---
+> >   kernel/cgroup/cpuset.c   | 3 ---
+> >   kernel/sched/isolation.c | 5 +++++
+> >   2 files changed, 5 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> > index a492d23dd622..25ac6c98113c 100644
+> > --- a/kernel/cgroup/cpuset.c
+> > +++ b/kernel/cgroup/cpuset.c
+> > @@ -1487,9 +1487,6 @@ static void update_isolation_cpumasks(void)
+> >   	ret = housekeeping_update(isolated_cpus, HK_TYPE_DOMAIN);
+> >   	WARN_ON_ONCE(ret < 0);
+> > -	ret = tmigr_isolated_exclude_cpumask(isolated_cpus);
+> > -	WARN_ON_ONCE(ret < 0);
+> > -
+> >   	isolated_cpus_updating = false;
+> >   }
+> > diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+> > index d224bca299ed..84a257d05918 100644
+> > --- a/kernel/sched/isolation.c
+> > +++ b/kernel/sched/isolation.c
+> > @@ -150,7 +150,12 @@ int housekeeping_update(struct cpumask *isol_mask, enum hk_type type)
+> >   	pci_probe_flush_workqueue();
+> >   	mem_cgroup_flush_workqueue();
+> >   	vmstat_flush_workqueue();
+> > +
+> >   	err = workqueue_unbound_housekeeping_update(housekeeping_cpumask(type));
+> > +	WARN_ON_ONCE(err < 0);
+> > +
+> > +	err = tmigr_isolated_exclude_cpumask(isol_mask);
+> > +	WARN_ON_ONCE(err < 0);
+> >   	kfree(old);
+> 
+> If you are doing "WARN_ON_ONCE() in housekeeping_update(), you don't need to
+> do it in update_isolation_cpumask() to avoid double warnings. Actually, you
+> don't need to return an error code from housekeeping_update() at all.
+> 
+> Cheers, Longman
 
-This looks fine to me from the Alpha side.
+Ok, I'm keeping the error return for allocation failures at the beginning of
+housekeeping_update() but the rest will only warn in place.
 
-Acked-by: Magnus Lindholm <linmag7@gmail.com>
+Thanks.
+
+-- 
+Frederic Weisbecker
+SUSE Labs
 
