@@ -4,182 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E083EE49BD
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 03:00:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70F12EE57CE
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 03:00:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 787C26B0089; Tue, 30 Dec 2025 22:00:23 -0500 (EST)
+	id D9F876B0088; Tue, 30 Dec 2025 22:00:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 731F16B008A; Tue, 30 Dec 2025 22:00:23 -0500 (EST)
+	id D1F846B008A; Tue, 30 Dec 2025 22:00:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D5406B008C; Tue, 30 Dec 2025 22:00:23 -0500 (EST)
+	id BF7336B008C; Tue, 30 Dec 2025 22:00:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 512096B0089
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 22:00:23 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F060F1A0392
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 03:00:22 +0000 (UTC)
-X-FDA: 84278262684.19.21431E6
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010021.outbound.protection.outlook.com [52.101.193.21])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4AE5B140009
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 03:00:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SDZtJQbR;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767150020; a=rsa-sha256;
-	cv=pass;
-	b=Omr1SrgXHISX6SsMiKBLBNfMfK3qFClX32JeoeUJM1RthTUmJJM4dtr4dCCMd+vDt7gH3F
-	VGe6TZUmfQqz8L+0Jbe7MXe4hHpLB+Kmi9dfmm2FNH/WnAtV4wkG/0pIs/ZSI1p+6JNvuK
-	ojsKBxFvuo4JzxxaPOwKxN07GPUeNOc=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SDZtJQbR;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767150020;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B18FA6B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 22:00:43 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C70D16047A
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 03:00:43 +0000 (UTC)
+X-FDA: 84278263566.16.03470E1
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6D7A0180019
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 03:00:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PBUtussQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767150041; a=rsa-sha256;
+	cv=none;
+	b=j/cwsRfbi30kt2PBsyi8BxJpGeNWDMW3thxdJBBn5Si8gO5t1SRBCcUEQasQeOJhX2Pviu
+	o7fLyGpclpAib9nmXJEDbV0fKDAHdLHO77N0CoJlgzUd/TDVuOCdwIPNUhyqGooZSuNJH/
+	cPHY2Fwxw1e+/L32hVG6zR/gFzX92Pc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PBUtussQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767150041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qWdrR336Ped0hPSNgnTR0ZsUaZG+C5Qy4Vo5tw89Y68=;
-	b=O8in9eiVlj4GTxpJMPKS+sux2ZUJvka96LwLZk9fZbXlrjBu+i5aYJqV5suIehI934giom
-	uDx62/wkKjZ2Hsa5jJ+vcmizk9PKo0ym75OKR+izVgPuNIQacOKxfwHqFVl0azDQFF4Iav
-	eV04bUpJOUx1ak0aHWKpSMYbgihdJ9c=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pKyBnWXwksHde2iJjjasOM8FCrSoBN3B+/imVPkHW6NrlIFD6Cq49zTS2lvqhU15XxyuI4HovN/+IUSAu7jQbCjtOesuaSYxje9a97XEuFJz4mm5B7TxXQE3OMCmDxgsNew1PtkukBMfc+SdH3Qlsv4ssGEHqyJotoKaKkJhTtySuYyRnKKMTVmd5HTFnuy/gpfV7Nl3iwou2QqtzoQXoKpDAAOeH7CuAdypfwDjqBkz3Fn6rXMZC3kVGweVt3J8Mc1ygGHobh1vSUBrmsyIl1uFXaYyhxmtejE8zEzV4ksF9sO+Ykt00VVQZdHWmqj/QKg5drDEyjumY+6Btt6Ddg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qWdrR336Ped0hPSNgnTR0ZsUaZG+C5Qy4Vo5tw89Y68=;
- b=x3D6ZHx4S4ergiyeH7ukFtOiedvJUJcPHiEOiz0XCAcPT8ELxOz4qB/ViPKBAkkU8Jor6UNJzDNNkbJspIcnMuDQ1Q06jLQvI7EFR9iqn9asAPYu/cd3jLxWVnSH1xLPjveUHAq19855NZ2BoQxdRyHfkWceOUZk4We+R3um+yeN+x7z4izfgiLyGknF28QQQwN6ZXNWUGgTdZr+4AbsAZJGAzph/OfLne0e1yqSVHV+vI6nIR8q9jUtDtpRxyqlcSukkIX56UphrlB1FE09n3Eo3eP9pYaIwXVmUqnxYVRthqDFv/KIPxVzSF9/CRC5gKXNfgnEHriK49SJXpp4Cg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qWdrR336Ped0hPSNgnTR0ZsUaZG+C5Qy4Vo5tw89Y68=;
- b=SDZtJQbRtUIWMRX/h99CztVpAsSI/xSZLMQEVKik1QHNTsdnI2b4dA1hALEyqoK+me8jP7PPo4VWTHOfnJcvUj1dMDHPqobX2hSsn2DO9lTtcn7xcYk/uZcBgdsCZmGZZoWfoEG+lShbS/wQV+Vd1Eb9CIIQa9geggvjEe9CzLYEGe4g5m9raoNmOGFTc7Qvs4aYQwlBZJjxYpl7T2TfFAIi/bVTaX+HD3omd/odahPnV+K5xv76i3u5UWbBRjiGIbLvEaqM7T+CXoBP52jEXTgsvXCVIpeOcPCCe8zgHvtOL2AEl8sCH33tnblw8fkTTtXiLjb2BjzYXUGLCp9/XA==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SA1PR12MB6752.namprd12.prod.outlook.com (2603:10b6:806:259::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9456.14; Wed, 31 Dec
- 2025 03:00:17 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9478.004; Wed, 31 Dec 2025
- 03:00:17 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
- Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
- sidhartha.kumar@oracle.com, jane.chu@oracle.com,
- Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v5 6/6] mm: hugetlb: allocate frozen pages for gigantic
- allocation
-Date: Tue, 30 Dec 2025 22:00:14 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <DC375867-8D63-4EB0-BE7F-0D21B4155450@nvidia.com>
-In-Reply-To: <20251230072422.265265-7-wangkefeng.wang@huawei.com>
-References: <20251230072422.265265-1-wangkefeng.wang@huawei.com>
- <20251230072422.265265-7-wangkefeng.wang@huawei.com>
-Content-Type: text/plain
-X-ClientProxiedBy: BL0PR05CA0011.namprd05.prod.outlook.com
- (2603:10b6:208:91::21) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SA1PR12MB6752:EE_
-X-MS-Office365-Filtering-Correlation-Id: c7ca498b-3a90-483d-679a-08de4818b9f0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?LTxP8cYM+u+mPzl2tz+JXhu1thTmBqEeayF1slC7Bv7REBP+FK9IT5+wHOOf?=
- =?us-ascii?Q?+LTP61a+MMwQldUPsJUUDDr8rvr2levJIo7T9uCyVGb74t9jNQ/5U9CmAYRW?=
- =?us-ascii?Q?DufTI8TmAP57e3gJKOLqH7RBg080MGysSJUVcOJ/0wH67wt1yQsPffpP6rf6?=
- =?us-ascii?Q?CboBBpjZaunfqsHw9gAp6yMvq+D86e9d3fiayViJjTmViL09ZAFPnOPlC9CS?=
- =?us-ascii?Q?Pr3+JAD9ImB63h+JjWpyBEZyUgrpI49flLYdpbv7a48mlSmi/v0a+of8euLO?=
- =?us-ascii?Q?5Zq0VOFLU3s1FOiGanAb2LUf1WnUOlZfxhfwAt/6zkGL1fpSKnFxOyLnzJog?=
- =?us-ascii?Q?E0p5hlapgNW5DnURTVjBFBQf89/w8t/PstPSgJwUJAN2qQ6NPamPwFvCtpTk?=
- =?us-ascii?Q?mVBlLLglyPzBBSruaNs8kTCgMTJJdvz2Aoa0/SofRhjunHrdo/SrwPyW8t6w?=
- =?us-ascii?Q?S6auHLI+rbpJOEFevnuJjoD1ejSwn6V7GL8susNjyPW9EvGQeQBrXrz2OBby?=
- =?us-ascii?Q?NSYsH5+KTp4MorworaO6EHaTmTRabk0jF7C4WOOBFg5KAVTpFm/dQW7ituqV?=
- =?us-ascii?Q?Il7qDWWvoIDdf+vNnsgAbSeU3Ie8VTm//glwBA0jPVHyjyBdDA1rweZkap4f?=
- =?us-ascii?Q?c1GzXTl/HlGgsG//dv8S+oRoVjkyu73DpQGbvlerKCXN5Vpp4w6OxXurvVRu?=
- =?us-ascii?Q?BcqDPGcDkDwf9zE6aAnC06oVUCmOzT4h6KnLthc0kPToDnWto1QN2ySKzAzw?=
- =?us-ascii?Q?K1w5tZpD8QDm2Y+s955RtTiiv+GPTra1EOn38ejgSGH+115htYtl+GVeIJbs?=
- =?us-ascii?Q?AZVCJ8/vaad8putAfkl6fpidHhKMcJQQtRpughvTywqjyCBawPuQvlUAfdYR?=
- =?us-ascii?Q?ZEKmppbilwa3EnkuIMzoLaRISz3EusEqFVw3jQK3aeE/DOIAFNTxyO4DIpkl?=
- =?us-ascii?Q?/35SYZykQwRCCKvZ1exzh/vzx2syl7Ges0OfbOL2ZLsxJor975EbZZeGLC1/?=
- =?us-ascii?Q?cVOkb7DVg8Sg5ysFGc5XzEiy6xm8kAg/LR5KYyS0IHWkJ4BkeqRObcozxDT9?=
- =?us-ascii?Q?b3WIv2OZWBlilXHLf31wIYrHhnIp5ea0kl3jYAh0WDTx1bJBc1faa9yuQH55?=
- =?us-ascii?Q?yM4UkwmiFy/8LkUU4wMLDHCBtEYMyUzQo3Bkxm000fblCvPM8iygfIQJLCYZ?=
- =?us-ascii?Q?zBCNefpkHoFKC0M36p6o/BOjijnMZMiV5vT0237DpTx3krGX+Gi56Ozgp5xo?=
- =?us-ascii?Q?T5mloDfj4xyJ7Lfz1piSmUAXO4ym0d+LW9p1RQ390hfFBcUriRj+TkNrnhW0?=
- =?us-ascii?Q?+lHICAxexIBt61elXYJddEpiyRtox0KcfuGNd0ERXKryvGmOv5ERmrfXxYGJ?=
- =?us-ascii?Q?Bxzg5wOLMOzjnKfOg6qy+npepa95qLhDr0Uu5cuPMhv/MdtY2JbtxdAhCdDU?=
- =?us-ascii?Q?cTR4Ef3Qge5PFVxkR+HOBx3h2Az8pVzR?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?K/KNSrdbHE1upiYFndvf1BXwJS6RqkpK/e+0QU8no+io7PFKT7GtnWQahrwE?=
- =?us-ascii?Q?QzK97MInNx2QbjF5WBdQuFroq2JyBz1JL4ak2WTmARDkup0d4yI04nInkiGW?=
- =?us-ascii?Q?RSJUoX438Xi0ICr5Sqrtjox6jFIY+XQ4ryv0XEiBMCU4/CdzdrbcjLLIxqi+?=
- =?us-ascii?Q?M3CucPvcAz0o58erCkz436m4lrUjKoOOaNF50zYlM9JISvquhhcR7UJURmQx?=
- =?us-ascii?Q?LKpzHDX6t+cuSSm38vgAuHrMft+dkPJvrKYlZnyP40Vy2ld2WbdW68voThj8?=
- =?us-ascii?Q?ppXmy55xD8iRQzywDJrAeuwE2r6/HkY0JBon0u6YsWkokOnsZYwU2aQzPief?=
- =?us-ascii?Q?2JGsK0NEGO2eXXA6LxzS0qqLQRpxHV0auv+08NrlAdsbPWNyrwP4eCVrlfZp?=
- =?us-ascii?Q?AejRCkjDtEKqakEjQ5hGWl39sTYXahxt5FXUpiP19tZa1DZdRXZoKzKDbJi4?=
- =?us-ascii?Q?tJlu6lYc65d7pydHe2thYkiKX9QuYe0q/uEpWhDCryjdAAer73BHfjTazrwW?=
- =?us-ascii?Q?JWqkNNvd3F+tS/SRs0l/2tJg/frHSPMpRoSIJb+O+1soXXYf5dk8L8kAKind?=
- =?us-ascii?Q?x9IBY2IZaWeKuMAW3oUnRAwJWZ/YERuONMLICsrjJ0giAYAX73L/uwLC41/E?=
- =?us-ascii?Q?Uo0H+o9oLgnRzE+IvRyBmZOHmHit0lScHuGSgA9TtQhPt4x0QoAa3+Wm2dkg?=
- =?us-ascii?Q?l04V5y4mhxc1dxRqzudLDTsM/SqHBSJ98aqEglv6ypO9ADY0pWOJI34RQv17?=
- =?us-ascii?Q?gvj8TzhiDLVAcBYvn3eFx36DvqETs1HwocKparsqCUwSIo0Rf9VHtcpfGN1q?=
- =?us-ascii?Q?qmSoI8s2S1za7ZhLAruhp4CIC2i0Ye9BniR8UNiDxVJx9JncVy4AJFYnJzn4?=
- =?us-ascii?Q?EMrM8YMeuAuBRQ0q/xacaeUjEM7OvmQEKela6jZ/YqMNQv2vCmEc6d3Bk2yW?=
- =?us-ascii?Q?V9JJkn2i1TJOQ/vgZlkKRTtLcA1PAyWKLvjSkWI6cUEx1URZbUW0fMr0y/1P?=
- =?us-ascii?Q?SZq2Fg7e37HqTfa/BMNW8aSNhUMVTwW8e+KQJGgSdu9CJJq3j5EqP1QO8KUk?=
- =?us-ascii?Q?eHR9kEUT+O9Ivnsn4Tzmgw7aM1iWydqeEGE3dsMNCl9w3fzofw7Ww7q0qRC0?=
- =?us-ascii?Q?JiqU1Pc54u49NoZx23KLhJbTpg1kCGEu88tcAPQ2uNgw4PEINGcFtrkRm5U7?=
- =?us-ascii?Q?uqrNFiVkdN58145/oUJbGpdQx0LIBgsjSAQfgFbrGWUuq0EA+ahwMRU/W8xN?=
- =?us-ascii?Q?pPo1YxXnqw3ltMIpqL2sUYIgRjgHv6m30gNAiwq3t+YpX4k5dFltXJy/0/t1?=
- =?us-ascii?Q?XZemMIjuz6xM9FKfao1UT69Wx07C21E590clW4yBLHXYF/u0kIl70jyc4YwA?=
- =?us-ascii?Q?PpfkGsyVTwvF3utYWlojKgNdtGUI1P7TRpkJNdj4WIaPBV52HsnCaFbpXFVR?=
- =?us-ascii?Q?0xyjj8Z4IPDKRaUwvDHpLPZlxooiRD/aciEfEWt7H4cH98APjWGeDDwnPaH9?=
- =?us-ascii?Q?bIk/r3C/I5lVdncJUif8IFyT6VtO1Cek/n1aaSiR5niUL/Bw7JPVvhlKDAt5?=
- =?us-ascii?Q?shkIZdfGQYnlsqBB3jnXfIPvtqWrwUpm2Ub9og1tUZLG17UP3JAd3sRqKUwj?=
- =?us-ascii?Q?dvR260Wdh1oeHvm6IMQDuelgoPZOToasc1OE2WMMVunIbZmPHmiiVlSwvOfH?=
- =?us-ascii?Q?IOH/JVdvugDeu2msqm5uAgOiqOjZ9oK7Nzbk91jKJuq580lY?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c7ca498b-3a90-483d-679a-08de4818b9f0
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2025 03:00:17.0041
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: heTmFRfX1JYy8yfHpQzrnWi5o1OwyQnPsHDerbJDQ+T0JAVV1f1fHO2LcTAh9AMf
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6752
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=MMZvWbbIBBmy2hVTByTqVU/28wHL8fmh5GRIKAADEPk=;
+	b=1tJOsBqGBbr/zdQMjYv3hyWzPMY/gQwoBPXgaVcKvjhUMgI0VTKhMP7WjQGbc3Y00zexVC
+	bXQ46GEfSqaBhLBnP5FJWOYxdtg3bwFgEXRTLfmFo//BY3WKlFELNYpUfRuaE4hIdxrSae
+	4g7tz8GG5vyZm+ev4QPMbDDf/1tr/1I=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b8018eba13cso1623288766b.1
+        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 19:00:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767150040; x=1767754840; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MMZvWbbIBBmy2hVTByTqVU/28wHL8fmh5GRIKAADEPk=;
+        b=PBUtussQzO3gylduDSCBCWWrOpBg53mun8CbHEZvnZ+LTxWRpH6U/2dT+ou5sUQ6vu
+         mvEE5dZzsgWfZUb427QUUvxwwS8OsMJLZQjm8fhKv0rb9Xl3aCFwRleEmaRzkSxaX6Ma
+         JizHawHAd4LhTV4wGEzAzdFygMvMdl82/qZlcik8cn/waQBmv6yk7fws1hBuDYOowIz3
+         Y7aB2K/AeSDX9056yxLg+yxwDI8PX8jF5adifI53ZozHMPAh5slNH/IBygHGQhFHXSKU
+         eE6VfBrlbOuBt5EWmv+4MxbFdV9eFvwIrxnY3R95SG46qpkKDb8jeKvxby1f9MMXhKBW
+         8E7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767150040; x=1767754840;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MMZvWbbIBBmy2hVTByTqVU/28wHL8fmh5GRIKAADEPk=;
+        b=QC0U0v/vEGhUVwWxIxtKRJpP9CPkautaZiQBPTQ+AdlYUn2T+V6Ya9TsrN8OPPMtcr
+         NI6hUzLjulm8QU59Jg/y1HBbu97g3o60vIPkhprEF1pLmMBXIt8rP/rEvq6yK1e5mzMz
+         zpEb4/XHYM1FBdUz1r1A7x6J6HP/bS2nQZ647HL+fD69giiKYgsW31jnW9Td1oPTpMew
+         McibL6a3PCR+PDPEKDJhzBn8yUHZgp8gWPyS3cJWm5UrHaKwILDLbmT3EP2jVapxdhGW
+         +fRPCJjuKk5p02BrT/0/aW6E1ksIHQbIO+wAYsg/65EwrkOU4aMPvPGG+LLaGSjYwlgc
+         3twg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJwLZ4ZTArdaGjIi+ABG7yJfyl5D0jLpisMBDtZtPpgN/qgBqTPzbK7TeS2UyBJjgnRtjhecnYmQ==@kvack.org
+X-Gm-Message-State: AOJu0YxA85FCNYswZxZlsz50ja+oaLK5zJzmHl4C5HKE1xx/gIxD3kNx
+	TE1YLfqk9WiOnfIWgrXWl+5C1K86jzjr+y4ttGSLuok/ILU/cb7n+l/I
+X-Gm-Gg: AY/fxX7Qhon14mgXOqgjkFElRYzJrncLdrxbzXKbXC8Wc1b9Emr49Yi8Easfs4pKhDD
+	w8jZqHODW5nlXnS12h2QPzlvalJnnxtP7N1CnuKeb2SyZ7sf2u3/7gwdPsAlz2m+ji7eFUmfQSc
+	LnDPPo7iX5Fkb8I8b+OhBliuykCdkquX+ZdcrJHfHsbm/TlwNR/17K44bzowVOiDeDp4o52OXtF
+	mzy3C/0Ka9YQwWN9G9lWDUufTqGJuRHqHxFjke8CnaPTP7p0Mt+Aljc/OdjsO8m+kc9x2SCZFCI
+	IAeC8kE/laf5IvNqiIqtxFWknWOZJchNcbJqJ3dRWrSRrr6x1RuSVEjb91q/CsdI2jQwT2Ti0xr
+	SWmUXiq8g6W3EfZXPxx/a02W7oI/sYpsSi1PNUBC9brhO9pgxjC9ZwmVMcKtqsdUgfY9AzAWt6t
+	ZPN7G4Uw7Hqw==
+X-Google-Smtp-Source: AGHT+IF8S0Qg+GmPFjjVlu2NlHvua7TCiotJg06/+N0u+q+yODVpwkPNVE7It1PwxVV5gykBDT11FQ==
+X-Received: by 2002:a17:907:78b:b0:b83:975:f8a5 with SMTP id a640c23a62f3a-b830976511cmr2325146266b.40.1767150039609;
+        Tue, 30 Dec 2025 19:00:39 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037a6050dsm3865880566b.9.2025.12.30.19.00.39
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 30 Dec 2025 19:00:39 -0800 (PST)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: will@kernel.org,
+	aneesh.kumar@kernel.org,
+	akpm@linux-foundation.org,
+	npiggin@gmail.com,
+	peterz@infradead.org,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	svens@linux.ibm.com,
+	arnd@arndb.de
+Cc: linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-s390@vger.kernel.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: [PATCH] mm/mmu_gather: remove @delay_remap of __tlb_remove_page_size()
+Date: Wed, 31 Dec 2025 03:00:26 +0000
+Message-Id: <20251231030026.15938-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4AE5B140009
-X-Stat-Signature: bkpagr3769akx5hgnexdrhx67xzgdmoe
-X-HE-Tag: 1767150020-835576
-X-HE-Meta: U2FsdGVkX1/ff0se4IsSSPSpCXTdObdazXLkfMBBz0DRZMnqgaucz6zYcT3llAAqvBOIkvU4KF6CrOKD5ko2txr9eJWXT47wzeZb+oSLxWzEvpXUv5fE/7f0JkoBy7wbG0x/IddfZGgXqrcVvrO7K6WDvHcms4VIvoThxJ24xmvrqcdtUP5iIZTc0kgTd82/vpDhQtkFXLMakiJrmYMaCZGSU3wvNesrTLQoKcfcF+Er3ueDAgyCy77mhRyGXpUTXTg9SNI+T/CvfKepkTvcx2pFBic3lWzNdD/NTA22KC8Xk+EfeGqqTO8/2/NRfoFd8PN3Dtsoq0vRggobOrq/BitxIyHy9rA/DxY/StWRaD9KqvM0YBULMrFkeUtFj3vjd8iQE6eh0zKW/x92c7u09xeNAdJjdliGemcwsi4BL6YRh3kpqVChGiBp/0pH42LTSUILNLNSchdKxKD2rS3q8IiSYeh0FVqqOxq66hqngxIqRDemqe8jf+4o93zEPY+6ltJ3Wvp3tZIdjZKNIs9GZhGr+VphaaRK7FDfHR4j8SV6KoaMl9Jmkyqr4fXETAvor7pXawTtuLFpATT1FB0ojCgGeipOCJtjKLzP6FigE/9pQ+Olq2TCVz5d6xadw5cJj/p4xU7XZJaZPymPVOml/SvkJhp17cve4ISMmiE1R/ev2Qv9RmN66EXAK0rBpixwc7+tax58NfSnNb5+xN5+Zg4xpcpoD99VAmhS1N8vAP/3bGI7nZ5rhIDuveSQx/1d+NF0mXt6bSEPwlMVL0jskHecXDYqAeq+YuuCJIaKPiPEIAB0SKEfRv8JRuxCzNny/ByyLB4JSY8UwYtqqwk71gumjX+9VJlG5kD27Jw0JWf4EGMt4AauCOY2VpOZ3YIR7A17grKUF4s4Bzhx5wy+CCPrOw5pxqw4N50OQOPIhVd3Jgk2AV7k713r8xR3/VGUA8TCqgkNc74KU0G7XvJ
- acsQ4U3f
- //zqRmKnLU1n5cz0q9bVNzESFX/KiLoX8hnneodUEEkyoNOmYVG1+wlEpn0rWZEiRbgRKvDv/bIOB5rm6w/2FKoZE1NBCw+kx8fdB2eASgbunU6h5bkusHNvW/UKAVDwTDsa9B+oe6rAgcXjpDTWIkZFwC3t1WvOB9Nurtqj+DeesTUmtdZWCUxI40375ZiQ5uoVwsStpswJ/kqDUMTRM4JVwMMHCRigndib1XVo9fGRu7xyRPW16mHCVrdWcbtlYGIpRfhVczSISqc2DXocwVmRe7yPcLDEIihCJK3JXFNmKGOA7gtBso29td+JFx+nOA5KeP7ek0W88h2OqAoke2IZWr7HokH4Yg/fPWdqEsQcLXI1HnBk1CN0rvQ==
+X-Rspamd-Queue-Id: 6D7A0180019
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 74a48p969afcryh93qzxqfnjrkhrcuna
+X-HE-Tag: 1767150041-587544
+X-HE-Meta: U2FsdGVkX18aTklsFFbacaLfAj1/VKHPIG/VdcHNpfRuv6gKxkZ0Gs/C/JiOBDp9D6XYvt0kSicKNnRTnsXVfeNgudiyUIU8cGwTqY0hnDUbQJwSr5AF1QP1XXLDQjR5pKQUKStfjx2HmFGSNmlN5CkRjtjW0x0ieymk8PmnadWV4Hinjh9aTCRM1xGZFn0LS0poXPrOoS4UXyBFGmnAyCYDZJOHW6yUIyBuXzQqPGr8zkDiZrkJ06aShLP9aXqY0TUWRuzuuYa2tGPIJzQbOXulgo+2MsKezR3CZF2Iqa9iaogV7vD5yD71MZv23PiCJVXxXqSv73Fctvb/+s4x359vU5Tj0XPyzeukhw7fNxOnH07LL/+MwhMc5F+Ke20GOOuRH+EkpzDgALr9P2FC0Cy3kBsh0YjX1VagxRZI/U/rIvcu3DJ/IOc5wSyPtaaN16aaies3s3xGF0ZBwagVz8uousOjAIXJrjag7Zf86zGO4KeRrnakp6s6IxY4H8VWv+gzhclxISYxgVH5rPyT9aEuF+lW6dZFmg4zUAuRhbc8cBdEdtrfS6Hd9OIqjlpm6rwPZygtsrp3uOpeJElAnPYZFppJRRwiLemNCs/L0mT0HujTUcnWnbTlpSm/hu/RKZUQO0bbDx4I0454u71eKCflVQMyriDrKE+JZyNd1kIRKlUOAu9DlKVN7wCNlf8y+rpo7K98BPMnoN1TX4pqcR4uHfyMmp8lvROFbu+cyIfLTlYfI7vLAkhiGZdnZAafJI3yXFSYbkYeZNgSKWLjcqZ9EBOPBHdfT6kC2OqKXu5NfZ2s8/wqJplYCDb99iGIW+tI/NgTd815GnYUJ/2le9VzNiPc+iHhYjpDDUnshFyOjqBIvG/5qDnw4L6hDrvM5SuvaXKca1M8Fxy1JQoJqNXtEx7lCHhUDixNYbjRWOT43j+PqotTFewWM0Qb6h2tlKIdRTjl325PvsYbxqz
+ 1PLIOUPi
+ 7J7zdycgmHAU5EEHtfp2rPXqAhcuTTce5+igKMloSb/6/Kpm30RKt1t+OC8iC7lADf36XReZ1K1lVcIl6Xu6kBUXaToz0T1CLiBql7+Ci4vyAWJL5lHDfWlq5Q1MF+MDDK83Uy3F2WjnUjFnBcnK87OsZOIWKCt9kidU8/XJWTifZs2Osl8W/BiOof3VSDOstjX+eCUaJmpafb6WINohaQopRDHrIalTaVYkokZE2vJuc+GUb7kpvuoBpUVgBfDJnFxFe6PI3Xl/tFX77uFFrdxPDNGeHk8BLUyQZumISdB/z+C184DaXyiovrinftp5GkRNf7b8uXxshQkGpy0Gfce7u35Xq11YJg0uVUeWF+FJ9FxwV45rNv20nDsCXLy4x9rMml9/gT3JJQAbdjc6hY3TrSHPtEG0omL++im4YXxfz4GLtkAV2q7+f3CYnXLzrt37/u1dTqEAFK7Wa9YpI4Iyda/A327ZTWBEPh9YDAjQIeCqsEwszKMk8YOusSnaXaLSFWLghEcqYRPBrkrIkN4atz7lt7XG/JENcb+3xa6lo5qkNU86BuIZZ+4z2AQGLFv5CRY5AnRd9h0/aoTSZvEZiVg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,28 +125,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30 Dec 2025, at 2:24, Kefeng Wang wrote:
+Functioin __tlb_remove_page_size() is only used in
+tlb_remove_page_size() with @delay_remap set to false and it is passed
+directly to __tlb_remove_folio_pages_size().
 
-> The alloc_gigantic_folio() allocates a folio with refcount increated
-> and then freeze it, convert to allocate a frozen folio to remove the
-> atomic operation about folio refcount, and saving atomic operation
-> during __update_and_free_hugetlb_folio() too.
->
-> Besides, rename hugetlb_cma_{alloc,free}_folio(), alloc_gigantic_folio()
-> and alloc_buddy_hugetlb_folio() with frozen which make them more
-> self-explanatory.
->
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
->  mm/hugetlb.c     | 75 +++++++++++++-----------------------------------
->  mm/hugetlb_cma.c |  9 ++----
->  mm/hugetlb_cma.h | 10 +++----
->  3 files changed, 28 insertions(+), 66 deletions(-)
->
-LGTM. Thanks.
+Remove @delay_remap of __tlb_remove_page_size() and call
+__tlb_remove_folio_pages_size() with false @delay_remap.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+---
+ arch/s390/include/asm/tlb.h | 6 ++----
+ include/asm-generic/tlb.h   | 5 ++---
+ mm/mmu_gather.c             | 5 ++---
+ 3 files changed, 6 insertions(+), 10 deletions(-)
 
-Best Regards,
-Yan, Zi
+diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
+index 1e50f6f1ad9d..0b7b4df94b24 100644
+--- a/arch/s390/include/asm/tlb.h
++++ b/arch/s390/include/asm/tlb.h
+@@ -24,7 +24,7 @@
+ 
+ static inline void tlb_flush(struct mmu_gather *tlb);
+ static inline bool __tlb_remove_page_size(struct mmu_gather *tlb,
+-		struct page *page, bool delay_rmap, int page_size);
++		struct page *page, int page_size);
+ static inline bool __tlb_remove_folio_pages(struct mmu_gather *tlb,
+ 		struct page *page, unsigned int nr_pages, bool delay_rmap);
+ 
+@@ -46,10 +46,8 @@ static inline bool __tlb_remove_folio_pages(struct mmu_gather *tlb,
+  * s390 doesn't delay rmap removal.
+  */
+ static inline bool __tlb_remove_page_size(struct mmu_gather *tlb,
+-		struct page *page, bool delay_rmap, int page_size)
++		struct page *page, int page_size)
+ {
+-	VM_WARN_ON_ONCE(delay_rmap);
+-
+ 	free_folio_and_swap_cache(page_folio(page));
+ 	return false;
+ }
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index 4d679d2a206b..3975f7d11553 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -287,8 +287,7 @@ struct mmu_gather_batch {
+  */
+ #define MAX_GATHER_BATCH_COUNT	(10000UL/MAX_GATHER_BATCH)
+ 
+-extern bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
+-		bool delay_rmap, int page_size);
++extern bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page, int page_size);
+ bool __tlb_remove_folio_pages(struct mmu_gather *tlb, struct page *page,
+ 		unsigned int nr_pages, bool delay_rmap);
+ 
+@@ -510,7 +509,7 @@ static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
+ static inline void tlb_remove_page_size(struct mmu_gather *tlb,
+ 					struct page *page, int page_size)
+ {
+-	if (__tlb_remove_page_size(tlb, page, false, page_size))
++	if (__tlb_remove_page_size(tlb, page, page_size))
+ 		tlb_flush_mmu(tlb);
+ }
+ 
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index 7468ec388455..2faa23d7f8d4 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -210,10 +210,9 @@ bool __tlb_remove_folio_pages(struct mmu_gather *tlb, struct page *page,
+ 					     PAGE_SIZE);
+ }
+ 
+-bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
+-		bool delay_rmap, int page_size)
++bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page, int page_size)
+ {
+-	return __tlb_remove_folio_pages_size(tlb, page, 1, delay_rmap, page_size);
++	return __tlb_remove_folio_pages_size(tlb, page, 1, false, page_size);
+ }
+ 
+ #endif /* MMU_GATHER_NO_GATHER */
+-- 
+2.34.1
+
 
