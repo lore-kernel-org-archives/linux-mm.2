@@ -4,123 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FE42EE57F7
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 09:42:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BDF0EE57F7
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 09:46:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C82A6B0088; Wed, 31 Dec 2025 04:42:48 -0500 (EST)
+	id 5F2E66B0088; Wed, 31 Dec 2025 04:46:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9759E6B0089; Wed, 31 Dec 2025 04:42:48 -0500 (EST)
+	id 575EA6B0089; Wed, 31 Dec 2025 04:46:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 881756B008A; Wed, 31 Dec 2025 04:42:48 -0500 (EST)
+	id 482C36B008A; Wed, 31 Dec 2025 04:46:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 740066B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 04:42:48 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01E8E1407E3
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 09:42:47 +0000 (UTC)
-X-FDA: 84279276816.24.2DBD133
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B7BBD140007
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 09:42:45 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nTcl3tEl;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767174165; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3820D6B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 04:46:50 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A66BA1407EF
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 09:46:49 +0000 (UTC)
+X-FDA: 84279286938.16.569E21B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E5248100003
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 09:46:47 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="VSe/zxSD";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767174408; a=rsa-sha256;
 	cv=none;
-	b=7h2qxTAN299jXyx4mbbIlqupS1wwxfrLy08DRCH1lguSLCh3f08K0/GfRRx+ByGN1opk+c
-	IuovgFqe09JqN/gp5ya5fItkBi7obdqWg8nVam0cTaYMlTcbsSg5oQM6YgJuHAsRGofIfZ
-	W7kck9hM3M7jaeu0YUg0pVVW2RtgUYw=
+	b=cJv1WM7tV8eTaXagwC310Xb/aAssLC7uBnKAmOISd7c80vAVb8o/xhfkaCe+JegfwkR4o2
+	lR7+1gZFXlvl1rW7QmzOG5Cyfw9BE9bmh/hiQ6t6ojdWbZx0PZaMWxTL7+Os1jPpE9mTZl
+	GKjQ6xNrBOgjecFto7iGchJ5dLJFzLM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nTcl3tEl;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="VSe/zxSD";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767174165;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1767174408;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RhQC3hnAx6vo8ybVJwyWTzkkYGMOha8q8BXdXCtNSM8=;
-	b=OkP4DDhHbfzPyzOJ/0NKSu5cofX6sSK/VBIU5CPQAgjmqXgbgPqUSI8Ropp9K60BWZLI9l
-	k94FNRuwrrQ2wHyCrZt7VEdRHp8eIu2iAPhNkorFBqmFyVO2Sv/6+O2RCtjmC9Qt249V6N
-	Q+sqOfvIPf+fH7XXoreCePtK5Y+BQg0=
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-64b4f730a02so17765816a12.0
-        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 01:42:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767174164; x=1767778964; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RhQC3hnAx6vo8ybVJwyWTzkkYGMOha8q8BXdXCtNSM8=;
-        b=nTcl3tEl4jVLiYE9MNCg7fy4vYBPxE8t8sLBui3bBFvf8fL6NWo1Al00FKThekWI9S
-         L1dO9c1p6pRWCbGfEAovUKkUWNfuomnRldO+WQgOvJvz9IfYZj0sa+gTBp2djRuCY78O
-         nwxx1XB+UBvNu7uhn3fYJM38zKz19mtK5mAaaywRNaiB8tAzj2am+F/BVzhiTNiELgTF
-         bamYJdzwCY3JrkDnhUU3h1LYGLBZM1jCxnul+ibhD//nFkPxfOWdweiSWi/iJsmlCl7S
-         iYHEsPCfXSfABuTtMZxyughMC9JnMSLqNRTnSsAUtMrs6BmRCYL4Cp9LADeRopLeq5aG
-         IG9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767174164; x=1767778964;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RhQC3hnAx6vo8ybVJwyWTzkkYGMOha8q8BXdXCtNSM8=;
-        b=piZVZIhkptSJGO3ucolWHgvtCM0OX5o1kX37i5d498TzaD48nAWT1gciu5lIt/mLT8
-         tI+lYW9FYH8WXfvXaPm0BbVnPWrhWWKx2/U0mVcmsya2iVDUqRUiTCwe7Txsrqci9j4D
-         NnT8o6gfvk4rz46o1YrDDTvnb/LgCrcnLhNkLLExXImDI3V7D2mZlpgndf9e8EkJreLk
-         xFJph/hY9H4eDVFxh7CLXGK/ywTmtxOMB5Dd7NbajqbQzgceW99Xp8G5YQ2f2w/lwIXy
-         /yftsFYDDD1/ZGgjwVeXLLq5nhyp1DfWG98sJ6d+8q0YOU8uJSOQrfvYu1E1Tpkkf/Wv
-         TwEw==
-X-Forwarded-Encrypted: i=1; AJvYcCX2oHv5+rGQX6KBpn6Dzng4xraQkHMJ6h/OLKK11PeFh0Zxllx16UYGidq+Mu3dbqsKgqRTogd9ew==@kvack.org
-X-Gm-Message-State: AOJu0YybJSLkXdJArM/nCJtM33+ucl1UaQLYiLCmTbd2vrERoFzAhNjt
-	G/G5KeNLA6yI9rtOAKer1sfpBXQMBhRvSvpUQ70WE+T7grviibWUbmjv
-X-Gm-Gg: AY/fxX48xZ9PZIiqWV+bd02v2En/jscd5KOOUqXm/2xoLXkMAKHuy0phEb/04WWqZOF
-	+hllq7x0p0bU/nwy+HIW7vBIHGBlPLTiUyJfRzfgCakNZP7dmfMwVvgwWhp5ktQ4SyKRzVyqt1W
-	cm47DutzRXSK8g1KxyyUp/2z9tcOyLstHA9ZZigjONQdXZtKACHt42y4+lK/xCKOBFY4ftN4x04
-	4Hy5oa9r0RO1Zy1Tk+Rem4VDtsFzVjnOsa2jTknKWAHI+FTdpTgMm21y9IaijwkjgX5PWsRhKNM
-	+2EItD9A7OQPXCttzzqREyBlQefwbNrqBjXoQYZq8BzObZn9vPEe8C62Duim+ov/qTkuaZXNYda
-	r/xcClUtWhrZbce1m22Ny241S3ojzzycNbnz360ujpzotZBXLnIbNSXOOCVmdx7s1cIA1MqTsf8
-	BFcch4dHDUqQ==
-X-Google-Smtp-Source: AGHT+IG6BnZXWofbdukBItAk61uwrC2j9z3+nQpSf68E/xI1yNmjywUHcnARSPenSAEDWkU1hfWn1g==
-X-Received: by 2002:a05:6402:2356:b0:64d:4f75:aa28 with SMTP id 4fb4d7f45d1cf-64d4f75adb0mr30963979a12.18.1767174163924;
-        Wed, 31 Dec 2025 01:42:43 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b9105655asm37568985a12.9.2025.12.31.01.42.43
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 31 Dec 2025 01:42:43 -0800 (PST)
-Date: Wed, 31 Dec 2025 09:42:43 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
-	peterz@infradead.org, dev.jain@arm.com, akpm@linux-foundation.org,
-	david@kernel.org, ioworker0@gmail.com, linmag7@gmail.com,
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-alpha@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v3 7/7] mm: make PT_RECLAIM depends on
- MMU_GATHER_RCU_TABLE_FREE
-Message-ID: <20251231094243.zmjs7kgflm7q6k73@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
- <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
+	bh=puWMIkCqzvcukNc6entSGSZYTJ90NDZmrdy+34MYr64=;
+	b=VbZMoR/VV7G5bZjWfQtfpkKwbncMQuWiCofUmKvZ6eE7B2jNzJNE3UzolUR1fF/OIN3LJt
+	3dFzSvsn5f1tl+7c6OWDwfOUT5wZCqv1fLdQWOG+Uz+/Ludz3P1t/NwxXmlT7sQjQ0nv6Y
+	n0S2WV+bhomiignWafumaxzD/pRaRsk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 90D0C40289;
+	Wed, 31 Dec 2025 09:46:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05723C113D0;
+	Wed, 31 Dec 2025 09:46:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767174406;
+	bh=Js4gGVpGtn7C+f3YQhPLQtxd+Rpk3HniIelYKQQwOw4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VSe/zxSDWx34KjwRibmxVhaeoXwJc7vuj1CDNSJId3c2TQLzK6sKsUapbmCiuwwvR
+	 fyJpfMDnR8SDywH+tRLlataLTsKEeSz8BqXp8Jaw+nWFiWCqO415Jjvm1xnRncfgaf
+	 suBdOV+DX3COyxwr9fW360XBr/n01Hd3E4ULQoykp4RHuEc9JGdjsLPI3rd2pdLnGB
+	 7z24kT3OG3AkMlWMQJPEOL9Zmxlhh7CPMXOhnGTc2E+E7t1OL2gL0l5lAKuE/pt2/y
+	 kvg9uD40StmRSVnI1EfCiqw2nWitUEvF9Rh8kjXV9/2/TXGZMPXUtPzaAW80yIhbkt
+	 DYSG5Henp/leQ==
+Date: Wed, 31 Dec 2025 11:46:39 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,
+	Evangelos Petrongonas <epetron@amazon.de>,
+	Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	nh-open-source@amazon.com
+Subject: Re: [PATCH] kho: add support for deferred struct page init
+Message-ID: <aVTw_08W7zXR7Y0F@kernel.org>
+References: <86jyyecyzh.fsf@kernel.org>
+ <CA+CK2bDxnTEe9Ohq5zLuyF-jqgD0DPhfdq6z=yztUsXU5p5fSQ@mail.gmail.com>
+ <863452cwns.fsf@kernel.org>
+ <CA+CK2bCjJWZG_rPoPsHWSxirmUCTOuFQzTCss2AKf9UqpThrdw@mail.gmail.com>
+ <864ip99f1a.fsf@kernel.org>
+ <CA+CK2bDDEZ5a+LJNDVMtKFtQ1D9rP6rJqU064eoru=a9eHpaAQ@mail.gmail.com>
+ <aVP6wBYoHJQsplIl@kernel.org>
+ <CA+CK2bDZPwYpUhksDLSbfVdVm5TYbh0XrOKRV=q4YjGpqH+Fwg@mail.gmail.com>
+ <aVQJUPOn85WlJaM9@kernel.org>
+ <CA+CK2bCm=AGDSLTbs6etbqveFUHU80okE-bCT2zg20nrHXgHRQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: B7BBD140007
-X-Stat-Signature: z7cd7kjy8oe1jze6a7x5ac766uan7394
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+CK2bCm=AGDSLTbs6etbqveFUHU80okE-bCT2zg20nrHXgHRQ@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767174165-178625
-X-HE-Meta: U2FsdGVkX1+oLfCNNGxuoGNQLAbMUHW/1AKjDqbkYsgpy7eflGpPE7CMSirn4pOLTJFzZAQ4Gf8Oae23Y10uHtLkPAzaFp5kNKQPNRB3wCwS8xZT64hJ4JcYlqaG/u9zDvA2NnoyPK8UWcYUX3yL87tqjmsndn0q5LEHUlrnJUMdt4iXL/MAZ0tzHmveg2j9M9aXYsQGMZ3Bkj/+L9veNwvRFFfCVcgE91Nkk7n6dYpcj+nbd3dh3T/9c8PHnfXcPgqXRIsB4A8H55DlFiAf+GVRUniJVJjpvxH6cFyzzDruGDW63TtCpT+AIt3CLCoWdYxsy/KDs/eZ7RTn/v83aXFObEMlTNKYN/s80Ln0C6iirBjaTbPutNFjQ5ax8e/gvCGFohjk/geT67OTYAMC20qxdqNv7HzRGgUlXZEwqek8sOoU3TPXf3xJePsN7nsY3Qkq2ybPUxPytDGIj49buPYYUd9SpXMEVCfyAhYi/xz3nuz+WHev/z7PuvdiROY96Qm7exmNMNcIaSv64rh7poaglYtbuAyrT8iKjRIpnH5NmWydIaK6w1TARzSbRgMP//Vmxt+nHbgGctsXFHzMFts191TToXW72GwyRUAfk5KnXoJOUytvZrOQm6jOrXC/Cp/BqjvOqUSyLnYXY+CwIm0X5wVU/ulLkeCWgv26hHX6NSXFlPWrEfncPbPa03jvihN4wK+FGH9UOnjSJ7rmuI9a0z1DS/g212zm4MlIEfSrc39d30AVoXUuDt5s/JJY5K/jEy447glKBSvDlnawg3ETneqE9ilf+sJGtGwNLZIZnq8bvH7FWdkUJqHlfy8uki2BQ0PJE2/lMJdnQgx6F0SkpZ9FsUQZZ5F7vuV1TW7Y+wB2pG18e5orWfzl38YyM5ldr1lP6xiEV8fmWY4LLuDDMdHtLMYd9iWJ787h2wgvG8PyBGQNbAhM+pCNSNhhQAqHklEG1JhmCUUJfWj
- sJwUxi0R
- KzawV9p174d0OG4DRjd5+qoDe4/7FfxPJNokvVJ2rjwgochjjf2ymaDsk7ZP63BOn3RvTx6CqXSqMphwGTzFyH0kOIl2OeFKnrJWKWwL+WqpEpBVNQJQw2mkblC0ZzYceLBHTLxtx8LijnHj3oFNA7/DyZpFOs7yvv0ws5qWheSliS/Bt9B3ScV5RL7jhjh8eG5KGc6Rra3mz4uEFtLBtrciDVYQ8leKG0QRstM8lVeYtA0RrspnsYZd8+M0crxBz0CZoIXVnJt5ido37y/JBKydtKuGJaHFJi+iub1ojwuGoBWKJc73TraUdl76tGWsVeZUGYgJnV4UX2quQzrUl12SI/mQmguc7CWmWbeG3v6z3mj3EMXbUpVXk/qtaQnEnvELK2Dh94ggcG1yfwZzKrj9DRodz8G9JRpapexzCHdNtc6Ua1OxD8OwaeBhe5Qj6UGkmeJkMKWtSr6wWLNYIWHokvtfspabo8/SM83OLQrRRVKgxV9u38c+K0TZSzbZZnfTg9ZkyXMhZj6N2fzFhYM8lM/3U8W/GTKyMvn2R8HOV/gVcSiDfZGMoUTKx0+FkejyZ2QGIxtRYFL/gfVVp5eZJJVgla9J5MQ3MrDR80Bz6i8d9lu46f5T3wZNhSa3EZ6goX03nyNkUrLk06lBP7u1PRsSqlz+iJfKFX0SZRNgBgWXtNeKUC5rSO5bSfUvwO0CTgIOW3qqfWbA=
+X-Rspamd-Queue-Id: E5248100003
+X-Rspamd-Server: rspam10
+X-Stat-Signature: yf5k5rx78jkwkxp6keii7uzwc1he3wak
+X-HE-Tag: 1767174407-414792
+X-HE-Meta: U2FsdGVkX1/PgASBa3TGuamJykZq8CApyjdoI6IDAuqpl/7LFsuRnzyGLqXsbkePeVnR/6RD/dIY75At2g0v++EcYM+XiyYmYEotDfGroZ54wgWtXHM66XGouZYje4JwtABCZAD0DdHf3Zg3NBCW6l76cxSIT77vWC7oSq9rF3mxf/8sbpVnrKcCDqMRaAC3WpS7WgedS8PNCEa19SGvSt4U3sM4BJapfajcY9eYuFkwxlFcjGutjPV5wqokX9WaFEGhrKJV5VDwfWvNAj3cKK4heTUsPUduucmHr7bwDQ6F66XLE5cwwJrYVpfbp8d+iKy4AZES/6Vw5lXNtFZ0rxCDWXiSxW6HkSRUFb6W6NvxepYfjO69UF8GsuyXE7SH28aHcUjbGbnsBIaoN0f7kuHmtTXqRtM9tDJaRhu4udRp8+hZV+cpj55wqVrnqSYyG1+t8GiwbR8qVm7cYjlBIxN8/d9fasIzBHGPWcMiWElX6E6oyMYHyp5Q/zkLKueJynWUfZvYUbtKCSUaa+PJwZhxj9CUIqvNA8vFJhVaMIoAxSkdyuG6TZ8K9KfhcCf28WeToHsoHJP7oczc2nmKgqKwmltj2m1LXkJ3xEWpxQyWXe3g1Dmdi05GhyBt3LaHBy3soGbjjH5VNAgOflc+dV3FjgZMIPVfUNVnCwcSMKjEx/koIeql7nhJFJIOGJgvjxON5+TbLe2gRPfJxKBvBcAEBlixP5NYXchiOfcasCiwHTKgZeRD5rbtlNYWJ9FfIUi+l0ophi3l8GcNnWgPU+URkHqQS/pizL5msNKxawoomZ9cExABFuY6APc5z98zv9aLpSNIfvbclaI4jgH9vj8As3rlImNi6dqPNbMOE8EJLVEVeYhVkZ1XX3bEpa6UPeL8b9tXkUGUqEBEtsLCfUuj0UCaEAaSeYCNhgptzgFBYPS7tSRQsw08aYNWgJEtJGPqnXOqRyi868JUNY5
+ c38nqddn
+ 8xJZKW9kRItFxwF3CPuNLGft+2w38q0qyGDVVnBni1P/df5EougBFg5TBj0fy9A4h1eTDJPxYMysttyTv4FBt1Z32RG7Uyq75Ea4jVHKTzLWixKraUC9qmRhV5GJ9tJlB4NDQhKcdhvY3G0CyCCDqoAkw5uWrmlTfXMOqG36Zmd7JAAdb7enZAnB1x0uZ54aRAgiPEATyhNKyXEX8bfRQl8GldkQA6Bp8mjIe/O4xbANznICQzX/WHy2effhquZp1sQx4KJ1ay3TMNus+pngKrfrxUyZxBsiNhY0IlfpyX+ydb2Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,75 +107,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 17, 2025 at 05:45:48PM +0800, Qi Zheng wrote:
->From: Qi Zheng <zhengqi.arch@bytedance.com>
->
->The PT_RECLAIM can work on all architectures that support
->MMU_GATHER_RCU_TABLE_FREE, so make PT_RECLAIM depends on
->MMU_GATHER_RCU_TABLE_FREE.
->
->BTW, change PT_RECLAIM to be enabled by default, since nobody should want
->to turn it off.
->
->Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->---
-> arch/x86/Kconfig | 1 -
-> mm/Kconfig       | 9 ++-------
-> 2 files changed, 2 insertions(+), 8 deletions(-)
->
->diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->index 80527299f859a..0d22da56a71b0 100644
->--- a/arch/x86/Kconfig
->+++ b/arch/x86/Kconfig
->@@ -331,7 +331,6 @@ config X86
-> 	select FUNCTION_ALIGNMENT_4B
-> 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
-> 	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->-	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
-> 	select ARCH_SUPPORTS_SCHED_SMT		if SMP
-> 	select SCHED_SMT			if SMP
-> 	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
->diff --git a/mm/Kconfig b/mm/Kconfig
->index bd0ea5454af82..fc00b429b7129 100644
->--- a/mm/Kconfig
->+++ b/mm/Kconfig
->@@ -1447,14 +1447,9 @@ config ARCH_HAS_USER_SHADOW_STACK
-> 	  The architecture has hardware support for userspace shadow call
->           stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
+On Tue, Dec 30, 2025 at 01:21:31PM -0500, Pasha Tatashin wrote:
+> On Tue, Dec 30, 2025 at 12:18 PM Mike Rapoport <rppt@kernel.org> wrote:
+> >
+> > On Tue, Dec 30, 2025 at 11:18:12AM -0500, Pasha Tatashin wrote:
+> > > On Tue, Dec 30, 2025 at 11:16 AM Mike Rapoport <rppt@kernel.org> wrote:
+> > > >
+> > > > On Tue, Dec 30, 2025 at 11:05:05AM -0500, Pasha Tatashin wrote:
+> > > > > On Mon, Dec 29, 2025 at 4:03 PM Pratyush Yadav <pratyush@kernel.org> wrote:
+> > > > > >
+> > > > > > The magic is purely sanity checking. It is not used to decide anything
+> > > > > > other than to make sure this is actually a KHO page. I don't intend to
+> > > > > > change that. My point is, if we make sure the KHO pages are properly
+> > > > > > initialized during MM init, then restoring can actually be a very cheap
+> > > > > > operation, where you only do the sanity checking. You can even put the
+> > > > > > magic check behind CONFIG_KEXEC_HANDOVER_DEBUG if you want, but I think
+> > > > > > it is useful enough to keep in production systems too.
+> > > > >
+> > > > > It is part of a critical hotpath during blackout, should really be
+> > > > > behind CONFIG_KEXEC_HANDOVER_DEBUG
+> > > >
+> > > > Do you have the numbers? ;-)
+> > >
+> > > The fastest reboot we can achieve is ~0.4s on ARM
+> >
+> > I meant the difference between assigning info.magic and skipping it.
 > 
->-config ARCH_SUPPORTS_PT_RECLAIM
->-	def_bool n
->-
-> config PT_RECLAIM
->-	bool "reclaim empty user page table pages"
->-	default y
->-	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->-	select MMU_GATHER_RCU_TABLE_FREE
->+	def_bool y
->+	depends on MMU_GATHER_RCU_TABLE_FREE
-> 	help
-> 	  Try to reclaim empty user page table pages in paths other than munmap
-> 	  and exit_mmap path.
+> It is proportional to the amount of preserved memory. Extra assignment
+> for each page. In our fleet we have observed IOMMU page tables to be
+> 20G in size. So, let's just assume it is 20G. That is: 20 * 1024^3 /
 
-Hi, Qi
+Do you see 400ms reboot times on machines that have 20G of IOMMU page
+tables? That's impressive presuming the overall size of those machines. 
 
-I am new to PT_RECLAIM, when reading related code I got one question.
+> 4096 = 5.24 million pages. If we access "struct page" only for the
+> magic purpose, we fetch full 64-byte cacheline, which is 5.24 million
+> * 64 bytes = 335 M, that is ~13ms with ~25G/s DRAM; and also each TLB
+> miss will add some latency, 5.2M * 10ns = ~50ms. In total we can get
+> 15ms ~ 50ms regression compared to 400ms, that is 4-12%. It will be
+> less if we also access "struct page" for another reason at the same
+> time, but still it adds up.
 
-Before this patch,  we could have this config combination:
+Your overhead calculations are based on the assumption that we don't
+access struct page, but we do. We assign page->private during
+deserialization and then initialize struct page during restore.
+We get the hit of cache fetches and TLB misses anyway.
 
-    CONFIG_MMU_GATHER_RCU_TABLE_FREE & !CONFIG_PT_RECLAIM
+It would be interesting to see the difference *measured* on those large
+systems.
 
-This means tlb_remove_table_free() is rcu version while tlb_remove_table_one()
-is semi rcu version.
+> > > (shutdown+purgatory+boot), let's not add anything to regress, as every
+> > > microsecond counts during blackout.
+> >
+> > Any added functionality adds cycles, this is inevitable. And neither KHO
+> > nor LUO are near the completion, so we'll have to add functionality to both
+> > of them. And the added functionality should be correct first and foremost.
+> > And magic sanity check seems pretty useful and presumably cheap enough to
+> > always keep it unless you see a real slowdown because of it.
+> 
+> Magic check is proportional to the amount of preserved memory. It is
+> not a required functionality, only a sanity checking. I really do not
+> see a reason to enable it in production. All other sanity struct page,
+> and pg_flags related sanity checking are usually enabled with
+> CONFIG_DEBUG_VM, so enabling it only with CONFIG_KEXEC_HANDOVER_DEBUG
+> is better.
 
-I am curious could we use rcu version tlb_remove_table_one() for this case?
-Use rcu version tlb_remove_table_one() if CONFIG_MMU_GATHER_RCU_TABLE_FREE. Is
-there some limitation here?
+Having sanity checks in production could be useful because some errors
+could be hard to reproduce in controlled environment with debug kernel.
 
-Thanks in advance for your explanation.
+Just last cycle there was commit 83c8f7b5e194 ("mm/mm_init: Introduce a
+boot parameter for check_pages") that allows enabling page sanity checks in
+production.
 
+So my take is to keep the magic check until KHO/LUO mature at least.
 
 -- 
-Wei Yang
-Help you, Help me
+Sincerely yours,
+Mike.
 
