@@ -4,96 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B993EE642F
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 12:33:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49649EE6428
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 12:43:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 983216B0088; Wed, 31 Dec 2025 07:33:42 -0500 (EST)
+	id A83916B0088; Wed, 31 Dec 2025 07:43:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 931056B0089; Wed, 31 Dec 2025 07:33:42 -0500 (EST)
+	id A31FB6B0089; Wed, 31 Dec 2025 07:43:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 812006B008A; Wed, 31 Dec 2025 07:33:42 -0500 (EST)
+	id 9132F6B008A; Wed, 31 Dec 2025 07:43:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FF386B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:33:42 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 16F7EC3B6D
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:33:42 +0000 (UTC)
-X-FDA: 84279707484.12.50A7705
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 68302C0003
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:33:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="oE4r/UCf";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767184420; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 82FE46B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:43:48 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 41818CC653
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:43:48 +0000 (UTC)
+X-FDA: 84279732936.15.FEAE2B6
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2E21FC0008
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:43:45 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmx.de header.s=s31663417 header.b=jl1TY5nj;
+	spf=pass (imf22.hostedemail.com: domain of markus.stockhausen@gmx.de designates 212.227.17.21 as permitted sender) smtp.mailfrom=markus.stockhausen@gmx.de;
+	dmarc=pass (policy=quarantine) header.from=gmx.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767185026; a=rsa-sha256;
 	cv=none;
-	b=Q22eI5Bid3gaArRy0gfzZkM52ImPuQPyHKLiqk4625yddLcw6DKLVWZO3BXtygQ8JPTUOt
-	weTxBIJropkMVQH7yfyRZ1i01/k/WBoOdI5E0FCs0kmDKX16m0XUt0A3t+sv4My5dSMfrz
-	bVtTiAlmjfqPdOi18nLb/xtcTQakIHA=
+	b=1hnnm10s2Mia0F6ExMHOTLcYTPZKsWwMaLpWvLmsUa6B65D4M/wn2KK8RKaNtUx29iht38
+	41+Ze58gBHkApegBshU3nFs0qnLXJaSoiQoIt1iiiicAOhhs6y5lo/QOKFoxuUBc+otmIl
+	F6xMUG577QmoUZPYv6yoqRoOYEA/07I=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="oE4r/UCf";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmx.de header.s=s31663417 header.b=jl1TY5nj;
+	spf=pass (imf22.hostedemail.com: domain of markus.stockhausen@gmx.de designates 212.227.17.21 as permitted sender) smtp.mailfrom=markus.stockhausen@gmx.de;
+	dmarc=pass (policy=quarantine) header.from=gmx.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767184420;
+	s=arc-20220608; t=1767185026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b/Ef/KyaWkE9RNyW+S3M0FmuRK4Y96AU6QKNl70SvQM=;
-	b=ngzIxXX4Dd2jttiF7e90qtP6tiVzI/7oMR0rwa/aaEKNlPD1l8n27ZlcFnb5ahF8XwQzoF
-	hxwM4I2bW61eleVUA+51iPokqHYImFLaAza1dzkrhoyxL4Jmzu4G0Wkl2+VyoIOSqVY4WA
-	JkZQGfSOeTpmqx2Wo/kPy7bM0vlofSY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 890AC60017;
-	Wed, 31 Dec 2025 12:33:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105F8C113D0;
-	Wed, 31 Dec 2025 12:33:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767184419;
-	bh=88co770AdIIceGvPwMVRk+/DHD76pSN9yIlkzwg/7uM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oE4r/UCfpuC1PaAb9MdsdBU8sXRc2ePgeEuIj2rQ9eP5m1TU5zx587hBGLFLuo9xJ
-	 V7g5LTrqyXvIRLQfqgbp2rXq3sEKWQ1HzoGh9Ey43xw0G5Pl9sACb+IRdk+GKEl32D
-	 KEdMisFv9H9UmI0Bhbhmm07yLfYehoNYdLQy+tkyYHwGwF2r3lPx8/2Xp++Ws1aSmK
-	 bOCTDRyrwF0Rg+NieWnXQCDeZK5Nrix7UnVkrveR+OUyU+3JVbFYMpu9OIxv3GQoDF
-	 /llElF2C7gkZ0d07keo6NKLapRuK/yrG1QrFbSmZ2x87lJ+6oDPlbtH7eyIEAgcmC2
-	 To5UZafOHYpqg==
-Message-ID: <1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org>
-Date: Wed, 31 Dec 2025 13:33:30 +0100
+	bh=dEhQpMsPCVwotTFTae/WubHmXa2WQBBzYVtdZc3TZ+M=;
+	b=pVUbOfz2r309csn5s9VWIeX0NS2F3TaofCwROObl03zZuRMXSF2HdTgJt4CkwYlTWiC3RF
+	szcE/lZVWOVpgstlu1LyV+cE60rR8lwd73adNq0dpYk8u1pNG+qn6tnxfpXBX+LYEhMn3u
+	4PshMAyEJxN4q1/kxqLYCzAQH6nq+0U=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1767185024; x=1767789824;
+	i=markus.stockhausen@gmx.de;
+	bh=dEhQpMsPCVwotTFTae/WubHmXa2WQBBzYVtdZc3TZ+M=;
+	h=X-UI-Sender-Class:From:To:Cc:References:In-Reply-To:Subject:Date:
+	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=jl1TY5njcMeEzXSUlYL/bNu0N3GvgkBvX7N32dR2LK415Tbw+SxYna2gqVdyJ2JS
+	 DXYdpzz4dLzORA3lJNA4KypNMXo+rsouTXbAphehNzJ4kQBivNfPQGTyQevUisfZf
+	 ZnQAiP6tASwe9aWs/0kICPBBUkItziB+ThXcMex06499/UAdrEti9wi7ortEskW+q
+	 MMdRBiyCQ+quVZAwNOhB7R1AtPhaPDGnKly+/TOFLunT7WW4CJGQ4x3kACnD78NMC
+	 pdgj0BGjZl0RQG+tchKJBVYhXEZKemFtrI1tZGTLHbqc9vNA99p2xdvD4j8LmcRT7
+	 kEkXhdPex8TxhIpWIw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from colnote55 ([94.31.93.28]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MmlTC-1wIY5h3V9K-00kS7W; Wed, 31
+ Dec 2025 13:43:43 +0100
+From: <markus.stockhausen@gmx.de>
+To: "'Mike Rapoport'" <rppt@kernel.org>,
+	"'Thomas Bogendoerfer'" <tsbogend@alpha.franken.de>
+Cc: "'Andrew Morton'" <akpm@linux-foundation.org>,
+	"'Chris Packham'" <Chris.Packham@alliedtelesis.co.nz>,
+	"'Thomas Gleixner'" <tglx@linutronix.de>,
+	<hauke@hauke-m.de>,
+	<jelonek.jonas@gmail.com>,
+	<linux-mips@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>
+References: <20251231105701.519711-1-rppt@kernel.org>
+In-Reply-To: <20251231105701.519711-1-rppt@kernel.org>
+Subject: AW: [PATCH] mips: fix HIGHMEM initialization
+Date: Wed, 31 Dec 2025 13:43:41 +0100
+Message-ID: <010f01dc7a53$1906e9f0$4b14bdd0$@gmx.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] skip redundant TLB sync IPIs
-To: Dave Hansen <dave.hansen@intel.com>, Lance Yang <lance.yang@linux.dev>,
- akpm@linux-foundation.org
-Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, arnd@arndb.de,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251229145245.85452-1-lance.yang@linux.dev>
- <f81b98e5-87c0-4c21-9a75-ad5f9b6af6aa@intel.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <f81b98e5-87c0-4c21-9a75-ad5f9b6af6aa@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 68302C0003
-X-Stat-Signature: 1yoed5rzokytkcztibydp9enfi6iaure
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQFbU2A2go5FJtG2va65UoMCofaSGLY9/u2A
+Content-Language: de
+X-Provags-ID: V03:K1:wwFhKEUocOJ6FCHJ7aKv9Y4avZFmC2ueczsXeDWPicyBUwYiyQO
+ ofU8yeVjTFk2d3dbeEgP9IgDFrtngRt9D/vhliIvum/O7SQFhfqItwWaRFgiZ3HBpFs2rdr
+ zMCnmIzyJS9j5hcX0xxZjQIO7a0Tfy9E6E6Ls/UNNPg2ZY9xdEF3Z+v4iDj7rh6lRiThcvm
+ e6U7Apn2hG2+oFyBGt8lA==
+UI-OutboundReport: notjunk:1;M01:P0:sbfn/S1eGzQ=;5ljjIn35YIU7y3TMdf5amfKIwUX
+ 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
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767184420-988611
-X-HE-Meta: U2FsdGVkX1/z5+y8KoJLvGZyJ+QHwClQWvOI9xDEmcrFjv3pZ+y98m+nFRwsjjpKkVhe9CNRIQVb0n4sbSKsNxkdDzNYPi6IpRPRQAFdOQBurbLVBN/k8i9L5J4Yt8ArZimvDHug0YFBx3q70X9R1dFUfrjEDPvYc7iMimKZ+mjrtQXaXW8x+hSWJFoH4RFbBnVOY1vFuJmIbz+elPUXwuO8vhYHiQ9BYVsKp47PhXQQ/yXHkS4Z3gycT76H4igBL6aXoHXUJ6J/LTyCzGkYt0rlmtlfX0x2AWxNkdZflHUxc33Aj7Cqc7zN+W8V7X/ueGGXp/+rOgu1VJ1yeLqqC6x88LLgSjxvdk8/wnmT5bkp0RW4+hLv0Hie0NRQLnm+B0piUmOS+cxUIMtR6lgACIMdMAJ4LWgWhSay0Li4mL0Pn95Y4iW/0cXSN+oVaaLHGVIjZrYijvM0wRCAPpDoM3nwm/T12r/gAK99iZWF07KOUFLe6YkoBfWBFQC32DTMK43Jg2xchSdppXueCpscosJU4OECQZNc/FXxNp8EhjBow/gJnXL9/5N9BnbleBmvP8WNHsuP0JEOS4/XWDl6JR6uhhTc1fvi3TraPF8cOSyyBy3pS5OX60G4mfIgAzLlGZ1Jhyc8jLGSq/9CeGbW2uSm8sUs+Iizlu4yyFqTIDLJgfrR0LvVCjHIXxTtrJQhe20Jjy9T4t+4OVtEGmbk9EgvWOzS48pQQI8ShKFkvnwsIsC8qh1VaU7aYotxmqGuMr/b9meS3CR/7Y/++SSjoPhOStzSxFCIUoIeNXl3qr2F/mXNlKdoYjHKdetkyil0m7cxyiWKZFMESqLcnkma7mxdNFIS2U25sycWP5+qSrxArihctiwQ6QuiWM4jpcV5F8W13beO/8vXolhHNOMbpLrlZj8pgfadu/3NWU/c52MLkbfgKCRCnb1LnBHbrWPaW0RohyvyXmlAxlfF82e
- /t3iXV/H
- 64OZ/mVR3MWcDD9VDS7eQDpxm3fGhRVd37gdmF1fXEb8vtuR6yaFEfxdoyWzO3snFdypc3O30JjOe+CiMwyFAPGT8G2FoonQqSQ5OJXFETV46HJMqeWtSK5BDJjo2zOObMqKc8XYkyU9K0emBzm2dh3dzc/PiErcyUtfNXfNWaMo0Jy0YbIucq556ZRA8HDxNPVOke0hTJu9ezzU9TIVpXfieAwxJp4yisCqQbHA37eaawAZ6K/iBHIevMOMnzw38sRxCtl69DpVE+Pub5WBoTdI1Mg==
+X-Rspamd-Queue-Id: 2E21FC0008
+X-Rspamd-Server: rspam04
+X-Stat-Signature: qo3d8q99yaiiqei97snhgspewppexj6g
+X-HE-Tag: 1767185025-716260
+X-HE-Meta: U2FsdGVkX19qqjo8uUQpoAhXVKgmtWJ/NwdzJsVYrkWEH7FoExkDcRc++ZUy1B7ChYeb9wtZ7swbmT4MrYp2PxJ1FOD3G+43jVh8YoFpnQRhQDY1Z52ndsrnmDMMTNaWBWY/Q3jGR1S2QS14c3KAHBvLVHMY1SR7yW/DmuwAe8nyAfURKOyCJT5ZQPJLasXaT34mrxKvh3sAR0PTLTaEHl16jaG22HMM6n5oI/aYcNGHEiKfS86a9+RBlesO0lpCNvVEqaDF7ggx3tqCU7zV8+p1ffTHiBceciEfiP9DmIn1emHfotuyrd2N2FczTZHbCjbDQaiCTd9QNMhoBMLipeh0LRCSCJl0/5VAW82VdTFNIbvV36PDEQ1EpKfcSh3M0kBCscu2QuTkdXQdTUT358hbeNrpQ/lG0r3Z3Jg/YFipydAZCSvqDClMz7zqBWC3zdl3p9IyGGEEJ8OvzbY47Wqrj2S6P1RTxivqczdd1A/QmafZrNJlhWHREH+ETcBOwDuB4m4Bso9BWcor1zpS1gFW1jYohzJJPYPoFPlBBiEd4Iv/PVwnpq9gFL+UeFrjwNsMmYqPWwa3E4Ux0nIKUTD+MT+rYP4siz3yWM/5fZaYzh4EdHBgDF6NRtCOslfbC2eZK0VSS5OFDkC/JidOiWsSYHdaVxaCWeDrNm/xbF4wuCURoyNJD+ZLVh0YMC83tln5MMHYbC5SXCS0c51FKwl78bFVEJJ5qoqzPDBv0Ui/k5D81V7XhKD9gkFfB9M4L2fCE7vgQ97sg23I1hQw0kZSmvWq+dWx2XSd2mQI0tArCKr+niO8jxyg2Ekg873v7WQOvFQboY1wRr7m3fBNY+S6RtvPN55yH/Cb6IPTq/7eIkvMxEH3Xv9GNLWuK/54TG58uDlN7rPct6KBlhACRgZaaeibhTlMJaEV/qbI9dWqv3hcMWvaA9L0fzcRKaVLc+4re073RslWipPtitc
+ T+iOsA42
+ FEWcqO0IgVawarQt+W7fYRieL65LkcQ3/UM/W8V8hKoIvK2loiQYtF/rwboJ6PYtg/9fBIkaMd9YDRFY5CgWRvvHs5TgI+N/yTHi1/R4G1mE94JE+gHyqlqiPj0cVjHDpLnDFmfFTRS3J2EKlKNdSGYltBxRKVKEnzjhueOcnbecjrzAeBSeN+fjQ0058E87RSAj0QxZRVoJ4Zg4bcoej4uQL+I2zupcclPGuEq5ZZ+cUmiAIe6cYJ2EQzXBMYJZBzRgQUU1km5jtKv+61lClJAsaPOss8psmcJJIMyP4wC+e7iUoXR9gymkQ+ELDO7Fb+rNTfOMevYTeOWv1iWvJjrCQ2E9gC6yuBeXUghwlwuc6qArWn1odY2bUJqRhg4dhywJPg1SZQNm2NhMRSnPwHcVQhkh0b4/KW0UO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,64 +182,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/31/25 05:26, Dave Hansen wrote:
-> On 12/29/25 06:52, Lance Yang wrote:
-> ...
->> This series introduces a way for architectures to indicate their TLB flush
->> already provides full synchronization, allowing the redundant IPI to be
->> skipped. For now, the optimization is implemented for x86 first and applied
->> to all page table operations that free or unshare tables.
-> 
-> I really don't like all the complexity here. Even on x86, there are
-> three or more ways of deriving this. Having the pv_ops check the value
-> of another pv op is also a bit unsettling.
+Hi Mike,=20
 
-Right. What I actually meant is that we simply have a property "bool 
-flush_tlb_multi_implies_ipi_broadcast" that we set only to true from the 
-initialization code.
+> Von: Mike Rapoport <rppt@kernel.org>=20
+> Betreff: [PATCH] mips: fix HIGHMEM initialization
+>
+> Commit 6faea3422e3b ("arch, mm: streamline HIGHMEM freeing") overzealous=
+ly
+> removed mem_init_free_highmem() function that beside freeing high memory
+> pages checked for CPU support for high memory as a prerequisite.
 
-Without comparing the pv_ops.
+Ah, that gives a little insight to the issue.
 
-That should reduce the complexity quite a bit IMHO.
+Thanks for the patch.
 
-But maybe you have an even better way on how to indicate support, in a 
-very simple way.
+Markus
 
-> 
-> That said, complexity can be worth it with sufficient demonstrated
-> gains. But:
-> 
->> When unsharing hugetlb PMD page tables or collapsing pages in khugepaged,
->> we send two IPIs: one for TLB invalidation, and another to synchronize
->> with concurrent GUP-fast walkers.
-> 
-> Those aren't exactly hot paths. khugepaged is fundamentally rate
-> limited. I don't think unsharing hugetlb PMD page tables just is all
-> that common either.
-
-Given that the added IPIs during unsharing broke Oracle DBs rather badly 
-[1], I think this is actually a case worth optimizing.
-
-I'd assume that the impact can be measured on a many-core/many-socket 
-system with an adjusted reproducer of [1]. The impact will not be as big 
-as what [1] fixed (we reduced the tlb_remove_table_sync_one() 
-invocations quite drastically).
-
-After all, tlb_remove_table_sync_one() sends an IPI to *all* CPUs in the 
-system, not just the ones in the MM CPU mask, which is rather bad on 
-systems with a lot of CPUs. Of course, this way we can only optimize on 
-systems that actually send IPIs during TLB flushes.
-
-For other systems, it will be more tricky to avoid these broadcast IPIs.
-
-(I have the faint recollection that the IPI broadcast through 
-tlb_remove_table_sync_one() is a problem when called from 
-__tlb_remove_table_one() on RT systems ...)
-
-[1] https://lkml.kernel.org/r/20251223214037.580860-1-david@kernel.org
-
--- 
-Cheers
-
-David
 
