@@ -4,114 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BA0BEE642F
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 11:58:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61C93EE642F
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 12:13:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB5106B0088; Wed, 31 Dec 2025 06:58:57 -0500 (EST)
+	id A84396B0088; Wed, 31 Dec 2025 07:13:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E634D6B0089; Wed, 31 Dec 2025 06:58:57 -0500 (EST)
+	id A07806B0089; Wed, 31 Dec 2025 07:13:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D65736B008A; Wed, 31 Dec 2025 06:58:57 -0500 (EST)
+	id 8E9886B008A; Wed, 31 Dec 2025 07:13:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C79F96B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 06:58:57 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 329A95C5E4
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 11:58:57 +0000 (UTC)
-X-FDA: 84279619914.22.7D59FAC
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 14E15A0004
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 11:58:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kqUWpXsK;
-	spf=pass (imf25.hostedemail.com: domain of wale.zhang.ftd@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=wale.zhang.ftd@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D3806B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:13:19 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 29A245C807
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:13:19 +0000 (UTC)
+X-FDA: 84279656118.02.24F3C6F
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4DC3A8000D
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:13:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ss0P3GdM;
+	spf=pass (imf02.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767182335;
+	s=arc-20220608; t=1767183197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4k3KU4h3qfrT/tc7arEQ50iod5wOTjS4IaKdmgyXIxo=;
-	b=1nvBmQU2/dcCw88y2WTogkWhecHYIuwNY5oiap37NJek2Cm9WbRkZP0GaH6pgOEcnnW31g
-	qe+oWuTaoBMSz9BNCPWsMTdZiFFzoTbmDgf+akidqps9f0BxENOvEEXZxT1Xw6tRSBYoNE
-	pBQj+Mx9kUv+oPSdzniGwTvQJRmj/N8=
+	bh=FHpfqEUrGSgxMV6guOQm6UqkwMcwdCx4Mtcxq/Zux9g=;
+	b=7phMAu+AGomNNu+I1hTNp+LP+3IpBqJvCAo+pAywJwQ/NZMe/Xf6y+RqU8PTQk9Yc0eSpD
+	/UD29Ycgkka6gHenOBZDzLfrVi5cvzOXK/I5DajRE4rDCewPiEAeGSd7FA0Hrvj3f2OwFg
+	l6o85Z7U/Mn2P2TQg6DpHKuH36lAGQM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kqUWpXsK;
-	spf=pass (imf25.hostedemail.com: domain of wale.zhang.ftd@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=wale.zhang.ftd@gmail.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ss0P3GdM;
+	spf=pass (imf02.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767182335; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767183197; a=rsa-sha256;
 	cv=none;
-	b=CrLWWcJMRTH1ruxPnTHLEaBsWP0CUj1hQK93/cyRgNzXoU+kyk9BU1ef1rJGaJ1U19T8zz
-	daVfljDZpE1HHAG5FuByl+DxDt/upHOSOfW6KlclwIYeaBhemlRaYLfr/BwIIxzIZ8lLdk
-	om7HjX6q4W5BniSUswN11xE6CoCxOww=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b79f8f7ea43so2401062066b.2
-        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 03:58:54 -0800 (PST)
+	b=nHWXaWaPEvEtZCwMz6AhFFxuyiNK0T875/hWdgFrBIrI/30BzJm5GKBklREOFxukqwSb50
+	pef2CyfeXnxbPZDzXUayx2xk+V6KcRH5JPWpPbssgWsDn7ntGcwJYrDnZjqK5z6JEQ0S91
+	2CwnvoJ1D+Luj7usVi7/BQZiL+FMFGU=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a07fac8aa1so116326335ad.1
+        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 04:13:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767182333; x=1767787133; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4k3KU4h3qfrT/tc7arEQ50iod5wOTjS4IaKdmgyXIxo=;
-        b=kqUWpXsKzCpvRWadtLqow24aNxtVv2KkCJgJlj3Q0GQH8VsNiXHXgMM9RWKM93Lr7+
-         CsWwot61RmRl89PgPnW6H/B8OFHR2a04GSxZNHPDXIUk+/mt/5OpcisRvgLavjjAH2iW
-         BcZUHiuuLzZCCAkR/6h3gqbhLt8ueXyeABegJRc++otbGe7NQhOwgxZ7/uZC+f/230PL
-         SjgSH5T5yv1Xnpi3H8s2zF4PMyVHyeKIC2O7nDWSeWWBCyAYLA7vCAINmfqJIBCHff7D
-         x2HFRTt/4KD/L83NqazxtKRrQZWZmcFS1PqhgjtwGCIGxxxvfW6RMHdFs7ehC2KS7ey0
-         gDiA==
+        d=gmail.com; s=20230601; t=1767183196; x=1767787996; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FHpfqEUrGSgxMV6guOQm6UqkwMcwdCx4Mtcxq/Zux9g=;
+        b=Ss0P3GdM9Cju8fLPyf3dmMezQn/i7w+QxymdF0mCeH6tuUjR7zuXqP8rVhXl0QYPJE
+         V90Ld/WdQAAOmjbiJAAZvsd9avU0H7bTwbXI8zY60Q+tGj9cm/8JdNU9vibm/Kk5sMXN
+         kORwdina9tkSt0QDHu8KsUWcIGEk8WVvvH8nVMKR2sS5I8vtkLR/fi/1Qt0gdhWxZTDq
+         vYXzKT4nsh06aCD/Qk6gmjOQ9fClpbEbr8DHYUXER8QQj1BRJ5FyDia5dP6U12Z0L00C
+         PjtRTsvw1EY80y3fDVBzDMqth+TbobU4XOoV0gE96xt6J9oaCKQm9IgYMh8KaofgIb+J
+         T6IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767182333; x=1767787133;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4k3KU4h3qfrT/tc7arEQ50iod5wOTjS4IaKdmgyXIxo=;
-        b=p4+xemZ0IEx6neO+Rh4IWDKuLhDR0WzvWlfBRBnfEJz2cDYPZtOTpB60tPTNG4aX0/
-         iFZ945KPujcnbk6EDP2X1OnB0JFWuWAvrPXhhE7UZPYHlf9m2Tk1UnI6dHQkIXr4l3kQ
-         ghC6Y/lMva48+tN8qYcdpBAXJWJJUoyxr+wtNnByDdIggSztjAEbev22/UfLRH6MgfpE
-         3lAsmci1sKC/Nurlxk2LCMTzgadXV5fck7wFJ9U+eUyS/0eOlmDJ4LL+/89NY5TL6MFq
-         khbiC8vX+EevS2ipbaUR43L36tRBouqLuatuL51Ipj7m59ZhswAkQS5mAunOY4BuBiWX
-         U29g==
-X-Forwarded-Encrypted: i=1; AJvYcCU43/1K0YmhFDRGwjZsrbQZgHqili4etWsOhmopA7q1u+VJbtskdkL9AiM+/5/jc2helt9sQ032MA==@kvack.org
-X-Gm-Message-State: AOJu0YxnjX70nEjgnyKgDgeAdWuvZItojpVk/IcTg/QSvxSkUOMMR+3E
-	3pSRo5SqmNoqO0LCA7GQN6SSOgIioIbITaH5fk+l1GQO5wbNPiK+guDpqw4Dl2wNL7xoOWdj/ln
-	yBblft+cSVtshDfjlJaQNWK5pJXACsG4=
-X-Gm-Gg: AY/fxX634ylsgJRfD6gha7xTwuomCUjnjusRiuRMXB+JxpqyQg96uLKt3vK+ZVjgjzb
-	RMiKWX2kIM7uCRGA78jVsCtUBV1oLZHSXIHuHDf9A0AgyLHIj/ExExAWEenpQydUSJc6eLtjYm1
-	u2LKvJdT0o7+cPGBxkMg+bj+g/PhTrnbJ2Fg49nkeroJoqYVowA0G4I/fibbTDZxqu64918i1ER
-	aqkpN7typh4T0NQGpo9L7v5ILrWoOR3TBiuNQNmu3sKa6A4VPrGPTajzmYwO+rlpQUIRihlt+f1
-	tgVLABg=
-X-Google-Smtp-Source: AGHT+IHs2RJ70zU+U6poJpmrLBikwmu4kevTrstSv14lON2pVsR34blEV0dtVWcXoEv9SwWnFlise9uNvH/090DXIH8=
-X-Received: by 2002:a17:907:6d12:b0:b76:bcf5:a388 with SMTP id
- a640c23a62f3a-b8037198f0cmr3834479766b.50.1767182333111; Wed, 31 Dec 2025
- 03:58:53 -0800 (PST)
-MIME-Version: 1.0
-References: <20251230130110.1366374-1-wale.zhang.ftd@gmail.com>
- <cb69a1e7-e836-4115-8733-12d2de879f51@kernel.org> <CAGsJ_4w=KuVs5+p+3gZ=L7=rzA3qgnMVQOBJNBEPnMDWx2N+dg@mail.gmail.com>
- <20251230133522.e15135c3a17826428f472a2e@linux-foundation.org> <4029d13c-3bfc-4ace-8da0-3895dfc001b1@kernel.org>
-In-Reply-To: <4029d13c-3bfc-4ace-8da0-3895dfc001b1@kernel.org>
-From: wale zhang <wale.zhang.ftd@gmail.com>
-Date: Wed, 31 Dec 2025 19:58:42 +0800
-X-Gm-Features: AQt7F2rajMZpwYO3mGZI3qQme9AkDvPnyiBNkiZ4XBhzeI9RBf_SItQIKisH8-k
-Message-ID: <CAHrEdetx_AUGa8Qk3JF-tgCZVJsfnfcLLSkkOVc_5ra6K6Q6Kg@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/swapops,rmap: remove should-never-be-compiled codes.
+        d=1e100.net; s=20230601; t=1767183196; x=1767787996;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FHpfqEUrGSgxMV6guOQm6UqkwMcwdCx4Mtcxq/Zux9g=;
+        b=q1GNIqysALtwz/0ednrU9d0XIbxBZ+VXPqJmRgbC/UCTgPv/zin8HRyIbcHPxJTGXA
+         CzQXkbLWzHvwYoT/Ww0A/r+v3C60lPg0rbsmPZHU2Jmxv+J/heQckapOIj4JkayQAmmQ
+         4JdpGw9dDs+xT+8I3WZRSi7aM2bVIADvhL709Ny1cSvmpkhgzY9y38YiAEzCLUonj1xf
+         hn4As7uVx0iH8UcTgnXw74lMKY6tpDj6cx/NeuBj1S5OReCPyVphyzgIUBzheozt4oDf
+         6zijBBNBM5NNK5izWTKwOfxdGIwkICr0ihDVCBUk2EVCAmzSNOG/i8qw3oZ8MzDF3WYu
+         iGDw==
+X-Forwarded-Encrypted: i=1; AJvYcCVu7yjV8fwC1lh9ahGBs8vDD21IUxGGc4BeQm50F80X/pic1nzl1wcAW2kTD8hONFBHvb/QeKXVaQ==@kvack.org
+X-Gm-Message-State: AOJu0YwmyjgxmU5Y/KKpHZCcUmIuV7whkObJuhBhAnBTdiogxYvXrRMM
+	NySipOV3vASaCK3qQSKctrl6RC6bzfliY4+JgTwKTgPsD+a3joB+SitX
+X-Gm-Gg: AY/fxX5FOC3frUcyEzbfvDGn+mAc+eYNyiIucMyom5EqKDbFDiUUeoXu+fgEzRdg1ON
+	ucQ3hAmXTcVDxS0XtybDzAqV9+MpVGPcQeBhUu2X9FItXISIhvt4XyLqbcCF68OABCZmTilAIlc
+	IljJZUeL5R90Tvmk4qih/5M5F5y+ZL8LcmC6XBM2At8wdX5gfo2U6e8uFinIZ9URyR/EZMqaaUr
+	RLThiQYMQ8+1bASfe2JSK0HNp5SB6ot9RU1LmqbqKOCWBJxS+O0Y9vEEdz5Om3PJVECMHRkUT4v
+	IBS9iBK0ORz04fuHihUKtXMomyqYw4dArHj6W32wE+uGbZRlHv6Ytc6+683Kq8z3YraiUiCu3Cp
+	Seynps8QKLLtIw1+qt1MDgA2fk48mzm03WgUNyEFYZbTagUtf9JpMpGxlTR4MuAFU+n3jElXTXT
+	CxKSIrGgpjLDqee4OsS6hVjnUZ
+X-Google-Smtp-Source: AGHT+IHpFgNfkmrixZZ+F74LvnVN4Eq9WkGfpXy0HhazbWxSAkLnFJ2YH7nhaPG/TBJ+851izY8JtA==
+X-Received: by 2002:a17:902:ef4c:b0:2a0:92a6:955 with SMTP id d9443c01a7336-2a2f2231751mr352425015ad.23.1767183196043;
+        Wed, 31 Dec 2025 04:13:16 -0800 (PST)
+Received: from localhost.localdomain ([121.232.80.251])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d4cbcfsm331485985ad.50.2025.12.31.04.13.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Dec 2025 04:13:15 -0800 (PST)
+Date: Wed, 31 Dec 2025 20:13:08 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
 To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Barry Song <21cnbao@gmail.com>, chrisl@kernel.org, 
-	ziy@nvidia.com, lorenzo.stoakes@oracle.com, matthew.brost@intel.com, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: nzuoxfaynmbmwt7djqjd3f5idrrjqzub
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
+	richard.weiyang@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH v2 3/4] mm: khugepaged: set VM_NOHUGEPAGE flag when
+ MADV_COLD/MADV_FREE
+Message-ID: <4y4aht35lkswkaorr36m6276aktp65bywdtnj6sxo7koscj3qp@qpdjv47lc75v>
+References: <20251229055151.54887-1-yanglincheng@kylinos.cn>
+ <20251229055151.54887-4-yanglincheng@kylinos.cn>
+ <084eee6b-6c9e-454b-a563-b2babb76b099@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <084eee6b-6c9e-454b-a563-b2babb76b099@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4DC3A8000D
+X-Stat-Signature: 6aug76pbtc7azq61r9eo3ne49dx1xoya
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 14E15A0004
-X-HE-Tag: 1767182334-512943
-X-HE-Meta: U2FsdGVkX19VqDKzot1HC57SWS9C5+Pg1Nx74jGmtvg+b3dXB0W7uUvdacUaw+51DBfpRyT/9+aqDT7SYDSygH9cX8cyMXp//NJAtJUhPhoIeyCi6crYyM+QHWDtFLecvUPAekFLcprrNWXxKWGXKC71bJZ/BbGqUIMD0O2fsskTJ/Feao7AMCSmeat/pUjn0laOYQuy3Xsig3Gy+InR09bjI0e6vtPJd+Uci+kwAzDaj50nyAC3YMrvhw0od3Z48AfU/N5dee02ZdxDqL3TD0+W6Eo+3tVcIVs1qqH5a+0x+X7WLJPpBV2aydYhZKXCCQJBPUJcJBnWweLO5O8gS3sLZ6dwcE+zfwWRFAM2XQjHo/NafwWQ9LZFBEBFPnpM4QcsIRKiVxCmnZNo7t+SWLy/0ytPbBw8oUTuMg1zs6Qu2v+lFrqNGOqvpy1Ob9kjI7TARGwnpN8nfxt79hcFPl0wcGs/sGyPes5GjgitdJ7JlDk+BJp1hrUjk1ZbxOznzZzxDMEMA77Jhh4RfJzwek84U15efB3L6seHMG2E+Q+MCv7m6P4TgETKvvpfjlu7Q+tvk2RsIOjuGjfZ8/GldgGU+jzMXVRo39U+KOPCj0KPK02dIN5+bjVIyHq/6MEWaHEwtl940zZgMalH3xVlUEK3mS9x5Yhtps+RRw5Wcqvi5b8qj70U9uHGAnLe23jtfNI44Wl598D+CWYIRBWJt+BeXmY+K9wgNFX9riz3Ujc8u8+LoWdrOs2d6JiFtEzBbeCp77pj70P860OjRdVa+tDQarAi7zO1gLuy5iYcAvKJqMQMPv/BksnPNCdkMVF1a9lziRe0WLmg4rqIQUHuF5MH2ru5KOGV8SVj7DmjmNYTlWGrfFqeYod9t5u13ucunMt6+bON8JSwAyit5CJFgaVpot0qE7JKZ0Y1WpyeYHctYqUNRIN07JysTYdR6oNRrkAIiReltaL4OrJiw6O
- g/YZ7+vl
- s1aZdcIgmkoBkaPaRiHtQPNc77n+I0Pa5Rj/t+MsKr6eToMyG1OW+yVJuwHg5Y2Y9jcuEfC9fIj8nmb2p+lv/mG+8O5CUM+6vj79p4/GExxEEAJ2R6GqjhZAADgMUNzpaa7fzJZ/CuzqTEYrXJLw7llJGXCM1dSxky3nV/W6pPqiO7ElnUXAmFSo9NdR0PiSi20wsS+pRHfa64yW2e2GPb1nOy8ThTTWIgp2fYxAacbvv08kKLLzk6S0o4z27a1yhLhFzoaQeb4HiDVDbYyEsm1buRbJYEsUvWxVXMTm8vNhxeznR45eEaosGrumAmzEEcc5FdNP6Kl/yLQhSsXljl4USCpY+vKGO/7jPAZ0PdGhP2+x6ht5GREytYVrzp4IfZa6uFIudXvdK2yB9fzcYpRE8IbjwYBGmiEmmUQbFnBTYSH+6vlRgYPAbdg==
+X-HE-Tag: 1767183197-706507
+X-HE-Meta: U2FsdGVkX19S+YaUJp1iyoCuobSHvjALSI3Sh9XYBSBXK1B6kdMciJqmu6OMWGKpg944U+EM4VBNbxkJ582K9HgSSJuQEt0ue5EwA9e/1b+00hvGbDR0fX+f2a0Saw5btf/29r5rUOkPPbS9wEJ3wU2Epn0vrxpZDw1Eq+tK3bF78lfOecaZp6/Gr8VB7tzTYNOZvZero7jIaY/OwMRtEUTvhsNclKm5OPsY1OVZew9eI6h4Kq5bje5TPWVxyUWcFlM94ep5CjE1Rmub1JCWeFYGo8P5hAo8xWllEPB3bRyL8206zllwApgnYqRLddP2CW1bc2M3DRP4nwL085xZJum8KeYdQRyIIqDAGRhsZcL7vPzvSaA/X9Ipk1MW456/8YBNQTRL4XF/W0vl4Vug6KqiGytUC8OC6w0KHE/qxdYV0Jia9qHrXIooGND3R2LxlCfpJ7PcecZhLZbBhritcNfqxdUxiN4BFAHRq9QR/QZbW+7SpEvnG6ttqIldidNhpNKA9BXAfH11QjRL3QvlPWGokM63tfMGKp9MF++cdWQljOaaMHc9L1b5qL9az++Lp1vXM0NxrVhX/9ztQu2Fbbvm989KNzmFRHmVINgyNCfuNrNChBGOHfW4nfJjDEsE5oG4kX7no8+qFERHIbS0S+JV8DoVe60pR1FsNSmZjRUA534u7kMNJJmn2ivuWKqdRLHuU94URe6O6MTt8HsKyVr2qp/63UBQm/oYFy/YvxaTg+VRPxgh/bGsYOYLsJyuOZT75C/nILxUNfBUIo8QcwMF4Wagp8ZCOoDeAK+erszSRwi4QiqUpf9dYYl4ABGtdfthsfmv8/5iMnLWYU5Cwy2XXPixg2IxeccRohQ6Q8opvWQsorho5QNQEmPUawpE8j5V/O7UhVpXhAK5GB/YNpEm9hfcrmUwXKgZdr6O7Bmijjv7jQI+IiJPJWv1FBCCv2CUoqAD9UGxbnqSmVZ
+ fu2c/7Ca
+ bn23n9Tg4zRAHCpsYlu09AXu9QWWDJcoYg8BKhssfHWm2Qq4zNiUDqaO79fambkt3LsR14hlopivfcG0vq//fPOhJSeuOSj70Q82pKRgNH1wf55d0osj3l87XX4tuoMr60JjgbaM5rBkNkDDklr758laCHPCsFlRp89klejak3SKLbugRrgl1jdQTfsMDPS0zQVui07GjMbtjPkRFLAPhxyyNPVRVjy0gPENSAT6HjIOka7GjMqoSUt3XyYiU6z1/5C7dDzcFva/zhQqTE3n6UfHxD1HObZ71WJ133cWhvW0Yg4JUK1x7OoWGORyT/ryapq3GCXpqbUBtjAouc7ArME4CI6UOa9kngU9TnWroj0mlTb5cbK5JHwm0QwmuNNLC2OT9zFqaHtl6oga2Zhg/kEzO14xLAFbIyb9UNx9dybSZP13QITZqekr7UjuSRfcONemF/QNxYBBDZfGJ89Z0PGNHmvtdBYrQqfk4jdtVe64v1iJdk3n6jlCmbTYTdP3iZeDOH40Yj9i8m5cs4QFiTJ+8O+AeOU5AMQqHUlblKqE8Rwg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,187 +123,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 31, 2025 at 5:59=E2=80=AFAM David Hildenbrand (Red Hat)
-<david@kernel.org> wrote:
->
-> On 12/30/25 22:35, Andrew Morton wrote:
-> > On Wed, 31 Dec 2025 10:28:25 +1300 Barry Song <21cnbao@gmail.com> wrote=
-:
+On Tue, Dec 30, 2025 at 08:54:33PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 12/29/25 06:51, Vernon Yang wrote:
+> > For example, create three task: hot1 -> cold -> hot2. After all three
+> > task are created, each allocate memory 128MB. the hot1/hot2 task
+> > continuously access 128 MB memory, while the cold task only accesses
+> > its memory briefly andthen call madvise(MADV_COLD). However, khugepaged
+> > still prioritizes scanning the cold task and only scans the hot2 task
+> > after completing the scan of the cold task.
 > >
-> >> On Wed, Dec 31, 2025 at 8:50=E2=80=AFAM David Hildenbrand (Red Hat)
-> >> <david@kernel.org> wrote:
-> >>>
-> >>>
-> >>>> -                     break;
-> >>>> +#ifdef CONFIG_NO_PAGE_MAPCOUNT
-> >>>> +             last =3D atomic_add_negative(-1, &folio->_entire_mapco=
-unt);
-> >>>> +             if (level =3D=3D PGTABLE_LEVEL_PMD && last)
-> >>>> +                     nr_pmdmapped =3D folio_large_nr_pages(folio);
-> >>>> +             nr =3D folio_dec_return_large_mapcount(folio, vma);
-> >>>> +             if (!nr) {
-> >>>> +                     /* Now completely unmapped. */
-> >>>> +                     nr =3D folio_large_nr_pages(folio);
-> >>>> +             } else {
-> >>>> +                     partially_mapped =3D last &&
-> >>>> +                             nr < folio_large_nr_pages(folio);
-> >>>> +                     nr =3D 0;
-> >>>
-> >>> The whole code was written to avoid ifdefs.
-> >>
-> >> The #ifdefs are only for -O0 builds, which are never a
-> >> mainline requirement. However, dropping functions that
-> >> contain nothing but a BUILD_BUG() seems reasonable?
+> > So if the user has explicitly informed us via MADV_COLD/FREE that this
+> > memory is cold or will be freed, it is appropriate for khugepaged to
+> > skip it only, thereby avoiding unnecessary scan and collapse operations
+> > to reducing CPU wastage.
 > >
-> > Let's not make -O0 an objective, please.  We often make assumptions
-> > about dead code elimination in order to keep kernel code more pleasing
-> > to read and to maintain.
+> > Here are the performance test results:
+> > (Throughput bigger is better, other smaller is better)
 > >
-> >> If those functions were actually required, the compiler
-> >> would fail anyway. In that case, there doesn=E2=80=99t seem to be
-> >> much value in keeping wrapper functions whose sole purpose
-> >> is to contain a single BUILD_BUG().
+> > Testing on x86_64 machine:
 > >
-> > I agree with that part of the patch - if the thing only does a
-> > BUILD_BUG() then let's simply remove it.  If somehow the compiler tries
-> > to reference the now-not-present function then we'll get an error messa=
-ge
-> > anyway.
+> > | task hot2           | without patch | with patch    |  delta  |
+> > |---------------------|---------------|---------------|---------|
+> > | total accesses time |  3.14 sec     |  2.93 sec     | -6.69%  |
+> > | cycles per access   |  4.96         |  2.21         | -55.44% |
+> > | Throughput          |  104.38 M/sec |  111.89 M/sec | +7.19%  |
+> > | dTLB-load-misses    |  284814532    |  69597236     | -75.56% |
 > >
+> > Testing on qemu-system-x86_64 -enable-kvm:
+> >
+> > | task hot2           | without patch | with patch    |  delta  |
+> > |---------------------|---------------|---------------|---------|
+> > | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
+> > | cycles per access   |  7.29         |  2.07         | -71.60% |
+> > | Throughput          |  97.67 M/sec  |  110.77 M/sec | +13.41% |
+> > | dTLB-load-misses    |  241600871    |  3216108      | -98.67% |
+> >
+> > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> > ---
 >
-> The change
+> As raised in v1, this is not the way to go. Just because something was once
+> indicated to be cold does not meant that it will stay like that forever.
 >
->         +#ifdef CONFIG_NO_PAGE_MAPCOUNT
->         +#define folio_inc_return_large_mapcount(folio, vma) \
->         +       folio_add_return_large_mapcount(folio, 1, vma)
->          #define folio_dec_return_large_mapcount(folio, vma) \
->                 folio_sub_return_large_mapcount(folio, 1, vma)
->         +#endif
+> Also,
 >
-> In the patch is wrong. It must be CONFIG_MM_ID.
+> (1) You are turning this into an operation that will perform VMA
+>     modifications and require the mmap lock in write mode, bad.
+>
+> (2) You might now create many VMAs, possibly breaking user space, bad.
+>
+> If user space knows that memory will stay cold, it can use madvise() to
+> indicate that these regions are not a good fit for THPs.
+>
+> But are they really not a good fit? What about smaller-order THPs?
+>
+> Nobody knows, but changing the behavior like you suggest is definetly bad.
+> :)
+>
 
-Hello David,
+Thank you for review and explanation. I got it.
 
-folio_inc_return_large_mapcount and folio_dec_return_large_mapcount
-are only used when CONFIG_NO_PAGE_MAPCOUNT is defined.
+For MADV_FREE, we will skip the lazy-free folios instead.
+For MADV_COLD, it will be removed in the next version.
 
->
->
-> So if the following makes compilers happy, fine with me:
-
-Apart from the solution as below, I can't think of any other ways. Do
-you have any good ideas?
-+#ifdef CONFIG_NO_PAGE_MAPCOUNT
--               if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
-
-> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-> index daa92a58585d9..9d782826e8579 100644
-> --- a/include/linux/rmap.h
-> +++ b/include/linux/rmap.h
-> @@ -336,6 +336,11 @@ static __always_inline int folio_sub_return_large_ma=
-pcount(struct folio *folio,
->          return new_mapcount_val + 1;
->   }
->   #define folio_sub_large_mapcount folio_sub_return_large_mapcount
-> +
-> +#define folio_inc_return_large_mapcount(folio, vma) \
-> +       folio_add_return_large_mapcount(folio, 1, vma)
-> +#define folio_dec_return_large_mapcount(folio, vma) \
-> +       folio_sub_return_large_mapcount(folio, 1, vma)
->   #else /* !CONFIG_MM_ID */
->   /*
->    * See __folio_rmap_sanity_checks(), we might map large folios even wit=
-hout
-> @@ -354,33 +359,17 @@ static inline void folio_add_large_mapcount(struct =
-folio *folio,
->          atomic_add(diff, &folio->_large_mapcount);
->   }
->
-> -static inline int folio_add_return_large_mapcount(struct folio *folio,
-> -               int diff, struct vm_area_struct *vma)
-> -{
-> -       BUILD_BUG();
-> -}
-> -
->   static inline void folio_sub_large_mapcount(struct folio *folio,
->                  int diff, struct vm_area_struct *vma)
->   {
->          atomic_sub(diff, &folio->_large_mapcount);
->   }
-> -
-> -static inline int folio_sub_return_large_mapcount(struct folio *folio,
-> -               int diff, struct vm_area_struct *vma)
-> -{
-> -       BUILD_BUG();
-> -}
->   #endif /* CONFIG_MM_ID */
->
->   #define folio_inc_large_mapcount(folio, vma) \
->          folio_add_large_mapcount(folio, 1, vma)
-> -#define folio_inc_return_large_mapcount(folio, vma) \
-> -       folio_add_return_large_mapcount(folio, 1, vma)
->   #define folio_dec_large_mapcount(folio, vma) \
->          folio_sub_large_mapcount(folio, 1, vma)
-> -#define folio_dec_return_large_mapcount(folio, vma) \
-> -       folio_sub_return_large_mapcount(folio, 1, vma)
->
->   /* RMAP flags, currently only relevant for some anon rmap operations. *=
-/
->   typedef int __bitwise rmap_t;
->
->
->
-> Use a config with !CONFIG_TRANSPARENT_HUGEPAGE:
->
->   $ LANG=3DC make mm/rmap.o
->    CALL    scripts/checksyscalls.sh
->    DESCEND objtool
->    INSTALL libsubcmd_headers
->    DESCEND bpf/resolve_btfids
->    INSTALL libsubcmd_headers
->    CC      mm/rmap.o
-> mm/rmap.c: In function '__folio_add_rmap':
-> mm/rmap.c:1249:30: error: implicit declaration of function 'folio_add_ret=
-urn_large_mapcount'; did you mean 'folio_add_large_mapcount'? [-Wimplicit-f=
-unction-declaration]
->   1249 |                         nr =3D folio_add_return_large_mapcount(f=
-olio, orig_nr_pages, vma);
->        |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->        |                              folio_add_large_mapcount
-> mm/rmap.c:1274:30: error: implicit declaration of function 'folio_inc_ret=
-urn_large_mapcount'; did you mean 'folio_inc_large_mapcount'? [-Wimplicit-f=
-unction-declaration]
->   1274 |                         nr =3D folio_inc_return_large_mapcount(f=
-olio, vma);
->        |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->        |                              folio_inc_large_mapcount
-> mm/rmap.c: In function '__folio_remove_rmap':
-> mm/rmap.c:1673:30: error: implicit declaration of function 'folio_sub_ret=
-urn_large_mapcount'; did you mean 'folio_sub_large_mapcount'? [-Wimplicit-f=
-unction-declaration]
->   1673 |                         nr =3D folio_sub_return_large_mapcount(f=
-olio, nr_pages, vma);
->        |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->        |                              folio_sub_large_mapcount
-> mm/rmap.c:1702:30: error: implicit declaration of function 'folio_dec_ret=
-urn_large_mapcount'; did you mean 'folio_dec_large_mapcount'? [-Wimplicit-f=
-unction-declaration]
->   1702 |                         nr =3D folio_dec_return_large_mapcount(f=
-olio, vma);
->        |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->        |                              folio_dec_large_mapcount
-> make[3]: *** [scripts/Makefile.build:287: mm/rmap.o] Error 1
-> make[2]: *** [scripts/Makefile.build:556: mm] Error 2
-> make[1]: *** [/home/dhildenb/git/linux/Makefile:2054: .] Error 2
-> make: *** [Makefile:248: __sub-make] Error 2
->
->
->
-> --
-> Cheers
->
-> David
-
-Thanks
-Wale
+--
+Thanks,
+Vernon
 
