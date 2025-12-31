@@ -4,94 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D560FEE642E
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 12:21:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 779C1EE642F
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 12:21:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46E4D6B0088; Wed, 31 Dec 2025 07:21:21 -0500 (EST)
+	id DC4B56B0089; Wed, 31 Dec 2025 07:21:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4465D6B0089; Wed, 31 Dec 2025 07:21:21 -0500 (EST)
+	id D84F96B008A; Wed, 31 Dec 2025 07:21:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 372FB6B008C; Wed, 31 Dec 2025 07:21:21 -0500 (EST)
+	id C9B326B008C; Wed, 31 Dec 2025 07:21:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 27B6B6B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:21:21 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CB4401A81C0
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:21:20 +0000 (UTC)
-X-FDA: 84279676320.20.A4840E9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 13AE540004
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:21:18 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fsHKDW85;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767183679; a=rsa-sha256;
-	cv=none;
-	b=ZzOQ+5o46ReShLlikKXe4m8rlWLz8ZSrKOJOMk+vdX8GNzQ7zDe7bA0ZpdkYqfw7lkfM/9
-	LxrAHVxNVzXi8B/2iUsuZ36Mhg/NnKdcOIMKqZ8iU3RkC+zA3Qa7P1ZLM1AKBgThSoy4Mp
-	m//QcLT5W8MEJZRaHZ4TDygo/J+Hjt0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fsHKDW85;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BAA976B0089
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:21:26 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7028A160C3F
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:21:26 +0000 (UTC)
+X-FDA: 84279676572.19.1C1128F
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8858A80003
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:21:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WjPNzhBO;
+	spf=pass (imf02.hostedemail.com: domain of kdipendra88@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kdipendra88@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767183679;
+	s=arc-20220608; t=1767183684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5yUllBZRICPghEcqhs/zzNseWFX/hNU3nxa0gIGachA=;
-	b=7FDtwgTDYEckQQwUGyLWoKvCJ9nlHsKwROg/PexIiVrc5ZWSapW94iwe1zj6B0wxOJT8cs
-	94U2Pf40JFj2LEtPt3L8RSzk60jY3O9NrLvI+9YijQ1dm4o94s1VjT2SPrk19Mx2HCxKvG
-	gj/lPGP9onJazkmORO55My+tc2ZUxto=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1BCA1423CE;
-	Wed, 31 Dec 2025 12:21:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58764C113D0;
-	Wed, 31 Dec 2025 12:21:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767183678;
-	bh=rwOuVs4lpDDF8bKqR4rIsZbo/WNCoOlr6UVNDV5zcrc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fsHKDW85kpgeh5hk9sfPbsVQiXI2NRDc9AFhqDOQFeWTdCGVkAEHcjUk//b9zVU40
-	 i0k1uSSvdRpjyAz71zdtC7pLe1niNddntqdU9x7HBhEzvnBnNbw94WVHfH6NXrNOSP
-	 cf2yxUJmksMtRrrm0xom5u9fEMJLIL3djtPPD2ezQURTVNdVfORvQoOUjX90BElub4
-	 uYRn10UUxF/BaFLDAcKNX4GeTPnK7QOMnVMsf3pRKgWgdV2VMiZWV0WyfedgYMgLKY
-	 GmqqokazWPglXAK6QUzirHH6LgNYiw9DApVCw7W5tWzOefar+iSxITAHgPb8JhkfkV
-	 hl+4ekmargpAQ==
-Message-ID: <9c3b81da-f0e8-4652-8900-05593e124c26@kernel.org>
-Date: Wed, 31 Dec 2025 13:21:12 +0100
+	bh=l1zQ6x4JBvnjcii6rxQIcqW7gW9Zy85sg7DcmNPmmRU=;
+	b=7VDeAxXZAKexyrUzi68P0YNG1XWquBaXPcTg9aX2votsXK6HiJE7GCXDNJeGyPzazaw1is
+	2Gu5GPfcoYGdTvXzmJy8Kjfwuknm+ZGtmdl0m97RNyH0usFgVBcpKA+SzAL/X3P/t4S+dv
+	tlthdzMWZSxXOpPs6HRkv1s67BOS80Y=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WjPNzhBO;
+	spf=pass (imf02.hostedemail.com: domain of kdipendra88@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kdipendra88@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767183684; a=rsa-sha256;
+	cv=none;
+	b=FuI935fOJ8Fs/yloUlcQ1XAOdq7TJYDbm2n4RHvXtCRYKCJJidknK0V+4e4WKt6l1Plbry
+	JKLlwF39JaLDcKGnTxu5GHbm1rwQrFTgR67grakwpq3j44c6Qc82YXeOM1/uVfgJ75ASM9
+	bdP6cLcpbfsl0dNbMyS1MBkEN4GJQxY=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a0d0788adaso97123205ad.3
+        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 04:21:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767183683; x=1767788483; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l1zQ6x4JBvnjcii6rxQIcqW7gW9Zy85sg7DcmNPmmRU=;
+        b=WjPNzhBOTrDa5/g2zql5GX1sSHagIEObriHVpxYdAQmZliAtKJTX7rvXCuE4rsWB7Z
+         +GLHoSbpT6EhmRTx9LgP1zLT5+WcoC7G9wkIECNXEgkcqMrVOtgfjNuMscx4+emxNEFx
+         EVC/bYckbUGEoZKaMT/KAsQi1KEc6WKuoKfbk+W8YfWQj8FOrz4A5oqoAr8gkh+WoTaD
+         IqtiQCqcfKXbfaJqNMRFVvJJCAogn+q3omRCVlaeJvJjZZ2z8ch8r30825fK3RVivb2r
+         IinVQzL8zwoDXIhxvec/m02qhvBzdqnq1rjqx/g/k2NSoWwwVX+cfBBl3m3Z0XRp9uUI
+         IEUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767183683; x=1767788483;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=l1zQ6x4JBvnjcii6rxQIcqW7gW9Zy85sg7DcmNPmmRU=;
+        b=Kg6coYoYVJ0rO9GkXHiMXrZbDMEY90J7iseMwBgrmy0HQEbHoLMyzQ2qQKKrOLiAuE
+         di/A2FVStc7v5E6G2WLzHG3GFGHrAPoN5AT6zciV/x2i1xhCh27QJu/mJnfCKwYE7LLF
+         1yOUyNSuLwbT5BbHhYAWgwRZwKuXa92NmaRlIbSc+yOTV1gOxVPzEW7xY+VdST0lrQd7
+         Avx1cG23lgohgO/q65CqF3/+XqrwOTGczsSVR1nEEoIuzqcqPGzExEBLMJXQhDMDCEic
+         CWIJpCxZZNU2SqKqQROIUTHIENLR5Exh7gvF5m6EtOU+4tbb/9+JJF88U/LbQAF+cCsh
+         T4kw==
+X-Forwarded-Encrypted: i=1; AJvYcCWa1O+RCwTYA0hvm+4S1PA6JdXeog5RVf7axZYjIkxiZkJUiEEpeyj1YaZJ9XdRSpXvkg+ne6Jw1A==@kvack.org
+X-Gm-Message-State: AOJu0YxYoc8PHtFI5SHQnGeEvbP1dmJj2wwNH+yLXNhJiCUpjDowvLOu
+	fXTh1jjqTZGhCYc8+pEcwOP2H66NpeV20IciCH5bmPycdj85H0zn7qh0Tx7FFU/zJm0=
+X-Gm-Gg: AY/fxX6bU9Qv5aL0vC+BY9XLFF9Arq6/aF2FtyiaYY1q1AL7krOAwzkIlTx2KzmDDNa
+	IMCrr2v0UuL/ul6/f/M2TR9vq8YKz5hD7vuiF/NFL+Uj+vI/r/VgfyXcCWH2skpLAZG4DS1o8m5
+	s6TSHBlUEVcmwTodoiPQs9n7xy76is+9QrRa9j3gjm8jaAEFFUKhYBodVQ1igNzNKCJ/1xzLldw
+	XVi58YkFz3nu889fEnXtnfqbgL9C6yCRDVNUCPNerEEcMsR8TYl5KgJ1HxCsXljSrag1BDvXcil
+	dQNfsC9CRBpQgfwd7Gbd3YukgfdFD3FW14mXIMq/9PeNNDVnPcX96STpVdVXC6u4NVupndVvrEu
+	Dn31NwHUnH/lkMi4mYOK3hKbcEGkABkicHhWSMwTwz3HIwTXi8wRx/hmj23JIMnS+0pqb0d5X8s
+	b3c5/3/KA=
+X-Google-Smtp-Source: AGHT+IG3HnaH+f6fsjU47HQdlXrZ7oQYX/xrU6Ub7MM9YQXarksQ4+8UuW9vEeF2U1f5e5gUpCwR+Q==
+X-Received: by 2002:a17:902:d54b:b0:2a2:d2e8:9f25 with SMTP id d9443c01a7336-2a2f28368eamr365848575ad.33.1767183683334;
+        Wed, 31 Dec 2025 04:21:23 -0800 (PST)
+Received: from ubuntu.. ([103.163.65.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e70dccd14sm35760786a91.16.2025.12.31.04.21.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Dec 2025 04:21:23 -0800 (PST)
+From: Dipendra Khadka <kdipendra88@gmail.com>
+To: akpm@linux-foundation.org
+Cc: kdipendra88@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	mhocko@suse.com,
+	rientjes@google.com,
+	shakeel.butt@linux.dev
+Subject: Re: [PATCH] mm/oom_kill: Remove unnecessary integer promotion in format string
+Date: Wed, 31 Dec 2025 12:21:17 +0000
+Message-ID: <20251231122117.7683-1-kdipendra88@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251230123336.ef33f8a55df71f3e3f782532@linux-foundation.org>
+References: <20251230123336.ef33f8a55df71f3e3f782532@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm: khugepaged: set to next mm direct when mm has
- MMF_DISABLE_THP_COMPLETELY
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
-References: <20251229055151.54887-1-yanglincheng@kylinos.cn>
- <20251229055151.54887-5-yanglincheng@kylinos.cn>
- <f47b6192-2115-4f4b-82ae-dd66e65f4340@kernel.org>
- <20251231025112.uzlgrs3dgbyzul2x@master>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251231025112.uzlgrs3dgbyzul2x@master>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 13AE540004
-X-Stat-Signature: 496rbdf4n7itbb1m3t6pu681y3rdyi5g
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: q9farj5pgcranurm5c37dh6szjw7ftm8
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767183678-930256
-X-HE-Meta: U2FsdGVkX1/dbWCic9mOzTA5jF2w906/URulCiMm074FJOnjBQygbdRHsztn6uttSZ3ooimOqQJK2+yM5Os72d2f1VIuPf4y5ETQjJByF4iB8WKvcbZx1M20oiJeg4iaA7FmMzq0ba0Jv8mYap+pDFUgy+gNaMORlq/fC9G1wkhoxm8UhyQk4BWncQUEnS5vmkvCOLZw5V2S0onvOQ4JOLwJA3vxlGe9HLp0T2KggyyNFnmGG51dg9SuUWCEX+5lqO8/Nl2wC+bAJBsAuSsGsNFViGGtulF0xHe+lZBh7QTStc3UmfJKui/cjGwrrp7jjBEFi7rw71ELA6I+Bk8P819iH1c8rG1jjED+C0VmDMjDx4lLjAyYpzbcy7/4l0/+sh3hXxZoDbRIT5oHDcxvhmXU4Wahi22Xq64mW3WtNM2+AZxj0/gzrhDpTLGLnegQY7fCGtswXQrnqzKi0FxR64NIw3JN5dZ5xunYLcbv3+cMtNDfMEfJHanx2XbUYRsCr+9vToYqdct5fB/2SLx/dHiBwA+yufiQJacQL45FN7ZuiPkQz2+/7UEgARUartnwPg9ORUat9C7MXRrWqBos+kbpU+vErOrxguhz6qOCcG/xe7gPsLCyWzu57C5bIDoTN0PLFskQNCnv1ICvc962D2stD7rCsinujmbPbgVwbNfa79lEMDno+v3LmLAbV6fGplWnHLC/xCGy9yHPE9JuEkaWj4+yqamzN+4SkuE4shPCnLxxoSAeH4oNhbyF6mE3odVp2irXIRxORT1nqULWVl6QqnLxPDnHQ5gyFiaMtDuhU2fIF04lRAxItCMbWIb8s+5tArRYdvVE45LiMVeAutERe0FmNHls9yFykpePPWN5yq88LL5pUsvbSqnNBx26IiKI7YBBEVHfBpAM1LmpJphAsKdsSp4gLdK1tU4W1rd461C/EiVEZUCWup0sI56mwvM+fxNiXqrWaJE9Foi
- pSuXdgWx
- BcND2QRm0zOm2hKbVGgclB9UNgle/nYT71OtgiCn74iykNhAvUvVOax2Y6mNzfXcMKY9yIdEV/H4kuc955zLX9dml6j/fjUYuCnRgVvTtILm+d5pO4zf12GKJjeJ/ceb9YX6nOUly4MUVEoMA5dxWmBM6YtzdnwGHGX0bcgogBhsHdk04EFTeouDAOvJ/6sThL+CzJFCFZUcuogWWKxV3FviPNfjozFmN7pkEJc6RZXoELXTC/Cj00KD8SeyIOJ6eVf6Hp6ND44lIRM29tb/s4yFWuS1bmnsgBwMV0t648lwcYIPssoN4au6h/ViplTsCrzcRatUN9tol3SmiBjf4tD5EncK5/vHAAtoMgAC7bJ8zZk4IrKAGCLCuRg==
+X-Rspamd-Queue-Id: 8858A80003
+X-HE-Tag: 1767183684-24082
+X-HE-Meta: U2FsdGVkX1+fPLqe093xtSHHDDhfWJOKpY+cSPhcwaXl63cCNK6bNcmGT/vEZo4XgSbJT69mk52uWXIEK2Gc+FNgb1xhmEFYFpnHXEMcJiqVJdwrfPsajd8yB+k0EiVRHrxmBmZUqr9fpJqjvDLHzUdQJ7su2fGuC1Qb8YVkV5+skPMX3R/lPa0hhoNGWUSRSd7Tep2cYPTL7FlFbqwD/CbR2x+z0U2Pklw8i+pUaW2KqtJ+8AqXMy8uOBm/611eK7Bq4litON5frzDZOpoEE2WV1cSdeWfvhgGsAwT4fjCEJi60etlYw/kUqnl4pfesNyy2p4HYrZEpt4YxdmCfEJZvsR57exzW94pkFmOxhLkSIIHVwbBVL1yXYnwaYdqkB9LEZ/gAqi675uOGjFslZwt50j4MnRcCfn7RcTGm1ObAxrNrgy0JnJcxeQUvQerGbZQh3YkyrWurPEX3qs3DnbXeBhJj8NOGpy0cfm2Wt1Wuvj/0dTGfbcLFs8AS0igFNkeZGhZX8R46HDNSJetxHo4JOxZ8iEMDIEIqHwZKKW7lYR2z5oweHtKamKO9vHz7nBY3Ccu+cJxcL+G8NbZJj4z+GpOq9foZorCdzLmM7sIs90Quw33Co+WC/wK3yubQMpE8vstmsGr7Dm0X31+x1oCWY9U6t83gOya280Mq4b/o3IXezQBbkzN6Muc4YNsIOYxRTQKAa9BzTGBIOvcypvxvi5DTxDH8Bj7Eq423gePZcuS0dxfMjLmvz3gp/ZMUI2k0tfG/Nf9BHprrmXGdCRA/UksXeIhJJlmriAuZ0HwLI8BCANRmdrMSjX184x4jfsKv+zjTvPTxDeSIAssgv9vxLK4vfdtI/x+TUV4nYEShuJ2msFJ0GS9cdV1NYelIcgJQYzSDzTDSuJkTggslrBS9/RAXSvOlHBb2DonpItiCe41AYWzVb0giV491LEYuINFzvfo99dsuaC9tHPN
+ 0tKbNCKU
+ waAXS1LNyw7++Shzn+zWD4gTOW/r5bBP5E1DVeEXtMPkHxh96Tu0kjUdul/AKyAjgg4rptiqH485VVvwLtukQDDfQYfVI0CC6V7wl7ZCkT+j/ZpwYQ2PPkG+ZV71jhJyGVo1qSVio13UCNOC803TlCcS0awEVkFDJNk1DfsxRvGzTegJrML1aJvQzBG00KQCHUCkRriIisCzLHN6EgjlGARXybzV1VZQ+g9iQaGAHj2dkQ8H3gizNv3SoYCSD+TWKbrnDToeoBFWL4QqSa0fkUe7Y4MP1mQqQZ1NpF7guakGtHXZmKh/snpM7WKT1EMfQIOP18WsZZNmCZnWcxR7ECRTcOjG8kXlvZIrGm8sjtXEI1RkvsiDQy0dHW6nnw8YyA+hJzECB440o03dQW9R56eNhMOWEyIISQvlxdmxmG5zErQAKJt4gWJIGv4SVmAiP8VyizeQQveBtI3Gc58Q7sf/w37gtFe8E10OXik/CybIZlKppDQOTTTPS134a5kJktpv+iw1+Lrigc9icRug6MHvbVg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,85 +123,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/31/25 03:51, Wei Yang wrote:
-> On Tue, Dec 30, 2025 at 09:03:23PM +0100, David Hildenbrand (Red Hat) wrote:
->> On 12/29/25 06:51, Vernon Yang wrote:
->>> When an mm with the MMF_DISABLE_THP_COMPLETELY flag is detected during
->>> scanning, directly set khugepaged_scan.mm_slot to the next mm_slot,
->>> reduce redundant operation.
->>>
->>> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
->>> ---
->>>    mm/khugepaged.c | 9 +++++++--
->>>    1 file changed, 7 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>> index 2b3685b195f5..72be87ef384b 100644
->>> --- a/mm/khugepaged.c
->>> +++ b/mm/khugepaged.c
->>> @@ -2439,6 +2439,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->>>    		cond_resched();
->>>    		if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
->>> +			vma = NULL;
->>>    			progress++;
->>>    			break;
->>>    		}
->>
->> I don't understand why we need changes at all.
->>
->> The code is
->>
->> 	mm = slot->mm;
->> 	/*
->> 	 * Don't wait for semaphore (to avoid long wait times).  Just move to
->> 	 * the next mm on the list.
->> 	 */
->> 	vma = NULL;
->> 	if (unlikely(!mmap_read_trylock(mm)))
->> 		goto breakouterloop_mmap_lock;
->>
->> 	progress++;
->> 	if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
->> 		goto breakouterloop;
->>
->> 	...
->>
->> So we'll go straight to breakouterloop with vma=NULL.
->>
->> Do you want to optimize for skipping the MM if the flag gets toggled
->> while we are scanning that MM?
->>
->> Is that really something we should be worrying about?
->>
->> Also, why can't we simply do a
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 97d1b2824386f..af8481d4b0f4e 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -2516,7 +2516,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->>          * Release the current mm_slot if this mm is about to die, or
->>          * if we scanned all vmas of this mm.
->>          */
->> -       if (hpage_collapse_test_exit(mm) || !vma) {
->> +       if (hpage_collapse_test_exit_or_disable(mm) || !vma) {
->>                 /*
->>                  * Make sure that if mm_users is reaching zero while
->>                  * khugepaged runs here, khugepaged_exit will find
->>
-> 
-> This one looks better.
-> 
-> But the sad thing is we can't remove this mm from scan list, since user may
-> toggle this flag later.
+>It's a teeny issue but I do like the present code - be very explicit
+>and careful about the types we're dealing with, don't rely on unobvious
+>C rules.
 
-In theory we could readd it to the list once the flag gets toggled.
+Actually, the scenario here is that while printing a short, it is 
+**promoted** to int due to C's variadic argument promotion rules.
 
-In fact, we could remove it from the list once we set the flag. But not 
-sure if that ends up any cleaner (dealing with races? not sure).
+Yes, we must use %hd when the **semantic type** is short. However, 
+due to integer promotion, the value is already passed as a 4-byte int 
+on the stack. The %hd format specifier then casts it back to short 
+for display.
 
--- 
-Cheers
+Since the value is already promoted to int internally, using %d is 
+simpler and avoids the unnecessary cast. The checkpatch warning 
+confirms this:
 
-David
+```
+WARNING: Integer promotion: Using 'h' in '%hd' is unnecessary
+#461: FILE: mm/oom_kill.c:461:
++	pr_warn("%s invoked oom-killer: gfp_mask=%#x(%pGg), order=%d, oom_score_adj=%hd\n",
++		current->comm, oc->gfp_mask, &oc->gfp_mask, oc->order,
++			current->signal->oom_score_adj);
+
+
+WARNING: Integer promotion: Using 'h' in '%hd' is unnecessary
+#961: FILE: mm/oom_kill.c:961:
++	pr_err("%s: Killed process %d (%s) total-vm:%lukB, anon-rss:%lukB, file-rss:%lukB, shmem-rss:%lukB, UID:%u pgtables:%lukB oom_score_adj:%hd\n",
++		message, task_pid_nr(victim), victim->comm, K(mm->total_vm),
++		K(get_mm_counter(mm, MM_ANONPAGES)),
++		K(get_mm_counter(mm, MM_FILEPAGES)),
++		K(get_mm_counter(mm, MM_SHMEMPAGES)),
++		from_kuid(&init_user_ns, task_uid(victim)),
++		mm_pgtables_bytes(mm) >> 10, victim->signal->oom_score_adj);
+```
+
+Checkpatch flags the 'h' modifier as unnecessary for this reason, 
+and many other subsystems have moved to using %d for promoted types. 
+Hence, I think this patch aligns with kernel coding practices.
+
+Best Rgards,
+Dipendra Khadka
+
 
