@@ -4,95 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69C0FEE57C8
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 01:42:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28CC7EE57D1
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 02:15:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B37D36B0088; Tue, 30 Dec 2025 20:42:05 -0500 (EST)
+	id 520516B0088; Tue, 30 Dec 2025 21:15:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE4CB6B0089; Tue, 30 Dec 2025 20:42:05 -0500 (EST)
+	id 4AD196B0089; Tue, 30 Dec 2025 21:15:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F1216B008A; Tue, 30 Dec 2025 20:42:05 -0500 (EST)
+	id 3E38C6B008A; Tue, 30 Dec 2025 21:15:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 88EC16B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 20:42:05 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F4FBC1C9C
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 01:42:05 +0000 (UTC)
-X-FDA: 84278065410.04.5D7DA07
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 70B0F1C0004
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 01:42:03 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D9096B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:15:15 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B7A0CC1D27
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 02:15:14 +0000 (UTC)
+X-FDA: 84278148948.17.6DD9FE1
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1C8291C0004
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 02:15:12 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of 3an9UaQkbAA05BCxnyyr4n22vq.t11tyr75r4p106r06.p1z@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3an9UaQkbAA05BCxnyyr4n22vq.t11tyr75r4p106r06.p1z@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DEueX3N3;
+	spf=pass (imf20.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767145323;
+	s=arc-20220608; t=1767147313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=gTZZjS79VHrfpj0W1pWmRNTRak1AXpPtMEXkehl7HRk=;
-	b=UnuNrrEc9ccqzAvAsyUKD7qw06WXDww0qEc//LiuIroLGUKP08rCyMkjShHCTidr76VmT5
-	PyXY2uyTCFvEjmTF83cMpfDkWNIB6em1QVJRq9AjvOUcycawMKRpmxji663OW2zKAWbki4
-	TKpBfTH3ZlSQCdp8UvFo5Q8hBqA/PWg=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TjfTZhxsuFnytCHStJNb8M8EerX5fb1TydQlSsVH+Kc=;
+	b=HZMDNpndNs7HRsbMUSJkCzkMveKo3tZpzB7j+3+Z65ldQu/7STrMHtV0j9yi6t1GUNpyrm
+	1x8aHr1bWHoh+nbK2QFPmE247zH7VEyenVuGuUkiVoHiIRTwczV91O4h9D5FRHtnfYPTyF
+	KrfQ/dRxhoXutTXX67GL2vwnPuexFjo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767147313; a=rsa-sha256;
+	cv=none;
+	b=0n5mUd9w2/ZDVHpDSjxZns4YGCoSTEw1ZXCQlQm9b2NGbGgeHKKgGL3bvVsXF2yNy+O1ad
+	npjqY9l0mJ1sGZjksPBbXzVPgCFyny+icvGoX6n8UUwE47MjFp7V4NoOQiSDSedIJPw+mL
+	4afycd9nnV5hZyCyRmWHr73MEQFjBvI=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of 3an9UaQkbAA05BCxnyyr4n22vq.t11tyr75r4p106r06.p1z@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3an9UaQkbAA05BCxnyyr4n22vq.t11tyr75r4p106r06.p1z@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767145323; a=rsa-sha256;
-	cv=none;
-	b=aukKd3+78RWjhHX9T/tiNty4vJaQJdZ/6QSyyoL0O/wM0D8D3A1vLotOY85kSy4gHZWhA+
-	zJ5hxrLDzlJ+AR188D5dsr7Ln2ik5WCquzGwVCCEvWP43IjQpFQUWRkrL86mYW/8A2EHsX
-	1SNu+DMntvedhO1wQN97JU9zYx89GVU=
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-65742f8c565so18804673eaf.1
-        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 17:42:03 -0800 (PST)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DEueX3N3;
+	spf=pass (imf20.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-646b8d2431dso2024729d50.2
+        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 18:15:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767147312; x=1767752112; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=TjfTZhxsuFnytCHStJNb8M8EerX5fb1TydQlSsVH+Kc=;
+        b=DEueX3N3ba0EyDWh/L1wUvdehn1wQkdGsqkEMeT9WDjU3HxYCCbdTiAbHAC4kKTBVH
+         RLc5lCvaPu5mqjXVXBwZEsbKD7HEPNO+cg5AAoQ7Or6CPVjEOkQk4eeUoqmufRzGXM8E
+         XvAGcY5ReCMmaCjERqdS9QmVOyPIbP+ZBVBLSLPZCFVFA7mzAnfQG8FLw6lb1VQeIs3K
+         gTYdykLQwB2K9EAkr21vkX9TuRmpgTAu7veXWK/GPy6yMFW0c21T6G9oBFbLgacZjuCi
+         aQOQkJXct6UB+tJSM/aARlyxmHD8DtzipMpu9Nh9hBmONNQ6mA4r+tx2OjAVMBF8NqJa
+         GseQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767145322; x=1767750122;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gTZZjS79VHrfpj0W1pWmRNTRak1AXpPtMEXkehl7HRk=;
-        b=I7xYh17UUHzTmGE2XxU+6gHdIBqf071R08LNlYriL6vGWD1jybzqs/A9xKXR1//x0V
-         n6DCBpmgenfhOJyF+2RU3p/We/fMhoiU9MLU2LhzsTxSevgVIjTCBCQ9B2mkpCipJR0G
-         UXdlR5s8j1bUHoJGXKeXFlXAEzSg+Oj79mvDhYYkmoCbiTT8bbk0c/SqIY4Ism15OUsk
-         +tET/wiadjASO4CapDwoA3ZuLyvRfbD8cCobB08dN/mSntVWtsWqF5yUBrFC8LlbZIaW
-         lYRUWrHddHvELG3cQ+p5/FNIAMcM9wdJqqpwFD6KXDyGDp1PIol8VwwB8SFHNJY1Gb5k
-         qfsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWkQnVaRjP2l0917soGn2aR2/rD4q13Y2paURu7NpOoDXyQ+Rw2wImfbpi8gmCHPmwMskXkPyEyCw==@kvack.org
-X-Gm-Message-State: AOJu0Yx/qlgd1tBXQwslsSWuHcpjkUuILvygxVib4WkPObGdCUoZbI71
-	fhUYrFEWKFzsx+NP/fpex46g6SopuLGatniM2ZJwGkR6yRs0/8VfDFD1i1VL+JlS7uy65/r03q2
-	dnvUyo9eQ0n0y171+V5ivbXGFDWK3WUOvtH6DHMQAiDhKnCKDg0/H5QLIwj8=
-X-Google-Smtp-Source: AGHT+IHxNzByy/IIqB+GfG++jCTnMxPHAU+BIqEALwrSkaIPtHK7tKgpL7oIzY6zR37aqpu0Jo5qfft1DeP4tsACTpcUsq5RaQ94
+        d=1e100.net; s=20230601; t=1767147312; x=1767752112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TjfTZhxsuFnytCHStJNb8M8EerX5fb1TydQlSsVH+Kc=;
+        b=qGTWgKuJliZDDdOzpIfMcJfMsbYiIQLwmX+6ffuCf32NjbeHdHtTcpH+kLzyaSK87j
+         abyqZ5+fwZGPQQnEzH+j+vYYrzahHpKFkryQDuiMpIDNStdyppOS9YSE5EBuTYQFuPOM
+         bsCqCEnIIuQHKwEs4XPgQsQI7zueI8bBSmm3Hhh6hWeROIrcw4/wsLmkR6r/k3ODRpPr
+         5FmWAnnzSRF3PBTY8S17uVWTaDvXKKofS2iBhtYFqCy+lqF9OijPEWlP7Pb/hvQ4+rBt
+         tMk7fyPj65fzEj06la5b0F8xJYpoZMSay4KUejnAQAWaUEFrHkEGFeAqWvfwwVhMNEJ2
+         fcPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXzcTsN0xsxLFiXnEtHJVtTJWg8rgsnmYDb2d6G4AjCRxg9cUtKmVmU00d6hkh4juMJ8B3+0DT+Lw==@kvack.org
+X-Gm-Message-State: AOJu0YwNbHdyt1pMVn/b8kcubm52gKswy0phjhEG/o/uI9rp6tacZ9mc
+	lSStN4VTugd4Mn1HMrv0NeR3K5u+EExVBOQDHilyP6e7VUNeX08n3trGqbs4aesW4DF7TQzwWTp
+	Nfrz2w8/vYHxAhLUw1xamZ3rkkf23itI=
+X-Gm-Gg: AY/fxX6Pj3kkRN0KhK7vI+dIMmaEfMTY1xygtlHxKT6Y1znQL3O8KSVo63BrZb4qsKm
+	AQEYYK/moGokw2tr1sc5lDXBGSHYC580OBnNvtNrYHDkc0C4l+XdA62B0/6eEy+l+t2MaEHYiv1
+	ojPCB00YjOJmLcs4AG9CoFoPGcoDyzS2/dtUjSvM+a1rLRbQwAlgQOCS0Stc963yIZHnSObUJsu
+	umUXgzeDSNHxXP06AjPf1WH2r6JhdytxUCw+RMQutqvimzcrbW8ouwLE3uJck2W6aZi1U4v
+X-Google-Smtp-Source: AGHT+IGL4DyIhhfeKJjVZUle8A3hNbfdiDShjwM2p95/bqd+VS+m5HW78WKGClsmtpLuHw6mEKZ5Sa5sxwI4ASCK3b8=
+X-Received: by 2002:a05:690e:1914:b0:645:5cf1:7685 with SMTP id
+ 956f58d0204a3-6466a8c9570mr26677749d50.77.1767147311921; Tue, 30 Dec 2025
+ 18:15:11 -0800 (PST)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2305:b0:65c:fb01:71af with SMTP id
- 006d021491bc7-65ea0345582mr11615339eaf.5.1767145322587; Tue, 30 Dec 2025
- 17:42:02 -0800 (PST)
-Date: Tue, 30 Dec 2025 17:42:02 -0800
-In-Reply-To: <67a4eae3.050a0220.65602.0001.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69547f6a.050a0220.a1b6.0308.GAE@google.com>
-Subject: Re: [syzbot] [mm?] KASAN: slab-use-after-free Read in list_lru_del
-From: syzbot <syzbot+6663075ddb9be85fa6e5@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, david@fromorbit.com, gfs2@lists.linux.dev, 
-	hughd@google.com, kent.overstreet@linux.dev, linux-bcachefs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mmpgouride@gmail.com, 
-	muchun.song@linux.dev, roman.gushchin@linux.dev, 
-	syzkaller-bugs@googlegroups.com, zhengqi.arch@bytedance.com
+References: <20251229145533.2437293-1-gutierrez.asier@huawei-partners.com> <20251229152250.78975-1-sj@kernel.org>
+In-Reply-To: <20251229152250.78975-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Wed, 31 Dec 2025 11:15:00 +0900
+X-Gm-Features: AQt7F2p3gYsDqr85ZYvuCiGLXjJute9alqoQns-Mc9ZwsH3742lbbwiyDQb2AQ0
+Message-ID: <CAHOvCC4FhpLrknhvWbDd=cxaLUyxHFkFxBDYSC3waeg4FC+TBg@mail.gmail.com>
+Subject: Re: [RFC PATCH v1] mm: improve call_controls_lock
+To: SeongJae Park <sj@kernel.org>
+Cc: Asier Gutierrez <gutierrez.asier@huawei-partners.com>, akpm@linux-foundation.org, 
+	damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	wangkefeng.wang@huawei.com, artem.kuzin@huawei.com, 
+	stepanov.anatoly@huawei.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 1o8ij5bqc9yn4ioie467k9b45r9bdbhw
+X-Stat-Signature: ukp9rgk68fu8pjx9ic7bwmzhxo3f7w9y
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1C8291C0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 70B0F1C0004
-X-HE-Tag: 1767145323-51691
-X-HE-Meta: U2FsdGVkX19o7Z8d1+9wJafeoQIed0lt5pYzvOTWEJL5mTC19L1Y+qjsVJdyaKdIeRrhAM2+hS8XyaY7x+JDhcBT1qxaK6pejBVNR4Tc9weMJvO6u6aW1t54wfrdczuxQLq87/0a/8tETTNBFe5Yfd//yT5ophGxm45+4uXGi57UIaMSr0ax/h0RcaHMvRCALBSCByBX8yKoHHYQCq07tXq2AsfN/dXD4J1bepIt9kovO8ZB6ysp0VH6dfBPqQS2u9iqzzff8akiYpr6U766H7q0BuZ5YGAPneU/EEfsDMIlylHLGfybmNENCnA+w98WEUaccFaiMgkqPp4Z7BA4B6GzaoQawmqLpwchoelaaVZ6WB/W6zRCLLcHW1Btds4wZBFlyrfE5rNfHtFIBSBb2hrWWcyIcIJ8Ve/zjFR91wDUcF3Dibk/McPvr4sbzNF1qgV2/EIBvSZkNTJor3vTxj2LZ04GzgjqXmQchsd3xKPWxLgwo+Hy36oY0dlbQwB+mYFoh0rEQLbFvCR9aCAbhqLeWMR3eXWb8Tn0tkMsGjidVpYriUEOWh3CLIMrImGwAu8ZPQCvbNmywmYcdjI7p3ioY5qowIYASc/Igw2kBtt3mwxu2wVhpG2mEFqiMMoRziuzcZ5o7HJhhh2nsfHLanNolkRebfAPLIMMEx4UvFmRirtJFuVjVVAFlmi6BO3rkmvWNu57nWG498ZR/chfykFKpy/8QwzqbGog3ZO21Cq1We6IC2JcTUPxND3d4wSFR7vtaJNYDaIPsH/G/XL1QtaKG8ZxIVsB29o45uw7KyEe6+yjimNtEjPciRFVdDtmjBLR7ycJMPTtNJVwjsIqcnGNTGXEE4+jni/+VN2Q5mxTTsb9Kp0diznP+w8C1K7mR89XND1EJA54nU6d+o8Zn/bcAKvQ7ux1GaHhfb/GTwnTxEq0fKCFlTeo7uON9cBcOuVmlM/oiE0Ukq+DQ/k
- D9KP0lT1
- rPC3IWnxZUsQ6D73Hplr0x/P+6CKRCay6kLV5ejV50pSqeJ+k7jSYf9FlnGZgoqd1B0OfqCaBUFRFBD3hMpW/Qg/a5STbLcS4yuI9fanqChSFTiZVkw61lVc1CFNQY4nD6A5TAMO7urQ64WQZOsQz7W1Sj43F5GgnyqjistAEKULLBpdO0NFil3kdoI8/YES0G9PCFFVIMKgKtLo9UoxUkVT/CkA1LPW75QT2QFiIp+calpvH8fevhlVb/mgfPjgZzm/47W1tMaTbqV16PDt8KvwdwQFhalpFybNTZSS+2tpM7FqUHMMUX2l4sWqheObQHBPhdlldQzIMbPgNlVX0KyGSj+F8RjSH09SN8de+aaMw4V6bIq2SWoqI6LZVI8evBs6p9VJsR1xw4xVx+sc2xpkH7dajAdQIGuzdOeAsbTejLOQSoGwzKrNtNy3JZPpeE/umiTRqKofAQ1uQdlNIxBeDVzeL9G0MCvVz0ArqDjhTp6azv4rOrAOEaG3uhs9/zWnhErgtUYUVDo5pzzQGw/G6IiDF3kUubuMpS9dvUsqDAxuv0tWx9gQmmTkJrHZZeV7+BQE+jKyRMFydztAJxaJ4s0s28JnqJxP7PRBvPzX1eA0DXFQlRrkp+uRvvosF94UrC2YOLgZs+Mt2TYjfZUdalWiwOhs8OnpRjMwN8SL71AYhc3Eicvfb0IgddYy5JLz9PhojdO2zkpOgrl+ulvIMkU8pMV/qrDjEDAHFwSFq9j+iqf+vU+7eqjbqKxEYcEZlc8unzMwMborUyBXtiUNt9tu9y4LkTaAaw6M4dqoB66XPxE7UO/MNpJ8J1BusYkbPOzdXoG5T48Y9MZEluL+qJNhKHNMuFcnlaTF4o8hxCvTOplngg+jV7e57tVOvLyhyx2NIDOsgNfUF0ZOJu8GFf7oVHA4vF0jxmZFvQLyqfYvRVFmIeYUK+z3ityJgiGaQqKyEkInaGG+gJkshqnXeep5m
- QWwglTZL
- CXKxSFkQzBEU32cypG1PWsu7vKdQeVtnHfh92RDtfDs4UkKApfZprFTlleYGK5TfwHvzZcsBKIkAV0ghU0a/0bTKJwJl+cS+OPvXlcLAIXr5USx8v6PJuF4wSum46d1Dl6IbvbxNmyQ=
+X-HE-Tag: 1767147312-21395
+X-HE-Meta: U2FsdGVkX184qPaqcDgcI0wp/IdkJ4nDXB65b90/iVl89KNhW3Bt2sk/Y8q4H50v7QoN2Z4iM0i4SNE750mDbblhdIHrifg4m8R12hYA1AsJmNcpLWav8T/Ne0B/50EKwNMqS9bqVAoXYLW3l1FNHUwTy86j54tktpK+EvUBoNVIIVcSnzE6CnNs0DnYDL7j9KHG8gn7qL3a7zWbNxNy990Ldf/mtUE92QLJwZLvDQuqW1lFQAZZiH/Slq/2gPMNXxxe2Wh8dt0bo4Q+olGwSjTnf1MzAmtWtPqE2Lg1SmfSnSQfHdWuctQq2kIi97SysRNFWyzjgCbbTNwq6y4Qj1mYLlLikY88ggqqoEIuk40f1aumOC8mHTkBmRhQCZ54wwVRCoRB51dhLyJ0TloAXmN5cwSe0LtACYuLAvBTBDf/pLSjsMMXyonCQ0DAUq9nCpGZoc7nwD6HZysvbyASCWIguw4nsJFi8Rqr0M8qQYwGMNF38SfuDqoXUpCziVNXGKUVBk39hYkev9B0egzjEHZC8DGc5+76eUXGNHWBelgF2CBPE5DS1NlWy2sRBfIE9XeQCioBYPuaIlY2SZQvdrXimS8SRCl8EM4MdMEzA3b9KyBK33W+BKMzkzJvuDFWzDZAobDsQU3HRY+wK5GM1VjtfRoc0pEiIAnLB5cKDVy7kwKsQF4WM2NKYxmYTgr9vmU/6f6grYLMsJt4m0ygyi9Mi6O3xJivPGqQZNH1PEXN0uSl4FGtOxEPP8iZnwUfNJ4jDx46Aj4kCeuiALPHp6dvf/liWnlHiAzpm1/da62QPAjcwSoUf5zi/wy9RGQ4y2M+UX8qM+8WN47XTRjFJjbZTphVO8b2gpUTBAiyWoAlvFGO+HfXbK76aFepDQYXISmwtPQCrs2b6Ng5AuYDA9Q05llz8lmoMT8LN5BXaiiF9XtIZB+QSJUsILC16rax642Es7e/3S7rSukIoBZ
+ LtaUpf65
+ f0BbeWSHcDqnnafNhe/x4Q62ixA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,24 +115,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot suspects this issue was fixed by commit:
+On Tue, 30 Dec 2025 at 00:23, SeongJae Park <sj@kernel.org> wrote:
+>
+> Hello Asier,
+>
+>
+> Thank you for sending this patch!
+>
+> On Mon, 29 Dec 2025 14:55:32 +0000 Asier Gutierrez <gutierrez.asier@huawei-partners.com> wrote:
+>
+> > This is a minor patch set for a call_controls_lock synchronization improvement.
+>
+> Please break description lines to not exceed 75 characters per line.
+>
+> >
+> > Spinlocks are faster than mutexes, even when the mutex takes the fast
+> > path. Hence, this patch replaces the mutex call_controls_lock with a spinlock.
+>
+> But call_controls_lock is not being used on performance critical part.
+> Actually, most of DAMON code is not performance critical.  I really appreciate
+> your patch, but I have to say I don't think this change is really needed now.
+> Please let me know if I'm missing something.
 
-commit 3a04334d6282d08fbdd6201e374db17d31927ba3
-Author: Alan Huang <mmpgouride@gmail.com>
-Date:   Fri Mar 7 16:58:27 2025 +0000
+Paradoxically, when it comes to locking, spin_lock is better than
+mutex_lock
+because "most of DAMON code is not performance critical."
 
-    bcachefs: Fix b->written overflow
+DAMON code only accesses the ctx belonging to kdamond itself. For
+example:
+kdamond.0 --> ctx.0
+kdamond.1 --> ctx.1
+kdamond.2 --> ctx.2
+kdamond.# --> ctx.#
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=117f329a580000
-start commit:   03d38806a902 Merge tag 'thermal-6.14-rc5' of git://git.ker..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8de9cc84d5960254
-dashboard link: https://syzkaller.appspot.com/bug?extid=6663075ddb9be85fa6e5
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=104d2864580000
+There is no cross-approach as shown below:
+kdamond.0 --> ctx.1
+kdamond.1 --> ctx.2
+kdamond.2 --> ctx.0
 
-If the result looks correct, please mark the issue as fixed by replying with:
+Only the data belonging to kdamond needs to be resolved for concurrent access.
+most DAMON code needs to lock/unlock briefly when add/del linked
+lists,
+so spin_lock is effective.  If you handle it with a mutex, it becomes
+more
+complicated because the rescheduling occurs as a context switch occurs
+inside the kernel.  Moreover, since the call_controls_lock that is
+currently
+being raised as a problem only occurs in two places, the kdamon_call()
+loop
+and the damon_call() function, it is effective to handle it with a
+spin_lock
+as shown below.
 
-#syz fix: bcachefs: Fix b->written overflow
+@@ -1502,14 +1501,15 @@ int damon_call(struct damon_ctx *ctx, struct
+damon_call_control *control)
+        control->canceled = false;
+        INIT_LIST_HEAD(&control->list);
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+-       mutex_lock(&ctx->call_controls_lock);
++       spin_lock(&ctx->call_controls_lock);
++       /* damon_is_running */
+        if (ctx->kdamond) {
+                list_add_tail(&control->list, &ctx->call_controls);
+        } else {
+-               mutex_unlock(&ctx->call_controls_lock);
++               spin_unlock(&ctx->call_controls_lock);
+                return -EINVAL;
+        }
+-       mutex_unlock(&ctx->call_controls_lock);
++       spin_unlock(&ctx->call_controls_lock);
+
+        if (control->repeat)
+                return 0;
+
+>
+> >
+> > Initial benchmarking shows the following results
+> >
+> >
+> > # bpftrace -e 'kprobe:kdamond_call { @start[tid] = nsecs; }
+>
+> Commit log shouldn't start with '#'.  Please consider indenting the above
+> command and below outputs of it.
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
+>
 
