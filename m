@@ -4,117 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C708EEEB565
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 17:32:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D6A6EEB565
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 17:36:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E04FE6B0088; Wed, 31 Dec 2025 12:32:32 -0500 (EST)
+	id 899ED6B0088; Wed, 31 Dec 2025 12:36:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB2DD6B0089; Wed, 31 Dec 2025 12:32:32 -0500 (EST)
+	id 8476C6B0089; Wed, 31 Dec 2025 12:36:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBE3E6B008A; Wed, 31 Dec 2025 12:32:32 -0500 (EST)
+	id 7297C6B008A; Wed, 31 Dec 2025 12:36:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B91D36B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:32:32 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 467458C518
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 17:32:32 +0000 (UTC)
-X-FDA: 84280460544.27.F903302
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5D65840009
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 17:32:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NOrYELuO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767202350; a=rsa-sha256;
-	cv=none;
-	b=XgC4/4NExUwbS6k/UGrOMvBnUdlY2zDQTNCsQ8I4HHb4+IYmbFL7ySPTG6W3JE2MnmtBx3
-	wX/1SlQ1vL9jsVnNPkq7drD75sOiZzjx+XouuerjznpYRJ78E0K82TfF/1SoeKwayD6DZd
-	5eNyblYW2vHgfETAWgHwX8w/UmoPAls=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NOrYELuO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FE3F6B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:36:13 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 074A6CCA76
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 17:36:13 +0000 (UTC)
+X-FDA: 84280469826.15.16C008A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7FD32180003
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 17:36:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=euqIVIQp;
+	spf=pass (imf16.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767202350;
+	s=arc-20220608; t=1767202570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U5VuiLn3dVAn40uBcT/YeDlX15d0jLQo0ZWVzvFA7PA=;
-	b=jYpBB3n8Qwm/WLV/PhmKPjFcmZ9QjI9Z8smLE/wVYu9KtgNXMMY2l0ih2n3epoJPb5eAEF
-	wz+fUffdD6wIl6Vqt5Sl4pvkuMxw7E2CRDGuRqGg+RX4u5qHvVXcUSqbT6axH5IW3uwMq4
-	lfIlTFN59oQkI+8zy9wVeW481VBHJOo=
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42fbbc3df8fso5450376f8f.2
-        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 09:32:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767202349; x=1767807149; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U5VuiLn3dVAn40uBcT/YeDlX15d0jLQo0ZWVzvFA7PA=;
-        b=NOrYELuO7lkMNlXC6JG9FYTmc4wsA8W5tYbotVKm4sAS4aPPGZvWjsLMDEfqgCqfkx
-         KirloJAOCbgx5EWVcHOcctopqzBYvp0TPlyvQOvZQI74/9OU+aKkuMmONiNI8my1JaKw
-         R+iUFHpm6OeSC9HaxaKiLaBhLGaP0s2ufxDXbfXzypesAWm6a1ZU4XU0MlLQU1n+JixK
-         Wqr2IAlJWv3dL388CE/MA2LnbjhnCXfUVKBZ/+iMkMNK8vWuQwXy9UBvtDAfT5p9Ipod
-         ivwgtDkVpeFEGx2MMt1laFXUKA/SD81ZIaL2fy3wPmE1IrxqGshyDfazljp8eGBgeZrl
-         0IWw==
+	bh=D+hPaZspsreAv3BlbsaDeG27kbGxsQkCDH5b5xlUDn0=;
+	b=2SkKJUst1Jb/MiPyQm7/ZfH6+sjiJMHivGoxeZWc21B86hieGrP1hAZLHc7av//laJhsjB
+	sWfaJeUD9ISGQ8t2IQRkp3Wc+kpCCKbD9r+Fqk8OmiiFkOQcX9zedPmY+05gq56n48PXl9
+	bhgWXuvywGyOz5E+aa8PBxqabYOwWfU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767202570; a=rsa-sha256;
+	cv=none;
+	b=uXGMvbn/Vr6nkdbRjHec4YXl11Q1J4bLcojgJn/Dxn9/wbLG1c2QdSPSV8uRKtH9qceaGh
+	7N7X2ZHK3qtHWJDO9A4I3dNrZpZjWbO1qUsUidyq+xK0vnyGDn9glBNBjuZ7+titHRRKOk
+	qDP3sAHvDfJ4fkgL0QOCkPN2plZcRio=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=euqIVIQp;
+	spf=pass (imf16.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767202569;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D+hPaZspsreAv3BlbsaDeG27kbGxsQkCDH5b5xlUDn0=;
+	b=euqIVIQp/TpFb1I7aDBhO+DQG6ASExg19D24BcogyOJmsjwbRM4UzT7gqvTeHi0XzuSBeA
+	idIOM9dM/JIUdPDVwUqYRdB9SgW2ThbIraTAC5MQmGNQlkjkgPnZp9Lt/ipkxlPe/FHzJu
+	zb28dQUz8gbozGxtBj0JE3pAMX+ZKbE=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-568-28J50FeoMSWiblsP0GMk-Q-1; Wed, 31 Dec 2025 12:36:08 -0500
+X-MC-Unique: 28J50FeoMSWiblsP0GMk-Q-1
+X-Mimecast-MFC-AGG-ID: 28J50FeoMSWiblsP0GMk-Q_1767202568
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b630753cc38so18327666a12.1
+        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 09:36:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767202349; x=1767807149;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=U5VuiLn3dVAn40uBcT/YeDlX15d0jLQo0ZWVzvFA7PA=;
-        b=O0sGg10sPYzidFvMXMtzYFkJtedc0OY/Svpw2jWi++d0gwU/CNwy8MswH1BH9P0YV7
-         zOXgB3OH2agfLKdtdXmcAV+aVHfVAB6Q5O21e7OpK+zKWSYj4mnofLYIHrn/dQyusx3c
-         QBYmYUGf8yTS1MjA3qFIhAV7AO2evscPAzejP8xrF/16UjmZrluPRT/68gOQ7eSWGxk8
-         Bd9osl+Rees/lo703YGNPD1QM0rRQ0jWbC7QLz863Pje86KrxGRR9D54i1ny7UqqKXbx
-         AOUj6cYX6Lyhe+OGuDGa4OWViV9WuFPdD9ehV9Io7In1Iry4Q6TQDkE9PJnxVr8sA28G
-         RQow==
-X-Forwarded-Encrypted: i=1; AJvYcCXcHZGDIJ8ifgg63XaatH5mwHZiG+v3lRH57RLvhWv/lei+CPB4/7T0YkDLMJqBAXvespblp1vZ2g==@kvack.org
-X-Gm-Message-State: AOJu0YyrCJDgdK0NKzykgKtsde1h9IX544RGG/HomjSk5XBSbtvN89Bd
-	WteL5VN2+fOYvHr5aAdjrZHlglXV1E7jOZmQ7t759hgpvSdjjARiDHqHFbRfhpiVCyi8VxfHVF1
-	HNbvoFnrqSrcsiQ+4ubmOqPoEs22gUH8=
-X-Gm-Gg: AY/fxX5oxw5Wf8dzGAC5qZoQY/uUopUAnHZ5UndbDgOe7zW88dsnYXRuOD2QpmQIlq9
-	B+kISHijFSkOptCyYRTvEHn54OHXKY1TE/AP/HV67aVLrT4Ubh5bc93qIjSATgG5eNUsFuwxBRN
-	Cq/5HanPQTetDZJB9lnXJWiUNpLwS2EUvjujD26amKCSWJ6u5SO2WBzp244YcDtmIuL2n7JM01n
-	8S9M/BzKRfLvMY/hZbg2t4uEYrWd57gUES+kaHgZXkGEdLU7OLLDMs1oFENUdeXuH9iDyxWSELH
-	i14NsUFx97dfEfkyjXQz8g4YGVhJ
-X-Google-Smtp-Source: AGHT+IF7HyxxRbtC84cXSMOHnJT4OH6Sl+m5edZ7DMni0hLzLRwsRYANm/mz1DDpTK4ecNOoY4W/98DOOm3T/bFVH4o=
-X-Received: by 2002:a05:6000:3104:b0:431:9d7:5c2e with SMTP id
- ffacd0b85a97d-4324e501694mr44836005f8f.35.1767202348661; Wed, 31 Dec 2025
- 09:32:28 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767202564; x=1767807364;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D+hPaZspsreAv3BlbsaDeG27kbGxsQkCDH5b5xlUDn0=;
+        b=V6pI45qEyPNn3b0oFt5hYbsIMiyOik5hR8lF5u0i5Zj1HqjyO+JTAgE4n04STrHcoy
+         BaPsn5oOeOobT4HKHqBJ1QaAZ/UabAAiQILiGcoazvA1U6mkShuv1JYzpauiT3NmBPrv
+         m8Fpbjw3qTT2e6MABv8ZvpfGUtHt24jHBN1Lo+NzobgdV5aiVdLYdPj9zeRUy4Fe7i4p
+         vcyYo1baRUMx4W1op6JjuFzntm3dU2eIVOnAskQaO4fUTvyeW6wBck4qjfaIkNjFTPgt
+         p5FowN5o+7HjCithkcdi+Wh9fZKzHnZbTEtu2yy+lv+wRQdk9+Xn12uSD8zC7xckJt8A
+         8Hyg==
+X-Forwarded-Encrypted: i=1; AJvYcCUzzxlGnkG6qvbi4Zdg8zl2np1Tx6Gpjv+hKDu++rVVEIeqe5SJmXxrDefKhdZqQOFCjAsj0zZpDg==@kvack.org
+X-Gm-Message-State: AOJu0Yw4HLjmv65mC9b67ISTrFXMoyqdmdvBeBd055cIZbck05RY4yXc
+	jykGptC7KyNHkiYvaVYW9KrYaxh5RQb12/Qubq2il1svAKf5Y+EVyB62HHNyVty/2HPE5rr+nmE
+	Z8ishXF8VGxR42UPmu7NCiLX4NJNZoB9TEiArT9mBQVWENsp4rEtM
+X-Gm-Gg: AY/fxX5HMxfRqHa1GHr+EBzt+QngaMCO+yVQvd/2nak7KR+2n8mWmq5rdrdcoAqGXU5
+	0nz65O6CeQDOkojX+IJAmJPVzpB63WyeqS6STfEghle6qTQ3VHeNA9jUssrl/rzU2pcSjaOGJir
+	WAilBKFZApmHruyn0fXvf7zvK279Sy0tjYvaKWuOXT/4xAUyfuHijfBIQTswD4T7+i14F3Al7eJ
+	zooxhveExSg1wpmi6M7U736jLFI1nUKlbTutW54zGiFV63q76GbJGrAEHGk/y6KZ7wQqHe5ARY5
+	J3QO3RkV17W9Tek/J4/dHUrxiC6kDYokj7bLkcRpcqxyyPWmN1sPX1+6h75vOziuTxF6J+TZIpU
+	ZjtiwZ/l55lGLwraAF58DVLh82n6QhGBcbx7LU0VnX23/1xnO
+X-Received: by 2002:a05:7022:6722:b0:11d:f464:38b3 with SMTP id a92af1059eb24-121722a9757mr33784152c88.2.1767202564081;
+        Wed, 31 Dec 2025 09:36:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEi3paBF328Dvc54FaF7ePmfKoOt8e8CqfUvXWomZaBGFhC0nmzfA+IqOZP166rR45yxweuTA==
+X-Received: by 2002:a05:7022:6722:b0:11d:f464:38b3 with SMTP id a92af1059eb24-121722a9757mr33784129c88.2.1767202563623;
+        Wed, 31 Dec 2025 09:36:03 -0800 (PST)
+Received: from [10.61.55.87] (syn-184-074-098-043.biz.spectrum.com. [184.74.98.43])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b05ff8634csm87792829eec.3.2025.12.31.09.35.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Dec 2025 09:36:03 -0800 (PST)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <f4228e20-62ff-4701-b6ce-59c99188d7b5@redhat.com>
+Date: Wed, 31 Dec 2025 12:35:49 -0500
 MIME-Version: 1.0
-References: <20251223044156.208250-1-roman.gushchin@linux.dev>
- <20251223044156.208250-4-roman.gushchin@linux.dev> <aVQ1zvBE9csQYffT@google.com>
- <7ia4ms2zwuqb.fsf@castle.c.googlers.com> <aVTTxjwgNgWMF-9Q@google.com>
-In-Reply-To: <aVTTxjwgNgWMF-9Q@google.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Wed, 31 Dec 2025 09:32:17 -0800
-X-Gm-Features: AQt7F2oadTXea_Sik1GVA2Fk1q8JBbDHb41lLkyeYrVxdpyCyv7zsIwArp1KPOg
-Message-ID: <CAADnVQLNiMTG5=BCMHQZcPC-+=owFvRW+DDNdSKFdF8RPHGrqQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v4 3/6] mm: introduce bpf_get_root_mem_cgroup()
- BPF kfunc
-To: Matt Bobrowski <mattbobrowski@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
-	JP Kobryn <inwardvessel@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Michal Hocko <mhocko@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 33/33] doc: Add housekeeping documentation
+To: Frederic Weisbecker <frederic@kernel.org>, Waiman Long <llong@redhat.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>,
+ Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20251224134520.33231-1-frederic@kernel.org>
+ <20251224134520.33231-34-frederic@kernel.org>
+ <370149fc-1624-4a16-ac47-dd9b2dd0ed29@redhat.com>
+ <aVVAfb2eaeyd7l-h@localhost.localdomain>
+In-Reply-To: <aVVAfb2eaeyd7l-h@localhost.localdomain>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: xUnmDEF03U36IclDZAbHUh3wk2YyLKoIk6sCfArv3I8_1767202568
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: px1w3n64hryujo9f6grfs9er1j6cmiaa
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7FD32180003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5D65840009
-X-Stat-Signature: cq4hp44yuy3ehu4za8dkk3czk5ys5x6j
-X-HE-Tag: 1767202350-369332
-X-HE-Meta: U2FsdGVkX19coXFtI9w4DAn+ujWovSQ3BLDH88MjRmkHzD5fBscnDjEnC68FFLHc/acazSc0eTN4PSI1KZlhQ8is88KHURSXXE11Lg05WDrSpYWzHx+CBuSfSwlW3zS1TqkA8iDe1owzPm45HbEBuYOzf3anX7RJTlwpKU6RKvzLJx3cT38KtfQ8AKWxOs30r0Rmb9sW8LvIEjO3CIXbZlaH6Hx/wW49IbcemGPeaDnpNpbdnThqHr7OOPA4ugz0z598HT7grsZryM5UZe/jMsra6PA3IzC2CJMHIJb9A2JxLMInJ5cDSeZ7QZOwxT26cuIveSznDdaYGSk0jUQnkKlfq+7OrtqAHgI9uM34hfk5aMUxLFLF2SRrXu7h/Qf8uTtIGqXWorZDNr6cZPv02B3N7I1tm4Frhyj7yi8VtsczFJU50TpySfIjjRKuIHqh/nsONoBTryYy50cip+RsNtUI/xfd4EGaR7N60TrxpoUyRynkwCZb86k1w5y+gl2/MB1ZB/GVtXe2LIVfKgvrV1lkeUKOoTORrLmtnVByQ6+dABg80Khhli80Jwom7OpZ0yUA6IzFu52EWzh+5ZNsEQlrqB9NWH+FyaVe5dTjYjqizBBaA/C+mQ7wqAVPmkrLaG5SEQwgH7rsCaWChyFoFa4EYk8h3CnzyFJhs2DZv0LwT5g03PP6UtVZtKewheDa08CNFuq5/cLiM0UKt2R2VFwFLpjsp+agzF7ylvn/vVbl4MsW74yeN5SDxAMlUIesIpFLOY+qkyAWpkZ0YlTF4HpfJBk/Ukgn70wZtlY6GWyj1R8SZP0jyi58h80swln/DBMnU+kYXi4zTYdTGVhCwyiUpLL3SboSmltojnU/KluKFYBeG2zpdM5sa9MJSparJislAHJaAFTNGs2CBi3vRea2TDQ2b0aSgx9qST0YpvDPezMYl1wYUeFlqMJ4AHLrn5OhOO/F/eOfqTfeMlk
- bFHTf3ZI
- k4GYd8P2ar9KVBg0tdAx9VgsP2QMDXTdpXMKGnlOVrgn6cO3vohyXxcnwkv2tMIin6ikTcmHXRQQV/j7KFK07pAptrRWHAjGS0zDm83ZlPAy++erIvaYe0gcNbmRIbwL/kzgTB3lMRZJboSYTTSN6H6oaUXBF8Yr+RbRbSUeXOAMs+kqtYaFplSKyGXYF+Gd4KM5fyvK03FyoiPyiVPyC283KmcZOSTmqPcgMoaNrI8jgV0MiPJ6Gk49R20Uz7AXHkiU9+fY9lpSZgbIT/vIHNmoV0PtQAPAEaybnQHLicDqyRQHiyVZntIcIQQ6QcLC69XRoRrtvn/T3zIwFb87ePb/kA/7+3oG4DQNZsH8RxcglGevG3yETEnW3CWkQusOQ3Rjix7e/5GhWDL+9/CklZxu5YSTp2mEgFIF8SnEBSg8X4aB7wn5Bm/0mq9EljjEiQRzOP1wLc3ETMu4gBWbi6FXfkx8pVvHoH0uAQtkEwYToenU0C5QOvkCFdg==
+X-HE-Tag: 1767202570-666007
+X-HE-Meta: U2FsdGVkX1/KanoqZf4BvxQWB+PF8BitxhZ0IwZwJJFehcuovZyyy7xWq1ea9rdQhk8ja3pNJvT/21ZwasFs9Busa14SwMEvfM+I+YJw/HTdNHY3/4UxPy6Sz1FpN5p4UgSF3tjWuaO29rzVNwmEewxhwHAX74roSkXH4j61cZzl+50YpD9nmW5jxxvJOUFaxjp8aJQ/9toAfpo2ogZgC0dcyBC9CPedUBfFbuwqsadD15Jni3SxClfo/DsYR01970LtDufjTvIJpWhpmaKVSAKDZuuCEEw5nGLhXwQs6pb2BW+G4rOqxkIFB98ZuN/HXRYHA6YQVhbbigXkv/rSgQlwuw3fT/7a446iHIlrypv+3PadMNeA+Tu8psTgmSFYe8WJA6gwQNQQYlEM7ynhVdMr5G4XVycDSEgokP3T/oZtWkIhXjf5kbzKpxkk1a9Axml6CmsVhR3NSLN3gqYPhzAt3A8qKMfUi1Fwh4zQvc0sZNSHLO18vtOghJ0Pno00xNRGTDrvcPImK2xH91DSo9yNYOMvnNbE7mDALGXpMAIWfdMd9oybELu9LPohR7dh6wuK6OmOnWixa/r0/Wsii9ZvKG70fTlbKNbJIzTathJkPTt8o3NSz9SBL4g1GwuIBAdTeTg5QvwKrzcIkHJHek9vByNltlvBEBkaE7d4GNaEIig3IF6N/IAB2pHhHekrgIYSVzt9ISNWwM2OQ9NyyVUapcWKK//FAh1bwVPwSKI9Dl0e1cLiLICBXDkIheMiqUWo1RaIbg+xgmMvY1Dd1+kkKBKxNW5jW2i2NEPlA9pAvTW50C0vL0qhNF/v94dOlmXZFNZ6eYg7v3/k9gPMOLX+B9PeDIavqx/cplAV2k3W2vK9G6bJA5Lqc9qw1nJByoxD+1vDMTpxR9Ja/ccXjt9hf8AMF9PCRQqPICRliqHb4oc6zc8M1alRnl9q16/cs5NLr5wTfHpLCcWM7bX
+ zI+32PCP
+ pkNvveEy4mzCcpy/gZhCpL3j1By8tdh5p8VaOBliajeV4Rm+rxcIRBNWMDNQITuywueScCqcv/zcE2ypo172LPCKnBpDHC7O01s+5ZQhlQ+h08K+kYT/VpuwWuhjSZbe56lmSburTbt6c5dMjbUPrWtuPQAudXV/1faHW3U58GdmoDfeBgguaKu5Z0u1yZsy0RAKk9ISwnXbrSwMQFNdTniV3DHFaY+epeb3HNEoOGCmoTdoYM48awCF3TgJs0LThiurykLcZIujhuAL0e/CzTTOLSxGNNmX5wnymOBS/YDOXguFxzf7ihIGsthBaKyrBY2UrTLjkY6vNik7IcsZWZax/LSckhopUgVp0UAtKNZ0G5U4yfFWqUeOr3/5Ai3/EXU4sRAQVe54w4qvUQak406nMPvewikHpX8qVYhv+wa2kkCLTA+IrfvRCJQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,107 +155,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 30, 2025 at 11:42=E2=80=AFPM Matt Bobrowski
-<mattbobrowski@google.com> wrote:
+On 12/31/25 10:25 AM, Frederic Weisbecker wrote:
+> Le Fri, Dec 26, 2025 at 07:39:28PM -0500, Waiman Long a écrit :
+>> On 12/24/25 8:45 AM, Frederic Weisbecker wrote:
+>>> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+>>> ---
+>>>    Documentation/core-api/housekeeping.rst | 111 ++++++++++++++++++++++++
+>>>    Documentation/core-api/index.rst        |   1 +
+>>>    2 files changed, 112 insertions(+)
+>>>    create mode 100644 Documentation/core-api/housekeeping.rst
+>>>
+>>> diff --git a/Documentation/core-api/housekeeping.rst b/Documentation/core-api/housekeeping.rst
+>>> new file mode 100644
+>>> index 000000000000..e5417302774c
+>>> --- /dev/null
+>>> +++ b/Documentation/core-api/housekeeping.rst
+>>> @@ -0,0 +1,111 @@
+>>> +======================================
+>>> +Housekeeping
+>>> +======================================
+>>> +
+>>> +
+>>> +CPU Isolation moves away kernel work that may otherwise run on any CPU.
+>>> +The purpose of its related features is to reduce the OS jitter that some
+>>> +extreme workloads can't stand, such as in some DPDK usecases.
+>> Nit: "usecases" => "use cases"
+> Are you sure? I'm not a native speaker but at least the kernel
+> has established its use:
 >
-> On Tue, Dec 30, 2025 at 09:00:28PM +0000, Roman Gushchin wrote:
-> > Matt Bobrowski <mattbobrowski@google.com> writes:
-> >
-> > > On Mon, Dec 22, 2025 at 08:41:53PM -0800, Roman Gushchin wrote:
-> > >> Introduce a BPF kfunc to get a trusted pointer to the root memory
-> > >> cgroup. It's very handy to traverse the full memcg tree, e.g.
-> > >> for handling a system-wide OOM.
-> > >>
-> > >> It's possible to obtain this pointer by traversing the memcg tree
-> > >> up from any known memcg, but it's sub-optimal and makes BPF programs
-> > >> more complex and less efficient.
-> > >>
-> > >> bpf_get_root_mem_cgroup() has a KF_ACQUIRE | KF_RET_NULL semantics,
-> > >> however in reality it's not necessary to bump the corresponding
-> > >> reference counter - root memory cgroup is immortal, reference counti=
-ng
-> > >> is skipped, see css_get(). Once set, root_mem_cgroup is always a val=
-id
-> > >> memcg pointer. It's safe to call bpf_put_mem_cgroup() for the pointe=
-r
-> > >> obtained with bpf_get_root_mem_cgroup(), it's effectively a no-op.
-> > >>
-> > >> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> > >> ---
-> > >>  mm/bpf_memcontrol.c | 20 ++++++++++++++++++++
-> > >>  1 file changed, 20 insertions(+)
-> > >>
-> > >> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> > >> index 82eb95de77b7..187919eb2fe2 100644
-> > >> --- a/mm/bpf_memcontrol.c
-> > >> +++ b/mm/bpf_memcontrol.c
-> > >> @@ -10,6 +10,25 @@
-> > >>
-> > >>  __bpf_kfunc_start_defs();
-> > >>
-> > >> +/**
-> > >> + * bpf_get_root_mem_cgroup - Returns a pointer to the root memory c=
-group
-> > >> + *
-> > >> + * The function has KF_ACQUIRE semantics, even though the root memo=
-ry
-> > >> + * cgroup is never destroyed after being created and doesn't requir=
-e
-> > >> + * reference counting. And it's perfectly safe to pass it to
-> > >> + * bpf_put_mem_cgroup()
-> > >> + *
-> > >> + * Return: A pointer to the root memory cgroup.
-> > >> + */
-> > >> +__bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
-> > >> +{
-> > >> +  if (mem_cgroup_disabled())
-> > >> +          return NULL;
-> > >> +
-> > >> +  /* css_get() is not needed */
-> > >> +  return root_mem_cgroup;
-> > >> +}
-> > >> +
-> > >>  /**
-> > >>   * bpf_get_mem_cgroup - Get a reference to a memory cgroup
-> > >>   * @css: pointer to the css structure
-> > >> @@ -64,6 +83,7 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgr=
-oup *memcg)
-> > >>  __bpf_kfunc_end_defs();
-> > >>
-> > >>  BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
-> > >> +BTF_ID_FLAGS(func, bpf_get_root_mem_cgroup, KF_ACQUIRE | KF_RET_NUL=
-L)
-> > >
-> > > I feel as though relying on KF_ACQUIRE semantics here is somewhat
-> > > odd. Users of this BPF kfunc will now be forced to call
-> > > bpf_put_mem_cgroup() on the returned root_mem_cgroup, despite it bein=
-g
-> > > completely unnecessary.
-> >
-> > A agree that it's annoying, but I doubt this extra call makes any
-> > difference in the real world.
->
-> Sure, that certainly holds true.
->
-> > Also, the corresponding kernel code designed to hide the special
-> > handling of the root cgroup. css_get()/css_put() are simple no-ops for
-> > the root cgroup, but are totally valid.
->
-> Yes, I do see that.
->
-> > So in most places the root cgroup is handled as any other, which
-> > simplifies the code. I guess the same will be true for many bpf
-> > programs.
->
-> I see, however the same might not necessarily hold for all other
-> global pointers which end up being handed out by a BPF kfunc (not
-> necessarily bpf_get_root_mem_cgroup()). This is why I was wondering
-> whether there's some sense to introducing another KF flag (or
-> something similar) which allows returned values from BPF kfuncs to be
-> implicitly treated as trusted.
+> $ git grep usecase | wc -l
+> 517
+"usecase" is not a proper word by itself, but people do use it some times.
+$ git grep "use case" | wc -l
+694
 
-No need for a new KF flag. Any struct returned by kfunc should be
-trusted or trusted_or_null if KF_RET_NULL was specified.
-I don't remember off the top of my head, but this behavior
-is already implemented or we discussed making it this way.
+Anyway, you can keep it if you want. It is not something that is worth 
+arguing for. :-)
+
+Cheers,
+Longman
+
 
