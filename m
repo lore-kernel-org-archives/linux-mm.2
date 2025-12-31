@@ -4,117 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 779C1EE642F
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 12:21:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B993EE642F
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 12:33:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC4B56B0089; Wed, 31 Dec 2025 07:21:26 -0500 (EST)
+	id 983216B0088; Wed, 31 Dec 2025 07:33:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D84F96B008A; Wed, 31 Dec 2025 07:21:26 -0500 (EST)
+	id 931056B0089; Wed, 31 Dec 2025 07:33:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9B326B008C; Wed, 31 Dec 2025 07:21:26 -0500 (EST)
+	id 812006B008A; Wed, 31 Dec 2025 07:33:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BAA976B0089
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:21:26 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7028A160C3F
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:21:26 +0000 (UTC)
-X-FDA: 84279676572.19.1C1128F
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8858A80003
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:21:24 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WjPNzhBO;
-	spf=pass (imf02.hostedemail.com: domain of kdipendra88@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kdipendra88@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6FF386B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 07:33:42 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 16F7EC3B6D
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:33:42 +0000 (UTC)
+X-FDA: 84279707484.12.50A7705
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 68302C0003
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 12:33:40 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="oE4r/UCf";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767184420; a=rsa-sha256;
+	cv=none;
+	b=Q22eI5Bid3gaArRy0gfzZkM52ImPuQPyHKLiqk4625yddLcw6DKLVWZO3BXtygQ8JPTUOt
+	weTxBIJropkMVQH7yfyRZ1i01/k/WBoOdI5E0FCs0kmDKX16m0XUt0A3t+sv4My5dSMfrz
+	bVtTiAlmjfqPdOi18nLb/xtcTQakIHA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="oE4r/UCf";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767183684;
+	s=arc-20220608; t=1767184420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l1zQ6x4JBvnjcii6rxQIcqW7gW9Zy85sg7DcmNPmmRU=;
-	b=7VDeAxXZAKexyrUzi68P0YNG1XWquBaXPcTg9aX2votsXK6HiJE7GCXDNJeGyPzazaw1is
-	2Gu5GPfcoYGdTvXzmJy8Kjfwuknm+ZGtmdl0m97RNyH0usFgVBcpKA+SzAL/X3P/t4S+dv
-	tlthdzMWZSxXOpPs6HRkv1s67BOS80Y=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WjPNzhBO;
-	spf=pass (imf02.hostedemail.com: domain of kdipendra88@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kdipendra88@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767183684; a=rsa-sha256;
-	cv=none;
-	b=FuI935fOJ8Fs/yloUlcQ1XAOdq7TJYDbm2n4RHvXtCRYKCJJidknK0V+4e4WKt6l1Plbry
-	JKLlwF39JaLDcKGnTxu5GHbm1rwQrFTgR67grakwpq3j44c6Qc82YXeOM1/uVfgJ75ASM9
-	bdP6cLcpbfsl0dNbMyS1MBkEN4GJQxY=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a0d0788adaso97123205ad.3
-        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 04:21:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767183683; x=1767788483; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l1zQ6x4JBvnjcii6rxQIcqW7gW9Zy85sg7DcmNPmmRU=;
-        b=WjPNzhBOTrDa5/g2zql5GX1sSHagIEObriHVpxYdAQmZliAtKJTX7rvXCuE4rsWB7Z
-         +GLHoSbpT6EhmRTx9LgP1zLT5+WcoC7G9wkIECNXEgkcqMrVOtgfjNuMscx4+emxNEFx
-         EVC/bYckbUGEoZKaMT/KAsQi1KEc6WKuoKfbk+W8YfWQj8FOrz4A5oqoAr8gkh+WoTaD
-         IqtiQCqcfKXbfaJqNMRFVvJJCAogn+q3omRCVlaeJvJjZZ2z8ch8r30825fK3RVivb2r
-         IinVQzL8zwoDXIhxvec/m02qhvBzdqnq1rjqx/g/k2NSoWwwVX+cfBBl3m3Z0XRp9uUI
-         IEUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767183683; x=1767788483;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=l1zQ6x4JBvnjcii6rxQIcqW7gW9Zy85sg7DcmNPmmRU=;
-        b=Kg6coYoYVJ0rO9GkXHiMXrZbDMEY90J7iseMwBgrmy0HQEbHoLMyzQ2qQKKrOLiAuE
-         di/A2FVStc7v5E6G2WLzHG3GFGHrAPoN5AT6zciV/x2i1xhCh27QJu/mJnfCKwYE7LLF
-         1yOUyNSuLwbT5BbHhYAWgwRZwKuXa92NmaRlIbSc+yOTV1gOxVPzEW7xY+VdST0lrQd7
-         Avx1cG23lgohgO/q65CqF3/+XqrwOTGczsSVR1nEEoIuzqcqPGzExEBLMJXQhDMDCEic
-         CWIJpCxZZNU2SqKqQROIUTHIENLR5Exh7gvF5m6EtOU+4tbb/9+JJF88U/LbQAF+cCsh
-         T4kw==
-X-Forwarded-Encrypted: i=1; AJvYcCWa1O+RCwTYA0hvm+4S1PA6JdXeog5RVf7axZYjIkxiZkJUiEEpeyj1YaZJ9XdRSpXvkg+ne6Jw1A==@kvack.org
-X-Gm-Message-State: AOJu0YxYoc8PHtFI5SHQnGeEvbP1dmJj2wwNH+yLXNhJiCUpjDowvLOu
-	fXTh1jjqTZGhCYc8+pEcwOP2H66NpeV20IciCH5bmPycdj85H0zn7qh0Tx7FFU/zJm0=
-X-Gm-Gg: AY/fxX6bU9Qv5aL0vC+BY9XLFF9Arq6/aF2FtyiaYY1q1AL7krOAwzkIlTx2KzmDDNa
-	IMCrr2v0UuL/ul6/f/M2TR9vq8YKz5hD7vuiF/NFL+Uj+vI/r/VgfyXcCWH2skpLAZG4DS1o8m5
-	s6TSHBlUEVcmwTodoiPQs9n7xy76is+9QrRa9j3gjm8jaAEFFUKhYBodVQ1igNzNKCJ/1xzLldw
-	XVi58YkFz3nu889fEnXtnfqbgL9C6yCRDVNUCPNerEEcMsR8TYl5KgJ1HxCsXljSrag1BDvXcil
-	dQNfsC9CRBpQgfwd7Gbd3YukgfdFD3FW14mXIMq/9PeNNDVnPcX96STpVdVXC6u4NVupndVvrEu
-	Dn31NwHUnH/lkMi4mYOK3hKbcEGkABkicHhWSMwTwz3HIwTXi8wRx/hmj23JIMnS+0pqb0d5X8s
-	b3c5/3/KA=
-X-Google-Smtp-Source: AGHT+IG3HnaH+f6fsjU47HQdlXrZ7oQYX/xrU6Ub7MM9YQXarksQ4+8UuW9vEeF2U1f5e5gUpCwR+Q==
-X-Received: by 2002:a17:902:d54b:b0:2a2:d2e8:9f25 with SMTP id d9443c01a7336-2a2f28368eamr365848575ad.33.1767183683334;
-        Wed, 31 Dec 2025 04:21:23 -0800 (PST)
-Received: from ubuntu.. ([103.163.65.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e70dccd14sm35760786a91.16.2025.12.31.04.21.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Dec 2025 04:21:23 -0800 (PST)
-From: Dipendra Khadka <kdipendra88@gmail.com>
-To: akpm@linux-foundation.org
-Cc: kdipendra88@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mhocko@suse.com,
-	rientjes@google.com,
-	shakeel.butt@linux.dev
-Subject: Re: [PATCH] mm/oom_kill: Remove unnecessary integer promotion in format string
-Date: Wed, 31 Dec 2025 12:21:17 +0000
-Message-ID: <20251231122117.7683-1-kdipendra88@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251230123336.ef33f8a55df71f3e3f782532@linux-foundation.org>
-References: <20251230123336.ef33f8a55df71f3e3f782532@linux-foundation.org>
+	bh=b/Ef/KyaWkE9RNyW+S3M0FmuRK4Y96AU6QKNl70SvQM=;
+	b=ngzIxXX4Dd2jttiF7e90qtP6tiVzI/7oMR0rwa/aaEKNlPD1l8n27ZlcFnb5ahF8XwQzoF
+	hxwM4I2bW61eleVUA+51iPokqHYImFLaAza1dzkrhoyxL4Jmzu4G0Wkl2+VyoIOSqVY4WA
+	JkZQGfSOeTpmqx2Wo/kPy7bM0vlofSY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 890AC60017;
+	Wed, 31 Dec 2025 12:33:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105F8C113D0;
+	Wed, 31 Dec 2025 12:33:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767184419;
+	bh=88co770AdIIceGvPwMVRk+/DHD76pSN9yIlkzwg/7uM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oE4r/UCfpuC1PaAb9MdsdBU8sXRc2ePgeEuIj2rQ9eP5m1TU5zx587hBGLFLuo9xJ
+	 V7g5LTrqyXvIRLQfqgbp2rXq3sEKWQ1HzoGh9Ey43xw0G5Pl9sACb+IRdk+GKEl32D
+	 KEdMisFv9H9UmI0Bhbhmm07yLfYehoNYdLQy+tkyYHwGwF2r3lPx8/2Xp++Ws1aSmK
+	 bOCTDRyrwF0Rg+NieWnXQCDeZK5Nrix7UnVkrveR+OUyU+3JVbFYMpu9OIxv3GQoDF
+	 /llElF2C7gkZ0d07keo6NKLapRuK/yrG1QrFbSmZ2x87lJ+6oDPlbtH7eyIEAgcmC2
+	 To5UZafOHYpqg==
+Message-ID: <1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org>
+Date: Wed, 31 Dec 2025 13:33:30 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: q9farj5pgcranurm5c37dh6szjw7ftm8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] skip redundant TLB sync IPIs
+To: Dave Hansen <dave.hansen@intel.com>, Lance Yang <lance.yang@linux.dev>,
+ akpm@linux-foundation.org
+Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, arnd@arndb.de,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
+ shy828301@gmail.com, riel@surriel.com, jannh@google.com,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251229145245.85452-1-lance.yang@linux.dev>
+ <f81b98e5-87c0-4c21-9a75-ad5f9b6af6aa@intel.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <f81b98e5-87c0-4c21-9a75-ad5f9b6af6aa@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 68302C0003
+X-Stat-Signature: 1yoed5rzokytkcztibydp9enfi6iaure
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8858A80003
-X-HE-Tag: 1767183684-24082
-X-HE-Meta: U2FsdGVkX1+fPLqe093xtSHHDDhfWJOKpY+cSPhcwaXl63cCNK6bNcmGT/vEZo4XgSbJT69mk52uWXIEK2Gc+FNgb1xhmEFYFpnHXEMcJiqVJdwrfPsajd8yB+k0EiVRHrxmBmZUqr9fpJqjvDLHzUdQJ7su2fGuC1Qb8YVkV5+skPMX3R/lPa0hhoNGWUSRSd7Tep2cYPTL7FlFbqwD/CbR2x+z0U2Pklw8i+pUaW2KqtJ+8AqXMy8uOBm/611eK7Bq4litON5frzDZOpoEE2WV1cSdeWfvhgGsAwT4fjCEJi60etlYw/kUqnl4pfesNyy2p4HYrZEpt4YxdmCfEJZvsR57exzW94pkFmOxhLkSIIHVwbBVL1yXYnwaYdqkB9LEZ/gAqi675uOGjFslZwt50j4MnRcCfn7RcTGm1ObAxrNrgy0JnJcxeQUvQerGbZQh3YkyrWurPEX3qs3DnbXeBhJj8NOGpy0cfm2Wt1Wuvj/0dTGfbcLFs8AS0igFNkeZGhZX8R46HDNSJetxHo4JOxZ8iEMDIEIqHwZKKW7lYR2z5oweHtKamKO9vHz7nBY3Ccu+cJxcL+G8NbZJj4z+GpOq9foZorCdzLmM7sIs90Quw33Co+WC/wK3yubQMpE8vstmsGr7Dm0X31+x1oCWY9U6t83gOya280Mq4b/o3IXezQBbkzN6Muc4YNsIOYxRTQKAa9BzTGBIOvcypvxvi5DTxDH8Bj7Eq423gePZcuS0dxfMjLmvz3gp/ZMUI2k0tfG/Nf9BHprrmXGdCRA/UksXeIhJJlmriAuZ0HwLI8BCANRmdrMSjX184x4jfsKv+zjTvPTxDeSIAssgv9vxLK4vfdtI/x+TUV4nYEShuJ2msFJ0GS9cdV1NYelIcgJQYzSDzTDSuJkTggslrBS9/RAXSvOlHBb2DonpItiCe41AYWzVb0giV491LEYuINFzvfo99dsuaC9tHPN
- 0tKbNCKU
- waAXS1LNyw7++Shzn+zWD4gTOW/r5bBP5E1DVeEXtMPkHxh96Tu0kjUdul/AKyAjgg4rptiqH485VVvwLtukQDDfQYfVI0CC6V7wl7ZCkT+j/ZpwYQ2PPkG+ZV71jhJyGVo1qSVio13UCNOC803TlCcS0awEVkFDJNk1DfsxRvGzTegJrML1aJvQzBG00KQCHUCkRriIisCzLHN6EgjlGARXybzV1VZQ+g9iQaGAHj2dkQ8H3gizNv3SoYCSD+TWKbrnDToeoBFWL4QqSa0fkUe7Y4MP1mQqQZ1NpF7guakGtHXZmKh/snpM7WKT1EMfQIOP18WsZZNmCZnWcxR7ECRTcOjG8kXlvZIrGm8sjtXEI1RkvsiDQy0dHW6nnw8YyA+hJzECB440o03dQW9R56eNhMOWEyIISQvlxdmxmG5zErQAKJt4gWJIGv4SVmAiP8VyizeQQveBtI3Gc58Q7sf/w37gtFe8E10OXik/CybIZlKppDQOTTTPS134a5kJktpv+iw1+Lrigc9icRug6MHvbVg==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767184420-988611
+X-HE-Meta: U2FsdGVkX1/z5+y8KoJLvGZyJ+QHwClQWvOI9xDEmcrFjv3pZ+y98m+nFRwsjjpKkVhe9CNRIQVb0n4sbSKsNxkdDzNYPi6IpRPRQAFdOQBurbLVBN/k8i9L5J4Yt8ArZimvDHug0YFBx3q70X9R1dFUfrjEDPvYc7iMimKZ+mjrtQXaXW8x+hSWJFoH4RFbBnVOY1vFuJmIbz+elPUXwuO8vhYHiQ9BYVsKp47PhXQQ/yXHkS4Z3gycT76H4igBL6aXoHXUJ6J/LTyCzGkYt0rlmtlfX0x2AWxNkdZflHUxc33Aj7Cqc7zN+W8V7X/ueGGXp/+rOgu1VJ1yeLqqC6x88LLgSjxvdk8/wnmT5bkp0RW4+hLv0Hie0NRQLnm+B0piUmOS+cxUIMtR6lgACIMdMAJ4LWgWhSay0Li4mL0Pn95Y4iW/0cXSN+oVaaLHGVIjZrYijvM0wRCAPpDoM3nwm/T12r/gAK99iZWF07KOUFLe6YkoBfWBFQC32DTMK43Jg2xchSdppXueCpscosJU4OECQZNc/FXxNp8EhjBow/gJnXL9/5N9BnbleBmvP8WNHsuP0JEOS4/XWDl6JR6uhhTc1fvi3TraPF8cOSyyBy3pS5OX60G4mfIgAzLlGZ1Jhyc8jLGSq/9CeGbW2uSm8sUs+Iizlu4yyFqTIDLJgfrR0LvVCjHIXxTtrJQhe20Jjy9T4t+4OVtEGmbk9EgvWOzS48pQQI8ShKFkvnwsIsC8qh1VaU7aYotxmqGuMr/b9meS3CR/7Y/++SSjoPhOStzSxFCIUoIeNXl3qr2F/mXNlKdoYjHKdetkyil0m7cxyiWKZFMESqLcnkma7mxdNFIS2U25sycWP5+qSrxArihctiwQ6QuiWM4jpcV5F8W13beO/8vXolhHNOMbpLrlZj8pgfadu/3NWU/c52MLkbfgKCRCnb1LnBHbrWPaW0RohyvyXmlAxlfF82e
+ /t3iXV/H
+ 64OZ/mVR3MWcDD9VDS7eQDpxm3fGhRVd37gdmF1fXEb8vtuR6yaFEfxdoyWzO3snFdypc3O30JjOe+CiMwyFAPGT8G2FoonQqSQ5OJXFETV46HJMqeWtSK5BDJjo2zOObMqKc8XYkyU9K0emBzm2dh3dzc/PiErcyUtfNXfNWaMo0Jy0YbIucq556ZRA8HDxNPVOke0hTJu9ezzU9TIVpXfieAwxJp4yisCqQbHA37eaawAZ6K/iBHIevMOMnzw38sRxCtl69DpVE+Pub5WBoTdI1Mg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,46 +102,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->It's a teeny issue but I do like the present code - be very explicit
->and careful about the types we're dealing with, don't rely on unobvious
->C rules.
+On 12/31/25 05:26, Dave Hansen wrote:
+> On 12/29/25 06:52, Lance Yang wrote:
+> ...
+>> This series introduces a way for architectures to indicate their TLB flush
+>> already provides full synchronization, allowing the redundant IPI to be
+>> skipped. For now, the optimization is implemented for x86 first and applied
+>> to all page table operations that free or unshare tables.
+> 
+> I really don't like all the complexity here. Even on x86, there are
+> three or more ways of deriving this. Having the pv_ops check the value
+> of another pv op is also a bit unsettling.
 
-Actually, the scenario here is that while printing a short, it is 
-**promoted** to int due to C's variadic argument promotion rules.
+Right. What I actually meant is that we simply have a property "bool 
+flush_tlb_multi_implies_ipi_broadcast" that we set only to true from the 
+initialization code.
 
-Yes, we must use %hd when the **semantic type** is short. However, 
-due to integer promotion, the value is already passed as a 4-byte int 
-on the stack. The %hd format specifier then casts it back to short 
-for display.
+Without comparing the pv_ops.
 
-Since the value is already promoted to int internally, using %d is 
-simpler and avoids the unnecessary cast. The checkpatch warning 
-confirms this:
+That should reduce the complexity quite a bit IMHO.
 
-```
-WARNING: Integer promotion: Using 'h' in '%hd' is unnecessary
-#461: FILE: mm/oom_kill.c:461:
-+	pr_warn("%s invoked oom-killer: gfp_mask=%#x(%pGg), order=%d, oom_score_adj=%hd\n",
-+		current->comm, oc->gfp_mask, &oc->gfp_mask, oc->order,
-+			current->signal->oom_score_adj);
+But maybe you have an even better way on how to indicate support, in a 
+very simple way.
 
+> 
+> That said, complexity can be worth it with sufficient demonstrated
+> gains. But:
+> 
+>> When unsharing hugetlb PMD page tables or collapsing pages in khugepaged,
+>> we send two IPIs: one for TLB invalidation, and another to synchronize
+>> with concurrent GUP-fast walkers.
+> 
+> Those aren't exactly hot paths. khugepaged is fundamentally rate
+> limited. I don't think unsharing hugetlb PMD page tables just is all
+> that common either.
 
-WARNING: Integer promotion: Using 'h' in '%hd' is unnecessary
-#961: FILE: mm/oom_kill.c:961:
-+	pr_err("%s: Killed process %d (%s) total-vm:%lukB, anon-rss:%lukB, file-rss:%lukB, shmem-rss:%lukB, UID:%u pgtables:%lukB oom_score_adj:%hd\n",
-+		message, task_pid_nr(victim), victim->comm, K(mm->total_vm),
-+		K(get_mm_counter(mm, MM_ANONPAGES)),
-+		K(get_mm_counter(mm, MM_FILEPAGES)),
-+		K(get_mm_counter(mm, MM_SHMEMPAGES)),
-+		from_kuid(&init_user_ns, task_uid(victim)),
-+		mm_pgtables_bytes(mm) >> 10, victim->signal->oom_score_adj);
-```
+Given that the added IPIs during unsharing broke Oracle DBs rather badly 
+[1], I think this is actually a case worth optimizing.
 
-Checkpatch flags the 'h' modifier as unnecessary for this reason, 
-and many other subsystems have moved to using %d for promoted types. 
-Hence, I think this patch aligns with kernel coding practices.
+I'd assume that the impact can be measured on a many-core/many-socket 
+system with an adjusted reproducer of [1]. The impact will not be as big 
+as what [1] fixed (we reduced the tlb_remove_table_sync_one() 
+invocations quite drastically).
 
-Best Rgards,
-Dipendra Khadka
+After all, tlb_remove_table_sync_one() sends an IPI to *all* CPUs in the 
+system, not just the ones in the MM CPU mask, which is rather bad on 
+systems with a lot of CPUs. Of course, this way we can only optimize on 
+systems that actually send IPIs during TLB flushes.
 
+For other systems, it will be more tricky to avoid these broadcast IPIs.
+
+(I have the faint recollection that the IPI broadcast through 
+tlb_remove_table_sync_one() is a problem when called from 
+__tlb_remove_table_one() on RT systems ...)
+
+[1] https://lkml.kernel.org/r/20251223214037.580860-1-david@kernel.org
+
+-- 
+Cheers
+
+David
 
