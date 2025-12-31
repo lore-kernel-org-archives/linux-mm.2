@@ -4,109 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28CC7EE57D1
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 02:15:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48319EE57D1
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 02:29:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 520516B0088; Tue, 30 Dec 2025 21:15:15 -0500 (EST)
+	id 798556B0088; Tue, 30 Dec 2025 21:29:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AD196B0089; Tue, 30 Dec 2025 21:15:15 -0500 (EST)
+	id 73BB46B0089; Tue, 30 Dec 2025 21:29:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E38C6B008A; Tue, 30 Dec 2025 21:15:15 -0500 (EST)
+	id 6522C6B008A; Tue, 30 Dec 2025 21:29:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D9096B0088
-	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:15:15 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B7A0CC1D27
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 02:15:14 +0000 (UTC)
-X-FDA: 84278148948.17.6DD9FE1
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1C8291C0004
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 02:15:12 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 501656B0088
+	for <linux-mm@kvack.org>; Tue, 30 Dec 2025 21:29:46 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9C4FB13AD34
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 02:29:45 +0000 (UTC)
+X-FDA: 84278185530.05.2FADFE1
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8E10A1C000A
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 02:29:43 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DEueX3N3;
-	spf=pass (imf20.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XWjmBNlf;
+	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767147313;
+	s=arc-20220608; t=1767148184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TjfTZhxsuFnytCHStJNb8M8EerX5fb1TydQlSsVH+Kc=;
-	b=HZMDNpndNs7HRsbMUSJkCzkMveKo3tZpzB7j+3+Z65ldQu/7STrMHtV0j9yi6t1GUNpyrm
-	1x8aHr1bWHoh+nbK2QFPmE247zH7VEyenVuGuUkiVoHiIRTwczV91O4h9D5FRHtnfYPTyF
-	KrfQ/dRxhoXutTXX67GL2vwnPuexFjo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767147313; a=rsa-sha256;
-	cv=none;
-	b=0n5mUd9w2/ZDVHpDSjxZns4YGCoSTEw1ZXCQlQm9b2NGbGgeHKKgGL3bvVsXF2yNy+O1ad
-	npjqY9l0mJ1sGZjksPBbXzVPgCFyny+icvGoX6n8UUwE47MjFp7V4NoOQiSDSedIJPw+mL
-	4afycd9nnV5hZyCyRmWHr73MEQFjBvI=
+	bh=37nD/3cQoIBI0/8IexFOw2YpceIM7p2wvl3IFIN7jQc=;
+	b=UAahzGD0yMwKhMS021nQR884weLn1YqtZYHGvMauVd1PsFWwEesB1sAyXFjnt+pTtsZARW
+	4HWFro2d6vOK2xCsk3l4cKaHA7ii9i3fjEjw5DDQi5BikhM4pSSY0f/2NTKvk6a0CatAk0
+	KJ5AmoXzM2D7okIs+61CBCPqHIHbID8=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DEueX3N3;
-	spf=pass (imf20.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-646b8d2431dso2024729d50.2
-        for <linux-mm@kvack.org>; Tue, 30 Dec 2025 18:15:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767147312; x=1767752112; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TjfTZhxsuFnytCHStJNb8M8EerX5fb1TydQlSsVH+Kc=;
-        b=DEueX3N3ba0EyDWh/L1wUvdehn1wQkdGsqkEMeT9WDjU3HxYCCbdTiAbHAC4kKTBVH
-         RLc5lCvaPu5mqjXVXBwZEsbKD7HEPNO+cg5AAoQ7Or6CPVjEOkQk4eeUoqmufRzGXM8E
-         XvAGcY5ReCMmaCjERqdS9QmVOyPIbP+ZBVBLSLPZCFVFA7mzAnfQG8FLw6lb1VQeIs3K
-         gTYdykLQwB2K9EAkr21vkX9TuRmpgTAu7veXWK/GPy6yMFW0c21T6G9oBFbLgacZjuCi
-         aQOQkJXct6UB+tJSM/aARlyxmHD8DtzipMpu9Nh9hBmONNQ6mA4r+tx2OjAVMBF8NqJa
-         GseQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767147312; x=1767752112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TjfTZhxsuFnytCHStJNb8M8EerX5fb1TydQlSsVH+Kc=;
-        b=qGTWgKuJliZDDdOzpIfMcJfMsbYiIQLwmX+6ffuCf32NjbeHdHtTcpH+kLzyaSK87j
-         abyqZ5+fwZGPQQnEzH+j+vYYrzahHpKFkryQDuiMpIDNStdyppOS9YSE5EBuTYQFuPOM
-         bsCqCEnIIuQHKwEs4XPgQsQI7zueI8bBSmm3Hhh6hWeROIrcw4/wsLmkR6r/k3ODRpPr
-         5FmWAnnzSRF3PBTY8S17uVWTaDvXKKofS2iBhtYFqCy+lqF9OijPEWlP7Pb/hvQ4+rBt
-         tMk7fyPj65fzEj06la5b0F8xJYpoZMSay4KUejnAQAWaUEFrHkEGFeAqWvfwwVhMNEJ2
-         fcPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXzcTsN0xsxLFiXnEtHJVtTJWg8rgsnmYDb2d6G4AjCRxg9cUtKmVmU00d6hkh4juMJ8B3+0DT+Lw==@kvack.org
-X-Gm-Message-State: AOJu0YwNbHdyt1pMVn/b8kcubm52gKswy0phjhEG/o/uI9rp6tacZ9mc
-	lSStN4VTugd4Mn1HMrv0NeR3K5u+EExVBOQDHilyP6e7VUNeX08n3trGqbs4aesW4DF7TQzwWTp
-	Nfrz2w8/vYHxAhLUw1xamZ3rkkf23itI=
-X-Gm-Gg: AY/fxX6Pj3kkRN0KhK7vI+dIMmaEfMTY1xygtlHxKT6Y1znQL3O8KSVo63BrZb4qsKm
-	AQEYYK/moGokw2tr1sc5lDXBGSHYC580OBnNvtNrYHDkc0C4l+XdA62B0/6eEy+l+t2MaEHYiv1
-	ojPCB00YjOJmLcs4AG9CoFoPGcoDyzS2/dtUjSvM+a1rLRbQwAlgQOCS0Stc963yIZHnSObUJsu
-	umUXgzeDSNHxXP06AjPf1WH2r6JhdytxUCw+RMQutqvimzcrbW8ouwLE3uJck2W6aZi1U4v
-X-Google-Smtp-Source: AGHT+IGL4DyIhhfeKJjVZUle8A3hNbfdiDShjwM2p95/bqd+VS+m5HW78WKGClsmtpLuHw6mEKZ5Sa5sxwI4ASCK3b8=
-X-Received: by 2002:a05:690e:1914:b0:645:5cf1:7685 with SMTP id
- 956f58d0204a3-6466a8c9570mr26677749d50.77.1767147311921; Tue, 30 Dec 2025
- 18:15:11 -0800 (PST)
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XWjmBNlf;
+	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767148184; a=rsa-sha256;
+	cv=none;
+	b=de6bKgKRR+LvO6fVenq7gUF+UJ++7dVNXkJvfPgWdqln1mHwwTn9L902Vfn8mwJUB5p1On
+	EER20wN8UnaujzLf2izEONjVe7Gv5Bmrnrg1YCzhw+4GlmfKo/ckGAN8bZY77kZ53t7ENV
+	CTJVoD7OQlwOOyWepZJ/mAkouJtqpIY=
+Message-ID: <af13561e-c512-4ab3-af5f-3b2057ac6667@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767148180;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=37nD/3cQoIBI0/8IexFOw2YpceIM7p2wvl3IFIN7jQc=;
+	b=XWjmBNlfSH4f7yYWlEW51gqh/6yRLbDw2YvyaNBHRcNpxz64Ud8N5126J65U7ERVSnQQfr
+	59jIGP68fKaJXi4HB2xgjLejyEflrzDJT8yqvo2Xzz5i73aE1om/wwQUGbnV2tYXPzjyTx
+	xbZc/lV026OlxMR2SGFTkWLyaXCHkQo=
+Date: Wed, 31 Dec 2025 10:29:29 +0800
 MIME-Version: 1.0
-References: <20251229145533.2437293-1-gutierrez.asier@huawei-partners.com> <20251229152250.78975-1-sj@kernel.org>
-In-Reply-To: <20251229152250.78975-1-sj@kernel.org>
-From: JaeJoon Jung <rgbi3307@gmail.com>
-Date: Wed, 31 Dec 2025 11:15:00 +0900
-X-Gm-Features: AQt7F2p3gYsDqr85ZYvuCiGLXjJute9alqoQns-Mc9ZwsH3742lbbwiyDQb2AQ0
-Message-ID: <CAHOvCC4FhpLrknhvWbDd=cxaLUyxHFkFxBDYSC3waeg4FC+TBg@mail.gmail.com>
-Subject: Re: [RFC PATCH v1] mm: improve call_controls_lock
-To: SeongJae Park <sj@kernel.org>
-Cc: Asier Gutierrez <gutierrez.asier@huawei-partners.com>, akpm@linux-foundation.org, 
-	damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	wangkefeng.wang@huawei.com, artem.kuzin@huawei.com, 
-	stepanov.anatoly@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ukp9rgk68fu8pjx9ic7bwmzhxo3f7w9y
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1C8291C0004
+Subject: Re: [PATCH v2 1/3] mm/tlb: allow architectures to skip redundant TLB
+ sync IPIs
+Content-Language: en-US
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ akpm@linux-foundation.org
+Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, arnd@arndb.de,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
+ shy828301@gmail.com, riel@surriel.com, jannh@google.com,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251229145245.85452-1-lance.yang@linux.dev>
+ <20251229145245.85452-2-lance.yang@linux.dev>
+ <725b85bf-ff5e-45d6-991e-d92598779f98@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <725b85bf-ff5e-45d6-991e-d92598779f98@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8E10A1C000A
+X-Stat-Signature: c7quj74eeitg3sgrhjbu59xdif3kfazb
 X-Rspam-User: 
-X-HE-Tag: 1767147312-21395
-X-HE-Meta: U2FsdGVkX184qPaqcDgcI0wp/IdkJ4nDXB65b90/iVl89KNhW3Bt2sk/Y8q4H50v7QoN2Z4iM0i4SNE750mDbblhdIHrifg4m8R12hYA1AsJmNcpLWav8T/Ne0B/50EKwNMqS9bqVAoXYLW3l1FNHUwTy86j54tktpK+EvUBoNVIIVcSnzE6CnNs0DnYDL7j9KHG8gn7qL3a7zWbNxNy990Ldf/mtUE92QLJwZLvDQuqW1lFQAZZiH/Slq/2gPMNXxxe2Wh8dt0bo4Q+olGwSjTnf1MzAmtWtPqE2Lg1SmfSnSQfHdWuctQq2kIi97SysRNFWyzjgCbbTNwq6y4Qj1mYLlLikY88ggqqoEIuk40f1aumOC8mHTkBmRhQCZ54wwVRCoRB51dhLyJ0TloAXmN5cwSe0LtACYuLAvBTBDf/pLSjsMMXyonCQ0DAUq9nCpGZoc7nwD6HZysvbyASCWIguw4nsJFi8Rqr0M8qQYwGMNF38SfuDqoXUpCziVNXGKUVBk39hYkev9B0egzjEHZC8DGc5+76eUXGNHWBelgF2CBPE5DS1NlWy2sRBfIE9XeQCioBYPuaIlY2SZQvdrXimS8SRCl8EM4MdMEzA3b9KyBK33W+BKMzkzJvuDFWzDZAobDsQU3HRY+wK5GM1VjtfRoc0pEiIAnLB5cKDVy7kwKsQF4WM2NKYxmYTgr9vmU/6f6grYLMsJt4m0ygyi9Mi6O3xJivPGqQZNH1PEXN0uSl4FGtOxEPP8iZnwUfNJ4jDx46Aj4kCeuiALPHp6dvf/liWnlHiAzpm1/da62QPAjcwSoUf5zi/wy9RGQ4y2M+UX8qM+8WN47XTRjFJjbZTphVO8b2gpUTBAiyWoAlvFGO+HfXbK76aFepDQYXISmwtPQCrs2b6Ng5AuYDA9Q05llz8lmoMT8LN5BXaiiF9XtIZB+QSJUsILC16rax642Es7e/3S7rSukIoBZ
- LtaUpf65
- f0BbeWSHcDqnnafNhe/x4Q62ixA==
+X-HE-Tag: 1767148183-632176
+X-HE-Meta: U2FsdGVkX1/MwsanGLPNGXt+R31bdq8lCqtN9KAZ7XYk4enxlBYfuLcbARpqbJyO1vVtNjFZXvizVP+I7RPUhiu8EYDx4GrGo6y9nJazsoXf0iF7QYdj3Q8TAHQ1XKpOjR1yDUvZgg+BPQ0PoidAbWX1+R2PjR3GdZyXDYzRcxB2pso1tCyEEzrZA+LXYU/lIsubY8q8W+85IfNhbyMqUzzLrGKLWX6uZn44sNB+Qv5jWikPJRobYbnMyq2MbZUOuZOt4yWBkBOuOrq7GcAFmFZ/T0mkFWIEaEc5Rl0qndV15N4sXmaAL4Jp0Nv79LPT5vsS0crXCuYesvXBA3W+z4MaACnCLtqEiJKzV6Xi9kUzH0M7NOre5wLEY0oBaSnCxWHCf1M7zUWZvXwrUgaWncDnnXcMjGoq+lc2HXf4BIXCbVpJs5jtneLj7Q1YTMULwpO7IZa1CPXuHfBeLehsGFDZBhB/MI+r6VPlxLRYo1To7wZ9yCEghheccZPt+o+yW1RU2vwDx5XFPcRB8oQ5PRPQ06O9qCT8GLF5NkIqluCqbph2sny7VAcYtlXUm+yD4CKNE3CMVd2HPxE1/je76M+hUTw9aCFHCxKg0vEwfsT2ZnmP/21kGFR7k0WlWJL5pZXlCNPhzj7+xYEgndDuzhPowNfH2SWg6X0eYp4NBXro+10eTQM9ESCFnsjbn9FSYvTrQ6JdnjHdA7RGNd6u07YQf0l7s7k03RTjVTVN8l0ntQcggoaLsaSrjuGWhcNUOXqmQRcIdd4UBErB8bgYDZyBxlgzzJJw8ouWS6heIUEK8AdojvI2mNuCfIMBWr0WPq2ia+w8+UdHGFxfmrSOvHC96OkLVVPYL7WPXGw43Q/zy9RFu1WYVitNRAJlXBdrRlv17e2sUd6ml4C5ZqxpJXfs8KPgjD6mSmA1tBaYejGAtxmhjWHShaT0vHpxc9u7238NmPLIdjXgHTQS6WT
+ M9lVrtYj
+ vdeSSccm6IwckKoZBrqBC0EtsvSaHlCzZ+DJTCtx3gBtDcSdr5LNARf11Ud1c+v+mTJ+zhy6NElRflLky3SuXRRlx85dD+xBzNRouPpgisfeENNGma5jNRQEprc0b3ynrjfpHKiWli2gQEWt3EZux10QSfBT1TArJXoriQHXPsFl/inHHrwmRq9LT/kxdLuSBx7HhZtlCRi6kr1nmEq/U+GM57MTx5JMsUu13
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,93 +100,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 30 Dec 2025 at 00:23, SeongJae Park <sj@kernel.org> wrote:
->
-> Hello Asier,
->
->
-> Thank you for sending this patch!
->
-> On Mon, 29 Dec 2025 14:55:32 +0000 Asier Gutierrez <gutierrez.asier@huawei-partners.com> wrote:
->
-> > This is a minor patch set for a call_controls_lock synchronization improvement.
->
-> Please break description lines to not exceed 75 characters per line.
->
-> >
-> > Spinlocks are faster than mutexes, even when the mutex takes the fast
-> > path. Hence, this patch replaces the mutex call_controls_lock with a spinlock.
->
-> But call_controls_lock is not being used on performance critical part.
-> Actually, most of DAMON code is not performance critical.  I really appreciate
-> your patch, but I have to say I don't think this change is really needed now.
-> Please let me know if I'm missing something.
 
-Paradoxically, when it comes to locking, spin_lock is better than
-mutex_lock
-because "most of DAMON code is not performance critical."
 
-DAMON code only accesses the ctx belonging to kdamond itself. For
-example:
-kdamond.0 --> ctx.0
-kdamond.1 --> ctx.1
-kdamond.2 --> ctx.2
-kdamond.# --> ctx.#
+On 2025/12/31 04:31, David Hildenbrand (Red Hat) wrote:
+> On 12/29/25 15:52, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> When unsharing hugetlb PMD page tables, we currently send two IPIs: one
+>> for TLB invalidation, and another to synchronize with concurrent GUP-fast
+>> walkers.
+>>
+>> However, if the TLB flush already reaches all CPUs, the second IPI is
+>> redundant. GUP-fast runs with IRQs disabled, so when the TLB flush IPI
+>> completes, any concurrent GUP-fast must have finished.
+>>
+>> Add tlb_table_flush_implies_ipi_broadcast() to let architectures indicate
+>> their TLB flush provides full synchronization, enabling the redundant IPI
+>> to be skipped.
+>>
+>> Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>>   include/asm-generic/tlb.h | 14 ++++++++++++++
+>>   1 file changed, 14 insertions(+)
+>>
+>> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+>> index 4d679d2a206b..e8d99b5e831f 100644
+>> --- a/include/asm-generic/tlb.h
+>> +++ b/include/asm-generic/tlb.h
+>> @@ -261,6 +261,20 @@ static inline void 
+>> tlb_remove_table_sync_one(void) { }
+>>   #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+>> +/*
+>> + * Architectures can override if their TLB flush already broadcasts 
+>> IPIs to all
+>> + * CPUs when freeing or unsharing page tables.
+>> + *
+>> + * Return true only when the flush guarantees:
+>> + * - IPIs reach all CPUs with potentially stale paging-structure 
+>> cache entries
+>> + * - Synchronization with IRQ-disabled code like GUP-fast
+>> + */
+>> +#ifndef tlb_table_flush_implies_ipi_broadcast
+>> +static inline bool tlb_table_flush_implies_ipi_broadcast(void)
+>> +{
+>> +    return false;
+>> +}
+>> +#endif
+>>   #ifndef CONFIG_MMU_GATHER_NO_GATHER
+>>   /*
+> 
+> 
+> This should likely get squashed into patch #3. Patch #1 itself does not 
+> add a lot of value to be had separately.
+> 
+> So best to squash both and have them as #1, to then implement it in #2 
+> for x86.
 
-There is no cross-approach as shown below:
-kdamond.0 --> ctx.1
-kdamond.1 --> ctx.2
-kdamond.2 --> ctx.0
+Sounds good, will do! Squashing #1 and #3 together, keeping the x86
+implementation as #2 ;)
 
-Only the data belonging to kdamond needs to be resolved for concurrent access.
-most DAMON code needs to lock/unlock briefly when add/del linked
-lists,
-so spin_lock is effective.  If you handle it with a mutex, it becomes
-more
-complicated because the rescheduling occurs as a context switch occurs
-inside the kernel.  Moreover, since the call_controls_lock that is
-currently
-being raised as a problem only occurs in two places, the kdamon_call()
-loop
-and the damon_call() function, it is effective to handle it with a
-spin_lock
-as shown below.
-
-@@ -1502,14 +1501,15 @@ int damon_call(struct damon_ctx *ctx, struct
-damon_call_control *control)
-        control->canceled = false;
-        INIT_LIST_HEAD(&control->list);
-
--       mutex_lock(&ctx->call_controls_lock);
-+       spin_lock(&ctx->call_controls_lock);
-+       /* damon_is_running */
-        if (ctx->kdamond) {
-                list_add_tail(&control->list, &ctx->call_controls);
-        } else {
--               mutex_unlock(&ctx->call_controls_lock);
-+               spin_unlock(&ctx->call_controls_lock);
-                return -EINVAL;
-        }
--       mutex_unlock(&ctx->call_controls_lock);
-+       spin_unlock(&ctx->call_controls_lock);
-
-        if (control->repeat)
-                return 0;
-
->
-> >
-> > Initial benchmarking shows the following results
-> >
-> >
-> > # bpftrace -e 'kprobe:kdamond_call { @start[tid] = nsecs; }
->
-> Commit log shouldn't start with '#'.  Please consider indenting the above
-> command and below outputs of it.
->
->
-> Thanks,
-> SJ
->
-> [...]
->
+Cheers,
+Lance
 
