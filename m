@@ -4,115 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F4A6EE6428
-	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 15:53:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1779AEE6428
+	for <linux-mm@archiver.kernel.org>; Wed, 31 Dec 2025 16:08:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 694446B0088; Wed, 31 Dec 2025 10:53:10 -0500 (EST)
+	id 392326B0088; Wed, 31 Dec 2025 11:08:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 641C36B0089; Wed, 31 Dec 2025 10:53:10 -0500 (EST)
+	id 360696B0089; Wed, 31 Dec 2025 11:08:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 524186B008A; Wed, 31 Dec 2025 10:53:10 -0500 (EST)
+	id 262FE6B008A; Wed, 31 Dec 2025 11:08:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 428D36B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 10:53:10 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E71D48BDE9
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 15:53:09 +0000 (UTC)
-X-FDA: 84280210098.22.4E5522D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 281554000E
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 15:53:07 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VxDab8BY;
-	spf=pass (imf04.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 15CA66B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 11:08:04 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 97D5FBA242
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 16:08:03 +0000 (UTC)
+X-FDA: 84280247646.15.10535AB
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 092C8C0008
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 16:08:00 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=DDJplSYz;
+	spf=pass (imf10.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767197281; a=rsa-sha256;
+	cv=none;
+	b=SfIlj8Wg4y1uUasng5dsLXaJAJIWVojo/LIbrgZYZBAfVaLTsBHaHAGxOX+yXyQj78p+Q3
+	JvjWv8oMk+saHPotueFagWyhm2vOs2EmDzXzgU7kQCRl3dIKDDRVz3QmvJD1P+tx78jcSj
+	ZmlMw3spueMOPZBoV1wbIKliL2QdZms=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=DDJplSYz;
+	spf=pass (imf10.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767196388;
+	s=arc-20220608; t=1767197281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VCjFp+pDGdRxDrsKK6M4AzYjr8nKeM2d1aD4T1BGjPU=;
-	b=161bJFoyxXeTk1MvO34PNz0V/uVAOV1jb7TBG4H1URAcZg1l9agTPfa56eMcn7LLl4WUqA
-	upl3lEFX5vHL+iBf06K9YeBMnBBV9SSJw5qSfeWTj3fnDa1HNHsFtsmp5gFbN3iPGh69ws
-	XYabVZKhfd1Dcz0l26O3LMZBclsk9o4=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VxDab8BY;
-	spf=pass (imf04.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767196388; a=rsa-sha256;
-	cv=none;
-	b=GaRpYPivfBSJBHW58EtltRIZx3DSW3VIPT588FtfeMyrqRPB0OiZJqI9NRTt7MRo9XyF1k
-	OS+zn/Q92fosaSwTNfVoSVvQ2zup78f9RZ3pHRncoOLPS4skX/4/90TX/TVuuQZWYPWsrz
-	xzA8ig9DibqEMo2Ch9tN+cH9u0YWxVw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CA2EF405A3;
-	Wed, 31 Dec 2025 15:53:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1961DC113D0;
-	Wed, 31 Dec 2025 15:53:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767196386;
-	bh=WuZtOdVS5pt77HE6C/4UqSC04WxBcGthdWDuudQRYgg=;
+	bh=HWouBMiF1EMh2+jI6GLE3S/Gvu5KjkPQi5L7cekMJZg=;
+	b=CEUbxs4EjtRPhfEtA2QwM9ziPH88pJWc1vP4Yx+UHG8o0aLF3CyIyFESmBd5PxJFrlQk5T
+	QUyB5UaSysCK05ck1NzzRIpL+3gnnpTip6z9a+apj3fsHAdvSZg+1vcBMgBjylBRKq6OjA
+	NPLPEH55XtDb1fFl8Pmc7LYrDSfyt6k=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DBD4040E0281;
+	Wed, 31 Dec 2025 16:07:56 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id IljZNyQjQjEF; Wed, 31 Dec 2025 16:07:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1767197270; bh=HWouBMiF1EMh2+jI6GLE3S/Gvu5KjkPQi5L7cekMJZg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VxDab8BYNIAerqtNV5zwvbjoskp/SPlehgZo8EmzUsqwfpTjb+PHLvjB3/Qja0h31
-	 UULkJOtXQH1SfmAb7vyAh6oIHb0OjR053QxyQL9jp1E2EPXisgst2fDkb6Pwm1biyT
-	 VWmvvozz2gG6CzWs1cAr3cftru801On2WHgnh2PLITLRtRFg3votB3ExybxAyD/TCc
-	 E9pfkXScaZOYlT/k3gRfSRJG9ofOzMXgcL5MwRQUb7FcyRsFHUs49yU5OMxzP78nXN
-	 a9Vs6QnYfGFU1BHGsY59xWhfGdN5QneBF7NTvxT2/ddwqD5zYUeX9DP8WxIh0e0M9/
-	 Gody5xZN6Kx0w==
-Date: Wed, 31 Dec 2025 16:53:03 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Waiman Long <llong@redhat.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
-	cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 19/33] cpuset: Propagate cpuset isolation update to
- timers through housekeeping
-Message-ID: <aVVG3-NBYIhJmVsk@localhost.localdomain>
-References: <20251224134520.33231-1-frederic@kernel.org>
- <20251224134520.33231-20-frederic@kernel.org>
- <a8262eaf-169d-415d-949e-70f1a17b1e38@redhat.com>
+	b=DDJplSYzrglhEEbmZ0mRfZaOt3zwvpzuTwYLPVsof6rsoCbpVLSC96nBSs6sJZ53F
+	 r4KdoaeGF4/+LewLHoiieG87nkutk8JbgcIJYbdXTwTkXTyFvfxZXuGIleyn9sZcc9
+	 BcAs8YbvqWAggpP2XlY7M5l+gQpaX06Ltgg6LIIgvK+aPyjsUBKvkd+7SqenAP5IPW
+	 AJWKodYRTVpNPr6bHQ4n75QwNuePw8LzroHCs9KLIWkz67rNuJ1hjGkYC46/VSNutn
+	 ZEOBz90ZJbzZIQaiOhPx8p7xfOJUPgeNC8mnv0mXpV4MhUbC8ObjRd7t5iRvOFhRRa
+	 ftxIcIDJYrLyaxkZ97E962kB6unDyW3gd9M7b6WyEnmDyF4//KX7HY6iTS0et3P+F3
+	 MrxHpd42tAcWAnv7ERLij6+t52a3vzHiCjCgOMAFtHI0kmHp+2slxNsQPhjlzk7jqM
+	 uvRewEESpB50jqP0hNOQ6Eh5u0UC+A45J6ciabtIvac6Y+68ksTzztgD5VJW28BOtp
+	 89JbFQNRqBGCR2xNJz0DbYOav2IS0By8QBHilsLBzyo1mqrXsaLG41S9IrlB6I9o1h
+	 xoSOWpgt36LbBIzAzRaVtQRday/5HW2zr2ygP2DaEHZL6BBd5KiUTYbKvtj5a2HTj5
+	 GWhUmofThhIi+lD1MA4yZEy4=
+Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id E824240E01AD;
+	Wed, 31 Dec 2025 16:07:13 +0000 (UTC)
+Date: Wed, 31 Dec 2025 17:07:05 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: shiju.jose@huawei.com, rafael@kernel.org, akpm@linux-foundation.org,
+	rppt@kernel.org, dferguson@amperecomputing.com,
+	linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, tony.luck@intel.com,
+	lenb@kernel.org, leo.duran@amd.com, Yazen.Ghannam@amd.com,
+	mchehab@kernel.org, linuxarm@huawei.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+	duenwen@google.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, wbs@os.amperecomputing.com,
+	nifan.cxl@gmail.com, tanxiaofei@huawei.com,
+	prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
+	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
+Subject: Re: [PATCH v13 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
+ table
+Message-ID: <20251231160705.GAaVVKKfj5o-s7xLv6@fat_crate.local>
+References: <20251121182825.237-1-shiju.jose@huawei.com>
+ <20251121182825.237-2-shiju.jose@huawei.com>
+ <20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local>
+ <20251208162924.00004a38@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a8262eaf-169d-415d-949e-70f1a17b1e38@redhat.com>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: we9c6o3kp3gfoo9udqtpkq8mj1xc8auc
+In-Reply-To: <20251208162924.00004a38@huawei.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 281554000E
-X-HE-Tag: 1767196387-526123
-X-HE-Meta: U2FsdGVkX1+CLPHI97RPNHjs9q/knHj4SgrS5nIyUFz9KBQ7s7bazn11b9028DDeDfGhmXNOoHzbnWNwLsqJEbhBmhuUY6VkuxyTN/r/wl1mSbojgd4AxxEWMmAH8EOgfBGRafTMpEKGgTglBxXOvNe/ofxAlbB99wMGmY65N8wJwR3tGq1U4GjSYKJbB6VJOGSAlFHINiTvjuIsMr4mdhmhfK7x6japqXVymnP+ngqxfOjKWDbSoQIf/XZHjY9VrsGOk4rg71ur2tFBX26xxf9VyG7X87i5sY2uEu8YAqIsBx6NBhAwtAg2aau0SI4q7/ejwesC1AUWkUfFz2kSlH7SnTYQqBaE+bC5SnRwMwvWUPf+GwhpOywYBoe1heUCxER3o/8EFs1DMm1873G4888KvdTZxasXe8d+skQpUl8k2OYNM45Nco12ee9x8TtYeN0Es+24rLjoSQTmA93etOziJ/poTQlB9dlL4D8Pxg34NKpwbZrSpsUA+q7ebKNQJHUBVlTbNtbM+3B4jqDKd+6mzaSrQtRZAUwr0Kogilz4vM2m6/1mrZyVEq34YKFWDZyDIVoNk+54+ZW2UnafFybHVQhCnIZF0TOwMFXKa+dnX29U7BRS+rmSPO4UMNW83DNWh7Y53kPft1L8JXKrmtiz946Tmu3Z3c8rhBoI24wHzqGI4bCBgG4eEEttZgGT6iTNiI+20voD7h/ByvK5fGtEV+19o+VcBKBWxzfSYRcvdyYRxLEO5U4Xlh9KKL5GS+e44NNTAhAKCFbA2yUgVAuv+z1iGfGDRS66dbvbNCBbDwyN1qFOi8kQYweK5fLqoqhOAXvjELmxCTd1yQr/A8JNSajOMR0xYeTkJRW/L5Wgg2qEwMqYhwM7gvvR7VlzKjObj+lDY12W9hoZd78h1i3IUcIa/VmWtwdCWRWfq4x9LjZjLy+RJhZuqgpMTbKg5C5ECaJeoVoQZYpApxw
- FbOCzM9E
- ZjomcBeqDTMabDlpImQNKN79pig90JiRaRzhsTYFZ/uQmSZqJNgVxam5Jeu5fsfZxblfckYll+eHvBdhx6RpnF0n1gIxRQHYlXO9BTVkHAmquXBv/RynCLi8+bxh9aisOy/yebqBcxH3rYkoHl43ghOn8RuTGSPatSEVF+WhTNf0TjsKcryboLyJk+0eGmA+4CO6S7Mcxmp/p3DYdjySKPd7w1Sbmoq2NlLDs70F2pBfgOrMr1rVffSQqjBmVpbbqbjXaeFNlNR/wwGg=
+X-Rspamd-Queue-Id: 092C8C0008
+X-Rspamd-Server: rspam04
+X-Stat-Signature: hqejs8m8nrdd8c181495rqaf75ij757q
+X-HE-Tag: 1767197280-106039
+X-HE-Meta: U2FsdGVkX1+Ypt7ZGsi1q/UxlV+B5RiYm3xt8iAPiYtWXIVqBajtsJx3GC6v77yAXm9W13KO7rIEMEJl1PiaoU1QVbrTh5tA0jnnrblnlLkdJIDUVUXq6AR9iJF9ABdPk6gfSgwU8DNz1/x4eGSkiR715a26kYIp/MMeJzptl/8xZBooZCyLLCqTMrXAzt1eoVDqTJosV2vTCrgssSt1aUeYhM0kkTLlZ6A4MdHsfDD3egwyadoeXPSWyWetGumLFUVNZ7fhDMLsMb315EgBnANO30v9tQOXjq2+gFyEwUJgZxQaSdeL/Eb+tdXOs9fP3e+y/6EUJbALXMb88g5111BFaiQoNRUUVao1oXxNXoNBBIOb2++VcRujQ5wy/Uosrtf2rh7RSGcWOqkyvRcdRxXRlUtQ0DsUm8BH9Z0hSPIPpsiZuOx+ECdP3X39tatTubayDiOjbaf1l8yhlr7hw8RxIabq9muMWP57Xnam7EQt4bwJBYN+U/h+k5mphEXtYGNhRIcMetRMcUsim1hVxluphztnEjvwijiiCAedWvzbJ5W24I3iRfuLtMGGpxKa3Iu3U+tF1fv8lr09O+iGM8/vaxKsewizD9qN9m3PP0Cs/hWIUEkMulkq/4ntp3U4p8ApGYMDsaauDOmDmJODwcfOBHMhwnR5mDXCmZ+nvDKU3NLRQXtFpH39lTqDbiSyZXrW/XOFJYSX2Nge8EK09oF0A+ZNxx0TW2mTnMtgwVWeRGKMIth/frRS//rDCeUosoZIjTs9cUB4cjVcL8Ta2SDY0gYc4+KgtMBYxm6h3IQ4wtedTPUp+ImD1Q1mNs1Ot5L8Ku2bs2tydn0zlFEAkk78rd7212Vdz+lIDwYPioSXpyveXZDpTmuOCy/S0MFkktFNTYRamsPbvW8M5Qs2qLY/tHKU76/G3Hfz6j5TkkxpBID0p9keE/seKg2qgdjV98ny2Kgc3dyykzr3Kas
+ 7+2/5MZP
+ 0UDJvAHOxVbh3zL2SZopxfgAkmOCJzcI1NuLOFz+dBQF/WUw/gpiVqORsoWK4rl3tEk+zI1euoY63HYoMLu54cx9lX+z5YHlQHHr+bFfBcOm5SMFGq5ITCd3dOZcMp4zv+L+4+MPImSZu4SJ2Y0Ms67JuGd1/cXMv46DfF/Aai87hZhvmeqfcUDoP1mAU95/nbXDcnskv0XUG0OxvwhaaIPAwzOMKrUwyelqoRWbAQUYa/OdwBfhYlbXP5WWHfX4Nuw3LeUfZQ4013juYt4MQxooLIEIriiXpblCARKdunuf2ESk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,62 +119,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Fri, Dec 26, 2025 at 03:40:25PM -0500, Waiman Long a écrit :
-> On 12/24/25 8:45 AM, Frederic Weisbecker wrote:
-> > Until now, cpuset would propagate isolated partition changes to
-> > timer migration so that unbound timers don't get migrated to isolated
-> > CPUs.
-> > 
-> > Since housekeeping now centralizes, synchronize and propagates isolation
-> > cpumask changes, perform the work from that subsystem for consolidation
-> > and consistency purposes.
-> > 
-> > Signed-off-by: Frederic Weisbecker<frederic@kernel.org>
-> > ---
-> >   kernel/cgroup/cpuset.c   | 3 ---
-> >   kernel/sched/isolation.c | 5 +++++
-> >   2 files changed, 5 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-> > index a492d23dd622..25ac6c98113c 100644
-> > --- a/kernel/cgroup/cpuset.c
-> > +++ b/kernel/cgroup/cpuset.c
-> > @@ -1487,9 +1487,6 @@ static void update_isolation_cpumasks(void)
-> >   	ret = housekeeping_update(isolated_cpus, HK_TYPE_DOMAIN);
-> >   	WARN_ON_ONCE(ret < 0);
-> > -	ret = tmigr_isolated_exclude_cpumask(isolated_cpus);
-> > -	WARN_ON_ONCE(ret < 0);
-> > -
-> >   	isolated_cpus_updating = false;
-> >   }
-> > diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-> > index d224bca299ed..84a257d05918 100644
-> > --- a/kernel/sched/isolation.c
-> > +++ b/kernel/sched/isolation.c
-> > @@ -150,7 +150,12 @@ int housekeeping_update(struct cpumask *isol_mask, enum hk_type type)
-> >   	pci_probe_flush_workqueue();
-> >   	mem_cgroup_flush_workqueue();
-> >   	vmstat_flush_workqueue();
-> > +
-> >   	err = workqueue_unbound_housekeeping_update(housekeeping_cpumask(type));
-> > +	WARN_ON_ONCE(err < 0);
-> > +
-> > +	err = tmigr_isolated_exclude_cpumask(isol_mask);
-> > +	WARN_ON_ONCE(err < 0);
-> >   	kfree(old);
-> 
-> If you are doing "WARN_ON_ONCE() in housekeeping_update(), you don't need to
-> do it in update_isolation_cpumask() to avoid double warnings. Actually, you
-> don't need to return an error code from housekeeping_update() at all.
-> 
-> Cheers, Longman
+On Mon, Dec 08, 2025 at 04:29:24PM +0000, Jonathan Cameron wrote:
+> No to this suggestion.  Doing so breaks the rules that Linus has laid
+> out for use of __free. Constructor and destructor must be next to each
+> other. See guidance in cleanup.h.
 
-Ok, I'm keeping the error return for allocation failures at the beginning of
-housekeeping_update() but the rest will only warn in place.
+/me goes and reads...
 
-Thanks.
+Ah, ok, makes sense.
+
+Thanks for pointing it out.
 
 -- 
-Frederic Weisbecker
-SUSE Labs
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
