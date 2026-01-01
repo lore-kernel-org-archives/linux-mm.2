@@ -4,65 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38DF5EEEC1C
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:17:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83272EEB57B
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:17:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EA796B00B7; Thu,  1 Jan 2026 17:17:00 -0500 (EST)
+	id EA2896B00B9; Thu,  1 Jan 2026 17:17:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B5816B00B9; Thu,  1 Jan 2026 17:17:00 -0500 (EST)
+	id E80ED6B00BB; Thu,  1 Jan 2026 17:17:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A4506B00BA; Thu,  1 Jan 2026 17:17:00 -0500 (EST)
+	id D86D56B00BC; Thu,  1 Jan 2026 17:17:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B6976B00B7
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:17:00 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3CA289106E
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:17:00 +0000 (UTC)
-X-FDA: 84284806200.04.F3AE283
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D78D6C0004
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:16:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C2srymam;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767305818; a=rsa-sha256;
-	cv=none;
-	b=LZrP4mtOiPHYP84WYdyb1Wil/5R8jLJPt7Tb1TLP1YAsw8Vmf8FGPbhctb0L3/EdKG8tyD
-	rUS00ikkxKE70WpARkGEJ6tSmkbNx55Elkk4XoLtW6Th4k4+kgiIrdBDx5er2T9k2c5Qr0
-	8AXc/+OEMe7WNUAmOmR0bkYnzvVABL4=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C2srymam;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C5B8B6B00B9
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:17:08 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 93AA113CC21
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:17:08 +0000 (UTC)
+X-FDA: 84284806536.06.F9B9223
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D75081C0003
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:17:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZJLuCa3i;
+	spf=pass (imf20.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767305818;
+	s=arc-20220608; t=1767305827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=deF+JrfXKJMQQONv/Z/SCp87iSCloLUAUVLjyUPPk0E=;
-	b=jkpoQqufs15SC8zMfErHYHmS8phWUd4XTJ/sMUCo7sEFIdFWqYDOwAfHRucx1tUVWm2LbR
-	OohKxpUqblI/yRw2f7Kz/2+pHifuT9+qiwsuny7POYjhz9hFdw1FzUtCyjjiypT1PpmBCw
-	ZQJPe2bADExg16CHQp4eO64qGuW17mw=
+	bh=g/1G4+sZ3iljLQtCbrDC0cE7D38NTHdeMPyplnQEilI=;
+	b=I/xg7MEFyvqe2Pno/UJJWfuc10OusjpjXz1/NOL+fJa5LQxthexvehpG/duN+5CFfvuY//
+	DdoH3sCG3yyiysO6y92WjTIPJAfW8Ygx0ccYLVBRrbN97gFDiOFuD7k0ZdlA+nDBRS7kfR
+	iggjOYgAwCcX919uBDNbLhuKbWJ54bY=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZJLuCa3i;
+	spf=pass (imf20.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767305827; a=rsa-sha256;
+	cv=none;
+	b=HZW9WpJs+fsc3L9BKkOmEDiEhsx3m77aHJO9zRabKcFt5QzpkObq69wP5olmg8hIsfBe6W
+	i3ppczyQLKiSX47m3KxJNmYPlj/e6N7U+oJm68sFU1KWvi8/U+yl1F7gaWdbFVw0u07RQy
+	1MNK789E2qQ1w/rIFlIv/TAceStdN9k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 703EB600B0;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1F7CB40AF4;
+	Thu,  1 Jan 2026 22:17:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9211BC4CEF7;
 	Thu,  1 Jan 2026 22:16:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B19C4CEF7;
-	Thu,  1 Jan 2026 22:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767305818;
-	bh=xcMcLXp9lSxfZhVrsREHiMXj3hvNw6ylCQ2N03wRKM0=;
+	s=k20201202; t=1767305826;
+	bh=MZh/70k9lOhqSg5WVM7HlPDgI+aR1XcYP1gqEcla7CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2srymamUA0MXxivD0ZeKbuJECZYnpJecM0twnYUVIw4QXxFyrb6VkzOgcYkmHia7
-	 +DnWEgfnwas3kVZuLf9KnTKlIMAuWVsPt4pwS9udwPhgI+qL1DxK7Sod9D8m263NIa
-	 W7qFbUW/tCcxsOubXiycdmSVDZ9lABvy+cWUVjffImRmPd4OCVaeJltguOh1R2iLNZ
-	 JtcehsjD6GO3wNqGufbqTqFGlp6vOWIx4t10NRQc+URkLgOMwMUo+VgTIAgOoZRK6F
-	 RExsJ3KheHEyeLBvwtNieJ9/RZAvnTRNxtfaiadl5mYG2GYxsztP4x+qItJkx55huk
-	 8+pERh53gsTmQ==
+	b=ZJLuCa3iG6Sm7iktwt0+ApaoTltF7T5PkNGYT+0FP+cENPGotvk+AtxV9gYfGxoRh
+	 FYbq6OQBiHVnSQG5nNAU0YiaAfhwF5/3MnrpsYLCnxojpjheLBAiqwStH81QUYHdxU
+	 QpWa/jJVwJAJswYmswDQWTt2J83Doun9lTzIbCxG8voxdXKjRZqTSyWamEjR/gAGoX
+	 APgwNFXFMvnndf4ZCm/g3oTfWdIkJ1NSL9gGsqGDP0ElfG70njnTdR88WFR1+jKsPv
+	 73vkg+OOaDpu4dw9cDanjVgYrwdaQjwrdcCXTitveYJo3cHiOsWXE4POuBaBb5mXgm
+	 rWMcFaLv1toEw==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -102,20 +103,23 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 20/33] timers/migration: Remove superfluous cpuset isolation test
-Date: Thu,  1 Jan 2026 23:13:45 +0100
-Message-ID: <20260101221359.22298-21-frederic@kernel.org>
+Subject: [PATCH 21/33] cpuset: Remove cpuset_cpu_is_isolated()
+Date: Thu,  1 Jan 2026 23:13:46 +0100
+Message-ID: <20260101221359.22298-22-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260101221359.22298-1-frederic@kernel.org>
 References: <20260101221359.22298-1-frederic@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ydfrzoo7dtqonneen56qeyqw6cniosh5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D78D6C0004
-X-Rspamd-Server: rspam10
-X-Stat-Signature: b7uhgtac6w6r9wsxr7rmb17riseu3zgm
-X-HE-Tag: 1767305818-199428
-X-HE-Meta: U2FsdGVkX1/By9nXl0gIDTv30SqKX1CB7Oq+6tct3qd5Ir04dAu/1aKHXnDJCDa3qwW1CqWv2f/oxjgmcvNxqdsC8OmN6fDuH/Yd5YvOic4axl6DnTiWC+0MxJMtMVJnZkzRZ3SI5NOPVtiiPdjMxGY2ZzbGbymSyf42UKlESySMTck03zAgbB294Y7nZesHZ+f620tjVoX1B1KF7kJgJeHgH8hLVcbWSFiOGhgfaW/5Nc8P+9lFnTp2YRnI2t5ixLx4Spu+Xrs8Rom/0vF4JjvWpLxrn11haEOV7Fa0XkACB6JwC5ey0c/rMzEUMFIn4u117BCIj4+Xw7BqlR3KSNNVrkKSkgCV/WWWafzicr2Ta8nYafRCE/VYBklp4PgXIQufmlVY7Zx3PoLNP4OBZob43H0AvBUhMpv2dsf+ulnhThhJLNOvONMYwneWs02kmaMH2DD71X99ycGmtGxyMGizq3YBJWepADIEujPHNqL/VGwvEPVrKfYAT4d5hi7W0fYaQsrvH/bCzi6V6dy6ZBv3tx8ayKCkh12zmjGEKAaDGFncL6CUxeaZjlj6uU6GFUAv2IUG1C8Pgasx9AMkHc4cGQZNFDQeeIqedbwlolp9jsPQiG8W609VCAF2qPoQE4PqPpJ6khPt9RNC1RceEcOXviIwpuYBLMeKJsP3EgdDXQFSLBoZKD0HVBdvH8cnwW1kY9F50IF5HrYvUMcj0R4N1JlaniuwS+Ma6LK2chfGzcDbQ6COsWGPAYsMX3PYy5CGimaki8h8qnT/xY2xSKRgoP0oa34PFLQGz2nKNVnP3qCEyjpttnQBNhvlzRyqqoUgWCQ4u7YnG0sfeO1qpI3+DTzGv899JyERXQLvHtoRWNFB+79hggjxGGzOD+DZrIzJmxXrAPlbfX0WjVROZQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D75081C0003
+X-HE-Tag: 1767305826-731642
+X-HE-Meta: U2FsdGVkX1+xqU27dIjM6pbB/Gm3GZSbyNXpFtQr1d2eGEmgqrM9eZhWUlch9zQYWLrl5dC4zrDLAZ8P+qnBz4RCgl+yfFqyDSt7q/0DEl7daes/cEy4jOotvCY2UgUu5voRvAebOC1kIQJHKsX2fsQbreWZgr3dYWdaBuwt5CuVM6BYNTVllnwinY+5jzk6HEuXWbtWJIIcOK8n5Ci9/jpdbYh8bzfWBrBB6KpqN0+sqHDPIpkD74PzHH+vDudTRpXPXhvi1bfzKdCLkDuc2lC3hrliNUAWPfJT0EB0sdSu4+XRwoc1zO1CthCzdcjfoweAttGT1tl9az6HWPMI35NufUTklcG0uVgrNQ/m568May7Ri8KYzAHY2wuSoTXIv+GOeMtrFZ4tDrGxGDvBAoUHOZlOI3C3TU7g2fKEqV6W8KQ1Eoly6uCUKm3fGB5sTEb+TMTY9UGeIx4yioX2dsaCrq8CWbqW4nl31N82IaLCImdgUtZX0buPkNUVhUw9SCQt1v32V8LCAUnx12X1XPQSuYt64sgKOtt6RFU6xAbz+9Rb8uqFkmp6AmpS2uRnFE1+j371CXP02el+e/Yk34Niy2n8ieXrVZZXc5/F+8cTWv0P1eNUsmNNKzacWSMrQmCXBPJrxwvo86hc/sFahtSi1Koq19u3tvkiYRyy7sonQaEAeHFLHJriKorX3Wy066NMynVHS9qgELWwe6CnLe7gBgpNbjhvoFu5iC+84cvHBImoFNoUMPXiy2tZw/JU4SjFzUjHLfhyPOvAGJyA6gfZZ1pZGgtDMINX1rSNJYmZHFYZKkMa/UEcQPc/OV/gLrBOdZNKl02hHzBlStOa0BHovV2OyNDu6pN3scQjIYXiFV6gBm4AMlVCeZczxtbBjiktW48v1/d5DQ3q049hSemOqcwAqcRS2jwhdslc3Mporr9dwhUEwECfJiQ4Mh2+OjIiZjDureIgI25FH7i
+ 15pSX/7I
+ AHtB18COB48tW+xTWBZXy9iNmuJM8lpIKxs8CckXTzaiH4IoqKlmnRtIqUm09XJxFGVOznPCyBj84zmGim3cD7Opr749NUi9tPwwcwycRugfykRdqXe3NTECdjtlvX8iEqWsgyfVhLYSzbcan4EV88kWD/Udk59vPa4shIqFTu0FF7yZU2WejXDyd1+URPrC96d0BzyzVlyZwmIOd3K/CVQOuxHgb7nneclEB1axvuHmTT1c7Ki61sa5WL3TL7wSFcyWfhyoUuYmDeR6GkzyMyFpa+OeOYVqhy8b5vVhdAI2UH1dNTH1ED1dOV7P5e6qxZ+So8Unfg495ukHXbAtysa/gv0K2DD9pR5CP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,33 +128,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Cpuset isolated partitions are now included in HK_TYPE_DOMAIN. Testing
-if a CPU is part of an isolated partition alone is now useless.
-
-Remove the superflous test.
+The set of cpuset isolated CPUs is now included in HK_TYPE_DOMAIN
+housekeeping cpumask. There is no usecase left interested in just
+checking what is isolated by cpuset and not by the isolcpus= kernel
+boot parameter.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Reviewed-by: Waiman Long <longman@redhat.com>
 ---
- kernel/time/timer_migration.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/linux/cpuset.h          |  6 ------
+ include/linux/sched/isolation.h |  4 +---
+ kernel/cgroup/cpuset.c          | 12 ------------
+ 3 files changed, 1 insertion(+), 21 deletions(-)
 
-diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
-index 3879575a4975..6da9cd562b20 100644
---- a/kernel/time/timer_migration.c
-+++ b/kernel/time/timer_migration.c
-@@ -466,9 +466,8 @@ static inline bool tmigr_is_isolated(int cpu)
- {
- 	if (!static_branch_unlikely(&tmigr_exclude_isolated))
- 		return false;
--	return (!housekeeping_cpu(cpu, HK_TYPE_DOMAIN) ||
--		cpuset_cpu_is_isolated(cpu)) &&
--	       housekeeping_cpu(cpu, HK_TYPE_KERNEL_NOISE);
-+	return (!housekeeping_cpu(cpu, HK_TYPE_DOMAIN) &&
-+		housekeeping_cpu(cpu, HK_TYPE_KERNEL_NOISE));
+diff --git a/include/linux/cpuset.h b/include/linux/cpuset.h
+index 1c49ffd2ca9b..a4aa2f1767d0 100644
+--- a/include/linux/cpuset.h
++++ b/include/linux/cpuset.h
+@@ -79,7 +79,6 @@ extern void cpuset_unlock(void);
+ extern void cpuset_cpus_allowed_locked(struct task_struct *p, struct cpumask *mask);
+ extern void cpuset_cpus_allowed(struct task_struct *p, struct cpumask *mask);
+ extern bool cpuset_cpus_allowed_fallback(struct task_struct *p);
+-extern bool cpuset_cpu_is_isolated(int cpu);
+ extern nodemask_t cpuset_mems_allowed(struct task_struct *p);
+ #define cpuset_current_mems_allowed (current->mems_allowed)
+ void cpuset_init_current_mems_allowed(void);
+@@ -215,11 +214,6 @@ static inline bool cpuset_cpus_allowed_fallback(struct task_struct *p)
+ 	return false;
  }
  
- /*
+-static inline bool cpuset_cpu_is_isolated(int cpu)
+-{
+-	return false;
+-}
+-
+ static inline nodemask_t cpuset_mems_allowed(struct task_struct *p)
+ {
+ 	return node_possible_map;
+diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
+index d8d9baf44516..d0fb0f647318 100644
+--- a/include/linux/sched/isolation.h
++++ b/include/linux/sched/isolation.h
+@@ -2,7 +2,6 @@
+ #define _LINUX_SCHED_ISOLATION_H
+ 
+ #include <linux/cpumask.h>
+-#include <linux/cpuset.h>
+ #include <linux/init.h>
+ #include <linux/tick.h>
+ 
+@@ -84,8 +83,7 @@ static inline bool housekeeping_cpu(int cpu, enum hk_type type)
+ static inline bool cpu_is_isolated(int cpu)
+ {
+ 	return !housekeeping_test_cpu(cpu, HK_TYPE_DOMAIN) ||
+-	       !housekeeping_test_cpu(cpu, HK_TYPE_TICK) ||
+-	       cpuset_cpu_is_isolated(cpu);
++	       !housekeeping_test_cpu(cpu, HK_TYPE_TICK);
+ }
+ 
+ #endif /* _LINUX_SCHED_ISOLATION_H */
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 12a47922b7ce..de693acc9254 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -29,7 +29,6 @@
+ #include <linux/mempolicy.h>
+ #include <linux/mm.h>
+ #include <linux/memory.h>
+-#include <linux/export.h>
+ #include <linux/rcupdate.h>
+ #include <linux/sched.h>
+ #include <linux/sched/deadline.h>
+@@ -1490,17 +1489,6 @@ static void update_isolation_cpumasks(void)
+ 	isolated_cpus_updating = false;
+ }
+ 
+-/**
+- * cpuset_cpu_is_isolated - Check if the given CPU is isolated
+- * @cpu: the CPU number to be checked
+- * Return: true if CPU is used in an isolated partition, false otherwise
+- */
+-bool cpuset_cpu_is_isolated(int cpu)
+-{
+-	return cpumask_test_cpu(cpu, isolated_cpus);
+-}
+-EXPORT_SYMBOL_GPL(cpuset_cpu_is_isolated);
+-
+ /**
+  * rm_siblings_excl_cpus - Remove exclusive CPUs that are used by sibling cpusets
+  * @parent: Parent cpuset containing all siblings
 -- 
 2.51.1
 
