@@ -4,65 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A236EEEC1C
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:16:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 746AFEEEC1C
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:16:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC9DE6B00B1; Thu,  1 Jan 2026 17:16:36 -0500 (EST)
+	id DB4DB6B00B3; Thu,  1 Jan 2026 17:16:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8A796B00B3; Thu,  1 Jan 2026 17:16:36 -0500 (EST)
+	id D88926B00B5; Thu,  1 Jan 2026 17:16:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8CA86B00B4; Thu,  1 Jan 2026 17:16:36 -0500 (EST)
+	id C19CB6B00B6; Thu,  1 Jan 2026 17:16:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A7BFC6B00B1
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:16:36 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B9D5C90FCE
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:16:35 +0000 (UTC)
-X-FDA: 84284805150.07.5C82D78
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2B66D140008
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:16:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u9tYFxpS;
-	spf=pass (imf26.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767305794; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B0D116B00B3
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:16:44 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 78ED413CCD0
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:16:44 +0000 (UTC)
+X-FDA: 84284805528.19.833B711
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B3406180013
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:16:42 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RlhVF70R;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767305802; a=rsa-sha256;
 	cv=none;
-	b=XZk756doBRWh9rAni90DrAV5K1GleVpLrgSmZTrDhnssQt4fsgaPYKk/uc30FI1KZ/DPb5
-	vwKnUYbJjslE+I/aJAvtPNkv7AFCEdgpcyRNTfx0iVBqf+ly7cwGlF5Yf2Axp1/OuKyLsB
-	NRBjQxFcBhCBuskk0CyWW0O7hKPc578=
+	b=1Q1sW9LG5EziIm1ypSvZ2myp/P5mwYpvXaBvd/1HCD8vKtbaZcYHgLFqqHuxQ0jl6IQWSa
+	pK+Eu5n51ACAz1pdbvBE4GV2s3ma0hgt8a/V6GjAht0OVzES5UXVwN3nUP5N0IxDZBWpPc
+	Dxgr25rQKS035eDSuc9wZ+zKov7rWqg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u9tYFxpS;
-	spf=pass (imf26.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RlhVF70R;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767305794;
+	s=arc-20220608; t=1767305802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=34qjHFuHyPtfXE5Ixbu5nLyOeRZu251qvy4DC8y6FNY=;
-	b=7MC1rLR8eCNdehfMwsZCW9k140Bbj/SdhXRjdEZw6ZJzvadvTdRSwv+0NH7rrFtBPK6IIy
-	5+lSxItnG7wTGqG3qHmxr5bvPxXi6IungSc3DFggutrlrv3v5jerUiKuHSY7ZG+Cg7lLxT
-	uAhOIOSTVvNdXhWHY81DNJE0/vKXcNQ=
+	bh=ZmHTkLAl+4L+IIrew62ITGYy9Ta39yFIFvI2Pf8igDo=;
+	b=MvY9JIO5L7L2//7FDKvbJwEuxu+Xsdl+9elNeCU9F82WmNSpyiqKwRXgfgmdTzlUUMyClG
+	HqdXKWb28Xu3p/e2X0lXpU4q0hWrgWuWE3tVazbg3lMroEM+M8dmuUJeJ4+HKSVgkaY471
+	6HlsFhWkSSrUNRi69LPfOUgqy9MQM/Y=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ACF8B60017;
+	by sea.source.kernel.org (Postfix) with ESMTP id AEFE440600;
+	Thu,  1 Jan 2026 22:16:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2E4C4CEF7;
 	Thu,  1 Jan 2026 22:16:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D5FC4CEF7;
-	Thu,  1 Jan 2026 22:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767305793;
-	bh=zo5aSfx0QMPboEF9rtQzkEKHHU4qfSe8IulGuelb3CM=;
+	s=k20201202; t=1767305801;
+	bh=tu0Lky1m6SezXDNrHXq/nqZLGO2PMXmZz7CmrPNyvdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u9tYFxpSYf2EKg3LeJ/BtkTuCPU9/7dT78WisN7MsccYOL1QHOblp04XVLBMNEwNj
-	 Mh8U2spUyrhiJe8m5+VHU3f7oIGLsOOKSSXslxXcFB4f/pba3lwajZoONzqVrh7gdf
-	 YOspVtG+Metqa5k6ARTlWvkA6QJveUHG5hrI8G0JOKUikcHidi2E+ApPG0Qqnv8lpU
-	 ZQ82Zy4ZdHegSVFS8OXE0/OnFJWOKXtOCm1E2dFG2HpUqlPP9hNAcl5tLwu7A3XWtS
-	 boXzsWts9BMQaOG9OW8FSoOnj5eMdWd1TOkunLzcfZisfxU/6M8mavVCFQLbVzucKF
-	 5aYSZvL5g4iJQ==
+	b=RlhVF70R2AS65IRO8RII+UUUzNJvMlGQuAXpStDftU6+lQxMvG6CvCo0T4ebR1GHD
+	 KlemMADSBO0tvUv0JMxOQi7RwC2e5e9qOd+wDiuvFMg/edsouocn8bnuJoESu1XhRh
+	 QuXEEBx8UVESHmdRJLs0dX2OXFAV2XWAoFGqHwHDWsKOJg9aibmeBgVYXX0v6lMSvB
+	 +HPmgBG6Gck9OZ7A0k1ClGdpKiq0hYFF4Y8QBbkBJBvCp9I5cerain9DStAsMVmlPT
+	 rd7kxh18ZUP43Z72fmFx+NnjMAUkUDL3bNYP7U4ceR5rMhiU1AMUNbQkirgphi0P3e
+	 XtpkPNO/7faLQ==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -102,22 +103,23 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 17/33] PCI: Flush PCI probe workqueue on cpuset isolated partition change
-Date: Thu,  1 Jan 2026 23:13:42 +0100
-Message-ID: <20260101221359.22298-18-frederic@kernel.org>
+Subject: [PATCH 18/33] cpuset: Propagate cpuset isolation update to workqueue through housekeeping
+Date: Thu,  1 Jan 2026 23:13:43 +0100
+Message-ID: <20260101221359.22298-19-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260101221359.22298-1-frederic@kernel.org>
 References: <20260101221359.22298-1-frederic@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B3406180013
+X-Stat-Signature: 1k9om88cqj6e9iqmwsfmk4zgcna16qz8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2B66D140008
-X-Rspamd-Server: rspam04
-X-Stat-Signature: dcnjneaxzq6i7k3sw6fxdni9xhe8f4jj
-X-HE-Tag: 1767305794-11039
-X-HE-Meta: U2FsdGVkX18VhIQEM7V0vnwnKgO84UnJcjzRlnksfkB7apSmKJ/JKABYjnvKNGR81WvtJTN4vQpezxCAXyk+5y/7DLlw7Zwif87hTXBINnNuLii3uVkn5fsfHfMZiWuROLezaVlLkVCT5G9dNQ74gh6/VefiFNXzxgv34fw2Xz0UaXfuiW7M3vwCmS9sqv1rFfXtwETNcf9b4125SHtJuHPw03PhGX7fGdlaQmCTxw5n30rvBpF+8JbbzzWeppiMDnZw5qcwoxyQAZWw48Ifhm4jljDCQhVEMR7gPlFiYlvOEnIMP96K9ZyDbRIeiQOxL+txiVazMO+VwOCwztr7CUkqkIrVefxPMABx4Nyc8oPVcOdqNKnMIACxfiK2XPzt7HwaovULzaY6GST4m1JMKnfI+T91qPlBfEts6c+/AHjLvjVT8c2+0ber3LfJl5DWsmmaf2z1aB3J0Gphkr0SUsV/WZccPE84r0ilw0O30FF7wFw9/vX1uzhtIOiLI3laNPxa3YH/wkScNjBluAXBjncAqxE+EFuCMA60t2o2izJVixP3mQOROrVa1F9SdqijNfyyMQjsk0tCdeKHgY028M29GHMbmYAMoaAzpxHkOv4tAzXCNnX3ReflaH0ummUrAQjlXggyKok5hMN4zAu5LO93ab9cU6nbUGyFTblo+iSnk7qUB78k2c0NwQS4Z5jlgDZXBTCuFOAU/ghd0QaKcfDL+7d0cEz1EoQgZPG1mKfWuavgjhWGa9J8GXPW4i9GWl2uqageNL+0yv8HttRnuhpMjgUtSlE8QfFd1pApQBxXVzNc1uipu0E06mRwCfbYDSh1br/tIhtPrjH5TAmk9FBCieMOfQrJ2pe3uFRbc+z07+z7x7sFrOp9radApGnyULVqbtHQ/gYj6lWSqr/FkeD/M8yFf9x/IVCMnDztOkn8Ox2rsQ1BzRrV5Gt28oIcXG+3fDDpeWtzHmC/aa6
- a2rGqvB4
- MwMpF/mqrljhEZBh+qbcW1BWPyahTMpys62R+15iN2hxt7vwabGC/pXK3E+xAnTBJhOfY+E0NL32hPPregtVEOGZRyjhVU8nCvuq0JcnVsZtQxnbXqgo/mdaqUcsLPDzVl5vApyrjf66EUkpJ7VS2q6igaaoNjYIPKArBjpqQi6PvaCSgvlMtPHuAkkRyMtL3LZz2mlFBZs9dokG2AJbkO4C+K3B5pbg2aoLsgvpqxISdZNXjzs5f3b0HhqHnGt6cwz24s7tp/ZfLDQ4=
+X-HE-Tag: 1767305802-933564
+X-HE-Meta: U2FsdGVkX1/JnRrlNu0R7gE0G62yxAza99oT47r9rXcsbC2C7fmL2Xw6Xl2sGrjA6Q3lWxToIVUBw65TGlz+S0El6RLBNVaQLHkxu2HyPgUqYe05FPVAMkr17JvLzg3mvqaXhIhqqnF4AxN/Q93PAePEhcoD/k2ISOhnCeu2wlcEud4OLNtr2oMfEntbODa9vVimymcEf+mepj+s/uvXLUFsN2PcmIzdj4dbJSzT/WHpXkZMDuNN1OIS7KLQLgLd9JaeWkessEwT1KWdMzbB2VdzdupsJW48kE2RnZJHUbtR1Rup9OvvsRi2eh+XjVQ1cm0BgNTFAFG98oJ8g0xYuPusVEy/S+Sh0zWjLS/e8gQ645oYZHFXTHK5o8gOiUe69qKaHeWWMSzEPjMQ2zlA/71n0qOdLs9+fYv357pcJcL2/lSp2zx11tSA4dEUwhSA8xRXe0vMdGMbvrt5ZbIkBK18fcmsNPG7aeqtEPLUySXt5V3RsyM8HxUJ+QfiQu8ATHhlcp9G96n80rjyWBG81NM/Kq+0Qq9eXYryE6L0FPdQQQS3HU6IYm/ox0bkMbInRpw/GlVktuUV/xRJKNSM/rxv15Wpb62YKHyTUkLgQ7DsdBCbtEZRoUEkLpKYD1ASyMcbidXVvCSQMzRUj0l79tik9boQEFs5WmeDwry3+WlgEtKOt1w9NPgb/zilvvnvrSkoCjE3+eEl/6hSHk6YVEaodN5EC4ATR7Z+ltEAl9R3AkIzbUxIfgdWW7g5B4n0eGT45AxrSH7jxehi5pfp/r9X4GiqhP8+CDnheCAHLJ1x5Fisbx8mPUzRsIBOQRcKF0SHjoGpfNQajjkFipnoPhVf4QTgH2xT2zMIMI9k2kD8qAckqs0AkJ49eJPRMdPBVDYgjIm2JaNioXARJrZ5sxRBR4Gwoj6iDMu81iJLT+/GK8jrWzD8X3eaiuK8UCExuWHGKZEXJnMRgWm/BGt
+ vc/7KUBL
+ CkNLhFS6WeJyrsW5vbFIMHbkBX9AyM5cqD0a7uvfm4mAJzaQnSc2P5rvEl3HJxfdv/7eJbonG7x9RTrWha0kroecnV2vu9LgBGwSO6q82KmxUrp4yM7untWYJ8sUMUbrkdcrKwKT8H2UQowCY73AEjxMRGwqbZh6UnPpcOMTykXMU63Nzblb0D7ldTog+9DHN74AmMTCHfmU87x5eRMn8+jH4cRbm1e3qAENixLOhnn2bqKG2o4SLHOWOkPnYEOSuqh8GFUiyB1QmzHw4CzyBlhwC6By+bkd9xuCj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,114 +128,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The HK_TYPE_DOMAIN housekeeping cpumask is now modifiable at runtime. In
-order to synchronize against PCI probe works and make sure that no
-asynchronous probing is still pending or executing on a newly isolated
-CPU, the housekeeping subsystem must flush the PCI probe works.
+Until now, cpuset would propagate isolated partition changes to
+workqueues so that unbound workers get properly reaffined.
 
-However the PCI probe works can't be flushed easily since they are
-queued to the main per-CPU workqueue pool.
+Since housekeeping now centralizes, synchronize and propagates isolation
+cpumask changes, perform the work from that subsystem for consolidation
+and consistency purposes.
 
-Solve this with creating a PCI probe-specific pool and provide and use
-the appropriate flushing API.
+For simplification purpose, the target function is adapted to take the
+new housekeeping mask instead of the isolated mask.
 
+Suggested-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Acked-by: Tejun Heo <tj@kernel.org>
 ---
- drivers/pci/pci-driver.c | 17 ++++++++++++++++-
- include/linux/pci.h      |  3 +++
- kernel/sched/isolation.c |  2 ++
- 3 files changed, 21 insertions(+), 1 deletion(-)
+ include/linux/workqueue.h |  2 +-
+ init/Kconfig              |  1 +
+ kernel/cgroup/cpuset.c    |  9 +++------
+ kernel/sched/isolation.c  |  3 +++
+ kernel/workqueue.c        | 17 ++++++++++-------
+ 5 files changed, 18 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index a6111140755c..b902d8adf9a5 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -337,6 +337,8 @@ static int local_pci_probe(struct drv_dev_and_id *ddi)
- 	return 0;
+diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
+index dabc351cc127..a4749f56398f 100644
+--- a/include/linux/workqueue.h
++++ b/include/linux/workqueue.h
+@@ -588,7 +588,7 @@ struct workqueue_attrs *alloc_workqueue_attrs_noprof(void);
+ void free_workqueue_attrs(struct workqueue_attrs *attrs);
+ int apply_workqueue_attrs(struct workqueue_struct *wq,
+ 			  const struct workqueue_attrs *attrs);
+-extern int workqueue_unbound_exclude_cpumask(cpumask_var_t cpumask);
++extern int workqueue_unbound_housekeeping_update(const struct cpumask *hk);
+ 
+ extern bool queue_work_on(int cpu, struct workqueue_struct *wq,
+ 			struct work_struct *work);
+diff --git a/init/Kconfig b/init/Kconfig
+index fa79feb8fe57..518830fb812f 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1254,6 +1254,7 @@ config CPUSETS
+ 	bool "Cpuset controller"
+ 	depends on SMP
+ 	select UNION_FIND
++	select CPU_ISOLATION
+ 	help
+ 	  This option will let you create and manage CPUSETs which
+ 	  allow dynamically partitioning a system into sets of CPUs and
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 1c0475e384dc..ea9925652d99 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1484,15 +1484,12 @@ static void update_isolation_cpumasks(void)
+ 
+ 	lockdep_assert_cpus_held();
+ 
+-	ret = workqueue_unbound_exclude_cpumask(isolated_cpus);
+-	WARN_ON_ONCE(ret < 0);
+-
+-	ret = tmigr_isolated_exclude_cpumask(isolated_cpus);
+-	WARN_ON_ONCE(ret < 0);
+-
+ 	ret = housekeeping_update(isolated_cpus);
+ 	WARN_ON_ONCE(ret < 0);
+ 
++	ret = tmigr_isolated_exclude_cpumask(isolated_cpus);
++	WARN_ON_ONCE(ret < 0);
++
+ 	isolated_cpus_updating = false;
  }
  
-+static struct workqueue_struct *pci_probe_wq;
-+
- struct pci_probe_arg {
- 	struct drv_dev_and_id *ddi;
- 	struct work_struct work;
-@@ -407,7 +409,11 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
- 		cpu = cpumask_any_and(cpumask_of_node(node),
- 				      wq_domain_mask);
- 		if (cpu < nr_cpu_ids) {
--			schedule_work_on(cpu, &arg.work);
-+			struct workqueue_struct *wq = pci_probe_wq;
-+
-+			if (WARN_ON_ONCE(!wq))
-+				wq = system_percpu_wq;
-+			queue_work_on(cpu, wq, &arg.work);
- 			rcu_read_unlock();
- 			flush_work(&arg.work);
- 			error = arg.ret;
-@@ -425,6 +431,11 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
- 	return error;
- }
- 
-+void pci_probe_flush_workqueue(void)
-+{
-+	flush_workqueue(pci_probe_wq);
-+}
-+
- /**
-  * __pci_device_probe - check if a driver wants to claim a specific PCI device
-  * @drv: driver to call to check if it wants the PCI device
-@@ -1762,6 +1773,10 @@ static int __init pci_driver_init(void)
- {
- 	int ret;
- 
-+	pci_probe_wq = alloc_workqueue("sync_wq", WQ_PERCPU, 0);
-+	if (!pci_probe_wq)
-+		return -ENOMEM;
-+
- 	ret = bus_register(&pci_bus_type);
- 	if (ret)
- 		return ret;
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 864775651c6f..f14f467e50de 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1206,6 +1206,7 @@ struct pci_bus *pci_create_root_bus(struct device *parent, int bus,
- 				    struct pci_ops *ops, void *sysdata,
- 				    struct list_head *resources);
- int pci_host_probe(struct pci_host_bridge *bridge);
-+void pci_probe_flush_workqueue(void);
- int pci_bus_insert_busn_res(struct pci_bus *b, int bus, int busmax);
- int pci_bus_update_busn_res_end(struct pci_bus *b, int busmax);
- void pci_bus_release_busn_res(struct pci_bus *b);
-@@ -2079,6 +2080,8 @@ static inline int pci_has_flag(int flag) { return 0; }
- _PCI_NOP_ALL(read, *)
- _PCI_NOP_ALL(write,)
- 
-+static inline void pci_probe_flush_workqueue(void) { }
-+
- static inline struct pci_dev *pci_get_device(unsigned int vendor,
- 					     unsigned int device,
- 					     struct pci_dev *from)
 diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-index ec3f15164fd1..5239f556745d 100644
+index 5239f556745d..2f4f184cef2b 100644
 --- a/kernel/sched/isolation.c
 +++ b/kernel/sched/isolation.c
-@@ -8,6 +8,7 @@
-  *
-  */
- #include <linux/sched/isolation.h>
-+#include <linux/pci.h>
- #include "sched.h"
+@@ -121,6 +121,7 @@ EXPORT_SYMBOL_GPL(housekeeping_test_cpu);
+ int housekeeping_update(struct cpumask *isol_mask)
+ {
+ 	struct cpumask *trial, *old = NULL;
++	int err;
  
- enum hk_flags {
-@@ -142,6 +143,7 @@ int housekeeping_update(struct cpumask *isol_mask)
- 
- 	synchronize_rcu();
- 
-+	pci_probe_flush_workqueue();
+ 	trial = kmalloc(cpumask_size(), GFP_KERNEL);
+ 	if (!trial)
+@@ -146,6 +147,8 @@ int housekeeping_update(struct cpumask *isol_mask)
+ 	pci_probe_flush_workqueue();
  	mem_cgroup_flush_workqueue();
  	vmstat_flush_workqueue();
++	err = workqueue_unbound_housekeeping_update(housekeeping_cpumask(HK_TYPE_DOMAIN));
++	WARN_ON_ONCE(err < 0);
  
+ 	kfree(old);
+ 
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 253311af47c6..eb5660013222 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -6959,13 +6959,16 @@ static int workqueue_apply_unbound_cpumask(const cpumask_var_t unbound_cpumask)
+ }
+ 
+ /**
+- * workqueue_unbound_exclude_cpumask - Exclude given CPUs from unbound cpumask
+- * @exclude_cpumask: the cpumask to be excluded from wq_unbound_cpumask
++ * workqueue_unbound_housekeeping_update - Propagate housekeeping cpumask update
++ * @hk: the new housekeeping cpumask
+  *
+- * This function can be called from cpuset code to provide a set of isolated
+- * CPUs that should be excluded from wq_unbound_cpumask.
++ * Update the unbound workqueue cpumask on top of the new housekeeping cpumask such
++ * that the effective unbound affinity is the intersection of the new housekeeping
++ * with the requested affinity set via nohz_full=/isolcpus= or sysfs.
++ *
++ * Return: 0 on success and -errno on failure.
+  */
+-int workqueue_unbound_exclude_cpumask(cpumask_var_t exclude_cpumask)
++int workqueue_unbound_housekeeping_update(const struct cpumask *hk)
+ {
+ 	cpumask_var_t cpumask;
+ 	int ret = 0;
+@@ -6981,14 +6984,14 @@ int workqueue_unbound_exclude_cpumask(cpumask_var_t exclude_cpumask)
+ 	 * (HK_TYPE_WQ ∩ HK_TYPE_DOMAIN) house keeping mask and rewritten
+ 	 * by any subsequent write to workqueue/cpumask sysfs file.
+ 	 */
+-	if (!cpumask_andnot(cpumask, wq_requested_unbound_cpumask, exclude_cpumask))
++	if (!cpumask_and(cpumask, wq_requested_unbound_cpumask, hk))
+ 		cpumask_copy(cpumask, wq_requested_unbound_cpumask);
+ 	if (!cpumask_equal(cpumask, wq_unbound_cpumask))
+ 		ret = workqueue_apply_unbound_cpumask(cpumask);
+ 
+ 	/* Save the current isolated cpumask & export it via sysfs */
+ 	if (!ret)
+-		cpumask_copy(wq_isolated_cpumask, exclude_cpumask);
++		cpumask_andnot(wq_isolated_cpumask, cpu_possible_mask, hk);
+ 
+ 	mutex_unlock(&wq_pool_mutex);
+ 	free_cpumask_var(cpumask);
 -- 
 2.51.1
 
