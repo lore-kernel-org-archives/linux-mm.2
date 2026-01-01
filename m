@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC165EEB573
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 00:32:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D22C5EEB577
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 00:52:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ECAC6B0088; Wed, 31 Dec 2025 19:32:34 -0500 (EST)
+	id 0D88A6B0088; Wed, 31 Dec 2025 19:52:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A4196B0089; Wed, 31 Dec 2025 19:32:34 -0500 (EST)
+	id 086C86B0089; Wed, 31 Dec 2025 19:52:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CE536B008A; Wed, 31 Dec 2025 19:32:34 -0500 (EST)
+	id EC74B6B008A; Wed, 31 Dec 2025 19:52:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 77B0F6B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 19:32:34 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 233251610A3
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 00:32:34 +0000 (UTC)
-X-FDA: 84281519028.20.2CC2F11
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D93B86B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 19:52:53 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 443EA13C634
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 00:52:53 +0000 (UTC)
+X-FDA: 84281570226.11.233AA21
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 84D5B1C000F
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 00:32:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XhPVW7U5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767227552; a=rsa-sha256;
-	cv=none;
-	b=5FkIuyA/ypE8quciO4RmXdIRUZv2e8jJcE3QIK8ZuFtoD9949j5Ox6pa9Sb62jSx1GxrGb
-	o/qAN7gb6xNIh7MJzUdwWTZbx61T9zQ7ocTPnUT5e5I/h4tom/FLcaB/uMGztGeivfErbc
-	taPElWLOnpNDCIJfq4huaGly+Mwa9Xw=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XhPVW7U5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id A9B7820004
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 00:52:51 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AmdLyjeK;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767227552;
+	s=arc-20220608; t=1767228771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MRomEK3kjB+pnBQNLzXqjNrBdNot9jiUPb+g8avNilI=;
-	b=MNZetEg6Uz5fGf3SXaUFAhIROm952e8TcZ2a+0SEwB7c6vNhjC/fgRJ4/C8l1gkyE5TMIk
-	Mz4BlnRatDdGNEW/g1Z18He4OvTWCGWaJ+zTiMaGeTRTqvpQC5MV1hj/H0zHoPU0LDtRWG
-	DEp3GBQ2oXvyIdzPaMzZogmTp39pdxM=
+	bh=mfKdA/EcFs1RblzZ8Anlxdgrf5i4YA4DwU0xmhZ33eA=;
+	b=e5pvu7+BuZyp2M5HcTqqu/PHFCqmmrnIXhAMUpcNc7Gu/vKFAYnuSdjFd0Puq8JjxOAAO7
+	fQI1NxZGn+RGkUh2Xll2AezoUaz9lXVvcIcyNGLZ6UoXX86k4oj++ZNZiXzMri3WBGHWj1
+	/vjKaF74fAPKJejQm/ip9P69wr1DBD0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AmdLyjeK;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767228771; a=rsa-sha256;
+	cv=none;
+	b=ubarSHZwHchESt3uLrfDEqnlB8sdUyXOQgMTxtVPX9GrMnNYIwW1O7dkRiCianH1XVokc0
+	vV9ostoyW2OPagW4MpQkvOQ4Gv0p4Sp4JfTGg7L/E1tpHD37fpoeNVrIZgsK9iT8zDh9JC
+	N0FrxqVD17ufbLfM6dqJx+1aVhBzfis=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B358C60008;
-	Thu,  1 Jan 2026 00:32:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56CBC113D0;
-	Thu,  1 Jan 2026 00:32:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0207760008;
+	Thu,  1 Jan 2026 00:52:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8D0C113D0;
+	Thu,  1 Jan 2026 00:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767227551;
-	bh=k8MuGUV6krS1djDhkLddMbuWQjOZXzq/iMN57+HfM8E=;
+	s=k20201202; t=1767228770;
+	bh=uRFI9tQrnCYxWpT5BJj60ROQreng33NJj7TDugKTC0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XhPVW7U5XZOD+IsSMMuKz4Zc9IrWo90xQkGrMVtJeIQF4yXv+IWZQPQCRAI+GZ6Jv
-	 NSaxHLzKEjdiB3lx3o4YT/1XlEyUt2cSzPPlB64uIcOuvuZEQfM0UoUmvkY66msLht
-	 DZrm3YNe2UH3RK5lcXZkHWMpkVR3STPSTuHQx9Brmo+5Um0QGyfLL30wyhn4+Uvbnu
-	 LHPX9InCYpIhkUq+WFTdyxc688vrvFxncRe4+mKfN5hiG1S3PmQGDmIMsSFQMdfgPf
-	 KEUqGgclXIg4O2gF4wjrio0F3gdeNC8egLMDFTVB2KyQA3hK4kAntCIxNc1B7PIxx9
-	 2rJRkXKKBe+BQ==
+	b=AmdLyjeKJE+Dr8YmzkZuoR+GC8w82koPUFL5eXmgfMdc3wHxYZiW38fhI7YmuVPPa
+	 KTub+t33ztfKcTpasShLRy2yJeg/55WB4CKm1u72Vgyp3MBv1fuiCuocqJCBDcjPhx
+	 cFnapSrqsul1Bzk0uS9wOzEpfAuGARrhYIksuSMGQYJLesP6sZgRyXSgqAYA0NSJCp
+	 FGgKjC22I22lHTgc6lfY04+WDs+WAOI4eHBoHzdM64KxXjJ09F/ZtwAqtOnHPEPE67
+	 2PrbdvCU99S5vUGzaB315+SJjvI6uQvhLphYpPYMr2kREhGWgg36hLgGjWmgur+nqI
+	 XGkoWbrfvIUOQ==
 From: SeongJae Park <sj@kernel.org>
-To: Pavel Butsykin <pbutsykin@cloudlinux.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	hannes@cmpxchg.org,
-	yosry.ahmed@linux.dev,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
+To: SeongJae Park <sj@kernel.org>
+Cc: Aaron Yang <yangqixiao@inspur.com>,
+	linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/zswap: fix error pointer free in zswap_cpu_comp_prepare()
-Date: Wed, 31 Dec 2025 16:32:26 -0800
-Message-ID: <20260101003227.84507-1-sj@kernel.org>
+	damon@lists.linux.dev
+Subject: Re: [PATCH v1] mm/damon/pa: initialize 'folio' to NULL to prevent use of uninitialized value
+Date: Wed, 31 Dec 2025 16:52:41 -0800
+Message-ID: <20260101005243.84695-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251231074638.2564302-1-pbutsykin@cloudlinux.com>
+In-Reply-To: <20251231070029.79682-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 7h8rt8dphmrkadegx44iygqdryzzhgx4
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 84D5B1C000F
-X-Stat-Signature: j3kewcxttctzc1r3gy4in3esco7ydfzk
-X-HE-Tag: 1767227552-953714
-X-HE-Meta: U2FsdGVkX1/uiHzPKXA3rMbTPbhOkpl+zoNBfsydmkjy/NL1/nRmYd/JczW12QjaLPYdeKXaGL17X0ke4mNdvD95JBJRGaiuKA091sWOlgkTY0hzIWBX6TF3RR+mMReXPPDvAm2OxGaEvwLWyBqqdhFmK/Fmrwp1RUmAQR5OFn9mnUzjq3Fw45mlIREoWZFSdzKR8AZRAeW9C0+IhfXnvkx2J0RQ56OaIMym37fYW2P80ypR3MZYxNaO8lhGW5pMnzRgUD5GuSeX3q4AhfMdNDaGc9vIBVmcUo4RQRiHvOnV6w5pRMDk9JXKtpAQFOgtgMaZeUIPNzx3S4gD1Lc2yFPgtkcudgZlabVtQMVahvxc3oMv4dvOqcFVPAusVM4Bl/UIgQ/Rlfi1TAIAJ6CBqSB8bAONTIaUMtHTkvn84Klhfo0Yze5M0lhSCcmT4xSol0o5S4DRKycXlh+CaWO1NxNNf11g5ucZb/lNqADZeubw2f7142la+42ilbI9mrqv9HLLTKKE9tn3hm/7z+dzdLt+p1zqk2J/KFEgvUjlBJP+N4/BdTMGrPoIoO0vizj6zqIcCuxGljwL1W9kPffpCYxoRzRxmBw6RTN/upWiabxGlBMpIMyasGawnlSk3aCkAXtH9p6BJ6i2lYO2M1K9ua5Vq8yxAvdHn9uKtHkyqb45iMavDCu5mKeQUpIUQwpl2/opB8oQWjDeYP6v/AfJ6zzXSud2+u/vX50fx6PxRzUDQz6K07bpo2HLI6tSP74tVua93HST9uQvBkXoYFuZohd437V62TZSciBKMe/f58dbZZh3bdn4ZTZ8iY5jQZlPvZTiBjk3BtLPRPiq84dA9obtZEoie3NF7ATrEg7AfrW7Wbz07amD5dD7wk/K8jPq6YTjLe47l6iJPAWCCDu/X3W34GCws6bsUGRSjynAKqkWDe9ILfiEEuK34xXVbWN1zVNSxfffGj7ZKP62sKJ
- pNIQp52J
- AKuaXVMcRlRaDV2yN5QtVCoVyDyTinoC7xVwShMY4Pl7QN4ZlhPLBvGAXdlsYBm24Eheemz1NfFF5RdvGgbOt7+lsdJ8vMI11bN/2M/6xjX1cYIw18AigjEVUPUobKsEiCabadq3YZQKx6yhFSgfW5AWlZYcMVMjfUHWXo5TPPNJNndiJPMWorDpJy1zwP3jMm8J9fOyS/ia7QVHcHnw/TSHRkDlzjBIuyC8hKKMuJoY483o6wenOC75ycz/5vXrjQ8o3o/l15vo502UFILHu9iPopuov5kgHD745xxVXcPseK99KQLM1hZF/HAZpMiYAAOindxKok2L77+3XDImx7i9orQ==
+X-Rspamd-Queue-Id: A9B7820004
+X-HE-Tag: 1767228771-379607
+X-HE-Meta: U2FsdGVkX19UdZndIfmTRluVd+PO148vcoe/sueb8c8VXHo++QAA5lSQsB9XHdNQAaRUNXxUDNmimLrVS5x1YU7YgczKdBewDeKDHNp7s/8jszrlLXkj1/7g3WOO+NAguBsfSe6pwWg7BG272uXBFttDma2rYw2k3wnXwFugqFgfe3x6HlJ2Fur0ILGlcU5uv4GYDTyhKi7z+tE8UHN68xAXi5H++8x/tKpB//cKt2Hx+P0XDYkT6ZWltQgHctjyQcighhISWUMAIdhj31foVGlPBQXa4Awm+l1zLL63P/kJ0E/XStERUsbNc5fX74B1usUGq3kyZljJ+xDlbIfvJIOA5f46EAekoWBsFqG9dtbVwmliFK0o1w7DqVhoH+E1FgUx+LNzfAlggykNXDDiodpBZCYBg3yrcYXPXPTOiVhaKN+zAL3bJLuFp3DN+VACzHk345R2pNiNpinQMO6op1FP0W73Fkae7YzjYK9hidnVZo66S4KgA1Nw9kTseE9uHNR6vrS5Wh3UV3005YghZK86gpE3Py2W1UwDSxB/n7vZi4VO+PJapP9xpXi2wSvuGmQkBkvgYTXuVXjc1MJ0A6Iu88FQP+8X6BO7V/i4PIizT1h2y/k8rLlnaOQontF1RSowSIPDszd5Ubtafc1BdMC77/NJLwFNjBm/swTd0JHSLDoNKnUCgdmoQJ6OjzhZkZ2+tCvYGLsRdndLF7PY6ijvTGWbBVN5DKSTfzvjRatrxuMThZXGgqa3KsfMrszYa2aMlM36aw+kmktAyHc6/Msf59YWocA1v0CfMwQAt38/K1TgaeCXfQWgwp6ZSy2n4q+pgqoK00Aw5tDdmujBfLqDitLavq3dQl50KuXBLIqO8DurOwwdgoMu4QcBYruSiFI+QKIajVGYZvK7rLaPYtSbWhHahad0M3KsE5AjCP8uhWCPbzwLvz2xCRYKwNjvND6fnFXbwZ/peWTg0uB
+ koylB8yI
+ 0eJzU5ei1pu77X+Vx5ESDRTVBQXv01GuiZucZ6l5/xoLjzP7FyHSlt1l+SjchhybKTW5u58iqztQ0C+S+jynlhhezGAUQP8dDefQcL4oHKE0W+Ou4gLhAUOJyCczUq+3jyfGuYek31MOX/ci+iLr/qbrx9K2DLHgpDuhQrlAree3HSPP3cKEzBM/ErZoLKfDUU7dOWYC6PFYbwWJ6fIujXM34yOOOY32zWCtP5CMZidgy0PdmRlgK+vvR96gd6gaHvtzp6ZicSUFx+jhLgT1aGceu7eG6Tvwtjbte3iLDWho7fG7NGR1bVMm2dyspy25XZFtg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,44 +96,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 31 Dec 2025 11:46:38 +0400 Pavel Butsykin <pbutsykin@cloudlinux.com> wrote:
++ damon@
 
-> crypto_alloc_acomp_node() may return ERR_PTR(), but the fail path checks
-> only for NULL and can pass an error pointer to crypto_free_acomp().
-> Use IS_ERR_OR_NULL() to only free valid acomp instances.
+On Tue, 30 Dec 2025 23:00:22 -0800 SeongJae Park <sj@kernel.org> wrote:
+
+> Hello Aaron,
 > 
-> Fixes: 779b9955f643 ("mm: zswap: move allocations during CPU init outside the lock")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Pavel Butsykin <pbutsykin@cloudlinux.com>
-> ---
->  mm/zswap.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 5d0f8b13a958..ac9b7a60736b 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -787,7 +787,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
->  	return 0;
->  
->  fail:
-> -	if (acomp)
-> +	if (!IS_ERR_OR_NULL(acomp))
->  		crypto_free_acomp(acomp);
->  	kfree(buffer);
->  	return ret;
+> Thank you for sending this patch!
+> 
+> For the patch subject, let's use 'mm/damon/paddr:' as the prefix of the
+> subject, for making it consistent with other past commits for the paddr.c file.
+> 
+> On Wed, 31 Dec 2025 13:57:37 +0800 Aaron Yang <yangqixiao@inspur.com> wrote:
+> 
+> > In damon_pa_mark_accessed_or_deactivate(), the local variable 'folio'
+> > is declared but not initialized. If the region [r->ar.start, r->ar.end)
+> > is empty or invalid such that the while-loop body is never entered,
+> > 'folio' retains an indeterminate (garbage) value. The function then
+> > unconditionally assigns this uninitialized pointer to s->last_applied
+> > (line 239), resulting in undefined behavior. Subsequent dereference or
+> > folio_put() on s->last_applied may cause crashes or memory corruption.
+> 
+> Nice finding!
+> 
+> > 
+> > Although DAMON regions are typically non-empty, zero-length regions
+> > can arise during region merging/splitting or due to address unit
+> > alignment — making this path reachable in practice.
+> 
+> But, can zero-length regions be made in real?  damon_ctx->min_sz_region
+> disallows DAMON having regions of size less that it, and all DAMON API callers
+> set it at least 1.  That is, DAMON code is at least intentionally designed to
+> prohibit zero-length regions.  And many parts of DAMON including
+> damon_pa_mark_accessed_or_deactivate() are written under the assumption that
+> there is no zero-length regions.  If there is a case that allows zero-length
+> regions, all such parts could trigger problems.
+> 
+> > 
+> > Fix by initializing 'folio' to NULL. Assigning NULL to s->last_applied
+> > is safe and semantically correct: it cleanly indicates "no folio was
+> > processed in this invocation", and callers are expected to check for
+> > NULL before use (as per common kernel practice).
+> 
+> For the above mentioned reason, I'd like to fix the code that allows
+> zero-length regions, rather than making only this single function safe from the
+> bug.
 
-I understand you are keeping NULL case to keep the old behavior.  But, seems
-the case cannot happen to me for following reasons.
+I still think in the above way.  But in my second thought, I also find no
+reason to oppose to initializing 'folio' to NULL.  It adds overheads of
+unnecessary initialization, but those seems quite negligible.  Meanwhile,
+_arguably_ it makes the function more complete and easy to read in my humble
+opinion.  The function might better to have further cleanup or complete
+rewriting, but I think such complete rewriting is too much request, while
+initializing the variable is a readability improvement for at least someone.
 
-First of all, the old NULL check was only for crypto_alloc_acomp_node()
-failure.  But crypto_alloc_acomp_node() seems not returning NULL, to by breif
-look of the code.  And the failure check of crypto_alloc_acomp_node() is
-actually doing only IS_ERR() check.
+That said, to do the initialization, I think the commit message need to be
+correctly updated.  Otherwise, it may only confuse people and encourage making
+changes that allow zero-length regions.  Also, this pattern exists on
+damon_pa_pageout(), damon_pa_migrate() and damon_pa_stat(), so better to update
+those altogether for consistency.
 
-So, it seems IS_ERR() here is enough.  Or, if I missed a case that
-crypto_alloc_acomp_node() returns NULL, the above crypto_alloc_acomp_node()
-failure check should be updated to use IS_ERR_OR_NULL()?
+So, Aaron, if you still williing to make this change, could you please send v2
+after doing aobvely commented requests (updating commit message and making
+changes to other functions)?
 
 
 Thanks,
