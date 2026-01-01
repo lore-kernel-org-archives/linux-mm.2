@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83C81EEB57B
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:15:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 031CFEEEC1C
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:15:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E91926B0088; Thu,  1 Jan 2026 17:15:38 -0500 (EST)
+	id 682276B00A4; Thu,  1 Jan 2026 17:15:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E250B6B00A4; Thu,  1 Jan 2026 17:15:38 -0500 (EST)
+	id 66A186B00A7; Thu,  1 Jan 2026 17:15:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4B956B00A6; Thu,  1 Jan 2026 17:15:38 -0500 (EST)
+	id 565EB6B00A8; Thu,  1 Jan 2026 17:15:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C55D46B0088
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:15:38 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8B03F5FA7F
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:15:38 +0000 (UTC)
-X-FDA: 84284802756.30.79EC633
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 443B16B00A4
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:15:47 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E801AD09B8
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:15:46 +0000 (UTC)
+X-FDA: 84284803092.16.04D9674
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1AC0980008
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:15:36 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nlQMgj1n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767305737; a=rsa-sha256;
-	cv=none;
-	b=DEZZlKYeyFxOgxvkcXER961NDgs5Qtvgg5SPO44a3pjK0ZJclGsfGUJaAZAMNPihXObGKY
-	ISVFgSQu1nXJlgx6UPMzX55GYu3gVQ4+Qr06JYKwNIY1huqGfIG0QkfiDGdSonm7EO0RQg
-	ksP4i66g0Nc9map/F2jIHBQVrXrKj1Q=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nlQMgj1n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5F342C000D
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:15:45 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EwXbskvK;
+	spf=pass (imf10.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767305737;
+	s=arc-20220608; t=1767305745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5wizuhTN6mGlwa9nDLf8YTsLN8D8vmBJXyWiJsoAfY8=;
-	b=mPBIqyAnd0mYWFBvsePeLvN0/Nd2Io++Q5dxlwLkY2jm5gYo62/6OY90/tSfRyIMfKCmJA
-	pMiW9VRsRRNGfqMTGSqVZjZeywEClLs4/cIvHTA0HdKMSQv78/0VqEFg06UnvvRYNlREZk
-	ql2cEf6JW2pOB3eBrFPyMSBMq42CJyA=
+	bh=B/jKYvdaoFd3YJ6UutURu5Dc/OJDsnXSZ7fKkBxu75s=;
+	b=yV7w+VQzJk4QaxTIedByayZHSPmfYdDiwj4XfHdUo/FKnMZyJg4U6412+YQkU8J5wG7Zzv
+	CUv5zxcfR+vxCHT3hTm+dIJJSOoEg0gsMpB/PxK4L3oEyg5vo5zdYqsxu40b8X73TOhRz3
+	+GBzA4w+wk0hDnvgwFhz2qs+DAtXoz0=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EwXbskvK;
+	spf=pass (imf10.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767305745; a=rsa-sha256;
+	cv=none;
+	b=KEEJVvP3OGNpc1DlX8YHUlgM+HIDa3aBz54o3JnDbxuSNTw/Xh/3cUnUT9GBL0RPENk0m0
+	/RSCs7tRZHXdlhY7VT4zmuYcyMB856Z1vtszqJsznYMfhbYkaGD8XglasO3y6IjN4VySWi
+	FhfUCmEMrpRiq9ZXGRaEqhZMcCFodDE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 89AB0600B0;
+	by tor.source.kernel.org (Postfix) with ESMTP id D5F80600AA;
+	Thu,  1 Jan 2026 22:15:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B3EC4CEF7;
 	Thu,  1 Jan 2026 22:15:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 208B9C116D0;
-	Thu,  1 Jan 2026 22:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767305736;
-	bh=cfBsUi49kwBpo1bGsw5oqJU14C2/JcinY0oHFYzJ/us=;
+	s=k20201202; t=1767305744;
+	bh=JzP68aQ+gy8MFfasMpMI/FZxkM6LDJNtU1916wSaM4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlQMgj1nTTXW18RtyL+xyRQjFuVUjFVIkw9w4/qbqxrf81g8r3KSDa05VKVN/bxA/
-	 vIKSiCe2IhhaJyJCtEzi9RsJO0Kbx8cxJXCZHBVgFZymaDNc7SBubaq2+9W8AmTG/R
-	 Eq6yt71iRpiTnQdzSIiKHmq7FzyJIJ71LVV0/jxsh8Dr0Psex4G5jmxaJgSgs/9rC7
-	 WvO1V9EwXxqIAxixAFfaI6OkeVse14raZBGXjJ1BvNu7ayX38rhmGCtOOAwATE9ajn
-	 kudc2CaRsC2rzY4fk5JPxN5Wf/5Y1n6opCaB/29876e/JqEDRp56ZY7BLWOVS3cV8r
-	 BETHMalvbdJ4w==
+	b=EwXbskvKcD7Va7qJGFYsQ0tn0UygWfaV28ml73obDfEt2Rsj/99pH16UNZ5cR6iUo
+	 vbdeDrnnEdkiX0FQ1mimKP2wbxcY1aw0ZvNIjkMuXMyOqBY0x/9Iyh73ce4Y+w7I70
+	 kHppkovnKnWEnZk5r0f1Bfjz7WMfMcePEOGtAT8lpEFS3sydbtVf2CFwBpNbWkr23U
+	 ZrBbHt43U9Kh1t59lnvVO5fcfcKHNrZLditSrGrPNY8TTkHUjYMzyAnmM4JTQawqP4
+	 pB5g+F1jCHz7O8Vszz3059lsP/23VujUCBswiL8zX4qHVm8K2ERG+BbzVyWgnHE1rf
+	 akC0dHnN/5uHA==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -102,20 +102,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 10/33] timers/migration: Prevent from lockdep false positive warning
-Date: Thu,  1 Jan 2026 23:13:35 +0100
-Message-ID: <20260101221359.22298-11-frederic@kernel.org>
+Subject: [PATCH 11/33] cpu: Provide lockdep check for CPU hotplug lock write-held
+Date: Thu,  1 Jan 2026 23:13:36 +0100
+Message-ID: <20260101221359.22298-12-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260101221359.22298-1-frederic@kernel.org>
 References: <20260101221359.22298-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1AC0980008
-X-Stat-Signature: 71rju1fuceok85hr1dbeei9jqy4x153i
+X-Stat-Signature: ca6becysebe1e9omaz6nm4azhgxu6t4y
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767305736-704810
-X-HE-Meta: U2FsdGVkX1/3dSNqBkh/dbgbYWylwt9aWp6lcgC00NP1Zak7ZXX1K7ihWivyvvi6FbXWHdki5AfKf8eUxSb62iQRYD/jm9LYVbdybXmo14s4g1t5Ae/5oF4tU7w1isi9yCvHkaU6AODQbiUIuQ7qnrM5wgkKFvU2vfZR+wZPjgzDrmj3uxXsDW1KRBYZ2c7bIYBV8ecwHnMBVEG75DdbhitCUu2288MKZZne9JXlKxBgrQXswC0JUttcUZJiOb+u3Wo3uMbqdD/Tb9NhBWN38SqSEpK9KnbmFQ/k5CryxaUHTwkkn/etyjDwHm7zfw+U0+C3laHl4yMIM7vsPiMAjWVMch8BLtRN3opoph9Tuv3Nh7q+US6BxIgSx2oL5HGzgBF68vWXp+gwKjl1G2rynCMIE0P/7ASGOortEJGl8PzlK+O3KUg8LfCLdTdNrWgxr/tw66keMeTB+2+RQtiRjbNjjrf0pzhMckbfxjFnWE4O7rUGSH5s1lo82Sp8UeSTQUDBQsa1nFk0rRJBzAOUD7CANC/WRDAji9BhPa9FDaG3sTSlGpGHrVVJWvaF4Y28pAr/SymLATLMtptUWBuUoHy+anySSzPQH7cT9rMVMLwGHXesUFPHrLz2UiBg28rI0jLWZ8RJbz5/km1u6CYzEcF/1zvv3rrnzjXDf+bby19Eth0ghiIWTm0eslFw1e8siI0lNBGbfAXXvmEv/1YeCzm3lCbv4AvD4Bwr5GMobiK1RRp9CDbwPH5c1vznOORJJSb3Lq8Joxqyy625wIA8JvLJn46IVpZGvry7qx+AKUvS7ZITdfH8/51ma2u8vLxneVWkE1G2vWDQ6FMr+0zeVA8p/ma3jLyaCc+DMOOvvIWABuoGGJ15i6YgFrBHQF6MquSGTRi9uCI=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5F342C000D
+X-HE-Tag: 1767305745-197224
+X-HE-Meta: U2FsdGVkX19ssUMGXK95RNfjGBZ3kQemwDLvwT/7Vw0XtJP6FuiRhFr9Aq9yd7p5mZT/NlSqcsQUkZvE8TK68HvK8YzQ/+hYiMOrg6HsG167LhU9gjGUxtKpOKcfA/9yik3e//jb+pXsd8xaE+ifcprmG/h0sbItmP5tZxq6OsajbhhDjU4yGkKgbyLf8dJSIAEc0vuWmRwV15xq4TVgWFzBp+C+XhjN+Qk3Pu14h4EF9wshYisMy1mpMXwXlJjvymZLFobvDQvnYxVSN+eZUW+GIXYMXPkmiAbkptPimKaBwkTvn3a84L8NK+YGUNeby8Zg+j5UqBdxR0Vbz5DxeRuA8uF9ROzbRhoRbDiQbHjEbPze7hpjccngMJTS80ZaW7nZz10BValsfnguf4t0IGu8/nY/kaMmdSVZj5WWeMjJVek/3bkMlXBM4oqvfSyg+QKrYDfWOXfDjSGJ42Ql8oreq3WJD0EW4NCyvcMn2+rJTVu/G4BuPZmUmxDRGUm1lQipxYZXJsFpzSWUN+223ppQfFQi5nRoWgPN70fTqWr3hEq8XM1OFzJoPgRsiyYgzoFS083kBOf1Vg7DlsnbEwA1LZtjKfz1sulyhgSWEaYRlKCGhLbESmy78M8UG5ShvOIoFb5hBR3DxHOPYl9C63oXICXZtZI0BDqe5ME9sFAUD1ypSCK+0QBv+xr1MR8UPIpK0oLlD+J3uNTm9A0XQC2OCzn/2Oni+2G4iMPEx589cfNzP2cm2KYWW3lXjQDqeOWYTTJ/uurdZ4GSs/JbHtxpTZMAnA8Tvpw5qhpP2WPLUNYTEA53zuV5hMlCqHsXDfWrNJ12j35ydzA5j4NJOteO5sw7sUJhz0x6WW6OxRsTVL05L08/HGYXhvJOqlvlsQk++u4/rowebZRvvJXJ2O7d47UDZj7sqOiE8efzFvgDd8SXrw1DFdjTzRSm4GgE7KgGpaJx0CfoyWj8O73
+ Qmug3wXt
+ W3JJdS9DPYm45vN/mfk9l+CWSAlA0p31SVz2UNr6Y4SVpjGDajEc/iN8JFYzYNlZpVOWA4eGWVbLG1h6sUkLI+0mhbFJ6u9hSjFTbwTYJUFHTo1gou1MD1eqIfDD3vo4IsssoKRYFEN4Y42E5oc9/+MR/cQ2t8E+l22su/xVUfQb4Tr8Lhtdk5uCU/8J1+BDr1oPibj91gmbJDxRQ6YRyaumfA57tqXq3qhAisN7x59SPAkM6zqg3EwU2PuO6E3PF2dDMiPyNmcbRhJk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,77 +126,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Testing housekeeping_cpu() will soon require that either the RCU "lock"
-is held or the cpuset mutex.
+cpuset modifies partitions, including isolated, while holding the cpu
+hotplug lock read-held.
 
-When CPUs get isolated through cpuset, the change is propagated to
-timer migration such that isolation is also performed from the migration
-tree. However that propagation is done using workqueue which tests if
-the target is actually isolated before proceeding.
+This means that write-holding the CPU hotplug lock is safe to
+synchronize against housekeeping cpumask changes.
 
-Lockdep doesn't know that the workqueue caller holds cpuset mutex and
-that it waits for the work, making the housekeeping cpumask read safe.
-
-Shut down the future warning by removing this test. It is unecessary
-beyond hotplug, the workqueue is already targeted towards isolated CPUs.
+Provide a lockdep check to validate that.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- kernel/time/timer_migration.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ include/linux/cpuhplock.h    | 1 +
+ include/linux/percpu-rwsem.h | 1 +
+ kernel/cpu.c                 | 5 +++++
+ 3 files changed, 7 insertions(+)
 
-diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
-index 18dda1aa782d..3879575a4975 100644
---- a/kernel/time/timer_migration.c
-+++ b/kernel/time/timer_migration.c
-@@ -1497,7 +1497,7 @@ static int tmigr_clear_cpu_available(unsigned int cpu)
- 	return 0;
- }
+diff --git a/include/linux/cpuhplock.h b/include/linux/cpuhplock.h
+index f7aa20f62b87..286b3ab92e15 100644
+--- a/include/linux/cpuhplock.h
++++ b/include/linux/cpuhplock.h
+@@ -13,6 +13,7 @@
+ struct device;
  
--static int tmigr_set_cpu_available(unsigned int cpu)
-+static int __tmigr_set_cpu_available(unsigned int cpu)
+ extern int lockdep_is_cpus_held(void);
++extern int lockdep_is_cpus_write_held(void);
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
+ void cpus_write_lock(void);
+diff --git a/include/linux/percpu-rwsem.h b/include/linux/percpu-rwsem.h
+index 288f5235649a..c8cb010d655e 100644
+--- a/include/linux/percpu-rwsem.h
++++ b/include/linux/percpu-rwsem.h
+@@ -161,6 +161,7 @@ extern void percpu_free_rwsem(struct percpu_rw_semaphore *);
+ 	__percpu_init_rwsem(sem, #sem, &rwsem_key);		\
+ })
+ 
++#define percpu_rwsem_is_write_held(sem)	lockdep_is_held_type(sem, 0)
+ #define percpu_rwsem_is_held(sem)	lockdep_is_held(sem)
+ #define percpu_rwsem_assert_held(sem)	lockdep_assert_held(sem)
+ 
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 40b8496f47c5..01968a5c4a16 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -534,6 +534,11 @@ int lockdep_is_cpus_held(void)
  {
- 	struct tmigr_cpu *tmc = this_cpu_ptr(&tmigr_cpu);
- 
-@@ -1505,9 +1505,6 @@ static int tmigr_set_cpu_available(unsigned int cpu)
- 	if (WARN_ON_ONCE(!tmc->tmgroup))
- 		return -EINVAL;
- 
--	if (tmigr_is_isolated(cpu))
--		return 0;
--
- 	guard(mutex)(&tmigr_available_mutex);
- 
- 	cpumask_set_cpu(cpu, tmigr_available_cpumask);
-@@ -1523,6 +1520,14 @@ static int tmigr_set_cpu_available(unsigned int cpu)
- 	return 0;
+ 	return percpu_rwsem_is_held(&cpu_hotplug_lock);
  }
- 
-+static int tmigr_set_cpu_available(unsigned int cpu)
++
++int lockdep_is_cpus_write_held(void)
 +{
-+	if (tmigr_is_isolated(cpu))
-+		return 0;
-+
-+	return __tmigr_set_cpu_available(cpu);
++	return percpu_rwsem_is_write_held(&cpu_hotplug_lock);
 +}
-+
- static void tmigr_cpu_isolate(struct work_struct *ignored)
- {
- 	tmigr_clear_cpu_available(smp_processor_id());
-@@ -1530,7 +1535,12 @@ static void tmigr_cpu_isolate(struct work_struct *ignored)
+ #endif
  
- static void tmigr_cpu_unisolate(struct work_struct *ignored)
- {
--	tmigr_set_cpu_available(smp_processor_id());
-+	/*
-+	 * Don't call tmigr_is_isolated() ->housekeeping_cpu() directly because
-+	 * the cpuset mutex is correctly held by the workqueue caller but lockdep
-+	 * doesn't know that.
-+	 */
-+	__tmigr_set_cpu_available(smp_processor_id());
- }
- 
- /**
+ static void lockdep_acquire_cpus_lock(void)
 -- 
 2.51.1
 
