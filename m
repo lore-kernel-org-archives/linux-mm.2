@@ -4,117 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 207DEEEB573
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 01:39:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1543FEEB578
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 01:41:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B7386B008A; Wed, 31 Dec 2025 20:39:15 -0500 (EST)
+	id 71B076B0005; Wed, 31 Dec 2025 20:41:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8774C6B008C; Wed, 31 Dec 2025 20:39:15 -0500 (EST)
+	id 6C9046B0093; Wed, 31 Dec 2025 20:41:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 791406B0092; Wed, 31 Dec 2025 20:39:15 -0500 (EST)
+	id 5CC6D6B0095; Wed, 31 Dec 2025 20:41:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6769F6B008A
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 20:39:15 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1B2D0CDBF1
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 01:39:15 +0000 (UTC)
-X-FDA: 84281687070.28.CA660A3
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 40F3B160004
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 01:39:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=g42Tynbh;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf08.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767231553; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 49F946B0005
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 20:41:18 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0A7F21A1217
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 01:41:18 +0000 (UTC)
+X-FDA: 84281692236.19.FC1286F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4B06920002
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 01:41:16 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DP+R3BPK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767231676; a=rsa-sha256;
 	cv=none;
-	b=aDLqxeo5m/lt3mYzlVU/HnR+TMitNGrfYMl+UfUCVt6IvrbszYLGTszC6g8dy1doXWzc6a
-	CwZ93OsUAHWlYCUCfT7+1YzdlFwnss/dz9uRyD7hnpA/E93ldffcS0/dog0CH+odW/8M5W
-	23Uh1eaqxsb0G3GDIQ6o0nmpfUAc6Wg=
+	b=bfQknwG6vDsphMF37bpGhVtftr7ieA1tNeCfCrmha3Kn1U/lx99mnXx4yzv/ij5CTAGYUu
+	A8GRWurseQAN07tXuPvZ52QimieY4e/Cg/eeErDGzFFwT+/30z1jp8j9GNwDkJCqOJr9KS
+	5CNAOsWG/QdapnU1QajUSOu0SZEA3vc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=g42Tynbh;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf08.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DP+R3BPK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767231553;
+	s=arc-20220608; t=1767231676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jTpmjsFfWGJYXQ4+Gh1GNQFtrEKxgP8Pana/cMDdnXc=;
-	b=0t2PqRnK3nHOBV6VNj0fsrpgptIDfw5+qohiEh6/3DyNt3zVBrxt9QlJ3U6ENP5bnHOcDH
-	hzI9xA8hzddKSgUwf3jLM9LVVbRtRz0cDsiSnez2V5F0zERYSVNeKS98EGC+PXFnlTATJl
-	OmhqbV4aDbjnRXyZJDMuTXlRV+YHb+Y=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a0d52768ccso139477035ad.1
-        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 17:39:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767231552; x=1767836352; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jTpmjsFfWGJYXQ4+Gh1GNQFtrEKxgP8Pana/cMDdnXc=;
-        b=g42TynbhGms1miS9jDtLWXt/liSg8ip5fBEIekfzOesPZTtTCUYDBIa9h8ONOOeJ34
-         O6Nvfyr6YbAxSVyg5KDtt0VTqJZcoOYuVkdcYXhjwTr79n5vRyDCxbVMCtpYyfafPxU6
-         L6R4UUylj1RgHmlWB7HOBmtdk36WP0kLYGhYg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767231552; x=1767836352;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jTpmjsFfWGJYXQ4+Gh1GNQFtrEKxgP8Pana/cMDdnXc=;
-        b=b8kuzMt2OORIfIAqwN0qLlQ2js9OP8FrWSABnFrWrZqkLY/f9QScfIg6tpJefNXH3g
-         FgAVuFHWmLo4TFV2ArTif7rU16gFrcWs0+5nnhvT8J9ULmykXKNMNhuYHtft2J15FEUR
-         6U+jgIjPQt5y6b2TRBzUAKLrB9Cqgxzt/kC76LcqTPKB89mmvR89RBPhvdoPt2NKcIf1
-         ZprU+T8hnl8UGJywMKi3BsA3ja6bloS0l6aMc79cguVgmh8YG+/X32i/f8OiXWMSo71L
-         qn5Kvdm0Rv0iQLcnFXvu2VCIeRNri3IhcXCGET7/0v+LAmLHyHdSekTtEd8IWHGjey50
-         dJWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWOnbz1MwSpl+Obu5cSAyWId6BrU0Qr38djYk4/EVV82DSYVOZvGasbfsByOPpuLGtGs7Z96BbGEA==@kvack.org
-X-Gm-Message-State: AOJu0YzqXh7r6Iu6icFNc2sHdDh+NJivr0da8o5ehxjXSWMQW7I7y0HX
-	3WS40zLG2IXHJKn4hls+F1B95+o2KGq7F7bTEkihxLb4tZ/AzMA/O3ssTTzkdbna3Q==
-X-Gm-Gg: AY/fxX5/8OeaEMt1M4uFOm7OgZuvbRRwLXHE8kOrUs67rdiZ+KrYByPkssOrxtC9NL3
-	wkupZUoypTtpfV/sVzotZ5X8U33XftpTrkxGvw15uhIC3CaYnfvyICLoLMf2YkZz6EX59tWgx6L
-	DOWk1iTt1QdbDx5S05QWNwKtVKY5Sjf9jFiNPQ0HX2DdF51usuD1Xk5jAcQsKQPkS/WM9erq7Qp
-	E5Uvh+IGqvUy7K8KcLaN3ddU1RnXZeQ76D0Z2qO15161F9qaGbAEYVEJRlOGe5NKNw8OTKdeSQ9
-	nX1VXJy66PoITtcWMyLOjgs2RXmY6jLvKAEk40rXarTzTBC8yE5y0e59B8AqE7GXsuC8XVVbsmf
-	US9urzwwVWBKXNWp3SnXscdQ/Ef7GBwOen+r/Ili3AYnlkiK+tI+FBYB2LRKDiGS/WKIYf9wh9M
-	Y10KLzcKPRfBjEMLfrGrbDLxyxt4mKOaEbMVZ1NpqLynPCFm07r/c9cYzAmIDa2QS7nnjho2zKE
-	tiGZIotXqJK
-X-Google-Smtp-Source: AGHT+IE+BHEISzORLzKURPdWIV/MJpQWDSfcxMR8GTirgm7X3O11dg1wbOagPCX5OWb3Oqc/bYukoQ==
-X-Received: by 2002:a17:902:f70d:b0:2a0:be68:9456 with SMTP id d9443c01a7336-2a2f28404a0mr372520875ad.46.1767231551884;
-        Wed, 31 Dec 2025 17:39:11 -0800 (PST)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:8d7c:8fc4:6773:1d38])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1e7c14747csm30972091a12.27.2025.12.31.17.39.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Dec 2025 17:39:11 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Brian Geffon <bgeffon@google.com>,
+	bh=HTC7gPRCrT2QzFMuMt0G4X4B34WF/iwcY4UYAajwVNs=;
+	b=shITpKd669kIsR9/FnERXReHdhlRBa+OKgZRTiEFL9f78uNAfwmANXYtc3mKEMHMJcqC9p
+	MwKj+IspCsuM9/df6OZDZX7bb0N3+DaPg8yJLpAZyvRccISr29U6cdoe9EtA4CMIbYpm4e
+	Q6nLayFU4uE8PsYU+aOsbJDYrUTGxfQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 248B842ACA;
+	Thu,  1 Jan 2026 01:41:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E0AC113D0;
+	Thu,  1 Jan 2026 01:41:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767231675;
+	bh=i+DdC/S+p6yii9OoNviXUJbL2K6hEFLW+od5/f/n/Ck=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DP+R3BPKrBXAZp35hZceNI/0P1oEljZQ0xQNN2EJcKKah58GDrhXYxp+5ugPPBMt0
+	 Mi2hLM6V88EPtnQktQh1aPdrRiVtf5eWxinXGwgYUhco5O64nusbCRDJzisM28jQBP
+	 4AJ23oPfDlGWg7q4XdOSGTmS0amZOVol6bRzN9Ia9CGDoWKb2LK00NWI1EV2IOmJDr
+	 MDJN0zTvc+27lszYmK0TnOuTZT/jhdY1V9ELHKhIYMJzMXDlirTMy1w/HfNuMKY15X
+	 sFL4MPgmVZEWf1MLsj4HuEroxGeJvjxXsG+s6c0Ch7T0/XKMvyXtO6uj7rjE9WBPy/
+	 NTwAwoNrs6/Bg==
+From: SeongJae Park <sj@kernel.org>
+To: JaeJoon Jung <rgbi3307@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"# 6 . 14 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [RFC PATCH 2/2] zsmalloc: chain-length configuration should consider other metrics
-Date: Thu,  1 Jan 2026 10:38:14 +0900
-Message-ID: <20260101013814.2312147-3-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
-In-Reply-To: <20260101013814.2312147-1-senozhatsky@chromium.org>
-References: <20260101013814.2312147-1-senozhatsky@chromium.org>
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/damon/core: remove call_control in inactive contexts
+Date: Wed, 31 Dec 2025 17:41:06 -0800
+Message-ID: <20260101014107.87821-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CAHOvCC4_unsc9u4kEDBTNxfS3rsiQi5QBTaiu3fGDcGrdryyBA@mail.gmail.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4B06920002
+X-Stat-Signature: 8fdq7a1sy5s1dgfjc7infousrtsp7buu
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 40F3B160004
-X-Stat-Signature: 17w71ok6j1fntibki48anea6n8tat86r
-X-HE-Tag: 1767231553-784659
-X-HE-Meta: U2FsdGVkX183KYy3ajqJPN4zQjKDrQJK/M0j3tdtjiCrjVel8OgqBMJDn656cNKpydGjwsDE5+Ob3gXUIud9IRa3o32bMi/3h88ACz+bSjqYali7NBik+mdwk5HuUY4hJiEdOcUCuCEGC243mQ4++UTPlvFEyHtLUhmwnzR8mXfMHwGEP6+xSI6ujiJg8ozvwntCIO1ET9hMikG8Ptdh6IzRrtYNYmTwudj0Z6jynIUxsCuYZp9NDU7tGMMz3ZOth7XQERNNoVtzz/XamGj5DMbEuCs8ITpot2wMOYqYYkVkrqZd9WtLMScbyojFJRKY9tmyyu6Esv0dHv2QqBDCA73uVZudWvNFBmIydNhcVbzpFj2fhymvq4h8KyRMmT8MmNrBEWg4YqaA6T7K/Ejw8Y/1vZxvuNPJBJ0ttOcCULa0eMJ5T7/e6GyFMHrbI9wFV37S/JFX5mKvzybg4wBlb5glh0jtZctUiZCmRzyG1QecgrvNtLLwrEknHPJ/3KKOTrjBCFDrBvUG1NJNB/NpfTlQ6nAqEgkniMktJLX0pFkV5v0x6z1Ba1vk0UeXDBlb7jeSv9weZjhh52PsfBS7TI9eAj5JYx4CnYBwOAD7q+ZKuRzW6AQ0tk6bPNTzQT8dg+F8rgNm1XZ+WML2cwihzwLkSvzTfyVjhyHxqK5TRbSA7l/qLfoKLkdakaUqIoGWzyHu2U7xV4XQFJLGTzDSZvmUngdXKzt8u4WcVGbC2JL75qShkUqxXzOv/j4TKvu1UspYYr4/59gQ5MHm12qHqtRzPFYWEDa6HaXQ97UB4VJkXL88cmQwEF5OECYV76PBcfpGj/eiSX3BCl+aeqbx6krL0XEhfSQNBcX3qEzyWwDpuRi1ywqW3lJVA4TXH0w5Pm17RHggh0koblz4nT4MlzG0X/P4I6FLl4iKtH50gx4N2kGMynF3uc4LFik1APetQ8Ck/q4MeYQaXq9KhBv
- BJdM6T3C
- 1VffhAkrBvSL79svE8q12DKjjBLrTlVGjzJGB8jq4D7wYvSq7i+IGonDmxF3JwpcRUyNLzMRV1Ww6xZwNPaYJP9xTLbg1+Wuy09dJoWI7RlBNUqXxDNWcV2fmQtdrLuAfjAMbhLZlUDSM9UgX4ifeMAmu7WrYntcFHQ6Thg+6DOsRXY1NTbqOqLhEM7GA4HdQhwduCyO8Zxl+Xf99AYP5cfAJXFKteCPr5f1yAmupvuz9KAyBOcgy5k28p3XNV1Y0h+ZA9YjVpCpmrcZg3q4Va/h+1Flnfj7q9EYLLGcd8sr2egsNWi0FF78HA/ITbX3Qpw297dvvPkZMRdwBVPia0L+zfWSxBMRlhaeDRb4qFbmq80k=
+X-HE-Tag: 1767231676-777281
+X-HE-Meta: U2FsdGVkX19BiNeQW0M1zra2Di1W7Gj9ZMX0G8jMVt/tdutkzHafn+r4obZ+Mb9te1njVodYBdOcz44I86VGg+UapFmcycdcKaNSgSh+qj0oiR0I4R4RWDL4QvrKZUkVSnuaN7v31bdU7GBVSzvX2KWBmQ4l0eiSxCR5dmCw6+XoFDhmQ9uzDyKMJu8fCv5aE+ZGMC7ZVdYpi7fMLcs+mgY5VGGwI1A2/xP4l+uV2DUrjD3swO65aqe8hFL9OGQnY5DSJ46TveCrPVQzQFx+mqmROsihFANKDE4757loFNjkt0Tu1lhNyn6hYDn/aA8PbYTTUytLu7i+Qjbt7n0eWXAPJ7/dE04YGDlFVGnq+nPyKYL8Kbts/WEJEsAaF5iPtXTQjBXweqX9DOa4uWq2R5D34/gTriCjt1pohHaDNYNMIdU2C6JY+0Q69EPotM9lh0gTQERsmaIG3RpdRp1F45ak0zbSpje3+C963eWsJIodrIlWAyNXH6zNDA+pR6itvFC068Buw6stW73Wtr7BjGYtN8Wu35wZ10tZwnKJIaWDs6E8XYFx2evY/A0+uFFTnMw0nzfBD3atyIFTJHv2uu4cM2iBFjlbJ5vUHAtGbYQjqR+qTKsT8UquEOsRf6rmXDiF9S9bcZNHvxOX9Lp68Cv0NqnCpvpTcvt45KcS2/K0u47FJWqKVrHrlxpxnzjIHym3CWNP+7GhM9PYYiZBURPAssC5Ijs4+EhnUXck/ANeg92AdhR4ri9UZ8fDlSX5Hb3T4NMAEogAOCZizCr5su+Dbm7KVFDqFdgAigMX3t24oMxpiVLSvU6ZCoedcGUscHdCV6M7XrB4Z249CQPnU6sjU86OELt6EmPNXC0j+LeY/lpJm45zIa1bG+zBN1YH6Xz4u6VCafBmEjRJtObbvaiOxMq2abVbFrj9AjsyYwuZBhcGBelqe059qnB/h5cl+KwDjUVFnafhy3SvrA0
+ y9RiSq/u
+ nNXVqCwMQEq2BfudC/7foQaY6LGjEMHHo7ZCHVLbmHSLoYJcgYNLCXn6TSZl3TbrIuk4ZCT1kx3C41CjgYYuBjuz5rFlwnmS02WHwsWD/xF8r05RS9O9MH9yklLN9bVBu215kslKqOerMsV9l5p7oNfyr258hQW5Wv0ojf/6L74CWsZNS/D+eW+bjFN3DQ7iKezS7KsuEJnA7jFPuVR53+28GHH1jT0Apg2fr/DfWzKruVECkW409V/ffOfZUDt9odAAEQ/peAzlbZ59mLqjyg9XqxQBJCrMmhuwXpR0ENbFqnkY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,122 +95,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is the first step towards re-thinking optimization strategy
-during chain-size (the number of 0-order physical pages a zspage
-chains for most optimal performance) configuration. Currently,
-we only consider one metric - "wasted" memory - and try various
-chain length configurations in order to find the minimal wasted
-space configuration.  However, this strategy doesn't consider
-the fact that our optimization space is not single-dimensional.
-When we increase zspage chain length we at the same increase the
-number of spanning objects (objects that span two physical pages).
-Such objects slow down read() operations because zsmalloc needs to
-kmap both pages and memcpy objects' chunks.  This clearly increases
-CPU usage and battery drain.
+On Thu, 1 Jan 2026 09:55:56 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
 
-We, most likely, need to consider numerous metrics and optimize
-in a multi-dimensional space.  These can be wired in later on, for
-now we just add some heuristic to increase zspage chain length only
-if there are substantial savings memory usage wise.  We can tune
-these threshold values (there is a simple user-space tool [2] to
-experiment with those knobs), but what we currently is already
-interesting enough.  Where does this bring us, using a synthetic
-test [1], which produces byte-to-byte comparable workloads, on a
-4K PAGE_SIZE, chain size 10 system:
+> On Thu, 1 Jan 2026 at 00:26, SeongJae Park <sj@kernel.org> wrote:
+> >
+> > On Wed, 31 Dec 2025 14:27:54 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> >
+> > > On Wed, 31 Dec 2025 at 10:25, SeongJae Park <sj@kernel.org> wrote:
+> > > >
+> > > > On Mon, 29 Dec 2025 19:45:14 -0800 SeongJae Park <sj@kernel.org> wrote:
+> > > >
+> > > > > On Mon, 29 Dec 2025 18:41:28 -0800 SeongJae Park <sj@kernel.org> wrote:
+> > > > >
+> > > > > > On Mon, 29 Dec 2025 17:45:30 -0800 SeongJae Park <sj@kernel.org> wrote:
+> > > > > >
+> > > > > > > On Sun, 28 Dec 2025 10:31:01 -0800 SeongJae Park <sj@kernel.org> wrote:
+> > > > > > >
+> > > > > [...]
+> > > > > > > I will send a new version of this fix soon.
+> > > > > >
+> > > > > > So far, I got two fixup ideas.
+> > > > > >
+> > > > > > The first one is keeping the current code as is, and additionally modifying
+> > > > > > kdamond_call() to protect all call_control object accesses under
+> > > > > > ctx->call_controls_lock protection.
+> > > > > >
+> > > > > > The second one is reverting this patch, and doing the DAMON running status
+> > > > > > check before adding the damon_call_control object, but releasing the
+> > > > > > kdamond_lock after the object insertion is done.
+> > > > > >
+> > > > > > I'm in favor of the second one at the moment, as it seems more simple.
+> > > > >
+> > > > > I don't really like both approaches because those implicitly add locking rules.
+> > > > > If the first approach is taken, damon_call() callers should aware they should
+> > > > > not register callback functions that can hold call_controls_lock.  If the
+> > > > > second approach is taken, we should avoid holding kdamond_lock while holding
+> > > > > damon_call_control lock.  The second implicit rule seems easier to keep to me,
+> > > > > but I want to avoid that if possible.
+> > > > >
+> > > > > The third idea I just got is, keeping this patch as is, and moving the final
+> > > > > kdamond_call() invocation to be made _before_ the ctx->kdamond reset.  That
+> > > > > removes the race condition between the final kdamond_call() and
+> > > > > damon_call_handle_inactive_ctx(), without introducing new locking rules.
+> > > >
+> > > > I just posted the v2 [1] with the third idea.
+> > > >
+> > > > [1] https://lore.kernel.org/20251231012315.75835-1-sj@kernel.org
+> > >
+> > > I generally agree with what you've said so far.  However, it's inefficient
+> > > to continue executing damon_call_handle_inactive_ctx() while kdamond is
+> > > "off".  There's no need to add a new damon_call_handle_inactive_ctx()
+> > > function.
+> >
+> > As I mentioned before on other threads with you, we care not only efficiency
+> > but also maintainability of the code.  The inefficiency you are saying about
+> > happens only in corner cases because damon_call() is not usually called while
+> > kdamond is off.  So the gain of making this efficient is not that big.
+> 
+> The overhead isn't that high, but I think it's better to keep things
+> simple.
+> I think it's better to use list_add_tail() when kdamond is "on".
+> 
+> >
+> > Meanwhile, to avoid this, as I mentioned on the previous reply to the first and
+> > the second idea of the fix, we need to add locking rule, which makes the code
+> > bit difficult to maintain.
+> 
+> I think it's better to solve it with the existing kdamond_call(ctx,
+> cancel=true) rather than adding the damon_call_handle_inactive_ctx().
 
-BASE
-====
- zsmalloc_test: num write objects: 339598
- zsmalloc_test: pool pages used 175111, total allocated size 698213488
- zsmalloc_test: pool memory utilization: 97.3
- zsmalloc_test: num read objects: 339598
- zsmalloc_test: spanning objects: 110377, total memcpy size: 278318624
+On my previous reply, I was saying I think your suggested approach is not
+making it simple but only more complicated in the next paragraph.  And I was
+again further explaining why I think so.  More specifically, the added locking
+rule, that I previously explained with the third fix idea.
 
-PATCHED
-=======
- zsmalloc_test: num write objects: 339598
- zsmalloc_test: pool pages used 175920, total allocated size 698213488
- zsmalloc_test: pool memory utilization: 96.8
- zsmalloc_test: num read objects: 339598
- zsmalloc_test: spanning objects: 103256, total memcpy size: 265378608
+Your above reply is saying it is "better", without any reason.  It even not
+addressing my concern that I explained more than once.  As a result, I again
+fail at finding why you keep repeating the argument.
 
-At a price of 0.5% increased pool memory usage there was a 6.5%
-reduction in a number of spanning objects (4.6% less copied bytes).
+So, let me again ask you.  Please explain.
 
-Note, the results are specific to this particular test case.  The
-savings are not uniformly distributed: according to [2] for some
-size classes the reduction in the number of spanning objects
-per-zspage goes down from 7 to 0 (e.g. size class 368), for other
-from 4 to 2 (e.g. size class 640).  So the actual memcpy savings
-are data-pattern dependent, as always.
+> 
+> >
+> > I therefore think the v2 is a good tradeoff.
+> >
+> > > As shown below, it's better to call list_add only when kdamond
+> > > is "on" (true), and then use the existing code to end with
+> > > kdamond_call(ctx, true) when kdamond is "off."
+> > >
+> > > +static void kdamond_call(struct damon_ctx *ctx, bool cancel);
+> > > +
+> > >  /**
+> > >   * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
+> > >   * @ctx:       DAMON context to call the function for.
+> > > @@ -1496,14 +1475,17 @@ int damon_call(struct damon_ctx *ctx, struct
+> > > damon_call_control *control)
+> > >         control->canceled = false;
+> > >         INIT_LIST_HEAD(&control->list);
+> > >
+> > > -       if (damon_is_running(ctx)) {
+> > > -               mutex_lock(&ctx->call_controls_lock);
+> > > +       mutex_lock(&ctx->call_controls_lock);
+> > > +       if (ctx->kdamond) {
+> >
+> > This is wrong.  You shouldn't access ctx->kdamond without holding
+> > ctx->kdamond_lock.  Please read the comment about kdamond_lock field on damon.h
+> > file.
+> 
+> That's right, I misjudged.
+> I've reorganized the code below.
 
-[1] https://github.com/sergey-senozhatsky/simulate-zsmalloc/blob/main/0001-zsmalloc-add-zsmalloc_test-module.patch
-[2] https://github.com/sergey-senozhatsky/simulate-zsmalloc/blob/main/simulate_zsmalloc.c
+Your reply is not explaining how the reorganized code is solving it.  Let me
+ask you again.  Please explain.
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- mm/zsmalloc.c | 39 +++++++++++++++++++++++++++++++--------
- 1 file changed, 31 insertions(+), 8 deletions(-)
+> 
+> >
+> > >                 list_add_tail(&control->list, &ctx->call_controls);
+> > > -               mutex_unlock(&ctx->call_controls_lock);
+> > >         } else {
+> > > -               /* return damon_call_handle_inactive_ctx(ctx, control); */
+> > > +               mutex_unlock(&ctx->call_controls_lock);
+> > > +               if (!list_empty_careful(&ctx->call_controls))
+> > > +                       kdamond_call(ctx, true);
+> > >                 return -EINVAL;
+> > >         }
+> > > +       mutex_unlock(&ctx->call_controls_lock);
+> > > +
+> > >         if (control->repeat)
+> > >                 return 0;
+> > >         wait_for_completion(&control->completion);
+> >
+> 
+> +static void kdamond_call(struct damon_ctx *ctx, bool cancel);
+> +
+>  /**
+>   * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
+>   * @ctx:       DAMON context to call the function for.
+> @@ -1457,11 +1459,15 @@ int damon_call(struct damon_ctx *ctx, struct
+> damon_call_control *control)
+>         control->canceled = false;
+>         INIT_LIST_HEAD(&control->list);
+> 
+> -       mutex_lock(&ctx->call_controls_lock);
+> -       list_add_tail(&control->list, &ctx->call_controls);
+> -       mutex_unlock(&ctx->call_controls_lock);
+> -       if (!damon_is_running(ctx))
+> +       if (damon_is_running(ctx)) {
+> +               mutex_lock(&ctx->call_controls_lock);
+> +               list_add_tail(&control->list, &ctx->call_controls);
+> +               mutex_unlock(&ctx->call_controls_lock);
+> +       } else {
+> +               if (!list_empty_careful(&ctx->call_controls))
+> +                       kdamond_call(ctx, true);
+>                 return -EINVAL;
+> +       }
+>         if (control->repeat)
+>                 return 0;
+>         wait_for_completion(&control->completion);
 
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 5e7501d36161..929db7cf6c19 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -2000,22 +2000,45 @@ static int zs_register_shrinker(struct zs_pool *pool)
- static int calculate_zspage_chain_size(int class_size)
- {
- 	int i, min_waste = INT_MAX;
--	int chain_size = 1;
-+	int best_chain_size = 1;
- 
- 	if (is_power_of_2(class_size))
--		return chain_size;
-+		return best_chain_size;
- 
- 	for (i = 1; i <= ZS_MAX_PAGES_PER_ZSPAGE; i++) {
--		int waste;
-+		int curr_waste = (i * PAGE_SIZE) % class_size;
- 
--		waste = (i * PAGE_SIZE) % class_size;
--		if (waste < min_waste) {
--			min_waste = waste;
--			chain_size = i;
-+		if (curr_waste == 0)
-+			return i;
-+
-+		/*
-+		 * Accept the new chain size if:
-+		 * 1. The current best is wasteful (> 10% of zspage size),
-+		 *    accept anything that is better.
-+		 * 2. The current best is efficient, accept only significant
-+		 *    (25%) improvement.
-+		 */
-+		if (min_waste * 10 > best_chain_size * PAGE_SIZE) {
-+			if (curr_waste < min_waste) {
-+				min_waste = curr_waste;
-+				best_chain_size = i;
-+			}
-+		} else {
-+			if (curr_waste * 4 < min_waste * 3) {
-+				min_waste = curr_waste;
-+				best_chain_size = i;
-+			}
- 		}
-+
-+		/*
-+		 * If the current best chain has low waste (approx < 1.5%
-+		 * relative to zspage size) then accept it right away.
-+		 */
-+		if (min_waste * 64 <= best_chain_size * PAGE_SIZE)
-+			break;
- 	}
- 
--	return chain_size;
-+	return best_chain_size;
- }
- 
- /**
--- 
-2.52.0.351.gbe84eed79e-goog
+I think my previous concern that raised to your two previous approach [1,2] is
+again samely applied to the above diff.  And now you are suggesting a similar
+approach here.  Please explain and answer all questions before you move on, or
+explain why your new apprach is different from your previous one and how it
+addresses raised concerns..
 
+[1] https://lore.kernel.org/20251225194959.937-1-sj@kernel.org
+[2] https://lore.kernel.org/20251226184111.254674-1-sj@kernel.org
+[3] https://lore.kernel.org/20251229151440.78818-1-sj@kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
