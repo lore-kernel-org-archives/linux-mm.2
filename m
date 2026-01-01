@@ -4,113 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 399DBEEB577
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 01:27:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2AC2EEB578
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 01:39:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96F4B6B0005; Wed, 31 Dec 2025 20:27:20 -0500 (EST)
+	id 7CCB76B0005; Wed, 31 Dec 2025 20:39:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91D3A6B0089; Wed, 31 Dec 2025 20:27:20 -0500 (EST)
+	id 77A2C6B0089; Wed, 31 Dec 2025 20:39:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FF2E6B008A; Wed, 31 Dec 2025 20:27:20 -0500 (EST)
+	id 65C226B008A; Wed, 31 Dec 2025 20:39:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E9676B0005
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 20:27:20 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BFB0C5EBFB
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 01:27:19 +0000 (UTC)
-X-FDA: 84281656998.15.F37706C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 343E440002
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 01:27:18 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=go9XllSI;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767230838; a=rsa-sha256;
-	cv=none;
-	b=OzTc3bMeqi28AZrDzllu6uCmRRzT94fbTncOvbsqbQDbjaS33DsJo0+HE7uBoBK/1MJWyP
-	2sx9MpzbCwL1PUVfwnsF3p2dMFs0HedzGSVzt9Tw6GdQVwbQVz90qZem0v9uLOyrNFaKb/
-	Um3DjvAdF4AGrUq/haxwKy+d8nXIpcE=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=go9XllSI;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 565136B0005
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 20:39:07 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E8CE1CD371
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 01:39:06 +0000 (UTC)
+X-FDA: 84281686692.03.DFE720E
+Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com [209.85.210.195])
+	by imf04.hostedemail.com (Postfix) with ESMTP id EF4244000A
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 01:39:04 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=b22JnzHW;
+	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.195 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767230838;
+	s=arc-20220608; t=1767231545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GIZ2+TTs0EEoEyjGKcpoyL5C5f8RhmuxTK2sG/mfXjE=;
-	b=ZbFRRlI2YOtJ6WNcuwbqzzxjeeUc90DymeyxXEhnIDbK84swYALNaoZ/t8gn336REPu2PC
-	ThUGMVCpAg6wxJ+CAWh7DQjHwYE23qj/1OWiXGSFrbzVds7cPykVfVzNkkc3ia7kJhIUBp
-	TV/I7hf8sQKAnSyQD1+W89eDXbgBRds=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3163160008;
-	Thu,  1 Jan 2026 01:27:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7ACC113D0;
-	Thu,  1 Jan 2026 01:27:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767230836;
-	bh=kfzq7OmA115iWgJ760zWgcONuzBXEf0EdKCppmYMA+4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=go9XllSISBYzAOyojV4kRDLc0Hnz1rcUEPO57TcB9+qJSNx41b/AgCw3COmwnxqiT
-	 j7mZyPb6MMMoWfBvYMRKbnSkqA9aNlPjK8qN3O6fQrDlWlCfoS7A/tERDwbL0qwoSr
-	 LfQqAcLLX+Rrl87zP58OiVxJMBgmW31R6wiBayKc=
-Date: Wed, 31 Dec 2025 17:27:14 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Alex Shi <alexs@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
- Brian Cain <bcain@kernel.org>, "Christophe Leroy (CS GROUP)"
- <chleroy@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- "David S. Miller" <davem@davemloft.net>, Dave Hansen
- <dave.hansen@linux.intel.com>, David Hildenbrand <david@kernel.org>, Dinh
- Nguyen <dinguyen@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Helge
- Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Jonathan Corbet
- <corbet@lwn.net>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, Magnus Lindholm <linmag7@gmail.com>,
- Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Michal Simek <monstr@monstr.eu>, Muchun Song <muchun.song@linux.dev>, Oscar
- Salvador <osalvador@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>, Pratyush
- Yadav <pratyush@kernel.org>, Richard Weinberger <richard@nod.at>, Russell
- King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>, Suren
- Baghdasaryan <surenb@google.com>, Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, Vasily
- Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>, Vlastimil
- Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>, x86@kernel.org,
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- loongarch@lists.linux.dev, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 00/28] arch, mm: consolidate hugetlb early reservation
-Message-Id: <20251231172714.a7fe44e856c14fdc8fe1cb43@linux-foundation.org>
-In-Reply-To: <20251228124001.3624742-1-rppt@kernel.org>
-References: <20251228124001.3624742-1-rppt@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=NG0PO6/K2629k1zA11E9F2khms6wStcmY/9M8/NoJAA=;
+	b=t2Pzzc75Lb0127IvkBeQmqwAaSjJ3XLv+3vSyz/bnE7+cbCLxHrmQRJXllq+9UqbLH/vtl
+	ShPm/kVHFqsyDfbSKk9oCKTLxyuBTOGZKDxADkEg/KXbS+kZH5dDMT2WwbTTdnJyotJa20
+	BUwJOgl3049j2Mb4BgHjsCjvYa2PLDw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=b22JnzHW;
+	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.195 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767231545; a=rsa-sha256;
+	cv=none;
+	b=MR9P45eeRqYcCqUP6FkmMl6O46g6XcvbYauMqbZg2rERkcNDgEUHpc36wYJSjDviPOh6xm
+	9h+Ubd2F+09cDCg2Ct3/VYb/GVxUCMkExIt4Fk7yP2w5ExjHDRIw2I0QrEFLPzxWEcQjbW
+	ItWd2Rpyj5bbXBr7AtpgNft+robdVi0=
+Received: by mail-pf1-f195.google.com with SMTP id d2e1a72fcca58-7d26a7e5639so12703611b3a.1
+        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 17:39:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1767231544; x=1767836344; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NG0PO6/K2629k1zA11E9F2khms6wStcmY/9M8/NoJAA=;
+        b=b22JnzHWf7+hgDjh5x5cjxQjShTG3XFqNcn9d+lDKVYR8iRNVplAVPTH1PSWAkpA00
+         +R3yZ2a4SLfF0gZVGsR4CI5Y6hpWJvzJRqcv5ENyFfHbobx/XGjARH89mbSOxXy6UAnf
+         SnS0eUrC6gPTFrbnQmHDaISLkqMMTp6RI5MU4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767231544; x=1767836344;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NG0PO6/K2629k1zA11E9F2khms6wStcmY/9M8/NoJAA=;
+        b=NpeomuNTb8ON4DNg4TDqUT3+eWuhS5YLjj/cxxb1lnJDPPVYWZlYLLsYvIJfTbIva6
+         4u727zOY6DxRSMbWCp+AWN4v4xS+mqIHfSpI7rEdyued+afk4OcBUkxXPRzhMxtmkfuR
+         UXkvVDap+NjaEql7ujKDOpYmxLt7KfIk/H6A/a6JO3gVQG6u09IXUXtH+eH/pYtzyywR
+         PiytFWQnVZfu/5BairW7t8JolI348MQ9f8Rrg90vg1v3M9skF+z+sI/nRmKFKS/zjanC
+         vTZrcf7UOaPf44pDEbuHfk62xi3PhiEbSlhCyHcN0xMrUWancC2/7aQiImlc8T14pLHT
+         6QEg==
+X-Forwarded-Encrypted: i=1; AJvYcCVC9Y/JB5scYgQdQxUlyzHM7cUOTpLrIHj9LaQK2LXw6+Gcgn+XmUTKiqFFokyJhIMBiJvcGpy6FA==@kvack.org
+X-Gm-Message-State: AOJu0Yw1pxwQI8U9YD6NEqfRfV2Jbg/21QaWTSTWrGQUXmxKYp0/TV1D
+	jlptqTMNfdQEviQo+iYbvZgzQKHH4USF8qkayoBPpcGEuLKCEBpQEeZE2AdhJDwclQ==
+X-Gm-Gg: AY/fxX674usmofuy8Cs+YpeGRNUWKMPrBqaYoUAwuat5e3j37N/X84/w6CK4nxW414w
+	BQ5PLx6GMR3zviuZ/9KR70A9WNO0dJWhAZRZa9N6ggVNhn0gkmRHCiA8i5/BPE9ZrJEcv40PPnf
+	dG8A6Sffh7JgDz26qeLANDIztOxWoxoC6wCyoVFnWzhu2EdmKLzgjYji4mi9f83Ckobi4pdrMBl
+	HbDk435n/nIQLmi7I8Pgc42iUQKrj2b+yfX+XrwIy5brqW4TlM0O/riTxvsypGmpG0Qj6W+QroY
+	Sm30dbAXbQxDJyx847ldgkSsgNUBhTopKWwrOyo7l7Rqs8WqxMOHQ4lF6Q4tBMCSlq8XyhUwV7S
+	/YgHQs7hy3G1lKFgTnEpE8N0q4zvoHOhYjbDwYgv4607NAYZ8EZNBZ6JDEh3APgXXapNwLQoSGz
+	t6s7l+2keLjTh+uEHFY0nKSpHLk9oiV5vRBEHpjRzc80ctnz737vzNeZpiyWYz30IYhtlxMDOBA
+	A==
+X-Google-Smtp-Source: AGHT+IEWIngAJ1cNKVOTV4KYhK8VAUI0UEvJWKavpyCuFX7fJ/moqAiu6PdiKBIbUOkmL1phY+Jb9Q==
+X-Received: by 2002:a05:6a20:a11d:b0:366:1955:e965 with SMTP id adf61e73a8af0-376a7fe2ac7mr34935014637.5.1767231543619;
+        Wed, 31 Dec 2025 17:39:03 -0800 (PST)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:8d7c:8fc4:6773:1d38])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1e7c14747csm30972091a12.27.2025.12.31.17.39.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Dec 2025 17:39:02 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Brian Geffon <bgeffon@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [RFC PATCH 0/2] zsmalloc: size-classes chain-length tunings
+Date: Thu,  1 Jan 2026 10:38:12 +0900
+Message-ID: <20260101013814.2312147-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: dyen7857hyd9w34puzfz4yboq3hmjgfq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 343E440002
-X-Rspamd-Server: rspam10
-X-Stat-Signature: d6hdg8kqw759qxc3gibgoxf4ue6dpxqn
-X-HE-Tag: 1767230838-900056
-X-HE-Meta: U2FsdGVkX1/HqsFPIOV4TTD2sHKZrO3+qv8SPpi8Cn7D4ufTQHYIWv+sJp4ScTbUMH2zi2/iH+h4uLs0KKFiaMfNOpZqVTpa+Fb+/r37CJyMjeNkdbEYgNO7QYD+EtmLJ08xqG5SsBTi0sG8lFZF+DKnx0su1+EbTe0NvWe4VZ6oKHTN/SAefuiFBTma+PgguvloUIqfNp+xPlvND9fstSmTPkgjleK4bw8EWnTb80PJVYaKreMPIPMtL0P2n6oAMWJ2tObYvjcMRDRDxdU4BRhUsgQ9RU9eMfxWFwpVZZLU0hr5Zh0zsoYIscklLlJpDc1acT3bePAoUaEf4n+B43r9gAnsf6/x2u5Zcc+Er+YAWTkfm7DVM2hA5SSnzoKU01rTZ/qvPDGQUcIk39LyIIzsKo49mYWV7x0JMc2M3NI7mevIZrlPSJxZd+CglZCGY1AJ9pesdsck/j156sTGBOxAUVSnMgWmWEx1U8k/6+1rOTvhroncZwqEL+vtTHXSAULzdD2j449oaEOt3OVvEmcNpY7pzNWz+Dn7TuoOJOSjquw1IPnk8VKwj7yxtMAKklmIjOFdK3n/Bjgp7yTYQllYPpRMtc+QpJPVXIQNYmYtfqWzQWZTYwsoFBqFE+Qiy6rbTnuVLiXdihMKsq0ojI0Lg4bt2cdGyKYeUiWzSzIQ1jOvtaGagXpj5F1SZ1689gzYMpQ9qkhxiXXiOgZYAHoJmg8027SLu5SuvTreVijBGCiurd73F5d7mwUprBQfTSGpB5zKIkx0RACnwBmgj4WUtOyTJMFZvzAPPKWWm+1MPZDcJjcBPmAAfioI7b7Nqo1nAri004V1v+DInnf2nXNH9KNrf/iMmr5h43ZMBVDkoCqRqAJMZnfAYVw6gew+u8azz5VjZ0yjyftQRGouK5wcDkapW7pLvUcX8KcE5BI=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EF4244000A
+X-HE-Tag: 1767231544-436569
+X-HE-Meta: U2FsdGVkX1+SZBL7XWpBWaYzu0OC9eeGAt58YmD6tPYjlkrZa9EwrlDMF4YfDdg5LunQXpAPhRNEQaLn3uE+O5eUe+P0Cf3LBVRdjAWT460M7vzQn7Bgkyi+0HkmVCAA5U4xLYjcL/BzWZJtdxM07fzSBMbPuove3eBkbn0mHuYmFCji9AzTqSD1+3kcNrsKTL6K68e2DUJ9utJXPUn84MVaCwT4hVfLry6+0Vbsle6NQ1ac3lW7UhTTvRXyheiA7gJL2VasNR3CJhHsOn4sDO5WcB/zjlcMvc3+h5CF/vxhepWCXxpmSJizZTBG+rznij+2DXdme4kV4z+Ft9auGEaHBFyVUZrs5urLz1kTSIGeITtw0F6TS1TKjhm9h8j7MNcxE5n91oa9t1l24qfqKGXl86nP5h/7SCAYWSQLUJoRXmMXR79PIlz4374ybXyIz4MiJ8xczKZiPZcQ8yPMxjvvVLTDSthYJw8l6y/Dz4erLRVt026f4RP8e94NclJE39b1rIFbcEZ0JbbOvR1ZFpPmlkleZrZd4bsaqerGfG0+l6F8SKZw4feqekXL6WcPUkJeByut0C8xlZ2H4XHrkpjoalIGJvqPz/Zli4nAm1eJdwr02LDDFVKqh1VHVZ9O/HX5Jf4XleFhiso8VIHqyPV8n1comsZWUjrivNakTi+F+WsApJi3YeUL7MNnJJlD2GyIq91MuJZd4SI6lCq2ipISPLHwLk4VB9iOoPJXKrq2/ZwU2AAS2mQ1D48TFUdk0cKTHFcaUcQzxeCZG0ke8MuhSmuPbFenGQh48Jl4w261K+TtxcTCw3/62VPF4kyQtQAY9Od0Q4aXhzCViSboOxMaPHPjvT/8GKssyoj43obTZrS6sH+O5ypimrBAdhnpCNfPDXxIOgHMfWE8lhTp3wJ6yNT0tXBDoNkD+gLxF+m6ayUpOVixbtGJEA+N8kE1V8lZpe/3hH6pDxQlNA/
+ aZf8tHR5
+ g86M3nw+D/Ogxf9tYEjKmgkTM7Z5DNxpo8oV8tDw7OCbqAAF85pYLCcl1JB8A/LUpz39Z5izvYTKmUXKpRl0Wa+8gqhVzbOFC8Zv5/wPo/zvtMMICzPUDfIiQ4FTaqEkpbvRBAGZlAPfV+6t/bealnLJVvAVnqH4FlvGk/cKnn1aaIgpkQG5uJ6JU0+wijM+Rf/Ei1+ornkgbzB8NDbR8fUlcjZcx3EelFrExwr2Ub222qLbhjCzQSt3NTgeucD6ZcT3CSeLO4SN691KfWTaPAdJ94msJmDqVE+hPFhO64zmf5JNgeSMg3TadTWDmIl+gDSUfzIuqxvThnDE+ryAeFiRfTw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,45 +120,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 28 Dec 2025 14:39:30 +0200 Mike Rapoport <rppt@kernel.org> wrote:
+This is an RFC series that follows up on the handling of 16K
+PAGE_SIZE discussion [1].
 
-> Order in which early memory reservation for hugetlb happens depends on
-> architecture, on configuration options and on command line parameters.
-> 
-> Some architectures rely on the core MM to call hugetlb_bootmem_alloc()
-> while others call it very early to allow pre-allocation of HVO-style
-> vmemmap.
-> 
-> When hugetlb_cma is supported by an architecture it is initialized during
-> setup_arch() and then later hugetlb_init code needs to understand did it
-> happen or not.
-> 
-> To make everything consistent and unified, both reservation of hugetlb
-> memory from bootmem and creation of CMA areas for hugetlb must be called
-> from core MM initialization and it would have been a simple change.
-> However, HVO-style pre-initialization ordering requirements slightly
-> complicate things and for HVO pre-init to work sparse and memory map should
-> be initialized after hugetlb reservations.
-> 
-> This required pulling out the call to free_area_init() out of setup_arch()
-> path and moving it MM initialization and this is what the first 23 patches
-> do.
-> 
-> These changes are deliberately split into per-arch patches that change how
-> the zone limits are calculated for each architecture and the patches 22 and
-> 23 just remove the calls to free_area_init() and sprase_init() from arch/*.
-> 
-> Patch 24 is a simple cleanup for MIPS.
-> 
-> Patches 25 and 26 actually consolidate hugetlb reservations and patches 27
-> and 28 perform some aftermath cleanups.
+[1] https://lore.kernel.org/linux-mm/fui4gqm6pealaxooz3xv3dnnqxscefyvhw5bhntedwh4tgjvdq@ootmbuoc3dpa
 
-Thanks for the diligence - this can't have been the most exciting thing
-to work on!
+Sergey Senozhatsky (2):
+  zsmalloc: drop hard limit on the number of size classes
+  zsmalloc: chain-length configuration should consider other metrics
 
-> I tried to trim the distribution list and although it's still quite long
-> if you feel that someone was wrongly excluded please add them back.
+ mm/zsmalloc.c | 48 ++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 38 insertions(+), 10 deletions(-)
 
-I'll add these to mm.git's mm-new branch for some testing.  I'll
-suppress the usual email storm because 41 * 28 is a lot of emails ;)
+-- 
+2.52.0.351.gbe84eed79e-goog
+
 
