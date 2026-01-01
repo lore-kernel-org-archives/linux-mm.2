@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8521AEEEC1C
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:17:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0691EEB57B
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:18:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAEC66B00A1; Thu,  1 Jan 2026 17:17:56 -0500 (EST)
+	id 4EB176B00C2; Thu,  1 Jan 2026 17:18:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8CEB6B00C2; Thu,  1 Jan 2026 17:17:56 -0500 (EST)
+	id 4AD196B00C3; Thu,  1 Jan 2026 17:18:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC4D06B00C3; Thu,  1 Jan 2026 17:17:56 -0500 (EST)
+	id 3A1816B00C4; Thu,  1 Jan 2026 17:18:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CBFA86B00A1
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:17:56 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A64759106E
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:17:56 +0000 (UTC)
-X-FDA: 84284808552.07.E229F3C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1CE5CA0008
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:17:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k3tzAh1q;
-	spf=pass (imf25.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767305875; a=rsa-sha256;
-	cv=none;
-	b=hrHq8FhNieb4S6KS9DBV39tTGu0L7o8lgJxft4Ge0MKgKkn/GafWPWawgqwvXwgbDQeQmp
-	WR1FrtdPHZOlYQ+MMd+45fv/qYP6+sNY/V/r5bSUO9sk4nenzIzRWiBVh+fNlXuQi2RtY0
-	B7vXwYnSBDGL8SPnTEkywkE61lOPFDg=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k3tzAh1q;
-	spf=pass (imf25.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B5036B00C2
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:18:06 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EF8B4141587
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:18:05 +0000 (UTC)
+X-FDA: 84284808930.17.21A57AD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4CF11140004
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:18:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nGRmEtfZ;
+	spf=pass (imf26.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767305875;
+	s=arc-20220608; t=1767305884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w/H7Gz//2W7YxEQDiG5Fn2sVeSOYBxF3U1J+XksfESs=;
-	b=66PIavxxs8iFeZNuax5WCx+f4CuNkOWg1AHiDC5jifg/g2Ti+FKOrijEKBTh9kfx9496m5
-	w1fSC4bS5gZudln/slHbykR5+if8R88Th5KvNhI7MX6vIYZ8PTlpHNBS9dDMTqlpMN+e26
-	JsL9DZ3nkh/4sHS1xWvZR/jl+Vz4O/c=
+	bh=/h8QDZ+sHBpzhnvHnd6Tsk6eiOFISxNm+oeftukpQuI=;
+	b=e362XALE5BKi96iokltA6waQhl3neTBAL/9BmlEl4iOfEaz2RVip9jtoyycHziIR8bK6Eo
+	byejqPQvOvu5Uf8FibNY0G4FbaP2tOUABo2SJ0kczmTiWm9X2v8YuZ5B1JFTbNlmuLb1rO
+	bSSy93H7dHzQkTCNFaO79jKu+BKQzzI=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nGRmEtfZ;
+	spf=pass (imf26.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767305884; a=rsa-sha256;
+	cv=none;
+	b=uvJH2ekCDndtO3i4+Wlo75ZlXbRpn514qHjmy5KRrTklIufGpWrYY0QmzzzvDyAxSmPEH/
+	1ZXvv90IJ3k0X43TfJV0bF1+TdTA/HxnzVBFi8VC0SxuYzgeogtIG+xul7nHKt0BrRgcOX
+	eE/MCgE2n5EKYEvdx/aylB7Kzi65pGQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9BE15600B0;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3783142E16;
+	Thu,  1 Jan 2026 22:18:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB81C116D0;
 	Thu,  1 Jan 2026 22:17:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696F1C4CEF7;
-	Thu,  1 Jan 2026 22:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767305874;
-	bh=OKxr66AuTYpmtINGeWatnOeeLWTfC6xUU/wfI1fZOeA=;
+	s=k20201202; t=1767305883;
+	bh=txAoH54KyHKbuey5FYwPXMe7a123Tyjq6wOFllqOg9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k3tzAh1qqBzEdJr7W13PBSjlKJJ2OZj+v1bk3WgK5Y/gMgiJhnOqkbzrE4d5fNn6r
-	 3ihlWEqcfPQ/esrNTdCUpshwQlHu06VG7Fg8ddHxFPeJyiGDYP6VsaEe7AtkYGFNID
-	 7bW3zS0Mk2L74PT+vdla6Mz6/0qfIdMkfBICDBxermqoh+GzMfbu/cvTlTD1Um7KNG
-	 qADGnv9N68YVfnTeHvZRAP+S2Gd2w3P6I51mCUa2XTbkMdiLCDF9BPwbcddsZ2ehdj
-	 ZdhkVDdGYr4dZ1sqs2Pe0ofLfYQE9v4eJ/Tk1J3wPU7EWgXsmp45dISB+MYVn2h/GZ
-	 vonDrbTOK4C9w==
+	b=nGRmEtfZf/dlvXTRXeRug3jmfNXg5p3dx5FKXhG8VpPBiNBxtnzA4f4zq4cdvK7V0
+	 Ajv2d1SdcQZ4WzUAu4ABDGC0IZLHAPLfc+WCdf/60Sme5hDBRAFCB6xCqi7jDHK8TF
+	 4a2XPX9edzLhaEeEVfw90VYwjSLfjgww8JY6aPlYilZjglIbWHfdhP9hfdMKGiuMiN
+	 CVr1nXXYlRlsxaU9eYzmlqJotqeOlCna/rZcx+YxZrtTiAiWR6tsZLK7yNbTl2KOPM
+	 rXK4eWyFydu9GzHrar4isymMZ59ZNyAzDsj4JlDrWOfFfn/6xBWLEiO09OJ4w8+hTe
+	 V7cgvK/o6R8RA==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -102,22 +102,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 27/33] kthread: Rely on HK_TYPE_DOMAIN for preferred affinity management
-Date: Thu,  1 Jan 2026 23:13:52 +0100
-Message-ID: <20260101221359.22298-28-frederic@kernel.org>
+Subject: [PATCH 28/33] sched: Switch the fallback task allowed cpumask to HK_TYPE_DOMAIN
+Date: Thu,  1 Jan 2026 23:13:53 +0100
+Message-ID: <20260101221359.22298-29-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260101221359.22298-1-frederic@kernel.org>
 References: <20260101221359.22298-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1CE5CA0008
-X-Rspamd-Server: rspam04
-X-Stat-Signature: ckdha6s8i9f4a74nijueqn5iz1db3wio
-X-HE-Tag: 1767305874-311805
-X-HE-Meta: U2FsdGVkX1+ZTJOjC+cXFY/HqzMD8pZ8udFK4maG9G6Jj3J13v2kw7ciIp0eBGBPRZcvEeSKuGO4JGd2nQs4OCNvH4c+hRoHK+3cDJuFTuWfcPmghJNkLiQTj0uWMx5MFKLRNBbnbRnOG+U2UWDIyLLZ5PjOgaO4cKgJVPlfI1H2lUfHUtAmGiWwPuqNuVRKS4I9dH9FtJmJt8rkJMamAhDmVVn6O7aJ33FoSfn/NJmJLcidruLRtEzkwaoljQC9EEKB+KeK9kKVV9V591Cxcgl/wiwRkCSzCdm/e7SdEpczjDQy7hkNc2+aGQU8PsYlK2kGmMt6E+xLMNSYwIRlWLs3eIoJW2ZQn58eb/uB8pIBA9gdDRe4gx0xune2b0h9zhzqXsKmVacJLp26jayeUjjOWsaB4DWoUd8dLyzbw6ywZBXA3IjcveYXw1QnU2xasnT1EX0wdp58mlF+91wFTfOt9FtdmaK55zXNx+yVtjN2WcoMkUMtdkel0zosqfPB7XG65QxulLjElqrxItRQK6Q25L/eHQbJqi/xNSf5N2u7WjWfl9EgIsmiOE2daJ/wY1jeGb5y2DPNz7yLltD0fk/5TMtKS/9eM1O5mJrqWIYmJJ0UdrvKpeA0GfbVG0DJ2QDKUKFcuHaWfzdHunMqzXxYdmuQT6XPBqC0RvrXaThDou/WzG6wdrKrKgvcl097UqpzPB+thq52C3zPYUr1AjyqYvtPc040ZqunDUwOz5n2R3NE053hHLNIInQ4X6zBfLHeKU+mdCxAzeprWOP53rchA8cUz+FQ2LfQHdIjYFla6x80N8SxyR3M9r0DHE4VFafvBca6mWLjTIq12GUOq3+CMOma+csIN1MFuOUdoh64XJsT8YvwTbO27nB2/yY5vNdgK9iwZZ+1G6U7x1jGVuRv1mFKu4pEtwFwr/Iv75UbSPd7YADnaiAYfdVg7F9viy9NLsbk9vdyvI43HDe
- tsf++/H9
- rQ0cPM3VskaxuyNfygJxhB/iFqiNSV9MLo/BVsSVRhR6+JkPBA11Sb38y1BcGNPQa2/Z0JmyLbXzJ929eG01uOb8np5fvCCzzpOpmGb9WQ9in1cOHa2xriUF08ecplQLC/EstPohaNJVSPgNsfycpC+ZU97cR/s+1Abe0lm6OcEy8lzwsgXKyXBwRLle8N8vFwJzsibH7jEdn1zUWrkAUIXdeVj1h0cvrkNjMB5tzHw6jCynqNgkfctJY6T1HVNmDcj4HnWOl81Sp+bRQRPlquecn1HLNG1ayNYdUHS5H1+IQfLHhXcIgK/mEgA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4CF11140004
+X-Stat-Signature: 1b4zes1dbmzgng58uhpbdpfmk6ge7bq4
+X-HE-Tag: 1767305884-241120
+X-HE-Meta: U2FsdGVkX186J29zymRcufgCsUOq1q5fRMkO5I5oIxRbPn64HnAuJMZr1dGtS6kAM5zXK0xSsZN3C1SqPIfjuKhinu/NNqfTmaq69DleDHJKb/by6mkCAl793T8A/v56NKUsb7OjK17Rhvs6xV2mRhIdxc0RDQ3iJMmG5GR8SbUjN11pwwzbkMnWLgzSAmocVQ6o9HM7unqOllVPVCp9MuEcsf3FemAMhUKvaytJuWzdaazxC8tPwcl4UwywcGe6DaC/SD91LiVBtLA8CzwdiEpUzXaTP9hp7hy9pfqoMzSIK2agnHodXqr20adPeHCUbhS/RjsEbtHHcU7z3VBGKf91RsO0V7L4NlTjvyDGx6bqeYG7S6Is35VdrUh3G8jipkgC2vvTSmO2lKl1iUk9SDuIoeSgeFsBlhPaKtzFiE6eAXy+M6/rR7k+q3W5RcaNaM/JxjMY+hDuWDjM7RkA4C6Sw7E0MupOZh/wIhgWJBzuJy24aCIuQ082ZXunKboQiHDjM5nazxwBCBRL8i4RyE6HltfYdVNSdB7SWsKyKComkWxD1AcndEAm2gfMsVKqZI3QcT3uLGPT+kupu5FfaTqDjvje+Xx+5lpBsvPZjksfbBqKbdGW/BN/ZGbKwmmGzRGuPvgDc3eOJBrp/meSJXpKhMNQb6S/oLawUyAr84tos8iXT0xeQQ4aUaf+jwHkOzTxctj4PxXc8PU04vAa+bs5JwzFKJZpR5sEyLyE01EbsJvh8LyU3y8pPQK089hA8CG/Y56mHU2bEOCU36WjYrKDqSH8/bIQUmmJn2MzAyzYK3ThhKVwS3HrzxD2teNvRDFYwRsUFN0bEAKi02luqjz0sZGDX3o2ZXnNiCspmlS0g9hcRjkShgGqGWKRyffhoSy5EG/RsEmDeE44stG/E5yQxM/ss/9hPdErVh9wad1Mrzv7FEcgtTspq+IffNLvrt7dpWrPJTgRmvfdezF
+ plZObu4p
+ EkuL9SHIAr2xQFS2FDdNWq/iK0f1dl3D1jVZ+Ak90CZfrL8hhnKSAPPTZ+npMUteILnpowBI4Wn77NjflCXaljDgat9cDxOVme/D6nvbHAPY/rAuByV91n0EjTN+f7SZ8X1jmldZpi5VOgCZj5i2zNbRS0ZKI0sHsEP3PzHBtGdr6tpR4sxYH19GQ/sc1qKcf1s9uNfmuM7fnAsRooHvUm798qRkO0DjETTjJtb2tgF5DkgnCuTfrQkbvnd56gnf2bu1ydcH0zhFExp+R3qS4Z+lWTVrcVQUbvxQY/kvBl0j6cB3MU0E2bhaROPxK/vmm96sbnnKuzHKRR9x/sOLNQ1C14g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,46 +126,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Unbound kthreads want to run neither on nohz_full CPUs nor on domain
-isolated CPUs. And since nohz_full implies domain isolation, checking
-the latter is enough to verify both.
+Tasks that have all their allowed CPUs offline don't want their affinity
+to fallback on either nohz_full CPUs or on domain isolated CPUs. And
+since nohz_full implies domain isolation, checking the latter is enough
+to verify both.
 
-Therefore exclude kthreads from domain isolation.
+Therefore exclude domain isolation from fallback task affinity.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Waiman Long <longman@redhat.com>
+Acked-by: Waiman Long <longman@redhat.com>
 ---
- kernel/kthread.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/linux/mmu_context.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 85ccf5bb17c9..968fa5868d21 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -362,18 +362,20 @@ static void kthread_fetch_affinity(struct kthread *kthread, struct cpumask *cpum
- {
- 	const struct cpumask *pref;
- 
-+	guard(rcu)();
-+
- 	if (kthread->preferred_affinity) {
- 		pref = kthread->preferred_affinity;
- 	} else {
- 		if (kthread->node == NUMA_NO_NODE)
--			pref = housekeeping_cpumask(HK_TYPE_KTHREAD);
-+			pref = housekeeping_cpumask(HK_TYPE_DOMAIN);
- 		else
- 			pref = cpumask_of_node(kthread->node);
- 	}
- 
--	cpumask_and(cpumask, pref, housekeeping_cpumask(HK_TYPE_KTHREAD));
-+	cpumask_and(cpumask, pref, housekeeping_cpumask(HK_TYPE_DOMAIN));
- 	if (cpumask_empty(cpumask))
--		cpumask_copy(cpumask, housekeeping_cpumask(HK_TYPE_KTHREAD));
-+		cpumask_copy(cpumask, housekeeping_cpumask(HK_TYPE_DOMAIN));
- }
- 
- static void kthread_affine_node(void)
+diff --git a/include/linux/mmu_context.h b/include/linux/mmu_context.h
+index ac01dc4eb2ce..ed3dd0f3fe19 100644
+--- a/include/linux/mmu_context.h
++++ b/include/linux/mmu_context.h
+@@ -24,7 +24,7 @@ static inline void leave_mm(void) { }
+ #ifndef task_cpu_possible_mask
+ # define task_cpu_possible_mask(p)	cpu_possible_mask
+ # define task_cpu_possible(cpu, p)	true
+-# define task_cpu_fallback_mask(p)	housekeeping_cpumask(HK_TYPE_TICK)
++# define task_cpu_fallback_mask(p)	housekeeping_cpumask(HK_TYPE_DOMAIN)
+ #else
+ # define task_cpu_possible(cpu, p)	cpumask_test_cpu((cpu), task_cpu_possible_mask(p))
+ #endif
 -- 
 2.51.1
 
