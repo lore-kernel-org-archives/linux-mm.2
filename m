@@ -4,90 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D22C5EEB577
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 00:52:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8191EEB577
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 00:56:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D88A6B0088; Wed, 31 Dec 2025 19:52:54 -0500 (EST)
+	id 341346B0088; Wed, 31 Dec 2025 19:56:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 086C86B0089; Wed, 31 Dec 2025 19:52:54 -0500 (EST)
+	id 2EF0A6B0089; Wed, 31 Dec 2025 19:56:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC74B6B008A; Wed, 31 Dec 2025 19:52:53 -0500 (EST)
+	id 1C6F36B008A; Wed, 31 Dec 2025 19:56:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D93B86B0088
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 19:52:53 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 443EA13C634
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 00:52:53 +0000 (UTC)
-X-FDA: 84281570226.11.233AA21
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A9B7820004
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 00:52:51 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AmdLyjeK;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 09E866B0088
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 19:56:11 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C09D1AA228
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 00:56:10 +0000 (UTC)
+X-FDA: 84281578500.18.EF554EB
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C80C880007
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 00:56:08 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Em01uN9Z;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767228968; a=rsa-sha256;
+	cv=none;
+	b=guu9uskv71NmBOlb3BiOViPSJBrIk8iAS/UqtnRu0oniLjCPgwTmVntktdtYCfm4I5yers
+	/TgsNCKtNP17dYuERDRwzB5tBgUr0C5sPtnADhQZKi/oaorJ7ePxd/N20Mwnt0SFCmx5Hs
+	+V6tSe0Flic34c4HQxep7rs3gsiP7qI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Em01uN9Z;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767228771;
+	s=arc-20220608; t=1767228968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mfKdA/EcFs1RblzZ8Anlxdgrf5i4YA4DwU0xmhZ33eA=;
-	b=e5pvu7+BuZyp2M5HcTqqu/PHFCqmmrnIXhAMUpcNc7Gu/vKFAYnuSdjFd0Puq8JjxOAAO7
-	fQI1NxZGn+RGkUh2Xll2AezoUaz9lXVvcIcyNGLZ6UoXX86k4oj++ZNZiXzMri3WBGHWj1
-	/vjKaF74fAPKJejQm/ip9P69wr1DBD0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AmdLyjeK;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767228771; a=rsa-sha256;
-	cv=none;
-	b=ubarSHZwHchESt3uLrfDEqnlB8sdUyXOQgMTxtVPX9GrMnNYIwW1O7dkRiCianH1XVokc0
-	vV9ostoyW2OPagW4MpQkvOQ4Gv0p4Sp4JfTGg7L/E1tpHD37fpoeNVrIZgsK9iT8zDh9JC
-	N0FrxqVD17ufbLfM6dqJx+1aVhBzfis=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0207760008;
-	Thu,  1 Jan 2026 00:52:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8D0C113D0;
-	Thu,  1 Jan 2026 00:52:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767228770;
-	bh=uRFI9tQrnCYxWpT5BJj60ROQreng33NJj7TDugKTC0I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AmdLyjeKJE+Dr8YmzkZuoR+GC8w82koPUFL5eXmgfMdc3wHxYZiW38fhI7YmuVPPa
-	 KTub+t33ztfKcTpasShLRy2yJeg/55WB4CKm1u72Vgyp3MBv1fuiCuocqJCBDcjPhx
-	 cFnapSrqsul1Bzk0uS9wOzEpfAuGARrhYIksuSMGQYJLesP6sZgRyXSgqAYA0NSJCp
-	 FGgKjC22I22lHTgc6lfY04+WDs+WAOI4eHBoHzdM64KxXjJ09F/ZtwAqtOnHPEPE67
-	 2PrbdvCU99S5vUGzaB315+SJjvI6uQvhLphYpPYMr2kREhGWgg36hLgGjWmgur+nqI
-	 XGkoWbrfvIUOQ==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Aaron Yang <yangqixiao@inspur.com>,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	damon@lists.linux.dev
-Subject: Re: [PATCH v1] mm/damon/pa: initialize 'folio' to NULL to prevent use of uninitialized value
-Date: Wed, 31 Dec 2025 16:52:41 -0800
-Message-ID: <20260101005243.84695-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251231070029.79682-1-sj@kernel.org>
-References: 
+	bh=pyNFHU4ughVI0kV2KMWlLZk3LMIAUnwijKyFOE7M0sE=;
+	b=ld/adMFI2TbzS6ZkUGkaDlU25n1ZPD54WiGOsDkAGQTORT+EKpKtLdHmyePxISebw3vMV8
+	j3WJDshbXTFzUWdy739+RLVGlLVQeRvD0SBZujJMnF7X7ggWiuoCCOafRydXJd235s46OC
+	xT5Fus7G4YjYSnpGWuvPJjnZ4P5JLI0=
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-78fba1a1b1eso134324197b3.1
+        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 16:56:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767228968; x=1767833768; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=pyNFHU4ughVI0kV2KMWlLZk3LMIAUnwijKyFOE7M0sE=;
+        b=Em01uN9ZSm7hOdVKXsOAKWYUG8Scl5GGDrhxeIM7XH5ULK/ybT6UHLyZy9atvF3IRo
+         kBZs/SgZifsclEpOdnwjKnvr3XBhXJs2q3y80AO1ouHeU0dfK6XnKZ/i38ysrLQ45mV+
+         DhJyRHWRMHZjs6PceFtIDFClpSZebCUokY+acGd/8nMeKYg9u4PSsvqbhDu2q8i1cxeC
+         8a5sHmUqRUd33z/mOQ65faScHIYZoN+2YJPqIEPevpm1HWUfzSBxmOAjZlZdCNWd6m2q
+         7qZQa2rI+umH+E1EGZM9D45aFG6qPkCNT5D0mjE46WUwt8nZHeJUQKLy3bnyd7e0lTnh
+         lJnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767228968; x=1767833768;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pyNFHU4ughVI0kV2KMWlLZk3LMIAUnwijKyFOE7M0sE=;
+        b=k9fggXvLmg2BZibANk61CqewCfrBz71SGXGeIJmOwIpWJw7c9REPifeuE+u3rFUoyv
+         GqxoPsP+FDLd5YNTa40MTEmRjIjNyCF+ZshRJrosT3TOT1Um6zf2F6lP9kHzYU9NIL7j
+         p2KJnHmknoQYqCduY+55XRSM0pyyb2IuaIdj1Zw1fHcMvzY9DhwdgXTM4KnjN3rqrE65
+         pPp9LG9xQ2UthvNiLpG82e+7DIc5U0NIelGZPupoSb7oqI3YUhcdpQk4987slC1B1y7J
+         uEpDrIt0DRaDvaINBPhTUw1iyWZL4DLOav03CZlS4x4OpvQDkVjrCWigTGSQObqHBc9w
+         juFA==
+X-Forwarded-Encrypted: i=1; AJvYcCViIRq3PyZ19U3IXQv1CEmhFxNJju+IIu3NB/+MQ0dOFMOW6Vc5z6ff+/hzIVsI+PfEXuplGzkySw==@kvack.org
+X-Gm-Message-State: AOJu0Yx68afWpTW6Au3WOr2KpZBp/7PTePrSZUm7Sl/9W/C/ApTkimfD
+	qJ8WH+QUaesfnlYqDlJMBSeca0xbW54MNDge6GEv5mFqSV99nSeDq1N+cEdflns2y7Yu6iJ3Cq7
+	1kRfwpe+lT972JhZ6KQaPQ0lSzwAyMiQ=
+X-Gm-Gg: AY/fxX5nHPOf6KIOrBYFOt+ZPKpspY6S5muR8sYFkqrkjfEDLRDDRHWzWErTUV8bgzf
+	LydBd47sbpvTlG7RK8lKRL8C2rvS7xdowLJenlxQQQKl5NTygtuvsl6T9idnox1ALP8hYWtIOen
+	nelawh1KsemQdGwviYdyt82iou4M9ZK1ucTRFqow/5xKzmkPd9m2hQH6s6nQtCOQPTWHxPH8Duk
+	nKZdUVW1Tx4dxHyxZn2BiC5JLFzPVUz0sg0oDtJZ8IpPbouP8anwsM7cScM+30QeTavYkpd
+X-Google-Smtp-Source: AGHT+IFJClY5cvw4t2ao24FSwxCQPmReOjoGPKIaWPe4wwUUqq+ToMWXrNF7UTqHic2eYD1gI6W3btX1uZ28DHWmf3Q=
+X-Received: by 2002:a05:690e:e85:b0:646:7b7c:2faf with SMTP id
+ 956f58d0204a3-6467b7c3083mr28119251d50.20.1767228967798; Wed, 31 Dec 2025
+ 16:56:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 7h8rt8dphmrkadegx44iygqdryzzhgx4
+References: <CAHOvCC6F5zLnBF=v7G5k1WdDZZmkBAK94ixzLiPF0W53wdtyeA@mail.gmail.com>
+ <20251231152617.82118-1-sj@kernel.org>
+In-Reply-To: <20251231152617.82118-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Thu, 1 Jan 2026 09:55:56 +0900
+X-Gm-Features: AQt7F2oDGlk4DOh69AZQt05dl7jK2z1FaYePTiI_hMVFnytUE4ig0iBuv4p53UE
+Message-ID: <CAHOvCC4_unsc9u4kEDBTNxfS3rsiQi5QBTaiu3fGDcGrdryyBA@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon/core: remove call_control in inactive contexts
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "# 6 . 14 . x" <stable@vger.kernel.org>, 
+	damon@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: C80C880007
+X-Stat-Signature: w5p1dwwfumtaqtrq5eu4tacid937gmcb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A9B7820004
-X-HE-Tag: 1767228771-379607
-X-HE-Meta: U2FsdGVkX19UdZndIfmTRluVd+PO148vcoe/sueb8c8VXHo++QAA5lSQsB9XHdNQAaRUNXxUDNmimLrVS5x1YU7YgczKdBewDeKDHNp7s/8jszrlLXkj1/7g3WOO+NAguBsfSe6pwWg7BG272uXBFttDma2rYw2k3wnXwFugqFgfe3x6HlJ2Fur0ILGlcU5uv4GYDTyhKi7z+tE8UHN68xAXi5H++8x/tKpB//cKt2Hx+P0XDYkT6ZWltQgHctjyQcighhISWUMAIdhj31foVGlPBQXa4Awm+l1zLL63P/kJ0E/XStERUsbNc5fX74B1usUGq3kyZljJ+xDlbIfvJIOA5f46EAekoWBsFqG9dtbVwmliFK0o1w7DqVhoH+E1FgUx+LNzfAlggykNXDDiodpBZCYBg3yrcYXPXPTOiVhaKN+zAL3bJLuFp3DN+VACzHk345R2pNiNpinQMO6op1FP0W73Fkae7YzjYK9hidnVZo66S4KgA1Nw9kTseE9uHNR6vrS5Wh3UV3005YghZK86gpE3Py2W1UwDSxB/n7vZi4VO+PJapP9xpXi2wSvuGmQkBkvgYTXuVXjc1MJ0A6Iu88FQP+8X6BO7V/i4PIizT1h2y/k8rLlnaOQontF1RSowSIPDszd5Ubtafc1BdMC77/NJLwFNjBm/swTd0JHSLDoNKnUCgdmoQJ6OjzhZkZ2+tCvYGLsRdndLF7PY6ijvTGWbBVN5DKSTfzvjRatrxuMThZXGgqa3KsfMrszYa2aMlM36aw+kmktAyHc6/Msf59YWocA1v0CfMwQAt38/K1TgaeCXfQWgwp6ZSy2n4q+pgqoK00Aw5tDdmujBfLqDitLavq3dQl50KuXBLIqO8DurOwwdgoMu4QcBYruSiFI+QKIajVGYZvK7rLaPYtSbWhHahad0M3KsE5AjCP8uhWCPbzwLvz2xCRYKwNjvND6fnFXbwZ/peWTg0uB
- koylB8yI
- 0eJzU5ei1pu77X+Vx5ESDRTVBQXv01GuiZucZ6l5/xoLjzP7FyHSlt1l+SjchhybKTW5u58iqztQ0C+S+jynlhhezGAUQP8dDefQcL4oHKE0W+Ou4gLhAUOJyCczUq+3jyfGuYek31MOX/ci+iLr/qbrx9K2DLHgpDuhQrlAree3HSPP3cKEzBM/ErZoLKfDUU7dOWYC6PFYbwWJ6fIujXM34yOOOY32zWCtP5CMZidgy0PdmRlgK+vvR96gd6gaHvtzp6ZicSUFx+jhLgT1aGceu7eG6Tvwtjbte3iLDWho7fG7NGR1bVMm2dyspy25XZFtg
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767228968-109755
+X-HE-Meta: U2FsdGVkX1/QxQeMpA6jeVAUtVfnVi6ZzevdcKPFh7RjshjJ+Yvmq8CJvC+cFIrDr8dSNbjRAw0A6h7LfCg8DkTVUX1hmlNlhmzSMrieqgDHKgIu2XjvYT751D+dwbFlhaInGw+w60kuiH2xMAHabpUOK194Qj9olbKPHsC4WN0cADyznI048ybI3P3aa24z+iCJXf3zvnqKmg5jvmoDK8j/kw43n9hvhpEHfcDWY5fw3wHaI3ai/KKZgWW/KVl8jPDIJ1vxBq/Fn8Yr9qB2zBV1Ra88WveQuoopKdvUnHlbfkcRWANQRBwSTMGvaIZoYBywmjruUQJeId10gI4lrqVS/UoaXgn/Btm+5q7tTt9f1bSqI8KEe3ndCDDwM3KY0VC5DqA+VXok/wwQit6MDUP6MxiQlKP+h3GomPkhEK40ajzAFxGjCloN8bYhoyWo1QeBXrailbnhcKrQBdf9ZP+OBRhErlfrUulAHoRNu0+bD/hj/++vSeT3L6GWMR/E2VqgrtV9OiGeSpmZ/vB8Ock4YIBqXz5muYOW1g8yQ+m5UDoOsi2ownoibhtVGiItFGbANHy/0nSImXlt4GyrHl34YHBzKt89cuBuoPem9MBlcsmwLBYqashqnAsQWSLqZ8Mw5819fNJ0IJJBaC3TB1oNXekn7cLhNjhl2bqiS21K+o7IXrvmo4f2nNgWrMwoY6FIrd7zCl1TlVCzQyY6nLwa/MhSgdARLhZUT5fbZ6MCVJ5a5f/HVbSLyVre1tDoj2tU9vfcVIr4TPsnxzxLJO1RfT8YiEoPm+T0OKM0XE3WuGQM/35m70FsgKlyAKNrktjnNT83pZxAYTX/ioezj/6odt8TX0KwhR8Jy3hfBk2IlRDhosliUgoNLEyQbOXv6dMjXfr/drR1PWscZkAe4fynzFWjNojM2C4M3lhYWG8t1CHnvO4f54aWz5ZRqHMqJAATnsJ8OG1cJU8+SID
+ aTxk0Myx
+ VX5F4yzS2nI9oZQTiLBkHFRh4AW103384zcQT6mSqmaXkdWtCoKju6fASAdksfwvRv1alYSFv2dgeHmAbrNYvg+/Yd0Xh+LHCGa206mrYy5wq9uB6hVGyNGl9vVdzjMrTjzAMcoDz9cpWP4bddWnvOOJJ1oCsC53aqW1kmWi6LlG45GXAJ3flXATtoVxaPQnl3eGc9eb8kB9IpvHpgV74jawRwa+UvT/sUmXkEs4kmi/uxQUnTJgC+C0+H+zF1rwg57zIlrM3knD47mMVhptXVVpw0RQwqq6qMJh/KImHbFbs2J3h/t4VJpc7Nc1h7+6Hai+c3CDWGzN+gf/uQtrGwqoCIQqKw2OKekmUHBD/Un5Nz3wDtqv399wNpqqnT1kGE1F57tiTBIrnP1/fsxZ6ARkPJeEEdybVUm4n/jwoAtVPxO6/xuEx7wldjvJK1KIFf6+B
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,74 +114,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+ damon@
+On Thu, 1 Jan 2026 at 00:26, SeongJae Park <sj@kernel.org> wrote:
+>
+> On Wed, 31 Dec 2025 14:27:54 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+>
+> > On Wed, 31 Dec 2025 at 10:25, SeongJae Park <sj@kernel.org> wrote:
+> > >
+> > > On Mon, 29 Dec 2025 19:45:14 -0800 SeongJae Park <sj@kernel.org> wrote:
+> > >
+> > > > On Mon, 29 Dec 2025 18:41:28 -0800 SeongJae Park <sj@kernel.org> wrote:
+> > > >
+> > > > > On Mon, 29 Dec 2025 17:45:30 -0800 SeongJae Park <sj@kernel.org> wrote:
+> > > > >
+> > > > > > On Sun, 28 Dec 2025 10:31:01 -0800 SeongJae Park <sj@kernel.org> wrote:
+> > > > > >
+> > > > [...]
+> > > > > > I will send a new version of this fix soon.
+> > > > >
+> > > > > So far, I got two fixup ideas.
+> > > > >
+> > > > > The first one is keeping the current code as is, and additionally modifying
+> > > > > kdamond_call() to protect all call_control object accesses under
+> > > > > ctx->call_controls_lock protection.
+> > > > >
+> > > > > The second one is reverting this patch, and doing the DAMON running status
+> > > > > check before adding the damon_call_control object, but releasing the
+> > > > > kdamond_lock after the object insertion is done.
+> > > > >
+> > > > > I'm in favor of the second one at the moment, as it seems more simple.
+> > > >
+> > > > I don't really like both approaches because those implicitly add locking rules.
+> > > > If the first approach is taken, damon_call() callers should aware they should
+> > > > not register callback functions that can hold call_controls_lock.  If the
+> > > > second approach is taken, we should avoid holding kdamond_lock while holding
+> > > > damon_call_control lock.  The second implicit rule seems easier to keep to me,
+> > > > but I want to avoid that if possible.
+> > > >
+> > > > The third idea I just got is, keeping this patch as is, and moving the final
+> > > > kdamond_call() invocation to be made _before_ the ctx->kdamond reset.  That
+> > > > removes the race condition between the final kdamond_call() and
+> > > > damon_call_handle_inactive_ctx(), without introducing new locking rules.
+> > >
+> > > I just posted the v2 [1] with the third idea.
+> > >
+> > > [1] https://lore.kernel.org/20251231012315.75835-1-sj@kernel.org
+> >
+> > I generally agree with what you've said so far.  However, it's inefficient
+> > to continue executing damon_call_handle_inactive_ctx() while kdamond is
+> > "off".  There's no need to add a new damon_call_handle_inactive_ctx()
+> > function.
+>
+> As I mentioned before on other threads with you, we care not only efficiency
+> but also maintainability of the code.  The inefficiency you are saying about
+> happens only in corner cases because damon_call() is not usually called while
+> kdamond is off.  So the gain of making this efficient is not that big.
 
-On Tue, 30 Dec 2025 23:00:22 -0800 SeongJae Park <sj@kernel.org> wrote:
+The overhead isn't that high, but I think it's better to keep things
+simple.
+I think it's better to use list_add_tail() when kdamond is "on".
 
-> Hello Aaron,
-> 
-> 
-> Thank you for sending this patch!
-> 
-> For the patch subject, let's use 'mm/damon/paddr:' as the prefix of the
-> subject, for making it consistent with other past commits for the paddr.c file.
-> 
-> On Wed, 31 Dec 2025 13:57:37 +0800 Aaron Yang <yangqixiao@inspur.com> wrote:
-> 
-> > In damon_pa_mark_accessed_or_deactivate(), the local variable 'folio'
-> > is declared but not initialized. If the region [r->ar.start, r->ar.end)
-> > is empty or invalid such that the while-loop body is never entered,
-> > 'folio' retains an indeterminate (garbage) value. The function then
-> > unconditionally assigns this uninitialized pointer to s->last_applied
-> > (line 239), resulting in undefined behavior. Subsequent dereference or
-> > folio_put() on s->last_applied may cause crashes or memory corruption.
-> 
-> Nice finding!
-> 
-> > 
-> > Although DAMON regions are typically non-empty, zero-length regions
-> > can arise during region merging/splitting or due to address unit
-> > alignment — making this path reachable in practice.
-> 
-> But, can zero-length regions be made in real?  damon_ctx->min_sz_region
-> disallows DAMON having regions of size less that it, and all DAMON API callers
-> set it at least 1.  That is, DAMON code is at least intentionally designed to
-> prohibit zero-length regions.  And many parts of DAMON including
-> damon_pa_mark_accessed_or_deactivate() are written under the assumption that
-> there is no zero-length regions.  If there is a case that allows zero-length
-> regions, all such parts could trigger problems.
-> 
-> > 
-> > Fix by initializing 'folio' to NULL. Assigning NULL to s->last_applied
-> > is safe and semantically correct: it cleanly indicates "no folio was
-> > processed in this invocation", and callers are expected to check for
-> > NULL before use (as per common kernel practice).
-> 
-> For the above mentioned reason, I'd like to fix the code that allows
-> zero-length regions, rather than making only this single function safe from the
-> bug.
+>
+> Meanwhile, to avoid this, as I mentioned on the previous reply to the first and
+> the second idea of the fix, we need to add locking rule, which makes the code
+> bit difficult to maintain.
 
-I still think in the above way.  But in my second thought, I also find no
-reason to oppose to initializing 'folio' to NULL.  It adds overheads of
-unnecessary initialization, but those seems quite negligible.  Meanwhile,
-_arguably_ it makes the function more complete and easy to read in my humble
-opinion.  The function might better to have further cleanup or complete
-rewriting, but I think such complete rewriting is too much request, while
-initializing the variable is a readability improvement for at least someone.
+I think it's better to solve it with the existing kdamond_call(ctx,
+cancel=true) rather than adding the damon_call_handle_inactive_ctx().
 
-That said, to do the initialization, I think the commit message need to be
-correctly updated.  Otherwise, it may only confuse people and encourage making
-changes that allow zero-length regions.  Also, this pattern exists on
-damon_pa_pageout(), damon_pa_migrate() and damon_pa_stat(), so better to update
-those altogether for consistency.
+>
+> I therefore think the v2 is a good tradeoff.
+>
+> > As shown below, it's better to call list_add only when kdamond
+> > is "on" (true), and then use the existing code to end with
+> > kdamond_call(ctx, true) when kdamond is "off."
+> >
+> > +static void kdamond_call(struct damon_ctx *ctx, bool cancel);
+> > +
+> >  /**
+> >   * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
+> >   * @ctx:       DAMON context to call the function for.
+> > @@ -1496,14 +1475,17 @@ int damon_call(struct damon_ctx *ctx, struct
+> > damon_call_control *control)
+> >         control->canceled = false;
+> >         INIT_LIST_HEAD(&control->list);
+> >
+> > -       if (damon_is_running(ctx)) {
+> > -               mutex_lock(&ctx->call_controls_lock);
+> > +       mutex_lock(&ctx->call_controls_lock);
+> > +       if (ctx->kdamond) {
+>
+> This is wrong.  You shouldn't access ctx->kdamond without holding
+> ctx->kdamond_lock.  Please read the comment about kdamond_lock field on damon.h
+> file.
 
-So, Aaron, if you still williing to make this change, could you please send v2
-after doing aobvely commented requests (updating commit message and making
-changes to other functions)?
+That's right, I misjudged.
+I've reorganized the code below.
+
+>
+> >                 list_add_tail(&control->list, &ctx->call_controls);
+> > -               mutex_unlock(&ctx->call_controls_lock);
+> >         } else {
+> > -               /* return damon_call_handle_inactive_ctx(ctx, control); */
+> > +               mutex_unlock(&ctx->call_controls_lock);
+> > +               if (!list_empty_careful(&ctx->call_controls))
+> > +                       kdamond_call(ctx, true);
+> >                 return -EINVAL;
+> >         }
+> > +       mutex_unlock(&ctx->call_controls_lock);
+> > +
+> >         if (control->repeat)
+> >                 return 0;
+> >         wait_for_completion(&control->completion);
+>
+
++static void kdamond_call(struct damon_ctx *ctx, bool cancel);
++
+ /**
+  * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
+  * @ctx:       DAMON context to call the function for.
+@@ -1457,11 +1459,15 @@ int damon_call(struct damon_ctx *ctx, struct
+damon_call_control *control)
+        control->canceled = false;
+        INIT_LIST_HEAD(&control->list);
+
+-       mutex_lock(&ctx->call_controls_lock);
+-       list_add_tail(&control->list, &ctx->call_controls);
+-       mutex_unlock(&ctx->call_controls_lock);
+-       if (!damon_is_running(ctx))
++       if (damon_is_running(ctx)) {
++               mutex_lock(&ctx->call_controls_lock);
++               list_add_tail(&control->list, &ctx->call_controls);
++               mutex_unlock(&ctx->call_controls_lock);
++       } else {
++               if (!list_empty_careful(&ctx->call_controls))
++                       kdamond_call(ctx, true);
+                return -EINVAL;
++       }
+        if (control->repeat)
+                return 0;
+        wait_for_completion(&control->completion);
 
 
 Thanks,
-SJ
+JaeJoon
 
-[...]
+>
+> Thanks,
+> SJ
+>
+> [...]
 
