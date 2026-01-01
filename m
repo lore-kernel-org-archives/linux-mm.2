@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29B43EEB57B
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:17:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8521AEEEC1C
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:17:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 931C56B0095; Thu,  1 Jan 2026 17:17:48 -0500 (EST)
+	id EAEC66B00A1; Thu,  1 Jan 2026 17:17:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 901A06B00C2; Thu,  1 Jan 2026 17:17:48 -0500 (EST)
+	id E8CEB6B00C2; Thu,  1 Jan 2026 17:17:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81B2C6B00C3; Thu,  1 Jan 2026 17:17:48 -0500 (EST)
+	id DC4D06B00C3; Thu,  1 Jan 2026 17:17:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 72EAE6B0095
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:17:48 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 43F5613CCD2
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:17:48 +0000 (UTC)
-X-FDA: 84284808216.18.7596B91
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CBFA86B00A1
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:17:56 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A64759106E
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:17:56 +0000 (UTC)
+X-FDA: 84284808552.07.E229F3C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B36784000C
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:17:46 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Tkk9fQ0Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767305866; a=rsa-sha256;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1CE5CA0008
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:17:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k3tzAh1q;
+	spf=pass (imf25.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767305875; a=rsa-sha256;
 	cv=none;
-	b=POO5k5L+e+4eZ7Gnm236HK66dR1svqFDx7i3uHymGh4JmMi6rDLs7oftoZ+d6o+/DFPI2t
-	zOE5+iVG+kewMfWsf5DRGbow6RQM7QDaAo5caBsBwMjgDGpcjQcEPGOmWVjLwNC8jBgEFF
-	FT9KBEya/CqTOr+ZjLvAIa+M1ksb+bw=
+	b=hrHq8FhNieb4S6KS9DBV39tTGu0L7o8lgJxft4Ge0MKgKkn/GafWPWawgqwvXwgbDQeQmp
+	WR1FrtdPHZOlYQ+MMd+45fv/qYP6+sNY/V/r5bSUO9sk4nenzIzRWiBVh+fNlXuQi2RtY0
+	B7vXwYnSBDGL8SPnTEkywkE61lOPFDg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Tkk9fQ0Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k3tzAh1q;
+	spf=pass (imf25.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767305866;
+	s=arc-20220608; t=1767305875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xqV0jxEG5BppcU3u+EG/emaB1lxt8tp2Ko8l8KTUFyA=;
-	b=zRm/gWUYxhIaU62mLur80MN9lB4uoyTcL7Q6Xz0QOibT3wFa3ZAegZCRQdQQKEdwjPYk+A
-	N/T6a/EFY6Ww/0cvME8jXhRKW/Ht01azSruPnMh3IeMc3yutiaqh4znYt8hbg6bl5w9efR
-	8oQl7L1g062CZDJlAN8wgs2dXWeQzV0=
+	bh=w/H7Gz//2W7YxEQDiG5Fn2sVeSOYBxF3U1J+XksfESs=;
+	b=66PIavxxs8iFeZNuax5WCx+f4CuNkOWg1AHiDC5jifg/g2Ti+FKOrijEKBTh9kfx9496m5
+	w1fSC4bS5gZudln/slHbykR5+if8R88Th5KvNhI7MX6vIYZ8PTlpHNBS9dDMTqlpMN+e26
+	JsL9DZ3nkh/4sHS1xWvZR/jl+Vz4O/c=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48576600AD;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9BE15600B0;
+	Thu,  1 Jan 2026 22:17:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696F1C4CEF7;
 	Thu,  1 Jan 2026 22:17:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8A2C116D0;
-	Thu,  1 Jan 2026 22:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767305866;
-	bh=FTfdEWcmOb6DfQTJTbI0bpXWltHwgECxQBbZ31X7mYQ=;
+	s=k20201202; t=1767305874;
+	bh=OKxr66AuTYpmtINGeWatnOeeLWTfC6xUU/wfI1fZOeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tkk9fQ0YxqsER1NIYCYAosngscJ4AdypdNtqtaJFGu9GcutE6+K3Jp7bcDA3NQOcH
-	 Xytzse9mx5JPmfO5GyVTdWYK5YFWOq2SOa+0UwmyekzSxNnR7H7CdbRcJ4wn0VUcE2
-	 BloJ1HDGpQYHr1o5ne77EZVEJFAMqZcvAJcxkkwqW+6RYgONx6ovugYS5UJbc3MsGQ
-	 46al2/dLj9svm4BceMLmrQv7cEOqWMDC/MJ0Nt9QJs9G8/f/CXDGVdlkiTDzPCRHIu
-	 d7zSfba6m/XDB0RQczXhePFboKDtAaVIaMnukN1N41tEjfibT6WhpuV5u4rwIUmoUh
-	 uDHS7oRP2rgHA==
+	b=k3tzAh1qqBzEdJr7W13PBSjlKJJ2OZj+v1bk3WgK5Y/gMgiJhnOqkbzrE4d5fNn6r
+	 3ihlWEqcfPQ/esrNTdCUpshwQlHu06VG7Fg8ddHxFPeJyiGDYP6VsaEe7AtkYGFNID
+	 7bW3zS0Mk2L74PT+vdla6Mz6/0qfIdMkfBICDBxermqoh+GzMfbu/cvTlTD1Um7KNG
+	 qADGnv9N68YVfnTeHvZRAP+S2Gd2w3P6I51mCUa2XTbkMdiLCDF9BPwbcddsZ2ehdj
+	 ZdhkVDdGYr4dZ1sqs2Pe0ofLfYQE9v4eJ/Tk1J3wPU7EWgXsmp45dISB+MYVn2h/GZ
+	 vonDrbTOK4C9w==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -102,22 +102,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 26/33] kthread: Include kthreadd to the managed affinity list
-Date: Thu,  1 Jan 2026 23:13:51 +0100
-Message-ID: <20260101221359.22298-27-frederic@kernel.org>
+Subject: [PATCH 27/33] kthread: Rely on HK_TYPE_DOMAIN for preferred affinity management
+Date: Thu,  1 Jan 2026 23:13:52 +0100
+Message-ID: <20260101221359.22298-28-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260101221359.22298-1-frederic@kernel.org>
 References: <20260101221359.22298-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B36784000C
-X-Stat-Signature: j5rfwk4xyt79db4gf9anw1oogoxuodx4
-X-HE-Tag: 1767305866-997108
-X-HE-Meta: U2FsdGVkX1/reiy/OcdpQUobxSM5HnT7qazrq4N2y+LpDPehfRKfW8jD32j15Xeo6vQsGlBNXul0+QIKXPgf+Jqgw2aM2DVQbr2mXG07Dy17N8j5qwhNDRXWzEUrLUAOoRzXeKnZEtOEibGuLP/94684kp+EjnFzpzfcUVWQsSDA5q6eRHNtdKdeZWWwcqyJSB9VU++NVGIGTcBsXzUL+l81Gl0ujdWUlJpznG4PP+R4UFC/JgAFS2OPkLG3kCayHvQDfrVzTvO4in0x3w48PH928wz+KkA/83ccSsRB8E2Pfmmu4SWb4j6wjlKBvAfStFDRj4ZppVsuKcmkZoyOS3ql8b/nRfRU4S2PmMjTZK1fc3OE5mOo8FVUUEr4oGTQiAjgKt2sUNLvfQ5Bh2BbaURIM4Lqaxe4kzb1yuurqZZN30g3XY7TbIN8IN1iS7L62/SQslSYW/mH4ACwkWnlFBTfedQIl4kqKVUB4+RZS5n+IIl88bdZCsSf5/2hzGV9GMtCxcDX6ZCGX9+3MlDQ1egIlYIyT9CZvKCQMDuxGMdOYEGQrDiJ3zgo8r4s3RwBvwhkohXFqRDFk2q9vKRGFLkZKlyfqAJiOapu33iRL0lNM9/tvXwvNd99sQXOT2Fxubc7ta1QLrxvHIdsZCPsY5AsiVG0cwD58gXm8SU7Ndd8srudvoEo+wGZihF4d8cGdCZwoaatstBlVmAHF0jKvwOkwJ2gr0LpQNGYfOenMb0zqqIHEQRyD/o0HAeFCF/BZpXxTxNqx93TAQsyd2rwpLINzIJOiJ/YUdLJzup1dX20rEii/x4L6bP82xUa5OoREynAwauq4mybknUpLOwVXc+737yme7LYU5HxYBqMWwLb2By4kp8vTYwMC7C82V/AT5e7WeE/V8CinEDEfzePXOQ3sqQ3a+aL+PIbvPPw3OvDGRSTjijhJXPVPZA9v1kAQKlaaJg2eSAEw/HMb0J
- vjvXBVhO
- dUZm7ckQsa3jjjyk++a/kj9AJKloutPWJzouKYC4WKFfRXQPt/iZpFSw3iUJ/zd39cMPsXAMLsjWJDf9qz0vFKMeZQUlqm2MBAWDIAgQPKgC5prI5Cbt7Gr9JuOuKJAe40+lHcvOrpKtquInGFowkxZnnNUVXkrlEdnL9v5oH4/F2FDfV0oeIwj2WNgZvvfWPlAi9T6KJaf3btZESYVF+X5DMe8EtnqzZs9+teeXP4dkVqJFw1+eCLCxT5T40cGpMamug45DgcfSlV+jvyKUpPew0jA8aG0Kh2Fz9
+X-Rspamd-Queue-Id: 1CE5CA0008
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ckdha6s8i9f4a74nijueqn5iz1db3wio
+X-HE-Tag: 1767305874-311805
+X-HE-Meta: U2FsdGVkX1+ZTJOjC+cXFY/HqzMD8pZ8udFK4maG9G6Jj3J13v2kw7ciIp0eBGBPRZcvEeSKuGO4JGd2nQs4OCNvH4c+hRoHK+3cDJuFTuWfcPmghJNkLiQTj0uWMx5MFKLRNBbnbRnOG+U2UWDIyLLZ5PjOgaO4cKgJVPlfI1H2lUfHUtAmGiWwPuqNuVRKS4I9dH9FtJmJt8rkJMamAhDmVVn6O7aJ33FoSfn/NJmJLcidruLRtEzkwaoljQC9EEKB+KeK9kKVV9V591Cxcgl/wiwRkCSzCdm/e7SdEpczjDQy7hkNc2+aGQU8PsYlK2kGmMt6E+xLMNSYwIRlWLs3eIoJW2ZQn58eb/uB8pIBA9gdDRe4gx0xune2b0h9zhzqXsKmVacJLp26jayeUjjOWsaB4DWoUd8dLyzbw6ywZBXA3IjcveYXw1QnU2xasnT1EX0wdp58mlF+91wFTfOt9FtdmaK55zXNx+yVtjN2WcoMkUMtdkel0zosqfPB7XG65QxulLjElqrxItRQK6Q25L/eHQbJqi/xNSf5N2u7WjWfl9EgIsmiOE2daJ/wY1jeGb5y2DPNz7yLltD0fk/5TMtKS/9eM1O5mJrqWIYmJJ0UdrvKpeA0GfbVG0DJ2QDKUKFcuHaWfzdHunMqzXxYdmuQT6XPBqC0RvrXaThDou/WzG6wdrKrKgvcl097UqpzPB+thq52C3zPYUr1AjyqYvtPc040ZqunDUwOz5n2R3NE053hHLNIInQ4X6zBfLHeKU+mdCxAzeprWOP53rchA8cUz+FQ2LfQHdIjYFla6x80N8SxyR3M9r0DHE4VFafvBca6mWLjTIq12GUOq3+CMOma+csIN1MFuOUdoh64XJsT8YvwTbO27nB2/yY5vNdgK9iwZZ+1G6U7x1jGVuRv1mFKu4pEtwFwr/Iv75UbSPd7YADnaiAYfdVg7F9viy9NLsbk9vdyvI43HDe
+ tsf++/H9
+ rQ0cPM3VskaxuyNfygJxhB/iFqiNSV9MLo/BVsSVRhR6+JkPBA11Sb38y1BcGNPQa2/Z0JmyLbXzJ929eG01uOb8np5fvCCzzpOpmGb9WQ9in1cOHa2xriUF08ecplQLC/EstPohaNJVSPgNsfycpC+ZU97cR/s+1Abe0lm6OcEy8lzwsgXKyXBwRLle8N8vFwJzsibH7jEdn1zUWrkAUIXdeVj1h0cvrkNjMB5tzHw6jCynqNgkfctJY6T1HVNmDcj4HnWOl81Sp+bRQRPlquecn1HLNG1ayNYdUHS5H1+IQfLHhXcIgK/mEgA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,36 +126,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The unbound kthreads affinity management performed by cpuset is going to
-be imported to the kthread core code for consolidation purposes.
+Unbound kthreads want to run neither on nohz_full CPUs nor on domain
+isolated CPUs. And since nohz_full implies domain isolation, checking
+the latter is enough to verify both.
 
-Treat kthreadd just like any other kthread.
+Therefore exclude kthreads from domain isolation.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Reviewed-by: Waiman Long <longman@redhat.com>
 ---
- kernel/kthread.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/kthread.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 51c0908d3d02..85ccf5bb17c9 100644
+index 85ccf5bb17c9..968fa5868d21 100644
 --- a/kernel/kthread.c
 +++ b/kernel/kthread.c
-@@ -818,12 +818,13 @@ int kthreadd(void *unused)
- 	/* Setup a clean context for our children to inherit. */
- 	set_task_comm(tsk, comm);
- 	ignore_signals(tsk);
--	set_cpus_allowed_ptr(tsk, housekeeping_cpumask(HK_TYPE_KTHREAD));
- 	set_mems_allowed(node_states[N_MEMORY]);
+@@ -362,18 +362,20 @@ static void kthread_fetch_affinity(struct kthread *kthread, struct cpumask *cpum
+ {
+ 	const struct cpumask *pref;
  
- 	current->flags |= PF_NOFREEZE;
- 	cgroup_init_kthreadd();
- 
-+	kthread_affine_node();
++	guard(rcu)();
 +
- 	for (;;) {
- 		set_current_state(TASK_INTERRUPTIBLE);
- 		if (list_empty(&kthread_create_list))
+ 	if (kthread->preferred_affinity) {
+ 		pref = kthread->preferred_affinity;
+ 	} else {
+ 		if (kthread->node == NUMA_NO_NODE)
+-			pref = housekeeping_cpumask(HK_TYPE_KTHREAD);
++			pref = housekeeping_cpumask(HK_TYPE_DOMAIN);
+ 		else
+ 			pref = cpumask_of_node(kthread->node);
+ 	}
+ 
+-	cpumask_and(cpumask, pref, housekeeping_cpumask(HK_TYPE_KTHREAD));
++	cpumask_and(cpumask, pref, housekeeping_cpumask(HK_TYPE_DOMAIN));
+ 	if (cpumask_empty(cpumask))
+-		cpumask_copy(cpumask, housekeeping_cpumask(HK_TYPE_KTHREAD));
++		cpumask_copy(cpumask, housekeeping_cpumask(HK_TYPE_DOMAIN));
+ }
+ 
+ static void kthread_affine_node(void)
 -- 
 2.51.1
 
