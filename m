@@ -4,119 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA45DEEB57B
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04C4DFA3722
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:44:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 177CC6B00D0; Thu,  1 Jan 2026 17:18:48 -0500 (EST)
+	id F092E6B008A; Thu,  1 Jan 2026 17:44:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12BAE6B00D2; Thu,  1 Jan 2026 17:18:48 -0500 (EST)
+	id EB6796B008C; Thu,  1 Jan 2026 17:44:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 058326B00D3; Thu,  1 Jan 2026 17:18:48 -0500 (EST)
+	id DE0ED6B0092; Thu,  1 Jan 2026 17:44:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E8FBC6B00D0
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:18:47 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC16B1AAE05
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:18:47 +0000 (UTC)
-X-FDA: 84284810694.01.3B2C46F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5D54EA0007
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:18:46 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ch0+O6T9;
-	spf=pass (imf15.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C8C416B008A
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:44:25 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7B35A13CD53
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:44:25 +0000 (UTC)
+X-FDA: 84284875290.12.B72D7B5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D7D834000D
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:44:23 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ekkAZUz4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767307464; a=rsa-sha256;
+	cv=none;
+	b=Qm+ltZw+6r+MhVsh/0qgC2UeTio9FBE4UdW8xcX2V3/h6y6ZF9dLFYFXXt+hobYmoVgTuS
+	lFnA9Cmju5VaJ/19fp2nIS9dTUmGXs3H9bXQxU9nDX6UBO3xnuKv8IhD1I8PMclo5Qhtwg
+	ZKO9fRL7/KKWgjNVAw5Zet2DEwczu24=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ekkAZUz4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767305926;
+	s=arc-20220608; t=1767307464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iMEZtpjkMJvKy0j2B2A5Z2PL6g1rPUGZICiE2R96ChU=;
-	b=U5m25TPdc/qe99acxf+IRsL6xeunYYqVtNPLKPvNFaCUQ/anoDKoGZ38byP4GkUulgkrIr
-	Cf8XGGPrNRfSKuWMMfK3IYYrQ5ZwwV0pDzylR8Qfdc3SjnO0pV4CmFQddS94zm7j83HwRb
-	zn4ernJPD8lOuTAPPO4SJCMW7YJvw3c=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ch0+O6T9;
-	spf=pass (imf15.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767305926; a=rsa-sha256;
-	cv=none;
-	b=qgIRo9iavh98+uptTH+q4+A3znuCQC6dOfyUuBpyOZ9iL6zx2ObE+4U+nUZxfr/a3AF/GN
-	tiIVBfRE/EWXcCTx/rj4bjyUun/VzKyNgz2ugblUlA0uhRntef/w4OkBWi54zMlHvccqVw
-	+0QJ9Kv5oqlekvn+vlK0sgOXJCi8Pow=
+	bh=1En3gHtrluIkdGd+I+3BxfPoxcccIM47tFRmGmdoIBM=;
+	b=w/rfdcMUmlDpZDWQVsmwc/vWFJVSpRksraoe3hKZVXv4FrVNUa5UiGtTtjZvsmKf6QRmlT
+	NJmZMhBHa4ckqe6YXdEs4oZ9NCopw2tMiMCOw7MbvQw4jeBKfzmUpkDoegQv3JAN0HXRIj
+	SOjGMN2dhK4R0sQMxQzgrnf/vmDRzzM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A121960054;
-	Thu,  1 Jan 2026 22:18:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5258EC4CEF7;
-	Thu,  1 Jan 2026 22:18:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A5C774432F;
+	Thu,  1 Jan 2026 22:44:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5585EC4CEF7;
+	Thu,  1 Jan 2026 22:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767305925;
-	bh=soOg+pSguRYShDvlBT6z+CExBTh9mpEwKqBDpU+MvVA=;
+	s=k20201202; t=1767307462;
+	bh=XmjtJHTHxjwd7ITB1Y0Try2fxeiVf666M3I/4f/D41c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ch0+O6T98cz7FFkRIvS/lrnNxuwEZVtNVKFC3b2uDV4OOAyrOCUNOhusqCS6JNycr
-	 JUpM4y18xsCFl5PanmWQQ56Xf4q84aK9WKNz43EhMZ1cwGEt+l7YTfU8aIyG79LZFm
-	 umUER4Ke8sqCA4evjdGE7hKCxtUMzlRqiHgbST3rqhEnSWxUWB0Ay/pY7a418yRReV
-	 VyWeUpgJ1b01hgn0Knsfb6k0nIunjAL6AWFL2SPFbQ9xuquSJrz5ncySl9dYIZ6+Q+
-	 kw65NtkT6BzpNxo/bs+0zFugLdB4vJmfSkrCoHMfujB2EbbJKcG3Fx7qcV66bUr8Dx
-	 F9u1AJrAhWhAQ==
-From: Frederic Weisbecker <frederic@kernel.org>
-To: LKML <linux-kernel@vger.kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org,
+	b=ekkAZUz4NtXIlXoQYj8OIW3Ny0kLmMRUdRxjI2M9tkYMEN5kVdmyOScLzB0jbABYk
+	 bWiwPvEy9nMFDuE3O93YG2GTzm4+FDCpvJdT9G7NOvPZNhRxA7NDwBID0BdMMbkPRB
+	 JoFgxnnmcV9mczNdNYaj3L3HZnNbsLxufAgk2eKEnnMCjUFEq9YZlve76X5ZkyxpCV
+	 nyybnFKdRlSA4ReGnaemO5vOSKuTKwdiwHIucmEYKc0GPn0brNVOwbWhDUBKcgg8BD
+	 ghccf0+kND1Lrs3pY8PKIYt2MDP2uZO7EIrA1zn3qdT373u93tU5rd4WhaIVz/mQ3I
+	 pT9LpCKjI5uPA==
+From: SeongJae Park <sj@kernel.org>
+To: JaeJoon Jung <rgbi3307@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Asier Gutierrez <gutierrez.asier@huawei-partners.com>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 33/33] doc: Add housekeeping documentation
-Date: Thu,  1 Jan 2026 23:13:58 +0100
-Message-ID: <20260101221359.22298-34-frederic@kernel.org>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20260101221359.22298-1-frederic@kernel.org>
-References: <20260101221359.22298-1-frederic@kernel.org>
+	linux-kernel@vger.kernel.org,
+	wangkefeng.wang@huawei.com,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com
+Subject: Re: [RFC PATCH v1] mm: improve call_controls_lock
+Date: Thu,  1 Jan 2026 14:44:19 -0800
+Message-ID: <20260101224420.73826-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CAHOvCC5Frn16MiaP7AjzvJNPfnGXyjcWmhtwNnKQzXwz3VUL9w@mail.gmail.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: whxfjtj66yurryq54hehn4qe17q1hg8x
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D7D834000D
+X-Stat-Signature: oyu8ikjiipapjo78byyojh958r5ti3am
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D54EA0007
-X-HE-Tag: 1767305926-109777
-X-HE-Meta: U2FsdGVkX18EyThJAlg3oHgyepdj/4wgZoKBl6Jkcokz9qGosdysM8aoRo/WRNqnRWhQgSs7ve+7CiPbes6SJzKQltg+BF0u+Viv+OXIOw06tgI9eKucPEehDnpDn++DAnlCq/yix7l3pSOxYYCQmsCO/z/AI0Pm3H1W0FHvqF3n4scdAqnoTbr+UPn8sZS3xmbDIXyQl9g/gbymgjSt1905UwUBccYR2lu+imAHr+sJnMlcBZAWM9552R/QrzidiijO9lHfifL56EU7MY6p8uHqKwGlurtkV6d1uBihtWYZ8fgL2TY6qYbJ8nduY2ja8RaYhELyRZvlBBDcqnLN8XG5P+CKLA4i9J+har/Q5MwBMOZh36s5xTXKf+Vbzas8DAcQfL7nJ5BpKWViE+guZ3tko30vSzwKvD3XyD+Ui3XT5pcvzH6JUTyK/k/phLc6BwvISxxZGnDLQadv6607xomFK35yu90M9PvyItYf6u17OyvwKk0i/NMtt4iG4+Q+R34C9SQTL9cTGPoCqzsUqJ8wDYvgACDmqxwDgW+MGXK4jDY/Fdj+13CbeY20d4rCSRth+g1OuNcitKrQkckyW1dWOCBKbjq7WS0ZdAxm6DshT3GfGFeL8OwvkyROgKF8GR9juBIJF7EEzDmCSRUmUhyIJ6z8GfEvR4qW9HxDoatb2VYYyiSNKwOWWzodH+tGO/i/f11vJgQuo4+MhenitOWAHcr0s7FXvhZ0NP2ohY4TBARq+uqI3qU8VAdWtV3Y062Hy7LONN26iJeuE8dA9Uc+crnpwxqiD3/zRT8tWYvMbHZLfFe6gE1FZgHC95ES+VKE8Oz7IRlslzRpMLSzAITFu4IXb4hQzPeDip3CSwuBoa+Msz4GpAcoVym2qsjey4s826UImks=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1767307463-867674
+X-HE-Meta: U2FsdGVkX1/3Lbd7frmezP2slAkhLJspb8TX+UN+8peheJMIeh1vGy7tpJzFvkw+IWCkCm1u1TM8IhB8UYqd7jRMJZY5rwCbM3llXT4eeyHla3nN5goAcZzcmM95Nvpnb3cLqO4Abw3o1ywC5LT0lwg6m/clhRwjVhxW9pBbEX8QiaTl194jezHJHCjInpxTV6Y3bGLvdSeCpQRQLzhngvZLkoTYsI0c5fAU63bsK8fLXbJ7N1zJVAHOLcHEUbHuJ1rwLdCMnuBMmnfNoJIrQT5eWQD1oLiLexuRIztX8jz61Z7eWflsa1bGYofPWBocQWAuEaASlXQJuGrmRxaPAma07m9XLrHd8qMGs+50pgtxGReyWm4gZBkBPVqdoZ0jKGct8orjq/uEqQo98DmENNYvCJnl3MEjvDfXKvJEKLgagkxsOK6kT7HGdUqcLMIQaZkuLlmsJ9jOFRzgHLVR+HziKqz0GebfBf+VRjPoKySEFB6C18t9qvKsggNJTzEb3t094tZEJiXJV5hf88JzyZPAlNK+N7A2SuSzX+js30HNF1SieOGtxOHe4wEGcSwlOf9tqEiXimYMw2bWrrCOIH2MZsO90iioidwuIhD6nXFWvX28QLMRJoU3lD8X/S/tNfL21E8bQt1udtmbC0Uh0wbXDY27eCBKlgStGgLAi940K+hHQqP/f4DdA522llLUmmB/qA2G2to4TDu2CrIlo29J/v6Bd72QHm2j5oUl0kZqD3FMRsfEx3MpOqTI24a4orkswN1l76Wmj33NomkwDLFCRDa7r3uKESZs6jvzw/70jAv+afsjE+LylAkrjmzl1GSLg7xWqHIV4WKIU6OdPnYyeIoDQOkPA87qsV4zJHHQN7QwYYBoqH+pZqT+wEmo6K/Drvqp3Bx4lbJqbPvJcAMCV/1WYYdtv5RVuCk2XV+ceMuySqjxZBRIbJOk7bDM
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,144 +96,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
----
- Documentation/core-api/housekeeping.rst | 111 ++++++++++++++++++++++++
- Documentation/core-api/index.rst        |   1 +
- 2 files changed, 112 insertions(+)
- create mode 100644 Documentation/core-api/housekeeping.rst
+On Thu, 1 Jan 2026 11:34:13 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+[...]
+> I'm sorry, but this conversation has gotten so long that I'm getting lost.
+> I've given my opinion, so I hope you understand.
 
-diff --git a/Documentation/core-api/housekeeping.rst b/Documentation/core-api/housekeeping.rst
-new file mode 100644
-index 000000000000..e5417302774c
---- /dev/null
-+++ b/Documentation/core-api/housekeeping.rst
-@@ -0,0 +1,111 @@
-+======================================
-+Housekeeping
-+======================================
-+
-+
-+CPU Isolation moves away kernel work that may otherwise run on any CPU.
-+The purpose of its related features is to reduce the OS jitter that some
-+extreme workloads can't stand, such as in some DPDK usecases.
-+
-+The kernel work moved away by CPU isolation is commonly described as
-+"housekeeping" because it includes ground work that performs cleanups,
-+statistics maintainance and actions relying on them, memory release,
-+various deferrals etc...
-+
-+Sometimes housekeeping is just some unbound work (unbound workqueues,
-+unbound timers, ...) that gets easily assigned to non-isolated CPUs.
-+But sometimes housekeeping is tied to a specific CPU and requires
-+elaborated tricks to be offloaded to non-isolated CPUs (RCU_NOCB, remote
-+scheduler tick, etc...).
-+
-+Thus, a housekeeping CPU can be considered as the reverse of an isolated
-+CPU. It is simply a CPU that can execute housekeeping work. There must
-+always be at least one online housekeeping CPU at any time. The CPUs that
-+are not	isolated are automatically assigned as housekeeping.
-+
-+Housekeeping is currently divided in four features described
-+by the ``enum hk_type type``:
-+
-+1.	HK_TYPE_DOMAIN matches the work moved away by scheduler domain
-+	isolation performed through ``isolcpus=domain`` boot parameter or
-+	isolated cpuset partitions in cgroup v2. This includes scheduler
-+	load balancing, unbound workqueues and timers.
-+
-+2.	HK_TYPE_KERNEL_NOISE matches the work moved away by tick isolation
-+	performed through ``nohz_full=`` or ``isolcpus=nohz`` boot
-+	parameters. This includes remote scheduler tick, vmstat and lockup
-+	watchdog.
-+
-+3.	HK_TYPE_MANAGED_IRQ matches the IRQ handlers moved away by managed
-+	IRQ isolation performed through ``isolcpus=managed_irq``.
-+
-+4.	HK_TYPE_DOMAIN_BOOT matches the work moved away by scheduler domain
-+	isolation performed through ``isolcpus=domain`` only. It is similar
-+	to HK_TYPE_DOMAIN except it ignores the isolation performed by
-+	cpusets.
-+
-+
-+Housekeeping cpumasks
-+=================================
-+
-+Housekeeping cpumasks include the CPUs that can execute the work moved
-+away by the matching isolation feature. These cpumasks are returned by
-+the following function::
-+
-+	const struct cpumask *housekeeping_cpumask(enum hk_type type)
-+
-+By default, if neither ``nohz_full=``, nor ``isolcpus``, nor cpuset's
-+isolated partitions are used, which covers most usecases, this function
-+returns the cpu_possible_mask.
-+
-+Otherwise the function returns the cpumask complement of the isolation
-+feature. For example:
-+
-+With isolcpus=domain,7 the following will return a mask with all possible
-+CPUs except 7::
-+
-+	housekeeping_cpumask(HK_TYPE_DOMAIN)
-+
-+Similarly with nohz_full=5,6 the following will return a mask with all
-+possible CPUs except 5,6::
-+
-+	housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)
-+
-+
-+Synchronization against cpusets
-+=================================
-+
-+Cpuset can modify the HK_TYPE_DOMAIN housekeeping cpumask while creating,
-+modifying or deleting an isolated partition.
-+
-+The users of HK_TYPE_DOMAIN cpumask must then make sure to synchronize
-+properly against cpuset in order to make sure that:
-+
-+1.	The cpumask snapshot stays coherent.
-+
-+2.	No housekeeping work is queued on a newly made isolated CPU.
-+
-+3.	Pending housekeeping work that was queued to a non isolated
-+	CPU which just turned isolated through cpuset must be flushed
-+	before the related created/modified isolated partition is made
-+	available to userspace.
-+
-+This synchronization is maintained by an RCU based scheme. The cpuset update
-+side waits for an RCU grace period after updating the HK_TYPE_DOMAIN
-+cpumask and before flushing pending works. On the read side, care must be
-+taken to gather the housekeeping target election and the work enqueue within
-+the same RCU read side critical section.
-+
-+A typical layout example would look like this on the update side
-+(``housekeeping_update()``)::
-+
-+	rcu_assign_pointer(housekeeping_cpumasks[type], trial);
-+	synchronize_rcu();
-+	flush_workqueue(example_workqueue);
-+
-+And then on the read side::
-+
-+	rcu_read_lock();
-+	cpu = housekeeping_any_cpu(HK_TYPE_DOMAIN);
-+	queue_work_on(cpu, example_workqueue, work);
-+	rcu_read_unlock();
-diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
-index 5eb0fbbbc323..79fe7735692e 100644
---- a/Documentation/core-api/index.rst
-+++ b/Documentation/core-api/index.rst
-@@ -25,6 +25,7 @@ it.
-    symbol-namespaces
-    asm-annotations
-    real-time/index
-+   housekeeping.rst
- 
- Data structures and low-level utilities
- =======================================
--- 
-2.51.1
+Unfortunately I'm still not fully undertanding your opinions.  But I understand
+that I'm asking details about your opinions, more than what you can answer at
+the moment with your available time.  It is unfortunate, but I think asking you
+more qeustions will only stress you, so I'd like to accept this as a
+communication failure and simply forget your mails you sent so far regarding
+the fix of damon_call() uaf issue.
 
+That said, I believe you made huge amount of effort in spite of your limited
+resources.  And your report of the damon_call() uaf issue was really helpful.
+I truely do appreciate your effort.
+
+
+Thanks,
+SJ
+
+[...]
 
