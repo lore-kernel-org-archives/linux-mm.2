@@ -4,125 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7000EEB573
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 02:07:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81108EEB578
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 02:29:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0460E6B0005; Wed, 31 Dec 2025 21:07:21 -0500 (EST)
+	id C605B6B0005; Wed, 31 Dec 2025 21:29:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F35DF6B0089; Wed, 31 Dec 2025 21:07:20 -0500 (EST)
+	id C0DFA6B0089; Wed, 31 Dec 2025 21:29:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E38EE6B008A; Wed, 31 Dec 2025 21:07:20 -0500 (EST)
+	id AEFB96B008A; Wed, 31 Dec 2025 21:29:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D005D6B0005
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 21:07:20 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7588C13C7FE
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 02:07:20 +0000 (UTC)
-X-FDA: 84281757840.06.FEFFCD2
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 71B6C40004
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 02:07:18 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bC4Eef1F;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E2056B0005
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 21:29:50 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3F9D21A1371
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 02:29:50 +0000 (UTC)
+X-FDA: 84281814540.20.B79D5DD
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6B006180002
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 02:29:48 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HEkiB62v;
+	spf=pass (imf06.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767233238;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1767234588;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UQBF0g7LGMkaWXJONFj1Zzubf3JQP1KLJgb8Ha1McV4=;
-	b=ujmsD73pcjlQc0VjGFM0eZJS2r8kR8zByGDL2FRxh9QrzgM/pQl4MqL5xFTLDmyWeWEbC1
-	IjwvFAJrRoE9+gY5wdR44NUapJ7lXpdGNCxDjQ4fS8ABh+0qc/DesjjXkXot5YhCgcBOtv
-	cAIkpk+hfsIQWrPRcACLwIQik/asL48=
+	bh=PQu1f9JiOtEXcxDEjSyvzzCwSzsVZVs8NmEMoX3qCAc=;
+	b=QOBw/0QWgALywEFhjq5yutofikGvdwaILoomRbMXLWYRbiHc4Rh0BGlkkiN/JWXATqShQK
+	l/tP016P99xqIRhgmG9fkTmysjfImZ5YGvkN2cAk+jZVLkCLbt2FkTSNVS9Vi0WDUr5ucK
+	8RvHK7gM9vydY08BnY2OPgRMhV3wEV4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bC4Eef1F;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HEkiB62v;
+	spf=pass (imf06.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767233238; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767234588; a=rsa-sha256;
 	cv=none;
-	b=lniqqYCJip8On9pbJz8nlxUMRzZTBoZuySBrBTj4j2oEdEnFNQ7CEbSxIXT45eljoFxIYM
-	j8visDxu89/hRW4LAmhCUtD+zmn+Jc1sk05fRl41J1VEonuCFMEa31mDGB+Uq39SE2/kKz
-	D6y5U6y+kR1FRMHT4pgLLasepvpXcWs=
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b736d883ac4so1883810566b.2
-        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 18:07:18 -0800 (PST)
+	b=U5Wb9mihKSzZ1PYRn6Q43zLHQrncrQF9zWqyxxX9wzcUFClPaUSi+kj1Sl+6lOdttxVnuS
+	fchkJ2ES3SfJbl0ANX7IwSq1skABo9oIbfS3B6YxoPyT8vpDKUb6hW2Y8pa7Lqho5WUu9g
+	M2/EI8TbVDmNhB6xHb1ffoVHeF5S/SI=
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6455a60c12bso10385272d50.3
+        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 18:29:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767233237; x=1767838037; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UQBF0g7LGMkaWXJONFj1Zzubf3JQP1KLJgb8Ha1McV4=;
-        b=bC4Eef1FuySt5nh3pYNeedDQd+MsGOqcKlZ3i3fe1fL+FbTK1xsNUKJWoIS45ci+A9
-         AyTmFkrfly4EdeUNG1Nz4QjtS0jhGYwg/9LhWjYOQSQMzMvSIOoon06urusZ2H069oZM
-         SMDniKhQ+Tznd4OMwC7CcElJAllQkxEiPqGYpxksYIBJUQkXhU0rYdihmkQSz86AD5yj
-         xukF+7AOS6j+Mi1ZtbITSNBtQ/FmLwM0gCoXAQnLR1P5Cl1cmCt1+0bXm1hE2oshVeI+
-         IHjiy0YZsxgea6wd/8DwyPCfSsAn8JMNCnV2x5xwSHIq9fohZXdRKfZKzWLwY2X2IIcV
-         CzWA==
+        d=gmail.com; s=20230601; t=1767234587; x=1767839387; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PQu1f9JiOtEXcxDEjSyvzzCwSzsVZVs8NmEMoX3qCAc=;
+        b=HEkiB62vvofPWorBq+YqfwV0JHxHH3eZ2wpHT+wu+cS4VNRkBCHIveKNQSxiRktz6d
+         h6nzb93VPPvU73iTeCUlbdS0gHQvz/zHzmeYkLf4UECvqlx/tUfmA3CDBbjkIRH7X8Vh
+         bKDlDiWMPNOTo+chRdZnqfWE6qOdtZwlVqz9urcJI1zGrd8S83O5JE73Y5lHrV0OvuIj
+         OyqhMDWBRrQJI6sIEwNPVn6KX1vq7+raLJgkqlllEarxQSQSn1f81Mxfv8uP+iaEXfld
+         uE7z8rLSLavHYCl/ZZAewqlYTwmrY7XKaKzYrI0gGqm7uCbRvBAyRB4xc/XSjSj54Itq
+         RTuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767233237; x=1767838037;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UQBF0g7LGMkaWXJONFj1Zzubf3JQP1KLJgb8Ha1McV4=;
-        b=qK+ZACi/XYaIvucYBfZnb+v1MEl8dTM9csxyDpHxapwqIIlzXufGDM5UlHxIoisokD
-         4MpqXy4O+Xy2Gbk5toro8zSPYlfYODMTGrFXKQOcVlZDCesbIOxrtR5wxd5/0aW0AH5f
-         xVIM/3iULiY/UrMld4AX/G57lLBoIoPamZlHigql2XKT7Hl+VP+rh1513wdcKKm5UVF3
-         vIjugW6xavBGY9pX4qxsU1mb7tYKhzLE2H57VuquhNBAMwChRTywV2PQu4JquZ75oMgX
-         s1HH0QEpldMVIyHi6uN0OnBkUvmONedFprxRbu3c5algCVYp8mS7Mr3L2l6yqi9258Ya
-         FDtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWufw1DHRtFWLSV8THuU1/RzH3FIj+0T0kh4KNps1bQdXNVrkDeHgdMS0JZ31odiZOnKp2tErsnOA==@kvack.org
-X-Gm-Message-State: AOJu0Yyxqd4D8wh39k/z88UueefGdN6UDEMnA9H7VwvCl8ht+KeUT/au
-	s4XPzPiUoX5TvyrqG/j/tJl9qBVpKRRy7lW1v37NTxpMNDxmK+qtla20
-X-Gm-Gg: AY/fxX7bvRIB82BhofTcFx7ptsOJ8vLWItOhlQaL+Xb8A+A7T/XIBzr4mvACBqYgzUr
-	c2003d13/AMmeBYOaYMcYKP/1juDXX9isEeZ7jlPtArMUjbXMu5AntUZVpUhmgALctI/sy1fwds
-	7rwgs3hXN45gKgBL8nLRyZl+N62UF8U71U023mezs179abjUTkRuYSS65KKaNdJSbakVIEezOyj
-	0ktsnPXyZClXcT5nKvVIilJ1g+9xIj/RCuGEtgMIQNbUyDJBXOtmMAF4FNVSqO4QDaTzcLDX3Xm
-	TPY/S+oLMXT/gmJ9GddcJgyf4BtAoCXUn8fbBEnNvt4PvJ3C70/2kTJ8vt43S+gT54xBZea0ER3
-	bv07OVK5Txu3JApzMBEkSouKQDY3f9EmguNemGoHmBDXgG0QmBA7QwsesgzgbPJ3namyannnsCE
-	TO8gkFCy3pHw==
-X-Google-Smtp-Source: AGHT+IGkCnh9dqfLUptvpy4PZGXmScqGnHYP3DGjjwJuJ8br2u0RfwesNHaEMQG1tTnLLwW9sFl6GQ==
-X-Received: by 2002:a17:907:7f05:b0:b72:9961:dc04 with SMTP id a640c23a62f3a-b8036f86950mr4237184166b.28.1767233236739;
-        Wed, 31 Dec 2025 18:07:16 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b910601c7sm39251595a12.14.2025.12.31.18.07.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 31 Dec 2025 18:07:16 -0800 (PST)
-Date: Thu, 1 Jan 2026 02:07:15 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: Wei Yang <richard.weiyang@gmail.com>, will@kernel.org,
-	aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
-	dev.jain@arm.com, akpm@linux-foundation.org, david@kernel.org,
-	ioworker0@gmail.com, linmag7@gmail.com, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v3 7/7] mm: make PT_RECLAIM depends on
- MMU_GATHER_RCU_TABLE_FREE
-Message-ID: <20260101020715.45wqnjgcklvjcth3@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
- <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
- <20251231094243.zmjs7kgflm7q6k73@master>
- <a3a60bbb-70b7-49ed-abc6-937e6c13d681@linux.dev>
+        d=1e100.net; s=20230601; t=1767234587; x=1767839387;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PQu1f9JiOtEXcxDEjSyvzzCwSzsVZVs8NmEMoX3qCAc=;
+        b=YxHLB6qKmosmsl0bxf5L2zXD+KTQt20NKMxhPYhhiQpwDcEGCu+AFeWUVt25IpVOhD
+         PlcQavcv6ehnXbgCMsmLUDgUhsfeS1QzbmOZVMJZiigm9ArkjOAGgU9ah2JQgBxz735l
+         9pARpUwe8Bs5ZcwX4Z0en4HFK8ZphKKnuoV6xGp092BKyMyJm5usMcVKzUqT00wkcOwG
+         NC+F0mmpTB2uWLH1wxA1QW66kn9SL9WRRj/q6mGaI+KNE2QDFNMCF2WRi+mNboxl8EPs
+         AXdpyO7tLD0Qk4a/2Bm4hy9ST8MrLwlRd5GFUGZ8Hdvce9me/LWHNAWSzjouCZQfIAlg
+         a8cw==
+X-Forwarded-Encrypted: i=1; AJvYcCVpGdopVmq0fqbHyxteBMBkpenwuk6KTlTpvcJWBkbRUjBlniAKUh0MMdl8sN8J5XFbZVXh+KNy6Q==@kvack.org
+X-Gm-Message-State: AOJu0Yxdh3NLwzqokSAUi/oRGrrQztl5w5zAukbVB6UV7ibduqyot5qW
+	b0HiQIWw1V6qZwH1HSRSC7Ie7IYkajwyUtJP2GI6U3nBNhwxVvvsmM/J4WWu6oAgkwtuTnHb2t/
+	vzaVH5VKzNMO8sJqTBEV2teOoYHqKhGo=
+X-Gm-Gg: AY/fxX7V1sagQwM5v5kjh5psdJ+fB5FbVkxvgp4ONk6M2KwsfDAksNxn1aocvWSGyED
+	y1bwu6w9IYl0btSQxmhoxDQPFGcomm38RMh08kCi3OAxpvV70ZKd2I4OAH5wUk1OQmBDlYYutHs
+	oaJx2NgGp5XSQdKEOqq0DBjQDhbTAn6Mc3RXAsH18/qwKzbNfgZbkKUVO7drpnW5UEuvWHTHFdJ
+	KhfW2OvDRp+BHGfC6Rto6FhXZiTHuUGEjsmWM86Axi6i7lfrpjjf90SnrPKNVbFu6j3O4rWnEpW
+	kR6gs1E=
+X-Google-Smtp-Source: AGHT+IG0j61eLfMBZtjBCRAtt6gD4cfUMx56tKt992tAV7oQ7u6A5BMnxDsu2RoR9WRSplTvopodGefdnhtnzMeu1cU=
+X-Received: by 2002:a53:acda:0:10b0:63f:ba88:e931 with SMTP id
+ 956f58d0204a3-6466a8c28d8mr24774162d50.38.1767234587455; Wed, 31 Dec 2025
+ 18:29:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a3a60bbb-70b7-49ed-abc6-937e6c13d681@linux.dev>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam02
-X-Stat-Signature: eumae6fyri9ya4uzuqr56qhff4zq15hj
+References: <CAHOvCC65azs4BU2fyP-kxvFWB3ZPCfyZ7KCO8N1sc0jtTENmNw@mail.gmail.com>
+ <20260101015123.87975-1-sj@kernel.org>
+In-Reply-To: <20260101015123.87975-1-sj@kernel.org>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Thu, 1 Jan 2026 11:29:36 +0900
+X-Gm-Features: AQt7F2rhNPQNC3SV0H9hrrUMFMj99IouwnqgjizjnbcHSdektK8WMCR8Js4GHWg
+Message-ID: <CAHOvCC5GWg5XhB+OUZi6C373qYS08ot-1A9QM+24mhnuqdq3mg@mail.gmail.com>
+Subject: Re: [RFC PATCH v1] mm: improve call_controls_lock
+To: SeongJae Park <sj@kernel.org>
+Cc: Asier Gutierrez <gutierrez.asier@huawei-partners.com>, akpm@linux-foundation.org, 
+	damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	wangkefeng.wang@huawei.com, artem.kuzin@huawei.com, 
+	stepanov.anatoly@huawei.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 71B6C40004
-X-HE-Tag: 1767233238-532775
-X-HE-Meta: U2FsdGVkX18mwYwSde1HomzlriVV4AbeeTjxh69BhyHNUU3jsQ6R4K4BILE7rJcPpeiPXwwq9uh4dPHbL76C9a0WqL6gsSRKCviTmMDKCZ1nqI6M3C+ttsBytQMxZ+I6o1mEqPzX0sEDbkjunmpwsCD0Jlir0KkS/RysMWGwkTIMk/kkNThR1Ov9EBUvboBaMNjTVGHAn8ywKkGcgq8EkyCobDby++v7m8YMvHPb/5jee+4/4HpoKHU+SkKvBnmOp0d60gf0L8ncwhqlKVixSw0pEWVVTexXhGvr5w8sYryE49n0959aBGJwbh0iv5t/nFSD+zvd+IyPewEhD9PBwGOBRB80lne4EoHy9J9WcVVq+EpAAuaJpwojx5kn2LDKX6ULHnR0dlT7MJ8dBvP0HU/i9rS6KArncfdYidiwhqwWeGLSqgwq3KUdUTsXsN0Hgn33VFehbkIErx+4jEszy432yAZ1iMHVcJGl9Jq8X0HSiG5k30rCmj9wa8gtR9LMkf+27Xa4/GOiSshKHlUmUR9agv7jC4d8QJiwazO5HZ4+9Xyl09qOPoSJHYrfXxO4+lGfihd5VVKdv83of+WneDM90eQuKr8XcfY4ZKQg0wxxmDHzlNiztSc0NFYUe5wZNJo9Y5EtPcqfUMvqxk5/wULheJlN4XUVHdsAKYXsB9B6HjBOvfvQ5ffKZ26h/jziysTLIqKgw13dn145bvkDutRLsr4uPPLUxIFiAXFGkGRjOKvd/sjadlI7SF4CCgwSLF5Dp/Eu5N7IxKBrHAD67w0WB5Xc3LbfZ0hTG5LE7ShfmLojoC2H8qvmqY8JcquZxDmPokFAJ77KHt/ZVkq2xRegG6TPDE+ijmGtBHZfYC2HyLIUyQYQmbV07xBjXAKPUmw8ywfj+ax9Rv5IPojONmXBqpDN5hqb8VBh6r9/Wd9LodY9ZyHQ5PoaSIswJ0sfOBcsLzHt6X9cbF/MTVV
- awxJ0/mB
- 0R0hyNTAjZh4Yb2+HhrxdJhxKkTlRcga0lHY+fR4QG0TGt9pJ6ezFp6++kOOA/BYJilyCOHuINIegGd38T25mmieoOos+EwmNbIJzuzTL4F5pGiW0Q6QtUag4aY+2wSKlcF1b+QDuLqbUthtZYszLr7f/NaSdTfOGH2sUahKHXCp6Si5mnWd7xvy/iLiZuGiirj8tsHMyhr8NSmmVVImp1FAgGaWfaCS+/z27FO1oud1Kf3Xi3BxnO4vK4pEldo3PBvoppUFDPoRfXeUi0tpIqo7CaD7k2EXUyesIeLvvRFhbg4f26Lc/ZvzHhHXTQAjOS69bWvyFll1l8CuBtAB5DyLnqwdts8tbT/tiTs/kZS4CGZq3wXWeeCzNuD6imid/22UYnlZV4uKfMMpcPZObf+X2TvZ5wFOzoJcDVcCS8/bPmljfmlSuBZkR4CGgFNw7cnh1bVGoQj2+u6OBT1vdjfMnsVSSSPvk1pLjGCjV4hr70+t1RpY7X/heG1Q/cv6rEeU4ONtoLPW6rEgIQ0ltQEXK/PvQDHfCoyIT3mdItjw2KDbgE7M61XI8py8EK/pOHUsLBhvkKXpTPPTzQzaplIsZRSrtqQLvoVWwL+eeozgnzCuoAxp17rxGLVakPqHecna+ezxNHkPw5a9m2R0zEXKqmOQwjYZ42dF4nC++Inn1yrQlfj+41UMmiakaWpqMw7g+KctEmlNRSTpniull0i2gK2hzYES+dkIQahNPq1fWcejmA1Nb3c0sB/UZowiO83Btk2GBtJLjQaTyFq+KgDFaxQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6B006180002
+X-Stat-Signature: qpwf13ci1enjdea67bkz9jwx4gijziqk
+X-HE-Tag: 1767234588-82632
+X-HE-Meta: U2FsdGVkX1+cjGxY33GrDut3aF0WO+EfeIyrUW02wjstxLdWdvm+SKGf/WRHsuWrhkigJMj5nYhb5o6OBUr4PNBxGjiaOaQVR1hmLkVDPZzwKOx5sd43XdJ8gupWZwsUcA3Q28fg1OwaEs84zL/YeUhOtHKtHVCkn08VKFnnBQ2AMc9ItLmKTsfQsRcGiENh+BYXo+RuHROvcXz54UQ/sLKISHLpm/BU1cfecNMDkqiU1b2ln0SZLOlnNUwR19VcDoNJV2jbCDu6N17UALHPYz9VuZBeIPe+xIpXZqbjplQBaJJ0Y7nf5GaEiDNEZ8mNFGEoDrZKn89sG1Uhx5T2TzlgXdc0oPOLlVoxpSp+CPBRuxOJC9zRDZMIBhbf9pNCJVkXYcHPG4C370ang5AUlfrK4AMcQc4NfNahzAdqKnwV2fq38uJLw6kMPlppHjDJgWP6FkiOjoRtKyq7WeZngUEEdMHDQPzyrMncsacxZXSLGlaz4qMMSmK8W8RTOKn0bRzvnba2P+ZvNH9thwQFhcydyX5hMOZwKcVXF0WgqSrdIMboFNev9QuEszI3whzeymrQkjM0tPnI5w0ZQR+1gGqqOECQXkFVS9unj563SXgccRkz30/WuC9NLbadVrzCyz+ZMlz8jfU0yRmOYo8Y5sGubUHB0qBoRaBxIDc7hSqPkdsqP9YzDP9PGOhAqPRtmxuUe1MDzlfw2qAtxuLkE58TDGWYMURe1XtsQ/8Y5Ia/XeBnxoKsp2dQ9aBTyWOUBIBwsZmeNE1/lcbGaFiQezCrjZqAD/+xFSFFLUXmE8Wq+Bqyy6plY3fS83eBdwpVHtQnj+KwchkmHQqd0kaPiHgFxmESvQ9UpBZBs7m13F/mXs389LOt19T23542+93qtIcY7afi9dlT5p95hf6Ty17ElopndaE3BeDEWzBS/a3lKWYahk47QE024b/D7qzOXKZQyYtH3vj5DPQxHOw
+ ynEFGOyj
+ S+3sWZUprh+i/Yrnb67RYEbN6ZmYhLbDM0jmt+LwTerWgNijjZOt8B7wL5oXgD6mQAsO8CRl+4kMVXvdOCVs+Qj04MAc922oBXtIEELk1HD+ZZRJsJWi5gMP7hx41PD+vMSiieWYIzA7o9/uZPrfnvvGfDTZmci7nJCqczXGCA0jbcuPLXbutL2+YhmfwPKJupOQkgr+R1yLka16XlJfcrnsow7saqAeuC0ZTKMh9KJZPOVKSd+vdfJhWxamRIWfIPVh3DfeE+zILmDxg54wmsV5SlffgMQByBfpQuNItIQEwcp7CeaxqYfQsGqiJ6ApkPF///QN3auQDBOC0Z0D89ADsh7mejvJ0q546lGpX4FBV2NlZFH6i9lrLVxdU8329QREW8jONmFq46L54GveH4U1nl74EtPGPlJ8WxGDWotdSmZDWTQZpt8Zv3PwC9xTtAHw2pDADw56tmTXHuCygwHy1rodoVNAMke6tCUTZqFtNfCpi140j5aD++oNT/16+Wsko
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,93 +117,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 31, 2025 at 05:52:57PM +0800, Qi Zheng wrote:
+On Thu, 1 Jan 2026 at 10:51, SeongJae Park <sj@kernel.org> wrote:
+>
+> On Thu, 1 Jan 2026 10:07:13 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+>
+> > On Wed, 31 Dec 2025 at 13:59, SeongJae Park <sj@kernel.org> wrote:
+> > >
+> > > On Wed, 31 Dec 2025 11:15:00 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+> > >
+> > > > On Tue, 30 Dec 2025 at 00:23, SeongJae Park <sj@kernel.org> wrote:
+> > > > >
+> > > > > Hello Asier,
+> > > > >
+> > > > >
+> > > > > Thank you for sending this patch!
+> > > > >
+> > > > > On Mon, 29 Dec 2025 14:55:32 +0000 Asier Gutierrez <gutierrez.asier@huawei-partners.com> wrote:
+> > > > >
+> > > > > > This is a minor patch set for a call_controls_lock synchronization improvement.
+> > > > >
+> > > > > Please break description lines to not exceed 75 characters per line.
+> > > > >
+> > > > > >
+> > > > > > Spinlocks are faster than mutexes, even when the mutex takes the fast
+> > > > > > path. Hence, this patch replaces the mutex call_controls_lock with a spinlock.
+> > > > >
+> > > > > But call_controls_lock is not being used on performance critical part.
+> > > > > Actually, most of DAMON code is not performance critical.  I really appreciate
+> > > > > your patch, but I have to say I don't think this change is really needed now.
+> > > > > Please let me know if I'm missing something.
+> > > >
+> > > > Paradoxically, when it comes to locking, spin_lock is better than
+> > > > mutex_lock
+> > > > because "most of DAMON code is not performance critical."
+> > > >
+> > > > DAMON code only accesses the ctx belonging to kdamond itself. For
+> > > > example:
+> > > > kdamond.0 --> ctx.0
+> > > > kdamond.1 --> ctx.1
+> > > > kdamond.2 --> ctx.2
+> > > > kdamond.# --> ctx.#
+> > > >
+> > > > There is no cross-approach as shown below:
+> > > > kdamond.0 --> ctx.1
+> > > > kdamond.1 --> ctx.2
+> > > > kdamond.2 --> ctx.0
+> > > >
+> > > > Only the data belonging to kdamond needs to be resolved for concurrent access.
+> > > > most DAMON code needs to lock/unlock briefly when add/del linked
+> > > > lists,
+> > > > so spin_lock is effective.
+> > >
+> > > I don't disagree this.  Both spinlock and mutex effectively work for DAMON's
+> > > locking usages.
+> > >
+> > > > If you handle it with a mutex, it becomes
+> > > > more
+> > > > complicated because the rescheduling occurs as a context switch occurs
+> > > > inside the kernel.
+> > >
+> > > Can you please elaborate what kind of complexities you are saying about?
+> > > Adding some examples would be nice.
+> >
+> > You probably know better than I do.  What I'm saying is too general.
+> > spin_lock is good for short collision waits, while mutex is more efficient
+> > for longer ones.  However, I'm saying that mutexes place a burden on the
+> > kernel because they schedule internally.
+>
+> Thank you for added explanation.  But, in your previous reply, you mentioned
+> "it becomes more complicated because the rescheduling occurs as a context
+> switch occurs inside the kernel".  Your above explanation ("mutexex place a
+> burden on the kernel because they schedule internally") is not adding more
+> explanation but just a repeat, to my view.  I'm asking what complexity (or,
+> burden) that you concern here, the internal scheduling is causing.
+>
+> So, may I ask your explanation again?
+
+I'm still learning about locking. I hope I'll stop here for now.
+
+>
+> >
+> > >
+> > > > Moreover, since the call_controls_lock that is
+> > > > currently
+> > > > being raised as a problem only occurs in two places, the kdamon_call()
+> > > > loop
+> > > > and the damon_call() function, it is effective to handle it with a
+> > > > spin_lock
+> > > > as shown below.
+> > > >
+> > > > @@ -1502,14 +1501,15 @@ int damon_call(struct damon_ctx *ctx, struct
+> > > > damon_call_control *control)
+> > > >         control->canceled = false;
+> > > >         INIT_LIST_HEAD(&control->list);
+> > > >
+> > > > -       mutex_lock(&ctx->call_controls_lock);
+> > > > +       spin_lock(&ctx->call_controls_lock);
+> > > > +       /* damon_is_running */
+> > > >         if (ctx->kdamond) {
+> > > >                 list_add_tail(&control->list, &ctx->call_controls);
+> > > >         } else {
+> > > > -               mutex_unlock(&ctx->call_controls_lock);
+> > > > +               spin_unlock(&ctx->call_controls_lock);
+> > > >                 return -EINVAL;
+> > > >         }
+> > > > -       mutex_unlock(&ctx->call_controls_lock);
+> > > > +       spin_unlock(&ctx->call_controls_lock);
+> > > >
+> > > >         if (control->repeat)
+> > > >                 return 0;
+> > >
+> > > Are you saying the above diff can fix the damon_call() use-after-free bug [1]?
+> > > Can you please elaborate why you think so?
+> > >
+> > > [1] https://lore.kernel.org/20251231012315.75835-1-sj@kernel.org
+>
+> You didn't answer the above question.
+
+There is something I misjudged above.
+It would be better to handle ctx->kdamond as a mutex using
+damon_is_running() API,
+and modify it to spin_lock only for call_controls_lock.
+
 >
 >
->On 12/31/25 5:42 PM, Wei Yang wrote:
->> On Wed, Dec 17, 2025 at 05:45:48PM +0800, Qi Zheng wrote:
->> > From: Qi Zheng <zhengqi.arch@bytedance.com>
->> > 
->> > The PT_RECLAIM can work on all architectures that support
->> > MMU_GATHER_RCU_TABLE_FREE, so make PT_RECLAIM depends on
->> > MMU_GATHER_RCU_TABLE_FREE.
->> > 
->> > BTW, change PT_RECLAIM to be enabled by default, since nobody should want
->> > to turn it off.
->> > 
->> > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> > ---
->> > arch/x86/Kconfig | 1 -
->> > mm/Kconfig       | 9 ++-------
->> > 2 files changed, 2 insertions(+), 8 deletions(-)
->> > 
->> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->> > index 80527299f859a..0d22da56a71b0 100644
->> > --- a/arch/x86/Kconfig
->> > +++ b/arch/x86/Kconfig
->> > @@ -331,7 +331,6 @@ config X86
->> > 	select FUNCTION_ALIGNMENT_4B
->> > 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->> > 	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->> > -	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
->> > 	select ARCH_SUPPORTS_SCHED_SMT		if SMP
->> > 	select SCHED_SMT			if SMP
->> > 	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
->> > diff --git a/mm/Kconfig b/mm/Kconfig
->> > index bd0ea5454af82..fc00b429b7129 100644
->> > --- a/mm/Kconfig
->> > +++ b/mm/Kconfig
->> > @@ -1447,14 +1447,9 @@ config ARCH_HAS_USER_SHADOW_STACK
->> > 	  The architecture has hardware support for userspace shadow call
->> >            stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->> > 
->> > -config ARCH_SUPPORTS_PT_RECLAIM
->> > -	def_bool n
->> > -
->> > config PT_RECLAIM
->> > -	bool "reclaim empty user page table pages"
->> > -	default y
->> > -	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->> > -	select MMU_GATHER_RCU_TABLE_FREE
->> > +	def_bool y
->> > +	depends on MMU_GATHER_RCU_TABLE_FREE
->> > 	help
->> > 	  Try to reclaim empty user page table pages in paths other than munmap
->> > 	  and exit_mmap path.
->> 
->> Hi, Qi
->> 
->> I am new to PT_RECLAIM, when reading related code I got one question.
->> 
->> Before this patch,  we could have this config combination:
->> 
->>      CONFIG_MMU_GATHER_RCU_TABLE_FREE & !CONFIG_PT_RECLAIM
->> 
->> This means tlb_remove_table_free() is rcu version while tlb_remove_table_one()
->> is semi rcu version.
->> 
->> I am curious could we use rcu version tlb_remove_table_one() for this case?
->> Use rcu version tlb_remove_table_one() if CONFIG_MMU_GATHER_RCU_TABLE_FREE. Is
->> there some limitation here?
+> Thanks,
+> SJ
 >
->I think there's no problem. The rcu version can also ensure that the
->fast GUP works well.
->
-
-Thanks for your quick response :-)
-
-And Happy New Year
-
-So my little suggestion is move the definition of __tlb_remove_table_one()
-under CONFIG_MMU_GATHER_RCU_TABLE_FREE. Do you thinks this would be more
-clear?
-
->> 
->> Thanks in advance for your explanation.
->> 
->> 
-
--- 
-Wei Yang
-Help you, Help me
+> [...]
 
