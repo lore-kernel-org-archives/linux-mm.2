@@ -4,91 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04C4DFA3722
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:44:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24ED8EEB57B
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 22:56:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F092E6B008A; Thu,  1 Jan 2026 17:44:25 -0500 (EST)
+	id 859506B0088; Thu,  1 Jan 2026 17:56:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB6796B008C; Thu,  1 Jan 2026 17:44:25 -0500 (EST)
+	id 7DCA06B0089; Thu,  1 Jan 2026 17:56:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE0ED6B0092; Thu,  1 Jan 2026 17:44:25 -0500 (EST)
+	id 6DC406B00B4; Thu,  1 Jan 2026 17:56:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C8C416B008A
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:44:25 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7B35A13CD53
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:44:25 +0000 (UTC)
-X-FDA: 84284875290.12.B72D7B5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D7D834000D
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:44:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ekkAZUz4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767307464; a=rsa-sha256;
-	cv=none;
-	b=Qm+ltZw+6r+MhVsh/0qgC2UeTio9FBE4UdW8xcX2V3/h6y6ZF9dLFYFXXt+hobYmoVgTuS
-	lFnA9Cmju5VaJ/19fp2nIS9dTUmGXs3H9bXQxU9nDX6UBO3xnuKv8IhD1I8PMclo5Qhtwg
-	ZKO9fRL7/KKWgjNVAw5Zet2DEwczu24=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ekkAZUz4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 586FB6B0088
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 17:56:01 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EDFBC920EE
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:56:00 +0000 (UTC)
+X-FDA: 84284904480.13.9E4F7F5
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 54F00120008
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 22:55:59 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LvE3nsof;
+	spf=pass (imf29.hostedemail.com: domain of 3fftWaQcKCCIERFCJCLEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--gthelen.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3fftWaQcKCCIERFCJCLEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--gthelen.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767307464;
+	s=arc-20220608; t=1767308159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1En3gHtrluIkdGd+I+3BxfPoxcccIM47tFRmGmdoIBM=;
-	b=w/rfdcMUmlDpZDWQVsmwc/vWFJVSpRksraoe3hKZVXv4FrVNUa5UiGtTtjZvsmKf6QRmlT
-	NJmZMhBHa4ckqe6YXdEs4oZ9NCopw2tMiMCOw7MbvQw4jeBKfzmUpkDoegQv3JAN0HXRIj
-	SOjGMN2dhK4R0sQMxQzgrnf/vmDRzzM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A5C774432F;
-	Thu,  1 Jan 2026 22:44:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5585EC4CEF7;
-	Thu,  1 Jan 2026 22:44:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767307462;
-	bh=XmjtJHTHxjwd7ITB1Y0Try2fxeiVf666M3I/4f/D41c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekkAZUz4NtXIlXoQYj8OIW3Ny0kLmMRUdRxjI2M9tkYMEN5kVdmyOScLzB0jbABYk
-	 bWiwPvEy9nMFDuE3O93YG2GTzm4+FDCpvJdT9G7NOvPZNhRxA7NDwBID0BdMMbkPRB
-	 JoFgxnnmcV9mczNdNYaj3L3HZnNbsLxufAgk2eKEnnMCjUFEq9YZlve76X5ZkyxpCV
-	 nyybnFKdRlSA4ReGnaemO5vOSKuTKwdiwHIucmEYKc0GPn0brNVOwbWhDUBKcgg8BD
-	 ghccf0+kND1Lrs3pY8PKIYt2MDP2uZO7EIrA1zn3qdT373u93tU5rd4WhaIVz/mQ3I
-	 pT9LpCKjI5uPA==
-From: SeongJae Park <sj@kernel.org>
-To: JaeJoon Jung <rgbi3307@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Asier Gutierrez <gutierrez.asier@huawei-partners.com>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	wangkefeng.wang@huawei.com,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com
-Subject: Re: [RFC PATCH v1] mm: improve call_controls_lock
-Date: Thu,  1 Jan 2026 14:44:19 -0800
-Message-ID: <20260101224420.73826-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAHOvCC5Frn16MiaP7AjzvJNPfnGXyjcWmhtwNnKQzXwz3VUL9w@mail.gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D7D834000D
-X-Stat-Signature: oyu8ikjiipapjo78byyojh958r5ti3am
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=I1gS6epj+hr0rH6I+yAY+Pf5DGDN/1lY3+3hmzSOP0E=;
+	b=fXso41M3L+E3Toyc0HmKF6z/KcdeNpOcJSdYsF9Xdl4m9C8OGatcxGpd2uqXTNM6QwFTNd
+	gX6Do0QssJseQclJDk6goSihNDGabje9l5gROStzNvL8aeLR+QOm7SSt7FN1+cj16YiAV3
+	X7VwtMMy2PfZnnaQtapWACUBVCDo6bI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LvE3nsof;
+	spf=pass (imf29.hostedemail.com: domain of 3fftWaQcKCCIERFCJCLEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--gthelen.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3fftWaQcKCCIERFCJCLEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--gthelen.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767308159; a=rsa-sha256;
+	cv=none;
+	b=STd6oNi4gX5s7f9TSPHbutMKWO+3qUUV7OQRy4FshfDacZqIFXJ3A+zXOtx1FfMKQGxLVg
+	jMYphE8hNIyVS9rKp6npfWDob2S6uTDvHgt5oHgp0ZjoSZ8zNie+ohOHzxLOAjCmaoub3v
+	gk4UpecI7WMEm3BUe1+hM7+tN4kxXm0=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34aa1d06456so27096921a91.0
+        for <linux-mm@kvack.org>; Thu, 01 Jan 2026 14:55:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767308158; x=1767912958; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=I1gS6epj+hr0rH6I+yAY+Pf5DGDN/1lY3+3hmzSOP0E=;
+        b=LvE3nsof3Wgd4MsPvoO9LOLSTkeDQQTTF9HjMT/x7wV4uW1Btm36y9sYirjtTgn9i9
+         zK65qXy7hxhI0IMlIlmbznsDC+zSfE/vIX171MGGMBfIwDWqMI3vPu8so6E/kUKP559N
+         TfXSKQHWBk8prAcGrVZyKaQQK1mNBsp98j8XWmJZccDxz6Cs6NfOWNnFPkDDqyk6x5+I
+         X5fRzzOjbAk+wqS6YBYZPTiCQFkTE6EQoEZcggyd4KTtwdlG2fg8ZpamkEuyDgkDFjO4
+         FzizXXqW0y8X/4xF2t/gYRPYN7QAMK30atcQLqJPojuIWHOZ2u4rb3/xL0M7NUtdNdz6
+         Dnrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767308158; x=1767912958;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=I1gS6epj+hr0rH6I+yAY+Pf5DGDN/1lY3+3hmzSOP0E=;
+        b=I/Y3RF+QBJ+iWOvOOTMtIO0hvVZLMIqjodNnmn6NBYgAHSifq6hj+hWOICdzqtGGVH
+         +CEg9f2Hsv4VZXld9+Aypdxp2yYY9tKiLiJ4ki2CDY/7JvFiJLR1rSyhr1ZRrTSNmKas
+         ud89q8Y+A8a8q4kyKOU3O/O5sluDz9trFwcaGsXYvxitdi3jGoxhRSmtGa+x2x62fDVx
+         LBmEl//Xs3Zm7y3lp5L4DhBR7pWoKvLRi+Gp2upiCycLFMQGhwuDSTdFtnTwjQL4yXzV
+         Prj5JcJTV5OFJvIj7Ui4wVPp9Qs82bIIAbScI5P+N0csrLqujLIISG4O7tcddukQxMEd
+         sUAg==
+X-Gm-Message-State: AOJu0YwIhXP0qmjxVx8RRx6Zue8vxCVfAHw5JXdq5npfK1QRQn+FO3Yp
+	rB3ZCBSiALGvDJC/4Ezd2FQgN80Wq3vN0BrUeqHXSR57vEESiQNfi/+LmpMlCHOJqicwk1M1CtZ
+	1E7yqQDOsLw==
+X-Google-Smtp-Source: AGHT+IEeangDUpkOYswA7LbzE5LNqy02vZOyzua3r0aNxLNhZI7tu3Luqfknf3iF/ilWE28iADIZZhI8lTje
+X-Received: from dlyy26.prod.google.com ([2002:a05:7022:69a:b0:11d:ccc4:4c98])
+ (user=gthelen job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:6984:b0:11d:fb4c:db13
+ with SMTP id a92af1059eb24-121722b7f18mr39930665c88.14.1767308157999; Thu, 01
+ Jan 2026 14:55:57 -0800 (PST)
+Date: Thu,  1 Jan 2026 14:55:51 -0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.358.g0dd7633a29-goog
+Message-ID: <20260101225552.3423108-1-gthelen@google.com>
+Subject: [PATCH] memcg-v1: remove folio_memcg_lock() doc reference
+From: Greg Thelen <gthelen@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Greg Thelen <gthelen@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1767307463-867674
-X-HE-Meta: U2FsdGVkX1/3Lbd7frmezP2slAkhLJspb8TX+UN+8peheJMIeh1vGy7tpJzFvkw+IWCkCm1u1TM8IhB8UYqd7jRMJZY5rwCbM3llXT4eeyHla3nN5goAcZzcmM95Nvpnb3cLqO4Abw3o1ywC5LT0lwg6m/clhRwjVhxW9pBbEX8QiaTl194jezHJHCjInpxTV6Y3bGLvdSeCpQRQLzhngvZLkoTYsI0c5fAU63bsK8fLXbJ7N1zJVAHOLcHEUbHuJ1rwLdCMnuBMmnfNoJIrQT5eWQD1oLiLexuRIztX8jz61Z7eWflsa1bGYofPWBocQWAuEaASlXQJuGrmRxaPAma07m9XLrHd8qMGs+50pgtxGReyWm4gZBkBPVqdoZ0jKGct8orjq/uEqQo98DmENNYvCJnl3MEjvDfXKvJEKLgagkxsOK6kT7HGdUqcLMIQaZkuLlmsJ9jOFRzgHLVR+HziKqz0GebfBf+VRjPoKySEFB6C18t9qvKsggNJTzEb3t094tZEJiXJV5hf88JzyZPAlNK+N7A2SuSzX+js30HNF1SieOGtxOHe4wEGcSwlOf9tqEiXimYMw2bWrrCOIH2MZsO90iioidwuIhD6nXFWvX28QLMRJoU3lD8X/S/tNfL21E8bQt1udtmbC0Uh0wbXDY27eCBKlgStGgLAi940K+hHQqP/f4DdA522llLUmmB/qA2G2to4TDu2CrIlo29J/v6Bd72QHm2j5oUl0kZqD3FMRsfEx3MpOqTI24a4orkswN1l76Wmj33NomkwDLFCRDa7r3uKESZs6jvzw/70jAv+afsjE+LylAkrjmzl1GSLg7xWqHIV4WKIU6OdPnYyeIoDQOkPA87qsV4zJHHQN7QwYYBoqH+pZqT+wEmo6K/Drvqp3Bx4lbJqbPvJcAMCV/1WYYdtv5RVuCk2XV+ceMuySqjxZBRIbJOk7bDM
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 54F00120008
+X-Stat-Signature: kdkyhu9fkgp5iizqeq7wuqd57t3rah55
+X-HE-Tag: 1767308159-857972
+X-HE-Meta: U2FsdGVkX1/d0YZ+EwkwmaJO+PYXablkZKjV3t0cr5C6gU3hCGccKISuVu8yB8dASmkjWJqzj1OrMYX7El2ZbvbwcoitAkKuHuiOH4rKrerYrFBXRc7EcuSQVZscjw1tv4j2ZFOayZCsDCT+5ZwnhsrdZvedYZQO8HU+o+oKeG0PQBIfbmPeX74tYTi4f5LsRIMInpY6UuQQIlIitOt7AyGxleUVegn80Kcq/rnpeh+T6Opehk6KP7OxPc3J2Sc7yydo/VK75L2GGuj0BehpRf+nrhM5G5nXM6PvSCWyE5G3C8CjHVsvj8oJ2eRWt/QAPMCMxHB/wQULXmosKgjoiaprd3mAEwEqqel7IjzrGOZIhRb5MUSpq3ow+b5s1jqST7T0H1PruzoITF2BlMW8OlvPVcv45B3SxqzsgZOu4xkitEl2ojK9ivb8smzInbSJB36BOhRljuLMiB0FlM7VXKnNQTtW5YG57fNt6jTgwDpa/tXNpYJDeOyJvJpscNx3lbE4d8jtrRylwKs2Ro12QgHQNAZbDen+xzhdbabPS71pK1mtP5ec/Yx/F6NH5lX0Io1uEr7UYthCqS5kmS4oPRfualCNpUH6rahzm+/SJPcR3T7OTeD4pmjKi+X1jQjeh4OqCAVqJpTbALtiaMqgXIGZQH4K07ejNM7HtoZozBter5M3EKqbufo6ulDFn/W7FIbeopZazZk68qXrGMT/N2X0yc0vPuXM6QlyEaXC+Jazg8Jvi+0jeaoepVj2+jlVy9nf/flh9wQ/JzLapXX+w37i8j25uneAKlWvH+ugZUY3SxU7DNCtt2PGb6ty6ybwxrERoZJ41qCblIGsPi1RHYMDTLn5l1S1O+QuLLI8Gk6/Qi3t5E6q0gnbaYj4Tt1C/MZzsJqS6W8Gqe10xMRUt/DcNJKFsAlfFwuI6WQGnrNIWPJkSYmSFzq77N/nY+1WHfV5Qxv8/hx0SmMEdcG
+ zZoyMlZh
+ 9TOS75d9//7kL4YZ8wT6x8tqK4T+vcPXgFX9ZbjjXopa8RcVRCFhYWvUIW1DbWGZpZZwFHDS4EjXpnvyhQX8ugqh8HTDCxz89tmsIADqs8yNcUz7bXe//L+qzs4HUPomACc80UWYRrrM2pGVko6PO691qK8nOxclBpcb0bWhyGx6KCsK02UoN+nsCIJdWExLqNFBcqIBK+SZcZa1IYttvt2UxacOXcTfANHKRxtZVBlrXczdWhAcyTrUWFSYQJNX4kTOaY5m/J2kXLMEJ4TnVio0GA4G7zP33emDLfTtYSFxU4S4wuQKBxdtXK7B34QBnKpy29yycLZziJwCOZvD8lsBFCjyiNSp3FueVdZiw8ElD3k40gCZypgf3Jxr53vUdPWSQkjCO6AikRsRgb5otqOXttnC7x3TXQY0bonyPvqLm3+EkPtiiio/8qOB1GjQ8zsKfOQugRnDIuLdvSm+NeScqm9MAellvFaTWWT77AQZUUxIJgLxU87MBTbqX/uUggwK1WPL0+SXAfdh4/S2ru8zoyji3Px52KouM4ZRF3q/891miMdKDLcxlZFcXbKSKyDt5co+trpwZV8MPX076BO6vTQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,25 +105,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 1 Jan 2026 11:34:13 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-[...]
-> I'm sorry, but this conversation has gotten so long that I'm getting lost.
-> I've given my opinion, so I hope you understand.
+Commit a29c0e4b2e86 ("memcg-v1: remove memcg move locking code") removed
+folio_memcg_lock(). Delete the final lingering documentation reference.
 
-Unfortunately I'm still not fully undertanding your opinions.  But I understand
-that I'm asking details about your opinions, more than what you can answer at
-the moment with your available time.  It is unfortunate, but I think asking you
-more qeustions will only stress you, so I'd like to accept this as a
-communication failure and simply forget your mails you sent so far regarding
-the fix of damon_call() uaf issue.
+Fixes: a29c0e4b2e86 ("memcg-v1: remove memcg move locking code")
+Signed-off-by: Greg Thelen <gthelen@google.com>
+---
+ Documentation/admin-guide/cgroup-v1/memory.rst | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-That said, I believe you made huge amount of effort in spite of your limited
-resources.  And your report of the damon_call() uaf issue was really helpful.
-I truely do appreciate your effort.
+diff --git a/Documentation/admin-guide/cgroup-v1/memory.rst b/Documentation/admin-guide/cgroup-v1/memory.rst
+index d6b1db8cc7eb..7db63c002922 100644
+--- a/Documentation/admin-guide/cgroup-v1/memory.rst
++++ b/Documentation/admin-guide/cgroup-v1/memory.rst
+@@ -311,9 +311,8 @@ Lock order is as follows::
+ 
+   folio_lock
+     mm->page_table_lock or split pte_lock
+-      folio_memcg_lock (memcg->move_lock)
+-        mapping->i_pages lock
+-          lruvec->lru_lock.
++      mapping->i_pages lock
++        lruvec->lru_lock.
+ 
+ Per-node-per-memcgroup LRU (cgroup's private LRU) is guarded by
+ lruvec->lru_lock; the folio LRU flag is cleared before
+-- 
+2.52.0.358.g0dd7633a29-goog
 
-
-Thanks,
-SJ
-
-[...]
 
