@@ -4,123 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B1DBEEB573
-	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 02:05:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7000EEB573
+	for <linux-mm@archiver.kernel.org>; Thu,  1 Jan 2026 02:07:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB6556B0005; Wed, 31 Dec 2025 21:05:00 -0500 (EST)
+	id 0460E6B0005; Wed, 31 Dec 2025 21:07:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C63E56B0089; Wed, 31 Dec 2025 21:05:00 -0500 (EST)
+	id F35DF6B0089; Wed, 31 Dec 2025 21:07:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B459C6B008A; Wed, 31 Dec 2025 21:05:00 -0500 (EST)
+	id E38EE6B008A; Wed, 31 Dec 2025 21:07:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A24F86B0005
-	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 21:05:00 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CA016141073
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 02:04:59 +0000 (UTC)
-X-FDA: 84281751918.13.A3B4151
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BEFE920005
-	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 02:04:57 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jxJd5tJX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767233097; a=rsa-sha256;
-	cv=none;
-	b=DbGDSrmfZ2mpy1q4OEVId9Ybc1xeQ/WKa0ao83GGw3T7LvLEXkjAkTJZTa4S6ZZX7T9b65
-	wssWkxSu5tsjX6caapkryIEqT64mL6crfGKC6KlTkWfnVCcyEvS1yVrit/sRCNXFKe/fT7
-	HF5ZPLd89jwT0L2wV8YAFPz4l8pKZVQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jxJd5tJX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D005D6B0005
+	for <linux-mm@kvack.org>; Wed, 31 Dec 2025 21:07:20 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7588C13C7FE
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 02:07:20 +0000 (UTC)
+X-FDA: 84281757840.06.FEFFCD2
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 71B6C40004
+	for <linux-mm@kvack.org>; Thu,  1 Jan 2026 02:07:18 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bC4Eef1F;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767233097;
+	s=arc-20220608; t=1767233238;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t4h33WmPmh9knOAQ2OtmSS5LD6H+sen3dTiFufGLTIE=;
-	b=N1W7jyVhXC+T2bqPa/0ZdOrEnli9UCgvGTrQWPsQLP9kLZVFpgiDVqpKRd0y5APWxyAxSQ
-	j8yYWpKmhNzad9HU2pIKWAtVX63GYSe7Ymt030qSpObwKZ9hjiNf8ZXMmFYlrEKNnVz/ds
-	KFbHOoFqYc/xe4fLT+xRe2bM9SP6wt8=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b72b495aa81so1852453466b.2
-        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 18:04:57 -0800 (PST)
+	bh=UQBF0g7LGMkaWXJONFj1Zzubf3JQP1KLJgb8Ha1McV4=;
+	b=ujmsD73pcjlQc0VjGFM0eZJS2r8kR8zByGDL2FRxh9QrzgM/pQl4MqL5xFTLDmyWeWEbC1
+	IjwvFAJrRoE9+gY5wdR44NUapJ7lXpdGNCxDjQ4fS8ABh+0qc/DesjjXkXot5YhCgcBOtv
+	cAIkpk+hfsIQWrPRcACLwIQik/asL48=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bC4Eef1F;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767233238; a=rsa-sha256;
+	cv=none;
+	b=lniqqYCJip8On9pbJz8nlxUMRzZTBoZuySBrBTj4j2oEdEnFNQ7CEbSxIXT45eljoFxIYM
+	j8visDxu89/hRW4LAmhCUtD+zmn+Jc1sk05fRl41J1VEonuCFMEa31mDGB+Uq39SE2/kKz
+	D6y5U6y+kR1FRMHT4pgLLasepvpXcWs=
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b736d883ac4so1883810566b.2
+        for <linux-mm@kvack.org>; Wed, 31 Dec 2025 18:07:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767233096; x=1767837896; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1767233237; x=1767838037; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=t4h33WmPmh9knOAQ2OtmSS5LD6H+sen3dTiFufGLTIE=;
-        b=jxJd5tJXOFkaVPa/dTROKMyVf6j72oecgtxD8xvY3ceGIQfZKOxZcAVnisoDIdF5aP
-         rTe8cMrCsOVLrA2juqaNs0fd8KhUGWiS/NQrTpcbvxD0cfOmoCx6qtHGJFj9/ItsuHxx
-         tMiLD2fcFQbkJMrFFqFkr4/Dh1Jj/+ECnZc2jCclAa1nNe+PbYvG/TCN3yLPrce5k1Yg
-         OHUCseIB/4QwA/kEL00Tm0WWlCC/VAzgB2Ref9cLdLi3xQHD+aPUWtre8+jZRG27HOaA
-         UV+CgWUkxiIfn3Assb9uPDOR09zrB6RnXn8x53B8joam0bI49MOeMAUu+9YtxVllakSy
-         sR7A==
+        bh=UQBF0g7LGMkaWXJONFj1Zzubf3JQP1KLJgb8Ha1McV4=;
+        b=bC4Eef1FuySt5nh3pYNeedDQd+MsGOqcKlZ3i3fe1fL+FbTK1xsNUKJWoIS45ci+A9
+         AyTmFkrfly4EdeUNG1Nz4QjtS0jhGYwg/9LhWjYOQSQMzMvSIOoon06urusZ2H069oZM
+         SMDniKhQ+Tznd4OMwC7CcElJAllQkxEiPqGYpxksYIBJUQkXhU0rYdihmkQSz86AD5yj
+         xukF+7AOS6j+Mi1ZtbITSNBtQ/FmLwM0gCoXAQnLR1P5Cl1cmCt1+0bXm1hE2oshVeI+
+         IHjiy0YZsxgea6wd/8DwyPCfSsAn8JMNCnV2x5xwSHIq9fohZXdRKfZKzWLwY2X2IIcV
+         CzWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767233096; x=1767837896;
+        d=1e100.net; s=20230601; t=1767233237; x=1767838037;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t4h33WmPmh9knOAQ2OtmSS5LD6H+sen3dTiFufGLTIE=;
-        b=ky2Dwq+L74mmB5hn22R9ON31cRNWri/sLVsZ4Srx1TWtbUJZXD8jbAe+/KADY12Jdg
-         Z/rhVWE47NWviISmX7WxpmDwS4oWEazPt8DotPsylVHOnAgA1KVm8ji08MOAEkMRC5Gp
-         HR5huDevvfW82Ik/g5g9RJqWbnoqJqqY2lhqoxuvRP2M3l5+dN2TmaS4Mm6vMZxjYTHL
-         8FVdO9l7fStMgsx+VcYIvvzVSLcWprjIx+DD8MtaIqyB+C0L0pnFdeDv4BRjCUYdbdPP
-         kUI8IhGCzQ8iTZt/L865e6uyox+JVwtqUJD79groWJTuXGRN4GzlXL5GxTbICtS8Vx+g
-         OKow==
-X-Forwarded-Encrypted: i=1; AJvYcCUwgsAdTbwHphgbpAmoKZNVt74xvtiMgLX1O4bHBoKIWXcTo+OYqbOkM17FfAeR3DQZqYVhRbL+BA==@kvack.org
-X-Gm-Message-State: AOJu0Yx2ueyNHuu4ijmsZvWkaNb0YmS2jfeucSGIwtV/aIxodDVnz7e9
-	OxJp1m1yO7GbZdpxU6vBxPtrwiu0+hGC/5XOJuZrpxhRATgrJ8wBOOhp
-X-Gm-Gg: AY/fxX4ku0iDcyoZL1LV+J9jUu1deTEnozSN9UVvwj+Vf+fKehamKvpaYglRuTbbCP2
-	prXTnVwfU8iyPq9AGdyvbDYMtZxZrjQHTW0+ZLMCHyX4301vQpaMdztV9fKZxF1+BmvQTBhQruA
-	LOj4PuA1rXhl0HX7uvnnILlVV8leMj6lP5LAXp2YIVwBZ3jASWrkPFWKfeWuqIBa5Sdeqp7TrfQ
-	GhubrzI7O/RZqOItaFmd1JEygm2wROSclurw0+qLfvcRzgXUN6P8gm33sXxxf5e8KoXULz7TnQa
-	WaCZXoO3DP2SJcFN1d9M6pYbZZ1nTwSqhOr1utQIzuwO99iRziHBSGwnSPI4CT6LOlpdTxLA5gP
-	SQEVNee+UvHB49OSfpY658BGevCS78uzCGNBlkHQ58pWY+jcFJ5aYsrhMCyyFc8/rh85JVHMzK5
-	OAn5hzyaWFZg==
-X-Google-Smtp-Source: AGHT+IFCnRN5BM6kVAHLy0RVPYJFMCs5SToyOj8yBYpIC2I9xHPhI6HdJIINOAMKk7wNRoMxzNkAfw==
-X-Received: by 2002:a17:907:960c:b0:b80:b7f:aa32 with SMTP id a640c23a62f3a-b80371da8f5mr4059310866b.41.1767233095827;
-        Wed, 31 Dec 2025 18:04:55 -0800 (PST)
+        bh=UQBF0g7LGMkaWXJONFj1Zzubf3JQP1KLJgb8Ha1McV4=;
+        b=qK+ZACi/XYaIvucYBfZnb+v1MEl8dTM9csxyDpHxapwqIIlzXufGDM5UlHxIoisokD
+         4MpqXy4O+Xy2Gbk5toro8zSPYlfYODMTGrFXKQOcVlZDCesbIOxrtR5wxd5/0aW0AH5f
+         xVIM/3iULiY/UrMld4AX/G57lLBoIoPamZlHigql2XKT7Hl+VP+rh1513wdcKKm5UVF3
+         vIjugW6xavBGY9pX4qxsU1mb7tYKhzLE2H57VuquhNBAMwChRTywV2PQu4JquZ75oMgX
+         s1HH0QEpldMVIyHi6uN0OnBkUvmONedFprxRbu3c5algCVYp8mS7Mr3L2l6yqi9258Ya
+         FDtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWufw1DHRtFWLSV8THuU1/RzH3FIj+0T0kh4KNps1bQdXNVrkDeHgdMS0JZ31odiZOnKp2tErsnOA==@kvack.org
+X-Gm-Message-State: AOJu0Yyxqd4D8wh39k/z88UueefGdN6UDEMnA9H7VwvCl8ht+KeUT/au
+	s4XPzPiUoX5TvyrqG/j/tJl9qBVpKRRy7lW1v37NTxpMNDxmK+qtla20
+X-Gm-Gg: AY/fxX7bvRIB82BhofTcFx7ptsOJ8vLWItOhlQaL+Xb8A+A7T/XIBzr4mvACBqYgzUr
+	c2003d13/AMmeBYOaYMcYKP/1juDXX9isEeZ7jlPtArMUjbXMu5AntUZVpUhmgALctI/sy1fwds
+	7rwgs3hXN45gKgBL8nLRyZl+N62UF8U71U023mezs179abjUTkRuYSS65KKaNdJSbakVIEezOyj
+	0ktsnPXyZClXcT5nKvVIilJ1g+9xIj/RCuGEtgMIQNbUyDJBXOtmMAF4FNVSqO4QDaTzcLDX3Xm
+	TPY/S+oLMXT/gmJ9GddcJgyf4BtAoCXUn8fbBEnNvt4PvJ3C70/2kTJ8vt43S+gT54xBZea0ER3
+	bv07OVK5Txu3JApzMBEkSouKQDY3f9EmguNemGoHmBDXgG0QmBA7QwsesgzgbPJ3namyannnsCE
+	TO8gkFCy3pHw==
+X-Google-Smtp-Source: AGHT+IGkCnh9dqfLUptvpy4PZGXmScqGnHYP3DGjjwJuJ8br2u0RfwesNHaEMQG1tTnLLwW9sFl6GQ==
+X-Received: by 2002:a17:907:7f05:b0:b72:9961:dc04 with SMTP id a640c23a62f3a-b8036f86950mr4237184166b.28.1767233236739;
+        Wed, 31 Dec 2025 18:07:16 -0800 (PST)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b83926533b7sm738659766b.20.2025.12.31.18.04.55
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b910601c7sm39251595a12.14.2025.12.31.18.07.15
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 31 Dec 2025 18:04:55 -0800 (PST)
-Date: Thu, 1 Jan 2026 02:04:54 +0000
+        Wed, 31 Dec 2025 18:07:16 -0800 (PST)
+Date: Thu, 1 Jan 2026 02:07:15 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, Vernon Yang <vernon2gm@gmail.com>,
-	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH v2 4/4] mm: khugepaged: set to next mm direct when mm has
- MMF_DISABLE_THP_COMPLETELY
-Message-ID: <20260101020454.unwjna3cdmcgpldp@master>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: Wei Yang <richard.weiyang@gmail.com>, will@kernel.org,
+	aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
+	dev.jain@arm.com, akpm@linux-foundation.org, david@kernel.org,
+	ioworker0@gmail.com, linmag7@gmail.com, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v3 7/7] mm: make PT_RECLAIM depends on
+ MMU_GATHER_RCU_TABLE_FREE
+Message-ID: <20260101020715.45wqnjgcklvjcth3@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251229055151.54887-1-yanglincheng@kylinos.cn>
- <20251229055151.54887-5-yanglincheng@kylinos.cn>
- <f47b6192-2115-4f4b-82ae-dd66e65f4340@kernel.org>
- <20251231025112.uzlgrs3dgbyzul2x@master>
- <9c3b81da-f0e8-4652-8900-05593e124c26@kernel.org>
+References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
+ <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
+ <20251231094243.zmjs7kgflm7q6k73@master>
+ <a3a60bbb-70b7-49ed-abc6-937e6c13d681@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9c3b81da-f0e8-4652-8900-05593e124c26@kernel.org>
+In-Reply-To: <a3a60bbb-70b7-49ed-abc6-937e6c13d681@linux.dev>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: BEFE920005
-X-Stat-Signature: eqf9ured4tn7jaysytp8s3oayripzshx
+X-Rspamd-Server: rspam02
+X-Stat-Signature: eumae6fyri9ya4uzuqr56qhff4zq15hj
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767233097-462029
-X-HE-Meta: U2FsdGVkX19C0PaUuOzjmMZqrk+Kju5x9aiZM508LXefV8WuxFue6Cg+g9iwt04a4FlxsyfQcCr6RfXFSnxxex8sA2TkoPOcT0K1egi1YUsqdMZkiZxW7dW/rjWRnroTdBsgz4S2arQQrsjMvzWvxC+UfZ8f0M2EOrqQKSA8iTx0VXai7XOFHKD4vr+rNuAxHUIghH5rx4Uc51cSxSYKOrk5GbsC/pWKnbdEPHRJqRSs+Z+EewZXzBLXHDAb2jY2V1wo9V3HOvbc3pGWZV4m8rrpcrrhNJPDPSTeG1p8ZJRHr1Sv0NiSd/RveSCHjds0moCPRb7qQSBgllmYpAf1TivgSWOp70iM8JpdNd1XKTcBdmCraejLw7PKvGF4iv/7rcHbUFDimT2C92Daw9WQJWB4+wMHjYtft+OppvQkXMPe/pj3jb50Pl1JrqP3G4+MGyJck0gjI8YVAq6Asb03jVrpRX8WgZ3ZAkn/CTuyEvmBe6Gh/AgRqGdBiVnXYna0Za/i54gAyG1pjCnM/XxDEROnQe7Bl9FXqeSXBpo9dNKZXVq/QTYoQoVqN5fh1/fWq59No9yL5f4mg1FVNdlesWaLOr9uhQlfyAwMsNV3Bz+nvcMaxsUW+xXCzAVoahcg3/2DQkNADlXcFJFB8AISjOwjaDHoxiIOtezNyzM6ULXr8oOrNNZjMYF/eHJRF3OAXvAY9YbZLS+qRd9r91jUJImowM+SlM+yC/RHpneXodyPDLzRe1W5pIplRe2DN1vWY1E0bhufz6Ex1d93gk/i6M93T2JoBmshY6sjckz4kaSmohLaE7pSxIx9QIkkubKQZVC5QyIwDK0LdZpdRiFV3XYy6hOfVlGx3ktBFScRZQQ6OtcwR2i7kiRUWjb0z45WXuENdtvwlHduZluy4x6PL43WCta8AwSnOOVEQgBY/Wcrcpc8NUnGek92ckx6l3nr4KzNdbHXian2ap+fv/z
- 3olR2AT9
- TcvBqpb2ShDfN68jcQdlkYfW+1wKu5Ez6YmeiGLcKSva87wqNnIsjGgV+nYf6ZPNbqV3CVVBu/OKHb0QsNCWNCCtpBFCZoTN76ZrGlVeo5HwhPbOwDVFPCC8GhDTcP1ojAaXum5Nw8cI6u7Z67WAMtwNwmy/uw8eH+ejgFJ8Sh8uHuUlWLwyTmKZeEai3B2eUzftNGHbt+jzletMpONqHBpo8+lr5VvZKiHkGxlyw94MMPHN/VQbFgXh+DPL9XGIYYz9WEyripNJxakv5fZZcx6d356SzNtlZjJowd16pxcrnACk13RkVhaShpkrq2h+qkBbFIhhaJI5FSYAGdha9gKkIeh8K2G3QvdKWimM6zUjAMYZCm3ZbuN7Dtre4uRtBQeuEScVbLPhtoI33RvYsT1HmFPXFb/NkUZdTmTkOzwEUSTCT//Rcw7jcKJaqoNSZflmv1lVGQkJmNOnwDN06Nveew0Ky57mbEBX8L8my91lmMte59T2nXHsz01PaG2via//6VkaOXnwD9E4JvP9byeXX63t7dw1Bml27PDjxIx0tbuzZjEh88bKoYata485LBQoXGcHPH5k0koR1SFUlm3hXCv8J+TCjGm3j9TvByrUJiCq84cwiEjm8yK0l+FmYWA+tDu7zabekPRs2Ryr094Z6gFUoC8ELos2rEmTvn9FJZvSWcXrmGmKivIl3chaEO3JOx/w3ONQyvKUQrlP71gomk6I3R4NnGcCUb3AZHRdnhbOc+Q0RIw1w1A==
+X-Rspamd-Queue-Id: 71B6C40004
+X-HE-Tag: 1767233238-532775
+X-HE-Meta: U2FsdGVkX18mwYwSde1HomzlriVV4AbeeTjxh69BhyHNUU3jsQ6R4K4BILE7rJcPpeiPXwwq9uh4dPHbL76C9a0WqL6gsSRKCviTmMDKCZ1nqI6M3C+ttsBytQMxZ+I6o1mEqPzX0sEDbkjunmpwsCD0Jlir0KkS/RysMWGwkTIMk/kkNThR1Ov9EBUvboBaMNjTVGHAn8ywKkGcgq8EkyCobDby++v7m8YMvHPb/5jee+4/4HpoKHU+SkKvBnmOp0d60gf0L8ncwhqlKVixSw0pEWVVTexXhGvr5w8sYryE49n0959aBGJwbh0iv5t/nFSD+zvd+IyPewEhD9PBwGOBRB80lne4EoHy9J9WcVVq+EpAAuaJpwojx5kn2LDKX6ULHnR0dlT7MJ8dBvP0HU/i9rS6KArncfdYidiwhqwWeGLSqgwq3KUdUTsXsN0Hgn33VFehbkIErx+4jEszy432yAZ1iMHVcJGl9Jq8X0HSiG5k30rCmj9wa8gtR9LMkf+27Xa4/GOiSshKHlUmUR9agv7jC4d8QJiwazO5HZ4+9Xyl09qOPoSJHYrfXxO4+lGfihd5VVKdv83of+WneDM90eQuKr8XcfY4ZKQg0wxxmDHzlNiztSc0NFYUe5wZNJo9Y5EtPcqfUMvqxk5/wULheJlN4XUVHdsAKYXsB9B6HjBOvfvQ5ffKZ26h/jziysTLIqKgw13dn145bvkDutRLsr4uPPLUxIFiAXFGkGRjOKvd/sjadlI7SF4CCgwSLF5Dp/Eu5N7IxKBrHAD67w0WB5Xc3LbfZ0hTG5LE7ShfmLojoC2H8qvmqY8JcquZxDmPokFAJ77KHt/ZVkq2xRegG6TPDE+ijmGtBHZfYC2HyLIUyQYQmbV07xBjXAKPUmw8ywfj+ax9Rv5IPojONmXBqpDN5hqb8VBh6r9/Wd9LodY9ZyHQ5PoaSIswJ0sfOBcsLzHt6X9cbF/MTVV
+ awxJ0/mB
+ 0R0hyNTAjZh4Yb2+HhrxdJhxKkTlRcga0lHY+fR4QG0TGt9pJ6ezFp6++kOOA/BYJilyCOHuINIegGd38T25mmieoOos+EwmNbIJzuzTL4F5pGiW0Q6QtUag4aY+2wSKlcF1b+QDuLqbUthtZYszLr7f/NaSdTfOGH2sUahKHXCp6Si5mnWd7xvy/iLiZuGiirj8tsHMyhr8NSmmVVImp1FAgGaWfaCS+/z27FO1oud1Kf3Xi3BxnO4vK4pEldo3PBvoppUFDPoRfXeUi0tpIqo7CaD7k2EXUyesIeLvvRFhbg4f26Lc/ZvzHhHXTQAjOS69bWvyFll1l8CuBtAB5DyLnqwdts8tbT/tiTs/kZS4CGZq3wXWeeCzNuD6imid/22UYnlZV4uKfMMpcPZObf+X2TvZ5wFOzoJcDVcCS8/bPmljfmlSuBZkR4CGgFNw7cnh1bVGoQj2+u6OBT1vdjfMnsVSSSPvk1pLjGCjV4hr70+t1RpY7X/heG1Q/cv6rEeU4ONtoLPW6rEgIQ0ltQEXK/PvQDHfCoyIT3mdItjw2KDbgE7M61XI8py8EK/pOHUsLBhvkKXpTPPTzQzaplIsZRSrtqQLvoVWwL+eeozgnzCuoAxp17rxGLVakPqHecna+ezxNHkPw5a9m2R0zEXKqmOQwjYZ42dF4nC++Inn1yrQlfj+41UMmiakaWpqMw7g+KctEmlNRSTpniull0i2gK2hzYES+dkIQahNPq1fWcejmA1Nb3c0sB/UZowiO83Btk2GBtJLjQaTyFq+KgDFaxQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,103 +131,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 31, 2025 at 01:21:12PM +0100, David Hildenbrand (Red Hat) wrote:
->On 12/31/25 03:51, Wei Yang wrote:
->> On Tue, Dec 30, 2025 at 09:03:23PM +0100, David Hildenbrand (Red Hat) wrote:
->> > On 12/29/25 06:51, Vernon Yang wrote:
->> > > When an mm with the MMF_DISABLE_THP_COMPLETELY flag is detected during
->> > > scanning, directly set khugepaged_scan.mm_slot to the next mm_slot,
->> > > reduce redundant operation.
->> > > 
->> > > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
->> > > ---
->> > >    mm/khugepaged.c | 9 +++++++--
->> > >    1 file changed, 7 insertions(+), 2 deletions(-)
->> > > 
->> > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> > > index 2b3685b195f5..72be87ef384b 100644
->> > > --- a/mm/khugepaged.c
->> > > +++ b/mm/khugepaged.c
->> > > @@ -2439,6 +2439,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->> > >    		cond_resched();
->> > >    		if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
->> > > +			vma = NULL;
->> > >    			progress++;
->> > >    			break;
->> > >    		}
+On Wed, Dec 31, 2025 at 05:52:57PM +0800, Qi Zheng wrote:
+>
+>
+>On 12/31/25 5:42 PM, Wei Yang wrote:
+>> On Wed, Dec 17, 2025 at 05:45:48PM +0800, Qi Zheng wrote:
+>> > From: Qi Zheng <zhengqi.arch@bytedance.com>
 >> > 
->> > I don't understand why we need changes at all.
+>> > The PT_RECLAIM can work on all architectures that support
+>> > MMU_GATHER_RCU_TABLE_FREE, so make PT_RECLAIM depends on
+>> > MMU_GATHER_RCU_TABLE_FREE.
 >> > 
->> > The code is
+>> > BTW, change PT_RECLAIM to be enabled by default, since nobody should want
+>> > to turn it off.
 >> > 
->> > 	mm = slot->mm;
->> > 	/*
->> > 	 * Don't wait for semaphore (to avoid long wait times).  Just move to
->> > 	 * the next mm on the list.
->> > 	 */
->> > 	vma = NULL;
->> > 	if (unlikely(!mmap_read_trylock(mm)))
->> > 		goto breakouterloop_mmap_lock;
+>> > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> > ---
+>> > arch/x86/Kconfig | 1 -
+>> > mm/Kconfig       | 9 ++-------
+>> > 2 files changed, 2 insertions(+), 8 deletions(-)
 >> > 
->> > 	progress++;
->> > 	if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
->> > 		goto breakouterloop;
+>> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+>> > index 80527299f859a..0d22da56a71b0 100644
+>> > --- a/arch/x86/Kconfig
+>> > +++ b/arch/x86/Kconfig
+>> > @@ -331,7 +331,6 @@ config X86
+>> > 	select FUNCTION_ALIGNMENT_4B
+>> > 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
+>> > 	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
+>> > -	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
+>> > 	select ARCH_SUPPORTS_SCHED_SMT		if SMP
+>> > 	select SCHED_SMT			if SMP
+>> > 	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
+>> > diff --git a/mm/Kconfig b/mm/Kconfig
+>> > index bd0ea5454af82..fc00b429b7129 100644
+>> > --- a/mm/Kconfig
+>> > +++ b/mm/Kconfig
+>> > @@ -1447,14 +1447,9 @@ config ARCH_HAS_USER_SHADOW_STACK
+>> > 	  The architecture has hardware support for userspace shadow call
+>> >            stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
 >> > 
->> > 	...
->> > 
->> > So we'll go straight to breakouterloop with vma=NULL.
->> > 
->> > Do you want to optimize for skipping the MM if the flag gets toggled
->> > while we are scanning that MM?
->> > 
->> > Is that really something we should be worrying about?
->> > 
->> > Also, why can't we simply do a
->> > 
->> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> > index 97d1b2824386f..af8481d4b0f4e 100644
->> > --- a/mm/khugepaged.c
->> > +++ b/mm/khugepaged.c
->> > @@ -2516,7 +2516,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->> >          * Release the current mm_slot if this mm is about to die, or
->> >          * if we scanned all vmas of this mm.
->> >          */
->> > -       if (hpage_collapse_test_exit(mm) || !vma) {
->> > +       if (hpage_collapse_test_exit_or_disable(mm) || !vma) {
->> >                 /*
->> >                  * Make sure that if mm_users is reaching zero while
->> >                  * khugepaged runs here, khugepaged_exit will find
->> > 
+>> > -config ARCH_SUPPORTS_PT_RECLAIM
+>> > -	def_bool n
+>> > -
+>> > config PT_RECLAIM
+>> > -	bool "reclaim empty user page table pages"
+>> > -	default y
+>> > -	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
+>> > -	select MMU_GATHER_RCU_TABLE_FREE
+>> > +	def_bool y
+>> > +	depends on MMU_GATHER_RCU_TABLE_FREE
+>> > 	help
+>> > 	  Try to reclaim empty user page table pages in paths other than munmap
+>> > 	  and exit_mmap path.
 >> 
->> This one looks better.
+>> Hi, Qi
 >> 
->> But the sad thing is we can't remove this mm from scan list, since user may
->> toggle this flag later.
+>> I am new to PT_RECLAIM, when reading related code I got one question.
+>> 
+>> Before this patch,  we could have this config combination:
+>> 
+>>      CONFIG_MMU_GATHER_RCU_TABLE_FREE & !CONFIG_PT_RECLAIM
+>> 
+>> This means tlb_remove_table_free() is rcu version while tlb_remove_table_one()
+>> is semi rcu version.
+>> 
+>> I am curious could we use rcu version tlb_remove_table_one() for this case?
+>> Use rcu version tlb_remove_table_one() if CONFIG_MMU_GATHER_RCU_TABLE_FREE. Is
+>> there some limitation here?
 >
->In theory we could readd it to the list once the flag gets toggled.
+>I think there's no problem. The rcu version can also ensure that the
+>fast GUP works well.
 >
 
-Currently we use khugepaged_enter_vma() to add one mm to scan list based on
-vma property, while toggling the flag MMF_DISABLE_THP_COMPLETELY is based on
-mm. If we want to readd it in prctl_set_thp_disable(), we need to change the
-semantic of khugepaged_enter_vma() or introduce another interface?
+Thanks for your quick response :-)
 
->In fact, we could remove it from the list once we set the flag. But not sure
->if that ends up any cleaner (dealing with races? not sure).
->
+And Happy New Year
 
-Removal is clear to me, but my concern is how we add it back. Looks a little
-unclear to me as described above.
+So my little suggestion is move the definition of __tlb_remove_table_one()
+under CONFIG_MMU_GATHER_RCU_TABLE_FREE. Do you thinks this would be more
+clear?
 
-Another thing is how much "thp disabled" processes would we have in system?
-If not that much, check the flag and skip it in the scan looks enough.
-
-BTW, if we can skip all thp mapped process during scan looks more benefit?
-
->-- 
->Cheers
->
->David
+>> 
+>> Thanks in advance for your explanation.
+>> 
+>> 
 
 -- 
 Wei Yang
