@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71926E9410B
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 07:00:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00075EEB57A
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 07:00:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C113A6B0089; Fri,  2 Jan 2026 02:00:27 -0500 (EST)
+	id 659266B008A; Fri,  2 Jan 2026 02:00:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDC1B6B008A; Fri,  2 Jan 2026 02:00:27 -0500 (EST)
+	id 624126B008C; Fri,  2 Jan 2026 02:00:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB4826B008C; Fri,  2 Jan 2026 02:00:27 -0500 (EST)
+	id 527296B0092; Fri,  2 Jan 2026 02:00:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C3896B0089
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 02:00:27 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 343D158764
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:00:27 +0000 (UTC)
-X-FDA: 84286125294.23.73017F7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 88F0940006
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:00:25 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kzLnd/zM";
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 41CFF6B008A
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 02:00:42 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C338958884
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:00:41 +0000 (UTC)
+X-FDA: 84286125882.15.D079C73
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 314F7A001C
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:00:40 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ApU/C+wN";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767337225; a=rsa-sha256;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767337240; a=rsa-sha256;
 	cv=none;
-	b=Pv3+I/Izc21/04qxrhhva6GXz8c1luVxiz9L1zeeHixvxKl5sLyLGzskJf/29gd1vboxQ7
-	KCvsAtlQ2jPGbuEeorgdwoKcfysBjR2oP1pbJe5zGcd6BEHeQypJEgujyeq3jy08CipxLT
-	1haPZBnM2TteN1V6NTR8QsJSGhOu3kQ=
+	b=TxfZHQmrnVu1NxJejnTlscRc9+Ul+jY3ZwWyPADHOWtZ/z15Oax7W6SzlGrOqmQbKkNm2k
+	vU4mRxPNxEC7eGbitGdt3vQNfDXv7aoIZfBZJqCvIgNevAVi1xdli4M9TEOPx2Xo1oHjmG
+	0DuaxDCj6v0orTygEu1cRLfz/zfPpgc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kzLnd/zM";
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ApU/C+wN";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767337225;
+	s=arc-20220608; t=1767337240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=fzGScPL8fKRb0zTLLc43dI7u38BalcaTw4vJNG5xahY=;
-	b=zATth1v0oZaTDcjQ5UObAf88NF7VHMVYxfMXcCONU/eCPkQqc4QJLGAmWR5fE14wdH2cdb
-	vCHZKjpINir+SkNTyRdhUGSTW5vVW/ccmPcSO+4wyTuqM/v9DwhEKVrnYPYmMJGlASGaXO
-	yr8Rdha2O2n8mHDGTEMa8/0ULKMc9D8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hMSeghU9mFb/iSGNjAJ2/WETrT3nayTRWjrK9prgUyE=;
+	b=c5UOxa1x2FZWKk07zVCpEazp5u7TptyccwjHAKMVw83jfRhV2igdMAbSwN1X0xFtAHs9V5
+	ghiiAQJ7eaba/VJLRVqvmOaBFa4S3bQc35dA4tCG++AywTPScPy0yx//IKae5oWAGhOIpF
+	35sjSXqtTbvTQB/MAm59nNnQxRTrw30=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9720240427;
+	by tor.source.kernel.org (Postfix) with ESMTP id 22B9160125;
+	Fri,  2 Jan 2026 07:00:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F09C116D0;
 	Fri,  2 Jan 2026 07:00:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C319C116B1;
-	Fri,  2 Jan 2026 07:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767337224;
-	bh=RKxDhFgzDq3YGxuar8UOMbGnphlEq9WWY3OvJ6HZDCo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=kzLnd/zMHbNqm077UwFJpmx8HoFPlr4yUOCztzLmN9ZIQ5wnYsrJhy5QOduSZSZCu
-	 ln9uSL2J89up8YOuvzJyKJyO0TdA9K2T7iLeGi3UcGq/gIK+YBe6n1UM9HyjDN81Sq
-	 76SBcppamscXiSirWYQvkdTDQRv6PS/pxFFDuRGA16UKYTxA19TbqJvemVVe4C5li4
-	 pveql/UPWwGhHkzRhKXcjRT1LfyID9hSKFNDryxzlL37GrYmkVlCNeoNw6tGBB11wg
-	 4Q9cCOjdnixoCVxmJSjdUxwUdeNpINX7P7sMG5OTDvI2zodHKJ6nnE5Hqo24Re3kM2
-	 Oq45tNJeyyGnA==
+	s=k20201202; t=1767337238;
+	bh=KgO7SaOs49km6xau9XjjDmzydPHNaHbDsqRu17wGsEs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ApU/C+wNb4idNTK1zz1rLmf7qMnQiTC69e5uyInO+Kw/+8zgij+cWb8B1RufqXU26
+	 1wwAkDpliKwcZM980+Xgpsrz9pj1f3b4c4DAWujjPkDCfQWq4BkvD/f8FippBrzSQO
+	 KbiqOWCGO+PDtGqsU79y82rc/RtNyo6RJJXmHSxwe5v1EVVeniyX4YJ8VYClntcefc
+	 6bNEl/xqs/e7MJSfTN3oSKRvHYgLidvtUF3HM0HkqeXsKG9V3CNaMeRVAp10jZFrHR
+	 a2+yXy2rd/ds/cJTsRv4zQKRp7NOtOqrhkbdkQHjNFRSNKPR8+JeTwPjQchjqqMdSB
+	 O39qW/PrqZb6w==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -129,20 +129,22 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH v2 00/28] arch, mm: consolidate hugetlb early reservation
-Date: Fri,  2 Jan 2026 08:59:36 +0200
-Message-ID: <20260102070005.65328-1-rppt@kernel.org>
+Subject: [PATCH v2 01/28] alpha: introduce arch_zone_limits_init()
+Date: Fri,  2 Jan 2026 08:59:37 +0200
+Message-ID: <20260102070005.65328-2-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260102070005.65328-1-rppt@kernel.org>
+References: <20260102070005.65328-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 88F0940006
-X-Stat-Signature: 64jyz9fb579ybe1mtrf4c87ia974nmet
 X-Rspam-User: 
-X-HE-Tag: 1767337225-163268
-X-HE-Meta: U2FsdGVkX1+46u83upwVFuHR5KbWC+Ar/4RKAtuUavFy+XSQtniLR5vOtMN9VVveUVtHwu9R9KXxIXD9uD2MKQEpDE80+jH1QiaXrmaSpWX5MV+VunYhLJt2wxSQzbW/OIPMn+dIgoiJhpYONzCoZDNLBVrKsTDKYfDSsSLRbeoAG4cq6CfmNBt0k791pngBENkNEi+nS9MpAMk1LSmUq8TSqNcbawVQ/DfYv5KjH9e5pDBvBvA1VSPzeBZGLQe7y4wK/hQRUrxoxZ8Gwdw3NBqZLZF3nuaGUcFborS76LAvgqEfuaCqEdxmz3F8LuUcKZwBGfXL+7AYsp9VdlH5rJIGH8HAs+ukhU0+7n+8Rf5ni2db09IxLxdngcwkRT+jHVkrogEwb4aMyNbmDbSsGIxcz/9VCuJC+S6QJRelKU0XbX+MWA/w04V+il2UMfiNwGpwfCV/94RKyS4ZKE8ExtErI0WEcKLZUR8jN6Azn/MVwBkKEwWQ8n6r70BVCfoxyf2fhXqfm78ab1Ph7EACLNgtcie54Pezq/JDnegm1I8+vQMCnaAsd5M0iQqRuNbxbX5MNJnUzgDdE+K5TPwRYusWiE6RPHLlwSjCQibE/welTaj3nVqdyLSo7RuDX3G7Wex046PVvw9euQPQvfOKhPqjlphkIvIHOZmF6YrKaXZv9rEf5DjAWnBXfm+kGYvVKw4kaqfjXVZ9BjMVPF85buEipD6/pWM3yomDnwuyPGuBgZApz7Wrp3KGZgdGUiDg8j34qyhAcyj3wI+6UjocouOKEVA5KJ1D1iUiXlHaV3uZpHz23kZbVX+zIOPSZdPMARxywr6gCegQXqUf5M0oNKOT02JWeDSRRNIppO0lIBpXy1frRjHmXrqRau14v4fGCu5U951VIMJztP69Ujm2HOuOGe9VfEudOw74kv0cgHTdYcGSP81isiSn2uRNmtkyC620lTTNrvU0KNIC9zu
- qnvXduQo
- qlVyBD0xju5yrK6XqYUyFU3hkYw4sIvfE9RUdL6bTiYRAxReT5rU4xM9yf9UsEmGDnOCOpEuULuHbZw1FzJkVzodgT8ETZkGcKHxaJG0T0sILqKzErN0cFQM5X7dweHfbzoA40IfigvU2kRHXeX9SoDCBF/N7NfbTG3wn2J2kMLh9XmP7Hk0akT7rGFi028xNhc7ZgX533K3Lw5O/ZnJCvh5PJ1EOL5Mkfh3cmnoaWFMwRu4=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 314F7A001C
+X-Stat-Signature: 8t9taa4br9akdachw6p1957z8rc5k11m
+X-HE-Tag: 1767337240-889970
+X-HE-Meta: U2FsdGVkX1/18eNdx1MHyUo9CMKpGw/ebhI8Fo2qQNhTIV5Sx64ax86KaS/fscp7OB4AdarBjXGwrafbYSiNYN5mlgZql3o26kp0rSc2hZ70ay17K+kiTnVEIvy84jvVvvpr4Hc0p9ZCePTqh/x7xJfiEIYRoy+aXXiWqIw+Zfx8JQtB9RG9267UbUcBOZIS8SosPb3IiZknll9csKJ1uh/EIDnpYgKZLb1VGouDVdvXqol16V9PYQ4+C1BHy3xt/c0WBJaBJt61yMzdWbrVfzSV6hUylMs/TsVPCmstluOIrt3jgir9UT9KbATp2mHzBHQwPJ/MNiUBZksoE5tuSiiTZTpNvVq6QXmDpFOWgMN36LWOUB22W3pioEuANY2zPFCvZ0SA4MD9+1TrjHK21IUmWi0HDnsOgkAHt8SmOWn7j4OkoQMx0e91bKmNaWhB9q+XspxgYBRVXP6xGFlLIMLtOewm8ubZQkAVPelb2KPKprUTaio8y0TP5MUPqXl7suYxCToyvtd0krJ/KWyQ6aTZibLbtdFoP8r3vCVRft+LjN9N9KqRk8flpsO2Vf47l3+sYvW3fZK9PRGPMvx23xX2LDLChcSXyv9YH3vwsZ2Nd1m6HLBmBggKKSQJKdmDQHmsci8Vai7MhY5Z0OrCDLy2TviMCrYZYxrXqCSQY61/oA8HHhSIWszPCe/HFPy3jcS0AOADdSCrGOdi5f1YYGbzYT7wMUNVl9ZD1Fo439JCmD9fDvjciFeDEf/lRIPNuXNyROOKfAZl170Vel2/bG/zfL+mcBvu1Cy4Ovcf/sXfqM+oigL7+7Vviq7IpEnc39bXi0GmcaGrVo0uXPMknRZAxxB8K5+nPR14FR/EOlxXXtNI3xwGDg+lPOhHPSFv9Re+KA6RlbB0G8PvOV2KkeuCw9tuXp7YiPxMeklbLuiH6LL0POcZC1qZjraMAQ6hmqGAY0PRpAe+jWWiw1P
+ e4fjsgaB
+ STlYGcOLewwFPcZOAM0u5hTLWV27h3OxdhakjHGPUIwZYvAO+8e7I42q5ejGhnEYUj22ojVYx6hiwczThGIpHi/PMyrWhN3jsklembn0wLiYTZ/WeIpqyJpQQ450P0fhjfr1Iy9jUmIdBr/nJBnxrvBOuLcaIMCylfEO5/lOdB20DKqD508WC5fRMzxZ0zkhWDx/VEDGWHrl2CD9dm3fP3yuNp7HmmRCI4scEFzMVQ+k+Z7lSwryUuyzfHUkowQZZG4YeO/Ltu1QssOHzAIeNdtipZ9w5sFzZwx0vvjBy+8wW/o4uYeaBvX+PeWu9J/eTMT94T+U5VaRO0RGOxGhedmM/Cg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,146 +155,68 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Hi,
+Move calculations of zone limits to a dedicated arch_zone_limits_init()
+function.
 
-Order in which early memory reservation for hugetlb happens depends on
-architecture, on configuration options and on command line parameters.
+Later MM core will use this function as an architecture specific callback
+during nodes and zones initialization and thus there won't be a need to
+call free_area_init() from every architecture.
 
-Some architectures rely on the core MM to call hugetlb_bootmem_alloc()
-while others call it very early to allow pre-allocation of HVO-style
-vmemmap.
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Magnus Lindholm <linmag7@gmail.com>
+---
+ arch/alpha/mm/init.c | 15 ++++++++++-----
+ include/linux/mm.h   |  1 +
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
-When hugetlb_cma is supported by an architecture it is initialized during
-setup_arch() and then later hugetlb_init code needs to understand did it
-happen or not.
-
-To make everything consistent and unified, both reservation of hugetlb
-memory from bootmem and creation of CMA areas for hugetlb must be called
-from core MM initialization and it would have been a simple change.
-However, HVO-style pre-initialization ordering requirements slightly
-complicate things and for HVO pre-init to work sparse and memory map should
-be initialized after hugetlb reservations.
-
-This required pulling out the call to free_area_init() out of setup_arch()
-path and moving it MM initialization and this is what the first 23 patches
-do.
-
-These changes are deliberately split into per-arch patches that change how
-the zone limits are calculated for each architecture and the patches 22 and
-23 just remove the calls to free_area_init() and sprase_init() from arch/*.
-
-Patch 24 is a simple cleanup for MIPS.
-
-Patches 25 and 26 actually consolidate hugetlb reservations and patches 27
-and 28 perform some aftermath cleanups.
-
-I tried to trim the distribution list and although it's still quite long
-if you feel that someone was wrongly excluded please add them back.
-
-The changes also available in git:
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=hugetlb-init/v2
-
-v2 changes:
-* move the hugetlb and memory map initializaion to mm_core_init_early()
-* add Acks
-
-v1: https://lore.kernel.org/all/20251228124001.3624742-1-rppt@kernel.org
-
-Mike Rapoport (Microsoft) (28):
-  alpha: introduce arch_zone_limits_init()
-  arc: introduce arch_zone_limits_init()
-  arm: introduce arch_zone_limits_init()
-  arm64: introduce arch_zone_limits_init()
-  csky: introduce arch_zone_limits_init()
-  hexagon: introduce arch_zone_limits_init()
-  loongarch: introduce arch_zone_limits_init()
-  m68k: introduce arch_zone_limits_init()
-  microblaze: introduce arch_zone_limits_init()
-  mips: introduce arch_zone_limits_init()
-  nios2: introduce arch_zone_limits_init()
-  openrisc: introduce arch_zone_limits_init()
-  parisc: introduce arch_zone_limits_init()
-  powerpc: introduce arch_zone_limits_init()
-  riscv: introduce arch_zone_limits_init()
-  s390: introduce arch_zone_limits_init()
-  sh: introduce arch_zone_limits_init()
-  sparc: introduce arch_zone_limits_init()
-  um: introduce arch_zone_limits_init()
-  x86: introduce arch_zone_limits_init()
-  xtensa: introduce arch_zone_limits_init()
-  arch, mm: consolidate initialization of nodes, zones and memory map
-  arch, mm: consolidate initialization of SPARSE memory model
-  mips: drop paging_init()
-  x86: don't reserve hugetlb memory in setup_arch()
-  mm, arch: consolidate hugetlb CMA reservation
-  mm/hugetlb: drop hugetlb_cma_check()
-  Revert "mm/hugetlb: deal with multiple calls to hugetlb_bootmem_alloc"
-
- .../driver-api/cxl/linux/early-boot.rst       |  2 +-
- Documentation/mm/memory-model.rst             |  3 --
- .../translations/zh_CN/mm/memory-model.rst    |  2 -
- arch/alpha/kernel/setup.c                     |  1 -
- arch/alpha/mm/init.c                          | 16 ++++----
- arch/arc/mm/init.c                            | 37 +++++++++---------
- arch/arm/mm/init.c                            | 25 ++----------
- arch/arm64/include/asm/hugetlb.h              |  2 -
- arch/arm64/mm/hugetlbpage.c                   | 10 ++---
- arch/arm64/mm/init.c                          | 39 ++++++++-----------
- arch/csky/kernel/setup.c                      | 16 ++++----
- arch/hexagon/mm/init.c                        | 19 +++------
- arch/loongarch/include/asm/pgtable.h          |  2 -
- arch/loongarch/kernel/setup.c                 | 10 -----
- arch/loongarch/mm/init.c                      |  6 +--
- arch/m68k/mm/init.c                           |  8 ++--
- arch/m68k/mm/mcfmmu.c                         |  3 --
- arch/m68k/mm/motorola.c                       |  6 +--
- arch/m68k/mm/sun3mmu.c                        |  9 -----
- arch/microblaze/mm/init.c                     | 22 +++++------
- arch/mips/include/asm/pgalloc.h               |  2 -
- arch/mips/include/asm/pgtable.h               |  2 +-
- arch/mips/kernel/setup.c                      | 15 +------
- arch/mips/loongson64/numa.c                   | 10 ++---
- arch/mips/mm/init.c                           |  8 +---
- arch/mips/sgi-ip27/ip27-memory.c              |  8 +---
- arch/nios2/mm/init.c                          | 12 +++---
- arch/openrisc/mm/init.c                       | 10 +----
- arch/parisc/mm/init.c                         | 11 +-----
- arch/powerpc/include/asm/hugetlb.h            |  5 ---
- arch/powerpc/include/asm/setup.h              |  4 ++
- arch/powerpc/kernel/setup-common.c            |  1 -
- arch/powerpc/mm/hugetlbpage.c                 | 11 ++----
- arch/powerpc/mm/mem.c                         | 27 +++++--------
- arch/powerpc/mm/numa.c                        |  2 -
- arch/riscv/mm/hugetlbpage.c                   |  8 ++++
- arch/riscv/mm/init.c                          | 10 +----
- arch/s390/kernel/setup.c                      |  2 -
- arch/s390/mm/hugetlbpage.c                    |  8 ++++
- arch/s390/mm/init.c                           | 13 +++----
- arch/sh/mm/init.c                             | 12 +++---
- arch/sparc/mm/init_64.c                       | 17 +++-----
- arch/sparc/mm/srmmu.c                         | 17 ++++----
- arch/um/kernel/mem.c                          | 10 ++---
- arch/x86/kernel/setup.c                       |  5 ---
- arch/x86/mm/hugetlbpage.c                     |  8 ++++
- arch/x86/mm/init.c                            |  8 +---
- arch/x86/mm/init_32.c                         |  2 -
- arch/x86/mm/init_64.c                         |  4 --
- arch/x86/mm/mm_internal.h                     |  1 -
- arch/xtensa/mm/init.c                         | 14 +++----
- include/linux/hugetlb.h                       | 12 ++----
- include/linux/mm.h                            |  5 ++-
- include/linux/mmzone.h                        |  2 -
- init/main.c                                   |  1 +
- mm/hugetlb.c                                  | 13 -------
- mm/hugetlb_cma.c                              | 33 ++++++++--------
- mm/hugetlb_cma.h                              |  5 ---
- mm/hugetlb_vmemmap.c                          | 11 ------
- mm/internal.h                                 |  6 +++
- mm/mm_init.c                                  | 20 ++++++----
- 61 files changed, 219 insertions(+), 394 deletions(-)
-
-
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+diff --git a/arch/alpha/mm/init.c b/arch/alpha/mm/init.c
+index 4c5ab9cd8a0a..cd0cb1abde5f 100644
+--- a/arch/alpha/mm/init.c
++++ b/arch/alpha/mm/init.c
+@@ -208,12 +208,8 @@ callback_init(void * kernel_end)
+ 	return kernel_end;
+ }
+ 
+-/*
+- * paging_init() sets up the memory map.
+- */
+-void __init paging_init(void)
++void __init arch_zone_limits_init(unsigned long *max_zone_pfn)
+ {
+-	unsigned long max_zone_pfn[MAX_NR_ZONES] = {0, };
+ 	unsigned long dma_pfn;
+ 
+ 	dma_pfn = virt_to_phys((char *)MAX_DMA_ADDRESS) >> PAGE_SHIFT;
+@@ -221,8 +217,17 @@ void __init paging_init(void)
+ 
+ 	max_zone_pfn[ZONE_DMA] = dma_pfn;
+ 	max_zone_pfn[ZONE_NORMAL] = max_pfn;
++}
++
++/*
++ * paging_init() sets up the memory map.
++ */
++void __init paging_init(void)
++{
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = {0, };
+ 
+ 	/* Initialize mem_map[].  */
++	arch_zone_limits_init(max_zone_pfn);
+ 	free_area_init(max_zone_pfn);
+ 
+ 	/* Initialize the kernel's ZERO_PGE. */
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 15076261d0c2..628c0e0ac313 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3552,6 +3552,7 @@ static inline unsigned long get_num_physpages(void)
+  * free_area_init(max_zone_pfns);
+  */
+ void free_area_init(unsigned long *max_zone_pfn);
++void arch_zone_limits_init(unsigned long *max_zone_pfn);
+ unsigned long node_map_pfn_alignment(void);
+ extern unsigned long absent_pages_in_range(unsigned long start_pfn,
+ 						unsigned long end_pfn);
 -- 
 2.51.0
 
