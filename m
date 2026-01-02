@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95175FA3729
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 07:06:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9A5FEEB57A
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 07:07:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AB226B00C1; Fri,  2 Jan 2026 02:06:56 -0500 (EST)
+	id 5BE326B00C3; Fri,  2 Jan 2026 02:07:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 060196B00C3; Fri,  2 Jan 2026 02:06:55 -0500 (EST)
+	id 598906B00C5; Fri,  2 Jan 2026 02:07:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E84526B00C4; Fri,  2 Jan 2026 02:06:55 -0500 (EST)
+	id 4AAA86B00C6; Fri,  2 Jan 2026 02:07:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D4FB26B00C1
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 02:06:55 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F31413AA73
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:06:55 +0000 (UTC)
-X-FDA: 84286141590.23.8C2A7F2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 383026B00C3
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 02:07:10 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EE8348B605
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:07:09 +0000 (UTC)
+X-FDA: 84286142178.16.4DFFB65
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E535E80006
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:06:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TkDnmotZ;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 629431C0002
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:07:08 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CxvPssLF;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767337613;
+	s=arc-20220608; t=1767337628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0d/fgmJzUuC3jidaBzidx264jdRyo/z9z8uWc0qcsnY=;
-	b=2GEo90DoUqpWeFEIWRb4Yy2SyX+4TEUO2X/24fWxK2mL/MwoRmDz39k09We+4+HUu/Aj3P
-	dt05fTQstW0Wu7yqDGT2mC8+UhL8BrEqBuZWhaoQ7c+TlWtqJ9x1qSf9Nqf4xeWBEGSsY6
-	1dZjhiZKAxTCfQNN6hNfFWTs7sUSwZI=
+	bh=Mw+h00YB7RAVdP7poV7dkiSai2G6Gsw/ByEs2J3Zae8=;
+	b=weuf3BVK/Z+yCxGBa9+Kelp68TeDnp7ftF8EBW/t04TLfPgySHfVgeGtjL2o1crNIfqqxi
+	3h0ciCqMw7WFwfcfA6E+S8OyK4dBA/2HpWszsbayF6nB6MxukGCRCT8g8iyj2sCJPe0JLA
+	3mPuA5BP+KACzPtWVg20qvm2441qIUw=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TkDnmotZ;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CxvPssLF;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767337613; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767337628; a=rsa-sha256;
 	cv=none;
-	b=l9IUsgj0FoVVaIYcB0jDsldQXOJpgbPSNrE2huPprG1zxes0Euzs/rq7ExFQ2xYMvi0AxN
-	KR/f/AUWwcxq0tOeXZfa86gPtKM974CNIWBMRWmRV36GFYt0ZNIld+wLd8sxJ7TywXLjbj
-	2NWJb7HPdDXTjMBbZvMWvG7lCzAgGqI=
+	b=fraiQWpnGrbXClTu5LTlkmXsYILxUYKyRLs060WOR/O4Jg/qmjDjHQmvS5F3t4UaiyfeM+
+	Zzk0B9NfLjCnxA7EoBECOyTFbrYYeLUbe8OZkOeAItWuU4Xr/24Xo/dPS1jL47So/jewtL
+	MwHJvHxtTv5Slr1WmKGzpq2HGrPnZF8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6C56A60017;
+	by tor.source.kernel.org (Postfix) with ESMTP id CCDAB6012A;
+	Fri,  2 Jan 2026 07:07:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E504C116B1;
 	Fri,  2 Jan 2026 07:06:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEC1C116D0;
-	Fri,  2 Jan 2026 07:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767337613;
-	bh=kMKUIBkqL1O4S3ZKa4SfOsA0W3WTf/VpmW+w2Z3QAsw=;
+	s=k20201202; t=1767337627;
+	bh=HRLMNbJfcIyzccjy/sfTD1k/8iARayV6dPdQfJTMnWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TkDnmotZu/YdNywK+Eq/loOeeJEB97xyKcnXixh8fkgNeSCwHVL6QnzxLLoAyErWM
-	 TRj2JtHlwHjDoVrWQTbaRj59/J4jnFOEokG7LKVo52RjzFCb878p8ePaRTeDzh2Si0
-	 3eLbVEoXK5/mP+D2jyewADhIDqxVGI2EpIIAjd0Elxy9Vlp2N4rNc/JsXa0N5H3giT
-	 0w6d0zO+vezRlwoSkgewur1fcZo4H7c1PPtods9nW8WUnlSV1SZFSxxt7kyXrS24qp
-	 KUWoXUzjudgicjqcHDPCRzEqHWPBB1EWTVX3Ta28eX8TEBh0H1yNHWWP6NYEYDqBll
-	 SVfxF1n6SYoTw==
+	b=CxvPssLFALKnAzAlXBll5rTphhZU7lG8jhoItNzn1fDH5h3/PSapvXks4U3zBNKEd
+	 Gjt8HaJNmGMQm+aKOWUJhnKIeCQ7VO+u8fAo/doIZz/Il+9XwBm8RvGrlfHBY4wksj
+	 Cq6GIEs4nXBSlEFiuN6ruwU2ocb72rmtMW/CPlqo0QaPKgGKxexcSr/e058WN5u+vt
+	 lU7HuQVp28/ddYn1T2PDlLul6PCmb+/cdQqpBV+UeDT6K9x9v670twTwtzSruR1eek
+	 5EbuXWwPo0AdoPZsDEj9liyOPfYpCx9mEEd3RXrrfPHn5OQecwQijHHNqnHYPLSYBm
+	 a5OWg4z3pZQcw==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -129,22 +129,22 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH v2 27/28] mm/hugetlb: drop hugetlb_cma_check()
-Date: Fri,  2 Jan 2026 09:00:03 +0200
-Message-ID: <20260102070005.65328-28-rppt@kernel.org>
+Subject: [PATCH v2 28/28] Revert "mm/hugetlb: deal with multiple calls to hugetlb_bootmem_alloc"
+Date: Fri,  2 Jan 2026 09:00:04 +0200
+Message-ID: <20260102070005.65328-29-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260102070005.65328-1-rppt@kernel.org>
 References: <20260102070005.65328-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E535E80006
-X-Stat-Signature: 8fc5nnb73d77ctwrd7jwjwr3mzmqnetm
 X-Rspam-User: 
-X-HE-Tag: 1767337613-363907
-X-HE-Meta: U2FsdGVkX1/T2OjGL10fy/zNZKaiDayx3BUJ1bnnCFbz1uFNbGzQqzAPpYg4Hq44fxL6LgPud2kG8rETGmAvplNz6BzcZoLNLxBVD0I1zcOiHJ51Vp8SXwgwTR+2aKZsSmOULj1Pe+NuZIInvUKju7nsMQYfxJM/xdnLVZDt16QpG75LekU8qLPa9KMsS04aJzIb3fs8vzLXBR0AeJYECLaWmhWUXx2qdjE7bqEmvpvKhOssf3z3yG36t47dXVFFv53hzOlQedNrdsL820MtDKK66QvXPah7fIm/lnpT6zBRDcHkQAt3YQ4aVSLVfnAlN4L+2vbXf/7ehoA7fiW/I3FUBDQNmTVNFyggtRUEIOcUVy7d6GjIGvP1SQ4CKvqJIm0sqyQ2ggwi+iPcqo+ZRC7tT1nG5Ehg6suHx4Mn1pZz5EDi8uF3KfsE4Jxim4HPQGKO+jaViZZA1WI6S33g/rC1ak5UjtiqLm4wnh3rk9U/Ta3P120rIEY22GBiMcpee9Aa9p+qkrWMtKpjRz9WFhEe3Llz6nYUvOXXoPkpV32SjfDD6MUkTsemL3JLR8qW0KjPNxkJVBKk68IYR3iMQ6RB5Zq2ktW5A0SqhH7+dFwlC7ifHrDn/mWBL4UNrCV/+bCCA/TqwI5maO/YPWSZBqkZ+EO7fgoEoawc7Q0jsbg3IXWLnRjlKgbi+4YfH0CcBjQog9rh5Y+SZTOKCcRnVT1jpcSx72SmHulUZf+kvqEu6lJ05kxY/qMklnWjok5Erkpxg+ecFENunenddnymD4toI5nZgZzULIZHv2nf4Ng8hSr65CEO20v2aUmy7vyug2Z/Tt5qGHIoKE7QnecPaBxGyMF/u0KycSKtA2qkjuMm5raA55TMCMA4bo5YAWTUVIBhMn5+FDVjFwpiKqm/NgNKvJCO9EvjAPwQR2kqYylEQ2UErqToTFKRwZm5pe+mE+d5Y663SjeyN+TdK3x
- BnNvq884
- WRmQc+xXLVv/iP0pot+D5xd6TRrd6D/wFAbfqDHIXDKNRZ3BuvzNKgW70SBKg0G28N+fIQK5N4u089vPm/6+/rmWBXev598laYjvzASFN8tgSoFh3bVIY/YrfT89zGuCq9ee1RplbNBlLNurZv5BdwA3Kgnv06P3vu5cHXt5hjx20w0o001T5pWKfrOm0Y6IMUNiHyU9ysbLoWbcjK3+BbRZ0mycpGXG90PARAMYBjK699Sv+D2DpJ3wtwt5ui15CNg+Pz1m7FRySSCLdW3u1ewKY8gIjVArpqi1VSov10kKb3me6Sz8sAs4kDw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 629431C0002
+X-Stat-Signature: 5xpes3gcg4piz1gggp7fjaos5ucpyn74
+X-HE-Tag: 1767337628-245938
+X-HE-Meta: U2FsdGVkX18YZL2aooXQUaWZNGVQIWDt7oG0DcIC5CO+/N5qXLBEJStDoFh+BGQmengvg/DcfedH9kAjHSfYfeeg24Tz8fQNSVDkYqPeeCd9q5HEB7y4sJfhazGbzVuQENUQzMSGUgJEPOz92x9GLVYp66MfX1jpc8Cic7sW86IAUJEZ7PnTcxr4xalYfez24zHg88CcRqK0a28grescwd+72Np2nscf4ltxvfXAFSNhVMZSrA3sFgqLJO2ARepxcwVNPLCUgCmvusKnMOk0Tk1Uasr5jc8euouer0PKYAdR5wslcW3OXxDEWLdaOCWtNTqUb57KAcXSll0TGSuiWkogC8qE3Sa68vD6HQF8t8XkwkmM3beTodiO2sfK8L3QzbHyXwUJrZRkzx0xZk2YoLTLEay4SnP349cHslbYlKGU3wdX2hKLHbBu7QWVSXsCICQgbhSNWdbjiS9/ZCvQpNlPqSkfrbN66sks+8RnbGbLWh6Tlh0t6Nk9Mc6AgdROLle7gYbOcoYZWrM6Kh7BFFIy5eHf7BXHVR0/z6oHBLWAjTfzw5u1WXquFfUCIDLbf/fVH+bpIJDveJ2WGeiUlCzMsu8NAbI1Rb4bX9UnoTD0HaIaLAzHRv7nIbAPCixIz2Bjc+2nfBgjN6TWuUX7PSaw7paXG7hDBvlv/K4Po13VDHRNYBNhQYFXwM8N2Dm4WjOkyDPpxGsRX7Exmfp2gUxBTE7niJCwcu+B8/OL8b0GfX9gB7vVEOjexyA5xTSJoPnWyuMcQBDtddp+2wA716AykI1DhWuTmBCo4BAbbRfxr2QT2zxHV2m4DeBB6ZbHHy/WQKE6EkKK8dE50FLnvSdWNLVT+FmntitUO7qPXh5sJ38xRwWfcEduLCWsvSBEea7DdzjZBV0mxOVYi60AexTGfGza66X4SKJD3whZeGOqWC7Y4o1SC+1OFDGCWA3aR4itXmuwCbSN07a/Rv1
+ UAc9h+wn
+ xEHVWCZObSO9dNLsOd5SleAwsMTq/9ukVEIL7U4En5tFbk3OJMTEpbQEbOW9BXiJjhak+/BxldD+T9IHcApCv+CIbqCZ0yz3JAIx/BWUnmOxV3Ef68XInLPqrXgmPX1R0IKAmalVtCCezU4EtuKsBNeG9lEP/COxKUhLvloeurpCdYPw+jEpB6F0nADXLilVtMXUe/0AIX3z9K/XyUDnmGZAcxyVaEA45DcRA0hgQhTOewY4AA9+RzzYyT2auTOXH4fkwfXABrJAu8k3MktTaUGGgDqgbXOTGdaYVyV6Y51IuMpwH6/1XSz3R5g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,106 +155,112 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-hugetlb_cma_check() was required when the ordering of hugetlb_cma_reserve()
-and hugetlb_bootmem_alloc() was architecture depended.
+This reverts commit d58b2498200724e4f8c12d71a5953da03c8c8bdf.
 
-Since hugetlb_cma_reserve() is always called before hugetlb_bootmem_alloc()
-there is no need to check whether hugetlb_cma_reserve() was already called.
+hugetlb_bootmem_alloc() is called only once, no need to check if it was
+called already at its entry.
 
-Drop unneeded hugetlb_cma_check() function.
+Other checks performed during HVO initialization are also no longer
+necessary because sparse_init() that calls hugetlb_vmemmap_init_early()
+and hugetlb_vmemmap_init_late() is always called after
+hugetlb_bootmem_alloc().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Acked-by: Muchun Song <muchun.song@linux.dev>
 ---
- mm/hugetlb.c     |  1 -
- mm/hugetlb_cma.c | 16 +++-------------
- mm/hugetlb_cma.h |  5 -----
- 3 files changed, 3 insertions(+), 19 deletions(-)
+ include/linux/hugetlb.h |  6 ------
+ mm/hugetlb.c            | 12 ------------
+ mm/hugetlb_vmemmap.c    | 11 -----------
+ 3 files changed, 29 deletions(-)
 
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 08fc332e88a7..c8b1a6dd2d46 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -175,7 +175,6 @@ extern int sysctl_hugetlb_shm_group __read_mostly;
+ extern struct list_head huge_boot_pages[MAX_NUMNODES];
+ 
+ void hugetlb_bootmem_alloc(void);
+-bool hugetlb_bootmem_allocated(void);
+ extern nodemask_t hugetlb_bootmem_nodes;
+ void hugetlb_bootmem_set_nodes(void);
+ 
+@@ -1300,11 +1299,6 @@ static inline bool hugetlbfs_pagecache_present(
+ static inline void hugetlb_bootmem_alloc(void)
+ {
+ }
+-
+-static inline bool hugetlb_bootmem_allocated(void)
+-{
+-	return false;
+-}
+ #endif	/* CONFIG_HUGETLB_PAGE */
+ 
+ static inline spinlock_t *huge_pte_lock(struct hstate *h,
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 51273baec9e5..82b322ae3fdc 100644
+index 82b322ae3fdc..e5a350c83d75 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -4159,7 +4159,6 @@ static int __init hugetlb_init(void)
- 		}
+@@ -4470,21 +4470,11 @@ void __init hugetlb_bootmem_set_nodes(void)
  	}
- 
--	hugetlb_cma_check();
- 	hugetlb_init_hstates();
- 	gather_bootmem_prealloc();
- 	report_hugepages();
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index b1eb5998282c..f5e79103e110 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -85,9 +85,6 @@ hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid, bool node_exact)
- 	return m;
  }
  
+-static bool __hugetlb_bootmem_allocated __initdata;
 -
--static bool cma_reserve_called __initdata;
--
- static int __init cmdline_parse_hugetlb_cma(char *p)
- {
- 	int nid, count = 0;
-@@ -149,8 +146,10 @@ void __init hugetlb_cma_reserve(void)
- 		return;
- 
- 	order = arch_hugetlb_cma_order();
--	if (!order)
-+	if (!order) {
-+		pr_warn("hugetlb_cma: the option isn't supported by current arch\n");
- 		return;
-+	}
- 
- 	/*
- 	 * HugeTLB CMA reservation is required for gigantic
-@@ -159,7 +158,6 @@ void __init hugetlb_cma_reserve(void)
- 	 * breaking this assumption.
- 	 */
- 	VM_WARN_ON(order <= MAX_PAGE_ORDER);
--	cma_reserve_called = true;
- 
- 	hugetlb_bootmem_set_nodes();
- 
-@@ -253,14 +251,6 @@ void __init hugetlb_cma_reserve(void)
- 		hugetlb_cma_size = 0;
- }
- 
--void __init hugetlb_cma_check(void)
+-bool __init hugetlb_bootmem_allocated(void)
 -{
--	if (!hugetlb_cma_size || cma_reserve_called)
+-	return __hugetlb_bootmem_allocated;
+-}
+-
+ void __init hugetlb_bootmem_alloc(void)
+ {
+ 	struct hstate *h;
+ 	int i;
+ 
+-	if (__hugetlb_bootmem_allocated)
 -		return;
 -
--	pr_warn("hugetlb_cma: the option isn't supported by current arch\n");
--}
+ 	hugetlb_bootmem_set_nodes();
+ 
+ 	for (i = 0; i < MAX_NUMNODES; i++)
+@@ -4498,8 +4488,6 @@ void __init hugetlb_bootmem_alloc(void)
+ 		if (hstate_is_gigantic(h))
+ 			hugetlb_hstate_alloc_pages(h);
+ 	}
 -
- bool hugetlb_cma_exclusive_alloc(void)
- {
- 	return hugetlb_cma_only;
-diff --git a/mm/hugetlb_cma.h b/mm/hugetlb_cma.h
-index 2c2ec8a7e134..78186839df3a 100644
---- a/mm/hugetlb_cma.h
-+++ b/mm/hugetlb_cma.h
-@@ -8,7 +8,6 @@ struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
- 				      int nid, nodemask_t *nodemask);
- struct huge_bootmem_page *hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid,
- 						    bool node_exact);
--void hugetlb_cma_check(void);
- bool hugetlb_cma_exclusive_alloc(void);
- unsigned long hugetlb_cma_total_size(void);
- void hugetlb_cma_validate_params(void);
-@@ -31,10 +30,6 @@ struct huge_bootmem_page *hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid,
- 	return NULL;
+-	__hugetlb_bootmem_allocated = true;
  }
  
--static inline void hugetlb_cma_check(void)
--{
--}
+ /*
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index 9d01f883fd71..a9280259e12a 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -794,14 +794,6 @@ void __init hugetlb_vmemmap_init_early(int nid)
+ 	struct huge_bootmem_page *m = NULL;
+ 	void *map;
+ 
+-	/*
+-	 * Noting to do if bootmem pages were not allocated
+-	 * early in boot, or if HVO wasn't enabled in the
+-	 * first place.
+-	 */
+-	if (!hugetlb_bootmem_allocated())
+-		return;
 -
- static inline bool hugetlb_cma_exclusive_alloc(void)
- {
- 	return false;
+ 	if (!READ_ONCE(vmemmap_optimize_enabled))
+ 		return;
+ 
+@@ -847,9 +839,6 @@ void __init hugetlb_vmemmap_init_late(int nid)
+ 	struct hstate *h;
+ 	void *map;
+ 
+-	if (!hugetlb_bootmem_allocated())
+-		return;
+-
+ 	if (!READ_ONCE(vmemmap_optimize_enabled))
+ 		return;
+ 
 -- 
 2.51.0
 
