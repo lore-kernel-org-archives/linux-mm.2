@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EB67FA3729
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 07:01:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A35A3FA372B
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 07:01:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C27516B0092; Fri,  2 Jan 2026 02:01:24 -0500 (EST)
+	id 14FBC6B0093; Fri,  2 Jan 2026 02:01:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF2996B0093; Fri,  2 Jan 2026 02:01:24 -0500 (EST)
+	id 0EFE36B0095; Fri,  2 Jan 2026 02:01:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF4F46B0095; Fri,  2 Jan 2026 02:01:24 -0500 (EST)
+	id F3E6E6B0096; Fri,  2 Jan 2026 02:01:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A1376B0092
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 02:01:24 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6684258892
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:01:24 +0000 (UTC)
-X-FDA: 84286127688.01.AF31853
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D7FCCA0012
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:01:22 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YfFbGR66;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E2FAC6B0093
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 02:01:38 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A943813A2A8
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:01:38 +0000 (UTC)
+X-FDA: 84286128276.28.A4E9B65
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 27AB920002
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:01:37 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jKMirO/V";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767337297; a=rsa-sha256;
+	cv=none;
+	b=xxvPJB6qRX5jviZHHaCBa+hZvHpMiaizokxgknnjsYrt5tV5Kh97RQSI8rZ45JhixnPwkx
+	lbfguzLEBlBpserzaI2avXf8rey9FOU0nkRykwKeFIr4ZCbCwknsreh/K8ND15arB35BlU
+	V6rdgwVaNQjolUVJMGGHyF+jM44etP0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jKMirO/V";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767337283;
+	s=arc-20220608; t=1767337297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pXj0Z2NgAtnlunEa9AvDDLLh6y0q3hS/njeAcboUK1o=;
-	b=lBDyd22rGa1vbiUcMSJW7sn1GrTlYpa1ojkaO85Y9IX47ebxRVOU00X1wNxzLQM5YSwbJC
-	pD31VQf5V4+FBth7pmBU0g5OiKNfau1zRTxNj3YBnbJT/dxOkQk3gUoALCHXruqdxSf5bL
-	zRsK9fVVaGCidCkubu/5+TOzWaODU2w=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YfFbGR66;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767337283; a=rsa-sha256;
-	cv=none;
-	b=05c4CSDwcimZaR97gFvB+zE9SS3+vRfU0DLee/VdNFm6chdGqwHICEh3UoRGu5hWFqKhEA
-	uxmvWplL34xUpMC6940m0TXnAji1le+XNUZdyHQPyycE7RWiG662euFMJwgw24POY264Xq
-	FIfQmo15NwP+GwW/LHF5l9DbawWEQu4=
+	bh=qYVousDSpw+811qLPmYYO+fHKcpA4yVaAONn/C+5QeM=;
+	b=lY5uL4AwxKqJQ58UbXqv1G+f+gw9HkyLJIyQwn4cT4ePWyVJlSBjICQWD4hgwnaNsH8dOA
+	9u9aX5j8ekJhTXbxovwMb7fmJ6wZ75nUbuqeLscvzreaGfe6VKR8T8L5oibfzK3A6ezXnx
+	4NiQ7iTcMxR0lH7iYuhMIMQ0JTIAdWU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 063C7439EC;
+	by tor.source.kernel.org (Postfix) with ESMTP id 85BB160017;
+	Fri,  2 Jan 2026 07:01:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626DBC19421;
 	Fri,  2 Jan 2026 07:01:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E256C116B1;
-	Fri,  2 Jan 2026 07:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767337281;
-	bh=djQarGwsnsMGImsgSQVJ5sD5jo+ZigjiDeQZakHIJZw=;
+	s=k20201202; t=1767337296;
+	bh=beem9LtRR1HHqRgL6PattJCY9S8i8ATD31bTRr88sn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YfFbGR66VHayErTkQoIoUIc4G3/Zokhn15LvFAqjzKw26utOu1LBn48hs2H6HzNQq
-	 enWDeSBA/K3oa8124S39Ky2QzRfQWKFy5skfNoCEkG9sz9vKEVoMX6gEHdOtbCXbst
-	 YovEdBmAC4uGLaHGNAqP3BqXeZF+EKxoW8SDO9IcHD6qwesn+Gli/x6/TpHAYsUlrD
-	 UCxGtUCULcfUxhXrs9KtImo/ip7nUbo9TQd43s1ekjsaSWhD1ejl+EXFJWf86KxJTp
-	 WhffTvUE+ThhBNL4rEwUFZ6nXbB9jltND/rGE7Zw/xtewRIoZJM55k7N+y1oDTnXyg
-	 wl/J8tjy8RWJQ==
+	b=jKMirO/VuTg7k/DrwUhdWDqifrgFVKcZxjR3ngObsepKAUunHyot4zCyt4dbuSd/r
+	 e8hg+giPXhpyeaesjjegSYPKpxLKNutC6OgDnsUOcv9WekXd+NB/AKiimQ9/mqBlv8
+	 KlScv9DH/Nq3I8tdNl74MxiqcD3aAM6FCfxhT4H7mKg7ixaPZ+3fILSKwLRmLkM5hx
+	 kysdZHAQiUMqmxsOZVYFQkemEYLKJWnM1VBLRTbuj7W90M9DavJ9z5GCk3Ez3M75pA
+	 nX597Xg69ltfgiS52uEQG5kNsR9io22pRfGDTHSAzWoLyLsgooMbRZSv3J+2WVEAAS
+	 pKICEEyQYsm7Q==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -129,22 +129,22 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH v2 04/28] arm64: introduce arch_zone_limits_init()
-Date: Fri,  2 Jan 2026 08:59:40 +0200
-Message-ID: <20260102070005.65328-5-rppt@kernel.org>
+Subject: [PATCH v2 05/28] csky: introduce arch_zone_limits_init()
+Date: Fri,  2 Jan 2026 08:59:41 +0200
+Message-ID: <20260102070005.65328-6-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260102070005.65328-1-rppt@kernel.org>
 References: <20260102070005.65328-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: k5njrstzmygrkxeuz33foxmww8zddwg7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D7FCCA0012
-X-HE-Tag: 1767337282-695206
-X-HE-Meta: U2FsdGVkX18cDj2/eNYhoTuLImC+vbEKp3oRjzwD1FMeUJkD8yDTO1OYFtyn5T/xKXmY9kz4859qvEL2/dCTvsmVMdLPGxJYJw8jgnxOPxX6w1AJRJpnkW94VkhURteivVaph+li6r37HkaO+nfmA+N4j3KRnqvA8rueP4WV9kpDAqdJZxUh+8WMwIUtqKOo5vXSVsxKifW06tN6ZnG4TTyk2VoqLFBeAyygiEekEhQTs72mL94S2Eptr4Q01eY6DqXA4IBxTmzoyXqh9Kol5rBntIavLmvg8EkXPM7v+nH/eMRLaptqDFPBzEkX27A7L5dUV+x6H0PkRWzVlvAe8YtObWKj5Wn+11ZNZBSmNpEa7ZXgdDwV8/sMEsT2qqZngGodUo+fbkbDbrz/Rl58FC77zUGqebdqztKO+Ek6vBL14dbpd3E5DONsfHhPYjzps+Fk0SDhnJm/kvlYoj6KQFZncV6iU9L539mkZUj9H2t9YhH+LLp1OjqgghWufh9yHGcabRUokte4OCrUiUFMbVinuVzV/iBPdHRz54QAttawGdEruMyH/maP6zDvAUYXGo68Rk6SYH77mCCcuWgOuAoTE4YkNPUwM+mOMpfTbk/DJGylLlqAD7XEBJMLKFw5zNQyml/jTZzQ4PGQxYPbCqbWzEIfqed/n8xEBDIY3uevT07NT9QzFrmYI2zDD0KmARRG6C8/AReo+f4eKmH4jIFabUvbRkPKbjRJTyFz7wF1UKPnVzskTyONFN/GPjmj48gCVKpFPp/E9XvhysQHy1C6hM7KXShdrPkdaGbGe647BKEk8b0zkxo1vrW5sa15CmtCpk+UKUdDKBL3NOaYVuBCQpw4NyJ7LMj4Qu2H2QCu2s7nt7bYx4krPlZrO/d7nNz5KFUAAdRVZVL08NYvXV63RyS1OQWNMiVKlZk9CRfl3C4DZdh3ea01QYxqGg+6wjhE1iP1jMSdQAtM4F1
- z3ntGpjN
- xu913vsNN71bVWeE=
+X-Rspamd-Queue-Id: 27AB920002
+X-Rspamd-Server: rspam10
+X-Stat-Signature: s318dm9yj5wmryjfiz9i3uubt646otzo
+X-HE-Tag: 1767337297-974360
+X-HE-Meta: U2FsdGVkX19sYqzlqhSUq1HpwI0lg4D46gBnR/bcsLyQx0koiVLyX2YI8GBzmhbL/muw7hgEaMRvoZY+A+PU/qokRRa6IsNlrfa8MiRC8GRDBVClsJaK3gz8mEK2I0wpFQE9Knm6HJAZxOYKATll/hReeFBIc4XxIYQX6tIA5rt4GcdTQ/FxpT6s2SKoQVFMsLDWudoTMtX2M1KgA/LX/lT2NmCNgje+gz7XLoXccpnHGpJQCUeCn7Zz2o+xysWfmPl6/Ah/Ltj5gF4nYxbsqZwYV/ZaemSOn7U+nzos4wffwPFX7uif/T8V3uVYsWhtERpxXcATcLzVVKVQ/mkEM9+L75CcvR4hHi4A4JboH07YXoIf2cUOHgLR1Nt0Wo68ukA9wp7NOXzkBDEdYab0ZSpAFvzFyuGu96XnOzO4KgSoNQC8fa/tXvJKcbDtmHoDarexzXFo1DU6kDc06DY8+ILCZzx1TWMreip8Y928VSK4p6rnTpfYsg8x/Z3sWBWkBqtEjBxkPQIvToUunRK6LaiQAN8hFRpihUtVRhOg+7qOoI8rHKxxo6NitzkNNV6Pml6y/MQVzhiQEZ/3U4dmj3X03RhDVWxn/Q6Mzf5XgiX1onrD6h+/7HCVcvx4blYcJCJKGSAsBEYc/0mLeRSz1/MriZfMALEdo1BeZFyJvGjDLGwV1T/wSsIufJ6VUnYl+63pW3knrZqtgdm+rREkaicT55VmC5hAvUoMgL0IFaByDjikq2N5mKgUhHGo8JU4FA2PwmdGAZerRyn6iMQ/Uf+u+z7ER9x2H/+zW9Im4t0SbSScHMUaKL0BqTQ7Rwd/TWriWpb1rl6IXxwQLLSxGrqk2e4eYfBP9cHkIijBy6kiGtFn8kCXxAQULwORSOhKCCMMf/rRFVJMBhPKCNPLMmi/DqkV6NfjmPap8gNEPCDQ2+5eA0IhA9G3+4A50H9DMy3GuA1ad/XHwTzIlzK
+ VLt/TrzY
+ 3zEt3b6kOgr/Sr1WcCbmAm87ndgxoYYdMK6hOpUFYvJ84SERjaK4Pm3H0Wjdp2rIjP/G5JS4yv12NsT7JM0rf/uTGNjPmUl+80ZjcfQ7p92BmsXu2HXp8g6OO1DdD6QgnyUELYa4AOxCCgDLSBT+GF93mFSNesT6gZWGIa8CbQPTaC6/bN2Ous3cU2seYIFp51/9Zsvw/pSuUFiJcHF2kOX9XkAhHsjnMG4sn5mOQYKFT9cJR3T8GvZsKYbLudLgKf0WM1klD4ZZXeGzY4ep+DT0cNQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,69 +162,52 @@ Later MM core will use this function as an architecture specific callback
 during nodes and zones initialization and thus there won't be a need to
 call free_area_init() from every architecture.
 
-While on it rename zone_sizes_init() to dma_limits_init() to better
-reflect what that function does.
-
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Guo Ren <guoren@kernel.org>
 ---
- arch/arm64/mm/init.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ arch/csky/kernel/setup.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 524d34a0e921..06815d34cc11 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -118,7 +118,21 @@ static phys_addr_t __init max_zone_phys(phys_addr_t zone_limit)
- 	return min(zone_limit, memblock_end_of_DRAM() - 1) + 1;
+diff --git a/arch/csky/kernel/setup.c b/arch/csky/kernel/setup.c
+index e0d6ca86ea8c..8968815d93e6 100644
+--- a/arch/csky/kernel/setup.c
++++ b/arch/csky/kernel/setup.c
+@@ -51,6 +51,14 @@ static void __init setup_initrd(void)
  }
+ #endif
  
--static void __init zone_sizes_init(void)
 +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
 +{
-+	phys_addr_t __maybe_unused dma32_phys_limit =
-+		max_zone_phys(DMA_BIT_MASK(32));
-+
-+#ifdef CONFIG_ZONE_DMA
-+	max_zone_pfns[ZONE_DMA] = PFN_DOWN(max_zone_phys(zone_dma_limit));
++	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
++#ifdef CONFIG_HIGHMEM
++	max_zone_pfns[ZONE_HIGHMEM] = max_pfn;
 +#endif
-+#ifdef CONFIG_ZONE_DMA32
-+	max_zone_pfns[ZONE_DMA32] = PFN_DOWN(dma32_phys_limit);
-+#endif
-+	max_zone_pfns[ZONE_NORMAL] = max_pfn;
 +}
 +
-+static void __init dma_limits_init(void)
+ static void __init csky_memblock_init(void)
  {
- 	unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
- 	phys_addr_t __maybe_unused acpi_zone_dma_limit;
-@@ -139,17 +153,15 @@ static void __init zone_sizes_init(void)
- 	if (memblock_start_of_DRAM() < U32_MAX)
- 		zone_dma_limit = min(zone_dma_limit, U32_MAX);
- 	arm64_dma_phys_limit = max_zone_phys(zone_dma_limit);
--	max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
+ 	unsigned long lowmem_size = PFN_DOWN(LOWMEM_LIMIT - PHYS_OFFSET_OFFSET);
+@@ -83,12 +91,9 @@ static void __init csky_memblock_init(void)
+ 	setup_initrd();
  #endif
- #ifdef CONFIG_ZONE_DMA32
--	max_zone_pfns[ZONE_DMA32] = PFN_DOWN(dma32_phys_limit);
- 	if (!arm64_dma_phys_limit)
- 		arm64_dma_phys_limit = dma32_phys_limit;
- #endif
- 	if (!arm64_dma_phys_limit)
- 		arm64_dma_phys_limit = PHYS_MASK + 1;
--	max_zone_pfns[ZONE_NORMAL] = max_pfn;
  
-+	arch_zone_limits_init(max_zone_pfns);
- 	free_area_init(max_zone_pfns);
+-	max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
+-
+ 	mmu_init(min_low_pfn, max_low_pfn);
+ 
+ #ifdef CONFIG_HIGHMEM
+-	max_zone_pfn[ZONE_HIGHMEM] = max_pfn;
+ 
+ 	highstart_pfn = max_low_pfn;
+ 	highend_pfn   = max_pfn;
+@@ -97,6 +102,7 @@ static void __init csky_memblock_init(void)
+ 
+ 	dma_contiguous_reserve(0);
+ 
++	arch_zone_limits_init(max_zone_pfn);
+ 	free_area_init(max_zone_pfn);
  }
  
-@@ -319,7 +331,7 @@ void __init bootmem_init(void)
- 	 * done after the fixed reservations
- 	 */
- 	sparse_init();
--	zone_sizes_init();
-+	dma_limits_init();
- 
- 	/*
- 	 * Reserve the CMA area after arm64_dma_phys_limit was initialised.
 -- 
 2.51.0
 
