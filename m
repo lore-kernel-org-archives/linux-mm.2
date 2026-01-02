@@ -4,97 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7C0DFA3741
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 13:47:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6594FA374B
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 14:05:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AAC46B0088; Fri,  2 Jan 2026 08:47:02 -0500 (EST)
+	id 0C6D06B0088; Fri,  2 Jan 2026 09:05:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 858336B0089; Fri,  2 Jan 2026 08:47:02 -0500 (EST)
+	id 09E646B0089; Fri,  2 Jan 2026 09:05:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73ECA6B008A; Fri,  2 Jan 2026 08:47:02 -0500 (EST)
+	id F176B6B008A; Fri,  2 Jan 2026 09:05:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 615A86B0088
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 08:47:02 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E614A1A794B
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 13:47:01 +0000 (UTC)
-X-FDA: 84287149842.14.C79F6F1
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F270580007
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 13:46:59 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=D8DUnaly;
-	spf=pass (imf30.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id DE4936B0088
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 09:05:32 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA9171AE34
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 14:05:32 +0000 (UTC)
+X-FDA: 84287196504.13.744AB08
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id BB1AA18000E
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 14:05:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bEXwHj4c;
+	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767361620;
+	s=arc-20220608; t=1767362731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1i20b/Mjn1bqQD3Dx3TUmWUZ2VJRP6JCW5L9UDKlzFc=;
-	b=o8bVIqH5wphUAtmfXLsEV5oekimMViEMqgxN/qXlU3Z6KZ2Yf+nRx3RnlQdMuaOXjpOCB6
-	QKVYyS+kUF8cQi1/OpjhJ55QDqvKoay0PplmYmlejGw+bEaUJIS/yCM5YFrNJE50AhNkfo
-	2kHbPVtfLlDPA7Xn7pDiolc44cqg3Lk=
+	bh=dHhKBLUj/xPGvd98uQUXe/daqMsBh++bApJj90w3Yok=;
+	b=omMO4LDTWqOq7ZF3EDKplD3rs6a/HRwFLvrc88UWAzeHW4MZDIu6o7YGqPyjkNwlE77MkY
+	pp66vcuNaFIde1uJouDTBj/7WfiKlc/+U4eta0/oqXz7BF0Zsg+trmV4vtY7EpmWupKKYp
+	kfmBXMnQOaW/sUcxERRTWIVBz/ubpKg=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=D8DUnaly;
-	spf=pass (imf30.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767361620; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bEXwHj4c;
+	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767362731; a=rsa-sha256;
 	cv=none;
-	b=SEUITNIS6CEZcRomv4JHHRMpU0ul5RUTohHYaVpWPtZWBCjv1tITvEC9a5td+y2bcyKOr4
-	gJw4Cgf7LYGoas5ozl2yRcQjv/ZequtGR1grjfrSVV0apA8REfxpoKlflaOxSLZZ4/GUX0
-	uT6vy+Ay8yaoYBD+VvRvftE5KrpRgQc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767361619;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1i20b/Mjn1bqQD3Dx3TUmWUZ2VJRP6JCW5L9UDKlzFc=;
-	b=D8DUnalymLz/H1sQ9Jc2FSZDbz89pGHZuzx7JDE/snZatbGxdtLN9O+hdJ1FHx9z+U4JdD
-	BdP3w7pZSRj7B7G9xUlUieevs8CDZojyb6Ndp80yDMXmURGTMdYoq1ar+YSjs8aCgLSRLe
-	z2tqvc50mOHyIBhLaZk7Pus241Z4oY4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-439-62FfLU-aMZixtLHflc2r_Q-1; Fri,
- 02 Jan 2026 08:46:52 -0500
-X-MC-Unique: 62FfLU-aMZixtLHflc2r_Q-1
-X-Mimecast-MFC-AGG-ID: 62FfLU-aMZixtLHflc2r_Q_1767361611
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9BEB119560B2;
-	Fri,  2 Jan 2026 13:46:50 +0000 (UTC)
-Received: from [10.44.33.27] (unknown [10.44.33.27])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 34A4A1800576;
-	Fri,  2 Jan 2026 13:46:48 +0000 (UTC)
-Date: Fri, 2 Jan 2026 14:46:44 +0100 (CET)
-From: Mikulas Patocka <mpatocka@redhat.com>
-To: Askar Safin <safinaskar@gmail.com>
-cc: adrelanos@whonix.org, arraybolt3@gmail.com, cryptsetup@lists.linux.dev, 
-    dm-devel@lists.linux.dev, gmazyland@gmail.com, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: Hard system lock-ups when using encrypted swap and RAM is
- exhausted
-In-Reply-To: <20251211182429.3300562-1-safinaskar@gmail.com>
-Message-ID: <eb3a9746-83a0-8271-6bd6-867ecfa49aad@redhat.com>
-References: <3f3d871a-6a86-354f-f83d-a871793a4a47@redhat.com> <20251211182429.3300562-1-safinaskar@gmail.com>
+	b=hHK6KgcN0BBYuJADbU8nvOn5QDAmNwOdn/R2VQ/c01GI07qnCmtDdWy3E5C+kDbsdFHV/E
+	4EW9JK87DpdTP4VgPihLr85Q8jFk6cHjLmY+VDwXEDb6fxpXhuUWzh15c5b7y+7fxvunBj
+	4izKSHQuDcZnbhhrqukLldqIDthkDD0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 999AC40624;
+	Fri,  2 Jan 2026 14:05:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A71C116B1;
+	Fri,  2 Jan 2026 14:05:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767362729;
+	bh=dHhKBLUj/xPGvd98uQUXe/daqMsBh++bApJj90w3Yok=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=bEXwHj4cDOGyrvCsRQsGDv6yK+YiVcL6Hso7BUrsbYoRlIE0/vU3oyAYugWyBB03N
+	 oLvB4x/cV2WbXpQ4eQ2+75+qFzaPNHOYpSE7Al6RyZFb/pH6fcgBWhZLuoTixEY+hG
+	 4vRM1b0DI0my9AcFkYxCHeB3j9IQg2/kzWUkIOUEpkbj19gqZ8W1oeqr2cbKmVdZIj
+	 0avpZ7L87kiJWhEaM0grbGMtsGS6G4xhroO237+78uDg+r3zrCjBegDBITsR6qYRHy
+	 Lzyti33d7vz4No+P31u2mk14wPviBN2gkACyXRwsf1yZ0eCAF1j1oIuIH7H1V45Pu5
+	 v0o+rvB5BhZeg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Evangelos Petrongonas <epetron@amazon.de>,  Alexander Graf
+ <graf@amazon.com>,  Andrew Morton <akpm@linux-foundation.org>,  Jason Miu
+ <jasonmiu@google.com>,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  nh-open-source@amazon.com
+Subject: Re: [PATCH] kho: add support for deferred struct page init
+In-Reply-To: <CA+CK2bDDEZ5a+LJNDVMtKFtQ1D9rP6rJqU064eoru=a9eHpaAQ@mail.gmail.com>
+	(Pasha Tatashin's message of "Tue, 30 Dec 2025 11:05:05 -0500")
+References: <20251216084913.86342-1-epetron@amazon.de>
+	<aUFJH9xzJXYOt_X8@kernel.org>
+	<CA+CK2bDGvgcGJijAtSSa2k_FWjnZXm2jRiFd6Z9-XjEQ-Y68DQ@mail.gmail.com>
+	<aUF4fsWwD9BswkFh@kernel.org>
+	<CA+CK2bB2mn5b0N9gs1UavYLUQhbpVvdo702oHZa15E9OaZkKWg@mail.gmail.com>
+	<aUUYprAotKYMiEs0@kernel.org>
+	<CA+CK2bD101cSC_7+OWkMei2QvUVjSaRLy+LboLe8Sz7KS3by4g@mail.gmail.com>
+	<861pkpkffh.fsf@kernel.org>
+	<CA+CK2bA1kYCf0BwhX3Sg9Ur82nK-7HPzs0sg6xbVWFAJaZLhpw@mail.gmail.com>
+	<86jyyecyzh.fsf@kernel.org>
+	<CA+CK2bDxnTEe9Ohq5zLuyF-jqgD0DPhfdq6z=yztUsXU5p5fSQ@mail.gmail.com>
+	<863452cwns.fsf@kernel.org>
+	<CA+CK2bCjJWZG_rPoPsHWSxirmUCTOuFQzTCss2AKf9UqpThrdw@mail.gmail.com>
+	<864ip99f1a.fsf@kernel.org>
+	<CA+CK2bDDEZ5a+LJNDVMtKFtQ1D9rP6rJqU064eoru=a9eHpaAQ@mail.gmail.com>
+Date: Fri, 02 Jan 2026 15:05:23 +0100
+Message-ID: <861pk885zw.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 1dyo18mh5biiu3iubt9gkhkkpsmcoqy4
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BB1AA18000E
+X-Stat-Signature: 6hmcxugzqzko58ppf3tb86ain7ppkrqd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F270580007
-X-HE-Tag: 1767361619-595757
-X-HE-Meta: U2FsdGVkX1/H623gKDz2eRUExJoPCXuWygbucPuK7j+2u0T5t685oYs44qrP9zb4oZSWXHv951XByNTE628nNMvBIIyrJZAfG2Z5oJADbyCp8LxqdyygdKYA0QtWKefsl2sMOd13YPToEXbP96xp7maioQTNFqkX6hvjiWIpozgFCMQ0TR6HEuvf2aWgU2sO8IoWWZoCl+k0cPgr6oLCgdiSmarFY/9wowZomTLwzQL0GsdfyVBsyRUM+h400uMX2M++ajv8ok/1r3ZJiiHPX13XgxXK1qVg7+oozbIeNdLnBIjho1vzyQP9tVYOooVeBkFGd4F2esGs+65+NuiQnubFi7CXQsj1Hd96L1WQpT4ArHM3/X+P9lKD+oXtRnDHolTvXAd58GNSV0BfIdChX5+/T+GXobZI4NXLIkE0WBb9J/7V5NUdOQPPMfmxJA7qAFb7YeOrpnoTyEXhLtkOFN1VIusDKc4CubEf9t/FNnLMbCvG7ggXTMy+zED8QrMhdvJtmQ5wPSW4XN8vPk4KrJ/apCAcPTJfOfJBMFzA77zcuDdCI0MUiAI+HYgfgAKPx4bG02w+7yFlttcvDQg31nD+h0QLLnwFlfzOjVYiOehIkFjzjxghiNOx3yX6Hw1zc4HcwzSroyAvw2ZzjQCfWxxzQe23isRcMpz7mLwBe7hUPuMtDMKLMuOuQ6Rs1TceQenB8P9Pd7VHs5pKbc+pqjvWafnJ6Vb/ZlBZMIdbVFzzY6shFNbgaxFhgoTy+11xjGZuG7wEGIafnT+4q7oRHwrR2qUcxAoVw87F43irNcbxTKkWvytNMuT7fSf40aLaykTK3pUDRGmYmE3IpHNa2FUWLmU5YdPnmUUs8dyw+YXN2ZlSCJcMnTLfQYDS7jBrmeEVGfqBn+MB3K4wWZ5IsbF4+2kLBCTCMQMnEcPLbmRcYrJqOJcgDh6MMZYvki5YDqIs8NHiZqMiMpMioih
- OBPoO7rZ
- lmKNSTsPioBnrkwAgj9e1zgSEtgGq41g5oMjTKKy6HU3DqUxn1Ogeky3DUHILrCs4X1+JuMmqOhY/YmA2dp8KDIBZ6gptl8Qq15fgnUIt64ayLZeh1RMmwWSr8I69I5Ec2nteDjyTc94nCBJFvZFjjBXfatauUgi2wTP/8i2U6y9rx8i10PIgy147Z6jH+RVuxew9cWG3ejvLT14BXa5hCBf7IXlrgKtXJn940gQx1K4yznucyWpTXpUlM8/wQDCrbLJpxT8oKQ2Qsg4fG2yURGI6kXtFjpzjArR8AgVz9umRsMOfJO4sV7d8CRPerIxlDIQbRoshivK51fOMrYimz3DvVw==
+X-HE-Tag: 1767362730-515947
+X-HE-Meta: U2FsdGVkX1/BGwfCDiFxmsqUHf31B1nDZvngyz+MMfZlJtL84D3MYvWmE9PNLYShQXgcIZ9uQnKZofbwebi0f5k3u3vndWatxLMrAeY0t80ewtOUVyyKF7Ko3+nqpXrwCNXNTPm5UaK5Ick/i49BK/NCAR+zjo4MF3iITlLmPXsbaVetNxWFdVVbfEp4i7XjekrCRWoXMua9geqqRkLdAvWm25ufr+wrnzeo5Ne9aWjoWP6aZLNRIHUFp4kAWEN6LaLeg7WqxOdRiXeQca9Q4TZmQoiXE1hNvMnDYmkEObcICdusHBPjZNQD1XMXMDgqhbfmToTOQfm3IA4nQxf5uNThnZI2VJWQBgPteo12ZkQL0ylamaReGL+w0qNHfStbReT/1H4R1oWWUKN5v8yTeHKTfYAF2ho6fIHjHwgjfI7sCnXCxjsMuhM8IWDu8pdENvQ3+C67eqR2Op36WOxYbmL45jOc5aJHfk0V+r+6OMXpF2Uu8e0npvyXR5534lEbnid70618g6YvwD3JYfcPAvlBDS0WDp34aJCBL4V45fYJfaVKwYl650SPtjzGjH3OOH9hhzVPpu8wllUUVLhOpMgbxBY2qttlE2XjPmgZfN1owcKGoH3OuQA8+1ntjdnKkVkJKYRE0+Ze/3UYw6qRfMNbdVAvCRcO8G5uNFUat1O7uVRvkU9ghGqdK43FfB5YLET73xBhGS3mCq4rsJXp3SWbmOr1ctCIkyN9XrN+/79RbwXseQxs2JUtqJRcUPpdVllldzcZ37l8gKt+eIWVWkCz2O9PnMHGVbvwbnbewqfbkdgW9h3/tHrpkJvnolzSjXAZKR+7ewTNcgfVaD2b816ncc3rYnkmpbIIilnujlIWQjnG/aTZ/YMTAWDlNHYuUmFVIi+Xm5z5NoB4kVuvmL2a53FdWF39bSmDL1yIG0g8Js0Q5cobaqrbkfCF3phCzAbU8GfRRwpLTUem+xf
+ qUZWKzPG
+ bHVkKXoIjDDpP49h4wtNoEzdqL894HTeonKXwttcQRGAnpMUk48auRN4sq4JCj6bOZQTe4PjqnFkjUL8iq0BGp6ahFYobA4N0uFbJcVQqxxeZyWKE9hg00IyydFUK6HEx+67+OX4YreipSBFORVWEK+wUHDZrUY1RwmMOEE+YOvBxADp6STpynTnbP4p4/rBcS6drxvtl6hIndwDDoHrU05lUphUgRHEbxRu0nqeNBUYVmsTxvwA7gbcx1A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,30 +112,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Dec 30 2025, Pasha Tatashin wrote:
 
+> On Mon, Dec 29, 2025 at 4:03=E2=80=AFPM Pratyush Yadav <pratyush@kernel.o=
+rg> wrote:
+>>
+>> On Tue, Dec 23 2025, Pasha Tatashin wrote:
+[...]
+>> >
+>> > I kind of do not like relying on magic to decide whether to initialize
+>> > the struct page. I would prefer to avoid this magic marker altogether:
+>> > i.e. struct page is either initialized or not, not halfway
+>> > initialized, etc.
+>>
+>> The magic is purely sanity checking. It is not used to decide anything
+>> other than to make sure this is actually a KHO page. I don't intend to
+>> change that. My point is, if we make sure the KHO pages are properly
+>> initialized during MM init, then restoring can actually be a very cheap
+>> operation, where you only do the sanity checking. You can even put the
+>> magic check behind CONFIG_KEXEC_HANDOVER_DEBUG if you want, but I think
+>> it is useful enough to keep in production systems too.
+>
+> It is part of a critical hotpath during blackout, should really be
+> behind CONFIG_KEXEC_HANDOVER_DEBUG
+>
+>> > Magic is not reliable. During machine reset in many firmware
+>> > implementations, and in every kexec reboot, memory is not zeroed. The
+>> > kernel usually allocates vmemmap using exactly the same pages, so
+>> > there is just too high a chance of getting magic values accidentally
+>> > inherited from the previous boot.
+>>
+>> I don't think that can happen. All the pages are zeroed when
+>> initialized, which will clear the magic. We should only be setting the
+>> magic on an initialized struct page.
+>
+> This can happen due to bugs when we use a partially initialized
+> "struct page", something that Mike have been looking to do. So, pass
+> some information in a struct page before it is fully initialized.
 
-On Thu, 11 Dec 2025, Askar Safin wrote:
+The magic is checked at restore time though, and by then all non-KHO
+pages should be properly initialized and have their magic cleared.
 
-> Mikulas Patocka <mpatocka@redhat.com>:
-> > So, this is what happened to you - the machine runs out of memory, it 
-> > needs to swap out some pages, dm-crypt encrypts the pages and generates 
-> > write bios, the write bios are directed to the loop device, the loop 
-> > device directs them to the filesystem, the filesystem attempts to allocate 
-> > more memory => deadlock.
-> 
-> Does similar thing happen in my case? I. e. swap on top of dm-integrity on
-> top of partition? Is my use case supported? (I'm not talking about
-> hibernation now, just about swap.)
-> 
-> -- 
-> Askar Safin
+Also, the magic is cleared by kho_restore_folio(), so this can only ever
+happen for pages that were preserved but not restored in the previous
+boot. I don't think that is a common use case in the first place.
 
-Hi
+[...]
 
-Dm integrity doesn't need to allocate memory when processing I/O requests 
-(it reserves some memory using mempools). So, dm-integrity on the top of a 
-partition should be safe.
-
-Mikulas
-
+--=20
+Regards,
+Pratyush Yadav
 
