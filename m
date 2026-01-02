@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 994CDEEB57A
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 07:05:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E13F5E9410B
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 07:05:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A83D6B00A1; Fri,  2 Jan 2026 02:05:01 -0500 (EST)
+	id 53D2F6B00B4; Fri,  2 Jan 2026 02:05:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 052716B00B0; Fri,  2 Jan 2026 02:05:00 -0500 (EST)
+	id 511CF6B00B5; Fri,  2 Jan 2026 02:05:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8D7C6B00B1; Fri,  2 Jan 2026 02:05:00 -0500 (EST)
+	id 414256B00B6; Fri,  2 Jan 2026 02:05:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D9AA76B00A1
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 02:05:00 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 896FCB89E8
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:05:00 +0000 (UTC)
-X-FDA: 84286136760.06.C68FE85
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CB600A000C
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:04:58 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T7gvefAb;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 303A06B00B4
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 02:05:15 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EC1CC140386
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:05:14 +0000 (UTC)
+X-FDA: 84286137348.12.2C0DC2D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 33DC7100013
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 07:05:12 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X4nEWJ/0";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767337498; a=rsa-sha256;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767337513; a=rsa-sha256;
 	cv=none;
-	b=YpMQ+RGxvGr5pglV8UmS7JYctBvVQgS079S5DDc3/ph2kIbUaKfaBotQHNWYCVyvmKG+NO
-	nUeTvrp60UNBf8qdWTrUaDH9+S/KCLPFsw/pQuPVHOz+A4Lzu4BUYK6onEZGlbQXa2eMrF
-	MJE2nEar3FRzXzcfZys0eTh6Eudnib4=
+	b=WkLu013wbCqbd3mXeCZzCEbH1r8Tmibw+qjj0m9FzqVT3v+/CzIGuBXfzL2zTvQIi7DAVv
+	twz0zKOqWlMERmXZP34jNTOXM09fKoFtjNcyLN5uSy+KV8hkbqePIlP82Se5UARLUANDHp
+	SQFk+n1Pb42eIbsVuRZb8D5rq5H/k3I=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T7gvefAb;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X4nEWJ/0";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767337498;
+	s=arc-20220608; t=1767337513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EUP8A0oU4o/USGU4JF7iSIOLVJ/2u6llFeNZ4HBfxOs=;
-	b=v2BAOd6+3atIZvl57azrgFymMExx8kTFBqRuUzI6GL1rYFbcz7YNgWRM6QrYKjOzcFUQPJ
-	hWx5vFPNsZL7ODrj7Fczf5H81bVlNbZ0tUBnY0kxTqSZYBoYOH+2Bm1C9kcnqyQoKe+6F+
-	53MFx2zGnaQFwPvb9G4woyeDHVy0NUY=
+	bh=azukzfgsXgu/EZDimou0ymklRTxVzT+QThHCfbcQvB4=;
+	b=2w3Tyi0+mLXT8sqJRjifZ4NGMJHxGKmgYeD92ovwvM+Zdaw4OSC5xCqMCKSz4lZZOkyiaT
+	kuWfcAMjLtIQj+1/+lQNKNvjzBNqxvI5B8GL0CGMpl2o++rdtJbBTo1q9mhncDKMC+E3Sq
+	VGht0oT1lb53pwWbzQc/h3oSc59iaHg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ED24960125;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B0B541912;
+	Fri,  2 Jan 2026 07:05:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5C2C116B1;
 	Fri,  2 Jan 2026 07:04:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DB2C116B1;
-	Fri,  2 Jan 2026 07:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767337497;
-	bh=2fA0ShJu41IpFxgmfkKiNARLhjMIlJQdtqcPZZQwJv0=;
+	s=k20201202; t=1767337512;
+	bh=4MJzw8wq/vYacVlPos8SheQzjEj4nCDptI3YxDfhXAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T7gvefAbqeIT5CvtwMrVVTK3a8rwBZYgQQiC3jHQXzpJtttvm2Q6kTJvhapk6XZcb
-	 BxF+dcRK4sWnZDHuyEkhkSgVzVSkGMHcSd/3KadF+TMHf4PFBbT6C4ZlsbwfSZyy+F
-	 s+tJoke565QPqUJ3BSWynVtoU3vWCNU4D0WB5cy4Pj6qI7fE42bh/vZ1QFMsek2t7H
-	 8KgpY0BjGMbdV/PjHSJG1h5Rp2t2bV2PF7HizyPVMFjuPeL5kHGynDuCznGy7tyi69
-	 sNqgANgSfgAUJSU8eV6M1uaFWSVde2/T7fCS5n7hNnv/5BeiutkN335sYt5mdY+Y0b
-	 IsCntvk5rQtpQ==
+	b=X4nEWJ/0L+n3VAFD31SZ9u/rL4Rw0XhJxVYC7R+OXsmo1R+f6/lf31rINifRbzeb+
+	 E7q+YbYslJsdX+mgT/DJOnTzdA8r1GLCYhATQ/6o7s0IJ73Te45CcPz4wjEFvvM/n3
+	 ThGwO2GIstpYmbDXYc1dqebuTUIdt2HiOryT/ZvS5M8ujm1ShtTfK4zRsWEwkJ/FNF
+	 8m/LHQ3fd5LrjZY8b6caOj2ahTu9OG/0IsdS9Q3L4EJW65MYUSuOxby2ogAIsiG7aF
+	 EFowjrwFr63a8VLMXiTaiTSYHWDOX7bOW4u2qYH3Zafy+sjM5mjfd7Q7v9egCc3YOp
+	 jgbCi3HZCBEVw==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -129,22 +129,22 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH v2 19/28] um: introduce arch_zone_limits_init()
-Date: Fri,  2 Jan 2026 08:59:55 +0200
-Message-ID: <20260102070005.65328-20-rppt@kernel.org>
+Subject: [PATCH v2 20/28] x86: introduce arch_zone_limits_init()
+Date: Fri,  2 Jan 2026 08:59:56 +0200
+Message-ID: <20260102070005.65328-21-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260102070005.65328-1-rppt@kernel.org>
 References: <20260102070005.65328-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 33DC7100013
+X-Stat-Signature: jt6osuqoyy56naaf7h988jch5so33cxi
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CB600A000C
-X-Stat-Signature: byno36axtpawkiu9yt934ph5oia4nnpc
-X-HE-Tag: 1767337498-292334
-X-HE-Meta: U2FsdGVkX1/ziI5lRG7m8AX/5L8hVGcG6GYhVBohgjKNqcOUcdaHd0/QunWY94hDGyEDtHPoBSdWhvHcY6Qwp8mUNxth6radH7O/1IBOK9jw6VK+2thUPNODyB0M483IjprGwl8nUCHnFfLeBQoSHBFV8JHMHM0VD1qaEAgBBFmNShwToPojQk18ZujPQVGo7h6v6ChE5mJYaNXUa2T4RX1VcTWLa1snT2CiAc3Dk0ICkHo/AigUmJt8wBTnqo4GDJbIEkk31HSddgNfrSYgHGaBhXeojcGMaKaKxP2QknUAZ4Lj/9PlPTxs4ZZnZi+HB9L6LDS5/eB3zUdl3+RwyMabJZbSZ4NCBOZ/IkIKSgfPNHB5kvoFIC0wccy2M1G7QXP7dO9gEMrhrigHIrN0Szn/mvih9pmW+Rkn2VrmkzrSYEHPFkrYw19m7a9SOnILgL7/OUteShbhxnsHuo5MXY41eKpaRBn22UWbFyKuw4J9K8L7cXQKDauL//r/e5VHSdJDjIhKKzMQ1/T7P6PTGyGwlmPyZedhjcahM9bSchPDprF2djLG2vju+gSPqJrbPMQj8ig6mx3yr63Q8T0eDDdsDTKwI090HleLlz+bYALnQPhwFTy8JQXSkLXntvcnsKyBZgJyf684RLbuQuggX1CKUC6pmnon15TorOq9/HB3CpQl+PakIRjB2zkf3sdTvoUapF99e4DVwIPuG2uNWC2xpAV0HSFZrKs2ACTVWg2IQlXKYXa0JQ3+MWTQudZ4sKhpZ7prWjIixwlAX9wlMx5+oSJpYPwa4sUdQ77hVfgvBgqq++n7AkS+WKjkMKEfWemAmFyH4NrZHrhv/9heYTdYZ/8pcjSPltpSUafNyAxY4a5i3tXWJOi5zlfwurhgnnyBSD2DbNhIi26pzBa16VsUNQkrCXu60ireAwdyWEJnI2SRWUTaWjo+Q85KxCFRihhHweup8VP+fUbOt8G
- DFa6/jZl
- 294QkYbeNenm1hRAE+pAFJuf2HeM1gOUUacp6OOxQe6Opi/EdrbsDMcxplEiAXIsMSLLQ97AeOgM/v+Pad/DvGxUdleckSQsvm0tb81HwJTPtOtjdfOQ7QRAtvgKDTKbfATOiuF3stGP/JhXeTiJ4kMGb8AC9eUKZZNxPsIArpDnjgaGvl3kRzaYuJWvSosa7mLwVJE/CP4/O6nT5X+zEdjjw/dgwC5+7Au65YfiRxeaL9sMJEeerdnHQ2k1KY9Wdv/MWpssvQQBavtkawIPTLC6Gog==
+X-HE-Tag: 1767337512-67982
+X-HE-Meta: U2FsdGVkX1+OibGL9LbAL6f2ih/CsnFJZdJa4ZRTNHuDMpiXwgm4Io9NDAO/bU4/ceXOLCN+ERFLp/JegR9A3VZkluz8hsfk6DUsTPwjblhzLSpPgLk8+zDgik8PxR9SmGpGTeRFbOkptIbcZw4S04+uM5wmER0OmEXqpXgg9NpgIQHn0+yv0ms5OqGOTgMbTWkkWhJv1/7ahikD0CR4F32M4U+yHPszV+rQAT7YYITlEykmu2viAEDhlaQOSp4wjAxM6qiVjWAA7XPMpLFX+2qrPOp+8sKaIy75voKoPuuHf9jhZD8sopMMdxl9qEEqokqP4Wt7ptO2v3YleZv1AhLuAlEBDTw/bD8K/L6SjUfAn7RSlbifk9hjkNCzHO49Mjzcih/x6HzFXX0R/0iX/SZs6RwvTGcKuRdhwxHI9ILF4WhiPylpVyqxLJlxgssfiujDQvls7Mn5MH8r3pCTNsGjddWJ/m55RTkvjxj7lTZwV8vrBQotMFHkH+fB/lNLeluzX/GE1Fbksy5g5JppWG4rSAYekGJVmev8Yxozavc2APfoahtkylb6FkxD+C5lep+JnWenVKm5WM4DygJqw5wYd1cblbypcU002rD7weGK1SDJYOhJG3RosJWFirk+Q355Tgp/Gd33YHvEPS06mKv15xE2kjs7kixdAFnXnFsyw5sD6WozdVDkB3/Vo8i9ykBhy5CGC7esDHFEZJA8gu09g9/vG/TYfcPMtJu87ip0lzrxtQrFBxU5Bb5UU3c2JbGmG/ZQEAWgXwyu/akun6Vx1df87POZWZmvEK7DdsAnO2dCP4e69xJSxbQHKfnJ+lJ/DxIrHw5fFUVNy4Jw7wEYbme6o6OEuKrV0zglDdbCoCOBXdppyZEUBG6EFArGCDciq7mnKpUx/zwJB6XHjFBkzywtqy+YnrEFQ0mxrNoVO4JfvlSM9dvzch7W5w0DKIdhc3ZuuumolNxxFG1
+ G2OAbAJN
+ 4qKqdA9SQvqP6O2I7+1NAO6JxeNTNZwmZaguF0PuPdLATdxzlEy/QMEFj8FvbMSojKO196YLiyVXALpsRMNEFdptZIGOzHVVSEfnCUnpLYD/nbGk8GPsafx/Y7GXDPh5nzgT8PL0zdat6Z/1TnKgW9RqiKptj/rzh1rTHP3Wy3nGduwsvd/j+W5nNaOwcZ8EHAVnR2yyr0rbTeNVxm9y23yI907Y01O1wD6/CoEyNBf9UFULzOK5m2AytqBo6m3OfW9wAA1iIKdFeJZH3s/ME6xx52g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -164,32 +164,41 @@ call free_area_init() from every architecture.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/um/kernel/mem.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/mm/init.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
-index 39c4a7e21c6f..2ac4e9debedd 100644
---- a/arch/um/kernel/mem.c
-+++ b/arch/um/kernel/mem.c
-@@ -84,6 +84,11 @@ void __init mem_init(void)
- 	kmalloc_ok = 1;
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index 8bf6ad4b9400..e7ef605a18d6 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -997,12 +997,8 @@ void __init free_initrd_mem(unsigned long start, unsigned long end)
  }
+ #endif
  
+-void __init zone_sizes_init(void)
 +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
-+{
-+	max_zone_pfns[ZONE_NORMAL] = high_physmem >> PAGE_SHIFT;
+ {
+-	unsigned long max_zone_pfns[MAX_NR_ZONES];
+-
+-	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
+-
+ #ifdef CONFIG_ZONE_DMA
+ 	max_zone_pfns[ZONE_DMA]		= min(MAX_DMA_PFN, max_low_pfn);
+ #endif
+@@ -1013,7 +1009,15 @@ void __init zone_sizes_init(void)
+ #ifdef CONFIG_HIGHMEM
+ 	max_zone_pfns[ZONE_HIGHMEM]	= max_pfn;
+ #endif
 +}
 +
- void __init paging_init(void)
- {
- 	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
-@@ -94,7 +99,7 @@ void __init paging_init(void)
- 		panic("%s: Failed to allocate %lu bytes align=%lx\n",
- 		      __func__, PAGE_SIZE, PAGE_SIZE);
++void __init zone_sizes_init(void)
++{
++	unsigned long max_zone_pfns[MAX_NR_ZONES];
++
++	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
  
--	max_zone_pfn[ZONE_NORMAL] = high_physmem >> PAGE_SHIFT;
-+	arch_zone_limits_init(max_zone_pfn);
- 	free_area_init(max_zone_pfn);
++	arch_zone_limits_init(max_zone_pfns);
+ 	free_area_init(max_zone_pfns);
  }
  
 -- 
