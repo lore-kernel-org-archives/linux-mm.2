@@ -4,119 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DFFEFA3728
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 06:51:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23A72FA3728
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 06:59:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 807EC6B0088; Fri,  2 Jan 2026 01:51:09 -0500 (EST)
+	id 527796B0088; Fri,  2 Jan 2026 01:59:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B5566B0089; Fri,  2 Jan 2026 01:51:09 -0500 (EST)
+	id 4D5276B0089; Fri,  2 Jan 2026 01:59:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C1866B008A; Fri,  2 Jan 2026 01:51:09 -0500 (EST)
+	id 3B6D96B008A; Fri,  2 Jan 2026 01:59:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5823E6B0088
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 01:51:09 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AA1BA8AF25
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 06:51:08 +0000 (UTC)
-X-FDA: 84286101816.14.16198E7
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AAA1240007
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 06:51:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=cloudlinux.com header.s=google header.b=Dz8XunaY;
-	spf=pass (imf12.hostedemail.com: domain of pbutsykin@cloudlinux.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=pbutsykin@cloudlinux.com;
-	dmarc=pass (policy=quarantine) header.from=cloudlinux.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B5426B0088
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 01:59:39 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A96E5140335
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 06:59:38 +0000 (UTC)
+X-FDA: 84286123236.10.61CDDF1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F41C2120005
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 06:59:36 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JURDexdX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767337177; a=rsa-sha256;
+	cv=none;
+	b=oUfAuk+RPITvIMt9WyFdGAFSH8TT1AgiNgR/9Puu1vnHaVbOQI/1gFztFKs0SpImJ94ziU
+	wbbzdCclp85Un8sZZ46yXiuJoor0fX6LWMqRZla474D97dDCRFjU/GuZq2pKv1R5EG33Av
+	Tb5/ey254TgqbD6WOc9xQE50sowA2YM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JURDexdX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767336666;
+	s=arc-20220608; t=1767337177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3hpQrTNwm3YyszShrc7DZ0drIuaJ2peMWnPJuSAGlVo=;
-	b=61TkXL6Ntsh+x0FZZ+IjrzkIaRkFXwM1ukwk1+Lu7YhJ3ieM1PzW8DQvX/Mylk4+RkcJBb
-	DgwTQWEvGjPzr57Wh/FOe3uxVyEOVUgPlN/hVTg6bWjX9NzG184G0sU1W7FCz3HDTHJKY7
-	lnJSS5yxgqKU9H+zukxqINAipL0/F8s=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=cloudlinux.com header.s=google header.b=Dz8XunaY;
-	spf=pass (imf12.hostedemail.com: domain of pbutsykin@cloudlinux.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=pbutsykin@cloudlinux.com;
-	dmarc=pass (policy=quarantine) header.from=cloudlinux.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767336666; a=rsa-sha256;
-	cv=none;
-	b=OuEt4z3vGUGzbayuShL6Aq4xTadc0IJUnhnKkvRhcE4GWoXaBdJ57vhZXAL6qX128s3AOU
-	rqXhnbp0OF3HqRdrOWiK5x4lXiq1E29tXDZkWjpZwJv5wQ9lz9vbOiJbe+YNK5mrBlfL67
-	auaik5yNws3fXyd0cUNCI4V0yG2nVu4=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4775895d69cso49906135e9.0
-        for <linux-mm@kvack.org>; Thu, 01 Jan 2026 22:51:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudlinux.com; s=google; t=1767336665; x=1767941465; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3hpQrTNwm3YyszShrc7DZ0drIuaJ2peMWnPJuSAGlVo=;
-        b=Dz8XunaYqsakJKbsEj+fBUnEbKw1kMTm43tGVt1p4aPAwFvnfDKNdeVm9v7USLQ2HO
-         OmdB/aDdiVFyz8eaHoEvth9b+a42cYOOOPPRH95ju6mYbQTYgQi8ciNMUvI93IDZVbDo
-         LgA4IjXNAdpBvxl6omUR+NeBScj0rukOOKMbQ+iSmNDcevHZw/MFNEvWFwML3SqnqmAT
-         suHk1vK43qVIq2NU8YKZq2Qq4dX08Vd/uK0B3RAal1S9lkv3VkIeCt/YcLI/3uxEjg7j
-         SWhK/o4Ngc5hOvhXc+gHzd+etnfuSdmGQ5nv+F7d0zuiOB7mR1/3/Had8PBKQnshV4Wx
-         JqVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767336665; x=1767941465;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3hpQrTNwm3YyszShrc7DZ0drIuaJ2peMWnPJuSAGlVo=;
-        b=rCFdHiZEIPSnaMUOXSS0+7YcGqFHU0anQEx1OhSFbYWUJpp02oMiCPekXiLTGbEAPr
-         rnn6Ck4O/gZhKk3NgpYYAtlfw62afq8Pg5VguMLUN2ZPN8FdEteIolhkznLNnPaaZYUJ
-         h8H+btwiSuh0qXDjKuv4PT3sbjHsLjks5WwMeFuFamPNXfYYYyTe+7mfbQpFHsP11/WA
-         PnKuFiVdPgtVu7LJ9ZPm+IoXXakiuySFuYHG1DONxNYqLCoYw0K8XF5sF8sA124b0mSe
-         VmHcC8OVLLqyAMcoLEE313kicGI3aFBcgt5XZLfjTuf3lqvpwQuaXjKaPDSxbt0qT/kX
-         25Dg==
-X-Forwarded-Encrypted: i=1; AJvYcCUzu/Ajt02uOZF6/H+UyhJeSuA3p8su9eEQ8DegoRaTJp0UMOeVsO/K9IYVY1mp9sVVNGrBTBo8mw==@kvack.org
-X-Gm-Message-State: AOJu0Yyx78eaRlekwMswFjih1tWZVRGr4LtJYmbUiuoaaogAzOigB23i
-	KVbAxgaeAjCArpTER+MiaO73mBy1UwyFFzr4KpRJZn9q7IpMnXU9pEMbioUvd67xrVM=
-X-Gm-Gg: AY/fxX7+3Tid3NW6pRZu8Tx2k+oqFq7fz1rZFEEsJWtbycFK0HpIHlA9Rj9jtfLFQcb
-	rp4oPZs1ZXkvhUoQprXRQ0pAKgEqjG6BdwoQjtvGHL4SGq05d7ltT8v8KgknxZGo16eKby//Oid
-	uOHwFTdwiQoO2YDNQwrVi5p+7vsT+zrN6aAMdWwkHx6lb5yMaIAJMMw+R4q1k0aupZFDGl013mJ
-	+SVe3q1Inb9m+/o+gG4Q8L4VoBggaqzOq+FVsnMhBajxy5csqkMa7BNS5fMu6h8QeuZWi2kyX0N
-	6nNOJXUmnf1yNdTSDafuRJNMMzQ44vOQ4b53pcX2wOJvoJHEp9ujBGcYs709OnJsX29rMjgxnfv
-	8shfNUtxTVu7QF9siK3aSfISfA4GjE0e90jzAKmzFc40b1dpK6WQEQrm3kYzBI39GFWcwUXAccj
-	25RvgGb8UaZCs6kOznh31jvQ==
-X-Google-Smtp-Source: AGHT+IF68v7S6jIe8LbFTO5ivrVeh6lbPhFlQxBojLvMugVBqe3kYYVhpxZgzhYV2iodtfZEG+eZjg==
-X-Received: by 2002:a05:600c:4e90:b0:46e:4e6d:79f4 with SMTP id 5b1f17b1804b1-47d19557183mr554474715e9.15.1767336664968;
-        Thu, 01 Jan 2026 22:51:04 -0800 (PST)
-Received: from [192.168.1.92] ([94.204.137.252])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eaa4749sm84134006f8f.37.2026.01.01.22.51.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Jan 2026 22:51:04 -0800 (PST)
-Message-ID: <baefc4db-2e2f-4b20-b44c-eeaadfaa1c1e@cloudlinux.com>
-Date: Fri, 2 Jan 2026 10:51:01 +0400
+	bh=I0saHnqZE8DNUz3Eq4POw6LWeguXVeLKnWvje6WQ15M=;
+	b=DkA3EY+ZnVBoryCziATyiGECA5zBGSGySjZpusUFigpF2fr06YNk+/FWhNt4reHuSRdA0j
+	+A5GI/Mw5c1D2FZKEqQhRRLUr7oVmywG672MNxM/vuE28/aPafJtcLrkMlwJVvXbk/N5TE
+	7NI3EnriWLAy68c8TVWlFFteUAm6f1U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6490F439EC;
+	Fri,  2 Jan 2026 06:59:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B4AC116B1;
+	Fri,  2 Jan 2026 06:59:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767337175;
+	bh=6UamW9ypeYvnLArvWXDR1zXy9G1XczNWSIs66XcI5UY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JURDexdXezRaYfVCWbUaXW3lzvXlm31RIqEgAxJWeFjD7mvppUL+nB5Q6DW/syoE7
+	 9KCN3XX0+IFrZ6lXHKvj23Zbubf1juMpQoyVR3R5K+W0wTXoTePytdymIvKf7/FuUt
+	 b7F7Op6aP4W0iuoMzjx2QqloKghcV05PUK7YhWlqmCDHRezSFJ5+E+XxOvd9U94KrO
+	 yMpXKhnr9xm6zugptlmyDIWLkIzbYaeb0b/lyAP5EPPZjPoSkHAZCyI/7qGe07Bh3c
+	 ZF/OMYqQXU+WaQeAzqytLFSZafleWXTxSNL1jQdGV6O5YweZiL0UFX3Jm+OycztA8g
+	 kFuOhUi2qJ56g==
+Date: Fri, 2 Jan 2026 08:59:12 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Shi <alexs@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Stafford Horne <shorne@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+	x86@kernel.org, linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org
+Subject: Re: [PATCH 00/28] arch, mm: consolidate hugetlb early reservation
+Message-ID: <aVdswNM9PUN6Kr8Q@kernel.org>
+References: <20251228124001.3624742-1-rppt@kernel.org>
+ <20251231172714.a7fe44e856c14fdc8fe1cb43@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/zswap: fix error pointer free in
- zswap_cpu_comp_prepare()
-To: SeongJae Park <sj@kernel.org>
-Cc: hannes@cmpxchg.org, yosry.ahmed@linux.dev, nphamcs@gmail.com,
- chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260101003227.84507-1-sj@kernel.org>
-Content-Language: en-US
-From: Pavel Butsykin <pbutsykin@cloudlinux.com>
-In-Reply-To: <20260101003227.84507-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AAA1240007
-X-Stat-Signature: kokrcur1r59gx6aarg79zaxen16b67er
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251231172714.a7fe44e856c14fdc8fe1cb43@linux-foundation.org>
+X-Rspamd-Queue-Id: F41C2120005
+X-Rspamd-Server: rspam03
+X-Stat-Signature: agw8um4n1njryfped1txzidbugdxwbcs
 X-Rspam-User: 
-X-HE-Tag: 1767336666-903127
-X-HE-Meta: U2FsdGVkX1/MjxLYTDHEkjh2mwPeeMWBkmavpQfKe3R09u4idFVbGMhVxXb4CImakWOL1kl8R+cnBGhcq3C18yqaDlUxXvc4fzPxJmxK03VnYrJ7ISTaT/LOXp+JGJISgPYm7uMFkNcsROAyabVEWxJdXUGeChbylziX1r7dBRtkFngLL96PqfA73Hv5jUZI8uDjVaek0R6NIm+TCySjIN6QtwLvVEZWn+Cp3AUFzb82Wb3Ls+nFuHo0yJ2BePnRhuIG8xdU4QumEQ2xOrO+YMtlaRQeboVXkDe0hnJ8FD3LaeUlK1OC6JtFSkUok0NT6wJazTfnPjLwR2MT71i8DJoRb5IBEKwcxDUDFGjzjdVpx2imqMBMvO6i8iMIW8PO2dHR/bhWGVQhvAqNN8F9YENNbWobpwQcewOskisQnP2gXWbxRL7Zur0+DinbNVCP78pyMFTRBRwqz7Rsif3GpZA2FXTXjSKdIHcYxRC3d1dTSxmvsrb/U6AhYC+oW7AHSFBMo0noH/MwUMz+9/gQaPtUa5spi+eoUNBFRWJOk81oaxnAuGlFQpmsuuqRj4bli7+aTtMKBzHjAUkCfKDycvLxbJUiZ9dJ7DXX+uVc/6ui3dnv4tfH2Du1lcuU4A1Oj5E0lrYwhA0TUcRNcgHJQ7Ow+ZIaajZOMIIsDYRje8MlFif1N7AOKmFYfv5WSOaGmBxOvuGfoNibpqBt4l6cJhy7puTpOqsBvrryWXGNLLIkksKxDfYN7Ieqv9ZG0JTnVXbwJAOE5ISQjWLfWo1luiZupdlS7HLTdaWqVh6ZD9/0PSupWiJv4/5uch77J2KC15T/HUkKvPFdClKSDIi/5KxDkwLaV+R6seUTDLatHZvZMecy0K1JU99Ngub5q+FPt11trD6LKEUI3JHm5FUgdThpJba++QPI+u3xE1u12p/qMSqXyKGvGVur+3PeBSbrejxDshszTCID2pWb+5V
- xdw03CEp
- zKPLaraCCzUdcO2dRgXHAz1QiHsPi+90oA0uoiSFDsJ8uH1680GWNkp0X5Ix+QE9u9lPmO+Lel6+6rG+8wlZqECQLJQ==
+X-HE-Tag: 1767337176-839692
+X-HE-Meta: U2FsdGVkX1+rm8KNAudXILwwPNz/QmqxylJhOOCY+m13a/52e6fvya5BiidVWPdDXLw+TB/a8F9BD0SD4IPF7CJ6NFnqUXiV5EPsk/SjrpG1cxISCJQPo2EwUhzuPvBfJdU79nqL66AX28/8vqPycOLPfx0NsVlRMdCObtSZ7Sxc7vjxEqjTAY/1EwPx0rQUHUNnP6EgMAe+FjrabzQwT7Z5dqacBVTYFXXxPfP3kXDyq8i+54hhjBQQG48NZ/AHlyl6HPswZUFcUiagNIcGefktl1hfEZwGdwN+gHKKUwUUQFu8SQFVqQIYxkdVTNuPkvUNfI3JLLNJbyYHkZzm3wkW87N0NshbhxT5VyabLgK6ssLTTi0nglzbJ3Wl44IvlSdpX/+atC4/RqVzqzuUB3HzhHjlTgJeM/1I40RM5k72cV9694hze9YSrpaukrLuTEWsr8Vl/Cm9UjvcndCLHoD4ZMutXOvN4qXjn+jDv0FjnYy6S4hyb/0FCq0wFSkqWmn819KkF3StKgBjRo/Qschg0+OIzLwnooIZMPderUphgFZDUkXfndU6ouRjyNiYbdPiBJ6vriU6cGg9H9pSG9tBZ3RaL8zsNow/UGaWkY1pEulBFzzj0X8DaonsK69whstvq15B2cAJHsoH4JXYSCMmuaLyyA7I5p2z5bfA+u1Azynp8xDkxSo9h69NXydp+8Xy2JSEIbCvRwUuOiJk0pSWZTJ1EwUS3MdxUMosHZSifImsR4HPENBGu1xslhHj92+SbTeiKGFU8BiCqumUvP4Jnp1pdpd9pDIltp+2IVJGB+IVH35UQkArt9mxmyNW5id9Ps5GSsAvhrbk/wMD5+5DKCMCRHfN6hKtKKSuhUmQzEoOgHFs6XDwle0d8TXKMzVwNpMQTL6o08TIq/xrCojDuxhzREWDSAWdFJ9tZYnM3IFQ77RmxThpq0VIuLfDDVMXFbvpoCYH/l/0TpX
+ A4QeDdB6
+ UEEvL1GN+d0bgkj4KhULdDGxEPoJavRs4v3ZlaYAdiGthrkaGf0LKq34DVAIjLXCdu7J3lgLDWX1NGfgR4aZiicgJrcmctD3i7DzKvsndFDaDdtW5Kp6pHJAXoygRFJWrXBcX1bWFnCINrBJ8koEURvxaBioeUBuy8R7nlqp1CVkGuMv7eljfMVcm/6NQCU63IfSTnmO+4cEvt4Y4S+Y+5A6zztXh9kmRwFtSapevOYuptY0ecMGjugxQe9z7HI2dmSKuYQo9W+Dl+HXpH9BB9HfTgA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,49 +135,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/1/26 04:32, SeongJae Park wrote:
-> On Wed, 31 Dec 2025 11:46:38 +0400 Pavel Butsykin <pbutsykin@cloudlinux.com> wrote:
+On Wed, Dec 31, 2025 at 05:27:14PM -0800, Andrew Morton wrote:
+> On Sun, 28 Dec 2025 14:39:30 +0200 Mike Rapoport <rppt@kernel.org> wrote:
 > 
->> crypto_alloc_acomp_node() may return ERR_PTR(), but the fail path checks
->> only for NULL and can pass an error pointer to crypto_free_acomp().
->> Use IS_ERR_OR_NULL() to only free valid acomp instances.
->>
->> Fixes: 779b9955f643 ("mm: zswap: move allocations during CPU init outside the lock")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Pavel Butsykin <pbutsykin@cloudlinux.com>
->> ---
->>   mm/zswap.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/mm/zswap.c b/mm/zswap.c
->> index 5d0f8b13a958..ac9b7a60736b 100644
->> --- a/mm/zswap.c
->> +++ b/mm/zswap.c
->> @@ -787,7 +787,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
->>   	return 0;
->>   
->>   fail:
->> -	if (acomp)
->> +	if (!IS_ERR_OR_NULL(acomp))
->>   		crypto_free_acomp(acomp);
->>   	kfree(buffer);
->>   	return ret;
+> > Order in which early memory reservation for hugetlb happens depends on
+> > architecture, on configuration options and on command line parameters.
+> > 
+> > Some architectures rely on the core MM to call hugetlb_bootmem_alloc()
+> > while others call it very early to allow pre-allocation of HVO-style
+> > vmemmap.
+> > 
+> > When hugetlb_cma is supported by an architecture it is initialized during
+> > setup_arch() and then later hugetlb_init code needs to understand did it
+> > happen or not.
+> > 
+> > To make everything consistent and unified, both reservation of hugetlb
+> > memory from bootmem and creation of CMA areas for hugetlb must be called
+> > from core MM initialization and it would have been a simple change.
+> > However, HVO-style pre-initialization ordering requirements slightly
+> > complicate things and for HVO pre-init to work sparse and memory map should
+> > be initialized after hugetlb reservations.
+> > 
+> > This required pulling out the call to free_area_init() out of setup_arch()
+> > path and moving it MM initialization and this is what the first 23 patches
+> > do.
+> > 
+> > These changes are deliberately split into per-arch patches that change how
+> > the zone limits are calculated for each architecture and the patches 22 and
+> > 23 just remove the calls to free_area_init() and sprase_init() from arch/*.
+> > 
+> > Patch 24 is a simple cleanup for MIPS.
+> > 
+> > Patches 25 and 26 actually consolidate hugetlb reservations and patches 27
+> > and 28 perform some aftermath cleanups.
 > 
-> I understand you are keeping NULL case to keep the old behavior.  But, seems
-> the case cannot happen to me for following reasons.
+> Thanks for the diligence - this can't have been the most exciting thing
+> to work on!
 > 
-> First of all, the old NULL check was only for crypto_alloc_acomp_node()
-> failure.  But crypto_alloc_acomp_node() seems not returning NULL, to by breif
-> look of the code.  And the failure check of crypto_alloc_acomp_node() is
-> actually doing only IS_ERR() check.
+> > I tried to trim the distribution list and although it's still quite long
+> > if you feel that someone was wrongly excluded please add them back.
 > 
-> So, it seems IS_ERR() here is enough.  Or, if I missed a case that
-> crypto_alloc_acomp_node() returns NULL, the above crypto_alloc_acomp_node()
-> failure check should be updated to use IS_ERR_OR_NULL()?
-> 
+> I'll add these to mm.git's mm-new branch for some testing.  I'll
+> suppress the usual email storm because 41 * 28 is a lot of emails ;)
 
-We have 'goto fail;' right before crypto_alloc_acomp_node() for the case 
-where kmalloc_node fails to allocate memory. In that case, 'acomp' will 
-still be initialized to NULL.
+kbuild reported failures on some configurations so I'm anyway going to send
+a lot of emails for v2 :)
 
+-- 
+Sincerely yours,
+Mike.
 
