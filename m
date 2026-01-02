@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0BC3FA374F
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 15:31:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65F44FA374F
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 15:33:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4012C6B0088; Fri,  2 Jan 2026 10:31:15 -0500 (EST)
+	id 9ED0D6B0088; Fri,  2 Jan 2026 10:33:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AF5E6B0089; Fri,  2 Jan 2026 10:31:15 -0500 (EST)
+	id 99A8F6B0089; Fri,  2 Jan 2026 10:33:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BB1D6B008A; Fri,  2 Jan 2026 10:31:15 -0500 (EST)
+	id 89C2C6B008A; Fri,  2 Jan 2026 10:33:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 15DC86B0088
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 10:31:15 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A740E8BAD4
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 15:31:14 +0000 (UTC)
-X-FDA: 84287412468.13.0B2E5E3
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9E52A4000E
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 15:31:12 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fs6ry2E4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767367872; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 798176B0088
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 10:33:26 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 25BD81A93D5
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 15:33:26 +0000 (UTC)
+X-FDA: 84287418012.01.BD8E86D
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 189CD180011
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 15:33:23 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eFxrBA84;
+	spf=pass (imf24.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767368004; a=rsa-sha256;
 	cv=none;
-	b=btYbXPg6Qn8d8CHhHjGAoaqSsTqME0nOiRTO5eDF0jlUmMY6NEgfaJs48hYV6tLkVJPLhS
-	ubkIWE5dsPlwPILgxwvEpXQp9/+DuE8YsHQIatEkZXdlkubQ/S0ngg7pbUPurrrPirs0/P
-	MXa0MtJZd8KjPYPq+wD+w/pbFmJZyH4=
+	b=KuBwq/+Izx5OVW/iyLSOUOo7PTI1BjS8gD3p1gN5Jplf58PvfTFCI4lZ54VSN3w2nYmPF6
+	X+xd1O3GrzzUrepemy2wLYMtE7umwbcRvJOzx4SX1UgXKmmThAZdk+zz30gk0A7itMasg9
+	tCskiVG54NUs3FKyJoAVI3BEcORousQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fs6ry2E4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eFxrBA84;
+	spf=pass (imf24.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767367872;
+	s=arc-20220608; t=1767368004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w4uNqY5r0cWL7e4gE2mSIbtSpXgssK+f0V6w+g1HxwU=;
-	b=M7/uadjkvNUm0yUCIiKecZPCwTq8lAEy63JhDWJ80zWfwmS4y4rrMet6axvyleDO7Z960n
-	VYrlUt249k3p8jpgPGBsCpt8JsP83xddZPbEKt3cLwzsnTb6sxvYoKomSLPHfsz2i5iY1w
-	qXviiyP1DOJjkz+qQ0Le0lzkDZKp1zo=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4779ce2a624so94949495e9.2
-        for <linux-mm@kvack.org>; Fri, 02 Jan 2026 07:31:12 -0800 (PST)
+	bh=vZM7TqRu/yWzeDptS/AMeKPxt1kNNx9jR2REOBS+MUI=;
+	b=rMe9ihVZgaoMxKtVYt8EOK8VXJ0Eo8oBdRaleBifSx09NEjLlseXHWFsiaSPLyDbwPfm5N
+	0OsDUBXXNancXRHewT0DOmexDGKMMWNjzNByPzf+UhCOwqKsAfhpTWvwAW7OEowyYB6+F4
+	9uS3g3QP30NmpN0MjVYCFzj+uJ0cBgQ=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4779cb0a33fso124873175e9.0
+        for <linux-mm@kvack.org>; Fri, 02 Jan 2026 07:33:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767367871; x=1767972671; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1767368003; x=1767972803; darn=kvack.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=w4uNqY5r0cWL7e4gE2mSIbtSpXgssK+f0V6w+g1HxwU=;
-        b=fs6ry2E43QG3dtbOw89SbHsuKSDSwWxhnQO+mEfqRSZKZhadKc41oCWJbS1ZvfLJ1Z
-         VCg8NDnAobeqAdEeawXsEyQTutk7VqBB4LT6ug6GAN89xhVrduVpQ2bDIZ+NVo5CrDxv
-         RHqAVtc/bKYn7qwokkzJdNGFSb808Mm2A654idj0zW3jj6lYVSjq8kT402v5mJ06x2kO
-         urxpuOiG0SV2AIw1xd5hmrNmTuaxRr7dKmABr9OhxvXmwIW5Pmob6KqZ4b9qpnKqzb0C
-         aD8GhkTqMSOnBPfZHZLKjcft+yei6Tw9u+loaM2h1aoNSPr8Oyj15grQNhLX/u9nYa9d
-         Zwzw==
+        bh=vZM7TqRu/yWzeDptS/AMeKPxt1kNNx9jR2REOBS+MUI=;
+        b=eFxrBA84nzfeKg2KvQ+gZvVddhhB6c7leR7IgLvwnTzF3fXVE+LoCfsgFGRWGbGycV
+         avRvv719RtBamclkMd9/NXHlVNBEsMbiHOJSjayHaXOBpK1Kq4QuXgIy0tx/IQFhEeQc
+         prT6VorC/ZR3b1/ZCdoC7jJ/W9DWzDh4SQEG/9AFmohs6bl+8ObREDNNGhJJlwcjGrTP
+         /jLTTPvX9eLBYfLLR6rO2Nky4OhoxJtfmKrRP2CgxeoRaEQ+gzBhf/lOtEMmBrWXZdD6
+         pHbev7G8DMfipQG9qtt7kDyhB7rYOXttdtx+j8pYhKyoznfBjsAx1QC7XRD613lT5g2H
+         kqGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767367871; x=1767972671;
+        d=1e100.net; s=20230601; t=1767368003; x=1767972803;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=w4uNqY5r0cWL7e4gE2mSIbtSpXgssK+f0V6w+g1HxwU=;
-        b=Guc0sWA5aeyieK9qxkdsrmBTocP/8UMkeIqClYsBAK2OhTVl6HbPQgDPFTJoN7Didg
-         0e0H8eoFIIddZc+Tx7IY6g4GPK9KuSvqyk3agSwizcqnYqV0kRKscevbIQ4yCPWZxk9G
-         kcludW1PkmM/lY2HSiWTaRRMSutiQhV83W1FGTcWd0xWlnu4ar8578JQgZja+VvqUvIn
-         UCYh3y4rInhjhwHWXaku2GzqTIIPPmEqJCOVEHDwUxWNzjEP92dzl6sJ05jftt9IeOu7
-         HFSeMJCQINox3GvUywvXbaS9GtrB7tn1fFCZtwZhdL6QwrUumRC0a6MjvYfZjEXd0iec
-         NkxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVGaLmS7NWBtbCmq6uaCJpTD3USsvuGf2mAYLeOEsGTv2am/DzWk/voDodp3UmVAMCGWvRYbvGxJQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz1e8khLWkP+hyYJswQPdtBPovv9CurUD/ZcLta+C/Yz69kOkCG
-	ElWIiSBhtxj3yyCxDGY8nfcbJypLzAjVmV2577q21mxLQIZAhqC/Kb9o
-X-Gm-Gg: AY/fxX7NjtpJ1aeqpalgphZW/IdGPeoCvVtd7c6HI5GFlhlMLebPjNYbbmjZvzkUluu
-	f52KIqlqMIbdAfAyeZhDHWYXzD7dLQ6zvFJjUlv+6STPL+sMrTC1Gw60yrkSD3KgrFTxeXRfWBd
-	61T9LbVlQty7PVvchDt+KREE1SpIcY1p9IVPfbNqM4soBs09vgM2at3769nDkryAlvansmAIBEn
-	VK7radMKtB1WAINAaVLX8uBgdM22bP7gZ11Tctdvi1iLbszl/8+/40ARoVpgN6ikyhuTSpMjAPL
-	fuFviqn8crGxGyyJZ/YykW42kJsoPhFR9EFcJcYqNRdlEsrbOxYNRmvumfIpY85ybfefhJ/y1nI
-	RmcS7LzCoPe5EYticjW+4ob/D+vpiNo8ksKLe6XfIPQFkxHUarrCZsuRwnx29AkwSAVSMXYqV8t
-	5WzLdmAbksaz/pPYKFG6DaEuO55gtNf+0hRNRKyYcopVONX7LxvoCAeFJ8VclP3pZ/OOe6G4/ZI
-	oEiYAsowRLI
-X-Google-Smtp-Source: AGHT+IHBT9YlOVOXNiWvFipggdEYaegBM5I94nBU4m8bda8nrXYoAOcEMlAFzjbdkmpGlrMqkrvPEg==
-X-Received: by 2002:a05:600c:3146:b0:477:7c7d:d9b2 with SMTP id 5b1f17b1804b1-47d1959f776mr535335675e9.32.1767367870730;
-        Fri, 02 Jan 2026 07:31:10 -0800 (PST)
+        bh=vZM7TqRu/yWzeDptS/AMeKPxt1kNNx9jR2REOBS+MUI=;
+        b=Ewpnj1bYls2PmwtJzaZ9MpkchOP9yFUqRYYzC5DhlFUQxOaVP2MI/qbwSWxffK4w6j
+         9kxJ76xDHfyAOlBrtnME+M7QPlh7HCq16PcUC81qpX+/fGH5d8DIX27lKbuxfGM5gzcd
+         I/t8a2GrCNEjefD7YdbUuIPlLbxp2a+0WCGp7hELjmtRRgUYMqpVB8LFdD9UQbpFenLt
+         MSls1umx4VMzT/rrAEBVAFPWP+5WkDEXw9kQs7JdiA8DWaSawwP+UYztv78h3QmiZksP
+         tXbF9hUp3+MyQlIYTIClbnPT/rSgmIMDJzGOBU9dp5pOZcj/wzby2fJAcUhl76iJlYV2
+         AGmA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQ4xNlNG5TMelXuDGFdwnoJ5YZ9HcQbe0gH8sULyzYZNAdRTjiWB+RBm8nwcmn+C6bu3EIeIHV6w==@kvack.org
+X-Gm-Message-State: AOJu0YyU2S2McYZcMJEOuV/FBL+mr+CguCdZw2ItXcP2jDSC3Fu6FTN2
+	YnsxIuarJMhAV2m3lB9Lk10ISGDke6CwdHZPhlkFNIujxbK1jyO1eUne
+X-Gm-Gg: AY/fxX6x6ok4tq7wTLGIVbVuHqCTlQj8l4gsPg/7S5SI41TTaH5byWW1EZVRw8RBLzP
+	n2szxTwzXZeMhzjAiniBDbUbPtFa/stOdV2e90GFhJQQqLBH/MsE88sKuQa2K+odggvDThnzEqf
+	VLzBfa53lwmRLfqpKSUHCxTmsM4tS6IiIwetdZqdzzrwdXtStN79ZGPHF2W/Os0/XePH3aH3S3W
+	f9opGmRNwCKgTs/Zket916U+FQot5QEHFC60eNB+KiNCdEL8rvO6qmh59F6sGdTjES8uZ2zAzTV
+	jQ4txKsUhmFLvj0W67/RJp32dloSMieoYhPSXMGJSyiDQF0U50/lMCJaBcrDqJ9dmM/+bYvuF6V
+	JcPVg8azlxwuVHLOV3U3yrsHEhTeYwuYvfj3ci4ePJhK6jdM7i7larI4fVCpNPRpvZDzj87rAbz
+	z/4a1R8W9CBfSCrOHT6kmOYPywRs9XjVFjAtuZVflk8RtFHjJmqqmJn8r4tfxM1YLzPr/Ni72Av
+	Vr/A5BBNmy8
+X-Google-Smtp-Source: AGHT+IFdFPZ9y4Ebi3gAY7G7FC7AwJ44xGEc2VCOYAbH4i07YP5Y3jFlEX44SExQe+wg/PAm5eJa/w==
+X-Received: by 2002:a05:600c:3b0e:b0:47b:deb9:fbc with SMTP id 5b1f17b1804b1-47d1955b7f4mr410575745e9.2.1767368002607;
+        Fri, 02 Jan 2026 07:33:22 -0800 (PST)
 Received: from ?IPV6:2001:16a2:c8d2:2b00:183a:1350:d3a4:d89? ([2001:16a2:c8d2:2b00:183a:1350:d3a4:d89])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d6ba40a50sm919985e9.7.2026.01.02.07.31.08
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be27c2260sm778246715e9.15.2026.01.02.07.33.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Jan 2026 07:31:10 -0800 (PST)
-Message-ID: <2bed4bbf-256a-4918-be53-1d4c6999a46b@gmail.com>
-Date: Fri, 2 Jan 2026 18:31:07 +0300
+        Fri, 02 Jan 2026 07:33:22 -0800 (PST)
+Message-ID: <b1e1be89-348e-4188-bb04-c86904e61709@gmail.com>
+Date: Fri, 2 Jan 2026 18:33:20 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] kexec: history: track kexec boot counter
+Subject: Re: [PATCH v2 1/2] kexec: history: track previous kernel version
 Content-Language: en-GB
 To: Breno Leitao <leitao@debian.org>
 Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>,
@@ -107,21 +107,21 @@ Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>,
  kexec@lists.infradead.org, linux-mm@kvack.org, rmikey@meta.com, clm@fb.com,
  riel@surriel.com, kernel-team@meta.com
 References: <20260102-kho-v2-0-1747b1a3a1d6@debian.org>
- <20260102-kho-v2-2-1747b1a3a1d6@debian.org>
- <fc542a5e-db54-4d7e-b363-42cc253b1a8c@gmail.com>
- <rsygqnm3qahkfoqo6usrz3jhpya3c3rqebz6rotl33dsx3rsbo@2v4yeabi7fda>
+ <20260102-kho-v2-1-1747b1a3a1d6@debian.org>
+ <2b315095-2393-45d5-b0bf-ea9fbecd2607@gmail.com>
+ <dc7x5xq2ufanc5vesvs6ccvulfiddqjcf74r7pp3tr4bfiomib@akskveejglww>
 From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <rsygqnm3qahkfoqo6usrz3jhpya3c3rqebz6rotl33dsx3rsbo@2v4yeabi7fda>
+In-Reply-To: <dc7x5xq2ufanc5vesvs6ccvulfiddqjcf74r7pp3tr4bfiomib@akskveejglww>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9E52A4000E
-X-Stat-Signature: spre36rfiqde1ti7ju5sir8o855nzdsn
 X-Rspam-User: 
-X-HE-Tag: 1767367872-83844
-X-HE-Meta: U2FsdGVkX1/i5iWstXl6ilqp6ZJc1SuHTikVjpIysjRB/g5Pjus/1sV0/XmQrykWnbFqJwn40nhjSpmUyrhsxRhdrTmumMnj9PIQiUGxkBur/kh56J0tsGDB1bm0rGqYHctuE6fj49RFZ+rOSCXNUExroBl1IZYTJyDW4b/YCFz+4Y23o4V4f7cT5tGKS346++Eomduk5Srh7AAremqveKIBf1+rphG7fWg7yDGZiaACxZ9A2uvFp2V4AFOl7HvyAlohInTNY2SGlabxuUkFGoijmqQeYonLHvWgX8K3qg7qQmXpLMMpLTWj6G/DI42XzWRKsmfiVvQMcRefONC/W9opqIPB8Q0bXkkIjJOWCLAXECf1XR5WDBqXa9nc1836PNoLz64bpFNHikAKR21kvXYaAM0TFq0WTnLdlD3HtF1TcxoXvWVAV/lpm5gi9psbYWytlMZGEPPOmplPKVOQPMzM4jotlvOM/L2cBODjNI+tHCKl9Y+Yeaca3PuX4ubrVGOkbWq/ngUaLzEfTi1sWR2ohy+yk66+vKoahlKZUrDOs/EK2TG/QCO34VX1iHkYM4NoyB/3saQ/TRlWqM3HBsFoyHpnxG9dBRJCEukamkASV1PDXwgoNLPINaHJOlFB1llPXDzbN+9UapCNnkwuijo1tQpcwU2Hlkpp9HU2d4ILysbpQH9cYY/m7sgmNspTuPB10St0MYbqJ1OOZqslLkR5UpEfjqG59s7SgEkvLCz+5zUmmYjuYGCw96hEJyFS5VQ5rLcD6S962unPvQQa+yBWj1pKp1rRtLXkaepEmV+4z8H8cNr5fahA/5maq2MzJRhU9X/oIq4w0b+VYCgLvW9PmJnb+341rgASLnQyhCVF7HCTY3RF+LMImqaMoeo1B68hTNW9DV2X/NytmEis8TgfVUXFB3rbbqigvsF6GJkZ7GIgXzk8JNHLN5EM87oNLOv+bAP4B1GOOTFYDaV
- Ae9mDCZz
- 8Kp/591acJyHTbbBnPLKt03WRz6uDtkgd/lWFrico+MxXVPfF2WLL3DpNqtPL1aWzf0jZ39FJq1uHUTgpjyUDOCdrmwaT++6JoSyUgasgtpldYJohaxgPmXI6dHVq58wN+/fjjshIcfsRroW866FMXC/BTuose7LUNpVeMQFeeXtFGpsUl6mVYojHrgHy8hY+nTDIF3lyVuqx3fWIQtAXNKdKTxSigfiB7+M9VF/y4kor52lMZghsUMb3ZlwjXv2NU2wuPj0xeA7A/K2ErifAXNm7/QS5RsUrp41K6ULzqamhHW6dfop9Xbm/6D3y5ZBrL8fm5+GT71g2I2FZB/tPAWkYD+wjHat4GI1b+ieC0OiFw/UrYKGq6VuXZ4IhgWQIOb4eWjTEPLtEGWV2i87BRYqg25E9eYo7FO9RD7AdVKdmT0qw/lxNAMwwvvKIPOrd7EmmhWYZ0vyBhJ2DKGuE4vdN12+oLoVldD2balqiZlgH7D3VMaJYA9JIoQp4RebN3QilMlzypHYI5Wa5F7CtDnH/1oMmQya4SWzGmoyzw+SpdMHwGM1DUbwu3S0AjeLRDBfCPCQjg0g+fDOoqYLmtUeTEA==
+X-Rspamd-Queue-Id: 189CD180011
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ohewn63fzn5j815q9esbcimm8kbhrdid
+X-HE-Tag: 1767368003-474551
+X-HE-Meta: U2FsdGVkX19N2Zve9PnM0EZrMj0WClZ0G2iJcMf/Yn4HLYZ5ycD7EDyd0EhB5Rit2cOFi/hvWlkRi1LMerPc2b2wSiIYyUGAOzuSc2LpzffcuVc3DHC4dDgnIg9dwLwHPidj5DQhMJapQIsC6S6SPpmRetZisA1ZusBlDyl+i1w/fuYfDtm6O0rxM5QQQveUXqFmpPHVoBRrLgKbmKuv/R34gdgsRMH62XYUiogAHtPFxcsd7hpY3Hd5hul1ZlMGE6hlAf82HVu/xhaKkTekgNiNQMhiEw+evP+nwAbIBym3WvFd202IhP19fNGeyzsTKXiVGvecoF9C8PUDrgH7rNJwX8sxWCiiONYSXA8L5h5TzZhJT9wEtz/53VsbEdTXbYpzO5RFKqKXADKE3X43BK2NwqcgFqJBIej+ybAs6icjUL+sWALeL8tQzDq22hGBAvLqyvm2GTpSIwRomFGr1OR+FeK6ZIhOegKovSiLFv/R3jljoJJCbyx/3dVp/ylNLj2wh5SQa67Nz2veG8pjrTReCjrCgfuK15X0xLQ4c/u4/Mzq8AtWmIs+07JJnOWN+1Bl3XfWWeTWYOzB4rnxULgwHxOP3N9OXyPIYuGPKpE7nEy+GJ14uj7q0ly8DPhUB56m3+qeFah+gmUgvKme7Jfm5oGrbqFSSqcbDhU64nKzaNgkVubZ+N9S50j23Y0T4Snd3Gh589OU8KT/VYxfr+bhlDNjpwZ7NEIistYVfono60TfOVYdupTTKFZb9jYGUKUYwPuIdjrtu7UYxXuEXuI4LjrBpb9AzDeWY9yK578jpyXuS2uZBdfRgi8q1ov4FM5Glay1vnSPyIQknF6ZO6xvVWEeIbonE9RGdfEBogvL5kKFEyUm67xYBBCSqgG1+ggH9R1mmp+Hk0YWdC72lN1q9NK+3GkTV2UJoE2SNVuZuQ/Mugg2S9SvWt/1gg8n5S0CVjtRRUgxSVl4Lvh
+ TBQTd07S
+ mf7eP/MCK4A3bzh5ohNnZgFvm+eke6XCa3J4VKU4KgZ89GgHycDTkIZX9W+1/OuEt+eAs2EgSF9Hf4XMpqD2raMaR9KfstAhMZJwN3/vO1QyuuTp1LWJasbDGmBUjIr7RrGz1wCxtJFd0H8K4Q8RAXCDtqtRqD1jq4pZUDeE0J+L0t/uSVuBL4Su9moVsc3lnacO3YbdymYUC4V5NJ4KRatadedqy8UODudxOhsqHUTYwX8Q3GoAlRFkutsD2O1T0qghnRLahquOHEE49ibyrZeFyYyIoNNz6rt/rV2qriqrtBPAdTUZJPhe84BWJze9H9N84s+GoYR3pHkxDOdLH9fJDS85k///O6Z2Oh+Olr2E34v9U6/WYrzdIGWTF/5e5gFc2ucSMjz+rxbJT4rSaeOQgWIbJTWdyOrDkLqds8lUeioXHnHA2Zz2g0lB9D3XM5hPCGwlWsweY/Qts5jAc6/5wdIa7Yb8p+QogPN50bra7+I5yLWEurH1I65niekUeCdkK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,89 +132,33 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 02/01/2026 18:24, Breno Leitao wrote:
+On 02/01/2026 18:14, Breno Leitao wrote:
 > Hello Usama,
 > 
-> On Fri, Jan 02, 2026 at 06:09:57PM +0300, Usama Arif wrote:
->>
+> On Fri, Jan 02, 2026 at 06:02:39PM +0300, Usama Arif wrote:
 >> On 02/01/2026 17:53, Breno Leitao wrote:
->>> Track and display the number of kexec boots since the last cold reboot
->>> when CONFIG_KEXEC_HISTORY is enabled.
->>>
->>> This extends the previous kernel release tracking feature by adding
->>> a counter that increments with each kexec boot. The counter provides
->>> visibility into the kexec chain depth, which is useful for understanding
->>> boot history in production environments.
->>>
->>> Add a new property, "kexec-count" in KHO FDT alongside the existing
->>> "previous-release" property. The counter is:
->>>
->>>  - Initialized to 0 when kho_in is instantiated.
->>>  - Incremented by 1 on each subsequent kexec.
->>>  - Printed alongside the previous kernel release version.
->>>
->>> The counter is stored as a 32-bit unsigned integer in FDT format and is
->>> only active when CONFIG_KEXEC_HISTORY is enabled.
->>>
->>> Signed-off-by: Breno Leitao <leitao@debian.org>
->>> Suggested-by: Pasha Tatashin <pasha.tatashin@soleen.com>
->>> ---
->>>  kernel/liveupdate/kexec_handover.c | 25 +++++++++++++++++++++++--
->>>  1 file changed, 23 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
->>> index 06d99627bb3c..fe5a2c5c4c86 100644
->>> --- a/kernel/liveupdate/kexec_handover.c
->>> +++ b/kernel/liveupdate/kexec_handover.c
->>> @@ -38,6 +38,7 @@
->>>  #define PROP_PRESERVED_MEMORY_MAP "preserved-memory-map"
->>>  #define PROP_SUB_FDT "fdt"
->>>  #define PROP_PREVIOUS_RELEASE "previous-release"
->>> +#define PROP_KEXEC_COUNT "kexec-count"
->>>  
->>>  #define KHO_PAGE_MAGIC 0x4b484f50U /* ASCII for 'KHOP' */
->>>  
->>> @@ -1257,6 +1258,7 @@ struct kho_in {
->>>  	phys_addr_t scratch_phys;
->>>  #ifdef CONFIG_KEXEC_HISTORY
->>>  	char previous_release[__NEW_UTS_LEN + 1];
->>> +	u32 kexec_count;
->>>  #endif
->>>  	struct kho_debugfs dbg;
->>>  };
->>> @@ -1330,6 +1332,9 @@ static __init int kho_out_fdt_setup(void)
->>>  	void *root = kho_out.fdt;
->>>  	u64 empty_mem_map = 0;
->>>  	int err;
->>> +#ifdef CONFIG_KEXEC_HISTORY
->>> +	u32 kexec_count;
->>> +#endif
->>>  
->>>  	err = fdt_create(root, PAGE_SIZE);
->>>  	err |= fdt_finish_reservemap(root);
->>> @@ -1340,6 +1345,10 @@ static __init int kho_out_fdt_setup(void)
->>>  #ifdef CONFIG_KEXEC_HISTORY
->>>  	err |= fdt_property_string(root, PROP_PREVIOUS_RELEASE,
->>>  				   init_uts_ns.name.release);
->>> +	/* kho_in.kexec_count is set to 0 on cold boot */
->>> +	kexec_count = cpu_to_fdt32(kho_in.kexec_count + 1);
+>> I think we should make this default if KHO is enabled, i.e. not have a Kconfig
+>> option for this. The cost of storing the char array is negligable.
+> 
+> Sure, I can get it enabled by default once KHO gets enabled. Thanks for
+> the feedback.
+> 
+>>> +	pr_info("This kernel was kexec'ed from kernel release: %s\n",
+>>> +		kho_in.previous_release);
 >>
->> Should this be kexec_count = cpu_to_fdt32(kho_in.kexec_count) + 1; ?
+>> Maybe s/release/version everywhere? It might not be a release, but no strong opinion.
 > 
-> I don't think so. Basically we want to increment the counter in native
-> endianess and then convert to the Big Endian (FDT/DT are big endian
-> AFAIK) and then store (line below) to the DT.
+> As I understand, in the kernel parlance, "version" is something
+> different from "release", and what we want here is "release". Here is an
+> example of uname, which also matches with kernel source code and UTS.
 > 
-> If we convert to big endian and then sum 1, it will mess with the
-> result. 
+>   # uname --kernel-version
+>   #1 SMP Mon Nov 17 07:00:42 PST 2025
+> 
+>   # uname --kernel-release
+>   6.16.1-0_gc0739ee5037a
+>
 
-ack, Thanks for explaining, I didnt think of endianess!
-
-> 
->> +    err |= fdt_property(root, PROP_KEXEC_COUNT, &kexec_count,
->>> +                sizeof(kexec_count));
-> 
-> Thanks for the review,
-> --breno
+ack
 
 
