@@ -4,239 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A05DEED628
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 17:46:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6209FFA3754
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 18:04:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C95D86B0088; Fri,  2 Jan 2026 12:46:41 -0500 (EST)
+	id ABBC16B0088; Fri,  2 Jan 2026 13:04:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C192D6B0089; Fri,  2 Jan 2026 12:46:41 -0500 (EST)
+	id A69B56B0089; Fri,  2 Jan 2026 13:04:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A995A6B008A; Fri,  2 Jan 2026 12:46:41 -0500 (EST)
+	id 943226B008A; Fri,  2 Jan 2026 13:04:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9100B6B0088
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 12:46:41 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B19D1A9ED5
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 17:46:41 +0000 (UTC)
-X-FDA: 84287753802.10.1750B85
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A757F140004
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 17:46:37 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="kx8e2/jh";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=TLEzvynV;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767375997; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 813106B0088
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 13:04:05 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 228C8C2B87
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 18:04:05 +0000 (UTC)
+X-FDA: 84287797650.23.44EF12C
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4468518000A
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 18:04:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=KsII55rW;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of fvdl@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=fvdl@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767377043; a=rsa-sha256;
 	cv=pass;
-	b=aNTreKKpr4e6rVj/103/ZEMOpcEJCTAqcjKq56l2XQN1omqOEwWCtArAult9I7ZOoIJ8El
-	8uxkS8gS2Rp7whRGUXBwcNvVrRZEmM1dlIWw/ynfaBPzzEREY/jl3m8g1KBW5k9+M0ealm
-	av2q83zc9X9C+vrFM2p3MaNFlJUiCmk=
+	b=8aB1b3+lQNPV+knAmv0ho95iI86pKPRzJsEcfW5djvgJCWgTMMauY+dvluX4Qs8wWWlDO6
+	IzBQ35mox5Mp21RFfRW+Hb3/gsJXDuFVOpdT5KXYXq2gzxwkmB0KpSJtXifJONjkTAy35u
+	8cThuBij7fm/TmdWPGQej5Y/km0XCoc=
 ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="kx8e2/jh";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=TLEzvynV;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=KsII55rW;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of fvdl@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=fvdl@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767375997;
+	s=arc-20220608; t=1767377043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kY+kOdx4myZqC4tdr/4VJFA8LuFBkMKlOLUVutyhsAY=;
-	b=ShkRVrH3BLdO6d41fjxQDy6rSpJsbXsNDlffe1YkSQLIkgQN/dNJUBpXFaCukydIXebpz5
-	zLNFHvhQLQBHHwDmfoyPmRXlNDNIQLoP5QYC8VYcWg3+bkYhyaA6SMFWB/T8m0xiHXLTMJ
-	PfIzOFCSns/IAgyMavGBpVOexxvghio=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 602BuqgN2738293;
-	Fri, 2 Jan 2026 17:46:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=kY+kOdx4myZqC4tdr/
-	4VJFA8LuFBkMKlOLUVutyhsAY=; b=kx8e2/jhiD9xM80RSuSGZvrdiqIF94OAnE
-	p4Nr0RllTbDUqa6VDbR9ATNdbariQrvY0vUhxHbwveHUXRYXPkRhyQFE7w3kB1mz
-	qnCm553PzrEfOPh6hpHYhXAgckTb7NH9wTQAMpNroFfbthV8SW0NgHiOn/927uj0
-	ABu5m0ouy+nolkqgoabAq47uyIa1AGAUnuqorBbE5Y8OqjDZBK6LaIi1Ku1tkTgk
-	mBLGZA2KsKks8XmUyUeXeU1/JnSzBZ6VxFrKhU3pOnU2InPq0jGblWfQmNPg5sLX
-	jjaGQ1BPyBKnsGniYLyHKviR2NM7qmWAOGLAKEpEq9kEmiHA13gg==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ba61wdbb7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 02 Jan 2026 17:46:31 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 602FUrbi024686;
-	Fri, 2 Jan 2026 17:46:29 GMT
-Received: from cy3pr05cu001.outbound.protection.outlook.com (mail-westcentralusazon11013050.outbound.protection.outlook.com [40.93.201.50])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ba5wmk5m2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 02 Jan 2026 17:46:29 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xPItclZjQxNFN4fCe9RxSU+SnKmud+9ymMY5HNSBMqEZMP7N7cmxtJh83QMmTLtSsWLFAglEf96zDuFbQZ7tfn8YK6LQEDTs5kqsO9pj+48kwcUbrquflNOljtpyOm75tkQdhSH8tRCxhSIkSDiXzgSRHRXwvt21wYMaZvpf1w0ttmXF237ZGj7qCIQ3jrjz78S/4kErgDC/GNkWpWbIOTRg1aoWntlpIjQlZql2q3L7U+Li/SX5iM4G2u335EDf50VPN5ser74I9vvg72aWHQqImWFkHBA2M+0Lyc7bJgQ1lgnF7C15OTL8fBxgkiCt+2ee2/NrpfzQ2zxEuNz/5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kY+kOdx4myZqC4tdr/4VJFA8LuFBkMKlOLUVutyhsAY=;
- b=TpBjva3ASH8X5Sr/qbV214/UJ7taS06nRazN7D6ldBEQSOv+wN9/CmS4GI5Nn367r3OP6xrv1L6DSfRnf6aqaibjot7zsKWY6z7G9GLjRXb+Vd9E6/V8j/a4MEzmPe+rOwenl6ai/Xvnrl1U2YNkGT4aaJlmzy8/+POm7MontNpJv0QkvPojD6VkBa2Xjf4ob0SGUR0Di1ULAOlXmZdT8KLeAK3s3rI72uhmGVMlEBWMtNAqKUZGlCvoBm9NBliazuF3Q0Q3iCxpKSrMpDVsI2KJxm1IHORe6kzsOR29M9JM6V9j4jclT6tK4N+bmf8TarrcplDcih9zlS3Pdxq42g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=VF7Ncw4qUW1QvZXNeYN2PHKmriSnoyG5jmMgiKLYwBI=;
+	b=R7Pplq08kV0DB4UKJ/R5yKFBjDb40cGM3A5tt1iq0BIDhV90ao1apuiMnIPiY6vjfTGNr6
+	uwt1sIs9BvifdVD7HZGBHcPuf5Btq61lwgXUM8qSS9WzIxGiiDwmJ6xTBsJx9CGbabh6tI
+	PLzgiqAXqc4D32FzmCGSfFvUhCNU3jI=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ee147baf7bso10901cf.1
+        for <linux-mm@kvack.org>; Fri, 02 Jan 2026 10:04:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767377042; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hZpzqANgge6tY0BI1/eMh2F8OFrHKFmfiflXc7bUK5r6kvZqkmHSb4CeIU5IGwgmO3
+         9P0tDfNzHlcohBMV2SUPCOEW8ebXSDMY/LmEFCj/kfquTJhKXisQCAilnopQWGPEydRt
+         LXI8jQM0ueDSk5T437v2gwHQ5bsiofzpE1+vqdG8q26oV6tLCW0dTJrL5agcec76DCCf
+         HchcLnZYkAuDR4UuDZ6zQ08GcofeGcMGOdCOnO29oS+fqWjtlftDbV4MqcStUOyhmwN7
+         ufj7N/CVuTTkqHaiHR83S7lfk1w3WqLrzDHw7mgYhlWTIRkzBMNEXT3OS8el1mc490Pl
+         qYpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VF7Ncw4qUW1QvZXNeYN2PHKmriSnoyG5jmMgiKLYwBI=;
+        fh=rBSAY97vn5XjVGmRPTeTQQE2PGjtD8P7y5YLbu4y43A=;
+        b=klcwLinmmoP1RurTC30/EByNzi+6b5QUTI+MoCrjfzPQaOIJMynyVW9YSbVUibS9NR
+         2/ur5WOvH+M0dIFL7wAvMZQ6iOgm1rGo0di2RjNDxqCHNxCBEWIrT9LPgrGiXsrQOUZh
+         5CK30Spn/VyGb8+++i2pnIjyp8P6TuNzrYugyHGb4vPr9rLU15jMAMebrYLKTdPO/8Pj
+         6zYnRmGTtEzdOs/CT7uBit0toGVbFPD9+SccDlPmwcELVA8uL/Iv/cbbZlEhfx/2cIAa
+         vW5at+P+LYOxfJoKxaa003wfcRoU8csnQ/OatWRVfdQNNl3rRG1vXmWOsyAmhEl0keTG
+         WHsA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kY+kOdx4myZqC4tdr/4VJFA8LuFBkMKlOLUVutyhsAY=;
- b=TLEzvynVdKBgMTT85LRDVMvSuaULWHsEOZNYZuJAq8qcdCqRochir6WZugi1Y8UwRg/Hf7Gh2hsVK11MNTaNh487ZYO57h5ZGr9NEciq6PM0JCXkF9bn/VlOb/XKpWC7HyZBtGQYkr4k1eBPs0Q55ReQr7OSpVbQvSeCqoC8sZw=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CY5PR10MB6190.namprd10.prod.outlook.com (2603:10b6:930:32::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Fri, 2 Jan
- 2026 17:46:27 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::f3ea:674e:7f2e:b711%6]) with mapi id 15.20.9478.004; Fri, 2 Jan 2026
- 17:46:27 +0000
-Date: Fri, 2 Jan 2026 17:46:28 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
-        Jeongjun Park <aha310510@gmail.com>, Liam.Howlett@oracle.com,
-        akpm@linux-foundation.org, jannh@google.com,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org, riel@surriel.com,
-        syzbot+b165fc2e11771c66d8ba@syzkaller.appspotmail.com,
-        syzkaller-bugs@googlegroups.com, vbabka@suse.cz
-Subject: Re: [syzbot] [mm?] WARNING in folio_remove_rmap_ptes
-Message-ID: <99a5ca7c-006a-443f-909b-d6375164412e@lucifer.local>
-References: <aVTJt9M-A1BL8w5O@hyeyoo>
- <20260101130906.839504-1-aha310510@gmail.com>
- <aVZ6b2ri1iRpM-7y@hyeyoo>
- <CAO9qdTEzgQQgV8HixsckHhOd5OgRk=_wRRaRbq4d5wJADMrAzg@mail.gmail.com>
- <794095b5-e9ee-4fff-8e3a-1e6b98e670a2@lucifer.local>
- <dd304877-1010-462d-bdf8-9d824250a05c@kernel.org>
- <9306c37f-bc7a-4a7f-931d-452ef6aad358@lucifer.local>
- <aVd-UZQGW4ltH6hY@hyeyoo>
- <75ba8e22-9f00-489b-989a-373d374244f5@lucifer.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <75ba8e22-9f00-489b-989a-373d374244f5@lucifer.local>
-X-ClientProxiedBy: LO2P265CA0293.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a5::17) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=google.com; s=20230601; t=1767377042; x=1767981842; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VF7Ncw4qUW1QvZXNeYN2PHKmriSnoyG5jmMgiKLYwBI=;
+        b=KsII55rWZkdWOnUcXt+9Pfl96YtwQeqYhYjR5gdYjMuRA7O7ljJp0qUimJHf0PW5RZ
+         OXFeFLH7Xi2GnWtiZ9Z4LbFSubLrJSUqFG8+G9McT6d2yoWuKvud1sl0XZjaq1NTLjAD
+         XkiirSjPBMG5xqb7vBYhaTTx2bWN6fVtYWddHtkdE/DTDMdSRKnF7YXA1vTCZAP3z0ym
+         ovHbFp2C+qNXD1UpXwiZWLKihLzTsCSlSX3nMjqp+vjZtIuI6Ptlex9S/0k90Cb8eD3O
+         ACILyVxvBNeoKNm0/NVOpYiUqL1MIuDXRJXjBpGRqUWfnzSz1kzQzLcHnRwRPG3sJXcm
+         xDFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767377042; x=1767981842;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VF7Ncw4qUW1QvZXNeYN2PHKmriSnoyG5jmMgiKLYwBI=;
+        b=oml+btMP7WnJmngidXG/7Ij1FgyU8wAoFP4bNQyB1XNCQqP+sJQcfd0Dc50pSn3TnS
+         UU171FWxcnmwnXMfE/oexcIzC9j7tboG0wj4uY10WTeXxMGMMEPHqmFis01SevXHTYQA
+         jnOVioBjRItO08gyOUXbOjNrSEUt2Ctar33Bt9tLGEnBAJlZECAw/p0eS4M3pPtcsdiX
+         wuEODXBYrZ0qhvgG2aFgsB0ErJ/W/XIrafcBSBvRpUqOcj7+zpmI7BO7RRUGxqWQAJ57
+         z6mqSWy7umSOFNlggY0KzcPIF3W3xx7Z2BaJxedniGvVWp7AyDP6wqSz09I+yrMMjsET
+         1QkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX8JAC+RvqBps4yecmgz9pieYbvzYTrCB60amIgljkm+MpBy7My4aMNvsPcVJykZIXtgJD2QaQDsQ==@kvack.org
+X-Gm-Message-State: AOJu0YxSpJzfUOaBimJiRubm52blZppW/3QdH/7wIY6fPol5bGtVQNBS
+	OXTmQLyvq6Vp4Wp1i1dx1CrzOyqDbkFk9L9/aE2Br02Vao8tDAgVNdMxNJ+BVnq/GDN6HSnEEyg
+	LTkXUVjrumrGhPheNS49Pol9SvegBiZYrwsmSh/gB
+X-Gm-Gg: AY/fxX63MuZGUYxq4e+hCLUtKS3qb9Ndn++klN6+95fxA37nouZzUcWeAHGizo65fax
+	msAwZDWwKMgqMvDMRqxKfwU9R3jJI+3VXri0vLhFfTmeAEX91jHTB8ke5GrKmgzcJADx5IVRIba
+	BLQXEKO0zM1Oa+RpZD2t9z4d+Sh4iTX8u0G/kJa5ozmClzaV+OmtwjAWMAGBq4kNB8KcbakmDjJ
+	vnIvjlpx0pgSkkBanDA8u83gBsW730BcWmxM+lHLrpzPxPu2LTJPhSCQHNqLEWTtKHHkro=
+X-Google-Smtp-Source: AGHT+IE626c1niVbXfJuRnnEKb/XVpUT3xgOsgVHvUYmmAhOToE2K50Gpbsa48xtp+jOGlgqExM/NP3EnDee4koBR/0=
+X-Received: by 2002:a05:622a:8016:b0:4fb:e3b0:aae6 with SMTP id
+ d75a77b69052e-4fbe3b0ad54mr14392961cf.1.1767377041692; Fri, 02 Jan 2026
+ 10:04:01 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CY5PR10MB6190:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8a730de6-ac0b-41d2-d51c-08de4a26dabe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?sks4FYe0KxThcJmBjc8ZTuAjsU/3YuAGIzQBfQMyJ4GO8MQ7e2JMp4cz6Jvi?=
- =?us-ascii?Q?Ia9A/TgXg99KvTg4N+a51zXxtMVH389xJ+fX0ubb9CdJJzJSaefZh7cb2skr?=
- =?us-ascii?Q?9988Cd/jPwfD7SQr0HN8/fl8Sh8FPoMh55yflaY2Yt15UQ0ertczkTvxh3g9?=
- =?us-ascii?Q?fWUVS4roj4BCPPSa5BaCxm3A2tqBpUizYZRGqSCD2Frvo4BiRoyItcR5EDaF?=
- =?us-ascii?Q?MG7Nl6voGbwLBSKXVZDKgjD3n/r7J0vUIhNzN7aum4lNiRbC1ykc1UkS+lRE?=
- =?us-ascii?Q?lyWvbpIsNV39nNrLpuLDksRlnZP+SXKV9sh920OG5v6J9UcHlTYhE/iHgfES?=
- =?us-ascii?Q?kFuPuPR99VZ3YJrrmsWowUCHHsdmGk1iUrrZrXfJpr32Ym9ohiLFyuhmOJ6Y?=
- =?us-ascii?Q?CjsnliuJYAWk6dkl2Od8tfFjCaRbfsmvwA82fD/dOwgGHmNLQo4aHQnHYJml?=
- =?us-ascii?Q?e24w6P56IsEDqRlioshb7a6/73dVp+YPFmPKZNeTNg4hjFqqznugivE9S9Z5?=
- =?us-ascii?Q?bjuLqC1nYASA9AfL3ogkNlVue6OqGDjOAls+Wsg4sY9VkchhAQhRXweO04tg?=
- =?us-ascii?Q?+ezElgjuz8N8zRbalzISJRZnp7+f4rSJfM/AkSp2xSchiI3IBtbqAH5UrrAF?=
- =?us-ascii?Q?ON7Q2ZqnPhoGH/syF1oeLLUAiVZn2On1eoOesRs9XdWbqHAcRPwHFxoSMTUE?=
- =?us-ascii?Q?jOCMiOX9BXVX0L3HQKDF2OMySn0eTgmleg3Co+H0BQQT1zY/3yFyqAYSx/Gf?=
- =?us-ascii?Q?UxiM51wXPL1H7Q6m4Lj0BkpmmF692PsRFeB+ycD/ZBpEQHlAqwvlGrvanOCb?=
- =?us-ascii?Q?OOEgy1+CguW/Lfz7QC0fYtCoYA2BmBDuoDR/wgi6cbH8vMfpUrQda1tSbdX9?=
- =?us-ascii?Q?xOvFCuSpf5ro9UQbF7Z7mWTMlyqNmRHZ0XHu41oj+dHEsphjq4+nX4BN7IVh?=
- =?us-ascii?Q?1AbFhgxhzWgxILaiNXwQS4tXN+hDIC4RVx1nVYfpqwLo+/Ct8OPj3d0WaGrF?=
- =?us-ascii?Q?c7OyTrNqJUG95fxRWvMgMwlVN3js1CnYOMuH4uC5e6vVOxfqCbFZ8+e16dsg?=
- =?us-ascii?Q?ZB+9FkwI1OTde5TxIeWWkCBQXZ1l1TwEQ3LVrQy8Em0MqjLi+luBIdpn9Fo5?=
- =?us-ascii?Q?5MTXDM6JkMlYyxS6BMw0XFenKSpQ5140Qi5ZHAUwqn6zQ541CjiHt6qQfeRv?=
- =?us-ascii?Q?6g4g6sD4h81QcDQKfjWbxhF5up+L2Eppxs6/UHJHw9UtE7wrL93nzGTdeMwJ?=
- =?us-ascii?Q?y78TiR6vQdftQ9Lp2NFjucUqox5WzyPY0uLVLENm39UKVq9gjt8B8svcbcxz?=
- =?us-ascii?Q?egpIimacxMoocJdSBGVEP1A1KhJH+dbiiYTJVGPNdYgWXiMnU6GHpN2ucEpA?=
- =?us-ascii?Q?tM6ADQFcGQBvEtsfD8gqN53HJBwQ2n4jdJbmh9z0mRkkk5W3TEbSLxDzu0hX?=
- =?us-ascii?Q?+a6IV4Hx42Xi3EGCQUtJYNvweNBz4Q4S?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5neLvlIVrHDQV6UbTMce0R/Q3P8eO79icKQ2M6/P7TAqoCutEUO48UxdnNbD?=
- =?us-ascii?Q?NEL9R/+GNBZfSWCo7mfxCTV1KQOhuOHRgk3JHoYiei/VPCVps7nGS7Lz4pnl?=
- =?us-ascii?Q?Whgy6+p61IzRQadpkGy57cC1ofJ8rLaLzFwFv6f5SDYEUM9/NWLTdohuviHp?=
- =?us-ascii?Q?7NY6vwadS2kZWiFY4lCjeiOrl5tvovjasEIkaC/WWa+tM8IxJ96THWQRW38Y?=
- =?us-ascii?Q?GswZRxzS7idKQQhn7xm25vXBsYAWBcQJDI2n1DM+c4pBKBaBdzJFJEESda9p?=
- =?us-ascii?Q?q3ESNDeOpqvqqTcIw/EBfEpyJ4weFgB/YBTpsmudl7xWBrrZbAAX8R3Ry73T?=
- =?us-ascii?Q?CpRMdSD+PZmsdUA5QMU/s00TWrI4lHC6tpmGToMjBtGkN1d6QvQYi8IlZYyk?=
- =?us-ascii?Q?jA/5yAFsg+kGwjFhn72BNkQG7mP1djN34lsf8MrjBVZPfh1rAKrn340iL4Qn?=
- =?us-ascii?Q?nf4tndHzIurWzz9qQo3j3DqsXbvToddeOz1T4FgRGsObMeKeuzd7mEnwXjJe?=
- =?us-ascii?Q?SrVL0aODj9PXMc8tr+MbM043GlmEx/hbeLz66ovDZceGDqRT+F73K/++FtHF?=
- =?us-ascii?Q?hjrdCDJmL1pnPgBnQZZ2FYLFYEdibtrN9UYytUpmegRq6jR94p1aw7e2e83E?=
- =?us-ascii?Q?cdXSwr4SYYh+4/O+0whuW9gvXjZLjagLa9kqSSTNp+66iiNkMDfdFLHaBGn8?=
- =?us-ascii?Q?XMSu31gfPGHD4O1POGTK09SpJ2rSHWdzfmNYL7Al8ZOF+SjAggxgEtC/uNCE?=
- =?us-ascii?Q?PiGMVjyWNi4v6s4Q3ARH47JyLugWidVB0POI2gYMPWGTUdL6jgVP1G4eIF4y?=
- =?us-ascii?Q?C1QT5LYR62dgvyTtyTd15MYpF5cV/xshN6wH3GSw61F1RxMz5sVfuxiF4G9Q?=
- =?us-ascii?Q?/MIFp2H6Sk8yqu2tMvoVLnDaGlGE3RzXr0VFJJzbgLPsRG7h0D0Jj75vO+Z3?=
- =?us-ascii?Q?JwuEBBw7SIrfl6F9YKQkxfdJWzcx9aNhGBSRyTL8A/IKOMTeTjYS7L4FjJ3y?=
- =?us-ascii?Q?mVW77N+mAPIA6JUvs44SfHrLSFrnjfbaF68HAa7YDsUNxtJP9t0QWRorEx2k?=
- =?us-ascii?Q?+RUqxBfJeJMi+ngCkbLreDGG67V8R+NewLT7Y3KGHakoI8Lo9MX7EHssgV8C?=
- =?us-ascii?Q?G9EGLJbmt9G7AKUWT+QmlJMzLF7T6xa6xfX1YlpVwsvN9QhQinEICR2CmRE4?=
- =?us-ascii?Q?8TznarcAZtF0E/9m2fZ8HXzpil1VZ4d3mQakb0nApA41ej5mo1O2i1VehtPd?=
- =?us-ascii?Q?bmAuhPaf+fsMyJ9WPiDJbrOXhTMpNLQvlpx1QNckixpjvREyg2h/2BUcJJz4?=
- =?us-ascii?Q?5e5IrOZcQh2TZrHtqwJq7OhMR7iLYc+Pe4yqtLBuUjsMnf+etq3hCaHpQPD/?=
- =?us-ascii?Q?os6VYashyWghC8nuIstMDG3E3fXUAuuW7D5xaZ0voCQNgSY5MXwOErsr4PKP?=
- =?us-ascii?Q?vd0bQsi8o4wSkIM0LunW1RiwNDI4bQdgth20miEYYoPxA+OXePFXmNLM9ipr?=
- =?us-ascii?Q?BWrxk3IuzM4Pgg18Q1IsG08itGavQ0bHkYZufqGsgSEuIt+kryMLZHJr59zL?=
- =?us-ascii?Q?yn3ggH3p8wVE4CFT7ynkkLAGqUNqvT65qBgCAF1fSwojy+fWMDzEurpU0TTD?=
- =?us-ascii?Q?RDZbc70GO39BsGgnr9spadZwC+R+Su7E86F5OGM8y+2NIO3KxvaPgnTyUnug?=
- =?us-ascii?Q?ddCma0ttQuhdLlT+VCDQUbdvf3poJHjXD8+E5dVZSrwpLIglbD7q458qbjOa?=
- =?us-ascii?Q?yOEVOWPWJZXRYuUouaMS3xsd0RGi4dE=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	M2d5uCnie4YBeupPGcO9CpdDDWuP0sS+B+ifOApmsKa/gZHfZauCNKtgG2fF2s7NDlXwYEuYpSpcy48EOlh9n1B4F92c1EB5Sl8f+mxX8btOYfHW9DeQPQp4S/BIaBXa+qgKIf4GJCUWjdtBkieMabmZGG06uHjXmP2ajtsUh4CXS12CXIAfsnDQp+rx3VBP8Jv1W8pFWBDtLk+6lWllG/aX0k2/kr5ZGR47CWQUhut35Cupr8KYMPMZQ5/5ES+ezSbJVWdKMbEuKqrLYOvkfEk7WmIbZPr+AaO3jD1V5SHsK/8u6DrMudHhscXjTCwSiv47wFahn7tHXBOszQC5hyyedcQZ5iSWYSAUQtTByrKlh+n3bYjeD22VSUqP2oPi47zSURDjHWT4vOJzskz3m1wVN9kdjwsLgnaogFAKHPfMcOcqONw8ZLV9XhW/a66dbPaa2WRkYAoMvMKJNA/Um+2myQGiBi3im7V/4gelYXpXkci7RgT7wvLs+3+Hg9mGvnE+HrbGlXDuTkXWFZAwQ0TB7WEf5GRSaioS0kowCIjLkC3+ohSY17BTERzglRwHT1vXqYbUgt+hOYT4fLmqBp84a5HFhU8JWGnnN0J85os=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8a730de6-ac0b-41d2-d51c-08de4a26dabe
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2026 17:46:27.3786
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cdsLguoOXl0UmZGgpYgyQfgBf6thnQSwNoGZ4SCiK8YuRvfhv9+HfouqbRVsMl3ZZdEgXRp5XAswpRR8MtedMiF4wida8ClqVAjJVaPTY3k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB6190
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-02_02,2025-12-31_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 suspectscore=0 spamscore=0
- phishscore=0 mlxlogscore=891 malwarescore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
- definitions=main-2601020158
-X-Authority-Analysis: v=2.4 cv=LL1rgZW9 c=1 sm=1 tr=0 ts=69580477 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=MY_yOW_JCWjPHViqXNAA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:13654
-X-Proofpoint-ORIG-GUID: VK7zBFOobQmmg0289wnFd8_z_-Z9GWRU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTAyMDE1OSBTYWx0ZWRfX26H1JM6evX44
- enxUQnvZpjhcLsx5p2iqRXheFKJnaRcIENjQbLsp6zbM1FK8lxcAXOtb8Q8RW3QoYdEb802SATF
- gsBAbg4ZA7ydJR5VJYtVdssFzYj6byoeSrZ4rrx14QEW8EO6kGiwPt21373FryrNAL5KM3PvLck
- bog8dMMMzoJa8H5AG6aqFyLHne8ESeSlBBjwPPpZWy8W0eEyov0AdqP5LuSY5LU4TzAj5usNsMR
- 4MU39WtxgQJqbzPOkQ9kScnER28VzWH9JfQjHbhS+SaNv3QVw4GD8LXHKIYToZQ030DI/RZkVn3
- ++uUtCzhJh1zUYnNMM9s6iSSGIV2Ce/hFLU2sW5V2a1ZNqaCdOPcAssV2CllIcmIxEpuUXRORIO
- jGPG5NDHnaFUMYdWpeZegowvEwV92qG9DIdu+L/JgtVvT11aEbI4K3crPVXmVpUOD3+MkDyRLQX
- YqTidhCWXr6mTb98O7oqY2jinfkXjGwyQ71vnaZQ=
-X-Proofpoint-GUID: VK7zBFOobQmmg0289wnFd8_z_-Z9GWRU
+References: <20260102070005.65328-1-rppt@kernel.org>
+In-Reply-To: <20260102070005.65328-1-rppt@kernel.org>
+From: Frank van der Linden <fvdl@google.com>
+Date: Fri, 2 Jan 2026 10:03:49 -0800
+X-Gm-Features: AQt7F2qPng5Y0NvX0my5UG4cpefC6iiH19nIvMPHQLdOtt1JmQ_l0Tjv8FxQEzo
+Message-ID: <CAPTztWaZZt_ygCDNaDdW9A_TtT1FNZW6hFzyiq2b6_xxMw38gQ@mail.gmail.com>
+Subject: Re: [PATCH v2 00/28] arch, mm: consolidate hugetlb early reservation
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, 
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	"David S. Miller" <davem@davemloft.net>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Jonathan Corbet <corbet@lwn.net>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>, 
+	Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>, 
+	Michal Simek <monstr@monstr.eu>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Richard Weinberger <richard@nod.at>, 
+	Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>, x86@kernel.org, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-csky@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-mm@kvack.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	loongarch@lists.linux.dev, sparclinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4468518000A
+X-Stat-Signature: pcatqkn33tbothhomsdw8cqg1btexe13
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A757F140004
-X-Stat-Signature: ezt51acsqa13tcqaat1o1ydu7965skxw
-X-HE-Tag: 1767375997-951196
-X-HE-Meta: U2FsdGVkX19u2eOdoKynQ/nX7Pbs41rFyhMFlNkgB6iEC4ppnh1wHjryh66Tdnqnvkj4XXgrYvNcBqTClH/rBGXDI1e/I155qHstIfA5I6vjzCzhIyoE0EHjnW/hq+N3n/4VVAEWt2v4nI4QojSVVbc0O3+130xtDV8Apclz3pLDz6ZVNgzljWTou9zpNt9+cHqXXLkjCcumtpP+6KnFEXNy2Bh4PHFLKH28W7pHwUvlDmXUQ67WyW8W/HaPRi57DEEZPqtK8J6tRqFfube3Pi4OAjJxbeFu4tOc6tuQxqylEld8Odem8ZPpPlsRItvQHvHmEoLkpM5vf5csw987pJ0mLDiflfHdJV8pzbcq8onb2/z8JtV2gE1ivtsAnxLdvP0eCbzPXJnrjlejjyqeHQz0+b213R7CpemNIcYBoEPiJNK2czdZnQTE7i8mXPLatV6xUjC8Np7SWznEKWy9SVID7amtEy0k2mM19iIboofZ5hv3oladTAJZV+6lIsfeCbo/Cm+txbs/NlXhxQgpJKQj38vWcPFeG7TQ6/CBV9FQ3UaDiWBhJtG/ilKEvkg6HXkr8s3cBu0mGAA66F3vYsyEN12Xhtbg5F0BRw6UjWA8ioWj0UUxhGeUloKLPwDOFYke0lrvF7CDCl+9WKoCJcfQzY1RZYoG3X2oSU6uSI6B9ySqEPAN0A/KkaLo4nJ8nQIkzSV3Y3BxprwPynNhaGvM6i8A4KSnkgXuG02v92HEnfQT09Zel2fM5S4bT4WDPCba2ckvpDtaSbrOk5zBBsNig6J5spG+2GdN0+Jl76YPKQUmYx78xFvWqXW6e+WtdaIfb3aqK2ktTAox0P1wg9YSXVDrr12H0gMDxYIc00MEX8ROR4yVv9AtolESuTV5DXOsc8l1dTRLcOGTOFuLFkh99JlKkgzLOV9bYRGVmiBgVIBtFl258DXuRAc8LrbdupsqwB+KiBGaumWo807
- OvF9U/V6
- oxPOwjbyRj+icSrNwNGL7apcg1yND5nEXb+JA/AK7CEKsxi6/n+KwcmIJriHliatHjfMh8jCmUp5lkwgXAMS9sNzDxbI6i3KMPymuF+ta3hnlaASHpyKohAD/P3escRxq+GoFVJtFua3ow4kU+HMtll69FIQvhgkpeUeQfFmyMGVdCagYl1Mi16OC/+wr3VY2sp81lml52nsHOEd0G2X2uUoFc8RSDqDOJZsw4xWtj2jG6bAtyhaFEYdwc+kZ4buxRWZWpqVKFs1vdGOEkv4pjOCkdCkvrdA0WF27K/00J1WKlEp7BVqS33Nyf2ef6U0nzj96nJJn/a7d3GA/G80WLA4b6X6zn4oDbuV9ZW20TniN/67FWkmjUtoNgDQ2DwPyFhUy3gXFUPV4xMf9ppceiU+ETbzig1aEqpmWulCbKjjQalZ6W7NXmr+RXZcq1KX9DIhBGDStQMQ37PXv1VDj/kJ2LMq8zu5sWLEdRDTRpITJBjoeM26aW21JMkx5Ugo5o73NcNcgt4zOHkTXynJSSWAq5sWQIQFHY6GdwMuaj4Yc/66m72UQ/V+51Oh3HOzKcn8F1UuA3G0f8cfV2a7tx56EXDt/2FxHhcJRwGigWVKe+qw2Q5iHufPLloctGq6KMWOI1ydPIbtEEyUlIixLKBkQ2fbfklW5tZzt6eE6Gr9bJWSriVOUPxJXYDSNeVeQmWsOMW5/pKWv6i+vyY72OOwEdt8Jn47/vOU7GoZ4/jEoxi8FgEA6DY5fKeRmZwd/IfWSaxX8esytnpHc+c5BQCfQX2sloYE0zVaD3fcH/8YC4pKf2/ikDzk1PQ==
+X-HE-Tag: 1767377043-553403
+X-HE-Meta: U2FsdGVkX1+vYRBPhXkiyDfjbeYY/W2UGcQRN7HqxuccLsM1iYCYAKByFt22KOCQbGQi1Cb1Bh4PxqmEY/6cFogGaBIVe0ASF3ZBghwGOcOo8DoRqwmPTdVbeRTd0HBzyt1n9ZbVWaPCM6Go6ygGdkzhSpkwrc9Z2NM/BOaSYdbqUvm3MDQUIHG6kan4TuJciGn91t3IE/EPuviiC75ydChBA6U1CxMUI2EUj2JNQ0a4aBxLH0Nr69UuakRLP7qNMHYVpPyXueM/mHXrfMI1iwtk8BXFzD3KNQB7ZtnAdj0aQLoNFptoSl9RctIFTPtA9JMMi9OM8j2EGQ/cGxQgy+WU7jHl6Dy/M4LywjFWdKTUyWLBD6hukWdcj/MX19XHy3Iov9bXVVJTcqTomnf7rSSVY1j/Rfzl7ZLDbLgOrt8LD6JvgwOR8/T5dTLt80iZvKhWBhTmyTjSHRn9abunCNeU0R7s/FqDP2e4dp8Q7pDc4howDvUHVbSwodYfMuHyzhFNg7yam+Ib+V3XgcWMq+x3XFoNnzapRKouGhOz+oxND6bIRiQC44QVLk7d+p3L75mnkEGtpGokPFCbgavRvZBmlWMrG4RsL17ALiTZ8vpjHxLRXkMxypCrrnbuelbdd2IfGCpS/owfWhBuHTiM0MyfBW7vHAYLqHvmhFsZmaneadHvgKBraXa0VVmUCiQgLbQIea7WXSVsZKUxlr9XnmPhrmYBvLJcLHb3806d4Fg4TLEi2Pvqo4aDxEltJUeRAqcgdUTt7L+PJk3y+LeGXDimUHakg0FiKuEJR0XOOcXHEXKZ5cP1THnFGY5QduWZTja+B+pxEuQLhUIQmgSDuMJwTp9mzAVcQh7soQOGGSbQfk2JJJC9pUv/8dQvW5IBIbKL6+pfdwQ9l4HpmHHzUoR7Klv1ZwrEUfwmhuhb6ZWsIPTjQr+UJk/P6x+PxVjkgjRfMmWMmwQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -245,116 +165,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-OK I now have a sane repro. It doesn't require a race, not even MAP_PRIVATE
-file-backed VMAs, it just requires the problematic merge to occur.
+On Thu, Jan 1, 2026 at 11:00=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> Hi,
+>
+> Order in which early memory reservation for hugetlb happens depends on
+> architecture, on configuration options and on command line parameters.
+>
+> Some architectures rely on the core MM to call hugetlb_bootmem_alloc()
+> while others call it very early to allow pre-allocation of HVO-style
+> vmemmap.
+>
+> When hugetlb_cma is supported by an architecture it is initialized during
+> setup_arch() and then later hugetlb_init code needs to understand did it
+> happen or not.
+>
+> To make everything consistent and unified, both reservation of hugetlb
+> memory from bootmem and creation of CMA areas for hugetlb must be called
+> from core MM initialization and it would have been a simple change.
+> However, HVO-style pre-initialization ordering requirements slightly
+> complicate things and for HVO pre-init to work sparse and memory map shou=
+ld
+> be initialized after hugetlb reservations.
+>
+> This required pulling out the call to free_area_init() out of setup_arch(=
+)
+> path and moving it MM initialization and this is what the first 23 patche=
+s
+> do.
+>
+> These changes are deliberately split into per-arch patches that change ho=
+w
+> the zone limits are calculated for each architecture and the patches 22 a=
+nd
+> 23 just remove the calls to free_area_init() and sprase_init() from arch/=
+*.
+>
+> Patch 24 is a simple cleanup for MIPS.
+>
+> Patches 25 and 26 actually consolidate hugetlb reservations and patches 2=
+7
+> and 28 perform some aftermath cleanups.
+>
+> I tried to trim the distribution list and although it's still quite long
+> if you feel that someone was wrongly excluded please add them back.
+>
+> The changes also available in git:
+> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=3Dh=
+ugetlb-init/v2
+>
+> v2 changes:
+> * move the hugetlb and memory map initializaion to mm_core_init_early()
+> * add Acks
+>
+> v1: https://lore.kernel.org/all/20251228124001.3624742-1-rppt@kernel.org
+>
+> Mike Rapoport (Microsoft) (28):
+>   alpha: introduce arch_zone_limits_init()
+>   arc: introduce arch_zone_limits_init()
+>   arm: introduce arch_zone_limits_init()
+>   arm64: introduce arch_zone_limits_init()
+>   csky: introduce arch_zone_limits_init()
+>   hexagon: introduce arch_zone_limits_init()
+>   loongarch: introduce arch_zone_limits_init()
+>   m68k: introduce arch_zone_limits_init()
+>   microblaze: introduce arch_zone_limits_init()
+>   mips: introduce arch_zone_limits_init()
+>   nios2: introduce arch_zone_limits_init()
+>   openrisc: introduce arch_zone_limits_init()
+>   parisc: introduce arch_zone_limits_init()
+>   powerpc: introduce arch_zone_limits_init()
+>   riscv: introduce arch_zone_limits_init()
+>   s390: introduce arch_zone_limits_init()
+>   sh: introduce arch_zone_limits_init()
+>   sparc: introduce arch_zone_limits_init()
+>   um: introduce arch_zone_limits_init()
+>   x86: introduce arch_zone_limits_init()
+>   xtensa: introduce arch_zone_limits_init()
+>   arch, mm: consolidate initialization of nodes, zones and memory map
+>   arch, mm: consolidate initialization of SPARSE memory model
+>   mips: drop paging_init()
+>   x86: don't reserve hugetlb memory in setup_arch()
+>   mm, arch: consolidate hugetlb CMA reservation
+>   mm/hugetlb: drop hugetlb_cma_check()
+>   Revert "mm/hugetlb: deal with multiple calls to hugetlb_bootmem_alloc"
+>
+>  .../driver-api/cxl/linux/early-boot.rst       |  2 +-
+>  Documentation/mm/memory-model.rst             |  3 --
+>  .../translations/zh_CN/mm/memory-model.rst    |  2 -
+>  arch/alpha/kernel/setup.c                     |  1 -
+>  arch/alpha/mm/init.c                          | 16 ++++----
+>  arch/arc/mm/init.c                            | 37 +++++++++---------
+>  arch/arm/mm/init.c                            | 25 ++----------
+>  arch/arm64/include/asm/hugetlb.h              |  2 -
+>  arch/arm64/mm/hugetlbpage.c                   | 10 ++---
+>  arch/arm64/mm/init.c                          | 39 ++++++++-----------
+>  arch/csky/kernel/setup.c                      | 16 ++++----
+>  arch/hexagon/mm/init.c                        | 19 +++------
+>  arch/loongarch/include/asm/pgtable.h          |  2 -
+>  arch/loongarch/kernel/setup.c                 | 10 -----
+>  arch/loongarch/mm/init.c                      |  6 +--
+>  arch/m68k/mm/init.c                           |  8 ++--
+>  arch/m68k/mm/mcfmmu.c                         |  3 --
+>  arch/m68k/mm/motorola.c                       |  6 +--
+>  arch/m68k/mm/sun3mmu.c                        |  9 -----
+>  arch/microblaze/mm/init.c                     | 22 +++++------
+>  arch/mips/include/asm/pgalloc.h               |  2 -
+>  arch/mips/include/asm/pgtable.h               |  2 +-
+>  arch/mips/kernel/setup.c                      | 15 +------
+>  arch/mips/loongson64/numa.c                   | 10 ++---
+>  arch/mips/mm/init.c                           |  8 +---
+>  arch/mips/sgi-ip27/ip27-memory.c              |  8 +---
+>  arch/nios2/mm/init.c                          | 12 +++---
+>  arch/openrisc/mm/init.c                       | 10 +----
+>  arch/parisc/mm/init.c                         | 11 +-----
+>  arch/powerpc/include/asm/hugetlb.h            |  5 ---
+>  arch/powerpc/include/asm/setup.h              |  4 ++
+>  arch/powerpc/kernel/setup-common.c            |  1 -
+>  arch/powerpc/mm/hugetlbpage.c                 | 11 ++----
+>  arch/powerpc/mm/mem.c                         | 27 +++++--------
+>  arch/powerpc/mm/numa.c                        |  2 -
+>  arch/riscv/mm/hugetlbpage.c                   |  8 ++++
+>  arch/riscv/mm/init.c                          | 10 +----
+>  arch/s390/kernel/setup.c                      |  2 -
+>  arch/s390/mm/hugetlbpage.c                    |  8 ++++
+>  arch/s390/mm/init.c                           | 13 +++----
+>  arch/sh/mm/init.c                             | 12 +++---
+>  arch/sparc/mm/init_64.c                       | 17 +++-----
+>  arch/sparc/mm/srmmu.c                         | 17 ++++----
+>  arch/um/kernel/mem.c                          | 10 ++---
+>  arch/x86/kernel/setup.c                       |  5 ---
+>  arch/x86/mm/hugetlbpage.c                     |  8 ++++
+>  arch/x86/mm/init.c                            |  8 +---
+>  arch/x86/mm/init_32.c                         |  2 -
+>  arch/x86/mm/init_64.c                         |  4 --
+>  arch/x86/mm/mm_internal.h                     |  1 -
+>  arch/xtensa/mm/init.c                         | 14 +++----
+>  include/linux/hugetlb.h                       | 12 ++----
+>  include/linux/mm.h                            |  5 ++-
+>  include/linux/mmzone.h                        |  2 -
+>  init/main.c                                   |  1 +
+>  mm/hugetlb.c                                  | 13 -------
+>  mm/hugetlb_cma.c                              | 33 ++++++++--------
+>  mm/hugetlb_cma.h                              |  5 ---
+>  mm/hugetlb_vmemmap.c                          | 11 ------
+>  mm/internal.h                                 |  6 +++
+>  mm/mm_init.c                                  | 20 ++++++----
+>  61 files changed, 219 insertions(+), 394 deletions(-)
+>
+>
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> --
+> 2.51.0
+>
 
-This triggers both for KASAN (doesn't even need iteration) and with sufficient
-iterations (to avoid re-use of anon_vma I guess?) triggers Jann's assert.
+Thanks for this series. When I introduced HVO pre-init, I noticed the
+inconsistencies in init order, but shied away from attempting any
+general cleanup, as I had only tested pre-init on x86.
 
-If you're using a >=6.17 kernel in your host I recommend you don't run this
-locally but rather in a VM :P
+With this, it should be possible to enable
+ARCH_WANT_HUGETLB_VMEMMAP_PREINIT on architectures that support HVO. I
+think that's only riscv and loongarch right now. But that's out of
+scope here, though.
 
-Requires CONFIG_DEBUG_VM or CONFIG_KASAN to be visible.
-
-Will follow up with proper patch. Not sure a test makes sense as we can't really
-assert anything sane here, will perhaps include in commit message instead.
-
-Cheers, Lorenzo
-
-
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/mman.h>
-
-#define RESERVED_PGS	(100)
-#define VMA_A_PGS	(10)
-#define VMA_B_PGS	(10)
-#define NUM_ITERS	(1000)
-
-static void trigger_bug(void)
-{
-	unsigned long page_size = sysconf(_SC_PAGE_SIZE);
-	char *reserved, *ptr_a, *ptr_b;
-
-	/*
-	 * The goal here is to achieve:
-	 *
-	 * mremap() with MREMAP_DONTUNMAP such that A and B merge:
-	 *
-	 *      |-------------------------|
-	 *      |                         |
-	 *      |    |-----------|   |---------|
-	 *      v    | unfaulted |   | faulted |
-	 *           |-----------|   |---------|
-	 *                 B              A
-	 *
-	 * Then unmap VMA A to trigger the bug.
-	 */
-
-	/* Reserve a region of memory to operate in. */
-	reserved = mmap(NULL, RESERVED_PGS * page_size, PROT_NONE,
-			MAP_PRIVATE | MAP_ANON, -1, 0);
-	if (reserved == MAP_FAILED) {
-		perror("mmap reserved");
-		exit(EXIT_FAILURE);
-	}
-
-	/* Map VMA A into place. */
-	ptr_a = mmap(&reserved[page_size], VMA_A_PGS * page_size,
-		     PROT_READ | PROT_WRITE,
-		     MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0);
-	if (ptr_a == MAP_FAILED) {
-		perror("mmap VMA A");
-		exit(EXIT_FAILURE);
-	}
-	/* Fault it in. */
-	ptr_a[0] = 'x';
-
-	/*
-	 * Now move it out of the way so we can place VMA B in position,
-	 * unfaulted.
-	 */
-	ptr_a = mremap(ptr_a, VMA_A_PGS * page_size, VMA_A_PGS * page_size,
-		       MREMAP_FIXED | MREMAP_MAYMOVE, &reserved[50 * page_size]);
-	if (ptr_a == MAP_FAILED) {
-		perror("mremap VMA A out of the way");
-		exit(EXIT_FAILURE);
-	}
-
-	/* Map VMA B into place. */
-	ptr_b = mmap(&reserved[page_size + VMA_A_PGS * page_size], VMA_B_PGS * page_size,
-		     PROT_READ | PROT_WRITE,
-		     MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0);
-	if (ptr_b == MAP_FAILED) {
-		perror("mmap VMA B");
-		exit(EXIT_FAILURE);
-	}
-
-	/* Now move VMA A into position with MREMAP_DONTUNMAP to trigger the bug. */
-	ptr_a = mremap(ptr_a, VMA_A_PGS * page_size, VMA_A_PGS * page_size,
-		       MREMAP_FIXED | MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
-		       &reserved[page_size]);
-	if (ptr_a == MAP_FAILED) {
-		perror("mremap VMA A with MREMAP_DONTUNMAP");
-		exit(EXIT_FAILURE);
-	}
-
-	/* Finally, unmap VMA A which should trigger the bug. */
-	munmap(ptr_a, VMA_A_PGS * page_size);
-
-	/* Cleanup in case bug didn't trigger sufficiently visibly... */
-	munmap(reserved, RESERVED_PGS * page_size);
-}
-
-int main(void)
-{
-	int i;
-
-	for (i = 0; i < NUM_ITERS; i++)
-		trigger_bug();
-
-	return EXIT_SUCCESS;
-}
+- Frank
 
