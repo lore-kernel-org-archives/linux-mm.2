@@ -4,92 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E641FA3741
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 14:39:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FCB8FA3748
+	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 14:53:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A02AE6B0088; Fri,  2 Jan 2026 09:39:56 -0500 (EST)
+	id ABF716B0088; Fri,  2 Jan 2026 09:53:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B1046B0089; Fri,  2 Jan 2026 09:39:56 -0500 (EST)
+	id A6C806B0089; Fri,  2 Jan 2026 09:53:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BCCF6B008A; Fri,  2 Jan 2026 09:39:56 -0500 (EST)
+	id 94E1D6B008A; Fri,  2 Jan 2026 09:53:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B5806B0088
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 09:39:56 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3808D1A0390
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 14:39:56 +0000 (UTC)
-X-FDA: 84287283192.24.0B9398B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B0B2820003
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 14:39:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RXgNzwE1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767364794; a=rsa-sha256;
-	cv=none;
-	b=GYSGpxBSaoHsYTjCYxJiigLgWtXR887XFfYewrAvAzw2wGHDdvsxN96ZRUksWh8ahS8pVd
-	t6TEa97gcx2WqUlHNVEyI1uWFF0S0YD4AQrJRl4NEfU353UiJAzsqa+R7oqv2OGCy8fbcC
-	0fTVdDTFznErd27Y6mS/3yLvP814R3A=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RXgNzwE1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 823F06B0088
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 09:53:46 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 076458B7A9
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 14:53:46 +0000 (UTC)
+X-FDA: 84287318052.09.B610527
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EB274100011
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 14:53:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.210.50 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767364794;
+	s=arc-20220608; t=1767365624;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xZ7bttNFq8mEFSC+woqAoH+Q6JWLvlflVgFuk+TD6cI=;
-	b=GEzoU6dULewvO36KFiTZvJWyYFOXxE6XAP+hmvXLyc9fPPQa/adZx/7gP74NlwaALNRrTM
-	IZWbXR5MOawHYCXI5YULh0M76gMi7IaPgLIAUFauLb7Ol02wQ5n9adRpwAEV1SEWzIVX4d
-	3tSH4wj5Zwp/ttTrzbALfpWQiArlCXQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 19D9C60017;
-	Fri,  2 Jan 2026 14:39:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388D9C116B1;
-	Fri,  2 Jan 2026 14:39:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767364793;
-	bh=NFZVoW1OohheL/BZDD6iCVBR2TX6b8zaD6eMYXzwGC8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXgNzwE1SI2gpupR21FN6yuKt9r1m+RG+oRnu4dmMGaqYzlROAwmSbKIxdJyAAY8y
-	 A2qostlhny+u7wwk9+qnCK+iHV6Rg8x6+vkCkqvPsZRE5WGcs7IvAuD5aNxb9+aKsU
-	 tja4L1XojxOxK6owOsA+H09OrqC91aszlbF2o8Zuog9sxHD4Ywd3pkvuMAwJQb3wKC
-	 nvKbyPM13uaCtR4yArs7ZCrEx1iCFkdIwrjaRPyordGYipEg/86e5AVKfFq5eRy5A0
-	 FTCyCwWMNQUSUQCHwYB3pVrP/KA+5xQXztKFWvrX9wF9inBePMp1gFnnpCQM/1tvMn
-	 qrSiKGdQVvMlg==
-From: SeongJae Park <sj@kernel.org>
-To: Pavel Butsykin <pbutsykin@cloudlinux.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	hannes@cmpxchg.org,
-	yosry.ahmed@linux.dev,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/zswap: fix error pointer free in zswap_cpu_comp_prepare()
-Date: Fri,  2 Jan 2026 06:39:44 -0800
-Message-ID: <20260102143945.52356-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <baefc4db-2e2f-4b20-b44c-eeaadfaa1c1e@cloudlinux.com>
-References: 
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=lVaoN1eh3C57/bKSyAYQv7yupDKJUH9rxo6P57vyXQE=;
+	b=d1rbkLsl1/DtNgpAxlx7iWxGgn5WmPyVY/wlivwJ0N0R0OrSpBGMmlrzwvVc5D6zOEoI/H
+	nw+KSrAXuGDwYLQ1O9YSg1KHqnes52E2Ayd558GR/4KS337fUQ0l8owRtxKn/5Js6tGYUh
+	8CQhWxEde6YyeWv4nOi+A/xyXuQj6hY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767365624; a=rsa-sha256;
+	cv=none;
+	b=GjNFzXzoHTNQOc8kZOZHxUmIiBpBZo0Bj7oJjlH0HhZ85Pj+K0ZGT9BeK3XivZMyhydIWR
+	LMtPWPD4puhA6IRVqpdsb+Y4yv231+SgVqc+YefD7sejYohAo0TXeS4dzX107BcJCvdzW8
+	1t2q+MrdNpZZs5xYfTSPzE7PLIvtrhI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.210.50 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
+	dmarc=none
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7c75a5cb752so8621821a34.2
+        for <linux-mm@kvack.org>; Fri, 02 Jan 2026 06:53:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767365623; x=1767970423;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lVaoN1eh3C57/bKSyAYQv7yupDKJUH9rxo6P57vyXQE=;
+        b=O57dpCrDanTjTQK0hgCg5vrgaiXa+bbqtYc6vx6zURmqCthkThfdDpBqVIO6/72YM+
+         CqlsANhavvsM9YZcI142JljpWgvqY80AKelfx9ya7PDj9WwPYiaFuGBhCG3wmL9Dl9fZ
+         e/DP/TIsrBm5Q6IkXu01fVj1ogcwKcO9q3sYWklk3JcTzJuf7ls8qKoUaCk3jRMExQWk
+         DoNCWWPi3052bz2oD+c2rX5Rv1uCXlBOyoAMwTh5OkxGqqydNPmVw3RM/f3YVVk9Cf6Z
+         lEamRYp+4A4UXbDPjmCXpw3OVRxZ5ZZstTb9zVlAYODNM3TQ/ZTLLRoSXiUsi4fKskaA
+         nIWw==
+X-Forwarded-Encrypted: i=1; AJvYcCWaC57xDLODw6FyKH48lq4d0waZKLEB0pEz170a+VzCg5M0jqyui2asCG1suJvzIIBz6+ezuZysqw==@kvack.org
+X-Gm-Message-State: AOJu0YztlRaYgMgTrCELfRzH2BLEOFRFIk2i/omQ7jYIhGEW9cWp0kMd
+	vsUG5s4Dukynb3hkZXX0acyo7OAF8j/Fy9pR/tQrrTyW+fXFE6v4Oof5
+X-Gm-Gg: AY/fxX5+aNXqCWG2suXNTA9kHYdClYDt6AkYQAgFs7vo4cmEiGjlH2VzJlRcXEa8ZA0
+	08DN1C3zNMg6d3HG7oWGqwbkwvhQsmCz9vPZZdbm5MBHfb3L9ALNrNCgofn2sYeT82m2hGpi1Kr
+	Z/J+WqsH1A8Wr4JbbjmIzBzBpjSblbglLmyEXyZe7kJ6QVRQarQ/BibXk7PfAoR9Mx/CBWBzzys
+	P3PHxP24TdfvtLa1x5EEGxFylj1jTACUg1FX+yC6soAVrcKEh4AfUikfd5qaswnUIabD/bacjBe
+	pij/JTDMA9szwJFAClHyD3Vda30atstIT9ZoiDR1tw/0OFq20GgfDCQ/WyLffx9Jsic6fO0lWDX
+	BLjKXeL/L1632eJawzjzFToO6pp/mdGuUMqko4HVxx4flABqZnT17nTFdpl6/UW6WkZh2HX625w
+	Uz7jLX47NhGdsjLJn7dczu1p+z
+X-Google-Smtp-Source: AGHT+IHeJsGZ/SX/hNY+45CMBgjyMFy5KgBCY+PBAVGiHHhPJdSaaqy8TMKvsf79sPPpSXptC0AkzA==
+X-Received: by 2002:a05:6830:6d05:b0:7c7:6a17:ba35 with SMTP id 46e09a7af769-7cc66a49319mr27427721a34.31.1767365622904;
+        Fri, 02 Jan 2026 06:53:42 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:41::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc6673ccc2sm28367487a34.12.2026.01.02.06.53.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Jan 2026 06:53:42 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH v2 0/2] kexec: history: track previous kernel version and
+ kexec boot count
+Date: Fri, 02 Jan 2026 06:53:22 -0800
+Message-Id: <20260102-kho-v2-0-1747b1a3a1d6@debian.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B0B2820003
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 47a1uixcuq1q658utjsdsty1mdinag6h
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOLbV2kC/1WNwQ7CIBAFf4XsuRjANtie/A/TAy3bspqAgUo0D
+ f9uqCePL5k3s0PCSJhgYDtEzJQoeBiYahjMzvgVOVkYGCihOqnOgj9c4FoLjRejcJEIDYNnxIX
+ eh+U2/nZ6TXect3qthKO0hfg5MllW7t+YJZe8tbrvjGqt6fFqcSLjTyGuMJZSvhGNpRqpAAAA
+X-Change-ID: 20251230-kho-7707e8a2ef1e
+To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+ linux-mm@kvack.org, usamaarif642@gmail.com, rmikey@meta.com, clm@fb.com, 
+ riel@surriel.com, Breno Leitao <leitao@debian.org>, kernel-team@meta.com
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2329; i=leitao@debian.org;
+ h=from:subject:message-id; bh=i3CmEWPm0Y4/Vry1pju4wRoGsXN3c5nNvQGe4fhn/iY=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpV9v12c+ZP5H2du0LVIKF7c1HtTaqzRJyfSxRA
+ vimJBZ+gq2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaVfb9QAKCRA1o5Of/Hh3
+ bT4HEACpMoA/+5gfeqIvqHqN6gPej2Pyzyh+VChw9mh70O9Hvkw2x/R/PcPDxAa4cGNgN7FSqyl
+ eTtdEYZDfzHqnWoZu/+3INPDVs549mMYYFI/eLLHjJ4wAevmGRVrWSJKL98VIAvNe07TR0DFM97
+ 1wiqosuV1WoNekZj1vxlwq0cruI65HuWh2eHEJyepVuGkTiEOJVtxgAIfZz4/v8SoF3e2vq7/6K
+ 3QVmO8DA49GnOHkbu636cWyeQsMAAVBru22UNBo4L9hm4VIXJrfn/L4gwCf7rGCEIqJG508VaD+
+ 5xzUojyuc0JeuTSZcXLVQi3C5XE3uQxYf/R5seyzlw0m1qnGWPd5L1svaWw5s/1SawV/WxEK7QN
+ HyhUb0DBykr2GrCcaYjf7LDZIjqlhqm1in6pKejY7ZMD5kH8TL4HktZepYJk7BYTARwQe/2VHH/
+ jdTXiKe5+wqcGmQ8ojVQW8+D16yvWdSw8lWx44jSO2z6/p6sg8lbcnttEgPmNxn1Z3xYuQIzvax
+ SPnbnWtwQ12k439dDzccUTYj6nOFQ+zYdZtiRwDjOHXaV/gz5T5K/Zp21ktl1v/OF51ApRQy57X
+ V1tAgqFH2DD2FvQPjo5jeAnyspCMxVOndYxEw3jjjMnnGrFYEnznI54N5uHTDZYf4IKqR/7M9yU
+ k/hgCgo34DcDsuA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Stat-Signature: uxzt6b9ia68puwryiem7r9obqhgfyzry
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EB274100011
 X-Rspam-User: 
-X-HE-Tag: 1767364794-536232
-X-HE-Meta: U2FsdGVkX1/YYx4YWpBmkMrkE5kNIa9oymUi6bihcY9io4dPYltblrfOWARuDuECsSQOy6Ax+/XfAzlvK0ciiGMLOFhyZnThZpD2Rp9h4W9/S9z3ce4NMPhwJGc9wa6UfhPJ2f9fK/dY2hvDY31Db5CpWkTeOKFOdQqbRzPzFMsuR8voDYcw+n7LEWyAw9tG6sss1HCG5G6SRFu9jWX1Q+kS27IEtmu/yNEjAn3OdiD4gNFKUJbF9F/4lsM2fSRrA+oeVQepzLBYzrBWt+/8cwnh9bQmNGTcH0zukD4bUBdaH3MyQtDDTdYsDyTVC0vfFWdODN4nOmFYZ0r0TzQqUKYHNzP7HDQFsnPMnxFIvF1r2YjNSo50gfLeHOOzGsaYo/Zw/OZ8HhZ9QEqWyPRNRlJ4KI4jLAxB+/5r3MYlkUp51vRCCXlI29rIDsElXR9AdFyVc7t84fQpgoGI2cj2QxDobkMu7mIATX48JfeurLdHSnp6XiHckSPUMPMZSWVFsl2woKNhLTOMhm6mim4XD2PeXX+nhG5IethsXQaU5qYJ5UDFMdNdzm0kcS8N6OvoEhtxcVECW0iRl3TaXj8F2qX1xf73AGNoqPbfzghN2Rx5ORQMJh4iF7esAOJAdB1Yl+Ow/+gfGWGTOHbfnL62S6CKcSJzvpg6wrkrPoG0EZ1yRutjylhDNKFbb4fYAprNSMyXJa506rr6ly9yLsjwfYeMHj3WH/4duu/XbigD9vU73iRz9RHMpH80Xufvxdr8HHjZlzs4RnEr9q16+AnB6DwQNpnkdOoaJbiRf3Qexh4phwhMOqkdX18+nWo9weR4vu2qrSbfTWb662dtPem5M24fxTgJinTZAfsTzry0SHTub8e6aA9iP1kX7P7VTTusRWYmRn3lcFnfh9tzfjVOZAG0OH1dsKM/yBXtirj8pAtR+UcessemCJLdyfOI/RwXYktGBwG/M21sco3+r7W
- wzI4yWLP
- EZOo0MzLqaLT3HTHuvQHdOBZi75DxGwPVkAu7Zm30+IUH1cg/FY83a0/ClFcbHiZ7e/4R8O8HhW9WZOCp/hGpDthcuRo0L2wsDModdQlBEyhxcBt864iRg6tZtKaVRXPjR21f7TTF9bENxgsZZi6s74F7nn6uhxHmNrGV4osMFHXToZ3uXOXylLichanueEUcfmz/WR7C9V8tlKHdL9vKhg3WePpgktWOBxbapg4/uoi5RBkxIBmYZqdjfBVO07/SWWQRxEFrovj4fo81d0kmMYtoaeuF5Qwkh/Xrr9yS5HQvd0X//zqS9WCESY8OsVZa3kIhtqfz0yDwhAQ2FVeOnyiVgg==
+X-HE-Tag: 1767365623-132726
+X-HE-Meta: U2FsdGVkX1+4L0pHw6IOjBoIoJbOpmdoezZ8+LH47lgjnE0YlVGRljdALFAB+vluftu70HQQWxs8z8TxetlV0llOaKILEYR86yyY3IVnBu/o70Ki/LGdpjmM3waBjK4JPrrWSbgXZSwB2mvsVboi5HF+LlByI0rfh4clMJGruE6zhb0S90Nmj/m49v/M6Qbff9QF2ykI2OXPqjuAH/CQot3t6JyOVYYM6o+XOCw+nvTh87SRtzC7w/7yfiQZCaHfnaFi3Qu/QPunYijlLef1mK4WqJ9dVMHRoI29YKSXIvuvQCh/p1ICxeTdOVPLe/TYzVCdxe8yvjYlFSuRHh6jsbJ5Gclkd5IX9RXRPNeTrt5psPGDL2V98qBKLf9ir33xCRqOFQrT+/Kv758T+WZc69We4jqtGFp9VrxH0my6wgKRXPRwiVKmgdPXboEDB37vzFDj+B3MGIXNjKZZZEQw5vexh7lZkABUmkzyCAWulahUs/j0ava0Gd5j+CsbMNQAbAP+n1JfIn8PEkrShjvDMX7+hf09W6UmGtitfuM6QjLatX8qlQnqh2QguZDKLYMlUHxk+lL47jeeDvBZ+SLswtsETSXg5vHb3aDgbH7WDTYORmNohqraSVO5BjyVgySfKSB3piax5mHE1ImYQij1+srr9l9wNE/kZl6WWuki+I2xlwxvP6hoziXiAUjocZpDOL0RIJjh2/1EyplSkknRm2hSClwrdj4ZiywXKSvs8NNDPQ7JvcHX9SHthpKrgd0vEWsx5kJlIPCCXUYOd+KMkjxEzbhQWT09n4N8w/CDUOmWD+cloj0EDWBM/gG1G60ryLPy1ubY9ks5lJvEqivdun6xJoemqoijt6gDn76FvnMRLSFM33lkqa10JAiXNEknPzi7F/tmQIbylI6mU3yoTdReCUGmV/E0/eC8H5/f/ZjgyEsmKPv3eSMDXgnRFgsyygiWGvvppRvioAGD7QL
+ JUbxQd7d
+ a1pgkdhoC+Jb8qrat30oFpTBOm2rGKCtETvwTZuBfJnQU8xq95TZJ82C/BgMtuAlnFCQKy+z5qXq2PY6uBC3swIRgs4BvW+7rST2dL2D4OaOej1aDR8GrRS1c4R7ytJaxtFJYNF99cdHLpuihgSAr3chouHgVmuenT3g81VEXkJhJo6H0wx5sx6mf1iQK2SGm9sa/7PLz3giv3zmtijrbn7khpfP4c/2V2A9tsaY3XHbSRe3WmO4FIt6iyO1HjaaL3g7lO19/KC4yXpbNj4sXGlqqqNLmqwKRPCNt9U/xtttcL1StWs8VEk5CPMLLES+hvA0nn2qKqvsY1vKseSoPKNHKvYp5nGPfqvKr2TZVk7Tu2ObVne77kL0iQDtuGCpoNJn7H5mwGKWTASJL3AYGYFFcWbJkCf2OFe88bvebFD3rtwb32AbQZpcOi+do99M9q3TX10hFU4rxqG2sdWGm6Dljq+f3EZlAETVc09Lflcn+qN1J2oyQIIcaIw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,60 +128,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2 Jan 2026 10:51:01 +0400 Pavel Butsykin <pbutsykin@cloudlinux.com> wrote:
+Use Kexec Handover (KHO) to pass the previous kernel's version string
+and the number of kexec reboots since the last cold boot to the next
+kernel, and print it at boot time.
 
-> On 1/1/26 04:32, SeongJae Park wrote:
-> > On Wed, 31 Dec 2025 11:46:38 +0400 Pavel Butsykin <pbutsykin@cloudlinux.com> wrote:
-> > 
-> >> crypto_alloc_acomp_node() may return ERR_PTR(), but the fail path checks
-> >> only for NULL and can pass an error pointer to crypto_free_acomp().
-> >> Use IS_ERR_OR_NULL() to only free valid acomp instances.
-> >>
-> >> Fixes: 779b9955f643 ("mm: zswap: move allocations during CPU init outside the lock")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Pavel Butsykin <pbutsykin@cloudlinux.com>
-> >> ---
-> >>   mm/zswap.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/mm/zswap.c b/mm/zswap.c
-> >> index 5d0f8b13a958..ac9b7a60736b 100644
-> >> --- a/mm/zswap.c
-> >> +++ b/mm/zswap.c
-> >> @@ -787,7 +787,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
-> >>   	return 0;
-> >>   
-> >>   fail:
-> >> -	if (acomp)
-> >> +	if (!IS_ERR_OR_NULL(acomp))
-> >>   		crypto_free_acomp(acomp);
-> >>   	kfree(buffer);
-> >>   	return ret;
-> > 
-> > I understand you are keeping NULL case to keep the old behavior.  But, seems
-> > the case cannot happen to me for following reasons.
-> > 
-> > First of all, the old NULL check was only for crypto_alloc_acomp_node()
-> > failure.  But crypto_alloc_acomp_node() seems not returning NULL, to by breif
-> > look of the code.  And the failure check of crypto_alloc_acomp_node() is
-> > actually doing only IS_ERR() check.
-> > 
-> > So, it seems IS_ERR() here is enough.  Or, if I missed a case that
-> > crypto_alloc_acomp_node() returns NULL, the above crypto_alloc_acomp_node()
-> > failure check should be updated to use IS_ERR_OR_NULL()?
-> > 
-> 
-> We have 'goto fail;' right before crypto_alloc_acomp_node() for the case 
-> where kmalloc_node fails to allocate memory. In that case, 'acomp' will 
-> still be initialized to NULL.
+Example
+=======
+	[    0.000000] Linux version 6.19.0-rc3-upstream-00047-ge5d992347849
+	...
+        [    0.000000] KHO: This kernel was kexec'ed from kernel release: 6.19.0-rc3-upstream-00048-geda7d9110f99 (kexec count: 3)
 
-Ah, you are right.  Thank you for fixing this.  Please feel free to add
+Motivation
+==========
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Bugs that only reproduce when kexecing from specific kernel versions
+are difficult to diagnose. These issues occur when a buggy kernel
+kexecs into a new kernel, with the bug manifesting only in the second
+kernel.
 
+Recent examples include:
 
-Thanks,
-SJ
+ * eb2266312507 ("x86/boot: Fix page table access in 5-level to 4-level
+   paging transition")
+ * 77d48d39e991 ("efistub/tpm: Use ACPI reclaim memory for event log to
+   avoid corruption")
+ * 64b45dd46e15 ("x86/efi: skip memattr table on kexec boot")
 
-[...]
+As kexec-based reboots become more common, these version-dependent bugs
+are appearing more frequently. At scale, correlating crashes to the
+previous kernel version is challenging, especially when issues only
+occur in specific transition scenarios.
+
+Some bugs manifest only after multiple consecutive kexec reboots.
+Tracking the kexec count helps identify these cases (this metric is
+already used by live update sub-system).
+
+KHO provides a reliable mechanism to pass information between kernels.
+By carrying the previous kernel's release string and kexec count
+forward, we can print this context at boot time to aid debugging.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes from v1 to RFC
+- Track the number of kexecs since cold boot (Pasha)
+- Change the printk() order compared to KHO
+- Rewording of the commit summary
+- Link to RFC: https://patch.msgid.link/20251230-kho-v1-1-4d795a24da9e@debian.org
+
+---
+Breno Leitao (2):
+      kexec: history: track previous kernel version
+      kexec: history: track kexec boot counter
+
+ kernel/Kconfig.kexec               | 13 ++++++++++
+ kernel/liveupdate/kexec_handover.c | 50 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
+---
+base-commit: 7620f9ccfabbdaf07620381264d8b8d91412542f
+change-id: 20251230-kho-7707e8a2ef1e
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
