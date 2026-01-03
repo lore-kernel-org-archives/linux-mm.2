@@ -4,86 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA87EFC617E
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 18:32:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68BA2FC6187
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 18:54:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC7B16B008A; Sat,  3 Jan 2026 13:32:51 -0500 (EST)
+	id B0B936B008A; Sat,  3 Jan 2026 13:54:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A75676B008C; Sat,  3 Jan 2026 13:32:51 -0500 (EST)
+	id AED1F6B008C; Sat,  3 Jan 2026 13:54:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9817F6B0092; Sat,  3 Jan 2026 13:32:51 -0500 (EST)
+	id 9EB536B0092; Sat,  3 Jan 2026 13:54:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 84F9E6B008A
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 13:32:51 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1D688BA4F5
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 18:32:51 +0000 (UTC)
-X-FDA: 84291498942.26.2ECFA22
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 68AA040006
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 18:32:49 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="H/ze6AGO";
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C66D6B008A
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 13:54:49 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D6F85A1EB
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 18:54:49 +0000 (UTC)
+X-FDA: 84291554298.24.BD8F8FB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4CAD91C0007
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 18:54:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ntpZea6S;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767465169;
+	s=arc-20220608; t=1767466487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zLepqkCGGcxCkG9pO1WE8NzpPMLGDUWjEtRJyK6vti8=;
-	b=xWww/1d9NqGAC/SLr9HsG5XXX08WguEcQEAPiyQspxsMEduwW1VtqQ0kf3jx+Ws+Qvy4cW
-	BnwlqY3+jjAyQFgQhABHlGS1kkDL3vssWzSwK5gNrGyIujyBL/EtDDowpow2jBwjthM6Of
-	LuSWW7P7DIGLPDF+3SNrxX/zdXLXK+8=
+	bh=WWLqVQ/pPQ1naqkMgxEFRjUWoHX6yre2yeQ2FeZ1a5Q=;
+	b=wzIkBJSialgEs4a+D2I+YMxRQXKnwlyxu/nJekcSHWGiHXg621y2YOqC0G9q1xonUyVPoE
+	WK4ESGvnJthIwNC3A/op3AmXvND4Qfg+FD/IpEuGBKaxZHizxFJ8AxC/hKgKz6Id3tdGky
+	bhjKwx0YfQ6ZWOXgRNk4mRiIzdNI8yk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="H/ze6AGO";
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767465169; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ntpZea6S;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767466487; a=rsa-sha256;
 	cv=none;
-	b=buhYM8n+v+AGk4PmkExPwRPtx0rZD5KhHwZwtq9fYl+3897Q2H6p/6qfXzv7Y//KMQK6aE
-	KloPUaJYdu8Svd1zN3ixgzjWI2M9FjHRaEnSNN+JwRJmsZS0uN1dXFj1NC1Kjk6RP1vb3d
-	P9VOhgo3ktilLstBIAt0RUXPtXFIi4o=
+	b=Kin8KgOX+gtPQ+BeqUC83a1d0o9AvgYfprRj/68aix4PTUHn5PChrye7Pwf16Lenr2T5GJ
+	Y2Yk8Ls09oh5QHDb9Q/uT6QDq3V7UTgj+WyMq4leQfT46mwby8NuisKncZz6W5Pz3hAvDy
+	6o4EmEDXblUDGrFK2OeYsYOQ4Vb1PPY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9EC8E60017;
-	Sat,  3 Jan 2026 18:32:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E24C113D0;
-	Sat,  3 Jan 2026 18:32:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767465168;
-	bh=POEHkpqzM2Kgm3O+hKTFaWkCDbY6suH1seQWUDCuBvg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=H/ze6AGOHL2UKpgvWQ/ttEcMNhy8xDpH4nEjyXFSro+iW2tpN/qnPR/YWXuEOmAXu
-	 6L4GquYtEkuscArkUslWJd8GVVl1Yo1H46Iynb0yUvq8ywiuFzxQ3HDrlFrmXO0VEy
-	 vuGtiYXFOsmia3yqvZAVjiEZgEjQxhUOEYal4JN8=
-Date: Sat, 3 Jan 2026 10:32:47 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Boudewijn van der Heide <boudewijn@delta-utec.com>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl
- <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>,
- maple-tree@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] maple_tree: Add dead node check in mas_dup_alloc()
-Message-Id: <20260103103247.9140cb2556280927b09f59d3@linux-foundation.org>
-In-Reply-To: <20260103165758.74094-1-boudewijn@delta-utec.com>
-References: <20260103165758.74094-1-boudewijn@delta-utec.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rhz1qqfj4ayg54tbu6na5c5jgdjcfa9n
+	by sea.source.kernel.org (Postfix) with ESMTP id 1784D40423;
+	Sat,  3 Jan 2026 18:54:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09051C113D0;
+	Sat,  3 Jan 2026 18:54:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767466485;
+	bh=JJi0MIW7ufay+ZZEo6EH5bf/kqP+vRBsByx4CICNQCs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ntpZea6Sa23o++gxekMhG3I2QU/XUTWc5nMNjfwy8Zyi3NxPf/H771f3L1fK5G+JV
+	 BrIkjrHnTIa77Opbod1/wKDGPBT3rKbTairESVy5GIn6kLNbwjXgkey0AYjrLhGdtm
+	 1WmiT9BvnPKoouYAqUVpZ8pMait9YtcjloPtOthbURuem94A6kCmWXPP6kGGR5TMsk
+	 u58EQYc7patXv3IP/W4ZCBdZ3acr/VkBhoQVGrCvo13QtDF90hlUSKKPF5FMbB73Cg
+	 bSz/V5A/Jkpw/H2SFDajyAjOcb+N26PpJKiNlYzPGaxtX/S68RKs74BHnvORKROqCy
+	 PVF9NX0W2W0Vg==
+Date: Sat, 3 Jan 2026 20:54:23 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Klara Modin <klarasmodin@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Stafford Horne <shorne@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+	x86@kernel.org, linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 22/28] arch, mm: consolidate initialization of nodes,
+ zones and memory map
+Message-ID: <aVll339wim7dCIaQ@kernel.org>
+References: <20260102070005.65328-1-rppt@kernel.org>
+ <20260102070005.65328-23-rppt@kernel.org>
+ <aVhN2NgQEKe0yzva@soda.int.kasm.eu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aVhN2NgQEKe0yzva@soda.int.kasm.eu>
+X-Rspamd-Server: rspam02
+X-Stat-Signature: e6yxatfwotf4s3quh3paqr98sjs8r79d
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 68AA040006
-X-HE-Tag: 1767465169-568894
-X-HE-Meta: U2FsdGVkX1/9nLpPRTCS0ZW4QdFt0v/IZU+g5Y9hp/O3dlTM1ea695aPPnmmZoQITdFL5YoKGBo5XOYHWeVRrBd7KBSyXkXFDpaHg/+y8yMHyd79e5acN0tFKxYuW57t3Ej8DkjP8W2pMBgS9ZHOKLZMQnd7C8IRWhE7eQE+Pqg9vxs29sOE2oMEWM4Y3D0ZqYbUjwf7HMA6U/QOqMGD7odKDFmEX2byGpfQKjdHZdv3ST/x4f9kItF2sDJPVdZUwH5cNJeShJUOiDD2MoQfNnqM1AfIuvokr0YM6RX+19j8KtrvtbB8Ty2f0RmZpH9B8SFecgfhp/9ZEqztbhKoC+ovvi+zVgepLHjyU9DpVwm6c7H5k/QpQBuWebABKnmocUEZYvz0kuYNrHDrYSIpvBh8Wpu6ALu4eg0AiUf09cX9hMhyfw1AmN2BELrnfZEiWUgGigSiJqyjEfTWIogQ/z/gmndvc8e3WxHdVe50x59pe4KCYwz2F7977KNn7m+mIN4/72GSpUaXPICQP5/jU5d0G5WY3gy2vEUZfRvt0K+MM1fd/4lSHU/z85WsnKqDGC8LSdpiYjwtKfPXAhDuu/HJ+fBtvn+661vaA5c6chGJyNCkYRPnADLaQcdw1w3nXj+74Gdb+GL8EkYd5RS20kAUgtGSqoYnYzLAGG9Li5pmsN3TfFhTPhdq7MU/IdYItJOH5nelRHcmq08xPBJJ8aze7T60JVyfB4eO40/uELhsw+SRtdWacbm1pA6/+Jn+qlzSsMlZYHJCv/fwxN20JBcaRrevXWxhvJH5swis9vEDoSOUg5XAqL7WTDiTLxktOIv9eXX458WG2FEr8PeKtaojb/DPLuf18fftXyhpLsQkHgi8D1rBpiqB18bqGcEuDm2d8zPqy/g1zLbMH6zOlza4S9+b0fXRHq2LJK/DPULYCSbtIDOxjmtAgnKC8jmDbSML7qES/QH+Tlx+6U0
- ZpajL7gx
- LpID4JPB7FEubPw2CFPNlaMYAOWQ1am1NfpsOpoIXOagYPBbgS5NGwc2ffZpvGQr6IER7cfOU2006FgvnTro/nuMt5rGEL2BcxhBtHsdj+4RhjfHhxzeWuPc/CQWCvJ2zNRDgRnThLrEAZ+zWT3lYOniA0Sr0f7pXYSj1bcPAD6m/PLVDqhN8/5vpMgW5Sl/gDc/foo1X5G+aW+IBblXtHI3G6raRms1GXJ2XOOZY6MzBP5HZYD6Vj8gge3Uqe95Bk1yw8Lu4u+ZfVA+FVqGGWsWZy4PPruEKMcQD/IgZj4FL2QObpmMC34HeKq7oQ8niohwaXL6sn7P5Kml8wbxOz9SKngg9AIQuiHEvXUYYDxEK+QZ0h7kUzFcTMOjyv0q94aOI68SNgG3IqyLSfpf6HZxAUg==
+X-Rspamd-Queue-Id: 4CAD91C0007
+X-HE-Tag: 1767466487-408362
+X-HE-Meta: U2FsdGVkX1/9QPhUHqPa7dKn6a+DwmxwqWS6+BDjiBQl8NWJBD9tVgeRvqjCs0ESo16BEIt4y9O66qc3K8Qhi0ar6bwP9DcVwyTed+14/lV4Bpj5oEWMMr6ltPIJ9J9ptdlpSy98jfrZ9UnsFjf3BYlUpUoywRAAQwPGKPO7EJIVbHzEsKdQY56fTGicmcV34ymYaVv2gV05jjUYGkT0QwX5zAtl8sCvOmn06tjT+h2ewm01Ht75C6r9HhhyJlxT8zGxFm0+LDB4sJgvQnkjhXM4z90Cay9mQAhny1PnbBb5rHB6hVYb4qnnThhhoUaC7wdQLUyoUcux8GhJ/yjzp0CNrtGaA/46qmFJ3i+EqFc1GplL89j+XT+oXdG4khtQBXoYNdf2IUppexTyoIbggjyPvXBkWcCslvxljDVEDWimHOTYilv3rDkythMCUapRJgy91dz48ugrfph0wrr4iPJf+FfFN/um1+/O9H5ttAOm+VeiKUMXvrAvJdvy5v/jP4ph0RCLjzjjpchHSzVFSwODv3nsmUC++RElUAk27kAjY/D03eyHm651Z8TPNqGHA7+v1vT+kl5BrIXd1/fVaBoEn1r3buTC/K5uSVBGKJRyADYXRj9WE2O/ltVZNZNSikGMsAzo512vNpg5PtpID41zDdWsYSfZ/P1/PV3cQiEwQ3hGirPSPEeC9Dd9MfN0eqPcW3ICyfVS0wb8i/4KIM8XUFRa8BTOgC+zcoAGzoh1XcYWUhxrlSGwDhXvUDv30EcMyKNDDjIsCK2fmu0MjmBDRFivxvYAdhw4d+2Nb/ha3GZSBzVJBAw3Q/hRzdu9kSlGSHxcmYJBD3WeygHtunQallMUlK2j2/jvNJmUIpkVR22xelFJJCtmYsyfL/+6AAVvyyHLpzoRJzzAikHLQ3f4jD3EuwcqOB7le2GjFmUCCdltIm2Fp9GyMy0ZRKMf1GhewJmEBNGkWd4MrIj
+ B3Y0ZKIP
+ fIZDXszPRIeBoo3OzmWu7ipq6c5H6pJJRVxgq/p8qzttI1m2QCRDgHAU2FjMzYiaL7xebGXqHSoTGehq0nDEHb9Bqm/w2nDZBSijHQMKQImG59zV12WZMLd4uBLSm++5gzGBMceT6E8O4Kr52wJ7To1rCfutPGgL1cG9U4+K6WVSVu8egUgoQdgdViXzfjg7B5ByC8Z6+GvQPKSXpokl8L4j445PCxP8YNu1up+vtO43FPJhL4h1E3atOeLN1T7L3DG3esNERlcFvAl84k7pqhna9g46ClcuQS0mUVPDym+hnIEQqj200szEP3Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,43 +138,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat,  3 Jan 2026 17:57:58 +0100 Boudewijn van der Heide <boudewijn@delta-utec.com> wrote:
+Hi,
 
-> The __mt_dup() function is exported and can be called without internal
-> locking, relying on the caller to provide appropriate synchronization.
-> If a caller fails to hold proper locks, the source tree may be modified
-> concurrently, potentially resulting in dead nodes during traversal.
+On Sat, Jan 03, 2026 at 12:33:29AM +0100, Klara Modin wrote:
+> On 2026-01-02 08:59:58 +0200, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > To initialize node, zone and memory map data structures every architecture
+> > calls free_area_init() during setup_arch() and passes it an array of zone
+> > limits.
+> > 
+> > Beside code duplication it creates "interesting" ordering cases between
+> > allocation and initialization of hugetlb and the memory map. Some
+> > architectures allocate hugetlb pages very early in setup_arch() in certain
+> > cases, some only create hugetlb CMA areas in setup_arch() and sometimes
+> > hugetlb allocations happen mm_core_init().
+> > 
+> > With arch_zone_limits_init() helper available now on all architectures it
+> > is no longer necessary to call free_area_init() from architecture setup
+> > code. Rather core MM initialization can call arch_zone_limits_init() in a
+> > single place.
+> > 
+> > This allows to unify ordering of hugetlb vs memory map allocation and
+> > initialization.
+> > 
+> > Remove the call to free_area_init() from architecture specific code and
+> > place it in a new mm_core_init_early() function that is called immediately
+> > after setup_arch().
+> > 
+> > After this refactoring it is possible to consolidate hugetlb allocations
+> > and eliminate differences in ordering of hugetlb and memory map
+> > initialization among different architectures.
+> > 
+> > As the first step of this consolidation move hugetlb_bootmem_alloc() to
+> > mm_core_early_init().
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > 
-> The call stack is:
->   __mt_dup()
->     → mas_dup_build()
->       → mas_dup_alloc()  [accesses node->slot[]]
-> 
-> The mas_dup_alloc() function may access node slots without first
-> verifying that the node is still alive. If a dead node is encountered,
-> its memory layout may have been switched to the RCU union member, making
-> slot array access undefined behavior as we would be reading from the
-> rcu_head structure instead.
-> 
-> Add an explicit dead node check to detect concurrent modification during
-> duplication. When a dead node is detected, return -EBUSY to indicate that
-> the tree is undergoing concurrent modification.
-> 
-> Signed-off-by: Boudewijn van der Heide <boudewijn@delta-utec.com>
-> 
-> ---
-> 
-> Build-tested and boot-tested with QEMU with Buildroot on x86_64. The
-> kernel booted and basic commandline operations work correctly. The race
-> condition this patch addresses is difficult to reproduce in testing, as
-> it requires concurrent tree modifications without proper locking.
+> This breaks boot on my Raspberry Pi 1. The reason seems to be the use of
+> page_folio() when initializing the dynamically allocated zero page in
+> arm, which doesn't work when free_area_init() hasn't been called yet.
 
-Thanks.
+I believe the reason is rather the use of virt_to_phys() that now happens
+before the memory map is ready.
 
-What are the worst-case userspace-visible runtime effects when this
-happens?
+> The following oopses are generated:
+> 
+>  8<--- cut here ---
+>  Unable to handle kernel paging request at virtual address 003dfb44 when read
+>  [003dfb44] *pgd=00000000
+>  Internal error: Oops: 5 [#1] ARM
+>  CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.19.0-rc3-03898-g7975b0084358 #451 NONE
+>  Hardware name: BCM2835
+>  PC is at paging_init (include/linux/page-flags.h:284 (discriminator 2) arch/arm/mm/mmu.c:1790 (discriminator 2))
+>  LR is at paging_init (arch/arm/mm/mmu.c:1789 (discriminator 1))
 
-If they're bad then presumably we'll want to backport this fix into
-earlier kernels with a Cc: <stable@vger.kernel.org> and, very
-preferably a Fixes: line.
+...
+
+>  8<--- cut here ---
+> 
+> and the second one repeats for some time afterwards.
+> 
+> I experimented a little by allocating the zero page statically as many
+> other arches do which fixes the issue as it does not need to be
+> initialized at this point anymore, though I have no idea if that's
+> appropriate.
+
+Do you mean putting the zero in the BSS like, e.g. arm64? I don't see a
+reason why this shouldn't work.
+
+I also have a patch with some minor changes that still keeps
+empty_zero_page allocated, but avoids virt_to_page() and folio_page()
+dance. Can you please test it in your setup?
+
+From 8a213c13211106d592fbe96b68ee29879ed739f8 Mon Sep 17 00:00:00 2001
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Sat, 3 Jan 2026 20:40:09 +0200
+Subject: [PATCH] arm: make initialization of zero page independent of the
+ memory map
+
+Unlike most architectures, arm keeps a struct page pointer to the
+empty_zero_page and to initialize it requires conversion of a virtual
+address to page which makes it necessary to have memory map initialized
+before creating the empty_zero_page.
+
+Make empty_zero_page a void * to decouple it's initialization from the
+initialization of the memory map.
+
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ arch/arm/include/asm/pgtable.h |  4 ++--
+ arch/arm/mm/mmu.c              | 10 +++-------
+ arch/arm/mm/nommu.c            | 10 +++-------
+ 3 files changed, 8 insertions(+), 16 deletions(-)
+
+diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
+index 86378eec7757..08bbd2aed6c9 100644
+--- a/arch/arm/include/asm/pgtable.h
++++ b/arch/arm/include/asm/pgtable.h
+@@ -15,8 +15,8 @@
+  * ZERO_PAGE is a global shared page that is always zero: used
+  * for zero-mapped memory areas etc..
+  */
+-extern struct page *empty_zero_page;
+-#define ZERO_PAGE(vaddr)	(empty_zero_page)
++extern void *empty_zero_page;
++#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
+ #endif
+ 
+ #include <asm-generic/pgtable-nopud.h>
+diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
+index 8bac96e205ac..867258f1ae09 100644
+--- a/arch/arm/mm/mmu.c
++++ b/arch/arm/mm/mmu.c
+@@ -45,7 +45,7 @@ extern unsigned long __atags_pointer;
+  * empty_zero_page is a special page that is used for
+  * zero-initialized data and COW.
+  */
+-struct page *empty_zero_page;
++void *empty_zero_page;
+ EXPORT_SYMBOL(empty_zero_page);
+ 
+ /*
+@@ -1754,8 +1754,6 @@ static void __init early_fixmap_shutdown(void)
+  */
+ void __init paging_init(const struct machine_desc *mdesc)
+ {
+-	void *zero_page;
+-
+ #ifdef CONFIG_XIP_KERNEL
+ 	/* Store the kernel RW RAM region start/end in these variables */
+ 	kernel_sec_start = CONFIG_PHYS_OFFSET & SECTION_MASK;
+@@ -1782,12 +1780,10 @@ void __init paging_init(const struct machine_desc *mdesc)
+ 	top_pmd = pmd_off_k(0xffff0000);
+ 
+ 	/* allocate the zero page. */
+-	zero_page = early_alloc(PAGE_SIZE);
++	empty_zero_page = early_alloc(PAGE_SIZE);
++	__cpuc_flush_dcache_area(empty_zero_page, PAGE_SIZE);
+ 
+ 	bootmem_init();
+-
+-	empty_zero_page = virt_to_page(zero_page);
+-	__flush_dcache_folio(NULL, page_folio(empty_zero_page));
+ }
+ 
+ void __init early_mm_init(const struct machine_desc *mdesc)
+diff --git a/arch/arm/mm/nommu.c b/arch/arm/mm/nommu.c
+index d638cc87807e..f80ff5a69fbb 100644
+--- a/arch/arm/mm/nommu.c
++++ b/arch/arm/mm/nommu.c
+@@ -31,7 +31,7 @@ unsigned long vectors_base;
+  * empty_zero_page is a special page that is used for
+  * zero-initialized data and COW.
+  */
+-struct page *empty_zero_page;
++void *empty_zero_page;
+ EXPORT_SYMBOL(empty_zero_page);
+ 
+ #ifdef CONFIG_ARM_MPU
+@@ -156,18 +156,14 @@ void __init adjust_lowmem_bounds(void)
+  */
+ void __init paging_init(const struct machine_desc *mdesc)
+ {
+-	void *zero_page;
+-
+ 	early_trap_init((void *)vectors_base);
+ 	mpu_setup();
+ 
+ 	/* allocate the zero page. */
+-	zero_page = (void *)memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
++	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
++	__cpuc_flush_dcache_area(empty_zero_page, PAGE_SIZE);
+ 
+ 	bootmem_init();
+-
+-	empty_zero_page = virt_to_page(zero_page);
+-	flush_dcache_page(empty_zero_page);
+ }
+ 
+ /*
+-- 
+2.51.0
+
+ 
+> Regards,
+> Klara Modin
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
