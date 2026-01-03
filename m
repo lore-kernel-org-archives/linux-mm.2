@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDE39FC617E
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 18:03:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA87EFC617E
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 18:32:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E1DA6B008A; Sat,  3 Jan 2026 13:03:14 -0500 (EST)
+	id AC7B16B008A; Sat,  3 Jan 2026 13:32:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 365B86B008C; Sat,  3 Jan 2026 13:03:14 -0500 (EST)
+	id A75676B008C; Sat,  3 Jan 2026 13:32:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2714A6B0092; Sat,  3 Jan 2026 13:03:14 -0500 (EST)
+	id 9817F6B0092; Sat,  3 Jan 2026 13:32:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 145E36B008A
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 13:03:14 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C86CA13B327
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 18:03:13 +0000 (UTC)
-X-FDA: 84291424266.06.2DA3BA8
+	by kanga.kvack.org (Postfix) with ESMTP id 84F9E6B008A
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 13:32:51 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1D688BA4F5
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 18:32:51 +0000 (UTC)
+X-FDA: 84291498942.26.2ECFA22
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 24D831A001C
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 18:03:11 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CBuBU4gQ;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 68AA040006
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 18:32:49 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="H/ze6AGO";
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767463392;
+	s=arc-20220608; t=1767465169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Y6YrkEvNRNoWi72KvnYWHt1isHW97aJTz9VSciybaE=;
-	b=B5WxQkaUd7jRGtuSWAKVt52YcgLHWmKJxXLsxW7R2nsNa6rpVArQ9GbZpQX3pT2GapTmoW
-	JG96I7UMl4muymhQQXNmZX3h4jSMfkCJ5tx2Wl66wfk33S03Um29j3rjuNo/N1VuKmTu7c
-	763dRC3Qe4Bczl6Dvejmb+fu0ED7vUg=
+	bh=zLepqkCGGcxCkG9pO1WE8NzpPMLGDUWjEtRJyK6vti8=;
+	b=xWww/1d9NqGAC/SLr9HsG5XXX08WguEcQEAPiyQspxsMEduwW1VtqQ0kf3jx+Ws+Qvy4cW
+	BnwlqY3+jjAyQFgQhABHlGS1kkDL3vssWzSwK5gNrGyIujyBL/EtDDowpow2jBwjthM6Of
+	LuSWW7P7DIGLPDF+3SNrxX/zdXLXK+8=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CBuBU4gQ;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="H/ze6AGO";
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767463392; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767465169; a=rsa-sha256;
 	cv=none;
-	b=U5JoR1933pAtEBeyEDp2PNM5XLqRlTCaVTkvU0OW7NS9Fdwc+fZYk5P25UXHh1bDDNCxna
-	2O/lzLlT6pFIQLnOLDWFs2xJOgc8g2qYWOIrjP9WVLsSVD+sMosoAM2qdpDqfdTLHR3ms7
-	hSWdKcwKYAMXi9CoppAJ3iCJl1V69aQ=
+	b=buhYM8n+v+AGk4PmkExPwRPtx0rZD5KhHwZwtq9fYl+3897Q2H6p/6qfXzv7Y//KMQK6aE
+	KloPUaJYdu8Svd1zN3ixgzjWI2M9FjHRaEnSNN+JwRJmsZS0uN1dXFj1NC1Kjk6RP1vb3d
+	P9VOhgo3ktilLstBIAt0RUXPtXFIi4o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6E83F60017;
-	Sat,  3 Jan 2026 18:03:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E50C113D0;
-	Sat,  3 Jan 2026 18:03:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9EC8E60017;
+	Sat,  3 Jan 2026 18:32:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E24C113D0;
+	Sat,  3 Jan 2026 18:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767463391;
-	bh=wjDin5AVThhZYNUvty8R27rS+ed9u1J/ub9S0aOSht8=;
+	s=korg; t=1767465168;
+	bh=POEHkpqzM2Kgm3O+hKTFaWkCDbY6suH1seQWUDCuBvg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CBuBU4gQ4AkZBrbUoPRDpNX7SRB7Jc7wspQPnrfo/ldXBoOBchIV8+zxKvHz6Ut6P
-	 ec1XLPh2xj3CcWAkOZRDjJh0FDRR1pxWLJR7GUu2bA/k4V4kLq6phPh3HeBnn+9sIY
-	 AuOljrHMMdIRPejyf0VkLJs8P40rfOcNbC5SEDIA=
-Date: Sat, 3 Jan 2026 10:03:10 -0800
+	b=H/ze6AGOHL2UKpgvWQ/ttEcMNhy8xDpH4nEjyXFSro+iW2tpN/qnPR/YWXuEOmAXu
+	 6L4GquYtEkuscArkUslWJd8GVVl1Yo1H46Iynb0yUvq8ywiuFzxQ3HDrlFrmXO0VEy
+	 vuGtiYXFOsmia3yqvZAVjiEZgEjQxhUOEYal4JN8=
+Date: Sat, 3 Jan 2026 10:32:47 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: david@redhat.com, miklos@szeredi.hu, linux-mm@kvack.org,
- athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
- linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-Message-Id: <20260103100310.7181968cda53b14def0455b3@linux-foundation.org>
-In-Reply-To: <20251215030043.1431306-2-joannelkoong@gmail.com>
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
-	<20251215030043.1431306-2-joannelkoong@gmail.com>
+To: Boudewijn van der Heide <boudewijn@delta-utec.com>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl
+ <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>,
+ maple-tree@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] maple_tree: Add dead node check in mas_dup_alloc()
+Message-Id: <20260103103247.9140cb2556280927b09f59d3@linux-foundation.org>
+In-Reply-To: <20260103165758.74094-1-boudewijn@delta-utec.com>
+References: <20260103165758.74094-1-boudewijn@delta-utec.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rhz1qqfj4ayg54tbu6na5c5jgdjcfa9n
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 24D831A001C
-X-Stat-Signature: uzoo7t8be6b9gpazrs4ecnf63bysucoa
-X-HE-Tag: 1767463391-385317
-X-HE-Meta: U2FsdGVkX19OBZkZ7BsdzrMEwOOie1RxnqRzluAleuwcHoHBx5N7smRBovkylgI4B1rcb6DgvI0S0dkE6d3fghtCvhIc7db9aF0B33CKuXt5I1CE9nYGHfrHi6xlzeuZk5zhNzMYwLe9+8X81/G+2vxv7CATrzXdIldIX1citeyB5VkXw3n2dS7RXUP7QVdVnEbKZgE6UBkBok5KWCc83SuhQUBOWgjfnBiPP7Y3JL6tMapVo+EIBljytUX+vZKso+q603H7dmTRne3uAwn2rirpiXbZ6eFHnnAfEi2nLgJgvhA3zEEXHeTj79xnPhBEC7Dbe0Dc8IU4Ogsn2CH7K3gvn4P3gL2f05RuaVI5GISAFAExyY8noWStZ1yapgRqA//DWybAGnPA82CxYaFTmxkzLzkp9EoWtpi8kdBlN75kWVzf5vW7fBgZi9kEquK6p9XQtWJm2xaMUlHDsKVN9Qg27GoCXCtVl8VcSkJdVirQMZJFlYLF1DJKiF8Pxp++LpcJ39RsZrYyLUmTgyjl0veG38ja5pImK0p8d6O5t+kL2dimtUyjOvFDurVoG5ljJ/N4N4ZgegRKEArm3I6fOV/OM7SN3NYfCdy+0En2tIdmycJeeNBMWRC7R/t3fzKYKDVNI9pEgsIt1TqSa0Hx1Q5RqP0g9CDDsWBCmwS+zemZXjhlHHNRkE5jlbeTVvWqmZhOO4WkjgguIOyx6SN7YCi6S53Cj06feo4ADyxLUCWaVMCorYgrlaI+aiQ8z6mQvgunoRk+wtmE8YjR0U7Evb3ITAqUIm0kYy6mNKxZtXjmScthTG/z7OVgMYUcvfpAPNJ+XZM6SH6WIpqEwY7iRyirE8FEAIYzVv0tt0sUB/elQypBCf/EZfTcxjIHfi3estvFwJr/msjKw1+lLwXhJGEyuc94QaqoFhjbrbbpg4NTLM/5E/VlMA8abXJx39RrneTx5pVCPYpppX7TcMV
- sAECT7b/
- uK2Mr+DROm5qLVggYPJR7JhFvGUbDk2LML/jkXD+uSTXNNVQjaGfBnUvySmw4mirW3tw4jiwwf0nMs43lzNd8hyFVhILbdu0TUCq+VFWUn5VDWIBpBDJJrFxBfjxUAr7LSL7VLS0zFfpU/C5kjnCIU+0MaJ9FFZCTqAl5Lz3A89no3WPwbohSrIxqK/0KcXV8MIFGRXePErvsJhVQEIiD7ASGRkB2r9ZM028Q0Lz6eF7HjOkurrpXhpZ/5/lHxLa+bYSemk3enUeIsh7BBCRaAX5zoTwyO2Ikal0xE1OwwqsSyRMDWNc31C5KeEW88PNfW51i8RK+L0XhdkLM/x1KUnVxXTD+OqCOpQa66LPXg7n0jrBbIEWBfSrq9TGog+JuODACUvnbde1jM3oij8dpPfOCAPiZT6G9pADGN2NKLlaWc4Q=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 68AA040006
+X-HE-Tag: 1767465169-568894
+X-HE-Meta: U2FsdGVkX1/9nLpPRTCS0ZW4QdFt0v/IZU+g5Y9hp/O3dlTM1ea695aPPnmmZoQITdFL5YoKGBo5XOYHWeVRrBd7KBSyXkXFDpaHg/+y8yMHyd79e5acN0tFKxYuW57t3Ej8DkjP8W2pMBgS9ZHOKLZMQnd7C8IRWhE7eQE+Pqg9vxs29sOE2oMEWM4Y3D0ZqYbUjwf7HMA6U/QOqMGD7odKDFmEX2byGpfQKjdHZdv3ST/x4f9kItF2sDJPVdZUwH5cNJeShJUOiDD2MoQfNnqM1AfIuvokr0YM6RX+19j8KtrvtbB8Ty2f0RmZpH9B8SFecgfhp/9ZEqztbhKoC+ovvi+zVgepLHjyU9DpVwm6c7H5k/QpQBuWebABKnmocUEZYvz0kuYNrHDrYSIpvBh8Wpu6ALu4eg0AiUf09cX9hMhyfw1AmN2BELrnfZEiWUgGigSiJqyjEfTWIogQ/z/gmndvc8e3WxHdVe50x59pe4KCYwz2F7977KNn7m+mIN4/72GSpUaXPICQP5/jU5d0G5WY3gy2vEUZfRvt0K+MM1fd/4lSHU/z85WsnKqDGC8LSdpiYjwtKfPXAhDuu/HJ+fBtvn+661vaA5c6chGJyNCkYRPnADLaQcdw1w3nXj+74Gdb+GL8EkYd5RS20kAUgtGSqoYnYzLAGG9Li5pmsN3TfFhTPhdq7MU/IdYItJOH5nelRHcmq08xPBJJ8aze7T60JVyfB4eO40/uELhsw+SRtdWacbm1pA6/+Jn+qlzSsMlZYHJCv/fwxN20JBcaRrevXWxhvJH5swis9vEDoSOUg5XAqL7WTDiTLxktOIv9eXX458WG2FEr8PeKtaojb/DPLuf18fftXyhpLsQkHgi8D1rBpiqB18bqGcEuDm2d8zPqy/g1zLbMH6zOlza4S9+b0fXRHq2LJK/DPULYCSbtIDOxjmtAgnKC8jmDbSML7qES/QH+Tlx+6U0
+ ZpajL7gx
+ LpID4JPB7FEubPw2CFPNlaMYAOWQ1am1NfpsOpoIXOagYPBbgS5NGwc2ffZpvGQr6IER7cfOU2006FgvnTro/nuMt5rGEL2BcxhBtHsdj+4RhjfHhxzeWuPc/CQWCvJ2zNRDgRnThLrEAZ+zWT3lYOniA0Sr0f7pXYSj1bcPAD6m/PLVDqhN8/5vpMgW5Sl/gDc/foo1X5G+aW+IBblXtHI3G6raRms1GXJ2XOOZY6MzBP5HZYD6Vj8gge3Uqe95Bk1yw8Lu4u+ZfVA+FVqGGWsWZy4PPruEKMcQD/IgZj4FL2QObpmMC34HeKq7oQ8niohwaXL6sn7P5Kml8wbxOz9SKngg9AIQuiHEvXUYYDxEK+QZ0h7kUzFcTMOjyv0q94aOI68SNgG3IqyLSfpf6HZxAUg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,43 +92,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 14 Dec 2025 19:00:43 -0800 Joanne Koong <joannelkoong@gmail.com> wr=
-ote:
+On Sat,  3 Jan 2026 17:57:58 +0100 Boudewijn van der Heide <boudewijn@delta-utec.com> wrote:
 
-> Skip waiting on writeback for inodes that belong to mappings that do not
-> have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
-> mapping flag).
->=20
-> This restores fuse back to prior behavior where syncs are no-ops. This
-> is needed because otherwise, if a system is running a faulty fuse
-> server that does not reply to issued write requests, this will cause
-> wait_sb_inodes() to wait forever.
->=20
-> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal =
-rb tree")
-> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-> Reported-by: J. Neusch=E4fer <j.neuschaefer@gmx.net>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
->
-> ..
->
-> --- a/fs/fs-writeback.c
-> +++ b/fs/fs-writeback.c
-> @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb)
->  		 * do not have the mapping lock. Skip it here, wb completion
->  		 * will remove it.
->  		 */
-> -		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-> +		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
-> +		    mapping_no_data_integrity(mapping))
->  			continue;
+> The __mt_dup() function is exported and can be called without internal
+> locking, relying on the caller to provide appropriate synchronization.
+> If a caller fails to hold proper locks, the source tree may be modified
+> concurrently, potentially resulting in dead nodes during traversal.
+> 
+> The call stack is:
+>   __mt_dup()
+>     → mas_dup_build()
+>       → mas_dup_alloc()  [accesses node->slot[]]
+> 
+> The mas_dup_alloc() function may access node slots without first
+> verifying that the node is still alive. If a dead node is encountered,
+> its memory layout may have been switched to the RCU union member, making
+> slot array access undefined behavior as we would be reading from the
+> rcu_head structure instead.
+> 
+> Add an explicit dead node check to detect concurrent modification during
+> duplication. When a dead node is detected, return -EBUSY to indicate that
+> the tree is undergoing concurrent modification.
+> 
+> Signed-off-by: Boudewijn van der Heide <boudewijn@delta-utec.com>
+> 
+> ---
+> 
+> Build-tested and boot-tested with QEMU with Buildroot on x86_64. The
+> kernel booted and basic commandline operations work correctly. The race
+> condition this patch addresses is difficult to reproduce in testing, as
+> it requires concurrent tree modifications without proper locking.
 
-It's not obvious why a no-data-integrity mapping would want to skip
-writeback - what do these things have to do with each other?
+Thanks.
 
-So can we please have a v2 which has a comment here explaining this to the
-reader?
+What are the worst-case userspace-visible runtime effects when this
+happens?
 
-
+If they're bad then presumably we'll want to backport this fix into
+earlier kernels with a Cc: <stable@vger.kernel.org> and, very
+preferably a Fixes: line.
 
