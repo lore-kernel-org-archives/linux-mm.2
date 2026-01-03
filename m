@@ -4,88 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C459CFC6160
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 06:02:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3596FC6160
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 06:36:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B49A46B0089; Sat,  3 Jan 2026 01:02:52 -0500 (EST)
+	id A3CC96B009E; Sat,  3 Jan 2026 01:36:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF7D26B008C; Sat,  3 Jan 2026 01:02:52 -0500 (EST)
+	id 9EB5B6B009F; Sat,  3 Jan 2026 01:36:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F6236B0096; Sat,  3 Jan 2026 01:02:52 -0500 (EST)
+	id 8E97A6B00A0; Sat,  3 Jan 2026 01:36:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C7E86B0089
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 01:02:52 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 29D0587544
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 06:02:52 +0000 (UTC)
-X-FDA: 84289608984.11.7900CB9
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CFF68140007
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 06:02:49 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	spf=pass (imf09.hostedemail.com: domain of pmenzel@molgen.mpg.de designates 141.14.17.11 as permitted sender) smtp.mailfrom=pmenzel@molgen.mpg.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767420170; a=rsa-sha256;
-	cv=none;
-	b=R1gGDiMZWSVb3bcjF6aivk7dogQ+/+h4r9owAdhLlD6KlonGiTR85Yfg3Rsbhz90tOiGY/
-	6Co3s/vjrEeQZ16DGPBOGdKmCFw7Ui/YEuQDPXXt3Vh5uZVTqmoIH6bOU/+/aXgKJuVmew
-	0m/Ly1SN1/rIxVPXLGP/hgKzw1Kl5lA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of pmenzel@molgen.mpg.de designates 141.14.17.11 as permitted sender) smtp.mailfrom=pmenzel@molgen.mpg.de;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C8106B009E
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 01:36:57 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F29FECCAFF
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 06:36:56 +0000 (UTC)
+X-FDA: 84289694832.04.972FFFF
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E980340005
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 06:36:54 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=wk6nqTwI;
+	spf=pass (imf07.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.210.169 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767420170;
+	s=arc-20220608; t=1767422215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EzpnsZ95C+miupYdUSOBHKPY1HilM3Lk0m1rwZj1Hxo=;
-	b=Nas+eYqrtQSr/H1ZVIdbA4jlR2CwM84sl4qg0NkGsJdR8ItjXDSnjnTxnnU36zQsfqyz77
-	B7EUQE2aVO/RyL5o0vFd5E0m/ySjC8Fpv4OTJHiH1CD8kd1nqGUBiQq2NNGlom0zj4PZx3
-	0RpzoaKKBvVu1kuLpUesSiVoH7tmkg8=
-Received: from [10.11.202.139] (unknown [124.195.223.90])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 8E26161CC3FCD;
-	Sat, 03 Jan 2026 07:01:52 +0100 (CET)
-Message-ID: <49cdd663-bcbd-48b4-ac38-77ce94ef0c8d@molgen.mpg.de>
-Date: Sat, 3 Jan 2026 12:01:19 +0600
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=n009qAjQa1f/gx1JlFPWaK6vp1HVpsaalQe/6LgsF9o=;
+	b=DDLNa18O/CtX7Xfnboig+clZGqlDFdylLoaCsy2cV6YbrpH3CdnIJSk3/77pDKrBh1bwDS
+	J8Q/PFvPg7ca5hYlgIZMJVcRicwk+UxLYbwRi6gfDX9f2YZEDMCbO3njqo2hh7sOh2S5TJ
+	ywyJoVrlfA7bunqvhxhGrpRxk7aaaYo=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=wk6nqTwI;
+	spf=pass (imf07.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.210.169 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767422215; a=rsa-sha256;
+	cv=none;
+	b=cyjrK2ulzk0V1W/o+b1kGxF/XyfHMfHa5dQOw+4DZMD1Apx1XANR8TELICucmrD5zwM+Fx
+	Kiyz+Ol9OyMa/KRYXUL2foaGX8JyisidNswnb0dA4/GYVTl4s6FbEP+gsR53oMPbnSzQka
+	dQus39lZV21cmp6dSVGCPNBEAFgGWVA=
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7b8bbf16b71so12712779b3a.2
+        for <linux-mm@kvack.org>; Fri, 02 Jan 2026 22:36:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1767422213; x=1768027013; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=n009qAjQa1f/gx1JlFPWaK6vp1HVpsaalQe/6LgsF9o=;
+        b=wk6nqTwIMTb4Yc88WKvIxkr8Pedvw3gi/5/pa3fZ1L2F7C4S9UUMIgb1QWbumNqGCj
+         WC4vmUBt+Yi0WSb0WUk1PzytjT3/02235S1k/GdSXAWS/Xi/KV3DjTU5iZr53aM63Ovm
+         tKats7aJHpC5LcQwklou6AFD2XQlWvWGwyYW4ZGWQUQtMqIM+RH/YE+nDOrQO/5O97wk
+         d1LW+D8ft/tVea5GIwjWnJYDevUmx+3Vn12oz9ANpy6nhgSAEEYF7s79wEt6l8FnGxCe
+         lio5qrpmx+cvvcnOpfX2/iUQsLNShCXyDTJ4shtq4v9Glfkl0fkFcMkOVlUTP7k7vfQv
+         U9fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767422213; x=1768027013;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=n009qAjQa1f/gx1JlFPWaK6vp1HVpsaalQe/6LgsF9o=;
+        b=CumLjnbtC/tJlzHxso5SyprZhGEGnC7fSYlKlIc4Stg5Nona1QB9CwsoI+rq5skZPk
+         7G/Ndx/++UQ/bNlrARKr0L9J3cWu1kX5c+LX5X8OIDELxJUBNCnXKuzvmOQUa41afHP1
+         2ONolljDBjtzPpWSN7ETWU72m9QYulaqz7QXSRM5jyJtihj8oRfUIa+rSzvAbMRpkOiO
+         gNBFs3QyPR3vztswc68Ipp0kb/HRVXii5s0QhXUVZOYgiquxvU/q7Ywldk5AVUc8D+Sl
+         2/ippGp6F/dOCNeTeTwhWm9I8UKDJwewwCCLFO0Q9W7eSe7zkI9081sOO9fCx/BKnMQg
+         FB/g==
+X-Forwarded-Encrypted: i=1; AJvYcCWCnyOnceszlDCpTRNO30FL755I1iq6rnY1ZtPOePWNr/FFaDcXpiVbzaM1A+g1/nbFnjdp85fpfw==@kvack.org
+X-Gm-Message-State: AOJu0Yy+VVQhXDx36uX9WcqVFECrep3lPcuuCvYe/WPNS6MDR89rEYbm
+	kAUxTuKyxDj+x7Vpt+txQMUdN180kHdwp1CiX5CQr0OPlX08Orh4s1oY2j3kKRcVBcM=
+X-Gm-Gg: AY/fxX4+S5rr4zb2vO8e0mndLewo+pM0bmcRT817F83x8XauxQwaf2rEdgJ9+V1HQfs
+	7B+LeHIwfKfDBZn0TnyY4DkUVegoE5I16td3JORhLtNV1XLb/KMRpWyM8ax2AXyIouot5E04hEe
+	1X+rzn6J6Qabhr9VMjlR3sJqTP2TiBg6541RhT4UCg29m5Fh99hvZ/tsgxKqdfBlgIy0osYTm3A
+	mFN93MHNaDawR/SXt1SeTOsZ8Lbq1hvuueH7V22zE1/hdD6iGS6KLyCfTn5YJ7x+QDX9TR5pfCM
+	66OG5+hZlz0H29duRKwBeAvkas0Q5njn8iURR42/1L3NqiTCX9lLvCsDARwU529GVewiKVsrlhl
+	RHnBGXlIUC3cq0B6QEhTeeGz2yDxtzobf+ZLTjy31Lb0mIcq2tTRTuVsTu6vDETpbgsDE2JBGIQ
+	2W+DVSLaxN6D9d1Qq21BeVfhHJVsexCCYCg9yQ3TMj+PqgK77fAhav74CHD44cSrJf
+X-Google-Smtp-Source: AGHT+IFjVDKmB/xNuLtQKRYfU/ITUXwxCDRtTDnOfIZDb5jRoUr7iNoQ0th445p4ZZcSbNCPgjHtMA==
+X-Received: by 2002:a05:6a00:140f:b0:807:c2b9:38ec with SMTP id d2e1a72fcca58-807c2b93f63mr22110230b3a.15.1767422213430;
+        Fri, 02 Jan 2026 22:36:53 -0800 (PST)
+Received: from ?IPV6:2405:6e00:642:d187:9f0f:f4ff:8fd1:e7bf? ([2405:6e00:642:d187:9f0f:f4ff:8fd1:e7bf])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e0a2e3esm41753812b3a.37.2026.01.02.22.36.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Jan 2026 22:36:52 -0800 (PST)
+Message-ID: <4b8953ac-567b-4d68-9c25-72a69afdf1b3@linaro.org>
+Date: Sat, 3 Jan 2026 08:36:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: BUG: kernel NULL pointer dereference, address: 0000000000000000
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
- Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org, regressions@lists.linux.dev,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Hans de Goede <hansg@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-References: <6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de>
- <db387081-345f-423a-a0ff-e13f3bec2d51@molgen.mpg.de>
- <CADVatmM_mRnkDX=hpUjbyKkZnGynxJfRSujGxm2LaWWMEL_2ew@mail.gmail.com>
- <ef9223ee-0a4e-468c-bfd0-0cf190d262f1@molgen.mpg.de>
- <aVgjpWaIRkerdgCa@eldamar.lan>
+Subject: Re: [PATCH 18/26] mm/memblock: Add MEMBLOCK_INSPECT flag
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, tglx@linutronix.de, andersson@kernel.org,
+ pmladek@suse.com, rdunlap@infradead.org, corbet@lwn.net, david@redhat.com,
+ mhocko@suse.com, tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
+ linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
+ jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+ linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org
+References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
+ <20251119154427.1033475-19-eugen.hristev@linaro.org>
+ <aVImIneFgOngYdSn@kernel.org>
+From: Eugen Hristev <eugen.hristev@linaro.org>
 Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <aVgjpWaIRkerdgCa@eldamar.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CFF68140007
-X-Stat-Signature: eb4crfwpppg9rfoe3g1ugxen1fp8q91c
+In-Reply-To: <aVImIneFgOngYdSn@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: ax4ih87d1jb78nbs8b673d7garwi6ijt
 X-Rspam-User: 
-X-HE-Tag: 1767420169-822481
-X-HE-Meta: U2FsdGVkX18qsK62U70cxIFz/p7arX0YpNcIKGFhDut6bLfBNLZUYPdrMsIRX/43jqx24LkPkxZPAQXQ2NFO/2zqBMFwTgam6ESVpA6l6zPPzkRz59UAQJ/jMxiYY1geRsJ3fLMs1colbyR/MDzD3kArgi5ewUnktt1gLSQaMq+xcUnDffchuN6Gg8SnCdZDa2AcmVaXiwkrPmgUDVtEGZ1Or0TcQwTo3ZI0Z4K72UZvFctcZ3U11w2ie7Ijj9NQGSBv5nZ3ayhxHpwh3iH/eMvwLacXbjGdZyZWyzwCB2pANTERzk99E74pFeY0vTJcWwPaFE3kQp51kpQzm6XizSbZqsMP4NNDKXa7TjZqkAPfCJQzNbpXxfSlS4pNhVOWp7sLkkvvdJNKEGmJdtwMjsPuGTecivae4S3+qC6V2Otk97q1wpNKQaTnCplONRoxWSAivZegSaaAw5wf0l4Z/C93ZiZDE3+GIMqOsWUCCSd1M29YtM9jtrw1BFP7YUcsLCaPfFHxo7WJOGVEWBqojgSJzl+mMWjyov/x38zooki+ZFm3+gp5KqLajK1ijPhr/PXhlKhPVyrSv3wMWu8cUtz0Vk5m9pC2YOk2RFBdUK4OYiyYmELRT7idjn0v6KnQByKvySjrf2TFlbLK2pbKYxGynH6WL/rL/P7HIxn8F7XXSt/3HzI10cO3AnU0fnombXrcRuJAarSyIKX/xrchQbXjwQ722s1pISp+QuhutASbwunM0u+LAxBQ72Z272KA0SIwuyiBHK8Yg/mR++PwfAgXTmU5jj2+OAK0TXdiJ8j7pI2HrhhWbzhQHn8vTJdhD0XjN2ix2gA68PkSdt/3tyhL3mEt6Ozg6EYnBQJyYnmP38BIaUDy6grhSvTNUuOiSV3CToQeQXBfpeT7OKTibdU0Fz9+/JM3v1DPBA2PK33ee/urXIs0Rp6L9/wlKFqG+vbHHo6CJLm7kr3mcod
- ko7mun5K
- b45lGc9jc7WXi6d0LHpabRrgVtR9A1nEPUkqBrBQTJ1kqzR8xkaayielFdJUiCa8U5Dc0STka/CDnyPvjTA+xOdj4Bz3AxNviRs9oP3H64d7lRdBQDeP3XtPNoAxATNrEqsVaBkh4lrXmILeFCt+Zn6RavdQbO1Adb37+pugi9JwO4jLMomOhyfNE00JjvIl9PUTDcuQERh+FHUyLQQC4nxzQTw5gB1nrCMtmFR9psubERw/mpRdxkTOC5A==
+X-Rspamd-Queue-Id: E980340005
+X-HE-Tag: 1767422214-343696
+X-HE-Meta: U2FsdGVkX1/gUlgkh0Va1S7kr9lORLOnO43mFJ+m72TLzjIJYa6OZsSn99eunbqzhNcnYzpBg37pQQpHysflURFJhgn/+/au1LGR7k6fY69XWzAB2r6emc0n3jqYCvciyJ480H96+ImbDaqFjJRkQFXd3AhpPvgtuNY94mRm8bKedewSVl11DoI2VHM96yeI+mt5cdTP1bp2vBCJmJiQ+oXqbjA1gs2lJgxDgWSJpSkAAJuIy4/UyMzli25gSZjCvF+pq3GaihpAu2IcUAU6LT8HsJSBbcaBak5FEwTu5du+OciDEniI/b7s7xBZOZX+u/L1lviSiqSJ7HjUZgkMFksI2V+qOnDKvMJDsHijgxr8SThgvFiBJuQTNDvrtCu1Qcnew7xZ8ot1utkFDMddjByqm+s3zLtu8l3xnrcQRqDvLaYLjffIMOQE8k4obnOIw+i4gK9yxDCAmRwD5s/cwm8zEleTkFPMkXmQxJgPBtKvrn/48yVbUQN9ZLXkZbzcNQVKgpjI5XfP6555b7d269M1BVcLT7PdCTNL2f7B7UBtGevDb93PxQcAcEfzDkhBe65Lw1vyS3KkZ2k9k7Cyq6WkFQImjh+z2FV3sRH132ddyuDf8RsQMT9TFE6g2Y3NgNI1/Lytjgyoff1aZN8GZZwKsyOLyfECoRfeaDrfMPPUeysKjYSASiEzJGkdDnSpx5/G2FlJAeISFB6Ltc7pmqWBMhe8xoxdMdgXZKiv92GDQbVs0kvYpLqpx19H/BjWujSo9TgGQeHKO8+kx5v+Th4GR/+ZLnuav5i+CbVWCtgknNb8/0RApVzjCQr3IFHSD/zt/64eAZAnieqWyPZ8ES5SHxSN6F08GSFnR1+fSW6GVD27SCFJv6PBDNuZ4Hd/XSIHPE3nE/atSTMVc/bDIUlP40ebmowOYRVXxyUijj+krFqdwRev+UNqtJ3c58KYqPQSae0alg5G6Ystm2D
+ QzT3ZSYS
+ f3VWixmY1lPOYEGTHZQ5f7td8ITKFy8VHaB+jBdQ7IgLD5gstUVpW9/BH/mQeLBPVhb8jgPXc4sfXpET5LlsHHLcCQ/VE57ZqASczVnkuDCz3pNhmW8yWyOXSvWhQOXgxVIugOoP6BbmtMsgwn1VkNbDoc3OWOpufFcMh/DownQuSIf5Rw4RlxJHrNfUZqu+Xrjn0AhJCXOl4Ho3u/RnkbfPGmYfZyu99snuHv4sUc8FXzsQo9TAmrqlcZabRGDCPQVteS/bBftN/cfNv7WS6hhxxNCvEHxnHZZkIyt0J2XAlKldsIDPOct7rAFkuQ4w0DZnqUHuqBLwtTe9+eVsELZUa6PH1XmwQdXm9jPsUWX5ctk/KapHjUM4rAhRlV5U8X4lo9i2TGYYrFjl6zfUBeCMwfOZC8fmd8ZvtexX5X5g9uLRLGFE/lV+upJmHQpileuockckz49xIPXVIWYTxSrKgPQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,195 +131,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Dear Salvatore,
 
 
-Thank you for the follow-up.
-
-Am 03.01.26 um 01:59 schrieb Salvatore Bonaccorso:
-
-> On Mon, Dec 01, 2025 at 05:05:59PM +0100, Paul Menzel wrote:
-
->> Am 01.12.25 um 14:25 schrieb Sudip Mukherjee:
->>> On Thu, 27 Nov 2025 at 22:55, Paul Menzel wrote:
->>
->>>> Am 27.11.25 um 19:51 schrieb Paul Menzel:
->>>>
->>>>> Unfortunately, not reproducible, but starting with Linux 6.18-rc7, I got
->>>>> the oops below *once*:
->>>>>
->>>>> ```
->>>
->>> <snip>
->>>
->>>> Building and booting Linux 6.18.0-rc7-00041-g765e56e41a5a, I got another
->>>> oops.
->>>>
->>>>        [   15.234799] ppdev lp.0: really_probe: driver_sysfs_add failed
->>>>        [   15.234852] ------------[ cut here ]------------
->>>>        [   15.234854] refcount_t: addition on 0; use-after-free.
->>>>        [   15.234864] WARNING: CPU: 0 PID: 353 at lib/refcount.c:25 refcount_warn_saturate+0xcd/0xf0
->>>>
->>>> Please find the output of `dmesg` attached.
->>>>
->>>> (It might be related to booting with an USB-C mini-dock connected, but I
->>>> do not know yet.)
->>
->> At least today, I am also only able to reproduce this with *no* power cable
->> plugged in, and the USB-C mini-dock connected.
->>
->>> In both cases, it seems the underlying hardware was removed or the
->>> module was unloaded while it was still registering.
->>>
->>> In the first case, 'parport_default_proc_unregister' has been called
->>> while parport driver is still checking for all the connected devices
->>> and was executing 'lp_attach'.
->>> 'parport_default_proc_unregister' will only be called when the parport
->>> module is exiting.
->>>
->>> Same in the second case,  'lp_attach' was still executing and
->>> 'ppdev_cleanup' was called.
->>
->> Please find the output of `dmesg` attached with the Oops for Linux 6.18.
->>
->> ```
->> [   14.696290] ppdev: user-space parallel port driver
->> [   14.696974] lp lp.0: really_probe: driver_sysfs_add failed
->> [   14.697015] kernel tried to execute NX-protected page - exploit attempt? (uid: 0)
->> [   14.697189] BUG: unable to handle page fault for address: ffff991d07830708
->> [   14.697223] #PF: supervisor instruction fetch in kernel mode
->> [   14.697249] #PF: error_code(0x0011) - permissions violation
->> [   14.697277] PGD 388401067 P4D 388401067 PUD 101338063 PMD 10785c063 PTE 8000000107830163
->> [   14.697313] Oops: Oops: 0011 [#1] SMP
->> [   14.697334] CPU: 2 UID: 0 PID: 357 Comm: systemd-modules Not tainted 6.18.0 #165 PREEMPT(voluntary)
->> [   14.697386] Hardware name: Dell Inc. XPS 13 9360/0596KF, BIOS 2.21.0 06/02/2022
->> [   14.697423] RIP: 0010:0xffff991d07830708
->> [   14.697445] Code: ff ff 20 a1 10 01 1d 99 ff ff 80 3a 50 93 ff ff ff ff 40 54 3c 06 1d 99 ff ff 01 00 00 00 07 00 00 00 00 00 00 00 00 00 00 00 <08> 07 83 07 1d 99 ff ff 08 07 83 07 1d 99 ff ff 00 00 00 00 00 00
->> [   14.697530] RSP: 0000:ffffa8c040a27a30 EFLAGS: 00010286
->> [   14.697561] RAX: ffff991d078306c0 RBX: ffff991d0722a000 RCX: 0000000000000007
->> [   14.697593] RDX: ffffffffc078d5c0 RSI: ffff991d01fa7ce0 RDI: ffff991d03cc0000
->> [   14.697618] RBP: ffffa8c040a27a80 R08: 00000000fffffff3 R09: 00000000fff7ffff
->> [   14.697639] R10: ffffffff9482b180 R11: ffffa8c040a27620 R12: ffff991d0722a040
->> [   14.697659] R13: ffff991d03cc0050 R14: ffff991d03cc0000 R15: ffff991d00dfe8e8
->> [   14.697679] FS:  00007f09cb7fd6c0(0000) GS:ffff9920d8587000(0000) knlGS:0000000000000000
->> [   14.697711] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> [   14.697728] CR2: ffff991d07830708 CR3: 0000000102019003 CR4: 00000000003706f0
->> [   14.697749] Call Trace:
->> [   14.697759]  <TASK>
->> [   14.697768]  ? parport_register_dev_model+0x273/0x3c0 [parport]
->> [   14.697792]  ? lp_register+0x6f/0x100 [lp]
->> [   14.697806]  ? msr_init+0x1000/0x1000 [msr]
->> [   14.697822]  ? parport_irq_handler+0x50/0x50 [parport]
->> [   14.697841]  ? lp_attach+0x99/0xc0 [lp]
->> [   14.697854]  ? port_check+0x1d/0x20 [parport]
->> [   14.697879]  ? bus_for_each_dev+0x82/0xd0
->> [   14.697894]  ? ppdev_cleanup+0xb40/0xb40 [ppdev]
->> [   14.697910]  ? __parport_register_driver+0x7e/0xb0 [parport]
->> [   14.697930]  ? lp_init_module+0x1e2/0x1000 [lp]
->> [   14.697945]  ? do_one_initcall+0x58/0x2f0
->> [   14.697960]  ? do_init_module+0x67/0x2a0
->> [   14.697974]  ? init_module_from_file+0x85/0xc0
->> [   14.697989]  ? __x64_sys_finit_module+0x163/0x3d0
->> [   14.698005]  ? do_syscall_64+0x82/0x9b0
->> [   14.698020]  ? vfs_read+0x15e/0x380
->> [   14.698035]  ? vfs_read+0x15e/0x380
->> [   14.698056]  ? __rseq_handle_notify_resume+0xa6/0x480
->> [   14.698080]  ? restore_fpregs_from_fpstate+0x46/0xa0
->> [   14.698098]  ? switch_fpu_return+0x5b/0xd0
->> [   14.698113]  ? do_syscall_64+0x21d/0x9b0
->> [   14.698134]  ? restore_fpregs_from_fpstate+0x46/0xa0
->> [   14.698158]  ? switch_fpu_return+0x5b/0xd0
->> [   14.698179]  ? do_syscall_64+0x21d/0x9b0
->> [   14.698203]  ? do_user_addr_fault+0x216/0x690
->> [   14.698230]  ? exc_page_fault+0x7e/0x1a0
->> [   14.698254]  ? entry_SYSCALL_64_after_hwframe+0x4b/0x53
->> [   14.698286]  </TASK>
->> ```
->>
->>> Are you seeing the crash only from v6.18-rc7 onwards? Was v6.18-rc6 or
->>> v6.17 ok for you?
->> Going through some Linux kernels, I hit the same issue with
->> 6.18.0-rc3-00256-gba36dd5ee6fd, but with that the graphics environment did
->> not load, and I only have the journal entry.
->>
->> ```
->> Dez 01 14:33:41 abreu kernel: kernel tried to execute NX-protected page - exploit attempt? (uid: 0)
->> Dez 01 14:33:41 abreu kernel: BUG: unable to handle page fault for address: ffff97fec6b9c588
->> Dez 01 14:33:41 abreu kernel: #PF: supervisor instruction fetch in kernel mode
->> Dez 01 14:33:41 abreu kernel: #PF: error_code(0x0011) - permissions violation
->> Dez 01 14:33:41 abreu kernel: PGD 3fda01067 P4D 3fda01067 PUD 101338063 PMD 106b74063 PTE 8000000106b9c163
->> Dez 01 14:33:41 abreu kernel: Oops: Oops: 0011 [#1] SMP
->> Dez 01 14:33:41 abreu kernel: CPU: 2 UID: 0 PID: 432 Comm: systemd-modules Not tainted 6.18.0-rc3-00256-gba36dd5ee6fd #154 PREEMPT(voluntary)
->> Dez 01 14:33:41 abreu kernel: Hardware name: Dell Inc. XPS 13 9360/0596KF, BIOS 2.21.0 06/02/2022
->> Dez 01 14:33:41 abreu kernel: RIP: 0010:0xffff97fec6b9c588
->> Dez 01 14:33:41 abreu kernel: Code: ff ff 20 ed 23 c7 fe 97 ff ff a0 3a f0 9a ff ff ff ff f8 37 58 c3 fe 97 ff ff 01 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 <88> c5 b9 c6 fe 97 ff ff 88 c5 b9 c6 fe 97 ff ff 00 00 00 00 00 00
->> Dez 01 14:33:41 abreu kernel: RSP: 0000:ffffaaba0095bb00 EFLAGS: 00010286
->> Dez 01 14:33:41 abreu kernel: RAX: ffff97fec6b9c540 RBX: ffff97fec48c7800 RCX: 0000000000000007
->> Dez 01 14:33:41 abreu kernel: RDX: ffffffffc077b5c0 RSI: ffff97fec71a58b0 RDI: ffff97fed8514800
->> Dez 01 14:33:41 abreu kernel: RBP: ffffaaba0095bb50 R08: ffff97fec77ec243 R09: ffff98022cd3f4c0
->> Dez 01 14:33:41 abreu kernel: R10: 0000000000000001 R11: 0000000006f6b9e9 R12: ffff97fec48c7840
->> Dez 01 14:33:41 abreu kernel: R13: ffff97fed8514850 R14: ffff97fed8514800 R15: ffff97fec7349b08
->> Dez 01 14:33:41 abreu kernel: FS:  00007f4b0c2fcc80(0000) GS:ffff980290b87000(0000) knlGS:0000000000000000
->> Dez 01 14:33:41 abreu kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> Dez 01 14:33:41 abreu kernel: CR2: ffff97fec6b9c588 CR3: 0000000106a5f004 CR4: 00000000003706f0
->> Dez 01 14:33:41 abreu kernel: Call Trace:
->> Dez 01 14:33:41 abreu kernel:  <TASK>
->> Dez 01 14:33:41 abreu kernel:  ? parport_register_dev_model+0x273/0x3c0 [parport]
->> Dez 01 14:33:41 abreu kernel:  ? lp_register+0x6f/0x100 [lp]
->> Dez 01 14:33:41 abreu kernel:  ? parport_pc_init+0xf20/0xf20 [parport_pc]
->> Dez 01 14:33:41 abreu kernel:  ? parport_irq_handler+0x50/0x50 [parport]
->> Dez 01 14:33:41 abreu kernel:  ? lp_attach+0x99/0xc0 [lp]
->> Dez 01 14:33:41 abreu kernel:  ? port_check+0x1d/0x20 [parport]
->> Dez 01 14:33:41 abreu kernel:  ? bus_for_each_dev+0x82/0xd0
->> Dez 01 14:33:41 abreu kernel:  ? lp_open.cold+0xaf5/0xaf5 [lp]
->> Dez 01 14:33:41 abreu kernel:  ? __parport_register_driver+0x7e/0xb0 [parport]
->> Dez 01 14:33:41 abreu kernel:  ? lp_init_module+0x1e2/0x1000 [lp]
->> Dez 01 14:33:41 abreu kernel:  ? do_one_initcall+0x58/0x2f0
->> Dez 01 14:33:41 abreu kernel:  ? do_init_module+0x67/0x2a0
->> Dez 01 14:33:41 abreu kernel:  ? init_module_from_file+0x85/0xc0
->> Dez 01 14:33:41 abreu kernel:  ? __x64_sys_finit_module+0x163/0x3d0
->> Dez 01 14:33:41 abreu kernel:  ? do_syscall_64+0x82/0x9b0
->> Dez 01 14:33:41 abreu kernel:  ? do_syscall_64+0xbb/0x9b0
->> Dez 01 14:33:41 abreu kernel:  ? do_sys_openat2+0xa2/0xe0
->> Dez 01 14:33:41 abreu kernel:  ? __x64_sys_openat+0x61/0xa0
->> Dez 01 14:33:41 abreu kernel:  ? do_syscall_64+0xbb/0x9b0
->> Dez 01 14:33:41 abreu kernel:  ? do_syscall_64+0xbb/0x9b0
->> Dez 01 14:33:41 abreu kernel:  ? exc_page_fault+0x7e/0x1a0
->> Dez 01 14:33:41 abreu kernel:  ? entry_SYSCALL_64_after_hwframe+0x4b/0x53
->> Dez 01 14:33:41 abreu kernel:  </TASK>
->> Dez 01 14:33:41 abreu kernel: Modules linked in: ppdev(+) lp(+) parport_pc msr(+) parport drm efi_pstore configfs nfnetlink efivarfs autofs4 ext4 crc16 mbcache jbd2 dm_crypt dm_mod dell_wmi dell_smbios dell_wmi_descriptor dcdbas evdev nvme serio_raw pcspkr nvme_core video intel_hid sparse_keymap wmi aesni_intel
->> Dez 01 14:33:41 abreu kernel: CR2: ffff97fec6b9c588
->> Dez 01 14:33:41 abreu kernel: ---[ end trace 0000000000000000 ]---
->> ```
->>
->> I was forced to hard reset the machine by pressing the power button for more
->> than ten seconds.
+On 12/29/25 08:56, Mike Rapoport wrote:
+> Hi Eugen,
 > 
-> FWIW, we have two bugs in Debian as well reported, but they were once
-> for 6.17.12 and 6.17.13 already. See:
+> On Wed, Nov 19, 2025 at 05:44:19PM +0200, Eugen Hristev wrote:
+>> This memblock flag indicates that a specific block is registered
+>> into an inspection table.
+>> The block can be marked for inspection using memblock_mark_inspect()
+>> and cleared with memblock_clear_inspect()
 > 
-> https://bugs.debian.org/1124075
+> Can you explain why memblock should treat memory registered for inspection
+> differently?
 
-This is
+It should not, at a first glance.
 
-AMD AM5 ASUS ROG STRIX B650-A GAMING WIFI, BIOS 3067 12/10/2024
+The purpose of the flag is to let memblock be aware of it.
+The flag is there to have a "memblock way" of registering the memory,
+which inside memblock , it can translate to a meminspect way of
+registering the memory. It's just an extra layer on top of meminspect.
+With this, it would be avoided to call meminspect all over the places it
+would be required, but rather use the memblock API.
+And further, inside memblock, it would be a single point where
+meminspect can be disabled (while preserving a no-op memblock flag), or
+easily changed to another API if needed.
+Ofcourse, one can call here directly the meminspect API if this is desired.
+Do you think it would be better to have it this way ?
 
-> https://bugs.debian.org/1124463
-
-This is
-
-Dell Latitude E5470/0VHKV0, BIOS 1.34.3 11/20/2022
-
-> Does it make a difference to cold-boot or reboot into the system?
-
-I only did cold boots, and I am not able to reproduce it anymore, and 
-wrote it off to some hardware issue – despite the system working fine 
-otherwise.
-
-I am adding the x86 folks, and regression lists.
+Thanks for looking into it,
+Eugen
 
 
-Kind regards,
+> 
+>> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
+>> ---
+>>  include/linux/memblock.h |  7 +++++++
+>>  mm/memblock.c            | 36 ++++++++++++++++++++++++++++++++++++
+>>  2 files changed, 43 insertions(+)
+>>
+>> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+>> index 221118b5a16e..c3e55a4475cf 100644
+>> --- a/include/linux/memblock.h
+>> +++ b/include/linux/memblock.h
+>> @@ -51,6 +51,10 @@ extern unsigned long long max_possible_pfn;
+>>   * memory reservations yet, so we get scratch memory from the previous
+>>   * kernel that we know is good to use. It is the only memory that
+>>   * allocations may happen from in this phase.
+>> + * @MEMBLOCK_INSPECT: memory region is annotated in kernel memory inspection
+>> + * table. This means a dedicated entry will be created for this region which
+>> + * will contain the memory's address and size. This allows kernel inspectors
+>> + * to retrieve the memory.
+>>   */
+>>  enum memblock_flags {
+>>  	MEMBLOCK_NONE		= 0x0,	/* No special request */
+>> @@ -61,6 +65,7 @@ enum memblock_flags {
+>>  	MEMBLOCK_RSRV_NOINIT	= 0x10,	/* don't initialize struct pages */
+>>  	MEMBLOCK_RSRV_KERN	= 0x20,	/* memory reserved for kernel use */
+>>  	MEMBLOCK_KHO_SCRATCH	= 0x40,	/* scratch memory for kexec handover */
+>> +	MEMBLOCK_INSPECT	= 0x80,	/* memory selected for kernel inspection */
+>>  };
+>>  
+>>  /**
+>> @@ -149,6 +154,8 @@ unsigned long memblock_addrs_overlap(phys_addr_t base1, phys_addr_t size1,
+>>  bool memblock_overlaps_region(struct memblock_type *type,
+>>  			      phys_addr_t base, phys_addr_t size);
+>>  bool memblock_validate_numa_coverage(unsigned long threshold_bytes);
+>> +int memblock_mark_inspect(phys_addr_t base, phys_addr_t size);
+>> +int memblock_clear_inspect(phys_addr_t base, phys_addr_t size);
+>>  int memblock_mark_hotplug(phys_addr_t base, phys_addr_t size);
+>>  int memblock_clear_hotplug(phys_addr_t base, phys_addr_t size);
+>>  int memblock_mark_mirror(phys_addr_t base, phys_addr_t size);
+>> diff --git a/mm/memblock.c b/mm/memblock.c
+>> index e23e16618e9b..a5df5ab286e5 100644
+>> --- a/mm/memblock.c
+>> +++ b/mm/memblock.c
+>> @@ -17,6 +17,7 @@
+>>  #include <linux/seq_file.h>
+>>  #include <linux/memblock.h>
+>>  #include <linux/mutex.h>
+>> +#include <linux/meminspect.h>
+>>  
+>>  #ifdef CONFIG_KEXEC_HANDOVER
+>>  #include <linux/libfdt.h>
+>> @@ -1016,6 +1017,40 @@ static int __init_memblock memblock_setclr_flag(struct memblock_type *type,
+>>  	return 0;
+>>  }
+>>  
+>> +/**
+>> + * memblock_mark_inspect - Mark inspectable memory with flag MEMBLOCK_INSPECT.
+>> + * @base: the base phys addr of the region
+>> + * @size: the size of the region
+>> + *
+>> + * Return: 0 on success, -errno on failure.
+>> + */
+>> +int __init_memblock memblock_mark_inspect(phys_addr_t base, phys_addr_t size)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = memblock_setclr_flag(&memblock.memory, base, size, 1, MEMBLOCK_INSPECT);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	meminspect_lock_register_pa(base, size);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +/**
+>> + * memblock_clear_inspect - Clear flag MEMBLOCK_INSPECT for a specified region.
+>> + * @base: the base phys addr of the region
+>> + * @size: the size of the region
+>> + *
+>> + * Return: 0 on success, -errno on failure.
+>> + */
+>> +int __init_memblock memblock_clear_inspect(phys_addr_t base, phys_addr_t size)
+>> +{
+>> +	meminspect_lock_unregister_pa(base, size);
+>> +
+>> +	return memblock_setclr_flag(&memblock.memory, base, size, 0, MEMBLOCK_INSPECT);
+>> +}
+>> +
+>>  /**
+>>   * memblock_mark_hotplug - Mark hotpluggable memory with flag MEMBLOCK_HOTPLUG.
+>>   * @base: the base phys addr of the region
+>> @@ -2704,6 +2739,7 @@ static const char * const flagname[] = {
+>>  	[ilog2(MEMBLOCK_RSRV_NOINIT)] = "RSV_NIT",
+>>  	[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
+>>  	[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
+>> +	[ilog2(MEMBLOCK_INSPECT)] = "INSPECT",
+>>  };
+>>  
+>>  static int memblock_debug_show(struct seq_file *m, void *private)
+>> -- 
+>> 2.43.0
+>>
+> 
 
-Paul
 
