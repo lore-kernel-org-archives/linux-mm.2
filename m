@@ -4,128 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 976D2FC6174
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 08:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC821FC617E
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 10:56:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0ACEA6B0099; Sat,  3 Jan 2026 03:48:16 -0500 (EST)
+	id AA31A6B0005; Sat,  3 Jan 2026 05:56:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08AE26B009B; Sat,  3 Jan 2026 03:48:16 -0500 (EST)
+	id A26456B0089; Sat,  3 Jan 2026 05:56:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDCD76B009D; Sat,  3 Jan 2026 03:48:15 -0500 (EST)
+	id 9324C6B008A; Sat,  3 Jan 2026 05:56:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DC6F76B0099
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 03:48:15 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 766851A7FF0
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 08:48:15 +0000 (UTC)
-X-FDA: 84290025750.02.4881FB2
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8EB12C0007
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 08:48:13 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DDXWv1RM;
-	spf=pass (imf28.hostedemail.com: domain of ming.jvle@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=ming.jvle@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DB956B0005
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 05:56:56 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1AF30139DE7
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 10:56:56 +0000 (UTC)
+X-FDA: 84290350032.11.67FC58F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 02FA04000E
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 10:56:53 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C8FdLi6b;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767437814; a=rsa-sha256;
+	cv=none;
+	b=UidwLjkpbT3jaVDiNB/YNc3V4dWduoipbcYRFSCKizVnGCdvtm40arDcwbVX51V+/nSC74
+	r7ixYroLlbejN5p3ba6BSD5zp4yT6cNVhyiYb6TN3kEe/r6EJjdOMjsqf1k/EdVKysWPed
+	09LslZqwIGbU5mHsCix0r1qpsYa4suU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C8FdLi6b;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767430093;
+	s=arc-20220608; t=1767437814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zNQtBvCUtmnAPeuru8aiLc1c6bgNqqxLSRGoZ3PSDyY=;
-	b=mx926fwxmnCEvPV3uc54LmaxsIqIY//bC9Wt5DMst0Ly3TittTd5pd2sesEelAy2w8kQbA
-	eBPX0NUP8n1qtC7Zd2E2bCUHdN0eRnFx1Fm7Npa+mHBpeCC42Q6I9yYgDfaAfjTTnyo8Wj
-	/rNu+ST+r7iMWEvYM0mFahlqBHW4o5k=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DDXWv1RM;
-	spf=pass (imf28.hostedemail.com: domain of ming.jvle@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=ming.jvle@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767430093; a=rsa-sha256;
-	cv=none;
-	b=3m3JowkkSK1j90alMS5aJ5T836XJA1EytAqxHF2cAdLxkCMisB86ZxnYS5tzQEh0EWm0zQ
-	hfUF8Apd/JhYc1pTZvMM+oX54Cs9UXVdCNwNUOnmqlN+t7S6FevErpJ9V3C8GAbOGT+CvE
-	oIBuceKcyiyCEQzZ4yKu8N475F0YMbs=
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7bc248dc16aso10066983b3a.0
-        for <linux-mm@kvack.org>; Sat, 03 Jan 2026 00:48:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767430092; x=1768034892; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zNQtBvCUtmnAPeuru8aiLc1c6bgNqqxLSRGoZ3PSDyY=;
-        b=DDXWv1RM2XVn5AUGCa9/GQCwezZ8/CGFCWiheCf0MOg1ESlbBI51ExClpGzh8warhc
-         xvJ07GfcaouGaQuwCLs0aDf47/UCjQbJHdxOeeZfXK4JV6XX3HhFY2aO3DDiqwz+7U/u
-         VJ+h19B/aEyQztt4Ezb+6EZngXHfmIqVATZtV5JjiFsxehq7EvTpodgC7HWl1xXnKJ5l
-         uhVxdSBxjL9XvdfavalI41THmtzsiAmXyi9vz+k3EO7lPFYUk86QA5gXKPv9IUJ4MosQ
-         L227d1jQRlfGlKTvlSyxVGSafgfh6YBjdQJJod/XGotv9O29sNTIpN2iP1KKSLlUyqkp
-         Ubww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767430092; x=1768034892;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zNQtBvCUtmnAPeuru8aiLc1c6bgNqqxLSRGoZ3PSDyY=;
-        b=ZCdJasx8D6sofqE2ZUZNG0CwJCbr0ZmyIuBOV+VCPaC2WwdCo7o0oW3xbTqUlZvBAg
-         JEz5FIUZ5LjEGG3g3QzxVXcluViQ7yLc1kFiNoiY8x7Zje5dIgt2lcuYmkf/clWmuGZF
-         l3EOUabfa0/OnSHEzbHmzjPhpXh8Qq75W6Bk1gtiJyhOoDLxMshDYp2nLZU2t6tROL12
-         go9cFwaTxSsYYIuy1AwS1URznzeB0UfGGPp9vkl8C+6DTB2fVWSSWujqjlfgYwipB4aS
-         AfsI8DJQKRGdpoap74twqfHx7VBDwvyRl0KDtmVAbQCEuigbSjCjsCwek79nEH65icHO
-         /bpg==
-X-Forwarded-Encrypted: i=1; AJvYcCWv6vxaAaI+huXOORI5z2aBa60XT/9XOHEA8IrMeyYj9mNP1EYQp1fuD026cc//lNjgm1xfFlx/fQ==@kvack.org
-X-Gm-Message-State: AOJu0YyYGLzA15gWHcPF+D0QfpEJ5F84Hsfp5+1o84kx3tjYfX4b69Xg
-	SPpDTd4+oekZnZd14OD+4O118tAG44UjsW2WU1RhT1CFvAk7b4g193kC
-X-Gm-Gg: AY/fxX6Fs78rRKkDj1gJiHTOPsJfNC6ZLkp4pk8BWvbdignJdUYypyQDRJo4UDjov4n
-	1mBbyi/w1PbrVDDRbTU3+IDS6vPXSIe+E4Vy3ymWOBRxsUp2Ua3exEB9N4gTK6MqNBEXljIOEpP
-	gnYsdGAn8kAUQ+o1pQ+FQuUlMpCqZwU6jGyv0J1IWdSJvTz5cEoPVzZmr3QZbG4epyZgs4XaKj3
-	YwSCepCvHnTbR0/9tyNmQ9jhkW4OLH5C+jHIyWJu3fsXshLZaZriC7pf4PutvRN+EPKfqUr0NOo
-	TldO1mT72XGsnUjfunHYvMwKmxEB1TXjJBARnEWR395CxSxp3BojRKKD9/48ZPkBFq6X/DrMzjK
-	6p3Y36fQCVOkeYmKRJCAQlRvDDa4zc2Z+ISDhPt6c9m8xkYJqiLq2Dic+nyNmgAk3ynjYEY3vKx
-	+SxhDa/VQGMc7VqwZzruMIZpR/JjgUU+hHH6A=
-X-Google-Smtp-Source: AGHT+IGp+2Ae35OlKcY/AZO4SFhsJuhif38Zo263lmc6gG+RjhGQaVQCgX9rVZBWLxbZMYLURcJ7SA==
-X-Received: by 2002:a05:6a00:e11:b0:7b9:4e34:621b with SMTP id d2e1a72fcca58-7ff6421137cmr37196936b3a.12.1767430092345;
-        Sat, 03 Jan 2026 00:48:12 -0800 (PST)
-Received: from jvle-ThinkPad-X1-Carbon-Gen-8.. ([210.73.43.101])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e197983sm42704939b3a.33.2026.01.03.00.48.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Jan 2026 00:48:12 -0800 (PST)
-From: Keke Ming <ming.jvle@gmail.com>
-To: mhiramat@kernel.org,
-	oleg@redhat.com,
-	peterz@infradead.org
-Cc: linux@armlinux.org.uk,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	tsbogend@alpha.franken.de,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	Keke Ming <ming.jvle@gmail.com>
-Subject: [PATCH 5/5] uprobes: use kmap_local_page() for temporary page mappings
-Date: Sat,  3 Jan 2026 16:42:43 +0800
-Message-ID: <20260103084243.195125-6-ming.jvle@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260103084243.195125-1-ming.jvle@gmail.com>
+	bh=yGpUw0Ox/Jp3kMXH8XGSAcDFluSymyYJIP4RuNh5bqs=;
+	b=hsv5gHAOo7CyceFMapU2XYOU6W5BaZoPZW3D/nGI1WaeZkGvBDgfcV7XAr6F0RBLOC29fe
+	NGrSIzBPO0SxKLD3Aob8dljjI3Q0QggcSXOpfjaW7bi+IH/ZgRMno4EOd2TM7xI4sQTtNI
+	b3fmVGMUhI5g6Rl82DypWECAUuYpJlU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767437813;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yGpUw0Ox/Jp3kMXH8XGSAcDFluSymyYJIP4RuNh5bqs=;
+	b=C8FdLi6bG5kjDMERqeu/vaWF/LQIV991ClweIQvc3YIGVvgEZfPDALlA+fkmUNMG2YrNwQ
+	dGts6vWt7cyvxaqI+7Uor+eARYnb2Qg1bkeNwCVOuNVt5QCOS6tbTksAMMf3Z4wLIVayL7
+	HQWtb7+EhnrrK/y3UMahqZfvEelAYUk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-zNokpBgqPf6VSRWU69Yn0Q-1; Sat,
+ 03 Jan 2026 05:56:49 -0500
+X-MC-Unique: zNokpBgqPf6VSRWU69Yn0Q-1
+X-Mimecast-MFC-AGG-ID: zNokpBgqPf6VSRWU69Yn0Q_1767437807
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0451619560A5;
+	Sat,  3 Jan 2026 10:56:45 +0000 (UTC)
+Received: from fedora (unknown [10.45.224.28])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 3114119560A7;
+	Sat,  3 Jan 2026 10:56:36 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Sat,  3 Jan 2026 11:56:44 +0100 (CET)
+Date: Sat, 3 Jan 2026 11:56:35 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Keke Ming <ming.jvle@gmail.com>
+Cc: mhiramat@kernel.org, peterz@infradead.org, linux@armlinux.org.uk,
+	catalin.marinas@arm.com, will@kernel.org, tsbogend@alpha.franken.de,
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 0/5] uprobes: transition from kmap_atomic to
+ kmap_local_page
+Message-ID: <aVj146EunyaOQzxO@redhat.com>
 References: <20260103084243.195125-1-ming.jvle@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8EB12C0007
-X-Stat-Signature: emrzxrn69t8i5ff1gqtq8dcbspw5xzea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260103084243.195125-1-ming.jvle@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Rspamd-Queue-Id: 02FA04000E
+X-Rspamd-Server: rspam03
+X-Stat-Signature: t9scgna54m5k93t5i7p64aw5zqw5oce1
 X-Rspam-User: 
-X-HE-Tag: 1767430093-628508
-X-HE-Meta: U2FsdGVkX1+iydXOmQkNfDDjrmB+lM2mGyfgavblCwly3p8xT0JKqNvXs4ZURzFlzmdz5ni6qkjyRzd/HC3LOTn+dwCvk0ThV74t+JVgakAKh7EFCA46rIrWSKLVwNngF6C0cS1LK7y71xX5SW8MZCP7lvZAg/NquIhMJdChkSElQe9FoxtciGt6Xx/cv5sdu9498fBQ4Wa5xgDCiYQLXuDgXaKr9WXfjBtgWACXes1QZ278bOkmPnk4bvi7f8wtA3vr7gkU7cdSl/So4kZd5XIrc4+wNbwvlQP3Ohi63vwWRJD7PenJOdyNUPttH4kZELKtlEJMSR1piCupM+8PoEz4qrknA26OuvQRRGywieZIfU9t4wvEyTEugQZikj/Xt3muyRbHZk/ed1NAXu/7WNb6hdpVRW9pgVjErUfZ+onBQGw9cZO0sgj8sGgSk7LoWpCWpLMKya1CjkJSpXtC0FwB0HWPSC6OJv/YQblAbFeVcfPQD8b2RAXamgb27dySx5THyegHF84F+X64kSp8qqZdqcDAHhWr831t4mhlxWwkFSoPtMpfh+Gy862KLUPpkvvT53f7o4TZr0NX1DcQOxJ8Ao4mou8XK0/9ngL/7HWmz5TF69EH+5qfbwhAwUG0BPXIH7vvT3xoI+srZLBJT5pzePqI8F2oCgujRCzrvn+Ig/k6MzNlZBGl+7xrEIOlOl5ZBN6T/l5twUVLgMlCRrIz1zx2MNZcYf+uYagJFuaXk+vEdQ7jayM4gP7zDboSezEycKawO8XTlqGvA4dPkRpRYY6af2MmpYvhqllNMvGveSC74eihVUs9cmgJsgz9dD7M7vDyCAgOwrv3WrG3ALIpANZ2lLj8zNabudwDilX8HcGDoYPbQGrJ0GgKKmN1Q6NjuYxkGSTjW8ZjJfzNS3bNfPVP5vzm83Z/qTM8bvThEPDTRE9HdVCY8GjCmKthCeH3NNxtfs20Wc6RdD8
- n1DpDVLR
- ckxB1FUyzGD7z7F3FqYsba04TJIxgPVtIsCyMxbVCsq9y74Ebx4vcCV91jDdFwpVUGn7QKklDzqGvX+lgeH0w8EBiPc7f1IJzlBRcWcuFpubvCYrqA0G6jAO/uf6vlRvEIrqlUy0H4gIuUdWywElPGIez+Mo5KAwVv1y25qNBoqxtP/Uw+jnbsEVagXTzT/baoxaIQU8mFPtvvyF0Y126Uyz8ItE8QFTHIM/YYcMHHbnCLbdVK0FMrjt/LzouvO3aOStswclfdXNMul04CfWND97tTIxO0twz8jsNw486FVT3XmAdZw5f6GtOKvIc2nR+1ieaNx95Mu/VM/1cDmodL/KhM8ZzhRBwFlS/NIGClxnEHbtgSO5T1iquH4vClpGQipPw+nzkA+Wxe7qtVdi4j21nphm7mO2ZBklCqvCRQzin3pmVLDeTe/4VeKrDxMliMBjg4a4mk24l1vs3MMu4fKPwy8kcRA82CRGqsn/8IMRl8fOLq/g7N8DQrUoq/DKUS8Tjssaj1ozZh8+RgkZDn11tRBey/apKHejrZ+EH3D0KJl/S5oQHy6tT2cWP5ngSQa8YpNwISKmQ8hAixb9Fx7C5jA==
+X-HE-Tag: 1767437813-726544
+X-HE-Meta: U2FsdGVkX18FYrc5OlEvbDrW+8VnfrKEzoW79y8PvEGrq0HxmggkiRv69tDvunWofouGuIxgXR2clbm05dPXawYJZ+UPNjp856M3DsZzr7PqEO2nQ1fQ3cfT4y4qv7EvZMKJKRDkg3tzylTPHh2/DfECGp0YkMunVQ1xyU2l3mfz7iccoE+z7VdJPaMcg9mommsk0SFIyWn8hYjVJSBjGGBZQBAGBK5m4Nx+5ZgFdg4R+8laHF24gJDk4XkrMZ7Ivv+nTcoix/DQnYuZQW0FKKvCkMsK7lgFY3j67DR6V9d9ysEIH0+L+r67yHwBKQjFDSpvVMOuP268s7lqS9rt0+/xbT1UKXdT8JQSnbxU+d7TjhsFy39SNhrjBWqgQ0q/l/FrgW1rUSsjsfl9J/eAxKXbVEASPtj4w4ovvyxREfvwaJnzqaJaiFckCKgXbkW5qSLObzadJJc46nJIuGH1gPX+JpznnBVfV6u9lbjIcRLXr27u9Ah2NZq5wF+hFOUyIOXOA2ok4h7krAC1jsB8A4aNAoYbpUYbLCcKlXCzQqI2kxoJfns1Wdpk5c0YeqbricsNc+hMfDnjwesgkPGPKKGhrIYgMpwVpQkupJugYtheudf4LqcFEe75tu3F2G4eNwKzllohcGvOwiaZpnLJ/9ecDA2yRohNN8qYQiQsxSiOnrW2o/lVU/H+TJ1rWyP4G6yIsIuFRcRF4PpBX9tkknr+0e8itR+ZNJpbiqx8jHq179vi2SYWPctkuDqlFBdVeYxtFW1ZUKlEgWfQ3YdahqjOyPyuWwcXqZGONTg2SDwhIZfpDNt/Tee/BMgOkLKs2xpyN4JsGghoQeWTYxv+ke+kSj8F4NrfyisPW/FECr4PkNcuJtcZYyYQ3Dn8XdG/H0BBILA81w3QJz9UaPq9+emuQzaSb8RTGi0e1vAglHmfhg41dr1VgbmXuysQnvMdjZNnHgJbudd+3leQdpL
+ U4Fmzeul
+ kzLVNsLWjUDSyXLEYJRwJXKFBcFYJyGWYNyxlTn7/I4zID0CPtTwQn5lCe1nyAyqHhjD9OQz3yx5y973FKsIQj8j/+VNopkI+m4+FkKDC1SLMbm0BvKndA93msQ7thEOwewAj4YGrZPlnYgDhi26MqttAT/DvnPJf68JCQWkPZIvqt9+tnb6YXIp3gKj5OxXsdivDq90BgY1aHbiLm+CLG+Wm9Q5F6arRF9zBhIiGq12mTev0KaWOTwXG5DsgJ9xlyyxxkyz1ky1WJ09jz5WkCvZH2tG4ZYrvdTQAS3jWo9QONMF0jYgFIUiuJWqXvCqd9RPa+7R6BZ8kIzu++y2sPxBBBPu1oXkmYlnJJ7pCMG0L9rpRjFaExUxhwwYJM7pesrib5DNtBxB14NPkC9PfPEwtigq1r3AleowdvPp7p1iZHCELkD9FEIYghl6JwE3YlhjFYF3W1GzFGCMkCgfzJ39Vp/8hBGq02krjipzgQqf1SKorUy/IIX/QEQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,57 +110,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace deprecated kmap_atomic() with kmap_local_page().
+On 01/03, Keke Ming wrote:
+>
+> Keke Ming (5):
+>   riscv/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
+>   arm64/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
+>   mips/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
+>   arm/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
+>   uprobes: use kmap_local_page() for temporary page mappings
+>
+>  arch/arm/probes/uprobes/core.c     |  4 ++--
+>  arch/arm64/kernel/probes/uprobes.c |  4 ++--
+>  arch/mips/kernel/uprobes.c         |  4 ++--
+>  arch/riscv/kernel/probes/uprobes.c |  4 ++--
+>  kernel/events/uprobes.c            | 12 ++++++------
+>  5 files changed, 14 insertions(+), 14 deletions(-)
 
-Signed-off-by: Keke Ming <ming.jvle@gmail.com>
----
- kernel/events/uprobes.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Thanks,
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index d546d32390a8..a7d7d83ca1d7 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -179,16 +179,16 @@ bool __weak is_trap_insn(uprobe_opcode_t *insn)
- 
- void uprobe_copy_from_page(struct page *page, unsigned long vaddr, void *dst, int len)
- {
--	void *kaddr = kmap_atomic(page);
-+	void *kaddr = kmap_local_page(page);
- 	memcpy(dst, kaddr + (vaddr & ~PAGE_MASK), len);
--	kunmap_atomic(kaddr);
-+	kunmap_local(kaddr);
- }
- 
- static void copy_to_page(struct page *page, unsigned long vaddr, const void *src, int len)
- {
--	void *kaddr = kmap_atomic(page);
-+	void *kaddr = kmap_local_page(page);
- 	memcpy(kaddr + (vaddr & ~PAGE_MASK), src, len);
--	kunmap_atomic(kaddr);
-+	kunmap_local(kaddr);
- }
- 
- static int verify_opcode(struct page *page, unsigned long vaddr, uprobe_opcode_t *insn,
-@@ -323,7 +323,7 @@ __update_ref_ctr(struct mm_struct *mm, unsigned long vaddr, short d)
- 		return ret == 0 ? -EBUSY : ret;
- 	}
- 
--	kaddr = kmap_atomic(page);
-+	kaddr = kmap_local_page(page);
- 	ptr = kaddr + (vaddr & ~PAGE_MASK);
- 
- 	if (unlikely(*ptr + d < 0)) {
-@@ -336,7 +336,7 @@ __update_ref_ctr(struct mm_struct *mm, unsigned long vaddr, short d)
- 	*ptr += d;
- 	ret = 0;
- out:
--	kunmap_atomic(kaddr);
-+	kunmap_local(kaddr);
- 	put_page(page);
- 	return ret;
- }
--- 
-2.43.0
+Acked-by: Oleg Nesterov <oleg@redhat.com>
 
 
