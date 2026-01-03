@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5896FC6171
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 08:47:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEFB8FC6174
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 08:47:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 336AB6B00A4; Sat,  3 Jan 2026 03:47:51 -0500 (EST)
+	id 3033F6B00A5; Sat,  3 Jan 2026 03:47:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E4546B00A5; Sat,  3 Jan 2026 03:47:51 -0500 (EST)
+	id 2E13B6B00A6; Sat,  3 Jan 2026 03:47:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F00C6B00A6; Sat,  3 Jan 2026 03:47:51 -0500 (EST)
+	id 1E3C46B00A7; Sat,  3 Jan 2026 03:47:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B3786B00A4
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 03:47:51 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AA26D1601B5
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 08:47:50 +0000 (UTC)
-X-FDA: 84290024700.11.2041B19
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D0147160005
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 08:47:48 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cCHBqoOx;
-	spf=pass (imf08.hostedemail.com: domain of ming.jvle@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ming.jvle@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DD986B00A5
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 03:47:56 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9C29E56C56
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 08:47:55 +0000 (UTC)
+X-FDA: 84290024910.09.85CE0A0
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B6C6B120005
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 08:47:53 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Kfm31f27;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of ming.jvle@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=ming.jvle@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767430073; a=rsa-sha256;
+	cv=none;
+	b=RPiLX6ctzvMbxHSGcmeKprinXdPRNyI3OM+bpVF+r4vsvFPvDB66IM6ZlO+4LXqBqEVMtz
+	OAoM+7wTbyuKZ1KZpmHX0eV3X1bdcJ1mjQz7LUTb4ZK3bR5WCNt4M2Kb5HjD9aAv7nI2vb
+	cHMazMUS0q92Nk/pJaLTdadsBvyotFs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Kfm31f27;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of ming.jvle@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=ming.jvle@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767430068;
+	s=arc-20220608; t=1767430073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=LLfzaNCKblQsWrgVFWjAAIDp8UyGda/a68IUZKqrEfs=;
-	b=nNlx6pcQ0QlxS6wWE36km6LxqPmYVoODX7Eof65VupFkBKURNqd6SOfT5drEVPaVO9qKvy
-	QAu/wplrHuhNoAtIAIJz66LWtBMcLjHczdacfymByb1NKQdjZMLGqsfGmqOZV67mfQezYC
-	EDEL81Wf29ODhZ7KWX0vQ57knBbQWrs=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cCHBqoOx;
-	spf=pass (imf08.hostedemail.com: domain of ming.jvle@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ming.jvle@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767430068; a=rsa-sha256;
-	cv=none;
-	b=vtRoB1Kyb9ljPTU0gjmMy8vrALyhjavTXTd/kOvBqWmhpyMYeV+PLQ/jfTzWkAUXvL1k08
-	WzjH5cNH+lMDp9W9aP5HAkoqTySvRI7C4BWX0im6c5XZgj2n0QATdy3zqKr87YI6gKWhwO
-	syNM9gcoIPC1VXJ6Dgb5cvAPTT0h0dE=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-803474aaa8bso241887b3a.0
-        for <linux-mm@kvack.org>; Sat, 03 Jan 2026 00:47:48 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sa14InhCOXebwmWDP7ecBkutspm2W7OpFimtcnzXp3w=;
+	b=mSiAn3mhRSotrgQGMaJ/Tc3beTxEG4D5ETp8PXllTatOc+iBaK0P5ZXOQEGlMhjfqElFTb
+	mHNdiaJBAeinddxqGzX1+/WFYYIf/qHNCB9oKvlbuA88LLUm+AkUWC0Bw4orz/BknujY4e
+	agTAaqYFbLBk3SXYTtoJGpeaq7DNxjg=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7f651586be1so232619b3a.1
+        for <linux-mm@kvack.org>; Sat, 03 Jan 2026 00:47:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767430067; x=1768034867; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LLfzaNCKblQsWrgVFWjAAIDp8UyGda/a68IUZKqrEfs=;
-        b=cCHBqoOxbWuilVY+ZSFp5OQN6j5RDhvBRvF25aSlW/tMDShq8cuU5y6hd5tbiz+RkJ
-         vp93qrPCpXFyZBvr8c2BerlaRs/MzXv6NAI2dyzR7eH1ob5ChywYlURECyQuz4qUanvy
-         c156ZinZnRfhYi/93MrNIHe8A38Z7rfuVelKA52khLpuugSwwH/J/GFfjqGDG2ebovUH
-         UkH7mDXOEFNl9r+4c89xt1q6e8blBmD89f0LKSubdqY7WScxM8EmIEVIt/y8S43DaPnB
-         EbsUtErwd2R56joO+50Bhcux0zGKKpdN7oaCCMNgZurM9m46Zqrpo+39aoAkBM2f5rgd
-         EDGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767430067; x=1768034867;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1767430072; x=1768034872; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LLfzaNCKblQsWrgVFWjAAIDp8UyGda/a68IUZKqrEfs=;
-        b=VuqDvP3QnN3R3E9AM/j0xLWP8FmfRDf2LT6L0K09D7JVXfnxB11aYdFnN07OcnZZ+5
-         2F//8O9WOdBSHzZxwcxhAmyLY759/tlFXbZTcVw8zLtfnY0GX7fxGwSy+wECimoq1HbB
-         Gu6NX5ilAiGz3YgyumeGn5Miq/Jcdo/104UArQ4FOJbbDH9yxXVGKuRu9XYLKgyQJyne
-         fZ5gbqn+MRDHuWu8HycMewxCNWPMUfpnbACfPk+PhGIaapIHnjBZQHf+GPo4gqIoatGc
-         ov1aUl8c9sYpB2xg2I4MTnV1Z/cxpeZNBwD8p59lMEZxor+SHOAUn4NxabvfOkYC8Bcz
-         UQWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVY6F9WcmooaaWAFDza0lUn0U87rJ8rx6OPnZvfAo7JXq+c/l+qw1vBu9AWWpmUxyjCURiXJdMQ6A==@kvack.org
-X-Gm-Message-State: AOJu0YyrE/y8M02Y0gTGkoeMDW1QrkyNYtimIAdlQdb3KpwaC7p7sJrv
-	+mFYg+dHKoEy5M/ANoQ4UooKSPv8kpb1nsYxWGOsC6jyvURbaLobHk/i
-X-Gm-Gg: AY/fxX6iTgdCESSuop15V5C8bDreOg5Z6A6yIYmyrwNFtRKHW7sYsymjDXS/nzyY7lc
-	mcBJcLLDNCyb3rqPu9cvSqpW41P3VFzjYN+lOIy3PhpZDofm9BKInh4GtJzsmQH27x8fZMb7QSz
-	fA+gxEXm+gzihRpV6qJ1ahvljVYL6sBI6Chm1i3bepZzrLcjsmU6b//ZIymo72zxbAyvey9w65H
-	bGuUKaXvQRj4MT5lcngMvZI8Yiwt/Io4dns3d3QXYKbhNxI8eUX8S8Y0z/npk1+L8bDwVXcmttt
-	nKMCpWMJGZwnZNidoCq23yQ5gXiJYfMg43EUzHIBh17XeEl1u4Ou5AF4Qo2AxerwhliDyQ2yw7y
-	i6Z9pJKEFN0VG0D5Wn709Q1CVv9PxxKbg2fWklae2xuAn/Q5Q1KHpMq1salI64VOOhyPiAcxCNe
-	jZw0WfYNoQl8i6NElN7d1N7UyAvHRQuYCeIuk=
-X-Google-Smtp-Source: AGHT+IFlp8qcq2QazAOf3KnrJVHQQLc5fUVTVkMNEtXBSYaNUnUycb5/s395woDebt+kaXn7KmVKuQ==
-X-Received: by 2002:a05:6a00:4ace:b0:7e8:3fcb:9afb with SMTP id d2e1a72fcca58-8148ba19ccdmr1341264b3a.17.1767430067508;
-        Sat, 03 Jan 2026 00:47:47 -0800 (PST)
+        bh=sa14InhCOXebwmWDP7ecBkutspm2W7OpFimtcnzXp3w=;
+        b=Kfm31f27xjLKfc4Q4ewKWg0qCGiicn3gzVx1XTQS0IwJI3ARPnO2P06gmyFpHbup+P
+         bxqO+gNR5T+LiyEKMQvkwvMOOs1/uPf/Vg1Bu88pcHcg4JmwdZ78bV/tn57SuoW9IbgC
+         9vQOGCqFV9Je+5KIBFgg1ghzP3UJXwNRcUvwlRQ//F7ea5pVvXftBqk8sGzk03c99T1M
+         encsiXrSa/9jkdJIhdkZIJ+A6opaGCdsfmLqYoYgLm8mMuS9ot0lA6LgcV2d+Mg1h64k
+         fujTvpLm1n3s9j5Lvek567Zf13mSJVCIRC836Rnw4pkTDVbN0fiCcjCE0iJC5N6Iviq8
+         B9gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767430072; x=1768034872;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sa14InhCOXebwmWDP7ecBkutspm2W7OpFimtcnzXp3w=;
+        b=QgkCbNBiGHtrlCiYqynurWJcLkgG5eMT3shmuZatvGfdqstC6pPT7HmsWDJTVpfqIP
+         YFDnsROVfj9i6NW3G4xHTYT17iaV9bSuWHTQU7WFkfqkKBnL3DK4IaJMiQwHbrFft1in
+         C5DVjX50XxWbjPtOyVam9mvGGRK9JTD/WSscRjc0O8G0h3e+rs2MG/jdk+XeJA3CwRIz
+         TwWKYIEXW06kk6vyGYd4GYP1EFP30Z00QoF3elrHjWgitL5D+cmn9rCERr9R2JmzoMdt
+         to9wHfTTJL+RD4MCEGfSTZ/ziEnAfKLfyuXVLCPhsTJdxDiUwBeuKKy0M8H6JVswNptH
+         pgpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIfrG4mOF1udnOropno2wqLdK7bffwqNT4TCcgDuvaFkXY5j76E8kx+3Yubzbm9POXA3VKZX4fyQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw2xcZGz/LR+WI9euBLgYiqGGKFLEN4gGLNPhwJfZfD8gNimbiU
+	JzeQ681HiS/MswGiG5zfd453kmFABHQDGYPGrPDlLE2IneITznR0Kuxd
+X-Gm-Gg: AY/fxX6Ev3BGsNn5DG7y9tS+jIv+Il0KJpnMEYSr2y8kfOUM56gHE8gFgLK5p50bn0X
+	mcbQyhOc/xsPCd3PNsB+9jkHaz45uUWqr+gZUHoOHqUe5BE+eKHKec0HdmxOwGfwIt75jXnskzB
+	+ay3qwctPXZuM/gGFg7QYHxXDRvn+9BAdifFn65LBCdknpHA6tE78xtBqRWEJgYuVyLFblU1h+X
+	VkWwXNdJfthDXkGOoe1NiK+1cbhQopiyWguow3Y3ZE5tiG0SM7B2Z+yUZmnKkaHnXeuBxmVwxnZ
+	YaiJ0rNl3pL3gIg8jzLQENmQq+OmqyqadhdFDDdrbmgi0bWfg/uAs5GnYwdcTuGxrkLUD8w7C/O
+	L1AwrqmhKvKojd7Q26509+xOmJDhlQEjRiIQkd75Ueg2Kv1qpu8VuaoY96PdXNIt+eYS8txrZAh
+	a69LfF5yNQHLfWrzMd0PRWPpj4JLhiH3D7RzA=
+X-Google-Smtp-Source: AGHT+IEE/qkOzQdehsR4JxutS5UUMjtZZSX5KqQIX0KxALxL/oRTRg+GqK0LQ65hB9xD4RLyoqIiJw==
+X-Received: by 2002:a05:6a00:1f04:b0:7e8:3fcb:bc46 with SMTP id d2e1a72fcca58-8148b5212bdmr1895799b3a.27.1767430072502;
+        Sat, 03 Jan 2026 00:47:52 -0800 (PST)
 Received: from jvle-ThinkPad-X1-Carbon-Gen-8.. ([210.73.43.101])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e197983sm42704939b3a.33.2026.01.03.00.47.42
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e197983sm42704939b3a.33.2026.01.03.00.47.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Jan 2026 00:47:47 -0800 (PST)
+        Sat, 03 Jan 2026 00:47:52 -0800 (PST)
 From: Keke Ming <ming.jvle@gmail.com>
 To: mhiramat@kernel.org,
 	oleg@redhat.com,
@@ -109,20 +110,22 @@ Cc: linux@armlinux.org.uk,
 	linux-mips@vger.kernel.org,
 	linux-riscv@lists.infradead.org,
 	Keke Ming <ming.jvle@gmail.com>
-Subject: [PATCH 0/5] uprobes: transition from kmap_atomic to kmap_local_page
-Date: Sat,  3 Jan 2026 16:42:38 +0800
-Message-ID: <20260103084243.195125-1-ming.jvle@gmail.com>
+Subject: [PATCH 1/5] riscv/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
+Date: Sat,  3 Jan 2026 16:42:39 +0800
+Message-ID: <20260103084243.195125-2-ming.jvle@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260103084243.195125-1-ming.jvle@gmail.com>
+References: <20260103084243.195125-1-ming.jvle@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3fp1qug14mww9hu36wca1zugjgryhr7e
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B6C6B120005
+X-Stat-Signature: cyamqzrjfkhu14bki7qeejpmamz363gh
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D0147160005
-X-HE-Tag: 1767430068-890238
-X-HE-Meta: U2FsdGVkX19N6nvGkiv7SYL7gweiXXdp/Q5evWkLAxU/jXul+/b+6JX+jmO2UAgBhAA9h1z/WuI9V3Jdm9uh5cf8holAkOP9Q1Cp8wbNbaU9vWqiOkNd3LtxW6hFBBrWHHwjvG1UcrM32+4OIXTOcaVf/i1kDUsCJPzvRWCyXZlFDSxmGXKDJoNQOPQf7wgGaLluDw4+s3+tbDfUWn7tkiDx9/eyQ0B4Xsp80KUO1NAUNNJ2RPNaTgs66OhqtQ2CbNnYqwcYsGSaoXVj/ElOgh3Itm0jTeFtn50S9LFFGsMijsewMd2NbwPVLUyZMfX4QqU/vMZHFGhdVjpHM+O7iZNDlMGTQFugNg7Phsp7Z9P4gYZ8WessIwIv1IXcfrp6Rhgr7OyPkCbdqMHS8xpMpCTd0aZWsn/MwGq3UFKjJoOoCDYX8HGOBm6aV8gGzCE8BJVAmAHn+GH45p7hfcnxgVBvDQPmboK5gLy9wjIHw7FFeehrxjIj7dNK3MUA+bJ6RJJOcmu++z+aRir57qisTdyy4kGmjD4aJ6lvbd+X6BPOeP9uEbNcDh5OZuZRjTbU9dSZfAwMiF061YvYWVJDFZn54YeOTBDrrT0WoyBF3m1841Db8+1hKt1xKz7/HmKogMUNr9RcWYs39i4yXQLHvCHCgkdSfIBMndbBWYsaQ5Y6MYpsx8FktY2j3YiYoEyAKybXSV+uv8MBHAD03GYRaYKGeLdodsYeYebn9OaPpgtA1Hby5WxkWHpMcqgKtvaOelUOG0eUIbl6t+T/NDsf+Ixmhr4ZANyuWnl7/Aq6HwcHMi42UVBLyiKpNVC8mtIrfR2kddJzSlllgPC+dQns5Jiy79yE6BdhqhFrERjAzRvF4EP/zEQ44UNzT7QPQq6GvPmv5gsFXEMsCAGqUeGKytPX787XBXmlcguJB55F6Z0tzcHw2vUk62jDUoL0Rvlf9iN9dEfLbSPqKYiiR/7
- 47OeWMSY
- nojckRFcUVZ17UJxY+dQDsz+sEuqgQ4dPpMKNX0hfs28dzN8cAjnSKCA3L1bS1g3wNubVwgjdaFvNlhx8niZ3bUcJA78vFMiwoxfExWvMbhpzYevEqsNeazSQJWKgUPH/BKIId6VryOaP88XHRLZ5Ynpz7szwiE9Zi0efCM1fIi46l420f/cQFEv1L6K2kAsrKbeXZ4ZWKwGRZDJ70NWpuY5c3KRKqsYtouHiK5kinTwmePojoKjgjsMgtbLrl9WFu2LWV+D6Sgx07HbmcAQVsZrJrvcBeAaFRtbpn+nQ+95b/5Mqk1rcuDQDWlY0xJM6trt1Gcjj/j0gN47YV/wL2CGu/3vId84jb68MqIlNBmZTh4RiYK+T7P4q0UlfJiDKAtxJFTYeZvt20axDNg0FA6YfhtT/5IzS339CNS3KRT5aUsxF/qu6/pxcbvV3KMJmfN80Q28NDxrnFDg0YkaUC6Hi0XNvj0id1FnxvXVdr1aG98UnANyjroH5sW4maV8hjGA3uO4wpRCOFKYV4wqcKTSanM82GCyUV44EPi39EqLHqessSgrz/fuINyejjS78yF64XOqrcnuBgu4X1SS4XDFPHZgyz3qvboenPOc+XTnuwIM=
+X-HE-Tag: 1767430073-522912
+X-HE-Meta: U2FsdGVkX1/1SxXcfkvkXLS+i+REnCpYK9aAv5QoqSyeXRNAnKlNdDjzgVV8SgXZQjoXQz4EB0fCLzZx9TADk3qLoTRh2duyF4owP4jAJyDO+DYWtCu1j7o9+HsdmuitOryvJC+ENr9ftyMeuHWGvPGSMEJtJ9FSjKmk7RiycLEcOgGmHVhcNOPP8riy77P+I++7+bc2XKG/+bFbNaogSwMxQaSGRUAL6fz78bm/kidIIF1XueVYq10jLjuyCrQfQlYwioRtyDeN816y4IF4fn1y/R34UUQo4muSfhd6+dodN55r7NUdHElA+Npv0xsnNX1e8L8nWaIjiwG5L60C8QdAFcriP/z0P0iqOxBtt/Ge5DKEY56Ktg5X2g6yFYcF0J14QJTJvIHHqLV+sczeFc6jQLIcSFZFn06zpv3xyiqoqQlQZskQcOalMhHakaWs87crkx/xt84b0XfTAwC2ZPXkpdrI9avaoNKIb+Q0cmDij6zG0L2FsFbaa8LC8jtI5PLziTWKJP0Gk0f/PHli5iGKqguw2dcsFiltwSAkkyMmw1/fzdaAvH1YI+zgnQrHYm8GvPDBwosT8M+QhJMHQJHmTvAjZQmVIi1m4Kh/hcxHY5/QzTH8YotQcil3eu2G9pdLrbZP6IYSAuPR7iZdmrlklf0//LBaikVsAPt78EZumk6JGi+FLFS2exYLtEpG2eZjy/IrM0a/kO9RDHfGSrmyLsZMwr6q9VGMeQp2b1crW+pXw+yPjpKMQwX5WVlf/QC3hZS+f4CEG4xEOW7jKYR2T4pUyW+Babf9UEwHmqRNxJqytgR4845aw6VNSG6t9X7PmUtbWwX4B+gLIoakG7kOty3Jct6SzAWh7d0GGprUSkmLPfwD+5eGgMtY+hD8HZgORuXjxZQ8THkkLmpCgpBPGq8u2fW4aRpthtoA0oBOHIbgAN3cTv06KmzFNWaCQE/gvE2mTTrhhC2vPkQ
+ DnnoqGhc
+ /oqwN8I+5rv7d8+2BAc9TWrr2cDKBi81DCULQMJFPVet/XxXH13NYWwyN7ntWNH8fCn/+qRcBVmJRB1uay3pemx/dgpUAlG9B4zwbby6fdwu0CZfqFjgvjBC38qDxOsVW8obLSQfyLQOnpTY+PI+Cs4euSTGtdo/jFFBxBni5qJAoeLcPWLQmWVmQt5grj/Dnj9dMx4qYl10AN0Cv5rO8bHfhXyOiMB80fz5ZOrbgXeWPwL3B6aJtjyxGNtTi3Cjry27VP01T2FujJBHz0qrAVPZoZZGf7H1pTAfNvjsyX4FD7wEL50q1cLpIQovVhhH8Wk6tG0YvqnDJ4PcsY4V6R2mvQ1S4go0FXfy8jhTIegb0Zcnls0UVJzX9ajRot2AuS9MLAgta+A0v9zGBYytx2npUh+GUgE8LcSxi0yTlPSB3o8ESk+mGvuNwJvjxoB96RrNnGebZ6FlS+CZ6PP7Oi69VubQxnKf2JbSNK6+m8jH7e8pf5mmuUNjUpQeZLtGo/aN5/ZjbwU1wasydMNbuQu2tWg/vB/mhqFXJimRb21KM+H67X5JNaHCudg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,41 +134,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The use of kmap_atomic/kunmap_atomic is deprecated. The purpose of
-kmap-like functions is to create temporary mappings.
+Replace deprecated kmap_atomic() with kmap_local_page().
 
-kmap_atomic() typically disables preemption, while kmap_local_page()
-allows preemption.
+Signed-off-by: Keke Ming <ming.jvle@gmail.com>
+---
+ arch/riscv/kernel/probes/uprobes.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-According to the documentation, kmap_atomic() is primarily necessary
-for contexts that cannot sleep.
-
-> kmap_atomic() may also be used by interrupt contexts, since it does
-> not sleep and the callers too may not sleep until after
-> kunmap_atomic() is called.
-
-> kunmap_atomic() may implicitly depend on the side effects of atomic
-> mappings, i.e. disabling page faults or preemption, or both. In that
-> case, explicit calls to pagefault_disable() or preempt_disable() or
-> both must be made in conjunction with the use of kmap_local_page().
-
-Link: https://docs.kernel.org/mm/highmem.html#temporary-virtual-mappings
-Link: https://lwn.net/Articles/836144/
-
-Keke Ming (5):
-  riscv/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
-  arm64/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
-  mips/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
-  arm/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
-  uprobes: use kmap_local_page() for temporary page mappings
-
- arch/arm/probes/uprobes/core.c     |  4 ++--
- arch/arm64/kernel/probes/uprobes.c |  4 ++--
- arch/mips/kernel/uprobes.c         |  4 ++--
- arch/riscv/kernel/probes/uprobes.c |  4 ++--
- kernel/events/uprobes.c            | 12 ++++++------
- 5 files changed, 14 insertions(+), 14 deletions(-)
-
+diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
+index cc15f7ca6cc1..f0d0691a8688 100644
+--- a/arch/riscv/kernel/probes/uprobes.c
++++ b/arch/riscv/kernel/probes/uprobes.c
+@@ -165,7 +165,7 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 			   void *src, unsigned long len)
+ {
+ 	/* Initialize the slot */
+-	void *kaddr = kmap_atomic(page);
++	void *kaddr = kmap_local_page(page);
+ 	void *dst = kaddr + (vaddr & ~PAGE_MASK);
+ 	unsigned long start = (unsigned long)dst;
+ 
+@@ -178,5 +178,5 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 	}
+ 
+ 	flush_icache_range(start, start + len);
+-	kunmap_atomic(kaddr);
++	kunmap_local(kaddr);
+ }
 -- 
 2.43.0
 
