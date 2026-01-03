@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED2A3FC6165
-	for <linux-mm@archiver.kernel.org>; Fri,  2 Jan 2026 23:56:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57686FC6166
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 00:21:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49C716B0088; Fri,  2 Jan 2026 18:56:56 -0500 (EST)
+	id EFFB86B0088; Fri,  2 Jan 2026 19:21:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44A1F6B0089; Fri,  2 Jan 2026 18:56:56 -0500 (EST)
+	id EE0D96B0089; Fri,  2 Jan 2026 19:21:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 322206B008A; Fri,  2 Jan 2026 18:56:56 -0500 (EST)
+	id E0D926B008A; Fri,  2 Jan 2026 19:21:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EA5C6B0088
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 18:56:56 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C70C91610A0
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 23:56:55 +0000 (UTC)
-X-FDA: 84288686790.06.D3D7C1D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3DF2640007
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 23:56:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BYIYmUu5;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D18C66B0088
+	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 19:21:46 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8C0AB8DBD4
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 00:21:46 +0000 (UTC)
+X-FDA: 84288749412.23.2E9288D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E69781C000A
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 00:21:44 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mTBZi2+A;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767398214; a=rsa-sha256;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767399705; a=rsa-sha256;
 	cv=none;
-	b=DudkaY5DAiIKxeKvxHQcSUpbTOFth/KgTVw0e06eqQSJnVAwRoXTXuqMfJLSiHt0Hv7UoC
-	HklWk0/qJPJEd5jt5TfuPwgbI67v2TpKB1P5nn8+xalCmlBHHno0cspik1Y4ilGjBaI//w
-	r7+e+4RDUDFK6ukuw5i7rW06aag2dHU=
+	b=IP8Qe36XCMqtYze9CEqDuikJZT3NOTdXphdVYYZAIE6sAKfH96Z8O8IqKSnLPVGqBjPNCE
+	OW3OIq/5+T7gcC0ZdKDVsSxHHiqXlwQO/5/HgXYNlxygSgrosuUG6z6FFvOtymtVnL+1LX
+	awhWcm37svPRrKb3JIxJzH46KfzJgX4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BYIYmUu5;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mTBZi2+A;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767398214;
+	s=arc-20220608; t=1767399705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cvEvWIniVEkgq0NPCD7flwQa1nehW2zJLcOBtAKFw2U=;
-	b=qCEo7iAOR/6IZpmydkbyuHmslTZPAV7e0e1ibFX2BbUdNrL1Ghb2gz/adbXl5CkV6/Ao73
-	UnFV1Q6Piam0gJNBHU0cy9RUe7UnwMzGyJBYRW5JEzbhCF2Vc0vQ3Vq3OQr27tj9fecp6j
-	5dDsoxSQoR/hEQZuhgrrPaaTiC5221A=
+	bh=e4lHSIO+1qEkSz0XNFJWZ9SyF8p46jgJGQuc94hZdtw=;
+	b=bgRAnfw9m+gwQOnT13IC9sujyVNJviNTboz6R6GHOxtshNjp4hG+nDiPBh5W1S3X0TwIsB
+	TfkBLRIN+MTMzVlnKv9WbR99lmEFeeJoUFX389fhtjDjtNTEIauKF1k/jzFUrunwtuR7G6
+	uM4XixP6PF3KRMGmLrejaAvBbQBcgIk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 51A8B6013C;
-	Fri,  2 Jan 2026 23:56:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC3EC116B1;
-	Fri,  2 Jan 2026 23:56:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A0A1D42B12;
+	Sat,  3 Jan 2026 00:21:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505E9C116B1;
+	Sat,  3 Jan 2026 00:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767398212;
-	bh=ybuwGpGfbUb5DnB9ItAV/BRz+NyDNoypHSY4MVr9kOY=;
+	s=k20201202; t=1767399703;
+	bh=RRxvex7w8FVUNgOkNM+y8EuSHgaNGHCq5mSSN/nxhSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BYIYmUu5TeTDkbQyjKr6SIiV06oIxmu9nmgM9oNxPQs0EY48rYPptaGdzqyI+peiB
-	 krEuYKQUc8r7jJ7w/hEhrOVHm34Dldm8Mo2zjcAl37CSYxJcI0sGy6Vj8gWr6dlCTg
-	 3nlZDjQV8UslZDXf5P/yyD3GK/j0ThK4fj7oeZlUivAPZ6a8o5KjkWLRmcTdWAh7gx
-	 Ad/4pqkLum46gVJXVD05f8S3CGaKMTtEvAWfL6NCuuzx89vbP8x57vr641meLutwFE
-	 nk1BBP4BwTrlOrfxGKJ5sNymnA4UyLY89TRJIE4s+Hxaqy+PIYsRrsBE+Peszs+fKf
-	 6sf0qo11/2gRA==
+	b=mTBZi2+AvRTWYk+wBgldQYvdYBAVIdINkvVX3c1ew+3uRhPqp33ntUYux6d0uog68
+	 jZ/QcdECygiJLPjqjgORCJXtnZF9o6iwmUkKLEp5ypNhLpIUBOC2iHVAgkSQdnmwQf
+	 f9UHCueduHcGbaeiTYMwp2QviwVwpj1CvhkvmY4tz5YmtgkvJ3cnwRrzg7PyiG9ldK
+	 fyTv5RbMUHfi2RrEXX4bfGw8LoY8sROoaPsM3my3URDtBjeUuHrccAkJPn4g4R4kdW
+	 Ict88pNFadtt/GFX3o4Gq1uphx5TEqePtZXvk/0N46pVmszreGRlOTGQSU0h1+Cdhh
+	 ndZE7qmLcLlHA==
 From: SeongJae Park <sj@kernel.org>
-To: Greg Thelen <gthelen@google.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] memcg-v1: remove folio_memcg_lock() doc reference
-Date: Fri,  2 Jan 2026 15:56:43 -0800
-Message-ID: <20260102235644.54611-1-sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"# 5 . 18 . x" <stable@vger.kernel.org>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/4] mm/damon/sysfs: free setup failures generated zombie sub-sub dirs
+Date: Fri,  2 Jan 2026 16:21:37 -0800
+Message-ID: <20260103002139.66559-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260101225552.3423108-1-gthelen@google.com>
+In-Reply-To: <20251225023043.18579-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3DF2640007
-X-Rspamd-Server: rspam03
-X-Stat-Signature: k7wajqzjfh98eiz3arebh9dsp1cxnnxc
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E69781C000A
+X-Stat-Signature: gwn5kxs9x89h8kgwnwspgyd3sj6thcge
 X-Rspam-User: 
-X-HE-Tag: 1767398214-211722
-X-HE-Meta: U2FsdGVkX1/HEcX4K3o5+3p6Gm4UtTwA7rci/KkEJhAy92sKaaFqGpsf2PH/1Js6ke+jzqi4osR0uPB4xjgiwDaDxDOVdAU739bw5ueBNk0OJEvOQmtKSiXuWi6ehyqzGu4eQLjhXUhQz9gka4UxOYMX8Oznqisfp/HBOaGYmf+RKh9+NF3Eyj32CJLwE34q5CKT0wPZJ1PH+myML4OJw63Y0mf8qoasMLYImaWQHkOHdo3gT0WF1uYjcvvP5PPKSTTbP95oJyCHIIjbF7OiJmB5k5M4kfIs0JnCjMmlaT5xnQr4XGMQvuEEJkYBwGtncN/Z5hstkyyTk0HFZmKoMFxidrIKGrImJYGd2cVl5OR4upyxzzGOyJNhvH1NlZ3xY9VvWJdJT++X5m859L6PMUBDyqaSJVytnc1TJliej11I4fsOXR7kBOECxSUYxTrNEjL3KtUn15BmoMo9RXCTYbPXlSQ6YVtKKI8fB1I/36o8j9ciHdZL595/hcyQeuFhwr6YkWLNgbxeKQOWKQ+JLdKgO9k8wENxCc0KQDJXg8250BWq5BBE10Epw3QEXGV7D8kFy2Czcp+YI3bGs0vvBwKLTyN4sJlBht0px0bpvSb37jFddlJHbGXqBNd9SmSyVwI+b27p6pG9LWkHjI9xRBeR+/jEGjXYBkz8eC++qZU4CWUvNOuXZfsCvTzwz7rEPkJzz20mTysi5kX+Tyb8SwhwFYkIRMyA3TK8VBCpA+rE4xSZgt8uMFKyra3rhY2lBr3Zi7MdCtPsOyCODTj4SzaIL8YOZetrkEdYX27kYARTCTktFkQjuNya+JELBZO7Sc8Y9tzHOU4AD41GKAc853K58IsoVEibWovdUllXFwDbdI+ictXUn3nu2QIdr+zoC3LeR2v8sS+BQESSoc9rCO0wFAvA5ojWElW4fL1Vuxfi5oagIjiMeSpPNpdg6NlPSELolKJoOzIs9YoKBiD
- 0mmRyPFj
- jvp1VczfM5h+2ngEkUp9/nwfNPb2EE7XIyhFGxN+b5SW+wF9CGfxLLf6fb8u79/hm8/iXAFzkhzPcJcQ9Q7NzrH++N3Ehjnp39xeqVwxYh0q4phliwphJnLPf5DmI95t/3Ls4wXpLAlBSHM4zAW38nstuasg+Csv6FZtVHUbHbIe3tZ0gMkU3h5DCVmpEOmETS3drLlbhwAgY1bpIN3mkXjd4S0vRxVppOiM+V06U1nvky/hxxgJkJQIXHXktkCMVYqv3ZPl0Qpv6IggAmZN58wOJdV2B1dhDF2Zp/VJkKTPPbTg=
+X-HE-Tag: 1767399704-656092
+X-HE-Meta: U2FsdGVkX19oPhPHPZx3AWIyHh9f0DVvTFjAGpX3e9vvXXRf4tIEk36hLuiaTdQ6A95igWMEnuJ5wxdvhLl4KroIc0sD0aaVfe1HVv5hYh0kjvi8WGPq18oAUztPOUOPDPvfIX0RsnQ4hbn6JcZ8F1CUbQSDDquu/qAbG0ytmVjqrBlNt0WfjT4JK/HRZYJuVXe7YN1qg4MJEpo/ub4Wz9s/JkoQ/Jv99QjuxiTOKWjhOm2KGn0KBEeohxZzCQ197bPvOx7M+j/f5SRNNiY2KQQPZzaQnOzR6W469v1FgAb7UTXuaOQH4bRHbhdMKIZE1yWtKMUZ8s+IZTyU+pHbVP35ZgK02ECFiAvQvUb4NwejD/bTYSSp37YhajdVDsY06DZTod9pJz9yDcRNjQSp00MsYKjPoRVL06gf96HN0NehwljvUHwscDdRto5CQuLFXbQWZuQNzJHbRjRWvDhPxHuyJrVxjfkC9IS5iQabZlf23pPys9lXaSF/tMQuw/cSjPRWI9jy9lJqahIeqTeEo9wP7uTROh8wcpTd/A8lJlV4NF9G7JLyCj8k1ccEoVnwLy/PVL3QZQIepRNMpwpNhF9pUQvQr/JIG49r5svm3pTrNmYdGNGDRbS6TVTXV5lcJyHx7ert36yoK+l/ZdOWiEUFZrC5llV5y1O/6//3/LCBZ5kvOX40cso+ZE/9DC5hXIDQQnC4qHdxPXEGLlqn/R8y/iMVX+hcAGnMNZjin28yKJgDvcyGDkCt3bb1YG8ULd4Ob1i/y2QEKNh3QpN1tkvmVTDn0dl2r14FJkF8/wz4onUTDSR7TMi5ks5/HvWfr2omfFb6hWVrGztwvhgroYwaxmP4ZQiK4RnewmoeSl7Dz6qSyRXNZUo2UAvQosyoAnXhkYTRyj4eRbBhf8scmtRKBZ9Y8QLxKIcnj20MVzGqHV0RlHiVamutN1bX5lNXvpRxCUVk5gRsPHUQPli
+ 8BOPQKY5
+ 60N1Tirz+uafMpNMXCGsktLYUr3NTvoULbYYbo4a1EDU9rq9OIWQIGoSLP5i7Z5cJhVKWeR9cAkGMy1xS2fEwM9noDOsHkWAXgd0tqAXyj0RiKrdCoPcMLAHt7nBU8PF9D2XWlmB2VxQl6VUaDiuQw34U7tzxbuBwjKv2xbZNdu33gn5Glk0BbAHbRkdlTnOSoiPXFj6mmDnDOoKtGJ7UU33obL0iozpjBAARy3Wum+K22ow=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,18 +95,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  1 Jan 2026 14:55:51 -0800 Greg Thelen <gthelen@google.com> wrote:
+Hello Andrew, happy new year!
 
-> Commit a29c0e4b2e86 ("memcg-v1: remove memcg move locking code") removed
-> folio_memcg_lock(). Delete the final lingering documentation reference.
+On Wed, 24 Dec 2025 18:30:33 -0800 SeongJae Park <sj@kernel.org> wrote:
 
-Nice cleanup!
-
+> Some DAMON sysfs directory setup functions generates its sub and sub-sub
+> directories.  For example, 'monitoring_attrs/' directory setup creates
+> 'intervals/' and 'intervals/intervals_goal/' directories under
+> 'monitoring_attrs/' directory.  When such sub-sub directories are
+> successfully made but followup setup is failed, the setup function
+> should recursively clean up the subdirectories.
 > 
-> Fixes: a29c0e4b2e86 ("memcg-v1: remove memcg move locking code")
-> Signed-off-by: Greg Thelen <gthelen@google.com>
+> However, such setup functions are only dereferencing sub directory
+> reference counters.  As a result, under certain setup failures, the
+> sub-sub directories keep having non-zero reference counters.   It means
+> the directories cannot be removed like zombies, and the memory for the
+> directories cannot be freed.
+> 
+> The user impact of this issue is limited due to the following reasons.
+> 
+> When the issue happens, the zombie directories are still taking the
+> path.  Hence attempts to generate the directories again will fail,
+> without additional memory leak.  This means the upper bound memory leak
+> is limited.  Nonetheless this also implies controlling DAMON with a
+> feature that requires the setup-failed sysfs files will be impossible
+> until the system reboots.
+> 
+> Also, the setup operations are quite simple.  The certain failures would
+> hence only rarely happen, and are difficult to artificially trigger.
 
-Acked-by: SeongJae Park <sj@kernel.org>
+The user impact of the bugs is limited as explained above, but the bugs exist
+in the code for real world usages.  I therefore expected this series would be
+added to mm-hotfixes-unstable.
+
+Do you have any concern at treating this series as hotfixes?  If not, could you
+please move this series into mm-hotfixes-unstable?
 
 
 Thanks,
