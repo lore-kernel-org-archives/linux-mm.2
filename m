@@ -4,156 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF193FC6174
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 05:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C459CFC6160
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 06:02:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24D6B6B0093; Sat,  3 Jan 2026 00:36:35 -0500 (EST)
+	id B49A46B0089; Sat,  3 Jan 2026 01:02:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FB436B0096; Sat,  3 Jan 2026 00:36:35 -0500 (EST)
+	id AF7D26B008C; Sat,  3 Jan 2026 01:02:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FADA6B0098; Sat,  3 Jan 2026 00:36:35 -0500 (EST)
+	id 9F6236B0096; Sat,  3 Jan 2026 01:02:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EF6BF6B0093
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 00:36:34 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83D9FCCB07
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 05:36:34 +0000 (UTC)
-X-FDA: 84289542708.06.D4F67B2
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 86E19180004
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 05:36:32 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VB+b2J98;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of shorne@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=shorne@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767418592; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 8C7E86B0089
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 01:02:52 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 29D0587544
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 06:02:52 +0000 (UTC)
+X-FDA: 84289608984.11.7900CB9
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CFF68140007
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 06:02:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	spf=pass (imf09.hostedemail.com: domain of pmenzel@molgen.mpg.de designates 141.14.17.11 as permitted sender) smtp.mailfrom=pmenzel@molgen.mpg.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767420170; a=rsa-sha256;
 	cv=none;
-	b=zwsbflVjdqyDM1heshnFnehD9TZgAEDarGvXZwBqb6mkmFU6Hq8dXNS75vOSChlOmI+R6E
-	RZGWyvn+GHWsFQMNggXAjb55hcQEmQgVP+c58rJpHGCt+X/Iac7ehYotbNh70m6yx66oYF
-	qQhZtSHYF13XgL1oBOL8sfQ8lmmi/Rc=
+	b=R1gGDiMZWSVb3bcjF6aivk7dogQ+/+h4r9owAdhLlD6KlonGiTR85Yfg3Rsbhz90tOiGY/
+	6Co3s/vjrEeQZ16DGPBOGdKmCFw7Ui/YEuQDPXXt3Vh5uZVTqmoIH6bOU/+/aXgKJuVmew
+	0m/Ly1SN1/rIxVPXLGP/hgKzw1Kl5lA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VB+b2J98;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of shorne@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=shorne@gmail.com
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of pmenzel@molgen.mpg.de designates 141.14.17.11 as permitted sender) smtp.mailfrom=pmenzel@molgen.mpg.de;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767418592;
+	s=arc-20220608; t=1767420170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=10gk4kIzv5viXrYP6wsblohOaaYzL8Wh9uCfOfLAyTE=;
-	b=uChC9IG36RVgitjUdvgXx0NbiOppCx/WQTjf5aFQDh41t77M77zGqAUo8axJFMZOjIoLMO
-	ZcEQ3lMPrM6VRg8kWmX5MDmU20zApPN5j+58ZmJg0Fi7LuEXdUKfgITDTx/NobJNgw0EyR
-	zemjGzMj3CuNbrSdeBeFUJokTqhFUKQ=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42fb5810d39so8128699f8f.2
-        for <linux-mm@kvack.org>; Fri, 02 Jan 2026 21:36:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767418591; x=1768023391; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=10gk4kIzv5viXrYP6wsblohOaaYzL8Wh9uCfOfLAyTE=;
-        b=VB+b2J98IerAxpzmpm4lvbEoBDJJFhrn06I8HwbFFRfwjYIBKvdPJFvK692Xv5UWnw
-         qfHSQlw0gyB6YTMImSj0qvvFqFwW+kI7/Hb40U2QlM0M3Brkw7x2d1sMkX+d4YkKgZ2P
-         soNK+mCbaEidX0XMHWkYaWNB/gKxYQj6USZgGYvcmqy8oQ4G5UktVXn+4dZNlzXi9Roo
-         CHiB0QpG0c579Fu3hxWfk6rXaoXc0eX1lHj4nTLKsDyLt7b68mCCVjIhMm75DAQFM51e
-         x27AVOzrTxWfVlKgZlLFto48AOR1TKp+vw+brqpbKUH+J3ua9LJppKRWj91XzXDmEaEJ
-         BaFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767418591; x=1768023391;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=10gk4kIzv5viXrYP6wsblohOaaYzL8Wh9uCfOfLAyTE=;
-        b=CNE2wuRgk/mbtDEqEFrfistNWkTx3blAKPJvx1uP9at4BzJ/h0WC1Y6VQUwDCSsYNT
-         xoOfDrv0ko2jBl5mJzIPy8hp5lRXgDh4DQQuMwht3cAU4S6q8PFGjrb/pAgnfNsPZCNt
-         AT4pWnVy3Rq7gtTDHMHhtm48SsnKXpEfsgB4wzxb8gAikNX7mDz2pRbu8QLfnyQ2ProT
-         b9Gd8sc9km6HUQucK3HF9Y7Gjcjdkiw+Ny6P7grCCuQyry5nW6H9fk18+xieKOF3OpbH
-         0yCcdLeBZML52rhkTm7TUlgYHsBDwsIqgrvwS/1wDX6uaQKE9DoMn4tiLXBSOPyfaAO0
-         ts9A==
-X-Forwarded-Encrypted: i=1; AJvYcCUJTCUsIFLcMdv8/ElR0R+VZC47rKvrUfosSxX6mEVDoK6yf+H9DcSaNgTQryLc3NaPdWgHiel6yQ==@kvack.org
-X-Gm-Message-State: AOJu0YwEzE+V8TlJvdLIVhEbI/h/o9Q6a2u+83iY28xtVBKtBnnT/bHS
-	BY4DKU9RSh6I9fTNv3bFHaNSfC0Diil9YuhgjPd8chknL0BUskIzlzRO
-X-Gm-Gg: AY/fxX5gwvhjP6Qj+MSD9gzKRnsPknQffrF3q1xVjEHClW2eA2EyTbYMqBJN8iPBG7s
-	3mOPxfN/S0s0aTcXZzMryq4eAzjffXdBrNfK6CGdj/qkAJagXloJMwZgThyHA3NQAwsf9OnW8gT
-	vC8TUcZSjnS6zPLZ1qmrussMJ6/x0YJaO0KpDQGH6x/Hr1ZEYDFbh5ztQRrphTzkQ2XEcDJ6gce
-	sL31Uayp8/+huXT6ykkQhlQzpGI985REr1RSM83ecZrt7bTEF/VJcOfoym/BYExZnJfxbd9dffI
-	lubEWpSZWHecV+HRSmccjWO+sLCkVfNX3a27TRm2uw2OnwyhrKtFJXs6QsAD391yYabZ09RmbdK
-	4XJeNHjyGkjijn3924aYZRMxXMfg81Yb1FnLFMhT9COMdexoCH8YLHXNMA8t0u48d7cD11Diodg
-	3IgQXFIqmjVc/rVJ7v/0m/g4YVzmVIa2HhJA/aXx0BJ1B5U2j8jUpxv+oj4DNg8xW+
-X-Google-Smtp-Source: AGHT+IGVfFhDmvRzquITceR9a5MtoKyW2aPxvUx0HbCgVxiLGpVVcSZGOqzt3JsoKLBzXfIUaXLywg==
-X-Received: by 2002:a05:6000:178f:b0:430:fd84:317a with SMTP id ffacd0b85a97d-4324e4fb825mr53362620f8f.38.1767418590643;
-        Fri, 02 Jan 2026 21:36:30 -0800 (PST)
-Received: from localhost (brnt-04-b2-v4wan-170138-cust2432.vm7.cable.virginm.net. [94.175.9.129])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eaa4749sm89007161f8f.37.2026.01.02.21.36.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jan 2026 21:36:28 -0800 (PST)
-Date: Sat, 3 Jan 2026 05:36:26 +0000
-From: Stafford Horne <shorne@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
-	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
-	x86@kernel.org, linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2 12/28] openrisc: introduce arch_zone_limits_init()
-Message-ID: <aViq2vsMk5tltK0f@antec>
-References: <20260102070005.65328-1-rppt@kernel.org>
- <20260102070005.65328-13-rppt@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EzpnsZ95C+miupYdUSOBHKPY1HilM3Lk0m1rwZj1Hxo=;
+	b=Nas+eYqrtQSr/H1ZVIdbA4jlR2CwM84sl4qg0NkGsJdR8ItjXDSnjnTxnnU36zQsfqyz77
+	B7EUQE2aVO/RyL5o0vFd5E0m/ySjC8Fpv4OTJHiH1CD8kd1nqGUBiQq2NNGlom0zj4PZx3
+	0RpzoaKKBvVu1kuLpUesSiVoH7tmkg8=
+Received: from [10.11.202.139] (unknown [124.195.223.90])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 8E26161CC3FCD;
+	Sat, 03 Jan 2026 07:01:52 +0100 (CET)
+Message-ID: <49cdd663-bcbd-48b4-ac38-77ce94ef0c8d@molgen.mpg.de>
+Date: Sat, 3 Jan 2026 12:01:19 +0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260102070005.65328-13-rppt@kernel.org>
-X-Rspamd-Queue-Id: 86E19180004
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 7oq7ds1pdbnswbpf7163xn9j6fifj99k
+User-Agent: Mozilla Thunderbird
+Subject: Re: BUG: kernel NULL pointer dereference, address: 0000000000000000
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+ Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org, regressions@lists.linux.dev,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Hans de Goede <hansg@kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+References: <6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de>
+ <db387081-345f-423a-a0ff-e13f3bec2d51@molgen.mpg.de>
+ <CADVatmM_mRnkDX=hpUjbyKkZnGynxJfRSujGxm2LaWWMEL_2ew@mail.gmail.com>
+ <ef9223ee-0a4e-468c-bfd0-0cf190d262f1@molgen.mpg.de>
+ <aVgjpWaIRkerdgCa@eldamar.lan>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <aVgjpWaIRkerdgCa@eldamar.lan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CFF68140007
+X-Stat-Signature: eb4crfwpppg9rfoe3g1ugxen1fp8q91c
 X-Rspam-User: 
-X-HE-Tag: 1767418592-409640
-X-HE-Meta: U2FsdGVkX18N9gEGrcDQxiDQ19kSv1oNjuJDRcoNugxDezrzUKbCn5kyLsLc0B4KpR1pSkNWzclDNlb5EZoCiY1g6Xn5IkqXT5MSsaza2002AyFvdqn2IsS29yXQ9uhHVhVhYdSyf/CP2yLOVsawicsJ93XSLzfoxHG6hKUXi4XvdIniXlqwVxmUuk+jaJFCjCS3gkPGjbCXQupAr7PnxP77liU0dkXXh8ccPSdNB20lYVrQjAQmkMIinTgqe2CVQ1pJZFNnFb+7Z8GArvaGI+G3MaU2g2pADszeEAeUGqZ92LAlhy0GvRbw7f/1aDsseV61eXAhFGoxx2A38Mh+cIGyfX5YEg/Pa+zc93gS5Yju6Nm3lCHUGP3dtgKBQVgbm9d5OSwxpTr0bBDgMZhpfpcZt4JKJ491sOjuLl+VNKEVW+h85p3YgRpZPat7Mi5krlidtMCpL8DDYTsHi9ZuBk3Voo4A+K1Cu8BWbBubSHLFV2sIH7zPAs+dTDVCT5gKSmWtSa/HPbpRNKM5xUwwyVpDjOYDDRoZeZUoIJK14qDxsPB+Ae/EjreQe2MpZysZUfUulS68g5NoLy6OW2VjMV4N8miAyI8DbdmkEdHprCE4fTBSJT9/wFXo5PGmn7YE9XQ5giG+1zUIUkldL4AnF6n4FXXlpotpzd8z5vL4ghtpEVp8aW5+3oOw94h4KzAHSu278bjL0CEjfpKkgwJgSKppKSqKNV9C5oVTux3kTOGt0X3jNxViohVKE6i/yjDxq3Zp8bQuOoz+z16csmibkNiSQwhS1kmMQge9jrCBjLBtDfBMBrMVNWWCwMg046vONwlbxzXuZECajgRSuRKI9vVmeJ0J4NrJsbA/X0HDUflqAVBX6Il1nmxj5hPbQn1+7OK1NRr8q/70/tTct9oFlP+gtiM45GZ5qO1n0X/ZV7oOL/a6la/PIbrrq51sRhJHgr8BED1dpbf2YDv6Z7e
- L9biE38d
- h5SvBpzXpVgeGWSpEBnqNCQfyeq1HZjCCsFpfNktDBuZ5Fns6ElaFskubfQFrDSxssEgf0q1Pzbm3MbspHvdlDK5NaopqKTVuWPe32D9xrK1hLJoac8FvCK5cQiRl3usVIPOM0QN6FlNW6BcBqNScrC9Y6hdkVjVd3Rt2+ea/ishu5iCIhFjYL5yu9oaFQUuV/umdA5MMyYNQOALOe+T/IlivaiSkdrovddcJqzoBGdLikhQwPvrH3PKoP9W/R08vkmkURMCjFuxYIHw4bTkPsnQE6E+Hhr6CEOz/0eOlSUv0nnWheq1aMjuVrayeIq9kG8fKQzld1ydPjlfCFhK6rNPe8pFsFOOLqGgw5TKZ3FUWsOLAcDlOZ32piACMW5bZ4DUwlPqjWB5y2kNbYI7MJB4/Lec3IBCbCOENpJt1k/6ugCC9KnPxAUMTuMMaDWnUM8vIAIsGUJp9iwNBwd7cMcOgVg9d8M1hP6FsQYqsDyof1o+GU5vK1ToZ8J0bwrjOghSl0zS8zIECrn/mya3CvtLbg3EYd6yGE0Frga/vSe35zHdZE28/d0lzHXt7NpwltN7x
+X-HE-Tag: 1767420169-822481
+X-HE-Meta: U2FsdGVkX18qsK62U70cxIFz/p7arX0YpNcIKGFhDut6bLfBNLZUYPdrMsIRX/43jqx24LkPkxZPAQXQ2NFO/2zqBMFwTgam6ESVpA6l6zPPzkRz59UAQJ/jMxiYY1geRsJ3fLMs1colbyR/MDzD3kArgi5ewUnktt1gLSQaMq+xcUnDffchuN6Gg8SnCdZDa2AcmVaXiwkrPmgUDVtEGZ1Or0TcQwTo3ZI0Z4K72UZvFctcZ3U11w2ie7Ijj9NQGSBv5nZ3ayhxHpwh3iH/eMvwLacXbjGdZyZWyzwCB2pANTERzk99E74pFeY0vTJcWwPaFE3kQp51kpQzm6XizSbZqsMP4NNDKXa7TjZqkAPfCJQzNbpXxfSlS4pNhVOWp7sLkkvvdJNKEGmJdtwMjsPuGTecivae4S3+qC6V2Otk97q1wpNKQaTnCplONRoxWSAivZegSaaAw5wf0l4Z/C93ZiZDE3+GIMqOsWUCCSd1M29YtM9jtrw1BFP7YUcsLCaPfFHxo7WJOGVEWBqojgSJzl+mMWjyov/x38zooki+ZFm3+gp5KqLajK1ijPhr/PXhlKhPVyrSv3wMWu8cUtz0Vk5m9pC2YOk2RFBdUK4OYiyYmELRT7idjn0v6KnQByKvySjrf2TFlbLK2pbKYxGynH6WL/rL/P7HIxn8F7XXSt/3HzI10cO3AnU0fnombXrcRuJAarSyIKX/xrchQbXjwQ722s1pISp+QuhutASbwunM0u+LAxBQ72Z272KA0SIwuyiBHK8Yg/mR++PwfAgXTmU5jj2+OAK0TXdiJ8j7pI2HrhhWbzhQHn8vTJdhD0XjN2ix2gA68PkSdt/3tyhL3mEt6Ozg6EYnBQJyYnmP38BIaUDy6grhSvTNUuOiSV3CToQeQXBfpeT7OKTibdU0Fz9+/JM3v1DPBA2PK33ee/urXIs0Rp6L9/wlKFqG+vbHHo6CJLm7kr3mcod
+ ko7mun5K
+ b45lGc9jc7WXi6d0LHpabRrgVtR9A1nEPUkqBrBQTJ1kqzR8xkaayielFdJUiCa8U5Dc0STka/CDnyPvjTA+xOdj4Bz3AxNviRs9oP3H64d7lRdBQDeP3XtPNoAxATNrEqsVaBkh4lrXmILeFCt+Zn6RavdQbO1Adb37+pugi9JwO4jLMomOhyfNE00JjvIl9PUTDcuQERh+FHUyLQQC4nxzQTw5gB1nrCMtmFR9psubERw/mpRdxkTOC5A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,51 +94,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 02, 2026 at 08:59:48AM +0200, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Move calculations of zone limits to a dedicated arch_zone_limits_init()
-> function.
-> 
-> Later MM core will use this function as an architecture specific callback
-> during nodes and zones initialization and thus there won't be a need to
-> call free_area_init() from every architecture.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  arch/openrisc/mm/init.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/openrisc/mm/init.c b/arch/openrisc/mm/init.c
-> index 9382d9a0ec78..67de93e7a685 100644
-> --- a/arch/openrisc/mm/init.c
-> +++ b/arch/openrisc/mm/init.c
-> @@ -39,15 +39,19 @@
->  
->  int mem_init_done;
->  
-> -static void __init zone_sizes_init(void)
-> +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
->  {
-> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
-> -
->  	/*
->  	 * We use only ZONE_NORMAL
->  	 */
-> -	max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
-> +	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
-> +}
-> +
-> +static void __init zone_sizes_init(void)
-> +{
-> +	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
->  
-> +	arch_zone_limits_init(max_zone_pfn);
->  	free_area_init(max_zone_pfn);
->  }
-
-Thanks, this looks like a good cleanup.
+Dear Salvatore,
 
 
-Acked-by: Stafford Horne <shorne@gmail.com>
+Thank you for the follow-up.
+
+Am 03.01.26 um 01:59 schrieb Salvatore Bonaccorso:
+
+> On Mon, Dec 01, 2025 at 05:05:59PM +0100, Paul Menzel wrote:
+
+>> Am 01.12.25 um 14:25 schrieb Sudip Mukherjee:
+>>> On Thu, 27 Nov 2025 at 22:55, Paul Menzel wrote:
+>>
+>>>> Am 27.11.25 um 19:51 schrieb Paul Menzel:
+>>>>
+>>>>> Unfortunately, not reproducible, but starting with Linux 6.18-rc7, I got
+>>>>> the oops below *once*:
+>>>>>
+>>>>> ```
+>>>
+>>> <snip>
+>>>
+>>>> Building and booting Linux 6.18.0-rc7-00041-g765e56e41a5a, I got another
+>>>> oops.
+>>>>
+>>>>        [   15.234799] ppdev lp.0: really_probe: driver_sysfs_add failed
+>>>>        [   15.234852] ------------[ cut here ]------------
+>>>>        [   15.234854] refcount_t: addition on 0; use-after-free.
+>>>>        [   15.234864] WARNING: CPU: 0 PID: 353 at lib/refcount.c:25 refcount_warn_saturate+0xcd/0xf0
+>>>>
+>>>> Please find the output of `dmesg` attached.
+>>>>
+>>>> (It might be related to booting with an USB-C mini-dock connected, but I
+>>>> do not know yet.)
+>>
+>> At least today, I am also only able to reproduce this with *no* power cable
+>> plugged in, and the USB-C mini-dock connected.
+>>
+>>> In both cases, it seems the underlying hardware was removed or the
+>>> module was unloaded while it was still registering.
+>>>
+>>> In the first case, 'parport_default_proc_unregister' has been called
+>>> while parport driver is still checking for all the connected devices
+>>> and was executing 'lp_attach'.
+>>> 'parport_default_proc_unregister' will only be called when the parport
+>>> module is exiting.
+>>>
+>>> Same in the second case,  'lp_attach' was still executing and
+>>> 'ppdev_cleanup' was called.
+>>
+>> Please find the output of `dmesg` attached with the Oops for Linux 6.18.
+>>
+>> ```
+>> [   14.696290] ppdev: user-space parallel port driver
+>> [   14.696974] lp lp.0: really_probe: driver_sysfs_add failed
+>> [   14.697015] kernel tried to execute NX-protected page - exploit attempt? (uid: 0)
+>> [   14.697189] BUG: unable to handle page fault for address: ffff991d07830708
+>> [   14.697223] #PF: supervisor instruction fetch in kernel mode
+>> [   14.697249] #PF: error_code(0x0011) - permissions violation
+>> [   14.697277] PGD 388401067 P4D 388401067 PUD 101338063 PMD 10785c063 PTE 8000000107830163
+>> [   14.697313] Oops: Oops: 0011 [#1] SMP
+>> [   14.697334] CPU: 2 UID: 0 PID: 357 Comm: systemd-modules Not tainted 6.18.0 #165 PREEMPT(voluntary)
+>> [   14.697386] Hardware name: Dell Inc. XPS 13 9360/0596KF, BIOS 2.21.0 06/02/2022
+>> [   14.697423] RIP: 0010:0xffff991d07830708
+>> [   14.697445] Code: ff ff 20 a1 10 01 1d 99 ff ff 80 3a 50 93 ff ff ff ff 40 54 3c 06 1d 99 ff ff 01 00 00 00 07 00 00 00 00 00 00 00 00 00 00 00 <08> 07 83 07 1d 99 ff ff 08 07 83 07 1d 99 ff ff 00 00 00 00 00 00
+>> [   14.697530] RSP: 0000:ffffa8c040a27a30 EFLAGS: 00010286
+>> [   14.697561] RAX: ffff991d078306c0 RBX: ffff991d0722a000 RCX: 0000000000000007
+>> [   14.697593] RDX: ffffffffc078d5c0 RSI: ffff991d01fa7ce0 RDI: ffff991d03cc0000
+>> [   14.697618] RBP: ffffa8c040a27a80 R08: 00000000fffffff3 R09: 00000000fff7ffff
+>> [   14.697639] R10: ffffffff9482b180 R11: ffffa8c040a27620 R12: ffff991d0722a040
+>> [   14.697659] R13: ffff991d03cc0050 R14: ffff991d03cc0000 R15: ffff991d00dfe8e8
+>> [   14.697679] FS:  00007f09cb7fd6c0(0000) GS:ffff9920d8587000(0000) knlGS:0000000000000000
+>> [   14.697711] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [   14.697728] CR2: ffff991d07830708 CR3: 0000000102019003 CR4: 00000000003706f0
+>> [   14.697749] Call Trace:
+>> [   14.697759]  <TASK>
+>> [   14.697768]  ? parport_register_dev_model+0x273/0x3c0 [parport]
+>> [   14.697792]  ? lp_register+0x6f/0x100 [lp]
+>> [   14.697806]  ? msr_init+0x1000/0x1000 [msr]
+>> [   14.697822]  ? parport_irq_handler+0x50/0x50 [parport]
+>> [   14.697841]  ? lp_attach+0x99/0xc0 [lp]
+>> [   14.697854]  ? port_check+0x1d/0x20 [parport]
+>> [   14.697879]  ? bus_for_each_dev+0x82/0xd0
+>> [   14.697894]  ? ppdev_cleanup+0xb40/0xb40 [ppdev]
+>> [   14.697910]  ? __parport_register_driver+0x7e/0xb0 [parport]
+>> [   14.697930]  ? lp_init_module+0x1e2/0x1000 [lp]
+>> [   14.697945]  ? do_one_initcall+0x58/0x2f0
+>> [   14.697960]  ? do_init_module+0x67/0x2a0
+>> [   14.697974]  ? init_module_from_file+0x85/0xc0
+>> [   14.697989]  ? __x64_sys_finit_module+0x163/0x3d0
+>> [   14.698005]  ? do_syscall_64+0x82/0x9b0
+>> [   14.698020]  ? vfs_read+0x15e/0x380
+>> [   14.698035]  ? vfs_read+0x15e/0x380
+>> [   14.698056]  ? __rseq_handle_notify_resume+0xa6/0x480
+>> [   14.698080]  ? restore_fpregs_from_fpstate+0x46/0xa0
+>> [   14.698098]  ? switch_fpu_return+0x5b/0xd0
+>> [   14.698113]  ? do_syscall_64+0x21d/0x9b0
+>> [   14.698134]  ? restore_fpregs_from_fpstate+0x46/0xa0
+>> [   14.698158]  ? switch_fpu_return+0x5b/0xd0
+>> [   14.698179]  ? do_syscall_64+0x21d/0x9b0
+>> [   14.698203]  ? do_user_addr_fault+0x216/0x690
+>> [   14.698230]  ? exc_page_fault+0x7e/0x1a0
+>> [   14.698254]  ? entry_SYSCALL_64_after_hwframe+0x4b/0x53
+>> [   14.698286]  </TASK>
+>> ```
+>>
+>>> Are you seeing the crash only from v6.18-rc7 onwards? Was v6.18-rc6 or
+>>> v6.17 ok for you?
+>> Going through some Linux kernels, I hit the same issue with
+>> 6.18.0-rc3-00256-gba36dd5ee6fd, but with that the graphics environment did
+>> not load, and I only have the journal entry.
+>>
+>> ```
+>> Dez 01 14:33:41 abreu kernel: kernel tried to execute NX-protected page - exploit attempt? (uid: 0)
+>> Dez 01 14:33:41 abreu kernel: BUG: unable to handle page fault for address: ffff97fec6b9c588
+>> Dez 01 14:33:41 abreu kernel: #PF: supervisor instruction fetch in kernel mode
+>> Dez 01 14:33:41 abreu kernel: #PF: error_code(0x0011) - permissions violation
+>> Dez 01 14:33:41 abreu kernel: PGD 3fda01067 P4D 3fda01067 PUD 101338063 PMD 106b74063 PTE 8000000106b9c163
+>> Dez 01 14:33:41 abreu kernel: Oops: Oops: 0011 [#1] SMP
+>> Dez 01 14:33:41 abreu kernel: CPU: 2 UID: 0 PID: 432 Comm: systemd-modules Not tainted 6.18.0-rc3-00256-gba36dd5ee6fd #154 PREEMPT(voluntary)
+>> Dez 01 14:33:41 abreu kernel: Hardware name: Dell Inc. XPS 13 9360/0596KF, BIOS 2.21.0 06/02/2022
+>> Dez 01 14:33:41 abreu kernel: RIP: 0010:0xffff97fec6b9c588
+>> Dez 01 14:33:41 abreu kernel: Code: ff ff 20 ed 23 c7 fe 97 ff ff a0 3a f0 9a ff ff ff ff f8 37 58 c3 fe 97 ff ff 01 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 <88> c5 b9 c6 fe 97 ff ff 88 c5 b9 c6 fe 97 ff ff 00 00 00 00 00 00
+>> Dez 01 14:33:41 abreu kernel: RSP: 0000:ffffaaba0095bb00 EFLAGS: 00010286
+>> Dez 01 14:33:41 abreu kernel: RAX: ffff97fec6b9c540 RBX: ffff97fec48c7800 RCX: 0000000000000007
+>> Dez 01 14:33:41 abreu kernel: RDX: ffffffffc077b5c0 RSI: ffff97fec71a58b0 RDI: ffff97fed8514800
+>> Dez 01 14:33:41 abreu kernel: RBP: ffffaaba0095bb50 R08: ffff97fec77ec243 R09: ffff98022cd3f4c0
+>> Dez 01 14:33:41 abreu kernel: R10: 0000000000000001 R11: 0000000006f6b9e9 R12: ffff97fec48c7840
+>> Dez 01 14:33:41 abreu kernel: R13: ffff97fed8514850 R14: ffff97fed8514800 R15: ffff97fec7349b08
+>> Dez 01 14:33:41 abreu kernel: FS:  00007f4b0c2fcc80(0000) GS:ffff980290b87000(0000) knlGS:0000000000000000
+>> Dez 01 14:33:41 abreu kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> Dez 01 14:33:41 abreu kernel: CR2: ffff97fec6b9c588 CR3: 0000000106a5f004 CR4: 00000000003706f0
+>> Dez 01 14:33:41 abreu kernel: Call Trace:
+>> Dez 01 14:33:41 abreu kernel:  <TASK>
+>> Dez 01 14:33:41 abreu kernel:  ? parport_register_dev_model+0x273/0x3c0 [parport]
+>> Dez 01 14:33:41 abreu kernel:  ? lp_register+0x6f/0x100 [lp]
+>> Dez 01 14:33:41 abreu kernel:  ? parport_pc_init+0xf20/0xf20 [parport_pc]
+>> Dez 01 14:33:41 abreu kernel:  ? parport_irq_handler+0x50/0x50 [parport]
+>> Dez 01 14:33:41 abreu kernel:  ? lp_attach+0x99/0xc0 [lp]
+>> Dez 01 14:33:41 abreu kernel:  ? port_check+0x1d/0x20 [parport]
+>> Dez 01 14:33:41 abreu kernel:  ? bus_for_each_dev+0x82/0xd0
+>> Dez 01 14:33:41 abreu kernel:  ? lp_open.cold+0xaf5/0xaf5 [lp]
+>> Dez 01 14:33:41 abreu kernel:  ? __parport_register_driver+0x7e/0xb0 [parport]
+>> Dez 01 14:33:41 abreu kernel:  ? lp_init_module+0x1e2/0x1000 [lp]
+>> Dez 01 14:33:41 abreu kernel:  ? do_one_initcall+0x58/0x2f0
+>> Dez 01 14:33:41 abreu kernel:  ? do_init_module+0x67/0x2a0
+>> Dez 01 14:33:41 abreu kernel:  ? init_module_from_file+0x85/0xc0
+>> Dez 01 14:33:41 abreu kernel:  ? __x64_sys_finit_module+0x163/0x3d0
+>> Dez 01 14:33:41 abreu kernel:  ? do_syscall_64+0x82/0x9b0
+>> Dez 01 14:33:41 abreu kernel:  ? do_syscall_64+0xbb/0x9b0
+>> Dez 01 14:33:41 abreu kernel:  ? do_sys_openat2+0xa2/0xe0
+>> Dez 01 14:33:41 abreu kernel:  ? __x64_sys_openat+0x61/0xa0
+>> Dez 01 14:33:41 abreu kernel:  ? do_syscall_64+0xbb/0x9b0
+>> Dez 01 14:33:41 abreu kernel:  ? do_syscall_64+0xbb/0x9b0
+>> Dez 01 14:33:41 abreu kernel:  ? exc_page_fault+0x7e/0x1a0
+>> Dez 01 14:33:41 abreu kernel:  ? entry_SYSCALL_64_after_hwframe+0x4b/0x53
+>> Dez 01 14:33:41 abreu kernel:  </TASK>
+>> Dez 01 14:33:41 abreu kernel: Modules linked in: ppdev(+) lp(+) parport_pc msr(+) parport drm efi_pstore configfs nfnetlink efivarfs autofs4 ext4 crc16 mbcache jbd2 dm_crypt dm_mod dell_wmi dell_smbios dell_wmi_descriptor dcdbas evdev nvme serio_raw pcspkr nvme_core video intel_hid sparse_keymap wmi aesni_intel
+>> Dez 01 14:33:41 abreu kernel: CR2: ffff97fec6b9c588
+>> Dez 01 14:33:41 abreu kernel: ---[ end trace 0000000000000000 ]---
+>> ```
+>>
+>> I was forced to hard reset the machine by pressing the power button for more
+>> than ten seconds.
+> 
+> FWIW, we have two bugs in Debian as well reported, but they were once
+> for 6.17.12 and 6.17.13 already. See:
+> 
+> https://bugs.debian.org/1124075
+
+This is
+
+AMD AM5 ASUS ROG STRIX B650-A GAMING WIFI, BIOS 3067 12/10/2024
+
+> https://bugs.debian.org/1124463
+
+This is
+
+Dell Latitude E5470/0VHKV0, BIOS 1.34.3 11/20/2022
+
+> Does it make a difference to cold-boot or reboot into the system?
+
+I only did cold boots, and I am not able to reproduce it anymore, and 
+wrote it off to some hardware issue – despite the system working fine 
+otherwise.
+
+I am adding the x86 folks, and regression lists.
+
+
+Kind regards,
+
+Paul
 
