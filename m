@@ -4,132 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68BA2FC6187
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 18:54:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA80CFC6182
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 19:00:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0B936B008A; Sat,  3 Jan 2026 13:54:49 -0500 (EST)
+	id D76076B008A; Sat,  3 Jan 2026 14:00:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AED1F6B008C; Sat,  3 Jan 2026 13:54:49 -0500 (EST)
+	id D57736B008C; Sat,  3 Jan 2026 14:00:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EB536B0092; Sat,  3 Jan 2026 13:54:49 -0500 (EST)
+	id C56A86B0092; Sat,  3 Jan 2026 14:00:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C66D6B008A
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 13:54:49 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D6F85A1EB
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 18:54:49 +0000 (UTC)
-X-FDA: 84291554298.24.BD8F8FB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4CAD91C0007
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 18:54:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ntpZea6S;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B33F76B008A
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 14:00:00 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 296F18C1D6
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 19:00:00 +0000 (UTC)
+X-FDA: 84291567360.10.73AB382
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 936E640002
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 18:59:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=daWX40jT;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767466487;
+	s=arc-20220608; t=1767466798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WWLqVQ/pPQ1naqkMgxEFRjUWoHX6yre2yeQ2FeZ1a5Q=;
-	b=wzIkBJSialgEs4a+D2I+YMxRQXKnwlyxu/nJekcSHWGiHXg621y2YOqC0G9q1xonUyVPoE
-	WK4ESGvnJthIwNC3A/op3AmXvND4Qfg+FD/IpEuGBKaxZHizxFJ8AxC/hKgKz6Id3tdGky
-	bhjKwx0YfQ6ZWOXgRNk4mRiIzdNI8yk=
+	bh=kxmRlp16vnAjFvCk4KFlk0C7OnwvbDobH+tqhbPlU1c=;
+	b=owfSty9VuYmGy2bBERrHM5Ceijkll66llZfI1pPFG4hfEoPhRG5NANwnYFWRbofN8eATRY
+	cuZdNipzllqyNpCV+mnhuWfR4qCRMZW00ZlIfd4AJClrav1xP+Pab+Ya2yqz75BpSQQQNW
+	/S2dmIpmkUWLk5paPPZXblI79L3Mcqw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ntpZea6S;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=daWX40jT;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767466487; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767466798; a=rsa-sha256;
 	cv=none;
-	b=Kin8KgOX+gtPQ+BeqUC83a1d0o9AvgYfprRj/68aix4PTUHn5PChrye7Pwf16Lenr2T5GJ
-	Y2Yk8Ls09oh5QHDb9Q/uT6QDq3V7UTgj+WyMq4leQfT46mwby8NuisKncZz6W5Pz3hAvDy
-	6o4EmEDXblUDGrFK2OeYsYOQ4Vb1PPY=
+	b=P0AgWH8h6ap0ZRHOJ1RZKUwcTp2nu9v36TP9Jyg8fB7NzeFAxKIC81ik5robiqQDJYwrwD
+	biHz3OtDqjvyJQceItgllkdcxEjMyD4cX+mvImjji9NmCrWuS4oEe17m+XN3WamujmHQNw
+	nIdYsnyTF4meX+IAV7KbKTfUlk2V2qM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1784D40423;
-	Sat,  3 Jan 2026 18:54:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09051C113D0;
-	Sat,  3 Jan 2026 18:54:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 09ADA60017;
+	Sat,  3 Jan 2026 18:59:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB19C113D0;
+	Sat,  3 Jan 2026 18:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767466485;
-	bh=JJi0MIW7ufay+ZZEo6EH5bf/kqP+vRBsByx4CICNQCs=;
+	s=k20201202; t=1767466797;
+	bh=omBZBCfeRSyWOrBJ6BZZYx870z71q5DnTs3+5igQ37M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ntpZea6Sa23o++gxekMhG3I2QU/XUTWc5nMNjfwy8Zyi3NxPf/H771f3L1fK5G+JV
-	 BrIkjrHnTIa77Opbod1/wKDGPBT3rKbTairESVy5GIn6kLNbwjXgkey0AYjrLhGdtm
-	 1WmiT9BvnPKoouYAqUVpZ8pMait9YtcjloPtOthbURuem94A6kCmWXPP6kGGR5TMsk
-	 u58EQYc7patXv3IP/W4ZCBdZ3acr/VkBhoQVGrCvo13QtDF90hlUSKKPF5FMbB73Cg
-	 bSz/V5A/Jkpw/H2SFDajyAjOcb+N26PpJKiNlYzPGaxtX/S68RKs74BHnvORKROqCy
-	 PVF9NX0W2W0Vg==
-Date: Sat, 3 Jan 2026 20:54:23 +0200
+	b=daWX40jTgv4j4LKq0g1uveUBTG7eo9odO7BGheJ+fHT0MwEC3l0Y4KRMLSyiZRN26
+	 /EWuxz7s0xZI3PadQZhOcP8+upJrUpGh7VZvt1smhEnRryciGxID8pD0bA3dEYTDfk
+	 5dVz8IzZXmPQAtm51yk8bubc0zvEhxgjzCJodcyGJOMRg65iaqQB08RPukYR7A14ll
+	 JoYjx+MPJfr+DUcgeRKqGyukoBzyf0mHZaGEZqZxrGEUZR92ATGKbDGEmZa0DlPKH1
+	 /3s1IFM4fEayAHdcVSTRMBfPN6zbXAuwXUvaOYPkBuyInEZaUdd+quJLeV962G7uNv
+	 BqniYHmjqzleg==
+Date: Sat, 3 Jan 2026 20:59:49 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Klara Modin <klarasmodin@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
-	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Stafford Horne <shorne@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
-	x86@kernel.org, linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2 22/28] arch, mm: consolidate initialization of nodes,
- zones and memory map
-Message-ID: <aVll339wim7dCIaQ@kernel.org>
-References: <20260102070005.65328-1-rppt@kernel.org>
- <20260102070005.65328-23-rppt@kernel.org>
- <aVhN2NgQEKe0yzva@soda.int.kasm.eu>
+To: Jason Miu <jasonmiu@google.com>
+Cc: Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
+	David Matlack <dmatlack@google.com>,
+	David Rientjes <rientjes@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 0/4] Make KHO Stateless
+Message-ID: <aVlnJZ7vN6-FEL6z@kernel.org>
+References: <20251209025317.3846938-1-jasonmiu@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aVhN2NgQEKe0yzva@soda.int.kasm.eu>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: e6yxatfwotf4s3quh3paqr98sjs8r79d
+In-Reply-To: <20251209025317.3846938-1-jasonmiu@google.com>
+X-Stat-Signature: m96tiogugswcajq5kub93kr8zo4ujagh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4CAD91C0007
-X-HE-Tag: 1767466487-408362
-X-HE-Meta: U2FsdGVkX1/9QPhUHqPa7dKn6a+DwmxwqWS6+BDjiBQl8NWJBD9tVgeRvqjCs0ESo16BEIt4y9O66qc3K8Qhi0ar6bwP9DcVwyTed+14/lV4Bpj5oEWMMr6ltPIJ9J9ptdlpSy98jfrZ9UnsFjf3BYlUpUoywRAAQwPGKPO7EJIVbHzEsKdQY56fTGicmcV34ymYaVv2gV05jjUYGkT0QwX5zAtl8sCvOmn06tjT+h2ewm01Ht75C6r9HhhyJlxT8zGxFm0+LDB4sJgvQnkjhXM4z90Cay9mQAhny1PnbBb5rHB6hVYb4qnnThhhoUaC7wdQLUyoUcux8GhJ/yjzp0CNrtGaA/46qmFJ3i+EqFc1GplL89j+XT+oXdG4khtQBXoYNdf2IUppexTyoIbggjyPvXBkWcCslvxljDVEDWimHOTYilv3rDkythMCUapRJgy91dz48ugrfph0wrr4iPJf+FfFN/um1+/O9H5ttAOm+VeiKUMXvrAvJdvy5v/jP4ph0RCLjzjjpchHSzVFSwODv3nsmUC++RElUAk27kAjY/D03eyHm651Z8TPNqGHA7+v1vT+kl5BrIXd1/fVaBoEn1r3buTC/K5uSVBGKJRyADYXRj9WE2O/ltVZNZNSikGMsAzo512vNpg5PtpID41zDdWsYSfZ/P1/PV3cQiEwQ3hGirPSPEeC9Dd9MfN0eqPcW3ICyfVS0wb8i/4KIM8XUFRa8BTOgC+zcoAGzoh1XcYWUhxrlSGwDhXvUDv30EcMyKNDDjIsCK2fmu0MjmBDRFivxvYAdhw4d+2Nb/ha3GZSBzVJBAw3Q/hRzdu9kSlGSHxcmYJBD3WeygHtunQallMUlK2j2/jvNJmUIpkVR22xelFJJCtmYsyfL/+6AAVvyyHLpzoRJzzAikHLQ3f4jD3EuwcqOB7le2GjFmUCCdltIm2Fp9GyMy0ZRKMf1GhewJmEBNGkWd4MrIj
- B3Y0ZKIP
- fIZDXszPRIeBoo3OzmWu7ipq6c5H6pJJRVxgq/p8qzttI1m2QCRDgHAU2FjMzYiaL7xebGXqHSoTGehq0nDEHb9Bqm/w2nDZBSijHQMKQImG59zV12WZMLd4uBLSm++5gzGBMceT6E8O4Kr52wJ7To1rCfutPGgL1cG9U4+K6WVSVu8egUgoQdgdViXzfjg7B5ByC8Z6+GvQPKSXpokl8L4j445PCxP8YNu1up+vtO43FPJhL4h1E3atOeLN1T7L3DG3esNERlcFvAl84k7pqhna9g46ClcuQS0mUVPDym+hnIEQqj200szEP3Q==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 936E640002
+X-HE-Tag: 1767466798-627887
+X-HE-Meta: U2FsdGVkX18fZ71J8TQB80IvCMEpWNc5IG94G1c0d1iAivzR3PfVQIvH9g7v6KzK8UHHCW8TNs4/5dcJOOTATdDB/2M7amK1tRtmfEnDHVb6GG6LKpVUtQ7dE4FfSbR8DNAc7wihyOef1/x8My59/IrU8X+AdxVfi+mEqSg1jjUC5MHqfFvNf6+gRC2GjeqoywHaMuBL5UNFFpaHEplYyHS3OKvh9wx45sSrvCXIMS+K2GPW5Je/bR7f2CG7E6Yiqxijy0p/8MtEbsAAydSQT8e2OPDgiuGxkdjByfCHjlP+oTc0Nqq1QYQMEqiAGf+ac4Xtxeum8yohLTTpsrODUzvlOGYA+BYG/tg4rQSqAjMvaT/sD7Cd8AV7d50Oao6Sl50Hmou1vlGEQsoGfmKpx4loXMQjHLUfHT6NK/vsQOa+fVqXcrsBMyJAc4cc0Os4D5MJjpaY4IsZ0Wfhk9XMy5aDC5C8INFoebfVzZf5682T4krGeogjqwrqRa/fqcgnU+Unujy1LYqJGwq2Ema1PfOraQ5S4GCSdXeaQiY/MMb6C1leFneUTsp0/+s0+4lzFtpwqZEr33rSAewV5WiVgSG71ILq5jdzpjNvfnCas5PRyz5EPO+Gnz5APRkalUWkJrHkAJx9rejE51IrRDBG2Qq8Xz7o/9jnUjA3YGMVRkcCGzlfTdjb1Ri8cAHS9Xr8SJMgVU5BM6QovuvJhAJPNN2n+yot3avjVMfH/4HG+XuDcazNIVVQYytvyPyMNladSnv6+CA0rfE2HgrkZansvy1/9+J6t+dckBXD1EB3YDBTrWvcc6YDkqXBLQFYim+kE2zJiU8YJV7o/YuYvY7hezu+/yllO0wuGbeh3VXVwMazjhRGU0ufgDhmM3pkQ7RtPd+ewxrzNwHbamaoFLXavKHiXzU6XyDtgHiSEoExDOGDHTMwL9g/Wg+SW3EC9NaK/zQR5j3sd6JA/Bfabtz
+ dPKjLA32
+ OTRdbuCt9h7RwWdiSLe0aSEOWwibp9V/FvMlzkRRGtZAkmtPoKmu5/4tkWtohqBZ6TglO91IyM3rz85OZ0LWSdREUV2DnDjiq1JVQIJGC+YzBESVnYbBQuXYRVLByHuTirXDqi35/Mdsv8UMbyKo7IRlDABV7+D1/KgkspXEOVsukePKTXtBuUlUcHwi1MD/dq7fUhiHbCPDcFb76/Az0zppAOQxSUi8lXTFRIz1WvWxkgg+AmlP+OvHkR16Jp3juobsnjIY91fP+XhM8CV54ZlwlMOt85tPkNAwqEdwdxD/npVQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,193 +98,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On Sat, Jan 03, 2026 at 12:33:29AM +0100, Klara Modin wrote:
-> On 2026-01-02 08:59:58 +0200, Mike Rapoport wrote:
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > 
-> > To initialize node, zone and memory map data structures every architecture
-> > calls free_area_init() during setup_arch() and passes it an array of zone
-> > limits.
-> > 
-> > Beside code duplication it creates "interesting" ordering cases between
-> > allocation and initialization of hugetlb and the memory map. Some
-> > architectures allocate hugetlb pages very early in setup_arch() in certain
-> > cases, some only create hugetlb CMA areas in setup_arch() and sometimes
-> > hugetlb allocations happen mm_core_init().
-> > 
-> > With arch_zone_limits_init() helper available now on all architectures it
-> > is no longer necessary to call free_area_init() from architecture setup
-> > code. Rather core MM initialization can call arch_zone_limits_init() in a
-> > single place.
-> > 
-> > This allows to unify ordering of hugetlb vs memory map allocation and
-> > initialization.
-> > 
-> > Remove the call to free_area_init() from architecture specific code and
-> > place it in a new mm_core_init_early() function that is called immediately
-> > after setup_arch().
-> > 
-> > After this refactoring it is possible to consolidate hugetlb allocations
-> > and eliminate differences in ordering of hugetlb and memory map
-> > initialization among different architectures.
-> > 
-> > As the first step of this consolidation move hugetlb_bootmem_alloc() to
-> > mm_core_early_init().
-> > 
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On Mon, Dec 08, 2025 at 06:53:12PM -0800, Jason Miu wrote:
 > 
-> This breaks boot on my Raspberry Pi 1. The reason seems to be the use of
-> page_folio() when initializing the dynamically allocated zero page in
-> arm, which doesn't work when free_area_init() hasn't been called yet.
-
-I believe the reason is rather the use of virt_to_phys() that now happens
-before the memory map is ready.
-
-> The following oopses are generated:
+> This series is broken down into the following patches:
 > 
->  8<--- cut here ---
->  Unable to handle kernel paging request at virtual address 003dfb44 when read
->  [003dfb44] *pgd=00000000
->  Internal error: Oops: 5 [#1] ARM
->  CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.19.0-rc3-03898-g7975b0084358 #451 NONE
->  Hardware name: BCM2835
->  PC is at paging_init (include/linux/page-flags.h:284 (discriminator 2) arch/arm/mm/mmu.c:1790 (discriminator 2))
->  LR is at paging_init (arch/arm/mm/mmu.c:1789 (discriminator 1))
-
-...
-
->  8<--- cut here ---
+> 1.  kho: Introduce KHO FDT ABI header:
+>     Adds a dedicated ABI header to define the FDT interface.
 > 
-> and the second one repeats for some time afterwards.
-> 
-> I experimented a little by allocating the zero page statically as many
-> other arches do which fixes the issue as it does not need to be
-> initialized at this point anymore, though I have no idea if that's
-> appropriate.
+> 2.  kho: Relocate vmalloc preservation structure to KHO ABI header
+>     Adds `struct kho_vmalloc` and related structs to the ABI header.
 
-Do you mean putting the zero in the BSS like, e.g. arm64? I don't see a
-reason why this shouldn't work.
+I think these two can be merged independently of the radix tree change.
+They seem ready to me and having them upstream will make it easier for new
+KHO functionality, like e.g. "kexec history" patches 
+(https://lore.kernel.org/all/20260102-kho-v2-0-1747b1a3a1d6@debian.org)
 
-I also have a patch with some minor changes that still keeps
-empty_zero_page allocated, but avoids virt_to_page() and folio_page()
-dance. Can you please test it in your setup?
-
-From 8a213c13211106d592fbe96b68ee29879ed739f8 Mon Sep 17 00:00:00 2001
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sat, 3 Jan 2026 20:40:09 +0200
-Subject: [PATCH] arm: make initialization of zero page independent of the
- memory map
-
-Unlike most architectures, arm keeps a struct page pointer to the
-empty_zero_page and to initialize it requires conversion of a virtual
-address to page which makes it necessary to have memory map initialized
-before creating the empty_zero_page.
-
-Make empty_zero_page a void * to decouple it's initialization from the
-initialization of the memory map.
-
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- arch/arm/include/asm/pgtable.h |  4 ++--
- arch/arm/mm/mmu.c              | 10 +++-------
- arch/arm/mm/nommu.c            | 10 +++-------
- 3 files changed, 8 insertions(+), 16 deletions(-)
-
-diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
-index 86378eec7757..08bbd2aed6c9 100644
---- a/arch/arm/include/asm/pgtable.h
-+++ b/arch/arm/include/asm/pgtable.h
-@@ -15,8 +15,8 @@
-  * ZERO_PAGE is a global shared page that is always zero: used
-  * for zero-mapped memory areas etc..
-  */
--extern struct page *empty_zero_page;
--#define ZERO_PAGE(vaddr)	(empty_zero_page)
-+extern void *empty_zero_page;
-+#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
- #endif
- 
- #include <asm-generic/pgtable-nopud.h>
-diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
-index 8bac96e205ac..867258f1ae09 100644
---- a/arch/arm/mm/mmu.c
-+++ b/arch/arm/mm/mmu.c
-@@ -45,7 +45,7 @@ extern unsigned long __atags_pointer;
-  * empty_zero_page is a special page that is used for
-  * zero-initialized data and COW.
-  */
--struct page *empty_zero_page;
-+void *empty_zero_page;
- EXPORT_SYMBOL(empty_zero_page);
- 
- /*
-@@ -1754,8 +1754,6 @@ static void __init early_fixmap_shutdown(void)
-  */
- void __init paging_init(const struct machine_desc *mdesc)
- {
--	void *zero_page;
--
- #ifdef CONFIG_XIP_KERNEL
- 	/* Store the kernel RW RAM region start/end in these variables */
- 	kernel_sec_start = CONFIG_PHYS_OFFSET & SECTION_MASK;
-@@ -1782,12 +1780,10 @@ void __init paging_init(const struct machine_desc *mdesc)
- 	top_pmd = pmd_off_k(0xffff0000);
- 
- 	/* allocate the zero page. */
--	zero_page = early_alloc(PAGE_SIZE);
-+	empty_zero_page = early_alloc(PAGE_SIZE);
-+	__cpuc_flush_dcache_area(empty_zero_page, PAGE_SIZE);
- 
- 	bootmem_init();
--
--	empty_zero_page = virt_to_page(zero_page);
--	__flush_dcache_folio(NULL, page_folio(empty_zero_page));
- }
- 
- void __init early_mm_init(const struct machine_desc *mdesc)
-diff --git a/arch/arm/mm/nommu.c b/arch/arm/mm/nommu.c
-index d638cc87807e..f80ff5a69fbb 100644
---- a/arch/arm/mm/nommu.c
-+++ b/arch/arm/mm/nommu.c
-@@ -31,7 +31,7 @@ unsigned long vectors_base;
-  * empty_zero_page is a special page that is used for
-  * zero-initialized data and COW.
-  */
--struct page *empty_zero_page;
-+void *empty_zero_page;
- EXPORT_SYMBOL(empty_zero_page);
- 
- #ifdef CONFIG_ARM_MPU
-@@ -156,18 +156,14 @@ void __init adjust_lowmem_bounds(void)
-  */
- void __init paging_init(const struct machine_desc *mdesc)
- {
--	void *zero_page;
--
- 	early_trap_init((void *)vectors_base);
- 	mpu_setup();
- 
- 	/* allocate the zero page. */
--	zero_page = (void *)memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
-+	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
-+	__cpuc_flush_dcache_area(empty_zero_page, PAGE_SIZE);
- 
- 	bootmem_init();
--
--	empty_zero_page = virt_to_page(zero_page);
--	flush_dcache_page(empty_zero_page);
- }
- 
- /*
--- 
-2.51.0
-
- 
-> Regards,
-> Klara Modin
-> 
+I'm going to prepare a series with these two patches and some few more
+updates to KHO and LUO docs and I'll send them in the next few days.
 
 -- 
 Sincerely yours,
