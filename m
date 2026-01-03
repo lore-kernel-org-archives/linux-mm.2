@@ -4,109 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68214FC6165
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 03:34:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1554FC6171
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 05:23:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDA366B0092; Fri,  2 Jan 2026 22:34:29 -0500 (EST)
+	id 69D2C6B0095; Sat,  3 Jan 2026 00:23:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B87006B0093; Fri,  2 Jan 2026 22:34:29 -0500 (EST)
+	id 67FDE6B0096; Sat,  3 Jan 2026 00:23:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5BF36B0095; Fri,  2 Jan 2026 22:34:29 -0500 (EST)
+	id 5AC526B0098; Sat,  3 Jan 2026 00:23:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F3AF6B0092
-	for <linux-mm@kvack.org>; Fri,  2 Jan 2026 22:34:29 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 162B816159A
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 03:34:29 +0000 (UTC)
-X-FDA: 84289235058.02.EE6A8E6
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A47D4120004
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 03:34:26 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XkJ9ZTWD;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A4046B0095
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 00:23:45 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D41DCC0146
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 05:23:44 +0000 (UTC)
+X-FDA: 84289510368.27.1777DA6
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CE92A100006
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 05:23:42 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=CLrN36QR;
+	spf=pass (imf14.hostedemail.com: domain of jasonmiu@google.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=jasonmiu@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767411267;
+	s=arc-20220608; t=1767417822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=11BZl/3hxu6ybybdpKdweKWE3uh7itVnzD8q3xLG56I=;
-	b=gRa1WNAb388ZhIhRLAusqIkzqtMntEdZ5KEgRIls27Kkt/WV69iekW15C4ruVesk01OqyR
-	Ae76x4uTJYUpY506/b50yAHhjncMdqtvjDPq7csev2Tgnrtm0OBTI6+gWz3uaUtghFEgnE
-	qqGuxv5CFgFuG4bj30xZXWhJnTq9Y14=
+	bh=lZgtRUf8QSMBPWBbIO9SBlR1yZTUnPXvstMpo+N3AXk=;
+	b=BIFuaP2Pa0t8ZveQPcQ8vMiCr2L7dPRfyVxSvJxphhUs5lKEujF7VamHtBaPmNBpHpvABN
+	xHxoFvEEzA3PLUpMuU2jOo49ALKw/nC0Z/lS2lhzc1sWfWFfnV4i2iOxGLjRcJ3H8WRsNV
+	MGmXJrJyH1tRIknJPSnAg7S0QAzCpkU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XkJ9ZTWD;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767411267; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=CLrN36QR;
+	spf=pass (imf14.hostedemail.com: domain of jasonmiu@google.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=jasonmiu@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767417823; a=rsa-sha256;
 	cv=none;
-	b=rUXPV0bxcAIakahOvAeGa0Oi9nq1uMmoWZyeMww6tHYzaFH2URMbUPYD133lkstI1wYgh6
-	1LX8Obr+DQMwuLf3Cm9KTTmW8FXpd5yu+GuEsQwzAJnveruV2ZfIVYdc/9ugNSA8/AWC0Z
-	9X1sRu5VNoEwy+ss2RambLapG5p6ijY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767411267; x=1798947267;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=csYK7RCPSHPoz/5MB1fELyelv1I54HjB4geF/Uuzq4w=;
-  b=XkJ9ZTWDaXXjL39LrwgpeNnHUATF32saMjapKE3J6ZzmAKx6TTF2aWzr
-   vPxujfZYTNQzC641zLfqkmBFwExWVNOBj/6On3eBCk4YZS5deySzt6OM+
-   hV7bnLVwbe65gstqvZjnRy4iKxTgsTKXYS+y8lJbqno0ZA5wXOmEpk2xp
-   PGmSwFrc16LhBvRgdNxb5jXsEUV+WZp0LJGBqQMhWRDlTcthz4oirhMxU
-   RyrDIKmMokPAPQNFqat5Tv/2FmgTskkKgRr1Img7DtrnjE9/l6WSGE00c
-   8FNO7ffbDTlFkvznwL1ZN8pd7qCWSTilcpa7mqaA641kGWMzrHvSAgElo
-   w==;
-X-CSE-ConnectionGUID: /DDrYg5tTymrISQNjIql5g==
-X-CSE-MsgGUID: qH92hRDuTgeoQjORScgfWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="71465977"
-X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
-   d="scan'208";a="71465977"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 19:34:25 -0800
-X-CSE-ConnectionGUID: PycnsbgIQrS09W4Z1BbpnQ==
-X-CSE-MsgGUID: ZkTbTrcgQ5eke62DbUKzFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
-   d="scan'208";a="239387734"
-Received: from lkp-server01.sh.intel.com (HELO c9aa31daaa89) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 02 Jan 2026 19:34:19 -0800
-Received: from kbuild by c9aa31daaa89 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vbsPA-000000002Yv-3ibi;
-	Sat, 03 Jan 2026 03:34:16 +0000
-Date: Sat, 3 Jan 2026 11:34:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, balbirs@nvidia.com,
-	matthew.brost@intel.com, akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	david@redhat.com, ziy@nvidia.com, apopple@nvidia.com,
-	lorenzo.stoakes@oracle.com, lyude@redhat.com, dakr@kernel.org,
-	airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com,
-	mpenttil@redhat.com, jgg@nvidia.com, willy@infradead.org,
-	linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org,
-	jgg@ziepe.ca, Felix.Kuehling@amd.com
-Subject: Re: [PATCH v1 3/8] mm: Add helpers to create migration entries from
- struct pages
-Message-ID: <202601030957.g8ml6bSY-lkp@intel.com>
-References: <20251231043154.42931-4-jniethe@nvidia.com>
+	b=LL8irWKMwxz08ztreAlQGkD/8MdJNBngs/V35o7IXRwVHGIkou84rbZTczasQMSuJ8sMwg
+	3PLtRX262pvlIBkBa4rs0I4NSFY+R2keyw4Z4o2qDMnxtmipRT3QUM3PcBMCS02rP6G7a/
+	QCr/XWVkkanItgm7tctFYQvE87xZ7gg=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-4308d81fdf6so5968092f8f.2
+        for <linux-mm@kvack.org>; Fri, 02 Jan 2026 21:23:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767417821; x=1768022621; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lZgtRUf8QSMBPWBbIO9SBlR1yZTUnPXvstMpo+N3AXk=;
+        b=CLrN36QREBFlEEc0f4Jaw3Ha8C9oEmfE/RueEsQ/3TYCKidTcyN9Du3NUnJRBCMckG
+         thIGz/uOB/QJsnp1v/lwKHQ9UZjHKNOeAQDUgOLJG4Q0aKrtbkcC1wrDX5epGBvjNDXg
+         ipWdYlxRuQA55vY0SCt1weJHpkD5r2Xlin0Y74GN6XLLSLrVRllZwup7AEYfRyLjoxPQ
+         bqMVNQatrrUbckn9wwmd5tBAKKEFu1zgvE6DPCIukne4p03UXXYgv2gy9Wox9GF1JEQn
+         t950mhsi7RjwAh/GXYtnasp2jmHlGupa/2toMmV3M7pAzqdMIM63P4zBEJ9URNk35GBO
+         MLIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767417821; x=1768022621;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lZgtRUf8QSMBPWBbIO9SBlR1yZTUnPXvstMpo+N3AXk=;
+        b=jlDTvh5FIFj4Ccch2osvl1KDE8vnJk8ijjDmz91DDWvDxOmGPgMUD+eG3OqksBP2WU
+         4f8MIsBVXXydVlGnsX8YcALldkh1W4tQZ8RuhWObB/YDv0pKmUtS51JKy9pxicDCpQ86
+         Rk9WgkBFzV8SiKTT6W6wQ7chu0sT/GZNsvZs3ApnF/8YnZQqyZk5KmB28Y7y7cGfqs+O
+         IJW7cG3JGCJCoy3EOKKih8XYoDPb3XgIrhpZo5IpeitMvucs2u2y+VLRVLRV2wjU2FOn
+         oXlGoCJM5lVKXQMaWxSE7PqRth/DL9+mm9RF3ggRiLoZg+AVudNbpi3vffmXmeAo13jB
+         ooxg==
+X-Forwarded-Encrypted: i=1; AJvYcCUjZWVS748rH2R/Zw07Hmo3zBuFT1yyFA46ndsruYOH+H+mIKmASg/EgUVrdqaA4RrC66jczP6ApQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz4LhbbHsNd+u0ec8RBMEUMtsMwpc3KcsvH52NPuECIntFD4qBn
+	yp6Kxw2DgtciM3xOu5KeKnnfM4ZZLUsKhoTNMPRQOghFzNqS18zrj8jtQSrXG6C7yYEvsmR9eXp
+	3bwONB13agpPeHtMNaY6Pb8uFGhIHqiHxOBGfTi04
+X-Gm-Gg: AY/fxX7+WAChRTPLMZshbfCIzRHuWzg4PvGeVzFNGWwbhfUvI/T+mYmCWg2RuO+A3hr
+	qslLWoZzb2YYQ8D2nvH9gxSLgQ+mistRWcL4LEX/n3YieFoIDhlBXCni2049701Piida2bnjNV2
+	4uphDlzRvVTsk6Grqjqpv4/ru0BVASyq6zcUEjEw1qWbl9c/g4EWR+Am9sTGtYjfQnytwd+iE6h
+	N/Lrjwd3lof2dO2eVyu8piygnUMxziYbCwNx8TYn1aQ4y10tgaxVlM+HDlA5PDnzmq+69E1i7Qq
+	/GRxwccJqu5CPHLXOm9e
+X-Google-Smtp-Source: AGHT+IE4mQWmRBvH97nv4gWQOk5C2ZKjea27wZ9QrkyWmMJAiSuXXrY0G4eg4AtkqH+3miTS2o2rpDJDFiIBbXk/GGM=
+X-Received: by 2002:a05:6000:2c0e:b0:42b:3afa:5e1d with SMTP id
+ ffacd0b85a97d-4324e4c9d89mr61654880f8f.20.1767417820911; Fri, 02 Jan 2026
+ 21:23:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251231043154.42931-4-jniethe@nvidia.com>
+References: <20251216084913.86342-1-epetron@amazon.de> <aUFJH9xzJXYOt_X8@kernel.org>
+ <CA+CK2bDGvgcGJijAtSSa2k_FWjnZXm2jRiFd6Z9-XjEQ-Y68DQ@mail.gmail.com>
+ <aUF4fsWwD9BswkFh@kernel.org> <CA+CK2bB2mn5b0N9gs1UavYLUQhbpVvdo702oHZa15E9OaZkKWg@mail.gmail.com>
+ <aUUYprAotKYMiEs0@kernel.org> <CA+CK2bD101cSC_7+OWkMei2QvUVjSaRLy+LboLe8Sz7KS3by4g@mail.gmail.com>
+ <861pkpkffh.fsf@kernel.org> <CA+CK2bA1kYCf0BwhX3Sg9Ur82nK-7HPzs0sg6xbVWFAJaZLhpw@mail.gmail.com>
+ <86jyyecyzh.fsf@kernel.org> <CA+CK2bDxnTEe9Ohq5zLuyF-jqgD0DPhfdq6z=yztUsXU5p5fSQ@mail.gmail.com>
+ <863452cwns.fsf@kernel.org> <CA+CK2bCjJWZG_rPoPsHWSxirmUCTOuFQzTCss2AKf9UqpThrdw@mail.gmail.com>
+ <864ip99f1a.fsf@kernel.org>
+In-Reply-To: <864ip99f1a.fsf@kernel.org>
+From: Jason Miu <jasonmiu@google.com>
+Date: Fri, 2 Jan 2026 21:23:28 -0800
+X-Gm-Features: AQt7F2pBVwG4Pai_GRfwCF2pWs-iKdBHBTiPITQe_l8Bzkpho3IogZSBp0YD7ds
+Message-ID: <CAHN2nPKH5BGrYFZihTWY4+HYXtnko+EVdq5VpT5R4Sk_VnPt-w@mail.gmail.com>
+Subject: Re: [PATCH] kho: add support for deferred struct page init
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
+	Evangelos Petrongonas <epetron@amazon.de>, Alexander Graf <graf@amazon.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, nh-open-source@amazon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CE92A100006
+X-Stat-Signature: hjykgomprueq8f9qwx1byjw8uyodg367
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A47D4120004
-X-Stat-Signature: gwdhz86e7aej8zqp9trs3didotx7kqhk
-X-HE-Tag: 1767411266-834518
-X-HE-Meta: U2FsdGVkX1+aUbn0+MM/ylfre1NbPrmP/lRnVaUlzWI66HdXMOHruz5iC2OFcGsUcrtmDulE3FTTwuCEnVxsqcDpxtNEzEstNrCqE2ZrDjkslPrbMns++2YxUmsAVwqQRR1BJyTFCRu7i9EfcIbfjyohN8/LtF49NXCLWps4PYNQRxtDOtAq4K6ddyMVwZn21pKiWZIZMK3Ka2XY8dwOTPxjlRLqsAlo7z3DT/EmUQYJwvmCHtKToHKV0ZBdtHWhxO1GSahpd7cXS7CMuPorj+1q+fn9RSOQp/slURAky2gziqORBoNSQYiKBJMxh6sZu2hgKPqfiMi9N7jkmSmgscr6e3sPsxGtpp7DF+Ci4aKJPfWMB7qm6ng1NH3fHt7uIbD4pGKWkDgyYed9Y/HYfq2xhwgpMUjM78VhmBJZ+2OKbm9C9XtTQQqteQxaUHsOxE94ANmPu4LPKHVEBWlnoT77PNzsazjcJbu+1hEHc5j5lA3dRnpXJKybeSou9lWHWWB8+QzdKh+Qc26XI3qaY/YrYqtXokqPxf40u5VyfnXAfOSy2/gJ0VrsnEdp+fOWmRbP9EgUGPQvPljBHLmMSmIUTjeO1E7AfRkBSxZiHcltt0XkGPhq8nL1Uad3v1I1uBlck+kp+bjjYKSNX8QuLS5v+H46/BEKyUEExczRYGIJKTNKxNtyi9UD18LBFO3LncyQTpxshJZo49Tl++/AhRn163a7dbttUZwjhcMQnUIZnxREfQByBdd1b4Zy4bQJLNyTnxIruqflk0CgF0GxCScT0pBwWYESlyPZH6FsGmvEX8ISyNlEdCQu+x9t8XjYEkS6WaDwCTSy6RVqI47/wCVLr1btSAnViYyCE+ljU9SzDImeg3+o9zXz73EHe+rcnWxju1CSpBk/OVnXd3KmjyXTNSQpJ+xETo6xR+S8qI3O6cAlBfGShNZpaUR7ixLBPTYwXRZ7znhpPDu+Xty
- xqIdqfRT
- o35y2hoctDil6eFaYg+D3n47nVSZdCDrYAcO7wFthl0jotnBlw7qGywDrjMxDsyU63D/FDcVcqafI5v3IpFl/pzTTyqcnCjNIn+MgMnfCObuoQxQzEDi/Kv8dAsMYfm+nz4UxjEuf48F4S44XRfXWUp1XF/c65JOGbinq4Nw29ak7ZrzUMZFuPeVdJz8opimzrmvJpWI3cKU+FSLaO1eVlQGIDg6aBYeT9k/PYHVL03K0tsnWxEaBWoy0YYQnRBnnEbKuB/BAfx+mVoi4PrM9xQ5lYMzfoATClvFxeQzKmsXlARIKdgB5bnG9NX3mX7ScsC+8qG+AbwJuxdFZF5I/pD2Mm0nrgKvYHW0E
+X-HE-Tag: 1767417822-613124
+X-HE-Meta: U2FsdGVkX18M3QRHtPEtxESG9fmNUK71PiReB6zdPjuy0GMwYgxM0s7wUhUX1FYSRa8zdYu8mR5xMBosy0I6Z3yLLJkxh3JSXKYeLhwH92er11RP5IMbs6Hq+Eiluvyl9inYUMtFfqMbNrBjGxM3fcJ9Vwu6BThQ99nDdJV59UmwwD0c/V5R1zEJ9VsYAnYLWCJwazyvqLyReGq+8KRCcf9YoOZlHx6H/2X4wQ+cAla/WboQZuNNz2xwd61ybq7gOkXVwYjr+UfVFIoF7+mODTkKKN8CJk0vvHEoBawLi5XVdVCbJ+3HOqiR0+4nWuCnENuPPjKJxyuzTNMG+R+OMorc7yYsRwy7tWMVp8r6iAr5pxpMdl9GBtXEG0UW+kXCknB6j2hbRNwumEP01tyc7FhM72phI4VJ+83ncea+wxqahdVp4jUeFUkYQ0n8zAdSt8RCx3hqgmOr5FI5T1HVJsimupHmlQRX8qI3sditpV/k/m4tD0ad8hERcfIiFdP7KhkK+zN76mxOcJu+VAPA3TJcPlz99JsYjl8AtI9QZngK5oZVU8irUU5z2QLAiMDzvhCt5LOlnIRttejleL+ch306JazPqzkzBwwHpGtIojRb2Et4nbYW3qI5llqA8/zg9V2ynPJJt66gjcXch1xkcJsSNs/2Ii8yBnELNF24g6vu9+vqNh1fZ3l/A80f+lAjzXdcpdNKLatDhHAPM2OKo5HdYGMtBreIRope+obUMak5Et3veX8aYbUngoac4Gyc71sWcz7Ol9tm1wHF1/WCrdZJUjcXV5bwYJltnVjW+3rCvrjNO+mFnyvmBfYgKWQeYsUrMQ/ourmG0I5lIIgdKnRqxh8/he9wohGTZyyBF4NQeDL5lWg1sH/LmRZqtpYKL+QapnvvXTGSvKjIHwUQUOuwk4NIyMHPZsYCRVlLnjblqP9YIdGw8vi38/lNl4ZWbj8M6jobfwrsMNqR3us
+ /bxlEa8q
+ 8c9RY198fpLRuQguUfY/xaBVEa2EPuyQ27bNZXCJVy2VGhsT8gjqHRWqAOh5//CVKXak1DHraGHRn4bWPY209dfi15neeYGKxhU/3nwKvx1N8ZZgYxBFL9QJQLOlZfnafC3xuMRRpHyG2doWC0H5mMdBmfb4p4p7hMqARhAJZev+ZbtfNpoExEwhI25nIPiGealNnuylXuQ4BDCBt4mmaKkm6g0Uacb7Rjc/K
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,365 +126,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jordan,
+On Mon, Dec 29, 2025 at 1:03=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
+> wrote:
+>
+> On Tue, Dec 23 2025, Pasha Tatashin wrote:
+>
+> >> > if (WARN_ON_ONCE(info.magic !=3D KHO_PAGE_MAGIC || info.order > MAX_=
+PAGE_ORDER))
+> >> > return NULL;
+> >>
+> >> See my patch that drops this restriction:
+> >> https://lore.kernel.org/linux-mm/20251206230222.853493-2-pratyush@kern=
+el.org/
+> >>
+> >> I think it was wrong to add it in the first place.
+> >
+> > Agree, the restriction can be removed. Indeed, it is wrong as it is
+> > not enforced during preservation.
+> >
+> > However, I think we are going to be in a world of pain if we allow
+> > preserving memory from different topologies within the same order. In
+> > kho_preserve_pages(), we have to check if the first and last page are
+> > from the same nid; if not, reduce the order by 1 and repeat until they
+> > are. It is just wrong to intermix different memory into the same
+> > order, so in addition to removing that restriction, I think we should
+> > implement this enforcement.
+>
+> Sure, makes sense.
+>
 
-kernel test robot noticed the following build errors:
+Yes I think this makes the life easier and simplifies NID retrieval,
+as I mentioned below.
 
-[auto build test ERROR on f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da]
+> >
+> > Also, perhaps we should pass the NID in the Jason's radix tree
+> > together with the order. We could have a single tree that encodes both
+> > order and NID information in the top level, or we can have one tree
+> > per NID. It does not really matter to me, but that should help us with
+> > faster struct page initialization.
+>
+> Can we use NIDs in ABI? Do they stay stable across reboots? I never
+> looked at how NIDs actually get assigned.
+>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jordan-Niethe/mm-migrate_device-Add-migrate-PFN-flag-to-track-device-private-pages/20251231-123453
-base:   f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da
-patch link:    https://lore.kernel.org/r/20251231043154.42931-4-jniethe%40nvidia.com
-patch subject: [PATCH v1 3/8] mm: Add helpers to create migration entries from struct pages
-config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260103/202601030957.g8ml6bSY-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260103/202601030957.g8ml6bSY-lkp@intel.com/reproduce)
+To encode the NID in to a single radix tree I think we can use the
+prefix bits before the order bit. For a preserved order-0 page the
+order bit is at 52 so we can use the bits 63-53 to encode the NID for
+each order. But I tend to have one tree for NID, which makes the
+process easier and more scalable. The cost will be 1 extra page
+because of the array pointing to each radix tree.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601030957.g8ml6bSY-lkp@intel.com/
+When traversing the radix tree during early boot we must initialize
+the head pages. We can have the page.private containing the order and
+NID info, like:
 
-All errors (new ones prefixed by >>):
+```
+union kho_page_info {
+  unsigned long page_private;
+  struct {
+    u16_t nid;
+    u16_t order;
+    unsigned int magic;
+  };
+};
+```
 
->> mm/rmap.c:2542:13: error: call to undeclared function 'make_writable_migration_entry_from_page'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    2542 |                                 entry = make_writable_migration_entry_from_page(
-         |                                         ^
-   mm/rmap.c:2542:13: note: did you mean 'make_readable_migration_entry_from_page'?
-   include/linux/swapops.h:240:27: note: 'make_readable_migration_entry_from_page' declared here
-     240 | static inline swp_entry_t make_readable_migration_entry_from_page(struct page *page)
-         |                           ^
->> mm/rmap.c:2542:11: error: assigning to 'swp_entry_t' from incompatible type 'int'
-    2542 |                                 entry = make_writable_migration_entry_from_page(
-         |                                       ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    2543 |                                                         subpage);
-         |                                                         ~~~~~~~~
-   2 errors generated.
+early_pfn_to_nid() should work here. If we ensure that pages in the
+same order do not cross the zone boundary as Pasha mentioned above, we
+can set the tail pages with the same NID later, when calling
+kho_restore_page() after deferred struct page init.
 
+With the `union kho_page_info`, this will be part of the ABI.
 
-vim +/make_writable_migration_entry_from_page +2542 mm/rmap.c
+> Not sure if we should target it for the initial merge of the radix tree,
+> but I think this is something we can try to figure out later down the
+> line.
+>
 
-  2275	
-  2276	/*
-  2277	 * @arg: enum ttu_flags will be passed to this argument.
-  2278	 *
-  2279	 * If TTU_SPLIT_HUGE_PMD is specified any PMD mappings will be split into PTEs
-  2280	 * containing migration entries.
-  2281	 */
-  2282	static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
-  2283			     unsigned long address, void *arg)
-  2284	{
-  2285		struct mm_struct *mm = vma->vm_mm;
-  2286		DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
-  2287		bool anon_exclusive, writable, ret = true;
-  2288		pte_t pteval;
-  2289		struct page *subpage;
-  2290		struct mmu_notifier_range range;
-  2291		enum ttu_flags flags = (enum ttu_flags)(long)arg;
-  2292		unsigned long pfn;
-  2293		unsigned long hsz = 0;
-  2294	
-  2295		/*
-  2296		 * When racing against e.g. zap_pte_range() on another cpu,
-  2297		 * in between its ptep_get_and_clear_full() and folio_remove_rmap_*(),
-  2298		 * try_to_migrate() may return before page_mapped() has become false,
-  2299		 * if page table locking is skipped: use TTU_SYNC to wait for that.
-  2300		 */
-  2301		if (flags & TTU_SYNC)
-  2302			pvmw.flags = PVMW_SYNC;
-  2303	
-  2304		/*
-  2305		 * For THP, we have to assume the worse case ie pmd for invalidation.
-  2306		 * For hugetlb, it could be much worse if we need to do pud
-  2307		 * invalidation in the case of pmd sharing.
-  2308		 *
-  2309		 * Note that the page can not be free in this function as call of
-  2310		 * try_to_unmap() must hold a reference on the page.
-  2311		 */
-  2312		range.end = vma_address_end(&pvmw);
-  2313		mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
-  2314					address, range.end);
-  2315		if (folio_test_hugetlb(folio)) {
-  2316			/*
-  2317			 * If sharing is possible, start and end will be adjusted
-  2318			 * accordingly.
-  2319			 */
-  2320			adjust_range_if_pmd_sharing_possible(vma, &range.start,
-  2321							     &range.end);
-  2322	
-  2323			/* We need the huge page size for set_huge_pte_at() */
-  2324			hsz = huge_page_size(hstate_vma(vma));
-  2325		}
-  2326		mmu_notifier_invalidate_range_start(&range);
-  2327	
-  2328		while (page_vma_mapped_walk(&pvmw)) {
-  2329			/* PMD-mapped THP migration entry */
-  2330			if (!pvmw.pte) {
-  2331				__maybe_unused unsigned long pfn;
-  2332				__maybe_unused pmd_t pmdval;
-  2333	
-  2334				if (flags & TTU_SPLIT_HUGE_PMD) {
-  2335					split_huge_pmd_locked(vma, pvmw.address,
-  2336							      pvmw.pmd, true);
-  2337					ret = false;
-  2338					page_vma_mapped_walk_done(&pvmw);
-  2339					break;
-  2340				}
-  2341	#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
-  2342				pmdval = pmdp_get(pvmw.pmd);
-  2343				if (likely(pmd_present(pmdval)))
-  2344					pfn = pmd_pfn(pmdval);
-  2345				else
-  2346					pfn = softleaf_to_pfn(softleaf_from_pmd(pmdval));
-  2347	
-  2348				subpage = folio_page(folio, pfn - folio_pfn(folio));
-  2349	
-  2350				VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
-  2351						!folio_test_pmd_mappable(folio), folio);
-  2352	
-  2353				if (set_pmd_migration_entry(&pvmw, subpage)) {
-  2354					ret = false;
-  2355					page_vma_mapped_walk_done(&pvmw);
-  2356					break;
-  2357				}
-  2358				continue;
-  2359	#endif
-  2360			}
-  2361	
-  2362			/* Unexpected PMD-mapped THP? */
-  2363			VM_BUG_ON_FOLIO(!pvmw.pte, folio);
-  2364	
-  2365			/*
-  2366			 * Handle PFN swap PTEs, such as device-exclusive ones, that
-  2367			 * actually map pages.
-  2368			 */
-  2369			pteval = ptep_get(pvmw.pte);
-  2370			if (likely(pte_present(pteval))) {
-  2371				pfn = pte_pfn(pteval);
-  2372			} else {
-  2373				const softleaf_t entry = softleaf_from_pte(pteval);
-  2374	
-  2375				pfn = softleaf_to_pfn(entry);
-  2376				VM_WARN_ON_FOLIO(folio_test_hugetlb(folio), folio);
-  2377			}
-  2378	
-  2379			subpage = folio_page(folio, pfn - folio_pfn(folio));
-  2380			address = pvmw.address;
-  2381			anon_exclusive = folio_test_anon(folio) &&
-  2382					 PageAnonExclusive(subpage);
-  2383	
-  2384			if (folio_test_hugetlb(folio)) {
-  2385				bool anon = folio_test_anon(folio);
-  2386	
-  2387				/*
-  2388				 * huge_pmd_unshare may unmap an entire PMD page.
-  2389				 * There is no way of knowing exactly which PMDs may
-  2390				 * be cached for this mm, so we must flush them all.
-  2391				 * start/end were already adjusted above to cover this
-  2392				 * range.
-  2393				 */
-  2394				flush_cache_range(vma, range.start, range.end);
-  2395	
-  2396				/*
-  2397				 * To call huge_pmd_unshare, i_mmap_rwsem must be
-  2398				 * held in write mode.  Caller needs to explicitly
-  2399				 * do this outside rmap routines.
-  2400				 *
-  2401				 * We also must hold hugetlb vma_lock in write mode.
-  2402				 * Lock order dictates acquiring vma_lock BEFORE
-  2403				 * i_mmap_rwsem.  We can only try lock here and
-  2404				 * fail if unsuccessful.
-  2405				 */
-  2406				if (!anon) {
-  2407					VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
-  2408					if (!hugetlb_vma_trylock_write(vma)) {
-  2409						page_vma_mapped_walk_done(&pvmw);
-  2410						ret = false;
-  2411						break;
-  2412					}
-  2413					if (huge_pmd_unshare(mm, vma, address, pvmw.pte)) {
-  2414						hugetlb_vma_unlock_write(vma);
-  2415						flush_tlb_range(vma,
-  2416							range.start, range.end);
-  2417	
-  2418						/*
-  2419						 * The ref count of the PMD page was
-  2420						 * dropped which is part of the way map
-  2421						 * counting is done for shared PMDs.
-  2422						 * Return 'true' here.  When there is
-  2423						 * no other sharing, huge_pmd_unshare
-  2424						 * returns false and we will unmap the
-  2425						 * actual page and drop map count
-  2426						 * to zero.
-  2427						 */
-  2428						page_vma_mapped_walk_done(&pvmw);
-  2429						break;
-  2430					}
-  2431					hugetlb_vma_unlock_write(vma);
-  2432				}
-  2433				/* Nuke the hugetlb page table entry */
-  2434				pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
-  2435				if (pte_dirty(pteval))
-  2436					folio_mark_dirty(folio);
-  2437				writable = pte_write(pteval);
-  2438			} else if (likely(pte_present(pteval))) {
-  2439				flush_cache_page(vma, address, pfn);
-  2440				/* Nuke the page table entry. */
-  2441				if (should_defer_flush(mm, flags)) {
-  2442					/*
-  2443					 * We clear the PTE but do not flush so potentially
-  2444					 * a remote CPU could still be writing to the folio.
-  2445					 * If the entry was previously clean then the
-  2446					 * architecture must guarantee that a clear->dirty
-  2447					 * transition on a cached TLB entry is written through
-  2448					 * and traps if the PTE is unmapped.
-  2449					 */
-  2450					pteval = ptep_get_and_clear(mm, address, pvmw.pte);
-  2451	
-  2452					set_tlb_ubc_flush_pending(mm, pteval, address, address + PAGE_SIZE);
-  2453				} else {
-  2454					pteval = ptep_clear_flush(vma, address, pvmw.pte);
-  2455				}
-  2456				if (pte_dirty(pteval))
-  2457					folio_mark_dirty(folio);
-  2458				writable = pte_write(pteval);
-  2459			} else {
-  2460				const softleaf_t entry = softleaf_from_pte(pteval);
-  2461	
-  2462				pte_clear(mm, address, pvmw.pte);
-  2463	
-  2464				writable = softleaf_is_device_private_write(entry);
-  2465			}
-  2466	
-  2467			VM_WARN_ON_FOLIO(writable && folio_test_anon(folio) &&
-  2468					!anon_exclusive, folio);
-  2469	
-  2470			/* Update high watermark before we lower rss */
-  2471			update_hiwater_rss(mm);
-  2472	
-  2473			if (PageHWPoison(subpage)) {
-  2474				VM_WARN_ON_FOLIO(folio_is_device_private(folio), folio);
-  2475	
-  2476				pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
-  2477				if (folio_test_hugetlb(folio)) {
-  2478					hugetlb_count_sub(folio_nr_pages(folio), mm);
-  2479					set_huge_pte_at(mm, address, pvmw.pte, pteval,
-  2480							hsz);
-  2481				} else {
-  2482					dec_mm_counter(mm, mm_counter(folio));
-  2483					set_pte_at(mm, address, pvmw.pte, pteval);
-  2484				}
-  2485			} else if (likely(pte_present(pteval)) && pte_unused(pteval) &&
-  2486				   !userfaultfd_armed(vma)) {
-  2487				/*
-  2488				 * The guest indicated that the page content is of no
-  2489				 * interest anymore. Simply discard the pte, vmscan
-  2490				 * will take care of the rest.
-  2491				 * A future reference will then fault in a new zero
-  2492				 * page. When userfaultfd is active, we must not drop
-  2493				 * this page though, as its main user (postcopy
-  2494				 * migration) will not expect userfaults on already
-  2495				 * copied pages.
-  2496				 */
-  2497				dec_mm_counter(mm, mm_counter(folio));
-  2498			} else {
-  2499				swp_entry_t entry;
-  2500				pte_t swp_pte;
-  2501	
-  2502				/*
-  2503				 * arch_unmap_one() is expected to be a NOP on
-  2504				 * architectures where we could have PFN swap PTEs,
-  2505				 * so we'll not check/care.
-  2506				 */
-  2507				if (arch_unmap_one(mm, vma, address, pteval) < 0) {
-  2508					if (folio_test_hugetlb(folio))
-  2509						set_huge_pte_at(mm, address, pvmw.pte,
-  2510								pteval, hsz);
-  2511					else
-  2512						set_pte_at(mm, address, pvmw.pte, pteval);
-  2513					ret = false;
-  2514					page_vma_mapped_walk_done(&pvmw);
-  2515					break;
-  2516				}
-  2517	
-  2518				/* See folio_try_share_anon_rmap_pte(): clear PTE first. */
-  2519				if (folio_test_hugetlb(folio)) {
-  2520					if (anon_exclusive &&
-  2521					    hugetlb_try_share_anon_rmap(folio)) {
-  2522						set_huge_pte_at(mm, address, pvmw.pte,
-  2523								pteval, hsz);
-  2524						ret = false;
-  2525						page_vma_mapped_walk_done(&pvmw);
-  2526						break;
-  2527					}
-  2528				} else if (anon_exclusive &&
-  2529					   folio_try_share_anon_rmap_pte(folio, subpage)) {
-  2530					set_pte_at(mm, address, pvmw.pte, pteval);
-  2531					ret = false;
-  2532					page_vma_mapped_walk_done(&pvmw);
-  2533					break;
-  2534				}
-  2535	
-  2536				/*
-  2537				 * Store the pfn of the page in a special migration
-  2538				 * pte. do_swap_page() will wait until the migration
-  2539				 * pte is removed and then restart fault handling.
-  2540				 */
-  2541				if (writable)
-> 2542					entry = make_writable_migration_entry_from_page(
-  2543								subpage);
-  2544				else if (anon_exclusive)
-  2545					entry = make_readable_exclusive_migration_entry_from_page(
-  2546								subpage);
-  2547				else
-  2548					entry = make_readable_migration_entry_from_page(
-  2549								subpage);
-  2550				if (likely(pte_present(pteval))) {
-  2551					if (pte_young(pteval))
-  2552						entry = make_migration_entry_young(entry);
-  2553					if (pte_dirty(pteval))
-  2554						entry = make_migration_entry_dirty(entry);
-  2555					swp_pte = swp_entry_to_pte(entry);
-  2556					if (pte_soft_dirty(pteval))
-  2557						swp_pte = pte_swp_mksoft_dirty(swp_pte);
-  2558					if (pte_uffd_wp(pteval))
-  2559						swp_pte = pte_swp_mkuffd_wp(swp_pte);
-  2560				} else {
-  2561					swp_pte = swp_entry_to_pte(entry);
-  2562					if (pte_swp_soft_dirty(pteval))
-  2563						swp_pte = pte_swp_mksoft_dirty(swp_pte);
-  2564					if (pte_swp_uffd_wp(pteval))
-  2565						swp_pte = pte_swp_mkuffd_wp(swp_pte);
-  2566				}
-  2567				if (folio_test_hugetlb(folio))
-  2568					set_huge_pte_at(mm, address, pvmw.pte, swp_pte,
-  2569							hsz);
-  2570				else
-  2571					set_pte_at(mm, address, pvmw.pte, swp_pte);
-  2572				trace_set_migration_pte(address, pte_val(swp_pte),
-  2573							folio_order(folio));
-  2574				/*
-  2575				 * No need to invalidate here it will synchronize on
-  2576				 * against the special swap migration pte.
-  2577				 */
-  2578			}
-  2579	
-  2580			if (unlikely(folio_test_hugetlb(folio)))
-  2581				hugetlb_remove_rmap(folio);
-  2582			else
-  2583				folio_remove_rmap_pte(folio, subpage, vma);
-  2584			if (vma->vm_flags & VM_LOCKED)
-  2585				mlock_drain_local();
-  2586			folio_put(folio);
-  2587		}
-  2588	
-  2589		mmu_notifier_invalidate_range_end(&range);
-  2590	
-  2591		return ret;
-  2592	}
-  2593	
+I suggest keeping the initial merge of the radix tree simpler,
+ensuring it has the same feature set as the current implementation. We
+can add the new deferred struct page support as a separate feature
+later. =3D)
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> >
+> >> >> To get the nid, you would need to call early_pfn_to_nid(). This tak=
+es a
+> >> >> spinlock and searches through all memblock memory regions. I don't =
+think
+> >> >> it is too expensive, but it isn't free either. And all this would b=
+e
+> >> >> done serially. With the zone search, you at least have some room fo=
+r
+> >> >> concurrency.
+> >> >>
+> >> >> I think either approach only makes a difference when we have a larg=
+e
+> >> >> number of low-order preservations. If we have a handful of high-ord=
+er
+> >> >> preservations, I suppose the overhead of nid search would be neglig=
+ible.
+> >> >
+> >> > We should be targeting a situation where the vast majority of the
+> >> > preserved memory is HugeTLB, but I am still worried about lower orde=
+r
+> >> > preservation efficiency for IOMMU page tables, etc.
+> >>
+> >> Yep. Plus we might get VMMs stashing some of their state in a memfd to=
+o.
+> >
+> > Yes, that is true, but hopefully those are tiny compared to everything =
+else.
+> >
+> >> >> Long term, I think we should hook this into page_alloc_init_late() =
+so
+> >> >> that all the KHO pages also get initalized along with all the other
+> >> >> pages. This will result in better integration of KHO with rest of M=
+M
+> >> >> init, and also have more consistent page restore performance.
+> >> >
+> >> > But we keep KHO as reserved memory, and hooking it up into
+> >> > page_alloc_init_late() would make it very different, since that memo=
+ry
+> >> > is part of the buddy allocator memory...
+> >>
+> >> The idea I have is to have a separate call in page_alloc_init_late()
+> >> that initalizes KHO pages. It would traverse the radix tree (probably =
+in
+> >> parallel by distributing the address space across multiple threads?) a=
+nd
+> >> initialize all the pages. Then kho_restore_page() would only have to
+> >> double-check the magic and it can directly return the page.
+> >
+> > I kind of do not like relying on magic to decide whether to initialize
+> > the struct page. I would prefer to avoid this magic marker altogether:
+> > i.e. struct page is either initialized or not, not halfway
+> > initialized, etc.
+>
+> The magic is purely sanity checking. It is not used to decide anything
+> other than to make sure this is actually a KHO page. I don't intend to
+> change that. My point is, if we make sure the KHO pages are properly
+> initialized during MM init, then restoring can actually be a very cheap
+> operation, where you only do the sanity checking. You can even put the
+> magic check behind CONFIG_KEXEC_HANDOVER_DEBUG if you want, but I think
+> it is useful enough to keep in production systems too.
+>
+
+I think we should traverse the radix tree once during the early
+boot-up to reserve pages in memblock. But if we can hook the radix
+tree walking in page_alloc_init_late(), we can further defer the page
+structs (including head and tail) here. Having one radix tree per NID
+seems handy here if page_alloc_init_late() allocates one thread per
+NID for parallelization.
+
+> >
+> > Magic is not reliable. During machine reset in many firmware
+> > implementations, and in every kexec reboot, memory is not zeroed. The
+> > kernel usually allocates vmemmap using exactly the same pages, so
+> > there is just too high a chance of getting magic values accidentally
+> > inherited from the previous boot.
+>
+> I don't think that can happen. All the pages are zeroed when
+> initialized, which will clear the magic. We should only be setting the
+> magic on an initialized struct page.
+>
+> >
+> >> Radix tree makes parallelism easier than the linked lists we have now.
+> >
+> > Agree, radix tree can absolutely help with parallelism.
+> >
+> >> >> Jason's radix tree patches will make that a bit easier to do I thin=
+k.
+> >> >> The zone search will scale better I reckon.
+> >> >
+> >> > It could, perhaps early in boot we should reserve the radix tree, an=
+d
+> >> > use it as a source of truth look-ups later in boot?
+> >>
+> >> Yep. I think the radix tree should mark its own pages as preserved too
+> >> so they stick around later in boot.
+> >
+> > Unfortunately, this can only be done in the new kernel, not in the old
+> > kernel; otherwise we can end up with a recursive dependency that may
+> > never be satisfied.
+>
+> Right. It shouldn't be too hard to do in the new kernel though. We will
+> walk the whole tree anyway.
+
+Yes, we can preserve the pages used for radix tree nodes in the new
+kernel. I think we should un-preserve them once LUO is done? Since KHO
+can be used by other clients we can add APIs to preserve/unpreserve
+the radix tree nodes.
+
+--
+Jason Miu
 
