@@ -4,104 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC821FC617E
-	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 10:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C955FA3750
+	for <linux-mm@archiver.kernel.org>; Sat,  3 Jan 2026 11:33:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA31A6B0005; Sat,  3 Jan 2026 05:56:56 -0500 (EST)
+	id 5C5406B0005; Sat,  3 Jan 2026 06:33:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A26456B0089; Sat,  3 Jan 2026 05:56:56 -0500 (EST)
+	id 573456B0089; Sat,  3 Jan 2026 06:33:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9324C6B008A; Sat,  3 Jan 2026 05:56:56 -0500 (EST)
+	id 47F9B6B008A; Sat,  3 Jan 2026 06:33:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DB956B0005
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 05:56:56 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1AF30139DE7
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 10:56:56 +0000 (UTC)
-X-FDA: 84290350032.11.67FC58F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 02FA04000E
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 10:56:53 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C8FdLi6b;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767437814; a=rsa-sha256;
-	cv=none;
-	b=UidwLjkpbT3jaVDiNB/YNc3V4dWduoipbcYRFSCKizVnGCdvtm40arDcwbVX51V+/nSC74
-	r7ixYroLlbejN5p3ba6BSD5zp4yT6cNVhyiYb6TN3kEe/r6EJjdOMjsqf1k/EdVKysWPed
-	09LslZqwIGbU5mHsCix0r1qpsYa4suU=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C8FdLi6b;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 348066B0005
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 06:33:54 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B4CD3CC230
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 11:33:53 +0000 (UTC)
+X-FDA: 84290443146.01.9AF9DD5
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf02.hostedemail.com (Postfix) with ESMTP id BF2A480006
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 11:33:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="B/G5Dith";
+	spf=pass (imf02.hostedemail.com: domain of sudipm.mukherjee@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=sudipm.mukherjee@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767437814;
+	s=arc-20220608; t=1767440031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yGpUw0Ox/Jp3kMXH8XGSAcDFluSymyYJIP4RuNh5bqs=;
-	b=hsv5gHAOo7CyceFMapU2XYOU6W5BaZoPZW3D/nGI1WaeZkGvBDgfcV7XAr6F0RBLOC29fe
-	NGrSIzBPO0SxKLD3Aob8dljjI3Q0QggcSXOpfjaW7bi+IH/ZgRMno4EOd2TM7xI4sQTtNI
-	b3fmVGMUhI5g6Rl82DypWECAUuYpJlU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767437813;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yGpUw0Ox/Jp3kMXH8XGSAcDFluSymyYJIP4RuNh5bqs=;
-	b=C8FdLi6bG5kjDMERqeu/vaWF/LQIV991ClweIQvc3YIGVvgEZfPDALlA+fkmUNMG2YrNwQ
-	dGts6vWt7cyvxaqI+7Uor+eARYnb2Qg1bkeNwCVOuNVt5QCOS6tbTksAMMf3Z4wLIVayL7
-	HQWtb7+EhnrrK/y3UMahqZfvEelAYUk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-zNokpBgqPf6VSRWU69Yn0Q-1; Sat,
- 03 Jan 2026 05:56:49 -0500
-X-MC-Unique: zNokpBgqPf6VSRWU69Yn0Q-1
-X-Mimecast-MFC-AGG-ID: zNokpBgqPf6VSRWU69Yn0Q_1767437807
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0451619560A5;
-	Sat,  3 Jan 2026 10:56:45 +0000 (UTC)
-Received: from fedora (unknown [10.45.224.28])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 3114119560A7;
-	Sat,  3 Jan 2026 10:56:36 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Sat,  3 Jan 2026 11:56:44 +0100 (CET)
-Date: Sat, 3 Jan 2026 11:56:35 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Keke Ming <ming.jvle@gmail.com>
-Cc: mhiramat@kernel.org, peterz@infradead.org, linux@armlinux.org.uk,
-	catalin.marinas@arm.com, will@kernel.org, tsbogend@alpha.franken.de,
-	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 0/5] uprobes: transition from kmap_atomic to
- kmap_local_page
-Message-ID: <aVj146EunyaOQzxO@redhat.com>
-References: <20260103084243.195125-1-ming.jvle@gmail.com>
+	bh=ufcefJVsovNbptadQDCIANuVGLP5nh4jVV/94BHGrao=;
+	b=A9ja4r6Zi9j3uOgxAWI/pya1se209gxKtIIBkyIpECXsaUT9Hc2QDD4XlsO2elKTPAtsoc
+	mBngkifmINPIOvfBMWeA/Sqr0JnWAarmvzsFR80to0d2ThVV01xniyz7KudXnWhpX38LYF
+	v9IP4ri5fwRz0O+xNa/mrNWmL/8zih0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="B/G5Dith";
+	spf=pass (imf02.hostedemail.com: domain of sudipm.mukherjee@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=sudipm.mukherjee@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767440031; a=rsa-sha256;
+	cv=none;
+	b=hrx/ts0PP2H4KKLPnuIx4fb64Iqztlng0kUh6NnQeFZF4XWG1zFkuWhsN3o+HCTaUdNYHA
+	DiLsLPKpdcgY3X2t5SO20/4JDQOBdd+RvfAQBGz12j5b6sxXyG9p35GIfOrhmC44kq3Cjf
+	S7wqugS+lh+BeV41/ssQgJqqSZyqHps=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47d211aee52so9070045e9.2
+        for <linux-mm@kvack.org>; Sat, 03 Jan 2026 03:33:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767440030; x=1768044830; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ufcefJVsovNbptadQDCIANuVGLP5nh4jVV/94BHGrao=;
+        b=B/G5DithuAsLf4fuMltMDFaYMTLdz3iI1wQh/s/zzZyf+8GM+IX/no3qB0QQmo5sST
+         Km3TJyusBtCS34U/ZgdegvvB0ORWckNJZd5D3cuT8CVEnSQNYyETDsnFbus7X8DS2wBF
+         CdJgl8YK7Wy2BmZ8Kmc5JhIlg6l3giofB6qnx696BN9v6/xzeZtFS1eamiSydeEAh06s
+         MTVzzPqqZvZIX1jhlAVKY+6qb1lgOZEMVBzzu4KfclHLJrjLCw+6XLIPy8Dq6h5Fc0di
+         DxxGg17slhjjOKFHf0ikKF2pfYK/z9eHH0BXfO6/yRdTijWwXccIXXob2bJtlpVdzlXn
+         Tdlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767440030; x=1768044830;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ufcefJVsovNbptadQDCIANuVGLP5nh4jVV/94BHGrao=;
+        b=pXq3mEPakeEcE50CbMoIHPgdgKeaDz1GHFeqNbQCbMCfb2Ui3EVqJtpYDArAZC6PNV
+         rk547zZulmmLhyUgltRhfRYz+a8ECQfJX+dYdVqS+NkG4CC1nxvQMGKVBu9wlBCIlFqJ
+         qfVllli37LiXUpneWqm6QZlx/jY1x1oZqpC7aJ4nfqyFra6PGLnX/FB85etOvTFuJCkE
+         iBKxLNsKnJ5SHEjVe3pDYlv9Vfhs9gXFdBpBzi3VaOSNqbVxZ5Qr1Ev048UWAB1pjhyH
+         yq5hrdonZMjX/XLsYmNSG0zsBTicLXkg7Ix4pH0ITLUC9sn7WOuzU3QV4h7KfztrHuIJ
+         9twQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUQH4KzJ5ICwPxjVpmFGBalNmuUApZh6054BoGohuS6ZxITTYcDraifdv2JV3+WIzRDLPFbQraMGQ==@kvack.org
+X-Gm-Message-State: AOJu0YwlDND0XP1KBMfoYxWKejdXjphhPwdSw+WDB0cOfdXYo4zvvASj
+	+on2uXOdL/rwSfY+XqeMLyy5gjlsvlVrFC9Hb7dGwKjecGts0wRQ32mM
+X-Gm-Gg: AY/fxX4KztC5EkPwJDEGJmSaqcSnRPguHM+5bq2TYRBnZPaWDN+uUJUWDZzDMGZdaSz
+	pwS+K48szqbObR8Yx7yaSAd3DI7yxIbxkz7tYLom2SCBNLQ0QHSbHeCU8eWctVTbIPYspLX0KZB
+	FP+r1allccn81etRozpLvA6EMbwWbTZKtlNb6MLyXRZlZBrTQA60BREMR6li1t5fToFWnT7ZbP+
+	Iq28Yyry2WGAd+/iONKu/UM7SRRYB2AypT2BFn48lC8tkdgmVZMVKkvC1hJDwIYKUZrrZjq/m01
+	toAMn0ug0dOGsUsIxpJX+5Gdsh8WdEjThbZ1G2v0bAEiAbRseMLMRfYmkzqIjBmPO38XE6dufKO
+	5s/G0hZSKVbDLygd/FEt9cHCyXb+lJiWlPaFwMsnv1kBTn+07PFa07ANMF+w41pgp7tsiluNP5o
+	Cvmz4NzfrEFFzCt0FB7a0KNQ==
+X-Google-Smtp-Source: AGHT+IH3pBngYGrXfax3dXFTdYtopPEIucZI6Xy95b+JVFKyiDopAVgfxaAI2m507ZcWZ3YvIO71Ow==
+X-Received: by 2002:a05:6000:4020:b0:429:bde0:1da8 with SMTP id ffacd0b85a97d-4324e70cadcmr33580502f8f.7.1767440029849;
+        Sat, 03 Jan 2026 03:33:49 -0800 (PST)
+Received: from debian ([88.97.178.141])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eab2a94sm89501609f8f.43.2026.01.03.03.33.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Jan 2026 03:33:49 -0800 (PST)
+Date: Sat, 3 Jan 2026 11:33:47 +0000
+From: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+To: Paul Menzel <pmenzel@molgen.mpg.de>,
+	Salvatore Bonaccorso <carnil@debian.org>
+Cc: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	regressions@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: Re: BUG: kernel NULL pointer dereference, address: 0000000000000000
+Message-ID: <aVj-mz8vaw53TWtX@debian>
+References: <6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de>
+ <db387081-345f-423a-a0ff-e13f3bec2d51@molgen.mpg.de>
+ <CADVatmM_mRnkDX=hpUjbyKkZnGynxJfRSujGxm2LaWWMEL_2ew@mail.gmail.com>
+ <ef9223ee-0a4e-468c-bfd0-0cf190d262f1@molgen.mpg.de>
+ <aVgjpWaIRkerdgCa@eldamar.lan>
+ <49cdd663-bcbd-48b4-ac38-77ce94ef0c8d@molgen.mpg.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260103084243.195125-1-ming.jvle@gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Rspamd-Queue-Id: 02FA04000E
-X-Rspamd-Server: rspam03
-X-Stat-Signature: t9scgna54m5k93t5i7p64aw5zqw5oce1
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <49cdd663-bcbd-48b4-ac38-77ce94ef0c8d@molgen.mpg.de>
+X-Stat-Signature: y84io4nwawrykqs6mydxxkgmo6nuock5
 X-Rspam-User: 
-X-HE-Tag: 1767437813-726544
-X-HE-Meta: U2FsdGVkX18FYrc5OlEvbDrW+8VnfrKEzoW79y8PvEGrq0HxmggkiRv69tDvunWofouGuIxgXR2clbm05dPXawYJZ+UPNjp856M3DsZzr7PqEO2nQ1fQ3cfT4y4qv7EvZMKJKRDkg3tzylTPHh2/DfECGp0YkMunVQ1xyU2l3mfz7iccoE+z7VdJPaMcg9mommsk0SFIyWn8hYjVJSBjGGBZQBAGBK5m4Nx+5ZgFdg4R+8laHF24gJDk4XkrMZ7Ivv+nTcoix/DQnYuZQW0FKKvCkMsK7lgFY3j67DR6V9d9ysEIH0+L+r67yHwBKQjFDSpvVMOuP268s7lqS9rt0+/xbT1UKXdT8JQSnbxU+d7TjhsFy39SNhrjBWqgQ0q/l/FrgW1rUSsjsfl9J/eAxKXbVEASPtj4w4ovvyxREfvwaJnzqaJaiFckCKgXbkW5qSLObzadJJc46nJIuGH1gPX+JpznnBVfV6u9lbjIcRLXr27u9Ah2NZq5wF+hFOUyIOXOA2ok4h7krAC1jsB8A4aNAoYbpUYbLCcKlXCzQqI2kxoJfns1Wdpk5c0YeqbricsNc+hMfDnjwesgkPGPKKGhrIYgMpwVpQkupJugYtheudf4LqcFEe75tu3F2G4eNwKzllohcGvOwiaZpnLJ/9ecDA2yRohNN8qYQiQsxSiOnrW2o/lVU/H+TJ1rWyP4G6yIsIuFRcRF4PpBX9tkknr+0e8itR+ZNJpbiqx8jHq179vi2SYWPctkuDqlFBdVeYxtFW1ZUKlEgWfQ3YdahqjOyPyuWwcXqZGONTg2SDwhIZfpDNt/Tee/BMgOkLKs2xpyN4JsGghoQeWTYxv+ke+kSj8F4NrfyisPW/FECr4PkNcuJtcZYyYQ3Dn8XdG/H0BBILA81w3QJz9UaPq9+emuQzaSb8RTGi0e1vAglHmfhg41dr1VgbmXuysQnvMdjZNnHgJbudd+3leQdpL
- U4Fmzeul
- kzLVNsLWjUDSyXLEYJRwJXKFBcFYJyGWYNyxlTn7/I4zID0CPtTwQn5lCe1nyAyqHhjD9OQz3yx5y973FKsIQj8j/+VNopkI+m4+FkKDC1SLMbm0BvKndA93msQ7thEOwewAj4YGrZPlnYgDhi26MqttAT/DvnPJf68JCQWkPZIvqt9+tnb6YXIp3gKj5OxXsdivDq90BgY1aHbiLm+CLG+Wm9Q5F6arRF9zBhIiGq12mTev0KaWOTwXG5DsgJ9xlyyxxkyz1ky1WJ09jz5WkCvZH2tG4ZYrvdTQAS3jWo9QONMF0jYgFIUiuJWqXvCqd9RPa+7R6BZ8kIzu++y2sPxBBBPu1oXkmYlnJJ7pCMG0L9rpRjFaExUxhwwYJM7pesrib5DNtBxB14NPkC9PfPEwtigq1r3AleowdvPp7p1iZHCELkD9FEIYghl6JwE3YlhjFYF3W1GzFGCMkCgfzJ39Vp/8hBGq02krjipzgQqf1SKorUy/IIX/QEQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: BF2A480006
+X-HE-Tag: 1767440031-77289
+X-HE-Meta: U2FsdGVkX1+PF2N5l7LJtd6ljaYOnrpb0JnVRlXzer5JKsF/L3fvY4AFJkitw+BxFmFyXMP14FgtKF1p9Itw3KAgp6nUD0u0ZG1jjtfhTlnTpmAwCEldZFuizF7/eaT4Dkfw5OlwX2AdAdVch4npue+pHKx3S+xeYJpxZklahjJMlJ9yR//lSeHdmgsg/W8SLHPLuHiS2WBkoc53g8rU1iQQv/u5KFUMaSSWyTw/N+B7j9iQCX280UqvNcqaL+igra0iUF39FBlCE5juRufz3EM3ytSBIPm8lpzUxLuvwT+WJoC1jipCspY8cNZVVij2JrvAp+QRSEuo5PNLbYLW7xxiy1+2lPeXrigsNPdtWckt1HFt2QmL29Re4XrQtGMaXv36i+oCh0hpgFkYvFrIUHkoSMcoq58umKpyBQSgSAz27QYT+pmTCu8Q98XNMptzka50pXVNGrgwG+nwgcPZJoq+7jOVcjMUMXFpHvlwjy+ufkxoPxrOK3eBk8CxRGWFEX9gnOHR9ZX59z2nO28k9Q0EcWL2unVNJtN30p+HaCWg4OFPvlKXDbQBYYOo4RUL1fPZiL7bKXVEJHK6p0QK8TVUUlCO5qI7dX96sYEQE2zBmHYU1g4XuNQ1QgIZ5FjOEIDSIf1mK+3pypTHRpQCucHx12X2i47RosADiJ9142Usrr5JIMA6gAgloGx7RyHPR20nXSmxZpLqnto12V/xjiXCPHClqzz4ldWWNmTnx7YlNsnSMmHiWxwEfjLHoJgk3kN/aprgetJR1qbERPgM+HytgsDPadsxARcnbpGZ8io0FBUk61/lST4UWwrPpsboK5v9FgYXjV9886RIxh2XvvkfH6XTbCp0I+BCcZ85GBNXmjDLzTxOqTOIOLMrTotqGxRi57g9yzVgw5kv+lTZNSO11xaj9q06Y/KNdKZoBIKS+kJalPFvy9+s0QmTi3gnKsS/sIeycGBE1p8lojZ
+ Kgxthn5S
+ nGKO7fYOZc0/w37Ue3W7hHi+0wuKnNP2WD3HIDArrBr46lqvpdzvDP/YlxCpTGpQIwMt80qbjBTOUIcAJuOv4raKGTlV80rvPdfm1Nd0k4Xii9pekoyLOnobYKhpxh0+40nCSu3HCEg1ac1T8I4e/3urmdlViCJSAatAOKqcPXhXC2+cdCwZpga+Ka87Gqi5voaqwfwSOsH5AwoSIKxNm6HM27TceLbSSSw+j236NCjdnvkwsFC0yksQQu2vEuOLd5bDO1sbTDw+mAXjW6QqrSEBIjBwFbKPrFCPNP7bYtSclZOw3+r/HF8AD8n2HgN+3Jf9lJA45LJvRzV2Cvc9feyzl7GEns/AEtFTaTN6BngGyIwX2ifqPlilXlAlGXxs1DFw4W3/R1q6T948GVJ2OgEb73AZWs1Zkvs8h7XFlB254puw4tNpMP9RgrjNWPVBkHnwHytoOWtV/k3B+7wmHMfShHflxk7ojAWYGUkO8p09RmvohcjAnx4Pb2g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,24 +133,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01/03, Keke Ming wrote:
->
-> Keke Ming (5):
->   riscv/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
->   arm64/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
->   mips/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
->   arm/uprobes: use kmap_local_page() in arch_uprobe_copy_ixol()
->   uprobes: use kmap_local_page() for temporary page mappings
->
->  arch/arm/probes/uprobes/core.c     |  4 ++--
->  arch/arm64/kernel/probes/uprobes.c |  4 ++--
->  arch/mips/kernel/uprobes.c         |  4 ++--
->  arch/riscv/kernel/probes/uprobes.c |  4 ++--
->  kernel/events/uprobes.c            | 12 ++++++------
->  5 files changed, 14 insertions(+), 14 deletions(-)
+On Sat, Jan 03, 2026 at 12:01:19PM +0600, Paul Menzel wrote:
+> Dear Salvatore,
+> 
+> 
+> Thank you for the follow-up.
+> 
+> Am 03.01.26 um 01:59 schrieb Salvatore Bonaccorso:
+> 
+> > On Mon, Dec 01, 2025 at 05:05:59PM +0100, Paul Menzel wrote:
+> 
+> > > Am 01.12.25 um 14:25 schrieb Sudip Mukherjee:
+> > > > On Thu, 27 Nov 2025 at 22:55, Paul Menzel wrote:
+> > > 
+> > > > > Am 27.11.25 um 19:51 schrieb Paul Menzel:
+> > > > > 
+> > > > > > Unfortunately, not reproducible, but starting with Linux 6.18-rc7, I got
+> > > > > > the oops below *once*:
 
-Thanks,
+<snip>
 
-Acked-by: Oleg Nesterov <oleg@redhat.com>
+> > 
+> > https://bugs.debian.org/1124075
+> 
+> This is
+> 
+> AMD AM5 ASUS ROG STRIX B650-A GAMING WIFI, BIOS 3067 12/10/2024
+> 
+> > https://bugs.debian.org/1124463
+> 
+> This is
+> 
+> Dell Latitude E5470/0VHKV0, BIOS 1.34.3 11/20/2022
+> 
+> > Does it make a difference to cold-boot or reboot into the system?
+> 
+> I only did cold boots, and I am not able to reproduce it anymore, and wrote
+> it off to some hardware issue – despite the system working fine otherwise.
+> 
+> I am adding the x86 folks, and regression lists.
 
+Thanks Salvatore for the Debian bug links.
+
+I had been trying to reproduce this but have not seen it on my machine so far.
+
+But looking at the traces from the Debian bugs and the trace from Paul, my best
+guess is that its happening because the low level driver, parport_pc in these
+cases, has not completed setting up the hardware.
+
+When 'lp' starts registering, parport driver will check if there is any port,
+if no ports are found then it will try to load the low level module.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/parport/share.c?h=v6.19-rc3#n198
+
+As mentioned in the comment request_module() is not trying to load a real module
+and it depends on the alias. Also, mentioned in the Documentation.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/admin-guide/parport.rst?h=v6.19-rc3#n45
+
+I am not sure why the problem is seen now, but is it possible to test the
+below diff please and see if that fixes the issue.
+
+diff --git a/drivers/parport/share.c b/drivers/parport/share.c
+index 427abdf3c4c4a..8f45daf7b3825 100644
+--- a/drivers/parport/share.c
++++ b/drivers/parport/share.c
+@@ -287,8 +287,16 @@ int __parport_register_driver(struct parport_driver *drv, struct module *owner,
+         */
+        ret = bus_for_each_dev(&parport_bus_type, NULL, NULL,
+                               port_detect);
+-       if (!ret)
++
++       /* Return if no port has been found. The driver has been
++        * registered, so whenever a new port registers
++        * attach_driver_chain() will be called which will then check
++        * all registered drivers.
++        */
++       if (!ret) {
+                get_lowlevel_driver();
++               return 0;
++       }
+ 
+        mutex_lock(&registration_lock);
+        if (drv->match_port)
+
+
+-- 
+Regards
+Sudip
 
