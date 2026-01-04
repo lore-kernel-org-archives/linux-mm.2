@@ -4,107 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DD05C2A074
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 10:45:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47251C2A06C
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 11:42:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F72C6B0092; Sun,  4 Jan 2026 05:45:16 -0500 (EST)
+	id 3A1A66B0092; Sun,  4 Jan 2026 06:42:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57A576B0093; Sun,  4 Jan 2026 05:45:16 -0500 (EST)
+	id 383506B0093; Sun,  4 Jan 2026 06:42:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 479E76B0095; Sun,  4 Jan 2026 05:45:16 -0500 (EST)
+	id 2AF736B0095; Sun,  4 Jan 2026 06:42:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 333BB6B0092
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 05:45:16 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 027D01AA069
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 10:45:14 +0000 (UTC)
-X-FDA: 84293949390.24.E03FDCD
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5C16A1C0007
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 10:45:12 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kFNzZawD;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AF2B6B0092
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 06:42:35 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 58710C21C1
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 11:42:34 +0000 (UTC)
+X-FDA: 84294093828.09.4A42F0C
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C26D31A000A
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 11:42:30 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RpICdXFw;
+	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767523513;
+	s=arc-20220608; t=1767526952;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w4kUc4Gy1Q4guuMiS1dhlIBFRFKR3lmOikhJJznqndg=;
-	b=ovjHOvUZflWxZhM3cfjTvtdYqIJEpRaoC3cg+LvQI0jWLMHBpGzr9oJPzCbaM3DdccuE6X
-	zc4ksUjnZPw0DIlgYKxz7fjey/ZYRwGBOjW+H6p0Rs1Atf508Zdrq8WsQA3QV9h9rkCAht
-	H20gFIjWAKJ0Oc3uMjKDArZz55B2Xpo=
+	bh=AOwFX5tiVkgDyyRQLg53zLZoYmPa6rEzkBzCc52YJus=;
+	b=VPOVQ/yhroLcuauJ6XY8vEXE9HTUgGJ9ZJ8qmpHwLdi3e9oJCd+polaC9uKq+IFVyU/aPM
+	zLJCptomyNRFys0i0nBlMMKVkJzjsXXD1vBcia45XyW1NhPQSPbFrUXMZ0Gba7th0P3LBC
+	LivPPfAdQ2gHcxc9IDFtbeNo7WZtuDs=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kFNzZawD;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767523513; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RpICdXFw;
+	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767526952; a=rsa-sha256;
 	cv=none;
-	b=JKZ0nmSx819ssBS5h9zstSZeTaZsE++4uFGZijUFkbT+nzbmS0MKogDNPUNLlyloQphGs/
-	g3X9cYDTVmdfh8UGfZjGG/xSqWdtBu0/VwMWjHvlzj2+uGzjYb3s2lsGNFoIYNiQt/Td/M
-	BmjpeOgNw0qv2miFxStzT4pKQVux5TY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767523512; x=1799059512;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ktwHsdreMOy3nXLKvFJ0EqHl5o10OsVdQQOqs+UIyeA=;
-  b=kFNzZawDq6WLnHGYJb/IXeLvxadebU37uodA6T7kw9Rit/Cl5NaiKInd
-   6KzrNgokfJSSxHBFtjRh+klzIpfFFH0R3AuASqMYb5CeJqWuwobyr6sS3
-   Exs6jVdhNmUNfHbIELW4753lmaGWm8MnyQSyRoewWC1Dmg71gttzD5YBs
-   8ToGulNQvb0KNIERqlaiQDicYYpwkMccp0deAkGKKgMNbmWbNPAyP24kb
-   FRs7vGanSNMB6rBldQQbGXkjz8b9M4G3h8EdZTgDB+euMnqMSmSeaguVR
-   cWym8iOBNu2UPFyWwmJ51X6WltHS4acg7HxZRgfk1XIdBmSTPN9Q9wuO/
-   g==;
-X-CSE-ConnectionGUID: vw5cTIaDSyOqdx9wJmXJ4A==
-X-CSE-MsgGUID: xgV9F80dRmSz8ySoa7IeYg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="68832778"
-X-IronPort-AV: E=Sophos;i="6.21,201,1763452800"; 
-   d="scan'208";a="68832778"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2026 02:45:10 -0800
-X-CSE-ConnectionGUID: ADv6f5dcTOe85eJFZpu8VQ==
-X-CSE-MsgGUID: yObrqGyaQlylT4I8Pv62Zw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,201,1763452800"; 
-   d="scan'208";a="206690326"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 04 Jan 2026 02:45:09 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vcLbe-000000000W1-196D;
-	Sun, 04 Jan 2026 10:45:06 +0000
-Date: Sun, 4 Jan 2026 18:44:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Pnina Feder <pnina.feder@mobileye.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	linux-kernel@vger.kernel.org,
-	Pnina Feder <pnina.feder@mobileye.com>
-Subject: Re: [PATCH] panic/kexec: Allow forcing panic execution on a specific
- CPU
-Message-ID: <202601041820.6M8cIq2e-lkp@intel.com>
-References: <20260101123237.277411-1-pnina.feder@mobileye.com>
+	b=7nmai++jvKhJ/8HS+1qK3HhOYkv/b4XU8QhB6H4gOGoPxCh/f9ELVmBgvCYYiLZN6fiSBO
+	zCaGb/kldlv2WjE1f68nzI4YdBmVn18rISuSdfiv0mwrqiXRFwAh+/RkkBIHZxv+OUFTpR
+	hHBLqOWV4eRbmSlTxqyA3NVX1vO02Ec=
+Message-ID: <b79c4a9b-2d19-442c-969a-7479a8ed9dc7@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767526946;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AOwFX5tiVkgDyyRQLg53zLZoYmPa6rEzkBzCc52YJus=;
+	b=RpICdXFwM2bpv2uDR71rh9y/MhZPTu5CAXYOzxJZzG778IK7V2psirnGHr197RexXfyoe3
+	W2kgrUs/lvzqTxvrecaYIWYJKymJYAfV5aQWnOWJQQMcscf6OfZJpLRj8m2srI6BSQG40/
+	pyHgXe5dGBjx7LZzmXzJ4fwwRKh9uS4=
+Date: Sun, 4 Jan 2026 19:42:16 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260101123237.277411-1-pnina.feder@mobileye.com>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 78c6z889roj5p9jozubq79omteeny5c8
+Subject: Re: [PATCH v3 4/6] mm: add folio_is_lazyfree helper
+Content-Language: en-US
+To: Vernon Yang <vernon2gm@gmail.com>, baolin.wang@linux.alibaba.com
+Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
+ baohua@kernel.org, richard.weiyang@gmail.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>,
+ akpm@linux-foundation.org, david@kernel.org
+References: <20260104054112.4541-1-yanglincheng@kylinos.cn>
+ <20260104054112.4541-5-yanglincheng@kylinos.cn>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260104054112.4541-5-yanglincheng@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C26D31A000A
+X-Stat-Signature: a8fdh5k8mzajphxdqrr1nn66gk5enwqp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5C16A1C0007
-X-HE-Tag: 1767523512-659585
-X-HE-Meta: U2FsdGVkX1+mGYRzyqGRCG2cPm3Gi+Tk2a41vDRE1+IRMhBW2sOt+KdBT3rL06LZgGSiIJTQ2mGxytnzFnI6C1NvuSG3ZPSPP+FYt1GjLXCLpCVCIroRpCFnyG/XObGvAqpQwkyrJnvdoJjJ2fhfobDCRsGY+o09hy/R9Pfj30iPDFa6NUioA3243Jtzh9jlUl9f5n9J4dB0D8YcGPTB6cHNidGkvSdWewmJXzdI0ETbSduvm1AN3ec1tOOy4Jd7riup0o/aNccTB64knpApsMk4OE0XNF1vCmDMlxt9edh6bk8xxYyJGhUSkTvID2pxCuQ3iMnpJS3OuNlftoSHzMKHKlxyCYn3KOX4VGYJqDTs1pwrmzvM07u3lD1miFDWN9sZ1quo7hI4kTVaUxwiHlQq0ff3FDCYFWQGRw2akPlG/qEJZeYuXPyiz4l1Q7pwqXUvKrlfivPoZubJfwnOkVoGWPxj3H7vWQvT2q7ACXztQF+7h7GX2J5D8MrB/Z2xKnjMwDFVdeHtgYnq1L1B5H5Ev3daZ7bjLvS2fNylh7IyxWej1frwGpjaLVhVPKgwordsS4lHeiqkKPynvniFA+u6R5i4Tm7LMpULMdjh12l07cmlvIop/KSaIoB3uDJuJWfmpZdEIzPWLaNmK8/mEXtrl6qkQ1q2X+RofWazE/ujR/KdqBnkmYpbfOSG3fAQ7KmX1uBinmjUlK4Db+BNtZGwlwiFUaKBFyD5M0GyhYCMnUEgcHDQ/GXaJzeEWXVBToygDuZRu9NG+WtCXkf1lxqem4chKLOeoHXqDRS90sWuaCMxuydSjDtsoN2PW8h3OusWVMS2FNyoccAWvOeGtC9Maqe5wYRj9vqQvz0ZbyGQCk76OpfjbNGPQfafZ7yUt73Ogw36i6WCLif6luOSVu4B9qTSnaqDLP0crMnVb7k6yQgR2HKxYqhowb92s829sdzh57I5iNvSg8aJLpX
- +mB07HH0
- BABR3iZmK6dqP561H1HRnSX+91zh9nNM4lgrQpxcs1cevcK9g1N96g3R7Spn5MN86SnE8rfuzl+rtaVtA+aOz3aJ6b6QFHxW3SChdJl8QGovjWIZ5zIqZNnU3XH63bcE2z+N+HajAkDpkslbNjPzxHhqQIK2Ky7GOXwto+bGalr3ufiQ5YTGendN3BfmZltoWPAK8Pk0mEsZgc7l+kKbQLlMknhcoQ41bhdrXVgKUz6IruzH8Pznif0HbxuhhnwkTi+muoPm7nSEyl1CFlI6zvmbRLhi6FK3XwOC9gaBaIBoL0j8X0uBsz/2euT2DnBb7eHr7JjskA+6bdw8f1wPUagHnnQtQlGK4JjtA8YO8yLOFd/2l0RQyDnNfyvZjJUHtf4smF2baOh/YB/ePwfC7JfCO2gUkaywFqy/i
+X-HE-Tag: 1767526950-516599
+X-HE-Meta: U2FsdGVkX18HGMg3uCCECBe70JD0DP0hIMiVnWbVm6P1kMwoAnb4WUjKGYayjWiYjN9wwO+c4EtCemhz547hj02YyWTQ51zMXoa2tlUp8Jm70QjxTcR8rT21jayGL5GgfyEUr7ZdefdxkLrq7lM2U2lQjEflRwtmfE5HmWERJCcCsa9QE4UM+aXCxxJ0k8fxktHSiSl8RVT8DWtles9oVURWXLc7aMV39UGyEmZkESRUaVRIHB4kroZZGRa5hLL1dHRr+WdjL8AzvvzKON0qcr9wqgeVAfbLvDMLmoPTFQcK/M66kpRiUlEXBC2VCl630ZUy2FObiFfLutgN5z51mnQQp3Yi/bsOm/h8x13IADOc9VeYB+FQ/SBcw6Aq86T2gyVMjiBSAuGbTSTZwbxj1809Q26UTXLAyMajbONBy9dqqdyh4reRPky25/mVmwm0LVQynDoA7bAnsHDODE7Xfj/wNiD02JB04fEJhRVuiaiCTHJyxmkG/MGGPqiLjgvWEonLyTivjfGqXGaSFxRna0GSIBKog+IjPeMy6AzSlirYuEvFC3RUFvpuoAgmeDKq/bZT4QBXLPQGUGnyHbyF70so/oTx2Ldr86PxsiNIuWj24gZdvYcydAE2liXX8aVj5daLsYClN5AmSWtxqrm+XfRwJM//YUUP4HWJuqCQL9YuOFQjFcSGwKla3lDCB9v+EUMHa+dci0hTjNZKIAcUHgnV/xOPkBjSb5UVYtw+3soYmf/ERgvIQd/0WjZHNLDUDDANnhbjZ+CIU2Kv3fnwp5B+lee1Ke2VfyGRvOCdJlcrqJcOmmn4MdlP9V8IN97mwWxu6BWL0DNh6pzWWHFXI9SAZmlzzRztKlMI39cBn+xPWC8HfO81EjSmESiKVwsh397JH7XF1Glwe+gas5PRteLLyXZxRvhoQrYC9XY+nghIRn6wQR3JFb6nAZsDZUPepmVkiy8nW8WxZOIXgZY
+ abMYoQGG
+ VzUSdTTjtCtkBBjBGym6USAOYFhBKHhgbShL4BpH/f1Ie4r55oUDi46lro2PrcFpxhR8GsxJKLuC1v0zAJ06wAhRz8b+l2VhkE3v2QmwazGZTfFIEBU2SPkROztSQ8C5Su/1DVmu/NsAHEv+jek/zkeqA6ZWD1RGRbCGn03JF/hLPWPvpJ5aSaWFEVsivXmtKOJIghMduTSyAL+5xqnng7R0cHisvfyet8FhJ++xbUEjlapoyY1mNeMedb/PuRs3LG6EOqYgKaTXVdbm2ziOBGMT181CA/TPJebwwQ11iXSDk5jg1auGKULk0tidjbG4Mf0fmA4ctHtI6gMG5FXho/orJqQzybzGauSUVzRYuYWURRvetQkz17l/D2y2c9R0VE31G/TeIdFv/o/W2unhr/WXQjA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,98 +93,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pnina,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on linus/master v6.19-rc3 next-20251219]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Pnina-Feder/panic-kexec-Allow-forcing-panic-execution-on-a-specific-CPU/20260101-203448
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260101123237.277411-1-pnina.feder%40mobileye.com
-patch subject: [PATCH] panic/kexec: Allow forcing panic execution on a specific CPU
-config: arm64-randconfig-r122-20260104 (https://download.01.org/0day-ci/archive/20260104/202601041820.6M8cIq2e-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260104/202601041820.6M8cIq2e-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601041820.6M8cIq2e-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> kernel/panic.c:349:69: warning: diagnostic behavior may be improved by adding the 'format(printf, 1, 0)' attribute to the declaration of 'panic_force_target_cpu' [-Wmissing-format-attribute]
-     321 |         vsnprintf(panic_redirect_msg, sizeof(panic_redirect_msg), fmt, args);
-         |                                                                            ^
-   kernel/panic.c:321:13: note: 'panic_force_target_cpu' declared here
-     321 | static bool panic_force_target_cpu(const char *fmt, va_list args)
-         |             ^
-   1 warning generated.
 
 
-vim +349 kernel/panic.c
+On 2026/1/4 13:41, Vernon Yang wrote:
+> Add folio_is_lazyfree() function to identify lazy-free folios to improve
+> code readability.
+> 
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> ---
+>   include/linux/mm_inline.h | 5 +++++
+>   mm/rmap.c                 | 4 ++--
+>   mm/vmscan.c               | 5 ++---
+>   3 files changed, 9 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> index fa2d6ba811b5..65a4ae52d915 100644
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+> @@ -35,6 +35,11 @@ static inline int page_is_file_lru(struct page *page)
+>   	return folio_is_file_lru(page_folio(page));
+>   }
+>   
+> +static inline int folio_is_lazyfree(const struct folio *folio)
+> +{
+> +	return folio_test_anon(folio) && !folio_test_swapbacked(folio);
+> +}
+> +
+>   static __always_inline void __update_lru_size(struct lruvec *lruvec,
+>   				enum lru_list lru, enum zone_type zid,
+>   				long nr_pages)
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index f955f02d570e..7241a3fa8574 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1838,7 +1838,7 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>   	max_nr = (end_addr - addr) >> PAGE_SHIFT;
+>   
+>   	/* We only support lazyfree batching for now ... */
+> -	if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
+> +	if (!folio_is_lazyfree(folio))
 
-   308	
-   309	/**
-   310	 * panic_force_target_cpu - Redirect panic to a specific CPU for crash kernel
-   311	 * @fmt: panic message format string
-   312	 * @args: arguments for format string
-   313	 *
-   314	 * Some platforms require panic handling to occur on a specific CPU
-   315	 * for the crash kernel to function correctly. This function redirects
-   316	 * panic handling to CONFIG_PANIC_FORCE_CPU_ID before kexec.
-   317	 *
-   318	 * Returns true if panic should proceed on current CPU.
-   319	 * Returns false (never returns) if panic was redirected.
-   320	 */
-   321	static bool panic_force_target_cpu(const char *fmt, va_list args)
-   322	{
-   323		static char panic_redirect_msg[1024];
-   324		int cpu = raw_smp_processor_id();
-   325		int target_cpu = CONFIG_PANIC_FORCE_CPU_ID;
-   326	
-   327		/* Already on target CPU - proceed normally */
-   328		if (cpu == target_cpu)
-   329			return true;
-   330	
-   331		/* Target CPU is offline, can't redirect */
-   332		if (!cpu_online(target_cpu)) {
-   333			pr_warn("panic: CPU %d is offline, cannot redirect panic. "
-   334				"Crash kernel interrupts may be unavailable.\n", target_cpu);
-   335			return true;
-   336		}
-   337	
-   338		/* Another panic already in progress */
-   339		if (panic_in_progress()) {
-   340			pr_warn("panic: Another panic in progress on CPU %d, cannot redirect to CPU %d. "
-   341				"Crash kernel interrupts may be unavailable.\n",
-   342				atomic_read(&panic_cpu), target_cpu);
-   343			return true;
-   344		}
-   345	
-   346		pr_info("panic: Redirecting from CPU %d to CPU %d for crash kernel\n",
-   347			cpu, target_cpu);
-   348	
- > 349		vsnprintf(panic_redirect_msg, sizeof(panic_redirect_msg), fmt, args);
-   350	
-   351		smp_call_function_single(target_cpu, do_panic_on_target_cpu, panic_redirect_msg, false);
-   352	
-   353		return false;
-   354	}
-   355	#else
-   356	static inline bool panic_force_target_cpu(const char *fmt, va_list args)
-   357	{
-   358		return true;
-   359	}
-   360	#endif /* CONFIG_PANIC_FORCE_CPU */
-   361	
+Please rebase against mm-new. Commit[1] already supports file folios
+batching in folio_unmap_pte_batch()
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
++	/* We only support lazyfree or file folios batching for now ... */
++	if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+
+[1] 
+https://lore.kernel.org/all/142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com/
+
+Thanks,
+Lance
+
+>   		return 1;
+>   	if (pte_unused(pte))
+>   		return 1;
+> @@ -1934,7 +1934,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>   		}
+>   
+>   		if (!pvmw.pte) {
+> -			if (folio_test_anon(folio) && !folio_test_swapbacked(folio)) {
+> +			if (folio_is_lazyfree(folio)) {
+>   				if (unmap_huge_pmd_locked(vma, pvmw.address, pvmw.pmd, folio))
+>   					goto walk_done;
+>   				/*
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 670fe9fae5ba..f357f74b5a35 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -963,8 +963,7 @@ static void folio_check_dirty_writeback(struct folio *folio,
+>   	 * They could be mistakenly treated as file lru. So further anon
+>   	 * test is needed.
+>   	 */
+> -	if (!folio_is_file_lru(folio) ||
+> -	    (folio_test_anon(folio) && !folio_test_swapbacked(folio))) {
+> +	if (!folio_is_file_lru(folio) || folio_is_lazyfree(folio)) {
+>   		*dirty = false;
+>   		*writeback = false;
+>   		return;
+> @@ -1501,7 +1500,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>   			}
+>   		}
+>   
+> -		if (folio_test_anon(folio) && !folio_test_swapbacked(folio)) {
+> +		if (folio_is_lazyfree(folio)) {
+>   			/* follow __remove_mapping for reference */
+>   			if (!folio_ref_freeze(folio, 1))
+>   				goto keep_locked;
+
 
