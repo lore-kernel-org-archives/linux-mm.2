@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6E3EC2A06C
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 18:14:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2F56C2A06C
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 18:27:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2F976B0098; Sun,  4 Jan 2026 13:14:47 -0500 (EST)
+	id 638396B009B; Sun,  4 Jan 2026 13:27:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDD5B6B0099; Sun,  4 Jan 2026 13:14:47 -0500 (EST)
+	id 610386B009D; Sun,  4 Jan 2026 13:27:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C13296B009B; Sun,  4 Jan 2026 13:14:47 -0500 (EST)
+	id 53D856B009E; Sun,  4 Jan 2026 13:27:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B30876B0098
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 13:14:47 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 672D61A12C6
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:14:47 +0000 (UTC)
-X-FDA: 84295082214.17.AFFE7F0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C93454000A
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:14:45 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="UC/MCP98";
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767550485; a=rsa-sha256;
-	cv=none;
-	b=Yaw8kdZ1AkrLuZo/fVs2Xvsmp55AFDtr8iNEnUdFexgF485/Erl9q5ZEVOMsL4mhhKYNJY
-	ICG2E/jGdv2dB4HbUIc17l226M1dxgJ22nge8/gOkZtwLSEHzAiG0ykXtVUq+b5FWlGw4Y
-	JmiukD9oytf7q/2azaiW0v5xwm4COwk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="UC/MCP98";
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 413866B009B
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 13:27:50 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE00E14120C
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:27:49 +0000 (UTC)
+X-FDA: 84295115058.15.3EF1EDD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E339840005
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:27:47 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZDCFqu9L;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767550485;
+	s=arc-20220608; t=1767551268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3ao7Ys3XAfy01aKjs5W1Sw2ZSuEhzNVkMNr8j8FICp8=;
-	b=kYTbTjyPBqhHl70Dm0Xr2jsht3uQMKwMgDmQfWMolPFzwqzeDZyvlVi+x3BP2AKBORFbVG
-	hm81DtnhtdM22BqFP15LCI+GfOoYBjZgLu/nXAo+m3OyAaaO+9OycQdhjGcBFEzDu2iwlv
-	1yyriKIMkZvZXnInGCIrhAELZBbJ0dU=
+	bh=TiAUC0bp7AM7FYgKFgUvHMqTAWhCJawvo/Gzj0nrbwY=;
+	b=P2oAGEP9UK98I/M29pRdiIWj99nQMG3PJ5/DpQx8VodZhqPtKFRLkAITuU6HcoXrsEQtPw
+	gLPcCNMvE7FKMHKRkbNQkIv9N7K+hKbrX6NiNEuoVgC1wX7MfC52mmqwYb6jaGXOAy9I0A
+	xAXnfy3+xHTlruwmkJ+rKQd6rHTmtzg=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZDCFqu9L;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767551268; a=rsa-sha256;
+	cv=none;
+	b=zkTCqKb/qRiLDmLBpcqjiM8hmIUO4Ckj/Q4woT0cG1qCLWapyRGsS5cO6EUO63fI+UD+qn
+	97gtbUSyFA47uXV1mdlW8Vo/SIHiO42bxYHlQy+TqCImUK09GgqnwKcLU6EpPZiZDVoMDh
+	fMQnfJeobli0fYEMeHv+vIufZ+9h3VY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2B39E60010;
-	Sun,  4 Jan 2026 18:14:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A417C4CEF7;
-	Sun,  4 Jan 2026 18:14:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 80A2040317;
+	Sun,  4 Jan 2026 18:27:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE170C4CEF7;
+	Sun,  4 Jan 2026 18:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767550484;
-	bh=uexxpGTRJdOdjecdMSGkGbE8JdVZGYKsGcsnXnMXSSc=;
+	s=korg; t=1767551266;
+	bh=ncBLtjyDgpOU9nUGlYr/lR60bzhWGn+9CqIvEOL0bQg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UC/MCP98UsfJ9tekhTU2w51FdkgZBaC73S0T3w5Vfe1JW1JVNXSvBo/gspEotD9AR
-	 M6x6lTFqA4Kd+yzrAyUUdG/n9F95nupj3jIyL/98gH56ZKtylj5uDTFlMVPIR4cxRX
-	 4RvivEddpK2EWpYW0qP6IXEOUvWZZLMA0iVma4UQ=
-Date: Sun, 4 Jan 2026 10:14:43 -0800
+	b=ZDCFqu9LkYtIhO1nOFih2qPFuzrbgULNTICSEuJzXgTv0atk0QwQhewhTZBIhtbYq
+	 OnDoQCNk+g8uOFfgdbhr72l1zUocTUsaDoS6VLSnSg/1623eFWM2W99/ikh1C8O+7X
+	 M7+l3ArIO6KJeeM7Q/7qhB2IxduoGupzddf7bvq8=
+Date: Sun, 4 Jan 2026 10:27:45 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: wujing <realwujing@qq.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
- <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Qiliang
- Yuan <yuanql9@chinatelecom.cn>
-Subject: Re: [PATCH 1/1] mm/page_alloc: auto-tune min_free_kbytes on atomic
- allocation failure
-Message-Id: <20260104101443.f10264bc9730de884b52c5a2@linux-foundation.org>
-In-Reply-To: <tencent_9DB6637676D639B4B7AEA09CC6A6F9E49D0A@qq.com>
-References: <tencent_C5AD9528AAB1853E24A7DC98A19D700E3808@qq.com>
-	<tencent_9DB6637676D639B4B7AEA09CC6A6F9E49D0A@qq.com>
+To: Bing Jiao <bingjiao@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, gourry@gourry.net,
+ longman@redhat.com, hannes@cmpxchg.org, mhocko@kernel.org,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ tj@kernel.org, mkoutny@suse.com, david@kernel.org,
+ zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com,
+ axelrasmussen@google.com, chenridong@huaweicloud.com, yuanchu@google.com,
+ weixugc@google.com, cgroups@vger.kernel.org, Akinobu Mita
+ <akinobu.mita@gmail.com>
+Subject: Re: [PATCH v4] mm/vmscan: fix demotion targets checks in
+ reclaim/demotion
+Message-Id: <20260104102745.cfd4f6bd661e8e817afcdba8@linux-foundation.org>
+In-Reply-To: <20260104085439.4076810-1-bingjiao@google.com>
+References: <20251223212032.665731-1-bingjiao@google.com>
+	<20260104085439.4076810-1-bingjiao@google.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C93454000A
-X-Stat-Signature: 8byxe6qudx45aokbdj8bummaxuhg6481
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E339840005
+X-Stat-Signature: m345sh6ba5xs3cr1urpy56yogsqgcyhy
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767550485-504552
-X-HE-Meta: U2FsdGVkX1/LpcuQdAB4ZLwjizQU3TeSlKsznqU6vj29fcHlj6aiYoSjIBA6Sqi/mkgklvI7EjVhzo1kF4xDZVnPHgCOds1koX5RXKmCX9i8IjKUYEnFFMMuGKtX/gCUVRR2nG2kg1q3bUOXOlHWTqt5YxMdUo0QJjltVwwrwHG6KG1HnQ8DA2VfI3kce8qEgR+WNKm7NWyokMHRWaC3FFjm743cE8m67uoG9G3S0p0nbJrf4bOaRrjKuxCBgS3kqpwA/QvIM93KxCL21nSgU0busN7OWWGqwZWsfUf850SdtRMjdZEuIpHX+8X7AvpY7F0gMwfVbg412TsrtJv7PN/3crWErez/VMO4WEWJbIJ/GmD0nQ0FDRUlf6f4v4L+9aCI/bI94nlVqh49KTTThunePoPwGy7Z4be0AhcjEJEBTqXFzTssSiSry++zkTug7ZAw3SzKdFILGxg7A3qZSvc465Tet8iC3Y3qkqe+KtbbQX/cnS3UHSfXx4hqAc/FyHezXpaat5Dsc5Rd3lebDsb29pBzoSAstqUDMgt5HFaYM1sDvs0hntEjaYEdYxgeSTR6/Kirm2FeriNlsxWxctsm7ufsvqrdirmFx6Ejg0EhnUL/4d/13G5uBtZG5Ox1nIPa9EY5yvkdolHmA2RHAIJ5J3bmUjDXtbUKsyIoeyDrSaMg1JpCkCy7AtMzGLEwVhDd2GmyA6kPup4XpzoOiCDifgnKrSsgxL2VBvNelmdKFmvwyT7W6odWbTFIWnNApTGAaD8I71oCHOFpjoiyz1Y6X81E5evOTCKQjRq0pcRsH5VRa8uog/K/0h5J9Mi4Pb/HePE5nmvz6Klu6mzIIxUi70wlP51TtKos/61tCtAvcfkDkG54NxDuiD3N9E5iHJB8dG/n7LXT0ml2p5rpCOgq1/Ykn7F0bFnLBv5WjV5r6B33ksY+sG8eHjzmSyOpK9mN6Ydx/XWkke0lGSV
- BF2BMQUB
- KqT8Oy2tiVhBtyM8jDYELHhDBy2AolxyamQtKSSKesH2OXYwdO3PHQpMySamLKJxMB6z+JS1VSSd47zAFTUC38pYAXGCqGsKXnTC1Nec3gR6fjkxo0hqUiyFAoicyTheBtTj3my1YGPo5FODBvWI0fLY8GVtPGGDT06YvttnOZfQBvUX4M0eYSqTMUFNeSgaKvvElwdMQzgWOEEpFNp9t4uKbkZm13JffqdxxsnSCz1CnKjQt9InlCnvyaBeQFJhHHf5yqTtDt8HpHtTE8LlXxHzUbl5RS/FDd77WB+Hygdoq845z6KXT+tpYdPahGUoaQ3IuUmMLHIEPDXHcXd+3FUiHAQ==
+X-HE-Tag: 1767551267-956088
+X-HE-Meta: U2FsdGVkX1+/yZJWvhwCEsls8RtHa3SSH5WmPDKDCziHhAoa6Ls/olrWS8q1W2/jSCe2fI7v1rVujXKbMCwSUMh/1cWVrpZ4M5OCAWgzFqXLZEHecL98hjD+nVK2j/bwSFR5sFENWRPipFC/56flU7mzRvtK90gt7GqTL8U5vKiq9cc2Ouchw6MawerN96UqH/iAFtYUr62hnxP1NjpNDhGCjUFCYLn+jfmZ0a0Avmda5K088nT6RdPTdUNVNUvWkwzoiGr6k+fdlms6DKF3Qug1I5oooQX84JFvEsV4njS4uFx+/Yx7pATaoYe5PoEx3CYeQ40dEIkUbe0ADzZ1pM9XCusXhnUJJ77l/AmBXybrbbdvY/Fy6MO5wdvk6x68Lr4i5mSJd4yAaGWGqRhBK5tA5qUPJQMzinfGXrR7wei79d84TrNzM/DOfpqCNsOl90CNooNh/pZIZ1tgkzk6u+Dy5vgq1H9XZMB3vgwYAK0cQrBYOgC4NzkmGhhtwC/UyxySdUSDUBRKQcmP0vKQ0ehbeRYPrNSZnmYK9AQ3rjqsLpZ0489OmUWot47fG6VbXEv2j1TtuENVimwqwAEnv21uuZe3tFrz4rgz1IGZsi6AvvNpFurB9D9o84WZurFTz04d1gU8WQNAASeKSOSANUDkxU9jb2lvaB2Mb7FkQ1bikmYlYrXTpMMVPBOLn0VSxw3PaErUVrwr5xAh9qSTU30Zp8bBjXFD1PfyWd+O7buW/h0xPl4phcnXkORaSp4I2BL0nEbwyV1DL8gin4eGC8BF/ux76Bq7YsLrsrCwt417USp+nLgp6MmcdyyrmBPDgzDLfdAO2EEdvK/74k5ECytnv0lTbfgk6hzWSOhjfeQxNB6dune6UQbfpC8obp+5nfi+ALkEP2tfgqGbMj8OGkWl9D6S6GikLl04uge4fHP/NVMcQjK5QIcSs6Rf/4XwXQXzm4RqdPi5UKBJOff
+ sEXanE/q
+ hGAB1yNvgHClkrIvjEsXykFY/QKyIeIwztRE17SxLRJL6REcl2uO4c/9O1eZAU0LogHSYulkG7L2ntTV+x+ftUxkjtm9+7i8REcAtqpvQ1oFMmcHNf2EbWNuU5gG84ptUz4par89VWIQx7OTe5rYPnIcgdNn/AuW0yZnTj+lyfejl6nBbMto4YEdZhE79QXxwVqHarHtjoMbaqA2qGaQaeN+zgLFDtCCy1+aepSryA5k/dRCWN6kYbIgHjjU3GxgrAkHKI144vqAykragnWvXishZ82is4+Q85s9tO74qK9Oq3c6zcVM9XFlN5VRk5LICfKJMy6i/jYokfhvchr5KCeTwXxeVPyqpBPP1HV+3STqguFSj9vreuEmDNg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,50 +98,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun,  4 Jan 2026 20:26:52 +0800 wujing <realwujing@qq.com> wrote:
+On Sun,  4 Jan 2026 08:54:05 +0000 Bing Jiao <bingjiao@google.com> wrote:
 
-> Introduce a mechanism to dynamically increase vm.min_free_kbytes when
-> critical atomic allocations (GFP_ATOMIC, order-0) fail. This prevents
-> recurring network packet drops or other atomic failures by proactively
-> reserving more memory.
+> Fix two bugs in demote_folio_list() and can_demote() due to incorrect
+> demotion target checks in reclaim/demotion.
 
-Seems like a good idea, however it's very likely that the networking
-people have looked into this rather a lot.  Can I suggest that you
-engage with them?  netdev@vger.kernel.org.
+Thanks.
 
-> The adjustment doubles min_free_kbytes upon upon failure (exponential backoff),
-> capped at 1% of total RAM.
+> Commit 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+> introduces the cpuset.mems_effective check and applies it to
+> can_demote(). However:
+> 
+>   1. It does not apply this check in demote_folio_list(), which leads
+>      to situations where pages are demoted to nodes that are
+>      explicitly excluded from the task's cpuset.mems.
+> 
+>   2. It checks only the nodes in the immediate next demotion hierarchy
+>      and does not check all allowed demotion targets in can_demote().
+>      This can cause pages to never be demoted if the nodes in the next
+>      demotion hierarchy are not set in mems_effective.
+> 
+> These bugs break resource isolation provided by cpuset.mems.
+> This is visible from userspace because pages can either fail to be
+> demoted entirely or are demoted to nodes that are not allowed
+> in multi-tier memory systems.
+> 
+> To address these bugs, update cpuset_node_allowed() and
+> mem_cgroup_node_allowed() to return effective_mems, allowing directly
+> logic-and operation against demotion targets. Also update can_demote()
+> and demote_folio_list() accordingly.
+> 
+> Bug 1 reproduction:
+>   Assume a system with 4 nodes, where nodes 0-1 are top-tier and
+>   nodes 2-3 are far-tier memory. All nodes have equal capacity.
+> 
+>   Test script:
+>     echo 1 > /sys/kernel/mm/numa/demotion_enabled
+>     mkdir /sys/fs/cgroup/test
+>     echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control
+>     echo "0-2" > /sys/fs/cgroup/test/cpuset.mems
+>     echo $$ > /sys/fs/cgroup/test/cgroup.procs
+>     swapoff -a
+>     # Expectation: Should respect node 0-2 limit.
+>     # Observation: Node 3 shows significant allocation (MemFree drops)
+>     stress-ng --oomable --vm 1 --vm-bytes 150% --mbind 0,1
+> 
+> Bug 2 reproduction:
+>   Assume a system with 6 nodes, where nodes 0-2 are top-tier,
+>   node 3 is a far-tier node, and nodes 4-5 are the farthest-tier nodes.
+>   All nodes have equal capacity.
+> 
+>   Test script:
+>     echo 1 > /sys/kernel/mm/numa/demotion_enabled
+>     mkdir /sys/fs/cgroup/test
+>     echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control
+>     echo "0-2,4-5" > /sys/fs/cgroup/test/cpuset.mems
+>     echo $$ > /sys/fs/cgroup/test/cgroup.procs
+>     swapoff -a
+>     # Expectation: Pages are demoted to Nodes 4-5
+>     # Observation: No pages are demoted before oom.
+>     stress-ng --oomable --vm 1 --vm-bytes 150% --mbind 0,1,2
+> 
+> Fixes: 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+> Cc: <stable@vger.kernel.org>
 
-But no attempt to reduce it again after the load spike has gone away.
+We'll want to fix these things in 6.16.X and later, but you've prepared
+this patch against "mm/vmscan: don't demote if there is not enough free
+memory in the lower memory tier", which is presently under test/review
+in mm.git's mm-unstable branch.
 
-> Observed failure logs:
-> [38535641.026406] node 0: slabs: 941, objs: 54656, free: 0
-> [38535641.037711] node 1: slabs: 349, objs: 22096, free: 272
-> [38535641.049025] node 1: slabs: 349, objs: 22096, free: 272
->
-> ...
->
-> +static void boost_min_free_kbytes_workfn(struct work_struct *work);
-> +static DECLARE_WORK(boost_min_free_kbytes_work, boost_min_free_kbytes_workfn);
-> +
->  void warn_alloc(gfp_t gfp_mask, nodemask_t *nodemask, const char *fmt, ...)
->  {
->  	struct va_format vaf;
-> @@ -4947,6 +4951,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  		goto retry;
->  	}
->  fail:
-> +	/* Auto-tuning: trigger boost if atomic allocation fails */
-> +	if ((gfp_mask & GFP_ATOMIC) && order == 0)
-> +		schedule_work(&boost_min_free_kbytes_work);
-> +
+This seems to be incorrect ordering - this fix should go ahead of
+Akinobu Mita's series "mm: fix oom-killer not being invoked when
+demotion is enabled v2".
 
-Probably this should be selectable and tunable via a kernel boot
-parameter or a procfs tunable.  But I suggest you not do that work
-until having discussed the approach with the networking developers.
-
->  	warn_alloc(gfp_mask, ac->nodemask,
->  			"page allocation failure: order:%u", order);
->  got_pg:
+So can you please redo this patch against current mainline?  And please
+also review the "mm: fix oom-killer not being invoked when demotion is
+enabled" series to ensure that things will work together nicely when
+that time comes.
 
 
