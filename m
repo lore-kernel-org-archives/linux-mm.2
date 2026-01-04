@@ -4,105 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83472C2A069
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 09:30:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DD05C2A074
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 10:45:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E33C56B0092; Sun,  4 Jan 2026 04:30:54 -0500 (EST)
+	id 5F72C6B0092; Sun,  4 Jan 2026 05:45:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0BC36B0093; Sun,  4 Jan 2026 04:30:54 -0500 (EST)
+	id 57A576B0093; Sun,  4 Jan 2026 05:45:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D35056B0095; Sun,  4 Jan 2026 04:30:54 -0500 (EST)
+	id 479E76B0095; Sun,  4 Jan 2026 05:45:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C1B306B0092
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 04:30:54 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5B1771A9DC6
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 09:30:54 +0000 (UTC)
-X-FDA: 84293762028.15.3550E88
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6F63D1C0002
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 09:30:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="nvW/V5ES";
-	spf=pass (imf21.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767519052; a=rsa-sha256;
-	cv=none;
-	b=fkQ8UTZHd8So/XYN8PKQyeJEhu3OsKqrVvexdppzOMwOphZRlY5KOFIio/5x9o5ADs+1q4
-	juIWfVvAdePqnrcp3rY5GNuwmFkWStjdvCfvTtBP60/HajMU0nY97f5EqyJWOB8Un6dd1X
-	i8Yg6eyu6bQuKIo4jO9XCxdWvF+abWM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="nvW/V5ES";
-	spf=pass (imf21.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 333BB6B0092
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 05:45:16 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 027D01AA069
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 10:45:14 +0000 (UTC)
+X-FDA: 84293949390.24.E03FDCD
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5C16A1C0007
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 10:45:12 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kFNzZawD;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767519052;
+	s=arc-20220608; t=1767523513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FbFb4vZ8Kx6nmpMz19A349GuNGVDXKPfDjacOVYnMgo=;
-	b=SSqlwOCPjlWJl/fcnsmkzMI+UV1LOpoAJgqXSfARxrM2AS80CVn127Ma1McT2sSQm5m3fB
-	ZLUT+eZDZ/c+8I/OoFUGjuMs1F7b4eMigBNOfHldFlnVgLz6UaONHEdTwzxqVALAx0NgYy
-	HXSQ6EweEmYI/DjhPC+2ApjkEtvjJl4=
+	bh=w4kUc4Gy1Q4guuMiS1dhlIBFRFKR3lmOikhJJznqndg=;
+	b=ovjHOvUZflWxZhM3cfjTvtdYqIJEpRaoC3cg+LvQI0jWLMHBpGzr9oJPzCbaM3DdccuE6X
+	zc4ksUjnZPw0DIlgYKxz7fjey/ZYRwGBOjW+H6p0Rs1Atf508Zdrq8WsQA3QV9h9rkCAht
+	H20gFIjWAKJ0Oc3uMjKDArZz55B2Xpo=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kFNzZawD;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767523513; a=rsa-sha256;
+	cv=none;
+	b=JKZ0nmSx819ssBS5h9zstSZeTaZsE++4uFGZijUFkbT+nzbmS0MKogDNPUNLlyloQphGs/
+	g3X9cYDTVmdfh8UGfZjGG/xSqWdtBu0/VwMWjHvlzj2+uGzjYb3s2lsGNFoIYNiQt/Td/M
+	BmjpeOgNw0qv2miFxStzT4pKQVux5TY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767523512; x=1799059512;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ktwHsdreMOy3nXLKvFJ0EqHl5o10OsVdQQOqs+UIyeA=;
+  b=kFNzZawDq6WLnHGYJb/IXeLvxadebU37uodA6T7kw9Rit/Cl5NaiKInd
+   6KzrNgokfJSSxHBFtjRh+klzIpfFFH0R3AuASqMYb5CeJqWuwobyr6sS3
+   Exs6jVdhNmUNfHbIELW4753lmaGWm8MnyQSyRoewWC1Dmg71gttzD5YBs
+   8ToGulNQvb0KNIERqlaiQDicYYpwkMccp0deAkGKKgMNbmWbNPAyP24kb
+   FRs7vGanSNMB6rBldQQbGXkjz8b9M4G3h8EdZTgDB+euMnqMSmSeaguVR
+   cWym8iOBNu2UPFyWwmJ51X6WltHS4acg7HxZRgfk1XIdBmSTPN9Q9wuO/
+   g==;
+X-CSE-ConnectionGUID: vw5cTIaDSyOqdx9wJmXJ4A==
+X-CSE-MsgGUID: xgV9F80dRmSz8ySoa7IeYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="68832778"
+X-IronPort-AV: E=Sophos;i="6.21,201,1763452800"; 
+   d="scan'208";a="68832778"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2026 02:45:10 -0800
+X-CSE-ConnectionGUID: ADv6f5dcTOe85eJFZpu8VQ==
+X-CSE-MsgGUID: yObrqGyaQlylT4I8Pv62Zw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,201,1763452800"; 
+   d="scan'208";a="206690326"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 04 Jan 2026 02:45:09 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vcLbe-000000000W1-196D;
+	Sun, 04 Jan 2026 10:45:06 +0000
+Date: Sun, 4 Jan 2026 18:44:30 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pnina Feder <pnina.feder@mobileye.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	linux-kernel@vger.kernel.org,
+	Pnina Feder <pnina.feder@mobileye.com>
+Subject: Re: [PATCH] panic/kexec: Allow forcing panic execution on a specific
+ CPU
+Message-ID: <202601041820.6M8cIq2e-lkp@intel.com>
+References: <20260101123237.277411-1-pnina.feder@mobileye.com>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767519049;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FbFb4vZ8Kx6nmpMz19A349GuNGVDXKPfDjacOVYnMgo=;
-	b=nvW/V5ES2PyczNjvZpVF1t4am9BRAzUTJJ8Ripk0DAHp9pBEiaGEXddUhOWuwRRl16WYwf
-	FcLA1KDM4BywKQp7vaskve6uH79z18mGt5fj8gLWE8191p8slVi95gYjZwtGEqKTF0vinH
-	vWBB5y302lWNigXRCR1R+Fah5EtOfbo=
-Date: Sun, 04 Jan 2026 09:30:46 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: hui.zhu@linux.dev
-Message-ID: <a935563217affe85b2a6d0689914d7aba2ce127f@linux.dev>
-TLS-Required: No
-Subject: Re: [RFC PATCH v2 0/3] Memory Controller eBPF support
-To: "=?utf-8?B?TWljaGFsIEtvdXRuw70=?=" <mkoutny@suse.com>,
- chenridong@huaweicloud.com
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Michal Hocko" <mhocko@kernel.org>, "Roman  
- Gushchin" <roman.gushchin@linux.dev>, "Shakeel Butt"
- <shakeel.butt@linux.dev>, "Muchun Song" <muchun.song@linux.dev>, "Alexei 
-  Starovoitov" <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
- "Andrii Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau"
- <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>, "Song  
- Liu" <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "John 
-  Fastabend" <john.fastabend@gmail.com>, "KP Singh" <kpsingh@kernel.org>,
- "Stanislav Fomichev" <sdf@fomichev.me>, "Hao Luo" <haoluo@google.com>,
- "Jiri Olsa" <jolsa@kernel.org>, "Shuah Khan" <shuah@kernel.org>, "Peter  
- Zijlstra" <peterz@infradead.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Nathan Chancellor" <nathan@kernel.org>, "Kees Cook" <kees@kernel.org>,
- "Tejun Heo" <tj@kernel.org>, "Jeff Xu" <jeffxu@chromium.org>, "Jan  
- Hendrik Farr" <kernel@jfarr.cc>, "Christian Brauner"
- <brauner@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Brian  
- Gerst" <brgerst@gmail.com>, "Masahiro Yamada" <masahiroy@kernel.org>,
- davem@davemloft.net, "Jakub Kicinski" <kuba@kernel.org>, "Jesper Dangaard
-   Brouer" <hawk@kernel.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org, "Hui Zhu" <zhuhui@kylinos.cn>
-In-Reply-To: <enlefo5mmoha2htsrvv76tdmj6yum4jan6hgym76adtpxuhvrp@aug6qh3ocde5>
-References: <cover.1767012332.git.zhuhui@kylinos.cn>
- <enlefo5mmoha2htsrvv76tdmj6yum4jan6hgym76adtpxuhvrp@aug6qh3ocde5>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260101123237.277411-1-pnina.feder@mobileye.com>
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 78c6z889roj5p9jozubq79omteeny5c8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6F63D1C0002
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 69t8kwcownchgxow46pw1w8st6s98bdq
-X-HE-Tag: 1767519052-540659
-X-HE-Meta: U2FsdGVkX1/UWGpbS08g6WoJP2aTB4iKkW3VhQl1l8NEVKaK2E7UmtG87XHguq4hSMjBt4CNQ7APR/xwwszYmUG9iQAZYly7P9Gwqwt+y+Jb3F+5zOo4I/mWUkgnTmrPg1o4K/K71+GQSgXKbL66z7MKjg+E7bNadYytokyF1ih2IjNJdcmyVoCO8XTTEH9B6oERwaLY8O+FnUSGNtq/qAVvGWi4TD3En0DSu8iP75oqpPLH6OQTW/oXg4IGoB89ktTlPhj2buRu05vINGpIzNmbwR4Ce6F34jkXdB55wDUreRnV8O1wCNP5fCe+HNY2arUTBxUyRrgpwfv74YX88vrTmcOXue/pWP57X4mwYqny6RaTwY6IgHcDOrxI9zTt3T3B95XlRni5P+IMIRTdqs9jWollep8M3zk7OMFjpQRtYYp0ore/RHqv6iEMtXce1GDCJGM8XxZeVFL5W6LUbx3W5qVDiGAzg52YERlf+1a2lItv1/IflHCMLPQ+SChj6QPsQgto57mYXMo2lKRlZFZVmXZvnFRreSsR9/9VEhhB3axyjRWpnUy0uijYJMWaM+3nCcaM3BtbbDuWrUzm85m15580l7tGyBWKDnsz5IQQ3S3eHbavbsnL9pfC2qtOi8IJ0Sne14g8TjjAMrZLzT4MAiEcyhgFqqwJiQTBP30oahK7+X1wVMhAxLD/eKzTl8Uk4lE2aDCd/vwV+DSYSXPyL/I8gaJOOAQxcltp6vqxyVprTOd0Q+GZexsrsN8oxFy9Q4l8qJb4/Iz3tKtGwMqt2S8Dx9JhVEX6RmjISlznG5TmnXK+DZf7E19/j0pwcHT4hvIHHmLxsIK0kUoKEwvXOETKA0jj1ks46baLKI1ktC4zSysC9Rjwup+tzC9sb26sQhd7Um0vnbv8VYKCQpj2qiZIhg0Ggca+GjRQas7B5OoBPa6BSNAvBNvbjRIy2di595mWMTmYmhtKy5C
- s9eGd433
- +WlkeVwfHTCzwYhSlYu5w8K1cEk91Egv/8RvtW1goxlnqMPvxMgzi0UPDp/uHvt0sLE39922LbNFPdONWpNVXTPv+Uepr3klAb2xFNufYg6TmFk4Us5RIs/DjJkk2nKa+AbmQeXdcWRRcBbdR9kuvjsvpWlZeRlTDS6Tk9Jrv96N+QjeNBE2CzqEWDrrwpkCmbgij2AZbcNvAdbF2qPx1KdZMCcgIQAbz1MotDOsqP5PNSSJ6vM1pAPSv8EeDluxsAcwZjpW4Ky8IqRGlG5dBThZAhLZN7WoZRnNc7Hkaqu34ZcN7dBv9Vc6pONnpcQjvQaTx3qnmtawENVMMzmKdYOBRDw==
+X-Rspamd-Queue-Id: 5C16A1C0007
+X-HE-Tag: 1767523512-659585
+X-HE-Meta: U2FsdGVkX1+mGYRzyqGRCG2cPm3Gi+Tk2a41vDRE1+IRMhBW2sOt+KdBT3rL06LZgGSiIJTQ2mGxytnzFnI6C1NvuSG3ZPSPP+FYt1GjLXCLpCVCIroRpCFnyG/XObGvAqpQwkyrJnvdoJjJ2fhfobDCRsGY+o09hy/R9Pfj30iPDFa6NUioA3243Jtzh9jlUl9f5n9J4dB0D8YcGPTB6cHNidGkvSdWewmJXzdI0ETbSduvm1AN3ec1tOOy4Jd7riup0o/aNccTB64knpApsMk4OE0XNF1vCmDMlxt9edh6bk8xxYyJGhUSkTvID2pxCuQ3iMnpJS3OuNlftoSHzMKHKlxyCYn3KOX4VGYJqDTs1pwrmzvM07u3lD1miFDWN9sZ1quo7hI4kTVaUxwiHlQq0ff3FDCYFWQGRw2akPlG/qEJZeYuXPyiz4l1Q7pwqXUvKrlfivPoZubJfwnOkVoGWPxj3H7vWQvT2q7ACXztQF+7h7GX2J5D8MrB/Z2xKnjMwDFVdeHtgYnq1L1B5H5Ev3daZ7bjLvS2fNylh7IyxWej1frwGpjaLVhVPKgwordsS4lHeiqkKPynvniFA+u6R5i4Tm7LMpULMdjh12l07cmlvIop/KSaIoB3uDJuJWfmpZdEIzPWLaNmK8/mEXtrl6qkQ1q2X+RofWazE/ujR/KdqBnkmYpbfOSG3fAQ7KmX1uBinmjUlK4Db+BNtZGwlwiFUaKBFyD5M0GyhYCMnUEgcHDQ/GXaJzeEWXVBToygDuZRu9NG+WtCXkf1lxqem4chKLOeoHXqDRS90sWuaCMxuydSjDtsoN2PW8h3OusWVMS2FNyoccAWvOeGtC9Maqe5wYRj9vqQvz0ZbyGQCk76OpfjbNGPQfafZ7yUt73Ogw36i6WCLif6luOSVu4B9qTSnaqDLP0crMnVb7k6yQgR2HKxYqhowb92s829sdzh57I5iNvSg8aJLpX
+ +mB07HH0
+ BABR3iZmK6dqP561H1HRnSX+91zh9nNM4lgrQpxcs1cevcK9g1N96g3R7Spn5MN86SnE8rfuzl+rtaVtA+aOz3aJ6b6QFHxW3SChdJl8QGovjWIZ5zIqZNnU3XH63bcE2z+N+HajAkDpkslbNjPzxHhqQIK2Ky7GOXwto+bGalr3ufiQ5YTGendN3BfmZltoWPAK8Pk0mEsZgc7l+kKbQLlMknhcoQ41bhdrXVgKUz6IruzH8Pznif0HbxuhhnwkTi+muoPm7nSEyl1CFlI6zvmbRLhi6FK3XwOC9gaBaIBoL0j8X0uBsz/2euT2DnBb7eHr7JjskA+6bdw8f1wPUagHnnQtQlGK4JjtA8YO8yLOFd/2l0RQyDnNfyvZjJUHtf4smF2baOh/YB/ePwfC7JfCO2gUkaywFqy/i
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,175 +113,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2025=E5=B9=B412=E6=9C=8830=E6=97=A5 17:49, "Michal Koutn=C3=BD" <mkoutny@=
-suse.com mailto:mkoutny@suse.com?to=3D%22Michal%20Koutn%C3%BD%22%20%3Cmko=
-utny%40suse.com%3E > =E5=86=99=E5=88=B0:
+Hi Pnina,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on akpm-mm/mm-everything]
+[also build test WARNING on linus/master v6.19-rc3 next-20251219]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Pnina-Feder/panic-kexec-Allow-forcing-panic-execution-on-a-specific-CPU/20260101-203448
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260101123237.277411-1-pnina.feder%40mobileye.com
+patch subject: [PATCH] panic/kexec: Allow forcing panic execution on a specific CPU
+config: arm64-randconfig-r122-20260104 (https://download.01.org/0day-ci/archive/20260104/202601041820.6M8cIq2e-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260104/202601041820.6M8cIq2e-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601041820.6M8cIq2e-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> kernel/panic.c:349:69: warning: diagnostic behavior may be improved by adding the 'format(printf, 1, 0)' attribute to the declaration of 'panic_force_target_cpu' [-Wmissing-format-attribute]
+     321 |         vsnprintf(panic_redirect_msg, sizeof(panic_redirect_msg), fmt, args);
+         |                                                                            ^
+   kernel/panic.c:321:13: note: 'panic_force_target_cpu' declared here
+     321 | static bool panic_force_target_cpu(const char *fmt, va_list args)
+         |             ^
+   1 warning generated.
 
 
-Hi Michal and Ridong,
+vim +349 kernel/panic.c
 
->=20
->=20Hi Hui.
->=20
->=20On Tue, Dec 30, 2025 at 11:01:58AM +0800, Hui Zhu <hui.zhu@linux.dev>=
- wrote:
->=20
->=20>=20
->=20> This allows administrators to suppress low-priority cgroups' memory
-> >  usage based on custom policies implemented in BPF programs.
-> >=20
->=20BTW memory.low was conceived as a work-conserving mechanism for
-> prioritization of different workloads. Have you tried that? No need to
-> go directly to (high) limits. (<- Main question, below are some
-> secondary implementation questions/remarks.)
->=20
->=20...
->=20
+   308	
+   309	/**
+   310	 * panic_force_target_cpu - Redirect panic to a specific CPU for crash kernel
+   311	 * @fmt: panic message format string
+   312	 * @args: arguments for format string
+   313	 *
+   314	 * Some platforms require panic handling to occur on a specific CPU
+   315	 * for the crash kernel to function correctly. This function redirects
+   316	 * panic handling to CONFIG_PANIC_FORCE_CPU_ID before kexec.
+   317	 *
+   318	 * Returns true if panic should proceed on current CPU.
+   319	 * Returns false (never returns) if panic was redirected.
+   320	 */
+   321	static bool panic_force_target_cpu(const char *fmt, va_list args)
+   322	{
+   323		static char panic_redirect_msg[1024];
+   324		int cpu = raw_smp_processor_id();
+   325		int target_cpu = CONFIG_PANIC_FORCE_CPU_ID;
+   326	
+   327		/* Already on target CPU - proceed normally */
+   328		if (cpu == target_cpu)
+   329			return true;
+   330	
+   331		/* Target CPU is offline, can't redirect */
+   332		if (!cpu_online(target_cpu)) {
+   333			pr_warn("panic: CPU %d is offline, cannot redirect panic. "
+   334				"Crash kernel interrupts may be unavailable.\n", target_cpu);
+   335			return true;
+   336		}
+   337	
+   338		/* Another panic already in progress */
+   339		if (panic_in_progress()) {
+   340			pr_warn("panic: Another panic in progress on CPU %d, cannot redirect to CPU %d. "
+   341				"Crash kernel interrupts may be unavailable.\n",
+   342				atomic_read(&panic_cpu), target_cpu);
+   343			return true;
+   344		}
+   345	
+   346		pr_info("panic: Redirecting from CPU %d to CPU %d for crash kernel\n",
+   347			cpu, target_cpu);
+   348	
+ > 349		vsnprintf(panic_redirect_msg, sizeof(panic_redirect_msg), fmt, args);
+   350	
+   351		smp_call_function_single(target_cpu, do_panic_on_target_cpu, panic_redirect_msg, false);
+   352	
+   353		return false;
+   354	}
+   355	#else
+   356	static inline bool panic_force_target_cpu(const char *fmt, va_list args)
+   357	{
+   358		return true;
+   359	}
+   360	#endif /* CONFIG_PANIC_FORCE_CPU */
+   361	
 
-memory.low=20is a helpful feature, but it can struggle to effectively
-throttle low-priority processes that continuously access their memory.
-
-For instance, consider the following example I ran:
-root@ubuntu:~# echo $((4 * 1024 * 1024 * 1024)) > /sys/fs/cgroup/high/mem=
-ory.low
-root@ubuntu:~# cgexec -g memory:low stress-ng --vm 4 --vm-keep --vm-bytes=
- 80% --vm-method all --seed 2025 --metrics -t 60 & cgexec -g memory:high =
-stress-ng --vm 4 --vm-keep --vm-bytes 80% --vm-method all --seed 2025 --m=
-etrics -t 60
-[1] 2011
-stress-ng: info:  [2011] setting to a 1 min, 0 secs run per stressor
-stress-ng: info:  [2012] setting to a 1 min, 0 secs run per stressor
-stress-ng: info:  [2011] dispatching hogs: 4 vm
-stress-ng: info:  [2012] dispatching hogs: 4 vm
-stress-ng: metrc: [2012] stressor       bogo ops real time  usr time  sys=
- time   bogo ops/s     bogo ops/s CPU used per       RSS Max
-stress-ng: metrc: [2012]                           (secs)    (secs)    (s=
-ecs)   (real time) (usr+sys time) instance (%)          (KB)
-stress-ng: metrc: [2012] vm                23584     60.21      2.75     =
-15.94       391.73        1262.07         7.76        649988
-stress-ng: info:  [2012] skipped: 0
-stress-ng: info:  [2012] passed: 4: vm (4)
-stress-ng: info:  [2012] failed: 0
-stress-ng: info:  [2012] metrics untrustworthy: 0
-stress-ng: info:  [2012] successful run completed in 1 min, 0.22 secs
-stress-ng: metrc: [2011] stressor       bogo ops real time  usr time  sys=
- time   bogo ops/s     bogo ops/s CPU used per       RSS Max
-stress-ng: metrc: [2011]                           (secs)    (secs)    (s=
-ecs)   (real time) (usr+sys time) instance (%)          (KB)
-stress-ng: metrc: [2011] vm                23584     60.22      3.06     =
-16.19       391.63        1224.97         7.99        688836
-stress-ng: info:  [2011] skipped: 0
-stress-ng: info:  [2011] passed: 4: vm (4)
-stress-ng: info:  [2011] failed: 0
-stress-ng: info:  [2011] metrics untrustworthy: 0
-stress-ng: info:  [2011] successful run completed in 1 min, 0.23 secs
-
-As the results show, setting memory.low on the cgroup with the
-high-priority workload did not improve its memory performance.
-
-However, memory.low is beneficial in many other scenarios.
-Perhaps extending it with eBPF support could help address a wider
-range of issues.
-
-> >=20
->=20> This series introduces a BPF hook that allows reporting
-> >  additional "pages over high" for specific cgroups, effectively
-> >  increasing memory pressure and throttling for lower-priority
-> >  workloads when higher-priority cgroups need resources.
-> >=20
->=20Have you considered hooking into calculate_high_delay() instead? (Tha=
-t
-> function has undergone some evolution so it'd seem like the candidate
-> for BPFication.)
->=20
-
-It=20seems that try_charge_memcg will not reach
-__mem_cgroup_handle_over_high if it only hook calculate_high_delay
-without setting memory.high.
-
-What do you think about hooking try_charge_memcg as well,
-so that it ensures __mem_cgroup_handle_over_high is called?
-
-
-> ...
->=20
->=20>=20
->=20> 3. Cgroup hierarchy management (inheritance during online/offline)
-> >=20
->=20I see you're copying the program upon memcg creation.
-> Configuration copies aren't such a good way to properly handle
-> hierarchical behavior.
-> I wonder if this could follow the more generic pattern of how BPF progs
-> are evaluated in hierarchies, see BPF_F_ALLOW_OVERRIDE and
-> BPF_F_ALLOW_MULTI.
-
-I will support them in the next version.
-
->=20
->=20>=20
->=20> Example Results
-> >=20
->=20...
->=20
->=20>=20
->=20> Results show the low-priority cgroup (/sys/fs/cgroup/low) was
-> >  significantly throttled:
-> >  - High-priority cgroup: 21,033,377 bogo ops at 347,825 ops/s
-> >  - Low-priority cgroup: 11,568 bogo ops at 177 ops/s
-> >=20=20
->=20>  The stress-ng process in the low-priority cgroup experienced a
-> >  ~99.9% slowdown in memory operations compared to the
-> >  high-priority cgroup, demonstrating effective priority
-> >  enforcement through BPF-controlled memory pressure.
-> >=20
->=20As a demonstrator, it'd be good to compare this with a baseline witho=
-ut
-> any extra progs, e.g. show that high-prio performed better and low-prio
-> wasn't throttled for nothing.
-
-Thanks for your remind.
-This is a test log in the test environment without any extra progs:
-
-root@ubuntu:~# cgexec -g memory:low stress-ng --vm 4 --vm-keep --vm-bytes=
- 80% \
---vm-method all --seed 2025 --metrics -t 60 \
-& cgexec -g memory:high stress-ng --vm 4 --vm-keep --vm-bytes 80% \
---vm-method all --seed 2025 --metrics -t 60
-[1] 982
-stress-ng: info:  [982] setting to a 1 min, 0 secs run per stressor
-stress-ng: info:  [983] setting to a 1 min, 0 secs run per stressor
-stress-ng: info:  [982] dispatching hogs: 4 vm
-stress-ng: info:  [983] dispatching hogs: 4 vm
-
-stress-ng: metrc: [982] stressor       bogo ops real time  usr time  sys =
-time   bogo ops/s     bogo ops/s CPU used per       RSS Max
-stress-ng: metrc: [982]                           (secs)    (secs)    (se=
-cs)   (real time) (usr+sys time) instance (%)          (KB)
-stress-ng: metrc: [982] vm                23544     60.08      2.90     1=
-5.74       391.85        1263.43         7.75        524708
-stress-ng: info:  [982] skipped: 0
-stress-ng: info:  [982] passed: 4: vm (4)
-stress-ng: info:  [982] failed: 0
-stress-ng: info:  [982] metrics untrustworthy: 0
-stress-ng: info:  [982] successful run completed in 1 min, 0.09 secs
-stress-ng: metrc: [983] stressor       bogo ops real time  usr time  sys =
-time   bogo ops/s     bogo ops/s CPU used per       RSS Max
-stress-ng: metrc: [983]                           (secs)    (secs)    (se=
-cs)   (real time) (usr+sys time) instance (%)          (KB)
-stress-ng: metrc: [983] vm                23544     60.09      3.12     1=
-5.91       391.81        1237.10         7.92        705076
-stress-ng: info:  [983] skipped: 0
-stress-ng: info:  [983] passed: 4: vm (4)
-stress-ng: info:  [983] failed: 0
-stress-ng: info:  [983] metrics untrustworthy: 0
-stress-ng: info:  [983] successful run completed in 1 min, 0.09 secs
-
-Best,
-Hui
-
-
->=20
->=20Thanks,
-> Michal
->
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
