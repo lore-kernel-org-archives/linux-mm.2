@@ -4,92 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2F56C2A06C
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 18:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF421C2A069
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 18:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 638396B009B; Sun,  4 Jan 2026 13:27:50 -0500 (EST)
+	id E0D8F6B009E; Sun,  4 Jan 2026 13:54:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 610386B009D; Sun,  4 Jan 2026 13:27:50 -0500 (EST)
+	id DE4A06B009F; Sun,  4 Jan 2026 13:54:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53D856B009E; Sun,  4 Jan 2026 13:27:50 -0500 (EST)
+	id D1D2A6B00A0; Sun,  4 Jan 2026 13:54:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 413866B009B
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 13:27:50 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE00E14120C
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:27:49 +0000 (UTC)
-X-FDA: 84295115058.15.3EF1EDD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E339840005
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:27:47 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZDCFqu9L;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BF7366B009E
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 13:54:39 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 53499161407
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:54:39 +0000 (UTC)
+X-FDA: 84295182678.16.00D4796
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9C12E140007
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:54:37 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=otFx3rCb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767552877; a=rsa-sha256;
+	cv=none;
+	b=mBJWw3kR538wRb853H7Sp4h3sP7B596tuB7eZF8mwMwSXJTk3qfRU2VN730/MENZIsxjmK
+	yPvRbQHWV4Kr+pTxnW6dPmMWy21Tf5OQV7+dbMgo53K6w8GdCXyd3RqNlNc4vI3VtW4Oa2
+	t/vfEIAwZzUSUqKWm/yTC7aL26zoook=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=otFx3rCb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767551268;
+	s=arc-20220608; t=1767552877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TiAUC0bp7AM7FYgKFgUvHMqTAWhCJawvo/Gzj0nrbwY=;
-	b=P2oAGEP9UK98I/M29pRdiIWj99nQMG3PJ5/DpQx8VodZhqPtKFRLkAITuU6HcoXrsEQtPw
-	gLPcCNMvE7FKMHKRkbNQkIv9N7K+hKbrX6NiNEuoVgC1wX7MfC52mmqwYb6jaGXOAy9I0A
-	xAXnfy3+xHTlruwmkJ+rKQd6rHTmtzg=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZDCFqu9L;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767551268; a=rsa-sha256;
-	cv=none;
-	b=zkTCqKb/qRiLDmLBpcqjiM8hmIUO4Ckj/Q4woT0cG1qCLWapyRGsS5cO6EUO63fI+UD+qn
-	97gtbUSyFA47uXV1mdlW8Vo/SIHiO42bxYHlQy+TqCImUK09GgqnwKcLU6EpPZiZDVoMDh
-	fMQnfJeobli0fYEMeHv+vIufZ+9h3VY=
+	bh=gaN7ORoI5WGBDDgDHPaIUghsOZoOq5cYVi0x3fGyaAY=;
+	b=bFJLAKHLvWuuNu59T1fuH+EJh3fNJNM8CCD21tJEzTmOsVtdX0yWFBmc7yc6LpDPuIuXS2
+	8Fx4W7nVXoYL/xHUyMF5zC9G4FPdNLNQDpcG7hUerZvl761XLaaZuHYL3gs2d5ScwxcxEH
+	carN5MWBXsGeckK2aRGcYbPE+5CmRXo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 80A2040317;
-	Sun,  4 Jan 2026 18:27:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE170C4CEF7;
-	Sun,  4 Jan 2026 18:27:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767551266;
-	bh=ncBLtjyDgpOU9nUGlYr/lR60bzhWGn+9CqIvEOL0bQg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZDCFqu9LkYtIhO1nOFih2qPFuzrbgULNTICSEuJzXgTv0atk0QwQhewhTZBIhtbYq
-	 OnDoQCNk+g8uOFfgdbhr72l1zUocTUsaDoS6VLSnSg/1623eFWM2W99/ikh1C8O+7X
-	 M7+l3ArIO6KJeeM7Q/7qhB2IxduoGupzddf7bvq8=
-Date: Sun, 4 Jan 2026 10:27:45 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Bing Jiao <bingjiao@google.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, gourry@gourry.net,
- longman@redhat.com, hannes@cmpxchg.org, mhocko@kernel.org,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- tj@kernel.org, mkoutny@suse.com, david@kernel.org,
- zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com,
- axelrasmussen@google.com, chenridong@huaweicloud.com, yuanchu@google.com,
- weixugc@google.com, cgroups@vger.kernel.org, Akinobu Mita
- <akinobu.mita@gmail.com>
-Subject: Re: [PATCH v4] mm/vmscan: fix demotion targets checks in
- reclaim/demotion
-Message-Id: <20260104102745.cfd4f6bd661e8e817afcdba8@linux-foundation.org>
-In-Reply-To: <20260104085439.4076810-1-bingjiao@google.com>
-References: <20251223212032.665731-1-bingjiao@google.com>
-	<20260104085439.4076810-1-bingjiao@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E339840005
-X-Stat-Signature: m345sh6ba5xs3cr1urpy56yogsqgcyhy
+	by tor.source.kernel.org (Postfix) with ESMTP id 11B226000A;
+	Sun,  4 Jan 2026 18:54:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD5FC4CEF7;
+	Sun,  4 Jan 2026 18:54:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767552876;
+	bh=5ckW21cSSSQDwyPudbOFi8bdZ2K9Gm5VSRg9b0IN2z4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=otFx3rCbfqeWsQ/hkeCrE6l/4QCl2MKwjMNEHyGyX64T17Qd+sifh1TJmmKBHvYEC
+	 hflTn9bWskCb76Y0CLz7BPa72gSvtUl58oeghHQMrkS6AF9yrZbTmeLnQapyjyQZA0
+	 0of++Cy/z6mKOJhFRTft2Yfx+tqhm3QK+0XdogprWkSKUHDLdyNRpNJ/O/DWNeGJSV
+	 cHNIqwE9klCdiH+oysrzU7qyVTfYUfkDv/Cj3Okmx7usCowXPpiYVamlLWWv09u2C4
+	 xQKfLBiUksCjBTvyrZO5+R0TGIWkntMXfFhNwllqDyEPeYB3Hr4K7Y3vBIXNMVKKdT
+	 p+xKBzPKaKTIQ==
+Message-ID: <9f9343f6-c714-4d2f-985b-e832c6960360@kernel.org>
+Date: Sun, 4 Jan 2026 19:54:32 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Joanne Koong <joannelkoong@gmail.com>
+Cc: miklos@szeredi.hu, linux-mm@kvack.org, athul.krishna.kr@protonmail.com,
+ j.neuschaefer@gmx.net, carnil@debian.org, linux-fsdevel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com>
+ <20260103100310.7181968cda53b14def0455b3@linux-foundation.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20260103100310.7181968cda53b14def0455b3@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9C12E140007
+X-Stat-Signature: 1yyjgrstgsdy4xq4tq55wbzp3rtgn6dn
 X-Rspam-User: 
-X-HE-Tag: 1767551267-956088
-X-HE-Meta: U2FsdGVkX1+/yZJWvhwCEsls8RtHa3SSH5WmPDKDCziHhAoa6Ls/olrWS8q1W2/jSCe2fI7v1rVujXKbMCwSUMh/1cWVrpZ4M5OCAWgzFqXLZEHecL98hjD+nVK2j/bwSFR5sFENWRPipFC/56flU7mzRvtK90gt7GqTL8U5vKiq9cc2Ouchw6MawerN96UqH/iAFtYUr62hnxP1NjpNDhGCjUFCYLn+jfmZ0a0Avmda5K088nT6RdPTdUNVNUvWkwzoiGr6k+fdlms6DKF3Qug1I5oooQX84JFvEsV4njS4uFx+/Yx7pATaoYe5PoEx3CYeQ40dEIkUbe0ADzZ1pM9XCusXhnUJJ77l/AmBXybrbbdvY/Fy6MO5wdvk6x68Lr4i5mSJd4yAaGWGqRhBK5tA5qUPJQMzinfGXrR7wei79d84TrNzM/DOfpqCNsOl90CNooNh/pZIZ1tgkzk6u+Dy5vgq1H9XZMB3vgwYAK0cQrBYOgC4NzkmGhhtwC/UyxySdUSDUBRKQcmP0vKQ0ehbeRYPrNSZnmYK9AQ3rjqsLpZ0489OmUWot47fG6VbXEv2j1TtuENVimwqwAEnv21uuZe3tFrz4rgz1IGZsi6AvvNpFurB9D9o84WZurFTz04d1gU8WQNAASeKSOSANUDkxU9jb2lvaB2Mb7FkQ1bikmYlYrXTpMMVPBOLn0VSxw3PaErUVrwr5xAh9qSTU30Zp8bBjXFD1PfyWd+O7buW/h0xPl4phcnXkORaSp4I2BL0nEbwyV1DL8gin4eGC8BF/ux76Bq7YsLrsrCwt417USp+nLgp6MmcdyyrmBPDgzDLfdAO2EEdvK/74k5ECytnv0lTbfgk6hzWSOhjfeQxNB6dune6UQbfpC8obp+5nfi+ALkEP2tfgqGbMj8OGkWl9D6S6GikLl04uge4fHP/NVMcQjK5QIcSs6Rf/4XwXQXzm4RqdPi5UKBJOff
- sEXanE/q
- hGAB1yNvgHClkrIvjEsXykFY/QKyIeIwztRE17SxLRJL6REcl2uO4c/9O1eZAU0LogHSYulkG7L2ntTV+x+ftUxkjtm9+7i8REcAtqpvQ1oFMmcHNf2EbWNuU5gG84ptUz4par89VWIQx7OTe5rYPnIcgdNn/AuW0yZnTj+lyfejl6nBbMto4YEdZhE79QXxwVqHarHtjoMbaqA2qGaQaeN+zgLFDtCCy1+aepSryA5k/dRCWN6kYbIgHjjU3GxgrAkHKI144vqAykragnWvXishZ82is4+Q85s9tO74qK9Oq3c6zcVM9XFlN5VRk5LICfKJMy6i/jYokfhvchr5KCeTwXxeVPyqpBPP1HV+3STqguFSj9vreuEmDNg==
+X-HE-Tag: 1767552877-619967
+X-HE-Meta: U2FsdGVkX1+X3sgFYrvtLZo5GqcTHkqoVovGcoPXdhauKRLqAP8VEXpsduDP+qxgMPk5k31jGvE/ufVu0N6n/0T/5Lk15qHuI5eey1xfKz3oLuUomMcfEgwu7Debj9YyDcubYW2owGhdZfnumiUxKdaPMw0NmccUIxpHY70wjJpjNSgWwdhYCCLELrI+N7RO6CNOO/nKuSr89X8bT1vHyQvQ2JcYs8JqyzfRDOy8Z6AzP6AqNOZU0W9GakSSpLfT6aSQqubMVi3TzupFjb/Oj650w9guQ4UFvLmxsJDtFuHLd5fgf10Kd1fNcgn/Dz8JxKM7zKxZN0eN5ZAGVDInTyj76ZtCLuyek/eyJ0m9alLW0jYw+qCekoiVgd1WfkqmlpT5IhDmo23iXIjzM2JseotgS4weKiN5NP0UoKYRJ3luYpquKcIBh4jORzml8IqrL//ypGSK0YLMjWSSIUv3Rdabz6hneoVeeje5NsvLldvNc9XHI+rTwXYyv6r278D/NF+JysxlVSM9zMDgn8ujZyvCpAX99TUyfG+iz30F4u1fOKkYa8ACd6sEdSnIBwgWdVHtqKTQSGDhmZ1XHXi/6+m/0b5+DXfWQzdyYdnsY6bIFL3cXlRhcRTGwvNE7Khkw7qVDMd17VEbh7NBbVufP2115cXqrRtVK5DoqlIRm6xAWd5SXHRo36lc+n5dZDoA8yygwfdV/dJ6dxSNI8JCGRQo6WAiKURkKl2CzvJYfEdYiiJrO3gcxvP+wG84OyQ5M9Vit21y4fVnN7NAuoofb+cDwKWB37VqoY06/s0tvI5AQ5taGU65QNzdzaof8W7NasygbGG46O5Ykg0us2r9hBSAe9YQ2SAWGv9w3vcs4CAQ5fiia2ZvopkvYpAMY2znOit5oYFVdleoTM8fegsL6N4qHRUE0PBE1DIKtu0IrfIXcEG3cXdrm3CjVwcWGgYXgYlJulEU6QITnBlTlnb
+ 1GAns+sD
+ 26qq+QUt68ewud0V9LVG3DrWRNOvcFz4tb20YsmOHoMLGx3HU+7HkAiCFMzk1DYCD0/AHZir2RF6WQUX/RXefd4Vk+5/fs5brkjGulx/S1ses/A910fS+dV+vULWxtTCNfAf+u+DAbeG+YEBHg5XBoX8WPkN1nrT2P+164KIaXPRsEkH3niiB/eaCiyd8jf9pD5EbBujHWVGTe5ZxzDRaivqZgtkujzibvIPZrYEmKyYX9CRhGMZcC6uMBWPiaq/7KwPYqDWaWWnKq4/tRcwkdWjOr1sNwLp1OsS/T+9ZNX00gbASwzzjaHRNiymirlvML7UfM06BMTLza3ErDHWEoNxyuuo09xY7N2wAtiTuO04Xc4uZ70W9ep+4lFo6gSfDg4pOwhAjuMZ7ky9D5Tx2BDdX85YKPPD47LQLIgHmbDFRHjbgsGg4Qu/6PABJkmxipTLHEPBn9YQGRb4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,82 +142,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun,  4 Jan 2026 08:54:05 +0000 Bing Jiao <bingjiao@google.com> wrote:
+On 1/3/26 19:03, Andrew Morton wrote:
+> On Sun, 14 Dec 2025 19:00:43 -0800 Joanne Koong <joannelkoong@gmail.com> wrote:
+> 
+>> Skip waiting on writeback for inodes that belong to mappings that do not
+>> have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
+>> mapping flag).
+>>
+>> This restores fuse back to prior behavior where syncs are no-ops. This
+>> is needed because otherwise, if a system is running a faulty fuse
+>> server that does not reply to issued write requests, this will cause
+>> wait_sb_inodes() to wait forever.
+>>
+>> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
+>> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+>> Reported-by: J. Neuschäfer <j.neuschaefer@gmx.net>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+>>
+>> ..
+>>
+>> --- a/fs/fs-writeback.c
+>> +++ b/fs/fs-writeback.c
+>> @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb)
+>>   		 * do not have the mapping lock. Skip it here, wb completion
+>>   		 * will remove it.
+>>   		 */
+>> -		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
+>> +		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
+>> +		    mapping_no_data_integrity(mapping))
+>>   			continue;
+> 
+> It's not obvious why a no-data-integrity mapping would want to skip
+> writeback - what do these things have to do with each other?
+> 
+> So can we please have a v2 which has a comment here explaining this to the
+> reader?
 
-> Fix two bugs in demote_folio_list() and can_demote() due to incorrect
-> demotion target checks in reclaim/demotion.
+Sorry for not replying earlier, I missed a couple of mails sent to my 
+@redhat address due to @gmail being force-unsubscribed from linux-mm ...
 
-Thanks.
+Probably sufficient to add at the beginning of the commit:
 
-> Commit 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
-> introduces the cpuset.mems_effective check and applies it to
-> can_demote(). However:
-> 
->   1. It does not apply this check in demote_folio_list(), which leads
->      to situations where pages are demoted to nodes that are
->      explicitly excluded from the task's cpuset.mems.
-> 
->   2. It checks only the nodes in the immediate next demotion hierarchy
->      and does not check all allowed demotion targets in can_demote().
->      This can cause pages to never be demoted if the nodes in the next
->      demotion hierarchy are not set in mems_effective.
-> 
-> These bugs break resource isolation provided by cpuset.mems.
-> This is visible from userspace because pages can either fail to be
-> demoted entirely or are demoted to nodes that are not allowed
-> in multi-tier memory systems.
-> 
-> To address these bugs, update cpuset_node_allowed() and
-> mem_cgroup_node_allowed() to return effective_mems, allowing directly
-> logic-and operation against demotion targets. Also update can_demote()
-> and demote_folio_list() accordingly.
-> 
-> Bug 1 reproduction:
->   Assume a system with 4 nodes, where nodes 0-1 are top-tier and
->   nodes 2-3 are far-tier memory. All nodes have equal capacity.
-> 
->   Test script:
->     echo 1 > /sys/kernel/mm/numa/demotion_enabled
->     mkdir /sys/fs/cgroup/test
->     echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control
->     echo "0-2" > /sys/fs/cgroup/test/cpuset.mems
->     echo $$ > /sys/fs/cgroup/test/cgroup.procs
->     swapoff -a
->     # Expectation: Should respect node 0-2 limit.
->     # Observation: Node 3 shows significant allocation (MemFree drops)
->     stress-ng --oomable --vm 1 --vm-bytes 150% --mbind 0,1
-> 
-> Bug 2 reproduction:
->   Assume a system with 6 nodes, where nodes 0-2 are top-tier,
->   node 3 is a far-tier node, and nodes 4-5 are the farthest-tier nodes.
->   All nodes have equal capacity.
-> 
->   Test script:
->     echo 1 > /sys/kernel/mm/numa/demotion_enabled
->     mkdir /sys/fs/cgroup/test
->     echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control
->     echo "0-2,4-5" > /sys/fs/cgroup/test/cpuset.mems
->     echo $$ > /sys/fs/cgroup/test/cgroup.procs
->     swapoff -a
->     # Expectation: Pages are demoted to Nodes 4-5
->     # Observation: No pages are demoted before oom.
->     stress-ng --oomable --vm 1 --vm-bytes 150% --mbind 0,1,2
-> 
-> Fixes: 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
-> Cc: <stable@vger.kernel.org>
+"Above the while() loop in wait_sb_inodes(), we document that we must 
+wait for all pages under writeback for data integrity. Consequently, if 
+a mapping, like fuse, traditionally does not have data integrity 
+semantics, there is no need to wait at all; we can simply skip these inodes.
 
-We'll want to fix these things in 6.16.X and later, but you've prepared
-this patch against "mm/vmscan: don't demote if there is not enough free
-memory in the lower memory tier", which is presently under test/review
-in mm.git's mm-unstable branch.
+So skip ..."
 
-This seems to be incorrect ordering - this fix should go ahead of
-Akinobu Mita's series "mm: fix oom-killer not being invoked when
-demotion is enabled v2".
+-- 
+Cheers
 
-So can you please redo this patch against current mainline?  And please
-also review the "mm: fix oom-killer not being invoked when demotion is
-enabled" series to ensure that things will work together nicely when
-that time comes.
-
+David
 
