@@ -4,79 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8588CC2A06C
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 13:44:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89639C2A06C
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 18:02:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B59476B0092; Sun,  4 Jan 2026 08:44:11 -0500 (EST)
+	id 67E7D6B0095; Sun,  4 Jan 2026 13:02:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B06EB6B0093; Sun,  4 Jan 2026 08:44:11 -0500 (EST)
+	id 62B3B6B0096; Sun,  4 Jan 2026 13:02:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A08F96B0095; Sun,  4 Jan 2026 08:44:11 -0500 (EST)
+	id 52DE16B0098; Sun,  4 Jan 2026 13:02:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F0726B0092
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 08:44:11 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 18D045C864
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 13:44:11 +0000 (UTC)
-X-FDA: 84294400302.23.20C7015
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1C2B5C0006
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 13:44:08 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767534249; a=rsa-sha256;
-	cv=none;
-	b=X5etKiPvEifRwTM6duzMHwGqTqeu4zkFA2XWHM4iABptNdUhVTUwG0IBi2rWiI9LxKrE+h
-	+Jo1T4Zs4bAMiimF67cBe6ODwq9586Csh/R93Y4Cos+tnK4kuFgnyKzUqqWYWsuLne9IIT
-	MMpCi+O6zoGPa1jmbnAAtPzApteTzfg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 46D7C6B0095
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 13:02:35 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AB5AA8E138
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:02:34 +0000 (UTC)
+X-FDA: 84295051428.14.A638C42
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id F003320011
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:02:32 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LpJQM6ho;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767534249;
+	s=arc-20220608; t=1767549753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=31alRJjH9aMomaXC5Ty+m1cilsBmQIpUnm1Eg7pXAIE=;
-	b=H7L9RdkI4at5+Qi+kD61NqIalKT4qHxIUMNxCvZTMXyTnQ3oE9hwQ0fXI3jfJ6u++uOnu9
-	lfIMcIw0dM/AlUiVRm+8KEIIvW2uOTKBi+H0ylrPJtFkoDfgRwjhUlBSw15WxUQjNdIwcp
-	fMwwmoAGMZwzRcDo4wGECmw9YZh5G9o=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 20FCF339;
-	Sun,  4 Jan 2026 05:44:01 -0800 (PST)
-Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D41783F5A1;
-	Sun,  4 Jan 2026 05:44:06 -0800 (PST)
-From: Ryan Roberts <ryan.roberts@arm.com>
-To: Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v1] mm: kmsan: Fix poisoning of high-order non-compound pages
-Date: Sun,  4 Jan 2026 13:43:47 +0000
-Message-ID: <20260104134348.3544298-1-ryan.roberts@arm.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sukNPMtSOV0nXMIev4sNjkhuhRsCMj+n/zxVIAKDb54=;
+	b=NK9Y/ezwMF7/T6xBVMdMV0NWNhbdJ/V3vVYvtQtCIqXr7l+Y91N2jQKUhpzvZUIVmXWEN3
+	vaCCN2Z2YmFzgW6sPCG79ccJHE/UyOPa4NGFFzliBlW9714/EZkNx6/MX9OXObT+5zsGY4
+	uXovMrIJZBL+P0wJ5KGwHbOUxj4syAk=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LpJQM6ho;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767549753; a=rsa-sha256;
+	cv=none;
+	b=s7CJXCnwtvNcv78S9ElOWITsA484cXg3+swNqfMKYqxCM8VA8A52WlguBCal1Dw3azk05k
+	+fJXCy7fBJhStGpH3sdSdb+IThM95M1BdxDxy1349BBbrqeeQQS4XUUUnTawDvMyHR+PK5
+	ambLDXrTdb4H3c9keYNZzNDwrf9a5KY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2E3A460010;
+	Sun,  4 Jan 2026 18:02:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EADC19423;
+	Sun,  4 Jan 2026 18:02:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767549751;
+	bh=CTZbCp3RpyYugdgjDwKUDAhn3JkVf+OgS6iO/KiU6cs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=LpJQM6hoUi+Q1YVYh08n8HeejbFS9R3NXWrFc0lipnhub04SnG50puKjpQV51KYiR
+	 HAI2oInhTrkk62gEqsOEchHIehRWy+QiJ8nwL11yPm4BIU1RJf6Ypr/XNICDJsI5E2
+	 +IuuUVccAB3441KNKabMLqFiklxzjd7b/v8xlCHk=
+Date: Sun, 4 Jan 2026 10:02:30 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v1] mm: kmsan: Fix poisoning of high-order non-compound
+ pages
+Message-Id: <20260104100230.09abd1beaca2123d174022b2@linux-foundation.org>
+In-Reply-To: <20260104134348.3544298-1-ryan.roberts@arm.com>
+References: <20260104134348.3544298-1-ryan.roberts@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F003320011
+X-Stat-Signature: wkxtnmogta1e96tppbi5q53juxaquai7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1C2B5C0006
-X-Rspamd-Server: rspam04
-X-Stat-Signature: wwdncfup6izg7rusm9jwx4cjsxwwd9wa
-X-HE-Tag: 1767534248-802544
-X-HE-Meta: U2FsdGVkX1+RThFGNuaO1It7nOVLlCp15rRTdo7PKqZ3+KcqWrgbAc05+B25ikkhEFdL159rJm6iRajFsceHswcp//deFYKJZzfbpiE+zh3XvvykIVXDUgUlaF2fCgBMIUW9rbOL1vnqSC30TOX7YVi6RICIjQXVXJWd0ofioZNErQ4IUqjq+m66c42S91ia2QJ4FJjTsS04xiVlJJV0oySnvDtCfV4mjtOF8WrIzH8bIlooUu/o4Yq3LhFhkvqi5Sr5oo/XpYm8j8JleNTcgT8cfeKp33N1LjrXpOREY/EzbJVOtuhh1HsscD9TErLjmYFgnwssGq0/Gk5HTctSyeGtQlq1veHFXxRQTR2pOAMdo+MSka9aukhvzgG4LsfBF424qqbTQu8yjSaQeWrZEgc1H8IPHxF7BH4Y1LuNuvqDWwA5sSblINSAko1TkXke4P1yxxxeoujB8OyFFLhn8kBXll/FFynt/yA/16ftuhwjdqOVfzmI696QFJWX/Ba4+bmTqFN2Ic8xhXl7JbXFYbKftj0KjDvOgGmC90+k98i+HI2H8iEPhOhlEpyQB3PYZBJMWFzvKDZ7P+VxL2BWAF9Ujcl6CB0ZYqpPt0Ptn4v2Vj+cWdhg/MWpz0oPGHbpUvmHc705pEFaIVj3A3n/Tx2VEMAWN9uYOGDSJEqJgkm3EK/S8BeoOj6Tlbu6Tv/BUH4U9quLIdJxNHd8knx6azqzEz/cssUYRO5T1WuX0FAM2bLeOGBvpIv87QKGaLM4AJNZ0EeYWox94NZ85sjvueBISSCr6ruQGYVxMxzfAkYGNFM8WO0j52urlqy7Uo7ZZNy+RuyqygKr2FyCKRCdwKg5+nCIkj1CZtTg5SGoNNLB6yZjc5e+RyO4Em/IdkN0SLjWE4rsQeeoM2tvoYWy4MC+mSuBVjCNC+gqQgdEDJ6vN5A/M8/oocgM2aJRF63EoNc8q9raBjEhv96ZG4S
- 3zRRncdl
- Ng2lyAIeL8+LPzAT2TXWIZ8uzmj10V7oePOXEm/++8DaT3AXrLUot9lGIeZVACT9FmS5C2sEpCA72d1vicxCPvFAyK312AOfk2w7li8C8VKymPuX7q8sPAsqiVdj8F9j3G413167eIKLhLmFKv+7f8koFXaVE5Hwu4+VafBR5Bdi1+2M=
+X-HE-Tag: 1767549752-104843
+X-HE-Meta: U2FsdGVkX1+EVGl0VJGVeOOdZq9l96yV+9cQ/ag8SJWj2cYRRo5OfBFjjIAOFVRSJkAMcPaQ09W2sJyvcvD7twzMZfcRNZ7y3DFW1GmrmjKPju7V6WYCAmmIA4R3cjBz8XNnwvZkabmDdgDFQasgQ/QE8GLBbwZaMepweAfJfCfoq2WiKR2MR+qNN2obYLox/CH5b+S/rt7v953QGibHvHbH26Ec0rhnW/Ci41tKuzHZQXPwuoUXvQ443DipluOlmzyvHjHpiPABt8f8fIUXQVP4PySTNMOem6hOlHuhrUTviCbMSYpEpchulLPdWo6cz9NgDttIkFUwpuWAdGp6S3lEqqE0t98lmCu9AI71jg81+csXBdZ3gmKPAOAfwC8lK+aLvqU3zi9ov4SvhDUwnTCkJ3t8y8LhFZbttDys3TtAQ7TaCjvgkmBPipKnW0Vkp0LvehoslBXhoVBnpycd0qu4l7NyUQRlViqMxZniJlmAuYmjwhA1uVTKr+QtPmmlwaRPCx7g7xkVYkIptW7zeXqlzo7ZnrvokoutAj/7fLhxwIzzQEnhrpkFjXV3zWFpU0cu8aobzy1xqeOsVbFpsXT53UaHhbuGZPnHYN79cnBxjeXsaQfEkTzaFGwMMz4xq0AdV1VBrjA2vogWqdo7LV5BEpJMQ8Knv4y5p9any0laX/oEXsmcJ5w0mrs5VaEZ2dIj0ah9p735PQ+U9J223h5mGgON1uoILtHJaicojJLB9D2F6i5OSXO60YO5O9vY021X9HqY2vK1gJtbbbSS57rgOOepyuHEheGlSVk4pBGUVfaWddJWOq92MhgI3zOYcnKYYR+jPluhbVNDfBcSlXmGd+eVThgDw6JoLmmjzJzp/K3B61QXZ6+fbqT5265gMHjXHmPa5fD8bmkz7BxjZhofpx/Rd3l9fzUZNwcqh39+RR8OV9lICKd6zyKjxqT59uE4m1ey6Un/6KP+Xlv
+ Zw3feKzP
+ X+yiRfU9PkvxaDtNE3RvedBJ1NJyR8Kajiaf/ombbfjRfQ4ydeUgqt3iCLm3isD/8gYAS1arOYZCnBe47L14s59xA1XWm+LHqITuYlVZ2Er6nUI/hiyMpLWxH9xZRonJhQtjPpgWEWggEYXvky1B6YuHjvf1C3sbUUXJ9SwA5Ka6Urgo3tLH8IENqIhbTNS8etLRsLDXr1mwoN8gX6ymH+GQJkx29TbeqhCCx2RmYozC4UqkSz0XStb0mESVK52FrxX2vmJwKluFNVi/Vk8kRDZD1umnLsiU94A2QtmgkDIsomG55iVbSkB0fCiAwBjB+0laMgYs6hBqPc/g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -85,57 +92,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kmsan_free_page() is called by the page allocator's free_pages_prepare()
-during page freeing. It's job is to poison all the memory covered by the
-page. It can be called with an order-0 page, a compound high-order page
-or a non-compound high-order page. But page_size() only works for
-order-0 and compound pages. For a non-compound high-order page it will
-incorrectly return PAGE_SIZE.
+On Sun,  4 Jan 2026 13:43:47 +0000 Ryan Roberts <ryan.roberts@arm.com> wrote:
 
-The implication is that the tail pages of a high-order non-compound page
-do not get poisoned at free, so any invalid access while they are free
-could go unnoticed. It looks like the pages will be poisoned again at
-allocaiton time, so that would bookend the window.
+> kmsan_free_page() is called by the page allocator's free_pages_prepare()
+> during page freeing. It's job is to poison all the memory covered by the
+> page. It can be called with an order-0 page, a compound high-order page
+> or a non-compound high-order page. But page_size() only works for
+> order-0 and compound pages. For a non-compound high-order page it will
+> incorrectly return PAGE_SIZE.
+> 
+> The implication is that the tail pages of a high-order non-compound page
+> do not get poisoned at free, so any invalid access while they are free
+> could go unnoticed. It looks like the pages will be poisoned again at
+> allocaiton time, so that would bookend the window.
+> 
+> Fix this by using the order parameter to calculate the size.
+> 
+> Fixes: b073d7f8aee4 ("mm: kmsan: maintain KMSAN metadata for page operations")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> ---
+> 
+> Hi,
+> 
+> I noticed this during code review, so perhaps I've just misunderstood the intent
+> of the code.
+>
+> I don't have the means to compile and run on x86 with KMSAN enabled though, so
+> punting this out hoping someone might be able to validate/test. I guess there is
+> a small chance this could lead to KMSAN finding some new issues?
 
-Fix this by using the order parameter to calculate the size.
-
-Fixes: b073d7f8aee4 ("mm: kmsan: maintain KMSAN metadata for page operations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
----
-
-Hi,
-
-I noticed this during code review, so perhaps I've just misunderstood the intent
-of the code.
-
-I don't have the means to compile and run on x86 with KMSAN enabled though, so
-punting this out hoping someone might be able to validate/test. I guess there is
-a small chance this could lead to KMSAN finding some new issues?
-
-Applies against today's mm-unstable (344d3580dacd).
-
-Thanks,
-Ryan
-
-
- mm/kmsan/shadow.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
-index e7f554a31bb4..9e1c5f2b7a41 100644
---- a/mm/kmsan/shadow.c
-+++ b/mm/kmsan/shadow.c
-@@ -207,7 +207,7 @@ void kmsan_free_page(struct page *page, unsigned int order)
- 	if (!kmsan_enabled || kmsan_in_runtime())
- 		return;
- 	kmsan_enter_runtime();
--	kmsan_internal_poison_memory(page_address(page), page_size(page),
-+	kmsan_internal_poison_memory(page_address(page), PAGE_SIZE << order,
- 				     GFP_KERNEL & ~(__GFP_RECLAIM),
- 				     KMSAN_POISON_CHECK | KMSAN_POISON_FREE);
- 	kmsan_leave_runtime();
---
-2.43.0
+We'll see, I'll park this in mm-new to get it a little testing, see if
+anything is shaken out.  If all looks good and if the KMSAN maintainers
+are OK with it I'll later move the patch into mm-hotfixes for more
+expedited upstreaming.
 
 
