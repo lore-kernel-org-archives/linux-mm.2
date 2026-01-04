@@ -4,96 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D379C2A069
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 01:33:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD120C2A061
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 01:55:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F3A06B0092; Sat,  3 Jan 2026 20:33:09 -0500 (EST)
+	id E862D6B0092; Sat,  3 Jan 2026 20:55:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A25A6B0093; Sat,  3 Jan 2026 20:33:09 -0500 (EST)
+	id E33F36B0093; Sat,  3 Jan 2026 20:55:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE5D06B0095; Sat,  3 Jan 2026 20:33:08 -0500 (EST)
+	id D3FDE6B0095; Sat,  3 Jan 2026 20:55:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E022A6B0092
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 20:33:08 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7CF70160FF5
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 01:33:08 +0000 (UTC)
-X-FDA: 84292558056.08.1CDB5A0
-Received: from unicom145.biz-email.net (unicom145.biz-email.net [210.51.26.145])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8F45B4000A
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 01:33:04 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	spf=pass (imf11.hostedemail.com: domain of yangqixiao@inspur.com designates 210.51.26.145 as permitted sender) smtp.mailfrom=yangqixiao@inspur.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C11BE6B0092
+	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 20:55:32 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1E34E5E40B
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 01:55:32 +0000 (UTC)
+X-FDA: 84292614504.21.6E5DDE8
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1FEB04000F
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 01:55:28 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KjBaJTsv;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767491730; a=rsa-sha256;
+	cv=none;
+	b=IK0f9Q84APL2WwdmtVU320znomyDwS6g6rzC4i7c9nIy1mTytY2ASga2beYiaCn/QY0jMl
+	IHNf0pCKQARFNCPkD2x7CcxiGwUmOEKPk4jJkzRwsvHQWZ4RuZ7WqBeZ96khmuau5Mgzcv
+	dWfF053E3SzU/pU0OpM+nJO+Obblo6U=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KjBaJTsv;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767490386;
+	s=arc-20220608; t=1767491730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=e4ja4iKSe7suHgRPrXj/YILKj5tzBTximd/3Nq3T5U4=;
-	b=Me9y3Px3hQyiMe8Wao3sZ1Efw4gR4rShp0kxkhvpa/4CG085bWULcaZWr5huhWRc0LHtgl
-	5ZuexNpr4ZUTw7n8sZfPP5Kf5BMFWxmDACEeg68KYgpef1Zyr+/YMamMktzzbT4858u1M7
-	9fi5iyyvlncstPd3MCsX4FBx4g1L3DA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of yangqixiao@inspur.com designates 210.51.26.145 as permitted sender) smtp.mailfrom=yangqixiao@inspur.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767490386; a=rsa-sha256;
-	cv=none;
-	b=MTQccNON0b0mEJ5krh73J3TaihY+yy9co/v+fwnnAExEQ62+ZFcpL1k1JV6uvDCqYRfHUg
-	LzOL06n/ULyM/0z+t6hPzJdcG0RkYw+y/2YR99xxaukmm2o+xwHClziazcVafWK0LkPJBK
-	+NZd856ZhU0avhEp6suPMh262skRujY=
-Received: from inspur.com
-        by unicom145.biz-email.net ((D)) with ESMTP id 202601040932585560
-        for <linux-mm@kvack.org>; Sun, 04 Jan 2026 09:32:58 +0800
-Received: from anolis.. (unknown [10.94.14.65])
-	by app9 (Coremail) with SMTP id cQJkCsDwJ_dJw1lpIl8OAA--.16032S2;
-	Sun, 04 Jan 2026 09:32:57 +0800 (CST)
-From: Aaron Yang <yangqixiao@inspur.com>
-To: sj@kernel.org
-Cc: linux-mm@kvack.org,
-	damon@lists.linux.dev,
-	Aaron Yang <yangqixiao@inspur.com>
-Subject: [PATCH v2] mm/damon/paddr: initialize 'folio' variables to NULL for safety and clarity
-Date: Sun,  4 Jan 2026 09:32:55 +0800
-Message-ID: <20260104013255.16962-1-yangqixiao@inspur.com>
-X-Mailer: git-send-email 2.47.3
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZIpYAVwIb6CxAYeydnlfw07j25D/J9qOjlgY2htp9h8=;
+	b=1GV7eUW47caarYsCmqtOuSoQ3qgls1ZBanlCFMbzJYMRKz64sOo3bpfStxpD/tiMWCScli
+	ILOjILBjLIhRMi+Sw+f/kfPHWJqkhp06xFZBVBGbuZxfS03VBbOxo2e0n0lBboGw89itcj
+	DP2Kvo8qRQDuz7lcix99OeB7hUKSqv8=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1767491726; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=ZIpYAVwIb6CxAYeydnlfw07j25D/J9qOjlgY2htp9h8=;
+	b=KjBaJTsvTD8ShMcRMB2iRBvKauQSZG8Xcqpy7pFZV7IJeFnyyrGPinxxmD+3IuU9lcgzr/VQFmHGMjf58HbXpCWJfCLXiEnmvGLhs4qKRkvVJGzAfrrKownU1HmWKgi2/fKG3v4SqXBwcZfVR0MaYI9975dMBzwCO/2YSCFKrdQ=
+Received: from 30.74.144.131(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WwA2gEm_1767491724 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sun, 04 Jan 2026 09:55:24 +0800
+Message-ID: <e94f80ff-cde9-42b0-b717-419fae3e7385@linux.alibaba.com>
+Date: Sun, 4 Jan 2026 09:55:23 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/5] arm64: mm: support batch clearing of the young
+ flag for large folios
+To: Ryan Roberts <ryan.roberts@arm.com>, akpm@linux-foundation.org,
+ david@kernel.org, catalin.marinas@arm.com, will@kernel.org
+Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1766455377.git.baolin.wang@linux.alibaba.com>
+ <3b427d9010a6d52f2b91342760f12be097d21cf6.1766455378.git.baolin.wang@linux.alibaba.com>
+ <c5df1f9f-952a-4e83-9ae0-bd0a83dedd36@arm.com>
+ <02239ca7-9701-4bfa-af0f-dcf0d05a3e89@linux.alibaba.com>
+ <85094ce2-21a8-4d25-bd96-7d809c5daa3b@arm.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <85094ce2-21a8-4d25-bd96-7d809c5daa3b@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cQJkCsDwJ_dJw1lpIl8OAA--.16032S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zw4kGry7CFyxtry3Cry8Zrb_yoW8ZrW7pa
-	yxG34DKrWjgFWku34DAF4kZry3trWUXF9xCFWfGa4SkF1Sgr1kKw4UA34UtF1UZryUGFs3
-	ZrWFqay7WFZ7JF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUyq14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26rxl
-	6s0DM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxAIw28IcxkI7VAKI48J
-	MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
-	xVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfU5WlkUUUUU
-X-CM-SenderInfo: 51dqw15l0lt0o6lq211xuou0bp/
-tUid: 2026104093258750103af30d165705e1226229ce3c5d7
-X-Abuse-Reports-To: service@corp-email.com
-Abuse-Reports-To: service@corp-email.com
-X-Complaints-To: service@corp-email.com
-X-Report-Abuse-To: service@corp-email.com
-X-Stat-Signature: wxinxkn9siaococ8y4o7fd8dhmuykxxc
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8F45B4000A
-X-HE-Tag: 1767490384-27896
-X-HE-Meta: U2FsdGVkX194dCE0GSfOrjOvbIhHZQuIUVHQgsgHBV2TkJojbFAZXHFhauiv3WwH8e9ZmHG5PqDuXwDuaMDiR5jvU0+lQh7fVEyzgOk5CnwtahyITXxKnVGN37WCPT9Jv65izwrLIZIVkjipIoY8SUwa27mcnpCwGULLhm/b001waNJHtYqaQ/CJLo6titzESr1OvWA01fJ8KAGikurERBWwJsfRzPN85jcF8PGpKymGMGxpiILsxwpku76b8p0Qcr38Ack2bUa8BROqfW6y+oL7yT0yp8G0+ioylg8MZLsgexhi+d2OKh8tqYMZr601iyImZuAgN0xSBRnV1r9r89P+N/1fNrgFyzPU/UFromREJ4jUrjKRCa8tG4pl8R4/1oxtpic1Kij7x1DiAA0LH7sOtN68vfX7jTx0DFej+YBAAy1TiGGUXSAxVLmeA6TLt+lZN9U/tlc0v4etd8yeT0SA+Yil0kUF0i3hnRlZBL/rNzIM0g4m8bLox2jx2y+3FdqH7+F3Dvn/7zDRmBFUpx/Rkrc1aNfoaMoMVRetLSJ0RUaAgg7Gu9iED/tp/fVt/yula9jP3egRS7q5DiYw1nR2qFRuHOECFbiCkLc+S8DD88GAzFnDtjIhpXgWpIy/wOQwj4paSggY8+2ew7g0Hz1qjdNJIN+AFpz3qOu7NiySgbqk2tkO1yFQu/Xj6G8/gtfT5g5h97nmoMqBWnafY+dGXMOrmxjTdLsycXnhnePmBa6xi6YTTD6vqazck5+xGV56ZwFfSWy3KjadHIYhzdz8YFEhdRwkLcrkzAcIflanVgm46BE8+JisIU+/dIAj/eTHdxOk8lz6XHUWAv/PNovb7Sjy9YFPy2o4CeI+M1VpxeZjwV1Gu1MwTaGVTtrjp3fPx/U04p0Jvza2FxgXq4mUhpvb7wUcU5OO/6J/IVseoafkf0GpEx3DPiuRJ3Ze5QpQm65UC8vJqQPny8t
- hz9xvPvi
- P8wzdalVyEF7Ysdwp2tAPtUM0RT55MYsOttS2OiMrlESrZQ94j1zshnZ04WXEa8+xLA1qgHSyKm+Rr2uZzTlmR9wN3S8X3daS5wm305c97UmlPh+ujLSiP9nCwfah5iyAu5cf4+sJTRjjvxo=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1FEB04000F
+X-Stat-Signature: zwedtzcubfsxhje34uwcke1zu9x4ybr7
+X-HE-Tag: 1767491728-40284
+X-HE-Meta: U2FsdGVkX1/NkHlHFf7MwjjNf/nGHT/oWlnOvr+wgwWjj7Ruftw0D2UYGmQDfD4SexQ0MOlLguvu0w29/pNc3mai+xTbJdH5Rm8+m2gbfN3sYAnI+qs68XVWvgV1IaZ4pE36lFLhSCxKYcpo6mzanhjhK6zokgnwq3G2iAi6Q5naMgyob39Sz2uN/K4+xK0XQaslGdASSLuwlNpC9pGTEuf/Fl9EMKungURfFX0U2DYGUz+n/YFmKcJcsnKtfRvWMryFNLPSRB9VVMGoID+v5GPz3VKeeihYXgapefx7UkI4fGVQenthjlVssg2MVNElZRhSuFfLYx61r41i6Z/nQpXE1kmswS5u/9NHW8xnFqP6A35HK6axbQDBakHjefKGb9Ye782GLfYo7utwlaP48gnj86YtgI9gvKWqLdV9RT7/f4aLOKKIwsu0hvm5CS+Q8SQ5KvwMIUOi9vJrk5oyKn8hl8XUrTcHOmELo3HJBHg61pG0vbplAVWZizPxR6lsArxoDe91bTZMFRCo8Q1l4Lk9bbhQyX4OEPkqo7R43+LUr4VmjyUilW6bciWTOZ7jYydOBK5Pq8G0qt5jFOq3Ww2FJJRPe0KKVFXFouZ6f1Dwti9FKX0V6dPlVTYeOb6H9TeiQIUfdWJ6P++uSM+O1FYUxRmVp1/4xfW+Rl8R7ct0z9c25Yr0XKD7PE8TdAIuSu+rhuGSXyKMmvQtvLcMBIgyCQja+0SNYkTuv9OwTiOiDfY01SDLrztDn/9jRTXRmCTTtspCfJ3ygvaRwzOa2lrliAKIJKy0PE3w2tJtkBiisu6sI81FZj0L/l38hR3xsqycGAOACSwnAFMNu9OuV5kDG+IZ2XJdbSxujl1W1n2yiPjyFy5J78CUQB+zGnrY3ofpKtmTEEiwISNVbz5JFiMN+6SKK1m4FHkVJauSIj0To0h2N/I8EgdtyvzOw7H4uJ3OTxVjlNrc/cx06FS
+ 0RhSROQO
+ 1B9KEqpF5e8OwDHjcD01eGFjOwIkQhaKrxU8cOY+IMyygr4GkbatLlasG42gBTZcjwflmjNruuD5/Gmp3s4cGbmSF44YGvgswhm2tkqGnrPZwaJ7RNe7OKFB8iohEVsVDjP/kxecF+7ZSwvwov0oYTpysTlABTrzeQsYscfQ/rB3Bz26srUrEhdv1U2CkAUXYUq9qRZGFkwWrO1l8WJ8sUwep7IHaUaLpWlhDfxfPGkNPlkjKVBgiSKI7GGDTJ5DBooSmBzz+7K7fvE1Opi1eyut+Y1Cy3vjpzjfeOpbRDVKzbsL1RNqC6xlttivxFIlGVhoo4b6iah6Ecmk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,63 +95,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In damon_pa_mark_accessed_or_deactivate(), damon_pa_pageout(),
-damon_pa_migrate(), and damon_pa_stat(), the local variable 'folio' is
-declared but not initialized.
 
-Initialize 'folio' to NULL to:
-- Follow kernel convention: uninitialized pointers should be
-  explicitly NULL
-- Improve code readability and maintainability
-- Provide safe fallback (NULL assignment to s->last_applied is harmless
-  and callers check for NULL before dereference)
 
-Signed-off-by: Aaron Yang <yangqixiao@inspur.com>
----
- mm/damon/paddr.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+On 1/2/26 8:12 PM, Ryan Roberts wrote:
+> On 25/12/2025 02:48, Baolin Wang wrote:
+>>
+>>
+>> On 2025/12/24 22:07, Ryan Roberts wrote:
+>>> On 23/12/2025 05:48, Baolin Wang wrote:
+>>>> Currently, contpte_ptep_test_and_clear_young() and
+>>>> contpte_ptep_clear_flush_young()
+>>>> only clear the young flag and flush TLBs for PTEs within the contiguous range.
+>>>> To support batch PTE operations for other sized large folios in the following
+>>>> patches, adding a new parameter to specify the number of PTEs that map
+>>>> consecutive
+>>>> pages of the same large folio in a single VMA and a single page table.
+>>>>
+>>>> While we are at it, rename the functions to maintain consistency with other
+>>>> contpte_*() functions.
+>>>>
+>>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>> ---
+>>>>    arch/arm64/include/asm/pgtable.h | 12 ++++++------
+>>>>    arch/arm64/mm/contpte.c          | 33 ++++++++++++++++++--------------
+>>>>    2 files changed, 25 insertions(+), 20 deletions(-)
+>>>>
+>>>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>>>> index 445e18e92221..d5fbe72e820a 100644
+>>>> --- a/arch/arm64/include/asm/pgtable.h
+>>>> +++ b/arch/arm64/include/asm/pgtable.h
+>>>> @@ -1648,10 +1648,10 @@ extern void contpte_clear_full_ptes(struct mm_struct
+>>>> *mm, unsigned long addr,
+>>>>    extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+>>>>                    unsigned long addr, pte_t *ptep,
+>>>>                    unsigned int nr, int full);
+>>>> -extern int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+>>>> -                unsigned long addr, pte_t *ptep);
+>>>> -extern int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
+>>>> -                unsigned long addr, pte_t *ptep);
+>>>> +int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+>>>> +                unsigned long addr, pte_t *ptep, unsigned int nr);
+>>>> +int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
+>>>> +                unsigned long addr, pte_t *ptep, unsigned int nr);
+>>>>    extern void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
+>>>>                    pte_t *ptep, unsigned int nr);
+>>>>    extern int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+>>>> @@ -1823,7 +1823,7 @@ static inline int ptep_test_and_clear_young(struct
+>>>> vm_area_struct *vma,
+>>>>        if (likely(!pte_valid_cont(orig_pte)))
+>>>>            return __ptep_test_and_clear_young(vma, addr, ptep);
+>>>>    -    return contpte_ptep_test_and_clear_young(vma, addr, ptep);
+>>>> +    return contpte_test_and_clear_young_ptes(vma, addr, ptep, CONT_PTES);
+>>>
+>>> As per your fixup patch, I agree that nr should be 1 here, not CONT_PTES.
+>>
+>> Yes.
+>>
+>>>>    }
+>>>>      #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+>>>> @@ -1835,7 +1835,7 @@ static inline int ptep_clear_flush_young(struct
+>>>> vm_area_struct *vma,
+>>>>        if (likely(!pte_valid_cont(orig_pte)))
+>>>>            return __ptep_clear_flush_young(vma, addr, ptep);
+>>>>    -    return contpte_ptep_clear_flush_young(vma, addr, ptep);
+>>>> +    return contpte_clear_flush_young_ptes(vma, addr, ptep, CONT_PTES);
+>>>
+>>> And same here.
+>>>
+>>>>    }
+>>>>      #define wrprotect_ptes wrprotect_ptes
+>>>> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+>>>> index e4ddeb46f25d..b929a455103f 100644
+>>>> --- a/arch/arm64/mm/contpte.c
+>>>> +++ b/arch/arm64/mm/contpte.c
+>>>> @@ -508,8 +508,9 @@ pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+>>>>    }
+>>>>    EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
+>>>>    -int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+>>>> -                    unsigned long addr, pte_t *ptep)
+>>>> +int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+>>>> +                    unsigned long addr, pte_t *ptep,
+>>>> +                    unsigned int nr)
+>>>>    {
+>>>>        /*
+>>>>         * ptep_clear_flush_young() technically requires us to clear the access
+>>>> @@ -518,41 +519,45 @@ int contpte_ptep_test_and_clear_young(struct
+>>>> vm_area_struct *vma,
+>>>>         * contig range when the range is covered by a single folio, we can get
+>>>>         * away with clearing young for the whole contig range here, so we avoid
+>>>>         * having to unfold.
+>>>> +     *
+>>>> +     * The 'nr' means consecutive (present) PTEs that map consecutive pages
+>>>> +     * of the same large folio in a single VMA and a single page table.
+>>>>         */
+>>>>    +    unsigned long end = addr + nr * PAGE_SIZE;
+>>>>        int young = 0;
+>>>> -    int i;
+>>>>    -    ptep = contpte_align_down(ptep);
+>>>> -    addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+>>>> -
+>>>> -    for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+>>>> +    ptep = contpte_align_addr_ptep(&addr, &end, ptep, nr);
+>>>> +    for (; addr != end; ptep++, addr += PAGE_SIZE)
+>>>>            young |= __ptep_test_and_clear_young(vma, addr, ptep);
+>>>>          return young;
+>>>>    }
+>>>> -EXPORT_SYMBOL_GPL(contpte_ptep_test_and_clear_young);
+>>>> +EXPORT_SYMBOL_GPL(contpte_test_and_clear_young_ptes);
+>>>>    -int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
+>>>> -                    unsigned long addr, pte_t *ptep)
+>>>> +int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
+>>>> +                unsigned long addr, pte_t *ptep,
+>>>> +                unsigned int nr)
+>>>>    {
+>>>>        int young;
+>>>>    -    young = contpte_ptep_test_and_clear_young(vma, addr, ptep);
+>>>> +    young = contpte_test_and_clear_young_ptes(vma, addr, ptep, nr);
+>>>>          if (young) {
+>>>> +        unsigned long end = addr + nr * PAGE_SIZE;
+>>>> +
+>>>> +        contpte_align_addr_ptep(&addr, &end, ptep, nr);
+>>>>            /*
+>>>>             * See comment in __ptep_clear_flush_young(); same rationale for
+>>>>             * eliding the trailing DSB applies here.
+>>>>             */
+>>>> -        addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+>>>> -        __flush_tlb_range_nosync(vma->vm_mm, addr, addr + CONT_PTE_SIZE,
+>>>> +        __flush_tlb_range_nosync(vma->vm_mm, addr, end,
+>>>>                         PAGE_SIZE, true, 3);
+>>>
+>>> Hmm... The requirement is that we must flush the _page_ if clearing access for a
+>>> pte that does not have the contiguous bit set, or we must flush the _contpte
+>>> block_ if clearing access for a pte that does have the contiguous bit set.
+>>>
+>>> With your changes, you may call for a large range that covers multiple contpte
+>>> blocks but only has a single pte in a single contpte block for which the access
+>>> bit was previously set. But that will cause flushing the TLB for the full range.
+>>> Could this cause a performance issue? Yes, no, maybe... I think it's unlikely
+>>> but I wouldn't rule it out in some edge case.
+>>>
+>>> I wonder if it's better to track the sub-ranges where access was cleared and
+>>> only issue tlbi for those sub-ranges? Probably just keep it simple (the way you
+>>> have done it) until/unless we see an actual problem?
+>>
+>> Good question. Indeed, as you said, we flush the TLB per folio now, which might
+>> increase the flush range. However, I think this approach is relatively
+>> reasonable for now.
+>>
+>> First, the mm-core also tracks the access status per folio, and it's really
+>> unnecessary to add excessive complexity to track the access status of sub-pages
+>> (or sub-ranges). I can already imagine that tracking the access status for each
+>> cont-block range as well as for non-cont pages across the entire large folio
+>> range, which can be too complicated.
+>>
+>> Second, __flush_tlb_range_nosync() is a lightweight flush. I quickly ran a
+>> measurement on my machine and found that the overhead of
+>> __flush_tlb_range_nosync() barely changes between nr=16 and nr=256 (both are
+>> around 40 ns).
+> 
+> I'm not concerned about the direct cost of the flush; I agree it should be
+> lightweight given we elide the trailing DSB. (although there is a possible case
+> on older HW that doesn't support TLBI-by-range where this will be converted to
+> multiple TLBI-by-page instructions and that can cause stalls if there are too
+> many of them).
+> 
+> My concern was the opportunity cost of evicting the entries for all the
+> non-accessed parts of the folio from the TLB. But of course, I'm talking
+> nonsense because the architecture does not allow caching non-accessed entries in
+> the TLB.
 
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 07a8aead439e..7d887a3c0866 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -156,7 +156,7 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
- 	LIST_HEAD(folio_list);
- 	bool install_young_filter = true;
- 	struct damos_filter *filter;
--	struct folio *folio;
-+	struct folio *folio = NULL;
- 
- 	/* check access in page level again by default */
- 	damos_for_each_ops_filter(filter, s) {
-@@ -212,7 +212,7 @@ static inline unsigned long damon_pa_mark_accessed_or_deactivate(
- 		unsigned long *sz_filter_passed)
- {
- 	phys_addr_t addr, applied = 0;
--	struct folio *folio;
-+	struct folio *folio = NULL;
- 
- 	addr = damon_pa_phys_addr(r->ar.start, addr_unit);
- 	while (addr < damon_pa_phys_addr(r->ar.end, addr_unit)) {
-@@ -262,7 +262,7 @@ static unsigned long damon_pa_migrate(struct damon_region *r,
- {
- 	phys_addr_t addr, applied;
- 	LIST_HEAD(folio_list);
--	struct folio *folio;
-+	struct folio *folio = NULL;
- 
- 	addr = damon_pa_phys_addr(r->ar.start, addr_unit);
- 	while (addr < damon_pa_phys_addr(r->ar.end, addr_unit)) {
-@@ -295,7 +295,7 @@ static unsigned long damon_pa_stat(struct damon_region *r,
- 		unsigned long *sz_filter_passed)
- {
- 	phys_addr_t addr;
--	struct folio *folio;
-+	struct folio *folio = NULL;
- 
- 	if (!damos_ops_has_filter(s))
- 		return 0;
--- 
-2.47.3
+Ah, now I understand your concern:). Yes, agree.
 
+> So doesn't sound like a problem; I think we can ignore this. Sorry for the noise.
+
+OK. No worries.
+
+>> Therefore, I would still prefer to keep the logic here simple.
+> 
+> Agreed.
+
+Thanks for your reviewing and valuable input.
 
