@@ -4,85 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78303C2A06C
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 12:10:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E0B6C2A06C
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 12:18:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3BDF6B0088; Sun,  4 Jan 2026 07:10:37 -0500 (EST)
+	id 4A7926B0088; Sun,  4 Jan 2026 07:18:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE9AA6B0092; Sun,  4 Jan 2026 07:10:37 -0500 (EST)
+	id 454656B0093; Sun,  4 Jan 2026 07:18:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF5CB6B0093; Sun,  4 Jan 2026 07:10:37 -0500 (EST)
+	id 353DF6B0095; Sun,  4 Jan 2026 07:18:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FF8B6B0092
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 07:10:37 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 299DD140949
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 12:10:37 +0000 (UTC)
-X-FDA: 84294164514.04.C00550A
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6AD4D20002
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 12:10:35 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ADKv9ZtY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767528635; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 25AE26B0088
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 07:18:03 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B9F82140982
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 12:18:02 +0000 (UTC)
+X-FDA: 84294183204.01.A3B155A
+Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2338114000B
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 12:17:59 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=UiwiZ72E;
+	spf=pass (imf23.hostedemail.com: domain of realwujing@qq.com designates 203.205.221.202 as permitted sender) smtp.mailfrom=realwujing@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767529081; a=rsa-sha256;
 	cv=none;
-	b=VdJcJI/I9V448FJKzwmAGPBXqFOIVRyT5WYFXtcxjv0G2HharWD7aRYxMx66Rid/A+vWPI
-	oRpv2uzmYt3TL+RS3Ob+54ph5l803mv3XnGV1io/YZk/SLdIpAMDKcUpjo1s5Nqm317HmN
-	9xdQh3zoEKOBvAORtlxiyFi2oxNwjZ0=
+	b=6HEqb6BWZ6tYZf2hruOlXuX++rpasODOyDsUCvLdx0neE+HF1Z+5rdi8BPSgOyuzJ788Eu
+	Zw479Wa6YpTmD8oYi03qXk+TPUz+V5rnb0knbDTys3fEUFznd+Cy3fip1KO5YqUDThFQi8
+	J5X7FrWltPqErPYYKqVTng5Kd9qO0og=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ADKv9ZtY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf23.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=UiwiZ72E;
+	spf=pass (imf23.hostedemail.com: domain of realwujing@qq.com designates 203.205.221.202 as permitted sender) smtp.mailfrom=realwujing@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767528635;
+	s=arc-20220608; t=1767529081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xl5TaGEvBEf42HQCVCzbxis7qI6SCRKuu7TWZG+3I9s=;
-	b=CuALLkjefhMR4OdMQ3Vo3ZLdgTt0s/BdpEBz+SYi39DmI50sWWhOprVe94CKzAiFQJUK03
-	Hb6MjEUgHVzpbPxz4BNDqTQACOBUVg+fCWena/xGG9EJAatREa8WM72gugGaerQYPL3Wyb
-	5UyFSWDWJwNhlCPDsoeeNCfCy1RguOg=
-Message-ID: <9c82ffaa-5f62-4110-80cc-00f0c46e90fb@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767528633;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xl5TaGEvBEf42HQCVCzbxis7qI6SCRKuu7TWZG+3I9s=;
-	b=ADKv9ZtY/3BIL0CprhLxL72rCOOuCfJBZ4cTq6K3omnUTVxyRYOkvdeYaTAYDgG4R34xbr
-	ChecQwZkL4vO3IlrenVNMTS7v8+Xt51baMczv58MJHB3jyR5CkQRFcLkZIZoTGvkuBVce9
-	hFmlIyixmevvL46ohirRS4jjZWYdmJ0=
-Date: Sun, 4 Jan 2026 20:10:17 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=/z+V1pSSbU+lSVDgvRDlrCapTmH2Lgc2n5gwlV+Ah1o=;
+	b=6OyoGrD3ZKKRClKFD0LTh6n45JpJydZKubKmPD5AkEHfc1zGjXUq15GQGI45Y8spL2Dwtf
+	aWFPs/LaU4arv9/6HX58C7sQNm6JLb7iUtr6Aoh/rvjWVUuRZfuzeb3H4z2f9dL6A+e+Ac
+	6KO5U7tHYGq05nXgsFw878/ue2zPES4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1767529074; bh=/z+V1pSSbU+lSVDgvRDlrCapTmH2Lgc2n5gwlV+Ah1o=;
+	h=From:To:Cc:Subject:Date;
+	b=UiwiZ72E/k4VhTuqN7bYdYqm8/wM4i0qQ6OJzy4yvLyTroMjTydJfu+plR57C41em
+	 1Jd7edVER8sX/MvlPFTfOn7/I3bUupLRpwjlLkGnic+4Akv5L99PF0HX/1YvzXCOw+
+	 akBhTj1j67hYojr1g9p7AEW6fhunBBs8P2HuCiLs=
+Received: from localhost.localdomain ([61.144.109.141])
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id 473AE06D; Sun, 04 Jan 2026 20:17:51 +0800
+X-QQ-mid: xmsmtpt1767529071t89bqu975
+Message-ID: <tencent_8BA7FE940453AF73CD41B2F517A52416C105@qq.com>
+X-QQ-XMAILINFO: Nfa8ERPlB8vKJdyOlBY9nyc2FCh2XZqTjecMBePxFnECbSYNlqY9QAt3majMZy
+	 UmWNxOQu47IH94nfm2pBjf63p/ogmspw87mVHgUtwfvqZj6iqQe6fRdsaMh2DzBELk5FfEJqvz3a
+	 0FNkhOe+DIYvE9Euk+UHy93PI8/WIhQLGf7ZtGCq/8pFlpXo7zHAtfuSdftcMN+mKM+EhCrzCM15
+	 2JvjS+UQ0T1LLx1QANfvisDj40I9tSeWUWn+40+QMBTUCeoir/x1BdSjA6vX5Mmjesa2NaA9Q34Q
+	 5m93Fgweul5SIPOy0ihxkfIaDZ368qWiAVC7IALP/KTZvPSUNnVmKrEEdQ1Gt88r9jJB+snYswvZ
+	 UMG+r4RnOI6yjFazVuW90zdpRv5KelpjT9tPGmWJEut2uQVV11nZIF1ywUsSMRzrbBKOXhqWN4wm
+	 FZ18uc/j1R8Np1rCcGJ/GuKElt6ZNkZ6IPrbjIQWlTHdXxzVtvU4UHiDhgW6gg65eNCqnORoM7qg
+	 mBOplRN7aLa6eGnggUNg7+Y72zXyX8BC3FXek2SEvMrRjncaHuZ2RxNhk5E+W8XjQ4/8ydO7lQTH
+	 TGgTmCU5vf6JAiG1iu0zJJFPheP22/VErNZeUdPNuDjY/wU2fyGFNCmcYAZo/N0/t8+TjKy+mbsF
+	 hmx6S6dVrtG5gciCecTEdVgjMCmOuiHynJ73PNf/SQWhnki56JrTymwSPGmGf4BSVwIZMRn6S8t8
+	 bVNIjFqhkjx9t0rcLJ7HykpEd+wCHRswZdv928GgPY0gJvsTrInjb5CgCXGC9D/BA7tPSwSLJ8/O
+	 OG3awDuhzpiaUmFyeCquiNzgZvuboAmMf5QrzJ3cLuaW4UScMQ6V1SB26XwC9YP+pON/CY0U6TNz
+	 YV5WhhFu0NOZ0+9XcWVKpSZvEbZBeeylEOXz8yGPgwMc7xU3bk24YnrxKs5X1xS7765NwMOjsAgo
+	 AvnVG70gO4txs4DFXwFWizDpUE7+D5BOZEsZ9Fu9V2WdQIGe54Jfgs+LFMIsoCeZqUmFP8nErjdp
+	 hfQqEgX35pgjbO8q9seveXD7skS4o=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: wujing <realwujing@qq.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qiliang Yuan <yuanql9@chinatelecom.cn>,
+	wujing <realwujing@qq.com>
+Subject: [PATCH 0/1] mm/page_alloc: dynamic min_free_kbytes adjustment
+Date: Sun,  4 Jan 2026 20:17:28 +0800
+X-OQ-MSGID: <20260104121729.1217059-1-realwujing@qq.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 5/6] mm: khugepaged: skip lazy-free folios at scanning
-Content-Language: en-US
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
- baohua@kernel.org, richard.weiyang@gmail.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>,
- akpm@linux-foundation.org, david@kernel.org
-References: <20260104054112.4541-1-yanglincheng@kylinos.cn>
- <20260104054112.4541-6-yanglincheng@kylinos.cn>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260104054112.4541-6-yanglincheng@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 6AD4D20002
-X-Stat-Signature: 14m8uwzxpfs1ju9tk5zusq39bfaysbib
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767528635-245330
-X-HE-Meta: U2FsdGVkX18KT6jt4MUTniNFPg4wsv/lkEKafCZPajGrSFyAN2M2eqAxso+Ca+BKG7VdfNcZnVMDTVRrXUmYFx564SoPcVvOZncSTRwME0/TY89wMCxQ55it1TX86YYQCZqXYgCN5LKW9D4txSz6BS5994mp2NiaA5AzqWoMOffA/bcJutVHhgv8X7ugmItD4YGO83axycGOWB75sTijxpOQXrgwQhVdZFt9x07p/f7CpafxDbNQdTzznfO/7sBQ+5rK5pgAxjxMJ5G9ZbeztlMhhYOZOK2S8MypQY1Pdf5aMedQSFoI+wPYI89pt7G0tSvBbku43lGJyKITRNJ0KExEYOaweoeFE20tpcBu65sanCMXkx7ZjM3NUbUY75pFq2WfOy4gfjOIx5ZzxpzmVKxGkruptRG+Xlq7h23PhRnWPmC1hcf56pYfTKBJCmCbSeanOY+7VCHrcm05q+Hpmfi+QQAnd1DpSAvNIOsKOtjBt/s8gGovYTPOUkE8ZyCBB68I2mPTgVsoVLlW2lAn9F2gKArMDSDSIMPIUT/pyYHMHeKOQ5qVdbhLph4uCQIviZuHllEbNB5DObRytadzBXGZ+FKZHhy4T2BCNtdLjsgUsU9t0BBFTsgbz/NoMYkGVCxKnNpYgtyRW4medCegbL5KYGxL5ie4F9GRck0C3jxa46WrqQcCB2g9r4++CnKYSescFNd4nuhHh9pOondG2hHfNOUIBDE6f1ZhIguqopE21WyqffZ9F5GPiWXYi7PCpHByWSjyGFPOJMu2emiomIdec5wdcyJc1FrVE0sNL8l918iZTYwDuFcKtXBrvnHQPwLWTIDb6b9OL03znuaci9iwg68IZ4DzEoRWKTgwkw1I5PK5DuDTGJllD+fe9GLCIVoosH5AiXAo4YwGQjMiTUmWKWyxAMevjCTEdQhRbKTPUQebn7mIlg==
+X-Rspamd-Queue-Id: 2338114000B
+X-Rspamd-Server: rspam04
+X-Stat-Signature: hzn6jhnfkzgf7g1ocdjghpg93knxb5s5
+X-HE-Tag: 1767529079-92263
+X-HE-Meta: U2FsdGVkX18C7678Eu2j0DlS8s5eOnVq+G8v3vpYZcUFehge72NAzzuVwGSk7EzAjz/jLxRb1BZzsuebf4GbAk4Yt9Y8H1EPzxJGEROP8aS0JW8zGSoULG496my9KgzSEh4fzL5EisKFBy72XaM4cMupDwNlrbwICXB5cGKKU7bdYYXv3XzQYXxlEOpZGX9qWSaPl8f2FjxCM21/QNk53J6LUUkjAqmV8yUfcvR2tvjXVbDU0/trgtuc4z0XqpjZJmHkRTuLdkwkYrprpL7h59A36CbERDJBHHI7kAbKZTx85BBLXtdjqKPsGUZkmz2SQdnPDGrvu3EBOhFwKonDFGwRY/VTvDHqOd9hLaeICss1dqlDOOp1+uq4kCD7aPFhpREiaMS4LQkuE8gWhg1+gQlYSJjxt+an+9NgRTcVvo2FnwW2onzXdcMkv3zhQvGIvWTjiSsO7UiN8BC+RwyF1nVlwfdmExgay4zUjN7lpO346+fqOLILVE0KmtC3B09qP8aY+3CXapxXuVuKymRlQtXWLy4XLG610szCmBTm7LkJ57uz+T8yHQu7hs9c3iKMGfyQOCsLya32j3O9ecohDLgXThAmy7CpqUg4++SXoBwobQrIhAH03nIzlnBcQwS9nj/9qJFvJhwe9wU3Y1USPhvHCqu0YXvHSRwJhwhV2hZLnw2cNP1uMJH2XZuFV24PT0FudhT0TNO0+/QO52NbvhTJYzUlcxyhqAEguuQuG0nd5T9+fGY1jRFBJrl8HDoE8o9IzLo3QEKgn4eHLVWjCINrcUjqJkrxv8aV+JnUN5UcuJLuBxo5+TYONWFMbO6ntJwlyeqy9bX4SNQr7yo1XjpPkIFgzdqt1kAKI6z7dKujbFZtXjkBGqnLUpkkXFTFuFb63NfQFe6nBx381wxkWLkPCLLJA5C4By8gAIoxyh/lSSH1VuLa2zg2fo5Fdv/wEbgG3qm8Q00avDxs3nl
+ /mT2nsKi
+ 6I7NJbzHWSFCNJKXyVlP2ZGhSrcmyGpPUZMQuI1h9tNF8Mfi1OudhtGGzKBvPyxGc/9Ykk0TN7xyQIMEIbQCQ3UtgRr+fc/DGNV4+jCb7MQ42JC7RdGA48gxVKkSh8HmlNAmFHH4aXgayZ5ezcDTCNLcMU+z7zqwfu8UpEJ4ZUIIjKqW7Q1Me1Lbznul9Lb5VF2xHwhT5bpJO3/+OwsmECtaPj5kfAaxu89wP8Q0DquUEG2mcOUzFDIv8TUy5Dh2zvmEXI6Ud61uT0TxyWOhOn5sAGghFf36cH99q
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,99 +109,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Atomic allocations (GFP_ATOMIC), particularly in network interrupt contexts,
+are prone to failure during bursts of traffic if the pre-configured 
+min_free_kbytes (atomic reserve) is insufficient. These failures lead to 
+packet drops and performance degradation.
 
+Static tuning of vm.min_free_kbytes is often challenging: setting it too 
+low risks drops, while setting it too high wastes valuable memory.
 
-On 2026/1/4 13:41, Vernon Yang wrote:
-> For example, create three task: hot1 -> cold -> hot2. After all three
-> task are created, each allocate memory 128MB. the hot1/hot2 task
-> continuously access 128 MB memory, while the cold task only accesses
-> its memory briefly andthen call madvise(MADV_FREE). However, khugepaged
-> still prioritizes scanning the cold task and only scans the hot2 task
-> after completing the scan of the cold task.
-> 
-> So if the user has explicitly informed us via MADV_FREE that this memory
-> will be freed, it is appropriate for khugepaged to skip it only, thereby
-> avoiding unnecessary scan and collapse operations to reducing CPU
-> wastage.
-> 
-> Here are the performance test results:
-> (Throughput bigger is better, other smaller is better)
-> 
-> Testing on x86_64 machine:
-> 
-> | task hot2           | without patch | with patch    |  delta  |
-> |---------------------|---------------|---------------|---------|
-> | total accesses time |  3.14 sec     |  2.93 sec     | -6.69%  |
-> | cycles per access   |  4.96         |  2.21         | -55.44% |
-> | Throughput          |  104.38 M/sec |  111.89 M/sec | +7.19%  |
-> | dTLB-load-misses    |  284814532    |  69597236     | -75.56% |
-> 
-> Testing on qemu-system-x86_64 -enable-kvm:
-> 
-> | task hot2           | without patch | with patch    |  delta  |
-> |---------------------|---------------|---------------|---------|
-> | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
-> | cycles per access   |  7.29         |  2.07         | -71.60% |
-> | Throughput          |  97.67 M/sec  |  110.77 M/sec | +13.41% |
-> | dTLB-load-misses    |  241600871    |  3216108      | -98.67% |
-> 
-> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-> ---
->   include/trace/events/huge_memory.h | 1 +
->   mm/khugepaged.c                    | 6 ++++++
->   2 files changed, 7 insertions(+)
-> 
-> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-> index 01225dd27ad5..e99d5f71f2a4 100644
-> --- a/include/trace/events/huge_memory.h
-> +++ b/include/trace/events/huge_memory.h
-> @@ -25,6 +25,7 @@
->   	EM( SCAN_PAGE_LRU,		"page_not_in_lru")		\
->   	EM( SCAN_PAGE_LOCK,		"page_locked")			\
->   	EM( SCAN_PAGE_ANON,		"page_not_anon")		\
-> +	EM( SCAN_PAGE_LAZYFREE,		"page_lazyfree")		\
->   	EM( SCAN_PAGE_COMPOUND,		"page_compound")		\
->   	EM( SCAN_ANY_PROCESS,		"no_process_for_page")		\
->   	EM( SCAN_VMA_NULL,		"vma_null")			\
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 30786c706c4a..1ca034a5f653 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -45,6 +45,7 @@ enum scan_result {
->   	SCAN_PAGE_LRU,
->   	SCAN_PAGE_LOCK,
->   	SCAN_PAGE_ANON,
-> +	SCAN_PAGE_LAZYFREE,
->   	SCAN_PAGE_COMPOUND,
->   	SCAN_ANY_PROCESS,
->   	SCAN_VMA_NULL,
-> @@ -1337,6 +1338,11 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
->   		}
->   		folio = page_folio(page);
->   
-> +		if (folio_is_lazyfree(folio)) {
-> +			result = SCAN_PAGE_LAZYFREE;
-> +			goto out_unmap;
-> +		}
+This patch series introduces a reactive mechanism that:
+1. Detects critical order-0 GFP_ATOMIC allocation failures.
+2. Automatically doubles vm.min_free_kbytes to reserve more memory for 
+   future bursts.
+3. Enforces a safety cap (1% of total RAM) to prevent OOM or excessive waste.
 
-That's a bit tricky ... I don't think we need to handle MADV_FREE pages
-differently :)
+This allows the system to self-adjust to the workload's specific atomic 
+memory requirements without manual intervention.
 
-MADV_FREE pages are likely cold memory, but what if there are just
-a few MADV_FREE pages in a hot memory region? Skipping the entire
-region would be unfortunate ...
+wujing (1):
+  mm/page_alloc: auto-tune min_free_kbytes on atomic allocation failure
 
-Also, even if we skip these pages now, after they are reclaimed, they
-become pte_none. Then khugepaged will try to collapse them anyway
-(based on khugepaged_max_ptes_none). So skipping them just delays
-things, it does not really change the final result ;)
+ mm/page_alloc.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-Thanks,
-Lance
-
-> +
->   		if (!folio_test_anon(folio)) {
->   			result = SCAN_PAGE_ANON;
->   			goto out_unmap;
+-- 
+2.39.5
 
 
