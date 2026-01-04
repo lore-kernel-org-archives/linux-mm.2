@@ -4,97 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DEBFC2A069
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 07:42:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37ACDC2A06C
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 08:41:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B35306B0092; Sun,  4 Jan 2026 02:42:44 -0500 (EST)
+	id D40936B0092; Sun,  4 Jan 2026 03:41:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0D8D6B0093; Sun,  4 Jan 2026 02:42:44 -0500 (EST)
+	id D0AAD6B0093; Sun,  4 Jan 2026 03:41:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A36606B0095; Sun,  4 Jan 2026 02:42:44 -0500 (EST)
+	id C373D6B0095; Sun,  4 Jan 2026 03:41:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EB396B0092
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 02:42:44 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 361FA8B4F6
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 07:42:44 +0000 (UTC)
-X-FDA: 84293489448.13.5684AED
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 30C2640004
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 07:42:41 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QCqScVhr;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767512562; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B5D276B0092
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 03:41:31 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3A63513B117
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 08:41:31 +0000 (UTC)
+X-FDA: 84293637582.12.BDE7F37
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5047AC0005
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 08:41:29 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OMRXYnvK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767516089; a=rsa-sha256;
 	cv=none;
-	b=YxWR83XWpQFUDyiEqA6EkLM0gm765sjxEkPQo50RWhb6T70UF+U0Ct+ATnnyBtmrV7rQI7
-	gl+eU34X7lJEQ0ECrfY7kK1xTrY4u2Ivs9qF7hZ+hOi/053JnQcB510bhmriXVOkUHqHj9
-	BBS3hukjyFHJPCbVtZoE6dtewF7+QJU=
+	b=JWZC6bmlLuJ3a2BW2Bb45oDLpoAjm4eDFRPq9SJned3EONip083pd8cIuqMdUv1aMUMAIj
+	ykmAF5fQvFfZ16i1lY2nlCEOUcUd+pSsHOZ2lerkSRNN4k+r97YlukIzse+8ny5H7XWjDs
+	DzAX/CBHq2kbZClMoeb8iXAOncbU5xs=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QCqScVhr;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OMRXYnvK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767512562;
+	s=arc-20220608; t=1767516089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=utODjkP/wfu9AFNdk4nFLPGFEgiTAhS1Gz4GHQGUKAA=;
-	b=xjHRVXTUl/5z4oBss4F2VUdRCREA45ENFcEYohdDX8BjerLBhp4TpQyNca3yYykPvVvOOf
-	SpHXtdm/kzWy2A56uBbUYtUZnSvMouYcP+seEY+QwrRrqACNxmNVJzDlLy29BzIFDYVzeJ
-	1yfP7iNQT6uMf7wpRE1jrAP0tf1aClA=
-Message-ID: <60b0c7e2-4a04-4542-a95a-00e88a0cf00d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767512559;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=utODjkP/wfu9AFNdk4nFLPGFEgiTAhS1Gz4GHQGUKAA=;
-	b=QCqScVhrgbv5SSfcgpaI2NunlMJdPqLgarwTxYyVzkHckrKcQq7Edeokx/HaT2gBBYmftc
-	2Wue/YNw+uJq7mdxzVL9JvISZejAFy2inQUDPfPIHjv5UPE6n1Xx5JIjwlcuyfcJLUgy57
-	lrvLQW5Y9cBBrf1OnvIbrS9j3z400jY=
-Date: Sun, 4 Jan 2026 15:42:23 +0800
+	bh=ZL3QagTQ9jAE3jZf2UYj5e9nSx7Hnf/m9dZ54tQmU6Y=;
+	b=Ojppf3ewrqs28M7FIZUshn88UjGIZWeBzMLi/kq9RU2G58/Z1M7X5MdCyTft4Hfln/8yl/
+	KcHvgVANHSg3es2GxFl0OmqxO/s+WnIQ7KOC1nUu84eLX+pscYq67nIazIIoOW2t6oG5Wr
+	Ij1V6cId6mCN7O4qfoEkqys1z2wk6qo=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42fed090e5fso6010780f8f.1
+        for <linux-mm@kvack.org>; Sun, 04 Jan 2026 00:41:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767516088; x=1768120888; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZL3QagTQ9jAE3jZf2UYj5e9nSx7Hnf/m9dZ54tQmU6Y=;
+        b=OMRXYnvKBi7Ju0Y2cRVwLiYxZt4Xf/XU5LJGBTwxp2gV9iIMW11eLH43z8c2Tj1uRj
+         Ga7QH32J4MoLhSmE1GpO35OXuZ9PN9y2xczsrgGI19Qq58zu+0tWQfvF/b7aQYkq6v6M
+         5J+SzGpL6Kdh1xewUYoQmo6qj3NfJOeKJ1IyY3xiL8bcAXCv+oxo8NNpewpoaBhzw/tN
+         hRAd0LFpAbmifQU6bdTTM3yY+x0Fo3OkdfcfGdcufCGkqWmUOihbWHAjaARw3pPW2jU+
+         77ni4qp3gUvV5pMq9UHE8DnYGozWgBRIXC50bh8FBz7ePb6fl/s2HS1YoGYFtLJR3EKc
+         LeCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767516088; x=1768120888;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZL3QagTQ9jAE3jZf2UYj5e9nSx7Hnf/m9dZ54tQmU6Y=;
+        b=jwKofmnIkNT2YIhGlobFcdogHjtDgvCSFv0fpt0AsyljnFVgcwrRAPrGkXmAQwbcK+
+         tHD1pAHu8bIFsPyDApPaoRoeFiztLSGB061F94bq6XkwjuaWcBmmO56ciilmOlU+1qLG
+         AuaPC8ZWllNkClxf8FtrOe+xoDFsGtgHoCBhsameD0vRyR5McaGSeFSBAd+9cbckkL1O
+         hu0OUAd+hcZmYhLiDcc01NIQcMyQwWMvhdIuRKz4aD7ZjiPw0zu5pZH0NqPCgg2GPn7e
+         6XU3wVtRg569G70GYgXxxC9natQOsw37wf89GxHUsgnrW7UC4je2ZonyRKyNJoOFfLsM
+         SUxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU76z2qDNr/7hM/7GpTG2PiHFc2TXB/00XQ49g2ybY7ykZQxUumXFXGSh3iUwUwxcebBkMPKv8GsA==@kvack.org
+X-Gm-Message-State: AOJu0Yxyj1N4VE+7Cd3rmr80VElvb2YXnUqZaaJzxrM6NLJz6/JtzQuV
+	slxPCqKyzqyX/7t2WcyozD11F06OgoPVHNubtigYQPPOa+RU5+hfaEt43JrlYqwCZwwtIl4LjWD
+	tI2r8GqbEFfDfUSNUyU7S8HUFjxJVnbo=
+X-Gm-Gg: AY/fxX7bOuiBZZCkufoBMWUqTfOteX3xhelvk4uhNjIOzvC8ErEr7bX3VxKC/32Bpsw
+	LrOJrPtvl6iEPyL1HmtiLruondm+/LeSqtPaBAZwnnJTgj9gdxlM3NL73qQbx4wN52GQ1HLGsJw
+	ZFI//N4yskqzyTAKT/plEglU3859eEu8jLwesXMqPj1nhPz+y/XNVemJFgsXg7qPxMaAEnn0FHY
+	2zajJ8aO+pIU8y2dYsutYLxGcu2EVedecegfGuyjPDdeZ5jcqFTVtx21MHG0sDZ8d/kQ2nB28zN
+	p+PcR/INbn9I3dh0qdKK2G0tK5/XQAhQxQdeLLA=
+X-Google-Smtp-Source: AGHT+IHQzFq+i/woR5r1u+aL5iID+9t9gIdl6JNWh5ubS4UyoIIR7NC4C6gkz8cAVcHEVBoMLfdk3Nox4f1w+MwWpLY=
+X-Received: by 2002:a05:6000:220b:b0:430:fbce:f382 with SMTP id
+ ffacd0b85a97d-4324e4d04d4mr55366470f8f.25.1767516087495; Sun, 04 Jan 2026
+ 00:41:27 -0800 (PST)
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 0/3] skip redundant TLB sync IPIs
-Content-Language: en-US
-To: Dave Hansen <dave.hansen@intel.com>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, arnd@arndb.de,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org
-References: <20251229145245.85452-1-lance.yang@linux.dev>
- <f81b98e5-87c0-4c21-9a75-ad5f9b6af6aa@intel.com>
- <1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org>
- <cea71c01-68e7-4f7f-9931-017109d95ef0@intel.com>
- <fc3c20a9-69a2-41eb-9f22-8df262717348@linux.dev>
- <f920487a-632c-407b-b092-7de87f66f4bb@intel.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <f920487a-632c-407b-b092-7de87f66f4bb@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+References: <20251231074638.2564302-1-pbutsykin@cloudlinux.com>
+In-Reply-To: <20251231074638.2564302-1-pbutsykin@cloudlinux.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Sun, 4 Jan 2026 00:41:15 -0800
+X-Gm-Features: AQt7F2ppXwyMl6fyQEBfhw1UkIR0oohdH_p0Oyp-hkq6e8XFwU446CRH76b3fXk
+Message-ID: <CAKEwX=PVZJZHJ9JyubqH4C63RLRiHvMaVYGc-TtY2jt9vGWzbQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/zswap: fix error pointer free in zswap_cpu_comp_prepare()
+To: Pavel Butsykin <pbutsykin@cloudlinux.com>
+Cc: hannes@cmpxchg.org, yosry.ahmed@linux.dev, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 30C2640004
-X-Stat-Signature: 8gxnyamsqspob7xd4ago78m5ygceae9w
-X-HE-Tag: 1767512561-51493
-X-HE-Meta: U2FsdGVkX18/Xtq0Q629tHY6dEzVY3tvVg1g6JF6P1/TH89l3y5b5oMv1tTfuaj4ct55i40/nHdx5Bt60t3RhOQqyNElHGxPt2kdzTeHTNWzL/m6KSia1QEA1ClTNcZxdam/S4/xLWnpHDaKjVtdpNBmTqJe+OVhBbKPePbrGPmEqzFe0eK6iEXogIEch8pyMkp42SsEzDOjtn0t1QuXqoGe5kesKKodSDxYAsfKnd02GAZSK+7ydTAyyVho8N9WU2l5f2QuzQu6L2Qys/gSGb3pS7tWp3uTM2L8Lg6xO6k+k7AeG86IsrdNKZJjdjaUFG1vUb5C4kDqp7SVjRvWp/4Fpq9mUpUkdK+5JQsNSpW10xIQCh/yUG2hkivtMce63F+8+/m3yjXd71CxxMYL3ZVU6o34JOY+2Xgab38E0z1/8uGeQqCRzVQFNzcHqHtzN7fdiQ5z4kqKKbwxxsfqXrCKakXuTwFC7XoVD4leBLRTViFxxlNm25g7K8RkT+oHvZclcew4zUYsrlntMYGhJFUxgcOYRDRvvoOygekvqPTZhP/nE1XQorwf/YurPBPaMLeetpG2QtLv6IRAlquogg5NNTYdf9r8V+eqBceYqCm5FP+eRg16BYUvNPd+BVvOuVWv6HlJxUoZ9GDgyL1uZ/FGZ1zzZ79A5YVez/Kg5KHgZ1grUceMpwjmAkAvJ+tw4amtKzOClsk5YuU3qeiM7ekd8RVeWNGu+vIMqU3O0DlNI+lheX5ZMBemLGvlm8OdB6y9xppAAJK2cc4dsjuW55FOfmCy0OdE9vL8Za+dQItzkjXDQ+4IJk9jGM0iRXiD+IeaYQ9VQXR3x6KE5aWf87lPOMLIjU9UmiuQ9okV4ZV/+39PDXuIDn7T72bpQ26aYkE0oHbRfkJgWwk4jS/s9wgTX6LjdK6PQ8kST5nLQKMTJnhKtAhphFkiVz81ujq+1kXZz3OKJ+siTEr8CMV
- UFldng2a
- 585ePLDuad8nJxar5If0oEB3lJW5iQYFluC0F25XT4PrdFLPPIiJKAMAg2v9OLlvyP0UVPYKNs9huxdfJSnGSAtPP1j2qtQSNHslE4IHxOjlF72VwbsiL50pcRxzALAiy4UyNQuDxhrYNlIh6aplGujYjSJE6+m+f1XLgw96JzXpqt6hCwgPP6o0pCvjI9OIbyQ3Sequ9J+KpZS8KbgIyxiIPDWTd3PfwB6sqcqVJmInP2CPlpV8gamXwUH2yC4/2PGB4
+X-Rspamd-Queue-Id: 5047AC0005
+X-Stat-Signature: wdqf91n7yms747c8x45s47i1cuw9q9as
+X-HE-Tag: 1767516089-790947
+X-HE-Meta: U2FsdGVkX18X3LgRq0OZktlKYZIRb8FJLYAFK6mf/cNl1S22skvg1Z5DowcLJheZ68hV0kt+rKTbjTPqI4puM9oWh38wVYtoUZ9SEfDKj5tdcz2VNDq5KnVzB4L5bb72SVX6mnvFMemGKMO5Uy0EtQaHc0n33/0zF2d1sGOiiV0z5Seh7WMVACLxAoncoYbyGrThMkuj33wtfmPPNeoTzXNDLEEsVw86OmOSzHknkFVT60XVwZrHXvcB6Y9BYVGbDHsmkdHw9TW4TBsjVVqbsJ2usKxwlLoAEfozyvER9ETmE24gpSMf73isge3E4ZTjqzLm6HmZA3b7oqvTDCFkaba37f8Z8ELQCYnYNd/npA9/TfQm2DL7pP/LjkGQDTe/bA78t4Hk4uwrt8KriIzt/2RE4L64QGDB1/BPMe9wjNBPCVvhMFN1ozuncLSK+mO0b+XlV041yHRLAo6A/5V/Rse1J9pFSjpya7UMGbetnIaC+8u29lrSH7GxK4HSuiZu/Nb74E1yKKoSIL/mhVfg9c0ktuT9kQiF06/s9+AUlL9EYchRvEabV006RA18ACpKjkdWWEDotwDj5ND6zgttI5McDDFcU7AZQfes0+94ayYaKsBcZ7XcAa9s135Z1lg9+PxDOIsutbYpcQ0bsGrcLv+qmvVFHXLjEGGvM+P9ztS6b//7A5PUF+vYnKJpfD/8b09kxO4BPM9jgn49mkD4hy64Wfk4xjicHfVrWl9fHR0/QxNHLH3QRqfZxlcY8dIgoJI8AmgRs78wj8X+uj56JNLRqSRDF/KCNErRy5z/wCOqiUVy2LSz3uaMbdLQ8IZpeY0EQIRArjmI2teM7etfpyZYk8aHYXbvWaFREyxOA5UEeHs7NZPqgJnXGny29aX3cGnUtspT+Sm5xCou5/3gLtJLzd0Dvwjgsp9oZHcIK/W/ag5LxSXqy1KJ8hmKqFcMNAa8ykvVEbvjKQQQziW
+ oCdmpsCx
+ aussqOIZ9dxEUrUUhJ8ccDChgj0OTgli0/BgG5cUM26Q65y8y7BPHUtVYPVqVRsCuzJxJ+Yil2gmXKWIXElRwNNAoq9ohQeuXlDL19N+X5HJ1RnE6YIbI+nj8QaX+XJdMkEDpMGvWdw7aqpmcdaGmnK+kToTm3dQQBOPMSQS+BK6ELNP9MFu9tkf9K1R1GlJAVAVJabKHb01EdFRSwxpbpQ5zuUh1YkrI1QwQH+02uwQnomB9WrbWFfhU9IQoBDMPzEgM2p2R4k4V+IwbYtjS5h7dEhL8vURYvz+MvaMTr1wyHV3bWoLp6oQVOacbmcJNYZhsiApF8B7X7ivKN4OgPNJoQsphVNb774E4WZ5GyW9EF5v0DMY4qFu4wa/NmSchExYGgezf/bqr7YmzCQDOysuI43HG4pZHz4svH9IXn9N/ya6zq5irkA1t52gub61w7bT/VQv4pULPszA3bpn75P7zmQVN6RoVhzFahfP9HmSAdcjSpq0YVlg9kn3b4BWe+LhE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,490 +118,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Dec 30, 2025 at 11:46=E2=80=AFPM Pavel Butsykin
+<pbutsykin@cloudlinux.com> wrote:
+>
+> crypto_alloc_acomp_node() may return ERR_PTR(), but the fail path checks
+> only for NULL and can pass an error pointer to crypto_free_acomp().
+> Use IS_ERR_OR_NULL() to only free valid acomp instances.
+>
+> Fixes: 779b9955f643 ("mm: zswap: move allocations during CPU init outside=
+ the lock")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Pavel Butsykin <pbutsykin@cloudlinux.com>
 
-
-On 2026/1/4 01:06, Dave Hansen wrote:
-> On 1/3/26 00:39, Lance Yang wrote:
-> ...
->> Maybe we could do that as a follow-up. I'd like to keep things simple
->> for now, so we just add a bool property to skip redundant TLB sync IPIs
->> on systems without INVLPGB support.
-> 
-> It's not just INVLPGB support. Take a look at hyperv_flush_tlb_multi(),
-> for instance. It can eventually land back in native_flush_tlb_multi(),
-> but would also "fail" the pv_ops check in all cases.
-
-Thanks for pointing that out!
-
-> 
-> It's not that Hyper-V performance is super important, it just that the
-> semantics of the chosen approach here are rather complicated.
-
-Yep, got it ;)
-
-> 
->> Then we could add the mm->context (or something similar) tracking later
->> to handle things more precisely.
->>
->> Anyway, I'm open to going straight to the mm->context approach as well
->> and happy to do that instead :D
-> 
-> I'd really like to see what an mm->context approach looks like before we
-> go forward with what is being proposed here.
-
-Actually, I went ahead and tried a simialr approach using tlb_gather to
-track IPI sends dynamically/precisely.
-
-Seems simpler than the mm->context approach because:
-
-1) IIUC, mm->context tracking would need proper synchronization (CAS,
-handling concurrent flushes, etc.) which adds more complexity :)
-
-2) With tlb_gather we already have the right context at the right time -
-we just pass the tlb pointer through flush_tlb_mm_range() and set a
-flag when IPIs are actually sent.
-
-The first one adds a tlb_flush_sent_ipi flag to mmu_gather and wires it
-through flush_tlb_mm_range(). When we call flush_tlb_multi(), we set
-the flag. Then tlb_gather_remove_table_sync_one() checks it and skips
-the IPI if it's set.
-
----8<---
-When unsharing hugetlb PMD page tables, we currently send two IPIs: one
-for TLB invalidation, and another to synchronize with concurrent GUP-fast
-walkers via tlb_remove_table_sync_one().
-
-However, if the TLB flush already sent IPIs to all CPUs (when freed_tables
-or unshared_tables is true), the second IPI is redundant. GUP-fast runs
-with IRQs disabled, so when the TLB flush IPI completes, any concurrent
-GUP-fast must have finished.
-
-Add a tlb_flush_sent_ipi flag to struct mmu_gather to track whether IPIs
-were actually sent.
-
-Introduce tlb_gather_remove_table_sync_one() which checks
-tlb_flush_sent_ipi and skips the IPI if redundant.
-
-Suggested-by: David Hildenbrand <david@kernel.org>
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
-  arch/x86/include/asm/tlb.h      |  3 ++-
-  arch/x86/include/asm/tlbflush.h |  8 ++++----
-  arch/x86/kernel/alternative.c   |  2 +-
-  arch/x86/kernel/ldt.c           |  2 +-
-  arch/x86/mm/tlb.c               |  6 ++++--
-  include/asm-generic/tlb.h       | 14 +++++++++-----
-  mm/mmu_gather.c                 | 24 ++++++++++++++++++------
-  7 files changed, 39 insertions(+), 20 deletions(-)
-
-diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
-index 866ea78ba156..c5950a92058c 100644
---- a/arch/x86/include/asm/tlb.h
-+++ b/arch/x86/include/asm/tlb.h
-@@ -20,7 +20,8 @@ static inline void tlb_flush(struct mmu_gather *tlb)
-  		end = tlb->end;
-  	}
-
--	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
-+	flush_tlb_mm_range(tlb->mm, start, end, stride_shift,
-+			   tlb->freed_tables || tlb->unshared_tables, tlb);
-  }
-
-  static inline void invlpg(unsigned long addr)
-diff --git a/arch/x86/include/asm/tlbflush.h 
-b/arch/x86/include/asm/tlbflush.h
-index 00daedfefc1b..9524105659c3 100644
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -305,23 +305,23 @@ static inline bool mm_in_asid_transition(struct 
-mm_struct *mm) { return false; }
-  #endif
-
-  #define flush_tlb_mm(mm)						\
--		flush_tlb_mm_range(mm, 0UL, TLB_FLUSH_ALL, 0UL, true)
-+		flush_tlb_mm_range(mm, 0UL, TLB_FLUSH_ALL, 0UL, true, NULL)
-
-  #define flush_tlb_range(vma, start, end)				\
-  	flush_tlb_mm_range((vma)->vm_mm, start, end,			\
-  			   ((vma)->vm_flags & VM_HUGETLB)		\
-  				? huge_page_shift(hstate_vma(vma))	\
--				: PAGE_SHIFT, true)
-+				: PAGE_SHIFT, true, NULL)
-
-  extern void flush_tlb_all(void);
-  extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
-  				unsigned long end, unsigned int stride_shift,
--				bool freed_tables);
-+				bool freed_tables, struct mmu_gather *tlb);
-  extern void flush_tlb_kernel_range(unsigned long start, unsigned long 
-end);
-
-  static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned 
-long a)
-  {
--	flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false);
-+	flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false, NULL);
-  }
-
-  static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 28518371d8bf..006f3705b616 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -2572,7 +2572,7 @@ static void *__text_poke(text_poke_f func, void 
-*addr, const void *src, size_t l
-  	 */
-  	flush_tlb_mm_range(text_poke_mm, text_poke_mm_addr, text_poke_mm_addr +
-  			   (cross_page_boundary ? 2 : 1) * PAGE_SIZE,
--			   PAGE_SHIFT, false);
-+			   PAGE_SHIFT, false, NULL);
-
-  	if (func == text_poke_memcpy) {
-  		/*
-diff --git a/arch/x86/kernel/ldt.c b/arch/x86/kernel/ldt.c
-index 0f19ef355f5f..d8494706fec5 100644
---- a/arch/x86/kernel/ldt.c
-+++ b/arch/x86/kernel/ldt.c
-@@ -374,7 +374,7 @@ static void unmap_ldt_struct(struct mm_struct *mm, 
-struct ldt_struct *ldt)
-  	}
-
-  	va = (unsigned long)ldt_slot_va(ldt->slot);
--	flush_tlb_mm_range(mm, va, va + nr_pages * PAGE_SIZE, PAGE_SHIFT, false);
-+	flush_tlb_mm_range(mm, va, va + nr_pages * PAGE_SIZE, PAGE_SHIFT, 
-false, NULL);
-  }
-
-  #else /* !CONFIG_MITIGATION_PAGE_TABLE_ISOLATION */
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index f5b93e01e347..099f8d61be1a 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -1447,8 +1447,8 @@ static void put_flush_tlb_info(void)
-  }
-
-  void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
--				unsigned long end, unsigned int stride_shift,
--				bool freed_tables)
-+			unsigned long end, unsigned int stride_shift,
-+			bool freed_tables, struct mmu_gather *tlb)
-  {
-  	struct flush_tlb_info *info;
-  	int cpu = get_cpu();
-@@ -1471,6 +1471,8 @@ void flush_tlb_mm_range(struct mm_struct *mm, 
-unsigned long start,
-  		info->trim_cpumask = should_trim_cpumask(mm);
-  		flush_tlb_multi(mm_cpumask(mm), info);
-  		consider_global_asid(mm);
-+		if (tlb && freed_tables)
-+			tlb->tlb_flush_sent_ipi = true;
-  	} else if (mm == this_cpu_read(cpu_tlbstate.loaded_mm)) {
-  		lockdep_assert_irqs_enabled();
-  		local_irq_disable();
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index 4d679d2a206b..0ec35699da99 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -249,6 +249,7 @@ static inline void tlb_remove_table(struct 
-mmu_gather *tlb, void *table)
-  #define tlb_needs_table_invalidate() (true)
-  #endif
-
-+void tlb_gather_remove_table_sync_one(struct mmu_gather *tlb);
-  void tlb_remove_table_sync_one(void);
-
-  #else
-@@ -257,6 +258,7 @@ void tlb_remove_table_sync_one(void);
-  #error tlb_needs_table_invalidate() requires MMU_GATHER_RCU_TABLE_FREE
-  #endif
-
-+static inline void tlb_gather_remove_table_sync_one(struct mmu_gather 
-*tlb) { }
-  static inline void tlb_remove_table_sync_one(void) { }
-
-  #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
-@@ -379,6 +381,12 @@ struct mmu_gather {
-  	 */
-  	unsigned int		fully_unshared_tables : 1;
-
-+	/*
-+	 * Did the TLB flush for freed/unshared tables send IPIs to all CPUs?
-+	 * If true, we can skip the redundant IPI in tlb_remove_table_sync_one().
-+	 */
-+	unsigned int		tlb_flush_sent_ipi : 1;
-+
-  	unsigned int		batch_count;
-
-  #ifndef CONFIG_MMU_GATHER_NO_GATHER
-@@ -834,13 +842,9 @@ static inline void tlb_flush_unshared_tables(struct 
-mmu_gather *tlb)
-  	 *
-  	 * We only perform this when we are the last sharer of a page table,
-  	 * as the IPI will reach all CPUs: any GUP-fast.
--	 *
--	 * Note that on configs where tlb_remove_table_sync_one() is a NOP,
--	 * the expectation is that the tlb_flush_mmu_tlbonly() would have issued
--	 * required IPIs already for us.
-  	 */
-  	if (tlb->fully_unshared_tables) {
--		tlb_remove_table_sync_one();
-+		tlb_gather_remove_table_sync_one(tlb);
-  		tlb->fully_unshared_tables = false;
-  	}
-  }
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 7468ec388455..288c281b2ca4 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -274,8 +274,14 @@ static void tlb_remove_table_smp_sync(void *arg)
-  	/* Simply deliver the interrupt */
-  }
-
--void tlb_remove_table_sync_one(void)
-+void tlb_gather_remove_table_sync_one(struct mmu_gather *tlb)
-  {
-+	/* Skip the IPI if the TLB flush already synchronized with other CPUs */
-+	if (tlb && tlb->tlb_flush_sent_ipi) {
-+		tlb->tlb_flush_sent_ipi = false;
-+		return;
-+	}
-+
-  	/*
-  	 * This isn't an RCU grace period and hence the page-tables cannot be
-  	 * assumed to be actually RCU-freed.
-@@ -286,6 +292,11 @@ void tlb_remove_table_sync_one(void)
-  	smp_call_function(tlb_remove_table_smp_sync, NULL, 1);
-  }
-
-+void tlb_remove_table_sync_one(void)
-+{
-+	tlb_gather_remove_table_sync_one(NULL);
-+}
-+
-  static void tlb_remove_table_rcu(struct rcu_head *head)
-  {
-  	__tlb_remove_table_free(container_of(head, struct mmu_table_batch, rcu));
-@@ -337,16 +348,16 @@ static inline void __tlb_remove_table_one(void *table)
-  	call_rcu(&ptdesc->pt_rcu_head, __tlb_remove_table_one_rcu);
-  }
-  #else
--static inline void __tlb_remove_table_one(void *table)
-+static inline void __tlb_remove_table_one(void *table, struct 
-mmu_gather *tlb)
-  {
--	tlb_remove_table_sync_one();
-+	tlb_gather_remove_table_sync_one(tlb);
-  	__tlb_remove_table(table);
-  }
-  #endif /* CONFIG_PT_RECLAIM */
-
--static void tlb_remove_table_one(void *table)
-+static void tlb_remove_table_one(void *table, struct mmu_gather *tlb)
-  {
--	__tlb_remove_table_one(table);
-+	__tlb_remove_table_one(table, tlb);
-  }
-
-  static void tlb_table_flush(struct mmu_gather *tlb)
-@@ -368,7 +379,7 @@ void tlb_remove_table(struct mmu_gather *tlb, void 
-*table)
-  		*batch = (struct mmu_table_batch *)__get_free_page(GFP_NOWAIT);
-  		if (*batch == NULL) {
-  			tlb_table_invalidate(tlb);
--			tlb_remove_table_one(table);
-+			tlb_remove_table_one(table, tlb);
-  			return;
-  		}
-  		(*batch)->nr = 0;
-@@ -428,6 +439,7 @@ static void __tlb_gather_mmu(struct mmu_gather *tlb, 
-struct mm_struct *mm,
-  	tlb->vma_pfn = 0;
-
-  	tlb->fully_unshared_tables = 0;
-+	tlb->tlb_flush_sent_ipi = 0;
-  	__tlb_reset_range(tlb);
-  	inc_tlb_flush_pending(tlb->mm);
-  }
----
-
-
-The second one optimizes khugepaged by using mmu_gather to track IPI
-sends. This makes the approach work across all paths ;)
-
----8<---
-pmdp_collapse_flush() may already send IPIs to flush TLBs, and then
-callers send another IPI via tlb_remove_table_sync_one() or
-pmdp_get_lockless_sync() to synchronize with concurrent GUP-fast walkers.
-
-However, since GUP-fast runs with IRQs disabled, the TLB flush IPI already
-provides the necessary synchronization. We can avoid the redundant second
-IPI.
-
-Introduce pmdp_collapse_flush_sync() which combines flush and sync:
-
-- For architectures using the generic pmdp_collapse_flush() implementation
-   (e.g., x86): Use mmu_gather to track IPI sends. If the TLB flush sent
-   an IPI, tlb_gather_remove_table_sync_one() will skip the redundant one.
-
-- For architectures with custom pmdp_collapse_flush() (s390, riscv,
-   powerpc): Fall back to calling pmdp_collapse_flush() followed by
-   tlb_remove_table_sync_one(). No behavior change.
-
-Update khugepaged to use pmdp_collapse_flush_sync() instead of separate
-flush and sync calls. Remove the now-unused pmdp_get_lockless_sync() macro.
-
-Suggested-by: David Hildenbrand <david@kernel.org>
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
-  include/linux/pgtable.h | 13 +++++++++----
-  mm/khugepaged.c         |  9 +++------
-  mm/pgtable-generic.c    | 34 ++++++++++++++++++++++++++++++++++
-  3 files changed, 46 insertions(+), 10 deletions(-)
-
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index eb8aacba3698..b42758197d47 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -755,7 +755,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
-  	return pmd;
-  }
-  #define pmdp_get_lockless pmdp_get_lockless
--#define pmdp_get_lockless_sync() tlb_remove_table_sync_one()
-  #endif /* CONFIG_PGTABLE_LEVELS > 2 */
-  #endif /* CONFIG_GUP_GET_PXX_LOW_HIGH */
-
-@@ -774,9 +773,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
-  {
-  	return pmdp_get(pmdp);
-  }
--static inline void pmdp_get_lockless_sync(void)
--{
--}
-  #endif
-
-  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-@@ -1174,6 +1170,8 @@ static inline void pudp_set_wrprotect(struct 
-mm_struct *mm,
-  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-  extern pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
-  				 unsigned long address, pmd_t *pmdp);
-+extern pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma,
-+				      unsigned long address, pmd_t *pmdp);
-  #else
-  static inline pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
-  					unsigned long address,
-@@ -1182,6 +1180,13 @@ static inline pmd_t pmdp_collapse_flush(struct 
-vm_area_struct *vma,
-  	BUILD_BUG();
-  	return *pmdp;
-  }
-+static inline pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma,
-+					     unsigned long address,
-+					     pmd_t *pmdp)
-+{
-+	BUILD_BUG();
-+	return *pmdp;
-+}
-  #define pmdp_collapse_flush pmdp_collapse_flush
-  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
-  #endif
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 9f790ec34400..0a98afc85c50 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1177,10 +1177,9 @@ static enum scan_result collapse_huge_page(struct 
-mm_struct *mm, unsigned long a
-  	 * Parallel GUP-fast is fine since GUP-fast will back off when
-  	 * it detects PMD is changed.
-  	 */
--	_pmd = pmdp_collapse_flush(vma, address, pmd);
-+	_pmd = pmdp_collapse_flush_sync(vma, address, pmd);
-  	spin_unlock(pmd_ptl);
-  	mmu_notifier_invalidate_range_end(&range);
--	tlb_remove_table_sync_one();
-
-  	pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
-  	if (pte) {
-@@ -1663,8 +1662,7 @@ static enum scan_result 
-try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
-  			}
-  		}
-  	}
--	pgt_pmd = pmdp_collapse_flush(vma, haddr, pmd);
--	pmdp_get_lockless_sync();
-+	pgt_pmd = pmdp_collapse_flush_sync(vma, haddr, pmd);
-  	pte_unmap_unlock(start_pte, ptl);
-  	if (ptl != pml)
-  		spin_unlock(pml);
-@@ -1817,8 +1815,7 @@ static void retract_page_tables(struct 
-address_space *mapping, pgoff_t pgoff)
-  		 * races against the prior checks.
-  		 */
-  		if (likely(file_backed_vma_is_retractable(vma))) {
--			pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
--			pmdp_get_lockless_sync();
-+			pgt_pmd = pmdp_collapse_flush_sync(vma, addr, pmd);
-  			success = true;
-  		}
-
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index d3aec7a9926a..be2ee82e6fc4 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -233,6 +233,40 @@ pmd_t pmdp_collapse_flush(struct vm_area_struct 
-*vma, unsigned long address,
-  	flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
-  	return pmd;
-  }
-+
-+pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma, unsigned 
-long address,
-+			       pmd_t *pmdp)
-+{
-+	struct mmu_gather tlb;
-+	pmd_t pmd;
-+
-+	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
-+	VM_BUG_ON(pmd_trans_huge(*pmdp));
-+
-+	tlb_gather_mmu(&tlb, vma->vm_mm);
-+	pmd = pmdp_huge_get_and_clear(vma->vm_mm, address, pmdp);
-+
-+	flush_tlb_mm_range(vma->vm_mm, address, address + HPAGE_PMD_SIZE,
-+			   PAGE_SHIFT, true, &tlb);
-+
-+	/*
-+	 * Synchronize with GUP-fast. If the flush sent IPIs, skip the
-+	 * redundant sync IPI.
-+	 */
-+	tlb_gather_remove_table_sync_one(&tlb);
-+	tlb_finish_mmu(&tlb);
-+	return pmd;
-+}
-+#else
-+pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma, unsigned 
-long address,
-+			       pmd_t *pmdp)
-+{
-+	pmd_t pmd;
-+
-+	pmd = pmdp_collapse_flush(vma, address, pmdp);
-+	tlb_remove_table_sync_one();
-+	return pmd;
-+}
-  #endif
-
-  /* arch define pte_free_defer in asm/pgalloc.h for its own 
-implementation */
----
-
-> 
-> Is there some kind of hurry to get this done immediately?
-
-No rush at all - just wanted to explore what works best and keep
-things simpler as well ;)
-
-What do you think?
+Acked-by: Nhat Pham <nphamcs@gmail.com>
 
