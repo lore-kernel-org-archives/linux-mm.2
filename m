@@ -4,76 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F86AC2A062
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 21:13:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A31CC2A069
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 21:15:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C702A6B00A4; Sun,  4 Jan 2026 16:13:07 -0500 (EST)
+	id 908EC6B00A6; Sun,  4 Jan 2026 16:15:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C48456B00A5; Sun,  4 Jan 2026 16:13:07 -0500 (EST)
+	id 8E04E6B00A7; Sun,  4 Jan 2026 16:15:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B71546B00A6; Sun,  4 Jan 2026 16:13:07 -0500 (EST)
+	id 8132B6B00A8; Sun,  4 Jan 2026 16:15:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E7F16B00A4
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 16:13:07 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 218E41A16C9
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 21:13:07 +0000 (UTC)
-X-FDA: 84295531614.18.EE9213F
+	by kanga.kvack.org (Postfix) with ESMTP id 6E0906B00A6
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 16:15:52 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 42255CF65F
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 21:15:52 +0000 (UTC)
+X-FDA: 84295538544.14.9BAA88E
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3BA79A000B
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 21:13:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YMPRJflG;
-	spf=pass (imf15.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4591D180003
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 21:15:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TpSsv4YI;
+	spf=pass (imf16.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767561350; a=rsa-sha256;
+	cv=none;
+	b=tQCMK4VwNVpcxGLgHuqgw9W+EKYup/dP4aXJ96nwzzQ3ZNHCTVjhANNP8rRd09BCTc8BbO
+	UMzcexQGSN1jOrPeJ6+4oXIMqxlbyGTHgg+aqurKQRK/BWSpPHN/ceySV9wTlteqI+jACj
+	bD6J1j+ZjQU+mY2yJVuR5PeTMxh3nkI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TpSsv4YI;
+	spf=pass (imf16.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767561185;
+	s=arc-20220608; t=1767561350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AgBgb313oQaNyn46BLjjQCZGKM9zlTYGWXVQQUu4odU=;
-	b=kho0xX6KKq4pAwSaF+1gYmuKuMh/VGsS1sHSA23rN7/flUIOyFAySHkuAFxxyb5UZ0pWIR
-	s+gt5pn7YLOUePDz5chcPN+qpnrbXE7vzAqtgwRIgm+QaYUpAMQKhlDjx1FYRZVCX067Ne
-	NFbELn6D2aj5r8i/QsluXfsTS4mfxaU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YMPRJflG;
-	spf=pass (imf15.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767561185; a=rsa-sha256;
-	cv=none;
-	b=iYWDv+Icvu+vZ/eHAeCgWIrNaHNW0YY5Bz67fQGehFeca6lu1IOPLBheiNjvQv+/Nxzs5i
-	qgMKMrrGBlMe73WGA7kGkru9xRqHVCbulCrVVp506beYwJcdDVhD/ODgKAxk6db3EYiLIs
-	1TvxMpIZiuCmsQWoFE9lcdUzEFURc1E=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=IlIrsuj0G1VmQJQm2jrruKAmlWEPSsKvc1kYYbu0tgU=;
+	b=dQjS/CurcMrjxJpGPVCUFihzg0s5rNEFisxdJEyudwUbzkLj18Yw79FuFya/JswxVFGaXq
+	aYRakwe4pqh+kglFew1TAnLOtWinYONxjR0HpmkaEekIrFSinhFDIMuBgkSBblQaToEyFj
+	avKO/Zb8xg4EoblMc9QwThT4MrYb78w=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767561184;
+	s=mimecast20190719; t=1767561349;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AgBgb313oQaNyn46BLjjQCZGKM9zlTYGWXVQQUu4odU=;
-	b=YMPRJflGXNhI06skwoW/K5RYjpujLbqKIIcXjqBas84pULkQ4mR+SUT9tew5mEAf9UC+SD
-	3XZfG64JgJ5UDgQUFF5Tz1vZSBV770FTtxvFy4V7ZZLrTCtKvbhpPk8WijR4ZkqeQ6OYxa
-	th62jg5HXujeS1gqZp3cqpz4fhSVT4s=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=IlIrsuj0G1VmQJQm2jrruKAmlWEPSsKvc1kYYbu0tgU=;
+	b=TpSsv4YI3U4ZdSm19/lkCX7XQTpNNw5XysDjlIX/acMR1jMxWQFI1weq943LSsO6HHUHyc
+	8W8tjUln/7mHKoI6qQPND46Yr+2gUI3k2aReD1Hof/ctA1W90ZnuTtF5/QcprObRQIYUBh
+	VtFeKc42fgrgt19vgHDU+BlWMbKxN2c=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-iCFXWwhrN_q5gaWNTOzuZw-1; Sun,
- 04 Jan 2026 16:13:01 -0500
-X-MC-Unique: iCFXWwhrN_q5gaWNTOzuZw-1
-X-Mimecast-MFC-AGG-ID: iCFXWwhrN_q5gaWNTOzuZw_1767561179
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-367-YYmF9m-IP3aIT5zDsRAeDQ-1; Sun,
+ 04 Jan 2026 16:15:44 -0500
+X-MC-Unique: YYmF9m-IP3aIT5zDsRAeDQ-1
+X-Mimecast-MFC-AGG-ID: YYmF9m-IP3aIT5zDsRAeDQ_1767561342
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E8FA91956053;
-	Sun,  4 Jan 2026 21:12:58 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 793401956089;
+	Sun,  4 Jan 2026 21:15:42 +0000 (UTC)
 Received: from [10.44.33.27] (unknown [10.44.33.27])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5B688180049F;
-	Sun,  4 Jan 2026 21:12:55 +0000 (UTC)
-Date: Sun, 4 Jan 2026 22:12:50 +0100 (CET)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0924C19560A7;
+	Sun,  4 Jan 2026 21:15:38 +0000 (UTC)
+Date: Sun, 4 Jan 2026 22:15:36 +0100 (CET)
 From: Mikulas Patocka <mpatocka@redhat.com>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 cc: Alex Deucher <alexander.deucher@amd.com>, 
@@ -83,24 +81,23 @@ cc: Alex Deucher <alexander.deucher@amd.com>,
     linux-mm@kvack.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
     Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
     Pedro Falcato <pfalcato@suse.de>
-Subject: Re: [PATCH v2] fix AMDGPU failure with periodic signal
-In-Reply-To: <0826eb09-216c-4d00-b4eb-ed1a2ba204bf@lucifer.local>
-Message-ID: <4e45bbf5-29ce-7cd6-8b01-8fb1331ac758@redhat.com>
-References: <6f16b618-26fc-3031-abe8-65c2090262e7@redhat.com> <0826eb09-216c-4d00-b4eb-ed1a2ba204bf@lucifer.local>
+Subject: [PATCH v3 1/3] tools/testing/vma/vma_internal.h: provide
+ fatal_signal_pending
+Message-ID: <45dd9b02-7867-6e5a-4a64-02c4d43c9b68@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -nNJZIT13b2KAVhxuCm1VLsZlcBwEU-YUOq_bwX6S8M_1767561179
+X-Mimecast-MFC-PROC-ID: 5WQNBClBykKjZ4-CNk9X3cC6sZKKCWcX_tawxr1Z67E_1767561342
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam02
-X-Stat-Signature: gng5gkck6x46ioge4n4w8833mhmc3qys
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3BA79A000B
-X-HE-Tag: 1767561185-529259
-X-HE-Meta: U2FsdGVkX18yt/IAKmgR5jn1ao7J+aaHZrwwSOIiAlY/la41KkUPbRn6CoZWLkl/+npNMHOa5jZh6V+5TPCzlk1G1G1nc1mVBnE6nBOOzMcANKGz9ZY+RmAe9Lfq2Uh5tFK9kMINc7kD4LpMTuw7slt05eeSaH9no/P+NpymsP69UJQ5gSSB3bCJ8/tWhgO7xmQ3c/i0bxrdsYZxpX8qjSSAhzCrFRBMzaT6PJwqyiK71STrIO5jlA3yC/yXkzoMA28OBqHHzr+9trImaaY59KIPuHOdrkQnKZSKOZopjoc3VWoJg7Cu39tF5+9OGbQ0POvap+fxUgRcr3yt+xIGYmaCTRMl9VuqsXxBs1Eqrj4acHJFXnhpTKrczWpQH97liUsBte+4M24RFTS7knCyiRoS4DosTWw6VeCF2e+lfumjPN4DeeD3E3VO+UMjQgyKYUp96OU5bqoz95odeRDH5Yig3Chr4iAZBJGzBIlwaW5S5S9zyl9pxmAgn6P5OOw5Ua0v1l244n7wgkUSSD74AeHH7MOXc3Zo1Yqz3IEPnrdkg/ohLfviiih+WsHLlRLlvqT2rohJn7q9qrnp1M1yzT1G6Q1VdtABtuezoZ8vfvxWh/I2ZJMwLxCgpAPUpZQuBvKa4WmTb2hAUCnaduj8f3XYiwSH2Zq3Te0CLM7P3KJYqI1Ht7CRbb4iJssgWvr37SjkhQcrCI0vRpXVFLVMIkWJwzrZTMA5L/yVY5H/ytLE8sPPppFTS18caYIHX5ZGwzY35UL2d8J0QwPIT1qhTZElkSiEgh9aWdDEpxIvx5W4a8LziwZXSMXpwEZSdml3ilS56SJbIXWPJLSSQxYmkjySwUivEB48vZDEcJ3hOYQKio2W5HcMxMAyT0v6qjfvvbwXGI9s96NT4IAwlr1GrvnwyY8blTfAudp1SLB8SuVju3GaGwMLTsNEmMjbXAlbYluiLbGqtGAEKkgVLq0
- QgPdQon9
- EXOnHoYBgfaw/8/0sjfGsi/fsmQ==
+X-Rspamd-Queue-Id: 4591D180003
+X-Rspamd-Server: rspam04
+X-Stat-Signature: mcdwuqywnaexp93phs9canquyrt47x6c
+X-HE-Tag: 1767561350-924588
+X-HE-Meta: U2FsdGVkX19S1hHcQk9m4wCEzYXkGC7XQghui4F8BYDvWUuNjsnB0Ec1b4jSC4BkHHxZ1s6aqhJv+5NAa8U7NUTZGAmA9PVrnMBqdxVksWiQQWuCB8y5EZyHGwD/7cBZrqSt6MzPvnFzRYIc4cKikP1AzNUNrnNOa8FiJsIuy1M3Cn+FSx2pFCVwU7kBGxXYW+wR8xFkRk55B4SqJaaq5Ysbcx4II1RxBDl4BnIQrOQS3DGksLSVXicwv1ZDWhUjCnK763ecyUvbgpy55P/ZjNAmOU41MLRcnLTwd7A/KyHBx2PgFMGXpBqVYZeITJKf0Znm0bbK+t3vQ0iuzlIwmYfdKsS2Z4VnfPAe2bENTiFGXr3ZvLk1qxVlW/EdLA/rSnAiXNwyNb973+LGRD+gvBMqNT7MQ/mGGP4O/2Xi3l0tVUvTMpJLAmjcrjqiBg/BR43BZXdwzHuIRc5fIFhtmQgPzhoFA1Q7jSFxjCfeCS2McgTuSofoGu6mopeF4+hjkPogL+t07noDK8a/mjR0ZvbaOXNlhvLhUfngEUebsOH6gGrHZpdmCKfF1B3ROTu3RSTuiUBcciRHuYTug7oHIeVG0/0xQqbsBtB0VJIs/TvtmDiChHq+oXlKzFd6g7DZzGFq52EHkacKxVRTsw+90vApWHO/zIf8XZ8th0lc+zfvvOvrABvTQ4+nQ7br0OusL8biPckr53UNgr3KP4GstjZIL4PwLrQwwcUG6xtFwBd1bRORncmWn5JfWR+4xc6aaaXD2sfbMbFFlgUC3uwZ+d6LCJOOj6L/Zsp1PLpsceiJ2Yz3KFm4SE7D6x/raaWkTJBUcaVQ0dWwnx0wEayegxUA5VEICYZiKc8NFe6jnJpTdCJtsfcNMtzLJpWhGtFm81PKN9VCzzYflfVFhLVB63jktf1ZMccpOQGbLi/vsYwZsfe1urLoOZ2bFzAanhL4Qt89vIvn+h1pkobi65l
+ FLT+5g4T
+ 3COseEpqxJgHBtSe8SAcDTbVtdyB5gjYa/ElLP8hUV807RdeIbGcQCT2DGqEq9gbtm5ReUgqajVdeD/NaM7asyUtU5wDMwLvWZkJ81OstQJJaLxNsGzMaWjKWl/CttcREvsqkxSN/7a8Ijb1gbWiTeAvI0SXRU1V/BG3jhyM9/3wMiT8TKhN2CAY8Vob4cIXrSF/QWOox4lV1OOKHqLuFRBRcjEg6h5EpyYhzUGereX9nLlyljpDDrJ9K27fUP0LghVyv9nEGwDFbrm92bR0V4e2GQtDb648hATDVvbXKYfkbluAcyn0WgFGjPA/S7Tch9IV2bliPX4nhGyfa7WM9dq525AlKTQsFTaEM1qm2ixIdJ6dZjXzPRypY6fpkClCRdjmHLdL+3xw32WklxSq/2YQXv07H3/5BptOMU94KMEBzx2oEggUOvHi6EsOgg7UQ7ydJ4N0zY/3m3oo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,43 +106,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Provide a dummy function fatal_signal_pending, because it will be used in
+the following patch in the function mm_take_all_locks.
 
+This commit avoids a test failure when the following patch will be apllied.
 
-On Fri, 2 Jan 2026, Lorenzo Stoakes wrote:
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
 
-> +cc literally everyone you should have cc'd in mm :/
-> 
-> Hi Mikulas,
-> 
-> You really need to check MAINTAINERS, you've sent a patch that changes mm/vma.c
-> without cc'ing a single maintainer or reviewer of that file. I just happened to
-> notice this by chance, even lei seemed to mess up the file query for some
-> reason.
+---
+ tools/testing/vma/vma_internal.h |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-I saw
-
-MEMORY MANAGEMENT
-M:      Andrew Morton <akpm@linux-foundation.org>
-L:      linux-mm@kvack.org
-S:      Maintained
-
-in the MAINTAINERS file, so I sent the patch to Andrew and to 
-linux-mm@kvack.org. I should have sent it also to people on the "MEMORY 
-MANAGEMENT - CORE" section, but I missed it.
-
-> I'm confused in general about this patch, you sent it on 7th Nov? And it's been
-> ignored until now and then taken without review to the hotfixes queue?
-
-I'm developing code that translates parallelizable loops written in the 
-Ajla programming language (www.ajla-lang.cz) into OpenCL and runs them on 
-the graphics card. Ajla sets up a periodic timer that sends a signal for 
-scheduling purposes and this signal interferes with OpenCL, causing the 
--EINTR failures.
-
-So far, I worked around this bug by blocking all signals around the 
-functions clGetPlatformIDs and clGetDeviceIDs - but it would be better to 
-fix it in the Linux kernel and remove the signal-blocking hacks.
-
-Mikulas
+Index: mm/tools/testing/vma/vma_internal.h
+===================================================================
+--- mm.orig/tools/testing/vma/vma_internal.h	2026-01-04 21:19:10.000000000 +0100
++++ mm/tools/testing/vma/vma_internal.h	2026-01-04 21:19:10.000000000 +0100
+@@ -1364,6 +1364,11 @@ static inline bool signal_pending(void *
+ 	return false;
+ }
+ 
++static inline bool fatal_signal_pending(void *p)
++{
++	return false;
++}
++
+ static inline bool is_file_hugepages(struct file *file)
+ {
+ 	return false;
 
 
