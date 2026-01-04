@@ -4,80 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF421C2A069
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 18:54:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E4ACC2A069
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 19:25:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0D8F6B009E; Sun,  4 Jan 2026 13:54:39 -0500 (EST)
+	id 4E7826B00A0; Sun,  4 Jan 2026 14:25:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE4A06B009F; Sun,  4 Jan 2026 13:54:39 -0500 (EST)
+	id 494D86B00A1; Sun,  4 Jan 2026 14:25:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1D2A6B00A0; Sun,  4 Jan 2026 13:54:39 -0500 (EST)
+	id 34CA66B00A2; Sun,  4 Jan 2026 14:25:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BF7366B009E
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 13:54:39 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 53499161407
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:54:39 +0000 (UTC)
-X-FDA: 84295182678.16.00D4796
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 212F96B00A0
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 14:25:18 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 83040141305
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 19:25:17 +0000 (UTC)
+X-FDA: 84295259874.02.8ABBE64
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9C12E140007
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:54:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=otFx3rCb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767552877; a=rsa-sha256;
-	cv=none;
-	b=mBJWw3kR538wRb853H7Sp4h3sP7B596tuB7eZF8mwMwSXJTk3qfRU2VN730/MENZIsxjmK
-	yPvRbQHWV4Kr+pTxnW6dPmMWy21Tf5OQV7+dbMgo53K6w8GdCXyd3RqNlNc4vI3VtW4Oa2
-	t/vfEIAwZzUSUqKWm/yTC7aL26zoook=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=otFx3rCb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id CB7731C0002
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 19:25:15 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mP7Tqgp2;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767552877;
+	s=arc-20220608; t=1767554715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gaN7ORoI5WGBDDgDHPaIUghsOZoOq5cYVi0x3fGyaAY=;
-	b=bFJLAKHLvWuuNu59T1fuH+EJh3fNJNM8CCD21tJEzTmOsVtdX0yWFBmc7yc6LpDPuIuXS2
-	8Fx4W7nVXoYL/xHUyMF5zC9G4FPdNLNQDpcG7hUerZvl761XLaaZuHYL3gs2d5ScwxcxEH
-	carN5MWBXsGeckK2aRGcYbPE+5CmRXo=
+	bh=C/7TQQhZhUdludtJRXOTPr/sPmzsgarrDd/VfJla7mE=;
+	b=O0JA6G4lvULFMLxHWhy5gZB4WTa0VArN5VJLddoek1Q2ilQD9Qfc6kCuxsYpUcT309C8k4
+	A79LyBWCWAf/VUZPIYTfNW1B64tQ/WhnbcnhaLxNkhIpoVsJshSdgKlSQrnLuU4yWljkj/
+	PXQFEjuJaMGZMU3ce2wksdK3rHOf1ts=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mP7Tqgp2;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767554715; a=rsa-sha256;
+	cv=none;
+	b=q5QVLiHp668ftni8CI5vciwuTWmQLq57Gq6tv0u/Nvtd2MLzaBjPAbpKSbO6+Q7UFE8EbX
+	y3jwufs8siwgPFlAu/LDSb4tIShmusJQf24LIbOhMHSwMykygx9XXjsrpr6jXJhjku9RRY
+	3rb+IzozZeP8Hjk7UKkaGmosZLoiDI0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 11B226000A;
-	Sun,  4 Jan 2026 18:54:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD5FC4CEF7;
-	Sun,  4 Jan 2026 18:54:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BBB516000A;
+	Sun,  4 Jan 2026 19:25:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F721C4CEF7;
+	Sun,  4 Jan 2026 19:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767552876;
-	bh=5ckW21cSSSQDwyPudbOFi8bdZ2K9Gm5VSRg9b0IN2z4=;
+	s=k20201202; t=1767554714;
+	bh=e57x6itIcSze2g42091hjwd01f/XzLmARCcIvAJgGfo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=otFx3rCbfqeWsQ/hkeCrE6l/4QCl2MKwjMNEHyGyX64T17Qd+sifh1TJmmKBHvYEC
-	 hflTn9bWskCb76Y0CLz7BPa72gSvtUl58oeghHQMrkS6AF9yrZbTmeLnQapyjyQZA0
-	 0of++Cy/z6mKOJhFRTft2Yfx+tqhm3QK+0XdogprWkSKUHDLdyNRpNJ/O/DWNeGJSV
-	 cHNIqwE9klCdiH+oysrzU7qyVTfYUfkDv/Cj3Okmx7usCowXPpiYVamlLWWv09u2C4
-	 xQKfLBiUksCjBTvyrZO5+R0TGIWkntMXfFhNwllqDyEPeYB3Hr4K7Y3vBIXNMVKKdT
-	 p+xKBzPKaKTIQ==
-Message-ID: <9f9343f6-c714-4d2f-985b-e832c6960360@kernel.org>
-Date: Sun, 4 Jan 2026 19:54:32 +0100
+	b=mP7Tqgp2gM5XcDjI4Xu3ICL26krzmLkrkoqqXSC7+7qAFmJP9mmOZ3N9z/pCtKIO1
+	 IynUk0zcHKTPeUgq1QuHlGgkXtyfkSesuWILrpmKT4Gsp3Ps6ENCy7WAc4B5zGtY7W
+	 FlqgAasuxyKyCybqbxmVhuAmGOZAfTm9v6r81bXdTUJ32tHFn0uBSE9UIJmdy7MyvH
+	 vzY9W3Z3iACpTEmOzjrNrVPnOVup+7kv0xWzMRy2EUG9xnc76Nk2ss38Lqgjm1FXv1
+	 OhnBfSz042Tzl4yRgDlhBz3+mhFRTvrogd4B0hf2brAaB3vmN3bF5tEE95FEW4i0zV
+	 FALSRmEj9Ptqg==
+Message-ID: <dc6a1474-70b4-47d5-b07d-a012b2c37b95@kernel.org>
+Date: Sun, 4 Jan 2026 20:25:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-To: Andrew Morton <akpm@linux-foundation.org>,
- Joanne Koong <joannelkoong@gmail.com>
-Cc: miklos@szeredi.hu, linux-mm@kvack.org, athul.krishna.kr@protonmail.com,
- j.neuschaefer@gmx.net, carnil@debian.org, linux-fsdevel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
- <20251215030043.1431306-2-joannelkoong@gmail.com>
- <20260103100310.7181968cda53b14def0455b3@linux-foundation.org>
+Subject: Re: [PATCH] mm/vma: fix anon_vma UAF on mremap() faulted, unfaulted
+ merge
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Jeongjun Park <aha310510@gmail.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry.yoo@oracle.com>
+References: <20260102205520.986725-1-lorenzo.stoakes@oracle.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260103100310.7181968cda53b14def0455b3@linux-foundation.org>
+In-Reply-To: <20260102205520.986725-1-lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9C12E140007
-X-Stat-Signature: 1yyjgrstgsdy4xq4tq55wbzp3rtgn6dn
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: krabkg4otozeim5z6u6ez8xooewsb4a9
 X-Rspam-User: 
-X-HE-Tag: 1767552877-619967
-X-HE-Meta: U2FsdGVkX1+X3sgFYrvtLZo5GqcTHkqoVovGcoPXdhauKRLqAP8VEXpsduDP+qxgMPk5k31jGvE/ufVu0N6n/0T/5Lk15qHuI5eey1xfKz3oLuUomMcfEgwu7Debj9YyDcubYW2owGhdZfnumiUxKdaPMw0NmccUIxpHY70wjJpjNSgWwdhYCCLELrI+N7RO6CNOO/nKuSr89X8bT1vHyQvQ2JcYs8JqyzfRDOy8Z6AzP6AqNOZU0W9GakSSpLfT6aSQqubMVi3TzupFjb/Oj650w9guQ4UFvLmxsJDtFuHLd5fgf10Kd1fNcgn/Dz8JxKM7zKxZN0eN5ZAGVDInTyj76ZtCLuyek/eyJ0m9alLW0jYw+qCekoiVgd1WfkqmlpT5IhDmo23iXIjzM2JseotgS4weKiN5NP0UoKYRJ3luYpquKcIBh4jORzml8IqrL//ypGSK0YLMjWSSIUv3Rdabz6hneoVeeje5NsvLldvNc9XHI+rTwXYyv6r278D/NF+JysxlVSM9zMDgn8ujZyvCpAX99TUyfG+iz30F4u1fOKkYa8ACd6sEdSnIBwgWdVHtqKTQSGDhmZ1XHXi/6+m/0b5+DXfWQzdyYdnsY6bIFL3cXlRhcRTGwvNE7Khkw7qVDMd17VEbh7NBbVufP2115cXqrRtVK5DoqlIRm6xAWd5SXHRo36lc+n5dZDoA8yygwfdV/dJ6dxSNI8JCGRQo6WAiKURkKl2CzvJYfEdYiiJrO3gcxvP+wG84OyQ5M9Vit21y4fVnN7NAuoofb+cDwKWB37VqoY06/s0tvI5AQ5taGU65QNzdzaof8W7NasygbGG46O5Ykg0us2r9hBSAe9YQ2SAWGv9w3vcs4CAQ5fiia2ZvopkvYpAMY2znOit5oYFVdleoTM8fegsL6N4qHRUE0PBE1DIKtu0IrfIXcEG3cXdrm3CjVwcWGgYXgYlJulEU6QITnBlTlnb
- 1GAns+sD
- 26qq+QUt68ewud0V9LVG3DrWRNOvcFz4tb20YsmOHoMLGx3HU+7HkAiCFMzk1DYCD0/AHZir2RF6WQUX/RXefd4Vk+5/fs5brkjGulx/S1ses/A910fS+dV+vULWxtTCNfAf+u+DAbeG+YEBHg5XBoX8WPkN1nrT2P+164KIaXPRsEkH3niiB/eaCiyd8jf9pD5EbBujHWVGTe5ZxzDRaivqZgtkujzibvIPZrYEmKyYX9CRhGMZcC6uMBWPiaq/7KwPYqDWaWWnKq4/tRcwkdWjOr1sNwLp1OsS/T+9ZNX00gbASwzzjaHRNiymirlvML7UfM06BMTLza3ErDHWEoNxyuuo09xY7N2wAtiTuO04Xc4uZ70W9ep+4lFo6gSfDg4pOwhAjuMZ7ky9D5Tx2BDdX85YKPPD47LQLIgHmbDFRHjbgsGg4Qu/6PABJkmxipTLHEPBn9YQGRb4=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CB7731C0002
+X-HE-Tag: 1767554715-471361
+X-HE-Meta: U2FsdGVkX187HfR4GP6XoBWuimSxk11baZ3bTDPnpdmRF5RAg26vuDzwZv/E6Y5JoayG4i/gwumYGcHMhL6VAleKIeu9rUWWgi+uu1RjOYRjmpYrVj1T7zkQCOY5sDdh/NrkkcOWTtAITFBSWCi4dsZ4P2RMqzHcU/43Hz7tJGUAxgz5eLppujUidXc6sgAqcb2OkT73yZ6MsiOuS3+53KA13J7A0BWKvj/soBHpeYfX+2hYGI0Bf19z26tKWwnIt395XnSn79+j63cQhL12DnFM9zWQaCutyAddsqGBmvXAS5F2Qy3x+7gEj3h+S31lETCSBK0JlHYrxi15ohorYARkD5Vf6HI5lOl7q8WSXZqwbr6mN7DhlNf1pSqBes0D6zsZiQeBjVBfz/wguNvNqlAhJLRUHzcMq9gUN5/6i6/s/U0aXodh4c1irqQ5DNOEs3oTrzagspmeIsSLAfrDW2YDFJnzr4f5DHk2eYBd2pInVK8bjSZjm8dwJe/AthvPudqt4jPBfs/ResMTLPKVXe6bY1QD9bEIZiOSqyWNTk1QiiCp77KAhzcsSBs6jUeNsk7q4ZV3dKOStMzlozSpJ3iybFqjdpr3XPbaOaGvJRi7Ag6jz96ppWBFtKbGIhqYWJJ/f+xoXN039L/UwOiGbqJrkmh10xaykiLOu4tDB2DKcCY0B7Sep8sEFu1PZ2Tr4h4nmrqJUvd1IgSmgtp5eAvJJ0Uq5oXyp0TmCtrEakQTRq1bSMfTQvI2US7n0Z70dPYfocy0PH7gcRZ3Ypr5znxi5zx2WkuJum7AQRCXQXgf7FfrJ+LJzI/776Dw4VcQ43w1Muz+3esu8fEcEtEjtCpwUDZzznNzvuq0KFZNasGgvuM3VJsdqrrmJ1h3xrpA3OQFTD31EEMYeOaGDeaGW9sTqXLyXiGzqt/EirByKMiNGd3SHyUKL2SjVyZOgjDtQ48a9UhwLbK2IOLGitO
+ wLLduEeq
+ wchpjSv953Af5m7pQBUfG/LgsmitqAECAKMSbysG6MohnjELfciQ0NaVIOAfcb4WpL0X5jqfyrp5k63H0zWxvio0TNWXxF9BvWKyTvwSXC2lXVLk1jpNIqajjfRZ8YkesrSygaddfwJT8/oAuyk4FZT9NUDTX7/7bId9zcOOOZuQYlogFITfMIwqP52HS6zGtZgRpHr7GQdXI9AI72LhrfrYkWMq4qg/pta9FwfnKxBJgK5rGolOIvBER4eycmUKgmb20Y1fmgBBiT5/JvDOQR9HwzmLVBy0pLNyTVrgVRjMdUwy1+2nY7UZyWmUvZiNrkTVqWBf2qId8ZjnIsiEs9xsbP2ROEdG8eIw1LjVYx7wu+dFSJCP/FwBb35+r/Z6108rEUxlbmelOVtgqXYRQPWPx7SBMV/nkEzpSGmLzOpIJpBM4RYAMB6kSKA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,54 +143,257 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/3/26 19:03, Andrew Morton wrote:
-> On Sun, 14 Dec 2025 19:00:43 -0800 Joanne Koong <joannelkoong@gmail.com> wrote:
+On 1/2/26 21:55, Lorenzo Stoakes wrote:
+> Commit 879bca0a2c4f ("mm/vma: fix incorrectly disallowed anonymous VMA
+> merges") introduced the ability to merge previously unavailable VMA merge
+> scenarios.
 > 
->> Skip waiting on writeback for inodes that belong to mappings that do not
->> have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
->> mapping flag).
->>
->> This restores fuse back to prior behavior where syncs are no-ops. This
->> is needed because otherwise, if a system is running a faulty fuse
->> server that does not reply to issued write requests, this will cause
->> wait_sb_inodes() to wait forever.
->>
->> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
->> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
->> Reported-by: J. Neuschäfer <j.neuschaefer@gmx.net>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
->>
->> ..
->>
->> --- a/fs/fs-writeback.c
->> +++ b/fs/fs-writeback.c
->> @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb)
->>   		 * do not have the mapping lock. Skip it here, wb completion
->>   		 * will remove it.
->>   		 */
->> -		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
->> +		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
->> +		    mapping_no_data_integrity(mapping))
->>   			continue;
+> The key piece of logic introduced was the ability to merge a faulted VMA
+> immediately next to an unfaulted VMA, which relies upon dup_anon_vma() to
+> correctly handle anon_vma state.
 > 
-> It's not obvious why a no-data-integrity mapping would want to skip
-> writeback - what do these things have to do with each other?
+> In the case of the merge of an existing VMA (that is changing properties of
+> a VMA and then merging if those properties are shared by adjacent VMAs),
+> dup_anon_vma() is invoked correctly.
 > 
-> So can we please have a v2 which has a comment here explaining this to the
-> reader?
+> However in the case of the merge of a new VMA, a corner case peculiar to
+> mremap() was missed.
+> 
+> The issue is that vma_expand() only performs dup_anon_vma() if the target
+> (the VMA that will ultimately become the merged VMA): is not the next VMA,
+> i.e. the one that appears after the range in which the new VMA is to be
+> established.
+> 
+> A key insight here is that in all other cases other than mremap(), a new
+> VMA merge either expands an existing VMA, meaning that the target VMA will
+> be that VMA, or would have anon_vma be NULL.
+> 
+> Specifically:
+> 
+> * __mmap_region() - no anon_vma in place, initial mapping.
+> * do_brk_flags() - expanding an existing VMA.
+> * vma_merge_extend() - expanding an existing VMA.
+> * relocate_vma_down() - no anon_vma in place, initial mapping.
+> 
+> In addition, we are in the unique situation of needing to duplicate
+> anon_vma state from a VMA that is neither the previous or next VMA being
+> merged with.
+> 
+> To account for this, introduce a new field in struct vma_merge_struct
+> specifically for the mremap() case, and update vma_expand() to explicitly
+> check for this case and invoke dup_anon_vma() to ensure anon_vma state is
+> correctly propagated.
+> 
+> This issue can be observed most directly by invoked mremap() to move around
+> a VMA and cause this kind of merge with the MREMAP_DONTUNMAP flag
+> specified.
+> 
+> This will result in unlink_anon_vmas() being called after failing to
+> duplicate anon_vma state to the target VMA, which results in the anon_vma
+> itself being freed with folios still possessing dangling pointers to the
+> anon_vma and thus a use-after-free bug.
 
-Sorry for not replying earlier, I missed a couple of mails sent to my 
-@redhat address due to @gmail being force-unsubscribed from linux-mm ...
+Makes sense to me.
 
-Probably sufficient to add at the beginning of the commit:
+> 
+> This bug was discovered via a syzbot report, which this patch resolves.
+> 
+> The following program reproduces the issue (and is fixed by this patch):
+> 
+> #define _GNU_SOURCE
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <unistd.h>
+> #include <sys/mman.h>
+> 
+> #define RESERVED_PGS	(100)
+> #define VMA_A_PGS	(10)
+> #define VMA_B_PGS	(10)
+> #define NUM_ITERS	(1000)
+> 
+> static void trigger_bug(void)
+> {
+> 	unsigned long page_size = sysconf(_SC_PAGE_SIZE);
+> 	char *reserved, *ptr_a, *ptr_b;
+> 
+> 	/*
+> 	 * The goal here is to achieve:
+> 	 *
+> 	 * mremap() with MREMAP_DONTUNMAP such that A and B merge:
+> 	 *
+> 	 *      |-------------------------|
+> 	 *      |                         |
+> 	 *      |    |-----------|   |---------|
+> 	 *      v    | unfaulted |   | faulted |
+> 	 *           |-----------|   |---------|
+> 	 *                 B              A
+> 	 *
+> 	 * Then unmap VMA A to trigger the bug.
+> 	 */
+> 
+> 	/* Reserve a region of memory to operate in. */
+> 	reserved = mmap(NULL, RESERVED_PGS * page_size, PROT_NONE,
+> 			MAP_PRIVATE | MAP_ANON, -1, 0);
+> 	if (reserved == MAP_FAILED) {
+> 		perror("mmap reserved");
+> 		exit(EXIT_FAILURE);
+> 	}
+> 
+> 	/* Map VMA A into place. */
+> 	ptr_a = mmap(&reserved[page_size], VMA_A_PGS * page_size,
+> 		     PROT_READ | PROT_WRITE,
+> 		     MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0);
+> 	if (ptr_a == MAP_FAILED) {
+> 		perror("mmap VMA A");
+> 		exit(EXIT_FAILURE);
+> 	}
+> 	/* Fault it in. */
+> 	ptr_a[0] = 'x';
+> 
+> 	/*
+> 	 * Now move it out of the way so we can place VMA B in position,
+> 	 * unfaulted.
+> 	 */
+> 	ptr_a = mremap(ptr_a, VMA_A_PGS * page_size, VMA_A_PGS * page_size,
+> 		       MREMAP_FIXED | MREMAP_MAYMOVE, &reserved[50 * page_size]);
+> 	if (ptr_a == MAP_FAILED) {
+> 		perror("mremap VMA A out of the way");
+> 		exit(EXIT_FAILURE);
+> 	}
+> 
+> 	/* Map VMA B into place. */
+> 	ptr_b = mmap(&reserved[page_size + VMA_A_PGS * page_size],
+> 		     VMA_B_PGS * page_size, PROT_READ | PROT_WRITE,
+> 		     MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0);
+> 	if (ptr_b == MAP_FAILED) {
+> 		perror("mmap VMA B");
+> 		exit(EXIT_FAILURE);
+> 	}
+> 
+> 	/* Now move VMA A into position w/MREMAP_DONTUNMAP + free anon_vma. */
+> 	ptr_a = mremap(ptr_a, VMA_A_PGS * page_size, VMA_A_PGS * page_size,
+> 		       MREMAP_FIXED | MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
+> 		       &reserved[page_size]);
+> 	if (ptr_a == MAP_FAILED) {
+> 		perror("mremap VMA A with MREMAP_DONTUNMAP");
+> 		exit(EXIT_FAILURE);
+> 	}
+> 
+> 	/* Finally, unmap VMA A which should trigger the bug. */
+> 	munmap(ptr_a, VMA_A_PGS * page_size);
+> 
+> 	/* Cleanup in case bug didn't trigger sufficiently visibly... */
+> 	munmap(reserved, RESERVED_PGS * page_size);
+> }
+> 
+> int main(void)
+> {
+> 	int i;
+> 
+> 	for (i = 0; i < NUM_ITERS; i++)
+> 		trigger_bug();
 
-"Above the while() loop in wait_sb_inodes(), we document that we must 
-wait for all pages under writeback for data integrity. Consequently, if 
-a mapping, like fuse, traditionally does not have data integrity 
-semantics, there is no need to wait at all; we can simply skip these inodes.
+Just wondering, why do we have to loop, I would have thought that this would
+trigger deterministically.
 
-So skip ..."
+> 
+> 	return EXIT_SUCCESS;
+> }
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Fixes: 879bca0a2c4f ("mm/vma: fix incorrectly disallowed anonymous VMA merges")
+> Reported-by: syzbot+b165fc2e11771c66d8ba@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/694a2745.050a0220.19928e.0017.GAE@google.com/
+> Cc: stable@kernel.org
+
+I was wondering whether this commit actually fixes older reports that Jann
+mentioned in his commit a222439e1e27 ("mm/rmap: add anon_vma lifetime debug check").
+
+     [1] https://lore.kernel.org/r/67abaeaf.050a0220.110943.0041.GAE@google.com
+     [2] https://lore.kernel.org/r/67a76f33.050a0220.3d72c.0028.GAE@google.com
+
+
+But 879bca0a2c4f went into v6.16, but [1] and [2] are against v6.14.
+
+So naturally I wonder, could it be that we had a bug even before 879bca0a2c4f that
+resulted in similar symptoms?
+
+Option (1): [1] and [2] are already fixed
+
+Option (2): [1] and [2] are still broken
+
+Option (3): [1] and [2] would be fixed by your patch as well
+
+But we don't even have reproducers, so [1] and [2] could just be a side-effect of
+another bug, maybe.
+
+
+
+> ---
+>   mm/vma.c | 58 ++++++++++++++++++++++++++++++++++++++++++--------------
+>   mm/vma.h |  3 +++
+>   2 files changed, 47 insertions(+), 14 deletions(-)
+> 
+> diff --git a/mm/vma.c b/mm/vma.c
+> index 6377aa290a27..2268f518a89b 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -1130,26 +1130,50 @@ int vma_expand(struct vma_merge_struct *vmg)
+>   	mmap_assert_write_locked(vmg->mm);
+> 
+>   	vma_start_write(target);
+> -	if (next && (target != next) && (vmg->end == next->vm_end)) {
+> +	if (next && vmg->end == next->vm_end) {
+> +		struct vm_area_struct *copied_from = vmg->copied_from;
+>   		int ret;
+> 
+> -		sticky_flags |= next->vm_flags & VM_STICKY;
+> -		remove_next = true;
+> -		/* This should already have been checked by this point. */
+> -		VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
+> -		vma_start_write(next);
+> -		/*
+> -		 * In this case we don't report OOM, so vmg->give_up_on_mm is
+> -		 * safe.
+> -		 */
+> -		ret = dup_anon_vma(target, next, &anon_dup);
+> -		if (ret)
+> -			return ret;
+> +		if (target != next) {
+> +			sticky_flags |= next->vm_flags & VM_STICKY;
+> +			remove_next = true;
+> +			/* This should already have been checked by this point. */
+> +			VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
+> +			vma_start_write(next);
+> +			/*
+> +			 * In this case we don't report OOM, so vmg->give_up_on_mm is
+> +			 * safe.
+> +			 */
+> +			ret = dup_anon_vma(target, next, &anon_dup);
+> +			if (ret)
+> +				return ret;
+> +		} else if (copied_from) {
+> +			vma_start_write(next);
+> +
+> +			/*
+> +			 * We are copying from a VMA (i.e. mremap()'ing) to
+> +			 * next, and thus must ensure that either anon_vma's are
+> +			 * already compatible (in which case this call is a nop)
+> +			 * or all anon_vma state is propagated to next
+> +			 */
+> +			ret = dup_anon_vma(next, copied_from, &anon_dup);
+> +			if (ret)
+> +				return ret;
+> +		} else {
+> +			/* In no other case may the anon_vma differ. */
+> +			VM_WARN_ON_VMG(target->anon_vma != next->anon_vma, vmg);
+> +		}
+
+
+No expert on that code, but looks reasonable to me.
+
+Wondering whether we want to pull the  vma_start_write(next) before the loop
+(for the warn we certainly don't care).
 
 -- 
 Cheers
