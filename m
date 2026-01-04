@@ -4,119 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED3B4C2A06A
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 02:38:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CA47C2A06C
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 05:41:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A231F6B0095; Sat,  3 Jan 2026 21:38:03 -0500 (EST)
+	id 0AC236B0092; Sun,  4 Jan 2026 00:41:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AC1A6B0093; Sat,  3 Jan 2026 21:38:03 -0500 (EST)
+	id 05A106B0093; Sun,  4 Jan 2026 00:41:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87ABF6B0095; Sat,  3 Jan 2026 21:38:03 -0500 (EST)
+	id E7E466B0095; Sun,  4 Jan 2026 00:41:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 72BE66B0092
-	for <linux-mm@kvack.org>; Sat,  3 Jan 2026 21:38:03 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C0D78DEA3
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 02:38:03 +0000 (UTC)
-X-FDA: 84292721646.20.E5501E4
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf08.hostedemail.com (Postfix) with ESMTP id F0409160004
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 02:38:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="kXC/cckK";
-	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767494281;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6wKB+j20nmK7xDpcTxTiEEDSD6VNb6s5qDeWYX+VR1M=;
-	b=ptLZgCseUSc0nElue5fZHKAbOhgu/FPAJPJL+81Ek29WDplu2QHbIgnczMPksULCGKGL8d
-	2WtPZU2t73aERRJmNNo6R+R5bUJyZ1qHqlrGJrjvj8YsXhsIMumSiVvCmPgNHEFQ77omv8
-	m5b1VovLIZvpbTPQ1/93RkNnLBXw3Hs=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="kXC/cckK";
-	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767494281; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D73C46B0092
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 00:41:30 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3E7348B098
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 05:41:30 +0000 (UTC)
+X-FDA: 84293183940.21.DE7EDE4
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5CA5E4000E
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 05:41:28 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lHCxTSuN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767505288; a=rsa-sha256;
 	cv=none;
-	b=6YGRsK45c5GV1ek9fJmrUsMIVZPPX9Hi3snwxpyrBL2VXn6lDicdECgYJgKaJP7uvIZ02o
-	vC5wtLuRMlYKOumWwK1ZDzAuXsLk229KHAwltVDxlBXZZNYVWUsim3aW3F5bviB/LR1aMB
-	NLxCwTXVjv5wSJvq8fNieXgGPntyxh4=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-65022780bb2so5672a12.1
-        for <linux-mm@kvack.org>; Sat, 03 Jan 2026 18:38:00 -0800 (PST)
+	b=aBZZFIasTeLwiki0LtgRJ2g/nZwzssG/Cdlic9AbJ5pZrdQbaH+74mfnhcRmKg9cVQzYBh
+	Cfqq/dF7ldjL9+xRY4AL9wqcN7CchrNkgxr5yBYPAQmeJr9HMsT8KqLtIUwT7MXyJwH/NU
+	0KoXgxL3dqeCxqEK6oYJ92y74O8hsfU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lHCxTSuN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767505288;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=L+kiv/8SILETCkwFrxgRITVEGgT0GejFYqT2B99DKFw=;
+	b=D/TT1owsJjWPGUByXYxkmm7wR/FHQ+cjs1FDbiAPqzx9hc/33RNCoq6SXuL7xh6SYC6nK1
+	9woktuoXas80jJIyZFq9Ecn+ae9Wj57GE3z5IGDQR1FHEKD+d2qkObp09nBqYJycIboeMM
+	diHkMPGFLY49LHRpB8Nii3zvyUCDYjk=
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7aae5f2633dso13620860b3a.3
+        for <linux-mm@kvack.org>; Sat, 03 Jan 2026 21:41:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767494279; x=1768099079; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6wKB+j20nmK7xDpcTxTiEEDSD6VNb6s5qDeWYX+VR1M=;
-        b=kXC/cckKZ7iCgJbpqTy6m3RxVqf6FAFWA1OZYgdU0S3BDtUNJnskJfTR7LDM6Vb3ri
-         06We51FWHaTD0hFpGW8595hTf17cqMsn1hlvbEVwDB7u/BlArLWL8LykOaN1olCuOW89
-         O81fuS5WouTEIE1PtYTvo5NEAo8lf3e4mzcumThTIF/HPif+KaplSifJihxmkbOMvlWt
-         e7nk/PKCw24FsHo75sjNNtO1WTA1H3+ath2T4ajc1aX8HrUSoA9s2BQ+TjT9qqwrS4Ka
-         E6/E69mpi0gBCk1yNbe4BH04EI/CQKwQbelQZUFx8UkJi5DlgwSaCS2hMnCcEE/n0Rx2
-         xPhg==
+        d=gmail.com; s=20230601; t=1767505287; x=1768110087; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=L+kiv/8SILETCkwFrxgRITVEGgT0GejFYqT2B99DKFw=;
+        b=lHCxTSuNKdHKTL49Y5pQE55AYxu7gbWebgK7X3zjkX2acd+kZOz1vQD/zoCtz4IszU
+         /1rM05LBzF+QwJa7vc3BXs519zbPf45I75CyGEsxrMohVtWM8yIH/EX6kc/yWQYKL3Zs
+         Kw94yxJQ2XvRQy3ovAGvMYpLdl4b5LHRzw8NiSyxK7MTgEnyX1FjhJj0pQZMvTc/k3NA
+         ZBird7L4ajYfMf03KBYYk9g5CVugGh2TACSWD05Fj8cRVhReTrcgm1Dp5+g4e/ujhcZj
+         pAcQhlJ8ZdwEkX9WNETOGiT/+LEkoxslYMamm1VM1rzX7Wyoz6nVOA3WBZHonO69azwj
+         WoRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767494279; x=1768099079;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6wKB+j20nmK7xDpcTxTiEEDSD6VNb6s5qDeWYX+VR1M=;
-        b=Fl/CPtmcc4gSRH/qRkQj4xp7YZtmivuWlh3ZLeZHwm43vsMbBsDMG9JRuSMkPdbfKI
-         /25CGetYsFU+7d+udjiRkdyI6nUB4xGq/OW3RJUuaR5+GSw37dT4rUbK/pNcTsZVD+Bj
-         8zzCwfnhhy03ycnIkOyeaONe5iOkqQ5otIRUmicAD/lhFSJ3Fpc7797zOjhik7EZ5/VI
-         J35uge/91rClvPzxNTpRLDf6whT+bUBIvIfTazVgjvh5qyKp7juRkFsSDAY0iLTM7Pz1
-         BQYwaRlS8czd5RIfAHYK/5RDzGvrKxm7mS5nl5CZOd3PWO7WpTJ3SlTC78tBBeyak+Z0
-         1Plg==
-X-Forwarded-Encrypted: i=1; AJvYcCW47tXEMLpmZ8dNcRhFCzmJfSG7vMVsF9lj+u85liOzLgkBwgNMFo56N189IbhKHn4HM0Oej97ltQ==@kvack.org
-X-Gm-Message-State: AOJu0YzFYOtwi/Ru4VRFRqWFF97RfD9B8tiro3nDfSnCMcY8wDezN/22
-	WM55SZCJyZi/MR1gTRtJWI+/X91Z4RJfiLuOnvqoDBYGDtnd9ESQj39E
-X-Gm-Gg: AY/fxX69iqawtOl6l0JhRODohsPUvooH7boYyRJ13qrUL5K+QsWAEse4KmecFYDfhf9
-	8NLdBweljhtqVVGg3/w0xWoKK7Uh44rqiG/i6WJ7VVr/XpueUCnr80IA/CvjLGwfvCLCrVn0DLA
-	Q35K1mFeL/UPdfqb+QpGO5ZST82W4d9w011N7FZZF7iuWEDDzOF7yX0Q304K1y40cmleDPyhz/g
-	Jgfd6YHXp3pRaMrCIkKI1MVy9yP53j6hVoU0mrDnrFKXcjqpXoG6wa73vX+QFMh2se2vcFu2He+
-	7f/eysaAqLYviB8sk33l5bWVQhyBoLsGsuJ3c5DQ0e7kLUWyjnua17zKlk4bVCukG7F0Ie+EiiC
-	1BMzGb+2sMNuPaEpSdpRmqYgQ9WswiEzSSQUjjbwWtoxBsMd0+qUQaG4rnZleZ1ycekqfQv+kkA
-	zE7IL9qGMWEA==
-X-Google-Smtp-Source: AGHT+IG8zgb0q79+2CGdVoNqQLo0gj+pkXe+FFJHkbkGRdgyA1XRa8a1rj6gXn5OP1VM1atpo/VVUQ==
-X-Received: by 2002:a05:6402:350a:b0:649:79a8:8b4f with SMTP id 4fb4d7f45d1cf-64b8e94e1bbmr43300523a12.11.1767494278896;
-        Sat, 03 Jan 2026 18:37:58 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b90414649sm49815378a12.0.2026.01.03.18.37.56
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 03 Jan 2026 18:37:57 -0800 (PST)
-Date: Sun, 4 Jan 2026 02:37:56 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [Patch v2] mm/huge_memory: consolidate order-related checks into
- folio_check_splittable()
-Message-ID: <20260104023756.jufklyl3bl64fnck@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251223122539.10726-1-richard.weiyang@gmail.com>
+        d=1e100.net; s=20230601; t=1767505287; x=1768110087;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L+kiv/8SILETCkwFrxgRITVEGgT0GejFYqT2B99DKFw=;
+        b=ljqGLoeYRutt2jr3egJxhR/jyg3S6TC4/4XjXplJgaNGXz34KNmbROpOS4TFo089nu
+         KGpFmSFXbQ7EiWvmDJM67CNZ06XCZjhG15YyJbkxJnb3PsGXbMdzFhOHziN7jhjLHJri
+         wL3Sbqrlhq/y8TdaoPm5ZaQdlAIBwgazyGrMnRUnMwkPX7eo61rZwGhv/KOYwRL3GTi7
+         flLgkF+5acUKgV5C5i2Yk+PZgvQSUVVKF1tUZFfRVZMnLHCt5mfq7Avgdms4sttvMC5T
+         3sD0P7rpyVStb6Cyc5SCaM7TYuAzd33LAXLJb9wCno2Nv4DEu0OBZJPD23AAEZtA5CDu
+         VpuA==
+X-Forwarded-Encrypted: i=1; AJvYcCUowHoDEDhXCDzp2633freXF+gr45OTaGg5g0MS686AJu8b4wfRCiyyNaUagpVrjGjjeYe87koECQ==@kvack.org
+X-Gm-Message-State: AOJu0YyXKzYY9CWfslFZdJDUmQ//YMmYn7luoXATv9LbYfLufZdNAIgc
+	nU9uYnu6ahAWPeFymfc4TCbXqrGI7TDFmJ4uTdyYQKfLgb2N6o5xBPs6
+X-Gm-Gg: AY/fxX6C9oLty+Evgto7KLavuyl4WnlCYBGTxqvelGJQjvWOFBQLLhceWkplAz8pVYK
+	oxI1YVwq26zxqGxa6Y9FVfkmxYf+1gO3WBjhhuISLnejAvdHtoOOHrF8txF+nbik6/J4iS+fimj
+	JmPn7pZZimjPF9ec5y8gwyDhLxlkDPsezOiU5AYazV2hvcHRxwT43et+f4EPpxmkNcXwJH7Horz
+	mw+ruhD1+d7DSrkFn9/zN/v/9jqbg7lOJBGJUE/3SL2Eaj/KV6apPkLz9/PXVaU5DmasbKj+18W
+	C2bjVxPaFXTa3eFxY36cUoD7M/JhJ6fYlT/zhA8TNFiqKp0IYnZLCknoSFj1URCIyqV7thteBmh
+	8Yp4DqurcbZPoD1uaMepYDjTkIV1bCNpHAU6B4Iv/ftevXzXrYkjjzvOdF92WJHh9Cu7H7mn7Un
+	MbbbkwoPTQuztnIs6OoQhOoN+nUmuU
+X-Google-Smtp-Source: AGHT+IHSNazXt203ZBtanUVsyfrVnyaVinElm0qffDxsDlurpazdiGN3PpxVXtFiIrT7TvMO9AkecQ==
+X-Received: by 2002:a05:6a00:4396:b0:781:16de:cc1a with SMTP id d2e1a72fcca58-7ff6607b421mr35122649b3a.32.1767505287106;
+        Sat, 03 Jan 2026 21:41:27 -0800 (PST)
+Received: from localhost.localdomain ([121.232.80.251])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7b31c479sm44378305b3a.24.2026.01.03.21.41.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Jan 2026 21:41:26 -0800 (PST)
+From: Vernon Yang <vernon2gm@gmail.com>
+X-Google-Original-From: Vernon Yang <yanglincheng@kylinos.cn>
+To: akpm@linux-foundation.org,
+	david@kernel.org
+Cc: lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	richard.weiyang@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: [PATCH v3 0/6] Improve khugepaged scan logic
+Date: Sun,  4 Jan 2026 13:41:06 +0800
+Message-ID: <20260104054112.4541-1-yanglincheng@kylinos.cn>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251223122539.10726-1-richard.weiyang@gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam02
-X-Stat-Signature: s1afkz1os7g4j4dkncbh1hk8fmytr7k8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5CA5E4000E
+X-Stat-Signature: zebsfxfphwqmoxosdmzb9stzbpkee9g5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F0409160004
-X-HE-Tag: 1767494280-52850
-X-HE-Meta: U2FsdGVkX1+RZcNi2WX71EUcrWgr1nzaoKHKs0E7TdOPSNGFTfTa8UA3x4h4WSRjjyhlZz8oeSO3aS5Z2cpHS8iUUyFbsosfr5pgROpkdMEGQNiRgnEghdRpcnDXyXaSQeH+rRjG5qM47YL3SvbnkoerAviHDd5xuwc11+XzUBoH0MIbbUYUguR8/irzPw/Lj7CWMpG1waNgNxN3+M6i3DZsVdZR7Sd6UyzpesDCiGNj37SsMVWl6UDUDF98zXpv6MxlMvUUOjd8jFN4x9KzWRIkB/I93nd8QoM8shSmCpjAgZQaHI4Yri5MsriTDkV+/NJQSGlhyKqvv31AKavJU1qLh1C9NMGyHLlbuKeC2JN7t6ff2TAXLX1oC3QLaRc7NBjaQdb42WVvN7MZg3svRrGRt8BNa8fa4jledkS901UJoTlT2yN1BPocvfxpbDCKEYU+x5RkZVy9D4I/hnqjrbWudelzO032EAWeAJp8oqjFpMhfZjhpcB2i/xWbqKJSQQY0gRd2j6gboisFdtYgXNttHrmTqZKlxtbtnDADG6vpyBQU6ynB7JbreV8qtPS0jYeLrP211xFEY5GGoxLxLyZT3PJ/b683pKrX0n8hnxfAnFymVfkwg7FxYvIU1xUVeAtZw5nwQQ4OmaqLOci56FZgA93wkGtVtzY2aGsiLaQnm7xztC+2yuMFDzlIlrtrrwAX7dBour95TFkQxxwmOdYEZ9xXFlFCQiMLmmBGjgtK83AvmW+ARB6zBgjJXFvx5AnnN+dl+9v/h9Qxh5FJTd+/DafOiOohK0RRiia5blw/B4EmywKXO4AlvEdgc/DHXL5k2cOya78UQk8sdAB/zKPy1ufib5FvVIaDLd1bTqBecEgQNpcyqVnDEjy2JktEfdtu07XUWc30Z25YYm2Qf01uT2hbkP4pxqAFsLhZ61+7SpT7bJw6242J+j8ezQJp5innLYbaTBgU1NH8ztW
- JiJiSSWf
- 7RRDxX3ZyQ8ov87FzDTgdqe8lZMvd45m/bTwlznP2UOV0BVPF0XpLJEYMvJcc/zhn9yojwpDvYTzj7ChkMlHxrLEDXlE1S49B6rYCp/rERvP4IbCQM3q4JSIGys6SHhdTOeY1Mwz+K3tborWTx++dUNomAQP2Im8McysGH+4HmbFwSTmypIVAZ0jzCizR7WJuGnUSo6nTIk1Zl9E1ymQp8ERy3h2A0iyxMsRD1jtNSesN4KF7qjkU5n9/EeTm96A6pKREvbYrzRA0ekZfARINAZAWGjDGwGAIDTaBCeAIkxej9v8tV9QE+h16MS1+w0hOsk7OByGVDazK7xuWG22OuhT7tOpt+ah72J8I1BvEM0lbyV+Ql/CbdyqTnrDv8Ed0aFkrxiGHnXc/cDO7Y6Lfwu73HdHMZna1suQ5PvRz2J870XGQQtN9O/QwozBrPBBZOnWy+O+CfUb8lAMCBYNDW/TMAymMbm4w3WsItYY/PxJavMN0XuMA7LDhLyWFJyBq1HwQTSKeqx/PNxN7q4fzaOiG4aIUoBAnOr/tW0VTatt4SsMHiJZJtA9FwbbSDbKGHw9XY7KaohQmtnePOtGAJtZt33nrjhAKcgWYaGsYuQDona7ju3+3iW3c+g51hW4T8Q39wNgKD62kdaDIwwtj7IQGj0cEHV8AjnSei+M/10+rQVLBgQmr0KEF/9woYf+t5nWvp1UyVfBiL0BLwotX0taHvaMBw8vAWBjswr/mZkJcvstFrWefXhlYzgk74STDMy+nO/Vm9RazN0ZOCnoH/+wjVxss2erFIGtN7E0TtUkNjG1KN+SJSPTydQ==
+X-HE-Tag: 1767505288-584423
+X-HE-Meta: U2FsdGVkX1/wDmrDMfqYhVySRFaczpC4KNXxsiGqfyxVH3gi9LWRR8ruPHPUr0Au2S+6r5hulUuZRve7KU8Vj8yVuzTwIUHMOmQAl1UnXEfH319oTeQPp3w77ZhLExuwepVbPW8t8oMFI8EKwcYQz0H3GkwnLbkugvEzffERG+Un9EBqVxLiw9L/gOsEyZemnFFvfHiQHH60QAUominteENNTeY3oASPhojnrSG1DjE9yzjaicttsKoJQb7FGnL+DJJmI4VPtqSdZQMVxBq8tbkjljht6gDBD5pk9YQEdMFPZ0/blO5PaxoQg51sWb6F5lJ7paieXXv2YCjxxDc4GcPc+kw2kQVUw3LrOYDL34iDe5wZ66uWp2pskbj64NRht/u5VcDmxo0goJqBq0V1etkOiNfQ+F8RArAcnXmNLLLBgFlSA4M3KL41l9X9c6iOI2BFq3yoJKMU/m2lsfJqe33mFKH3v/cGKitnDKL51hm0+kRkH5p21unojqQAJwhp/M7tZxZyYlYr6lsbWTe6ew875TloASzcUaGfgaP7C/c9DNecDEcQ3c1VyU7qBCPojO/2slZJalUO1oyzkAOxxjrClbFBMxnBGgRDbZA9rHQlfgmAZjxDHZ4hNeVXALI0+rFDCklODYhqut7TmUAgwG+/ZIj2qiXl/68Wj55IIS5jbPkmHfCuUrncQz/fIIyHMzQSV6s0MP/oNIatP21Kwh9+4fMC+2NT75OXA7ro/++cNMsdxN/mKrucBL5y4ksHXEGYY+vIbGrrDOOgXh2MhpRaj2gNWwZkJ98MXK7pvuEheaaNvW6QofM+bloHFSzFXU8cLJiOW5jYktMkvjX48EAbIkcaKYoEyXs6JT+ED9x4m6bkG+8gyJL0aMPhJapacLEqmMs6DSVdILbOQKr4QVQpiI/hmXJWA8tRS4tox8aEeXEf3n7WtkGLy/nGcyhQHnV2iFlw3DqosiZ2O2X
+ bHY+j150
+ zOVZGIUv/3pN9a4X6+RoVMsUGfBBTzQM5IFRiDaYgAz5SuUXkzJ0HOi/umYKy2Ncbg0QuJ5RWyicW6NAAayt5A0Wg2RFG5znNg+2+AZWwddsXNv24xjpc+y7t7lLd51JOP3CVWGRFN6WeRISspALgeYsTarGVJMuELYDCG/vFwUjal+8otSvjFphmDissRe2Ww8avVTCtLuD9BDW4W9F8i4MECWo+yQdhqjpJFEBPZKZlEeAHDjTj+YgC8/ehakCZ/ZDVQ3ZLHfwENzii1YFGsNsxxYyWzw9XqdT8ZMWNCqUyqpiPjYtyTBLp0HbADeW5KPtyaeSOM2vtTQBoI7W436d3cq8R6blqmI0kXswNLLFHTokKBpYd5nuMSOkiPR3ONgnRrUbHEPHKDrS+aGlSDh9UZI7/iES0jJfbPgJZy21iRCiMjDVgG75l85wF+2+WY92RIOW+mMHK/wax26PubuOITiubSrQPIxjBaXaKON/Uu8rPYTcIvc5Vrg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,191 +125,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 23, 2025 at 12:25:39PM +0000, Wei Yang wrote:
->The primary goal of the folio_check_splittable() function is to validate
->whether a folio is suitable for splitting and to bail out early if it is
->not.
->
->Currently, some order-related checks are scattered throughout the
->calling code rather than being centralized in folio_check_splittable().
->
->This commit moves all remaining order-related validation logic into
->folio_check_splittable(). This consolidation ensures that the function
->serves its intended purpose as a single point of failure and improves
->the clarity and maintainability of the surrounding code.
->
->Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->Cc: Zi Yan <ziy@nvidia.com>
->
->---
-[...]
->@@ -3719,28 +3723,33 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
-> 		/* order-1 is not supported for anonymous THP. */
-> 		if (new_order == 1)
-> 			return -EINVAL;
->-	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
->-		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->-		    !mapping_large_folio_support(folio->mapping)) {
->-			/*
->-			 * We can always split a folio down to a single page
->-			 * (new_order == 0) uniformly.
->-			 *
->-			 * For any other scenario
->-			 *   a) uniform split targeting a large folio
->-			 *      (new_order > 0)
->-			 *   b) any non-uniform split
->-			 * we must confirm that the file system supports large
->-			 * folios.
->-			 *
->-			 * Note that we might still have THPs in such
->-			 * mappings, which is created from khugepaged when
->-			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
->-			 * case, the mapping does not actually support large
->-			 * folios properly.
->-			 */
->-			return -EINVAL;
->+	} else {
->+		if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
->+			if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->+			    !mapping_large_folio_support(folio->mapping)) {
->+				/*
->+				 * We can always split a folio down to a
->+				 * single page (new_order == 0) uniformly.
->+				 *
->+				 * For any other scenario
->+				 *   a) uniform split targeting a large folio
->+				 *      (new_order > 0)
->+				 *   b) any non-uniform split
->+				 * we must confirm that the file system
->+				 * supports large folios.
->+				 *
->+				 * Note that we might still have THPs in such
->+				 * mappings, which is created from khugepaged
->+				 * when CONFIG_READ_ONLY_THP_FOR_FS is
->+				 * enabled. But in that case, the mapping does
->+				 * not actually support large folios properly.
->+				 */
->+				return -EINVAL;
->+			}
-> 		}
+Hi all,
 
-Hi, Happy New Year to all :-)
+This series is improve the khugepaged scan logic, reduce CPU consumption,
+prioritize scanning task that access memory frequently.
 
+The following data is traced by bpftrace[1] on a desktop system. After
+the system has been left idle for 10 minutes upon booting, a lot of
+SCAN_PMD_MAPPED or SCAN_NO_PTE_TABLE are observed during a full scan by
+khugepaged.
 
-Following the application of this patch, a warning was reported [5]. The root
-cause is an attempt to uniformly split a page cache folio down to order-0 when
-the mapping has a mapping_min_folio_order() > 0.
+@scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+@scan_pmd_status[6]: 2           ## SCAN_EXCEED_SHARED_PTE
+@scan_pmd_status[3]: 142         ## SCAN_PMD_MAPPED
+@scan_pmd_status[2]: 178         ## SCAN_NO_PTE_TABLE
+total progress size: 674 MB
+Total time         : 419 seconds ## include khugepaged_scan_sleep_millisecs
 
-It is worth noting that the current upstream code also denies this split, but
-it does so silently. This patch simply makes the violation visible.
+The khugepaged has below phenomenon: the khugepaged list is scanned in a
+FIFO manner, as long as the task is not destroyed,
+1. the task no longer has memory that can be collapsed into hugepage,
+   continues scan it always.
+2. the task at the front of the khugepaged scan list is cold, they are
+   still scanned first.
+3. everyone scan at intervals of khugepaged_scan_sleep_millisecs
+   (default 10s). If we always scan the above two cases first, the valid
+   scan will have to wait for a long time.
 
-Upon reviewing the code history, I believe the logic introduced here is
-correct. The existing comment--"We can always split a folio down to a single
-page"--appears to be misleading, as it does not account for modern
-constraints where a minimum folio order is required by the mapping.
+For the first case, when the memory is either SCAN_PMD_MAPPED or
+SCAN_NO_PTE_TABLE, just skip it.
 
-Below is my analysis and suggestion:
-----
+For the second case, if the user has explicitly informed us via
+MADV_FREE that these folios will be freed, just skip it only.
+
+The below is some performance test results.
+
+kernbench results (testing on x86_64 machine):
+
+                     baseline w/o patches   test w/ patches
+Amean     user-32    18586.99 (   0.00%)    18562.36 *   0.13%*
+Amean     syst-32     1133.61 (   0.00%)     1126.02 *   0.67%*
+Amean     elsp-32      668.05 (   0.00%)      667.13 *   0.14%*
+BAmean-95 user-32    18585.23 (   0.00%)    18559.71 (   0.14%)
+BAmean-95 syst-32     1133.22 (   0.00%)     1125.49 (   0.68%)
+BAmean-95 elsp-32      667.94 (   0.00%)      667.08 (   0.13%)
+BAmean-99 user-32    18585.23 (   0.00%)    18559.71 (   0.14%)
+BAmean-99 syst-32     1133.22 (   0.00%)     1125.49 (   0.68%)
+BAmean-99 elsp-32      667.94 (   0.00%)      667.08 (   0.13%)
+
+Create three task[2]: hot1 -> cold -> hot2. After all three task are
+created, each allocate memory 128MB. the hot1/hot2 task continuously
+access 128 MB memory, while the cold task only accesses its memory
+briefly andthen call madvise(MADV_FREE). Here are the performance test
+results:
+(Throughput bigger is better, other smaller is better)
+
+Testing on x86_64 machine:
+
+| task hot2           | without patch | with patch    |  delta  |
+|---------------------|---------------|---------------|---------|
+| total accesses time |  3.14 sec     |  2.93 sec     | -6.69%  |
+| cycles per access   |  4.96         |  2.21         | -55.44% |
+| Throughput          |  104.38 M/sec |  111.89 M/sec | +7.19%  |
+| dTLB-load-misses    |  284814532    |  69597236     | -75.56% |
+
+Testing on qemu-system-x86_64 -enable-kvm:
+
+| task hot2           | without patch | with patch    |  delta  |
+|---------------------|---------------|---------------|---------|
+| total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
+| cycles per access   |  7.29         |  2.07         | -71.60% |
+| Throughput          |  97.67 M/sec  |  110.77 M/sec | +13.41% |
+| dTLB-load-misses    |  241600871    |  3216108      | -98.67% |
+
+This series is based on Linux v6.19-rc3.
+
+Thank you very much for your comments and discussions :)
 
 
-All the story came from [1] which introduced folio split to any lower order.
-The check on order is fixed by [2], which is the base of current form.
+V2 -> V3:
+- Refine scan progress number, add folio_is_lazyfree helper
+- Fix warnings at SCAN_PTE_MAPPED_HUGEPAGE.
+- For MADV_FREE, we will skip the lazy-free folios instead.
+- For MADV_COLD, remove it.
+- Used hpage_collapse_test_exit_or_disable() instead of vma = NULL.
+- pickup Reviewed-by.
 
-When we split a large pagecache folio, it has two possibilities:
+V1 -> V2:
+- Rename full to full_scan_finished, pickup Acked-by.
+- Just skip SCAN_PMD_MAPPED/NO_PTE_TABLE memory, not remove mm.
+- Set VM_NOHUGEPAGE flag when MADV_COLD/MADV_FREE to just skip, not move mm.
+- Again test performance at the v6.19-rc2.
 
-    1) khugepaged collapsed folio
-    2) filesystem supported large folio 
+V1 : https://lore.kernel.org/linux-mm/20251215090419.174418-1-yanglincheng@kylinos.cn
+V2 : https://lore.kernel.org/linux-mm/20251229055151.54887-1-yanglincheng@kylinos.cn
 
-For case 1), the folio could only be splitted to order-0, so the check is
-added, (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !mapping_large_folio_support(folio->mapping))
+[1] https://github.com/vernon2gh/app_and_module/blob/main/khugepaged/khugepaged_mm.bt
+[2] https://github.com/vernon2gh/app_and_module/blob/main/khugepaged/app.c
 
-For case 2), it looks implies mapping_large_folio_support() is true. And it
-looks we assume it could be splitted to any lower order. Because the
-mapping_min_folio_order() is introduced by [3] and the min_order check is
-introduced in [4], both are later than [1] and [2]. So when [2] applied, we
-don't have the knowledge of mapping_min_folio_order(). (I may lose some
-background here, if not correct, please correct me.)
+Vernon Yang (6):
+  mm: khugepaged: add trace_mm_khugepaged_scan event
+  mm: khugepaged: refine scan progress number
+  mm: khugepaged: just skip when the memory has been collapsed
+  mm: add folio_is_lazyfree helper
+  mm: khugepaged: skip lazy-free folios at scanning
+  mm: khugepaged: set to next mm direct when mm has
+    MMF_DISABLE_THP_COMPLETELY
 
-The introduction of [3] and [4] changes the assumption at [2], besides
-checking mapping_large_folio_support(), the mapping_min_folio_order() should
-be checked. So the comment in current code is misleading:
+ include/linux/mm_inline.h          |  5 ++++
+ include/trace/events/huge_memory.h | 25 ++++++++++++++++
+ mm/khugepaged.c                    | 47 +++++++++++++++++++++++-------
+ mm/rmap.c                          |  4 +--
+ mm/vmscan.c                        |  5 ++--
+ 5 files changed, 71 insertions(+), 15 deletions(-)
 
-	/* 
-	 * We can always split a folio down to a
-	 * single page (new_order == 0) uniformly.
-	 */
+--
+2.51.0
 
-For case 1), it still stands, but for case 2) we should also check min_order
-with mapping_min_folio_order(), which [4] does.
-
-If my understanding is correct, below is my suggestion for the comment change.
-Feel free to correct me, if I miss something.
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 40cf59301c21..b0ba27b0f763 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3714,28 +3718,28 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
-                /* order-1 is not supported for anonymous THP. */
-                if (new_order == 1)
-                        return -EINVAL;
--       } else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
--               if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
--                   !mapping_large_folio_support(folio->mapping)) {
--                       /*
--                        * We can always split a folio down to a single page
--                        * (new_order == 0) uniformly.
--                        *
--                        * For any other scenario
--                        *   a) uniform split targeting a large folio
--                        *      (new_order > 0)
--                        *   b) any non-uniform split
--                        * we must confirm that the file system supports large
--                        * folios.
--                        *
--                        * Note that we might still have THPs in such
--                        * mappings, which is created from khugepaged when
--                        * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
--                        * case, the mapping does not actually support large
--                        * folios properly.
--                        */
--                       return -EINVAL;
-+       } else {
-+               /*
-+                * When splitting a large pagecache folio, it has two
-+                * possibilities:
-+                *
-+                *   1) khugepaged collapsed folio when
-+                *      CONFIG_READ_ONLY_THP_FOR_FS is enabled
-+                *   2) filesystem supported folio
-+                *
-+                * For case 1), we only support uniform split to order-0.
-+                * For case 2), we need to make sure new_order is not less
-+                * than mapping_min_folio_order().
-+                */
-+               if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
-+                       if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-+                           !mapping_large_folio_support(folio->mapping)) {
-+                               return -EINVAL;
-+                       }
-                }
-+
-+               if (new_order < mapping_min_folio_order(folio->mapping))
-+                       return -EINVAL;
-        }
-
-
-The warning reported is in madvise_cold_or_pageout_pte_range(). I don't find a
-way to eliminate it, since user may specify any range to madvise(). Uniformly
-splitting to order-0 is a general way.
-
-[1]: 2024-02-26 c010d47f107f mm: thp: split huge page to any lower order pages
-[2]: 2024-06-07 6a50c9b512f7 mm: huge_memory: fix misused mapping_large_folio_support() for anon folios
-[3]: 2024-08-22 84429b675bcf fs: Allow fine-grained control of folio sizes
-[4]: 2024-08-22 e220917fa507 mm: split a folio in minimum folio order chunks
-[5]: https://lore.kernel.org/all/694ac438.050a0220.35954c.0000.GAE@google.com/
-
--- 
-Wei Yang
-Help you, Help me
 
