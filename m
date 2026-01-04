@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89639C2A06C
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 18:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6E3EC2A06C
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 18:14:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67E7D6B0095; Sun,  4 Jan 2026 13:02:35 -0500 (EST)
+	id D2F976B0098; Sun,  4 Jan 2026 13:14:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62B3B6B0096; Sun,  4 Jan 2026 13:02:35 -0500 (EST)
+	id CDD5B6B0099; Sun,  4 Jan 2026 13:14:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52DE16B0098; Sun,  4 Jan 2026 13:02:35 -0500 (EST)
+	id C13296B009B; Sun,  4 Jan 2026 13:14:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 46D7C6B0095
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 13:02:35 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AB5AA8E138
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:02:34 +0000 (UTC)
-X-FDA: 84295051428.14.A638C42
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B30876B0098
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 13:14:47 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 672D61A12C6
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:14:47 +0000 (UTC)
+X-FDA: 84295082214.17.AFFE7F0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id F003320011
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:02:32 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LpJQM6ho;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf01.hostedemail.com (Postfix) with ESMTP id C93454000A
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 18:14:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="UC/MCP98";
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767550485; a=rsa-sha256;
+	cv=none;
+	b=Yaw8kdZ1AkrLuZo/fVs2Xvsmp55AFDtr8iNEnUdFexgF485/Erl9q5ZEVOMsL4mhhKYNJY
+	ICG2E/jGdv2dB4HbUIc17l226M1dxgJ22nge8/gOkZtwLSEHzAiG0ykXtVUq+b5FWlGw4Y
+	JmiukD9oytf7q/2azaiW0v5xwm4COwk=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="UC/MCP98";
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767549753;
+	s=arc-20220608; t=1767550485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sukNPMtSOV0nXMIev4sNjkhuhRsCMj+n/zxVIAKDb54=;
-	b=NK9Y/ezwMF7/T6xBVMdMV0NWNhbdJ/V3vVYvtQtCIqXr7l+Y91N2jQKUhpzvZUIVmXWEN3
-	vaCCN2Z2YmFzgW6sPCG79ccJHE/UyOPa4NGFFzliBlW9714/EZkNx6/MX9OXObT+5zsGY4
-	uXovMrIJZBL+P0wJ5KGwHbOUxj4syAk=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LpJQM6ho;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767549753; a=rsa-sha256;
-	cv=none;
-	b=s7CJXCnwtvNcv78S9ElOWITsA484cXg3+swNqfMKYqxCM8VA8A52WlguBCal1Dw3azk05k
-	+fJXCy7fBJhStGpH3sdSdb+IThM95M1BdxDxy1349BBbrqeeQQS4XUUUnTawDvMyHR+PK5
-	ambLDXrTdb4H3c9keYNZzNDwrf9a5KY=
+	bh=3ao7Ys3XAfy01aKjs5W1Sw2ZSuEhzNVkMNr8j8FICp8=;
+	b=kYTbTjyPBqhHl70Dm0Xr2jsht3uQMKwMgDmQfWMolPFzwqzeDZyvlVi+x3BP2AKBORFbVG
+	hm81DtnhtdM22BqFP15LCI+GfOoYBjZgLu/nXAo+m3OyAaaO+9OycQdhjGcBFEzDu2iwlv
+	1yyriKIMkZvZXnInGCIrhAELZBbJ0dU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2E3A460010;
-	Sun,  4 Jan 2026 18:02:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EADC19423;
-	Sun,  4 Jan 2026 18:02:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2B39E60010;
+	Sun,  4 Jan 2026 18:14:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A417C4CEF7;
+	Sun,  4 Jan 2026 18:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767549751;
-	bh=CTZbCp3RpyYugdgjDwKUDAhn3JkVf+OgS6iO/KiU6cs=;
+	s=korg; t=1767550484;
+	bh=uexxpGTRJdOdjecdMSGkGbE8JdVZGYKsGcsnXnMXSSc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LpJQM6hoUi+Q1YVYh08n8HeejbFS9R3NXWrFc0lipnhub04SnG50puKjpQV51KYiR
-	 HAI2oInhTrkk62gEqsOEchHIehRWy+QiJ8nwL11yPm4BIU1RJf6Ypr/XNICDJsI5E2
-	 +IuuUVccAB3441KNKabMLqFiklxzjd7b/v8xlCHk=
-Date: Sun, 4 Jan 2026 10:02:30 -0800
+	b=UC/MCP98UsfJ9tekhTU2w51FdkgZBaC73S0T3w5Vfe1JW1JVNXSvBo/gspEotD9AR
+	 M6x6lTFqA4Kd+yzrAyUUdG/n9F95nupj3jIyL/98gH56ZKtylj5uDTFlMVPIR4cxRX
+	 4RvivEddpK2EWpYW0qP6IXEOUvWZZLMA0iVma4UQ=
+Date: Sun, 4 Jan 2026 10:14:43 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v1] mm: kmsan: Fix poisoning of high-order non-compound
- pages
-Message-Id: <20260104100230.09abd1beaca2123d174022b2@linux-foundation.org>
-In-Reply-To: <20260104134348.3544298-1-ryan.roberts@arm.com>
-References: <20260104134348.3544298-1-ryan.roberts@arm.com>
+To: wujing <realwujing@qq.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
+ <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Qiliang
+ Yuan <yuanql9@chinatelecom.cn>
+Subject: Re: [PATCH 1/1] mm/page_alloc: auto-tune min_free_kbytes on atomic
+ allocation failure
+Message-Id: <20260104101443.f10264bc9730de884b52c5a2@linux-foundation.org>
+In-Reply-To: <tencent_9DB6637676D639B4B7AEA09CC6A6F9E49D0A@qq.com>
+References: <tencent_C5AD9528AAB1853E24A7DC98A19D700E3808@qq.com>
+	<tencent_9DB6637676D639B4B7AEA09CC6A6F9E49D0A@qq.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: F003320011
-X-Stat-Signature: wkxtnmogta1e96tppbi5q53juxaquai7
+X-Rspamd-Queue-Id: C93454000A
+X-Stat-Signature: 8byxe6qudx45aokbdj8bummaxuhg6481
 X-Rspam-User: 
-X-HE-Tag: 1767549752-104843
-X-HE-Meta: U2FsdGVkX1+EVGl0VJGVeOOdZq9l96yV+9cQ/ag8SJWj2cYRRo5OfBFjjIAOFVRSJkAMcPaQ09W2sJyvcvD7twzMZfcRNZ7y3DFW1GmrmjKPju7V6WYCAmmIA4R3cjBz8XNnwvZkabmDdgDFQasgQ/QE8GLBbwZaMepweAfJfCfoq2WiKR2MR+qNN2obYLox/CH5b+S/rt7v953QGibHvHbH26Ec0rhnW/Ci41tKuzHZQXPwuoUXvQ443DipluOlmzyvHjHpiPABt8f8fIUXQVP4PySTNMOem6hOlHuhrUTviCbMSYpEpchulLPdWo6cz9NgDttIkFUwpuWAdGp6S3lEqqE0t98lmCu9AI71jg81+csXBdZ3gmKPAOAfwC8lK+aLvqU3zi9ov4SvhDUwnTCkJ3t8y8LhFZbttDys3TtAQ7TaCjvgkmBPipKnW0Vkp0LvehoslBXhoVBnpycd0qu4l7NyUQRlViqMxZniJlmAuYmjwhA1uVTKr+QtPmmlwaRPCx7g7xkVYkIptW7zeXqlzo7ZnrvokoutAj/7fLhxwIzzQEnhrpkFjXV3zWFpU0cu8aobzy1xqeOsVbFpsXT53UaHhbuGZPnHYN79cnBxjeXsaQfEkTzaFGwMMz4xq0AdV1VBrjA2vogWqdo7LV5BEpJMQ8Knv4y5p9any0laX/oEXsmcJ5w0mrs5VaEZ2dIj0ah9p735PQ+U9J223h5mGgON1uoILtHJaicojJLB9D2F6i5OSXO60YO5O9vY021X9HqY2vK1gJtbbbSS57rgOOepyuHEheGlSVk4pBGUVfaWddJWOq92MhgI3zOYcnKYYR+jPluhbVNDfBcSlXmGd+eVThgDw6JoLmmjzJzp/K3B61QXZ6+fbqT5265gMHjXHmPa5fD8bmkz7BxjZhofpx/Rd3l9fzUZNwcqh39+RR8OV9lICKd6zyKjxqT59uE4m1ey6Un/6KP+Xlv
- Zw3feKzP
- X+yiRfU9PkvxaDtNE3RvedBJ1NJyR8Kajiaf/ombbfjRfQ4ydeUgqt3iCLm3isD/8gYAS1arOYZCnBe47L14s59xA1XWm+LHqITuYlVZ2Er6nUI/hiyMpLWxH9xZRonJhQtjPpgWEWggEYXvky1B6YuHjvf1C3sbUUXJ9SwA5Ka6Urgo3tLH8IENqIhbTNS8etLRsLDXr1mwoN8gX6ymH+GQJkx29TbeqhCCx2RmYozC4UqkSz0XStb0mESVK52FrxX2vmJwKluFNVi/Vk8kRDZD1umnLsiU94A2QtmgkDIsomG55iVbSkB0fCiAwBjB+0laMgYs6hBqPc/g=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767550485-504552
+X-HE-Meta: U2FsdGVkX1/LpcuQdAB4ZLwjizQU3TeSlKsznqU6vj29fcHlj6aiYoSjIBA6Sqi/mkgklvI7EjVhzo1kF4xDZVnPHgCOds1koX5RXKmCX9i8IjKUYEnFFMMuGKtX/gCUVRR2nG2kg1q3bUOXOlHWTqt5YxMdUo0QJjltVwwrwHG6KG1HnQ8DA2VfI3kce8qEgR+WNKm7NWyokMHRWaC3FFjm743cE8m67uoG9G3S0p0nbJrf4bOaRrjKuxCBgS3kqpwA/QvIM93KxCL21nSgU0busN7OWWGqwZWsfUf850SdtRMjdZEuIpHX+8X7AvpY7F0gMwfVbg412TsrtJv7PN/3crWErez/VMO4WEWJbIJ/GmD0nQ0FDRUlf6f4v4L+9aCI/bI94nlVqh49KTTThunePoPwGy7Z4be0AhcjEJEBTqXFzTssSiSry++zkTug7ZAw3SzKdFILGxg7A3qZSvc465Tet8iC3Y3qkqe+KtbbQX/cnS3UHSfXx4hqAc/FyHezXpaat5Dsc5Rd3lebDsb29pBzoSAstqUDMgt5HFaYM1sDvs0hntEjaYEdYxgeSTR6/Kirm2FeriNlsxWxctsm7ufsvqrdirmFx6Ejg0EhnUL/4d/13G5uBtZG5Ox1nIPa9EY5yvkdolHmA2RHAIJ5J3bmUjDXtbUKsyIoeyDrSaMg1JpCkCy7AtMzGLEwVhDd2GmyA6kPup4XpzoOiCDifgnKrSsgxL2VBvNelmdKFmvwyT7W6odWbTFIWnNApTGAaD8I71oCHOFpjoiyz1Y6X81E5evOTCKQjRq0pcRsH5VRa8uog/K/0h5J9Mi4Pb/HePE5nmvz6Klu6mzIIxUi70wlP51TtKos/61tCtAvcfkDkG54NxDuiD3N9E5iHJB8dG/n7LXT0ml2p5rpCOgq1/Ykn7F0bFnLBv5WjV5r6B33ksY+sG8eHjzmSyOpK9mN6Ydx/XWkke0lGSV
+ BF2BMQUB
+ KqT8Oy2tiVhBtyM8jDYELHhDBy2AolxyamQtKSSKesH2OXYwdO3PHQpMySamLKJxMB6z+JS1VSSd47zAFTUC38pYAXGCqGsKXnTC1Nec3gR6fjkxo0hqUiyFAoicyTheBtTj3my1YGPo5FODBvWI0fLY8GVtPGGDT06YvttnOZfQBvUX4M0eYSqTMUFNeSgaKvvElwdMQzgWOEEpFNp9t4uKbkZm13JffqdxxsnSCz1CnKjQt9InlCnvyaBeQFJhHHf5yqTtDt8HpHtTE8LlXxHzUbl5RS/FDd77WB+Hygdoq845z6KXT+tpYdPahGUoaQ3IuUmMLHIEPDXHcXd+3FUiHAQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,39 +95,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun,  4 Jan 2026 13:43:47 +0000 Ryan Roberts <ryan.roberts@arm.com> wrote:
+On Sun,  4 Jan 2026 20:26:52 +0800 wujing <realwujing@qq.com> wrote:
 
-> kmsan_free_page() is called by the page allocator's free_pages_prepare()
-> during page freeing. It's job is to poison all the memory covered by the
-> page. It can be called with an order-0 page, a compound high-order page
-> or a non-compound high-order page. But page_size() only works for
-> order-0 and compound pages. For a non-compound high-order page it will
-> incorrectly return PAGE_SIZE.
-> 
-> The implication is that the tail pages of a high-order non-compound page
-> do not get poisoned at free, so any invalid access while they are free
-> could go unnoticed. It looks like the pages will be poisoned again at
-> allocaiton time, so that would bookend the window.
-> 
-> Fix this by using the order parameter to calculate the size.
-> 
-> Fixes: b073d7f8aee4 ("mm: kmsan: maintain KMSAN metadata for page operations")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> ---
-> 
-> Hi,
-> 
-> I noticed this during code review, so perhaps I've just misunderstood the intent
-> of the code.
+> Introduce a mechanism to dynamically increase vm.min_free_kbytes when
+> critical atomic allocations (GFP_ATOMIC, order-0) fail. This prevents
+> recurring network packet drops or other atomic failures by proactively
+> reserving more memory.
+
+Seems like a good idea, however it's very likely that the networking
+people have looked into this rather a lot.  Can I suggest that you
+engage with them?  netdev@vger.kernel.org.
+
+> The adjustment doubles min_free_kbytes upon upon failure (exponential backoff),
+> capped at 1% of total RAM.
+
+But no attempt to reduce it again after the load spike has gone away.
+
+> Observed failure logs:
+> [38535641.026406] node 0: slabs: 941, objs: 54656, free: 0
+> [38535641.037711] node 1: slabs: 349, objs: 22096, free: 272
+> [38535641.049025] node 1: slabs: 349, objs: 22096, free: 272
 >
-> I don't have the means to compile and run on x86 with KMSAN enabled though, so
-> punting this out hoping someone might be able to validate/test. I guess there is
-> a small chance this could lead to KMSAN finding some new issues?
+> ...
+>
+> +static void boost_min_free_kbytes_workfn(struct work_struct *work);
+> +static DECLARE_WORK(boost_min_free_kbytes_work, boost_min_free_kbytes_workfn);
+> +
+>  void warn_alloc(gfp_t gfp_mask, nodemask_t *nodemask, const char *fmt, ...)
+>  {
+>  	struct va_format vaf;
+> @@ -4947,6 +4951,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  		goto retry;
+>  	}
+>  fail:
+> +	/* Auto-tuning: trigger boost if atomic allocation fails */
+> +	if ((gfp_mask & GFP_ATOMIC) && order == 0)
+> +		schedule_work(&boost_min_free_kbytes_work);
+> +
 
-We'll see, I'll park this in mm-new to get it a little testing, see if
-anything is shaken out.  If all looks good and if the KMSAN maintainers
-are OK with it I'll later move the patch into mm-hotfixes for more
-expedited upstreaming.
+Probably this should be selectable and tunable via a kernel boot
+parameter or a procfs tunable.  But I suggest you not do that work
+until having discussed the approach with the networking developers.
+
+>  	warn_alloc(gfp_mask, ac->nodemask,
+>  			"page allocation failure: order:%u", order);
+>  got_pg:
 
 
