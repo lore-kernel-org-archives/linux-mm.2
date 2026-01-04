@@ -4,168 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83E3CC2A06C
-	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 07:22:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DEBFC2A069
+	for <linux-mm@archiver.kernel.org>; Sun,  4 Jan 2026 07:42:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67C4B6B0096; Sun,  4 Jan 2026 02:22:33 -0500 (EST)
+	id B35306B0092; Sun,  4 Jan 2026 02:42:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63C726B0098; Sun,  4 Jan 2026 02:22:33 -0500 (EST)
+	id B0D8D6B0093; Sun,  4 Jan 2026 02:42:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4754B6B0099; Sun,  4 Jan 2026 02:22:33 -0500 (EST)
+	id A36606B0095; Sun,  4 Jan 2026 02:42:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E0176B0096
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 02:22:33 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01A111A8A3E
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 07:22:32 +0000 (UTC)
-X-FDA: 84293438586.15.0E4BF9A
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010070.outbound.protection.outlook.com [52.101.56.70])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1AFEE40005
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 07:22:29 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=TedDEedr;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf11.hostedemail.com: domain of Honglei1.Huang@amd.com designates 52.101.56.70 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767511350; a=rsa-sha256;
-	cv=pass;
-	b=y4xzeDOwCmopKFNZn0Hm7G28Q3BO1gXT9RJBZmL+fYcgGO87o9pmUBheVOPN7mu9lxQoqN
-	K79jRApa7UJ774EA38YJnW2eQf14HD53jNli3ZvP3TzvBme96y27Sq1tKVib/nAAzATZbn
-	zwdXn9jR9FkR6ua0KdWkmk3QJFBqypA=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=TedDEedr;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf11.hostedemail.com: domain of Honglei1.Huang@amd.com designates 52.101.56.70 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767511350;
+	by kanga.kvack.org (Postfix) with ESMTP id 8EB396B0092
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 02:42:44 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 361FA8B4F6
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 07:42:44 +0000 (UTC)
+X-FDA: 84293489448.13.5684AED
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 30C2640004
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 07:42:41 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QCqScVhr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767512562; a=rsa-sha256;
+	cv=none;
+	b=YxWR83XWpQFUDyiEqA6EkLM0gm765sjxEkPQo50RWhb6T70UF+U0Ct+ATnnyBtmrV7rQI7
+	gl+eU34X7lJEQ0ECrfY7kK1xTrY4u2Ivs9qF7hZ+hOi/053JnQcB510bhmriXVOkUHqHj9
+	BBS3hukjyFHJPCbVtZoE6dtewF7+QJU=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QCqScVhr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767512562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pEhcRp08TrkcMs/mdXjvglLWujQx6Wl/vt6RKxcaw2Y=;
-	b=A75mXQcstSW4ZlZw40YnME/pHcjAWAjVlJj08DH6LwPKuuhZXXDL5A4HnNX/yCWpaMfZxI
-	9ZHcDyYBAnHVAd7cvAwDNt6/QU50NCjFpYG8ub/ldZ3SVacUjCRLQz1/Pf8biTx55onEts
-	zk6QuC+AKN7yhTgcyM5DHetKlUwD7wc=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qFtGNhGbac6r2EfKMcrHtwh1WjhZgag2jfFBenYnckH6Ch4etPgcCNeEDTITLY7CovU1qBK3iSSYnz8TMKdT7EM35MDc+h9kuE49u3PeWo39Iz6uqSku5nWUj8wFPzsexWTUIqSnCaLKKyUw4OSSON0o3jtqsjWSv0Gi/zeR5UVN6Fn0gZZTdnBoS6fB5mgb4I7PrOHXajlBMofXKsCDvE2ax83adDVU/Xkjy33L4sA87/hZoCO9b/rrdeBHMRS2uXqkK851AvvTZ1rE5rGTbwoenWV+zdgmwbxNgmNhY+/wEuAeXJF2D0wDEfQhgl4gRJ4QZ7SBHty9JOBFkCBfUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pEhcRp08TrkcMs/mdXjvglLWujQx6Wl/vt6RKxcaw2Y=;
- b=vzGc13YiDV8x6vAOIrvlQEqpDT3kFRnL//wKt2sNUsjRYEesFIJ2QJ5ZFad+NrT3IrCtyCg3tea/d8e5ksDq5cXW7brz4AzsdgllTpZaO4FBzeH5b370TEJh5jgELSCOjUnbyYS/qZn0dwrhj/vX01fetMwk/t6gikxZYU3NXnmNPH+4sQghAhNE5V9RnE+DKLV8FJgJebQqd31K0MxpwBkVW2qacmKoCdlQ/S7WnAMINeM6hoAxG/0FaPz9X5TEE3Kybc0LpgBysKRcNm2+gHIyF9HZD/iMnOju17qAmMNQZ43oh4N5gLodlpWtLT7ysEn0H0h/lViKKeJ9TNDDqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=collabora.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pEhcRp08TrkcMs/mdXjvglLWujQx6Wl/vt6RKxcaw2Y=;
- b=TedDEedr09sybNf5o2aXRpe8asiwnISnWfVEFr3IVeBqz5WCPRsQnhAo1+a+zH6vYrR5AFVtUg6nK6ADHeDQ5tqD0C1FT/VIu+ramgGaLDqdHT5N6ev2yz+cOyn3A+L+qWUsD3d+9pSjc2WEFRan16ZgjqlpSibZM+peen/R5T4=
-Received: from MN2PR16CA0066.namprd16.prod.outlook.com (2603:10b6:208:234::35)
- by SA5PPFE3F7EF2AE.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8e6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Sun, 4 Jan
- 2026 07:22:26 +0000
-Received: from BN3PEPF0000B36D.namprd21.prod.outlook.com
- (2603:10b6:208:234:cafe::94) by MN2PR16CA0066.outlook.office365.com
- (2603:10b6:208:234::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9478.4 via Frontend Transport; Sun, 4
- Jan 2026 07:22:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF0000B36D.mail.protection.outlook.com (10.167.243.164) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.0 via Frontend Transport; Sun, 4 Jan 2026 07:22:26 +0000
-Received: from honglei-remote.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 4 Jan
- 2026 01:22:22 -0600
-From: Honglei Huang <honglei1.huang@amd.com>
-To: <Felix.Kuehling@amd.com>, <alexander.deucher@amd.com>,
-	<christian.koenig@amd.com>, <Ray.Huang@amd.com>
-CC: <dmitry.osipenko@collabora.com>, <Xinhui.Pan@amd.com>,
-	<airlied@gmail.com>, <daniel@ffwll.ch>, <amd-gfx@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <akpm@linux-foundation.org>, <honghuan@amd.com>
-Subject: [PATCH v2 4/4] drm/amdkfd: Wire up batch userptr ioctl handler
-Date: Sun, 4 Jan 2026 15:21:22 +0800
-Message-ID: <20260104072122.3045656-5-honglei1.huang@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260104072122.3045656-1-honglei1.huang@amd.com>
-References: <20260104072122.3045656-1-honglei1.huang@amd.com>
+	bh=utODjkP/wfu9AFNdk4nFLPGFEgiTAhS1Gz4GHQGUKAA=;
+	b=xjHRVXTUl/5z4oBss4F2VUdRCREA45ENFcEYohdDX8BjerLBhp4TpQyNca3yYykPvVvOOf
+	SpHXtdm/kzWy2A56uBbUYtUZnSvMouYcP+seEY+QwrRrqACNxmNVJzDlLy29BzIFDYVzeJ
+	1yfP7iNQT6uMf7wpRE1jrAP0tf1aClA=
+Message-ID: <60b0c7e2-4a04-4542-a95a-00e88a0cf00d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767512559;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=utODjkP/wfu9AFNdk4nFLPGFEgiTAhS1Gz4GHQGUKAA=;
+	b=QCqScVhrgbv5SSfcgpaI2NunlMJdPqLgarwTxYyVzkHckrKcQq7Edeokx/HaT2gBBYmftc
+	2Wue/YNw+uJq7mdxzVL9JvISZejAFy2inQUDPfPIHjv5UPE6n1Xx5JIjwlcuyfcJLUgy57
+	lrvLQW5Y9cBBrf1OnvIbrS9j3z400jY=
+Date: Sun, 4 Jan 2026 15:42:23 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B36D:EE_|SA5PPFE3F7EF2AE:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ca9623a-cf97-417c-4f5f-08de4b6202f4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?K8UiKKWLwt0cyKOgJzLHQNxbtWPP4XOKIwzwQyS3gVuvKNQqsjzEaptTkVhb?=
- =?us-ascii?Q?HH9RDZ2g+Tsnv2OE0CqSlV1LD8enGaPiPAtj8diGED7qWn//h9vJUZ9kceng?=
- =?us-ascii?Q?8wPDTNZr8zfUFxp1hKNepgfu2rKP+ee9x028t5C0M4gjHMaoyjHoTOihaYJ9?=
- =?us-ascii?Q?tQYQU/wKQ3SiPPNi0/EIdrEQnYLNH53qV8YNQxwEueRjcFDL95vHA1Yvxovx?=
- =?us-ascii?Q?nOcioQzq1ki3pUNq3ug7I6hVYAI4avMrcpsoE+QgLdd0HCEqgS6OqNntgZ3S?=
- =?us-ascii?Q?QJJim35iQ/N0KQaJoIlQIzwZxDcaGVXssGunLb+T6YQB4XEA3CWiLPYITURn?=
- =?us-ascii?Q?sd0ZVMAe2u1bHBtdAAksRyimFO/Zn6ewW7tMbd8OY2mPOrH9k48FJh7l/PRP?=
- =?us-ascii?Q?k0cJ2WfogKMgDhnrUZEGHtirQmVmRmljbNXQRjHHiPICTwHw5v4yanX0iyBD?=
- =?us-ascii?Q?882o1XPJUrD5rwckk5GZX4RFRjwyYN8yJrv1AUsdGO2I0W/07aEWVtGIxu2m?=
- =?us-ascii?Q?0RIprY2TblIHKK6EkaacjBNTZ684oyk9sDq9jUStr/5ba7qyiHD6gohOWey9?=
- =?us-ascii?Q?IwhcvnaU5D5nn+7L0KOCJ1yMhjX3lm/OaUXsoyUW3iPcs3xHePC7HtqrsYQ/?=
- =?us-ascii?Q?4eDZ+K6ELoCGH3onweUDO08vT0YvNL6qy51XEySHACGx6TfnDsEfBTYM2K2B?=
- =?us-ascii?Q?Nr+myMmhgN76DJWWakf0ACWxz76kuhgB7dYq15pNy79e9jzyxqMF5Un3uADy?=
- =?us-ascii?Q?QdD8zCL3GDUeieZAcemQMeGjb9XXGnQsNbAU2im3yusySIMIMfcLb3M6VC9N?=
- =?us-ascii?Q?P4HnPfj0KzXejhEfDtHo8qXl+ev4ha+CPf5N4QQbwUldN9BLqINzE4IrvsTC?=
- =?us-ascii?Q?qfd2dhlu/GJcF1VaoSSvv/A8T6CLODS3PBwUFZgi07nfWOzx7xOhYZpfJS9K?=
- =?us-ascii?Q?O8oh3iNocLtrF6w3G1MuDNxoV5Cxhpq6jVLecLwhGYF4iT1GkkPU+73NkdhT?=
- =?us-ascii?Q?WfCivN0WrWIwAy1kU09F+m+ecJMlG3JegvvIP5WREmOQv3imo552AMEiHjjm?=
- =?us-ascii?Q?S2oajjcJNLAGtZwaGo4yhQXvnKc9tFnbjl2ZSGFp7tOQjN6D1DlmJKn4ANX4?=
- =?us-ascii?Q?uBWic1OAq+L5tS0/HEsUgmYK3CoUGPS5oECGvc5uXaK3aCgDVQvKCPeu/hgc?=
- =?us-ascii?Q?yGUVAOzHPy7dJw+2jXvvE28GFdfJMJby0YBy9G3AJt5PVVjDx2yJpppDZCnj?=
- =?us-ascii?Q?UIyLrO6K7OAafOAl7jj6qv99g6n8vVJN7dEFH+Zi7W5YRE7927LGzxTxjyQx?=
- =?us-ascii?Q?5oKK23IWA53f0FKoSjcL4o4EQJ0ktrfOFBBChix9sOWmzHw3h8r/sOsLsp4A?=
- =?us-ascii?Q?Z6V4+ERDOXHS/ppBREf+E4YuEyoSCKvsHVm78LjaLf63lHY5dGp4FKpk6bmh?=
- =?us-ascii?Q?DehvPAiN553BBrSypRJjAwqlfw7WGdzJmmyXtwEEKdEbIelM5wvlr0v407Sw?=
- =?us-ascii?Q?RDC7oNljsuNk4hLrAuRzbX7nkgMVj9oBcv+Di/w0apastAqIjt5WQYNd79w7?=
- =?us-ascii?Q?m7R/nn2J2qkoaZ7ylck=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jan 2026 07:22:26.1198
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ca9623a-cf97-417c-4f5f-08de4b6202f4
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B36D.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFE3F7EF2AE
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1AFEE40005
-X-Stat-Signature: mefytdcjbjbed3fbxgxh69ntudtx3o84
+Subject: Re: [PATCH v2 0/3] skip redundant TLB sync IPIs
+Content-Language: en-US
+To: Dave Hansen <dave.hansen@intel.com>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, arnd@arndb.de,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
+ shy828301@gmail.com, riel@surriel.com, jannh@google.com,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org
+References: <20251229145245.85452-1-lance.yang@linux.dev>
+ <f81b98e5-87c0-4c21-9a75-ad5f9b6af6aa@intel.com>
+ <1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org>
+ <cea71c01-68e7-4f7f-9931-017109d95ef0@intel.com>
+ <fc3c20a9-69a2-41eb-9f22-8df262717348@linux.dev>
+ <f920487a-632c-407b-b092-7de87f66f4bb@intel.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <f920487a-632c-407b-b092-7de87f66f4bb@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1767511349-931433
-X-HE-Meta: U2FsdGVkX1//DJ7ULBnWoi3tBWJthV6T3ikGQGrimhz4EvgvS5X5dUeszJHonDm8E7l24BrTS5MZ0ItqKNSH9SdJt57lkraqb51kudfPpqjRjaM9BfVJOChA1VoDTrRk7bX65WebXJS4cr5GB/Ts6Q1k6ARmZOV/m6w3kbsF/N3JNwZfTGXVjEE2Hgahc8SCyn1h1y58RVriQxnfPm0NQVy+NNdlxB0y+rFah+gT4lV5Ewtegf61RPPKqgMeO5GvTtbYnkKATjfwzJ+NAs6tSyoQ2D4cYiaEk83itS02Sa5yG/nM/DmlF1KGfmHPc9CzDBIf7nH+7ibieVMcoJLXaew4tA6+4eQFPA9l4M3afawfz+POJEu1WurgDuYXmJxXD+MmJS/5QrsBbRhO/OUDLqyouaTXMPJ2o/zW8SfI+V7uPTeOzGXiRGnixA2TfVO5MkzERI+GDKVKrZCZp+TD3y7xK28pCDdLL1vRmcPw3GGfeDsF8qM35zcU7WrY9ORJ2JdkdSV9nIn8/xO5oJgAwyfOJAabKc+VVfsc5uL805cQIVJi4BFnoNP4/kBk1XL9XvTjBxYAn0aQusRLZEVVu2QkttkbKUBDdRjfBAkgZQLHHXO6tP+QBKhJHirfIkjjFcG9u5jOpTVR9ek9wZkfatoVn4k/Pd4qX5bkdVG/FF/XJ3xJRMjj1YB3KP5blsrYUEqni2uSEioTdGt9VBC05K8B6kuSEPZMEEx2s/qYYCZUYzO5rf7jEeF7iYjxsHOSdzA0sqKsSBEHIJA5LOzF4mJMfo5DmgoWNv6Cx642v381oN4XW1yKDzO3hcRiEkueblhklWAgPG0YMwhDYHgpy0lt3aVVB4UdqZH7W0BmXO0Y0RfP9OWUPQlbe0OVLCkTOh2wXIvYf+nsjX26nxxjL1koGDRNyQ8lZKft0RIvCJO+Gw0d2H3TZ69rix+OpisSokC/TCvCq1pzjT22Qbu
- c+mnVif3
- SdbEF5zrCRMZGUr+P1wy2qAQkJJKgtB7hy0fX8JThrExGYUmrU2r/LvJoOLEDOsQ/l2sYQctAxZM5melhmvgUzAcwJpuPfPLVJ+s7CNBl3SMse9nTnzFqpnvqc+mvbknHSQos9FX8Pu43TKcXcyAaohKUTpHPuDSBzFvvtq9kxSmt9bxBVfaO1r6QPpHh/7l3zesjq2RjhN83XwjK1VXOUCgq1cIZXIe4DNzrTQgJ5rGHLsPUh4rS3N5emIX/Q9U2AMq5r7/fDB1+rMOEuxB/5tLbGI9t/1/TYPtbHFxQYbtd8zw5vF6hpzUgd5XWLgLaenh8VRVMpEFr6J3jxNSVxruLshv4PKrGCjMUYoVw3NygTPna0pjjiGZDrsf0u4IlrxUKFETy27hkOgn7XyFpbOuW7JWvujHQj/wnKpiLNgcjI7HLRC2R05jpQynSrS7BRnvmVbArcQjK266AdJBctV6M+wtisjAqtqmapz/Cu0KfT0g=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 30C2640004
+X-Stat-Signature: 8gxnyamsqspob7xd4ago78m5ygceae9w
+X-HE-Tag: 1767512561-51493
+X-HE-Meta: U2FsdGVkX18/Xtq0Q629tHY6dEzVY3tvVg1g6JF6P1/TH89l3y5b5oMv1tTfuaj4ct55i40/nHdx5Bt60t3RhOQqyNElHGxPt2kdzTeHTNWzL/m6KSia1QEA1ClTNcZxdam/S4/xLWnpHDaKjVtdpNBmTqJe+OVhBbKPePbrGPmEqzFe0eK6iEXogIEch8pyMkp42SsEzDOjtn0t1QuXqoGe5kesKKodSDxYAsfKnd02GAZSK+7ydTAyyVho8N9WU2l5f2QuzQu6L2Qys/gSGb3pS7tWp3uTM2L8Lg6xO6k+k7AeG86IsrdNKZJjdjaUFG1vUb5C4kDqp7SVjRvWp/4Fpq9mUpUkdK+5JQsNSpW10xIQCh/yUG2hkivtMce63F+8+/m3yjXd71CxxMYL3ZVU6o34JOY+2Xgab38E0z1/8uGeQqCRzVQFNzcHqHtzN7fdiQ5z4kqKKbwxxsfqXrCKakXuTwFC7XoVD4leBLRTViFxxlNm25g7K8RkT+oHvZclcew4zUYsrlntMYGhJFUxgcOYRDRvvoOygekvqPTZhP/nE1XQorwf/YurPBPaMLeetpG2QtLv6IRAlquogg5NNTYdf9r8V+eqBceYqCm5FP+eRg16BYUvNPd+BVvOuVWv6HlJxUoZ9GDgyL1uZ/FGZ1zzZ79A5YVez/Kg5KHgZ1grUceMpwjmAkAvJ+tw4amtKzOClsk5YuU3qeiM7ekd8RVeWNGu+vIMqU3O0DlNI+lheX5ZMBemLGvlm8OdB6y9xppAAJK2cc4dsjuW55FOfmCy0OdE9vL8Za+dQItzkjXDQ+4IJk9jGM0iRXiD+IeaYQ9VQXR3x6KE5aWf87lPOMLIjU9UmiuQ9okV4ZV/+39PDXuIDn7T72bpQ26aYkE0oHbRfkJgWwk4jS/s9wgTX6LjdK6PQ8kST5nLQKMTJnhKtAhphFkiVz81ujq+1kXZz3OKJ+siTEr8CMV
+ UFldng2a
+ 585ePLDuad8nJxar5If0oEB3lJW5iQYFluC0F25XT4PrdFLPPIiJKAMAg2v9OLlvyP0UVPYKNs9huxdfJSnGSAtPP1j2qtQSNHslE4IHxOjlF72VwbsiL50pcRxzALAiy4UyNQuDxhrYNlIh6aplGujYjSJE6+m+f1XLgw96JzXpqt6hCwgPP6o0pCvjI9OIbyQ3Sequ9J+KpZS8KbgIyxiIPDWTd3PfwB6sqcqVJmInP2CPlpV8gamXwUH2yC4/2PGB4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -174,203 +103,490 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Honglei Huang <honghuan@amd.com>
 
-Add the ioctl handler for AMDKFD_IOC_ALLOC_MEMORY_OF_GPU_BATCH that
-processes userspace requests for batch userptr allocation.
 
-The handler performs validation of input parameters including:
-- Checking all ranges are page-aligned and non-zero
-- Verifying total size matches sum of range sizes
-- Ensuring no conflicts with existing SVM allocations
-- Validating that USERPTR flag is set
+On 2026/1/4 01:06, Dave Hansen wrote:
+> On 1/3/26 00:39, Lance Yang wrote:
+> ...
+>> Maybe we could do that as a follow-up. I'd like to keep things simple
+>> for now, so we just add a bool property to skip redundant TLB sync IPIs
+>> on systems without INVLPGB support.
+> 
+> It's not just INVLPGB support. Take a look at hyperv_flush_tlb_multi(),
+> for instance. It can eventually land back in native_flush_tlb_multi(),
+> but would also "fail" the pv_ops check in all cases.
 
-This completes the batch userptr feature by connecting the UAPI
-to the implementation.
+Thanks for pointing that out!
 
-Signed-off-by: Honglei Huang <honghuan@amd.com>
+> 
+> It's not that Hyper-V performance is super important, it just that the
+> semantics of the chosen approach here are rather complicated.
+
+Yep, got it ;)
+
+> 
+>> Then we could add the mm->context (or something similar) tracking later
+>> to handle things more precisely.
+>>
+>> Anyway, I'm open to going straight to the mm->context approach as well
+>> and happy to do that instead :D
+> 
+> I'd really like to see what an mm->context approach looks like before we
+> go forward with what is being proposed here.
+
+Actually, I went ahead and tried a simialr approach using tlb_gather to
+track IPI sends dynamically/precisely.
+
+Seems simpler than the mm->context approach because:
+
+1) IIUC, mm->context tracking would need proper synchronization (CAS,
+handling concurrent flushes, etc.) which adds more complexity :)
+
+2) With tlb_gather we already have the right context at the right time -
+we just pass the tlb pointer through flush_tlb_mm_range() and set a
+flag when IPIs are actually sent.
+
+The first one adds a tlb_flush_sent_ipi flag to mmu_gather and wires it
+through flush_tlb_mm_range(). When we call flush_tlb_multi(), we set
+the flag. Then tlb_gather_remove_table_sync_one() checks it and skips
+the IPI if it's set.
+
+---8<---
+When unsharing hugetlb PMD page tables, we currently send two IPIs: one
+for TLB invalidation, and another to synchronize with concurrent GUP-fast
+walkers via tlb_remove_table_sync_one().
+
+However, if the TLB flush already sent IPIs to all CPUs (when freed_tables
+or unshared_tables is true), the second IPI is redundant. GUP-fast runs
+with IRQs disabled, so when the TLB flush IPI completes, any concurrent
+GUP-fast must have finished.
+
+Add a tlb_flush_sent_ipi flag to struct mmu_gather to track whether IPIs
+were actually sent.
+
+Introduce tlb_gather_remove_table_sync_one() which checks
+tlb_flush_sent_ipi and skips the IPI if redundant.
+
+Suggested-by: David Hildenbrand <david@kernel.org>
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 159 +++++++++++++++++++++++
- 1 file changed, 159 insertions(+)
+  arch/x86/include/asm/tlb.h      |  3 ++-
+  arch/x86/include/asm/tlbflush.h |  8 ++++----
+  arch/x86/kernel/alternative.c   |  2 +-
+  arch/x86/kernel/ldt.c           |  2 +-
+  arch/x86/mm/tlb.c               |  6 ++++--
+  include/asm-generic/tlb.h       | 14 +++++++++-----
+  mm/mmu_gather.c                 | 24 ++++++++++++++++++------
+  7 files changed, 39 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index a72cc980a..d8cfd8697 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -1196,6 +1196,162 @@ static int kfd_ioctl_alloc_memory_of_gpu(struct file *filep,
- 	return err;
- }
- 
-+static int kfd_ioctl_alloc_memory_of_gpu_batch(struct file *filep,
-+					       struct kfd_process *p, void *data)
+diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
+index 866ea78ba156..c5950a92058c 100644
+--- a/arch/x86/include/asm/tlb.h
++++ b/arch/x86/include/asm/tlb.h
+@@ -20,7 +20,8 @@ static inline void tlb_flush(struct mmu_gather *tlb)
+  		end = tlb->end;
+  	}
+
+-	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
++	flush_tlb_mm_range(tlb->mm, start, end, stride_shift,
++			   tlb->freed_tables || tlb->unshared_tables, tlb);
+  }
+
+  static inline void invlpg(unsigned long addr)
+diff --git a/arch/x86/include/asm/tlbflush.h 
+b/arch/x86/include/asm/tlbflush.h
+index 00daedfefc1b..9524105659c3 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -305,23 +305,23 @@ static inline bool mm_in_asid_transition(struct 
+mm_struct *mm) { return false; }
+  #endif
+
+  #define flush_tlb_mm(mm)						\
+-		flush_tlb_mm_range(mm, 0UL, TLB_FLUSH_ALL, 0UL, true)
++		flush_tlb_mm_range(mm, 0UL, TLB_FLUSH_ALL, 0UL, true, NULL)
+
+  #define flush_tlb_range(vma, start, end)				\
+  	flush_tlb_mm_range((vma)->vm_mm, start, end,			\
+  			   ((vma)->vm_flags & VM_HUGETLB)		\
+  				? huge_page_shift(hstate_vma(vma))	\
+-				: PAGE_SHIFT, true)
++				: PAGE_SHIFT, true, NULL)
+
+  extern void flush_tlb_all(void);
+  extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+  				unsigned long end, unsigned int stride_shift,
+-				bool freed_tables);
++				bool freed_tables, struct mmu_gather *tlb);
+  extern void flush_tlb_kernel_range(unsigned long start, unsigned long 
+end);
+
+  static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned 
+long a)
+  {
+-	flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false);
++	flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false, NULL);
+  }
+
+  static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 28518371d8bf..006f3705b616 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -2572,7 +2572,7 @@ static void *__text_poke(text_poke_f func, void 
+*addr, const void *src, size_t l
+  	 */
+  	flush_tlb_mm_range(text_poke_mm, text_poke_mm_addr, text_poke_mm_addr +
+  			   (cross_page_boundary ? 2 : 1) * PAGE_SIZE,
+-			   PAGE_SHIFT, false);
++			   PAGE_SHIFT, false, NULL);
+
+  	if (func == text_poke_memcpy) {
+  		/*
+diff --git a/arch/x86/kernel/ldt.c b/arch/x86/kernel/ldt.c
+index 0f19ef355f5f..d8494706fec5 100644
+--- a/arch/x86/kernel/ldt.c
++++ b/arch/x86/kernel/ldt.c
+@@ -374,7 +374,7 @@ static void unmap_ldt_struct(struct mm_struct *mm, 
+struct ldt_struct *ldt)
+  	}
+
+  	va = (unsigned long)ldt_slot_va(ldt->slot);
+-	flush_tlb_mm_range(mm, va, va + nr_pages * PAGE_SIZE, PAGE_SHIFT, false);
++	flush_tlb_mm_range(mm, va, va + nr_pages * PAGE_SIZE, PAGE_SHIFT, 
+false, NULL);
+  }
+
+  #else /* !CONFIG_MITIGATION_PAGE_TABLE_ISOLATION */
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index f5b93e01e347..099f8d61be1a 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -1447,8 +1447,8 @@ static void put_flush_tlb_info(void)
+  }
+
+  void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+-				unsigned long end, unsigned int stride_shift,
+-				bool freed_tables)
++			unsigned long end, unsigned int stride_shift,
++			bool freed_tables, struct mmu_gather *tlb)
+  {
+  	struct flush_tlb_info *info;
+  	int cpu = get_cpu();
+@@ -1471,6 +1471,8 @@ void flush_tlb_mm_range(struct mm_struct *mm, 
+unsigned long start,
+  		info->trim_cpumask = should_trim_cpumask(mm);
+  		flush_tlb_multi(mm_cpumask(mm), info);
+  		consider_global_asid(mm);
++		if (tlb && freed_tables)
++			tlb->tlb_flush_sent_ipi = true;
+  	} else if (mm == this_cpu_read(cpu_tlbstate.loaded_mm)) {
+  		lockdep_assert_irqs_enabled();
+  		local_irq_disable();
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index 4d679d2a206b..0ec35699da99 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -249,6 +249,7 @@ static inline void tlb_remove_table(struct 
+mmu_gather *tlb, void *table)
+  #define tlb_needs_table_invalidate() (true)
+  #endif
+
++void tlb_gather_remove_table_sync_one(struct mmu_gather *tlb);
+  void tlb_remove_table_sync_one(void);
+
+  #else
+@@ -257,6 +258,7 @@ void tlb_remove_table_sync_one(void);
+  #error tlb_needs_table_invalidate() requires MMU_GATHER_RCU_TABLE_FREE
+  #endif
+
++static inline void tlb_gather_remove_table_sync_one(struct mmu_gather 
+*tlb) { }
+  static inline void tlb_remove_table_sync_one(void) { }
+
+  #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+@@ -379,6 +381,12 @@ struct mmu_gather {
+  	 */
+  	unsigned int		fully_unshared_tables : 1;
+
++	/*
++	 * Did the TLB flush for freed/unshared tables send IPIs to all CPUs?
++	 * If true, we can skip the redundant IPI in tlb_remove_table_sync_one().
++	 */
++	unsigned int		tlb_flush_sent_ipi : 1;
++
+  	unsigned int		batch_count;
+
+  #ifndef CONFIG_MMU_GATHER_NO_GATHER
+@@ -834,13 +842,9 @@ static inline void tlb_flush_unshared_tables(struct 
+mmu_gather *tlb)
+  	 *
+  	 * We only perform this when we are the last sharer of a page table,
+  	 * as the IPI will reach all CPUs: any GUP-fast.
+-	 *
+-	 * Note that on configs where tlb_remove_table_sync_one() is a NOP,
+-	 * the expectation is that the tlb_flush_mmu_tlbonly() would have issued
+-	 * required IPIs already for us.
+  	 */
+  	if (tlb->fully_unshared_tables) {
+-		tlb_remove_table_sync_one();
++		tlb_gather_remove_table_sync_one(tlb);
+  		tlb->fully_unshared_tables = false;
+  	}
+  }
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index 7468ec388455..288c281b2ca4 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -274,8 +274,14 @@ static void tlb_remove_table_smp_sync(void *arg)
+  	/* Simply deliver the interrupt */
+  }
+
+-void tlb_remove_table_sync_one(void)
++void tlb_gather_remove_table_sync_one(struct mmu_gather *tlb)
+  {
++	/* Skip the IPI if the TLB flush already synchronized with other CPUs */
++	if (tlb && tlb->tlb_flush_sent_ipi) {
++		tlb->tlb_flush_sent_ipi = false;
++		return;
++	}
++
+  	/*
+  	 * This isn't an RCU grace period and hence the page-tables cannot be
+  	 * assumed to be actually RCU-freed.
+@@ -286,6 +292,11 @@ void tlb_remove_table_sync_one(void)
+  	smp_call_function(tlb_remove_table_smp_sync, NULL, 1);
+  }
+
++void tlb_remove_table_sync_one(void)
 +{
-+	struct kfd_ioctl_alloc_memory_of_gpu_batch_args *args = data;
-+	struct kfd_ioctl_userptr_range *ranges = NULL;
-+	struct kfd_process_device *pdd;
-+	void *mem;
-+	struct kfd_node *dev;
-+	int idr_handle;
-+	long err;
-+	uint32_t flags = args->flags;
-+	uint32_t i;
-+	uint64_t total_size = 0;
-+
-+	if (args->total_size == 0) {
-+		pr_err("Batch allocation: total size cannot be zero\n");
-+		return -EINVAL;
-+	}
-+
-+	if (args->num_ranges == 0) {
-+		pr_err("Batch allocation: invalid number of ranges %u\n",
-+		       args->num_ranges);
-+		return -EINVAL;
-+	}
-+
-+	if (!args->ranges_ptr) {
-+		pr_err("Batch allocation: ranges pointer is NULL\n");
-+		return -EINVAL;
-+	}
-+
-+	if (!(flags & KFD_IOC_ALLOC_MEM_FLAGS_USERPTR)) {
-+		pr_err("Batch allocation requires USERPTR flag\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (p->context_id != KFD_CONTEXT_ID_PRIMARY) {
-+		pr_debug("Batch USERPTR is not supported on non-primary kfd_process\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	ranges = kvmalloc_array(args->num_ranges, sizeof(*ranges), GFP_KERNEL);
-+	if (!ranges) {
-+		err = -ENOMEM;
-+		goto err_alloc_ranges;
-+	}
-+
-+	if (copy_from_user(ranges, (void __user *)args->ranges_ptr,
-+			   args->num_ranges * sizeof(*ranges))) {
-+		pr_err("Failed to copy ranges from user space\n");
-+		err = -EFAULT;
-+		goto err_copy_ranges;
-+	}
-+
-+	for (i = 0; i < args->num_ranges; i++) {
-+		if (!ranges[i].start || !ranges[i].size ||
-+		    (ranges[i].start & ~PAGE_MASK) ||
-+		    (ranges[i].size & ~PAGE_MASK)) {
-+			pr_err("Invalid range %u: start=0x%llx size=0x%llx\n",
-+			       i, ranges[i].start, ranges[i].size);
-+			err = -EINVAL;
-+			goto err_copy_ranges;
-+		}
-+		total_size += ranges[i].size;
-+	}
-+
-+	if (total_size != args->total_size) {
-+		pr_err("Size mismatch: provided %llu != calculated %llu\n",
-+		       args->total_size, total_size);
-+		err = -EINVAL;
-+		goto err_copy_ranges;
-+	}
-+
-+#if IS_ENABLED(CONFIG_HSA_AMD_SVM)
-+	/* Check for conflicts with SVM */
-+	svm_range_list_lock_and_flush_work(&p->svms, current->mm);
-+	mutex_lock(&p->svms.lock);
-+	mmap_write_unlock(current->mm);
-+
-+	/* Check GPU VA for SVM conflicts */
-+	if (args->va_addr &&
-+	    interval_tree_iter_first(&p->svms.objects,
-+				     args->va_addr >> PAGE_SHIFT,
-+				     (args->va_addr + args->total_size - 1) >> PAGE_SHIFT)) {
-+		pr_err("GPU VA 0x%llx already allocated by SVM\n", args->va_addr);
-+		mutex_unlock(&p->svms.lock);
-+		err = -EADDRINUSE;
-+		goto err_copy_ranges;
-+	}
-+
-+	/* Check each userptr range for SVM conflicts */
-+	for (i = 0; i < args->num_ranges; i++) {
-+		if (interval_tree_iter_first(&p->svms.objects,
-+					     ranges[i].start >> PAGE_SHIFT,
-+					     (ranges[i].start + ranges[i].size - 1) >> PAGE_SHIFT)) {
-+			pr_err("Userptr range %u (0x%llx) already allocated by SVM\n",
-+			       i, ranges[i].start);
-+			mutex_unlock(&p->svms.lock);
-+			err = -EADDRINUSE;
-+			goto err_copy_ranges;
-+		}
-+	}
-+
-+	mutex_unlock(&p->svms.lock);
-+#endif
-+
-+	mutex_lock(&p->mutex);
-+	pdd = kfd_process_device_data_by_id(p, args->gpu_id);
-+	if (!pdd) {
-+		err = -EINVAL;
-+		goto err_pdd;
-+	}
-+
-+	dev = pdd->dev;
-+
-+	pdd = kfd_bind_process_to_device(dev, p);
-+	if (IS_ERR(pdd)) {
-+		err = PTR_ERR(pdd);
-+		goto err_unlock;
-+	}
-+
-+	err = amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu_batch(
-+		dev->adev, args->va_addr, args->total_size, pdd->drm_priv,
-+		(struct kgd_mem **)&mem, NULL, ranges, args->num_ranges,
-+		flags, false);
-+
-+	if (err)
-+		goto err_unlock;
-+
-+	idr_handle = kfd_process_device_create_obj_handle(pdd, mem);
-+	if (idr_handle < 0) {
-+		err = -EFAULT;
-+		goto err_free;
-+	}
-+
-+	args->handle = MAKE_HANDLE(args->gpu_id, idr_handle);
-+
-+	mutex_unlock(&p->mutex);
-+	kvfree(ranges);
-+
-+	pr_debug("Batch userptr allocated: va=0x%llx size=0x%llx ranges=%u handle=0x%llx\n",
-+		 args->va_addr, args->total_size, args->num_ranges, args->handle);
-+
-+	return 0;
-+
-+err_free:
-+	amdgpu_amdkfd_gpuvm_free_memory_of_gpu(dev->adev, (struct kgd_mem *)mem,
-+					       pdd->drm_priv, NULL);
-+err_unlock:
-+err_pdd:
-+	mutex_unlock(&p->mutex);
-+err_copy_ranges:
-+	kvfree(ranges);
-+err_alloc_ranges:
-+	return err;
++	tlb_gather_remove_table_sync_one(NULL);
 +}
 +
- static int kfd_ioctl_free_memory_of_gpu(struct file *filep,
- 					struct kfd_process *p, void *data)
- {
-@@ -3309,6 +3465,9 @@ static const struct amdkfd_ioctl_desc amdkfd_ioctls[] = {
- 
- 	AMDKFD_IOCTL_DEF(AMDKFD_IOC_CREATE_PROCESS,
- 			kfd_ioctl_create_process, 0),
-+
-+	AMDKFD_IOCTL_DEF(AMDKFD_IOC_ALLOC_MEMORY_OF_GPU_BATCH,
-+			kfd_ioctl_alloc_memory_of_gpu_batch, 0),
- };
- 
- #define AMDKFD_CORE_IOCTL_COUNT	ARRAY_SIZE(amdkfd_ioctls)
--- 
-2.34.1
+  static void tlb_remove_table_rcu(struct rcu_head *head)
+  {
+  	__tlb_remove_table_free(container_of(head, struct mmu_table_batch, rcu));
+@@ -337,16 +348,16 @@ static inline void __tlb_remove_table_one(void *table)
+  	call_rcu(&ptdesc->pt_rcu_head, __tlb_remove_table_one_rcu);
+  }
+  #else
+-static inline void __tlb_remove_table_one(void *table)
++static inline void __tlb_remove_table_one(void *table, struct 
+mmu_gather *tlb)
+  {
+-	tlb_remove_table_sync_one();
++	tlb_gather_remove_table_sync_one(tlb);
+  	__tlb_remove_table(table);
+  }
+  #endif /* CONFIG_PT_RECLAIM */
 
+-static void tlb_remove_table_one(void *table)
++static void tlb_remove_table_one(void *table, struct mmu_gather *tlb)
+  {
+-	__tlb_remove_table_one(table);
++	__tlb_remove_table_one(table, tlb);
+  }
+
+  static void tlb_table_flush(struct mmu_gather *tlb)
+@@ -368,7 +379,7 @@ void tlb_remove_table(struct mmu_gather *tlb, void 
+*table)
+  		*batch = (struct mmu_table_batch *)__get_free_page(GFP_NOWAIT);
+  		if (*batch == NULL) {
+  			tlb_table_invalidate(tlb);
+-			tlb_remove_table_one(table);
++			tlb_remove_table_one(table, tlb);
+  			return;
+  		}
+  		(*batch)->nr = 0;
+@@ -428,6 +439,7 @@ static void __tlb_gather_mmu(struct mmu_gather *tlb, 
+struct mm_struct *mm,
+  	tlb->vma_pfn = 0;
+
+  	tlb->fully_unshared_tables = 0;
++	tlb->tlb_flush_sent_ipi = 0;
+  	__tlb_reset_range(tlb);
+  	inc_tlb_flush_pending(tlb->mm);
+  }
+---
+
+
+The second one optimizes khugepaged by using mmu_gather to track IPI
+sends. This makes the approach work across all paths ;)
+
+---8<---
+pmdp_collapse_flush() may already send IPIs to flush TLBs, and then
+callers send another IPI via tlb_remove_table_sync_one() or
+pmdp_get_lockless_sync() to synchronize with concurrent GUP-fast walkers.
+
+However, since GUP-fast runs with IRQs disabled, the TLB flush IPI already
+provides the necessary synchronization. We can avoid the redundant second
+IPI.
+
+Introduce pmdp_collapse_flush_sync() which combines flush and sync:
+
+- For architectures using the generic pmdp_collapse_flush() implementation
+   (e.g., x86): Use mmu_gather to track IPI sends. If the TLB flush sent
+   an IPI, tlb_gather_remove_table_sync_one() will skip the redundant one.
+
+- For architectures with custom pmdp_collapse_flush() (s390, riscv,
+   powerpc): Fall back to calling pmdp_collapse_flush() followed by
+   tlb_remove_table_sync_one(). No behavior change.
+
+Update khugepaged to use pmdp_collapse_flush_sync() instead of separate
+flush and sync calls. Remove the now-unused pmdp_get_lockless_sync() macro.
+
+Suggested-by: David Hildenbrand <david@kernel.org>
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+  include/linux/pgtable.h | 13 +++++++++----
+  mm/khugepaged.c         |  9 +++------
+  mm/pgtable-generic.c    | 34 ++++++++++++++++++++++++++++++++++
+  3 files changed, 46 insertions(+), 10 deletions(-)
+
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index eb8aacba3698..b42758197d47 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -755,7 +755,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+  	return pmd;
+  }
+  #define pmdp_get_lockless pmdp_get_lockless
+-#define pmdp_get_lockless_sync() tlb_remove_table_sync_one()
+  #endif /* CONFIG_PGTABLE_LEVELS > 2 */
+  #endif /* CONFIG_GUP_GET_PXX_LOW_HIGH */
+
+@@ -774,9 +773,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+  {
+  	return pmdp_get(pmdp);
+  }
+-static inline void pmdp_get_lockless_sync(void)
+-{
+-}
+  #endif
+
+  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+@@ -1174,6 +1170,8 @@ static inline void pudp_set_wrprotect(struct 
+mm_struct *mm,
+  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+  extern pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
+  				 unsigned long address, pmd_t *pmdp);
++extern pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma,
++				      unsigned long address, pmd_t *pmdp);
+  #else
+  static inline pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
+  					unsigned long address,
+@@ -1182,6 +1180,13 @@ static inline pmd_t pmdp_collapse_flush(struct 
+vm_area_struct *vma,
+  	BUILD_BUG();
+  	return *pmdp;
+  }
++static inline pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma,
++					     unsigned long address,
++					     pmd_t *pmdp)
++{
++	BUILD_BUG();
++	return *pmdp;
++}
+  #define pmdp_collapse_flush pmdp_collapse_flush
+  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+  #endif
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 9f790ec34400..0a98afc85c50 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1177,10 +1177,9 @@ static enum scan_result collapse_huge_page(struct 
+mm_struct *mm, unsigned long a
+  	 * Parallel GUP-fast is fine since GUP-fast will back off when
+  	 * it detects PMD is changed.
+  	 */
+-	_pmd = pmdp_collapse_flush(vma, address, pmd);
++	_pmd = pmdp_collapse_flush_sync(vma, address, pmd);
+  	spin_unlock(pmd_ptl);
+  	mmu_notifier_invalidate_range_end(&range);
+-	tlb_remove_table_sync_one();
+
+  	pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
+  	if (pte) {
+@@ -1663,8 +1662,7 @@ static enum scan_result 
+try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+  			}
+  		}
+  	}
+-	pgt_pmd = pmdp_collapse_flush(vma, haddr, pmd);
+-	pmdp_get_lockless_sync();
++	pgt_pmd = pmdp_collapse_flush_sync(vma, haddr, pmd);
+  	pte_unmap_unlock(start_pte, ptl);
+  	if (ptl != pml)
+  		spin_unlock(pml);
+@@ -1817,8 +1815,7 @@ static void retract_page_tables(struct 
+address_space *mapping, pgoff_t pgoff)
+  		 * races against the prior checks.
+  		 */
+  		if (likely(file_backed_vma_is_retractable(vma))) {
+-			pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
+-			pmdp_get_lockless_sync();
++			pgt_pmd = pmdp_collapse_flush_sync(vma, addr, pmd);
+  			success = true;
+  		}
+
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index d3aec7a9926a..be2ee82e6fc4 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -233,6 +233,40 @@ pmd_t pmdp_collapse_flush(struct vm_area_struct 
+*vma, unsigned long address,
+  	flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+  	return pmd;
+  }
++
++pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma, unsigned 
+long address,
++			       pmd_t *pmdp)
++{
++	struct mmu_gather tlb;
++	pmd_t pmd;
++
++	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
++	VM_BUG_ON(pmd_trans_huge(*pmdp));
++
++	tlb_gather_mmu(&tlb, vma->vm_mm);
++	pmd = pmdp_huge_get_and_clear(vma->vm_mm, address, pmdp);
++
++	flush_tlb_mm_range(vma->vm_mm, address, address + HPAGE_PMD_SIZE,
++			   PAGE_SHIFT, true, &tlb);
++
++	/*
++	 * Synchronize with GUP-fast. If the flush sent IPIs, skip the
++	 * redundant sync IPI.
++	 */
++	tlb_gather_remove_table_sync_one(&tlb);
++	tlb_finish_mmu(&tlb);
++	return pmd;
++}
++#else
++pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma, unsigned 
+long address,
++			       pmd_t *pmdp)
++{
++	pmd_t pmd;
++
++	pmd = pmdp_collapse_flush(vma, address, pmdp);
++	tlb_remove_table_sync_one();
++	return pmd;
++}
+  #endif
+
+  /* arch define pte_free_defer in asm/pgalloc.h for its own 
+implementation */
+---
+
+> 
+> Is there some kind of hurry to get this done immediately?
+
+No rush at all - just wanted to explore what works best and keep
+things simpler as well ;)
+
+What do you think?
 
