@@ -4,117 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6981BC79F8C
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 13:33:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F261DC79F9A
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 13:58:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EB0C6B014B; Mon,  5 Jan 2026 08:33:00 -0500 (EST)
+	id 216EA6B014E; Mon,  5 Jan 2026 08:58:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2979D6B014C; Mon,  5 Jan 2026 08:33:00 -0500 (EST)
+	id 1B43D6B014F; Mon,  5 Jan 2026 08:58:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19A056B014D; Mon,  5 Jan 2026 08:33:00 -0500 (EST)
+	id 0BCFA6B0150; Mon,  5 Jan 2026 08:58:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 047736B014B
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 08:33:00 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B2CE9B2E40
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 13:32:59 +0000 (UTC)
-X-FDA: 84298000878.15.9222FF2
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E8623140013
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 13:32:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DCkLtOZi;
-	spf=pass (imf26.hostedemail.com: domain of suhua.tanke@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=suhua.tanke@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EB5BF6B014E
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 08:58:28 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8E7271A0121
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 13:58:28 +0000 (UTC)
+X-FDA: 84298065096.23.E93D47B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 93F9EC000E
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 13:58:26 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LMdQElta;
+	spf=pass (imf10.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767619978;
+	s=arc-20220608; t=1767621506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=oJm6OiRS9K3PqeaDgMDkLMzyrlgeIiwTpzJ3FbroMYM=;
-	b=C+3DfjAJtqNOAwE6seGWjzdx1HmCbRbPsYwfBqaL2pzA+Zr9SQl/4Q54CFVOWiny5c/xw1
-	474WMOMCLczsmNviM8ycZYPJTb4Fvbq2fXQLT5EofVokmKNuI7BpkyyHBVvRxKg/w01RPT
-	7dvmB2ZT4oC7SQV9chk3lkIBqRV52RM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767619978; a=rsa-sha256;
-	cv=none;
-	b=uvUFM4XZfmI4gUFhjcb/d2oMevCTn7/j3jsu0iddG8SCypIMu+aw2AtNohTEQo5qxW6c5E
-	FbijR4/8EChUnD6DHd5F6XKbmvKA7MSyC+3nroJVUldvrHaq+nf2NpotKSW+ezB0GphGVw
-	Gl+ti6oMh4lLJwmi3+YvEPfyOgFyGDU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tAkRmahwDMj8glf3/6lkFxmOJSwV+a/ZJXhYLby36UQ=;
+	b=ciCzsdU1v9xkM8sMCl5hjBEp0hNdiFOESRucTvByFqiAa46bodiJRNhYezTURWG6+7lnSv
+	fG2WFMozzqvVrvRgBITc2Rm4+fb2A5IS3AdA27xARL62Pdl5Dk4KABeGNJCsvkLIPfB7bw
+	KgzrJN98vMXvc2qRtI41e1j2Gv9Kq80=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DCkLtOZi;
-	spf=pass (imf26.hostedemail.com: domain of suhua.tanke@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=suhua.tanke@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7b22ffa2a88so13017606b3a.1
-        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 05:32:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767619977; x=1768224777; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oJm6OiRS9K3PqeaDgMDkLMzyrlgeIiwTpzJ3FbroMYM=;
-        b=DCkLtOZigXciLYUJeLT4jM/Mk6wpgZShiEXkN5byEIoa3EhU6lE4pWK72j1rdG5zG6
-         tZIG4XEs+d4eNpBCaj6SOggAMPnPY4BNNjCnoclu9sQRZBAxJQVhMkiD0CUANybWzjRb
-         Ku7naDfo5ddIT4vHqeD1VUu4ajetIOBgbZWQIHlG3ofgXbtO5ov9iEFGB6twvF5d397T
-         9Ez+0evCiax9zU/KeWst48Q4K+u1jZwcClsJAj3ysFvudWcrsMiRlS2dDP9zcn8zFZqp
-         efXWt7RukfJt+btcK9HIAZQF/ZooY1yM6NZqMzdDOSFzBPUX+gHiDkPFSMhRj6SIZZVh
-         nOmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767619977; x=1768224777;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oJm6OiRS9K3PqeaDgMDkLMzyrlgeIiwTpzJ3FbroMYM=;
-        b=KAj19lXoHK5hkvAmfpRpYPTkXJeltjY0DIXhe8jdBc5SF3xDytuaX5L0lHJhHSVvAZ
-         YaODUE5bNgpxQgxnnpsEDZ02D/llwnB/gZXfz0ishkyw9WJf08oYG1z1U2BB1gqOoik8
-         W+pm01DSb5mkswel4btFyJimYvWBalWenLJYD4c+KYsQ9Xyc0464KVtSp283VU/hrUOq
-         9YgACEvcsoju5b7pBSCUnXyss7H5OINdeO8uWKCt/9IQgvH86EG4vA68w9j3M6NWOwmD
-         Q+vhk62TfS1/8P+nnxYQlBv6Qbv0kO79MAMeqVXHiTYiS7BduCxXqQ3KjebUd/+miD0Z
-         +goA==
-X-Gm-Message-State: AOJu0YxJU6ajEPmHovPbWnIDmXLo3TbMc6vWjMAfENLpG7w56D1cJKAD
-	Rhce+pYcyi2HPy0brd8qHa+MKl8JkQ97P8neHkSoDW+GtzNCuGbRg4w/
-X-Gm-Gg: AY/fxX7baypxNNQks/Tpuc6IlJM9qD9HLkHgS6HF/2bBXE+b/40Ff1VbwYsYFCMEGDc
-	k8dAemUlcO2/QlsjXmZt7ES/wsKgyPUXwG54uaDKwXoRvE7eqEhTZaQ44ZVsj9kOiN+6yaiOQgP
-	vXvnv/lzxGb5TS01edgvi1DXo/P7sKkeeyIs7KtgTcMMlbaYJ0pmEh5BqDb4wfq7ggJth/4ODCD
-	4M0hVUgO4YJyOZttku/smKYGPyMxxeoBPz0lekteDv1cY/lJUfNJBhAcJplk0xjdmyeEBOcrd6L
-	+Dn22vEKorIaRREpsv9kgeHPigNogMTZn4yEE8vjCVXnVAS+qt6M5nm3TXCPCFTOOh8B7mEnGGm
-	s9bTJlC/YBV8ZFLS/Z9stNpUVK/shJkTP4LYxz3QQiEkZX7ZOC27qtDaghUCGyUNkwlUw/cgG0m
-	m/L5sVGQYmpkRKTwSw/N63hashQ66W+tymyfJfRTKg1fYfKqQ+mtZQSggcMvljNiY50U4=
-X-Google-Smtp-Source: AGHT+IFcfxyiX7l4rPQkTcK0i562jckqNjZwoBg+p1wVoO/k/BzFfOrlmw0VrclwAigZJSDfdEyimA==
-X-Received: by 2002:a05:6a00:ab0a:b0:7e8:4471:ae60 with SMTP id d2e1a72fcca58-7ff67456c07mr40295975b3a.44.1767619976607;
-        Mon, 05 Jan 2026 05:32:56 -0800 (PST)
-Received: from suhua-virtual-machine.localdomain ([43.224.245.234])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e0a19d8sm48306894b3a.42.2026.01.05.05.32.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 05:32:56 -0800 (PST)
-From: Hua Su <suhua.tanke@gmail.com>
-To: akpm@linux-foundation.org,
-	vbabka@suse.cz,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	suhua.tanke@gmail.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hua Su <huasu@xiaomi.com>
-Subject: [PATCH] mm: fix execution order in alloc_contig_range_noprof
-Date: Mon,  5 Jan 2026 21:32:50 +0800
-Message-Id: <20260105133250.763076-1-suhua.tanke@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LMdQElta;
+	spf=pass (imf10.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767621506; a=rsa-sha256;
+	cv=none;
+	b=DRy2ZkRRuaSi5GqiQ/HSZUXU++QNWpmhwPPaw7GbWUn2kzOJVF8w2FX1sa5iYUujhZhNG3
+	quvZTFnaKyYEy3EeBUTQjWeyoMxCkQ8g0Oqr5ifUBAY8YlZ2r8DIxbR0zjLAnQga34RezP
+	AcYGo113+0aKM39/iFYWbdbtqpxUkJE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767621505;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tAkRmahwDMj8glf3/6lkFxmOJSwV+a/ZJXhYLby36UQ=;
+	b=LMdQEltaxZqvBb2G47MWUkDlOlihAHjgzZpA0UQwwisYNY5cPpTrb3egqhGcIvV39IscbX
+	wQCxZV/19SDfvbrY+8nxcU12MxFQDXCxUgLy8wfqXwr6j+MI0/FOzp8Y/me74YUg9va16L
+	+PeCvqlhRoojrItkuPSyZSPrTD18obs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-152-7ozuR_E_NR2ifjhmuXX-wA-1; Mon,
+ 05 Jan 2026 08:58:20 -0500
+X-MC-Unique: 7ozuR_E_NR2ifjhmuXX-wA-1
+X-Mimecast-MFC-AGG-ID: 7ozuR_E_NR2ifjhmuXX-wA_1767621499
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E212195608A;
+	Mon,  5 Jan 2026 13:58:18 +0000 (UTC)
+Received: from bfoster (unknown [10.22.64.153])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C24CC1956048;
+	Mon,  5 Jan 2026 13:58:15 +0000 (UTC)
+Date: Mon, 5 Jan 2026 08:58:08 -0500
+From: Brian Foster <bfoster@redhat.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>,
+	syzbot+178fff6149127421c2cc@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/shmem: fix uninitialized folio in shmem_symlink
+Message-ID: <aVvDcEB583Yuolm_@bfoster>
+References: <20251224094027.65842-1-21cnbao@gmail.com>
+ <aUwcV2HhtdiXXxfJ@casper.infradead.org>
+ <CAGsJ_4whKLWiw6LNexFPHTFWB1QbSrAwrBtspuc=c8fM2=WnvQ@mail.gmail.com>
+ <bdb7f7c6-ecf5-4da1-a11a-cc19c77fe4f2@linux.alibaba.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7qascjmuwru4p53f1kc1xg4apzktwyqy
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E8623140013
+In-Reply-To: <bdb7f7c6-ecf5-4da1-a11a-cc19c77fe4f2@linux.alibaba.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Rspam-User: 
-X-HE-Tag: 1767619977-218145
-X-HE-Meta: U2FsdGVkX1+tSK9dd+Xct1OsN6Do/5JtD72FE3icES6BqKw1qTfaeP3pdcGmMeLnDMfAUOwW2mlS8el4kGopBSViPs7x4hGmmoV0HfTdedH/2qIzh4L1U/5CRNVsB0Kk7OD8n3a8GbXK4EYOAPgsTjbJwn+9CsLWQx8Bqpjrc1S99XVNAl/uH7nBtVByfLziirbnYIxt7gkh5E9Wa8ht5EeWDkFUyZh60y5Q8CHNdHRaJRPzJvgYcIRZdpQIr62y+KHbwuQVLYvWJyUsINgS4UBd9+vIhdEJXvZsJE/Dmre9xUQJqmx5LGOyxTdnLTEyOr/pgdlcqwDbIBwm7Y1mB51pmthofToLhaqfYLRx6jvOVCS8OqX8rxytFMI/NMrMbU6d9DzZWei/jq6Dzt1jADHI6eu8Ygw72dbRj+xCH5Rj1ZTZPa1BE8181+HfFCcHj4TLaheIbnrKdGKJggmiYr5W9GfwMpbZjPpSxq2ge78mym4eHcZ4+H+mipcBruTU+1mv+imIrecRn2EcWvbLapyVnINnz1rGTMufiz9F7Z76wzWHW2nQAq9/zLnnEa/njZUeK50/HLi//kR6cLHiJKfcwNtNPi53C7Cvl15VX4O4O8YqW8KKhhNIYx9r2b4IBZMvLlL3FstJwjTq9tz7Mshjgj5zP4s4LWdHMBt5NztrnftBaXvElUNiuvwZW4voMhLD0eERj49SURFPedw5tgkTYq7qfpwPxazyo4jJZb57LvzUmx6Q3OlAAfK+hG1PtfVrzpd6GPlyoxWl2geYPfdxlcxH5zcFAUjp0eZpxkHhD/xalNy8F7CiW+dlBrGY4xYCJMKe4Dl+e1Ciyz/QRMRaEa2QK9yOW2N/Py0l6fB4ErmwdOsQbUlEm1THzwwZV9IULi846OE6WhihgXuMahaGpUYQjDcxa4Kqhu2mPFEyaDUY2P7q6YnVFIbARjOtBFFOcFfcpSbskbph4zm
- CPn4Yrgs
- Pq6RVdmivgaNUeKjxFRenoQYqnF1x8u3UZr+QSZxpIybGhXJNoTlqyhzD/I8nFVS7kZjvuVhgZAfKjPKUAMwGGv871PGUvi9nMaj/tVAa8wQ2PBgjf72fiakLhCHeWtfs2/L8oabBEbKYB4GBbcg0p56lSF/V6yr3hGm80pUapYsXMMVKPKJ5uyiG1VcDej7hw9jhi6RYopaXFVwGiyBt1jy5oyRAzHYoN4ecRO4bKLIuuhpW9DvkhF8MhXXckmCXUWUlTVEAqCBTLktSs4RE0U1qlAMEGu+GYcyQ8fzSGEZXDAWb7nKa5W2LU0PzthgDthK7u/cDrE5B6fds2a0TKpArMH87j+2kqZiE2+qJkq/EiY7iULozNVc8Zq08kZ3xSbtp9Myx4IKQD8clT+t+zzGgaFRt0ZlraaV0vSHgTDCgGfj2IPCZmGZB3BlFRGplsImUMRCdVlSGSk+uG4FV6Swg6bfd8UvqDWaHiN1WSekCV9Ch1ydl/yRjtHzm61OAept+++SrnmYZhFDlRrFHZt+vIahw2Wi+XA3sJPd8DQ/HpBgKvMPEbU9PHAQeouDQMB5c0+cBjagpkuSYwBPvUpgfeQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 93F9EC000E
+X-Stat-Signature: 7dj68swqpptiegk71w147in5kso6o5hh
+X-HE-Tag: 1767621506-290092
+X-HE-Meta: U2FsdGVkX1/OjDzTEMiBJ7NuBHrEeXnbFe8d0nCufCJWmNTOYPRsN7QBpjtVvIjGjpGVZeFCdj23Jhv8DYSiNNmS6o3e//iOc9ra2fNy+mk44jDRT+GB+ie6Vwp3aYG1kx+WIkwL5cbkA3HA2tiyqkArmp9CHke7/LWpBZByGAZg8IM3Kfmfa2vpiLqJxwAuDACkGW1wKPXx9akLR9AtxkZwAGYk8yTlFrgHPITd5vo5SwFzWhd4eygO2bHQBce2fYTOLGFh2kNsT4w2prJULbe6fU62vgJ9HJGRMt7EPEls3Qc2YqMZjokcrOkubDtHthl9LYl9taAnpEtXtdKsEN0WWOfTx0Ago5lj05sVjafmxZHNsfsVAy3ZtoSHXY3cReY0TSWRJei0T9sIcj7thRu4PLAMalAvO78cCXgvMnpa5FhSy0rjDlQtITP2LeUJfQbh7Jr4RKGowRpm2ivvFgrj/bVCDMqDrQ9Cp12fs9eMDHkWfYd35+qHPjlteqd0hgYdn1LvVt5PscVNlbNtxhQoTu4AepvpdjnGJd0N2auw9yzw3PZdltCz9StjtkWBhih2GnyvCP3wDwHCFWqLN8wopfy0EbnzA/46CI7f32DEVmzjiK7+RGbe+4mrCDCORh3YoxEnf9iop/B5//VyID4ScUiVHivCkgQD72rpdZ2rMBwv4GilkaoF+AuSWty9OyJT92iriY6EJHy19CkqmXwoifv0hp6ZHyzhXwnowFQIQdpWIUhUMmlsY32LQwJOIsNFsjwJjbSDb7wvc/0c6cDs6sFq0m5AT+9uj37u65OnJmChDt1VD1bd3lXXEFSbwRNz2xG0lKuYkiWbpBrurL96tTROegpycmF+SKABt14GGWLvOk3Btjko08HmsuMFOflsyHT8vCaWwfQJOzIvu/vPfEcEeA2iC1lNmtieZveISgoom+LUxhly6lhTVW1DGDDDzNGBiOsyga7uAJY
+ 86N69Xn5
+ 087Xcj+/CeZUczn1jNqMwS6tCWvesdb2sETBO4u+z34Ld0Cp+9/c+o35vaGIPe/qUMrj2N0p9GQxaeL/OhotIXFpF797d1ppKjL1SkEiW31vX6+cTQHGoOPY26i8g48eaPuOlUFj67EnMtKwI+dgr6f31TS+gDhTJR7RqYBxG9vizYfzrRq/mTvPW/wkDJ2A/CPueLgqyDjEREpghmqkNUS/dUd9v+k+xcA+MZUo16YCENBO13rU7kMtek9AuxwdCaQSatEUEHtJzo2Q1RL95aJL8JXekzbzi/zz7v64hVCLP5UTtgNzYpaQDF4+uelEbUPr3OlahHSPqx+XOdaQP49s8tAVckLFs6P9X57cW7c8f6xVm50zaJBdRQg5ZVQQZMbbdSY2Lu14IBJ8c5wKmR62mDyHYCzBhGYD/Z5mhL0KkI8GMFgKYfWAbzQKJEL67W+OoJguKtwe5ebFzImUi5Z/r35o80NEJKmgU8sS3oon5gTNr2XDlpWf3l3fMnlt9VwH7bux5D1U7dg/wSjXlPJwOfNxNY4u8CR/QJ7vPlEN0gJJ+bPvyYatuLLfqX8EbsHHSAs3NfqdAAkF7v1zlbDVPkq0JB18sApb7xsTRJGD9c53LXnIr7LWfV1KCBTJjXK6v
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,72 +110,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix the execution order issue in alloc_contig_range_noprof where
-drain_all_pages was called after start_isolate_page_range, which
-may be lead to race conditions.
+On Thu, Dec 25, 2025 at 06:08:08PM +0800, Baolin Wang wrote:
+> 
+> 
+> On 2025/12/25 12:04, Barry Song wrote:
+> > On Thu, Dec 25, 2025 at 6:01 AM Matthew Wilcox <willy@infradead.org> wrote:
+> > > 
+> > > On Wed, Dec 24, 2025 at 10:40:27PM +1300, Barry Song wrote:
+> > > > From: Barry Song <baohua@kernel.org>
+> > > > 
+> > > > Uninitialized folio allocated in shmem_symlink() may be accessed
+> > > > during swap-out, causing KMSAN BUG:
+> > > 
+> > > This would be an unfortunate way to fix it.  The vast majority of
+> > > symlinks are short, and we'll never access past the \0 in normal
+> > > operation, so we'll be dirtying a lot of cachelines essentially to (1)
+> > > shut up an automated tool and (2) optimise a corner case.
+> > > 
+> > > How about this instead which delays zeroing to swapout?
+> > 
+> > Matthew, thank you very much for your review, even during Christmas.
+> > I would like to wish you a happy holiday!
+> > 
+> > I am not quite sure, as shm symlinks do not seem very common. Since
+> > allocating a folio requires a symname longer than 128 bytes (where
+> > 128 == SHORT_SYMLINK_LEN), such cases appear even rarer.
+> > 
+> > BTW, do we need to migrate the owner_2 flag in folio_migrate_flags()?
+> > If so, I am not quite sure it is worth changing the hotpath to
+> > accommodate this.
+> 
+> +1. At least for me, using the 'PG_owner_2' flag alone to mark this uncommon
+> case doesn't seem quite worthwhile.
+> 
 
-Based on community patches commit ec6e8c7e0314 ("mm, page_alloc:
-disable pcplists during memory offline") and commit d479960e44f27
-("mm: disable LRU pagevec during the migration temporarily"), we
-disable pcplists and LRU cache before page isolation to ensure no
-pages are left in per-cpu lists during isolation.
+Also JFYI the post-eof swapout zeroing work (still pending) looks to me
+like it would cover the swapout time case [1]. That's just if you wanted
+to go that route here; creation time zeroing for the large symlink case
+seems reasonable enough to me as well.
 
-Signed-off-by: Hua Su <huasu@xiaomi.com>
-Signed-off-by: Hua Su <suhua.tanke@gmail.com>
----
- mm/page_alloc.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Brian
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 6a47443c48ff..d08f929ca64c 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6815,8 +6815,6 @@ static int __alloc_contig_migrate_range(struct compact_control *cc,
- 		.reason = MR_CONTIG_RANGE,
- 	};
- 
--	lru_cache_disable();
--
- 	while (pfn < end || !list_empty(&cc->migratepages)) {
- 		if (fatal_signal_pending(current)) {
- 			ret = -EINTR;
-@@ -6850,7 +6848,6 @@ static int __alloc_contig_migrate_range(struct compact_control *cc,
- 			break;
- 	}
- 
--	lru_cache_enable();
- 	if (ret < 0) {
- 		if (!(cc->gfp_mask & __GFP_NOWARN) && ret == -EBUSY)
- 			alloc_contig_dump_pages(&cc->migratepages);
-@@ -6973,6 +6970,9 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
- 	if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
- 		return -EINVAL;
- 
-+	zone_pcp_disable(cc.zone);
-+	lru_cache_disable();
-+
- 	/*
- 	 * What we do here is we mark all pageblocks in range as
- 	 * MIGRATE_ISOLATE.  Because pageblock and max order pages may
-@@ -6998,8 +6998,6 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
- 	if (ret)
- 		goto done;
- 
--	drain_all_pages(cc.zone);
--
- 	/*
- 	 * In case of -EBUSY, we'd like to know which page causes problem.
- 	 * So, just fall through. test_pages_isolated() has a tracepoint
-@@ -7076,6 +7074,8 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
- 		     start, end, outer_start, outer_end);
- 	}
- done:
-+	lru_cache_enable();
-+	zone_pcp_enable(cc.zone);
- 	undo_isolate_page_range(start, end);
- 	return ret;
- }
--- 
-2.34.1
+[1] https://lore.kernel.org/linux-mm/20251121152246.1023918-3-bfoster@redhat.com/
+
+> > > diff --git a/mm/shmem.c b/mm/shmem.c
+> > > index ec6c01378e9d..f3b3be1b50fe 100644
+> > > --- a/mm/shmem.c
+> > > +++ b/mm/shmem.c
+> > > @@ -1636,6 +1636,13 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+> > >                  folio_mark_uptodate(folio);
+> > >          }
+> > > 
+> > > +       /* Zero out symlink tails to help with compression */
+> > > +       if (folio_test_owner_2(folio)) {
+> > > +               struct inode *inode = folio->mapping->host;
+> > > +               folio_zero_segment(folio, inode->i_size, folio_size(folio));
+> > > +               folio_clear_owner_2(folio);
+> > > +       }
+> > > +
+> > >          if (!folio_alloc_swap(folio)) {
+> > >                  bool first_swapped = shmem_recalc_inode(inode, 0, nr_pages);
+> > >                  int error;
+> > > @@ -4133,6 +4140,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, struct inode *dir,
+> > >                  memcpy(folio_address(folio), symname, len);
+> > >                  folio_mark_uptodate(folio);
+> > >                  folio_mark_dirty(folio);
+> > > +               folio_set_owner_2(folio);
+> > >                  folio_unlock(folio);
+> > >                  folio_put(folio);
+> > >          }
+> > 
+> > Thanks
+> > Barry
+> 
+> 
 
 
