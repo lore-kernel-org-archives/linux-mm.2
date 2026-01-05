@@ -4,88 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AF76C79FA5
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:42:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D55C79FA7
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:46:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 881A96B00A1; Mon,  5 Jan 2026 11:42:04 -0500 (EST)
+	id 3A84B6B0197; Mon,  5 Jan 2026 11:46:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8524A6B00D7; Mon,  5 Jan 2026 11:42:04 -0500 (EST)
+	id 37F226B0198; Mon,  5 Jan 2026 11:46:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A9056B00B9; Mon,  5 Jan 2026 11:42:04 -0500 (EST)
+	id 25E686B0199; Mon,  5 Jan 2026 11:46:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 68BAE6B0195
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:42:04 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E66A1A8C2F
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:42:04 +0000 (UTC)
-X-FDA: 84298477368.07.E221AAE
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4F6F440012
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:42:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 167A76B0197
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:46:52 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE0151A01C2
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:46:51 +0000 (UTC)
+X-FDA: 84298489422.28.938D932
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1D17B2000B
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:46:48 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1/1r/KF7";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vfZrxLdI;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1/1r/KF7";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vfZrxLdI;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767631322;
+	s=arc-20220608; t=1767631609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ecwU61vSMDvwVxGvE4lCZ/nGt10YlcCNPWtJAI6XoCw=;
-	b=HHCxL/B0v1og5cmjUnshZPmJunMUCgdLztaGCAxZfdIfwHjXdxHi1tFSx9qvXsScZa31yJ
-	BnL4uAz8d4rUpq9GYt7cez13LL59tptBhKYtsjvXMb7zuxR+Oph7qu7Cc6Z4TePJJqmStm
-	8rhIqZlOLlb7JFQdtkVx+WrwHRdEd9o=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767631322; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4BbgkS5ORMgbzsoj2tJDrX7KFBsx2OdqqnsNHutRsfE=;
+	b=QiCsY+Ls2bj5LAR/R+jhgdNxHd5RFVIjZiL3SBoUadgVMdMqC6uv74/N7vl6eBzwCC5mzi
+	ckZ5hxr/F4MgR8vP3xsylfmpeZfwdyi0BcJ9LoP5TqYkEpTmf4y0wOZp1gtQ4HZy0WzYMA
+	6AYKlxKTfeeVnNa5n8bIJr/z9eVhlBA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767631609; a=rsa-sha256;
 	cv=none;
-	b=Bd00ODeWcsiRBuqTSSn45ssFxfUrf8zPQ6HDJjflx8L0oyzFmE0o8RGTioNT4MFPVBeRiD
-	JMEk23e1gv6NMwcCg1AkRLvUJ0ekVhPStGWHW4b8sNBn3XDFHw7bQIEShYJFF5KiL/retQ
-	nxdUsx56JTgBx3HbQInDUbI8Bv4PFLA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6360E339;
-	Mon,  5 Jan 2026 08:41:54 -0800 (PST)
-Received: from [10.1.38.150] (XHFQ2J9959.cambridge.arm.com [10.1.38.150])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 65D193F6A8;
-	Mon,  5 Jan 2026 08:41:59 -0800 (PST)
-Message-ID: <acd0b9ab-9b7c-42b9-91a9-7fc85140b6ca@arm.com>
-Date: Mon, 5 Jan 2026 16:41:58 +0000
+	b=H4WDBcfgEsU7IGwRZfNl+2aMpdQosIwGtCdXNnl4NPSEHZdcBY4fMIv+u9o3qXEzNuexE+
+	S/Mhx3sf2XsrmCman+f0WWKoXg8HESRIAWHngLW180K2JoG+bYSq2f9VYlxVyF5PJIyx27
+	B7loACZeRYwgzbZ4Q725kZbtlS+5xgE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1/1r/KF7";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vfZrxLdI;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1/1r/KF7";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vfZrxLdI;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7E6245BE55;
+	Mon,  5 Jan 2026 16:46:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767631607; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4BbgkS5ORMgbzsoj2tJDrX7KFBsx2OdqqnsNHutRsfE=;
+	b=1/1r/KF77LaFMblOegPQzp6XEbWTywlB+yXrwy2s8bDmm/fObjJTcqm4LV7R3NIG81P8Zx
+	ao36vdPaySDYzXEP9yal2Abg3IoNUWGqjY2sJAI2GGbLhNZKkANXZJ7IQo3PZFaTz77/vh
+	RsY1a8eFYacr4j5k9ZwZE59tDe5kWnM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767631607;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4BbgkS5ORMgbzsoj2tJDrX7KFBsx2OdqqnsNHutRsfE=;
+	b=vfZrxLdIhw6Rsg4TkdBySiHceCw9wNh9VSKow51U8lXMWPgjknb0pnTwGkPtGJxAvLY4Rf
+	t/zZCy8iXHG2TpBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767631607; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4BbgkS5ORMgbzsoj2tJDrX7KFBsx2OdqqnsNHutRsfE=;
+	b=1/1r/KF77LaFMblOegPQzp6XEbWTywlB+yXrwy2s8bDmm/fObjJTcqm4LV7R3NIG81P8Zx
+	ao36vdPaySDYzXEP9yal2Abg3IoNUWGqjY2sJAI2GGbLhNZKkANXZJ7IQo3PZFaTz77/vh
+	RsY1a8eFYacr4j5k9ZwZE59tDe5kWnM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767631607;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4BbgkS5ORMgbzsoj2tJDrX7KFBsx2OdqqnsNHutRsfE=;
+	b=vfZrxLdIhw6Rsg4TkdBySiHceCw9wNh9VSKow51U8lXMWPgjknb0pnTwGkPtGJxAvLY4Rf
+	t/zZCy8iXHG2TpBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 713FF3EA63;
+	Mon,  5 Jan 2026 16:46:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7JpHG/fqW2ltIwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 05 Jan 2026 16:46:47 +0000
+Message-ID: <07c4f991-ae41-456d-8e7f-287bf8676c9e@suse.cz>
+Date: Mon, 5 Jan 2026 17:46:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/2] Free contiguous order-0 pages efficiently
-Content-Language: en-GB
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kefeng Wang <wangkefeng.wang@huawei.com>
-References: <20260105161741.3952456-1-ryan.roberts@arm.com>
- <D9734C47-0EDA-4154-8889-1B789B49322F@nvidia.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <D9734C47-0EDA-4154-8889-1B789B49322F@nvidia.com>
+Subject: Re: [PATCH] mm/mempool.c: set @elems slots to NULL once freed
+Content-Language: en-US
+To: klourencodev@gmail.com, linux-mm@kvack.org,
+ Christoph Hellwig <hch@infradead.org>
+Cc: akpm@linux-foundation.org
+References: <20251223231054.16061-1-klourencodev@gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251223231054.16061-1-klourencodev@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4bthocttmre5fp4s6w3t6r879sjco3ny
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Stat-Signature: duhfron33ytyu58kgaf84t1tgi69p9eu
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1D17B2000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4F6F440012
-X-HE-Tag: 1767631322-11745
-X-HE-Meta: U2FsdGVkX1/9TT5GD71XvUWmgkhVZVSMfhNB3As+73IV08NhNtMvZaPrqLmjqGj7aYHuLs5BGBMQ2vZBD+7ZOcRYlgytz+cQNRh/aUwdezyZWbFwxB1S2xkHPMkHK8h124YTFCpzKzZx1bH3rU9qrmPCW94/RdbityOndcW19nigda9+aDY12goT6vXSuWVIegCL6Jz0+0eM+ceN6fww8hN/qKX59lZ56nxjeO6d0qIMJzvcWmNQLq0gLp8Ik3Ii0gOOYZD5YyU6oZtKJirVCLVsQN2iNaE5zhfQ70RuIKi6NdhdMJSvM/QVyLlBvTSFcxwX43Hufi0eiikLnoh5HBuXmr2apuXUopeFSKQ0aI/zRP2rynDSRMSwHhqcmEVm5GsGIphWeIdwEfyruo/BMk3QJzV0MVWTALdcE3xXpdRb98si/pWSqmhFN0kGdqj+H6cN5jdrsM+1NYV8lLM6oqH4A6utlRKbbnDirva879kMlvr13OXN3lvBIVVyCe/sF1xP2m6kcix3FAd9VhFAqf01oZghV9BbBrX7IFmCm0Cd5nbpelgHwgvMPjHGpEpI1dA4xG2ai8hozbCJXH0DxgQAdpbJ3V7PcRx3Kl8s7aOnavxSpg4bLx2qEW+bBlnASQweIknz4nVrd1yYmoa9mVyfQOdSqILO+dkYmdY4D5oimHFUbAfS0lu7K0aTJtRvTCiGyWyEVN6UU+42QiFTgYB3j1bzxQRfZ5aAzqIEjUYPbAGMA4d68g9EJJMnvBL/KVfbTL7WlGng+8QQklOBtVQyuShgYgc18czxse0SzOn8O6OrVx+rFfLewE0YassmgOUm4sS9vCqRQg51li2jO6rjWDoCb6MeulyWPUZP/V4ZIXYSkjKGrY3mPWNi7WrhAAeWfd4JaUMmQJHZAkYNGz4RtuS7p6dOUSyY7HsTSe9ByZooDktOmNHuQ8bEZltr/PNpeJbla6DTen2VGIB
- nazswmXr
- Um/8Euomyv+LVE+FZ01BEZDIxhlbNplajJpTpYouvqTPTp7xyGyA436vjo4VxrFkh2f9AfAo45nSriCBxTRqMlm9c9JYWi13QZ7ztg0KPEbU1p4ii3BBB1FsTJ82zP8U0IpcoIySA2jDDqQVlh1JarhFYCHBMXnSRsDhCgja0F14D9ZT53+nRbAvgXmGsYvh4lrYUpBoLvj7IU7vcZI4HSj1cbmagxVxyov6BxDNYdduF6D+UaZlj1R7uV1HpQ2IRjHOdQ8DL6FcWnIUVxWIWqop4jR9KxU6WoIU0
+X-HE-Tag: 1767631608-684069
+X-HE-Meta: U2FsdGVkX19DgjMqf2GOwSXBG3XYnWHbMDDwb6telSwFcWBhLuaTfsb2lFBFPwF43ZeDuS6ioWnF6iDyWpNUUlLVfLZuMdRn08kLx/P+OFxv6bUo9HFV0eN9MXs3+hg5FczjL3G7EWxbn++ouVIK37D0SafGxq82F6pLMK+4LE+UbMHEParzJZvkjDcpofmSkvA1kwZHWNR5pJPug3u/hYHRpiTDtYVBmLT3hHJ6CJaUiouBEFM3pI5YlZxQQIRCRQFk+qApvbibb7dxBTaHjmNTAklSfVBgLwk7sAsXyhszX+9YAC8vbRc4joeIOVUckex6WUX5+H/wwbn4xZDBvmc6JhJyju7e/Ts2lGA/q7f38LSsNGyhzsOEkgV2l06Hf2OO9YY7ePsPxx2rf3TFbKmHfhK5zdT/4xeK7iL3rA1CbHmV5EGh7YWXRtzDCkwP07fPckXCgPIIFoO/FItRpkVCUMQFWDKBbqu2FDWC+eAFiTrh92cAyVYD5kY/6NVJpEvRbBOhyERlVfj1dnV69Myt/6wDuQx81rcZuGM7BOG4NQwhz5/ghqQLj8Q1cRMJbgaNN9Nw/EBDs9NICV8hg31jXKpZyjPxLDimOcw9F/fUEh3iBONSEHsjzO5UoZ7IEAhP85FVdqRW2kxnYuqXxEkXEHbziZ4ZOgqcwVLJjBEdqvObNDBE1L+rn/CgEZVSbcu3pRU+yUwq0I+IT+NQHYNHU6kku4bN1KhagfyO5K5FWViIjKwQANXs/56/yGJrTi0bRHqiu0JtZuBLYQlULS4u1EpYTcfngTmnRTlezlnr4VAjacwL8aSgbzEOb3RkWBVYU6GiY7X4qW1etJtwMiPianzNHmBJe5eg/LfrK/V8TLbmX+U80be4BCNPbqVbJzf1HQGqruui4qR8IQJ06gkHlf/I+p5XWq3HOzTM+IN22ubFZicIra5dAco399BdENCNS0VnDIrk76vq1LM
+ 8l5SEDsL
+ i2IWmRzk6Y/hCOn/fDMZOplieVTEUWuJN84L0GGKWZdNl7YiI9D5wPNJGJJ8dwNhUHyMFyb4g+DbL+cCcV3FZiHI/6pt0Eod5iZJ6tIkTia6+j0ZvgbTdeM2pX7QDKjqk3lvM6hIuCvYaw5jtmYQN+kCxT+Z+t11YOAR5qb2RPh9/DRq5awbpZfjToGhjIG1AlENIyeagqwec4H+awC4a+VAXW3anu2d8HXTKt+X8UNnNg1BrrJaCVfeOoyJKqn5pHHQwRHulnbQO/rIljWbkwaII7AUhTC5Bha4A+68Yz1UE06tej4CwgBIT5g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,70 +177,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/01/2026 16:36, Zi Yan wrote:
-> On 5 Jan 2026, at 11:17, Ryan Roberts wrote:
+On 12/24/25 00:10, klourencodev@gmail.com wrote:
+> From: Kevin Lourenco <klourencodev@gmail.com>
 > 
->> Hi All,
->>
->> A recent change to vmalloc caused some performance benchmark regressions (see
->> [1]). I'm attempting to fix that (and at the same time signficantly improve
->> beyond the baseline) by freeing a contiguous set of order-0 pages as a batch.
->>
->> At the same time I observed that free_contig_range() was essentially doing the
->> same thing as vfree() so I've fixed it there too.
->>
->> I think I've convinced myself that free_pages_prepare() per order-0 page
->> followed by a single free_frozen_page_commit() or free_one_page() for the high
->> order block is safe/correct, but would be good if a page_alloc expert can
->> confirm!
->>
->> Applies against today's mm-unstable (344d3580dacd). All mm selftests run and
->> pass.
+> This is documented in the function comment as "...and sets their
+> slots in @elems to NULL.", but it was not followed.
 > 
-> Kefeng has a series on using frozen pages for alloc_contig*() in mm-new
-> and touches free_contig_range() as well. You might want to rebase on top
-> of that.
-> 
-> I like your approach of freeing multiple order-0 pages as a batch, since
-> they are essentially a non-compound high order page. I also pointed out
-> a similar optimization when reviewing Kefeng’s patchset[1] (see my comment
-> on __free_contig_frozen_range()).
-> 
-> In terms of rebase, there should be minor for free_contig_range(). In addition,
-> maybe your free_prepared_contig_range() can replace __free_contig_frozen_range()
-> in Kefeng’s version to improve performance for both code paths.
+> We need to follow the NULL assignment, because elements newly returned
+> to the pool must not be touched under any circumstances by the user.
 
-OK, great! I'll hold off on the rebase until I get some code review feedback on
-this version (I'd like to hear someone agree that what I'm doing is actually
-sound!). Assuming feedback is positive, I'll rebase v2 onto mm-new and look at
-the extra optimization opportunites as you suggest.
+Well alternatively we could update the comment if no user needs to rely on
+this. Since it was modeled after __alloc_pages_bulk()/release_pages() and
+release_pages() doesn't do this, we could also avoid it for perf reasons.
+Christoph, what do you think?
 
-Thanks,
-Ryan
-
+> Signed-off-by: Kevin Lourenco <klourencodev@gmail.com>
+> ---
+>  mm/mempool.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> I will take a look at the patches. Thanks.
-> 
-> [1] https://lore.kernel.org/linux-mm/D90F7769-F3A8-4234-A9CE-F97BC48CCACE@nvidia.com/
-> 
->>
->> Thanks,
->> Ryan
->>
->> Ryan Roberts (2):
->>   mm/page_alloc: Optimize free_contig_range()
->>   vmalloc: Optimize vfree
->>
->>  include/linux/gfp.h |   1 +
->>  mm/page_alloc.c     | 116 +++++++++++++++++++++++++++++++++++++++-----
->>  mm/vmalloc.c        |  29 +++++++----
->>  3 files changed, 125 insertions(+), 21 deletions(-)
->>
->> --
->> 2.43.0
-> 
-> 
-> Best Regards,
-> Yan, Zi
+> diff --git a/mm/mempool.c b/mm/mempool.c
+> index c290e5261b47..1a2060304fd4 100644
+> --- a/mm/mempool.c
+> +++ b/mm/mempool.c
+> @@ -674,7 +674,8 @@ unsigned int mempool_free_bulk(struct mempool *pool, void **elems,
+>  	if (unlikely(READ_ONCE(pool->curr_nr) < pool->min_nr)) {
+>  		spin_lock_irqsave(&pool->lock, flags);
+>  		while (pool->curr_nr < pool->min_nr && freed < count) {
+> -			add_element(pool, elems[freed++]);
+> +			add_element(pool, elems[freed]);
+> +			elems[freed++] = NULL;
+>  			added = true;
+>  		}
+>  		spin_unlock_irqrestore(&pool->lock, flags);
+> @@ -683,7 +684,8 @@ unsigned int mempool_free_bulk(struct mempool *pool, void **elems,
+>  		/* Handle the min_nr = 0 edge case: */
+>  		spin_lock_irqsave(&pool->lock, flags);
+>  		if (likely(pool->curr_nr == 0)) {
+> -			add_element(pool, elems[freed++]);
+> +			add_element(pool, elems[freed]);
+> +			elems[freed++] = NULL;
+>  			added = true;
+>  		}
+>  		spin_unlock_irqrestore(&pool->lock, flags);
 
 
