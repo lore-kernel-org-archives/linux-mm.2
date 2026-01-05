@@ -4,120 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00DBDC79F87
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 12:43:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03F13C79F87
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 12:46:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 520176B0145; Mon,  5 Jan 2026 07:43:19 -0500 (EST)
+	id 651866B0147; Mon,  5 Jan 2026 07:46:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CA6F6B0147; Mon,  5 Jan 2026 07:43:19 -0500 (EST)
+	id 628FA6B0148; Mon,  5 Jan 2026 07:46:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CD1C6B0148; Mon,  5 Jan 2026 07:43:19 -0500 (EST)
+	id 54C8D6B0149; Mon,  5 Jan 2026 07:46:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E6056B0145
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 07:43:19 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05AF8BF4A4
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 12:43:19 +0000 (UTC)
-X-FDA: 84297875718.13.F57930E
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1687A160003
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 12:43:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ze+TwaML;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of 347FbaQkKCAgitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=347FbaQkKCAgitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767616997; a=rsa-sha256;
-	cv=none;
-	b=i3T0/2DAhMsSYl+oXEIkodLSuMkerkkwtHTYIVg9CUDt4VEwHTU0mRXnq/SXQ2cA+wYLNA
-	Rg2puZKK0/kTFrtEqTEryt0gxCXRt0zfBpJJvn/e26pMnHpZ2poEEIMxVxCKT1G7ylCStQ
-	EnsZunycBkEWUYNsS9f4onhlF10OnnY=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ze+TwaML;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of 347FbaQkKCAgitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=347FbaQkKCAgitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3F6FA6B0147
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 07:46:11 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0BC3116194A
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 12:46:11 +0000 (UTC)
+X-FDA: 84297882942.16.4D5206A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6F27E120009
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 12:46:09 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hk1GyY8p;
+	spf=pass (imf29.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767616997;
+	s=arc-20220608; t=1767617169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z46BFumMsZupou+yyaDDz+IWIkSi27BbE4HeuL18C6o=;
-	b=VFy3LTDz304aHuaM4RRPZam9ei8gLabDZT+XAHlaMS6X8rHeW4Fe4m6JmL1DBg+2pCash4
-	FUoU+yBgi2j5uYuI66fFJODOv7AkLuttv7eqOIyczCh5kjhBAp3lBQCSenk0wuBiHkb8KY
-	Tr6YNGv/wbrBezzObnKQwuEvovaEodo=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-477bf8c1413so90088915e9.1
-        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 04:43:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767616996; x=1768221796; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z46BFumMsZupou+yyaDDz+IWIkSi27BbE4HeuL18C6o=;
-        b=ze+TwaMLpWeIbYSEWkKS4N85CK16r8/t6RANg3WRygg2rMjeI1Emaf//xQOS6aH12l
-         RrjEoILCFWGFCrKY81LDeBGPd2uB9mc6afI1G4OpIUqUD0E8bSkhHRSlf9mWkeigXVt7
-         YNCSsgyEOIgM/4BCQMWqg5vZ5Ce0BEpR356mkwCDhkWYXThmdoIG1L+vsfdO1DFu25lK
-         GRdLYmjSzjJ/sr1p3DF9kQQqe+qcvurB/7MfdU6YoajDruuJMXwfVMwAIwWAK9Gasumo
-         M8+Oza6lI5aSZnOGaU0inBMLJnXx5Oinorw1kzqs22GvtVBWfrEpnYA6gVbnB6rPWP9J
-         u+Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767616996; x=1768221796;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z46BFumMsZupou+yyaDDz+IWIkSi27BbE4HeuL18C6o=;
-        b=oplMYqVzcsfKl58qkr1/HLShFq54NNg5KnL0PVrI/uOZ8upDGwT5nFVkn3tb3aN727
-         JBRqhyKOI1sqpB4JhAcm3r6OGQZVgEP4hYUmQdG6f3qQr8QN9lO0qhCyAJe0OZcu6EyC
-         zeCdak45vG/Uvlubc7IIWAJuptVMyvoTuFnzPB5pVUG+BykUwfr08V46l9SbRkBB2a9H
-         VTo/StG2UIfOYdEqjAz2hkdbkLiqXMP2ELE0etVEWiaUy8hByFwihI/+qPLJhixqLVI0
-         onotMefFMDS/wkCscx3fJZ6b+WvQSq36xbNoGoSt1lZvSszAknnRsZ4a3QdQp4UmsDr8
-         6guw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrcl2AjSKIhiFGdrgsPEAtFQM8MHvxvJEkYKuyaBdHJim3ZettoAsWU4lht8j0dRkjyyp2ph19DA==@kvack.org
-X-Gm-Message-State: AOJu0Yzch78iu1fZj1TGc53WkcZToPh0SIUB5199xV8HooitxMNImCdk
-	TMGDvX05BjuWFirFm7LN40jaB8iygiukwy45yud6KAB8tE8y2O1jOxoDLDep736/zDVjMCO8hTI
-	0jMZeyW8QvltCNvrvfg==
-X-Google-Smtp-Source: AGHT+IHb4FXR8+6IReKURWCDo1GDROcS9nS8ZK0U/BuzFCFRx4UyIi4H/RGJplSPzQ8aQkM5GOyc9gt0PQUHWiI=
-X-Received: from wmdd17.prod.google.com ([2002:a05:600c:a211:b0:477:a0e9:dc85])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:470e:b0:475:da1a:53f9 with SMTP id 5b1f17b1804b1-47d1954778dmr560627315e9.14.1767616995744;
- Mon, 05 Jan 2026 04:43:15 -0800 (PST)
-Date: Mon, 05 Jan 2026 12:42:40 +0000
-In-Reply-To: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com>
-Mime-Version: 1.0
-References: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1586; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=NxiYW0CbqWZmci++RKJimpvk5ApS8tJULtdHUF0b2gE=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpW7G9HcM8jXB7EhJZmxhOVXBkfAqJJ6TRQSLuj
- qqOtSRahV2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaVuxvQAKCRAEWL7uWMY5
- RmBiD/wM+sYNoJCxxvFtNBv5ZQEVMGut4EMMHuoEp+cxz9iETUHnUKV2WdfWAv6Di6pElayIQDs
- Xmhu8IWGphqcOrROZon8pQ/ru5idMHqBNRM2+dM8RBKllHE7h894KMd18tczyyVkW3pOf27fQ6q
- xWpaxOVrUUU1Hs5PLZLA/g5rHishlixFGSXGcgZuD1gaBpy5wPSuKXj7PZpruci2BADDp/AdRpn
- 2veLunxvPaX7qJ3993M5PhhCJbKLKVe8dmRygNk3XLQWcR6aWc9FYpPOLQUJktuYKeO/nRdJRgp
- xxZcsm8Y/O5i1wAVyJkziZGoV2PMvt+I9/GHmNcv2qtRCKW+YZ8SwmfaUaEcAC89U/77imhlsIa
- 7/NzPNXI2eYehM13QdD9pZ+HSTMPFvr5mxzaK8Az2J9/kOUfcNL1u06cVBDlg/SiA5U5oBhsHHc
- tx1BOy6XuvTw/0nWHO4bvywYt/tr9BCfP4D8hWUk5EWzTw0sILLeY6IFRNFmkE7kzLos7IXwWQu
- 6APiigknaMWoc7VxpFylvh+5HkBDbmtRUpCPdNN4tcmyE+qE4CVNmRE2Hfu6N550AqSo7hW4A/R
- x7YiCjYiJxt9Lg6gri95NC+QF2aN9O0vXpASyjJJ6OCIssdU85AHDq+TzO3r/7Hu0BWtrm56Y9F rIrBJAV/P58bS3g==
-X-Mailer: b4 0.14.2
-Message-ID: <20260105-define-rust-helper-v2-27-51da5f454a67@google.com>
-Subject: [PATCH v2 27/27] rust: xarray: add __rust_helper to helpers
-From: Alice Ryhl <aliceryhl@google.com>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Tamir Duberstein <tamird@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 1687A160003
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 975d7ksmfs7bwdgnd8w75ye83ryobchf
+	bh=Ar03mS5x6zUGnTrvGUaSaCLNf04tKd+zHscC0ASsXDI=;
+	b=5cTBFeDv7ITAUiStbAJy9PAf57znHCkV+M1793ZBOqaqpLKAEjnG8hp6IL6huFrIdPK9pE
+	FkvurcCLnHYObPIRNRdx9l4GejmcxpsFEjTaDfPHcSPo4J/tgCm36N2cZCwYgYWEdkb3FT
+	MhrkFjYufniUVmplgiFN4J/5HGvy9eU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hk1GyY8p;
+	spf=pass (imf29.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767617169; a=rsa-sha256;
+	cv=none;
+	b=BjzZqzzDCoAIQXN3Aw1TXd0+ACOH4UR0w1NArL7UJ9JAGiIpAnw0rA4gsTHQFkYidzVBLi
+	PmspqCoHHXlLBX/DixPsdiAc9lMBVpAkZQT9YCVFHwOLBFDB3FjVwhdvc5vOrcKQCGnwCH
+	q1RMWxl1zcLq4YDeeWVA434PddbqurI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C9AB96011E;
+	Mon,  5 Jan 2026 12:46:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A40C116D0;
+	Mon,  5 Jan 2026 12:46:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767617168;
+	bh=ql8wdMN032MrP8xavsv4jPuanq1kV6VysEAcsIRbjMo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hk1GyY8poIzMwUg1Iu63Ub8SWVmdLS4TEm6OBkbOuil30njeic/+PyYniw19FvcfQ
+	 akkAIC2dCBZpjG7mL+5tlswp55YzpRjO/r2CQ2P2icCNfqjFIC/Axp/X+aI/Gzqy4t
+	 7DYXjBx4oQ4EWotSOuDKT6K/tdQ9CrmP4u6yeWgATKXWwyeKV/6HP+XIQFZP3kR2VX
+	 NoBcM97/reHliukWwJASK0Ivj7chaFY7MJki7jZWxQDQRiZY4fna4e4eISENd0VNRE
+	 ekfQvWw42zotZy6AniyKMrvCJuYsZOv9Hips04+ePO1QHQaYiSpIQx9Ygjpu4qQ03n
+	 XuW6wtoAVoZdg==
+Date: Mon, 5 Jan 2026 12:46:03 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Yunsheng Lin <linyunsheng@huawei.com>
+Subject: Re: [PATCH 1/4] selftests/mm: remove flaky header check
+Message-ID: <2bc4e09a-045a-4d33-8857-1bdfe3281da2@sirena.org.uk>
+References: <20251216142633.2401447-1-kevin.brodsky@arm.com>
+ <20251216142633.2401447-2-kevin.brodsky@arm.com>
+ <5f866c1a-c8cd-4dc6-b312-9017cef89920@sirena.org.uk>
+ <e971e44e-5539-4fc4-8128-0ce9c3d10a38@arm.com>
+ <682f64d0-353c-47bb-808b-eacc2d4d6c00@sirena.org.uk>
+ <9c97ac9c-b0df-42e7-84fc-7e0d986c7324@arm.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ee3kU50VQDofGf6W"
+Content-Disposition: inline
+In-Reply-To: <9c97ac9c-b0df-42e7-84fc-7e0d986c7324@arm.com>
+X-Cookie: So many women
+X-Rspamd-Server: rspam02
+X-Stat-Signature: ooufwjm55or6dmwojtip1ib9o59wnbxw
 X-Rspam-User: 
-X-HE-Tag: 1767616996-760519
-X-HE-Meta: U2FsdGVkX1/Z8Ee3/W8Wn1RUA3gMEDzg5cJM3YJHZqPqW2QwknTP6IJCXDf9QZLV5kJCpB1ebvST7CaR1UwBFgu8s79SXsN3ejpUSyobY6uwKjO03RmDREzyoRBCqjgLnmqv4+6xKHEaHJUpVuNgNE7wSHJUfzF3VqRg+Cx3xZTxrT3tgOkQxWyIhTDoCCgq2A/kBrHER+PcNCM5BM0QbWrQ8J3SHf1EuBBjTkdtIjCm6SpCLYDsq85WOeU5UmmNS/ctGgznNRXzxng+RZATf0a1jIbGBWeSSZsV0tC/xiZAQ8gC8NlHFMZIOiOwsQy2F74HVEfDOOkkiHaE/Bc83PowP943O0fyNZp1H+wNBWr4p0HIS/5bLJaqjxLbxCZyANtLHVHYRj6hJzRjkmleYWYVqsS0Lyr7B4aHVRhIAuJ9pYae5g+0dOygDLTM6pPbH28OdqI7KJBg9cMY6GvCrwRGSvuZNzHeFdv4/Y6SWM7YBQOxXGfQ3QiGdweJ3nyFfcJJvT5lgHDx6Ak2rYZuukUOLtPgEdWa7CVz6nyKq9PzYnz5o06mpSPhPnsWdkleZDSfWxgqSmSFCJ2fT5jVyg4b9kE6RS4sxdoEVbGwu0Ig8MOq4aITwYIZgtN3hBNTPreC3z/ms5lHoBPWZTjF8caVY3aO+nG8flTIasFqxyDoZ/JoWceBO+jD7bahvT0XKjhfiI1azyz4Un2w2kbZ6pDMSSAMO5sONp/oTRTkZh12bB+LTg7ZNK55rB2XnQMHCE0tvWcEbOnpfQMDLcXqx9tMtdsvYU5QyPwGvtVW22UVx0wO9OAPR29HkS2w/7Me6gbVWDveFMIrMJ3xiY1ikjy/iinx6Li79JUbnxtMDZtCaAMWrRaGYxBe+BYMdlNIFg5v3fFeElU5Ua6ZM3wiAqvt/Mq7M2ra3gE3lVleICQOTOj4SF7xBlFCvTG4RfzvnLZs3K6FJ7+jLn7gw2/
- tsSnceNb
- YePBY/5FtOjTPIw4Q12w2GA5xnkJe0b7hRK9rJEJdqiDGe2wLbDfN8HDLnc7fVTjOaFFLrW6oXkY1/oEVzsXYAjR6eNtsCEEma9w6bkGGKOBbPhsBlfeKbXG8Z6EQyodRAK/K5uK/DdFoTEX/52TAecBvGKvNHu42II3yvfBUqRZ1KVGZU0/mX+80Jzy5RiBaC7aivwOu2Ci1p2wLoSMd/Buhb2+4jdvi50X8lb8yfiI4p/6h3dRPUwmLvJLdV9LrgVEtV9JVBeFQJoKXVuzwCL5/iagUq5Ie91RSjl+bokHJ9Ody8CPEpqC/ef9n2hAMsnfl1Vt48ysVhXzJZR+wlla//o8VQ/nBOfCRiMJTFV1Xm43ub+m2xVu6kk2xjIrCbju/dUnsCugeuA2Dv/vx3d/OJSYW8Yu1va5iCapm3KvDlBwKqpGGR2h9ca0zdky3ER2r37l86L3uVHyYwzsmOIlFelz9EsqWpn3+Wf6/wPHD0uWY4YNw15E/BFTsCVKrOxYG5L5PAvLNKhlK1BPnGAoCU27tZ1pHIX5+CmgqwNkdckVxmqL0WPuGkPSseOcnMSrQIv+ygQM5Iu2VNwMLnvFGisHP+UFaFbWVhnzs9EXG9UoJtADl9cPPKnL7QsxCdZ3CNaFMbFNTnCRMluqmTh+KZKv+XSecPC9mCzRK132IcfAdQnknb5m0lDnu7C9XIe9UvXHPW0CkdYvbNoyipI0EeJQ9Lg0unDT+KG1mSeZMBdTB/HafbGIpiut4AW/jfViAaQsw6bMw6iKsw0YD3AE7W/xZOHon2/A13sgD6fkIrTFtuYhvjjjLUzNFIw21KU2Gt2s2foR+aQKfR24LhacEQkCKLrWP3jxPlB4/cPQO8O5ZpdAvhWIe+zSx5gH7H5AcVOq/7uQoEW2eAh2Jw0RuKPyTEHAqzjcpKxAXDbYmFJhEDh5yuk1YjnBgMyEHWg/C2VKULqz0uHT/n6Jd3/ZulQ==
+X-Rspamd-Queue-Id: 6F27E120009
+X-HE-Tag: 1767617169-372593
+X-HE-Meta: U2FsdGVkX18OYp6W+KI/G+aJL7+/N1vvYhGBX5wcFahULU/uyNLU/xVjLdkMS+G0jEA38S6wlUkws/dYRSTtw6Zw6/+9jvu6wBS2abKu/RsJN10xLQaoLc5GEz9ckqKA0k8/YqdrEZ5XwHUvv87bTfTkj7fCfj6vNGVzhBe3m505EGDBEXJEMRLYQScG4WV9UZQtOMQ5maPlOlBAf4NcqRNdjnc8rCkdF50WRvd1cpyZJwyWK/oZg/z39eyCHqF8jRIVTkwwq4VOHPP4DlKp+bjVq7S7C2dfPr2EFgMCUkTBLJqUjaDA/oaQQIDVM31xmu8LKiZJ5H2An+4EP+rHY/DlWyHSujv0k5uqlIxWg58rO1SAEVOZq8xnYbEIAqrJy2FRTXI2BNxHtXxppmnj0QEhSZ96MvfdpJvBjGeJETTGOdMPEN/srOfmV083JF1Y0vojfESCbTNmol4AfNdsfq+q/p09p9bRuWKC86zsSlEA0N9RYf73taBZ+BDHUehWPfLbPmfD/ziHAlAf+vjRYNhBCrltbnaD+6IMSKkYjU1bDjDzMEYdo33Fd/skGhhl/2nLE07jYk/pItGrAnXNPfKVdr/x+gN9VRL6VBtowDE5UlRHsrcPGu4YJaR9BWUB2yD0YH0LJgLFsWXxvq74WsNLL7Vd05ZggphxkFUG9OvlOA2ZQRkKlIhbljSIAkhv6S5r/apQMmI8tf03t3W+scpElOZa/48BA5K1vdmZ6oHd9R9w5mlFoVyAb6m2EcCEBI3+6UGVexZOUnOpjXA5qUvhXE5Vi1OMlmkft9ntJOuTJMTDhJOoBxy41d74WFRYKEmP0nW6OrILuID5QFo51DZMcdjKd12IjMAyB0G+F4DsCcKIgfXIs5OkGcg0zDvGFOtlB/LHX0vAsdfiFhh8s51bgv4q77V+NYxsZZqkikZibFu1hnb73OKwS6CRG37mv0CjVUZDKavVNBDXle0
+ gCMcTzLK
+ 6XZRtR93Q6l7iLzaal1Zl+eHa3ks9rSMh9JBSHCl+djmBeH7jFdTYok2hDTNl9rd+wwj9ica08skrtv4KBZqxkkT4YM2ULRVvnCU7baYoBYrYUlbZHIUTfR6RCTc6sOPl4ZGAMjvb6OmSItWOKkMhvEJVZMngDgDIf28HlkGKngy4Fb85Gfs1wC63hj/sIqxVDRA7PAfTOhjUsjByT4bAukAjVME5xMgRRLkH8WpY2hj43x9fv5AYPCuaU+/lrEajVQmaIA1qZjXEsHthwzDhCK3KEEyoBcyFUtATotwxigImtK+QyP2SUCzILg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,61 +104,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is needed to inline these helpers into Rust code.
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Tamir Duberstein <tamird@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-mm@kvack.org
----
- rust/helpers/xarray.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+--ee3kU50VQDofGf6W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
-index 60b299f11451d2c4a75e50e25dec4dac13f143f4..08979b3043410ff89d2adc0b2597825115c5100f 100644
---- a/rust/helpers/xarray.c
-+++ b/rust/helpers/xarray.c
-@@ -2,27 +2,27 @@
- 
- #include <linux/xarray.h>
- 
--int rust_helper_xa_err(void *entry)
-+__rust_helper int rust_helper_xa_err(void *entry)
- {
- 	return xa_err(entry);
- }
- 
--void rust_helper_xa_init_flags(struct xarray *xa, gfp_t flags)
-+__rust_helper void rust_helper_xa_init_flags(struct xarray *xa, gfp_t flags)
- {
- 	return xa_init_flags(xa, flags);
- }
- 
--int rust_helper_xa_trylock(struct xarray *xa)
-+__rust_helper int rust_helper_xa_trylock(struct xarray *xa)
- {
- 	return xa_trylock(xa);
- }
- 
--void rust_helper_xa_lock(struct xarray *xa)
-+__rust_helper void rust_helper_xa_lock(struct xarray *xa)
- {
- 	return xa_lock(xa);
- }
- 
--void rust_helper_xa_unlock(struct xarray *xa)
-+__rust_helper void rust_helper_xa_unlock(struct xarray *xa)
- {
- 	return xa_unlock(xa);
- }
+On Mon, Dec 29, 2025 at 04:40:26PM +0100, Kevin Brodsky wrote:
+> On 18/12/2025 15:25, Mark Brown wrote:
 
--- 
-2.52.0.351.gbe84eed79e-goog
+> > Well, there's also the selection of KDIR which for some reason defaults
+> > to the installed kernel so we get:
 
+> Overall the kselftests tend to assume that we're building on the same
+> machine we'll run them, so at least that feels consistent. The same
+> default is used for most other out-of-tree kselftests modules
+> (livepatch, net/bench).
+
+That's really not the expected usage pattern, I'd be surprised if a
+non-trivial propoprtion of kselftest builds were intended to be run on
+the system they're built on - a lot of people test interactively in VMs,
+or on some other target hardware, and automated systems are going to be
+building separately.  The two you've identified look like special
+snowflakes TBH (livepatch in particular has a bunch of other issues due
+to what it's trying to do).
+
+> Maybe the documentation should be updated to recommend setting KDIR
+> explicitly? Or maybe it could default to KDIR=$PWD or $(abspath
+> $(KBUILD_OUTPUT)) when cross-compiling?
+
+I think defaulting to something related to the current kernel build is
+more sensible here.
+
+--ee3kU50VQDofGf6W
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlbsooACgkQJNaLcl1U
+h9AHxQf/Z8Nc97ZwGUewBQVLOCUmYjLOtU4B6nWHPdZgpoANTtvhZOi/lqyJS7gV
+WLscnoEUA266crkqIWb3oIoWkNERtD19h+s5H+IXm4Nz1V22lG6R5PDblt8YegSJ
+lFYuGvGeeBKESvTsg7PQDpjmLaV75LorK6X3t8GSjrEXtPKTJKIBxXfefrDHfDWh
+ZWCTb/j1DMDdBZ/hRcRYPtiti8f0mcsIDB0KfJ2RYP/9VpcaVMgnGSVA+8lYjOZZ
+flWs7KSCcOoMG8qZcqKmICyAewMgEvgjq4JTQkwJ8nnTHysXHnK558HZ01lydGFK
+lrN4yLX5KhvW7HkLN1/hjP0ihXbSkA==
+=jLkm
+-----END PGP SIGNATURE-----
+
+--ee3kU50VQDofGf6W--
 
