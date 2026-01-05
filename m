@@ -4,91 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14722C2A07A
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 09:35:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84867C2A07B
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 09:56:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5ABF56B0110; Mon,  5 Jan 2026 04:35:04 -0500 (EST)
+	id ACEA36B0112; Mon,  5 Jan 2026 04:56:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5580C6B0111; Mon,  5 Jan 2026 04:35:04 -0500 (EST)
+	id A4AB66B0113; Mon,  5 Jan 2026 04:56:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 439B56B0112; Mon,  5 Jan 2026 04:35:04 -0500 (EST)
+	id 8F83F6B0114; Mon,  5 Jan 2026 04:56:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 34D9D6B0110
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 04:35:04 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AF8BF9F2B6
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 09:35:03 +0000 (UTC)
-X-FDA: 84297401286.29.28508D1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1DF1C18000D
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 09:35:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YVtYl43N;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767605702; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 7CF066B0112
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 04:56:15 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0F2191A0EC3
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 09:56:15 +0000 (UTC)
+X-FDA: 84297454710.21.51A2FD5
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 879F6100004
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 09:56:12 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E7i5Fpwq;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yEIVvlmN;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="R/ywBHxS";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=I5nxatXx;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767606972; a=rsa-sha256;
 	cv=none;
-	b=ansTsasqLicLr52+9UDC1bgSK2Pp86thjdIPCIAXRS4euYhhbUN7tbrPbaUUZDen5eaA6n
-	l4O8jPD3GvwDtAzKWwf6jIl1hB1g8O+eMPPEYjYQFcKC3oR43UXhQpRMdqDUu3otsMQ7FW
-	PTgCDTLiuoAlamtmZdO+bAYpvZjVLjw=
+	b=5wmO2Jv2FFxtwEXEEVFLe/yFs3jhczRFwxfEELAi/EyuiWoEOh8MFYWzc6878fM0HP51sD
+	wAR1TxdHeC+qqc4dXIwMfBR2Oku2UBpx9/6KZJo1xdkZgce1puw+QLBPssSSyISdWQAzho
+	oTtCT2akOAQ19MDpxqDnxrWyTRZ0tcw=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YVtYl43N;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E7i5Fpwq;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yEIVvlmN;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="R/ywBHxS";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=I5nxatXx;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767605702;
+	s=arc-20220608; t=1767606972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xN/knMZf4MAFBx6ZWKRu/Poc/1c/pqv4Ar+pXBUK73I=;
-	b=tvGinCvDya2JR0+1QnyXw0zMvJE5isTrz3kds61vuyv4m/81ncJ9cjWGIaFtpE46GEXNqb
-	9eEoRmxh4v9ewPbqJISo+loVCWIgsR4qoE2cyGgy4K7F8a7qjZ5XeWezyqfbb6vOTWH4M8
-	3S5+RnL9jICXOgMJzQ+OOo4BJx/uSFs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6469C6011E;
-	Mon,  5 Jan 2026 09:35:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D20C116D0;
-	Mon,  5 Jan 2026 09:34:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767605701;
-	bh=bn7mM9cOL8od9/KRNKPTS1zEKSNile2RiMjyI0hZBf8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YVtYl43NMWF7kgcJE4xufMXZZpjTsLLjkQnuZPgsgz9d/YZYL0qm77oYxQKBKmAJK
-	 F8zv+f6PCteGmpflvD6m59enuxDzGihjhl7qfdkJty+HSTNDrAMD5mr9pjliYmINBC
-	 hsaS6U1Q0UYvf5BbhyfOkEeQsLKzO+drcJwSM5StyTQ9Ot2oK47ZG35crN3OZAMpYQ
-	 VD22esVWApTUvNTCqoz/sXRfjKkQWF/9mkhWBP71WZnQ8wooORUd3GzY8zuRLHYMi6
-	 SJw8oilCe9pXK5NNnDv37f5mv303+5J8tb3Kom1K57gWRSu1NgmyPkSHQO8EMmGhVV
-	 eh3tSWdZ3H7iw==
-Date: Mon, 5 Jan 2026 11:34:55 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Cui Chao <cuichao1753@phytium.com.cn>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
-	wangyinfeng@phytium.com.cn, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
-Message-ID: <aVuFv7P6og6pY2lj@kernel.org>
-References: <20251230092750.856060-1-cuichao1753@phytium.com.cn>
- <aVPtSNKRnnI88Euk@kernel.org>
- <dac83ef4-6e4d-421b-bd54-7090d2f963d9@phytium.com.cn>
+	bh=tyzvGt7ijyC3iXfUIAbqPhVhe1mSFkUEVg0NYFf04bY=;
+	b=yC4evzxMc1XW0kX9adAEHco0BQ+RllfKIK7VFJxFIcHfYGEZIALmNKWaBa2UDBC8+TNStr
+	wO7crfM4pnx/Gqj0OIzoflhGmF9eeTZQqkPcghMdFctO6PdGZcKpbk62ZDGvtK4ArWK9E1
+	BC4mA7kMQnpD/YNTSP+0yyzlREyL7hg=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id CDC695BE34;
+	Mon,  5 Jan 2026 09:56:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767606970; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tyzvGt7ijyC3iXfUIAbqPhVhe1mSFkUEVg0NYFf04bY=;
+	b=E7i5FpwqEfF3sSQzIGa7nSu9OuUjOpt2iscA238PoyrAhEf0SP/BNkLbXTdbL8pSyzkLne
+	VnSoyAfskyeFAygapvCLDTZGiEUvlx4V2/N5ue3AJ4YbQKnT6ZC42LKkdF9RjbNdFepuDO
+	/8A5WvlsBta30yu04B8EYRX0V9WTpXA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767606970;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tyzvGt7ijyC3iXfUIAbqPhVhe1mSFkUEVg0NYFf04bY=;
+	b=yEIVvlmNnvo18hfLm2a3k4uNcVJEXakgPgy1H7UCpIiiUq/3b9uV+jrxvt1j3caDxM6K9h
+	kS+FGMxVmsFz7ACQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767606969; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tyzvGt7ijyC3iXfUIAbqPhVhe1mSFkUEVg0NYFf04bY=;
+	b=R/ywBHxSUrbqAa6LMzFpOwqn7ztTjlGhqqXaBOCRfjzBE72tHH5F35oeu951VGzup7HtQH
+	7s28lP+KUyZ/fFTO1ff84LyHDm9pkuvPLsSL3bMXjNVkPP5t0pVnLEgh7RYNua7M1EkVJY
+	dKmriE83g57xtywbiXkyquxoM5uAHoI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767606969;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tyzvGt7ijyC3iXfUIAbqPhVhe1mSFkUEVg0NYFf04bY=;
+	b=I5nxatXxr3jOMvQJ250fW1nLDZvTWQvOtiXKQ19T/YG9ClyH/d5YiuzJLkEb5IPgTLA9RB
+	RT8kX7b9rAxMqhDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B27F03EA63;
+	Mon,  5 Jan 2026 09:56:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jc9CK7mKW2l0SwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 05 Jan 2026 09:56:09 +0000
+Message-ID: <ccee668c-88b1-4b06-ba33-1cde63c61ade@suse.cz>
+Date: Mon, 5 Jan 2026 10:56:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dac83ef4-6e4d-421b-bd54-7090d2f963d9@phytium.com.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] mm/page_alloc: auto-tune min_free_kbytes on atomic
+ allocation failure
+To: wujing <realwujing@qq.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Lance Yang <lance.yang@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, Qiliang Yuan <yuanql9@chinatelecom.cn>
+References: <20260105081720.1308764-1-realwujing@qq.com>
+ <tencent_6FE67BA7BE8376AB038A71ACAD4FF8A90006@qq.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Content-Language: en-US
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <tencent_6FE67BA7BE8376AB038A71ACAD4FF8A90006@qq.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 879F6100004
+X-Stat-Signature: 4o7xqyd8tuxb3fkft8ciaadoajuhufjc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1DF1C18000D
-X-Rspamd-Server: rspam04
-X-Stat-Signature: yroysx1ngkoo8agoqsr8qfrik8kktbp3
-X-HE-Tag: 1767605701-251255
-X-HE-Meta: U2FsdGVkX1/lxWFRZM92zzVPd8+kpyB0gI9R0aKhhur/73BYRQLw22bNJf5Df0VwsZKpFM0PfzgeoQNtmUV8sz8TZGEmgJQuc5799tRswQD21RjwLxhWt4K+7cOmVOBD/1LZv9zofRxhqVjBRi4qsd25IrXch/8KHBg6jUA4ExHnnEyti03o4vCvWevBwgNrM2N3nkzuYgJ1mPwhqb5ujWKRtUFetzAXiAEPFn0Ep/9Pn3M7Glhfl2E+Ex3yUFIlQyL2+SmtVbpSThmvrqBXmWSolFQu3uYZtfqUbr1cEHb9TuBKu5Dn2wh8GeekrP42xwOirMT/cdhD4M2xTFSH2V4HX4rk+pZ2GKRKlP7XkLA1oOuGI9D/jdBUUJAfcKXtGYfRh9HJpfpIHYnPT0QjDjV3aSeQuCf8YaxLnccG7VNORIkOBlPpzO/56HDlxT+OEcreqBE0iOa2xkTSr3/nTarEQNLO9O84cBchcgMPGHMSF0J6Axqnfh0Q2bYBVO5PDf/rDCZpXHpi98ZRlvG5a46NV3/d+qZmcx54HHe8LopjKj9dyIy84lAn1r6fI2Xbsp9gepfKI71Hmmt22LVd6A65EG0WtHSxYuSAEncgiP26hbH+FcbrcKULXwXtxKCMhNYxRNVhEORLtFEEN1m/tBu8rVdLaeKlqe0YCpm2km+3o3M4bpVKTwQOLa2Av/ziFiIDpnGmKjXme5qfqwSYHOmSIuDeHiHduf+U4/LEAEkl34Og4FZ9hToNpvO3MpOmJ/tFH6a5xxIwqyUF3Fb8pBDhRIa7PXp9QUc/paB20RPYFJ3UABSZbZOyWqwRsXkeagwGVv/HsvMsAaQjYoWVVa90ds87v3tZ/v3exHcBWjanJVuKYv5XiConAeeB7yy6oBovu04ZbC73l8zpihGDxNvuCXAZatiuIXOP1c5T5OH9HPFwhGrvVuCZUtZMM7SdItkfHXc3QcW5B5anA2B
- IQdIW4bH
- YcDfkJK5Jfphu1WQCj74Fo5hhAgTeeGQS0BG+EXlrxcQSLSmq4rToFkBRDBtYFNjkZgw0KBI1M9fZb82ow8Rh5iGHEjGZKHFqJkuxe3p4U8Bo9738o0Y+laDWRohZ86q1ZMiLXI4s9fhu3Wl4fGDavO3ahezduH2YKEB2Bmhb0cHfd+IBuykZHEX3PdDJP+JqsJxi2AreNHRsxoqKASBYzzSMkqAG8465GAj/AGGPLv21YLdTNQ7qpFjr1iGWzF4LntndGoAXG/RlHO5aJACRFD7nOQ7d1/T4/jLFfrCIWD7YNTPoa3emj7IThE+lkjLb3pjpK0vPTUIpOONGCwI1mZSVxKXCGF+TnbGDOxPys9AHwuXKD6wQvS32tr1Y1Gw6dm4r
+X-HE-Tag: 1767606972-898804
+X-HE-Meta: U2FsdGVkX19JNqaBGcjIKh6cMnl6ZHb0jqnFzs/U/lfuu3ZkbADgUB90HLSCeUi3aP/WfxrL8rlqM64MiCmH1S4bM7axtLdxVhZoW4XTdbJvE+dfatv0dKmuOxhoF33ufFVI41Ok85cnXFAJJInQJcj0t5rexWD8Ewgm10rENc4Bo52JL4UBuV5VYuWtwH2PFocNkRR5xShFsO0QTOiLNnVZqOVpV4Hgp8WTa506K3LeP+9aaq5smLAiAezNycZgtHTuzoOvXXSmIDkn2/pkbe1q1++J7wPpjUAteoOhXcB+WYEZLkOO/uFEl6Rr26BxpINfAz6MFDd1/m2ZG7c1SNwV9Crtvv/F0zwKtQrRAQ3UqoIU75SxfCYQMp6c0ruW8ZVUSI9WWb8QLHL++chzfSWGQzL9Psq7QlLkRbHjmFYxzNk8hhATtcUUqDDwhuQ9Dqhf1AFvYNOaI8IIybTDknv6657rxopAWiY8LmQcKZjPlSs2eGbc2cZuBzZygE91pIZma83Yv9T0HgvMTl6gp0Jm3UxPGg9iHrb348wlpm3H/ZHx18tIjvOlVdsuwgQxpaIj1dCGxZmr2BsKv5tfM2rwcA4dgMBu9y2O91itaqHBgqCdhcnlNMPwV1nEBK6riCNmIt61bNVahldiW93lJPo2eYcDGb8fNMqOEzb2XaLC/YLYgA5do0oZx6dXWoFlOdSzaC8mRq1czBGhgr9sc8HOp45pi2L5MPIgQ5lYMrF03vn1Iswea/yeRCmTaXIoFAQThdtTNoYrLwJAd8lLm1pFR6s1w+on0cWhJQOHhKQZWHGjqSF0LfPhj5K2/V0rqUrNVDEmiPx9hP7ZRLCYkofut289xwViQG20hKYDXegw19okCQGfEvSs9RgT5qPN0Yc0aiAiYh+rSOZf4gKAdjRsuWcd3NqXSQMD7QbFXNKQ0fSacNADgSejRP8p4sGx0T77vto4IDV1l2Ib165
+ tMbQy4jn
+ qypwd5cT5xzWFTu+PXyeZg38kWXIbcH7U68bKtCp3ylwqqV4/89hmnVZxauFcmfUO/ltfUFARPqtF6s3AlvMoAHlOIRCi4GHuuqAEpzry4A2iMbdSROFUFRKDB/VU6uv1mv7s9bJCDGPAB8mp+YZDPYjUEHR0fpMcl3tO/OR/GVk6UycDNp7HFXotRevmr/TiYExmDoIotj+WNk15C2ijCbmKPSd6GSKR6VHcHcgIMDXAfxz70Hg1SOXEjQyBmWlGegMZpnI+pJmdysMazEoi4Mpg1o4DtIrEOxcsbbGTOZnJl/yVWMw8rYkNso/PcE4h38PdszosNNCjdxIV6s5GJTsYBrHWQ0fwgMdG2r9ulGtwjlQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,47 +181,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 05, 2026 at 10:38:30AM +0800, Cui Chao wrote:
-> Hi,
-> 
-> Thank you for your review.
-> 
-> On 12/30/2025 11:18 PM, Mike Rapoport wrote:
-> > Hi,
-> > 
-> > On Tue, Dec 30, 2025 at 05:27:50PM +0800, Cui Chao wrote:
-> > > In some physical memory layout designs, the address space of CFMW
-> > > resides between multiple segments of system memory belonging to
-> > > the same NUMA node. In numa_cleanup_meminfo, these multiple segments
-> > > of system memory are merged into a larger numa_memblk. When
-> > > identifying which NUMA node the CFMW belongs to, it may be incorrectly
-> > > assigned to the NUMA node of the merged system memory. To address this
-> > Can you please provide an example of such memory layout?
-> 
-> Example memory layout:
-> 
-> Physical address space:
->     0x00000000 - 0x1FFFFFFF  System RAM (node0)
->     0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
->     0x40000000 - 0x5FFFFFFF  System RAM (node0)
->     0x60000000 - 0x7FFFFFFF  System RAM (node1)
-> 
-> After numa_cleanup_meminfo, the two node0 segments are merged into one:
->     0x00000000 - 0x5FFFFFFF  System RAM (node0)  // CFMW is inside this
-> range
->     0x60000000 - 0x7FFFFFFF  System RAM (node1)
-> 
-> So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
+On 1/5/26 09:21, wujing wrote:
+> Introduce a mechanism to dynamically increase vm.min_free_kbytes when
+> critical atomic allocations (GFP_ATOMIC, order-0) fail. This prevents
+> recurring network packet drops or other atomic failures by proactively
+> reserving more memory.
 
-Can you please add this example to the changelog? 
- 
-> > > scenario, accurately identifying the correct NUMA node can be achieved
-> > > by checking whether the region belongs to both numa_meminfo and
-> > > numa_reserved_meminfo.
-> > > 
-> > > Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+Were they really packet drops observed? AFAIK the receive is deferred to
+non-irq context if those atomic allocations fail, it shouldn't mean a drop.
+I also recall the main source of these GFP_ATOMIC failure warnings was
+finally silenced some time ago? Maybe we just need more silencing.
 
--- 
-Sincerely yours,
-Mike.
+Thus I'd be reluctant to proceed unless there's confirmed benefit and
+interest from netdev.
+
+As for the implementation I'd rather not be changing min_free_kbytes
+directly as that could interact with admin changing that in unpredictable
+ways. We already have watermark_boost to dynamically change watermarks (for
+other reasons) and seems it would be better to expand that.
+
+> The system increases min_free_kbytes by 50% upon failure, capped at 1%
+> of total RAM. To prevent repeated adjustments during burst traffic, a
+> 10-second debounce window is enforced.
+> 
+> After traffic subsides, min_free_kbytes automatically decays by 5% every
+> 5 minutes. However, decay stops at 1.2x the initial value rather than
+> returning to baseline. This ensures the system "remembers" previous
+> pressure patterns and avoids repeated failures under similar load.
+> 
+> Observed failure logs:
+> [38535641.026406] node 0: slabs: 941, objs: 54656, free: 0
+> [38535641.037711] node 1: slabs: 349, objs: 22096, free: 272
+> [38535641.049025] node 1: slabs: 349, objs: 22096, free: 272
+> [38535642.795972] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+> [38535642.805017] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+> [38535642.816311] node 0: slabs: 854, objs: 42320, free: 0
+> [38535642.823066] node 1: slabs: 400, objs: 25360, free: 294
+> [38535643.070199] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+> [38535643.078861] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+> [38535643.089719] node 0: slabs: 841, objs: 41824, free: 0
+> [38535643.096513] node 1: slabs: 393, objs: 24480, free: 272
+> [38535643.484149] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+> [38535643.492831] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+> [38535643.503666] node 0: slabs: 898, objs: 43120, free: 159
+> [38535643.510140] node 1: slabs: 404, objs: 25424, free: 319
+> [38535644.699224] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+> [38535644.707911] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+> [38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
+> [38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
+> [38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+> [38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+> [38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
+> [38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
+> [38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+> [38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+> [38535649.655523] warn_alloc: 59 callbacks suppressed
+> [38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
+> [38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
+> 
+> Signed-off-by: wujing <realwujing@qq.com>
+> Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
+> ---
+>  mm/page_alloc.c | 85 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 85 insertions(+)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index c380f063e8b7..2f12d7a9ecbc 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -30,6 +30,7 @@
+>  #include <linux/oom.h>
+>  #include <linux/topology.h>
+>  #include <linux/sysctl.h>
+> +#include <linux/workqueue.h>
+>  #include <linux/cpu.h>
+>  #include <linux/cpuset.h>
+>  #include <linux/pagevec.h>
+> @@ -3975,6 +3976,16 @@ static void warn_alloc_show_mem(gfp_t gfp_mask, nodemask_t *nodemask)
+>  	mem_cgroup_show_protected_memory(NULL);
+>  }
+>  
+> +/* Auto-tuning min_free_kbytes on atomic allocation failures (v2) */
+> +static void decay_min_free_kbytes_workfn(struct work_struct *work);
+> +static void boost_min_free_kbytes_workfn(struct work_struct *work);
+> +static DECLARE_WORK(boost_min_free_kbytes_work, boost_min_free_kbytes_workfn);
+> +static DECLARE_DELAYED_WORK(decay_min_free_kbytes_work, decay_min_free_kbytes_workfn);
+> +static unsigned long last_boost_jiffies = 0;
+> +static int initial_min_free_kbytes = 0;
+> +#define BOOST_DEBOUNCE_MS 10000  /* 10 seconds debounce */
+> +
+> +
+>  void warn_alloc(gfp_t gfp_mask, nodemask_t *nodemask, const char *fmt, ...)
+>  {
+>  	struct va_format vaf;
+> @@ -4947,6 +4958,17 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  		goto retry;
+>  	}
+>  fail:
+> +	/* Auto-tuning: trigger boost if atomic allocation fails */
+> +	if ((gfp_mask & GFP_ATOMIC) && order == 0) {
+> +		unsigned long now = jiffies;
+> +		
+> +		/* Debounce: only boost once every 10 seconds */
+> +		if (time_after(now, last_boost_jiffies + msecs_to_jiffies(BOOST_DEBOUNCE_MS))) {
+> +			last_boost_jiffies = now;
+> +			schedule_work(&boost_min_free_kbytes_work);
+> +		}
+> +	}
+> +
+>  	warn_alloc(gfp_mask, ac->nodemask,
+>  			"page allocation failure: order:%u", order);
+>  got_pg:
+> @@ -6526,6 +6548,10 @@ int __meminit init_per_zone_wmark_min(void)
+>  	refresh_zone_stat_thresholds();
+>  	setup_per_zone_lowmem_reserve();
+>  
+> +	/* Save initial value for auto-tuning decay mechanism */
+> +	if (initial_min_free_kbytes == 0)
+> +		initial_min_free_kbytes = min_free_kbytes;
+> +
+>  #ifdef CONFIG_NUMA
+>  	setup_min_unmapped_ratio();
+>  	setup_min_slab_ratio();
+> @@ -7682,3 +7708,62 @@ struct page *alloc_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned int or
+>  	return page;
+>  }
+>  EXPORT_SYMBOL_GPL(alloc_pages_nolock_noprof);
+> +
+> +static void boost_min_free_kbytes_workfn(struct work_struct *work)
+> +{
+> +	int new_min;
+> +
+> +	/* Cap at 1% of total RAM for safety */
+> +	unsigned long total_kbytes = totalram_pages() << (PAGE_SHIFT - 10);
+> +	int max_limit = total_kbytes / 100;
+> +
+> +	/* Responsive increase: 50% instead of doubling */
+> +	new_min = min_free_kbytes + (min_free_kbytes / 2);
+> +
+> +	if (new_min > max_limit)
+> +		new_min = max_limit;
+> +
+> +	if (new_min > min_free_kbytes) {
+> +		min_free_kbytes = new_min;
+> +		/* Update user_min_free_kbytes so it persists through recalculations */
+> +		if (new_min > user_min_free_kbytes)
+> +			user_min_free_kbytes = new_min;
+> +		
+> +		setup_per_zone_wmarks();
+> +		
+> +		/* Schedule decay after 5 minutes */
+> +		schedule_delayed_work(&decay_min_free_kbytes_work, 
+> +				      msecs_to_jiffies(300000));
+> +		
+> +		pr_info("Auto-tuning: atomic failure, increasing min_free_kbytes to %d\n", 
+> +			min_free_kbytes);
+> +	}
+> +}
+> +
+> +static void decay_min_free_kbytes_workfn(struct work_struct *work)
+> +{
+> +	int new_min;
+> +	int decay_floor;
+> +	
+> +	/* Decay by 5% */
+> +	new_min = min_free_kbytes - (min_free_kbytes / 20);
+> +	
+> +	/* Don't go below 1.2x initial value (preserve learning effect) */
+> +	decay_floor = initial_min_free_kbytes + (initial_min_free_kbytes / 5);
+> +	if (new_min < decay_floor)
+> +		new_min = decay_floor;
+> +	
+> +	if (new_min < min_free_kbytes) {
+> +		min_free_kbytes = new_min;
+> +		user_min_free_kbytes = new_min;
+> +		setup_per_zone_wmarks();
+> +		
+> +		/* Schedule next decay if still above floor */
+> +		if (new_min > decay_floor) {
+> +			schedule_delayed_work(&decay_min_free_kbytes_work,
+> +					      msecs_to_jiffies(300000));
+> +		}
+> +		
+> +		pr_info("Auto-tuning: decaying min_free_kbytes to %d\n", min_free_kbytes);
+> +	}
+> +}
+
 
