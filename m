@@ -4,148 +4,242 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5A16C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 15:09:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70836C79FA0
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 15:10:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 290D76B0151; Mon,  5 Jan 2026 10:09:23 -0500 (EST)
+	id CC82D6B0155; Mon,  5 Jan 2026 10:10:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 268B66B0155; Mon,  5 Jan 2026 10:09:23 -0500 (EST)
+	id C9FE66B0158; Mon,  5 Jan 2026 10:10:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13D786B0156; Mon,  5 Jan 2026 10:09:23 -0500 (EST)
+	id B4E3C6B0159; Mon,  5 Jan 2026 10:10:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F35126B0151
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:09:22 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8AA1CC07D4
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:09:22 +0000 (UTC)
-X-FDA: 84298243764.26.C6C03C1
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 10D7240017
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:09:19 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dzAAew3W;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=h5CuoAbB;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dzAAew3W;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=h5CuoAbB;
-	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767625760;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A173E6B0155
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:10:06 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 372891A095A
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:10:06 +0000 (UTC)
+X-FDA: 84298245612.18.4E7DC5B
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AA97640012
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:10:02 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=JxsWFnGn;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=hl43BKrh;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf17.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767625802; a=rsa-sha256;
+	cv=pass;
+	b=0bfrN9K18+oIGd2Su6cu9xI+DurE+R+5+DQV6wEBgJIldZQ/3Yrm74/v0xTVeBU7W869eU
+	PpajLh8ro47WJ91VmoLSRQFvcecayegZktI1pWOWM/8zAPmnT7HbTI+4Wdmauv+08oPiDg
+	gTGc+d6074Y5tX0BAMnuDA3TvncAG+s=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=JxsWFnGn;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=hl43BKrh;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf17.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767625802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=nXFJRGDoPP/1NBMbu/mIZ+YgI9XsAfdquYGVHPf/sao=;
-	b=wyDVJM4XLc6cHaNjIPRhYYeTSSjz7CNOlDuY9d8xWn09LbJqHoO2AASx+GBwrxIEWgtDtH
-	LTXgKzD70tBPZ1KRu6jIKDh8HAzyAMvxTvaQgNdu1/TYy48taBxrLzfsWJZWcphhewCbyA
-	rTTSKFMHVaFwfMF9cq6ERh8Ww3MY3mE=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dzAAew3W;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=h5CuoAbB;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dzAAew3W;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=h5CuoAbB;
-	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767625760; a=rsa-sha256;
-	cv=none;
-	b=jqwv3bY679/sx0okhSuVOOth7PtBcVSRlFoqUIF/oapdZswxYjufosQsZRzEoPxX4ZePrY
-	6qw+HmxBbkJ1aoLLx2hHOecczkpKOniN0XR8RO08s6ItScOBs9K3yfVBMry7h9Gsbl2WAr
-	lhmgxkzOTvKwJF95tY1kxnjR9YEsG2E=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3BA225BD95;
-	Mon,  5 Jan 2026 15:09:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767625758; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nXFJRGDoPP/1NBMbu/mIZ+YgI9XsAfdquYGVHPf/sao=;
-	b=dzAAew3W5f3JVFYbqdSx03wQ/AtLH1R8kZmOZoDi6oOjmBmsMzJTt2PQvWb61WgxqVSMEe
-	W+Bt01IqcYiJubANGRfa6JpF6NjSL2Z4Mr/idlRmRQgwC7nYdl/otz9PGkQfFx3Cgis45R
-	MNb8w9r2YbY3qp11+NjpImUaBRO3vj8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767625758;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nXFJRGDoPP/1NBMbu/mIZ+YgI9XsAfdquYGVHPf/sao=;
-	b=h5CuoAbBVOuxilN6AjMSr4r5O5yb2+FfLbxhfK1Z+eQOFyLPBnoLyRlOR6A325GlRhg1Py
-	xza49PoncpAUeiBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767625758; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nXFJRGDoPP/1NBMbu/mIZ+YgI9XsAfdquYGVHPf/sao=;
-	b=dzAAew3W5f3JVFYbqdSx03wQ/AtLH1R8kZmOZoDi6oOjmBmsMzJTt2PQvWb61WgxqVSMEe
-	W+Bt01IqcYiJubANGRfa6JpF6NjSL2Z4Mr/idlRmRQgwC7nYdl/otz9PGkQfFx3Cgis45R
-	MNb8w9r2YbY3qp11+NjpImUaBRO3vj8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767625758;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nXFJRGDoPP/1NBMbu/mIZ+YgI9XsAfdquYGVHPf/sao=;
-	b=h5CuoAbBVOuxilN6AjMSr4r5O5yb2+FfLbxhfK1Z+eQOFyLPBnoLyRlOR6A325GlRhg1Py
-	xza49PoncpAUeiBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1ECE93EA63;
-	Mon,  5 Jan 2026 15:09:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id MqczBx7UW2mCDwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 05 Jan 2026 15:09:18 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Mon, 05 Jan 2026 16:08:56 +0100
-Subject: [PATCH mm-hotfixes] mm/page_alloc: prevent pcp corruption with
- SMP=n
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=06wyz7wMV4hD5hPP6EcrZZ17Kw4oWFGb7OU+8gt8sdM=;
+	b=S5kgNWRKYzr0MJ8wJiYsSgshc5BBGcIj037gJE637hMtPzX+mXGYh3rMxLymDV94c7D601
+	ifkIKfugP7IaIaXEdg/5PifI/gyWTFdS8d9RCj9kXjic4daQ50eaL8k19xyApjt4Bh2b4D
+	xFz2VXujdS3K0SMNXWgBxmk593q1mek=
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 604Mo23K592162;
+	Mon, 5 Jan 2026 15:09:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=06wyz7wMV4hD5hPP6E
+	crZZ17Kw4oWFGb7OU+8gt8sdM=; b=JxsWFnGnWRBoo5ktiE/Z8YOvmuXAlVCrv7
+	/AEIhZqHbAHA3EN4YdvHUVx+XE2LHvKV4lFJZ/SUFcMZ+v9HBbynkapimB6moAJ2
+	3i2SpN6x3qLoq+GD3wQQ4UeexI1oIfqxJIS1X6GfbJ15Ti0QGJTs4uAVd9KdSHwn
+	k3t/zBHNi8YFB5+HUqfSFrl2sz/l3wLG3hB6ZwNJWuF2jX4pi5IVWxdXKwHtLtJ+
+	OPCfHU1lv2pWhPNEun7Biuj+EDceibRIo0oOUIiXxj80DvSzCnXBduV3XeV+WpLp
+	RU1cRUrKXcP61liFFKAM0LG3VuTfC0PN1HCWNPj/IuL1Le2015bA==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bev2jhwmv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 05 Jan 2026 15:09:57 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 605EtcCN026370;
+	Mon, 5 Jan 2026 15:09:56 GMT
+Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013071.outbound.protection.outlook.com [40.93.196.71])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4besjhqpb6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 05 Jan 2026 15:09:56 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZBFGPK5qgW0a4Jzzhq2ZV7i1GSkmm7uS6Lmya1tK9mb4pigixKHKlVLZfVw4cyXck3ZjsPva2wG8fJoIV1uGnRG9hFobKEqqjOR6wMY09M9N7KI3wjJpYrqxPq5pYphxsZ2kbqqc9iffDBykf89BxJ4k1IBK+NF4dcvZUNfuRjM+5S8Hu3TSgXhRC9pUgwsIbqVqPGbNHNsB3E73nWdfAA/4CFBc0INfA2Dkb9gM1WSYs74gSlAyMRgcWZuvDFkN07GXhMLVJmwHL05qLkc0G73LTprVSFzQAP4bcPTEg/XMWxVuFbTRlxZ5MAyc9B/B9Ez6M9itEn0E/YX2Elkxhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=06wyz7wMV4hD5hPP6EcrZZ17Kw4oWFGb7OU+8gt8sdM=;
+ b=pw2STy5EABtFNnEjlSX/jH5LKrp/ZPr0w00agfiOrXvyTnma/kih3w9uebXT/HkGfkdm/FGO4ZrYuEFuqIJUat+Vol3zDpJIppfLskiCZMFjaDb5V/IVVPwpwQumHP3oeBIJK1KPL4tPaU0JulRYcw8PU3dbBYd2REvoG1zwLEDI6AspGX+jN/sGe5WErciGJwLHbaseZi7aLrOlVG8v3ZbcGa2PEJJasvZpl8CW3GjLieixcDitjxlIWLv6k6Dc4lDcd7APX4jZQCSgOlmxEsvJhWGYGRuqFgkcLs6EIzI3IhbZIRXeGQrf9R9X5rYG/bhdVg/l5tQ1IQs72bGKNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=06wyz7wMV4hD5hPP6EcrZZ17Kw4oWFGb7OU+8gt8sdM=;
+ b=hl43BKrhSF1QU8Fi+R+u2rYL3VdsaW8Trw0W/OyWnaQtUTcprxNgqZaLNKN7RYiYeySqTyVAvPnhqrQqIN1tvAJOqNJOOhxNd3t9He+oUFi7CyrPd3ugURET35maczh24dEHiAyo6i7tUb8PNLYN5Uv0GxePUfycQ5PA1y/j/CA=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by PH7PR10MB6628.namprd10.prod.outlook.com (2603:10b6:510:20b::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Mon, 5 Jan
+ 2026 15:09:51 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c%5]) with mapi id 15.20.9478.004; Mon, 5 Jan 2026
+ 15:09:51 +0000
+Date: Mon, 5 Jan 2026 10:09:48 -0500
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Andrew Ballance <andrewjballance@gmail.com>,
+        Gary Guo <gary@garyguo.net>, Andrew Morton <akpm@linux-foundation.org>,
+        maple-tree@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 10/27] rust: maple_tree: add __rust_helper to helpers
+Message-ID: <qwm7lwnardqkxym4nld5vyqk4i3i3va6zuv2uew3ypscealf3u@irzyhge4ygef>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Andrew Ballance <andrewjballance@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, Andrew Morton <akpm@linux-foundation.org>, 
+	maple-tree@lists.infradead.org, linux-mm@kvack.org
+References: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com>
+ <20260105-define-rust-helper-v2-10-51da5f454a67@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260105-define-rust-helper-v2-10-51da5f454a67@google.com>
+User-Agent: NeoMutt/20250905
+X-ClientProxiedBy: YT1PR01CA0080.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:2d::19) To PH0PR10MB5777.namprd10.prod.outlook.com
+ (2603:10b6:510:128::16)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz>
-X-B4-Tracking: v=1; b=H4sIAAfUW2kC/yXMSwqAMAxF0a1IxgZqxe9WxIHEaDOollZFKO7do
- sPD5b0Igb1wgD6L4PmSIPuWUOQZkJm2lVHmZNBK16pQFS5yoyOHp8OS2pZU11SaCdLAeU71Oxv
- AWjT78Xt8nhfX6qYaaQAAAA==
-X-Change-ID: 20260105-fix-pcp-up-3c88c09752ec
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
- Mel Gorman <mgorman@techsingularity.net>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
- stable@vger.kernel.org, kernel test robot <oliver.sang@intel.com>, 
- Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8903; i=vbabka@suse.cz;
- h=from:subject:message-id; bh=FpnZkQzqTXgpLCeDqbf635ppL7kxREyq/3JaLxYT+kI=;
- b=owGbwMvMwMG4+8GG0kuuHbMYT6slMWRGX5EQOJE0jdPA6XvK4j83sj8vy8rg1lpdsVHjo3qn8
- +6DS69LdzL6szAwcjBYiimyVO8+4Sg6U9ljmofvR5hBrEwgU6RFGhiAgIWBLzcxr9RIx0jPVNtQ
- z9BQB8hk4OIUgKle+YuDYVrKSfHZR/5PqbI5l7skK6Er82f8B82bakarr0YsaNwXx9cts+7Pa88
- H8WHp38sPHQgVjX4+tYL598b1atsunpivmrlOO+bJc4P7pyYLua/qtrM1t/+xd07Akt4dSqoVxW
- y6nY05xs6HBYoFt7W+emxSdvFInsGre6V1yz2EDszcrVzy6E7FrsuSgYXcvwycpkay97ZqTV3Ly
- 1uxftL951dvpOySCJ5jlL3z8rPAbz636hw0is/Xt56XEHZKFj947LOOziEV3ogPVWdSm1ZcCVJm
- TJ+6cxnDHqZNwcsrq3MLXn7Q/T1jj5JeDdf93Zse+4lbuV8uu24l7TElPH6b9L5A09zfgiwpggq
- dNj13AA==
-X-Developer-Key: i=vbabka@suse.cz; a=openpgp;
- fpr=A940D434992C2E8E99103D50224FA7E7CC82A664
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam02
-X-Stat-Signature: n7oys8q4iua5kgtih1prpc1mx9i6nmzi
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|PH7PR10MB6628:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8cc79b93-715a-430c-5a58-08de4c6c796c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?KNnt92x2iruXtAdRyj4YZhau/XHv49e3AbvPDTKH++2nohiYs17m2Q0dJrtK?=
+ =?us-ascii?Q?1MlqdsEWQt8uXhgY0pL0in6mEMZWYrAE4C4bZiGNUNL7Xx7p/prafx5wyh/o?=
+ =?us-ascii?Q?nf/d1tlOAJU8hgbd6V7TxTJsRpQ4SEhI2tfDighyeWnsVbUkay9uFz7fxZQV?=
+ =?us-ascii?Q?ePg8MWidzOwQaGi45zAQ3b9bzjMINP+wQ9tPJzX2w8AS0M5TxvogLVUrlcgC?=
+ =?us-ascii?Q?0AxxhXrPUG5/nYOUSCGcptkoiqghzNff1PDsKt6/YHNToBwIVMOyFqv4ytwD?=
+ =?us-ascii?Q?vHk/p+M0G/gwnv4K7YDQ93kVjximDQX+yEUIjp+T6zs7JXfZ+6Vz7+WGS9vV?=
+ =?us-ascii?Q?QUHa6ENGooRSJbdHR+rBxxJmAWffaSuiB0J6cbH3DMJhcP7710n406evaCZK?=
+ =?us-ascii?Q?+bWCU51B2oEufzZbDGvfud0lPJmXQw799iciuUF7oPq8Er+qwgXuDEuWnHTz?=
+ =?us-ascii?Q?2YKqNrLvrz5YVdqGOfRbaKGZjBHoqpX3pMEsU7Z3tHYp6IHbYQYBlKpacbdT?=
+ =?us-ascii?Q?uFfQpKp53mBzUSGCRt8UM1sclFBIRUKLWI3RFjM8yI0ETiGyl12lg5he+ejs?=
+ =?us-ascii?Q?J6sT4zZZhxDC+N13EeTXeqsvyn21bYX/cjcGuQmqYORJ1NWtzNXn17CW80zG?=
+ =?us-ascii?Q?pgthHnT/zGdlbSTvLfwRjqlwX+kvE+nJjxtxIbgsjtatdfu4k9jZwGN5QteT?=
+ =?us-ascii?Q?tOHxw9EAC/oBd0a0r5D0pYIGP2hhsGvAqqF6rm288gSt3CWIjGUESh+O2anf?=
+ =?us-ascii?Q?W65VAO7SQbdPL4PSdBpl/pR+uS01W6Y+trvZ0a/g7u6R6lPyhKGhjGKIPzt6?=
+ =?us-ascii?Q?wnLMV3KzY8VzHAHhFnUvPndqPVohNYhmDGOPoWhZcSCrdnbQUxTS8iTqaIa/?=
+ =?us-ascii?Q?XWkRyo2Yty2A8gr/+Lbd89OsVCVdMu1800ase2fy8auwwqMs2/TAqVAn4Hf2?=
+ =?us-ascii?Q?gkOnx3hxHNYTyQ/1bXOFe/Io0Oy1+J4IQ3DP5ibFZjbXVcUI1Tjy5d+0l3Cp?=
+ =?us-ascii?Q?s58XMDRfg52Xm19+oCyhCUxv08cINov9Bmj5CVQq9DtOMa95LKDAPStxVh1o?=
+ =?us-ascii?Q?WAMmrn8QxNsjMTvWmtdCOwdncpVyla4pAWNS1szqiHyH5ojnivU9KQWKHG7n?=
+ =?us-ascii?Q?QRuMYg2NctFoO9SY1lwW14j4qVUeVjq0a7MLFjt1lH1w2eLR0tcIbf7MM8BK?=
+ =?us-ascii?Q?nYDFlXGebH6BynfDxmnPSx7b7nZuzMlvM3JLsv0yey4ZCD+a+G4hrAVdG3ed?=
+ =?us-ascii?Q?8hw2dTcUATDCAAlVWDx+MrIseZM4TRMNKkhvw6Wt2QVWub1Vh82QaqU5Flji?=
+ =?us-ascii?Q?linqzaHi9Q0AONDmcm3Xd5AJarnGs7+Vxi8AmhE9ht5mFgHXfgRGKxUQsUY5?=
+ =?us-ascii?Q?+oKWqvE/INv96MWZ1FARWrIg+u0PqB8uQAyyErvssVRTjBOP9g0ET5NP0fqp?=
+ =?us-ascii?Q?O0vwWs0WGRbM6qiH33I19NLrgnIQmiGw?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?lwp3Cj/VlLIVZmjSvZESrkHGRF3qyOYHiRx1c7gg6ky29UYaEgJLsvcdNehc?=
+ =?us-ascii?Q?u7dXfMk+XYKqrTGk3zwoilolwVhjN0OURSJBBiQ/7fGaeUNWZ1jph8KXytB4?=
+ =?us-ascii?Q?RX+6MND68u125+kRjVyOC+svWESGULzyAtt7I1SCNC/ryRvkslbYLzqnEwYB?=
+ =?us-ascii?Q?eAgY1nyhxt7+0tzBo6hXQeCmVcdALFps3ePckrWXP8qIVwZx3JZK9w9sUx4A?=
+ =?us-ascii?Q?5aLYjAx6v4PAVCrmNe7n2y28PuP8nxPW7fieuKIfIb5Nl89M5LnSKSGenxzq?=
+ =?us-ascii?Q?mAYM6yzLmqzNRo8iMjQ6U98AN2nPhsO6t+DBodn+gGgYwk9p92C3FsVx98NP?=
+ =?us-ascii?Q?/yoN5XwtyPl2ZKFQ2fe3uXGhzKt7DwEhrIthssmkhH9CNQ6wehQg2lWQI/oQ?=
+ =?us-ascii?Q?esb1L0QWZxtj5GvQqM2NeWltWdZrfAQJR7o69LiWeLLN6FZlil5rUFbzgR3e?=
+ =?us-ascii?Q?adxTxoK0Cp1kmN6D4sq0i6MisUrd2gTpkLwDTy7GAhcjLGx8uINYvP56tKoN?=
+ =?us-ascii?Q?jltydwVeF5vsebzXQI7CvI13cLG9XkTGrh9Ftfx5RvV6Ae8EfzZxStMx16NG?=
+ =?us-ascii?Q?86bviLFuQWH+UlYyCop7Yg+2TZQHLOT0WK/J1bd3zk9XvY1THoVq/WHrK1w2?=
+ =?us-ascii?Q?/t+k4M2gJgcxZgDFbSJNC8BykpEeeZW0aIKwN3QPIW04j0VBBssHp3Rgu1Gs?=
+ =?us-ascii?Q?vPiUkAmGqr4AgUdb8XKDLnP8Cux2FIbfrmxs0U0r8nHJyEQZVbJ3Ij7zVcea?=
+ =?us-ascii?Q?abEaPQ9+YSpC3z/cJGxfUJobaOkpefqtLhs+YxSIXJHaAFIOWaaFS1T4p0bm?=
+ =?us-ascii?Q?QDLulWk23Id9HfOrEHETmhfYO1Xo6zmAAkmuwmSNaHBQ+LPq7kiw5uRTN7pn?=
+ =?us-ascii?Q?1TZzHissabj1+IrA/8TbGYY2Qq1AOzmRdIjtVz5bAZoFkRkEM67FbhVpbwqY?=
+ =?us-ascii?Q?Ag1tSYmhUcVCdxfOvdXzm3lsLNHla0bO2MxBHYBoFllKzu2rMiurlsSlqwE3?=
+ =?us-ascii?Q?KCo2dy+eSrb2XtgO52rv7vBUW1jIa5qnjMfsJytwHa00RXxflj1xfUN9H70v?=
+ =?us-ascii?Q?Qxkd1iyrpSUg4m+EOUsIMsaOkma4hmURNtcDed0iLuuunblkioXdLsSrkVXc?=
+ =?us-ascii?Q?gUU2WHNZZzk/2WIAtyi7mNlxsdHucl9WNHPaQE+vms7yPdJNnkuo0RoHQTd+?=
+ =?us-ascii?Q?eawsLEOfqHwXbgt+2BobDSXxsElZwyHeTQs6VvqZsmW5mbmc47xMmrmRvQV8?=
+ =?us-ascii?Q?+Xtab40WaS3v4iIL4EI+2wIYWguZ190qDfcx4CDblGc7ya5i+CyVSZf+X0tE?=
+ =?us-ascii?Q?BRqYcaD7TTgF6ffPlS1ohJZi0vcGA0e3/pL3iAOESZv09DDcCvTMWEoXurIN?=
+ =?us-ascii?Q?mxO/7bbfii1C3hZeATCZRjYFFLHKi2W4lKTa2Y6+mDuZ+rH9W/HZIoAkl36N?=
+ =?us-ascii?Q?XbiGQN4PqyLTx7DnyxQVt0LYz61m+gxFMcfJRVC1BDHhNRPGKARoULOoVs9C?=
+ =?us-ascii?Q?HKkJQOk+rrYg0o4y3iWv4Y+hOIGR6mnrhtSuF2sqU5qp8xSFTEc4ldyWXKES?=
+ =?us-ascii?Q?tbMncJFqSNggrdKOjOZR8H79yf2Ka4L7mxMjfE1i9TZimMbGZGL+LZPJeXY9?=
+ =?us-ascii?Q?xyAQqWlvt4A5yi4cCgnPkmi3RfOeq11HHWGrKa/K3GH0xn4fyKSqIU2bmRck?=
+ =?us-ascii?Q?ycSzI2qfw6czoqjd347qfHFOsSBcLRxIX5VDBlIkEpt3yAtMg0ALGMr7QsXa?=
+ =?us-ascii?Q?4FJ7rSHidw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	wDsXD2eIsstWPSNYP+45bTIkm8oQomkyKfUwy5kX49ENsMeekptv3CN+4Ih2VPz3Y9uy5dsEFwllBYaThzcow6onCD1oLuQrKlxLVyyFtG4XKfbJ67r2QRw5Tc4PB6n05DYBv6MtfpUjw2PCNdmogesCHQXrX2wt2CvK/F2ImV0sQM2M1tOlY1Q3n0HT8ecyojPA7nsHU1nWaMRg+7+X3wIsGj6rkeSwRVvfirmTfIEiihE9fJEiySApREziaPRWjdzMxlObfkqsg/kEjLuPfhmVhzl0blco3HNT33zNZgAEZafx7Yw173a5ZDpDkyxurf/9kKyGjezmTT2UhKApjqbe4Pr/16dYvrtBIkEAOeki9Q2SMtEorcx1F0aN9LrIzMi/qqjOX8in5LXk2ldnRGOVnpo6hBVQqXZET/1sLoAyp410Q+P/Lz/3pcwIf2iAA2KJPKIi8uxJYa4PzPYCYCw4yFnwKwJZzC4QsZMBkdiGzkuLOLiQMLOgtoEYMwvvdt0D2Cksqj4ZGGS4aA2VmQzPvl7EDCoaFidO9c+iw3mDISYh/XweDUBTCkuKLIpOO9dCfqJ5gL3JlRGdFqMU3nct/EMIjQExsIfHIZvrfEU=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8cc79b93-715a-430c-5a58-08de4c6c796c
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2026 15:09:51.1674
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iVJtDCydgcI5JyVjfLddGtD+vX0VI1w1siQ9RyzwHgFbbpR6x9zRTpJjd/eThK7N6CUoxtTlOT7fDON0O6MzTw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6628
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-05_01,2026-01-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 malwarescore=0
+ spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
+ definitions=main-2601050132
+X-Proofpoint-ORIG-GUID: CSrCZRtWt1g3ZDsUY_Y_1XxBMd5L3bhF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA1MDEzMiBTYWx0ZWRfXyIe2t4gtZRMK
+ a03ZJ78jZ6a0EOrkbkc5YBl7UO0Duw07kTYYo2I4XI43+AQqiAb0wrQTAVQ1sqymJvkDN/4UtkW
+ cTrhmKJfNZYJeLN3KCL2x6V2N+m6ctmcvpThDlpV62JzV+ChsESrhJea8JWkQaJ2PdEbbFKyTzY
+ k58QIxCK6vIN0MpBNbIQs8lo9tR6V0mjbhn2aMRfsMua/bYlirqpf4N7ImGNdrN8wi8QkAVCp/v
+ xajL1sq89Q51rjv2SCcO21YMFLlH8UI+5XSwArkdsAMYygnAAXToAh9w+I1Ey8P3u+hQlwKGs+I
+ N/ag6xWAu96a13rstTpkzm+VpE/lSRsqu3l6Yqj8FG0Pxawdr4E6ncs0os2V+/zBkzppfpjfYVY
+ xyeYE4KQqAda1mFYpecsIHEWYvQ1oWQbJkB3rixdvAxCZjxuIIfLQCNqpd3NIX7mRoXkgzQ4tRX
+ rhKtnsmjUdKRc3huZ5P2fN4vRLCYrj2P3e8hdZq0=
+X-Authority-Analysis: v=2.4 cv=A9hh/qWG c=1 sm=1 tr=0 ts=695bd445 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=1XWaLZrsAAAA:8 a=pGLkceISAAAA:8 a=_2yia0w1AAAA:8 a=yPCof4ZbAAAA:8
+ a=Z4Rwk6OoAAAA:8 a=JfrnYn6hAAAA:8 a=37rDS-QxAAAA:8 a=RsEYw7Wb8r_WlH3BIDUA:9
+ a=CjuIK1q_8ugA:10 a=4yAS8WwzZ1jAEY03B-5r:22 a=HkZW87K1Qel5hWWM3VKY:22
+ a=1CNFftbPRP8L7MoqJWF3:22 a=k1Nq6YrhK2t884LQW06G:22 cc=ntf awl=host:12110
+X-Proofpoint-GUID: CSrCZRtWt1g3ZDsUY_Y_1XxBMd5L3bhF
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AA97640012
+X-Stat-Signature: iibdei3aj8dnj13a91r9mhmdr1wexytt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 10D7240017
-X-HE-Tag: 1767625759-204347
-X-HE-Meta: U2FsdGVkX19odaSoxT3gw0LebW65lsToITcAqJBPD39L97+H60ExUX6nIxtRHjmxOUSGm84wZrRaDh5NaCQmglygcaRujT4CTNdnzqPwPtpUlHBSu2EOu1gDkrVjm+L6WALrEwOJgcRE45PrzX0xTt23FIUK1MxluVaUjst5SQ2LBVL7qi4Xivg1xfzkGkAx25eU0OOBM8J/1iQ3SNPnTPT1Jq52k7J7ZQv/fCmz4JIyPUIBYoFsyj2C4NLGT0qWch4GIL8YHUnnj1Zb6IYqir0rgjX5aSgERZNrUxlw0SSYSdesemHQhDW+7+MZy5Yh3DxhORxTHOD4/PxRxFrwzdgIwMA2x0i0tFgOBaZJNOzleEF+ZoIAEMdDHiit/EhgvY61M1tbS3oFMV8y4+qLn1hC0aDAwybbhXxseOVs+1dTJIAmYHA2Et6xqThSMTQ+L7NLnRG+/OQOo3+JjydPBp1fsQ8zecME2y7+R0ytRnV0NbHXAIC6lcTQYTYFG/r2g8/8pJAA2lhUNxHk+sRzB88t76qiVJzot48cfyyo5ilOkD9ykQmvmwReT7igPCW1Z8xeiumakxIMMi5XWGMJKZEVF7LC8QZwjXfoE/U+mWNntzS4zFZPJLC24i7RXtYzNGgdfOUT/r7PPFqzSP3lcuB2z48F2Yo52OzTk+Ut+5o2j8l0BQ52E9fvQPZN+E43BISZtojiyBPnoSqYZNZxhvdB05xtsUZfRCwTDZF5w98QZmmo6icB25RyRP6gcbN/+ZONzRHJ+axXxrsTC97IpLHJEHHLcBkW7qKKUyNWNcOIY03SitEnvUj0NoecZlAjVQHk6ZUYN1XqHw24Ecj4AYQHorwfnQOgDD1MHIVNqOY37V/P+PsCrTI9jkQnJ9Llr9X98n0mnET7o30vVthbkfwt+nmvCStHFFHfGKPirYtIrSkXW3rOouN7/Og1C/0S/oZlDwc3DkI1aKaPek7
- r44taLz1
- kI14hbbpYzJgWv1KdaxsdJm9rQo9wcF2ivIRKyTuR1q9B+spY/nN91faV+q/KuXqAbeKv67AC9mgzcMSIvxpDg/QY+odHv03gxSfvl/c90N7MALlHNYgdKSQJEZlRSWMDEry35ghWW8Z9Svla6NLT/NAGoS432Bzwm1dthYForfp2sp4i+lwqJCkr9bnWB1j69UjD74iN00fF9+lpKBuXOUDqE0Xw7GqQM4ds1+4U/ez+4/NLJ8tKcR9KVp/jomCScOiIeGLbFzJCjfkCQpQ7c/beCJAk624W3EPjQiBOCoDZMBnAeq9hKGDTMR4fnjXtD1OxWH2FStwXmFnlyG2W1q6vJX1YA+n6dyrlt8WpqZm6UGdJa94chVlFbBupjUphTd+ItILNcKaDMgzNKrjSK/BaGg==
+X-HE-Tag: 1767625802-142451
+X-HE-Meta: U2FsdGVkX194BO56Uh1HQ8VtfQNXcLXgnvWHxkecyC5wu3MFIl1ZNmaz8HMIjumsPQTvIEId5cR77iCEIVTUhIkSCNtSpm4CQmbqrkt58bnbL8cHq77wMWzQ63TehB1dWVMXI03XSF87Sh4bKt6zQs7u4MBdnsXD/0QiaT1bM79gyK/vIlEw7pqx9b8myrjVbbMaNmX94AXJtvlT1bZxV1CzbrixZZlVsqX+iVcjd8OF1j01ul9iF/kuf6cK7nlCqt9DxzAMabDy6nAPGkzZy5sccxh/Er1csAgV7Q2FW40/BOu5zkiqsqvZTHja0k6hEhtZeetAiK1OXsbATuetTlNINaVNAemxT4bYvnZRRhqhT+T6YuWEZNo3KFaJ8rGFIQoq99GYPreZl0q6FvKmNTTqtD/QKxoX8ueOU8NSCUF/YuuNE4BTIBjrLLUY7ULWuH5p/3zo3IUmVLprlSzA1xze3M/jSVDRFBj0n9PEkSzzLUvlxmBZaOxdNSzZEMqklmLJ5pZQkoHlYwLA4ur3UGNEg3uULnu/0mDQjubywrImgTziUG/CLi2lcdRRM0WxGgoUuP1MSj/AUNIcU8+y/WzwwyWinpOHru1mwa+EkfO8a9C71RN9bBo9bBtaJCc59m3mlMizdIjCAbsM2lAJVWgig37gO0LPZkvsxqibC80ikTekqBy20BJs19M61UUN2mY9caTHqIS6OyxvpAVK5ilbdK/P0ks19ws15sOlIAiCgtvWwqf07jUslG8X4yDjuRH9yWmkbhFFP3a0o+5czuZbWuo/3EwFTRnSvCpwqYM/FM5zz+2yXVtf6rM9XatY4beP3A9AiWXknq5wznEDWlMJEETh3Xj5f5TPAcbwraxeMGEtj5XVXRh5WgZR8WRZm35r8nM0lFLKVIx8c4xX8KNuVDdYpGJ5Itk3Omn3Z8efJg8aIX6n5RvUTP5zasfMTyvAvOgFtNpnKHXCTKG
+ 9CfGoeN1
+ QoVwIA8nu82BujuDlqTmQxl8y9fxOqexJRrMxddnei8xWWspYmUTGNrW4e1TsPn1Hpc56p0cOaqVsYu9YzrFRwdN4PX4st8FxGFGEcjX61Zv7AwYjSVx8XQBzUf5nJGjq0/DkChNeE31WKniLCYuOZwutttaMhljVeZJMBXRdnGWLFavUSzk2U10xMu2dtKJaSA60sg0yXHU2c3QkXNQQU6XK2vP/4+2AQIFqaBVKFYqCUGzKMSTXSE9bJD7NaozxI15JwpCFRyjzwodXGBIUCbzgmgKjE8zBz1vxiou8zWi+drs42eGoqozb+xAgUmnlnugH2D8Bhm9F2IJm7c/8RqFskleLvSvHQsK3yqA97u0aVNPXh9FrSZGxuv/7Rj07/C3rL5SsJqKmdPftulTw34SLEZeZd3ZsETCudiN3InfjDXdmkgK6lw9z3QWtsWNJEO4KUkZsrv5yfybz5cWPhQvQy6S1G5r7e+yrga7KdviRHKh7DkLnMmkhqY2bPxQIe3obCb41QDZdIlBRqEAYjTmUQwD+mj6ZAhieT2nbqHllzA9tqqqYqMFJg9oTSWYQmiqTTKGSvbTu8P5+7KpPth+iRePh48e5EZYLvNabbTiLqYLO4Ettdgp1sepbB8jnnelxTAqz3XZAMe7JA66WGIIq1AloT/rQgdTASAClLQJCmTl/V+rV+993Ij4TFFr62nkc6eZO9y5y2zQPB47kPaUY9hj8dq3NDa5oovn61wgRWXsYXr4TDEidHstWjRAPwDxa1ZKHF5nm0MDTvJ9RiBEWCIbn68oFo1isKCgSeFxM/dfHXNR0oYeSfVHjTBZn3n42DvdYYgwGOSxGz6+E7pOH15/Rz8mE1RX+bUk/EnIF9QJKo30isUAd/CSAq/fXwNX1UBclsa4SZeOx8Bu2tH0zrjhlCXd5wreA+Tny6EuJUmbP5pQT0lnwbd5Fpv58A7nCK7G562xdIFkXajVdVsbbZ2Fk
+ rDekIe5p
+ 0USIx4pImpQ7iWM1N2DT1rloFY7AU3z97K+HqbNt+31wl9OXQ5+2JuXEA0B2fsfl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,214 +248,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The kernel test robot has reported:
+* Alice Ryhl <aliceryhl@google.com> [260105 07:42]:
+> This is needed to inline these helpers into Rust code.
+> 
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Acked-by: Andrew Ballance <andrewjballance@gmail.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
- BUG: spinlock trylock failure on UP on CPU#0, kcompactd0/28
-  lock: 0xffff888807e35ef0, .magic: dead4ead, .owner: kcompactd0/28, .owner_cpu: 0
- CPU: 0 UID: 0 PID: 28 Comm: kcompactd0 Not tainted 6.18.0-rc5-00127-ga06157804399 #1 PREEMPT  8cc09ef94dcec767faa911515ce9e609c45db470
- Call Trace:
-  <IRQ>
-  __dump_stack (lib/dump_stack.c:95)
-  dump_stack_lvl (lib/dump_stack.c:123)
-  dump_stack (lib/dump_stack.c:130)
-  spin_dump (kernel/locking/spinlock_debug.c:71)
-  do_raw_spin_trylock (kernel/locking/spinlock_debug.c:?)
-  _raw_spin_trylock (include/linux/spinlock_api_smp.h:89 kernel/locking/spinlock.c:138)
-  __free_frozen_pages (mm/page_alloc.c:2973)
-  ___free_pages (mm/page_alloc.c:5295)
-  __free_pages (mm/page_alloc.c:5334)
-  tlb_remove_table_rcu (include/linux/mm.h:? include/linux/mm.h:3122 include/asm-generic/tlb.h:220 mm/mmu_gather.c:227 mm/mmu_gather.c:290)
-  ? __cfi_tlb_remove_table_rcu (mm/mmu_gather.c:289)
-  ? rcu_core (kernel/rcu/tree.c:?)
-  rcu_core (include/linux/rcupdate.h:341 kernel/rcu/tree.c:2607 kernel/rcu/tree.c:2861)
-  rcu_core_si (kernel/rcu/tree.c:2879)
-  handle_softirqs (arch/x86/include/asm/jump_label.h:36 include/trace/events/irq.h:142 kernel/softirq.c:623)
-  __irq_exit_rcu (arch/x86/include/asm/jump_label.h:36 kernel/softirq.c:725)
-  irq_exit_rcu (kernel/softirq.c:741)
-  sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1052)
-  </IRQ>
-  <TASK>
- RIP: 0010:_raw_spin_unlock_irqrestore (arch/x86/include/asm/preempt.h:95 include/linux/spinlock_api_smp.h:152 kernel/locking/spinlock.c:194)
-  free_pcppages_bulk (mm/page_alloc.c:1494)
-  drain_pages_zone (include/linux/spinlock.h:391 mm/page_alloc.c:2632)
-  __drain_all_pages (mm/page_alloc.c:2731)
-  drain_all_pages (mm/page_alloc.c:2747)
-  kcompactd (mm/compaction.c:3115)
-  kthread (kernel/kthread.c:465)
-  ? __cfi_kcompactd (mm/compaction.c:3166)
-  ? __cfi_kthread (kernel/kthread.c:412)
-  ret_from_fork (arch/x86/kernel/process.c:164)
-  ? __cfi_kthread (kernel/kthread.c:412)
-  ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
-  </TASK>
+Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-Matthew has analyzed the report and identified that in drain_page_zone()
-we are in a section protected by spin_lock(&pcp->lock) and then get an
-interrupt that attempts spin_trylock() on the same lock. The code is
-designed to work this way without disabling IRQs and occasionally fail
-the trylock with a fallback. However, the SMP=n spinlock implementation
-assumes spin_trylock() will always succeed, and thus it's normally a
-no-op. Here the enabled lock debugging catches the problem, but
-otherwise it could cause a corruption of the pcp structure.
-
-The problem has been introduced by commit 574907741599 ("mm/page_alloc:
-leave IRQs enabled for per-cpu page allocations"). The pcp locking
-scheme recognizes the need for disabling IRQs to prevent nesting
-spin_trylock() sections on SMP=n, but the need to prevent the nesting in
-spin_lock() has not been recognized. Fix it by introducing local
-wrappers that change the spin_lock() to spin_lock_iqsave() with SMP=n
-and use them in all places that do spin_lock(&pcp->lock).
-
-Fixes: 574907741599 ("mm/page_alloc: leave IRQs enabled for per-cpu page allocations")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202512101320.e2f2dd6f-lkp@intel.com
-Analyzed-by: Matthew Wilcox <willy@infradead.org>
-Link: https://lore.kernel.org/all/aUW05pyc9nZkvY-1@casper.infradead.org/
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
----
-This fix is intentionally made self-contained and not trying to expand
-upon the existing pcp[u]_spin() helpers. This is to make stable
-backports easier due to recent cleanups to that helpers.
-
-We could follow up with a proper helpers integration going forward.
-However I think the assumptions SMP=n of the spinlock UP implementation
-are just wrong. It should be valid to do a spin_lock() without disabling
-irq's and rely on a nested spin_trylock() to fail. I will thus try
-proposing the remove the UP implementation first. It should be within
-the current trend of removing stuff that's optimized for a minority
-configuration if it makes maintainability of the majority worse.
-(c.f. recent scheduler SMP=n removal)
----
- mm/page_alloc.c | 45 +++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 37 insertions(+), 8 deletions(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 822e05f1a964..ec3551d56cde 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -167,6 +167,31 @@ static inline void __pcp_trylock_noop(unsigned long *flags) { }
- 	pcp_trylock_finish(UP_flags);					\
- })
- 
-+/*
-+ * With the UP spinlock implementation, when we spin_lock(&pcp->lock) (for i.e.
-+ * a potentially remote cpu drain) and get interrupted by an operation that
-+ * attempts pcp_spin_trylock(), we can't rely on the trylock failure due to UP
-+ * spinlock assumptions making the trylock a no-op. So we have to turn that
-+ * spin_lock() to a spin_lock_irqsave(). This works because on UP there are no
-+ * remote cpu's so we can only be locking the only existing local one.
-+ */
-+#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
-+static inline void __flags_noop(unsigned long *flags) { }
-+#define spin_lock_maybe_irqsave(lock, flags)		\
-+({							\
-+	 __flags_noop(&(flags));			\
-+	 spin_lock(lock);				\
-+})
-+#define spin_unlock_maybe_irqrestore(lock, flags)	\
-+({							\
-+	 spin_unlock(lock);				\
-+	 __flags_noop(&(flags));			\
-+})
-+#else
-+#define spin_lock_maybe_irqsave(lock, flags)		spin_lock_irqsave(lock, flags)
-+#define spin_unlock_maybe_irqrestore(lock, flags)	spin_unlock_irqrestore(lock, flags)
-+#endif
-+
- #ifdef CONFIG_USE_PERCPU_NUMA_NODE_ID
- DEFINE_PER_CPU(int, numa_node);
- EXPORT_PER_CPU_SYMBOL(numa_node);
-@@ -2556,6 +2581,7 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
- bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
- {
- 	int high_min, to_drain, to_drain_batched, batch;
-+	unsigned long UP_flags;
- 	bool todo = false;
- 
- 	high_min = READ_ONCE(pcp->high_min);
-@@ -2575,9 +2601,9 @@ bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
- 	to_drain = pcp->count - pcp->high;
- 	while (to_drain > 0) {
- 		to_drain_batched = min(to_drain, batch);
--		spin_lock(&pcp->lock);
-+		spin_lock_maybe_irqsave(&pcp->lock, UP_flags);
- 		free_pcppages_bulk(zone, to_drain_batched, pcp, 0);
--		spin_unlock(&pcp->lock);
-+		spin_unlock_maybe_irqrestore(&pcp->lock, UP_flags);
- 		todo = true;
- 
- 		to_drain -= to_drain_batched;
-@@ -2594,14 +2620,15 @@ bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
-  */
- void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
- {
-+	unsigned long UP_flags;
- 	int to_drain, batch;
- 
- 	batch = READ_ONCE(pcp->batch);
- 	to_drain = min(pcp->count, batch);
- 	if (to_drain > 0) {
--		spin_lock(&pcp->lock);
-+		spin_lock_maybe_irqsave(&pcp->lock, UP_flags);
- 		free_pcppages_bulk(zone, to_drain, pcp, 0);
--		spin_unlock(&pcp->lock);
-+		spin_unlock_maybe_irqrestore(&pcp->lock, UP_flags);
- 	}
- }
- #endif
-@@ -2612,10 +2639,11 @@ void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
- static void drain_pages_zone(unsigned int cpu, struct zone *zone)
- {
- 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
-+	unsigned long UP_flags;
- 	int count;
- 
- 	do {
--		spin_lock(&pcp->lock);
-+		spin_lock_maybe_irqsave(&pcp->lock, UP_flags);
- 		count = pcp->count;
- 		if (count) {
- 			int to_drain = min(count,
-@@ -2624,7 +2652,7 @@ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
- 			free_pcppages_bulk(zone, to_drain, pcp, 0);
- 			count -= to_drain;
- 		}
--		spin_unlock(&pcp->lock);
-+		spin_unlock_maybe_irqrestore(&pcp->lock, UP_flags);
- 	} while (count);
- }
- 
-@@ -6109,6 +6137,7 @@ static void zone_pcp_update_cacheinfo(struct zone *zone, unsigned int cpu)
- {
- 	struct per_cpu_pages *pcp;
- 	struct cpu_cacheinfo *cci;
-+	unsigned long UP_flags;
- 
- 	pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
- 	cci = get_cpu_cacheinfo(cpu);
-@@ -6119,12 +6148,12 @@ static void zone_pcp_update_cacheinfo(struct zone *zone, unsigned int cpu)
- 	 * This can reduce zone lock contention without hurting
- 	 * cache-hot pages sharing.
- 	 */
--	spin_lock(&pcp->lock);
-+	spin_lock_maybe_irqsave(&pcp->lock, UP_flags);
- 	if ((cci->per_cpu_data_slice_size >> PAGE_SHIFT) > 3 * pcp->batch)
- 		pcp->flags |= PCPF_FREE_HIGH_BATCH;
- 	else
- 		pcp->flags &= ~PCPF_FREE_HIGH_BATCH;
--	spin_unlock(&pcp->lock);
-+	spin_unlock_maybe_irqrestore(&pcp->lock, UP_flags);
- }
- 
- void setup_pcp_cacheinfo(unsigned int cpu)
-
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20260105-fix-pcp-up-3c88c09752ec
-
-Best regards,
--- 
-Vlastimil Babka <vbabka@suse.cz>
-
+> ---
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Andrew Ballance <andrewjballance@gmail.com>
+> Cc: maple-tree@lists.infradead.org
+> Cc: linux-mm@kvack.org
+> ---
+>  rust/helpers/maple_tree.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/helpers/maple_tree.c b/rust/helpers/maple_tree.c
+> index 1dd9ac84a13feed53c0ed5eec6805517081d0673..5586486a76e0de60969af1510b4b0428392920e6 100644
+> --- a/rust/helpers/maple_tree.c
+> +++ b/rust/helpers/maple_tree.c
+> @@ -2,7 +2,8 @@
+>  
+>  #include <linux/maple_tree.h>
+>  
+> -void rust_helper_mt_init_flags(struct maple_tree *mt, unsigned int flags)
+> +__rust_helper void rust_helper_mt_init_flags(struct maple_tree *mt,
+> +					     unsigned int flags)
+>  {
+>  	mt_init_flags(mt, flags);
+>  }
+> 
+> -- 
+> 2.52.0.351.gbe84eed79e-goog
+> 
 
