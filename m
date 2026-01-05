@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78CD3CCF2C2
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 20:12:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F08BBCCF2D5
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 20:12:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 009A26B0096; Mon,  5 Jan 2026 15:12:26 -0500 (EST)
+	id EBEEC6B0098; Mon,  5 Jan 2026 15:12:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE5346B0098; Mon,  5 Jan 2026 15:12:25 -0500 (EST)
+	id E91A26B0099; Mon,  5 Jan 2026 15:12:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBC336B0099; Mon,  5 Jan 2026 15:12:25 -0500 (EST)
+	id C02C76B009B; Mon,  5 Jan 2026 15:12:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C5E9E6B0096
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:12:25 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 70C2CB771A
+	by kanga.kvack.org (Postfix) with ESMTP id A9BFB6B0098
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:12:29 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 62AB457C85
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 20:12:29 +0000 (UTC)
+X-FDA: 84299007618.26.D4C2E5F
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D94D2180003
 	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 20:12:25 +0000 (UTC)
-X-FDA: 84299007450.18.BA7F8E7
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1A0C8180004
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 20:12:21 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=piI3AcAg;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=ylLoGMMr;
-	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ChrT9Y9M;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=PKK7nimZ;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf06.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767643942;
+	s=arc-20220608; t=1767643946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DTfiZyf/2+UgnsYJ9XqdaZsbFBQjH75YOxTKwUXybaM=;
-	b=1QK2xJZyouVjDosENMU/YcawWQAaCMu2SSuB2dWLMTKI4rQ9G7Wd8fEh7Yq6FJKBBZgO0N
-	5Ltmu+yBZXdd1OZRHfkUo3XVjEqG5/Dy+BpB4fr/b/gMoUNHyucf6/kQvvLi5C1GwYou8Z
-	6nvhQwqMB7n+dGuZCEe1V4VgWxqP08k=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=piI3AcAg;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=ylLoGMMr;
-	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767643942; a=rsa-sha256;
+	bh=scuAgwS9CEhqIXwWEDiyls3Jhbzu6h+qqUyy5rcJJts=;
+	b=lVNokpZq/CwLDk8QR28lx6zriFx6T/OPiD+HV4Mrv2PWSsRgNN9wJFynYlU5X8R+Dp12pr
+	GnOkcGbzJww8k3gkWyuTg0Zqvou3hgpgvTNJuDnW9OgUGCex5XEW4+Mqrj6HgrKGVFkMMn
+	Id48h1lnLAkMWGwlUSO0BbpGBmgGb+w=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767643946; a=rsa-sha256;
 	cv=pass;
-	b=3elFHsMe3/TfyWcf2OC8QeTCAHN1ZJpM7v5UEIcF8xYpB09Ud+Vdr8mjh4ljYW43NdIVea
-	W7Je8kIgL3n1MvI6ERQ/3R8nUpkSAgKyjBjKD/HqlCsDepNsKsKk++cwgVkcBIHTe21bw4
-	aOHZqzWZkjQWupVegTydAAL0zBo2rog=
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 605HpM7w1935090;
-	Mon, 5 Jan 2026 20:12:16 GMT
+	b=nhVqZEPjFpezfNLoVAFIz0vT0pc8kJDEqnwkua34OCwlpH/TxA9HfHBieCO/NvIRR71m8l
+	QN8N1VahrCFsBk4enHmzYcL/WM9P905mR5id6WEyuzz3zIeQNgv0OvIGVdF6m8uRSjQSYT
+	l+CqFsdUozdx1/8Sw3VzdD71iwNHah4=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ChrT9Y9M;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=PKK7nimZ;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf06.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 605JKcE41874497;
+	Mon, 5 Jan 2026 20:12:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=DTfiZyf/2+UgnsYJ9XqdaZsbFBQjH75YOxTKwUXybaM=; b=
-	piI3AcAgPnmUsKMw9tedns2NbD1Q3bQYrNxoM4E8/o5if658+Xb/z5DzTJoS/O7o
-	BLsEhRy9AUPL1Ah6QeLPgpX3sKn7fW8FM9+fIUbCb8DGKZeSfYp4Sa2c/lwPE/wu
-	/C5R8aYdrMhVjjcgthvFHq3YGsMLxVdMpBU6TsXauhCAsHkeAiPnpCkWQ5eDGfSt
-	n/f+CZqoXESabxL+oq0sEzDi3j5DDD/XjAw7JJLXRHmI32x7ZOmFKHC+1bliIZfQ
-	fe9A2tAhJ9kUjCBlXlz0+GcC1z70WtgtRLGaxNo8X8j7CBROxVIr1z1wo2yvpCq5
-	w8/DMzxzXFsd6xmfRDVa6w==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bgj2c076y-1
+	corp-2025-04-25; bh=scuAgwS9CEhqIXwWEDiyls3Jhbzu6h+qqUyy5rcJJts=; b=
+	ChrT9Y9M97uCe1hbGs3WBOiywiNG0bVgTVIwt7LPG6u8SJhBB/e6QCnc66verTL2
+	hwB0Em+CM2/0vMsrkXB91ZymJdeASPCBG5k3vxHxHWnY7LTaCSUL7zVP4rAZ/x89
+	X6fMcod8KpAtAKsTRwlgUolyTaSa0o/NSkenwtCL8x2jCXgoBqVkeH1N37QOUCLY
+	9g/dC7uOc0+NBbkMFUBxfFoQ0BwBRbPF5plBq4DbJRdfaRSRu8uVaGx56qgRfkhp
+	ZSeeMr2RC+oEAqUQXhsUGQ3Q9VIf+TO+sLLv/qKkMUWBbtYx7DwhbwM0JT2E/5xT
+	uV4dQN8jPBa0zPC8WxTFGw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bgkcfr2jv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 05 Jan 2026 20:12:15 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 605J8Q9E034230;
-	Mon, 5 Jan 2026 20:12:14 GMT
-Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012042.outbound.protection.outlook.com [52.101.48.42])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4besj7sj4u-1
+	Mon, 05 Jan 2026 20:12:18 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 605JBCDN020542;
+	Mon, 5 Jan 2026 20:12:16 GMT
+Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010052.outbound.protection.outlook.com [52.101.193.52])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4besjhssse-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 05 Jan 2026 20:12:14 +0000
+	Mon, 05 Jan 2026 20:12:16 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bexTJUCYfKXntCArC22OfbYmENDiLBTOyCI1NCid/5Vyffqb3uEgstk+0cfuwJuyApXU0ZDkbA9Cko6TowDu2u7KIRPF05/S/eR7iFVRTTnSpgcInfKjyFK9NSzJz3lVljkanxfZoGdEp/Lr/3Ws8KWKrDduCyyk2C7xAeWumPOYh6W63T0Z4RPMQDqLw4bCT76EliLbBdUskdj7M39n0u6wnkP/g1zs9PkwFDsmFjeNjdgcjKHDfkA09+u2xe00OTadjQ95NOdbATUaeaw7PzlEzyAz1lL9EiGyi8cnKFFQnBhDsxnrdI8OULg9Cgynro7RPaXTvyHd/U41F766dQ==
+ b=DB8smq36KbYanMUgWd9zInM7vfJ2F1alQhfMB+40/x4aMEEMF64nPU8fqpsrQFzr2IY4h4wQo2suEGbIeLq/6pUl+GqCu85ZA1i0o0Z2zfHhwI5esuOC7NbfDjh80OfOSAogDd/dV/X3yQD35ISIHkiIiGwwkiesucp6KtaNFmUUDcLQNtJsNBXHyIGwgDHEn8nCne6bWgd/Zkpn/XDuTVhkHUT0Nirq7oABt1o2xf/S0OeZw1KJTRJiAKATqTVuzfhOIXarFczRwTwGSSWGAs6DSmO6KEpaUdu916GyL8rFgs40POFDJ+IdKa6UbCG0oYuw42EHfyn+FwY/5mnrkg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DTfiZyf/2+UgnsYJ9XqdaZsbFBQjH75YOxTKwUXybaM=;
- b=g7JXV4d5oba3+LIUknIPts2ijxFiNESeBjTsFbHPjrD+2crfLT09YqAj2+zN7OI3mZaTopE/zqmidCW/2CevJ+/kPPwczA4jnLrtjHT8Z5htKCobeH/4nxv6OusOxiGiDDs28p+UgsEuFLRVTtRIWxUdgYwxC0CtfjJ+LkskmN8/dDZIN8eQi6h6HUPiua/NHiIWEtcpOFN22Y4oOgRoZgtgq0j69cHH8c1II8XAbk6xamkM+MwLo3zTy6axYY/iXC/LlO6Pp+3CWz8fqimFHpEy2Wx/mibRaaBXep6bBveK4nvREZ9lvwn23kIJtiNJ7ZK0/GQ/T1QS/9bsZhuxyA==
+ bh=scuAgwS9CEhqIXwWEDiyls3Jhbzu6h+qqUyy5rcJJts=;
+ b=hfcJxAK7hVE6O0UvRNJW1GSW971Um5kIZKGQX90hElChJTkiar7L553BhoRvYmZyW9NkhrhJLxPwxS442CwWtalmhbbtA79DQCAd9vULZ9Ni1siBQuOOlRM+8Yi8QLI9nCZ4Bvvo+UL1mCKq1016WiKT6DsmuWUPRt1GntcvcaEYju5GwmFhh9B1yOogjlwVivmy8vqMTygCbnGCjJ27JE8edMYGE1FyGQtCeJf/cSSXyT4GGdgu13Byh4EQi5LdkX7CTVTjJF7BIBiEv9T+c6UgbPfySvr2fKbUdVpghnMZsdJiX5pMQZB/5n801iGVTsOIpi/C8K4gHuXi4QFs6w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DTfiZyf/2+UgnsYJ9XqdaZsbFBQjH75YOxTKwUXybaM=;
- b=ylLoGMMr1gs211YbmX8oFTv3f+K75elMFLmX3R2jtRk/NqZSAzlM8eydhfccDmMtzxPKKzjMVZbPVOr+0I7ObdRa/wRhIqFtMPGNwCZUISABKeFXai5p2eoLTYT4Y8fZ5WsXc0yjJQ5C6N632WOC18jmz+jown0iQi8V3hD0eNQ=
+ bh=scuAgwS9CEhqIXwWEDiyls3Jhbzu6h+qqUyy5rcJJts=;
+ b=PKK7nimZumiQlQVMAtQVY4zQA3oRFL+sq79sYyWMQvNTa0U4pXXYUMEeW02b9IAoqqSIbH125DUrjomCp1ya5emDa9SnUYRvB7jKNhwz1WpUfDdf0KlYi+oO27TalDK+2qZzCPMuZ8Ixw20kd70Fe6WeIjhtHGcDzs5dT6yMdso=
 Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
  by SJ5PPF136884A98.namprd10.prod.outlook.com (2603:10b6:a0f:fc02::78b) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Mon, 5 Jan
- 2026 20:12:11 +0000
+ 2026 20:12:13 +0000
 Received: from DM4PR10MB8218.namprd10.prod.outlook.com
  ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
  ([fe80::f3ea:674e:7f2e:b711%6]) with mapi id 15.20.9478.004; Mon, 5 Jan 2026
- 20:12:10 +0000
+ 20:12:13 +0000
 From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
@@ -110,129 +110,129 @@ Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
         David Hildenbrand <david@kernel.org>,
         Jeongjun Park <aha310510@gmail.com>, Rik van Riel <riel@surriel.com>,
         Harry Yoo <harry.yoo@oracle.com>
-Subject: [PATCH v2 3/4] mm/vma: enforce VMA fork limit on unfaulted,faulted mremap merge too
-Date: Mon,  5 Jan 2026 20:11:49 +0000
-Message-ID: <6e2b9b3024ae1220961c8b81d74296d4720eaf2b.1767638272.git.lorenzo.stoakes@oracle.com>
+Subject: [PATCH v2 4/4] tools/testing/selftests: add forked (un)/faulted VMA merge tests
+Date: Mon,  5 Jan 2026 20:11:50 +0000
+Message-ID: <1daf76d89fdb9d96f38a6a0152d8f3c2e9e30ac7.1767638272.git.lorenzo.stoakes@oracle.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1767638272.git.lorenzo.stoakes@oracle.com>
 References: <cover.1767638272.git.lorenzo.stoakes@oracle.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: LO3P265CA0005.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:bb::10) To DM4PR10MB8218.namprd10.prod.outlook.com
+X-ClientProxiedBy: LO4P265CA0142.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c4::16) To DM4PR10MB8218.namprd10.prod.outlook.com
  (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ5PPF136884A98:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9414e77f-e510-46ce-b51c-08de4c96b547
+X-MS-Office365-Filtering-Correlation-Id: d0d96eae-fca3-4b0a-30e0-08de4c96b6ae
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?OIYZaO64Tl9FvTcvn4VV/IA1q/45Igx+N1S4849A23NuCCj3Gc14/F7tPvZf?=
- =?us-ascii?Q?RUFIlnLZ2dVG3A/8d1wQvTAMCiNqJsutphfPx3Vjiu2Ka7qbTEKdDtWBbMl9?=
- =?us-ascii?Q?TxS+eCzWly6v81p6iTcsjCwXDEZnsj63hhn7aPabQ/CHrPOuOqnID4KLLBJl?=
- =?us-ascii?Q?Gmu8fyUJsx/ME38y5wJ53hFaz7Y/JWR39Q4pFVMINGR8rck+wWxija6AyCqB?=
- =?us-ascii?Q?sgQtoVSFALW7DVXLVuR8LFNGejqPAxqTrISAiTj0i3fHiuqL4FbO9tfGQSXd?=
- =?us-ascii?Q?1NnyxFH8aHJImFt3G5AUvu8rdEiC1az5TiJaRehcgH86hqPX9Tsb8ktlxS8v?=
- =?us-ascii?Q?8WOy+K8CIzM4E90oWE/odsH7Cl/ShDCCRUUxFTXPoCZM2tYmZZoEmDV4xQIm?=
- =?us-ascii?Q?oW41FXHQAlsDp0NKuB1Ja6PRVTtPohauBQihFvfsmOs9g0Zl8WIaLNO57enq?=
- =?us-ascii?Q?l3bH8yS1jcWh2i8j02LpoqjNR58QJ1vOrfb7haVAUrYM0b13DDoIgMhm5B/K?=
- =?us-ascii?Q?lx2m74+1kxKJbr+EBYKkcsJASS/lVoaI2tvkfsZv4BX6OzLnZ0ksgqOqyk5Q?=
- =?us-ascii?Q?Eo/prAvRqgSd8EUC5ikvLfnzqnhzeO/3XVF9ZUz9z6xQOWrKjLDVKO5kbNpu?=
- =?us-ascii?Q?q9v2+dU16LhE9akYt9cN05jr0zs1/8fRas45IaH3+4PJNmy2W50s3xiIT4MQ?=
- =?us-ascii?Q?1uEs+u0RaWEXrdPI0YdDk9+5fixT9moWYTyG6d15kMKYcNqNwJvKt+w3mbir?=
- =?us-ascii?Q?8XInN4O75NwJUagoY+DrZ9o1Hbuqh98z7p2UMI2vgAD/tAW1TV0AbfmGuoz6?=
- =?us-ascii?Q?9Cu+k+gwR+pIfCktiXBIlRgFv0wqUznRuu9yy/3mGoiiGpnhu2dT7Xo/UUwM?=
- =?us-ascii?Q?NcAqwqo2AUDLOr8ps9aiCav3SyEpFYJFdyEsbfRotFx3Okeg94bsyd43sb8p?=
- =?us-ascii?Q?/Jwy8pk9Vskgz01sGe44OOzfmAywYW/KCJd53oKKMVRYNY5DSxhaCFoablT1?=
- =?us-ascii?Q?OVZ2Q8eKVHpmgQRKzzdkVOBofIamFZyj9cVg6h5CZ8c7EXFZUTZLbjnv5c9d?=
- =?us-ascii?Q?J3KpxmUwCQSwUSNy+UjVxXCZSUygMNf9U6be4yFrHhOYuPZOleh041wjyzcZ?=
- =?us-ascii?Q?rqw+dLfBrnWxQA4mz6JiRWIM8HotpaZjZeTIMxT+Svmiyyxfxg+FnwIvyqQ7?=
- =?us-ascii?Q?Rvh+x6tspdcJ+QYa5uu/AnnrMhlwk/zcDACTBu2o2ebY1gi4x/7r1KZxgDYS?=
- =?us-ascii?Q?JQQO9NRoco90H68ab3i4ZEcgX4cLEF4asta6kZh8rZXT/9lUc6ACgHblC+CJ?=
- =?us-ascii?Q?m9qrRwTYrFjDnf75vx9RZ+QozMqx2dwzOs6aON8NY2CtFWN7yl85Z156B18y?=
- =?us-ascii?Q?9zMLbUQT8LbKEsBZWguQiZX9si+Ta490RsuTiUHrE2shbRdocQxLPMQKuY5a?=
- =?us-ascii?Q?/ngvj37Tv85NeLtAXANbHXIvfvDANOgf?=
+	=?us-ascii?Q?uxcLNOdFGRE9n4w1qFRMV7zrqOqrDpa1/DQu0i0uVyE4WL3uP6IdVby0fx9e?=
+ =?us-ascii?Q?wLIn//gVt58Bh/XSsWynQ0x2uwyixm78aKcyDbCAiIKe+F7bHYI8izL32ZLq?=
+ =?us-ascii?Q?iwOskkXxd3WW8S4UcDzAsFjBjFkv3S3/ea27RD62guAOC0p0PsECwaKxpsf6?=
+ =?us-ascii?Q?IXmCUoj/hAc++J/C8qqF6FoWJpB3iFyKi9T9rMQVBwFm2UaqBZfuXwbUogTM?=
+ =?us-ascii?Q?zEI8mzVrl7VWnQocyJxD07Ln/IEkVrVtppW1cDTg0UT6gmRT/13+Yq/079x4?=
+ =?us-ascii?Q?Xkz7MY3cxAVRIj2sHZZSRlquOuuRFB9bJ4T5rmlb94FxkwXs4Y8joTnPY9f+?=
+ =?us-ascii?Q?DhUKs02CxKQ1hi0FkhH/em2LfMp2nZy7B7c058zY1QxdEPK2dqJfaTKHS2IR?=
+ =?us-ascii?Q?Ij1yjZmhw2a0AIwuBEOK4/GONs45BGeAHbX37i32IVENmmJt5B2+4g3QW4xV?=
+ =?us-ascii?Q?wIJD4ssadmVLgQiE6AigTFG8v3S0no/w/fNz356BRAMOgglKEOhk/VOez8tR?=
+ =?us-ascii?Q?kMSZweFxtEpByxg+8ShzafgrxemDF4ozLJPr6e9pxw14HwR7tlyvDKsIH3Lx?=
+ =?us-ascii?Q?ryz/4aKd8vwl0nS4BCA22U6yo7bqNfO4BhL6no57ux7tBYd4WXSIWCsw1mFP?=
+ =?us-ascii?Q?A4LQGnOxcOXUdeFSYX2bcY90JMtfexGHhbW/3x/tNC9Rd4wUygrWFcvBXp9h?=
+ =?us-ascii?Q?/s6DNan2ejr+Xp01JrjHKLR/06SNv2WcaOEYKb7ZoK/ASFNbYnrHyOrufhUp?=
+ =?us-ascii?Q?NRWYn+2zzls7VYSYIW9sN2TEQ0QLgCELhxp6K9bWY5OqvZmaMeWLWyP5ZZFK?=
+ =?us-ascii?Q?NBJIzCN6Eab+7lSq6ZqF7Jp47l+mxO0VXmSWW2usKJexdjRKjCxIXrIt6NpX?=
+ =?us-ascii?Q?S3hCN/LSjbxBHpu1g2u/wn3uzqOfwFmfkD5WIG/Cz6+A7qHUt1Fp5OfKkmEx?=
+ =?us-ascii?Q?i69I9hmh1IGhbsJ0lDb1czo3e8I8yfN6lsO0+HFJNcnTaszBcdDvU40X0rJO?=
+ =?us-ascii?Q?VfJfwkjeHYrftuYWwHnmtVih5vs4LcGV8VaOJd9ycE4ppgrUFsfh2uwJd3rm?=
+ =?us-ascii?Q?uY3Dm4yP7HjeehpCwinSyrSP0rUDWq5NOm/z4fCTGErgZvIGGxylvx4KIQFj?=
+ =?us-ascii?Q?Z1ic13f6AYODrQpS9LepqLfOmFB+jEsM9+AVqspF7vvowqnNNULbFGv9js8f?=
+ =?us-ascii?Q?u9OvLj5ti7nhEcLWqrkL2Nn3aW7A5E4uig/nnjz4jyYAB0aMBkex7zQ7q+6x?=
+ =?us-ascii?Q?wnfDQoFOefcStvvO4L396ItRDLLWK1wxjFrJR47t42XqLIoq6QNb79u1TqEO?=
+ =?us-ascii?Q?SRK3AdJNKiFIuJk5yAiQSgrh3+IoLhVbw0Qnalyt0Emn4EhktW4wT7cEy+8R?=
+ =?us-ascii?Q?+wID33S1sf/48KxwlMGb5JmvHWpaSFuFOKqDBnvUf5jpGWfZExdvUPPpKiWz?=
+ =?us-ascii?Q?bMTe7r6XqV4ViROZ5vPuCrHVFjKz10MF?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ZGZrUC4qXORQmA8rO8+X8JImEj7UCPNkuyoQeixfi2JGaKScYVpE9E/lDQ1R?=
- =?us-ascii?Q?gY7eFFSERTRIx4HAto86+tFoFwf3SxkTY8r7Qus1BrSlFJAwPBtONU5u8oSf?=
- =?us-ascii?Q?etbNmg9JAaRvr6xEe7x3PV0DNrgwj1ES72XjuFgfmLl936XHbzM4CmWqhbP/?=
- =?us-ascii?Q?ljTtrKxnRRfaTNhzfupMFSTx+BBqCD44QzWOYT8PZurbdaK7ukA6UYJ+8lLb?=
- =?us-ascii?Q?eOTld4jMzDB6IFv0tKu6+6ZA6MfXXFvq7D9Mbc4ySiG+17XcPsR2KmxrNA44?=
- =?us-ascii?Q?9WRDdSA0JTtwpCenE5et8QSxMDebIf74bv6qvd58u5X956irAtO36nrc7Hfg?=
- =?us-ascii?Q?hNAPpo3X3J3PmA6/nKiIiR3aSAWVGS2yiioIlxa7m5iZRzO+zUCmgNs6AUci?=
- =?us-ascii?Q?BYTJD1NRidIq7EOZQy8Ct5T1Ryl07xXJpO86j6+zM5nt8sGAiBA9ShvT7sXe?=
- =?us-ascii?Q?Cpa4+znKpN4F/wIqdZJt0uOpFzFjXoYgy7UONfsfOt/mMb/6TYSHkrUPNhOl?=
- =?us-ascii?Q?jMU5rWWfNTdhCPMQD2hsxIQSqiDWEyWnlEIVgDFrQCRl6MifQMtqMfRnNDTb?=
- =?us-ascii?Q?eWezWxIxsq93DZ1SNilWjkQHo/azw7zUfSlLQT39cdQPC4zTm/a3ugIDa0fV?=
- =?us-ascii?Q?9qK2S0/zgSQx52ZZgOjWCe5KKKVkzIeRYTszHY2bl1frAtgbSsh6s6euXzhp?=
- =?us-ascii?Q?ooamrijYrHeqNK6fCiug+cAnfV2EzwsuaqkMwduvgr/KtXql9g5/1zPudX74?=
- =?us-ascii?Q?QXZIv52YiSQf1HtaI8eMxO7Pwh6n+p2B4L1j154gSKOSmCoOusgG8xoZ6QOA?=
- =?us-ascii?Q?80C06HbyyC6Oh8Yfq/kl6C6JsEd0OIMhONWOEY3r0sdHkFiUrj+d793q3fJf?=
- =?us-ascii?Q?kG/8QIG4VBA38OPqmOilb6PSeKgJRrnmzfFK/TI0ns6hHLqCitmxRzGKepa0?=
- =?us-ascii?Q?pQ2CqQhooMVDbIsxYfGUZJxMo6Hebb+vXsAvvRWd+T16xibubtlkD74qoArV?=
- =?us-ascii?Q?PF2Pa8qFj5KddYw/8USPX2LdZR3zm4A3at4zs9mPALMF7kX3IeulWqWUgR+E?=
- =?us-ascii?Q?ooYyxzEViu4aMqYXqtekcr/keCuVRE7q6WDrmJRiEygV0h4sbz/GF300+zAm?=
- =?us-ascii?Q?w3ZMGLGvcs4T+2izMBJBT82DEaX4BUr5hBineJNgq+J1ISxGkpOpJlceBLcM?=
- =?us-ascii?Q?nEKJe1OYy2SxE1lInRpaeQ/dp+X4l7EKQpP2uob18PeTAIQxCimcoq5kQKq9?=
- =?us-ascii?Q?SQ1IyVrtT557d0LAHqNOn7dCyiZ/bAC2qPq31G3rjd2XAPEe6CddpNAiVq9H?=
- =?us-ascii?Q?f9/Y1r+nhzEg8k9pqMpPOkXnUd/x6b5OK3qBAo/f6ttIYHfXQETr5DdbjgfS?=
- =?us-ascii?Q?6zre0jwoaA+kMD50gWRxf8Ky96VX9w80rFdRQBoeSlbq5a9xbaCfQJ+Xl9xa?=
- =?us-ascii?Q?2olnsMmj2ebKhG6huIzWqR/GII/8I4z4AkmP4MfMD3qR4eNReOMqyW4GUgIa?=
- =?us-ascii?Q?K/tb3H8xaRVXh45nTrppFIOi7u6KLJwS/pIOpaur0MgICCTkIyZtaQwTlKMm?=
- =?us-ascii?Q?yNM26ZLdZQfVZeoMUMd68D3q20vSW/t4nm6YhnbERyZP7Jav2QGv7WPY09Gz?=
- =?us-ascii?Q?DzmcgNacRN6e9gBsYlILhxYTvwJePN4iFdw835ZUwSBP8WDC0hWgx446CP+h?=
- =?us-ascii?Q?aa+dYTHKYQsB0KZfPuRj3DYGS9Hu55o/rSdzthkIyIK2vyWozZtSJyIpytDL?=
- =?us-ascii?Q?yAu11ogJNBAuRFLr/d8PQ5dxznOr+CU=3D?=
+	=?us-ascii?Q?cQmSNNcUKWHVnoc96RFMyB/Guh705EqMDrvEuIPFjn7VoAlRKCqWrYF254f5?=
+ =?us-ascii?Q?N0LbSgJWKVfknYdB/Ejp9eLQcz2k2pPwkCU1zKhBrtvFk5xdtEiaoflN1eKH?=
+ =?us-ascii?Q?dqCTThzhgRe6NzQ5QAAaZ/FiA7tOL3QjnWSBKcQP/xKmU+A/vUCCOe34O64o?=
+ =?us-ascii?Q?G71sqoWo2srCwnCb5j6BWdCnzOj8SguCxq14ofeDzeT0F4hVNq/HyNGVpfTa?=
+ =?us-ascii?Q?022eggU6M8UBS1z2Zo84ZOPflNGp6rrZjbKPCKg5Em3ZlwdLNvCwm5yF00B3?=
+ =?us-ascii?Q?oG3P5KuFb1FiLxcFXPjGsvdmslHWKRLXGXpkvcXos/hOESnpTTX9jolhh31+?=
+ =?us-ascii?Q?266De8OUE6t7ZTFYiZZpmX4qhSzNEFTsJGtFQ+q5P9GhhfEfEpndDlBamYzq?=
+ =?us-ascii?Q?Y5GKEPphW0y8+NNC/lxAVNXw7Vfdh3EgwKSt45wGDY8vSjG/42q69i59AEHb?=
+ =?us-ascii?Q?0AN4uek6mMS1GC3rzHxQ1uVKjzAF8+Ckdm+WyjszwgQt+VnQbpjamlknwmIA?=
+ =?us-ascii?Q?goQGTRGvCc3PWGuStx7jYaP1IbZW3x04xbwzIb443/lK7tZZMZdiLRolgT29?=
+ =?us-ascii?Q?o7FJYchxRhqxMr5XkERluNNs3z988os9NdOAwJolkP3dW4CZocn5TFEm3TGZ?=
+ =?us-ascii?Q?mSevLzy6orNi3MxzXJerh/IgZzedh4bsJhsBJFxlER2b7SKqnnmL0SRasqXx?=
+ =?us-ascii?Q?hQNCTDJSCFHRSDk1T7i0jwPfQ+472rH2Oie6J1ySTChpYJnLkqku4/5Ejx/c?=
+ =?us-ascii?Q?LX6f4BJAVS+iP6W+F3E6q+Yjosf4P3habSI42F8RbW0dlZelDudwdDwyjnMX?=
+ =?us-ascii?Q?+ExzCcUs/s58KA8/fX211r/q6nc1s6tBKpLm41UwZtqUlJge+kvO3TB5kku5?=
+ =?us-ascii?Q?3eGZbES9GF+r1WJSciPoR5R0Huhop6Ec1vP4birN52MMHsaND/1xrMiWgKCV?=
+ =?us-ascii?Q?t+7+Dt7l/tUfmCrR2h6wpOLLiUNCgroXbghsLwklgR/V+jRiDMAT4ewGBxD+?=
+ =?us-ascii?Q?BjTpLVkFBmmiiKj252PQTNApwHrYDmUM3jUB+Y2bPusqbi59AMkgoXVvKVvZ?=
+ =?us-ascii?Q?y7N8sfqHJIOuon7s7lloptvyyj7YYozh/LNA1p3j7lAYFDrM4N02Gjf3xyQv?=
+ =?us-ascii?Q?rc5JJvwNaX8IoXcZEVSYSwR0v0hrUBiTSsN+TSIDrE2YQzbZKgwN2uLEAr7A?=
+ =?us-ascii?Q?hYfHX+OGpSYQUsRFu54yQSoSpubPRJewrW+YWIJ5KJkz3incfFA9FCFQZ9ax?=
+ =?us-ascii?Q?C9dwoqiCZPVVNsIVd9aZfLPZ4GBx7315EYWzSvL6hbIk7UKHHFomcO2vS+9d?=
+ =?us-ascii?Q?ksiI89QQ2EwXSrB/AAfxVbACABQN5KNyUs4X5hkyugH4ERvyHTFm/Rw93cNv?=
+ =?us-ascii?Q?sJOnLWMRcsGPj0AFKZa5lcDiBSQsrPUFDmsXqItyfuKzDvHft7fkwXqg4600?=
+ =?us-ascii?Q?QCOcHfKYqm355jdu68mfpF0BCU8XK/fg+T/LkRrKWChzWvcxrDzEHkCSklbn?=
+ =?us-ascii?Q?xGJqa4RrVqGakLbpfYoOcmAVu0U+Cehvi7dKAPt/l9nKSep9aXMw6QpP8qce?=
+ =?us-ascii?Q?39HRntHYXAfhOcEF2aWMNx6dazN/CKCgxAdHR4eg4CgNwATROTP+iq3FHatI?=
+ =?us-ascii?Q?ivhBeWSGvdZjHubmqXpmXBQDlBX5VVvb/0ZPtfGn7/nOzFJBfDBRTA2/L9pc?=
+ =?us-ascii?Q?qCA6T8bnb5jgU6VgJYl70+2uCSxyd/2vi0fSxzgfRBbPZS4Ae9adDNhg3R0j?=
+ =?us-ascii?Q?q4lQKhoXgveS9WhaKsD5eICKEgAtSm0=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Xte8+eNKrwJT8OlXzExp7HvideHd4TK6+9DnzEl2W8B8CfDH7Ge+OZ4p3bpVh81AzB56UKUguLfmpd4licvkQ4cqaotCQEkiSNBkVA+CTLiKfTNbMhp3thRBs/wMzqUp5ZADP63xvbrxSRkaIdEIZOJL9laDteH6RwWMcbyWWEZYHncQRGuUshuspGxavxxzGeOCstRXS3+ZI+VQBvaAwtnLnCgqAYTFrbXjG4NNYmDjJ1V4pu5DEE82gxro36gxyUPJLU1vB5m2alIIX/qb7vKmVVhSThVsIBI755UpmSUbmBDlebxP8HAxkl6Fps91BfhOmb5Dl1Cdifg6lraXPUqxD/Jc/C1L+V6XzNUD6iA3oDMOiAjY2WUttaQo04TbPuL09KHiRmimxnN6z55tWJXQYUqJtbRzRxmaBAwwA1ryhFH9pdHoNueaB7GrZs/iaxymMaHVKrgUgWyTr03k89oikZv62vhqavjJv+Akmr/6T4T/RGiYvBEGBTV9t/c3bLBatfuDvjvbeDq4ZFpvG8d5wrQbqzKBFQ3ccFqsmW7B5yx4SgQk/rlUVPKe6cyJi9fvsqomfjCIAqUF/1yq6dDYXcBL9NaGBVWpLkqoN2Y=
+	0D2L1SA1TmQpoy+f8eXCI8Fry7aKcma+8d9QoNLqjlOtLsMPuysvaEpSoJRl4IPFNbHEOjpj9Oi/kZDFuzkuSetoTuepxbTOin+OURo4wik1XyZY8kSY4cYSQkKWNyrYx+0+49J9J7z872biklR+GFDGsxWsVNqZOQbkfQ5iib9OPD8xZI/50cT0m4yvNzi8KKXhVtvG06eujJIgYt82AEchgh+1QNFIsHUZl7dh58eHHDK0gyELBTwEA+JDC9lkpUJBsQyBSLkf7vsb14nOzyQSC1xZZkdruTwnz1SzEzrlRrewfmAINbH9gHl+uDaWAcaIya+8CQGv4yhmQEJDQTTvj4o7eKKBPX5fg0b46d2s5isTno88wReuBeJDoycfHpJHz0EcB/7FlvGWDDtkbsKaRUCaWqh1vRBD3DPLst72K49HOpItSSQDd/BpUtBa+ytIDl2foGywKgzKxaBcCbNhyK98nM0r5zfwFFKj9K4Wanvhrj2fb5tjwnSokbvuugoOKHSNB1ZjZIt0vfsRiox6pwsaMSdLFvKKGOH4J+2fpTeNVdyZX4gYWQFTBArBcH6ltQ7j23VHaUIQYTR5ASilkhujewu90cH7LOxSKCs=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9414e77f-e510-46ce-b51c-08de4c96b547
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0d96eae-fca3-4b0a-30e0-08de4c96b6ae
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2026 20:12:10.4438
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2026 20:12:12.9520
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0XRRGRbTB05IfIGgEVOpRb6Gn8UvIuV0nYKPcKZOwk45hoiZrecbO1O0H4MEhbiyyrWxYWbU2nJFb09yKD2jrBQyH9KW9QMGDMLClxexmnw=
+X-MS-Exchange-CrossTenant-UserPrincipalName: Rvi3JRFpFBNCNcwi34DIPxukSPbYFEDuH1NeOvryf+DhhTu40g78bfV8gdT2DfgRMgqd9jf7wqcUyu8qIAqF/NGJRoX1JzYe+Mn9dxQ69dY=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF136884A98
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-05_02,2026-01-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0
- mlxlogscore=999 phishscore=0 malwarescore=0 spamscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=869 bulkscore=0
+ suspectscore=0 malwarescore=0 adultscore=0 mlxscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2512120000 definitions=main-2601050175
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA1MDE3NSBTYWx0ZWRfX7y2St3e0wNZS
- w9k7mKIH4X64eauyzNddzd9/+R5RdryxLlgsSZMMhVKymGiEZ/UBuYkJi41jlKdsny+SkiBMONk
- QIu/hc1X+UtnZzHe1pDfZ1ckc9elyTh69b+7lLzZ8/RmKeIfDvG6xzmmLh8594FUE9zJ6X2OtSb
- F0B2aSOJCHvTnmOsdRmKwvTbbIC7iJAg9YusTpbKrN/tmx2Y53ecuBghGsx8s136u5fNgAakCXk
- VseN/5EjPPk/6iVc3aW1iBKUMW6eOK4YYlg1Ons+z6waPbBoG2+IlJhcwLO6YK6I/Of2ZGD6iCT
- n+mQSdLr8n/lTWyRLvRS3TWTizE+hHRNiqY8+k5RluQPI0Qp/AFjhLpqdHMfdfu/jDSWQxTiWLO
- NwdG4iE5m/3Hr20EGwehEqZ15cCHLqVBAaJ+gKFFU+TM+fymhzDtOJ+gmUDxScRoVz9IEdcKwtF
- 1d7W/+Zpag+n+axHV0w==
-X-Authority-Analysis: v=2.4 cv=KeDfcAYD c=1 sm=1 tr=0 ts=695c1b1f b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+X-Proofpoint-ORIG-GUID: hHTqTLw4GaE2zrqX6iIyrsi1SJWq0wxe
+X-Authority-Analysis: v=2.4 cv=VKPQXtPX c=1 sm=1 tr=0 ts=695c1b22 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=vUbySO9Y5rIA:10
  a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8 a=VwQbUJbxAAAA:8
- a=2gQd8Ctu3wjniymgDV0A:9
-X-Proofpoint-ORIG-GUID: NSmt2m0f8laVrUQsTVtxBb5FS6k7tgDd
-X-Proofpoint-GUID: NSmt2m0f8laVrUQsTVtxBb5FS6k7tgDd
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 5juasoiydkx3nzo16yx9uzqb7iskztf9
+ a=24_Z-CCR0W1utOZiRgIA:9 cc=ntf awl=host:12109
+X-Proofpoint-GUID: hHTqTLw4GaE2zrqX6iIyrsi1SJWq0wxe
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA1MDE3NSBTYWx0ZWRfX9/O93ZlRWwdQ
+ PtBcqnv7SAPEJTmqyTdJlwlspR0IPxaH2sN7uvVU1riMYa92jA5YKsduTTMxvTgVj9uNK1bLBeC
+ oeU5kwxg1Iq5lRzXX5V6BGMnh7ksMqzb4mN28LE0xaF47ype/KkNWFwu3Anaf9qa6wFWeZtkslY
+ XRmm3qZL77lLQZBGb6QVC8VKQvSWcyoyQzX1d17lmnS780eRo5qiwd7CcIYXOD4HM8C6DDz7xJh
+ qfSXiE8GA0iAhHh+852hTh17tO7FPl27Q1wgJ2z7K1Y5mYdQrbSDjRzAYi2StFZMmffz1NWN1w4
+ +P2wJ8IbEad8UMBjR/DeQNu2EsnuCFCxQBCyp5ZNc0m9EPh0RWvF4saIkeGJIktoJ3znvznpWaO
+ H3oEvWALeC5x/UGCLKOakrwmgoqjTC+tMUl7AEAgbjNFoDRosA6RZdt5xs6K9qJRqNUfVCM4QzY
+ s5eVEqToi4v2fYHivQ0uBhNdSrMkeiFCuGikU/PE=
+X-Stat-Signature: bzbdcjxoznyrms9rm1ya89reatutxkqt
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D94D2180003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1A0C8180004
-X-HE-Tag: 1767643941-27726
-X-HE-Meta: U2FsdGVkX1/7VaImD4EdYBppnQYsY/ybkaygL4bmVZO5CT3OlofwvX1v+fRHPwJKzrHf0Uzpc+hYs17g2U5UUVplsPP2oA+SgfA0qromFCNhlO1DiilSQ/LcYQEfpvGIatRmZzg17jIEGaozDw763KVR45GhMMOlqULNqnWnP+sSk0RGXfIn2s+xbpdXqJZZhBEJWo5UyMK9gjBKjUJkGA6u2qaKQU8UN67l/LPzY65WjF07otmNRyqxoMoihXK0QCtAVd1GB7Dwl2jyjIq3xHRma4jhR4Ary/JyyT7UXpRiq1LB/r247K/7FUW0ff0JRLiK9q5FwJ+bdW3Mgi3xMfyz+kv1nExropv8raGBYzlHUGCDlQ+ReWNKOQA3+g79iclPc7o+6nyI53JYRLgkzdjZb6ikHiPxb7qdnK9gt3Lzeas7stLgYt7fpsXnUCCzABLO2pVv2E3thzkE04z/W1mR4+aZDw1I8wjzkoUTOIlj3tyI6rI3Q/g2ZdIvR6hPvO6Mc3c74v9S94Ya94lCTKptLuP9C2m9stYt3Awmi5FchA8jOAqT8/DxpV1F9MKn+LREjQsMu/k1tOAux/QOv3PbzRYuSy/RvUw0CGuvUyo5pC36UGUPeoP5uQWsFacD8GhTYvUEGQgP0YCuukBiA9WGvAnHA7M+OVcHhKAvjONaf9ELWIPCEfddb/Q91xtZUgZu1vaXkKPtjAm3TZ7x8BWHSczBuD81bgeUz49R57AyBjTwKXjxgwE6cL3+vjfLl+0MuBUHHBp7hpByayiq+DZxscODBCiSn4k/tLpVeyEfzVjvSxB8CZ39Fwz8TqQM55O4rjMm40q+5E3koXJFyvjRENsYO27wW2jhieqkMxxeFN9kvIgDpH8qGFgivaDegHorRHN9ocVJIjl6aIypx7eHLZ7NcPKc0zuB+lLx1elliNS4m/wGY9ZyjneC72daTNGmxDEqRCMp/1WL/gD
- vUNahRp3
- ZO1tGfixTLed1kTh0GBAANtf+Qjnvl/b7RH7co7fIEUNnFfPbLyRXsh4Lgnx7DBnFQvAy/8mJauOfsqaM998FSuNOdAyKOp9GrVaSJCtCwbXiNoQjfHPlA+dISlqKXN7Bo9VRhwOM9WAEQ3P53BElaFnYeCg88asVCXMLbaCra3jPDIzMiVP4y1IquPwXzTte2jRNiuzkql8lnEYXYHDZJLlBdPr740xBwI5246TCmWZz2tbUpDaW71vEreqfmHPYpjFR0k7mPzhlpx/x9k3yALa26zdVw/ZkjVXRObsrtwUrvq14YsmjjRcm++onI7wOo/j0kR+Urj7BcKsaTPLX14PU4US6/O44e03LWvSIFF+3A19TAgI+1XUdsp3aiXb0ntV55NqrBCkQgJTOWZxa8VcnMLbHMPAS6z8hlPvAot/Dax1PWUn/5+o9JWiuZLAcZyh/MLl0Gb7FTQhyl6wA1uJAbLi4oXzXdztNf0aJ7t55CFYT/LW0OiFze3i/3cNexLHU6hx1XGczIWF7KP1/4dysLkOlofRmY9YKeGhY1zsZu4vRro91w5eUdBZRhW8S6wTPXda8Wc5HXWGYKcwGJedtJrPQRU+KtFBQDLmGseGMvqFVhuDTKCuqYjoVUYRiyS4lNKx/lYVybK6mnhvYpEDQ/yjLVB+la+kV
+X-HE-Tag: 1767643945-800535
+X-HE-Meta: U2FsdGVkX19DBeJqaH8icSWapB+X5YUqjhZxK0zkysjvX9s4SraUkfA5U+M5SeYC30UuxuYopyBzWgJoHymw2Lu0jNjhoWPjAtNAhx0BBZ5VtzdrvrpVPpFG/wsClFklAoOP+CoKedTl10BdwA8AiUPtd/AjAe3yrr13PMiZMYEnIfHxtjHUsLoRELZRRBwXwp7WvSpuZGVXDhhcf8IyFkVPoKMZOxDk/CNp703EVlj/EUxYUraiVZLVDA8zjQCMm+TjnD3g4LHACB3QDyJgvskoPMeAjYhjHtRjr8HIU3m+8HQRDZsdfJ2i9dmExPvzU5/DQNFe2ym96Em5tN79MYkXkPnrJjknfe3445qaR9ybpD+R+qxzl6HsAeWQiQbVTyZk8J86i4RoXcKfHSG9VNEhJpRVx2XKtHWYjnzFRQQPYvTQZyhuAakcLVUzExmKFsn4jOYsNZoShJb4sSPeovixGgfO/7hZdrnR2BYgyxyKpaKgSmfb3Br7PddjCamQfZqzDDe7mqcvGq2xD517T2F0X4RzUp3DQ7o9b2lZOoaEh0LdNKegEPAe2q+j7cEkRPojeADWyCzYsRuB47iP9jP9ArnDIgpFBjFavQkUSyrKQYxoB+JAbt9HUZyiGAYDQQ9DQZEFJpDQ1PAoZt6Elpi31vWFnODgjKyxpAn5s9ApBhXn2QcHwruxskv2y7oB0XpAi1kGHFN2YSL3OArRzaAgiUxZulZeyk7Kr4TlS08QPk4GqAWLwdAVRQKtok4FV7Ft5Nd0zV/9FzZcufm4X6rVE9D3vKsqWCXqp0bNTIxj0SBKVe8fCLTi5VatkwiUfG6F7fvSa3z1zCC9WbCuCky9NiLldRkF4oIUetliyj2Hy7yMGw1yUU9NHAQKw+3VqbFmzyR5Qq3R57Iry86CjEAkTDSNtucYR2sFZUjCkXZjzO1d+SDxQgKZrDgZg188xkt1y7yW3GXZVgRMBgK
+ BDMZnkqM
+ 24mdAjx9D86pqqPAVgS6TAdM6yIWY5xosylC+YD1uJJbURKk/qLRkjL6Jmfa/00+ObOkF2jIUEkf+C7kt9Z2jxOIR7V81x6tqD+cboT9iQsMrKXJbwdkHtNhdkT8vYH53sOjGhLMG5RJbcvpIom9dAZzYImJ+5iW2Dx1RMQZawROLJv86KZPzRjET95eqID9e85+tublex+jhGI8mLiwb9B0UeLQzORQRVbJ3n7oLLFzqbRmM9lAPLkGkRjUK+ze/sLeH1wjQQTjxwBNbK+cvlc4cbZEtD/YiE6ckiS+njVahDKehcRVsWSVExVnMfa+8qcYb2Ckm6iBymQw7/hqTfXWng2m5XUppIxluL8YLEI5WZecl1VeeAbO2q5QoR0w6/k9Vehs6jq+uUf4tF4fd4IGAs7dowdqoUJusxRyr4f7k+s1Wcz+XoMljDyWFbfGcZwaycFco1d+JQ19xRxl/YjIRqLdO/8LhJ5ILbyDkEFL2yvCDoYLeIAYVrLt6JB85TrgX3ZAl57cS41uablSddSNelwSLWZlm+LltQGbbAeBBonoxkLBwg0aGQn34Q74zMfqS8iyJF7ra9VUA678LZfO9sVcRFV0cuoZCYRKnsAu6hsucqdIVYxXFAiQfePsIYWZk3VK+vG9ikSjxjqOgsahGlqgfiy57wLJq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -241,85 +241,347 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The is_mergeable_anon_vma() function uses vmg->middle as the source
-VMA. However when merging a new VMA, this field is NULL.
+Now we correctly handle forked faulted/unfaulted merge on mremap(),
+exhaustively assert that we handle this correctly.
 
-In all cases except mremap(), the new VMA will either be newly established
-and thus lack an anon_vma, or will be an expansion of an existing VMA thus
-we do not care about whether VMA is CoW'd or not.
-
-In the case of an mremap(), we can end up in a situation where we can
-accidentally allow an unfaulted/faulted merge with a VMA that has been
-forked, violating the general rule that we do not permit this for reasons
-of anon_vma lock scalability.
-
-Now we have the ability to be aware of the fact we are copying a VMA and
-also know which VMA that is, we can explicitly check for this, so do so.
-
-This is pertinent since commit 879bca0a2c4f ("mm/vma: fix incorrectly
-disallowed anonymous VMA merges"), as this patch permits unfaulted/faulted
-merges that were previously disallowed running afoul of this issue.
-
-While we are here, vma_had_uncowed_parents() is a confusing name, so make
-it simple and rename it to vma_is_fork_child().
+Do this in the less duplicative way by adding a new merge_with_fork fixture
+and forked/unforked variants, and abstract the forking logic as necessary
+to avoid code duplication with this also.
 
 Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Fixes: 879bca0a2c4f ("mm/vma: fix incorrectly disallowed anonymous VMA merges")
 Cc: stable@kernel.org
 ---
- mm/vma.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ tools/testing/selftests/mm/merge.c | 180 ++++++++++++++++++++++-------
+ 1 file changed, 139 insertions(+), 41 deletions(-)
 
-diff --git a/mm/vma.c b/mm/vma.c
-index 660f4732f8a5..fb45a6be7417 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -67,18 +67,13 @@ struct mmap_state {
- 		.state = VMA_MERGE_START,				\
- 	}
+diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
+index 22be149f7109..10b686102b79 100644
+--- a/tools/testing/selftests/mm/merge.c
++++ b/tools/testing/selftests/mm/merge.c
+@@ -22,12 +22,37 @@ FIXTURE(merge)
+ 	struct procmap_fd procmap;
+ };
  
--/*
-- * If, at any point, the VMA had unCoW'd mappings from parents, it will maintain
-- * more than one anon_vma_chain connecting it to more than one anon_vma. A merge
-- * would mean a wider range of folios sharing the root anon_vma lock, and thus
-- * potential lock contention, we do not wish to encourage merging such that this
-- * scales to a problem.
-- */
--static bool vma_had_uncowed_parents(struct vm_area_struct *vma)
-+/* Was this VMA ever forked from a parent, i.e. maybe contains CoW mappings? */
-+static bool vma_is_fork_child(struct vm_area_struct *vma)
- {
- 	/*
- 	 * The list_is_singular() test is to avoid merging VMA cloned from
--	 * parents. This can improve scalability caused by anon_vma lock.
-+	 * parents. This can improve scalability caused by the anon_vma root
-+	 * lock.
- 	 */
- 	return vma && vma->anon_vma && !list_is_singular(&vma->anon_vma_chain);
- }
-@@ -115,11 +110,19 @@ static bool is_mergeable_anon_vma(struct vma_merge_struct *vmg, bool merge_next)
- 	VM_WARN_ON(src && src_anon != src->anon_vma);
- 
- 	/* Case 1 - we will dup_anon_vma() from src into tgt. */
--	if (!tgt_anon && src_anon)
--		return !vma_had_uncowed_parents(src);
-+	if (!tgt_anon && src_anon) {
-+		struct vm_area_struct *copied_from = vmg->copied_from;
++static char *map_carveout(unsigned int page_size)
++{
++	return mmap(NULL, 30 * page_size, PROT_NONE,
++		    MAP_ANON | MAP_PRIVATE, -1, 0);
++}
 +
-+		if (vma_is_fork_child(src))
-+			return false;
-+		if (vma_is_fork_child(copied_from))
-+			return false;
++static pid_t do_fork(struct procmap_fd *procmap)
++{
++	pid_t pid = fork();
 +
-+		return true;
++	if (pid == -1)
++		return -1;
++	if (pid != 0) {
++		wait(NULL);
++		return pid;
 +	}
- 	/* Case 2 - we will simply use tgt's anon_vma. */
- 	if (tgt_anon && !src_anon)
--		return !vma_had_uncowed_parents(tgt);
-+		return !vma_is_fork_child(tgt);
- 	/* Case 3 - the anon_vma's are already shared. */
- 	return src_anon == tgt_anon;
++
++	/* Reopen for child. */
++	if (close_procmap(procmap))
++		return -1;
++	if (open_self_procmap(procmap))
++		return -1;
++
++	return 0;
++}
++
+ FIXTURE_SETUP(merge)
+ {
+ 	self->page_size = psize();
+ 	/* Carve out PROT_NONE region to map over. */
+-	self->carveout = mmap(NULL, 30 * self->page_size, PROT_NONE,
+-			      MAP_ANON | MAP_PRIVATE, -1, 0);
++	self->carveout = map_carveout(self->page_size);
+ 	ASSERT_NE(self->carveout, MAP_FAILED);
+ 	/* Setup PROCMAP_QUERY interface. */
+ 	ASSERT_EQ(open_self_procmap(&self->procmap), 0);
+@@ -36,7 +61,8 @@ FIXTURE_SETUP(merge)
+ FIXTURE_TEARDOWN(merge)
+ {
+ 	ASSERT_EQ(munmap(self->carveout, 30 * self->page_size), 0);
+-	ASSERT_EQ(close_procmap(&self->procmap), 0);
++	/* May fail for parent of forked process. */
++	close_procmap(&self->procmap);
+ 	/*
+ 	 * Clear unconditionally, as some tests set this. It is no issue if this
+ 	 * fails (KSM may be disabled for instance).
+@@ -44,6 +70,44 @@ FIXTURE_TEARDOWN(merge)
+ 	prctl(PR_SET_MEMORY_MERGE, 0, 0, 0, 0);
  }
+ 
++FIXTURE(merge_with_fork)
++{
++	unsigned int page_size;
++	char *carveout;
++	struct procmap_fd procmap;
++};
++
++FIXTURE_VARIANT(merge_with_fork)
++{
++	bool forked;
++};
++
++FIXTURE_VARIANT_ADD(merge_with_fork, forked)
++{
++	.forked = true,
++};
++
++FIXTURE_VARIANT_ADD(merge_with_fork, unforked)
++{
++	.forked = false,
++};
++
++FIXTURE_SETUP(merge_with_fork)
++{
++	self->page_size = psize();
++	self->carveout = map_carveout(self->page_size);
++	ASSERT_NE(self->carveout, MAP_FAILED);
++	ASSERT_EQ(open_self_procmap(&self->procmap), 0);
++}
++
++FIXTURE_TEARDOWN(merge_with_fork)
++{
++	ASSERT_EQ(munmap(self->carveout, 30 * self->page_size), 0);
++	ASSERT_EQ(close_procmap(&self->procmap), 0);
++	/* See above. */
++	prctl(PR_SET_MEMORY_MERGE, 0, 0, 0, 0);
++}
++
+ TEST_F(merge, mprotect_unfaulted_left)
+ {
+ 	unsigned int page_size = self->page_size;
+@@ -322,8 +386,8 @@ TEST_F(merge, forked_target_vma)
+ 	unsigned int page_size = self->page_size;
+ 	char *carveout = self->carveout;
+ 	struct procmap_fd *procmap = &self->procmap;
+-	pid_t pid;
+ 	char *ptr, *ptr2;
++	pid_t pid;
+ 	int i;
+ 
+ 	/*
+@@ -344,19 +408,10 @@ TEST_F(merge, forked_target_vma)
+ 	 */
+ 	ptr[0] = 'x';
+ 
+-	pid = fork();
++	pid = do_fork(&self->procmap);
+ 	ASSERT_NE(pid, -1);
+-
+-	if (pid != 0) {
+-		wait(NULL);
++	if (pid != 0)
+ 		return;
+-	}
+-
+-	/* Child process below: */
+-
+-	/* Reopen for child. */
+-	ASSERT_EQ(close_procmap(&self->procmap), 0);
+-	ASSERT_EQ(open_self_procmap(&self->procmap), 0);
+ 
+ 	/* unCOWing everything does not cause the AVC to go away. */
+ 	for (i = 0; i < 5 * page_size; i += page_size)
+@@ -386,8 +441,8 @@ TEST_F(merge, forked_source_vma)
+ 	unsigned int page_size = self->page_size;
+ 	char *carveout = self->carveout;
+ 	struct procmap_fd *procmap = &self->procmap;
+-	pid_t pid;
+ 	char *ptr, *ptr2;
++	pid_t pid;
+ 	int i;
+ 
+ 	/*
+@@ -408,19 +463,10 @@ TEST_F(merge, forked_source_vma)
+ 	 */
+ 	ptr[0] = 'x';
+ 
+-	pid = fork();
++	pid = do_fork(&self->procmap);
+ 	ASSERT_NE(pid, -1);
+-
+-	if (pid != 0) {
+-		wait(NULL);
++	if (pid != 0)
+ 		return;
+-	}
+-
+-	/* Child process below: */
+-
+-	/* Reopen for child. */
+-	ASSERT_EQ(close_procmap(&self->procmap), 0);
+-	ASSERT_EQ(open_self_procmap(&self->procmap), 0);
+ 
+ 	/* unCOWing everything does not cause the AVC to go away. */
+ 	for (i = 0; i < 5 * page_size; i += page_size)
+@@ -1171,10 +1217,11 @@ TEST_F(merge, mremap_correct_placed_faulted)
+ 	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 15 * page_size);
+ }
+ 
+-TEST_F(merge, mremap_faulted_to_unfaulted_prev)
++TEST_F(merge_with_fork, mremap_faulted_to_unfaulted_prev)
+ {
+ 	struct procmap_fd *procmap = &self->procmap;
+ 	unsigned int page_size = self->page_size;
++	unsigned long offset;
+ 	char *ptr_a, *ptr_b;
+ 
+ 	/*
+@@ -1197,6 +1244,14 @@ TEST_F(merge, mremap_faulted_to_unfaulted_prev)
+ 	/* Fault it in. */
+ 	ptr_a[0] = 'x';
+ 
++	if (variant->forked) {
++		pid_t pid = do_fork(&self->procmap);
++
++		ASSERT_NE(pid, -1);
++		if (pid != 0)
++			return;
++	}
++
+ 	/*
+ 	 * Now move it out of the way so we can place VMA B in position,
+ 	 * unfaulted.
+@@ -1220,16 +1275,19 @@ TEST_F(merge, mremap_faulted_to_unfaulted_prev)
+ 		       &self->carveout[page_size + 3 * page_size]);
+ 	ASSERT_NE(ptr_a, MAP_FAILED);
+ 
+-	/* The VMAs should have merged. */
++	/* The VMAs should have merged, if not forked. */
+ 	ASSERT_TRUE(find_vma_procmap(procmap, ptr_b));
+ 	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr_b);
+-	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr_b + 6 * page_size);
++
++	offset = variant->forked ? 3 * page_size : 6 * page_size;
++	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr_b + offset);
+ }
+ 
+-TEST_F(merge, mremap_faulted_to_unfaulted_next)
++TEST_F(merge_with_fork, mremap_faulted_to_unfaulted_next)
+ {
+ 	struct procmap_fd *procmap = &self->procmap;
+ 	unsigned int page_size = self->page_size;
++	unsigned long offset;
+ 	char *ptr_a, *ptr_b;
+ 
+ 	/*
+@@ -1253,6 +1311,14 @@ TEST_F(merge, mremap_faulted_to_unfaulted_next)
+ 	/* Fault it in. */
+ 	ptr_a[0] = 'x';
+ 
++	if (variant->forked) {
++		pid_t pid = do_fork(&self->procmap);
++
++		ASSERT_NE(pid, -1);
++		if (pid != 0)
++			return;
++	}
++
+ 	/*
+ 	 * Now move it out of the way so we can place VMA B in position,
+ 	 * unfaulted.
+@@ -1276,16 +1342,18 @@ TEST_F(merge, mremap_faulted_to_unfaulted_next)
+ 		       &self->carveout[page_size]);
+ 	ASSERT_NE(ptr_a, MAP_FAILED);
+ 
+-	/* The VMAs should have merged. */
++	/* The VMAs should have merged, if not forked. */
+ 	ASSERT_TRUE(find_vma_procmap(procmap, ptr_a));
+ 	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr_a);
+-	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr_a + 6 * page_size);
++	offset = variant->forked ? 3 * page_size : 6 * page_size;
++	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr_a + offset);
+ }
+ 
+-TEST_F(merge, mremap_faulted_to_unfaulted_prev_unfaulted_next)
++TEST_F(merge_with_fork, mremap_faulted_to_unfaulted_prev_unfaulted_next)
+ {
+ 	struct procmap_fd *procmap = &self->procmap;
+ 	unsigned int page_size = self->page_size;
++	unsigned long offset;
+ 	char *ptr_a, *ptr_b, *ptr_c;
+ 
+ 	/*
+@@ -1307,6 +1375,14 @@ TEST_F(merge, mremap_faulted_to_unfaulted_prev_unfaulted_next)
+ 	/* Fault it in. */
+ 	ptr_b[0] = 'x';
+ 
++	if (variant->forked) {
++		pid_t pid = do_fork(&self->procmap);
++
++		ASSERT_NE(pid, -1);
++		if (pid != 0)
++			return;
++	}
++
+ 	/*
+ 	 * Now move it out of the way so we can place VMAs A, C in position,
+ 	 * unfaulted.
+@@ -1337,13 +1413,21 @@ TEST_F(merge, mremap_faulted_to_unfaulted_prev_unfaulted_next)
+ 		       &self->carveout[page_size + 3 * page_size]);
+ 	ASSERT_NE(ptr_b, MAP_FAILED);
+ 
+-	/* The VMAs should have merged. */
++	/* The VMAs should have merged, if not forked. */
+ 	ASSERT_TRUE(find_vma_procmap(procmap, ptr_a));
+ 	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr_a);
+-	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr_a + 9 * page_size);
++	offset = variant->forked ? 3 * page_size : 9 * page_size;
++	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr_a + offset);
++
++	/* If forked, B and C should also not have merged. */
++	if (variant->forked) {
++		ASSERT_TRUE(find_vma_procmap(procmap, ptr_b));
++		ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr_b);
++		ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr_b + 3 * page_size);
++	}
+ }
+ 
+-TEST_F(merge, mremap_faulted_to_unfaulted_prev_faulted_next)
++TEST_F(merge_with_fork, mremap_faulted_to_unfaulted_prev_faulted_next)
+ {
+ 	struct procmap_fd *procmap = &self->procmap;
+ 	unsigned int page_size = self->page_size;
+@@ -1373,6 +1457,14 @@ TEST_F(merge, mremap_faulted_to_unfaulted_prev_faulted_next)
+ 	/* Fault it in. */
+ 	ptr_bc[0] = 'x';
+ 
++	if (variant->forked) {
++		pid_t pid = do_fork(&self->procmap);
++
++		ASSERT_NE(pid, -1);
++		if (pid != 0)
++			return;
++	}
++
+ 	/*
+ 	 * Now move VMA B out the way (splitting VMA BC) so we can place VMA A
+ 	 * in position, unfaulted, and leave the remainder of the VMA we just
+@@ -1397,10 +1489,16 @@ TEST_F(merge, mremap_faulted_to_unfaulted_prev_faulted_next)
+ 		       &self->carveout[page_size + 3 * page_size]);
+ 	ASSERT_NE(ptr_b, MAP_FAILED);
+ 
+-	/* The VMAs should have merged. */
+-	ASSERT_TRUE(find_vma_procmap(procmap, ptr_a));
+-	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr_a);
+-	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr_a + 9 * page_size);
++	/* The VMAs should have merged. A,B,C if unforked, B, C if forked. */
++	if (variant->forked) {
++		ASSERT_TRUE(find_vma_procmap(procmap, ptr_b));
++		ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr_b);
++		ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr_b + 6 * page_size);
++	} else {
++		ASSERT_TRUE(find_vma_procmap(procmap, ptr_a));
++		ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr_a);
++		ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr_a + 9 * page_size);
++	}
+ }
+ 
+ TEST_HARNESS_MAIN
 -- 
 2.52.0
 
