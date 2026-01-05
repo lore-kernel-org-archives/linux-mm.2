@@ -4,79 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B662CC79F9F
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 15:44:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE205C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 15:47:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 112D16B016B; Mon,  5 Jan 2026 10:44:38 -0500 (EST)
+	id 383796B0166; Mon,  5 Jan 2026 10:47:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EAC46B016C; Mon,  5 Jan 2026 10:44:38 -0500 (EST)
+	id 3310A6B016C; Mon,  5 Jan 2026 10:47:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0167E6B016D; Mon,  5 Jan 2026 10:44:37 -0500 (EST)
+	id 233A06B016E; Mon,  5 Jan 2026 10:47:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DFA736B016B
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:44:37 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 11D516B0166
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:47:38 -0500 (EST)
 Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 94FCF138DBE
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:44:37 +0000 (UTC)
-X-FDA: 84298332594.18.131B120
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A9AB288B3B
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:47:37 +0000 (UTC)
+X-FDA: 84298340154.18.F71AAC1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BA34A40008
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:44:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="innY/Tl2";
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id D8CB0180002
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:47:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X24i1ElB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767628056; a=rsa-sha256;
+	cv=none;
+	b=qUFqnqZf1uTMsgUxZl2DcOrrkxCL4osWDNq/E0hdgExZFV1ndnqEbjDnpnVEWOQEETo6vG
+	K0XRzSMTDFMI8FuC2FJHQrIKF4ZjwBAduBB5RP7HNUJFju7FO/3v6ReSJ9EKrXHrEkYw9y
+	9jqZWhZnWJLuLa3Dfmrix8LZDjbf61I=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X24i1ElB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767627875;
+	s=arc-20220608; t=1767628056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OzVIOQTll5paiGldSWSu9xwP26wDYXWg3+51U8R+ay8=;
-	b=ktgz/qh/kPOlfHXDPp40UerWEq1Mddp3mB3CLK9vFG/vInJ8Me1z93tYFaCw6kBUKZcLwK
-	wD3REV//A/uleP8oKeWLCRY9M1CTOkUxzz3etnGqgSXyLCPg8eIYvtjew3pgv2DfomOcHG
-	4mPB8b4PIpZd920iLZkd758HlpqvkTk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767627875; a=rsa-sha256;
-	cv=none;
-	b=muP0R6fRU+FmO0BYuS9MBwYBA1VPf7oG7PV1FfikWqx2jUB22+4gLe+z3I0/sVxbJqV9/5
-	fs3vmfqSxYsVaoKRjHaEuzqJq2IVo/oWBYCatKF0Eiicxd086fvXs/Vzjp+c9re5KfYmhB
-	FTnXgBEpudqv/fLKcsdMKCu78NVvVKM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="innY/Tl2";
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=P1rsslmBgiMQy+dSxfGDIjno39Zg+6YRvf7rbvq9vQY=;
+	b=DpUVrzoUwJLTRjIwQefdUgEp15LRmMMQ71zGgU0f0c3vNASYHxv51YFWvdbGP3y5ncQdtW
+	6TVfCphJqJRpQqpJ2FzhJdJyOfCsNdyxgXLyQ8Ww7MLau8FVUAJ8kh9rlNRa+aVwSMKKXw
+	kbQZ98gBGITBma1L5UXBeg/XuBiOlCA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 92D6C41942;
-	Mon,  5 Jan 2026 15:44:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9FFC116D0;
-	Mon,  5 Jan 2026 15:44:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E949941B6C;
+	Mon,  5 Jan 2026 15:47:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBB8C116D0;
+	Mon,  5 Jan 2026 15:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767627874;
-	bh=zyB+RXeNVXUVeBgnUv45RpvYtGKzZKPTAq3FhztMpug=;
+	s=k20201202; t=1767628054;
+	bh=ANvQzADNiHhNv3LRm2+i7hk6k4iTvSy9hbzpwZaKbHE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=innY/Tl2BGOxvQUBT9NyZo+k32OQBsSsf9fPILKhnS8ddQUe/HrpmtTPnpXOdVqI9
-	 hDgWNOu/sOsd9+7IxRlYBEckWSlOODdbi3u8AQAfEGgprAiKlYigf+BxG94P47E/oj
-	 i5pCiefjcDrii3Mz0udMRYnqmlfVa3SsXfQIs0RlrZXbDgdY8+VFRo/q5GufE7kb48
-	 sJmTdnKQE0D4BshA+CiJZDsW5cdZQNeu9UrlTYutQNjYDxCalkOToo156WImQ1zVej
-	 0i8G/jx0DTFKPiXvEW4AZO41O7p6v2y7YuniFRb9YbpqHz3bsGlbP8GNauOzaoUDGF
-	 zTlR+TILO1BPg==
-Message-ID: <51e72690-8a0a-4532-b6a2-79a851edc44e@kernel.org>
-Date: Mon, 5 Jan 2026 16:44:28 +0100
+	b=X24i1ElBjInjssWJeHWxUqm+aCXxFVonAeEyNnLzEcGm3rXNlWY+/cg/qaoKvkApv
+	 zitviB5j8U+oMxJYx/fzNwJcV259ktuMUCdQ3UkAfaUrRrj6GyNMwuUUvNFUD8fsTN
+	 +AUStNPwxoLt+Y8jUHySsGigHFPBz1WbTP3rIjkiFU2lwk/76pl6WGgO7xr+Ht9xse
+	 sxCco/fqGa2aXF1KNU7TBOmAyfZi3E/aBS+PeyIFG0MlorDyXIDfLKbX78wWh/W6/q
+	 g1rNd6MhnUavLjJVZHIKwN6kLqGS0MFI4vkUva7MGb1d2G5BE8XFH4zh79Za2zS5M5
+	 O7/2AoAYh7c4w==
+Message-ID: <b7425b3d-f614-4099-9f15-51c6c2cea68c@kernel.org>
+Date: Mon, 5 Jan 2026 16:47:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mmu_gather: remove @delay_remap of
- __tlb_remove_page_size()
-To: Wei Yang <richard.weiyang@gmail.com>, will@kernel.org,
- aneesh.kumar@kernel.org, akpm@linux-foundation.org, npiggin@gmail.com,
- peterz@infradead.org, hca@linux.ibm.com, gor@linux.ibm.com,
- agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
- arnd@arndb.de
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-s390@vger.kernel.org
-References: <20251231030026.15938-1-richard.weiyang@gmail.com>
+Subject: Re: [PATCH v3 1/3] tools/testing/vma/vma_internal.h: provide
+ fatal_signal_pending
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, amd-gfx@lists.freedesktop.org,
+ linux-mm@kvack.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>
+References: <45dd9b02-7867-6e5a-4a64-02c4d43c9b68@redhat.com>
+ <18f7f4ff-67f8-4a39-b6c4-893bfbed4955@lucifer.local>
+ <7014fb92-0d46-4c64-b3ae-0eb9d6b81878@kernel.org>
+ <a09462c7-af2d-4282-89e3-2cc43777338f@lucifer.local>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20251231030026.15938-1-richard.weiyang@gmail.com>
+In-Reply-To: <a09462c7-af2d-4282-89e3-2cc43777338f@lucifer.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: jbnx4khqwnfd3qayruo6a486hr884mki
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BA34A40008
+X-Rspamd-Queue-Id: D8CB0180002
+X-Stat-Signature: tfga3c83pioixr79k1qdwr48khcibez3
 X-Rspam-User: 
-X-HE-Tag: 1767627875-967608
-X-HE-Meta: U2FsdGVkX19OA12k4g/FfULhppAIc9JztJVEiK+DMFftCgg7UluhoFfASppUgEqtYnPa150gE+egwdicDzCF/zuR5ZXnOw/JADFBskKwIgVWcev7SbVU2t5VfRbxux+hVzErfhm3xb1KjU6g0eDA8XHS+GccqbmlejWCxCB3/UxLSnYwqlQUoQmkZL9vnPRdUBwXwXzo2DI2Wjk+E+anro0v0HEjpjRcCvJnBKDeCO/Pa6j6K8wMLQBxgFmV4PLN1J0sxkLwofx5qV6lJ7IfPMYyzlGL75y/u02mn/Hl3u+bDqNCdEF+r49ujKti9xiGjMnjE8xQPHilW7hPCjxQiLCNxXhp1DfI8yHdYEOljrAtdTJ8QHgoS7eGxv1oNNlaCgwC9yICd8zSzq3XyXgcT7wbUzwMdtf1a+cj9ggWmLn1nASOfYyoijA51L1gSAxL6ZvO44wCbuVwVdu06rKgZzWiY2Lh+3gdUA8WGLcjdRuIU8eREn1nUDKSioNqtd7d6zbcxi8ZKnNHk5/muhxjGVKNiq1xFPfrQjKcmSzI6E4e6f4m0wjLd3A34jJ60Lh1d90KzjCOI+53lcn9o8y0hP0oXwZkFCZ3s6IC/YdbEyj9R11LT0W594oj7XuIGF6gK0cJ/VFe83b5ThLSke667N4lV3bNNfTzT48XqQw8zhuxW2gKwb1rH02dR/wh/Iqt2baPmU5j2vjkSTQjWzLiOKVqygs/+GaCvAPw9XTGAtdtfmr7jCdQYmus2LZqSysJP/GLTcOX1kRsLx4Z+Cg8mYk4T+PYuRBzFemE+dMzMY2day3RgBNRX0jgE8OV/cFePvNZlkyueITFf0lZunTbMa2iasuB+cZtmojiwQvyBO2IPi+julr6009oMHhQozKcfVWhPSAy91BKFyRUT2b1NVL1Ve49H+u1av6DXK9tfAFDJjWKZmcvEr4QO2CjXmhp2/eBsCj2+juHL6p0Hx4
- as7WVRpf
- ZV0elVbJYIDNw2pspBGQColwAudh5Ccp2/9xSmrE7eBz2rq2LOEf8/ewaKvDSJcxApHhFwt0Yth7365XUgwGFR7YPOfa3jx4g6tzDDUucWAc2Qw6ZwnStaED0Ne3KxPTWcIDbCYkzO0AvRWXdbqcYrrS+O2+YTtFoNEv9WoOz8741ClsO0SEwS+ZK4hZjUksC4jGwVZTWc7mS0d9FXdKQnCxM+DGZuThErZSAIn4cpJCxiKBy1I0xdQMEswIH/zkSVvZ/soiFhPUBYBaFRMP9KFTL/rWqLP/8p2aPZxuU6yPxjqZSpzJ5OvQirLnNxOdIqGsKXGFNubBcsGq4G02j9j3llsW1NuNy9bYIHr4+lnW3+mGc+NafTuod0KF65hSbza1pYkOhvc3TqlAV4MEGePIclT5BfeoaUICL0PYmp8x9UGo=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767628055-758191
+X-HE-Meta: U2FsdGVkX19OMNGE+PwK7Zb7JBOka7zK8PX/J7amoYRht3zsu5LBWC2vewg/NKqZgo8Qxt6ph77XiGvMmw51gMbX0M3lmG0+/FS8tDpXH7HFCCVaZSEDyXrZPpQKaTdcR1SJIr0Jz6wAfEkcjDOAyfGbyzzhzV8wnlJ8oJwW0j5t0kScnNgl3ppIQjcuz+2ldvu8Gyhpm+DUpmJh2xJbcDf4pdWSl+mHE9B0e+FWoFnQtxt5WapdvYcKtbKuNMe5YkaLXEAWcUFbakvy6TcA3e/ho/DCqXKdDok5ljIs26vMRKe30q6qdt8Hw9HCce/rSX3QDOX5AuJ6c39jBz4IxYJxDu71QmaqdWh2sAg4IjX2W64rvtUqPcyKRTfUkn6nVe7MkE3i+kQ+I1ycL2Fkgv+SzEzVloJwwCPdq5Avsc1wBLYtiG9p7qulHeGWNvS/SXdwTThzX2wzQBpGqrGh3aBzt+ezpghhY5CPcWRVgir8frMjBdEtUAI+Zkbe1HwskenLYz+XcELRL4ND/sLRB3eAw3FnPOqakTtVb/2CyT+dfIxjHfA7nPCq0oQPAIB1ddAoq3in/ysTxtF6tERIlNt0lGSo0VseDjdAAPM6+cO3k4pYPJ2AQ5DK6LGbq0oOam/bDQWuAgGQac5bQ1kmGQHTyMkYTs8hFmY6HltkMeFzkb6v6dQlBpMXzfid18Waldqpc0gEb7T0URIt2l2cD/GddsCMi0nAL9eRKhq3hzV/9stwI2UqMD7xwTG7WZXRuyLCnouGzMlMgXVu74OResBOxbHG1zakUOz9nKUbGB+ABl4HyLsic9SqNSWWdgTfrMebpaxvbcMNox5s1e4bmlP/zh2Bu4V2MdxAxc/bWepmjJRG7UB5nYr0NGDfXT+LqNMu0vfu7Ffm5tByEKj/mmLgxmscGMHLa1kDcp3do3ghxq8y/VkK3De6At6RPM5l8Lu47W10WpgoWoyrRFH
+ wqXSrNAj
+ Fo02204zx9X1PYYeRzWPy4QNGYlgOEIIrEE5X3wV6q+shSS4jWLs50WqoIIJdT7kSAQk6Fk0qeeV40N845pMV2/Mu/m51n4FQcJrFrq6YsXRy7TeeCIRia/g2AV9CY+jWzqdsexDVztDlo7lcZ5wC5oQKY31SEDAH74VIcBTMvo10wLu86ozLmWe/03+rGLE+AL065+7Az/3VwefEgNtfB3vlJ4+ioYICp8ZXn26scuU1r51d8mkBWPtFK/HhFHcFhO98d/vAcuoN6pVrOTuIgdds7UGF7y6oSZca4m0/v3pKTbMB2rlX0i8MF9P+ZIWKVFOeW+KUd8JGmG+Q9peJKJuq9SFpdJkjUjVg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,25 +146,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/31/25 04:00, Wei Yang wrote:
-> Functioin __tlb_remove_page_size() is only used in
-
-s/Functioin/Function/
-
-> tlb_remove_page_size() with @delay_remap set to false and it is passed
-> directly to __tlb_remove_folio_pages_size().
+On 1/5/26 16:36, Lorenzo Stoakes wrote:
+> On Mon, Jan 05, 2026 at 04:06:38PM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 1/5/26 13:18, Lorenzo Stoakes wrote:
+>>> On Sun, Jan 04, 2026 at 10:15:36PM +0100, Mikulas Patocka wrote:
+>>>> Provide a dummy function fatal_signal_pending, because it will be used in
+>>>> the following patch in the function mm_take_all_locks.
+>>>>
+>>>> This commit avoids a test failure when the following patch will be apllied.
+>>>>
+>>>> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+>>>> Cc: stable@vger.kernel.org
+>>>
+>>> No, please don't cc stable. Also don't cc stable without a Fixes tag.
+>>>
+>>> This isn't backportable given you now need to backport to 5.10, 5.15, 6.1, 6.6,
+>>> 6.12, 6.17.
+>>>
+>>> I'm not sure how Andrew deals with a mix of Cc: stable and not-cc-stable patches
+>>> in a series, think he generally doesn't like, but I'm not sure how exactly we
+>>> are supposed to express order here otherwise. Andrew?
+>>
+>> Can't we just have this hunk here as part of patch #2?
+>>
+>> Backporting should be rather simple, just drop the hunk on kernels where it
+>> doesn't apply. Sure, a bit of manual work, but better than making our life
+>> more complicated here.
+>>
+>> But maybe I am missing something.
 > 
-> Remove @delay_remap of __tlb_remove_page_size() and call
-> __tlb_remove_folio_pages_size() with false @delay_remap.
+> Because the patch was sent with patch sending-101 issues (yet still merged to
+> hotfix queue inexplicably) so I assumed manual fixups might be problematic.
 > 
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> But actually because we moved mm_take_all_locks() between files it'll need
+> manual fixups anyway.
 
-Right, the only code that sets delay_rmap=true is 
-zap_present_folio_ptes() where we now only call 
-__tlb_remove_folio_pages() directly.
+Yeah, that's what I thought. Backports might not be that easy either way.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Sending+testing stable backports is not particularly fun (I have some in 
+my inbox ...), but sometimes it only requires one backported version 
+that can just be used for all older kernels.
 
 -- 
 Cheers
