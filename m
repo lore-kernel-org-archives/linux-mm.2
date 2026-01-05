@@ -4,171 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D55C79FA7
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:46:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E63FC79FA5
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:47:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A84B6B0197; Mon,  5 Jan 2026 11:46:52 -0500 (EST)
+	id D1FFA6B0198; Mon,  5 Jan 2026 11:47:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37F226B0198; Mon,  5 Jan 2026 11:46:52 -0500 (EST)
+	id CD3A36B019A; Mon,  5 Jan 2026 11:47:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25E686B0199; Mon,  5 Jan 2026 11:46:52 -0500 (EST)
+	id BD64A6B019B; Mon,  5 Jan 2026 11:47:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 167A76B0197
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:46:52 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE0151A01C2
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:46:51 +0000 (UTC)
-X-FDA: 84298489422.28.938D932
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1D17B2000B
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:46:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1/1r/KF7";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vfZrxLdI;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1/1r/KF7";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vfZrxLdI;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AAC716B0198
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:47:46 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3C52B55AD0
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:47:46 +0000 (UTC)
+X-FDA: 84298491732.20.BDEAE6E
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 19CAE40008
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:47:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=GzuPGAG1;
+	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767631609;
+	s=arc-20220608; t=1767631664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4BbgkS5ORMgbzsoj2tJDrX7KFBsx2OdqqnsNHutRsfE=;
-	b=QiCsY+Ls2bj5LAR/R+jhgdNxHd5RFVIjZiL3SBoUadgVMdMqC6uv74/N7vl6eBzwCC5mzi
-	ckZ5hxr/F4MgR8vP3xsylfmpeZfwdyi0BcJ9LoP5TqYkEpTmf4y0wOZp1gtQ4HZy0WzYMA
-	6AYKlxKTfeeVnNa5n8bIJr/z9eVhlBA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767631609; a=rsa-sha256;
-	cv=none;
-	b=H4WDBcfgEsU7IGwRZfNl+2aMpdQosIwGtCdXNnl4NPSEHZdcBY4fMIv+u9o3qXEzNuexE+
-	S/Mhx3sf2XsrmCman+f0WWKoXg8HESRIAWHngLW180K2JoG+bYSq2f9VYlxVyF5PJIyx27
-	B7loACZeRYwgzbZ4Q725kZbtlS+5xgE=
+	bh=dVf3u2DFHBy+G2reAT7+xTPxrhj2Q9BCnr/QUBSKiK8=;
+	b=nedUl/cBn/GXF/nI2pMz4IrR/vvxsxyvNmu5OHQlm3320Dhi4OCtGXe7Bpw7DGLNijWFOh
+	0Ua3CUQWhD4KBkf2h+1EyTefCErKOa1JMiuRE7UXoo3h8/QjjP6+9xaavAU+awGPjAPk/Q
+	sXCz1hXnfsgsAt+HPTXSif3DtZ5h5tI=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1/1r/KF7";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vfZrxLdI;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1/1r/KF7";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vfZrxLdI;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7E6245BE55;
-	Mon,  5 Jan 2026 16:46:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767631607; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4BbgkS5ORMgbzsoj2tJDrX7KFBsx2OdqqnsNHutRsfE=;
-	b=1/1r/KF77LaFMblOegPQzp6XEbWTywlB+yXrwy2s8bDmm/fObjJTcqm4LV7R3NIG81P8Zx
-	ao36vdPaySDYzXEP9yal2Abg3IoNUWGqjY2sJAI2GGbLhNZKkANXZJ7IQo3PZFaTz77/vh
-	RsY1a8eFYacr4j5k9ZwZE59tDe5kWnM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767631607;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4BbgkS5ORMgbzsoj2tJDrX7KFBsx2OdqqnsNHutRsfE=;
-	b=vfZrxLdIhw6Rsg4TkdBySiHceCw9wNh9VSKow51U8lXMWPgjknb0pnTwGkPtGJxAvLY4Rf
-	t/zZCy8iXHG2TpBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767631607; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4BbgkS5ORMgbzsoj2tJDrX7KFBsx2OdqqnsNHutRsfE=;
-	b=1/1r/KF77LaFMblOegPQzp6XEbWTywlB+yXrwy2s8bDmm/fObjJTcqm4LV7R3NIG81P8Zx
-	ao36vdPaySDYzXEP9yal2Abg3IoNUWGqjY2sJAI2GGbLhNZKkANXZJ7IQo3PZFaTz77/vh
-	RsY1a8eFYacr4j5k9ZwZE59tDe5kWnM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767631607;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4BbgkS5ORMgbzsoj2tJDrX7KFBsx2OdqqnsNHutRsfE=;
-	b=vfZrxLdIhw6Rsg4TkdBySiHceCw9wNh9VSKow51U8lXMWPgjknb0pnTwGkPtGJxAvLY4Rf
-	t/zZCy8iXHG2TpBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 713FF3EA63;
-	Mon,  5 Jan 2026 16:46:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7JpHG/fqW2ltIwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 05 Jan 2026 16:46:47 +0000
-Message-ID: <07c4f991-ae41-456d-8e7f-287bf8676c9e@suse.cz>
-Date: Mon, 5 Jan 2026 17:46:47 +0100
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=GzuPGAG1;
+	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767631664; a=rsa-sha256;
+	cv=none;
+	b=Ge2ST0M3Y985Gn9ICs86tE0dfqYPeuxoMJBpeitp2UkA2s3ycETt6qSEOGJtYxk5Lpy7Ol
+	DV5T8XEdxMPj7DdLYTSRUJQQBOrYk/IBVaeGKZd5Jng+NFatCHizbQBNS14T9/wbp2NCZk
+	PV3GbODoNlHE3MQjvgaNQniiSOMF9e8=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-47795f6f5c0so784575e9.1
+        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 08:47:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1767631662; x=1768236462; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=dVf3u2DFHBy+G2reAT7+xTPxrhj2Q9BCnr/QUBSKiK8=;
+        b=GzuPGAG1cRxvL6bscNuN8d7u+gbtVDMRzqNAaiXenNp36vKuVjR1P4BywbZs84gl+v
+         7neFLv9E2q/xz2cGW3t01FlSb7RB6fCvbKgo9IDYo2xdLdThwL0bSVJgFcpqOR2vuyug
+         N3+4UV3L0H76bdx63kOTQV+yhI5nYTVYimLtXtuf36Ddck1hcpbuoLislFBK3r0eLny6
+         emmBC9n1kR64xuIaKJuNSiMU8/ikNOBbJWkd/721v1Zp+vEoZkH3DaDjWp5BTSvdIa1N
+         QxvAvkpCMRh/xsrjwTlLxndYCN34Y4aPbKsFWdE615TbonJk0RIVLV9RMvChmfKkuh1J
+         zT8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767631662; x=1768236462;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dVf3u2DFHBy+G2reAT7+xTPxrhj2Q9BCnr/QUBSKiK8=;
+        b=WidGSREgFYXYwY7t/vgxxPkNBCf3EV4fFHC3jAucGUWkEqDM6xZtZlB9S4RgToUrzs
+         +3Dnd1eVKfHKHN0hPyC+r7yorlSlIhnX5/FBl2DujaFaYS/xvb4g+A66UyaPtiCRN8ub
+         Hi3JBLwH9cfJMzobZJrNpgSE7lDGggkD75I62bCozzxGl8qwXd4VgggyrgXDzH0gUaKD
+         JWofcSJIslxx68n8SMX3x3IwRZH/tD1hJhfw5jz0+SBA0q0EQkAt797w/MYBjTcjtHX/
+         a4rQ8a0UpuSH5biuw5+S0xLseZEv93TtxWSiq6uk+SBZveaf47E2rEOe6y6nDh3w1OUq
+         r/4A==
+X-Forwarded-Encrypted: i=1; AJvYcCUKGmxfckBenNVIe6uwhPSYGezYZOZVeqEJGhjNDU4gET5gRen2/yjppBeZpuS58ahf1Vc5aFtVbA==@kvack.org
+X-Gm-Message-State: AOJu0YyE3MGNMsRr5MYwDQbi7dlnwwDYemU464FmSR8ReGuzcLjQPQvT
+	cgOZxsli9J9SefQUm7/YxqUK1wxM61dKRpbMrewXnjnTtGjIRYxlYH6JwUr2ad94m5I=
+X-Gm-Gg: AY/fxX63Zwq7/dcqBc5OV2sDxs/H4xkMvhIie+Lb7Xb+GHfAktIU+M3G6zNXyqPkXUV
+	05eW+yzT0hifj+3Ec1w8JDi0BniLORlJsodEJ/2WpS+Vd26wZo19RFSUU5xQiWrm7Vcen3HJgE1
+	3upHxnU1pwI0NU3q7vX36fPfxNqYAnXwglsFO7kt+8S+++7yrgkCYpnivEHbvhZmsvjYV3J3jOg
+	hiXzXhJfUY2FC3ldHPV7VoqfPDUjeASpyCo/uk+nEEPgzrypnw9r85hcyhweUE3Q5IsKDK/CPyF
+	C7lR0/f1uXoRY4yI6uQ4T/0mjqzvf08TdWN/lkH3BjfLJC1Gve0e8yrDGNc9QM63qwCJzVWpBmB
+	qMxWYSbHlCZ/4cz9co943EDZk9l6el+rRSRCkWugfWbwCJJXHqSI5GuD4zjNYJqiAaDd+RuU7Gz
+	bEoWW1vCEvI2zhWOVgeu4vK6ld
+X-Google-Smtp-Source: AGHT+IEbXwEOmbKLHAAdWfErBpN1iq2Thm7pkrNBOzof7I9+NvjlAAF1JhXxTvcoCCGSIEMhKFN87A==
+X-Received: by 2002:a05:600c:3b87:b0:477:aed0:f3fd with SMTP id 5b1f17b1804b1-47d1953b7b0mr684658085e9.8.1767631662427;
+        Mon, 05 Jan 2026 08:47:42 -0800 (PST)
+Received: from localhost (109-81-90-116.rct.o2.cz. [109.81.90.116])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7ece8088sm3482295e9.0.2026.01.05.08.47.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 08:47:42 -0800 (PST)
+Date: Mon, 5 Jan 2026 17:47:41 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: wujing <realwujing@qq.com>
+Cc: Lance Yang <lance.yang@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Qiliang Yuan <yuanql9@chinatelecom.cn>
+Subject: Re: [PATCH 1/1] mm/page_alloc: auto-tune min_free_kbytes on atomic
+ allocation failure
+Message-ID: <aVvrLekQJMMJk9lD@tiehlicka>
+References: <20260105063830.15140-1-lance.yang@linux.dev>
+ <tencent_8CE8292766552797836FEB198A402CA2CF06@qq.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mempool.c: set @elems slots to NULL once freed
-Content-Language: en-US
-To: klourencodev@gmail.com, linux-mm@kvack.org,
- Christoph Hellwig <hch@infradead.org>
-Cc: akpm@linux-foundation.org
-References: <20251223231054.16061-1-klourencodev@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251223231054.16061-1-klourencodev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Stat-Signature: duhfron33ytyu58kgaf84t1tgi69p9eu
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1D17B2000B
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <tencent_8CE8292766552797836FEB198A402CA2CF06@qq.com>
+X-Rspamd-Server: rspam02
+X-Stat-Signature: nbij9k3q6dx3o8ru7tfsitz19b1t7up7
 X-Rspam-User: 
-X-HE-Tag: 1767631608-684069
-X-HE-Meta: U2FsdGVkX19DgjMqf2GOwSXBG3XYnWHbMDDwb6telSwFcWBhLuaTfsb2lFBFPwF43ZeDuS6ioWnF6iDyWpNUUlLVfLZuMdRn08kLx/P+OFxv6bUo9HFV0eN9MXs3+hg5FczjL3G7EWxbn++ouVIK37D0SafGxq82F6pLMK+4LE+UbMHEParzJZvkjDcpofmSkvA1kwZHWNR5pJPug3u/hYHRpiTDtYVBmLT3hHJ6CJaUiouBEFM3pI5YlZxQQIRCRQFk+qApvbibb7dxBTaHjmNTAklSfVBgLwk7sAsXyhszX+9YAC8vbRc4joeIOVUckex6WUX5+H/wwbn4xZDBvmc6JhJyju7e/Ts2lGA/q7f38LSsNGyhzsOEkgV2l06Hf2OO9YY7ePsPxx2rf3TFbKmHfhK5zdT/4xeK7iL3rA1CbHmV5EGh7YWXRtzDCkwP07fPckXCgPIIFoO/FItRpkVCUMQFWDKBbqu2FDWC+eAFiTrh92cAyVYD5kY/6NVJpEvRbBOhyERlVfj1dnV69Myt/6wDuQx81rcZuGM7BOG4NQwhz5/ghqQLj8Q1cRMJbgaNN9Nw/EBDs9NICV8hg31jXKpZyjPxLDimOcw9F/fUEh3iBONSEHsjzO5UoZ7IEAhP85FVdqRW2kxnYuqXxEkXEHbziZ4ZOgqcwVLJjBEdqvObNDBE1L+rn/CgEZVSbcu3pRU+yUwq0I+IT+NQHYNHU6kku4bN1KhagfyO5K5FWViIjKwQANXs/56/yGJrTi0bRHqiu0JtZuBLYQlULS4u1EpYTcfngTmnRTlezlnr4VAjacwL8aSgbzEOb3RkWBVYU6GiY7X4qW1etJtwMiPianzNHmBJe5eg/LfrK/V8TLbmX+U80be4BCNPbqVbJzf1HQGqruui4qR8IQJ06gkHlf/I+p5XWq3HOzTM+IN22ubFZicIra5dAco399BdENCNS0VnDIrk76vq1LM
- 8l5SEDsL
- i2IWmRzk6Y/hCOn/fDMZOplieVTEUWuJN84L0GGKWZdNl7YiI9D5wPNJGJJ8dwNhUHyMFyb4g+DbL+cCcV3FZiHI/6pt0Eod5iZJ6tIkTia6+j0ZvgbTdeM2pX7QDKjqk3lvM6hIuCvYaw5jtmYQN+kCxT+Z+t11YOAR5qb2RPh9/DRq5awbpZfjToGhjIG1AlENIyeagqwec4H+awC4a+VAXW3anu2d8HXTKt+X8UNnNg1BrrJaCVfeOoyJKqn5pHHQwRHulnbQO/rIljWbkwaII7AUhTC5Bha4A+68Yz1UE06tej4CwgBIT5g==
+X-Rspamd-Queue-Id: 19CAE40008
+X-HE-Tag: 1767631663-711546
+X-HE-Meta: U2FsdGVkX19tAYY6LF9phifmOF/Uc5hBXTY3KOgjuqrm+Ra6Hup300ZXyBbTGYhU8oujlUxQ9OA3kF2sUuc4Acdrh5Ne2CYWJ3fuFgMFaRGdx+rz+cKoBkliSi34EYZBDlOf7ZwTNSWsLsyvJP6SRvwi7tie6FOSiwuAcyCaUERMa0SPHcxkeTR3l3GKsIcJbDyqsVvzzNpUfvdnqzXJqOPP6cLN8u9XtCvx3zKMsfCHxvexcz2e26aYdyMvs/htFkzEyOt9Sy/3vvvFvYD/nyvtxIG51gzjeE4z5VkRTS1atCBgHlgB7CffRP7QsOUkgpqv1qP0lnlXAPPMscNCNFbqR/ktPjqXqm4ROS3A6L/Y7dEdHOJrB0NffnqSpEWeTSmkrPB0Ammn2cetKqh+sfrbymiOjK8sQRSpRI9WmzKpeJvglPU+5/v2M8DPmY5IT8WzXQ8uODQQI2WNAoHZ+nbgIzpk8V7+iHRuO5wTo1GkOmH+sHILhX5H4yebFkizr1IXQxxY56NDwDvdWr/XZVgzIjmhKnbR01bY/rwGO0UzyeBfnlZ0JXT0ja8ir4IinTSSQa/pyBcjPbNr8XgY19V+UOTBYTA2xce8vknHFTt43XLu2GD/gfGn5fY9nAGlIRWhv85+/MfBLpf6FhA4YT+KpX4lMa4hF7LyMviDNNlcNnVHvAuj8qW5ojyQVOD6Fx0DjgMQ4vmUO/jsMQP3g6t9+aLEsSvp3/Rei+Oq8BzhdBxbbOSbIq+QiKCgxzuKZGhi1fV16rmrELx1SkTiSBv9l7L0N7kMHeRT0HBcxP5U2wheLXKd9UOzpJSq9gVb6slCQfT8/w8scHSlcxcN4UMIEaVTIkbDO07A3GRz5Lc4/XROqT74zPGxawQXHgIpuoQnJRAl/hb0TczyHR9mfxkGqK5GK7eIL8QrAHeFVZAFJVKa5imprbte5k3UNT+OiQqQVeRmLwXbRZVOVc3
+ ZBbQfogM
+ dKI50uVysmJJGAmorvLiPi/HOXC87MpD5hkowoAO9HmyYItS3TvDQgcknJzQMHHrf7JAjWrMbgWhhShoZIFqf3Rf2k6oNRor3qH9tDaoC554C6hrkSx9FR+BbCvAUPo0XZjzV5UVNLmP45ibYFtq92UfxFDwyY+UWdxsv5bAcwhVfyaLp79aQliwjeR+RPGb0c9+gVvY5gxv+RC6FywDPVt8MXiLwt2VgLMlKlk80HW4AndWWdRcSmauyYe7RW+pCrIq7FQzUFqOWbnEStn6EzVdfMlLO+JBMpMH2262REd/HFv7u5/TqYykca+OVO0ll9GPzGq7qJui9nO2+ETXfBhWHMwycKoVGolNg76AXSRY9HRHU0RRtuDx1utUGQubEQaXb36aVH2BzJdSc22TdrSoMq+Si16PUZzGYc7AqOfFTeRA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,48 +129,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/24/25 00:10, klourencodev@gmail.com wrote:
-> From: Kevin Lourenco <klourencodev@gmail.com>
+On Mon 05-01-26 15:29:04, wujing wrote:
+> Hi Lance,
 > 
-> This is documented in the function comment as "...and sets their
-> slots in @elems to NULL.", but it was not followed.
+> Thanks for the suggestion about using watermark_scale_factor instead of 
+> min_free_kbytes. I appreciate the feedback, and I'd like to explain why I 
+> believe min_free_kbytes is the correct knob to tune for this specific problem.
 > 
-> We need to follow the NULL assignment, because elements newly returned
-> to the pool must not be touched under any circumstances by the user.
-
-Well alternatively we could update the comment if no user needs to rely on
-this. Since it was modeled after __alloc_pages_bulk()/release_pages() and
-release_pages() doesn't do this, we could also avoid it for perf reasons.
-Christoph, what do you think?
-
-> Signed-off-by: Kevin Lourenco <klourencodev@gmail.com>
-> ---
->  mm/mempool.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> ## The Core Issue
 > 
-> diff --git a/mm/mempool.c b/mm/mempool.c
-> index c290e5261b47..1a2060304fd4 100644
-> --- a/mm/mempool.c
-> +++ b/mm/mempool.c
-> @@ -674,7 +674,8 @@ unsigned int mempool_free_bulk(struct mempool *pool, void **elems,
->  	if (unlikely(READ_ONCE(pool->curr_nr) < pool->min_nr)) {
->  		spin_lock_irqsave(&pool->lock, flags);
->  		while (pool->curr_nr < pool->min_nr && freed < count) {
-> -			add_element(pool, elems[freed++]);
-> +			add_element(pool, elems[freed]);
-> +			elems[freed++] = NULL;
->  			added = true;
->  		}
->  		spin_unlock_irqrestore(&pool->lock, flags);
-> @@ -683,7 +684,8 @@ unsigned int mempool_free_bulk(struct mempool *pool, void **elems,
->  		/* Handle the min_nr = 0 edge case: */
->  		spin_lock_irqsave(&pool->lock, flags);
->  		if (likely(pool->curr_nr == 0)) {
-> -			add_element(pool, elems[freed++]);
-> +			add_element(pool, elems[freed]);
-> +			elems[freed++] = NULL;
->  			added = true;
->  		}
->  		spin_unlock_irqrestore(&pool->lock, flags);
+> The failures we're observing are GFP_ATOMIC, order-0 allocations in interrupt 
+> context (network packet reception). From the logs:
+> 
+>   [38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC)
+> 
+> These allocations:
+> 1. Cannot sleep or wait for memory reclaim
+> 2. Can only use memory below the MIN watermark (the emergency reserve)
+> 3. Fail when even this emergency reserve is exhausted
+> 
+> ## Why watermark_scale_factor Won't Help
+> 
+> watermark_scale_factor controls the distance between MIN and LOW watermarks. 
+> It makes kswapd wake up earlier (at LOW instead of closer to MIN), which is 
+> great for preventing memory pressure.
+> 
+> However, for GFP_ATOMIC allocations:
+> - They don't wait for kswapd
+> - They only care about the MIN watermark itself
+> - A larger LOW-MIN gap doesn't increase the atomic reserve
+> 
+> Even if kswapd wakes up 10 seconds earlier due to a higher 
+> watermark_scale_factor, network interrupt bursts happen in milliseconds, 
+> leaving no time for reclaim.
 
+The thing is that your approach is not immediate anyway. You are
+scheduling a deferred work when allocation already fails unless I am
+missing something. Which is too late as well.
+
+Lance has a good point that updating the scale factor earlier might help
+to smooth out the reclaim for the increased demand.
+
+> ## Why min_free_kbytes Is Necessary
+> 
+> min_free_kbytes directly controls the MIN watermark — the actual memory 
+> reserved for atomic allocations. Increasing it immediately makes more memory 
+> available for GFP_ATOMIC, which is what we need.
+
+Well, if the memory is hard to reclaim for kswapd and earlier wake up
+doesn't help out to reclaim any memory then is realistic to expect that
+direct reclaimers can do better on the min_free_kbytes (and watermarks)
+update?
+
+> ## Alternative: Hybrid Approach?
+> 
+> That said, your point about side effects is valid. One option could be:
+> 1. Increase min_free_kbytes for immediate relief during failures
+> 2. Also increase watermark_scale_factor slightly to make kswapd more aggressive
+> 3. This could reduce the frequency of hitting MIN in the first place
+> 
+> Would this hybrid approach address your concerns?
+
+I would much rather start with a simpler approach and only make this
+more complicated when it turns insufficient. Scaling watermark_scale_factor 
+seems like a more natural approach to me. Could you give it a try or
+have you tried and it proved to be a worse solution?
+-- 
+Michal Hocko
+SUSE Labs
 
