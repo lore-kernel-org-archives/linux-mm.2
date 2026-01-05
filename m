@@ -4,85 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0855EC79FAF
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 18:24:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA636C79FB3
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 18:31:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C7306B0005; Mon,  5 Jan 2026 13:24:36 -0500 (EST)
+	id 5EB126B008A; Mon,  5 Jan 2026 13:31:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 674376B0092; Mon,  5 Jan 2026 13:24:36 -0500 (EST)
+	id 5A1C76B0093; Mon,  5 Jan 2026 13:31:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 555EC6B0093; Mon,  5 Jan 2026 13:24:36 -0500 (EST)
+	id 4D84B6B0095; Mon,  5 Jan 2026 13:31:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 459546B0005
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 13:24:36 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F0A7F14022A
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 18:24:35 +0000 (UTC)
-X-FDA: 84298735710.23.157EAA6
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FE696B008A
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 13:31:33 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EE576139276
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 18:31:32 +0000 (UTC)
+X-FDA: 84298753224.06.228C83D
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D5B7B140011
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 18:24:33 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=l9wfCNJW;
-	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767637474; a=rsa-sha256;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 54268C000A
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 18:31:31 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MsZxHeGy;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767637891; a=rsa-sha256;
 	cv=none;
-	b=pQWLT/GiJ0fPpY0p3BY5Exlp6JxVJx1F8iFkfA0w5iQebNItJRBR2BZ6/gfxvmniESKchD
-	aQhb9BY/21jIzv4fBduV/vkQCGSUNZeTRcfqNUFg744fnrUwx8OParPaZQTzo38M9NWkLX
-	GkbGW8m+pAU9nvaWUWUr+kwKcyK0wZs=
+	b=EIgoIzXEVZXunGmyAwgSoLWTLNTKRUi6K5oBHFnWcpXD6M26rZmd+LAViQB62NZm7zIsjt
+	B1SOIbDx6WhH77cW0XVEuC2evir+K9xpELBZL45vrjO8PfJlSRE00iZ5eIO4DoSfOh4rhw
+	TPGYdpv0gPDxV9lxQ8LyCjYjz8wn4ko=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=l9wfCNJW;
-	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MsZxHeGy;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767637474;
+	s=arc-20220608; t=1767637891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cmAw3sEmOW/PfoEmS4nNuobuL/oTLixAsI0C3Pzjvo0=;
-	b=xIhp3s2p1oK3KKVeoJOjdLky9wO+CabJCB5NxGBMmBYEYP5RjHvlUXFJBvIMbfOh+GcddB
-	7nq48MsTHjCcighbMSRUeY/vRZ1q9o6hnnl/khXj6uQqTmOIHz/Mk6X1qd8SYvEMDYGv6V
-	fjFkd7DZzlDr00vNZAYkszMtysYZ7KY=
+	bh=8MmaHundWB98Zl9LWZS5d2NV+pR8sSOwYB6rXTuV7y0=;
+	b=VEGa9baA3VgpyHIXh+x2gH5/NnicGudM8ntWLM/krX+gLG7wSqfyVfccmEDVeaMZ8CFYc3
+	sWtVMVfR6VJFzac0v8gi1I30WsDA8VS8ckPSQTHpPZdZCre/B7FXFzWyQ5YzRdBgxKP17a
+	75YLQ6kHK/ZQ3WFMsJmUgShUzNFCxEE=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cmAw3sEmOW/PfoEmS4nNuobuL/oTLixAsI0C3Pzjvo0=; b=l9wfCNJWstlU6DI61gawiguPIS
-	YViswUJweTRCav0QQDt5HVa7Ai0ZCGTfGM3X2ZSD45LS/lkxdlVwmmHC7ITkdmW8GJUTTKDFyjoe/
-	CzfJ6sDf17ItYV9vNfP5ZVOoKdT/mz8fPjGLaNqDKiKKvZ+tzEuTL4cuzjzUL3ZzAFJ3l2DCW4sHm
-	KWe8ib0w5MSHu0fyXs/kVivqL3eV2NjLDVl5WGygaD0IdQISfSXUIGb6Er0niB/Pu9ydTR7XdpoGF
-	SzUVRvgtWzb6QtAI8lI4eS/8MZ05GDq78blntDUQljxq3oBOrM7eYGMgIrh1xAbHKoj5jc+BEgn0i
-	0DhsuwSA==;
+	bh=8MmaHundWB98Zl9LWZS5d2NV+pR8sSOwYB6rXTuV7y0=; b=MsZxHeGyC/LA3L9MAeio2PLiBQ
+	55DSL/XD8VtW1KUcoUP9ZR9K96zKoQsD7xMHTPNlLbU2zND2MHipFuqVjwvSr5C+Xq1EKfHWl0HDN
+	yZFo9UISlqY2AtbOARykVtnfD4j0mVfiz1pA2E9vPszcPPtDnXI3hswxK4rTPsN1AcFZYiRBbYXjq
+	n4ndBT0QehzAmxlyBsjr11aRnc/mewCEPBJGPgzlAwVDpOD7wEuZHVkpHRZgWeOimFu6WsNo2N6Bq
+	iDw0OHIwapnUJrY/AIZ8hIJXrghNPFh0uYgwmSXtGyULQkIs4Mc5KoIE0I7Oup0EiF9zucvYpph/J
+	GoFBy6CQ==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcpFm-0000000AjJK-0xle;
-	Mon, 05 Jan 2026 18:24:30 +0000
-Date: Mon, 5 Jan 2026 18:24:30 +0000
+	id 1vcpMW-0000000Ajpk-25QI;
+	Mon, 05 Jan 2026 18:31:28 +0000
+Date: Mon, 5 Jan 2026 18:31:28 +0000
 From: Matthew Wilcox <willy@infradead.org>
 To: Calvin Owens <calvin@wbinvd.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Shivank Garg <shivankg@amd.com>
 Subject: Re: [BUG next-20260105] khugepaged: kernel BUG at
  ./include/linux/xarray.h:1441
-Message-ID: <aVwB3t2wD6Dyt6yT@casper.infradead.org>
+Message-ID: <aVwDgMWsHqebuu0j@casper.infradead.org>
 References: <aVvz3tYdu49TGkjI@mozart.vkv.me>
+ <20260105095111.c0e726f7a85bccd8a1aa0067@linux-foundation.org>
+ <aVv-nloKXjqyfrFP@mozart.vkv.me>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aVvz3tYdu49TGkjI@mozart.vkv.me>
+In-Reply-To: <aVv-nloKXjqyfrFP@mozart.vkv.me>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 54268C000A
+X-Stat-Signature: touromqmqbgo4qhuyh1zdpjnkki66faf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D5B7B140011
-X-Rspamd-Server: rspam04
-X-Stat-Signature: msykg4mdh191n9594ub98f6xay76qwif
-X-HE-Tag: 1767637473-744173
-X-HE-Meta: U2FsdGVkX1/2O1g7oz9bvwSLcIThtLjTD9clf3m3NY4JT6/A8k1Drw3Noe9zIxcZ2u80YImr4zAfJkuAXTQmA3AHR9xza915iCk3sd665UfKCqmOVuhpkolcaRld5YN9O2mSFbb+VKEsJwn6fJUm/OA2oadgwbYZFR+RR04jvn1u/e8wdGZxa2E3byVsCno0FVjJOw8F1tYEg+Rro2K2y8p2ZHX8HIQ2hHzeF5fP8P9HIF24po0SSZxusBm92/rqzSUOUQe4x5wnzmu0h2/cgjGN2JUoFhhOOXlxXct8ryx+Chi5gk+XqpePSJd9m9Es7W2J3oWLfGbibPI12+8jUo1VCfVAEVNUfRc3iEwVuAfWp095MarFT9OzBs2Shl7mMKzdjAbuzZu0rpdjapP9xjBn6Fa0G0dV6/cVYxZ8RuWS9+HnVxy02VRiJiHTtoyp0UNUaC/cYVYgZdIENEgmyKnOb4pMyOneVA/JY7MtjnmZfW5y1KOiCEae+dGB8ASBic7EFf7rXWnMV62SQuzpWgIih4cRSDznKH44I+P/8HWHtNF2hRa2NrTQVyyMSO3GwlPeZfa900/BBLmA+D18CKfPm5ZoovXto13gH70t/1laFqTcnbeVyHp99a/YiCkfhlukHwLlCjBM6ojosbvYShDmUF//FJuw8bVN6E7cj5avZd5JrGM6fQKLz4zudKvEDpMduQ/dwd80iaWNP9shH3oTCMINBEdbshEDQFPiRMMDAP/JJrJFiq1ge7ChFKEYpUQHv1/BYxPIIrc+opON2Mihh9b/IerTRIbzeK5sT0l/Y718gcg4i4qLYAG9p3j7mQNh0XHbr3iIZEmon5q25z+sevv4ubxCqskERAubxpPO8FTCygZszkM6olClr9HnzSE/3OJW34OWovkcbzwkpjxpxRwwjvuoThHkkpNwaUkxO35IQQ/6hmCU3aEXaVyGiJrtzs6ll1e8mHld8XV
- ZzYYqHvP
- TXEMx4bOucPcqho6GfvfXnPTCCiAHk4i1MduJbIgkSLBr/gveLDCoIlzDSg2ibqrdlejUc5q7+2ukXpHkLdoe0v6dr7pUyT6GyfZbcWcv+3oMZ5u25e3DIeROoqjp2dxOIDvFygJ50gFCpRbBRSV1l6vizALPwppbKwphtgFIqnktqQZiIf3vPKVzItGM0kDtB9oRiqgg3WCILKXhhXKY0GKfXBi30Bl6FerAbmSgLEaa4klRWCdYz4s5Uw==
+X-HE-Tag: 1767637891-387252
+X-HE-Meta: U2FsdGVkX196SyvGkFAGUhER5UTEb2sVf2MUltZAMbSG5VJykIJbsmR3k1WK9hTRFIsqjafSlGJsz9iXFT2F/d2f9x6P5SKwYM+AaqFi6wSsSi34s3eZB9M5CMIIQECzSGyosJUmGeNUsasyZAo19JTPaLErXICLgTg+8Cz7DPuigJu9ehnDhseBLOLvTKW2+BlKGaZQ/iEB5I1ubhx11hZrSFcx4YLo5h36RzHDcsCEQvOxFO6ehV192j24v5mjt8UJ82XqYfWE2TCoMlKGBH8jNUTVw6Ni6RRUfzm2q0x1cPBtsXpKuce/49r/5OXSA8s5UEnILgJoKTAKZMtTkBaU+LhQiXGU+09ngViiNVewqcOa9ebqwl5OPJBEg38wI25aoEAJhFVttMp2ojm/wHsNo8u1rvzDKPScnzjTRlR5x2ZsEk2gMadx9e1EDGNUJuHPekydDhv1rZ87sFRpoCE2o7An7qOcu/VQmKQOmxNOveTF2T8vPJNq4cswoWLtYDslm05/G6vQFZdwGj3njA0m/rDtJrWxhVVWBCW9oY2fEkD87wHLPYJJPy3HQOM8EEcaCFLEvqe+59+gAAfQbNa8ziFyKAkcCdS1fu2DSEYz8izpl1w0La8xzgOVdaC7i6yBV+yCaKFnMOkl5GGqcVkhBRUPtW0TLqz0OjJgf9ecUiGBJCsXxft7LhtLZt2Cm2hkWk9N3UnbMYXsKUBxflXTn0To87q/Jhy6PoxIs2abVItIejOKI9Y8aLdb1JvuCB9qtHPFiHcnJvbHhrW+5z0yTECBlCAWjinuob/4YwT77NEs3rcfkOK2rknrC22F3jHi42bsFnRG3YP/BeQx3U2Xqfwmxv/To78xaeoGB75BwhhQU7YQsEUWsGd+8kUAsIvZrrT0s+Xeq5L07TjpdOESseMx8NaMiGjmNP79lYd02HM8i9U3/scvZj12vTvh1jNghPV4f75CKsry97A
+ Q4fAm8cE
+ 2NW7yq8UW7eFAQkiCjXJKmoSoK8wYZRDs9iyLdJzOgsHoOSbVKFcYO1U0ErlDbJAvnJLgmh7XeSn1Ss2ulu8QQAAiUQ65b+omiYSx4iHr29eFKDcc5UToHgf6lULJahCBCJdytRaB9kDnA71sTA16FXmAcuspsSHa5+qOAk337WxtqEVItCs2go/4TzUOYWpdvZlmx9YruUbmn9KAjkpArq+U9RXtxrY+P9lWigUOXeD30MXNRvIcUSxCSP+VQsw/4v39qDf6ohkesOE86vkhSNK/daxgTdE7RfR2ngc8scBjv0dC7orS5IvfQg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,20 +94,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 05, 2026 at 09:24:46AM -0800, Calvin Owens wrote:
-> Hello all,
-> 
-> I'm hitting this BUG_ON consistently after boot on next-20260105:
-> 
->     [   17.103774][   T40] node ffff888102d43918 offset 0 parent ffff888102d42920 shift 0 count 64 values 0 array ffff888107432e38 list ffff888102d43930 ffff888102d43930 marks 0 0 0
->     [   17.108851][   T40] ------------[ cut here ]------------
->     [   17.110476][   T40] kernel BUG at ./include/linux/xarray.h:1441!
->     [   17.112321][   T40] Oops: invalid opcode: 0000 [#1] SMP PTI
->     [   17.114177][   T40] CPU: 1 UID: 0 PID: 40 Comm: khugepaged Not tainted 6.19.0-rc4-next-20260105-x86-hardened-yugetlb #1 PREEMPTLAZY  a1685c863f468289fb411d1c9b04bc9e336fe015
->     [   17.118934][   T40] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-20240910_120124-localhost 04/01/2014
->     [   17.122375][   T40] RIP: 0010:hpage_collapse_scan_file+0x1b05/0x1b30
+On Mon, Jan 05, 2026 at 10:10:38AM -0800, Calvin Owens wrote:
+> On Monday 01/05 at 09:51 -0800, Andrew Morton wrote:
+> > That's
+> > 
+> > static inline struct xa_state *XAS_INVALID(struct xa_state *xas)
+> > {
+> > 	XA_NODE_BUG_ON(xas->xa_node, xas_valid(xas));
+> > 	return xas;
+> > }
+> > 
+> > which was added by Willy's 43b00759f21b ("XArray: Add extra debugging
+> > check to xas_lock and friends").  Maybe it found a bug.
+> > 
+> > I'm not actually sure how 43b00759f21b found its way into linux-next. 
+> > It isn't in mainline.
 
-Could you run this through ./scripts/decode_stacktrace.sh ?  I'd like
-to see which caller of xas_lock() triggered this.
+It's in the xarray tree.  git://git.infradead.org/users/willy/xarray.git#main
 
+> > I'm seeing no other changes to xarray.  mm.git's khugepaged does have a
+> > bunch of changes which Shivank added, so I'll cc Shivank and hopefully
+> > he can spot something?
+> > 
+> > Can you suggest how others could reproduce this?
+> 
+> It triggers immediately after boot for me on any QEMU VM, one of them is
+> an empty husk that runs nothing but sshd.
+> 
+> FWIW (not much I guess), I disabled DEBUG_XARRAY, and the first VM has
+> been happily running next-20260105 that way for about an hour. The
+> workload is seeding distro install ISOs with transmission.
+
+It's checking for something which _could_ be a problem.  So it'll catch
+any sloppy uses, and doesn't necessarily mean it'll be a problem.
+It may be as simple as moving a call to xas_reset() or adding one
+(see the other fixes in 43b00759f21b particularly the ones which affect
+the test suite).
 
