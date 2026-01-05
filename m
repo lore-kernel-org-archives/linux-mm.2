@@ -4,109 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB2FFC2A072
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 08:22:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A045C2A077
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 08:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 171EA6B0100; Mon,  5 Jan 2026 03:22:05 -0500 (EST)
+	id 5CAC06B0102; Mon,  5 Jan 2026 03:54:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 120D46B0101; Mon,  5 Jan 2026 03:22:05 -0500 (EST)
+	id 578816B0103; Mon,  5 Jan 2026 03:54:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 022026B0102; Mon,  5 Jan 2026 03:22:04 -0500 (EST)
+	id 4AEFA6B0104; Mon,  5 Jan 2026 03:54:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E50A56B0100
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 03:22:04 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90888F52C5
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 08:22:04 +0000 (UTC)
-X-FDA: 84297217368.06.0750BF6
-Received: from out203-205-221-209.mail.qq.com (out203-205-221-209.mail.qq.com [203.205.221.209])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3D7DD140002
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 08:22:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=wH4A9r1L;
-	spf=pass (imf23.hostedemail.com: domain of realwujing@qq.com designates 203.205.221.209 as permitted sender) smtp.mailfrom=realwujing@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3753F6B0102
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 03:54:39 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDC2814219F
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 08:54:38 +0000 (UTC)
+X-FDA: 84297299436.20.50D217B
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4DB111C0005
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 08:54:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZOAfE6YE;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767603277; a=rsa-sha256;
+	cv=none;
+	b=CNj2wmJbnee9boRDyy0ihktoLTn8eYwZsEWl6E7bAkApFt6Hq0G4CaAcOCsREqB2heZEZj
+	+ogVK/+zBSCgjbPkdmpXU+IHYsANqIw4ql/FPj0IFaeZXiQ41t0J/Be055vxPyQ7KoqzgI
+	LyjOMeN6v+g12HfKq+xdT93S1z46z2o=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZOAfE6YE;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767601322;
+	s=arc-20220608; t=1767603277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lXZuyiPqxgHVa4OJsj5vnpr+LBGAt5DcCj3yHiyEQoQ=;
-	b=TdZGPZgLNHAl48BruGwziqkb94HJe/Ap/DKqdPMz1ZlKgKCjVoK0F7dSKQAinRA0aF23it
-	Ap48Znn29qMibl0kBkzElE/BgZW8YVir54VTXexlfYqM7CBX3eflv2qP4+QyFM5vMNV9gU
-	j3iyJEMNLwm6rqHD0E7yIvrryBQHc20=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=wH4A9r1L;
-	spf=pass (imf23.hostedemail.com: domain of realwujing@qq.com designates 203.205.221.209 as permitted sender) smtp.mailfrom=realwujing@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767601322; a=rsa-sha256;
-	cv=none;
-	b=3/svpprOylBDp6epFG/xTUCED2skiYdeQkxenjKodrRpLIy+/8da+6SseTeoeJXxkxoVAj
-	fVhGeHtCZlGalG12yvyxrsy7TVaq+20rwibokP3sbnw9bVla6nHC95HA0PfBY+y/4Euotx
-	BDXWltu2KFjQ25Y4QQKAftnP9rbYCiY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1767601319; bh=lXZuyiPqxgHVa4OJsj5vnpr+LBGAt5DcCj3yHiyEQoQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wH4A9r1LK+aYSGQfyZwHi6+q3URFe8D5ty94H74eE4sM720xH4I33z8ajNaEQStc3
-	 5roHpeduXj2eaXUcJKFj/QDxH5CHMg8Yi4XeRQt5ybFY7njtpiY9zTrton+CXFF3qn
-	 fWfdp/qB8TccWzrS8vOPRaIvfheVCUa73fEIe0M8=
-Received: from localhost.localdomain ([61.144.111.35])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id 57925034; Mon, 05 Jan 2026 16:21:57 +0800
-X-QQ-mid: xmsmtpt1767601317te9acxqp2
-Message-ID: <tencent_6FE67BA7BE8376AB038A71ACAD4FF8A90006@qq.com>
-X-QQ-XMAILINFO: OIPiZ4jSkGWAR3rmek1NQfj50RkwmECUekHdPWHPKk507wzbluK5Co6bHHMYFY
-	 kERosLo8Gtgz61l8Nm/FJlDsX4HS9R5lVhSFVsZgqv1+qDjTgNoHNSpy5lFm4ym8FnR7UbrfFrlz
-	 39QSHF+VAvq+u2Sdfl5se80xQ+cDT5ybweyjV6VTGxcSnUnKfSWzMyOlb102mtY55sXdBr8Zn/UJ
-	 eLhT+toHXZbajg1LwBiJQvwvAxZdYz3eWAz7yQfwe1sQP86l3UPUGH3eExgB0DsxCD3vil602cR1
-	 k4d5EfHpImtZH+xRVmqKf4h/ejh1RduchTBk42PqGAcs6XEAMSFyf6yAIfrwSYIE2lwF++a+RTTJ
-	 f0W3m/rT+9VBt8IYizDsTZ9TK03URJm1ZWGeBYuCOIhatqB9S9M7YSzL4sLBvBd6ID3idI5pd9Y1
-	 VnHGtOP2Ww8EcFobcIrhxtxDTopwc7JEiirvUlQFFAPdH1Vmu441m9EU+bx+NiXA9uZn4H7QBoKp
-	 +Tl+phISV2FpjFVVOPabDlvBW+FKwuMYHg7Q5hLkHYP2RM1EoPRfYZWGsFSsK7Erl89DjySQZZVz
-	 xxV3xCP6O9H07rYVNdPAZcVV6n8Cg0uzIb8K64td2NDat87POq5rVfyuSXCceuB0vL1xt2hB+XVz
-	 KARwbwFIc7GaAIfD9p9zAbZfM6uXxjzCJVHyAuWVUXwz/WL1cEQ459jz2cNmpj/1PoKrewF5eA/6
-	 b5S7isLxKVH1VhO6YdeHQm2aPhpcfMywz5rouaH4UA8hIyurkw8Xo1r6pLzTdL82amK/DN16mYKj
-	 Ulo0iaBKdpfHQ30GoTbS1XtcoERBWn4VvO8q7zfzLsMu0xK0HY/PRPs5D9epA38BjNW7FaU5RIcs
-	 4zSdlKU9bGRKGYRQJrkEKu8dfxkCM59/8IYX+kUNEDYGEXU0r2WS7agvkqh4c5bPDVq6i/MRneb+
-	 DeZIJgn2dD+49kRiz/5KXbsKSxleHl79y8laLiehDBYpPkJ8Jjf1uDM6xfh6LUwW8uZSOCpBrYbX
-	 HVD78NQXvBcXGCFTuwh1Pwbi2K541ewM3MrvemRDP7/Ty7zVRy3f5pyjFj80pyxfDFRj8qi7/URb
-	 +AY4g44kLES8P/+l8=
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-From: wujing <realwujing@qq.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Qiliang Yuan <yuanql9@chinatelecom.cn>,
-	wujing <realwujing@qq.com>
-Subject: [PATCH v2 1/1] mm/page_alloc: auto-tune min_free_kbytes on atomic allocation failure
-Date: Mon,  5 Jan 2026 16:21:52 +0800
-X-OQ-MSGID: <20260105082152.1309853-1-realwujing@qq.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260105081720.1308764-1-realwujing@qq.com>
-References: <20260105081720.1308764-1-realwujing@qq.com>
+	bh=r55kyqmmD/uClVKO277vu4AQCwQE5+8myu34W1wd2+s=;
+	b=OEJvu0kCIOL3jy4XyVRjBcLypnc8jN9HlGWUdVL8tbBM5wBW70Wb9lsE9JvpEjckVh3sAq
+	I+aCX5TCUHz34qBhDrsoIi5KpjIKDDFnu6+OBt8Gydp97iqkw75D46xRevw2fRFZYBL/03
+	xPcdk9yZGrNG4n2v+rW7+hLptmNhXpo=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1767603273; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=r55kyqmmD/uClVKO277vu4AQCwQE5+8myu34W1wd2+s=;
+	b=ZOAfE6YEZZR512GS/W3z90MBl3s9AplvzLUMNQ2k43QtuJKJnYt+TYrv/JhK+AbnlzIiMBa5W029t1030R8mdyA4ovwhpqLzqn6UWa2Pe5diWTPs3Q2eumnh6Qy2iQ73geBDXxIoaxjIBjjV1MYp8I6mHxVrYb0a4Vezl6Zwbq0=
+Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WwM6l9s_1767603271 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 05 Jan 2026 16:54:31 +0800
+Message-ID: <5fd5013d-89b7-4d32-b655-67bd9d103f04@linux.alibaba.com>
+Date: Mon, 5 Jan 2026 16:54:30 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/shmem: fix uninitialized folio in shmem_symlink
+To: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Barry Song <baohua@kernel.org>,
+ Hugh Dickins <hughd@google.com>,
+ syzbot+178fff6149127421c2cc@syzkaller.appspotmail.com
+References: <20251224094027.65842-1-21cnbao@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20251224094027.65842-1-21cnbao@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3D7DD140002
-X-Stat-Signature: utq7jqf5tjarz3pf7amiiqawq8sfucr4
-X-HE-Tag: 1767601321-413826
-X-HE-Meta: U2FsdGVkX18pN59oRJQ+Exb53GFX/j82skNtRUJQDo9a8QRlAuqUtoiI7SAZF5/OTvshUeDZQ2g3Y+GyStZWJA51vYvIEF1wLvMCTwWqgnPT9tCz0pa6PBsRmiyGESsR/bpiS1hqc7cApv2YbncN1RmBFvKdkbcVwUnh3CcKEc+Zix1Pbpv87dHquEs4jo0v2JB2fGHLdHhEDMxtgmI/9eSX3TLknMkB4BBE90P8xzhw07C1RzJ7Gnwvb0gL6AHseDh0mm9WtSrMUiorEm2lpwIJ4Exrt5BeaE7qCNwS4y+5dte58/daY3coFDoEqb4K4oYKsYuq//DQEOp3WR5xvQPCxU2bmrvRvuBXgTfdmfKOw4lDiWJ+pHw1c8ms9Fga4XkmDBrZMPLJh9BV2S+zK51kWeEhj81eUIRjclkZuUv8DgTK+IyGsj/72DopjdSR5VZlJguf/lM581lPmlAKvNAc2DLd9rXih40QHawckEUg1jpbhG1xJUrktz60CFZ/MebRKeURc0vFe2TAPTOC77ZHZPIYme9ZiElPZ5+9dMELcWWnfgeZ4sphtqPh256Rzx41O5vi7mIBP7HGz+gAc3JVKgMlMM3pK2FJKf3vdVjHWjIql+WbYxKqdZVqSu5Do1C7uS0e9jKQFGHUzesGk03AWHMN9GVlLGZ6tez1JNQvJziMV60MQbJjaDj1d64BVLwMNnmnsvpt2NKyKfhqW1ZEldJP03ENGa3wCw6nMM/WXFOynO506OO+Kb6DEmYqUFzmBulCRjI/0IVeYIe1grRDQFw1X8RHJ8Y1dyJNm/UfuYO/kAc2WXQdAzlHpkyxnQ3Vp1iinzkr7RQuwXdMqU3RzAz7rBoPl569Ahw1ji9ZebmGuQcERABLL3kICaNQAyYeCXKLtwLKPpmdjZDcMewy0suG8lc3ClccMifz0jCyDfAV2bwbKKm//pLEODPuw2emhnNCaUooW9q3FXW
- C28o5EsW
- pMNzwbZHZqzNRjvsKdzNcgDm9C+BKFORId6gpPjEqU6n5zXqCi/2SDP8W1GhN+pCPqXIMA7ihvWVJFwdeq+UkkSwPIhFyZCcHRWn+nFxTYqIJguqhZ8p+ekpIYjV0tcZEC/Pcl0Ucck9O7cAv9sJDu411RDNH6gFue18yqri2Tap7puL2mlbkOQF0ZmkeW1a+3CFCFCGAxQuSw46Q5yzi/5a11oDfvU04q2ONUNXYr6N9TwzzWGp8h8QiMQlBX4n4RCSbLTDDQT+/n9wFlcrbZhBhqVoFyVWTR22oS1O6BW0K25LOYk7G1liDKGT3wpsjFg7h
+X-Rspamd-Queue-Id: 4DB111C0005
+X-Rspamd-Server: rspam10
+X-Stat-Signature: q6xf8k9crm1tp9q8qbgb3dwu47o3qwj3
+X-HE-Tag: 1767603275-447493
+X-HE-Meta: U2FsdGVkX1+9GNmNiCsx7+aVVqAVroNs+bjm77LgulXXAD2ahXkmVZhzB6f+kYpHbeS8f7BqISpRiq9f2086PkiGjSulDhW3nRm/vv1aSej8XkghDtGCaVXxxg9xa8IEUNthAwNxei3A9IaRt60w6LssUa1mP+gpCZ65KkqEh+yI5QGUL4mnk7tbe8V4JHLnDw4nvYQ2tABV34rGVGLl2Z1+7SXEgQKERHv/tWhskQkgHTec39ZFBYJfKnJHCjmazhCkLwNfV4EMG8pjTwd+4mTWCzozaK4C8fYB9GDuAvDX+aC7LGsf+YHaQt3HEX0xQ/JCwkmBa8S39jUUCzAMUic42OPhPIb4OJkgau/o0r3xWm/nQHZ5h6T8zUWZDbK/PSZEOcuCLdwmw2Cr2H1tbMeje9aMsJCaPmovVgjEpWAVy/q/I23ghr3btoazkrjrLdLYyEn8Ncm3RbJGrUBGywuxikm8gw10guDziP7gyvuq9s6lUlQ+v3ArTvnWKraYzgQ/Nalmg3Jsnml0IgSv42BsOGBHzjY3AIWlqLfSPTGhN1H/qgZBSkDNFEgQEwlyYqyv6GYiyHFZmmkfd9TycTGu29nP7xL/fgJV9PZP8Bz3sYx0AuAvgulo2MsS48VGgRslUkTOMxmAzoNxderkFAY7G105podci9vJH6rDVacwPEE13wLjwbOVWPJIoFCu3un2bRLO6MitnBi8K1HlFJGJP6IItn6sq8UekMoqwABAwtFWzK32+j2X9OevcFiTo6B+8nCi+Hh+2wnmncWSqNZVg5lus+rZNryyLaCPkfGCQbmzPshfUR04v/kZXfmW6/SEi8lHHK2K1O+rPm3A2yur449JhTxej9KqKdKgjvcV3Jb4UDcKgXpODCx34N2823Gr3DpjLnYJOaefcD3RzwCJtvbzq/2AbU35GA5hw8eZqzlZ+VyJTDWkeoBtRo4JjXj7XotT6dlKznyMhBH
+ unU7U7H0
+ BhEbAqrvYS25624i4gwInIXmhXvJlP5ZDK2kKwDrQIaF1EKFFFGo86fSpxWpTs4ipiXSV659ZVezYYNT9+1WOEp5iITkrgAriSPgwWNyndkQX12qSnUwV1n+kHfcb00CcUFv1zfLSWGrXGYRX5mtYrPa4uNIwnhgWSex+DeT2Va9OlX/h9R+O1OlLEpVv19/8uQzNWp6aUuORXKIH3Z2cfDxKuOY6AZ+BCHSjsoW9/6Z0kxf7f69WU56xebAhDDJ6CtkmoVf2sdD3RceVGJnTub3RrZnAMioY/LMJpyvb/RKLimDC9YMBayM4l20ZYVrmulf3V5u4UlMZbCXtW6gaYI+wSn1PCx96vO9khGeMGZFExtA99mACOck/GzDWmEs8jKYBbrnhgqlQXoIO4EjP/UllWpXX7fxMZbSAnRMzNc/6gbs5GilGuwdkiHT+Q1Gj5rEVTUxPKAFhwfda/lYoAgXKdOHrkYYlYJ0dHuBUSjXxYhpkVKP4YHOIaWfp/NR30mnLVHH22TcpJ/Pj4gg5F0U3jpWwidC2OzMDyb9P8XBM1Uw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,178 +88,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a mechanism to dynamically increase vm.min_free_kbytes when
-critical atomic allocations (GFP_ATOMIC, order-0) fail. This prevents
-recurring network packet drops or other atomic failures by proactively
-reserving more memory.
 
-The system increases min_free_kbytes by 50% upon failure, capped at 1%
-of total RAM. To prevent repeated adjustments during burst traffic, a
-10-second debounce window is enforced.
 
-After traffic subsides, min_free_kbytes automatically decays by 5% every
-5 minutes. However, decay stops at 1.2x the initial value rather than
-returning to baseline. This ensures the system "remembers" previous
-pressure patterns and avoids repeated failures under similar load.
+On 12/24/25 5:40 PM, Barry Song wrote:
+> From: Barry Song <baohua@kernel.org>
+> 
+> Uninitialized folio allocated in shmem_symlink() may be accessed
+> during swap-out, causing KMSAN BUG:
+> 
+> BUG: KMSAN: uninit-value in is_folio_zero_filled mm/page_io.c:188 [inline]
+> BUG: KMSAN: uninit-value in swap_writeout+0x468/0x1390 mm/page_io.c:263
+>   is_folio_zero_filled mm/page_io.c:188 [inline]
+>   swap_writeout+0x468/0x1390 mm/page_io.c:263
+>   shmem_writeout+0x1abb/0x1f60 mm/shmem.c:1662
+>   writeout mm/vmscan.c:649 [inline]
+>   pageout mm/vmscan.c:698 [inline]
+>   shrink_folio_list+0x5920/0x7fc0 mm/vmscan.c:1418
+>   evict_folios+0x999d/0xbf30 mm/vmscan.c:4711
+>   try_to_shrink_lruvec+0x12b6/0x17e0 mm/vmscan.c:4874
+>   lru_gen_shrink_lruvec mm/vmscan.c:5023 [inline]
+>   shrink_lruvec+0x46f/0x4f10 mm/vmscan.c:5784
+>   shrink_node_memcgs mm/vmscan.c:6020 [inline]
+> 
+> This patch clears the remaining part to zero for the portion not
+> covered by memcpy from symname.
+> 
+> Cc: Hugh Dickins <hughd@google.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reported-by: syzbot+178fff6149127421c2cc@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/lkml/6949370f.050a0220.1b4e0c.0038.GAE@google.com/
+> Signed-off-by: Barry Song <baohua@kernel.org>
+> ---
 
-Observed failure logs:
-[38535641.026406] node 0: slabs: 941, objs: 54656, free: 0
-[38535641.037711] node 1: slabs: 349, objs: 22096, free: 272
-[38535641.049025] node 1: slabs: 349, objs: 22096, free: 272
-[38535642.795972] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-[38535642.805017] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-[38535642.816311] node 0: slabs: 854, objs: 42320, free: 0
-[38535642.823066] node 1: slabs: 400, objs: 25360, free: 294
-[38535643.070199] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-[38535643.078861] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-[38535643.089719] node 0: slabs: 841, objs: 41824, free: 0
-[38535643.096513] node 1: slabs: 393, objs: 24480, free: 272
-[38535643.484149] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-[38535643.492831] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-[38535643.503666] node 0: slabs: 898, objs: 43120, free: 159
-[38535643.510140] node 1: slabs: 404, objs: 25424, free: 319
-[38535644.699224] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-[38535644.707911] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-[38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
-[38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
-[38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-[38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-[38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
-[38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
-[38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-[38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-[38535649.655523] warn_alloc: 59 callbacks suppressed
-[38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
-[38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
+LGTM. Thanks.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-Signed-off-by: wujing <realwujing@qq.com>
-Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
----
- mm/page_alloc.c | 85 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 85 insertions(+)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index c380f063e8b7..2f12d7a9ecbc 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -30,6 +30,7 @@
- #include <linux/oom.h>
- #include <linux/topology.h>
- #include <linux/sysctl.h>
-+#include <linux/workqueue.h>
- #include <linux/cpu.h>
- #include <linux/cpuset.h>
- #include <linux/pagevec.h>
-@@ -3975,6 +3976,16 @@ static void warn_alloc_show_mem(gfp_t gfp_mask, nodemask_t *nodemask)
- 	mem_cgroup_show_protected_memory(NULL);
- }
- 
-+/* Auto-tuning min_free_kbytes on atomic allocation failures (v2) */
-+static void decay_min_free_kbytes_workfn(struct work_struct *work);
-+static void boost_min_free_kbytes_workfn(struct work_struct *work);
-+static DECLARE_WORK(boost_min_free_kbytes_work, boost_min_free_kbytes_workfn);
-+static DECLARE_DELAYED_WORK(decay_min_free_kbytes_work, decay_min_free_kbytes_workfn);
-+static unsigned long last_boost_jiffies = 0;
-+static int initial_min_free_kbytes = 0;
-+#define BOOST_DEBOUNCE_MS 10000  /* 10 seconds debounce */
-+
-+
- void warn_alloc(gfp_t gfp_mask, nodemask_t *nodemask, const char *fmt, ...)
- {
- 	struct va_format vaf;
-@@ -4947,6 +4958,17 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 		goto retry;
- 	}
- fail:
-+	/* Auto-tuning: trigger boost if atomic allocation fails */
-+	if ((gfp_mask & GFP_ATOMIC) && order == 0) {
-+		unsigned long now = jiffies;
-+		
-+		/* Debounce: only boost once every 10 seconds */
-+		if (time_after(now, last_boost_jiffies + msecs_to_jiffies(BOOST_DEBOUNCE_MS))) {
-+			last_boost_jiffies = now;
-+			schedule_work(&boost_min_free_kbytes_work);
-+		}
-+	}
-+
- 	warn_alloc(gfp_mask, ac->nodemask,
- 			"page allocation failure: order:%u", order);
- got_pg:
-@@ -6526,6 +6548,10 @@ int __meminit init_per_zone_wmark_min(void)
- 	refresh_zone_stat_thresholds();
- 	setup_per_zone_lowmem_reserve();
- 
-+	/* Save initial value for auto-tuning decay mechanism */
-+	if (initial_min_free_kbytes == 0)
-+		initial_min_free_kbytes = min_free_kbytes;
-+
- #ifdef CONFIG_NUMA
- 	setup_min_unmapped_ratio();
- 	setup_min_slab_ratio();
-@@ -7682,3 +7708,62 @@ struct page *alloc_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned int or
- 	return page;
- }
- EXPORT_SYMBOL_GPL(alloc_pages_nolock_noprof);
-+
-+static void boost_min_free_kbytes_workfn(struct work_struct *work)
-+{
-+	int new_min;
-+
-+	/* Cap at 1% of total RAM for safety */
-+	unsigned long total_kbytes = totalram_pages() << (PAGE_SHIFT - 10);
-+	int max_limit = total_kbytes / 100;
-+
-+	/* Responsive increase: 50% instead of doubling */
-+	new_min = min_free_kbytes + (min_free_kbytes / 2);
-+
-+	if (new_min > max_limit)
-+		new_min = max_limit;
-+
-+	if (new_min > min_free_kbytes) {
-+		min_free_kbytes = new_min;
-+		/* Update user_min_free_kbytes so it persists through recalculations */
-+		if (new_min > user_min_free_kbytes)
-+			user_min_free_kbytes = new_min;
-+		
-+		setup_per_zone_wmarks();
-+		
-+		/* Schedule decay after 5 minutes */
-+		schedule_delayed_work(&decay_min_free_kbytes_work, 
-+				      msecs_to_jiffies(300000));
-+		
-+		pr_info("Auto-tuning: atomic failure, increasing min_free_kbytes to %d\n", 
-+			min_free_kbytes);
-+	}
-+}
-+
-+static void decay_min_free_kbytes_workfn(struct work_struct *work)
-+{
-+	int new_min;
-+	int decay_floor;
-+	
-+	/* Decay by 5% */
-+	new_min = min_free_kbytes - (min_free_kbytes / 20);
-+	
-+	/* Don't go below 1.2x initial value (preserve learning effect) */
-+	decay_floor = initial_min_free_kbytes + (initial_min_free_kbytes / 5);
-+	if (new_min < decay_floor)
-+		new_min = decay_floor;
-+	
-+	if (new_min < min_free_kbytes) {
-+		min_free_kbytes = new_min;
-+		user_min_free_kbytes = new_min;
-+		setup_per_zone_wmarks();
-+		
-+		/* Schedule next decay if still above floor */
-+		if (new_min > decay_floor) {
-+			schedule_delayed_work(&decay_min_free_kbytes_work,
-+					      msecs_to_jiffies(300000));
-+		}
-+		
-+		pr_info("Auto-tuning: decaying min_free_kbytes to %d\n", min_free_kbytes);
-+	}
-+}
--- 
-2.39.5
+>   mm/shmem.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index ec6c01378e9d..835900a08f51 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -4131,6 +4131,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, struct inode *dir,
+>   			goto out_remove_offset;
+>   		inode->i_op = &shmem_symlink_inode_operations;
+>   		memcpy(folio_address(folio), symname, len);
+> +		folio_zero_range(folio, len, folio_size(folio) - len);
+>   		folio_mark_uptodate(folio);
+>   		folio_mark_dirty(folio);
+>   		folio_unlock(folio);
 
 
