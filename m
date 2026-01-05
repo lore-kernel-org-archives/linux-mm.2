@@ -4,91 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 353DFC2A073
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 02:32:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15438C2A073
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 02:38:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79FA06B00C8; Sun,  4 Jan 2026 21:32:50 -0500 (EST)
+	id 4E6306B00CA; Sun,  4 Jan 2026 21:38:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 777576B00C9; Sun,  4 Jan 2026 21:32:50 -0500 (EST)
+	id 4940F6B00CB; Sun,  4 Jan 2026 21:38:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AD756B00CA; Sun,  4 Jan 2026 21:32:50 -0500 (EST)
+	id 320C86B00CC; Sun,  4 Jan 2026 21:38:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 583C16B00C8
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 21:32:50 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BDC15140C37
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 02:32:49 +0000 (UTC)
-X-FDA: 84296337258.19.1F7ED7E
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 60F5D1C0006
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 02:32:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=BMc5I14R;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 089496B00CA
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 21:38:47 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 80AEF161DA0
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 02:38:46 +0000 (UTC)
+X-FDA: 84296352252.02.ED11303
+Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 77AA2C0003
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 02:38:43 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	spf=pass (imf22.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 129.150.39.64 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767580368;
+	s=arc-20220608; t=1767580724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lCeFINuEpZTgO83TvN70WfqLpvLxXbwhEJYmsPx6DPA=;
-	b=A6QNQyNistjfL6ZE4DtSk5O7ChugeKbaVEYbRD76Jw5aspKWF/ZJd1U5442tIUr8dawkyn
-	Xi6CB5kqwV8F3CDsUqufEc2D8jb9Wrs3TYStbX/xCUgVd9ngx6qWYOvfP5s9VSFDspYRKi
-	CulEkMhGM+4znyTmcw7hh+dMNns146Q=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BG5rGKUAJHalMajXM0Z42DHfAsMQGq1+R4Pf0E/Mo4A=;
+	b=rtqunLPUBRJqgNCX0bUHbaFxNzHCg0HGg5TLrPq/8qaKLcQIlVJVbzYug5+vLHoCfdRFFs
+	CEwHYOdU3ZkNwizXNYtmWru0h1rZXgTXrzK4cBDuBDav0pHoYhwcY8dLHhKj1boZcjP0Si
+	40QRG3f2i31H0SpGjpiWm2udel8qs8Y=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=BMc5I14R;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767580368; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 129.150.39.64 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767580724; a=rsa-sha256;
 	cv=none;
-	b=HikxAXSbTuZLMXhzC8y3+TuzG12ImdDOiplzuNZAh87JVYVuFRBECquiBwBfRABRRSLt+Q
-	/X+Hf+PDGj/ZT4OTn+lEo4Jo+m1OqtnGUzPQuYb8V8zRBRHdE3kzU+VbHa0BcE9vk4z/q3
-	OxXbkF4gQuw3DDUcYArBiYt/QPL+z/Q=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=lCeFINuEpZTgO83TvN70WfqLpvLxXbwhEJYmsPx6DPA=; b=BMc5I14RUoMck9ZAvxtXoxbUu9
-	eL1ReVBSaA4jKnqyxn+Y3X8dgEeOAeyuqC/pdzKEKVFD3GqpHwGHwa8nEQIolaCy0l2vFAbAgBBy+
-	56ldn6XtNISYMSbsQ706P/B5VWDKQXIr2g1zR14EthGkKgjHQZCR4UZzwiuW2x2JxcqYDVrtwn09z
-	vgf4rvEvwNcS51by1OXxLMPCLaTVLrMi8UukdF64QbBw6CR2rQE/Fngm8Xm012pWKKO7WDYrc2R4U
-	7wv2nm8hjedMkqa7laLIOvEUK8RYX5Xfa56fMen6KrCIaY8/jDgXWP+Ks2I+i3df4gOKVTczvh3W5
-	IN+5bYgw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcaOc-00000009l6D-2VNa;
-	Mon, 05 Jan 2026 02:32:38 +0000
-Date: Mon, 5 Jan 2026 02:32:38 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: wujing <realwujing@qq.com>, Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Qiliang Yuan <yuanql9@chinatelecom.cn>
-Subject: Re: [PATCH 1/1] mm/page_alloc: auto-tune min_free_kbytes on atomic
- allocation failure
-Message-ID: <aVsixmk_D99cZqz5@casper.infradead.org>
-References: <tencent_C5AD9528AAB1853E24A7DC98A19D700E3808@qq.com>
- <tencent_9DB6637676D639B4B7AEA09CC6A6F9E49D0A@qq.com>
- <20260104101443.f10264bc9730de884b52c5a2@linux-foundation.org>
+	b=I9hcEuSw8RrVxdhABZ9wnLbh3GQTRbzCGWo5wjwQDwprGfMMITu637nxOlrPOwNdVllBzM
+	94Vhs0ITc1gN9rlpzxfp/euaGYOUrI3D9HoRjrMd7oQgmhwcZg/YKuUdcelaHYj2yuxoE2
+	p6igg6QzGNyP8JtploIaBc4m/g4gACA=
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwDn7porJFtpwjFZBQ--.1345S2;
+	Mon, 05 Jan 2026 10:38:35 +0800 (CST)
+Received: from [10.22.77.56] (unknown [123.150.8.50])
+	by mail (Coremail) with SMTP id AQAAfwCnAO4oJFtpVQIRAA--.30651S2;
+	Mon, 05 Jan 2026 10:38:32 +0800 (CST)
+Message-ID: <dac83ef4-6e4d-421b-bd54-7090d2f963d9@phytium.com.cn>
+Date: Mon, 5 Jan 2026 10:38:30 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260104101443.f10264bc9730de884b52c5a2@linux-foundation.org>
-X-Stat-Signature: fwixyqw8pmsduq68r9q1uo8r6yqu6hj1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Joanthan Cameron <Jonathan.Cameron@huawei.com>, wangyinfeng@phytium.com.cn,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251230092750.856060-1-cuichao1753@phytium.com.cn>
+ <aVPtSNKRnnI88Euk@kernel.org>
+From: Cui Chao <cuichao1753@phytium.com.cn>
+In-Reply-To: <aVPtSNKRnnI88Euk@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAfwCnAO4oJFtpVQIRAA--.30651S2
+X-CM-SenderInfo: pfxlux1drrlkut6sx5pwlxzhxfrphubq/1tbiAQAFAGlZeBoChwAHsU
+X-Coremail-Antispam: 1Uk129KBjvJXoW7Ww4rKw4fWF1UGrWDCF45Wrg_yoW8Kr1UpF
+	4aqFWrKFW8Jr1xGFs293WUtw1Ivana9F45WFWxCrnrZ3WFqr1DZrWSqr1ruF4ktrWfCF4F
+	qF4Dt3Z0qw18uaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+	UUUUU
+X-Rspamd-Server: rspam02
+X-Stat-Signature: pyngje31nagjscgh6cfr7e4h4gt51i5o
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 60F5D1C0006
-X-HE-Tag: 1767580367-315883
-X-HE-Meta: U2FsdGVkX1/qVpJ4iFbnmThlGoVrC681Syps9ak52LLs025kIdh/ymjwNFLiKRCsuDKKLYAUzJT9erBOh9NONpiw1m+lZdz0gWNi5xfAZI9ooHhoHB8jU0+SuSbMCFQRMOFwglQ1x0sma7TLH14yKmZwa1cCG218hxB7vxaY2MCXIej9qJQx0mF61hxT13trF8cyxq3daWkRLuwzqrdV6KrULlThlNzNoeO0n/KOsCH5USdOSeSqnWf2n7D6n9NFAf7sX1UICh0ffSB5g9SxHABwG+n5rYULqwqPNE7r4MqOy9gh85qKPXH6kUXHpho1oeyKqlRsrLbTqI5xAXc0+jg7TH0nPirpe/fFGBoP19310UTkn6U54kVXHo4D9SkvSlxFpC0whvqMKiE7NOPylpwknjQr3JnEibj+fi5I7DHQ9FMNKj5Chl5SSaYDwVcMKQeZUIHvXzgAAv7LUhdnFIpLA1MbTwWoKf/Bnwe/jExiBZNhNJY/asCvDU7+krzGsvZNk6jnrJxMGnfHxIx8w3wC/G5OS4vP7rAO3uUBEmiDSD7Q/vrbLrjAIc7oOrSSIQB7GUZwBrH6Tcc/dFv9b+5HBZnFjod+wIwSSg30eg1m4369V4R4jRbREjNilBHxFXZWc3Az5hUmE9/itd/OsZM9sKJ2bqIwe9harlK8zx4muBlO3sIK5hx70VtKMeb0//OGiosIu4BA8ZvH2TQ2UZ3iFEOoionN07wfEflf65aU6VTAkSRsurTc/EpEqM/UphCye06F0Tst828VUVq9O9TDD8YFchkaXcmQUYgCT9wABuniIVt+d1CsfIEUhtExUbG9ThYrOPyu3Pp8ToCazAi/6I3HhvkvY7LWO1cCrpUAmPWT4jmRzQXawQPs+9uP5/LSvQylxqs04remHOvIlM1+x/7ZSvn0rVj+6grR+LfC4YbICjH6ryiQrp8847AB7zpPGLaK9pFxqrO/zPR
- hCu/lqhh
- xAND6pgorBfQ8sEvZfzczD2AkkOiR53BHeJIdiKk+6tA7IPYcz2pcowIEjYmqOJh+gLFKKNaki7HDxskHgVX30f+q217z8bJ/sRFNT5B/dVFy8qwbjgjWvNqNhegdk1W5cTGorQtAdnR/PAY5g1kjOwhEC8z3KskTz5yRaHk20+Pp+4cOXrtylo0f4u91j/1otZ+5skAwWZ85+z/CMevtbJlh0NF5U2ejucCiv7rD8DPaQEu9C+Sa4N/ARFiWHurrC5UKXGf4/ZOSKgth1405p2y/yovcqXAvtIGJqzA5sCflwvj1TEnH3NYGnEZwcuEw9NRTS4yihXOE9MNY79AKslPliQ==
+X-Rspamd-Queue-Id: 77AA2C0003
+X-HE-Tag: 1767580723-363380
+X-HE-Meta: U2FsdGVkX19VuF/f3ZshnjlDepY3FK2/GSR54HlSjDEuRrQEI5HR8Wp9rWwHYzCGuGD0VqgJm1amsr9DgP50VRG5xz0ToBVaYClrcV4WubB4b31KHPkqXovaYe0GD+uEhzrEnkHERvouJ/cCLxvAlKaIAUzO73YLUi+xoubFKu7FYPX4WSy6bsLIZcS4VY76Sij8IuXP2xroRVld1hT8eJeG44Qtmnswwk434WX3BX1iUajce5ctuxCoo81yhMQkfBH/FKFS74bkzZTwz1IhGVYiEe0oEKGFwHmkK/wU7yhBcHr29K9PvH1QE++hrY+NbMuEkP27YSoGOE9BJ69GugYVUxwpl+qNbYRl7vtt477ZKJkffinrYmHLDS1M3iEAYS1Kd40wK+1yWTvln6a9O5e7StLGeNUVtOMYyVLMjLQVtUQN5Rc96zEN7+B4f9K/gCZdPszlsbvAnyjNFDVFf6j9MFZeoLjmLHVmAEIQ8OmnzoEoD79PY7raSiYZiEKZS7jTwNfvCuG6AJPZcb1v/KOozQI4lc6ry7LH/GeRKB59mDMAXn8/MD6Etsf+08ZavCFvcNfhQ2WN3D0PXKfFAl5DdOh9+it+Ssb6au2U7ejNVSY2Z2Cueor8qJQk6puujF97wI2f+eefcUxzMmcajM9kg0umrwbacwnsE5UE1kah7hZRso0QsMsYVSYxZxPcy6kjkLZHFsM2MyOQb3mtVh0XmV4OLgGwZ4mbgg0Tn9paSB01/z8bC4lt3a7IdGxSY1g+Q35kkdJj9BDap9D2Z0uF10NY2k5Np+Smr0cG+9Px9e+3KiKp9ciyvE5gDTtqzq+OPP/TMoN3vP1/ABXboNxiitIhGURf8uzset5ykSspwdirn0HUv6+cWVJl2xU7SsucCrVRQw63JoFze7kNw6MPajoB4g08sk06BTfZxSvczRjC8vmL4vYazPWy6anbpGCHmruP2gSKPfIS6eX
+ VveaMDZz
+ gCffv2cosApYB7zgcEm/PAEuXs3K2By5amTBB+Ox9ZHjZ18dC7HigpLG8WNaO9IPrGjNU9A7NNrOU1c6RnmGBTPWMw0V5qgX0pGgzy+YY81f93ka95Ll2HSYlYA3MMaOkKCaNAJAhqKHjl4dMp57gpcdklLOtwX7RA7THUS1m1i/FTHi1kY32dVt9DbAEtLIK1jAd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,48 +91,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jan 04, 2026 at 10:14:43AM -0800, Andrew Morton wrote:
-> On Sun,  4 Jan 2026 20:26:52 +0800 wujing <realwujing@qq.com> wrote:
-> 
-> > Introduce a mechanism to dynamically increase vm.min_free_kbytes when
-> > critical atomic allocations (GFP_ATOMIC, order-0) fail. This prevents
-> > recurring network packet drops or other atomic failures by proactively
-> > reserving more memory.
-> 
-> Seems like a good idea, however it's very likely that the networking
-> people have looked into this rather a lot.  Can I suggest that you
-> engage with them?  netdev@vger.kernel.org.
+Hi,
 
-Agreed, the networking people should definitely be brought into this.
+Thank you for your review.
 
-I'm broadly in favour of something like this patch.  We should do more
-auto-tuning and less reliant on sysadmin intervention.  I have two
-questions:
+On 12/30/2025 11:18 PM, Mike Rapoport wrote:
+> Hi,
+>
+> On Tue, Dec 30, 2025 at 05:27:50PM +0800, Cui Chao wrote:
+>> In some physical memory layout designs, the address space of CFMW
+>> resides between multiple segments of system memory belonging to
+>> the same NUMA node. In numa_cleanup_meminfo, these multiple segments
+>> of system memory are merged into a larger numa_memblk. When
+>> identifying which NUMA node the CFMW belongs to, it may be incorrectly
+>> assigned to the NUMA node of the merged system memory. To address this
+> Can you please provide an example of such memory layout?
 
-1. Is doubling too aggressive?  Would an increase of, say, 10% or 20%
-be more appropriate?
 
-2. Do we have to wait for failure before increasing?  Could we schedule
-the increase for when we get to within, say, 10% of the current limit?
+Example memory layout:
 
-> > The adjustment doubles min_free_kbytes upon upon failure (exponential backoff),
-> > capped at 1% of total RAM.
-> 
-> But no attempt to reduce it again after the load spike has gone away.
+Physical address space:
+     0x00000000 - 0x1FFFFFFF  System RAM (node0)
+     0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
+     0x40000000 - 0x5FFFFFFF  System RAM (node0)
+     0x60000000 - 0x7FFFFFFF  System RAM (node1)
 
-Hm, how would we do that?  Automatically decay by 5%, 300 seconds after
-increasing; then schedule another decay for 300 seconds after that until
-we get down to something appropriately smaller?
+After numa_cleanup_meminfo, the two node0 segments are merged into one:
+     0x00000000 - 0x5FFFFFFF  System RAM (node0)  // CFMW is inside this 
+range
+     0x60000000 - 0x7FFFFFFF  System RAM (node1)
 
-> > +	/* Auto-tuning: trigger boost if atomic allocation fails */
-> > +	if ((gfp_mask & GFP_ATOMIC) && order == 0)
-> > +		schedule_work(&boost_min_free_kbytes_work);
-> > +
-> 
-> Probably this should be selectable and tunable via a kernel boot
-> parameter or a procfs tunable.  But I suggest you not do that work
-> until having discussed the approach with the networking developers.
+So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
 
-Ugh, please, no new tunables.  Let's just implement an algorithm that
-works.
+
+>> scenario, accurately identifying the correct NUMA node can be achieved
+>> by checking whether the region belongs to both numa_meminfo and
+>> numa_reserved_meminfo.
+>>
+>> Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+>> ---
+>>   mm/numa_memblks.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+>> index 5b009a9cd8b4..1ef037f0e0e0 100644
+>> --- a/mm/numa_memblks.c
+>> +++ b/mm/numa_memblks.c
+>> @@ -573,7 +573,8 @@ int phys_to_target_node(u64 start)
+>>   	 * Prefer online nodes, but if reserved memory might be
+>>   	 * hot-added continue the search with reserved ranges.
+>>   	 */
+>> -	if (nid != NUMA_NO_NODE)
+>> +	if (nid != NUMA_NO_NODE &&
+>> +		meminfo_to_nid(&numa_reserved_meminfo, start) == NUMA_NO_NODE)
+> I'd suggest assigning the result of meminfo_to_nid(&numa_reserved_meminfo,
+> start) to a local variable and using that in if and return statements.
+
+
+I will use a local variable named reserved_nid.
+
+
+>>   		return nid;
+>>   
+>>   	return meminfo_to_nid(&numa_reserved_meminfo, start);
+>> -- 
+>> 2.33.0
+>>
+>>
+-- 
+Best regards,
+Cui Chao.
+
 
