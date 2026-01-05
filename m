@@ -4,122 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABC24CD0408
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 21:19:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7D55CD040D
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 21:34:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2ECA6B0095; Mon,  5 Jan 2026 16:19:03 -0500 (EST)
+	id 4AA7E6B0088; Mon,  5 Jan 2026 16:34:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F06326B0096; Mon,  5 Jan 2026 16:19:03 -0500 (EST)
+	id 480DB6B008A; Mon,  5 Jan 2026 16:34:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E26F16B0098; Mon,  5 Jan 2026 16:19:03 -0500 (EST)
+	id 3AD286B0093; Mon,  5 Jan 2026 16:34:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D2CE76B0095
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:19:03 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8142056DEA
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 21:19:03 +0000 (UTC)
-X-FDA: 84299175366.17.AF911BD
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9037F4000E
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 21:19:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mv5GI0h8;
-	spf=pass (imf07.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 292706B0088
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:34:21 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F11458AEB2
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 21:34:20 +0000 (UTC)
+X-FDA: 84299213880.25.F8264F7
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 161F9100006
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 21:34:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=yM1if0dA;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=bingjiao@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767648859; a=rsa-sha256;
+	cv=none;
+	b=ZMPsEQ8gKBZ6OpW/SiIzovawXsu7IY/aDSXYRA2aeUOgixI22XdGmIgNpQWeL+JjYRoL1K
+	bgrYlcISMezpoQsOUQ7ZE8R0RYMjSoAc+WrzjFG9IUVsfpC9PKjtQYYYToxgdITYe2GF6B
+	8+0pnFf2KqFKiPHFbgYE/oGo7vuxHJo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=yM1if0dA;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=bingjiao@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767647941;
+	s=arc-20220608; t=1767648859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x5LAxK+AjnG3YzNOBaLOPsRos3hCuelykUfVzgLenNc=;
-	b=7AUIY5wHkPmb8Sfkx3AAG+iHZeJEa4Zovj7LDI96R4GFJ+50LcLdtTCkJTaLXXtCJr9q2T
-	ktCGl8Demmgpni8uPudnUwo/6F8uF/L7Dv9EYzQJ5DYUdanJW8lBYXieNosyaXAm4Bkzld
-	gzDBqrVUHWdUBeRrQ27kImWn8Rf8u5E=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mv5GI0h8;
-	spf=pass (imf07.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767647941; a=rsa-sha256;
-	cv=none;
-	b=20sy4ujSzDStRrbvIIbsq0wXbwc7mB7qIKttmVsFahJxVES73z5zfudXaRub5Aeoj9tYTo
-	NJLZnrQACNOa/DlPUyX3dKhCMLwcxxonAYQDdMkC1QFHTg4/Kb/feo7DyyI5vsEwAAh15+
-	XWMVkHsYpWBh0ObKNtzyCQ+/2KQ1Neo=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-29f102b013fso4368135ad.2
-        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 13:19:01 -0800 (PST)
+	bh=iSWfb6WbMa4GK6t36QHV/UhaSlBkhsogc7OHaBLtTbE=;
+	b=3UB70kOZyXMWqQJR3AJLUjLWFhw/Hq0kidqpB9ld+p5zpEhMaP92nxR0gfOQcHuiY9/3Q9
+	dnbLA+tP19Fj7RJxH9K+E1Qns4Gr+Ns2jRFMihHcAGrnrQuBTCGga7k1BLAkiywQ0DVH77
+	W3JXwF4PvZLUx7TG9PrTWXhJhjAsGZ4=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-29f02651fccso57045ad.0
+        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 13:34:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767647940; x=1768252740; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x5LAxK+AjnG3YzNOBaLOPsRos3hCuelykUfVzgLenNc=;
-        b=Mv5GI0h8MHvQYiXC9MJh3nCFx/fHtCb05kAFLD6BHvx7yZishPX1s1viZqaohdtHe1
-         WkTCaNElPR7pJpzQnbJnpyzzc1kCC+zS7jYNUWyvAPD5J2fGpwPEpbSkLIyTi6HwQXey
-         RcOrinaiqhAA4uWKZlORlprfcTQBUtevfcl+8LVU62bbRo7LRM6WLn2Pe6BKz0btUiQ2
-         dWHMQVKo7iTRAXNVbXX0VBo7UVJzl1fd0JbbCFZwZwAMKgHtM7jXn9xvM7VGkNxAJmtj
-         e0L855nHpyOKCxazyvBcwRWyyi10DCZDAReeip6yjMQzmh8DTqrU+182klQWDwVyp4XO
-         etzA==
+        d=google.com; s=20230601; t=1767648858; x=1768253658; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iSWfb6WbMa4GK6t36QHV/UhaSlBkhsogc7OHaBLtTbE=;
+        b=yM1if0dAbtuxFfjOCBQeYfOrPf4+rE0dlnVqSsEzUPfU8/sqeOGTLsM2bCpczQh+CG
+         at8n1oaXL6e8Sfs7ran/MI/FcDp2QY1GqghCXLOk6zBbcylTxhez3kiO4w+sEMYQXpo1
+         eUDfe71imCWIia0NMKP2ZfNstpKmoYCalWz17aCeDKBQejbeOhuookRYeKS9vgNcqelm
+         WsRyFOUubWs7xZBTz4zYOXIgGec36zOMs2UCVJTKfBgtip1/HlwywkABBOw99oO26mCL
+         pRqyilHPGP5sNGrF3tLL/keZT/WkXmVC0dWtrPsCmiZDC5zJl4iLF60i39RQP3i5JXjR
+         AUyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767647940; x=1768252740;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=x5LAxK+AjnG3YzNOBaLOPsRos3hCuelykUfVzgLenNc=;
-        b=W62QlTeV8p6MKL7mEB+QH3jiRJ7AdkcMLMSs0TQxSAQGNiV0dUblWzejiMeCacptN/
-         Pl3sM2TFyXYbrujv0P3284Ll+s15J8rIpWERiXWW6E/qwCs2q7TSEy6Yw0GnEnYijs1j
-         iFiQmR3h7/3Qndobj1qJUh05icDACiI77su55eDby8RNfmIaDBKESXYP3PV/uZSO6EcV
-         MYxyJWsTelz7xyT5CufbSZP/BouTa2OYiJm+aFWdFGskeGH0K8TTEgrUvqnm8dbzMp6+
-         xj1W6qSRu5tQJ78sFXtEZqPmDAt6Oy6QF2yRKey+c62GVFOHVSG2m1BJV8orgq/ypA4v
-         zBww==
-X-Forwarded-Encrypted: i=1; AJvYcCUC+/R+J5V1QwOpYLTHp/tGtnrWYHoI8XHaiUZQ+P0Jr+wFIQlsXLQVigIegRQzBlUmt512uIkcDA==@kvack.org
-X-Gm-Message-State: AOJu0YyYgGwffpqGTTzbjIP2dFzuaFJir5aQcbniEBkK/xiYPlM9HNYE
-	QcrfAj0j38aK/UdlS7fqvzn+zzrZUA6er8PoW8al9RKO+9oDwIajVU60
-X-Gm-Gg: AY/fxX4hZByC8SozgDV57A6HZaMsmDYsq8OdgBriNHzzOpwRXXb2oYvEKdJaTi9wH1m
-	KBpCudS8fGofXy2Bnu1rHE2FRpXUZy592UDRsClvPUmLlnUwDCWR2mIh0euzEYUSb0h9m00ga27
-	kQ5bb4zqB/tp/gdBcvbF8I7zCVZ5OwBNOmF86ScvOEGK47pX8TR0lu0mdulpBByITzp9AXb8dn+
-	B/ObXYNK67vbEIhdUi6rJ9k5q3rcAB6uVqKrQcv82EOOBOnB4LJJr+mGYKPTPylLiB4ZXbhRhY0
-	YliVu77plS4IcIrLgdmDl+bM9Q1fU6rjUGKIEHPOdKdCFoZWXS7r5m7THyxjHl7Wf2npwT8Vcfg
-	GHPEj3lJZ2kpLOha/8Dj3W6wXZWINrN4wZREFQ5Md+GHG6GV1ZbuTQ5ObyvpcE//HDHvPbcSlMT
-	j9kDPIip1x+T/08ZeW
-X-Google-Smtp-Source: AGHT+IHHnbvfuO02O2T8eWP+vcVOcuSJ7Y6r/Zmdy3IOsvMBodteHhpEqVwKxEJiZnOh/YXs6iICfw==
-X-Received: by 2002:a17:903:2f92:b0:2a0:d629:9035 with SMTP id d9443c01a7336-2a3e2d758c7mr8216695ad.3.1767647940296;
-        Mon, 05 Jan 2026 13:19:00 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:3::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cc8dd2sm1526925ad.82.2026.01.05.13.18.59
+        d=1e100.net; s=20230601; t=1767648858; x=1768253658;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iSWfb6WbMa4GK6t36QHV/UhaSlBkhsogc7OHaBLtTbE=;
+        b=ieGTWVsUzzmGu2W9keY4s0InAzwEKMfI938QX64V3z+I1MU49+dXaw+5koNMdDZNpE
+         3r9j8pIUhwlBwbedtkI2NCKYmf02iBsQXOT18Tbmc3M7oRLUlgJS/MyPoVrrGM/XQyYa
+         ktJxLY4WE7m/ezySRhRQs89rsQ8YIjXYXkmE1J2k0hwifT4KMJanRXMOnQ2kyyyxig86
+         DmXU4f6CnBpyp/cXKuUeJltCkMh+q4VylCqN7y/bT1Ak4mDo8LuIh0RV4x3ZwNiMgOuQ
+         IInhtv7TFyKyTUSAmftOAheMV3g0xudOuXv+SzrChqivcm4VFTOMgeOAU2UVj5812vlH
+         uqVA==
+X-Gm-Message-State: AOJu0YybXBqREnfyeWl7qghr5We1P3bPBrxjVot68MLh7B53AwOPcWHf
+	E6Bw1dUzBCr2rIWw8gVoU/xlstbBQwf3Ejp7WIi2/ZkNL3uE7wmLe06xb31KdDj0vg==
+X-Gm-Gg: AY/fxX5BlhjQ8jeJndKDB2rvalfmwp4U3iXBLSWab852X0LPJjHgOCQSmp3sE9UuHop
+	1NoW8VX0/km8iYTf9eBwFxIRc5V7n7NURyVz4FDNPVkBwCEG0GXnJPDkL0hzKX1M/6bUF1I8w7+
+	qFc5A/643IupjbBZVWDrWrx64YgL7u7RZIqexpI0zQ+sQYguk/mcI9Euws0T/xb+msynKnncJaJ
+	SY8acbe3/7/NL4R+4MK7mekQ/w/i+UDlJGUZsCfzeoicceO3VCGxyniyAXP6LFVy/1U4h8Eqacd
+	ZAgbv4b4Jcm6lFpyH9NtTxJgLSZ2g9e4BjD/4hQWBplt7nyySVTk1S5/o2QseEkpDGzChNuQU7X
+	1+GyhbNRF6KzoFdGo+3DkGEI7m5PDkKOLCHQoQ7asPRf4tl4pjeWaowg/yNCgk6PzWB1a30/fOJ
+	ZKolWW+nD/Kyc7gNCuVAl/cYCpOd5Gu3tev2tvKSGCDz5xiwfDCt2L
+X-Google-Smtp-Source: AGHT+IE/9wbqXZpR+eCiNUPQoW/brnPaSVUSFMiUwvWM0JW5+HuqfmdEFWty6+NS58ihX3xiYnJu2A==
+X-Received: by 2002:a17:902:d4cd:b0:2a3:ccfa:c41f with SMTP id d9443c01a7336-2a3e42564ecmr148435ad.1.1767648857501;
+        Mon, 05 Jan 2026 13:34:17 -0800 (PST)
+Received: from google.com (248.132.125.34.bc.googleusercontent.com. [34.125.132.248])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cc02ecfaasm300231a12.14.2026.01.05.13.34.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 13:18:59 -0800 (PST)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: akpm@linux-foundation.org
-Cc: david@redhat.com,
-	miklos@szeredi.hu,
-	linux-mm@kvack.org,
-	athul.krishna.kr@protonmail.com,
-	j.neuschaefer@gmx.net,
-	carnil@debian.org,
-	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Bernd Schubert <bschubert@ddn.com>
-Subject: [PATCH v3 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings in wait_sb_inodes()
-Date: Mon,  5 Jan 2026 13:17:27 -0800
-Message-ID: <20260105211737.4105620-2-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260105211737.4105620-1-joannelkoong@gmail.com>
-References: <20260105211737.4105620-1-joannelkoong@gmail.com>
+        Mon, 05 Jan 2026 13:34:16 -0800 (PST)
+Date: Mon, 5 Jan 2026 21:34:11 +0000
+From: Bing Jiao <bingjiao@google.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, longman@redhat.com, hannes@cmpxchg.org,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com,
+	david@kernel.org, zhengqi.arch@bytedance.com,
+	lorenzo.stoakes@oracle.com, axelrasmussen@google.com,
+	chenridong@huaweicloud.com, yuanchu@google.com, weixugc@google.com,
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH v5] mm/vmscan: fix demotion targets checks in
+ reclaim/demotion
+Message-ID: <aVwuU2o5bm7K5w_7@google.com>
+References: <20260104085439.4076810-1-bingjiao@google.com>
+ <20260105050203.328095-1-bingjiao@google.com>
+ <aVvenfzgCU9uKJN8@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5qzmtju9btspg7rjtrw7p4ncq95gyu81
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aVvenfzgCU9uKJN8@gourry-fedora-PF4VCD3F>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9037F4000E
-X-HE-Tag: 1767647941-669414
-X-HE-Meta: U2FsdGVkX1+ugjpUfERVo9FVN6e6o3/yZWtfkAOhcVWw0fFFoGD+N+JIzdSEGQAeTYsR39gdh10Upxm1IBn2E2yWIZK+uTnQ0RbENgbuzrrp7Fzm6otoqYR5BUfBFelB1u/CShk6AzraPdzjKBA7/WbaKxV/lbJlEQErNwUh/po/J+1L7DvHaXhUVqTxmbzm80z9P29ZDQhjZvW3Ll1hSx9sZo27FF7IKPyc3OKbmaVyTrm47sOVlOb/QKedCmq2viXxQ04VtSk2NLQv8JCZG8tPxwKtFV2dY/2VT0Snp6iERkcGNDgwStLnooZhkqhs2Ji7o+cPhbqsKbUxklBzTnAWFnyE6QxScdGKnxAnLhJrJOYU7wDX1MxpISRTcPSL9CU2/5Xlb6MPwMAvTtu0Wlb4eE0eH4tIuIqwqHtrsnZkuDo6lEx6kwGeCDVbqmliWr5j0QVB2qoNdlTg34DAblpJyWFW/Hv5Rv6wKrA42Ir01CAdssYCmO+FCwQY2c6jlvhQs0YUwYTYvzVSo7c/1Qpx54myJ4TwrstoWv0oV7fFqUEp1Wh4TyzcPcpKyypyzthpux9PU4wrFGInrBbBDb/Qkm2iZyp3whpLBvDPG2oQpI9UWuBVFVAJNQUGVBIW+ar+CULglKU4tK1nLVD0UfuPe2h0nb4TSam+eL7avaWd5BwBoNxUw9yNTLz0BcFp0TuhWFZGcMHUlPl+su5baVx0aJoCQ52CopXiHjuMp0eQzFwlY49OO1PxSkZ/vtjNqMzXH+Y/zi8aUspjxVbJ+/x3n/b/79HG1YzqCKt9A904fNwY84SINE55O6u5rO7wejP64Lrrrui5U87RRkVfWrKXAO9yEYtcISLFwYhv3bNZ2dCD0JZfTvwfrOlOEm10ebj1DB6K8vb6yoVLr7Sme2tSk9oG8wDj+SnJLE3hMfPvOv4qQ34IM5Y5v0+Dv/CfXCcgifywr8mQRA0A1E1
- kivFut1p
- VUQsSz5D1qe2XtluBqBckM/mN8LFl9vNIKqNwleZ2bKsAgtBArDtg4R3NdC0rHNU402VBGPA7ptPaVEOMZL8ALyWZoLPjZ2dsoll3oHp6MnuDFb4q2Z6sN/ti9+zaqWb6KcEmp+uOE/wiV3NRvqwaherfS4CSVYWRsu8WHe9i51dNbhtESKa+hrHfkCJWa2VtWP5QYJRK+NvQq8/XanKB34x7ENe/ipNcGLMYHq/bdxBWRr+yR8izubkvWU053V7TVfcu6oe00QcQzAIeeO3ixORaXSyju+og6DW1HOhTdLp9Hsf5wzeb3CVm8ZKs0eLAvcbArPLgsufaYcZ+roRSgiDDPGyehhzK2vO+JXdHTUm3yvmwMn+7IW5O/6FPOzxE7pFXp7IceZKJUbzvi0faGGk8kE1wjB/SJA4Olrfips8oPd0a4PcogcJqR5M4YMkwyd75NlNbXuz9Io2oLHvhEVGuqObKRRJIX84IyUbd29ryU5PMcUwuihK+RqOT6FkdqHzt/QeBJJt8oVtdx61eYnqBJKvXXLereb2qSwnhcIg88vkUQYA0Q1S8GGO0j/5xZL5JYaw9eJUFTFJhTQEFh2/JPj8YaDLxIQXKGwebKZMQzdXXfS4gi4m0Kz29GwtGFcSeEzRC8bOL/9K/0Td4AqIqLDcIMBukIizgW+Mkw9xc8IdaNRCUwstldDb0bKRiDNLCxIIe45VTRovG7QRUVzfxyCKKZXiYDnBcZsS5BsTWw29N5gZn2hQr2A==
+X-Rspamd-Queue-Id: 161F9100006
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 5kkj9uwoiywud7yh938huznrnb8ohk6d
+X-HE-Tag: 1767648858-980481
+X-HE-Meta: U2FsdGVkX1+SB8stt9mIEjXi9lTKYSks/ZDSc2MqnaV+k+DB9xV38AzBXobaSpTbH5g3q2A5frjd3mifdkSjPOsZetQelynQW1ssTumA0vPPQlVk0FfV0/3TtgBWteKioObkxhUDmcGlt5qoGIn2Dwb3O9Jg8BOz6xSWkgcvcS+JI/HgVF8eMwG7vtDUe7Wy95EgaVZcx5hlw/sxD1/OA+XC3V5wLiy/xeOJsfcCblCLoL0qJ5/AmJadzJji9+FDkg9O+UmstrMQyrxggySaWmwcOJJz3k7jxy/n1wdep9ktjHzj0wQam5qIGfEU2TkInTb4D65n0300jjpeMaPbOuWhGHGGP61QDpth2nMH0dfh9E7xJNy+dHA9vTD2CEnkU/XNEqx7n7BwkQkDhbSw5XR0g6dXNqZE+OsrqwnRA1uyrE98npFxn5DFJTdGW1pWGUVDUrWhdvYAlDSxPZBcoWPdyo6vymY+l536+vXHeiKolNfFdDii1a/DtknwCWdDSH6kkY0pJ3DB60Dz9XYhws/kBo/GFHYreQSzqrEZCslmN5QjKJrtVzg5qbd7r31z051MWwSpSHd/KaCCBluo18s2ZRlbWOx1It+Q4TMA/L4j/S6T6FLKMIEm2fO8xdNFKE6jvvY1em+0QeRA2qUSfl8GmRO2yop4F3HEog0RyKbK385YH9jGeO6nc4TeRDRHO8s3pNeYZP8/k8xIYxxKKIe3Bc0rKK7VioRkiTrHusD/K3vg/PBM10vfHftSArbqDWj6NsSBnenDBjxK9Ryp5P0KZxkcBnbyVOMFGdNJh4UkgSzpCpNIox9yuzfOjQW2kU9YHMOipXg0ByAam4H5SKhXhALjbKDijm06h+YFUz/3RMdAgIsfyoa0vRBXOl5c5ScPcWgewAE0omxjx88zY0M5tgMDxt9Zr9pzRWQbksexTsGUoshBxbJ6ex/4MQOGcy6fg5znrXj8yScbUNM
+ Ey5y9M9F
+ b2ZF6WiZHJIiBxLcYIq+SRS8d8RMu3T/ZglQKDKmXeiJ31QdPLHxQzaVj4FK8wO+c6LaFaMJp2GIUP1xkk2dPIcQq6E9xCToedT81h4StpdqQxmUlU4cHDLNHLiRhpSBvkB0PXmpylgbMLSuciytzElJZnwPRVcp75d8egYjn1tAZEgL8Czr+hwODuT4an/teTVmdvMlXJXpUSKFY3O/IFmJLgqy8VAuQeKoqB+cclLWABVcazc/wzPQAe6oDBAsHuG/R4RfV/LXQNolh2M8X5t6rvHLihVfvoF9h1ylOTv8M4Ab3sqLVcBLhjYvi+QCE9eRpoE5ZRxiiSrte/fjj8gbalNR8YpkaB0ELcuFzgpd1tHQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,95 +126,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Above the while() loop in wait_sb_inodes(), we document that we must
-wait for all pages under writeback for data integrity. Consequently, if
-a mapping, like fuse, traditionally does not have data integrity
-semantics, there is no need to wait at all; we can simply skip these
-inodes.
+On Mon, Jan 05, 2026 at 10:54:05AM -0500, Gregory Price wrote:
+> On Mon, Jan 05, 2026 at 05:01:52AM +0000, Bing Jiao wrote:
+> ... snip ...
+> > +/**
+> > + * cpuset_nodes_allowed - return mems_allowed mask from a cgroup cpuset.
+> > + * @cgroup: pointer to struct cgroup.
+> > + * @mask: pointer to struct nodemask_t to be returned.
+> > + *
+> > + * Returns mems_allowed mask from a cgroup cpuset if it is cgroup v2 and
+> > + * has cpuset subsys. Otherwise, returns node_states[N_MEMORY].
+> > + *
+> > + * Returned @mask may be empty, and nodes in @mask are not guaranteed
+> > + * to be online.
+> > + **/
+> > +void cpuset_nodes_allowed(struct cgroup *cgroup, nodemask_t *mask)
+> > +void cpuset_nodes_allowed(struct cgroup *cgroup, nodemask_t *mask)
+> >  {
+> ... snip ...
+> >  	/*
+> >  	 * Normally, accessing effective_mems would require the cpuset_mutex
+> > -	 * or callback_lock - but node_isset is atomic and the reference
+> > +	 * or callback_lock - but not doing so is acceptable and the reference
+>
+>
+> "node_isset is atomic" is an argument that not taking cpuset_mutex is
+> acceptable since it's a singular operation against a nodemask (one bit
+> it checked) - and therefore for a moment in time the node is either
+> allowed or not (and we make no absolute guarantee of corrected when this
+> race occurs, we just note that we're corrected).
+>
+> nodes_copy is not atomic, and in fact this can result in returning an
+> empty nodemask if cs->effective_mems is being recalculated at the time
+> this copy occurs.
+>
+> Rather than just saying "not doing so is acceptable" - can you please
+> change this comment to explain the implications of not acquiring the
+> mutex a little more clearly?
+>
+> Example:
+> ```
+> We do not acquire cpuset_mutex during this check because the correctness
+> of this information is stale immediately after the query anyway - this
+> saves lock contention in exchange for racing against mems_allowed rebinds.
+>
+> As a result, @mask may be empty because cs->effective_mems can be rebound
+> during this call.  Callers must check the mask for validity on return.
+> ```
+>
+> The rest of the comments in the function explains a about this, but I
+> think with this update the comments need a little more rework.
+>
+> ~Gregory
 
-This restores fuse back to prior behavior where syncs are no-ops. This
-fixes a user regression where if a system is running a faulty fuse
-server that does not reply to issued write requests, this causes
-wait_sb_inodes() to wait forever.
+Thanks for the suggestions. I will reword the comment in V6.
 
-Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
-Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-Reported-by: J. Neuschäfer <j.neuschaefer@gmx.net>
-Cc: stable@vger.kernel.org
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Reviewed-by: Bernd Schubert <bschubert@ddn.com>
-Tested-by: J. Neuschäfer <j.neuschaefer@gmx.net>
----
- fs/fs-writeback.c       |  7 ++++++-
- fs/fuse/file.c          |  4 +++-
- include/linux/pagemap.h | 11 +++++++++++
- 3 files changed, 20 insertions(+), 2 deletions(-)
-
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 6800886c4d10..baa2f2141146 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2750,8 +2750,13 @@ static void wait_sb_inodes(struct super_block *sb)
- 		 * The mapping can appear untagged while still on-list since we
- 		 * do not have the mapping lock. Skip it here, wb completion
- 		 * will remove it.
-+		 *
-+		 * If the mapping does not have data integrity semantics,
-+		 * there's no need to wait for the writeout to complete, as the
-+		 * mapping cannot guarantee that data is persistently stored.
- 		 */
--		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-+		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
-+		    mapping_no_data_integrity(mapping))
- 			continue;
- 
- 		spin_unlock_irq(&sb->s_inode_wblist_lock);
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 01bc894e9c2b..3b2a171e652f 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -3200,8 +3200,10 @@ void fuse_init_file_inode(struct inode *inode, unsigned int flags)
- 
- 	inode->i_fop = &fuse_file_operations;
- 	inode->i_data.a_ops = &fuse_file_aops;
--	if (fc->writeback_cache)
-+	if (fc->writeback_cache) {
- 		mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_data);
-+		mapping_set_no_data_integrity(&inode->i_data);
-+	}
- 
- 	INIT_LIST_HEAD(&fi->write_files);
- 	INIT_LIST_HEAD(&fi->queued_writes);
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 31a848485ad9..ec442af3f886 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -210,6 +210,7 @@ enum mapping_flags {
- 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
- 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
- 				   account usage to user cgroups */
-+	AS_NO_DATA_INTEGRITY = 11, /* no data integrity guarantees */
- 	/* Bits 16-25 are used for FOLIO_ORDER */
- 	AS_FOLIO_ORDER_BITS = 5,
- 	AS_FOLIO_ORDER_MIN = 16,
-@@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
- 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
- }
- 
-+static inline void mapping_set_no_data_integrity(struct address_space *mapping)
-+{
-+	set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-+}
-+
-+static inline bool mapping_no_data_integrity(const struct address_space *mapping)
-+{
-+	return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-+}
-+
- static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
- {
- 	return mapping->gfp_mask;
--- 
-2.47.3
-
+Best,
+Bing
 
