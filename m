@@ -4,83 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DCBAC79FA7
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:26:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26592C79FA3
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:28:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFB4C6B018B; Mon,  5 Jan 2026 11:26:32 -0500 (EST)
+	id 7797F6B018C; Mon,  5 Jan 2026 11:28:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA8B86B018C; Mon,  5 Jan 2026 11:26:32 -0500 (EST)
+	id 72FF86B018E; Mon,  5 Jan 2026 11:28:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B5136B018D; Mon,  5 Jan 2026 11:26:32 -0500 (EST)
+	id 6294E6B018F; Mon,  5 Jan 2026 11:28:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 87D1B6B018B
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:26:32 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 48A47861C1
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:26:32 +0000 (UTC)
-X-FDA: 84298438224.18.AC2BC7C
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DE726B018C
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:28:00 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F38B81601A2
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:27:59 +0000 (UTC)
+X-FDA: 84298441878.01.AFBC5B7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8D9631C0014
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:26:30 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PP8vSOoD;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 45832100008
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:27:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qSZNzxuS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767630478; a=rsa-sha256;
+	cv=none;
+	b=1ExtFeS2iNFY5BGnegK1Z/4Nr8CF9s1upnoDiTAEdVXWJmb1GbA6Fe7xRFlphp/dhlbdWG
+	LaN5XFai7RE24z0b5Kcah+M/bNXfScfs260x5BstiZvjV51p6LU4gmLxhPVabZiPz0ik5E
+	cPaaHkJ9Q6d0F+7pln6+OdJrblE7Loo=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qSZNzxuS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767630390;
+	s=arc-20220608; t=1767630478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hZ2ojU87TNha0KRRGRiKIzPLP9/bRKAPV0u99QmmZ2E=;
-	b=nhf19MPKFtMi3AjvlhBacl4jrOJPYcDIvnh0pSSHTwz9BuUO5AETX53FgwVjgWSw+kh4LO
-	WMsTUvCI/pq0qgoZydbOeACYaINijdYsH+dEegx2Z8kjvLVcasEb4NrhaVWXewPbfiXDkG
-	YdUMlQSxsEQkxOJCvivA5r7zcybvtZ0=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PP8vSOoD;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767630390; a=rsa-sha256;
-	cv=none;
-	b=G0m1Q8fSNyf1EcS26o3xRKaoyMkh0sIcPrgSDEKWYyJq7lpGmFqVucGLOZzY30Ijf92S7n
-	M41S1DvZo7AgxinJ36cFIIR9gzfln4zRtLHU2aL5JrI/kyKnelhF33N4Wk+8hcKRwW1pwA
-	6BKicVwMIyDUar+Dep6fNflSKB0GcIg=
+	bh=Plf+CIWHxwvwTbVTcjFfDO6MsJFFMhHXH8fxWcJAjLs=;
+	b=z03OlbK1K50n6wkzgm8Satr3+QaXfTfxG7ClveVsGQU298My7SX70lcwKbYXVD0s1uWEna
+	Bfz6Vf0K3YYAtpwgnrhi19n/VBA7J9qUJAA2q0zcyTbEXB27y4jn1QgMUs96SmqEOVj2RK
+	DdyB/LCaIrs+4ZlixKBiluwCoULmK84=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A73B06011E;
-	Mon,  5 Jan 2026 16:26:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08145C116D0;
-	Mon,  5 Jan 2026 16:26:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A543E6013C;
+	Mon,  5 Jan 2026 16:27:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEF9C116D0;
+	Mon,  5 Jan 2026 16:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767630389;
-	bh=6SacAMtpQANO4psA3HZm8ayi91MqDzYKHmJBKJCg7/g=;
+	s=k20201202; t=1767630477;
+	bh=/xldXt0ZTEtlBZnN727Bl0SHm6j6KmRJZBIePEBGVGU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PP8vSOoDTgvYUhxARFnNQCwHSjyfT5W54BbX3llSGhjKAht77UOueDxH2RC1xkhQN
-	 +EDBIXbHsVGqWN+j5ATsD48xYHroVq4TH2Q7z6B/2wOl4caGKBYUH2jSI/uRFk6pAd
-	 iGLFOGfEgzI/32bZIgvbGR8NcZF5zgVgRUqf9BK9VJkIYGzXaxtqWSqAlFxpI1uZpc
-	 QaqTnc6WLU72idmw3vWcLL7uDv+gTxsyvzYT5prsaWRApIC92EJTRYZYRhTEiHqHqO
-	 hllBkBPiZLWIl7YGpJMQA9Sdh8yDQKYKrqGuyIU9ITb3iuxGnSsRXUK0s1GsHUPiaA
-	 O1C0Q0J2/fHYg==
-Message-ID: <7232ac17-8fb4-482b-b820-78d6bd47c4a5@kernel.org>
-Date: Mon, 5 Jan 2026 17:26:23 +0100
+	b=qSZNzxuSkRIaAspqW/kVZv8G1aFRRlHNYL9ruZZx2gOJyH/VRUPG35rWEnlko/7gK
+	 e6U5CCkts0cRPE6pBKe3SDvW1J3NBm+/dKBk5029l3PpUYwYIeQr6zhcTDXJw178Cg
+	 j7e1ah5baO3SPwekzj1Qbigf1iQxrB7dt/7qm+Pe6jr2f+aErOlG16wBYQol6Mgbf0
+	 hCcafZQXNVjottjb8oVH/DyeEz2FBaVwcgB8MTGyx5fs+2/SrhY04tVPgp8x+iTknn
+	 VxrSVjfHWcRm8nRSS3Cjy/pXKT8gyqgP1KfURrxV7wA/jOz2vvk+LiVE3cdSoeeFu4
+	 jF/83z3OKf3RA==
+Message-ID: <c2b81430-e89e-49b8-8557-1a374f2e6d01@kernel.org>
+Date: Mon, 5 Jan 2026 17:27:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/2] Free contiguous order-0 pages efficiently
-To: Ryan Roberts <ryan.roberts@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Uladzislau Rezki <urezki@gmail.com>,
- "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
- Ackerley Tng <ackerleytng@google.com>, Michael Roth <michael.roth@amd.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260105161741.3952456-1-ryan.roberts@arm.com>
+Subject: Re: [PATCH v7 0/2] Optimize zone->contiguous update and issue fix
+To: "Li, Tianyou" <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
+ Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
+References: <20251222145807.11351-1-tianyou.li@intel.com>
+ <011e2691-994f-4038-adf0-02e899eca777@intel.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260105161741.3952456-1-ryan.roberts@arm.com>
+In-Reply-To: <011e2691-994f-4038-adf0-02e899eca777@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ypagubjehz9r5nr4dpgakio5c4o4kuns
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 45832100008
+X-Stat-Signature: 9a1b7p4sqjp7md7buuseiwq3ife4d4fz
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8D9631C0014
-X-HE-Tag: 1767630390-685738
-X-HE-Meta: U2FsdGVkX18K8GogdT/bRr+xsmimBbG2kHZtviNsgl/SEdSbELr+6gOMGYgv3B3ml/pHuFJWZyK4vVci1ZsUkP5Gqy/Oz2d45ES7VSbf+WFCmH30yjZi8NsShLNaSMOlD3UqxeBRVCvTQi5RqVjzX044bKvToG1e0tA3K5f5g+acupDgF/YYNyONGUV4kBEQI4zxecP2lO5lKnL/4GqM2u/OtvcI3rwiWMrgyaKb8gdGn7t14719gIFNWuV0JEjJI9BlQ2xVJwt4uhHKXLiMGOMCj6U6bdfXMLMg0zSV0vXtWcxPwRMdWUWNZkFI6NOJXHn1sM01EONIG82z3U1Ieia+xFO2be3FVqcmLvaQqGOvLXCNcyAmuZNlKt0r5ZU/9Qaf7D/BueirqBBuL9zcgYSbS+7DBprgaMwEQ/p/gNx0nFpXhXajWw9XRvJopIPwYlVrMmQxJuU8DmuBthqwrDWFyT3iLr7//XJQhCxOGz9PhoDGgpvgkG+NqQXkuCuXmQBuY+StKE8uiTIfteK5llL44HG1NkCVxzqc7VDUgC1K0gdzqzZOg8ld5Bi1UxSR8KNqPAPXmwKeky5U24MoBRtyr1Wj2xnQ7StOC5YUUpUZmZ+zsrQwttUuetpDUTmdLlyyoNXGf9hA8t6DplXMmbKBDbYgmHhGMhZtF1oK969ns/vQ6XqqaoRcYMsSzinAId4uu756pzrd3JdU1kMKrN2MiZyDnhcgtRG1Xl5eL7SksUMgvL2/rqlyjdgtcTJqTkdHkmTDd8CpHOSkQVaSsPIgwm5mPIUBbNenhbAoNscE5PWuXWRG4sa1PbEAipUciBYvV1HexlOYfeo76imw90awnEEZJHHckfa91R6B53XnS8IG5n14QpDpXLSWQjfTonGZdyF8SfByuPdlALG+XTvUGRkoiaYBJnGTHYMfbZEe02QApPdhF1lWaGS8NquCRy6JwhxOkyf35auZB/g
- K5XvJmuL
- ax3YJqhoqOJkgbunFuJ/9D4DIRrqhYxJlqtFrVJ1wFYKXxteW1kTOmdlZ5oamF3eTpveJMRNwhu0FC4AYk0+L/40cYN4pRNl7x1lVtQtd2IX6v+qU5uXSBny0o3v2uQhB7SiplfGoZqg4j/MNqVgJld1Mll8TT/3OoqbufkZ5fNY6494ZVBuDOt9x4u/6XC6jYGbtzvWNkoDZ1r5AiwE/BkNhtsIxhCv2a6UoZWo8G9ykCF/7k+CzmUJS0/ScszMKO2gCH/DNiyFAXp+1P8opXzQRVf3xaz24VhuZynNMH7r4TFFR/iSv+dduZtv83YxYyKcX8fcJ0+dROFM=
+X-HE-Tag: 1767630478-687848
+X-HE-Meta: U2FsdGVkX1/9OJSQcA4sPSjVjLfIG066dzof43HE6PnhmxHl749uWvTiRDsfKtwtE7Y/aDDtEj0IbuNNaWdzVUhAfS3bihSn6ynYLkAqAULjZRtWv0lkvU53VN1yRsxrZu9oEesVLBdO3MCaN+MonMgCxEQ7m5XManez/n9JJkuelZKYuNmhHViGDk9B12dxIZwWEz28dLtmyp8VppNgP5JF3ylgch5hylLz8qGI7Z6hH9p0P6DP66rdQ07uHrINIBFeqYC2qW9ciAvh6bSnMRCF/XzX5Hv6/I9EaL2Hm26MtIZapdjd3MVfhMpCQeyxQfeICl9LOvNIRgBZfwYvaKbF7SXrZ+YmPAGdQlMDucWi0mInDxzbKrRkKJE3Eq9FshTEeygnpISrdN9JFVCp7MGU7c7iZel+U8FtIilmXdl2LiUB9kMP3bwnPL544zHm/7mIEUWSb2WxKmEOGOdt/EU7X0+vc+HcgK8UocVur1oGq2TwYpCai8ZZUyBNY9VDA9sTd6BC6yfba3UVTx7P0SayVUSExhj/d3Vu0SS189nKpY2U7UJz6zan6zZOjhX33DMn34yIcacxsfgLUhSfZf8xxuHc2CRbBgpxjDFra1VfvXNfOBlAshFDgP+azOnPgJNOusseaR5KQC/Y8X3lrktN6Z5QBVQd0OZDFfrGhSyKLIQSB4vn6XSFWvYDUX1ZeIgftDpuOK6j9NXR7PKuqqXD4900Bg+8ZwNj0heLGq2NCsAUY6e/KFXhoLuEsYzMbVxp3+GXSB5XZ2fuMuoFwzWZRlISPkkiXcVqLVZM3aNnvjl20+WOC8kmsai2E/LgVEFMq7v1mvwq49LUUkFQQDY3aEBzfMoBNFiSrkKz6ntzyj78pSOMaTdBOKUhFSP0Sgg2Ts6tAIuU7jEF4355tv5jrcxlpGfPRHCoKfpXOgBLzm1I+5Y31ey8DCzkKjGLIDfdDSA+B58JG2H/8uw
+ Sx/TBDbC
+ vACCOiVXFYxBQG/uunT+CIqwGo7XoNVQxMtACuj9pOemngKRgpeE2VR1RO9CmWO6pUnjfIbnCeih8tHO5Jqk7vBcbfAQH1dw/MAitBOWNON3dsTj9b9t9tBw15SHwMh8vQ1umRFLEFxOYxYf+M9QPsc34vuUg9DjF66Yem/tOTGT005k9O2tiTCmapLypyTYDcdgOAb2zA8dz38r4/74dqUUWkv6TkD4Dy8aipK/8MU3wvxsgi4VCJSuqX36QiiWtWp0FOoi8mQZ3gEfLGI9x7FGUXeZvA8Q60sbpyNXYoy4NHyV7CaBOiXSEfmXK38+nknI+FEkC2pnIor7/mtaasRgRb6qV8G0V7k+lPBNtwUlJQXkdHcVdRDFK0zrFgribOpNy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,24 +142,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/5/26 17:17, Ryan Roberts wrote:
-> Hi All,
+On 1/5/26 13:21, Li, Tianyou wrote:
+> Happy New Year!
 
-Hi,
+Happy New Year to you too!
 
 > 
-> A recent change to vmalloc caused some performance benchmark regressions (see
-> [1]). I'm attempting to fix that (and at the same time signficantly improve
-> beyond the baseline) by freeing a contiguous set of order-0 pages as a batch.
+> Appreciated for your review and looking forward for the comments. Thanks.
 
-I recently raised the utility of something like that in case we had to 
-split a large folio in the page cache for guestmemfd, and then want to 
-punch-hole the whole (original) thing while making sure that the whole 
-thing ends up back in the buddy.
+Sorry, I missed this version (and the previous one) as there was a 
+problem with me noticing mails sent to my old @redhat mail account in my 
+@kernel account.
 
-Freeing individual chunks (e.g., order-0 pages) has the problem that 
-some pages might get reallocated before merged, consequently fragmenting 
-the bigger chunk.
+Will take a look soon!
 
 -- 
 Cheers
