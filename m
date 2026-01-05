@@ -4,132 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0EFDC79F9D
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 15:23:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DA46C79F9D
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 15:23:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3146A6B015B; Mon,  5 Jan 2026 10:23:33 -0500 (EST)
+	id 6BDFF6B015C; Mon,  5 Jan 2026 10:23:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EBCB6B015C; Mon,  5 Jan 2026 10:23:33 -0500 (EST)
+	id 695736B015E; Mon,  5 Jan 2026 10:23:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F7736B015D; Mon,  5 Jan 2026 10:23:33 -0500 (EST)
+	id 594EE6B015F; Mon,  5 Jan 2026 10:23:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F6BD6B015B
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:23:33 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AA7271601CC
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:23:32 +0000 (UTC)
-X-FDA: 84298279464.04.D7EB1CC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 54EB214000F
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:23:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bv2bf1Vd;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 446926B015C
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:23:39 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D490E1601BD
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:23:38 +0000 (UTC)
+X-FDA: 84298279716.14.975BC65
+Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D57BE180009
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:23:36 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=MIM9w0VM;
+	spf=pass (imf16.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.68 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767626610;
+	s=arc-20220608; t=1767626617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kvol/NELX0tPFUtDya+ReTe+UwusQer03cBYWzkJb5Y=;
-	b=iFulo69kboT/go29pyAEhoMz3UKb9Q6/QBJwN2BmYNALXn8zPFQJSDqUaDx2qsCHLllKu+
-	/ahG9swZgEowAtVSz8JmWkfBpNcaO/0Y5kVfbAhQCU4BiHxfMqYiaLm9SNxXmG+1ZphMtJ
-	BEiDetpCbyXzWs4KtipmgpgoqbMGyLA=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bv2bf1Vd;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767626610; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=HaYTQ7BWPsiVNKxI7qR6p+hkO0uDJULloleKtGqvInE=;
+	b=7AqVMfAjLew8TLOerz8oKzw0wz6nUGeOYbOI/lk257br+ANrrYBMycV9vfo1GBPmxBeUCG
+	1TK7ZZ9v7lVS8hEmXEIP2QjmPKufRmeycw4CvhabymeO9YCXEWiam/+bMNgxsHSProJ0UH
+	p3tpsxOffJF12ZZK7xXf1y323CTpG98=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767626617; a=rsa-sha256;
 	cv=none;
-	b=KFz9OrjIzpNmjaF7JBwkKTF4yJDs6aSRkJ71YN5VnzicVuI8a33z/uxdfA9YL0+iyrgrFU
-	v4SQbroHKBmNtf27JLf0jkxgSFvc4o5SQLWZUGwcqwv/Fqok/Uktg0TZCBD/3CJ/NLmm5c
-	TSKQaFfarrjgoKche9T8NgSsVp58a/8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7C2A56011E;
-	Mon,  5 Jan 2026 15:23:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF71C116D0;
-	Mon,  5 Jan 2026 15:23:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767626609;
-	bh=LtzYOHMdA/4Q15LdVlQqArb6eJ9bup1EzXK0sLlkQfU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bv2bf1VdVu+c6YEbDqrJiZHjMB/V32/DgX8KrjvK/WLsU1G8xPZvtRReUa6ttGJ+I
-	 hJ1+fWP0CLOu67opvyIHrnk5qi1IYWWvyFHmuLYikwNaJ6NoYJxNQejB/+cUud841E
-	 LMp6aw9cn9PJ46vINPSIO4SroKMHcd+206lD8gff8NRbW1ICA42E5Z+XSTemXpUQu0
-	 GNYctpTJ5UfIdnL5Tv1lXjSDk6GPeec8vcHwDaZzYQhBtASDl2qXXmyhM/LZiewoLz
-	 5IcgIOg7Od9G3GKt6csjo6W4ims4+OgonoRrS1DZp5VCGKO/kw7+2Q7BRvNj9FnE4j
-	 F6Fov+xvjNlog==
-Message-ID: <350310f2-8644-46c7-a29e-c977e76f0285@kernel.org>
-Date: Mon, 5 Jan 2026 16:23:23 +0100
+	b=wHBYPo5ZOgO3pyU7ZtgNgMeQ3JEj1iByb8PXIoQLSfz8MTt7bO+qRQVQ+v8v3V0/qV/qx2
+	i+xjRxkBopY/TBP9tRgdqtfK+Ppko5i18+txwvw7VslIm2Ow2AHOI9aW22WoXLpVSxQpJQ
+	RMIu2nU9nadkei004GDPDZ3vli580MI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=MIM9w0VM;
+	spf=pass (imf16.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.68 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-4775e891b5eso117995e9.2
+        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 07:23:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1767626615; x=1768231415; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HaYTQ7BWPsiVNKxI7qR6p+hkO0uDJULloleKtGqvInE=;
+        b=MIM9w0VML3fjhTP6zxtUm2u9oUILnP270tzucpaXYVYrzYt2s8Gyu0ZHk554cHbYzA
+         4mrlW4eO789FRCHZVdo4zHb7EXjSbRxI4rjJod/mU/tQ3QEpoSOjjAdqQT9d924kRAdk
+         6qNXnFEysgRvV4ewjDpqt26E6pL+tEB++49YVlq0rjcioqJ0JgmNyjmV9sSMWBIndJVF
+         kQ8DDXTfmYBh3G8/jvdhwYO1DsOt/DMD6DSRipbHTx/cF69ECHSjHqWIobaE2K8MQdkf
+         AQOTUUc0Xi0EjOBbYFYcph8N18tSW0GN8pF0tz+cTYTLyTvRHRk2QJGGU3fHjoDKwVMP
+         33jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767626615; x=1768231415;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HaYTQ7BWPsiVNKxI7qR6p+hkO0uDJULloleKtGqvInE=;
+        b=xNaOE+aObCH+ypwH9wmdfouvDhEdSLC1P4XHEJewN5b5naxNp6wWUIUeU6mKQEyWwV
+         0Uy0OAZ3W6SVTq+6mmZ5l0ld2TpITWcnMfMfOYMCEVgr0kGNn5KKfvEM92xHu+jajInS
+         WJxEDqb14BfsZFUmjtT6Bfn5ujAFSg5fSQiRiSx0r4VtfUms2aKBzLchpfazpbGiVduZ
+         zZT8YYg/SvTJXJ19PQzp9VmqIhuA+xvPQfgBujZQw6h5RYIp1SmL+t4Cr2mbENmFAdiE
+         sVxlGsEvcBADHbP773JZTUilgnLBfeYwX8a4gNcMdqTjvBA/vfW43pHr837GuCVoyfZa
+         gNqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVWTy/k7su+Myj+vC+J6bwtnZXtjJ83mKdwBlB/MfQqUq0q4GvcSnXabG2j+GR6Nmd6sZTtNd5bkQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy6WVNFrogojyEpMndttfnNZecl0XZAAuvBluJ2JIBBn8+rLznZ
+	SJFnwrw7T9cBMXB8BOHDjrq6hfZZ60dMB0BCuzdchHDCrrXDffoNu+I6qOrlejugQL0=
+X-Gm-Gg: AY/fxX5tLNPre+s4+yzQg3j+6rKeYKStiJk3LTkXtC4ummiOd1WU830Q6lyil3PH9fg
+	IybuHIjykdHedeeToFS8L25uc2qFQ5HxHt9NJIJJtfaGS1h0fvNu7W/PUOY0zyNMeA6Cb+eU6Od
+	nQNENmQX0T0RosxBCREZPS+1leHxsEFWXLRcVTKCpQJy7BvGZB5SD6LYkT3N2ZzGZNjtqYpL1MS
+	5AzeEksNArBlynsn+k5Eiq7aUdJHV0ODoNkVuLpka3xSLxWYdZaOiF26UdFSMdngMYcEwKfcOl3
+	EXIlOYcgreXILYqaaU+sDPS0AQ03T6nkfzd+mW8e2pIHb17a3NUAUJb17g/qa+umPo3EvGH5YsZ
+	TNNBbezfLCirzAq/v3zwUCaD7E4w63BPEHLm9KbLj9yoGZZPrQlGyM5eNXr5fvA1J60HJh9dBP1
+	kNsYpjig6SoCV/7SOT
+X-Google-Smtp-Source: AGHT+IEbzAH4Mwt8s7uaZyKDja05IxXDpz9rS7YosY9x88I2jrHj3aj2heYz9G34c7JpuT0cp6DgjA==
+X-Received: by 2002:a05:6000:40ce:b0:431:8f8:7f17 with SMTP id ffacd0b85a97d-432bca2c441mr136677f8f.10.1767626614828;
+        Mon, 05 Jan 2026 07:23:34 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bc9dfaa2sm152913f8f.0.2026.01.05.07.23.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 07:23:34 -0800 (PST)
+Date: Mon, 5 Jan 2026 18:23:31 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev, Steven Rostedt <rostedt@goodmis.org>,
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH 3/5] tracing: Have tracer option be instance specific
+Message-ID: <202511071533.domGENBS-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2] mm/vmstat: remove unused node and zone state helpers
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com
-Cc: linux-mm@kvack.org, Joshua Hahn <joshua.hahnjy@gmail.com>
-References: <20251225210213.2553-1-richard.weiyang@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20251225210213.2553-1-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: rjabantew1anz7mrwoxaw3ape94gogtu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251105161935.545400234@kernel.org>
+X-Stat-Signature: szdh8xp4wahtskdj139tqtj1krdyogxr
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D57BE180009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 54EB214000F
-X-HE-Tag: 1767626610-355639
-X-HE-Meta: U2FsdGVkX1+eBqoAa0/Gx/NKylqGd40XEQe3qmsFX04pHcxCem2IvZcf7O9roZHhf+xVegqICCqhqcGmKSTyooIQAImn2SMK+3z5W2a4FwM4O77YtByG1Tf2PyFnR70TY03NeYxQc92yrelLf1QztIWqBpt17++P+XE1j7aZEsrswly2VoYhNOxXksNIuuLifYQM6VUMp4tiy7zlab8KdHt3iO/vUbK/LhGMKyrRXczW39gEKEzwlZEyHvXy3PDe30HojskaDWgxMGED6uQ2iY9VzIGib1qkDlrz/pBp7IarHnNOx0zOCZTmzR71yIi8dSSgVqQbV5DVzaalqya8FxarUtW2aTX0KEbo0KWZl31eVskrWbijUz2KCOVOX3RjrkTIY2qW0IBEJHqqlDB7OCYoTtsdb0E+jeTdhKV69hntSZNP3/xFojhSpOGqi2zYUOrg4VaaPv2I/T3LiyDWoWvApJKyXYyb2ii9lNGMXa2f1vYHMaizL3i/RtfW2zXIkGcNkKhbJKQylK1ZzFTFYs1afNKyLttsAC1RWzfjKW8ZO5zeodSZps0t0rTZSXYeUZBlViwrzVVvu9mGaZ9i0ADqJpj8z/09bPV0SxBo7xeH4KwVybElFic5kgyct6pQUBpeQlrE9f0/xGgIQ/D66O0x6OGW7vyJtiRDxpMAYF+rwWwxIeyH27QKn+oG8qfpA68obry+CSaOEoFPQKjxq3r3zvqmHmHmuy5lA06TIaD+hrsvEyW2ek8CxdNR6MW9Hd89FeRCmF1k6ZDyMsF3nks6jQPK5WsClmDTlMDjyXXQ3BjOkwQRk+lYWHu6mJtAUNWEPb6vmNUSEzdDEz/BjqOJNVmLlWz5DErgU6LmeXbzs8cC5+aDVMLSULzPSUx+7vY8RRPyNecXovATqIrDinnQJaoRCINYJ4vzFwA4F5RyzHRR4dyUubV1JKCD6p/l1OyAtnQyeGMDD7NbgVQ
- BA67zZAQ
- 8KnhwWmxL5T0F8Ik/IAfC1VY8xFUPA+9b40vP
+X-HE-Tag: 1767626616-255916
+X-HE-Meta: U2FsdGVkX1+mliVJpoy1i9m+fdJZwYMeVh7iZTH19G3r1kxfjP/g7StJG7150pNADjJ+E70TCB528PtseRZzFpUPiAeC/oSnH9QizANY+HzsfClUhxyl7rNPCTrHHc380RKrx9C4gTxbWSrQBl4I//7kjgnIH76sLMQXJtpYaalI/WXrBRxH1T7RqrGn5Yd/DqVNTPmQsO11O3OK+zL/92bgeXKltlqWIvD31n/t+ndb/OIHWgiOE6sKaxIk2fOJaUJ/aAKFSlVvGs/UcNDDztn7r/rMHFq1pOD/m86fcR7wo0K3jdjJpVgiUEe8aPYjFQWx7hNtiBzFomKBK8/0LJUEHX2J7k+0GpVF9QVHPMZEK7aaA9KoqPjJlKiYPUVLBHRJCX14v/Fu6h2/BYOEwbckDzBM6CGUYw1knZkhEvosDGBcGEpM431DbXfFvpWGiTegImYyKA7BE7rSWLqvNFfAPIgM8+juUUAv9xUycchcq+nqVlf4OIw8OT5VVuXY4tValX3iLI15Sbu7dd5ypl+bNCdJhq86D3mspTStG4pzX4gOWLHec3Cpx+94lNFdwsNgN9Kn/pDlG414m1jKd1YVP800cJLZGCzCHkOMlVzzz45tbwH4lBzYRpCI86VGd1+2+1Aq+KfcyeKHgyJ8jSxcmmXvmn36eBV5pQvUemIWm3QcI4rlZlG15L4B3pFo7btwBnFJV/M+og/wzVIHr6F8Y5qlpW9WbvC0DJpJcKyDppTvHaafzVQi7WU6Pz0OV9aHfAmgZ7XBLRTeaaEpnQp7GCKliK1Myf8YudMnTPyGEW3EO0pVg8OLFgnecNEuySvgQaDpFdV0hHVktwJ6R5qMnbHxi9DEB1n+Udgl6FZuseXIxrqFo6j6agtKAXlLiUbJjDMa2L19XF3wNM5tvnGdn56hIWK+bHPjP4If5U3QJ9dgSBCOSYEnNEjnFaB3UD1hyIPeSIx9QSK6I+e
+ 0Cw5Mwui
+ jaxBqwFMjKhQy6DcBabyCzh04RvVf26fDN9lxZZoqKboWKgfzhSK5s99cTPYKu7EDRawV0H8Rl+BqVf5NGS3qewOyg0JZ/ZMhKIvQ69BHJB0QUA+rRrbQxdmIzsb93WtN8hqBG1pwYkimYQrPFbS9TcHZSh9SzK3eSIda2jMIYyeQ8WM5dyvS9S3hF6rnME78JmAyG6++4tCehBZYSccoBbCDeA5fEkimylJizIotn6aeau47B1d7SbWhu9huGE+lFbRayzTIJfjiA6e0y99cGHf1OC+I7/fxphv8lDhIJgJYVHC/G5SJE8V7+WIVY5cieF8ZgAB76/LXoDqbrXkpdIBjYKW7NCEHp2w7nguNmphbEdn9rQOfbdieir6kh9bwqJKCCqhTrFJ9EP1YFhyhpQ7QdWQL9L8dx2bwjSScxJYbo2pMzQpgcQRKbJZoqLVHsbDevO44ZyBEVt8uJJmb56Jq7TpEs3yznYznGJpHwzyQQLCYB6Es1Mk/4RBfzXclQLlud2igvsSDguYcvv7QCC9cv6ZBCtTvA+8TndwoUYw/OVUqAXkUh9GvccOL2TaDiOH6WaA9TUOnxAEA5CfcwlzAE7dvlD6AMIGT/xIv1zPeo6c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,27 +122,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/25/25 22:02, Wei Yang wrote:
-> Several helper functions for managing node and zone states have become
-> obsolete and no longer have any callers within the kernel.
-> 
->    inc_node_state()
->    inc_zone_state()
->    dec_zone_state()
-> 
-> This commit removes the dead code.
-> 
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> ---
+Hi Steven,
 
-Note: It's good practice to describe below the "--" what changed between 
-v1 and v2, and to not drop RBs/Acks for minor stuff.
+kernel test robot noticed the following build warnings:
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Remove-dummy-options-and-flags/20251106-010511
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
+patch link:    https://lore.kernel.org/r/20251105161935.545400234%40kernel.org
+patch subject: [PATCH 3/5] tracing: Have tracer option be instance specific
+config: i386-randconfig-r072-20251107 (https://download.01.org/0day-ci/archive/20251107/202511071533.domGENBS-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202511071533.domGENBS-lkp@intel.com/
+
+smatch warnings:
+kernel/trace/trace.c:6313 tracing_set_tracer() warn: iterator used outside loop: 't'
+
+vim +/t +6313 kernel/trace/trace.c
+
+9c5b9d3d65e4858 Masami Hiramatsu         2020-01-11  6285  int tracing_set_tracer(struct trace_array *tr, const char *buf)
+09d23a1d8a82e81 Steven Rostedt (Red Hat  2015-02-03  6286) {
+4699bbb369ba1d3 Steven Rostedt           2025-11-05  6287  	struct tracer *trace;
+4699bbb369ba1d3 Steven Rostedt           2025-11-05  6288  	struct tracers *t;
+12883efb670c28d Steven Rostedt (Red Hat  2013-03-05  6289) #ifdef CONFIG_TRACER_MAX_TRACE
+34600f0e9c33c9c Steven Rostedt           2013-01-22  6290  	bool had_max_tr;
+12883efb670c28d Steven Rostedt (Red Hat  2013-03-05  6291) #endif
+d33b10c0c73adca Steven Rostedt           2024-12-24  6292  	int ret;
+bc0c38d139ec7fc Steven Rostedt           2008-05-12  6293  
+d33b10c0c73adca Steven Rostedt           2024-12-24  6294  	guard(mutex)(&trace_types_lock);
+1027fcb206a0fb8 Steven Rostedt           2009-03-12  6295  
+7a1d1e4b9639ff0 Steven Rostedt (Google   2024-06-12  6296) 	update_last_data(tr);
+7a1d1e4b9639ff0 Steven Rostedt (Google   2024-06-12  6297) 
+a1f157c7a3bb342 Zheng Yejian             2023-09-06  6298  	if (!tr->ring_buffer_expanded) {
+2b6080f28c7cc3e Steven Rostedt           2012-05-11  6299  		ret = __tracing_resize_ring_buffer(tr, trace_buf_size,
+438ced1720b5840 Vaibhav Nagarnaik        2012-02-02  6300  						RING_BUFFER_ALL_CPUS);
+73c5162aa362a54 Steven Rostedt           2009-03-11  6301  		if (ret < 0)
+d33b10c0c73adca Steven Rostedt           2024-12-24  6302  			return ret;
+73c5162aa362a54 Steven Rostedt           2009-03-11  6303  		ret = 0;
+73c5162aa362a54 Steven Rostedt           2009-03-11  6304  	}
+73c5162aa362a54 Steven Rostedt           2009-03-11  6305  
+4699bbb369ba1d3 Steven Rostedt           2025-11-05  6306  	list_for_each_entry(t, &tr->tracers, list) {
+4699bbb369ba1d3 Steven Rostedt           2025-11-05  6307  		if (strcmp(t->tracer->name, buf) == 0)
+bc0c38d139ec7fc Steven Rostedt           2008-05-12  6308  			break;
+bc0c38d139ec7fc Steven Rostedt           2008-05-12  6309  	}
+d33b10c0c73adca Steven Rostedt           2024-12-24  6310  	if (!t)
+
+t can't be NULL here.  It needs to be if (list_entry_is_head()) return;
+
+d33b10c0c73adca Steven Rostedt           2024-12-24  6311  		return -EINVAL;
+d33b10c0c73adca Steven Rostedt           2024-12-24  6312  
+4699bbb369ba1d3 Steven Rostedt           2025-11-05 @6313  	if (t->tracer == tr->current_trace)
+d33b10c0c73adca Steven Rostedt           2024-12-24  6314  		return 0;
+bc0c38d139ec7fc Steven Rostedt           2008-05-12  6315  
+4699bbb369ba1d3 Steven Rostedt           2025-11-05  6316  	trace = t->tracer;
+4699bbb369ba1d3 Steven Rostedt           2025-11-05  6317  
 
 -- 
-Cheers
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
-David
 
