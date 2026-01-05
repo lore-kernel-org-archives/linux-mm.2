@@ -4,99 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40D13C2A062
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 04:46:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E539C2A062
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 04:52:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09F1B6B00D5; Sun,  4 Jan 2026 23:46:30 -0500 (EST)
+	id AD80A6B00D1; Sun,  4 Jan 2026 23:52:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0774A6B00D7; Sun,  4 Jan 2026 23:46:30 -0500 (EST)
+	id AAFB76B00D8; Sun,  4 Jan 2026 23:52:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE2696B00D8; Sun,  4 Jan 2026 23:46:29 -0500 (EST)
+	id 9E5986B00D9; Sun,  4 Jan 2026 23:52:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DBD4C6B00D5
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 23:46:29 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6B54B1ACD1A
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 04:46:29 +0000 (UTC)
-X-FDA: 84296674098.13.9356CC4
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 68FED40005
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 04:46:26 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Osa9AYo6;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767588387; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 8A2A06B00D1
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 23:52:16 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 169E81A1F61
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 04:52:16 +0000 (UTC)
+X-FDA: 84296688672.20.52E57C7
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2DDA5A0011
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 04:52:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c8ioliHE;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767588734; a=rsa-sha256;
 	cv=none;
-	b=sGeWRnu1F/weC3OirLl+jyTyNRdKjNSujTOBULxun2lQ0BPBqEFqks8kAt1XZ5ViohtJl+
-	dJ8TIf/hLysbyycN2J91gRguHC5gjLcouyGacOcIzdTzzjTClpTAfEq2z+n+89K/bIklcP
-	pjqa3YTQeoybsuMLpUHGqTQ9Chkl7SY=
+	b=CfcNgRsjx6OI2tG2DcWr9xqxQtBD0w1bLQKrYi9PH6LHSQnRiwNb2DIG2Vkunk/YvzlUu9
+	ephNiW4/m8gi+wOf6oIY+KjS1VVwprMIYvNstCJoInn51g1iPI66692B3lpapMq3hNUhkI
+	jBw2wf+Z+l0F5e5Lo5naggikUFd13sk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Osa9AYo6;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c8ioliHE;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767588387;
+	s=arc-20220608; t=1767588734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=InQf/76fnHHFMB6qLlLLxfF2uVE32caiSOT2o0Wx/rA=;
-	b=dbhjYKkl5IKyJJeP5ZpY/HhTPr6eB8NHnZd9IocXXJbc5XEusvXFFZwTBPluhp6S9FWi0F
-	CxsondpcT92mz8a+ogmpFZfy6kSOcxUcFbfedC/dcsEC9CtywnXpp/cnaHk/6AApapF+8Q
-	331cng7YBeCWyBhmsb65+J+V7pfz3vY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767588387; x=1799124387;
-  h=date:from:to:cc:subject:message-id;
-  bh=e66a15lEvMS5/0tetiz2yLJL3T9fHXsu4MzXu0oYxec=;
-  b=Osa9AYo6Ld22ZdDyl2ASyuU/SCAkwkpA0COWh8MiAJfImdjiywEs/9gm
-   OLudNZxDMrUs6ALVEaDRfFQvnfapu8J/zIh6rTQjzn9tTSBOjzKM+2Ih7
-   qNyDxVP79ZAEVaSrfu6l1orxeW3/mUz1BwzNlWJ/8Uq64y7Fa0AFlA+0c
-   xTc3K5sRr7TyMeSlA+zwMHxqHU1OV9FQ/Q5vD1a3CkP+m8c7qtPjENonL
-   DK3hoQhh83eYuYQhlBHwGyD5cv4PyiCwb1bY7POQOsG87pQ5nO+CZXkgA
-   rO3Yy/o+BxNT4rhn10Pr3Txg0YTrm2ir8mXwwPD4u+nsa3bZITdnaPOui
-   g==;
-X-CSE-ConnectionGUID: VQXwPjbCQ3WX4ploWE0fQQ==
-X-CSE-MsgGUID: 4TxbGoW1TpujbjkFdb8new==
-X-IronPort-AV: E=McAfee;i="6800,10657,11661"; a="67965063"
-X-IronPort-AV: E=Sophos;i="6.21,202,1763452800"; 
-   d="scan'208";a="67965063"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2026 20:46:25 -0800
-X-CSE-ConnectionGUID: BFNiGtvcTiquc4zhMt9meg==
-X-CSE-MsgGUID: sflfUcZORl+soO98ljR6eg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,202,1763452800"; 
-   d="scan'208";a="206780138"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 04 Jan 2026 20:46:22 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vccU0-000000000wH-3KdF;
-	Mon, 05 Jan 2026 04:46:20 +0000
-Date: Mon, 05 Jan 2026 12:45:48 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- Linux Memory Management List <linux-mm@kvack.org>,
- Sasha Levin <sashal@kernel.org>
-Subject: [sashal-next:mm-next 5/7]
- arch/loongarch/net/bpf_jit.c:1322:7: error: call to undeclared function
- '__bpf_address_lookup'; ISO C99 and later do not support implicit function
- declarations
-Message-ID: <202601051241.10hXC1ge-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 68FED40005
-X-Stat-Signature: trs6kk9m9owazc1epg31sa35tgiqa9qq
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cEeY/rnS8rSB2Dg6HKwl5ETnj7+qifS9o7TBnlznks0=;
+	b=6TWVPBGTWuzLxJyVLVJy8VpiIfa2wP7qKeFSl4UTeDR4Rp3AjYeKxdUDgAI8Imx5h10LZA
+	10Y76jRaxQ52MkEFFN0Fs4izBRF/tdp6hdfGiyrz/QwxeR9W+61SzK/lAQLvfkElbtoFO6
+	7CaVikvzmjdZ3LZ2OqV019HBQ34BfvU=
+Date: Sun, 4 Jan 2026 20:51:58 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767588731;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cEeY/rnS8rSB2Dg6HKwl5ETnj7+qifS9o7TBnlznks0=;
+	b=c8ioliHEZHw1dAr6H7QXCal+ZW7hMAOBHbiFI/52p5F1EdA3y+c03Yr8L+QpwwChDTRHqM
+	pudzb305btEREzNeMNF+9m+2aWP+xEboRHheoVR0muR1tmLejRdyfqImSATfwyq1sVjYGE
+	2jChyixsWQeMCRYnSimL3Jq3aGWDNdQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm/vmscan: mitigate spurious kswapd_failures reset
+ from direct reclaim
+Message-ID: <gd7qbyakigogdbfxkujtc2ewwfzbwudn2l6vqkbkttv46wkfrd@nqseltiu2do5>
+References: <20251222122022.254268-1-jiayuan.chen@linux.dev>
+ <4owaeb7bmkfgfzqd4ztdsi4tefc36cnmpju4yrknsgjm4y32ez@qsgn6lnv3cxb>
+ <2e574085ed3d7775c3b83bb80d302ce45415ac42@linux.dev>
+ <u2llnnpmpsgarwrt74ffgo3cuwe4apdbeh5hkclzbh5gykwltb@whb7uuj7ub5i>
+ <e93c75cb1a46a60ec415215c555312c82b9145ac@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e93c75cb1a46a60ec415215c555312c82b9145ac@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 2DDA5A0011
+X-Rspamd-Server: rspam03
+X-Stat-Signature: scnapssa95snq5it1bm5yh5byqojirbr
 X-Rspam-User: 
-X-HE-Tag: 1767588386-695534
-X-HE-Meta: U2FsdGVkX19jy6N1OMp2oMSzvf0Rka+FDlfQN2qTtmXGqysRPXD89etj5NNfMs51UwwpufxakPPbMtZZmwmKdYEojsTJCKQlqdBuNnGYNkxlqjne1qYZWoMqvp7TfstKsshjyCFYg6u0axIkEs6wTqgKC1WbsA45kt9yYTrNy0DCbOMipmePv/OwEi11aXesaiCh8VAKxVZWMSuxZfXuLUIwekuosSOoTQyguXkjXQmYihrCq38byQQU05rMSSj6kRSfuGeqkrg88i2VCI1tlIyHBgwHynrfy1dqzmgZnWImmR2RyiTqD4qBprtH4uK/knlgBmslt1D3sUPQ2dO3tZiu5wC9do3edw8em/BU0o0fygecixV6ag5i+x1HAKTZsshqbkt4PP/N0C434D8aM+123Z4EffInXcwz4CMDY1ZtdiO/TOhsy8x6vMsutGQrkU6bYERBVyEZ4RhMyvCyyPs40tw9YYowHI5x1G0Uu99MFoHCQ2Jii41D5edH8vC1WCn/IP6tTqrCjln+XL/Iw3hFXB2R4e37Eot/F9JqfqTIvvZbwmZyycTKnACrD0O9eEfy3FsVi3376Jobac41H/iO/anE0bBnqOgl+Pg8XqKcBsKJpwlGq2FqlF9z6yz9zDpBALztOPElQDwmOm6xiR01rIRuPHtKij9fRW3O8blIT2+Lr+TUovMC3VaGWXD+DpTtMZm/YIbOuFK2h5eEmHw0wFi45ApeBpbRNAK4VcOt17tezvbFkL3KiqBKg0/qwDGidO5gE8PG2QBcd+NIEWRGZ+MxM9wqMjU0HP4uLqYiTfw1yLj3sP0BGdQjxasGCv8gUyWIyiVTIq5nWDMCeNv3nhUz4VYFGq9sF7XeU1pjdcl+Hqk0aCb/BaDKYdF5StyU4EYXb/TzjduIRIqgNqtaj1nRLYTCFytDFyGgLOpETFOiCwMX7x+UPG1oz6k0d1fxgZfAZ5ZS00McV8J
- O3YtgeM7
- 5IbikuZ2FX+Xy1OJD6a7PcIARDgsDawHIh3iHP7rz+pXh4qsCA+b2HMCsRHMciRHZEvOXeZyPZmF5raEjhWV2Ce4JandzjnShepYRRS9fjByHa7vpkTKpQa0NkbjpkNAFdmMjDPh5l8Cyza18fJf5G57PgES+5+OTPwtp9kQHPaaJz/PxEPHVn83KY/4ncYH23YrYd+wNIhTmvwUY1GHIJJnAoEqEPAyIO+VRtwGWI6zmn6VfIM0n7F9Se5BebzDclCM98B3gDV083SLpWTICEzgi1A==
+X-HE-Tag: 1767588733-949640
+X-HE-Meta: U2FsdGVkX1+xWyZdDNEz47+pokAMpz9gvP+dMFlstrcMBH5uRplN/AlHWhltUy67YJT7UMcIGoJLFS5/LMXE0GaL/jo6d/0TuMuPWQha1HlgtZBtYuuvjNszBiUfdI2dygLMaOAmBV3Njs4hUDhD7KyEl9op2bswPg+BYyS0P1DBgbi+UQoSj4MzyNfHgho1mFbHII80WFIRTKWJrDOHTXpFqpZsLqf+oT1FhAhG4Jcg6mkMKkiOEUZQuLyL3bw8yW71alrL0fQxwBMQvbDyYscNqzMR0xP6b/ubhEVG90Q8sI9PyG99zidFzR08rUoC6r0LNY5wAIYGfGBzQKTk687P33rZPfAG5qu4BtuITN+yu+JZjTiko8oZWQkwXO3iXEDWMitIbUxODmQFRJvtuCzPHGSv/95N2FJTMoaV3SSmgXXvqScb4s/pZztst6/Q6xZg2hFrxqw7DuyTl+FCx8GWCIkLgoZR8UKbhk6SzglK9ZxOHVIl9oTL9kFxerqiI1PTP62+eeeN3ijvSZp9uBt+FJU6vRlpPz8HyohwWOuPTwn0yAXdzp8AO/Qk20gaCFaiV+8Eb8lW/ZPOW/9xA6c+qQ2JB3g264XGDOfID/U+pYaKJH+MhgssWNeb6KEBeF9qHym0ng6Pfoz3gGiJYLllsItmFZJcZs9lA4f9XPZtoGcUsjsOoxe+FFIZOmAdxfRBLDSVMn4+hXdtC6oYQRJMAkdGrgmHOugTt672W5loSZtre0MkFTMm5QwQ6w0J8RaAleZZsjz5gnbZfHqxx/xVemxbI1nzVfcsI/1+YmNOm2gevJ++Ly9zmbbo+9e7RAayY15A0QOpSMeiGSuV5B33XD5oTUcBoWt4KZe+5mvqsjVXkZwGDSBR1j/Xj2G9mcYHVNnRklGxMJRBVbVYOH+VTbl/632MqMpPEXUut/4bmNgrTwp6Vpd/ZULn+6RWOl/MqQohFhPYGnaJDYu
+ IGKRmT4K
+ 0viVJmRcoJcZ4LCXnyZ5k4vdPnfrhICcI9X/ZpcqPJQ+/OSzkNi4/MhrrA8u6IZxvBXwjrJJoK26UB6cDr/8h+dyPQ/V2+a+XjZ5h6yktWm8FAtDKfypjXDOvyDGco+r3AQ6Wz8LbPjuBIoJrrKIw6q/opoY3nCL/bz4y7xuh4iT344e7CVh+E/dAErMY2pMBOn6QzcUVoJHP5III/GekMURpM0I6DBugrlxuVO1sWjj0NV/ZIpd5v4mTEd3dOEmvdybBTftRgLf21OMdjplObMUowA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,93 +96,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/sashal/linux-next.git mm-next
-head:   e10a56cdd2c231b8e6e59651bf02e3878ea3cc76
-commit: 5c48a0498b4b96a11af18d27ae295822bc40e0c3 [5/7] Merge 'mm-nonmm-unstable' from https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm (mm-nonmm-unstable)
-config: loongarch-randconfig-002-20260105 (https://download.01.org/0day-ci/archive/20260105/202601051241.10hXC1ge-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260105/202601051241.10hXC1ge-lkp@intel.com/reproduce)
+Hi Jiayuan,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601051241.10hXC1ge-lkp@intel.com/
+Sorry for late reply due to holidays/break. I will still be slow to
+respond this week but will be fully back after one more week. Anyways,
+let me respond below.
 
-All errors (new ones prefixed by >>):
+On Tue, Dec 23, 2025 at 08:22:43AM +0000, Jiayuan Chen wrote:
+> December 23, 2025 at 14:11, "Shakeel Butt" <shakeel.butt@linux.dev mailto:shakeel.butt@linux.dev?to=%22Shakeel%20Butt%22%20%3Cshakeel.butt%40linux.dev%3E > wrote:
+> 
+> 
+> > 
+> > On Tue, Dec 23, 2025 at 01:42:37AM +0000, Jiayuan Chen wrote:
+> > 
+> > > 
+> > > December 23, 2025 at 05:15, "Shakeel Butt" <shakeel.butt@linux.dev mailto:shakeel.butt@linux.dev?to=%22Shakeel%20Butt%22%20%3Cshakeel.butt%40linux.dev%3E > wrote:
+> > > 
+> > [...]
+> > 
+> > > 
+> > > > 
+> > >  I don't think kswapd is an issue here. The system is out of memory and
+> > >  most of the memory is unreclaimable. Either change the workload to use
+> > >  less memory or enable swap (or zswap) to have more reclaimable memory.
+> > >  
+> > >  
+> > >  Hi,
+> > >  Thanks for looking into this.
+> > >  
+> > >  Sorry, I didn't describe the scenario clearly enough in the original patch. Let me clarify:
+> > >  
+> > >  This is a multi-NUMA system where the memory pressure is not global but node-local. The key observation is:
+> > >  
+> > >  Node 0: Under memory pressure, most memory is anonymous (unreclaimable without swap)
+> > >  Node 1: Has plenty of reclaimable memory (~60GB file cache out of 125GB total)
+> > > 
+> > Thanks and now the situation is much more clear. IIUC you are running
+> > multiple workloads (pods) on the system. How is the memcg limits
+> > configured for these workloads. You mentioned memory.high, what about
+> 
+> Thanks for the questions. We have pods configured with memory.high and pods configured with memory.max.
+> 
+> Actually, memory.max itself causes heavy I/O issues for us, because it keeps trying to reclaim hot
+> pages within the cgroup aggressively without killing the process. 
+> 
+> So we configured some pods with memory.high instead, since it performs reclaim in resume_user_mode_work,
+> which somewhat throttles the memory allocation of user processes.
+> 
+> > memory.max? Also are you using cpusets to limit the pods to individual
+> > nodes (cpu & memory) or they can run on any node?
+> 
+> Yes, we have cpusets(only cpuset.cpus not cpuset.mems) configured for our cgroups, binding
+> them to specific NUMA nodes. But I don't think this is directly related to the issue - the
+> problem can occur with or without cpusets. Even without cpusets.cpus, the kernel prefers
+> to allocate memory from the node where the process is running, so if a process happens to
+> run on a CPU belonging to Node 0, the behavior would be similar.
 
->> arch/loongarch/net/bpf_jit.c:1322:7: error: call to undeclared function '__bpf_address_lookup'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1322 |         if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
-         |              ^
-   arch/loongarch/net/bpf_jit.c:1322:7: note: did you mean 'bpf_address_lookup'?
-   include/linux/filter.h:1378:5: note: 'bpf_address_lookup' declared here
-    1378 | int bpf_address_lookup(unsigned long addr, unsigned long *size,
-         |     ^
-   1 error generated.
+Are you limiting (using cpuset.cpus) the workloads to single respective
+nodes or the individual workloads can still run on multiple nodes? For
+example do you have a workload which can run on both (or more) nodes?
+
+> 
+> 
+> > 
+> > Overall I still think it is unbalanced numa nodes in terms of memory and
+> > may for cpu as well. Anyways let's talk about kswapd.
+> > > 
+> > > Node 0's kswapd runs continuously but cannot reclaim anything
+> > >  Direct reclaim succeeds by reclaiming from Node 1
+> > >  Direct reclaim resets kswapd_failures,
+> > > 
+> > So successful reclaim on one node does not reset kswapd_failures on
+> > other node. The kernel reclaims each node one by one, so if Node 0
+> > direct reclaim was successfull only then kernel allows to reset the
+> > kswapd_failures of Node 0 to be reset.
+> 
+> Let me dig deeper into this.
+> 
+> When either memory.max or memory.high is reached, direct reclaim is
+> triggered. The memory being reclaimed depends on the CPU where the
+> process is running.
+> 
+> When the problem occurred, we had workloads continuously hitting 
+> memory.max and workloads continuously hitting memory.high:
+> 
+> reclaim_high    ->   -> try_to_free_mem_cgroup_pages
+>                    ^      do_try_to_free_pages(zone of current node)
+>                    |         shrink_zones()
+> try_charge_memcg  -              shrink_node()
+>                                      kswapd_failures = 0
+> 
+> Although the pages are hot, if we scan aggressively enough, they will eventually
+> be reclaimed, and then kswapd_failures gets reset to 0 - because even reclaiming
+> a single page resets kswapd_failures to 0.
+> 
+> The end result is that we most workloads, which didn't even hit their high
+> or max limits, experiencing continuous refaults, causing heavy I/O.
+> 
+
+So, the decision to reset kswapd_failures on memcg reclaim can be
+re-evaluated but I think that is not the root cause here. The
+kswapd_failures mechanism is for situations where kswapd is unable to
+reclaim and then punting on the direct reclaimers but in your situation
+the workloads are not numa memory bound and thus there really is not any
+numa level direct reclaimers. Also the lack of reclaimable memory is
+making the situation worse.
 
 
-vim +/__bpf_address_lookup +1322 arch/loongarch/net/bpf_jit.c
+> Thanks.
+> 
+> > > 
+> > > preventing Node 0's kswapd from stopping
+> > >  The few file pages on Node 0 are hot and keep refaulting, causing heavy I/O
+> > > 
+> > Have you tried numa balancing? Though I think it would be better to
+> > schedule upfront in a way that one node is not overcommitted but numa
+> > balancing provides a dynamic way to adjust the load on each node.
+> 
+> Yes, we have tried it. Actually, I submitted a patch about a month ago to improve
+> its observability:
+> https://lore.kernel.org/all/20251124153331.465306a2@gandalf.local.home/
+> (though only Steven replied, a bit awkward :( ).
+> 
+> We found that the default settings didn't work well for our workloads. When we tried
+> to increase scan_size to make it more aggressive, we noticed the system load started
+> to increase. So we haven't fully adopted it yet.
+> 
 
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1305  
-ae4a3160d19cd16 Menglong Dong 2025-11-18  1306  int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type old_t,
-ae4a3160d19cd16 Menglong Dong 2025-11-18  1307  		       enum bpf_text_poke_type new_t, void *old_addr,
-ae4a3160d19cd16 Menglong Dong 2025-11-18  1308  		       void *new_addr)
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1309  {
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1310  	int ret;
-ae4a3160d19cd16 Menglong Dong 2025-11-18  1311  	bool is_call;
-73721d8676771c6 Chenghao Duan 2025-12-31  1312  	unsigned long size = 0;
-73721d8676771c6 Chenghao Duan 2025-12-31  1313  	unsigned long offset = 0;
-73721d8676771c6 Chenghao Duan 2025-12-31  1314  	void *image = NULL;
-73721d8676771c6 Chenghao Duan 2025-12-31  1315  	char namebuf[KSYM_NAME_LEN];
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1316  	u32 old_insns[LOONGARCH_LONG_JUMP_NINSNS] = {[0 ... 4] = INSN_NOP};
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1317  	u32 new_insns[LOONGARCH_LONG_JUMP_NINSNS] = {[0 ... 4] = INSN_NOP};
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1318  
-3d770bd11b94306 Hengqi Chen   2025-10-02  1319  	/* Only poking bpf text is supported. Since kernel function entry
-3d770bd11b94306 Hengqi Chen   2025-10-02  1320  	 * is set up by ftrace, we rely on ftrace to poke kernel functions.
-3d770bd11b94306 Hengqi Chen   2025-10-02  1321  	 */
-73721d8676771c6 Chenghao Duan 2025-12-31 @1322  	if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1323  		return -ENOTSUPP;
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1324  
-73721d8676771c6 Chenghao Duan 2025-12-31  1325  	image = ip - offset;
-73721d8676771c6 Chenghao Duan 2025-12-31  1326  
-73721d8676771c6 Chenghao Duan 2025-12-31  1327  	/* zero offset means we're poking bpf prog entry */
-73721d8676771c6 Chenghao Duan 2025-12-31  1328  	if (offset == 0) {
-73721d8676771c6 Chenghao Duan 2025-12-31  1329  		/* skip to the nop instruction in bpf prog entry:
-73721d8676771c6 Chenghao Duan 2025-12-31  1330  		 * move t0, ra
-73721d8676771c6 Chenghao Duan 2025-12-31  1331  		 * nop
-73721d8676771c6 Chenghao Duan 2025-12-31  1332  		 */
-73721d8676771c6 Chenghao Duan 2025-12-31  1333  		ip = image + LOONGARCH_INSN_SIZE;
-73721d8676771c6 Chenghao Duan 2025-12-31  1334  	}
-73721d8676771c6 Chenghao Duan 2025-12-31  1335  
-ae4a3160d19cd16 Menglong Dong 2025-11-18  1336  	is_call = old_t == BPF_MOD_CALL;
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1337  	ret = emit_jump_or_nops(old_addr, ip, old_insns, is_call);
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1338  	if (ret)
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1339  		return ret;
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1340  
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1341  	if (memcmp(ip, old_insns, LOONGARCH_LONG_JUMP_NBYTES))
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1342  		return -EFAULT;
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1343  
-ae4a3160d19cd16 Menglong Dong 2025-11-18  1344  	is_call = new_t == BPF_MOD_CALL;
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1345  	ret = emit_jump_or_nops(new_addr, ip, new_insns, is_call);
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1346  	if (ret)
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1347  		return ret;
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1348  
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1349  	mutex_lock(&text_mutex);
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1350  	if (memcmp(ip, new_insns, LOONGARCH_LONG_JUMP_NBYTES))
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1351  		ret = larch_insn_text_copy(ip, new_insns, LOONGARCH_LONG_JUMP_NBYTES);
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1352  	mutex_unlock(&text_mutex);
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1353  
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1354  	return ret;
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1355  }
-9fbd18cf4c69f51 Chenghao Duan 2025-08-05  1356  
+I feel the numa balancing will not help as well as or it might make it
+worse as the workloads may have allocated some memory on the other node
+which numa balancing might try to move to the node which is already
+under pressure.
 
-:::::: The code at line 1322 was first introduced by commit
-:::::: 73721d8676771c6c7b06d4e636cc053fc76afefd LoongArch: BPF: Enhance the bpf_arch_text_poke() function
+Let me say what I think is the issue. You have the situation where node
+0 is overcommitted and is mostly filled with unreclaimable memory. The
+workloads running on node 0 have their workingset continuously getting
+reclaimed due to node 0 being OOM.
 
-:::::: TO: Chenghao Duan <duanchenghao@kylinos.cn>
-:::::: CC: Huacai Chen <chenhuacai@loongson.cn>
+I think the simplest solution for you is to enable swap to have more
+reclaimable memory on the system. Hopefully you will have workingset of
+the workloads fully in memory on each node.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+You can try to change application/workload to be more numa aware and
+balance their anon memory on the given nodes but I think that would much
+more involved and error prone.
+
+Shakeel
 
