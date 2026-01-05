@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB3F9C2A07B
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 09:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58554C2A07E
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 09:56:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 263656B010F; Mon,  5 Jan 2026 04:56:24 -0500 (EST)
+	id 5574B6B0113; Mon,  5 Jan 2026 04:56:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F99A6B0113; Mon,  5 Jan 2026 04:56:24 -0500 (EST)
+	id 4B24E6B0116; Mon,  5 Jan 2026 04:56:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FBEE6B0115; Mon,  5 Jan 2026 04:56:24 -0500 (EST)
+	id 3B5336B0117; Mon,  5 Jan 2026 04:56:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F09D36B010F
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 04:56:23 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 81CE31A0EE5
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 09:56:23 +0000 (UTC)
-X-FDA: 84297455046.19.FF89140
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9E871160005
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 09:56:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=3rQ06Dm+;
-	spf=pass (imf08.hostedemail.com: domain of davidgow@google.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=davidgow@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 261116B0113
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 04:56:25 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFC72C558E
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 09:56:24 +0000 (UTC)
+X-FDA: 84297455088.13.A2AC311
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0B5C8A0003
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 09:56:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3A9Yc+Cr;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of davidgow@google.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=davidgow@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767606983; a=rsa-sha256;
+	cv=none;
+	b=gEDcumAWMjSsXzf8s5d0bF6VL2uQ3JuCc+v1ctbbYragRonMN0nENEx9ah23BylH+XGYFh
+	002+FOLSB8qtLvFX04ozCXHLRhchc3/swzyHVKiJoLyitiu6jgRmystvOk8Mjd7cAf4tCV
+	6JgeGYAvvPfwAA7Mk5WxCPrDRmCQWXs=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3A9Yc+Cr;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of davidgow@google.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=davidgow@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767606981;
+	s=arc-20220608; t=1767606983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=978ZWWi6sai890Fl++7NaEkwfYAeYbiznAx+5B69J/8=;
-	b=K8aHh27tCzbaTaZ8JsJmQ2zBoXGeQ4hKfh/dCddK/XMFLncDsMQojTltYZXkpzOXSqQJYb
-	d9cJ9Yk1TiKJKAKQcGlZB7uk9KyPpfTNtdFgnKFT0mx5VhThgJI+PQn3HnL5T4HUWfW82P
-	fW8MKdVGUurNxjBdL8oCgB8e7mcJIF8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=3rQ06Dm+;
-	spf=pass (imf08.hostedemail.com: domain of davidgow@google.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=davidgow@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767606981; a=rsa-sha256;
-	cv=none;
-	b=HV9yjMVimGzyRO6vXrgOr/q/PAqAd9A+q0LP/J+AA6VSXHs3qxkwLx+D8Tmwtbm15xA6rI
-	BUzok0+2M0EngdlsCrqXrp6I7ZptJDQp5Ymo+SZY5qGwAxbMCRpCMR16pvmcBjcofg0CAb
-	/gUCM0IVX7yh2Mtfd/giJFH7tTjl4SY=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42fb2314eb0so11033020f8f.2
-        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 01:56:21 -0800 (PST)
+	bh=9sAFWDOjvNjOHWWvYbDu/Q41H06R6rApJd/rfCzHjV0=;
+	b=k3Nv69vFp2NzKKmxO6GupSRzjW/GHN12EWeP/wk1tHIxy7Y8MlixITDz27Jbnoyn/KGDrX
+	wS/dIb8dANeG27AYJuHUYfzVGUfMvKk1FD8r+bB4QHrmq6E0ujOO1obeBS56NOR9jb96uT
+	p5X+fdLbFLFynSFgbH4Xt0cc1ZIqonI=
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-432755545fcso4391811f8f.1
+        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 01:56:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767606980; x=1768211780; darn=kvack.org;
+        d=google.com; s=20230601; t=1767606982; x=1768211782; darn=kvack.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=978ZWWi6sai890Fl++7NaEkwfYAeYbiznAx+5B69J/8=;
-        b=3rQ06Dm+JSiwksZlrA9XWT6tIzjA+RWwXPUQArjqYXwhmgPcMOm1jGDEcZdygnPURm
-         8dvLqPbFiKiAlffT33SJWLpXDUmCpfrr/FM3DrRq9XpqhEVTrLILV5s/Tg4Q1pDcpkSt
-         uRsI/0qAL27Ahmkru9nWJNtkHMks08O98bv4qPtNqaDi9jrWjMe+Fll4GQTGf+QBKMEX
-         vVMm9IrBuMwmE/q71oGVVoJfDY86Ww+7Ok0q4TmfBFq/Ki3L0smBXFAFkH/s+CdMf+d0
-         t+hH4vTxbOz+9QnHiVXtanmlEFzRjjugBrPpbXDNrtg1uX/VXk/L5Wv54raE6dlqadrt
-         hg/A==
+        bh=9sAFWDOjvNjOHWWvYbDu/Q41H06R6rApJd/rfCzHjV0=;
+        b=3A9Yc+Cr5QdABQurVs9TIMyId5cphAWVzHwyLWXj7LCBkDYkoxRZSy+BxtbtR4Q4lP
+         EURMWjykDbae23McseuukM8tR/lqtqRUA5c2GJ7lSALqqv6mCSn5F7W0fDa96/E7JXDZ
+         H4Th5Efyw6dP6A/sz/NYwVXRHDo11bN/v14n9UVoNy26vWE0CzNgwayBPH39IJotHr0/
+         tgnRWHlmJg3O8+aBjJgW7HsZf+7q2Ps4l4/MsODE/EUw5Y/dFULPz0zJTMfyRp/StAaA
+         OrnpWOm8u153vnJQEp0kCSVr/Nd5qk5mixE7fTIEP2nhqRufjJZ8wEFqw4FfsBMolPDL
+         2a/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767606980; x=1768211780;
+        d=1e100.net; s=20230601; t=1767606982; x=1768211782;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=978ZWWi6sai890Fl++7NaEkwfYAeYbiznAx+5B69J/8=;
-        b=aSsxQ36u5OfEO8fvFJOJ8UKtbr9kEeisV6C0MxluK0mcpSsW+R6ukCtxYRft1iuZi6
-         Fk98DAjlBnLy0+wBWi+ov2RqwoypgBYUhhKT4mIDB6puYiNlHk6OZJULi9FZBXVv9JHf
-         hrqEchNIGQ/1rCAdAOxbOaR+Hb0JLB80RI/6aIUCbPH+2+4Oty+vIhZcgVhWkCPFaZW6
-         m+NwP7wdezeMXbCtMuNFYzv2L2t1FDROQRw1o2SRMhL3I8pvn4FdMz+SjwygDkX8e9tR
-         OK3b10LwOjMS6UJ0Ehoiv39SH5oDb7xM5Gj29EkduJe/J8l6uopYH1mRnzqUoUUAg+zl
-         K1vA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGBRENXhNN3fpDOQlQCZ0X7Yyh3ZiY8oQk/qEb/kSbpkTd9Xrkawti0P4FUWI1MmG/coyai15B7A==@kvack.org
-X-Gm-Message-State: AOJu0YwAAVpg/pWDlOWq8Ev2KQ0yQ0qTW5ufACoGAvvvN7wXJNO96lhT
-	suSisWRB7njQB32NoFwyXi6AnhAm4aYKHU4rnUircAdJvE/0rjfKPd25ZzAUV/ZUFI6hWqBXpbb
-	IBKBdMeQXHUwYaNbqTePV5tNGoq7/C2/ArLa9wo9/
-X-Gm-Gg: AY/fxX7VUrXospRHVW5czr6D6+zGI2dd8Dn4yOJwrKnxpwo7qZ4dStKAm5d5c2gqldP
-	bR7OhYb4FizZXbT+rXpOf846ZqVV73D05Pr75mLXqh6ogRPACCM7DmSAg6SKeIw7Lidg9vw1zDa
-	gSwShGarVTuUWZFKIj97taxp/u3zE/fIOJ7k6rYNjQiMt9mHqZNCo0F5cjWedHmZIvWOghEuCv9
-	JL68Gw0XLGzSS6U0qwlflJhA/0kLusmLMz+nxef5eBbrs6SRr2SClQ06Pw3me4MVbqC1Q==
-X-Google-Smtp-Source: AGHT+IFhHGqV+111+Jsl/C7heOpaY1/FMuHju4NwSGTautSM3LQjZq6+CfqKPbYyrgfW0H5gLSsVGXIU8o316QNo+WU=
-X-Received: by 2002:a05:6000:1acc:b0:431:a33:d864 with SMTP id
- ffacd0b85a97d-4324e4cbe79mr60695677f8f.18.1767606979125; Mon, 05 Jan 2026
- 01:56:19 -0800 (PST)
+        bh=9sAFWDOjvNjOHWWvYbDu/Q41H06R6rApJd/rfCzHjV0=;
+        b=swPrYIpkhLWkwPN/TroMa5X6611LkHOse+Rl9f+oELBridm0KWZ4XvCaHDWfifbKaH
+         m1Qn6ZkPTUpR1qjatV+xODMwVKhPrjuWSmt5DD60XbnQaEdJInnYL3uta0B3zIEyAIrn
+         ZHSrl8k9k7OeAxKKtuG4u91gOQhHfiIDTpOQpvm6X1KJoTlP1BpOKvRmtfnk31m9D0bC
+         XbtYVVXE2wPsu1D2qNo177nVgpV4C6r58HdXeaAhDJJ0VLajdBjev3Yhb+tCRJw7tjZy
+         CcUH9mxaf6xG59iOPBLuVCTXSFVakFBImFts8baEdeZv0jv4afrrDKElNvjnD6t4gBcW
+         m9dg==
+X-Forwarded-Encrypted: i=1; AJvYcCUI6zeXs84BVjAhdc/A1XswrmUHHpXtqotgvUOns1NUS9FTq4DeUgGIVAO0gs5Bc2DOkfS1UnVDuQ==@kvack.org
+X-Gm-Message-State: AOJu0YyhWXmPSD2Ml8y9yjavxLUhJ8cw6lcrFKVawhPODQX/KPQGm2JR
+	GpCTeo2B0rlaSCQbHBRsTGGC4XuJtAkVdsHmBC9y+fegyI6E7cheias2u6C/ACO6M0qjVtQ8WEn
+	/da5UG/5nA+6EivL3Ndju4FouhENcs9HAf+RwkIbe
+X-Gm-Gg: AY/fxX5VSpvDi0eeUIRGIsesNc1B1gU6YfC6fSIDyf23H9mTHByuxMDMDnVkatfAdBG
+	Y1KjWpc9uKmea0M+HHiLhZBwjXipr5HgL6963qMixKgGcvrt4eUfYHN9gG4wQS2H9IQ/p2293KE
+	dBlVb22iFMAEVOxEctH087lhRb0ELglLFiFYcRsjjJGZF12fSBAe3tzr+T2r+9hIC+YCZqq+ypQ
+	QRfLQ/RvgbOsBOLicVdAxRsVMCntBE+04XuNr2/iqGDmTjFj4nNy0r1xgUSp6pAJ7iNqg==
+X-Google-Smtp-Source: AGHT+IETP1/O0u6R8P0hJGnBjXEjiplyCGQS9hjuMTh/gbkgMQlB7HrQ/PUiVu/ttzpwaj5I20HoxJBvpIG4+MOunxc=
+X-Received: by 2002:a05:6000:144a:b0:432:8f36:d69 with SMTP id
+ ffacd0b85a97d-4328f360df7mr30751973f8f.33.1767606981272; Mon, 05 Jan 2026
+ 01:56:21 -0800 (PST)
 MIME-Version: 1.0
-References: <20251223-b4-kunit-user-alloc-v1-0-fb910ae0e50c@google.com> <20251223-b4-kunit-user-alloc-v1-1-fb910ae0e50c@google.com>
-In-Reply-To: <20251223-b4-kunit-user-alloc-v1-1-fb910ae0e50c@google.com>
+References: <20251223-b4-kunit-user-alloc-v1-0-fb910ae0e50c@google.com> <20251223-b4-kunit-user-alloc-v1-2-fb910ae0e50c@google.com>
+In-Reply-To: <20251223-b4-kunit-user-alloc-v1-2-fb910ae0e50c@google.com>
 From: David Gow <davidgow@google.com>
-Date: Mon, 5 Jan 2026 17:56:05 +0800
-X-Gm-Features: AQt7F2rWRtCZ2foFqib5wHn__dRxlvbLK48dSdGfX_Bapcf6uaBoiId46FXURj4
-Message-ID: <CABVgOSn8UjWjEe-FNfOBSpZiBL0797VvJQZOOGp5QB6tv52COQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] kunit: test: Delete pointless resource API usage
+Date: Mon, 5 Jan 2026 17:56:08 +0800
+X-Gm-Features: AQt7F2p6A3aOQH7r3FcVWFP8NFSKL2NfwhVBOpWA4or5Xgs8FwgJSgAY7np9lAM
+Message-ID: <CABVgOSmMXsbhJsBBy9p=WK1RdB+gcgyuma_FTSfQOGWJ0eqU8A@mail.gmail.com>
+Subject: Re: [PATCH 2/3] kthread: Add kthread_take_mm()
 To: Brendan Jackman <jackmanb@google.com>
 Cc: Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>, 
 	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
@@ -106,15 +106,15 @@ Cc: Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>,
 	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000002b4cf70647a1123e"
-X-Rspamd-Server: rspam02
-X-Stat-Signature: mbdprxajscj4ncmt98ogomzmarm7uxcf
+	boundary="00000000000043fa600647a112f3"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0B5C8A0003
+X-Stat-Signature: e9ngxym9s6hme9i5n4qrkw31rt6jwjar
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9E871160005
-X-HE-Tag: 1767606981-323115
-X-HE-Meta: U2FsdGVkX1+4c73cgR0UEVTfRQcZ+1YgHqkXR+ndh9UdLy2qfPDh983O+YP9xUc38yzXIv2dYovIGsnOxP43YqTRpw6XHJTViktdnvbsGusnNN3g2hMAvCSsR2WM66vKtVHkw77Euu35n2yax133446iAMNAzhwYhFwnHPbbmbv0g+ftBnQt9z+kQVwXxYTVSbeHygc5CrCFaPJb/F5HhG4phkNSkxch6vm3cnKSL1JURm4Y4nVjujfDWOKzct8ji72X1oD3zWoKKas1gnjmRm2oPvDQyqTjZYhNy6E/d8OqhwY0qAqaewhVNFdR9k2refYIP6/x+KSl+ofC16MeTPK/DI/ePIDqyd9YKxuf0ow1HQzPeP6rHQhFv3kNemYAeEPybxs6qkqUgMduRMy8eGauV52c7wd3y5rqVytyQTXHOailSPO8WjlruLVYTQJnNAyzCJV2wpqYSwHU3rGHgBJHrxk/tyd/gz06kOigVGYSEjhzsjYDEZpeGAf+2T+0tEO+1BRn1Gik6x/RlHy1Oryy4XdToHe/vaWyPkPR70uMF0TxSyaVvL6F/6Ls00ES5ixoAPM+2WURPmB7pMyd8mjQMMMA55/Lu/kTMW/C0ZV3WYgmf2F75Aiyfmy2CqMg1u4J5Cl7HBELQ9P5Kx6GO9jifU4+jfMgADspLus2tY73v142KVO2PH3KyPS6b9n3rOCUf0eKdrTp3DxdzqneosLpsu5E8w0rNXt2ktujNZPzEqlHnJuP0YkL5s/w7B+mS/0GFEKTbwPY+841SzI4NSu6iXdaYFhrwx8vykXesF7Wr38xT1mIXakCgNElabhnv/IY0Mpk4qpgAErUqIJCI9rFdcuPL65awFF08xiFT7JNP5Li5MIal5CKTQxn7GRqNxFKbUU/OFe1rwVJ83JvEZtRWaZCGQTUpRm8fkMIv2IcVeptk+rNlsmQV8sAkci3QuuyGOQEab8GEerqu0Y
- 8PLsqgiZ
- ocFA3pVf+jtn+G3kaZV1Rp4+pY1PnhPQ8gIc5H/4udH4eL5ovqihoUN1izTdg4/UnSIIDLs2XsvpCbuBmuAjlDHLDT5Q1GxAJWVHqe2OPcYw5GxijIrhi/8anHTP3jIPlFYfofdetVKqxtMqSTaVy5U+ov3eOyw5owH3B8h2JCa9vmD+vfXrLPPU2nAUiRigrWqWH6OyfePUN4IKDiGeoAzX1Lb7m5EUUJkmgI0x8huIUhONeOtaaE3cTcs1KGRUfszL+lV5ydbWnBF3rgZgRItIDCgih9yYh0Zqb38aFnLVzKCovjsfHfMYlfU51D2ZPqnpvp+/hLyS0u/mjF8jHdTb2kFeVw/FYo6Hd
+X-HE-Tag: 1767606982-992883
+X-HE-Meta: U2FsdGVkX19jBL594A1HyVN3o3WeHCQ22FXE2WqPbZzxkDz/PFFoC713dqqfWfGQwOpCwftrK8OOOeENE5CLOEF2yu6kesiZC+N5LE3DjbPXAuLSHa48RXDj1MAFbqzxs4Vfj9LUtqsuLFJmyPHHrGVgqWKZhpQlzy7B/KmEmHUq0PIFBWE3oBPdns8KD5zH8YqGQDbPKC0/zy7vNH4epth809RyK247XGKC9YWINVnooBV031jeO61XmR9IqA0CTfev0jp+lWHUz90JX1iAQUc93yTj1MFDx8ird27HfcJ5FMw/cYF3PMKSZzcBL0avmHRz2EvNXzmuv5eYsM3TcK2P3jqzhjmvhbxt/FXXOOsI88t9N+fXIM23RTcMB2EUEhnI6qt2N40+0h8LCjmjkCNJfeWXRnQOpdzjzzRFwv4aVJjxx//unuMVfJ3/d+DJtgo/3oOpq1qHhvqxdEIRqdGDlhvZhnAOOteHY+L5CXrDUfGNysjE/cFG1W968TlsKneL4CCqiKQ7TbAxSdMctok63bPv7A53RrOa3Z3BR77fzOfjbkBXqucAzj3ZI/Lb010v3IqEueq7BmbiLFGOdDkNSb/6bAJSg7XsH2G4ZLPiUjEXVAMDGz3O5MBquJpCcy5xVmpiBfLlXEHmAI9A4suhVtSAIya/dRLV93SAx1qtYyNx9disMIVsurJoeXpwDoE/f/2JcRCBDNwHbEFi+/yyPxkc7Xok3RSImnXOPB9eOoQHNy+iwIfiMeRiwsSP5KaVEStcbSrIP8lXImwAzDbpIWl83SsZxW9hKIm5TSUjc3EqyG9mJHIofSMTrrXp0l06n5BR/52eH3XclZr/yusjTouesIte+hNPgEszpTdagt2sl4L4Tces68B83A4PAI5ERSlsxkjZdtXx36GeluVKkiNsWfydnuzBTX397HHJhU31UsSGlkQ2ml0W0sP9MTbX3HViKV4JmmPLl7c
+ +26mDAWt
+ v1SwHYuL1zoyGEBwlWf2hIcVopm6Vb0nPnQNNebGGiCT32yjXLKab6lXU7F8VUO8ZjgVix5h+FXaLzD1fXPCY4aIgFYL6MWDPkjUkTct+6xFFxbkhTbMZepcJ6Yj6zumx+EC+HDfBc0S4wmmESr4OV1Lgj8DkN8b/nsfhGyi9FwS+hEon8l9/uL48NiEQve0+9MFJU7ttWBKPf/4I/xEEf7D+1niOH/TfugEROZ3penkH8wc18DbVw0JCJgDudfZCVgXPVevv79l3LPkvChS9P0yX9lDeBoaNnx64RbDg1rIEu2e4tf9f4IY9o9KClIzL3Ytav7w/HyV8Oy4MI/zFOlEu9fL6M7fbQR8X6GmU26ov6yYfplUj7xMCCLnb0MfiTzcAqIjbquFvBV9Bt+AcOhlYAwalyTtQn/P790yepnMwAY3I2Xt/Ta3v4w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,138 +123,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000002b4cf70647a1123e
+--00000000000043fa600647a112f3
 Content-Type: text/plain; charset="UTF-8"
 
 On Wed, 24 Dec 2025 at 00:18, Brendan Jackman <jackmanb@google.com> wrote:
 >
-> This code uses the low-level resource API to track parameters of the
-> vm_mmap call, but it doesn't do anything with them, because the mm
-> teardown code takes care of tearing down the mmaps. Delete it.
+> lib/kunit/user_alloc.c currently uses kthread_use_mm() without a
+> corresponding kthread_unuse_mm(). This is a bug, but fixing it in KUnit
+> makes writing tests that use mms more difficult, because of KUnit's
+> resource/try-catch model.
+>
+> Therefore, introduce a new operation that does what kunit_attach_mm()
+> wants, namely an unbalanced call with cleanup deferred to
+> kthread_exit().
+>
+> This is actually just the same as kthread_use_mm() but without taking a
+> reference on the mm_struct.
+>
+> While adding this, clarify the reference returned by mm_alloc(), since
+> that is what kthread_take_mm() is gonna be paired with, in practice.
 >
 > Signed-off-by: Brendan Jackman <jackmanb@google.com>
 > ---
 
-This makes sense. Maybe there's a case where tracking mmaps as
-resources could be useful in the future, but I can't think of any off
-the top of my head, so this is just wasteful for now.
+This makes some sense to me from the KUnit side, though it'd probably
+be nicer to have a way of actually triggering kunit_unuse_mm() at the
+right spot. I'm not sure if we'll want to have tests spawn additional
+threads sharing the same mm in the future, too, which this shouldn't
+make impossible, particularly if we have a requirement that those
+threads don't outlast the original test thread.
 
-Reviewed-by: David Gow <davidgow@google.com>
+Otherwise, Is there a reason we can't mmdrop() from another kthread
+instead of trying to kthread_unuse_mm()? I wouldn't be surprised (it
+doesn't _seem_ right), but seems to work here.
+
+Regardless, I've tested this on a bunch of different KUnit configs
+(UML, x86, arm, powerpc, m68k, etc) and nothing has gone wrong. But
+I'm definitely not an mm expert, so someone who is probably should
+look over this as well.
+
+Reviewed-by: David Gow <davidgow@google.com> # For KUnit
 
 Cheers,
 -- David
 
 
 
->  lib/kunit/user_alloc.c | 76 ++++----------------------------------------------
->  1 file changed, 6 insertions(+), 70 deletions(-)
+>  include/linux/kthread.h |  1 +
+>  kernel/fork.c           |  3 ++-
+>  kernel/kthread.c        | 36 +++++++++++++++++++++++++++---------
+>  3 files changed, 30 insertions(+), 10 deletions(-)
 >
-> diff --git a/lib/kunit/user_alloc.c b/lib/kunit/user_alloc.c
-> index b8cac765e6204..564f5566641d5 100644
-> --- a/lib/kunit/user_alloc.c
-> +++ b/lib/kunit/user_alloc.c
-> @@ -7,21 +7,6 @@
->  #include <linux/kthread.h>
->  #include <linux/mm.h>
+> diff --git a/include/linux/kthread.h b/include/linux/kthread.h
+> index 8d27403888ce9..2e6244d8ff1a3 100644
+> --- a/include/linux/kthread.h
+> +++ b/include/linux/kthread.h
+> @@ -259,6 +259,7 @@ bool kthread_cancel_delayed_work_sync(struct kthread_delayed_work *work);
 >
-> -struct kunit_vm_mmap_resource {
-> -       unsigned long addr;
-> -       size_t size;
-> -};
-> -
-> -/* vm_mmap() arguments */
-> -struct kunit_vm_mmap_params {
-> -       struct file *file;
-> -       unsigned long addr;
-> -       unsigned long len;
-> -       unsigned long prot;
-> -       unsigned long flag;
-> -       unsigned long offset;
-> -};
-> -
->  int kunit_attach_mm(void)
->  {
->         struct mm_struct *mm;
-> @@ -50,67 +35,18 @@ int kunit_attach_mm(void)
+>  void kthread_destroy_worker(struct kthread_worker *worker);
+>
+> +void kthread_take_mm(struct mm_struct *mm);
+>  void kthread_use_mm(struct mm_struct *mm);
+>  void kthread_unuse_mm(struct mm_struct *mm);
+>
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index b1f3915d5f8ec..761e6232ea75a 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -1147,7 +1147,8 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
 >  }
->  EXPORT_SYMBOL_GPL(kunit_attach_mm);
 >
-> -static int kunit_vm_mmap_init(struct kunit_resource *res, void *context)
-> -{
-> -       struct kunit_vm_mmap_params *p = context;
-> -       struct kunit_vm_mmap_resource vres;
-> -       int ret;
-> -
-> -       ret = kunit_attach_mm();
-> -       if (ret)
-> -               return ret;
-> -
-> -       vres.size = p->len;
-> -       vres.addr = vm_mmap(p->file, p->addr, p->len, p->prot, p->flag, p->offset);
-> -       if (!vres.addr)
-> -               return -ENOMEM;
-> -       res->data = kmemdup(&vres, sizeof(vres), GFP_KERNEL);
-> -       if (!res->data) {
-> -               vm_munmap(vres.addr, vres.size);
-> -               return -ENOMEM;
-> -       }
-> -
-> -       return 0;
-> -}
-> -
-> -static void kunit_vm_mmap_free(struct kunit_resource *res)
-> -{
-> -       struct kunit_vm_mmap_resource *vres = res->data;
-> -
+>  /*
+> - * Allocate and initialize an mm_struct.
+> + * Allocate and initialize an mm_struct. The caller gets a single reference to
+> + * the mm's address space, which should be released with a call to mmput().
+>   */
+>  struct mm_struct *mm_alloc(void)
+>  {
+> diff --git a/kernel/kthread.c b/kernel/kthread.c
+> index 99a3808d086f0..c660c04a1b627 100644
+> --- a/kernel/kthread.c
+> +++ b/kernel/kthread.c
+> @@ -1589,10 +1589,16 @@ void kthread_destroy_worker(struct kthread_worker *worker)
+>  EXPORT_SYMBOL(kthread_destroy_worker);
+>
+>  /**
+> - * kthread_use_mm - make the calling kthread operate on an address space
+> + * kthread_take_mm - make the calling kthread own an address space.
+> + *
+> + * Unlike kthread_use_mm(), this doesn't have a cleanup, instead that happens
+> + * automatically on kthread exit. Correspondingly, it does not take any
+> + * references, by calling this function you donate your reference to the address
+> + * space (from mmget()/mm_users).
+> + *
+>   * @mm: address space to operate on
+>   */
+> -void kthread_use_mm(struct mm_struct *mm)
+> +void kthread_take_mm(struct mm_struct *mm)
+>  {
+>         struct mm_struct *active_mm;
+>         struct task_struct *tsk = current;
+> @@ -1600,13 +1606,6 @@ void kthread_use_mm(struct mm_struct *mm)
+>         WARN_ON_ONCE(!(tsk->flags & PF_KTHREAD));
+>         WARN_ON_ONCE(tsk->mm);
+>
 > -       /*
-> -        * Since this is executed from the test monitoring process,
-> -        * the test's mm has already been torn down. We don't need
-> -        * to run vm_munmap(vres->addr, vres->size), only clean up
-> -        * the vres.
+> -        * It is possible for mm to be the same as tsk->active_mm, but
+> -        * we must still mmgrab(mm) and mmdrop_lazy_tlb(active_mm),
+> -        * because these references are not equivalent.
 > -        */
+> -       mmgrab(mm);
 > -
-> -       kfree(vres);
-> -       res->data = NULL;
-> -}
-> -
->  unsigned long kunit_vm_mmap(struct kunit *test, struct file *file,
->                             unsigned long addr, unsigned long len,
->                             unsigned long prot, unsigned long flag,
->                             unsigned long offset)
->  {
-> -       struct kunit_vm_mmap_params params = {
-> -               .file = file,
-> -               .addr = addr,
-> -               .len = len,
-> -               .prot = prot,
-> -               .flag = flag,
-> -               .offset = offset,
-> -       };
-> -       struct kunit_vm_mmap_resource *vres;
-> +       int err;
->
-> -       vres = kunit_alloc_resource(test,
-> -                                   kunit_vm_mmap_init,
-> -                                   kunit_vm_mmap_free,
-> -                                   GFP_KERNEL,
-> -                                   &params);
-> -       if (vres)
-> -               return vres->addr;
-> -       return 0;
-> +       err = kunit_attach_mm();
-> +       if (err)
-> +               return err;
-> +
-> +       return vm_mmap(file, addr, len, prot, flag, offset);
+>         task_lock(tsk);
+>         /* Hold off tlb flush IPIs while switching mm's */
+>         local_irq_disable();
+> @@ -1632,6 +1631,25 @@ void kthread_use_mm(struct mm_struct *mm)
+>          */
+>         mmdrop_lazy_tlb(active_mm);
 >  }
->  EXPORT_SYMBOL_GPL(kunit_vm_mmap);
+> +EXPORT_SYMBOL_GPL(kthread_take_mm);
+> +
+> +/**
+> + * kthread_use_mm - make the calling kthread operate on an address space.
+> + *
+> + * This must be paired with a call to kthread_unuse_mm().
+> + *
+> + * @mm: address space to operate on
+> + */
+> +void kthread_use_mm(struct mm_struct *mm)
+> +{
+> +       /*
+> +        * It is possible for mm to be the same as tsk->active_mm, but we must
+> +        * still mmgrab(mm) and mmdrop_lazy_tlb(active_mm) (in
+> +        * kthread_take_mm()), because these references are not equivalent.
+> +        */
+> +       mmgrab(mm);
+> +       kthread_take_mm(mm);
+> +}
+>  EXPORT_SYMBOL_GPL(kthread_use_mm);
 >
+>  /**
 >
 > --
 > 2.51.2
 >
 
---0000000000002b4cf70647a1123e
+--00000000000043fa600647a112f3
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -344,14 +358,14 @@ KAzwyf3z7XUrYp38pXybmDnsEcRNBIOEqBXoiBxZXaKQqaY921nWAroMM/6I6CVpTnu6JEeQkoi4
 IgGIEaTFPcgAjvpDQ8waLJL84EP6rbLW6dop+97BXbeO9L/fFf40kBhve6IggpJSeU9RdCQ5czGC
 Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
 BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAYQLf/BIzLow9kWqD8My
-PzANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgU21tlyrnKcwwD0HKVywy0ClrUDAI
-j+EYTMvKqDXyr+cwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjYw
-MTA1MDk1NjIwWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+PzANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQggiScsvRriAlTYeRBZZrxcT/n5dta
+x94uXMjvUSJtn8kwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjYw
+MTA1MDk1NjIyWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
 YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
-AQEBBQAEggEAeMLzwQb11o4HDjkOsb6HGw4/G9MyJhF307GZPsc4LZdDAC9ooU7tiWoalH18Ns1h
-aHTztw9YWNPV6p05eCFszD3HSVsArAPc9hjOwYDrZxYP9WLm2+tDhznPZ5fU8jD9MOArRQV5ZLw8
-iM58Rsh8XvugkQfnQ2OTKenE2olTmjPq6ZF8DmeuKcPbMkL73wKt4Eldu5ZEJS6AVDCqmnckMqcg
-AnLrFFHnEk8cAaDu1SnK5UUwOkhzFkUzR0QAZzQjLnXKRUPbbZPKRy0AVUBnO7MOpUI1oDEqjgox
-W59oH9Fi8nrgcXB0NU1R+j8LSNJguiqTek5F40H1BGZH8759LQ==
---0000000000002b4cf70647a1123e--
+AQEBBQAEggEAYjSa6/owBcNpOQa+qYBG3RkRAs4qIIdK8QlaIAcaRZJ5YRFpPVOWUNtbhaL/nhAE
+EYJ/MuMwolf5I51gj2sUA7inlHe7oVLeHXmi9czUohAbpWiR18XEOKj+PtND3DO6YzzJpTFRHrgS
+4E9QnE/pd4qVgjcBr1i7SfKZiuFH4FBZ9eScf+0E5tOV6lIHR9fLD5MKUQGS47MK414SmgDsRg43
+bigKQKNwfBf9IUnBMAY/v6CQ/xGuUFUzMvcVQnepUb0JeIkS0ceQJe4HGu+/nrIqjVBXWx99vtrG
+a8sqw9Kl1CCuK0vCNWjs2v27D7eaLVKhmdujvIDA4V/uUtPynw==
+--00000000000043fa600647a112f3--
 
