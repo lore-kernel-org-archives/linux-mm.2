@@ -4,140 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE205C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 15:47:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B74F7C79F9D
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 15:54:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 383796B0166; Mon,  5 Jan 2026 10:47:38 -0500 (EST)
+	id 26A2E6B016C; Mon,  5 Jan 2026 10:54:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3310A6B016C; Mon,  5 Jan 2026 10:47:38 -0500 (EST)
+	id 2172D6B016F; Mon,  5 Jan 2026 10:54:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 233A06B016E; Mon,  5 Jan 2026 10:47:38 -0500 (EST)
+	id 119FA6B0170; Mon,  5 Jan 2026 10:54:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 11D516B0166
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:47:38 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A9AB288B3B
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:47:37 +0000 (UTC)
-X-FDA: 84298340154.18.F71AAC1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D8CB0180002
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:47:35 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X24i1ElB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767628056; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 00DD26B016C
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:54:43 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC42288E97
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:54:43 +0000 (UTC)
+X-FDA: 84298358046.19.FDE7146
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C185140003
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 15:54:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=kk+1N5Ns;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767628481; a=rsa-sha256;
 	cv=none;
-	b=qUFqnqZf1uTMsgUxZl2DcOrrkxCL4osWDNq/E0hdgExZFV1ndnqEbjDnpnVEWOQEETo6vG
-	K0XRzSMTDFMI8FuC2FJHQrIKF4ZjwBAduBB5RP7HNUJFju7FO/3v6ReSJ9EKrXHrEkYw9y
-	9jqZWhZnWJLuLa3Dfmrix8LZDjbf61I=
+	b=BSTLkdO/6LrvM2shFM2dcYnzt4bJJgk1hcRgeeFVYUtRDTaVcWwWuCz4liBnF3bzN9nC5l
+	aUyK+GFVYig7N3twxK70ADLDwLn+jpxqhl60nq8oGmG9donJMXgbzT3MLTe/WFFZ0PLCeA
+	2uSxkcfNpt4KmcLU9BV2ZlMto/pzNcU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X24i1ElB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=kk+1N5Ns;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767628056;
+	s=arc-20220608; t=1767628481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P1rsslmBgiMQy+dSxfGDIjno39Zg+6YRvf7rbvq9vQY=;
-	b=DpUVrzoUwJLTRjIwQefdUgEp15LRmMMQ71zGgU0f0c3vNASYHxv51YFWvdbGP3y5ncQdtW
-	6TVfCphJqJRpQqpJ2FzhJdJyOfCsNdyxgXLyQ8Ww7MLau8FVUAJ8kh9rlNRa+aVwSMKKXw
-	kbQZ98gBGITBma1L5UXBeg/XuBiOlCA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E949941B6C;
-	Mon,  5 Jan 2026 15:47:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBB8C116D0;
-	Mon,  5 Jan 2026 15:47:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767628054;
-	bh=ANvQzADNiHhNv3LRm2+i7hk6k4iTvSy9hbzpwZaKbHE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=X24i1ElBjInjssWJeHWxUqm+aCXxFVonAeEyNnLzEcGm3rXNlWY+/cg/qaoKvkApv
-	 zitviB5j8U+oMxJYx/fzNwJcV259ktuMUCdQ3UkAfaUrRrj6GyNMwuUUvNFUD8fsTN
-	 +AUStNPwxoLt+Y8jUHySsGigHFPBz1WbTP3rIjkiFU2lwk/76pl6WGgO7xr+Ht9xse
-	 sxCco/fqGa2aXF1KNU7TBOmAyfZi3E/aBS+PeyIFG0MlorDyXIDfLKbX78wWh/W6/q
-	 g1rNd6MhnUavLjJVZHIKwN6kLqGS0MFI4vkUva7MGb1d2G5BE8XFH4zh79Za2zS5M5
-	 O7/2AoAYh7c4w==
-Message-ID: <b7425b3d-f614-4099-9f15-51c6c2cea68c@kernel.org>
-Date: Mon, 5 Jan 2026 16:47:30 +0100
+	bh=WqeiK1L0ygc2pzqeCiF6H1L5F3hBzQyLyjzKsWaL6zQ=;
+	b=5/HoF4QusEM646OYLFR94LQ/9NGTnkD6N/1vX3DpD5GPufijl1hfgtu2b/SCOi7i3bIKUP
+	n5S+i+3qP6WW8PhK4R8ezFaYSpIJhFIrJ/B15+Ym+GcJum2F7s5YC1Sdj4iu6Nf+gg+w4C
+	hJsEiJznTtPCZTpsVZtJRTvV7foIy8s=
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8b2d7c38352so195213485a.0
+        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 07:54:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1767628481; x=1768233281; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WqeiK1L0ygc2pzqeCiF6H1L5F3hBzQyLyjzKsWaL6zQ=;
+        b=kk+1N5NsC2RzEiw6MuzHXNvxFLKu0dtKjtXa65Df8d9tXgALQc5rvAbAoEMOXi4wmj
+         53IR4bXov3UpPLfG27O7+dxARWskANo0Lwjz920qW3JbM5G8eNiqCBtkPsTy4+frACwz
+         7RIV7I8KGv3AV7OFrBawcjbmAFfEkT2Kyt2cFCzjmjGX0CzruKbw/os2PQ4KC77BdoHU
+         rBKbtpg2+R/ArtpUox7VAyGvkp59U/HyeNlaVFnLRocceThcOqDqaIsPwSMIoogHYjq0
+         jg3c4OqlVFXbtJK39qYKy/aytERzkQzwERT6ziBZAXIryvElwFV+5HPsixmmnwhYnepc
+         nRUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767628481; x=1768233281;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WqeiK1L0ygc2pzqeCiF6H1L5F3hBzQyLyjzKsWaL6zQ=;
+        b=fMkler8WLWtMGd8uv9IfRf+YKmLUCVBMJ8M+JJLKv0/khs7NNQLeHPo1TmK/0+G7Bq
+         FRbLdeZWGAypSFedalGIPdagvFxIED0V9qM+EtsIqTgZK2deO1lE3hA7tAAA1yhtzl0u
+         HJg0k7Gt67m9vFAlVPlwVzmQSYOFt4bIdM2YfWkTx/xcsQEnL+T4ywQjK4Mq8VZ3wffQ
+         3OXswBQCxlDrmeJu/kTSAforcpGZZenZd/BsFi2PDPQb3aS8oP0ben2nNQvpybQUcudj
+         vyAYPMaSGYTfWskKuRZh+tsVE82YL0Ta9dTjYrMmfSfpGnYjhnUYiBUkt1ajum/qHdhY
+         vpHQ==
+X-Gm-Message-State: AOJu0Yzh8Ky80pIw/4VaPYgKY3hma/vg/y8m6+PEuBIazS1OI1otdPnS
+	6mMIJ4a5jlOuspNjJlS592YEGAvtZzJ3VsX0ztVe5nILk1hBMnT40azR6FBFtkRa2oY=
+X-Gm-Gg: AY/fxX4AlpESiUl4ojU+QSS8bBaW94jy1KHQtS1Sy2E0lGrDPbqoc7LTVsSaT7wFZFs
+	RkBqp+a0JLc58HDQkGuUZ8grjNLxhkgDNLWBsokdtAIQwGQjyzT9AwiOtteZb5Bt9Pjvf/l/PyQ
+	jTyVSENPQGMmBVXkWbWqXVeAneliXnc3umvd51Vi2zo5It7K2xzus9CE6mCdrjeeD4hCSG3eGCp
+	BdTadn67AyQNuTlNCv4y6FjZuMcFfFTpPrbVs/4R3r6ia1c0vyZkpitDc4Ape6evq+rBtXiAfmD
+	dARYJk3qajdd97FoCZrju+8klbNF2SfyWQnhFmk1/zhPzF4SPqBpDTYlLhRDOBZFuCgnFroEdiI
+	darvFxeRoHeUplAGWjJ94cn6DeDjhOfCDKjydOi8t+2KgsOqscLeyahrXYaqBM7F4TnRBOFkx2O
+	yvaSjbmiXHSGH45qiuOapm9BOUxKTesZ7s3/zcVMJS7SFjNhAbQ+G9xieAkMWwB4zoaqksJA==
+X-Google-Smtp-Source: AGHT+IFjadPoIlIw6SGjI59tZCwclSAcWIXhM7W6liSGa0PXOk8e+eEyYSDeMbDYFUQqM4JsPhO5iA==
+X-Received: by 2002:a05:620a:44ce:b0:89f:cc73:386 with SMTP id af79cd13be357-8c356acd43dmr1062406285a.13.1767628480647;
+        Mon, 05 Jan 2026 07:54:40 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37ea0f713sm5250085a.15.2026.01.05.07.54.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 07:54:40 -0800 (PST)
+Date: Mon, 5 Jan 2026 10:54:05 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Bing Jiao <bingjiao@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, longman@redhat.com, hannes@cmpxchg.org,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com,
+	david@kernel.org, zhengqi.arch@bytedance.com,
+	lorenzo.stoakes@oracle.com, axelrasmussen@google.com,
+	chenridong@huaweicloud.com, yuanchu@google.com, weixugc@google.com,
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH v5] mm/vmscan: fix demotion targets checks in
+ reclaim/demotion
+Message-ID: <aVvenfzgCU9uKJN8@gourry-fedora-PF4VCD3F>
+References: <20260104085439.4076810-1-bingjiao@google.com>
+ <20260105050203.328095-1-bingjiao@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] tools/testing/vma/vma_internal.h: provide
- fatal_signal_pending
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mikulas Patocka <mpatocka@redhat.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>, amd-gfx@lists.freedesktop.org,
- linux-mm@kvack.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>
-References: <45dd9b02-7867-6e5a-4a64-02c4d43c9b68@redhat.com>
- <18f7f4ff-67f8-4a39-b6c4-893bfbed4955@lucifer.local>
- <7014fb92-0d46-4c64-b3ae-0eb9d6b81878@kernel.org>
- <a09462c7-af2d-4282-89e3-2cc43777338f@lucifer.local>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <a09462c7-af2d-4282-89e3-2cc43777338f@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D8CB0180002
-X-Stat-Signature: tfga3c83pioixr79k1qdwr48khcibez3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260105050203.328095-1-bingjiao@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767628055-758191
-X-HE-Meta: U2FsdGVkX19OMNGE+PwK7Zb7JBOka7zK8PX/J7amoYRht3zsu5LBWC2vewg/NKqZgo8Qxt6ph77XiGvMmw51gMbX0M3lmG0+/FS8tDpXH7HFCCVaZSEDyXrZPpQKaTdcR1SJIr0Jz6wAfEkcjDOAyfGbyzzhzV8wnlJ8oJwW0j5t0kScnNgl3ppIQjcuz+2ldvu8Gyhpm+DUpmJh2xJbcDf4pdWSl+mHE9B0e+FWoFnQtxt5WapdvYcKtbKuNMe5YkaLXEAWcUFbakvy6TcA3e/ho/DCqXKdDok5ljIs26vMRKe30q6qdt8Hw9HCce/rSX3QDOX5AuJ6c39jBz4IxYJxDu71QmaqdWh2sAg4IjX2W64rvtUqPcyKRTfUkn6nVe7MkE3i+kQ+I1ycL2Fkgv+SzEzVloJwwCPdq5Avsc1wBLYtiG9p7qulHeGWNvS/SXdwTThzX2wzQBpGqrGh3aBzt+ezpghhY5CPcWRVgir8frMjBdEtUAI+Zkbe1HwskenLYz+XcELRL4ND/sLRB3eAw3FnPOqakTtVb/2CyT+dfIxjHfA7nPCq0oQPAIB1ddAoq3in/ysTxtF6tERIlNt0lGSo0VseDjdAAPM6+cO3k4pYPJ2AQ5DK6LGbq0oOam/bDQWuAgGQac5bQ1kmGQHTyMkYTs8hFmY6HltkMeFzkb6v6dQlBpMXzfid18Waldqpc0gEb7T0URIt2l2cD/GddsCMi0nAL9eRKhq3hzV/9stwI2UqMD7xwTG7WZXRuyLCnouGzMlMgXVu74OResBOxbHG1zakUOz9nKUbGB+ABl4HyLsic9SqNSWWdgTfrMebpaxvbcMNox5s1e4bmlP/zh2Bu4V2MdxAxc/bWepmjJRG7UB5nYr0NGDfXT+LqNMu0vfu7Ffm5tByEKj/mmLgxmscGMHLa1kDcp3do3ghxq8y/VkK3De6At6RPM5l8Lu47W10WpgoWoyrRFH
- wqXSrNAj
- Fo02204zx9X1PYYeRzWPy4QNGYlgOEIIrEE5X3wV6q+shSS4jWLs50WqoIIJdT7kSAQk6Fk0qeeV40N845pMV2/Mu/m51n4FQcJrFrq6YsXRy7TeeCIRia/g2AV9CY+jWzqdsexDVztDlo7lcZ5wC5oQKY31SEDAH74VIcBTMvo10wLu86ozLmWe/03+rGLE+AL065+7Az/3VwefEgNtfB3vlJ4+ioYICp8ZXn26scuU1r51d8mkBWPtFK/HhFHcFhO98d/vAcuoN6pVrOTuIgdds7UGF7y6oSZca4m0/v3pKTbMB2rlX0i8MF9P+ZIWKVFOeW+KUd8JGmG+Q9peJKJuq9SFpdJkjUjVg
+X-Rspamd-Queue-Id: C185140003
+X-Rspamd-Server: rspam10
+X-Stat-Signature: sacagm4c13856exh13dyru4dmrrqf1uo
+X-HE-Tag: 1767628481-834443
+X-HE-Meta: U2FsdGVkX19jFyznRLdhXIy7OkSi6Sx1rF541216HU348mOO7rbVynIz+jRY00vxh+G4L+N4ogVbHM6wsIM3prmfbnGU73JRJeBxqbMah3nrQui3GdFbFn3U/WApIJSo/DYH5w5h4vruEGufTfpqQtGXgbOO3NCEZy1c/cI1eS7Nxtq+btlSNInZPnx/mo/hlrfvKyCnZtAExSz05ueDjyDrl3M9S2qeeT8nQQqU3JAtjEQX2qTjffdOuzun4ZzajAGeJWV11eUfajvs+4bGL3cr2N04gNatIuihUFeoO/Qtjx2akTr8ZpZBQ5sXG7zcRzkS5cAVkbyCbt0dlCnohBdxaZ23kqHv1o8OfyLBjFFgP/9zWK3fWDV6Dd+k67zQN82t0fSp6Rlnz4WkYCnSyW1wPaMavbB/zp1QD/Fy1//YeUWUkHZWMIOyf8QJT0l4TiogKOu0qyOICA3jP+2aXVI5KOl5i8dlaB5RtCXd7FBorPYGk3Fr27lK9I0Wwl1X2FlqvslD4kjX0IW+GdIuK5cAD1aPnIVA2adDhJk9UX6g/W9n/WyicNzpC2a1OfJEuJUertkUOuBS4IG2nZINgJvP+c5Bs3R8AWd4v43OBsdurUb/qt1PB2fVygifwtc5GC4qKjxpNJwzFDzISNjNXFw9lYgr0M8qIt7TeP2YoZe8pXt45BT966TCEx4n/JbvZAa60HLTmMmE4RXeQWam74Bl+kNS5OVo6tRt4xYjlRRrnl/wxr6/9n89LvgM83JDiNZXMwRVHPJxL4llqPdrK18xWXGG/b5DFcTw+yZuvSwU0VEfmkh+xpMX4mw15oj/exo297BD5pDh1msBTltUr/jgxJCdxLqj/EOv6ySWf0ahDRjxI/+fzCre5bmYzpXA7tunsZ5MlpOaC8D/RNtZyYQ+6oDaw/UFAmZYoJtAmRarNYBc1Ej4xYtmvrumtZLOZoF43/oJUdvtRWAixkE
+ mJTjJzNH
+ TQxDPxK7P/FzyMjJuBf8td50FquK4nzZ6ppsjkaTG8kV2AiFm84hkk2qv9ptTk7udZRC/9pWvW5eJXF1GR1iukWBx+IGXM1vX8aQksaCi7uZ1uC26L52OBOAOFTC+qXHoUbxwa6UuPHu0avu4CfdE9R6VEeL/7a539TSqdgjXCHK0/EBbfrbLwjDpiyWS8iTaUdgjiVRovqVl6Y6//grjIWMGaJV9Rr2bmdcUygFaULt6IxkN+cHW0ycXe519rTL6h4wSR8BQcsBKBt4LUBgSgbqKsmUdvdtbrpwpA510Noe9JAaUZoaFmyEGGk/DJU2PXbiNFpCVdxjFy7M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,49 +125,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/5/26 16:36, Lorenzo Stoakes wrote:
-> On Mon, Jan 05, 2026 at 04:06:38PM +0100, David Hildenbrand (Red Hat) wrote:
->> On 1/5/26 13:18, Lorenzo Stoakes wrote:
->>> On Sun, Jan 04, 2026 at 10:15:36PM +0100, Mikulas Patocka wrote:
->>>> Provide a dummy function fatal_signal_pending, because it will be used in
->>>> the following patch in the function mm_take_all_locks.
->>>>
->>>> This commit avoids a test failure when the following patch will be apllied.
->>>>
->>>> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
->>>> Cc: stable@vger.kernel.org
->>>
->>> No, please don't cc stable. Also don't cc stable without a Fixes tag.
->>>
->>> This isn't backportable given you now need to backport to 5.10, 5.15, 6.1, 6.6,
->>> 6.12, 6.17.
->>>
->>> I'm not sure how Andrew deals with a mix of Cc: stable and not-cc-stable patches
->>> in a series, think he generally doesn't like, but I'm not sure how exactly we
->>> are supposed to express order here otherwise. Andrew?
->>
->> Can't we just have this hunk here as part of patch #2?
->>
->> Backporting should be rather simple, just drop the hunk on kernels where it
->> doesn't apply. Sure, a bit of manual work, but better than making our life
->> more complicated here.
->>
->> But maybe I am missing something.
-> 
-> Because the patch was sent with patch sending-101 issues (yet still merged to
-> hotfix queue inexplicably) so I assumed manual fixups might be problematic.
-> 
-> But actually because we moved mm_take_all_locks() between files it'll need
-> manual fixups anyway.
+On Mon, Jan 05, 2026 at 05:01:52AM +0000, Bing Jiao wrote:
+... snip ...
+> +/**
+> + * cpuset_nodes_allowed - return mems_allowed mask from a cgroup cpuset.
+> + * @cgroup: pointer to struct cgroup.
+> + * @mask: pointer to struct nodemask_t to be returned.
+> + *
+> + * Returns mems_allowed mask from a cgroup cpuset if it is cgroup v2 and
+> + * has cpuset subsys. Otherwise, returns node_states[N_MEMORY].
+> + *
+> + * Returned @mask may be empty, and nodes in @mask are not guaranteed
+> + * to be online.
+> + **/
+> +void cpuset_nodes_allowed(struct cgroup *cgroup, nodemask_t *mask)
+> +void cpuset_nodes_allowed(struct cgroup *cgroup, nodemask_t *mask)
+>  {
+... snip ...
+>  	/*
+>  	 * Normally, accessing effective_mems would require the cpuset_mutex
+> -	 * or callback_lock - but node_isset is atomic and the reference
+> +	 * or callback_lock - but not doing so is acceptable and the reference
 
-Yeah, that's what I thought. Backports might not be that easy either way.
 
-Sending+testing stable backports is not particularly fun (I have some in 
-my inbox ...), but sometimes it only requires one backported version 
-that can just be used for all older kernels.
+"node_isset is atomic" is an argument that not taking cpuset_mutex is
+acceptable since it's a singular operation against a nodemask (one bit
+it checked) - and therefore for a moment in time the node is either
+allowed or not (and we make no absolute guarantee of corrected when this
+race occurs, we just note that we're corrected).
 
--- 
-Cheers
+nodes_copy is not atomic, and in fact this can result in returning an
+empty nodemask if cs->effective_mems is being recalculated at the time
+this copy occurs.
 
-David
+Rather than just saying "not doing so is acceptable" - can you please
+change this comment to explain the implications of not acquiring the
+mutex a little more clearly?
+
+Example:
+```
+We do not acquire cpuset_mutex during this check because the correctness
+of this information is stale immediately after the query anyway - this
+saves lock contention in exchange for racing against mems_allowed rebinds.
+
+As a result, @mask may be empty because cs->effective_mems can be rebound
+during this call.  Callers must check the mask for validity on return.
+```
+
+The rest of the comments in the function explains a about this, but I
+think with this update the comments need a little more rework.
+
+~Gregory
 
