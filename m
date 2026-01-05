@@ -4,114 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A2D8C2A073
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 01:43:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79091C2A062
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 01:48:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC34C6B00BC; Sun,  4 Jan 2026 20:43:01 -0500 (EST)
+	id B5E926B00BE; Sun,  4 Jan 2026 20:48:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D844F6B00BE; Sun,  4 Jan 2026 20:43:01 -0500 (EST)
+	id B0BAD6B00BF; Sun,  4 Jan 2026 20:48:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1B266B00BD; Sun,  4 Jan 2026 20:43:01 -0500 (EST)
+	id A38656B00C0; Sun,  4 Jan 2026 20:48:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AFC046B00A2
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 20:43:01 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE6121AC370
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 01:43:00 +0000 (UTC)
-X-FDA: 84296211720.02.FA3EC3A
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DA10C1A0008
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 01:42:58 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 90BA36B00BE
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 20:48:45 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 130AAD5FDC
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 01:48:45 +0000 (UTC)
+X-FDA: 84296226210.25.A2376EB
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3D1291A0008
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 01:48:43 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=lLf0HEZ8;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AJwAw27k;
+	spf=pass (imf19.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767577723; a=rsa-sha256;
+	cv=none;
+	b=BpleeD3mju1hkQfAFyaZGMM+QZQUZ9RgI1L8MZRilFhRjZRToEzqdOfsIrjQDljtBZaBc0
+	163F1plF7m1OpVfn+WvQWQZfmKAC8mYy6n/D7Af90KGCe4oFDdXgvCz/1hzWw3/FCjtStc
+	gxppGyJ5BpyG+MExerTl2e8gYvG3aAI=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AJwAw27k;
+	spf=pass (imf19.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767577379;
+	s=arc-20220608; t=1767577723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+gAO+yv/gpp4aH2e7rkoPJP/n/Hsp6z2VtvqOcpwbVM=;
-	b=W99jeqKvW4cQwAIgaSmQvQlsbvMrEFP72e19mlK0dwmaBTjXsb7wB9PZNC8ypZOSt7dvhx
-	s/c5f4xeXFV4LBC/RirnNEMXwBdYif95PDcJI4KfQzeEYKYSL31CaykfUC7qZGiMNYF8N2
-	ESPUCtaSaYnpRbfWJGY9q2QG/nMTQZE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767577379; a=rsa-sha256;
-	cv=none;
-	b=lsearmI+JQszERKxYwxLP6v1hKoUOSzi/F3vaQeE3gi3IiW+dhg40DCW8oRI/+7/VQTA0z
-	tUhHqD9X2mAhVeetqTXAZUrkmO/EpHaXBTdwM89DdsMCjRFMZ06ri1OpCtqkNBsQhUml7M
-	WNnfjEhTqtPkPvo9on5ZNNMq1cTuizI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=lLf0HEZ8;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a0f3f74587so192585775ad.2
-        for <linux-mm@kvack.org>; Sun, 04 Jan 2026 17:42:58 -0800 (PST)
+	bh=z2+aQRhSUkFqP2LmTFOubf1LXn/mk66U3B8sFd28M+s=;
+	b=So5gzElNBDUXHKCtMG3TFjrg6pS1mfZX+xbHED7byRb+x+AiSQaqEAnelJYAzRo9Reh9eY
+	OIDJRYZSFyY6+aCeYjDSyaegkdOQlgIDJx/196l8zctSeOjRnoLZw8Cxd/HdWb4XE4neFA
+	j4iXv3gT4UnCU3+KaKZzrwQVDnpgB4M=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7fc0c1d45a4so11950174b3a.0
+        for <linux-mm@kvack.org>; Sun, 04 Jan 2026 17:48:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767577377; x=1768182177; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1767577722; x=1768182522; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+gAO+yv/gpp4aH2e7rkoPJP/n/Hsp6z2VtvqOcpwbVM=;
-        b=lLf0HEZ8HMsoU0M5stEBNRl2IZipxBD7tEd16RuvOY6d7MGdXSJm+BCUO9jmje5Wf7
-         0TE4VkaxJTVQw6UJrQyCJsBRTaWA/EMM+waLf4vIRm1F0EqxhVoxB50CjV4p2ieUTnoi
-         /FGkcsVsI+7oxLuV5M6qESTvtFDBDWAuu8D2g=
+        bh=z2+aQRhSUkFqP2LmTFOubf1LXn/mk66U3B8sFd28M+s=;
+        b=AJwAw27kArBXaUDc1MwDqWapn66WIj9e/OGOBWWmihy3y8RABpUZaWuMmovrn9XFXx
+         6ygdfPclnVuy7oSdq3C7fT3aDZYJ+MkR4dNl3U6CbmD5TxkGoFaNHMdTRJOcxiSLpRVL
+         E0mYp/YU/n2Cq0ziYxPuX1FOdGAb5Ti8V9h8+Bkt6cc+cDaf84w9YriypWh9vm2kziQj
+         2iBw1zFcQwP/mGhjdSBsTABqf6iFkNIT9z+rCi06Fn/2KyqoKfcFkvnfQIB15vpNkTbS
+         LO1ty3Td5W9lexMbrtERe2zP3ygpm4GVbauh+yWUn37TOFkClG53iG4JBgnZ6fezcWl8
+         ND0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767577377; x=1768182177;
+        d=1e100.net; s=20230601; t=1767577722; x=1768182522;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+gAO+yv/gpp4aH2e7rkoPJP/n/Hsp6z2VtvqOcpwbVM=;
-        b=D+abJo+ehqJUBGu+h/56G0FAqgJ/vZsAyyE9Ra7psogDWgJ6zUDHuETMFrT4tBkAyA
-         EwqwJR/8eVM7cCOLplAkvy9hTttu2WifoXwQOnK4uySwqtsA8mLwxnl+97MLtcX3uSXy
-         T/1E38rGM/u+fg5zgtNIvqYfVi71jQK7/JwNc8AY4zZupxOMW/079bKsx9F5jf+MMNj+
-         RY3vyilhVTm83WCJB6se5mbcgU7nY6F3RBPqazszQNR9BxdPkDOrbWaEHr4baaRjMCwB
-         SAJ01UuzBuWV47b0wPRGNg4TemrmDUIbMTPw4SIiJ/awsqhpORxfIetKXJLOCXwhgQU8
-         JU5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXGMfSdJQg18N9enF+OVdr42++1GwuNjHiLwvAULkOLjYEqCGjeI/D/950iFokQJwIfNM4gDUq3RQ==@kvack.org
-X-Gm-Message-State: AOJu0YzalWE4SfPaYh7JZXxlaY78F+jfz5IW/g1PHjxwa6avgv0COfSv
-	Ij9wLazFe9XUPjKWbjl5R8ZXucUAkpFXyq3TVds3vlgc16TorHjFhZEe20Kg30uEcg==
-X-Gm-Gg: AY/fxX5hnGtulz59xT7sj/6g3hHV8s/ID53cCbmX87zzseQF1Rb+e8uP+OBDv/f9cQZ
-	cXIdIvv17Ap9PxWrKk27xVdNyYNlozQNyiWxjTCOWeSqiK4Mkx3Fj1Yo8yeGITmCw+foPQsXBra
-	69tz1Lg7r7NDHDClgmjLf4z+9GQcyktmjEKK8azYsJCUnOPWMaMwqnczkkKQgTddIX3aACt9deK
-	MlqVbOaidbHM9QVxjGDydFFvlEX0dRhSk9iBBT65pyQ0ui86VrW6Xuo3kU2TJ8nBLLIb0DvI+y+
-	j2ES+WdZubDrLgBXaL7EerONVK+thvhnkLNXUyMJWVovJFN8esFxpfiCevRM8aDWEnzlTWwbDmy
-	8/3bY69klEsqYxh8+/tnz6qVV3RjNrwGqjxOCZVB083lly/cokw5LxPDTf9PjvL4j0UO1HnOo33
-	Fl66ht061nrA4FaeqYHK3GjX1W9aUKcE14QCU9uz8queMM8Q0MLik=
-X-Google-Smtp-Source: AGHT+IHRq6ioUewrYiODXdqjDXOR3KSfjOptUP5zM2pTAnvbchFEjjOi+oLwUB12rewWFbfrJtJFWg==
-X-Received: by 2002:a17:903:fad:b0:271:479d:3dcb with SMTP id d9443c01a7336-2a2f2212bc9mr512621455ad.6.1767577377431;
-        Sun, 04 Jan 2026 17:42:57 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:3657:db4a:faff:666f])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d7736fsm440160085ad.92.2026.01.04.17.42.54
+        bh=z2+aQRhSUkFqP2LmTFOubf1LXn/mk66U3B8sFd28M+s=;
+        b=H+A3cRw48TEMbgOfxqhmhaoMdjWy/j2tbESl4eP6/SbL96QBvVov4WV4StrWKrGA6v
+         6U6e4/7ClAAfnBZlVU/fQIJ22vBvcC4EP6ntPVCDkeTxNaD38AKTTBADiPqK4KVw9k0g
+         vk7YHVVmTjxf3VXi3+9lnLsf8UJWlQ5jvPq65ikPc0smTJQwyuBXPgjqjnJEqjZ6AzvX
+         VMyYhBpOQoTkULxIDgxA68ujSbJ2hYBEZmgG/HWbSqtVQkVfKS3pjCHD2AocNW+QIF9/
+         2Wf9HbNNwzaxnSqoAaQl35qM6bCU38pri86LXmLe7XULD6Og5C6V+qrDUdeaJj37WAEW
+         rICg==
+X-Forwarded-Encrypted: i=1; AJvYcCW5pkv7gUhfdtJ+MAx2KBD0Q6pZnXLJgczQP4Dg7hboD+5FPqQTC2JjBhYFTehDsE+TnZZ6l2nkWw==@kvack.org
+X-Gm-Message-State: AOJu0YyUA8FBwsoAFr8Kal86yu3cCVO5Eng5togmSasjAoEGHV37RZ+V
+	w+mWb3qNS59bfD7F1sk0p2zMC/gz/3/AAxBBmN+XBdjlfYtBL4qoR5JPtWwbZ2BKcOo=
+X-Gm-Gg: AY/fxX5bnNYzgfjl5St4oz5bD1rnDGTs0RTKmitzZ4LbNIMEG8mJw1FJOPOCHcifXJ2
+	V0VjlnsR0+si9KKP7e4pw0mAYvVjzjwpMyRqUAt2G3rT8wZHyDVaZ/xdutNVofAJ71ZSjHG/suY
+	Pcl+zJ6Uo8T5PZBK9RmchX2pVjjfxBZbd2O1GvbSLG7rVWs+wfWgEd8bOxDvorq0X2EL7BRWrOC
+	qHj+zfEXWRYTy0gRlW6jiQ0iWW654pkG9nGff5UQYXY3KefJUDUU4NsMXH8u46w2yUBboMFRmts
+	IpE6K4sVwQ4zfvAT/9VEQGF791x2XWtJkg20CE9I1DDT4PTGRUqKq1C9R+HMpg22NyB5hei4Ox1
+	gekzdH+iBktkkYwFEtaSDU2MdmcBAzMpLZ5EnjBKbEXMwZ3hoT7OWLNa19+rNNgr+pjg513pXoK
+	pCOOWza/ZU/3RazU3iivKAOtmu6d8LhJYsAw==
+X-Google-Smtp-Source: AGHT+IE2iJ8DiNLYNsgNDeO8hqqAj3PiHMcfETlG8kOMzjEDM32HM5zkC9NMI9rCpO25q70zIBJhCA==
+X-Received: by 2002:a05:6a00:1d27:b0:7e8:450c:61c1 with SMTP id d2e1a72fcca58-7ff66679547mr39592131b3a.49.1767577721866;
+        Sun, 04 Jan 2026 17:48:41 -0800 (PST)
+Received: from localhost.localdomain ([121.232.80.251])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e0a1a2asm45799049b3a.41.2026.01.04.17.48.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Jan 2026 17:42:56 -0800 (PST)
-Date: Mon, 5 Jan 2026 10:42:51 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
- consider other metrics
-Message-ID: <gg5zdpzrk47tljbnaudcy2gnsodyhmmar23qb57b67bhx6ntje@eq2fcrl2dk4z>
-References: <20260101013814.2312147-1-senozhatsky@chromium.org>
- <20260101013814.2312147-3-senozhatsky@chromium.org>
- <ddfs43qldaws5urlnpah3ibp5xeu7st37p5hgdfajvdtwor4sd@fkcm3brinygo>
+        Sun, 04 Jan 2026 17:48:41 -0800 (PST)
+Date: Mon, 5 Jan 2026 09:48:32 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com, 
+	baohua@kernel.org, richard.weiyang@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>, akpm@linux-foundation.org, 
+	david@kernel.org
+Subject: Re: [PATCH v3 5/6] mm: khugepaged: skip lazy-free folios at scanning
+Message-ID: <3lbptab7e2nhqilwnoccq6kxks2r55j3ffqtslt62o2qtgulk5@w4mwglb2kd75>
+References: <20260104054112.4541-1-yanglincheng@kylinos.cn>
+ <20260104054112.4541-6-yanglincheng@kylinos.cn>
+ <9c82ffaa-5f62-4110-80cc-00f0c46e90fb@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ddfs43qldaws5urlnpah3ibp5xeu7st37p5hgdfajvdtwor4sd@fkcm3brinygo>
-X-Stat-Signature: nbsteuychab6zeetcjf8qs78d5cixcza
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DA10C1A0008
+In-Reply-To: <9c82ffaa-5f62-4110-80cc-00f0c46e90fb@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1767577378-801565
-X-HE-Meta: U2FsdGVkX1/WtKfga+xUbFAVe+vAvDlcZ11Uxm9M8evd63kHZCoi7JIFM8P8CzLHdNM2awdf0985XPaNT9n9utANtWnhCkRY45tBPlFwQhN1zkAsUobtpSC64gemzLHT8dFzEpoj8NazDzACXmje9uNBeJcbQwyo5L5OVIGFEQ1l0kq1e71kj9M8FZUVxqsJBmmkJzieuWNQtbi2FAnO9lF8LaDVnD/lW+VJu1j2MOHeRt+HtNI3gASKmqsjH8tKr7mQo/vBrW6TjxjwM1uu9ccmBi3ZouotL+yxkL/X+llpyHBjCGb4Wk7v1Bf1NZbFnYFsqn94g3dJVlhNB8nIBM2q4/t9QfsLTgsJ5kERIdUo7iNBMiNfp6midA9tU0B5Foz/dQnK4bgdIlYur3W+4sjLQNM7jWice/sGJy3tEryLuXVYkoPqOL8c1yWE6xVrMQAipukQWUDHnibOTutqD+sp8Y0um4ocSPyTch9ndQb8YGAtVXyGwLeU1IMrDmG5ToZU447pMzgxzqCChe8FCIzUK38K0DEEEqjQBOGnaVXUrk6NA+zSTe6Ttt0jzpHNq8LPkmOkwhH+Dq0bakPLczrYkV7ySMOm330JMahGFj6LUSALLtM7bsuVh3JFBypg1XLzcfr+yGCOoGDpJZaxVn6o/oBLkwTMKmKYcq3lYwVUS9FvlJ2X4WEmql54GuHWnmCKtCfbAEEWwiJZ8dmvyv4Qzbe6fPEhpyK9IQFonejHrn0e8hycKKH8ix17o8qHUY0xQWFWCK+n/CNU0FtC7MO+G7pQJ/HAZJeUQpNuqybWWN+jfSX2lfCGMJS2HaJv2uHZkBOZZW+Z1Az2hHEvEceaUiUwWmfcNpwBpqzjHqrTSaOti6QlRHN+lMIlZ6BiYQ70HwI6+LvkiTJ2CR1+aelj4sjqXC6QtSdDqrmQvHky/8bNpgN8479A5EsZNQyEk4/ta10xGqPShcRVeUA
- pRF5JLAV
- KmFuj6lx5Frff9ewGUaNwCHitrdQDsgWd38WudtXvSv5K/YYJKL8forDNQKmDPf75R0PKtt0hHd3yQhuICu5HYQ7uV9ogCNR0cTiIrKLPucpQp/GQTfXsdvUWTlZ7VvGnGOerYJJe0iJ5Faewtez40HIFWhSgdaM3BgZWapvlwzwMnVPfqICPhokqpcvr9Wu91igt5VEjQ2zJlE4SXtl8hF3Hfn8LYiUpyOG7iKBUwoSKNF/uN2VgY76Pt7LxHwvFXs+811Mjo/ZgBeMVjXXavlZudYFuICp0kARrFKZ9gKAzbSrhqPQjh4b0OVRjXlTuFdwJyQrbhVvZsMDNv7blNmlp6KM2tgcSdArlIG5B8AVpWYM=
+X-Rspamd-Queue-Id: 3D1291A0008
+X-Rspamd-Server: rspam04
+X-Stat-Signature: fzwgxadkf1jpf5gp7oqkaj63ie3sx1hw
+X-HE-Tag: 1767577723-791276
+X-HE-Meta: U2FsdGVkX1/mTJlMEoZUVHdCQ1WlW1cUG6yfWXxN20iwAf+esfV3kzPGD2bRVllCBqMRGz3PyleYYxFu4mZ/4x1/FGd1AvkTIYpNax/mHNUNKAVH+xPJ893W/dMTzv/oRf/O/yApZDGGHaBWUeUPi0tWyjpfEfDKezXvBVl+6+YY3SFze9apkADdK9jsFDQHQgzbLzUPUhMnbKvRskqb6+k/jrDPGIC1DhrwFl+Ot+bAc7hqP30cZPTrqdZLbnK2Kji/gnYb3gzsrmW0c+oz7DTW1L6eqnznLXt8a3xSThbifUR/UV3tKDb6yYiF/JXFDRsbCssL6sQ8HCZDc7xwJK5/psBL3PAx9Sy/MQlOOv6qvvLjKvuIPKG5ngv3phJmd5bPesvrmvacYVTCTsEpBulzDzgNGux3h+OOlkbuM1f93DC02+8z6S2Fd/64dAvjPncw+2Cgt4yRdTZklgu4TqK+LF+tWHT0Ai2wzJd8giI7etn18FkVnAsgTzxAyajUlLmm99XpTAIBIh48Je2juEtV2V+aZI6TFd3s2t9E6MuWZCEtjRXO0ti041FL2EoheNMRP60Zo3rOi+4JnggyDO8kxqi97y1pSXOkj1Wii2A/lz2AoePJY6TJnmfnYXPk86RXAVR7zdYpF2CmDhovf2tH89bzjqwQpFbe27zz5PC4Pc6hmNLZEbBKOWn3g6crPmBBAqXCO7cemaAe4DRBg+YArSzo5g/VUex8Yelt0vF5MKhfDWkTNLG+wsgjrFUeSxr6dkEVQLzmXBw/vcZK3WK6wxoFCZCehJxpBKvOEu1AdbKC50vNZbCEnebeH55PttANr6waKwMP/3AR+h3xZDMGB4rRd8w4oILZvlMMvnXgo+iv4n/4SfLf5+zlyZf5XURwjs4qXCWs1onTyp1920wf+uAIVrHDsG6cWdJvZaTglaetHXz91ecGPs/9GYTLOpWFrok2C8O/1hk6gdi
+ mnhjkuiS
+ EsPJv1BIs06I9rsMdfAojVnfuPqCk6kOPRQ8gJaHbgdb0alnHdCxB/pY1Hm3d9E29CVYH25KJKXXptytqS89/9YpaSSY2TQwDgNPi+36WQaKXBO3b81a6BrCAL8a4rxGdcdjx8hxI4J0VJRQbZd/lAy4MLREwKWZlQZjv8+5SYRbdpYUTIrNPL3AvyaaMPrSRRf6KFxHw90OFy1Ors0g1veqGfzdvuoUn9LCbkoiQsd0+QX6GLG9nRGm1zohTrQ8Wrq00j9U4mkqIc4zN+ddEegP1K2oAv1ZCEpIBHvebw9uD8ESzJEHEvITEKFDUCmMPUvwYVBqUTt5G2Q5pwphcK1VmtDlJR3RFqY1VKbjY4zlEa2d8xgJnMqxcslFxsujGQ88YwV6KZgRqOYIxvmvLLkYsfTdcju0VKcthGX8JAyK0e0x72jc0W8kGuAOFfiadumXkKUo8aOQpW8QLHE0etNe1VkMqWKt0hlHOXMnAvjqAZLsQ42nBGPj96AykoTDcameP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,96 +122,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/02 18:29), Yosry Ahmed wrote:
-> On Thu, Jan 01, 2026 at 10:38:14AM +0900, Sergey Senozhatsky wrote:
-[..]
-> 
-> I worry that the heuristics are too hand-wavy
+On Sun, Jan 04, 2026 at 08:10:17PM +0800, Lance Yang wrote:
+>
+>
+> On 2026/1/4 13:41, Vernon Yang wrote:
+> > For example, create three task: hot1 -> cold -> hot2. After all three
+> > task are created, each allocate memory 128MB. the hot1/hot2 task
+> > continuously access 128 MB memory, while the cold task only accesses
+> > its memory briefly andthen call madvise(MADV_FREE). However, khugepaged
+> > still prioritizes scanning the cold task and only scans the hot2 task
+> > after completing the scan of the cold task.
+> >
+> > So if the user has explicitly informed us via MADV_FREE that this memory
+> > will be freed, it is appropriate for khugepaged to skip it only, thereby
+> > avoiding unnecessary scan and collapse operations to reducing CPU
+> > wastage.
+> >
+> > Here are the performance test results:
+> > (Throughput bigger is better, other smaller is better)
+> >
+> > Testing on x86_64 machine:
+> >
+> > | task hot2           | without patch | with patch    |  delta  |
+> > |---------------------|---------------|---------------|---------|
+> > | total accesses time |  3.14 sec     |  2.93 sec     | -6.69%  |
+> > | cycles per access   |  4.96         |  2.21         | -55.44% |
+> > | Throughput          |  104.38 M/sec |  111.89 M/sec | +7.19%  |
+> > | dTLB-load-misses    |  284814532    |  69597236     | -75.56% |
+> >
+> > Testing on qemu-system-x86_64 -enable-kvm:
+> >
+> > | task hot2           | without patch | with patch    |  delta  |
+> > |---------------------|---------------|---------------|---------|
+> > | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
+> > | cycles per access   |  7.29         |  2.07         | -71.60% |
+> > | Throughput          |  97.67 M/sec  |  110.77 M/sec | +13.41% |
+> > | dTLB-load-misses    |  241600871    |  3216108      | -98.67% |
+> >
+> > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> > ---
+> >   include/trace/events/huge_memory.h | 1 +
+> >   mm/khugepaged.c                    | 6 ++++++
+> >   2 files changed, 7 insertions(+)
+> >
+> > diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
+> > index 01225dd27ad5..e99d5f71f2a4 100644
+> > --- a/include/trace/events/huge_memory.h
+> > +++ b/include/trace/events/huge_memory.h
+> > @@ -25,6 +25,7 @@
+> >   	EM( SCAN_PAGE_LRU,		"page_not_in_lru")		\
+> >   	EM( SCAN_PAGE_LOCK,		"page_locked")			\
+> >   	EM( SCAN_PAGE_ANON,		"page_not_anon")		\
+> > +	EM( SCAN_PAGE_LAZYFREE,		"page_lazyfree")		\
+> >   	EM( SCAN_PAGE_COMPOUND,		"page_compound")		\
+> >   	EM( SCAN_ANY_PROCESS,		"no_process_for_page")		\
+> >   	EM( SCAN_VMA_NULL,		"vma_null")			\
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index 30786c706c4a..1ca034a5f653 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -45,6 +45,7 @@ enum scan_result {
+> >   	SCAN_PAGE_LRU,
+> >   	SCAN_PAGE_LOCK,
+> >   	SCAN_PAGE_ANON,
+> > +	SCAN_PAGE_LAZYFREE,
+> >   	SCAN_PAGE_COMPOUND,
+> >   	SCAN_ANY_PROCESS,
+> >   	SCAN_VMA_NULL,
+> > @@ -1337,6 +1338,11 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+> >   		}
+> >   		folio = page_folio(page);
+> > +		if (folio_is_lazyfree(folio)) {
+> > +			result = SCAN_PAGE_LAZYFREE;
+> > +			goto out_unmap;
+> > +		}
+>
+> That's a bit tricky ... I don't think we need to handle MADV_FREE pages
+> differently :)
+>
+> MADV_FREE pages are likely cold memory, but what if there are just
+> a few MADV_FREE pages in a hot memory region? Skipping the entire
+> region would be unfortunate ...
 
-I don't disagree.  Am not super excited about the heuristics either.
+If there are hot in lazyfree folios, the folio will be set as non-lazyfree
+in the memory reclaim path, it is not skipped in the next scan in the
+khugepaged.
 
-> and I wonder if the memcpy savings actually show up as perf improvements
-> in any real life workload. Do we have data about this?
+shrink_folio_list()
+  try_to_unmap()
+    folio_set_swapbacked()
 
-I don't have real life 16K PAGE_SIZE devices.  However, on 16K PAGE_SIZE
-systems we have "normal" size-classes up to a very large size, and normal
-class means chaining of 0-order physical pages, and chaining means spanning.
-So on 16K memcpy overhead is expected to be somewhat noticeable.
+If there are no hot in lazyfree folios, continuing the collapse would
+waste CPU and require a long wait (khugepaged_scan_sleep_millisecs).
+Additionally, due to collapse hugepage become non-lazyfree, preventing
+the rapid release of lazyfree folios in the memory reclaim path.
 
-> I also vaguely recall discussions about other ways to avoid the memcpy
-> using scatterlists, so I am wondering if this is the right metric to
-> optimize.
+So skipping lazy-free folios make sense here for us.
 
-As far as I understand SG-list based approach is that it will require
-implementing split-data handling on the compression algorithms side,
-which is not trivial (especially if the only reason to do that is
-zsmalloc).
+If I missed something, please let me know, thank!
 
-Alternatively, we maybe can try to vmap spanning objects:
+> Also, even if we skip these pages now, after they are reclaimed, they
+> become pte_none. Then khugepaged will try to collapse them anyway
+> (based on khugepaged_max_ptes_none). So skipping them just delays
+> things, it does not really change the final result ;)
 
----
- mm/zsmalloc.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+This patch just resolve scene for hot1 -> cold -> hot2.
 
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 6fc216ab8190..4a68c27cb5d4 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -38,6 +38,7 @@
- #include <linux/zsmalloc.h>
- #include <linux/fs.h>
- #include <linux/workqueue.h>
-+#include <linux/vmalloc.h>
- #include "zpdesc.h"
- 
- #define ZSPAGE_MAGIC	0x58
-@@ -1097,19 +1098,15 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
- 		addr = kmap_local_zpdesc(zpdesc);
- 		addr += off;
- 	} else {
--		size_t sizes[2];
-+		struct page *pages[2];
- 
- 		/* this object spans two pages */
--		sizes[0] = PAGE_SIZE - off;
--		sizes[1] = class->size - sizes[0];
--		addr = local_copy;
--
--		memcpy_from_page(addr, zpdesc_page(zpdesc),
--				 off, sizes[0]);
--		zpdesc = get_next_zpdesc(zpdesc);
--		memcpy_from_page(addr + sizes[0],
--				 zpdesc_page(zpdesc),
--				 0, sizes[1]);
-+		pages[0] = zpdesc_page(zpdesc);
-+		pages[1] = zpdesc_page(get_next_zpdesc(zpdesc));
-+		addr = vm_map_ram(pages, 2, NUMA_NO_NODE);
-+		if (!addr)
-+			return NULL;
-+		addr += off;
- 	}
- 
- 	if (!ZsHugePage(zspage))
-@@ -1139,6 +1136,11 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
- 			off += ZS_HANDLE_SIZE;
- 		handle_mem -= off;
- 		kunmap_local(handle_mem);
-+	} else {
-+		if (!ZsHugePage(zspage))
-+			off += ZS_HANDLE_SIZE;
-+		handle_mem -= off;
-+		vm_unmap_ram(handle_mem, 2);
- 	}
- 
- 	zspage_read_unlock(zspage);
--- 
-2.52.0.351.gbe84eed79e-goog
-
-
-> What are the main pain points for PAGE_SIZE > 4K configs? Is it the
-> compression/decompression time? In my experience this is usually not the
-> bottleneck, I would imagine the real problem would be the internal
-> fragmentation.
-
-Right, internal fragmentation can be the main problem.
+--
+Thanks,
+Vernon
 
