@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F821C79FA5
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:59:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC4F9C79FA5
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 17:08:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C83FA6B01AA; Mon,  5 Jan 2026 11:59:08 -0500 (EST)
+	id 32C7E6B01AE; Mon,  5 Jan 2026 12:08:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1D566B01AE; Mon,  5 Jan 2026 11:59:08 -0500 (EST)
+	id 2D9D76B01B1; Mon,  5 Jan 2026 12:08:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF5636B01B1; Mon,  5 Jan 2026 11:59:08 -0500 (EST)
+	id 1E6D86B01B3; Mon,  5 Jan 2026 12:08:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BCB46B01AA
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:59:08 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66F911A8B08
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:59:08 +0000 (UTC)
-X-FDA: 84298520376.15.8E1505C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9E44C100011
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:59:06 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KTXXkEaS;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B3D36B01AE
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 12:08:22 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 836271399CC
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 17:08:21 +0000 (UTC)
+X-FDA: 84298543602.25.A95CA18
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 81E782000B
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 17:08:19 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XS1TiyVe;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767632899; a=rsa-sha256;
+	cv=none;
+	b=WvlgutN2+oufV1SkDMsJgQJbLv6e7d1ToRGIGANqLUJCv/Pure+3jUq0xc44zyoDw0GzlU
+	YFz2xHkk1qCq2XI38jX588D0Xia/zrfNCEjMymFAN4sS+Iz/Hf/LSQES5elpFH6+meBa6W
+	MDDHq6SP7pJEdvFV8d5GjXpasxQ3v7s=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XS1TiyVe;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767632346;
+	s=arc-20220608; t=1767632899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jgLz2wb6YzYAtKdul4NZXCNshaZWhEAbs1WVt1GJJA8=;
-	b=8PIP2IWAf0mWhN3ZVlRsgqrbxMmdqvAylDw+3emEkjei2cAKKR9YsnzY5qMJk4ienxL8Gz
-	6Q+1G7M6LghatjQrihQ+R3jRc0YeLCxbf18Dikdefso/S2y8c9t6poNxRm2KEwVeKrWR27
-	FPLQRdOWPapt6Q04EEbnnTsrDJIu3yA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KTXXkEaS;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767632346; a=rsa-sha256;
-	cv=none;
-	b=G1zI7UtYNSzkUOZm96NRhUv5n1R4Nu1I0diM+GApWEIscq5Vd2X2JSVymaZ3/nDC2aBkh7
-	K1NUsxFy+mQTz+Hgo0HFq/vsElkasL9Ah72Ki2O3B3MdGEFDB86sC2IQ6V8q3lyuWCsZVe
-	DN/0LeWdVYOJQxi2AdiAVIQ7NpBe4Fg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BFA1541522;
-	Mon,  5 Jan 2026 16:59:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1201C116D0;
-	Mon,  5 Jan 2026 16:59:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767632345;
-	bh=C6eql9p/ad94rcfI0wx8v7YVZgYVcqqRLJPOYgSXxaU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KTXXkEaSn1qSxmg3X/H4hpPTj0ClyfZ0VysM8X/evDibdhBNIEqIpqRTQiHLfPSjQ
-	 O7cxUL8dwnJPNV259iK2NZZUMClYbezs/R9K+JVV2srthxxDylExf3BuBp+3F3/GgF
-	 OSIAlUaW5DCi2dZ4sAijlXSrA6oEVkWVQAq/MQZwjsMjjrtQ+hMCrFbqca/GnfLPpN
-	 MfJicZnI0UTrfyEtipvhHGOkYeOLG1rGZTYXneZMG8ubqf6oFNYu1ZSZmlMYraCajg
-	 44v/uE4G6GkGajG4xib9kC19CZgwZSBUyC41Y8ZY1WYAtWUZYmgfHtbHep7r9zOmDt
-	 L+LgHDoV0hiDg==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Graf <graf@amazon.com>,
-	Jason Miu <jasonmiu@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	kexec@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 6/6] kho/abi: add memblock ABI header
-Date: Mon,  5 Jan 2026 18:58:39 +0200
-Message-ID: <20260105165839.285270-7-rppt@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260105165839.285270-1-rppt@kernel.org>
-References: <20260105165839.285270-1-rppt@kernel.org>
+	bh=c/YCqX8o5v9VD26M3nxmomUHfJaSJn42QMDaxF6W4n0=;
+	b=7gc8q61K20+HP8Kz/fbTQS55wPs33c6lRv/JW0xGP2mxBgcLnZ2KnUd/GeME/ZL9uHXJdS
+	jHEoWDEwWjOl64sfDRqq4QHQjcKk1jcTIGsNs1e0IgZ489xtgp2G+P33ARmxSj/HCQ1UWY
+	kKuhFsww9D+b2QE+Ukz+xI8pBEecr4g=
+Date: Mon, 5 Jan 2026 09:08:11 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767632897;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c/YCqX8o5v9VD26M3nxmomUHfJaSJn42QMDaxF6W4n0=;
+	b=XS1TiyVeiyIyOlMjdeiI6yjCJrpmqbHF/OZAV12j10f0zr+3z8ozLOYrMzXpi+/oCW8Nmx
+	FlqbEY7Cxnl7khT2W/5F7goEBLiGE6jpFL1RYXUZCK12I0NlV+0hl5FIPi6lt4LU7kPX5g
+	0MwLWfCr23EzxnQbidln80Cz2RgREQM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, Hui Zhu <hui.zhu@linux.dev>
+Subject: Re: [PATCH v2] mm/memcg: scale memory.high penalty based on refault
+ recency
+Message-ID: <qlzvksuvo22rrngdihyeepwhphretoenre3gvkako7kgsgw3sy@l775pvzorcdh>
+References: <20251229033957.296257-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251229033957.296257-1-jiayuan.chen@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 81E782000B
+X-Stat-Signature: jftdwofj39n9w3ip7s1z5umqcaqku1iz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9E44C100011
-X-Stat-Signature: eiic51cm8nb5u4g6371xfwekpcoreawi
-X-HE-Tag: 1767632346-874747
-X-HE-Meta: U2FsdGVkX1+THaCXVb3+Pg5HBNJA2Ag73Zk4sh1Mztcm0zPgjZx/cV9VYNRRf50A7Khgc/Coq6yuFbuy1KJqbOvX7kibYlQN2BkEM9yUEinT4JjFvxWmFcfaDoKPghkbJkyfuVEf3IRCfXinbT7wgL3FETJCiWXs8tJeIlhXyMg4vujKUPFrfSJzGiL53aBy5YDxVkMM/vfY1/VMrFvvsVmp8h+t+bPOPltIgwEbTsdB9GXXHpG5MSVFibW5YvZBKTjhKUMRPT/6G+xya3FQOftJTYxjc1azSqeWM1QfZcIVRin0GRFCPkzXdKUrl/2hujnKeXzHxY2d62YF/ctN9mLd53aWixKeve4f0FuFxFwk5BKmhUu4pYfy3h2UrE5+nJyzRhvTort634n0g+3rPr472GFmtEfexVt60EPYj2JfjNHIq9JAU/zjKeuGzDAbvjniKTfQf4PA/e9aOZ7y6eDA8mI91yTvy43A5AbQ4qjrYwQfA1ovOMlcHYiCN0jYzWdCYhZkIOyTAOcaWktJ8yrto7B56wFB/B4ES/gge/AG/LnR6Wjl7qMM1V6OXRtSd9qqVTYsF1Djq1i85L2jiyhqHyGD/20qPPiHw5Id+mhHMKR3oimZjuZ7iT29EhWXaoBQ4Wsi0RwBH8cr+piOcxS0vcaUlrjhTX+E5RQnRVe74yztVuCM1UtuXLHK5gB9dqRFPVDEfe9bNPIABL+EUNXZRL2Ju6BDzLmbAuG0trFw1SzA7YhJs3laFCaqWEKIM4i1q/phCGMb72jvDRzCevA7+5YrSCi46uG0HABQ9rHFRexklzsq1dFp23t5VfSf/2PoHc/rzzlyrMmu6Od75HvRdDL8LkwmRyL7WYqdvir5/u0Mmryw+Koee09te/glCrRinGPdRlS4SP8Z7r8mQclYBo8a+yl3GcKeaR+G/V8yqyjjMQJ3lUk8AnfluTfl80ExguOdsEWXB87pTSZ
- ekvbrveG
- gNUJKGn5/7L6GUL//Dq5PPi4yOC8kh5j4e6TuLodbO/9INYO6YBcSNq30HJdFsyqjeeOe6k6yw/WvvuF7Gdq7vq9bjStXGcpFcUKQaTQSro+904yF0mrp4kQtDMb9DZ7pg6R706iME16CJqFE/Z9xzDsz1OuX7xhojS0KZL5g7+JmDmDvdyweoslgWIwv7aBvnzPIxIk/39o+KK1rnHG1w57bFsvwE5HMMuKMk8ecRxsHHog=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767632899-657411
+X-HE-Meta: U2FsdGVkX1+LPGkxUcE+yNoWw8EqUdblzvD6CkMcio8N9k/Q5AJ3r2C8DK1Z5hVbADj7/kQ8xMlbz4jkXdtb5W7CFsHEECdUzdzAc0gVcV7MJVlT5/NBedNc8ekrTnVJVDZFJHn4+zfDb/sq2CC5EDaxuGZERSDgufmspMtBrQWHv5Q2fGe8gQtPeXa0dvG0WggSeVMt5KPsvjSKunKi7dDn8hyiSdQYaScUczrTzGtCJvMWKmTAP8Lr3L+bNHlmPpE6MWnSnw6OJORRC4TzYYRclm/o2engqf6e4rGb6yrQKCke26vft+CNoZ0UHcdX33L6lsZATZRKexK9bmpZZRBRucKlivw09uRqRu0IUz1Blthb16GXk9LF4YBV4pyXem+UPQcclWXJ6R3kfI9Ma+wPKuKQke6GSuG4Xxvsg2P1j9f91M9AFMKZf6ngh81Amk+MXG3bJecGdhlHaBNR+0dD2+Vuls4e6SacvX5BClT8EcRDkt3UGSgHtLMf+KhKWyFj34epjjsvYH3kUs72rD5Ac1jk5fyvlTu3bvQU2G73yWJckofXhTUWelw8KVrzFhdafoRsgsLKp5H/fRhdtqIvZCDZnrqUlnrTWbFcn9jUs8BAVnhfMbr84ylMrZ3KImatzaNNf0J6PAg+32VOReEVHbRjXQKqwvQnIxhiDhT3555BDbc4Y8RFTGV9rsBhBruYkLl3E7aSXvPjHinLkmU4Y0NCZUtM6c/K7kvR7m3+qciRLljM/+4lSfhWSlNpCA/CCEKzhADbV+yFFrapt+aAvoYpEKhaH3jbiaHqqVBrNXFNY6QJnsukDNN9w22WJLm0xNMrXRonjDsoQTesdp6jS3IpNSMp2+LkXJoh3csf1dMh/PzK6mcH4O67yOOiHHJuC8x45TlnoiXbqGzDGMPradJDdbTjqxt6BifsD64wWK4q+iME2WmCZzxgttuDbvTAOn1pqK3e2trwaIV
+ c2ac794H
+ PcMhfVBiwAgXYlUhIjVK8jXqrsIhNcbxaHFgPW8lNQMv0j92cgXBHJeuI1GKwJtUdPwP6snZymul1x/JRFPydpJhvlvWMO+B///jcVHfD74MwUiCXzZeGkd6ISVfkCHUzrPbdc+mr8RX8HK2Io3UOgX6JHCK66O/7bjPzN7bUWBzcx9hzqE/uvDTRkBZhW1+fLnf0EiYHchm560/CKcr8UmA5y2OkqC1yv5GW84eqHw2+YmtJagN5kn9iJhfAb8MR7JA89ce3ubpwETVB8D0fc8oifsm+d7aokKNho7O0NqXfdtg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,232 +96,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
++Hui Zhu
 
-Introduce KHO ABI header describing preservation ABI for memblock's
-reserve_mem regions and link the relevant documentation to KHO docs.
+Hi Jiayuan,
 
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- Documentation/core-api/kho/abi.rst            |  6 ++
- .../kho/bindings/memblock/memblock.yaml       | 39 ----------
- .../kho/bindings/memblock/reserve-mem.yaml    | 40 -----------
- include/linux/kho/abi/memblock.h              | 72 +++++++++++++++++++
- mm/memblock.c                                 |  4 +-
- 5 files changed, 79 insertions(+), 82 deletions(-)
- delete mode 100644 Documentation/core-api/kho/bindings/memblock/memblock.yaml
- delete mode 100644 Documentation/core-api/kho/bindings/memblock/reserve-mem.yaml
- create mode 100644 include/linux/kho/abi/memblock.h
+On Mon, Dec 29, 2025 at 11:39:55AM +0800, Jiayuan Chen wrote:
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> 
+> Problem
+> -------
+> We observed an issue in production where a workload continuously
+> triggering memory.high also generates massive disk IO READ, causing
+> system-wide performance degradation.
+> 
+> This happens because memory.high penalty is currently based solely on
+> the overage amount, not the actual impact of that overage:
+> 
+> 1. A memcg over memory.high reclaiming cold/unused pages
+>    → minimal system impact, light penalty is appropriate
+> 
+> 2. A memcg over memory.high with hot pages being continuously
+>    reclaimed and refaulted → severe IO pressure, needs heavy penalty
+> 
+> Both cases receive identical penalties today. Users are forced to
+> combine memory.high with io.max as a workaround, but this is:
+> - The wrong abstraction level (memory policy shouldn't require IO tuning)
+> - Hard to configure correctly across different storage devices
+> - Unintuitive for users who only want memory control
+>
 
-diff --git a/Documentation/core-api/kho/abi.rst b/Documentation/core-api/kho/abi.rst
-index 1d9916adee23..2e63be3486cf 100644
---- a/Documentation/core-api/kho/abi.rst
-+++ b/Documentation/core-api/kho/abi.rst
-@@ -16,6 +16,12 @@ vmalloc preservation ABI
- .. kernel-doc:: include/linux/kho/abi/kexec_handover.h
-    :doc: Kexec Handover ABI for vmalloc Preservation
- 
-+memblock preservation ABI
-+=========================
-+
-+.. kernel-doc:: include/linux/kho/abi/memblock.h
-+   :doc: memblock kexec handover ABI
-+
- See Also
- ========
- 
-diff --git a/Documentation/core-api/kho/bindings/memblock/memblock.yaml b/Documentation/core-api/kho/bindings/memblock/memblock.yaml
-deleted file mode 100644
-index d388c28eb91d..000000000000
---- a/Documentation/core-api/kho/bindings/memblock/memblock.yaml
-+++ /dev/null
-@@ -1,39 +0,0 @@
--# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
--%YAML 1.2
-----
--title: Memblock reserved memory
--
--maintainers:
--  - Mike Rapoport <rppt@kernel.org>
--
--description: |
--  Memblock can serialize its current memory reservations created with
--  reserve_mem command line option across kexec through KHO.
--  The post-KHO kernel can then consume these reservations and they are
--  guaranteed to have the same physical address.
--
--properties:
--  compatible:
--    enum:
--      - reserve-mem-v1
--
--patternProperties:
--  "$[0-9a-f_]+^":
--    $ref: reserve-mem.yaml#
--    description: reserved memory regions
--
--required:
--  - compatible
--
--additionalProperties: false
--
--examples:
--  - |
--    memblock {
--      compatible = "memblock-v1";
--      n1 {
--        compatible = "reserve-mem-v1";
--        start = <0xc06b 0x4000000>;
--        size = <0x04 0x00>;
--      };
--    };
-diff --git a/Documentation/core-api/kho/bindings/memblock/reserve-mem.yaml b/Documentation/core-api/kho/bindings/memblock/reserve-mem.yaml
-deleted file mode 100644
-index 10282d3d1bcd..000000000000
---- a/Documentation/core-api/kho/bindings/memblock/reserve-mem.yaml
-+++ /dev/null
-@@ -1,40 +0,0 @@
--# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
--%YAML 1.2
-----
--title: Memblock reserved memory regions
--
--maintainers:
--  - Mike Rapoport <rppt@kernel.org>
--
--description: |
--  Memblock can serialize its current memory reservations created with
--  reserve_mem command line option across kexec through KHO.
--  This object describes each such region.
--
--properties:
--  compatible:
--    enum:
--      - reserve-mem-v1
--
--  start:
--    description: |
--      physical address (u64) of the reserved memory region.
--
--  size:
--    description: |
--      size (u64) of the reserved memory region.
--
--required:
--  - compatible
--  - start
--  - size
--
--additionalProperties: false
--
--examples:
--  - |
--    n1 {
--      compatible = "reserve-mem-v1";
--      start = <0xc06b 0x4000000>;
--      size = <0x04 0x00>;
--    };
-diff --git a/include/linux/kho/abi/memblock.h b/include/linux/kho/abi/memblock.h
-new file mode 100644
-index 000000000000..fbfb2eb1b1cf
---- /dev/null
-+++ b/include/linux/kho/abi/memblock.h
-@@ -0,0 +1,72 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#ifndef _LINUX_KHO_ABI_MEMBLOCK_H
-+#define _LINUX_KHO_ABI_MEMBLOCK_H
-+
-+/**
-+ * DOC: memblock kexec handover ABI
-+ *
-+ * Memblock can serialize its current memory reservations created with
-+ * reserve_mem command line option across kexec through KHO.
-+ * The post-KHO kernel can then consume these reservations and they are
-+ * guaranteed to have the same physical address.
-+ *
-+ * The state is serialized using Flattened Device Tree (FDT) format. Any
-+ * modification to the FDT structure, node properties, or the compatible
-+ * strings constitutes a breaking change. Such changes require incrementing the
-+ * version number in the relevant `_COMPATIBLE` string to prevent a new kernel
-+ * from misinterpreting data from an old kernel.
-+ *
-+ * Changes are allowed provided the compatibility version is incremented.
-+ * However, backward/forward compatibility is only guaranteed for kernels
-+ * supporting the same ABI version.
-+ *
-+ * FDT Structure Overview:
-+ *   The entire memblock state is encapsulated within a single KHO entry named
-+ *   "memblock".
-+ *   This entry contains an FDT with the following layout:
-+ *
-+ *   .. code-block:: none
-+ *
-+ *	/ {
-+ *		compatible = "memblock-v1";
-+ *
-+ *		n1 {
-+ *			compatible = "reserve-mem-v1";
-+ *			start = <0xc06b 0x4000000>;
-+ *			size = <0x04 0x00>;
-+ *		};
-+ *	};
-+ *
-+ * Main memblock node (/):
-+ *
-+ *   - compatible: "memblock-v1"
-+
-+ *     Identifies the overall memblock ABI version.
-+ *
-+ * reserved_mem node:
-+ *   These nodes describe all reserve_mem regions.
-+ *
-+ *   - compatible: "reserve-mem-v1"
-+ *
-+ *     Identifies the ABI version of reserve_mem descriptions
-+ *
-+ *   - start: u64
-+ *
-+ *     Physical address of the reserved memory region.
-+ *
-+ *   - size: u64
-+ *
-+ *     size in bytes of the reserved memory region.
-+ */
-+
-+/* Top level memblock FDT node name. */
-+#define MEMBLOCK_KHO_FDT "memblock"
-+
-+/* The compatible string for the memblock FDT root node. */
-+#define MEMBLOCK_KHO_NODE_COMPATIBLE "memblock-v1"
-+
-+/* The compatible string for the reserve_mem FDT nodes. */
-+#define RESERVE_MEM_KHO_NODE_COMPATIBLE "reserve-mem-v1"
-+
-+#endif /* _LINUX_KHO_ABI_MEMBLOCK_H */
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 905d06b16348..6cff515d82f4 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -21,6 +21,7 @@
- #ifdef CONFIG_KEXEC_HANDOVER
- #include <linux/libfdt.h>
- #include <linux/kexec_handover.h>
-+#include <linux/kho/abi/memblock.h>
- #endif /* CONFIG_KEXEC_HANDOVER */
- 
- #include <asm/sections.h>
-@@ -2442,9 +2443,6 @@ int reserve_mem_release_by_name(const char *name)
- }
- 
- #ifdef CONFIG_KEXEC_HANDOVER
--#define MEMBLOCK_KHO_FDT "memblock"
--#define MEMBLOCK_KHO_NODE_COMPATIBLE "memblock-v1"
--#define RESERVE_MEM_KHO_NODE_COMPATIBLE "reserve-mem-v1"
- 
- static int __init reserved_mem_preserve(void)
- {
--- 
-2.51.0
+Thanks for raising and reporting this use-case. Overall I am supportive
+of making memory.high more useful but instead of adding more more
+heuristic in the kernel, I would prefer to make the enforcement of
+memory.high more flexible with BPF.
 
+At the moment, Hui Zhu is working on adding BPF support for memcg but it
+is very generic and I would prefer to start with specific and real
+use-case. I think your use-case is real and will be beneficial to many
+other users. Can you please followup on that Hui's RFC to present your
+use-case? I will also try to push the effort from the review side.
+
+thanks,
+Shakeel
 
