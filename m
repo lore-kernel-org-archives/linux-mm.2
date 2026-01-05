@@ -4,123 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CAE2C79F87
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 12:31:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BA2EC79F87
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 12:42:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD14B6B013B; Mon,  5 Jan 2026 07:31:01 -0500 (EST)
+	id 4D5F66B013F; Mon,  5 Jan 2026 07:42:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA9446B013E; Mon,  5 Jan 2026 07:31:01 -0500 (EST)
+	id 47AED6B0140; Mon,  5 Jan 2026 07:42:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD6066B013F; Mon,  5 Jan 2026 07:31:01 -0500 (EST)
+	id 37A256B0141; Mon,  5 Jan 2026 07:42:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AE2306B013B
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 07:31:01 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A0BD1A2541
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 12:31:01 +0000 (UTC)
-X-FDA: 84297844722.29.F888D10
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 50E44100013
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 12:30:59 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=O0T4Ylai;
-	spf=pass (imf05.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 22B136B013F
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 07:42:43 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 77A421A2579
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 12:42:42 +0000 (UTC)
+X-FDA: 84297874164.16.32B53A5
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 869D9C000D
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 12:42:40 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=SNjDn4O6;
+	spf=pass (imf22.hostedemail.com: domain of 3vrFbaQkKCOEDOLFHUbKOJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--aliceryhl.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3vrFbaQkKCOEDOLFHUbKOJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767616960; a=rsa-sha256;
+	cv=none;
+	b=S1os82o9YxnJQ2YmkbtjVYM+1RaB62Le5E99iKm6zsGwN8SzecgbRUa54G9R7PDQGTsdAD
+	rl2dALLP/DKFLzDQur0DAVMndDnN34EITm1bAsd4Q6ND/hyad/JIJdHgWp8PM6OkcADj9b
+	5t8gO8f8nKz16VBQVnN5u2sAKOvclkE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=SNjDn4O6;
+	spf=pass (imf22.hostedemail.com: domain of 3vrFbaQkKCOEDOLFHUbKOJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--aliceryhl.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3vrFbaQkKCOEDOLFHUbKOJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767616259;
+	s=arc-20220608; t=1767616960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zCWMOYN02QpBDQ3to6O345gp9Yx6Y45Zca158HmgYQU=;
-	b=QV3wwKhfA5+S3qF7uphqQFB7rwrG43VJYKx72/fB+H6/u7MWe/Nb/ZYAwbwr7tHToXrZjo
-	Logg1oPbdDuG5gnqW7oLYkb07ksk7LhqJ2aStRkgkUSAv/exp29d13RvDsp0Zsc3YGmijx
-	exiADoxWiPebpE8WKiKcq6jhf4vWfAs=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=O0T4Ylai;
-	spf=pass (imf05.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767616259; a=rsa-sha256;
-	cv=none;
-	b=3lk0yzKuSh4U+ItrAp1Kkos/R8T8dhShxU5WDp6omUtKJPdEUq7mu1kkJbApm0b5bAe+JJ
-	LyZCSdHeIlXq9yuuHhdUrOgZuH1LBInrnlEUoMIuLcTBiuhJvX0qUk++cvyN51JQXidvD8
-	xwWaoo30o219sIlWmx8QuzroT138YRE=
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-34c21417781so14771476a91.3
-        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 04:30:59 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=suTH4y/aK07UioTUbupgL2cgp19BWpg3A0c3oYdgR0I=;
+	b=thix9tfaePLKj6+xVwJ/gi6tskRn1HBWz6aJEqgvB3PhkMwjqTp9Y6ZFBVgL4Xk24L5IzP
+	P4WXlU8UcoNXF/Ie44Ds43w/bF8Lr1N1n3mm0Ogdrh0KEkPdkL4xcHvbnnMGKNFC5Ha7kQ
+	CWDHFikB83Zmhi3ejKc2KEiFqfimGmA=
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b8395caeab6so55326066b.2
+        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 04:42:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767616258; x=1768221058; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=zCWMOYN02QpBDQ3to6O345gp9Yx6Y45Zca158HmgYQU=;
-        b=O0T4Ylai+V0DWP8wUWHLDdbLxhqAXI6JCzHn5zsSlB5kf7x2etdF1bJaId4F4OBfsh
-         MC8FA/suLkvIIE2G44YPrH3GnkWozmf7mrSYkSnKF/RFjK2eIvUkuXht0Dm1Ig37w1av
-         p4czjUHzIk+l0qKzmJUtZ+h9bOqzg74vG68gxVc5yQpeNUS6bcRnh5f6HsoK8iZJXkB7
-         6gbi76yozLUoT1xQK8BwHj8H1Mpnu/wot0iakhVFm4+RNQf7FThW1pq3Bl4wV8qlFFpd
-         zASjB7kWW3JNYzMlEMVBn7niJRpJ319zmty6nzIpB3LIIUK24YweGvJwT0Yh4B4RCQPg
-         4CQQ==
+        d=google.com; s=20230601; t=1767616959; x=1768221759; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=suTH4y/aK07UioTUbupgL2cgp19BWpg3A0c3oYdgR0I=;
+        b=SNjDn4O64NBZnwyUErYEHjMF1GpvIgT2bbep6NaXBJ1Yb6zeQaLh2rKzJp+IfFY3+M
+         Gk3yrCYE2Bx9a0QlnsISiYfYKkwT8wfgj9wmoDzxPlfEL1fJAg1ltMXBRAmM97//itk6
+         26Ai8f3IOGe0skr0K9gGeq5+zLP7os4HybHrjQfK4YAQcXP8ZSSyeO3PLPPrg1quzwsj
+         dxaaACh/NqxqgzEJKo0o9AFludIWIxqjkewdiZVhnP8RbfC8M+xORZZS1qIa2jZG1Fwc
+         Vf3hxA7X1ixxvoFcHzQfzxZy5F08irdRyGg90YDSSAYBNVEAbbnI1o2yf2hXARsk5Jts
+         xg/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767616258; x=1768221058;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zCWMOYN02QpBDQ3to6O345gp9Yx6Y45Zca158HmgYQU=;
-        b=UQB45deLEH2SYOqjyjVUHf40J3d5/3e77FY8sOlPiF2+f0vxZJhRWdNfxEr1sT5VmS
-         F62YmAW2KEM1Qd8p5wLxqTjWA+wvV/NZhHTZxcUnGBWDNi6LbjvUkmhbrNd4lvYaH1Z2
-         rZk/zCBMXWQC6FYx5bsh+z440PGyjW6z9oiFBw/JqNupT+gKO4NVV55R1IWOzdmSQ4Rw
-         ZmaTG2LyBdqtHvw8FfxRoHDWjm3iU/iqBFUW8cQv784s8IoPj9nMM+FRKxh0tnVLkc5b
-         9hc0V5w81MlvYx6vRtM/axQIUibf7YPfrOei58CpG1RtzSpqEEk7UnQr6agUQVJO2RVU
-         WT3A==
-X-Forwarded-Encrypted: i=1; AJvYcCWGpvwSh+fyyftZLp53qlvPjM/pbdV3zVU3utIsy9BQwtSxZBS0WMat4FLQL1N/6i8OuUtYjWB+Ww==@kvack.org
-X-Gm-Message-State: AOJu0YwcKMgM91TgxfNlE22/FSlaviuZc/gruOryf2mKE+lSxtRfCNpZ
-	qdTcPjzC9mtjSBNFu15Bsm5jCxu8ji5Qv3r0NR/5FII9O9iB0Fsww9Xafddhq4jy
-X-Gm-Gg: AY/fxX6yXBiDpToAjCoRkn05/kJrExRTGvFIFVRy3uOwoS1XUjFF0QcyfYNDOSgbYQF
-	574bZTE40tkz140bnrWfm2NQ7uIYdfijGB9zDWAAjZapclxmqXORuOSM6u3OYceDGAWLSREfTPg
-	B9kRd6wI0oQCI0/s3HL1fe62Rg8oIcEwp36U5ac7Gkv5F33APN6nFcljXqoiBRWFbUREBNLkIzM
-	w++Sfxqjg+BG//1rA/f2InNJKWQH5QAjJhf6F0XPEfYmpRuqKrzVz446adv7R/zbJyYzT4oS5Ui
-	lohaA7aiqTK+/g3gT2NwFq4d7meKmFC2LCrPCFviZEFMvHEpLK7NRXXdOdA2Py4kyfu6ofDkii4
-	v6zANpJ9f+lkBIrF/zXGu9JMHFcBzIHfgFhpgaeTtgqwYqciUigH/0/jBWq4gmfo5l9aWQiksNP
-	YVyKJMA1Ug8PPHRf9kRTT/8q8=
-X-Google-Smtp-Source: AGHT+IFEx4eFq/GPPm0MzR5yjXwkMy832NpHYKUtp+HdxJhx6g05jsnDashjdiYnKLGufDJ09ME82g==
-X-Received: by 2002:a17:90b:5245:b0:349:19a8:e00e with SMTP id 98e67ed59e1d1-34e921bc767mr39321331a91.31.1767616257915;
-        Mon, 05 Jan 2026 04:30:57 -0800 (PST)
-Received: from localhost.localdomain ([121.232.80.251])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f450e68fesm2722273a91.4.2026.01.05.04.30.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 04:30:57 -0800 (PST)
-Date: Mon, 5 Jan 2026 20:30:46 +0800
-From: Vernon Yang <vernon2gm@gmail.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com, 
-	baohua@kernel.org, richard.weiyang@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>, akpm@linux-foundation.org, 
-	david@kernel.org
-Subject: Re: [PATCH v3 5/6] mm: khugepaged: skip lazy-free folios at scanning
-Message-ID: <tpowqsrlxwx6hu5ljry54wpt5lverarqeincc3jufrqhfjmwwy@uzs6q6gecubd>
-References: <20260104054112.4541-1-yanglincheng@kylinos.cn>
- <20260104054112.4541-6-yanglincheng@kylinos.cn>
- <9c82ffaa-5f62-4110-80cc-00f0c46e90fb@linux.dev>
- <3lbptab7e2nhqilwnoccq6kxks2r55j3ffqtslt62o2qtgulk5@w4mwglb2kd75>
- <d3fd4546-3161-4d58-b018-31aca53b6b04@linux.dev>
- <CACZaFFNJO+-yZdDPdN-5rQLuJvT5cp2pbtqV13FHo9PeqtxARg@mail.gmail.com>
- <cf094519-82e1-4f11-b670-dacf89da22ef@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cf094519-82e1-4f11-b670-dacf89da22ef@linux.dev>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 50E44100013
-X-Stat-Signature: sh7g5xtu1796ehmfoh7b8q9h9c9h6p8d
+        d=1e100.net; s=20230601; t=1767616959; x=1768221759;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=suTH4y/aK07UioTUbupgL2cgp19BWpg3A0c3oYdgR0I=;
+        b=ldwM01JKUU45RJyeTBXm7zE5zNQNVFzrX0t0DeB948df0vbR78Op93FbEy/R9hQtKH
+         r97fE2KFOIbf1MNE+IQwV8mhJL8eGxerYJXtwtt0T80ILpmoun6Y1t7EKFeN9QEkjY7s
+         n+3uoBFNzV4kjW6wLwF+NZyAkZ7P1PaSXstWogYaAc6onoK4BwJAXfjpmNI57Sz0DJa9
+         6ki9RSSwQuJurNsyyfMZhX/MW5zUFqYtCw+PnQeKDAYIZNLKR9hL01PSZpXw5VmDjjyj
+         EDRTYhmQcNxHQ5UXVpWyAomFpXXOoNnT4nlsFTdc0E5ekAxAKs4W59hUe381LbMllzVe
+         g27A==
+X-Forwarded-Encrypted: i=1; AJvYcCVqQhHGs1Qa8YBzhG9jZPS/GRXSbwJZuAQYn3w+09DUD+5mBokStnzegEEb18FY+Oxy4YbjrI0N0Q==@kvack.org
+X-Gm-Message-State: AOJu0YwoWQsXGL+w41ufnb9kUTx2EvqSLJI9+NJIVkyCGT4rw4rMqUZe
+	Cu53SYVmyN9zFUZd6rP0rnPtWM6aJF60cJxBixqZFNoXRg6xzZfffmJ0mTBGBI3qwXAbLYJteHN
+	9ebPqZoE0bRxccdOBjQ==
+X-Google-Smtp-Source: AGHT+IGf1O7IHkQTlTr95Pslbnl5wrFL8+HDWkBjzBEOHejeoVvO3AomqVuVaw8gUaSkcMI/MyfZHpwyBJwWEqs=
+X-Received: from ejcul5.prod.google.com ([2002:a17:907:ca85:b0:b73:3b0d:754d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:906:318c:b0:b80:402e:6e77 with SMTP id a640c23a62f3a-b80402e6f1fmr3924567866b.54.1767616958861;
+ Mon, 05 Jan 2026 04:42:38 -0800 (PST)
+Date: Mon, 05 Jan 2026 12:42:13 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAKWxW2kC/32NTQrCMBCFr1Jm7UgmoUZceQ/pok2nSaAmJalBK
+ b27sQdw8+B7vJ8NMifPGW7NBomLzz6GCvLUgHF9sIx+rAxSyJaq4MiTD4zplVd0PC+ccNJDq+h
+ KSggNtbikmnkfo4+usvN5jelzfBT6uX/nCqHAXjIpMxjS/eVuY7Qzn018Qrfv+xf9TXaXtQAAA A==
+X-Change-Id: 20251202-define-rust-helper-f7b531813007
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5550; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=kMOE8SG+apSYdkSF9wxqn459O1XV4mgd4R9CI30yqRE=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpW7G2KP3s3XkvuUe28vfCsN8trnhXVpe23MOsp
+ r09yEuuWCGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaVuxtgAKCRAEWL7uWMY5
+ RvWlEAClQm3dLefLdyw558cl7DXXFM/HG6E0PYtjbQN8CJN5Z73NMsBCPkh4yi3buGxEDSwuLgK
+ knLtqhBaD1uekLELc+gYUWfr87wmwKWNdTFPwiPPorV51hNabNaXw8G7fOYYMdF+oxPpF/1MkqL
+ +h2mkAAuC4NIQrJ858OmgnAGAMmLTFdB1n+a62gCy4lbEQ+P19PHaV421HMwhz7HZ2zymicnR/I
+ YQegrNv3LY5G3K38u1cG0t0TmheZacr6GTA969Qw4qbJHpcuwYXq7kxEqXbgX6m59pwD3Wjjpry
+ hw/QZRKqddie8OdfN4X9hVSaRnZ2YTxS914ZbYHeNxK2aAKzT3hK7KA+iR9yICYNMqRl6tfchAn
+ dbu/pDyjlflom6arj6cS+By423tUdk5jbgU5+GtHRr6jE58lI65j3HOKfdWNAGC68BugTffPYy4
+ ZB6WJ7vIOjICkbpwY3OY8xNiKhiA8NRRgNDmBCtMrU4q1Z02hhm639rqkLt4Ls9fGBvO9/g97YD
+ 6dOKVGW4yqgDQhLSoUQhSGPZSRLMfaz9tqZ4lsyNhCq0/edLIJfsQhCRB3ZHADjjhOMMHK/lpdZ
+ w1UiXgV48Dh91eOwO4H2r6iHlqp4Eydgtc/WDsVIaegqEKCM57R/ttatf0zojd8qfWcDHJyPgdD qkahi/Z6S+Gc45Q==
+X-Mailer: b4 0.14.2
+Message-ID: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com>
+Subject: [PATCH v2 00/27] Allow inlining C helpers into Rust when using LTO
+From: Alice Ryhl <aliceryhl@google.com>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Peter Zijlstra <peterz@infradead.org>, Elle Rhumsaa <elle@weathered-steel.dev>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org, 
+	Benno Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Paul Moore <paul@paul-moore.com>, 
+	Serge Hallyn <sergeh@kernel.org>, linux-security-module@vger.kernel.org, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	Andrew Ballance <andrewjballance@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, maple-tree@lists.infradead.org, 
+	linux-mm@kvack.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Vitaly Wool <vitaly.wool@konsulko.se>, 
+	Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
+	linux-pwm@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>, rcu@vger.kernel.org, 
+	Will Deacon <will@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Ingo Molnar <mingo@redhat.com>, 
+	Waiman Long <longman@redhat.com>, Mitchell Levy <levymitchell0@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, linux-usb@vger.kernel.org, 
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, Tamir Duberstein <tamird@gmail.com>, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-HE-Tag: 1767616259-12501
-X-HE-Meta: U2FsdGVkX1/WCgHdn+VVTOM1I9DzEfcJIIcCutzLGWGVIPRDxcWssCofiAKksunNkRTR18KO3AlkhkOV2LuiOf5i8LRzYBo7plRGL+aw0pcQiurCszqdFvp9S8Y6dXOgskbtcY/tj1LkadaPQapO/BvrysXhjIp45gxPjFUGv1JD6dGGVoPTFYnIe5iPLzem3FzXPnYJV7SjohMa6mBn08asbCX7HJ1GLzptoca9t0NvZ8mCO80ZVYJvSmkirsW3/1rPxX2eRNAEOSY3FnoJsIGv+3xehXXfIy+Y8StkvYbOFQg3jD4Xf3lQqlWprvrLh1qcUVSRlmTuPxKdVdyJfDBmhEJYCTq3FsHqVkA149WT/QEwmcwZ1Of8Oxovvw3yqq1Q2MqizojwAbBQsoKeeAmf63S8a/GPgjdVw0mz2zBVl7aV2DF2oENl2kJfA1V53OMZnjg+d5Y/36n68WDAhX/L663kqu39bD6Zl8qDyh25/TMeNa8dVW/9bSupF7nsPv8oE7URMqRAk9oYxVsME3NRy3piZVO9Mgk/fyAY7fpnhCyHiogTZfisLxTg6/o6GuppfaNfU6a9yl9EV4iJ1xaATbG+5r4XubwOblGZ0KZsrTUlTJJm92Td63C6XZm2KGBLEydHEwxmWfiYF2xMUaf6v36g0vUVkFcySn55jSBiA6kUfFaPIQjDuA9K6kMSaetwxRKl32oCnTZTRPineRsQpfuyVgd2SSVdbXYfrsLLqlpaUra7+Lz5JK3iIB9rW52Kxss23xvloNogu2Rj4aMdzsNhCy4gCWLh64FMa18aT37ofSex0OAOJEhkukopv+xvYUjbsPv6y1KT6CwbOpTsT7f+2pQKpkToTS/wMV6JnDVK6lLYHgTKYqRgm9HB9yzUCV4Ym1SJNy8Iqm6MNpyWEPxvk7Ca+Cp9abvDwdFgIaHRoAaHHB9RD6LbwN3s07rAAW3cshr+b+JuOWE
- zyo3/meE
- y2GHES+R1Ep1CpGLexOwDt9Wzsq2c/ox7MUEEGER4QrKa1qRNnJHfCwHx5liPuUmjC+TXl7qKY1O0RRgDOlTk5DCaRZmpD2EOK6YGMaX+Ub1w7SFFs/tYnZi5DwmFLPwMMAHc0gmRluuVmFMYBiE1j0VtF5AmTsTtyAvHwnLSTrN89ZCc12i6HRbxNnPV8wqsUsIjdJ2cUZfBvNHY+8tk0Zvva1KqnTM+NrhbpG3EtIP0kcMo4DrUfbiIItkm5z6g1m/9FRIef2UDhbJniojJOikFkkvMzMVS2S1IbjYNSf0pudD2EnOWYH5BLV+5AmJvMTPyUqmUlPmRJuaV4z2qRjXyyfIpEIsxo6OWY95Vwhz3h8rU6Ao6Jd4pcxzxsi74GxAt8tjX687By1JD3dsoQ18SW3aWiv9PxD3p22pw2H90jHLG+4trneWyUv3DGdcjxvaRtJUt/IC7bv2QsON8McK7RADsU+x+20RLy5Kcr5HxU8caO1huYpcj89LQB6PH1EmV0p/9DFKLNDm7DFtfmzvGlw==
+X-Rspamd-Queue-Id: 869D9C000D
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 7fr11zbo8a8bmie4jwdf4j7g731atwda
+X-HE-Tag: 1767616960-743687
+X-HE-Meta: U2FsdGVkX1+8FAygg0UOItmOUOoq8VYHFJ/Ozju0n0INQuA7dXpCMyDrXeNnd11KTX1v7sZPeTyVC9L5eYAVuGx+2xmTxnX25bn3uJoRFAgg/SMWrOTKT4VY2lb1Rq9zZyvRI4JWbc/WMdM5OdqZJyF9yH5dSuIHGcj8arPCAku8GI2dzeKjdDuXrfX1EJwWv2N1deGCNLAsvRnAjeLA87bTvTX3UAR6ySvoIM5p92OmHD6m9bOU3JrQ8bEFfhD9HLLZ9ooyjvUdUhhWeIpBOzQ751km4tRKk34Uhsxguka3wI6EoA2IHreauZ07iArYUuSoANCi5aSgly0OvTTHtlQIE1W+FEsyRuNDs/4YxiCRJI2qOQknx0vtgilVY/Q7yQ9duB+2OX1vGVAXXACXbBeN12ziATPCQ9eTs5OoKkgzMNt+reFs12/k6RcPGNjrtHWujAR9DRvSFo9KQ2nV9BMj75xNHC1foJGeRUoaER0bN9Qn6XErTgqB9NLK293cScFL77OX9SAamvtfse1Nt0LqzWHCiivOF2l8hYq/j7FV+aH6TOqZSQfxSD/r6kVr8YZ0P9uWkriF793kDLiIJl9yiiJ+AjeZOikuEF6iA6hak73Xs4itNtkd8iGbCRywEb1hiWxhtH8FRLxY56m3XqB6UucUtTBsvbQ6kJrPStgeCAm01AEKipky4rEskmDNf1P+uXIghtCzzvZ+oLQr27V7Xc+loTQ8HufbfQkNw97uvD/SxYZNXxxzSvxIJx16dlZ9B5xvrt5usG+C6yShcHFp660DJJhUwmlYlghB+/HnK4fIwVW+jXq6X8R6KuKmvE4UyaQc7qet41pwebOTT77pVYsUICsPPpmxSk1CnnoM1P1CiMNgggHt+mFyXAIixuvvbAUi7lPMhJUoe+nS1diBC6JkouMmP6S9UbbGu8zvuNqxAcyyFgVINO5mfWaULvaV85Y/BXl8CYU0j5u
+ cTxY2xxt
+ MLZIJDB2Y3YLTMmP+tuVAKDD9Rcefx12kh77rhyATVLMS0oPfQlYw1YsPH+/fbaUnKHxYsa0UovsdUmM2B2EhxLxCG3Z9hsBhZC+rpE5jGemdyfgsqAYomQiSeGinGQLTqdlmxyrxo0Xd/txxQld4VRe9v9K4m8kF34iIDT/nBNmoRPjWguQyUldFkwEP0Fwc/3JaejencF6xjia6fT17JeKWtDSr/vhmGT8uRRAjy5tryM8FeQS4D+1siHBnZQ1ev/4Nk46G5+M/HSdVVcU3if1KIQ8+0EIeH7znhgKxrkC8gkTbuZ18U/HgWqtx+/gPvGB8b3Rw9uBnnXTgolRThrIngm5O0PumIQ0I3QrDP86lg5v2ulg+VwUZwdqkVGYN9gXs3S37CcnOZ4bHTJqyMLGVx/KE/+wHVHvCylXH7B9oVBw2LqG03fnf9u0DKcwlvMqG5i/Ne6HzuazDy+TeZakiYrfb2POgTGSCkkThv/YFcsSTK6p2Mz7lDdIDnIqWBKu5XrHs00ReOyBbf9JGw0qmwFgyYopHTGMKpOx0aSv6vFK1le4gKlU0u/7anVrviJusQ1hFPrQJ7KwpDlkqjdnyXCEv2VamwPlRbdeCE1TA0ETsTWTs+zxuh97Wy60twgBK6tSmkZjUZH8uxvmTz8vNXScHtBrhsEsuuujyUtqClwZNtq7pgztSmnUDCasccys3pK5Qo9Ctvgd8tN0VEvsd6Aavi4w4TVEAGq6UyH8KFVk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,193 +148,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 05, 2026 at 11:35:58AM +0800, Lance Yang wrote:
->
->
-> On 2026/1/5 11:12, Vernon Yang wrote:
-> > On Mon, Jan 5, 2026 at 10:51 AM Lance Yang <lance.yang@linux.dev> wrote:
-> > >
-> > > On 2026/1/5 09:48, Vernon Yang wrote:
-> > > > On Sun, Jan 04, 2026 at 08:10:17PM +0800, Lance Yang wrote:
-> > > > >
-> > > > >
-> > > > > On 2026/1/4 13:41, Vernon Yang wrote:
-> > > > > > For example, create three task: hot1 -> cold -> hot2. After all three
-> > > > > > task are created, each allocate memory 128MB. the hot1/hot2 task
-> > > > > > continuously access 128 MB memory, while the cold task only accesses
-> > > > > > its memory briefly andthen call madvise(MADV_FREE). However, khugepaged
-> > > > > > still prioritizes scanning the cold task and only scans the hot2 task
-> > > > > > after completing the scan of the cold task.
-> > > > > >
-> > > > > > So if the user has explicitly informed us via MADV_FREE that this memory
-> > > > > > will be freed, it is appropriate for khugepaged to skip it only, thereby
-> > > > > > avoiding unnecessary scan and collapse operations to reducing CPU
-> > > > > > wastage.
-> > > > > >
-> > > > > > Here are the performance test results:
-> > > > > > (Throughput bigger is better, other smaller is better)
-> > > > > >
-> > > > > > Testing on x86_64 machine:
-> > > > > >
-> > > > > > | task hot2           | without patch | with patch    |  delta  |
-> > > > > > |---------------------|---------------|---------------|---------|
-> > > > > > | total accesses time |  3.14 sec     |  2.93 sec     | -6.69%  |
-> > > > > > | cycles per access   |  4.96         |  2.21         | -55.44% |
-> > > > > > | Throughput          |  104.38 M/sec |  111.89 M/sec | +7.19%  |
-> > > > > > | dTLB-load-misses    |  284814532    |  69597236     | -75.56% |
-> > > > > >
-> > > > > > Testing on qemu-system-x86_64 -enable-kvm:
-> > > > > >
-> > > > > > | task hot2           | without patch | with patch    |  delta  |
-> > > > > > |---------------------|---------------|---------------|---------|
-> > > > > > | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
-> > > > > > | cycles per access   |  7.29         |  2.07         | -71.60% |
-> > > > > > | Throughput          |  97.67 M/sec  |  110.77 M/sec | +13.41% |
-> > > > > > | dTLB-load-misses    |  241600871    |  3216108      | -98.67% |
-> > > > > >
-> > > > > > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-> > > > > > ---
-> > > > > >     include/trace/events/huge_memory.h | 1 +
-> > > > > >     mm/khugepaged.c                    | 6 ++++++
-> > > > > >     2 files changed, 7 insertions(+)
-> > > > > >
-> > > > > > diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-> > > > > > index 01225dd27ad5..e99d5f71f2a4 100644
-> > > > > > --- a/include/trace/events/huge_memory.h
-> > > > > > +++ b/include/trace/events/huge_memory.h
-> > > > > > @@ -25,6 +25,7 @@
-> > > > > >      EM( SCAN_PAGE_LRU,              "page_not_in_lru")              \
-> > > > > >      EM( SCAN_PAGE_LOCK,             "page_locked")                  \
-> > > > > >      EM( SCAN_PAGE_ANON,             "page_not_anon")                \
-> > > > > > +   EM( SCAN_PAGE_LAZYFREE,         "page_lazyfree")                \
-> > > > > >      EM( SCAN_PAGE_COMPOUND,         "page_compound")                \
-> > > > > >      EM( SCAN_ANY_PROCESS,           "no_process_for_page")          \
-> > > > > >      EM( SCAN_VMA_NULL,              "vma_null")                     \
-> > > > > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > > > > > index 30786c706c4a..1ca034a5f653 100644
-> > > > > > --- a/mm/khugepaged.c
-> > > > > > +++ b/mm/khugepaged.c
-> > > > > > @@ -45,6 +45,7 @@ enum scan_result {
-> > > > > >      SCAN_PAGE_LRU,
-> > > > > >      SCAN_PAGE_LOCK,
-> > > > > >      SCAN_PAGE_ANON,
-> > > > > > +   SCAN_PAGE_LAZYFREE,
-> > > > > >      SCAN_PAGE_COMPOUND,
-> > > > > >      SCAN_ANY_PROCESS,
-> > > > > >      SCAN_VMA_NULL,
-> > > > > > @@ -1337,6 +1338,11 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
-> > > > > >              }
-> > > > > >              folio = page_folio(page);
-> > > > > > +           if (folio_is_lazyfree(folio)) {
-> > > > > > +                   result = SCAN_PAGE_LAZYFREE;
-> > > > > > +                   goto out_unmap;
-> > > > > > +           }
-> > > > >
-> > > > > That's a bit tricky ... I don't think we need to handle MADV_FREE pages
-> > > > > differently :)
-> > > > >
-> > > > > MADV_FREE pages are likely cold memory, but what if there are just
-> > > > > a few MADV_FREE pages in a hot memory region? Skipping the entire
-> > > > > region would be unfortunate ...
-> > > >
-> > > > If there are hot in lazyfree folios, the folio will be set as non-lazyfree
-> > > > in the memory reclaim path, it is not skipped in the next scan in the
-> > > > khugepaged.
-> > > >
-> > > > shrink_folio_list()
-> > > >     try_to_unmap()
-> > > >       folio_set_swapbacked()
-> > > >
-> > > > If there are no hot in lazyfree folios, continuing the collapse would
-> > > > waste CPU and require a long wait (khugepaged_scan_sleep_millisecs).
-> > > > Additionally, due to collapse hugepage become non-lazyfree, preventing
-> > > > the rapid release of lazyfree folios in the memory reclaim path.
-> > > >
-> > > > So skipping lazy-free folios make sense here for us.
-> > > >
-> > > > If I missed something, please let me know, thank!
-> > >
-> > > I'm not saying lazyfree pages become hot :)
-> > >
-> > > If a PMD region has mostly hot pages but just a few lazyfree
-> > > pages, we would skip the entire region. Those hot pages won't
-> > > be collapsed.
-> >
-> > Same above, the lazyfree folios will be set as non-lazyfree
->
-> Nop ...
->
-> > in the memory reclaim path, it is not skipped in the next scan,
-> > the PMD region will collapse :)
->
-> Let me be more specific:
->
-> Assume we have a PMD region (512 pages):
-> - Pages 0-499: hot pages (frequently accessed, NOT lazyfree)
-> - Pages 500-511: lazyfree pages (MADV_FREE'd and clean)
->
-> This patch skips the entire region when it hits page 500. So pages
-> 0-499 can't be collapsed, even though they are hot.
->
-> I'm NOT saying lazyfree pages themselves become hot ;)
->
-> As I mentioned earlier, even if we skip these pages now, after they
-> are reclaimed they become pte_none. Then khugepaged will try to
-> collapse them anyway (based on khugepaged_max_ptes_none). So
-> skipping them just delays things, it does not really change the
-> final result ...
+This patch series adds __rust_helper to every single rust helper. The
+patches do not depend on each other, so maintainers please go ahead and
+pick up any patches relevant to your subsystem! Or provide your Acked-by
+so that Miguel can pick them up.
 
-I got it. Thank you for explain.
-I refine the code, it can resolve this issue, as follows:
+These changes were generated by adding __rust_helper and running
+ClangFormat. Unrelated formatting changes were removed manually.
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 30786c706c4a..afea2e12394e 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -45,6 +45,7 @@ enum scan_result {
- 	SCAN_PAGE_LRU,
- 	SCAN_PAGE_LOCK,
- 	SCAN_PAGE_ANON,
-+	SCAN_PAGE_LAZYFREE,
- 	SCAN_PAGE_COMPOUND,
- 	SCAN_ANY_PROCESS,
- 	SCAN_VMA_NULL,
-@@ -1256,6 +1257,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 	pte_t *pte, *_pte;
- 	int result = SCAN_FAIL, referenced = 0;
- 	int none_or_zero = 0, shared = 0;
-+	int lazyfree = 0;
- 	struct page *page = NULL;
- 	struct folio *folio = NULL;
- 	unsigned long addr;
-@@ -1337,6 +1339,21 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 		}
- 		folio = page_folio(page);
+Why is __rust_helper needed?
+============================
 
-+		if (cc->is_khugepaged && !pte_dirty(pteval) &&
-+		    folio_is_lazyfree(folio)) {
-+			++lazyfree;
-+
-+			/*
-+			 * Due to the lazyfree-folios is reclaimed become
-+			 * pte_none, make sure it doesn't continue to be
-+			 * collapsed when skip ahead.
-+			 */
-+			if ((lazyfree + none_or_zero) > khugepaged_max_ptes_none) {
-+				result = SCAN_PAGE_LAZYFREE;
-+				goto out_unmap;
-+			}
-+		}
-+
- 		if (!folio_test_anon(folio)) {
- 			result = SCAN_PAGE_ANON;
- 			goto out_unmap;
+Currently, C helpers cannot be inlined into Rust even when using LTO
+because LLVM detects slightly different options on the codegen units.
 
+* LLVM doesn't want to inline functions compiled with
+  `-fno-delete-null-pointer-checks` with code compiled without. The C
+  CGUs all have this enabled and Rust CGUs don't. Inlining is okay since
+  this is one of the hardening features that does not change the ABI,
+  and we shouldn't have null pointer dereferences in these helpers.
 
-If it has anything bug or better idea, please let me know, thanks!
-If no, I will send it in the next version.
+* LLVM doesn't want to inline functions with different list of builtins. C
+  side has `-fno-builtin-wcslen`; `wcslen` is not a Rust builtin, so
+  they should be compatible, but LLVM does not perform inlining due to
+  attributes mismatch.
 
---
-Thanks,
-Vernon
+* clang and Rust doesn't have the exact target string. Clang generates
+  `+cmov,+cx8,+fxsr` but Rust doesn't enable them (in fact, Rust will
+  complain if `-Ctarget-feature=+cmov,+cx8,+fxsr` is used). x86-64
+  always enable these features, so they are in fact the same target
+  string, but LLVM doesn't understand this and so inlining is inhibited.
+  This can be bypassed with `--ignore-tti-inline-compatible`, but this
+  is a hidden option.
+
+(This analysis was written by Gary Guo.)
+
+How is this fixed?
+==================
+
+To fix this we need to add __always_inline to all helpers when compiling
+with LTO. However, it should not be added when running bindgen as
+bindgen will ignore functions marked inline. To achieve this, we are
+using a #define called __rust_helper that is defined differently
+depending on whether bindgen is running or not.
+
+Note that __rust_helper is currently always #defined to nothing.
+Changing it to __always_inline will happen separately in another patch
+series.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Pick up Reviewed-by: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>
+- Update formatting in mm and slab patches.
+- Add new helpers in files uaccess, pwm, and time.
+- Drop any patches that have been merged.
+- Link to v1: https://lore.kernel.org/r/20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com
+
+---
+Alice Ryhl (27):
+      rust: barrier: add __rust_helper to helpers
+      rust: blk: add __rust_helper to helpers
+      rust: bug: add __rust_helper to helpers
+      rust: clk: add __rust_helper to helpers
+      rust: completion: add __rust_helper to helpers
+      rust: cpu: add __rust_helper to helpers
+      rust: cred: add __rust_helper to helpers
+      rust: err: add __rust_helper to helpers
+      rust: jump_label: add __rust_helper to helpers
+      rust: maple_tree: add __rust_helper to helpers
+      rust: mm: add __rust_helper to helpers
+      rust: of: add __rust_helper to helpers
+      rust: processor: add __rust_helper to helpers
+      rust: pwm: add __rust_helper to helpers
+      rust: rbtree: add __rust_helper to helpers
+      rust: rcu: add __rust_helper to helpers
+      rust: refcount: add __rust_helper to helpers
+      rust: security: add __rust_helper to helpers
+      rust: slab: add __rust_helper to helpers
+      rust: sync: add __rust_helper to helpers
+      rust: task: add __rust_helper to helpers
+      rust: time: add __rust_helper to helpers
+      rust: uaccess: add __rust_helper to helpers
+      rust: usb: add __rust_helper to helpers
+      rust: wait: add __rust_helper to helpers
+      rust: workqueue: add __rust_helper to helpers
+      rust: xarray: add __rust_helper to helpers
+
+ rust/helpers/barrier.c    |  6 +++---
+ rust/helpers/blk.c        |  4 ++--
+ rust/helpers/bug.c        |  4 ++--
+ rust/helpers/build_bug.c  |  2 +-
+ rust/helpers/clk.c        | 24 +++++++++++++-----------
+ rust/helpers/completion.c |  2 +-
+ rust/helpers/cpu.c        |  2 +-
+ rust/helpers/cred.c       |  4 ++--
+ rust/helpers/err.c        |  6 +++---
+ rust/helpers/jump_label.c |  2 +-
+ rust/helpers/maple_tree.c |  3 ++-
+ rust/helpers/mm.c         | 20 ++++++++++----------
+ rust/helpers/mutex.c      | 13 +++++++------
+ rust/helpers/of.c         |  2 +-
+ rust/helpers/page.c       |  9 +++++----
+ rust/helpers/processor.c  |  2 +-
+ rust/helpers/pwm.c        |  6 +++---
+ rust/helpers/rbtree.c     |  9 +++++----
+ rust/helpers/rcu.c        |  4 ++--
+ rust/helpers/refcount.c   | 10 +++++-----
+ rust/helpers/security.c   | 26 +++++++++++++++-----------
+ rust/helpers/signal.c     |  2 +-
+ rust/helpers/slab.c       |  4 ++--
+ rust/helpers/spinlock.c   | 13 +++++++------
+ rust/helpers/sync.c       |  4 ++--
+ rust/helpers/task.c       | 24 ++++++++++++------------
+ rust/helpers/time.c       | 14 +++++++-------
+ rust/helpers/uaccess.c    | 10 ++++++----
+ rust/helpers/usb.c        |  3 ++-
+ rust/helpers/vmalloc.c    |  2 +-
+ rust/helpers/wait.c       |  2 +-
+ rust/helpers/workqueue.c  |  8 +++++---
+ rust/helpers/xarray.c     | 10 +++++-----
+ 33 files changed, 136 insertions(+), 120 deletions(-)
+---
+base-commit: 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb
+change-id: 20251202-define-rust-helper-f7b531813007
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
 
