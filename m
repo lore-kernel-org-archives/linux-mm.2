@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85C7BC79FA5
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:58:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37B63C79FA5
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:58:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7B4D6B019F; Mon,  5 Jan 2026 11:58:49 -0500 (EST)
+	id 907D36B01A0; Mon,  5 Jan 2026 11:58:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3C446B01A0; Mon,  5 Jan 2026 11:58:49 -0500 (EST)
+	id 8F3AF6B01A2; Mon,  5 Jan 2026 11:58:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4AB56B01A1; Mon,  5 Jan 2026 11:58:49 -0500 (EST)
+	id 7F2F56B01A3; Mon,  5 Jan 2026 11:58:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AF5196B019F
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:58:49 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5CE001401A2
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:58:49 +0000 (UTC)
-X-FDA: 84298519578.03.D0591F1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A6A21A000D
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:58:47 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YxhbXFH7;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E1A26B01A0
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:58:52 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 19CB41A0143
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:58:52 +0000 (UTC)
+X-FDA: 84298519704.18.3D7F98F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 89D8BC000D
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:58:50 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=svrBcNYN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767632327; a=rsa-sha256;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767632330; a=rsa-sha256;
 	cv=none;
-	b=G2x3O1CoPeZxZS91GLtvaVFVefCSqshi9hsWOPvS3Y2jrjqmAIL+h+NcTkvAbVszUc3RWF
-	2zNlLgUIRPgiDWm0bEV7yJjzCs2nCECOrCxvmcp7qX94ZK5e5zBYj3byYbmpQLLnsYOOZC
-	g4rcGWc2AFkLxRFbALpd1sohv+N014E=
+	b=aDdugK1pF8xbTxy9jZb71sBxlmFu8KDLyziQZ3fViQjAPWU8fBjvpXZG/PXOH6AuO6+apP
+	qfttphiOeJFZeNVvOuzqC46SVqt7oOLUu01ZENELyE+OSwzKx0F4rei/e2mwaSHwWaH3QI
+	i+gvzdSH2tNHYxA8WUjrg7WdIz44gJk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YxhbXFH7;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=svrBcNYN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767632327;
+	s=arc-20220608; t=1767632330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ivdXEMRjHX8ActYuqmF+142e8M/tE9eaqLHBL0xTXos=;
-	b=515um+TYCk5D7JjM+3n7wDYqfu7lTIJ+ZoYw6pWB/U/h6kveN65Q8xWUTUy4OSt37Cdw1w
-	QN/WQ9xgoDafx8aHpJpD2UZ0g6E4uaw1HXStm2OQg4aszwzdmPLkHQ/L825eidDi7yN/Og
-	XlFO+vy3ZbGK3gouJaE5D8pqntKhCZE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3p8/iARn7Ne+mgy99vOdquYnoHq9+JHvsSKe/gLUKJ0=;
+	b=oNCSdJw10s0RnPpMGrm0uBJEqF5jWnfuGmoSqbpHxekbI2qKPPkxokMM2Uh3hN9MO/mV8w
+	uHSm6yOOocD9w+c3iuqYXrdUI8qMYULi0TNHa2+cr6laTMPmUlkPUMsjvFRgu18Ij8H2s/
+	dsWyVm/7j3J/kpMBqjdpAFqeQogMJVY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 441C642A32;
+	by tor.source.kernel.org (Postfix) with ESMTP id B44AE6013C;
+	Mon,  5 Jan 2026 16:58:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2367C19421;
 	Mon,  5 Jan 2026 16:58:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF57C116D0;
-	Mon,  5 Jan 2026 16:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767632326;
-	bh=mupDn7J1NSAUZ9GV/4Xx6+A3fMSwov+EkCqaBWzjOm0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YxhbXFH76Gyi1Q1IeKu6BX24k5shRmCdHTfQU6bcQLC+cFfvY6krzkB7bYUSyKShM
-	 uG3/cpRYYGDTPOIHfDhg2kcFrP5Gp6NamzlQawAXRrOlyltMcby7Mt9b8DBtYbpKto
-	 96jjELOv3zquxG0gGWkrpuk7p0oWRgvwDoo1qoJl3fH6tAs2rYwQ4SqlsRgydOkP3B
-	 NNkzjtmUJXTBdpSoq4sJFo9aigVIYb24zrKwUzbbPMlbk2LV4TRc/U+BGF9XgsMk1M
-	 ASKyg5/3mtBaFz2gwK99f/FbiD3h8zdRbVQp+P3XwjyWFE/ZxoqDI4dziDjI6+yBUY
-	 Qe4yO5QYs0iig==
+	s=k20201202; t=1767632329;
+	bh=fx5hU4O4QRxBLang5mD6EyamP0RPBzh181UvkxPwN3w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=svrBcNYNOWwFsNOsZuHPbsSLKKggkG3B9iIlMNA0mv8rsCj/DdlNBKj8SMVRsg9yo
+	 jwcc/xtvtmEogZ34qkeP3/spCawq8zMu5sVFjAXs5UG25LCW7lDMpJ0oczS+ItrJY5
+	 zwJETKF0vuG9yPhjn9jDmtas+9mkk/cPdRarDLjFFGLsBflYfDFpk590OWg0YgAZkG
+	 NWlFQtC7p1/qa86uOxuF2wRPenf7iZ1zuq2MKxUBmISN7MbBGwnu/OaVghj9JJtJ8L
+	 M1Sn1VXyGh0ANtc2LaBCUj9j6OAVykRJ1iYNQJsojsJiiV7nPRs3sr+9Oh7dOIkjkT
+	 1Ba7g+REDsqpA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alexander Graf <graf@amazon.com>,
@@ -75,20 +75,22 @@ Cc: Alexander Graf <graf@amazon.com>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/6] kho: ABI headers and Documentation updates
-Date: Mon,  5 Jan 2026 18:58:33 +0200
-Message-ID: <20260105165839.285270-1-rppt@kernel.org>
+Subject: [PATCH 1/6] kho/abi: luo: make generated documentation more coherent
+Date: Mon,  5 Jan 2026 18:58:34 +0200
+Message-ID: <20260105165839.285270-2-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260105165839.285270-1-rppt@kernel.org>
+References: <20260105165839.285270-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A6A21A000D
-X-Stat-Signature: 8oycypyekmnr1t7z4inbmd968uidq4ps
+X-Rspamd-Queue-Id: 89D8BC000D
+X-Stat-Signature: enj944yxdmhqi89y5gokworribdwwwnz
 X-Rspam-User: 
-X-HE-Tag: 1767632327-383795
-X-HE-Meta: U2FsdGVkX1+N/hjXNPPk4hz1y8LQPrtxE0ggYTdkqxXAHkzuaVaBdkrXrgXGiFzNdpaEprsxT9aMq1hjzbbkfxv6DdE2U+FBTwLcPAqSx0kfDT0z/BM/dp+AqOPA09/yGr/koDvAAMya8M5eot7gnSZbdY7t3Q4kPLx4v4eBfXmBTNCbNwZarIW9m2LqJZjiSZ7qM/2G7bGrOzf7JxnX56VlY5SeQ3nocpNHEUrsAEU191L0Xi/I9iYO3bs7dUgaGWsMmAr/5Eic9OoraPej0+cEYoHi9CKrn2D+VELjv+3PJyiEyLOzQbbaCkowun5Mzn0fghseMDPXm0Aj7P6Vxl9IsS7EHkIkKmZoY8h06+8Vw2TcUM0n8dXNi69dxbJSdd/vpfgtsU43jXoFZ0OPsnW9WPzpBy79ECa1LTqQsg7ASDQPkrVw5Xk8Du3vTqxB1BNnYW3rMX2mhkg1Greweckkia4TlUwbFj1uN2ued17hiD+qwT8HqGdq4Bqd0+H2ML1A8R3ppXf2LzW6EP4/GvJWxiz9Fv1A9tE5VqoxVGjddww0w6gbvxl1149YWjQ+I80+zF1DXzCUv+X9dHzF7gisW6xhVuF0CcMHW2J4CFcIYWBYJa3oBkotrx3XTOH38zpVJR772zCaXkUDpum8fMmImgPKuEJEYOM9QJWVbyxQv8aExIVWeMu4mN3lAxukPjcvxEc8H95ShVadT9GRgda3CCv5LGuzEhOwZZ8FM8c+3g7wNeIF19HI3c8DxoOMdbvdxePAWQHBOJ9Ze1U9muFRebAE5PRGihqmk3Ccs8ti7unzByzB7gLKWMzCyXz7s+EDOYfrcRBwzU02cIfFFUhef9W5ohs/zKWD25RYFingxq2DJuyJjRoF7zKyOfLbXqzZV7RIO0j1fn68nTfZpw+Y3/buJyDk53hHayhPW38U0bs/mT/grg4GHtLTm5+lF1Xm0Efg2h1AzzWFNBX
- 4ccOWaWk
- Madjw7PlNKe14Az3ePKB30xFFh/twaU6e1J9tOtmeQ1dV+WYx6YDoYIeT9pMuMMoLgipgA30U/uIub2ADQwttYFxkvWhYQF7+TsOn6tnDUulFf8QpXDtARxz11/WJZPUiVGxoOU4T4cYhooaXjCg9+ILEH6tWfDF/4uB3EOpQjcjp0C2SoC5hR6b335KX6ZIrNKXF9/8E8Sj1QRE32B3gzQsPocX+grYnVzC0jApX8C7u5LQJi+nXTzaVibFTvH5tIB5NfjcULZMF4To=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767632330-787287
+X-HE-Meta: U2FsdGVkX18WDk1buQ1PYTSWGf6MtJwCpAaFo93f3t0adwdIuNOwD36d1RO9/8/rgBkGS8uVOcnC3ty0cqDJSyme1ioa5iC62xRrFAYlLMzMO0Ipg3cbduIy3gD9WuW9E86M/TuG6f9qD7tPdMvMDwdnrIfZLBiAf5mk6U0dC6K2Uu9Fjog6/dfvy0RuU+Dok10o8bRXKfEg3uHNhXcyUUozYvclAnLl3iS7afo0saonlD4FN1hMJnfAlWhW/vikGFTTUQ7kom5tod7UDW8lbPTfBdM5F5urtkO8AYZkkEz2SwuBeYTmQdIVxBxGwgfUSR+fvSYn6+OBL8d4QdMzCh3m8L8jVRjeWor+Wgv+lTXWKOrvExxmE2I6vUTgdCW4EBLl3HG5rkdQI6FYqhycv91bn8gMUhaDh+xVvGm7FDdktCyWbT3xywfbXYIdAe5TvFCgE54zDWTn/pHzquvonM4qFyzTf9G8rNnlo7N9OV8Z81Wnldlfuc8Z9dkeuOxMyjaNnjcygsu1danCOYYdpptKnR0NtE/iBi2U8tW/tqhSus9zMrw4ls6gy7bCZDv68JoJ4ZxUUd3Jg3T1iHogpLJ8X6OYEBTU21vZ9wUt9U7xZiJ2DIW8I8PDpxvZJLMtPwzLLMkwtK86HeMI2sKTrddlNZ0hQHxZsP8iZBt5hHSER7umcYLN30avjymfU3HdCaGtRE8aan8uQiHl+dgW0wEydzkI2erKvs8Ls1+35S4eT1QhCG/wR19fmWa3Mh+GYF5h2sCeFDGD+70uwlczJORHmDOG80YuMcDXrH6Vtb49diQ0M76I5M0ty1i9LCMiYzSfTZTiRRrJtxjObDAs9q1lCBLC+bwbBw91HO53gmm80R0R5Au1n2E/FBg97arfHGnUXo5WLFAU0zNiRIjKgTjgVuL/PEIa1Ca4YvamneXRNq48Fw+ELwvP83vmsUEReQ5GoI/Wdcg1AN54rOJ
+ f5x4EO63
+ 4e37Lc5B1vgUbywWENJmm+k2e38H0fYN0f/NLVnsJAWV/9AdzMENb0PZDZr5clXeqdvP7siXMlr2t4vn4G8aJu+TDHeF2j14bd5hNj8eLaMpnEi3KDwVVD7Upxci6CUlDuT+3nEEckkZiHtKzeYwCIMEW3UwA807KUFRCOjgH8lL2T2P2HGABQex6G0S7kS6mjeEc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,59 +101,35 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Hi,
+LUO ABI description starts with "This header defines" which is fine in
+the header but reads weird in the generated html documentation.
 
-LUO started adding KHO ABI headers to include/linux/kho/abi, but the
-core parts of KHO and memblock are still using the old way for
-descriptions on their ABIs.
+Update it to make the generated documentation coherent.
 
-Let's consolidate all things KHO in include/linux/kho/abi.
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ include/linux/kho/abi/luo.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-And while on that, make some documentation updates to have more coherent
-KHO docs.
-
-Jason Miu (2):
-  kho: Introduce KHO FDT ABI header
-  kho: Relocate vmalloc preservation structure to KHO ABI header
-
-Mike Rapoport (Microsoft) (4):
-  kho/abi: luo: make generated documentation more coherent
-  kho/abi: memfd: make generated documentation more coherent
-  kho: docs: combine concepts and FDT documentation
-  kho/abi: add memblock ABI header
-
- Documentation/core-api/kho/abi.rst            |  28 +++
- Documentation/core-api/kho/bindings/kho.yaml  |  43 -----
- .../kho/bindings/memblock/memblock.yaml       |  39 -----
- .../kho/bindings/memblock/reserve-mem.yaml    |  40 -----
- .../core-api/kho/bindings/sub-fdt.yaml        |  27 ---
- Documentation/core-api/kho/concepts.rst       |  74 --------
- Documentation/core-api/kho/fdt.rst            |  80 ---------
- Documentation/core-api/kho/index.rst          |  78 ++++++++-
- Documentation/core-api/liveupdate.rst         |   2 +-
- Documentation/mm/memfd_preservation.rst       |   2 +-
- MAINTAINERS                                   |   1 +
- include/linux/kexec_handover.h                |  27 +--
- include/linux/kho/abi/kexec_handover.h        | 163 ++++++++++++++++++
- include/linux/kho/abi/luo.h                   |   8 +-
- include/linux/kho/abi/memblock.h              |  72 ++++++++
- include/linux/kho/abi/memfd.h                 |   6 +-
- kernel/liveupdate/kexec_handover.c            |  34 +---
- lib/test_kho.c                                |   1 +
- mm/memblock.c                                 |   4 +-
- 19 files changed, 361 insertions(+), 368 deletions(-)
- create mode 100644 Documentation/core-api/kho/abi.rst
- delete mode 100644 Documentation/core-api/kho/bindings/kho.yaml
- delete mode 100644 Documentation/core-api/kho/bindings/memblock/memblock.yaml
- delete mode 100644 Documentation/core-api/kho/bindings/memblock/reserve-mem.yaml
- delete mode 100644 Documentation/core-api/kho/bindings/sub-fdt.yaml
- delete mode 100644 Documentation/core-api/kho/concepts.rst
- delete mode 100644 Documentation/core-api/kho/fdt.rst
- create mode 100644 include/linux/kho/abi/kexec_handover.h
- create mode 100644 include/linux/kho/abi/memblock.h
-
-
-base-commit: f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da
+diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
+index bb099c92e469..beb86847b544 100644
+--- a/include/linux/kho/abi/luo.h
++++ b/include/linux/kho/abi/luo.h
+@@ -8,10 +8,10 @@
+ /**
+  * DOC: Live Update Orchestrator ABI
+  *
+- * This header defines the stable Application Binary Interface used by the
+- * Live Update Orchestrator to pass state from a pre-update kernel to a
+- * post-update kernel. The ABI is built upon the Kexec HandOver framework
+- * and uses a Flattened Device Tree to describe the preserved data.
++ * Live Update Orchestrator uses the stable Application Binary Interface
++ * defined below to pass state from a pre-update kernel to a post-update
++ * kernel. The ABI is built upon the Kexec HandOver framework and uses a
++ * Flattened Device Tree to describe the preserved data.
+  *
+  * This interface is a contract. Any modification to the FDT structure, node
+  * properties, compatible strings, or the layout of the `__packed` serialization
 -- 
 2.51.0
 
