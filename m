@@ -4,85 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15438C2A073
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 02:38:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87283C2A073
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 02:48:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E6306B00CA; Sun,  4 Jan 2026 21:38:47 -0500 (EST)
+	id CF5BE6B00CC; Sun,  4 Jan 2026 21:48:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4940F6B00CB; Sun,  4 Jan 2026 21:38:47 -0500 (EST)
+	id CA3226B00CD; Sun,  4 Jan 2026 21:48:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 320C86B00CC; Sun,  4 Jan 2026 21:38:47 -0500 (EST)
+	id BAFAB6B00CE; Sun,  4 Jan 2026 21:48:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 089496B00CA
-	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 21:38:47 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 80AEF161DA0
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 02:38:46 +0000 (UTC)
-X-FDA: 84296352252.02.ED11303
-Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 77AA2C0003
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 02:38:43 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	spf=pass (imf22.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 129.150.39.64 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A8A266B00CC
+	for <linux-mm@kvack.org>; Sun,  4 Jan 2026 21:48:25 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A395BFCA6
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 02:48:25 +0000 (UTC)
+X-FDA: 84296376570.28.54F670F
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 41C4814000A
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 02:48:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	spf=pass (imf26.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767581303; a=rsa-sha256;
+	cv=none;
+	b=NiEQcngS4rkdW9jSim0+TivGYq3Jc3ta1cEQ5ibxOim0RtdJor0/NKw5uK9hjNft20d4av
+	oDxQlJux/pxVpYgvuEkrlkzXNm5vXcPhj2ABimTSBF11ovcy12u1AnS+JH9MudOci2AptN
+	M9qgc+RRYMF5XhgIP29vrakdjpCIgO4=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	spf=pass (imf26.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767580724;
+	s=arc-20220608; t=1767581303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BG5rGKUAJHalMajXM0Z42DHfAsMQGq1+R4Pf0E/Mo4A=;
-	b=rtqunLPUBRJqgNCX0bUHbaFxNzHCg0HGg5TLrPq/8qaKLcQIlVJVbzYug5+vLHoCfdRFFs
-	CEwHYOdU3ZkNwizXNYtmWru0h1rZXgTXrzK4cBDuBDav0pHoYhwcY8dLHhKj1boZcjP0Si
-	40QRG3f2i31H0SpGjpiWm2udel8qs8Y=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 129.150.39.64 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767580724; a=rsa-sha256;
-	cv=none;
-	b=I9hcEuSw8RrVxdhABZ9wnLbh3GQTRbzCGWo5wjwQDwprGfMMITu637nxOlrPOwNdVllBzM
-	94Vhs0ITc1gN9rlpzxfp/euaGYOUrI3D9HoRjrMd7oQgmhwcZg/YKuUdcelaHYj2yuxoE2
-	p6igg6QzGNyP8JtploIaBc4m/g4gACA=
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
-	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwDn7porJFtpwjFZBQ--.1345S2;
-	Mon, 05 Jan 2026 10:38:35 +0800 (CST)
-Received: from [10.22.77.56] (unknown [123.150.8.50])
-	by mail (Coremail) with SMTP id AQAAfwCnAO4oJFtpVQIRAA--.30651S2;
-	Mon, 05 Jan 2026 10:38:32 +0800 (CST)
-Message-ID: <dac83ef4-6e4d-421b-bd54-7090d2f963d9@phytium.com.cn>
-Date: Mon, 5 Jan 2026 10:38:30 +0800
+	bh=j0l6FF+HFrfp3J599HCQ4b38n0HV5NdimjyBTd+xPw8=;
+	b=QAOdrMJAF6jIOq+wbgF2trkzvRWqssWFobOtTaSWTyv0cCBg/nj7XfxpGS3qPUevnN4YAn
+	31wWTmcohLWXTIlOddX9YSJWPo8ojbhgSHeMwgMUTIt4iAh6ldDucC5etqa9BfMe2diStR
+	e+yW0SPQ55mCBC5HUkhz7q3K0EHbwbg=
+Received: from mail.maildlp.com (unknown [172.19.163.170])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dkzHB2pNZzKHMYq
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:47:34 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id EEF0A40570
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:48:11 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgBH9vZqJltpcVSxCg--.65049S2;
+	Mon, 05 Jan 2026 10:48:11 +0800 (CST)
+Message-ID: <b55451ff-b861-4e4f-bc79-6de0c802d64e@huaweicloud.com>
+Date: Mon, 5 Jan 2026 10:48:09 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Joanthan Cameron <Jonathan.Cameron@huawei.com>, wangyinfeng@phytium.com.cn,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251230092750.856060-1-cuichao1753@phytium.com.cn>
- <aVPtSNKRnnI88Euk@kernel.org>
-From: Cui Chao <cuichao1753@phytium.com.cn>
-In-Reply-To: <aVPtSNKRnnI88Euk@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAfwCnAO4oJFtpVQIRAA--.30651S2
-X-CM-SenderInfo: pfxlux1drrlkut6sx5pwlxzhxfrphubq/1tbiAQAFAGlZeBoChwAHsU
-X-Coremail-Antispam: 1Uk129KBjvJXoW7Ww4rKw4fWF1UGrWDCF45Wrg_yoW8Kr1UpF
-	4aqFWrKFW8Jr1xGFs293WUtw1Ivana9F45WFWxCrnrZ3WFqr1DZrWSqr1ruF4ktrWfCF4F
-	qF4Dt3Z0qw18uaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-	UUUUU
-X-Rspamd-Server: rspam02
-X-Stat-Signature: pyngje31nagjscgh6cfr7e4h4gt51i5o
+Subject: Re: [PATCH v4] mm/vmscan: fix demotion targets checks in
+ reclaim/demotion
+To: Bing Jiao <bingjiao@google.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ gourry@gourry.net, longman@redhat.com, hannes@cmpxchg.org,
+ mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com, david@kernel.org,
+ zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ cgroups@vger.kernel.org
+References: <20251223212032.665731-1-bingjiao@google.com>
+ <20260104085439.4076810-1-bingjiao@google.com>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20260104085439.4076810-1-bingjiao@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgBH9vZqJltpcVSxCg--.65049S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3uF45Ar47WrWxCw4kZF43KFg_yoWkGr47pF
+	s5Gw1rCr4rArW7Gr4Svayq9a4Fvw1kXF45A3WxWrn7AF9IqF1jgr1Dtwn3XFWUCFyrur12
+	qF13Aw18u3yqya7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 41C4814000A
+X-Stat-Signature: yrpeakwiicuhi7b85wambaazn78ziequ
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 77AA2C0003
-X-HE-Tag: 1767580723-363380
-X-HE-Meta: U2FsdGVkX19VuF/f3ZshnjlDepY3FK2/GSR54HlSjDEuRrQEI5HR8Wp9rWwHYzCGuGD0VqgJm1amsr9DgP50VRG5xz0ToBVaYClrcV4WubB4b31KHPkqXovaYe0GD+uEhzrEnkHERvouJ/cCLxvAlKaIAUzO73YLUi+xoubFKu7FYPX4WSy6bsLIZcS4VY76Sij8IuXP2xroRVld1hT8eJeG44Qtmnswwk434WX3BX1iUajce5ctuxCoo81yhMQkfBH/FKFS74bkzZTwz1IhGVYiEe0oEKGFwHmkK/wU7yhBcHr29K9PvH1QE++hrY+NbMuEkP27YSoGOE9BJ69GugYVUxwpl+qNbYRl7vtt477ZKJkffinrYmHLDS1M3iEAYS1Kd40wK+1yWTvln6a9O5e7StLGeNUVtOMYyVLMjLQVtUQN5Rc96zEN7+B4f9K/gCZdPszlsbvAnyjNFDVFf6j9MFZeoLjmLHVmAEIQ8OmnzoEoD79PY7raSiYZiEKZS7jTwNfvCuG6AJPZcb1v/KOozQI4lc6ry7LH/GeRKB59mDMAXn8/MD6Etsf+08ZavCFvcNfhQ2WN3D0PXKfFAl5DdOh9+it+Ssb6au2U7ejNVSY2Z2Cueor8qJQk6puujF97wI2f+eefcUxzMmcajM9kg0umrwbacwnsE5UE1kah7hZRso0QsMsYVSYxZxPcy6kjkLZHFsM2MyOQb3mtVh0XmV4OLgGwZ4mbgg0Tn9paSB01/z8bC4lt3a7IdGxSY1g+Q35kkdJj9BDap9D2Z0uF10NY2k5Np+Smr0cG+9Px9e+3KiKp9ciyvE5gDTtqzq+OPP/TMoN3vP1/ABXboNxiitIhGURf8uzset5ykSspwdirn0HUv6+cWVJl2xU7SsucCrVRQw63JoFze7kNw6MPajoB4g08sk06BTfZxSvczRjC8vmL4vYazPWy6anbpGCHmruP2gSKPfIS6eX
- VveaMDZz
- gCffv2cosApYB7zgcEm/PAEuXs3K2By5amTBB+Ox9ZHjZ18dC7HigpLG8WNaO9IPrGjNU9A7NNrOU1c6RnmGBTPWMw0V5qgX0pGgzy+YY81f93ka95Ll2HSYlYA3MMaOkKCaNAJAhqKHjl4dMp57gpcdklLOtwX7RA7THUS1m1i/FTHi1kY32dVt9DbAEtLIK1jAd
+X-HE-Tag: 1767581297-901699
+X-HE-Meta: U2FsdGVkX1+ultQqtqFyFTOir1QngUQ/bV6vnEqC+azXz6iBJ3cSd05KXcwlQRyS2ATuiaPCYrN/1mn6VDbLPEedM1pKhAY1dbvJqTy9OS219LcsBS49TGipvEjYPaoyYCpb9Jn8BG1WXJPerwRa+yzCFAvz+/C/RrYEQJ548lqbF70aJfQaP1+aQmzeEY1SxLz2l5RaSUYP9zibkmKcNSWMvJqFoNv6hkoyx9QAxrHztiBwOm6ask6wLM6lEj7ZDG8t7f3tTvZ9lcnpccOcvSwZiqK28pO1UW5xWtmNpdPLSWJXr0DWq5jRwRjmU0zJJsNlye0Xxni8OPwsRzeavN2dZwqspCj2/+Z/NaKY4QBNTP8Ia4QdAMedYwNOGq3RxEjfBoL5nxZtWEd5n7TdRh0W3kM+/N9WG6uPl1AD3XyPt6mukMb39RegcllwBN0iL9bhUqiYOso1UZH+Pre8d8UjWUyzBvxy7HttWdgn4ILIHziPgduQnxx+mUluc88qUTf/xSqNNuc2iN6w+tJdJbR7r9sVk7HW17r963pY6rFGI2xHXW8VdkjEXte64UyWdI5/33SLlwsXjAXHa5P9i3QQ4nz7sTvLOG4vNSKgUedKqwJlVfXoozC1XdsjOScUMelBKt2kc2hk8crnT1gW8hGUsyyL4Kb4x35JcK0krb6PDm8z6LbhwhFIbLqMnE0Bio16qnGa0VGm3VLZv5cvHXwgbt51GkMVuTGgPq0cKOA+sPPZpPRdgpxQJf7JvDoHCyla7sXuhpvTnO7iyuTLcGxuTCGX9CuSnNCwN9z2NhsQxisJ/TEGTptDszrmGaFmhjhgDjvxo5uwTEYcSG+t5JquxBtcBDu/oa7fa1Qh+Hb0VtxWlDoSlkZhSoXkh4WB5CkU1ionBfYgEJBdBfCmm0kw4yrKRcypCFjcRyuQNJX6iqlmCXuEzLYHbdL2N5NdUB+OXvI+trrXZ2BJygr
+ duoumV1c
+ 0mrJ5KPwiAnC11MNVVi8BSYF+yga3D+J7eL6Opt8tOYpEwUu1wKai5A1LVqgwECebNZFHETYOoWq3pYKKHOj6ms5l7lc+d5hGPOvuzpNeV8vHJSM2zXGFdRacYQsiRoVdjBINx3HVnbo+kBlADvl7UTYOO9NBfVW8Ss+o74l5JeRyXOw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,75 +111,301 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-Thank you for your review.
-
-On 12/30/2025 11:18 PM, Mike Rapoport wrote:
-> Hi,
->
-> On Tue, Dec 30, 2025 at 05:27:50PM +0800, Cui Chao wrote:
->> In some physical memory layout designs, the address space of CFMW
->> resides between multiple segments of system memory belonging to
->> the same NUMA node. In numa_cleanup_meminfo, these multiple segments
->> of system memory are merged into a larger numa_memblk. When
->> identifying which NUMA node the CFMW belongs to, it may be incorrectly
->> assigned to the NUMA node of the merged system memory. To address this
-> Can you please provide an example of such memory layout?
 
 
-Example memory layout:
+On 2026/1/4 16:54, Bing Jiao wrote:
+> Fix two bugs in demote_folio_list() and can_demote() due to incorrect
+> demotion target checks in reclaim/demotion.
+> 
+> Commit 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+> introduces the cpuset.mems_effective check and applies it to
+> can_demote(). However:
+> 
+>   1. It does not apply this check in demote_folio_list(), which leads
+>      to situations where pages are demoted to nodes that are
+>      explicitly excluded from the task's cpuset.mems.
+> 
+>   2. It checks only the nodes in the immediate next demotion hierarchy
+>      and does not check all allowed demotion targets in can_demote().
+>      This can cause pages to never be demoted if the nodes in the next
+>      demotion hierarchy are not set in mems_effective.
+> 
+> These bugs break resource isolation provided by cpuset.mems.
+> This is visible from userspace because pages can either fail to be
+> demoted entirely or are demoted to nodes that are not allowed
+> in multi-tier memory systems.
+> 
+> To address these bugs, update cpuset_node_allowed() and
+> mem_cgroup_node_allowed() to return effective_mems, allowing directly
+> logic-and operation against demotion targets. Also update can_demote()
+> and demote_folio_list() accordingly.
+> 
+> Bug 1 reproduction:
+>   Assume a system with 4 nodes, where nodes 0-1 are top-tier and
+>   nodes 2-3 are far-tier memory. All nodes have equal capacity.
+> 
+>   Test script:
+>     echo 1 > /sys/kernel/mm/numa/demotion_enabled
+>     mkdir /sys/fs/cgroup/test
+>     echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control
+>     echo "0-2" > /sys/fs/cgroup/test/cpuset.mems
+>     echo $$ > /sys/fs/cgroup/test/cgroup.procs
+>     swapoff -a
+>     # Expectation: Should respect node 0-2 limit.
+>     # Observation: Node 3 shows significant allocation (MemFree drops)
+>     stress-ng --oomable --vm 1 --vm-bytes 150% --mbind 0,1
+> 
+> Bug 2 reproduction:
+>   Assume a system with 6 nodes, where nodes 0-2 are top-tier,
+>   node 3 is a far-tier node, and nodes 4-5 are the farthest-tier nodes.
+>   All nodes have equal capacity.
+> 
+>   Test script:
+>     echo 1 > /sys/kernel/mm/numa/demotion_enabled
+>     mkdir /sys/fs/cgroup/test
+>     echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control
+>     echo "0-2,4-5" > /sys/fs/cgroup/test/cpuset.mems
+>     echo $$ > /sys/fs/cgroup/test/cgroup.procs
+>     swapoff -a
+>     # Expectation: Pages are demoted to Nodes 4-5
+>     # Observation: No pages are demoted before oom.
+>     stress-ng --oomable --vm 1 --vm-bytes 150% --mbind 0,1,2
+> 
+> Fixes: 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Bing Jiao <bingjiao@google.com>
+> 
+> ---
+> v3 -> v4:
+> Update functions to filter out nodes that are not in cgroup's
+> mems_allowed rather than returning mems_allowed directly.
+> It minimizes stack usage and remains versatile enough to return
+> mems_allowed when all possible nodes are set in the passed
+> nodemask_t pointer.
+> ---
+> 
+>  include/linux/cpuset.h     |  7 ++++---
+>  include/linux/memcontrol.h |  6 +++---
+>  kernel/cgroup/cpuset.c     | 24 +++++++++++++++---------
+>  mm/memcontrol.c            |  5 +++--
+>  mm/vmscan.c                | 32 +++++++++++++++++++++-----------
+>  5 files changed, 46 insertions(+), 28 deletions(-)
+> 
+> diff --git a/include/linux/cpuset.h b/include/linux/cpuset.h
+> index a98d3330385c..c937537f318a 100644
+> --- a/include/linux/cpuset.h
+> +++ b/include/linux/cpuset.h
+> @@ -174,7 +174,8 @@ static inline void set_mems_allowed(nodemask_t nodemask)
+>  	task_unlock(current);
+>  }
+> 
+> -extern bool cpuset_node_allowed(struct cgroup *cgroup, int nid);
+> +extern void cpuset_nodes_filter_allowed(struct cgroup *cgroup,
+> +					nodemask_t *mask);
+>  #else /* !CONFIG_CPUSETS */
+> 
+>  static inline bool cpusets_enabled(void) { return false; }
+> @@ -301,9 +302,9 @@ static inline bool read_mems_allowed_retry(unsigned int seq)
+>  	return false;
+>  }
+> 
+> -static inline bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
+> +static inline void cpuset_nodes_filter_allowed(struct cgroup *cgroup,
+> +					       nodemask_t *mask)
+>  {
+> -	return true;
+>  }
+>  #endif /* !CONFIG_CPUSETS */
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index fd400082313a..911e0c71453e 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -1740,7 +1740,7 @@ static inline void count_objcg_events(struct obj_cgroup *objcg,
+>  	rcu_read_unlock();
+>  }
+> 
+> -bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid);
+> +void mem_cgroup_node_filter_allowed(struct mem_cgroup *memcg, nodemask_t *mask);
+> 
+>  void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg);
+> 
+> @@ -1811,9 +1811,9 @@ static inline ino_t page_cgroup_ino(struct page *page)
+>  	return 0;
+>  }
+> 
+> -static inline bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
+> +static inline void mem_cgroup_node_filter_allowed(struct mem_cgroup *memcg,
+> +						  nodemask_t *mask)
+>  {
+> -	return true;
+>  }
+> 
+>  static inline void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg)
+> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> index 6e6eb09b8db6..cc0e1d42611c 100644
+> --- a/kernel/cgroup/cpuset.c
+> +++ b/kernel/cgroup/cpuset.c
+> @@ -4416,27 +4416,34 @@ bool cpuset_current_node_allowed(int node, gfp_t gfp_mask)
+>  	return allowed;
+>  }
+> 
+> -bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
+> +/**
+> + * cpuset_nodes_filter_allowed - filter out nodes not in cgroup's mems_allowed.
+> + * @cgroup: pointer to struct cgroup.
+> + * @mask: pointer to struct nodemask_t to be filtered.
+> + *
+> + * Description: Filters out nodes that are not in mems_allowed for @cgroup.
+> + * Nodes returned in @mask are not guaranteed to be online.
+> + **/
+> +void cpuset_nodes_filter_allowed(struct cgroup *cgroup, nodemask_t *mask)
+>  {
+>  	struct cgroup_subsys_state *css;
+>  	struct cpuset *cs;
+> -	bool allowed;
+> 
+>  	/*
+>  	 * In v1, mem_cgroup and cpuset are unlikely in the same hierarchy
+>  	 * and mems_allowed is likely to be empty even if we could get to it,
+> -	 * so return true to avoid taking a global lock on the empty check.
+> +	 * so return directly to avoid taking a global lock on the empty check.
+>  	 */
+> -	if (!cpuset_v2())
+> -		return true;
+> +	if (!cgroup || !cpuset_v2())
+> +		return;
+> 
+>  	css = cgroup_get_e_css(cgroup, &cpuset_cgrp_subsys);
+>  	if (!css)
+> -		return true;
+> +		return;
+> 
+>  	/*
+>  	 * Normally, accessing effective_mems would require the cpuset_mutex
+> -	 * or callback_lock - but node_isset is atomic and the reference
+> +	 * or callback_lock - but not doing so is acceptable and the reference
+>  	 * taken via cgroup_get_e_css is sufficient to protect css.
+>  	 *
+>  	 * Since this interface is intended for use by migration paths, we
+> @@ -4447,9 +4454,8 @@ bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
+>  	 * cannot make strong isolation guarantees, so this is acceptable.
+>  	 */
+>  	cs = container_of(css, struct cpuset, css);
+> -	allowed = node_isset(nid, cs->effective_mems);
+> +	nodes_and(*mask, *mask, cs->effective_mems);
 
-Physical address space:
-     0x00000000 - 0x1FFFFFFF  System RAM (node0)
-     0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
-     0x40000000 - 0x5FFFFFFF  System RAM (node0)
-     0x60000000 - 0x7FFFFFFF  System RAM (node1)
+Why do we need the and operation? Can't we just copy cs->effective_mems to mask directly?
 
-After numa_cleanup_meminfo, the two node0 segments are merged into one:
-     0x00000000 - 0x5FFFFFFF  System RAM (node0)  // CFMW is inside this 
-range
-     0x60000000 - 0x7FFFFFFF  System RAM (node1)
+Per Longman's suggestion, name it cpuset_nodes_allowed and handle the filtering in
+mem_cgroup_node_filter_allowed. Please keep the allowed nodes retrieval logic common.
 
-So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
+>  	css_put(css);
+> -	return allowed;
+>  }
+> 
+>  /**
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 75fc22a33b28..4c850805b7a9 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -5597,9 +5597,10 @@ subsys_initcall(mem_cgroup_swap_init);
+> 
+>  #endif /* CONFIG_SWAP */
+> 
+> -bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
+> +void mem_cgroup_node_filter_allowed(struct mem_cgroup *memcg, nodemask_t *mask)
+>  {
+> -	return memcg ? cpuset_node_allowed(memcg->css.cgroup, nid) : true;
+> +	if (memcg)
+> +		cpuset_nodes_filter_allowed(memcg->css.cgroup, mask);
+>  }
+> 
+>  void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg)
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index ac16b6b984ab..919e116ddaf3 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -345,18 +345,24 @@ static bool can_demote(int nid, struct scan_control *sc,
+>  		       struct mem_cgroup *memcg)
+>  {
+>  	int demotion_nid;
+> +	struct pglist_data *pgdat = NODE_DATA(nid);
+> +	nodemask_t allowed_mask;
+> 
+> -	if (!numa_demotion_enabled)
+> +	if (!pgdat || !numa_demotion_enabled)
+>  		return false;
+>  	if (sc && sc->no_demotion)
+>  		return false;
+> 
+> -	demotion_nid = next_demotion_node(nid);
+> -	if (demotion_nid == NUMA_NO_NODE)
+> +	node_get_allowed_targets(pgdat, &allowed_mask);
+> +	if (nodes_empty(allowed_mask))
+> +		return false;
+> +
+> +	/* Filter out nodes that are not in cgroup's mems_allowed. */
+> +	mem_cgroup_node_filter_allowed(memcg, &allowed_mask);
+> +	if (nodes_empty(allowed_mask))
+>  		return false;
+> 
+> -	/* If demotion node isn't in the cgroup's mems_allowed, fall back */
+> -	if (mem_cgroup_node_allowed(memcg, demotion_nid)) {
+> +	for_each_node_mask(demotion_nid, allowed_mask) {
+>  		int z;
+>  		struct zone *zone;
+>  		struct pglist_data *pgdat = NODE_DATA(demotion_nid);
+> @@ -1029,7 +1035,8 @@ static struct folio *alloc_demote_folio(struct folio *src,
+>   * Folios which are not demoted are left on @demote_folios.
+>   */
+>  static unsigned int demote_folio_list(struct list_head *demote_folios,
+> -				     struct pglist_data *pgdat)
+> +				      struct pglist_data *pgdat,
+> +				      struct mem_cgroup *memcg)
+>  {
+>  	int target_nid = next_demotion_node(pgdat->node_id);
+>  	unsigned int nr_succeeded;
+> @@ -1043,7 +1050,6 @@ static unsigned int demote_folio_list(struct list_head *demote_folios,
+>  		 */
+>  		.gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
+>  			__GFP_NOMEMALLOC | GFP_NOWAIT,
+> -		.nid = target_nid,
+>  		.nmask = &allowed_mask,
+>  		.reason = MR_DEMOTION,
+>  	};
+> @@ -1051,10 +1057,14 @@ static unsigned int demote_folio_list(struct list_head *demote_folios,
+>  	if (list_empty(demote_folios))
+>  		return 0;
+> 
+> -	if (target_nid == NUMA_NO_NODE)
+> -		return 0;
+> -
+>  	node_get_allowed_targets(pgdat, &allowed_mask);
+> +	mem_cgroup_node_filter_allowed(memcg, &allowed_mask);
+> +	if (nodes_empty(allowed_mask))
+> +		return false;
+> +
+> +	if (!node_isset(target_nid, allowed_mask))
+> +		target_nid = node_random(&allowed_mask);
+> +	mtc.nid = target_nid;
+> 
+>  	/* Demotion ignores all cpuset and mempolicy settings */
+>  	migrate_pages(demote_folios, alloc_demote_folio, NULL,
+> @@ -1576,7 +1586,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>  	/* 'folio_list' is always empty here */
+> 
+>  	/* Migrate folios selected for demotion */
+> -	nr_demoted = demote_folio_list(&demote_folios, pgdat);
+> +	nr_demoted = demote_folio_list(&demote_folios, pgdat, memcg);
+>  	nr_reclaimed += nr_demoted;
+>  	stat->nr_demoted += nr_demoted;
+>  	/* Folios that could not be demoted are still in @demote_folios */
+> --
+> 2.52.0.358.g0dd7633a29-goog
 
-
->> scenario, accurately identifying the correct NUMA node can be achieved
->> by checking whether the region belongs to both numa_meminfo and
->> numa_reserved_meminfo.
->>
->> Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
->> ---
->>   mm/numa_memblks.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
->> index 5b009a9cd8b4..1ef037f0e0e0 100644
->> --- a/mm/numa_memblks.c
->> +++ b/mm/numa_memblks.c
->> @@ -573,7 +573,8 @@ int phys_to_target_node(u64 start)
->>   	 * Prefer online nodes, but if reserved memory might be
->>   	 * hot-added continue the search with reserved ranges.
->>   	 */
->> -	if (nid != NUMA_NO_NODE)
->> +	if (nid != NUMA_NO_NODE &&
->> +		meminfo_to_nid(&numa_reserved_meminfo, start) == NUMA_NO_NODE)
-> I'd suggest assigning the result of meminfo_to_nid(&numa_reserved_meminfo,
-> start) to a local variable and using that in if and return statements.
-
-
-I will use a local variable named reserved_nid.
-
-
->>   		return nid;
->>   
->>   	return meminfo_to_nid(&numa_reserved_meminfo, start);
->> -- 
->> 2.33.0
->>
->>
 -- 
 Best regards,
-Cui Chao.
+Ridong
 
 
