@@ -4,79 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EEE4C2A07F
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 09:33:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14722C2A07A
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 09:35:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3B406B00C0; Mon,  5 Jan 2026 04:33:08 -0500 (EST)
+	id 5ABF56B0110; Mon,  5 Jan 2026 04:35:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F1626B00DC; Mon,  5 Jan 2026 04:33:08 -0500 (EST)
+	id 5580C6B0111; Mon,  5 Jan 2026 04:35:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 947F96B00EE; Mon,  5 Jan 2026 04:33:08 -0500 (EST)
+	id 439B56B0112; Mon,  5 Jan 2026 04:35:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8120C6B00C0
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 04:33:08 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1ABE41607F4
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 09:33:08 +0000 (UTC)
-X-FDA: 84297396456.12.4BFDEF9
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5B66512000B
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 09:33:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767605586; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 34D9D6B0110
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 04:35:04 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AF8BF9F2B6
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 09:35:03 +0000 (UTC)
+X-FDA: 84297401286.29.28508D1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1DF1C18000D
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 09:35:01 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YVtYl43N;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767605702; a=rsa-sha256;
 	cv=none;
-	b=g9KdJ7LXYWwAFzjWRzknExnYK8SeUiYpo4RrKqAh2kxgK1O6BZB/kbTPPLOmriIdtrHdun
-	44Rt3pk2GlLhjohK3/u0zR65sz0AEAi1Y/IRRrS4aKvEHdXHRX9gWSxrXDhW0wic3Lwsgj
-	HbmBdIUbxx56bWNt0sbdk3Kzwlpz1Ws=
+	b=ansTsasqLicLr52+9UDC1bgSK2Pp86thjdIPCIAXRS4euYhhbUN7tbrPbaUUZDen5eaA6n
+	l4O8jPD3GvwDtAzKWwf6jIl1hB1g8O+eMPPEYjYQFcKC3oR43UXhQpRMdqDUu3otsMQ7FW
+	PTgCDTLiuoAlamtmZdO+bAYpvZjVLjw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YVtYl43N;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767605586;
+	s=arc-20220608; t=1767605702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gFXxsU+UsyLdB6Z+mPbyGvEYKxFrszh+6SMRER0e2qA=;
-	b=CVSRvmRW2gVns0TJ6ebShiQuD8cHFWNs5uFGjjGjzi7W1lePfS/5lHFH+yA/upF0NO2sZv
-	v8ADfysRsqSY9RMnA872uTTzy66Um1aen24SogIOq3MkhAjdCdf7f39hQAFCbzIUhslF2G
-	jW+Z0YA38XQAqQEywq99pMo0v6WgmDs=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9FB2E497;
-	Mon,  5 Jan 2026 01:32:58 -0800 (PST)
-Received: from [10.163.86.15] (unknown [10.163.86.15])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4A8603F5A1;
-	Mon,  5 Jan 2026 01:33:04 -0800 (PST)
-Message-ID: <f1087282-43fc-4239-88c5-84aa909ce823@arm.com>
-Date: Mon, 5 Jan 2026 15:03:00 +0530
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xN/knMZf4MAFBx6ZWKRu/Poc/1c/pqv4Ar+pXBUK73I=;
+	b=tvGinCvDya2JR0+1QnyXw0zMvJE5isTrz3kds61vuyv4m/81ncJ9cjWGIaFtpE46GEXNqb
+	9eEoRmxh4v9ewPbqJISo+loVCWIgsR4qoE2cyGgy4K7F8a7qjZ5XeWezyqfbb6vOTWH4M8
+	3S5+RnL9jICXOgMJzQ+OOo4BJx/uSFs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6469C6011E;
+	Mon,  5 Jan 2026 09:35:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D20C116D0;
+	Mon,  5 Jan 2026 09:34:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767605701;
+	bh=bn7mM9cOL8od9/KRNKPTS1zEKSNile2RiMjyI0hZBf8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YVtYl43NMWF7kgcJE4xufMXZZpjTsLLjkQnuZPgsgz9d/YZYL0qm77oYxQKBKmAJK
+	 F8zv+f6PCteGmpflvD6m59enuxDzGihjhl7qfdkJty+HSTNDrAMD5mr9pjliYmINBC
+	 hsaS6U1Q0UYvf5BbhyfOkEeQsLKzO+drcJwSM5StyTQ9Ot2oK47ZG35crN3OZAMpYQ
+	 VD22esVWApTUvNTCqoz/sXRfjKkQWF/9mkhWBP71WZnQ8wooORUd3GzY8zuRLHYMi6
+	 SJw8oilCe9pXK5NNnDv37f5mv303+5J8tb3Kom1K57gWRSu1NgmyPkSHQO8EMmGhVV
+	 eh3tSWdZ3H7iw==
+Date: Mon, 5 Jan 2026 11:34:55 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Cui Chao <cuichao1753@phytium.com.cn>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	wangyinfeng@phytium.com.cn, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
+Message-ID: <aVuFv7P6og6pY2lj@kernel.org>
+References: <20251230092750.856060-1-cuichao1753@phytium.com.cn>
+ <aVPtSNKRnnI88Euk@kernel.org>
+ <dac83ef4-6e4d-421b-bd54-7090d2f963d9@phytium.com.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memblock test: include <linux/sizes.h> from tools mm.h
- stub
-To: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-References: <20251228183942.3628918-1-rppt@kernel.org>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20251228183942.3628918-1-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <dac83ef4-6e4d-421b-bd54-7090d2f963d9@phytium.com.cn>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5B66512000B
+X-Rspamd-Queue-Id: 1DF1C18000D
 X-Rspamd-Server: rspam04
-X-Stat-Signature: 1g4sw74tyqqhs5f3uaq1oy1r6md78h93
-X-HE-Tag: 1767605586-619903
-X-HE-Meta: U2FsdGVkX1/VtzS8iBVQRB0pHZlkBtm6ohX3toCaHMfKE/UosNQo42a0W8JXqy5wQK7HGqex8Nz1Hk5Y+rgB/UiobfnmaTrV6jLb1C7niqam3Co7aWJ24jystJr2CAmfIdugUByTa48FD4SuoDjNGZsE5M4WgWHBeJVbkdASWUgrNxv64uZ6sAhRqcsKPyY3/IRf9Ol6fx5bBbV/axhfVUEHPQ8WHdMBMk6Ngs9UkDlXBEF5xZ1WjYg5iXATvf/h+8YN3RDK8hzkH/X+0q7FNcHgS8Ukn+E89i6sSvSfd2gnv2wbSlYvvYN1nBg/2OMNvLXrygI2K4m76mPgar/LdBZRSZ4HFuCfH1lqwyJaLTUZ65CPqEuX4xjOVDTVvyAtI0y7yIORtp5FfiLTohd5N+716qVcD8NVglPjuSs4rkg1Jgjpbhk8KW+mYzsKkaDjPsGPkZar3dQ4z0Pb96sQ3YzRVnZgRoVS0hQ0nz1tOwD8TY7YA9dJj0UVzEgd7RhfiZksJcwkP0j4pJmbHmCotuTbW73JEGXP8yVRDX7/FRewZJuzQWnJMq1QHU3Plsg5azfjfWnUkIJ5/KCG8hkV/ftWmJgmvUJcx5JyDgUkjYyQ+IUOQwYCNinZRc7+bSSIWnoVmkPyqh/PRQyjsTsu8BghcoQhy4w2Tw0hNVYNz0FiQqHNmxt/2mLdsyxPjvE1o92iJuY/lJxtasYVgY6lVlv2apNBcBxJ0a382PVkaf3cBQSmXTZfho7GLFlOAA+QEUZ2Y+Gs8uEv60jpT38XsLvj+bUuEfskM1vO00Q2uWymTnKqgK0TSAYGN6ZYSNud5NzuNTQcCTo819vdL74pxw3ecqjy8zDz0Tdgde3rAY9lKtfT8jmRzeTuN2ag33hpsmrheQphSJ1WtChTZrSHMjP7ALypNDn+7y9o3pS08WT3ikE7qOZJ1alSYKfzXAAvwcZH9Jb07q11tsY5jx7
- j4weE0N/
- pZQb7/EDVq1elqQoirg0owm1drj+dIMdBwThWERY7vxEt2Jgotzmkrmiiu8mI+vOPo94W/pko+cXeNyl3lZJI3W9NEvLh4RAiI8v3OmwXBWdOK4mLsg693/1mp3nCIdBf2CHSEuIqIveY1qpLCe9m2+oQ4Swmka4SClazVCSUrPKOurtIKsW3wp1XpHFkJchvvbbnvLsVi6k/rcZ4rKbwsLD8Lq347yY+4tzojRLXGlI03r9j55PbxsG6c0JZpz2/Jet6+Lj98C8hcDr3Mugs2JuQyE4OFE2TQPJH
+X-Stat-Signature: yroysx1ngkoo8agoqsr8qfrik8kktbp3
+X-HE-Tag: 1767605701-251255
+X-HE-Meta: U2FsdGVkX1/lxWFRZM92zzVPd8+kpyB0gI9R0aKhhur/73BYRQLw22bNJf5Df0VwsZKpFM0PfzgeoQNtmUV8sz8TZGEmgJQuc5799tRswQD21RjwLxhWt4K+7cOmVOBD/1LZv9zofRxhqVjBRi4qsd25IrXch/8KHBg6jUA4ExHnnEyti03o4vCvWevBwgNrM2N3nkzuYgJ1mPwhqb5ujWKRtUFetzAXiAEPFn0Ep/9Pn3M7Glhfl2E+Ex3yUFIlQyL2+SmtVbpSThmvrqBXmWSolFQu3uYZtfqUbr1cEHb9TuBKu5Dn2wh8GeekrP42xwOirMT/cdhD4M2xTFSH2V4HX4rk+pZ2GKRKlP7XkLA1oOuGI9D/jdBUUJAfcKXtGYfRh9HJpfpIHYnPT0QjDjV3aSeQuCf8YaxLnccG7VNORIkOBlPpzO/56HDlxT+OEcreqBE0iOa2xkTSr3/nTarEQNLO9O84cBchcgMPGHMSF0J6Axqnfh0Q2bYBVO5PDf/rDCZpXHpi98ZRlvG5a46NV3/d+qZmcx54HHe8LopjKj9dyIy84lAn1r6fI2Xbsp9gepfKI71Hmmt22LVd6A65EG0WtHSxYuSAEncgiP26hbH+FcbrcKULXwXtxKCMhNYxRNVhEORLtFEEN1m/tBu8rVdLaeKlqe0YCpm2km+3o3M4bpVKTwQOLa2Av/ziFiIDpnGmKjXme5qfqwSYHOmSIuDeHiHduf+U4/LEAEkl34Og4FZ9hToNpvO3MpOmJ/tFH6a5xxIwqyUF3Fb8pBDhRIa7PXp9QUc/paB20RPYFJ3UABSZbZOyWqwRsXkeagwGVv/HsvMsAaQjYoWVVa90ds87v3tZ/v3exHcBWjanJVuKYv5XiConAeeB7yy6oBovu04ZbC73l8zpihGDxNvuCXAZatiuIXOP1c5T5OH9HPFwhGrvVuCZUtZMM7SdItkfHXc3QcW5B5anA2B
+ IQdIW4bH
+ YcDfkJK5Jfphu1WQCj74Fo5hhAgTeeGQS0BG+EXlrxcQSLSmq4rToFkBRDBtYFNjkZgw0KBI1M9fZb82ow8Rh5iGHEjGZKHFqJkuxe3p4U8Bo9738o0Y+laDWRohZ86q1ZMiLXI4s9fhu3Wl4fGDavO3ahezduH2YKEB2Bmhb0cHfd+IBuykZHEX3PdDJP+JqsJxi2AreNHRsxoqKASBYzzSMkqAG8465GAj/AGGPLv21YLdTNQ7qpFjr1iGWzF4LntndGoAXG/RlHO5aJACRFD7nOQ7d1/T4/jLFfrCIWD7YNTPoa3emj7IThE+lkjLb3pjpK0vPTUIpOONGCwI1mZSVxKXCGF+TnbGDOxPys9AHwuXKD6wQvS32tr1Y1Gw6dm4r
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -85,39 +97,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29/12/25 12:09 AM, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On Mon, Jan 05, 2026 at 10:38:30AM +0800, Cui Chao wrote:
+> Hi,
 > 
-> memblock test compilation fails:
+> Thank you for your review.
 > 
-> memblock.c: In function â€˜memblock_validate_numa_coverageâ€™:
-> memblock.c:784:58: error: â€˜SZ_1Mâ€™ undeclared (first use in this function)
->   784 |                 mem_size_mb = memblock_phys_mem_size() / SZ_1M;
->       |                                                          ^~~~~
+> On 12/30/2025 11:18 PM, Mike Rapoport wrote:
+> > Hi,
+> > 
+> > On Tue, Dec 30, 2025 at 05:27:50PM +0800, Cui Chao wrote:
+> > > In some physical memory layout designs, the address space of CFMW
+> > > resides between multiple segments of system memory belonging to
+> > > the same NUMA node. In numa_cleanup_meminfo, these multiple segments
+> > > of system memory are merged into a larger numa_memblk. When
+> > > identifying which NUMA node the CFMW belongs to, it may be incorrectly
+> > > assigned to the NUMA node of the merged system memory. To address this
+> > Can you please provide an example of such memory layout?
 > 
-> The SZ_1M is defined in sizes.h, but it is not included by stub version of
-> mm.h in tools/include/linux.
+> Example memory layout:
 > 
-> Add include of sizes.h to tools/include/linux/mm.h to fix the compilation
-> of memblock tests.
+> Physical address space:
+>     0x00000000 - 0x1FFFFFFF  System RAM (node0)
+>     0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
+>     0x40000000 - 0x5FFFFFFF  System RAM (node0)
+>     0x60000000 - 0x7FFFFFFF  System RAM (node1)
 > 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  tools/include/linux/mm.h | 1 +
->  1 file changed, 1 insertion(+)
+> After numa_cleanup_meminfo, the two node0 segments are merged into one:
+>     0x00000000 - 0x5FFFFFFF  System RAM (node0)  // CFMW is inside this
+> range
+>     0x60000000 - 0x7FFFFFFF  System RAM (node1)
 > 
-> diff --git a/tools/include/linux/mm.h b/tools/include/linux/mm.h
-> index 677c37e4a18c..028f3faf46e7 100644
-> --- a/tools/include/linux/mm.h
-> +++ b/tools/include/linux/mm.h
-> @@ -4,6 +4,7 @@
->  
->  #include <linux/align.h>
->  #include <linux/mmzone.h>
-> +#include <linux/sizes.h>
->  
->  #define PAGE_SHIFT		12
->  #define PAGE_SIZE		(_AC(1, UL) << PAGE_SHIFT)
+> So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
 
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Can you please add this example to the changelog? 
+ 
+> > > scenario, accurately identifying the correct NUMA node can be achieved
+> > > by checking whether the region belongs to both numa_meminfo and
+> > > numa_reserved_meminfo.
+> > > 
+> > > Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+
+-- 
+Sincerely yours,
+Mike.
 
