@@ -4,103 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 671F1C2A088
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 10:47:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50512C2A096
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 10:52:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B251F6B0123; Mon,  5 Jan 2026 05:47:45 -0500 (EST)
+	id AEA2E6B0126; Mon,  5 Jan 2026 05:52:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD2526B0125; Mon,  5 Jan 2026 05:47:45 -0500 (EST)
+	id AA9B16B0127; Mon,  5 Jan 2026 05:52:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B3216B0126; Mon,  5 Jan 2026 05:47:45 -0500 (EST)
+	id 9E0376B0128; Mon,  5 Jan 2026 05:52:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 87E606B0123
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 05:47:45 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2C8E9C3034
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:47:45 +0000 (UTC)
-X-FDA: 84297584490.20.7D0E21B
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5B978A000B
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:47:43 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	spf=pass (imf15.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.167.179 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767610063; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AB486B0126
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 05:52:48 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2E8AF1ABA11
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:52:48 +0000 (UTC)
+X-FDA: 84297597216.25.89C5646
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4BE13A0008
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 10:52:46 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=MqB+3rEU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of 3_JdbaQgKCOsWNPXZNaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3_JdbaQgKCOsWNPXZNaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--jackmanb.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767610366; a=rsa-sha256;
 	cv=none;
-	b=q7mhPrbLIuwOKvn9sF0fU8BQHuCsJHMG8VQV9ha+b/xNhwAZJvzoRrmGD0FEir1rlLvUgR
-	idiUGv6H/Gv9qPMB8NUnlkEPuHP48ripTp4kZtiCSQtI4wL9zBH9kqlxveRevyw71Vxj8z
-	Eg4wi+bqHqrV0Jdlkrg5LBgE4TLdlvM=
+	b=QhrDAL00n/p945xt5tr/YEoG2OHnYwZXiTiE9pmB5BmDhpgJaFDnwsbcbQMdLDhBBm3UL5
+	Hb7Xo+GsMSYWKvJFq9l2TLE1CvxdUIXk2x9N261AAVIK+xKMrNBQIwOwjtxVZu4+1yKNs4
+	ajELXqtgzbrPr6HLCq1FbLhTaPcNQxg=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.167.179 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
-	dmarc=none
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=MqB+3rEU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of 3_JdbaQgKCOsWNPXZNaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3_JdbaQgKCOsWNPXZNaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--jackmanb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767610063;
+	s=arc-20220608; t=1767610366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AEsrfFSGpZi9ASLRdkHNghNCtZ2WVv91pfY2tmYJY2c=;
-	b=Cteq1/H8esN22p65+RbZ5W1VoCZRpQJpa/s/oq0w6nnuuyextE/pYNytG9RcP1RRYziPBb
-	V+/5F4+XiiKMMsnnY8MemjxOxMFotOscuitptbssFj2ZNdxdpBIqJosJ8NPMCTbR1NkqQ5
-	UNv7T1wmlLpl323oOKq3OBrTrE1Lczo=
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-45391956bfcso11012153b6e.3
-        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 02:47:43 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eZIE86Erp1QGbs2m/K1kc889xwmLfFaps0VsChU7D34=;
+	b=u0mvNvxxm+7MFURjLXHHcJZkDhyZxrEfRSInrxioLgLbdxqfQNdAFfrfkXDJxm8m1YXqq4
+	+dxx7UCF+Vyonnb9G3svBBzEWU17Gyu1fd90EdMS+oS15yFfC+fo1sVLmH4DXSJe4pMFZ6
+	BBnrTr7/GF0sWZu7lxURXQAgZ+dNREg=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-430fcfe4494so12668826f8f.2
+        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 02:52:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767610365; x=1768215165; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eZIE86Erp1QGbs2m/K1kc889xwmLfFaps0VsChU7D34=;
+        b=MqB+3rEU3axDp04vadMY3BnwHtjsLI/V0ILKqy2oVQUvfYSlPLDxBo5HjX3SJ10w54
+         sdYxO7XeVxTIWYdGvIbcrN/GsAHGMUzvSRRuOMsID4u3d6d6U6/giG/FQwgbDjzOvBRV
+         SNuJW1C/M4EsWOgUC74d9gW+ef6k8lzM5QSZQ1zM0Maf8hSt/4h5VzicUkJrQZh2MCdO
+         +RKp5K7D17QmOHzQwZb7Qi6tjPxh8N5f6QgrQnWEJy9n6sswjCv+IBLvxlIpPf/00RVx
+         he9W5TTLHunB07XQLbAZuU85IradIl9sTj6VfRb6NA4YwsMeHZyXS//NkW3EYsHJm8oR
+         DI1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767610062; x=1768214862;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AEsrfFSGpZi9ASLRdkHNghNCtZ2WVv91pfY2tmYJY2c=;
-        b=Y9tddHxIJCSML0BKioShPmAnNDYjfrZuY7RpAWu8Qk+dI7uPGv+jWbhU9rPQaCORMv
-         jfjQBqGbmcio56NIdYTlouCXY/D/ZEcCCes9Yp+SsdYeSgstStx6hhZKZSAzhs+8dThO
-         U64cVQIE82aSeftHYFp7/R9QphPFLGPnOUeFdMZgtBM5/WnQw9e2U4QtRLWQXZaMBMtF
-         u1ylxy1ydNOkbZQSak78qPVp5LbiJ5I3b4Ofr6+TSDHDLkWx39gs2+IMdY9kQBgtu7iV
-         5sPOf3Nh7LdiqgykIRwIWjYaBzsy5h6OUskFsvIETQwlcofkxwAu9Lx4cbjpQyG6DxNt
-         zLiw==
-X-Forwarded-Encrypted: i=1; AJvYcCUMKzi8Kgug7HNK8JNJi3SqNbUZl2SAR3cwfwzvJMAKEcm+fixpdof1OK5U1W1mu5oAW40OrMhKhg==@kvack.org
-X-Gm-Message-State: AOJu0YxmizixJfpaH7lEL6Q8JwX/DVNc0Bb0qDcAlhV83Pt2TvIqQSmi
-	wCTaeD+x55zrudEDllHeoUaTBf6EFmREr9v6+6Fi5O8fA4yZHLeQsv6h
-X-Gm-Gg: AY/fxX46Idtl+jjhzQORqyLhAZpTIgdK8AFRnUTFVzy0H699sRbcAiR0706avEfGcw+
-	c+nj4KvnX1YJfWaPJNgsqVBv47kXdnInFP2sF13/0/sgGEvkzyLPcaXh1dL5WZBMOKLefKyulcF
-	HYgwqoGPzI9dcWdWpRIxnQX1zuqbs0Q21VUh2ugrXxwizFQgnix44ChC+wjsMsHDJNqjIxLdU0V
-	/1mT36o0VPgfKoL9f6pjkpbZNgCC8aIj3Yf2ULxrs1THs/tat2PxIKe54UZEBwSv5+VmO8RZCpZ
-	VtoZ2nQXGNH2ZUAp3viNX/dldNfCKF+ZikJbcbVF73BFa1jJgpxbt0pN95RzjTj4bBTnkI4p+jT
-	s3uCJ3QInf4ML8fw7/Wo22q3xrrW3U39BIwozWqSYsXctjW0r765Z58NKIsJpiIYgPCVBsQ/m9i
-	Kl8j6GzeobBbh4Xof90Vm/+lQ4
-X-Google-Smtp-Source: AGHT+IEwXxwWocz3VK/aAh4+7MTdg42Q1LzhGoYzyLvRU3S8MGGvIvy4zzBvdu4VmS5Kx6cPAUk+Qg==
-X-Received: by 2002:a05:6808:1882:b0:450:c776:876f with SMTP id 5614622812f47-457b22410ccmr21114894b6e.54.1767610062321;
-        Mon, 05 Jan 2026 02:47:42 -0800 (PST)
-Received: from gmail.com ([2a03:2880:10ff:53::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-457b3f1761csm23007975b6e.22.2026.01.05.02.47.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 02:47:41 -0800 (PST)
-Date: Mon, 5 Jan 2026 02:47:39 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, usamaarif642@gmail.com, rmikey@meta.com, clm@fb.com, 
-	riel@surriel.com, kernel-team@meta.com
-Subject: Re: [PATCH v2 1/2] kexec: history: track previous kernel version
-Message-ID: <josgeh3zd55a5sjmclidj53v7hoekzvb63ah45aocvgwh6ajxk@rnzjabyqkojz>
-References: <20260102-kho-v2-0-1747b1a3a1d6@debian.org>
- <20260102-kho-v2-1-1747b1a3a1d6@debian.org>
- <86secn7ors.fsf@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86secn7ors.fsf@kernel.org>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5B978A000B
-X-Stat-Signature: huqhi8t9o3nj8p8tgjaozwj1rtpkwppz
+        d=1e100.net; s=20230601; t=1767610365; x=1768215165;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eZIE86Erp1QGbs2m/K1kc889xwmLfFaps0VsChU7D34=;
+        b=IwbB+fwrbGECA1emMBrtAy2JNOIGhZyINjCyv1HUsB01XfZ28VthqXomUTcLH3oXGB
+         NzA60uMIHbWfAE+zYZErxwqqDXMmZl/IVEg5hyDf8okjL29rUXLyOssyBXEDa9l5QccH
+         n0w9jh8nUvv2PT0cIEUH15kmCEUGbnxGi28tdAucMZNHULStO7TT1mUzc4ZHx1o29rAI
+         AKZYv/iNKYJ4GO4PBxhEGGd3Yb1bJBGNUDPtuVfr5LrM88mFT79ZyK8vVmeo0QE+8Urf
+         coKxG222QlqYN2ySwPMQFSuIicuWslh9CFcagu+yZS7sLQyREvAahTk563b2x0tawq+z
+         wxTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWBhY4HKsBWVogAG/NWDyW6/R8GRwY2CrYTFrdTF+Cvfv/DfkbVea4Vu+z7uZ5Gd3uJ2p8QsdL1TQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw6n0FdMzI2eQOhO7/G+5g1QiG+QxcmrG3eomqGPaxdfwALgtkA
+	6jCxy5pQ2zkmWYMgj0GElz7cGE0wTRHJe/tLhnORtr58C2QFro9vCaAd5yKFNiqRKM8iXIs0DKJ
+	BwGVeQ9U1Gee9/Q==
+X-Google-Smtp-Source: AGHT+IEAJYABQdl0S3AMd+Kym0YbP2ev2YfxQ/hHue5b+xcTvswe3K5CPOaAuQwSBUuFhDhZ84cMtaq210atDg==
+X-Received: from wrbgv28.prod.google.com ([2002:a05:6000:461c:b0:42f:b138:c617])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8718:b0:479:1a0a:ebbe with SMTP id 5b1f17b1804b1-47d25082cc8mr551544395e9.14.1767610364788;
+ Mon, 05 Jan 2026 02:52:44 -0800 (PST)
+Date: Mon, 05 Jan 2026 10:52:44 +0000
+In-Reply-To: <CABVgOSmMXsbhJsBBy9p=WK1RdB+gcgyuma_FTSfQOGWJ0eqU8A@mail.gmail.com>
+Mime-Version: 1.0
+References: <20251223-b4-kunit-user-alloc-v1-0-fb910ae0e50c@google.com>
+ <20251223-b4-kunit-user-alloc-v1-2-fb910ae0e50c@google.com> <CABVgOSmMXsbhJsBBy9p=WK1RdB+gcgyuma_FTSfQOGWJ0eqU8A@mail.gmail.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DFGLKV1IYDM7.1W30Z9PG0WIA9@google.com>
+Subject: Re: [PATCH 2/3] kthread: Add kthread_take_mm()
+From: Brendan Jackman <jackmanb@google.com>
+To: David Gow <davidgow@google.com>, Brendan Jackman <jackmanb@google.com>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>, 
+	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	<linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1767610063-518031
-X-HE-Meta: U2FsdGVkX19L2MPKwDLA8M5gHYJKZMhMpperNzA3+JsqjOSKn//ZR7FgAH9WOx/kMj9CnYbUT0z2u7zZxZGuw/KZEXOdnf01JjxPamCRFbvB2IFXlOXfGbsQb6rzW2ilBWf3Q1QqQpYem6v3Rp2jV991pRl88EfuGb5xRCq/Ur9tWjlqzHNzYb7mG55zvDWjTYjWIDj5rx+fsS3Kr804jKCQXknmDuv5SfIjfL8uQfGOFdcDzsTLUEE/3xxNgcfTvDBFbX5N9aS2CWkf6jwQd2lkclqPYVlxcDe4/qQ1dk9Z6J2WgkHtic5VCQIJZ/Q+eqrAI7MPINFQNrfzG9Z9HqhnMFdmv1f82x2Qxl664FfLGXu3skTWOx+ion8NouSQitOSwvcQ/onS6rnQrobP6mUp5tcgiqon0M6+EJi2Nwwe7mVQ+0idPiruYCnAwcx0nFVX6diiWO1hO8R5+jlWV7VYgXePaGpXc0SVpvXRilUdLaKqPpolUPWMxREcLnU2wgzFD5e+0K0/vmdXG1Q9UJ1KSOQrbtsjs1PdfW6YZBmbzUrlphbbPgFxymEG0S35oVP9JZc3WSKrHCMGddjFj0TB67+8SX4JFiHGDC63PUwxp+eQlkjsm4dzRnk5A1O7v8fHrVoQ8Fr+sV2DuiXGfikfycm/ZHA+0sSOV/Ow5YIx3sLFMioUb1V2tx4uwYLzrZG+/JjKDqVbwobfon8nXYVL1h6KWAEdeBmDY+xe8+HaAbDxdLnNFd5SQ4Nqje7JFRYvLEKxMA/BfDwMFZFUGvSILPNUmgMFNez9iuNxMxPoZd6JVmQN3LjAn51GKygmRovqDKnrO+MUYNyZ1aEeJDnzG6W50xWJF7hpGh3//hU8/wloLe7W3MlFLjc+L+aqCb9IMSkBKnKNeotScH6LeQpnUEwsClbbSz43gNdirDvvEO+6ruALLri4s26jxY6vWGyzq95D5n10hRGVRlq
- dA1iFXTi
- AP54x+69Kxace+qVyUQbLP9T7bZfEkeEe79TPUJli2g6bdK6iK37TeBrek9frG8aEpY+jAMbzzo92uDRc955mT3RDqqa1JmJlvh7TOSfPzsONUHM0hciTK3UgghvBt469t+TxiaSqpwRvYrcaHGgfLR1GSZNmtNtjuxDmU4NG+7N3C0Y5EBajn2WVuohc9xziWVdoH35fip0d5lUJFoNZjZAcOVk36axI82r1QWktxw9WF96L9Ci4SvXt/oWmuv8plk4hkArHeEKE5EXttoGAZLEkbGSA4Z2R41LlRcMzyi0K3X1uQwlbuEn7ZQl/Tybq+K8Ulhem0NkRLaIVz6QHJavPItbt52I23svtZOb6bmZ0h3eQwxDZaCTEFIjrer5LarGaDgeg2ikdCiM4VUm9uDx98sYoppHmSnis
+X-Rspamd-Queue-Id: 4BE13A0008
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 6yandfb5djt56719qdm8qpyapeoeqzdw
+X-HE-Tag: 1767610366-910413
+X-HE-Meta: U2FsdGVkX1+vJViUhPmm07sP07+79uYxdt/QX5BASdFTgxWxmtW6ahGronhWAeLhrdF2sFojybKhMJ873xUYz90tpoxxC8+/ap3wF+DD938Z8Yzp3vtQsHUQaRVEstbwUSYQSoNV+gHO8+uVPxgqHusV8hKYj4ej5ro/FgU27Z5VbeG3+vhogMRpoXTi/yB7goh9bhGlMOF+FnhR5ZPSfmWlKnrHZiNGrVrNj+w+9J6MNf3Iq+iPIK2aVT/jKydF/E4exBgYxcJ7vAOq1iVa04EpYlYUSfQKOTv2TYp9CBLQx4fBeoRWCBY/FmemQcx3lnLnlIDzQ2YDmx9CF3TTMGZxI/pmA0uoippNdyJMobvK+fYBx5swPiKBapV8z83yecQHXq0jKaFZVlcplMPurdY+r1QK1Gz8M1izpPPKfj8fyb6EBB0HmZbHVbI7NzRi0PHNs1V3hZftn2CbE/BhjkhF6ucnC71OW5oJ/QXv7WCHdjBhcH9UR81IYg/vuTUUyGSCclK4LakVsQuQwgmBpLWdCIGhiesQFqzb9empiRO4iJfUwhSzpItqJBW9QBMUTlMO3pGLHq7Yrkx751AEhBSR/b8RWnft2ybICWHwRyUVzxM6xHs4/qhQRkBhWnKYcU+Jhv/WvKz7MKY/RgsJHzxUWnmvhX+ahArkvfg7NGI+oqRDhZ+O6ZQIkPnkW7ABj63hOtVt6mkW5giZ3hJGaFM/Spw/835VBwzNke86bImNTwwZi4pSDm1Gs7hIMXfnZoHddNZW7mw6JMpfdx/d73u2sULiPYyd1LoEuV7bv9x80lzUUwsPncOYGlpyn0R6j2nAwCuzVLp0g+Sp9tw63fPpqd33QEfSl7Vs1rzFdx6T8gsFLHlFLzFSbAd48F6jpWaUtzS12ochBNP8qziyrdVzelcqs/k3xHwBWjp1A8T8e/lvD2nCG8t/6Oo3c8JDc6JWJBode+Vld+6hMLg
+ yYn1MdJC
+ ZO/Z75SfP1WrATo2xLrH/UkLa/eloO6q5fUtEcwoi+KZegSRSSZe92XIey57jx53WsGdzKVKNBQFmSAYU79DJti9rKKog3T1tDVxN4a6Nz1sLSFKUJ8Snr0V/TklGOOL49xfYV9bFPJ+yGxZLyYuRN2AKf5JK6yu1eEpqHobg4wQN5AQW65XMYq212koWyGRFaAqQ7AF+q5+RzPEG6koz0h7XxbD5Co9ToE/WOJYoToyZs3oBatkbRFCuDVYNsA43AnAGiVlkUrhOiEAfCaeBZ7KQIQF3VIzKLF5E1IXuRYxc79Zw3ytN5hYShCeL/0c2eblYSgQ9lD0ygFC9i1uhdaXm7+DLv8/dk6J/TwenKVRzRIkvWzAJfc9Sgp/VQiTtcHnSYyygQCisM+N7E84mhidoTojSuz0S8qLBs1/AnDmmTMu3txvPf/XVKUxnSn6Yi+APSgWyZf8QMaBrPbT8660i2jmNB3dVZICaUID4/VF1S38FI2VvxgmKZCtznn3d8fXd6MOEMSIXM4o+DpF05b1n29vgQIHaejPKcQRhQMQlmLjaD/wfBPTuALmFh0zJ0X/xHhMYcFqDK1o/uES/N6/cr8z2DMgqiHNwBDUc7pFfP2w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,47 +119,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Pratyush,
+On Mon Jan 5, 2026 at 9:56 AM UTC, David Gow wrote:
+> On Wed, 24 Dec 2025 at 00:18, Brendan Jackman <jackmanb@google.com> wrote:
+>>
+>> lib/kunit/user_alloc.c currently uses kthread_use_mm() without a
+>> corresponding kthread_unuse_mm(). This is a bug, but fixing it in KUnit
+>> makes writing tests that use mms more difficult, because of KUnit's
+>> resource/try-catch model.
+>>
+>> Therefore, introduce a new operation that does what kunit_attach_mm()
+>> wants, namely an unbalanced call with cleanup deferred to
+>> kthread_exit().
+>>
+>> This is actually just the same as kthread_use_mm() but without taking a
+>> reference on the mm_struct.
+>>
+>> While adding this, clarify the reference returned by mm_alloc(), since
+>> that is what kthread_take_mm() is gonna be paired with, in practice.
+>>
+>> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+>> ---
+>
+> This makes some sense to me from the KUnit side, though it'd probably
+> be nicer to have a way of actually triggering kunit_unuse_mm() at the
+> right spot. I'm not sure if we'll want to have tests spawn additional
+> threads sharing the same mm in the future, too, which this shouldn't
+> make impossible, particularly if we have a requirement that those
+> threads don't outlast the original test thread.
+>
+> Otherwise, Is there a reason we can't mmdrop() from another kthread
+> instead of trying to kthread_unuse_mm()? I wouldn't be surprised (it
+> doesn't _seem_ right), but seems to work here.
 
-On Fri, Jan 02, 2026 at 09:17:27PM +0100, Pratyush Yadav wrote:
-> > Subject: [PATCH v2 1/2] kexec: history: track previous kernel version
-> 
-> Nit: please use the prefix "kho: " for KHO patches.
+No I think this works and it's actually how I originally wrote the
+patch. 
 
-ack.
+However I think it's very messy, it depends very heavily on the
+implementation of kthread_use_mm(), i.e. it is saying "I assume that
+everything in kthread_use_mm() gets undone by kthread_exit(), except
+that there's exactly one mmdrop() missing". This seems like a natural
+conclusion when you've just spent half an hour staring at
+kthread.c and drawing up a stupid little ASCII diagram to try and
+drill this godforsaken refcount API into your head... But once you step
+away from this patchset I think it would look completely bonkers. Here
+I'm looking for a way to actually solve this with a proper API.
 
-> On Fri, Jan 02 2026, Breno Leitao wrote:
-> > Add CONFIG_KEXEC_HISTORY to store and display the kernel version from
-> > the previous kexec boot.
-> >
-> > When enabled, the current kernel's release string is saved to the
-> > "previous-release" property in the KHO device tree before kexec. On
-> > the next boot, if this property exists, the previous kernel version
-> > is retrieved and printed during early boot.
-> >
-> > This helps diagnose bugs that only manifest when kexecing from
-> > specific kernel versions, making it easier to correlate crashes with
-> > the kernel that initiated the kexec.
-> 
-> Why can't you use journalctl to figure out which kernel was running
-> previously?
+On the other hand, I'm now adding a weird special kthread API just to
+solve this one little problem in KUnit, which people might reasonably
+object to.
 
-This is a good question, this is why this doesn't work for me:
+So yeah I probably should have laid out some other options in the cover
+letter. The ones I can obviously see are:
 
-1) in some cases you cannot rely on systemd infrastructure.
-   - This is very common when you have linux as the boot loader, which
-     basically boot linux (UEFI -> Bootloader/linux -> kexec -> target linux)
-   - In these cases, the bootloader doesn't have write access to the
-     filesyste/journal
-   - This is becoming more and more common. For instance, at Meta, Linux
-     is the default bootloader.
+1. The current proposal.
 
-2) in some of the bugs I've listed earlier, the machine doesn't even get
-   to userspace before the crash. For instance, in the bug fixed by
-   commit 77d48d39e991 ("efistub/tpm: Use ACPI reclaim memory for event
-   log to avoid corruption"), the kernel was not reach userspace/init,
-   thus, it would not be possible to run journalctl.
+2. Just call mmdrop() from the other kthread and spray comments
+   everywhere to try and make it make sense.
 
-Thanks for the review,
---breno
+3. Find a way to call kthread_unuse_mm() before the kthread dies, with
+   some sort of magic in the kunit_try_catch logic.
+   But presumably to make that all work with faulting tests etc is gonna
+   mean more special APIs, probably worse than kthread_take_mm(). (I did
+   not explore this very carefully so it's possible this is easier than
+   I guess).
+
 
