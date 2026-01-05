@@ -4,115 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48E40C2A072
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 07:23:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F6BBC2A062
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 07:29:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54C9D6B00E4; Mon,  5 Jan 2026 02:23:49 -0500 (EST)
+	id 8A77F6B00E6; Mon,  5 Jan 2026 02:29:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51A056B00E5; Mon,  5 Jan 2026 02:23:49 -0500 (EST)
+	id 87EB86B00E7; Mon,  5 Jan 2026 02:29:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A3A66B00E6; Mon,  5 Jan 2026 02:23:49 -0500 (EST)
+	id 781636B00E8; Mon,  5 Jan 2026 02:29:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D14F6B00E4
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 02:23:49 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8595E16238A
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 07:23:48 +0000 (UTC)
-X-FDA: 84297070536.22.CF55A6D
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 97BB340006
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 07:23:46 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=h9RTx+Fb;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf27.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.45 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767597826; a=rsa-sha256;
-	cv=none;
-	b=jW7Sgq5ro79mlK7REBQYfZiXeY+GLc3IWDVq19l1wE9q8mBknRKHlepRtylNsGoS64ncKX
-	ZZsKMrjMlt8Qu2mQ+8kBXoAVoNOndYC1UtQ2SNBNt6R7P8bhzPCZ5pmb3SDqy1fhq5dbmM
-	AwdSwq9s++KAV1RB3jgf5J+HIlwvDIs=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=h9RTx+Fb;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf27.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.45 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 645C46B00E6
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 02:29:40 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E9F619BCDA
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 07:29:39 +0000 (UTC)
+X-FDA: 84297085278.02.09C4466
+Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 14ECD1C000A
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 07:29:36 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=UNcXnX5z;
+	spf=pass (imf18.hostedemail.com: domain of realwujing@qq.com designates 162.62.58.211 as permitted sender) smtp.mailfrom=realwujing@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767597826;
+	s=arc-20220608; t=1767598177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QSxp5OH076gMrGxUPr3s0H7dbp9DxnQK1qQdqLTmlac=;
-	b=s1aUaMk/qjJaGxj8CsgqWfu+j23t3TYMNILPKe9SU9fGXwDq+wbh8s1AGKQ6vgwJJtsHY3
-	IEFklrPxeZJDO9dz/nGOVo6JX1bA7yMyxdd5LeC3+log9CsVQdGMFtwvenpHtDMgOPriAp
-	AX+73W3sphKC29wTA/jbHTQTzpi+I7I=
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-34ab8e0df53so13231994a91.3
-        for <linux-mm@kvack.org>; Sun, 04 Jan 2026 23:23:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767597825; x=1768202625; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QSxp5OH076gMrGxUPr3s0H7dbp9DxnQK1qQdqLTmlac=;
-        b=h9RTx+FbNJ7DX8KVVuT3ZgWmmnA2LEMxRwvxPsFRNowrvRZvWnfazWAcojKM/QjolG
-         PjZnSVqW2VQJn0FQdmYxJWjQN98mLDbpPMnDaJFMNQLdvhGMDb4l6lgD+e7B2I1RqD3J
-         9GuzIhYRpJrnzL4FLdnuJNPcBmu3PoYDX3y3g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767597825; x=1768202625;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QSxp5OH076gMrGxUPr3s0H7dbp9DxnQK1qQdqLTmlac=;
-        b=PeUWjCe3Sdtz4VtnxBQqFt04i9dLRQ+oK7x68QbRG99JvyIqkmG5SUiF5JCWzoGFOk
-         RrbnHPCg5fku4T6+rvy8oUWiTt2gYk2V/p1Uy8e8a8p33w+L0qhfIRVOc2gpxBIL2p0Z
-         dhUjMxkIidj4ougy+x2ciCKA6iI9NG14xN9MdvEu8X1k7R5FC25tpXz07n0mwfaN0/tq
-         m5uHTFIk/+A9d9TZbY4RWosKAdA0igSJr4r24TGZjyAFPlKZhXAHRKn5CCAu43dE/fdI
-         MecAkWoTHlQn+hfZq5nExl7pdbq2grj0zFXQdJ1K8CkzhfCehUaqqOSJjNv42KMlg0wd
-         b4DQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWQc3WjLc5i5UD6k4PhIBHDAqHk3/osnVY3/pQ9lWKKS6coLjuxLoI9aPq1MwDt81GCE+Vsf3dUuw==@kvack.org
-X-Gm-Message-State: AOJu0Yx+rLpwmkeNyVnF2d6K/rbSApOxYgcYn14tiXwq50jkzT1BFeLE
-	EU58uqv6HLi/lSU1ZKPmeT4UKf7AguSqSwTWXaQNrxtSOjX9KAYKfNcL8m4nCCkVcA==
-X-Gm-Gg: AY/fxX7vFWcCYSz2V7ECGO4TwN0wT1VcxWAO4/impuiqFaRqDADWszBl6QAVHTD3vUZ
-	8Tlq+32up3ImbEMgT2lqzj6bEwQiMd6ih4PPCTMz2jWOKOz3fWCuKHIRpHA8JRPHJOc/ipYapFl
-	ZRtffVlzKnR8SeTf6Mj2TeMN4TQOy8e7SVks8nmL3ZEIho+HgrKHKviQAtIp3gOsz0UE6ooYMC5
-	3HfkAU7eYIUfaFs8zEkbcY4asIamhnc+nOjrGkUuZNLOEA/g26paX8KPPl/qtbvEBGAA8ex82w7
-	qyI8gbqkT6w/sPlGXW6rUHujaNl9y6WsWhCr70ITfF34hwJuBRdt+nRQXo9qc/G5vRnNiWldCWM
-	/7TptJoFyyygM1OvL/u4gv/SfOk+ZgVo5XjDhhOvQkD7/r92WxZgiFlwG68EZxWN/Uid/t2f7Bl
-	wHwX1kyWW9yuw9f5Y0pqqBCSFEsncB33PogbJG3gk9wlBlwrdicoPCB2Sp8FRARg==
-X-Google-Smtp-Source: AGHT+IG9b8NEn5tQUUjPXLsTW33wdMdtjEkBXF0N9Mx3x4wdkKXPA9twh21llcHj8xSlk9p5iMqf+g==
-X-Received: by 2002:a17:90b:2804:b0:339:a243:e96d with SMTP id 98e67ed59e1d1-34e921f7bb8mr36771622a91.36.1767597825432;
-        Sun, 04 Jan 2026 23:23:45 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:3657:db4a:faff:666f])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f477077adsm5206179a91.10.2026.01.04.23.23.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Jan 2026 23:23:44 -0800 (PST)
-Date: Mon, 5 Jan 2026 16:23:39 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
- consider other metrics
-Message-ID: <gdtbjepmea65zajh6dafxiekv2wmoerje7v3qxjundbezdnpps@f5ofogyw7wnl>
-References: <20260101013814.2312147-1-senozhatsky@chromium.org>
- <20260101013814.2312147-3-senozhatsky@chromium.org>
- <ddfs43qldaws5urlnpah3ibp5xeu7st37p5hgdfajvdtwor4sd@fkcm3brinygo>
- <gg5zdpzrk47tljbnaudcy2gnsodyhmmar23qb57b67bhx6ntje@eq2fcrl2dk4z>
+	bh=l2dTv/FNr5ZBYUYJFBjrwwsOib3XHe+T921gUuHMQXY=;
+	b=dWf+eS0ubRzNJ1LktrwBpORLGZ5Q/3T2OkYoy0y/otwtHOLyofSTE7FpDWLRwOwNh/17No
+	ZGCvAJtIlk3G9s6OfElf3FlF5D8inDF+9Ghuc6DXEE1rkzB11AAZW5kEXo7E4Mu0yKH63H
+	+Og6GrZO6x+vnqgMlGkUpAsSZ55F9i0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=UNcXnX5z;
+	spf=pass (imf18.hostedemail.com: domain of realwujing@qq.com designates 162.62.58.211 as permitted sender) smtp.mailfrom=realwujing@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767598177; a=rsa-sha256;
+	cv=none;
+	b=a34SDr+InrEQGultRCUx9+J3hLFXwa1YjBaQ8/DTb4WbhDa6oSgskJYyL3ULYrcjoMC6O+
+	ApaZIoSYTTmP1mb4c0etTLfVBGkXnbhlUOKt0KlGzxw70drffA2hP/w6HWbyqC25VZkCpD
+	gvxsfxRj/ef1cRDWTRi8xnd7SFRbNHA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1767598172; bh=l2dTv/FNr5ZBYUYJFBjrwwsOib3XHe+T921gUuHMQXY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=UNcXnX5zEGPcaXvQXPhs06D1/aQQXberSNaTE5LKiKwaEvjrr/Djfy/w56aIT2QRv
+	 Valu61uZCUK5b4ZdjNJztz1pBjkzXPmzydhbUeNbbkVFWpwFAFtj1uRUOhRU/vH5+3
+	 KJb5JvPCnNzf4JMvkntU+npUFnlTaS+hSloytAlQ=
+Received: from localhost.localdomain ([61.144.111.35])
+	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
+	id 75D3C6F5; Mon, 05 Jan 2026 15:29:29 +0800
+X-QQ-mid: xmsmtpt1767598169tnojks7dx
+Message-ID: <tencent_8CE8292766552797836FEB198A402CA2CF06@qq.com>
+X-QQ-XMAILINFO: NbgegmlEc3JuJvoeLQeVKYia9J1U4yJYBOq+Hs3nQSkJdJy1wM+tCIbcktScox
+	 NjqviY2TdsPPF77D5afaco96fcLMdjKMemSwgF+Wy9tcxENaQP0mhRYSn3e/cL9P0fn369uAszqb
+	 TDUaQigd9SDOvixQRUZTYSIeJWlfL1/MWlDAY7t/DI4xBonNLkLDwKW69lSJPAY7vGPyBhffFEgC
+	 OQRx+SWcy5+euka0aW0Kc3Y0ERP7czOnzPCNXzYxPqxRyeDyRZXpQ1qcOD4OP0UNcNsAKUECpy5a
+	 XjvxNFBqIXnC4iwnE6Zjfh9gwLbu0xsu+J/wiAWP7xvhToVYAO3BWId2+mCKzcYeG7fD5/CMhWTa
+	 MMqa1bXsHinhH4aQSNlwsboCwmblld7wR6X4KZLt6ZHqsYQr9OODQ9OfetSbaTkqDZ8nOBv2Us54
+	 zP1pxcwYc+ZShobEnobfKU/hfpbUIoqRkHOgVsNRJs27Dz5YAHAfA49ZTSkoqFpMFZovJEgBO6tc
+	 sxMA40/i9DoJcsxDVMHC+WmPUiu4t90+0os2m5fzXMU6bLt/ejt77c4glImQ17hpIwRk9q9ELKVC
+	 TBTEXW5xjYhu2MHRf8HpptJbxIB1cqHX+Cw6AxQCSWoYKQgM0nd5OUR24B1A1mBhFSv15lnNGj5P
+	 GkiZKeQDpjjPjdq9rsYyC+TATUJTSTcuQ86yo0EIGjyY3QZgNgeTR2KCcsV+5NoAWJhZvEtUwhGI
+	 GK0Ch8Md1P0st+UXG7VyV6fZ2q5WhKdhQUKysMcdWuIadHAh7c7qGTYLgVrJ9JDsfSMtiaBOWrlu
+	 mazaYWv4RKLICBmHQ1AXzK17uyt2CIH3S8ZquNW1HOvloqkj3QOnCLjw0lc8PBn3/tOERp3cVzKE
+	 6WsPAAm/Ax+xq3A72rIDgXz5Zg8wN8PTZw2P4qKCS4OUmxCPEG3vLJsMikKoLH7nZWo5CICmN6mA
+	 v50DlyoN+qCURMDmsSwZKk3pTS7/6f30MzBoJ/QFYbWSfetdPs3p2sS9xSpMkqrzCzvc8Fl3+on0
+	 dHNWLtbPZmUvFhTDpF0mDWAke+0y5sBk5sLqMcdw==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+From: wujing <realwujing@qq.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qiliang Yuan <yuanql9@chinatelecom.cn>,
+	wujing <realwujing@qq.com>
+Subject: Re: [PATCH 1/1] mm/page_alloc: auto-tune min_free_kbytes on atomic allocation failure
+Date: Mon,  5 Jan 2026 15:29:04 +0800
+X-OQ-MSGID: <20260105072904.1298002-1-realwujing@qq.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260105063830.15140-1-lance.yang@linux.dev>
+References: <20260105063830.15140-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <gg5zdpzrk47tljbnaudcy2gnsodyhmmar23qb57b67bhx6ntje@eq2fcrl2dk4z>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 14ECD1C000A
+X-Stat-Signature: o876di3fsgdkgeyw1e8jygayk9kmresy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 97BB340006
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 1xfc1g5ar7ikfmt67nxdk51rg4xy1dkg
-X-HE-Tag: 1767597826-386614
-X-HE-Meta: U2FsdGVkX1/rhP2jpBV4qBdc2AQQTk2wY1IzSRjk1csYPUze8shKs4/KK5a6PeUTe7KI+WDavKTwHIonkC2YQ+SrcAgAWHJvqFwX91/ggHzlHWUT52/ptp6GRfgVE2fOl0otOeg5AsEBMptzL4bCtB8sCjy6QzBk+NESMA3tVP/mgwNPZcyRcvNcNbYMppmlJuMvQmLXFBqIgQv/9t2mH+jtrU+9qKUDhA4yOLo77H5ZLjETBgtmJnwMMOI7O4zKYH5FiNoNkUyD2WoQ4dT6/otHXO/WjLp5HMmpekpRQ/M4YzqVCg6mVRZEfEIXzgAZOOUD4jHhNARh9nuVNnPvgLmiZicC6vAuNgFD+0HT0b0U8fN4e5jU7C3Essx6LVrbnkc2TAgg/u4OTbOAFsBrpbVylv9GwMz6XQorNsdsOfkl0LWPXVfMFsx0/0hE2PfjUmEYlMqyIa9HENsfdGqCJVxvrX7+ft0PHbjL0KsuglqBue/i3xPUeSwGwjSmQu1ysq7NLlp09WWpZ8sliq/NAel1ccQXtWcYGPzUFE3MZOk4SBxRl5RJE5+9K98vsZxZR43rWGhC4dbyaQr/H1sxluwndgc6tUHudT5bH1flLrvgNGDcF78LjkFpPrg1f4JOBCIe2ST6+50ty/TR/FX6B4ujscUCSkz+Lq+EfdBT1avh5Elek8v6JY5ztGkOkUp6RgG+yPhqPnZb/+QDdYFnvMjAwwF9Nxgxktn/xrwkMQnuJiS8I4kcUb8kP3t8VYjDCx1TIPr9yhhIPm8eh96WvWSBHiIsjt0c2R60Qbv/aJtnNe2n82wa8gL5jNyy05h1mn3OI1SPqzkLL79hIc8FaJ+qGa56QiD+2ikbKGVrMFyzqYKFx+7Li5idtPoYFbnKqQvCTP+md1wBiHaefyTnibzPKRdXpBmDWmhDZWYjffaKxoGCIoKAMoyQGdP/sv1T59AQqywPgCq6R7D0zdH
- 6DfbCPBy
- qYyYDzKt8W9+qAUxd8dHYZg2bM97W7Zg6bnz7gMHI4M68/VIF94XUq58GfNTw4O52fgVAjBB1SmlfVMuzceAleVjjiJMsSBJwYLd479nB72zsGWm0ATubGMtALNL4/h8wPMx2XdwSYNbT+4qS33N9X0mHG1ikLXZdTmlUqo5+DqUITSYoHckuvUiNYlfcRi9Aq7+B1USyTNjVLyPJB/de8CLXLKIcVciKB3AjbWBn2spcLgesTOwwW2Lzm0aWSTAGZjk+OA8yY/vA5g/dZhXnwa3jJutx23qoA9bwjoOFPUnIB63B+mXfzpTjwdQsPQ9+7D8y6otLw/ymLhP+7XvoDm/qHGixZ8QjhaTKavIqHWj+vM4=
+X-HE-Tag: 1767598176-335343
+X-HE-Meta: U2FsdGVkX1/BLhDazWImHk3xFY7QcLCzLzAeSG8wrntXVTz8KAQ4n4K0lZvLxFzSIjtmth/OepSqFAYe/vDtpVcPrPY8qXyZjKMfTFQLY2wYTCnDbtQvZu/0yF+6JhhhURZ5RPS5CXPsm8p+olb+zvT7CvYWGDEsN6l/SXEz6XUb5PS1vts5BKDlMLTcFoit/xE1LA2I6AbMRMLH9dDMAnPDgZbxHq5ScnT+HM6NZBGFT3WLn8gqP/57W55xRgL/gc0vWGupyGDqYjqRRmVPbWYdvr7lfrW/5Sx98aPPuRqSUGPzuIuPl8f9FMBuF1C82wzxWTuFKJDIIuc6GO32defWtXs0CvgOJhx5hwf3G3INv8URiTSbQdrnZgfB/M4oKo0ek+ntsNF789ljVAMIvEK6Bo63N2TQtuNGhSxN44NFl6UjWqyBcdYmHWTcaV7KBc5wJRmTXcXjiANO4vizYr4ESy75IPXsv6xXU8DE2gM20P2rUbYIbD0NbesidwIaSWfk+msyPKxKEe12JDYuDRnpgoMSzE1AyDFB+vnSxKD+H9xM5hHt20pq9kUfQKgTDgysXejcWplSy2uWClXBMKRQmROo8IG3Hw44Ii+YDXsx2ZeIwRLvPOH5X3BgG5ogonKFsiRNxOA3nC0RkSlXufWQc+o/zSpWuMKhW3JaaIaw3GF7LEcT+19cMttyCz6T9fYmiHfBzsz6mgsTqF8ReZOkR48VI5pqFkoFcxT3FhpZltPKqFpqPg5e/xf2mtTpCViKlm0RDaH3bAWc+fRu9xDmXq2y2cnjYj8fy6jQr/9qGZ17RmUOyNTyJX4brptLzTk5fP3SSHAcqDNQAKt0hBnB2ZVzsC8BgsWxUMVx4AJ131/paq7CoSETHao9uBzF/6/N2yWOOPurTkfU6v855Guh1Ag7dzPd4vJepe+eNAsjb9czEb/8KoZ8TzaKt61OVaY4a6+sSmf5Zq6w7GF
+ hTQ8gALL
+ 2yGJNJm5Votq5MBPPA868q51go3Zpp93vyUUNGplLsAaAUfPUH/+PYMsulc270w70KaOcHepiwVd7XnzSrMzRmg2lov3Olh/kIjrvDPEt0l0Rfc/BbElth821EsJg/s2f793k+EzIWng7DAGouQpM3Kp5aTHKO1S7VCWjWvgpA3xrVGAyK7baSqYFbz0tP/X8cpxvYtTqaHCSs4ejzXOPSjEBInvgJ1dC2RyPROP4IWLFF2YfO+/B+iMUVOsH25BSS2lpggzktUstDRKefeouMFQVZVwfFOKtD6QbQ1eymhlxl/wMPWYjMY1M4qdBZozRGYJ7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,123 +114,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/05 10:42), Sergey Senozhatsky wrote:
-> On (26/01/02 18:29), Yosry Ahmed wrote:
-> > On Thu, Jan 01, 2026 at 10:38:14AM +0900, Sergey Senozhatsky wrote:
-> [..]
-> > 
-> > I worry that the heuristics are too hand-wavy
-> 
-> I don't disagree.  Am not super excited about the heuristics either.
-> 
-> > and I wonder if the memcpy savings actually show up as perf improvements
-> > in any real life workload. Do we have data about this?
-> 
-> I don't have real life 16K PAGE_SIZE devices.  However, on 16K PAGE_SIZE
-> systems we have "normal" size-classes up to a very large size, and normal
-> class means chaining of 0-order physical pages, and chaining means spanning.
-> So on 16K memcpy overhead is expected to be somewhat noticeable.
+Hi Lance,
 
-By the way, while looking at it, I think we need to "fix" obj_read_begin().
-Currently, it uses "off + class->size" to detect spanning objects, which is
-incorrect: size classes get merged, so a typical size class can hold a range
-of sizes, using padding for smaller objects.  So instead of class->size we
-need to use the actual compressed objects size, just in case if actual written
-size was small enough to fit into the first physical page (we do that in
-obj_write()).  I'll cook a patch.
+Thanks for the suggestion about using watermark_scale_factor instead of 
+min_free_kbytes. I appreciate the feedback, and I'd like to explain why I 
+believe min_free_kbytes is the correct knob to tune for this specific problem.
 
-Something like this:
+## The Core Issue
 
----
+The failures we're observing are GFP_ATOMIC, order-0 allocations in interrupt 
+context (network packet reception). From the logs:
 
- drivers/block/zram/zram_drv.c | 8 +++++---
- include/linux/zsmalloc.h      | 2 +-
- mm/zsmalloc.c                 | 4 ++--
- mm/zswap.c                    | 3 ++-
- 4 files changed, 10 insertions(+), 7 deletions(-)
+  [38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index a6587bed6a03..b371ba6bfec2 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2065,7 +2065,7 @@ static int read_incompressible_page(struct zram *zram, struct page *page,
- 	void *src, *dst;
- 
- 	handle = get_slot_handle(zram, index);
--	src = zs_obj_read_begin(zram->mem_pool, handle, NULL);
-+	src = zs_obj_read_begin(zram->mem_pool, handle, PAGE_SIZE, NULL);
- 	dst = kmap_local_page(page);
- 	copy_page(dst, src);
- 	kunmap_local(dst);
-@@ -2087,7 +2087,8 @@ static int read_compressed_page(struct zram *zram, struct page *page, u32 index)
- 	prio = get_slot_comp_priority(zram, index);
- 
- 	zstrm = zcomp_stream_get(zram->comps[prio]);
--	src = zs_obj_read_begin(zram->mem_pool, handle, zstrm->local_copy);
-+	src = zs_obj_read_begin(zram->mem_pool, handle, size,
-+				zstrm->local_copy);
- 	dst = kmap_local_page(page);
- 	ret = zcomp_decompress(zram->comps[prio], zstrm, src, size, dst);
- 	kunmap_local(dst);
-@@ -2114,7 +2115,8 @@ static int read_from_zspool_raw(struct zram *zram, struct page *page, u32 index)
- 	 * takes place here, as we read raw compressed data.
- 	 */
- 	zstrm = zcomp_stream_get(zram->comps[ZRAM_PRIMARY_COMP]);
--	src = zs_obj_read_begin(zram->mem_pool, handle, zstrm->local_copy);
-+	src = zs_obj_read_begin(zram->mem_pool, handle, size,
-+				zstrm->local_copy);
- 	memcpy_to_page(page, 0, src, size);
- 	zs_obj_read_end(zram->mem_pool, handle, src);
- 	zcomp_stream_put(zstrm);
-diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
-index f3ccff2d966c..64f65c1f14d6 100644
---- a/include/linux/zsmalloc.h
-+++ b/include/linux/zsmalloc.h
-@@ -40,7 +40,7 @@ unsigned int zs_lookup_class_index(struct zs_pool *pool, unsigned int size);
- void zs_pool_stats(struct zs_pool *pool, struct zs_pool_stats *stats);
- 
- void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
--			void *local_copy);
-+			size_t mem_len, void *local_copy);
- void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
- 		     void *handle_mem);
- void zs_obj_write(struct zs_pool *pool, unsigned long handle,
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index be385609ef8a..2da60c23cd18 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -1070,7 +1070,7 @@ unsigned long zs_get_total_pages(struct zs_pool *pool)
- EXPORT_SYMBOL_GPL(zs_get_total_pages);
- 
- void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
--			void *local_copy)
-+			size_t mem_len, void *local_copy)
- {
- 	struct zspage *zspage;
- 	struct zpdesc *zpdesc;
-@@ -1092,7 +1092,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
- 	class = zspage_class(pool, zspage);
- 	off = offset_in_page(class->size * obj_idx);
- 
--	if (off + class->size <= PAGE_SIZE) {
-+	if (off + mem_len <= PAGE_SIZE) {
- 		/* this object is contained entirely within a page */
- 		addr = kmap_local_zpdesc(zpdesc);
- 		addr += off;
-diff --git a/mm/zswap.c b/mm/zswap.c
-index de8858ff1521..291352629616 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -937,7 +937,8 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	u8 *src, *obj;
- 
- 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
--	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, acomp_ctx->buffer);
-+	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, entry->length,
-+				acomp_ctx->buffer);
- 
- 	/* zswap entries of length PAGE_SIZE are not compressed. */
- 	if (entry->length == PAGE_SIZE) {
--- 
-2.52.0.351.gbe84eed79e-goog
+These allocations:
+1. Cannot sleep or wait for memory reclaim
+2. Can only use memory below the MIN watermark (the emergency reserve)
+3. Fail when even this emergency reserve is exhausted
+
+## Why watermark_scale_factor Won't Help
+
+watermark_scale_factor controls the distance between MIN and LOW watermarks. 
+It makes kswapd wake up earlier (at LOW instead of closer to MIN), which is 
+great for preventing memory pressure.
+
+However, for GFP_ATOMIC allocations:
+- They don't wait for kswapd
+- They only care about the MIN watermark itself
+- A larger LOW-MIN gap doesn't increase the atomic reserve
+
+Even if kswapd wakes up 10 seconds earlier due to a higher 
+watermark_scale_factor, network interrupt bursts happen in milliseconds, 
+leaving no time for reclaim.
+
+## Why min_free_kbytes Is Necessary
+
+min_free_kbytes directly controls the MIN watermark — the actual memory 
+reserved for atomic allocations. Increasing it immediately makes more memory 
+available for GFP_ATOMIC, which is what we need.
+
+## Alternative: Hybrid Approach?
+
+That said, your point about side effects is valid. One option could be:
+1. Increase min_free_kbytes for immediate relief during failures
+2. Also increase watermark_scale_factor slightly to make kswapd more aggressive
+3. This could reduce the frequency of hitting MIN in the first place
+
+Would this hybrid approach address your concerns?
+
+Thanks again for the thoughtful review!
+
+Best regards,
+Wujing
+
 
