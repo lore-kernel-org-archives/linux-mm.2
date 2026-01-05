@@ -4,135 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80476C79FA3
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:16:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8758EC79FA7
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:17:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4EA06B0183; Mon,  5 Jan 2026 11:16:55 -0500 (EST)
+	id ED3656B017C; Mon,  5 Jan 2026 11:17:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D21986B0184; Mon,  5 Jan 2026 11:16:55 -0500 (EST)
+	id E80B16B0184; Mon,  5 Jan 2026 11:17:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF6676B0185; Mon,  5 Jan 2026 11:16:55 -0500 (EST)
+	id DAA026B0186; Mon,  5 Jan 2026 11:17:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AD3EF6B0183
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:16:55 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 51B6C16013E
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:16:55 +0000 (UTC)
-X-FDA: 84298413990.17.31051A5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 97B814000F
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:16:52 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eGrDbTsK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767629812; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C7E696B017C
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:17:56 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7AFC216013E
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:17:56 +0000 (UTC)
+X-FDA: 84298416552.11.90E7A5F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8468E16000B
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:17:54 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf08.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767629875; a=rsa-sha256;
 	cv=none;
-	b=Z821FCzdDqo6rrtqDAy2919uidOyRmDtOYHQE4xBcG6pW44ZKeP2L06VUrviF65Q2aBDMx
-	BOzzWBum//G12u1fPr8naJ1HNn1CbCoO+My/27rBkemmxxyLSOEj5hm2IcOsWzbDpcxBjN
-	pPrr00jg2wpzk4wTF21MZA8FF/ek/UA=
+	b=bDIuGPtxur7obXJsNKLE6c/gjlJ8Dyt7yw7i+YQf5rNH06/GsbiR247IZV4WqsbPxY003u
+	lUf41UDMxilGGUNOZXOgtXS0ks9CL2pZ7TAy/uE1qB9a3o6NvyrkfffkM0pzyAxi5mLbIz
+	N5AT6bIny58yI9eEqB76A9fpMAaUFSI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eGrDbTsK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf08.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767629812;
+	s=arc-20220608; t=1767629875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bnv7eR4PlTh/VRrHfI/VZLyEtnYDN1oKh0nDU+AEIq0=;
-	b=E2OHlwXajhCKvCXwBW5Ip4wyK/Jb/jRXJRi7VWDUz1zb1wWa/KDGmPKDSd35nwv8Af67J4
-	ouSjj5eatfZjv/2nzy0qM35BHeyp8+JsitGNa49FGn7GYksuc99AO45mz5LIFDIj6UjyrX
-	cFDoe2LOvmB/1pWJ2CTOEhQODMPPjT0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8BE7841987;
-	Mon,  5 Jan 2026 16:16:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DB4C116D0;
-	Mon,  5 Jan 2026 16:16:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767629811;
-	bh=yJKheNOHT430R7ojIOfd0gQns/RA63NiAXct2IT/Nn0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eGrDbTsKpxwDxVnt9qq2XGlh/fmAKV5dG+pvhmsdLNTfTxwnsH8xvPE62QRLzZIa5
-	 2xkMd9QC7nC2xhKfrCwcKaC6zL+EDMFuf/0OgA62R5KMe1yrJMyl0LG4EqCr7LOTP/
-	 3iuyzlsU2fdiwjkswSKS5qT1MxlzOzqPO55+a4bb/7w48YUTctpJthTyp+ZGBBcO3f
-	 TotDnqGw/X1aG8aC0Baslh41QlCgCk3zqJ1hY1eHOOktA+IrS5+0QoJJh1D1V8oH6Z
-	 D0APExT8+wDWRsN5Mb1kMYpYMrgTCTvKHQLuV+PD+LfVetLzm7I5TyR/C2uxkRNR/h
-	 eNJOfwMx68ELg==
-Message-ID: <7ca733d2-ba0d-4792-bcd8-bc153e7b1b15@kernel.org>
-Date: Mon, 5 Jan 2026 17:16:45 +0100
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=e3iWm/lYsOhP8R40mxWlclaAvDaPCSkJYGINSh44ewM=;
+	b=VCUnHPqTcXhKGZ3Nx3IKUu0uS2drx6x3OO7MKwL77wLUMUevGZwejCbYIsqGLRtk4CqaVK
+	7h+BWioJc1/7QQzxgxPYd62yUcWUyYZlSHrgzF5QHdLzLHIUKxjvUDvMgfPdQnN8SJAQIL
+	HXGChRHX9XEaPVITNDAUCNHdV3etmQM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 89D63339;
+	Mon,  5 Jan 2026 08:17:46 -0800 (PST)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 840A63F6A8;
+	Mon,  5 Jan 2026 08:17:51 -0800 (PST)
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/2] Free contiguous order-0 pages efficiently
+Date: Mon,  5 Jan 2026 16:17:36 +0000
+Message-ID: <20260105161741.3952456-1-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2] mm/huge_memory: consolidate order-related checks into
- folio_check_splittable()
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org
-References: <20251223122539.10726-1-richard.weiyang@gmail.com>
- <20260104023756.jufklyl3bl64fnck@master>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260104023756.jufklyl3bl64fnck@master>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 97B814000F
-X-Rspamd-Server: rspam03
-X-Stat-Signature: hgu5kfnenq1epoo1m1ukfwhysxmk77zu
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1767629812-290104
-X-HE-Meta: U2FsdGVkX19MSis9ZHRzTmbj1yvwEnIwqAbfQmaDmXZKF4ixD6GtqWtoAp9IEEZxt5/XGmwnHdI4/FLGCCZi+bZLPNI6uul2YwOmwY4XausnLovAi+nqukWSe37gCYTyxyov8A+8c8kXMY3y9HCbvKb6N88XNmnfH+QEdqEDpUy70cpWHCcpG3WtGJrn8OpKQD0luhnf94mdasFgZvHD9BzjIMARquc8x16557pXlLGeNd2uXh33lx9zPKZzB/q5Mk1FmNNazv3FWwU4Sb4VlxgciMMmB+zeoam0brk6GzfUOW9vHYinFdasWwOqiNdgw4yW7UcC8M4byZ9zrwxg3E/V/qqFpLfzFZgWcfq2MxO+dukJQGSTiwS+CgjwoEJy9CvrVSyRQ2jhPqgPSuTNxKu5TA53W7K7B0xQ4yAgZfzmXK8LAuSd1MKOYphlEobTvVb0pM1RtXO3ngmXYHVa+VaN+vidS8aWfy6+UuNF0QuG7RM9tBZdwfPDFkJ8h8IlLW92j7jKajBdxbEMJJECKEKwRx4A+suJ6TeTfcZnCRH3R4dYYOxeE3W+aCNOTd/dywagToA7/7OS+7S8grY07NAXs5GS9+nL0x59Ren9dxsYNYLRlKeqmvP/CRk42kxsybXCZLD+H8FIJkuycsprydqgTpHvDRQZK0uDRPjyPZ6S98wbwnUpOlLafXUlOZ79AO2WEXJQr5t6EAhu2M9kHdaGZeKkKmLXdemChGGBPAu1X2c+dZdAQFhWKc6o7fxSpuisYZvnqJpS7AlXqd812jMNXUkzCBfsbAz4VEZsewqdc/cnrCJM/QQzWSsNrJzaTU/SQf419nr5GAQ7z87M/VrHPiTYFl0Rp8smJRyI01XsHCoaP7fqqKmsrTbrTUhrpnV8hnGpjxC8rXOWEDwQD3XixKFzRZ8/vORT4kXK6NC1/iHGJP92KFoOEovmHH+7WbaibzUPbZV0J6Gy6sT
- ikztYfY5
- zylt0Df3TQPxp9aoNEFfxMV9tdqZwdXQ9xM9sQk5OtqKifWD49+ypmYZpRsxhnRZ6lHJIN9oZUpGQkzsuGEgw/Cvx/N/jVFGRPEEsWbMxIbCP708WDsW6CrVScis+6Sw34FISADVs0ecuqRWtIHz2nZPAzTxV7MG2TgHj69jBUlfMx0nPhTUINumvrvzq3QvHvf7zYm+cJCCQfglZhvcnYpaMbZjAYw6hUXaVb3036Z9jU5HX1Z0dUfG4wnUZzeyQHQT+3AcT35hoeUmUtaRdYF0qnfih2JOtJ5N3TWvb7CuV/UNeWMb3lpcEKaTtY0xPrNoYVSzOfuJMiVrs3vUdCQmYhlUf/9CsAmFRz7fUQSeKWJJT+Qg44pLql/UXJ9Ismgtb7RqHlzOGqWb1pITMSS47d9ZDHvk/jOY7
+X-Rspamd-Queue-Id: 8468E16000B
+X-Rspamd-Server: rspam04
+X-Stat-Signature: yeywejfjha84fyy7snumn6odqbjj584h
+X-HE-Tag: 1767629874-817852
+X-HE-Meta: U2FsdGVkX1+VYNmsbEQV5UWuEoLlzkIm4QayWw0kuTICQAztK1D36aMljrPT2EPWRsmjVrA2EYeAwJncK61vigfwTpq93xcw0jZN0PvniognCIrwLWmxVN46SJPB0q2yiIFPjZnYEaA3rlcsuJHM1LGRLuV+y2yNiB+zIWXhnsL82Ux5bC6LbXCaY7DKaLkV+Lvl/whWgbqTj4i2nT4kRIQ8jlyW5xFX6OMvkeXXMHrrQgLUQwFWbjWLzsFflDaz1GfjfZS75zvqM10Pxn31/QKShEXVn9AYotnwlSOgX53WwE/E64p35ViW7+UoVluIDlbu9NAvTa9M0A+RbAqLd+7ZS7ZdGofYxTbphBm/Ee53YRS7oIUxGGEa4SSiC86opokFls3B1tKhjP+jsVX8TDIVqeYEW3EnQQ41G3fS7O3rTbaK3orphx4aec6zzWt6Qef4gQXmHJjqFzIedzp2FVS95V56Pjeobx6ucoRNkQifihVfVmF0iwl7vAbPOnoF+rdHVy9Ckps9Qvs4R74Y/E6XuhiySNaJzgHwK/gHG+GcTfosT4sMFgQeIVqIawewW/eaYPGGZWC5Z/KN8z3kFkGJ+mh7wxArAe96YW7y6dndte4AzB1KguZHZ89Q8ZjU8OfhA0kmuL8oUjsWir/7WVf1U45r1aqw+xzePJwG51E1xHh2QxLyMjDkiDvn2D91EPjj9lzo8jNo6sJ5QoqNcKan6ycfM3OXCAhZ6LEIejqQpgg89iJc2UnEgEVamvzuHJB77XschLtEfvUDsL5GSYoe9OuH5CralWkBRGKQrYw8L4rHfO9Q4ZZx8Xe8NJu6rn+IytQ3xEMQdcW4hmM6yMAhu5J3QzEzBKj85Q25TomWokwdN3+xjIVGr97IHHO5eOPiDydl3tYeZ+G2oPO7MxsgvUuo1F4PoLJ/1QjIaM5P3raxGZq+HaefFRl2te6GULg3SJNEY5+o9O7PDFt
+ UQ+5Imtd
+ G59zw+Iim6K967Ycdt/lKCErQvLfduNv8IcmJrgJWWC8LeIRRGJSU8dLIJV7mxqAoq/570OwelTlGNtTCE7oAmTHxTEV37uyZw788nnZDHJCy+asoToVr3TCSfCBQHukyXaR5z0ij77cHJ3LN3EhKvHBoRog4WxJAQfOT9cjl9NsgVLamv0AynJSd0X3+PGkWJ/vS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,113 +92,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/4/26 03:37, Wei Yang wrote:
-> On Tue, Dec 23, 2025 at 12:25:39PM +0000, Wei Yang wrote:
->> The primary goal of the folio_check_splittable() function is to validate
->> whether a folio is suitable for splitting and to bail out early if it is
->> not.
->>
->> Currently, some order-related checks are scattered throughout the
->> calling code rather than being centralized in folio_check_splittable().
->>
->> This commit moves all remaining order-related validation logic into
->> folio_check_splittable(). This consolidation ensures that the function
->> serves its intended purpose as a single point of failure and improves
->> the clarity and maintainability of the surrounding code.
->>
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->>
->> ---
-> [...]
->> @@ -3719,28 +3723,33 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
->> 		/* order-1 is not supported for anonymous THP. */
->> 		if (new_order == 1)
->> 			return -EINVAL;
->> -	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
->> -		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->> -		    !mapping_large_folio_support(folio->mapping)) {
->> -			/*
->> -			 * We can always split a folio down to a single page
->> -			 * (new_order == 0) uniformly.
->> -			 *
->> -			 * For any other scenario
->> -			 *   a) uniform split targeting a large folio
->> -			 *      (new_order > 0)
->> -			 *   b) any non-uniform split
->> -			 * we must confirm that the file system supports large
->> -			 * folios.
->> -			 *
->> -			 * Note that we might still have THPs in such
->> -			 * mappings, which is created from khugepaged when
->> -			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
->> -			 * case, the mapping does not actually support large
->> -			 * folios properly.
->> -			 */
->> -			return -EINVAL;
->> +	} else {
->> +		if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
->> +			if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->> +			    !mapping_large_folio_support(folio->mapping)) {
->> +				/*
->> +				 * We can always split a folio down to a
->> +				 * single page (new_order == 0) uniformly.
->> +				 *
->> +				 * For any other scenario
->> +				 *   a) uniform split targeting a large folio
->> +				 *      (new_order > 0)
->> +				 *   b) any non-uniform split
->> +				 * we must confirm that the file system
->> +				 * supports large folios.
->> +				 *
->> +				 * Note that we might still have THPs in such
->> +				 * mappings, which is created from khugepaged
->> +				 * when CONFIG_READ_ONLY_THP_FOR_FS is
->> +				 * enabled. But in that case, the mapping does
->> +				 * not actually support large folios properly.
->> +				 */
->> +				return -EINVAL;
->> +			}
->> 		}
-> 
-> Hi, Happy New Year to all :-)
+Hi All,
 
-Happy new year to you, too!
+A recent change to vmalloc caused some performance benchmark regressions (see
+[1]). I'm attempting to fix that (and at the same time signficantly improve
+beyond the baseline) by freeing a contiguous set of order-0 pages as a batch.
 
-There was an offlist discussion about some of the text below, because a 
-couple of people wondered whether it was an LLM-generated reply, and 
-whether it is even worth the time to read.
+At the same time I observed that free_contig_range() was essentially doing the
+same thing as vfree() so I've fixed it there too.
 
-So I am curious, did you end up using an LLM to compose this reply, and 
-if so, to which degree? Only to improve your writing or also to come up 
-with an analysis, code etc?
+I think I've convinced myself that free_pages_prepare() per order-0 page
+followed by a single free_frozen_page_commit() or free_one_page() for the high
+order block is safe/correct, but would be good if a page_alloc expert can
+confirm!
 
-Feel free to use an LLM to improve your writing, analysis etc. Just a 
-note that nobody here is interested in getting LLM-slopped, so don't 
-send unfiltered/unchecked LLM output to the list.
+Applies against today's mm-unstable (344d3580dacd). All mm selftests run and
+pass.
 
-In general, I think it was raised already in the past, please don't send 
-patches for code you don't fully understand. It consumes quite some 
-bandwidth for us reviewers/maintainers here and it just gets very likely 
-to break things by accident.
+Thanks,
+Ryan
 
-The comment change suggestion below does not make any sense to fix a 
-warning we trigger. If an LLM wrote it, you should never have sent it. 
-If you wrote it, you should have invested more time to understand the 
-problem and come up with a reasonable solution ... or not worked on it 
-in the first place if you don't understand the details.
+Ryan Roberts (2):
+  mm/page_alloc: Optimize free_contig_range()
+  vmalloc: Optimize vfree
 
+ include/linux/gfp.h |   1 +
+ mm/page_alloc.c     | 116 +++++++++++++++++++++++++++++++++++++++-----
+ mm/vmalloc.c        |  29 +++++++----
+ 3 files changed, 125 insertions(+), 21 deletions(-)
 
-To the issue at hand: Zi Yan pointed this very thing out in v1 [1], no?
+--
+2.43.0
 
-The patch as is cannot work: we cannot return -EINVAL for something that 
-is not supposed to trigger a warning.
-
-[1] 
-https://lore.kernel.org/linux-mm/01FABE3A-AD4E-4A09-B971-C89503A848DF@nvidia.com/
-
--- 
-Cheers
-
-David
 
