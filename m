@@ -4,120 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B29B7C2A062
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 05:08:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A86B4C2A062
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 05:11:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 226DC6B00DB; Mon,  5 Jan 2026 00:08:32 -0500 (EST)
+	id DAAE96B00DD; Mon,  5 Jan 2026 00:11:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DCAE6B00DD; Mon,  5 Jan 2026 00:08:32 -0500 (EST)
+	id D592B6B00DF; Mon,  5 Jan 2026 00:11:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10A6C6B00DE; Mon,  5 Jan 2026 00:08:32 -0500 (EST)
+	id C31E76B00E0; Mon,  5 Jan 2026 00:11:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 02AB06B00DB
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 00:08:32 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A06D31A1F98
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 05:08:31 +0000 (UTC)
-X-FDA: 84296729622.11.C573CD7
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf03.hostedemail.com (Postfix) with ESMTP id F306E20002
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 05:08:29 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=VQpPeVlS;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=bingjiao@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767589710; a=rsa-sha256;
-	cv=none;
-	b=1ikr8s/D74kX7Sn3icq/ObIRV2WhSk3Tw7hscmbEatQloS16ApepQqIOYx9aB6c2VPQaqy
-	+xm3lnULv64XgcSAhXwwF/8RIqeDSn2Wu83iK0GObcI0z76oAnI2BfZmaBqQSgYKPUbkvM
-	z0J24ar+a7kghOBnyYtMYHRC2K8kt60=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=VQpPeVlS;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=bingjiao@google.com
+	by kanga.kvack.org (Postfix) with ESMTP id B1F336B00DD
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 00:11:07 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6B13398496
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 05:11:07 +0000 (UTC)
+X-FDA: 84296736174.02.BD3180A
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B8E9F140008
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 05:11:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0gmyZ7d5;
+	spf=pass (imf26.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=bingjiao@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767589710;
+	s=arc-20220608; t=1767589865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cd/jk1OYxxJI0FgFMQ/4AyHrYlkj9I7IC7MmkMckJUw=;
-	b=Uhl/Prg16s59ZypkINqoMZkLng9aEXzeD5A5iG6MMcQAx59/pjQdA1Xrn7xXvxQN4qiaj0
-	Ttd+hvlAPhGkO5Ra+XL1RGr1q0QE0FYyI2OYCW7rbw/Kg2aLMCHclPgUK0TqKy3291VZdB
-	U4HlgGao7AskgECJ+VJKCycaW1xRO+k=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a35ae38bdfso147835ad.1
-        for <linux-mm@kvack.org>; Sun, 04 Jan 2026 21:08:29 -0800 (PST)
+	bh=MvpNrM6V6EQoznDW/e/eykjEU9kcBlSrOOOQoJkleao=;
+	b=LSsUtNliQhYXgPbXJjo6hpVH4lKWIKgtAHdYX8mU1oeQ5dfD7G2AuW26POnK8ww2ytjb+m
+	kMR0WdsOMOQB4L8CnEGAVJLX/eDCWrutgz+cdWvZIqW6MAuVeI+UwU6q5wPdgKnA5PYNee
+	EsXGJasUp8q6agYs5dAyMyFYK85ci4Q=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0gmyZ7d5;
+	spf=pass (imf26.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=bingjiao@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767589865; a=rsa-sha256;
+	cv=none;
+	b=Jgztona0ZUK33mb3cznobLdlKH0ogkzx8057Xtod1/lIGbwAQsjPXQcGMceMt+1NA9O7sh
+	fSU5jwsKqix2/J8JKvqaA2Gmc2Fs967vtsfR5p57Ac6qrt2xSyvGMAotCxpzEaTcmTw/Xl
+	Gjp6J2C9MOlBK3MwSg+vWrZaWZJYjZQ=
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a0d06cfa93so155305ad.1
+        for <linux-mm@kvack.org>; Sun, 04 Jan 2026 21:11:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767589709; x=1768194509; darn=kvack.org;
+        d=google.com; s=20230601; t=1767589865; x=1768194665; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cd/jk1OYxxJI0FgFMQ/4AyHrYlkj9I7IC7MmkMckJUw=;
-        b=VQpPeVlSbRDRmTl/qvTUMOcgRhjqlyqnc0jfqDB0YeWoU94rVB76LSZWnfKnyi6KRG
-         4RE+loGDgQW4iyy58Rpo7T5tPQuLtnuPSkbQPYlhTvdVUef4S75MJKQ1dJr2cTkAtkxN
-         fSv45ANH1qaoyomp8LYvarFBv/7ueOrvrjWGmDQE/hxIzg/DspqxtLLX0ko7S8SuGBuU
-         +byJzqC6XkNGPyK6jPesKx77XPQEJcIyl0yE8onS+6ky/e2H77lA6aOVQzWUpc8hQhvw
-         3x2ycmoLNcvVY067vM78hLfJy9hIwI75QvGsyjBGpS/lt4VujqUbLN+kqBELuaw7YDax
-         HGGA==
+        bh=MvpNrM6V6EQoznDW/e/eykjEU9kcBlSrOOOQoJkleao=;
+        b=0gmyZ7d5JMRoyunSxZnB1z6SEZlCNZLuEiSSqFYz1ZhRkHUHIwQt7Luxa+ClQXW/Xn
+         nwPqmbMgGllaNlnZGvYWabllt7sjInVpekwTNfMZRJRpK/ybRWFcRuQ+c24U7kxWbPHa
+         kFg27aQwYCrewm7syvWRIRTuNVUG9E47Qi9R69Tfw6TVfmZQtheqDMlSMz2RnxyWK0p/
+         /KjutIOa28wr/azspgHth+8SwLvCiGwlXHinyjiNtscf3CUj08rIn5na8Wx7ZXupcrjp
+         Viy8lY9opcGrdOPs6jEI1bKZP6XlEz7abe1GMtb8d5A5yQEa5q6epWtR+z7pBMKkAV8u
+         bavQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767589709; x=1768194509;
+        d=1e100.net; s=20230601; t=1767589865; x=1768194665;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cd/jk1OYxxJI0FgFMQ/4AyHrYlkj9I7IC7MmkMckJUw=;
-        b=v/bcCq6EqAKR4dI7enbIs0NbUU/4CkrpkuhbHtKLnHD2Na6rqsNnppR2RMtZJ71kgn
-         lreJbmhBrfQvDdOZx4RquVJjpQ4b8Gbi/zrxcWPnAc3ei0879dzaGQoaVN100Y4DPZgQ
-         vopKOUqdhj7ppC3Z87zo7aYptVj65Ny17ko5Ti02LT98gCx4+h9+qJKVbhTKrkAkn2pm
-         w0vTspYBPdK9d9tJLOj4VAv2xvDM77CZxyyG3Rd6tl7Bnk+/s76f/f9ypJCCOy7W9Gmf
-         12PW4u0R+wcOThx8SccpOTEo8O8ySFRoVsugi1z7S84eT84BXf+iAPjRD1Rs9j5Kz3lI
-         3few==
-X-Gm-Message-State: AOJu0Yw6hHvskhrMChH0rCtSkY1tfk/a3nQHZXBQEmHegB/CJs4eF88e
-	k6oZ/bmGXwabwiLfWrnyN61hPilDYS8Ez0BMco52ZI4nSl2QHG8qeqJYCKzbHHVu5g==
-X-Gm-Gg: AY/fxX6RL4NHJp5FCzXOUwwK67ciFj3HuAtsEMMpz5QXvXiPZAfoH+kgjkJIEszQr4v
-	Q3PFFqhTX2HkMGcyM7I59PvMPiutaSdB1yqhX3mPLqaTgJ0VMHK9gC+RlwZRX3jh/NW8zTMTM7b
-	HnhY+3RWPIOAb97H21LHUKnkMPP4YSfCNqu2lGr+KfSdzViGbO0TIRm/n9jR5dkVHRW/6mtIpep
-	jQMNo0THrq1ni2LEj1II9GDjIH5x3mgEBrEYnolvfhPdo3K9EBO7Gnz7rFO26hOmWp+zr3PepFn
-	KzrEY7AoubysuuD7zKzpF75LapbnlUcnlWt3cGvW7QMx1f0kOWrytiMI6IkT5k8FerUOc7Fz46y
-	QM01CNMLO8YXLS3/AMdFsuWQlew8Kuvv1Htt6EhI8q68Awq82HMJ1Ehg2GJDzTF2iXUkLfDnxrJ
-	Mv41/aWvsSFJBBM1WxTfAIagHmC4z+MkYYVZWkRl52C0RI826tj6Sn
-X-Google-Smtp-Source: AGHT+IGk8Jm8wNCmyi1j3iw6iak7/1We7ESwQmtL7zKxxPgAfcDGUZnYJOZFjtq1xd+E+EX1n5ZlNw==
-X-Received: by 2002:a17:902:d588:b0:29e:27f4:bac0 with SMTP id d9443c01a7336-2a3c1c161d4mr2381045ad.16.1767589708401;
-        Sun, 04 Jan 2026 21:08:28 -0800 (PST)
+        bh=MvpNrM6V6EQoznDW/e/eykjEU9kcBlSrOOOQoJkleao=;
+        b=Yu5z92WxrIgVXf7uwcfGqYivobbyJXDc2DBI54j3YMaQuGmIky0fshWumVowHIrnco
+         4F6vn9legZdeGcAprIisaohEutSCk2qIJphkbYpSlb8jMPH8m664JMVifGhWcnchcMz1
+         W1gxukJ0bCd16MVIwu2Gt3AXXmKgC2EynjUfUkCz+Iy8VWtADPVVaJYLdlxsByYL0SZb
+         BlsojtmzalU24K6haRNZd59yIgkmmQ++ZsSFz+D6uwe4brDoWRh7frfjcT/wfhGpOOp5
+         GFMao+XSFTN8lOi/6TP4bftF4GXpkIL6+PHk9eeJ5GK0Ny3d5t85VD9B7dPHYkWdTrha
+         W1xg==
+X-Gm-Message-State: AOJu0Yx5X58r2RHcEZNN/brr0fAZDkd70dmHa+k+vleC8FC9R1/iWMPJ
+	zjgc+oAgIp6dX4xhwy34M95VrZoEeDDzUde5w2D/5LJtBbOxszjlAZefcZqRukDZQg==
+X-Gm-Gg: AY/fxX6PBOArdamQfOHUAkrNpnRlAPPaQdsllYPVb2jQaEFb7SWNY0F0NYgKV8xAafY
+	pa6S62+N3oAxNfYdMjx5v5TjC87dWuQgRqHU0ERBJLvqDe4FsHnOABJtyLrPjZN8GuGGeeqexrc
+	Ey938sUoG2Jxgf4iGQVPWG8Vp2JwtGrtulYF5U1yJg1lKPQKdGRu9QV3T9p7zAL4+ir6PHggFQ2
+	Q7kVJZW/IGEJ0ocW4mldtabCKC1CQowMe0rtTgft9Ti0B4JFCfgL8xjFLfsJBLYz1URitsIMUHt
+	j80hyIyqNe8HsvNxDULQONeZb4q1xH8ufT68NKIyScuvLyn1d7NJ4UfMgzcYgG8n5wcBbodPSdV
+	gLepIBE02Af0XD8Z6McZlbCo5oyy5jSn6nFQsASUApHAWLpkg5iW8at2OnsDRHMmjjddGWD8b31
+	2Kum4W/tabFZjaLomt+cJ2XhOshKHkWzHvTZ9m7F25q9js/sdTAcESFt/tVr//Gfo=
+X-Google-Smtp-Source: AGHT+IH6GRc2aKx9uWPc08BhMYf4GulScHtpZeTvi1OKubAvka4Vbsx4UDJ2sIYfstiF5FDYFBSb0Q==
+X-Received: by 2002:a17:902:d4d2:b0:26d:72f8:8cfa with SMTP id d9443c01a7336-2a3c3188ae9mr1797925ad.13.1767589864039;
+        Sun, 04 Jan 2026 21:11:04 -0800 (PST)
 Received: from google.com (248.132.125.34.bc.googleusercontent.com. [34.125.132.248])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f45bf6f1dsm3187814a91.2.2026.01.04.21.08.26
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7ae354easm46697199b3a.16.2026.01.04.21.11.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Jan 2026 21:08:27 -0800 (PST)
-Date: Mon, 5 Jan 2026 05:08:22 +0000
+        Sun, 04 Jan 2026 21:11:03 -0800 (PST)
+Date: Mon, 5 Jan 2026 05:10:58 +0000
 From: Bing Jiao <bingjiao@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, gourry@gourry.net,
-	longman@redhat.com, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com,
-	david@kernel.org, zhengqi.arch@bytedance.com,
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, gourry@gourry.net, longman@redhat.com,
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, muchun.song@linux.dev, tj@kernel.org,
+	mkoutny@suse.com, david@kernel.org, zhengqi.arch@bytedance.com,
 	lorenzo.stoakes@oracle.com, axelrasmussen@google.com,
-	chenridong@huaweicloud.com, yuanchu@google.com, weixugc@google.com,
-	cgroups@vger.kernel.org, Akinobu Mita <akinobu.mita@gmail.com>
+	yuanchu@google.com, weixugc@google.com, cgroups@vger.kernel.org
 Subject: Re: [PATCH v4] mm/vmscan: fix demotion targets checks in
  reclaim/demotion
-Message-ID: <aVtHRi-D3iSb3ZkQ@google.com>
+Message-ID: <aVtH4tXHgx0a3udf@google.com>
 References: <20251223212032.665731-1-bingjiao@google.com>
  <20260104085439.4076810-1-bingjiao@google.com>
- <20260104102745.cfd4f6bd661e8e817afcdba8@linux-foundation.org>
+ <b55451ff-b861-4e4f-bc79-6de0c802d64e@huaweicloud.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260104102745.cfd4f6bd661e8e817afcdba8@linux-foundation.org>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F306E20002
-X-Stat-Signature: aqbr88z9abt58g4jepwko3bfhje659nm
+In-Reply-To: <b55451ff-b861-4e4f-bc79-6de0c802d64e@huaweicloud.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B8E9F140008
+X-Stat-Signature: pacd1buch7h3kzbwuy9863rzwc1ign1z
 X-Rspam-User: 
-X-HE-Tag: 1767589709-525092
-X-HE-Meta: U2FsdGVkX18ELbxxuCaxmn7VEU7dC9Y/yWJzDisYJw6asXkh7bgPx0VrlRLcjHIy1utmJCsLZxxxOJzGiU5vBJVudU7yya3S5yMyhf3Kadlr46o6d7ODwv/C/MFsBpPs2Xuv32fJyfkrO3/MsGq69UgpfqsjByfMe3queuOZtT77EdsSElUIvnsld32aOby/NETEJ/lQl0H7pAvQ/LMIjTeoOvknPQDLe6Vkce5FY3tT06brCk5TJuoxd/CPXZrAwOk7/v6K5/TNHkABy9OFQSIrKoDv1AdtcuWJjht1eE7q5PnaJ0EeQaku09hylVnkMsJiFkzcQmO/Srt5wIRZGftL/d6RIdKAq02EQEuVOTLqqVZ/T0iC/kbdc15aELh6OlJT1kQOHbzXLsimPl5j2MeudTTpUUm0mLWnpvZ87kK1dz6Af7srD7+1ZnGtgRp8KNz6WNhekDkpZ7PIWmJri9/N2ghjEdG9GDLbi+KJKppMt/h+1LdZ6csQurfq7Myjh7+b4FaIbQDyL8mYlV5BhUq2tPzixhCvPLTv6fpOTqJu2LNe7OefkCllx0djHilcVuSWKP4ZiLW3P9pPDnXJhtMaPDCK9mP/ewjk7Dw3xwZlI2rWFVCzbqo7uavPtxGUfbdo09gBwUas5y51+bam0SE9bdnc0pGPHk7FKgGpwgd63PrBy01iWYWKAHqhjWe7ByISFXoiKCOxcVpSRi67pRR1MGWrPkL6sKwgy0UfgZXO70vMEbEtUNTqYLlgZYq5LIncngqkGyZL7IoZSF8g5Nlqs6zWni7AX8B/sSQFVrMSf+BMejVefZDUEU8VwRXJ0nnviT492Wg36jKvl2O2/wVGGOwZdtx6iNOlQX4mnzVBvYa6DeL80zciQAN3IgHLsVENnUIKfOy0Ys2zluRfsp3XXEeRFLNXlHDKlUflgwY63Fpc21KdhLDJkfQDjgRVrTWalaoNJQv11Fwabl7
- nNx67mPC
- 9qfgViIk9jLbbO0W3VojR2zpwqYxdXnqGnXpfCsgq2GAs2KBnY4hcZtjIatpBpNePJ+4r6zeqdzu/PbQZKcXa2TpIHQ==
+X-HE-Tag: 1767589865-84644
+X-HE-Meta: U2FsdGVkX1//SU6QeFjArld92vUg2XEqBNZYuoRdAonQd1khjK/vEbPK59qv6+zpha0MAXCnc7GhLd8RqVWdQYFg3hKyoWA0nDxQiO6W/FgzSqtSc5Dybv0tKyEB/AEDmzNTNXkvovseNZJTtc4xlHoOCLyWxtTOmsEl96ym8sBcIYJrOauwJbi+FCJWkcFilIHSh6FPPqBNkFhUeYHsawBYIlTQB0zkY+TlAB6c8UM011WNSa5WEHZQp+o0NFa3xoi6oqc0CDdpebhJnZoSmK+xYC/Z8gdHXfUxMJs3r4Id37ZWMv1/scppW4up0pfSwGrkBSX5ioCcBB8lrw7yZaVdzFuAt0vE7Aj9bDhlyftnBdswFMG0q482RwW/fi3flFh45vN86VlT8tnP3qCQfaIQtqCWVtkaTX7HivotChSH9aBDd4ojC0Sg4+sCNeDV+dQ0jiA6C9BL7W3B5T4PxU5M1JbIjx2irp9FM7LezBmjXyhOVKU/dvz47L/X1XmPE6bz7m2xUuACgetgmYTTMME97txpj1h1vp842VCj8wMhCR4Bu1llVi+KXt4gRjtH3ifNmDzAknB8GxDZuKFXQpETUgYEiNtuUMPkltaVUvtFUPeAi4f+VC3DxFTStOp5uWQeTx5ng11My6VlyWOHAeXbnxA1K2BTQczSYbEne8WJYc3cr4PffgmLBdQgc3fSOSJ2odjfcPMBpe0uGFWE++yiEfmmvsqLNonW4gWEQhyOl0HUqa3oefA+G0oeUg4YcHz0/Lfbf8MoHGsDUr7gL6u03I9iz+OoUJW7ecBIgg/0vygEvFDbI3fE4YQfaPflkdLKxd7UZfaQsmbqrFLcVBttPnosIkezQPNB/VQYLrqCopWfXr1qWgWYPyQV6RxALT6TR6dlc8WznAkATYyI0zAHMS0Adcp5VhfFEUyfyMjcYgQL+JOVWsvlyJeF23oGP0GgEKuWti9E8jnoTao
+ yl8DAA2T
+ jzNKZCiV9vVilNxJ4h6tD2CNs/w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,28 +125,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jan 04, 2026 at 10:27:45AM -0800, Andrew Morton wrote:
-> We'll want to fix these things in 6.16.X and later, but you've prepared
-> this patch against "mm/vmscan: don't demote if there is not enough free
-> memory in the lower memory tier", which is presently under test/review
-> in mm.git's mm-unstable branch.
+On Mon, Jan 05, 2026 at 10:48:09AM +0800, Chen Ridong wrote:
+> >  	cs = container_of(css, struct cpuset, css);
+> > -	allowed = node_isset(nid, cs->effective_mems);
+> > +	nodes_and(*mask, *mask, cs->effective_mems);
 >
-> This seems to be incorrect ordering - this fix should go ahead of
-> Akinobu Mita's series "mm: fix oom-killer not being invoked when
-> demotion is enabled v2".
+> Why do we need the and operation? Can't we just copy cs->effective_mems to mask directly?
 >
-> So can you please redo this patch against current mainline?  And please
-> also review the "mm: fix oom-killer not being invoked when demotion is
-> enabled" series to ensure that things will work together nicely when
-> that time comes.
+> Per Longman's suggestion, name it cpuset_nodes_allowed and handle the filtering in
+> mem_cgroup_node_filter_allowed. Please keep the allowed nodes retrieval logic common.
+>
+> Best regards,
+> Ridong
 
-Hi Andrew,
+Thank you for the explanation and suggestions.
 
-Thank you for the detailed explanation. Patch v4 has been sent.
-
-V4 is patched against the mainline. Tested on both the mainline and
-mm-everything (after Akinobu Mita's series "mm: fix oom-killer not
-being invoked when demotion is enabled v2"), and passed.
+Patch v5 has been sent with the corresponding updates.
 
 Best,
 Bing
