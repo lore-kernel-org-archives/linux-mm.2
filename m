@@ -4,123 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E63FC79FA5
-	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:47:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 151DBC79FA7
+	for <linux-mm@archiver.kernel.org>; Mon,  5 Jan 2026 16:49:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1FFA6B0198; Mon,  5 Jan 2026 11:47:46 -0500 (EST)
+	id 580E36B019A; Mon,  5 Jan 2026 11:49:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD3A36B019A; Mon,  5 Jan 2026 11:47:46 -0500 (EST)
+	id 52DF46B019C; Mon,  5 Jan 2026 11:49:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD64A6B019B; Mon,  5 Jan 2026 11:47:46 -0500 (EST)
+	id 430C36B019D; Mon,  5 Jan 2026 11:49:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AAC716B0198
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:47:46 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3C52B55AD0
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:47:46 +0000 (UTC)
-X-FDA: 84298491732.20.BDEAE6E
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 19CAE40008
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:47:43 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=GzuPGAG1;
-	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 31BD96B019A
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 11:49:31 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0ED985EB1
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:49:30 +0000 (UTC)
+X-FDA: 84298496100.13.233270B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1402F1A0014
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 16:49:28 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="bfAKs4/B";
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767631664;
+	s=arc-20220608; t=1767631769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dVf3u2DFHBy+G2reAT7+xTPxrhj2Q9BCnr/QUBSKiK8=;
-	b=nedUl/cBn/GXF/nI2pMz4IrR/vvxsxyvNmu5OHQlm3320Dhi4OCtGXe7Bpw7DGLNijWFOh
-	0Ua3CUQWhD4KBkf2h+1EyTefCErKOa1JMiuRE7UXoo3h8/QjjP6+9xaavAU+awGPjAPk/Q
-	sXCz1hXnfsgsAt+HPTXSif3DtZ5h5tI=
+	bh=5IzfCHdiJzKkBoq2pYh3uxR9Qt7WuNkqXZ3aOpibuJc=;
+	b=y8Yt8Am84G7WHzYkVz0D5zXZcTTAUReh6HwKe/8h2HgYXIzfYJKdQXfreeyZUGEgoMwN6Q
+	ZW9P1puSxDMtL8Oj1JzLxVli+F4xvR8qOX0Bkx+EqzDW25y8M7g6SG02M+IoKLPgs05f+D
+	/y5lugBA9klgP6QBamF2sFN8qTb+6mc=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=GzuPGAG1;
-	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767631664; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="bfAKs4/B";
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767631769; a=rsa-sha256;
 	cv=none;
-	b=Ge2ST0M3Y985Gn9ICs86tE0dfqYPeuxoMJBpeitp2UkA2s3ycETt6qSEOGJtYxk5Lpy7Ol
-	DV5T8XEdxMPj7DdLYTSRUJQQBOrYk/IBVaeGKZd5Jng+NFatCHizbQBNS14T9/wbp2NCZk
-	PV3GbODoNlHE3MQjvgaNQniiSOMF9e8=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-47795f6f5c0so784575e9.1
-        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 08:47:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1767631662; x=1768236462; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=dVf3u2DFHBy+G2reAT7+xTPxrhj2Q9BCnr/QUBSKiK8=;
-        b=GzuPGAG1cRxvL6bscNuN8d7u+gbtVDMRzqNAaiXenNp36vKuVjR1P4BywbZs84gl+v
-         7neFLv9E2q/xz2cGW3t01FlSb7RB6fCvbKgo9IDYo2xdLdThwL0bSVJgFcpqOR2vuyug
-         N3+4UV3L0H76bdx63kOTQV+yhI5nYTVYimLtXtuf36Ddck1hcpbuoLislFBK3r0eLny6
-         emmBC9n1kR64xuIaKJuNSiMU8/ikNOBbJWkd/721v1Zp+vEoZkH3DaDjWp5BTSvdIa1N
-         QxvAvkpCMRh/xsrjwTlLxndYCN34Y4aPbKsFWdE615TbonJk0RIVLV9RMvChmfKkuh1J
-         zT8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767631662; x=1768236462;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dVf3u2DFHBy+G2reAT7+xTPxrhj2Q9BCnr/QUBSKiK8=;
-        b=WidGSREgFYXYwY7t/vgxxPkNBCf3EV4fFHC3jAucGUWkEqDM6xZtZlB9S4RgToUrzs
-         +3Dnd1eVKfHKHN0hPyC+r7yorlSlIhnX5/FBl2DujaFaYS/xvb4g+A66UyaPtiCRN8ub
-         Hi3JBLwH9cfJMzobZJrNpgSE7lDGggkD75I62bCozzxGl8qwXd4VgggyrgXDzH0gUaKD
-         JWofcSJIslxx68n8SMX3x3IwRZH/tD1hJhfw5jz0+SBA0q0EQkAt797w/MYBjTcjtHX/
-         a4rQ8a0UpuSH5biuw5+S0xLseZEv93TtxWSiq6uk+SBZveaf47E2rEOe6y6nDh3w1OUq
-         r/4A==
-X-Forwarded-Encrypted: i=1; AJvYcCUKGmxfckBenNVIe6uwhPSYGezYZOZVeqEJGhjNDU4gET5gRen2/yjppBeZpuS58ahf1Vc5aFtVbA==@kvack.org
-X-Gm-Message-State: AOJu0YyE3MGNMsRr5MYwDQbi7dlnwwDYemU464FmSR8ReGuzcLjQPQvT
-	cgOZxsli9J9SefQUm7/YxqUK1wxM61dKRpbMrewXnjnTtGjIRYxlYH6JwUr2ad94m5I=
-X-Gm-Gg: AY/fxX63Zwq7/dcqBc5OV2sDxs/H4xkMvhIie+Lb7Xb+GHfAktIU+M3G6zNXyqPkXUV
-	05eW+yzT0hifj+3Ec1w8JDi0BniLORlJsodEJ/2WpS+Vd26wZo19RFSUU5xQiWrm7Vcen3HJgE1
-	3upHxnU1pwI0NU3q7vX36fPfxNqYAnXwglsFO7kt+8S+++7yrgkCYpnivEHbvhZmsvjYV3J3jOg
-	hiXzXhJfUY2FC3ldHPV7VoqfPDUjeASpyCo/uk+nEEPgzrypnw9r85hcyhweUE3Q5IsKDK/CPyF
-	C7lR0/f1uXoRY4yI6uQ4T/0mjqzvf08TdWN/lkH3BjfLJC1Gve0e8yrDGNc9QM63qwCJzVWpBmB
-	qMxWYSbHlCZ/4cz9co943EDZk9l6el+rRSRCkWugfWbwCJJXHqSI5GuD4zjNYJqiAaDd+RuU7Gz
-	bEoWW1vCEvI2zhWOVgeu4vK6ld
-X-Google-Smtp-Source: AGHT+IEbXwEOmbKLHAAdWfErBpN1iq2Thm7pkrNBOzof7I9+NvjlAAF1JhXxTvcoCCGSIEMhKFN87A==
-X-Received: by 2002:a05:600c:3b87:b0:477:aed0:f3fd with SMTP id 5b1f17b1804b1-47d1953b7b0mr684658085e9.8.1767631662427;
-        Mon, 05 Jan 2026 08:47:42 -0800 (PST)
-Received: from localhost (109-81-90-116.rct.o2.cz. [109.81.90.116])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7ece8088sm3482295e9.0.2026.01.05.08.47.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 08:47:42 -0800 (PST)
-Date: Mon, 5 Jan 2026 17:47:41 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: wujing <realwujing@qq.com>
-Cc: Lance Yang <lance.yang@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Qiliang Yuan <yuanql9@chinatelecom.cn>
-Subject: Re: [PATCH 1/1] mm/page_alloc: auto-tune min_free_kbytes on atomic
- allocation failure
-Message-ID: <aVvrLekQJMMJk9lD@tiehlicka>
-References: <20260105063830.15140-1-lance.yang@linux.dev>
- <tencent_8CE8292766552797836FEB198A402CA2CF06@qq.com>
+	b=515ZLaLoAJ28gDXXZvLSP3QN636eZEWcKUgP6vOBWxyfTxR15hS8qSvQNnV+CeFPqc+q7/
+	l5Gmd27AX1gvbuwN6gwDnvxnQMQHHv0SzhgQ7jPpr9BijoaNOfPXFgPbpyyUhyCO0BSNr0
+	ej9pRDjcMknh3n0WQZWcobDn9tjBd6k=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0A182406F8;
+	Mon,  5 Jan 2026 16:49:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32254C116D0;
+	Mon,  5 Jan 2026 16:49:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767631767;
+	bh=q4jProQTOr60sLsG+h2XK+ynEstH6XLCXVz8oALa8gY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bfAKs4/BGFyCRwCH+PUoi6dKBrSOT1OFhGke+NhSx+WHx0963FCJyFW9CzbIfyul0
+	 hOaELtLEe+yU5C6nghjzsZ6zR6U2DWzOpHJOwEoXQG8AEulvCx1D0ObpkA7/jHr6OT
+	 xOoDoUl51JNPx5ccOEpxo2YuH04x9+m4mqhdP81qLxKKadekAhvUgBlb+S9F+OpZ3t
+	 JuEH9aIcSI1hdd6QRsU1vhw5eekBF8of1d8GaKhp9DH8rW2x3dWE6pFMjjnoqS1Odr
+	 I5qX/9KyfZDx8lDcpND3h+qGgAWlruBELpSZXJNsbe25wY42iV+4pZmnYFSviuU4oQ
+	 lUKBIxiULVFUQ==
+Message-ID: <69c9ac59-4fb2-42fc-a8ae-32f583e47de4@kernel.org>
+Date: Mon, 5 Jan 2026 17:49:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <tencent_8CE8292766552797836FEB198A402CA2CF06@qq.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/6] mm: khugepaged: refine scan progress number
+To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org
+Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, richard.weiyang@gmail.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260104054112.4541-1-yanglincheng@kylinos.cn>
+ <20260104054112.4541-3-yanglincheng@kylinos.cn>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20260104054112.4541-3-yanglincheng@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam02
-X-Stat-Signature: nbij9k3q6dx3o8ru7tfsitz19b1t7up7
+X-Stat-Signature: sysp4rmfxikue3d57jqfy8wb4fuytd61
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 19CAE40008
-X-HE-Tag: 1767631663-711546
-X-HE-Meta: U2FsdGVkX19tAYY6LF9phifmOF/Uc5hBXTY3KOgjuqrm+Ra6Hup300ZXyBbTGYhU8oujlUxQ9OA3kF2sUuc4Acdrh5Ne2CYWJ3fuFgMFaRGdx+rz+cKoBkliSi34EYZBDlOf7ZwTNSWsLsyvJP6SRvwi7tie6FOSiwuAcyCaUERMa0SPHcxkeTR3l3GKsIcJbDyqsVvzzNpUfvdnqzXJqOPP6cLN8u9XtCvx3zKMsfCHxvexcz2e26aYdyMvs/htFkzEyOt9Sy/3vvvFvYD/nyvtxIG51gzjeE4z5VkRTS1atCBgHlgB7CffRP7QsOUkgpqv1qP0lnlXAPPMscNCNFbqR/ktPjqXqm4ROS3A6L/Y7dEdHOJrB0NffnqSpEWeTSmkrPB0Ammn2cetKqh+sfrbymiOjK8sQRSpRI9WmzKpeJvglPU+5/v2M8DPmY5IT8WzXQ8uODQQI2WNAoHZ+nbgIzpk8V7+iHRuO5wTo1GkOmH+sHILhX5H4yebFkizr1IXQxxY56NDwDvdWr/XZVgzIjmhKnbR01bY/rwGO0UzyeBfnlZ0JXT0ja8ir4IinTSSQa/pyBcjPbNr8XgY19V+UOTBYTA2xce8vknHFTt43XLu2GD/gfGn5fY9nAGlIRWhv85+/MfBLpf6FhA4YT+KpX4lMa4hF7LyMviDNNlcNnVHvAuj8qW5ojyQVOD6Fx0DjgMQ4vmUO/jsMQP3g6t9+aLEsSvp3/Rei+Oq8BzhdBxbbOSbIq+QiKCgxzuKZGhi1fV16rmrELx1SkTiSBv9l7L0N7kMHeRT0HBcxP5U2wheLXKd9UOzpJSq9gVb6slCQfT8/w8scHSlcxcN4UMIEaVTIkbDO07A3GRz5Lc4/XROqT74zPGxawQXHgIpuoQnJRAl/hb0TczyHR9mfxkGqK5GK7eIL8QrAHeFVZAFJVKa5imprbte5k3UNT+OiQqQVeRmLwXbRZVOVc3
- ZBbQfogM
- dKI50uVysmJJGAmorvLiPi/HOXC87MpD5hkowoAO9HmyYItS3TvDQgcknJzQMHHrf7JAjWrMbgWhhShoZIFqf3Rf2k6oNRor3qH9tDaoC554C6hrkSx9FR+BbCvAUPo0XZjzV5UVNLmP45ibYFtq92UfxFDwyY+UWdxsv5bAcwhVfyaLp79aQliwjeR+RPGb0c9+gVvY5gxv+RC6FywDPVt8MXiLwt2VgLMlKlk80HW4AndWWdRcSmauyYe7RW+pCrIq7FQzUFqOWbnEStn6EzVdfMlLO+JBMpMH2262REd/HFv7u5/TqYykca+OVO0ll9GPzGq7qJui9nO2+ETXfBhWHMwycKoVGolNg76AXSRY9HRHU0RRtuDx1utUGQubEQaXb36aVH2BzJdSc22TdrSoMq+Si16PUZzGYc7AqOfFTeRA=
+X-Rspamd-Queue-Id: 1402F1A0014
+X-HE-Tag: 1767631768-512170
+X-HE-Meta: U2FsdGVkX18Npt1p60RE36HBjtsiRWFvICRGyhebklHq2/1pSuXUbxysYogJRdnMT4ij9suOdX8bLv9YtJdqCkVV0uAmnpEd6UaknbBrLkA9/tGfMAT7p0S5EflaZbqINIahdEWkOyjXxO/Db3XfadW1M8CFMatxYKfUqAIgd4EsUXAGa78PwcsJBWCtmem5LFjt7MqVrrldWQay/4Fk6Y0dZZ7TIsM8/ngb3JCCcJFaqd0aZYLUZz9L2+Pc2Eqh6sx8hEboyQ5kMifahtgVMwCtnPLV5DfTIYe0f/FQb7csJpTSqVFYMNiW3b+R5sil1/A3g+1jVdtl+zjfoSTfHnv6CCJCS/YL3fwrETGbwJpsdErKFrBO4tcMFhFSK3sxk/tQPoCtWuAkpADUwrau8b/+/YdY8Duuiah62lyRzi8Bfwa7cI0C7YZkPk8Xv0O3ri0avPqaFGZAyHAODBrw67Gy0cfFr06SlLLzvOHz4RS/ViC2Y9lvKobwLt47M9n60tEDhDuzy7JAJyNmckScR3In2qTuEe9MUm1FX8NBgk4t5wrOaaO7VeSvqA1MasHirZSJLcpKRzx6zMA5XSL/DW2N9pHTcJTzazsZOpAGqn0qPU3KCStMBWGBA4l4ArUnybCs2ACXb2WbhFW3r+NR3rcXyKYqqDxsUq4iqlr2J7+9i8yGfZteF3aKZC8Vf/flFHIr3yBOs9U3uQ2qYblorfRsDMKNKdv8QddJVw5AcwH+wm6Rpc7JXdeFbLb50XYM1b3eNfhjBdObxqjHHl98mTGq4cT9QT9Wx0iKBUg9eZ6iMhA8Np+Fh+LFSt0RL0NMw9ytoONvRmZ/s3hV+3TKXeQpGEVM6vRF0wLZ52XqwtXfeI06ne4yCju/Dtz7h3sRfzdkRjPsyU1pGc64H5/G6l6/juTNdIbjxruVOi7ipDrtPI8TVulh63OQKLLrfQ9bWwyeQLCCKGsa10q0U0u
+ ue1UwdOc
+ OZgqA13uRXu+Hhv0Q+dd0Wov5VowPBLeEPf6ACTnkxPz22bY0n8yoFqzfTRQVhMCRO5ZkljCx6neNNPVa5e5/jXk8jPFuBiuL22Z06RcMukit279b2idtoHPqLSRFdxa9OZauO4rAo36qkWOijO2llXsk+4Y5xanJk5eMweIiRZZi6F/YgrdTQdpjjT4eJFLhB4t3sfeYvOZY6B9PRTt4bf5ULgMloP5BupPZCBMxn1o1fK41Bdbw33pTTuRjsTB+fqChGPJK+UEVGFIv0KOYLyqvWlHDi8TqsU24Aclfr5jFiHWguIgeU19RDMTz6WNRDF0XLmWjLX3/bCFgN34k3AJ+FHBGZwNZ0u4ynmX2hbzLKGlMprHfGRtKipMjtA11qhRb9KEiFQVz6RuMdsz/UU0Kz78atk5qEuIv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,72 +140,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 05-01-26 15:29:04, wujing wrote:
-> Hi Lance,
-> 
-> Thanks for the suggestion about using watermark_scale_factor instead of 
-> min_free_kbytes. I appreciate the feedback, and I'd like to explain why I 
-> believe min_free_kbytes is the correct knob to tune for this specific problem.
-> 
-> ## The Core Issue
-> 
-> The failures we're observing are GFP_ATOMIC, order-0 allocations in interrupt 
-> context (network packet reception). From the logs:
-> 
->   [38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC)
-> 
-> These allocations:
-> 1. Cannot sleep or wait for memory reclaim
-> 2. Can only use memory below the MIN watermark (the emergency reserve)
-> 3. Fail when even this emergency reserve is exhausted
-> 
-> ## Why watermark_scale_factor Won't Help
-> 
-> watermark_scale_factor controls the distance between MIN and LOW watermarks. 
-> It makes kswapd wake up earlier (at LOW instead of closer to MIN), which is 
-> great for preventing memory pressure.
-> 
-> However, for GFP_ATOMIC allocations:
-> - They don't wait for kswapd
-> - They only care about the MIN watermark itself
-> - A larger LOW-MIN gap doesn't increase the atomic reserve
-> 
-> Even if kswapd wakes up 10 seconds earlier due to a higher 
-> watermark_scale_factor, network interrupt bursts happen in milliseconds, 
-> leaving no time for reclaim.
+On 1/4/26 06:41, Vernon Yang wrote:
+> Currently, each PMD scan always increases `progress` by HPAGE_PMD_NR,
+> even if only scanning a single page. By counting the actual number of
 
-The thing is that your approach is not immediate anyway. You are
-scheduling a deferred work when allocation already fails unless I am
-missing something. Which is too late as well.
+"... a single pmd" ?
 
-Lance has a good point that updating the scale factor earlier might help
-to smooth out the reclaim for the increased demand.
+> pages scanned, the `progress` is tracked accurately.
 
-> ## Why min_free_kbytes Is Necessary
+"page table entries / pages scanned" ?
+
 > 
-> min_free_kbytes directly controls the MIN watermark — the actual memory 
-> reserved for atomic allocations. Increasing it immediately makes more memory 
-> available for GFP_ATOMIC, which is what we need.
-
-Well, if the memory is hard to reclaim for kswapd and earlier wake up
-doesn't help out to reclaim any memory then is realistic to expect that
-direct reclaimers can do better on the min_free_kbytes (and watermarks)
-update?
-
-> ## Alternative: Hybrid Approach?
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> ---
+>   mm/khugepaged.c | 31 +++++++++++++++++++++++--------
+>   1 file changed, 23 insertions(+), 8 deletions(-)
 > 
-> That said, your point about side effects is valid. One option could be:
-> 1. Increase min_free_kbytes for immediate relief during failures
-> 2. Also increase watermark_scale_factor slightly to make kswapd more aggressive
-> 3. This could reduce the frequency of hitting MIN in the first place
-> 
-> Would this hybrid approach address your concerns?
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 9f99f61689f8..4b124e854e2e 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1247,7 +1247,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+>   static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>   				   struct vm_area_struct *vma,
+>   				   unsigned long start_addr, bool *mmap_locked,
+> -				   struct collapse_control *cc)
+> +				   int *progress, struct collapse_control *cc)
+>   {
+>   	pmd_t *pmd;
+>   	pte_t *pte, *_pte;
+> @@ -1258,23 +1258,28 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>   	unsigned long addr;
+>   	spinlock_t *ptl;
+>   	int node = NUMA_NO_NODE, unmapped = 0;
+> +	int _progress = 0;
 
-I would much rather start with a simpler approach and only make this
-more complicated when it turns insufficient. Scaling watermark_scale_factor 
-seems like a more natural approach to me. Could you give it a try or
-have you tried and it proved to be a worse solution?
+"cur_progress" ?
+
+>   
+>   	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+>   
+>   	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+> -	if (result != SCAN_SUCCEED)
+> +	if (result != SCAN_SUCCEED) {
+> +		_progress = HPAGE_PMD_NR;
+>   		goto out;
+> +	}
+>   
+>   	memset(cc->node_load, 0, sizeof(cc->node_load));
+>   	nodes_clear(cc->alloc_nmask);
+>   	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
+>   	if (!pte) {
+> +		_progress = HPAGE_PMD_NR;
+>   		result = SCAN_NO_PTE_TABLE;
+>   		goto out;
+>   	}
+>   
+>   	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>   	     _pte++, addr += PAGE_SIZE) {
+> +		_progress++;
+>   		pte_t pteval = ptep_get(_pte);
+>   		if (pte_none_or_zero(pteval)) {
+>   			++none_or_zero;
+> @@ -1410,6 +1415,9 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>   		*mmap_locked = false;
+>   	}
+>   out:
+> +	if (progress)
+> +		*progress += _progress;
+> +
+>   	trace_mm_khugepaged_scan_pmd(mm, folio, referenced,
+>   				     none_or_zero, result, unmapped);
+>   	return result;
+> @@ -2287,7 +2295,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+>   
+>   static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+>   				    struct file *file, pgoff_t start,
+> -				    struct collapse_control *cc)
+> +				    int *progress, struct collapse_control *cc)
+>   {
+>   	struct folio *folio = NULL;
+>   	struct address_space *mapping = file->f_mapping;
+> @@ -2295,6 +2303,7 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+>   	int present, swap;
+>   	int node = NUMA_NO_NODE;
+>   	int result = SCAN_SUCCEED;
+> +	int _progress = 0;
+
+Same here.
+
+
+Not sure if it would be cleaner to just let the parent increment its 
+counter and returning instead the "cur_progress" from the function.
+
 -- 
-Michal Hocko
-SUSE Labs
+Cheers
+
+David
 
