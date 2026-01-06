@@ -4,119 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BF47CDC19C
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 13:22:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B247FCDC19C
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 13:24:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10E2A6B0095; Tue,  6 Jan 2026 08:22:54 -0500 (EST)
+	id 136B86B0098; Tue,  6 Jan 2026 08:24:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E2FC6B0096; Tue,  6 Jan 2026 08:22:54 -0500 (EST)
+	id 0F4706B0099; Tue,  6 Jan 2026 08:24:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00C9F6B0098; Tue,  6 Jan 2026 08:22:53 -0500 (EST)
+	id F38996B009B; Tue,  6 Jan 2026 08:24:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E250D6B0095
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 08:22:53 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AFA33B9F23
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:22:53 +0000 (UTC)
-X-FDA: 84301604226.28.E06BF69
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E204214000F
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:22:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	spf=pass (imf23.hostedemail.com: domain of penguin-kernel@I-love.SAKURA.ne.jp designates 202.181.97.72 as permitted sender) smtp.mailfrom=penguin-kernel@I-love.SAKURA.ne.jp
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767705772; a=rsa-sha256;
-	cv=none;
-	b=yMwoIC+YJq3Ns1DAiZ5OxDLKRMp2KXOHrgEZ1uA5SrfVy6jGwaO3WbdsvZYz0dcXH96qOv
-	wAEo7LApV/ANqNlRBox3sghvZ63GVfyb+9SipMMXEqMDgQHc0BVl1ezwgjEyJihnGdrDMx
-	zn9tw5kIQvMwyZjSUCAgsBKthIRs6Gw=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of penguin-kernel@I-love.SAKURA.ne.jp designates 202.181.97.72 as permitted sender) smtp.mailfrom=penguin-kernel@I-love.SAKURA.ne.jp;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E15716B0098
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 08:24:31 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8079958F9C
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:24:31 +0000 (UTC)
+X-FDA: 84301608342.14.CC47C0D
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 819B5160003
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:24:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=delta-utec-com.20230601.gappssmtp.com header.s=20230601 header.b=ILIkA1u+
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767705772;
+	s=arc-20220608; t=1767705869;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j0/XcQ4MyKbdRtIFVSuEfvR9IygVIY0KqI25WDHpKpc=;
-	b=BHWzMhmC9DiWebZZHPyExa3e956IzWt40sRU+k4SyyAG8TjJBHgHpbenbpcyZ5OGndz85P
-	Yj/F5ychmjiHwpSczJ7UVyXrngGhGc81wKz6S1ezI5xdxv0OR3OU4qhA8xVWCa6kr0TINB
-	0arqfWpyd0UeBG+M/E1zvbKlJMR5JHk=
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 606DLekF006168;
-	Tue, 6 Jan 2026 22:21:40 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.10] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 606DLdft006165
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Tue, 6 Jan 2026 22:21:39 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <993d381a-c24e-41d2-a0be-c1b0b5d8cbe9@I-love.SAKURA.ne.jp>
-Date: Tue, 6 Jan 2026 22:21:38 +0900
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hLe3wwA2KEDYP6Pc8iIb6s88ks6V9T+zKQuLs+23u7s=;
+	b=XmMNtWy7MLRTeKqA4C9WcT6W4FHN74fo4M3OaPPJVLTdTyUjaG62G4zecAM+Q5H20KbxUQ
+	YZ/NrWvpeOB4y6hUccz/mmB2rptWRnot2zur/2x00VfaaB9J0WZy1OUTBEaC9LBNbvSlwb
+	qGT5FsBYCrCb8kptYhtjse+lYJHL2xg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=delta-utec-com.20230601.gappssmtp.com header.s=20230601 header.b=ILIkA1u+;
+	spf=none (imf08.hostedemail.com: domain of boudewijn@delta-utec.com has no SPF policy when checking 209.85.218.52) smtp.mailfrom=boudewijn@delta-utec.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767705869; a=rsa-sha256;
+	cv=none;
+	b=O4fRb5z04S63f7fU0D3mcHsshq6IshnZro4hE3+KctusJlGIwvMuI6SzdeufH0MCHMFy24
+	eLvOEQYiTgd29J1lo0iTnxKJwM8lEVApu9d6U34SFRGTbCrHiT5hl5hHjvPVD9OxeHH2y6
+	OMiXjGoAtp99Gk+m/QW5a2mFqDVxgPU=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b79f8f7ea43so198615966b.2
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 05:24:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=delta-utec-com.20230601.gappssmtp.com; s=20230601; t=1767705868; x=1768310668; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hLe3wwA2KEDYP6Pc8iIb6s88ks6V9T+zKQuLs+23u7s=;
+        b=ILIkA1u+ewUuNMgtQA01qe6OF9hD1uwLi0mIzqxssdIZLph0Shr30AM1181oVT6iqF
+         K584lWVzg5/VHTSbcoP7TrfkTTPgLpdy03OKdJrnmWxnrTzxrViVP2SHw98YWhSWP/1w
+         rjaRP3vLpUyvvIZmkB8nfjTmC/v2tGW7DHVCx/z7WtDFeP2VNlQzJcoMDa8aSMxoVImx
+         lefgSX3lu/DBo+iCZoKls6i759O/sMts5r9pD1SK0KUxw/kdK3CG1gCPQEcIrhheRcms
+         YtaCf0oV6hYjUol3IdkTX8uGE3lxP0PLhB7SaA/1w4xLtapD3H6Z+0d9O7dx9xQ3Ez2e
+         fbgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767705868; x=1768310668;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hLe3wwA2KEDYP6Pc8iIb6s88ks6V9T+zKQuLs+23u7s=;
+        b=TtcjAM6N0jJaFQj61Xx0boVNmalxvbXZRp1rcC2TeoxvfP9rAGhDUG9nMKiLzZwY/Q
+         2vYhPeou0KpEL7TG+Kx9PFdcFv4NrY8NH8L0s6JhntrYJypO/TzXG8mmQ5nXr7VXjP5n
+         F0f6DttsbQ2pyIfeOt9JGUqGoSXNyVJA7t9nqgoYaFSIyZ5N/Uj6rIi4gNUC8eq9feLP
+         iB+929s07mlBkr7b+z6Za/WIG4eC0WOhwa7U6ow8ektDij7GrlL7KzK7ds0zyciub8/V
+         ByEFIDPp7OGa2nqtKhtkk8vJsnBtpCIQfH3Gd+RSJbVp8wOvHe8PJcuNBcaDBpgwnzMf
+         xF0A==
+X-Forwarded-Encrypted: i=1; AJvYcCV1+uvSzcoZ4s1Wul7k25j3foUXjDUf3l3j9gCKzc5bfz19myixI1DbHjZMbldd/LJd+drPN3AGcA==@kvack.org
+X-Gm-Message-State: AOJu0Yw9KdCRSMzw9aq0EAcTmjA+D5IP3/CnSt+0wQo/cmn4hj15jgek
+	W1QJze1TgKGXOtcXnUb70m/CGWDOZhn1d0cjC1JNzB1YYezcxgezu+Br06plNVySWw==
+X-Gm-Gg: AY/fxX5t08Mb7O9C0H2goOHFQTUCPaVfAom7r3fjv40eS5UqT6jX54PjX6DhFOh5w+V
+	Aq4gklmY8sEeJDQw8WfjMTbAwK3lQoqLLRW34Pu/ve0aw4Gb9k6faP0O6laFu6jMkMmpFIs6Ib6
+	N8I9GPVxNRJXIAB/VKPb/Ohohhj/71EVtWx/+9nQ8vZt1TwND85fetC9h71FxKYtobQcsBVl7tz
+	5EanPd4vwQATpcWsKtv4oqrzWRQ4VzlYFQJQgiOLFSq89oUcowCp336VJu/8hVyK99MbqqeXT+I
+	y1rHIpqWm+lxvdxCAvhJrMs3cGYMA14mJ3e/G/V7l82Jm5tNjSfYVw3gapJ7VG1gPENXoBsfODH
+	Loxk+O/tZuz/gyFJ+esrkCrDytL2MvVaiSDqo99V2shXA04CPz55dE9tXl59TMlusagDRMyT783
+	eeV6tGiIux4rCO3K3HF2GHxFpHGQd0Rt0buOUOQndrGzxXTlAbs9aTpM+oSAHAtvjQ/iyrVO4Dy
+	MihWl2GFU69IyT6cMbUa0PrQI+oX/6oEK+IQVB+
+X-Google-Smtp-Source: AGHT+IFqcaVA0U22F5AO1EtQKh6NaEtx//r6IuAy77I4Rzsf+eNQzqgKz1++L5vJry4MqCwG/RHJcg==
+X-Received: by 2002:a17:907:94d3:b0:b83:3773:e72a with SMTP id a640c23a62f3a-b8426a43d45mr296632666b.1.1767705867458;
+        Tue, 06 Jan 2026 05:24:27 -0800 (PST)
+Received: from localhost.localdomain (2001-1c00-3405-d100-fd78-186a-9428-6b97.cable.dynamic.v6.ziggo.nl. [2001:1c00:3405:d100:fd78:186a:9428:6b97])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a27c8f3sm232698066b.16.2026.01.06.05.24.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 05:24:27 -0800 (PST)
+From: Boudewijn van der Heide <boudewijn@delta-utec.com>
+To: willy@infradead.org
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	aliceryhl@google.com,
+	andrewjballance@gmail.com,
+	boudewijn@delta-utec.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	maple-tree@lists.infradead.org
+Subject: Re: [PATCH] maple_tree: Add dead node check in mas_dup_alloc()
+Date: Tue,  6 Jan 2026 14:24:18 +0100
+Message-ID: <20260106132418.57408-1-boudewijn@delta-utec.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <aVx4PjdhG31LfjuA@casper.infradead.org>
+References: <aVx4PjdhG31LfjuA@casper.infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 06/36] cleanup: Basic compatibility with context
- analysis
-To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
-        Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        Will Deacon <will@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-        Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
-        Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
-        Bart Van Assche <bvanassche@acm.org>, Christoph Hellwig <hch@lst.de>,
-        Dmitry Vyukov <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-        Joel Fernandes <joelagnelf@nvidia.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Justin Stitt
- <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-        Kentaro Takeda <takedakn@nttdata.co.jp>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Mark Rutland
- <mark.rutland@arm.com>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
-        Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-        Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
-        kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
-        linux-wireless@vger.kernel.org, llvm@lists.linux.dev,
-        rcu@vger.kernel.org
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-7-elver@google.com>
-Content-Language: en-US
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <20251219154418.3592607-7-elver@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Anti-Virus-Server: fsav101.rs.sakura.ne.jp
-X-Virus-Status: clean
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E204214000F
-X-Stat-Signature: xpwtmdpwk6azb4nzddxqc6nzjfdgo7my
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: x8yhke8h6m5tpqi3sarrbdgk5yejaupn
 X-Rspam-User: 
-X-HE-Tag: 1767705770-287992
-X-HE-Meta: U2FsdGVkX189UbD8U6RdLKUqNoihK8aMiCKghl64QF+EZlilVjfqsGLQ9ux8l8Q/jEB3KxaehkTGKy3JQJ0zxKkf15nRz1Z3vP4ScWWT7c+HLxLDYEJwTxO73rMV6o1huUi/M06CL89G/PPuEC6bkVf4aV8qoavXFST/CXJWlJAYJy+/lVT1pL0lVJTDpVe3GEdDOqn2ErCV8CKaJNRF4q8RL/YXGKBp+vYN1ndyd7xSuL5uqHiTllxdNkUmx9+PFIn3hPZxGkKH1jmDj5hM3LiQtuKH7B1TCh1my+9iYfeeTrA3TfX2WrJnf1zlNEJ6pz1sgWRW+YW3QVGucBzMGmjJ3aDws9jnS9Rp8NCntsN7utQVkN9hNNZ5pNdoRnFW2rppM3UEWWTt1ruDw+1J0CEEyc5VBlZV9ADRzJa8TOer/2kvvMIy8WJYJbyqBC/8aNfyYYp5+BASXOeVpbofbcbjTUvhuI2Jm1neO6AUb++PAYsNql9C27C2VUr/Xm0/RcWfmZUxWKOgu+crayvSJHMD75JpXHosRy5YtVW95ttLY1eaDm16/vn7GhWSGGmNWR+CNKv/nccwmv97EQqeNU6hTwwSQz6jTeK6CpS4GW/3JmwRYOrLbyK+TNXHt1rj6VbffvFeaq0xzJ30qUBH8LlYDomgX4ojjsQM7ml7wcnPEE2d9ZZGrjYfvzqinZlm0XpwWdaMCrmlqo4wKkrUdZF6r7OQCC8kiRUHV7Tbky4YXttoy0VAy/2vwvKwO2JWH+FlxS/UCsIBEmylGZqScw21Q2W94fhHtLlV4fQ9JZosi+Ks2H6hWqAzM/S+4w6eAq6z01kJzGRoyLCS4EiOwqmN96os6xbQxTz1ieIiPtuzzxTeyXJX9dVI61NQbrIgUeEFbp3delWbDIwNAzLQNEms4jzE25ALAwmDoGb3nurRV+8Ij2XtXC2v8cC+sM6sEvSUh6FF6FJXm4FF9y4
- GuSPbf0N
- aeX56rbvNSu+5nswtmdLaz2lms0RWxi9rWN0ObiuGMPvt+ey9f9dg2M92sdTPH8ZTZrVELgrsy07QfhNs+X2zjB/vZHxp6VZlqRFk75F2QQU5QspvjP94O599Ew5Px0KBYmaOHmB7nM85DfBn5v85SMq6Qp5Q/uWVr1Gt3SnDHRhxYFcQKO9CjeGiIy6WQTohKaiCbLN6Gt1CoNppguDtWeQQ/V+BgbLOuylUW4oAs/A+Q3VU49R50cYWoIIx+3gOLcI7OP+kdyCUTouRbDXJ6UlY6Qc8LWC7G5uJvECAGPnm+kaS0L1yIdb1DS0eQ0czZcQK2QPnYl0idODyKEZSc3xUFqNHTElc57Okk0kWm8dhVmc+2OZ5fAgkXb9GmmGEpbricldKDppYWRgO7iiK4S+O0A==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 819B5160003
+X-HE-Tag: 1767705869-566601
+X-HE-Meta: U2FsdGVkX1+Hv5UidiAX1rxDRfFHQDKF5x18/UzU+nYYnarggoY2Em2aXmq4jHRKtjNaelnje+MMF6xA9lyw9c3k4U88EZ3Ij34rdJPI7CFHHDsBqgYTmc+slrDEGrOm4i2bZKPue9ViE1UlqGtoMB6pGe0u32NG3+YIeahCaHFGTPGHKAzw0PjHulXwk8oYxRKnuhwy34FcRv2Pfd7A/mQm3ruS7xkiTvU7ne6EOyuf7jjXw1YaZnWCX/jcmgTWsVwMzTIVABUXVwwOZEdSVviZubCTn+E+MtC2SPqQ4FoY/BhYWpJNmSZTcJheRc+jdgi1Vq5OsyMuGHybKAAxMIbfW56lJyRKL2B/n/AefgumJRLE8rt63ji75fofAeRfujZCrw2eZPrYsqFCpguka93zaMijB6nV2CO5CobQG50DGwzxi1rUSyXCtowH1U/bdGuSYtIhzrHQZLW/ZuLN7UA0b/vE5jbhbD6US9Kfsp/L7YZBx1rZF6uGFHgjZDgR8PYJu8532tvQnJYKW/DifLs1F8IuTBouofRTG2iCFwe+UHAkzpl+MmQw2U5gilhDdkaD3X4fBKI5I2MSDXZthBQZZk4U62F7Jbid6Ga3SN4pFMQLCOQMCkueOvsf2NeVr0ndEybn89jVJVYTocwhjSyltbUxXdfzrs7icPLzOou+NU04EmFA6+ictSjEXJnS4423HZ69ZHEr2jLmxh1jJhuGFySB0cf49hCM0ClUfBh/cSSy1fasusPiJODDqHqIolEIaQBjYyY+5PP1VFgQkaahr6nruAymfhrGd7oc0EE4pUwIMxBRV2uKleoZYWfXu15rz1MF0FK6qSRwVgfsEhwvrozQUwEXG4WLd3pvyzbB7zJE3Z2GDNg1Gd4Fb0hA6o0cPf/TOyGytW6pS7QMae1BUdxw2LO4Bo5Lpu2/+HWo0aK4Os9YbsVyp8foMHiFYssWsPepoaIYeVb4QjI
+ K7yNKl2d
+ cr+qXJnQwi35VZ9YSnY2ar/qbCfLfV6D2D2RBVJF+mEEe4Y1N53xSfcxPSu/RjnpKrP1TdrYKPKw0yb+/h7D0NbePzSnRLFyfpUqLWFeq8Rr95CmDYVkVJvJKl3DFOYVtye2IbuBWT/b4D7JQ2HtKJ3sBoPQngV9+T5WgYiX0wGlt18z7avA/w0b66+kOBrbr+iKmNBWuU4RbHcNFP9bf7UTK1jdAauzqv9sebDPQmH0P5fkR4ATgP/8fimxjWThrQb2oUm/xo9o/zJT8+SOlItACC9o3ouNEx+0LN/BXRNjTCpjH89sjT/RKP7y4CcMHNwwsRITzQ4tIvK8F9K1ZZ+/OUCYaHrFMIojpk4ii6uRJIB3cB57ezyq9QPH3naLMJQ2AA11aWAMCJosoi9qvAK/UmuvB3M1DnRIoaKeOZSeZw629DE9sxM3Cuytgbna27GADKRli4YPylKXJcSKfMgZZ9Hcyk9biD/du495nUYNmSnfIGYYP1elT/PIw4AphhFbB/ujtOg9Velyk+3TEecg0yQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.026365, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,21 +124,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/12/20 0:39, Marco Elver wrote:
-> Introduce basic compatibility with cleanup.h infrastructure.
+> Surely this should just be a lockdep assertion that the appropriate
+> locks are held?
 
-Can Compiler-Based Context- and Locking-Analysis work with conditional guards
-(unlock only if lock succeeded) ?
+Just to confirm: do you want me to remove the original runtime check entirely
+and replace it with a lockdep_assert(), or do you want both?
+If it's only the assertion,
+that would mean that production builds won't enforce the check, right?
 
-I consider that replacing mutex_lock() with mutex_lock_killable() helps reducing
-frequency of hung tasks under heavy load where many processes are preempted waiting
-for the same mutex to become available (e.g.
-https://syzkaller.appspot.com/bug?extid=8f41dccfb6c03cc36fd6 ).
+For v2, should I add a Fixes: line and Cc: stable,
+or should i leave it out?
 
-But e.g. commit f49573f2f53e ("tty: use lock guard()s in tty_io") already replaced
-plain mutex_lock()/mutex_unlock() with plain guard(mutex). If I propose a patch for
-replacing mutex_lock() with mutex_lock_killable(), can I use conditional guards?
-(Would be yes if Compiler-Based Context- and Locking-Analysis can work, would be no
- if Compiler-Based Context- and Locking-Analysis cannot work) ?
+Also, do you want me to include a Suggested-by tag
+for your lockdep_assert suggestion?
 
+Thanks,
+Boudewijn
 
