@@ -4,88 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51D23C47BE2
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 11:11:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EE6BC47BE6
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 11:19:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E1AF6B008A; Tue,  6 Jan 2026 06:11:05 -0500 (EST)
+	id 6194F6B008A; Tue,  6 Jan 2026 06:19:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88E8E6B0093; Tue,  6 Jan 2026 06:11:05 -0500 (EST)
+	id 5F11F6B0093; Tue,  6 Jan 2026 06:19:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BB426B0095; Tue,  6 Jan 2026 06:11:05 -0500 (EST)
+	id 5285F6B0095; Tue,  6 Jan 2026 06:19:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E2FB6B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 06:11:05 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 12AE51B7AB
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:11:05 +0000 (UTC)
-X-FDA: 84301272090.01.589E49D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5E8814000D
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:11:03 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F6726B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 06:19:36 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7C84B9C3A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:19:35 +0000 (UTC)
+X-FDA: 84301293510.19.08230B0
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 721F7C0010
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:19:32 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OhCh+yZX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767698374; a=rsa-sha256;
+	cv=none;
+	b=RphfmVowI1DHeWFoSkDHQi5Igqv+CCYW+PKYfP3XsukuHqssF28d0NhVgsDKDWSUWm/Mkv
+	fXzK4HVUweZXOdWNfo9mlJiiUd8kV98pT3XZMpQd81quD1gaekhofid7lnVj2XN412uIdk
+	tSMkEosXiFBWUKySFhwB8QOSoMokU3g=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OhCh+yZX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767697863;
+	s=arc-20220608; t=1767698374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MR4UcKFyw6osJsKaBIwWGvru9oBOfn+ceDOkKBmh8Eg=;
-	b=6GSyRnIezh1xiXmcAX50Y6O2SEjJisWmU98T3uRNPNFJd0jcFlpyj+N/riNzvN/zaklSyY
-	UJ5IoRmEq8Red63iTLkvZP0Cguj/HF6yK5UYkRqfoOW9EOZu8yjs4+RXi0lEHLTL+9d83A
-	+PEN4Dos1YD6wbdJCfud3HOOAUvfK9I=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767697863; a=rsa-sha256;
-	cv=none;
-	b=8aD6kVKHYVvu9tvYISfRU7ZgEz7qzLKhNhMcDWztuwOfV1m/uTzS85LGnk8/4biVqHqogX
-	gyloMEgUeMuUJdrvV0GUIcNpAmxDS8/Bcp/GTaEFvpnwv30E+diuBTqv5UrSMuPtbbQI3q
-	WS4cpSeBV54gKNiGi3FFmAeP1tv/u/Y=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 98652497;
-	Tue,  6 Jan 2026 03:10:55 -0800 (PST)
-Received: from [10.1.39.162] (XHFQ2J9959.cambridge.arm.com [10.1.39.162])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DB16D3F5A1;
-	Tue,  6 Jan 2026 03:10:59 -0800 (PST)
-Message-ID: <2d5db1da-7dc3-4ca9-85cb-1e97ba4e8925@arm.com>
-Date: Tue, 6 Jan 2026 11:10:58 +0000
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RxmNw8YNH8htTjmTZyblWLK2VY0PjffdH8VXCg/kWWw=;
+	b=14d19IYy6eFIctlLw9eUTm4aMSlBHMMeANu6wKv1TcizbsDw+1z/KNgrw0mb0+s83NnRfS
+	1/h7FguKX27j8A1QLgTvy6/CoUDSW34BdAyEzIN7D7EOzwU7JMAVmFzGVYbII7q+Y4O3W9
+	j4XW203x9UNduaHKNmgm5HXe37KVNQ0=
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/2] Free contiguous order-0 pages efficiently
-Content-Language: en-GB
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Uladzislau Rezki <urezki@gmail.com>,
- "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260105161741.3952456-1-ryan.roberts@arm.com>
- <aVyRz62kQbPe5HbI@casper.infradead.org>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <aVyRz62kQbPe5HbI@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6pjzsqbqur7x71cwko81py5ibpxnskjw
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767698370;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxmNw8YNH8htTjmTZyblWLK2VY0PjffdH8VXCg/kWWw=;
+	b=OhCh+yZXjeB2LCOKtLfiYL+Mx4h4GgbDe4uyuaYuMcx5T1fo00IchJECKN/BEs9uymqrZe
+	Ou4AECQg8/aBayX+XNa6Z5vGDbCkRODIc4+bB+AAhJ8tNUFyVHqirrZ7V/P2w2LQKDTINV
+	Os7hlgr+28HxQEN6VKd4iBsW/Z+Pmo4=
+Date: Tue, 06 Jan 2026 11:19:21 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
+Message-ID: <52cc0b2671b068903c6580b7431db0f22982ae86@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v1] mm/vmscan: mitigate spurious kswapd_failures reset
+ from direct reclaim
+To: "Michal Hocko" <mhocko@suse.com>
+Cc: "Shakeel Butt" <shakeel.butt@linux.dev>, linux-mm@kvack.org, "Jiayuan
+ Chen" <jiayuan.chen@shopee.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Johannes Weiner" <hannes@cmpxchg.org>,
+ "David Hildenbrand" <david@kernel.org>, "Qi Zheng"
+ <zhengqi.arch@bytedance.com>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Axel Rasmussen"
+ <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
+ <weixugc@google.com>, linux-kernel@vger.kernel.org
+In-Reply-To: <aVzaqAZ5Wagh5cDQ@tiehlicka>
+References: <20251222122022.254268-1-jiayuan.chen@linux.dev>
+ <4owaeb7bmkfgfzqd4ztdsi4tefc36cnmpju4yrknsgjm4y32ez@qsgn6lnv3cxb>
+ <2e574085ed3d7775c3b83bb80d302ce45415ac42@linux.dev>
+ <u2llnnpmpsgarwrt74ffgo3cuwe4apdbeh5hkclzbh5gykwltb@whb7uuj7ub5i>
+ <e93c75cb1a46a60ec415215c555312c82b9145ac@linux.dev>
+ <gd7qbyakigogdbfxkujtc2ewwfzbwudn2l6vqkbkttv46wkfrd@nqseltiu2do5>
+ <d7df4e26841d83154f2cc2487d5acbaf2ff2cc27@linux.dev>
+ <aVzaqAZ5Wagh5cDQ@tiehlicka>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 721F7C0010
+X-Stat-Signature: 7dumu4amb1xcqwsqgutusjpgdrn9y3km
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5E8814000D
-X-HE-Tag: 1767697863-59406
-X-HE-Meta: U2FsdGVkX18oiYqJwSuxJem0Moj6OHVy5jw5Ilh2ZVQd1JEnJk3uH2ZrHV2RZ+v4oFSPoD7EVga1nk0W1qqwEifBAQwcPKweFpn7NH0Ry+MjhiqPC2aEiyh8lutLafwH8uXUQFr4zE9ZvTUWyBNJt27pmN9RcBzpQDmle5nhpmcc8G5TOYL5uqxQzcXdVApWv+29OcUunfLn7TEADsV0/XyFsUKyduEmJFkOJiAt0RIHoJDxDOt12fvuOJQM73MFN6Sg+1QoGTJKCy4js0hLg1EXeEx8XYyqAxOh6iDyMRXHhj88uCCc+bDZL7JRJvVhHvAeLIdaeZPww5Qd5JvI380q7LsyWdtmGWkNP52sgMxXDIAiUfJJ5IexYRDlev12xlVXIQ1OL1SaxaDhuLZLPsH0C1eX93e55ObU4v2Sc6NyANgtkpmTnA9V39DTD6ZGZEqyWyPDwzdopGH9AHIrzsOrHJk4qR3IvXr3PfaxIeSRA/KYki211ci4q6vv/Sxw8CtKw3coCLQ0xlrModlI7xLuE2/THVxFKf2FUaZ/DaNDGT9Ib5km2oWLFBr5uZAyHxY6/XeAGJQWKXFq7YMxdeBQSGlLmfKVuSdn5dwbQA3LfDenRO+JgGwrWfwfDnE+pFRDMHuw7WLBe0tFpJS8iU8T56ozwm/ZExZf5pPJYPRkvQ3A5S+xdot1EegpqcthVBH3NwezDuqXnrSBrwkHHmk4b1BEsVPRhFrW0JQZdECTkBgT6wGJiLsCQZvHxYKyAbpnW+VItdSeZpCVSdAZbwwJi9T6UKHP2gQrBtw1suMdNG1eLZHYsN4UH9Rwndsad5tHJyAWTsFliarD4aJtac70A26i6aBiaxrP+TJBpBjAxmIavCri9U4GHMVE1l2HJoRVE78k4YUu2rta7Q9Bh+z7M1wlGhI9FeBQB7V8iAgLs/SYD6faFCA2qbh/K7mH/hMEw3v1yn0Aqfm3PK0
- HDJp6v+h
- O9NlB1TUHOY3WYu/UjtzB0E2OCuJ+ZcJYx6a9eV88CGODblMCMJBtFxVmtwYvXplqIhcHpN4BrH0/bEQqUkgZzzXfrKM9uguQ/K3qnFnDeEcfqELvzME0Kbihlf5pOrlfo6uDt88jW7kn2Hu3HVMaK/K3C4L/M6SHG7zlNv+Jok1ziaiwRUIe4SZA+rlmQ17RBh5OrOe+JKgR+wOig+FtNO+crdW9HxcD5lPGUnIuiGupy78FpuSqntqXFt1803kqVzzUmaa+nLcuAcqZNLcqXSv9O7GMEOKiKuVol0CaGOEmhWo=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767698372-701245
+X-HE-Meta: U2FsdGVkX18on5fDVSgANYSwNRrzebnnj3aqh5GKbxdBncMGBbEsFdvVXOarLMjKy/IvfpzMt7Qb8FJav/qMrhWNfO72kF6AaDZHK6qIkO6jGKzMCNxE+EIgJL9qPPpf0rEcALE/ehiJsTVyXe9Ev/ybYpp7iy6tC7jTlRk9AZGLjV32wZS0w2VXfh/pJJoZ3cebxhQWHQEqgvj5NuosfqnSzgjNnATzZEhltXZqD1JIu3pnO8+oGg6xbaJNfP8IWXSFYvOrB6Yq+KCgRVrYj6loK2wikBX8jk8bE0nXq1qwFYnB3R7T4NRDkEhqwGGHktwFirdsv4liBw09tp7N4QQVDteukIkXnx/oOkcgFfAiuWGrdOfKOWPQtRFWodTRQHhoAnNpvJZ20KGmgcCPryN53vYea7nrNbp+FS+EHoKxTFjoHJoM6NZkEwsmEQPPEoU9ZDlvEW9WRemiV/aAo+dKsi4zib+QfpnEH5h9yDck72KUsmUugyhzIZh2vafFXrORwz6cquh1or/Up85RFyGoCrzxjrV+PHZOHluglglUEvsITLPA5S4UrJUViR8ifKS74x6mGjplvVeZwIupSdiqxImlaNOkw+biMx1mM4440i06br4rY0ZDmJwsIBiuLUtNCN+52+E5pbMWufphYtof6j//b5k8zp+b49BwRwhSxEaJKQgzcifM8+VwLZhEz/xeGavF8OANcPT98RPDIjv7LDHI4Shq9OLeoUqcwBIZ4/SVq53xTzATJVlIMUjTQNCf50an3IPdtSiUhIcU+4PSIOvq2PROcYvv7b2RdYkXAygVP94eI8rCQ9QhSs3Sr8PLc07+eVkqbGuk70RnSv1okANfekH5/Ki2QdM4JdHkUyCjL6wWdOfNuJuWov/ulbvWHrTeOHQHiIDBmNBQHsh0UahTQ1+THDCUfufI17cyJ7jz7lybHsLuMcRBCNXLr3wKXP1SRtRXZZcKrLb
+ CsOG48dS
+ RlVmhi3OZjCiZhgQRfYY4+FC3u4PS3w/GWK5Fa15YmDgpFmjdV4VhGP2hmK0vi+PZnyKLdz0d/rOoarXgwR9mBXAJZH4J2BAIZ/iaAl2kXokYtCaTZp2cxp5rvp91RJyJpEFOrfvTW6YD8toUUgMBBZd6rM5yk7bLm35+BN42K/GnjkW4q0gMj3/RQsvSYF2ykM+DZgLaBE4QbVnuwzC1jkvUfYtOOkL+/VQKczAmTQVc8C5w4/ArhsJZMRCYX738zFltNhSBh0VJ6UlQb/QroyUDBLwcfcRkmwv7TYI0uVnV5R9jtVvJ46JUkwHc1YYqcqG55fQd8Eh42fHNAmniCJ7PM9LXpjHSfXKQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,33 +104,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06/01/2026 04:38, Matthew Wilcox wrote:
-> On Mon, Jan 05, 2026 at 04:17:36PM +0000, Ryan Roberts wrote:
->> Hi All,
->>
->> A recent change to vmalloc caused some performance benchmark regressions (see
->> [1]). I'm attempting to fix that (and at the same time signficantly improve
-> 
-> Unfortunately, there was no [1] ... 
+January 6, 2026 at 17:49, "Michal Hocko" <mhocko@suse.com mailto:mhocko@s=
+use.com?to=3D%22Michal%20Hocko%22%20%3Cmhocko%40suse.com%3E > wrote:
 
-Oops:
 
-[1] https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com/
+>=20
+>=20On Tue 06-01-26 05:25:42, Jiayuan Chen wrote:
+>=20
+>=20>=20
+>=20> That said, I believe this patch is still a valid fix on its own - r=
+esetting kswapd_failures
+> >  when the node is not actually balanced doesn't seem like correct beh=
+avior regardless of the
+> >  broader context.
+> >=20
+>=20Originally I was more inclined to opt out memcg reclaim from reseting
+> kswapd retry counter but the more I am thiking about that the more your
+> patch makes sense to me.=20
+>=20
+> The reason being that it handles both memcg and global direct reclaims
+> in the same way which makes the logic easier to follow. Afterall the
+> primary purpose is to resurrect kswapd after we can see there is a
+> better chance to reclaim something for kswapd. Until that moment direct
+> reclaim is the only reclaim mechanism.
+>=20
+>=20Relying on pgdat_balanced might lead to re-enabling kswapd way much
+> later while memory reclaim would be still mostly direct reclaim bound -
+> thus increase allocation latencies.
+> If we wanted to do better we would need to evaluate recent
+> refaults/thrashing behavior but even then I am not sure we can make a
+> good cut off.
+>=20
+>=20So in the end pgdat_balanced approach seems worth trying and see whet=
+her
+> this could cause any corner cases.
 
-(it's the same link as Closes: tag in patch 2).
+Thanks Michal.
 
-> I'm not sure this benchmark is
-> really doing anything representative. 
+Regarding the allocation latency concern - we are already
+in the direct reclaim slowpath, so a little extra overhead
+from the pgdat_balanced check should be negligible.
 
-Yes that's probably fair, but my argument is that we should either care about
-the numbers or delete the tests. It seems we don't want to delete the tests.
-
-> But the performance improvement
-> is certainly welcome; we'd deferred work on that for later.
-
-OK, let's focus on the "performance improvement" motivation instead of the
-"regression fixing" part :)
-
-Thanks,
-Ryan
+> --=20
+>=20Michal Hocko
+> SUSE Labs
+>
 
