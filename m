@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FAE4CEFD12
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 21:20:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4CE8CEFD0C
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 21:20:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB6C96B0098; Tue,  6 Jan 2026 16:20:12 -0500 (EST)
+	id 9578F6B009D; Tue,  6 Jan 2026 16:20:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B923E6B009D; Tue,  6 Jan 2026 16:20:12 -0500 (EST)
+	id 920EE6B00A0; Tue,  6 Jan 2026 16:20:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACED66B009E; Tue,  6 Jan 2026 16:20:12 -0500 (EST)
+	id 7A2A26B009D; Tue,  6 Jan 2026 16:20:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E1C26B0098
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:20:12 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5C082CECBE
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:20:12 +0000 (UTC)
-X-FDA: 84302807064.01.1758B19
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 55B936B009D
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:20:14 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 040F0BD6EB
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:20:13 +0000 (UTC)
+X-FDA: 84302807148.08.FA961A5
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 982F6140004
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:20:10 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025122301 header.b=HfvJFaa0;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf09.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767734410; a=rsa-sha256;
-	cv=none;
-	b=aSc7GYvnv2DqNdTp2VkrK0JEuK7unIBe5mWMDTyuojyyr1uR9qmk53xMFr5lE/Zler7oTr
-	Z/zZA7E8QERwlY9bN7e2dlXxQMWl1fUZShtTY/uKBkWBsOxLm9VMBsxTOTHtxFGvhWsyrU
-	ysL1HwWgKyzEC9MUBhAn7ZMOvuzQvP0=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025122301 header.b=HfvJFaa0;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf09.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3113F18000D
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:20:11 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025122301 header.b=HtOBDzSY;
+	spf=pass (imf06.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767734410;
+	s=arc-20220608; t=1767734412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VVho2iKTMWzAOd/OWaBSJbTv3DT5W1zC1/L1M7eea/8=;
-	b=xyX2a8cn0kaY1YKLQ7dZxIQHPkjdGTKrqgnnasUEvdE+bj4rKqDbE4o2/HzcNvcgclQ8XY
-	Wuup37/EXh9Dq05zBR0uqYuKMmoTnM9WjhF49M1Ct6xNVwE2+J/qmoQpzlB/KWAjapNCjr
-	ha8SOjYmeRsnK77qww5VvJlz5nx3qKs=
+	bh=aI8MIw+sMa6PRGtTxYvVJEbs7tXT12sE7HZ5eTyFKjU=;
+	b=AymcK7vZbsVawiS7CbQofICe8rrkl7hH5pNNykHy8hAsraWXB2MRhA9aGQleLNPlufAcRb
+	ff4uUjq9seK4rsI3v11hpzM/2zKYaA8pjeYBRt2s0f2N/z38pu7cPg8k4gCyGanFbzPGOe
+	cDoOisrQgSFtDJo/Xiqi9kB3xEg1AjU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767734412; a=rsa-sha256;
+	cv=none;
+	b=je4zMsKs83dQJVRl2dJpWC4+XCUipaHxgrUBD6OEBrzPs7x6tL2Fsz84oEm8OxkkSS0nCT
+	UP98IifKoAPCnHtKjpEi4bwxqOhV0VkLaGHR3SndPGzr9rmgm7+PI7y7YUbXgPD2e/8iXz
+	4BaLwcyyywwKNitlo1UHDZNxIBf2Qa8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025122301 header.b=HtOBDzSY;
+	spf=pass (imf06.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 Received: from mail.zytor.com ([IPv6:2601:646:8081:9483:178c:dccb:2d71:85fe])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 606LIrDs029412
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 606LIrDo029412
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 6 Jan 2026 13:19:01 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 606LIrDs029412
+	Tue, 6 Jan 2026 13:18:53 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 606LIrDo029412
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025122301; t=1767734343;
-	bh=VVho2iKTMWzAOd/OWaBSJbTv3DT5W1zC1/L1M7eea/8=;
+	s=2025122301; t=1767734336;
+	bh=aI8MIw+sMa6PRGtTxYvVJEbs7tXT12sE7HZ5eTyFKjU=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=HfvJFaa0gTbb2tkyjNL++bFb14gaJoaIOQQF17n1QCVepF2wHwBcovxKULPWgJ1O0
-	 cApUL2Mc+6QipWb7uMwNJtevej0iVB1RpTlNLOeM1Wdc1n3Y5FawDz/hvQUSdtXOoG
-	 jg7VkzjgGG+Pq//POPW/584bX2WXOJ3SD65xbBc/UQ040ebf7I41FAqcN18XClAnwe
-	 xAfdpgoYDGS6dtDkoQFtnr41Km6KUGT/969P/ioHtKK3CeiSyfVUZpU8FNQsBovCNY
-	 ndqBRuF30ldODoUvo8SiHeGJKcDKMfejZpXuZilgaSKiKfKHHumAPGmal9NtF2kzJI
-	 IWS7NPMNNV0NA==
+	b=HtOBDzSYOXIElCekW0xbSMoqezJNGWAvd6WaEV1EvTfZMIldHnKSr20qoQaBLFLXj
+	 xODoSdOhVI2fcQNwmMkzFzmtKjkyeGlaK/DXbOZnF1UWa81uqePmMadJ8n6FfTvvbG
+	 RM8kPPigUITdMIV8FuKGvK6EdVGp79UaHWT2o+W9VWD9oOi5LF/fNOh9/24TrDilRT
+	 Sli0hekCuEPa8Dd5tLyvdvJf5ip5+okYvSAPDkKO5MGVxFxWvlgUXcWz+vpztnswqw
+	 1p+kPkQgRASGlDp2tUHdT3rG5+82/UPMj7deC4ziJ/KQ6C34DB/PvlS1juBFoVj2PZ
+	 SBzySI8XzhPWw==
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -81,22 +81,22 @@ To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-sgx@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v4.1 04/10] x86/entry/vdso32: don't rely on int80_landing_pad for adjusting ip
-Date: Tue,  6 Jan 2026 13:18:37 -0800
-Message-ID: <20260106211856.560186-4-hpa@zytor.com>
+Subject: [PATCH v4.1 00/10] x86/entry/vdso: clean up the vdso build, vdso updates
+Date: Tue,  6 Jan 2026 13:18:33 -0800
+Message-ID: <vdso-cleanup-patch-4.1@zytor.com>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <vdso-cleanup-patch-4.1@zytor.com>
-References: <vdso-cleanup-patch-4.1@zytor.com>
+In-Reply-To: <20251216212606.1325678-1-hpa@zytor.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 982F6140004
-X-Stat-Signature: sg46igmjmj4ft4j9yw7conewjrjjzt98
+X-Stat-Signature: k4q1xfzoppysyetqqwf1x3irysnfkkad
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3113F18000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767734410-956906
-X-HE-Meta: U2FsdGVkX18bOmreCWQeyUr0YFBdBkPjtOxOgpVyTKrngeF3VjQLnzZ2tey5h5NnEVfGObKxdEE3L3W3P6WWoY+JW9PpluH8LxLLqKocgIx3M06/u6NPnXDXZkdsrKw+e2r1QUZfgHRQ37m9RIPSf5+/GQ1UD3rcsFgWyS1trfmF9l/w4zJqSf84JVOdrmYeYftHhCgQafQrSlgLMkFPALbAJ/ERf6nNdQ6Jt6RPizwrVAS7TQHFCCnA2rX2d07hSg4tcryRz78h/nUdIdOdmoQ57DRBMbq5lmnOWwD2+3y0ATDf84JUmXUsohPaKJ3Hr9Dgf1X7LTkWzLjEgTWInQBfNnwFTZEPBiWNgUqtj667QrfWJLK05US26UPAhPuUHe3vv+GFKNgcvRNnVzVng8XdBWNOsVrq/6K2KBZ6l20li7EhzkJIKExJV/vpmE0w3VGHezh+AuX7lnnMkI4ko0L8wslYZIKxSdTwGaPt20osT0f62mY+z2o6LsSNMMMelAf2inLC0HHNAcloN9cfwc2aox8aIAR2LDOec9yylwLF7RbnCJifcBt/7hgjAw8GCSlSBaZ7nvKMhIh2VusCbD6H/HqaW3HuiUZi6VmXWT9AF0eSzp/azII1dnUYP33IjUr/4F3JkHc/GfFH6OihMA+G2xXHPZBEB02yM9nDbiR6Yh8B+E2zQlH89I2V+4vPX+/9mBDbCVY00yUbA1hwcNqcWNqS6V94m+1gSGV7JM38kIfADJAHClyGw+pSZ4RREfw6TX5W0Ae8I1JcctDoFyikpCXF+HxNmr8o831ejCi2SdKjIxUrv+1lVCuwKXbek3fJVFuR/URy/H8YRcdW3hfN1A4yXY6W8cehfxhWo5OUVmt6xa5V+juYjHxe3fcPtVmml4bliKXvDTi0RsX9pLMMyzPad5JOdOdlnaNEXltw0FPGLix627pcVPjyKPQFDMScn4YxTc23Nqwi6SE
- gMi2aT2f
- 1L4ZOwkhda9of77JXKlvRzgxhAza4GstvuUF85tJBQGtlQH6hjINHHR1/kIsAooyJM0IZr9pEo6V/ApHyQI53uCkwA98P8vR0y65K/mtsZwnV7T14nZ6ZXcnsIOUrjm1P0y2lrXvaiICJzGpyZMP2LML1GzQU2H4E1/KgB2S5N/FMmulwp2q5isNN8ufojDBpDcC0MFGc6ePTTPKtHb+OiT26WFvuDEheMeF9+ai7pTn57gJbo1CCq7GMKg5XzLA2lOSUsjT5lQWSkpddiOS75L6ri98WhAg5Z3BEzYfD5GEPmvX+eiynh4xj88mWh9MzhGEwkxfseG00W35WeZ32aiwC2oCnNZN9ZobmtQdT7BYnZgY=
+X-HE-Tag: 1767734411-2442
+X-HE-Meta: U2FsdGVkX18o0Imf1ECba9GkGXiOnhdHS0yVOAM5J7UNcn8JxEGm4cxfuSDHWvmz+RCpVpOI7Vy0Fyr5G4MbULKkW4TLrFdZD5HyrSDM6T0IEqjz22Jxv6TNSWshWM+sLW/uW1W5azzngClUmIubb7jiigzji0rP4GGy4AWTCK2oRj9Z2hjTrwJ9FNEShFqjgQLJL0LkIQA7RuOJM53u0ECv58somm9hBE8ZX2KVZkBNYZmyqaL42fPeUxWdo3kL/AoO7L2UyHlYMWWqdtgbKKc1FY2ihCiHIxtSiHEn6ScPQBVR/PigG/9otRobusxdMXeFDocvn4NnJjMs/YptHiuwRY0AL2F+uITf8yOeWcaHeYZxT9T3OdOSar9Kd2fxtrSmOkv58vbIDIILhdw0Pc90AZMtUheukoeYhuTGPP/AtsbIFWnIb2lMpxzF9TOoQ4zrftiKblziGdje0nhL9T7eVGBz+pBtgdhyJfYpwLQX95D/dI0VgGvIKdD2AGoL9Fw5asv76i2MijO/3WaY+31OhOn2KzbT7+zxKTcso10fC0pQ7usUJkcSdZfcNqo4K+Hbp/UNjhIUo+5CKfvuD/m6SQBgYidfnUoNf+6xGaUo6v2MJYaW3wPB9LqCxcrsWEizutTTZXzhza/+Q39DZoBpXShQ34a/IBSkcu+aAt5KA4mtZR0C3HnbF7bGswLnR4br2ra9CSTYtuAK5c8LZy1z7ZKM+lpYFFArimhVdAJTisA12JJSQT/XzUFDrIxLA4FukJm5bx4/u22LgTHaCqq54gERiEAMTCxtZ5gPxVTTY/8H9Q27ycYsDzP7UcUSVGVF57ssTHDdGynm+fB1nH4idsxCCo+SqBaIjYdzi29xQmS45ZrA+ZX7tYmzyAhazXdoHDg5sxFvkcU7SRysmHHKfHzIVrkguSAtIKyE10iKZH0nt6WBxoRtuVt/kyqP67afuBvImdsstcsQDmS
+ faXsGOB/
+ NnzwoLcX9MH8m9sWovDxp21VRlErFZ7UlMgbnvy9M3+Bo+6IAXWGbMEyLk+Vvhp2+ILIQC/wV8Wp10WWlsrVfjADjJC9R9jOFX74hSZChDQKI5s4aenFtD2TrLSpoJE+sex9pa3wSZgfR+I9frHgpWByLVkw2v37j+dgfqEd76+HrRB8X9Gm/W5mipUVFdSuKJdrkTgYQRx0fN+9vLdfKZMpt5fSs+02Ozw2Q/P8PYTF9t4AiSHqo/QLTGeVOx4IXCeZK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,53 +105,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There is no fundamental reason to use the int80_landing_pad symbol to
-adjust ip when moving the vdso. If ip falls within the vdso, and the
-vdso is moved, we should change the ip accordingly, regardless of mode
-or location within the vdso. This *currently* can only happen on 32
-bits, but there isn't any reason not to do so generically.
+This is intended as a ping, since I think the v4 got swallowed by the
+holidays. v4.1 IS BASICALLY A REBASE AND RESEND OF v4; THE ONLY CODE
+CHANGE IS A SINGLE SPACE CHARACTER.
 
-Note that if this is ever possible from a vdso-internal call, then the
-user space stack will also needed to be adjusted (as well as the
-shadow stack, if enabled.) Fortunately this is not currently the case.
+This patchset cleans up the vdso build by building the 32- and 64-bit
+vdsos in separate directories, moving the vdso2c tool to
+arch/x86/tools, and by merging common code and especially Makefile
+rules between the 32- and 64-bit vdsos to the greatest extent
+possible.
 
-At the moment, we don't even consider other threads when moving the
-vdso. The assumption is that it is only used by process freeze/thaw
-for migration, where this is not an issue.
+Be more strict about sanitizing and standardizing the vdso build
+options.
 
-Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Disable CFI for the vdso until the kernel adds user space IBT support.
+
+Modernize the DWARF generation in vdso32/sigreturn.S.
+
+Add macros to cleanly call system calls from vdso source code.
+
+Add the GNU_PROPERTY and GNU_STACK PHDRs to the vdso.
+
+When using int $0x80 (old 32-bit hardware or FRED-capable 64-bit
+hardware) skip the stack stuff in the 32-bit kernel entry code and
+call int $0x80 directly when used from C code.
+
+Changes from v4 to v4.1:
+
+  - Fix a single bogus whitespace character change in patch 7.
+  - Fix the spelling of Uros Bizjak's name in the comment to patch 8.
+  - Rebased onto v6.19-rc4.
+
+Changes from v3 to v4:
+
+  - Improved description of patch 01/10.
+  - Split out the move of vdso2c to tools into a separate patch.
+  - Remove unrelated formatting changes from vdso-layout.lds.S.
+  - Fix *-x32.o being missing from "targets".
+  - Rebased onto v6.19-rc1.
+
+Changes from v2 to v3:
+
+  In arch/x86/include/asm/vdso/sys_call.h:
+  - Remove stray comment from prototyping (Uros Bizjak)
+  - Remove VDSO_SYSCALL6() since it would require special
+    handling on 32 bits with frame pointers and is
+    currently unused. (Uros Bizjak)
+  - Indent nested preprocessor directives.
+
+Changes from v1 to v2:
+
+  Too many to count - much of the patchset has been reworked
+
+Patches:
+
+  x86/entry/vdso: rename vdso_image_* to vdso*_image
+  x86/entry/vdso: move vdso2c to arch/x86/tools
+  x86/entry/vdso: refactor the vdso build
+  x86/entry/vdso32: don't rely on int80_landing_pad for adjusting ip
+  x86/entry/vdso32: remove SYSCALL_ENTER_KERNEL macro in sigreturn.S
+  x86/entry/vdso32: remove open-coded DWARF in sigreturn.S
+  x86/entry/vdso: include GNU_PROPERTY and GNU_STACK PHDRs
+  x86/vdso: abstract out vdso system call internals
+  x86/cpufeature: replace X86_FEATURE_SYSENTER32 with X86_FEATURE_SYSFAST32
+  x86/entry/vdso32: when using int $0x80, use it directly
+
 ---
- arch/x86/entry/vdso/vma.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
-
-diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
-index 8f98c2d7c7a9..e7fd7517370f 100644
---- a/arch/x86/entry/vdso/vma.c
-+++ b/arch/x86/entry/vdso/vma.c
-@@ -65,16 +65,12 @@ static vm_fault_t vdso_fault(const struct vm_special_mapping *sm,
- static void vdso_fix_landing(const struct vdso_image *image,
- 		struct vm_area_struct *new_vma)
- {
--	if (in_ia32_syscall() && image == &vdso32_image) {
--		struct pt_regs *regs = current_pt_regs();
--		unsigned long vdso_land = image->sym_int80_landing_pad;
--		unsigned long old_land_addr = vdso_land +
--			(unsigned long)current->mm->context.vdso;
--
--		/* Fixing userspace landing - look at do_fast_syscall_32 */
--		if (regs->ip == old_land_addr)
--			regs->ip = new_vma->vm_start + vdso_land;
--	}
-+	struct pt_regs *regs = current_pt_regs();
-+	unsigned long ipoffset = regs->ip -
-+		(unsigned long)current->mm->context.vdso;
-+
-+	if (ipoffset < image->size)
-+		regs->ip = new_vma->vm_start + ipoffset;
- }
- 
- static int vdso_mremap(const struct vm_special_mapping *sm,
--- 
-2.52.0
-
+ arch/x86/Kconfig.cpufeatures                       |   8 +
+ arch/x86/Makefile                                  |   2 +-
+ arch/x86/entry/syscall_32.c                        |   2 +-
+ arch/x86/entry/vdso/.gitignore                     |  11 +-
+ arch/x86/entry/vdso/Makefile                       | 162 +--------------------
+ arch/x86/entry/vdso/common/Makefile.include        |  89 +++++++++++
+ arch/x86/entry/vdso/{vdso-note.S => common/note.S} |   5 +-
+ arch/x86/entry/vdso/{ => common}/vclock_gettime.c  |   0
+ arch/x86/entry/vdso/{ => common}/vdso-layout.lds.S |  38 +++--
+ arch/x86/entry/vdso/{ => common}/vgetcpu.c         |   0
+ arch/x86/entry/vdso/vdso32/Makefile                |  24 +++
+ arch/x86/entry/vdso/vdso32/note.S                  |  19 +--
+ arch/x86/entry/vdso/vdso32/sigreturn.S             | 152 +++++--------------
+ arch/x86/entry/vdso/vdso32/system_call.S           |  22 ++-
+ arch/x86/entry/vdso/vdso32/vclock_gettime.c        |   5 +-
+ arch/x86/entry/vdso/vdso32/vdso32.lds.S            |   2 +-
+ arch/x86/entry/vdso/vdso32/vgetcpu.c               |   4 +-
+ arch/x86/entry/vdso/vdso64/Makefile                |  46 ++++++
+ arch/x86/entry/vdso/vdso64/note.S                  |   1 +
+ arch/x86/entry/vdso/vdso64/vclock_gettime.c        |   1 +
+ .../entry/vdso/{vdso.lds.S => vdso64/vdso64.lds.S} |   2 +-
+ arch/x86/entry/vdso/{ => vdso64}/vdsox32.lds.S     |   2 +-
+ arch/x86/entry/vdso/vdso64/vgetcpu.c               |   1 +
+ .../entry/vdso/{ => vdso64}/vgetrandom-chacha.S    |   0
+ arch/x86/entry/vdso/{ => vdso64}/vgetrandom.c      |   2 +-
+ arch/x86/entry/vdso/{ => vdso64}/vsgx.S            |   0
+ arch/x86/entry/vdso/vma.c                          |  24 ++-
+ arch/x86/include/asm/cpufeatures.h                 |   2 +-
+ arch/x86/include/asm/dwarf2.h                      |   1 +
+ arch/x86/include/asm/elf.h                         |   2 +-
+ arch/x86/include/asm/vdso.h                        |   6 +-
+ arch/x86/include/asm/vdso/gettimeofday.h           | 108 +-------------
+ arch/x86/include/asm/vdso/sys_call.h               | 105 +++++++++++++
+ arch/x86/kernel/asm-offsets.c                      |   6 +
+ arch/x86/kernel/cpu/centaur.c                      |   3 -
+ arch/x86/kernel/cpu/common.c                       |   8 +
+ arch/x86/kernel/cpu/intel.c                        |   4 +-
+ arch/x86/kernel/cpu/zhaoxin.c                      |   4 +-
+ arch/x86/kernel/fred.c                             |   2 +-
+ arch/x86/kernel/process_64.c                       |   6 +-
+ arch/x86/kernel/signal_32.c                        |   4 +-
+ arch/x86/tools/Makefile                            |  15 +-
+ arch/x86/{entry/vdso => tools}/vdso2c.c            |   0
+ arch/x86/{entry/vdso => tools}/vdso2c.h            |   0
+ arch/x86/xen/setup.c                               |  28 ++--
+ arch/x86/xen/smp_pv.c                              |   5 +-
+ arch/x86/xen/xen-ops.h                             |   1 -
+ 47 files changed, 444 insertions(+), 490 deletions(-)
 
