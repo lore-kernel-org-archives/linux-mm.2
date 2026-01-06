@@ -4,121 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54856CE9D47
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 15:14:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E108ECE9D47
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 15:19:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94AA66B009B; Tue,  6 Jan 2026 10:14:04 -0500 (EST)
+	id 397A16B0088; Tue,  6 Jan 2026 10:19:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91F1E6B009D; Tue,  6 Jan 2026 10:14:04 -0500 (EST)
+	id 34F206B008A; Tue,  6 Jan 2026 10:19:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84AE66B009E; Tue,  6 Jan 2026 10:14:04 -0500 (EST)
+	id 223D56B0093; Tue,  6 Jan 2026 10:19:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 70F706B009B
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:14:04 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 48FDB1AE47
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:14:04 +0000 (UTC)
-X-FDA: 84301884408.07.35EB8BB
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 47CEA120012
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:14:02 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Ry/DxSja";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of memxor@gmail.com designates 209.85.221.66 as permitted sender) smtp.mailfrom=memxor@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767712442; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 131656B0088
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:19:24 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C2B511A02AB
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:19:23 +0000 (UTC)
+X-FDA: 84301897806.27.1F46B0B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E7ED4C0013
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:19:21 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZzFBdx/W";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767712762; a=rsa-sha256;
 	cv=none;
-	b=tEHyDfeMMp4Y6lkVhKAjcX5Y2qpotD+TUdGIdJcxnHNvCdGb5nm12yryETqY+4Z6MN/sL9
-	S+oLAv6fijRDCYVb8pyKxmulOlckDOCUf7Ev1rVA1xTpVogr6mbgtXvrZaZGLaEGLF9gyo
-	tU3/teH/zXZIw8Bd/4e9MhF+DJiiIX0=
+	b=wlrHg59+DTqaVubAxQ1hnAbZPMg/c7rrFCf1NyQRLbL5ZDXZu9ApxdHQXG9PCWN15vB9hu
+	3fRNjC7Q5MAId2fF0f1H+kcaTVNslEydsm29u3y4nDQnZmoA3FJF0ikgVIXdhGoWtyiESa
+	mhXlAxZljarH6da1BavFEHOS+IOpSBQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Ry/DxSja";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of memxor@gmail.com designates 209.85.221.66 as permitted sender) smtp.mailfrom=memxor@gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZzFBdx/W";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767712442;
+	s=arc-20220608; t=1767712762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uCh39lELCZD3ykKYeblQxs0BjY8Mv990pLsUcyMALY0=;
-	b=GL6RbIkJjgs7F3yz4SqKzgw8SvV7FcGVXgOVxhKX3LmMRZqCS4fobk8+DQe+wd7POyaXXy
-	eBAu47PS5AWIeipXO4FR3twMKvtLfH5F+SPw7+tXhuH+3SuvK1ZO10o6e6t95LkYaaaxZM
-	Z2Q/CkM2FVLpfiIy0hX6+1Ta7v4kw80=
-Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-42b3d7c1321so630493f8f.3
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 07:14:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767712441; x=1768317241; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uCh39lELCZD3ykKYeblQxs0BjY8Mv990pLsUcyMALY0=;
-        b=Ry/DxSjaG/YJukr24Ipd+o4Hm0++MsYAIysVNPqDbdHCAcgySmGEhzBVo45hEbypmC
-         YDJDBhTaUkqdrutmXMvgIYy5AMWE8lKfS/iFDsc6aGYKt+ZEtsvWFZuKNRUELUteHSTw
-         PmFMeG6VkuJzMcQKX5Kr2O74rcVff/DbQgNfuJkaKnFJMHYe5RSxKDMjDBPxcAEuSxmj
-         XnC1+HXUhK3O2m/GsAC4mfEExCQiFW0LECnZWa8h3kDaURJI70wP6wlO+mrdRX+Cutz/
-         m0g0CqIu09jPFoyPLW0QwtX82U/+K8HpdDLPDNc+s5iawaoDmZlba5CxrWzNeXZhrmwA
-         LvBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767712441; x=1768317241;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uCh39lELCZD3ykKYeblQxs0BjY8Mv990pLsUcyMALY0=;
-        b=LadG3HkM6fwcEgXhtCvL88ujU/LJ8sbBAeBABXDEXvcmVlc5LCH2W+mD0BM1DG118n
-         5RNpBfXz6lhrC4DbB2EqQzVtJrlDyHeSdPUhnhWMysZvIOfENdE+REy+J2uwQdxIjYB6
-         LZhzO+LgFlqn8AuDpqaT+KMTJzLvQqcwSbsVnciJ9YeMAb+8oiASdsvpYTYvo6c2tVED
-         Sik4Kswc47nhmr6FM87lOq6obpONgmY3SI6PAroG1dCQNd5rg8UPDacgRHVT6lKei1Ri
-         MWiUzU1mhyUBSsPUhnHH3Ms3aYXWmUEzFrPfzsFCDppnMrLusK85uwZ8Eg6VzYa3k9WI
-         kpOw==
-X-Forwarded-Encrypted: i=1; AJvYcCUZq6ttpstdJRPVE0Wk+RXifSOBWNE/RbYt+l2++mylM+qCevR5oSkve17x9k5fdKnK8ade5URZSw==@kvack.org
-X-Gm-Message-State: AOJu0YxkwKqR/7GgQwW9PV0pvtjvkzslz6TfZoCEnB4L8Rvq2jnGramm
-	BW7JE4PDeqPs6cjhoPf86cRfXz95atck8FRZxsLYOgiLHiVyDfRgYn4TpWpJFCl81oGqTER3LCA
-	5IyYxUN1T1/Mq/FApMzAthlQcMZmoHKU=
-X-Gm-Gg: AY/fxX5jLWxh2iKc8PcVktTo7dNrq6goWbMIViTyVHlqAYRSSmoLWu0kGdMUv/qXYGx
-	8v6GF7/60Gql/TrKaDgc5PKLS3LHPH82DZkxJbgpuevaf3AXVc0AiFvvZ0XZoW9q5pBB5mncKcZ
-	VnwiTvt+wrDTNStR6TPmtS+FlHh6ZEXeh13wx6XVuXvrp/Zh8ozxu10y54dVU7Nt2LSGaP40160
-	MCwuZqG2Rs9G1OgRzOc3uGh5uUpkRyFMoief3Qb7Vpg5RmbObCtuFQ0wF515vvRs0BuYoCFckkz
-	JNqROKEDtNdYZL0+6+MMPD2eCCXl
-X-Google-Smtp-Source: AGHT+IEuDSk+uHO37kfw+1KlRWo86Tj0U4wD3OG+qF+cUYxLCnvs8i0ykjdYVfeOvoUjITKDQXbaPZgs6cojh2n4umM=
-X-Received: by 2002:a05:6000:240c:b0:431:7a0:dbc3 with SMTP id
- ffacd0b85a97d-432bc9efea0mr4747718f8f.29.1767712440581; Tue, 06 Jan 2026
- 07:14:00 -0800 (PST)
+	bh=fgfgbctUF7kJY4GbHAbcNmnHQc4AiPPCBiRwo+2uenY=;
+	b=1M/KFo61SP/2XQjF0BqRfR36ZK9IVWgtGyNX5ACbadfIqxe4JFyKv2nX+pXOQBJCQX1rO4
+	ipYoBxAAKkUX5bx0l960HqWaRCt4eIqBbt8ussCPpBjRZ6nHwHqcZd9YtmVGjCn9rMNMmM
+	O0Ike1cxWoh3jAhdNrxr7t5EnjDJ8YY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C2245418AD;
+	Tue,  6 Jan 2026 15:19:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C849C116C6;
+	Tue,  6 Jan 2026 15:19:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767712760;
+	bh=PQWjEY27AuDHc3U5eemh0TiBpvWBZ7jdK/tSG6xBxCE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZzFBdx/WI2GjYmhcvi6yp9/4UwfmyCrys7P4UZIgj9FaT0LKyStePM0eQWcUtCvvD
+	 /V+gKQvG7a5yrjBvfP3OIZyuMzZcMET1RTxKDveQdPqP4J0DZItzZPPXMiwZqRJxTH
+	 ltE0xzEPK4GVmb4gMdVhyH8bNy3BF0lQYPQpov9PLICaPs60edviHqk09OlDoH0xPd
+	 a5h8A4YKZAZYXLg467JE6rI21qfDDc21DmskYYRK8VOMlItxTnVkmGU0o2NZ95NM05
+	 pmZzeKuBl5AVnS7gEx1hfB0qvpQtQU6tW2wcirPpQZSWcVxB4fWJg52P/EadhVBR7F
+	 KN8vizOZoWdiA==
+Message-ID: <da1e8a00-99fe-46d9-b425-c307ea933036@kernel.org>
+Date: Tue, 6 Jan 2026 16:19:10 +0100
 MIME-Version: 1.0
-References: <20251223044156.208250-1-roman.gushchin@linux.dev>
- <20251223044156.208250-4-roman.gushchin@linux.dev> <aVQ1zvBE9csQYffT@google.com>
- <7ia4ms2zwuqb.fsf@castle.c.googlers.com> <aVTTxjwgNgWMF-9Q@google.com>
- <CAADnVQLNiMTG5=BCMHQZcPC-+=owFvRW+DDNdSKFdF8RPHGrqQ@mail.gmail.com>
- <aVts9hQyy-yAjlIK@google.com> <CAADnVQJr0WqmqA2fQeC0=Jn5F-ujWmUkL-GfT6Jbv8jiQwCAMw@mail.gmail.com>
- <aVwnUUXmgE1uOOj4@google.com>
-In-Reply-To: <aVwnUUXmgE1uOOj4@google.com>
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Date: Tue, 6 Jan 2026 16:13:24 +0100
-X-Gm-Features: AQt7F2rALTpWBryWGjQiLYrXRReZq_KM9PVniA_IEDb7aQ0ryO8-rDy8cUAcUVE
-Message-ID: <CAP01T75ATFb_gjy5_fSwt6=QMxt7kGSS+12SJN9rz9SfJQ7Qyg@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v4 3/6] mm: introduce bpf_get_root_mem_cgroup()
- BPF kfunc
-To: Matt Bobrowski <mattbobrowski@google.com>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, Tejun Heo <tj@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
-	JP Kobryn <inwardvessel@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Michal Hocko <mhocko@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 47CEA120012
-X-Stat-Signature: 3qw1cifi8h7y6rn7en7skzyoereuonfm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v3 1/2] mm/tlb: skip redundant IPI when TLB flush
+ already synchronized
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
+Cc: dave.hansen@intel.com, dave.hansen@linux.intel.com, will@kernel.org,
+ aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, arnd@arndb.de, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ shy828301@gmail.com, riel@surriel.com, jannh@google.com,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ioworker0@gmail.com
+References: <20260106120303.38124-1-lance.yang@linux.dev>
+ <20260106120303.38124-2-lance.yang@linux.dev>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20260106120303.38124-2-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1767712442-626825
-X-HE-Meta: U2FsdGVkX1/touucJO1FmReJWxpyzMfuLfQnfT5OKVVbYkb4+RtIAGn6ODDYr0cbhLU1ZvIshdfyy8uiPdnPmoKbNeuH9WFxs1IGM6MAulN9jnh1/Vckg3LDWZKiSEo9K5bNClUxm3U7xQmPFJyZzxBqS7B8R0uCSLTuOrsVtxy6pSj3y55fR9/pa43FN0jmm/RKBtfj/EAU1dL2fYBxa6uSnYcioT2RuRxtWj8ksjwyNfgdQHjgh21EwK/aAG58Ao3+oNZAm8QqaVJgeIhe10ek3tVVJ/trj2uxMGjtw0vfZKeQY6ewBNnl0LRDshMHRFXtV2H3rVitzeI+OUlLQtsQutBRs6vqPHBra8ES924PFBEKq7GjjPzJFYxFgaGOqEyq45fbFHlcwKhZzoYokgX9LtLN5PmcpbAGTOOthuspZXbGDiOt/lruWkbhkPn7Ma0WUBdAkGjtzlkkhSqFvP17sW4sagUJ3IS88DAgY7HoWqrvV/NIbBXGJl6Kt9qSWCNB9UMAUx8KATSvQoiFMbAR8bqvbcA0CQhYkIOqJgNgMEd0DBfuJJJ65cUqATV79nKz3L86BUhXKW6uvewHHhJvoIjXc4ixi6gesSKFzoWV9+8WyZHEliWD6kjKiIXEEBsoSksnx/m/x71t6kmBK2UwXHDV5hQHp1PlYZWp6ev7ExVGTQl7Ja4gtubJfW9mXl1fjhH8kS/0bj84yUD6zLUl0LsN8LCoaarOxRK+3fhJHqxPHuRAP8yV/aJqM39Sx/fqjhrbpSW0CcvX7RTm4Q0ixDLiKOkkOKyZg6NMtgEazv6bs1yGYu/VUOkId0BQ8Q3CS+vViMA7ZPoAkYEIV6t+QM3uXZpgqZihb63LSKH7TVmoppuMoQLDwBXJdbT40bF/Bpfjshvq0+n1y/eIkEPAJx0hqLLVPcMQFyArarb7CYtUthwrIYg4S05GWbrDOLEtoh9kaQEMpc/c6K8
- zjLhYQ6j
- Od7A5jSbXzOneL30Qv1LvdVuyww1B++Xn+RJ5o5QcOmvFBFleayqJE19YdX+lkxsXcXuK4M6ixRUhbSHH3+Q5/SgU6VI0MYY515rxDI0RR1mU8OKGxrLMI0g23rjDq/UBUorw4LKd2figlRv2JEWBDkJ+g+5p5Cei7fkrU1bbe/5JWNrdx1nVdwDh/1A4Q/ORh+7kxaVkWuIC7Suxd+jfI6+sL/RHB7TwMKHm0xFbCY1EdEkVmLvJ2jlx5jn8w2jxpiy6b/xJbLo+IFB/+BGSfy+AH8g+XzmHPskrJtNrxxEdQ9NuCCOpIPrFsBjv7G5Kz+2o1hQ0Nw0WhBPSgtx6UAd2GMgdwFL/fkkBv2tnL3humOnJABjETls4umWXGsMh0Z+eDmL0F8Lt+roB1hLhJQQS9kFt+uj716/AtyBMAA+VFsTb1PIMrv5vGIFpaYs/0doZueA12rn8fF7qc1m58zuuoFJd3zyxFHHuz4zBPlHkG3xtnPTQDp/hFGvCINLVCIQ1gmWj+FeI+W96DjAvkhZFmOHnMmk6L+BdyXscm4R3FQJmdzN2YUOPT0a4ppBp3PrnkceVg2Ui7vw=
+X-Rspamd-Queue-Id: E7ED4C0013
+X-Rspamd-Server: rspam10
+X-Stat-Signature: pg8o4mncfzrcp1g8z87a88mt9bdhsksm
+X-HE-Tag: 1767712761-879577
+X-HE-Meta: U2FsdGVkX1/he6o7xxkGx9HxqCwQyVkkUUr0PkrVqruPcSUR2HEX1fay+409basZS5rCxBgsX2NCvEKo8/dK5fAz3D5vHiQGdxAnDsFYIinLuaDzb4O3+ANhqvA9EXsgeph+FJE/TUhlSBCEHNca1gpKEhJrOgGBweDboNErCDxC8hMq2kGXTWWgCbf4mHxgAaBwygT8va/vLDUAXNaxxnHXQrsjGZ46jgVMhA2LuARDLfDc+UC6ktxmhyDY0+4XXbvoxTM3oD1M6rMktbSsI4Cqq1dSN1euPW5vMdemfxfNOI+8U6/FwpMQSV5PX1xnYsNI0jWTyx43oLZ7IGYmaPiggMQwlwwRmVYcu920GK666vdOBA1rKpvc96uC45riZBuvFFmIs/1ZR4TbSS2N9brODswYnHdbnpMW6LGq1oXYiGFNL8BohtMP5IyeY91MAAoshfyV0EU7tciWhsKWpeZL24ZG+hR6Ze3eud7JT/AJ3ILNka3fLn4pWosLC2VhC8C3SbEvlNNW4fv5G/F+aqXZZIrx4lbUnOT3S+1SDGjVJrHcxJK4N1cOQJOg6BNWpV3AAQX3O7tZD8ei1BMGEq7hzBIfAHQylBALYg6/xHuRb4+vZnZTfyBaKmgnhFs8BCHKMl0nH7kJ3DgjsuEaptT/JcguK46ZLG63WZHbKRrC9izoaP6N7R8LqjyBHatyHthpBirwdKTLeKn9z7n6dUPRC+yHGFm82WR+1UupuHYCjPzXi/RlCASovlXjwRy9NyqtmmD/Bjc7pedn9CwyhS/Ez2uQRc94ovP0RDIEBM3I/mr9ZgUhPzkbeCjP87hZz7eLhMrcmUNhGPla2Hvve3szFenAqMV/vBKjYaDP5kaIhYFZSPg41SXcq009L/nRfYOpeMyR17gw/qRbopWnmfNPRQ5yX2zj+dDfRBFjJU3uuMS6tYHNJi6zqxYB5n3+STmERU10bMMxAg+cNBj
+ HiL0vVb5
+ ikGnLWemtNZHj7Q7DG/8lwIOoWMpHsPs2oUp7finurjHXeLOMelwA6zj8J8h5q+3owTJuFnauWSLZRjCbm6gIk9bTJ6KiExtQ5ExmIm1iRb/2xq815KX7zZfE6xenhccobdBTS1G6a4eGvdrjUPzsxWeakR6wB0rx+FTmPqtAs4/QQion7yZhcAuqB1zbfrMVSMuRyjLfvLENHci3dwG4/DEaTs6Vba9XnA3XtkAGvbFhqK670iJ/vp2I7OM25kQErokW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,49 +146,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 5 Jan 2026 at 22:04, Matt Bobrowski <mattbobrowski@google.com> wrot=
-e:
->
-> On Mon, Jan 05, 2026 at 08:05:54AM -0800, Alexei Starovoitov wrote:
-> > On Sun, Jan 4, 2026 at 11:49=E2=80=AFPM Matt Bobrowski <mattbobrowski@g=
-oogle.com> wrote:
-> > >
-> > > >
-> > > > No need for a new KF flag. Any struct returned by kfunc should be
-> > > > trusted or trusted_or_null if KF_RET_NULL was specified.
-> > > > I don't remember off the top of my head, but this behavior
-> > > > is already implemented or we discussed making it this way.
-> > >
-> > > Hm, I do not see any evidence of this kind of semantic currently
-> > > implemented, so perhaps it was only discussed at some point. Would yo=
-u
-> > > like me to put forward a patch that introduces this kind of implicit
-> > > trust semantic for BPF kfuncs returning pointer to struct types?
-> >
-> > Hmm. What about these:
-> > BTF_ID_FLAGS(func, scx_bpf_cpu_rq)
-> > BTF_ID_FLAGS(func, scx_bpf_locked_rq, KF_RET_NULL)
-> > BTF_ID_FLAGS(func, scx_bpf_cpu_curr, KF_RET_NULL | KF_RCU_PROTECTED)
-> >
-> > I thought they're returning a trusted pointer without acquiring it.
-> > iirc the last one returns trusted in RCU CS,
-> > but the first two return just a legacy ptr_to_btf_id ?
-> > This is something to fix asap then.
->
-> No, AFAIU they do not. These simply return a regular pointer to BTF ID
-> (PTR_TO_BTF_ID), rather than a formally "trusted" pointer (which would
-> carry the PTR_TRUSTED flag or a ref_obj_id). scx_bpf_cpu_curr returns
-> a MEM_RCU pointer (via KF_RCU_PROTECTED), which is somewhat considered
-> to be trusted within a RCU read-side critical section *ONLY*.
->
-> Kumar/Tejun,
+>   
+>   static void tlb_table_flush(struct mmu_gather *tlb)
+> @@ -367,7 +378,7 @@ void tlb_remove_table(struct mmu_gather *tlb, void *table)
+>   		*batch = (struct mmu_table_batch *)__get_free_page(GFP_NOWAIT);
+>   		if (*batch == NULL) {
+>   			tlb_table_invalidate(tlb);
+> -			tlb_remove_table_one(table);
+> +			tlb_remove_table_one(table, tlb);
+>   			return;
+>   		}
+>   		(*batch)->nr = 0;
+> @@ -427,6 +438,7 @@ static void __tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm,
+>   	tlb->vma_pfn = 0;
+>   
+>   	tlb->fully_unshared_tables = 0;
+> +	tlb->tlb_flush_sent_ipi = 0;
+>   	__tlb_reset_range(tlb);
+>   	inc_tlb_flush_pending(tlb->mm);
+>   }
 
-Yeah, they don't return a trusted pointer. I think it would make sense
-to change the behavior here by default.
-A non-trusted pointer cannot be passed to kfuncs taking trusted
-arguments, so hopefully it will only make things more permissive and
-doesn't break anything.
+But when would we have to reset tlb->tlb_flush_sent_ipi = 0 later? 
+That's where it gets tricky. Just imagine the MMU gather gets reused later.
 
->
-> Please keep me honest here.
+Also,
+
+	+	if (info->freed_tables && info->tlb)
+	+		info->tlb->tlb_flush_sent_ipi = true;
+
+in native_flush_tlb_multi() misses the fact that we have different 
+flushing types for removed/unshared tables vs. other flush.
+
+So this approach more here certainly gets more complicated and error prone.
+
+tlb_table_flush_implies_ipi_broadcast() was clearer in that regard: if 
+you flushed the TLB after removing /unsharing tables, the IPI for 
+handling page tables can be skipped. It's on the code flow to assure that.
+
+What could work is tracking "tlb_table_flush_sent_ipi" really when we 
+are flushing the TLB for removed/unshared tables, and maybe resetting it 
+... I don't know when from the top of my head.
+
+v2 was simpler IMHO.
+
+-- 
+Cheers
+
+David
 
