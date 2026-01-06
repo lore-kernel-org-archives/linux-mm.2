@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C7BACEFD11
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 21:20:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6943CEFD12
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 21:20:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CFCF6B00A0; Tue,  6 Jan 2026 16:20:15 -0500 (EST)
+	id 9257E6B00A2; Tue,  6 Jan 2026 16:20:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6457C6B00A1; Tue,  6 Jan 2026 16:20:15 -0500 (EST)
+	id 8C7AA6B00A3; Tue,  6 Jan 2026 16:20:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 363716B00A2; Tue,  6 Jan 2026 16:20:15 -0500 (EST)
+	id 766556B00A4; Tue,  6 Jan 2026 16:20:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2081E6B00A0
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:20:15 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9C1165D00F
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:20:14 +0000 (UTC)
-X-FDA: 84302807148.17.C93242E
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 531BE6B00A2
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:20:21 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E66F91A0C7F
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:20:20 +0000 (UTC)
+X-FDA: 84302807400.10.7A303A1
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D23DCA000E
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:20:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025122301 header.b=PoMpztMT;
-	spf=pass (imf15.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+	by imf18.hostedemail.com (Postfix) with ESMTP id 50F751C0002
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:20:19 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025122301 header.b=LRjGtXUF;
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (imf18.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767734419; a=rsa-sha256;
+	cv=none;
+	b=VE/6dz7u0aEl5tpqMxZddltDsANZ4r1LjrT0CXwfcAnqoaDDaFLQcs4qtOT9m9rK0TIjWh
+	+VKcgPrmMv5Z4UtYsl4Rm0bCKOgsqNjwdtSiy+NzSSupCDNsoVGC+9vNsD3sDePOXVl5Dh
+	VLorGPtasoVyd1m3Y61+nYylepqGP9U=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025122301 header.b=LRjGtXUF;
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (imf18.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767734413;
+	s=arc-20220608; t=1767734419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qflYDEYSfpEA8CgU+zw+8+XYOHYFRgGv++82XjVNC1o=;
-	b=aci9yS7VeASkpaziQ1+YiAALNCxtson1caRlRMlSgIVl1k4WBnMAKh+OVZls8SWDC/E/Hi
-	P39zsMR7WB9G9TC1mlcqGrL5rik3SNzjPzXuNuwxkPaKVRBsNf7YQNXPw0h3NIIZBqW7rz
-	lbQZVtuKKzGbnzrRDI1I8X/gk+N2W4E=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025122301 header.b=PoMpztMT;
-	spf=pass (imf15.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767734413; a=rsa-sha256;
-	cv=none;
-	b=dmgUlq2YYwQ/7RM+USqEPnI5mh+qfYyJnOGosKdnfYVyFOMD5wQhj6gewlauAMh0qfPey1
-	4rI6tjJFQJx/XCjD+jkeLLdB+dA12ku14eVK87O6i8m3qOBfr4gVETTFcnq6dw6mTEsn86
-	n4iyrcXIxL0Z9HFAxDMVB/aJfShY0SE=
+	bh=AB+971Z2K/0s3r5t/Zl6ByNhuiR5RGHV+jj8e23dhBU=;
+	b=I36CprYAVmpnc96Q0NJf0LBlnc1inkMgwEv1oVKPuw8elXcYSnUEbg4q4z6q0DXmQqIfP0
+	R5gJjWo5mwrSyRu4PSPprAZQN2QQwoA4nM09REMpZ2Luhp3nhs1FCb84VVP0OuY2ePY41T
+	BTGg1DIKUtT7hoZzdAzx5bJyqNpqL44=
 Received: from mail.zytor.com ([IPv6:2601:646:8081:9483:178c:dccb:2d71:85fe])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 606LIrDt029412
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 606LIrDr029412
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 6 Jan 2026 13:19:03 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 606LIrDt029412
+	Tue, 6 Jan 2026 13:19:00 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 606LIrDr029412
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025122301; t=1767734345;
-	bh=qflYDEYSfpEA8CgU+zw+8+XYOHYFRgGv++82XjVNC1o=;
+	s=2025122301; t=1767734341;
+	bh=AB+971Z2K/0s3r5t/Zl6ByNhuiR5RGHV+jj8e23dhBU=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=PoMpztMTNEiy33udTg/19xCcwh38wxuUxtCCxlW3m5DrqTNqz/7/VGpGoCcr4iFB4
-	 KerBCArQdhirHvPEyFqef2WGKj0pYtLEvpvnIqAcisoOF/cjagdNK0QzQGLWMx4rGr
-	 ZQ4SJKuHxDxwxHNnpP0/0GujYD40OUvO2ARBBI2s4hqpdN/0ILFTCI6fhohUhmFyW/
-	 p3BB4e1Ph6gl6Zso4WaOasusd80fg/tXBrTXYO5YzCDgbild4Yr8GYi3gJ6AFXNuC9
-	 s/n8SqLSC8NkXSz58gxfpmXC4NnWcslKmRoQFofKouOFLT3LsJEoyM9/2G4EhALABg
-	 QbEHXNwK07Piw==
+	b=LRjGtXUFaMz7OYR07EEFt9odMPeBo2Vys6fhhZuHmB/89dZM80b8UkwX6Z9FELnaY
+	 zrqGgqNg/+ltY1UZWYNuwdITTIe05Wsc/iUhpNdHptIzMf7W13HvsQtnYlAp8kh6fE
+	 H0O0lC09WKihCWgAIjekrzSwEbMfGWx8NgzSer73MiserW1yJZ5uldkPjN3H1l4tbh
+	 rKhSPOONEiffQkdB6cpNvE2sRlXKFQvhRRYXq3e+MsTD7UNpE3jHmLx1qMhlGVh/bj
+	 Xqo/eF6c90sF7YlwLK9YBdV5YU09W8YKHwp3IvKbx9SyvxcWTBYJmzNrszAkd/ofsd
+	 6KLjoEyWci0kg==
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -81,22 +81,20 @@ To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-sgx@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v4.1 05/10] x86/entry/vdso32: remove SYSCALL_ENTER_KERNEL macro in sigreturn.S
-Date: Tue,  6 Jan 2026 13:18:38 -0800
-Message-ID: <20260106211856.560186-5-hpa@zytor.com>
+Subject: [PATCH v4.1 03/10] x86/entry/vdso: refactor the vdso build
+Date: Tue,  6 Jan 2026 13:18:36 -0800
+Message-ID: <20260106211856.560186-3-hpa@zytor.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <vdso-cleanup-patch-4.1@zytor.com>
 References: <vdso-cleanup-patch-4.1@zytor.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D23DCA000E
-X-Stat-Signature: 11rtuapc7whgns3oxe4fykg75ibw6h46
+X-Rspamd-Queue-Id: 50F751C0002
+X-Stat-Signature: b1qqhakx3qbstpskiwgrwo6g17ptio9m
 X-Rspam-User: 
-X-HE-Tag: 1767734412-292576
-X-HE-Meta: U2FsdGVkX187ikvtm8kXwVADYWcuLFDqktoJh3BhG7kSjx7LwmlO3S5wq8uIqXjL9KfjSzS1QWfP0v2pSjgw5+EXyc7aukm/QYcbzjztBfR5hW3343EaTRwwNAH35Y2L8SAHjPBwKmlg9Bpr3ePJQ81d9xfY7PEnRCqte/zdwubOeCqlfZnX7K/rdU1v69nPzAB6X4RJXywIlPv7p6hNZWwxOttN21JPJN3acNamd76QlUPfUzLq7VfdxDqLcfUxcX92o0ojMUN87Pei8xG+D4HsKd/q6+a9GoKbfDU/LVEyVCuTVlr4M0jzNeQWqZwwXlJO5MWaYs64diU40kVLQWAHbC1T3aPh2psQxDcLrVHkt5Fs/mYQifAWgPfTY+6Cj28Kj8ggMQw4yL2nBfeLzX51FwqMwkthwBmSaVC7ZkuYikxtZg8Z5VjQQFQmVYcmEiPXjDcniAByyrYEgTWMBBo79VP7vzV5gWUqoFdrkv/D2da2cFSFpbE0Rl3EHi+wn6OWxOYanYJkcO05FFK3q/44KEx0p0I8VXBjcwJMHiS+xuGciGQkn3XSU3ENNz297bDeMhwalgw+PkuaGqyck8vCLa3LK2tkPortluXayhtGWqmd1STw4iKDlUJJHFQiwI00CbqQ8YKu5PpsWungJMqjRuHizgoEbgcnd2uJlmZROwbxMnPNf+t/46bdKZcDJX1Pm5VqGN9OkbVG0BZE+yCRfY936PB0jc2of7583p8d45+g6AzkpRZBHJEd3radBlIJ1M3UkA/RLbqoKLMdy62z0Zn04FDGB+/uNT6H3C5m/X7bx8l2prv7MpoAkBZ9sfhchAmwZwlDe9L5OlCUs22UP2qebIIu0jRQ8nOMJz2IjwQ8x/+eKJ0ZRbGCMCw5PRs1rbOAnnFqn1SLFI2mN4qeZV7uEw2tg6GhoUT2OiGxCOQuKpuV1GacC/DSFbdCXN0SxCpbOIPP1VsKzX5
- ctuiNvlQ
- 00sKXeLgdS54Nme1xVx3UXFZDrqHJgoREidEVpq8SarFBv6T5IEdlbfKjj08aHHBXAQD+gviDSAVUW6VPyRNVaNdfSYAL/lqpVzJAYWZR7OHA6oejCvgPQzW6MhXMcgTgkOGD4H4RatifmoMrTvjGhbc2IK6MZM7XdZa3DFMTPMhGqbwcHAeRUm+WFHhOwwhdA1nfkDZEv2Xer3LA8jeWhbCO99Fckdp7RFAl91jnW5Att+OobKEj5Uupd/Ml+1jtfFBc4PnV4sIstBp1lO0pHuEW8/yp6FxhqYOmWUWPvGRoNRG7/5PT0Te1so3+pA28Gm/9JUZbIWIlyHNCZWm1Li2iWUd3FU8zcwA9a28cGIfkHpY=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767734419-665384
+X-HE-Meta: U2FsdGVkX1+h1c/cOwqwWb6qyGP430hDxDcRZUt2EaQbFr7EetBcb3pi1Bjcvve+7cfUzZ8Gkk33ILiXCARQ/dPZIKl4cPY94+VyiiuUcVbAmyCFfTgb8VFoWek+R0TqyWtY+gxdH3YA6fV8+jXGU5GSgiw4DSp79c6t1FkVR0jfWai5FCzOjfm3ohcWLV3aiBd7GlEyyPny2en3IfctfeiTOxuL0Iel8uH3L0Fg2nuVnKqHmSc1EbhMnt44TymEapGJUzKLiPwg1wj4eQTRtPy8ZzNY4QEpnNVj0S13n74WdU+o9j9HRqXCG5g8kJmQBEDJxz4lANtG+HOwVVnDpQaeo/1cNg5lMRDFagjDrvQAtTKijzhyHwR4eSxeJarlna8/s1vLHb4Uodvifpz7KAtZfYBFASYteTCKvfSek2S0HiSCc242dgMQhSCwG+hnVqsaUZPhgYnNVb7HFHQh/PfQSov7sLKMeQTVxb9JjJyvc8+ySv15TvrIkAAukpMx67kMrGKm50j0X/BvfnrkvKLJxXcQtALEjA0069MY1CJb7i8cqQcCuj4C3Qf3seJLeYCuQA1qbeQJbz0kOJXafX2gmr7xImOfFlinA6JdBDl2mZ47QWAq+cqTyHqAugllXo5XXDA5UGcxFKTyfaH6anMeQSYARNL/Uq9KNW4BWPghiMgOIR6BRdkjBuyWmUyWMBLPTZYxq/I+9uD2pN0iawWsObTs76srvxVMU2aDCD7bU13u0t9YJZsR9qFLbbyPlG4yafmLwcid/jlTPAcnOJgbqbsv8JfLy1ooB6B1XjmFyMmK239k8i2sUaWVpeeNanWWg4dSq6clrF1CjDQ6Ww66OW+oUo9JldvsUZQPQG8KCrCSr278QNPh6DfFvQss9/TswtynfZIJ6DWP/cHB2lQfkRoIybO98cVKIKA2wPbuodwsIv/VkCUlrs0pGW+5hmLhWNekR0E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,50 +103,598 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A macro SYSCALL_ENTER_KERNEL was defined in sigreturn.S, with the
-ability of overriding it. The override capability, however, is not
-used anywhere, and the macro name is potentially confusing because it
-seems to imply that sysenter/syscall could be used here, which is NOT
-true: the sigreturn system calls MUST use int $0x80.
+- Separate out the vdso sources into common, vdso32, and vdso64
+  directories.
+- Build the 32- and 64-bit vdsos in their respective subdirectories;
+  this greatly simplifies the build flags handling.
+- Unify the mangling of Makefile flags between the 32- and 64-bit
+  vdso code as much as possible; all common rules are put in
+  arch/x86/entry/vdso/common/Makefile.include. The remaining
+  is very simple for 32 bits; the 64-bit one is only slightly more
+  complicated because it contains the x32 generation rule.
+- Define __DISABLE_EXPORTS when building the vdso. This need seems to
+  have been masked by different ordering compile flags before.
+- Change CONFIG_X86_64 to BUILD_VDSO32_64 in vdso32/system_call.S,
+  to make it compatible with including fake_32bit_build.h.
+- The -fcf-protection= option was "leaking" from the kernel build,
+  for reasons that was not clear to me. Futhermore, several
+  distributions ship with it set to a default value other than
+  "-fcf-protection=none". Make it match the configuration options
+  for *user space*.
+
+Note that this patch may seem large, but the vast majority of it is
+simply code movement.
 
 Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 ---
- arch/x86/entry/vdso/vdso32/sigreturn.S | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/x86/entry/vdso/Makefile                  | 161 +-----------------
+ arch/x86/entry/vdso/common/Makefile.include   |  89 ++++++++++
+ .../entry/vdso/{vdso-note.S => common/note.S} |   5 +-
+ .../entry/vdso/{ => common}/vclock_gettime.c  |   0
+ .../entry/vdso/{ => common}/vdso-layout.lds.S |   0
+ arch/x86/entry/vdso/{ => common}/vgetcpu.c    |   0
+ arch/x86/entry/vdso/vdso32/Makefile           |  24 +++
+ arch/x86/entry/vdso/vdso32/note.S             |  19 +--
+ arch/x86/entry/vdso/vdso32/system_call.S      |   2 +-
+ arch/x86/entry/vdso/vdso32/vclock_gettime.c   |   5 +-
+ arch/x86/entry/vdso/vdso32/vdso32.lds.S       |   2 +-
+ arch/x86/entry/vdso/vdso32/vgetcpu.c          |   4 +-
+ arch/x86/entry/vdso/vdso64/Makefile           |  46 +++++
+ arch/x86/entry/vdso/vdso64/note.S             |   1 +
+ arch/x86/entry/vdso/vdso64/vclock_gettime.c   |   1 +
+ .../vdso/{vdso.lds.S => vdso64/vdso64.lds.S}  |   2 +-
+ .../x86/entry/vdso/{ => vdso64}/vdsox32.lds.S |   2 +-
+ arch/x86/entry/vdso/vdso64/vgetcpu.c          |   1 +
+ .../vdso/{ => vdso64}/vgetrandom-chacha.S     |   0
+ arch/x86/entry/vdso/{ => vdso64}/vgetrandom.c |   2 +-
+ arch/x86/entry/vdso/{ => vdso64}/vsgx.S       |   0
+ 21 files changed, 180 insertions(+), 186 deletions(-)
+ create mode 100644 arch/x86/entry/vdso/common/Makefile.include
+ rename arch/x86/entry/vdso/{vdso-note.S => common/note.S} (62%)
+ rename arch/x86/entry/vdso/{ => common}/vclock_gettime.c (100%)
+ rename arch/x86/entry/vdso/{ => common}/vdso-layout.lds.S (100%)
+ rename arch/x86/entry/vdso/{ => common}/vgetcpu.c (100%)
+ create mode 100644 arch/x86/entry/vdso/vdso32/Makefile
+ create mode 100644 arch/x86/entry/vdso/vdso64/Makefile
+ create mode 100644 arch/x86/entry/vdso/vdso64/note.S
+ create mode 100644 arch/x86/entry/vdso/vdso64/vclock_gettime.c
+ rename arch/x86/entry/vdso/{vdso.lds.S => vdso64/vdso64.lds.S} (94%)
+ rename arch/x86/entry/vdso/{ => vdso64}/vdsox32.lds.S (92%)
+ create mode 100644 arch/x86/entry/vdso/vdso64/vgetcpu.c
+ rename arch/x86/entry/vdso/{ => vdso64}/vgetrandom-chacha.S (100%)
+ rename arch/x86/entry/vdso/{ => vdso64}/vgetrandom.c (91%)
+ rename arch/x86/entry/vdso/{ => vdso64}/vsgx.S (100%)
 
-diff --git a/arch/x86/entry/vdso/vdso32/sigreturn.S b/arch/x86/entry/vdso/vdso32/sigreturn.S
-index 1bd068f72d4c..965900c6763b 100644
---- a/arch/x86/entry/vdso/vdso32/sigreturn.S
-+++ b/arch/x86/entry/vdso/vdso32/sigreturn.S
-@@ -3,10 +3,6 @@
- #include <asm/unistd_32.h>
- #include <asm/asm-offsets.h>
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index 3d9b09f00c70..987b43fd4cd3 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -3,159 +3,10 @@
+ # Building vDSO images for x86.
+ #
  
--#ifndef SYSCALL_ENTER_KERNEL
--#define	SYSCALL_ENTER_KERNEL	int $0x80
--#endif
+-# Include the generic Makefile to check the built vDSO:
+-include $(srctree)/lib/vdso/Makefile.include
++# Regular kernel objects
++obj-y				:= vma.o extable.o
++obj-$(CONFIG_COMPAT_32)		+= vdso32-setup.o
+ 
+-# Files to link into the vDSO:
+-vobjs-y := vdso-note.o vclock_gettime.o vgetcpu.o vgetrandom.o vgetrandom-chacha.o
+-vobjs32-y := vdso32/note.o vdso32/system_call.o vdso32/sigreturn.o
+-vobjs32-y += vdso32/vclock_gettime.o vdso32/vgetcpu.o
+-vobjs-$(CONFIG_X86_SGX)	+= vsgx.o
 -
- 	.text
- 	.globl __kernel_sigreturn
- 	.type __kernel_sigreturn,@function
-@@ -16,7 +12,7 @@ __kernel_sigreturn:
- .LSTART_sigreturn:
- 	popl %eax		/* XXX does this mean it needs unwind info? */
- 	movl $__NR_sigreturn, %eax
--	SYSCALL_ENTER_KERNEL
-+	int $0x80
- .LEND_sigreturn:
- SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
- 	nop
-@@ -28,7 +24,7 @@ SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
- __kernel_rt_sigreturn:
- .LSTART_rt_sigreturn:
- 	movl $__NR_rt_sigreturn, %eax
--	SYSCALL_ENTER_KERNEL
-+	int $0x80
- .LEND_rt_sigreturn:
- SYM_INNER_LABEL(vdso32_rt_sigreturn_landing_pad, SYM_L_GLOBAL)
- 	nop
+-# Files to link into the kernel:
+-obj-y						+= vma.o extable.o
+-
+-# vDSO images to build:
+-obj-$(CONFIG_X86_64)				+= vdso64-image.o
+-obj-$(CONFIG_X86_X32_ABI)			+= vdsox32-image.o
+-obj-$(CONFIG_COMPAT_32)				+= vdso32-image.o vdso32-setup.o
+-
+-vobjs := $(addprefix $(obj)/, $(vobjs-y))
+-vobjs32 := $(addprefix $(obj)/, $(vobjs32-y))
+-
+-$(obj)/vdso.o: $(obj)/vdso.so
+-
+-targets += vdso.lds $(vobjs-y)
+-targets += vdso32/vdso32.lds $(vobjs32-y)
+-
+-targets += $(foreach x, 64 x32 32, vdso-image-$(x).c vdso$(x).so vdso$(x).so.dbg)
+-
+-CPPFLAGS_vdso.lds += -P -C
+-
+-VDSO_LDFLAGS_vdso.lds = -m elf_x86_64 -soname linux-vdso.so.1 \
+-			-z max-page-size=4096
+-
+-$(obj)/vdso64.so.dbg: $(obj)/vdso.lds $(vobjs) FORCE
+-	$(call if_changed,vdso_and_check)
+-
+-VDSO2C = $(objtree)/arch/x86/tools/vdso2c
+-
+-quiet_cmd_vdso2c = VDSO2C  $@
+-      cmd_vdso2c = $(VDSO2C) $< $(<:%.dbg=%) $@
+-
+-$(obj)/vdso%-image.c: $(obj)/vdso%.so.dbg $(obj)/vdso%.so $(VDSO2C) FORCE
+-	$(call if_changed,vdso2c)
+-
+-#
+-# Don't omit frame pointers for ease of userspace debugging, but do
+-# optimize sibling calls.
+-#
+-CFL := $(PROFILING) -mcmodel=small -fPIC -O2 -fasynchronous-unwind-tables -m64 \
+-       $(filter -g%,$(KBUILD_CFLAGS)) -fno-stack-protector \
+-       -fno-omit-frame-pointer -foptimize-sibling-calls \
+-       -DDISABLE_BRANCH_PROFILING -DBUILD_VDSO
+-
+-ifdef CONFIG_MITIGATION_RETPOLINE
+-ifneq ($(RETPOLINE_VDSO_CFLAGS),)
+-  CFL += $(RETPOLINE_VDSO_CFLAGS)
+-endif
+-endif
+-
+-$(vobjs): KBUILD_CFLAGS := $(filter-out $(PADDING_CFLAGS) $(CC_FLAGS_LTO) $(CC_FLAGS_CFI) $(RANDSTRUCT_CFLAGS) $(KSTACK_ERASE_CFLAGS) $(GCC_PLUGINS_CFLAGS) $(RETPOLINE_CFLAGS),$(KBUILD_CFLAGS)) $(CFL)
+-$(vobjs): KBUILD_AFLAGS += -DBUILD_VDSO
+-
+-#
+-# vDSO code runs in userspace and -pg doesn't help with profiling anyway.
+-#
+-CFLAGS_REMOVE_vclock_gettime.o = -pg
+-CFLAGS_REMOVE_vdso32/vclock_gettime.o = -pg
+-CFLAGS_REMOVE_vgetcpu.o = -pg
+-CFLAGS_REMOVE_vdso32/vgetcpu.o = -pg
+-CFLAGS_REMOVE_vsgx.o = -pg
+-CFLAGS_REMOVE_vgetrandom.o = -pg
+-
+-#
+-# X32 processes use x32 vDSO to access 64bit kernel data.
+-#
+-# Build x32 vDSO image:
+-# 1. Compile x32 vDSO as 64bit.
+-# 2. Convert object files to x32.
+-# 3. Build x32 VDSO image with x32 objects, which contains 64bit codes
+-# so that it can reach 64bit address space with 64bit pointers.
+-#
+-
+-CPPFLAGS_vdsox32.lds = $(CPPFLAGS_vdso.lds)
+-VDSO_LDFLAGS_vdsox32.lds = -m elf32_x86_64 -soname linux-vdso.so.1 \
+-			   -z max-page-size=4096
+-
+-# x32-rebranded versions
+-vobjx32s-y := $(vobjs-y:.o=-x32.o)
+-
+-# same thing, but in the output directory
+-vobjx32s := $(addprefix $(obj)/, $(vobjx32s-y))
+-
+-# Convert 64bit object file to x32 for x32 vDSO.
+-quiet_cmd_x32 = X32     $@
+-      cmd_x32 = $(OBJCOPY) -O elf32-x86-64 $< $@
+-
+-$(obj)/%-x32.o: $(obj)/%.o FORCE
+-	$(call if_changed,x32)
+-
+-targets += vdsox32.lds $(vobjx32s-y)
+-
+-$(obj)/%.so: OBJCOPYFLAGS := -S --remove-section __ex_table
+-$(obj)/%.so: $(obj)/%.so.dbg FORCE
+-	$(call if_changed,objcopy)
+-
+-$(obj)/vdsox32.so.dbg: $(obj)/vdsox32.lds $(vobjx32s) FORCE
+-	$(call if_changed,vdso_and_check)
+-
+-CPPFLAGS_vdso32/vdso32.lds = $(CPPFLAGS_vdso.lds)
+-VDSO_LDFLAGS_vdso32.lds = -m elf_i386 -soname linux-gate.so.1
+-
+-KBUILD_AFLAGS_32 := $(filter-out -m64,$(KBUILD_AFLAGS)) -DBUILD_VDSO
+-$(obj)/vdso32.so.dbg: KBUILD_AFLAGS = $(KBUILD_AFLAGS_32)
+-$(obj)/vdso32.so.dbg: asflags-$(CONFIG_X86_64) += -m32
+-
+-KBUILD_CFLAGS_32 := $(filter-out -m64,$(KBUILD_CFLAGS))
+-KBUILD_CFLAGS_32 := $(filter-out -mcmodel=kernel,$(KBUILD_CFLAGS_32))
+-KBUILD_CFLAGS_32 := $(filter-out -fno-pic,$(KBUILD_CFLAGS_32))
+-KBUILD_CFLAGS_32 := $(filter-out -mfentry,$(KBUILD_CFLAGS_32))
+-KBUILD_CFLAGS_32 := $(filter-out $(RANDSTRUCT_CFLAGS),$(KBUILD_CFLAGS_32))
+-KBUILD_CFLAGS_32 := $(filter-out $(KSTACK_ERASE_CFLAGS),$(KBUILD_CFLAGS_32))
+-KBUILD_CFLAGS_32 := $(filter-out $(GCC_PLUGINS_CFLAGS),$(KBUILD_CFLAGS_32))
+-KBUILD_CFLAGS_32 := $(filter-out $(RETPOLINE_CFLAGS),$(KBUILD_CFLAGS_32))
+-KBUILD_CFLAGS_32 := $(filter-out $(CC_FLAGS_LTO),$(KBUILD_CFLAGS_32))
+-KBUILD_CFLAGS_32 := $(filter-out $(CC_FLAGS_CFI),$(KBUILD_CFLAGS_32))
+-KBUILD_CFLAGS_32 := $(filter-out $(PADDING_CFLAGS),$(KBUILD_CFLAGS_32))
+-KBUILD_CFLAGS_32 += -m32 -msoft-float -mregparm=0 -fpic
+-KBUILD_CFLAGS_32 += -fno-stack-protector
+-KBUILD_CFLAGS_32 += $(call cc-option, -foptimize-sibling-calls)
+-KBUILD_CFLAGS_32 += -fno-omit-frame-pointer
+-KBUILD_CFLAGS_32 += -DDISABLE_BRANCH_PROFILING
+-KBUILD_CFLAGS_32 += -DBUILD_VDSO
+-
+-ifdef CONFIG_MITIGATION_RETPOLINE
+-ifneq ($(RETPOLINE_VDSO_CFLAGS),)
+-  KBUILD_CFLAGS_32 += $(RETPOLINE_VDSO_CFLAGS)
+-endif
+-endif
+-
+-$(obj)/vdso32.so.dbg: KBUILD_CFLAGS = $(KBUILD_CFLAGS_32)
+-
+-$(obj)/vdso32.so.dbg: $(obj)/vdso32/vdso32.lds $(vobjs32) FORCE
+-	$(call if_changed,vdso_and_check)
+-
+-#
+-# The DSO images are built using a special linker script.
+-#
+-quiet_cmd_vdso = VDSO    $@
+-      cmd_vdso = $(LD) -o $@ \
+-		       $(VDSO_LDFLAGS) $(VDSO_LDFLAGS_$(filter %.lds,$(^F))) \
+-		       -T $(filter %.lds,$^) $(filter %.o,$^)
+-
+-VDSO_LDFLAGS = -shared --hash-style=both --build-id=sha1 --no-undefined \
+-	$(call ld-option, --eh-frame-hdr) -Bsymbolic -z noexecstack
+-
+-quiet_cmd_vdso_and_check = VDSO    $@
+-      cmd_vdso_and_check = $(cmd_vdso); $(cmd_vdso_check)
++# vDSO directories
++obj-$(CONFIG_X86_64)		+= vdso64/
++obj-$(CONFIG_COMPAT_32)		+= vdso32/
+diff --git a/arch/x86/entry/vdso/common/Makefile.include b/arch/x86/entry/vdso/common/Makefile.include
+new file mode 100644
+index 000000000000..3514b4a6869b
+--- /dev/null
++++ b/arch/x86/entry/vdso/common/Makefile.include
+@@ -0,0 +1,89 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Building vDSO images for x86.
++#
++
++# Include the generic Makefile to check the built vDSO:
++include $(srctree)/lib/vdso/Makefile.include
++
++obj-y    += $(foreach x,$(vdsos-y),vdso$(x)-image.o)
++
++targets  += $(foreach x,$(vdsos-y),vdso$(x)-image.c vdso$(x).so vdso$(x).so.dbg vdso$(x).lds)
++targets  += $(vobjs-y)
++
++# vobjs-y with $(obj)/ prepended
++vobjs := $(addprefix $(obj)/,$(vobjs-y))
++
++# Options for vdso*.lds
++CPPFLAGS_VDSO_LDS := -P -C -I$(src)/..
++$(obj)/%.lds : KBUILD_CPPFLAGS += $(CPPFLAGS_VDSO_LDS)
++
++#
++# Options from KBUILD_[AC]FLAGS that should *NOT* be kept
++#
++flags-remove-y += \
++	-D__KERNEL__ -mcmodel=kernel -mregparm=3 \
++	-fno-pic -fno-PIC -fno-pie fno-PIE \
++	-mfentry -pg \
++	$(RANDSTRUCT_CFLAGS) $(GCC_PLUGIN_CFLAGS) $(KSTACK_ERASE_CFLAGS) \
++	$(RETPOLINE_CFLAGS) $(CC_FLAGS_LTO) $(CC_FLAGS_CFI) \
++	$(PADDING_CFLAGS)
++
++#
++# Don't omit frame pointers for ease of userspace debugging, but do
++# optimize sibling calls.
++#
++flags-y += -D__DISABLE_EXPORTS
++flags-y += -DDISABLE_BRANCH_PROFILING
++flags-y += -DBUILD_VDSO
++flags-y += -I$(src)/.. -I$(srctree)
++flags-y += -O2 -fpic
++flags-y += -fno-stack-protector
++flags-y += -fno-omit-frame-pointer
++flags-y += -foptimize-sibling-calls
++flags-y += -fasynchronous-unwind-tables
++
++# Reset cf protections enabled by compiler default
++flags-y += $(call cc-option, -fcf-protection=none)
++flags-$(X86_USER_SHADOW_STACK) += $(call cc-option, -fcf-protection=return)
++# When user space IBT is supported, enable this.
++# flags-$(CONFIG_USER_IBT) += $(call cc-option, -fcf-protection=branch)
++
++flags-$(CONFIG_MITIGATION_RETPOLINE) += $(RETPOLINE_VDSO_CFLAGS)
++
++# These need to be conditional on $(vobjs) as they do not apply to
++# the output vdso*-image.o files which are standard kernel objects.
++$(vobjs) : KBUILD_AFLAGS := \
++	$(filter-out $(flags-remove-y),$(KBUILD_AFLAGS)) $(flags-y)
++$(vobjs) : KBUILD_CFLAGS := \
++	$(filter-out $(flags-remove-y),$(KBUILD_CFLAGS)) $(flags-y)
++
++#
++# The VDSO images are built using a special linker script.
++#
++VDSO_LDFLAGS := -shared --hash-style=both --build-id=sha1 --no-undefined \
++	$(call ld-option, --eh-frame-hdr) -Bsymbolic -z noexecstack
++
++quiet_cmd_vdso = VDSO    $@
++      cmd_vdso = $(LD) -o $@ \
++		       $(VDSO_LDFLAGS) $(VDSO_LDFLAGS_$*) \
++		       -T $(filter %.lds,$^) $(filter %.o,$^)
++quiet_cmd_vdso_and_check = VDSO    $@
++      cmd_vdso_and_check = $(cmd_vdso); $(cmd_vdso_check)
++
++$(obj)/vdso%.so.dbg: $(obj)/vdso%.lds FORCE
++	$(call if_changed,vdso_and_check)
++
++$(obj)/%.so: OBJCOPYFLAGS := -S --remove-section __ex_table
++$(obj)/%.so: $(obj)/%.so.dbg FORCE
++	$(call if_changed,objcopy)
++
++VDSO2C = $(objtree)/arch/x86/tools/vdso2c
++
++quiet_cmd_vdso2c = VDSO2C  $@
++      cmd_vdso2c = $(VDSO2C) $< $(<:%.dbg=%) $@
++
++$(obj)/%-image.c: $(obj)/%.so.dbg $(obj)/%.so $(VDSO2C) FORCE
++	$(call if_changed,vdso2c)
++
++$(obj)/%-image.o: $(obj)/%-image.c
+diff --git a/arch/x86/entry/vdso/vdso-note.S b/arch/x86/entry/vdso/common/note.S
+similarity index 62%
+rename from arch/x86/entry/vdso/vdso-note.S
+rename to arch/x86/entry/vdso/common/note.S
+index 79423170118f..2cbd39939dc6 100644
+--- a/arch/x86/entry/vdso/vdso-note.S
++++ b/arch/x86/entry/vdso/common/note.S
+@@ -1,13 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 */
+ /*
+  * This supplies .note.* sections to go into the PT_NOTE inside the vDSO text.
+  * Here we can supply some information useful to userland.
+  */
+ 
+ #include <linux/build-salt.h>
+-#include <linux/uts.h>
+ #include <linux/version.h>
+ #include <linux/elfnote.h>
+ 
++/* Ideally this would use UTS_NAME, but using a quoted string here
++   doesn't work. Remember to change this when changing the
++   kernel's name. */
+ ELFNOTE_START(Linux, 0, "a")
+ 	.long LINUX_VERSION_CODE
+ ELFNOTE_END
+diff --git a/arch/x86/entry/vdso/vclock_gettime.c b/arch/x86/entry/vdso/common/vclock_gettime.c
+similarity index 100%
+rename from arch/x86/entry/vdso/vclock_gettime.c
+rename to arch/x86/entry/vdso/common/vclock_gettime.c
+diff --git a/arch/x86/entry/vdso/vdso-layout.lds.S b/arch/x86/entry/vdso/common/vdso-layout.lds.S
+similarity index 100%
+rename from arch/x86/entry/vdso/vdso-layout.lds.S
+rename to arch/x86/entry/vdso/common/vdso-layout.lds.S
+diff --git a/arch/x86/entry/vdso/vgetcpu.c b/arch/x86/entry/vdso/common/vgetcpu.c
+similarity index 100%
+rename from arch/x86/entry/vdso/vgetcpu.c
+rename to arch/x86/entry/vdso/common/vgetcpu.c
+diff --git a/arch/x86/entry/vdso/vdso32/Makefile b/arch/x86/entry/vdso/vdso32/Makefile
+new file mode 100644
+index 000000000000..add6afb484ba
+--- /dev/null
++++ b/arch/x86/entry/vdso/vdso32/Makefile
+@@ -0,0 +1,24 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# 32-bit vDSO images for x86.
++#
++
++# The vDSOs built in this directory
++vdsos-y			:= 32
++
++# Files to link into the vDSO:
++vobjs-y			:= note.o vclock_gettime.o vgetcpu.o
++vobjs-y			+= system_call.o sigreturn.o
++
++# Compilation flags
++flags-y			:= -DBUILD_VDSO32 -m32 -mregparm=0
++flags-$(CONFIG_X86_64)	+= -include $(src)/fake_32bit_build.h
++flags-remove-y          := -m64
++
++# The location of this include matters!
++include $(src)/../common/Makefile.include
++
++# Linker options for the vdso
++VDSO_LDFLAGS_32		:= -m elf_i386 -soname linux-gate.so.1
++
++$(obj)/vdso32.so.dbg: $(vobjs)
+diff --git a/arch/x86/entry/vdso/vdso32/note.S b/arch/x86/entry/vdso/vdso32/note.S
+index 2cbd39939dc6..62d8aa51ce99 100644
+--- a/arch/x86/entry/vdso/vdso32/note.S
++++ b/arch/x86/entry/vdso/vdso32/note.S
+@@ -1,18 +1 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/*
+- * This supplies .note.* sections to go into the PT_NOTE inside the vDSO text.
+- * Here we can supply some information useful to userland.
+- */
+-
+-#include <linux/build-salt.h>
+-#include <linux/version.h>
+-#include <linux/elfnote.h>
+-
+-/* Ideally this would use UTS_NAME, but using a quoted string here
+-   doesn't work. Remember to change this when changing the
+-   kernel's name. */
+-ELFNOTE_START(Linux, 0, "a")
+-	.long LINUX_VERSION_CODE
+-ELFNOTE_END
+-
+-BUILD_SALT
++#include "common/note.S"
+diff --git a/arch/x86/entry/vdso/vdso32/system_call.S b/arch/x86/entry/vdso/vdso32/system_call.S
+index d33c6513fd2c..2a15634bbe75 100644
+--- a/arch/x86/entry/vdso/vdso32/system_call.S
++++ b/arch/x86/entry/vdso/vdso32/system_call.S
+@@ -52,7 +52,7 @@ __kernel_vsyscall:
+ 	#define SYSENTER_SEQUENCE	"movl %esp, %ebp; sysenter"
+ 	#define SYSCALL_SEQUENCE	"movl %ecx, %ebp; syscall"
+ 
+-#ifdef CONFIG_X86_64
++#ifdef BUILD_VDSO32_64
+ 	/* If SYSENTER (Intel) or SYSCALL32 (AMD) is available, use it. */
+ 	ALTERNATIVE_2 "", SYSENTER_SEQUENCE, X86_FEATURE_SYSENTER32, \
+ 	                  SYSCALL_SEQUENCE,  X86_FEATURE_SYSCALL32
+diff --git a/arch/x86/entry/vdso/vdso32/vclock_gettime.c b/arch/x86/entry/vdso/vdso32/vclock_gettime.c
+index 86981decfea8..1481f0021b9f 100644
+--- a/arch/x86/entry/vdso/vdso32/vclock_gettime.c
++++ b/arch/x86/entry/vdso/vdso32/vclock_gettime.c
+@@ -1,4 +1 @@
+-// SPDX-License-Identifier: GPL-2.0
+-#define BUILD_VDSO32
+-#include "fake_32bit_build.h"
+-#include "../vclock_gettime.c"
++#include "common/vclock_gettime.c"
+diff --git a/arch/x86/entry/vdso/vdso32/vdso32.lds.S b/arch/x86/entry/vdso/vdso32/vdso32.lds.S
+index 8a3be07006bb..8a853543fc0d 100644
+--- a/arch/x86/entry/vdso/vdso32/vdso32.lds.S
++++ b/arch/x86/entry/vdso/vdso32/vdso32.lds.S
+@@ -11,7 +11,7 @@
+ 
+ #define BUILD_VDSO32
+ 
+-#include "../vdso-layout.lds.S"
++#include "common/vdso-layout.lds.S"
+ 
+ /* The ELF entry point can be used to set the AT_SYSINFO value.  */
+ ENTRY(__kernel_vsyscall);
+diff --git a/arch/x86/entry/vdso/vdso32/vgetcpu.c b/arch/x86/entry/vdso/vdso32/vgetcpu.c
+index 3a9791f5e998..00cc8325a020 100644
+--- a/arch/x86/entry/vdso/vdso32/vgetcpu.c
++++ b/arch/x86/entry/vdso/vdso32/vgetcpu.c
+@@ -1,3 +1 @@
+-// SPDX-License-Identifier: GPL-2.0
+-#include "fake_32bit_build.h"
+-#include "../vgetcpu.c"
++#include "common/vgetcpu.c"
+diff --git a/arch/x86/entry/vdso/vdso64/Makefile b/arch/x86/entry/vdso/vdso64/Makefile
+new file mode 100644
+index 000000000000..bfffaf1aeecc
+--- /dev/null
++++ b/arch/x86/entry/vdso/vdso64/Makefile
+@@ -0,0 +1,46 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# 64-bit vDSO images for x86.
++#
++
++# The vDSOs built in this directory
++vdsos-y				:= 64
++vdsos-$(CONFIG_X86_X32_ABI)	+= x32
++
++# Files to link into the vDSO:
++vobjs-y				:= note.o vclock_gettime.o vgetcpu.o
++vobjs-y				+= vgetrandom.o vgetrandom-chacha.o
++vobjs-$(CONFIG_X86_SGX)		+= vsgx.o
++
++# Compilation flags
++flags-y				:= -DBUILD_VDSO64 -m64 -mcmodel=small
++
++# The location of this include matters!
++include $(src)/../common/Makefile.include
++
++#
++# X32 processes use x32 vDSO to access 64bit kernel data.
++#
++# Build x32 vDSO image:
++# 1. Compile x32 vDSO as 64bit.
++# 2. Convert object files to x32.
++# 3. Build x32 VDSO image with x32 objects, which contains 64bit codes
++# so that it can reach 64bit address space with 64bit pointers.
++#
++
++# Convert 64bit object file to x32 for x32 vDSO.
++quiet_cmd_x32 = X32     $@
++      cmd_x32 = $(OBJCOPY) -O elf32-x86-64 $< $@
++
++$(obj)/%-x32.o: $(obj)/%.o FORCE
++	$(call if_changed,x32)
++
++vobjsx32 = $(patsubst %.o,%-x32.o,$(vobjs))
++targets += $(patsubst %.o,%-x32.o,$(vobjs-y))
++
++# Linker options for the vdso
++VDSO_LDFLAGS_64  := -m elf_x86_64 -soname linux-vdso.so.1 -z max-page-size=4096
++VDSO_LDFLAGS_x32 := $(subst elf_x86_64,elf32_x86_64,$(VDSO_LDFLAGS_64))
++
++$(obj)/vdso64.so.dbg:	$(vobjs)
++$(obj)/vdsox32.so.dbg:	$(vobjsx32)
+diff --git a/arch/x86/entry/vdso/vdso64/note.S b/arch/x86/entry/vdso/vdso64/note.S
+new file mode 100644
+index 000000000000..62d8aa51ce99
+--- /dev/null
++++ b/arch/x86/entry/vdso/vdso64/note.S
+@@ -0,0 +1 @@
++#include "common/note.S"
+diff --git a/arch/x86/entry/vdso/vdso64/vclock_gettime.c b/arch/x86/entry/vdso/vdso64/vclock_gettime.c
+new file mode 100644
+index 000000000000..1481f0021b9f
+--- /dev/null
++++ b/arch/x86/entry/vdso/vdso64/vclock_gettime.c
+@@ -0,0 +1 @@
++#include "common/vclock_gettime.c"
+diff --git a/arch/x86/entry/vdso/vdso.lds.S b/arch/x86/entry/vdso/vdso64/vdso64.lds.S
+similarity index 94%
+rename from arch/x86/entry/vdso/vdso.lds.S
+rename to arch/x86/entry/vdso/vdso64/vdso64.lds.S
+index 0bab5f4af6d1..5ce3f2b6373a 100644
+--- a/arch/x86/entry/vdso/vdso.lds.S
++++ b/arch/x86/entry/vdso/vdso64/vdso64.lds.S
+@@ -9,7 +9,7 @@
+ 
+ #define BUILD_VDSO64
+ 
+-#include "vdso-layout.lds.S"
++#include "common/vdso-layout.lds.S"
+ 
+ /*
+  * This controls what userland symbols we export from the vDSO.
+diff --git a/arch/x86/entry/vdso/vdsox32.lds.S b/arch/x86/entry/vdso/vdso64/vdsox32.lds.S
+similarity index 92%
+rename from arch/x86/entry/vdso/vdsox32.lds.S
+rename to arch/x86/entry/vdso/vdso64/vdsox32.lds.S
+index 16a8050a4fb6..3dbd20c8dacc 100644
+--- a/arch/x86/entry/vdso/vdsox32.lds.S
++++ b/arch/x86/entry/vdso/vdso64/vdsox32.lds.S
+@@ -9,7 +9,7 @@
+ 
+ #define BUILD_VDSOX32
+ 
+-#include "vdso-layout.lds.S"
++#include "common/vdso-layout.lds.S"
+ 
+ /*
+  * This controls what userland symbols we export from the vDSO.
+diff --git a/arch/x86/entry/vdso/vdso64/vgetcpu.c b/arch/x86/entry/vdso/vdso64/vgetcpu.c
+new file mode 100644
+index 000000000000..00cc8325a020
+--- /dev/null
++++ b/arch/x86/entry/vdso/vdso64/vgetcpu.c
+@@ -0,0 +1 @@
++#include "common/vgetcpu.c"
+diff --git a/arch/x86/entry/vdso/vgetrandom-chacha.S b/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
+similarity index 100%
+rename from arch/x86/entry/vdso/vgetrandom-chacha.S
+rename to arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
+diff --git a/arch/x86/entry/vdso/vgetrandom.c b/arch/x86/entry/vdso/vdso64/vgetrandom.c
+similarity index 91%
+rename from arch/x86/entry/vdso/vgetrandom.c
+rename to arch/x86/entry/vdso/vdso64/vgetrandom.c
+index 430862b8977c..6a95d36b12d9 100644
+--- a/arch/x86/entry/vdso/vgetrandom.c
++++ b/arch/x86/entry/vdso/vdso64/vgetrandom.c
+@@ -4,7 +4,7 @@
+  */
+ #include <linux/types.h>
+ 
+-#include "../../../../lib/vdso/getrandom.c"
++#include "lib/vdso/getrandom.c"
+ 
+ ssize_t __vdso_getrandom(void *buffer, size_t len, unsigned int flags, void *opaque_state, size_t opaque_len)
+ {
+diff --git a/arch/x86/entry/vdso/vsgx.S b/arch/x86/entry/vdso/vdso64/vsgx.S
+similarity index 100%
+rename from arch/x86/entry/vdso/vsgx.S
+rename to arch/x86/entry/vdso/vdso64/vsgx.S
 -- 
 2.52.0
 
