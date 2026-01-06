@@ -4,135 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 540B8C47BD8
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 10:05:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E73B2C47BDD
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 10:26:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 774966B008A; Tue,  6 Jan 2026 05:05:52 -0500 (EST)
+	id 3EE486B008A; Tue,  6 Jan 2026 05:26:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71ABD6B0093; Tue,  6 Jan 2026 05:05:52 -0500 (EST)
+	id 39C076B0093; Tue,  6 Jan 2026 05:26:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EF436B0095; Tue,  6 Jan 2026 05:05:52 -0500 (EST)
+	id 27D9B6B0095; Tue,  6 Jan 2026 05:26:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 48F046B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 05:05:52 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA8231B4CF
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:05:51 +0000 (UTC)
-X-FDA: 84301107702.08.778BD26
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id F1C58160002
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:05:49 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dp/tW1qp";
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 172916B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 05:26:05 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE0818BC09
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:26:04 +0000 (UTC)
+X-FDA: 84301158648.23.3E42976
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+	by imf18.hostedemail.com (Postfix) with ESMTP id CBC041C0005
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:26:02 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="K/IeqBek";
+	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767693950;
+	s=arc-20220608; t=1767695163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7bzH3NK4Uu8cfYQRDJ0IbIrNVOl2O3KL2y8eO7FudBE=;
-	b=ndjaYEVtff8hQjwqWDZxVRUyi7zFrv1PVUoapZdFCbySYp4kSX92veQZzHFCcQ/taYK72z
-	HW0WLi262Q5L+RxWLBsMZP8leb+P7lOt5Da8yhOzU//tVaXMrGV65GP0VcS1T6fWIQbGGs
-	Z/yWndan0MbEOhSOvbBd0lzpXniU068=
+	bh=yrYlgSs3aSLf4OO6JdIXAa9ZB/yG8lk++eER1aaE778=;
+	b=qcydeXYtAqxPcifFxikZniTxmEF5V8U8aqtG/rVyaGcmSmdzG2Z89MY/bdzwnU5JPqiRGH
+	oPWdpUROscI1uFiB/NCTIWH+8WoSnC4Q4o8/3uPxrshFSZ9EQR9eRFOp1qJuQHCnF81vl+
+	vmEsHJw1nIUK9Rqdx38c25mUI1xhu18=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dp/tW1qp";
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767693950; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="K/IeqBek";
+	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767695163; a=rsa-sha256;
 	cv=none;
-	b=ZiiRZYJFXL4PxgOOUWF7e9gVIpO2JMLuAOkZTDAiVHfLNzV5zX/WONFnNWO3AttEGF5udd
-	QMP9bTQ00WPsW+C44V8wHfhsi2j7nd8hzy9Aw/c39a8l9SDHmn8AlVDtck3VpLUpdNz6+K
-	xkSI1oyWf+tSwcmWHJFBYo/XMW2DUo4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C0620401E9;
-	Tue,  6 Jan 2026 10:05:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B24C116C6;
-	Tue,  6 Jan 2026 10:05:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767693948;
-	bh=9tJVBrC2RGcJNRIoSkZGDIElVh+JiC6ZoPPf3FqVOlM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dp/tW1qp/Fn5nNEJxl3L2ALhHIsbH5fkOMhMgK13eS9JysC9cfo0Q2yVm4a/A3YYF
-	 N5Oaf4+GAH1Ixai+J1sG+GqmTa0PrjbHzA8aVAKBFZCkhfcbxi+aNMQopVmvcbJZm9
-	 ujT2abFFsoJANTNFADnywRjjq26Nlvut6CEccv79YBxRKzyI24GU/IXbuJBtdvoxOK
-	 As1ql9Ig58dZ/lTlkt89OkOFNXrp2tY2/W0X8xJaH4fW2G970DE5jL1JDBSPWgROy1
-	 QRrC1oc+T+0W7sDyeVQ+W3LCjfyzrzEIHJu6rVOGWmgHeWhac0AILBLCpZcUVp/LTk
-	 fI2hapOqqpJhA==
-Message-ID: <616c2e51-ff69-4ef9-9637-41f3ff8691dd@kernel.org>
-Date: Tue, 6 Jan 2026 11:05:43 +0100
+	b=mLyJlBgovyTKBht9mkQZN/3xaQhGieaUrK5pVDxVP5ldJFqaYPElPJXicqpT4vAjPixTWJ
+	YC5uy1vkC25D5/QdkRUGB/NKztRTH3T1hfGJEFFES7MEDOCo1N4SfFj1nRc7o9kEEpCv+w
+	rE4+uK7mYlT7DLgjruwhhEF9pI5ixYk=
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-47d63594f7eso4897855e9.0
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 02:26:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1767695161; x=1768299961; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yrYlgSs3aSLf4OO6JdIXAa9ZB/yG8lk++eER1aaE778=;
+        b=K/IeqBek/8kCjK+f8d94ImixVtJMTcRobmYnTZFy843d10fDOFSU22x8c7RmwK4pqE
+         hy5q4sl+JVOYtgPThDE0T9MZF9QrIv2tUtm6aw4DHusfH6m6W2P4l41kv39PCnlqQVB7
+         ODDTIZmpc+gzRCqAYeZxbDxKO7b2lnn8W6GYAAvEhcxlAxRkYyDZhq36MI4MjXDi6fwJ
+         gstLDrlJN47WX96xQpwn1/d6mE4PEd2SYWTtEZbbRNEPoGHpOVKSKvqUlWkOzmSTv9IY
+         u0efPUfSaOsOSKOcjtuOcI16jAB92LTOY8iu7WCVB8FWh16JHOzeiRYe1x5ZfkuSVmB3
+         u1MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767695161; x=1768299961;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yrYlgSs3aSLf4OO6JdIXAa9ZB/yG8lk++eER1aaE778=;
+        b=bFnClmVXpMOBM3YRRtK81cK1eBsC9cP8dfvKMC86ebb7Z5QE4Jw+ZBwcldcB0ggZBu
+         hak+QmCiGLrCoc11fv+FyzhzJY0LTmHxkyGYDm70rN8X/RnCGJ5lZ/JasV/McscZWJQu
+         iqurMP/xOCi3/ke60muTtv+zL4gvxTD4hGAaFeBLP4L1vfo52XArZnvY8AzlEmbgySjy
+         RWj3tpPwlHtgjdh7wR/NBnCZEJbDR1oho+5mEDhSuoojEiQx/UZcKpQFhjnE+GrMLcvK
+         BvsE2F8muhjuqDrudK/uz8Tkp38JRUOfkAvdHH2vdwT10+OBEnYOM6NOT5CsYwd88JD1
+         W79A==
+X-Forwarded-Encrypted: i=1; AJvYcCUn2NTGi61lbCgwWIPSIu9liW1b1EMK8j4SeidcSL//xMpBae1rzdfggCsv/lBtFf042RIeOeV8TQ==@kvack.org
+X-Gm-Message-State: AOJu0YweHaGSGP5OCsVp1AhJa2zR7SnQyczD9ealWKBQC/j+BLP2dU1j
+	F3UV+1U96UeefJjaL1qwHpqxUWjoNjfzJaVBM4ktUE5Re9I6UlfLYfpk8BRK93HDt3M=
+X-Gm-Gg: AY/fxX5UGDsBwi5gyEQpu0QY6oL0fMw8UP+c69sBbyGHHTzGFpJFbVeidQL7ljl3yHv
+	HNr9+UkOiTL5pnJ7IJrzpAuV8OYrm5Hz057kX+8/wyyh24pEcPMFL/iNM1Z/J+zirUAuX60ohCS
+	C8L6KRkcRRHoY3odxwm0CgkV22ut/3QnTfF0FXd7i5fjL50Wk0fOjwGmot43z8dX4y1ev4LnPHC
+	8q0j943HIGiBDEaB8EPFXnY6orXEcoNXB8ovgHF4AZghJKfkUgFc96HzRyS1oK6lObIJZsxFHY7
+	UDQ1vlpsDV331g8Y7CEzpdsK52AKN6pNyyny/UzJX5QghYdmV2+l/1YytbfNDRm/39A0/Bg9QV3
+	JOXjkM+4TkTwjZemiUokHlyj8FIxaXUUiC0lSI015ZjircGSdr9uccDWyR192vtt21ENc8LiI/I
+	bmLMRMVAn9+1YeDnBKCNydxrMetSXzP43SF4c=
+X-Google-Smtp-Source: AGHT+IFb++SFH+rzxjUyOLzVtbAwCNpIM3DiqRn405rjEU6hdyHt22A9JWXC6Ev1mua/rT+52Ubpuw==
+X-Received: by 2002:a05:600c:3484:b0:477:7a78:3016 with SMTP id 5b1f17b1804b1-47d7f06dc14mr27492355e9.8.1767695161240;
+        Tue, 06 Jan 2026 02:26:01 -0800 (PST)
+Received: from localhost (109-81-90-116.rct.o2.cz. [109.81.90.116])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5df939sm3571930f8f.21.2026.01.06.02.26.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 02:26:00 -0800 (PST)
+Date: Tue, 6 Jan 2026 11:25:59 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, SeongJae Park <sj@kernel.org>,
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/8] memcg: separate private and public ID namespaces
+Message-ID: <aVzjN5z3w114fNB4@tiehlicka>
+References: <20251225232116.294540-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-To: Jan Kara <jack@suse.cz>, Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, miklos@szeredi.hu, linux-mm@kvack.org,
- athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
- linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
- <20251215030043.1431306-2-joannelkoong@gmail.com>
- <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: d5tzcg59odb5c86zq6eud9n481zifdpw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251225232116.294540-1-shakeel.butt@linux.dev>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CBC041C0005
+X-Stat-Signature: shokiom1gh9i1gmsq1mfao7u1a36xx5f
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F1C58160002
-X-HE-Tag: 1767693949-234950
-X-HE-Meta: U2FsdGVkX192leGp8Q6bGGHa2Mk5TFq6kOiaiKjF2p9vqlEDJWcFjZLlbJzq37qGBVUavDEO7zjx3T1s0LfcbWys1MRgvBT1+aA2HOjsic0FfYeay7qBY6iU/yDPgFS477bVkD0cZMlSEEeYVT6SZ4Nv5Rs0oxdYQkiVkTFrXjqLKauTEi/PMP3yQWa+xURHz3du4DADgUHt4ixM+L4x0w3tumhiE//qbvmCTnZT6RFNS4HsjdS+Ud2knV/9h7GVS8VCWMPogpRFJD+J5Tli1afeCVkNEaJ2P+0vWeroxkJbylBefeGvZIraDEJGmkD+vH0u6ojWgrIZgRf1NGpHMfryAJIzdUFzw9b00mYGb0JrpFgQLnCG+jFIuZvHTyVNaQlpROU4k90in6iTpQory+Jjw3CuW7Bnhjknw/2Ku5gN2F564yFAehbCHWDdEIxr7cnvQPcDXj3j4hC4aPVix645eyTMbdCqtm0XglF6Ld9PF4Asv56BoJN+DEgBDTzjSeu0RbCk1hfKb1ZdjZBQQ0rRp6VNxbl39b+SRCHzh/1FlnkE+AOAf1X26nn/Cedpro288hUQgHQJFrvrPgnVazfXaEyn923SSEQxztu5+mGMQt7LRVggJagUD6m7Zq/bFB88tAaDmSOF4wkpy7b27rVeecw6V86Zds3x6UUFwr18GXudRstWgQm33FjMe3XkYcY4Vp87yBKeaBWrZAL+fq2ydNc2F2fXlAwzt5/c7AGR71ZU+hiDSlvmPyrjqw+c//c0GLJoi+H2ostX64r9NPEm/X3YI6QC2tNDGc7zRnxPDr0D4QDwSrOuoTb9BIhrkQElIbb5qMscSunCKRTCbzWXEYPwkp1F4M/x3NX2FcenbBH1CpSHzCpZjPekO28ih+7rZXEpDvOyVJWJrC8pFzUWIrhbbSRd+FKNfIeZzLda1bZ1L82ibdKCt8/XDaa0i9zWXVQM5U6JrhAgg3s
- Hrg/CERb
- zpgwk3/h/2myB7+FAqBODhNecPOJy6u7Sm2So1YSjLHQK3xj3NXzWTH9Wqxnxams//JgI1BQUEH/98cYr6TXhanqVAmDfsF7o7bekTNhNwqOj9nbGclDnkYwRYSF++boO86s6y6EsceabjysosdggvjeMSbIG61TVLQkByLRAwTXTN/GVEIDF4lQdOOWsNdNeDHx/nbcKK9EJqXqM/RrkmgUW697kleboD/FwJf/pZrmmRXTQwFx0ukWpFYClnI2w69ipcSA8GeVUMCiJBLb3sJCSaHnjFFDI5uI5Zmd0nICMzrfjKzv0citE/pOvTzRfhnBpm+9dMg3/Aw9hmwtzg4JarAAodQ6SWfNILYqW0qd+Dcd9YrEp+MTPumMSPJUuokjrlnZw9hJwNQHYRR1s7P6uNi1mtC9/ENeLvTaVPB66NNhRZ9/H9+eRCMS3TbTfVy42Ugffy7jRI3A=
+X-HE-Tag: 1767695162-170017
+X-HE-Meta: U2FsdGVkX1/ttx4izZ957WTUXqMHKgU70fo6qFaDS6rEjkYyV2jVozkteajbW8DYTmqs8GhSnKkI9ORuLEgGOuxBDgyy4x9nf5REzUP7n6LPq/PCGbMU+Y44RmstsGTMyv2VdwqE5DAehyVgVH/cIry3RlsjKjKg2kn7Bmf4aQYcv6TfgsGCeBVoGKGuhYzGcXjjFJMMiVXVeourki6ekzrvqyEoWewRWeODCJeMnpxTFtfNMzSJ6PTXRE6ihoFB1GFHhoAD5stMDe0zWx5rbtYnKzj8enGn7cXNEOoU+ECoiqHK6WLuSaD7Lyhu7QFcouhqGEF4+tciF/q4J2ziwoJjZMqriKk18Phnc4TYEDTA3RGkZB13ngvg9T9UvKKLsn53piw91WMsutCVMzbDxA08vvgHugi3q5TpNki5oKZZNRfUPzsdmMYTkFt6hbSDgQgcrgwmpnYCyw+JEesuTPgMdArFsE27/62+VJyc9rpVE8+etl6c5xEAhQW2YiWPVkzJ4ujPKwKPMwpEzoZkE1Vg9uyv8VN7Yfyej5vE/3qvrVxd49ThcoEIN71y03Aw6v6M3oTT+2zsXPkTSB5px3gS/DLK/v6E79Kud2lhqV2g3HMtvhz9Sk6/FxuQ5a5o2ImclaFriY/7DT8wsm4r3rhzmeNURUkmKX0qKGDs8zooLVr1ihCsS2/Bw0ZdzzqWgq/ngsFLC24djKMDhwbiv5VlWnn+zjV6E48nTRuNTUttuLOh8zEueBGcC4o0uOCEqwyLUC/xLh54ly1LrzRvhYlBMQPTCPHYg9oG3DMGh/RuX7r8mO4m/NPJPVf+qaBI4C7Mhk5glY2esfjQ/0RrDkpyJv25//Ec4jBSfL2VM7PhZf9008f/aJS0XUnMqLcq/CNQUIoILeNgHGIF87jmB9oq2Fd+y6Zwoaoe3sjADraAtIP+nqBxcBt2Ghi4T0PQgOnuwHedoEeNdXycCnI
+ v3i5dyJZ
+ RBv4X779DkIxaNDK2CLhMjnDNdTm0SBDgMyZO+3w/tdd4cYfHTPbfvn9SEOECbld3p6aym1GgBDuq4O/GrY+pVh5oaOuYQC3Ym8HM7iFv9DxXvG8Clohg6R+5Ai+7y2+4dHs8sZWSELE3z/EQl5/WxqzLJgHwy0hOjgqPh3DDw/MH7tm8svtQDjY7uoW13dm+CK/Y2t3jwScyRJFpu8+b0l6dSffFTmF2676JIY1uc5FjcYV8VJ8DVZGkrMj9I3zO4kEvixcDrvNsXOEJhik60/3zIbI6SiBRkREGPrC1Ws9LNW4Gl4IOHbpbfBEUiBPtvsqZe5SlSU9wpj6MXo42Z4M8eqJZkx0BefAucGonwe0R6nOI/stbP0GqC/ROQKSWdh5tYU3NjbF/QJTwe1tgi/PSrGqO3NBAWm5tT9Qz0a3ZDxCGl0fy6QdLEXbYNdZ0viZb9aV9zhUr8kDsoyVBLDNRDu33F/2McvQltfH1c/0xdB+Vmom2of5lTg0FHyG+aX7pJMvzVpahm5Pz43gxiH4m3A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,103 +123,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/6/26 10:33, Jan Kara wrote:
-> [Thanks to Andrew for CCing me on patch commit]
+On Thu 25-12-25 15:21:08, Shakeel Butt wrote:
+> The memory cgroup subsystem maintains a private ID infrastructure that
+> is decoupled from the cgroup IDs. This private ID system exists because
+> some kernel objects (like swap entries and shadow entries in the
+> workingset code) can outlive the cgroup they were associated with.
+> The motivation is best described in commit 73f576c04b941 ("mm:
+> memcontrol: fix cgroup creation failure after many small jobs").
 > 
-> On Sun 14-12-25 19:00:43, Joanne Koong wrote:
->> Skip waiting on writeback for inodes that belong to mappings that do not
->> have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
->> mapping flag).
->>
->> This restores fuse back to prior behavior where syncs are no-ops. This
->> is needed because otherwise, if a system is running a faulty fuse
->> server that does not reply to issued write requests, this will cause
->> wait_sb_inodes() to wait forever.
->>
->> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
->> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
->> Reported-by: J. Neuschäfer <j.neuschaefer@gmx.net>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> Unfortunately, some in-kernel users (DAMON, LRU gen debugfs interface,
+> shrinker debugfs) started exposing these private IDs to userspace.
+> This is problematic because:
 > 
-> OK, but the difference 0c58a97f919c introduced goes much further than just
-> wait_sb_inodes(). Before 0c58a97f919c also filemap_fdatawait() (and all the
-> other variants waiting for folio_writeback() to clear) returned immediately
-> because folio writeback was done as soon as we've copied the content into
-> the temporary page. Now they will block waiting for the server to finish
-> the IO. So e.g. fsync() will block waiting for the server in
-> file_write_and_wait_range() now, instead of blocking in fuse_fsync_common()
-> -> fuse_simple_request(). Similarly e.g. truncate(2) will now block waiting
-> for the server so that folio_writeback can be cleared.
+> 1. The private IDs are internal implementation details that could change
+> 2. Userspace already has access to cgroup IDs through the cgroup
+>    filesystem
+> 3. Using different ID namespaces in different interfaces is confusing
 > 
-> So I understand your patch fixes the regression with suspend blocking but I
-> don't have a high confidence we are not just starting a whack-a-mole game
+> This series cleans up the memcg ID infrastructure by:
+> 
+> 1. Explicitly marking the private ID APIs with "private" in their names
+>    to make it clear they are for internal use only (swap/workingset)
+> 
+> 2. Making the public cgroup ID APIs (mem_cgroup_id/mem_cgroup_get_from_id)
+>    unconditionally available
+> 
+> 3. Converting DAMON, LRU gen, and shrinker debugfs interfaces to use
+>    the public cgroup IDs instead of the private IDs
+> 
+> 4. Removing the now-unused wrapper functions and renaming the public
+>    APIs for clarity
+> 
+> After this series:
+> - mem_cgroup_private_id() / mem_cgroup_from_private_id() are used for
+>   internal kernel objects that outlive their cgroup (swap, workingset)
+> - mem_cgroup_id() / mem_cgroup_get_from_id() return the public cgroup ID
+>   (from cgroup_id()) for use in userspace-facing interfaces
+> 
+> Note: please apply this series after the patch at
+> https://lore.kernel.org/20251225002904.139543-1-shakeel.butt@linux.dev/
 
-Yes, I think so, and I think it is [1] not even only limited to 
-writeback [2].
+Makes sense to me. Originally I was not supper happy about the private
+interface as this should be really private to memcg proper but then I
+have noticed the lru code needs this outside and dealing with that would
+be quite messy so an explicit name is probably better in the end.
 
-> catching all the places that previously hiddenly depended on
-> folio_writeback getting cleared without any involvement of untrusted fuse
-> server and now this changed. 
+Feel free to add
+Acked-by: Michal Hocko <mhocko@suse.com>
 
-Even worse, it's not only untrusted fuse servers, but also 
-trusted-but-buggy fuse servers, unfortunately. As Joanne wrote in v1:
+Thanks!
 
-"
-As reported by Athul upstream in [1], there is a userspace regression 
-caused by commit 0c58a97f919c ("fuse: remove tmp folio for writebacks 
-and internal rb tree") where if there is a bug in a fuse server that 
-causes the server to never complete writeback, it will make 
-wait_sb_inodes() wait forever, causing sync paths to hang.
-"
+> 
+> Shakeel Butt (8):
+>   memcg: introduce private id API for in-kernel users
+>   memcg: expose mem_cgroup_ino() and mem_cgroup_get_from_ino()
+>     unconditionally
+>   memcg: mem_cgroup_get_from_ino() returns NULL on error
+>   memcg: use cgroup_id() instead of cgroup_ino() for memcg ID
+>   mm/damon: use cgroup ID instead of private memcg ID
+>   mm/vmscan: use cgroup ID instead of private memcg ID in lru_gen
+>     interface
+>   memcg: remove unused mem_cgroup_id() and mem_cgroup_from_id()
+>   memcg: rename mem_cgroup_ino() to mem_cgroup_id()
+> 
+>  include/linux/damon.h      |  4 +--
+>  include/linux/memcontrol.h | 26 +++++++----------
+>  mm/damon/core.c            |  7 ++---
+>  mm/damon/sysfs-schemes.c   |  6 ++--
+>  mm/list_lru.c              |  2 +-
+>  mm/memcontrol-v1.c         |  6 ++--
+>  mm/memcontrol-v1.h         |  4 +--
+>  mm/memcontrol.c            | 60 ++++++++++++++++++--------------------
+>  mm/shrinker_debug.c        | 13 +++++----
+>  mm/vmscan.c                | 17 ++++-------
+>  mm/workingset.c            |  8 ++---
+>  11 files changed, 68 insertions(+), 85 deletions(-)
+> 
+> --
+> 2.47.3
 
-> So do we have some higher-level idea what is /
-> is not guaranteed with stuck fuse server?
-
-Joanne first proposed AS_WRITEBACK_MAY_HANG, which I disliked [2] for 
-various reasons because the semantics are weird. I am strongly against 
-using such a flag to arbitrarily skip waiting for writeback on folios in 
-the tree.
-
-The patch here is at least logically the right thing to do when only 
-looking at the wait_sb_inodes() writeback situation [3] and why it is 
-even ok to skip waiting for writeback, and the fix Joanne originally 
-proposed.
-
-To handle the bigger picture (I raised another problematic instance in 
-[4]): I don't know how to handle that without properly fixing fuse. Fuse 
-folks should really invest some time to solve this problem for good.
-
-
-As a big temporary kernel hack, we could add a 
-AS_ANY_WAITING_UTTERLY_BROKEN and simply refuse to wait for writeback 
-directly inside folio_wait_writeback() -- not arbitrarily skipping it in 
-callers -- and possibly other places (readahead, not sure). That would 
-restore the old behavior.
-
-Well, not quite, because the semantics that folio_wait_writeback() 
-promises -- writeback flag at least cleared once, like required here for 
-data integrity -- are just not true anymore.
-
-And it would still break migration of folios that are under writeback 
-even though waiting for writeback even for migration even though in 
-99.9999% of all cases with trusted fuse server will do the right thing. 
-Just nasty.
-
-Of course, we could set AS_ANY_WAITING_UTTERLY_BROKEN in fuse only 
-conditionally, but the fact that buggy trusted fuse servers are now a 
-thing, it all stops making any sense because we would have to set that 
-flag always.
-
-There is no easy way to get back the old behavior without reverting to 
-the old way of using buffer pages I guess.
-[1] 
-https://lore.kernel.org/linux-mm/504d100d-b8f3-475b-b575-3adfd17627b5@kernel.org/[2] 
-https://lore.kernel.org/linux-mm/f8da9ee0-f136-4366-b63a-1812fda11304@kernel.org/[3] 
-https://lore.kernel.org/linux-mm/6d0948f5-e739-49f3-8e23-359ddbf3da8f@kernel.org/[4] 
-https://lore.kernel.org/linux-mm/504d100d-b8f3-475b-b575-3adfd17627b5@kernel.org/
 -- 
-Cheers
-
-David
+Michal Hocko
+SUSE Labs
 
