@@ -4,136 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7910AC47BCF
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 09:34:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0170C47BD0
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 09:47:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E07F36B0005; Tue,  6 Jan 2026 04:34:06 -0500 (EST)
+	id 14AF96B008A; Tue,  6 Jan 2026 04:47:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDF296B0088; Tue,  6 Jan 2026 04:34:06 -0500 (EST)
+	id 0F8636B0093; Tue,  6 Jan 2026 04:47:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEB626B008A; Tue,  6 Jan 2026 04:34:06 -0500 (EST)
+	id F3CE56B0095; Tue,  6 Jan 2026 04:47:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BE2A26B0005
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:34:06 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5D0E3B99E2
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 09:34:06 +0000 (UTC)
-X-FDA: 84301027692.06.19CF270
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C26FD20003
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 09:34:03 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Cf+rn6jm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=B7fPsCqp;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Cf+rn6jm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=B7fPsCqp;
-	spf=pass (imf03.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E59086B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:47:14 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 84AF8C1DDD
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 09:47:14 +0000 (UTC)
+X-FDA: 84301060788.14.2A27229
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6E12F120002
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 09:47:12 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=SiB3YFfZ;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767692832; a=rsa-sha256;
+	cv=none;
+	b=bgagYLz8+l6quM5OM5Vdu/yndGkvv4Wi+45vs81IZuiiBUKwNkxnINKQcmyOKAxKc2S6tH
+	k4JeiT9RN4ZdpRj4H0TMUPRZAUsnTiXfb0hxqEUVckv5QgykKVWtpt8iROXDgkuemzC3uV
+	DWEkG31Ps2KdcskumIoPKTOI0qRNiR4=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=SiB3YFfZ;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767692044;
+	s=arc-20220608; t=1767692832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lD+gb9iTwtAOL0+AaRfPVu6+0szSFg5PvynsVOPibio=;
-	b=TLnzPglEmo8p1IlU5MqWpP9olLZpHz4u7TH6SH1orBn9mMqwQRm1IBmyn3j5hmb1DDsIzt
-	85wX7HRSaRik1Hz71LzIRE+EUFlek5zZndH0naoh3KMUnoRZCx2HGSFfrug9AOYJsSDNdB
-	7+pJtZ8Q38GQriwcwW1aRQIlVWFu/Is=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Cf+rn6jm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=B7fPsCqp;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Cf+rn6jm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=B7fPsCqp;
-	spf=pass (imf03.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767692044; a=rsa-sha256;
-	cv=none;
-	b=EtVknf3X+l6Kg62bDeaBUWysv0Cg+D5qb7pb1t+F+rQuz++bOuRuCueTkprEAfMqV2N+K3
-	z5YZgXL6gx9UFx+tdWaXYnEQTxzwlvv3+7qsVwbSKW8rt5UNFqqNzCWQkJkVIn+yOEW1Fp
-	LVvKK7vvCBjKPNs6Qj7khfpMgpnVBzE=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A71EA339D0;
-	Tue,  6 Jan 2026 09:34:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767692041; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lD+gb9iTwtAOL0+AaRfPVu6+0szSFg5PvynsVOPibio=;
-	b=Cf+rn6jmcX1v54zQheY+lMcF2mDy52EZG8pxdJNAgv3Sty7rG6uOyfZH87D7kwM/k3uYed
-	PMKnfzXhO2fEVVujHEr51L9H7fIKgAkdaTCkRh3aLvQgM/rw2xFJOGnEUkMvyJYcpj+eY5
-	8ntv+S3ziU8MrsupBMynI7igz1+oH+A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767692041;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lD+gb9iTwtAOL0+AaRfPVu6+0szSFg5PvynsVOPibio=;
-	b=B7fPsCqpcP3/aj1MkEzq4rt0LvLey0WxaVyG6EXbTwzmpxh2CVUnDs6k001S1FozzVWju0
-	9AMdTMS4ZsmCmUAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767692041; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lD+gb9iTwtAOL0+AaRfPVu6+0szSFg5PvynsVOPibio=;
-	b=Cf+rn6jmcX1v54zQheY+lMcF2mDy52EZG8pxdJNAgv3Sty7rG6uOyfZH87D7kwM/k3uYed
-	PMKnfzXhO2fEVVujHEr51L9H7fIKgAkdaTCkRh3aLvQgM/rw2xFJOGnEUkMvyJYcpj+eY5
-	8ntv+S3ziU8MrsupBMynI7igz1+oH+A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767692041;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lD+gb9iTwtAOL0+AaRfPVu6+0szSFg5PvynsVOPibio=;
-	b=B7fPsCqpcP3/aj1MkEzq4rt0LvLey0WxaVyG6EXbTwzmpxh2CVUnDs6k001S1FozzVWju0
-	9AMdTMS4ZsmCmUAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9DD613EA63;
-	Tue,  6 Jan 2026 09:34:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YxCHJgnXXGkxbgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 06 Jan 2026 09:34:01 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 5EE5FA08E3; Tue,  6 Jan 2026 10:33:46 +0100 (CET)
-Date: Tue, 6 Jan 2026 10:33:46 +0100
-From: Jan Kara <jack@suse.cz>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, miklos@szeredi.hu, 
-	linux-mm@kvack.org, athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, 
-	carnil@debian.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-Message-ID: <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
- <20251215030043.1431306-2-joannelkoong@gmail.com>
+	bh=xJXQ4Wd2y2qV/yJPfn8lP+tueGk0lD0a+quRej+wuvM=;
+	b=JrEBeXwuudJkhwfI1y4m/a1Im8BRBklZxP0weoXdYSwBoiN4shYLwQE+MaClGCX/8jk7FF
+	BJxzu50qbg5MMXhmpj2ZrCEnJhidKy5OMMbfT9+YcyPtVwnREQNykLU4YXTzI1T9xprsLh
+	CzGG3FNCNPUjdersTBOyjL6IknlYua4=
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7f89d0b37f0so1191816b3a.0
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 01:47:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1767692831; x=1768297631; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xJXQ4Wd2y2qV/yJPfn8lP+tueGk0lD0a+quRej+wuvM=;
+        b=SiB3YFfZW19uodJxKHWH1dLlgv6ErfX6Uhl31fdDybxdkkY61f/9pbj3z6inCW2AfX
+         eS3FNBpWMEgIo4S8Apf7GL71fTWAm1Lco/7gT4XMv9mN/T0egYGaNtHe9hlcmv28TyjE
+         6wyjXE5gbVbpaXoUd1ESiPungQHYqT8oVRY4s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767692831; x=1768297631;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xJXQ4Wd2y2qV/yJPfn8lP+tueGk0lD0a+quRej+wuvM=;
+        b=HbhGoj+zRaGSYFcSQVb3VSKPIg8LYEcWVrwKKlb1hsEm5nmTpH3whSlnGreW/zzB5M
+         C7SS3P83dmhtqGxOJDDWdSHllzTimwPCa2gteMiAw1/tVy5UITy/d8OIoOm43FKy0pdX
+         XzjwIQFSQGpXqk/tqb030EiWPZAG13HlPAz3WzchHrUbGdJTvn1p7Jt4/YmGWhp/xQ44
+         5mYsjG6phM0QgocEy/X7k3tjGLXghDst14XfNxLmTumgThsgRcMbK6uWc1GcS2EROhmv
+         4O9b6oNOOxNXXN6BqXNJfh1m2Ihb1VAJYTRpF12G6CTAYwbYClW2iv/78nu0l6+DZ5sb
+         z84w==
+X-Forwarded-Encrypted: i=1; AJvYcCWVeOpH6QWnyXerMnNWRYKzyVISxhrUDtQgQanjf9/lXPCoHq2ttiLuUA3mT5S/BIuxrv9bCNZcYA==@kvack.org
+X-Gm-Message-State: AOJu0YyCFWZxA4Ag4KOdeOU8GSxxhsfw7rx/nQ597BRnSYVCLxFdYuH6
+	PDwFndExa+6/CGi22T4LfKmdKttP/D9wS/wgR5TtGAVFyMsRCo0rxvniNiuwOrTVlg==
+X-Gm-Gg: AY/fxX4eUrNI0JwAwwAPGkv1gAEJG52nYxuvz3q97prubG+pCVu21aLCmRebWuTluwC
+	s4nPNzGDedSFg1nMc9YZBDZvqNIR8SIK5oDNmfhy5EXSD6CBB0J1Tg8EeHJKNdGxzD5NY7rIMM6
+	hPI+DkriSB0XrlAvjCMxHeVPFu6F1DzbgkwSn3LKr0z2TNxuu+YWBR6KkfffwvCCzCmf6jQczL8
+	n5ynFJNaPkGUt3sIYcJEbQH45APMee1i4kqyh0GHEIua96ov1QjWEb6GVyiN0YPzrCMqu3lxnCX
+	YU4L+evKurK9pEAIMnQ153H1L1GZ1thdXRXLFy7EdWgHNChhOz330StJN7Qn+gQu8FkQcDe6SlM
+	rVhEk/J7qS6DLDJaA5ZK4+ZNcPUqIUROSlXjjKVsYZTmfe5E9hGU1oJYL55ZyDVATfLT7+s9L5v
+	epGnNewGr6Pl/ZscJlL9hxXdLNYHsv17rmPaKbdz6h87MQ6LpE67M=
+X-Google-Smtp-Source: AGHT+IGpAMvNG5pRJJflVY45rokqvptz5oyKx3i7Xxx3gYwE1ZwQz6+oJctbCyU69G0avbqPtFt4wg==
+X-Received: by 2002:a05:6a20:7489:b0:371:b0c2:4acf with SMTP id adf61e73a8af0-38982a55826mr1930940637.7.1767692831281;
+        Tue, 06 Jan 2026 01:47:11 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:9f6a:2617:8891:93ff])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cbf28f6cdsm1851021a12.6.2026.01.06.01.47.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 01:47:10 -0800 (PST)
+Date: Tue, 6 Jan 2026 18:47:04 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
+	Herbert Xu <herbert@gondor.apana.org.au>, linux-mm@kvack.org
+Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
+ consider other metrics
+Message-ID: <b6mzgm4cgl2sgervqymz6cldgxtck7em7hzzgamucm572k4ayd@bhp3msgnitbh>
+References: <20260101013814.2312147-1-senozhatsky@chromium.org>
+ <20260101013814.2312147-3-senozhatsky@chromium.org>
+ <ddfs43qldaws5urlnpah3ibp5xeu7st37p5hgdfajvdtwor4sd@fkcm3brinygo>
+ <gg5zdpzrk47tljbnaudcy2gnsodyhmmar23qb57b67bhx6ntje@eq2fcrl2dk4z>
+ <v5veb673xrz6z3tevfdymhuik7nltojrvcqyjih4ds7co4p4hr@5e7ngdkrxo32>
+ <5p4iyah6zlrnxpbsis32c4m5lrjj3pq7xwcugq35d2entwfai2@n2r6y3ga2ie5>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251215030043.1431306-2-joannelkoong@gmail.com>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 6nzskoqahsrcucm89mfk4ihodh65md6e
+In-Reply-To: <5p4iyah6zlrnxpbsis32c4m5lrjj3pq7xwcugq35d2entwfai2@n2r6y3ga2ie5>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6E12F120002
+X-Stat-Signature: eb469sxn78ktq7c1zbqfch1az9cpcqbb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C26FD20003
-X-HE-Tag: 1767692043-226841
-X-HE-Meta: U2FsdGVkX1/h87O1dO0eHAfZIV4F2cAf3lmtO1dxL0eAYsiQlg18G2dvZz3HPNkbuQlvK2BtXaNYpHOLLCOkKMfa4WiakJfsNbS4A61G49YNUcFzoqUi0H90sfCb+x8ezA34ldpWX/tYr1mcauqFq4O1zJS6uT6JPWH29ZyMlcmW2BSkszqJ6fy4izN58Bf34JNHFUm6FgWIepfjga0A1Cy0BRtkz8Sl44ghUFOUTpr/lq7GC6ti1i/X2CHFdRlRFo41CJ7OyI8UqQoHGPTz56MVtlrLq3w4ktLrmOC//OgTrvBV/wKDjxmIBMsF55ddBqvylr6LFShSsyfx9lqZxuqMExiEk+rxHeLuZ4ipVWkDDC8p1ElRvKPHPPdM7TAepafTHQbC8wBd55I/M1gqPVIkE8qchZK7lwpmbzmcOHoJwxtO78Al1oLChx0PyRUtZybv96WlnA5a+FwLTVf9creceMh3MQSSLlWOiSHNMLLbn8XjhoFcYQH+8fdSKpmXtd4ahGQ0xtvk5QJNYafuwxy/jTSdaF7AxfsDr9rd1vJlEmJPluF+DSko2ZBofm9UvHlgDEI33/1Tydj4mphj0/a5mtAMDA9jAcf/pQaNBu7kolAPXRT+7VQefGaYxAMjv4vLlufrHelMYZBfluYheJt7NY2QHIIoOzDLR6++/CRU7LQ7wnUiTqmEq0TwLQksBs1CQcN2EPuJpPZsXbfCmRnnTJoVBojdNC4SmFR2hoQsrc47ztKeLcc5eUeRHaDMtJqL2/WObXgZlJGb2t7aHEllITFB3vjfoXrb9kD5y2yPQWsAbgeNb6mGpzLQxcyZZXrvejxQ9WWdmYwkMxqN75lMjUJ3btEurAUZfOG4kSOVzyLBl772k2jFH4KSPjp4cnpkTamvPyL0b1sNBqrdYEU6IufSxjAHJj9WzzT559QqCuOPcVHpxm1oGs67v7c6wAh5BYBmwVdgiRfvh/k
- rm2IF8nn
- bZXzoLgczTbjpMW8NAyMefu+EZDnk3wI8M/BlOxe3KIRKXPCwnXVXnQBka3yaZ0F0y96nUrbtW0H9V5xJJZIwfa2NWNfrJj0nB3IAMXGh3wXVRubQCEQS3Dqsz7owCvq7dI7IZxKcus59J8BXg33hT3jJGN6HjfBs+iGZZPviCAVE6XS7uUH9nK7XbOVB06/A+z1u2OQzNidDfK5i94xR4tnbBIT9FtFR/JKMjklMxKg73NAvezxv+NhqrD5e9Vbst7xxgBBTryGTUxZduhyXbiwz9Gf1c+i/h/fuu52zHUnHnQjjyX6mRSlfWw2oR/8ekWs7cEWusNEhvFxOGOA9IGM1fxqWK4XIvBmzpeOQ/V3p08EAYjSdT4/zjvVfr6c8F9MIlVT1mOFPQ0EdbMWQMjrS6xr+DJRj1kiTHlqhv03f21RLSwrnyfXA0W7C97SmCLnx/BMVUEeeSlOVh7hoffWXrsNAX3X4kYD/raD4aGSq4q+PPCs938MBqSWboSAWrC4UfwLBnzWhuQjcVwdqi45k0UTOzoeFXykoD58yUnTS+fSTbW5YToxKJNWCP40IJ294
+X-HE-Tag: 1767692832-14243
+X-HE-Meta: U2FsdGVkX1+oOprRJa4DEClmZpkQcEO17L1W8LzTQ5ucseQSMgmDK0W56IZwURBAJjzey0YbiZ3MSGva9SDOwXdJPOH88ICAmk02FNXJFN94OvDWXbbWOEhvM4UZxjusqMgd0elGvk8ISlhy4xssdRm65s/DJq8z0FERbtMmXKAghOuoyPkmhi7OHaVp8JcdlBTsvgL/ukj+7hkO39ifPWm2cUxxXG/4/WA8kRY9zCV77D3SFQNRCLIbKeyCDEGP0t4BY1FuO5zQzufPE7CBGMhxPjIhXLsPzxR8PZO0ALACqAXKbfLRKdeuDFLNv683bcXGYk2KUVu9ZrdVXTG9jDXQKInPKf1CeIKV7tMg/3OGah4mK9tbAinNN89h76kEoBRYPUYW31cFof3cChKph5TY/jNgyEn79k6nkjVcvvghC7Kc4XDjSIkAYinF1mDhIXBiVBpUWk4msruXkEgo4EhvOuBruQGgOuTvTFH1pTyRiQHl99H6LzYN8rswlhatNI19CPUDOyy6yHSPi3ythj9pSXRw8koUg3aSHLPn9GRDvO8M1zhB48axUtiZ1MxBXR5qM+iGIt/MzpzldxaB3HFiFdVCSzYzvSYMuLuxFoAPz4WfR0FL28mJEOUJF/QonfA+L/iEfec1HPnEWVeXPw3alIXlMbMJU6qG3b/ccdS5XvaVAGxb2liZsdpAtfPlXd0wxOo8FCVLCNbfhgVpNCWVRRjdzwZ7mQqIQqwpIiEyKkzEsoOjwGQ1Z/zPihuZXp+pP6f7+uHMz5VyBw+mjqXcssTGKtJdbqDrPfsMR0hyYcYynvdquXaP9MfLwN6uHffyXCi8dgbMCou6K5a5PtEiuZMP1qMk/vkbt6KPRnX7FZdLpeRIwsSpDzNR5/+Ui44ewTziQZ8OOVxznnoRuJ0bHXpgsP8F89EagY3im9LvoyC359/0DGRwQUAp75VE9LJINZ0Fs68yRu7tddD
+ YPZBdF9Q
+ XR65p/LbbNLi1Bt1sDIwk6QNwEafr4lcPUAEBuZCfkUuWFsMsUzA8+2JLxwXccSY5XzPbCLQfoT2JHvQThzsVHSaVFUC8Eh3Z6Tb8PiByQcGN4ginHXbWuctJdREny7RL/CSUuVD/YeyNeSbQg0zJeHsSQLyr5Jf72lWTN3aGdr+02KR9kNFDL+5pHwSBTpt/gHRpr4qNKogUXhaEMClPfC/Aqmjy0MBGnhoq6lNwn4WdcpXPS/BkkjDUw7YfShpb0W0ajQ0xFyffqKxFfbap3I7Z5t6IknxDg2Y/WZPJoYhKHiMijcs3D2Cmsn+FSIJHdbDiy0IhZ6aRQk3xU0ANBDIeEbzGodMi4FXQvQ4ObEiFxTk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,112 +123,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[Thanks to Andrew for CCing me on patch commit]
+On (26/01/06 13:20), Sergey Senozhatsky wrote:
+> Another area where we potentially could apply similar heuristics
+> is size-calsses merge logic: sheer fact that two size-classes have
+> similar objects per zspage and pages per zspage does not necessarily
+> mean that merging them will be beneficial.
 
-On Sun 14-12-25 19:00:43, Joanne Koong wrote:
-> Skip waiting on writeback for inodes that belong to mappings that do not
-> have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
-> mapping flag).
-> 
-> This restores fuse back to prior behavior where syncs are no-ops. This
-> is needed because otherwise, if a system is running a faulty fuse
-> server that does not reply to issued write requests, this will cause
-> wait_sb_inodes() to wait forever.
-> 
-> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
-> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-> Reported-by: J. Neuschäfer <j.neuschaefer@gmx.net>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-
-OK, but the difference 0c58a97f919c introduced goes much further than just
-wait_sb_inodes(). Before 0c58a97f919c also filemap_fdatawait() (and all the
-other variants waiting for folio_writeback() to clear) returned immediately
-because folio writeback was done as soon as we've copied the content into
-the temporary page. Now they will block waiting for the server to finish
-the IO. So e.g. fsync() will block waiting for the server in
-file_write_and_wait_range() now, instead of blocking in fuse_fsync_common()
--> fuse_simple_request(). Similarly e.g. truncate(2) will now block waiting
-for the server so that folio_writeback can be cleared.
-
-So I understand your patch fixes the regression with suspend blocking but I
-don't have a high confidence we are not just starting a whack-a-mole game
-catching all the places that previously hiddenly depended on
-folio_writeback getting cleared without any involvement of untrusted fuse
-server and now this changed. So do we have some higher-level idea what is /
-is not guaranteed with stuck fuse server?
-
-								Honza
-
-> ---
->  fs/fs-writeback.c       |  3 ++-
->  fs/fuse/file.c          |  4 +++-
->  include/linux/pagemap.h | 11 +++++++++++
->  3 files changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> index 6800886c4d10..ab2e279ed3c2 100644
-> --- a/fs/fs-writeback.c
-> +++ b/fs/fs-writeback.c
-> @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb)
->  		 * do not have the mapping lock. Skip it here, wb completion
->  		 * will remove it.
->  		 */
-> -		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-> +		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
-> +		    mapping_no_data_integrity(mapping))
->  			continue;
->  
->  		spin_unlock_irq(&sb->s_inode_wblist_lock);
-> diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-> index 01bc894e9c2b..3b2a171e652f 100644
-> --- a/fs/fuse/file.c
-> +++ b/fs/fuse/file.c
-> @@ -3200,8 +3200,10 @@ void fuse_init_file_inode(struct inode *inode, unsigned int flags)
->  
->  	inode->i_fop = &fuse_file_operations;
->  	inode->i_data.a_ops = &fuse_file_aops;
-> -	if (fc->writeback_cache)
-> +	if (fc->writeback_cache) {
->  		mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_data);
-> +		mapping_set_no_data_integrity(&inode->i_data);
-> +	}
->  
->  	INIT_LIST_HEAD(&fi->write_files);
->  	INIT_LIST_HEAD(&fi->queued_writes);
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 31a848485ad9..ec442af3f886 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -210,6 +210,7 @@ enum mapping_flags {
->  	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
->  	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
->  				   account usage to user cgroups */
-> +	AS_NO_DATA_INTEGRITY = 11, /* no data integrity guarantees */
->  	/* Bits 16-25 are used for FOLIO_ORDER */
->  	AS_FOLIO_ORDER_BITS = 5,
->  	AS_FOLIO_ORDER_MIN = 16,
-> @@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
->  	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
->  }
->  
-> +static inline void mapping_set_no_data_integrity(struct address_space *mapping)
-> +{
-> +	set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-> +}
-> +
-> +static inline bool mapping_no_data_integrity(const struct address_space *mapping)
-> +{
-> +	return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-> +}
-> +
->  static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
->  {
->  	return mapping->gfp_mask;
-> -- 
-> 2.47.3
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+That's nonsense.
 
