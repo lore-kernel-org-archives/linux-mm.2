@@ -4,85 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15BC1CD0431
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 03:11:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27DEFCD0435
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 03:14:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B6536B0093; Mon,  5 Jan 2026 22:10:59 -0500 (EST)
+	id 8BC566B008A; Mon,  5 Jan 2026 22:14:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B5C36B0095; Mon,  5 Jan 2026 22:10:59 -0500 (EST)
+	id 894076B0093; Mon,  5 Jan 2026 22:14:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E80B6B0096; Mon,  5 Jan 2026 22:10:59 -0500 (EST)
+	id 7C97F6B0095; Mon,  5 Jan 2026 22:14:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 50A276B0093
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 22:10:59 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0B61F1A0367
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 03:10:59 +0000 (UTC)
-X-FDA: 84300062238.21.A5A7FA9
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 40678C0003
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 03:10:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	spf=pass (imf28.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767669057; a=rsa-sha256;
-	cv=none;
-	b=zHMe9RAVM6jm9L5z8w3gjOzv3bBAfXA0XlI4E0Ql+6FLW2zZKK44BN4xjtKbiHsUxGHtJS
-	xVx/uEZufq8Y2aMZNVEdsLCJrNqk2h99OY0BXifAg1ZnMGFDu78K6LdCqqg47Qcz71pXzh
-	yCuxRrLiKaq+ybrTlzSwHBav5knFqIk=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 68EDC6B008A
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 22:14:37 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 36AAF13AA06
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 03:14:37 +0000 (UTC)
+X-FDA: 84300071394.03.255D565
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 363CC100002
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 03:14:34 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=L4SeUm1j;
+	spf=pass (imf14.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767669057;
+	s=arc-20220608; t=1767669275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rphLXzNrhdKpB3e561pO1wVhwxpImphAdY8BacwJ2ws=;
-	b=NAfrd4VO+SlASameqIeY1E9DMWlajehafQrzAClUsVCtjysTUybSUVqYhLDhqR9qbs+MB/
-	lOWNEEKN3kBdEpxe/00coUX6ixqBaEJ63nEM8LQbdBKaCLDnw4a/O9e8oxRiUJX/wYJbBp
-	GyASXGyHhgNfwBbF9Dm8n9zWFiJrMqc=
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
-	by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwA3JVw1fVxpfyHoAg--.25076S2;
-	Tue, 06 Jan 2026 11:10:45 +0800 (CST)
-Received: from localhost.localdomain (unknown [218.76.62.144])
-	by mail (Coremail) with SMTP id AQAAfwCX7eozfVxpE1ARAA--.16517S3;
-	Tue, 06 Jan 2026 11:10:45 +0800 (CST)
-From: Cui Chao <cuichao1753@phytium.com.cn>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: Wang Yinfeng <wangyinfeng@phytium.com.cn>,
-	linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
-Date: Tue,  6 Jan 2026 11:10:42 +0800
-Message-Id: <20260106031042.1606729-2-cuichao1753@phytium.com.cn>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20260106031042.1606729-1-cuichao1753@phytium.com.cn>
-References: <20260106031042.1606729-1-cuichao1753@phytium.com.cn>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SSIXmXHDZZDTd4tsk6VB8G6eA4XEfbMhwVQl2vQbAZs=;
+	b=uIVNsfUjjI2kO6GrtyStcmEPlZ53ZbD5MrpEqU6ywZ0mWwVSWoAGnBgQ3OrU/c0wEVhXEe
+	cRmcsMfLTxodqPx43nco+czzHqZFpyWe1dwLmoR7DNRmpZg3jn23uITu9FIeC2VOknUBso
+	3zeJzLPCi0dWnG9eX8WLS9V6pfNn9no=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767669275; a=rsa-sha256;
+	cv=none;
+	b=2CYECVuzLaz7VXYNDSoKKnNo+5XF6mlaJ3CAC11zax9C/Y93pYBH+UonGHc3dtrm2y6r1g
+	fUxulTNmZg+290vMzgiGxdhnPMaZww2o8FvCuWlbQzxiw3NyDY3JIh9uiiEDyLX8oYshg+
+	0Pmntoq4B0wTYLTr+dx+jDd29TeOWbI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=L4SeUm1j;
+	spf=pass (imf14.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAfwCX7eozfVxpE1ARAA--.16517S3
-X-CM-SenderInfo: pfxlux1drrlkut6sx5pwlxzhxfrphubq/1tbiAQAHAGlcG0AAvgAEsS
-X-Coremail-Antispam: 1Uk129KBjvJXoW7KrWxGr15JFykur17tFW5KFg_yoW8ZrWfpF
-	4aqFWFgF4kJry7GFs2k3WUAw1xtFnYkF4YgFZrCwnxZ3WFqw1UZryavr1SvF1ktrWfCF1r
-	XF4qy3WYvw18ZaDanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-	UUUUU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767669272;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SSIXmXHDZZDTd4tsk6VB8G6eA4XEfbMhwVQl2vQbAZs=;
+	b=L4SeUm1j/nAU67n5ezffzmjCAaPcy9UI1hOi8JJXpVKrGChdsu2EFiAaRVNxAAogheJBV2
+	46PNCMSxVk70AuM1bZ9lNDF2H/zmLT84KOpu/+AECdoBYf0wv8i/6YNjscf5lh4OVuGL1T
+	lnrfComLSWTDt2PpK8hY7rvDVs6apkM=
+Date: Tue, 06 Jan 2026 03:14:29 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
+Message-ID: <d9ed02ebcf71057e42c808beb68f8eb489394750@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v2] mm/memcg: scale memory.high penalty based on refault
+ recency
+To: "Shakeel Butt" <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org, "Jiayuan Chen" <jiayuan.chen@shopee.com>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, "Michal Hocko" <mhocko@kernel.org>, "Roman
+ Gushchin" <roman.gushchin@linux.dev>, "Muchun Song"
+ <muchun.song@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>,
+ "David Hildenbrand" <david@kernel.org>, "Qi Zheng"
+ <zhengqi.arch@bytedance.com>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Axel Rasmussen"
+ <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
+ <weixugc@google.com>, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, "Hui Zhu" <hui.zhu@linux.dev>
+In-Reply-To: <qlzvksuvo22rrngdihyeepwhphretoenre3gvkako7kgsgw3sy@l775pvzorcdh>
+References: <20251229033957.296257-1-jiayuan.chen@linux.dev>
+ <qlzvksuvo22rrngdihyeepwhphretoenre3gvkako7kgsgw3sy@l775pvzorcdh>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: pnrw817zr51p6xnr36k1yctmr1oqfjbe
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 363CC100002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 40678C0003
-X-Rspamd-Server: rspam10
-X-Stat-Signature: qg5beijegcszzwbtq4gybwu7iexbrkgq
-X-HE-Tag: 1767669057-263460
-X-HE-Meta: U2FsdGVkX19t0AjKOdpYck3JR0tqEres7xb/ih4Dzkw+so+D8KBDBk1Se95myYE8t7HKH3vy5D4F2T1RkfQXOcXvcrI10Xk5J8YpoGAFbNF0siLnJbZ4JRRsGeUBrOBb6caa+4nqzpCOVfoyEdtanvppRgAXSst6zHreXIfOhmWSyvE0Jy8uzXPVv4A31zQIMWeqLQTuUPY4wcuhd7m20uHPCQLXdsp9ei44hqkjgmztA66m4F/SLBq6QGlkiyuvZ9l5dNiJ+XwmUYHvEyBHSG2b1V48RCqeTK9szKQXDANypOj7Ei6ihi5zG/ltVSM7/3HoRia3khEBjoIqTboL/4pVZunaZZxEs4kx6rx50lyERW2kasehLF/UMQZxvl4fH1rp6SJYDoeE1e05d74bL975ZFZI2HTTCYageyJTsNggAIVZbvH+THeQEKnwvjZFS02GOX0O4+0DVjYMs1trBU5iN08GNwGdXkbiIls/V7Yh6v286Ron0zwxz8cQY7KFZZ7eBme2Jcu4Y9K4usZtF1mC26uFqzyeZ5vpyndZwQ9DbJ+Hq6sTsVTlzYAK5NIuDcorQ1aZ4kAiy6uxE+Z/5/Q/syVrjYSs/CGSUdKtiCzXR7M47ePcUBGRrf1IrAL9GuJJbGq2FKSRUrFvF8fYwqyEDaVCer73I1dqxrNKh2bFiZIZZrORdiutYXdTspBh2IIuj6xh2DSWW+34k0eHh80Iab9uxKIcRH7TwSfq+V5G870JdDKvmJouYoW1mVWVJYwHDyyDgFfmr8jyjCK0nUCkLaEJfUCuV9XSficnV/AIV6//z8zqGSfH0Qd7Vga+Fn4bswwEpMIyEZWHx+Huaz3HR3mDBFmZ3LBUnsgJVySwjrr96o9DbzMjP0ooL49D2fEe50yrJke0wQlmWweFaiiKnLit5xzYYgmQsmw6uSvg9YF4IZgvKF6CPp6Je2GUXEBAS5UJjw0l6h6kITn
- 1/00FZ0u
- MVPpcC5oqA01YERH+4WRrD89KxFYI4JmBAnQE6YMVY3LBCSnnN475HzcP68gqnHmyqLJO4XM87+jzW4AHk1gdPwVXdgGdGLVC37dPZJO71jnQSfDnvApbWfM/Pg==
+X-HE-Tag: 1767669274-193461
+X-HE-Meta: U2FsdGVkX19DlkQN1jHzSlNhsH83KT/OAf2HW80KZoNvJ9KmirSFSnQHXwmOfi6YdOjWzs69svy4nO0Xd04+exJiRhL9hzkA0K5xHUR2DabVyN58+2OBjoqULEf7nBcaZUh5phLxjeQcrigBbdGPI7REzkh6fdobUZhSmIg6uF4ek/sRrTAk5qq9TOO8dKzlKPeeQauuULmCjoh7/DhXrShmWvdnbzCSydrRGsIGaT3vW2eO75lf1/YZAbR4C6lsEWzrHKDN/s/fqm0BEh2HU/lOCLpJQUyoGIuCLHedHukTd6h/d8vIrv4RvkFTninKkJVRwxVgCLzhSTALZVT5DMphid16c/2XLnMLUAkpQxprwVw3/Lz0oCsYcw8vPb1tNV7mTMk2ymKGFi93dT6PgqkCrkG2S8Ak4PGGS2X5ny06PImuy7zKdzmVLpQ0CyVbTT78Y8MQ0pUVpzSVnpHGB2Dc9r1mK8HU8Viwgu6LBJnX8rGOd6lAYEOLRqF8+wwTHUlm1h2OXTS8L0bR8bsm8urz7UxLhnnlXCpXdjGLbW95LTXxXAniTYncyI8i12S0oqkmBsBy1IXeH3dx0h+2YOxRZIoZ9it+Dt3WmdNA4aPsm9Rf8agdhe9rafMHGDT27hA4zvKNfBxuG580/nOQw7UnLgEnb9YcQc7gd2wDjrEL560GO6fmb06OcxrNUPx1kraMkVfgNP9iPJnQwW/Uh/cuZCo5mrfhA+aHVwF/OvbLgLVHCms4iIlw60d/Fj8AeaNSUubtPsECXPnOGg7toW7lffG5GFGwEpd9B6KWbrLoUC/jCrrZPodtO0+2gXECIgTT2Rw2aZgbTFFqyTPocUWUv01VivJNKrXtr6zaKQ0nBuFNbqaiiuN7VwAabamJStG/zrWGkmTitl2YiGNp7RYM8pBbeq7PC4V0K9WRuQhAK7TDGR9iQanaSeKjMpmkAdB9LCkKOVjM03G3xD/
+ +RkdrWT8
+ P1aNsVr+CZvuxLMyAvr3+sjRLi/cY+KbtgsY3jJPpCrT4EArrpGWhNGag2LmTw5hAAHz4ajnzManbOzIi7w9lHDtUhWpNarbIygYZjvkhAm8EyJVm/03odkIIcEQapMVUehcDPZJHeccXA+KCpGa9uotxdsbIxwm21W56wZbCB3EtzpHaVbT8+e31BYViJk2gs8eeMFTng0SIyJXvohYIewk3S8dWHMKK/+CVkamjJFluXoVwBYtxRfVvo0YZr5kzfd/Fjy4AQTbq3ztphUIFYgc8bGYHbLtbbrD0JFwkeCVLcjRldpTWDXVUqw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,60 +100,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In some physical memory layout designs, the address space of CFMW
-resides between multiple segments of system memory belonging to
-the same NUMA node. In numa_cleanup_meminfo, these multiple segments
-of system memory are merged into a larger numa_memblk. When
-identifying which NUMA node the CFMW belongs to, it may be incorrectly
-assigned to the NUMA node of the merged system memory.
+January 6, 2026 at 01:08, "Shakeel Butt" <shakeel.butt@linux.dev mailto:s=
+hakeel.butt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshakeel.butt%40linux=
+.dev%3E > wrote:
 
-Example memory layout:
 
-Physical address space:
-    0x00000000 - 0x1FFFFFFF  System RAM (node0)
-    0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
-    0x40000000 - 0x5FFFFFFF  System RAM (node0)
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
+>=20
+>=20+Hui Zhu
+>=20
+>=20Hi Jiayuan,
+>=20
+>=20On Mon, Dec 29, 2025 at 11:39:55AM +0800, Jiayuan Chen wrote:
+>=20
+>=20>=20
+>=20> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> >=20=20
+>=20>  Problem
+> >  -------
+> >  We observed an issue in production where a workload continuously
+> >  triggering memory.high also generates massive disk IO READ, causing
+> >  system-wide performance degradation.
+> >=20=20
+>=20>  This happens because memory.high penalty is currently based solely=
+ on
+> >  the overage amount, not the actual impact of that overage:
+> >=20=20
+>=20>  1. A memcg over memory.high reclaiming cold/unused pages
+> >  =E2=86=92 minimal system impact, light penalty is appropriate
+> >=20=20
+>=20>  2. A memcg over memory.high with hot pages being continuously
+> >  reclaimed and refaulted =E2=86=92 severe IO pressure, needs heavy pe=
+nalty
+> >=20=20
+>=20>  Both cases receive identical penalties today. Users are forced to
+> >  combine memory.high with io.max as a workaround, but this is:
+> >  - The wrong abstraction level (memory policy shouldn't require IO tu=
+ning)
+> >  - Hard to configure correctly across different storage devices
+> >  - Unintuitive for users who only want memory control
+> >=20
+>=20Thanks for raising and reporting this use-case. Overall I am supporti=
+ve
+> of making memory.high more useful but instead of adding more more
+> heuristic in the kernel, I would prefer to make the enforcement of
+> memory.high more flexible with BPF.
+>=20
+>=20At the moment, Hui Zhu is working on adding BPF support for memcg but=
+ it
+> is very generic and I would prefer to start with specific and real
+> use-case. I think your use-case is real and will be beneficial to many
+> other users. Can you please followup on that Hui's RFC to present your
+> use-case? I will also try to push the effort from the review side.
+>=20
+>=20thanks,
+> Shakeel
+>
 
-After numa_cleanup_meminfo, the two node0 segments are merged into one:
-    0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
+Hi Shakeel,
 
-So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
+Thanks for the feedback and pointing to Hui's RFC.
 
-To address this scenario, accurately identifying the correct NUMA node
-can be achieved by checking whether the region belongs to both
-numa_meminfo and numa_reserved_meminfo.
+I noticed Michal has already forwarded my patch to that thread, and
+Hui has responded. I'll wait to see how that discussion evolves and
+whether there's an opportunity to integrate my use-case into his
+BPF framework.
 
-Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
----
- mm/numa_memblks.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+You're right that my timestamp-based approach is heuristic. It was
+designed as a simple, low-overhead approximation to detect active
+thrashing without the cost of flushing refault counters on every
+charge. But I agree that a more flexible BPF-based solution could
+be cleaner in the long term.
 
-diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-index 5b009a9cd8b4..e91908ed8661 100644
---- a/mm/numa_memblks.c
-+++ b/mm/numa_memblks.c
-@@ -568,15 +568,16 @@ static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
- int phys_to_target_node(u64 start)
- {
- 	int nid = meminfo_to_nid(&numa_meminfo, start);
-+	int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
- 
- 	/*
- 	 * Prefer online nodes, but if reserved memory might be
- 	 * hot-added continue the search with reserved ranges.
- 	 */
--	if (nid != NUMA_NO_NODE)
-+	if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
- 		return nid;
- 
--	return meminfo_to_nid(&numa_reserved_meminfo, start);
-+	return reserved_nid;
- }
- EXPORT_SYMBOL_GPL(phys_to_target_node);
- 
--- 
-2.33.0
+I'll follow up on Hui's thread once there's more progress.
 
+Thanks,
+Jiayuan
 
