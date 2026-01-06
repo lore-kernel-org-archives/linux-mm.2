@@ -4,121 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9145CEFD03
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 20:00:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02B6ACEFD04
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 20:04:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE59D6B008A; Tue,  6 Jan 2026 14:59:59 -0500 (EST)
+	id 4AE796B008A; Tue,  6 Jan 2026 15:04:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E933F6B0092; Tue,  6 Jan 2026 14:59:59 -0500 (EST)
+	id 45CBE6B0092; Tue,  6 Jan 2026 15:04:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D754A6B0093; Tue,  6 Jan 2026 14:59:59 -0500 (EST)
+	id 3340C6B0093; Tue,  6 Jan 2026 15:04:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C1E586B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:59:59 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 716AB13C016
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:59:59 +0000 (UTC)
-X-FDA: 84302604918.27.447B4A1
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8773C14000F
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:59:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="n7k/+GKD";
-	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 1D5F86B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:04:06 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D4F3C1A0A7F
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 20:04:05 +0000 (UTC)
+X-FDA: 84302615250.16.F63B849
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E402420015
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 20:04:03 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VJJjaibs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767729844; a=rsa-sha256;
+	cv=none;
+	b=uAeYYi1YwUWmYG96s5P6TnmGX5zOqYcLE42gv5Zv/4x9Fa8aCwH77B+iLQWTk/RPahcJCr
+	EKHsq/6D3DYUh7uS9b4jssJxI4vk5ss9RiWQYjUqbc0rHxR7H7oYNK5/Q8Itk3zWGv+CqU
+	NPXYiJdFIrmmIrs9Pa1nPKV/PpIUqBU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VJJjaibs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767729597;
+	s=arc-20220608; t=1767729844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BWpz+GfQini7oDjFufcaLNIyvW0LJEPJ4NqJCF4ChR4=;
-	b=q/pfn4rzJG6sflTpdsUePoU2DUn3Nry9cwUUZmEnHA0r2OtUD6bW8yeC+BiChVOQ3zp5nw
-	d2MovSFoWytfuz78e8B885JLvE4asYltE1rs3taExM2jfFdlOHL/aMkY0x3lCjsK7TavKI
-	U7oDZsBLGPTEpQAfKI3i5k3GyNrIikY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="n7k/+GKD";
-	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767729597; a=rsa-sha256;
-	cv=none;
-	b=ht+p4/Wdd/MlBisA3wsRrtthKnsW5RYBo+WYebmMgtH0IdNdc32Aug90AyeoLZ38Q7VcTt
-	Wg/fgM25Ubxdq93rNhuOsjWjAsp4DV/ocKHWTVRR9xm1BfGHEUrfIjLob/DZf8SdfEc4jM
-	izEN3HKlYwYRg+2EZrCZIDn3D0lgIpM=
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-88a34450f19so13115446d6.1
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 11:59:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1767729596; x=1768334396; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BWpz+GfQini7oDjFufcaLNIyvW0LJEPJ4NqJCF4ChR4=;
-        b=n7k/+GKDk8r5UGtlxQfE43/d3u/n/OYBchf9O1Ez+F+la7YKYpivLKUtTygwIVC2Yk
-         0Mwq0CB8qin9trrqrU3Nlk7kiD+JuVUaI3k6/zhUrGsFdwU3rmAIPmlhRqIeTGc5vxqo
-         Lpg0sg5KBcH00bhXSAXonVtMyj7FinqGuNL+JImdKd0FygrFridXZslB7eV3xxhvVMkP
-         mQSXKMmhk/vkrI3c+j76DWYVdKK2Kwf4aRqhT5Or7hdT+7EUVJxthIUCoU7w64+9nWl9
-         5LhZKuQcJwK0ZphYKaQZTQBCwGiL/pZhWnvIUa5ns4HJUtNUBQkARHkJ3KJzJ2HL1TZU
-         UX4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767729596; x=1768334396;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BWpz+GfQini7oDjFufcaLNIyvW0LJEPJ4NqJCF4ChR4=;
-        b=PYj+gnG97TtdMdcokKgP5BrPkBqNORNUzK+57TYaZsEiVk4TeLp6G8a5x5P+snK1Gt
-         VJxzyk9uiHqJ2OwpbK5nnAcbByAkWPT+IhlcI+tjawB9eYEeRJPTr9hN8hQlZwtmHi5m
-         RGnKQrKccelk20P9l4A+MLkeYhZFEn1mgMNluVHF2hmMfUGjsPmEkgFq9j33UkKl8LgK
-         XMtXPKq0amg9VD5JF8mK1T+ZqXcl3xsWsPueJb5R4i7Pm5V0gQTTiikr6td+fGS02fGY
-         59WYHFw+sDVywJRxB+zeJ4UCQ831H2Xjc13Z1dKeUbSXz3+Slh37+Ggy5c1btPeUvvep
-         +h1A==
-X-Forwarded-Encrypted: i=1; AJvYcCVceIv+2sFrERmfc7xj0i4jU6/Z3MvNUEhGe4HsV/X+QUKFJMBuq611J2XDQjqX6Nfiq8u2T4TDiQ==@kvack.org
-X-Gm-Message-State: AOJu0YwPcm8iIAJw7Txb/xNIO/bokXsyhoimy2qh9V5GU66NdG5p56yL
-	spucIQjkGPuesIxxx9ek7HIybwYemAqRbX5sZleZwK+qPaN9DcvnuJbVgMSE4yzADro=
-X-Gm-Gg: AY/fxX5phflwBHxy3rGlptTie1pwN/k+L1u59ll/TdIQB1ZGSY6Ss2LbPmVQUHWyuhd
-	4E/gVIXmVEF3EYuGKLyeBmwfyjN7QxX7soKddfNTL0qOIV3KX+cLHwD+9idS5lUNVzaptPH/AGU
-	KmGtZ1ehVRr/lsYNZeDMh7uYc60XVtOgTXtt9wFqiltS1ILaIuOX2EbVCAa9Vkt8JW9EOcoFGRn
-	My5s7aUjAyXj5fpTmwIa+ixP0cs+ihzNmW3D3sJPZgt1rVgiGZCdgYv20Auu/63Fp6Obb5S1ccz
-	Lxk5ZaiBQnPCwt7Ah64KFzy8eamzZkJWjYloWqpvLMEFPIbseY/zaITd6KcozsM/+prT5qcNUwf
-	rtkWjUK27SYIfsTaoFtp5D0TomI8MjNaALeb7L4WSyjdDrZRlARDmGN+8H3YbmIQjAYbHaLDHGN
-	1aBnchk01kmr42BfLp3MC1ITJ/EJ2lI9Xa3KTrbPyC1e3QMqB7ekS+L4uIAwAyPU8G4O1TGg==
-X-Google-Smtp-Source: AGHT+IH0pDZX0kEZDbgkinL5VI9nQJeDZHAvbz2W5LdZr1hgU13QOB2KrppALh+k9k7U8WBwPbQhHw==
-X-Received: by 2002:a05:6214:4992:b0:880:57dd:5f15 with SMTP id 6a1803df08f44-890842755e5mr1974186d6.54.1767729596630;
-        Tue, 06 Jan 2026 11:59:56 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4a63b9sm232749985a.3.2026.01.06.11.59.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 11:59:56 -0800 (PST)
-Date: Tue, 6 Jan 2026 14:59:21 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: hare@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com, osalvador@suse.de, gregkh@linuxfoundation.org,
-	rafael@kernel.org, dakr@kernel.org, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com
-Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
- blocks to zone movable
-Message-ID: <aV1pmeXP2pZ55g5i@gourry-fedora-PF4VCD3F>
-References: <20260105203611.4079743-1-gourry@gourry.net>
- <7f053290-6b9a-4d18-936e-0f28006c79c3@kernel.org>
- <aV0_SMq_I_R7ikF3@gourry-fedora-PF4VCD3F>
- <9575e042-39f4-4f01-80db-34aaaa9312e6@kernel.org>
- <aV1PQd3tyfSiH4xD@gourry-fedora-PF4VCD3F>
- <616f97b7-24e0-4134-a08d-5abaf07a8b09@kernel.org>
+	bh=JpvhbI/N5IToLxrIUrMGgHGqxlfmj9eZ3fPKasnbxsc=;
+	b=j6pxQEkhcbvGiqmxV2nwEmEu/Jfs8m+eY77NOSrIOdvyWqdWRkxcjymogttb4yjzNF4H0O
+	8YU+yAdlY1puipRzto3Xnl8dQLADDqxPY38gxYzLCsVvi41GUkM2PqmNnWgWtmkcD2ZJF8
+	BuH6e6yedNyVSUyGQ8lLq3fkltH+wE4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id ED1C860008;
+	Tue,  6 Jan 2026 20:04:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3813BC116C6;
+	Tue,  6 Jan 2026 20:03:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767729842;
+	bh=Q6xGZJmPaIERTQ/PbYnzfWP+ZBaqkIj/1xfOlvYbOCg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VJJjaibsIHpdBm9Dc8E7uYrAZfg7FXmoqZrc0K/k2QtFykZticTsazwBOnHIMOhN1
+	 JNCvpGF5V/91NM2XYkj7sAgNZOQwpYcROcU62wtvWRwwYud1tKC3dPpgZyWhC6xDDe
+	 aBy2rN//OuG017ao4sgjFjv91qhvkK/umSd8ktWl0mrGZ3fPqA376MyJ7PS6zIIA5U
+	 cjq13EaB6MG7z/08sa16NmgtqWzQv4TufYJMviM6VgRkYPNG0f/tEMQ/1aFqCzqvmq
+	 BBsb4kDo/0AFFiKGg6VTqQv99ZPgPo+BalmB9qbIUvIWc8TWurjbJaUW+39s6CF4C3
+	 PxPNyi/cORVDg==
+Message-ID: <857be078-1464-4e29-979d-0459cad8508b@kernel.org>
+Date: Tue, 6 Jan 2026 21:03:56 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <616f97b7-24e0-4134-a08d-5abaf07a8b09@kernel.org>
-X-Stat-Signature: 8ri9bdadw15cyapj5te4xkrb1hfoy3d1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/2] mm/memory hotplug: fix zone->contiguous always
+ false when hotplug
+To: Tianyou Li <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
+ Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
+References: <20251222145807.11351-1-tianyou.li@intel.com>
+ <20251222145807.11351-2-tianyou.li@intel.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20251222145807.11351-2-tianyou.li@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8773C14000F
-X-HE-Tag: 1767729597-461779
-X-HE-Meta: U2FsdGVkX18HR4cm2y2VcNDRgfHrwPQ3s+4JqDjOFVe5rsLbEiaGJRCk/Ly44EpqOLr8TQ5Zxy27SaCVE75BFPb+rAY6DMm9nUUDySv98vsPHJJWebO/P7p5UEcx67AEFyAgfbAJ1Qxkt2TxP9mMjrt2hZ/0WRZlBz/s5qdB4rZbB48Co1H6fDm1RSRecKlPTbGbaSoIYEzewP8rK5U170UeDhUNRoRYaE4tRz6Q1vV+VnSVXbV7Aav+qDleQbvIK7Kw1S1saus7GYWGfp/Z4cKxCXpKF8bidTelr81qVFuy+d0DAG08jL7fajNXmwW5djsgHAGqK6GQRG3h/5zbo2Hp7JC6uLjNkYuuOYJ98LXyYJhypH221+Ot/uJsSSTnlLa0kQwXB0hEuPld1JCe/5LpbRuf9VsCJp92XPvK9C7rfRR/0CaLQhSfpqUGIBQA0uYutRUapnG5JUHjw6CC9W+Z3ln+hHfq2Y49lXvuKObkbRLb6k1fJud6GQbDCS7QPqlKnWDsYAAcKmrgrX7JKLj+9+SXBlpTdp2NkQx4peoa7mZtVU09Qn0xaXJrACqTk+xpxeD5exCfcgR7RpQZtLLpVuoSs4lKSBfCF2nvl76t7Bn0uxyZ7SM1RJYAZVVyAmdlrwm4xWrHwQpjO7GwRVW6rRTIqXl2YceOX2xjF6a678HO7FNx1mZiKi9ewR5ArDWMeVMQLSxdIzKT4j/CxzcJ2zyCA5kYg258vG5HWhlLe2iJ6zDU8S6UY5pHhmThz/eivloY7QyLw4PHsT+ismL6ZjTEnMhOm1CChKS7DdttVD0FaPii0a0YQk+Lf/m0GlS7CII4x/58xBQWY3ErbyGWo+ajKd6+TKigUJ4l0SzCCWu/uavG8iqz8mBWaQtnhlJGw3tfNH9LZmF0+df8rh7YNEeQJt3PAbIN0LUJY1jYgegJejYk3ERgEU12Iov8r0Oy0xwl4q3Y9NK/fdH
- Trf2ohZ2
- MpuLgUcVZANfCRgFSPj38aQC6m80yGW9ug5zbUzynfK2kVcwbdwWP2Yxi+j9znsAzCSTHxbExLGbQt4UDRedYiJVfJ2N2o/fU9EYbYKquaC3SmcaZzTDBYIWaIxk5hf5txzj+vssoWCDLoGHwHyGNaEgKq6lh1bkPW8u83pomqXIHS3g57Q5BavLaku5/YlT1ylKkMEn4/9SqKaQl/0r+kh6KASMfOiooxQVNsuu+f8uZ4gHP+6l3dapy/s344dnCnIrr3ojAsuBPMXPgMozzvjUNCNWXYorUlIekQrGCWrncn21uMETtiMXzyiai6OzD4LbJT1bJqytyjOTL8yYIeXsFeoKOlbXPbqzHKutqvZ/0PpqfJzsK3aCBlQ==
+X-Rspamd-Queue-Id: E402420015
+X-Rspamd-Server: rspam10
+X-Stat-Signature: jyxt3rmfrgnznfhk88s8cqq37oo6koge
+X-HE-Tag: 1767729843-456134
+X-HE-Meta: U2FsdGVkX1/qgOV73J/fAmFi8YcsS790W6rar93uGv/h9SmBzkw/cAJsrs61O01DRnXzE0TfZ6hdmkQRRYUj4OFSf/rPXzNq49eCfuqRfRKQROXexmKeHg1ouu00WlRBOwNOKMHHOJRNscZ6xHB1+3mrAVD7hv+F/KS7pUnI94Cf1/SN+40617HdqAnd95KyWAaaCKPqRG4h5VxqY7tkWmx6Fiqv4CZIu9896vGDJu3C50SUb4sPcyAPKYNW3EarcpLUrStGdQoQvsxMOOGO3bcMc+ZIxzrkMSN/QUA2Td1lUQgkLeonAXo8cp2hw1EAcuuP8SMRCLIp/cjsh4IOroZPnonXDqiMqb0F7HO8C8PwC/1HihJKB9n9gOsup1VuP/uN8OOXPWPSf4sh+OuWqpVHfQDUS9X9y0LWoySFaHgkS5KtMxFuTGXBnT0JvFAQ168erBQNZPyjXarLkPfl2TX8IM3i4IZpsaFVpzNcF+9iTAAhrSX3bHv8Lsgjcqr7BkvmVda7jPcNqz2NmQMP69e137NmMxIIAdgFrKRZv4+4M8JBNq0g0tCYiOFDrA6cpay87CJf0+Af92zQjnki8mP9BKYrYFiYGrxD5c36a/2Yn2o43HlDQwQu6yqHoKDYtlLwe2ucZ8tvSmxPi+bsyVxX0A37QuE4Sev4q3mPEZW3AB0MhhdeiG90FKkTblOeLvb1P/x46JCHM+0WErQkKjiLKTRL6HI7jcuOhnMuZ8w+U4i+RgIISfF+lXjV0GYebsrNIn9eAnapN1aA9DpABMKvsCFtNSfYK5JOkaEdQkvArxyPOjsUX4tE+TM4UOalh6Fp/HgXk917Glx1lFZNxRFtpoGwXFJEjV7AjZukwOL/YhXNn8JRK5q/fGHB4d1QO9ntIfItE3DqyIuOpf0BoVVi6pXa0ZwcbZO6fuYxm75w6Y97H3JVWSPm0u7Ziw1eZgkZJZ5L9pj5Fn1R8Kq
+ ehARlpPG
+ WcsGvd8sZ/VvddZ+gHpz09DrcJzJH1w1jBw5hph0KGyyJTncg033iPcJVElFkc7yBH1xRwXjGhtcXAHXoSEj+DDxBgrdiybgdBqWS3kzO5p8U4OaLD5bPqviJCdTjXRTJZxQOkm8iZ46yQUZQRCmW7pNyO3buH4wjt7EYT3epMKseinvUjyVyCVaV5/tq1nLpAZACLKDeQbgbdiPWeAnelU9L/0oiGFTIcokS/+R3aqTh7Hyn0d0bAZO9bO+ibDhn+LFuJd8xYwkOjBtDWolN5QAgWYJ+ZjBYQDGj6FBk4hIhqs7VObCP1uN1xnx24ugqB14nfb/ZgLnyFqU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,32 +143,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 06, 2026 at 07:38:54PM +0100, David Hildenbrand (Red Hat) wrote:
-> On 1/6/26 19:06, Gregory Price wrote:
-> > On Tue, Jan 06, 2026 at 06:52:11PM +0100, David Hildenbrand (Red Hat) wrote:
-> > > On 1/6/26 17:58, Gregory Price wrote:
-> > 
-> > Fair, I'll revist this once Hannes gets a chance to chime in.
-> > 
-> > This was effective at getting the discussion started though :P
+On 12/22/25 15:58, Tianyou Li wrote:
+> Function set_zone_contiguous used __pageblock_pfn_to_page to
+> check the whole pageblock is in the same zone. One assumption is
+> the memory section must online, otherwise the __pageblock_pfn_to_page
+> will return NULL, then the set_zone_contiguous will be false.
+> When move_pfn_range_to_zone invoked set_zone_contiguous, since the
+> memory section did not online, the return value will always be false.
 > 
-> Hehe, yes.
+> To fix this issue, we removed the set_zone_contiguous from the
+> move_pfn_range_to_zone, and place it after memory section onlined.
 > 
-> Another thing to look into would be to provide a way for ndctl to just
-> add+online the memory in one shot, without having to go back to walking
-> memory blocks to online them etc.
->
+> Function remove_pfn_range_from_zone did not have this issue because
+> memory section remains online at the time set_zone_contiguous invoked.
 
-I think it's the opposite: offline+remove needing to be done in one step
-while holding the hotplug lock.  Right now, I think you have to do
-something like
+The description is a bit hard to follow. Let me try:
 
-daxctl offline-memory ...
-daxctl destroy ...
 
-You can't destroy and have it offline the memory for you in one go IIRC.
+"set_zone_contiguous() uses __pageblock_pfn_to_page() to detect 
+pageblocks that either do not exist (hole) or that do not belong to the 
+same zone.
 
-Maybe that's the ACTUAL fix here?
+__pageblock_pfn_to_page(), however, relies on pfn_to_online_page(), 
+effectively always returning NULL for memory ranges that were not 
+onlined yet. So when called on a range-to-be-onlined, it indicates a 
+memory hole to set_zone_contiguous().
 
-~Gregory
+Consequently, the set_zone_contiguous() call in 
+move_pfn_range_to_zone(), which happens early during memory onlining, 
+will never detect a zone as being contiguous. Bad.
+
+To fix the issue, move the set_zone_contiguous() call to a later stage
+in memory onlining, where pfn_to_online_page() will succeed: after we
+mark the memory sections to be online"
+
+
+Now, there is no need to add the handling to 
+mhp_init_memmap_on_memory(). Note how mhp_init_memmap_on_memory() in 
+memory_block_online() is always followed by online_pages().
+
+So, it's sufficient to move it after the online_pages_range(). I would 
+also add a comment there saying something like:
+
+/*
+  * Now that the ranges are indicated as online, check whether the whole
+  * zone is contiguous.
+  */
+
+
+Can we find some Fixes: tag (which commit introduced the regression)? 
+Likely we want to CC stable.
+
+-- 
+Cheers
+
+David
 
