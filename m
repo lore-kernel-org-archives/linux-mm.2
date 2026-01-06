@@ -4,242 +4,247 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C448DCEFCFA
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 19:26:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2013CEFCF8
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 19:27:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 264046B008A; Tue,  6 Jan 2026 14:26:47 -0500 (EST)
+	id 0D3026B008A; Tue,  6 Jan 2026 14:27:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 211B76B0092; Tue,  6 Jan 2026 14:26:47 -0500 (EST)
+	id 0AAC36B0092; Tue,  6 Jan 2026 14:27:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 067526B0093; Tue,  6 Jan 2026 14:26:47 -0500 (EST)
+	id E7A8F6B0093; Tue,  6 Jan 2026 14:27:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DECBB6B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:26:46 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7C324C2E52
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:26:46 +0000 (UTC)
-X-FDA: 84302521212.28.26CC83D
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1890914000B
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:26:42 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=auccEX6f;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=f3meQXfI;
-	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D38D26B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:27:56 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8BE788C9A8
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:27:56 +0000 (UTC)
+X-FDA: 84302524152.03.73A6084
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D008440013
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:27:52 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=j07vqgbd;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=iYornYDK;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf04.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767727603;
+	s=arc-20220608; t=1767727673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5PTwYrRz8VGLWJXJfny38L38CBlz3iiV5IkiY1LU4Ss=;
-	b=7HWckMWfvYtjnnoFUdg5JQYOQk3dG1swYmmVCzHmz/7Ty+YucKe8fh3HjMGS7/Aa5VdodJ
-	Pw1DSx8uG9J9TW4Y4lcBSQcbpcg8flN69hLAaPTQrZQ+UAQqcUQY7U4j7201v1G3Adl1M/
-	Bbk7Ng2GS3xLU8thb0ZDupt6zf230jg=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=auccEX6f;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=f3meQXfI;
-	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767727603; a=rsa-sha256;
+	bh=Jew2ClAbp71rXXZb1dTuUtsk0ybUIlGqYJgETLyixPw=;
+	b=afVzOwBmyOvsG5t9bUiYOwJHsx43ytqyrQbF8cbtfT5yABgi5ZPQMFZjJ90azundIoSl78
+	imvMdo8uiOhY8aJvZEa3C9smoNY0FhsH3UEL/8vY816lwH6r+1hmrLC9V6l5b7nXfZCEA8
+	MB7+J1v0o3ZFVl8VzJ7c5Znr3+YRQy0=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767727673; a=rsa-sha256;
 	cv=pass;
-	b=V1x91TtpotFt+PiuNHYIEVMUdw5DEzeYM1DUtmimmxo0fIVJlL1whgZ1w5KsBuuSDnjWbB
-	0SgtrXTxFgrzNWEnUTAC1vd+/68ngCStphHxR74WqOzJfXrAzjzRgHKqv3XpMBE7cV6owR
-	meaI1KHf96FOvy/ll0Iycs8mR3qrA3c=
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 606JKO9g343678;
-	Tue, 6 Jan 2026 19:26:27 GMT
+	b=frCyTAMG8klC/4H0imXLLhlZbA5TMogv46z5xLsHJmJTe+QtUP9HXGRqCmiK3JlH0ay72J
+	2064PDFlIoP155kSAbtpW2yaV4tUy93Js45U43C91/nrO4UYcUAcy4H0yu6rWFP8QbhKdY
+	GsECCSOu03knZcuySFdWLobu8WnfovI=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=j07vqgbd;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=iYornYDK;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf04.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 606J5x55007758;
+	Tue, 6 Jan 2026 19:27:47 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=5PTwYrRz8VGLWJXJfn
-	y38L38CBlz3iiV5IkiY1LU4Ss=; b=auccEX6fSk3e+Caznx99dyOVgUxtSEYQgR
-	ni2f8aLORTChpe9jjXXB0I7qSEjC4nknTWMzCQLyo2P33aBetsLDX7mwG/px7htH
-	eEH30674KDB1ztKzMMMjO5fybabmQkc1iPCsaOy3fSWHSd4WR5MjIiDzR5ElRqxG
-	MfDQBayFN4fIAnXr1aLNSHh7MGo4sMtYwp0UNeqXiCIU+HiPnBGnAwjFwzCie7AF
-	/EeqP59RoysMAC65OcrTjgn0o0Mqx/Ly4mB4yjpCtlIv4tU+ZXpazwske5/tB1CH
-	sf4FqEwxX4SIyUPx3yNllPgM2XlgxZLOXHlopKos+Rr6ljg5Uziw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bh8f7g08m-1
+	:references:subject:to; s=corp-2025-04-25; bh=Jew2ClAbp71rXXZb1d
+	TuUtsk0ybUIlGqYJgETLyixPw=; b=j07vqgbdatIZPCCrHYOm8VmyNwZkgkp5Yz
+	kTtd/KQG8pxMGXDkjeGCd5UNUpk05y//fpMG/vm+vzBhMJAVFcyy11jvJ2iNlzsj
+	haotLn9Dh3/R++fAhUuuc19F/KNm4OGnM5otkSEtxZrbjNGIhbRj/Nd5dOuX3J32
+	nbJIhGgpdhxC/AgC9/qeA2dSFSN4AIUUqurf0ifIZkBg1JF6B88foxFKerHSwxsk
+	YcIcWEKoV2somRlCNyaDiZ/VRHqZovvfsEZ1sGu86g9ZOKW3N+IUge/UFjoWkzGB
+	bHODQn1I7ghCvDElEiBY2x8grIa1dSOq3cVKLzrivt8zQM3Vnv0g==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bh88mr1kp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 06 Jan 2026 19:26:27 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 606HQCd8015540;
-	Tue, 6 Jan 2026 19:26:26 GMT
-Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010022.outbound.protection.outlook.com [52.101.56.22])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4besj8r20w-1
+	Tue, 06 Jan 2026 19:27:47 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 606IoG5X026510;
+	Tue, 6 Jan 2026 19:27:45 GMT
+Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013039.outbound.protection.outlook.com [40.107.201.39])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4besjk8jw5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 06 Jan 2026 19:26:26 +0000
+	Tue, 06 Jan 2026 19:27:45 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ej9Sw61ZPA4/gsoTyOM6pGlZdflV6GXiSVrl4RT4ZJrnOVyBXBM0HkdC2j60BtHIQKUYVXkE1OkVZ+hgjp2qGHj9kdkl2C9FtZLHSh7nfDfvOTfXFBnyEyTRZek+gaISnYGRHfcpCsrgumHaWWriGWFRJx3+D0WeBVKjAHsWPZK8BwzF2BeAO4/izDzK8DeIuyQKG5Oi3Gc49IKIjXu5WYQ6pSH6InUMAZQQEp0NFFai5MSfCSj3scfJCdYoyMJhYdK6lberpN91zQ4TNTw51xAJWefyzoRqeT/223lAWk77Eg8lLMxfsleTSOb33kKMm80FBC2U4TE6QPdPxjo7tQ==
+ b=MxqIAbZmZ4Pf5VvFcbw8n/RKhsfCppIA4HXSlqBcXk612u9j3it92Uou3X/okjOVG9cPEgyqodHOATacK9uIm4VNZIptg+0MMvv4kVXeRZ6ktHBvUPRRPArMS89gs9Of+NmH2Q+El8ulDPq9E0bfTyTDAFXuuY8c1n846gQIyhHt+68Mjy/6vFyqzwCTlzukK3EOnVp3zxOXDm9QiTzs4vnO5J28Bh1Tixsrhlk/oFJc46sP3athHgm/LDTJC5YRlT92sC8+g+/gqPQxZibBGALLa2FunSyH5Sd9W3W+T0cmLv4F3cgEFtcG5yARS76Pb5nF1pKZPevNLx5SlzoZSw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5PTwYrRz8VGLWJXJfny38L38CBlz3iiV5IkiY1LU4Ss=;
- b=cG6+UWgzpR6qWYDEcOW57sLRYe+xRocC3sSMX+UabzZmC/EFz2Gh5nEOkAA1YvxQICr4QjUuHVqIPAxrKRpUf0GQOHhMIrB5WZPUmeXt68pKNcX2xvmKQaFNui3vyuLXX0WiDyc+ta4l4z2TlfEeTXE+NA3Updfc95KEom/LMgv2C1FwIbcAI0dw4ImUV+SOi+K7jLIOLPUNGS/th62FyE5hKZ9crbyRXG59dqiHHncBLT0WcpkL7YE2aYGOP/0JCeYVl8SwBvtuRCupYbh3mU0FnTsOpPOtPkvvCoOy1Kx05SWUW+YsT9YaQLofVc5Sdnkk+vWwRRGOjc0zonGxsQ==
+ bh=Jew2ClAbp71rXXZb1dTuUtsk0ybUIlGqYJgETLyixPw=;
+ b=rFr6j5IX8GMnN1M/ND9hWtOvGaEBe3THXz2W3tshRxsZN6vSTNBnfKiC+Z7YgkG+sJe4ZV/xJ9XC7t1HVrE39j2bysV6bzmjUy10o8Ji7VGsJ47ZmlM+e1MBP+XbIAD3DwRs6N3++SAmRCw5A6eCyH5N8zrDY8Z8D3BVYYY57SCZvJSc4TZaQvN0VItNQj7hd47D3Sdtizze23rlsvA2xYvtYiRx8tMECU4AANIGgaI7DyEoV1v2ZXZ0cXjDByyp+/XEMvbVuxOKIEMDq/t1KWke1iDj7Lk5cD9KzcLHnUximb+XSAd1CejgoKtjy1LgYfF8vLrVIfi0ZqhUIRUmZQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5PTwYrRz8VGLWJXJfny38L38CBlz3iiV5IkiY1LU4Ss=;
- b=f3meQXfILSWN/zMkPm93wwEbaof8HGaI3AXdq2JJ3OuKQNMKv8HV7k9fUPPTHwhNVGPAipqsd5saydNXaTDJIsUnYKlTFyYMbYKGwc1j3x5kf+zRq6pC1op+52JimbXzjvHGyS3hR9S6IR+/rXjJnMUuSGs0yoLAd9JUcQ3z41I=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SN4PR10MB5543.namprd10.prod.outlook.com (2603:10b6:806:1ea::13) with
+ bh=Jew2ClAbp71rXXZb1dTuUtsk0ybUIlGqYJgETLyixPw=;
+ b=iYornYDKBCm7pSqsy7tAcUwGUVi+DAp3Ch4l2Hyb5vyRmpFo+iUH4/Qxs4XjY/WJMD3lv5nuX9S5bhOvKKRKCsCS6K43cw69UYcRSD5oqoD0pouxcIVaAryFpIEQeXNPuom7Dg3jswSTF5k3PcVFNiq7nKRB19YL3mXy5DmpfPU=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by CY8PR10MB6907.namprd10.prod.outlook.com (2603:10b6:930:86::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Tue, 6 Jan
- 2026 19:26:22 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::f3ea:674e:7f2e:b711%6]) with mapi id 15.20.9478.004; Tue, 6 Jan 2026
- 19:26:22 +0000
-Date: Tue, 6 Jan 2026 19:26:24 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, Will Deacon <will@kernel.org>,
-        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
-        Harry Yoo <harry.yoo@oracle.com>,
-        Laurence Oberman <loberman@redhat.com>,
-        Prakash Sangappa <prakash.sangappa@oracle.com>,
-        Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND v3 4/4] mm/hugetlb: fix excessive IPI broadcasts
- when unsharing PMD tables using mmu_gather
-Message-ID: <4e3e2b83-c024-4e16-9913-89f4bc302444@lucifer.local>
-References: <20251223214037.580860-1-david@kernel.org>
- <20251223214037.580860-5-david@kernel.org>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Tue, 6 Jan
+ 2026 19:27:41 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c%5]) with mapi id 15.20.9478.004; Tue, 6 Jan 2026
+ 19:27:40 +0000
+Date: Tue, 6 Jan 2026 14:27:37 -0500
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>,
+        Harry Yoo <harry.yoo@oracle.com>, Jann Horn <jannh@google.com>,
+        Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+        Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>,
+        Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 8/8] mm/rmap: separate out fork-only logic on
+ anon_vma_clone()
+Message-ID: <oecut2v62gxlisp24gxgzwzxm3y3kiqcbkrheuxwkwyrb45apl@qtyhfsv34wi7>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, Jann Horn <jannh@google.com>, 
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Chris Li <chriscli@google.com>, Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+References: <cover.1767711638.git.lorenzo.stoakes@oracle.com>
+ <a4f87ba914697a47419f12901a995759fd977fdd.1767711638.git.lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251223214037.580860-5-david@kernel.org>
-X-ClientProxiedBy: LO4P123CA0058.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:153::9) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+In-Reply-To: <a4f87ba914697a47419f12901a995759fd977fdd.1767711638.git.lorenzo.stoakes@oracle.com>
+User-Agent: NeoMutt/20250905
+X-ClientProxiedBy: YT1PR01CA0145.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:2f::24) To PH0PR10MB5777.namprd10.prod.outlook.com
+ (2603:10b6:510:128::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SN4PR10MB5543:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6669e2df-e4de-4a41-46af-08de4d597981
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|CY8PR10MB6907:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3772af7e-b712-40e5-3a71-08de4d59a876
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Okc809rKvw6RMT4FL56BHugtOv5QfGhHs5Kz5n4nXY1P0CO58KDc9xCvLZC8?=
- =?us-ascii?Q?MPQ0JlegEJsl4XZlwfMYbrN1Jfm/Xfp7rp2PKCRjKhOUtNy/YQ5dM48oe8Qt?=
- =?us-ascii?Q?O0QuWpdbOcMtET+rqCIhEmTlVVqnMcGHNljQ8wjFjkqfDRTygmlBVzlmPd0v?=
- =?us-ascii?Q?z2ds66HIxeVZkkTodJyg4614Q6J7tLcVlMcuAl00w+3DGkTGgS9L/QT0Pv0O?=
- =?us-ascii?Q?o7fHQvfE0tW2tzfP7bW5S1aTzngrvFZOOWYLs7vV2tKxYZKvE1HOyr0jz6jB?=
- =?us-ascii?Q?7lMn98XSOgNcCFh/2UopuiQeXkdHwiHAEcWK3xz0hGEoFfNSpp9kC1a+nqJH?=
- =?us-ascii?Q?RtPP4z8+heBsIcaYk2m4KgurRwfYYTtnAAio4/cAcYzcii/cuxr2cUlrjqHT?=
- =?us-ascii?Q?lPGShX2evJG9/HMFmdb6wbfJbPn1tbfQMHx47kuon8uAu1ZP3fqRlmWAyxIJ?=
- =?us-ascii?Q?u2U//uZIM4HgTUplmC+EGAEp9ZvuiX1DsxnmvFe+Jiuj4YBSPMtacLyfK7g6?=
- =?us-ascii?Q?oYGv6N7M+yR13goywPIT+OxoYpRxXpBNfiCdJl+GBsTZ3aBwdFD6HNfRFIeG?=
- =?us-ascii?Q?cJfV7eauXCDqQoOTnj9VXWkrM2bOHQFYHZksqbgMaMzPjYcVOWt9wchhHE+k?=
- =?us-ascii?Q?0nllojeeyVQ5uNaIVyG1FKK3j2cL/lrCeHLgyBB9S+t3xXqoC/VjW8bmN4Bs?=
- =?us-ascii?Q?VZ5XaMzhaKpUyQAuFjV2CjLOmnlyoG73ITChFNwTyoytugsQJ9IQMJ4deOyS?=
- =?us-ascii?Q?eMUlLCmUmlzgSUPHjbtnkMpZ+uKMT68dIUfMLNktF3FaX+rUbVgpK+jUZkaZ?=
- =?us-ascii?Q?Hs571e9fVqyMaoPAN3SQsIjFP46v6Pxl2bMnvSKmF8RslhrS6PsNMKL97Nec?=
- =?us-ascii?Q?XU4nHvyY8JUriSmBWcqhN7N7kzniMPb4VxpndBZOSlWhq2wGEDu7dSuzG5UJ?=
- =?us-ascii?Q?klrK8KhmLvKqbMTLhnkSzjMnAJARQDpCsk7WeSFG7DhK58sTRWgpXNP8Ya/C?=
- =?us-ascii?Q?1NDHA2KL5Bu616joDo+ci1XLUgINV+CI3yDD+KjSxt+s2UwmxeMDI8OdLYEt?=
- =?us-ascii?Q?kO7C1q5k4b1jYMdY9EBgA2+0RXqlqEa6+1KPLH3je0sU0J+dnh4u2mhrYGK7?=
- =?us-ascii?Q?VkybXxXpvN7NQvgQbBYsZvmxFhEU0bxk7jUAxYJUTdlH8AFNISKkfMCW9FPB?=
- =?us-ascii?Q?g49d+JA5g6my8bT+jxptQbZdfdNxCSbrcE80iu4OcBRrvabDAYgQWX1nZ7nZ?=
- =?us-ascii?Q?Ajgb1Ksf0mxzbPk21UgjF2gYdUeGXi661hVKxKd30HF7Y887ALKe215MqxVk?=
- =?us-ascii?Q?wAxwFVijHQHw5bLhLMX+X7sxb/MUV5IVyZtk+Tq/tSxOkWYiQ2YPSC4PtbEX?=
- =?us-ascii?Q?lYWBtDUGlvRqPlgMJMbCGHgq/oyzuZ3zz0TDPIZt7VzICxX+863Qznu7wAzD?=
- =?us-ascii?Q?9/hWwSyAhjvV9lAQ0iLBtFdSJ37hhcRKSa/OTcBYQ6WHqXPOuga4pg=3D=3D?=
+	=?us-ascii?Q?dU/ZfNVTaYoDmQRxlLIjlW41tvSY3LizeOtt98lYVk/yl28Ycy4XuTQJCk1W?=
+ =?us-ascii?Q?YmxYndEUTw07lBBrr565/Tb4C3wbAwR/Hf50L5v8dzS10JNiiMYSQkSC5+tK?=
+ =?us-ascii?Q?nKoBfuqqEgGh7tGygqkQarlZMh5a0Iy9WUbjkfdu5JrrrwVd2BahTBvQtABo?=
+ =?us-ascii?Q?5wc3+8wIeP9wymuucNPIQ78tnpGR5DF4e3tSqink2jKX428FeXoApaQsZOJ0?=
+ =?us-ascii?Q?5gtLwJf9pIVBAVgr8Z8Sk7BIxr/c/TY206lXIVicsq2Ghq02Z9J9r3MdeKKH?=
+ =?us-ascii?Q?f3uFViKCXrESOrvJJkGLeVeZOEQ6hVtZBlVk6pODjJtMSpl5TxLjDfqJ51SO?=
+ =?us-ascii?Q?uq4poRI4U9BH+86XzOnjFr/kxcMQG33Xx24KK4XobZXsNF085RFqq8XqjbsB?=
+ =?us-ascii?Q?77M4rwf9YMeVy/bis4mHpZbMVmvOK6AiYM2JJYRa8s/4svqFZvRpJPpdTKzF?=
+ =?us-ascii?Q?6TPV3DTPiLJgDlmiuOLsdqcDXZodcyb0E+CudQjSuhrxAHcd+sGm7eAPZtER?=
+ =?us-ascii?Q?KiWgY+rsYCH5VFv2DoHbuw9XYoIKtcp/q1ApNKhkJIcRLJkP4DQkp+2U/Nik?=
+ =?us-ascii?Q?AcSKYq7mE7gQstZFgi46CAb98nGecd6x9YttdaRpoOC2v10+VQiiyGuCzIkh?=
+ =?us-ascii?Q?fqStR9WCYaXEFZbkk9ofbV7lBkSGVRN6zTHq1W7YDkMSy+6+W+scM/YT8TWT?=
+ =?us-ascii?Q?GQVfWNyWfDDsq225B5VVBmBMFcA/HHzOwoMTgQI6GmNoJt1mbqtBakftQBPx?=
+ =?us-ascii?Q?kqvYsGuowzd17K/F57VZ7aj9EkbQ959x2IgNyBl1rU41P2ImBBImx2zCGLOF?=
+ =?us-ascii?Q?Vxt/UUPguKS987HZkYDSXAjRHKwPRjdTRApMpvXG+CchNaeiyui6Knv+08QY?=
+ =?us-ascii?Q?bK8dcK7Wj1MKHBNlZ5burPDOvuI9dsje3J34ZBl2spplAhnXwFgi9/K9jpo9?=
+ =?us-ascii?Q?9ULgL2ltQ3OsRVrg4IUq6vSiASJhmyvdFtcrmhRFFLJ5Q15vHoqPw0qYJ0EH?=
+ =?us-ascii?Q?weZuCnden11FiP0jLV1SQBSEZ89kLB7g2VUwT5XS2WLj81O+1DSt+X1OCHxs?=
+ =?us-ascii?Q?GJDBja40cTMPU1GOao7/hW6k+2UrAPgnvvuCPM2lhNl0zrFxGo5VmD8QiyBQ?=
+ =?us-ascii?Q?F/502FF77L4LfI0q806C/Ii1F0vhqYRbVh8dsEyS7sOP9dunzShbR4tzMJsV?=
+ =?us-ascii?Q?coOiO/7811MZZXxmu0ZVItdQFsZBpTU1L1i1Uo1qgml7pjoVVHyTRVcFywAU?=
+ =?us-ascii?Q?cABAuAMkuPVnng8h2NYbItjpAjroeqbDfE3bhAr5lmKuKeZUc3ubUiLU0OuM?=
+ =?us-ascii?Q?bVXKuO2uUmi2egNjqPx5zn9GhJ4rN8u7YbRHuHjJNxDFwKyvqgwfj1052Ujb?=
+ =?us-ascii?Q?Dvmoc0ZW+uxfjeotNiGfyAe/+0TJoYaIcxlYYfJaA6wBtAonom3YeMXO+Dwg?=
+ =?us-ascii?Q?LKeno6i13NQtg5YfMRZ7Cz6helaZvNUH?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WMVbkX2mP4yL08pMMmPu/kVndAwNpr3RTPkwBqPmrhD/jAa4V57iikJQA1Es?=
- =?us-ascii?Q?Gcbpvjn9BQbM91VtNf7/AlACQT1lptcB1E/iz/Y0FV4vHJgjun821d6M+fNJ?=
- =?us-ascii?Q?X+X8hXboSSkgNnoBvcnyUNqdHgvt2NL3Wr3/mU6zWDMkd6PWCmTdrcOa3vtM?=
- =?us-ascii?Q?T1wSNMjS/82sncXn6NX7dCfpBfCW2bjiKX+KJURHCtmMhDGXF6zH1X6MeApn?=
- =?us-ascii?Q?V6qcPkwr5/NDIQ4VcUOebln0uIVejp+tauifpQ9IThIoEe0ZG39bXfl9u8WO?=
- =?us-ascii?Q?3GfndUDX8NTGEM13LWBd3WW9exgXsQG0cUxDDeZVkCe73slTVb3KcdfzPOGe?=
- =?us-ascii?Q?A5TaL9pyMfNoGo25MUL7thcf6JDmQJIBmIMZYp/bDn+1oCCKcRRllo+edUky?=
- =?us-ascii?Q?Q/XU3cFAwt0fRXWWDBNoynggEI17Vn447Wk59BNZzAjqBh5kUsjYEuTiOLKm?=
- =?us-ascii?Q?2xbOYVCXln1ow3wnSEbMjNc1tf1ZnOmNxorIBf0vgKUKdexCTRxZFGetaOAi?=
- =?us-ascii?Q?g+lWDlFeyYCTuGBEQHKLoJedJ4bNZK8kK1vla1PB2QQbM3jT6/nsKebkAZCz?=
- =?us-ascii?Q?PRGZIXuoEIj85JR4+hssBwYMFK9ZtFkQVi79vU9IStt7CCxJZV8mWp3GmYz+?=
- =?us-ascii?Q?sHPwasBTOmJuBmpEE7q0vrxiNg+BOfc7VZ6uEttrrJxTBPAi2LKOQl+ryz4j?=
- =?us-ascii?Q?ZCglemM0N854ftw20812v+EW/XxBB8nrwN6MT3SInRsaQJnNWgrQEyErzfcM?=
- =?us-ascii?Q?+6yk4+gcVlSHkIwXWzGDPv/DzaMXzlHGe8ySNKZ3nTiTRVA8swZxsakBIh11?=
- =?us-ascii?Q?8uH8YOjN7BrAahYtOohaIUxGPAZBCBQENxNw/f4SHzej30CcikGLLc37I8ot?=
- =?us-ascii?Q?TIUaZ+smU+QyAWwQEWdpwW+B/HExYaQLDTXtt/LsDgt1+6BrttCOwsstNeAG?=
- =?us-ascii?Q?ME3sLIjzWJTrOUYJ0eDF59N7PY4UsDgznwSs2MSAgOe5+oFhYsAw3qBrtE35?=
- =?us-ascii?Q?gs1gqfGH//+eXo6KEUdruwzHdgWK5qwLUSczOrsELY74YrKNHTw/WCDBNiod?=
- =?us-ascii?Q?L5CvdBk2MK7MR0ZfOtrNiv2kroaL8hcnYWgsC/YcCj/jz69N3ojjQt6N3OeO?=
- =?us-ascii?Q?NsaQj1zUR3supxzEOt60bK9o2SxIwWGVU5F9sM2vHt6IDxhMpgJxdYYZhOPI?=
- =?us-ascii?Q?Ssn0btEZBw9ju2vyBlJE02AGli134L17SeIWW61Myt2f9ZC3QL0imSangiLq?=
- =?us-ascii?Q?8ieyDW4hLKsz/VRK+2AHuaQChZqFPRp3oN89sWsUe58gCpMEAheglU8uYggy?=
- =?us-ascii?Q?ifFWXlAvs03JiWxliaA9thgE+dOorj3LfMsRTIbJ06KrQuaYTWk7l97LOp1O?=
- =?us-ascii?Q?DIw4O4QPG/6eJR+UdiAxZMpEJm5sVg3mPY/oaSannSYPezlDhftU2Q+lCCFQ?=
- =?us-ascii?Q?Xoii2kfS3jTB0RdTbTKl/Qz/YNJ2b3xgv2f18Q/RzfY2+JFKLIgZchvmCZRW?=
- =?us-ascii?Q?eAskHYzkzdFf3GrtDWfUS+pbV0Brr64LKD8AOYY2FlJWC5WQzwlodX6tBhtM?=
- =?us-ascii?Q?hswM4AF2IaK1FcadQ8cDa0uJVT4qWwsBp9LmD37yGsE0xwXT0tYXAVvms1nA?=
- =?us-ascii?Q?yL79sVVf9kMX8bf4lT41ZbIrPrVxgp55SDM5AXPxZG/vhtx4WBOTeHXyI8WN?=
- =?us-ascii?Q?KWkjX8cG6ZGG3hTzAgAgB0jZb97btTE5DZU+GJUJnvNJwrY4sGJrbcbouRUl?=
- =?us-ascii?Q?IFzuJ2zobsdMQWsisMVcbmDCOE7YKr4=3D?=
+	=?us-ascii?Q?EzsuFh7ASQ6L6t+Yvcesu54lYjSFu9fzDd5B08nMRb3gBAIV6DH7ZJ5wTVwF?=
+ =?us-ascii?Q?KVx1cbPy3YFfCZugrNGEd18SG+Ws/2xopZWO2vxJ9eyMl/nQIw1m2HcjG2q4?=
+ =?us-ascii?Q?5es1pn4LSO5AaZAG5DnHvD7hrzfMW4xgreyT0Bn5maaLiXpGa2JsHBawtsIe?=
+ =?us-ascii?Q?/H170r3nSsjfFNZUzTSrnIuS4Bdb8TN3CSIlYvsn8QSs8FU8lEUpYUVTdwOo?=
+ =?us-ascii?Q?A/Z8XekfLXvn7+ESRZoKgSbT/c3nsCpEPGLD3mfn/lTDq9Ivucz8YGAoiYoM?=
+ =?us-ascii?Q?ARWzVs4Lqw2MbTGuKKhJ6k+3gXEyjocdGJzbgWeuOVfi5wvFH1Q+L5B4lA9x?=
+ =?us-ascii?Q?zTQ0DdxAMYTXpdvydMF5RvWo4zj5LW/fmHjg8Kcz3Gj0020YDNRpmlfgdRRJ?=
+ =?us-ascii?Q?lqUL5DzxUvzNc3j+xkHdmzzvxTOJn15DBnNaAGGv6iWJossVWu18IJn63aQY?=
+ =?us-ascii?Q?HkO4Ktfp2by1o6d5yJXgIStsGOobsIY3IsRgcvn+CHGfPDH2VpG6UHLX7grS?=
+ =?us-ascii?Q?WJTJj3K3H/G2I8+CBBODBR6VUpN6ZkRxySoJp5en37+Tvs+9pgRZjYVc5yKZ?=
+ =?us-ascii?Q?Ho2bJSvhPwLYyL79rV97j+8lYxfHIxPoBggzWQyf2pjMf1RlbdrS0E686uuC?=
+ =?us-ascii?Q?gO2PRhDg5vU4i4ypG72MeUWhA/qush0e7Gq1Izk3koeJHNneBxbLnErd+pzQ?=
+ =?us-ascii?Q?f8N7kX3wXK6Ujusx/o1OQvcdXId9/o+lJF5ocm42uqxLAxxLsOB45LHI4oLa?=
+ =?us-ascii?Q?5mGD/UdblhAhLfi+VVvib+JGr9QbHEg47svI/mZ4XcPgrLId4GmeFhcZw69k?=
+ =?us-ascii?Q?Sz+xvMAoe++/+K23fMXPXWz11hDWUl1l+am8kBnA6pDw2M10pF3NSsbqXTbT?=
+ =?us-ascii?Q?IlQT/J+ce1w8PC8Fl5A3z8MTjCkv7X2wUrg6r+Ww9AEvgbA9chdCPVGZ+uCW?=
+ =?us-ascii?Q?DBOulGvruKXWfJlQlrWIRS44X2G4MB3dxOZk4U7Pzp/MexYZ+ux2IUXGDFGq?=
+ =?us-ascii?Q?njdJm1/c+/i3goBLx+aZazrS9w4nUCYgOuukpaQr36Evh7ZuE18GvivQh4+w?=
+ =?us-ascii?Q?10yrm5sA5UPu48GMo8EwEvJLg/x525oE+a13DVAhJLG9Ot7MZ8fjmG5CT3r3?=
+ =?us-ascii?Q?DEqzMmGwHLHMb2QbSXjaUPgLKOdqJPHgqlJWtgFkes7mto6jTfRznu3xH1fu?=
+ =?us-ascii?Q?+hLPQynSjkZq8Q265gPxGbckBbn/+msrFatObsX1fwlOUJ5jySDWa8JP9gIm?=
+ =?us-ascii?Q?XG7izZhcsWp/o13i+GoP+GeWxdgFdHGIaoPP67W8iDnN8ukHK0nV5GygiWh5?=
+ =?us-ascii?Q?NjZOfu6aWbuPmwdmYzRfC/319QIYKIIYQHztQ92y6wRtIdQjr78s3KhaWvUN?=
+ =?us-ascii?Q?bgIn5cJoHJ0gRD6duNqVwiw86H6fFlVZ6K7wlAcqNU+WG2fy6hdEr8V4EeFf?=
+ =?us-ascii?Q?bdYqO70IZzJqlVEtai8tNdVwE0X4//kNtA2dDA3KX9LC/Kt/TjDWdmnkNM+U?=
+ =?us-ascii?Q?8QrTiWGLXg6zFp/8Z56oXAx/6S1k65mETNKnEwVlTWm7WyLN9z9rdCaAkrwu?=
+ =?us-ascii?Q?StFlumz/dfqcFoJ9oxgULvpY6+LtHR5EH3vt6n1m4tRv//T5fTC19sxuOgYC?=
+ =?us-ascii?Q?HDCGI+kJ8ORXejTgdbiFYKFTVujgzfXSlJsdvqteRqeJTw/P9tB8bcl8k4Vd?=
+ =?us-ascii?Q?ARFusvoYGGEdHM+q7sur2Sw2c2ABjtCE5t+pgDh8Zpec/n6hBmNZLC1IXHnY?=
+ =?us-ascii?Q?kG5k5zBQTA=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	LyeJYuzlJQneREK5hbq0M5y8v1tzQHJJOpMwxz7L1InY+lLMJOh5bf7YBQD7Mn5jbkX7WcxgDabY23bIIW6AddV5aJog9ZRDWaUvf8dPNP5tQwv7EDOSbQM+EhgxXDCpigJKN9glWl3ICRgGry56/zrxw1fbOwRxU43Rk8i/FKKqNv3My77qHDGKlrk5ti7DvW7T1uSuiloOWKge++VfK1htyWnOIodrG/bwjKjIr72E5RYewJb7gAdJtb5h5L7clhnLmbo5ovW/DE1jdeyx9Q/ICoZOu3IKUUkQQ/KMM14r6dBw1u+9h9zrpsb6yCJABKWo7mmsj5qFynyd17rjCuVhxw0d58stRcGLTpzsnTYDb2Qa4nlh7fOBG0TA8+h35Dcz3guT+RDGM99ADDg0dpOscpB9240YdUhgbdOZD3BdIE0w8ekwNLol86oB3LO7sT3vx6qxXoLCqarAysm55enzLZ6vCpXdMrip1z3NKT93YBY3rWrcxQXn1Ku17geyJVlB6hkE4cyHcp54JzeOaO39w+ozsKSgCIRAI1kXmgomciZ2uwlSBCa5RkLUxrl+Ld5ehYRT9+bn50XuoYQY42h0xb1TwQOW9reSp4hW7HQ=
+	kuvnbWZfe0iroKDY9+aSmkP/px6Dv89rVpjnb/2VdFp49WSUNdD2nwFaLX6COUZ9LMsuHA5YroTM7oJnPc0tdjXqXj4qR0Epa1TaCif99vl7Jf3JALeZacI+T8+c51OFsrWPXW5ItmciqRfFbrI5OQG9hFJz+A8KCyHZE/g/uPZFcaugkTi+OA5xhSMVMlwcgZwC3ggFkNl0zLz8l0HNOWlvnjxgXbCxqUFFEL99pBsprv8DSnIfUWs03yblnDf2cnGxsDeyxyVO+HrAvH3PEwz1dP2F7lGDw24sHiM7lLnrrTsbx1B/fwXCIWw5zlASzZsWHH/2uOzwppOszFWDDv4rRnkcb3rQ3OSMECOmuXIeZJJ0sA9aKmGmbxx3Q2vSTwvarJW3rBsmGhIm+0KHBv+dQGcoCsd1xrhl1n7b0xFuG/aMHnx38/H4ZyQfFj/I2XqxTuiB1SVeJLdchs5CiCTSw+hZBRCykXudTkQwSsq9JLjSPDY9S7ENAmhkh+lzMYFRwbZpv6pz6GPQrFxw+H7LKg4+QHiVR4RrLDPSVh3Bl38W/8W5V08jHVB9GnD+L8es14VtD4kooVDXNjez+ZEnvrJxKqTkokRhdThOWF8=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6669e2df-e4de-4a41-46af-08de4d597981
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3772af7e-b712-40e5-3a71-08de4d59a876
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2026 19:26:22.1730
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2026 19:27:40.8643
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VY7mg0FjlyoDSrRhuTVZ94ray80+rqwcWE70urwD+tjs88ny92GKpZanFYVOWM6DmfvnLbwknKKppQoAvSaY+IgwVCHDTRK9G5kVK6s858k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN4PR10MB5543
+X-MS-Exchange-CrossTenant-UserPrincipalName: CTeRnLnyC1XEEaP++cwqH+j8dGcBfsBLNZZ9YM60G9Zo0Lp5vR2I75+49SVLp7MzfHOxSL3fFfRORapJoj+pZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB6907
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-06_01,2026-01-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 spamscore=0
- mlxlogscore=999 phishscore=0 malwarescore=0 adultscore=0 mlxscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 malwarescore=0
+ spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
  definitions=main-2601060168
-X-Proofpoint-ORIG-GUID: RvWLKDgP5-DiD2iAfHGciheWCaKCuTuK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDE2NyBTYWx0ZWRfX1Pt7J+lmlFQS
- aG97q/KOZC7Saiyg+w5KjCmVT/tz+/z3Q9gF7i3P4RW5B7l5pgzaFxNJN7HO8mZVi7YbBPuB+j5
- XNILtnWFIzlr1HYgGpRkqhUln3LRLw3avQ4eO7F7poY6ksKPQJi6BRqZeD978/P4Iz3QQOtY983
- fgWjTsen/VjYkpSok/Rf8XpZljki7JSKs+LTPofj5RkAvlelQPTBaULrGjQjbftG5ZWaUuNO/EG
- Zwvxttu5BZx16IZYAGhC6qIR84NDLUsfaqPWs1OqjwBmKlUDTYwCoLP5/RwFPYEmLre+qJ0dHl/
- uAOssNaxM9X0qGgln8jGxi3+yB5wE9m+wy7xCfuF1G6FfTImb02Q/+cZQcn8tUk42+VP/11w1j4
- JGWgomHqesLRoKWYLXqKIpFBGtx9Y1wWUP5lawegvVw2ensmS7fZLMgi7WfZm3c4ExhP8zeSzRl
- bqHqXr8um111bTd6NNQ==
-X-Proofpoint-GUID: RvWLKDgP5-DiD2iAfHGciheWCaKCuTuK
-X-Authority-Analysis: v=2.4 cv=Y4z1cxeN c=1 sm=1 tr=0 ts=695d61e3 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDE2OCBTYWx0ZWRfX7lXE05lksKv+
+ prnOQlccu1O+9KuD0cRrhHN/my8S2ZPo7aBy01Fazl/TQphKB6zmDhHGKXPg1J6aGIWd9DQNtuD
+ iysxLoV5/RZPyhQZ2EgdfM26Ujg5J6TZShFFiDI6TxSl9ph6od/7bxTV/CWJ290tTqytaUngj4C
+ epc5snD01/vNAahIkj1tPNejNNh6C60Ndlfp0jXQbqfXHMxO+PCUwqqxjeaL9PaxBl/wSQZk5Zz
+ wUQVvA7JTysy6YG58tRxUEJMJ+7RuVwyS4CwhlSp6dcHGVpS51LB/YWmtH6zasp2PsCBfFCl4/C
+ PM2ePe4gP9mq0X6AceI/pm8fKy72AFntY6t2QzIcB5mZ/GoYEfEHgGzSymq3Fzcv5lSMf2ZRDb/
+ lTptJGFImfJCOFzczvrdDvrXYFkVQPlG5rMe4Va4XamJn5qx9OtODGtN+kgq8jcJRhos9qWv8y8
+ 0dZc0ad3OzaS98WI4WaJBxVLdzKXo7GR2fCPEnEY=
+X-Authority-Analysis: v=2.4 cv=UYhciaSN c=1 sm=1 tr=0 ts=695d6233 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
  a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8 a=K1192TvNGPq6cbv30xkA:9
- a=JwldTkq2j4ZXW0OM:21 a=CjuIK1q_8ugA:10
-X-Stat-Signature: 6aiwzs4ehndn5gz6hojfj6zttapkchkt
+ a=yPCof4ZbAAAA:8 a=z_2foXKho-7GSaKOSxQA:9 a=CjuIK1q_8ugA:10 cc=ntf
+ awl=host:12110
+X-Proofpoint-GUID: spK7anbZck3zyAJkQrvRlG5pA9K5Z7oi
+X-Proofpoint-ORIG-GUID: spK7anbZck3zyAJkQrvRlG5pA9K5Z7oi
+X-Stat-Signature: 8838agbjsu4mtpj6icygc4j1jghg7to7
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D008440013
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1890914000B
-X-HE-Tag: 1767727602-674803
-X-HE-Meta: U2FsdGVkX1+6GLfUgC0SZDkDJsCfT5zi/oYjBExPeEPRc8fwlukn4rno/P805eYN9XOZwtcQYGK5rhdutAXUiyrpa38HLlCnJagf24PUGnpeNMWUkyrg1Bsr1EwFn2QgCz8LJvRBUeZpfn6R5zwecZ/L8m50vquUYopnyHl/dZeVUZRYDPM3LwPUqZhNtFdYpobWH6eApmj4Uie2GU2MJKlbduR635RCB4qoMqNYdbEfppneVskuC6Gellty38gFh5H8r6Lqa/FaLKP1tf+YGERa64J8j0mrEV6TgbPq354BGuBPgjiydZcRBCZBIHhFHcPXsmLaryfvKGReSPlwV/sN8uHh301RPxNoTvpt3Dl8EeQT4KGz3B9hsRUXO3/B5S2GrqQXscg3viN3B/MbOpNzM3h9kuiRdM2qxU+HL5iDc0qdPUpb0QNEujXPW2qklxC3X2OYvP8YIHdcTMo3gygu/pmmZ5Fxp2sFeQQkuG0wZgNMhgh1nWWxruHe6NTtzzCIw86t2QZkDhu+Ap97O7y3ydADz9+6+QnnzSZgExwx8s4DqCJMW23qUWx9/xOSJgSCiuN4rOKG2eYcKYLl4i9CoAW7Jqw1B+wRs272j0bxB6f0Zy3uuI1a4oBACgpJnyE5Houg1iZqGltduejgGkJh1VQSGxt1uKowyAs7PSDcBaEUc6Vyu9ZLljHIb3bJx9iQXHP7GUOlBm+rwZlNh4YJe7khKBOqK6sqiu4r8ccXqwWmw2i/6xRzOjYIj/We5jJ3Kq6WVeIVEOrnIdp29+4m/QPmtuU0RPw9hHZ6UPm/rwBm4Sdh4SAqJ8z2XfbucLr91zph8pl5tuhAMAic2mvRJuav2tT/XjzQflcIWqGIlvNHl1COl73of5OCU3tIH64A8gomqd77Apq24exm3v0mCGb81oqMaNaz2L46fc6q29mu1QEPRNKkMF8zjjfmO8+35TYqAJKTmSp7eoK
- p8mnKBwN
- UuwNuP/PfeqWsDkyTYZm3u+AQMLIzQta2MZqVd036d52Jwr/Q9Updn6FwmfP+v6Y+uxsnptOcHz6ELmeSgUy+yPSvqEq2bmsuJ4XgWnpxIneuuX8T/0aGRaCgs9FBal+h+tcfgeFrI7ln9KMCF0prvGV7Vpc1bWHNn/0D3gEveTeSKoIXEsZWcwcNePiclePtp4aZ7Y7RgS/S42bF3k0oln2P/B6iPK/v/KPOUxGYYSidfIQsGbNRlHGLYyScVS3pXhH9yImXGfkU1wAEh+MgjccgOOJMrixYqoAuPAmLm3HpXAiafIPE3qNjL3H2MijQ1OdxV8jMuEKmSeX5dRzKrxw2OdNKiMwgEqjQm/9n08pK4tj3TdpIfft8j4781sY8u0FWFYqK+T4Nt7CTfIHd7yBm1ADzp0doNFuZFGTggPSyKgpw3KRW5U7mIRCffzzJ8//dW3rHtDDf5skNnTH8OEY1e6fnf3BiMJ8ZOeN20t4bMuTJ8m4NUY/Tf2Ncfpl4FdeIwzs4T0l94aR1ZnNa+6L3UCqeaYbATo++APs2R8lkmunXaEa0M7xgVA4ue6s69MPABo2GkUVpqG72wl7rnLZhbyxpWi+XwMLRPku156zqnJYMVhh18E9nQ82v9y53G5YMt9RzBJqt200jCiMHuuAM/vCsFcSjslkKKT3BGC2wU/17em8+J/HPa2cWv0lcY9QoVFhhp5qXmDWzlaX7xlQbIMqzIFx+rU8dXsf+B7UePKCzMVGXL53JLL2Bl1PeeaS0TejOy1peSPB27GmCCtYjoPN99Et4ZYm32bqHWX06tHk=
+X-HE-Tag: 1767727672-355875
+X-HE-Meta: U2FsdGVkX19OIuLCFJ1swkUeNZ5CwlAx/NWpQdy3ZpkRK85tbUYGubjD7wKOdFkmmrhd63fDWv7mhFGCeityFtk5xyzVJYu8Wmb8XB/j9K72W6AGlwBErajhyJoe6KeHuZRYysOUenPTzVNrU1LXRfIJ7bXE8mxekUgsVZ5zH48oSnIdAEmqm5L+3BLXSdtleeSxePFGX93iv5dN/9zJwVcOcrv8cTWzJ+iLNtZUtrsxjn4/UbngfZtY8kC0ZjoGKI8LHzfvwgSG8fQgwFjp9oFVv6FnTCyhuZzrHh3A4eacNF03A9saXxCMX5LrzKNeujGLmhiU98dHY5Kn+5B3a+dh0iqiE0KZbQowpnsJ0aGqlu07/F2gAcudJYkIm2YXcL+8oB0d2+RFn2hd7A0E/Wggc5qoL819IurRjddu+AaLtAXab99a8lr5Xh3GFrcODI7WbEAaToN0u+MmdGTV09PO8P5Rh+KcVU60RAk6EONCIXAnvaB5DxFxYKjznIMRNq4+y2Oz9pxkx0kgsVz8QpXlwDQlmXw05of21G3N8rnWwywNGuvLPG19wLUiG+4CGrhnl6RX9fUImcKKJYxczUCCFdkDelHDR5yQTI/0zhKB3Lpv/1hmygMziloYWn45DwMkW6PyspQI/AEim30bGzT4XB06M4Ri7M4nMn9YlYabSmoBZbxaCWX3LhWk4hBIe/sFANfsc5XkaJfyjOJS6EAyh4TRpfBAFwOrM67getYZBgicpVWGJ0LNrEdp7SE/0hjSZMz0LdruU9VSpzTD4JAFR4eMkvm8hzV4kf57zvUEkb1V3WeLMeeNfEFzyhQyFzDI1XSwPFaYcH7cQ10/5cAyMo+M9zB9Q8DzSazuR+knrXj40dbQAAM65HmpTQTSoJo+KwkaTzCZAdvcAAWfrQbWewzjUgWD3kPjc8C3SDBSC148fzZJlIgilwe1j/M3pdTAtNorLCp3eQJEQI1
+ z0pN+I09
+ UJN/MsjfCfHq1N106lHr/hRQUx6mJKLGRTlshvnC8V/bXf4UNKb20kzFSxxxWDTYArE5aLx8yL+mDzGNbfAGFDWrpAuv0xexQezpYt7i6k7EI9M9Ld52je0iGvUlwJhYHmNBz4FFGlJEvdUJOSh/VMCuyCR7mrAWpfpTuXV8EhcI9tmioV/c3Jeb8b9SaXSNsux68gbDq/dlbB8yWg28PwyudhJAOnkXjJA25lvre/fqVxiQnraJY3XB4QKQ2lc8pt5HXsU1FjLbfzdgr3ZF91A6aDrcw4eMjcqfyCsrQv7GdbjzKUEKMvV2tMSrRGoTTkxrDEiaZUhHYle4+/vqppLGdkBqyPxKkLEg1QWEnT2/JPl5QNXJm9ozSZAY9IRAFghqlhhj1tOeCN5uWdFmT9yh2Rn3uIlFQHUWJ7TRpQlGgpP7QeeWnUnG9dlhzqp17RJj7zjVwx8k7U1RUOu9lJO8xiMj36yu5BZOYEZNRXkoutVD/sd7siVhAGzPcEP2fYuZnftY7dRzQS5zmhc1i6iXZYx+FEMbNizjuIX99Ph8Ji/SrMg+6Mya7LBgd1+uWt7YIarGs7AmPWpb5hP0LgSqG4EF5E8iewH448JPTIvmnwhhYZsdFiHXJgpkumnWgMQHu0txoe21McZM+mG5CjUnicDNeAaCeFiz5ZP6Wv4frtXPGIthMm1whG8gnFfB12463
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -248,765 +253,257 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 23, 2025 at 10:40:37PM +0100, David Hildenbrand (Red Hat) wrote:
-> As reported, ever since commit 1013af4f585f ("mm/hugetlb: fix
-> huge_pmd_unshare() vs GUP-fast race") we can end up in some situations
-> where we perform so many IPI broadcasts when unsharing hugetlb PMD page
-> tables that it severely regresses some workloads.
->
-> In particular, when we fork()+exit(), or when we munmap() a large
-> area backed by many shared PMD tables, we perform one IPI broadcast per
-> unshared PMD table.
->
-> There are two optimizations to be had:
->
-> (1) When we process (unshare) multiple such PMD tables, such as during
->     exit(), it is sufficient to send a single IPI broadcast (as long as
->     we respect locking rules) instead of one per PMD table.
->
->     Locking prevents that any of these PMD tables could get reused before
->     we drop the lock.
->
-> (2) When we are not the last sharer (> 2 users including us), there is
->     no need to send the IPI broadcast. The shared PMD tables cannot
->     become exclusive (fully unshared) before an IPI will be broadcasted
->     by the last sharer.
->
->     Concurrent GUP-fast could walk into a PMD table just before we
->     unshared it. It could then succeed in grabbing a page from the
->     shared page table even after munmap() etc succeeded (and supressed
->     an IPI). But there is not difference compared to GUP-fast just
->     sleeping for a while after grabbing the page and re-enabling IRQs.
->
->     Most importantly, GUP-fast will never walk into page tables that are
->     no-longer shared, because the last sharer will issue an IPI
->     broadcast.
->
->     (if ever required, checking whether the PUD changed in GUP-fast
->      after grabbing the page like we do in the PTE case could handle
->      this)
->
-> So let's rework PMD sharing TLB flushing + IPI sync to use the mmu_gather
-> infrastructure so we can implement these optimizations and demystify the
-> code at least a bit. Extend the mmu_gather infrastructure to be able to
-> deal with our special hugetlb PMD table sharing implementation.
->
-> To make initialization of the mmu_gather easier when working on a single
-> VMA (in particular, when dealing with hugetlb), provide
-> tlb_gather_mmu_vma().
->
-> We'll consolidate the handling for (full) unsharing of PMD tables in
-> tlb_unshare_pmd_ptdesc() and tlb_flush_unshared_tables(), and track
-> in "struct mmu_gather" whether we had (full) unsharing of PMD tables.
->
-> Because locking is very special (concurrent unsharing+reuse must be
-> prevented), we disallow deferring flushing to tlb_finish_mmu() and instead
-> require an explicit earlier call to tlb_flush_unshared_tables().
->
-> From hugetlb code, we call huge_pmd_unshare_flush() where we make sure
-> that the expected lock protecting us from concurrent unsharing+reuse is
-> still held.
->
-> Check with a VM_WARN_ON_ONCE() in tlb_finish_mmu() that
-> tlb_flush_unshared_tables() was properly called earlier.
->
-> Document it all properly.
->
-> Notes about tlb_remove_table_sync_one() interaction with unsharing:
->
-> There are two fairly tricky things:
->
-> (1) tlb_remove_table_sync_one() is a NOP on architectures without
->     CONFIG_MMU_GATHER_RCU_TABLE_FREE.
->
->     Here, the assumption is that the previous TLB flush would send an
->     IPI to all relevant CPUs. Careful: some architectures like x86 only
->     send IPIs to all relevant CPUs when tlb->freed_tables is set.
->
->     The relevant architectures should be selecting
->     MMU_GATHER_RCU_TABLE_FREE, but x86 might not do that in stable
->     kernels and it might have been problematic before this patch.
->
->     Also, the arch flushing behavior (independent of IPIs) is different
->     when tlb->freed_tables is set. Do we have to enlighten them to also
->     take care of tlb->unshared_tables? So far we didn't care, so
->     hopefully we are fine. Of course, we could be setting
->     tlb->freed_tables as well, but that might then unnecessarily flush
->     too much, because the semantics of tlb->freed_tables are a bit
->     fuzzy.
->
->     This patch changes nothing in this regard.
->
-> (2) tlb_remove_table_sync_one() is not a NOP on architectures with
->     CONFIG_MMU_GATHER_RCU_TABLE_FREE that actually don't need a sync.
->
->     Take x86 as an example: in the common case (!pv, !X86_FEATURE_INVLPGB)
->     we still issue IPIs during TLB flushes and don't actually need the
->     second tlb_remove_table_sync_one().
->
->     This optimized can be implemented on top of this, by checking e.g., in
->     tlb_remove_table_sync_one() whether we really need IPIs. But as
->     described in (1), it really must honor tlb->freed_tables then to
->     send IPIs to all relevant CPUs.
->
-> Notes on TLB flushing changes:
->
-> (1) Flushing for non-shared PMD tables
->
->     We're converting from flush_hugetlb_tlb_range() to
->     tlb_remove_huge_tlb_entry(). Given that we properly initialize the
->     MMU gather in tlb_gather_mmu_vma() to be hugetlb aware, similar to
->     __unmap_hugepage_range(), that should be fine.
->
-> (2) Flushing for shared PMD tables
->
->     We're converting from various things (flush_hugetlb_tlb_range(),
->     tlb_flush_pmd_range(), flush_tlb_range()) to tlb_flush_pmd_range().
->
->     tlb_flush_pmd_range() achieves the same that
->     tlb_remove_huge_tlb_entry() would achieve in these scenarios.
->     Note that tlb_remove_huge_tlb_entry() also calls
->     __tlb_remove_tlb_entry(), however that is only implemented on
->     powerpc, which does not support PMD table sharing.
->
->     Similar to (1), tlb_gather_mmu_vma() should make sure that TLB
->     flushing keeps on working as expected.
->
-> Further, note that the ptdesc_pmd_pts_dec() in huge_pmd_share() is not a
-> concern, as we are holding the i_mmap_lock the whole time, preventing
-> concurrent unsharing. That ptdesc_pmd_pts_dec() usage will be removed
-> separately as a cleanup later.
->
-> There are plenty more cleanups to be had, but they have to wait until
-> this is fixed.
->
-> Fixes: 1013af4f585f ("mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race")
-> Reported-by: Uschakow, Stanislav" <suschako@amazon.de>
-> Closes: https://lore.kernel.org/all/4d3878531c76479d9f8ca9789dc6485d@amazon.de/
-> Tested-by: Laurence Oberman <loberman@redhat.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+* Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [260106 10:05]:
+> Specify which operation is being performed to anon_vma_clone(), which
+> allows us to do checks specific to each operation type, as well as to
+> separate out and make clear that the anon_vma reuse logic is absolutely
+> specific to fork only.
+> 
+> This opens the door to further refactorings and refinements later as we
+> have more information to work with.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-OK with some local testing, ample use of git range-diff, this LGTM, hopefully no
-horrifying weird arch strangeness in some other corner lurking to bite us :P
+A few minor things, but this looks correct.
 
-So:
-
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
 > ---
->  include/asm-generic/tlb.h |  77 +++++++++++++++++++++++-
->  include/linux/hugetlb.h   |  15 +++--
->  include/linux/mm_types.h  |   1 +
->  mm/hugetlb.c              | 123 ++++++++++++++++++++++----------------
->  mm/mmu_gather.c           |  33 ++++++++++
->  mm/rmap.c                 |  25 +++++---
->  6 files changed, 208 insertions(+), 66 deletions(-)
->
-> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-> index 1fff717cae510..4d679d2a206b4 100644
-> --- a/include/asm-generic/tlb.h
-> +++ b/include/asm-generic/tlb.h
-> @@ -46,7 +46,8 @@
->   *
->   * The mmu_gather API consists of:
->   *
-> - *  - tlb_gather_mmu() / tlb_gather_mmu_fullmm() / tlb_finish_mmu()
-> + *  - tlb_gather_mmu() / tlb_gather_mmu_fullmm() / tlb_gather_mmu_vma() /
-> + *    tlb_finish_mmu()
->   *
->   *    start and finish a mmu_gather
->   *
-> @@ -364,6 +365,20 @@ struct mmu_gather {
->  	unsigned int		vma_huge : 1;
->  	unsigned int		vma_pfn  : 1;
->
-> +	/*
-> +	 * Did we unshare (unmap) any shared page tables? For now only
-> +	 * used for hugetlb PMD table sharing.
-> +	 */
-> +	unsigned int		unshared_tables : 1;
+>  mm/internal.h                    | 11 ++++-
+>  mm/rmap.c                        | 74 ++++++++++++++++++++++----------
+>  mm/vma.c                         |  6 +--
+>  tools/testing/vma/vma_internal.h | 11 ++++-
+>  4 files changed, 74 insertions(+), 28 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 4ba784023a9f..8baa7bd2b8f7 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -244,7 +244,16 @@ static inline void anon_vma_unlock_read(struct anon_vma *anon_vma)
+>  
+>  struct anon_vma *folio_get_anon_vma(const struct folio *folio);
+>  
+> -int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src);
+> +/* Operations which modify VMAs. */
+> +enum vma_operation {
+> +	VMA_OP_SPLIT,
+> +	VMA_OP_MERGE_UNFAULTED,
+> +	VMA_OP_REMAP,
+> +	VMA_OP_FORK,
+> +};
 > +
-> +	/*
-> +	 * Did we unshare any page tables such that they are now exclusive
-> +	 * and could get reused+modified by the new owner? When setting this
-> +	 * flag, "unshared_tables" will be set as well. For now only used
-> +	 * for hugetlb PMD table sharing.
-> +	 */
-> +	unsigned int		fully_unshared_tables : 1;
-> +
->  	unsigned int		batch_count;
->
->  #ifndef CONFIG_MMU_GATHER_NO_GATHER
-> @@ -400,6 +415,7 @@ static inline void __tlb_reset_range(struct mmu_gather *tlb)
->  	tlb->cleared_pmds = 0;
->  	tlb->cleared_puds = 0;
->  	tlb->cleared_p4ds = 0;
-> +	tlb->unshared_tables = 0;
->  	/*
->  	 * Do not reset mmu_gather::vma_* fields here, we do not
->  	 * call into tlb_start_vma() again to set them if there is an
-> @@ -484,7 +500,7 @@ static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
->  	 * these bits.
->  	 */
->  	if (!(tlb->freed_tables || tlb->cleared_ptes || tlb->cleared_pmds ||
-> -	      tlb->cleared_puds || tlb->cleared_p4ds))
-> +	      tlb->cleared_puds || tlb->cleared_p4ds || tlb->unshared_tables))
->  		return;
->
->  	tlb_flush(tlb);
-> @@ -773,6 +789,63 @@ static inline bool huge_pmd_needs_flush(pmd_t oldpmd, pmd_t newpmd)
->  }
->  #endif
->
-> +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-> +static inline void tlb_unshare_pmd_ptdesc(struct mmu_gather *tlb, struct ptdesc *pt,
-> +					  unsigned long addr)
-> +{
-> +	/*
-> +	 * The caller must make sure that concurrent unsharing + exclusive
-> +	 * reuse is impossible until tlb_flush_unshared_tables() was called.
-> +	 */
-> +	VM_WARN_ON_ONCE(!ptdesc_pmd_is_shared(pt));
-> +	ptdesc_pmd_pts_dec(pt);
-> +
-> +	/* Clearing a PUD pointing at a PMD table with PMD leaves. */
-> +	tlb_flush_pmd_range(tlb, addr & PUD_MASK, PUD_SIZE);
-> +
-> +	/*
-> +	 * If the page table is now exclusively owned, we fully unshared
-> +	 * a page table.
-> +	 */
-> +	if (!ptdesc_pmd_is_shared(pt))
-> +		tlb->fully_unshared_tables = true;
-> +	tlb->unshared_tables = true;
-> +}
-> +
-> +static inline void tlb_flush_unshared_tables(struct mmu_gather *tlb)
-> +{
-> +	/*
-> +	 * As soon as the caller drops locks to allow for reuse of
-> +	 * previously-shared tables, these tables could get modified and
-> +	 * even reused outside of hugetlb context, so we have to make sure that
-> +	 * any page table walkers (incl. TLB, GUP-fast) are aware of that
-> +	 * change.
-> +	 *
-> +	 * Even if we are not fully unsharing a PMD table, we must
-> +	 * flush the TLB for the unsharer now.
-> +	 */
-> +	if (tlb->unshared_tables)
-> +		tlb_flush_mmu_tlbonly(tlb);
-> +
-> +	/*
-> +	 * Similarly, we must make sure that concurrent GUP-fast will not
-> +	 * walk previously-shared page tables that are getting modified+reused
-> +	 * elsewhere. So broadcast an IPI to wait for any concurrent GUP-fast.
-> +	 *
-> +	 * We only perform this when we are the last sharer of a page table,
-> +	 * as the IPI will reach all CPUs: any GUP-fast.
-> +	 *
-> +	 * Note that on configs where tlb_remove_table_sync_one() is a NOP,
-> +	 * the expectation is that the tlb_flush_mmu_tlbonly() would have issued
-> +	 * required IPIs already for us.
-> +	 */
-> +	if (tlb->fully_unshared_tables) {
-> +		tlb_remove_table_sync_one();
-> +		tlb->fully_unshared_tables = false;
-> +	}
-> +}
-> +#endif /* CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING */
-> +
->  #endif /* CONFIG_MMU */
->
->  #endif /* _ASM_GENERIC__TLB_H */
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 03c8725efa289..e51b8ef0cebd9 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -240,8 +240,9 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
->  pte_t *huge_pte_offset(struct mm_struct *mm,
->  		       unsigned long addr, unsigned long sz);
->  unsigned long hugetlb_mask_last_page(struct hstate *h);
-> -int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
-> -				unsigned long addr, pte_t *ptep);
-> +int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> +		unsigned long addr, pte_t *ptep);
-> +void huge_pmd_unshare_flush(struct mmu_gather *tlb, struct vm_area_struct *vma);
->  void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
->  				unsigned long *start, unsigned long *end);
->
-> @@ -300,13 +301,17 @@ static inline struct address_space *hugetlb_folio_mapping_lock_write(
->  	return NULL;
->  }
->
-> -static inline int huge_pmd_unshare(struct mm_struct *mm,
-> -					struct vm_area_struct *vma,
-> -					unsigned long addr, pte_t *ptep)
-> +static inline int huge_pmd_unshare(struct mmu_gather *tlb,
-> +		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep)
->  {
->  	return 0;
->  }
->
-> +static inline void huge_pmd_unshare_flush(struct mmu_gather *tlb,
-> +		struct vm_area_struct *vma)
-> +{
-> +}
-> +
->  static inline void adjust_range_if_pmd_sharing_possible(
->  				struct vm_area_struct *vma,
->  				unsigned long *start, unsigned long *end)
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 42af2292951d4..d1053b2c1f800 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -1522,6 +1522,7 @@ static inline unsigned int mm_cid_size(void)
->  struct mmu_gather;
->  extern void tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm);
->  extern void tlb_gather_mmu_fullmm(struct mmu_gather *tlb, struct mm_struct *mm);
-> +void tlb_gather_mmu_vma(struct mmu_gather *tlb, struct vm_area_struct *vma);
->  extern void tlb_finish_mmu(struct mmu_gather *tlb);
->
->  struct vm_fault;
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 3c77cdef12a32..2609b6d58f99e 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -5096,7 +5096,7 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->  	unsigned long last_addr_mask;
->  	pte_t *src_pte, *dst_pte;
->  	struct mmu_notifier_range range;
-> -	bool shared_pmd = false;
-> +	struct mmu_gather tlb;
->
->  	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, old_addr,
->  				old_end);
-> @@ -5106,6 +5106,7 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->  	 * range.
->  	 */
->  	flush_cache_range(vma, range.start, range.end);
-> +	tlb_gather_mmu_vma(&tlb, vma);
->
->  	mmu_notifier_invalidate_range_start(&range);
->  	last_addr_mask = hugetlb_mask_last_page(h);
-> @@ -5122,8 +5123,7 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->  		if (huge_pte_none(huge_ptep_get(mm, old_addr, src_pte)))
->  			continue;
->
-> -		if (huge_pmd_unshare(mm, vma, old_addr, src_pte)) {
-> -			shared_pmd = true;
-> +		if (huge_pmd_unshare(&tlb, vma, old_addr, src_pte)) {
->  			old_addr |= last_addr_mask;
->  			new_addr |= last_addr_mask;
->  			continue;
-> @@ -5134,15 +5134,16 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->  			break;
->
->  		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
-> +		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
->  	}
->
-> -	if (shared_pmd)
-> -		flush_hugetlb_tlb_range(vma, range.start, range.end);
-> -	else
-> -		flush_hugetlb_tlb_range(vma, old_end - len, old_end);
-> +	tlb_flush_mmu_tlbonly(&tlb);
-> +	huge_pmd_unshare_flush(&tlb, vma);
-> +
->  	mmu_notifier_invalidate_range_end(&range);
->  	i_mmap_unlock_write(mapping);
->  	hugetlb_vma_unlock_write(vma);
-> +	tlb_finish_mmu(&tlb);
->
->  	return len + old_addr - old_end;
->  }
-> @@ -5161,7 +5162,6 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  	unsigned long sz = huge_page_size(h);
->  	bool adjust_reservation;
->  	unsigned long last_addr_mask;
-> -	bool force_flush = false;
->
->  	WARN_ON(!is_vm_hugetlb_page(vma));
->  	BUG_ON(start & ~huge_page_mask(h));
-> @@ -5184,10 +5184,8 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  		}
->
->  		ptl = huge_pte_lock(h, mm, ptep);
-> -		if (huge_pmd_unshare(mm, vma, address, ptep)) {
-> +		if (huge_pmd_unshare(tlb, vma, address, ptep)) {
->  			spin_unlock(ptl);
-> -			tlb_flush_pmd_range(tlb, address & PUD_MASK, PUD_SIZE);
-> -			force_flush = true;
->  			address |= last_addr_mask;
->  			continue;
->  		}
-> @@ -5303,14 +5301,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  	}
->  	tlb_end_vma(tlb, vma);
->
-> -	/*
-> -	 * There is nothing protecting a previously-shared page table that we
-> -	 * unshared through huge_pmd_unshare() from getting freed after we
-> -	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
-> -	 * succeeded, flush the range corresponding to the pud.
-> -	 */
-> -	if (force_flush)
-> -		tlb_flush_mmu_tlbonly(tlb);
-> +	huge_pmd_unshare_flush(tlb, vma);
->  }
->
->  void __hugetlb_zap_begin(struct vm_area_struct *vma,
-> @@ -6409,11 +6400,11 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
->  	pte_t pte;
->  	struct hstate *h = hstate_vma(vma);
->  	long pages = 0, psize = huge_page_size(h);
-> -	bool shared_pmd = false;
->  	struct mmu_notifier_range range;
->  	unsigned long last_addr_mask;
->  	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
->  	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
-> +	struct mmu_gather tlb;
->
->  	/*
->  	 * In the case of shared PMDs, the area to flush could be beyond
-> @@ -6426,6 +6417,7 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
->
->  	BUG_ON(address >= end);
->  	flush_cache_range(vma, range.start, range.end);
-> +	tlb_gather_mmu_vma(&tlb, vma);
->
->  	mmu_notifier_invalidate_range_start(&range);
->  	hugetlb_vma_lock_write(vma);
-> @@ -6452,7 +6444,7 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
->  			}
->  		}
->  		ptl = huge_pte_lock(h, mm, ptep);
-> -		if (huge_pmd_unshare(mm, vma, address, ptep)) {
-> +		if (huge_pmd_unshare(&tlb, vma, address, ptep)) {
->  			/*
->  			 * When uffd-wp is enabled on the vma, unshare
->  			 * shouldn't happen at all.  Warn about it if it
-> @@ -6461,7 +6453,6 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
->  			WARN_ON_ONCE(uffd_wp || uffd_wp_resolve);
->  			pages++;
->  			spin_unlock(ptl);
-> -			shared_pmd = true;
->  			address |= last_addr_mask;
->  			continue;
->  		}
-> @@ -6522,22 +6513,16 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
->  				pte = huge_pte_clear_uffd_wp(pte);
->  			huge_ptep_modify_prot_commit(vma, address, ptep, old_pte, pte);
->  			pages++;
-> +			tlb_remove_huge_tlb_entry(h, &tlb, ptep, address);
->  		}
->
->  next:
->  		spin_unlock(ptl);
->  		cond_resched();
->  	}
-> -	/*
-> -	 * There is nothing protecting a previously-shared page table that we
-> -	 * unshared through huge_pmd_unshare() from getting freed after we
-> -	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
-> -	 * succeeded, flush the range corresponding to the pud.
-> -	 */
-> -	if (shared_pmd)
-> -		flush_hugetlb_tlb_range(vma, range.start, range.end);
-> -	else
-> -		flush_hugetlb_tlb_range(vma, start, end);
-> +
-> +	tlb_flush_mmu_tlbonly(&tlb);
-> +	huge_pmd_unshare_flush(&tlb, vma);
->  	/*
->  	 * No need to call mmu_notifier_arch_invalidate_secondary_tlbs() we are
->  	 * downgrading page table protection not changing it to point to a new
-> @@ -6548,6 +6533,7 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
->  	i_mmap_unlock_write(vma->vm_file->f_mapping);
->  	hugetlb_vma_unlock_write(vma);
->  	mmu_notifier_invalidate_range_end(&range);
-> +	tlb_finish_mmu(&tlb);
->
->  	return pages > 0 ? (pages << h->order) : pages;
->  }
-> @@ -6904,18 +6890,27 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
->  	return pte;
->  }
->
-> -/*
-> - * unmap huge page backed by shared pte.
-> +/**
-> + * huge_pmd_unshare - Unmap a pmd table if it is shared by multiple users
-> + * @tlb: the current mmu_gather.
-> + * @vma: the vma covering the pmd table.
-> + * @addr: the address we are trying to unshare.
-> + * @ptep: pointer into the (pmd) page table.
-> + *
-> + * Called with the page table lock held, the i_mmap_rwsem held in write mode
-> + * and the hugetlb vma lock held in write mode.
->   *
-> - * Called with page table lock held.
-> + * Note: The caller must call huge_pmd_unshare_flush() before dropping the
-> + * i_mmap_rwsem.
->   *
-> - * returns: 1 successfully unmapped a shared pte page
-> - *	    0 the underlying pte page is not shared, or it is the last user
-> + * Returns: 1 if it was a shared PMD table and it got unmapped, or 0 if it
-> + *	    was not a shared PMD table.
->   */
-> -int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
-> -					unsigned long addr, pte_t *ptep)
-> +int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> +		unsigned long addr, pte_t *ptep)
->  {
->  	unsigned long sz = huge_page_size(hstate_vma(vma));
-> +	struct mm_struct *mm = vma->vm_mm;
->  	pgd_t *pgd = pgd_offset(mm, addr);
->  	p4d_t *p4d = p4d_offset(pgd, addr);
->  	pud_t *pud = pud_offset(p4d, addr);
-> @@ -6927,18 +6922,36 @@ int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
->  	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
->  	hugetlb_vma_assert_locked(vma);
->  	pud_clear(pud);
-> -	/*
-> -	 * Once our caller drops the rmap lock, some other process might be
-> -	 * using this page table as a normal, non-hugetlb page table.
-> -	 * Wait for pending gup_fast() in other threads to finish before letting
-> -	 * that happen.
-> -	 */
-> -	tlb_remove_table_sync_one();
-> -	ptdesc_pmd_pts_dec(virt_to_ptdesc(ptep));
-> +
-> +	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
-> +
->  	mm_dec_nr_pmds(mm);
->  	return 1;
->  }
->
-> +/*
-> + * huge_pmd_unshare_flush - Complete a sequence of huge_pmd_unshare() calls
-> + * @tlb: the current mmu_gather.
-> + * @vma: the vma covering the pmd table.
-> + *
-> + * Perform necessary TLB flushes or IPI broadcasts to synchronize PMD table
-> + * unsharing with concurrent page table walkers.
-> + *
-> + * This function must be called after a sequence of huge_pmd_unshare()
-> + * calls while still holding the i_mmap_rwsem.
-> + */
-> +void huge_pmd_unshare_flush(struct mmu_gather *tlb, struct vm_area_struct *vma)
-> +{
-> +	/*
-> +	 * We must synchronize page table unsharing such that nobody will
-> +	 * try reusing a previously-shared page table while it might still
-> +	 * be in use by previous sharers (TLB, GUP_fast).
-> +	 */
-> +	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-> +
-> +	tlb_flush_unshared_tables(tlb);
-> +}
-> +
->  #else /* !CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING */
->
->  pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
-> @@ -6947,12 +6960,16 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
->  	return NULL;
->  }
->
-> -int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
-> -				unsigned long addr, pte_t *ptep)
-> +int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> +		unsigned long addr, pte_t *ptep)
->  {
->  	return 0;
->  }
->
-> +void huge_pmd_unshare_flush(struct mmu_gather *tlb, struct vm_area_struct *vma)
-> +{
-> +}
-> +
->  void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
->  				unsigned long *start, unsigned long *end)
->  {
-> @@ -7219,6 +7236,7 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
->  	unsigned long sz = huge_page_size(h);
->  	struct mm_struct *mm = vma->vm_mm;
->  	struct mmu_notifier_range range;
-> +	struct mmu_gather tlb;
->  	unsigned long address;
->  	spinlock_t *ptl;
->  	pte_t *ptep;
-> @@ -7230,6 +7248,8 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
->  		return;
->
->  	flush_cache_range(vma, start, end);
-> +	tlb_gather_mmu_vma(&tlb, vma);
-> +
->  	/*
->  	 * No need to call adjust_range_if_pmd_sharing_possible(), because
->  	 * we have already done the PUD_SIZE alignment.
-> @@ -7248,10 +7268,10 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
->  		if (!ptep)
->  			continue;
->  		ptl = huge_pte_lock(h, mm, ptep);
-> -		huge_pmd_unshare(mm, vma, address, ptep);
-> +		huge_pmd_unshare(&tlb, vma, address, ptep);
->  		spin_unlock(ptl);
->  	}
-> -	flush_hugetlb_tlb_range(vma, start, end);
-> +	huge_pmd_unshare_flush(&tlb, vma);
->  	if (take_locks) {
->  		i_mmap_unlock_write(vma->vm_file->f_mapping);
->  		hugetlb_vma_unlock_write(vma);
-> @@ -7261,6 +7281,7 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
->  	 * Documentation/mm/mmu_notifier.rst.
->  	 */
->  	mmu_notifier_invalidate_range_end(&range);
-> +	tlb_finish_mmu(&tlb);
->  }
->
->  /*
-> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-> index 247e3f9db6c7a..cd32c2dbf501b 100644
-> --- a/mm/mmu_gather.c
-> +++ b/mm/mmu_gather.c
-> @@ -10,6 +10,7 @@
->  #include <linux/swap.h>
->  #include <linux/rmap.h>
->  #include <linux/pgalloc.h>
-> +#include <linux/hugetlb.h>
->
->  #include <asm/tlb.h>
->
-> @@ -426,6 +427,7 @@ static void __tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm,
->  #endif
->  	tlb->vma_pfn = 0;
->
-> +	tlb->fully_unshared_tables = 0;
->  	__tlb_reset_range(tlb);
->  	inc_tlb_flush_pending(tlb->mm);
->  }
-> @@ -459,6 +461,31 @@ void tlb_gather_mmu_fullmm(struct mmu_gather *tlb, struct mm_struct *mm)
->  	__tlb_gather_mmu(tlb, mm, true);
->  }
->
-> +/**
-> + * tlb_gather_mmu - initialize an mmu_gather structure for operating on a single
-> + *		    VMA
-> + * @tlb: the mmu_gather structure to initialize
-> + * @vma: the vm_area_struct
-> + *
-> + * Called to initialize an (on-stack) mmu_gather structure for operating on
-> + * a single VMA. In contrast to tlb_gather_mmu(), calling this function will
-> + * not require another call to tlb_start_vma(). In contrast to tlb_start_vma(),
-> + * this function will *not* call flush_cache_range().
-> + *
-> + * For hugetlb VMAs, this function will also initialize the mmu_gather
-> + * page_size accordingly, not requiring a separate call to
-> + * tlb_change_page_size().
-> + *
-> + */
-> +void tlb_gather_mmu_vma(struct mmu_gather *tlb, struct vm_area_struct *vma)
-> +{
-> +	tlb_gather_mmu(tlb, vma->vm_mm);
-> +	tlb_update_vma_flags(tlb, vma);
-> +	if (is_vm_hugetlb_page(vma))
-> +		/* All entries have the same size. */
-> +		tlb_change_page_size(tlb, huge_page_size(hstate_vma(vma)));
-> +}
-> +
->  /**
->   * tlb_finish_mmu - finish an mmu_gather structure
->   * @tlb: the mmu_gather structure to finish
-> @@ -468,6 +495,12 @@ void tlb_gather_mmu_fullmm(struct mmu_gather *tlb, struct mm_struct *mm)
->   */
->  void tlb_finish_mmu(struct mmu_gather *tlb)
->  {
-> +	/*
-> +	 * We expect an earlier huge_pmd_unshare_flush() call to sort this out,
-> +	 * due to complicated locking requirements with page table unsharing.
-> +	 */
-> +	VM_WARN_ON_ONCE(tlb->fully_unshared_tables);
-> +
->  	/*
->  	 * If there are parallel threads are doing PTE changes on same range
->  	 * under non-exclusive lock (e.g., mmap_lock read-side) but defer TLB
+> +int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src,
+> +	enum vma_operation operation);
+>  int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvma);
+>  int  __anon_vma_prepare(struct vm_area_struct *vma);
+>  void unlink_anon_vmas(struct vm_area_struct *vma);
 > diff --git a/mm/rmap.c b/mm/rmap.c
-> index 748f48727a162..7b9879ef442d9 100644
+> index 8f4393546bce..336b27e00238 100644
 > --- a/mm/rmap.c
 > +++ b/mm/rmap.c
-> @@ -76,7 +76,7 @@
->  #include <linux/mm_inline.h>
->  #include <linux/oom.h>
->
-> -#include <asm/tlbflush.h>
-> +#include <asm/tlb.h>
->
->  #define CREATE_TRACE_POINTS
->  #include <trace/events/migrate.h>
-> @@ -2008,13 +2008,17 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->  			 * if unsuccessful.
->  			 */
->  			if (!anon) {
-> +				struct mmu_gather tlb;
+> @@ -233,12 +233,13 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
+>  }
+>  
+>  static void check_anon_vma_clone(struct vm_area_struct *dst,
+> -				 struct vm_area_struct *src)
+> +				 struct vm_area_struct *src,
+> +				 enum vma_operation operation)
+
+You could save a line here by putting src and operation on the same line
+and tabbing only twice, but sure.  This is true in earlier patches as
+well.
+
+>  {
+>  	/* The write lock must be held. */
+>  	mmap_assert_write_locked(src->vm_mm);
+> -	/* If not a fork (implied by dst->anon_vma) then must be on same mm. */
+> -	VM_WARN_ON_ONCE(dst->anon_vma && dst->vm_mm != src->vm_mm);
+> +	/* If not a fork then must be on same mm. */
+> +	VM_WARN_ON_ONCE(operation != VMA_OP_FORK && dst->vm_mm != src->vm_mm);
+>  
+>  	/* If we have anything to do src->anon_vma must be provided. */
+>  	VM_WARN_ON_ONCE(!src->anon_vma && !list_empty(&src->anon_vma_chain));
+> @@ -250,6 +251,40 @@ static void check_anon_vma_clone(struct vm_area_struct *dst,
+>  	 * must be the same across dst and src.
+>  	 */
+>  	VM_WARN_ON_ONCE(dst->anon_vma && dst->anon_vma != src->anon_vma);
+> +	/*
+> +	 * Essentially equivalent to above - if not a no-op, we should expect
+> +	 * dst->anon_vma to be set for everything except a fork.
+> +	 */
+> +	VM_WARN_ON_ONCE(operation != VMA_OP_FORK && src->anon_vma &&
+> +			!dst->anon_vma);
+> +	/* For the anon_vma to be compatible, it can only be singular. */
+> +	VM_WARN_ON_ONCE(operation == VMA_OP_MERGE_UNFAULTED &&
+> +			!list_is_singular(&src->anon_vma_chain));
+> +#ifdef CONFIG_PER_VMA_LOCK
+> +	/* Only merging an unfaulted VMA leaves the destination attached. */
+> +	VM_WARN_ON_ONCE(operation != VMA_OP_MERGE_UNFAULTED &&
+> +			vma_is_attached(dst));
+> +#endif
+> +}
 > +
->  				VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
->  				if (!hugetlb_vma_trylock_write(vma))
->  					goto walk_abort;
-> -				if (huge_pmd_unshare(mm, vma, address, pvmw.pte)) {
+
+try seems to imply we can return something saying it didn't work out,
+but this is void.  Naming is hard.  reuse_anon_vma_if_necessary seems
+insane, so I don't really have anything better.
+
+> +static void try_to_reuse_anon_vma(struct vm_area_struct *dst,
+> +				  struct anon_vma *anon_vma)
+> +{
+> +	/* If already populated, nothing to do.*/
+> +	if (dst->anon_vma)
+> +		return;
+
+This is only used on VMA_OP_FORK, how is it populated?
+
+I assume this is a later refinement?
+
 > +
-> +				tlb_gather_mmu_vma(&tlb, vma);
-> +				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
->  					hugetlb_vma_unlock_write(vma);
-> -					flush_tlb_range(vma,
-> -						range.start, range.end);
-> +					huge_pmd_unshare_flush(&tlb, vma);
-> +					tlb_finish_mmu(&tlb);
->  					/*
->  					 * The PMD table was unmapped,
->  					 * consequently unmapping the folio.
-> @@ -2022,6 +2026,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->  					goto walk_done;
->  				}
->  				hugetlb_vma_unlock_write(vma);
-> +				tlb_finish_mmu(&tlb);
->  			}
->  			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
->  			if (pte_dirty(pteval))
-> @@ -2398,17 +2403,20 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->  			 * fail if unsuccessful.
->  			 */
->  			if (!anon) {
-> +				struct mmu_gather tlb;
+> +	/*
+> +	 * We reuse an anon_vma if any linking VMAs were unmapped and it has
+> +	 * only a single child at most.
+> +	 */
+> +	if (anon_vma->num_active_vmas > 0)
+> +		return;
+> +	if (anon_vma->num_children > 1)
+> +		return;
 > +
->  				VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
->  				if (!hugetlb_vma_trylock_write(vma)) {
->  					page_vma_mapped_walk_done(&pvmw);
->  					ret = false;
->  					break;
->  				}
-> -				if (huge_pmd_unshare(mm, vma, address, pvmw.pte)) {
-> -					hugetlb_vma_unlock_write(vma);
-> -					flush_tlb_range(vma,
-> -						range.start, range.end);
->
-> +				tlb_gather_mmu_vma(&tlb, vma);
-> +				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
-> +					hugetlb_vma_unlock_write(vma);
-> +					huge_pmd_unshare_flush(&tlb, vma);
-> +					tlb_finish_mmu(&tlb);
->  					/*
->  					 * The PMD table was unmapped,
->  					 * consequently unmapping the folio.
-> @@ -2417,6 +2425,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->  					break;
->  				}
->  				hugetlb_vma_unlock_write(vma);
-> +				tlb_finish_mmu(&tlb);
->  			}
->  			/* Nuke the hugetlb page table entry */
->  			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
-> --
+> +	dst->anon_vma = anon_vma;
+> +	anon_vma->num_active_vmas++;
+>  }
+>  
+>  static void cleanup_partial_anon_vmas(struct vm_area_struct *vma);
+> @@ -259,6 +294,7 @@ static void cleanup_partial_anon_vmas(struct vm_area_struct *vma);
+>   * all of the anon_vma objects contained within @src anon_vma_chain's.
+>   * @dst: The destination VMA with an empty anon_vma_chain.
+>   * @src: The source VMA we wish to duplicate.
+> + * @operation: The type of operation which resulted in the clone.
+>   *
+>   * This is the heart of the VMA side of the anon_vma implementation - we invoke
+>   * this function whenever we need to set up a new VMA's anon_vma state.
+> @@ -281,17 +317,17 @@ static void cleanup_partial_anon_vmas(struct vm_area_struct *vma);
+>   *
+>   * Returns: 0 on success, -ENOMEM on failure.
+>   */
+> -int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src)
+> +int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src,
+> +		   enum vma_operation operation)
+>  {
+>  	struct anon_vma_chain *avc, *pavc;
+> +	struct anon_vma *active_anon_vma = src->anon_vma;
+>  
+> -	check_anon_vma_clone(dst, src);
+> +	check_anon_vma_clone(dst, src, operation);
+>  
+> -	if (!src->anon_vma)
+> +	if (!active_anon_vma)
+>  		return 0;
+>  
+> -	check_anon_vma_clone(dst, src);
+> -
+>  	/*
+>  	 * Allocate AVCs. We don't need an anon_vma lock for this as we
+>  	 * are not updating the anon_vma rbtree nor are we changing
+> @@ -317,22 +353,14 @@ int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src)
+>  		struct anon_vma *anon_vma = avc->anon_vma;
+>  
+>  		anon_vma_interval_tree_insert(avc, &anon_vma->rb_root);
+> -
+> -		/*
+> -		 * Reuse existing anon_vma if it has no vma and only one
+> -		 * anon_vma child.
+> -		 *
+> -		 * Root anon_vma is never reused:
+> -		 * it has self-parent reference and at least one child.
+> -		 */
+> -		if (!dst->anon_vma && src->anon_vma &&
+> -		    anon_vma->num_children < 2 &&
+> -		    anon_vma->num_active_vmas == 0)
+> -			dst->anon_vma = anon_vma;
+> +		if (operation == VMA_OP_FORK)
+> +			try_to_reuse_anon_vma(dst, anon_vma);
+>  	}
+> -	if (dst->anon_vma)
+> +
+> +	if (operation != VMA_OP_FORK)
+>  		dst->anon_vma->num_active_vmas++;
+> -	anon_vma_unlock_write(src->anon_vma);
+> +
+> +	anon_vma_unlock_write(active_anon_vma);
+>  	return 0;
+>  
+>   enomem_failure:
+> @@ -362,7 +390,7 @@ int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvma)
+>  	 * First, attach the new VMA to the parent VMA's anon_vmas,
+>  	 * so rmap can find non-COWed pages in child processes.
+>  	 */
+> -	error = anon_vma_clone(vma, pvma);
+> +	error = anon_vma_clone(vma, pvma, VMA_OP_FORK);
+>  	if (error)
+>  		return error;
+>  
+> diff --git a/mm/vma.c b/mm/vma.c
+> index 4294ecdc23a5..2a063d6568d9 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -528,7 +528,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  	if (err)
+>  		goto out_free_vmi;
+>  
+> -	err = anon_vma_clone(new, vma);
+> +	err = anon_vma_clone(new, vma, VMA_OP_SPLIT);
+>  	if (err)
+>  		goto out_free_mpol;
+>  
+> @@ -626,7 +626,7 @@ static int dup_anon_vma(struct vm_area_struct *dst,
+>  
+>  		vma_assert_write_locked(dst);
+>  		dst->anon_vma = src->anon_vma;
+> -		ret = anon_vma_clone(dst, src);
+> +		ret = anon_vma_clone(dst, src, VMA_OP_MERGE_UNFAULTED);
+>  		if (ret)
+>  			return ret;
+>  
+> @@ -1899,7 +1899,7 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+>  		vma_set_range(new_vma, addr, addr + len, pgoff);
+>  		if (vma_dup_policy(vma, new_vma))
+>  			goto out_free_vma;
+> -		if (anon_vma_clone(new_vma, vma))
+> +		if (anon_vma_clone(new_vma, vma, VMA_OP_REMAP))
+>  			goto out_free_mempol;
+>  		if (new_vma->vm_file)
+>  			get_file(new_vma->vm_file);
+> diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
+> index 93e5792306d9..7fa56dcc53a6 100644
+> --- a/tools/testing/vma/vma_internal.h
+> +++ b/tools/testing/vma/vma_internal.h
+> @@ -600,6 +600,14 @@ struct mmap_action {
+>  	bool hide_from_rmap_until_complete :1;
+>  };
+>  
+> +/* Operations which modify VMAs. */
+> +enum vma_operation {
+> +	VMA_OP_SPLIT,
+> +	VMA_OP_MERGE_UNFAULTED,
+> +	VMA_OP_REMAP,
+> +	VMA_OP_FORK,
+> +};
+> +
+>  /*
+>   * Describes a VMA that is about to be mmap()'ed. Drivers may choose to
+>   * manipulate mutable fields which will cause those fields to be updated in the
+> @@ -1157,7 +1165,8 @@ static inline int vma_dup_policy(struct vm_area_struct *src, struct vm_area_stru
+>  	return 0;
+>  }
+>  
+> -static inline int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src)
+> +static inline int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src,
+> +				 enum vma_operation operation)
+>  {
+>  	/* For testing purposes. We indicate that an anon_vma has been cloned. */
+>  	if (src->anon_vma != NULL) {
+> -- 
 > 2.52.0
->
+> 
 
