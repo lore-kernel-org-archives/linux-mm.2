@@ -4,93 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B582DCD0437
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 04:38:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 684D0CD0437
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 05:08:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21C8A6B008A; Mon,  5 Jan 2026 23:38:47 -0500 (EST)
+	id 595866B0088; Tue,  6 Jan 2026 00:08:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 198C86B0093; Mon,  5 Jan 2026 23:38:47 -0500 (EST)
+	id 538DA6B008A; Tue,  6 Jan 2026 00:08:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09B9D6B0095; Mon,  5 Jan 2026 23:38:47 -0500 (EST)
+	id 442516B0093; Tue,  6 Jan 2026 00:08:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E9BB76B008A
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 23:38:46 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9C7A01603C5
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:38:46 +0000 (UTC)
-X-FDA: 84300283452.12.61973FF
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0726920004
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:38:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pgcvkbsi;
-	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FCF46B0088
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 00:08:43 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BC63E1B4B8
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 05:08:42 +0000 (UTC)
+X-FDA: 84300358884.29.C001E86
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0BBA5C000C
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 05:08:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=aiQiW5Ty;
+	spf=pass (imf28.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767674325;
+	s=arc-20220608; t=1767676121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yTHalOLUmgnOoLmmCtnuWbnyzLCxCDhqZLeNdhtc+EQ=;
-	b=K5qSXIWbZEHwXTES1T5NOdUI3t8ev1xmRkNS3OzeXqbrgVrSLa3ly3BJcxKkB9v+Gl6VFH
-	VxyCNnE8X8ViT4xApBi3u1M1CCdLuBH70iP+qiuyBo5h1yErw6l098WUHNtbmhIt5kuBMH
-	uS0fZZ04saJA/MYfUy7DmkrQ62pUskg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767674325; a=rsa-sha256;
-	cv=none;
-	b=n+COQBGBqcXT/x2Kkhh0HC3gVztBpBo4tHJSWwyHeih0ZIu+4FYgSFivm27XH2zfj/eyUJ
-	zAQFeX7bNY1GBICmy+uI28X790fZRZtCnkQ2TIMGq14iCrgyypQ1funuX1AzQBg41AlcFD
-	g7eU4ZsLMh6mLj0kz2u5fIt3OQgNy2M=
+	bh=pFbnawxlHXDDkgXSSpYv3ae8u1dbcbfkYb5iiUdscbY=;
+	b=0L4BUAJKrbUq9zYXPLNm8DQ+N8kpWHW+YlswfIia7aNhicRVYfEYKWmE74PdRw+sYibRWd
+	ZMhAc+J4fLrkQsK5C5Swmb6QmZPkVKl78aCgz5L+OjD5emrstgVYUhMN7MKSdBfKO/pN7k
+	1C/wV0Mugum4Nf7RZQuTzcuVBcvKa9U=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pgcvkbsi;
-	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=aiQiW5Ty;
+	spf=pass (imf28.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767676121; a=rsa-sha256;
+	cv=none;
+	b=Jjwesb1BKNuaY/cEvvceYPhA0Xa4z2YqV1OFjKnF35x/pTdvUvaG7jAHrS/G1uTIZL2lXn
+	A06HvPwmqLA1cAaZUFRKa3IJKpCzh56Fj/9NYJOiNe34flMpMDnfMILqyf9m3PahM8xlT0
+	xqDlHM/MY1Zs+6GXU8HzMrJ1NLbgXuY=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=yTHalOLUmgnOoLmmCtnuWbnyzLCxCDhqZLeNdhtc+EQ=; b=pgcvkbsiN/sb/abeSWJdygSHLe
-	LAlq87gfHKyohHUgWzMhd3z3ZOoD6JW13qZO7VER2AXxIdhNoIIzaQvaQb8q1AU8lP67+nsdr7mb1
-	WA1mO0Q/x4rcJj8weriQ3HLtKMhTDwwU6dMSFgwaWD9dRR9bAGGwkhLQkww0adWPfkx7RHebUzZ/t
-	B3XYUaO05sewBVPXsGbG/Wj7OvkrBuaEcMrBYtnvdjTYiKXnQCsE7emj5hCQYXiXwux3/o2kAVNfR
-	hr1L9D3pTNPkyJGe6FH2Fdp3Bvw27HIES/txC9lRQ7hj6KWUtk05PZjRDgukGz4Xm3l4/hdkQ6GbJ
-	Z/4uf2xg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcyq8-0000000BK1y-0Xwg;
-	Tue, 06 Jan 2026 04:38:40 +0000
-Date: Tue, 6 Jan 2026 04:38:39 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/2] Free contiguous order-0 pages efficiently
-Message-ID: <aVyRz62kQbPe5HbI@casper.infradead.org>
-References: <20260105161741.3952456-1-ryan.roberts@arm.com>
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=pFbnawxlHXDDkgXSSpYv3ae8u1dbcbfkYb5iiUdscbY=; 
+	b=aiQiW5TyILuzYRMyoEsy0Vst58yDyzhehww90uNxQtv0BmNiISBPEmO6Gwt4lj6PiPwoGEZsaK9
+	yP8RNgft85zHS98sF9U+9biJyL+FLGh2Rm4022NbWNyzNRG32linDyN0LnmHu+dTwZ1KzlwKWw0/z
+	3vlG+3Z59GStyqhblp8jF0AtEDBl8HQuQEMaOVs6UFYKcFOso4KLySpCtYEKI2PU6CEjnyDTOBMAx
+	/46WYAiK78baEj9eVpMpcj8v++DebputBqe/yT2NyMqONRdheHdvUNq0LQyCNBiKO89s8xkXQRG9c
+	z6v9/m+0nuoxdY2GmLp6dyha8YHHQuRdppHQ==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1vczIf-00EaDb-0Y;
+	Tue, 06 Jan 2026 13:08:10 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 06 Jan 2026 13:08:09 +0800
+Date: Tue, 6 Jan 2026 13:08:09 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
+ consider other metrics
+Message-ID: <aVyYuS_usi-lpHkM@gondor.apana.org.au>
+References: <20260101013814.2312147-1-senozhatsky@chromium.org>
+ <20260101013814.2312147-3-senozhatsky@chromium.org>
+ <ddfs43qldaws5urlnpah3ibp5xeu7st37p5hgdfajvdtwor4sd@fkcm3brinygo>
+ <gg5zdpzrk47tljbnaudcy2gnsodyhmmar23qb57b67bhx6ntje@eq2fcrl2dk4z>
+ <v5veb673xrz6z3tevfdymhuik7nltojrvcqyjih4ds7co4p4hr@5e7ngdkrxo32>
+ <5p4iyah6zlrnxpbsis32c4m5lrjj3pq7xwcugq35d2entwfai2@n2r6y3ga2ie5>
+ <7q5gqpfshnc3lfhzxughpks3fc2knw2delpm5io2oe54monydl@5isuxnjputjr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260105161741.3952456-1-ryan.roberts@arm.com>
-X-Stat-Signature: wq88a3bmprrtrsibcxoaxhcbakg1qnti
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0726920004
+In-Reply-To: <7q5gqpfshnc3lfhzxughpks3fc2knw2delpm5io2oe54monydl@5isuxnjputjr>
+X-Rspamd-Server: rspam02
+X-Stat-Signature: nncwbzeidqeodn6jpbtxjdbc89bnb1r9
 X-Rspam-User: 
-X-HE-Tag: 1767674324-404439
-X-HE-Meta: U2FsdGVkX1/52/+lxPEHZI85G2/Gcz6p7UlDQyzmnoopGsfPGIxcGm2b75X/eFtYzBtxM2REeelj4d58H8j7GtvUccQEyFd6+/sO5tcFXkQcGSt1ME2YdXVQpslauser6REx5focmVOUaIL9yA/ETKYA7u59alNZfCxf3xEM3U+d/mEZghBg1JIilGMvl8eOUtCvDVskWa95EcrD75u7Pr7akt3iMdsbRTRDyLQPRBt6C4eE8uMTBiRRc7NbV307nHgVdCyjANQ7vNGYkvhIfp46b14pbmxh9fVrVJHhaMBbCUnnPwnulH2w1qiJhL392K0ZBLXseI++0XdGKigYzLhqSH51eMHJ5iEuguzDbli9rbjnROq6JFjvSjGaHZmfaRIJ0gwodkVNLyP4xAr9vOurTtpNXqJeZ+AIsIwHd0ZFivYxcK7umXHIi32Y696SCPz3QPj5VxY2c5MxFXi1jtIg+HmdvUbO5ZM1F8hLClPUUywVbWXvxC0I3ItmhtQOJxLt5iZ4qRn3S4LOT/gs0CL1jWwmlUZcsr/0f+TSTesgko4qg8SbE4QsOhi5PPG74KU+gVhCUr2VwU65PlZv/q0ZHm+G9xdQXz7+UF7npTcstIHdgosImJovXXIHzX7/6I7opSVUbPx8xGmYhu6D6FrO2E93zavjseOAQicdfeQUmJGl2Ug2NL4DyaX/LizOfAO0J6o13bAPC5C/Fp6F3LwjizSJC5HFTcyAUsy/x1YVx7kV6AnYpfgcA07TG0mfeh9pNGVhZGLodfxfemIgWjpsQFw7I+glZzi8ShdDXVp31eZf+L/jQlymv4aOERnXZRCmOCq1hoiLMasJ1Pv8wM5Kmh3lgB6IslKQ2X4ivbIifXjKKIVCJ6EyyJoXhDHsCZa4Rv262AjhqqwfOOeGRg05BlJQyq+fT2Wi1q4aKo9vMpziQStWWwgzwj1iR5S3YADnw0CixoX77u+iVrO
- n8DjZUP0
- 9z560jK/K3e2Z2nyHuWzqjsvCUOFPXq6Bs6coFvdz3hsIl/IseOaHqSxHWMPFGdLNVv1OBhOpw3zp+kzLBBlWwTBo3vu2ORn8W5kKtpgUduxwguKf6G/Z3tkAhB94wDcApjI5nPOrD5h0wxGN5v0cUu/3n3+SLtwhOXEPRTmcnNFVlFLnXcqY5qSw8hpPvZYsnPvGx4a6keVkgEhnDXQpOpTcotVJ1KeNNw99CXo5GNetLtb4tN3uGltnDPFdYkfj5W1NfCyMC860sWFBOcEAzxXrXg312otP/3I06W99UDQqObt4eo3vlPB/4n2HNbmhRQhs
+X-Rspamd-Queue-Id: 0BBA5C000C
+X-HE-Tag: 1767676119-884376
+X-HE-Meta: U2FsdGVkX19updVwe7GMdMnW3klq5LqQ6PRY6wVDxFu5/Y3GPqWT28Uw6UqXtaiHyVqUiFsMAOj2Pz51KO1vlLBTqZ5RdMA6/X9Otcx9Gto/smCOBBAH7oWeBtmRM+bt0pFoWcT7d9lTl5V/uv8BIP5flpgOFYqs4xIiObaZ+Bu/hvuw/ZZq4sghgYq2J/jOqeHq7Gg/q/OjUhO1joUIR/7QrdhY9oqDIPRBzl7p0pECHvei6GKtYI5gasOOyiJEUlmoiqCKtZdxcg2YcyInr9BTsGWrxX8g9W/CtuJon7+LCANNA8CGsROP+/B3B7U9KQzc6SOWLftN6LuTMEsBTX5hslUmF7cgd1Wqq/8hgUyJyfXHc/stQhynkDkS90AyzyT4xkhQJggZfDo2nTRnntZ93zC4dzjMzKHQifL9xcotOjBjyKVPTfs/YL3Mf8d51KOyTYH7joDfzpz6ndRYOOitZVPKnJP7BoYvkOEBeIHDu8+mcRoO/tmaOV0QCrM9phhuhY35imieO3rsPvavu+sCfDc6PSSgo6ckSpXW/cGhy9SCayiKlkBhL2lFSCg5LHOyMWDSg0bd7+kTHjL56zw/+UDCep/SppNMjt8qXl2yJyTPSoIIVAzuHMPCC7GEOcgsfsdqKZmMPIX5sHN5/BzPy2cVbQkAHUb58DAi33SAxqCpfwPk+zhL9azooJ9d3y0Cc2u/0TSVOfalYVWz05yabogPSewGWuqujPqkBfeA4PeruJ8BWES8+cIygnL93lskXIAm6LdWELUrU16+NQeRAf/JsJVQM/DKP3PwBbeqHdp3oBT/SiU6onqltvHHyCC49SYNKvsztq3nbhV0YGIIpmNq5Kvde9Yn8KaYBoW/S+dPTwIp32iOjpLsthHTOAknkWYPqVC9eAFeXSYreBuansmpM/+9UmFqyF3qjn6V2m70aNKiTpfEAMjjXFJMdegfQ7DnBO1xfM3JCn/
+ 8Imd/Mu+
+ teKQkOvQBSMkkD/ReZCZrxTIARLUKHAVmy/grPkGXSkwoJVlx+vu5A9KPF9pMtOGBKNz5QJQxL9DkWZrzfXrAWiR5CIUAtJUWpSEa/bg/Ge0W7djnhjW0IByII8VOKCPfk+Bam3CsYAA95zjnW1kH2cVaffQb1BEP+9vjfqqoVVO+OIDqiZqEI4AWrGE1SiMVEg/K4sgBPEcocD5Is4oc3xSgIJ0wLdpTxTGfvM3ye6S/rAT+wa3Ec6jSDhSCP9Ocq+vB3bDAXhJfEDZGjLNIDoEH0npKGK0MwIRc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,14 +101,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 05, 2026 at 04:17:36PM +0000, Ryan Roberts wrote:
-> Hi All,
+On Tue, Jan 06, 2026 at 01:22:45PM +0900, Sergey Senozhatsky wrote:
+> On (26/01/06 13:20), Sergey Senozhatsky wrote:
+> [..]
+> > > I am not sure tbh, adding Herbert here. I remember looking at the code
+> > > in scomp_acomp_comp_decomp() at some point, and I think it will take
+> > > care of non-contiguous SG-lists. Not sure if that's the correct place to
+> > > look tho.
+> > 
+> > Ah, so it does kmap under the hood.  I suppose that can work.
 > 
-> A recent change to vmalloc caused some performance benchmark regressions (see
-> [1]). I'm attempting to fix that (and at the same time signficantly improve
+> I'm hallucinating, sorry.  Yeah, let's hear from Herbert what's
+> the direction here.
 
-Unfortunately, there was no [1] ... I'm not sure this benchmark is
-really doing anything representative.  But the performance improvement
-is certainly welcome; we'd deferred work on that for later.
+I have not implemented the underlying SG support yet because
+there are no users in the kernel as of now.  But if this is
+useful for you then we can certainly do this, at least for
+LZO which is fairly simple.
 
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
