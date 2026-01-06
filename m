@@ -4,141 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 653D9CEFD0C
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 21:20:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85CACCEFD11
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 21:29:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C82DE6B00AB; Tue,  6 Jan 2026 16:20:46 -0500 (EST)
+	id 840D46B00A6; Tue,  6 Jan 2026 16:29:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2C876B00AC; Tue,  6 Jan 2026 16:20:46 -0500 (EST)
+	id 7EDE66B00A7; Tue,  6 Jan 2026 16:29:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B04926B00AD; Tue,  6 Jan 2026 16:20:46 -0500 (EST)
+	id 6F0C26B00A8; Tue,  6 Jan 2026 16:29:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 998A16B00AB
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:20:46 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 23B6E5D0B9
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:20:46 +0000 (UTC)
-X-FDA: 84302808492.08.42FA2D9
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0C7321A0005
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:20:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mDSyjlDF;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767734444;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F2226B00A6
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:29:41 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 012A5160CB5
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:29:40 +0000 (UTC)
+X-FDA: 84302830962.22.B00EFF0
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2E00C4000A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:29:39 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=miPC4uR7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767734979; a=rsa-sha256;
+	cv=none;
+	b=3gxnCrqcphiodNYc7IzQzA9vyFXTw4eJAxpu+wX6ZeUiYDkyPbQjwQinmfPcBMBxfD+bqF
+	z6BHgIzGo5dCsH3YpW3IkTsmPc+dkcNErLKn7c9i1FJcnFJ6aa4xsaz+rKTswaP6qiBV0X
+	uiN+d/FAs29lKyFW4TmnAU/2mSjqWQc=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=miPC4uR7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767734979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G3dGEzAyvhIQxfi89wOpHCfP7sC0Yh8V2PTA10IoVoY=;
-	b=3inXE/krNyCPg6B971mlSSv2IARcQsDP67nUZ85YookHYbBaXZVDSjFaQNKByvaa6Fs079
-	E6yvqUFollmOtaNnUvqYDT1KZ3/Rrj5CZbTLTmiOhapqQQqxPfTiTtZeErSJ+s5+5uhBwD
-	P0aKUUlr8UIwYgem9A/THEwZE5/9Buc=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mDSyjlDF;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767734444; a=rsa-sha256;
-	cv=pass;
-	b=4PE0rZPg9rqJVMxp/pbsDMecUHrP1ILGd6fsCbnOMThqptPBAbgYNEtACSn+aZkZ7KvkXz
-	PY/so370nyU2ljYmPJW49hs6oGbIv+avAHo7mpvS2W1IAQLDgx3Ntezr5/tYcS3Ks66d7F
-	TZfPLGT/cBi0VikvIR7pK77GzkD1LMY=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6505d147ce4so2789a12.0
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 13:20:43 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1767734442; cv=none;
-        d=google.com; s=arc-20240605;
-        b=htvhWFmKBBs4/9YChYUaUvIT1mqeUZisWsJHQZ9+ZrPB2RtPi9kkdCTDBl1JjJOPlZ
-         WSOApAzP8sZq54EBnoZZb2LBOpGZsEqxWCvFzDzA+dynjJzP5WzljS3U0/nhrhknUnSI
-         ShUDoqCJQoUsec9fJhvlH7n7Z/SXLRPGoCZfyIoFsvBLecwpc8t/+XAIBcdPzgknr46N
-         ScmsEqCurS86EuCn6r0q3abgOputAPdG5E7RTgyMi9R+0XFeB6LGFLvaL6XwPWHwXnRQ
-         aCAu4FlV+J5nbscI2PVkgdVK5qYFFv2F9NdS3LrqHyV8JaN1PNsZDX1cJmXHhoDJDiV2
-         0zog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=G3dGEzAyvhIQxfi89wOpHCfP7sC0Yh8V2PTA10IoVoY=;
-        fh=+l52Pbjp0YAo6slDJv4J0hTB4ooi9fMoVhlMPolwtn4=;
-        b=SVORgmHi08Y4Xbl3Jd3Nju7HOWjRbWFl1M1VI8vxExra9mldplH7LSZ0X4wvL6ytTG
-         fqa50NPD+Zbrf6VGW0Fw33JipQ7eSOXDQnpLQ8Hm0aND3OQTrE69Tkn7zn//bqxdwsGU
-         AsY4r8rHPy6Uv4j6AaAmKJP9RVRHYHMNC1K91tLdiP47MJPk8iC8RtgL4gbhl+4c1fB0
-         iQS2Rb+f07DUos/oHldOEJRRV1BJEIzcMQk6QRWmbjDgnyuqZqZJi1xJhnAbndYUqYtw
-         xu4mgfCGzfJV+6VS2R0CMGTjxyNWoRFiYdh2np/7Kk854HQ1b0lyhBSwQ9I+FxKvkYed
-         vfRg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=I3zjahn8T3WCja+qS1GjQYcEO/PlU6X91htTMP5EirE=;
+	b=OIoDRi2U6tiJ25AczZEtP9HGTcDnMzmfBRUF/LSyncN0rgUEzuwdS9bvemi5F5tjWYTwqx
+	Yorq5Hpib9MIJY3KipPBwgldkaZDCQHV8xsUC0P87Hv4rfnthDonw1zKzyKFbU8iTyAtLn
+	pIvimQg4OHcMHJeruZrsWgSjD3UWtNc=
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-88a2d21427dso13972456d6.3
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 13:29:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767734442; x=1768339242; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1767734978; x=1768339778; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=G3dGEzAyvhIQxfi89wOpHCfP7sC0Yh8V2PTA10IoVoY=;
-        b=mDSyjlDFr3PU9Cbsj9haCuFT7X9CkYE7fmVXZM6Z6e7iqxSVqVcJHDiMkU4/fSwGx/
-         oLwXnJLeJ/ZSB8K+iFX54UNqhZjn9zokd6qPV2BxhzUq0MuhSfO6+ErRmnHozzBfCHGa
-         WwUPz8pMVKquOdcg5LhedUwM3DJ9W+WWOwS+wPgXylMBYvFgnOE5BGtJvnCKBmKNJHXW
-         pGF7Cuj0yhLB3L5BJaC2QIYqDaTJoMGHdct7yDh0kF5jL11NegZ//28LrtQAspuyFGa3
-         F2WN1pU/Y36VBe2+FUXJTl2B66WOhEw6/b04XSf76zWFKg72Nz4WsQpoapZ+DldBh0gj
-         cEBw==
+        bh=I3zjahn8T3WCja+qS1GjQYcEO/PlU6X91htTMP5EirE=;
+        b=miPC4uR7OGhh+J++wXKDckpPjJE0Nn5h95k5sHc2vrjXh92IBKnBmMy2xR1I+XzIrt
+         rnZRDXlNqRF+zAqq2hCrioo/HB2oS9i4ToD2oaX/VPXr1jGnJKxqUlZtlFBTplabgSVa
+         IKd6fE63Ml4q0fy9ifJBCBf3ZdmfTBbpB8nX+/IkeSxWkjQCBkMtkorQiDEnut0InZrb
+         AlxKe0EHLjHr2mxsJCsPsKNkrQcWSFE+rG9SCuWJdNwYTBJJPiuRdhxzR7Qk5+O2S2su
+         5ti9RfXATpIJPQgJXV3ArrXcvz4UIhPuw1zQ7q5CVp4UXrGPXzMS9fs0s6afZf06tYEL
+         OBWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767734442; x=1768339242;
+        d=1e100.net; s=20230601; t=1767734978; x=1768339778;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=G3dGEzAyvhIQxfi89wOpHCfP7sC0Yh8V2PTA10IoVoY=;
-        b=hvM0HrGdZsTLserUpdXmj2Uuy3sOb4YtKny6d8RcTWyWT/P3YmPxk20ENILY+N/rZl
-         WAv+dS8IlQ8gJ35L1Uf3IFzfwzw8C7gFPVKits6k6rVvcL6y7MkdaBUXrin6PmTZPz6N
-         LMGK2AcvViqjXtbe4bhqgBXVsTzwKkHUu1VCfjXDfN575nyIppuuMSEbyqerd357+tKF
-         33Yd7OuPK5cV5hPo12nnLDePmyp17rbNHhD8azQxBEgh9jFLpIhO56VA/UOGQc6Iv93a
-         rrJU/RiKY74A8V5MbyuKVtLufqIy0efBYh0Qjlj59xzP9azSYxtnvvjoa8kVwsGwOVP1
-         +IVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVskivFpwjasrP1X3JMilgSJ83A8u9GL2wSzXPg5e9rVmuFHGH6UM9vek5AvqLh9Dm+4dKzwK0DUQ==@kvack.org
-X-Gm-Message-State: AOJu0YzXxHXz1qbAQEImHejb1M5wPxXrEqUV0GufUk3nvBeAYwHmbh1U
-	WJ8Jq921esXujXEzlMHtliNm1zkf/yFC+6TSVp0hYkzVdY5kps5cXVgXNG618NQ4C0UgSCW5VxY
-	nkxqDgjJ1slCMeG3YgudOb2HpHqehdjiy+AUuQU+M
-X-Gm-Gg: AY/fxX7EzoA0IluRnxQ3yOxZ9O68fyz1xouQiJaZYxH3hIwbyMrYrwZPc7vAQ6oZ65M
-	FHu4IwNl0Yp4snRJfqKRtxNKpyvTpo+prbZnho1FsUnrIxNdkFuOxvRo/1PawZBDoxUeYNEfrPM
-	HXTiBFWtUXZqAO468FpeP4Bb4phVxFqL+K/NCIJfhaGE/b8Z9q7YDnrXswYKAq6OF0N24ie2mnM
-	eZVmhEHgcufvbRbEnfbNmZjBbtzsBMIyTnVIae72E+wrgmwYLCd7nFORMos7rGq0eYgx+e0O4pp
-	dr+ns9DJzWmIrN56KfmEegdHzg==
-X-Google-Smtp-Source: AGHT+IEcvWgNFI9a+FTZMbphSlXQ8Zuxx6/i+WqW+It0LG3jn6ton00nUSvPJB/CSFIAnA6s6y0NkLqvQo6im5YeY34=
-X-Received: by 2002:aa7:c90f:0:b0:643:6975:5381 with SMTP id
- 4fb4d7f45d1cf-65097c5bc4amr7334a12.15.1767734442183; Tue, 06 Jan 2026
- 13:20:42 -0800 (PST)
+        bh=I3zjahn8T3WCja+qS1GjQYcEO/PlU6X91htTMP5EirE=;
+        b=d3dwu0ofBRc2AMA+0V2jUjwfzP2O77g0MIkvjRTcVtMZNc/J8T/K4zDSCLKA5eGP/s
+         QEiByLIrG13UYZ45OoCC/as8r00DkNhPEgWDI/izqOphof1EiZXGCYlzT5tFlbzxO9aa
+         aF0jeN4n3/riW5i30qOpz1mx/pDzCo5EkXph2Z7sz82QqSzFRibU+JCP1ahyvotI8WGl
+         OcE5wqpY6XcwjHqMFB0q+y7jpCkPc5O/AdEQkLdE2xNVhzMdiU9WGCHT1IY5sPuL8DY3
+         zSgt55cOLcPfc/nMcfjAbbHonBJCMoJqMNcCVLSJ1+mr4BM/y+ztlFKStWwjSBLPX+rI
+         avSA==
+X-Forwarded-Encrypted: i=1; AJvYcCWc+luozd/vZCQydWxcwFVV4Kw61V4WwhxHd9BEsO3wO3jsComnfu8+jHS1OQ0yrtwYqAvv/i2ybA==@kvack.org
+X-Gm-Message-State: AOJu0YxZMXYT0Ch0/+B2ZmiUO/CeDITJqPz5dB63T6ryVQG9WLwlj2/y
+	zOdQjBUzTmEdn/KnLN7YcUFOoD3ipOAJo/7M0Id8hoRDQKY2BubFDUn540sIEN8kxkCB8T2x9X5
+	Uh1V5e/UzgfHtHTm5TO/ZlgtD/yUt2zo=
+X-Gm-Gg: AY/fxX5sBD9aqo1l6a2xjbxhSSowZ1oH0hGAxjzHgV9VZKVIRUnfv6rfG1YxT5yzj77
+	g1AeRu+MIPDUGECPvfMn0B1ywt2cEIz8FyUyRRstDFJyUX3zRzMASUwoRbDq63PprJEkMwrC5EW
+	+KTKlMzpNxy3uzIa4HYm9apEtuyJuNIsBvs2PPSviU+ifkIz4Qlugca3z1BdUMkTSWQSxdv/56r
+	8KRRaMolspbOsM48SLuCAxYziIaIQTy7zmPO5TGq/kY9eW47Y4IEFduSBqmR8A2xFD6m5rNL4pB
+	haKD
+X-Google-Smtp-Source: AGHT+IFBFTBjIk61F+k7sjdbtEFqa+eDK3RQZsJs/Vz+F3rPSMTDJenxsaZritdQ4eQpFloBiKlHyEaZpqgbbWzDq9M=
+X-Received: by 2002:a05:6214:5a0a:b0:88a:2b12:f746 with SMTP id
+ 6a1803df08f44-890842a452fmr6151926d6.56.1767734978076; Tue, 06 Jan 2026
+ 13:29:38 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1765970117.git.lorenzo.stoakes@oracle.com>
- <4ce4ec09b92664091e8935982d83dde3a4c7f898.1765970117.git.lorenzo.stoakes@oracle.com>
- <CAJuCfpHWUj6npkpMsgHmLHMk4NHRzaDyDG2oQk1SuQ53swcMSA@mail.gmail.com> <03723727-7fdf-4f06-8117-bbe2d6c2b7f7@lucifer.local>
-In-Reply-To: <03723727-7fdf-4f06-8117-bbe2d6c2b7f7@lucifer.local>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 6 Jan 2026 13:20:29 -0800
-X-Gm-Features: AQt7F2qEiHWOjdWMT1089zNBJOWU_k13wb_cWMTlcUPlU8EuW4TE9TKXr8ze4S8
-Message-ID: <CAJuCfpFvAOBVyv+UaTS+_9scTdPmo2-vsTE98-XSOpZZe=_VhQ@mail.gmail.com>
-Subject: Re: [PATCH 7/8] mm/rmap: allocate anon_vma_chain objects unlocked
- when possible
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>, 
-	Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
+ <142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com>
+ <20260106132203.kdxfvootlkxzex2l@master>
+In-Reply-To: <20260106132203.kdxfvootlkxzex2l@master>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 7 Jan 2026 10:29:25 +1300
+X-Gm-Features: AQt7F2rL-Zf8YqKEcucnaMZPmDexQolmxiwZjT9Pk0GgPcf0w9YhWyyrqBnVLII
+Message-ID: <CAGsJ_4yKRtyADU2ZxUMgvqdrhAEL4SpZxCMRt28gNJfUf--5zQ@mail.gmail.com>
+Subject: Re: [PATCH v5 5/5] mm: rmap: support batched unmapping for file large folios
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org, 
+	david@kernel.org, catalin.marinas@arm.com, will@kernel.org, 
+	lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, Liam.Howlett@oracle.com, 
+	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	riel@surriel.com, harry.yoo@oracle.com, jannh@google.com, willy@infradead.org, 
+	dev.jain@arm.com, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0C7321A0005
-X-Stat-Signature: pefxdeeoomj8ky49pr75iauf7ssajr65
+X-Rspamd-Queue-Id: 2E00C4000A
+X-Stat-Signature: jnnythxszbpfhgysmhm1ci9arw4wo9jt
 X-Rspam-User: 
-X-HE-Tag: 1767734443-352868
-X-HE-Meta: U2FsdGVkX1+7Y0cDVZvjCDwsKtrg0yMNTWnNVW11mPi2/5hpIjKw62ZrW4EZy2lgMZ66M/754igAK5V2T4XZ835kfYEDHYCaLCbMqbpXV1VIfbQYcwDMH2nFEaPagdS/bf9qYyT/cRU6wGkZtj42oBh4eEKWfHVt72S9KKesk1z5y7GkCsPaZTFSv7pBSEvFeKHxE77DsZDhd841Qww1wlMf67NaJqAg16QYbss1TNDzpSMAnG8dRy+dDV//2hKDitjD+mCOIzu1sZ6ksiRO03HwuHY7HhoMycV7IzHpkpSB6TFR6BfT2ECcFVCTb+tT3ulB78HkPYG4DPHmKQw3Q9n0vV9YvGptS17Wmi4hHrpPkf32w/o2a+oXDQlS4D+DYENK3Tdoutjvf5hu26T/9dvd/N09L5AnMLcOsHNKTZOVAmcJ8KgtrvqD7IWu2ZgMV/NgGOrLUQCyv1IXEYAPU7glfTaolZJ0DpZZiMpJ+leoZkmAhCQqXXyP8hHD0NOfmYMwrz+6iexXNr71o0SCu7Aae2Si5UI+qOpfsQk6gbuiWcRaB9E3I9iRqsK8vc7KFkJujzCRCvqCMat9Y0g79ysBjouOqu2hzzCt4k2mRXWKmt/2cvkTExeuBEHiM3i/zN1shyFZth5iHEZKNuG/SJ+X1XyGNW/LFZjQ6g+2za/M0Ib3BUxLbFlOlcdxb5P8AR9lRydVIIUDelc9l9zl1BC++0SEqnDTOTxvlQp4RAZofqXIArylvPKlTDrwsjqhXWQJzK7ggXph+BNAc2g5r4QJt9XGpFzobC9txjpnf8OzOkDtSQFEz8spx1G4op5+bGuH0sN4KYA0l7dXjNew//No9EN1EpAGKk5fXkbFhP1S4fB6RT/sPydJsVk7p4yTC5pB2TQAMR5/RPMuQAEbihs4FjK0MXZcCMkky1f8fTcaedxGkOlxhROS44dVL8LMW90DunYmxIq7XpVLYvj
- 3rxtWWE7
- vUjKXgkCMyGuxHDFQqRQOaBKKiawj39kf9tJtEWH/wOmpVarc70uwcKWygWjddCNlxpLfxWDzRO7RTBB2pEVYAf+dBgZqarAn+gOzccVUwBVmsh/twx7NYxJjtGdd9AXfAemtqPzhNT4Vj6H3AxkditvoDSouxgqwtL9Po8ZtpN6RwlPasnL/zHkN+fFuVB4X08HYi06pBjeIAahaVgwPnNLwRftTBtRFx8bGqKRfnYF1ML7LSrbMUs34kztV5KhIfxsiYaGUO6CxXoPTeqAKNChWU8YslSVgZO6kSgUvqfB1YeFgDeUSBFJajEYruf8rNXPw8039ZaM+FOF2zF23wsF03N5rlHE+i5pABQ27BfAkJg29q1ei0J/7eAU13LbBtLD9hiDrFTTBEG8=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767734979-416138
+X-HE-Meta: U2FsdGVkX19dzvfwemtaBIzJ7ZgWzqzsTJyXhadrZYvJ37RDvEV1MyuV7NDABA/Iz2w00eZOKiIuOHoo2ONrugvtDmc5V/EoxuJdsdAgWSXy4bgEjErBxgO+08A3rr2Vec7mT+2wsLnpBLmz3PbF0Ajdbq51u997u1weOw04EiaA+i7ZatkOUrVDbPACorO0sSLeN0RQ0phiJvUsaouMDcLBKl2935En4N3+ZgoeP8pV0gnuiX5BkWJnnC7lFQQs8wxoUWwqtstlBEHTdZGle2OSKypMHUvEV6HQwwZPJh2i+1dWzwi6DyKq/FLbJo1DQZsbXkMtbDjzcVKVtGcOoZvb/WzKMdVwqPaPZ7i2orrGxP05RgPgt+Ma7Y2vuGuI8f6pwhHGz31Sfo6oKqpkXdxvuAiDENGiPFGAG8qyLckAps6oATZIMrYsrJmyRKUv93LfhC9QzzlVdgviAJI1aJfiFbtgXjy2iCBcjmuAe7+piNTiH4G/3Jju3KDOciyTza7W9Gmv+upuE0+QEf0lanmTmOD+sA48wn7YntRFPGXQ98ReTjgpfzYvihPJP0M+BHrLhcN6SlPKyspQYQPaq9uYdrLN8qWC6CqSKYE0GQLmCV/kAC5YxMXnTUYhf0lGrdBqakrp9KSdKpEPyfhxL/rV5yliJd7d5WnPY9bUiH5pkuwnBWwis7oz+8SgrSkVAUc+4K+WMrO6B+2tsO+Hh4gSHJlqY8OFBih7NkFSIKSFELcAgNFUlv8JvIUsmdZ2/j1HQm2qkQs5efTGIrR6w1Ohau7y+KLNm4kELx05v1i5Zug7FCuRC+3/EZ/9NnkuDtjXlV96pht13NidShsWZ4ySepJNsDN02Q5+qygrlsYyFw36MLpq8tNUuNpGZ0J4R/K0GIAGfZRuZlTTsJRV4Fe2WDs99aw77o8RwRKyKhFm+wqjqJHDmIhIb8KimV+zWbzMARq9ZT7cc+mqMmN
+ TjDY2y5n
+ F7D9Fi+n5rQl7K/rbUAobdcr69SmjKxDcWeIYe+EmvqFnNqtuJetqBIlkNEfjRAUXnPI2yLZPK3ooqo7guj2/O9yApq/aFNDpU6ptm5NvuIF4uG2p0rp9sGMczfyMaAqK7OES4wYDxm74MQMzEgNMOmmUYwZ1mXIaoWgh3ZlnKfPOdOIqLnsGO96ckgSMVb2sbyKvN1ohlo5O0k3LXFXL4/LcWmUFRC7hByj88+kUWgpfU+0aErLhnZCoTy4Vgo/d4gZdIgxgwMa4frwksajU4rVQsYicGIMUK8eOtQ1BAfcFI4eIrFQHVtzasJ9yt2Z/wzI5CDWPIlHkhOuAVB+Ej8fjsNZWFrcLgVVduZ/0rju6bIxeMImjDCCfTjRpAYPT4UnJ0/eK1wbl4haw1DdZ+XYfCjaMYuRHMVhileRFKv3+/zSt3tRfEiG/cpN6PZQbyv1EF8rLTykY1n+YiJgWIY3fQ3fp5ny8M43eZfm8dv8UzByyTdaPFy98U6AEFs6GnPCHS+y+P7czLFSg0Uou3b4TpXGLu3UxB4NJ+d9QqTq7D/s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,194 +124,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 6, 2026 at 6:17=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
+On Wed, Jan 7, 2026 at 2:22=E2=80=AFAM Wei Yang <richard.weiyang@gmail.com>=
+ wrote:
 >
-> On Tue, Dec 30, 2025 at 01:35:41PM -0800, Suren Baghdasaryan wrote:
-> > On Wed, Dec 17, 2025 at 4:27=E2=80=AFAM Lorenzo Stoakes
-> > <lorenzo.stoakes@oracle.com> wrote:
-> > >
-> > > There is no reason to allocate the anon_vma_chain under the anon_vma =
-write
-> > > lock when cloning - we can in fact assign these to the destination VM=
-A
-> > > safely as we hold the exclusive mmap lock and therefore preclude anyb=
-ody
-> > > else accessing these fields.
-> > >
-> > > We only need take the anon_vma write lock when we link rbtree edges f=
-rom
-> > > the anon_vma to the newly established AVCs.
-> > >
-> > > This also allows us to eliminate the weird GFP_NOWAIT, GFP_KERNEL dan=
-ce
-> > > introduced in commit dd34739c03f2 ("mm: avoid anon_vma_chain allocati=
-on
-> > > under anon_vma lock"), further simplifying this logic.
-> > >
-> > > This should reduce lock anon_vma contention, and clarifies exactly wh=
-ere
-> > > the anon_vma lock is required.
-> > >
-> > > We cannot adjust __anon_vma_prepare() in the same way as this is only
-> > > protected by VMA read lock, so we have to perform the allocation here=
- under
-> > > the anon_vma write lock and page_table_lock (to protect against racin=
-g
-> > > threads), and we wish to retain the lock ordering.
-> > >
-> > > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> On Fri, Dec 26, 2025 at 02:07:59PM +0800, Baolin Wang wrote:
+> >Similar to folio_referenced_one(), we can apply batched unmapping for fi=
+le
+> >large folios to optimize the performance of file folios reclamation.
 > >
-> > One nit but otherwise nice cleanup.
+> >Barry previously implemented batched unmapping for lazyfree anonymous la=
+rge
+> >folios[1] and did not further optimize anonymous large folios or file-ba=
+cked
+> >large folios at that stage. As for file-backed large folios, the batched
+> >unmapping support is relatively straightforward, as we only need to clea=
+r
+> >the consecutive (present) PTE entries for file-backed large folios.
 > >
-> > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
->
-> Thanks!
->
-> One nice thing with the separate cleanup_partial_anon_vmas()'s function
-> introduced as part of this review (thanks for the good spot!) is we can n=
-ow
-> simplify this _even further_ since we don't even insert anything into the
-> interval tree at the point of allocation, and so freeing is just a case o=
-f
-> freeing up AVC's.
->
+> >Performance testing:
+> >Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and =
+try to
+> >reclaim 8G file-backed folios via the memory.reclaim interface. I can ob=
+serve
+> >75% performance improvement on my Arm64 32-core server (and 50%+ improve=
+ment
+> >on my X86 machine) with this patch.
 > >
-> > > ---
-> > >  mm/rmap.c | 49 +++++++++++++++++++++++++++++--------------------
-> > >  1 file changed, 29 insertions(+), 20 deletions(-)
-> > >
-> > > diff --git a/mm/rmap.c b/mm/rmap.c
-> > > index 60134a566073..de9de6d71c23 100644
-> > > --- a/mm/rmap.c
-> > > +++ b/mm/rmap.c
-> > > @@ -146,14 +146,13 @@ static void anon_vma_chain_free(struct anon_vma=
-_chain *anon_vma_chain)
-> > >         kmem_cache_free(anon_vma_chain_cachep, anon_vma_chain);
-> > >  }
-> > >
-> > > -static void anon_vma_chain_link(struct vm_area_struct *vma,
-> > > -                               struct anon_vma_chain *avc,
-> > > -                               struct anon_vma *anon_vma)
-> > > +static void anon_vma_chain_assign(struct vm_area_struct *vma,
-> > > +                                 struct anon_vma_chain *avc,
-> > > +                                 struct anon_vma *anon_vma)
-> > >  {
-> > >         avc->vma =3D vma;
-> > >         avc->anon_vma =3D anon_vma;
-> > >         list_add(&avc->same_vma, &vma->anon_vma_chain);
-> > > -       anon_vma_interval_tree_insert(avc, &anon_vma->rb_root);
-> > >  }
-> > >
-> > >  /**
-> > > @@ -210,7 +209,8 @@ int __anon_vma_prepare(struct vm_area_struct *vma=
-)
-> > >         spin_lock(&mm->page_table_lock);
-> > >         if (likely(!vma->anon_vma)) {
-> > >                 vma->anon_vma =3D anon_vma;
-> > > -               anon_vma_chain_link(vma, avc, anon_vma);
-> > > +               anon_vma_chain_assign(vma, avc, anon_vma);
-> > > +               anon_vma_interval_tree_insert(avc, &anon_vma->rb_root=
-);
-> > >                 anon_vma->num_active_vmas++;
-> > >                 allocated =3D NULL;
-> > >                 avc =3D NULL;
-> > > @@ -287,20 +287,28 @@ int anon_vma_clone(struct vm_area_struct *dst, =
-struct vm_area_struct *src)
-> > >
-> > >         check_anon_vma_clone(dst, src);
-> > >
-> > > +       /*
-> > > +        * Allocate AVCs. We don't need an anon_vma lock for this as =
-we
-> > > +        * are not updating the anon_vma rbtree nor are we changing
-> > > +        * anon_vma statistics.
-> > > +        *
-> > > +        * We hold the mmap write lock so there's no possibliity of
+> >W/o patch:
+> >real    0m1.018s
+> >user    0m0.000s
+> >sys     0m1.018s
 > >
-> > To be more specific, we are holding src's mmap write lock. I think
-> > clarifying that will avoid any confusion.
->
-> Well, it's the same mm for both right? :)
-
-Hmm. I think in dup_mmap()->anon_vma_fork()->anon_vma_clone() call
-chain the dst->vm_mm and src->vm_mm are different, no? After
-assignment at https://elixir.bootlin.com/linux/v6.19-rc4/source/mm/mmap.c#L=
-1779
-src->vm_mm is pointing to oldmm while dst->vm_mm is pointing to mm. Am
-I reading this wrong?
-
-> and actually the observations
-> would be made around dst no? As that's where the unlinked AVC's are being
-> established.
->
-> I think more clear is 'We hold the exclusive mmap write lock' just to
-> highlight that it excludes anybody else from accessing these fields in th=
-e
-> VMA.
->
+> >W/ patch:
+> >real   0m0.249s
+> >user   0m0.000s
+> >sys    0m0.249s
 > >
-> > > +        * the unlinked AVC's being observed yet.
-> > > +        */
-> > > +       list_for_each_entry(pavc, &src->anon_vma_chain, same_vma) {
-> > > +               avc =3D anon_vma_chain_alloc(GFP_KERNEL);
-> > > +               if (!avc)
-> > > +                       goto enomem_failure;
-> > > +
-> > > +               anon_vma_chain_assign(dst, avc, pavc->anon_vma);
-> > > +       }
-> > > +
-> > > +       /* Now link the anon_vma's back to the newly inserted AVCs. *=
+> >[1] https://lore.kernel.org/all/20250214093015.51024-4-21cnbao@gmail.com=
+/T/#u
+> >Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+> >Acked-by: Barry Song <baohua@kernel.org>
+> >Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> >---
+> > mm/rmap.c | 7 ++++---
+> > 1 file changed, 4 insertions(+), 3 deletions(-)
+> >
+> >diff --git a/mm/rmap.c b/mm/rmap.c
+> >index 985ab0b085ba..e1d16003c514 100644
+> >--- a/mm/rmap.c
+> >+++ b/mm/rmap.c
+> >@@ -1863,9 +1863,10 @@ static inline unsigned int folio_unmap_pte_batch(=
+struct folio *folio,
+> >       end_addr =3D pmd_addr_end(addr, vma->vm_end);
+> >       max_nr =3D (end_addr - addr) >> PAGE_SHIFT;
+> >
+> >-      /* We only support lazyfree batching for now ... */
+> >-      if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
+> >+      /* We only support lazyfree or file folios batching for now ... *=
 /
-> > >         anon_vma_lock_write(src->anon_vma);
-> > > -       list_for_each_entry_reverse(pavc, &src->anon_vma_chain, same_=
-vma) {
-> > > -               struct anon_vma *anon_vma;
-> > > -
-> > > -               avc =3D anon_vma_chain_alloc(GFP_NOWAIT);
-> > > -               if (unlikely(!avc)) {
-> > > -                       anon_vma_unlock_write(src->anon_vma);
-> > > -                       avc =3D anon_vma_chain_alloc(GFP_KERNEL);
-> > > -                       if (!avc)
-> > > -                               goto enomem_failure;
-> > > -                       anon_vma_lock_write(src->anon_vma);
-> > > -               }
-> > > -               anon_vma =3D pavc->anon_vma;
-> > > -               anon_vma_chain_link(dst, avc, anon_vma);
-> > > +       list_for_each_entry_reverse(avc, &dst->anon_vma_chain, same_v=
-ma) {
-> > > +               struct anon_vma *anon_vma =3D avc->anon_vma;
-> > > +
-> > > +               anon_vma_interval_tree_insert(avc, &anon_vma->rb_root=
-);
-> > >
-> > >                 /*
-> > >                  * Reuse existing anon_vma if it has no vma and only =
-one
-> > > @@ -316,7 +324,6 @@ int anon_vma_clone(struct vm_area_struct *dst, st=
-ruct vm_area_struct *src)
-> > >         }
-> > >         if (dst->anon_vma)
-> > >                 dst->anon_vma->num_active_vmas++;
-> > > -
-> > >         anon_vma_unlock_write(src->anon_vma);
-> > >         return 0;
-> > >
-> > > @@ -385,8 +392,10 @@ int anon_vma_fork(struct vm_area_struct *vma, st=
-ruct vm_area_struct *pvma)
-> > >         get_anon_vma(anon_vma->root);
-> > >         /* Mark this anon_vma as the one where our new (COWed) pages =
-go. */
-> > >         vma->anon_vma =3D anon_vma;
-> > > +       anon_vma_chain_assign(vma, avc, anon_vma);
-> > > +       /* Now let rmap see it. */
-> > >         anon_vma_lock_write(anon_vma);
-> > > -       anon_vma_chain_link(vma, avc, anon_vma);
-> > > +       anon_vma_interval_tree_insert(avc, &anon_vma->rb_root);
-> > >         anon_vma->parent->num_children++;
-> > >         anon_vma_unlock_write(anon_vma);
-> > >
-> > > --
-> > > 2.52.0
-> > >
+> >+      if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+> >               return 1;
+> >+
+> >       if (pte_unused(pte))
+> >               return 1;
+> >
+> >@@ -2231,7 +2232,7 @@ static bool try_to_unmap_one(struct folio *folio, =
+struct vm_area_struct *vma,
+> >                        *
+> >                        * See Documentation/mm/mmu_notifier.rst
+> >                        */
+> >-                      dec_mm_counter(mm, mm_counter_file(folio));
+> >+                      add_mm_counter(mm, mm_counter_file(folio), -nr_pa=
+ges);
+> >               }
+> > discard:
+> >               if (unlikely(folio_test_hugetlb(folio))) {
+> >--
+> >2.47.3
+> >
+>
+> Hi, Baolin
+>
+> When reading your patch, I come up one small question.
+>
+> Current try_to_unmap_one() has following structure:
+>
+>     try_to_unmap_one()
+>         while (page_vma_mapped_walk(&pvmw)) {
+>             nr_pages =3D folio_unmap_pte_batch()
+>
+>             if (nr_pages =3D folio_nr_pages(folio))
+>                 goto walk_done;
+>         }
+>
+> I am thinking what if nr_pages > 1 but nr_pages !=3D folio_nr_pages().
+>
+> If my understanding is correct, page_vma_mapped_walk() would start from
+> (pvmw->address + PAGE_SIZE) in next iteration, but we have already cleare=
+d to
+> (pvmw->address + nr_pages * PAGE_SIZE), right?
+>
+> Not sure my understanding is correct, if so do we have some reason not to
+> skip the cleared range?
+
+I don=E2=80=99t quite understand your question. For nr_pages > 1 but not eq=
+ual
+to nr_pages, page_vma_mapped_walk will skip the nr_pages - 1 PTEs inside.
+
+take a look:
+
+next_pte:
+                do {
+                        pvmw->address +=3D PAGE_SIZE;
+                        if (pvmw->address >=3D end)
+                                return not_found(pvmw);
+                        /* Did we cross page table boundary? */
+                        if ((pvmw->address & (PMD_SIZE - PAGE_SIZE)) =3D=3D=
+ 0) {
+                                if (pvmw->ptl) {
+                                        spin_unlock(pvmw->ptl);
+                                        pvmw->ptl =3D NULL;
+                                }
+                                pte_unmap(pvmw->pte);
+                                pvmw->pte =3D NULL;
+                                pvmw->flags |=3D PVMW_PGTABLE_CROSSED;
+                                goto restart;
+                        }
+                        pvmw->pte++;
+                } while (pte_none(ptep_get(pvmw->pte)));
+
+
+>
+> --
+> Wei Yang
+> Help you, Help me
+
+Thanks
+Barry
 
