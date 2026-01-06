@@ -4,78 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9920CCEFCF0
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 18:46:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 631D0CEFCE2
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 18:48:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08A5F6B008A; Tue,  6 Jan 2026 13:46:35 -0500 (EST)
+	id C64DC6B008A; Tue,  6 Jan 2026 13:48:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 038BB6B0092; Tue,  6 Jan 2026 13:46:34 -0500 (EST)
+	id C3C8A6B0092; Tue,  6 Jan 2026 13:48:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7D026B0093; Tue,  6 Jan 2026 13:46:34 -0500 (EST)
+	id B49936B0093; Tue,  6 Jan 2026 13:48:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D84F16B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:46:34 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8E55E1ABC8A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:46:34 +0000 (UTC)
-X-FDA: 84302419908.14.417E288
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id CEE661C000B
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:46:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OzV1Iic2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767725192; a=rsa-sha256;
-	cv=none;
-	b=xE0jv/T6YIEo+y+YzYMngR4Glh8h51RXeInbCgJ2Htm98+kKALZf0yvpXWHVfzHMKE275q
-	qfdge9T7FXmsH3jqudcPbL8hJWoAIp9ArGUnehYxE3nXmZK842BTEVTdKkxqNvOGeUOWW/
-	705xF7/y3uNr9wpYS3v2NL+qUM9behs=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OzV1Iic2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A553F6B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:48:04 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A9DEC2B23
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:48:04 +0000 (UTC)
+X-FDA: 84302423688.07.66C2FDF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 62673120011
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:48:02 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RBZfi93e;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767725192;
+	s=arc-20220608; t=1767725282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sog+fLGNGr5AUzPGLAm/BqHFTxEnR45anibRIzvom0c=;
-	b=GYeiLT0jimyl/WV1woelFeZob3ZGLmozgUXqaYBBU8vIybQRnghNZEFNGJBhABmoCvH5HM
-	BuOnm3PciWqQO5ITBEIa8/YKEzOTO6JlWpVezCXVzn+7LODJW1CUjf6eU+IRaJpCClWme3
-	F6kNw5MVvadeTx7X1fx8PkoIdSim9+Y=
+	bh=5GrnLq8hdyVOF3w1aHshNG4tM1TjxxmghCj5zoNifMI=;
+	b=g9v6i1WrOeUq48C/dslHpdMOa/VTlkLlutW2nXf3OdkdOWexD/0iPo9FoGPLj7s4I8XDeJ
+	SFWPEpwFruJm2UypdQ4q3cF3Z0vv0rVQQJKKZ2TbUU/bSBhZuF0t7PimfGmn6h9Y6tv1gc
+	7LwHOWKA7e19X+6JnrRcIoBCqiLmIVM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767725282; a=rsa-sha256;
+	cv=none;
+	b=IM0bkHdDqeQKzGlIIjI7TWWJntsCvmqrTeeQwAqmztise+AK4JXC+bzoIGrEo9J2GZmtwg
+	QhXmrSbVMEwfav/kWNnOeuDHX9foWzkSB1nEuG+e7CKvtukQxRWrWv5QnIUBN1Q4K5B3bS
+	TdGgER677AmW9dRPtW0f9MZuxuL49/U=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RBZfi93e;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 05B476013D;
-	Tue,  6 Jan 2026 18:46:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93274C19423;
-	Tue,  6 Jan 2026 18:46:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6FE7843E6E;
+	Tue,  6 Jan 2026 18:48:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45F2C116C6;
+	Tue,  6 Jan 2026 18:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767725191;
-	bh=KpOiVaXPjG1PAae7sFpgxWI7yXFuwOVZaMip5iXibeo=;
+	s=k20201202; t=1767725281;
+	bh=1xLw4PGhhepqTmOWiFNHJxsYbSya5iTaPTtK335HWco=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OzV1Iic2K0TUMTrBbT5fK8X7C6A4aWz4pzAe1tPMBnx2TNo1FW33ZkD7Z9ZhYEHYX
-	 udfnJ64qUWrQJoRZAdTf2ftf16YShoGKjSjv3CaTjsdCeN4mz8ziGZW/yIdOsv7kjB
-	 UFIm/no8sqYVSrF+wVlV0cgar5KDdyFdUARp+cKOlyLRt3zPJnKHBxp7k3nt5GTYsc
-	 AK2wUk4OhuJJk99B+3K2oFhMNQBlyXQCOsH8LDFQvZXpYXW9Z1yY8LjKUMcNzAb+Z3
-	 iX6u6RGXIVCQz9xKP4RSZBVgjiOHYu9710GYkZiqa5QPIaxp69RIZdIfBX3ZG/UgnD
-	 Cwj1Yo3RS+uTA==
-Message-ID: <9c807ff8-b4ad-43d5-8034-ec7fcd0fe5d6@kernel.org>
-Date: Tue, 6 Jan 2026 19:46:25 +0100
+	b=RBZfi93e3zJ4ckLzdlnY6RSFqBPL9eEv6o1YyJsTO8y2D4QGjEjb1xlwH+XkscKhk
+	 fe1hZSD5vXy07mB4Gr+M/VK+62cxLv/RRvZsQw4XNvkyhkncKUGIibXhSCymMaS9pG
+	 wSe8NvtdO7Xu3HElPpcn+YYBLD2uKhEnUI/BSMvBVLU8soi3YenhfYL+12pt/GnW4m
+	 9VjtQ1ob8nNLXvtRLmXIW4cdSIyKPy/nMFJ3ouO5ad0+tURt5dzckgb0JQFtHykPA9
+	 tWjWrP9KMxHd1JEGZ84hzWthw8m1uW5ukUGlmuPlEyukNifl4vvq5dKQ7FOpemOIad
+	 G9/QFNMAG2feA==
+Message-ID: <6e17dab8-cc85-4d68-a7b0-c187754572df@kernel.org>
+Date: Tue, 6 Jan 2026 19:47:54 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7] page_alloc: allow migration of smaller hugepages
- during contig_alloc
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- richard.weiyang@gmail.com
-References: <20251221124656.2362540-1-gourry@gourry.net>
+Subject: Re: [PATCH V2 5.15.y 0/2] Fix bad pmd due to race between
+ change_prot_numa() and THP migration
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: stable@vger.kernel.org, Liam.Howlett@oracle.com,
+ akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ dev.jain@arm.com, hughd@google.com, jane.chu@oracle.com, jannh@google.com,
+ kas@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, npache@redhat.com, pfalcato@suse.de,
+ ryan.roberts@arm.com, vbabka@suse.cz, ziy@nvidia.com
+References: <20260106115036.86042-1-harry.yoo@oracle.com>
+ <3c1000ae-6c4b-4b03-a458-e74edf64db8f@kernel.org> <aV0ixeDusgafhonV@hyeyoo>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20251221124656.2362540-1-gourry@gourry.net>
+In-Reply-To: <aV0ixeDusgafhonV@hyeyoo>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CEE661C000B
-X-Stat-Signature: hmpeearm7ajp7tk74yoc11nst5okmn8i
+X-Stat-Signature: fb5ynugwq3tssmpjy7hey41kniigy6iy
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 62673120011
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767725192-955311
-X-HE-Meta: U2FsdGVkX19k4CLCg53zk1FkiZPgsSnVHg/eX5urt+7KsnAW+Sw5hByA4iblVBR4UyekRHqUzWPp6BCT58qYICILSgyVoT1/kwlg5ZyZhAB72ifeElBtBM/k7VLxadu84VUhn9QOOOMOtVqstnT4PTak2ydihQb90wmaC95VsBiZCcvgDkmM+bqwQtu5f2FNcEkkbJBzCncL4ZL8jDjStwyeOLtao3BIX9O5c76ae900lTELNh88IxkqdWz2R5n+VED56T5rUfAkq5MXqrMJpLsj53vgLckXFMIaXRFvYqoMsDgSCT2vnTz+WycwbiXNVkiFwLejMZlMeJFs/aC8BKo+iNU8biXAiPVPspGQn8aNtItX2BmxvNIalqu1ZEveY47hiYPjten+9Uiw0WxvqFG/JuQn9ehJMxOmQ2u5HdvEcbdmNv4xhbbtoij4W0z5jC3KwMG1IEz7UByJY49XdHbHmAoxif9tm1jlVAxtMjCOPRLtxHddEaeSkZI1Uc1hZJd1bahhohEbatONqbhrUdPS9ITMN6CobdFfnEJXfGFdXLepH/hqnBxEb+hMDu8TKkvQE4yjsj6cUevRmFyhjQSZ565vIk42pV21HIBT9qagsPp7ZSPiaj3Ivzx/GFma+ltEu7RSNEkZz4nAbNbQy6hZbD0rhJugUqU+Kntz10ckPWtuQQaMl52fer1Md+hHetQIWs1PLLaoKGKElO0hTE+2v5wywfUpGvh+M9jqA72BLHbwnrrHiQXe8Gd6EW/daoWcPFk4ckeMF3a0ZsWB5deN75Cz14O1rek8sG1xXl2jI75fIq9Wc/ejHxmQsZzG4nWqJie/vCk6e41phR6iT5p1gHPpYGuRBbSphU+79hOUbXarAsMALfhfgqok//wxL7NRLLORIzh+JYRuoeSRth2iidHW9WIm7V9N3K0XYEluR3c73rKegth2bwec3gGtQGglOgunEwUWJUKCC0P
- sSZ07Lta
- 5yn76RanMUb+T/jZ2swdbhBYl786rEnAGNahBU8M10ZWnPaOo8qB/rsLjByxmy/yUrhDB+cfOBVyPpB98E2wS9tN1hccpgCcBf9inaIZwX7h/sh00m3I4ndBsruuoFctRnuWBG36/xdZJULS1DuIKfRiO2eyf6wJw2GBPoodAa9apXLaVdh+KuLf4YrOnA6InhpClgKIEuLoTk2vvIRZndnFJiUWroBbKHE/ZPTWogAJB/sUWK6oKcfmH5Icmz1n0/fo4tVVYEzeZJjVz9gNMbDySzkELk2/TRCcnRsP2/fahQ8BSTwPc7nmp7SXMhZvmxq+I/sLFKaG9RFV6qMx89sDj8KoPRVbR8NpRUwXOuY90QmTta27sjUVn2Q==
+X-HE-Tag: 1767725282-715368
+X-HE-Meta: U2FsdGVkX18r+3Umyqz0tXMMzTJSIHdCTLL8jAYbaDmF/vPRIFhzsXKp9bXjwhieQycO4fRW5G5G4b/D25iBo8R+8uoZL4IvXechbAifRG4JWoJyYLSPBg8hFWEQ8L6hOlKlTWRqTF/hlh7drPtuVt65+U4itMWkRzal0btIMpo6RtcsB+BuzuEsvV3Nfr4Y74F0zDuicU2r4gWvXIm7HeI8/fxsFxmqV0afy5KiFl1v08PfzvljM5os6hQ679H2UkCPz1Hj5zN5xU/WhqHjT77pMwwn9mfIOzyFm2+m07JTnrXQV69KqsxEUi26m++lV3iZoSQlq71f1AqnxBBh1rEbZXF0KzIKtcJDMqKNoUy+2R5/Lbej7mINKNfr8kppPk67dmS983NhuUu3nSMtuR9aaU8rPdp7mmODE8Nb+dHF7Mo23ivlNLUSmIF9OCXpsAHJ98PLNxsIG9c81vzTlug+1nSh9rUXRYv/hooPqq9eIocAlH1jWFDIBlOV62CuZ1hnumNxqH7yevIiA4CtFY6iekOTAiACU1P+T7HYd6YSb8Tr6EPrOMkjq8yxLTJ0jSSzmKYz+SmeFCo9TW1R73E0gcDqn3xJq0cJEkmCGeGwA+fccTJsPPqSmtboP9BI9fLzBOMgc7GvcreWX7vmazdSB8I32QcZOjWJ7+Cj7FcdCEd36YvvTuSgFUi01nl4TtPoglv/BUdJqcmpY5aZe2fkb3K3fJG2ioF1PXf0qPfe+4BKPNbwAyEBLKiNTawecTHkgbG5t6YYzyKjRWhYzlnB2rPjGeY1fL2UzlbJkywwUgGadPQQPWTbQQXMYscoueG3418a5Bvfgq/oAG7vjYLkGC0tBq7ZUgLFrr25MIKFyN/n/MPOjwtI6b0zuzKqRHgiRTXz/pRb6tGVDT+WJkh+z6V+luCzF1bjrR7lDRathGTPzbLUpznv4OVR0ZdTK4ErHMSJ4Qfkr1EGq/O
+ gLm5Hz/I
+ jA1fbpIq2b3Vf2HHms/1/OLzx7ncTKUuXo0eYRsxdv4Lo5huMwkPxxRcAe5yjwM/93K4Acp5OHgFmPp//MRKFKgSF0YUUKzKUtr9EMiaRdFNm+c2hAbZ9SJFbqR6uNIV4p/EnprZYIwCcb8bXAt4cwrFj9lLMJFOnpiBmVccPQca8YJQ5OItJtEg6pAFMQ8oHwpO1xOPxkGphX7GYxuAL7lUd/dOQ/Know9j/rllAaG2G3gkBNTYkeGzIEbWF0tNDTP024ir4gK36Q50iQIjYeiqjh/iaoJHsymdw3tDXj9ZrCegTB9Id7dfvtNNLQrSwr/557PujfjiEs1g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,51 +143,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> -			return false;
-> +		/*
-> +		 * Only consider ranges containing hugepages if those pages are
-> +		 * smaller than the requested contiguous region.  e.g.:
-> +		 *     Move 2MB pages to free up a 1GB range.
-> +		 *     Don't move 1GB pages to free up a 2MB range.
-> +		 *
-> +		 * This makes contiguous allocation more reliable if multiple
-> +		 * hugepage sizes are used without causing needless movement.
-> +		 */
-> +		if (PageHuge(page)) {
-> +			unsigned int order;
-> +
-> +			if (!IS_ENABLED(CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION))
-> +				return false;
-> +
-> +			if (skip_hugetlb) {
-> +				*skipped_hugetlb = true;
-> +				return false;
-> +			}
-> +
-> +			page = compound_head(page);
-> +			order = compound_order(page);
-> +			if ((order >= MAX_FOLIO_ORDER) ||
-> +			    (nr_pages <= (1 << order)))
-> +				return false;
-> +
-> +			/*
-> +			 * Reaching this point means we've encounted a huge page
-> +			 * smaller than nr_pages, skip all pfn's for that page.
-> +			 *
-> +			 * We can't get here from a tail-PageHuge, as it implies
-> +			 * we started a scan in the middle of a hugepage larger
-> +			 * than nr_pages - which the prior check filters for.
-> +			 */
-> +			i += (1 << order) - 1;
+On 1/6/26 15:57, Harry Yoo wrote:
+> On Tue, Jan 06, 2026 at 03:35:32PM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 1/6/26 12:50, Harry Yoo wrote:
+>>> V1 -> V2:
+>>>     - Because `pmd_val` variable broke ppc builds due to its name,
+>>>       renamed it to `_pmd`. see [1].
+>>>       [1] https://lore.kernel.org/stable/aS7lPZPYuChOTdXU@hyeyoo
+>>>
+>>
+>> Ouch.
+> 
+> Haha, it was really unexpected :)
+> 
+>>>     - Added David Hildenbrand's Acked-by [2], thanks a lot!
+>>>       [2] https://lore.kernel.org/linux-mm/ac8d7137-3819-4a75-9dd3-fb3d2259ebe4@kernel.org/
+>>
+>> LGTM
+> 
+> Thanks!
+> 
+> Perhaps I should have clarified if your Acked-by:
+> applies only to 6.1.y or ealier versions as well (5.15.y, 5.10.y, 5.4.y).
+> 
+> What do you think?
+> (planning to send 5.10.y and 5.4.y versions tomorrow)
 
-Assuming page != compound_head(page), you'd be skipping too much.
-
-You'd only have to skip as many pages as pages are left in this compound 
-page.
-
-I think we have similar code elsewhere: see has_unmovable_pages().
-
-Apart from that LGTM.
+I don't expect there to be a lot of difference, so feel free to slap 
+them on all, and I'll briefly scan the patches when you send them around.
 
 -- 
 Cheers
