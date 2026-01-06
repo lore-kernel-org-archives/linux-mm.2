@@ -4,99 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5178CEFD17
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 22:04:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BAB7CEFD15
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 22:06:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C5A36B008A; Tue,  6 Jan 2026 17:04:12 -0500 (EST)
+	id 70EAC6B008A; Tue,  6 Jan 2026 17:06:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19CE46B0092; Tue,  6 Jan 2026 17:04:12 -0500 (EST)
+	id 6BC8D6B0092; Tue,  6 Jan 2026 17:06:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09C436B0093; Tue,  6 Jan 2026 17:04:12 -0500 (EST)
+	id 59F086B0093; Tue,  6 Jan 2026 17:06:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EE6276B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 17:04:11 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9D60DBE072
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 22:04:11 +0000 (UTC)
-X-FDA: 84302917902.15.D9B12F1
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1101E2000B
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 22:04:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hj638dO2;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767737049; a=rsa-sha256;
-	cv=none;
-	b=6og7F+xxq39xChvZFAyASKMw1uzqb9/zS8AglkL/GhOQrUwPZNViK0nEapEtHQuLHX/q/9
-	ZcKDIQ8OzS9jR8c3sHXQI4b9VhGn7iEcWcb6WywGVUCwAPjNcFzepEbOvFknLWon0nEjFr
-	jSt6hdjIIBIh/3SZkzhrr3y80WinsJ4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hj638dO2;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 484696B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 17:06:55 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E9ED013C344
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 22:06:54 +0000 (UTC)
+X-FDA: 84302924748.10.EEC92FB
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 18A051C0005
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 22:06:52 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oCzLRuwi;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767737049;
+	s=arc-20220608; t=1767737213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=qfDErPEgoswHZGx9gFwhoGjSnnvS1nGIn9gWV/KEVjo=;
-	b=zy3HTeJi2eSob4BMXJ07E+Gqrv1N6giMFgHnrOG/kGuYvMY+iRiho16IuRellNYjPtpEW1
-	dohuKJJYnWdo3zfEmEVWC5x6omnhezDa3EzrlpPoclODvApFUeXgHXIbY7hiz/K4lqpzEv
-	6xjkjLEZ+HuH2pI74U81M6+mPafG3Mc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767737049; x=1799273049;
-  h=date:from:to:cc:subject:message-id;
-  bh=UFTG9aL3f9/XmUP+1PBndY6CARZ4FneNWM1ttoPXAEU=;
-  b=hj638dO2SKSSpmXTge/VIMSbnbtlAb7HAoO2iTwhUmk/nOeVofytEgJd
-   Q8mz1+1uITI5Sx3IrkLQc5tAt5PeH4+CZALy0zWrzL36HqetGLoM49818
-   fMpEO9o1PU07oX0USqAMKL0b1Ie6ZOB+h0hgxQ7MYRnxKV+TpL6LiFFEd
-   JBi8lmvxKoX+TXgidQcCG8d1Xzz8ZLYpMT8PAPQRrrazNfG4TWBUaXkAc
-   grbHvapfbdAig6HQsEVbhRt8GZml0qVjps4OP2HNZzAiCJBBPd9SFt/kq
-   kdRoXVxol9qZhq3K6Knl6Wzhcwc65RT70SeRP6I75P/Ko9g9dgk9kgNUo
-   g==;
-X-CSE-ConnectionGUID: iP4+MZCeQHqPWGRbySxgaA==
-X-CSE-MsgGUID: dIMY6PttSnm3EEz+ENhEQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="86692917"
-X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
-   d="scan'208";a="86692917"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 14:04:07 -0800
-X-CSE-ConnectionGUID: f951dwc+TXSmbgrI9VCqbQ==
-X-CSE-MsgGUID: W0PEiAFmQh6buIR1uY0ONg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
-   d="scan'208";a="202522720"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 06 Jan 2026 14:04:05 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vdF9l-000000003GP-3evx;
-	Tue, 06 Jan 2026 22:04:01 +0000
-Date: Wed, 07 Jan 2026 06:03:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Thomas Ballasi <tballasi@linux.microsoft.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-new 224/226]
- include/trace/events/vmscan.h:238:54: error: incomplete definition of type
- 'struct mem_cgroup'
-Message-ID: <202601070517.0yxdw4WK-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1101E2000B
-X-Stat-Signature: nsha7ub8fpg1kt87h1s3g4bdw9zh7a7m
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=M3c1lMUlB9cNQxKpptyug2XMgjZvECYwlcrOtmUyfSw=;
+	b=TCR/O1LilDerD2eUG5dGKdDoCQzHWmohroT3GzRgr5NtdcmYNIUmvwDWWLmHVc8PUnJUqP
+	+VjJr2Ki058Zpzpz+sp18bZOZZvxaExNZlyLAQrdCbYJXRYn/iH3eIDyoGM/6kfohfGgVR
+	gitXJrXQu0zaWfKFHPWjLsV1/kIcMPY=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oCzLRuwi;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767737213; a=rsa-sha256;
+	cv=none;
+	b=kD6cZs4ncZF7T2HhUxX8lceQoD2cBPgCIhVS2vllqwEMQb3kr3yMfOqAsBsN3ClbfL+Zi6
+	Tk4BLVjN3D1llnJNFDiKOQvaSTp65Z3+goj7k2LL7ALqNF+1TL9GEsS6+2/kmeeUgARV6S
+	CV3KFORiRyBgEYhy100doNsYqoBiM1U=
+Date: Tue, 6 Jan 2026 14:06:43 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767737211;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M3c1lMUlB9cNQxKpptyug2XMgjZvECYwlcrOtmUyfSw=;
+	b=oCzLRuwi0BoDJ10FmMpN54xdHFkQ5wWlNCvKynWEhu3DXXKtR/CKtjCKgt2vPJNooOFaF/
+	mDKTYfa2uLS1MUB2N0z0VnraXAMRJjGojDdUjnWw7baLf90GMMamhtSxgc8muu06+B74QC
+	8EEBzyzwlFLRddL0Cneo7g9A3LJbSCY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/vmscan: mitigate spurious kswapd_failures reset
+ from direct reclaim
+Message-ID: <gxrh27cynibsmexsb6gahs2gd2wkicoiumzfyljbxt5mdleium@5rmx6bljxj3c>
+References: <20251226080042.291657-1-jiayuan.chen@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251226080042.291657-1-jiayuan.chen@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 7j75yrdw1k9sc564t5zy7jy5u7kxc91n
 X-Rspam-User: 
-X-HE-Tag: 1767737048-73468
-X-HE-Meta: U2FsdGVkX1/7SGErENMk9r8LxjeHXTdbY5+v1Qfvk9FGj89y8K+5JDp29sRGK2az5HwddTwvz3HeJcm4qKNo4m+FDzMYJ/svTKEWWbbsAwChCIhGJE8XHviW/9iObNN3pl9rFIcU8HBzfmSrfGxXZvMhjegongMMcC95/1vkJHFduA0KVDtYgAsqXLzo05nuyuqQtUJxHbZ5YXTaLAtFgS5WqyWvOWfBV23/rxX776mjh70HR0cryH1sj7RSWGcUhfy7O+386qXARKM9i7vgz/zfRtiTtSFm0GWk9lVq1NRPbcws6j9pNmP1CQxIelGFht1+UBCVXDpnT+/ew9mMMOcVW1rnfzHx3R55SxXCJIwmndr+RKCz9vnSdKhFPWQWpUziC7xjMR5KO5uHAAM1awFbwK8R0IjZ64n3mU0TrQA7KdajZRrvG0Dv2r3a27/crGrl11UDJXadZPP2OfQfQwKYM/0ZjTqZSb8vrIQ8t2ltkNm0P+SvgboLgj/lF6LdQZ1lAOH+KnwTG3mW2KKFaU5bWKynMhy6yM2fI9Bia2BNtwlKCFsFqwx+eRk27jxM5N7wyMak/SN3YYdMkg4Hkymz0BjzzQ5eY0BHs+GgAVTQqzPVMhEHXo2nCxir8ztmE7zr90s0Q0Iwj+s3FEXLF36XUyBnaPI20x5IvmOay2r17xjF37VrEm0HNzi/2FtqRzO5gd8KNlICBiuvpMHsM8RNSBaCelP3IukXv8pw4P+7tKvQK+34hljfyNzPOy1SG8RsVrOUw0cPBCJ0SlrAtyXI7pEm8yjcWoVPgxRSWU3uA33gFp5tWXYJ0X15kGBwP9SeGMkqDMhaOntWAhRDpwkjGHqPNQqO+z5kgOgRZNZN2v1wvlt3a3oA8AdpdRcsc9DNQ+7Nhrl6x4d5/0c2BlAFZlzIRjxp0lyz1QJBGys/5/Bzwf7cbzjHFXBzt6AeKtbcJvX7UxqO27EXjPZ
- 3AISmYno
- QJMRb5esYpTa7vM6kZzyzxQMb/a+47HVQ+juNVUvWPXP0Pcv4d0VXu7J0i3qQSix677EEXMj48Yw+uHifDVgiXNdjGvjCTVJzb8T8f+1wezAoAFx5qu/aCl3xkcQY6Yp1MkGLriPLHmaV+lb6cls9FJg8IUr3Ae5sVOyY+O/4nLKgoTnXM1wsa6cTWPj+vUCSglrEn5XwWAvrHh4usXMoJs3gvl3Dwox/h1F/VQapdFpVprjv7g0XAEuHdMWlFivMAh5LaO+EXoYPATYvyrw4MGvoMJnv43PokOnl
+X-Rspamd-Queue-Id: 18A051C0005
+X-HE-Tag: 1767737212-861733
+X-HE-Meta: U2FsdGVkX18oVJ7sRDin7PwCm5pIxjarquZ8kE8et4u9J325Z7PJkGhOcwVlQ7wehUZhjBARoP6xFdDs8BHr0vQjFB0il959vazmCQ78RM1X5AG33PZnIwh2BdaQG173ocjtBuHtFI5F92z6SGm/zgyAc+/G2FsSOLkSqPpehX9RM6o2Tu44SduCiAMCIJ0BMIYu03EI6lmOrXrTU39Lmj9K1PX9NFIi5bvirNUbizFP2NJm/186jqhHiQIj3uGY9X/iIkfRc5Q83yXDhSzaJ5z+oUWl0Hjokb3z4mKvz+ixQ2wbDTKDyEnPhlQDdSegPTUOJ4G4nydEZxfQlTOhXLU4y1YFanytr7DRgGY0xb9QLrB16f4bCA0Gg4udaqMnwzv9IV/kXYkfodhFHHxaA2XsGd/lZydBGoIgNVAdjBz8gdsuiQHTkOGvlOvUPMXWQjmIOrQ4hqMn6IG+7B0QQbwqkrACjzSr4Mmirz+aJnfsdNBCXwmMVCkLkbGRl8505hOhMjEXEPltY4AUgs5GCt6Pni4g4HyWnn1k+VE3r8IvAIFSavyd6dSm03iBifPg9VACbM6s2J8hHnnqTAhojzUXTsUqsxAK2ONl9F7LWLg0jZb0R+J+aIF3TBYeLZPjMWfINA6sgABT7THm0mQb3mSp+wHy8VL0/KBzSP6OzanZxAT61jrCgcHodGsrnf/gSqOdiSWNzmZ6C9M4J0x4X87CW6rp2QLBdbFThjh2RrrAGUMfHaP1l62Do39iX8FyxpNIxqQMBEUcKHrtVFZTXek+C+8vRFh1XN0LqIwzRPlAcD222NMiT3O4xd0A+QLqzPRrC9YBTD0Z9QGjJrIdqSPPh/RxleQ9tlzIqF1PlDeWtS7nRNKbu5A9eWzN9DGgLjIe5kCIPaMqfCbPxG/vv5s7orOqOykRpj/r+2vp7XHu7AwRg1krOu9lWNi/zmgP/lgRVyrEMkPY5AIt9ui
+ xeChmVGD
+ Wb/rxYFG/hhTASyF2jXcCHiTTAJfY/MOCWuJqtuOQfrxG8JrdLLD2n/ZR822xFc8iJ+TfW8zJ1jnHz9ourmf5jNkkZk0xdSHCqtrlcEYIZMnhxkc8WnWJAUzaQpqW+9xn2H4o68ZRLkZMIfFWhXpz+ttUiC4MWYiYrjg7zkcPQV562Y5lbghI6sMynHns0oLaouImVs/1iEBDNAwUxiyG9TzeUnyL4D+UdXLbSmv7mPpLfohRTS76SsLCu5ffXzDUBKqsLrJomGBrvQRV+47xoomIYOE7fYKLmZk3WG6v0o4c7gb/2EaX7O5t9nY1LWrpX+NnoVjo9oNGSt+nEEoB9eEoqQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,192 +92,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   d51d3f6765d29ab5cdc6a59ad832017e660d5add
-commit: b84bca52c8e661aa7da507a03cc3f6831fef2edf [224/226] mm: vmscan: add cgroup IDs to vmscan tracepoints
-config: arm64-randconfig-002-20260107 (https://download.01.org/0day-ci/archive/20260107/202601070517.0yxdw4WK-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260107/202601070517.0yxdw4WK-lkp@intel.com/reproduce)
+On Fri, Dec 26, 2025 at 04:00:42PM +0800, Jiayuan Chen wrote:
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> 
+> This is v2 of this patch series. For v1, see [1].
+> 
+> When kswapd fails to reclaim memory, kswapd_failures is incremented.
+> Once it reaches MAX_RECLAIM_RETRIES, kswapd stops running to avoid
+> futile reclaim attempts. However, any successful direct reclaim
+> unconditionally resets kswapd_failures to 0, which can cause problems.
+> 
+> We observed an issue in production on a multi-NUMA system where a
+> process allocated large amounts of anonymous pages on a single NUMA
+> node, causing its watermark to drop below high and evicting most file
+> pages:
+> 
+> $ numastat -m
+> Per-node system memory usage (in MBs):
+>                           Node 0          Node 1           Total
+>                  --------------- --------------- ---------------
+> MemTotal               128222.19       127983.91       256206.11
+> MemFree                  1414.48         1432.80         2847.29
+> MemUsed                126807.71       126551.11       252358.82
+> SwapCached                  0.00            0.00            0.00
+> Active                  29017.91        25554.57        54572.48
+> Inactive                92749.06        95377.00       188126.06
+> Active(anon)            28998.96        23356.47        52355.43
+> Inactive(anon)          92685.27        87466.11       180151.39
+> Active(file)               18.95         2198.10         2217.05
+> Inactive(file)             63.79         7910.89         7974.68
+> 
+> With swap disabled, only file pages can be reclaimed. When kswapd is
+> woken (e.g., via wake_all_kswapds()), it runs continuously but cannot
+> raise free memory above the high watermark since reclaimable file pages
+> are insufficient. Normally, kswapd would eventually stop after
+> kswapd_failures reaches MAX_RECLAIM_RETRIES.
+> 
+> However, containers on this machine have memory.high set in their
+> cgroup. Business processes continuously trigger the high limit, causing
+> frequent direct reclaim that keeps resetting kswapd_failures to 0. This
+> prevents kswapd from ever stopping.
+> 
+> The key insight is that direct reclaim triggered by cgroup memory.high
+> performs aggressive scanning to throttle the allocating process. With
+> sufficiently aggressive scanning, even hot pages will eventually be
+> reclaimed, making direct reclaim "successful" at freeing some memory.
+> However, this success does not mean the node has reached a balanced
+> state - the freed memory may still be insufficient to bring free pages
+> above the high watermark. Unconditionally resetting kswapd_failures in
+> this case keeps kswapd alive indefinitely.
+> 
+> The result is that kswapd runs endlessly. Unlike direct reclaim which
+> only reclaims from the allocating cgroup, kswapd scans the entire node's
+> memory. This causes hot file pages from all workloads on the node to be
+> evicted, not just those from the cgroup triggering memory.high. These
+> pages constantly refault, generating sustained heavy IO READ pressure
+> across the entire system.
+> 
+> Fix this by only resetting kswapd_failures when the node is actually
+> balanced. This allows both kswapd and direct reclaim to clear
+> kswapd_failures upon successful reclaim, but only when the reclaim
+> actually resolves the memory pressure (i.e., the node becomes balanced).
+> 
+> [1] https://lore.kernel.org/all/20251222122022.254268-1-jiayuan.chen@linux.dev/
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601070517.0yxdw4WK-lkp@intel.com/
+Hi Jiayuan, can you please send v3 of this patch with the following
+additional information:
 
-All errors (new ones prefixed by >>):
+1. Impact of the patch on your production jobs i.e. does it really
+solves the issue?
 
-   In file included from mm/vmscan.c:73:
-   In file included from include/trace/events/vmscan.h:554:
-   In file included from include/trace/define_trace.h:132:
-   In file included from include/trace/trace_events.h:468:
->> include/trace/events/vmscan.h:238:54: error: incomplete definition of type 'struct mem_cgroup'
-     238 |                 __entry->memcg_id = sc->memcg ? cgroup_id(sc->memcg->css.cgroup) : 0;
-         |                                                           ~~~~~~~~~^
-   include/trace/stages/stage6_event_callback.h:133:33: note: expanded from macro 'TP_fast_assign'
-     133 | #define TP_fast_assign(args...) args
-         |                                 ^~~~
-   include/trace/trace_events.h:44:16: note: expanded from macro 'TRACE_EVENT'
-      44 |                              PARAMS(assign),                   \
-         |                                     ^~~~~~
-   include/linux/tracepoint.h:139:25: note: expanded from macro 'PARAMS'
-     139 | #define PARAMS(args...) args
-         |                         ^~~~
-   include/trace/trace_events.h:435:16: note: expanded from macro 'DECLARE_EVENT_CLASS'
-     435 |                       PARAMS(assign), PARAMS(print))                    \
-         |                              ^~~~~~
-   include/linux/tracepoint.h:139:25: note: expanded from macro 'PARAMS'
-     139 | #define PARAMS(args...) args
-         |                         ^~~~
-   include/trace/trace_events.h:427:4: note: expanded from macro '\
-   __DECLARE_EVENT_CLASS'
-     427 |         { assign; }                                                     \
-         |           ^~~~~~
-   include/linux/mm_types.h:36:8: note: forward declaration of 'struct mem_cgroup'
-      36 | struct mem_cgroup;
-         |        ^
-   In file included from mm/vmscan.c:73:
-   In file included from include/trace/events/vmscan.h:554:
-   In file included from include/trace/define_trace.h:132:
-   In file included from include/trace/trace_events.h:468:
-   include/trace/events/vmscan.h:280:42: error: incomplete definition of type 'struct mem_cgroup'
-     280 |                 __entry->memcg_id = cgroup_id(sc->memcg->css.cgroup);
-         |                                               ~~~~~~~~~^
-   include/trace/stages/stage6_event_callback.h:133:33: note: expanded from macro 'TP_fast_assign'
-     133 | #define TP_fast_assign(args...) args
-         |                                 ^~~~
-   include/trace/trace_events.h:44:16: note: expanded from macro 'TRACE_EVENT'
-      44 |                              PARAMS(assign),                   \
-         |                                     ^~~~~~
-   include/linux/tracepoint.h:139:25: note: expanded from macro 'PARAMS'
-     139 | #define PARAMS(args...) args
-         |                         ^~~~
-   include/trace/trace_events.h:435:16: note: expanded from macro 'DECLARE_EVENT_CLASS'
-     435 |                       PARAMS(assign), PARAMS(print))                    \
-         |                              ^~~~~~
-   include/linux/tracepoint.h:139:25: note: expanded from macro 'PARAMS'
-     139 | #define PARAMS(args...) args
-         |                         ^~~~
-   include/trace/trace_events.h:427:4: note: expanded from macro '\
-   __DECLARE_EVENT_CLASS'
-     427 |         { assign; }                                                     \
-         |           ^~~~~~
-   include/linux/mm_types.h:36:8: note: forward declaration of 'struct mem_cgroup'
-      36 | struct mem_cgroup;
-         |        ^
-   In file included from mm/vmscan.c:73:
-   In file included from include/trace/events/vmscan.h:554:
-   In file included from include/trace/define_trace.h:133:
-   In file included from include/trace/perf.h:110:
->> include/trace/events/vmscan.h:238:54: error: incomplete definition of type 'struct mem_cgroup'
-     238 |                 __entry->memcg_id = sc->memcg ? cgroup_id(sc->memcg->css.cgroup) : 0;
-         |                                                           ~~~~~~~~~^
-   include/trace/stages/stage6_event_callback.h:133:33: note: expanded from macro 'TP_fast_assign'
-     133 | #define TP_fast_assign(args...) args
-         |                                 ^~~~
-   include/trace/trace_events.h:44:16: note: expanded from macro 'TRACE_EVENT'
-      44 |                              PARAMS(assign),                   \
-         |                                     ^~~~~~
-   include/linux/tracepoint.h:139:25: note: expanded from macro 'PARAMS'
-     139 | #define PARAMS(args...) args
-         |                         ^~~~
-   include/trace/perf.h:67:16: note: expanded from macro 'DECLARE_EVENT_CLASS'
-      67 |                       PARAMS(assign), PARAMS(print))                    \
-         |                              ^~~~~~
-   include/linux/tracepoint.h:139:25: note: expanded from macro 'PARAMS'
-     139 | #define PARAMS(args...) args
-         |                         ^~~~
-   include/trace/perf.h:51:4: note: expanded from macro '\
-   __DECLARE_EVENT_CLASS'
-      51 |         { assign; }                                                     \
-         |           ^~~~~~
-   include/linux/mm_types.h:36:8: note: forward declaration of 'struct mem_cgroup'
-      36 | struct mem_cgroup;
-         |        ^
-   In file included from mm/vmscan.c:73:
-   In file included from include/trace/events/vmscan.h:554:
-   In file included from include/trace/define_trace.h:133:
-   In file included from include/trace/perf.h:110:
-   include/trace/events/vmscan.h:280:42: error: incomplete definition of type 'struct mem_cgroup'
-     280 |                 __entry->memcg_id = cgroup_id(sc->memcg->css.cgroup);
-         |                                               ~~~~~~~~~^
-   include/trace/stages/stage6_event_callback.h:133:33: note: expanded from macro 'TP_fast_assign'
-     133 | #define TP_fast_assign(args...) args
-         |                                 ^~~~
-   include/trace/trace_events.h:44:16: note: expanded from macro 'TRACE_EVENT'
-      44 |                              PARAMS(assign),                   \
-         |                                     ^~~~~~
-   include/linux/tracepoint.h:139:25: note: expanded from macro 'PARAMS'
-     139 | #define PARAMS(args...) args
-         |                         ^~~~
-   include/trace/perf.h:67:16: note: expanded from macro 'DECLARE_EVENT_CLASS'
-      67 |                       PARAMS(assign), PARAMS(print))                    \
-         |                              ^~~~~~
-   include/linux/tracepoint.h:139:25: note: expanded from macro 'PARAMS'
-     139 | #define PARAMS(args...) args
-         |                         ^~~~
-   include/trace/perf.h:51:4: note: expanded from macro '\
-   __DECLARE_EVENT_CLASS'
-      51 |         { assign; }                                                     \
-         |           ^~~~~~
-   include/linux/mm_types.h:36:8: note: forward declaration of 'struct mem_cgroup'
-      36 | struct mem_cgroup;
-         |        ^
-   4 errors generated.
+2. Memory reclaim stats or cpu usage of kswapd with and without patch.
 
+thanks,
+Shakeel
 
-vim +238 include/trace/events/vmscan.h
-
-   205	
-   206	TRACE_EVENT(mm_shrink_slab_start,
-   207		TP_PROTO(struct shrinker *shr, struct shrink_control *sc,
-   208			long nr_objects_to_shrink, unsigned long cache_items,
-   209			unsigned long long delta, unsigned long total_scan,
-   210			int priority),
-   211	
-   212		TP_ARGS(shr, sc, nr_objects_to_shrink, cache_items, delta, total_scan,
-   213			priority),
-   214	
-   215		TP_STRUCT__entry(
-   216			__field(struct shrinker *, shr)
-   217			__field(void *, shrink)
-   218			__field(long, nr_objects_to_shrink)
-   219			__field(unsigned long, gfp_flags)
-   220			__field(unsigned long, cache_items)
-   221			__field(unsigned long long, delta)
-   222			__field(unsigned long, total_scan)
-   223			__field(int, priority)
-   224			__field(int, nid)
-   225			__field(unsigned short, memcg_id)
-   226		),
-   227	
-   228		TP_fast_assign(
-   229			__entry->shr = shr;
-   230			__entry->shrink = shr->scan_objects;
-   231			__entry->nr_objects_to_shrink = nr_objects_to_shrink;
-   232			__entry->gfp_flags = (__force unsigned long)sc->gfp_mask;
-   233			__entry->cache_items = cache_items;
-   234			__entry->delta = delta;
-   235			__entry->total_scan = total_scan;
-   236			__entry->priority = priority;
-   237			__entry->nid = sc->nid;
- > 238			__entry->memcg_id = sc->memcg ? cgroup_id(sc->memcg->css.cgroup) : 0;
-   239		),
-   240	
-   241		TP_printk("%pS %p: nid: %d memcg_id: %u objects to shrink %ld gfp_flags %s cache items %ld delta %lld total_scan %ld priority %d",
-   242			__entry->shrink,
-   243			__entry->shr,
-   244			__entry->nid,
-   245			__entry->memcg_id,
-   246			__entry->nr_objects_to_shrink,
-   247			show_gfp_flags(__entry->gfp_flags),
-   248			__entry->cache_items,
-   249			__entry->delta,
-   250			__entry->total_scan,
-   251			__entry->priority)
-   252	);
-   253	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
