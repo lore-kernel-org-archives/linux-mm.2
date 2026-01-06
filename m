@@ -4,133 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6668CEFD01
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 19:46:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D9DACEFD01
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 19:49:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCDED6B0005; Tue,  6 Jan 2026 14:46:20 -0500 (EST)
+	id 9E86D6B0005; Tue,  6 Jan 2026 14:49:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7B766B008A; Tue,  6 Jan 2026 14:46:20 -0500 (EST)
+	id 996366B0092; Tue,  6 Jan 2026 14:49:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA4F86B0092; Tue,  6 Jan 2026 14:46:20 -0500 (EST)
+	id 877C46B0093; Tue,  6 Jan 2026 14:49:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B79216B0005
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:46:20 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4EF328C959
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:46:20 +0000 (UTC)
-X-FDA: 84302570520.30.32762BC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 88231180004
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:46:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LLqCeCwG;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 75BC56B0005
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:49:21 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1AFB3CFBEF
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:49:21 +0000 (UTC)
+X-FDA: 84302578122.06.1BDFD11
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1D183120011
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:49:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=a0p91Y5X;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767728959; a=rsa-sha256;
+	cv=none;
+	b=r1vysuL7sYck2f6VDsj8A2U4fbXSp5NZdOEr7mrh0iaA0tPURGYBQCnj73b49MulhgVb8e
+	HF5Gh1N1MsIhKL51lE72pn4lDOfaECDoQRKBdtdL7Fa+Wb7UchH3JhU9J3lBFW9JPc2rgM
+	mYQKV/x5/0fBURQjSPpYrhu7pb4h08Y=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=a0p91Y5X;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767728778;
+	s=arc-20220608; t=1767728959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=URX669MPjltVUJFI/791Isky/Jh/x/44RN7jyDVOBjg=;
-	b=LpC9L/Q1BwUpE9x6Rc98WPeK2qx6PnyAipVj52M7J2OrubwreY5kHF6piFzbpecH8L/iJX
-	k7nwVPAkdfVZ7nf454weaF0ukujzynyoJ54xKFVgvlnQRZc0+GCVZG4ilzSsxNE3JlTVqF
-	pJYlxAVzRu+BKweh6Zf4fLwAjSey0qI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LLqCeCwG;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767728778; a=rsa-sha256;
-	cv=none;
-	b=4jZU7R3q9HFtfWcbw4vP1XkLQWUC9LWpCGqBp0VcUxRKz+DWj2PZJBIY7gzEUAFVnddM8E
-	YcIPdo/4V9lwh5Nkawjztyg7LirLox2AOjowZVKb+7SPx2ePCSV77QpV/8O6cFWFVjyNLY
-	SW4eyE1wlbVqI6qljzCbjgCBtxYtT0c=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F221260007;
-	Tue,  6 Jan 2026 19:46:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F2EC116C6;
-	Tue,  6 Jan 2026 19:46:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767728777;
-	bh=dvajO2fLli8SqFjSpkHtIoV/jmZ3HdNgl4b9tT1yC2k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LLqCeCwGP8hC9Mq3Z1J+aX5sDpBXFVT3fM5KhxVGNm/YoWbAvXOLR5QWiwM/NdJ/e
-	 lloR41ZjnCzU6fVVURReq9frk0WkR/ZFz9AG9vI3/oNuDJPvrGBvTR4pZKQJ8JvF4t
-	 LkGknZkIMAnHEztwWly0yEClYlZ+PBg95A+vtp4SKJKgyvke7+L/UMAxJeQAeeHOBZ
-	 AK+L7lucRmk3igoRsjmtpIu+c76SJPKDWD0pEWYho4lW7bwz/PKZ4Nam8chM0m5amV
-	 sCK4iLzoZlkWFXXmA5HyE0Ur9hu8bfv+r9IklZsC1WA1YCD3gehYNDzusHeuTW2h32
-	 0omxg/6gsbFFw==
-Message-ID: <1690da61-412a-457a-9bb4-1135838135da@kernel.org>
-Date: Tue, 6 Jan 2026 20:46:14 +0100
+	bh=rHkRaP2tx80Uh6Mi6taIl9DuPGNq0u3ufZRpaBi3H/g=;
+	b=zkn/+ODLYKM/51ZE9vtLRG1/DyUMvGuECuIO2YwHD9DSzK9SqHYJ79PSEYt6DbfjSFx0CK
+	YwZ1Lx2UqjEo0a06oEiXfc8B3IlBwTm7NnZTXa4a9tSgvrkB9iJdXNo6QSCclEqjBIaZ+4
+	iALpGgkjAEEsFW7TBf5E1LjKkWy0nBw=
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-42e2e77f519so819621f8f.2
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 11:49:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1767728957; x=1768333757; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rHkRaP2tx80Uh6Mi6taIl9DuPGNq0u3ufZRpaBi3H/g=;
+        b=a0p91Y5XYxzOR5bbEoCgkTveAy1Naw2R6UcpMA6MhRmmLODK+aDCqMQKYfXVV10BX9
+         pumptWTMReZAwr+jtPUEq0e9ZccAFeu1k10dXGeIoAkRRW71D0agFkdGCeUnR02+52So
+         FftQvcaSy7To6FT39U1IgsrojKD0JPQyTjba+c1Ceg4o+zSqpZXuG3xXR2gmzLYzWu4v
+         JN14c65DTIc/XVKR+oP0QMV0iR7pDwxGl+KlyS2FXqqMSCD3728jmJz+MhSVNSgMLH16
+         GTHxkec5LT1mT7+ZWHqNoxMqTc3ZSFGLA56I97R0b3ZsvBAeuXbuCeTFKBVdP5bUxbUZ
+         Bv8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767728957; x=1768333757;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rHkRaP2tx80Uh6Mi6taIl9DuPGNq0u3ufZRpaBi3H/g=;
+        b=N6Np9m5lW+YASSJj+UwKZBZdYQvxQprZqqEKSF98fPZrtrup8xQGL9Ih83cOKPI9VL
+         doNAVdqV1Z0joD/DZ8tBwSlWXFF5uyKbRZtXDhDH1+yL4B/MEKkgcBCZoi0h2lFBaAsX
+         jLcSeH1gPPpBkIdbc25HLS7VG5eBga9B3dRkKD998x0JKgVSJTJZAqMUaXwoVLyNpyzP
+         lUWT2XUVxBc58J8qyghYSgwjuhToLkQSFXSYQIyodefhXrfMJCzxwuXBGARStvNOuVUN
+         Mg1Pd47Cx890WSw4KYR2ay/B8clLSucd35E8OTftmXQ4B8dbetarqHds3kW4v53s3gAl
+         mZNg==
+X-Gm-Message-State: AOJu0YxOJZ75CsTSEGZdflbLCeWQrwPUDy4HNqLoSaFJdcH3zyaa5MIE
+	qcVGnXKPjbwhODvTFXvULfSKLTiF6wAZH3/xuYnkEpsPXFwnWu1xQv4Ht8OMXbG/GQM=
+X-Gm-Gg: AY/fxX5bkq7eSrw9hXDpCrhM/N1Qr6a82QGjK9neDS6GeQCAHqHiac9cOxORGmye4vG
+	aOMQraF/iN7Jc6VLPbRyZe/IAqjvO/M0aZnaPNmpJfD8KNj+a44JEC+gHX6l9s+6n6fScD5KmpR
+	iAwp9hNx2TnmU/SorhPz2H4OMPjFY4Nov9zUQ/bS10yxZyzduNeG8EAO+clCF4uWiJIXSrihTPt
+	H1PXAiW3d7hx3rYfN3jhHO/vzTq+wDUC15jKDTMVwpPF1smjT3hI9GDhsFOsC2yFDSzJrVoyYPO
+	QpQtcejmHqPyl9WlbwENIKhon23mz4clANLK2xO9dIN+7ShGxvvwfrkn12ozn7pQXXryiFf6uWA
+	77w1adIocF2lVEMLj1q4EWd//rHF2+XPZQcs2OIgOFNC2ASFpqMxPmb2GYBHfCz+W4U51AS34zV
+	lioErHhtw9CE9PhKgFBwWYreYc
+X-Google-Smtp-Source: AGHT+IF4JLpTosJ+ky8JQbfIvRxievBhMEnNPfm14TESXhXn5qIqhxbBa4jTREutDNhaOuZNhuKI+w==
+X-Received: by 2002:a05:6000:290e:b0:430:f704:4da with SMTP id ffacd0b85a97d-432c37a74dfmr265600f8f.58.1767728957407;
+        Tue, 06 Jan 2026 11:49:17 -0800 (PST)
+Received: from localhost (109-81-93-164.rct.o2.cz. [109.81.93.164])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e175csm6163158f8f.14.2026.01.06.11.49.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 11:49:17 -0800 (PST)
+Date: Tue, 6 Jan 2026 20:49:16 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	david@redhat.com, osalvador@suse.de, gregkh@linuxfoundation.org,
+	rafael@kernel.org, dakr@kernel.org, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, hare@suse.de
+Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
+ blocks to zone movable
+Message-ID: <aV1nPG1BgBQDWkjE@tiehlicka>
+References: <20260105203611.4079743-1-gourry@gourry.net>
+ <aV0kzBxg57Mlw8mx@tiehlicka>
+ <aV0-ChclC7SCrxcg@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/fadvise: validate offset in generic_fadvise
-To: Kevin Lourenco <klourencodev@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
- Kevin Lourenco <k.lourenco@criteo.com>
-References: <20251222141817.13335-1-klourencodev@gmail.com>
- <961095cd-59d2-454a-9b97-493d12f296a1@kernel.org>
- <CAFveykO9tAhGnKCnSD-2_wt3QxMTNF3sW20NGwnPK-3yMd__yA@mail.gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <CAFveykO9tAhGnKCnSD-2_wt3QxMTNF3sW20NGwnPK-3yMd__yA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 88231180004
-X-Stat-Signature: mo3zcjatozjuyguuq3qrmb56ox6cxke8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aV0-ChclC7SCrxcg@gourry-fedora-PF4VCD3F>
+X-Rspamd-Queue-Id: 1D183120011
+X-Stat-Signature: histi7fqzrx3zynsaktfhwdxe8w5a589
 X-Rspam-User: 
-X-HE-Tag: 1767728778-903172
-X-HE-Meta: U2FsdGVkX1+Mrw6jgVTAUu865IyQcigZKkztMVoEFpVfsTCtAVrIpB6JZchQhdFzSTf4PxbdOiSMojbw+MfxSECs2IZ1W7H4SWfhq3gMNjEOot9u1o33L96C/5LedHtFw6gGT213Dc5VnNqq3tk3YfFeJQbsq1ImMDVUZKowL8zhkYtoZglQe4CO40efHlvgTjCQZhlMlTc0SyKdBnaLRcNRAYa/htSP4lRUov5l+j0zDcdnsTTmweQByVKtEv6bejY1vMUeJkBTJsm3bws9UMonaQMcmkYKtVzq0kJGtko6GnICa+uusGTF0TBI6KkStwY3zf2TAscv0trrNVGW63ZkNTKPJoFo66iGXvoUHph4EtRPfRSQk5JObD9zIdEoxxHmwBgZk06Pipf4oeRhDxqgvlvtavnW227IHea0jCCLha4csnzHNCt2y2ZlfRuaG12s59Nos22DdvUoWP0eJPTlD7Hl/f1OgFtqACtja4L79L2uz7dq0eGWLZb1gIoUXOhd6U5zS721UvcstZAPhutlsDHkZN9eGIRKQMlyuHUTZrTVwvTB/b3yjghFiLmQh6uh2MuUVGdMlOaL3lm4gcHLnDfsCJCXls9LfaUagopPispSaSQ7C4bxYX4hfSrnrCEgV4QjKkRa8rag9rQ5vpYtKljoUKKnNeIOv0lnw3XO6XmIAzGKOuPp52zAwb9n6J9lPLSgftEqcO+KuTCSq4f8CP0A7Qrv/J+EPrqF+Da0vUuYsCfwkl4nkMpREPUpVAX14ZsmD8MYIBk/DqPtNSB5u2FRPYc+ofX6xxuXXCvhRYg4q7wxbg8P3CKt7FHI9nMrBnTN82fmGW9ReGP2BloOrdY/OogJF12KdsXHWFT85eV9gr6jgPoEeuq6oFfGMi4518dabwNbxbyo/eSwlW3FM4TlIJUV7Pjn3dk7adYG55OvB+yk4lzcUsOdB3Klz/GPn7rfcz1rJwuHMMO
- qBIQpxem
- Fo/inSxlcIYB8l1OTt9xpDuvinnzev5hUhx9ej/1IOFj/uuOFiS6i9QKZgLTRLHGcC54tXGFk3KuFRJxsMmIEVRbaiZBTPzItoq43pZhwTHcevRpDa6rBvMu84QO35bTHiVwBAg9+2YVvWS2h0GPfoPmmmA1BxSY+JqqxtFoIUxbCYu2kCCnJNv4NS6pl16pRgAdGQGQZedv2nXATRIaJPFqedRPZN1B4ne/Qg4FetUVfnzyp7E0PEz4K2V/0lFB4gi3FGLLGeURCihJXIIw5k/Mu2aNx1fcNsfXXwxySRfSRFwJwhXL7CassCabVLE46yHnp17ijKuMXNJdIoS1VygFNDOp7GAVHSPAu4RRG2dacck8dpLOuSlxfsMymU3BrI+o3elLNWAdxwnXSK/4CEJzGC+WkiDq4rNNkulx3ajuAISKD2XaWJEdvp/JUBg3+4JBe7fQ/3nee73jkuKH1ehOczIGswITpH77bqI8VXF73iX6ko3cHxkuNf0VOxHnq9KNG
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767728958-161504
+X-HE-Meta: U2FsdGVkX18u7k0i2xdv1Fi8SpAGTnSUEh3Ghz65F0UqV0Z+qXCAgCb1f18rRDh2c5H2JQW84h+8Gb+DtEXdkPmYwvXyAAbvxxBKGV7RHPnLvmsj3gOOTBk/55KiQJOJuG5N7ZdmduF0PkekrleSWaZhaBNfW6mVw64S5LMY9OmJdUa365MCcLJfWgQ+PAP6OjPFWK1PpjxyQCupPA4MAjSLrRyT3tSPZnLEiqQWvnd3rhvQdUGsWMTx3kr+0Xscq7kT0jwsR0i5P5wJxe3VkGC5t1PqMxe8gXx6Z3JOUz0Bd1MCtMCZ4EBDuNtYV1YZXO7OoDAOa8yvRogsip0xUtYbfp+KyAyWLBnNYz5DZoXDKeKyn79Z633vwsjj6iVgkOaNVTwm6iNUcv3jww+Fb1I3q2a45btcW8ecKXa8BEzKqzr8tGsgLmBM6xesQBEfzF+sn+Vxfpb4kSHx8pRNjzlRMxOVaIrhj8AdSzXrXt4qmz8hKgXh5O09IGTGv6sMPVwHILyxUiHpvQfZ1j2kgDYm3CBqZelFjDqWDyX0Hc8gwiCAlB660Np65dSKZBeQyP22dNtLcT43b85mxAHtkE8z9bm90afJMXK/5DY9W2jhU6iOyu/xDZIDHuWtCrrRQh3rgbEUB9X/xm4H945N8dd5cj3g6QgDrBsyGnKE7AbVTNVdZgvEbrxLvBLBMh7u2KbOER/5tUIWiWe28rDvmBy9XuyrzZVMdgCvTLMPq2wLrgi1ZR9CISDWc6pVkN9Gr5YFylxh5ISjodzcSYQ7WAxZk8IJVx0G0cEJvCqxqGPrnlqPsEkRUd5K8666azPmFpJMDTX3YEKfrPic49dnaMqP3UYgZt5Ku0SBvpoVT983mNHmc7Uyc/QR8jzSVbmwQJ0ZDRLob9wFGmW0eXb9WJMQmZVBKXaoGwaZY+J0pocduj/2CtFv1OibUnQ5JQ/p2pknGM1O+clgyHjcpNA
+ tJAS1obv
+ PA7AmZUi6DrfIa1kTgSQHx5Wd1wazI8IGtWG/loqkfofUURpjgnSvB/soQES8DaqMd4fPczV+dVoDnsmeS6wWnWMJ70PZYE99Kzad89OAh23CYS1Y4MhHal18LwoWXRxE1tUixy7/BMZ7ei14tWm1aWWvtj7AGrbLRd4x7iSu/fDpE00LjMkNPtS81YnnNtptCyWhKIxPo/xeqfWCRTRRrt0hcwPOIbBYHBQDqUq5wng3WQWyuD/5YoGVcBtvJepNStcMknAwVAaLErlorTWJRGEqHm8yJxowiEniZRS8I9nfw90IM9UFg8h51eGH0QRFpf5d7c7nEL2nqp/WYHjmf5qWd6YPQ8+Eo30w5FT5yuhnsdl/V/UypL8xBNsQcp9eeKE242CmtdNCPFQ+QeigBEwg9A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,82 +123,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/23/25 17:16, Kevin Lourenco wrote:
-> Hi David,
-
-Hi!
-
+On Tue 06-01-26 11:53:30, Gregory Price wrote:
+> On Tue, Jan 06, 2026 at 04:05:48PM +0100, Michal Hocko wrote:
+> > On Mon 05-01-26 15:36:11, Gregory Price wrote:
+> > > It was reported (LPC 2025) that userland services which monitor memory
+> > > blocks can cause hot-unplug to fail permanently.
+> > >
+> > > This can occur when drivers attempt to hot-remove memory in two phases
+> > > (offline, remove), while a userland service detects the memory offline
+> > > and re-onlines the memory into a zone which may prevent removal.
+> > 
+> > Are there more details about this?
 > 
-> Thank you for your thoughts and recommendations. Well noted, I will
-> now start limiting the commit message to those specifications :)
+> The details are with Hannes, I was just recapping what was described in
+> his devmem talk at LPC ("To online or not online").
+
+I know of policies to online newly added memory blocks but I am not
+aware of policies to re-online something that has been made offline.
+ 
+> > That being said, rather than movable_only, should we have a mask of
+> > online types supported for the mem block?
+> > 
 > 
-> For point (1):
+> I briefly considered this.  I went with this for RFC-v1 since it's
+> fairly simple and because movable is really the only zone with hotplug
+> guarantees (any other zone makes no hotplug guarantees).
 > 
-> I see POSIX definition like this: "The byte position in the file where
-> the next I/O operation begins."
-> (https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html?utm_source=chatgpt.com),
-> so what is almost certain is that a negative offset makes no sense /
-> there is no hidden mechanism or anything.
+> It's also significantly more complex of a change for questionable value,
+> but if people see this as the way to go i'll happily pivot to that.
 
-All I find in that regard is
-
-"... starting at offset and continuing for len bytes. The specified 
-range need not currently exist in the file. If len is zero, all data 
-from offset to the largest possible value of the file offset for that 
-file shall be specified. "
-
-So, something with a negative offset sure does not exist in the file.
-
-Which makes me wonder whether we are here in a scenario where we would 
-simply ignore everything "negative" (clamp offset to 0), simply return 0 
-(because it's not documented to create an error), or whether we are in 
-undefined behavior land and can simply return EINVAL.
-
-> I don't think we can
-> accidentally break users, my intuition is that nobody ever
-> intentionally passes a negative offset (probably the same for len).
-
-Some programs do stupid things, you would be surprised :)
-
-> 
-> We could rely exclusively on the user to ensure the offset is positive
-> and follow POSIX recommendation. But since errors can occur, I think
-> it can be hard to debug where a simple test, the same for len, could
-> have made their experience easier. I think this is also the path
-> FreeBSD chose: https://github.com/freebsd/freebsd-src/blob/main/sys/kern/vfs_syscalls.c#L4918
-
-That's very good thing to note!
-
-Interestingly, they also check
-
-	offset > OFF_MAX - len
-
-So checking that offset+len will not overflow. Do we want something 
-similar? (check_add_overflow() etc. )
-
-> 
-> For point (2):
-> 
-> Since I think nobody intentionally passes negative values and since
-> that makes no sense semantically speaking, I think we can consider it
-
-Well, then why document negative length? ;) We should be as clear as 
-possible in the documentation.
-
-If POSIX would have been clearer we wouldn't have this discussion :)
-
-> unnecessary to update the man page right now and only think about it
-> in the future if a negative offset gains a new meaning, for example.
-> 
-> Wdyt?
-
-Likely we should really update the man page to reflect reality. 
-"Starting with Linux v7.0, posix_fadvise() will fail with ...".
-
-Given that FreeBSD rejects negative offsets I guess we are good.
-
+Sure, I wouldn't push for more complexity just for the sake of a
+theoretical extensibility. And I have to admit I have't tried to a quick
+PoC to see how complex this could grow. I was hoping this could get into
+a simple mask for online types with default MMOP_ONLINE_KERNEL|MMOP_ONLINE_MOVABLE
+and special cases just choosing one of the two and zone_for_pfn_range
+checking for the compatibility with the requested online type. But I do
+appreciate there might be some obstacles on the way to achieve that.
 -- 
-Cheers
-
-David
+Michal Hocko
+SUSE Labs
 
