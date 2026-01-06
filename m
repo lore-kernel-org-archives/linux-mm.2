@@ -4,116 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E33FCD0431
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 04:20:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A8C6CD0435
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 04:22:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 851B66B008A; Mon,  5 Jan 2026 23:20:41 -0500 (EST)
+	id 8ADE26B008A; Mon,  5 Jan 2026 23:22:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 819666B0093; Mon,  5 Jan 2026 23:20:41 -0500 (EST)
+	id 86F206B0093; Mon,  5 Jan 2026 23:22:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 769E66B0095; Mon,  5 Jan 2026 23:20:41 -0500 (EST)
+	id 7A6556B0095; Mon,  5 Jan 2026 23:22:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 63F0D6B008A
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 23:20:41 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DC638C1A64
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:20:40 +0000 (UTC)
-X-FDA: 84300237840.25.5009EA5
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf25.hostedemail.com (Postfix) with ESMTP id EF3F8A0007
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:20:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=lJaZAFrS;
-	spf=pass (imf25.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.173 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	by kanga.kvack.org (Postfix) with ESMTP id 63EF96B008A
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 23:22:54 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 297C98B75D
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:22:54 +0000 (UTC)
+X-FDA: 84300243468.02.5BE6B18
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 417F88000B
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:22:52 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=XkIhCy3V;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767673372; a=rsa-sha256;
+	cv=none;
+	b=X/RfdxldCzQaF46UlAzki5z8KJh/8k+jeXEwKf5RNJ64iww3KMh04/g6f74jCJ6tCBzryj
+	pdt+cRWyGVjC0Cb9/igoga4xDGyrct+L9RyKNPY/xXZWOy8ujgmXtJ3TZe1IQViOo6TSFT
+	sbZNFer9s4gGJ4O5dzIiIfcYG8VWxMs=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=XkIhCy3V;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767673239;
+	s=arc-20220608; t=1767673372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5nR20EMIwFVHhIbY46YlqFgmKZSQYP6FzHYmAxvSlSs=;
-	b=BiO4dUJerz/Imyhvu2JRVlryjeY1RO7AxaK6/gB8NF8M6REHw4fe1hwGCeFT21M078xhBc
-	SXlkjtkP6ONM7uITURJsDsbkYBBqR/TWrLV0IGG0S7kdThKJkLvQaimMdNBRL3UaLEtemF
-	BJ6lbMwoeO5Z3sFq7rHZpRWzNaQeNsA=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=lJaZAFrS;
-	spf=pass (imf25.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.173 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767673239; a=rsa-sha256;
-	cv=none;
-	b=CK+Hkxx2D28R1wwdZ8y0RcSOoYGd13pWtS10h17hR7gZAf4O3TwNnqRfdcnKg6SP3IGpUX
-	HCqCriBHDq0Ry+4GOYeSzNdoLUmVTtZyibUbLs0t9YDJGpiP5YIHHPIZxVvf7vZnlM5aPK
-	+epftnzF9R6a/OBEAKaFiZjk1QA7Mb4=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a1388cdac3so4973465ad.0
-        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 20:20:38 -0800 (PST)
+	bh=0eYUlJ+g3mqH10cvjONqq5/v+TZqim6meEDN5yOwo5A=;
+	b=oyCLJTaEBPDKqUXxxZ/sSp29t+b/DK7xFKUAtPrkh11qtQM1JYOur+3JkSJR5XqwYTtktB
+	iqaECOEXA3W3thPfxd4QQvRXGhLJgLrMNc0Qn7g2p3mWCqWMbvG4LgPCSvnS/jvuQCj34O
+	J5t+cDkOnLHxqXLlokN035uKQ6Vu+2E=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a12ed4d205so5694085ad.0
+        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 20:22:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767673238; x=1768278038; darn=kvack.org;
+        d=chromium.org; s=google; t=1767673371; x=1768278171; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5nR20EMIwFVHhIbY46YlqFgmKZSQYP6FzHYmAxvSlSs=;
-        b=lJaZAFrSWH0LvosIQi5kIhxdizHFbEbgd+t4TtDY4exxcuTJ1TsqLe+5tZ1WBMLEoU
-         +psGIVYpTfxIg6vhS0n1pMSYYsdoRDK0jLvy95tZB+GiIIbxLkWcFEPU55oUTGabtqS0
-         yWQIlBztXXtUsmFMzSZyA3aQ0itomNTzQkInk=
+        bh=0eYUlJ+g3mqH10cvjONqq5/v+TZqim6meEDN5yOwo5A=;
+        b=XkIhCy3V2KMSlNIroYav9B7aRJzwRtXLTM9AeZ6Iq5dfddY3e+M6tQKpHwB7kxLXmk
+         tJ7cHjJCieZZywzxHx/t+pZROkmDsKnnWJ+UCey4SUgriR3PtHeNp8gEQNblDHRa8drd
+         lyFlvew1VInym+MipGBRS/MGy33xjmCE9GsiY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767673238; x=1768278038;
+        d=1e100.net; s=20230601; t=1767673371; x=1768278171;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5nR20EMIwFVHhIbY46YlqFgmKZSQYP6FzHYmAxvSlSs=;
-        b=U9FRdos/p8sV6Vb8tV74kDywt4YE7PGJ9kX835UFS76pNoyYG0uHfUMPIyT2zjjBR0
-         SI9zetDQpLbURif/KePKRktWlcSmCrx+ZRiPkpNcrqoBzM2svULTK4TRZuoZPzI8Di5K
-         F6uGxGloYSAmyY21CYLzD0oLjDwUIySCC5eD1Es8VhzmrrSmnb/V3Vv9Xm3gwRMhX/s7
-         9FifTNtDPqQVLy/W9CfEuIRTr2b8P/iH6tmmEdzKZ0SUnzJiH6gwp4YX669TAnqZDWfK
-         EyGdfmPUE6CRh9gXKKe8bEL/ISCtkuWp4pndPb3CkbjxiW/D8TkAlHiRa1TMJH7EFFnB
-         es/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXb5rPTwbY6y6hpDOEOUH/1OZx8UGndeinqRFA3v2Z4Jp2QEREr6AkxbWb2D5zOhh4yY2odACQS7Q==@kvack.org
-X-Gm-Message-State: AOJu0Yw0jRVovaNBtagQ6if/tbKESaDMOsQMzichoP+jrvlpPVAOBP+u
-	HHA5SPjF3SH8Dc8q01wGwEAouC99CV6+KmdQooi8AdN2G71NQAgHn47kqfl5RrMsqg==
-X-Gm-Gg: AY/fxX42sxQdSXVnmsoZFZLpR6fvK0TVcFswBQz6DPRD4zj08/YfTFdjwrmTmMtJfws
-	qm6djyOPBivZKyBvCw/yJ/y3DOQG9RP7yfeHG2KOfeJowd7ZrXFZxfVeVHjanriMAD02qwePXjO
-	+YMrxDwN7feML/JPkjGX/5UB5dPhxNofFh4magOWl0qNM17Yxc2lUufQxGA3Ywj1xXJj5/S9T7A
-	LS1uu7hTlZ5CLDQGc0zaQzvH0HdWzJuS5WqFDVLsJYKplLmHv3UE5gLlMAyEmJno49MZw9kZm/V
-	dqrPOdOO/H7nR6P38qnNgVqR+gC3hi3aL+zwhmH5GmXSwVNYI2vkwOt/YO4AgEj4DylVrArpgNO
-	K+/hHSeyfIbQIE1Tjh+E9zt+G470r07yFdEkGF5NXYAV2xDDl0PbVyt19WGymkR4+ir0sbASFYL
-	hZTCEPeq6bTqtFM/w5tjKUK49GZ/IMSFPPTFlrWXtzUYBRYUfxFpTiPO9uTLxphA==
-X-Google-Smtp-Source: AGHT+IGNnwivwQjfmTqXJ2XmqpNnhVh1B7HdunE/wMghXM5//G0Q0PvZKIaZhQtM/yNZ5AiSG216ew==
-X-Received: by 2002:a17:902:c405:b0:2a1:3cd9:a734 with SMTP id d9443c01a7336-2a3e2de111emr15868395ad.43.1767673237876;
-        Mon, 05 Jan 2026 20:20:37 -0800 (PST)
+        bh=0eYUlJ+g3mqH10cvjONqq5/v+TZqim6meEDN5yOwo5A=;
+        b=UtJ9wtHQ0J1N/0ylWzSlXad0Ymdb5uGMxwcxunO62i0MH3szmYmh6b3pC3oDS7ps29
+         AtRCpm5QSxKhGEiaos2tKrjv/oSkRl1BDzBzvSSh2l1bd9AZRkrioT6C+sE4zAe1Ygjo
+         zuabPHfVmFeVGjDxooi9SrMUfwCy+7FQcaXL0OglLZ53FAhE+0pDjNB0hJL5iuYFCt8T
+         D9E6+l0yC7Vo92VbSHux3wnBLOE/XfIJ1bfb85x18zH8xr5cDd03SWksFQgYv5W8R7d0
+         KtyOg6Agen5nCkXWq0g75NiUV+Ak5QzqOCB0D0skr8EGXwWJedhOvgQWzqtHHFOiIckV
+         cqdg==
+X-Forwarded-Encrypted: i=1; AJvYcCXszKaPkQ26j07OlDQ+tskCiHZ9fq/daS8Tw/ZowAcdm+BMzvtT25heYEE/cwkVrhEQxNdkE+WEUA==@kvack.org
+X-Gm-Message-State: AOJu0Yx0dReyLkZiUB1yhnbPIzL84OnrYCsMtHuF5ofT7rTJHj9jK16d
+	J3K0efWdfkoH1pF/BjEeXdhZ9ImWYhwK+wTAAwAr/YXlLqffVCI86c0FxXYe1uY5p8CxjJuYSy5
+	F5E9Mfw==
+X-Gm-Gg: AY/fxX6pE32baSL+cSe9c1snPm2Qvs+aVkoIDlENP2dIT3RkDqDC1zaCRX8tz5/pcnz
+	ILmCi3ruPDQMJLxewRDZsfBcVGKib6Ym6/rQ3Ftd+9Tn2FKd9Hs/6mJMR3dB8a/SeGjmL5DvrYY
+	nv1deuJWYBa5tZ0GK3peJikTBYiuixl7SNHBWifpTdtZJoC3R5oFP+mlPyukst9JM50zqppbnhm
+	maLMGnzJOz++cPhswnWTfsrZRAHHOCKLO6OYHvWNlxAOu45GhuuujAmKLBicFvxrQLAhF3EuuIz
+	WnNL381OXA/pkus37ncUadA9SkCEJJ+APZvhzWBLxSu+crLiD0K/A2hH9lFR3wRLLT0mHepqGcB
+	wc7gJWua0A2lmz9NcE2JlPVJuEWwPLt4h8amR3jxtOGR69r3U80vhfEqDZNvhKD76nV1fM2hOk0
+	n+2dcwSGPPYCjxGJ9vmTohGsGn09K/PZzi52E/oby+hXxUsjji0kc=
+X-Google-Smtp-Source: AGHT+IH6aD3M2KLGwHrxb7oY8wT35Z/B+MT2jOiIa/baPMIX3xBc4ojfmp4wSS6LiWAuhE6KHB+zXw==
+X-Received: by 2002:a17:903:2ec3:b0:2a1:3ee7:cc7a with SMTP id d9443c01a7336-2a3e2d9ddf4mr15028195ad.17.1767673371138;
+        Mon, 05 Jan 2026 20:22:51 -0800 (PST)
 Received: from google.com ([2a00:79e0:2031:6:f5eb:5af6:e88e:8a77])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cd4bd8sm6665105ad.102.2026.01.05.20.20.34
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c3a303sm6970685ad.5.2026.01.05.20.22.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 20:20:36 -0800 (PST)
-Date: Tue, 6 Jan 2026 13:20:32 +0900
+        Mon, 05 Jan 2026 20:22:50 -0800 (PST)
+Date: Tue, 6 Jan 2026 13:22:45 +0900
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>, 
 	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
 	Herbert Xu <herbert@gondor.apana.org.au>, linux-mm@kvack.org
 Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
  consider other metrics
-Message-ID: <5p4iyah6zlrnxpbsis32c4m5lrjj3pq7xwcugq35d2entwfai2@n2r6y3ga2ie5>
+Message-ID: <7q5gqpfshnc3lfhzxughpks3fc2knw2delpm5io2oe54monydl@5isuxnjputjr>
 References: <20260101013814.2312147-1-senozhatsky@chromium.org>
  <20260101013814.2312147-3-senozhatsky@chromium.org>
  <ddfs43qldaws5urlnpah3ibp5xeu7st37p5hgdfajvdtwor4sd@fkcm3brinygo>
  <gg5zdpzrk47tljbnaudcy2gnsodyhmmar23qb57b67bhx6ntje@eq2fcrl2dk4z>
  <v5veb673xrz6z3tevfdymhuik7nltojrvcqyjih4ds7co4p4hr@5e7ngdkrxo32>
+ <5p4iyah6zlrnxpbsis32c4m5lrjj3pq7xwcugq35d2entwfai2@n2r6y3ga2ie5>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <v5veb673xrz6z3tevfdymhuik7nltojrvcqyjih4ds7co4p4hr@5e7ngdkrxo32>
+In-Reply-To: <5p4iyah6zlrnxpbsis32c4m5lrjj3pq7xwcugq35d2entwfai2@n2r6y3ga2ie5>
+X-Rspamd-Queue-Id: 417F88000B
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 19559ixprg75pckppo11h75tfcaffrya
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EF3F8A0007
-X-Stat-Signature: s1ehrnhdigwa9aqj3ktebkxiiuo6os5a
-X-HE-Tag: 1767673238-997954
-X-HE-Meta: U2FsdGVkX19z+bb2jKvKJrc7RvHXR7Wf8uFArK67gOYewmEqly7kobGhbmXWAreLl2jGn4e0MmvTRiV6Dv3y3ENJPyVSUDQoShdUJ7ibaRvkOnm9pUGYaPbHWz4g5vN2kC7/IGjPf3M4Mi5h1qKlZuMg9HItSAq46mLAJyLgBRorKSKHapMSXeUuutakerAwKLmo2/hB8F9hUfBaHS5Gre50qXoMsFRDkRnBzLjD2TKs43L46HN8iPZmXAhIjbj06bsmrldHanbf1XK3cc3imvfiLj5ebAww1WiMIvULZNH3APyyU32ZRqqdtc1SZpi14zpw7pod/y7PgG62KZ22Arm7qVKhQQc4hmgDHDL+xCP/tL2Gt4wySOYIdgXAA3Xxnnc6PBPlM77xtcwALiK7HA37IrvvUQI4OuKS6HnsFEeiB//pn+QJx9tF5UcttlJLjf5irpACU1q3m7CUgJF6DjRd9sewCRcVnqPorqdZiYrOxGLD/ptIBO+5lskBcY7wqLYagMMPTRoThgZDOS5cKTo9Z9leq4r7f/NrBgGVHoeYQDjqjvqbRq6i2FA/J+61wYj4rDQLxj/ox/z2dWn694h/JcAWcy/gDUBFctUhlhbb08lnqQ/dxGcSrsoti5NQTZqxwKuV6rFProW7/16vY0UklgeeeLG8jJd7WP/1uyml1ZtUgTyh7AWoziMCQLluA/3D2Wvp5pi3NecDFhMJ/6wHb1tdC/3nGiiYlI0y7KdwobuW0nfHD/rG3WH+GnfHWVNBuEpZnnMASbXUfWfNJ+rpesG9woqVNVXx1XgQInavpdad8coMLSH3OZCU6nXXXY4YMK1XPWvurQLbtSinQZxPQi8VL6puIzrp2UtD2DQkNHBMs6+Xrqdam4u7CnIEDEW39Rjk10yfe751AOyPwAEepLR+gEWgKWXyU2pHiJhD+huTLLwsYZRt2+RgDJ4TbikICSwqhw4xWUeKyVE
- Faqr+FwR
- 0PEXQ44meRkfnbJFYMMBWFA8Fa722I5VCyIbDmBnzA2aWV8GAClmNtiVvODI2cUeL79nQwNc58jxBp8tVyd/AugaBirZ2OLIqGZFEpLWNVcL0au1S/PnZHvuca7BiUM/B+aauKWDOQCdWwBJsvrl7ErkHLAp/+BpG0/ixk8RlED0rn6pnRrcrJ96vavf6BfHJDIABzJvFzSMvvLSxKgmfQuDYfz5u9y0R+RjrPsWgkI1GLAtHNOA4NdzIDntLiJSSAl7RbWnyqdQmcfXAULbfVWgiFbYc0hrM5srjLz5gE1EWIg1aAESrsgs3dC1DpPjG6sJsn7Nqw8OBmD6X68kuo2HmMF7Lnqt2rHyqdTLF5zGdEQ0=
+X-HE-Tag: 1767673372-664943
+X-HE-Meta: U2FsdGVkX1+Jdv7V+Qc7pfM6OAgXieGVnF04wDocXB7lwdThcIei1VhsGl6X5p0CU6oJg53wsR+Pst9Y5vBUDrHXMOrgs6v+JoJaHXdhZQ7Xh+S3LTZnkGPiw3z8alQL380YRLOc6XLpWGtTXH7X25DIQnZiPftN/o6SN7C98vg++guLfSKP6QvBobW7DAWonpZ7NBpFJW8KcK4nBQsWBckTUB/S9KiGgdu0WV5iGpaFxTFoHcgYdZWmFtvplXtC/ZV1OC8vJ0AMNma83B2Uvv5EZ0ENGqUmbn+GyZyez9ryGk7nSRaHjeouE3iyLXZERc2NVtXVslz8hwYzIE3+B7+EVmrSHtiTHgilrqZEFvjF1NAXjqi6RkrkQorWIz74vNTWuoIUg7O3I2vhYBuF4R9odIMfTC/nterOv9les9ek7RXovYW52N7ol2bYwGGPOmy0q4nlpQo/4LH4GIHJsioarH3Cezti2ZaxVM6Mon16cJVMtF+7VdWU4mbWVBEvCCJp4DA1IPUVyc5ckQKxI6NGkgbxFgeFupGx6li8micEGS/8li19R2nJ9g9O5Bcab/kIXkXh4HVzobVsM+VH09SY0T4ZGnE5jd3yHu9VVwnU1JIjAHQ08GdLnSaP+wMXOlGUw0L8XxFWr3GFEtCwd7pKiKNbFPq3EL6xfZP5pbOQUK/hKy0vxSJXiP6cywyiMg2xOCfRApOwp+66TxCwR0Gvhp625RSVreRSxADclCrs+VMe6ODeAY1nbf48EiSJ0rZ5zggJp31iVqzLNWOmjSKv2V2gLiBpmSLnfCCqMBMzgg/CT0wISdr1WfNoxzsPN8L4iImWio+mgjowoWqdlgWpcsGY2anLJPR/YNH3efeKfBdB3UHA7QL/12pIwnGxDUzqYyzmOZEVw34DLD7J05wpR1aU4qJA+p2049hlU4cPPv9HesgJP4tdD/9kDKQUb4XxpY1ofY8goAL9mT7
+ nsBpZbO0
+ PF1vKYWJHpcVHXlFq2FgkGSyOHHV0l5xSUyX644p+Qj+jrPdEoQRa9ZTSpvovY5Wa6QR2pj6fn9I6Kk0MoNrQvKpqQcQ2//onP+ZZexZA3QoOKH6ueXHH0sbLqhOPlyqwPMwxdAAEUg7DoWit5HOX4cuICt/80r9CGfRv8O4hZyEnGx31Om8x4JqU7xxjnd9BufZ0p7zUnr1m/4abFi3MjQ9dIH/WdPo8PDtwP1ayHq+hCvZObfdSzTpCEkx43v8mKwNTqC6iOvFk+qTyGKhaAuxzBZY8EGzXpI9qXIujqRzbpNpGSGGWlP+f6qvf50rsG8dvqjbBWogPABat9CUQPBsLfiOyjh/Xh1O4QPTJXmJsI3HRG41721XWLcdGu/U2Y2g5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,64 +124,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/05 15:58), Yosry Ahmed wrote:
-> On Mon, Jan 05, 2026 at 10:42:51AM +0900, Sergey Senozhatsky wrote:
-> > On (26/01/02 18:29), Yosry Ahmed wrote:
-> > > On Thu, Jan 01, 2026 at 10:38:14AM +0900, Sergey Senozhatsky wrote:
-> > [..]
-> > > 
-> > > I worry that the heuristics are too hand-wavy
-> > 
-> > I don't disagree.  Am not super excited about the heuristics either.
-> > 
-> > > and I wonder if the memcpy savings actually show up as perf improvements
-> > > in any real life workload. Do we have data about this?
-> > 
-> > I don't have real life 16K PAGE_SIZE devices.  However, on 16K PAGE_SIZE
-> > systems we have "normal" size-classes up to a very large size, and normal
-> > class means chaining of 0-order physical pages, and chaining means spanning.
-> > So on 16K memcpy overhead is expected to be somewhat noticeable.
+On (26/01/06 13:20), Sergey Senozhatsky wrote:
+[..]
+> > I am not sure tbh, adding Herbert here. I remember looking at the code
+> > in scomp_acomp_comp_decomp() at some point, and I think it will take
+> > care of non-contiguous SG-lists. Not sure if that's the correct place to
+> > look tho.
 > 
-> I don't disagree that it could be a problem, I am just against
-> optimizations without data. It makes it hard to modify these heuristics
-> later or remove them, since we don't really know what effect they had in
-> the first place.
-> 
-> We also don't know if the 0.5% increase in memory usage is actually
-> offset by CPU gains.
+> Ah, so it does kmap under the hood.  I suppose that can work.
 
-Sure, we are on the same page here.
-
-Another area where we potentially could apply similar heuristics
-is size-calsses merge logic: sheer fact that two size-classes have
-similar objects per zspage and pages per zspage does not necessarily
-mean that merging them will be beneficial.  E.g. if padding between
-class->size and smallest possible object (when multiplied by the number
-of objects per zspage) becomes a large enough wasted space.
-
-But again, heuristics are hard.  I'm fine with us dropping that idea
-for the time being.
-
-> > > I also vaguely recall discussions about other ways to avoid the memcpy
-> > > using scatterlists, so I am wondering if this is the right metric to
-> > > optimize.
-> > 
-> > As far as I understand SG-list based approach is that it will require
-> > implementing split-data handling on the compression algorithms side,
-> > which is not trivial (especially if the only reason to do that is
-> > zsmalloc).
-> 
-> I am not sure tbh, adding Herbert here. I remember looking at the code
-> in scomp_acomp_comp_decomp() at some point, and I think it will take
-> care of non-contiguous SG-lists. Not sure if that's the correct place to
-> look tho.
-
-Ah, so it does kmap under the hood.  I suppose that can work.
-
-> > Alternatively, we maybe can try to vmap spanning objects:
-> 
-> Using vmap makes sense in theory, but in practice (at least for zswap)
-> it doesn't help
-
-OK.
+I'm hallucinating, sorry.  Yeah, let's hear from Herbert what's
+the direction here.
 
