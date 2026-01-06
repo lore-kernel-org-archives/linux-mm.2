@@ -4,87 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F789CD0430
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 02:49:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A68C6CD0432
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 03:10:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF9066B0005; Mon,  5 Jan 2026 21:49:42 -0500 (EST)
+	id D1C306B008A; Mon,  5 Jan 2026 22:10:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC6EA6B008A; Mon,  5 Jan 2026 21:49:42 -0500 (EST)
+	id CBC3C6B0093; Mon,  5 Jan 2026 22:10:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E06FB6B0093; Mon,  5 Jan 2026 21:49:42 -0500 (EST)
+	id BE8D46B0095; Mon,  5 Jan 2026 22:10:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D0E856B0005
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 21:49:42 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7B614140348
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 02:49:42 +0000 (UTC)
-X-FDA: 84300008604.24.49B3519
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D8BAA100002
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 02:49:39 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DrtzPLOi;
-	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ABED46B008A
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 22:10:58 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4EF6A58742
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 03:10:58 +0000 (UTC)
+X-FDA: 84300062196.29.488C8C3
+Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7950580003
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 03:10:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	spf=pass (imf02.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 129.150.39.64 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767669056; a=rsa-sha256;
+	cv=none;
+	b=btdZ+AGcbOKUSMgShGBIbifS4+VhND6eCFeTEYBz0mIAYzjN/C95Van3KVTl14NG6/Molp
+	waRnugH2ohdNgoq1mqcNq4s3CN2UULumZGs/E23IScLg1knMXAbDG42ClpmWqp/knI7WRW
+	mLCZoCVBjis/T7QLcbU6WphTSCC6+HI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 129.150.39.64 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767667780;
+	s=arc-20220608; t=1767669056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K7S7R4M4sfj4F+O8uKJV1jH+M2uc19cr+SROpwV2PzI=;
-	b=SA3n45Og7r8l5U2d4giXiWRsYrHgHU8J4TV0/SgmzFjt/det2SEFcgMNzn9P0R6hjrWwlK
-	KEnHZLitwVuX8nIQMGo5pW7ICRZgXYTFVfPhjXgwNUrQwSPFQbZvcKmfeZfooX+RwqjAKU
-	HOrEtRIk3FeuhredJBH1f1O/yBNnQjA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DrtzPLOi;
-	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767667780; a=rsa-sha256;
-	cv=none;
-	b=ZHJ9vV1PGfIpmCZQMqoIUIG7iQju/acepozpupWfLWld+uewIx2pl5oHzHRu+GjDKRl0vc
-	XmHs0BrMRIHyJA7HBJIXWj682uxkXNJaTY1sFEFub3ysV2DPSpwLf9cxsjJQVqdRUYgOih
-	NhjL5X54XvKku9hXeKv9KnIgey7CkMo=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=K7S7R4M4sfj4F+O8uKJV1jH+M2uc19cr+SROpwV2PzI=; b=DrtzPLOi5MYOk5yqk+Xemsrv2A
-	YmbS9EY894YFnGOdfW23ephl8stj8SkltMC6jSTKPfxJct+On+e94n+dgZmkqHTEOPWm11XEbyQu2
-	gBJ8ZJmmjWQBtdJsKys0lCttjyq1bEWokfHo5jBcyS9V831RunadteBnjI7+cKFPdad8+6e7Ah9GJ
-	9Ch9/n7tFKPJvoH4DpZ/s6t88f5bFf3RGqX+6uQ89jIqOCc5ONEWE7CIB0c02ZU7mH0SATgIRcndJ
-	Tb/aSNCHecSSgo9MP+OzVhKNA9yqq2isAOf9891HaGyWncQFonV+yiiuqpMNWOb3JWl8SkEk97HPj
-	GjPH7hJg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcx8Y-0000000BDNG-1Tsg;
-	Tue, 06 Jan 2026 02:49:34 +0000
-Date: Tue, 6 Jan 2026 02:49:34 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Boudewijn van der Heide <boudewijn@delta-utec.com>,
-	Liam.Howlett@oracle.com, aliceryhl@google.com,
-	andrewjballance@gmail.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, maple-tree@lists.infradead.org
-Subject: Re: [PATCH] maple_tree: Add dead node check in mas_dup_alloc()
-Message-ID: <aVx4PjdhG31LfjuA@casper.infradead.org>
-References: <20260103103247.9140cb2556280927b09f59d3@linux-foundation.org>
- <20260103200633.246006-1-boudewijn@delta-utec.com>
- <20260105173350.d8ad7d630be1f0a581dfd565@linux-foundation.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=jTLtCCaYurJil8YqoH+5MOsohAzzrJ5v4M6c1ZSHKHM=;
+	b=JErp2L0ql4DwW/GlwrLuCq22WsRI3MdKvve+eexRadZwt9ms+v+KIRgBmrz73E/Rrm+u2R
+	AmNw3hgZ1YXk7F34/tb+j+1ifUpgeybSvZlFbSh2GPplQFONd8azsM2g9LYdYnyQpIMU0V
+	4yOMv8JnVagUJIf3YTfqs2bouaBV+F8=
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwCHjJg4fVxp0tlnBQ--.5211S2;
+	Tue, 06 Jan 2026 11:10:48 +0800 (CST)
+Received: from localhost.localdomain (unknown [218.76.62.144])
+	by mail (Coremail) with SMTP id AQAAfwCX7eozfVxpE1ARAA--.16517S2;
+	Tue, 06 Jan 2026 11:10:44 +0800 (CST)
+From: Cui Chao <cuichao1753@phytium.com.cn>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: Wang Yinfeng <wangyinfeng@phytium.com.cn>,
+	linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 0/1] Identify the accurate NUMA ID of CFMW
+Date: Tue,  6 Jan 2026 11:10:41 +0800
+Message-Id: <20260106031042.1606729-1-cuichao1753@phytium.com.cn>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260105173350.d8ad7d630be1f0a581dfd565@linux-foundation.org>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: z4iqp48w89teknyhp1afzgz49nfhaaxx
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAfwCX7eozfVxpE1ARAA--.16517S2
+X-CM-SenderInfo: pfxlux1drrlkut6sx5pwlxzhxfrphubq/1tbiAQAHAGlcG0AAvgADsV
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU8nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D8BAA100002
-X-HE-Tag: 1767667779-151571
-X-HE-Meta: U2FsdGVkX193sBIVtUPgFqE+nj3aLbQyByCQsCcUl0jnuvl2qG5iBg30aZA/RQCvzu09+GCX7BHVvgjiRIFOsHXpF6jYxBRAHvKY/uApNjG1v0Kn+fDTPABAvyzYS47Fw7iPCHS3Ja+AYEdlA/NTPNMirjGUrjiU+QrNli5KHnU/cu0OUrSnI487olSSx6L7+LYhjxom2+Bag3y0ttMoJcA6eSzAw53DnYnxLHVBCxb31Nww58nvIxmXSHyzYuaqrv6sPRidLIZTy4gSQI2ltqfQI0/WrDmD6nHfOJUi3ugBM+AJxCevXFOU3RUOqJKWfxAm4ujv1jO4lSrbu2LyS8k1fOHVjmOKg6bHEuUt3qVtApCvF3jl0aOGeIuJ6oMi+N0hgff0pOUTQuL66NsHYXOeyoNPehnaEgxHkbJwyFKevyCT9XEl+dEgnIb9faELja9Z8kzUoRFe7NQLO2UXBC9j22sTpOORRwXPUlScJwKVFNZHyVAJERx8G3RL2PfKJdRealbDqVEiuVy20KxknxsKJimRBoYcDTkfzjPEjPUk7h3I/68macedRAjC2C/A527l4FHA2+8ChU6czI16RMYAdAvPrZ/0Xtqg5c0NmumgqGBP0quwuKMBd7flZXZUYv/6RWnLauPPHQokQX5sg4/ESakVJQGG4TnI69wYygq7T8ArjiKrZf0NhGWAE9HdwrAU7s2D1ieao1AFczwXf52FbPpO4nB9Po+IUtU7puy2HlMC5138lyjXEzspQbA/BMd8zrFBjejRPqSxvP7Addfx9yMRtw2TOtA3A4XX8PRe3M1Bhc/D1AlaCfARlBfmZJbXZTduEQMQv731sFEmGcHQi8Pw0jLFG4zBFvNUyTog1fYpPo9BhtSVwY2Mrc6vPITH56Aog/aPtem0npqcenQccaKKVrT20CJajRp0S95ma4cNMPLwmiyrr5fiqkledd/ndRcSxO5YfEAmnVC
- snEjc6Eq
- Ry2RNezilfFhN05HLvo6cIihjcemAAWEUeIUa9imCr0sMridK6UeUY2DD7vfCSeIzLO4RYYw1B8A86JEGRK/hNCfMKfbwKaDljjkUvw/WyJaD40LhISMqyNyapyl248xtQkfwBP6qyj8QOXRVqVCEoHgNjjH/zxne59P98fnf/4bGSAfKWEcARmcGAQKHd0aDVjZ7PZ0w48UhVtj+IpoYJSuSgjVfndkw1RhUGBXSP9Sl8jDtTCS1s5DYMbmKfrhMgXFro//KzZbbmFhk4Sa4JDnT58jIH11lUiiQHGjskelvCHs=
+X-Rspamd-Queue-Id: 7950580003
+X-Rspamd-Server: rspam10
+X-Stat-Signature: bm3hxqcy5ohnre16ybrk66cqzdwxwoqp
+X-HE-Tag: 1767669054-824861
+X-HE-Meta: U2FsdGVkX18OtTWRxLrHpHODI9Yl5XcwftKyHrMa0sbdmkdeepMt4UZBFIBo8GWmZPWBz6BwLZkTcX1NY/Cy9WyBBaVTtgSOP55Im4aBzqxmL/JKMEjEuq3UT0QnfhxEQrkG2ZxjIl0/sOGSiw6Wht8j1Zf9gLLcI79vq+yLz2jGPgCTjcdIV60SX91HPMXUlURk3z0M4g9bFHMWxxzjAgksPF9ckiriJ8IiL/3l4TSsKKpJRm5J82+5SwAuMMcJcme1ANUg5eHxO7q4xeDJevvM6Qqq1ececW2JVERwveNBSkSngKsfx/aD4iyQtOqjwbTwSEpv8Y5uzdE0rwukyTRGsFu9Bi0csEQ6oYXYjDqM0/nQAq/DAKA4Q8MZoVvVoB94PrVdMihwbtqWo66+7YYu39A6bwSqQXYLsZ9SwTPBK0aJp5p0XltNmKAawhpD/yPmhmc1a/MwlyuIfAq2VNRhFv/oG5vlw6aYAohrJZ1oTRnonmxiBvgZ4Nh0Gwpf7GtnfRXd3XKoXKHHNwKw8JnTd5swBPDkCWx54+vHRgTNpCGGDTkN9I+jiRIzLubH46wF+W6hdWfQGGbNICqxLZsfLj30jmnwKl8eFb29RHmbm/av8AIsYNNUROXuTPPn9xc/FtYGSCGkR1h1ZG+cs3uGiII4c/m1iJoKBLz8a03s94BuwNQAXjMA5Z716uCFcmBrLBs9UyWUBtd6IcsxTfSRgXlp1CfK4/oPJSnMxFCGmz1iy7dDdbU7oZV8P5QnfaDE9XBoMIbL/nvIObOsBcdOuJd3oBKxkR9TdjCaH0p5IKRpoyUq6F7ifSqR46CwLyX4+8PRMFTqyqlG+SkeXl0vMrqMzhHPNPkTbKGH8bDTyVqv0+v0o5vGgNftAwL8zisyTBYYXQ4tRCa8b/Pvnf4kJClNpcfppNeNXQjIrQ27sySfn0OZc4suK0GQy38+3iue8MnhM8X4VeuF/x8
+ uVK2L2tX
+ owD1Shtu+qhzw2clFE/+M3Oaxzm6/lw+oRJUC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,10 +86,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 05, 2026 at 05:33:50PM -0800, Andrew Morton wrote:
-> Great, thanks, I added all that to the changelog and queued this in
-> mm.git as a hotfix, for runtime testing and pending reviewer input.
+Changes in v2:
+- Added an example memory layout to changelog.
+- Added linux-cxl@vger.kernel.org to CC list.
+- Assigned the result of meminfo_to_nid(&numa_reserved_meminfo, start)
+  to a local variable.
 
-Surely this should just be a lockdep assertion that the appropriate
-locks are held?
+Cui Chao (1):
+  mm: numa_memblks: Identify the accurate NUMA ID of CFMW
+
+ mm/numa_memblks.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+-- 
+2.33.0
+
 
