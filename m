@@ -4,115 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFBB8CDC18E
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 12:29:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35A9ECDC192
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 12:43:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 366FD6B0093; Tue,  6 Jan 2026 07:29:13 -0500 (EST)
+	id 64F536B0088; Tue,  6 Jan 2026 07:43:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 311D06B0095; Tue,  6 Jan 2026 07:29:13 -0500 (EST)
+	id 5FD0F6B008A; Tue,  6 Jan 2026 07:43:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 213DB6B0096; Tue,  6 Jan 2026 07:29:13 -0500 (EST)
+	id 4FC526B0093; Tue,  6 Jan 2026 07:43:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 116476B0093
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 07:29:13 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D86EC1A0443
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 12:29:12 +0000 (UTC)
-X-FDA: 84301468944.24.1AFDC9C
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 02318100004
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 12:29:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=sOKhoy1w;
-	spf=pass (imf14.hostedemail.com: domain of 3FQBdaQgKCNoF68GI6J7CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3FQBdaQgKCNoF68GI6J7CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767702551; a=rsa-sha256;
-	cv=none;
-	b=Gtn6wdwNt8IgALq3TcdpEaXiN96sAzSLfbsdGXE3/r5AbNzjhmfH2UJJ5KEVmWm6BZUgkb
-	a4skXhL5fC5gUC+wnX0datl3FVll7M15mKa8qV1x0nf9DbG4Pnebo1rF2sOeIm4sGM4feR
-	kgTOn5jfM/0IKjYDOMtwERE7Gfhh+uA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=sOKhoy1w;
-	spf=pass (imf14.hostedemail.com: domain of 3FQBdaQgKCNoF68GI6J7CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3FQBdaQgKCNoF68GI6J7CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767702551;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D1466B0088
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 07:43:02 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B550CB9CA1
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 12:43:01 +0000 (UTC)
+X-FDA: 84301503762.29.4047A4F
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B94EB4000A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 12:42:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Fs4PN+j+;
+	spf=pass (imf11.hostedemail.com: domain of maze@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=maze@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767703379; a=rsa-sha256;
+	cv=pass;
+	b=Ds30aa8wvuEsTyHMgRHF5+nkpR5HT1bKtCD+YK9KLQ0hiJdTE+sWITta7WRZBy2nN9ZrLq
+	/QgWjMdkviOOB5YpewPLuvKPxrbiTCujnu5aU757bCL77hOQXbTIxLADwMxiMjoTwvSsZ9
+	LxZSA5KA0fTM69c5WV+q2DXnGPtPYRY=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Fs4PN+j+;
+	spf=pass (imf11.hostedemail.com: domain of maze@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=maze@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767703379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/pZdwAP/wq9kuKKVzLJ5M0q6p8KUwTZW9kKk5Fbt3zQ=;
-	b=p60gsRtC/Bi/dBGSLKIIVNr86rI/9DBz9GTAEQXxDDNRIU77IVke9tlIkK8he+t088J+GV
-	tVLis0qFMo00uq5n+gh7UTU7qzm99NNu3wbjWuaPLfOoQ7sG/jGV+NhF0X8zvJhyIax2Vb
-	rsoglHaNL0KZUPbrx3lo7o6BCLbbs7Y=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-477a1e2b372so7776815e9.2
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 04:29:10 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6VaaRHRd5E6uRpWJGcDGRBcsl4ux3CBEvtldX20kevU=;
+	b=59cauBbATi3ROW/lm2iurooqjsmTHxZnj4iYE7IE75+lSdFSlbROvtuYNZ20cEsyoIhYL6
+	Bf8jtKThIhfmPyzVWOIrjPjnSH/AAsX7mrkMg4SLqbM6ML3EkFZ8ICHSADI4vpR3g+uh9d
+	2ssHHSHly/JT3lcTbYcDo8eZk9gsQW8=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4f34f257a1bso315431cf.0
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 04:42:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767703379; cv=none;
+        d=google.com; s=arc-20240605;
+        b=khj3wsnjtqoJq5TF2myGHEUyzfxp7gkQlCcMPZXIJgv9vGMxkXgv1eT/Ir+PaY9zet
+         1fDNwFPCajdLxbUna7Fsm+foe6GriGxivUjvPcDfrEDYyn0CnjvseDcZdtP9/JeGOmXU
+         A35zVadu57MP5Ex+c1/Xvx7anWvhEL+K+fDRrP/nwedLtPQM7xMBAz4smewjbHHQq10V
+         i7g2mFhelZ7HGH6CN/mmyyRCHdTKo3EFXksjA6+WCVr1k7ml2ayCWHMQNgqv4lhNeUTY
+         VYVRep72og+6HQ1/q4VPPk0MHBkgcs80KA2FF87ewxpddXwfDuSbElRnpToxQukKXSkY
+         Httw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:dkim-signature;
+        bh=6VaaRHRd5E6uRpWJGcDGRBcsl4ux3CBEvtldX20kevU=;
+        fh=NIu0QlvIKKd2sJDAspNggYXHiChVVgQY3ctjQJ3VRzU=;
+        b=fdtw+nAu0sr24f0iKJnOP7dk1rzoUYrpQIWSGuLA4gUYIOu0KtS17z0fERGld6+vci
+         jxU4F7K1aoupM/3qq8WIX7ZoI/EkwUIQRCitRqyEew8HZOxi9jqYNmudPDon9X08HOei
+         cnlfDpXlEh8h56GfQboyah8M3/QSv8/FOU/ee9o1f++La7GoetEV7BUxqQ4tfSbAPbV2
+         p7N1AaVsDWlk5qm5OFstiIkX85fb0eSX+LdNlVx64lpIixrSHYJPhH5iKLDbZmDwd83h
+         Hzpbj4j7LrtbcBTobpiNtWn/+Z3F7c52CZ7URFcuM7E8py+2xhmyd/in/oSwQvBlrxFd
+         XVLA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767702549; x=1768307349; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/pZdwAP/wq9kuKKVzLJ5M0q6p8KUwTZW9kKk5Fbt3zQ=;
-        b=sOKhoy1wJZWmbYZmkD6clMjy8v3cvkjLUSmOA9db0JmfzZtDN2bSrAcdO0T+4jHRUy
-         LI2A++oE5mgCDWdL/QIwKtn/akOhyE63+OESxpNXGaTpF9I73uQiQ9wFUZ6XgqkKSO2T
-         S26UG12G5K5IcO4kANrN2rqIUGAT/ENDtvlTRv7EF7UGCOT6IGkoMze/kYS5a91K+PNr
-         pzxeIxSf/bSEYIo1X0+3TKiNgqFwBtxmd3TD4G0/DXzyp6rBl5pVMru6E9Ux/slKjyBN
-         TLx0DtBcE/tg0JP4vTFolWH0+KoUKJM7AsHxp9FWc8TO7nza6SF4pjSusHMDwN+3W5bV
-         h7ow==
+        d=google.com; s=20230601; t=1767703379; x=1768308179; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=6VaaRHRd5E6uRpWJGcDGRBcsl4ux3CBEvtldX20kevU=;
+        b=Fs4PN+j+bV1XHrv+K9nm2atppzTDPAVuwOT8/i1n4P4FwSJrlUy9z7ozUq6bj0Zwk2
+         eQAhpEyNElqm33X9bE2VIfNJvdxFsLrcrYdCDfKaDuRQ+srz79lWIE2Pda3WGltX+BYr
+         AKZNUkf51nmXmsmAxIXM3ridU19UvQsZnjGBwNYsKOxB1y0U1A8uaEo2Tt//vq2he4sB
+         mliZlH3cv9ctYbTFRP+0QmO5fteu/OUmugTlduboEIIB94MKuKQX/oK7D8T4m/+EgUaw
+         Ni4NU/xqZwGn8HlVDuZy0behaD5GrRRNnH3gX3jDhNPxndgT+OTn8HQSHYW2kLDzT+KG
+         bRRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767702549; x=1768307349;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/pZdwAP/wq9kuKKVzLJ5M0q6p8KUwTZW9kKk5Fbt3zQ=;
-        b=JcE/8VOXmCbQZFcU7EzEgyua7Wb+EJV1NFACbtPVATPfLTIJJvGuvbpBm28eTXQ7px
-         iGgGxNgLOkUjnaTPb/ViWb+JzrOfZi2kqfPEI0crbABbKhwD+fepgDa7XyW8M6qU6wbl
-         oANGoVKm5e5pvxG8d5O4ayH3O5pOGYYKe18U/2KQf6TLX9F0mvl1Tksth7TrDaxrOvPE
-         slWs9C4yh9VIumuKeztAKB38hcz49+n1InKwqaSNEghVbThy3HGnqIFeYjl+m93gZSPT
-         Fdj5u0q4E6bxheXT8R698UJj85zW2d9CpcMs+MhgZNRYriUNL9G+FVbpNJpR+E+YA0oi
-         jMpw==
-X-Forwarded-Encrypted: i=1; AJvYcCVmKLdsGhWNPhk1AlXaRNxnoa2nTarf7J4eqkxLKdN4VI4mXRnmTBUdgXt1jedGkgDOH8UDoWXmzQ==@kvack.org
-X-Gm-Message-State: AOJu0YyrL8P2CP5o0bxqkutT727OdCsbUYTKPr0kFfcL4cjNc6regqdj
-	BPsudPtHM3Ehl8GD8urg5kO+lM8mHxF3GOcCRm0d70FKkCyfOURys9ilLOgsTBufjdfgnU+YxG8
-	ceoKZtAuCam+/aw==
-X-Google-Smtp-Source: AGHT+IGDb5uS6PkHdgGZm/vN+neaeuomXNsUF5fH4vDNKaBbgCTUgMqpCF8VtoYm6kaWCOvj+sJGU4W9OTyeoQ==
-X-Received: from wmoo8-n1.prod.google.com ([2002:a05:600d:108:10b0:479:36b0:ff54])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b27:b0:475:da1a:5418 with SMTP id 5b1f17b1804b1-47d7f062feamr32360515e9.1.1767702549472;
- Tue, 06 Jan 2026 04:29:09 -0800 (PST)
-Date: Tue, 06 Jan 2026 12:29:08 +0000
-In-Reply-To: <20251016104409.68985-1-reddybalavignesh9979@gmail.com>
-Mime-Version: 1.0
-References: <20250830163949.20952-1-reddybalavignesh9979@gmail.com> <20251016104409.68985-1-reddybalavignesh9979@gmail.com>
-X-Mailer: aerc 0.21.0
-Message-ID: <DFHI984SEFV3.2JL88CLHNT2SO@google.com>
-Subject: Re: [PATCH v3] selftests: complete kselftest include centralization
-From: Brendan Jackman <jackmanb@google.com>
-To: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>, <akpm@linux-foundation.org>, 
-	<shuah@kernel.org>, <richard.weiyang@gmail.com>
-Cc: <david.shane.hunter@gmail.com>, <khalid@kernel.org>, 
-	<Liam.Howlett@oracle.com>, <davem@davemloft.net>, <david@redhat.com>, 
-	<edumazet@google.com>, <gnoack@google.com>, <horms@kernel.org>, 
-	<kuba@kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<linux-security-module@vger.kernel.org>, <lorenzo.stoakes@oracle.com>, 
-	<mhocko@suse.com>, <mic@digikod.net>, <ming.lei@redhat.com>, 
-	<pabeni@redhat.com>, <surenb@google.com>, <vbabka@suse.cz>, 
-	<linux-kernel-mentees@lists.linux.dev>
+        d=1e100.net; s=20230601; t=1767703379; x=1768308179;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6VaaRHRd5E6uRpWJGcDGRBcsl4ux3CBEvtldX20kevU=;
+        b=sYmOjDYeM40DCjBAkw+rUPujy818o6gKvZRLxO0kmcyV9SwZW7vSAJYoVHg2/blga5
+         gRM2Px+K0xrAcpjrO0pmU9H4tl4Truo7szegyMDVCM58F+dr2A6UGn12cqJDr1BmiQWL
+         SnwY0YI8+cxfaUzcnBg/IYyFAp6O+5l8HsRz49k3HeVb0olteZkEOZiJvx1r6DjOU7gV
+         9/SwvP5iKjok2BRbCcJZoKeEIqFj1OnBQ1Z+Cmwx8uaCtGz6I+MmEFOJUYdH92FMkFN1
+         uxZeJWGfyLIeqKzHo8QjE6TZwL1Kox3FOF4vXKd0dF3e9zscdkjQtF8k+w9v4oaZ3Yrx
+         EwNg==
+X-Forwarded-Encrypted: i=1; AJvYcCUylf/HLj2K025oyAiuedBTkALnZcSOu3W8xwm6XLCL56HSueWtyoqCXlOQQ1DwkPgOBXb0YJqrcw==@kvack.org
+X-Gm-Message-State: AOJu0YybXBTQAJkOAnlWuVgEZ+bH8QL3tHHKVDLqrIfNotAURF98f0EI
+	IbFOyb+lOyFG5DVyPqh7IEbfrcnmvL4LzGPyoZPmucf8lIfUn9whefdVq78wDFEHCwWtB9Do65v
+	LKnwQHj5bKMwdeftOOrzwGMji1+CImLpN4GDP+lB3
+X-Gm-Gg: AY/fxX4xRdaPS+IGRsOtjpjI3/Gn1ehZkMff/PgOcFSlDP76cRznztSE56cEe7f+WF3
+	ly0GT8SaEOTS5ZNl6QPROjDJUjCY99jEIbYTSkkXMspvHv/x43eWV2/42yG2sc2dKzuWmV6x3Us
+	HiH5nEGtnf5W0Ndxfw1FINQC+HlXiHUXVX0ziOFckc1IiTxZ9UR/34f2iZF+8wu9NNGbBEC3wMU
+	HqavqRCagllMZGmJjxWY0fXUTiLCUBVC+qNwPxSTGBE8vzsFOOBFXFF2w1DEvojsNsN2rIufCU8
+	MCKCYUaK+XyB11HJr7OpPVFWCucwnSf+ZQN4u8M=
+X-Google-Smtp-Source: AGHT+IF2dfr0SMyFQSL6v0PMc5yR7XxJ4qkpwDrq4c4RXHNO+Xdso8ZsWtwR+M8KWBYE6f6ityYl33zzMf6nK+95nws=
+X-Received: by 2002:ac8:5fc5:0:b0:4f3:b0f3:62bb with SMTP id
+ d75a77b69052e-4ffa963a05cmr9713571cf.13.1767703378488; Tue, 06 Jan 2026
+ 04:42:58 -0800 (PST)
+MIME-Version: 1.0
+From: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
+Date: Tue, 6 Jan 2026 13:42:45 +0100
+X-Gm-Features: AQt7F2qAI1ZtC3RYWs2Wp-HOwXoK03sV5LG9X9mZr-LKGvVUmzl8KqyB9wnW6k4
+Message-ID: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
+Subject: KASAN vs realloc
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: joonki.min@samsung-slsi.corp-partner.google.com, 
+	Kees Cook <keescook@google.com>, Andrew Morton <akpm@google.com>, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Danilo Krummrich <dakr@kernel.org>, Kees Cook <kees@kernel.org>, 
+	jiayuan.chen@linux.dev, syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com, 
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, 
+	Kernel hackers <linux-kernel@vger.kernel.org>, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 02318100004
+X-Rspamd-Queue-Id: B94EB4000A
 X-Rspamd-Server: rspam04
-X-Stat-Signature: mwqjorc4g81azq3g7y7m49d3idp1cfqo
-X-HE-Tag: 1767702550-803191
-X-HE-Meta: U2FsdGVkX18IKoit1CHn6PUPZ/CuP+LVOzoBxDjVyeZxlXUi0TpONRf5XYTUS8tNBVRprhaSBgUfldN7PZPlcodEFcjxhPQSW7KK7Ty0TpDpT23XzGNh3Y4nUxRicuVFKvuKsO4/Hz/9JspTQnKxDQOtO4vuvrmPF4653+YX4RdoOu0GDxSMCdE09BxzUHf+utd7RTWZgx5bxYDAkPUJ6s+nVGaxANpwwLxrPCWMBhbRnet+Dzuoghf90cBU0vPBzrYhjVV6n34v20FpIWEpIFB3N7j+S9KxSTSB29kJpMyfUuPKx3piLBA8K0ShkuDHWyGiC+DowF/0d6trY+rI+w7MsivUSLnKtA3GRBY6d8aDHBSDn+Mr88uj3YVYP13eAGpK/zr8vZEPOPvyRYtJZPEZBfKqr3PXq/E1LJJI+rYQ77NiXOJXEyk6qJiLRXJuMcn26nkr+cTH84FaRw45a7/F75xdXYu+z1n1IPWm9a4mhHsYIiJnjg5Jt1y8yqSWGMuPqimsL7e4gWTHWumZbuAe7I6c/nPF7Ty1zEGx4TlKLhqoBm4TIpjWrw3dK/U9zxgph544PGdvbe4txyY4iBtD7/UnyuFsd2U8L3k+eqECWn4CPuGpOmR0L88Hogaq016EWZ++Tu/AgK1RYo1rT3ZA7THRW6Bt/L4lGaiLiapYpFDTYBJeKHKg6pyrd7rOdRxNRQaixXfVppPdpJnnhMTO7+daEGahu3sbTN2wFofEWUemgccuVreiohtW4jWQJlozyDSFtXmZqBMUllyVP3miHaz6+72yxGnHF3lZ52f5iaKtbE0oqQQXEqoc/cB+zBIEool6bj2AxYBxXD3dtwue8j0su3kJwL9YaaNrERAV71besw0RhqqB0ygGuu7zjB0QBXDs9JMLsJuUMl1LdZLo+OgYJRmOQYKWHxhmXjP5BF7tKKQmW+CjzAaYtWBNnXmTihner2r3jtppfpK
- Xxxc2ZLb
- l0Ep7nRfg+kavrqNbf4pahV8jZfW2oy4FNsSVk1v6ib66uWD0hoc97QPLRC/FbpgT8Cu7gZcVxcUKPxmrexQFWq2tL5eyd5x8pXh/PwpwU9io+Gig9CgbES9cQcm0qBNdMtJnTteAo5n0Vk3dj5gnXfdQkRWfnl43VU9SrW8z6wAptHojyyzsd2o9wlxCgSYVJw1RDS35/TX1SEO9tBwNswzQSxijyWaf2rzD8IMoUyQxOBq0Bmsol3Y6txN5ag3iCTUeCFhmA2ULPyDJpozE3ka2BNIs6qI2LCePi5VGmlAjj0zuuH8usBw0Ee1IFc1Uczompeq426j65MVvANhY0Tk6rGgdNQnDiF4N0NDANDiij2UKbpJn9ZeIcETZu/WJuCNE78NesbdqjCCD7npIOg+e54Hvw0pIlwBfqUQev79yO4CBRRU8wCJBHLkd0TUlYOezoefhRvFVrgY0/8Kd0g45RCH1rHdEZA3MgREwIkBs6YJnTrjnXSneHYBksH2mAFhykZahb5we51URtpEY7y281etOJ5JfN4d7t9wFFYGXWBtk1t2o/HvvjSleq0bgKU0nJNdO27lT4254Zcrr1oJxbEWnrF5kd5mNKf0YlGI2mopMLfvDUZ+QpfFYN74d0T4WSOZifjLZwnE=
+X-Stat-Signature: y4y4tf38srjwzs1aks8jtqqsw9rso4p8
+X-HE-Tag: 1767703379-852808
+X-HE-Meta: U2FsdGVkX18632sF3GuokTYFdaut433wET/0GwqRKKFIgtMWOx+PW40WXULDyTTdrcR/E1zE/dFb5CbnG/ohAhnFZ/rIppqh3dKAJO8HQWdZZR2CLCpxGof60E6N/vl9icquUFwzduzyEkdEDey1O7yCmJEbkNkqK6gGgtWTB/4sUiVSzTrqg7bPDpKyYaNpjf11sHzVoM2KyQH6dZgzHB7ScOVlJNKAy4ijluGr3VNSDlI9o/pXfl0ch9byAXILQpEYXXjeP9bL1cFauznOUaE7a30SM2EIp1SWG0UCC2SOKZnJO3YOSuKtikcry3v0L08Tcy0DAAcesI7GdYfMy7yxiyMusApvykw6sJY1OjW/sCb9Dbjx/IADnxGomlxGXxoFC+bsw2Li0nDrTV5Ha0I+2xcnwUcCbcqYOA7JcXZchv4ScLspFQgZFJh1jDZce5yre/s1GmmxrE9cB7bJ5esWWfD41x9BgdgkyDHiF85RFndrBXSb0ekG6Y3cpbmDhs4HUu1Svm4ouHOpWfuMCMiEUJ3So39h/+KRBLCZH03dcgQ2XL2vFjgkOblBCFyZjurwU8TOZSZdw0w4M9GtyWEiJeP7G79fqPosmjp3BXol0k0HdQZwnApfO8/6TANiYi6D340xjgCT633PFXMpgbvdTerN88vO5XRAMxM0fhGOMH2Bp33vOdEhm+LFCXKR9jX2f30S2CCn3GTadagA1ad4Tnc3fMkGk2wHhQ1Z7ex/EFRuH6Nz1exHWG0uSx5xF45Q32A1MPuuUm7X7cGuW5bB+TtZs8bj1jVKAsALntQylVKGQ44zHAJp9A9tnEM5laIr8b4bTqnWdF4pBB6Cgkhw81Yr0sX9/rc2+e63/XoIkrt9XWJqAzfOxLgpiWeg/Aj+8REASMJ4YvLU0jM0R5/Fe2wb4xAhYH3HdeC+hztw3vCw8dSsfxj610Da8UNaRxDxp3bnQUmMz+OEFdM
+ +k8KTCHv
+ t9/WSBGSBAxlN8DJ0PQJm/rCWcer+wdHCt7RIVFIp0MgJs7oeXRmGiaXnOr8vrKVVVH8KKRx1iT6nn5YJU56LoOR4CMbeZvnMdGFrwOGtKxn6dMLDJr2W1ehsusZX1qU464jlc07RMmLsTY04cOwC1zqQjw3RUv9/PHFS7zMcmWdYOCi3e3hANyQGlRF+twTKTY6mlNn+VSx7TR0ashlukNNpqOfWLkGMJI3gB2GBCZlkVf/yZDR9KtghfT7ss6I5RQw/Uua2/wxFFgGXDtIN9oAUmQQRKdQC8T32egSUa1O/cyDnfZRv39vtznDigWzijkuV51AqutUML6XRjVNKSqWPYzcM3TuItcmBJIwsAHx81S6X6+sK7dRpV5cEWU0tjMjvLY+YhZNjdD2W0BW+Q4kjJw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,28 +143,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Oct 16, 2025 at 10:44 AM UTC, Bala-Vignesh-Reddy wrote:
-> This follow-up patch completes centralization of kselftest.h and
-> ksefltest_harness.h includes in remaining seltests files, replacing all
-> relative paths with a non-relative paths using shared -I include path
-> in lib.mk
+We've got internal reports (b/467571011 - from CC'ed Samsung
+developer) that kasan realloc is broken for sizes that are not a
+multiple of the granule.  This appears to be triggered during Android
+bootup by some ebpf program loading operations (a struct is 88 bytes
+in size, which is a multiple of 8, but not 16, which is the granule
+size).
 
-This seems to be breaking the x86 build for me:
+(this is on 6.18 with
+https://lore.kernel.org/all/38dece0a4074c43e48150d1e242f8242c73bf1a5.176487=
+4575.git.m.wieczorretman@pm.me/
+already included)
 
-=E2=9D=AF=E2=9D=AF  git checkout e6fbd1759c9ece5044d3470f30a5e2166dc9de89
-=E2=9D=AF=E2=9D=AF  make -j mrproper
-=E2=9D=AF=E2=9D=AF  make -sj100 defconfig
-=E2=9D=AF=E2=9D=AF  make -sj100 headers
-=E2=9D=AF=E2=9D=AF  make -sj100 -C tools/testing/selftests  TARGETS=3D"x86"
-In file included from syscall_nt.c:17:
-helpers.h:10:10: fatal error: kselftest.h: No such file or directory
-   10 | #include "kselftest.h"
-      |          ^~~~~~~~~~~~~
-[...]
-=E2=9D=AF=E2=9D=AF  git checkout HEAD^
-=E2=9D=AF=E2=9D=AF  make -sj100 -C tools/testing/selftests  TARGETS=3D"x86"
-[builds]
+joonki.min@samsung-slsi.corp-partner.google.com summarized it as
+"When newly requested size is not bigger than allocated size and old
+size was not 16 byte aligned, it failed to unpoison extended area."
 
-If I just revert all the changes to tools/testing/selftests/x86/, it
-builds again.
+and *very* rough comment:
+
+Right. "size - old_size" is not guaranteed 16-byte alignment in this case.
+
+I think we may unpoison 16-byte alignment size, but it allowed more
+than requested :(
+
+I'm not sure that's right approach.
+
+if (size <=3D alloced_size) {
+- kasan_unpoison_vmalloc(p + old_size, size - old_size,
++               kasan_unpoison_vmalloc(p + old_size, round_up(size -
+old_size, KASAN_GRANULE_SIZE),
+      KASAN_VMALLOC_PROT_NORMAL |
+      KASAN_VMALLOC_VM_ALLOC |
+      KASAN_VMALLOC_KEEP_TAG);
+/*
+* No need to zero memory here, as unused memory will have
+* already been zeroed at initial allocation time or during
+* realloc shrink time.
+*/
+- vm->requested_size =3D size;
++               vm->requested_size =3D round_up(size, KASAN_GRANULE_SIZE);
+
+my personal guess is that
+
+But just above the code you quoted in mm/vmalloc.c I see:
+        if (size <=3D old_size) {
+...
+                kasan_poison_vmalloc(p + size, old_size - size);
+
+is also likely wrong?? Considering:
+
+mm/kasan/shadow.c
+
+void __kasan_poison_vmalloc(const void *start, unsigned long size)
+{
+        if (!is_vmalloc_or_module_addr(start))
+                return;
+
+        size =3D round_up(size, KASAN_GRANULE_SIZE);
+        kasan_poison(start, size, KASAN_VMALLOC_INVALID, false);
+}
+
+This doesn't look right - if start isn't a multiple of the granule.
+
+--
+Maciej =C5=BBenczykowski, Kernel Networking Developer @ Google
 
