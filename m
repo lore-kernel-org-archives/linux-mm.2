@@ -4,140 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 947D8CE9D65
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 15:41:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AFD2CE9D66
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 15:41:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04BA86B008A; Tue,  6 Jan 2026 10:41:56 -0500 (EST)
+	id 8583D6B0093; Tue,  6 Jan 2026 10:41:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3AAC6B0093; Tue,  6 Jan 2026 10:41:55 -0500 (EST)
+	id 7D7286B0095; Tue,  6 Jan 2026 10:41:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3D9E6B0095; Tue,  6 Jan 2026 10:41:55 -0500 (EST)
+	id 6E4366B0096; Tue,  6 Jan 2026 10:41:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D3BDE6B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:41:55 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7887658852
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:41:55 +0000 (UTC)
-X-FDA: 84301954590.06.45B2000
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B7C4740005
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:41:52 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g3oqSPRr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767714112; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E2CE6B0093
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:41:57 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DBC2B82AA
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:41:57 +0000 (UTC)
+X-FDA: 84301954674.28.2715282
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 84ADB40004
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:41:53 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sD2z4exr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767714115; a=rsa-sha256;
 	cv=none;
-	b=ZEkc/6Ljthd/hkkI4Eq5Hj4sXc5dFEFsPgrJ9OtgaeuMdFJL7y7OFGqCGDPyLd71z5A6+/
-	ljwgKS60x+0e2hNRIuMiTI/k/f9oxLVXOIcVLpFaust9OMSmJotNoCI+R+wCcR39z9+DWV
-	KHLEodqXSrMEsN53GGI4TTwFanifVuY=
+	b=bUsK0AoOm58KAAX57YCjS6bRDq1qe4ysUD28jlVREziqrLd9rLTS+h2lDs5aDoK2lfv55h
+	XGlHGtHZ3kq5yHS7LTyETLJOUtlPFhmUBAdZubW0QOYbXJGTebe4tn4dqLq1set9mtBirA
+	gGLJkdKMW6HD1LJuyEZVERxnBQdOCrY=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g3oqSPRr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sD2z4exr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767714112;
+	s=arc-20220608; t=1767714115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S6vXfan0Wf0wObOzKXxZdAP1tsQ2rha+wzbrGhBlCTQ=;
-	b=cimWYR1585UtrP8OnrXAZIb7G+jCnWOkNudzTiJsIauR/YuVwcRlDk6f3DCh1+CuNSPYR3
-	9gDlW+osP6qC7mMuqVTZf6fItpCep6zhznQiS7tFk1sxnmM1MWJSix/Mjr50rl7+DoM7Gb
-	g7Av4a1ByZBJxm061HbZy91V0bFTgHk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2708160008;
-	Tue,  6 Jan 2026 15:41:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC48C116C6;
-	Tue,  6 Jan 2026 15:41:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767714111;
-	bh=lLS8KmtOZp2zZZScnCqYpBIcm1XXF9y6DjF8nyQEl2k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=g3oqSPRrkU8q7sONds5Cf2OqAY/lUYNmQljRgD2wu+PLkdCs7+5lpK02C3YF2wcOy
-	 KXpMmdJ+qc96quWHQW6pIOk+RWVePLuLHW0J3pxbMNeJFbT+mOv9a+cxksjTrGbIQ1
-	 H1E1dy1AmyLWTtQYUHnNq4LAG3CvOFHB8eUzN8J4/DrB6dL4c4ivpUZVHGUu9HZoQG
-	 O07TtVhyC4IXPUzFkblGph3FTi08R2Wr1y7Y3iBaaGO7zw13sCtFRdCWHwqq4yGt3/
-	 O73JmTX9H1tfnccCgB0x5C8t+Kxfxf6vDHGLp6wL/2X4ZUZy4RjBAI8S0g8++Tpbrh
-	 dqzGbcx8AkGYg==
-Message-ID: <c39232ea-8cf0-45e6-9a5a-e2abae60134c@kernel.org>
-Date: Tue, 6 Jan 2026 16:41:46 +0100
+	bh=iByVDmD38s5JhKFTtjPltcBnKNB8pZjXuWFjepg4AvA=;
+	b=w3wyQxVK3CB2CLMC2MaQcI+sO49aMxSLTiVRNhGO//h7ZHy333tX5HIy+URSd5bECT4PMS
+	M0Pk65LJZor6vZ6JOFj5vTdIPamkxNXdrZ/dI0jk3lrWSxshZUjYZyhisz5Si54fncMjrv
+	G5p15VxEHZlJTR4hDPRnSQwJWFxXaPo=
+Message-ID: <3e9b27dd-1051-4e40-bd80-0fbbda957f0a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767714111;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iByVDmD38s5JhKFTtjPltcBnKNB8pZjXuWFjepg4AvA=;
+	b=sD2z4exrVkndcJilqghsE+zBxBQlO4GkU6WEAENU2y/YSmHFjdi3JTPErwJYLi/S6hOC5g
+	K3Tj5j/A4Vgiw8fOP7YZy+k0Gct6uXHjin7ywdKBTxxMx1USdipaMVe0zKaSfDKvUeKywG
+	BI6f+S2C2Miu+O/fpieSq1/S8e9OOns=
+Date: Tue, 6 Jan 2026 23:41:05 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Jan Kara <jack@suse.cz>, Joanne Koong <joannelkoong@gmail.com>,
- akpm@linux-foundation.org, linux-mm@kvack.org,
- athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
- linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
- <20251215030043.1431306-2-joannelkoong@gmail.com>
- <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
- <616c2e51-ff69-4ef9-9637-41f3ff8691dd@kernel.org>
- <CAJfpeguBuHBGUq45bOFvypsyd8XXekLKycRBGO1eeqLxz3L0eA@mail.gmail.com>
- <238ef4ab-7ea3-442a-a344-a683dd64f818@kernel.org>
- <CAJfpegvUP5MK-xB2=djmGo4iYzmsn9LLWV3ZJXFbyyft_LsA_Q@mail.gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH RESEND v3 2/2] mm: introduce pmdp_collapse_flush_sync() to
+ skip redundant IPI
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <CAJfpegvUP5MK-xB2=djmGo4iYzmsn9LLWV3ZJXFbyyft_LsA_Q@mail.gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: dave.hansen@intel.com, dave.hansen@linux.intel.com, will@kernel.org,
+ aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, arnd@arndb.de, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, shy828301@gmail.com, riel@surriel.com,
+ jannh@google.com, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ioworker0@gmail.com
+References: <20260106120303.38124-1-lance.yang@linux.dev>
+ <20260106120303.38124-3-lance.yang@linux.dev>
+ <86ab8a1f-f6a3-4523-8ccc-f99edfd30a7e@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <86ab8a1f-f6a3-4523-8ccc-f99edfd30a7e@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 84ADB40004
+X-Stat-Signature: aa57mzypu4hbe1jko4ang7r7ngpeabsq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B7C4740005
-X-Rspamd-Server: rspam10
-X-Stat-Signature: wc5twiyq5e5mcjgkh5zsic8ikea6fpf3
-X-HE-Tag: 1767714112-21346
-X-HE-Meta: U2FsdGVkX1/5wGx51IxoGy5sgC6gH+QhRyI1jPiekcHqQVYXKELv6LtlY7Vlw61iXIH0nx/vbYGlJajexCvrotuO3O3BYJ1eo/1tHsZf2yfsUvkwrXxut++4ActZ87qDowDlE9hZtpglACpBiv4CSQs70Nkr06FVw/cCZuqLHnYEzOJkSt5wU1zG/owc5w/8yZbWXno7Qzax65kZAZkbBvzT0HI5+Vgoiu9EBtAQ0MkWXZvuvL92gBNhvQQEAX/qklhDUQde2O9w18+bKjXXq6P2iUECyB1Du33dYBz7MlvwMJn6KsH3UVfOKuRtAQ4qrToNh/wdetLc2+piMsGMRtmi3kZg4jG1J7/nDxLfSgDoCnJJQqVjKutcoEN9GLMhsagy1cs7SSvrbWGqpf2pvFJA60U8k7FdqcWwnPjkvSoZFZGrCGz92rP/1GUNjj6d0IhUpPIsRe+fbKAckSIak+QbMVVgYMp2dvoeFGVcnqocy/lLOMcwAyyLPrD4iaI/DoGBCA/cqciLr8OslCojl+GLalgirtGAbA1aim6aclYzll1oMiRTUBsCIa5d9udHUCrUPDp28MY1Ow+xpPjqMnqHo5unLHCcgxVbCegBi1ZYxz2DFdm8ZL1+T36lRgnvE/4BpDDFbBHgv68ysyrrza3SRdCNbYKk+99PnpiUZbcg5Dgt2q+5fUMLl38kQlA04JkfESiEjKilrk1gD/iAo95tQCRAANbNqDTG6KX/yGbW13PJai4rXwM1VpdcorVENwE5cLUV20qYZF2D2perftDAuOnsUbHramUrDVuhD1jhnwDDXxyqKCxGfq5UHsf/U8PSX/DPpiPeQ9MENjmxgjRcjmSYBJcDLypUtqZcsa7gISbPdkrR+85VcdT1xvO+OFgtWBni9dGxmJKNo+f0jJa78VVMlWvRotMHTGucljqnc42eteZfrgZ5eQu/vac6U7RI6avkYt0MxAAbWGk
- ePANovEJ
- gGbuDxxO1n8vbmy7a/hGnLp3j9FPMGWPrdnxJIohNkko9wrGefZzMfUT+9o4BfCovuX37LqMDiyYZHyS+q/knGAOZOa1Q4oS928cCn0BNiXIVpFmC5BR0xMkEBYV2TwGdr4iAcNblaG9dk/fWKeGCqJ8R8rUW1TFohYLe3FxdUaj61cMShc8XpDQxSmRnsxtqD4d0tspsoIpwAzx6rP/DECRk6oIxzW5AdvA2lzvc+F4hc6m5OnzTaG4LBFy8MnSv3lBOuJD4U9oiMY99+Xjak9ahjnAW6MgyUYotLmcMTkaDjCRUFMXJRFDrRxl1czO8sHeKrbNQCYEPkrM=
+X-HE-Tag: 1767714113-469338
+X-HE-Meta: U2FsdGVkX1+Dtkm9SjKWZZ8dgJ0AN+4dKVbla1KH+wVu5BXo2xXXjMfwAc0c7HvF9Y5Sl5N0VNPs1fX7H6qAucYG5JkSaREblqLr+1QMugO1AhIbHHykVNHn80/uaitT1/WRigGDkRIM3LZPae0e9t1A7a15rFQ5TXuTJrGKTN5RKo/7Ex94gicxT7AZqy2TEuDCNEjq6f2z6IGMigA8avbKvP8czQCjtG4OfXZl1327KuY7gAR3oQ9Ug51Ox0I1s6RmULnizRhbRsD0kBbDgQo70bcfdysNGYoUKL9nmmKjtnbznR+o9BaUXtDqB/yqJpG/RPZdSU+PPcJ3RmzP4ZFPFCbKpQf7rVJHzko/68zV6ic98rKlvYpSnqYmc58lOuI3rVES4fUH7RuZyRyBs8mkcGViCpJDrRBnEts79b9uiyjVTrZOp6WC904gZFNJqEx9NCe1fVHy6RpehinkdSOWdm51Y7iBrKUHMIgODFl+Lj9mTjqeUQUdTFF5dwnIzE+Po4R74HGALAKPKVRDhruYedc6TqjKWv8h+JIgQWXmer/20GX92Yq09Eju6Av0HQZS9IVEorC7uDlhGQiMbXQGqdLd6JiHki6/S0TMr8EGYhO/W2DbmLtYLsFdwNK92SA2VQJdNpCwaiN7qtARH8vqb4mofE2bKygKBbxNYzxgxpBm1j0pr3VC2qA+pcI8/lyoBKuRFYhFxMddZAItN8w95yFrcQeAY7I3zcW8XgNenGSWXIatox2z3ZbOlNiIJLGwhUe77fpn+yscv3TzQWYvSvvt/YYE02YTUAtDSkJuwl1E2wX/qxFB6jjxRN5EaYQACB9Nf/OSsaMhtmwF4XlaL2iV9A8afyOgQR8uiKl9oPIdjqN9LOvF7iZlTidzTLMmqx/LN5V9fUUVD0opvsGlQ3tGjAdFz5gx/6if/AyW6AyegruuWqekvHNxBcNAWwb98/FEcxMrIj7AOI0
+ mU9jJwze
+ oh4ELtb0XJ2Qw07btdzDtgQ/RNm95dkfRDWFpgU4pnkaaS4Awg6Ivd8ulpl/fHbWCSdc+GoHnGiKQzsxFsakqB/znlFT2YsvuhF0je5V92IoJsCJETUNe/bTxE9aODDFNcxHYko+CrQHZA3ETV2RzFlDswUY+lu6uv4zzdWip1Lnhy3yHlSHQ8yRSHvJD/7KzjxFWqyVF7GmSIA4hWBMZTJ1Ja7XYpE4rj/UU1jcm1DTtZdqGD9Uwj4wvzMExa43FUIgsIXmpEJ0BZ5tBuiMJV8u+2EZB+N6NeltqsoIkD9BBZoqzG2YV444W0GcH2fGX4T9bfG1OeuLW1zLAi0uzzRGp/A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,29 +100,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/6/26 16:21, Miklos Szeredi wrote:
-> On Tue, 6 Jan 2026 at 15:34, David Hildenbrand (Red Hat)
-> <david@kernel.org> wrote:
-> 
->> I don't recall all the details, but I think that we might end up holding
->> the folio lock forever while the fuse user space daemon is supposed to
->> fill the page with data; anybody trying to lock the folio would
->> similarly deadlock.
-> 
-> Right.
-> 
->> Maybe only compaction/migration is affected by that, hard to tell.
-> 
-> Can't imagine anything beyond actual I/O and folio logistics
-> (reclaim/compaction) that would want to touch the page lock.
 
-I assume the usual suspects, including mm/memory-failure.c.
 
-memory_failure() not only contains a folio_wait_writeback() but also a 
-folio_lock(), so twice the fun :)
+On 2026/1/6 23:07, David Hildenbrand (Red Hat) wrote:
+> On 1/6/26 13:03, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> pmdp_collapse_flush() may already send IPIs to flush TLBs, and then
+>> callers send another IPI via tlb_remove_table_sync_one() or
+>> pmdp_get_lockless_sync() to synchronize with concurrent GUP-fast walkers.
+>>
+>> However, since GUP-fast runs with IRQs disabled, the TLB flush IPI 
+>> already
+>> provides the necessary synchronization. We can avoid the redundant second
+>> IPI.
+>>
+>> Introduce pmdp_collapse_flush_sync() which combines flush and sync:
+>>
+>> - For architectures using the generic pmdp_collapse_flush() 
+>> implementation
+>>    (e.g., x86): Use mmu_gather to track IPI sends. If the TLB flush sent
+>>    an IPI, tlb_gather_remove_table_sync_one() will skip the redundant 
+>> one.
+>>
+>> - For architectures with custom pmdp_collapse_flush() (s390, riscv,
+>>    powerpc): Fall back to calling pmdp_collapse_flush() followed by
+>>    tlb_remove_table_sync_one(). No behavior change.
+>>
+>> Update khugepaged to use pmdp_collapse_flush_sync() instead of separate
+>> flush and sync calls. Remove the now-unused pmdp_get_lockless_sync() 
+>> macro.
+>>
+>> Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>>   include/linux/pgtable.h | 13 +++++++++----
+>>   mm/khugepaged.c         |  9 +++------
+>>   mm/pgtable-generic.c    | 34 ++++++++++++++++++++++++++++++++++
+>>   3 files changed, 46 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>> index eb8aacba3698..69e290dab450 100644
+>> --- a/include/linux/pgtable.h
+>> +++ b/include/linux/pgtable.h
+>> @@ -755,7 +755,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+>>       return pmd;
+>>   }
+>>   #define pmdp_get_lockless pmdp_get_lockless
+>> -#define pmdp_get_lockless_sync() tlb_remove_table_sync_one()
+>>   #endif /* CONFIG_PGTABLE_LEVELS > 2 */
+>>   #endif /* CONFIG_GUP_GET_PXX_LOW_HIGH */
+>> @@ -774,9 +773,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+>>   {
+>>       return pmdp_get(pmdp);
+>>   }
+>> -static inline void pmdp_get_lockless_sync(void)
+>> -{
+>> -}
+>>   #endif
+>>   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>> @@ -1174,6 +1170,8 @@ static inline void pudp_set_wrprotect(struct 
+>> mm_struct *mm,
+>>   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>   extern pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
+>>                    unsigned long address, pmd_t *pmdp);
+>> +extern pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma,
+>> +                 unsigned long address, pmd_t *pmdp);
+>>   #else
+>>   static inline pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
+>>                       unsigned long address,
+>> @@ -1182,6 +1180,13 @@ static inline pmd_t pmdp_collapse_flush(struct 
+>> vm_area_struct *vma,
+>>       BUILD_BUG();
+>>       return *pmdp;
+>>   }
+>> +static inline pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma,
+>> +                    unsigned long address,
+>> +                    pmd_t *pmdp)
+>> +{
+>> +    BUILD_BUG();
+>> +    return *pmdp;
+>> +}
+>>   #define pmdp_collapse_flush pmdp_collapse_flush
+>>   #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+>>   #endif
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 9f790ec34400..0a98afc85c50 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -1177,10 +1177,9 @@ static enum scan_result 
+>> collapse_huge_page(struct mm_struct *mm, unsigned long a
+>>        * Parallel GUP-fast is fine since GUP-fast will back off when
+>>        * it detects PMD is changed.
+>>        */
+>> -    _pmd = pmdp_collapse_flush(vma, address, pmd);
+>> +    _pmd = pmdp_collapse_flush_sync(vma, address, pmd);
+>>       spin_unlock(pmd_ptl);
+>>       mmu_notifier_invalidate_range_end(&range);
+>> -    tlb_remove_table_sync_one();
+> 
+> Now you issue the IPI under PTL.
+We do send TLB flush IPI under PTL before, e.g. in 
+try_collapse_pte_mapped_thp():
 
--- 
-Cheers
+	pgt_pmd = pmdp_collapse_flush(vma, haddr, pmd);
+	pmdp_get_lockless_sync();
+	pte_unmap_unlock(start_pte, ptl);
 
-David
+But anyway, we can do better by passing ptl in and unlocking
+before the sync IPI ;)
+> 
+> [...]
+> 
+>> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+>> index d3aec7a9926a..be2ee82e6fc4 100644
+>> --- a/mm/pgtable-generic.c
+>> +++ b/mm/pgtable-generic.c
+>> @@ -233,6 +233,40 @@ pmd_t pmdp_collapse_flush(struct vm_area_struct 
+>> *vma, unsigned long address,
+>>       flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+>>       return pmd;
+>>   }
+>> +
+>> +pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma, unsigned 
+>> long address,
+>> +                   pmd_t *pmdp)
+>> +{
+>> +    struct mmu_gather tlb;
+>> +    pmd_t pmd;
+>> +
+>> +    VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+>> +    VM_BUG_ON(pmd_trans_huge(*pmdp));
+>> +
+>> +    tlb_gather_mmu(&tlb, vma->vm_mm);
+> 
+> Should we be using the new tlb_gather_mmu_vma(), and do we have to set 
+> the TLB pagesize to PMD?
+
+Yes, good point on tlb_gather_mmu_vma()!
+
+So, the sequence will be:
+
+	tlb_gather_mmu_vma(&tlb, vma);
+	pmd = pmdp_huge_get_and_clear(...);
+	flush_tlb_mm_range(..., &tlb);
+	if (ptl)
+		spin_unlock(ptl);
+	tlb_gather_remove_table_sync_one(&tlb);
+	tlb_finish_mmu(&tlb);Thanks,
+Lance
 
