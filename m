@@ -4,83 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 208D7CEFCEB
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 18:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DEE9CEFCEC
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 18:40:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70A836B008A; Tue,  6 Jan 2026 13:39:04 -0500 (EST)
+	id 882436B008A; Tue,  6 Jan 2026 13:40:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D3E76B0092; Tue,  6 Jan 2026 13:39:04 -0500 (EST)
+	id 84D5E6B0092; Tue,  6 Jan 2026 13:40:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E0516B0093; Tue,  6 Jan 2026 13:39:04 -0500 (EST)
+	id 74F426B0093; Tue,  6 Jan 2026 13:40:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C7BA6B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:39:04 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E2F8D5B7A7
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:39:03 +0000 (UTC)
-X-FDA: 84302400966.25.610B9B5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 398064000F
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:39:02 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XqveFlin;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 611506B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:40:16 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 071541607F1
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:40:16 +0000 (UTC)
+X-FDA: 84302404032.18.9F61919
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2629EA0015
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:40:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bACpOAMr;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767724742;
+	s=arc-20220608; t=1767724814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hgUj4G+p8jDHvMX+STFXHX5ylg/LFAORDW4PvHGENCg=;
-	b=w5U2tAnLIpD+XXG/IDKywfMA3TNOmveWsaCzY04URY/yxXHPup23StMMGbjMjYcDWiBxAD
-	AD0pRL8hNyvHeSANy7Z1Ae+/gYIHlxGlbF5qwB5gsBv6DxjEa/cOC+12FvhjKyyHydF7WR
-	J1rUqga/6qr3l5NPJrOJEN8FinVgjoU=
+	bh=z7RLsnELxKTpYCw18WSM2EKoT0NbUqIQbS55fjmkm9A=;
+	b=Y6sr2u454L60SkkcoE8ECpJVy3ArQTGB6TvFG8lYz53tfC9zODtLZo9uI1QtKmsRBGZ6HR
+	eldUoZajLx0eHeaIqgQIdSs+R5hW3Pv3muXKiq27Yc8uJyC1GDMZbxitRuhbRScZNKhfbd
+	kImg8Ee2hWcft//yumAT8TQ9SkuW2GQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XqveFlin;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bACpOAMr;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767724742; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767724814; a=rsa-sha256;
 	cv=none;
-	b=042w+4PXSbPIm8KxflNtS5t3B1h549f8yn0IbeJFVHiwzgPxZmxwIFtoDrBFjzO7sRhIm8
-	bYa+3j9R1qSd+JW1S6bxECa0sMg8owHBFbCy9+nL+/eqEUnUobxHvZ6uUsYsYldGRi5s11
-	o/gr1kve/Sovz6WlwVBIxxR57f77mVY=
+	b=OV3f8q665N4LZUHJcin7J/r+pwI1ohJLvRB5MjEpP9VZuG/3dbvJrPDi7Mg0X+3rCRWTgn
+	Pyv2vsFjLbOVWota1OGmjAbDjwZt95664wqHnghOhcWj71kRqdSs0cAiOFsP2XT9Y3IHAH
+	PljwGO5DasKLFAsp6Ajwot1AUUjPk8A=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6CA4360008;
-	Tue,  6 Jan 2026 18:39:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DFEC116C6;
-	Tue,  6 Jan 2026 18:38:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EE251417A2;
+	Tue,  6 Jan 2026 18:40:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AF1C116C6;
+	Tue,  6 Jan 2026 18:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767724741;
-	bh=tm0QDYQ7CzUd3TQGcCn0OduK4E5EmxUcy5XXrvBdEVc=;
+	s=k20201202; t=1767724812;
+	bh=JuwHakOpYpMvCGfqvDnVgRv8J5uE91JaqwMAzOrA6yM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XqveFlinAXm8UKS1c+Yoyd8/RpP4+kKAYqVmsJk5rUgZCvlflXGJtqqIUdqqGM8OS
-	 Nkaj06Wqdn9WuXlcpMbwzgO2hfzGBPP4A2HA2alRyD2pRBv33lSRnXV9Ddxf/SCeBY
-	 TwVbkU7dWmGBCnFriMz3re06gjBbQaAop9sYczEOB/ZDoJUIPLP3duHPI/zrfY2nOE
-	 Ka9Py/ZKzR/E/RycRjzz7ZgYmI9uJBRQUTjEmfWVEK2BKlRsbBYPdj3sPRgI+Yi9jP
-	 tnkDTBtaoCRtGJFXX9506e0u3ORWVqO+rVReKfZG3v9cnxIPDsvBv+/ZR4LGYlE7Sk
-	 OyCgAx/dHBeBw==
-Message-ID: <616f97b7-24e0-4134-a08d-5abaf07a8b09@kernel.org>
-Date: Tue, 6 Jan 2026 19:38:54 +0100
+	b=bACpOAMrbUq/wRCabMMdWiZ5CGJf97djDVtqkPT5O9EE9oqzOR1pgJQ9SOl+VY03U
+	 +8zdGBJ0Da2ZFvf8A6dyTHLtIGfGdnDL7h4ccV4M8RUHmtfsJabxPQ2SV5hctOWtLr
+	 +2agB1XXt/MNQ3BpJakEfrtANJaauDQyTqDf8e/5PH9wKy6LNNt9h7K0bKfwfSrL8h
+	 IbJAnVoP+qSFUQ3/EUN2eEx+JW5Om+Wc999Wu8kKV8Ouxxf07V24EPY1Ji+goR97Xe
+	 66QxULwYV/wTaS/g3XgrxKKAsdaaMjga4uoMUPaUhtWm7ZC7hQXfZyzCWW5LBLqhBG
+	 QKDVE3JsPcP+w==
+Message-ID: <41467ff9-46f3-4937-ae96-3bde178a63af@kernel.org>
+Date: Tue, 6 Jan 2026 19:40:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
- blocks to zone movable
-To: Gregory Price <gourry@gourry.net>, hare@suse.de
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
- dakr@kernel.org, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com
-References: <20260105203611.4079743-1-gourry@gourry.net>
- <7f053290-6b9a-4d18-936e-0f28006c79c3@kernel.org>
- <aV0_SMq_I_R7ikF3@gourry-fedora-PF4VCD3F>
- <9575e042-39f4-4f01-80db-34aaaa9312e6@kernel.org>
- <aV1PQd3tyfSiH4xD@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH] tools/testing/selftests: fix gup_longterm for unknown fs
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Mark Brown <broonie@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260106154547.214907-1-lorenzo.stoakes@oracle.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <aV1PQd3tyfSiH4xD@gourry-fedora-PF4VCD3F>
+In-Reply-To: <20260106154547.214907-1-lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 398064000F
-X-Stat-Signature: 75jaak1gnx9zhdnur4g7bpe98qersyr4
-X-HE-Tag: 1767724742-466675
-X-HE-Meta: U2FsdGVkX1+1Ok00vewg4oPQUpz+TezwTWXrBHrqPlKdz7ZM2jvnk0vM9otjDMpuv27q+4M59zUBd7g/mR8DuwyiNZpsXTPZX0jFsYY70Bt3cfGqz7iIeyCYDvVE2joD2MqGD9ZMvbVnGdh83tUkJKeG8koEbG9KoD59C+QeEqDGEx/vWEGMiFFPpi66u2TNtgw9owQ0OdTuAJFFvE0j3Me1CnCVl/hRVYJmBfaXuyGV39+chZ63cxA03EOhsePjJOZDKp91vD5GRLUCfg93ecypyV4lWAbsclwCxAzankp2N/Qvsrz0cTWIzBrCns6UMozP9Vv6JeheeHY6BfMMKEcCD8XbizoNQczGOY3nmkocTNWIlAqWgHcoLO3qComO1J7tCmh4C0md3TOLdCBsw2MBONj9IdXyDZ/NYPfx9OMrBwMkLr388Z/F2gFTkn2yUuNrovsEemn/hhJvGzWl3GcSbxKRljaxLsS6oeUbmj9zIRdPsCTB+RmUGfydA+dwRs2DXJn/ASKV8jwuAZJQ5jkMTakf7ifVQd4PKAU1/cof8HgHOX/lBRcdwcC2nVkklLhlCUVD8NUR4NYJlr9GBNdNAVxkL6zrWYueAbKLfHxdcsTH7QIsb1JYeJDPFBlnHBFDanETOR9MgpakG03pqh1zU4gLiCxMTHvtznrYNEjyCEMAyZ1S1hsMuCvAeWu+tZRoAw7g3hfML1yDCaQCZskznSy3jPueNYzkvaR3GBA86jOXPpoJdiDigiSn1i+0mqGybPFFekmv09r3eQ+zY7aiL/JY0mgvPSseMEXl79TUfR1epymGFkia0UllykNVJRPS9/41zddW+WSMhFR2Rgl12edW1BWkenHT0iRuHGv2XpD6ryphi+BMHL+ItJDIhwwP6pHxb/s+/HkRxdB8bur7l7BHWCpBniC1/T+8D5qUJpfh7T3a+zqFBiCF4DT4+k+76wehZaIpIOOTDgM
- yB8u/+tM
- Wk/85R67HRs7/CK6/1tTPLbq+wSynPUufjItIK3IEFa3s2iW/fV/gQ6FKZxfC84atwWdIEHNQx8A5JFnIU85tvOLwS6p5Ppy9aPzl9vK+JIoWjCjOKfmodPqxN+k7stNJmCSAtqPkmj+NqpJDRP8+ripnugFBiBkTsTcLNXeTNE76u20tanqkkQqPkJz5V9jFpzDKhJ8dcD/yWsVn1EeKVvRG3sryoTF+LRvAqXTnvCpUa6ohrKX/1pqFOnKbLc35S8QocRI2Ke8o5HvttIOB4dGp26x2706MlVfgXmwb+STv+m3UOx0J6Mp9Uw==
+X-Rspamd-Queue-Id: 2629EA0015
+X-Stat-Signature: x5nkrti9qr5amatoh1wk1u7m9e86qwr8
+X-HE-Tag: 1767724813-239845
+X-HE-Meta: U2FsdGVkX1+R2j3CnVTW4BR+8XTf0ODh+rotg1+a3AuXtnZegBedHUyA+uwgboQ9St5rzWCIeK1Arbp2ZWx5JcQ9IKX/qy1evLqtqP39qXiSq0Jds+hmUqUfA84ybCfPluldkz+cPKOyctZM45RrR/5Pk4h4B6amRoLed8xTsK6miopc+mHNDjif9ETNnqtNtmAR5ShX6iy/5CZLPP2w0p2OAUFIqkNZ/55CTX+Ii84ggJHC+1uq8y8LYftYv0fhoChgFUFbTknHqMm5da8QhjWuNU1GInmsxxQMERfI29kUApdJW3JLveLejv0sJqHsUDpF644P+Mydh+GlmUUuIeSS6FhZBZJaqQLtVlQgqSz0kwYCkGs8SylhCgi4H7P1IktzMjXV9C8guE8fInkEZPB9ws02YiqGiYbp5ZRh1FkP3L2Mo0TZXWvJ+uy84J7JOKC6MyX35CLu2DP5uRM8bkrJ5kEGkIqC5Bs030htMDkpepDrjKrNNoqhlZP5UFzHNIbWROU2kdFCeLZKcr9x9gt5ahgQ6d3m7oNgwJ+Wqv+nqkwQIbzslAuydevhVSc9O/Fsmr6DPJ0hwa2yR0nbqxwWJOSfqvgx5SUW6lJZ1Jvq0Gnt0WfiXKRhU6eSCklhbwsm1ymToozlO/un05Cak3rQqFvT/rCHq1hNXqRtQj0XpT5N7Ik4Y/928GeZAOH8rwH+5hmijFEDtjA1BxY6xbl7SIrhYY6Ldsa06qrWmLKhflRc2ab8LMhbnw3Q5G27e8BstZzl7t162SmUIvdeo7OpSz+wcJIv2IymVX9FufgJtmZAXK8nA1itFXqiGABXALNY9rRLyj4iedZUm5Qt+sVW5zmKRClcjwvT4hv1oqIwPrpuZPZf+IG80Lcw9JsTgONXsg1ItM3Vnqh/CErMkPdPD1IeTkPeZE5UlilBc9n4n5H/Gx+ZGLTx1njBQGsei8xvvz4K+KW5+tyR1SZ
+ icTLrioT
+ 3YnZtZpTmrNqvdd9dYqSBd4pajgOEuGI6NYeupG/U/To9/7kF4eWHjnmjTj2pojSNol5ilDilhXhTAvhaJczJi0Z2if8DV5d8qNRfcVZbBmtFG0rTREiEEY52INLw5BRmaZ3URJqhR+DK7kpDNMfKmKwvnhdBh3jHFGrUEGvAC0DoDAAucVx25fR2pGRCGD4soeSrfFcTEMztJblOvcfSuGfRvVzztHAYzwp2E/VzVFq2AzdTuWtzpBfiUbVd6JemzdPXJtyomUzgqnkocEC6+Zpv3t1Y5sBQKmFdpzsv5f2+8HocerrL54e8ki2DQ52dNg3DTBghbyM4QB2oGIi+yB4Abme3p8rdFDuh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,88 +143,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/6/26 19:06, Gregory Price wrote:
-> On Tue, Jan 06, 2026 at 06:52:11PM +0100, David Hildenbrand (Red Hat) wrote:
->> On 1/6/26 17:58, Gregory Price wrote:
->>> On Tue, Jan 06, 2026 at 04:24:21PM +0100, David Hildenbrand (Red Hat) wrote:
->>>
->>> I'm not against this idea, but it also makes the sysfs a little more
->>> confusing (`echo online` now does different things based on prior
->>> state).
->>
->> Right, but only for the contig-zones policy.
->>
->> But maybe you really want the default for such memory to be "movable" even
->> when not onlined beforehand? So I am not sure if the description of the
->> problem here is accurate.
->>
->> Isn't one problem also udev racing with ndctl?
->>
+On 1/6/26 16:45, Lorenzo Stoakes wrote:
+> Commit 66bce7afbaca ("selftests/mm: fix test result reporting in
+> gup_longterm") introduced a small bug causing unknown filesystems to always
+> result in a test failure.
 > 
-> Yeah there's a bunch of races, the specific ones mentioned by Hannes i
-> need to go back and re-listen to the talk.
+> This is because do_test() was updated to use a common reporting path, but
+> this case appears to have been missed.
 > 
->>> I preferred just failing if the block wasn't compatible with
->>> the zone (maybe making it more clear with a dmesg print?)
->>
->> The thing is that this block is compatible with the zone, no?
->>
->> In a system where you would never want to offline that memory, why should we
->> stop someone from onlining it to a kernel zone? I'm sure someone with a
->> weird use case will show up later that will complain about this.
->>
+> This is problematic for e.g. virtme-ng which uses an overlayfs file system,
+> causing gup_longterm to appear to fail each time due to a test count
+> mismatch:
 > 
-> Presumably you wouldn't be setting the MHP flag that prevents the blocks
-> from being onlined in a kernel zone then - in which case this all just
-> works as intended today.
+> 	# Planned tests != run tests (50 != 46)
+> 	# Totals: pass:24 fail:0 xfail:0 xpass:0 skip:22 error:0
 > 
->> But the patch is missing details on who would actually set MHP_MOVABLE_ONLY.
->> A user should be posted alongside the core change.
->>
+> The fix is to simply change the return into a break.
 > 
-> This is fair and probably the obvious immediate user would be a dax
-> device with some kind of `dax0.0/protect_unplug` feature set.
-> (With a better name obviuosly).
-> 
-> I will defer to Hannes on his specific use case, but I could see the
-> CXL-DCD (Dynamic Capacity) set wanting something like this.
-> 
->>>
->>> Anyway, let me know what your preference is, happy to pivot however.
->>
->> Restricting memory to be movable-only to handle a user-space problem as
->> described here sounds like the wrong approach to me. You really want the
->> default of such memory to be "movable".
->>
->> Almost like an optimized "auto-movable" policy :)
->>
->> Or a new policy that will respect a provided default (MHP_DEFAULT_MOVABLE).
->>
-> 
-> Fair, I'll revist this once Hannes gets a chance to chime in.
-> 
-> This was effective at getting the discussion started though :P
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Fixes: 66bce7afbaca ("selftests/mm: fix test result reporting in gup_longterm")
+> ---
 
-Hehe, yes.
-
-Another thing to look into would be to provide a way for ndctl to just 
-add+online the memory in one shot, without having to go back to walking 
-memory blocks to online them etc.
-
-After all, ndctl knows exactly what it wants, as configured by user space.
-
-
-Something like "dax0.0/online_mode" (or however we can make it clearer 
-that this is for the system ram mode), which would default to "offline" 
-(what we have right now).
-
-When set to "online_movable", we'd online the memory to online_movable 
-right during add_memory(). So no races with udev and no manual onlining 
-necessary.
-
-One could also envision a mechanism for ndctl to 
-offline_and_remove_memory() memory, instead of manually offlining it, to 
-then race with somebody else wanting to reonline it.
+Reviewed-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
 Cheers
