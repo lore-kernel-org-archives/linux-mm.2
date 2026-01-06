@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD8B8CD0437
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 04:36:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B582DCD0437
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 04:38:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08FF76B008A; Mon,  5 Jan 2026 23:36:34 -0500 (EST)
+	id 21C8A6B008A; Mon,  5 Jan 2026 23:38:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03D506B0093; Mon,  5 Jan 2026 23:36:33 -0500 (EST)
+	id 198C86B0093; Mon,  5 Jan 2026 23:38:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E621B6B0095; Mon,  5 Jan 2026 23:36:33 -0500 (EST)
+	id 09B9D6B0095; Mon,  5 Jan 2026 23:38:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D6C8D6B008A
-	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 23:36:33 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5A4921603D5
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:36:33 +0000 (UTC)
-X-FDA: 84300277866.26.0AE5D6B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E9BB76B008A
+	for <linux-mm@kvack.org>; Mon,  5 Jan 2026 23:38:46 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9C7A01603C5
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:38:46 +0000 (UTC)
+X-FDA: 84300283452.12.61973FF
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 24C3C1C0003
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:36:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hgB4giA+;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767674191; a=rsa-sha256;
-	cv=none;
-	b=wz6mkg+Ec+kJOBmBejlz+cmhq8oMIqYrb4x+Szw1/ONGt9gEenwYPRuvsXnrVrTyxn5Ocf
-	tksBIMzoKoBZ0eujlb3X4luc+7aXLfby4GF1f0Rn3LCsqerEy8OlGrohiVw4vcqD1LogqR
-	ivdy5KUUuPPy7aJKyr3B096b8ngR+sI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hgB4giA+;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0726920004
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:38:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pgcvkbsi;
+	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767674191;
+	s=arc-20220608; t=1767674325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SCqnCUlOtKBvjGl2QuwECZj56qaExF+6jInKwQCN3dM=;
-	b=Jhn78hG4oTTO0imHWMqWEor9OfGnVc/04O/5TtLkRs2NOljdyMV6hKK218a7zx4EO6dtep
-	g8ulm6a2P1CmdKQkwpExT/PzxGr/9g3Sh3WKi3Y/YSfSt+EPWZdb1n/aVuCs+GVM9Ve7Ah
-	6dmUxEL06x39NvkOTYvTGQvo9W8LdjE=
+	bh=yTHalOLUmgnOoLmmCtnuWbnyzLCxCDhqZLeNdhtc+EQ=;
+	b=K5qSXIWbZEHwXTES1T5NOdUI3t8ev1xmRkNS3OzeXqbrgVrSLa3ly3BJcxKkB9v+Gl6VFH
+	VxyCNnE8X8ViT4xApBi3u1M1CCdLuBH70iP+qiuyBo5h1yErw6l098WUHNtbmhIt5kuBMH
+	uS0fZZ04saJA/MYfUy7DmkrQ62pUskg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767674325; a=rsa-sha256;
+	cv=none;
+	b=n+COQBGBqcXT/x2Kkhh0HC3gVztBpBo4tHJSWwyHeih0ZIu+4FYgSFivm27XH2zfj/eyUJ
+	zAQFeX7bNY1GBICmy+uI28X790fZRZtCnkQ2TIMGq14iCrgyypQ1funuX1AzQBg41AlcFD
+	g7eU4ZsLMh6mLj0kz2u5fIt3OQgNy2M=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pgcvkbsi;
+	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=SCqnCUlOtKBvjGl2QuwECZj56qaExF+6jInKwQCN3dM=; b=hgB4giA+DWeoQmOHIaA5k1Oa1A
-	g+wO9FLQ6BnOIDVxW60/sDhtyyqBItmEOOfGyZdpBUZnsYblPE/n06j2engCg1uOJGzkp9BncECq3
-	c+k6FuuI/sJMDh8LWid+LpsfUFn365vaRbB/ZQYW+rnpKpr0k+2318kn54IMguKqlaHAASjWnTT7s
-	oS3C+R/Zboi3wlmC+putpGegMUONDkOxgr5Xb5vQSikTx5pTYuY2/rwRMmhLmUxohi4PkGSjtY0B3
-	Mt+FwEAikiPUBCQHVQKPHEuGoBUGw45q8nFcRNrG7W7HXei5s3eNUZVxkaCgNyFHuamR0KxL+VUKy
-	lH+fQRvw==;
+	bh=yTHalOLUmgnOoLmmCtnuWbnyzLCxCDhqZLeNdhtc+EQ=; b=pgcvkbsiN/sb/abeSWJdygSHLe
+	LAlq87gfHKyohHUgWzMhd3z3ZOoD6JW13qZO7VER2AXxIdhNoIIzaQvaQb8q1AU8lP67+nsdr7mb1
+	WA1mO0Q/x4rcJj8weriQ3HLtKMhTDwwU6dMSFgwaWD9dRR9bAGGwkhLQkww0adWPfkx7RHebUzZ/t
+	B3XYUaO05sewBVPXsGbG/Wj7OvkrBuaEcMrBYtnvdjTYiKXnQCsE7emj5hCQYXiXwux3/o2kAVNfR
+	hr1L9D3pTNPkyJGe6FH2Fdp3Bvw27HIES/txC9lRQ7hj6KWUtk05PZjRDgukGz4Xm3l4/hdkQ6GbJ
+	Z/4uf2xg==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcynw-0000000BJvR-0m6Z;
-	Tue, 06 Jan 2026 04:36:24 +0000
-Date: Tue, 6 Jan 2026 04:36:23 +0000
+	id 1vcyq8-0000000BK1y-0Xwg;
+	Tue, 06 Jan 2026 04:38:40 +0000
+Date: Tue, 6 Jan 2026 04:38:39 +0000
 From: Matthew Wilcox <willy@infradead.org>
 To: Ryan Roberts <ryan.roberts@arm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -76,22 +76,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Uladzislau Rezki <urezki@gmail.com>,
 	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] vmalloc: Optimize vfree
-Message-ID: <aVyRR2-fdvJ_9JNy@casper.infradead.org>
+Subject: Re: [PATCH v1 0/2] Free contiguous order-0 pages efficiently
+Message-ID: <aVyRz62kQbPe5HbI@casper.infradead.org>
 References: <20260105161741.3952456-1-ryan.roberts@arm.com>
- <20260105161741.3952456-3-ryan.roberts@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260105161741.3952456-3-ryan.roberts@arm.com>
+In-Reply-To: <20260105161741.3952456-1-ryan.roberts@arm.com>
+X-Stat-Signature: wq88a3bmprrtrsibcxoaxhcbakg1qnti
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0726920004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 24C3C1C0003
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 4krb6aye1cqncd137mnbfebky848ee98
-X-HE-Tag: 1767674190-103694
-X-HE-Meta: U2FsdGVkX19OkVFZkbr6sYOiGI6zIohs9Td+MA6cy8L4J51BxsSnvdZCAbNYy2In7b4464DxME9fF0qSRSlmoS9OhBHmGjosqVJaZkGDhJkiS2bDbvNnJFZ0hA/b/d9BiZOEo0y9ABy7VKYxLhbAuIWGXgmmiemLY7St6E4qCEnuciD0ZF5rGNUNBGPRHFWfLQU1TZ6bbM544jkSle5rX42cuKJxIppTwJdk4PFpnmOomu+BZnBSSSXjsNsRFKyHQUqnp2hr+FZn7PlfyQGgd5OSe+3GP4ORPOfYmXhIxzjDeUO4FZ0l1TwQUz4RWZbh7O7kx34NPsSeFN+tB3tXvtlj5Cgjq+Ecqynm82DPI+Ld0SbGYysv0mNEcSfhSiF/AEOAovDPjuO3DrRr8ZrJXzmfS9uelEKtjAw1LbyodnMMB+vj35HKbs92vI8NXOnLEf6by/skY0aMX/ebqGh+AiN8+bUXVGQrvtvk/Omp0+LCBbf7a6KsZOt3PAtjuetIpW9dSULXrjX11OV+HqrJ0T+xNfXdSfPZTViBdCyDU9YOKmP9lNiOy/1KRxVzLnyB94KgUcqsSOxI5sFhK9WFsV6enlFV7s06QcFOpp6ahe8agb48EUe5NaHVjGSFFSuIg7cHUp4w/GGhddD+A5y+kbS4TCgUhy52A6hqvhoEt44oc5zvGAaCXMQcFOWWfbdPpfYx23qnZvkUKRLLpZMh3GjsOy15Zf1wCE7h4LT4CvCDuuWoXVNGFo5GJBM5qn8WubQtLOrRdcehUXNTqNqbgNMi43Icuc+OkeyEiPY3CLkyutMhVIiELj3j3v3OFYkMdvJuTcsVd2SHTlfXcP6iUcjIM0QpshqHT/zsCU5IV507bfYyTY2WCLbFiypNboZMxwJ/LRrQc0yvRfgD0bHYHL5yn6Z6+zC1kg660KWNW9vdqJlolfva8aNH6M96X/KPVqFSX8vjIHjMXQGgXBG
- 357pQc98
- XJLCt5J3eXMUPdZXaWddwW7L5Q/dCk00tTfzACsWfMByIVMDLY9d34FZEq/WO9y5nZM97tIcC/rwCVivO6TmeZSCXntB8UQ8hQfp2blAZt0FMoaoOPtH4Ek6RaAbrDPFexbbYczk4ozFoxlsG6tzMiR8zzAGDOJP/1t1hGuIIBcPKLlezRVxD2Yfr3Q/GkqAfC21pc6kriQCbU0TAL6ECrlwm3xK1W0L9i2BQtzbA+vdcl7Z9EMQZGYoFIKgFT8s+d8ED6zZfZzBOBJpferwuew6GArrgZY/dvyYWFVTXcmgNBuFmSg05AwKDMCW6iqzvcC4Y
+X-HE-Tag: 1767674324-404439
+X-HE-Meta: U2FsdGVkX1/52/+lxPEHZI85G2/Gcz6p7UlDQyzmnoopGsfPGIxcGm2b75X/eFtYzBtxM2REeelj4d58H8j7GtvUccQEyFd6+/sO5tcFXkQcGSt1ME2YdXVQpslauser6REx5focmVOUaIL9yA/ETKYA7u59alNZfCxf3xEM3U+d/mEZghBg1JIilGMvl8eOUtCvDVskWa95EcrD75u7Pr7akt3iMdsbRTRDyLQPRBt6C4eE8uMTBiRRc7NbV307nHgVdCyjANQ7vNGYkvhIfp46b14pbmxh9fVrVJHhaMBbCUnnPwnulH2w1qiJhL392K0ZBLXseI++0XdGKigYzLhqSH51eMHJ5iEuguzDbli9rbjnROq6JFjvSjGaHZmfaRIJ0gwodkVNLyP4xAr9vOurTtpNXqJeZ+AIsIwHd0ZFivYxcK7umXHIi32Y696SCPz3QPj5VxY2c5MxFXi1jtIg+HmdvUbO5ZM1F8hLClPUUywVbWXvxC0I3ItmhtQOJxLt5iZ4qRn3S4LOT/gs0CL1jWwmlUZcsr/0f+TSTesgko4qg8SbE4QsOhi5PPG74KU+gVhCUr2VwU65PlZv/q0ZHm+G9xdQXz7+UF7npTcstIHdgosImJovXXIHzX7/6I7opSVUbPx8xGmYhu6D6FrO2E93zavjseOAQicdfeQUmJGl2Ug2NL4DyaX/LizOfAO0J6o13bAPC5C/Fp6F3LwjizSJC5HFTcyAUsy/x1YVx7kV6AnYpfgcA07TG0mfeh9pNGVhZGLodfxfemIgWjpsQFw7I+glZzi8ShdDXVp31eZf+L/jQlymv4aOERnXZRCmOCq1hoiLMasJ1Pv8wM5Kmh3lgB6IslKQ2X4ivbIifXjKKIVCJ6EyyJoXhDHsCZa4Rv262AjhqqwfOOeGRg05BlJQyq+fT2Wi1q4aKo9vMpziQStWWwgzwj1iR5S3YADnw0CixoX77u+iVrO
+ n8DjZUP0
+ 9z560jK/K3e2Z2nyHuWzqjsvCUOFPXq6Bs6coFvdz3hsIl/IseOaHqSxHWMPFGdLNVv1OBhOpw3zp+kzLBBlWwTBo3vu2ORn8W5kKtpgUduxwguKf6G/Z3tkAhB94wDcApjI5nPOrD5h0wxGN5v0cUu/3n3+SLtwhOXEPRTmcnNFVlFLnXcqY5qSw8hpPvZYsnPvGx4a6keVkgEhnDXQpOpTcotVJ1KeNNw99CXo5GNetLtb4tN3uGltnDPFdYkfj5W1NfCyMC860sWFBOcEAzxXrXg312otP/3I06W99UDQqObt4eo3vlPB/4n2HNbmhRQhs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,53 +99,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 05, 2026 at 04:17:38PM +0000, Ryan Roberts wrote:
-> +	if (vm->nr_pages) {
-> +		start_pfn = page_to_pfn(vm->pages[0]);
-> +		nr = 1;
-> +		for (i = 1; i < vm->nr_pages; i++) {
-> +			unsigned long pfn = page_to_pfn(vm->pages[i]);
-> +
-> +			if (start_pfn + nr != pfn) {
-> +				__free_contig_range(start_pfn, nr);
-> +				start_pfn = pfn;
-> +				nr = 1;
-> +				cond_resched();
-> +			} else {
-> +				nr++;
-> +			}
+On Mon, Jan 05, 2026 at 04:17:36PM +0000, Ryan Roberts wrote:
+> Hi All,
+> 
+> A recent change to vmalloc caused some performance benchmark regressions (see
+> [1]). I'm attempting to fix that (and at the same time signficantly improve
 
-It kind of feels like __free_contig_range() and this routine do the same
-thing -- iterate over each page and make sure that it's compatible with
-being freed.  What if we did ...
+Unfortunately, there was no [1] ... I'm not sure this benchmark is
+really doing anything representative.  But the performance improvement
+is certainly welcome; we'd deferred work on that for later.
 
-+	for (i = 0; i < vm->nr_pages; i++) {
-+		struct page *page = vm->pages[i];
-+
-+		if (!put_page_testzero(page)) {
-+			__free_frozen_contig_pages(start_page, nr);
-+			nr = 0;
-+			continue;
-+		}
-+
-+		if (!nr) {
-+			start_page = page;
-+			nr = 1;
-+			continue;
-+		}
-+
-+		if (start_page + nr != page) {
-+			__free_frozen_contig_pages(start_page, nr);
-+			start_page = page;
-+			nr = 1;
-+			cond_resched();
-+		} else {
-+			nr++;
-+		}
-+	}
-+
-+	__free_frozen_contig_pages(start_page, nr);
-
-That way we don't need to mess around with returning the number of pages
-not freed.
 
