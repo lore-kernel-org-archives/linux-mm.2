@@ -4,100 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF361C47BEA
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 11:36:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D779C47BE2
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 11:38:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19D976B008A; Tue,  6 Jan 2026 06:36:33 -0500 (EST)
+	id 4D5056B008A; Tue,  6 Jan 2026 06:38:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14A766B0093; Tue,  6 Jan 2026 06:36:33 -0500 (EST)
+	id 4ACBA6B0093; Tue,  6 Jan 2026 06:38:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 049826B0095; Tue,  6 Jan 2026 06:36:32 -0500 (EST)
+	id 3BE446B0095; Tue,  6 Jan 2026 06:38:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E03E96B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 06:36:32 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 42FE2C1F82
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:36:32 +0000 (UTC)
-X-FDA: 84301336224.21.5520C06
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E52B8100003
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:36:29 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=ah+mVaBs;
-	spf=pass (imf05.hostedemail.com: domain of michel.daenzer@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=michel.daenzer@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 284206B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 06:38:06 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BCB0C13AF52
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:38:05 +0000 (UTC)
+X-FDA: 84301340130.25.816D642
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B907E4000E
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:38:03 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RQ7HEb5B;
+	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767699390;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1767699483;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bAmqeFdlWOAGRIi5evINvMoi90p8G0L9s9GZUo+ZNnU=;
-	b=Dt08mSGEaF65h3IBVqh7wiKWb1QnrdC6ruJoBSD1Iccwqy/+qr0bJ9vi0uin/BSSlSUJrT
-	iP4dB9JeUD18AEyap3eWf1munhWk9/MHTaE0p8kWzo8dPXvXPxgoPkiXWE0Lk+lHiH+UUl
-	hZEjfod2i+IBtcqx8p2nYtwUk+g00hc=
+	bh=MiPIfmjv3b05N/bw/XvHmU5o9/AUPMqaF5FRtYSnf34=;
+	b=Qs9MGmnUcKE3v09K3boDqzbVATgIaAsV99c6v6aF1klyTeIlngOvycRksqjfVuTYiN/R42
+	hBaGRNTQByq3YAp1dAnCD4QY9/ePfOaDu8VkbNgOu9DnqdQQx00c63GcyedfaFe8ceNMoZ
+	FFIB6kYmfXQxhYB3YFJcWGM2SHGeOZM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=ah+mVaBs;
-	spf=pass (imf05.hostedemail.com: domain of michel.daenzer@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=michel.daenzer@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767699390; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RQ7HEb5B;
+	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767699483; a=rsa-sha256;
 	cv=none;
-	b=yLmbhLdR8Bzab3Idje2kCcue0I0GWAbpOXaAawQcH1qTO58s7IQUbck6pzsa0k7R+HDMAl
-	vYlvJJcKJ0nqfXQonxEd1aNTUQ71e4vYvW3pBssHhWXZ/ilmA2FEkrGLqCQSfUP9BHwBN3
-	MZbf9rbMjs0jYqJ2W5yNX3wB0fJttdc=
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dlpyx1tPSz9srM;
-	Tue,  6 Jan 2026 12:36:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1767699385;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bAmqeFdlWOAGRIi5evINvMoi90p8G0L9s9GZUo+ZNnU=;
-	b=ah+mVaBsxyCrWuJq0ICyA0wUs6qdvWHHEffzIOxZzoDfHemd/91ncSYxpx97QhP/x6Xx7t
-	WMJqVFYqXZBfIPrnxbihfpX3TaTuxc0EEFysJs+MjETToA4+wVQb/Zr2TOMF1vmUUyWpLZ
-	I1WI8Q3w6S0Tu0uVAchQ3NwLFLEzTf134oeD3UHiVTC5btx5iJ0HUCgeYiXMmbIhrZN6Dd
-	n9dQku6N1qBOUGqE2lbkFMx28w3gQi21avSl9JKCYlzXPNeHn/3dEUvqtt3iRaZ8aweASZ
-	2ROzNFrr8yjvwftDD9bz+7ZuG7IZ820R5HqH0NqsLfFxdn1DLAZuEpe86DgcHA==
-Message-ID: <e597171a-cc64-4811-a043-db2e539aaf94@mailbox.org>
-Date: Tue, 6 Jan 2026 12:36:20 +0100
+	b=KJ0U7WM8T4S9iPY5xcBKul9X/8pbQIxH9eyxjNUXiQ0KPpjrJtAP3n/nEgSHVuJzybJ9ei
+	SboWL1gg4yrFeGJTmDxywj5yikhdXIY3HErW35CwzdRTNC8wK2yidpA4lKFrzzJgkMdU5O
+	4o0/3C7yobeUn3Zw4FYszVxEW1iCSkw=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b7ffa5d1b80so141138166b.0
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 03:38:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767699482; x=1768304282; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MiPIfmjv3b05N/bw/XvHmU5o9/AUPMqaF5FRtYSnf34=;
+        b=RQ7HEb5B4I2iRDI9VwhlNRwypkLL6DYjmMDRCKTxGJJGSp9Oxp+vvLP6J/09HvqJ1W
+         vSUfQIst4H7R1dBfg4FX1BF4iGnjVyoiA7aOarCBzshWE10FUtdf1KRSAR8OH/ETMvWv
+         C4Jl/GCj6ZYSeNjMpcv1QdVtHWQyUkUAyA81KVZGh8iA50LTcJP/8gHePk+BChIG/Bev
+         bP1TVMHX0s0MWp3gdPkTpoS2tiULbCWPfpNqjRwJx7qogIZhiLwuofIXNenllxVnsg4W
+         hOqOF7RCBrUAV72BSW8p6VVGo96Zpq7dEYSmYh7YMoXxOVEDgxT29AeyrP3gOLOckr7X
+         Z6XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767699482; x=1768304282;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MiPIfmjv3b05N/bw/XvHmU5o9/AUPMqaF5FRtYSnf34=;
+        b=w2gKlvm0PU10gYOsxXsdGOzQZr3rfEmagD9kfey28huddsm9Hui7S1NMh2MPZKDQwG
+         XU77N4BS5NAJgQSazjPlIEGoHxvCSJlrsLMZymB8ifDMZWd2B0SlAnRk/56zyNuucB48
+         xy650qUeoZoNpEzk3U5UPsy5KYv7taHUyel8KrWqe1U5SQw7KIBx88qN6uWjQlHM62rs
+         FesQxKCiea423xRaU0lOOlCZwSesC536t5f75V+mX4ai+ct1ham1ryfBI0gZqLMl+Yol
+         e7wF8Zvz7eGAc5T1/qOODeWLER8wv8BMGxZmGfCli5doy5uSLvuNwSowis3zIh2iqfze
+         gWBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCGjClIHJQwe4m7hZ4aYz/zVDQKuaRD85yyN3vsIgebnf4p9DH7R+flMSrODXzwZ6U5GGTapR+ZA==@kvack.org
+X-Gm-Message-State: AOJu0YzjYS557PPp+Dw6B7GebneFhZDgfROCsrE8Xu67fKxKJU2ptb+D
+	65o3IZjwGFYRyNuTSDgZ158Exlv8JVkvNN5PYI5sbAVnpq78uMbgK0l1
+X-Gm-Gg: AY/fxX7LVg2b1h11Tij6SbATzZfbdjDbrOlpaUMA2i6JMrF9gv48s1QvyC7uhWnAQSN
+	ZBhwLWmNQh7MT7jhxvCXBE3TKKTdKwJUTfFpzXIyWFpQ/J036HmiyQverc4MooBeYYflsKaTdsU
+	2yHx9ulm8rmdgTKnMU8vKAUmyxGLAy7qD18Odj/El4xV5HCC2TxpW32JhmMO4sZo2pK0ylmBvIq
+	hLS0iqHIXy2knZgkyar/FG7oo+IWI5L0rAg2UqKnM1Q0wEfyfLnP2+XQkss4kASZufjFTJnua5d
+	vzShj2XxqdQ/+I/bME6Rc6tLN/Bw+enqmM75249Ph7/T4T8I3jnoUjYG0O6Jz1/QtBlQ9jLkXu+
+	OC8P81kHv6QVvqHKdNZKb+Nk9lzPoDgIx6IG+RbDJOCbmBLUPU1TPfhsw4ruCFGMp16VvHj6fAM
+	rjX6JId7mXMA==
+X-Google-Smtp-Source: AGHT+IE4vK7Idw33w0dr627IjMwMmN4O113exdBdmGZBRMY89j9Rrr4y7a7t8aNrQBWlB/zASfmhOw==
+X-Received: by 2002:a17:907:3f0e:b0:b80:1b27:f2fd with SMTP id a640c23a62f3a-b8426c4e48emr335853166b.54.1767699481671;
+        Tue, 06 Jan 2026 03:38:01 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a2bc6bbsm212937266b.27.2026.01.06.03.38.01
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 06 Jan 2026 03:38:01 -0800 (PST)
+Date: Tue, 6 Jan 2026 11:38:00 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, will@kernel.org,
+	aneesh.kumar@kernel.org, akpm@linux-foundation.org,
+	npiggin@gmail.com, peterz@infradead.org, hca@linux.ibm.com,
+	gor@linux.ibm.com, agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, arnd@arndb.de,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	linux-s390@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_gather: remove @delay_remap of
+ __tlb_remove_page_size()
+Message-ID: <20260106113800.rilod6iajre7wzxs@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251231030026.15938-1-richard.weiyang@gmail.com>
+ <51e72690-8a0a-4532-b6a2-79a851edc44e@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 2/3] mm: only interrupt taking all mm locks on fatal
- signal
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Mikulas Patocka <mpatocka@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, amd-gfx@lists.freedesktop.org,
- linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-References: <b672e17b-461d-16ae-e7d3-45d3c1aab142@redhat.com>
- <7whbqlfrwjr4z2d4bpny3rjyl5tetdyx7ccf52uvby7hgywoym@6l6m2xcytez7>
-From: =?UTF-8?Q?Michel_D=C3=A4nzer?= <michel.daenzer@mailbox.org>
-Content-Language: en-CA
-In-Reply-To: <7whbqlfrwjr4z2d4bpny3rjyl5tetdyx7ccf52uvby7hgywoym@6l6m2xcytez7>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 7ceeee7f4f9448e5d4c
-X-MBO-RS-META: tgxmey483p8e7gbw9y4cgr43xd49dy1g
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 7en7pue84itjgsjqrmrf6puk7e5c31z4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <51e72690-8a0a-4532-b6a2-79a851edc44e@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: 17qunfkara5yjfycz1qjn4kehxj13b5o
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E52B8100003
-X-HE-Tag: 1767699389-535493
-X-HE-Meta: U2FsdGVkX18BPqZ8ec9uZHaBmlLLCPZMF2THJsl8KUB5HAdiD50iHbH9TPABwZJSuOUM03jhUdIRhXL+Oc+SodYtAEA3YMnEHn//UmkKRHFBDvDj9CJGNHtsRHl5k1FkOnYXGuTV0MbZGTH+wXI9owEPOK7dGuzrqxU3FtIf3w/DSoXVI8fMIz5I+iIaxpYPuoX82F+oSouihrDjCpxrB7tmktv4wW1P0+U/9O/gNxz/tSZd4hJH63uoxf0EJzgoyBkP1vZJxwIzM//ABYAuoJN0TqkTbbfjxQJj7/H51ac1Yg6TMr9NsOsF1Pb8U90XcUybKeaNMDJ1saHdgZRQJ23qf4S3JS1aPN4fTjxO5Qd9RCFx4wsYkN0sH5RKO2Q8i7F8qduW02/gJbaOZKk1uZ4YRLM0363CMdboBzloR+MMTIeUZ/jkdw65nct/k6CO3olNPYLaqQyOydOd7Hvoet8BlxaAz1ceSJyWbShwHcVzPOdRa4hdSt6AxLg9a7la5yHKYCCywMsX4XoQS5VETimcy/xCQ4yawnPIg9WgmAAINLue6iMpnMR9rq1XKjZP1iFHv3U7MeNJFvB8OdgJYp3QA/cEamsdOI1TYQkXA1d26zY4bmYAofowhB2biJi0Ud9uQ8kFMnHUOJrFiXo7XMTK9BC8aWhLzicQYIWa/uhFvzAeL9inHd4LID5CIZWDhiuUdtDUREqu7FGV3C6AnN8/aywfQlSqZrMb7AL48fEIOi7iyrEwhJHGPnjZk1dYp7Q9z1M2WgZgMNmf05q+IY7ZMEPIdRB3VRs1Mx1G+LWHv8KlQk4fZr3YoqzRfNObYTaKnoKWbJl8UJeNsJ3tyGSrVc2pYDapc0zAxQ6i9BpawcOtsMmEKZ9qSZI2x0nZAnHe7yHU1t6S89WfHMYs/TrauyptVWENgy1A9FXvWIeE+8FCpAkeBHwWLWnrbUOhrMow2muJxP/VdQRNtst
- ljLrk4YP
- 0LSQ5RBInZTvSLcyZ5uZubHxwKN8f+gR4IlYlS6Mt7kZ9d8e4JYxqu+586yiBmA+W2mdGFZCUiXBHuHt5PVbR/ZPtRDp3+Rzp3LfPkdsGyG15FCxw2qvsG256RJO0KXzD74wcGdewwzSPWJ0xy/MqLeeXPElRjb2C9c4b3rYUlOowp7a5MTcFSgu86tQZIhMmqrreE26hrbYE0wvsQfY/3gXJmwcQI5heluRWiSzh3UQjpTslUqq7fEIW93WULh23WbVYrjB008WiWOOQqxTDq8OH9YRo9gZL9M45o+ct77bIu2rM6IzsO8MWM04fVu20BCHWQIEvugOJi+gVYV8dHl5XErGNFnFioHUM
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B907E4000E
+X-HE-Tag: 1767699483-444024
+X-HE-Meta: U2FsdGVkX18cG7cEsVimTgg9Occt6xW+sPw8HplFsWNTcDZGGc7i4Y8tABxPEvHjY5pmVgz6yzAStbjHeSIxfK4fo1BcPxwWB3yDk90AeI9KS22gxvqhbkeoBWqe0ALIN3+noU2B0Qq2xUj3a4HHL1htfVCpInkpMMZmStCIvl2c5g5D99b6Di94VhMJk5tIeQO/PxIaCERWaTuPks+SQ1owawdbWWI0ThJlvmM7IO7VuJKort+klGHR+USPho2oh7KFuTTf5U9FKXiTk8FhzR4EI6kE0hlNLBHURohwtbodaxl6HOgiOikLrz2J8poti401a2h9WdoPLzJaYqA6/DBbDuiBZ4AR4JZhE9BblbbTQt42JPKx2BZcC5ib0S8DDy5CpgmsbpeKVhlN13qDVDNOuRw5k0U+EcDmQYn/QkiYyFVnfkgdU1hmQoN5Q5Lkj/e0KC/AmH3x7UTnYQg2ACKz7XgzZ0dxl71aLUUrO4Uwt82LzC1YUsXM6Kl2n8H7qLixEl5EZ+Okh8ZG79edE2R0GWraVsdKXEuFcXynS+l/FCF+WJCttib+XJuxcJmeZ2bxa57D0NuqRKK2GksyrFI6eWrc10TSpJzZ+InLHgkdNmMLYuDBj/B2S/o5tNWsKWiY1Ovmt9o1Whq/20c0UpiY7cUJxZEdqRsYLOphkegxJ8jV2prOL1wV78b1skvQF7/GmGZj6po3CnzmqywoPc8gJ0P3Sa6eIEEM6ONTbC4o/1b7HwTBnBIvnw+TD31QB2mYPQaxmxKonXLB7E/yHcsDNfH1DlBIzBrs0EQuN2Ro6R9eqVpk4Ng6lkBTI6x4Zik0MNOPWpAad3uQSoYJ2gW314TEp5VltmEq5RCAk1KLTHWi5mnLTtEPaznX3/s2i9nMIeGvTdOCgvwa3mcR4AFrbxsIdHpY0EkWWe12tnYCoM59z/0FZS+2Mo9YCO5TAyHfY9bj1uWwBg5WiYL
+ E2RndwiP
+ uUpTh+MGAhbCDJgklPGC3M1PsAxeCoaW0nHDnNRo9dvl4lS4EYI/pbMjqFAiWIGjDizxdLXxpS9zvozOHDc0ZvGR/53+pXL1PQIqvt7pnEA/6VYwFV6o2o311SwUak67J/72XYG/BozLVhH7OG0wK4A7YeW4golAmqt2KYxuE8kmbv830GBAjs2CkyDwMgp96LtfCcKnIjgonbuLgnyy+EPN/TTYJwJ2JE6ROms3risGcp43u2jLFHe7k9+H1p/wRTeDcwGPCtIwHihDsXdtQLyLqHMKkRRuRMw5jEy8UxO88kJHoQJQmF3xeV4qF/FEvE4HO0ZX8s4KjIe3K2ed3YpT73DM81pNmZikAwk6gKoXjiVSWsodkyuBQuiTQZzpVbSaA2e0utkTHdst89bz4daZly3YiFoH6CaCrcGVYvU6cIk6+Rw1GOnQOnVVB1309CfU+nFq3vbMRYOIxaZContVx8oswcb+k4o9PMbpUuwFSjYa7YyHkTQi4lYEUAUEwCPcx+zgqIxzodm+4jGlRj+aHj99Gn82dew7x2xbwtsiuHm38TVcbqAbHtdnQONpjizVE6n/hIIZ7gvl214YNzArI6kFBlEe7AMZ0HL9GWtEWsAvK1uhAH/HJuMZG+5j1n6PIqAff9UklFQVYKKyo5vMnW2o8WCxtdna9GQwDKmFO4IY0VyJzAyfaLxW5b+q52XsFgSCvWU4NNBM0q9Ec5PjgkgudEQ7vHMlNGnqFtpEs2MRaamqno0frVtLs57YmAWdYcj1t/EZpxuYClpdbJE+u3+QPy1EWIa8lKRmlQC5uZGS0hP5rBKoJsRZ2yfklEsS6DGob5FTb4JwXJ04e0u5aOSNoYuy/pTQA3y6Tfor9E7grb+Fz92Efdzl9mZKjjQlWRa5xXcT5ZNs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,41 +128,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/5/26 19:15, Liam R. Howlett wrote:
-> * Mikulas Patocka <mpatocka@redhat.com> [260104 16:17]:
+On Mon, Jan 05, 2026 at 04:44:28PM +0100, David Hildenbrand (Red Hat) wrote:
+>On 12/31/25 04:00, Wei Yang wrote:
+>> Functioin __tlb_remove_page_size() is only used in
 >
-> I'm not saying it's wrong to change the signal handling, but this is
-> very much working around a bug in userspace constantly hammering a task
-> with signals and then is surprised there is a response that the kernel
-> was interrupted.
+>s/Functioin/Function/
+>
+>> tlb_remove_page_size() with @delay_remap set to false and it is passed
+>> directly to __tlb_remove_folio_pages_size().
+>> 
+>> Remove @delay_remap of __tlb_remove_page_size() and call
+>> __tlb_remove_folio_pages_size() with false @delay_remap.
+>> 
+>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+>
+>Right, the only code that sets delay_rmap=true is zap_present_folio_ptes()
+>where we now only call __tlb_remove_folio_pages() directly.
+>
+>Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>
 
-I'd go further than that. If user space fails to retry the system call in response to -EINTR, that's a user-space bug, period. It can happen anytime for any number of other reasons. (That most system calls happen to get away without it most of the time doesn't make it not a bug)
+Thanks
 
-(This is assuming the system call can be safely retried, otherwise returning -EINTR to user space for non-fatal signals would be a kernel bug)
-
-
->> I'm submitting this patch for the stable kernels, because this bug may
->> cause random failures in any code that calls mm_take_all_locks.
-> 
-> They aren't random failures, they are a response to a signal sent to the
-> process that may be taking a very long time to do something.
-> 
-> I really don't see how continuously sending signals at a short interval
-> interrupting system calls can be considered random failures, especially
-> when the return is -EINTR which literally means "Interrupted system
-> call".  How else would you interrupt a system call, if not a signal?
-> 
-> I feel like we are making the code less versatile to work around the
-> fact that userspace didn't realise that system calls could be
-> interrupted without a fatal signal.
-> 
-> And from that view, I consider this a functional change and not a bug
-> fix.
-
-I agree.
-
+>-- 
+>Cheers
+>
+>David
 
 -- 
-Earthling Michel Dänzer       \        GNOME / Xwayland / Mesa developer
-https://redhat.com             \               Libre software enthusiast
+Wei Yang
+Help you, Help me
 
