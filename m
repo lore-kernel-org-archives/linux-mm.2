@@ -4,82 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B04BCC98331
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 14:34:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85A36C98331
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 14:35:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08A2E6B008A; Tue,  6 Jan 2026 09:34:04 -0500 (EST)
+	id E94F26B0093; Tue,  6 Jan 2026 09:35:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 037F46B0093; Tue,  6 Jan 2026 09:34:03 -0500 (EST)
+	id E3FAE6B0095; Tue,  6 Jan 2026 09:35:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7BD36B0095; Tue,  6 Jan 2026 09:34:03 -0500 (EST)
+	id D40F06B0096; Tue,  6 Jan 2026 09:35:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D8BBE6B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 09:34:03 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4EEE11A6E9
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:34:03 +0000 (UTC)
-X-FDA: 84301783566.01.10D9912
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C21396B0093
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 09:35:42 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 78A911AAFB
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:35:42 +0000 (UTC)
+X-FDA: 84301787724.23.6FD804D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5C8B718000E
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:34:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qqpBBoRA;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 994C7A0008
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:35:40 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cHWmxWE8;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767710041;
+	s=arc-20220608; t=1767710140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wx+ewIqNCvXiEK72ZIzZeNoHzYUIlPPL9R9aVyJh3G4=;
-	b=3xAvmJmhpLSsJvYgw9cGLqR/BDc5aljh8WbrEuTJ4n9uBdHyKhVtXVEHJNq+2qe6owzFAL
-	I/Gc+zBIzenbzoH2ycV1IudU7il4M4PKBKUGM2kJf7ZtdFt+XuShO+Ues8kjBYgFWLdIjL
-	oo1L/ykvTvDoCCX94LqimS4UdRVeJ8Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767710041; a=rsa-sha256;
-	cv=none;
-	b=zI/1j2YBYp8k6r+pA8IqGy/OnQHVUX05T+JafXWbHxHfwbCz3JTST1P12jKaU+soLw0inK
-	YtVQy3Vn4pWU8hVkAHXz1AIi6gXLL5vgRgJAoiXrACRVbMDEcvmJmwvRD8hrg5M2qflBbl
-	5eP5NmVRLQShF0KHmFoJMxvZ7RY7A9I=
+	bh=v9Mr5MCGLsJYJ4BGgidTrIVqbg3Lz/yZNTDt3U/JSAo=;
+	b=Y3F8FGHezhyzniwpJ4r5Mf2V8ZdB2TJSUqugrQevdg5NR8mDu6ir6WVD855v7pU0rdVIHo
+	5SGnL2bW8XhO0LzobD3AKCwEFOFAmsdCFfWh55VgDQw8fVw3J4jiYVFikJL717wZ5A/m6Y
+	YtXlOu69Jh3gnHZ6q5ynFYw+PgcZ1pE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qqpBBoRA;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cHWmxWE8;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767710140; a=rsa-sha256;
+	cv=none;
+	b=V6TmS0ZrrEYWF5fwUDm8HgvKJ4ArbSF/1rW1THG3f8Adm7kVRq0wbptL+jNrQEh9P7COe3
+	shPSttHvGQCfl+pctTsNexkCOtiQYyeFiYdvAM7bEkwR9B5dE+z69UvfofzQhunXOX1iLC
+	bt45IXJnuwB2Cw61/S6oZxkS6IMsKNk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2FEE240A05;
-	Tue,  6 Jan 2026 14:34:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684BDC16AAE;
-	Tue,  6 Jan 2026 14:33:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B01C741861;
+	Tue,  6 Jan 2026 14:35:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00765C116C6;
+	Tue,  6 Jan 2026 14:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767710040;
-	bh=OD1TgDZeB7mYEnHxc/Q1fkeQ0gYBFCDnhMkeUpbXDxU=;
+	s=k20201202; t=1767710139;
+	bh=3aey1rxhyZ3DGxEvx20ao4JiVSSZMfpaEGZCiLcboFg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qqpBBoRAPpFtdbygI5te+6DMFR2ULPHp+mdHIgT7EXp5Ap0QmtmsaVE+8wVktWG7+
-	 E3EpkARf0310WL7WpvBXnUKYlGaOD50KEK3ESWBcHpHb5blEZu+M32HYLhlg8DcoWL
-	 /OJiRimM3kzA87J3x5V6QH1Yx0nWn2el52RYxAOxFegRifD41A/thNtnLEQl+T6xwv
-	 uqr4uW0cugJ3igO3b/PuLaScCEl3co3p9oZp/bvOb+vMG03MkXPvwHWdmw8PJeY+t1
-	 SHgcb40tthApNsYn4G+c4qT4Wco7grALBDJWgNgb8CbwNIDG99mIBBAYgkLL+Y+MaT
-	 ibJnSp0MVoqPQ==
-Message-ID: <238ef4ab-7ea3-442a-a344-a683dd64f818@kernel.org>
-Date: Tue, 6 Jan 2026 15:33:54 +0100
+	b=cHWmxWE82GCfipjOW4wSp2eiSFL7GX3slkYtxEOnlG40PamJVFJZuq/ou01pgfShe
+	 AjZhRUSDPzBTmzL+L2E9oVUexngtFf0BuVuPvsqhVlzvYmIx0YhAodzSXJKq28OpLd
+	 hcb2IBhuLrjGk12pURhF9MZ2K6dRTr5s0Fdv7oFf5JLrFNV+xWk8Ka9TwP/nEWxCuL
+	 gVFcAGcEl7ABrQL7AfptHAs19hndNtKTW+GK559Kp8i6htL3xa6DYRT0X1DeRcONFc
+	 KLm1DHPKSNTZDFnl3zDYQyRyXjlH1jt9EPye5oDU7C8BOGwHICeeDlv1xVa0zB/u3Y
+	 0xgMEbnrILVLA==
+Message-ID: <3c1000ae-6c4b-4b03-a458-e74edf64db8f@kernel.org>
+Date: Tue, 6 Jan 2026 15:35:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Jan Kara <jack@suse.cz>, Joanne Koong <joannelkoong@gmail.com>,
- akpm@linux-foundation.org, linux-mm@kvack.org,
- athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
- linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
- <20251215030043.1431306-2-joannelkoong@gmail.com>
- <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
- <616c2e51-ff69-4ef9-9637-41f3ff8691dd@kernel.org>
- <CAJfpeguBuHBGUq45bOFvypsyd8XXekLKycRBGO1eeqLxz3L0eA@mail.gmail.com>
+Subject: Re: [PATCH V2 5.15.y 0/2] Fix bad pmd due to race between
+ change_prot_numa() and THP migration
+To: Harry Yoo <harry.yoo@oracle.com>, stable@vger.kernel.org
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, dev.jain@arm.com, hughd@google.com,
+ jane.chu@oracle.com, jannh@google.com, kas@kernel.org, lance.yang@linux.dev,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, npache@redhat.com,
+ pfalcato@suse.de, ryan.roberts@arm.com, vbabka@suse.cz, ziy@nvidia.com
+References: <20260106115036.86042-1-harry.yoo@oracle.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <CAJfpeguBuHBGUq45bOFvypsyd8XXekLKycRBGO1eeqLxz3L0eA@mail.gmail.com>
+In-Reply-To: <20260106115036.86042-1-harry.yoo@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: jz95rk1cky6eb95oertgqfrxpkfgu4d7
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5C8B718000E
+X-Stat-Signature: ks4yr86hucp9yb4h585gjmdac7ohiyjg
 X-Rspam-User: 
-X-HE-Tag: 1767710041-563344
-X-HE-Meta: U2FsdGVkX19K/Z+00VLQyZSigvWMlM5r0JtWt6v1xf/JgxawhNylp4GVeeeFF0UgsoQAPVLCpDFvknCgNQDqXE7t/Abh8/rKJ2HpPJNIIPjEetFqSU/A1N1TRtfWGQeXbcM24HS+nIttp5ecnSEqOErnTY6T9as4eOMekvbfJMWseVMjIZn5fzvA9RpMTicGVod77ay1c6X1UyHkpzjdlmK9Aj7f2BIbujxEaZqycQPbcJEXsegMXbRwN3R8OJAAE5a5NgKYqeVQQjN9SifcdHwytuBI5/b7BmPOBW4Jq6Nrq4JiTmxXzP9poerFNT66R1jBTEkqRbdY0k+/5bNBRfH4F5jyR1pAr6V5ebkrrEySXkjQ5nA7h6dhTVThLUPCRgybt2+TkqMxY4bvgfjbCicd3soc+QmN1mNRfwiTy97tS9VmOnyEo6T1LnzLS+ethfvlPFyKxekhb+e7ycQiif4jKuTKf8hPsvRiuuvxMvyEI4qHkroLFLtjc1jy8Qkt37ORz9tQmUxjBO8IsN6E2ujuledXXXalGI5h37C6m6G2YwX/pEicgqeNszYEN1Q2KFfVOFojqrmR8Zhg9PZNKDWFSNVacIbyQeXzo2sLDhF8aiVRPVLrIp3HWPPMJGC6A2UvegTdMhJxU1e4UEOt9CPDXnPI1MScjjbwDi/plLoO/u5D1lGTs62QdAPOLTej3Mi1uKHzhwiO3rGmWkUTyUuAqJug5Q/8gFa94Z/lzvDBqhZe9gMhtGPdSNMplHMeoKiv2URohZQJ6oicTNx7EZ9MRynI3sgMxCzx/Ug2xORGq6OPZnngWqIJRgxtT5/AFhdN50YBMla4p/jU/dEhGvvzDln81QRMswY9+mZBAI1bFRtRRQJuNjyQ4k6EHephsaSKPHpoBdUrPg6dCWRAZ9I+eQq3GmT9TtfCOXu/l8vyCy8yNePTC/nBkRYehSdccbDGoy/cqr36Axjb9Fk
- Tm7ypTwr
- //tlYPnNIeLLqtfESy6t1tOzHnIlATotSSwMEjY1I3fCxs8MFSNRsR+mkWsKHrbEltGgKdqysvdxWQuYJKV9SyAftTRWcw4fTzmpVpNVk3knXwDTRXiDEpFzMMsIiU5Ro5qqBJmM89PFh8gZfBSFNlVy79wbBKDKGSSNLTGQLeW59VikjwBhYTu0auBit26HgVGN0k+KyyAgEMThafPwrFrWhwHa+wFHgGKnstnQ1p4Ak1kV39JNJYfh1+9C/3AFq33yT1D5Nix8LJgmH+8uPIiwn8I3VAg8aliGDSYUWx9/W0KnLnM40WRk82B8kiyG9Y4KJ4i4GYXPb6zk=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 994C7A0008
+X-HE-Tag: 1767710140-525439
+X-HE-Meta: U2FsdGVkX1+x8iC4zphpKIZhOYLHik05UH1bn3zZlZL7AXbhyoTDUwXfPPHj/sTg3oKtWwPT7bMllyCH7APFC67Yf1Tlq+mXRyBBH5GVjxIDG8bISgcoFk63MOZyfWA8rgJ1lEqWcBdl+lKICvVfNXdV1Fs3P9wlS5DwSffy/UlKKe8tOS7T26YOKQRbVNC+ZV+TZZgRsayX/90RNY/xBltXJWDd8Yvvhpi1FF+249y6eTLLOUzJxnwUmVL/CyOsgYIdkfNdq18tsTaI8uzsLwjbj9Y6VJBqt3Spxp+vK0jQlFKQhnoppyzoPUTd4xl2Pbw85sSJT9D5Cs1EDMa7fmRSSwvjY8Aq/5M8q2YOBn0ZK2npRdMLfdV7HBpQ6gjv3Raa4FfIYFEXB5UvXoALj0E1Y63otWStHWOE2Vrr8cfQc4EKGmkjvaXJf7wf4wfidzMgrxJNsY0YMzIjK+vH5orIU3Gk8sUaMsCEPv+i3MDuN2DgYEM24FT8k1PWaUnqm1XhGnN0xiohmBE6Jooln9Y9ZGUcFqTuEJB4zcE3ZOGkaEeBjIf0ZoklgWwckZw8SjP/BpmcF/vcgAB97zaztREqC8nyAWncGgE2HmtuvCOFjG1a9Myp7gK5RhxUW4eR6sUOw/Vnv8M2sNpzYFV7XSoUgXVmZO9rWAZz4126+0zSY2SPoiyHEtql0DOPUT9LiJ++o7MBf4Eq4wFYedKJPReMFpl8qn7HeqGXv501avYatI2CKUhwVxEt3iZuhLa8Ufnr+YXftqXLJ5mgR+ZeYkJZPgZv0LG55b81hMgbHE9eTpCiT/JU1b0JZVBmRfyPTYFn5wdhnN5iY5CiTNq+lMfgZQZO3L6yMw6bnnjx6+FiACQ3S1bJasp96BshJ1PCKNfU5eQicnDIk5U86vXFV3NHqrb/dEMSwVbZYDFokzbqTKnlmd7unEFh3QHCNblETs2VSguCgR3hIT07rV/
+ GjwUGF5j
+ gKGUFGdRzFfECVGwjCcvaVw38KTGro9A/G0MfLH8z+5645ZPOYYpUux/43GRb6mkx0Y/b1XFqPmqd+0VoFRBp6X2IkpYMQWZudt+OPkXlgAZoxpjzEvyuyAp7k3WHTDa064t3d76aI6EauhP8wYU2yl79jjbMHb790F+EJ/+ub/EZ16PDM9HX7p8P9/VcpoHna1wgQ0qa7lo4RIgkMRo4UPC1OLhqH81VFEsmlrVsgr5S7FFOccju2Y5MEKdVbAZDIckcU7t+1MqdYkERDOG0t9hc32qPMrcarFYYxOE2vABfuAC9qujlkMMaR9LFrKbVhLi8P8NDqvZDj28=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,74 +141,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/6/26 14:13, Miklos Szeredi wrote:
-> On Tue, 6 Jan 2026 at 11:05, David Hildenbrand (Red Hat)
-> <david@kernel.org> wrote:
-> 
->>> So I understand your patch fixes the regression with suspend blocking but I
->>> don't have a high confidence we are not just starting a whack-a-mole game
-> 
-> Joanne did a thorough analysis, so I still have hope.  Missing a case
-> in such a complex thing is not unexpected.
-> 
->> Yes, I think so, and I think it is [1] not even only limited to
->> writeback [2].
-> 
-> You are referring to DoS against compaction?
-
-In previous discussions it was raised that readahead runs into similar 
-problems.
-
-I don't recall all the details, but I think that we might end up holding 
-the folio lock forever while the fuse user space daemon is supposed to 
-fill the page with data; anybody trying to lock the folio would 
-similarly deadlock.
-
-Maybe only compaction/migration is affected by that, hard to tell.
-
-> 
-> It is a much more benign issue, since compaction will just skip locked
-> pages, AFAIU (wasn't always so:
-> https://lore.kernel.org/all/1288817005.4235.11393.camel@nimitz/).
-> 
-> Not saying it shouldn't be fixed, but it should be a separate discussion.
-
-Right. But as I pointed out in [4], there are other call paths where we 
-might end up waiting for writeback unless I am missing something.
-
-So it has whack-a-mole smell to it.
-
-> 
->> To handle the bigger picture (I raised another problematic instance in
->> [4]): I don't know how to handle that without properly fixing fuse. Fuse
->> folks should really invest some time to solve this problem for good.
-> 
-> Fixing it generically in fuse would necessarily involve bringing back
-> some sort of temp buffer.  The performance penalty could be minimized,
-> but complexity is what really hurts.
-
-I'm not sure about temp buffers. During early discussions there were 
-ideas about canceling writeback and instead marking the folio dirty 
-again. I assume there is a non-trivial solution space left unexplored 
-for now.
-
-> 
-> Maybe doing whack-a-mole results in less mess overall :-/
+On 1/6/26 12:50, Harry Yoo wrote:
+> V1 -> V2:
+>    - Because `pmd_val` variable broke ppc builds due to its name,
+>      renamed it to `_pmd`. see [1].
+>      [1] https://lore.kernel.org/stable/aS7lPZPYuChOTdXU@hyeyoo
 > 
 
-Maybe :) I'm fine with the patch as is as well.
+Ouch.
 
->> As a big temporary kernel hack, we could add a
->> AS_ANY_WAITING_UTTERLY_BROKEN and simply refuse to wait for writeback
->> directly inside folio_wait_writeback() -- not arbitrarily skipping it in
->> callers -- and possibly other places (readahead, not sure). That would
->> restore the old behavior.
-> 
-> No it wouldn't, since the old code had surrogate methods for waiting
-> on outstanding writes, which were called on fsync, etc.
+>    - Added David Hildenbrand's Acked-by [2], thanks a lot!
+>      [2] https://lore.kernel.org/linux-mm/ac8d7137-3819-4a75-9dd3-fb3d2259ebe4@kernel.org/
 
-Yeah, I raised some "except" below, I assume there are more. No that I 
-would want to go down that path :)
+
+LGTM
+
 
 -- 
 Cheers
