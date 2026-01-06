@@ -4,87 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AB76CEFD0C
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 23:26:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 882C6CEFD0C
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 23:30:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5FC66B0088; Tue,  6 Jan 2026 18:26:34 -0500 (EST)
+	id C5ACA6B0088; Tue,  6 Jan 2026 18:30:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE2B36B008A; Tue,  6 Jan 2026 18:26:34 -0500 (EST)
+	id C07A86B008A; Tue,  6 Jan 2026 18:30:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E1D96B0092; Tue,  6 Jan 2026 18:26:34 -0500 (EST)
+	id B0AA16B0092; Tue,  6 Jan 2026 18:30:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 89AC46B0088
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:26:34 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 394D68D6EB
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 23:26:34 +0000 (UTC)
-X-FDA: 84303125508.28.3CE874F
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C770980007
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 23:26:30 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WYEwkBj2;
-	spf=pass (imf30.hostedemail.com: domain of kent.overstreet@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=kent.overstreet@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DDF96B0088
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:30:19 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 13C4913C52C
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 23:30:19 +0000 (UTC)
+X-FDA: 84303134958.07.17CA1A7
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 313CE40017
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 23:30:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=P00BrUyi;
+	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767741992;
+	s=arc-20220608; t=1767742217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dTr2VYpGZUXkz8/X79lKRSGp5qVJrcOa+q9S93X9RYc=;
-	b=temOQ+vyQKhrxOluNSAuNbxJsmEP1vVlhmQAcDDYRY6fc6387xRPV/DhHv8JZGCQ7JXkI8
-	SJSBqMSl7l4mAdhbx+EZvgqX2bN+9ZRNvswL/+3ecs//F+pRLprtGeEobOI8uWJnswR7+R
-	6uYIagtW5GR2b8EJhE3KSlvpidtpFNE=
+	bh=dMPrgVPAJkxzoSL+MjXhmJYJPrnZM80RIBzr/vd32Eo=;
+	b=RuPt+bVhx0kIbGOintLsTQmeh98PybodWgWIrRXQM0U/HWXklYnD4jFPahTYNWHWpKMtfK
+	mVRRxAFz1N/w2ODzsHbzH+VrE0DSMY3xAiscsHZc23TwTknxly4gRQC+u12qfn2l/Jv1DH
+	UhyhQMB2DhzyJW9I80YMCyF+6t2jPH0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WYEwkBj2;
-	spf=pass (imf30.hostedemail.com: domain of kent.overstreet@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=kent.overstreet@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767741992; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=P00BrUyi;
+	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767742217; a=rsa-sha256;
 	cv=none;
-	b=BVuw7OFjKp7f+B4Zt+hk7usldhfMXTqU/dxXbFxe6wkXL968ys54JIOh7dxdK3pfIoHE/K
-	PwJ8hnAO2IAbnpuC6R993jErfzMKlh2OCo+4UcxmZblB8FeLnKpcVe39mCLlCD3dSc6yDS
-	fyrsknXfEOil4j26CK8AKQyQxHs31cw=
-Date: Tue, 6 Jan 2026 18:26:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767741988;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dTr2VYpGZUXkz8/X79lKRSGp5qVJrcOa+q9S93X9RYc=;
-	b=WYEwkBj2eVQT6DEKGr4vtDO8503dmyiN76UZ0WuQyob889KZjYi5kTx0zAHNDZWvZPpyG5
-	n/nzUG5ctYL+8tGC5zrH57XeIT8TFX7bLBgzwZH4EQAeB4uo7kA54mlvKmQ/+Ut9Q13D2/
-	IX6bUtB0GzzlsfDUp1Z4Y4xq6NQVsio=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: David Wang <00107082@163.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
-	hannes@cmpxchg.org, pasha.tatashin@soleen.com, souravpanda@google.com, 
-	vbabka@suse.cz, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC] alloc_tag: add option to pick the first codetag
- along callchain
-Message-ID: <aV2VWbY4Rb_w-QTs@moria.home.lan>
-References: <20251216064349.74501-1-00107082@163.com>
- <CAJuCfpEtZ2Ncpa4goKUcerruB67fALJ2v2KrbWB1_PB7iwwjSQ@mail.gmail.com>
- <75285cc4.3c52.19b916d9490.Coremail.00107082@163.com>
- <aVzorksJEyI0wlxh@moria.home.lan>
- <37169c79.a0e5.19b93a2768f.Coremail.00107082@163.com>
+	b=B2+wY/8h8C/qGs4vvsEOKBspT/LM9WG9D3HWjGPlUC9jdwzoI4pr1YzXq23TLLRK5Kf1sA
+	Ug5mDAMi9qjXtV28HKNKAzIqaS40hych0s97nIMUOr3RwetQOqMlQ2fGM9HXMls9E26Hit
+	z7wNflZSTQau+I0k629HwB9Tvf3UzgQ=
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-888310b91c5so1733636d6.1
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 15:30:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767742216; x=1768347016; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dMPrgVPAJkxzoSL+MjXhmJYJPrnZM80RIBzr/vd32Eo=;
+        b=P00BrUyiPsRdPQteDuSpcQjlfkTlA+1+sRf81FrsiNqAJlfJEa8CXgCmnVZNl7gj5z
+         PBvvF30+jt+orxLN29n4hQ0ZB8DLemIaOBl1Mcpuc+ZCluXJT9ZUZe3df5QXdvOAWK/N
+         X6ivAe7nHjocfwZot8+tA8nQIius7W7IY6M2qRI6kzh9Eb8jJidYAsOjbhdHp7dnD212
+         AI5Mry5iqpPtey6eS4uLhj1SBs2lYYKOIrg1OUQSiDZrOgpAIbua+WH0DVgDOHqTmf+A
+         F0QVg7E/ZHV8kcqcmbEB+pBfFtZQXbBMGq7Q7jHobgd2FZxZZT9vOzTuS6PiP8b3D08r
+         O7bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767742216; x=1768347016;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dMPrgVPAJkxzoSL+MjXhmJYJPrnZM80RIBzr/vd32Eo=;
+        b=FhX6tnPoqNfb2xZqqiC9QZA0UZEfHEZNpwwuh1W4llk0XAsRlPMvSC+qBTW9OmMoA4
+         l4O5P177aT2WmIbrqRfvxSmPfn0Z6taS67Y9EFqG0V5rgAualqC8+/FkePDaHhm57rGn
+         hQRquXJSE9rD05KPAFO65lELNjywTB5WcQU0GtNgMCBftWp43uQqK9H7j5tY8Q6pJQFw
+         3W4ZBE8u6lI4w3uUDPo8P/hFiodXpO6LqXEWbF4FEuc5m0hFlra435STfGoE9pzjzqdX
+         kjCLE4qdkfj4fsx2buwyHA4SCJldDxtgNvnfev0OHqyidEbEbKAzIkiEMZ54Id3+knls
+         CFjA==
+X-Forwarded-Encrypted: i=1; AJvYcCXhLQl34OD/6OYEQ+8H15RSyFF7gn93oQLGULB0sC7/sTZGujA5Z3K4L0WNfLxcbUljkH+Pygwyww==@kvack.org
+X-Gm-Message-State: AOJu0YxlYCIH4F8Z8BSeeRyE+4F3iGqHfUss9Ef2mNFgD7zv5703JnGy
+	5Q53EC/u1rPrStvlOLBnsDsa4HiKO1bQb2V8ZBWp9NQB9pXG3ZJRawurp4SB7fA3zjxNapeGafj
+	haIbYuWc0KGoX7F/1vE7DVCPURiFZnFE=
+X-Gm-Gg: AY/fxX5opuTZkX/co41feeSv0iuyZQgJt+egesqadtswUspsH8AxFijwohMy2HUjVHF
+	aMdtSONGODRGf3oCHvYXU0v7qtDHinshT1wYAt1EOwILUOzV02q4wn8V//FqW/H/MbwtCON0Sm/
+	A1OjPjdEJID6zyrycYMAOnml/E+D2WyYwfU7BJIetfHz+FawHwzxiNVE2hx2OwUteTSl+JByuIR
+	vF40lrx5ZrPQCiMPK0SzCioNykQ4PIzuYn8C32WQ1Am4V/UoD8EUWYlySJtEiIKMA30bK3iLoJq
+	MzIJK/5Uq0h1/3jxhQZbdQ==
+X-Google-Smtp-Source: AGHT+IH4DdeN8NA/9bx7gypeth53pF4xCrOLbCSBRDkT68+39OMrQflzwe0faxz8RIiURIMpee/M6awa20lDfJJEDPM=
+X-Received: by 2002:a05:622a:2c2:b0:4ee:2721:9ed3 with SMTP id
+ d75a77b69052e-4ffb3f7c162mr10231181cf.26.1767742216040; Tue, 06 Jan 2026
+ 15:30:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <37169c79.a0e5.19b93a2768f.Coremail.00107082@163.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C770980007
-X-Stat-Signature: ko5rji3useth7bdcgs1eexbkoeb84twn
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com> <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+In-Reply-To: <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Tue, 6 Jan 2026 15:30:05 -0800
+X-Gm-Features: AQt7F2pJlPO-7drumYMDtTF9-DOPHU0IjtOLLiFeDA2rNi5E_BAE0vn6n9y_GsM
+Message-ID: <CAJnrk1aYpcDpm8MpN5Emb8qNOn34-qEiARLH0RudySKFtEZVpA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+To: Jan Kara <jack@suse.cz>
+Cc: akpm@linux-foundation.org, david@redhat.com, miklos@szeredi.hu, 
+	linux-mm@kvack.org, athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, 
+	carnil@debian.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 5ta7mbyno8uu84gno7xgp8hcpkoi5zda
 X-Rspam-User: 
-X-HE-Tag: 1767741990-757607
-X-HE-Meta: U2FsdGVkX18ILfmPi/GrDEJKYsAQ4Wg8qPHw/zM1acnB58yAsBqlOutAphC6jUiWYQoanDXjeTGjDe2pV1F2zY5XcWCgnzay/U9A/2eC6et+8vEexgEeTPZ/k9uzTm3DaejdFvQj6SU6ZTky4kkOztFBLUgk+RSQt3j0gawmL269EUX5qJWfDzfZ+bI9giAxzDSsx2iM91pNRq0667WR9IBY7/dyNSafZHyTAUsGDJNmV8R/ajgdoWalOuuZAESP3I8MOqnK7bODGBNp1H3NaJBfYKSmKxr4U1HCjaJot1L9a3jkjMuwC07jk1a2nRIViKDxYY1DQiP0h7gkZof7IatSGjtzG38dVKbSbPjYCPT8DZAdHPaalVVipIk91k+zEM30b3AFZGDnieLbIVSJzlI6LCAI5jaQPtnembMFOeL2Onsjl+/YGIg0/nywGfHDzSp932QsgTFgn4ammIWu2u54hhosnpEYlGyghSXj1Xzx1/KSBmWa+ppLJORFXoXz4a/2ERXylAEGRslHaPnxzPqTniwaFL6k50BI/+1o38kkdrjgne8NHYfBUZlBZxnrsEP7XnmIDp3yRa9kkhsSKVwwmExV8f7IJPBMbWyV7OBeYx/dM4yEX7FhDLFrNRQ7M602uWEoRarVUIRJ+AroYz+FMbsghPxw1t1XmHGmi1LBsv80SS8UTOL22VTBRXstHFl0QzJmO+u4FF5e9UQV+I+kckAPNuqq2KyeIUit9G8p48OOqyaUIjaxsSXc6LJYtu/1XKIJWbbs9NtW3LEzhYhX6IAZoyvkhx+13HZ2vKICAGss3fRdiGHt5hl6TX4lbMyTxL8T6kK0QZqOtiyd2alPts51SEKwLCMwJI01pCAnQFs7L/QMiNER/YgHBdTUjKSqteJsmpkrhUQyRCvKCVFuGmFNs8KhCn5iWHymr6+1Y2Jl3OTz+pAPYBlwXGqnuDhB9r/8urE2mNSqPJr
- Xp7MEx6H
- Hvs/VrdXJT0C8UP4mPFH5LsUgauMKNBwHXPSZnQGngpMS4OZBuMrkDNwkF99MRhOqKQhoF+X0X0Wl+6eRRaOQu46eNGeRyRnKx70SVBytVjjGdHGrbTSFm0jsASbIt7EodEZgUQN29l7vMa/JdxMPoyAo1Y27PcIHzSZ5aKM+dzX6VGf5J9Zd6am/M0g/0zGYALe4qyajlKre59UYHzPS1Wh6tg==
+X-Rspamd-Queue-Id: 313CE40017
+X-HE-Tag: 1767742216-69064
+X-HE-Meta: U2FsdGVkX19k3gx3+nwnDEQGHccjbSqNwX6/5aQGa1cTkg5vHeGNVOqQe7NsAouDp/YkRw4e+71ow+E4jl497cnDBhHukoKv1Rf3XfRnRz4OFZdtEpCVmiIsMDRtG5T/zI9SQ2F9xzCmQC+N7KzAmXk/4df5p7pMJFGNnZu7M7loK2i9pBYZapyNaGLM6apkbzon1s3vkiORg6ITe67nt2JczZevU3hViIme4bHA2pRyP/FztgfZq9XqcH9IyThpyGeWEZVNw7gYTE18/Eu1aQyHSUaAaTxm7sH//akNNy4KZSKqTh4reUU0N7AO7GCoKmE0mFWxTLixQb9hSk8nGVTFNRg4taLNyHc5urOnzroGJCL5AKeDn2xfT4Uur20mkWDA8RoXkOMv0E1XIklqdo8R0GTScD+lfWf3s8/1+fg/hkFNHcT7+ZzDkWR2r6sSLI0JliCzW6PpEx/5nXjan/7M4RecwhXYO23dUNnxUNADOxpYlFmlBSpkHBshAMgwYY5Qt50BM1aRLB5CwpNpTN+O+/qNloEsvAMzZs6LJmkDR9FbHiUoE+0bCU+smc7zibKJJd3Svu42QgBjFglTQPEh++c2xuB1fQpNatYvNId0yiUXd2huDg19tB1SL9EMAWzfxktsmgkFecdtab4I3AYzqxUa49MbJDySlsgeuG3dcH/+cwq/+Yqa0vwN0wROh+CdPomV4zaF79+RcVP2jR0RQe78wyp/E3j0pa+hFtn3/+SRii/7m8oW8YkIIDi82N14UxRhkjsJ9fnT9pDOleh/I4d4YUABRcLe/wPTKO/nN91A9uCxHXCJrXuYZEeqdAt6N9UdVJdwp3LfYprrbWVuXjR67t0G8OeYFaLaWIOHaIMnsiwOGWneXTG+35htE3THkPKTu4zM1BkmlowRjwdVXGPVFRqoXTCMT8lzUmiuJYo1LFdJihiB4oDr+nrKWuket3R2PPkW67CMVXD
+ aB5/mlnk
+ EtmraBndqZRUEB5gYYM8BFQdfHBpu4WrF2pTHWlDBcanL93YSymzN5XTsvEUAQW+wBJaoT/1xvO7OvfDfD0vhv0ox5DKhs6NlNmj33kLwxe8safRnt+cHuc+hDVHOtcATmnB+O8DzMQqm62tUQVFyLqjh2iMIbrIdCB+FwTvOr6DfKmu9WA5mYK0TLI9JB/oH7olft37OdhpEldbM8Ys9OhW6oKaUNVx1gdou/3B80+UnigLQJ7xYrcfRGtZNxoDtI+0Siz8B7+GpacnoFeqTjPenEA+LHwIe6OEbqY8mzY8iHqbgB6isXB4leZ0Oc0yt+bPPpgb0D+ucREZ0BuQkKDOsbLnJaEK+6Ykp3rF2TYUN3AJUw1ncoY1QCWWYxW354tFg9wMnIUPd6rN06XZH27b7n1SDVtO7Gu7IR5QlVaXE9BJ0PPCY0dGDMWswizXdzBPluy4vt3GI2bQPgPTWXY5As8SFFWyvSSjZIYwtssO/i0CwzsBpr5tAjxJoWHBKx6BbqO6DVMolXiqcRHzUm/ZLZ62baY+AqzIENy3W5D91/aQ9nnbcQ9ei+A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,71 +120,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 06, 2026 at 10:07:36PM +0800, David Wang wrote:
-> I agree, the accounting would be incorrect for alloc sites down the callchain, and would confuse things.
-> When the call chain has more than one codetag, correct accounting for one codetag would always mean incorrect
-> accounting for other codetags, right? But I don't think picking the first tag would make the accounting totally incorrect. 
+On Tue, Jan 6, 2026 at 1:34=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+>
+Hi Jan,
 
-The trouble is you end up in situations where you have an alloc tag on
-the stack, but then you're doing an internal allocation that definitely
-should not be accounted to the outer alloc tag.
+> [Thanks to Andrew for CCing me on patch commit]
 
-E.g. there's a lot of internal mm allocations like this; object
-extension vectors was I think the first place where it came up,
-vmalloc() also has its own internal data structures that require
-allocations.
+Sorry, I didn't mean to exclude you. I hadn't realized the
+fs-writeback.c file had maintainers/reviewers listed for it. I'll make
+sure to cc you next time.
 
-Just using the outermost tag means these inner allocations will get
-accounted to other unrelated alloc tags _effectively at random_; meaning
-if we're burning more memory than we should be in a place like that it
-will never show up in a way that we'll notice and be able to track it
-down.
+>
+> On Sun 14-12-25 19:00:43, Joanne Koong wrote:
+> > Skip waiting on writeback for inodes that belong to mappings that do no=
+t
+> > have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
+> > mapping flag).
+> >
+> > This restores fuse back to prior behavior where syncs are no-ops. This
+> > is needed because otherwise, if a system is running a faulty fuse
+> > server that does not reply to issued write requests, this will cause
+> > wait_sb_inodes() to wait forever.
+> >
+> > Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and interna=
+l rb tree")
+> > Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+> > Reported-by: J. Neusch=C3=A4fer <j.neuschaefer@gmx.net>
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+>
+> OK, but the difference 0c58a97f919c introduced goes much further than jus=
+t
+> wait_sb_inodes(). Before 0c58a97f919c also filemap_fdatawait() (and all t=
+he
+> other variants waiting for folio_writeback() to clear) returned immediate=
+ly
+> because folio writeback was done as soon as we've copied the content into
+> the temporary page. Now they will block waiting for the server to finish
+> the IO. So e.g. fsync() will block waiting for the server in
+> file_write_and_wait_range() now, instead of blocking in fuse_fsync_common=
+()
+> -> fuse_simple_request(). Similarly e.g. truncate(2) will now block waiti=
+ng
+> for the server so that folio_writeback can be cleared.
+>
+> So I understand your patch fixes the regression with suspend blocking but=
+ I
+> don't have a high confidence we are not just starting a whack-a-mole game
+> catching all the places that previously hiddenly depended on
+> folio_writeback getting cleared without any involvement of untrusted fuse
+> server and now this changed. So do we have some higher-level idea what is=
+ /
+> is not guaranteed with stuck fuse server?
 
-> Totally agree.
-> I used to sum by filepath prefix to aggregate memory usage for drivers.
-> Take usb subsystem for example,  on my system, the data say my usb drivers use up 200k memory,
-> and if pick first codetag, the data say ~350K.   Which one is lying, or are those two both lying. I am  confused.
-> 
-> I think this also raises the question of what is the *correct* way to make use of /proc/allocinfo...
+The implications of 0c58a97f919c (eg clearing folio writeback only
+when the server has completed writeback instead of clearing writeback
+and returning immediately) had some analysis and discussion in this
+prior thread [1]. Copying/pasting a snippet from the cover letter:
 
-So yes, summing by filepath prefix is the way we want things to work.
+"With removing the temp page, writeback state is now only cleared on the di=
+rty
+page after the server has written it back to disk. This may take an
+indeterminate amount of time. As well, there is also the possibility of
+malicious or well-intentioned but buggy servers where writeback may in the
+worst case scenario, never complete. This means that any
+folio_wait_writeback() on a dirty page belonging to a FUSE filesystem needs=
+ to
+be carefully audited.
 
-But getting there - with a fully reliable end result - is a process.
+In particular, these are the cases that need to be accounted for:
+* potentially deadlocking in reclaim, as mentioned above
+* potentially stalling sync(2)
+* potentially stalling page migration / compaction
 
-What you want to do is - preferably on a reasonably idle machine, aside
-from the code you're looking at - just look at everything in
-/proc/allocinfo and sort by size. Look at the biggest ones that might be
-relevant to your subsystem, and look for any that are suspicious and
-perhaps should be accounted to your code. Yes, that may entail reading
-code :)
+This patchset adds a new mapping flag, AS_WRITEBACK_INDETERMINATE, which
+filesystems may set on its inode mappings to indicate that writeback
+operations may take an indeterminate amount of time to complete. FUSE will =
+set
+this flag on its mappings. This patchset adds checks to the critical parts =
+of
+reclaim, sync, and page migration logic where writeback may be waited on.
 
-This is why accounting to the innermost tag is important - by doing it
-this way, if an allocation is being accounted at the wrong callsite
-they'll all be lumped together at the specific callsite that needs to be
-fixed, which then shows up higher than normal in /proc/allocations, so
-that it gets looked at.
+Please note the following:
+* For sync(2), waiting on writeback will be skipped for FUSE, but this has =
+no
+  effect on existing behavior. Dirty FUSE pages are already not guaranteed =
+to
+  be written to disk by the time sync(2) returns (eg writeback is cleared o=
+n
+  the dirty page but the server may not have written out the temp page to d=
+isk
+  yet). If the caller wishes to ensure the data has actually been synced to
+  disk, they should use fsync(2)/fdatasync(2) instead.
+* AS_WRITEBACK_INDETERMINATE does not indicate that the folios should never=
+ be
+  waited on when in writeback. There are some cases where the wait is
+  desirable. For example, for the sync_file_range() syscall, it is fine to
+  wait on the writeback since the caller passes in a fd for the operation."
 
-> >The fact that you have to be explicit about where the accounting happens
-> >via _noprof is a feature, not a bug :)
-> 
-> But it is tedious... :(
+That was from v6 of the patchset and some things were changed between
+that and the final version landed in v8 [2] (most notably, changing
+AS_WRITEBACK_INDETERMINATE to AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM and
+dropping the sync + page migration skips), but I think that analysis
+of what cases need to be accounted for / audited remains the same. I
+don't think there are any places beyond those 3 listed above that have
+a core intrinsic dependency on folio writeback being cleared cleanly
+(eg without any involvement of an untrusted fuse server).
 
-That's another way of saying it's easy :)
+For the fsync() and truncate() examples you mentioned, I don't think
+it's an issue that these now wait for the server to finish the I/O and
+hang if the server doesn't. I think it's actually more correct
+behavior than what we had with temp pages, eg imo these actually ought
+to wait for the writeback to have been completed by the server. If the
+server is malicious / buggy and fsync/truncate hangs, I think that's
+fine given that fsync/truncate is initiated by the user on a specific
+file descriptor (as opposed to the generic sync()) (and imo it should
+hang if it can't actually be executed correctly because the server is
+malfunctioning).
 
-Spot an allocation with insufficiently fine grained accounting and it's
-generally a 3-5 line patch to fix it, I've been doing those here and
-there - e.g. mempools, workqueues, rhashtables.
+As for why this sync user regression has surfaced and now needs to be
+addressed, I don't think it's because there's a whack-a-mole game
+where we're ad-hoc having to patch up places we didn't realize could
+be broken by folio writeback potentially hanging. The original
+patchset [1] contained patches that addressed the sync and compaction
+case (eg maintaining the original behavior that the temp pages had),
+so I don't think this is something that was missed. These patches were
+dropped because in the discussion in [1], they seemed pointless to
+mitigate / guard against when there already exists other ways
+migration/sync could be stalled by a malicious/buggy fuse server. What
+I missed was that it's more common than I had thought for
+well-intentioned servers to not correctly implement writeback
+handling, and that even if it's userspace's "fault", it's still
+considered a kernel regression if buggy code previously sufficed but
+now doesn't.
 
-One trick I did with rhashtables that may be relevant to other
-subsystems: rhashtable does background processing for your hash table,
-which will do new allocations for your hash table out of a workqueue.
+Thanks,
+Joanne
 
-So rhashtable_init() gets wrapped in alloc_hooks(), and then it stashes
-the pointer to that alloc tag in the rhashtable, and uses it later for
-all those asynchronous allocations.
+[1] https://lore.kernel.org/linux-fsdevel/20241122232359.429647-1-joannelko=
+ong@gmail.com/T/#u
+[2] https://lore.kernel.org/linux-fsdevel/CAJfpegveOFoL-XzDKQZZ4U6UF_AetNwT=
+UDbfmf7rdJasRFm3xA@mail.gmail.com/T/#m56255519bf9af421ae07014208ccd68a96e72=
+d52
 
-This means that instead of seeing a ton of memory accounted to the
-rhashtable code, with no idea of which rhashtable is burning memory -
-all the rhashtable allocations are accounted to the callsit of the
-initialization, meaning it's trivial to see which one is burning memory.
+>
+>                                                                 Honza
+>
+> > ---
+> >  fs/fs-writeback.c       |  3 ++-
+> >  fs/fuse/file.c          |  4 +++-
+> >  include/linux/pagemap.h | 11 +++++++++++
+> >  3 files changed, 16 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+> > index 6800886c4d10..ab2e279ed3c2 100644
+> > --- a/fs/fs-writeback.c
+> > +++ b/fs/fs-writeback.c
+> > @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb=
+)
+> >                * do not have the mapping lock. Skip it here, wb complet=
+ion
+> >                * will remove it.
+> >                */
+> > -             if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
+> > +             if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
+> > +                 mapping_no_data_integrity(mapping))
+> >                       continue;
+> >
+> >               spin_unlock_irq(&sb->s_inode_wblist_lock);
+> > diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+> > index 01bc894e9c2b..3b2a171e652f 100644
+> > --- a/fs/fuse/file.c
+> > +++ b/fs/fuse/file.c
+> > @@ -3200,8 +3200,10 @@ void fuse_init_file_inode(struct inode *inode, u=
+nsigned int flags)
+> >
+> >       inode->i_fop =3D &fuse_file_operations;
+> >       inode->i_data.a_ops =3D &fuse_file_aops;
+> > -     if (fc->writeback_cache)
+> > +     if (fc->writeback_cache) {
+> >               mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_d=
+ata);
+> > +             mapping_set_no_data_integrity(&inode->i_data);
+> > +     }
+> >
+> >       INIT_LIST_HEAD(&fi->write_files);
+> >       INIT_LIST_HEAD(&fi->queued_writes);
+> > diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> > index 31a848485ad9..ec442af3f886 100644
+> > --- a/include/linux/pagemap.h
+> > +++ b/include/linux/pagemap.h
+> > @@ -210,6 +210,7 @@ enum mapping_flags {
+> >       AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM =3D 9,
+> >       AS_KERNEL_FILE =3D 10,    /* mapping for a fake kernel file that =
+shouldn't
+> >                                  account usage to user cgroups */
+> > +     AS_NO_DATA_INTEGRITY =3D 11, /* no data integrity guarantees */
+> >       /* Bits 16-25 are used for FOLIO_ORDER */
+> >       AS_FOLIO_ORDER_BITS =3D 5,
+> >       AS_FOLIO_ORDER_MIN =3D 16,
+> > @@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_=
+on_reclaim(const struct addres
+> >       return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->f=
+lags);
+> >  }
+> >
+> > +static inline void mapping_set_no_data_integrity(struct address_space =
+*mapping)
+> > +{
+> > +     set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+> > +}
+> > +
+> > +static inline bool mapping_no_data_integrity(const struct address_spac=
+e *mapping)
+> > +{
+> > +     return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+> > +}
+> > +
+> >  static inline gfp_t mapping_gfp_mask(const struct address_space *mappi=
+ng)
+> >  {
+> >       return mapping->gfp_mask;
+> > --
+> > 2.47.3
+> >
+> --
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
 
