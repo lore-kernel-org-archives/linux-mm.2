@@ -4,124 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6496C47BE2
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 11:34:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF361C47BEA
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 11:36:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A739E6B008A; Tue,  6 Jan 2026 06:34:36 -0500 (EST)
+	id 19D976B008A; Tue,  6 Jan 2026 06:36:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A33D76B0093; Tue,  6 Jan 2026 06:34:36 -0500 (EST)
+	id 14A766B0093; Tue,  6 Jan 2026 06:36:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96A196B0095; Tue,  6 Jan 2026 06:34:36 -0500 (EST)
+	id 049826B0095; Tue,  6 Jan 2026 06:36:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 82C5C6B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 06:34:36 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2C9381AA3AA
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:34:36 +0000 (UTC)
-X-FDA: 84301331352.26.40FC415
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2E93440014
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:34:33 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bl0XiXAu;
-	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E03E96B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 06:36:32 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 42FE2C1F82
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:36:32 +0000 (UTC)
+X-FDA: 84301336224.21.5520C06
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E52B8100003
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:36:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=ah+mVaBs;
+	spf=pass (imf05.hostedemail.com: domain of michel.daenzer@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=michel.daenzer@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767699274;
+	s=arc-20220608; t=1767699390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KoUoIpbxATSqLMzgG8ilQMkf+g6gJyxFiLa7FEkFkG4=;
-	b=xSyg4FAFAxBtpEKP8zkwMMIfql+NU31b9brokXA/IMoNZMU+zUEPoAgksZJeYhMmVBP1V3
-	ja+xFp8Vr4ISDyg59vrLutlwDlgNf6KNcU1eEdZQAZtvVHrv0548gDZHW3H5D6PQxmS9rI
-	MB5MIV11BQHcVnN6NWChaB7n4ij/34A=
+	bh=bAmqeFdlWOAGRIi5evINvMoi90p8G0L9s9GZUo+ZNnU=;
+	b=Dt08mSGEaF65h3IBVqh7wiKWb1QnrdC6ruJoBSD1Iccwqy/+qr0bJ9vi0uin/BSSlSUJrT
+	iP4dB9JeUD18AEyap3eWf1munhWk9/MHTaE0p8kWzo8dPXvXPxgoPkiXWE0Lk+lHiH+UUl
+	hZEjfod2i+IBtcqx8p2nYtwUk+g00hc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bl0XiXAu;
-	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767699274; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=ah+mVaBs;
+	spf=pass (imf05.hostedemail.com: domain of michel.daenzer@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=michel.daenzer@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767699390; a=rsa-sha256;
 	cv=none;
-	b=60zYYmST5JQwJ86J7VCAWelBKH05LW3APdcRyuSvJy5UjO4gPmfTjqEQIHdtaHoblIF5bF
-	NRZIUJ7gaE74sMDgGz4l/cwpkHYTxRFkI+Deke95ywXipC2bWGWhV/+ugA8D3joEMz+RpW
-	l5K7ZXlT9euMPKWRKhQO4XGBq37BCWw=
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59583505988so1371285e87.1
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 03:34:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767699272; x=1768304072; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KoUoIpbxATSqLMzgG8ilQMkf+g6gJyxFiLa7FEkFkG4=;
-        b=Bl0XiXAuAi+ihe3pxqyfVEgrVBsVPnbpxX+9RhLz1S/cWWc4OEYvq2EZQdRvluV8HG
-         ZCsNgiO3nZKpmRTW+Swmi2gS6ROkUsATIrgA7gWbtu+HeKeuGeIwoNw5hGFu2ZxScbpx
-         HG8nEGotD4jev6D6i0uQutJCESSUqRhMdcstP9tY1apUBRyCxYmGdZgKbt3ji1KK8ejS
-         j2CWgDwYFKM3m45JYkNZFs80YYaBuGBrHEQYKcjo+cw4bubYtYomg1F5JnMRwjt8TnnY
-         2e8yMhVxiTYXAgay12q5QGwgxiIeZMPq1mQkyK2drEkz5VPf/qBw8y6kiUOQspEkJQm/
-         5KXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767699272; x=1768304072;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KoUoIpbxATSqLMzgG8ilQMkf+g6gJyxFiLa7FEkFkG4=;
-        b=M7DEHWyeGgcFvWNavLTqZx9EMScIGtE3BvXOw5JKbBbtakD+2EK6zBfiVoP5V/rWeR
-         giaD2DRYXADqiuyzKdKYorwBPXxw2TINez7waKs/tdPIIV0hR6e1lxF3p0XihN5QKodN
-         a6Wy7fQuFfs+SBtzC1oqFCaGfejXnw9iIpOG5pWAmJ7hokm2Y+DeW3lM5cBffeEVkjG5
-         fqMJHz/Y4OJqQkhLl0tjsN5NgnT0J1E9xUz4lnpU+Dia9jmpy5sOUmKPj8NPY+YxmVJ/
-         aB7LTu0hwH7djpHgD/6KypQ7XNeWIwajHEnJBHrwFFh9/l408sdxsstCbVEIHaZv1beH
-         kIjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWl/UiHHJRMJPlCGdttuSmJqojKQaplNWUG9WiPT8iOR44t1PYN3+9zqZ33ZmG1iSD9Qny/0ydAVg==@kvack.org
-X-Gm-Message-State: AOJu0YxzaS1cyV/3ohfk4Hmd8PbOxhuzTS1i2dUJCxnwo4mODWKYEWRA
-	BZHh6wwyS3KN5eulRAf8edmEcyJNskZi9rv8iC1Dh0szSC0pRFE83acO
-X-Gm-Gg: AY/fxX7CMV8JAPln33UAY2Nwe+9yMo5efk70tr1Bi0ppGK7iOIoocnZF9djpO1lUxzp
-	kXXq9sNaftfoI4VnNBznD3HUtk5YXT/qYmDN/YfxWlCe4d/qtkiHBGlxJE3VfGuCAAH8g2Q9Ihn
-	Oy/Foz4aSXT7XvFmGi+kUUunAYtH4WGZp5+9yy5UR6Gsy+PRP64oCvCVGr1lknqJqy3M3+cukNw
-	TU5HppLs+A/PKNfmX/tyoM/S9BOpfhuFo+sresGW/+9tV20HSBci3OEjCfZojPSJSh+cReIBMn8
-	pwSA9iiucUXvJwtJODJOQDvf25vHzVwGGt8+q1e92Py6ZYNfak1hbLKqrSO4jp4Z4iED+nNQqwD
-	V4+aszNK6ejgbk7eqzr2p4Mx04Jvlnm0TjJcAIkgp1TyX1rKdFrk=
-X-Google-Smtp-Source: AGHT+IE+lB9eendcALR/ULoAEQJKIfgtjYi2OGAI/Wqdno2jUmDLBw3R96c+3XtiVW2SaiRPDwGHFQ==
-X-Received: by 2002:a05:6512:3ca6:b0:598:f35d:952e with SMTP id 2adb3069b0e04-59b65a939bbmr793660e87.25.1767699271961;
-        Tue, 06 Jan 2026 03:34:31 -0800 (PST)
-Received: from pc636 ([2001:9b1:d5a0:a500::800])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b65d5dc74sm517522e87.54.2026.01.06.03.34.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 03:34:31 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Tue, 6 Jan 2026 12:34:29 +0100
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/2] Free contiguous order-0 pages efficiently
-Message-ID: <aVzzRU-VkHpJlpps@pc636>
-References: <20260105161741.3952456-1-ryan.roberts@arm.com>
- <aVyRz62kQbPe5HbI@casper.infradead.org>
+	b=yLmbhLdR8Bzab3Idje2kCcue0I0GWAbpOXaAawQcH1qTO58s7IQUbck6pzsa0k7R+HDMAl
+	vYlvJJcKJ0nqfXQonxEd1aNTUQ71e4vYvW3pBssHhWXZ/ilmA2FEkrGLqCQSfUP9BHwBN3
+	MZbf9rbMjs0jYqJ2W5yNX3wB0fJttdc=
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dlpyx1tPSz9srM;
+	Tue,  6 Jan 2026 12:36:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1767699385;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bAmqeFdlWOAGRIi5evINvMoi90p8G0L9s9GZUo+ZNnU=;
+	b=ah+mVaBsxyCrWuJq0ICyA0wUs6qdvWHHEffzIOxZzoDfHemd/91ncSYxpx97QhP/x6Xx7t
+	WMJqVFYqXZBfIPrnxbihfpX3TaTuxc0EEFysJs+MjETToA4+wVQb/Zr2TOMF1vmUUyWpLZ
+	I1WI8Q3w6S0Tu0uVAchQ3NwLFLEzTf134oeD3UHiVTC5btx5iJ0HUCgeYiXMmbIhrZN6Dd
+	n9dQku6N1qBOUGqE2lbkFMx28w3gQi21avSl9JKCYlzXPNeHn/3dEUvqtt3iRaZ8aweASZ
+	2ROzNFrr8yjvwftDD9bz+7ZuG7IZ820R5HqH0NqsLfFxdn1DLAZuEpe86DgcHA==
+Message-ID: <e597171a-cc64-4811-a043-db2e539aaf94@mailbox.org>
+Date: Tue, 6 Jan 2026 12:36:20 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aVyRz62kQbPe5HbI@casper.infradead.org>
+Subject: Re: [PATCH v3 2/3] mm: only interrupt taking all mm locks on fatal
+ signal
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Mikulas Patocka <mpatocka@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, amd-gfx@lists.freedesktop.org,
+ linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
+References: <b672e17b-461d-16ae-e7d3-45d3c1aab142@redhat.com>
+ <7whbqlfrwjr4z2d4bpny3rjyl5tetdyx7ccf52uvby7hgywoym@6l6m2xcytez7>
+From: =?UTF-8?Q?Michel_D=C3=A4nzer?= <michel.daenzer@mailbox.org>
+Content-Language: en-CA
+In-Reply-To: <7whbqlfrwjr4z2d4bpny3rjyl5tetdyx7ccf52uvby7hgywoym@6l6m2xcytez7>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 7ceeee7f4f9448e5d4c
+X-MBO-RS-META: tgxmey483p8e7gbw9y4cgr43xd49dy1g
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 7en7pue84itjgsjqrmrf6puk7e5c31z4
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2E93440014
-X-Stat-Signature: p81nphi6u1kiwmkcwzdw973dh9rnzuum
-X-HE-Tag: 1767699273-263210
-X-HE-Meta: U2FsdGVkX18khvZPhSJceGuNKuHu/XZooL0T0nXT7oe5cStdqpaWwLdDEsUlrM8ejdbwwPG9q0n7PCFdvt/LjyL42gyx2cHU1IHSzYs/VSHx2EeOaYigHnpDa5wt4DwTPAfxB7ftmYeoMbHEgoGVGp1WaeKfWBG+UFX6ziuGELXTPIr0eH0UF99uNn0//lxCdywvd5BbHz9yAwcvzidyplnPMDhJBAEkF4cjAfHupuN8E9H3UiIB77RQA0lj1Mg4h8Hw5Oiej6eGByP+d0zm6fx/czm+sMH+77AuKYCiPz+m+3i7/evs2SHA3IZ9Jo6SvVp4XRELlSV8NdZowpLrPX0Q10RlO9TkvGHyvzbN/gq4CceQXsYUjb/9qJzhBSTn9hbNs4wINe4eXlvcRwf3EzBgS5BVSef0MGmGubecU85N64tzN1Zx9aqL64zygFXaL1gj3YamSmQPpqfAQ00Gqp+cwLwmzqyavahT8eAUuJStJ2DNYDcO4P1OIXh6wRsxyuFd1DYZpccYOnLGkzqeKNIiK0LQAb/h925JUleiDrbpaSOVAmhqK1ypG2OAD0ZVCJDSGVYtsjsebXoHGmC/gnfD9+ezJG88+hgzi5BKLESJb9WP3SnMfI/bQKVS+LWgdmvwZuzFBIsf8OY6U0mSYPghPYHo9uqkIUv3mx0Lm0p1/KbH/YS7Yzgb4fWDSpViBqN2LHYgtNPREhGuEdbTItV6zHnMCSzk5JojVx0THJTEkiVaAm713dI8kvnGxg1XBuW9V+uP65nIkThk2IWZdpL7OIFypxOn+8/6MSVWEHIz6wCKiiVQMs/dqhqMEgKcNhg4NWsRlkhukF4aykP/o2pg/QbOZQlduPITQQK/wzC3Voni0pMMhKzwFdYBe0txGEbckyl3Cz1Pnytl3cbvacEjRA21ldcg8zJ9yZiKYr3Od54ZQWLs/hemy386OUXUt5F0z2dKz6gNnInUH2A
- RyEn9DHh
- M0u+c8lruHXSjoQ9AJHbllB6B67FfbCzodVCg3XJzyneLHUGyZ/dZrHuWuqamN5LphqXrojTyMJXFbEqv4mZ2WIta4bHCqK5cLddSkrksBE3C3YN5KtZzEqmt2u10DC5Mn0Uf9HOq8ipPoh8nWtx/z7VEEMPpfubh+5D312O69xsJPwFZY+EZmAIitHKSC1R4m24HCwdbT7TPlkndTPOBz7gQo75+OYvHaKu5Jz+WhyZoaKkApXuYO9t/ItlSZ56KSlhJTXkeekvm+ln0fTYM7+u9trJy6WOFs8OKoe0IAmkYat5EFXzTeBVzbkh0Kg0pfGz51j+V68nvyfXh5RPj8hrZPqAsetnqsVTTwISDarc++xUz8VntOXyMWKhQsOzDvbOeyvEmnbreGgVbjHhivvWxF86DaoGN3Y18ERwTmJzNOUcx3Q8xykv2/ca/GPPeDiW7Z2AHv4TpO3+QT4L0NaPQEt/RlGMS76qSDSrScpznpmJbmjikptB2/KbJDJ6l1Ud5SO45XKKez8VXHGDh1DsLhthr+bbnTY98SFPeEjrUbo8=
+X-Rspamd-Queue-Id: E52B8100003
+X-HE-Tag: 1767699389-535493
+X-HE-Meta: U2FsdGVkX18BPqZ8ec9uZHaBmlLLCPZMF2THJsl8KUB5HAdiD50iHbH9TPABwZJSuOUM03jhUdIRhXL+Oc+SodYtAEA3YMnEHn//UmkKRHFBDvDj9CJGNHtsRHl5k1FkOnYXGuTV0MbZGTH+wXI9owEPOK7dGuzrqxU3FtIf3w/DSoXVI8fMIz5I+iIaxpYPuoX82F+oSouihrDjCpxrB7tmktv4wW1P0+U/9O/gNxz/tSZd4hJH63uoxf0EJzgoyBkP1vZJxwIzM//ABYAuoJN0TqkTbbfjxQJj7/H51ac1Yg6TMr9NsOsF1Pb8U90XcUybKeaNMDJ1saHdgZRQJ23qf4S3JS1aPN4fTjxO5Qd9RCFx4wsYkN0sH5RKO2Q8i7F8qduW02/gJbaOZKk1uZ4YRLM0363CMdboBzloR+MMTIeUZ/jkdw65nct/k6CO3olNPYLaqQyOydOd7Hvoet8BlxaAz1ceSJyWbShwHcVzPOdRa4hdSt6AxLg9a7la5yHKYCCywMsX4XoQS5VETimcy/xCQ4yawnPIg9WgmAAINLue6iMpnMR9rq1XKjZP1iFHv3U7MeNJFvB8OdgJYp3QA/cEamsdOI1TYQkXA1d26zY4bmYAofowhB2biJi0Ud9uQ8kFMnHUOJrFiXo7XMTK9BC8aWhLzicQYIWa/uhFvzAeL9inHd4LID5CIZWDhiuUdtDUREqu7FGV3C6AnN8/aywfQlSqZrMb7AL48fEIOi7iyrEwhJHGPnjZk1dYp7Q9z1M2WgZgMNmf05q+IY7ZMEPIdRB3VRs1Mx1G+LWHv8KlQk4fZr3YoqzRfNObYTaKnoKWbJl8UJeNsJ3tyGSrVc2pYDapc0zAxQ6i9BpawcOtsMmEKZ9qSZI2x0nZAnHe7yHU1t6S89WfHMYs/TrauyptVWENgy1A9FXvWIeE+8FCpAkeBHwWLWnrbUOhrMow2muJxP/VdQRNtst
+ ljLrk4YP
+ 0LSQ5RBInZTvSLcyZ5uZubHxwKN8f+gR4IlYlS6Mt7kZ9d8e4JYxqu+586yiBmA+W2mdGFZCUiXBHuHt5PVbR/ZPtRDp3+Rzp3LfPkdsGyG15FCxw2qvsG256RJO0KXzD74wcGdewwzSPWJ0xy/MqLeeXPElRjb2C9c4b3rYUlOowp7a5MTcFSgu86tQZIhMmqrreE26hrbYE0wvsQfY/3gXJmwcQI5heluRWiSzh3UQjpTslUqq7fEIW93WULh23WbVYrjB008WiWOOQqxTDq8OH9YRo9gZL9M45o+ct77bIu2rM6IzsO8MWM04fVu20BCHWQIEvugOJi+gVYV8dHl5XErGNFnFioHUM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,24 +106,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 06, 2026 at 04:38:39AM +0000, Matthew Wilcox wrote:
-> On Mon, Jan 05, 2026 at 04:17:36PM +0000, Ryan Roberts wrote:
-> > Hi All,
-> > 
-> > A recent change to vmalloc caused some performance benchmark regressions (see
-> > [1]). I'm attempting to fix that (and at the same time signficantly improve
-> 
-> Unfortunately, there was no [1] ... I'm not sure this benchmark is
-> really doing anything representative.  But the performance improvement
-> is certainly welcome; we'd deferred work on that for later.
+On 1/5/26 19:15, Liam R. Howlett wrote:
+> * Mikulas Patocka <mpatocka@redhat.com> [260104 16:17]:
 >
-When discussed the high-order preference allocation patch, i noticed
-a difference in behaviour right away. Further investigation showed that
-the free path also needs to be improved to fully benefit from that change.
+> I'm not saying it's wrong to change the signal handling, but this is
+> very much working around a bug in userspace constantly hammering a task
+> with signals and then is surprised there is a response that the kernel
+> was interrupted.
 
-I can document the test-cases in the test_vmalloc.c if it helps. Also
-i can add more focused benchmarks for allocation and free paths.
+I'd go further than that. If user space fails to retry the system call in response to -EINTR, that's a user-space bug, period. It can happen anytime for any number of other reasons. (That most system calls happen to get away without it most of the time doesn't make it not a bug)
 
---
-Uladzislau Rezki
+(This is assuming the system call can be safely retried, otherwise returning -EINTR to user space for non-fatal signals would be a kernel bug)
+
+
+>> I'm submitting this patch for the stable kernels, because this bug may
+>> cause random failures in any code that calls mm_take_all_locks.
+> 
+> They aren't random failures, they are a response to a signal sent to the
+> process that may be taking a very long time to do something.
+> 
+> I really don't see how continuously sending signals at a short interval
+> interrupting system calls can be considered random failures, especially
+> when the return is -EINTR which literally means "Interrupted system
+> call".  How else would you interrupt a system call, if not a signal?
+> 
+> I feel like we are making the code less versatile to work around the
+> fact that userspace didn't realise that system calls could be
+> interrupted without a fatal signal.
+> 
+> And from that view, I consider this a functional change and not a bug
+> fix.
+
+I agree.
+
+
+-- 
+Earthling Michel Dänzer       \        GNOME / Xwayland / Mesa developer
+https://redhat.com             \               Libre software enthusiast
 
