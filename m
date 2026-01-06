@@ -4,130 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 501F7CEFCF2
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 19:14:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DD10CEFCF5
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 19:21:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AE006B008A; Tue,  6 Jan 2026 14:14:08 -0500 (EST)
+	id 91F506B008A; Tue,  6 Jan 2026 14:20:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35BB16B0092; Tue,  6 Jan 2026 14:14:08 -0500 (EST)
+	id 8CDB76B0092; Tue,  6 Jan 2026 14:20:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23DF66B0093; Tue,  6 Jan 2026 14:14:08 -0500 (EST)
+	id 7AEAE6B0093; Tue,  6 Jan 2026 14:20:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 115B06B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:14:08 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B5E6D16090B
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:14:07 +0000 (UTC)
-X-FDA: 84302489334.23.93E2372
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8CFD5C0010
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:14:05 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ZwNWsoaa;
-	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.67 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 66E326B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:20:59 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E491113BF0D
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:20:58 +0000 (UTC)
+X-FDA: 84302506596.19.AD860B1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5E3961C0007
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:20:57 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IADNriuX;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767726845;
+	s=arc-20220608; t=1767727257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P4b6An5MJliymK+l5lQ+asO/gerD4yNm0UvKmXCvNrg=;
-	b=EyYdD+iIQ9D7pW3hJdhcQmNglmNpVrEIDgNJT5obGjcflfZXWPVFbEpTa5P1LVwoqGvhVd
-	JL96Bn8Q6xh+H8iSmK7yFcdu6WXo2AbKkJERGV0D2sfhUVspp+jwV1xXWNKRG98ZH0wYQT
-	Lw1lTvMORH5h1BWKnlHzdUuQ67AhGxw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ZwNWsoaa;
-	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.67 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767726845; a=rsa-sha256;
+	bh=1Uc0F3DUwIqqUR/64oFUqD1CdYQ/LZ++reJ8LrVQ7NU=;
+	b=05QFvIgYCYXrTUj15aiFJ2jSgreE7QoBK4Yqe5T/aEMzEqQD6NB6Os/a1n9P2TfCSB4rKw
+	zvqeoi2N/xUi44yYSccebJmpGGQh4S+qArjkfHN9wHbI5DJs5prkgM9n5AinpVLmx/byo6
+	nYsR9aoGcLLySm8qR+kwhn6OFe5ARBE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767727257; a=rsa-sha256;
 	cv=none;
-	b=BBNryzskatc9cJHjo9FjeMHO/BKD2aCFoMl6jcNBdZBRWgAreywRZVt493ZzaXIt7+N6UB
-	h4FcQ5LBjlCGn29h6dVH46mBySRNshpEtCn035Ntb3YiIn1+AczAGhGurc1ztyH3oilJit
-	MU4fVyfW8M7AB778RIQdnemqnoJAkFM=
-Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-47774d3536dso1298535e9.0
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 11:14:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1767726844; x=1768331644; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=P4b6An5MJliymK+l5lQ+asO/gerD4yNm0UvKmXCvNrg=;
-        b=ZwNWsoaaemn2+Ndp4pcWGpVM27F0riU6A9BxfbhI1jTZvpahq+ef55PgMDCvq6sSec
-         kjeRueG9XReOfKOG16nRFYt6VV3lR6E6llWv11fL5QV3lciPJrnkd2uwBuPSInW4I7L0
-         ZMULbh3+3ZMaopahqEl0YyZf2Kkrty2R0hy6rPKiZ6ohwvMoWnQ1QVzHUOKDHAUNHSs+
-         7+WvTck734sKDw27CjOi3noTg5Fdoi+6P/yoIpiufFUlgz3po2zRfbwmeUYU0gQ3iMWX
-         5kZUn4Gk80o2V0mKylqSmYGYz6HjTNA1938dHNxVsfKbu3mkucSTg1X1MVzq+x4vM0AS
-         ytyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767726844; x=1768331644;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P4b6An5MJliymK+l5lQ+asO/gerD4yNm0UvKmXCvNrg=;
-        b=KhQCDaWSRCWX86Z5msePKZJeAm1+bxzMih4XbdpJlOpjFlUmYmxi2/YYgtC1cvo7Jl
-         GwwXmKYqm3AIsd1XAd06UCIpiXfO/UE6upYudCu3cYOkSm/kY3cO8reUBxZ3bNxA/kI7
-         AES57P6NB1iOz7iI1i6BmCNt3YLt3focyIsBI/k6qYUE713OM9XJB4GeIdCmJ5yR3lho
-         c+IFmbjaHZHL7CoHyxN5TWx069wDxTC3UdotoD3G/xHt1a9dtAEuS/syG4yhAdbROXIw
-         4vFV6dbA8TLjCEBiG9ALMdj3gKTPPPXiwXZEbeexQyv41g0JIfttPb+Shpx7oprgINzN
-         egPw==
-X-Forwarded-Encrypted: i=1; AJvYcCXEoiStMkaLYAzMXtOfxYQmFFIJg33gVJorMGDOzQdllcThUUyiZ+gWIzjgNt463XPrXBmjwD9P7A==@kvack.org
-X-Gm-Message-State: AOJu0Ywa65u/kXfMXwwRWeWIcw9nDjzkjWaTtuEzOxLt5VP6F45n/T67
-	93EE27PRcRtrBaEhBVZxAgx/xxH0m/0JVMNQ4GLGBMTUTXo676f07Mc15oyzLJnTsbE=
-X-Gm-Gg: AY/fxX7h6E7vjUAG29LzjOyHY3erVw7oPyAGmNvigScW+D3ybrXUltmb6EO3CxSG3zx
-	62GYzdroPnIVkij8FDGxilVx4od6UsG2S/tj6UOgbsHOFTn54SwRnhnkfohJHTbFSoVCfMBpsAD
-	tv7j0/3iSWjL3R9IiMqhLllb6C43sVlyChEVqTcVrdj5S96hbgiWXAA6ZpHCG7lrY0tJxprxGi/
-	xv8twdmEWnn5zRqEoLIoh1rwb+/L2zUPNiblfbzhf2kyVF/zmv3cftAU/ueU2yLfc0gp9huRctX
-	z7uiuqlOoQf1a6Xgy7u6YkeAL/nU5hkwzSVH4cJGgGdf8pyzUJUdGA7tLvcBKYlElIec9wM5Qyb
-	b0isVh21qhydXVe6OzxMUh0r3x8jYJJajHn9fB1BDGdUq/9SI4BzgSuAEJPoviHGq8VLHEDnzaP
-	NVhs6kDdNgLuyyg35LceRVRsFv
-X-Google-Smtp-Source: AGHT+IEyNwsx2FHFz7Vpse3jYP2GR6qjdO3W7d0IOA9iHAVE6nWkedBySE+QtJWPz2tdpfLkjzsUNw==
-X-Received: by 2002:a05:600c:848d:b0:477:9a61:fd06 with SMTP id 5b1f17b1804b1-47d7f41153cmr46778365e9.8.1767726843867;
-        Tue, 06 Jan 2026 11:14:03 -0800 (PST)
-Received: from localhost (109-81-93-164.rct.o2.cz. [109.81.93.164])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f661a03sm63555415e9.13.2026.01.06.11.14.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 11:14:03 -0800 (PST)
-Date: Tue, 6 Jan 2026 20:14:02 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm/vmscan: mitigate spurious kswapd_failures reset
- from direct reclaim
-Message-ID: <aV1e-mn1JJix4bZ5@tiehlicka>
-References: <4owaeb7bmkfgfzqd4ztdsi4tefc36cnmpju4yrknsgjm4y32ez@qsgn6lnv3cxb>
- <2e574085ed3d7775c3b83bb80d302ce45415ac42@linux.dev>
- <u2llnnpmpsgarwrt74ffgo3cuwe4apdbeh5hkclzbh5gykwltb@whb7uuj7ub5i>
- <e93c75cb1a46a60ec415215c555312c82b9145ac@linux.dev>
- <gd7qbyakigogdbfxkujtc2ewwfzbwudn2l6vqkbkttv46wkfrd@nqseltiu2do5>
- <d7df4e26841d83154f2cc2487d5acbaf2ff2cc27@linux.dev>
- <aVzaqAZ5Wagh5cDQ@tiehlicka>
- <52cc0b2671b068903c6580b7431db0f22982ae86@linux.dev>
- <aV0HI2-iRXuQ4MGv@tiehlicka>
- <rlibyovqzrcir3egfa5pzjn3rgk6ctav63okppevjpsp5fu4lx@rerujqrjf2j6>
+	b=jPlMzu9251fZ3B1LipUNdvRqgQq8e97unCRXdBl5sv7fkVZAFAipLyDdKIz9I/jy5w3wjd
+	eJpmfH01J+YqW0ysHc/kONyUvjl4pThay0ERLeFke+DdXVRKMfWb/fVfWSxNG98CVTA2c6
+	8N+tu2qPYKoj4niVs7mDHF5oEUZJKXg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IADNriuX;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id BB1B560007;
+	Tue,  6 Jan 2026 19:20:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD41C116C6;
+	Tue,  6 Jan 2026 19:20:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767727256;
+	bh=eo/x9ROfg5WKQWxp7LBJD1JrVmKZnu+ytyd9m+qhnzk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IADNriuXuMloqcnP3VojVv6eQPZ5CHvGqQzSUV+rWO64RTnJGVw2B7FdiFpkgwwRn
+	 vGIFwEFMXWPfG4EwUm3YSQ1F9EwCGpvmzfqvLcCBlc8IUflqm4/Asqy8AKrOT9njPg
+	 kDSBOec2TPZ6CH4av7XEgso2iYXcPZekt9xWsYvAN3smKhB7qlvNCsSO8bcZ4PzJ5i
+	 P4eJ9qxqwLVCpiEd65ASVxjg36sb84JgGb2qVsdc4ItNRPf5wlugCPO1Pokkw5Lg1u
+	 l36EP5PCLRiC83Jn7PMmBhpahXspun1ZrPqjN7WAQYq4aF7wFLZiKFTGRW5wfJgvko
+	 xsnZqjxD0YoGg==
+Message-ID: <9e8b01f9-d1b0-44a7-86c9-97622b2baec1@kernel.org>
+Date: Tue, 6 Jan 2026 20:20:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <rlibyovqzrcir3egfa5pzjn3rgk6ctav63okppevjpsp5fu4lx@rerujqrjf2j6>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8CFD5C0010
-X-Stat-Signature: 64mefz345wr75jun8m7mfypujcx69nbq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7] page_alloc: allow migration of smaller hugepages
+ during contig_alloc
+To: Zi Yan <ziy@nvidia.com>
+Cc: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ richard.weiyang@gmail.com
+References: <20251221124656.2362540-1-gourry@gourry.net>
+ <9c807ff8-b4ad-43d5-8034-ec7fcd0fe5d6@kernel.org>
+ <36001B4C-A781-4571-AE65-4C00C9D215FC@nvidia.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAa2VybmVsLm9yZz7CwY0EEwEIADcWIQQb2cqtc1xMOkYN/MpN3hD3
+ AP+DWgUCaKYhwAIbAwUJJlgIpAILCQQVCgkIAhYCAh4FAheAAAoJEE3eEPcA/4Naa5EP/3a1
+ 9sgS9m7oiR0uenlj+C6kkIKlpWKRfGH/WvtFaHr/y06TKnWn6cMOZzJQ+8S39GOteyCCGADh
+ 6ceBx1KPf6/AvMktnGETDTqZ0N9roR4/aEPSMt8kHu/GKR3gtPwzfosX2NgqXNmA7ErU4puf
+ zica1DAmTvx44LOYjvBV24JQG99bZ5Bm2gTDjGXV15/X159CpS6Tc2e3KvYfnfRvezD+alhF
+ XIym8OvvGMeo97BCHpX88pHVIfBg2g2JogR6f0PAJtHGYz6M/9YMxyUShJfo0Df1SOMAbU1Q
+ Op0Ij4PlFCC64rovjH38ly0xfRZH37DZs6kP0jOj4QdExdaXcTILKJFIB3wWXWsqLbtJVgjR
+ YhOrPokd6mDA3gAque7481KkpKM4JraOEELg8pF6eRb3KcAwPRekvf/nYVIbOVyT9lXD5mJn
+ IZUY0LwZsFN0YhGhQJ8xronZy0A59faGBMuVnVb3oy2S0fO1y/r53IeUDTF1wCYF+fM5zo14
+ 5L8mE1GsDJ7FNLj5eSDu/qdZIKqzfY0/l0SAUAAt5yYYejKuii4kfTyLDF/j4LyYZD1QzxLC
+ MjQl36IEcmDTMznLf0/JvCHlxTYZsF0OjWWj1ATRMk41/Q+PX07XQlRCRcE13a8neEz3F6we
+ 08oWh2DnC4AXKbP+kuD9ZP6+5+x1H1zEzsFNBFXLn5EBEADn1959INH2cwYJv0tsxf5MUCgh
+ Cj/CA/lc/LMthqQ773gauB9mN+F1rE9cyyXb6jyOGn+GUjMbnq1o121Vm0+neKHUCBtHyseB
+ fDXHA6m4B3mUTWo13nid0e4AM71r0DS8+KYh6zvweLX/LL5kQS9GQeT+QNroXcC1NzWbitts
+ 6TZ+IrPOwT1hfB4WNC+X2n4AzDqp3+ILiVST2DT4VBc11Gz6jijpC/KI5Al8ZDhRwG47LUiu
+ Qmt3yqrmN63V9wzaPhC+xbwIsNZlLUvuRnmBPkTJwwrFRZvwu5GPHNndBjVpAfaSTOfppyKB
+ Tccu2AXJXWAE1Xjh6GOC8mlFjZwLxWFqdPHR1n2aPVgoiTLk34LR/bXO+e0GpzFXT7enwyvF
+ FFyAS0Nk1q/7EChPcbRbhJqEBpRNZemxmg55zC3GLvgLKd5A09MOM2BrMea+l0FUR+PuTenh
+ 2YmnmLRTro6eZ/qYwWkCu8FFIw4pT0OUDMyLgi+GI1aMpVogTZJ70FgV0pUAlpmrzk/bLbRk
+ F3TwgucpyPtcpmQtTkWSgDS50QG9DR/1As3LLLcNkwJBZzBG6PWbvcOyrwMQUF1nl4SSPV0L
+ LH63+BrrHasfJzxKXzqgrW28CTAE2x8qi7e/6M/+XXhrsMYG+uaViM7n2je3qKe7ofum3s4v
+ q7oFCPsOgwARAQABwsF8BBgBCAAmAhsMFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAmic2qsF
+ CSZYCKEACgkQTd4Q9wD/g1oq0xAAsAnw/OmsERdtdwRfAMpC74/++2wh9RvVQ0x8xXvoGJwZ
+ rk0Jmck1ABIM//5sWDo7eDHk1uEcc95pbP9XGU6ZgeiQeh06+0vRYILwDk8Q/y06TrTb1n4n
+ 7FRwyskKU1UWnNW86lvWUJuGPABXjrkfL41RJttSJHF3M1C0u2BnM5VnDuPFQKzhRRktBMK4
+ GkWBvXlsHFhn8Ev0xvPE/G99RAg9ufNAxyq2lSzbUIwrY918KHlziBKwNyLoPn9kgHD3hRBa
+ Yakz87WKUZd17ZnPMZiXriCWZxwPx7zs6cSAqcfcVucmdPiIlyG1K/HIk2LX63T6oO2Libzz
+ 7/0i4+oIpvpK2X6zZ2cu0k2uNcEYm2xAb+xGmqwnPnHX/ac8lJEyzH3lh+pt2slI4VcPNnz+
+ vzYeBAS1S+VJc1pcJr3l7PRSQ4bv5sObZvezRdqEFB4tUIfSbDdEBCCvvEMBgoisDB8ceYxO
+ cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
+ EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
+ qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
+In-Reply-To: <36001B4C-A781-4571-AE65-4C00C9D215FC@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: gjatwx4jmwn9irabb7kjpa8igrwk9n3q
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5E3961C0007
 X-Rspam-User: 
-X-HE-Tag: 1767726845-600039
-X-HE-Meta: U2FsdGVkX1/X0MwTGKn6RcW3y1eyYDe4XkWSJGcUOlqlsCaZCRa6mxEHKBryYETHU1aJTnfmXwMXa5L9HD87dBQnxQE3WigOzPRyXaXoMGi8jYnjh6gWfNBwIlhphJ1GRm8h/S8b8EWKpEZfAba9EYKjGNgYcslgr6hlKCS8OaNZ+LC41ehQzTk7uIhF4zzPaBbUgsxQ4wyGA3qRyCeas2SqqonOFDjZ+je8iXsVAaVLa7BDgZKF1PYKsGvoV1a0pQZI7ENnpZ3s8rJc8HgxFw2S2hVQTFBE7bOd1qlJuMVeDJidOgmM/rx4MyX5c+y4wTNO8s3p0K9YUxsDbbBkflSIBKJxV7k1iyjNBJgPnsvBT6zZDh9MhpmoDVLXOTsDhdpuhNWKeuo5XKjkqk6hV9gW3HrsZv/8n4nWDTI0DGpXc5FW5ohSeZU7rZt30BiXSA9AOigAvTTB3srE4YchM4IrtMRhmPdZ/nDMELvTLWqdbzZ2FfyoZf97cWSkkcIuB6GS8caam9u+uJq14Y22gaHbngjg85PO2/OnreeQ2DbMVK6J20AL/Y/DXzkZPIJo5nKya74ErRmlsjV3IXRh7YCNRVqsPWP2autn8HxJslgrSd4vmheLFKOPrjqsyYD8+3lwmSwLjRuw02jlHl8ZqJUsl5+a1my8D0VGdyg0bNFKDBjCmA+aF2cEiJ7zb8iPIWQq/bFBepWId/UzfSjSvSnCckgOdM9t6LX0LKm8YEKYo556IbFISQBfokTNCYzxXlBrlY0uXOlc9D7WSeln4bpGoqZpqnAcHhtNNqImHeOOVIA/d6RdLn+eFEst+VQGYUSV8LkIqPFttt4fYsFGnnmCiM0sc02gilK9VZMPnc9wCjsPg1zo+I0PCuf46zJP5+WXEMdXKQryLRmDyYStI263m/vhjI4lkoupwgKUoopyHN0WH88uunHojvoUPsbYoKh+K48qUsUSz3neT2E
- Es8OBdDw
- 1wlyAE5xmQ0ls3WLEXjtmVssWTUuZgIxswik1tOMqXKrGGk+gKXnh5iNxmUmsBKSFERkaAR3qK7xBAgLDfBuR0QLRbsc7VJfhmzLLoqMeB8S07PJMUfORLSHiIS5SJsM3PgJad7HeoTFQ0whMz31LswRNbqNE/PT31bk//ot8awepP54xma0YmrhmBsIL4LTffKhABTWwjuDiI6a3fyR4Mao2HcqKp54bRaChU1YRYBwcVqYrpbqHS90vrpN34nuE3Gu/kS6oAlcxnd0VlVlNx82hMP6uecfs/KAf4XnyJ/Ln8tIfu0kk9ydpaZCWICkgmGgPaLnUuEyKS7HOdvBzQvAMZjFWtYu8LHpl6PYvfKIYG1C6OhKVXWq+bZu7xmWIUKY7Y69BiJMxGmodq1QSx/fj2CLQm04tkkZ6MAIN2qBNGAWBUsvMMv+atneNmm/jWiRsjnVKiemACWAFg2fhsurK4LfrtA0fJjx8n3YxvIu+Tp63B2Dpbrr7Ypk9WxNdAbTwFvpPwuP1Ed/rvqBlHatoTiX1d/glPqDxHKJlajTCM+w=
+X-HE-Tag: 1767727257-560288
+X-HE-Meta: U2FsdGVkX19/rhSwfLww377m2ytYTy9Oo3b9JzLTO1KMG6+7yqAfPcBWdJ7unSbZnt4vV62BcVBehGELsJaFmXITVW0PuhUnCRgOeo5g18oTlR+OUBUEE64b4ft5hJ1zWg80q9M8i8jLw6g5hEy7ZZWXpY9D8biHekw3Y0gSNHldovbSPcTUAzfV36BCEm4eXx9On3jdySk/5LZSFg6ZVWpc+bLgJC/A+or9Ako2YuAy7L9RrnoNecFqdbOmljv+4RLhHvIVciGRtzM5BHZCaH9t7AzDuWskrmlrDcMwcUHW0oQ9MB9K6GZOtEBYzJcuMY8p5Kml5cONmALRmlhqA3uzwjYhNwbp+QowRuY25C7xIF95blE4cvEaJ772MuUYJuOSM23IUaULo8+TEwrp9bq03KT3vryjCzMbO2ZF7avysf0PLoAHq2XSWiAybH/U7PcNNytGGwdZPz4/ALzQ7qYLIHg4bxo6V/PKIqHh23kNEbA2r1Y4UMQfAmTfwkEK7iKHuOP4rYZNynVpR1WTc0sKsNhdDN8D9+iXAjei6xlt+nI5FCrw46omOVkyiaIC9pf5uN9RFTEn5DOGgpsBFu40Tb45JM/RyrotsgsT5kiWNO4m+BJeAGsdFZSg4Sn1GMLNyD6k1ipdKM4/eRJa9BQoZpjJ8QaeOAv80Yep+zH2lBssefnYrJ50uOvxWUZBbV67S8P/iLtiaIU+qjE7bG2TJwYxIU1Xi0vtNlxcVexkb6fI6qgB29T++cyBpHzG1FAmYl+GTFWm8MxcEMzlUBiVlMfKb/ZweTho6aY0CAraD2bzQ2L7MCP/kP+rx3qU+eFPjTZPhIR4AaVNyOWUp3vGuen37UtIQxA3F2s+VxjsMG5MBw2xvbq2XwX9x3+6zQEk2OqdUoCevX1BOWPw50OGirPRDFGpzFGMIqzCJB+/6ktKH9D8CcMvoODHmeaDq+mQLK7rbguy7bjB5FE
+ 3Q3+AGyU
+ wwJCalnHRW+tjgTLS0NxT5VYFw+M4IdNH+Xu6SVuREJVINwbKhZAw5fV+KjriC4oxPzk86S6WJacN32M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,77 +143,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 06-01-26 08:50:11, Shakeel Butt wrote:
-> On Tue, Jan 06, 2026 at 01:59:15PM +0100, Michal Hocko wrote:
-> > On Tue 06-01-26 11:19:21, Jiayuan Chen wrote:
-> > > January 6, 2026 at 17:49, "Michal Hocko" <mhocko@suse.com mailto:mhocko@suse.com?to=%22Michal%20Hocko%22%20%3Cmhocko%40suse.com%3E > wrote:
-> > > 
-> > > 
-> > > > 
-> > > > On Tue 06-01-26 05:25:42, Jiayuan Chen wrote:
-> > > > 
-> > > > > 
-> > > > > That said, I believe this patch is still a valid fix on its own - resetting kswapd_failures
-> > > > >  when the node is not actually balanced doesn't seem like correct behavior regardless of the
-> > > > >  broader context.
-> > > > > 
-> > > > Originally I was more inclined to opt out memcg reclaim from reseting
-> > > > kswapd retry counter but the more I am thiking about that the more your
-> > > > patch makes sense to me. 
-> > > > 
-> > > > The reason being that it handles both memcg and global direct reclaims
-> > > > in the same way which makes the logic easier to follow. Afterall the
-> > > > primary purpose is to resurrect kswapd after we can see there is a
-> > > > better chance to reclaim something for kswapd. Until that moment direct
-> > > > reclaim is the only reclaim mechanism.
-> > > > 
-> > > > Relying on pgdat_balanced might lead to re-enabling kswapd way much
-> > > > later while memory reclaim would be still mostly direct reclaim bound -
-> > > > thus increase allocation latencies.
-> > > > If we wanted to do better we would need to evaluate recent
-> > > > refaults/thrashing behavior but even then I am not sure we can make a
-> > > > good cut off.
-> > > > 
-> > > > So in the end pgdat_balanced approach seems worth trying and see whether
-> > > > this could cause any corner cases.
-> > > 
-> > > Thanks Michal.
-> > > 
-> > > Regarding the allocation latency concern - we are already
-> > > in the direct reclaim slowpath, so a little extra overhead
-> > > from the pgdat_balanced check should be negligible.
-> > 
-> > Yes, I do not think that pgdat_balanced call itself adds to the latency
-> > in the reclaim (slow) path. Mine main concern regarding latencies is
-> > about direct reclaim as a sole source of reclaim itself (as kswapd is
-> > not active).
+On 1/6/26 19:56, Zi Yan wrote:
+> On 6 Jan 2026, at 13:46, David Hildenbrand (Red Hat) wrote:
 > 
-> Yes we will be punting on direct reclaimers to collectively balance the
-> node which I think is fine for such cases i.e. high kswapd_failures.
-> However I still think the high kswapd_failures is most probably caused
-> by misconfiguration of the system by the users (like overcommitting zones
-> or nodes with unreclaimable memory or very memory.min).
-
-I am not questioning a misconfiguration. It is just far from great that
-kswapd adds to the problem under those conditions without a very good
-reason. I would be pushing back on increasing complexity for apparently
-misonfigured systems but I believe it is fair to say that failure
-counter reset logic could see some improvements. So let's see whether we
-can deal with the situation better while improving on this logic without
-much of an added complexity.
-
-> Yes, we can
-> reduce the suffering of such misconfigurations like this patch but
-> somehow the user should be notified that the system is misconfigured.
-> Anyways, I think we can proceed with this path.
+>>> -			return false;
+>>> +		/*
+>>> +		 * Only consider ranges containing hugepages if those pages are
+>>> +		 * smaller than the requested contiguous region.  e.g.:
+>>> +		 *     Move 2MB pages to free up a 1GB range.
+>>> +		 *     Don't move 1GB pages to free up a 2MB range.
+>>> +		 *
+>>> +		 * This makes contiguous allocation more reliable if multiple
+>>> +		 * hugepage sizes are used without causing needless movement.
+>>> +		 */
+>>> +		if (PageHuge(page)) {
+>>> +			unsigned int order;
+>>> +
+>>> +			if (!IS_ENABLED(CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION))
+>>> +				return false;
+>>> +
+>>> +			if (skip_hugetlb) {
+>>> +				*skipped_hugetlb = true;
+>>> +				return false;
+>>> +			}
+>>> +
+>>> +			page = compound_head(page);
+>>> +			order = compound_order(page);
+>>> +			if ((order >= MAX_FOLIO_ORDER) ||
+>>> +			    (nr_pages <= (1 << order)))
+>>> +				return false;
+>>> +
+>>> +			/*
+>>> +			 * Reaching this point means we've encounted a huge page
+>>> +			 * smaller than nr_pages, skip all pfn's for that page.
+>>> +			 *
+>>> +			 * We can't get here from a tail-PageHuge, as it implies
+>>> +			 * we started a scan in the middle of a hugepage larger
+>>> +			 * than nr_pages - which the prior check filters for.
+>>> +			 */
+>>> +			i += (1 << order) - 1;
+>>
+>> Assuming page != compound_head(page), you'd be skipping too much.
 > 
-> Juayuan, have you tested this patch on your production environment? 
+> It might not happen based on my reasoning[1], but feel free to punch poles. :)
 
-Yes, getting some reclaim stats to the changelog would be highly
-appreciated (with and without the patch of course if you can reproduce
-the issue).
+:) hehe, I should just have read that comment more carefully.
+
+Anyhow, I wonder whether removing 6 lines of comments by just doing it 
+properly might be better?
+
+head = compound_head(page);
+order = compound_order(head);
+
+...
+
+i += (1 << order) - 1 - (page - head);
+
+
+In any case
+
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers
+
+David
 
