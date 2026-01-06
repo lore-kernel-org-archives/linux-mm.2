@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 475BECD043E
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 06:20:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ACFDCD043D
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 06:20:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92B586B008A; Tue,  6 Jan 2026 01:20:07 -0500 (EST)
+	id CAAAE6B0093; Tue,  6 Jan 2026 01:20:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C1486B0093; Tue,  6 Jan 2026 01:20:07 -0500 (EST)
+	id C6CC06B0095; Tue,  6 Jan 2026 01:20:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D6F96B0095; Tue,  6 Jan 2026 01:20:07 -0500 (EST)
+	id B32E46B0096; Tue,  6 Jan 2026 01:20:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 68DF56B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 01:20:07 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0EA3E1A6BC3
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 06:20:07 +0000 (UTC)
-X-FDA: 84300538854.28.E9E528B
-Received: from out203-205-221-240.mail.qq.com (out203-205-221-240.mail.qq.com [203.205.221.240])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2E1F340005
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 06:20:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=LUCDwfzl;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A08966B0093
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 01:20:09 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5B41BB9675
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 06:20:09 +0000 (UTC)
+X-FDA: 84300538938.10.34DF788
+Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D40B340004
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 06:20:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=b0Lv9T0F;
 	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf07.hostedemail.com: domain of realwujing@qq.com designates 203.205.221.240 as permitted sender) smtp.mailfrom=realwujing@qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767680405; a=rsa-sha256;
+	spf=pass (imf17.hostedemail.com: domain of realwujing@qq.com designates 162.62.57.64 as permitted sender) smtp.mailfrom=realwujing@qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767680407; a=rsa-sha256;
 	cv=none;
-	b=02OpPbguJlKBOqYYQ2oe2g7m12e6Ke7FKRv2QHd6qF6cj67GlEw6HanToF90LAP+BBymK9
-	Ibu4gPK0fzUJxLrihS9yXgFSlmP/CbUQzrhr8IuNCMNUXgmYi5fns7Yu9RINgmhvh8pvRc
-	JBFv5A5dbh5ydCkZ3blIkLN7lNp3Phg=
+	b=hY9N32VOlW+AoXxD1486Uy7PmDCLl82lJzCfggKSx3wPew7gmBp4HVIkFB/FybkfZgJaLB
+	BDm0tFXYSZP86pLa49vmZFCzkFMICv4MF2ECb5Uj5k7/p/OZnpRezNnFjulcw2C4NTpwTQ
+	0b7iOayspQkouYuFXga3ws3XbGUttXo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=LUCDwfzl;
+	imf17.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=b0Lv9T0F;
 	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf07.hostedemail.com: domain of realwujing@qq.com designates 203.205.221.240 as permitted sender) smtp.mailfrom=realwujing@qq.com
+	spf=pass (imf17.hostedemail.com: domain of realwujing@qq.com designates 162.62.57.64 as permitted sender) smtp.mailfrom=realwujing@qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767680405;
+	s=arc-20220608; t=1767680407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=oWeQ2kJjEGjK3YYXF0wMYljSTvgST0B5Lrw1NuuCIhI=;
-	b=bLEPXzsQCYQaE4P+sgiCxVXhQB1Nw1JNos6mUYOlEAs1dy80wYZ2tPv6KWTEilyJ45bfpH
-	X/cFP/HN8Q9eg+iLdaW6Yh8y0mQbmLdBryP7zhRY/6Y1/q+rxnj7tvf/Id6wrbSPF5RjsO
-	sgy+81MzRSOpVZsw5aK5MoYq4hjSu2M=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UFSN+SdCs/qhH1mWp1W8skDGAS1NgxyCffI3h2S0VGQ=;
+	b=FYSaPiI+PiRExSXXQe/N2nwaWfzvKqu7f4yrOXOxaJ7iWOdj+84dbTkAxy0x0PGy/hDuSY
+	MmICExtFyi5lbDrl2HEcV0sIgOlLILPXWeHuGFspsX8/MRQjdFIR41tkDlMHv17Megaf9l
+	cfmXN38/4+VV0e8ZmWocnE1dNq01dng=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1767680399; bh=oWeQ2kJjEGjK3YYXF0wMYljSTvgST0B5Lrw1NuuCIhI=;
-	h=From:To:Cc:Subject:Date;
-	b=LUCDwfzlEF0iCImRcmtUELsHQUtSyaiNOVFRTqdrgKF0+vpzHlmnxEBirKVge0w4x
-	 gw3CQp0UMGEy4JGbD2yMJGxy6E/3wNjOqfdNeUzikLcqyZIVyVYTzgWZC7MeKiY5cR
-	 ueS60Cr6NJdNKOLKqfW0bYCrnjhh9o6fQ6EbqoTQ=
+	t=1767680401; bh=UFSN+SdCs/qhH1mWp1W8skDGAS1NgxyCffI3h2S0VGQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=b0Lv9T0Fmd5M0HeyZfFRH7n+orwc8criBnJXHCtDs/skJs1jt6RdBU3vZgQei3C33
+	 7/l9n8ESJcit8z3jedleejNqTo1tRhmcUGig6/dHvMB2y2c6M5OYC3zDGEIp3axnsj
+	 ABvoMvQqqyv7xNvbAbIINEly7/F4GjN/I0nyeda4=
 Received: from localhost.localdomain ([61.144.111.35])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id 4F7A747B; Tue, 06 Jan 2026 14:19:55 +0800
-X-QQ-mid: xmsmtpt1767680395txvn5w2w5
-Message-ID: <tencent_B8B6D067EF7417B3B0D3DCC1A01505453F05@qq.com>
-X-QQ-XMAILINFO: MqswyhUqVe0Cvri/+gbwmiEf1SPmZO+uovLwR+3auWS2LMDQ/JvJVZ+Fp2i9WJ
-	 VFkeB+X9PJICG0pUtfJ1N3oN9jK9f1EcrkKcNaSxHdWONZ7ffI5JE7SGomS8XbAhA2fbI55ATAkb
-	 +AduTmMh/if6V1CIr+BLjL2HQjBhIcqOkimAt6+OBg9r4/ajGFFCs0bLY1ip3KobaBUws7RWcL5Z
-	 Hgm6rRZ1g5zcCKEp73Rqsj2ifISu139Ro5+0smzr7FiZoi31gawc10CxtmHAOyM6byGs6vrlgKOD
-	 vCJu6IXoKDsvuJRkHN9KhqlX4WsXGUGpfbEnhcSLJb3RbL49lwPYvVICxa6h8k2ZOS892wNVT1Rw
-	 sLg+Mj20QmxdPTu//FswU8NqPc2gNlbLtv17qRbVpd+ZIw70oLqJIVEIkgDR9xyzlfOvYMqyAKit
-	 VOqpnfLqEenZ+gla1q1HpW7+m86xoiJWN6h+TjqV6Tt8RmKpFW5hMT5yuFVfAybbyIttNny9+6Ej
-	 qutWVYvW2C3hH+DWHg05s4Gv2I0/jL4Zrmywq3Lt/k1dOQtTEfc2dYJnzOTTudG3TPEmBeanr3FI
-	 4XyezwoEkeN1Lw5EYT2TqbOioWGUDF3sdWgowY13LMA92Nz+4oWqSKSCGHsbJVFVEeTQTxMw5j0a
-	 1nxQBC5l777/ulllfTxDszpwhFcXPJu1c9f6XoIScc9rGzMUU15ICLNWK9OT7SgGE+QKXosC3dAM
-	 Ljes1MYr9Y3ClC8130PznLWxYnapGH8Yi4a+9w1+Mv9zv7tIO6egB1se9c6/ftqBplBFzkIjy/h4
-	 8pQjtIf9OK2DIQOj4jV8ao5a8gFNMMfQirM9GQrRw4oRe0h4mx6hNzqERNm1+srlR6vlGnP18IaF
-	 oK752lzUfg7fxu+xGK4mEB1k5ovjoSRiQ6IDeED3IuQDLPnvMD32XDN09ew7OXKWVCvlZwbfISll
-	 OxCofWXZV6bSwXZ1QlMYkfWGA3cS73Xy42O4aiVyzb/G8aZaFGjL4s6pqBh0oC+Tn6wQf3IhFSms
-	 pRKihYxr/iJmhJJQOIo0IXGXs3W54=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id 4FA1EED5; Tue, 06 Jan 2026 14:19:58 +0800
+X-QQ-mid: xmsmtpt1767680398t5ye8pvf8
+Message-ID: <tencent_D23BFCB69EA088C55AFAF89F926036743E0A@qq.com>
+X-QQ-XMAILINFO: NU1WwRH9AHfm7TOlxfRiKreig6ZSDjwrNmcEADPbn7zOLp/TKopybhBXKK0J+U
+	 bMo3BTx4UUVXUVnTAfnkG7Yc9d30IRD9XSC3jscZ1kD6taHi/0RBuiaVX+x2IDfTUoBP9SG4uHEf
+	 wEqc6i0zORQy5lrLCi2r6D5vKz+kFVwKgd+ATiNvnS4eyW8HpLW3QCfSxxxlrGmMRS+/3mZwIISb
+	 sqCPfvX7JhyBSyub5e2J42AemqaFjpN3qI2Df/cTc8g04pTcNE+q0+eVB/L+GDRLiSSd2lB+LBrP
+	 6/OLCxh8ePZ4mlLvOxXew89eB/iK1m5D5+fwZqbC7NGqhGMDG4Xl6EFFeRBrsRnHvRleVeQRlqfZ
+	 EBwJsZvDr27lf+kwg2LkFMpj7OhkHic1209ChF+3KRSo9Tey4Vwu5bdYS/1xHjl5quke9jthSYRa
+	 qsxrSVda5ZdERns5DUZ91S7bOb6/qDe2ZQcFElnlig6OVGfstnlkGIS9liyiqlEA8b1pjWgPIkxd
+	 TVlEd6ECfzX2Iu7J5yB+PtriSfKS1EOnH5HStHBCyuAZmqXU7Bysr2MlCj8SOjbttj/dkcrH/NdR
+	 4KAivzRgxOMizIcGcJL4Hsd/uWws3Qt7Z9afoQeHTvNteZpDSqhrOnICazmc4ZtMDvxuCESyKmn+
+	 TUmb03sDrDr9+Y7FcrgUqNmY9Q2sEtnjNihyKENpUwtuvhnZXIwzy86brGC8eEeiqkEZWCyT6Gyb
+	 itkBL3FxVS3SQTHek3pqpu62S8W+51nmDKx1kbOLowf7RjTzv2JOthdKZHUZO2tqrUjP2MDzwk9h
+	 zfgon7tmLgNPMy1W06fxGVQ8tEIwdiDt3cPTbC+g9cp5mw6fR378aad6/0eZ5AYWAWQFTT3Y1gme
+	 tqbLdFtMtSq79NIhxSQ9ZbWquRu7ykapl5UPcSHZoOeJqGJUhPFgorvPVb3H1a05OWDFylbMhRYe
+	 El09ph7hRJkDQVjSitXxCPPHET/AYYDuac1B3G/mRuBbC0y1NJez9OjWv5nLKyanZ9vz3lh3YdXJ
+	 Xi0Gh8hOHCp8FOV8klY/GkliHhFh10fmcuKR8K0w==
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
 From: wujing <realwujing@qq.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Vlastimil Babka <vbabka@suse.cz>,
@@ -92,21 +92,24 @@ Cc: Vlastimil Babka <vbabka@suse.cz>,
 	linux-mm@kvack.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	wujing <realwujing@qq.com>
-Subject: [PATCH v4 0/1] mm/page_alloc: auto-tune watermarks on atomic allocation failure
-Date: Tue,  6 Jan 2026 14:19:49 +0800
-X-OQ-MSGID: <20260106061950.1498914-1-realwujing@qq.com>
+	wujing <realwujing@qq.com>,
+	Qiliang Yuan <yuanql9@chinatelecom.cn>
+Subject: [PATCH v4 1/1] mm/page_alloc: auto-tune watermarks on atomic allocation failure
+Date: Tue,  6 Jan 2026 14:19:50 +0800
+X-OQ-MSGID: <20260106061950.1498914-2-realwujing@qq.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260106061950.1498914-1-realwujing@qq.com>
+References: <20260106061950.1498914-1-realwujing@qq.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2E1F340005
-X-Stat-Signature: 7hoghnnccuuibiwjmm36cs31e6w941p6
+X-Rspamd-Queue-Id: D40B340004
+X-Stat-Signature: o9wt5sfy9eidgu9zjt3mti955qrfz9ej
 X-Rspam-User: 
-X-HE-Tag: 1767680403-819162
-X-HE-Meta: U2FsdGVkX1+mjGjl3adF/51G5vIYZSK04ownWYRGRGyf1zeqfFwQTp2d2lg5wLdmIDj5RS/AP/xIkkaJ+sgO7s0HjimGMjFvoNcF2nsFKaYI3u5RP6purzqApCrww2xXQ+u4i0kDXG53brF4emPj2s0OXLIvZ3NLCI51P0GUsDxvyJwEvnmqMGln3u4x0Uvc/DKyDg6GjL2cfEFSP++nVzwGsufPTlJUAn03l9ao6Dnf54Hg+thrySNKCMNAQY97DStWZmIIUEtyCnHmdz/5StE1xR9TPVRt5LdMQ2sm41sI6bTCeDYjOr5jsRtE1AMPxUtdk9WCTyI560g+1D0dU7a2uQKjpFXA3ZutfqfV7SNMmiKUVFMc8Di09P/iaEXCmxA+ZZNjfO0lMF0ni0a7MKqTE7MQn3hzcSSMcQakbZc11gmGJz9Ra1G1b7ug+pniyKxBeq47ycymsxIO5cgdPTW8Vko8t+azuqXnbgrV0+mQGL8m2Qylt/xriX7Ftg8APqRCSHCVuV8bxBcg5LCztG5r1WxzFSD5SahB1FAzW78tn3rAehpGjaQhoSNwyK8OONhZI+SQpBOdBiJTJ5RqiUvMkZy2ImEvBV/9MrHludyGKHvIiwHWrtTtbU9R9w671yfHu9fcGWvwq+Rv8RlgVeL3lem4mSGSDZ3v32JFBZSNofd1Ho5KqZeq3QtYagmn2V1OkZHGXihHP7KDrGqxPdCBrjwawp/zJqawje15XNaV+HusYqwj2aDU28To4hF1YZimMP7Xtq2+wNhrpZ8t1yod1L+tIZnFTbizQuaSCyp7sKMD9O3+2EBLWjK4YuGkzR2N4/ck81hCLxIAbA7rz5np3uvjF3DOyDMTrTq5g28rv18pTXOclsRj9FkN1PU/uu3xvOKA0P/0DLo4litxdkl4q8ADJC8NVDh7HbdjpYBuKAOJP9pqkvbn5t5+piCjNh3xFMaq9rWpqbznkGW
- nvzi05+D
- y446CRIsCjm41y5JcDrphfE3DbqZx+AKA/7fybcAKOs625qyZ+pkDymUoqs0y9ty2PSUBcRbUr7mkksH25uOu8qRzsJhtZdLBhEzDWNDQxTHPquJvoO3UZ6i6uT0EyNvgcC6OR/Rz3ZzaS3SxtEi30AmNJglLce2krmSFdGByY8F0i/SkRmXgRoFZOI/JG05ZmtQqfO/o9IBCRILwSyqdTWaZToTB8VjzxXGYadZ13w9P12hDMTTwgR2Ueq9NmPlodgH+qYTasaUJOIOhF+V8xE1K9oObkfyZNv8i
+X-HE-Tag: 1767680406-609278
+X-HE-Meta: U2FsdGVkX19kwZZuQH3nCfE2P5DX8Pm7YhH9Kp5qBiazo5U9WW5KMpEx+UqDOiST4YMVhzPjP4MCDxl0HrW6o4XVsIDBETRmkV80LVs8y3ySlb581pgeOOix9WO/9gGxbYNzZEAXX9hCkSbVZaHivJUf9QoLjyD23z/TPFr+AuiIP/mvdHKcUNCuxeTst/xZMvKPCJTq15FzlIpZll7jdqkfMohlwGOE+5zjQjg6GCVd+ja1eqyGkce2gY7iHeP6JGIz1Uzv9a3rJpSwwJLoilQV18YhaaconJCoNGuU9iAbcVw3X1x2Ago84hULx+b4P4y3Z0F1C23rVCvcpU5wNCmrWImNODIFH2W7kzVOMOFok0WHj9/pAB57bS9c9Mm8bZ1EwUECWQaaRmCT1fvKU+0vr1UjCcZrxnZFhIOFendbPrEzJRw+cUKF44zHk6GtICnn0WQEsAdfeJbPrurQSi4USorFOXjdAMpsroCgqhvuf3f05EBk4QExLVY2Brpdka/+IyD8fK/O2Lk0ub90BHQZTfe8JbUUTSqpD/W8OUjzbP90DmihM1429DpxpT3NWYZkZ80elXocAhxEPwl+gLtECCkbFxU7DND83KIh9rS4w7pUeD4T4el7l00SvNguV2VSFqu5WBEUMV7s6KbZNZ4bKDAWR3c6NKbaI+VQnas3q+/Ecc0gYAyBFu2w6hqCur/RKnp6XLJlXmt5KMmCwzBCfXImfIO/+rrWe9mffucslHn0xUDqoZlCHMaoA/9azKXsiFl8TjgoYfgytHFOhXyf/SzU5K53NtXd8sOtAuHlpDX6GnuDzZNVo07Gt0+OfVVNEV0pKfjCf8jJJezNS1RNwJhr4zofsbzH1Of36NL2RgLTr61z5lyr83Q8jFpA6+Oe7BpZc5SowHr/FT7QE7wQV0cVFqSnF2ZqJu2X7xDtOtqeQ18tNPzjcdynz8H+HKNfLqnMvDkNneWEGUG
+ VfRfnWR6
+ MlPzBvomMnrQhuw3qZyez9uQ0ICj2YAsF6mPM2glb0IlusQdnEuZtxhfoIglK/C/a4v5ovDkQIX4d5qB3lF1nx9C5ybC8MLz/CHQtxq9DCutD39ewaMfHihpFh5vgmKAJSNgZyW9fYAYljRRY6HJMT1/D87dbBSkGm5Vb122KCGKEGeFBLxkucVcRVsN+cL76oTQERPIzfCanzwNxhomcyZiLFSgz62CYtqlnTMo0+xX1qtAk3vpf3L/NTuOEonnGSFE4Lcuqg5OuItXt41LKKNwo2KcvekQfkFVVyRiYRHBNs/DzU8I8lRNhpQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,77 +118,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+During high-concurrency network traffic bursts, GFP_ATOMIC order-0
+allocations can fail due to rapid exhaustion of the atomic reserve.
+The current kernel lacks a reactive mechanism to refill these
+reserves quickly enough to prevent packet drops and performance
+degradation.
 
-wujing (1):
-  mm/page_alloc: auto-tune watermarks on atomic allocation failure
+This patch introduces a multi-tier, reactive auto-tuning mechanism
+using the watermark_boost infrastructure with the following
+optimizations for robustness and horizontal precision:
 
- include/linux/mmzone.h |  2 ++
- mm/page_alloc.c        | 55 +++++++++++++++++++++++++++++++++++++++---
-Hi Andrew, Vlastimil, Michal, and others,
+1. Per-Zone Debounce: Move the boost debounce timer from a global
+   variable to struct zone. This ensures that memory pressure is handled
+   independently per node/zone, preventing one node from inadvertently
+   stifling the response of another.
 
-This is v4 of the patch to introduce reactive auto-tuning for GFP_ATOMIC 
-allocations. This version incorporates significant architectural 
-refinements based on feedback from Michal Hocko and the community.
+2. Scaled Boosting Strength: Replace the fixed pageblock_nr_pages
+   increment with a dynamic value scaled by zone_managed_pages (approx.
+   0.1%). This ensures sufficient reclaim pressure on large-memory
+   systems where a single pageblock might be insufficient.
 
-### Addressing Michal Hocko's Feedback (v3 -> v4):
+3. Precision Path: Optimize the slowpath failure logic to only boost
+   the candidate zones that are actually under pressure, avoiding
+   unnecessary reclaim overhead on distant or unrelated nodes.
 
-1. "Reactive is too late":
-   Michal correctly noted that boosting only after failure is 
-   sub-optimal for non-sleepable contexts. 
-   -> v4 introduces **Proactive Soft-Boosting**. When a GFP_ATOMIC request 
-   enters the slowpath but has not yet failed, a lightweight boost is 
-   triggered, replenishing reserves *before* exhaustion occurs.
+4. Proactive Soft-Boosting: Trigger a smaller, half-strength (pageblock >> 1)
+   boost when an atomic request enters the slowpath but has not yet failed.
+   This proactive approach aims to prevent the reserve exhaustion before
+   it leads to allocation failure.
 
-2. "Use watermark_scale_factor instead of complex knobs":
-   Michal suggested that scaling the reclaim aggressiveness is more 
-   idiomatic than just boosting the watermarks.
-   -> v4 implements **Hybrid Tuning**. We now introduce 
-   `zone->watermark_scale_boost`. When pressure is detected, we not 
-   only boost the base watermark (via boost_watermark) but also 
-   temporarily increase the recovery aggressiveness (via scaling).
+5. Hybrid Tuning & Gradual Decay: Introduce watermark_scale_boost in
+   struct zone. When failure occurs, we not only boost the watermark level
+   but also temporarily increase the watermark_scale_factor. To ensure
+   stability, the scale boost is decayed gradually (-5 per kswapd cycle)
+   in balance_pgdat() rather than reset instantly, with watermarks
+   recalculated at each step via setup_per_zone_wmarks().
 
-3. "Smooth transition":
-   There were concerns about the "cliff-edge" effect of resetting tuning 
-   parameters instantly.
-   -> v4 implements **Gradual Decay** for the scale boost (-5 per 
-   kswapd cycle), ensuring a stable fallback to the baseline.
+Additionally, the patch implements a strict (gfp_mask & GFP_ATOMIC) ==
+GFP_ATOMIC check to ensure that only true mission-critical atomic
+requests trigger the tuning, excluding less sensitive non-blocking
+allocations.
 
-### Core v4 Optimizations:
+Together, these changes provide a robust, scalable, and precise
+defense-in-depth for critical atomic allocations.
 
-1. Per-Zone Debounce: Moved the 10s debounce timer to struct zone to 
-   ensure independent pressure responses across NUMA nodes.
+Observed failure logs:
+[38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
+[38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
+[38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+[38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+[38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
+[38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
+[38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+[38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+[38535649.655523] warn_alloc: 59 callbacks suppressed
+[38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
+[38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
 
-2. Scaled Boosting Intensity: Boost strength is now dynamically scaled 
-   by ~0.1% of managed pages, ensuring TB-scale systems get a 
-   meaningful response.
-
-3. Precision Pathing: Both failure-path and proactive boosts now only 
-   target the preferred zone (precision break) to prevent unnecessary 
-   background reclaim overhead.
-
-4. Strict Bitmask Verification: Tightened the tuning trigger to a 
-   strict (gfp_mask & GFP_ATOMIC) == GFP_ATOMIC check to focus solely 
-   on mission-critical allocations.
-
-Testing in simulated burst environments shows that the combination of 
-proactive boosting and hybird scaling provides a significantly 
-more robust defense against packet drops than simple reactive boosting alone.
-
-Special thanks to Vlastimil Babka, Andrew Morton, Matthew Wilcox, Lance Yang, 
-and Michal Hocko for the foundational critiques that led to this design.
-
-Thanks for the reviews!
-
+Signed-off-by: wujing <realwujing@qq.com>
+Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
 ---
-
-wujing (1):
-  mm/page_alloc: auto-tune watermarks on atomic allocation failure
-
  include/linux/mmzone.h |  2 ++
  mm/page_alloc.c        | 55 +++++++++++++++++++++++++++++++++++++++---
  mm/vmscan.c            | 10 ++++++++
  3 files changed, 64 insertions(+), 3 deletions(-)
 
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 75ef7c9f9307..4d06b041f318 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -882,6 +882,8 @@ struct zone {
+ 	/* zone watermarks, access with *_wmark_pages(zone) macros */
+ 	unsigned long _watermark[NR_WMARK];
+ 	unsigned long watermark_boost;
++	unsigned long last_boost_jiffies;
++	unsigned int watermark_scale_boost;
+ 
+ 	unsigned long nr_reserved_highatomic;
+ 	unsigned long nr_free_highatomic;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index c380f063e8b7..4a8243abfb17 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -217,6 +217,7 @@ unsigned int pageblock_order __read_mostly;
+ 
+ static void __free_pages_ok(struct page *page, unsigned int order,
+ 			    fpi_t fpi_flags);
++static void __setup_per_zone_wmarks(void);
+ 
+ /*
+  * results with 256, 32 in the lowmem_reserve sysctl:
+@@ -2189,7 +2190,7 @@ static inline bool boost_watermark(struct zone *zone)
+ 
+ 	max_boost = max(pageblock_nr_pages, max_boost);
+ 
+-	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
++	zone->watermark_boost = min(zone->watermark_boost + max(pageblock_nr_pages, zone_managed_pages(zone) >> 10),
+ 		max_boost);
+ 
+ 	return true;
+@@ -3975,6 +3976,9 @@ static void warn_alloc_show_mem(gfp_t gfp_mask, nodemask_t *nodemask)
+ 	mem_cgroup_show_protected_memory(NULL);
+ }
+ 
++/* Auto-tuning watermarks on atomic allocation failures */
++#define BOOST_DEBOUNCE_MS 10000  /* 10 seconds debounce */
++
+ void warn_alloc(gfp_t gfp_mask, nodemask_t *nodemask, const char *fmt, ...)
+ {
+ 	struct va_format vaf;
+@@ -4742,6 +4746,27 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	if (page)
+ 		goto got_pg;
+ 
++	/* Proactively boost watermarks when atomic request enters slowpath */
++	if (((gfp_mask & GFP_ATOMIC) == GFP_ATOMIC) && order == 0) {
++		struct zoneref *z;
++		struct zone *zone;
++
++		for_each_zone_zonelist(zone, z, ac->zonelist, ac->highest_zoneidx) {
++			if (time_after(jiffies, zone->last_boost_jiffies + msecs_to_jiffies(BOOST_DEBOUNCE_MS))) {
++				zone->last_boost_jiffies = jiffies;
++				/* Smaller boost than the failure path */
++				zone->watermark_boost = min(zone->watermark_boost + (pageblock_nr_pages >> 1),
++					high_wmark_pages(zone) >> 1);
++				wakeup_kswapd(zone, gfp_mask, 0, ac->highest_zoneidx);
++				/*
++				 * Precision: only boost the preferred zone(s) to avoid 
++				 * overallocation across all nodes if one is sufficient.
++				 */
++				break;
++			}
++		}
++	}
++
+ 	/*
+ 	 * For costly allocations, try direct compaction first, as it's likely
+ 	 * that we have enough base pages and don't need to reclaim. For non-
+@@ -4947,6 +4972,30 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 		goto retry;
+ 	}
+ fail:
++	/* Auto-tuning: boost watermarks on atomic allocation failure */
++	if (((gfp_mask & GFP_ATOMIC) == GFP_ATOMIC) && order == 0) {
++		unsigned long now = jiffies;
++		struct zoneref *z;
++		struct zone *zone;
++
++		for_each_zone_zonelist(zone, z, ac->zonelist, ac->highest_zoneidx) {
++			if (time_after(now, zone->last_boost_jiffies + msecs_to_jiffies(BOOST_DEBOUNCE_MS))) {
++				zone->last_boost_jiffies = now;
++				if (boost_watermark(zone)) {
++					/* Temporarily increase scale factor to accelerate reclaim */
++					zone->watermark_scale_boost = min(zone->watermark_scale_boost + 5, 100U);
++					__setup_per_zone_wmarks();
++					wakeup_kswapd(zone, gfp_mask, 0, ac->highest_zoneidx);
++				}
++				/*
++				 * Precision: only boost the preferred zone(s) to avoid 
++				 * overallocation across all nodes if one is sufficient.
++				 */
++				break; 
++			}
++		}
++	}
++
+ 	warn_alloc(gfp_mask, ac->nodemask,
+ 			"page allocation failure: order:%u", order);
+ got_pg:
+@@ -6296,6 +6345,7 @@ void __init page_alloc_init_cpuhp(void)
+  * calculate_totalreserve_pages - called when sysctl_lowmem_reserve_ratio
+  *	or min_free_kbytes changes.
+  */
++static void __setup_per_zone_wmarks(void);
+ static void calculate_totalreserve_pages(void)
+ {
+ 	struct pglist_data *pgdat;
+@@ -6440,9 +6490,8 @@ static void __setup_per_zone_wmarks(void)
+ 		 */
+ 		tmp = max_t(u64, tmp >> 2,
+ 			    mult_frac(zone_managed_pages(zone),
+-				      watermark_scale_factor, 10000));
++				      watermark_scale_factor + zone->watermark_scale_boost, 10000));
+ 
+-		zone->watermark_boost = 0;
+ 		zone->_watermark[WMARK_LOW]  = min_wmark_pages(zone) + tmp;
+ 		zone->_watermark[WMARK_HIGH] = low_wmark_pages(zone) + tmp;
+ 		zone->_watermark[WMARK_PROMO] = high_wmark_pages(zone) + tmp;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 670fe9fae5ba..7fca44bdbfe5 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -7143,6 +7143,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 	/* If reclaim was boosted, account for the reclaim done in this pass */
+ 	if (boosted) {
+ 		unsigned long flags;
++		bool scale_decayed = false;
+ 
+ 		for (i = 0; i <= highest_zoneidx; i++) {
+ 			if (!zone_boosts[i])
+@@ -7152,9 +7153,18 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 			zone = pgdat->node_zones + i;
+ 			spin_lock_irqsave(&zone->lock, flags);
+ 			zone->watermark_boost -= min(zone->watermark_boost, zone_boosts[i]);
++			/* Decay scale boost gradually after kswapd completes work */
++			if (zone->watermark_scale_boost) {
++				zone->watermark_scale_boost = (zone->watermark_scale_boost > 5) ?
++								(zone->watermark_scale_boost - 5) : 0;
++				scale_decayed = true;
++			}
+ 			spin_unlock_irqrestore(&zone->lock, flags);
+ 		}
+ 
++		if (scale_decayed)
++			setup_per_zone_wmarks();
++
+ 		/*
+ 		 * As there is now likely space, wakeup kcompact to defragment
+ 		 * pageblocks.
 -- 
 2.39.5
 
