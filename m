@@ -4,108 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9699ACDC165
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 11:52:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AA71CDC165
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 11:52:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05A0C6B00A2; Tue,  6 Jan 2026 06:52:02 -0500 (EST)
+	id 8EA976B0093; Tue,  6 Jan 2026 06:52:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0378D6B00A3; Tue,  6 Jan 2026 06:52:01 -0500 (EST)
+	id 8C86B6B0098; Tue,  6 Jan 2026 06:52:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5C9F6B00A4; Tue,  6 Jan 2026 06:52:01 -0500 (EST)
+	id 7D54D6B00A7; Tue,  6 Jan 2026 06:52:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D438B6B00A2
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 06:52:01 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A2CEA13B1A3
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:52:01 +0000 (UTC)
-X-FDA: 84301375242.17.310737A
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E6915140012
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:51:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RJK4rD9u;
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D28D6B0093
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 06:52:45 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2C9231A04D0
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:52:45 +0000 (UTC)
+X-FDA: 84301377090.11.B5B0ACC
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9BD4340002
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:52:42 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=DQBl2eeu;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9j8uBiXa;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uYmvT4y3;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WTw07Xrb;
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767700363; a=rsa-sha256;
+	cv=none;
+	b=jC/FdRR2Hf8m6dM9Hml5fP7nQiJMZ8Vt2vz9ejFK4kJ4ZB0a8sBbodmN7AvkR8y7N2E6nu
+	Uat3pijYYa4jvK2miFQCJTrrKBYLNBqr8u6SQ2IexBx8eRb60Ndoi1YCKMlWyTQDZWA0EO
+	Twnho1pdwFCe3p6Rhm/7PdR5WW1m0lk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=DQBl2eeu;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9j8uBiXa;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uYmvT4y3;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WTw07Xrb;
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767700320;
+	s=arc-20220608; t=1767700363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ASH9sKA9CqH12pO8t+a39xF1o8l7wjDesRLJzYo7jDg=;
-	b=6sWELMX4PtvEnSHaLXDvJhaJ85rvm+7Q4ZtS/OrdaozuirHFUs627UFkuLr3b8N0SnXq0M
-	kz0Ptp6/d4SQ3japLEY+EgzgZw5xff4iqjS3T9i+NQApUPBUbgwidaiQRg9bcx5eGBsNN2
-	hCBaZ/M3ojrvSsPwrfRCnWL4tXXjiS4=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RJK4rD9u;
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767700320; a=rsa-sha256;
-	cv=none;
-	b=shvMxXxRAvZvRT2C3RrIg8NbUeNbz+1QRKCXIkHYuT/x8pS8d5e487l702pc7NyqtAjDxM
-	qOt6ba05c5ouq4uLRA85cCAZ0l4aH/HGvDyEvPIupDF2v+7fxHPId43EaV7wGX12QNb82l
-	1CEqkpCLwRJaj9DlVX+AeCiCv7/xVuA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767700318;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ASH9sKA9CqH12pO8t+a39xF1o8l7wjDesRLJzYo7jDg=;
-	b=RJK4rD9unB904yjqG7YtH7GMUxlSQosNsESRT1mysjrtG6iWRY3XfoCtx7wfDR1mUmSENh
-	K+7ytPQIYIEbfTgBvfJkgXXfFELO3BA5ZjkqVX7i7ZOvSqJwQPquL2YZYJTGL8V/otYdqC
-	m1zIidafAOa/1RV1YpAD9A5g+Pv1s04=
-From: lance.yang@linux.dev
-To: akpm@linux-foundation.org
-Cc: david@kernel.org,
-	dave.hansen@intel.com,
-	dave.hansen@linux.intel.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	peterz@infradead.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	arnd@arndb.de,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	shy828301@gmail.com,
-	riel@surriel.com,
-	jannh@google.com,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ioworker0@gmail.com,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v3 2/2] mm: introduce pmdp_collapse_flush_sync() to skip redundant IPI
-Date: Tue,  6 Jan 2026 19:50:53 +0800
-Message-ID: <20260106115053.32328-3-lance.yang@linux.dev>
-In-Reply-To: <20260106115053.32328-1-lance.yang@linux.dev>
-References: <20260106115053.32328-1-lance.yang@linux.dev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=8Pzqm7yBJpos/p0nM9CIYaPav19Caa+xAkFLOqfFMYo=;
+	b=jNW2Y0Iit1TvzpBm6T0DeowW/MfrqnTM3Bgtsve8i9JeSfKlOX4ajjyGRI5ONwzyikaF9r
+	vW1ZoxVuLnZVoKmz/UzsxKmiU7I5fbMl4PyWO2hqlcO3i49KVa5kFI1fnItMlbrMon6+Fv
+	okelUTuwd753/7lYgYcIIk16mYjthCg=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E8D11339E5;
+	Tue,  6 Jan 2026 11:52:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767700361; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8Pzqm7yBJpos/p0nM9CIYaPav19Caa+xAkFLOqfFMYo=;
+	b=DQBl2eeuz8nYG+pjXwamht0RieJAdzQM2aA0Osf1Y/yEQYPZwWdO4sp53K8NLQDM3WqS/M
+	yrh8BdVTwgOXepovhk/4nJnZRkWuOK4Of2gwPKVZ2ChTkNYLUSLDhBMUAtf/eLhVqf/Ahb
+	aVEJChyPIkehy2TXOE39V5bvWCwryjc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767700361;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8Pzqm7yBJpos/p0nM9CIYaPav19Caa+xAkFLOqfFMYo=;
+	b=9j8uBiXaj6ZUS6TcJ2Dz0l+FICiIE+dRrNFJsygAmqyd7dfcPqQgWqtg2biZP/IGSt1r+I
+	u+HSxAeEvdYVO3Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767700360; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8Pzqm7yBJpos/p0nM9CIYaPav19Caa+xAkFLOqfFMYo=;
+	b=uYmvT4y3sQTY5Zv2bOQGv8lSK4HzoUGDmUITF5HzFZZTaUdNzZun1tu/vZ4anGITtp4S3n
+	93EXtxIMDNmPNi22K3mwV02gaWlEgB4jsLLvtacdqEBaXemv5kVZjsEkoCjG3owaBSPPTG
+	TwGkkoDlvCfh553AbF0orEObX4Q+TdI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767700360;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8Pzqm7yBJpos/p0nM9CIYaPav19Caa+xAkFLOqfFMYo=;
+	b=WTw07XrbnshBRRIKcbykeLCNrhFYOsQnzN+YAvHKCajamUfqf+bjn+m76C8MY52+Lp55CZ
+	C1LFcwJ5IRfp/BDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CA7953EA63;
+	Tue,  6 Jan 2026 11:52:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id xoUeMYj3XGnsZwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 06 Jan 2026 11:52:40 +0000
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH mm-unstable v3 0/3] tweaks for __alloc_pages_slowpath()
+Date: Tue, 06 Jan 2026 12:52:35 +0100
+Message-Id: <20260106-thp-thisnode-tweak-v3-0-f5d67c21a193@suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: utqs3sf5coj557bj933rub7q6a715jqm
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIP3XGkC/33NTQ7CIBAF4Ks0rMXAoDW48h7GBYWpJVraAMWfp
+ ncX2ejCuJjFy8z7ZiYBvcVA9tVMPCYb7OByEKuK6E65M1JrcibAYMuB1zR2Yx4b3GCQxhuqC9V
+ Sg9KNUDXsSC6OHlt7L+iR9D2dXIiquSI55WWuxsE/ysPEy8k/O3HKKMONlIYLA9gcwhRwrZ8FS
+ /ANyJ8AvAHNeAuCt4brD7AsywuJcn5gAAEAAA==
+X-Change-ID: 20251216-thp-thisnode-tweak-c9c2acb3a627
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Zi Yan <ziy@nvidia.com>, David Rientjes <rientjes@google.com>, 
+ David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Mike Rapoport <rppt@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ Pedro Falcato <pfalcato@suse.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Vlastimil Babka <vbabka@suse.cz>
+X-Mailer: b4 0.14.3
+X-Rspamd-Queue-Id: 9BD4340002
+X-Rspamd-Server: rspam03
+X-Stat-Signature: f4ena5dqnkuf3e17za3hkjj7w1mzrxcu
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E6915140012
-X-HE-Tag: 1767700319-448253
-X-HE-Meta: U2FsdGVkX19uh7uOZydhq2CIPqOg+Kgu4rPM0UsjJTuDCnbHloXbqdCPAS2kczlWN4jmyKZ0SzCEoF4OXPY0czlzervsAT19jcjKIFsReRr5rpJC03mJ7iYB+M6EcZjTosh3DPeFMg1Gz9L0zLMqj6zNJSbB2er4R71sLn7IG3BZFIweDkR5DjWz4fPbe6eOyiilXIowAOfHbtED7JEmBZED4whimzdQ8c+dSzGQXjGIGUhWy2lXQphQ0xeloBzU4kG7sI06Z/41oNrp+F1O/Q4XsTpIJqnbquy5paxuwlFwsIITqfa719IMguKM022sYYu1mANJFQQMOUxqxA12OFqtURkrI/wWZXAyu5ti9WpYAbaLPpoDmoH3xu+Y4cJoD9inC7pLGkQ3SyFupvXodOraDu+gYaaNIuYkJ+sLee3HdadVb+MyY7R08dd7Ucko1vS0e396aCsFi81UYmJgSYQyA6Q+PfuNQS1W/GPgs80ci4uBtoRxg2IT1NDNjSIS1FZz9uJ1lyii8tA/tNlcA+wSd5hHTNUqztWWuK4npSkFW32dmzjBojDxZIC8ClITNYeQqZnDk7+yDUe7yFNsIP9WJULfjLP7LkpAPFe62DKbfMRxJK6GDuGx6SP0GAH6SoWMiv/nU6wG35fdeadLP+GmOSFRaGcC11l3iPrqfSHtu7HSfEJ5domXcB61RvePvQezF6ojw+ubkGVg9d1xlmTRxEdzKCFDq3tzJRMjG7rLrXj6nMm7n/kmO99M3PA+699Mbz8LHYmFtFkh6NgqYF5TEMt3zXQDtHmV3+G1DQiureAnj8QMOZIsigFfTye0I4trM1kopOctqtSCZoNDRNzKBBvOSfd8w/LAVVUlOeGvp+gAGk5QQ1dp97LySlgzaVV0fK3lrOyfhmCbmFoaWyT4yj/7bxHtSxXlsNHEeiVlCCZc5S9x250pF2Foz1rjEuMrkHG6hjfGvPEksjP
- f0gtVB9f
- g6axwu3EQHZUloAZECa9xMsJ9Y2xpDAuLaVXuGpm7did3BiWa5s3Cy+vh3WmYmUTelzFtUdZSgpXFB7DoKrN9dvZntKHGMlWDF5AjhwBDozoMomzhh25p8sl/Go1G5EoBDsHaxLyrA3jxx16nXYqxUp5VdVPLajGSHFc+YwCuTZKupe2Un63zvuYjzzSEd23K91mexIyMXa8OS/bNHm+Mhlo00kD/rLhPL6F8zzCrlv0lQkv+KiuPV2ZjV4bqc2tcXNPsnftCAYqAMPqDQHHfgLjO4oEBHS+z/7e/sbd10glKFpA=
+X-HE-Tag: 1767700362-113856
+X-HE-Meta: U2FsdGVkX19QbeHYu889OXZzSo9/HZqY1Lzt5qY1ugu9nuylapS+aAaUsr27lrmk0+WCBJZ7UtRCPSD+G1Q9p+bekYbN53ZKepliFKkMQ8MjbobJLUfvMTBV+t4oFuXHWe89Kl3+T8i6iD1tMhg0iRrDbPzTtDb3UWIKY9/8TYNPee0MgwLqfuizKrX/ZuB0Sr/2VJmwhmx2EZ5Ztp0R1MpLzvgn3t/3tkGVA1XMUDUkcuI/8TbXa9Soq8l3YOzBCzlvZqqNjNpDrJTg/oYnyhA8mFwJN1PkOc+40RtAyfgBcphlJjwp7N8nzUc/3/fnQ8lp4dO8/rUi2oUBaQqVO4aoYneE/TjyVVb+8R/Rpik5tTBF5EYmcPRE8eV3TwX6/epUTJMyGwfQWCUqQbS/aLZBdl6Vz3YpyCuX0VeCJwDDMigYOGC/8zjxlqBBNieHCoQDAUEE83prMxipfqoQS9G3Y+iJ4aCudZifcpSPz3LtQl5AsbgJuQrj4EdMbSF+k1nDvF07WO1RClOrZAl97ppNY7WOUiO3F0hY5khuzosdGQr+a5n6z5YMYso24RUR3Q8tAu9Y4bt/u6swIbkNUxiEdjJKM27VDPwWCU6Iv9VTo+gEI6b7taBFzyl/NnWSFIa+GVyG2filOzD+V7Xy7gd7b6L8rphOabbgZ/DAAys6AGnFIgOELmuqFAJkOBr5FA8/jLffYSjWDdcc9ZbwhNbogHluX+v8HCobtjS4yKP/O0eL7DhO6dS3qEb1DHGuAqx7n8ghd5oiO4AuOzJyO36s1QZDSLQm4Aa+dF9bjBOwZZI4vl2Gzsv01bvNT5+S6UkAMDD2BMtpdJpwD6ZI/BVBBYAqUSrZnsiApREij6pczlWj0VgDM0v3Nw6Bgn2D9GQ740NEcNDXofvgPSMaYi+Y+Ca9dJkw8N4/wigD9ftMQp6Y+wqmpJAGpOryxBF/YTk5kuNZhaiE+RM8n01
+ k7ASNklr
+ sjUwvtZEw2c2S1pFUoyxLbbVVHRFgFAbEYhhcFWzG8BJbbuuUurJWpW7gHU+msCb/+yHvvwNk+3fNeCXlR95dhwpjB22DgP038w86ZBgY+7ZfyJytglWp1Wy0K79jXd6/llfx5Ux354VNkAfU1Kud01tXK49l6DwyLDbHP4vlDMdgJfAIdGm+dhvZQEStMJEQojtap08wdQa9FQRQaD7PRiRBxIkf7mQmWNVS8L5xr7xrZ7YrXAOdvkX8wcalu9ZrF8Gj37ocTXf39ZggBOXHVfsA1t4bTHldcgRmmI7PdwcYf2pKOArHE8b+ZY2Z/nFZ8UKBtzVea425WZpH+taeMyKh9q2TPxO1FiREWS3Fyzm92c3FIxFmtyL2LegK+2lS15CMO9fa/Ay6Itihvrb2oq5Oaizr8+u53jH/X5zaWqbTuEjQ2Bst1Shnq92nU6L4pr3W/cpHB+61NBSpPjPg3NCmZkceHRbxhqhF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,164 +142,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
+First non-RFC of the page allocator cleanups on top of the THP
+allocation fix:
 
-pmdp_collapse_flush() may already send IPIs to flush TLBs, and then
-callers send another IPI via tlb_remove_table_sync_one() or
-pmdp_get_lockless_sync() to synchronize with concurrent GUP-fast walkers.
+https://lore.kernel.org/all/20251219-costly-noretry-thisnode-fix-v1-1-e1085a4a0c34@suse.cz/
 
-However, since GUP-fast runs with IRQs disabled, the TLB flush IPI already
-provides the necessary synchronization. We can avoid the redundant second
-IPI.
+Rebased to mm-unstable where the fix is included now.
 
-Introduce pmdp_collapse_flush_sync() which combines flush and sync:
+In patch 1, in v1 (where it was patch 2) I have proposed not to attempt
+reclaim for costly __GFP_NORETRY allocations at all. Johannes suggested
+that we should not change the semantics that much, so now instead we
+allow them all (except with __GFP_THISNODE). The main idea that remains
+is that we don't decide based on the exact compaction result anymore.
 
-- For architectures using the generic pmdp_collapse_flush() implementation
-  (e.g., x86): Use mmu_gather to track IPI sends. If the TLB flush sent
-  an IPI, tlb_gather_remove_table_sync_one() will skip the redundant one.
+Patch 2 is a cleanup also based on a suggestion from Johannes, and Patch
+3 became the obvious next step in that direction. These should be making
+no functional changes, while simplifying __alloc_pages_slowpath().
 
-- For architectures with custom pmdp_collapse_flush() (s390, riscv,
-  powerpc): Fall back to calling pmdp_collapse_flush() followed by
-  tlb_remove_table_sync_one(). No behavior change.
-
-Update khugepaged to use pmdp_collapse_flush_sync() instead of separate
-flush and sync calls. Remove the now-unused pmdp_get_lockless_sync() macro.
-
-Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- include/linux/pgtable.h | 13 +++++++++----
- mm/khugepaged.c         |  9 +++------
- mm/pgtable-generic.c    | 34 ++++++++++++++++++++++++++++++++++
- 3 files changed, 46 insertions(+), 10 deletions(-)
+Changes in v3:
+- Remove RFC tag, rebase to mm-unstable.
+- Remove gfp_thisnode_noretry() in Patch 2 (per Joshua).
+- Instead add gfp_has_flags() to shorten checking for multiple flags.
+- Link to v2: https://patch.msgid.link/20251219-thp-thisnode-tweak-v2-0-0c01f231fd1c@suse.cz
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index eb8aacba3698..69e290dab450 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -755,7 +755,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
- 	return pmd;
- }
- #define pmdp_get_lockless pmdp_get_lockless
--#define pmdp_get_lockless_sync() tlb_remove_table_sync_one()
- #endif /* CONFIG_PGTABLE_LEVELS > 2 */
- #endif /* CONFIG_GUP_GET_PXX_LOW_HIGH */
- 
-@@ -774,9 +773,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
- {
- 	return pmdp_get(pmdp);
- }
--static inline void pmdp_get_lockless_sync(void)
--{
--}
- #endif
- 
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-@@ -1174,6 +1170,8 @@ static inline void pudp_set_wrprotect(struct mm_struct *mm,
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- extern pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
- 				 unsigned long address, pmd_t *pmdp);
-+extern pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma,
-+				 unsigned long address, pmd_t *pmdp);
- #else
- static inline pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
- 					unsigned long address,
-@@ -1182,6 +1180,13 @@ static inline pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
- 	BUILD_BUG();
- 	return *pmdp;
- }
-+static inline pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma,
-+					unsigned long address,
-+					pmd_t *pmdp)
-+{
-+	BUILD_BUG();
-+	return *pmdp;
-+}
- #define pmdp_collapse_flush pmdp_collapse_flush
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- #endif
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 9f790ec34400..0a98afc85c50 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1177,10 +1177,9 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
- 	 * Parallel GUP-fast is fine since GUP-fast will back off when
- 	 * it detects PMD is changed.
- 	 */
--	_pmd = pmdp_collapse_flush(vma, address, pmd);
-+	_pmd = pmdp_collapse_flush_sync(vma, address, pmd);
- 	spin_unlock(pmd_ptl);
- 	mmu_notifier_invalidate_range_end(&range);
--	tlb_remove_table_sync_one();
- 
- 	pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
- 	if (pte) {
-@@ -1663,8 +1662,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
- 			}
- 		}
- 	}
--	pgt_pmd = pmdp_collapse_flush(vma, haddr, pmd);
--	pmdp_get_lockless_sync();
-+	pgt_pmd = pmdp_collapse_flush_sync(vma, haddr, pmd);
- 	pte_unmap_unlock(start_pte, ptl);
- 	if (ptl != pml)
- 		spin_unlock(pml);
-@@ -1817,8 +1815,7 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
- 		 * races against the prior checks.
- 		 */
- 		if (likely(file_backed_vma_is_retractable(vma))) {
--			pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
--			pmdp_get_lockless_sync();
-+			pgt_pmd = pmdp_collapse_flush_sync(vma, addr, pmd);
- 			success = true;
- 		}
- 
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index d3aec7a9926a..be2ee82e6fc4 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -233,6 +233,40 @@ pmd_t pmdp_collapse_flush(struct vm_area_struct *vma, unsigned long address,
- 	flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
- 	return pmd;
- }
-+
-+pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma, unsigned long address,
-+			       pmd_t *pmdp)
-+{
-+	struct mmu_gather tlb;
-+	pmd_t pmd;
-+
-+	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
-+	VM_BUG_ON(pmd_trans_huge(*pmdp));
-+
-+	tlb_gather_mmu(&tlb, vma->vm_mm);
-+	pmd = pmdp_huge_get_and_clear(vma->vm_mm, address, pmdp);
-+
-+	flush_tlb_mm_range(vma->vm_mm, address, address + HPAGE_PMD_SIZE,
-+			   PAGE_SHIFT, true, &tlb);
-+
-+	/*
-+	 * Synchronize with GUP-fast. If the flush sent IPIs, skip the
-+	 * redundant sync IPI.
-+	 */
-+	tlb_gather_remove_table_sync_one(&tlb);
-+	tlb_finish_mmu(&tlb);
-+	return pmd;
-+}
-+#else
-+pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma, unsigned long address,
-+			       pmd_t *pmdp)
-+{
-+	pmd_t pmd;
-+
-+	pmd = pmdp_collapse_flush(vma, address, pmdp);
-+	tlb_remove_table_sync_one();
-+	return pmd;
-+}
- #endif
- 
- /* arch define pte_free_defer in asm/pgalloc.h for its own implementation */
+Changes in v2:
+- actual THP reclaim fix sent separately
+- allow one reclaim attempt for __GFP_NORETRY allocations
+- further __alloc_pages_slowpath() cleanups
+- Link to v1: https://patch.msgid.link/20251216-thp-thisnode-tweak-v1-0-0e499d13d2eb@suse.cz
+
+---
+Vlastimil Babka (3):
+      mm/page_alloc: ignore the exact initial compaction result
+      mm/page_alloc: refactor the initial compaction handling
+      mm/page_alloc: simplify __alloc_pages_slowpath() flow
+
+ include/linux/gfp.h |   8 ++-
+ mm/page_alloc.c     | 163 +++++++++++++++++++++++-----------------------------
+ 2 files changed, 78 insertions(+), 93 deletions(-)
+---
+base-commit: 186f32b9f92ad7ef6bb90d1d0e9692665cfbb69b
+change-id: 20251216-thp-thisnode-tweak-c9c2acb3a627
+
+Best regards,
 -- 
-2.49.0
+Vlastimil Babka <vbabka@suse.cz>
 
 
