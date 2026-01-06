@@ -4,119 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B247FCDC19C
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 13:24:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0913CDC19C
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 13:28:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 136B86B0098; Tue,  6 Jan 2026 08:24:32 -0500 (EST)
+	id 61AAB6B0088; Tue,  6 Jan 2026 08:28:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F4706B0099; Tue,  6 Jan 2026 08:24:32 -0500 (EST)
+	id 5F2CE6B009B; Tue,  6 Jan 2026 08:28:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F38996B009B; Tue,  6 Jan 2026 08:24:31 -0500 (EST)
+	id 528D36B009D; Tue,  6 Jan 2026 08:28:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E15716B0098
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 08:24:31 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8079958F9C
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:24:31 +0000 (UTC)
-X-FDA: 84301608342.14.CC47C0D
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 819B5160003
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:24:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=delta-utec-com.20230601.gappssmtp.com header.s=20230601 header.b=ILIkA1u+
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CED26B0088
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 08:28:05 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E2CB88C042
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:28:04 +0000 (UTC)
+X-FDA: 84301617288.23.1DB260A
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B6E1014000F
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:27:59 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767705869;
+	s=arc-20220608; t=1767706083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hLe3wwA2KEDYP6Pc8iIb6s88ks6V9T+zKQuLs+23u7s=;
-	b=XmMNtWy7MLRTeKqA4C9WcT6W4FHN74fo4M3OaPPJVLTdTyUjaG62G4zecAM+Q5H20KbxUQ
-	YZ/NrWvpeOB4y6hUccz/mmB2rptWRnot2zur/2x00VfaaB9J0WZy1OUTBEaC9LBNbvSlwb
-	qGT5FsBYCrCb8kptYhtjse+lYJHL2xg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KQzPpkIuj0ak54TrSIWyLS0jmADk18wf4pTreALtfkQ=;
+	b=PwY3TT1F0+ESn8a+IKUwvHf3jmpRHrtnV73wV7WoD7I6KaDoO8MUVcC3bhY0SxsZCYF2N1
+	iV4GPrYVRaFDoeGPeGyHMjGgt0gF0b9j1H+7yzLbGs1chScynlIjGv5nNt+qaIjbPjsfUP
+	6yWPgZ1s9m8JzTzOuXnQ9un8JZbzN2Q=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=delta-utec-com.20230601.gappssmtp.com header.s=20230601 header.b=ILIkA1u+;
-	spf=none (imf08.hostedemail.com: domain of boudewijn@delta-utec.com has no SPF policy when checking 209.85.218.52) smtp.mailfrom=boudewijn@delta-utec.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767705869; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767706083; a=rsa-sha256;
 	cv=none;
-	b=O4fRb5z04S63f7fU0D3mcHsshq6IshnZro4hE3+KctusJlGIwvMuI6SzdeufH0MCHMFy24
-	eLvOEQYiTgd29J1lo0iTnxKJwM8lEVApu9d6U34SFRGTbCrHiT5hl5hHjvPVD9OxeHH2y6
-	OMiXjGoAtp99Gk+m/QW5a2mFqDVxgPU=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b79f8f7ea43so198615966b.2
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 05:24:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=delta-utec-com.20230601.gappssmtp.com; s=20230601; t=1767705868; x=1768310668; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hLe3wwA2KEDYP6Pc8iIb6s88ks6V9T+zKQuLs+23u7s=;
-        b=ILIkA1u+ewUuNMgtQA01qe6OF9hD1uwLi0mIzqxssdIZLph0Shr30AM1181oVT6iqF
-         K584lWVzg5/VHTSbcoP7TrfkTTPgLpdy03OKdJrnmWxnrTzxrViVP2SHw98YWhSWP/1w
-         rjaRP3vLpUyvvIZmkB8nfjTmC/v2tGW7DHVCx/z7WtDFeP2VNlQzJcoMDa8aSMxoVImx
-         lefgSX3lu/DBo+iCZoKls6i759O/sMts5r9pD1SK0KUxw/kdK3CG1gCPQEcIrhheRcms
-         YtaCf0oV6hYjUol3IdkTX8uGE3lxP0PLhB7SaA/1w4xLtapD3H6Z+0d9O7dx9xQ3Ez2e
-         fbgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767705868; x=1768310668;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hLe3wwA2KEDYP6Pc8iIb6s88ks6V9T+zKQuLs+23u7s=;
-        b=TtcjAM6N0jJaFQj61Xx0boVNmalxvbXZRp1rcC2TeoxvfP9rAGhDUG9nMKiLzZwY/Q
-         2vYhPeou0KpEL7TG+Kx9PFdcFv4NrY8NH8L0s6JhntrYJypO/TzXG8mmQ5nXr7VXjP5n
-         F0f6DttsbQ2pyIfeOt9JGUqGoSXNyVJA7t9nqgoYaFSIyZ5N/Uj6rIi4gNUC8eq9feLP
-         iB+929s07mlBkr7b+z6Za/WIG4eC0WOhwa7U6ow8ektDij7GrlL7KzK7ds0zyciub8/V
-         ByEFIDPp7OGa2nqtKhtkk8vJsnBtpCIQfH3Gd+RSJbVp8wOvHe8PJcuNBcaDBpgwnzMf
-         xF0A==
-X-Forwarded-Encrypted: i=1; AJvYcCV1+uvSzcoZ4s1Wul7k25j3foUXjDUf3l3j9gCKzc5bfz19myixI1DbHjZMbldd/LJd+drPN3AGcA==@kvack.org
-X-Gm-Message-State: AOJu0Yw9KdCRSMzw9aq0EAcTmjA+D5IP3/CnSt+0wQo/cmn4hj15jgek
-	W1QJze1TgKGXOtcXnUb70m/CGWDOZhn1d0cjC1JNzB1YYezcxgezu+Br06plNVySWw==
-X-Gm-Gg: AY/fxX5t08Mb7O9C0H2goOHFQTUCPaVfAom7r3fjv40eS5UqT6jX54PjX6DhFOh5w+V
-	Aq4gklmY8sEeJDQw8WfjMTbAwK3lQoqLLRW34Pu/ve0aw4Gb9k6faP0O6laFu6jMkMmpFIs6Ib6
-	N8I9GPVxNRJXIAB/VKPb/Ohohhj/71EVtWx/+9nQ8vZt1TwND85fetC9h71FxKYtobQcsBVl7tz
-	5EanPd4vwQATpcWsKtv4oqrzWRQ4VzlYFQJQgiOLFSq89oUcowCp336VJu/8hVyK99MbqqeXT+I
-	y1rHIpqWm+lxvdxCAvhJrMs3cGYMA14mJ3e/G/V7l82Jm5tNjSfYVw3gapJ7VG1gPENXoBsfODH
-	Loxk+O/tZuz/gyFJ+esrkCrDytL2MvVaiSDqo99V2shXA04CPz55dE9tXl59TMlusagDRMyT783
-	eeV6tGiIux4rCO3K3HF2GHxFpHGQd0Rt0buOUOQndrGzxXTlAbs9aTpM+oSAHAtvjQ/iyrVO4Dy
-	MihWl2GFU69IyT6cMbUa0PrQI+oX/6oEK+IQVB+
-X-Google-Smtp-Source: AGHT+IFqcaVA0U22F5AO1EtQKh6NaEtx//r6IuAy77I4Rzsf+eNQzqgKz1++L5vJry4MqCwG/RHJcg==
-X-Received: by 2002:a17:907:94d3:b0:b83:3773:e72a with SMTP id a640c23a62f3a-b8426a43d45mr296632666b.1.1767705867458;
-        Tue, 06 Jan 2026 05:24:27 -0800 (PST)
-Received: from localhost.localdomain (2001-1c00-3405-d100-fd78-186a-9428-6b97.cable.dynamic.v6.ziggo.nl. [2001:1c00:3405:d100:fd78:186a:9428:6b97])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a27c8f3sm232698066b.16.2026.01.06.05.24.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 05:24:27 -0800 (PST)
-From: Boudewijn van der Heide <boudewijn@delta-utec.com>
-To: willy@infradead.org
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	aliceryhl@google.com,
-	andrewjballance@gmail.com,
-	boudewijn@delta-utec.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	maple-tree@lists.infradead.org
-Subject: Re: [PATCH] maple_tree: Add dead node check in mas_dup_alloc()
-Date: Tue,  6 Jan 2026 14:24:18 +0100
-Message-ID: <20260106132418.57408-1-boudewijn@delta-utec.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aVx4PjdhG31LfjuA@casper.infradead.org>
-References: <aVx4PjdhG31LfjuA@casper.infradead.org>
+	b=6wwr2ydVpd+KPw5yIXqq99d8Xt69xIXD4HUo7icLnOZ4lgNJMC3+6CZ8RBmxTSj9vFAQJt
+	NaEGgmrqTkY+xtisxIBCrP+UXEGjG5CVn9RxYtnEqGmLQjNQQi/sjvKfEtUSkoet7xglcp
+	4wlcvpMiS3nxrt3duNIpTjOgci0ME7k=
+Received: from mail.maildlp.com (unknown [172.19.163.198])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dlsQF6pq4zYQv4T
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:26:45 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 8182A40574
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:27:46 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgAHtfXPDV1pXzxeCw--.1359S2;
+	Tue, 06 Jan 2026 21:27:44 +0800 (CST)
+Message-ID: <c8c2d782-e67d-4f4f-917d-6cb198fe1175@huaweicloud.com>
+Date: Tue, 6 Jan 2026 21:27:42 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: x8yhke8h6m5tpqi3sarrbdgk5yejaupn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC -next] memcg: Optimize creation performance when LRU_GEN is
+ enabled
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, lujialin4@huawei.com,
+ chenridong@huawei.com
+References: <20251119083722.1365680-1-chenridong@huaweicloud.com>
+ <20251126171513.GC135004@cmpxchg.org>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20251126171513.GC135004@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgAHtfXPDV1pXzxeCw--.1359S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CryDXr48tF1xKw1rWF45Wrg_yoW8Ary8pF
+	Z8XayDKa18tr9xKrs7tr9rWayFyws3Gr1Yyr1DKrnrZw43Aw12kFy7CF1UW395KF4ku3y2
+	qFW5Xa4rtw4UCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 819B5160003
-X-HE-Tag: 1767705869-566601
-X-HE-Meta: U2FsdGVkX1+Hv5UidiAX1rxDRfFHQDKF5x18/UzU+nYYnarggoY2Em2aXmq4jHRKtjNaelnje+MMF6xA9lyw9c3k4U88EZ3Ij34rdJPI7CFHHDsBqgYTmc+slrDEGrOm4i2bZKPue9ViE1UlqGtoMB6pGe0u32NG3+YIeahCaHFGTPGHKAzw0PjHulXwk8oYxRKnuhwy34FcRv2Pfd7A/mQm3ruS7xkiTvU7ne6EOyuf7jjXw1YaZnWCX/jcmgTWsVwMzTIVABUXVwwOZEdSVviZubCTn+E+MtC2SPqQ4FoY/BhYWpJNmSZTcJheRc+jdgi1Vq5OsyMuGHybKAAxMIbfW56lJyRKL2B/n/AefgumJRLE8rt63ji75fofAeRfujZCrw2eZPrYsqFCpguka93zaMijB6nV2CO5CobQG50DGwzxi1rUSyXCtowH1U/bdGuSYtIhzrHQZLW/ZuLN7UA0b/vE5jbhbD6US9Kfsp/L7YZBx1rZF6uGFHgjZDgR8PYJu8532tvQnJYKW/DifLs1F8IuTBouofRTG2iCFwe+UHAkzpl+MmQw2U5gilhDdkaD3X4fBKI5I2MSDXZthBQZZk4U62F7Jbid6Ga3SN4pFMQLCOQMCkueOvsf2NeVr0ndEybn89jVJVYTocwhjSyltbUxXdfzrs7icPLzOou+NU04EmFA6+ictSjEXJnS4423HZ69ZHEr2jLmxh1jJhuGFySB0cf49hCM0ClUfBh/cSSy1fasusPiJODDqHqIolEIaQBjYyY+5PP1VFgQkaahr6nruAymfhrGd7oc0EE4pUwIMxBRV2uKleoZYWfXu15rz1MF0FK6qSRwVgfsEhwvrozQUwEXG4WLd3pvyzbB7zJE3Z2GDNg1Gd4Fb0hA6o0cPf/TOyGytW6pS7QMae1BUdxw2LO4Bo5Lpu2/+HWo0aK4Os9YbsVyp8foMHiFYssWsPepoaIYeVb4QjI
- K7yNKl2d
- cr+qXJnQwi35VZ9YSnY2ar/qbCfLfV6D2D2RBVJF+mEEe4Y1N53xSfcxPSu/RjnpKrP1TdrYKPKw0yb+/h7D0NbePzSnRLFyfpUqLWFeq8Rr95CmDYVkVJvJKl3DFOYVtye2IbuBWT/b4D7JQ2HtKJ3sBoPQngV9+T5WgYiX0wGlt18z7avA/w0b66+kOBrbr+iKmNBWuU4RbHcNFP9bf7UTK1jdAauzqv9sebDPQmH0P5fkR4ATgP/8fimxjWThrQb2oUm/xo9o/zJT8+SOlItACC9o3ouNEx+0LN/BXRNjTCpjH89sjT/RKP7y4CcMHNwwsRITzQ4tIvK8F9K1ZZ+/OUCYaHrFMIojpk4ii6uRJIB3cB57ezyq9QPH3naLMJQ2AA11aWAMCJosoi9qvAK/UmuvB3M1DnRIoaKeOZSeZw629DE9sxM3Cuytgbna27GADKRli4YPylKXJcSKfMgZZ9Hcyk9biD/du495nUYNmSnfIGYYP1elT/PIw4AphhFbB/ujtOg9Velyk+3TEecg0yQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.026365, version=1.2.4
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B6E1014000F
+X-Stat-Signature: r56fp7n64y8suettmaudoc5exegb1kpc
+X-HE-Tag: 1767706079-91918
+X-HE-Meta: U2FsdGVkX1+4kVx/hxsl+mLsaWkB/YwvZ04IBRIyCYCtRlZUdJqzzinR73mZ1nz8eezG+B3x31D1lqVZfBvPV91BdpnOC0CheOL9H53ndJfOh8PtqVMT/sP842WdBHwF2tGDgYGttfCLBSimG8vqmdaxe5w78L8A9x1rTmkxBaM5au+qQh75eZqy6lpTaE9/CSFR3lmtJeb0a+cRoQl+qtQjpL+r2qlUg4E1sMYeLitilh997IPTMR+zEMBLmM0KJYih1bJRLSC5U3xLSJ7JET54x6M/8KKxuXe+mEmR7+9zgt/g2HCkMlz4EA6AtvkSZIpJdw3EnRLdv46m3ZAa+/kF6yQP/8K+MSubsW+0q1Cz/ubGzCQoKQayY9+Id+/iK7Xh3ZW+rtWi66r/d9J4XIKv9TSpkbhA2A0+s9dvHjBC5W40jcuDAT2kclE9dgtNNVH+tJlUCSFcKK7gUXMY6sHvPJHJ4bPu84lUbdt6pfp3rXB96hXrC8z6PCDu0Vy3/MlnlnX6lxu1B4U/Cyr5Se6T4Tes9Jo7M/JHHn5YW90K705XLJAOXtKPNcGlT3BKO9TLDIBbAvGZ+Wg0I+GVNaCWa90GbzmwCesMq9ku+KHeNehK+5HYl92c9LQIteEkdEyTp5W+xZ9guo7Y0H+F7rD+UqcAJ9NK9KC4TDXu6I/9EZ6bNyxTj9cgedCW9U0tVN14ZQnE42C9DvCP1dlxJVKXgztoo8GD+EYhERDmOkupVbwuMJx4A52N/330Ns78nwduOut3FYY41QBHx5zoPakNYoLnk21L9PiY0CxU0nu8fSmnXqBGYNvZ7LSGxdGS/g6jm4n4MAwjqm6FFIObmmhQAt6Nx+cvYSB1KIlcFdG22hLvcOqhmnLaJKio/2IfrOSV/1Qfx05EVO0DHlOnv4HkMicuAbgfyG4GJsCKbNVVDJ09iyi/EJ6STQFrO1YqrAjcqyQCBo3tCRWAjcu
+ Y2KYhOsw
+ Zq7/fVmnGEOvKyYvX2kApjSU++B/myhYj8qjItTY16ATBiJjRFgxYetrbcJrQD//8/aXdM5Td/A5zzmDdlJHhF7su8DvyhaXs5wpgDh+NDgGL8N55kbVFuzQOzxIG10+FR+swiJQKybNuoNXhUMFSsuqGv0+g5mZ3irOUhZfPI66OOUMa950KP24xG+LouSvzdRemGR7e6zVqzfkd0j7HjWsk3KyzyMZ2UZTMgrKXC1II8ec=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,20 +110,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Surely this should just be a lockdep assertion that the appropriate
-> locks are held?
 
-Just to confirm: do you want me to remove the original runtime check entirely
-and replace it with a lockdep_assert(), or do you want both?
-If it's only the assertion,
-that would mean that production builds won't enforce the check, right?
 
-For v2, should I add a Fixes: line and Cc: stable,
-or should i leave it out?
+On 2025/11/27 1:15, Johannes Weiner wrote:
+> On Wed, Nov 19, 2025 at 08:37:22AM +0000, Chen Ridong wrote:
+>> From: Chen Ridong <chenridong@huawei.com>
+>>
+>> With LRU_GEN=y and LRU_GEN_ENABLED=n, a performance regression occurs
+>> when creating a large number of memory cgroups (memcgs):
+>>
+>> 	# time mkdir testcg_{1..10000}
+>>
+>> 	real	0m7.167s
+>> 	user	0m0.037s
+>> 	sys	0m6.773s
+>>
+>> 	# time mkdir testcg_{1..20000}
+>>
+>> 	real	0m27.158s
+>> 	user	0m0.079s
+>> 	sys	0m26.270s
+>>
+>> In contrast, with LRU_GEN=n, creation of the same number of memcgs
+>> performs better:
+>>
+>> 	# time mkdir testcg_{1..10000}
+>>
+>> 	real	0m3.386s
+>> 	user	0m0.044s
+>> 	sys	0m3.009s
+>>
+>> 	# time mkdir testcg_{1..20000}
+>>
+>> 	real	0m6.876s
+>> 	user	0m0.075s
+>> 	sys	0m6.121s
+>>
+>> The root cause is that lru_gen node onlining uses hlist_nulls_add_tail_rcu,
+>> which traverses the entire list to find the tail. This traversal scales
+>> with the number of memcgs, even when LRU_GEN is runtime-disabled.
+> 
+> Can you please look into removing the memcg LRU instead?
+> 
+> Use mem_cgroup_iter() with a reclaim cookie in shrink_many(), like we
+> do in shrink_node_memcgs().
+> 
+> The memcg LRU is complicated, and it only works for global reclaim; if
+> you have a subtree with a memory.max at the top, it'll go through
+> shrink_node_memcgs() already anyway.
 
-Also, do you want me to include a Suggested-by tag
-for your lockdep_assert suggestion?
+Hi, all,
 
-Thanks,
-Boudewijn
+I previously attempted to remove the memcg LRU [1], but this change introduced a regression that
+increased kswapd overhead significantly.
+
+Now circling back to this issue: does anyone have suggestions on how to address this problem
+effectively?
+
+[1] https://lore.kernel.org/cgroups/0b8ea26f-71f7-4f6d-b0d6-7d42e087a7ed@huaweicloud.com/T/#t
+
+-- 
+Best regards,
+Ridong
+
 
