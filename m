@@ -4,114 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E964CE9D42
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 14:48:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A73FCE9D42
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 14:52:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB4EF6B008A; Tue,  6 Jan 2026 09:48:26 -0500 (EST)
+	id A227C6B0093; Tue,  6 Jan 2026 09:52:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D821B6B0093; Tue,  6 Jan 2026 09:48:26 -0500 (EST)
+	id 9A60E6B0095; Tue,  6 Jan 2026 09:52:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8E8B6B0095; Tue,  6 Jan 2026 09:48:26 -0500 (EST)
+	id 887C46B0096; Tue,  6 Jan 2026 09:52:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B7C7A6B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 09:48:26 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6056C8857B
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:48:26 +0000 (UTC)
-X-FDA: 84301819812.05.C53EC65
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 546671A0018
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:48:24 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="DHk9/egB";
-	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 74D5F6B0093
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 09:52:39 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 21D5A1401D8
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:52:39 +0000 (UTC)
+X-FDA: 84301830438.20.DD8EBA4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 34B434000D
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 14:52:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qN3NVoS7;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767710904;
+	s=arc-20220608; t=1767711157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zcDYYUlSpjZtiuhui593Rk5sJ8xjAAB2MtRfUEdlRcA=;
-	b=n7/MNnTl1XGIiaajfyCzgP7mQ7HGf7Ppc8ffgy/o3xwzZS4II0GQMITTeTEIIeIhTBKCPg
-	yBhEKWRc7wLH1o6GgZBm9bJVQF9QIUbAhjfQ407ZX2wfExMZfWxTnxL3oHh/J2rbglmn4Z
-	T00nCtmzvKzGvrU6JJqb9xjN1iA9Gao=
+	bh=6SPO5Dc499A+t7Y1eit7J4iMI7ltNcacj9JPSlYdcXo=;
+	b=W04wCnZ5mXL9KXm4MlM1iXrRDzyMN16YoQmotd/YQWSW9UIhfLyRQlFVFQKPBiNjtDeBF8
+	1caGX4T3yc44biGmar15uDmu7qkNf7Es16ofJfOPJcvD/gvuqQjHfsIyg38Am/2gym8CQa
+	7BeL0QNVvWpZ7c0P+h6/ioCbTIQk9EE=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="DHk9/egB";
-	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767710904; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qN3NVoS7;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767711157; a=rsa-sha256;
 	cv=none;
-	b=PwzaXty2lvaiVjp5/u9Lx5ZLTQ9Z1O6ElRowES4XgpdenaQ0P2cXRIvedx8k1J78/j44Gl
-	IJm4r3UouorM+5YPJ1opIB0H1sKPKMgPk0TZSN1pxlVBMj5zR+H6XEzq+9lyJ1eUecCJn3
-	uDLkJkrG0uVLHUJFvaiQm41FLNlzPpk=
-Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-477bf34f5f5so9627735e9.0
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 06:48:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1767710903; x=1768315703; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zcDYYUlSpjZtiuhui593Rk5sJ8xjAAB2MtRfUEdlRcA=;
-        b=DHk9/egBTeqmvMvpQz3L+FElWQ1rJlHDYAFU9wjAGlyV8TwQt4lvlCn8kEOW/ipDLm
-         Go/jkHz+7TDSCJvQNYCBUswNqDdcop7hOXvM2TLeoNQuqkKqO/ioC/IcJW/k14vBp2DT
-         aIqQLQNHbDP5JbTWiLJaylObdq9j7T4BFxVreG9dOGAaye8MloOl1PCtLTj11II6ijap
-         IRnZzccq3iylCcOgpTMfAHttaGaYa4Bb3Dq7UI0Cw68M8rFwby2J3LSXaJD4QsIeZbkt
-         jAgQbbbZ3c/4w1uCctrEmVftoOXQnFyMQaGHDux0V2Ihb57ULpj1qypc5lPJPT819New
-         NKNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767710903; x=1768315703;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zcDYYUlSpjZtiuhui593Rk5sJ8xjAAB2MtRfUEdlRcA=;
-        b=Hi3A44ApttEXlT3A2ViLr3/yMw8lSZbofB7pa+5hxni7Uycq4bPW+zRWjb+2XmEJKX
-         do7Fv9LiTkqXrcOMPZS3Q8/51Q5ukcyDip+zQpDxyAuRKPCzCYizUh21EAhAPwtOuEEX
-         gPoB1Reng3bYYpDvnvrXBRLyVI8a6tTipC6Z9Mo6cnP2IQkdjrvQLOVVlAicBCd15EhL
-         um7rBj0Y3fDRdOK3CKRZw89TgbDJ5sisTXEFrzqQlkKBBxpIJsE27zdkyps2tb2uxFyk
-         tGMKiLMXGdBb0iz15gLF6a8YJXtp/ynYRMUyuyu6DPZ78jl6FhvH/EbRM/Q63dgI4Q+1
-         AgRw==
-X-Gm-Message-State: AOJu0YzSICMzCNeMoQ6WazbneqhIasmoApst+HuMagPVfX/r8BtFt0r8
-	fqMoJtnYFAtJqR5C8kKDdVPYIwfaBGWFl68FUG64KeVkeyaW1rAWAgebgNfAVYHKBME=
-X-Gm-Gg: AY/fxX6DwxVVTdKXErsPMjjNAHMcH8rhVyLVJAVZbI0ZM/5fyTKH+hZsqkOrmR7yipa
-	4hnjsCCXFfqoYU6epYbTroVnaNjjDKTTyo6E01sAuskGXH1yth90qb2bCov4tEmlC69A835VJCa
-	Qpvmb8cV+sAmi/STlx7kp0rB97S+uJT9jWh+0tB+P6aRaGxki9ipRSIJ25n26iQnnjZ6aZ+Ml5d
-	qovfZ2Tjh09Q7rjARXpTvAuNHvqYV0Jfm3mMzVyPKdkoV8F2PTzg16cckvbKFSk13/iLJ24L6sz
-	WqFYsoKlQx/HEGEnvwe/IPMGQqOkSUSy6PJfD/baxZuqkh5iPQXCZofZGi4tV91XU5Eb9jtJ1Sm
-	j5XIXa8Kx0nNZ1uyN8frlPBWSuNZKgmWJQ1V27jUWubsYAq9e+RWTcHDEAYWLuMuqo7Le8oAKdx
-	41cbaBl1W/khsIbn3Hpl47RvE9
-X-Google-Smtp-Source: AGHT+IG+fGx05jjqgVtGpbmzaDFhFjx3lqKyFTpOmlDCBAFJagE9HL0lIyPb6OYzFukf4RkWIHBZRA==
-X-Received: by 2002:a05:600c:5395:b0:479:1348:c614 with SMTP id 5b1f17b1804b1-47d7f09fe13mr36724665e9.26.1767710902546;
-        Tue, 06 Jan 2026 06:48:22 -0800 (PST)
-Received: from localhost (109-81-90-116.rct.o2.cz. [109.81.90.116])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f9a31bdsm19312725e9.0.2026.01.06.06.48.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 06:48:22 -0800 (PST)
-Date: Tue, 6 Jan 2026 15:48:20 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	richard.weiyang@gmail.com, David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v7] page_alloc: allow migration of smaller hugepages
- during contig_alloc
-Message-ID: <aV0gtOs5cuLu57Mk@tiehlicka>
-References: <20251221124656.2362540-1-gourry@gourry.net>
+	b=cZJMuf8Ix51Q1YhXG9XamnoWz4hFst9Lg3ZCrDh5A6J0VLM2qBoZIPqRwxj0BLhPFF7rKo
+	ZqI0VKoRbtWK2kZ2u53Jtd4c4I1owYsiNrv4pkT8I02csSvOwZMItrlUIy08Y95QDiCDYO
+	Jc3yFjzzRz6+6AKZnj8GXNc9NXZXXL0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4371543B17;
+	Tue,  6 Jan 2026 14:52:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE22C116C6;
+	Tue,  6 Jan 2026 14:52:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767711156;
+	bh=CJyAnRXxJCk+YGjPEV8Sv7WGSx04lU9lyLseKMpwELE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qN3NVoS7p5mxzT3p2llkIpzWshTHfYGVshwzRutqctwkY4H/3U1L7znk1kZkUsZst
+	 FCYha36L/rHxAIqDg/Ng7RDOCv/aMPG/sADBROaG0nYYLLCLG0KKnLBPwZ6DwBZYLI
+	 29LZe+gnRH7eBE9C4ZFr0t7YIkeJC2iUHQpKaTSrpNF3Pxtp3GUGmMO/ILvElNRWwc
+	 VFEtmJjrOOpygYKB2l7fbptpdyUx6yizAM6iGPzR4UDuiCu8Sj8IRaF2piSmFV+70y
+	 SxsLuiId1Q3O2s251lg2KEa3d753GdvysKceSxV1F8HxXS7ZZxZdhw0wNRv647HgtI
+	 SUzb2MJZgARuw==
+Message-ID: <06f5cd4a-6d76-4759-9c06-c7c3c3211528@kernel.org>
+Date: Tue, 6 Jan 2026 15:52:29 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251221124656.2362540-1-gourry@gourry.net>
-X-Rspamd-Server: rspam02
-X-Stat-Signature: xsis5fw1h4jerkcu1ux5ute7hsjh1tfu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND] kernel/fork: Update obsolete use_mm references to
+ kthread_use_mm
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>,
+ =?UTF-8?B?bWluZ3podS53YW5nKOeOi+aYjuePoCk=?= <mingzhu.wang@transsion.com>,
+ "kees@kernel.org" <kees@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "dietmar.eggemann@arm.com" <dietmar.eggemann@arm.com>,
+ "mgorman@suse.de" <mgorman@suse.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
+ "surenb@google.com" <surenb@google.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Jiazi Li <jqqlijiazi@gmail.com>
+References: <KUZPR04MB89656F6F10537974E46766E08F87A@KUZPR04MB8965.apcprd04.prod.outlook.com>
+ <aVzVVTS3gjtz4XNB@tiehlicka>
+ <cbcc95f1-5039-4fe3-bc7a-c8edc29f5b11@kernel.org>
+ <aVz3vlG2PlQ9JX_Z@kernel.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <aVz3vlG2PlQ9JX_Z@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: g45dchmdpq5ennsxnzyt9qyfp5tjs6r4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 546671A0018
-X-HE-Tag: 1767710904-266536
-X-HE-Meta: U2FsdGVkX1/Vk45lYNyDfFpCihlabsPpmdQuGonomk9oWQB3yLkuPMlLWTs6CeqYTQlB/u91wjCqDTOsTZrIaCYiStrUlZVGF1AMyiGHSCJsbGpXrxK7Va+o7+rhtt45l9iV87FVKeb0pwlAPlXotMCr/qKWirYXNULDdIWNBeBbl7qQiGtQkurq34fmiYg0uZk64bY15P31cQ9M5KMsvOU1z2RlFEfxmLg4fE942zEVcdg2TA6mUr4diUl+KMVCvz5QGZMBXXjTdMk1IbXycbkDZwJflU0aTghTJuT5d6MSMRxIvJSr8YyxiHq2wAMdNvDK65/nPWEuMsr4/FVYj5iBTsE9deWc5rbohOfIb06fLFmsBi98ux5JvsJMG9KDCfjvSTKvSo+O+L1qHlum37gj7EeWKfXgEJqdB0Ct6KhMfGMt0XjcajpS8miUgYNh9xBpKBppOGFy0pTIDmQf0ZoZ38wV6keTe/+y3kzWR0v/7QqUaRc9EIuBYlR7k9uSTCWzj06ZYWiHMfH2PR4PNOdgIQ7darRPDzCEyV/LwCBN7vytwZ9Y3kpGVCgfVrZ28IefU/tf2baXI2+j8F3v7uTMbe/G7mMjnb7b8gsf+ZBwDXQ6YVK/5EBVvO9fMXK6LH93o4KMoHTe1wNNMG5/NwJWgkMcnx166Rijohzesi/gF9vX7XpKVHpK1Pe8k44GURl1t2/Y/oOal4zJMyww9zGx4SJhnmm6w+UBD+sOTyYG5ak8BYa0Apznh7jMvYXtQVPAo98lTu18kkjgt1jkQUPrfTGeR9XqObNoNN94t2JEipxTeLjp0lhxH5GxeMdbAj2vy18eaunNkpvRNV6Orczy4f8rLt/WRKQ2MCDfx2wGNy0OxGit4ByJ2ZS2b0iNBwfYL3p7LC7blBgpnOm6v2zofaToW10shuRwnybvHaJWCRy0GcqymBfXnFzBmKOoDTxBZiIlaDXktLRj7e1
- KYRXkOlF
- jXpuPChSsiAW3/holbYlftM0iJMqruEQjPBq5Sdc5HtRfvEWQ2DeLwLBORy5PiO3KsoOcO/t+fjWD6X+t2wlcUofflFc2/VXrPSE8q5GaI2RCFlsSOJP1j1flcaAjy+LQswiYKC/y9qcqlEL9y8Bm/f9oQw0b026YHXL0HGJmTa7xUd5ZEQ8nfItOR/X/HdmRQjFGdE5GZgXUT7lDPM8mOogbBZpv1M4G6nl4utfskkJjBpQFJYeH0BfrnFk7CDLJI1sBXmiFEPSVXXpRW40F7+cWKmvkAIKA5Z+WNc+Cvr8NbqsmFJP9gjSpFxQgBj6xipn6u0MDgH+A6J8oaHFphRGUaN7eOLmE+IVkoE3HJAv6Tpt3MqIMh76swC9Fp4DeUVsJWcz6oCaKVgjNa+zu0ncpNikxZX4hV543/qPg4S4xw/o/qiq1mcffjALjtHfWywlF0lnASS/4+/FNsTgxoOZ4i7+9FVLg1NZv4G+V2R2gk3qrZjomy1/urBw3mDIXGpHyMj99SjMy+9DTc4E5Yzs2onJgVBqUAfl6jlACSPIzzU3K5xi4Gr/da3U9nur6xWRKvatoc+C+S4Z+ph0IIZ66oCCQIK/dVJIF5tV5iPZ/eAa1m1mpMTTM6qEKzhXzD7e/8PQ/E5ho9Hy3Ck5EfWGZiRBu5x4ziurwUVXTrlSezz5tABUqcez9ky6e8igxIK/OqSfN+M+skDXLpGj2wlpKslVt8/Zf3Y17eEurwEbnpppHupqFR79KtTa9iHMR4XZIcP8hweW5GRE=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 34B434000D
+X-HE-Tag: 1767711156-627634
+X-HE-Meta: U2FsdGVkX1+6BjodTfU+8AI/S3xUTsF7EQVfUN8hLWU3IyaNh1AmEmuaU2Cm+vMJ5/lBgxaBjOugTfxWlcuSg6xBKV94pNhfa+HPg5VhA4lb786ItsVHgswcszPn378Tnm+GBqX94Yaxb9/5lfI5nosLfG4lQkM5EC0BcwGye7l6wthFCLVNaruzCa3wqZzDmqpvd4SYK/pzO8rszYyjChWkEBo6abeDfSaU6SNkjAlwjlHhC36UGZP5BIFpS0bkDknw7J0EwIAijIbczazbiRRd0HOadsTHYafpRR1xdtbPxL77Fij+sinGx8K+xlX1UMoBScHtC4xFakpkKxhAOppo823FsHIpxOgs+YTLbTNJD7WCiKlQ1mWiOht/JHaPHrDNbujfkaoMBVIIkH/0PO63OlTW0Ks8v1hZb2rPpEIkiuTcn4p7caFLvhKuU/pQAaxsV9ypTc1EQMLaxDVrveoolnmzZaxbBmengrSf0q2E37WvMRM8c0Z/YV6UzjGjXavj0stguxFkZa95kuMXdHkvxesmu6FeydA0+BAxVrUcOs/PQCsZhXm3Z7Rii1pFGGOVzjaw/bvCkcD/Kl9MUsB5Vv7Syi9IXBgH+wY7gi+dGZLUhoGRBwGYYKZyeFdfasXWru+LFpCh0AjoL8j4blW6L/LAmkYswa1uRad6vlFIyuXr4/xTioFmRc5Qu+cOFvcnXSSNO3kBkSb4Xvm5s6oSPiUypB5t41FlaJ77Y/Er3VR+3T//HIG5yilup+Fv87Ept/G4b1kxSncA7z2ky7LxJ3NY9pp6dXs974dkHbxHwVkyL8nb6n+TIwZjCBAq9Q+bcFHRCIBEaydp8dTjp3kgTciErVES20GkCB+3ucwiHZOMCgWg3iFXo01mjMCgfGNLWBMCbx+P5Y42j0zne5OXxIDfDmNBbDkwpdsJX5SIcktP1EOwsB18aH3lW8Sx6gnngaP8hQ7J1hQtMmM
+ 2yhkirqg
+ VzKkvzqFKvjXcQiibAebDnUIPpjMgluBRe6hcObXM8HfJYkmJqXdkokV3xp1T7Ococ2Zq3HQLh5OkxSUGMfvVGEo0YbqUsAKdCB5otgvX54UkWAnQ1J1nXs9Y+8qetGZuKjQCO2uoXCJ49TIIpJUORPrLlHcfZxmaOhtbpHSm/vn3C1TAboLerPrQyl1+junqH+H964qAE0r1sse+1NM/aTjFa0baNjZjoyE4+IYaZ6CRnY0qiL7yQplUQ1cnOhcaI/bqZVwPOkf0vodTHgtF6kBr7sedKYTwzBUaNBPPKgZ+TbjS0PBVJtu9YyP2Xji+ooTmlFxV9R+HDfwkYmGcm2L5ch4CHPLD10WDWY7coVRL7g2nC2CTMBaJxlc+Y06z9bVI9UW+YoWcCmOFA23REA8ozhRyfIXte9WOUIQX+X3fqlpKvyP/dWJOcI4isX+dZ2Y0t8g/E/JA/Eyod5YE5ftSHhV7jWPxnOTIgD2+tCEFGFer6aTJZCgXM9LQFML6q4Lea2nYA6VPAxPEd3z3SSVWdJS0NKNoBTrvaYhS5SEthb0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,70 +150,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun 21-12-25 07:46:56, Gregory Price wrote:
-> We presently skip regions with hugepages entirely when trying to do
-> contiguous page allocation.  This will cause otherwise-movable
-> 2MB HugeTLB pages to be considered unmovable, and makes 1GB gigantic
-> page allocation less reliable on systems utilizing both.
+On 1/6/26 12:53, Mike Rapoport wrote:
+> On Tue, Jan 06, 2026 at 10:29:03AM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 1/6/26 10:26, Michal Hocko wrote:
+>>> On Tue 06-01-26 07:05:28, mingzhu.wang(王明珠) wrote:
+>>>> The comment for get_task_mm() in kernel/fork.c incorrectly references the deprecated function `use_mm()`, which has been renamed to `kthread_use_mm()` in kernel/kthread.c.
+>>>> This patch updates the documentation to reflect the current function names, ensuring accuracy when developers refer to the kernel thread memory context API.
+>>>> No functional changes were introduced.
+>>>>
+>>>> Signed-off-by: mingzhu.wang <mingzhu.wang@transsion.com>
+>>>> ---
+>>>>    kernel/fork.c | 2 +-
+>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/kernel/fork.c b/kernel/fork.c index c4ada32598bd..64e228c541bc 100644
+>>>> --- a/kernel/fork.c
+>>>> +++ b/kernel/fork.c
+>>>> @@ -1312,7 +1312,7 @@ struct file *get_task_exe_file(struct task_struct *task)
+>>>>     * @task: The task.
+>>>>     *
+>>>>     * Returns %NULL if the task has no mm.  Checks PF_KTHREAD (meaning
+>>>> - * this kernel workthread has transiently adopted a user mm with use_mm,
+>>>> + * this kernel workthread has transiently adopted a user mm with
+>>>> + kthread_use_mm,
+>>>
+>>> Please do not wrap the line here.
+>>
+>> But please do so in the patch description, where the maximum should usually
+>> be 72 characters per line. :)
 > 
-> Commit 4d73ba5fa710 ("mm: page_alloc: skip regions with hugetlbfs pages
-> when allocating 1G pages") skipped all HugePage containing regions
-> because it can cause significant delays in 1G allocation (as HugeTLB
-> migrations may fail for a number of reasons).
-> 
-> Instead, if hugepage migration is enabled, consider regions with
-> hugepages smaller than the target contiguous allocation request
-> as valid targets for allocation.
-> 
-> We optimize for the existing behavior by searching for non-hugetlb
-> regions in a first pass, then retrying the search to include hugetlb
-> only on failure.  This allows the existing fast-path to remain the
-> default case with a slow-path fallback to increase reliability.
-> 
-> We only fallback to the slow path if a hugetlb region was detected,
-> and we do a full re-scan because the zones/blocks may have changed
-> during the first pass (and it's not worth further complexity).
-> 
-> isolate_migrate_pages_block() has similar hugetlb filter logic, and
-> the hugetlb code does a migratable check in folio_isolate_hugetlb()
-> during isolation.  The code servicing the allocation and migration
-> already supports this exact use case.
-> 
-> To test, allocate a bunch of 2MB HugeTLB pages (in this case 48GB)
-> and then attempt to allocate some 1G HugeTLB pages (in this case 4GB)
-> (Scale to your machine's memory capacity).
-> 
-> echo 24576 > .../hugepages-2048kB/nr_hugepages
-> echo 4 > .../hugepages-1048576kB/nr_hugepages
-> 
-> Prior to this patch, the 1GB page reservation can fail if no contiguous
-> 1GB pages remain.  After this patch, the kernel will try to move 2MB
-> pages and successfully allocate the 1GB pages (assuming overall
-> sufficient memory is available). Also tested this while a program had
-> the 2MB reservations mapped, and the 1GB reservation still succeeds.
-> 
-> folio_alloc_gigantic() is the primary user of alloc_contig_pages(),
-> other users are debug or init-time allocations and largely unaffected.
-> - ppc/memtrace is a debugfs interface
-> - x86/tdx memory allocation occurs once on module-init
-> - kfence/core happens once on module (late) init
-> - THP uses it in debug_vm_pgtable_alloc_huge_page at __init time
-> 
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Link: https://lore.kernel.org/linux-mm/6fe3562d-49b2-4975-aa86-e139c535ad00@redhat.com/
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> 75 ;-P
 
-Sorry to be quite late with this one. Making this two stage process is
-a reasonable compromise. Have you considered using hugepage_movable_supported?
+You are technically correct sir.
 
-Anyway
-Acked-by: Michal Hocko <mhocko@suse.com>
+I think it dates back to "git show"/"git log" adding 4 spaces in front, 
+making the text still fit into 80c terminals. So you want <= 76. Then, 
+whether a project allows for going up to 76, 75 or 72 depends on the 
+religious believes.
 
-Thanks!
+https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+
+Is an interesting read.
+
+I've been trying to stick to the 50/72 rule for years, especially as 
+it's easy to remember across projects. Well, I frequently violate the 
+"50" part :)
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers
+
+David
 
