@@ -4,140 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E108ECE9D47
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 15:19:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5BB1CE9D45
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 15:21:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 397A16B0088; Tue,  6 Jan 2026 10:19:24 -0500 (EST)
+	id 4B02E6B0088; Tue,  6 Jan 2026 10:21:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34F206B008A; Tue,  6 Jan 2026 10:19:24 -0500 (EST)
+	id 467576B008A; Tue,  6 Jan 2026 10:21:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 223D56B0093; Tue,  6 Jan 2026 10:19:24 -0500 (EST)
+	id 3943F6B0093; Tue,  6 Jan 2026 10:21:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 131656B0088
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:19:24 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C2B511A02AB
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:19:23 +0000 (UTC)
-X-FDA: 84301897806.27.1F46B0B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E7ED4C0013
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:19:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZzFBdx/W";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767712762; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2629D6B0088
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:21:03 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D9A991AA01C
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:21:02 +0000 (UTC)
+X-FDA: 84301901964.22.D4E146B
+Received: from relay.hostedemail.com (unirelay09 [10.200.18.72])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1B552160004
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:21:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767712861; a=rsa-sha256;
 	cv=none;
-	b=wlrHg59+DTqaVubAxQ1hnAbZPMg/c7rrFCf1NyQRLbL5ZDXZu9ApxdHQXG9PCWN15vB9hu
-	3fRNjC7Q5MAId2fF0f1H+kcaTVNslEydsm29u3y4nDQnZmoA3FJF0ikgVIXdhGoWtyiESa
-	mhXlAxZljarH6da1BavFEHOS+IOpSBQ=
+	b=Sf7fOfcAgRnC4IanAmtqshDr+16++eQAca7CbTpaOj2KJ1kN3GliBQeTqI2+n1F1rYetcr
+	q1HBDxFZcMc+S1apQagskhJGsuVu6sVy4gVhP3yvodLjpADGevTUGSUsAg9YSptOjpraPB
+	JpjNzjItmCAw495D9P+TkiRa7Vy98C8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZzFBdx/W";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf08.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767712762;
+	s=arc-20220608; t=1767712861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fgfgbctUF7kJY4GbHAbcNmnHQc4AiPPCBiRwo+2uenY=;
-	b=1M/KFo61SP/2XQjF0BqRfR36ZK9IVWgtGyNX5ACbadfIqxe4JFyKv2nX+pXOQBJCQX1rO4
-	ipYoBxAAKkUX5bx0l960HqWaRCt4eIqBbt8ussCPpBjRZ6nHwHqcZd9YtmVGjCn9rMNMmM
-	O0Ike1cxWoh3jAhdNrxr7t5EnjDJ8YY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C2245418AD;
-	Tue,  6 Jan 2026 15:19:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C849C116C6;
-	Tue,  6 Jan 2026 15:19:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767712760;
-	bh=PQWjEY27AuDHc3U5eemh0TiBpvWBZ7jdK/tSG6xBxCE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZzFBdx/WI2GjYmhcvi6yp9/4UwfmyCrys7P4UZIgj9FaT0LKyStePM0eQWcUtCvvD
-	 /V+gKQvG7a5yrjBvfP3OIZyuMzZcMET1RTxKDveQdPqP4J0DZItzZPPXMiwZqRJxTH
-	 ltE0xzEPK4GVmb4gMdVhyH8bNy3BF0lQYPQpov9PLICaPs60edviHqk09OlDoH0xPd
-	 a5h8A4YKZAZYXLg467JE6rI21qfDDc21DmskYYRK8VOMlItxTnVkmGU0o2NZ95NM05
-	 pmZzeKuBl5AVnS7gEx1hfB0qvpQtQU6tW2wcirPpQZSWcVxB4fWJg52P/EadhVBR7F
-	 KN8vizOZoWdiA==
-Message-ID: <da1e8a00-99fe-46d9-b425-c307ea933036@kernel.org>
-Date: Tue, 6 Jan 2026 16:19:10 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=HIiHze0VyWpov5Jqj7uVp/MqJ9pLwc5+QqqrO3k1/is=;
+	b=1zbT3i0wARlJBo7Qhxz0APyvULEO8DSjrHH8L3dkijYVm9INZdXthIogoCAoFJP0yPX6mj
+	IuFFoNGzW1hpdwyeXO0CUOuvpqXR3aSmhmn5GHSe/76ApOKbAiWibOjZb1vYrilBYUvd2m
+	mBRhVP+emvdU1+Rd6pbsP1dWfI5qN9E=
+Received: from omf13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 384438ABED;
+	Tue,  6 Jan 2026 15:20:59 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf13.hostedemail.com (Postfix) with ESMTPA id ECE9C2000D;
+	Tue,  6 Jan 2026 15:20:55 +0000 (UTC)
+Date: Tue, 6 Jan 2026 10:21:20 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
+ <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark
+ Williams <clrkwllms@kernel.org>, Mel Gorman <mgorman@techsingularity.net>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, stable@vger.kernel.org, kernel test robot
+ <oliver.sang@intel.com>, Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH mm-hotfixes] mm/page_alloc: prevent pcp corruption with
+ SMP=n
+Message-ID: <20260106102120.4272260e@gandalf.local.home>
+In-Reply-To: <04624b16-40ea-42c6-b687-4013796e4779@suse.cz>
+References: <20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz>
+	<20260105164036.32a22c2e@gandalf.local.home>
+	<04624b16-40ea-42c6-b687-4013796e4779@suse.cz>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v3 1/2] mm/tlb: skip redundant IPI when TLB flush
- already synchronized
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
-Cc: dave.hansen@intel.com, dave.hansen@linux.intel.com, will@kernel.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, arnd@arndb.de, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com
-References: <20260106120303.38124-1-lance.yang@linux.dev>
- <20260106120303.38124-2-lance.yang@linux.dev>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260106120303.38124-2-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19Cnps0ORM9wOahzNOtx0DT319eAQmpInc=
+X-HE-Meta: U2FsdGVkX18qn3xbopg0HXbkKioqQiII+KS+SESHqD4DmcTs87FqtTwlrJHklBpNtixlk38wVYTWl58BF19c+TgMm92szMg+VQcnCFJNRD4AHB5RYUf1fMNVhQROcMki6PZDC0Yr/gdYibD8NrC5wWG37/dIiBSLdagQmEYQCqe4JL5jxVSUPjcFfM05fbU3ts99MchYGe3AcRK+OZCbq7ODj7gIEfL2XaQLW0BDxwqvZlqdVSGAODffh/iEG18lJF8gLB7q7qfRDRhLXeXY2dl8zEBMD79afbk00Tj1xF5+SjEf+Sp0KISnnd++GCQG
+X-HE-Tag-Orig: 1767712855-198917
+X-Rspamd-Queue-Id: 1B552160004
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 7ue5a44wypk99ky14qm411h7f5gs61tt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E7ED4C0013
-X-Rspamd-Server: rspam10
-X-Stat-Signature: pg8o4mncfzrcp1g8z87a88mt9bdhsksm
-X-HE-Tag: 1767712761-879577
-X-HE-Meta: U2FsdGVkX1/he6o7xxkGx9HxqCwQyVkkUUr0PkrVqruPcSUR2HEX1fay+409basZS5rCxBgsX2NCvEKo8/dK5fAz3D5vHiQGdxAnDsFYIinLuaDzb4O3+ANhqvA9EXsgeph+FJE/TUhlSBCEHNca1gpKEhJrOgGBweDboNErCDxC8hMq2kGXTWWgCbf4mHxgAaBwygT8va/vLDUAXNaxxnHXQrsjGZ46jgVMhA2LuARDLfDc+UC6ktxmhyDY0+4XXbvoxTM3oD1M6rMktbSsI4Cqq1dSN1euPW5vMdemfxfNOI+8U6/FwpMQSV5PX1xnYsNI0jWTyx43oLZ7IGYmaPiggMQwlwwRmVYcu920GK666vdOBA1rKpvc96uC45riZBuvFFmIs/1ZR4TbSS2N9brODswYnHdbnpMW6LGq1oXYiGFNL8BohtMP5IyeY91MAAoshfyV0EU7tciWhsKWpeZL24ZG+hR6Ze3eud7JT/AJ3ILNka3fLn4pWosLC2VhC8C3SbEvlNNW4fv5G/F+aqXZZIrx4lbUnOT3S+1SDGjVJrHcxJK4N1cOQJOg6BNWpV3AAQX3O7tZD8ei1BMGEq7hzBIfAHQylBALYg6/xHuRb4+vZnZTfyBaKmgnhFs8BCHKMl0nH7kJ3DgjsuEaptT/JcguK46ZLG63WZHbKRrC9izoaP6N7R8LqjyBHatyHthpBirwdKTLeKn9z7n6dUPRC+yHGFm82WR+1UupuHYCjPzXi/RlCASovlXjwRy9NyqtmmD/Bjc7pedn9CwyhS/Ez2uQRc94ovP0RDIEBM3I/mr9ZgUhPzkbeCjP87hZz7eLhMrcmUNhGPla2Hvve3szFenAqMV/vBKjYaDP5kaIhYFZSPg41SXcq009L/nRfYOpeMyR17gw/qRbopWnmfNPRQ5yX2zj+dDfRBFjJU3uuMS6tYHNJi6zqxYB5n3+STmERU10bMMxAg+cNBj
- HiL0vVb5
- ikGnLWemtNZHj7Q7DG/8lwIOoWMpHsPs2oUp7finurjHXeLOMelwA6zj8J8h5q+3owTJuFnauWSLZRjCbm6gIk9bTJ6KiExtQ5ExmIm1iRb/2xq815KX7zZfE6xenhccobdBTS1G6a4eGvdrjUPzsxWeakR6wB0rx+FTmPqtAs4/QQion7yZhcAuqB1zbfrMVSMuRyjLfvLENHci3dwG4/DEaTs6Vba9XnA3XtkAGvbFhqK670iJ/vp2I7OM25kQErokW
+X-HE-Tag: 1767712860-490797
+X-HE-Meta: U2FsdGVkX1/JYMTEnqNOOa73Q3tO97D/KOotW6YRN24VBzOOrW5qrLGOrfgdslZi6cJgsD9iOS7EdAUOzEi2EkvwnMpoiJ3Kk46O7STcIHt9xD8WW/TkrEJZJgZJuLyY1sxxEoY4K389n2i+lmBWQOFjD88QTYuP4xSwtM9S4YOVL775wJQFvjEF3FsGbjoLZCUIrPv2KYP8lEKgfkXo1NQ7xoBskq6e+iGSnmo+Ow+BSaj20BvSZbj4O1qZck+sfxjyp8N+UT5P9IIJ0X86pUMYm0KVGtpr5A7qpvjX9UCaFJEuTd12VgPmph1pDeg0j9s27k+cvHM0nOlHErAxUbeHfOrQYlodWY0f3y+nwtAvhCXi71YJ8TtcuD+1xUS9UXyxSgm3P/bTEnZU1fiGtFYMWgDMs1FucYeLe/0z9O6Z62IhHWNwn54fmvtSJWfL1FtinszQR02l2+f3jA8FkeDmrWRWJXHxuD4neXe4SH74kbUeGqpXNLUQ8DbilVG6gwZfay12Hfg2Jg9IRgBsNRs7qiGwLopkZIGTK1p87wuOrcCS9jRrHUaT1ko1uNQdRu3lNt8v+aqNbtQMp0X0Mh9bHGB59CwAmLx9ugk/yfBAxOGxBHMCJM8JBBpVXnzkqyEtnsq348LUy6r5xKoDFOQFR2kem6KpmJFO07AXAQROmRwBoKpMlVP1x1aq92JeV9uL8M7ARD3Twu3uKDyxwJCq91m8zVgFV6/B7XWQ0m1LOVle63qXDb9N8c6bai2Xa2OLl8YppQSWaxaAWyzGjEGx4CheT54KR5QJcmEuRj4Huf6SZcn3m9ipNBtLC9vhfOnabDcdy9UwXLOe26fvShdazqvUWd6r+NtGt/ip8O1vghv1nAKM/sc9A8Fu8mMtAQmLZBdtjKA7GfBrjT0ITUOH9UX8mjD0/sH87oYToS3s20Ga7qL1O2u3odvEtlo3W/IiqRwOyUPvPTvt9XP
+ 3xcO+jmS
+ PMxcb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,51 +92,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->   
->   static void tlb_table_flush(struct mmu_gather *tlb)
-> @@ -367,7 +378,7 @@ void tlb_remove_table(struct mmu_gather *tlb, void *table)
->   		*batch = (struct mmu_table_batch *)__get_free_page(GFP_NOWAIT);
->   		if (*batch == NULL) {
->   			tlb_table_invalidate(tlb);
-> -			tlb_remove_table_one(table);
-> +			tlb_remove_table_one(table, tlb);
->   			return;
->   		}
->   		(*batch)->nr = 0;
-> @@ -427,6 +438,7 @@ static void __tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm,
->   	tlb->vma_pfn = 0;
->   
->   	tlb->fully_unshared_tables = 0;
-> +	tlb->tlb_flush_sent_ipi = 0;
->   	__tlb_reset_range(tlb);
->   	inc_tlb_flush_pending(tlb->mm);
->   }
+On Tue, 6 Jan 2026 09:28:29 +0100
+Vlastimil Babka <vbabka@suse.cz> wrote:
 
-But when would we have to reset tlb->tlb_flush_sent_ipi = 0 later? 
-That's where it gets tricky. Just imagine the MMU gather gets reused later.
+> >> + */
+> >> +#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
+> >> +static inline void __flags_noop(unsigned long *flags) { }
+> >> +#define spin_lock_maybe_irqsave(lock, flags)		\
+> >> +({							\
+> >> +	 __flags_noop(&(flags));			\
+> >> +	 spin_lock(lock);				\
+> >> +})
+> >> +#define spin_unlock_maybe_irqrestore(lock, flags)	\
+> >> +({							\
+> >> +	 spin_unlock(lock);				\
+> >> +	 __flags_noop(&(flags));			\
+> >> +})
+> >> +#else
+> >> +#define spin_lock_maybe_irqsave(lock, flags)		spin_lock_irqsave(lock, flags)
+> >> +#define spin_unlock_maybe_irqrestore(lock, flags)	spin_unlock_irqrestore(lock, flags)
+> >> +#endif
+> >> +  
+> > 
+> > These are very generic looking names for something specific for
+> > page_alloc.c. Could you add a prefix of some kind to make it easy to see
+> > that these are specific to the mm code?
+> > 
+> >  mm_spin_lock_maybe_irqsave() ?  
+> OK, I think it's best like this:
 
-Also,
+Yeah, thanks.
 
-	+	if (info->freed_tables && info->tlb)
-	+		info->tlb->tlb_flush_sent_ipi = true;
+-- Steve
 
-in native_flush_tlb_multi() misses the fact that we have different 
-flushing types for removed/unshared tables vs. other flush.
-
-So this approach more here certainly gets more complicated and error prone.
-
-tlb_table_flush_implies_ipi_broadcast() was clearer in that regard: if 
-you flushed the TLB after removing /unsharing tables, the IPI for 
-handling page tables can be skipped. It's on the code flow to assure that.
-
-What could work is tracking "tlb_table_flush_sent_ipi" really when we 
-are flushing the TLB for removed/unshared tables, and maybe resetting it 
-... I don't know when from the top of my head.
-
-v2 was simpler IMHO.
-
--- 
-Cheers
-
-David
+> 
+> ----8<----
+> >From a6da5d9e3db005a2f44f3196814d7253dce21d3e Mon Sep 17 00:00:00 2001  
+> From: Vlastimil Babka <vbabka@suse.cz>
+> Date: Tue, 6 Jan 2026 09:23:37 +0100
+> Subject: [PATCH] mm/page_alloc: prevent pcp corruption with SMP=n - fix
+> 
+> Add pcp_ prefix to the spin_lock_irqsave wrappers, per Steven.
+> With that make them also take pcp pointer and reference the lock
+> field themselves, to be like the existing pcp trylock wrappers.
+> 
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> ---
+>  mm/page_alloc.c | 30 ++++++++++++++++--------------
+>  1 file changed, 16 insertions(+), 14 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index ec3551d56cde..dd72ff39da8c 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -177,19 +177,21 @@ static inline void __pcp_trylock_noop(unsigned long *flags) { }
+>   */
+>  #if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
+>  static inline void __flags_noop(unsigned long *flags) { }
+> -#define spin_lock_maybe_irqsave(lock, flags)		\
+> +#define pcp_spin_lock_maybe_irqsave(ptr, flags)		\
+>  ({							\
+>  	 __flags_noop(&(flags));			\
+> -	 spin_lock(lock);				\
+> +	 spin_lock(&(ptr)->lock);			\
+>  })
 
