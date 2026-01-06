@@ -4,95 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75529CEFCE2
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 17:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70539CEFCE4
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 17:34:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D184B6B008A; Tue,  6 Jan 2026 12:29:59 -0500 (EST)
+	id B767A6B008A; Tue,  6 Jan 2026 12:34:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF0006B0092; Tue,  6 Jan 2026 12:29:59 -0500 (EST)
+	id B24A86B0092; Tue,  6 Jan 2026 12:34:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C19AB6B0093; Tue,  6 Jan 2026 12:29:59 -0500 (EST)
+	id 9F8606B0093; Tue,  6 Jan 2026 12:34:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B40676B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 12:29:59 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E4066B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 12:34:52 -0500 (EST)
 Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 61F5013B72E
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 17:29:59 +0000 (UTC)
-X-FDA: 84302226918.06.98B5959
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E4BF0100009
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 17:29:57 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="G4/ASQjj";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767720597; a=rsa-sha256;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 303D3C239E
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 17:34:52 +0000 (UTC)
+X-FDA: 84302239224.06.C19BB2C
+Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 28C0E20010
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 17:34:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=lYiy+aRp;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of elver@google.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=elver@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767720890; a=rsa-sha256;
 	cv=none;
-	b=r608gRlnnpHUjGo1i+c/OQSo9SgBFozs5XqLjOWSjOatXRozlfyFYpzQHvymA9VJPZljAf
-	SypaoyZbqckhpiyIVBX7BoTQdZovsUgbeeSW0TFfNhFiWrBsbTvFC/NfxaH2pTRNl608QH
-	hE/lepYE8Xy4UsQlYeJldgAdFvZIpgM=
+	b=Xbi0JlrgMA1MtasyPvLoDUyyvHdj2dFPKsu94pOWj7sN2LweWGBrXKztZpOPCULdqt53IZ
+	BXibMQ+hu/h8VAGBGWrkW8xPIjSak+lrm8PWgTywSjWwz0WRJGoC99vIVCYYVdorz4DtAS
+	FkFRkv28szz0X+s7paX/C1bkTm3n1T4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="G4/ASQjj";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=lYiy+aRp;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of elver@google.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=elver@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767720597;
+	s=arc-20220608; t=1767720890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bvk4mAWm+CguhJ+cTMPXOAcLF+P2foSMTEwLoiimpkk=;
-	b=VlyIGO7Vq1B1+qiQ65Tt26IUHmXtSowA8rqPZKLN3y6v2eLgdsGRUH7c5hxgZUj0hs/gi9
-	OHBYAd2uPUCJLnQGiaCN/S02IIqRnoAaVvCx/GEv3P8oUNUQgT6Lg0rVnGw0J/pn7oo3wB
-	L3KMzypF4fx+9/ZdQPLBpq8oRM3vD1E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4BA9A6011E;
-	Tue,  6 Jan 2026 17:29:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4802BC116C6;
-	Tue,  6 Jan 2026 17:29:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767720597;
-	bh=S59AIhszH1mltc6DfCoGlRJ+0/sPO1hMLyo8OSVvGME=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G4/ASQjj9n5SEFj3Y3lei8PxO5TbigT6vEzGbkddPw5ppErLKA4dVT6q7harmTpUL
-	 SnDZvChCe4x+vEqiPm7N0qxANu2dxvIkT9otgrgBQKbOevxt7t+KWEr0UUUArr3vYx
-	 N30dZ6i3I3VEuIX1DaZ1xWvsbBDOxU9qCp/blaPJfLr6Ld5+9kPjM6CaDz14LRqLa9
-	 CWtIzL4h0gWCmdN9q3OV51jaVYxojvxYEnUQs2w8a7FyLRVi5q9EaYTFP6iSUinniD
-	 9gLrx/BKcecZwSHVQTa34oBOGj7h5TRy+NN1op7XH2HQRvYaPVwcdnciObu8xufofg
-	 /OWnL1pjedxFA==
-Date: Tue, 6 Jan 2026 17:29:51 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] tools/testing/selftests: fix gup_longterm for unknown fs
-Message-ID: <56b7d3e2-fcfa-42c2-988f-907086f031d1@sirena.org.uk>
-References: <20260106154547.214907-1-lorenzo.stoakes@oracle.com>
- <20260106092836.d6a4fa77b755bd989d1521b9@linux-foundation.org>
+	bh=RXcHtzljW/LEwcnvhUw7B+CYy+kN5WC/pk6M+qEtNI0=;
+	b=UolusHGYn37aYLao4ncMd3j7321y7sR5sPv0yqlNUHZ8rrE4qtMOroHitki28PomHNmvCE
+	ek7Qbs5L6j5CLW6cFsehFBBa8LGka4apR36gq4IdzMJYx/JM9YiiN62eClIES0t5GxCQKU
+	IiTRynx5/FOAPsa9zbDg1JMccsX4cik=
+Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-477770019e4so10424945e9.3
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 09:34:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767720888; x=1768325688; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RXcHtzljW/LEwcnvhUw7B+CYy+kN5WC/pk6M+qEtNI0=;
+        b=lYiy+aRpUXr6A5C2qhL56/dC1VeHyWV3aI9B9TglL3LXa3rrrMuawO6C9MGhu5BP6H
+         Kryj0B0ODBMIOJlWHHD6JqFkoVEYMi7qVSSV1b4I6SDKrWqCwnZPg0xY2pImIaft5tTC
+         ZoP1DKTl/NCiw+egBj55CEQX7ie4pE/kdhAT53JevihMiMht+0+MDpde3NBFDOt7nx8y
+         7mqCFGQoCk23fWTzxfxk0XUs/f8kggXduu3Ziy+wxV4V4I6lVZUXTezb1H4yr27ZsKse
+         doya/3VOsEc2A2ov7epERTCrUMPbNsE0abbrQ44Zc76bQQg9Vpw6V70tJ1Bp08eyy57q
+         00mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767720888; x=1768325688;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RXcHtzljW/LEwcnvhUw7B+CYy+kN5WC/pk6M+qEtNI0=;
+        b=CM41GNLZ8FpMVbuVSfnQ9doKbdFAG+HB5gOrOzHRFpek1nLcTwVsJE/CaMEKuRrwUh
+         GFMF4Lhf/mgYCOKMyy5g6HFbYpWzdu7MI45XTgKbBFl5LvsqOvdcxFuIeJ1eE+AwCBGN
+         QYhmYTyfgvZywr8MIP2GNR9FdCPldmA8W1ZraARTgzTLZvYbUsTKmAfYeMen0QT0KvGe
+         qJLMqMLLRlE3m++401k9fi1SFCv5VhbSaplp8KEpaw0X7WboZnZ5zZ/AOItrH5YBNm/o
+         HR4mJiWLdJqSIzxELUxfQii51vvlcN2wQBQF5m01U1k/XSsqWSgodMekONb2swUwuWcz
+         5iEw==
+X-Forwarded-Encrypted: i=1; AJvYcCWNwUEj4Xkikzg0Mcg/8zWOC+EBa/3y8AS7JfSZYyqPUxEOHR29YyUf25dJE71dw8flNAl1q3SgGg==@kvack.org
+X-Gm-Message-State: AOJu0YyKYL62fM907q9HPZfc7jG/qVZbh7ppE+3pv84DdijgH3ZF37xC
+	rqZX/PibqohpURj6uTIyq573XB5fJ0Q7jXYUKI33jNDE9wl47gCx7RKB/oYA9nV7Nw==
+X-Gm-Gg: AY/fxX5HoDu3RWc49+kG5NILyurdy6ZLjnubimo0Clu9VOsPq5GONuYiDSGMIgROAW1
+	sHzaFghEuC9GR4t8y7szjik9sJAhZmvkV1X15C4CC2AO8VV8gj2aUHLd+P2QmTp4tUnPdIhndx8
+	OrYAGqxuE4Kf7WttOYVOy9uIvO62duPgTaQdtJ1+eOnCMil7C4cCA7xxqUtUrK1TKb6l/BRr9aM
+	7w5IlDOqqswyUNWrnLpQDrzd/0v6pLLMbeMYBxLoDYyo+T+pSUbKOO4xak2jHV9c9NYEFFeDocT
+	37RfzjuwA7MBwhXy6kyC9qQs0eWG4S+6nvOzAjknBWOK51DJB14qQZqIKVV7oC78C6Z9FlcZcxH
+	7Xj0NLvVjBzjiybxALzRR2Ttu7TMtiuOREiJGmzflPW6hdoXhrSuxbnQaEX2Xd0g7DI+YTZoWdc
+	EiLeBypSneoJhfcpwVG0NHM9ZlFXeg7cfeFB+jw3PcBVsrDMeT
+X-Google-Smtp-Source: AGHT+IHmVK6EqE14VH+HPUL16Zk51harYxsBJJheKVL1BeqXTS/M31ba8unH1eaK7+ALdSr4nMxyjw==
+X-Received: by 2002:a05:600c:46ca:b0:477:7a53:f493 with SMTP id 5b1f17b1804b1-47d7f0980e2mr44046495e9.23.1767720888108;
+        Tue, 06 Jan 2026 09:34:48 -0800 (PST)
+Received: from elver.google.com ([2a00:79e0:2834:9:4477:8df2:f516:1bd3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7fb4b3c5sm21868415e9.15.2026.01.06.09.34.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 09:34:47 -0800 (PST)
+Date: Tue, 6 Jan 2026 18:34:39 +0100
+From: Marco Elver <elver@google.com>
+To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+	Chris Li <sparse@chrisli.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
+	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
+	llvm@lists.linux.dev, rcu@vger.kernel.org
+Subject: Re: [PATCH v5 06/36] cleanup: Basic compatibility with context
+ analysis
+Message-ID: <aV1HrwZm6xg8PnRU@elver.google.com>
+References: <20251219154418.3592607-1-elver@google.com>
+ <20251219154418.3592607-7-elver@google.com>
+ <993d381a-c24e-41d2-a0be-c1b0b5d8cbe9@I-love.SAKURA.ne.jp>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="1m3/mpdwsBsKXyRx"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260106092836.d6a4fa77b755bd989d1521b9@linux-foundation.org>
-X-Cookie: People respond to people who respond.
-X-Rspamd-Queue-Id: E4BF0100009
-X-Stat-Signature: 5c44k3bopx5c4hhgqteanzewhpxhrt6u
+In-Reply-To: <993d381a-c24e-41d2-a0be-c1b0b5d8cbe9@I-love.SAKURA.ne.jp>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 28C0E20010
+X-Stat-Signature: k3usxtkjkcswzue5t1anrfhemj1x7f1g
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767720597-973649
-X-HE-Meta: U2FsdGVkX1/Bg1bUbqHbjwwlwkkeUF+CaE2Ik2HErxvpAuRxE88gBRNVHoXZxgC5nlmanlj7F01+tJpCQcFznCpp6Y5Z8pcaX/tF5dLJ66zYJqQ+gZBEyIjL7L8NE7CMhjiKob6f2/M7f7u2xMpU3T6qhSdDlhGZB0JwlVb/2BzJtzJUEk2odMWMkRCHyNyZAOFjqAOpXOnyc/MH3+YVC+NHpwU4hUVOKt7mD78EOhMAiclqoJdiO8IKQVNnMXfbeXRJ/kxRxZwQqHOTkvBk1LblpiG17QjOMEcHCtOj4iGN8aXddgl07L0X/qP3NOi5BbwsLRrjG99i3uQP1Y57EUDoUFHx1Ss8akd/KMDvf9AUxMGoQ9rY6r9hZRYrQBa3NXqnELUYkoQai3JalxSfz/bhbGrZoPGyn5ZFbXWrefYHTAJN/W9hNUsu6D6ffmuH+YRQCiuQr1r/s+Qy+gbWRRaYQ+CvV4shIuU6uTJeWFTM69slOdWa/i7JHuk+P/k8Itk2PonoxwxqOzVdu20XLwKDV2Ujnp31h1u1tTpfyX8JZyMX63DbK9OyLq3KurfnPAxwCwEyI5T1sB8o3wtKQC0qH2Tug5XkBgpSP7x37kqmDvjxyHGHP/uDNYEEHjJ3DQBeZlVjHf+r15CflBslkPturCQi251Cx8+/8kQ0seuYzgMb9ZiyZz5mXS2843tqseAq74uYERSKh7B4QkZpLHoMB1PZwY3M/kXlR4Xw+yVJ6nbEPfWKH+50yWj4tFESF4XBk9VmRiakKOT3VzQ4QV8o4bkKMlfqPB+jezhzUvOBi+lS/FEohkZwGGUwe7G1GdV+7TmYrGveycn7I8fsVyoSKgLKG9GuGPzTihY7LZbe6uEzWgLOlRGaIYMXf1O0UCHxVumDK2+f5Zj9Vlm3ypmTu5Tqon9yCc5WolRCRga4lotGgW3PGi5/+SzX+TJs8gy+xMw+wQR11ms/8Qv
- Y9t+Crhr
- 8c+SNUuNyNV7pms37kZFnyeHRKQ==
+X-HE-Tag: 1767720889-815746
+X-HE-Meta: U2FsdGVkX185aP0XMzLIUFXU36DZ7czlF9Z76kcbPZrMIqwin2+fZVAkNnyIUjBKnsYc8OjM9jTKCok5ydbx6akOv4ztjeqGIG1Q6VNi0zTpgT7UVFFuocUmwULPsBrpU223FoNvOpu92dQPt1nSDrjP4Xe+yIqt6C2+srxzzei1QmqvVe5VQzLEswywsJFVQbbyG7xCc0JxqgZCkc9bVqqicsloHMLHo3YmWIGdxkmLuPza9oRfCbteP6CXSHwJ4BGzhwKLqhrLb5N2LV4deJFXq0HWM4Rt5nHnGrlKpoQaRZ0HJ2oedwC/gBCQGtlNulCgtu0TnyZq7enpDlYEqzfZ2PDQlYk09zNph4DqYb2d/IdH2qWfev8KlT+VC0bx1HLvClibIaV+OBeE19RpaiRnVNgLMZdCPeHL3poWMWvl7jfR8t6z5QcfEV9ApBDEBZJjnkzSyLYbfm3fAlIl/F9oVflGUTioYvAnz+hEiw7siJjNUzRsHDgj0FK8Ci0QQ+7+MTmiJcW+4dOc8jUoevDgOpnQC5bTauHSqQiAoA4A62vomKTwPDyNIypyFG/yks6BqWt4fc+oArXBed0LnRRCsmBQCqVFOM4CWqivbbVJ93QjtEFrb6ZLvYo5wVJuJ/Yy+Lz9a69j7evQ0LJzlyUcf7NEQ0Kmnzijv9RG70l0E654aXDeWxUpVPWZupTSzWz8CvVtisT5g1DQrOrVy7LEYKgGes8XTDFbY1QJlq/PbmFi8pl3mI5FWppTeFKnA6Zakr/XoAHTfUBJrzVNvArz/MdezkLTiUA9GtcM+d0od8gC9qCFnYlaj6atLSgvRuY4GxRE5r33GO5YXhMpK2Vdl9Cj9qCyUB1EDc56i+g8EmoHM24N94ud3UQYMYSJZYF/b+iRuMygG7iP5Y9lBCLwI0OXTw6+qMf6Y9cjNek8pH/ASFcReRIrqQ0gm5qFmrvOaQ0ulhEQrDod/zX
+ p0one/Ek
+ eeRgKAfQ8CcB039tU5GuUO5CnU+PU8uass1kTUMp59BJjES1RAn2LUULV7hgTRA9n/nOT8w9EHGUqg/jdWiROOrKZZJKr4MXrPhUqS+ii/dW+eg326uVZEC/niXnUzF9Ql8gNROBYca3Py2MCkPqoyBj5cUmksq0A2fA8hWRdtlsUhQ3Uf+jZpMk4rdj65zEo/dXmaCTII+5DbO+7WmjgTRZESl+Dl7plPTPX1Ceo+P7ZO/r7VBDJNLGDf/EFA5FvE46HGEVeY1ctJr6/+f5HcsupNq6fTy1gLVZwY6o5pcZGGw3SK8a8jvlA7HFg1LMJhJ6vdmmfHfYR+81eh3+yDjq5YDjFXw07i9pIrdQwugmSonpWtzxkeicCwK8MDAZ66HLjhYIKzEWEo5kTkfk/BDNUAT4ICvdoHjL5Kqb2EY2vCZLZQAP/VU97QdyzfuPqsMBfUwoxDgo2xF/yGlr+vkWS/KFMsOqXmU0YeGUW+2MSq3L52lZUPHMzRUoO87p63ylTlwfzhyQF4XbKta6nwbVNr+r6LC/z5Owb0I2PN62M4+LuYvN2WfnFgQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,39 +158,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Jan 06, 2026 at 10:21PM +0900, Tetsuo Handa wrote:
+> On 2025/12/20 0:39, Marco Elver wrote:
+> > Introduce basic compatibility with cleanup.h infrastructure.
+> 
+> Can Compiler-Based Context- and Locking-Analysis work with conditional guards
+> (unlock only if lock succeeded) ?
+> 
+> I consider that replacing mutex_lock() with mutex_lock_killable() helps reducing
+> frequency of hung tasks under heavy load where many processes are preempted waiting
+> for the same mutex to become available (e.g.
+> https://syzkaller.appspot.com/bug?extid=8f41dccfb6c03cc36fd6 ).
+> 
+> But e.g. commit f49573f2f53e ("tty: use lock guard()s in tty_io") already replaced
+> plain mutex_lock()/mutex_unlock() with plain guard(mutex). If I propose a patch for
+> replacing mutex_lock() with mutex_lock_killable(), can I use conditional guards?
+> (Would be yes if Compiler-Based Context- and Locking-Analysis can work, would be no
+>  if Compiler-Based Context- and Locking-Analysis cannot work) ?
 
---1m3/mpdwsBsKXyRx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+It works for cond guards, so yes. But, only if support for
+mutex_lock_killable() is added. At the moment mutex.h only has:
 
-On Tue, Jan 06, 2026 at 09:28:36AM -0800, Andrew Morton wrote:
-> On Tue,  6 Jan 2026 15:45:47 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+	...
+	DEFINE_LOCK_GUARD_1(mutex, struct mutex, mutex_lock(_T->lock), mutex_unlock(_T->lock))
+	DEFINE_LOCK_GUARD_1_COND(mutex, _try, mutex_trylock(_T->lock))
+	DEFINE_LOCK_GUARD_1_COND(mutex, _intr, mutex_lock_interruptible(_T->lock), _RET == 0)
 
-> > Commit 66bce7afbaca ("selftests/mm: fix test result reporting in
-> > gup_longterm") introduced a small bug causing unknown filesystems to always
-> > result in a test failure.
+	DECLARE_LOCK_GUARD_1_ATTRS(mutex,	__acquires(_T), __releases(*(struct mutex **)_T))
+	#define class_mutex_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex, _T)
+	DECLARE_LOCK_GUARD_1_ATTRS(mutex_try,	__acquires(_T), __releases(*(struct mutex **)_T))
+	#define class_mutex_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex_try, _T)
+	DECLARE_LOCK_GUARD_1_ATTRS(mutex_intr,	__acquires(_T), __releases(*(struct mutex **)_T))
+	#define class_mutex_intr_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex_intr, _T)
+	...
 
-> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Fixes: 66bce7afbaca ("selftests/mm: fix test result reporting in gup_longterm")
+And we also have a test in lib/test_context-analysis.c checking it
+actually works:
 
-> -stable users might want this?
+	...
+	scoped_cond_guard(mutex_try, return, &d->mtx) {
+		d->counter++;
+	}
+	scoped_cond_guard(mutex_intr, return, &d->mtx) {
+		d->counter++;
+	}
+	...
 
-I think so.
-
---1m3/mpdwsBsKXyRx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmldRo4ACgkQJNaLcl1U
-h9CM0Qf/S33dckv3loTsZRKZjDP/+2/a4BY6PGpohLKe0w51tgiuLCxd1X/2jk6N
-ky7lf8dsYp0n3gH8X5qNqZkV6ORRUPjNFbnwjb4+uz/qboNv/tb71GeHU+hGKDDJ
-8gFFUMBBhgwP5sXymPeIx0x3zY6c9/exaja3RQJxAgu9aLw8MYID1LXhT4zfsh8z
-S0X+ifWgfr4qcUzuVwE0uOoBWP6OqM5cINm2oLf1Gj6QawsGJVn+J8bJU/masvJL
-uEfk+6nZyT9qFiquPddDzZokuSYPYOxyOPXYwuUTaedmgJ74xSNUhb2t5t0suwgb
-q3sLVMMrHap0GNb3DCnb794Bycr5gA==
-=gYNf
------END PGP SIGNATURE-----
-
---1m3/mpdwsBsKXyRx--
+What's missing is a variant for mutex_lock_killable(), but that should
+be similar to the mutex_lock_interruptible() variant.
 
