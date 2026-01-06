@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B87CCEFD12
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 21:20:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C7BACEFD11
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 21:20:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B09776B009E; Tue,  6 Jan 2026 16:20:14 -0500 (EST)
+	id 6CFCF6B00A0; Tue,  6 Jan 2026 16:20:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A407A6B00A1; Tue,  6 Jan 2026 16:20:14 -0500 (EST)
+	id 6457C6B00A1; Tue,  6 Jan 2026 16:20:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86AB96B009F; Tue,  6 Jan 2026 16:20:14 -0500 (EST)
+	id 363716B00A2; Tue,  6 Jan 2026 16:20:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 55D436B009E
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:20:14 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2081E6B00A0
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:20:15 -0500 (EST)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2A57ED031A
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9C1165D00F
 	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:20:14 +0000 (UTC)
-X-FDA: 84302807148.17.FF833A8
+X-FDA: 84302807148.17.C93242E
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7A2DE40010
+	by imf15.hostedemail.com (Postfix) with ESMTP id D23DCA000E
 	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:20:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025122301 header.b=cJJgNjOA;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf17.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767734412; a=rsa-sha256;
-	cv=none;
-	b=QJpyFkkwK1cjS5Vvblr3cOiJfG1VIWXfJfXPglX/sKDg3VbxkdGFZ710AwDp3wl+muAAHx
-	PmD/WCoYq8prYdn73nAZhYemoFTLimVd4KX20lfeIQ7w6zUVZz8wLGPhXaBiu9VAF2RsW6
-	kZLH8vbGZHz3zbjEJGjduju89ymsGDM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025122301 header.b=cJJgNjOA;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf17.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025122301 header.b=PoMpztMT;
+	spf=pass (imf15.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767734412;
+	s=arc-20220608; t=1767734413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0H6Hb1SNFV2MzYNq0MIPEdNZM15rFuDuoHIHPxAZ1Q4=;
-	b=v+GbLLA33AZzpvaa8FaSH1X1xPhGzyi56PoLzkFgZOh53NU01hsA+hHfYCTYvhTYvwPlCi
-	OsQMcGk2wo+zRs0iI+LHuuLBYkRLgA6ZS1H+WWXY0UBV/x1NUZ7qr+/v5cXmpeTemvAWxj
-	XZmZmRTXdbRosxrL07gDs8XhNIG2RJ8=
+	bh=qflYDEYSfpEA8CgU+zw+8+XYOHYFRgGv++82XjVNC1o=;
+	b=aci9yS7VeASkpaziQ1+YiAALNCxtson1caRlRMlSgIVl1k4WBnMAKh+OVZls8SWDC/E/Hi
+	P39zsMR7WB9G9TC1mlcqGrL5rik3SNzjPzXuNuwxkPaKVRBsNf7YQNXPw0h3NIIZBqW7rz
+	lbQZVtuKKzGbnzrRDI1I8X/gk+N2W4E=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025122301 header.b=PoMpztMT;
+	spf=pass (imf15.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767734413; a=rsa-sha256;
+	cv=none;
+	b=dmgUlq2YYwQ/7RM+USqEPnI5mh+qfYyJnOGosKdnfYVyFOMD5wQhj6gewlauAMh0qfPey1
+	4rI6tjJFQJx/XCjD+jkeLLdB+dA12ku14eVK87O6i8m3qOBfr4gVETTFcnq6dw6mTEsn86
+	n4iyrcXIxL0Z9HFAxDMVB/aJfShY0SE=
 Received: from mail.zytor.com ([IPv6:2601:646:8081:9483:178c:dccb:2d71:85fe])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 606LIrDp029412
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 606LIrDt029412
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 6 Jan 2026 13:18:56 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 606LIrDp029412
+	Tue, 6 Jan 2026 13:19:03 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 606LIrDt029412
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025122301; t=1767734338;
-	bh=0H6Hb1SNFV2MzYNq0MIPEdNZM15rFuDuoHIHPxAZ1Q4=;
+	s=2025122301; t=1767734345;
+	bh=qflYDEYSfpEA8CgU+zw+8+XYOHYFRgGv++82XjVNC1o=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=cJJgNjOAX3K+bazHyfLHz/myuduhZ4P+RgOtYDMii1hLHVmflY1FkMiNARU2B0UZC
-	 Qcz5w+s3z1XITIbsKqEJUNWd9/W84eb8auSupkmlsLgn2aR/SrF7h0+c+o3PUxKBFl
-	 jBbHv7n3m8qvLsAc8XrB5BBpKHAcz5M8Grb9GENQR/ip2BkIu2DFafsk+OtZHZjmSY
-	 TfUa99t8NJAf3Z+frZfUYWHfji8wSZMu29Z4lqMsixM9jfsBBq37drasnYZrKZMD9L
-	 efMxbSgNq/1NW8ocv3JokUYyoQyRCF5rdbzYGyyfsNDVWcFzzIAaIX9BVT6IEHaryh
-	 uiYE+bjTu49Dw==
+	b=PoMpztMTNEiy33udTg/19xCcwh38wxuUxtCCxlW3m5DrqTNqz/7/VGpGoCcr4iFB4
+	 KerBCArQdhirHvPEyFqef2WGKj0pYtLEvpvnIqAcisoOF/cjagdNK0QzQGLWMx4rGr
+	 ZQ4SJKuHxDxwxHNnpP0/0GujYD40OUvO2ARBBI2s4hqpdN/0ILFTCI6fhohUhmFyW/
+	 p3BB4e1Ph6gl6Zso4WaOasusd80fg/tXBrTXYO5YzCDgbild4Yr8GYi3gJ6AFXNuC9
+	 s/n8SqLSC8NkXSz58gxfpmXC4NnWcslKmRoQFofKouOFLT3LsJEoyM9/2G4EhALABg
+	 QbEHXNwK07Piw==
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -81,22 +81,22 @@ To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-sgx@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v4.1 01/10] x86/entry/vdso: rename vdso_image_* to vdso*_image
-Date: Tue,  6 Jan 2026 13:18:34 -0800
-Message-ID: <20260106211856.560186-1-hpa@zytor.com>
+Subject: [PATCH v4.1 05/10] x86/entry/vdso32: remove SYSCALL_ENTER_KERNEL macro in sigreturn.S
+Date: Tue,  6 Jan 2026 13:18:38 -0800
+Message-ID: <20260106211856.560186-5-hpa@zytor.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <vdso-cleanup-patch-4.1@zytor.com>
 References: <vdso-cleanup-patch-4.1@zytor.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7A2DE40010
-X-Stat-Signature: 1q8xk9nrpo7fwzheyssq5ef54gw49onf
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D23DCA000E
+X-Stat-Signature: 11rtuapc7whgns3oxe4fykg75ibw6h46
 X-Rspam-User: 
-X-HE-Tag: 1767734412-77103
-X-HE-Meta: U2FsdGVkX18Rch1OA1Cn9bWTYKtoXADAZ2s0k3Ey3QqQL+Nqs20R9a8i9uXybpKFHT633u3rFTosx0VOKEXm9WjMRk4av4KqyLEzxLWeLRGlHMCEwOkNulgTHWfrGRobrQT7rmiktCwgjKJChJxk0rNmws9zO9usIihoLFCe3JFTN9dDz4PF+dErGa+8+APXVs1JBi3uNXCQzeqnLV19iqOTxjZsTRMSUz3ktZx05wGLDAwUKgLZoIYiEKbroqIdRTf2iDYTf02zA1B1NYBtFQdzVYiFh/r+9nR/JExBanjjggNZidwqcccSp3CIIJZzy+JlhQniOZ3X40K4bgIofP6BtX/w4ARFRM6X9X8H7IJml75l/2VJDCpE0vHQylo7k02A/CwFTdIErGOfNPFwCdGuASyXSoESYepDwxFROjFzszuWSHSCUg+3FU51bOeczqYsHQGG46//o7YIaSh8EkxTXdO/7zWeZ+cc38KwZc6iOMKeDReFbcjpUHu14yZ5D/GuQITcHqXvOQQtFskXHTcW8R1rKZ85leBb6RnuqQBGY651Ruh+oi2nohS9f+hYBnk1l2uO88ilEXcA/btbDAp+kMM1ZfmeSzh5Qd9xeaesIhrxt5H88wh00KAa8nhWSUwEzdoRa04/iVDzklQhoTdfU2KYvT8mcm650UDEkmrpMLpXI1o+Iv2WM8mBDwbbb88ZLbyVBUYwVsUoleFy0XQGyTTF8h/lpR5tTCef6GQgUktnW3r8Xa4FhfTJCLRnbuldjYkr5KioLo4fknGpoP/EwlhfkNLkmgdbRib8klKcPhCCAzSU8rH9LRcmECgaVoYNVs0bFPJFyvmRvripJOCS4QvmdVmasFspQfq85FNZxfzqY4LcI4H7tIesFUQ/4upMEvtzgAE+W6bh4ulCSb4OtNAm2zYyce68do2FNV9Q0EU3dUjmBfHNnGOM0Da4MX2CrIVkv2OI7snlT7N
- Qlz50VLh
- isgdlseI5tTeYkevCvk/9ZCWfn/1kU7tsGLJ/CrQ/peKChvfijl1aHbGxNKSGI68e9F8uezyR+ATnorx8PPSxoLs/2zFOPbw3oxmWdai07yzJiSMyhv8u8EXdT+7ppDqwW35P3Cy30STNdwCAGtSUUtBnglatZoK/XH63SXSpGS8JC1d+gKV0RCisVEEq1VLdaoJf17d5rBqLkSCXePscpJLgoyvec/xqFo8P8k4S3iGVuaoFVZ231MeIJMYjEwgVveNKqIMQmVqB3MTvlgBnKQvygVvny/7P9zCa7XqHL+XRSHt7+KZzvbd2yrTgAd8D0eM2wgFrqDJ2xjj6a8ryui27kBp4DZb8KIkoZJzLTv0HZwg=
+X-HE-Tag: 1767734412-292576
+X-HE-Meta: U2FsdGVkX187ikvtm8kXwVADYWcuLFDqktoJh3BhG7kSjx7LwmlO3S5wq8uIqXjL9KfjSzS1QWfP0v2pSjgw5+EXyc7aukm/QYcbzjztBfR5hW3343EaTRwwNAH35Y2L8SAHjPBwKmlg9Bpr3ePJQ81d9xfY7PEnRCqte/zdwubOeCqlfZnX7K/rdU1v69nPzAB6X4RJXywIlPv7p6hNZWwxOttN21JPJN3acNamd76QlUPfUzLq7VfdxDqLcfUxcX92o0ojMUN87Pei8xG+D4HsKd/q6+a9GoKbfDU/LVEyVCuTVlr4M0jzNeQWqZwwXlJO5MWaYs64diU40kVLQWAHbC1T3aPh2psQxDcLrVHkt5Fs/mYQifAWgPfTY+6Cj28Kj8ggMQw4yL2nBfeLzX51FwqMwkthwBmSaVC7ZkuYikxtZg8Z5VjQQFQmVYcmEiPXjDcniAByyrYEgTWMBBo79VP7vzV5gWUqoFdrkv/D2da2cFSFpbE0Rl3EHi+wn6OWxOYanYJkcO05FFK3q/44KEx0p0I8VXBjcwJMHiS+xuGciGQkn3XSU3ENNz297bDeMhwalgw+PkuaGqyck8vCLa3LK2tkPortluXayhtGWqmd1STw4iKDlUJJHFQiwI00CbqQ8YKu5PpsWungJMqjRuHizgoEbgcnd2uJlmZROwbxMnPNf+t/46bdKZcDJX1Pm5VqGN9OkbVG0BZE+yCRfY936PB0jc2of7583p8d45+g6AzkpRZBHJEd3radBlIJ1M3UkA/RLbqoKLMdy62z0Zn04FDGB+/uNT6H3C5m/X7bx8l2prv7MpoAkBZ9sfhchAmwZwlDe9L5OlCUs22UP2qebIIu0jRQ8nOMJz2IjwQ8x/+eKJ0ZRbGCMCw5PRs1rbOAnnFqn1SLFI2mN4qeZV7uEw2tg6GhoUT2OiGxCOQuKpuV1GacC/DSFbdCXN0SxCpbOIPP1VsKzX5
+ ctuiNvlQ
+ 00sKXeLgdS54Nme1xVx3UXFZDrqHJgoREidEVpq8SarFBv6T5IEdlbfKjj08aHHBXAQD+gviDSAVUW6VPyRNVaNdfSYAL/lqpVzJAYWZR7OHA6oejCvgPQzW6MhXMcgTgkOGD4H4RatifmoMrTvjGhbc2IK6MZM7XdZa3DFMTPMhGqbwcHAeRUm+WFHhOwwhdA1nfkDZEv2Xer3LA8jeWhbCO99Fckdp7RFAl91jnW5Att+OobKEj5Uupd/Ml+1jtfFBc4PnV4sIstBp1lO0pHuEW8/yp6FxhqYOmWUWPvGRoNRG7/5PT0Te1so3+pA28Gm/9JUZbIWIlyHNCZWm1Li2iWUd3FU8zcwA9a28cGIfkHpY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,204 +105,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The vdso .so files are named vdso*.so. These structures are binary
-images and descriptions of these files, so it is more consistent for
-them to have a naming that more directly mirrors the filenames.
-
-It is also very slightly more compact (by one character...) and
-simplifies the Makefile just a little bit.
+A macro SYSCALL_ENTER_KERNEL was defined in sigreturn.S, with the
+ability of overriding it. The override capability, however, is not
+used anywhere, and the macro name is potentially confusing because it
+seems to imply that sysenter/syscall could be used here, which is NOT
+true: the sigreturn system calls MUST use int $0x80.
 
 Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 ---
- arch/x86/entry/syscall_32.c    |  2 +-
- arch/x86/entry/vdso/.gitignore | 11 ++++-------
- arch/x86/entry/vdso/Makefile   |  8 ++++----
- arch/x86/entry/vdso/vma.c      | 10 +++++-----
- arch/x86/include/asm/elf.h     |  2 +-
- arch/x86/include/asm/vdso.h    |  6 +++---
- arch/x86/kernel/process_64.c   |  6 +++---
- arch/x86/kernel/signal_32.c    |  4 ++--
- 8 files changed, 23 insertions(+), 26 deletions(-)
+ arch/x86/entry/vdso/vdso32/sigreturn.S | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/entry/syscall_32.c b/arch/x86/entry/syscall_32.c
-index a67a644d0cfe..8e829575e12f 100644
---- a/arch/x86/entry/syscall_32.c
-+++ b/arch/x86/entry/syscall_32.c
-@@ -319,7 +319,7 @@ __visible noinstr bool do_fast_syscall_32(struct pt_regs *regs)
- 	 * convention.  Adjust regs so it looks like we entered using int80.
- 	 */
- 	unsigned long landing_pad = (unsigned long)current->mm->context.vdso +
--					vdso_image_32.sym_int80_landing_pad;
-+					vdso32_image.sym_int80_landing_pad;
+diff --git a/arch/x86/entry/vdso/vdso32/sigreturn.S b/arch/x86/entry/vdso/vdso32/sigreturn.S
+index 1bd068f72d4c..965900c6763b 100644
+--- a/arch/x86/entry/vdso/vdso32/sigreturn.S
++++ b/arch/x86/entry/vdso/vdso32/sigreturn.S
+@@ -3,10 +3,6 @@
+ #include <asm/unistd_32.h>
+ #include <asm/asm-offsets.h>
  
- 	/*
- 	 * SYSENTER loses EIP, and even SYSCALL32 needs us to skip forward
-diff --git a/arch/x86/entry/vdso/.gitignore b/arch/x86/entry/vdso/.gitignore
-index 37a6129d597b..eb60859dbcbf 100644
---- a/arch/x86/entry/vdso/.gitignore
-+++ b/arch/x86/entry/vdso/.gitignore
-@@ -1,8 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
--vdso.lds
--vdsox32.lds
--vdso32-syscall-syms.lds
--vdso32-sysenter-syms.lds
--vdso32-int80-syms.lds
--vdso-image-*.c
--vdso2c
-+*.lds
-+*.so
-+*.so.dbg
-+vdso*-image.c
-diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
-index f247f5f5cb44..7f833026d5b2 100644
---- a/arch/x86/entry/vdso/Makefile
-+++ b/arch/x86/entry/vdso/Makefile
-@@ -16,9 +16,9 @@ vobjs-$(CONFIG_X86_SGX)	+= vsgx.o
- obj-y						+= vma.o extable.o
- 
- # vDSO images to build:
--obj-$(CONFIG_X86_64)				+= vdso-image-64.o
--obj-$(CONFIG_X86_X32_ABI)			+= vdso-image-x32.o
--obj-$(CONFIG_COMPAT_32)				+= vdso-image-32.o vdso32-setup.o
-+obj-$(CONFIG_X86_64)				+= vdso64-image.o
-+obj-$(CONFIG_X86_X32_ABI)			+= vdsox32-image.o
-+obj-$(CONFIG_COMPAT_32)				+= vdso32-image.o vdso32-setup.o
- 
- vobjs := $(addprefix $(obj)/, $(vobjs-y))
- vobjs32 := $(addprefix $(obj)/, $(vobjs32-y))
-@@ -44,7 +44,7 @@ hostprogs += vdso2c
- quiet_cmd_vdso2c = VDSO2C  $@
-       cmd_vdso2c = $(obj)/vdso2c $< $(<:%.dbg=%) $@
- 
--$(obj)/vdso-image-%.c: $(obj)/vdso%.so.dbg $(obj)/vdso%.so $(obj)/vdso2c FORCE
-+$(obj)/vdso%-image.c: $(obj)/vdso%.so.dbg $(obj)/vdso%.so $(obj)/vdso2c FORCE
- 	$(call if_changed,vdso2c)
- 
- #
-diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
-index afe105b2f907..8f98c2d7c7a9 100644
---- a/arch/x86/entry/vdso/vma.c
-+++ b/arch/x86/entry/vdso/vma.c
-@@ -65,7 +65,7 @@ static vm_fault_t vdso_fault(const struct vm_special_mapping *sm,
- static void vdso_fix_landing(const struct vdso_image *image,
- 		struct vm_area_struct *new_vma)
- {
--	if (in_ia32_syscall() && image == &vdso_image_32) {
-+	if (in_ia32_syscall() && image == &vdso32_image) {
- 		struct pt_regs *regs = current_pt_regs();
- 		unsigned long vdso_land = image->sym_int80_landing_pad;
- 		unsigned long old_land_addr = vdso_land +
-@@ -230,7 +230,7 @@ static int load_vdso32(void)
- 	if (vdso32_enabled != 1)  /* Other values all mean "disabled" */
- 		return 0;
- 
--	return map_vdso(&vdso_image_32, 0);
-+	return map_vdso(&vdso32_image, 0);
- }
- 
- int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
-@@ -239,7 +239,7 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- 		if (!vdso64_enabled)
- 			return 0;
- 
--		return map_vdso(&vdso_image_64, 0);
-+		return map_vdso(&vdso64_image, 0);
- 	}
- 
- 	return load_vdso32();
-@@ -252,7 +252,7 @@ int compat_arch_setup_additional_pages(struct linux_binprm *bprm,
- 	if (IS_ENABLED(CONFIG_X86_X32_ABI) && x32) {
- 		if (!vdso64_enabled)
- 			return 0;
--		return map_vdso(&vdso_image_x32, 0);
-+		return map_vdso(&vdsox32_image, 0);
- 	}
- 
- 	if (IS_ENABLED(CONFIG_IA32_EMULATION))
-@@ -267,7 +267,7 @@ bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
- 	const struct vdso_image *image = current->mm->context.vdso_image;
- 	unsigned long vdso = (unsigned long) current->mm->context.vdso;
- 
--	if (in_ia32_syscall() && image == &vdso_image_32) {
-+	if (in_ia32_syscall() && image == &vdso32_image) {
- 		if (regs->ip == vdso + image->sym_vdso32_sigreturn_landing_pad ||
- 		    regs->ip == vdso + image->sym_vdso32_rt_sigreturn_landing_pad)
- 			return true;
-diff --git a/arch/x86/include/asm/elf.h b/arch/x86/include/asm/elf.h
-index 6c8fdc96be7e..2ba5f166e58f 100644
---- a/arch/x86/include/asm/elf.h
-+++ b/arch/x86/include/asm/elf.h
-@@ -361,7 +361,7 @@ else if (IS_ENABLED(CONFIG_IA32_EMULATION))				\
- 
- #define VDSO_ENTRY							\
- 	((unsigned long)current->mm->context.vdso +			\
--	 vdso_image_32.sym___kernel_vsyscall)
-+	 vdso32_image.sym___kernel_vsyscall)
- 
- struct linux_binprm;
- 
-diff --git a/arch/x86/include/asm/vdso.h b/arch/x86/include/asm/vdso.h
-index b7253ef3205a..e8afbe9faa5b 100644
---- a/arch/x86/include/asm/vdso.h
-+++ b/arch/x86/include/asm/vdso.h
-@@ -27,9 +27,9 @@ struct vdso_image {
- 	long sym_vdso32_rt_sigreturn_landing_pad;
- };
- 
--extern const struct vdso_image vdso_image_64;
--extern const struct vdso_image vdso_image_x32;
--extern const struct vdso_image vdso_image_32;
-+extern const struct vdso_image vdso64_image;
-+extern const struct vdso_image vdsox32_image;
-+extern const struct vdso_image vdso32_image;
- 
- extern int __init init_vdso_image(const struct vdso_image *image);
- 
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 432c0a004c60..08e72f429870 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -941,14 +941,14 @@ long do_arch_prctl_64(struct task_struct *task, int option, unsigned long arg2)
- #ifdef CONFIG_CHECKPOINT_RESTORE
- # ifdef CONFIG_X86_X32_ABI
- 	case ARCH_MAP_VDSO_X32:
--		return prctl_map_vdso(&vdso_image_x32, arg2);
-+		return prctl_map_vdso(&vdsox32_image, arg2);
- # endif
- # ifdef CONFIG_IA32_EMULATION
- 	case ARCH_MAP_VDSO_32:
--		return prctl_map_vdso(&vdso_image_32, arg2);
-+		return prctl_map_vdso(&vdso32_image, arg2);
- # endif
- 	case ARCH_MAP_VDSO_64:
--		return prctl_map_vdso(&vdso_image_64, arg2);
-+		return prctl_map_vdso(&vdso64_image, arg2);
- #endif
- #ifdef CONFIG_ADDRESS_MASKING
- 	case ARCH_GET_UNTAG_MASK:
-diff --git a/arch/x86/kernel/signal_32.c b/arch/x86/kernel/signal_32.c
-index 42bbc42bd350..e55cf19e68fe 100644
---- a/arch/x86/kernel/signal_32.c
-+++ b/arch/x86/kernel/signal_32.c
-@@ -282,7 +282,7 @@ int ia32_setup_frame(struct ksignal *ksig, struct pt_regs *regs)
- 		/* Return stub is in 32bit vsyscall page */
- 		if (current->mm->context.vdso)
- 			restorer = current->mm->context.vdso +
--				vdso_image_32.sym___kernel_sigreturn;
-+				vdso32_image.sym___kernel_sigreturn;
- 		else
- 			restorer = &frame->retcode;
- 	}
-@@ -368,7 +368,7 @@ int ia32_setup_rt_frame(struct ksignal *ksig, struct pt_regs *regs)
- 		restorer = ksig->ka.sa.sa_restorer;
- 	else
- 		restorer = current->mm->context.vdso +
--			vdso_image_32.sym___kernel_rt_sigreturn;
-+			vdso32_image.sym___kernel_rt_sigreturn;
- 	unsafe_put_user(ptr_to_compat(restorer), &frame->pretcode, Efault);
- 
- 	/*
+-#ifndef SYSCALL_ENTER_KERNEL
+-#define	SYSCALL_ENTER_KERNEL	int $0x80
+-#endif
+-
+ 	.text
+ 	.globl __kernel_sigreturn
+ 	.type __kernel_sigreturn,@function
+@@ -16,7 +12,7 @@ __kernel_sigreturn:
+ .LSTART_sigreturn:
+ 	popl %eax		/* XXX does this mean it needs unwind info? */
+ 	movl $__NR_sigreturn, %eax
+-	SYSCALL_ENTER_KERNEL
++	int $0x80
+ .LEND_sigreturn:
+ SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
+ 	nop
+@@ -28,7 +24,7 @@ SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
+ __kernel_rt_sigreturn:
+ .LSTART_rt_sigreturn:
+ 	movl $__NR_rt_sigreturn, %eax
+-	SYSCALL_ENTER_KERNEL
++	int $0x80
+ .LEND_rt_sigreturn:
+ SYM_INNER_LABEL(vdso32_rt_sigreturn_landing_pad, SYM_L_GLOBAL)
+ 	nop
 -- 
 2.52.0
 
