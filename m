@@ -4,121 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48C7FC47BDC
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 09:54:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 540B8C47BD8
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 10:05:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79A016B008A; Tue,  6 Jan 2026 04:54:18 -0500 (EST)
+	id 774966B008A; Tue,  6 Jan 2026 05:05:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 771BA6B0093; Tue,  6 Jan 2026 04:54:18 -0500 (EST)
+	id 71ABD6B0093; Tue,  6 Jan 2026 05:05:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6675B6B0095; Tue,  6 Jan 2026 04:54:18 -0500 (EST)
+	id 5EF436B0095; Tue,  6 Jan 2026 05:05:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 56D536B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 04:54:18 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D6061AA1B0
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 09:54:18 +0000 (UTC)
-X-FDA: 84301078596.09.F2029EA
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3168A100006
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 09:54:15 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RX22CWfu;
-	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 48F046B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 05:05:52 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA8231B4CF
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:05:51 +0000 (UTC)
+X-FDA: 84301107702.08.778BD26
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F1C58160002
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:05:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dp/tW1qp";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767693256;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1767693950;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V0eyoLBOuPdC8ApqYm/uvXjk9GHrnSsW/3To+GTw9X0=;
-	b=Lej9v6gEFy/Fq+WXd8a/4HJhluwlp+V+7Ae/ap2bLZj+7VCstYNm0bFOek9PCpwRgSe2FS
-	47STy5jqm/Hu5bF8iItJw+3koO0rFCbgB8S2PILsvZ7SAC28yqqzX8citdys7Bly7nAiZ6
-	YpLl9ay2ovFoy0DE4MzhMqh2f16BLCo=
+	bh=7bzH3NK4Uu8cfYQRDJ0IbIrNVOl2O3KL2y8eO7FudBE=;
+	b=ndjaYEVtff8hQjwqWDZxVRUyi7zFrv1PVUoapZdFCbySYp4kSX92veQZzHFCcQ/taYK72z
+	HW0WLi262Q5L+RxWLBsMZP8leb+P7lOt5Da8yhOzU//tVaXMrGV65GP0VcS1T6fWIQbGGs
+	Z/yWndan0MbEOhSOvbBd0lzpXniU068=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RX22CWfu;
-	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767693256; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dp/tW1qp";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767693950; a=rsa-sha256;
 	cv=none;
-	b=Fbk7Mtu69NCEFF38idUV7YuqQ1Guor84O9irpg33uBIYw14Dk0sDZrO17B9ge2I3DZJYvV
-	bueoDZlMq3h0AFSO58Igrv2ajYqpBuJ2wUKQJVwNCWarC1KwyxqZ8HMYpM9DkTfGfvkBRs
-	EVLDN2jL/ajBVhoS3BI39dxd9YMsAqs=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-64b921d9e67so1249432a12.3
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 01:54:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767693254; x=1768298054; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V0eyoLBOuPdC8ApqYm/uvXjk9GHrnSsW/3To+GTw9X0=;
-        b=RX22CWfuSp8xD4BgXXKXVP2SC5da7sEWB/xnLASpoygwTxg5ZAy6+6Y4XbJzTrORvD
-         dzS5J8FpsjGOy6gLTJYmpAXHaStI8iqVYvzc71xegygTq3s1QTbrz6w9lYYM6xcGBPM8
-         dkwaC047BkiPxKm279d3pVNGOgHnPjlV3LYG+pT7kfSIYdwlbptHmKWsrstWU2fmfjzo
-         gr5CSryWwbcSUHKtzdsArOOi58c1hjHMW1qZBfVXe9xUXNlOcuaco/r3kcyF+u1hu6o3
-         5gbllgDMxVmZ63aCPwLlu1AQkrpQ+dZPMMM4WNkVgZtwBT/n6ap7+0yGIA7BytO7whXb
-         DQeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767693254; x=1768298054;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V0eyoLBOuPdC8ApqYm/uvXjk9GHrnSsW/3To+GTw9X0=;
-        b=UXhsTexz75Yscrs11fmlY1TVY8EjksQnvyTBts8WMYJvZxytoljW8L5yt2mg3kjZ/I
-         VrXZdDBdhnAAaTPT+prb3R9suyg3ewQazE+MXPTU6DLOqokAtNAUB97c7eDhzyUtZE/d
-         MDtoDTU4MR6YIFYjBnMGrEUWPBuNiOrJfW5GGmeSKuBIK88HzIME3KH5movzJSWR+6Gv
-         vYEaFAnuntYzuCTzszTMsYS4+BbGceYHZjr+ClZJBctDGGjPmLL7PpINWH1lDXN2ra9z
-         mKUhD7/J1oPujDtjubiU4DZO00XObOXRvnPjfLWo11RJlFl1P/mOjRaLpBNlVgbFfDTc
-         bICQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXLHvk4BrhPd290XP2mzrVzGKy5Fi6gSbxp/NeObfLq4GOyfUYHyvGH5DjsGWIUDs/KmSZxZeHEmw==@kvack.org
-X-Gm-Message-State: AOJu0Yx94lf8XzUfS1cRHtpJtZai4cQdAvsAOzjSlu/j/U1OBrv3QV2D
-	NYnvFmwDjqUxKlfxcK98Ks1TLmjzqPsg+MHw2xSjHUMO7ZPhD4lso/o9
-X-Gm-Gg: AY/fxX7SMJc8qoRuw6OXHLPvWrrtHJrrlYZU7OEHL/l1e3IMxeB1eJz1KypfkIMA0OB
-	+YekRo/vRRnUxTCL5LzlB4gc5MOuf2kGy1iUb/AglagLMo81oXl3n7BmhAA/Fg2+17XpGe0PqZ4
-	9Bh45ADubEekR8yvBS/KcKrVnqhSGbRxT0OuUT3y+VgjcppruxfOHL3y91LPKWsx4XWqYPs7mhi
-	Ztqb7ebpwb9M+D5vvuCUrxmLriLBNtDXkZEZOwW5OyfDrFBWdOPzMdiD0gAYJByP1cqPK06Anjp
-	HJCcGkOIMjZVVtf/LuPMAx6LBwfPEp+rMMx5towzf255hH+E5ooACi/4X5srTtMvGDujTwB44lg
-	wSHp/3gCDELpFTvQqgsMYuqYdlm8uIO43w1Jfp/ZOISAUyrh53fZVBrCB6boGIO3mbD2nrTgXv4
-	rQlYlexUBNgg==
-X-Google-Smtp-Source: AGHT+IG5JmLS3+ADHiEERF62cScjto4uOMG+vc1/H968gXrQDGX4tHaLpkbx2/1sQCUJAR8utHToyA==
-X-Received: by 2002:a17:907:983:b0:b7a:1bde:a01a with SMTP id a640c23a62f3a-b8426c3e8d4mr242565166b.62.1767693254294;
-        Tue, 06 Jan 2026 01:54:14 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a234000sm190563266b.4.2026.01.06.01.54.13
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 06 Jan 2026 01:54:13 -0800 (PST)
-Date: Tue, 6 Jan 2026 09:54:13 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
-Subject: Re: [Patch v2] mm/huge_memory: consolidate order-related checks into
- folio_check_splittable()
-Message-ID: <20260106095413.aqkrh4byh32qltli@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251223122539.10726-1-richard.weiyang@gmail.com>
- <20260104023756.jufklyl3bl64fnck@master>
- <7ca733d2-ba0d-4792-bcd8-bc153e7b1b15@kernel.org>
+	b=ZiiRZYJFXL4PxgOOUWF7e9gVIpO2JMLuAOkZTDAiVHfLNzV5zX/WONFnNWO3AttEGF5udd
+	QMP9bTQ00WPsW+C44V8wHfhsi2j7nd8hzy9Aw/c39a8l9SDHmn8AlVDtck3VpLUpdNz6+K
+	xkSI1oyWf+tSwcmWHJFBYo/XMW2DUo4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C0620401E9;
+	Tue,  6 Jan 2026 10:05:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B24C116C6;
+	Tue,  6 Jan 2026 10:05:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767693948;
+	bh=9tJVBrC2RGcJNRIoSkZGDIElVh+JiC6ZoPPf3FqVOlM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dp/tW1qp/Fn5nNEJxl3L2ALhHIsbH5fkOMhMgK13eS9JysC9cfo0Q2yVm4a/A3YYF
+	 N5Oaf4+GAH1Ixai+J1sG+GqmTa0PrjbHzA8aVAKBFZCkhfcbxi+aNMQopVmvcbJZm9
+	 ujT2abFFsoJANTNFADnywRjjq26Nlvut6CEccv79YBxRKzyI24GU/IXbuJBtdvoxOK
+	 As1ql9Ig58dZ/lTlkt89OkOFNXrp2tY2/W0X8xJaH4fW2G970DE5jL1JDBSPWgROy1
+	 QRrC1oc+T+0W7sDyeVQ+W3LCjfyzrzEIHJu6rVOGWmgHeWhac0AILBLCpZcUVp/LTk
+	 fI2hapOqqpJhA==
+Message-ID: <616c2e51-ff69-4ef9-9637-41f3ff8691dd@kernel.org>
+Date: Tue, 6 Jan 2026 11:05:43 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7ca733d2-ba0d-4792-bcd8-bc153e7b1b15@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+To: Jan Kara <jack@suse.cz>, Joanne Koong <joannelkoong@gmail.com>
+Cc: akpm@linux-foundation.org, miklos@szeredi.hu, linux-mm@kvack.org,
+ athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com>
+ <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam02
-X-Stat-Signature: 81pcq4ajzxidorr83tc8ihqjm3w88hqk
+X-Stat-Signature: d5tzcg59odb5c86zq6eud9n481zifdpw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3168A100006
-X-HE-Tag: 1767693255-124878
-X-HE-Meta: U2FsdGVkX18kHRZJuFy1Un1xfjT+RLSoPeUPP6tk+J2pc7ouv5ZSeG5y9HZQjc40S5NlW6R/GLgju40/+1hcUkgCZZg9YVI8DuxkU+zDIX7sJXui8cBBvrlIpgqkq3ko00TT5hiR+ra8qs+O3X92bTkbMxW0/F+qu9mSNjzoswUU2MiTFET1t/XINOxs7pteTlYVj2wIZLQO0rIPBgjTpOG8uL4pHn63puFd14x1EaAo/wbvgWwIDYJIbIIGAnbLVSnKIr8/ZfsDykghYLlVTlGoMM2uDVuYxv5oC547SrAaZyQq9avLa84FpcGgXLoi2NXJR1TOHQW1B6j/IXFxP7JuPp8dc7cIJNwzY2lNoE/28Nf+um2bTvOvlkOJcDIjKfbVFQZRzVGSro2LaAjcxC4mTlWLmzyerFLXGWMD04DNlaDGgbJ2Y2iSS2slKOxu5nPANPR6ckQVJ/+JWCvBTYdD0PWXuPBHRevBev2EyzeCoPwxCZ+eMu28+2YmI6yCKKeQaVzsm7KxB+8a1INc/qYIOP/GMSs3igwN1nqYql8jP8ksCTtcCvh74XtR+Rg7YtIY8GAelExhwa3iMCISPVBZVFzPgvDMeK2mlW2UWS0Tiv/VanjDnWgpXdO5mcbopO8oRihE7RYU3yuouvUKuXkELLgoZtUpi24fE09Xjsx2K+0MId8IEGJvDmeUvxcXgpjZKgq8cWHE3db2viCl/FcWkkXLaKOQwVkouy4el8QsfRizfJRXoeXYSHkEGyP2peVWuRBW8g8qqh3qtBqi8CCEG9h+KwilBCnRZTQqA7Zy+nutFnubKKcVoYPuENLtXdGexlTAHMWjwH8WAq7z7tV7tn4YAg1UJG6ypi/dtfsWnIZbjqorkocUanb7QxwTdOpF5crEp03bAjrj2jMR1Ra5kLj6F7XdlGwCjqTk3RdxQz4NnOyHF+Cckz1Ecqo8sVLe4teuad99j3QZaTZ
- cZIqe/Nf
- EPoRUAbcYsW3/rMX3H3/1JLaabg4qE6UCXJxWCw0d5ljwEYtLCEOiiU8H4TbKViqwOYDDLYTcC5yUbRofiuyawLEqE9DQLdsZbZzBUOj0Nu4TvuGKPlujmZKgbrkLALBespboBMYWVjQh0ONNzBjKJpKhwzjjigSjV4MneQsSkpOuyizOoK90OQ34UM7MFO18JEOxaQYm4wwK2TaLck9D21OhgS3y4hz3dxfERY4LhKXwsXioHv0d8ffFPQJeSZYHx+8/6WVG5hnrdydtXUIOU0nhg8PT1pT+rx4E7G983zNAc4h6qMN9orR3mAmSZ6HNw1hhFhSBxz3LfHe1A4ZRwz8jjhAEuDNAhnspPRRSzqFR8lXC1/aa5BNql8ir1OzxEzjgPRf0/P5b12tky4E9JuF1rKWuity00L3d5FY1QNcknrX1TZWtEXl7HLRkDNLegKAzG0JMB62XY+hocUhQMJkVYdYulrR4sMAiGvqm/4dfNOdB38tYNX4SmLJj5PDcS1mPl5dJ+acbMCAk6M/BwwAuO1y0IaKGsIkNNzg0T5RB/FexQHdHjxSTE2B7gOOOi48hrtAqmCSK1I9KOFL+o8IancvoPEXLLJvkOH+AUnnw3D/FBNZotKrBIxN93P0HlyQt33ulwUHpPBovixQpaHEPmb/otr4f6iAKJLvuGhn8/HgBv7JM78WGdf7qn6IaoHD0872V7mKv9his3DvU6ed2y+BL3v3asrSISzrbwJIN9g+7L2XT56T+7gFmF7eKarf1vB1c6d25oGTw3ymbVX3OAOIxxxy2iV363Zkw0y3mh8QP2t1lqx50lqeFwyCFZWWpjQYc/B7KzxQbSSau0gl9JM8VUg0I0bcfK24y/uIxzus7Sc6kOnFlwcJLehn0IKmCGN50j8ZmU97X383xYsMtQEyu+YzynaAp
+X-Rspamd-Queue-Id: F1C58160002
+X-HE-Tag: 1767693949-234950
+X-HE-Meta: U2FsdGVkX192leGp8Q6bGGHa2Mk5TFq6kOiaiKjF2p9vqlEDJWcFjZLlbJzq37qGBVUavDEO7zjx3T1s0LfcbWys1MRgvBT1+aA2HOjsic0FfYeay7qBY6iU/yDPgFS477bVkD0cZMlSEEeYVT6SZ4Nv5Rs0oxdYQkiVkTFrXjqLKauTEi/PMP3yQWa+xURHz3du4DADgUHt4ixM+L4x0w3tumhiE//qbvmCTnZT6RFNS4HsjdS+Ud2knV/9h7GVS8VCWMPogpRFJD+J5Tli1afeCVkNEaJ2P+0vWeroxkJbylBefeGvZIraDEJGmkD+vH0u6ojWgrIZgRf1NGpHMfryAJIzdUFzw9b00mYGb0JrpFgQLnCG+jFIuZvHTyVNaQlpROU4k90in6iTpQory+Jjw3CuW7Bnhjknw/2Ku5gN2F564yFAehbCHWDdEIxr7cnvQPcDXj3j4hC4aPVix645eyTMbdCqtm0XglF6Ld9PF4Asv56BoJN+DEgBDTzjSeu0RbCk1hfKb1ZdjZBQQ0rRp6VNxbl39b+SRCHzh/1FlnkE+AOAf1X26nn/Cedpro288hUQgHQJFrvrPgnVazfXaEyn923SSEQxztu5+mGMQt7LRVggJagUD6m7Zq/bFB88tAaDmSOF4wkpy7b27rVeecw6V86Zds3x6UUFwr18GXudRstWgQm33FjMe3XkYcY4Vp87yBKeaBWrZAL+fq2ydNc2F2fXlAwzt5/c7AGR71ZU+hiDSlvmPyrjqw+c//c0GLJoi+H2ostX64r9NPEm/X3YI6QC2tNDGc7zRnxPDr0D4QDwSrOuoTb9BIhrkQElIbb5qMscSunCKRTCbzWXEYPwkp1F4M/x3NX2FcenbBH1CpSHzCpZjPekO28ih+7rZXEpDvOyVJWJrC8pFzUWIrhbbSRd+FKNfIeZzLda1bZ1L82ibdKCt8/XDaa0i9zWXVQM5U6JrhAgg3s
+ Hrg/CERb
+ zpgwk3/h/2myB7+FAqBODhNecPOJy6u7Sm2So1YSjLHQK3xj3NXzWTH9Wqxnxams//JgI1BQUEH/98cYr6TXhanqVAmDfsF7o7bekTNhNwqOj9nbGclDnkYwRYSF++boO86s6y6EsceabjysosdggvjeMSbIG61TVLQkByLRAwTXTN/GVEIDF4lQdOOWsNdNeDHx/nbcKK9EJqXqM/RrkmgUW697kleboD/FwJf/pZrmmRXTQwFx0ukWpFYClnI2w69ipcSA8GeVUMCiJBLb3sJCSaHnjFFDI5uI5Zmd0nICMzrfjKzv0citE/pOvTzRfhnBpm+9dMg3/Aw9hmwtzg4JarAAodQ6SWfNILYqW0qd+Dcd9YrEp+MTPumMSPJUuokjrlnZw9hJwNQHYRR1s7P6uNi1mtC9/ENeLvTaVPB66NNhRZ9/H9+eRCMS3TbTfVy42Ugffy7jRI3A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,138 +141,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 05, 2026 at 05:16:45PM +0100, David Hildenbrand (Red Hat) wrote:
->On 1/4/26 03:37, Wei Yang wrote:
->> On Tue, Dec 23, 2025 at 12:25:39PM +0000, Wei Yang wrote:
->> > The primary goal of the folio_check_splittable() function is to validate
->> > whether a folio is suitable for splitting and to bail out early if it is
->> > not.
->> > 
->> > Currently, some order-related checks are scattered throughout the
->> > calling code rather than being centralized in folio_check_splittable().
->> > 
->> > This commit moves all remaining order-related validation logic into
->> > folio_check_splittable(). This consolidation ensures that the function
->> > serves its intended purpose as a single point of failure and improves
->> > the clarity and maintainability of the surrounding code.
->> > 
->> > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> > Cc: Zi Yan <ziy@nvidia.com>
->> > 
->> > ---
->> [...]
->> > @@ -3719,28 +3723,33 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
->> > 		/* order-1 is not supported for anonymous THP. */
->> > 		if (new_order == 1)
->> > 			return -EINVAL;
->> > -	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
->> > -		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->> > -		    !mapping_large_folio_support(folio->mapping)) {
->> > -			/*
->> > -			 * We can always split a folio down to a single page
->> > -			 * (new_order == 0) uniformly.
->> > -			 *
->> > -			 * For any other scenario
->> > -			 *   a) uniform split targeting a large folio
->> > -			 *      (new_order > 0)
->> > -			 *   b) any non-uniform split
->> > -			 * we must confirm that the file system supports large
->> > -			 * folios.
->> > -			 *
->> > -			 * Note that we might still have THPs in such
->> > -			 * mappings, which is created from khugepaged when
->> > -			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
->> > -			 * case, the mapping does not actually support large
->> > -			 * folios properly.
->> > -			 */
->> > -			return -EINVAL;
->> > +	} else {
->> > +		if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
->> > +			if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->> > +			    !mapping_large_folio_support(folio->mapping)) {
->> > +				/*
->> > +				 * We can always split a folio down to a
->> > +				 * single page (new_order == 0) uniformly.
->> > +				 *
->> > +				 * For any other scenario
->> > +				 *   a) uniform split targeting a large folio
->> > +				 *      (new_order > 0)
->> > +				 *   b) any non-uniform split
->> > +				 * we must confirm that the file system
->> > +				 * supports large folios.
->> > +				 *
->> > +				 * Note that we might still have THPs in such
->> > +				 * mappings, which is created from khugepaged
->> > +				 * when CONFIG_READ_ONLY_THP_FOR_FS is
->> > +				 * enabled. But in that case, the mapping does
->> > +				 * not actually support large folios properly.
->> > +				 */
->> > +				return -EINVAL;
->> > +			}
->> > 		}
->> 
->> Hi, Happy New Year to all :-)
->
->Happy new year to you, too!
->
->There was an offlist discussion about some of the text below, because a
->couple of people wondered whether it was an LLM-generated reply, and whether
->it is even worth the time to read.
->
->So I am curious, did you end up using an LLM to compose this reply, and if
->so, to which degree? Only to improve your writing or also to come up with an
->analysis, code etc?
->
+On 1/6/26 10:33, Jan Kara wrote:
+> [Thanks to Andrew for CCing me on patch commit]
+> 
+> On Sun 14-12-25 19:00:43, Joanne Koong wrote:
+>> Skip waiting on writeback for inodes that belong to mappings that do not
+>> have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
+>> mapping flag).
+>>
+>> This restores fuse back to prior behavior where syncs are no-ops. This
+>> is needed because otherwise, if a system is running a faulty fuse
+>> server that does not reply to issued write requests, this will cause
+>> wait_sb_inodes() to wait forever.
+>>
+>> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
+>> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+>> Reported-by: J. Neuschäfer <j.neuschaefer@gmx.net>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> 
+> OK, but the difference 0c58a97f919c introduced goes much further than just
+> wait_sb_inodes(). Before 0c58a97f919c also filemap_fdatawait() (and all the
+> other variants waiting for folio_writeback() to clear) returned immediately
+> because folio writeback was done as soon as we've copied the content into
+> the temporary page. Now they will block waiting for the server to finish
+> the IO. So e.g. fsync() will block waiting for the server in
+> file_write_and_wait_range() now, instead of blocking in fuse_fsync_common()
+> -> fuse_simple_request(). Similarly e.g. truncate(2) will now block waiting
+> for the server so that folio_writeback can be cleared.
+> 
+> So I understand your patch fixes the regression with suspend blocking but I
+> don't have a high confidence we are not just starting a whack-a-mole game
 
-The first three paragraph of the mail is polished by LLM, since once upon a
-time Andrew suggested me to use LLM to refine my text.
+Yes, I think so, and I think it is [1] not even only limited to 
+writeback [2].
 
-Others, including the code change is not LLM-generated.
+> catching all the places that previously hiddenly depended on
+> folio_writeback getting cleared without any involvement of untrusted fuse
+> server and now this changed. 
 
->Feel free to use an LLM to improve your writing, analysis etc. Just a note
->that nobody here is interested in getting LLM-slopped, so don't send
->unfiltered/unchecked LLM output to the list.
->
->In general, I think it was raised already in the past, please don't send
->patches for code you don't fully understand. It consumes quite some bandwidth
->for us reviewers/maintainers here and it just gets very likely to break
->things by accident.
->
->The comment change suggestion below does not make any sense to fix a warning
->we trigger. If an LLM wrote it, you should never have sent it. If you wrote
->it, you should have invested more time to understand the problem and come up
->with a reasonable solution ... or not worked on it in the first place if you
->don't understand the details.
->
->
->To the issue at hand: Zi Yan pointed this very thing out in v1 [1], no?
->
+Even worse, it's not only untrusted fuse servers, but also 
+trusted-but-buggy fuse servers, unfortunately. As Joanne wrote in v1:
 
-Hmm.. this is not the same thing.
+"
+As reported by Athul upstream in [1], there is a userspace regression 
+caused by commit 0c58a97f919c ("fuse: remove tmp folio for writebacks 
+and internal rb tree") where if there is a bug in a fuse server that 
+causes the server to never complete writeback, it will make 
+wait_sb_inodes() wait forever, causing sync paths to hang.
+"
 
-Actually before sending v2, I have talked with Zi Yan off-list and he said it
-looks good.
+> So do we have some higher-level idea what is /
+> is not guaranteed with stuck fuse server?
 
-But after triggering the warning, I re-read the history and found the logic is
-correct but comment is misleading. And current upstream don't report the
-warning if we want to split folio uniformly to 0 when the folio doesn't
-support.
+Joanne first proposed AS_WRITEBACK_MAY_HANG, which I disliked [2] for 
+various reasons because the semantics are weird. I am strongly against 
+using such a flag to arbitrarily skip waiting for writeback on folios in 
+the tree.
 
-Or more worse, we should split to 0, but we didn't.
+The patch here is at least logically the right thing to do when only 
+looking at the wait_sb_inodes() writeback situation [3] and why it is 
+even ok to skip waiting for writeback, and the fix Joanne originally 
+proposed.
 
-Thanks for your patience on taking a look.
+To handle the bigger picture (I raised another problematic instance in 
+[4]): I don't know how to handle that without properly fixing fuse. Fuse 
+folks should really invest some time to solve this problem for good.
 
->The patch as is cannot work: we cannot return -EINVAL for something that is
->not supposed to trigger a warning.
->
->[1] https://lore.kernel.org/linux-mm/01FABE3A-AD4E-4A09-B971-C89503A848DF@nvidia.com/
->
->-- 
->Cheers
->
->David
 
+As a big temporary kernel hack, we could add a 
+AS_ANY_WAITING_UTTERLY_BROKEN and simply refuse to wait for writeback 
+directly inside folio_wait_writeback() -- not arbitrarily skipping it in 
+callers -- and possibly other places (readahead, not sure). That would 
+restore the old behavior.
+
+Well, not quite, because the semantics that folio_wait_writeback() 
+promises -- writeback flag at least cleared once, like required here for 
+data integrity -- are just not true anymore.
+
+And it would still break migration of folios that are under writeback 
+even though waiting for writeback even for migration even though in 
+99.9999% of all cases with trusted fuse server will do the right thing. 
+Just nasty.
+
+Of course, we could set AS_ANY_WAITING_UTTERLY_BROKEN in fuse only 
+conditionally, but the fact that buggy trusted fuse servers are now a 
+thing, it all stops making any sense because we would have to set that 
+flag always.
+
+There is no easy way to get back the old behavior without reverting to 
+the old way of using buffer pages I guess.
+[1] 
+https://lore.kernel.org/linux-mm/504d100d-b8f3-475b-b575-3adfd17627b5@kernel.org/[2] 
+https://lore.kernel.org/linux-mm/f8da9ee0-f136-4366-b63a-1812fda11304@kernel.org/[3] 
+https://lore.kernel.org/linux-mm/6d0948f5-e739-49f3-8e23-359ddbf3da8f@kernel.org/[4] 
+https://lore.kernel.org/linux-mm/504d100d-b8f3-475b-b575-3adfd17627b5@kernel.org/
 -- 
-Wei Yang
-Help you, Help me
+Cheers
+
+David
 
