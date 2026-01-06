@@ -4,137 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11807CEFCF1
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 18:50:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5FC7CEFCF0
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 18:53:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 789D46B0092; Tue,  6 Jan 2026 13:50:45 -0500 (EST)
+	id 4826C6B0088; Tue,  6 Jan 2026 13:53:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70C566B0093; Tue,  6 Jan 2026 13:50:45 -0500 (EST)
+	id 459A86B0093; Tue,  6 Jan 2026 13:53:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 630DA6B0095; Tue,  6 Jan 2026 13:50:45 -0500 (EST)
+	id 33B416B0095; Tue,  6 Jan 2026 13:53:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 50F726B0092
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:50:45 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 21947C2B57
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:50:45 +0000 (UTC)
-X-FDA: 84302430450.17.AF0961E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 42C164000E
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:50:43 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tq1cJ425;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767725443;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D58C6B0088
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:53:03 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0473BB89F
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:53:02 +0000 (UTC)
+X-FDA: 84302436204.10.A4C8A57
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B0EDDA0013
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:53:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=X8bCeI6g;
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767725580; a=rsa-sha256;
+	cv=pass;
+	b=hAiC3vHX4ce6l2/mmgi9hiyrMx0fHcf383ftIpHSqrcCBzNiYfkP/mFeXTu0FmgnRZlGD+
+	zjYfSlIeZGhHKzoIdrpie96+nErIKaNIIT+G4RyWnK5Qhqv0NPT6Yvu+NSbWSyApDEPL30
+	A7QEphs2y125DIlRm8C4Zn1lZBp5Hsc=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=X8bCeI6g;
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767725580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T8mM/QCyTmzBYiYUuOzpkdSyfocSouqvRtj/NUsgV2g=;
-	b=aiD+3OFtZOdVNvpl/d8B1taoPnUU6Pfrw91WKFTPKkF5w41x5oa0Ht2c9Xi5DrftIzgiRO
-	b6aajXZAMruLFN5ycLNR43NlWMXbgyary9ViliYqPrlGKGS9LAZM8KQHeZAhFswBFj9gCz
-	c2Yto90R9BFZxs6dzbvhRRhfwPMcpo0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tq1cJ425;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767725443; a=rsa-sha256;
-	cv=none;
-	b=amMo8MzEIMZgjbOvmvb/FiXlq9vI/boUGiNKEyd63FSYV3Xs5ih7uHCz87LfKxJ5QHgjkW
-	5DgNIX6LcOfvTBKvgSyfN+1qNEi92+yrYGSfTVej6pBzuktHbjAXlC1iTE2FhiXr5/4JkV
-	o1tQkUkDU97AjEMyCWRd347dKbqC8z0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 66BD2443D2;
-	Tue,  6 Jan 2026 18:50:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3307C116C6;
-	Tue,  6 Jan 2026 18:50:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767725442;
-	bh=I/bcoXQ6kDpOCwpshNUvwwN7/ElnY0U8t+Mw0UoO0lI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tq1cJ425gNeqChPTy3WE50LL9HdUJu7POBrgUKJL2W39VOA8vFF9xtEHWEFS06gNC
-	 G0tn/jVfDVZIXidulUSDfbuE/7b/1Uvlh/jdU4uMr1A7fq773YAomQwKIrmtDWp5D+
-	 SwTtTSnSYEqrfbDCerRJTcMggsHFUooFYGJBhTwOVCH8DDIysH3NunrfEJGwsStVWT
-	 PLt/OueGqUbk+drqJgYTWW1SEY4mzR9Dy+LF6Lazkpn893XXR/rREFeiSZGEOcksIj
-	 9nBDcd9fSVfbNevQWcZSmdNu5672lu7FwE2Fx9YTwxqBdDsgvVNF1e3XkE5UYOom2E
-	 f/Y5MqCbL0+yQ==
-Message-ID: <42286636-2fca-4658-a79d-145ad1c37b37@kernel.org>
-Date: Tue, 6 Jan 2026 19:50:33 +0100
+	bh=GT+cnqqYCM1dG+HDgG3vFhUq+Y1V8HXnF1EzwS0uCwg=;
+	b=8n66d4DRPtE4QoAkDe//OqS9phlLjc/Fn8Ssf9U6+5kyEcEZqgEPbOCegMbZ7jaEbisEjS
+	Swks+5mxNUICynqlp0jYVB4H5hR2zWF6lZNxDWfljbR2EM/+KeNI2XHpZJwwGd1E7QPOuU
+	ucVQIClF3TmwC2JZX7F3Agkr859KIXc=
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-64b72793544so1014a12.1
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 10:53:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767725579; cv=none;
+        d=google.com; s=arc-20240605;
+        b=k/oXmUCjdwxpbfqhuxNb80+69mUnyhlrv7RaFJFkiysnSlv6NWDuTSC6lrQ1zgfuro
+         TxmKOC7WycJhccLp7lMzIv7YmJ3w8Sr2hl3uKBjxSzSXZz3R9KEnwKJ1Evp2Ue4e+i31
+         irw/Hq5R00oldVrxUT8SJbowlZwlNdFIMGSuMj/6vguf9p4QO9qFtaLd31KiJ94N9adu
+         yKtoO+QtL8J9RDtndSGtAzS56OA+jKGOHSpJ3y2lJSRcCYHE0MGQmjC/2ubymRomuvL0
+         vSWPoKw9urf+BfG6zpCJzXWDlKtv7AS6sz3Ejel/UlGAdb6JayW/gzp4MS5i0eS7C/Yc
+         Fx9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GT+cnqqYCM1dG+HDgG3vFhUq+Y1V8HXnF1EzwS0uCwg=;
+        fh=8VnPxrU1LYm9ffWtvtUNT6MGFqZvXsY3t7s4L71m5CA=;
+        b=lmCnh64MwcpUZi19jShq/8O2WL60Vqj3VKa1TcQ8tiHZWqUDCLInQcGs8q6nqK0aSy
+         WEaNklE5UEItIShWOKHMmHShf3C/KID+I64pLsBveEQP3BbCc/4b8A78etHkNQ3dNN9y
+         6H2/lakLphjY2fiYj90YHturzk9fCCBrwFFRXrH+yR1gtHYiu09Mjv+Tg0crEUmusTHs
+         l4zIBeS7uRjFsbRPVP1DVfz5XwRZXDuCdpE2FlbLxcfkwMeeG1A5yYSynrwp2as9o5EM
+         n8RyCymXTEgd/OBwtjCUbKOqyenv+irmAf7W7urkwklaShC+KVgGsKRrG4JqwCPnUNPQ
+         RBsg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767725579; x=1768330379; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GT+cnqqYCM1dG+HDgG3vFhUq+Y1V8HXnF1EzwS0uCwg=;
+        b=X8bCeI6giXqRg4pVeP+wp6asxN2fYdI95nVWTd8QyCBiJmwbRmq1xKqXI8rbQEPGMM
+         hnWiGLRJPcTMmlzQcJgZIPpKyWWBKTbOmE73oBsJnYgw8PkQ7YBsDZ8kxAURm4alkvLY
+         V5V6/CcFQ6p3wNiI4iPyLGiHSr/oIM6iirBEwsIqaNrvWIv+tAQsMh6qZ4bOwOKJzUR5
+         c+XQshQ9e1NWsONSRc540j8ceCPcuPEFgnL5iQGZPPfi+jCGBfjrOatdrV/HpWS2ydVu
+         7REq/gCuC3t75vEMm6i9hcbnoe/q6cGULgKm6aypP+ftTCBE9MDPQQVmUo/oQUoFNU3S
+         U2jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767725579; x=1768330379;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GT+cnqqYCM1dG+HDgG3vFhUq+Y1V8HXnF1EzwS0uCwg=;
+        b=r+CLY/qkiwipfpsbCJKS86MTHo3ziIxz2AcoOz0lZsjjaGJkvdo5IDepNF4wQJrDob
+         XAPWcR3HPAYTFhznR9kTPtWMZW3Gd3onRrWNIK390w2eqvALefHnPdmrwT/OZGTfIT+g
+         2jQvqoRY3dhYe1fOl7QzgiBqkRr5VkvG22NhQXRsp+TNtQ5cDUNskbFtbaW+Sa29SFsD
+         OIH4OQJJwKSmunQlYE2zsApLuvz+RRKdXB+N1xumzLstz4PI0djRFgap8k57WWd8V6zd
+         AqEao2qjGAzKhdJzdrPv39S4yRK9Ufx4PmjdDtp0dx9JgdyZlDr1n0o5deVynE4sju18
+         ZELw==
+X-Forwarded-Encrypted: i=1; AJvYcCWglZudNEy3eGJ2FrA80P3I12N85EvOOpsA4Yghha7tk0bRQsioxLL/0gJgY4AkXgv8Sd2rXc5UzA==@kvack.org
+X-Gm-Message-State: AOJu0Ywkos/zOKvRIXHHWVFgqtXKvGXWyN00gUSFSd9P8r/EoJxvBJil
+	4xODhxl/nJ8iTJWgU9CTK6ohBaITbsIyO7GRIMc1Vwh99Zbhus+CdNiI5mRMb6I9tD9vwAafNNA
+	EU4Yhpil56h+zAiJmqFI11hEKTNQJff0RpBJ7xsHY
+X-Gm-Gg: AY/fxX5UGtmuPcetlbZRxutYpHl6d4/Sbb5fKBpSOHDIeU2QnAZE7rtXbyyg7UTBnyj
+	S8aF/4jW95ozKf3dLF7h9BzWsHqGcbpUlt1tym83lb2JvvGui/OWdAN1BbATiUWl21d6M9CbeYa
+	hIDpim/QlLdwAMxUzyLpoMRywFPm6Hf0xygXw8OrIoQ8Efz/Te7y83XnN0RcT0lDqcVuV2eyaqO
+	SGmlvT8jaIln7dgIZZE7EtH9QmvGRmfAS0vztB9xg7XlHfE/7jTBW3HRsoz0RtLUnSVRgPxAr5P
+	16spJvZ5K/9t4w7+QkzIKbhvZw==
+X-Received: by 2002:a50:ee15:0:b0:64b:4494:6417 with SMTP id
+ 4fb4d7f45d1cf-65097b21180mr2250a12.6.1767725578613; Tue, 06 Jan 2026 10:52:58
+ -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/4] iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
-To: Mostafa Saleh <smostafa@google.com>, linux-mm@kvack.org,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
- akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org,
- xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org
-References: <20260106162200.2223655-1-smostafa@google.com>
- <20260106162200.2223655-2-smostafa@google.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260106162200.2223655-2-smostafa@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <cover.1765970117.git.lorenzo.stoakes@oracle.com>
+ <3acc90a8613d5e2ea8882d60b5677228e6fe624d.1765970117.git.lorenzo.stoakes@oracle.com>
+ <fkgm4eqdwymljueszhsfyvm2zksc6x4vagca2mlnpl7vtawap4@d7obev7d5hce>
+ <CAJuCfpFYQasYVb3ds_-55aqhnjBaX2oH7fJ_wJSPZQybiSrAPg@mail.gmail.com> <13c66c95-ca0d-4711-b755-676ec4066811@lucifer.local>
+In-Reply-To: <13c66c95-ca0d-4711-b755-676ec4066811@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 6 Jan 2026 10:52:45 -0800
+X-Gm-Features: AQt7F2pH2xjuAfpicCFxvpEdCTszQbUFDYy_poR4rB3s3j9Ea7380lM2yk_G_Ls
+Message-ID: <CAJuCfpGt7=RXW_MHy+1kEN3N=kV9zO+E_b9ybqtpWz79eVhnew@mail.gmail.com>
+Subject: Re: [PATCH 1/8] mm/rmap: improve anon_vma_clone(), unlink_anon_vmas()
+ comments, add asserts
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 42C164000E
-X-Stat-Signature: rd4aoj3dhqiupmzuyywmrmfjsposo4es
-X-HE-Tag: 1767725443-196186
-X-HE-Meta: U2FsdGVkX1+Yb+R51OF6+0g5VykdV9y/WQi4ekl4w1+LuP9v6h4V5YovDM2OnVVmWtomzg31s3NycPWtopXIfRy7dFgCK3Bz5k9HRPaxGeLRohwRepdDx7HeB2hS6/iivQWHP6GHl5W46G+zthiNczfZsPT6ehNYbYf5iAP8yMmgenRY5Xng3/q05ObDF7NrnDTSgTv4qyqgr9TwN8cnyKP0AYw4egq+LhfWtQHBs/zseYmq/vGM7LHK8LCP67MVox6ml+rhA2IfYC1J3tot6Anp8rhRVqAc+c7XaR9FXV3+e6/eS6JDFUT/qvkT6VvMqTHVrOMa8msVqxoZkpYDTqmiY2ezfw2SauGvNnP0fyPOjTNwJLU9xLnW7Dcm/lVSw24YpVuK5oo2snOm5o5h16gko+EQxNosIUbUZ5jjQ3T01jImCeBg/2cXvIj1ydNlT0eDMUHjxQnaRlPoSNA+MJQbzb+x6IWMPaYo+43CivgJvOPWzSe6MXjst9BAJLR7u10UQlFhjt+uWJr1VZzsvPtN25QYavern2tW9z+VIXHnaVEYigMNl+iIdcAfCWdpWpYoRbHH8AAve2lP0rwe5T2juGmM1OWROBydUYFaBDNY2qGHglMvTl8wk+tRqCCJUAQYsVMDmdyU+RYtgq7K+ZhEG987XPSZzAqkGsawZIVR4aqeAeN7h+VXa303thD0Xg63R3/Hs9V6XTLXIH5wcix2LV7ZswNm8w4ZxsPbVDpPFNw07vmCOtjIJlRGeYWXItYMBSc+7Su3/doSvo8fJVIoKa4a5OVfu2AKJy/Kazux+P3BoBiXHaS3u0KxUBg9SShNlYSTvxYwa0J5Ep4xr9UNWLFifyFIC0caQIIYeHSxHbl5egq12SUrq8LvueXP1qAblsF9uMJiFly59v2ZZv32lE9R/VqW5fAH+Ou2CykkBotEO+lQ7P+8bSpExEc7BP1yjk+UoMH/j05t8RU
- sSl1gMNX
- 2bOamkSUYJJe3BfZX3Gnxca9hOfUiYvveaHCrFtCTdgj4QXBz4sG73moYmE8ea+sYqvHPIMGuPwzrSiwCNEChzhpLR2lJQsmBEk5BVs2zPCQDVG+yh9WQVCq9fuxB4ePZHpkzmXXO6HMFzJSw/zm6ohv2QwQz8gMCv9Wf1JqIUydTYKNaKEkJWv4mf406fYbxxn5wxr7wer7cWpzrYvWBgI1G37jCS8MkoKCgX/+ortkHbG/sJgMU+3zkhB7lx8G+KWqQZJejONpGQxlYXRVDuIO5qjYkxlOXbQ8aEMixn/kteJxCGZwhwfpe9e2iJaThtoqNKB84abvoT9ZKCclsqvvN1fV6/YSnllHxEyHkt4+8sVnAVC1Y4FqJScgiTbWmBk9HEpOQZjXVAsETp1DB1dt2RXUCDqDJ+4P6
+X-Rspamd-Queue-Id: B0EDDA0013
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 3j5fo3utrikpbswbj6bkfk3oysqzp6jp
+X-HE-Tag: 1767725580-496271
+X-HE-Meta: U2FsdGVkX19hKPo6iCXdb9oy66vQP/7Y2fFxKxRutid/FvyT3KMvoYk/vvU+EDiY8m1Ayn9sAqx8eozSrFnpA/NpM3UfPlCBz1oP8w/O7go5T9C+p21aqYmonBVn4L7W0wxFd2TIEUIjQcAXc+IClxr3F8SH9ff9wKAk9q+Lo2gAK3EkD5w7PuCoudzTQ6ebCxzSWlVJco/iiH/zgUUZBPVuiOsby7GRtk/0xeN1De+ef+hXL4J8agajFw3mDHiGIw6GzpSZL1toA6iTcpS1Guj5hGJ2MnVvRbe8zUcnNmWZERmQfQ6Yx4fnQ2zh7PFPdEv8aHdwrLRSjBA/O/YJBkt3vt00mwMLsI3JqpuQpHgpuaFgR7XIgm7Q9YDuWOQUor1CMQxNDz0hgUyE/83lEENEqs0J/1t8gB6FEmkrL9GLnOmQDo5iSRCMX0AyJNxYs4S7DFov94nhMLGFdIZ8K2DfhKERcSfCZZ0tit/+usUU3IIrpb4Srqb+6Iiwqp9ZS9Mwmx37t3+DvRsxNyANRNn+LcVFfT3DIQKnP2W/NQoWUaLsNupLUBrfml3G+xN32yLD1vVPpx2ZE2/Dycb0T2+k7IIMUkUVaozcrWZOq0XhbbLP8kDsC0LYDgpQMgNBPOeqmkdNuRMOuuVP0NVEB6I+rUeyte2DcSXCBlRoaKoT8LO0GuTEi729ubuBCVGeA8KSpOflAqsYtTPS61NTDAbLsMRl3lBmXKRTi65wUI9vFyIW3DFnazGeulp3WwWasfCWWr9XraVJOF+lUU0rXfgOqGFQqrHwKMlClgxw3Z59TrLZA9PHReSdjEzKPVQvy5jwq2pbDfuH4ucQRHXSeV1oFfE12fA0T06V3dhV8Jj8Kwq1RuU79gHW48g4XI2aBy2HrBHHdKf9MixG8hof4nMdwaWiE53hWfYXzCqdTJwoGo4glB15ENnmLG6cCybCVqutWkdR0neo5QgSMSJ
+ cn7C1iMC
+ PVG/9+A0Q5wTkMZoYdSnSHsyy8iQxD6i7pOs7OclKwJZNccwt16aVY7fruGD0VvHOQSCAtT7nnzu542lsVwQ5TT7NHRqhVonfflReUo/bLiulO7KQB0J8/WGPACybw7S56evmi7nZCmtFcaM3TEGrHJ1YSgEHLZH8beeM+nVhBh+7BH+JARk/UgqkAhfuWk1B3/Do6dcFuLCfH715E/47jfR0HynqkAbmZDOA+eTCbgrOSYYrMBYY2xcNYQokeqfW1bMCQtnvZ3lzxngJqWNew9kB4/+fF7PbkB8x94z5Z9Ap2D/EQ+5XKL65lA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,53 +147,332 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/6/26 17:21, Mostafa Saleh wrote:
-> Add a new config IOMMU_DEBUG_PAGEALLOC, which registers new data to
-> page_ext.
-> 
-> This config will be used by the IOMMU API to track pages mapped in
-> the IOMMU to catch drivers trying to free kernel memory that they
-> still map in their domains, causing all types of memory corruption.
-> 
-> This behaviour is disabled by default and can be enabled using
-> kernel cmdline iommu.debug_pagealloc.
-> 
-> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-> Signed-off-by: Mostafa Saleh <smostafa@google.com>
-> ---
+On Tue, Jan 6, 2026 at 4:54=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Mon, Dec 29, 2025 at 01:18:04PM -0800, Suren Baghdasaryan wrote:
+> > On Fri, Dec 19, 2025 at 10:22=E2=80=AFAM Liam R. Howlett
+> > <Liam.Howlett@oracle.com> wrote:
+> > >
+> > > * Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [251217 07:27]:
+> > > > Add kdoc comments, describe exactly what these functinos are used f=
+or in
+> > > > detail, pointing out importantly that the anon_vma_clone() !dst->an=
+on_vma
+> > > > && src->anon_vma dance is ONLY for fork.
+> > > >
+> > > > Both are confusing functions that will be refactored in a subsequen=
+t patch
+> > > > but the first stage is establishing documentation and some invariat=
+ns.
+> > > >
+> > > > Add some basic CONFIG_DEBUG_VM asserts that help document expected =
+state,
+> > > > specifically:
+> > > >
+> > > > anon_vma_clone()
+> > > > - mmap write lock held.
+> > > > - We do nothing if src VMA is not faulted.
+> > > > - The destination VMA has no anon_vma_chain yet.
+> > > > - We are always operating on the same active VMA (i.e. vma->anon-vm=
+a).
+> >
+> > nit: s/vma->anon-vma/vma->anon_vma
+>
+> Thanks will correct.
+>
+> >
+> > > > - If not forking, must operate on the same mm_struct.
+> > > >
+> > > > unlink_anon_vmas()
+> > > > - mmap lock held (read on unmap downgraded).
+> >
+> > Out of curiosity I looked for the place where unlink_anon_vmas() is
+> > called with mmap_lock downgraded to read but could not find it. Could
+> > you please point me to it?
+>
+> In brk() we call:
+>
+> -> do_vmi_align_munmap()
+> -> ... (below)
+>
+> On munmap() we call:
+>
+> -> __vm_munmap()
+> -> do_vmi_munmap()
+> -> do_vmi_align_munmap()
+> -> ... (below)
+>
+> On mremap() when shrinking a VMA in place we call:
+>
+> -> mremap_at()
+> -> shrink_vma()
+> -> do_vmi_munmap()
+> -> do_vmi_align_munmap()
+> -> ... (below)
+>
+> And the ... is:
+>
+> -> vms_complete_munmap_vmas() [ does downgrade since vms->unlock ]
+> -> vms_clear_ptes()
+> -> free_pgtables()
+>
+> I've improved the comment anyway to make it a little clearer.
 
-[...]
+Ah, now I see. Thanks!
 
-> +#endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
-> diff --git a/mm/page_ext.c b/mm/page_ext.c
-> index d7396a8970e5..297e4cd8ce90 100644
-> --- a/mm/page_ext.c
-> +++ b/mm/page_ext.c
-> @@ -11,6 +11,7 @@
->   #include <linux/page_table_check.h>
->   #include <linux/rcupdate.h>
->   #include <linux/pgalloc_tag.h>
-> +#include <linux/iommu-debug-pagealloc.h>
->   
->   /*
->    * struct page extension
-> @@ -89,6 +90,9 @@ static struct page_ext_operations *page_ext_ops[] __initdata = {
->   #ifdef CONFIG_PAGE_TABLE_CHECK
->   	&page_table_check_ops,
->   #endif
-> +#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
-> +	&page_iommu_debug_ops,
-> +#endif
->   };
->   
->   unsigned long page_ext_size;
+>
+> >
+> > > > - That unfaulted VMAs are no-ops.
+> > > >
+> > > > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > >
+> > > Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> > >
+> > > > ---
+> > > >  mm/rmap.c | 82 +++++++++++++++++++++++++++++++++++++++++++--------=
+----
+> > > >  1 file changed, 64 insertions(+), 18 deletions(-)
+> > > >
+> > > > diff --git a/mm/rmap.c b/mm/rmap.c
+> > > > index d6799afe1114..0e34c0a69fbc 100644
+> > > > --- a/mm/rmap.c
+> > > > +++ b/mm/rmap.c
+> > > > @@ -257,30 +257,60 @@ static inline void unlock_anon_vma_root(struc=
+t anon_vma *root)
+> > > >               up_write(&root->rwsem);
+> > > >  }
+> > > >
+> > > > -/*
+> > > > - * Attach the anon_vmas from src to dst.
+> > > > - * Returns 0 on success, -ENOMEM on failure.
+> > > > - *
+> > > > - * anon_vma_clone() is called by vma_expand(), vma_merge(), __spli=
+t_vma(),
+> > > > - * copy_vma() and anon_vma_fork(). The first four want an exact co=
+py of src,
+> > > > - * while the last one, anon_vma_fork(), may try to reuse an existi=
+ng anon_vma to
+> > > > - * prevent endless growth of anon_vma. Since dst->anon_vma is set =
+to NULL before
+> > > > - * call, we can identify this case by checking (!dst->anon_vma &&
+> > > > - * src->anon_vma).
+> > > > - *
+> > > > - * If (!dst->anon_vma && src->anon_vma) is true, this function tri=
+es to find
+> > > > - * and reuse existing anon_vma which has no vmas and only one chil=
+d anon_vma.
+> > > > - * This prevents degradation of anon_vma hierarchy to endless line=
+ar chain in
+> > > > - * case of constantly forking task. On the other hand, an anon_vma=
+ with more
+> > > > - * than one child isn't reused even if there was no alive vma, thu=
+s rmap
+> > > > - * walker has a good chance of avoiding scanning the whole hierarc=
+hy when it
+> > > > - * searches where page is mapped.
+> > > > +static void check_anon_vma_clone(struct vm_area_struct *dst,
+> > > > +                              struct vm_area_struct *src)
+> > > > +{
+> > > > +     /* The write lock must be held. */
+> > > > +     mmap_assert_write_locked(src->vm_mm);
+> > > > +     /* If not a fork (implied by dst->anon_vma) then must be on s=
+ame mm. */
+> > > > +     VM_WARN_ON_ONCE(dst->anon_vma && dst->vm_mm !=3D src->vm_mm);
+> > > > +
+> > > > +     /* No source anon_vma is a no-op. */
+> >
+> > I'm confused about the above comment. Do you mean that if
+> > !src->anon_vma then it's a no-op and therefore this function shouldn't
+> > be called? If so, we could simply have VM_WARN_ON_ONCE(!src->anon_vma)
+>
+> It's a no-op :) so it makes no sense to specify other fields. In a later =
+commit
+> we literally bail out of anon_vma_clone() if it's not specified. In fact =
+the
+> very next patch...
+>
+> > but checks below have more conditions. Can this comment be perhaps
+> > expanded please so that the reader clearly understands what is allowed
+> > and what is not. For example, combination (!src->anon_vma &&
+> > !dst->anon_vma) is allowed and we correctly not triggering a warning
+> > here, however that's still a no-op IIUC.
+>
+> Yup it's correct and fine but it's a no-op, hence we have nothing to do, =
+as you
+> say.
+>
+> I thought it was self-documenting, given I literally spell out the expect=
+ed
+> conditions in the asserts but obviously this isn't entirely clear. I'm tr=
+ying
+> _not_ to write paragraphs here as that can actually make things _more_
+> confusing.
 
-The MM bits LGTM
+Yeah, that comment just confused me a bit. If it's no-op then other
+conditions should not matter, yet we are asserting them. Anyway, I
+undersdand the intention and new new comment or no comment at all are
+fine with me.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>
+> Will update the comment to say more:
+>
+>         /* If we have anything to do src->anon_vma must be provided. */
+>
+> >
+> > > > +     VM_WARN_ON_ONCE(!src->anon_vma && !list_empty(&src->anon_vma_=
+chain));
+> > > > +     VM_WARN_ON_ONCE(!src->anon_vma && dst->anon_vma);
+> > > > +     /* We are establishing a new anon_vma_chain. */
+> > > > +     VM_WARN_ON_ONCE(!list_empty(&dst->anon_vma_chain));
+> > > > +     /*
+> > > > +      * On fork, dst->anon_vma is set NULL (temporarily). Otherwis=
+e, anon_vma
+> > > > +      * must be the same across dst and src.
+> >
+> > This is the second time in this small function where we have to remind
+> > that dst->anon_vma=3D=3DNULL means that we are forking. Maybe it's bett=
+er
+> > to introduce a `bool forking =3D dst->anon_vma=3D=3DNULL;` variable at =
+the
+> > beginning and use it in all these checks?
+>
+> Later we make changes along these lines, so for the purposes of keeping t=
+hings
+> broken up I'd rather not.
+>
+> And yes, anon_vma is a complicated mess, this is why I'm trying to do thi=
+ngs one
+> step at a time, so we document the things you'd have to go research to
+> understand, later we change the code.
+>
+> >
+> > I know, I'm nitpicking but as you said, anon_vma code is very
+> > compicated, so the more clarity we can bring to it the better.
+>
+> Right, sure, but it has to be one thing at a time.
 
--- 
-Cheers
+Ack.
 
-David
+>
+> >
+> > > > +      */
+> > > > +     VM_WARN_ON_ONCE(dst->anon_vma && dst->anon_vma !=3D src->anon=
+_vma);
+> > > > +}
+> > > > +
+> > > > +/**
+> > > > + * anon_vma_clone - Establishes new anon_vma_chain objects in @dst=
+ linking to
+> > > > + * all of the anon_vma objects contained within @src anon_vma_chai=
+n's.
+> > > > + * @dst: The destination VMA with an empty anon_vma_chain.
+> > > > + * @src: The source VMA we wish to duplicate.
+> > > > + *
+> > > > + * This is the heart of the VMA side of the anon_vma implementatio=
+n - we invoke
+> > > > + * this function whenever we need to set up a new VMA's anon_vma s=
+tate.
+> > > > + *
+> > > > + * This is invoked for:
+> > > > + *
+> > > > + * - VMA Merge, but only when @dst is unfaulted and @src is faulte=
+d - meaning we
+> > > > + *   clone @src into @dst.
+> > > > + * - VMA split.
+> > > > + * - VMA (m)remap.
+> > > > + * - Fork of faulted VMA.
+> > > > + *
+> > > > + * In all cases other than fork this is simply a duplication. Fork=
+ additionally
+> > > > + * adds a new active anon_vma.
+> > > > + *
+> > > > + * ONLY in the case of fork do we try to 'reuse' existing anon_vma=
+'s in an
+> > > > + * anon_vma hierarchy, reusing anon_vma's which have no VMA associ=
+ated with them
+> > > > + * but do have a single child. This is to avoid waste of memory wh=
+en repeatedly
+> > > > + * forking.
+> > > > + *
+> > > > + * Returns: 0 on success, -ENOMEM on failure.
+> > > >   */
+> > > >  int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_stru=
+ct *src)
+> > > >  {
+> > > >       struct anon_vma_chain *avc, *pavc;
+> > > >       struct anon_vma *root =3D NULL;
+> > > >
+> > > > +     check_anon_vma_clone(dst, src);
+> > > > +
+> > > >       list_for_each_entry_reverse(pavc, &src->anon_vma_chain, same_=
+vma) {
+> > > >               struct anon_vma *anon_vma;
+> > > >
+> > > > @@ -392,11 +422,27 @@ int anon_vma_fork(struct vm_area_struct *vma,=
+ struct vm_area_struct *pvma)
+> > > >       return -ENOMEM;
+> > > >  }
+> > > >
+> > > > +/**
+> > > > + * unlink_anon_vmas() - remove all links between a VMA and anon_vm=
+a's, freeing
+> > > > + * anon_vma_chain objects.
+> > > > + * @vma: The VMA whose links to anon_vma objects is to be severed.
+> > > > + *
+> > > > + * As part of the process anon_vma_chain's are freed,
+> > > > + * anon_vma->num_children,num_active_vmas is updated as required a=
+nd, if the
+> > > > + * relevant anon_vma references no further VMAs, its reference cou=
+nt is
+> > > > + * decremented.
+> > > > + */
+> > > >  void unlink_anon_vmas(struct vm_area_struct *vma)
+> > > >  {
+> > > >       struct anon_vma_chain *avc, *next;
+> > > >       struct anon_vma *root =3D NULL;
+> > > >
+> > > > +     /* Always hold mmap lock, read-lock on unmap possibly. */
+> > > > +     mmap_assert_locked(vma->vm_mm);
+> > > > +
+> > > > +     /* Unfaulted is a no-op. */
+> > > > +     VM_WARN_ON_ONCE(!vma->anon_vma && !list_empty(&vma->anon_vma_=
+chain));
+> >
+> > Hmm. anon_vma_clone() calls unlink_anon_vmas() after setting
+> > dst->anon_vma=3DNULL in the enomem_failure path. This warning would
+> > imply that in such case dst->anon_vma_chain is always non-empty. But I
+> > don't think we can always expect that... What if the very first call
+> > to anon_vma_chain_alloc() in anon_vma_clone()'s loop failed, I think
+> > this would result in dst->anon_vma_chain being empty, no?
+>
+> OK well that's a good spot, though this is never going to actually happen=
+ in
+> reality as an allocation failure here would really be 'too small to fail'=
+.
+>
+> It's a pity we have to give up a completely sensible invariant because of
+> terribly written code for an event that will never happen.
+>
+> But sure will drop this then, that's awful to have to do though :/
+>
+> Hey maybe we'd have bot reports on this (would require fault injection) i=
+f this
+> had been taken to any tree at any point. Ah well.
+
+I'll look into the new version to see the final result. Thanks!
+
+>
+> >
+> > > > +
+> > > >       /*
+> > > >        * Unlink each anon_vma chained to the VMA.  This list is ord=
+ered
+> > > >        * from newest to oldest, ensuring the root anon_vma gets fre=
+ed last.
+> > > > --
+> > > > 2.52.0
+> > > >
+>
+> Thanks, Lorenzo
 
