@@ -4,95 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33A4BCD0421
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 05:25:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07DDECD0438
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 05:56:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 878686B008A; Tue,  6 Jan 2026 00:25:51 -0500 (EST)
+	id 318D56B008A; Tue,  6 Jan 2026 00:56:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85A0E6B0093; Tue,  6 Jan 2026 00:25:51 -0500 (EST)
+	id 2F12C6B0093; Tue,  6 Jan 2026 00:56:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75BE86B0095; Tue,  6 Jan 2026 00:25:51 -0500 (EST)
+	id 1FC936B0095; Tue,  6 Jan 2026 00:56:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 635DD6B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 00:25:51 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AFB461403C6
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 05:25:50 +0000 (UTC)
-X-FDA: 84300402060.24.19DEE58
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B15F640002
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 05:25:48 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="IbmOCT/e";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767677149; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EFC36B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 00:56:05 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9155FB9670
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 05:56:04 +0000 (UTC)
+X-FDA: 84300478248.14.98FDFC9
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A97B580009
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 05:56:02 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MDTCVqTi;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767678962; a=rsa-sha256;
 	cv=none;
-	b=XZ8+I1EAOfdFdKKP9BMze1YPtMCsHi0JlRVvyJK88ODjeFltkf3rBWk5NylsLw+csKrIJ+
-	xodAA1safc2/yHpDiRaw03tTAJZ8tPrR4upCDS/LJCxnfk8uHGeEPLqYN2nrXigpr2YiwX
-	jKbOFsfKP0c39/tRKy9/J3M8gAtU2WI=
+	b=rc71m4VePhKpnl+9cHLtm4J14zbZF4T1eMEekClMcmNzV+yMtWUZK/EfkdQbBNUp5eHZM9
+	HDWfSVgtjCrwKc7c8ncau0qO5cp6WGLueWLjEscfB5NyX9jPkyCPgagxQRKOJ8MYdpD8Mu
+	TsOkor9O80sC0pJXpTVM434xbnuOi/k=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="IbmOCT/e";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MDTCVqTi;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767677149;
+	s=arc-20220608; t=1767678962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/qScMDy8mz80NZ8SjOwgc1YriWtALcRcs1IwrYU/jNo=;
-	b=RRLpHvLYMuhmieTDw/hInJ7AtpL5lJIyoArEjTha2Ivm7qkpKmV0EHkvFU/XiXRsd2wi1u
-	bCi8QgDL2w+kzWAnI18NsLCE9fubtOoRqMEr87UQZmCHQMdkatt89FQBobYINzWXxMIgmz
-	OtP5Qzv+eo8wzyVN5Wa+hxn+sW0PsSY=
+	bh=BkCmBaf8nAhGe/XehVsJi/EpXcjBFJ/V7Iw1gyLZrME=;
+	b=KZ73fbK5uf2YtTontOtbekZXLvGzJVXyjba/Q2s1GlvNM4CA2hyRj49sEfB1p9eGrnxgg+
+	EZV6sj0dInDUQRMpJTOMuxMKGRkVLuFolrdtWMxSxt7hU5+RNf44yAAuHcxaL25TW+trhP
+	N8ycB2Y239xYVEHaNFzoxj/7JsqGoPk=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7b8e49d8b35so823153b3a.3
+        for <linux-mm@kvack.org>; Mon, 05 Jan 2026 21:56:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767678961; x=1768283761; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BkCmBaf8nAhGe/XehVsJi/EpXcjBFJ/V7Iw1gyLZrME=;
+        b=MDTCVqTisXkbrTkZkqTow3G9mLmk02fTuH4tyYvtH2vV9wtFUdnWgfiKPrw4kheoM4
+         72AnXAkSbrE08etkUVfr6O35RJ9HNi7HTRegC2RkUdpZrn9HqeZPaToRQjRn3hPiaShS
+         XFM5OOFPrk4WONAioxjGVYhn7oGMqnY4GUkHNVGyL3w7SW+71XVxMywGC6Nez4BtIU1O
+         oiaUyG1hUpJvEuomt3PuU/bv1AhBTkpwHY9DKRbmJe0xKVI6JQ6EeJFKzFxzoTs2Kwch
+         lDjhENZR1mJ9VJIBSKsC9ppQyU0eo/wPBbA5P1yOFNQwosjHuOwrLILHaHQzHPtdCZ9O
+         tQsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767678961; x=1768283761;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BkCmBaf8nAhGe/XehVsJi/EpXcjBFJ/V7Iw1gyLZrME=;
+        b=TdxeXF8+20M2tp0cVb+Uts+KtaTn8WRg5fh28t4VV07ku1uCYtPhbuPUO8R4eUCIIM
+         Bd5Y4XiLAGE7VpcqqtdVjFQx4kofVHyrOx+CUgbwxnvb1R9lzc/+zVmKvGJgQvIezXCp
+         +twmEeoq0oJ2hZeXWZekuLFACkFhVW1T9wfifYZZKJ6JyPgSgEn7CcWEY+JzdT3dDqpy
+         0P7VsOcT5xnEuVH6ETyMY9pajbOvGQaIphyNWEAh254tS+m9JNAIVykr84o7x0Sa9iLZ
+         joJ2BCOKuYcdgrdaXJBT+C2LAcQxq7MBzDr1Df2zrqoGsmwIBUGrB4KVpGhxDy42jt8o
+         06rA==
+X-Forwarded-Encrypted: i=1; AJvYcCViiHeiIHbWiwPUOcmxTtkARQVRkTYOxf+z1toyLNkAtU695wr/zddoYvRW8OfOMWClZQ0O04Du+A==@kvack.org
+X-Gm-Message-State: AOJu0YyNjJU/VqfsxBJ9Q7vs/Ib767A90PD4wvZve8p0pHoFBH6drXlJ
+	uGe1vwMmfKwyb4CQFVdq7kPTD4SBq1W4apNAOHGRaq8KcK6wpqtDkIdP
+X-Gm-Gg: AY/fxX62jcO2mJBO1aF3TCP73i4Hv00fwvtLDfqMeX+nNe6zKT3pd2Wwa2CNthVNNWu
+	SCBX65nYCJMEqQ2BItqA57EYPxUXaof+IPXRimSSg9M1Z9CAnDndXIxx/0j2g/VVfPcAggc+Sha
+	BEt+ZlmrohAdn+qM1m9O3CDWQMrh204Q9p6K7ppx6leEhxxxPqHZVHfXCBNcco9FvbS/gdGgwij
+	ql8ecfFv4gW6YdV5569nuacGC/TiRC1Phpb0j1vemKS9qp0Z9jGmnSX3w98dm3/SvMsgRrUXq4l
+	YbLF1cDTyUmrfHzktM6hA3yES0Hm/ybaep9sa3jox2m80K7sCUG6MRRbqWHAFWsaO825jN6D2JO
+	H33iVA3I/9VogXmYbqij90QTO7IEJWbvo8nAucAMiyAEZnf41Xd36aW0UWFL9dVcdKLwz5QofvR
+	zz9PAP7+pTtnUpDTkdWdOyXBk=
+X-Google-Smtp-Source: AGHT+IHhkJOQTD4pfA7Gs34xg7AIc6YAZfNu7WcsDUZ8ACVJoQvvvLrH9QPNNgl2vPSkvHxvZhOsXA==
+X-Received: by 2002:a05:6a00:8c04:b0:7e8:43f5:bd0c with SMTP id d2e1a72fcca58-8187f4a165fmr1853088b3a.33.1767678961337;
+        Mon, 05 Jan 2026 21:56:01 -0800 (PST)
+Received: from localhost.localdomain ([121.232.80.251])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819c5302c61sm877571b3a.42.2026.01.05.21.55.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 21:56:00 -0800 (PST)
+Date: Tue, 6 Jan 2026 13:55:44 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
+	richard.weiyang@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH v3 2/6] mm: khugepaged: refine scan progress number
+Message-ID: <zc4yspu5rq4he64std2f6l7mnyua36tudnwj7fgqmk4aioevzw@ungu66emhlgf>
+References: <20260104054112.4541-1-yanglincheng@kylinos.cn>
+ <20260104054112.4541-3-yanglincheng@kylinos.cn>
+ <69c9ac59-4fb2-42fc-a8ae-32f583e47de4@kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767677144;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/qScMDy8mz80NZ8SjOwgc1YriWtALcRcs1IwrYU/jNo=;
-	b=IbmOCT/e8a1pAevtWnDiO6JIJGso9sPNLtpDd2GQpMzpGtPvsaxNapWBckGntWrwF+EjKz
-	rONtdvkzcnMOQLXpP4iNDMQlSchWAyj/5Sq9QOtOV6tBm7uD3n5M9z9wD6uthI1S/QwHtF
-	k70TruFeqtl9143WknkiV2egqDB7pUM=
-Date: Tue, 06 Jan 2026 05:25:42 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <d7df4e26841d83154f2cc2487d5acbaf2ff2cc27@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v1] mm/vmscan: mitigate spurious kswapd_failures reset
- from direct reclaim
-To: "Shakeel Butt" <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, "Jiayuan Chen" <jiayuan.chen@shopee.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "David Hildenbrand" <david@kernel.org>, "Michal
- Hocko" <mhocko@kernel.org>, "Qi Zheng" <zhengqi.arch@bytedance.com>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Axel Rasmussen"
- <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
- <weixugc@google.com>, linux-kernel@vger.kernel.org
-In-Reply-To: <gd7qbyakigogdbfxkujtc2ewwfzbwudn2l6vqkbkttv46wkfrd@nqseltiu2do5>
-References: <20251222122022.254268-1-jiayuan.chen@linux.dev>
- <4owaeb7bmkfgfzqd4ztdsi4tefc36cnmpju4yrknsgjm4y32ez@qsgn6lnv3cxb>
- <2e574085ed3d7775c3b83bb80d302ce45415ac42@linux.dev>
- <u2llnnpmpsgarwrt74ffgo3cuwe4apdbeh5hkclzbh5gykwltb@whb7uuj7ub5i>
- <e93c75cb1a46a60ec415215c555312c82b9145ac@linux.dev>
- <gd7qbyakigogdbfxkujtc2ewwfzbwudn2l6vqkbkttv46wkfrd@nqseltiu2do5>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: B15F640002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: f4rizz8zt3jpiini1x5z39dwqshnsm5y
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69c9ac59-4fb2-42fc-a8ae-32f583e47de4@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A97B580009
+X-Stat-Signature: ytss6khwui9ofma76dax75knwis6dt3y
 X-Rspam-User: 
-X-HE-Tag: 1767677148-808921
-X-HE-Meta: U2FsdGVkX18aPsw5qRAGMb+3EkuYJGWB+EH05ULgIxzYaePOjlspnoeCrsmMB6sg6SrqYcgc27jLN0sekO07s+piMqeVwQG3Ao8D3VV1Atbr6aWroSCq8RkcFN3afsSYEjS+xiHUuppT83kdwJ+CzdEY6sReFrKqLS6fhOcvnKZjnzlGplubGo1Osk5qmJl4bITPpji2BE6txBjt8lA1M+tLMNu7KQOjTH/msqTePAC8foAqxyYsdjX1MzAiRJB0Z69MD3Kh0+rEbGoGZYaVTKJI4UUSJyWL/QRJAPM3L4jRi4XG4JMuG4PGnZ73kNyIWZ0uR13T1Hay56u5i8GMha5oe2U2dtijBW3hG6tDo6Er0BHH1uoTLwyBhRpXR9Xb6QKtFCM+IEZgk3ZE7VtX3qScC+u3pG5r83MJAjCOm+fYKWqAFMOVcrHqHuSscz0T8ZzsRvaVaCamfZIixVEL7p/3KwEU2gWl16rxIoh2PFNe2QcDJ9kSvRqT7OMP8sLoeqQ37s1TnblQict1zy+b00nBuIRIrnO2YKrCbhFBMukWIxl3cRM+RhTfosBa9DW6EK3TcsTWOWsIvW7svLNpmAG/+sCQlfCYng2b7bD1LQd7snAPfqHWy/DW4znjc34VQ5rMGARTT7p3akFn/J7muOTSOVZpWJ2D+/62oOs8CpFAAjeUL+Ez5ayUWiAjfpn10MAAz5VYq1E8j2NKd4h71DNxgoeNd8w91ftN2dBBToxixOcYeQ3GfF1ZceX/DUIyQeceYYE7VeIeC1FykhLXDq1ey8ivjU6ubtDlVBgtbJgjvLVnPSOTSOXjG0CcSs/ajPw+/ktUg7CHNp9sq2Zk+DrYf1xwRVFcmzV3AXXUqYa9HDRf8IYFb0fpkN7A24UOoFYMciVf/xorXFw7Rx1E+PrzDgbFxABFhz5xPqY9TCBl/GGz73FuRB2Cxg9ylzvqi+Fh8axRNjBwJHkx1r6
- 8BdbvbuW
- OEIaPs4CwWVicpS731ncf/3QAi8jkAp+VnRhh/ZH0pd3RFWvtiKU2oSmyqFMblVL8PQuDqIAk1KAmrkaHzi2QcWiKIlOvbF0K4Kyy5jJJGcRBEdO0ZDOeo8dqdUkVRFmk5/dHfWGA+FsM7dMVG+Y5A7BMXQhW1Iheo5i8qJIT5tK9DQs5oAcflpkRkLKFu5MkDbnDow0OB2xTXXwZDbD80HgHAbhsepeOi/+H7Fs9YxwHqcA/wvIy966EKTdq83dj4PgLsEm58DlvfxjPSKe7uoQHR6/3IG7EO3kM
+X-HE-Tag: 1767678962-847239
+X-HE-Meta: U2FsdGVkX1/3mjwrQpfPL93VZbqtrDLlp/gF2K4jwbmgSo9NJeEd2cS7fUjTqdKwJ7w6tT1r+0+QyeQoHyhBcgWk1AsYa2JrcoSwXvT0xr0UbLUutoUoRKqzRx9aF+YOkvlirEGSa86T3ievUXYEPmoOOehIty01RMqgoKJLhQTI9tHeW5KCXGT4HUCClP0c1HKVlSOnTumGjpRElE3bjXPeoezk0830/zQ1aEBEN+YdsIC0miUo0koGeIpKdnbnEphOGo3KSm+5LA2RDs1P3be7/Soe8hyEiLRffDvkbo3+aM8NKILfkSS8TW3D0NEP2Ra7LMkBOjLhuPXQndQ6YJdI/ghiP2JDwhOxVc6Yghp61bxFgQ2xUqGDW5CPROlCTxs9MyL9zHUvTkrvM7Ah9Nd/YDBBQC6RCyM6CesczhPNxHovdSAyB4fKx0CRopl90XevlXxCaMnFuTIxf0nsKKOUXYn1MpnRfRyddmIZxecfE1tDvRR3LB4RaZViA/l9uizPq7WtzQoOQy2V7qql5jzEOTvqfu055Nc+0ThsOrM54LTb4eQ3lUwDxrxwvqZ9+ifXiUWzkmQxgmfcfW2PUTH/pUUGYg+kI+47uYss6mMIHx+Uwr6H26pKulR+rm3GPirJYwNvl+ojZz38xmhQvSbDrN3CtnkD+SJqtPLpYNxOWRVsYm+uui9zSkgJdc6PQNEceKSDc86F8i+z05rkko519vv4v6tnjXLBJMx8iTlhee5c/vuGyajerKccTfKTgnoyig4Tijr8auYmcayf2/aLO4Gy3/7H0WN7nf4jxnBxNpzP1tWbTgEdbIuGMAYdzHafJs11cjSYFKwo2SFIeBjrifHUBehNNvPO6f2wgnmo4HilCKIzMZ5v+uukEHvBCmLK51ZNFWKH9O3toCkmsbdEf6mX64EiDJcFK4YXTvovPHLMSYWUhnfo+oPtjTwj180WHnEYuLvI8U4Tq+X
+ OdoZJkoH
+ sMNU9kTcFlDlMUKVMf3SdufKCT20XLUmmkPCvSECGFnxFODMKxwYOFCDkdQmC5gXt7EKHt9aMTvffwzYe8TQtVcLRAlvAlvKWVseSzJw9gEr+YjTMAoXAzap9nGrII5NClkYZbF0QFuIY7X1oC94VIWbegF5R1c3lsbRbZ8r4ouCquzyS4DHgdcAP9zGcnetCVTb4k5C4iazPdoHpwjxOPm0+IUg3OqCAFSWaaHaxh+seS6iesH2IUh1y8G0LQPrTMB6zV2z0NreY9XnCKjvcuQcNt7z90bKgjP7iJrim3pPi+2UhDb0hoiLqcair2Op9c8ssARDD7UXflfrmviJVcqgWH/0KlX35aoGc86+AMeYedJrzM7ke/poxZ0qLpcnwdPq3h+OoCO9U2i/Bvc/aifeC7uNYb24zIcX1AxhcOlSFrZjWxTBF/jxH2gSpMwYnTvKm04ypWiSixZXFEEak3stUbxXUJnPNzMt8DM9un9ZlJwAHDn+Da3llfIJZ2C1eUt9hNTcq93M0qflK+gUig2LYMZuCPGtuTKDY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,236 +122,241 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-January 5, 2026 at 12:51, "Shakeel Butt" <shakeel.butt@linux.dev mailto:s=
-hakeel.butt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshakeel.butt%40linux=
-.dev%3E > wrote:
+On Mon, Jan 05, 2026 at 05:49:22PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 1/4/26 06:41, Vernon Yang wrote:
+> > Currently, each PMD scan always increases `progress` by HPAGE_PMD_NR,
+> > even if only scanning a single page. By counting the actual number of
+>
+> "... a single pmd" ?
+>
+> > pages scanned, the `progress` is tracked accurately.
+>
+> "page table entries / pages scanned" ?
+
+The single page is pte-4KB only. This patch does not change the original
+semantics of "progress", it simply uses the exact number of PTEs counted
+to replace HPAGE_PMD_NR.
+
+Let me provide a detailed example:
+
+	static int hpage_collapse_scan_pmd()
+	{
+		for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+		     _pte++, addr += PAGE_SIZE) {
+			_progress++;
+			pte_t pteval = ptep_get(_pte);
+			...
+			if (pte_uffd_wp(pteval)) { <-- first scan hit
+				result = SCAN_PTE_UFFD_WP;
+				goto out_unmap;
+			}
+		}
+	}
+
+During the first scan, if pte_uffd_wp(pteval) is true, the loop exits
+directly. In practice, only one PTE is scanned before termination.
+Here, "progress += 1" reflects the actual number of PTEs scanned, but
+previously "progress += HPAGE_PMD_NR" always.
+
+Previously discussed, just skip SCAN_PMD_MAPPED or SCAN_NO_PTE_TABLE,
+currently in Patch #3, not this Patch #2.
+
+> >
+> > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> > ---
+> >   mm/khugepaged.c | 31 +++++++++++++++++++++++--------
+> >   1 file changed, 23 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index 9f99f61689f8..4b124e854e2e 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -1247,7 +1247,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+> >   static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+> >   				   struct vm_area_struct *vma,
+> >   				   unsigned long start_addr, bool *mmap_locked,
+> > -				   struct collapse_control *cc)
+> > +				   int *progress, struct collapse_control *cc)
+> >   {
+> >   	pmd_t *pmd;
+> >   	pte_t *pte, *_pte;
+> > @@ -1258,23 +1258,28 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+> >   	unsigned long addr;
+> >   	spinlock_t *ptl;
+> >   	int node = NUMA_NO_NODE, unmapped = 0;
+> > +	int _progress = 0;
+>
+> "cur_progress" ?
+
+Yes.
+
+> >   	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+> >   	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+> > -	if (result != SCAN_SUCCEED)
+> > +	if (result != SCAN_SUCCEED) {
+> > +		_progress = HPAGE_PMD_NR;
+> >   		goto out;
+> > +	}
+> >   	memset(cc->node_load, 0, sizeof(cc->node_load));
+> >   	nodes_clear(cc->alloc_nmask);
+> >   	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
+> >   	if (!pte) {
+> > +		_progress = HPAGE_PMD_NR;
+> >   		result = SCAN_NO_PTE_TABLE;
+> >   		goto out;
+> >   	}
+> >   	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+> >   	     _pte++, addr += PAGE_SIZE) {
+> > +		_progress++;
+> >   		pte_t pteval = ptep_get(_pte);
+> >   		if (pte_none_or_zero(pteval)) {
+> >   			++none_or_zero;
+> > @@ -1410,6 +1415,9 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+> >   		*mmap_locked = false;
+> >   	}
+> >   out:
+> > +	if (progress)
+> > +		*progress += _progress;
+> > +
+> >   	trace_mm_khugepaged_scan_pmd(mm, folio, referenced,
+> >   				     none_or_zero, result, unmapped);
+> >   	return result;
+> > @@ -2287,7 +2295,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+> >   static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+> >   				    struct file *file, pgoff_t start,
+> > -				    struct collapse_control *cc)
+> > +				    int *progress, struct collapse_control *cc)
+> >   {
+> >   	struct folio *folio = NULL;
+> >   	struct address_space *mapping = file->f_mapping;
+> > @@ -2295,6 +2303,7 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+> >   	int present, swap;
+> >   	int node = NUMA_NO_NODE;
+> >   	int result = SCAN_SUCCEED;
+> > +	int _progress = 0;
+>
+> Same here.
+>
+>
+> Not sure if it would be cleaner to just let the parent increment its counter
+> and returning instead the "cur_progress" from the function.
+
+Both are good for me, I have implemented one version as follows, please
+see if it is cleaner.
+
+--
+Thanks,
+Vernon
 
 
->=20
->=20Hi Jiayuan,
->=20
->=20Sorry for late reply due to holidays/break. I will still be slow to
-> respond this week but will be fully back after one more week. Anyways,
-> let me respond below.
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 9f99f61689f8..4cf24553c2bd 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1247,6 +1247,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 				   struct vm_area_struct *vma,
+ 				   unsigned long start_addr, bool *mmap_locked,
++				   int *cur_progress,
+ 				   struct collapse_control *cc)
+ {
+ 	pmd_t *pmd;
+@@ -1262,19 +1263,27 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
 
-No worries about the delay - happy holidays!
+ 	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+-	if (result != SCAN_SUCCEED)
++	if (result != SCAN_SUCCEED) {
++		if (cur_progress)
++			*cur_progress = HPAGE_PMD_NR;
+ 		goto out;
++	}
 
-> On Tue, Dec 23, 2025 at 08:22:43AM +0000, Jiayuan Chen wrote:
->=20
->=20>=20
->=20> December 23, 2025 at 14:11, "Shakeel Butt" <shakeel.butt@linux.dev =
-mailto:shakeel.butt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshakeel.butt=
-%40linux.dev%3E > wrote:
-> >=20=20
->=20>=20=20
->=20>=20=20
->=20>  On Tue, Dec 23, 2025 at 01:42:37AM +0000, Jiayuan Chen wrote:
-> >=20=20
->=20>  >=20
->=20>  > December 23, 2025 at 05:15, "Shakeel Butt" <shakeel.butt@linux.d=
-ev mailto:shakeel.butt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshakeel.b=
-utt%40linux.dev%3E > wrote:
-> >  >=20
->=20>  [...]
-> >=20=20
->=20>  >=20
->=20>  > >=20
->=20>  > I don't think kswapd is an issue here. The system is out of memo=
-ry and
-> >  > most of the memory is unreclaimable. Either change the workload to=
- use
-> >  > less memory or enable swap (or zswap) to have more reclaimable mem=
-ory.
-> >  >=20
->=20>  >=20
->=20>  > Hi,
-> >  > Thanks for looking into this.
-> >  >=20
->=20>  > Sorry, I didn't describe the scenario clearly enough in the orig=
-inal patch. Let me clarify:
-> >  >=20
->=20>  > This is a multi-NUMA system where the memory pressure is not glo=
-bal but node-local. The key observation is:
-> >  >=20
->=20>  > Node 0: Under memory pressure, most memory is anonymous (unrecla=
-imable without swap)
-> >  > Node 1: Has plenty of reclaimable memory (~60GB file cache out of =
-125GB total)
-> >  >=20
->=20>  Thanks and now the situation is much more clear. IIUC you are runn=
-ing
-> >  multiple workloads (pods) on the system. How is the memcg limits
-> >  configured for these workloads. You mentioned memory.high, what abou=
-t
-> >=20=20
->=20>  Thanks for the questions. We have pods configured with memory.high=
- and pods configured with memory.max.
-> >=20=20
->=20>  Actually, memory.max itself causes heavy I/O issues for us, becaus=
-e it keeps trying to reclaim hot
-> >  pages within the cgroup aggressively without killing the process.=20
->=20>=20=20
->=20>  So we configured some pods with memory.high instead, since it perf=
-orms reclaim in resume_user_mode_work,
-> >  which somewhat throttles the memory allocation of user processes.
-> >=20=20
->=20>  memory.max? Also are you using cpusets to limit the pods to indivi=
-dual
-> >  nodes (cpu & memory) or they can run on any node?
-> >=20=20
->=20>  Yes, we have cpusets(only cpuset.cpus not cpuset.mems) configured =
-for our cgroups, binding
-> >  them to specific NUMA nodes. But I don't think this is directly rela=
-ted to the issue - the
-> >  problem can occur with or without cpusets. Even without cpusets.cpus=
-, the kernel prefers
-> >  to allocate memory from the node where the process is running, so if=
- a process happens to
-> >  run on a CPU belonging to Node 0, the behavior would be similar.
-> >=20
->=20Are you limiting (using cpuset.cpus) the workloads to single respecti=
-ve
-> nodes or the individual workloads can still run on multiple nodes? For
-> example do you have a workload which can run on both (or more) nodes?
+ 	memset(cc->node_load, 0, sizeof(cc->node_load));
+ 	nodes_clear(cc->alloc_nmask);
+ 	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
+ 	if (!pte) {
++		if (cur_progress)
++			*cur_progress = HPAGE_PMD_NR;
+ 		result = SCAN_NO_PTE_TABLE;
+ 		goto out;
+ 	}
 
-We have many workloads. Some performance-sensitive ones have cpuset.cpus =
-configured to
-bind to a specific node, while others don't.
+ 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+ 	     _pte++, addr += PAGE_SIZE) {
++		if (cur_progress)
++			*cur_progress += 1;
++
+ 		pte_t pteval = ptep_get(_pte);
+ 		if (pte_none_or_zero(pteval)) {
+ 			++none_or_zero;
+@@ -2287,6 +2296,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
 
-> >=20
->=20> Overall I still think it is unbalanced numa nodes in terms of memor=
-y and
-> >  may for cpu as well. Anyways let's talk about kswapd.
-> >  >=20
->=20>  > Node 0's kswapd runs continuously but cannot reclaim anything
-> >  > Direct reclaim succeeds by reclaiming from Node 1
-> >  > Direct reclaim resets kswapd_failures,
-> >  >=20
->=20>  So successful reclaim on one node does not reset kswapd_failures o=
-n
-> >  other node. The kernel reclaims each node one by one, so if Node 0
-> >  direct reclaim was successfull only then kernel allows to reset the
-> >  kswapd_failures of Node 0 to be reset.
-> >=20=20
->=20>  Let me dig deeper into this.
-> >=20=20
->=20>  When either memory.max or memory.high is reached, direct reclaim i=
-s
-> >  triggered. The memory being reclaimed depends on the CPU where the
-> >  process is running.
-> >=20=20
->=20>  When the problem occurred, we had workloads continuously hitting=
-=20
->=20>  memory.max and workloads continuously hitting memory.high:
-> >=20=20
->=20>  reclaim_high -> -> try_to_free_mem_cgroup_pages
-> >  ^ do_try_to_free_pages(zone of current node)
-> >  | shrink_zones()
-> >  try_charge_memcg - shrink_node()
-> >  kswapd_failures =3D 0
-> >=20=20
->=20>  Although the pages are hot, if we scan aggressively enough, they w=
-ill eventually
-> >  be reclaimed, and then kswapd_failures gets reset to 0 - because eve=
-n reclaiming
-> >  a single page resets kswapd_failures to 0.
-> >=20=20
->=20>  The end result is that we most workloads, which didn't even hit th=
-eir high
-> >  or max limits, experiencing continuous refaults, causing heavy I/O.
-> >=20
->=20So, the decision to reset kswapd_failures on memcg reclaim can be
-> re-evaluated but I think that is not the root cause here. The
+ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+ 				    struct file *file, pgoff_t start,
++				    int *cur_progress,
+ 				    struct collapse_control *cc)
+ {
+ 	struct folio *folio = NULL;
+@@ -2327,6 +2337,9 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+ 			continue;
+ 		}
 
++		if (cur_progress)
++			*cur_progress += folio_nr_pages(folio);
++
+ 		if (folio_order(folio) == HPAGE_PMD_ORDER &&
+ 		    folio->index == start) {
+ 			/* Maybe PMD-mapped */
+@@ -2454,6 +2467,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
 
-The workloads triggering direct reclaim have their memory spread across m=
-ultiple nodes,
-since we don't set cpuset.mems, so the cgroup can reclaim memory from mul=
-tiple nodes.
-In particular, complex applications have many threads, different threads =
-allocating and
-freeing large amounts of memory (both anonymous and file pages), and thes=
-e allocations
-can consume memory from nodes that are above the low watermark.
+ 		while (khugepaged_scan.address < hend) {
+ 			bool mmap_locked = true;
++			int cur_progress = 0;
 
-You're right that multiple factors contribute to the issue I described. T=
-his patch addresses
-one of them, just like the boost_watermark patch I submitted before, and =
-the recent patch
-about memory.high causing high I/O. There are other scenarios as well tha=
-t I'm still trying
-to reproduce.
+ 			cond_resched();
+ 			if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+@@ -2470,7 +2484,8 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ 				mmap_read_unlock(mm);
+ 				mmap_locked = false;
+ 				*result = hpage_collapse_scan_file(mm,
+-					khugepaged_scan.address, file, pgoff, cc);
++					khugepaged_scan.address, file, pgoff,
++					&cur_progress, cc);
+ 				fput(file);
+ 				if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
+ 					mmap_read_lock(mm);
+@@ -2484,7 +2499,8 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ 				}
+ 			} else {
+ 				*result = hpage_collapse_scan_pmd(mm, vma,
+-					khugepaged_scan.address, &mmap_locked, cc);
++					khugepaged_scan.address, &mmap_locked,
++					&cur_progress, cc);
+ 			}
 
-That said, I believe this patch is still a valid fix on its own - resetti=
-ng kswapd_failures
-when the node is not actually balanced doesn't seem like correct behavior=
- regardless of the
-broader context.
+ 			if (*result == SCAN_SUCCEED)
+@@ -2492,7 +2508,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
 
-> kswapd_failures mechanism is for situations where kswapd is unable to
-> reclaim and then punting on the direct reclaimers but in your situation
-> the workloads are not numa memory bound and thus there really is not an=
-y
-> numa level direct reclaimers. Also the lack of reclaimable memory is
-> making the situation worse.
-
-
-> >=20
->=20> Thanks.
-> >=20=20
->=20>  >=20
->=20>  > preventing Node 0's kswapd from stopping
-> >  > The few file pages on Node 0 are hot and keep refaulting, causing =
-heavy I/O
-> >  >=20
->=20>  Have you tried numa balancing? Though I think it would be better t=
-o
-> >  schedule upfront in a way that one node is not overcommitted but num=
-a
-> >  balancing provides a dynamic way to adjust the load on each node.
-> >=20=20
->=20>  Yes, we have tried it. Actually, I submitted a patch about a month=
- ago to improve
-> >  its observability:
-> >  https://lore.kernel.org/all/20251124153331.465306a2@gandalf.local.ho=
-me/
-> >  (though only Steven replied, a bit awkward :( ).
-> >=20=20
->=20>  We found that the default settings didn't work well for our worklo=
-ads. When we tried
-> >  to increase scan_size to make it more aggressive, we noticed the sys=
-tem load started
-> >  to increase. So we haven't fully adopted it yet.
-> >=20
->=20I feel the numa balancing will not help as well as or it might make i=
-t
-> worse as the workloads may have allocated some memory on the other node
-> which numa balancing might try to move to the node which is already
-> under pressure.
-
-Agreed.
-
-> Let me say what I think is the issue. You have the situation where node
-> 0 is overcommitted and is mostly filled with unreclaimable memory. The
-> workloads running on node 0 have their workingset continuously getting
-> reclaimed due to node 0 being OOM.
-
-From our monitoring, only a single cgroup triggered direct reclaim - some
-hitting memory.high and some hitting memory.max (we have tracepoints for =
-monitoring).
-
-> I think the simplest solution for you is to enable swap to have more
-> reclaimable memory on the system. Hopefully you will have workingset of
-> the workloads fully in memory on each node.
->=20
->=20You can try to change application/workload to be more numa aware and
-> balance their anon memory on the given nodes but I think that would muc=
-h
-> more involved and error prone.
-
-Enabling swap is one solution, but due to historical reasons we haven't
-enabled it - our disk performance is relatively poor. zram is also an
-option, but the migration would take significant time.
-
-Thanks
+ 			/* move to next address */
+ 			khugepaged_scan.address += HPAGE_PMD_SIZE;
+-			progress += HPAGE_PMD_NR;
++			progress += cur_progress;
+ 			if (!mmap_locked)
+ 				/*
+ 				 * We released mmap_lock so break loop.  Note
+@@ -2810,11 +2826,11 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+ 			mmap_read_unlock(mm);
+ 			mmap_locked = false;
+ 			result = hpage_collapse_scan_file(mm, addr, file, pgoff,
+-							  cc);
++							  NULL, cc);
+ 			fput(file);
+ 		} else {
+ 			result = hpage_collapse_scan_pmd(mm, vma, addr,
+-							 &mmap_locked, cc);
++							 &mmap_locked, NULL, cc);
+ 		}
+ 		if (!mmap_locked)
+ 			*lock_dropped = true;
 
