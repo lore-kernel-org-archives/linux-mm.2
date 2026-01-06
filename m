@@ -4,89 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED83BCEFD0C
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 20:59:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6397ECEFD11
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 21:08:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63F676B0092; Tue,  6 Jan 2026 15:59:17 -0500 (EST)
+	id B45C76B008A; Tue,  6 Jan 2026 16:08:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FF076B0093; Tue,  6 Jan 2026 15:59:17 -0500 (EST)
+	id AF3B16B0092; Tue,  6 Jan 2026 16:08:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50FF26B0095; Tue,  6 Jan 2026 15:59:17 -0500 (EST)
+	id 9F5536B0093; Tue,  6 Jan 2026 16:08:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 421AE6B0092
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:59:17 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F3E665CC65
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 20:59:16 +0000 (UTC)
-X-FDA: 84302754312.06.CB14F40
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1F10640011
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 20:59:14 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=M90BQAfj;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CB3C6B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:08:10 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2152F160C21
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:08:10 +0000 (UTC)
+X-FDA: 84302776740.04.0799AE7
+Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com [209.85.218.65])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2C0DBA000D
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:08:07 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=delta-utec-com.20230601.gappssmtp.com header.s=20230601 header.b=24giguF2
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767733688; a=rsa-sha256;
+	cv=none;
+	b=qmXuhsLgeNMm7EXDU7sY5o6VqfJktHBcXsuRWgjqLyYQDF6Ywtcf/ussYZCpfe9QBld96q
+	2L5mapfrz0XEBAnHtP2xJXe7TJM6Umb2UtCgq57DybJASzM3oT+E23EDYe4RcmC2HVKhgi
+	pgbUE3EQhAzAuXKYZOmJUDnhkHpxwvg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=delta-utec-com.20230601.gappssmtp.com header.s=20230601 header.b=24giguF2;
+	dmarc=none;
+	spf=none (imf15.hostedemail.com: domain of boudewijn@delta-utec.com has no SPF policy when checking 209.85.218.65) smtp.mailfrom=boudewijn@delta-utec.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767733155;
+	s=arc-20220608; t=1767733688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vk0TSqk+Q3gNiVjVEI88qN3K4YMlNT3Ne1LbxSQjNXw=;
-	b=Q4RSPwzvkTtn7obYsl5bMZoFFG7y6Jz9VFsva1UiH1ThveOXk1Yc0VGC0CygM3NILNjbLp
-	l1qr0TfX8DBLtJ0pOJUBERUvXRqFw/pbJUz1eALwyEZgtHN2Ke/7Wh+R+/phR3JMf6nzzJ
-	hmYeF9z6+BOaV/YkergymhTcDiY3vUM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767733155; a=rsa-sha256;
-	cv=none;
-	b=1X7lHregdDuiemYkhT8CtKZ1ZMVAzdV+87Ss5nVfZuALyD9qGkAuEhZVFz5ZiOxgW9V4vv
-	aPbueJiFCh+pmFKQoFeIyxRyIqKUCtWYqNhLkQjAxc5YpBkUvwEvGL/lZEvOmJU5QL+fwj
-	yrIEaTRhYe1yCYDNHNXLTBw8WRaaQpE=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=M90BQAfj;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D937443C19;
-	Tue,  6 Jan 2026 20:59:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D739C116C6;
-	Tue,  6 Jan 2026 20:59:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767733153;
-	bh=s8JI4AVlsCOv4ICnt24mH5HiGOEafgKJaj9Y+ffuZNU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=M90BQAfjWTj/KzZmq+K81A45dxfsHv9/1iVIGzvsbARktXCStO6+lsrcr4YtC7rdk
-	 nGKlxUxiSEqxTjbX4CqDH72MgCAo+HoVCL6GPpNCqh8lC4GzkBUqRUwZ5p0cTnoKV3
-	 ANz1NdRwS3hmq1B0O7jGws/IMbqxlBplqyx63Xwk=
-Date: Tue, 6 Jan 2026 12:59:12 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>, Mikulas Patocka
- <mpatocka@redhat.com>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>, David Hildenbrand <david@redhat.com>,
- amd-gfx@lists.freedesktop.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] fix AMDGPU failure with periodic signal
-Message-Id: <20260106125912.a4975dd1919c913c22fd5101@linux-foundation.org>
-In-Reply-To: <52bffed4-d9b0-4ec9-85a6-ba70e22106f3@lucifer.local>
-References: <6f16b618-26fc-3031-abe8-65c2090262e7@redhat.com>
-	<61c3d41d-602d-4dfc-872a-873acf653b6d@lucifer.local>
-	<20260106101249.be7514e75c09a928c6fa71ef@linux-foundation.org>
-	<52bffed4-d9b0-4ec9-85a6-ba70e22106f3@lucifer.local>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fn7ipaazicm3gbsr5d79j1neh66qysac
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1F10640011
+	bh=RqqUNyuXR+Yvt4RTDI+UgqNMmHuV3qmM4zjaX+NQuDM=;
+	b=PVHMwTrJfeo3ePCKDTR0Yy15D1e+yKYVH+LypjHkpWGwW+3r30S/ZTM4kuFKlmibtPPtCP
+	TqIQ6/ZkW81LM/QQuIXmEsz0R6BkFVgpuIFZkJjESVD6mdSzF7e7ZpNFGpePZ4/sZctQHe
+	+2QP9yN2njYZinMGn25OscEg12zj9uY=
+Received: by mail-ej1-f65.google.com with SMTP id a640c23a62f3a-b7a02592efaso231032766b.1
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 13:08:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=delta-utec-com.20230601.gappssmtp.com; s=20230601; t=1767733686; x=1768338486; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RqqUNyuXR+Yvt4RTDI+UgqNMmHuV3qmM4zjaX+NQuDM=;
+        b=24giguF25+uVz/zZExdGbejp7fqSxRSSQRPsPOS03RX+zKOJaUvNKRo7R5bnUDXF+W
+         seYDUXFU3vb3wvh4Tcbg+9V0r78A8g0BRkfnyilTpJ/BxVkbyNlxoLlVd0A3YQqQpEn5
+         tbU6Z3GMU7dWiybUz3e436y3xYRYjf2xbVnLu4tP5R8xwh8cx2Br1rtvM6UDpdmq7ktP
+         IL2X8yc8aiwOyMvRp7qCBnjNktgmOq3zgSucHTwwcj7wiGRe4yMkNzZAjWqOMxQJyTCa
+         69dfeqIMa89zUaEw0MqVsm2X3F3LQoYs4tQ1R4tKe1rQiywmX3iaT3vcH3DFzfg7hOqy
+         /BWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767733686; x=1768338486;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RqqUNyuXR+Yvt4RTDI+UgqNMmHuV3qmM4zjaX+NQuDM=;
+        b=ZlyMgS7fN+t28gs+JIv4DXPakffNo7nuho9c2v7E3tjhDxjTh22Tlsgg5JCsDndrlU
+         DGKEarPw3VUFdsb0XIl2iS/92x1KLDEuvpwoDa4MhvA5j1AJPTYDz26icN+g12MNBQvG
+         ioRNgHmawGupCJlhoA5SPdEYayauuygZq7WP5Ns7i7xZhHXzW6+rKCIVzqqQt/P9JG5W
+         2p2ACc2nW0TkhqVsGkOz7bgpHjUnQWoq1zfXDRWD8cMRne7+nvJgYZUU4QjAcnmtN6A6
+         Nit/uplkwBBC1CHNdjL8PMriBS55GKyVtWS6p5aI2pYe/NyVqq8yBkV8tVYdv5s7TSSt
+         T27w==
+X-Forwarded-Encrypted: i=1; AJvYcCVx6AZzutnPnFnDhJdPKbZVKhJmXc5UantCLePRr7LaBqlcXYzAFhqrX6HBTa/arhWiEiQh2xBVCw==@kvack.org
+X-Gm-Message-State: AOJu0YwWvt5B+fll69KUNVhSM0F2dBcKHRkReGrWdUfXGbyKjJqf2P6h
+	xvM8jZbN+SWa2ND52mA5f0eOy0wcxvfEvV5nzdd7ntTjsBfllTyN0sz0EpLCYZKa3w==
+X-Gm-Gg: AY/fxX7E3ArjLkZrksR1Ga0uuKZvyEr/VVaUl+5X4i9Ini2dY+eH6E7s9cvcQuE5/qP
+	+GPHfzHebekainyWO0Ippps8ElSbVfEIYqjgqziE7jxiB+7v2kB7+tKRCWNk39Oauxu42GO8qvf
+	mnP7w78GpqygfVhrRueFyWP4M6VH4QN99WGmf9il7BMjkV5UyRX9fu2nn4TtS2tyj2t0TkJewWz
+	FRtkw7lWg8QQ0EH3t37I65flF3Hik+ms4HgGYsgkZai17saeuTrwza7qadiuwjWrTTwCmj0YCrH
+	Zn0x03HHYJT8mIb32T1xiK9oncfGItyC9pcWd85yCdWKY5xPx3NaGOcYi9Et4Rt+3RfNaelZCwB
+	/TWCos5Ii2zBxQviRxaJAjMAjs3Z6WzorAeLMoLSXs7+nm9qV75qVz9IMXid9Bfui9wJ7dqI6ih
+	WGBNn0s9kXU1eWjdqKAE1ejje77y8qwlZ08zULvmRlS/zserTlKLsdslBhSPsLMdsilnrwcBCuU
+	TM4yD0G4cenSGcsVJCTGL6wfmOq7p7fsIBOZmByotLGL2iw6x0=
+X-Google-Smtp-Source: AGHT+IFUzgn3IMAbiaVWy1jakAZv6/wUacnrCtIooZwJJw+s/NPGplo36j3Vx+jccIDOiDOSIvcdMA==
+X-Received: by 2002:a17:906:ef0c:b0:b76:d54b:849e with SMTP id a640c23a62f3a-b8444f4ab76mr46587066b.34.1767733686468;
+        Tue, 06 Jan 2026 13:08:06 -0800 (PST)
+Received: from localhost.localdomain (2001-1c00-3405-d100-fd78-186a-9428-6b97.cable.dynamic.v6.ziggo.nl. [2001:1c00:3405:d100:fd78:186a:9428:6b97])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6507b22c3absm3033836a12.0.2026.01.06.13.08.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 13:08:05 -0800 (PST)
+From: Boudewijn van der Heide <boudewijn@delta-utec.com>
+To: Liam.Howlett@oracle.com
+Cc: boudewijn@delta-utec.com,
+	akpm@linux-foundation.org,
+	aliceryhl@google.com,
+	andrewjballance@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	maple-tree@lists.infradead.org
+Subject: [PATCH v2] maple_tree: Add lockdep assertion in mas_dup_alloc()
+Date: Tue,  6 Jan 2026 22:07:57 +0100
+Message-ID: <20260106210757.465586-1-boudewijn@delta-utec.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260103165758.74094-1-boudewijn@delta-utec.com>
+References: <20260103165758.74094-1-boudewijn@delta-utec.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2C0DBA000D
+X-Stat-Signature: q8czt34rrez1n8dww4uqadqy9emqukam
 X-Rspam-User: 
-X-HE-Tag: 1767733154-540779
-X-HE-Meta: U2FsdGVkX187WULEDgi8u6cOquyBSnoy0pffwxZEU4WW+GEGXGT0ISWo/mjxDkPP9tqw4myBmw8Gx04n0VoSX9msPfA1IiZHi88bqWlMbfp6dJS1oRU/468Ec7HnCgRTWxezGui8u3NW3NTPJPhjbzly+YXpEpZLqc/NU3NldOyaqMH/J0tbVVvGJXA9Vr7N8OOdq0xTVos9G460KLbcVijV5dNQSLhNNta972rppK9gZsnc+7aHHloFTFWm55lyzeJtpfmvpFlLpNgUSUE+TN4t38zh3KDeghYwd6/9j6quEPVoz2MJTYiFbBqz5xyAdxwaLNHOJ/0+uYHjfIEAVK0wjO8t4TpTaidXQPi/cuAtpDNW0LmeM6utp0IEupxqg/ZszO4VfI8XdCdUqufaU40ye2ddwc2x6mmqgsEt3fGKALp8lur87U+W4sSCXMQQnuyArl+1dSO7+Eblzb+2xwxTSDDocHpAJepzBnwLH1UyU9/eBIqyWQ2QY8ALxuOrPMC/DC9fFFogc6TLZaG0H04tA79x6mqftQMF3ZYD3JFeauQ/dB2DksQD7SJDPzZdaqw+LK4+jHqELwlnOBu0ccaUTy8KJ5lGCFDC6c2dFN4GdryCLJfrOnNxa/VU7L1fnOl/vxF/nE6B+f+KbowAWYBDpPCWXPLhzRMH8CLtuDX4HOPLgliJpYY1clNZwJppSQvxCQslFmTmrUOac/AKdLmSP4gn+CFyFz4/l8j5lJJy72j3zXPDNqOONsz6KZ6kzs1zFMWy86vsoT1cGQx8Gh8U7grcSPi7RI+4MeaIgUZbyEcCj4Ge32X9MmdsbaLMGoquA3nIrAPBSkIuTrdgZNZdFzxDyM4s/a2sqP+AbtCFrv1ta7/T6VetA2YY0VNJGaZquN34UlIbKuNQ37GBiyk1ia3SyISPbKHDvR4rlK6Z+prOhQR91uXINdrhsdZS6QIN1dP2vUguiuwjDAZ
- qqqrZbmo
- 3/FYolT8JNHTJS4RSi9w0O7rgUKgUlgQ0/WOeQUJOGCYtSDb443HA3haVCwWvYCAOMduHqmxHCqZp2Yl1PKesh9VPbvuxqYKIKNYgdxdMmOI6qKXqEsw3TtgxFQkv5qGnWeHkqeEMsngznqVVO0Uhx7U6YkujCeLoLMDyhHIzOgfxVgtM8f7k1oqPqh3Dt8Od4k5ryxvER1ILW0Hnv445wNa7wwxdXyy68JDLHnYZWoEclxfY70xX26FlMckYuOagdVuef+dtl27rnLM=
+X-HE-Tag: 1767733687-393337
+X-HE-Meta: U2FsdGVkX19TXFTyGDrygdJSBguhMSKjXSlBi+DHxUpdx8rXOQV9xeRiQ3U3TyczLykPxB4U/AZt4AZN2r6UmxPhltPIlmL++1xkUnt+Fsw6aPMmxwcfcWyOVy02mwNDph40pu228fTfU1luUr7GnFB6n6ANYquLqj02btHrVHlMNHApYMcJZej5ntmT9zzS+G6bgawUHkY6e8+DgsG+izK1eROswnzT1TxAx9DIlCXqp5Ob39fi1M+POVq7eG/3eA1FXb/p7Qa95j23pJa6hOHZCgXKAiXNqwyvjOzs7NvD/8u0qnNDZpZLx3S3w2LAdUIRVLLo6RN0zpkCYeWQJfMpX65YnhmiecjFHe4SMOgB1ayag3jUH9gmyPyyE3NJUZBrh/HL3VZEP4elfWqdB7XJWFxWF3dqCyiZZ+9eQSD/CohnZOOrjJJZMXNlqEcoUGNyc6k3sh3d7evxP3R+cagbNkduLOwj6nG8elh2v+9VrYmzq8kTvGgDRek6j1s6sqggxGuQQZiHVno9FaUfnI7KvbunFU5xFJdumi9qW4x+lZhioKnI5ZEuDHwc90eENTwzS/6I9/DeSA3EQPY0Qu7xv5yRA9pREZHl657zfwUSxMUwzmAJy9kukhiPHC6gzSfyiMLiVWRPiw/kor5ntZjbwejnfcdpPB0YwRcnCH7V9fssPAaQjnTJHvDd43iplSdA/gShqsetyS7phapmjFL2PoFBJgQyMkdOjt3tamqgtgkY6B1iMKuhFVoE6pG90umtGFFVy61/saLyAOE8UTYUseWPTK19me/VGBO+s3elok6/VHL63TQHdUjLkezT9lZTU7kUdByzkj0mP90zQ70nd+nKW5D28EeXtHqVKywL/9cZVFZwqbxMEtyPC8HZWE+poBoXQh3EpSFkm+Z9X9KG2Px8WJHWKft7DIyITEUYtIVheEit5UC7gyE3YE/3IrKYJ8Dj+qRJ/47CPFj
+ m8cX8u0u
+ uwbblvTSl1gnyn0575kfBRn3k+blKs+b+BWOnnYSZ6xiBAl744XCvaswzhhKTr22+GuDwCBrrqn39m6d9IYSvWCBWaaBjdiCbY7v5UcWQCaBkBJXv8MEHRXeHXSEuk8nvvE/4OGzs2Wms7n42Jhm59P/qnyhwVHz8XIXZHNaDOfOwU+OIaavL7+BJOyiawM5/Q+vpckSd4NKaY4J838Lw+9aAHKZkc5bwJKxVtJaH7vthdyjekskLyz9os7KQMlFI4fLRbOfuFaT/mCX4GtLHXtpEXvnftdkpesJls1SADgX10rYHkVkExRpqkqnF1eKLixc5FgQH6pgdfUErIgBGuGo+w4k95iKbmDfgM2aZZ/6+gryDqsdRN+mMSU7Q8AyZNqkBQmmH7PixYU7fESV2vdwXm5yaXxCOMS4wwYRzOtCVIKR0KLD6ct2+KR8kIlwmx2rfIXg8KgM0C5uXU3AzIb/H2X8x0xFoMQK0ngAoOXAu9rCgrmRpdNg13wD1cf4b4UUi7nFhZIF7FiQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,68 +123,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 6 Jan 2026 18:24:10 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+The __mt_dup() function requires callers to hold the appropriate write
+lock when duplicating a maple tree. Without proper locking, concurrent
+modifications during duplication could access invalid node slots.
 
-> On Tue, Jan 06, 2026 at 10:12:49AM -0800, Andrew Morton wrote:
-> > On Tue, 6 Jan 2026 11:51:49 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
-> >
-> > > I'm not sure if the git repos are lagging vs. quilt, but as reported this
-> > > patch breaks the VMA tests, and the tests are _still_ broken.
-> > >
-> > > Yet it's still in mm-new, mm-unstable, and even mm-hotfixes-unstable.
-> > >
-> > > This is interfering with my work, can we please drop this.
-> > >
-> > > Also the v3 is currently being debated, so surely should have been dropped
-> > > until we have this resolved?
-> >
-> > Well.  I don't drop fixes unless it's decided to be a non-issue or
-> > unless a better fix is available.
-> 
-> Even if it breaks the build and that's been reported on-list?
+Add a lockdep assertion to catch such API misuse during development.
+This is API hardening rather than a bug fix - all in-tree callers
+already follow the proper locking rules as documented above __mt_dup().
 
-I addressed that.
+Signed-off-by: Boudewijn van der Heide <boudewijn@delta-utec.com>
+---
+Changes in v2:
+    - Replaced runtime deadnode check with a lockdep assertion
+v1:
+    https://lore.kernel.org/lkml/20260103165758.74094-1-boudewijn@delta-utec.com/
 
-> >
-> > I've done this for ever - I've held onto "wrong" fixes for *years*.
-> > View this as a weird issue-tracking system for a project which has no
-> > issue-tracking system.  It's to prevent issues from falling through
-> > cracks and getting lost.
-> 
-> I think a lot of the issue is these processes seem to work to you but those
-> on the ground are finding them not to work.
-> 
-> The kernel today is not the same as the kernel X years ago, esp. in terms
-> of sheer volume.
-> 
-> Having a patch that none of the relevant maintainers/reviewers have seen
-> land in an -rc out of the blue is a really serious problem.
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index 5aa4c9500018..3b4357f16352 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -6248,6 +6248,8 @@ static inline void mas_dup_alloc(struct ma_state *mas, struct ma_state *new_mas,
+ 	void __rcu **new_slots;
+ 	unsigned long val;
+ 
++	lockdep_assert(mt_write_locked(mas->tree));
++
+ 	/* Allocate memory for child nodes. */
+ 	type = mte_node_type(mas->node);
+ 	new_slots = ma_slots(new_node, type);
+--
+2.47.3
 
-It isn't in -rc.  It's in mm-hotfixes-unstable and it's marked "acks?",
-which means not to go upstream without further consideration.
-
-> Also it was taken 2 months after it was submitted, so nobody could have
-> _possibly_ picked this up by reading the list. This is why I am really
-> underlining this case.
-
-That's why I grabbed it.  Had I not done so, this issue would have been
-lost.  What I do *worked*.
-
-> >
-> > It's unfortunate that this one causes disruption so I guess I'll loudly
-> > comment it out and track the issue that way.
-> >
-> 
-> I think we need a better approach, yes.
-> 
-> We in mm are really very responsive compared to most, I think asking people
-> to wait and resend if somehow it got missed is considerably saner than
-> 'well I'll take any patch purporting to be a fix from anyone so we keep
-> track of stuff'.
-
-If someone wants to step up and be MM issue tracking person then great.
-I don't want to be that person.
-
-And let me reiterate: had I not done this, the issue Mikulas identified
-would have remained unaddressed.
 
