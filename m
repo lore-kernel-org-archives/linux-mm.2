@@ -4,81 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7597CEFCE2
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 17:52:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B0F2CEFCE2
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 17:54:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2A806B008A; Tue,  6 Jan 2026 12:52:21 -0500 (EST)
+	id CF63B6B0005; Tue,  6 Jan 2026 12:54:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7C26B0092; Tue,  6 Jan 2026 12:52:21 -0500 (EST)
+	id CA4666B0088; Tue,  6 Jan 2026 12:54:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAC856B0093; Tue,  6 Jan 2026 12:52:21 -0500 (EST)
+	id BB0056B008A; Tue,  6 Jan 2026 12:54:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A57646B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 12:52:21 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4F19CC25D8
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 17:52:21 +0000 (UTC)
-X-FDA: 84302283282.28.F7AACE9
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AC78F6B0005
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 12:54:55 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 42B551AB5D8
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 17:54:55 +0000 (UTC)
+X-FDA: 84302289750.26.36E1F89
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BB2FE180003
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 17:52:19 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IbPCy0It;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3AA231A0004
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 17:54:53 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rWtodjAM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767721939; a=rsa-sha256;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767722093; a=rsa-sha256;
 	cv=none;
-	b=gdLYp6jjqXqRsYOysnzlcp2i9feVAkFuFaxqs9ypDFy6SK4E9SMuvDB+JWKwZ48rDqi+jE
-	mnsPNY+01Ul+TMqxT42NchhlVRcuzZFYZ94RiwITPr97sER4VdMmqU+Fsf1Tpc9rhea5pE
-	zAUijP9NYaynM+I7Pe1womfMVJcztEs=
+	b=uUVn8xBSadzRmQ2k+uioSwlcCf2EXT/5gdCDQygeLeLtez3T6VmrcSPwQqt1rKBH/pzxuy
+	ApgZJB0MjgYVcPE8YDjzmry7f0bWfpT1Ex9tHeaUejchWoVgbLcxXYrktS4FRGyio+c4+j
+	UFeZVBZLtYy0HYpwZ+VOXC57jbPHk/I=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IbPCy0It;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rWtodjAM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767721939;
+	s=arc-20220608; t=1767722093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m/CCcTi8r1YhegimpVdREms4A9cZmIkZfo3o4Pe972Y=;
-	b=fxNDkmY8h7I2lxyLbwLFDUyJ1UITKCVYR+Q3eIpCH/qQfmk7wZV/bw6+5gfRWNHXoGPZZp
-	H3r4WHxkgAMoy8SGyyS8s9+FQjSNcDahRNIR1s0zQC6TmIaoHwI2ujDIAd4tLe68AndtrS
-	88ydc+J5jeYzz63AmZF/oIdk3i8iLF4=
+	bh=C3dIuZFRjgDFlW51LoZADH2ZoeovtFoXctOU67zoqhc=;
+	b=ss7bOshwM7sTYAUFeHcoNXypduSzl4huU6N8nI9HEOYExIESa6bH2HJl1obja4kAkRg9oy
+	MaLsbq8L4iS1g/NGLwkalK7KPKGG66NLSNqZU6U+lOkouHfTsZBVNgcXVA+VBBoAc+GaFW
+	6G+jxOjbmMbXhZ2VRGTwa7CY1DgvvlU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D392A60007;
-	Tue,  6 Jan 2026 17:52:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D18C116C6;
-	Tue,  6 Jan 2026 17:52:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9D22A60007;
+	Tue,  6 Jan 2026 17:54:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39ABC116C6;
+	Tue,  6 Jan 2026 17:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767721938;
-	bh=p1c3WMeUaHTT26OVRketCaLs++7iT/cuCyQgsuGHZIg=;
+	s=k20201202; t=1767722092;
+	bh=v2sDP0QArV+gbzzixJfSSBn0r6oALTCxT9HXYbfR9k8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IbPCy0It3SRpYwFSDcRT1suC5krs1BsSmVkpDa3GSz4AoBiDOk2SLido9BDPE6+tw
-	 o6S//pbNCzHmzNhiVS/RMdb8z4SULvMlbDR1mGJoj/kVB5wXNZs+tkSUyvBpdbBHlQ
-	 1bPAyPvVhYhXOUrv2KTmH3Ou9JkV6braCMg6E6K57RynXGfK/gMd8R8IsCxiTZKXxg
-	 SN7t8OUkY+V6xdFq9oaDSAdjyPVXnzGKH1idzHDZKZlasJMVjicRgGEt+EFUQ7L0JI
-	 bFDxF0YobYZx5ky34zeue8BR8W6NLU9M/sbiNSKnvcPHGtFMYmBzqOwZBobA6lz2Er
-	 2p0emrh5DWvgw==
-Message-ID: <9575e042-39f4-4f01-80db-34aaaa9312e6@kernel.org>
-Date: Tue, 6 Jan 2026 18:52:11 +0100
+	b=rWtodjAMlxnZe+ay7i47Un1eMblNV0jNUO4l7ZFdY1AKQPkYueQEvjvoj2xIcNH8F
+	 LJHoaJRLY0oyqLUEVDDzijkrCHyH/F0yHheIDx/TkvmL8D+cVOTAmAAYl2t75Dmjde
+	 sIrG268Ydfr8+Mm87IxSNmU8yVdvGRII7sBxapjguupEDrG0hnUuILpBIiYsfV/R/c
+	 WEqqWsakmqnUurdVp1qz/n3ijAIu4QB40fvbVKJasoRY5Hyuh0c0EGvxAIvKY6cfJS
+	 YwIZ2OltZy3Cu4bJZoxNIqcUw4WcGccp1l5RYmGemuRbc8ImU+3mu5y0p055Y7MeOf
+	 T7q+bXPZXFa5w==
+Message-ID: <01ebe0c6-6135-4937-a758-93a5fc78d7fe@kernel.org>
+Date: Tue, 6 Jan 2026 18:54:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
- blocks to zone movable
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
- dakr@kernel.org, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, hare@suse.de
-References: <20260105203611.4079743-1-gourry@gourry.net>
- <7f053290-6b9a-4d18-936e-0f28006c79c3@kernel.org>
- <aV0_SMq_I_R7ikF3@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+To: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Jan Kara <jack@suse.cz>, Joanne Koong <joannelkoong@gmail.com>,
+ akpm@linux-foundation.org, linux-mm@kvack.org,
+ athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com>
+ <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+ <616c2e51-ff69-4ef9-9637-41f3ff8691dd@kernel.org>
+ <CAJfpeguBuHBGUq45bOFvypsyd8XXekLKycRBGO1eeqLxz3L0eA@mail.gmail.com>
+ <238ef4ab-7ea3-442a-a344-a683dd64f818@kernel.org>
+ <CAJfpegvUP5MK-xB2=djmGo4iYzmsn9LLWV3ZJXFbyyft_LsA_Q@mail.gmail.com>
+ <c39232ea-8cf0-45e6-9a5a-e2abae60134c@kernel.org>
+ <CAJfpegt0Bp5qNFPS0KsAZeU62vw4CqHv+1d53CmEOV45r-Rj0Q@mail.gmail.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <aV0_SMq_I_R7ikF3@gourry-fedora-PF4VCD3F>
+In-Reply-To: <CAJfpegt0Bp5qNFPS0KsAZeU62vw4CqHv+1d53CmEOV45r-Rj0Q@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BB2FE180003
-X-Stat-Signature: 8jzpqp7q84u3e9ey6mfbj5isb6icun3z
+X-Rspamd-Queue-Id: 3AA231A0004
+X-Stat-Signature: 1w7w1g1i5c3mmgjckcbmf9ct4zzjhyz9
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1767721939-246618
-X-HE-Meta: U2FsdGVkX1/0PTqpeFb4Mp9Q4WiyAN6SjUZEJJmLdwTgkHHZ9tZmNyDrfUROkkv61Oo23s7dxosE+4uBLZOOWT7QocdOiugXjf0GzH92zBtCODGxboU8wHiGc1EsdagaizY3eUnXYf8inMC0X3TX2r/sIXdEqOK2LmSAJhNEbMVgl3z0Nb0BAaCjqCN3z3TI7V7Xqs3COk5Fv6rkGhIiboNLMxVjHVvwdlFg+Yxw4Yit1A7DqqL+WFFYqCaERawV2qd0rXgCOi4lTGuUkMDTj+CUNvO3S7SRiYDXIEpqrJ8ZjBOTYg5G9+orJkI4Iar43vlgvZyeWGkVSJ2A0zhVyp6v+AzCAlQXX6EVuXE1hZjUc3X2TdK9Rqv9EZfqVgtM+CwkzWBRuHNIPXe6xIhn5hlwm86sG6WzbXGjthNLXBVSZoxokDi72pbkcQuYDSeSX9BfWizp9+JAHLy/0v4gukPw2fb9+JEUmaknGbUtk6w3AFv0Xs1IxYxyQxCnBfcMI1R6ESTqKH8xPM8oWszVSH1Jphqw0VxEutvm2xKkqkiwjw256PUk+hyNMFW47WLg+wNw5+GAgsxXv2x+jU69/MlSRQ2riWAfBIWV8WiMdAsYKfgwmZt3LkH4X/vb8lzeSUPALoMtdyU09ySfOQoaLmKlUvOKYqkMB2E47f/o/DhJsln3YIZJ3G6gPT4JEnwCDkrpMk1KhzTss/zUaFSeG2KEg9kNDrC6RUU+R4Yw0CibGNxpW2Sb9JVSV8AusRI99gUJVGQIcDKBhO+4QTyIGRafNpzOjNvY3wXBZ3F5HJ4/X0PifMUNme60XGwDujKE6bMm+qsdmJyEKwLs6jrl4Lyf9lwgedki04nzETfMb2QEklhIqYn5HllCmcGsyQqJkF+ouNmXz8ZsXrPlzlfO5jdzP5T0VFyaWSxh0h0XT0J0AGggzi+Wr+LT0eim85+NEeROVheU1+vS63ml3Sl
- rt4VwY3s
- xbihJ
+X-HE-Tag: 1767722093-705951
+X-HE-Meta: U2FsdGVkX1+MFkTsjGoiBjJOPHn+gPn3KSi+YqVMLNxXg+MSdQPssPf8ZvZUC3NV85jQ0+EfQs02TN65R9OcgLwjvPSGQP/pE9f7jbAJr24951F6XiVyynvIWHZzwz4O3RcpEV+OfIDh5NUjHHmnVQyEYpo9Wt7OX7nEq9Prt3WFyYf2FaVdbPDmqZIY/VvsiQgG6egvv6VD/RTUMg9j83Fhss8HQg5xW6tLO5SfoEbhiP0Nf83X4hMIYysTvLbRR83zemLtnLcdQeFA62i2h7lSUlcq7ha+4s6mMoAqvOzZgPvyqsTpMB9MLCvc+vhzpILmvbHHE/IEn7NkJ83ykiURTExT5WGhi/Y/C3u7wTYTR78IbUZBPr5pjDYG4nLn4hn3DU+EowAxxNBTo7myzN/g5mw6HDo5IJl2bGLuZBvyKIM3FkRP1UWGNUyLwBtnAY98afAc98t6nOO3OxGxTK92arNfZmaJhGf0PPSKcCwl+z27isyK8zmZABgokru2mrI+UuWufwr7g+S5enuUXDUZru8HzibbE4MqFdtCzjs0Pdlc1rIIn87CG3I/ttsrReB4rP+x6c0lre+xBvi9PIVzCzZ1usxouoRut/zkHhoeMzB+xIRsJvfh1SYbxIXsZ9gA8pBvVNBezKjURD6OsvfrKkBScLJyWxDumW41iY8IDwiPXzm9QCWeDJRK5Fy6V6W+WVP9qblb1YireSl97nxZH75L+F3v/ENIw7XTIhiEDEXekkIOqindFfnXbAaxybamjkXs10DqUGJ9fjjzplGPm8Z2zL7iC+dJTqL7v/KKrbsRd2teHTaUZW0P/l4b5E14ko72hypReUK+YDtOMGCarjXy7vuv13nA000ZUzgBtGpTzO3V67YwqnWzYMqjVQwfFHbjNFErAyd0RWpuE/vts1QIL7bMiH8/2Jv7H5tV4WpoCoVs7JKqIj21u6VGdyZ/CChYD1cXsbU3mVz
+ 0LNAeVex
+ UtrSZduD0T8Fc4RkLMD0PIs0UkukzOpB5dx1opXgcRye8Pf75cbED8ha5iY/iy3RhKDWqMVv7Bz+3jTxULYfNRZQg1JMTggC7sEanuO0pYQcD1cMWl/UVF1nLPve2RGz238Gf2SeJldrQysJTq1QhaIKLawRNqWSbPpDIn/wRzu95D4PI5rVmYY6vv9cHyMp4p72KhUAgC5ycN9kMzmpZnA03LPx8sxfZxgg2dEVoe3gByU+dYGRUYq2lmH8gYRwT9DzTTPYOfdDW/C6bzY07wgeqo+/DyWxVPn5vIvbyKZuMvjsqaIUA9Im8P+S/Bz54Bwgdb/GRkdzofCk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,68 +148,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/6/26 17:58, Gregory Price wrote:
-> On Tue, Jan 06, 2026 at 04:24:21PM +0100, David Hildenbrand (Red Hat) wrote:
->>> +/*
->>> + * Restrict hotplugged memory blocks to ZONE_MOVABLE only.
->>> + *
->>> + * During offlining of hotplugged memory which was originally onlined
->>> + * as ZONE_MOVABLE, userland services may detect blocks going offline
->>> + * and automatically re-online them into ZONE_NORMAL or lower.  When
->>> + * this happens it may become permanently incapable of being removed.
->>
->> If it's really only that, we could also look into simply making a re-online
->> without a specific mode ("online") to use the previous mode.
->>
->> We could glue that to the "contig-zones" policy only, to not affect
->> "auto-movable".
->>
->> That is, remember the zone to which it was previously onlined, and then
->> simply re-online to that one.
->>
+On 1/6/26 17:05, Miklos Szeredi wrote:
+> On Tue, 6 Jan 2026 at 16:41, David Hildenbrand (Red Hat)
+> <david@kernel.org> wrote:
 > 
-> I know we do this in memory_hotplug.c to rollback to prior state.
+>> I assume the usual suspects, including mm/memory-failure.c.
+>>
+>> memory_failure() not only contains a folio_wait_writeback() but also a
+>> folio_lock(), so twice the fun :)
 > 
-> I did notice in... i think it was either memory.c or hotplug.c... that
-> we end up setting mem->online_type=MMOP_OFFLINE after comping an online
-> operation.  That seemed confusing and maybe we can use that to store the
-> current state.
-> 
-> I'm not against this idea, but it also makes the sysfs a little more
-> confusing (`echo online` now does different things based on prior
-> state).  
+> As long as it's run from a workqueue it shouldn't affect the rest of
+> the system, right?  The wq thread will consume a nontrivial amount of
+> resources, I suppose, so it would be better to implement those waits
+> asynchronously.
 
-Right, but only for the contig-zones policy.
-
-But maybe you really want the default for such memory to be "movable" 
-even when not onlined beforehand? So I am not sure if the description of 
-the problem here is accurate.
-
-Isn't one problem also udev racing with ndctl?
-
-> I preferred just failing if the block wasn't compatible with
-> the zone (maybe making it more clear with a dmesg print?)
-
-The thing is that this block is compatible with the zone, no?
-
-In a system where you would never want to offline that memory, why 
-should we stop someone from onlining it to a kernel zone? I'm sure 
-someone with a weird use case will show up later that will complain 
-about this.
-
-But the patch is missing details on who would actually set 
-MHP_MOVABLE_ONLY. A user should be posted alongside the core change.
-
-> 
-> Anyway, let me know what your preference is, happy to pivot however.
-
-Restricting memory to be movable-only to handle a user-space problem as 
-described here sounds like the wrong approach to me. You really want the 
-default of such memory to be "movable".
-
-Almost like an optimized "auto-movable" policy :)
-
-Or a new policy that will respect a provided default (MHP_DEFAULT_MOVABLE).
+Good question. I know that memory_failure() can be triggered out of 
+various context, but I never traced it back to its origin.
 
 -- 
 Cheers
