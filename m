@@ -4,119 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12593CEFCE6
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 18:07:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A49ECEFCE6
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 18:10:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF37A6B008A; Tue,  6 Jan 2026 13:07:35 -0500 (EST)
+	id 9D8FB6B0005; Tue,  6 Jan 2026 13:10:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCB8A6B0092; Tue,  6 Jan 2026 13:07:35 -0500 (EST)
+	id 9865F6B008A; Tue,  6 Jan 2026 13:10:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEA7A6B0093; Tue,  6 Jan 2026 13:07:35 -0500 (EST)
+	id 8B00E6B0092; Tue,  6 Jan 2026 13:10:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C05F6B008A
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:07:35 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 51DA38C4AB
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:07:35 +0000 (UTC)
-X-FDA: 84302321670.22.92E1AF1
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5D65BC0019
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:07:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GHpnGc1j;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 76C7A6B0005
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 13:10:04 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 492BB1AB78F
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:10:04 +0000 (UTC)
+X-FDA: 84302327928.21.BDD8686
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 495DF140016
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:10:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O1Q2XCkA;
+	spf=pass (imf23.hostedemail.com: domain of ubizjak@gmail.com designates 209.85.208.177 as permitted sender) smtp.mailfrom=ubizjak@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767723002; a=rsa-sha256;
+	cv=none;
+	b=3gSYaNgALHY+5POKAvv+g4o19AkvPIP5CRI0NtQjN7uu6pCVR47ZEFDg23H+vY5rabQomA
+	3jiGCZ4efhoJu2JBRbkg/UKO+K0IXX3uMX81tAtFRjq3rPGTqr6Mqc8Xh+9h0P120mE/Bs
+	HNUQG4Y3hg3S7Kj325u+Bb5x+ZIEtoA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O1Q2XCkA;
+	spf=pass (imf23.hostedemail.com: domain of ubizjak@gmail.com designates 209.85.208.177 as permitted sender) smtp.mailfrom=ubizjak@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767722853;
+	s=arc-20220608; t=1767723002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J9laVuKjYDSqLAjje1jBZcztaW2hTq+bS4g/OEUzif0=;
-	b=cSNXew/8Vy1f2CkUnMknEmG/+CBIKEtK9mbkQLriRSu2NA/G3+/2UW72A7VMH2luPE628+
-	bEPCCghE2MIulT8qUAd76wFr8E3gB1E0qw6kGNsBViIZ/tkfU7H81jnQX2Fz/BSpoOh28V
-	zZE96EQvUKY8RoDWZTGV9UcSw0dykT4=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GHpnGc1j;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767722853; a=rsa-sha256;
-	cv=none;
-	b=1ZScdSl8ecRkzE0LIPTyCVeD6Jx0Nh6co7Xplic3mS9+9bEKqF9hgp3szsy8sEDLeJgVJg
-	5L9Wv2/UdosndOZy/6NYqtuWis/a1JTBsM5YQ8qUXKI36LHXFAtAhx39G2KJSIO8Z94o2D
-	HKOabqZ/vUnzvmaFB+89Rf+0SBRzSG8=
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-88a367a1dbbso16816306d6.0
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 10:07:33 -0800 (PST)
+	bh=tnFJTdAUFhEmW0tR2qamSfQ3pZ9alh5f7uC4JnPOGLk=;
+	b=5zxpnppe3b7UxT3sdgO9c5OnBIUL/ZTTGJcq9WHwbzmZV3QzJPGDQvk7ao7r6uHWJdUyT1
+	qlQ3S5My/QnR+YNj1MMciAAR7kvI+tNZ0yTX8K0pRxrXXXWEbhWIgREHA+QiLUpD3i+hxR
+	+0PDYc7uMAMhUVrha/1DFYyJgh+3bKQ=
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-382fb535b73so2907621fa.0
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 10:10:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1767722852; x=1768327652; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J9laVuKjYDSqLAjje1jBZcztaW2hTq+bS4g/OEUzif0=;
-        b=GHpnGc1jZMGMSRYPgXllUqeO+v7C3yCrrF540SnC+mzvkGdlYUXD9Js5oQP0f/OKR4
-         YJG1t6hC8+5BxgLXJysqOuOqglTQ0zqkKaT148a7bz6DklH5hEn8TYZvTIAeYl9HNKVD
-         /a/NgtS6Boog0pcrZPpFLRcQTXOTk1zE4uI91mRx4UL3cvBvhKYhHSMGxK8sbVS5rfN4
-         CP11d88l3tdQM5miHpYXBuucb6xYFCnKZBL6JvPt781I61AY+eQydI40pscBkb04HdoP
-         SldLmuo3VBm3JnpQyc9qHM7kB9x1oFAhGSoMg4Qt487prjzSDM0eRioa4ECa7FqBLfpF
-         5HGQ==
+        d=gmail.com; s=20230601; t=1767723000; x=1768327800; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tnFJTdAUFhEmW0tR2qamSfQ3pZ9alh5f7uC4JnPOGLk=;
+        b=O1Q2XCkASkNW9Psy16hfHJ2rha6tc/8RrWK2mSjsC1HU8uxTMOyNHBAtS7dHC3HqVh
+         mVZgMYCtLvVj5ePeDC00VwS0pwtuNzD+fyrHAAvFCaKOaipkdMxlK80CK3EvadrOMBAo
+         MYRj8ia0iO5yJQt30FqW1WVkyGaqaVsLtS5g0QPR3cAaxGZijOM1KuJLqIo854lkITFi
+         nHIJNDA2p9tVJZ7BUA1u0YWbkJDqqI9vdKKUFl/tbPmYE1+VRTvrf5+nL5G5ts7cWtHW
+         vHr/yMb6915LjL++2CUoRj10IMvAFZQN7ikcijCr4aA+U6/6ElkV8KPqK6NhVga2pahc
+         pdgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767722852; x=1768327652;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J9laVuKjYDSqLAjje1jBZcztaW2hTq+bS4g/OEUzif0=;
-        b=Hkm00G/XertYuXTYmYuFYeYbvvQ77Fh6J/wdhvdSJ0JcXpbfsKthW0sbIC7jO32kVd
-         kOaLT2JRGET74IeYyU/OwYRep9zytvGy6rtPT/YNWxJmc7aaXd9+9QA0XWNjTF+MuFF3
-         YTHZekNsGaQUDyAla3ogVtZ1/8BiAnQ9yfsgAyEkLwBqFvY4GKVs2ZUZYLx4iZBsAVf1
-         lFWTE2knjyoP383QIUfs44WdF4SU1VZIowRHKPDwt8uXeszCM8VmlTpXMxaxNsG/W2Yy
-         ZTUfAGZaG9/Lg6ZA2P4Q5kcoILj5ik2n97gqr+R/6lOhH4CTRpgJwkkrdjD+RUsY+Uy8
-         gs9A==
-X-Gm-Message-State: AOJu0Yz+SN9b49owdhfh2MhMmKCVq7DCKxpT66CknFFTQeLyP4zHoq3Q
-	v1orxooIRGiyhqREotKNqWQVHK2gpoK43Esu5tWAjFwQLagQsJdJ0AmmEzkdGrm0HjQ=
-X-Gm-Gg: AY/fxX6V5X9Ho3I4yB9S9xQg1Lt0YVBIi8goUHbb/IzK0FZgge+KKlQtKhYkYHC4tqH
-	9L5YMo6VzsJelGDUrA7HB4dCwZLBUs0lV6URjNvwYPgSaOPTr3dzORvjI5/6ZRlW/57xc2PyU/F
-	l1dlYbHh9MDgyJgmPttr1QGfe7ZH8Re8+4+OWCpsWKlX8tyxDoMF+Q4ZZAJtT3HtB0zDrAjOfoI
-	+46FsJDErMlPik9lAKVmkwieCuokwG10c6PZJ7zeI7HaAX7yDgcHgK8b4sZRSgz4yFXQzDYTRoB
-	42F9yYpzhLg+17qSX2I/39yUk3hkxDd45W6ewHKvmyDKbrjelvaUt+lxaSkWMkl6dFJrTOFWytc
-	GPycRw2uH8fDN9h9skXr3MOK13wmcjFNdsTgKtlm314XDopkCsdrDaO/LHWaSLcd/S2oDqWPXqD
-	9xniantkFJyNbOyer94tfDhFiv+CYa9tdRyFOo3GxDgFeGyyTYia0HhnXhSBw4FFeVFQ31PtpvW
-	TpFGEZ3
-X-Google-Smtp-Source: AGHT+IHmu9VTvtAeFwjCxaomaQKd0bZd4wIlSSTmE655IttQAEneagYSSt/nFbvLMBMJNomeQHn5pg==
-X-Received: by 2002:a05:6214:19ed:b0:882:4e6c:5fce with SMTP id 6a1803df08f44-89075ee323fmr52661036d6.59.1767722852452;
-        Tue, 06 Jan 2026 10:07:32 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770ce659sm17717226d6.10.2026.01.06.10.07.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 10:07:32 -0800 (PST)
-Date: Tue, 6 Jan 2026 13:06:57 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, hare@suse.de
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
-	dakr@kernel.org, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com
-Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
- blocks to zone movable
-Message-ID: <aV1PQd3tyfSiH4xD@gourry-fedora-PF4VCD3F>
-References: <20260105203611.4079743-1-gourry@gourry.net>
- <7f053290-6b9a-4d18-936e-0f28006c79c3@kernel.org>
- <aV0_SMq_I_R7ikF3@gourry-fedora-PF4VCD3F>
- <9575e042-39f4-4f01-80db-34aaaa9312e6@kernel.org>
+        d=1e100.net; s=20230601; t=1767723000; x=1768327800;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tnFJTdAUFhEmW0tR2qamSfQ3pZ9alh5f7uC4JnPOGLk=;
+        b=SOrm3+aLSEE4fH5qz81p9sjfigIiR/ktzr3WZxIrswU/X6IBIoqDgy1jRoPLpBC1Qu
+         lHQ2W+izktcRnktDr+xDRNXO3kfxIieHjRaWEkZsE2b4W0LCyxZpn9RX8w0vVe4laYba
+         gHGZ44893WxSRQqyhdhe4+KqMupBqA3wL6UDWonZWWdxdZ2ssXbrDVa4+A/06FNSZpv3
+         lzDA65D5TAUp5BkP7Zje/uVKtJ2qRkd3rcamisw6Tcs9enmKR5tubxiRrXa3bxxdULD8
+         JLcUCgnqFL7ILye+UpaXpgKCbAZscKf0Sb4Ut5hWBljB8w/lwjWlvZ7QNt2uoYitHH35
+         2/Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCWMmpToolKhhB4TdAQQhZ0X5a6SnqT83r0iM4O0WQ0d3/6cPw3fseTEoj8w8l0gh6hxKJ6VKgpNQQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzb7aILs6NPA3YxUuzN5rhtj9MeuLNxJm2UwKd+34mVQZQ5MX5/
+	y09Y+PyFSrZnZPb2mckdJfc3xkEQbIzZclAdpNUYEPmBgXck3XxiYrwWexaI71cr1A0sGUtCfF+
+	ku1GndcHT/x8fgjmZ1XzhT1CZxWjQMFs=
+X-Gm-Gg: AY/fxX5uspd9D+TE0ykGozIFDJvu38oZRUqp8wb3+vXBzuO2ait27CcloUOWqNJfP2k
+	9IopPhCvXq7TqNbW1TL3doxvLskOd7wllEKmpJmyzlR5T1vL6Oaz+g8yhKXqPprVurur3fTAiW9
+	FZ76CuuzOlVq7K7TdiWJoUzrMCOg6PJ8PhlvSBe9uudf38Y9QGKsgmR/SeAhn+17Krtlb9COrEj
+	WW96foyFVns7Jp//bfy4ojQuUmeZW7hCyyIlb6ni1lOG0HCvIkhDqoeh3lY9Aa5PxOiAXuUZZvk
+	C7syl4pv3JdXXenh88emqZY5ODxn/tcj7WFxAMNHww0E+NNh
+X-Google-Smtp-Source: AGHT+IHMYU+nk1r5SKL7TSwqR3QLSy12FC5m91tH1LYgMH9CNfNRgKMZ574MhYRurVuFQRtgy5OSRqqEEKHj6a+SALI=
+X-Received: by 2002:a05:651c:b1e:b0:37b:9976:df0d with SMTP id
+ 38308e7fff4ca-382eaac3863mr10517641fa.21.1767722999902; Tue, 06 Jan 2026
+ 10:09:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9575e042-39f4-4f01-80db-34aaaa9312e6@kernel.org>
+References: <20251216212606.1325678-1-hpa@zytor.com> <20251216212606.1325678-9-hpa@zytor.com>
+In-Reply-To: <20251216212606.1325678-9-hpa@zytor.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Tue, 6 Jan 2026 19:09:48 +0100
+X-Gm-Features: AQt7F2p_W3_5YudECGljLUVodss-gTpK6wtqg-lAs_JJhTsy4VEleAOJ12I6yk4
+Message-ID: <CAFULd4bQ-0ZD8PeAYiK1WK6yhKctxTSPksJLGg4gmE1eqzKDNg@mail.gmail.com>
+Subject: Re: [PATCH v4 08/10] x86/vdso: abstract out vdso system call internals
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, "Theodore Ts'o" <tytso@mit.edu>, 
+	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+	Xin Li <xin@zytor.com>, Andrew Cooper <andrew.cooper3@citrix.com>, 
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Brian Gerst <brgerst@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Ingo Molnar <mingo@redhat.com>, James Morse <james.morse@arm.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nam Cao <namcao@linutronix.de>, Oleg Nesterov <oleg@redhat.com>, Perry Yuan <perry.yuan@amd.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Huth <thuth@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-sgx@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5D65BC0019
-X-Stat-Signature: r8nyra4sxo5negeco55pmdr3efbkgbc1
-X-HE-Tag: 1767722853-838026
-X-HE-Meta: U2FsdGVkX1/IiZQwcxZEEfQbBXztyMHB7/6CHxdtGTDOwqt0ebvKWAPRHNiYLrcI3LLEPgewpZ2s64Sa8IhRnjux7Wk+536yackJ1eyTcn3hreHNt2s/1vQ0AzL+T4E9hAUwoLT3OL6dgiGrGxsmqe2YvuqcJE+o4BSK9dz+EwS6XUD6wvVl6GgQfLx+PqoNCagOZzXo4nsvzxJlo+OCsdVfYtYC6kFJcLuKSYd2NvTsBbhM1TDt2+UpWCmaqKN0BzoelwZFFBzr5eKizj7jqJgEeNiVz8ytKY0VgKsFem2Nz4xL45gEl2YZvd9g5DX3s2rQrGLNY+bApyzTz9jgn/2NFvjb5O9lPPYnTe++clZY7udXPLfA1Set9KUOkhDKY9mZagjyL95awuGSYTtFa/3X9w/eyeK1q0dsQkDyrkDdTT8+4txbOxWoc7VCDxf1217QQ9Yw2VyVeGptXLjdIeXtFnWKrcPtE7hIK6rwm1pajBBcjeP86vltci+oDU7whAwGjQ1JhwSv2qmwbMKyZTVcgWQ4wNURavKbZPRdwz8Jw6ygeKQHROrABUqm848m/xgBb4OXurewjuLnLmvqRnVL8XXTfSBENAvPz09OIckxx1qnZ9kQCMthyIKY052kvX7sJh9YCQ91STVodVQOrg1qY3lH4pG51gKFIOdnIsO01W8+Ta2oy/nEKnV0H881TkDEQtxTnhS0RRIVYNCVHNFJf7MDUGUikxImd/xVDLupNckC7pUfiBd+EgTJt+C/2UEopFDirNtGwpRPeHwLgAgBUwD3M/7pz9ut3y5lNeh36uTQDxoDQHjrmI/KRmNMcAkAkdOM2ZeKD8qGN6IKHcprjp+FM0szZK7Cjmzn3mqPl7HaXiCmnrLHUX68F6JSdrEGmR7Go+yCyd3OlaI291boyifzy6qaDuNaoIDJo1XcfK5YhqU8CLh+VN94klqqt28GCNvQry+wLDXgylI
- uoj3GwhI
- zCHR2cl5EaY2sYJunzKZ4llaUy9up28egltu5IRw7bpla9upPmtSGZ2m45rh9MdVVKkBKo8d41It5rVRICxwL5g3GHO7qQr+NreXZwOe3iCpHUaPZC9lJvP9c+jkkE+XLnk5yvps0TBthVOagdRgeJ+8P9SBYOls6ZngH8OPRNCOio1GHe3aIgE1MwRzH/II/rkJgTT9gM2qHIywcjqYYF+xvC+t3Oxka4Yto5zdgqcr90TXMwroOCS3j3RzC5/QJNN3uBwOx5KaGsDYPzp/q6/b6hThEzCoeiL6s871DL8NLDdm+Fw79UkcGBlrBO1tmccZ9ndn6J+IvSXKldmLM5CLsSGhBOAzxy1+6NhShzDiBjgu5C9Qu3vbsCA==
+X-Rspamd-Queue-Id: 495DF140016
+X-Rspamd-Server: rspam04
+X-Stat-Signature: g9hbuhb845733rzk7okx65m7e1gx51wo
+X-HE-Tag: 1767723002-305599
+X-HE-Meta: U2FsdGVkX19vPXhMyIFYh/UQCFPut9NiIheyRl1aW1AFlc7y1/WpYqQipqkxvVCoB+q57NgD9LPieXEZMRIbLjT3sICdeVplDksTO66i8fu6mCR/8kfLozmv3k0eHplK8fWWVHUf41Yq67hIsDnDiXsrOazSMf8U4YBGYUVEIAVF0de8n4kJ6In+cQ7M0o/NClcxGMtDIpTW0VjuMh7i8AyPymLDSOQIF3rdTSq5a0i+3doYxO9zw+9Fjx9pxp94sje/yzm9DIrx1YZNAnTqdp2ozUJr5nTXpvPK+FW0H7i0nnCxdeEfM4z3M+lZJ0Ka06GqSb9zGJHj+Xu5xY4mbTYKV08BW9FkNj/4v6O+ASBJzC2MAgDm8876jQxsYxOAaO8TqLeVhkSo50fxXEBaEqHgof2Qw14blTck1bieyKoCVcIiJJpfHIRKdeVZWy5xeujEcsX0mb0AtA1RS0aOiSACPH9kpO5nA9P52UmuipZnQkhqaosDE8LHApJnOrOSn96EFE1wZAhExVpYRzcQj8TsbLcNgGgL1fCfLu4ySJ01tqfn3/mpG07Bcpg55UEQgEJssSqg5QfofKdt4qqDv1mhY5FSY5g3lsJnygHBNvqrKy88y7Pxph1kwMcY8I5faioNtAKwmMWjoscnHD9pVxUh3vuQBEOtFX0r/TUChitPX9rmQH3/bxSnXWy8pliWyWWuVn+IAI95v1/QoaFIHr9wIxMPXc/yIMNliF4frrHDnjjLiEoZkN9QbRIHs+3nl/JA1xntKWaRB3HOlVSjkS52njx5Jl4qxugTWSJWuy2ZaQMLjt0XThB3JtnqW50mKm3ZKIixOkLG8jBq09/xyAIfXTFnosAz7rv6VVpDwLthzCLuprcbfaZ78g49zJFIAAkOtNzN3vYJEBffRjwv20sr1R2b7YkSZUfOpHvf4FvikfAnDTh8/qgWiPW/ZHRILxqTBnnwIK3pa2gJInT
+ 3/FHRyPC
+ PayVK8cJPcj01N9PxqfIY+gO2Qbb4vU5BpgGAOhPlh2Jr6yhi3RsKJfLvRTHsL0ExGB52EprhpOq8jEnyYsJMOv+Ztz+gJzcqNF17Q1tH0Md43V9gOOjIVr6OLkss8/vzOc7YSK/sNi41gLrb2YVkEnbRzSjfQCUGH3ls6Ar5YKslY46BcolKv25s+GtlN6Y+UyvtzfiYbttrR59IsmerAgqRuBTecsD7SSRvspAi3s5MXTjKvnL2RK8mWt37dorVehxKFioUgYEVqiBFLWOtdkvenj5GU2mR7Gk0ew2ic0F/so40OQkjJYEtJDxVfkJR3UOo16zIQ0+885gNP6zYJyOaSFvjZQ7Vxg2fylyHnfPUKNyCUD/kb9C+LPvnC11p6Yd1yImBtGtSZA9Gi4tE/znLTd6przCdNL+FZXoazgXz1OZYU9oI1In6RUa5p9d+bv0j
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,66 +125,328 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 06, 2026 at 06:52:11PM +0100, David Hildenbrand (Red Hat) wrote:
-> On 1/6/26 17:58, Gregory Price wrote:
-> > On Tue, Jan 06, 2026 at 04:24:21PM +0100, David Hildenbrand (Red Hat) wrote:
-> > 
-> > I'm not against this idea, but it also makes the sysfs a little more
-> > confusing (`echo online` now does different things based on prior
-> > state).
-> 
-> Right, but only for the contig-zones policy.
-> 
-> But maybe you really want the default for such memory to be "movable" even
-> when not onlined beforehand? So I am not sure if the description of the
-> problem here is accurate.
-> 
-> Isn't one problem also udev racing with ndctl?
-> 
+On Tue, Dec 16, 2025 at 10:26=E2=80=AFPM H. Peter Anvin <hpa@zytor.com> wro=
+te:
+>
+> Abstract out the calling of true system calls from the vdso into
+> macros.
+>
+> It has been a very long time since gcc did not allow %ebx or %ebp in
+> inline asm in 32-bit PIC mode; remove the corresponding hacks.
+>
+> Remove the use of memory output constraints in gettimeofday.h in favor
+> of "memory" clobbers. The resulting code is identical for the current
+> use cases, as the system call is usually a terminal fallback anyway,
+> and it merely complicates the macroization.
+>
+> This patch adds only a handful of more lines of code than it removes,
+> and in fact could be made substantially smaller by removing the macros
+> for the argument counts that aren't currently used, however, it seems
+> better to be general from the start.
+>
+> [ v3: remove stray comment from prototyping; remove VDSO_SYSCALL6()
+>       since it would require special handling on 32 bits and is
+>       currently unused. (Uros Biszjak)
+>
+>       Indent nested preprocessor directives. ]
+>
+> Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 
-Yeah there's a bunch of races, the specific ones mentioned by Hannes i
-need to go back and re-listen to the talk.
+Acked-by: Uros Bizjak <ubizjak@gmail.com>
 
-> > I preferred just failing if the block wasn't compatible with
-> > the zone (maybe making it more clear with a dmesg print?)
-> 
-> The thing is that this block is compatible with the zone, no?
-> 
-> In a system where you would never want to offline that memory, why should we
-> stop someone from onlining it to a kernel zone? I'm sure someone with a
-> weird use case will show up later that will complain about this.
-> 
-
-Presumably you wouldn't be setting the MHP flag that prevents the blocks
-from being onlined in a kernel zone then - in which case this all just
-works as intended today.
-
-> But the patch is missing details on who would actually set MHP_MOVABLE_ONLY.
-> A user should be posted alongside the core change.
-> 
-
-This is fair and probably the obvious immediate user would be a dax
-device with some kind of `dax0.0/protect_unplug` feature set.
-(With a better name obviuosly).
-
-I will defer to Hannes on his specific use case, but I could see the
-CXL-DCD (Dynamic Capacity) set wanting something like this.
-
-> > 
-> > Anyway, let me know what your preference is, happy to pivot however.
-> 
-> Restricting memory to be movable-only to handle a user-space problem as
-> described here sounds like the wrong approach to me. You really want the
-> default of such memory to be "movable".
-> 
-> Almost like an optimized "auto-movable" policy :)
-> 
-> Or a new policy that will respect a provided default (MHP_DEFAULT_MOVABLE).
-> 
-
-Fair, I'll revist this once Hannes gets a chance to chime in.
-
-This was effective at getting the discussion started though :P
-
-~Gregory
+> ---
+>  arch/x86/include/asm/vdso/gettimeofday.h | 108 ++---------------------
+>  arch/x86/include/asm/vdso/sys_call.h     | 103 +++++++++++++++++++++
+>  2 files changed, 111 insertions(+), 100 deletions(-)
+>  create mode 100644 arch/x86/include/asm/vdso/sys_call.h
+>
+> diff --git a/arch/x86/include/asm/vdso/gettimeofday.h b/arch/x86/include/=
+asm/vdso/gettimeofday.h
+> index 73b2e7ee8f0f..3cf214cc4a75 100644
+> --- a/arch/x86/include/asm/vdso/gettimeofday.h
+> +++ b/arch/x86/include/asm/vdso/gettimeofday.h
+> @@ -18,6 +18,7 @@
+>  #include <asm/msr.h>
+>  #include <asm/pvclock.h>
+>  #include <clocksource/hyperv_timer.h>
+> +#include <asm/vdso/sys_call.h>
+>
+>  #define VDSO_HAS_TIME 1
+>
+> @@ -53,130 +54,37 @@ extern struct ms_hyperv_tsc_page hvclock_page
+>         __attribute__((visibility("hidden")));
+>  #endif
+>
+> -#ifndef BUILD_VDSO32
+> -
+>  static __always_inline
+>  long clock_gettime_fallback(clockid_t _clkid, struct __kernel_timespec *=
+_ts)
+>  {
+> -       long ret;
+> -
+> -       asm ("syscall" : "=3Da" (ret), "=3Dm" (*_ts) :
+> -            "0" (__NR_clock_gettime), "D" (_clkid), "S" (_ts) :
+> -            "rcx", "r11");
+> -
+> -       return ret;
+> +       return VDSO_SYSCALL2(clock_gettime,64,_clkid,_ts);
+>  }
+>
+>  static __always_inline
+>  long gettimeofday_fallback(struct __kernel_old_timeval *_tv,
+>                            struct timezone *_tz)
+>  {
+> -       long ret;
+> -
+> -       asm("syscall" : "=3Da" (ret) :
+> -           "0" (__NR_gettimeofday), "D" (_tv), "S" (_tz) : "memory");
+> -
+> -       return ret;
+> +       return VDSO_SYSCALL2(gettimeofday,,_tv,_tz);
+>  }
+>
+>  static __always_inline
+>  long clock_getres_fallback(clockid_t _clkid, struct __kernel_timespec *_=
+ts)
+>  {
+> -       long ret;
+> -
+> -       asm ("syscall" : "=3Da" (ret), "=3Dm" (*_ts) :
+> -            "0" (__NR_clock_getres), "D" (_clkid), "S" (_ts) :
+> -            "rcx", "r11");
+> -
+> -       return ret;
+> +       return VDSO_SYSCALL2(clock_getres,_time64,_clkid,_ts);
+>  }
+>
+> -#else
+> -
+> -static __always_inline
+> -long clock_gettime_fallback(clockid_t _clkid, struct __kernel_timespec *=
+_ts)
+> -{
+> -       long ret;
+> -
+> -       asm (
+> -               "mov %%ebx, %%edx \n"
+> -               "mov %[clock], %%ebx \n"
+> -               "call __kernel_vsyscall \n"
+> -               "mov %%edx, %%ebx \n"
+> -               : "=3Da" (ret), "=3Dm" (*_ts)
+> -               : "0" (__NR_clock_gettime64), [clock] "g" (_clkid), "c" (=
+_ts)
+> -               : "edx");
+> -
+> -       return ret;
+> -}
+> +#ifndef CONFIG_X86_64
+>
+>  static __always_inline
+>  long clock_gettime32_fallback(clockid_t _clkid, struct old_timespec32 *_=
+ts)
+>  {
+> -       long ret;
+> -
+> -       asm (
+> -               "mov %%ebx, %%edx \n"
+> -               "mov %[clock], %%ebx \n"
+> -               "call __kernel_vsyscall \n"
+> -               "mov %%edx, %%ebx \n"
+> -               : "=3Da" (ret), "=3Dm" (*_ts)
+> -               : "0" (__NR_clock_gettime), [clock] "g" (_clkid), "c" (_t=
+s)
+> -               : "edx");
+> -
+> -       return ret;
+> -}
+> -
+> -static __always_inline
+> -long gettimeofday_fallback(struct __kernel_old_timeval *_tv,
+> -                          struct timezone *_tz)
+> -{
+> -       long ret;
+> -
+> -       asm(
+> -               "mov %%ebx, %%edx \n"
+> -               "mov %2, %%ebx \n"
+> -               "call __kernel_vsyscall \n"
+> -               "mov %%edx, %%ebx \n"
+> -               : "=3Da" (ret)
+> -               : "0" (__NR_gettimeofday), "g" (_tv), "c" (_tz)
+> -               : "memory", "edx");
+> -
+> -       return ret;
+> +       return VDSO_SYSCALL2(clock_gettime,,_clkid,_ts);
+>  }
+>
+>  static __always_inline long
+> -clock_getres_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
+> -{
+> -       long ret;
+> -
+> -       asm (
+> -               "mov %%ebx, %%edx \n"
+> -               "mov %[clock], %%ebx \n"
+> -               "call __kernel_vsyscall \n"
+> -               "mov %%edx, %%ebx \n"
+> -               : "=3Da" (ret), "=3Dm" (*_ts)
+> -               : "0" (__NR_clock_getres_time64), [clock] "g" (_clkid), "=
+c" (_ts)
+> -               : "edx");
+> -
+> -       return ret;
+> -}
+> -
+> -static __always_inline
+> -long clock_getres32_fallback(clockid_t _clkid, struct old_timespec32 *_t=
+s)
+> +clock_getres32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
+>  {
+> -       long ret;
+> -
+> -       asm (
+> -               "mov %%ebx, %%edx \n"
+> -               "mov %[clock], %%ebx \n"
+> -               "call __kernel_vsyscall \n"
+> -               "mov %%edx, %%ebx \n"
+> -               : "=3Da" (ret), "=3Dm" (*_ts)
+> -               : "0" (__NR_clock_getres), [clock] "g" (_clkid), "c" (_ts=
+)
+> -               : "edx");
+> -
+> -       return ret;
+> +       return VDSO_SYSCALL2(clock_getres,,_clkid,_ts);
+>  }
+>
+>  #endif
+> diff --git a/arch/x86/include/asm/vdso/sys_call.h b/arch/x86/include/asm/=
+vdso/sys_call.h
+> new file mode 100644
+> index 000000000000..dcfd17c6dd57
+> --- /dev/null
+> +++ b/arch/x86/include/asm/vdso/sys_call.h
+> @@ -0,0 +1,103 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Macros for issuing an inline system call from the vDSO.
+> + */
+> +
+> +#ifndef X86_ASM_VDSO_SYS_CALL_H
+> +#define X86_ASM_VDSO_SYS_CALL_H
+> +
+> +#include <linux/compiler.h>
+> +#include <asm/cpufeatures.h>
+> +#include <asm/alternative.h>
+> +
+> +#ifdef CONFIG_X86_64
+> +# define __sys_instr   "syscall"
+> +# define __sys_clobber "rcx", "r11", "memory"
+> +# define __sys_nr(x,y) __NR_ ## x
+> +# define __sys_reg1    "rdi"
+> +# define __sys_reg2    "rsi"
+> +# define __sys_reg3    "rdx"
+> +# define __sys_reg4    "r10"
+> +# define __sys_reg5    "r8"
+> +#else
+> +# define __sys_instr   "call __kernel_vsyscall"
+> +# define __sys_clobber "memory"
+> +# define __sys_nr(x,y) __NR_ ## x ## y
+> +# define __sys_reg1    "ebx"
+> +# define __sys_reg2    "ecx"
+> +# define __sys_reg3    "edx"
+> +# define __sys_reg4    "esi"
+> +# define __sys_reg5    "edi"
+> +#endif
+> +
+> +/*
+> + * Example usage:
+> + *
+> + * result =3D VDSO_SYSCALL3(foo,64,x,y,z);
+> + *
+> + * ... calls foo(x,y,z) on 64 bits, and foo64(x,y,z) on 32 bits.
+> + *
+> + * VDSO_SYSCALL6() is currently missing, because it would require
+> + * special handling for %ebp on 32 bits when the vdso is compiled with
+> + * frame pointers enabled (the default on 32 bits.) Add it as a special
+> + * case when and if it becomes necessary.
+> + */
+> +#define _VDSO_SYSCALL(name,suf32,...)                                  \
+> +       ({                                                              \
+> +               long _sys_num_ret =3D __sys_nr(name,suf32);              =
+ \
+> +               asm_inline volatile(                                    \
+> +                       __sys_instr                                     \
+> +                       : "+a" (_sys_num_ret)                           \
+> +                       : __VA_ARGS__                                   \
+> +                       : __sys_clobber);                               \
+> +               _sys_num_ret;                                           \
+> +       })
+> +
+> +#define VDSO_SYSCALL0(name,suf32)                                      \
+> +       _VDSO_SYSCALL(name,suf32)
+> +#define VDSO_SYSCALL1(name,suf32,a1)                                   \
+> +       ({                                                              \
+> +               register long _sys_arg1 asm(__sys_reg1) =3D (long)(a1);  =
+ \
+> +               _VDSO_SYSCALL(name,suf32,                               \
+> +                             "r" (_sys_arg1));                         \
+> +       })
+> +#define VDSO_SYSCALL2(name,suf32,a1,a2)                                \
+> +       ({                                                              \
+> +               register long _sys_arg1 asm(__sys_reg1) =3D (long)(a1);  =
+ \
+> +               register long _sys_arg2 asm(__sys_reg2) =3D (long)(a2);  =
+ \
+> +               _VDSO_SYSCALL(name,suf32,                               \
+> +                             "r" (_sys_arg1), "r" (_sys_arg2));        \
+> +       })
+> +#define VDSO_SYSCALL3(name,suf32,a1,a2,a3)                             \
+> +       ({                                                              \
+> +               register long _sys_arg1 asm(__sys_reg1) =3D (long)(a1);  =
+ \
+> +               register long _sys_arg2 asm(__sys_reg2) =3D (long)(a2);  =
+ \
+> +               register long _sys_arg3 asm(__sys_reg3) =3D (long)(a3);  =
+ \
+> +               _VDSO_SYSCALL(name,suf32,                               \
+> +                             "r" (_sys_arg1), "r" (_sys_arg2),         \
+> +                             "r" (_sys_arg3));                         \
+> +       })
+> +#define VDSO_SYSCALL4(name,suf32,a1,a2,a3,a4)                          \
+> +       ({                                                              \
+> +               register long _sys_arg1 asm(__sys_reg1) =3D (long)(a1);  =
+ \
+> +               register long _sys_arg2 asm(__sys_reg2) =3D (long)(a2);  =
+ \
+> +               register long _sys_arg3 asm(__sys_reg3) =3D (long)(a3);  =
+ \
+> +               register long _sys_arg4 asm(__sys_reg4) =3D (long)(a4);  =
+ \
+> +               _VDSO_SYSCALL(name,suf32,                               \
+> +                             "r" (_sys_arg1), "r" (_sys_arg2),         \
+> +                             "r" (_sys_arg3), "r" (_sys_arg4));        \
+> +       })
+> +#define VDSO_SYSCALL5(name,suf32,a1,a2,a3,a4,a5)                       \
+> +       ({                                                              \
+> +               register long _sys_arg1 asm(__sys_reg1) =3D (long)(a1);  =
+ \
+> +               register long _sys_arg2 asm(__sys_reg2) =3D (long)(a2);  =
+ \
+> +               register long _sys_arg3 asm(__sys_reg3) =3D (long)(a3);  =
+ \
+> +               register long _sys_arg4 asm(__sys_reg4) =3D (long)(a4);  =
+ \
+> +               register long _sys_arg5 asm(__sys_reg5) =3D (long)(a5);  =
+ \
+> +               _VDSO_SYSCALL(name,suf32,                               \
+> +                             "r" (_sys_arg1), "r" (_sys_arg2),         \
+> +                             "r" (_sys_arg3), "r" (_sys_arg4),         \
+> +                             "r" (_sys_arg5));                         \
+> +       })
+> +
+> +#endif /* X86_VDSO_SYS_CALL_H */
+> --
+> 2.52.0
+>
 
