@@ -4,115 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 882C6CEFD0C
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 23:30:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA20BC47BE1
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 23:48:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5ACA6B0088; Tue,  6 Jan 2026 18:30:19 -0500 (EST)
+	id CEA706B008A; Tue,  6 Jan 2026 18:48:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C07A86B008A; Tue,  6 Jan 2026 18:30:19 -0500 (EST)
+	id CA2176B0092; Tue,  6 Jan 2026 18:48:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0AA16B0092; Tue,  6 Jan 2026 18:30:19 -0500 (EST)
+	id BCA956B0093; Tue,  6 Jan 2026 18:48:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DDF96B0088
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:30:19 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 13C4913C52C
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 23:30:19 +0000 (UTC)
-X-FDA: 84303134958.07.17CA1A7
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 313CE40017
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 23:30:16 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=P00BrUyi;
-	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767742217;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AA7156B008A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 18:48:48 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4408513C56A
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 23:48:48 +0000 (UTC)
+X-FDA: 84303181536.18.B800CD2
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6ECFD80009
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 23:48:46 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=laveeshbansal.com header.s=zoho header.b=D6ArQYd6;
+	dmarc=none;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf30.hostedemail.com: domain of laveeshb@laveeshbansal.com designates 136.143.188.15 as permitted sender) smtp.mailfrom=laveeshb@laveeshbansal.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767743326; a=rsa-sha256;
+	cv=pass;
+	b=gkJmWAgmHrMp+KP9C6q2uvdck691raeF8wUBVcba595yWBjNVjROKTC9E7uR9w4NUbqrkz
+	0D8E21lU5H0IGEpUsOAiMXl1MC7fnV3UZZdrUknmsIdh88Prgf8FCS/G7NTvjvvTzr0fE6
+	jex8j0A3j101HJfFztNa5xsxl2oTsEQ=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=laveeshbansal.com header.s=zoho header.b=D6ArQYd6;
+	dmarc=none;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf30.hostedemail.com: domain of laveeshb@laveeshbansal.com designates 136.143.188.15 as permitted sender) smtp.mailfrom=laveeshb@laveeshbansal.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767743326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dMPrgVPAJkxzoSL+MjXhmJYJPrnZM80RIBzr/vd32Eo=;
-	b=RuPt+bVhx0kIbGOintLsTQmeh98PybodWgWIrRXQM0U/HWXklYnD4jFPahTYNWHWpKMtfK
-	mVRRxAFz1N/w2ODzsHbzH+VrE0DSMY3xAiscsHZc23TwTknxly4gRQC+u12qfn2l/Jv1DH
-	UhyhQMB2DhzyJW9I80YMCyF+6t2jPH0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=P00BrUyi;
-	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767742217; a=rsa-sha256;
-	cv=none;
-	b=B2+wY/8h8C/qGs4vvsEOKBspT/LM9WG9D3HWjGPlUC9jdwzoI4pr1YzXq23TLLRK5Kf1sA
-	Ug5mDAMi9qjXtV28HKNKAzIqaS40hych0s97nIMUOr3RwetQOqMlQ2fGM9HXMls9E26Hit
-	z7wNflZSTQau+I0k629HwB9Tvf3UzgQ=
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-888310b91c5so1733636d6.1
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 15:30:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767742216; x=1768347016; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dMPrgVPAJkxzoSL+MjXhmJYJPrnZM80RIBzr/vd32Eo=;
-        b=P00BrUyiPsRdPQteDuSpcQjlfkTlA+1+sRf81FrsiNqAJlfJEa8CXgCmnVZNl7gj5z
-         PBvvF30+jt+orxLN29n4hQ0ZB8DLemIaOBl1Mcpuc+ZCluXJT9ZUZe3df5QXdvOAWK/N
-         X6ivAe7nHjocfwZot8+tA8nQIius7W7IY6M2qRI6kzh9Eb8jJidYAsOjbhdHp7dnD212
-         AI5Mry5iqpPtey6eS4uLhj1SBs2lYYKOIrg1OUQSiDZrOgpAIbua+WH0DVgDOHqTmf+A
-         F0QVg7E/ZHV8kcqcmbEB+pBfFtZQXbBMGq7Q7jHobgd2FZxZZT9vOzTuS6PiP8b3D08r
-         O7bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767742216; x=1768347016;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dMPrgVPAJkxzoSL+MjXhmJYJPrnZM80RIBzr/vd32Eo=;
-        b=FhX6tnPoqNfb2xZqqiC9QZA0UZEfHEZNpwwuh1W4llk0XAsRlPMvSC+qBTW9OmMoA4
-         l4O5P177aT2WmIbrqRfvxSmPfn0Z6taS67Y9EFqG0V5rgAualqC8+/FkePDaHhm57rGn
-         hQRquXJSE9rD05KPAFO65lELNjywTB5WcQU0GtNgMCBftWp43uQqK9H7j5tY8Q6pJQFw
-         3W4ZBE8u6lI4w3uUDPo8P/hFiodXpO6LqXEWbF4FEuc5m0hFlra435STfGoE9pzjzqdX
-         kjCLE4qdkfj4fsx2buwyHA4SCJldDxtgNvnfev0OHqyidEbEbKAzIkiEMZ54Id3+knls
-         CFjA==
-X-Forwarded-Encrypted: i=1; AJvYcCXhLQl34OD/6OYEQ+8H15RSyFF7gn93oQLGULB0sC7/sTZGujA5Z3K4L0WNfLxcbUljkH+Pygwyww==@kvack.org
-X-Gm-Message-State: AOJu0YxlYCIH4F8Z8BSeeRyE+4F3iGqHfUss9Ef2mNFgD7zv5703JnGy
-	5Q53EC/u1rPrStvlOLBnsDsa4HiKO1bQb2V8ZBWp9NQB9pXG3ZJRawurp4SB7fA3zjxNapeGafj
-	haIbYuWc0KGoX7F/1vE7DVCPURiFZnFE=
-X-Gm-Gg: AY/fxX5opuTZkX/co41feeSv0iuyZQgJt+egesqadtswUspsH8AxFijwohMy2HUjVHF
-	aMdtSONGODRGf3oCHvYXU0v7qtDHinshT1wYAt1EOwILUOzV02q4wn8V//FqW/H/MbwtCON0Sm/
-	A1OjPjdEJID6zyrycYMAOnml/E+D2WyYwfU7BJIetfHz+FawHwzxiNVE2hx2OwUteTSl+JByuIR
-	vF40lrx5ZrPQCiMPK0SzCioNykQ4PIzuYn8C32WQ1Am4V/UoD8EUWYlySJtEiIKMA30bK3iLoJq
-	MzIJK/5Uq0h1/3jxhQZbdQ==
-X-Google-Smtp-Source: AGHT+IH4DdeN8NA/9bx7gypeth53pF4xCrOLbCSBRDkT68+39OMrQflzwe0faxz8RIiURIMpee/M6awa20lDfJJEDPM=
-X-Received: by 2002:a05:622a:2c2:b0:4ee:2721:9ed3 with SMTP id
- d75a77b69052e-4ffb3f7c162mr10231181cf.26.1767742216040; Tue, 06 Jan 2026
- 15:30:16 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Lmr7mdc/8YeCB4SkZf2G+cx0l2ku/Gk1x04euv5l+rs=;
+	b=n0NoDLraI+jFHXTCZU37nMInNu6a0tehHGmVQ1dvCcu8vcyvPmVlDMLoQmq0qpLv/WyufF
+	gCg3S6kKK1Z2HNtCdMH7q7xani96vp2pygGgylwwnz1NrvNG2y9xBbF++dCzynp77L0zw7
+	gLYNKwC1iyFJNldjTOnBS2BRGKNOH0w=
+ARC-Seal: i=1; a=rsa-sha256; t=1767743321; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=DtVyfBHd7TcH8Csk7OT+Du7jve/48YB+Gx3G8j4wjnuNNIMR4MqS30fi988yp0yHMkf1hdsuk8VfMn/f4O6zKkoE7v+nfXevapl4+W+Ed/T3UfceVT/u4FW9Bm6sdb+xGn/6cInjeTwQuOLH9Szcg4iDREo9RYgAhSuuHjEbtQs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1767743321; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Lmr7mdc/8YeCB4SkZf2G+cx0l2ku/Gk1x04euv5l+rs=; 
+	b=N0totdKahc1xjj9abvprcOUj3YKB51ir1fLL3X39Hav2dCVBM94KY++p/AziiFmTR02OCM7vA+6hQF6rPGfCd/RGkJA6wTD1TNldICATT5Zl9TostWszatfPkxnpzwxGluF3WE2iycua4BMeW9dfc6ESxh1eCEtIE0jEloViESQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=laveeshbansal.com;
+	spf=pass  smtp.mailfrom=laveeshb@laveeshbansal.com;
+	dmarc=pass header.from=<laveeshb@laveeshbansal.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767743321;
+	s=zoho; d=laveeshbansal.com; i=laveeshb@laveeshbansal.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=Lmr7mdc/8YeCB4SkZf2G+cx0l2ku/Gk1x04euv5l+rs=;
+	b=D6ArQYd6l6WxxBGr/d9yiONMbaTOFClQx4k+oDbTp/tNgRbzM0FRudohyPXYYzAl
+	Dix8gFmBbXzSzinkm7ygka2joGJwXx9jncc7LRgrpo6nTxd3m/lYijp/WqqSFy394qT
+	5/mZoQZb5q6BMU4GkCES0xgy76L2/rzCSiMeuhTw=
+Received: by mx.zohomail.com with SMTPS id 1767743320289358.0160297415563;
+	Tue, 6 Jan 2026 15:48:40 -0800 (PST)
+From: Laveesh Bansal <laveeshb@laveeshbansal.com>
+To: dakr@kernel.org
+Cc: linux-mm@kvack.org
+Subject: vrealloc() shrink TODO
+Date: Tue,  6 Jan 2026 23:48:39 +0000
+Message-ID: <20260106234839.586018-1-laveeshb@laveeshbansal.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
- <20251215030043.1431306-2-joannelkoong@gmail.com> <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
-In-Reply-To: <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Tue, 6 Jan 2026 15:30:05 -0800
-X-Gm-Features: AQt7F2pJlPO-7drumYMDtTF9-DOPHU0IjtOLLiFeDA2rNi5E_BAE0vn6n9y_GsM
-Message-ID: <CAJnrk1aYpcDpm8MpN5Emb8qNOn34-qEiARLH0RudySKFtEZVpA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-To: Jan Kara <jack@suse.cz>
-Cc: akpm@linux-foundation.org, david@redhat.com, miklos@szeredi.hu, 
-	linux-mm@kvack.org, athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, 
-	carnil@debian.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 5ta7mbyno8uu84gno7xgp8hcpkoi5zda
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: 6ECFD80009
+X-Stat-Signature: fcbyr5z4dnqp9mt985o6yrkmb8gu6o9q
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 313CE40017
-X-HE-Tag: 1767742216-69064
-X-HE-Meta: U2FsdGVkX19k3gx3+nwnDEQGHccjbSqNwX6/5aQGa1cTkg5vHeGNVOqQe7NsAouDp/YkRw4e+71ow+E4jl497cnDBhHukoKv1Rf3XfRnRz4OFZdtEpCVmiIsMDRtG5T/zI9SQ2F9xzCmQC+N7KzAmXk/4df5p7pMJFGNnZu7M7loK2i9pBYZapyNaGLM6apkbzon1s3vkiORg6ITe67nt2JczZevU3hViIme4bHA2pRyP/FztgfZq9XqcH9IyThpyGeWEZVNw7gYTE18/Eu1aQyHSUaAaTxm7sH//akNNy4KZSKqTh4reUU0N7AO7GCoKmE0mFWxTLixQb9hSk8nGVTFNRg4taLNyHc5urOnzroGJCL5AKeDn2xfT4Uur20mkWDA8RoXkOMv0E1XIklqdo8R0GTScD+lfWf3s8/1+fg/hkFNHcT7+ZzDkWR2r6sSLI0JliCzW6PpEx/5nXjan/7M4RecwhXYO23dUNnxUNADOxpYlFmlBSpkHBshAMgwYY5Qt50BM1aRLB5CwpNpTN+O+/qNloEsvAMzZs6LJmkDR9FbHiUoE+0bCU+smc7zibKJJd3Svu42QgBjFglTQPEh++c2xuB1fQpNatYvNId0yiUXd2huDg19tB1SL9EMAWzfxktsmgkFecdtab4I3AYzqxUa49MbJDySlsgeuG3dcH/+cwq/+Yqa0vwN0wROh+CdPomV4zaF79+RcVP2jR0RQe78wyp/E3j0pa+hFtn3/+SRii/7m8oW8YkIIDi82N14UxRhkjsJ9fnT9pDOleh/I4d4YUABRcLe/wPTKO/nN91A9uCxHXCJrXuYZEeqdAt6N9UdVJdwp3LfYprrbWVuXjR67t0G8OeYFaLaWIOHaIMnsiwOGWneXTG+35htE3THkPKTu4zM1BkmlowRjwdVXGPVFRqoXTCMT8lzUmiuJYo1LFdJihiB4oDr+nrKWuket3R2PPkW67CMVXD
- aB5/mlnk
- EtmraBndqZRUEB5gYYM8BFQdfHBpu4WrF2pTHWlDBcanL93YSymzN5XTsvEUAQW+wBJaoT/1xvO7OvfDfD0vhv0ox5DKhs6NlNmj33kLwxe8safRnt+cHuc+hDVHOtcATmnB+O8DzMQqm62tUQVFyLqjh2iMIbrIdCB+FwTvOr6DfKmu9WA5mYK0TLI9JB/oH7olft37OdhpEldbM8Ys9OhW6oKaUNVx1gdou/3B80+UnigLQJ7xYrcfRGtZNxoDtI+0Siz8B7+GpacnoFeqTjPenEA+LHwIe6OEbqY8mzY8iHqbgB6isXB4leZ0Oc0yt+bPPpgb0D+ucREZ0BuQkKDOsbLnJaEK+6Ykp3rF2TYUN3AJUw1ncoY1QCWWYxW354tFg9wMnIUPd6rN06XZH27b7n1SDVtO7Gu7IR5QlVaXE9BJ0PPCY0dGDMWswizXdzBPluy4vt3GI2bQPgPTWXY5As8SFFWyvSSjZIYwtssO/i0CwzsBpr5tAjxJoWHBKx6BbqO6DVMolXiqcRHzUm/ZLZ62baY+AqzIENy3W5D91/aQ9nnbcQ9ei+A==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767743326-590373
+X-HE-Meta: U2FsdGVkX18SXADbDhZz69nuMZH+foa+SQ6TXyqNjbn1OzqfJCUkbTyiHCKYjy7dsY84a//4jKXJ/T5S8wIBe49/vAnoq4vU7XGVjdgzuvlruIEjLV7Gh/XRKf872ksX2LbEIcF4EgjlWxi1ZMf46EBzpSx+kf2bXnKks+202fcDuRUh85zTxVBgbk3PGq9BkR5fn3x4dsm01hje59xPJryLC16Vgw2+8BOCxuIxJnUP3SK4vmsO2JEkrsg+Y+u5GoTcaoQy3flySaqAmSYmnd25Modo+UbXZu7hptNY5K4QxyE2mlbsStZ2RNU9+bMPfooGSDH8dB2anrR6fYEu5Estk4wc5yqGzE7gvxuNKfbg+v3JHTYMYgp1kzq/nUqVfUVMwo0WcFRyqW+Em+/EMI3mv9x153b7vYdlH9MMio4DUNpg+CG+yd5xShamGVT021pV/Envs2qD/FCl9vxXan1Rgqdbk6E3jbpyobsmXot5tWBKnMeNDIE2P07B5e5o/sEbPQrFqRaE4bGgOpl4nZH+7a9ZdHnz59Eo/BOPEv/uvS7Ml9LoLFM4C0n1fyP291/p63zWkZWNsk+Nt2/c3SZmQ0rL7Zj0PINvo4eorhziou7gosg7qgA+jnjLKdzhwzORC9JUPUT4g6qWB5EqpB+rJgU5LGIytwNnqWum5f2jd8YJxW0MC6yY6OB4dKpdfMJEE1dJU4hO11csjJmyb7oTfBDK/pv2FJjzahCsAQWRaceON4xt2Vr4eerDrTrEWxxv9eaGt9nXB6lyCiwYN2qK9nBo2WwPCGtC4rCoPt2XSo1zY/zkrpNKVXPl5CChmEKz7keG6vIm5y4FAhv+nVJbE2Rl+cfLHfypDhhy5m4pJGhHv2P5YyBOXriDlBN31goh1K+h5IpC5Sn+V/uR7WcB3fHD9CfHT1Qa9fcucWSFjqRjNkZ4/yvn5Vor9hQBdoc8nCz/trW/lDT0Yao
+ Rcu3v8wn
+ SNSicXeX8d9L/A+xnROkR8mfUOrLo6IEiP9MiWFGjvUhPZmmEHRZWfWv3yI7fIS5jxpqleMD44p2izCktIuyZDZlN4+Swm9V6aKYR/75o2rGLM+zT2p1yk6iie1ZEWKqL9/ziTJOmTNDufg9StFsM0mGWy+PGQyQsI4i8P2Xqv25hp+zdf3/4ucIk+utmyQ0gV1EFID+P+01k6zTryDgkxoLY7QUVRnTjMaqsIkTnXzw38U2OvCLfdfYR9UOHErtWQP6wbTB4FnRJcJfalX02peOxlh/huJ6KjLrp274W0I8712Xnws19KHvBYCThVxPD4MgJ41+7uM7FtfE=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,231 +96,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 6, 2026 at 1:34=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
->
-Hi Jan,
+Hi Danilo,
 
-> [Thanks to Andrew for CCing me on patch commit]
+I came across the TODO you left in vrealloc_node_align_noprof() (mm/vmalloc.c:4317) about shrinking the vm_area when reallocating to a smaller size. I'd like to work on this if it's still relevant.
 
-Sorry, I didn't mean to exclude you. I hadn't realized the
-fs-writeback.c file had maintainers/reviewers listed for it. I'll make
-sure to cc you next time.
+I wanted to check if this approach makes sense: keep the virtual address range unchanged, unmap pages from the end using vunmap_range(), free them, and update nr_pages and memcg accounting. This would avoid vmap_area allocator complexity while still reclaiming physical memory.
 
->
-> On Sun 14-12-25 19:00:43, Joanne Koong wrote:
-> > Skip waiting on writeback for inodes that belong to mappings that do no=
-t
-> > have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
-> > mapping flag).
-> >
-> > This restores fuse back to prior behavior where syncs are no-ops. This
-> > is needed because otherwise, if a system is running a faulty fuse
-> > server that does not reply to issued write requests, this will cause
-> > wait_sb_inodes() to wait forever.
-> >
-> > Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and interna=
-l rb tree")
-> > Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-> > Reported-by: J. Neusch=C3=A4fer <j.neuschaefer@gmx.net>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
->
-> OK, but the difference 0c58a97f919c introduced goes much further than jus=
-t
-> wait_sb_inodes(). Before 0c58a97f919c also filemap_fdatawait() (and all t=
-he
-> other variants waiting for folio_writeback() to clear) returned immediate=
-ly
-> because folio writeback was done as soon as we've copied the content into
-> the temporary page. Now they will block waiting for the server to finish
-> the IO. So e.g. fsync() will block waiting for the server in
-> file_write_and_wait_range() now, instead of blocking in fuse_fsync_common=
-()
-> -> fuse_simple_request(). Similarly e.g. truncate(2) will now block waiti=
-ng
-> for the server so that folio_writeback can be cleared.
->
-> So I understand your patch fixes the regression with suspend blocking but=
- I
-> don't have a high confidence we are not just starting a whack-a-mole game
-> catching all the places that previously hiddenly depended on
-> folio_writeback getting cleared without any involvement of untrusted fuse
-> server and now this changed. So do we have some higher-level idea what is=
- /
-> is not guaranteed with stuck fuse server?
+One thing I'm not sure about: for huge page allocations (page_order > 0), partial unmapping seems problematic - should shrink just be skipped in that case?
 
-The implications of 0c58a97f919c (eg clearing folio writeback only
-when the server has completed writeback instead of clearing writeback
-and returning immediately) had some analysis and discussion in this
-prior thread [1]. Copying/pasting a snippet from the cover letter:
-
-"With removing the temp page, writeback state is now only cleared on the di=
-rty
-page after the server has written it back to disk. This may take an
-indeterminate amount of time. As well, there is also the possibility of
-malicious or well-intentioned but buggy servers where writeback may in the
-worst case scenario, never complete. This means that any
-folio_wait_writeback() on a dirty page belonging to a FUSE filesystem needs=
- to
-be carefully audited.
-
-In particular, these are the cases that need to be accounted for:
-* potentially deadlocking in reclaim, as mentioned above
-* potentially stalling sync(2)
-* potentially stalling page migration / compaction
-
-This patchset adds a new mapping flag, AS_WRITEBACK_INDETERMINATE, which
-filesystems may set on its inode mappings to indicate that writeback
-operations may take an indeterminate amount of time to complete. FUSE will =
-set
-this flag on its mappings. This patchset adds checks to the critical parts =
-of
-reclaim, sync, and page migration logic where writeback may be waited on.
-
-Please note the following:
-* For sync(2), waiting on writeback will be skipped for FUSE, but this has =
-no
-  effect on existing behavior. Dirty FUSE pages are already not guaranteed =
-to
-  be written to disk by the time sync(2) returns (eg writeback is cleared o=
-n
-  the dirty page but the server may not have written out the temp page to d=
-isk
-  yet). If the caller wishes to ensure the data has actually been synced to
-  disk, they should use fsync(2)/fdatasync(2) instead.
-* AS_WRITEBACK_INDETERMINATE does not indicate that the folios should never=
- be
-  waited on when in writeback. There are some cases where the wait is
-  desirable. For example, for the sync_file_range() syscall, it is fine to
-  wait on the writeback since the caller passes in a fd for the operation."
-
-That was from v6 of the patchset and some things were changed between
-that and the final version landed in v8 [2] (most notably, changing
-AS_WRITEBACK_INDETERMINATE to AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM and
-dropping the sync + page migration skips), but I think that analysis
-of what cases need to be accounted for / audited remains the same. I
-don't think there are any places beyond those 3 listed above that have
-a core intrinsic dependency on folio writeback being cleared cleanly
-(eg without any involvement of an untrusted fuse server).
-
-For the fsync() and truncate() examples you mentioned, I don't think
-it's an issue that these now wait for the server to finish the I/O and
-hang if the server doesn't. I think it's actually more correct
-behavior than what we had with temp pages, eg imo these actually ought
-to wait for the writeback to have been completed by the server. If the
-server is malicious / buggy and fsync/truncate hangs, I think that's
-fine given that fsync/truncate is initiated by the user on a specific
-file descriptor (as opposed to the generic sync()) (and imo it should
-hang if it can't actually be executed correctly because the server is
-malfunctioning).
-
-As for why this sync user regression has surfaced and now needs to be
-addressed, I don't think it's because there's a whack-a-mole game
-where we're ad-hoc having to patch up places we didn't realize could
-be broken by folio writeback potentially hanging. The original
-patchset [1] contained patches that addressed the sync and compaction
-case (eg maintaining the original behavior that the temp pages had),
-so I don't think this is something that was missed. These patches were
-dropped because in the discussion in [1], they seemed pointless to
-mitigate / guard against when there already exists other ways
-migration/sync could be stalled by a malicious/buggy fuse server. What
-I missed was that it's more common than I had thought for
-well-intentioned servers to not correctly implement writeback
-handling, and that even if it's userspace's "fault", it's still
-considered a kernel regression if buggy code previously sufficed but
-now doesn't.
+A few questions:
+1. Is this optimization still wanted?
+2. Does the approach above make sense, or is there a better way?
+3. Any preference on the shrink heuristic?
+4. Anything else I should watch out for?
 
 Thanks,
-Joanne
-
-[1] https://lore.kernel.org/linux-fsdevel/20241122232359.429647-1-joannelko=
-ong@gmail.com/T/#u
-[2] https://lore.kernel.org/linux-fsdevel/CAJfpegveOFoL-XzDKQZZ4U6UF_AetNwT=
-UDbfmf7rdJasRFm3xA@mail.gmail.com/T/#m56255519bf9af421ae07014208ccd68a96e72=
-d52
-
->
->                                                                 Honza
->
-> > ---
-> >  fs/fs-writeback.c       |  3 ++-
-> >  fs/fuse/file.c          |  4 +++-
-> >  include/linux/pagemap.h | 11 +++++++++++
-> >  3 files changed, 16 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> > index 6800886c4d10..ab2e279ed3c2 100644
-> > --- a/fs/fs-writeback.c
-> > +++ b/fs/fs-writeback.c
-> > @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb=
-)
-> >                * do not have the mapping lock. Skip it here, wb complet=
-ion
-> >                * will remove it.
-> >                */
-> > -             if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-> > +             if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
-> > +                 mapping_no_data_integrity(mapping))
-> >                       continue;
-> >
-> >               spin_unlock_irq(&sb->s_inode_wblist_lock);
-> > diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-> > index 01bc894e9c2b..3b2a171e652f 100644
-> > --- a/fs/fuse/file.c
-> > +++ b/fs/fuse/file.c
-> > @@ -3200,8 +3200,10 @@ void fuse_init_file_inode(struct inode *inode, u=
-nsigned int flags)
-> >
-> >       inode->i_fop =3D &fuse_file_operations;
-> >       inode->i_data.a_ops =3D &fuse_file_aops;
-> > -     if (fc->writeback_cache)
-> > +     if (fc->writeback_cache) {
-> >               mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_d=
-ata);
-> > +             mapping_set_no_data_integrity(&inode->i_data);
-> > +     }
-> >
-> >       INIT_LIST_HEAD(&fi->write_files);
-> >       INIT_LIST_HEAD(&fi->queued_writes);
-> > diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> > index 31a848485ad9..ec442af3f886 100644
-> > --- a/include/linux/pagemap.h
-> > +++ b/include/linux/pagemap.h
-> > @@ -210,6 +210,7 @@ enum mapping_flags {
-> >       AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM =3D 9,
-> >       AS_KERNEL_FILE =3D 10,    /* mapping for a fake kernel file that =
-shouldn't
-> >                                  account usage to user cgroups */
-> > +     AS_NO_DATA_INTEGRITY =3D 11, /* no data integrity guarantees */
-> >       /* Bits 16-25 are used for FOLIO_ORDER */
-> >       AS_FOLIO_ORDER_BITS =3D 5,
-> >       AS_FOLIO_ORDER_MIN =3D 16,
-> > @@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_=
-on_reclaim(const struct addres
-> >       return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->f=
-lags);
-> >  }
-> >
-> > +static inline void mapping_set_no_data_integrity(struct address_space =
-*mapping)
-> > +{
-> > +     set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-> > +}
-> > +
-> > +static inline bool mapping_no_data_integrity(const struct address_spac=
-e *mapping)
-> > +{
-> > +     return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-> > +}
-> > +
-> >  static inline gfp_t mapping_gfp_mask(const struct address_space *mappi=
-ng)
-> >  {
-> >       return mapping->gfp_mask;
-> > --
-> > 2.47.3
-> >
-> --
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
+Laveesh
 
