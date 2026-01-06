@@ -4,112 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BDC1CE9D78
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 16:22:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A77C4CE9D6F
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 16:24:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1B046B0098; Tue,  6 Jan 2026 11:22:16 -0500 (EST)
+	id F1CB16B00A0; Tue,  6 Jan 2026 11:24:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A01FD6B0099; Tue,  6 Jan 2026 11:22:16 -0500 (EST)
+	id ECA4C6B00A1; Tue,  6 Jan 2026 11:24:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D9F86B009B; Tue,  6 Jan 2026 11:22:16 -0500 (EST)
+	id DD68F6B00A2; Tue,  6 Jan 2026 11:24:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 803206B0098
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:22:16 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E8081AA23D
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:22:16 +0000 (UTC)
-X-FDA: 84302056272.05.6E2A420
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 36AD040007
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:22:13 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Dzq/z+JJ";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3tDZdaQgKCOcbVXbcJOJPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--smostafa.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3tDZdaQgKCOcbVXbcJOJPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--smostafa.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767716534; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id C915C6B00A0
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:24:57 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 975D31A04AF
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:24:57 +0000 (UTC)
+X-FDA: 84302063034.15.49D2ED7
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CF022120004
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:24:55 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wq0+Fvyf;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767716696; a=rsa-sha256;
 	cv=none;
-	b=Vz3e79rX2DBgJ4kvmgjgGo5PXKDYCCfZUsSOksHaU74qJzLnFp+RhLcXsggRLAbaBeNZJH
-	jDX1uv6g2MoGATk5QmuzCJC3QLVNlEO2ju/eC5saSI3+B2rkfYRnDROKn1QuUEINaXafPN
-	bm5vPkzEemgSjMqk7EQAvTEGX6DQOM4=
+	b=VO5FaGiPKiHBJTQNovN5nwNuYeWNFYhLJpgNU9dTHSCyqqFYkh2b1PXfYs64POLfWzAcGY
+	M8Mb846+IyEl2SdJ1oQvrI1EB884+Pjr/cLNG+RZM49eCxswnkvYnXfzli8gVxf9c1QN/a
+	yvyP1KbE3+35/CkYPD6H6Q9m9tJJyhI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Dzq/z+JJ";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3tDZdaQgKCOcbVXbcJOJPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--smostafa.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3tDZdaQgKCOcbVXbcJOJPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--smostafa.bounces.google.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wq0+Fvyf;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767716534;
+	s=arc-20220608; t=1767716696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G7euyx2l/lFhNmo6AV48hUE7kw2bo/jzXTOveIYTXGk=;
-	b=mmtyF6zx63iZO44kaL09cj1TJIAnWOBYzcmCasZoQcQhZ3GhDYmVE9+1DRNCpyu9ezWSqN
-	CrSnsG/+S8ZsvP6ag5fwtBVF5paD9eUWdruSsgEqT858J14xe4bbc+jZ1D5+/KuX19baNL
-	fkEIG1PPQai+yFQUtbwcbFVs9zRszMo=
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b79ff60ed8eso135360166b.0
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 08:22:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767716533; x=1768321333; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G7euyx2l/lFhNmo6AV48hUE7kw2bo/jzXTOveIYTXGk=;
-        b=Dzq/z+JJJT8H1F1nfzbzPifRnpwV4i+tk2QS49/KtUbtZyTbQZDc5whl2j3hRK49fc
-         9YRRgJf0pZoNxpWWUMKG8g4VcCp66dgpcJ7LAscJo0TIt9od0kWXjJvZIXgc4C6cq7NR
-         EAFxbs7e3Fx2Z6Z5srrU1k2zzw7MoglTBoBF+8v8a6+Av3P/QMKkZt0HJ/J4V7PPPNR8
-         EVpRT/7Y3n3OuevGnsDps1qLwu/EZuDSktvVzYZIIV88/S86U48LX8sArIbeeBhMnoiI
-         1lmgKGtjlrNLCMv0+hGRz94OkeLo7/zC59GGB1P13uEVyWsaHvRYS9C9lESIhKr9bLBP
-         pVpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767716533; x=1768321333;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=G7euyx2l/lFhNmo6AV48hUE7kw2bo/jzXTOveIYTXGk=;
-        b=IZtNYelLbssYtA9Leq5BkYaZcLZtZMt4DaTaBspMJqMhDQEVfFas2jD5+MsV+nFOJ8
-         yVsujwDhAkcCt8KQ97D8FEQojl6xrb4upRM3pUJmAB4sxv3AxdLNEQj7r+jb5S7LYYwD
-         d8+UpARjf5vOLEEGydLQGX4rOjAkZNsu0qNqJN/89EF2WMOsSSssi8HgtLW9DRss5Yn/
-         iu/yaXkBrobwvlcJDDz3Sn3yuOKNUsEToS8fE8a36T52VdabeV8ynjfC3sbNZ1pV5pdd
-         1Sm7Jtn+yZ/WAuURl0wT6kx/qRlh/bM3/uLNftu0s+DkDgMMW3l9i9GzftYSndYFoEFq
-         Cjaw==
-X-Gm-Message-State: AOJu0YxrD7AhHBWYwJCd2+lQJHQoXmLvjz9AbZmgwBiicLWozjzYHxAz
-	kWnUpEkleMu1YacMar2Ek4uaBi1Pdr/g2fbaXjRCA+6zLMqgAVAlOIu4JBdoDtIwmTpO2nmqHLM
-	xsazdk3IIwNk1RqvkYaYToSw0S8qwzLuB0/EIaeqry2vZ/3FckM9kMH/gPejuoHMcyb8nt/9W3H
-	UqjVrSId5gH38CRjAgZ7k6rcKyhe0wMJLoXsvNa78LbQ==
-X-Google-Smtp-Source: AGHT+IHKuH10kjkZ8zaCmrcCmU1cvF8nSsBKUsUrtCQVeYxLXeu/BwvVsndP2KZRLEWkWRgI2bRUPCcpfcbaHg==
-X-Received: from ejcrc16.prod.google.com ([2002:a17:907:a310:b0:b7b:bae3:33a3])
- (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:9415:b0:b7f:fbb2:baa with SMTP id a640c23a62f3a-b8426bf1f67mr332737466b.51.1767716532695;
- Tue, 06 Jan 2026 08:22:12 -0800 (PST)
-Date: Tue,  6 Jan 2026 16:22:00 +0000
-In-Reply-To: <20260106162200.2223655-1-smostafa@google.com>
-Mime-Version: 1.0
-References: <20260106162200.2223655-1-smostafa@google.com>
-X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
-Message-ID: <20260106162200.2223655-5-smostafa@google.com>
-Subject: [PATCH v5 4/4] iommu: debug-pagealloc: Check mapped/unmapped kernel memory
-From: Mostafa Saleh <smostafa@google.com>
-To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
-	xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org, 
-	Mostafa Saleh <smostafa@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	bh=Xy+iO6JE2tmVjALe8fTi0G1UevQ+KFFMhU4WqwTl0fk=;
+	b=Vz8lTKOc2d3AYhqQtzqTovzTSMDJgVxGSaWxvRCe1GmI1qIle/hi5n3bdT/B3t972ueoZq
+	T56lDxcQe4tgwRQ0NgOUf7ovrAqBNQ0v/w3X5IHql1WhIP3IScnjGXdfi4jVcTkMBhyV78
+	V5e046G1ldG+Q0g2dSekIQEMRh//cXs=
+Date: Tue, 6 Jan 2026 16:24:45 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767716693;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xy+iO6JE2tmVjALe8fTi0G1UevQ+KFFMhU4WqwTl0fk=;
+	b=wq0+FvyfmQO2Rzs3r7s8fSPpNWrOcUYAcmnWdSQ98GR3xeS24mgmiSTZTvb0SS+wTptwrS
+	pdf62dgeXSo88YlYWD/q+ny07KbwyJs5RFs9k7jo6JSABVU3Wutbm5xNNnfnxhs2fN8/A+
+	OIrqv0/5F0dDDyj3OfpsW1vtOcuiYkU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
+ consider other metrics
+Message-ID: <dou7g3n5fpynsab7hmxf4bgmqdewtdhkkiriwlghxzyduick7h@bsi3q2kivvbs>
+References: <20260101013814.2312147-1-senozhatsky@chromium.org>
+ <20260101013814.2312147-3-senozhatsky@chromium.org>
+ <ddfs43qldaws5urlnpah3ibp5xeu7st37p5hgdfajvdtwor4sd@fkcm3brinygo>
+ <gg5zdpzrk47tljbnaudcy2gnsodyhmmar23qb57b67bhx6ntje@eq2fcrl2dk4z>
+ <v5veb673xrz6z3tevfdymhuik7nltojrvcqyjih4ds7co4p4hr@5e7ngdkrxo32>
+ <5p4iyah6zlrnxpbsis32c4m5lrjj3pq7xwcugq35d2entwfai2@n2r6y3ga2ie5>
+ <7q5gqpfshnc3lfhzxughpks3fc2knw2delpm5io2oe54monydl@5isuxnjputjr>
+ <aVyYuS_usi-lpHkM@gondor.apana.org.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aVyYuS_usi-lpHkM@gondor.apana.org.au>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: CF022120004
+X-Stat-Signature: 9gw3n3qqu9a1zn7mohufp8ursuyrfcbe
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 36AD040007
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 9tzj9hdcwug6mx31p81m1x1xzyaieyz1
-X-HE-Tag: 1767716533-104795
-X-HE-Meta: U2FsdGVkX18u4aaXym6UaQo8noLB3o4wuNJ7A+04MT6C4wX10WY5x4kUzSgvjUB1l/Gl33l1kza/FmjD+NKfpzos3LCIqB5g0XVvHpG22q5o1aXTqqCVTvf+sBDZidQuvYz4WD8NxzRG0VeoDm+JckmNFsAaPGAtrUL/8hQMnf+NRGI0oHwwlV5GX9hLhNu6SjPCsmfYLrYn/RTFOyzPcOPLFIFEYi2JqmR5Qg602PAVv03aw9PGvPBK8EfW0JI/wdwsA3HjX+WrD2+FPyDdgLYCaP9mbBZTU8IA7P/Z4W1NYMPdVqO6CU4lAExinP9xBCYkMQ2l4zCfKRuUuGCIAqg7j7Cg/+pJAm4tJJnreei2NnxPxR08obuS1aCITCgXp1+faE2SaMtEWiW8RwpxwaHOXBpyiiKama9PYSWCgEm2H38PgdJGsdSo5+5F9vIAdyr1Tm6aV79PVmtKfvGf6+qKhshEAYfkWO4lPIgrlDLE0TIrf7g+yS3TQsRv6Xs1cBSbumNFD6psXm2Sj0naSq4jpS/Todct8hSXiYKkZsRHBmNj3lLEWHhn7Z2p58AuKxBDxNOieH3HWT+iQ70Bx1pl3aW3wPwLUHPtcyt9PEtxj+IwH7ZgPHB4DiTcIXDb5ihRTISWBqfbdt3lEf168umV/SnSgmoAu3Vq0cPKF4Q8VjAbk03lCsk5hUUwi4BBBWkuDupS84EFRaOAf5a1i581heRCdmQT2EwAa7KIH+GEUwGRv1RvGfNEtsRV5zZKW7PTgepDJexAmCOlgrZdq5VIlwNchQnFz51byqPdiIdBoNc0Z6IIGPY9yDUGyu0TFIXI7S0Z3DCmzTsWXtYGnDIAqxWctJQPrmv6kiV60ndzjDBlvUVyurRewOy+aK8sDcYuMGMw9unyEBcbeRJsb6iTCRuoXapEClsq0dJx9GdZwGMsxFu5Brp6LVzo0xjcBeoacFiSoYaFG4q/ZDX
- 4GMIF7bB
- KbaSPDrgV3x88gWhctO4SeV3EJhCq1hFOSO2U8e6L1XLKsnewa5r24fzT1oygnFZB8Aib3E3ilP3L8OpVz/O5hJLBCodNpMrBZBTTxHq1IO47hoOgZcFx1AvoimDi+kOTlavqSRTbMuAiHDUoOGVrZuQiqAmhve2CR/+aMQ6WiZLCzY94PO9vqw71oaAQyF02Vi/Y8YdSMAAT+W+kJVO67+W/ybGeoD1GOqblmhRBsxc3zKTFVYbZhpEO3ASDZkbZ82gqFxY1IxyuNRCxypCX/DmY3xLUIg15HwPCFsRTu4TEcPW0n0UzK7DMPCL9lCzOPLXIQmXJtcD3omGSeHyrLAqHFdEmgAwusarJr1f05BeWsr8mQIHKc59EzHjSk4bpw5cFvVdKuqLbTf9JUBSQTnvPWOOrLotGqH9LUTxyuJiR5PfvXp6wxLPKex0MXL8QTIC4mC/o2dlj4Lj8ifZxV5FeeI+s6PHqCl5mi0pb+d86J/G/tiDM6M55xusHOaaih9bO83CxqZcs1d7VLDDEzwA/3GpZL//RposcGAQFyrWnZi0d1IU1USX7FRJwQiM6SchrRlT7CmToxIkbBi/T2Co/1K8bGq2NUL4tPETYogjxN7I=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1767716695-505050
+X-HE-Meta: U2FsdGVkX194QNAMM1th79MrLrG5jsmvBLdPYC516oLaeoNkjSUvv3PIOokBC6qSqG44ZxNZitx52a6tXfE8X+i53Qoq/KdiMeW2dIbf+3m3veBZhAaVSBqCyWka1QYzGLzeADTFBKShsTiz06xjR4/+mscUs/i769w+YwwrJSX3FcWPCQOUDFfXN+kKmgRiHD+VMuRZrF4QfTcsuSjBySqhOk/EliYg7Z2LKdgkQft/fLIGB0yIFeZjUVn5OjIqPw74PQbbGj7sqA35YvF3Tb6YcgvlhIzFsiWOCs6I2Bg1sXFiDd5hIZmhQvFNg9J/VbCBVcV0iunn543gkOkWXGE6GYpo7yrniaw5o57r34moN3sg3a//lJyWphg/UFJTafO4imGKJq595IC2Nw2loh0P7a9K4pdHpowsCskaATvuOzuojsVedwoFN0NL0wHMyOpWPQJ8IMqjyC1r4etF9W2tG8fEdpVREvgb56rgZc5bD1BOWx04X4oMGMkJCm8j7mf6ZrnjIN8bpGZvfkRBZ5bt1kGZtdiz1grpWI7Cb5L5qAfXzxTwBteA9+j+QOWKDIKBU/KnKqzSSUMkEJsGxFdHDtFcPKuInZkRabIp+W7r6l8RfZDf32cZCdJ15hiTC7TSH2TwVHQnJQVC6sLQuuEEPSDiGK4kfyE1F/o29EKLOqt++VSk/xclp7AjbHRvpzLsEZArwMtXVeXUmki7o6Lr5JVac3j1OC/VhzvyUNQh7l7czsMkU/5hnYHBeyaUx75rZ0zRqDUX4r2s/iZ0kYpVjLe/UFpDTKt6DpncUcKGNYOtzBQMpR8r2JbEjcqExpjjX1BXNZeGnx5IMyjtoY1dT9gzZ2UAev4cZsCSyZ0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,125 +95,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now, as the page_ext holds count of IOMMU mappings, we can use it to
-assert that any page allocated/freed is indeed not in the IOMMU.
+On Tue, Jan 06, 2026 at 01:08:09PM +0800, Herbert Xu wrote:
+> On Tue, Jan 06, 2026 at 01:22:45PM +0900, Sergey Senozhatsky wrote:
+> > On (26/01/06 13:20), Sergey Senozhatsky wrote:
+> > [..]
+> > > > I am not sure tbh, adding Herbert here. I remember looking at the code
+> > > > in scomp_acomp_comp_decomp() at some point, and I think it will take
+> > > > care of non-contiguous SG-lists. Not sure if that's the correct place to
+> > > > look tho.
+> > > 
+> > > Ah, so it does kmap under the hood.  I suppose that can work.
+> > 
+> > I'm hallucinating, sorry.  Yeah, let's hear from Herbert what's
+> > the direction here.
+> 
+> I have not implemented the underlying SG support yet because
+> there are no users in the kernel as of now.  But if this is
+> useful for you then we can certainly do this, at least for
+> LZO which is fairly simple.
 
-The sanitizer doesn=E2=80=99t protect against mapping/unmapping during this
-period. However, that=E2=80=99s less harmful as the page is not used by the
-kernel.
+Just to clarify, IIUC the SG support would mean that zram or zswap can
+pass a non-contiguous SG-list to the crypto API, regardless of
+compressor support. I assume that the crypto layer will either pass the
+SG-list as-is to the compressor if it supports it, or copy it into
+scratch space to be contiguous if needed.
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
----
- drivers/iommu/iommu-debug-pagealloc.c | 23 +++++++++++++++++++++++
- include/linux/iommu-debug-pagealloc.h | 14 ++++++++++++++
- include/linux/mm.h                    |  5 +++++
- 3 files changed, 42 insertions(+)
+So zswap, for example, will get an SG list from zsmalloc and pass it
+directly to the crypto API for decompression. Then the effort to add
+support to compressors can be done separately.
 
-diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-de=
-bug-pagealloc.c
-index 86ccb310a4a8..5353417e64f9 100644
---- a/drivers/iommu/iommu-debug-pagealloc.c
-+++ b/drivers/iommu/iommu-debug-pagealloc.c
-@@ -9,6 +9,7 @@
- #include <linux/iommu-debug-pagealloc.h>
- #include <linux/kernel.h>
- #include <linux/page_ext.h>
-+#include <linux/page_owner.h>
-=20
- #include "iommu-priv.h"
-=20
-@@ -73,6 +74,28 @@ static size_t iommu_debug_page_size(struct iommu_domain =
-*domain)
- 	return 1UL << __ffs(domain->pgsize_bitmap);
- }
-=20
-+static bool iommu_debug_page_count(const struct page *page)
-+{
-+	unsigned int ref;
-+	struct page_ext *page_ext =3D page_ext_get(page);
-+	struct iommu_debug_metadata *d =3D get_iommu_data(page_ext);
-+
-+	ref =3D atomic_read(&d->ref);
-+	page_ext_put(page_ext);
-+	return ref !=3D 0;
-+}
-+
-+void __iommu_debug_check_unmapped(const struct page *page, int numpages)
-+{
-+	while (numpages--) {
-+		if (WARN_ON(iommu_debug_page_count(page))) {
-+			pr_warn("iommu: Detected page leak!\n");
-+			dump_page_owner(page);
-+		}
-+		page++;
-+	}
-+}
-+
- void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size=
-_t size)
- {
- 	size_t off, end;
-diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/iommu-de=
-bug-pagealloc.h
-index a439d6815ca1..46c3c1f70150 100644
---- a/include/linux/iommu-debug-pagealloc.h
-+++ b/include/linux/iommu-debug-pagealloc.h
-@@ -13,6 +13,20 @@ DECLARE_STATIC_KEY_FALSE(iommu_debug_initialized);
-=20
- extern struct page_ext_operations page_iommu_debug_ops;
-=20
-+void __iommu_debug_check_unmapped(const struct page *page, int numpages);
-+
-+static inline void iommu_debug_check_unmapped(const struct page *page, int=
- numpages)
-+{
-+	if (static_branch_unlikely(&iommu_debug_initialized))
-+		__iommu_debug_check_unmapped(page, numpages);
-+}
-+
-+#else
-+static inline void iommu_debug_check_unmapped(const struct page *page,
-+					      int numpages)
-+{
-+}
-+
- #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
-=20
- #endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 6f959d8ca4b4..32205d2a24b2 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -36,6 +36,7 @@
- #include <linux/rcuwait.h>
- #include <linux/bitmap.h>
- #include <linux/bitops.h>
-+#include <linux/iommu-debug-pagealloc.h>
-=20
- struct mempolicy;
- struct anon_vma;
-@@ -4133,12 +4134,16 @@ extern void __kernel_map_pages(struct page *page, i=
-nt numpages, int enable);
- #ifdef CONFIG_DEBUG_PAGEALLOC
- static inline void debug_pagealloc_map_pages(struct page *page, int numpag=
-es)
- {
-+	iommu_debug_check_unmapped(page, numpages);
-+
- 	if (debug_pagealloc_enabled_static())
- 		__kernel_map_pages(page, numpages, 1);
- }
-=20
- static inline void debug_pagealloc_unmap_pages(struct page *page, int nump=
-ages)
- {
-+	iommu_debug_check_unmapped(page, numpages);
-+
- 	if (debug_pagealloc_enabled_static())
- 		__kernel_map_pages(page, numpages, 0);
- }
---=20
-2.52.0.351.gbe84eed79e-goog
+Did I get this right?
 
+> 
+> Cheers,
+> -- 
+> Email: Herbert Xu <herbert@gondor.apana.org.au>
+> Home Page: http://gondor.apana.org.au/~herbert/
+> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
