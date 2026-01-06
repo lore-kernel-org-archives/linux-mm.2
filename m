@@ -4,110 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFFA9CE9D4E
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 15:23:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9137CCE9D53
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 15:24:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D38E6B0099; Tue,  6 Jan 2026 10:23:40 -0500 (EST)
+	id DB1106B0005; Tue,  6 Jan 2026 10:24:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 472CC6B009B; Tue,  6 Jan 2026 10:23:40 -0500 (EST)
+	id D7B066B0095; Tue,  6 Jan 2026 10:24:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37F8F6B009D; Tue,  6 Jan 2026 10:23:40 -0500 (EST)
+	id C916E6B009B; Tue,  6 Jan 2026 10:24:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 262256B0099
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:23:40 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E15AA1AFD0
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:23:39 +0000 (UTC)
-X-FDA: 84301908558.22.B348E87
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 12132140007
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:23:37 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V4s0ogbv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of aha310510@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=aha310510@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767713018; a=rsa-sha256;
-	cv=none;
-	b=IJK56Jt+DTWV9CXvlEGCZX22Z57Jho4mYVr1iIE+CaFIJZGLMyG7a1wwSe9zNpBk11ITqj
-	74eYPV20TLVZve4u5PK+VWnVhzAQoXcXSfdsnHZjbOILY+3AIXYg4dAtjB73J6TJc0f4Fe
-	Nykci/gQXjAdkXqKoYCJCWrw/FIqWhU=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V4s0ogbv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of aha310510@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=aha310510@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B743C6B0005
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:24:30 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5028C57C20
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:24:30 +0000 (UTC)
+X-FDA: 84301910700.10.6FE96A9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 72E72C0009
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:24:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YB6lzGB9;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767713018;
+	s=arc-20220608; t=1767713068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qBqM6O2fnhnvOrXryCzdHWp9tlzBg33CYRduSw1s71E=;
-	b=a8NxIi73ZaJOqBQZ9mFmb9eN0UieMZUgssH+MeOOdIgfjzyUHtIIcvfBtU2gxz7hKIBsX6
-	2EAvwgLbEJcTstfNRG7s0JgTNjdSHvGeieS0pzqaIxkMarv3f0ShdOq11HoZlmRK0gcekj
-	VmNsF/53JW0j0X4sboLv49cFRzQeVDc=
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso1190598b3a.2
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 07:23:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767713017; x=1768317817; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=qBqM6O2fnhnvOrXryCzdHWp9tlzBg33CYRduSw1s71E=;
-        b=V4s0ogbvP3XeW+YU29zy4VhXl38tU5OjhQKIPCrEiRukBXOQuEmtvMz33wUup03PMQ
-         F6CZhmPStxDLu8o3df4MShg+moSMy5NhmbCNGZ5yJcn1+USQBNGy2r4DdRshWlLnErks
-         Ojxy06KjlpXsJtCnmLh8CslN/8pli42QadhDLzWEZ+QtoLP2llSRg3fhSiiQpGZfI9Kx
-         /iOFGZJMGmRbyiwmDCcQ4zzkDm9++/n3thGSpU+GVWgUWKZZ64AYWriSZxSyoXMEdA2R
-         WE7130HjMutKkBSpt401mMJoirZlDKNEwHX8GBR04VB0kkhu3jZU7BaKBOQdkTIX2LZ3
-         o6aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767713017; x=1768317817;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qBqM6O2fnhnvOrXryCzdHWp9tlzBg33CYRduSw1s71E=;
-        b=BrTJhZGMA2Kvu5N1P0Qj7RWQVugK2HwWXiuttCX1CtJMLlybrur59MS6uQr4G+03Jr
-         l6BPssN4+Ry/b4K+U2X6iWFbo4f8EGHy+M9FDGurlTFS1WkwkmGkWmtiOErcA/Yd5tAP
-         24NGD8SLyorLtvXNZvqxc1Kv6LFe1AjLG1xfjLvPAcViBWM1uS+dhP0uFvva5WpIWf6P
-         txZRRM3qiqBZ+qTZSU+0Wmd2EstUDXT7aq7SGTmG2pQWwrrmrGGzMmMaLlDXJa9ZvrKp
-         5ykKiSK3zK7b5Y6fcCRywj6XssrETfSFZTQTryhKIc3wybAOHimINWlkRWpCwdZMF24O
-         rMnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWkX952+yOLYUgUcUwrg8kHSwJhIj5Cs+9vl6iyEvwBRHG1B9joxaZ2d/43PlVJ80srylQdkT4B3g==@kvack.org
-X-Gm-Message-State: AOJu0YwIIg6aDKdU7NQR12oFQ57ttTE239Q056Vaomv9OIbe99DOoQUG
-	EPR8TtEy+c2lTIrGezx060ZImXcbPwKKCHKSEvB2kQD5fECkPvg/IvQy3d8K65pVQRog83+Dv/C
-	UBUm2iVbOMtHwZnBLgoGoulvvbvxugA8=
-X-Gm-Gg: AY/fxX7S0GpZAOcZ1UPg7X56YLiiSUPIeYWFLMb5GdYymw/zRJmtpZhf1Dp0iz5suT1
-	6bWosVMaJc260Mn+s49rR+7nZyV9WJCg9indRDWOp0awwsQ4umIZeIjjsK2+26+IChSdwqGjtJZ
-	JwMCaeNMw2ceNiuidkik/SmTNqZs+glF06KZMeeFbv/R2QywfPMvnqJ28LZ1hNVH6Qv7GC7tphk
-	8y3OkFQKraIUaEAYfLqBAh/vmh/jEtB9Zg7raYKdAe87xQ3S/Od+D9URDteRU5GOt/8sKUBgw==
-X-Google-Smtp-Source: AGHT+IE9bORTCKypDc1PqvfFYjBUroDU53PJJo0MGyxWQYHEr5KM77iPPkHbhUj8qhDxQkqMgPnoXv3nxwQwen8Z7gY=
-X-Received: by 2002:a17:90b:35cc:b0:34e:6b7b:ded4 with SMTP id
- 98e67ed59e1d1-34f5f3441femr2128630a91.36.1767713016818; Tue, 06 Jan 2026
- 07:23:36 -0800 (PST)
+	bh=lN6KQmcR1cPbtam6FHeJxWMZpj7fs7VQ7xs9r8TR33s=;
+	b=xRxcgeYxm9MweiFWvW4OwhstF8s1VxWR8SgYHQHGtUm+pfMSR09BSGNMQ2cmhMmTqSgYib
+	HuisI90pTFvRi3Sy8qjBn3rT4BVNj/whNih6gMnJhD6MBDfXL4lp2yYWfQHH2UgLRwNZD7
+	ROnRnhoejVBNrAPcDOv8tXMJMWz1uXM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YB6lzGB9;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767713068; a=rsa-sha256;
+	cv=none;
+	b=kOv60rZexzVrWSPFNJTq6XK6RS3S76m/CobzS2rRI0aF6g1J3wPYN6397n7p+ht6Up4uh2
+	CXrVcn/iJgQHJ4VAZa//0qjhKlpTXUusF/Jdk55s3a2gN/K2BEQJ3jG1QLsNKcmgHEnZd3
+	ELNIzpFfnRr2Jjgbn2+HvgVijaZ7MKg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 764E843476;
+	Tue,  6 Jan 2026 15:24:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59507C16AAE;
+	Tue,  6 Jan 2026 15:24:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767713067;
+	bh=EfBD7bh1FnOYX4P+xNvQx4E+q8Xm0urG3QJDAxoat3I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YB6lzGB9yPROCeUmtjE1/+hDeCZy2joy8cazV0rTfo7VRK8rjoCttdnd2AkrBwN9o
+	 99Xo7Y2Ad0TsI1xQobp79/nc9HAEWI6tQKLBjJA0RU0ukF2JviGhl2FAffbPB9imvD
+	 9WQ9CQ+AXfGiLAArgSmPgePODtTgLJvKgTAmLKQXH7S981Ss81y2bHISN/53w/Cq1r
+	 3m2yKs65Qr9vvt3+lKhMmNxvu49b0E9oDR9mQGcd27uijgLkXh6lO2ppYdG8hqUA0E
+	 KHBtHp5ZKhZN2pI5sMo5pCSxkKf+fLkZvF/AhBd92G/5d7+BNCZf3Bw4NZfLZchrQ4
+	 tLTxqgUEQOo4A==
+Message-ID: <7f053290-6b9a-4d18-936e-0f28006c79c3@kernel.org>
+Date: Tue, 6 Jan 2026 16:24:21 +0100
 MIME-Version: 1.0
-References: <cover.1767638272.git.lorenzo.stoakes@oracle.com> <6e2b9b3024ae1220961c8b81d74296d4720eaf2b.1767638272.git.lorenzo.stoakes@oracle.com>
-In-Reply-To: <6e2b9b3024ae1220961c8b81d74296d4720eaf2b.1767638272.git.lorenzo.stoakes@oracle.com>
-From: Jeongjun Park <aha310510@gmail.com>
-Date: Wed, 7 Jan 2026 00:23:28 +0900
-X-Gm-Features: AQt7F2rDC-SGpZkUK_mRW6olBAMMdVnAp0c1TY11Bej_aJLGQIuJ38xcVtBFQ_g
-Message-ID: <CAO9qdTGp3KxpGjwfsKj3rADXsZLPbBY_XYyHJTy6NVgBF9U+0w@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] mm/vma: enforce VMA fork limit on
- unfaulted,faulted mremap merge too
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
+ blocks to zone movable
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, osalvador@suse.de,
+ gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, hare@suse.de
+References: <20260105203611.4079743-1-gourry@gourry.net>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20260105203611.4079743-1-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 5it3dc4ozih9e77hndpo7wemo8grfa3b
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 12132140007
-X-Stat-Signature: cwc18639zikdxzuoeq7sjayd1mtuuk7o
-X-HE-Tag: 1767713017-439510
-X-HE-Meta: U2FsdGVkX1/L5ZsB2ZChIaPh7x+3mjYORLbNJM6ImPWqiB5BF+J/oWd8TCSbb1itDTiIn1cpvz4dTDnZRgtqgieRE6iorZxzI6rjLqHtrSOER66wdMtHG/0WDnGUrKsaNSLV/Ckl5tr2Xu+hRegguVSef61sEa5BUbnYsNo7z8f0sexuvCv8sVuQ80+2796hGTtJ2T3+Funfl+lrWn3ADxycrqKQavnoEd7wFGQCeTZAE6p3h4S3yUin1bP2jZ+1jL2ZtHo8r4na+lgbX0OdQv4gCnEAQFgxlArROm5++Z1sti4dfdsE2ANiN930JxhbUpoPm2r/EeA3sOLcm5knQRaYs+5bHJ5TYmtWyJ8mkyKqKk5HpV8iKXV6tIsv2lVm3WIK6ue80lPo/WROfICsgWzxamCDMLSdG21dVceIG6CwKFshI9+XYsrNbmaCfAndLFUTqcE0taEpyDZ6h90zEZUwPQv/9ImIk/+YkQESbRhRCtnwhLBGAUG5T0GwUwWKqxcPfEEoQKhpCPbissX2lNFOR9wsqmRx7qJ1CqcfGy3SECVpPH+P7HGyo9itDGE6skWYRyA2AURczfQakb9UVs6/pS6GBq0/H9sNILNIWXo5tf5EQ7y6qZGKiz1OvVxOBgh3U0A8sUjqGf+2Efzdn8mzj9LQJropJLvFKXrAluuZK99uMteizgKz/ckJXOk+Z0ABzhHfFoWKCLc2w67JOXgg1M98O3baLSf8s8kBHhelQ1xYjeXuSkHBg+b1m89yaqmLJq2HT3jAT7MT0kNM0TB2wq5WQd9Ikcj6na6dbF7tZbALWgwVw+LOSCQkbsb4DyMRHtHYeS97+uupR1sRYF9aFQB1Bm3d4xQtiJSk3zM8vJmYSWsuXldIcEP9IJTygyBPaCgGIM/5EwH6uO5897P4RsK6GsL544lrgO4K/rrCpoKMuprfturue7Xa/LTiPn35TpmuUC9FOfqbZl9
- iRSS7VFb
- xpsjTqQi9DK9G/qZAHypvpQvOzDgmuQjfcWoahTzPn0E2+eNGqKxFeKKVjR7AOHE9sZguEgUTXzewJYPTeqe8bbSyFtgaP4yVMJC6PY8fOQdYB10fSof4SiqkBW3k5YVHxBU1/PhvRhnVi9PNu49wD1gp1D0XyQYsUtHTXokYXmTMtCDI/scY1gAF2TXh0EmekAUOOXYp/XIy+BBkBorcOO6ClWv0dA1MtjLuUroLuZcw1NLgg04zuHyklq8hzxj0I9cgrgC+2qMu8ASviBcuEH4CxZHrovgnC7Qmc+LCgQ28/eQgMwpauGPU25xid3Yek/ALP+Ph5c07Zz41l2Y71SCAjQaw3bzQMZ4ATX4RpALIeDfyVdi/2uDNFEJ6WtG9fWRdFfFbUbJn6ryZJ6KXAErCJGaV1HVNRK8srLCVeUYbqcg=
+X-Rspamd-Queue-Id: 72E72C0009
+X-HE-Tag: 1767713068-684653
+X-HE-Meta: U2FsdGVkX1/DWYnovuR6Lu7m76ljZKV+68VhCZd88oDzgIqQdzeQBMd7aAESTfR0eVKiCWWykMGUU6F+LuqWE9LFpgC49xWKacII0OGbF8DFNF09nnwnxrTNBEPeypEf72qnVfmjXY1PyeU6UhyT/yAsn5HJrESVTsOkGdGZH62Ylz8tKdMt4ZmSjka44zPQEg4lKIstgHuF7SZm3lotUHG7OiEEZ74wRqYYShmrK5/7d6/DrZNlzp9VD/xz31E5qcW1sNXz6ue4XBKNNCzw03uL6gZ+GwHBo6Ioj/BHSSo34KnErm7N+qFTtINoZZI2pds6QqCG16Vszka58HUtLgLaLBkOPPM9fejgj/33D3pPXKWc263czXeq48emNPKB10/vq4jv3Y3RPwfhTYr7hRDfFh715lZC4HcHL/sUFu7PS+fDXNbl6AMjdV792cpPAndXOCPc06xfxbUQGhh0WResqzQiaLbWYkba1yi8bnc190RmjzB/JT+BSgmRGyXpEYWYBqpCHIvw56EQxQqR9OhaFU4fN2Zikc+bdkA/QNbW4/q/iZ8hwVJ2imfNTAkbZOaWh8zMdpQgMnhDb/zpkqLcS+XH00SQ6sfHe+U7JrvOpcqdnTMI7Zj/0n5y5jhgLnE6oVC27mg1177K5keCxT1O89iemRRX1Tte/6YkHcY3PFfSmiCcCdwEVJFddgnolQ4G2FYprb5vgGfUMtZ3cBtIykUQPtVKL9BFvSUuN56yc5x9zmNZoyGAQZrud/dxJ8de3j9BVIAEdFN+uZf8joDLu++C+h4SWUxjW3QkiCiQqd9fq6BX7YRaDeFzS8DeL/sT7n37FpxH6rsH/OEPQ7g1JGPxu+05kMfoGx2sCWwIMoayW2foD0Qyoba5yU5am2HBpmCSiybM6rfnSRVFL27B5B6VFmFWaVU3ZLFU4G8L/QrRv6hjODwlZt5DojuLQf/mJ2O7HyxzgH4VEx7
+ P/bigrpr
+ lDintuXztSmpm8Roaa/ozUh5VUZ2u/fGuC6TaPG5jKLduDw3YYsD+czNceeYFnxAW9/TXTEhkXI4uEH0BbYrYS51EVirdu3N69ZRttDThfDuhWcmYI4nrjThYxdzg8A3JvuZhqyZM4efKtgrjOnSMGY76M+Ukkz7dFQYuwsUyqGGXVdsPPQxIPjp+dt8SwS7d9tgndJHngUtPGdVRS3Kk9OESWymvgQDqfBWuS60AwbuunIQvJLlK0UgGRlls2nifLXsqG7G/rXUbJVLbA5RMfK+blvFIOwgyXul4+8OZQT+a6arLUiPG2oL/JQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,91 +141,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
->
-> The is_mergeable_anon_vma() function uses vmg->middle as the source
-> VMA. However when merging a new VMA, this field is NULL.
->
-> In all cases except mremap(), the new VMA will either be newly established
-> and thus lack an anon_vma, or will be an expansion of an existing VMA thus
-> we do not care about whether VMA is CoW'd or not.
->
-> In the case of an mremap(), we can end up in a situation where we can
-> accidentally allow an unfaulted/faulted merge with a VMA that has been
-> forked, violating the general rule that we do not permit this for reasons
-> of anon_vma lock scalability.
->
-> Now we have the ability to be aware of the fact we are copying a VMA and
-> also know which VMA that is, we can explicitly check for this, so do so.
->
-> This is pertinent since commit 879bca0a2c4f ("mm/vma: fix incorrectly
-> disallowed anonymous VMA merges"), as this patch permits unfaulted/faulted
-> merges that were previously disallowed running afoul of this issue.
->
-> While we are here, vma_had_uncowed_parents() is a confusing name, so make
-> it simple and rename it to vma_is_fork_child().
->
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Fixes: 879bca0a2c4f ("mm/vma: fix incorrectly disallowed anonymous VMA merges")
-> Cc: stable@kernel.org
-> ---
+> +/*
+> + * Restrict hotplugged memory blocks to ZONE_MOVABLE only.
+> + *
+> + * During offlining of hotplugged memory which was originally onlined
+> + * as ZONE_MOVABLE, userland services may detect blocks going offline
+> + * and automatically re-online them into ZONE_NORMAL or lower.  When
+> + * this happens it may become permanently incapable of being removed.
 
-Reviewed-by: Jeongjun Park <aha310510@gmail.com>
+If it's really only that, we could also look into simply making a 
+re-online without a specific mode ("online") to use the previous mode.
 
->  mm/vma.c | 27 +++++++++++++++------------
->  1 file changed, 15 insertions(+), 12 deletions(-)
->
-> diff --git a/mm/vma.c b/mm/vma.c
-> index 660f4732f8a5..fb45a6be7417 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -67,18 +67,13 @@ struct mmap_state {
->                 .state = VMA_MERGE_START,                               \
->         }
->
-> -/*
-> - * If, at any point, the VMA had unCoW'd mappings from parents, it will maintain
-> - * more than one anon_vma_chain connecting it to more than one anon_vma. A merge
-> - * would mean a wider range of folios sharing the root anon_vma lock, and thus
-> - * potential lock contention, we do not wish to encourage merging such that this
-> - * scales to a problem.
-> - */
-> -static bool vma_had_uncowed_parents(struct vm_area_struct *vma)
-> +/* Was this VMA ever forked from a parent, i.e. maybe contains CoW mappings? */
-> +static bool vma_is_fork_child(struct vm_area_struct *vma)
->  {
->         /*
->          * The list_is_singular() test is to avoid merging VMA cloned from
-> -        * parents. This can improve scalability caused by anon_vma lock.
-> +        * parents. This can improve scalability caused by the anon_vma root
-> +        * lock.
->          */
->         return vma && vma->anon_vma && !list_is_singular(&vma->anon_vma_chain);
->  }
-> @@ -115,11 +110,19 @@ static bool is_mergeable_anon_vma(struct vma_merge_struct *vmg, bool merge_next)
->         VM_WARN_ON(src && src_anon != src->anon_vma);
->
->         /* Case 1 - we will dup_anon_vma() from src into tgt. */
-> -       if (!tgt_anon && src_anon)
-> -               return !vma_had_uncowed_parents(src);
-> +       if (!tgt_anon && src_anon) {
-> +               struct vm_area_struct *copied_from = vmg->copied_from;
-> +
-> +               if (vma_is_fork_child(src))
-> +                       return false;
-> +               if (vma_is_fork_child(copied_from))
-> +                       return false;
-> +
-> +               return true;
-> +       }
->         /* Case 2 - we will simply use tgt's anon_vma. */
->         if (tgt_anon && !src_anon)
-> -               return !vma_had_uncowed_parents(tgt);
-> +               return !vma_is_fork_child(tgt);
->         /* Case 3 - the anon_vma's are already shared. */
->         return src_anon == tgt_anon;
->  }
-> --
-> 2.52.0
->
+We could glue that to the "contig-zones" policy only, to not affect 
+"auto-movable".
+
+That is, remember the zone to which it was previously onlined, and then 
+simply re-online to that one.
+
+-- 
+Cheers
+
+David
 
