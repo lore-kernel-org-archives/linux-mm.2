@@ -4,119 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7506DCE9D7B
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 16:49:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15B58CE9D7D
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 16:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBCC36B0005; Tue,  6 Jan 2026 11:49:12 -0500 (EST)
+	id 7CA1D6B0093; Tue,  6 Jan 2026 11:50:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D68816B008A; Tue,  6 Jan 2026 11:49:12 -0500 (EST)
+	id 78A756B0095; Tue,  6 Jan 2026 11:50:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6BD26B0092; Tue,  6 Jan 2026 11:49:12 -0500 (EST)
+	id 689D26B0096; Tue,  6 Jan 2026 11:50:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B4E166B0005
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:49:12 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1BEFC8BF3B
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:49:12 +0000 (UTC)
-X-FDA: 84302124144.21.25E349E
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2FE6B40005
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:49:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=delta-utec-com.20230601.gappssmtp.com header.s=20230601 header.b=TWfGZecQ
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767718149; a=rsa-sha256;
-	cv=none;
-	b=x2sblVdg4kvbHnpGvuId6LismXbqIVDvwmVaboIjVgM/V2WNrzegmfowR+9Vwy4m/y+u/o
-	XxuHG5e/OKEvYh17PVZKVLWs8f7EVh+Dhdl5lAIahFY1F+fXeopx8UJTtEET+s3UzPnAlB
-	jRZ3XlPQ1waEYGuNuL3N0pZzCi1NMM4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=delta-utec-com.20230601.gappssmtp.com header.s=20230601 header.b=TWfGZecQ;
-	dmarc=none;
-	spf=none (imf07.hostedemail.com: domain of boudewijn@delta-utec.com has no SPF policy when checking 209.85.218.52) smtp.mailfrom=boudewijn@delta-utec.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5201A6B0093
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 11:50:22 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EBA1813B275
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:50:21 +0000 (UTC)
+X-FDA: 84302127042.11.3A15CAD
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 05AE7140008
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 16:50:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H57AzpyA;
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767718149;
+	s=arc-20220608; t=1767718220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H/2hOfQwWsFzjkLVUeSCjYmpOw68MXiDDJlSVEBxaXg=;
-	b=th27F/iEK6wFYsKi8SFChPZI638rXyK55cFjUJCsOmJnzF2WYPHHcu3kPo131IY0Y72N/5
-	Snm/hKZWXCr76v1jxtv2VewnAYh9WkGGmqTAjLcsj52810yYou9B9f9ZbLGSJCdYFiXO55
-	VReBTiCXk84S0bGJTWQ9BGb6NM+oHoo=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b727f452fffso204866b.1
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 08:49:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=delta-utec-com.20230601.gappssmtp.com; s=20230601; t=1767718148; x=1768322948; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H/2hOfQwWsFzjkLVUeSCjYmpOw68MXiDDJlSVEBxaXg=;
-        b=TWfGZecQsdy/kWkGdwe0H03cHagWMflTPl5LYs+Apd020+01dSfs05/9UgfutI6WZf
-         xsYYqGumP8pgf1i/youzw94Y+XarDuSYdsMZ4y6p9S7WWymLccIHkqSik6HkpWeT37i0
-         6WW3IRVFWbPrfsJrVoSkLWnDZSZpXjMsQw21ux2NTsvCSXmh0FMXo5CSiF51DWurNxn7
-         hZlpFcfgv+IHkPM9VVj34g9DLEc3nSyphPLyHSeF+eDGuLEdD8D9IGb40QGqaiSHPWR/
-         uQO0K2IX7Sc/tX1XkoJvZl97LHFZiruINYVFGUvKvJK1oyKX6Hl9v8OsV9BqntjiXZN/
-         LxXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767718148; x=1768322948;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=H/2hOfQwWsFzjkLVUeSCjYmpOw68MXiDDJlSVEBxaXg=;
-        b=mHTnWSECJ/ZHGywcBcEd5gRhur4Oj0PAYrNBOB8xA/97Hr1XUaRHVlA3qVbfk9nQGA
-         bu9B2hW+B5JIi0DzpHieZTI5PdGQEHdp14ugH4YJbXT5uOkkQyGaQ86feMxWkQzlsYcD
-         /iCA90PFTukIg9kpZyrxWgAo7TvugrIrahXXbc8605RcoPzUmzW/ELZDLsmeay41FJW+
-         ytc7bWZV31VL4kjbFAFYp0tgx6oAWOp+xqDHRRYX85YalzN6b6ERPiVd7XohFX80RxpW
-         KZmV212BSorPbd4i1l4tgbABGQ1Y9QFB/aeCJrf+JeOApIjjh8l+sVaZFh/1T6WxJxDc
-         zE0g==
-X-Forwarded-Encrypted: i=1; AJvYcCW1M8dDb5/aQlIB9fOwO6jxnjYz1SixN9fOk/ZAV72J4u8EStjJ4WV2M8POAvasuMp9WheKx27Amw==@kvack.org
-X-Gm-Message-State: AOJu0Ywy9W/uO66+twNuie3fMgguRcbwKJxkbffNPMk44eom2HzQz6UZ
-	wJCz5s2VN4oNFelkmJBQo+MRrsdotrBALlfYD95evw7rgmBkufex8lYPUKajRLKTqw==
-X-Gm-Gg: AY/fxX6AoRHujEQe2KZoRHr7B9UwvHwuizwauwmcFILQk9PvSplwY98gCZC55zHgiCA
-	kZ8kja+53TzM+eUnzzOVA0Wuvnwuzimxt/U29T7MgEGy+hxMzr2jBoZme+j297TaIg0Fbswftg9
-	fy1nc6GDCK608SzfyuclMgjb6HfgW9hl5X957JvlD2t0ft+rzUauvJk8CkV37WAmCVupX/783ZH
-	lS/5A6bWfCf7iQTVtpN+itGldcHKNH0c9MfWnJjgNDrLvNLj+AUCNlF4CENAuZLvyD1csGs6c4F
-	4j4S0Lc47Us4CoL9ls7xrQgcqiIWUQYXaixR3QUcjYYdObMzm6Z8Di5mP5x07Iiqij7+JCttwOe
-	0POjZQ/U5+Zd7qt27d/qwzHw8Cwsd1P271iWL05s2Ek+l9EZ2b75mf90K/h2dmBpxA+AYMcgHOB
-	n9C1Z804PsxRZXCaAOUdFJ1k148DZPtOMpDQJSw0RF9oZs0PDtjNnTsqD53XisMb6Xu+mUyl0uC
-	UMKvqQazct21/L5ciNNsxJt4wsoOQ7icB5gP34I
-X-Google-Smtp-Source: AGHT+IEHCglQNO0/MVSOt8fK8+G32v50l3Jpso3LgWYx6GLnM5uCEhibt+qUpj+mRzM+1ok5vuYFIw==
-X-Received: by 2002:a17:907:8e96:b0:b80:3ff7:e43d with SMTP id a640c23a62f3a-b84299b2a7amr363926566b.26.1767718147469;
-        Tue, 06 Jan 2026 08:49:07 -0800 (PST)
-Received: from localhost.localdomain (2001-1c00-3405-d100-fd78-186a-9428-6b97.cable.dynamic.v6.ziggo.nl. [2001:1c00:3405:d100:fd78:186a:9428:6b97])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a233fdfsm272017666b.7.2026.01.06.08.49.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 08:49:07 -0800 (PST)
-From: Boudewijn van der Heide <boudewijn@delta-utec.com>
-To: liam.howlett@oracle.com
-Cc: akpm@linux-foundation.org,
-	aliceryhl@google.com,
-	andrewjballance@gmail.com,
-	boudewijn@delta-utec.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	maple-tree@lists.infradead.org,
-	willy@infradead.org
-Subject: Re: [PATCH] maple_tree: Add dead node check in mas_dup_alloc()
-Date: Tue,  6 Jan 2026 17:48:44 +0100
-Message-ID: <20260106164844.280106-1-boudewijn@delta-utec.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <vaz4cykqkaa6qksfp6nsnta4rkzqpvaorzdsgy5orapkwx6mil@knfau4tgxmup>
-References: <vaz4cykqkaa6qksfp6nsnta4rkzqpvaorzdsgy5orapkwx6mil@knfau4tgxmup>
+	bh=EV1/7g27OqAnKH1HEhXIWq4jwD3/NhMQm4HUZLHQWo4=;
+	b=eiSSerT1SGNk9gSmchibsdi55aMcH4Y2fmEjcS5WJvvA04xYCecWlaWJewsfqmp2OlCpWI
+	Uer/0/D5/h/24xPJa6uiy26MIbM5OXEayfp/2KzUoNsq6M1HyO5UzUIYcUV5WKq9diDK2j
+	Q+0WeGA7U+hlEQHTv3k7tdAX3FNAOhg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H57AzpyA;
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767718220; a=rsa-sha256;
+	cv=none;
+	b=qnxuydOH8bcwkXc5Ge4r9ln+RINaq9hDbck640KhzUY5UUF/bzECYCCTTVSy8YYj2P+w9F
+	rZGMXvIYhONjils5N2eXr6Ale1oLSqRgZah8P9OWJmQnYrOKzUZqJ45YNU8RPZdDthhJSL
+	LDEADTIGduG+ThwZqaJndLTiJGGF2jo=
+Date: Tue, 6 Jan 2026 08:50:11 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767718217;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EV1/7g27OqAnKH1HEhXIWq4jwD3/NhMQm4HUZLHQWo4=;
+	b=H57AzpyA7hzF8Iam56J4codlkXJbaNKtoF6FeI5R8kBN3YKGOk9cITwTdfJ089k85tPUyB
+	a8Q++YPA41YXzL1B3SpcP8UGq1K1Yfjp00jhOE3v5Vdu7krkiCJsyNpU1P2vaV8+qpg/K1
+	T7tdt8nZhTdvp84ljO194cL2SDdTApo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org, 
+	Jiayuan Chen <jiayuan.chen@shopee.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm/vmscan: mitigate spurious kswapd_failures reset
+ from direct reclaim
+Message-ID: <rlibyovqzrcir3egfa5pzjn3rgk6ctav63okppevjpsp5fu4lx@rerujqrjf2j6>
+References: <20251222122022.254268-1-jiayuan.chen@linux.dev>
+ <4owaeb7bmkfgfzqd4ztdsi4tefc36cnmpju4yrknsgjm4y32ez@qsgn6lnv3cxb>
+ <2e574085ed3d7775c3b83bb80d302ce45415ac42@linux.dev>
+ <u2llnnpmpsgarwrt74ffgo3cuwe4apdbeh5hkclzbh5gykwltb@whb7uuj7ub5i>
+ <e93c75cb1a46a60ec415215c555312c82b9145ac@linux.dev>
+ <gd7qbyakigogdbfxkujtc2ewwfzbwudn2l6vqkbkttv46wkfrd@nqseltiu2do5>
+ <d7df4e26841d83154f2cc2487d5acbaf2ff2cc27@linux.dev>
+ <aVzaqAZ5Wagh5cDQ@tiehlicka>
+ <52cc0b2671b068903c6580b7431db0f22982ae86@linux.dev>
+ <aV0HI2-iRXuQ4MGv@tiehlicka>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aV0HI2-iRXuQ4MGv@tiehlicka>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2FE6B40005
-X-Stat-Signature: m1sttbib8tw676d7pp5zowwbrffqdphn
-X-HE-Tag: 1767718148-387048
-X-HE-Meta: U2FsdGVkX19c+/Fn7zAX+Gh1Vn603YtymeJQafAGUAeUkmCSzMHM81XkykLKW3Lul4fCUcZ9ONvuoNI8NHnLc920ioicplZk49vf/SAur6yXmsgGHT1gW33emIkJT0UMgS6MGQKPswiHWHPOouj3CBQb5dEVuN/pHsj59y3WVj47DAfuG8q/zVphqiy45/N8Pge3PoXU6DZwS/Ajq6iUMcfG6yqvBiZEzLPQL3ai1uyDWpBePhky/KzUagcZjCQ9Ixqu611lQc2uTFbcooC4d/o0PqvsYV17UsA61vk7mB43BFjJDf+IOE7W+pVbwudSm3VI5ZcC/bpyQLgSLxRXxILxDphQ/09M3nFZYyFk7dvJ4qslvFpnv1yhSD4I7080OgnWpLvn1xcuDYDh4vUhWOhBdRSyS+yaL+gOGJrENBUNXOiOP+4Waw4gmK+K1qwQeqX0xVPU/lpyNJ3JEFxZ5ApST0wLh9LTSwCh/m02+z7v/c1eK5tVTxQoludGu3afzKPGwfE8dQIUriqvQ4wlhMBQbpneWDe7lz35F4N6LxFIgiUk1dvxD+ypp9JWy/Ku5d+7X9HEXMxN5R/RXHM9tPWMBTFHIo/Iav4PMk0gogk6yBfP8ucx1pOcbwDZ8LDoiy+zNBP0KhwPuoij9tfHHx69J1Yqarq6K0/y9nteFk2UH0k05KrAa2Tfi1LkZIRMt/cHjxxo+GLaadiCKjTUcBsFZzfzFwIo2dMtJB70VvMf99fAlmSJe9K9IoBgvGLqZ7kGpOFiIxPpjvM+yhxKSOKCF/cHZ9S3be1JbOP+YoBJJhRUpfW5MBb1L8jVa605KCeCyvwEQRbs3SsWbBoE/vpWHsQgd/Xj2AFb1+eq658BaBKUBiycoCoRLLxZyTXhjW5Bqev9RXyYFcUgFAfzxXmdfeejK9W/frL+2yZ+Z6C6jQeNCi6uKLmAQ5V7sOFSMv889oJBCp7uMduqTWn
- 3WuFWRrs
- K+dPfroFx/3585CsdzVTuL+ygbLONJL6nAAm7P2bW9+oGvpU1pBnzqgMeDi0QPpKoRp5Rt+q45giTp7fujyU1d+au9usI/jP90fPBniuQNxH7FPeihXxXSabN6MWkSPtfQOsnqHhuxmuoTyf8Xu3c3o/XmIFw0UeiCs8oV07iS3Q9yDa/5TuxTDpOVGmoWynz6qNVBeKW4LwuiYffczVODQm1ohzA2lG2bgznuene9tOYpuMvoytKBTuQGWG5KOtsmMP4OhLvjwCISydq+7u6pUSquDmSqUaDSUL2Si+//Nvc5MBZNLTb+cW1hOJDAAwyBPXRA2dlGsbrBhuSOueakb3Iu7zdckHuIa3lyEgzr2M4IjyVxryS2DU6uZEEj+vLU8+Pw0LKMQYhxFTgNcMqgqTRdoVR64GEOPVDOG3hjH/vbk6tobO4xpOLgQRO7GJW2fx3VLGKArsIe++yEfv6YZT0UA==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.010238, version=1.2.4
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 05AE7140008
+X-Stat-Signature: b39conndhzoqnkwfq67mzfkbiur6ofs3
+X-HE-Tag: 1767718219-338183
+X-HE-Meta: U2FsdGVkX18TXMJxecpKKtXF7wvtzM7p1tuZWYh77gEHcZpeqaIup7oiHVRDj3zprMSZ07yeh2pnPgdEDjn5cDMqJJPiaex8Z5rzTAkao9wCYRdpwYeV0jtV6yTftNu/iZ5YdN16YlzmfzSxmYAA7/OS5oTzYl47Wg2/37wOg2VyKG1disfQTrYZGS83iMo1tkeqc429IAxeNpWFqpS5OL2ydiYX8fAlC0//c9L1qmSajOgwAiepzrb78XnGy5m4D7QO2iPIuQx4qQc5aOrBKajIkpYtTkifHCyd5nfEVivAJSv5Tp9tdvea/pQZf014Ir9MNln3FiqKe2KG3zNVH25dAWoJoBgYK+me+pkP1S6mu5vZlksBo5ZHyf2LwG5O5OQd82+3UpDMjyTyeF/0crrxewqhZMIF5HGdtyj8Vn13+GEs04np3TRTfKEaMV2A+l8krQoe+FSyuLcY8PQnNJfizdbm2ldnc1xGO+J2Vt2YnI4DnExDkSrq+RCBNtvspk3M6XelwSTgx7bPZtNijYmYNF86mnpEXvMJ2OHY40B3tBaiUxU7YxvzSTbgoVZiGXvZD1Yg4/oQ0Ojhp8tS30nrvYYjBcobGx958AHrc5s/pdVPYuTgbOGr+ESVoiZWt7bVgColrvM8N6J+IQ1Nl6D6ASm8tFLb4KA4Cyhe3f+Fx4eBKkmO/zBoPtIqF92vWuFUW6VpiqJoji5zLpmkV6OwfMWpiP5uWfkNV/rl5wswvJr7bFYkvUeIrt1N+mmZtOJIkxwtoI3TaLMTmYSnrPFgtBXQSx9ScxfI6d3Aam2dcsNg2Sn1Xi54nZ/PpO/vZn62FnnQ+xa0GKToQu+90yF69MuF25kJzlYa8ibjWE576hNioNn5+/2hbgJ4hgMaXmdGETal/rj35ZZYhnH4b4zd3NLCsHBGdjBlIZ9m0xErWoiit2E4oR21Ugdi5qPAT2lb/2Mv3T7uLic0tyI
+ fUlENemZ
+ CxMG9Cy9t5+yl4Kf0bVgern6qu8L0aF5W/a2RV+5//4eWeMpXyDd8YyEQn7vY8p3xSWO55w0ryZPKdK3TBa4JM9oodSvDfJCgTK70MY7y9WaHcLEhTURZRaKuMiEF6Ud0pQioUE2Y70UvklM3q3zDsaIFGEjO6I1HhIUe7TxvfYZRjYHAmrHiLPEEh1xWVqg3iPl5WmHqiSzNp2j00Tt1PLY4jYB8ilkk4ifmv+AGkF/rfUAZvMOx4o0L0Io6AooZhM1VjSh4wJ1ta3FsZNsO9FrVPwHigyNe5zXiIeZaLmUSJGQL6qMQ7rs9MW+f8ftxT3jzdMMSKn0aB+hJdIOSVwdO5iqsqlwNxXXl
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,32 +101,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > > Surely this should just be a lockdep assertion that the appropriate
-> > > locks are held?
-> > >
-> > Just to confirm: do you want me to remove the original runtime check entirely
-> > and replace it with a lockdep_assert(), or do you want both?
-> > If it's only the assertion,
+On Tue, Jan 06, 2026 at 01:59:15PM +0100, Michal Hocko wrote:
+> On Tue 06-01-26 11:19:21, Jiayuan Chen wrote:
+> > January 6, 2026 at 17:49, "Michal Hocko" <mhocko@suse.com mailto:mhocko@suse.com?to=%22Michal%20Hocko%22%20%3Cmhocko%40suse.com%3E > wrote:
+> > 
+> > 
+> > > 
+> > > On Tue 06-01-26 05:25:42, Jiayuan Chen wrote:
+> > > 
+> > > > 
+> > > > That said, I believe this patch is still a valid fix on its own - resetting kswapd_failures
+> > > >  when the node is not actually balanced doesn't seem like correct behavior regardless of the
+> > > >  broader context.
+> > > > 
+> > > Originally I was more inclined to opt out memcg reclaim from reseting
+> > > kswapd retry counter but the more I am thiking about that the more your
+> > > patch makes sense to me. 
+> > > 
+> > > The reason being that it handles both memcg and global direct reclaims
+> > > in the same way which makes the logic easier to follow. Afterall the
+> > > primary purpose is to resurrect kswapd after we can see there is a
+> > > better chance to reclaim something for kswapd. Until that moment direct
+> > > reclaim is the only reclaim mechanism.
+> > > 
+> > > Relying on pgdat_balanced might lead to re-enabling kswapd way much
+> > > later while memory reclaim would be still mostly direct reclaim bound -
+> > > thus increase allocation latencies.
+> > > If we wanted to do better we would need to evaluate recent
+> > > refaults/thrashing behavior but even then I am not sure we can make a
+> > > good cut off.
+> > > 
+> > > So in the end pgdat_balanced approach seems worth trying and see whether
+> > > this could cause any corner cases.
+> > 
+> > Thanks Michal.
+> > 
+> > Regarding the allocation latency concern - we are already
+> > in the direct reclaim slowpath, so a little extra overhead
+> > from the pgdat_balanced check should be negligible.
+> 
+> Yes, I do not think that pgdat_balanced call itself adds to the latency
+> in the reclaim (slow) path. Mine main concern regarding latencies is
+> about direct reclaim as a sole source of reclaim itself (as kswapd is
+> not active).
 
-> Please do not include any runtime checks in this change - Just the
-> lockdep_assert().
+Yes we will be punting on direct reclaimers to collectively balance the
+node which I think is fine for such cases i.e. high kswapd_failures.
+However I still think the high kswapd_failures is most probably caused
+by misconfiguration of the system by the users (like overcommitting zones
+or nodes with unreclaimable memory or very memory.min). Yes, we can
+reduce the suffering of such misconfigurations like this patch but
+somehow the user should be notified that the system is misconfigured.
+Anyways, I think we can proceed with this path.
 
-> > that would mean that production builds won't enforce the check, right?
-> >
-> > For v2, should I add a Fixes: line and Cc: stable,
-> > or should i leave it out?
-
-> This does not need to be backported and does not fix anything.  It's an
-> attempt to protect the user from shooting their own foot off by using
-> the interface incorrectly.
-
-> The fact that no one in the tree uses it incorrectly means that any
-> backport would be for the benefit of out-of-tree drivers, which we do
-> not support.
-
-Thanks for the help and clarification! I will send v2 with just the assertion,
-as suggested.
-
-Thanks,
-Boudewijn
+Juayuan, have you tested this patch on your production environment? 
 
