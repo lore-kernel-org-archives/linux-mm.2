@@ -4,115 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EC3FCE9D46
-	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 15:05:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BE31CE9D46
+	for <linux-mm@archiver.kernel.org>; Tue,  6 Jan 2026 15:07:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0403B6B009F; Tue,  6 Jan 2026 10:05:55 -0500 (EST)
+	id C45286B0005; Tue,  6 Jan 2026 10:07:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00ACD6B00A0; Tue,  6 Jan 2026 10:05:54 -0500 (EST)
+	id C0F2E6B0088; Tue,  6 Jan 2026 10:07:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4C576B00A1; Tue,  6 Jan 2026 10:05:54 -0500 (EST)
+	id B1B876B0095; Tue,  6 Jan 2026 10:07:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D208D6B009F
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:05:54 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 70AC41AD46
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:05:54 +0000 (UTC)
-X-FDA: 84301863828.23.188980B
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4AEBF14001D
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:05:52 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Wh7vj6qd;
-	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9DCF06B0005
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 10:07:37 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6612316023B
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:07:37 +0000 (UTC)
+X-FDA: 84301868154.17.A671DD9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A397FC0017
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 15:07:35 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ik9S8YpN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767712055; a=rsa-sha256;
+	cv=none;
+	b=ieuR0VgTTDqImbEFwNtd7yVKayen2KY7nCFaoWq5LhhXv6av+5kEfB6GQgMNAZaLtyveb5
+	SDAnb3Jk4aNoN8itQceVL1jQ/udl5zqCmaLRwx2PqtfLOeVSIe4H7mIKZo5pFvHUFm7ezs
+	uprqNBz2eX8m4hIRMC+ErkBV0c3i1gE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ik9S8YpN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767711952;
+	s=arc-20220608; t=1767712055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ih/MVF9hcG6o3ffasttP2xSTsAYulJAzGdAShorFulo=;
-	b=OzZLsTBxJDW7Or2LK9vyvsKH+Z0D025uHzJFx/aBf7e2ruj+4LuTtNnmjHS8Nia8orXp6O
-	Z30ovh01ki69YQHD1Qdi/ip+vPL7QjA4I4S+dkp/xJcz9HS61Y0ydASBvI+4l9bvxZx/F/
-	boBJIzf1bFlK2aPmEp0t0DzzuBdtE84=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Wh7vj6qd;
-	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767711952; a=rsa-sha256;
-	cv=none;
-	b=LUhB9zSgI/5iBPnN7cxX//REZUipFd6+a5/q9I0X09RSdvMJPgAs7VThs9LmjrAlxZpQ09
-	UM0TiKPpS8wqoNhTvMN9rPplJXZGVL0xrCxte5i66KApxaIy02IOpwysqrH8fdo3DOu0nu
-	pf64a0n3qKCOa07VzAq8TeR6F+QkRh8=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-477ba2c1ca2so11198365e9.2
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 07:05:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1767711951; x=1768316751; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ih/MVF9hcG6o3ffasttP2xSTsAYulJAzGdAShorFulo=;
-        b=Wh7vj6qdKp2SsgruRs4CGy/yP5M+GQQqY8GFf4XZVJmZy9JfcZu41aWD8T1aIghokz
-         qDmv99pKOm8WOXrDJ8mQOJeyg/MV2WYErAoZmI9GDI9/cOsM3s6+68nwRV9goXp3pimQ
-         K8iP1CeUDTR5/eiIFKOuX/cL+R82tlVplYWxPPEsBcT/RAYrytBjyfNzb6BWx7n4RGRB
-         W5tR5okOfeSnJLPhg2VYTQ0d1WCyKg33pbPHxu31VLJFQOD1kKwQGcTFosgERd/XlsYN
-         ozgC7Sk1+mkMG6i4rTHaMkVrE2FkqayPsUiUhUTvAt3mfx92eBOfud0lPmmxe/5gMkyA
-         +6+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767711951; x=1768316751;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ih/MVF9hcG6o3ffasttP2xSTsAYulJAzGdAShorFulo=;
-        b=wNl7u3D8QYK0oCTWIKGbNPDwyMP0ohzY1gWSbBzu0y+XbkKoHQEVrH2g/lKg/gIN8g
-         R9MQlktC0QyuKMvg1hN3aJw6VGm0Q2S6bFMRDSBRi198wAHIwcF+dty8UDJ9Y5wriOPM
-         FZ+D4qL540HKqNrxnEYR5vosVqExqxDRDzG5DFQiQEQ6Sa4rnPwvdhBHCXfCDuttjVaZ
-         jXp6PYltdTxWMAjxkBeVqfxbFSALBNMnn71tT1hc5RqE+RpdtdZk9qmqWa+f4Q1dStUn
-         xiH8sKT2w0RE5x7NEvP7ta/6JDikc2vmpfvrmiQDji33pmZv0rPv1fxTTW/UEsuF/URL
-         IWTw==
-X-Gm-Message-State: AOJu0YyYs4wxeysxTXaZQLYKKlhPNHV946YhctISJJ8HuBy1ZEu3+rBV
-	dGtvXPYrVwDMJA2po2l5wekaeNDDcQmrZ4YnBy4dkfz94fL+AAh8lCbjdEU1eCQnGug=
-X-Gm-Gg: AY/fxX47lNorL2m9Gt9qd+Cqsw1FP4BmCz5WERuloMxX4nHNA1U8tTKAQANJXsLtRL+
-	Ejyo13p/80px4gcTNB2ittFpfkyonP3UhMTd9K4D2CA21FzrfMNvWdLdcHEpGkTECf/WKiocD7b
-	SzGhoCn/Pfd+kRg8t6k19zlgLoit0ttPO1OCMMBLXBRGWWXFV4tmSxOhSFhrU3n8mDLKAJwhEJ7
-	UtX/Zs9odnt22yTedmvuoC1XPLHJyc8O/e5dv1hurlpz2wP2VDESakBm3KCecf22yyj/ustfxCh
-	rXihrHNYXolCRjGvaZsb05WXPWXgrrr2z7cLZl4bhLSsCTW0aPfNhYGUmW9daLiJDVSB6Elpacx
-	bixnWsI6/Qpq+5ooH8ARHXRYK6lzpFrCTKXJa2tKF8JAZ4RjJB0WGf5Gn3G/uIOi+bu2gOGUkfX
-	fpXMgdBaKqy4XyQXSIPDFFjy4C
-X-Google-Smtp-Source: AGHT+IGGY4QMf7Vmj2DO9sOVzlCcpkgE7/x2sMUminVefVSu/zv6TU4CZM+xAOFU1F8EI6fpRdVj5w==
-X-Received: by 2002:a05:600c:46ca:b0:477:7a53:f493 with SMTP id 5b1f17b1804b1-47d7f0980e2mr37962255e9.23.1767711950535;
-        Tue, 06 Jan 2026 07:05:50 -0800 (PST)
-Received: from localhost (109-81-90-116.rct.o2.cz. [109.81.90.116])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f69e802sm47611505e9.8.2026.01.06.07.05.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 07:05:50 -0800 (PST)
-Date: Tue, 6 Jan 2026 16:05:48 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	david@redhat.com, osalvador@suse.de, gregkh@linuxfoundation.org,
-	rafael@kernel.org, dakr@kernel.org, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, hare@suse.de
-Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
- blocks to zone movable
-Message-ID: <aV0kzBxg57Mlw8mx@tiehlicka>
-References: <20260105203611.4079743-1-gourry@gourry.net>
+	bh=w6u38ZBlE64XscVQRFf/r7lVzbYrkD7bnkzZn9V4fpM=;
+	b=RqoZaSrtRQVmuz+z2NA5lVA4R7dj1K5Ffl+/0dalc0U8jBZZSiJQMH2JZX+R2pCOCrxZpI
+	3BsGC2jm3iMufPc49/9krY7PaHOf7Myd0aL/2+3Wkr9YR2E2FWihypWR0ClIUg6n3OcudC
+	0bgmKNEzh3mFsB4Tj4Dmx+LCTx2MgOM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E16276011E;
+	Tue,  6 Jan 2026 15:07:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C23C116C6;
+	Tue,  6 Jan 2026 15:07:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767712054;
+	bh=8qG/+V95KgS0mZQXBDQS4rA76GBhdjSGltajL1KP3uM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ik9S8YpNULD6Yr7Z5c6FjldYO0LXnp8CcBy8uPubZKpLZMSuOwhQ3g+s7DLfdYf/J
+	 uBlp/ogoYVroHmuF23LGkqgRmR0mkAaaAavIEV9HSlg4rvUk8535XYsFEZAFhtdFR3
+	 blFTH1Lth7yBClD5NaKVLgPZ5aCy/lmat8Idqa0T7PZo8BCsdd6a8y5jliRtvvk/ej
+	 B0Lmk/KVLLDODqRzmuNr2fJqmIILfq64JNz1JLO2WMo5AqIAo6G4yOJ62eTYbDBzkt
+	 Qw8T8Y3PWIAQx1wpQ0okdbSpWDV0pfmgc9dS0+7ibU1W3HjcaEgqvIvp+V+GMsdkWv
+	 SwXP8ZhXr8VsQ==
+Message-ID: <86ab8a1f-f6a3-4523-8ccc-f99edfd30a7e@kernel.org>
+Date: Tue, 6 Jan 2026 16:07:24 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260105203611.4079743-1-gourry@gourry.net>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4AEBF14001D
-X-Stat-Signature: xo63xsg6h87339wmzwauea4jsiunygg4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v3 2/2] mm: introduce pmdp_collapse_flush_sync() to
+ skip redundant IPI
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
+Cc: dave.hansen@intel.com, dave.hansen@linux.intel.com, will@kernel.org,
+ aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, arnd@arndb.de, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ shy828301@gmail.com, riel@surriel.com, jannh@google.com,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ioworker0@gmail.com
+References: <20260106120303.38124-1-lance.yang@linux.dev>
+ <20260106120303.38124-3-lance.yang@linux.dev>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20260106120303.38124-3-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A397FC0017
+X-Stat-Signature: wr3j6ujg3bh7xgediebes8y1w3ue5k1d
 X-Rspam-User: 
-X-HE-Tag: 1767711952-114425
-X-HE-Meta: U2FsdGVkX1/WlS7J3f0qkNQey/hHmH6+UTDzb1xCcEUfXGeWWIuVR+pOjWU2ZhrpZk0ovDOvVx2W48Ee3HGGtYryDOYN2c4TgezOjNdc11Kaklfzyxh9hMmU8CaqrvguCPi38xhKkA7a5P/0TEY0KrCsWEZ8CN5oXWur6DoCOwfxa9bH4Ivjv2euG7LK6L7o09QhrJVgw986hAdTrcA72/cBaHmpAGnHhtdLXQcThPoA/l5ohN6qM81+pwvhAgdzBCqJVEltst7vp5EmZLVi2QYHkfhq7I5pUtsGqk6RCCty0VysTbgptyR2ctkRGNOv8a8gCTRsOEzbpBnYr5nW6fu6GF1EGsf3y7n+C0ARLrKws+m1ywVxS7EAmWPnLb+IKfbhrvfhzrFSSHRHXg3E+binFBFd5p1gK4ubTHptefOb0+1LRajyyikS+RoVuGG+1zUNXm7qHpCoKeTohVxzxxsfjPXhSRrNEyR3z3Rk44ysuzuaXxQFkVVBO9JqDjWMHq2pOW8XqDC2oqAz3QzEWkS1BEVdAb9hKOfUpOgDeztd/Q1AHLAp/yCmCZcf7+ZaIL6kcUTWDZs/0Y1JAX8e94mPpyNBso6dFJAuV5QKU29B954+vFCcLPtM/Fw0iFbegC4e185b7K8j+hhpoSrw9iDgyw5UDUPxue6syUv9rRFSkUBDHQxAaZIE1wyZR7lBgDihLoRhwXQM+X3xL9KL1176uPY7Y3zrP/aQquVHQUx5iygA4Zld1RCSuvvZGwuHw/kpV8ZYyje0MIH8MnlpeV/oVcBpe0b2c31ox6JwUbATHM0GG9m/p7rtwfqtDzliRxzHNbmWDZqaPK/oYIFUuHnhR2hjI+/XCyH0PM1e/WD0ltKHtHuqeuLOZPbjxlhmXtqrllFgb80WJ2VxrHhMGUJ63m7CgNFhkqSqBcQiNgxF8hKPZ6QQO5+ifSj97t4vPwMphb7ZiOPt6KwvvhR
- awTv7Xt+
- u9/JDeUzxD63xOtRHwKp6Rj9l56UTpyIdk5BGmC2PL+ENlwJlElneHBYN/byRWZXidpC4Sq9rheH4wjCmvvMKQVsg223eo2osY+SEAsyYFUlrWDQhgmkQFf17szbYxIhYkz2y79gNDdK1qtwXsCZFvEaxQLrT482JoAEfDSkFi1SfEay0f1KUxSHNEI9LqCGiLwM5t6ee+2QRqRLU7pE6NCNhagV1ohK/hqohAL3gg89+7rvVp2UAmytIL7m0r3BdXVv7hvwHprkCb8b/jgPcdhAEQnZihsZps4verenG5Vg/DwNENsfhbGqgmz6amueh3qZAc/GSUj2yAO9AMREkqIdxhesTzg0pdA+arpMBNvhKQPDg2yuBiFQsrYxyVATuUAe5OTaA2+gx4SRcY771z5WWlnoJsCLffdSySKH4Jq0TWm48W/Qbqsd3reuyDpXPg7wkX9nEfIg8yTU=
+X-HE-Tag: 1767712055-21923
+X-HE-Meta: U2FsdGVkX1/NmPhLBlclQqcpVfEWBwZygl7ynHQt8bcHLLI/qi5L5UGBgIx9AbucaoQKy/UYsZ5ErXVwPstcD3jDcjhSh07DY8Qqdnqgg9XFbG5V5CQZ7pT2AxuBDuJRRFVbx3jHYxSGe5Sw4ubnTdY8BBkamAeaBlWyiPa10dq16qE1hUReGvOXd756CSHh7j9jw8ZYiA8rt9G57PVPgcnRp8ag4XcI3GFh3kMknWXlIw3boN2K0usk2FdPZv2I5N4/uNLWcmLK0ICHzyHhcQLSmVC9HiWHVuCjnwYcjT8LFo4dtKuoMwspjKrJHFq6mwtv3AYdb/7DLRL80053qPTw1y6SHEUe+QJVuUmRRm6ZkDtDzftgIFjLTzcXN0ZtuS1pGdICfe/zfuPh9PPIQYxw8eaUi5FOjxq07+CWYxtxTFmOQ+pI9GR5isWkT+ZMyVJ9T/G70rnCXsPfVhgdUhXPAatoc/lR2xQigPxDf9XwZ0PL2x3iWWSJf8W/R/BriDxtKLr19iDGrQwdZBUDdNB+dW3bKXWtquje5nvLpO8inIpZu8N5mcwJ9bOhQyQIM+AddJumQNKeKzDmmiu4THpLUEMVop9GCejN0KtCwFKWbIZ7t+Hs7yBuhrWRPSeuMswwlrsOJWnAbp3AsAFxG3Shezu4dRdoX0gZOwuJYdjVBSslFKS4k728zDYuCrUR+nbdOkH5pgXe1j79WuRjoAFJ6KZRod6Q/HC3u5KlhBBembDV5oATShn8S70jxy+QUTXH3Q4rKwXKOKn1r+F74EsdCJ3WI42HSSrkpuOQtQpnbYJAMlmcDV4dB/Dl/L6xaRi49iuIlhawFeFrkrbetrlOAJ3ax+ZHs8Wq2jIx62iPj+B4e1sju5CX052ys/4cPenpsbyzWJAdi6/7YgsU4LlJLAc21tXK5FcU19M0WRBBzqe1UiSOAeg3vEfQio9z1YGpghSKWOPl4DVNEld
+ 06j7jnHY
+ hhwLa/pjPwz7ApAK4z3yqlPL0o6z1fWCFbcWANzHre2DzPOMs75LZJ0VpauOeKY+oxXUhyiP9SkJkyUZ/gbHbP7BlKzqLRr0uHVDIilS4kdpBjFdUz6yOMi2XB0aYWUrVsBuSVI740iOHlnO2w+Liah8pi33RIH3P6fdYBVRBAKKuYU7IkIW3x+dMHZ++pg6wxnIkzkO/+jWwGYSgAguH2SYtxceYsRW2TAaKPiNoKSzoyStS1jwI6n8XGo15YcWWv+TiIWDSmZqJ8zs+RcyJ8FJwcDski9boZFJEqDfqE8ck80KTJgIoOHKI9pMvW1cXzxBNHMrnRTV1GQuLfGspk/rppO+OcouTP/TY3wkBo338+F9vPf3PCrV2+jKzGrXiG7tu7jVoH9YUSFc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,208 +146,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 05-01-26 15:36:11, Gregory Price wrote:
-> It was reported (LPC 2025) that userland services which monitor memory
-> blocks can cause hot-unplug to fail permanently.
->
-> This can occur when drivers attempt to hot-remove memory in two phases
-> (offline, remove), while a userland service detects the memory offline
-> and re-onlines the memory into a zone which may prevent removal.
-
-Are there more details about this?
-
-> This patch allows a driver to specify that a given memory block is
-> intended as ZONE_MOVABLE memory only (i.e. the system should try to
-> protect its hot-unpluggability). This is done via an MHP flag and a new
-> "movable_only" bool in `struct memory_block`.
+On 1/6/26 13:03, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
 > 
-> Attempts to online a memory block with movable_only=true with any value
-> other than MMOP_ONLINE_MOVABLE will fail with -EINVAL.
+> pmdp_collapse_flush() may already send IPIs to flush TLBs, and then
+> callers send another IPI via tlb_remove_table_sync_one() or
+> pmdp_get_lockless_sync() to synchronize with concurrent GUP-fast walkers.
 > 
-> It is hard to catch all possible ways to implement offline/remove
-> process, so a race condition here can clearly still occur if the
-> userland service onlines the memory back into ZONE_MOVABLE, but it at
-> least will not prevent the removal of a block at a later time.
-
-Irrespective of the userspace note above (which seems like a policy that
-should probably be re-evaluated or allow for a better fine tuning) I can
-see some sense in drivers having a better control of which zones (kernel
-vs. movable) can their managed memory fall into.
-
-That being said, rather than movable_only, should we have a mask of
-online types supported for the mem block?
-
-> Suggested-by: Hannes Reinecke <hare@suse.de>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
+> However, since GUP-fast runs with IRQs disabled, the TLB flush IPI already
+> provides the necessary synchronization. We can avoid the redundant second
+> IPI.
+> 
+> Introduce pmdp_collapse_flush_sync() which combines flush and sync:
+> 
+> - For architectures using the generic pmdp_collapse_flush() implementation
+>    (e.g., x86): Use mmu_gather to track IPI sends. If the TLB flush sent
+>    an IPI, tlb_gather_remove_table_sync_one() will skip the redundant one.
+> 
+> - For architectures with custom pmdp_collapse_flush() (s390, riscv,
+>    powerpc): Fall back to calling pmdp_collapse_flush() followed by
+>    tlb_remove_table_sync_one(). No behavior change.
+> 
+> Update khugepaged to use pmdp_collapse_flush_sync() instead of separate
+> flush and sync calls. Remove the now-unused pmdp_get_lockless_sync() macro.
+> 
+> Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
 > ---
->  drivers/base/memory.c          | 15 +++++++++++----
->  include/linux/memory.h         |  4 +++-
->  include/linux/memory_hotplug.h | 13 +++++++++++++
->  mm/memory_hotplug.c            | 12 +++++++++---
->  4 files changed, 36 insertions(+), 8 deletions(-)
+>   include/linux/pgtable.h | 13 +++++++++----
+>   mm/khugepaged.c         |  9 +++------
+>   mm/pgtable-generic.c    | 34 ++++++++++++++++++++++++++++++++++
+>   3 files changed, 46 insertions(+), 10 deletions(-)
 > 
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 6d84a02cfa5d..59512e4b8d62 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -374,6 +374,8 @@ static int memory_block_change_state(struct memory_block *mem,
->  
->  	if (to_state == MEM_OFFLINE)
->  		mem->state = MEM_GOING_OFFLINE;
-> +	else if (mem->movable_only && to_state != MMOP_ONLINE_MOVABLE)
-> +		return -EINVAL;
->  
->  	ret = memory_block_action(mem, to_state);
->  	mem->state = ret ? from_state_req : to_state;
-> @@ -811,7 +813,8 @@ void memory_block_add_nid_early(struct memory_block *mem, int nid)
->  
->  static int add_memory_block(unsigned long block_id, int nid, unsigned long state,
->  			    struct vmem_altmap *altmap,
-> -			    struct memory_group *group)
-> +			    struct memory_group *group,
-> +			    bool movable_only)
->  {
->  	struct memory_block *mem;
->  	int ret = 0;
-> @@ -829,6 +832,7 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
->  	mem->state = state;
->  	mem->nid = nid;
->  	mem->altmap = altmap;
-> +	mem->movable_only = movable_only;
->  	INIT_LIST_HEAD(&mem->group_next);
->  
->  #ifndef CONFIG_NUMA
-> @@ -880,7 +884,8 @@ static void remove_memory_block(struct memory_block *memory)
->   */
->  int create_memory_block_devices(unsigned long start, unsigned long size,
->  				int nid, struct vmem_altmap *altmap,
-> -				struct memory_group *group)
-> +				struct memory_group *group,
-> +				bool movable_only)
->  {
->  	const unsigned long start_block_id = pfn_to_block_id(PFN_DOWN(start));
->  	unsigned long end_block_id = pfn_to_block_id(PFN_DOWN(start + size));
-> @@ -893,7 +898,8 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
->  		return -EINVAL;
->  
->  	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
-> -		ret = add_memory_block(block_id, nid, MEM_OFFLINE, altmap, group);
-> +		ret = add_memory_block(block_id, nid, MEM_OFFLINE, altmap, group,
-> +				       movable_only);
->  		if (ret)
->  			break;
->  	}
-> @@ -998,7 +1004,8 @@ void __init memory_dev_init(void)
->  			continue;
->  
->  		block_id = memory_block_id(nr);
-> -		ret = add_memory_block(block_id, NUMA_NO_NODE, MEM_ONLINE, NULL, NULL);
-> +		ret = add_memory_block(block_id, NUMA_NO_NODE, MEM_ONLINE, NULL, NULL,
-> +				       false);
->  		if (ret) {
->  			panic("%s() failed to add memory block: %d\n",
->  			      __func__, ret);
-> diff --git a/include/linux/memory.h b/include/linux/memory.h
-> index 43d378038ce2..bab24f796d3d 100644
-> --- a/include/linux/memory.h
-> +++ b/include/linux/memory.h
-> @@ -80,6 +80,7 @@ struct memory_block {
->  	struct vmem_altmap *altmap;
->  	struct memory_group *group;	/* group (if any) for this block */
->  	struct list_head group_next;	/* next block inside memory group */
-> +	bool movable_only;		/* If set, only ZONE_MOVABLE is valid */
->  #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_MEMORY_HOTPLUG)
->  	atomic_long_t nr_hwpoison;
->  #endif
-> @@ -160,7 +161,8 @@ extern int register_memory_notifier(struct notifier_block *nb);
->  extern void unregister_memory_notifier(struct notifier_block *nb);
->  int create_memory_block_devices(unsigned long start, unsigned long size,
->  				int nid, struct vmem_altmap *altmap,
-> -				struct memory_group *group);
-> +				struct memory_group *group,
-> +				bool movable_only);
->  void remove_memory_block_devices(unsigned long start, unsigned long size);
->  extern void memory_dev_init(void);
->  extern int memory_notify(unsigned long val, void *v);
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index 23f038a16231..ca51ef2ad0cf 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -75,6 +75,19 @@ typedef int __bitwise mhp_t;
->   */
->  #define MHP_OFFLINE_INACCESSIBLE	((__force mhp_t)BIT(3))
->  
-> +/*
-> + * Restrict hotplugged memory blocks to ZONE_MOVABLE only.
-> + *
-> + * During offlining of hotplugged memory which was originally onlined
-> + * as ZONE_MOVABLE, userland services may detect blocks going offline
-> + * and automatically re-online them into ZONE_NORMAL or lower.  When
-> + * this happens it may become permanently incapable of being removed.
-> + *
-> + * Allow driver-managed memory sources to restrict memory blocks to
-> + * ZONE_MOVABLE only, so that the truly degenerate case can be mitigated.
-> + */
-> +#define MHP_MOVABLE_ONLY		((__force mhp_t)BIT(4))
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index eb8aacba3698..69e290dab450 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -755,7 +755,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+>   	return pmd;
+>   }
+>   #define pmdp_get_lockless pmdp_get_lockless
+> -#define pmdp_get_lockless_sync() tlb_remove_table_sync_one()
+>   #endif /* CONFIG_PGTABLE_LEVELS > 2 */
+>   #endif /* CONFIG_GUP_GET_PXX_LOW_HIGH */
+>   
+> @@ -774,9 +773,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+>   {
+>   	return pmdp_get(pmdp);
+>   }
+> -static inline void pmdp_get_lockless_sync(void)
+> -{
+> -}
+>   #endif
+>   
+>   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> @@ -1174,6 +1170,8 @@ static inline void pudp_set_wrprotect(struct mm_struct *mm,
+>   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>   extern pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
+>   				 unsigned long address, pmd_t *pmdp);
+> +extern pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma,
+> +				 unsigned long address, pmd_t *pmdp);
+>   #else
+>   static inline pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
+>   					unsigned long address,
+> @@ -1182,6 +1180,13 @@ static inline pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
+>   	BUILD_BUG();
+>   	return *pmdp;
+>   }
+> +static inline pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma,
+> +					unsigned long address,
+> +					pmd_t *pmdp)
+> +{
+> +	BUILD_BUG();
+> +	return *pmdp;
+> +}
+>   #define pmdp_collapse_flush pmdp_collapse_flush
+>   #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+>   #endif
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 9f790ec34400..0a98afc85c50 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1177,10 +1177,9 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>   	 * Parallel GUP-fast is fine since GUP-fast will back off when
+>   	 * it detects PMD is changed.
+>   	 */
+> -	_pmd = pmdp_collapse_flush(vma, address, pmd);
+> +	_pmd = pmdp_collapse_flush_sync(vma, address, pmd);
+>   	spin_unlock(pmd_ptl);
+>   	mmu_notifier_invalidate_range_end(&range);
+> -	tlb_remove_table_sync_one();
+
+Now you issue the IPI under PTL.
+
+[...]
+
+> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+> index d3aec7a9926a..be2ee82e6fc4 100644
+> --- a/mm/pgtable-generic.c
+> +++ b/mm/pgtable-generic.c
+> @@ -233,6 +233,40 @@ pmd_t pmdp_collapse_flush(struct vm_area_struct *vma, unsigned long address,
+>   	flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+>   	return pmd;
+>   }
 > +
->  /*
->   * Extended parameters for memory hotplug:
->   * altmap: alternative allocator for memmap array (optional)
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 81ba5b019926..1a184bfd87f6 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1346,7 +1346,9 @@ static int check_hotplug_memory_range(u64 start, u64 size)
->  
->  static int online_memory_block(struct memory_block *mem, void *arg)
->  {
-> -	mem->online_type = mhp_get_default_online_type();
-> +	mem->online_type = mem->movable_only ?
-> +			   MMOP_ONLINE_MOVABLE :
-> +			   mhp_get_default_online_type();
->  	return device_online(&mem->dev);
->  }
->  
-> @@ -1449,6 +1451,7 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
->  	unsigned long memblock_size = memory_block_size_bytes();
->  	u64 cur_start;
->  	int ret;
-> +	bool movable_only = mhp_flags & MHP_MOVABLE_ONLY;
->  
->  	for (cur_start = start; cur_start < start + size;
->  	     cur_start += memblock_size) {
-> @@ -1478,7 +1481,8 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
->  
->  		/* create memory block devices after memory was added */
->  		ret = create_memory_block_devices(cur_start, memblock_size, nid,
-> -						  params.altmap, group);
-> +						  params.altmap, group,
-> +						  movable_only);
->  		if (ret) {
->  			arch_remove_memory(cur_start, memblock_size, NULL);
->  			kfree(params.altmap);
-> @@ -1506,6 +1510,7 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->  	struct memory_group *group = NULL;
->  	u64 start, size;
->  	bool new_node = false;
-> +	bool movable_only = mhp_flags & MHP_MOVABLE_ONLY;
->  	int ret;
->  
->  	start = res->start;
-> @@ -1564,7 +1569,8 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->  			goto error;
->  
->  		/* create memory block devices after memory was added */
-> -		ret = create_memory_block_devices(start, size, nid, NULL, group);
-> +		ret = create_memory_block_devices(start, size, nid, NULL, group,
-> +						  movable_only);
->  		if (ret) {
->  			arch_remove_memory(start, size, params.altmap);
->  			goto error;
-> -- 
-> 2.52.0
+> +pmd_t pmdp_collapse_flush_sync(struct vm_area_struct *vma, unsigned long address,
+> +			       pmd_t *pmdp)
+> +{
+> +	struct mmu_gather tlb;
+> +	pmd_t pmd;
+> +
+> +	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+> +	VM_BUG_ON(pmd_trans_huge(*pmdp));
+> +
+> +	tlb_gather_mmu(&tlb, vma->vm_mm);
+
+Should we be using the new tlb_gather_mmu_vma(), and do we have to set 
+the TLB pagesize to PMD?
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers
+
+David
 
