@@ -4,138 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 672C5CF6BE4
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 04:58:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEE63CF6BEA
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 05:13:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 585096B0092; Tue,  6 Jan 2026 23:58:25 -0500 (EST)
+	id 2620B6B0088; Wed,  7 Jan 2026 00:13:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55C496B0093; Tue,  6 Jan 2026 23:58:25 -0500 (EST)
+	id 210026B0092; Wed,  7 Jan 2026 00:13:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43DA66B0095; Tue,  6 Jan 2026 23:58:25 -0500 (EST)
+	id 0E5846B0093; Wed,  7 Jan 2026 00:13:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 358276B0092
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 23:58:25 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B07521AA3EB
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 04:58:24 +0000 (UTC)
-X-FDA: 84303961728.01.752A6AF
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0F10F100006
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 04:58:22 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=atgLP4Tt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767761903; a=rsa-sha256;
-	cv=none;
-	b=GZhdmB5OgcpQHK7fVWf30sb2qmnOs7lIWeHNpGungg+aMvjvf1LzREkGB+TQIrYK1173xg
-	bFHyTxrGWO0CYv25kajyT7R4M6GfPfaP8C5FHw9/zEb7G+gpOPXRNiZiRjUXRVdCgNdu4P
-	pfPdFDpRGllLFCN5sdkpFrpfy61diJs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=atgLP4Tt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767761903;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ECA876B0088
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 00:13:04 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7C95186D84
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:13:04 +0000 (UTC)
+X-FDA: 84303998688.10.15727A6
+Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazolkn19013081.outbound.protection.outlook.com [52.103.74.81])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 35079A000A
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:13:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=DEy45SNE;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf25.hostedemail.com: domain of WangzXD0325@outlook.com designates 52.103.74.81 as permitted sender) smtp.mailfrom=WangzXD0325@outlook.com;
+	dmarc=pass (policy=none) header.from=outlook.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767762781;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nurUXHNs091EaceKYt0jtxQiBJ2IaAdTDr7CGJ+zWBU=;
-	b=r9vvDpNLbjse67OvLeQX5Tx+HOgszkdL4avDHHSgJY+AaGjdaDbzzJkywBGrBbCCTgYzG9
-	KblsyLlnhHhTkEoqG5/b9/xxXWJFSCr/lOFL6aStsoSzrBW64VZMgn2NHPwBXooOTGvwux
-	4wReMZyw7WntXfwqqxTR9EIKYnGkpEg=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-34c71f462d2so1618982a91.0
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 20:58:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767761902; x=1768366702; darn=kvack.org;
-        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nurUXHNs091EaceKYt0jtxQiBJ2IaAdTDr7CGJ+zWBU=;
-        b=atgLP4Tt4iRpSGZQd3q9PFZ/pb0PShymFvPAt9CQjYbCubGAClVpFv7xqL2x1s9RkY
-         +Ut3ZhLRAi4ey6ETKGJYWyKKQwP0Nv206eVjdlHCATgOac6FyzXP0IiQytFdR1uapOqA
-         appLOI4oqZ9L5nvMsZIXRH7+pNlSQRCHKrTgqi7jsIAERDz9AGphb/L05h6n8g0sNliy
-         tb5kP2zRjWAQevyQQ0Q3bmJlC8PjfXu0Q+co63KptFTz6YrmM6HKCKKpNT/c3gixQzIR
-         bkLmma7cnq2N5M+nwNnj941xXZELoB/4W50lsyhU+lh7dhIeHeL8oBKhRO6WkQpgX8TH
-         /L3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767761902; x=1768366702;
-        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nurUXHNs091EaceKYt0jtxQiBJ2IaAdTDr7CGJ+zWBU=;
-        b=WZwoESx0a9GJfiILjVPFm/wQM+gtwYDQA/xFlNzndVvTbuTL9i4C3keORjX67yJ4CX
-         UQ3uXNrseJpAKtRqPB+5TcaWXr4GRTmiUCKLbgwsljIGaQBNb6XoOQDVUmsyGLgw/vE9
-         wiMPze8bmY4DBqMIcONibaV0Nmsvcs9OqtaFQxTUyCBmyrozNtV6vOBpSi9T+4/Fw61t
-         ohKHx28lnMnaFm2Eto217oPyeE6mgWg5heT/GUVziviSqdbEJ6hUIo8H9L4JrGNEDYIH
-         xtFLhRaE+h73172hVW8pLs40u0AudMeleKzmF+BZTJkVaswbDeLFa8v51oeGGqnAqZcZ
-         VddQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX0zu2fOJns8Skf8cI5V5jswM4hlhxEq1mlExvb0Qmv+yoW8GsG6pYGLpODJGAitV0hoyechhpF4Q==@kvack.org
-X-Gm-Message-State: AOJu0YwTo/Ggiwadr18f2jfSREX45swCx8MElRqGT60h8klzibgiEtY/
-	Eb9a2nKijVrK45uc4xBvpS6s/yZwCBxb93lG1gmMEba1iiR/ISWjtSYF
-X-Gm-Gg: AY/fxX5POGNyR4HV6TAQJncpdBcLsod87nyPZSt/mdpfRlRL9OHdgypO1cViWvr9v3W
-	hYAZaYORDkEZKwAjSx8h68SWfzBSreHuXnrgcfYZz2lCBH+11kqVHH8Bj0IO1ObmaZLDEh/rdN4
-	AAW5uKWOghOR7E8RAr1eusSEFWi3rDLb5f67gpQsowEC0oBAKG7pMdeWG1/YxV/hOxHcSEgGD5H
-	adAKIaAywomyCxD2fHL3LcbC5dKP4SoamdVxANoR9CUoUqQHR16ZJx+R/FSIxUXdWM18mshrOlg
-	OGNlSMDwqErxgKNq/7kqorwOi+CXVIx2W7QKB3bZh+Li4vG8hvzaDGMYyAQh1QqUyYvGWDsxkau
-	G5/q3iGUBp6X1lKVYrYJ2JSQ159PCl0S1w2D/6z7+OCaKjdmaw6gnDXGtCdnnss/XWD8arLhkg3
-	5OqGOdGQ==
-X-Google-Smtp-Source: AGHT+IE3iEJ4twso46GOnqJPDopUox2qFLaKHiDPKI95vlPPxjV/F7mxvaI/CeOE2s8GrRHRScEd6Q==
-X-Received: by 2002:a17:90b:6c7:b0:335:2eef:4ca8 with SMTP id 98e67ed59e1d1-34f68d3b4a4mr1191743a91.33.1767761901762;
-        Tue, 06 Jan 2026 20:58:21 -0800 (PST)
-Received: from dw-tp ([49.207.192.172])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f5fb75902sm3622895a91.16.2026.01.06.20.58.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 20:58:20 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Alex Shi <alexs@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	"David S. Miller" <davem@davemloft.net>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Jonathan Corbet <corbet@lwn.net>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>, 
-	Michal Simek <monstr@monstr.eu>, Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Richard Weinberger <richard@nod.at>, 
-	Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>, x86@kernel.org, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-mm@kvack.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	loongarch@lists.linux.dev, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2 14/28] powerpc: introduce arch_zone_limits_init()
-In-Reply-To: <20260102070005.65328-15-rppt@kernel.org>
-Date: Wed, 07 Jan 2026 09:57:34 +0530
-Message-ID: <87ldia9he1.ritesh.list@gmail.com>
-References: <20260102070005.65328-1-rppt@kernel.org> <20260102070005.65328-15-rppt@kernel.org>
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=pRWkGssTABUN2NIq8Z0FukwXN7m1p1aQvRIV0QGdEoM=;
+	b=guyHeaHEnV/UWyex+WOz56YRrCw5IBsECVsHqNC9mXIt7IncJ9bS+WL5XuTsuwRQE1qRHA
+	a8aSnoGTQ18Bp2L6nSTueGk/nBdYJBkXGtYXLrxLbJ+8HI7AYLh05DYHYCosDVIr6xONld
+	fO85H3NSPVw0Akt9RkqWJ4X1LYwD0jM=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767762781; a=rsa-sha256;
+	cv=pass;
+	b=bdhgznDFiGOWLSAf2hw0I5h6mUmMONErHhWM2pR5EvXjnctYPflQMYu5BPRqS+b5lhBjtm
+	WStuDkbHLLAH0OccPtm8qKqCiHOD82SPRykSoSA++5uZ9UaVqCZ9cAn84W33FjTpNHWkYX
+	dpcpNTisxio6xoSEatgvYxKp5hRuq4g=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=DEy45SNE;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf25.hostedemail.com: domain of WangzXD0325@outlook.com designates 52.103.74.81 as permitted sender) smtp.mailfrom=WangzXD0325@outlook.com;
+	dmarc=pass (policy=none) header.from=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lUzi4fVYzQwFij9MUiqlzNE4eeArP1BfSuEJIP4jEbtlILJb2tPmX4cXVhlGnzIrmCrJpsMM7BghUGqZTZ5VEVP9GKZ1T3n5UPUyYVkgcVoOwgT+WuXVFkpbL4cRjh3MfjNr3mi1SRiC8ZyXx4gaQCYFdS0TDKSDNJOCSD6sxbEnfqEh8r6gXNzGcg0ypYDlSfmL817wBdNd15EfTRuSkbvRTn51VNckXKT4gqNdCc8EKGoT1TWyIRyX8+5TwDq7w6yHaDyLZOO50nVGvzEMqIxX1pyV8mfeMUbHruEbMbr2ZiRAzkx+tCHiVTq2cFqawxzooSOb2CC9DTuMUioVIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pRWkGssTABUN2NIq8Z0FukwXN7m1p1aQvRIV0QGdEoM=;
+ b=Oj8Mz5NBMeL+TOF/JrAVla61stPCXuhvk0AOV/wL+EcldQTlXgb8UADCMk5L7VwxdGHTPT779jWcj/NwoVS5xGD4OBxjMPpyVr/4132CvpD1xDPf8xLADhM8+IT4iDQz5TjCuMM4LEHmW21KvRJLmErUpFnw0TAvsRqxWNTxmxE5aw4LZ4ioH461F+jufknj+L7J4sOOFoIKeNkv0vmGv10jLMn8/Y918AKr3gJgFyMY9amyhFt7WmaN1wpXjh/pqOA/vgqdDlrAZ1dXhP49XirN+oPKaS2q+YYj/pKYaS7lHovStELqMHOao8+R2kvpKqvVmIeQP38uMG6y4SeZSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pRWkGssTABUN2NIq8Z0FukwXN7m1p1aQvRIV0QGdEoM=;
+ b=DEy45SNEKZzI4HYcfsJzLgRgWBmaWw+FHJBGVcAJIX6Bmt9b/TetVz/Gt4BGb/7FvuyTR36d7GHcs8Qb5Du920NXk7RVbP09011R1mjNViCqeahhPMh4NRLLqbHUU1oh5joeRMA1JCkvg4+pSAw2NDG8T0M4ih5scl/ZbtZKz3FZmlhbCruK62uhLxu9z7QGZg0FuvLSz6vmD04+2s6oh0G17PLoBTswiWqZrjkSZzbZVkV163Z3k0pDOnyRKvSSPECH9e4xZ4hx0+4G/jW1A/6kTvE8BHgAsqTxLiUMd2GbtfCwHVJyF/n+OM1AChdwlbjYUmU6OBRnECenYD44pA==
+Received: from KL1PR03MB8800.apcprd03.prod.outlook.com (2603:1096:820:142::5)
+ by KL1PR03MB7696.apcprd03.prod.outlook.com (2603:1096:820:ed::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
+ 2026 05:12:54 +0000
+Received: from KL1PR03MB8800.apcprd03.prod.outlook.com
+ ([fe80::95dd:dd8:3bbf:2c16]) by KL1PR03MB8800.apcprd03.prod.outlook.com
+ ([fe80::95dd:dd8:3bbf:2c16%6]) with mapi id 15.20.9478.004; Wed, 7 Jan 2026
+ 05:12:54 +0000
+From: "WangzXD0325@outlook.com" <WangzXD0325@outlook.com>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+CC: "rcu@vger.kernel.org" <rcu@vger.kernel.org>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: [BUG] rcu_preempt self-detected stall during kmemleak_scan via
+ debugfs write (6.18.0)
+Thread-Topic: [BUG] rcu_preempt self-detected stall during kmemleak_scan via
+ debugfs write (6.18.0)
+Thread-Index: AQHcf5Lg/18E5O+qc0mVXdIQdmTzlA==
+Date: Wed, 7 Jan 2026 05:12:53 +0000
+Message-ID:
+ <KL1PR03MB8800B64AFA0A40CFF301C50CA184A@KL1PR03MB8800.apcprd03.prod.outlook.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: KL1PR03MB8800:EE_|KL1PR03MB7696:EE_
+x-ms-office365-filtering-correlation-id: 6fbae254-52a4-462b-5155-08de4dab6999
+x-ms-exchange-slblob-mailprops:
+ AlkLxVwsndl/rxNUOXMa9JcMokG6ISaNqs8stGBjwR82Vei5ITA4HQvHs61041IYzvHjQ3aCE4Ik1VcGRv/ySxKilSDA4jMNUADoh8NsqRMFJ4AU5ULYle019gHmNPf9X00i1Vvc8zOoqjHkiSwPtQn038cUq130VuPRw2R2ucqP0X88Xi4ntenA6O/eehT8SK0MO8CR+JvfR2Agr3LnyhB8nHbZRT9iLlB9TU4tlw80RTCXQ3Lni0ZKyKwEoJNfelU8oLr9xkKQKtY8ZTjJL7jhrwTWTgcUYxwn6Lzukf9ViZ9AGFHVKMOGgOa9nudkEfQYlXNG4RoLsQyBNPLGktiSjkUIz+sImC/Uh/mswpMnueSO3q7+SQveLNy7rH4g6nmAS+NF2yOnjBEcSHRCHhNT4YEUzHgPMXH9nSiATGYo9F7I3X0on+lax7oZPfK+uG2VSqrTmu/s98eMUwyPuoHmGqlj0c3VRrIG5cKw3yyZKpXZ3QXQk0jqwd2jD7WKvLW4xbMllQpo5UNj+AYI7AqnLn5YiWjLyrvg/1+Pd71LgATkdII5Lfg7gEAtKPL4m0eAErD44xnisWXCSTJceFySgoCrQNaWwa8txcKBnQUNP21zR8YQpQdrexxWfP6arYAYLpE9gYraL3E0un5zp6kotjxRhRHfDNyW1NmlwTwrPrV2y+N/+E8lGhb+VDOjw4VVQtEg0ae2WCbDA2HrskxcDTcyocypt/7+2yVvj/tn9IwjPiYzRpcJhAbXC8b5Zc5+UixTbFoYlJ14nE6bXWFw1GeGsZo9
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|39105399006|15080799012|15030799006|19110799012|13031999003|8062599012|8060799015|55001999003|31061999003|461199028|20031999003|3412199025|440099028|40105399003|102099032|3430499032|26104999006;
+x-microsoft-antispam-message-info:
+ =?gb2312?B?cHFWbG14YnF2NlF0Z3J4dWVQMmxsWVNLZXU3Mkl3TEhObk1yc0xScXBlQzB1?=
+ =?gb2312?B?Q2VnbFdJbjcyZFduVFIvdXlON0x6M3JNSm9NZjZlblNsOWt5SzJqMU5PaE5J?=
+ =?gb2312?B?Tyt3aDRYNHBBMG1XT3NQVWwzMUpDUnRIdE1IMERnK3pOdUpKWWJSc1FpVlAz?=
+ =?gb2312?B?TjBVb0NaR2F2a0FmUmNsbTZpanF3RmhMS0N6ZUdvVnBiZHhacFozeU1vcVpH?=
+ =?gb2312?B?NUFpTU8xS1NjdFNJTUJsSHJyZWVMd2w4MHQ1Um51aEovUVRWRWdrM01DLytE?=
+ =?gb2312?B?b0Z1Tlo4MkNKcTE2bHcyM1ZyY1RLWi9QS1lDMjVsU1UzSi9Fd09XcmE4UDBO?=
+ =?gb2312?B?bTBlZXpkYnRRUE5zeEFXQTFoRWlJZkJUQjVTNC92d3kvSkFjNmY4L0g3cENW?=
+ =?gb2312?B?VmRFYzV2OWVoMTVUUUtpOWFWVjJIamtlZzZkUUtNOTdMQWVDdEkvMTJocG93?=
+ =?gb2312?B?M2VLWnU3NHJ6Wmh2ekllQVp3TzJBM2FqaEZjVEpQZUduNWl1QWlabkFNRHE3?=
+ =?gb2312?B?YzVaNS9LVlY5OUNCQTFvMHgvaGJOTEZSN2ZJM2IwZ1Vyb3F0NmlOZlpiSGtW?=
+ =?gb2312?B?Zk56dGZKZHFDNjZ4SWlNbitCUWZPMHcwS2pwc1RRdkhPRnN4bWVrN0g3eUFP?=
+ =?gb2312?B?Q3J1NEY0czBNbnR1Sm5HY2hvb3Y4OVlxdk5LdXVDclJsR0lVLy9Ka0FVWDBC?=
+ =?gb2312?B?SnBtNTVpNExjbjZwV3ZTTUZHeCtraDF3ZjZGZjlrNWR3bStFamx4UGRndFB0?=
+ =?gb2312?B?MXpKNkxWSDhvSERjUmNvcjlnWEMxN09WNFFhdU9HTFJWbEZCY2JQcnZLN0Jp?=
+ =?gb2312?B?U0VVSEJPczNudEtzUVM4TWxKdGFsTlZaZXVTQ3JxYTJrQTJiVytsRGt4enRq?=
+ =?gb2312?B?VXYxU1R4YjBUWWdNd0ljSzlUd2lrZTlySGd4RUV4OFJFME91cTFHUktpemxI?=
+ =?gb2312?B?TWNscDAvbEpRUERhcEd6TURrRHkrbFBZb1FzSWNOSFkrNi9qY0hSYUJhOUpU?=
+ =?gb2312?B?SExOU2NsVUVQV2FOVzk0R21GTDZGYlc3aEdiUU5nR2hEbElyUHBZM0FkTnd5?=
+ =?gb2312?B?Tk1jcUxzOHYzemZHY29GcS9zRy9TbGNFK1lIYTJBMnYvakNIam50OG9rcUpu?=
+ =?gb2312?B?Uyt2N25SdTdqc2ttR2xWWXNiUjBJdGZ5T0N1QkZIdkZsN2FNTURIL08rQk01?=
+ =?gb2312?B?SFN0cG9uZFJqNmNKTFZ2MSsyNVRhOTdVM2ZMSEFWMmhDMTlzM0lWV1FoRVdx?=
+ =?gb2312?B?QUZpUXNWRWprVmNIUGFCOXY1NEdOTjRXU3JUVGtleEFCcnZiWitsd3lyaFhy?=
+ =?gb2312?B?SFdMcVBhdEZCd2I1bTl2TldiVVNmRGxDczIvN1FzdEtsZHg2eVpIL1VIZEVC?=
+ =?gb2312?B?djNQbE9jbmx5NU12L0krKzFHdmxnbnJDOVc0VFUzMUFyb1Z3SElZclZtV1N6?=
+ =?gb2312?B?VUpTMWlZNkFuZ1lKUTVvUTl5WExxaGpvcFEwaGhQMS9ZdFRzam5IVWhSTUVi?=
+ =?gb2312?B?ck4rQUxoMklYbERqQU9FcEkwR0d4cWhqREtoZU13L2xHL3FNaEtYeDcwQWJG?=
+ =?gb2312?B?VXZRdGVBdjdhSVplaEVhU2dkVXRRYzhuZVJHUGlaWnM5eUx2TndxWk9nUi96?=
+ =?gb2312?B?NXRnTnFqWFFmTUhpZUxackhUMzVIK2JCYTFqdVNXajNYaVJCa0d5OE43b0Zn?=
+ =?gb2312?B?YmY2Vks0aVhJRFdVeHdoSmhiTGtCYU9zZXJmMmx0dXgwQm9vS2VIMFQ5OEFP?=
+ =?gb2312?B?SmloT2wzdThiTlhoVEhpeU84S09wdDJKWWszRm10WjREU3JYckNoSXMvNkor?=
+ =?gb2312?B?bHRwc2JOWGNodTM1RElJdz09?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?gb2312?B?Vkh2UjhySVU1a2N3dWxSTzdEZnBZd0x6RVBxWWtCanZYZDBnN0I2RTZFdGth?=
+ =?gb2312?B?cjRmVWFnU0ZEYXI1azhIRWVOQ1N1YUpJUkMwNVB4ZzJBWFFxRnl5bXBzZkNE?=
+ =?gb2312?B?aURRVmh6WUo4THFaUkZhWGtpREtaT1lZM1ZoSjBZMGZXaEFyQ3JtUFBNWEpR?=
+ =?gb2312?B?dW9oeERWSTN6OTJPd0pYemo5NnJxd1ZHaXltd3RxSEQzdkNFd1REVm9GMFlx?=
+ =?gb2312?B?YWo4bW8wOUVDT0NuQndTc2sxVTdCdU1vNm8xUS9XTFNZenM3Y21ZWDNvRVYy?=
+ =?gb2312?B?QkVjVk96cjdhazV0azZMeUROaVRTaTJjU2xPK1dzcmNuS2tQMTB5OWhVT1k1?=
+ =?gb2312?B?RnU5S3VLVnY2L2FHZ1Zabkxrd3E0T3U4dm93SHBQSFVEOVF4TDBMOWFJVytr?=
+ =?gb2312?B?ZWFPY3o1ZjJkaWo2dHFwL0JPNHk0bDY4L1ltMmkyMmliZ0tFQklIQ053N0hv?=
+ =?gb2312?B?eXZSOWNhdkNLb3p3RGlibktKSmE0OERkMzBGblFYa2dsS2dIc0o1d3EzRCtm?=
+ =?gb2312?B?ZXhJSHdJVE8yTjUvY25yNkM4RFNOYTU1KzF0U1l6WUpDRGYvWTRld0xpOExt?=
+ =?gb2312?B?ajBRQ3R4N2w3UGxCQ2QrdmZob1JNTkpWY1R4T0E4ZjJTR1MyTGYvWlV3amRt?=
+ =?gb2312?B?dks2aFU3RmR5QnhuU1c1TndUU1M4QmlKUXRWU08yTWZ1aXI0bzhCQUlzVTg3?=
+ =?gb2312?B?MkYrTWlVdXlxald4cHpzR2dEbEQ4ZkMwL0pyclBZVXNXK1huc05wdklUaW9y?=
+ =?gb2312?B?d1F3T1YrQ3VnQVFWZkRjekt6OTJEblRaUkRGdUJNV0loWjZWRktleGFCemha?=
+ =?gb2312?B?Yk5IZGszWm91bmtCVU54VGJzUHhhQy9OUEUyT3kyZ0Q2ZnM5SE8xYU5XSkIx?=
+ =?gb2312?B?SWpHZUY3Umc0Tk51NkxKTW5nK1UyUG1ON3QzNHpXZStQOWdIOVNPamYzekRk?=
+ =?gb2312?B?K3pxU3lNUmlydjlZTjlFbmhJK2VySnpCYW9UWDhDRzdRT0Y1WW10Z0ZsL1dO?=
+ =?gb2312?B?QzlyRDlweFhSL010bi8xS0VrVVhkZ2hXUjUwcHM3Wm8rSTh2R2NLalg4QTNZ?=
+ =?gb2312?B?MVpsSFJLd2ZLZHNqRnkySlRGcGVrTzJQYUEyUXg5emJUWCt1SjhDNURnUng1?=
+ =?gb2312?B?am5OWER4dzNtWmJHeEZLblVVanp1aC90ZlVib3VMSElHYytEbU9FdXFJaDI2?=
+ =?gb2312?B?MHhHc3VoWWpra1FMV0puM3V3UlZkWjlBSzJDMnk5M3Y5V2pNNlUybDRWSEYx?=
+ =?gb2312?B?NDdRcDhJVUhhVGlJVjdLZi9kS1VFZFdJV1lTUlNqZjNwREhtaUxpWUxVWVlW?=
+ =?gb2312?B?QTI2bWFwTFhDeU9iM1lsRC9IY3pqZGdZeUIyT05qSGdBRFhYTkJkeWlOQ0pR?=
+ =?gb2312?B?K1ZBaU1IbDdOQjZ1WE9mYm9kNnEvWHhTQXRqNlJsWWhUeHhZek9OSy90VGIx?=
+ =?gb2312?B?RnJqdGl6OXg1d3dMZUxxNFRHbVRZWHdQdm1namtJNXphWTN3aVo1TWNyWFVM?=
+ =?gb2312?B?b0l1S1lqejAvR0owbkhCYUN3YUFIRUcwYjBUeWpBWUMya0FySTNldThrc0w2?=
+ =?gb2312?B?ZCtzaFVpK1dZL1lrb0tUU2dDajdVOEg5QVpwS0lLa0NTNVRMTDBJQ1o4d1Z4?=
+ =?gb2312?B?d0Fic3Mzdk5SWDBONzNoMGFJWkxGRzJEaGtnZFNWLzlIeEJkLzZSSXVZNjky?=
+ =?gb2312?B?VmVoSXRxTHg0UDNucE1zMXJxdnFkQ2J0azM2UWtoVDNDSENOcnZHRUl3VjdE?=
+ =?gb2312?B?Q1dRUk83SGpXK2NQREVmNEV4TmtQZnBXd0tTdzFYMFd3K2NuNm9DV0Z2Tkhm?=
+ =?gb2312?B?SXBadEdaSUVnYlA4VkFsVjdxQlBaQ3ZGNFN5cWl6VEVlTk5FOUJZbG1EZ3ht?=
+ =?gb2312?Q?IIct88oPZAg4h?=
+Content-Type: multipart/alternative;
+	boundary="_000_KL1PR03MB8800B64AFA0A40CFF301C50CA184AKL1PR03MB8800apcp_"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0F10F100006
-X-Stat-Signature: b6uzh653mbi6fn1b3k8topoec65brimu
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: KL1PR03MB8800.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fbae254-52a4-462b-5155-08de4dab6999
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Jan 2026 05:12:53.8336
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR03MB7696
+X-Stat-Signature: ynb8u1o768am48uoef5fc7qeonr4nbuc
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 35079A000A
 X-Rspam-User: 
-X-HE-Tag: 1767761902-671199
-X-HE-Meta: U2FsdGVkX18yJT/rcnMxQ+la8FAOtL+L+4pUe9IZegSjNXzftPBoPzTtQL/Wf0JsKhAU1VR7+trcIrMvTj6ES4JE0fj7+x7yzDhzLQuygfS3c7iYyMUvm+SSxCnCJ+J6/8R8cDglhEdDkH0aYXPMwm1msenOpOhhNU5aWvTsNkhJ+kh4wbmiOz286aTV2pwY44tQl10nxd1MfXe54f2Cv2q7mKh5l+jQ9Y8T4g2Pfdtx2gH4elvitNPN+vOFIrsZkiq8T3s3aD01eE/IMwcVgMIvy/i/QFlfzBMQyBLaAflPgYMYpp3lLqq1jIGbDFRv5cl/SV0LtW5vFy/hOHlE9tTi84THjUyY1L4qcd/bE0sguDKLFirgt5swUAIJtT6hqSeFkyAZmFLEK6mDKC+S5y3kVFdnThvnhqSVgf3MOcgB3lV7u4Spq/SOTWZkAzby/klkeERDprNTbrz9b3OvFizVrxR29UDf5QBnhVRLCTtxcjLzUGdhTHGBfrtPAjqwlRPaGa0zz2uNw/9m0I2U/fAJbd6j69AHdRbHBduAfFIXqbw+8Hv2cw9Jddcz/pOR30A7HjnacPBUx1a1D13GGCijGq4QXi+KFfYS2cZcT0OShk6lZJ4TYQ2jh6ayWfVNBZvJ//Wno9S3UGvKQeKrUmPnUIpLhBPJCoPI2md6Z/tKNyt+VebEfE7wsFrcmqhMkYMt1/8k7bChjMDhEtKIwdi0Opq4KB1u0dKd4x7/j6TnplAaOpSE0IXcNDdzCuEc3fNFnpJIPdNzKFbqHplbNM1Ro7yhnlHdc4onJ8YBcQUA1Bj4C+RyHtLf3YZ5Q0bRH1XiwafKMmypO6s1EFpgGF9LFWUIrqN9AMiD0mxevybbvXmEB/i059RT4KsSYMbnzXTvXqeqKZmIPL/3dvtDzO7tRQhRA1i+DWIXUg+pDb7fUvbPEhHajNKCkPKMfjyHE2wASmDfLtGlngD0GTU
- ygBFwtlP
- 8uIg3IPxD4WruN6wtCDnCcyDP7xVloV6jripdj1w9ev7NZWfEs9j2aWAP3LNmsjzdF3/r2J/jkR67d6mQ2ENO5htU7bjh+KOOir7s4YGIYLylFmxkcTqWP6Io9yG1nNFGM7p+
+X-HE-Tag: 1767762780-580215
+X-HE-Meta: U2FsdGVkX191FP8zoHhljvEjKP7bTX6nH/ssLu/or9GblRn6whAN8tEAvzHxDK8xk5TIl68E0l30ZLbXtoc5tM8y1O9ulhfWt7NuWL4eex5npMQA6GEgWS1Uov1L+TV81fa9oBd/+a+l2DCdbGDGIOpemi7GktO6ygPDnUUJnVBtzqJNQL6SReX+f7yyBByoZgeqiHr6fOpyHcH0Aa/wzcZahTLfOVTHKun8ONsUQhfZwmJE4OnGBk2f4eW6RHudc0XLPIFP/delK8SSYCTHtuIWqRv8oXZSUBWKKVpZWw5G1hJFTnZ+YmdHmXbQL+aSi81wytAYhrbxliVkmDBSAPI8HgpbmhAZ4gIyqJ1o5cnGZddilEIvmwwKL6E2O3XkKPBTrkFWQ8x5RYsgxNWt2cNWHlOkKdcrAbKWTIONGwYmRy7aaDR70C45fRqwcUouwNHN/JHwN4rddwChYSZyitkRiPuOhrv0GyRzeZr/MO61wvYemXHkaT4MX1RlcLPY4V/z0hxutWof2iE9qMF2LwDcOxJfFmTH9dkIVKF9fQYHwCL6Yf7h2H+bu3cItiPw+Kxn/FEUXDQSKYJIPefZZhL/9zTQlFZK+RhKf3xYKGr+imOEONSRpfnXGlNzmOmKIxIL9u7l0oz7szhBGgnaqMj6cUCXzOjAh7Q0YjEYaVFImf2kpY2+29sDWMNUjXGRYi5AgN699LBGy6UansS20V7Tl27FHJTY+u5kXGKFfPEc0caahMEpPoDSQj2k5rc+ASnQ2BgqBRPib27WeCFoDTzfdmKm1lYCSAs5pSCZqSeilTfVw1ZqHzW2MpIkKIZBZUwUk52oOpz74f2qEjGdFAkE0fWdj+pw/HZXPcEhbsVC6a1WrQm0R1ojg8imB6fYmYw6+owb/GQOk7b8bJrzCtauwLODOO/OwZ7/NoQ1yy5EZUmkpNGQHABG5QyECV2QS46XFShrBu7wzwDUENU
+ 1+wHmotl
+ jyh3zENKOI2fxHckIIHjr0lrbH7J0XzlqGNGNQU39vydt2DEn+clPWppeGcPwceh/4SHjw7S7LhiEB7Fmo0ZsVmLvpi4mNWoY1O12fBTUmE37jr6pNZwhEO0Lw9VZ6CyjiaO4kRwARCYZU0QjIIz6b3le0+jIb6e3d3l6zds3WhDHFmKMzporuUAkoiU79Hljx0B/GlKxjvEEhnVms9IxNt8htQ5uNNkhiimchehMhsLfuxS4mWSZxCD21zvWxNzVi4XaSw19AxSALimOXld430o6L/IJN8jh4M7xZlxELh9QDcgxdQkvcn9Y73qGMliIVW/RBJKHpii2vfplf/b31uxrgPErawakTgLIXQf0vpaOUzMjzS8bb4RZbHsCyfa4JVtBLoakea4294AgYEL31ta2f7G4BASOMA0UyLwo9HTwj4ppdTQQ5xGHgjgmALaj+sS7VRFDFWL2ewrQoaxnLIjLwt1Cr/Zxi3+QtXRnOfG/Z1jaXvJdgVtHeWepVzuU3e82jXk2EFDrRanv3bDEyub+fFBC4xKHLgsvigDL1ek0uTpgFI8fIj2R+XPsdFBpameDNcb7lQjTK3SDpZJRoIMvrnJ2OkxDak9vHfDhXdc2sR9Kh8HmtRETthmmrvqlx8cGqPtFMZOpsXf8HwsxoAZ2RoSbjFPbZ1SeKIZDA2ErwqG7UuUc9gEH5NCuz+WuLrEKZPdGHAhyL5+jOQ4PtvqGVhEt6a4MUMN8zIjO3aPTmuc+J/xYaZFJGsdTP38g2XA3ArBOAnRhc8AUW+I2XxrD84ueOXZfb8sVMmUTDGDtteUqgchYWwyhEA4WGL7iE0ZBnBxeUzyDsNWBCh5YTW0h0UXoa1uy6L+hqdtwHtdC2IgcDVgC4XWsk2LwN5HPsmFc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,81 +194,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mike Rapoport <rppt@kernel.org> writes:
+--_000_KL1PR03MB8800B64AFA0A40CFF301C50CA184AKL1PR03MB8800apcp_
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> Move calculations of zone limits to a dedicated arch_zone_limits_init()
-> function.
->
-> Later MM core will use this function as an architecture specific callback
-> during nodes and zones initialization and thus there won't be a need to
-> call free_area_init() from every architecture.
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  arch/powerpc/mm/mem.c | 22 ++++++++++++----------
->  1 file changed, 12 insertions(+), 10 deletions(-)
->
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index 3ddbfdbfa941..32c496bfab4f 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -221,13 +221,23 @@ static int __init mark_nonram_nosave(void)
->   * anyway) will take a first dip into ZONE_NORMAL and get otherwise served by
->   * ZONE_DMA.
->   */
-> -static unsigned long max_zone_pfns[MAX_NR_ZONES];
-> +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
-> +{
-> +#ifdef CONFIG_ZONE_DMA
-> +	max_zone_pfns[ZONE_DMA]	= min(zone_dma_limit, max_low_pfn - 1) + 1;
+SGVsbG8sDQpJIGFtIHJlcG9ydGluZyBhIHBvc3NpYmxlIFJDVSBzdGFsbCBvYnNlcnZlZCBkdXJp
+bmcgZnV6eiB0ZXN0aW5nIG9uIGENCnJlY2VudCBrZXJuZWwuDQo9PT0gU3VtbWFyeSA9PT0NClRo
+ZSBrZXJuZWwgcmVwb3J0cyBhbiAicmN1X3ByZWVtcHQgc2VsZi1kZXRlY3RlZCBzdGFsbCIgd2hp
+bGUgZXhlY3V0aW5nDQprbWVtbGVhayBzY2FubmluZyBjb2RlLCBhcHBhcmVudGx5IHRyaWdnZXJl
+ZCB2aWEgYSBkZWJ1Z2ZzIHdyaXRlLiBUaGUNCnN0YWxsIGhhcHBlbnMgaW5zaWRlIGEgc3Bpbl91
+bmxvY2tfaXJxcmVzdG9yZSgpIHBhdGggZHVyaW5nIGttZW1sZWFrDQpvYmplY3Qgc2Nhbm5pbmcu
+DQpUaGlzIHdhcyBvYnNlcnZlZCB1bmRlciBzeXprYWxsZXItc3R5bGUgZnV6emluZyAoc3l6LWV4
+ZWN1dG9yKS4gSSBkbyBub3QNCmN1cnJlbnRseSBoYXZlIGEgbWluaW1hbCByZXByb2R1Y2VyLg0K
+PT09IEVudmlyb25tZW50ID09PQ0KS2VybmVsOiA2LjE4LjAgKGxvY2FsbHkgYnVpbHQpDQpDb25m
+aWc6IFBSRUVNUFQodm9sdW50YXJ5KQ0KQXJjaDogeDg2XzY0DQpIYXJkd2FyZTogUUVNVSBTdGFu
+ZGFyZCBQQyAoaTQ0MEZYICsgUElJWCkNCkNQVSBjb3VudDogNA0KV29ya2xvYWQ6IHN5ei1leGVj
+dXRvciAoZnV6emluZykNCj09PSBPYnNlcnZlZCBiZWhhdmlvciA9PT0NCktlcm5lbCByZXBvcnRz
+IGFuIFJDVSBzdGFsbDoNCklORk86IHJjdSBkZXRlY3RlZCBzdGFsbCBpbiBjb3JydXB0ZWQNCnJj
+dTogSU5GTzogcmN1X3ByZWVtcHQgc2VsZi1kZXRlY3RlZCBzdGFsbCBvbiBDUFUNCnJjdTogMi0u
+Li4hOiAoNjMgdGlja3MgdGhpcyBHUCkNCnJjdTogKHQ9MjYzMTM2IGppZmZpZXMgZz0yMzUxNDkg
+cT0xMCBuY3B1cz00KQ0KVGhlIHN0YWxsIG9jY3VycyBvbiBDUFUgMiB3aGlsZSBydW5uaW5nIHN5
+ei1leGVjdXRvci4NCj09PSBDYWxsIHRyYWNlIChyZWxldmFudCBwYXJ0KSA9PT0NClRoZSBzdGFj
+ayB0cmFjZSBwb2ludHMgaW50byBrbWVtbGVhayBzY2FubmluZyBjb2RlIGludm9rZWQgdmlhIGRl
+YnVnZnM6DQpzY2FuX29iamVjdCBtbS9rbWVtbGVhay5jOjE2MTUNCnNjYW5fZ3JheV9saXN0IG1t
+L2ttZW1sZWFrLmM6MTY0OA0Ka21lbWxlYWtfc2NhbiBtbS9rbWVtbGVhay5jOjE4MDANCmttZW1s
+ZWFrX3dyaXRlIG1tL2ttZW1sZWFrLmM6MjE3Mg0KZnVsbF9wcm94eV93cml0ZSBmcy9kZWJ1Z2Zz
+L2ZpbGUuYzozODgNCnZmc193cml0ZQ0Ka3N5c193cml0ZQ0KZG9fc3lzY2FsbF82NA0KVGhlIGlu
+c3RydWN0aW9uIHBvaW50ZXIgYXQgdGhlIHRpbWUgb2YgdGhlIHN0YWxsIGlzIGluOg0KX3Jhd19z
+cGluX3VubG9ja19pcnFyZXN0b3JlDQprZXJuZWwvbG9ja2luZy9zcGlubG9jay5jOjE5NA0KPT09
+IEFkZGl0aW9uYWwgb2JzZXJ2YXRpb25zID09PQ0KVGhlIHN5c3RlbSBsYXRlciBzaG93cyBqb3Vy
+bmFsIGNvcnJ1cHRpb24gYW5kIHN5c3RlbWQtam91cm5hbGQgYmVpbmcNCnJlc3RhcnRlZCBieSB0
+aGUgd2F0Y2hkb2csIHBvc3NpYmx5IGFzIGEgc2Vjb25kYXJ5IGVmZmVjdC4NCnN5emthbGxlciBy
+ZXBvcnRzOg0KU1laRkFJTDogZmFpbGVkIHRvIHJlY3YgcnBjIChlcnJubyA5OiBCYWQgZmlsZSBk
+ZXNjcmlwdG9yKQ0KSXQgaXMgdW5jbGVhciB3aGV0aGVyIHRoaXMgaXMgZGlyZWN0bHkgcmVsYXRl
+ZCB0byB0aGUgUkNVIHN0YWxsIG9yIGENCmNvbnNlcXVlbmNlIG9mIHRoZSBzeXN0ZW0gYmVjb21p
+bmcgdW5yZXNwb25zaXZlLg0KPT09IFJlcHJvZHVjZXIgPT09DQpObyBzdGFuZGFsb25lIHJlcHJv
+ZHVjZXIgaXMgY3VycmVudGx5IGF2YWlsYWJsZS4NClRoZSBpc3N1ZSB3YXMgb2JzZXJ2ZWQgZHVy
+aW5nIGZ1enppbmcgd2l0aCBzeXotZXhlY3V0b3IuDQo9PT0gRXhwZWN0ZWQgYmVoYXZpb3IgPT09
+DQpObyBSQ1Ugc3RhbGwgc2hvdWxkIGJlIHJlcG9ydGVkIGR1cmluZyBrbWVtbGVhayBzY2Fubmlu
+ZywgZXZlbiB1bmRlcg0KbWFsZm9ybWVkIG9yIGFkdmVyc2FyaWFsIGRlYnVnZnMgaW5wdXRzLg0K
+PT09IEFjdHVhbCBiZWhhdmlvciA9PT0NClJDVSByZXBvcnRzIGEgc2VsZi1kZXRlY3RlZCBzdGFs
+bCB3aGlsZSBleGVjdXRpbmcga21lbWxlYWtfc2Nhbi4NCj09PSBOb3RlcyA9PT0NClRoaXMgbWF5
+IGluZGljYXRlIHRoYXQga21lbWxlYWsgc2Nhbm5pbmcgaG9sZHMgcHJlZW1wdGlvbiBvciBpbnRl
+cnJ1cHRzDQpkaXNhYmxlZCBmb3IgbG9uZ2VyIHRoYW4gZXhwZWN0ZWQgdW5kZXIgY2VydGFpbiBj
+b25kaXRpb25zLCBvciB0aGF0IGFuDQpSQ1UgcmVhZC1zaWRlIGNyaXRpY2FsIHNlY3Rpb24gaXMg
+bm90IGJlaW5nIGV4aXRlZCBwcm9tcHRseS4NClBsZWFzZSBsZXQgbWUga25vdyBpZiBhZGRpdGlv
+bmFsIGluZm9ybWF0aW9uLCBrZXJuZWwgY29uZmlnIGRldGFpbHMsIG9yDQpmdXJ0aGVyIHRlc3Rp
+bmcgd291bGQgYmUgaGVscGZ1bC4NClRoYW5rcyBmb3IgeW91ciB0aW1lLg0KUmVwb3J0ZWQtYnk6
+DQpaaGkgV2FuZw0KDQo=
 
-Hi Mike, 
+--_000_KL1PR03MB8800B64AFA0A40CFF301C50CA184AKL1PR03MB8800apcp_
+Content-Type: text/html; charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
 
-This doesn't look correct. Isn't the zone_dma_limit value in bytes actually?
-Shouldn't it be -
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dgb2312">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div>Hello, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp=
+; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nb=
+sp; &nbsp; &nbsp;&nbsp;</div>
+<div>I am reporting a possible RCU stall observed during fuzz testing on a&=
+nbsp;</div>
+<div>recent kernel.&nbsp;</div>
+<div>=3D=3D=3D Summary =3D=3D=3D&nbsp;</div>
+<div>The kernel reports an &quot;rcu_preempt self-detected stall&quot; whil=
+e executing&nbsp;</div>
+<div>kmemleak scanning code, apparently triggered via a debugfs write. The&=
+nbsp;</div>
+<div>stall happens inside a spin_unlock_irqrestore() path during kmemleak&n=
+bsp;</div>
+<div>object scanning.&nbsp;</div>
+<div>This was observed under syzkaller-style fuzzing (syz-executor). I do n=
+ot&nbsp;</div>
+<div>currently have a minimal reproducer.&nbsp;</div>
+<div>=3D=3D=3D Environment =3D=3D=3D&nbsp;</div>
+<div>Kernel: 6.18.0 (locally built)&nbsp;</div>
+<div>Config: PREEMPT(voluntary)&nbsp;</div>
+<div>Arch: x86_64&nbsp;</div>
+<div>Hardware: QEMU Standard PC (i440FX + PIIX)&nbsp;</div>
+<div>CPU count: 4&nbsp;</div>
+<div>Workload: syz-executor (fuzzing)&nbsp;</div>
+<div>=3D=3D=3D Observed behavior =3D=3D=3D&nbsp;</div>
+<div>Kernel reports an RCU stall:&nbsp;</div>
+<div>INFO: rcu detected stall in corrupted&nbsp;</div>
+<div>rcu: INFO: rcu_preempt self-detected stall on CPU&nbsp;</div>
+<div>rcu: 2-...!: (63 ticks this GP)&nbsp;</div>
+<div>rcu: (t=3D263136 jiffies g=3D235149 q=3D10 ncpus=3D4)&nbsp;</div>
+<div>The stall occurs on CPU 2 while running syz-executor.&nbsp;</div>
+<div>=3D=3D=3D Call trace (relevant part) =3D=3D=3D&nbsp;</div>
+<div>The stack trace points into kmemleak scanning code invoked via debugfs=
+:&nbsp;</div>
+<div>scan_object mm/kmemleak.c:1615&nbsp;</div>
+<div>scan_gray_list mm/kmemleak.c:1648&nbsp;</div>
+<div>kmemleak_scan mm/kmemleak.c:1800&nbsp;</div>
+<div>kmemleak_write mm/kmemleak.c:2172&nbsp;</div>
+<div>full_proxy_write fs/debugfs/file.c:388&nbsp;</div>
+<div>vfs_write&nbsp;</div>
+<div>ksys_write&nbsp;</div>
+<div>do_syscall_64&nbsp;</div>
+<div>The instruction pointer at the time of the stall is in:&nbsp;</div>
+<div>_raw_spin_unlock_irqrestore&nbsp;</div>
+<div>kernel/locking/spinlock.c:194&nbsp;</div>
+<div>=3D=3D=3D Additional observations =3D=3D=3D&nbsp;</div>
+<div>The system later shows journal corruption and systemd-journald being&n=
+bsp;</div>
+<div>restarted by the watchdog, possibly as a secondary effect.&nbsp;</div>
+<div>syzkaller reports:&nbsp;</div>
+<div>SYZFAIL: failed to recv rpc (errno 9: Bad file descriptor)&nbsp;</div>
+<div>It is unclear whether this is directly related to the RCU stall or a&n=
+bsp;</div>
+<div>consequence of the system becoming unresponsive.&nbsp;</div>
+<div>=3D=3D=3D Reproducer =3D=3D=3D&nbsp;</div>
+<div>No standalone reproducer is currently available.&nbsp;</div>
+<div>The issue was observed during fuzzing with syz-executor.&nbsp;</div>
+<div>=3D=3D=3D Expected behavior =3D=3D=3D&nbsp;</div>
+<div>No RCU stall should be reported during kmemleak scanning, even under&n=
+bsp;</div>
+<div>malformed or adversarial debugfs inputs.&nbsp;</div>
+<div>=3D=3D=3D Actual behavior =3D=3D=3D&nbsp;</div>
+<div>RCU reports a self-detected stall while executing kmemleak_scan.&nbsp;=
+</div>
+<div>=3D=3D=3D Notes =3D=3D=3D&nbsp;</div>
+<div>This may indicate that kmemleak scanning holds preemption or interrupt=
+s&nbsp;</div>
+<div>disabled for longer than expected under certain conditions, or that an=
+&nbsp;</div>
+<div>RCU read-side critical section is not being exited promptly.&nbsp;</di=
+v>
+<div>Please let me know if additional information, kernel config details, o=
+r&nbsp;</div>
+<div>further testing would be helpful.&nbsp;</div>
+<div>Thanks for your time.&nbsp;</div>
+<div>Reported-by: &nbsp;</div>
+<div>Zhi Wang</div>
+<div><br>
+</div>
+</body>
+</html>
 
-     max_zone_pfns[ZONE_DMA] = min((zone_dma_limit >> PAGE_SHIFT) + 1, max_low_pfn);
-
-
--ritesh
-
-
-> +#endif
-> +	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
-> +#ifdef CONFIG_HIGHMEM
-> +	max_zone_pfns[ZONE_HIGHMEM] = max_pfn;
-> +#endif
-> +}
->  
->  /*
->   * paging_init() sets up the page tables - in fact we've already done this.
->   */
->  void __init paging_init(void)
->  {
-> +	unsigned long max_zone_pfns[MAX_NR_ZONES];
->  	unsigned long long total_ram = memblock_phys_mem_size();
->  	phys_addr_t top_of_ram = memblock_end_of_DRAM();
->  	int zone_dma_bits;
-> @@ -259,15 +269,7 @@ void __init paging_init(void)
->  
->  	zone_dma_limit = DMA_BIT_MASK(zone_dma_bits);
->  
-> -#ifdef CONFIG_ZONE_DMA
-> -	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn,
-> -				      1UL << (zone_dma_bits - PAGE_SHIFT));
-> -#endif
-> -	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
-> -#ifdef CONFIG_HIGHMEM
-> -	max_zone_pfns[ZONE_HIGHMEM] = max_pfn;
-> -#endif
-> -
-> +	arch_zone_limits_init(max_zone_pfns);
->  	free_area_init(max_zone_pfns);
->  
->  	mark_nonram_nosave();
-> -- 
-> 2.51.0
-
+--_000_KL1PR03MB8800B64AFA0A40CFF301C50CA184AKL1PR03MB8800apcp_--
 
