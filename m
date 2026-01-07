@@ -4,107 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9AABD0D176
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 21:23:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EA64D0D171
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 21:30:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B9B06B0088; Wed,  7 Jan 2026 16:23:18 -0500 (EST)
+	id 996656B0092; Wed,  7 Jan 2026 16:30:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3912B6B0092; Wed,  7 Jan 2026 16:23:18 -0500 (EST)
+	id 977CD6B0093; Wed,  7 Jan 2026 16:30:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 290826B0093; Wed,  7 Jan 2026 16:23:18 -0500 (EST)
+	id 84F486B0095; Wed,  7 Jan 2026 16:30:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 172BA6B0088
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:23:18 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 91122B9A49
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:23:17 +0000 (UTC)
-X-FDA: 84306443634.25.B7E198C
-Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7B4D080012
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:23:15 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=deltatee.com header.s=20200525 header.b=sAs7KK64;
-	spf=pass (imf30.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com;
-	dmarc=pass (policy=quarantine) header.from=deltatee.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 726246B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:30:00 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2C1731604FF
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:30:00 +0000 (UTC)
+X-FDA: 84306460560.24.B01FA41
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 48548C0002
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:29:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JhXvBhXX;
+	spf=pass (imf22.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767820995;
+	s=arc-20220608; t=1767821398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UkZv5onkyAXg00ymNzmBDBe0GBLZo5D/WkzgMa+G8aE=;
-	b=ujlsvJcS7XYbafJ1ht82csYF9Hc1YGEEEzWYJirHX3T8btcKw4qIujrzfKS/Mvzmz87gF/
-	KFX6VskSUPWuroY8gDOn1Qa+omcy4XsNwoRhY38DCkNANp7ZRkCZ6RjHazDZhDwyWfgnZr
-	F7yTd0h3jKnY8x5xDPnfc4/ulHimxaI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=deltatee.com header.s=20200525 header.b=sAs7KK64;
-	spf=pass (imf30.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com;
-	dmarc=pass (policy=quarantine) header.from=deltatee.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767820995; a=rsa-sha256;
+	bh=ow7ejlnL76blgGovBd3isSBtOAsvSD2Rawb77QSvQFQ=;
+	b=G9fJJ7rnnB0o9Yx6QPeCJ+hrW9D8NCXZ7bGd4jxmx3D+v5RAs2HBWZ0KaBL0p4T4c2e3Ae
+	SkZNTXNwyLpiodP+O/rgewKmGKRHQ8kXs6f8gWhLQZn/LOyCyGBZu0MxUh4uBPX5gHOHw4
+	SLYGAezEU6tagA27AJnfsZbGJLy+aBU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767821398; a=rsa-sha256;
 	cv=none;
-	b=6VO/zom/9cfqTqWmYVg6EZcT6TADwvditxkk89PvIqftGqQImQA0R7vSRDlLTT74zjZaUJ
-	LHV6B8b/TQmJ9sHbgJ1e35AyrU0wHuyv+t2dTF0HLnGDjhcGbWzAFovYWmjXHkxvkRILpW
-	vc5+QkYtiQ2rr6wjkxErVLOvx4JtnXs=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
-	MIME-Version:Date:Message-ID:content-disposition;
-	bh=UkZv5onkyAXg00ymNzmBDBe0GBLZo5D/WkzgMa+G8aE=; b=sAs7KK643BWbWhoo6dF6UQ1/hT
-	ZLLmOL/LPVznRjY+5D4R/1OIBjEGbBOAKimg/TrjMiTYbZ9Suqs5NKYOv2oYJIaV0Rx5hzGUkn6vd
-	/9KjuYX4IPOeSz5EF/TriHk3wHFgOz6Sz/lAmLXfLaejw2/5GozSnvKBlFB7DlrSzk59G/tHTLq1E
-	85vfcq1tY1L6TJ8DUK2kGelCJqhlxt4crpt5Tck1bCOssOIZo0Mu3hk1t5Fg8EUxOgsx11R8LDK6e
-	e9kT6VK8iumDWsc2JoHZLObgto8LS/BXGS0VnuqYEirj8o55U+UXAMOFyVcUMXldKifXSan0zEErN
-	nzh97lrw==;
-Received: from d142-179-236-232.abhsia.telus.net ([142.179.236.232] helo=[192.168.11.155])
-	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <logang@deltatee.com>)
-	id 1vdazo-00000002GOe-3sYV;
-	Wed, 07 Jan 2026 14:23:13 -0700
-Message-ID: <1d2714eb-f5fc-4e73-9114-8d644deccdcc@deltatee.com>
-Date: Wed, 7 Jan 2026 14:22:53 -0700
+	b=5GS8I8lilcsxfqdCJ00B0rxnvg3anLqEihFoaOteUrXZpCL/0TxIRsZHqUgzyJKsWqmb1T
+	amxTFhvZbpnK8zVFAxzVGkACsSxEiG3AB2+5cE8ZH1sl1MaUzQ6d8yhVla+Dl32xAUX3EY
+	fwZ0dAu7SwFdUCPiVXBB0/PcttJDg+M=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JhXvBhXX;
+	spf=pass (imf22.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767821397;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ow7ejlnL76blgGovBd3isSBtOAsvSD2Rawb77QSvQFQ=;
+	b=JhXvBhXXvEeTqPFU8p4O6qfXvdq46v72e6P68PpZKUlNUn6ic0ln20XqnZQY1UQQzePJuB
+	6bDI8gXt/HibfqLri8JgwWFN8Vu4hi4I7HkF9eBHBT+DePsY5JJmHJHEr4LfbXNWlU/isX
+	5HE2tE7ld6jGwq+g/ZFKerC5k9S+XTE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-497-ENzFtFryNKKpqRGMa8A-nA-1; Wed,
+ 07 Jan 2026 16:29:53 -0500
+X-MC-Unique: ENzFtFryNKKpqRGMa8A-nA-1
+X-Mimecast-MFC-AGG-ID: ENzFtFryNKKpqRGMa8A-nA_1767821391
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2CC6E195608F;
+	Wed,  7 Jan 2026 21:29:51 +0000 (UTC)
+Received: from [10.44.33.27] (unknown [10.44.33.27])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7950919560A2;
+	Wed,  7 Jan 2026 21:29:46 +0000 (UTC)
+Date: Wed, 7 Jan 2026 22:29:44 +0100 (CET)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Matthew Wilcox <willy@infradead.org>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Pedro Falcato <pfalcato@suse.de>, 
+    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+    Alex Deucher <alexander.deucher@amd.com>, 
+    =?ISO-8859-15?Q?Christian_K=F6nig?= <christian.koenig@amd.com>, 
+    David Hildenbrand <david@redhat.com>, amd-gfx@lists.freedesktop.org, 
+    linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>, 
+    Jann Horn <jannh@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] mm_take_all_locks: change -EINTR to
+ -ERESTARTSYS
+In-Reply-To: <aV7IO8-trMSI1twA@casper.infradead.org>
+Message-ID: <d3d77df6-931a-b97c-d551-a69ee5ca9493@redhat.com>
+References: <20260107203113.690118053@debian4.vm> <20260107203224.969740802@debian4.vm> <aV7IO8-trMSI1twA@casper.infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Hou Tao <houtao@huaweicloud.com>, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-mm@kvack.org,
- linux-nvme@lists.infradead.org, Bjorn Helgaas <bhelgaas@google.com>,
- Alistair Popple <apopple@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tejun Heo <tj@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
- <dakr@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Keith Busch
- <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
- houtao1@huawei.com
-References: <20251220040446.274991-1-houtao@huaweicloud.com>
- <20251220040446.274991-11-houtao@huaweicloud.com>
- <07a785e5-5d2e-4c81-a834-1237c79fdd51@deltatee.com>
- <20260107202424.GC340082@ziepe.ca>
-Content-Language: en-US
-From: Logan Gunthorpe <logang@deltatee.com>
-In-Reply-To: <20260107202424.GC340082@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 142.179.236.232
-X-SA-Exim-Rcpt-To: jgg@ziepe.ca, houtao@huaweicloud.com, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, linux-mm@kvack.org, linux-nvme@lists.infradead.org, bhelgaas@google.com, apopple@nvidia.com, leonro@nvidia.com, gregkh@linuxfoundation.org, tj@kernel.org, rafael@kernel.org, dakr@kernel.org, akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, kbusch@kernel.org, axboe@kernel.dk, hch@lst.de, sagi@grimberg.me, houtao1@huawei.com
-X-SA-Exim-Mail-From: logang@deltatee.com
-Subject: Re: [PATCH 10/13] PCI/P2PDMA: support compound page in
- p2pmem_alloc_mmap()
-X-SA-Exim-Version: 4.2.1 (built Sun, 23 Feb 2025 07:57:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7B4D080012
-X-Stat-Signature: 48anpxzcfxf4neryzjia9my99ezz6bua
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Stat-Signature: d855o4heytbukb434hfjcapspee359yh
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 48548C0002
 X-Rspam-User: 
-X-HE-Tag: 1767820995-17889
-X-HE-Meta: U2FsdGVkX18BE4lvTORFnKQdVs1qoRU9FutxjQaqvLeRERsXyURLT5v13zho+C0oWmyJfBURviKe2z0WXg9nqHATma+dpKNipQSOQ/piN8JKtv77Ljt796r56sCVya6vKqUOMg8ejkK0AkWm/bp28f0j5hEEKl2kKGz2/fsnmiDdqveTRrREXj8K1OmDOwQYIdGsCcxDWpT9XdL+DyAL4QkZzm7SF5vspnPz4OuEmqIc6zJhmGBxpzzWkLzfH38qnC2d/tuVj+a4gPVyNOToStjNLMgRa0rHoPDFsdtg2NU5OaYQZAJ2kA+RfNSRaEZRD13mQVnanBnWe6UmwdWCRRFm8oBXqj2wv9F9Se7BPfa35LO6gqUpV4QJD019qsF68WRBllqoTURZg6GYKuIFJRhzvQN+l0unyDgtYVfEC1Ib0xCTVfhwK3g0BpxnnElzrCML5KLa5g6I9p++JZ1pCnmvsw18gxOj6IwlahHMJkj5XYF+ROFyvHUCgtE6ECpnGdAhRsvIh5DuqbE0n7xfaxRRfLj+XgwwdwaAgFGRiIacEt5RxcWJqaHK1aygsSljI+zEAPF9GDgpUdscY/bt/4QVhV3qcSiGwPQllSiyBgqY9JjabkEqxbRC+dwU0iUw2ErNqemu2Ikpa4j1gnIAxuz2P1aTi99ZoctrL0Z8Um6oFebhfKjiDLTZFf+tMSwzH35k1M1DsK7g6dyfW+DrA2C+kIXS1NSNwfIPkGe29kaHyotqoRqyJUUGVSU1gYQqf3BVvtdQhzpAY9Eha3u8IpJj83wwRb/JhDFG9VdWt+zaQ0L6aqmzEzjaj2/0FFh4wOg9I4nfwMtG4/4dN25wnb6rMy5e0lMHoHbRHj0OBF80sY7071L0JlVt89h1c4QDyWWNQMQIt27645JkTZoARm3NXg9QeGiKA+EZLnLyqnpMujYROeL4pAMI7TeNEIBP8MRTPV0fRe1dF2QYRDq
- Y0nRt7hH
- obAhosOfoE/U1Wc9MaPefne4/YZgFUctaYtFoQ7gG9zkYgfrLNJZsT+Ya9+PBH7lwG6dQIDgsPswl4T0+SCwoYWmMM57TCC60Y0mFJ3jH8j+MJPjPRm7wD/y3C56DvLwtSfux//Q/ZCevS41lXLFNpMOCtp/bNlmJz4/E2m8bgZwkB6yItTvvqrsa4aDMbV8X1TtBz5OfymuXenhAbS0c1CkIZpr5GNMMnlEF40wENMuvEDloRxGvkDfkJPtOHiVWjWE4CgWdt4a31QGTLXi0tHIy5ztIbyeMVOmhddiC0mXPvHgevXW3dKtfkuKCEKFRZqbM2OypChTwkkQtJELI65a0DCGhx4kNtfA4
+X-HE-Tag: 1767821398-23641
+X-HE-Meta: U2FsdGVkX19JeRCg6IsqPjLl870BRx5h164Hom/q0//gp2K7RptR+r8/eg0lLWVvYfzwaHq7A5jpI/z/VAsfeKTVgi7SYR/ntZJ7zbWfe9GDGIAzKU2WAH/ZS4YquSoc7ZotjXlu4S7mdv75EAKoczBRpWRdawYP7rnRBuPWfkDwgQJAsICnxcDbS+NfVjG8vJPXFPEhByYY7yvs9pHe9n/AWPA6vkFLJyKT0eaOuLTyYbk0whJ5db1t8m+riW2I7KDXusTNeXNaD9KqNrbCjb0Lt3a3DmCp7WqKVN9o3vM8Y6z0qATXhNgzwsAIdSsYcK/3VI6Epv/9TOC/65C/kk0qVIV1Alqbm/0t8ojnPByBmdAIX1LD7aIEP619E3YgkfgvfwtqAr7yQfdJl9d6IAvLTJpdWDUkXL0UrBpL9v259fGJkPbA2Yk9v2IQgTtB+vAYu6OJDXe0hY+FGzXgI+NwCfHXOQ2Q+VhazBXCmh3FO1FayAiHaFh8M3TfnBgTvWMiyUgVGbcvcQN4W+wdrzmBpHoIY5GBQ9vOyTe5u3w1sTdDn4zISRajASw5bwJAy/Izo/gC7IcwWrda1+faz9cDLjnfIm18ZIwwUJQuKLBswZSmm/U9yyYgWlXdMZ9GYpEO+5wpUqnTkoDJs0nxErLQULJ6dCpj+LsenyDq8XeTNpOMnn49Lpr5Rj6p7R8ElSITEP11XuMf3b2X0QhEWgOPDa+22hIsBjuiiOYOv94l2Fni5iGXYkSBYZkOYyay3f65tEK2aMoWmsKHMblkJ1JzehxfQOYPje9Lr3YBapaM2qjChs8lWZEFWNLIziX3e2gWawE3blCt9yOtJMVEIdDW6u+t0eI22kUCZ4G9bXlS3xoiQ+OUdadBKBHaaLedpIPLWXvL+P9DNIGfmZKYRXgQxMGoQtSPUwlIDKrnP+ZG4kOGHySCebMGwYB4Z0VZ3amDu09lZDB+a4VhTKu
+ i8T7frGs
+ nkOTdCyrkvaeBEqvac//n+8odrtwQ0WNTEqFBz3XHvBs3VzcEVwUHnqRj6FBVByks3tAmhu6RygP78ACbJDr26gbNkoX2dGvG2HoOPGyjdZBKJ/phimqRzQOYJ1MzX4/8qtBVoGfg5GzSQDl/hmCLRBmDHBVnqM45pw9al/0jf/DlYRAT0iHdN5FWfNs2N074bO/BYWl3JdRFiMV8yxhNKKg8TOngKdN2iWDYuaQSl0e11eRPPZIjeE7CGs0wM+ZdluTfPC2rZLbrWpGmeLN1g1F6JdSnd6hKSpXMeHj9CMwN5MPXIVfu3uLGj2dbE2IpqiYMXOec67AYUqfKLfu9JiNnS4tKCWdkuDNbEdBjaSrHHRS08vwik7XQow==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,33 +111,19 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026-01-07 13:24, Jason Gunthorpe wrote:
-> On Mon, Dec 22, 2025 at 10:04:17AM -0700, Logan Gunthorpe wrote:
->> I would have expected this code to allocate an appropriately aligned
->> block of the p2p memory based on the requirements of the current
->> mapping, not based on alignment requirements established when the device
->> is probed.
-> 
-> Yeah, I think this is not right too.
-> 
-> I think the flow has become confused by trying to set a static
-> vmemmap_shift when creating the pgmap. That is not how something like
-> this should work at all.
-> 
-> Instead the basic idea should be that each mmap systemcall will
-> determine what folio order it would like to have, it will allocate an
-> aligned range of physical from the genpool, and then it will alter the
-> folios in that range into a single high order folio.
-> 
-> Finally the high order folio is installed in one shot with the mm
-> dealing with placing it optimally in the right page table levels.
+On Wed, 7 Jan 2026, Matthew Wilcox wrote:
 
-This all sounds the same as what I was advocating for. genpool does
-still need to be modified to support the specified alignment
-requirements for the allocation.
+> On Wed, Jan 07, 2026 at 09:31:14PM +0100, Mikulas Patocka wrote:
+> > This commit changes -EINTR to -ERESTARTSYS, so that if the signal handler
+> > was installed with the SA_RESTART flag, the operation is automatically
+> > restarted.
+> 
+> No, this is bonkers.  If you get a signal, you return -EINTR.
 
-If there is more help from the VM layer to insert different orders of
-memory, that would be fantastic too.
+Why?
 
-Logan
+fifo_open returns -ERESTARTSYS, so why not here?
+
+Mikulas
+
 
