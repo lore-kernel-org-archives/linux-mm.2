@@ -4,137 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6621CFD625
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 12:47:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCEF9CFD626
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 13:12:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01C796B0092; Wed,  7 Jan 2026 07:47:47 -0500 (EST)
+	id 210F26B0092; Wed,  7 Jan 2026 08:12:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0B8E6B0093; Wed,  7 Jan 2026 07:47:46 -0500 (EST)
+	id 1BEA66B0093; Wed,  7 Jan 2026 08:12:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0DAC6B0095; Wed,  7 Jan 2026 07:47:46 -0500 (EST)
+	id 0BE906B0095; Wed,  7 Jan 2026 08:12:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C95496B0092
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 07:47:46 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5AA0D1A0345
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:47:46 +0000 (UTC)
-X-FDA: 84305144532.11.54256B9
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 05EB3C0006
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:47:43 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=J02v0lJc;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Pi1la0j1;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=J02v0lJc;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Pi1la0j1;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf28.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767790064; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id ED5946B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 08:12:30 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 20D9E587C8
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 13:12:30 +0000 (UTC)
+X-FDA: 84305206860.26.A8F49BB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8A8FA18000B
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 13:12:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SMpNz00V;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767791548; a=rsa-sha256;
 	cv=none;
-	b=dIPzlvljQ6sBL5B6YlbDKwLgxcsq06AeqDMqCY6KZmyvWop5ZQPVzEUDQU8C1m4hxEQG8S
-	JHMS3A0qziUUMdx7fC9bhmAwuM5iidmh2b58OydjoIYtyA2onmac0PGsmjnCwo7WJtk1ON
-	1OaCvZRWUYjFA0Vagtpi3ipUhyfElbI=
+	b=mrF37E7153pMXkG3KjkGnLYTaOJjEJSYZCmnE4PeJKnFwGOPDBen8i25D4nlRQTIu1tQD7
+	YI3RXS+rtheFp1qpzf9Pmvk/7W2PjGS1rhNnZyUDKbB95sesWbZGnllniUYMoi8rRo4UTq
+	/5W6Wz18FCod8Z4OdeI0ex1MQL07UAc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=J02v0lJc;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Pi1la0j1;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=J02v0lJc;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Pi1la0j1;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf28.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SMpNz00V;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767790064;
+	s=arc-20220608; t=1767791548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l4yeaiwFw4tFr94QA0WF6Qmoj2lmHuBzJ0Gyzocch9Q=;
-	b=0KNfaJg1ZjPrQGelD0xFolPH8ujz7uP5wcwVJ49XkNf8U9/PA7bkIxmvN0BW83UHY097ov
-	xgnH/ZXqe6YVnJVyjnYG3rnWhB3snwxJeEaKIR+Nap2f3WEf7tc+jPkbBmlz02G8bVDYe+
-	VgDYzJaWVv7VFH2s2gl67S7+so7O0FA=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7102733C2C;
-	Wed,  7 Jan 2026 12:47:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1767790062; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l4yeaiwFw4tFr94QA0WF6Qmoj2lmHuBzJ0Gyzocch9Q=;
-	b=J02v0lJcmFfUHIBCQh1KeYlJ4SIX7PXEXiv0UZgqTr0kJCYnoVDlgPnP4NAcnRrgOwn40D
-	RRt/yy+mLFiYsJcKKI8vNZ5kPpXXJScRfmAEZZlkFTj73vkz2R19QuvZNP/Zel3RLda4RM
-	T50J03s0OPkOPHfMbTqVk8913+SYWcw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1767790062;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l4yeaiwFw4tFr94QA0WF6Qmoj2lmHuBzJ0Gyzocch9Q=;
-	b=Pi1la0j1rVisr6xRsyp4Vf2Xkd3BiP87V1B6+bahEKU+FcJ19mzc+mJZKsx486pPuKMFJm
-	CHygq9ydid+NfDCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1767790062; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l4yeaiwFw4tFr94QA0WF6Qmoj2lmHuBzJ0Gyzocch9Q=;
-	b=J02v0lJcmFfUHIBCQh1KeYlJ4SIX7PXEXiv0UZgqTr0kJCYnoVDlgPnP4NAcnRrgOwn40D
-	RRt/yy+mLFiYsJcKKI8vNZ5kPpXXJScRfmAEZZlkFTj73vkz2R19QuvZNP/Zel3RLda4RM
-	T50J03s0OPkOPHfMbTqVk8913+SYWcw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1767790062;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l4yeaiwFw4tFr94QA0WF6Qmoj2lmHuBzJ0Gyzocch9Q=;
-	b=Pi1la0j1rVisr6xRsyp4Vf2Xkd3BiP87V1B6+bahEKU+FcJ19mzc+mJZKsx486pPuKMFJm
-	CHygq9ydid+NfDCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0E0923EA63;
-	Wed,  7 Jan 2026 12:47:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vucEAu5VXml2YAAAD6G6ig
-	(envelope-from <hare@suse.de>); Wed, 07 Jan 2026 12:47:42 +0000
-Message-ID: <88dbe97c-3510-4ce7-ae85-067243a152bd@suse.de>
-Date: Wed, 7 Jan 2026 13:47:41 +0100
+	bh=nH1lIKowpY71IyFBqdjo2R6v53N3f0jy/DRCKOUdr3Q=;
+	b=IpruEt9GtyUeWFNT6kKWZvZkFuIGsDAPSWzQOqifBBMgjZ0Z5iKRqygrUCqWe0EELLLBud
+	yzQB62PszWPcsbcF8bhJQrlB0fZSlPFCQJ/apkxWex65Sz34ry4VpD/g+lfWO8UpatmVLd
+	8wO7TYbjvuII88OAGeM+9Mx/8vuyb+A=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id ADD756001A;
+	Wed,  7 Jan 2026 13:12:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04516C4CEF7;
+	Wed,  7 Jan 2026 13:12:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767791547;
+	bh=nH1lIKowpY71IyFBqdjo2R6v53N3f0jy/DRCKOUdr3Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=SMpNz00VTY3IuWA9a30byLgzg6Yh6ZcTskIv7FxF7xT2ePEReH5jjvCRfdAV+cLh5
+	 LwAzR/q1D8c/FAIqW0CctIwkKCcYV6SSZp/DKqTOsxpizdy5ADaYtVVgm3hwilByhW
+	 6Fz3VwIocRheTWtQhyXxMg7P7dM5WD9EXcnxEEM2eo9l7W6/S5Qms6cPOtnDtXX9J5
+	 VQh0/DfofvY8PKQQYfwzzs3swf0Yk+8tqNOpKKvQo2PzBoOFcbTvvimJ+onwZYWKIb
+	 B/tUp3pqY5pcDKygMahUQ+grzc1hNfzFT5Q/CkPIpGCm/dXEEJTXTTNOlB67ZEwOPV
+	 8nTNltf5UqWUw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Alexandre
+ Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Nathan
+ Chancellor <nathan@kernel.org>, Nick Desaulniers
+ <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>, Nicolas Schier
+ <nicolas.schier@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+ linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
+ nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
+Subject: Re: [PATCH 0/4] Inline helpers into Rust without full LTO
+In-Reply-To: <20260107123528.GF2393663@noisy.programming.kicks-ass.net>
+References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
+ <87y0m9har9.fsf@t14s.mail-host-address-is-not-set>
+ <QViERQV7XT0BjTfSSyP6vzQc4AYxosyF5TEZ5kRu8AVWjmGCP_5n5V2AV2hjqVza8-jvzyquH3JLJA1zvbRD9w==@protonmail.internalid>
+ <20260107123528.GF2393663@noisy.programming.kicks-ass.net>
+Date: Wed, 07 Jan 2026 14:12:10 +0100
+Message-ID: <87sechh8id.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
- blocks to zone movable
-To: Michal Hocko <mhocko@suse.com>, Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- david@redhat.com, osalvador@suse.de, gregkh@linuxfoundation.org,
- rafael@kernel.org, dakr@kernel.org, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com
-References: <20260105203611.4079743-1-gourry@gourry.net>
- <aV0kzBxg57Mlw8mx@tiehlicka> <aV0-ChclC7SCrxcg@gourry-fedora-PF4VCD3F>
- <aV1nPG1BgBQDWkjE@tiehlicka>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <aV1nPG1BgBQDWkjE@tiehlicka>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 05EB3C0006
-X-Stat-Signature: mzabrt565zkcgmjr74kk5pzn4dgj5smc
-X-HE-Tag: 1767790063-496922
-X-HE-Meta: U2FsdGVkX1/uT+EvUj/QGicdXFureTAenBWOghf731dfB4cICEoX5RJ9ysKlCxcVHHBGEfNC0EAJdn+zDTnDk4+wMnv3q8xaxkFtukOwEXkIoYMLhhtqW8+45TI8IWvGVzf7Z+Yxs9OCbn35yf6UfiTmIzSSuBM3bnvZttPhDGFABXS1lypeOkLBoxfO5JcirgNmbmGYgUhr9t1m/P1vs9cFK/ZXDNPeQ63tc+povxc/VGdWJkYkOtmbbFvQB4vfv6BsU+LfvlVeN4XsFKemEHEB7GHFHqbcsDUw44lH2BjZWeutTEWwMAvmCE0RT2IwNJGaFKaHqSLkLYnHfSoPWaRXWr4nqRZ0s4ACqXiEVeM93XQW3999is0OT77h0BlHdR+yTXExTl7mnGM/fMF7+dFHMDJpzVKj+u8mMCadOYJtNtO832WQlccZFH2lOdq4p+mywxfhTmEkQfaZPZd/1Ab+kioIoWwaWFylFlmEdstmYJoKTj/udTuiZBlzQvphwYh2FpjzxsMcjNUBoTScCOELS/BCPABWMz2gkiAkhG+wrHDzD5MEIGCR40axayETLboaqGbQ8j5zeo5JFvvo6vh9ZHkSv2Jjd0PvqbldsiohxzESjdIdjzZGyWyaDH8tYSVk0lQLjYtB9tOGhmk6ooMaEqf8LFJLlF5mxFLaRPPPzxFXzaRBPXFpaKe/ads1QbkqqUzZwGciZ9LkfNrdptsYYBA8ckDhI5Zd6084XSmCsvWkuAgePgXgsTNJu5BtQ5rZnEyXm4gSTHhQZ5yburdmHyhPqW428ukD+nEzZ/G8YKK1HPlCtQ3EePplv0VnnLj1n/3cQeRmZa8sRebiwkh7YToc1VJAYcVB0I70EbX7GPsJOtB/iD2cZGhM4+BpHjZxTLpIl/+cPT47mA9LZ7HM0cxd7XgW8shKg3+SURcj0ogEtSZ1qcQlhqhptZfl8WqvJ++evYGh+jDlJJt
- hPvKf5Og
- 6G09VpftqfeWR+bITRDYs1VpSp3BO/qrZtYI781hHt6jpy2tAvTg19lUvza10NO/bLKHatayLNv/LDCKJv7MigKJHSR5wjDAcPaALQ1htXH7h3NPUN0TsOTVWdgN0TEH11gloqBOq7kGT9DcZaJVmVxyVH2FTe5tfcAiAcQoeQrfJ6yP18JYsUaIfUX/fgoy1c+xJCrqREKUyexMtWopWAz+bP3mIVz9gpF/8/0QQ+R3Vi+beo1PDQdsaOXSI6fixQnOopdplVkTNYAKa8ag0CLz7z+9zJlL6xOa+VRGUmWNR+RRm+M1bytzX6qHCNVKYeLw1HLJ9uJpJRYcjm0K2MD1a5ospDiqfgZAy+3p4H8Zv7VoAYsC9v636AS0QPqu1NkC8
+X-Rspamd-Queue-Id: 8A8FA18000B
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 4h7sbrfrf33e17y69st5sa6wrd5wzerd
+X-HE-Tag: 1767791548-324564
+X-HE-Meta: U2FsdGVkX19LeacjXBMei6TrkajRczYIFp/MT5lNMtTx6jzg03ea03InGOj8G74H7DNBd+QYsmIrCs9TTpjnSzU0QXSjvKCBxJT8aguZGfbXEpUVo0xk2+aZUZn6OF2XVQlDjSHaDFa9e7bg4FqEB++tLPb8tVn0lDSH+EnSQiH3pV6oPYeNti3wwJ+unONPLib0xM+FTdVYgm1vuKGcWwldCLYNsLcxBRLEwww7hR2cX/YsMlYg88s768Y5XIb0ND089JU1y6zjqSLBjc3O+d+8lICogHQ5m6bU1Eg05Xor3ou55UmCPyE088+SMdU/GnkhOGN2oNXgk9VKLXbKRoKNnTkc6wEiRpOwhDtFJcRBwM0n7Et7mUfpMJ/7eZQB1Xhkdpf9Tg01qDwwWM6vhojQSBMKkgKo89g5nQx6ZwKJ1zcM62B1Q2BLzLv4mFvyZ6AiaftAqRoFMys+O+BpN5G1+AJ2PRUsfCgH/k9e1wENoYcdv73Azh1TmS2PVxbHDDizC6cpBhOor9VovdGpa//Cnj+rjdTxjiDaRiTgy7aeGCgFGGHS6SmW2Vh1gyYEAUCgot65LK8ZNj+m4AG48ZduK/dhUfhsw4Rk67msa0ja7tL0aBbPvT5W2hrG8HFmFio8fV+qDyGp1mRk3Qyg7G8/hKkmTABEU2+LeRdGnOVLMuVeXdR7kNAc+jHSy0NurP12bKAqJePKuj1p4lPN12rSWgxMMSkjXXsYndi9mr38i+g5f6/Pwi9aam5v/JrdWK7xWlv573Mp17mnrbyeK7jqN6+goF17hamqxS7+QjQCb6Xq4Hi5pMUajcnzR5BadrfH47+b2aOms/xKAKqs4mNWRtlUr8iweYljMjJMwsgSh/HmMDqlB8PKCvfzXnFuXK0M+wbP+xFyzszJwh9bOE3D2EUaB4CawRKbr0i4YHEkMb8xnmZTFadLQX/5RuI1hkPdjLPsyU4Wl3xhwEa
+ vev2Z8ub
+ 6FcB5xjbJINjsgNkdehRJiD+R4MWkTmiPetxvi5dDof2EgXLZ6f9q+dWgt8kSn6GArRSftikp4JKqYQGStME23ETEdc6Ad0fSbMxKzGedg8AH62YWCu5QX896AZh6IdK9a/KuJyL11L7y5FuV6zAAbX2NepVeR64ZKDSGbIzrmTWtLjYey8kVcsqQteSG5qPuzNPEmoY2rHzk8fet2DzXI5snb1Co2DIFjdsrqhTak5V/rlseUqH9CdxHCzMQSIbPLAEcXjfPEvm63cMqzWOSvlCFFWaHZ4qcfxyP4HQD0YGm8+SSVk32hnn0TYtGoG3HXkHXsGQ5XpsPg77u31O1qJU0yA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,62 +106,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/6/26 20:49, Michal Hocko wrote:
-> On Tue 06-01-26 11:53:30, Gregory Price wrote:
->> On Tue, Jan 06, 2026 at 04:05:48PM +0100, Michal Hocko wrote:
->>> On Mon 05-01-26 15:36:11, Gregory Price wrote:
->>>> It was reported (LPC 2025) that userland services which monitor memory
->>>> blocks can cause hot-unplug to fail permanently.
->>>>
->>>> This can occur when drivers attempt to hot-remove memory in two phases
->>>> (offline, remove), while a userland service detects the memory offline
->>>> and re-onlines the memory into a zone which may prevent removal.
->>>
->>> Are there more details about this?
+"Peter Zijlstra" <peterz@infradead.org> writes:
+
+> On Wed, Jan 07, 2026 at 01:23:38PM +0100, Andreas Hindborg wrote:
+>> Hi Alice,
 >>
->> The details are with Hannes, I was just recapping what was described in
->> his devmem talk at LPC ("To online or not online").
-> 
-> I know of policies to online newly added memory blocks but I am not
-> aware of policies to re-online something that has been made offline.
->   
-It's not a policy per-se, but rather a udev rule (which one could
-argue _is_ a policy, mind). There is a rather long-running SLES bug
-around this if you are interested...
-
-But in either case: we cannot prevent the user from writing arbitrary
-udev rules. But we should make sure that the result of udev actions
-makes sense for the system.
-
->>> That being said, rather than movable_only, should we have a mask of
->>> online types supported for the mem block?
->>>
+>> Alice Ryhl <aliceryhl@google.com> writes:
 >>
->> I briefly considered this.  I went with this for RFC-v1 since it's
->> fairly simple and because movable is really the only zone with hotplug
->> guarantees (any other zone makes no hotplug guarantees).
+>> > Currently the only way for Rust code to call a static inline function is
+>> > to go through a helper in rust/helpers/. This introduces performance
+>> > costs due to additional function calls and also clutters backtraces and
+>> > flame graphs with helper symbols.
+>> >
+>> > To get rid of these helper symbols, provide functionality to inline
+>> > helpers into Rust using llvm-link. This option complements full LTO, by
+>> > being much cheaper and avoiding incompatibility with BTF.
+>> >
+>> > I ran a microbenchmark showing the benefit of this. All the benchmark
+>> > does is call refcount_inc() in a loop. This was chosen since refcounting
+>> > is quite hot in Binder. The results are that Rust spends 6.35 ns per
+>> > call vs 5.73 ns per call in C. When enabling this option, the two
+>> > languages become equally fast, and disassembly confirms the exact same
+>> > machine code is used (in particular there is no call to
+>> > rust_helper_refcount_inc). Benchmarking Binder also results in an
+>> > improvement from this change.
+>> >
+>> > This patch is complementary to:
+>> > https://lore.kernel.org/all/20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com/
+>> >
+>> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 >>
->> It's also significantly more complex of a change for questionable value,
->> but if people see this as the way to go i'll happily pivot to that.
-> 
-> Sure, I wouldn't push for more complexity just for the sake of a
-> theoretical extensibility. And I have to admit I have't tried to a quick
-> PoC to see how complex this could grow. I was hoping this could get into
-> a simple mask for online types with default MMOP_ONLINE_KERNEL|MMOP_ONLINE_MOVABLE
-> and special cases just choosing one of the two and zone_for_pfn_range
-> checking for the compatibility with the requested online type. But I do
-> appreciate there might be some obstacles on the way to achieve that.
+>> I get the following modpost errors when building with this applied on top
+>> of v6.19-rc4:
+>>
+>> ERROR: modpost: "__SCK__WARN_trap" [drivers/gpu/drm/nova/nova.ko] undefined!
+>> ERROR: modpost: "__SCK__WARN_trap" [drivers/gpu/nova-core/nova_core.ko] undefined!
+>> ERROR: modpost: "__SCK__WARN_trap" [drivers/block/rnull/rnull_mod.ko] undefined!
+>> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_minimal.ko] undefined!
+>> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_misc_device.ko] undefined!
+>> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_print.ko] undefined!
+>> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_dma.ko] undefined!
+>> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_pci.ko] undefined!
+>> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_platform.ko] undefined!
+>> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_faux.ko] undefined!
+>
+> Looks like it used the wrong static_call_mod() version, was MODULE
+> defined?
 
-Yes, and really it's only ZONE_MOVABLE for which such a treatment
-makes sense currently. Once we have other zone types we might need
-to re-evaluate that. But for now I guess we're fine with a simple flag.
+CONFIG_MODULES=y, yes
 
-Cheers,
+I built without the patch first, then applied the series, enabled the
+option via menuconfig and ran the build. I thought maybe some dependency
+check is messed up so I retried the build from a clean state. Same
+result.
 
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+
+Best regards,
+Andreas Hindborg
+
+
+
 
