@@ -4,93 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D9BACFD647
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 15:18:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7572BCFD652
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 15:21:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F01D16B0093; Wed,  7 Jan 2026 10:18:55 -0500 (EST)
+	id CC2DF6B0095; Wed,  7 Jan 2026 10:21:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E856E6B0095; Wed,  7 Jan 2026 10:18:55 -0500 (EST)
+	id C709B6B0096; Wed,  7 Jan 2026 10:21:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D84216B0096; Wed,  7 Jan 2026 10:18:55 -0500 (EST)
+	id B98D36B0098; Wed,  7 Jan 2026 10:21:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C90E46B0093
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 10:18:55 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6E3F01403EA
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 15:18:55 +0000 (UTC)
-X-FDA: 84305525430.22.82FB138
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AE6C2A0017
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 15:18:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hKo9VFoF;
-	spf=pass (imf25.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A7C116B0095
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 10:21:53 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 22ED3160426
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 15:21:53 +0000 (UTC)
+X-FDA: 84305532906.15.A74FFA3
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4353E40003
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 15:21:51 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=c+w26wzo;
+	spf=pass (imf11.hostedemail.com: domain of praan@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767799133;
+	s=arc-20220608; t=1767799311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qxr27IuxLKzANdfB3MOLiqpjhWBXTrgQvz1V+lSWJmk=;
-	b=ksZSgiKRTGeGeIjSH7h7+Wh0uu0pBQgUapdBt2EWhaQSl2gs6vCRXokldkJShOGedtvPgl
-	g3MUJqAKjkH/IR3nuvp0J/wvQFGQfVcPT80zYbwTP7LNrIKYV7Xkg5dHh/pV78ImFso/YW
-	rN0cau5PsDiZ4NkhUGcJUp9T84OAC0g=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hKo9VFoF;
-	spf=pass (imf25.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767799133; a=rsa-sha256;
+	bh=av5/MRE4yF0I2OFo4G0L4h2O1Biqj9eGUDHDZYxFrTQ=;
+	b=LI5wQ1VggbnqiwwIeufro7zHOj3HpwaIMbTegPt7Uaq9atrj44CqoJMEhLh7QKNLq1plko
+	0Y70R4DYisMB3qVlR+s/ALBqP1PcA2enbbskcBlv0jSPtXpK83Tfr85i/QcUZ0EWBliohh
+	jcqBQj5tWgyM0BeDVeaZwzWLBOmptw4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767799311; a=rsa-sha256;
 	cv=none;
-	b=h5gd1uApC3PcThAzVm3nDtThTvBhxEM9+uwEqqj9yESBGPhHv7SR4bYycxZDawedZtmILA
-	ySeNnGtaKLk9/oaaO/PpglvaKFBHtoW/Oz3ZkKXHybzvCgu0kTURaM9+8uYlWod7PEH2f9
-	xHXMWQri4NkrA4i5BgDPIHqxt+Ta97E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 16FD76001A;
-	Wed,  7 Jan 2026 15:18:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E0AC4CEF1;
-	Wed,  7 Jan 2026 15:18:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767799132;
-	bh=xPL3Fpbo/v10fWIshMmR+kr1gDEFucXCaY5JfO1sMMU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hKo9VFoFYLXs2IVNwu3AXqcLPdopcfM+7h7i1AcM4SEzMXY/jcKTyc3vnNPvsrsNb
-	 4w6GT5HorsbuBTVaLehKcGcCy/wCNXbGjsydW/MDnU1Wi72qBxsl8RqXl5bwSmM2wO
-	 kPvdRtILXgmS9p1xEoMMLewjrs7GMEkgUIKYy8ARAgMTyUMywU3XEnuyeCv0LbSId1
-	 ZPYlHz31xfJLEHGkj5+Hxc1Ru0UKv+UGzbD0URy8eBo4iagBLpUjA9D1JM5kxlo/Zw
-	 dWB4xgZrmA0DjOpnIgCGnx4cNDte1KoUOT1il+pJqN62HbnmEpR3kw+xEEUxe5v7xS
-	 Yn1SysxrDOp7g==
-Message-ID: <01d6b029-e641-4029-86cb-43e7de42814c@kernel.org>
-Date: Wed, 7 Jan 2026 16:18:48 +0100
+	b=d1Ew4zPnGWNUlZ8yaZ3y6YCS3C7NMTkkIdjQC47dAc/dXNBplg0BO/Tk0ncjDh35E5m3Y+
+	wmCItTItkA/HcAjiEkJ/fJOvFuibc3IA/a8CflRQaGvcCtxmrPHGU+c3FG4I6JTWqo1hse
+	9khvcGK3J51bnl3gP3hF5+fHZB2BnzU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=c+w26wzo;
+	spf=pass (imf11.hostedemail.com: domain of praan@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a35ae38bdfso72285ad.1
+        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 07:21:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767799310; x=1768404110; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=av5/MRE4yF0I2OFo4G0L4h2O1Biqj9eGUDHDZYxFrTQ=;
+        b=c+w26wzooO4MC4eaNz6tW+Q1PTsOW8tnRX9TehyZ6YLWZjWit518i3uGzoh2mlMfVb
+         pB9hlWQt1Jf+LMbdxSAOHoi1GeyNetcYIunytsH6OAtD13AF0KZCp3ueO+QRICKR6Xkf
+         sqE7tJcg9rOcr78TKcRkcDN7VWNYsaKpBtBJHG/WuLQLh0iYzy++KC/7I1uX4eGwmzn9
+         oU6FvdQ1AhtZ5mE3x0/u6CW7BfCMFxQ6/AIrRQX49FIHxfsAw9Cqgy7r7vTzc+XSEd5+
+         fdSkxElEAaBnQRo0sySbTn4FMErknqI/fnAeVH075yBneVEWjJoshJb1tthsOykuzMNo
+         GATQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767799310; x=1768404110;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=av5/MRE4yF0I2OFo4G0L4h2O1Biqj9eGUDHDZYxFrTQ=;
+        b=VBsULvMJMVIFTqwyuI12isgtPsvnWO6xOgp6NdKmWX8Vz4hYCiQgfd+rm9hbq585g8
+         aGBwuKzGGPwtkSxSSHMkHBqZS+MicPxUrIJRBROqLfmoqINgQ21UQ2BEDiVusPvYhmhn
+         7FPwWoYwg8Ko/vOlo2QQDrf4LR5t8iJK543/p3c8PZkqFPchvZ3a2AR4no5sDehz4YrO
+         5JrpzqxqvFRfwFtK0h286r+Jki8SLrl7rAK3S3P99Q+GnRQI7z7XkUQT7X60FDvWcyyK
+         SXwN4Uz3lkPxxMJplC/FWO+UJnVHto+1nO9517EUK7OciauowSKEsucIe0KGjymVXOvB
+         yn9w==
+X-Gm-Message-State: AOJu0YyNPExbzoL0Wca3gVK/f7ZhlR0OfIcJ0MQsRfgDZ1SWalAmPZb5
+	Gfz4YiorGzHBaiZAvhJ5Ziygov3t/bowGcWLDcmD6EcLBFcorDmg9QvJnFFodrS4KQ==
+X-Gm-Gg: AY/fxX6e8NQnuc43Bh46kuGAJYe8RtW+w/kCpUjD/ZVYWHiLOiGAaeoBktOVRAYK/yS
+	jAVo/YzHNPmES4F5D3rxmKMQ2qnm1jdaudaSJgtqbndhZ7YdZPWUJ4YEV/I9VZCYphVRFH869hw
+	cRTMHHIlxIALHHleUddDIXphzTvLY+FLChpH9N9JFGI08nREvF2K4vtmxgAg1R/qjL++f+E3iwp
+	2B2KPj72RdesF9PCHRuaj9MZf87IAdmKE27W+q1UMkemr88FartrGpkdT5kMPomxjkrKbQv1b6b
+	NxaiWSc1mE+SuNkPjY6w2LV70SRPvNQAzG9jyHR43i9PC0AmB3ASWB0/dU5VUXgzlAMkOSs8fL0
+	Z1CGpG00Y2TVOj/Z0NuwFcZ0X3lwHC2vJnEebs9e2bTkIG8vPYd15l8pTtkvQYa0Sq3Vnvb4eQF
+	yo4oohcJG4xSAMPCtAj8EuZXB2JK2EaUleK90BQ4llird7LgQS
+X-Received: by 2002:a17:903:2c9:b0:298:45b1:6ef4 with SMTP id d9443c01a7336-2a3edbbee8fmr2891085ad.12.1767799309447;
+        Wed, 07 Jan 2026 07:21:49 -0800 (PST)
+Received: from google.com (222.245.187.35.bc.googleusercontent.com. [35.187.245.222])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c47221sm53772985ad.23.2026.01.07.07.21.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jan 2026 07:21:48 -0800 (PST)
+Date: Wed, 7 Jan 2026 15:21:41 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Mostafa Saleh <smostafa@google.com>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
+	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com,
+	baolu.lu@linux.intel.com, rdunlap@infradead.org
+Subject: Re: [PATCH v5 3/4] iommu: debug-pagealloc: Track IOMMU pages
+Message-ID: <aV56BWisUQTMK2Gk@google.com>
+References: <20260106162200.2223655-1-smostafa@google.com>
+ <20260106162200.2223655-4-smostafa@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vmalloc: export vrealloc_node_align_noprof
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20260107-export-vrealloc_node_align_noprof-v1-1-a581bec13054@google.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260107-export-vrealloc_node_align_noprof-v1-1-a581bec13054@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: pdr94h1pfkjpit3y17rmdekop4bhtzhs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260106162200.2223655-4-smostafa@google.com>
+X-Stat-Signature: 7g9nrexxe969pg9i5iipfuqbjk6qir67
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4353E40003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AE6C2A0017
-X-HE-Tag: 1767799133-231823
-X-HE-Meta: U2FsdGVkX19KTrMD0Ov+6CcVW5yviO4rmmL7PfbHieCwp1Uq4srGRDnirX/GKRB37mvloM1w9R04Eclt1PuOEkLEJlLDrdc0h8cUmdPWsHfydpVnXm86xNaYbKwiuCKuK0FA5S6C1uJqAdS0k2yXABp0GcLi/XRXvADIzEmLugvkbxZqpjQII61lbV0EUEUJM0Dntk3IMWKUzMFjqisN6IletOBGmbPJ6t/ZWeo7GFUB/vur59p2MX9UchqGiUb6B77FP73Fks0TqlCFI3CcSdHIFwazydLQ8TcF3kjSxa4+1s8XFcHOsjRTpG9++7NVGwaPA55Wi3U0f2QchROHj91sR5mn3siM62Md7uYvUctRgfDO1+DjlYriwvllsrb9a9DfWCYTG1UwnwDM4p76fhjDLndA38/aes49ZcXGQO54evvob1nlBUlDxc938fEVo+TH9tv3LWqanBsAb/JTcihpNpiq9csOov4HwwHAtbJlff+M0C+Fgsayxm0UO0Hpu16JWDgjbA/r7NLSzMSPQC8vfX14PCq7pgVNqjcs0ZiqkNfQUogjbR/xYg3ThqQe9QmB3W8aF55uxuIw3ajxgxoJld0cxN1LU3e925pg0yXwaio5apLAPIjbIy7puNssqr2Nl908pj4C1ODlHmDqbsXT/3lz4NPe6YV65nZzl1Oj3KhclwW4/e6ecSb63j/c5p1Mr3J1msx6hgQSryFyGnBGxRSpm3MjOJkYigYNuKDBnDwbf3XNI9zRewBRy7r2L+6hZSWJCQmwjExPRsaSfpO+/UYfATQqAs4fs4HcJO42fHeaUor3pOvei8uP4IH4kuHlNMCH4UAglCApoODrExIH/cPMAhsCPnQK+zKJPkUwmp7tml/7lvshK4LmH3GHsUyYpbRdT9Lk9hoDWZfyI8XnPhKP42n9ErKp6Jj3khwLE5YxMVW44Bo1THxqjVWfVuR3c0EEK3N9KhOjRCY
- ZsuB5wFZ
- xGqJAsA2Vz+CRDUhV4fKpEckWUuGWX90sBAgnFsyXt9hFE8MUJb/ZXk7mIoshY6ozO/uvyzdvUXQHNPVkZOBnVUadOLI8cVp3h/AJoAg3T8z/fL7PknMAA1pM3C22OapDStiIi/6/E0uJqpK3NMXjfRvr2yHtOBaxoXcjOslDHz9Ht5l+KnnSuzwd24VHR4+Po7PoNXxJTY6OpYQ4+AxkQImKmhrD5ebZXlGCWmWvJwPsoEBlV3dvVnhjg7gd+iSz7O2OUXpJO6L3mdQw261ZQtCpA3CpgzYd3BlNF/x79kwMD02mOZP714meoxDvJga9kV1nm4rz7qLvOU+IAUZHaZKdulOpx75P8phUciTQGN8Ggci12EPfuvRSrJyat7DlLzNDrV+7UmWp42ogmRJsrtwdR95HuXc4Dtyb9n0V32IVXbhfwqtm/cW2ngbNRy+kg02M
+X-HE-Tag: 1767799311-75046
+X-HE-Meta: U2FsdGVkX18ORx3HVa8XZAvMTRUgyu8xUZnNT0Fcq05wbSryIUyY5DoCYAQkaSARUb5mTXJkIQLPLQEwoVPaWfl6ixJeBlCWfqJ58dKJ6YIAal+S/UvF7vSmYCERAfHUBBTeEOewbm6qYq0tiWc+fBxru6HhFzeCMjwiFvwOEnEJsOxvax4madsookMyJiy4s7nDWjabWOx/Ln8kxGzVz1r56VaX6fx2WY22h6FRw8XrzZEEJlX2flccgHEGEaVhgUXhFKjHuu+81hzOfdwlsbyIorkjzhdY06SIiBvmXcir8RBf9f1fEgkFs1FrPKrh9oeeCuK2RYFkK0mC13eqjOkrxa0njOnnQBiosXklBfCMZI1phggHRZMRNHQEMBQsSs5d2/256GF7zlS2QInAP2WZxcDUmHhVSBuAke2SlH6itLkZSYjh587RmOYlhaQuolYFARSl16avdmz7+ZgMeH9zfsybIojKhptQX8xR19OHV3jMHeK1F3Yobpq2QTKyIy8BI8l/bw2Pv4qya5KoBNPkhTCKaaha5GSxFb8x3Ps1izLjKiyysXu4McT6OqL7yU03EBaNTZ41sg79groiWx1OdXUhJ2XXa/Hkisf9e3GCsrDJpwuGAS/hwHJDFJG1SIjsvzSbWS8peItDroLrpX+g2Q5NRqwT/pTy/JduAhMW9ISfedZV5nC6ZYx/IKO3pOwYZQuZg7Kw331OxZJNcisdQDTHSGvFcalGKOTfVOpq7Snu1yg6SuycZSSoPMEeMDZVIM8qBJwRv8qqHkMpH6TDjMM6E8f2jUq1FTyxWH6/+GwjKGqnuDwIsO6zcidroMO2L4tKBqmjhryV8nZh7Lp7zsGboZlkva+7cQv8EBtPQY/8PmSodXUpUQYF0p+MmmrsFpM0UxPpfwE07vNS2bEmsx+yJgqeZCx+g/SvAVgKb9mmQK6nS4bB13qKMQr8UGkF0K5qCN5xZhy07hA
+ iw/sqJ8W
+ RkJrV+wMOBNiCthUGLJm7/u0JzebnlRJ0BzcTRBI4+mmXQ5rxmhqhwzJekiuam7T96OfxW7JZQ1hmCAByYNyGuW2J3htVY9puAzPg4tknFEOVQ0j7p0fTcqG7ipqJoT3WJpOfr3dT/Pig2dZUv+6U2ZYJfgw1o8yNRkkW80xxEcDxCb/+qgdV62exYo9gfSHvTZg/dwLg9weipEY6PIanO7xfz9o/Y6zUZThjN3DYvZ6xHxeLzkgpzy/zdCO2/VZy/UuKM9U3sR6x/7GzECOrNicyZV6ctw7G/Vnnyc/tahl51drrCMgcg6lflGms+yOfGGRHpR6JjOd4QggdtuZbbUcM8KGA0vxcyN8byc9CC9eHQwXfhi92e+Ak89O2Lz2QSeAiCxpBDhPGSrp4mGDHJO2SH7ODZNE8TY7c
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,26 +123,189 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Jan 06, 2026 at 04:21:59PM +0000, Mostafa Saleh wrote:
+> Using the new calls, use an atomic refcount to track how many times
+> a page is mapped in any of the IOMMUs.
+> 
+> For unmap we need to use iova_to_phys() to get the physical address
+> of the pages.
+> 
+> We use the smallest supported page size as the granularity of tracking
+> per domain.
+> This is important as it is possible to map pages and unmap them with
+> larger sizes (as in map_sg()) cases.
+> 
+> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+> Signed-off-by: Mostafa Saleh <smostafa@google.com>
+> ---
+>  drivers/iommu/iommu-debug-pagealloc.c | 91 +++++++++++++++++++++++++++
+>  1 file changed, 91 insertions(+)
+> 
+> diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
+> index 1d343421da98..86ccb310a4a8 100644
+> --- a/drivers/iommu/iommu-debug-pagealloc.c
+> +++ b/drivers/iommu/iommu-debug-pagealloc.c
+> @@ -29,19 +29,110 @@ struct page_ext_operations page_iommu_debug_ops = {
+>  	.need = need_iommu_debug,
+>  };
+>  
+> +static struct page_ext *get_iommu_page_ext(phys_addr_t phys)
+> +{
+> +	struct page *page = phys_to_page(phys);
+> +	struct page_ext *page_ext = page_ext_get(page);
+> +
+> +	return page_ext;
+> +}
+> +
+> +static struct iommu_debug_metadata *get_iommu_data(struct page_ext *page_ext)
+> +{
+> +	return page_ext_data(page_ext, &page_iommu_debug_ops);
+> +}
+> +
+> +static void iommu_debug_inc_page(phys_addr_t phys)
+> +{
+> +	struct page_ext *page_ext = get_iommu_page_ext(phys);
+> +	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
+> +
+> +	WARN_ON(atomic_inc_return_relaxed(&d->ref) <= 0);
+> +	page_ext_put(page_ext);
+> +}
+> +
+> +static void iommu_debug_dec_page(phys_addr_t phys)
+> +{
+> +	struct page_ext *page_ext = get_iommu_page_ext(phys);
+> +	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
+> +
+> +	WARN_ON(atomic_dec_return_relaxed(&d->ref) < 0);
+> +	page_ext_put(page_ext);
+> +}
+> +
+> +/*
+> + * IOMMU page size doesn't have to match the CPU page size. So, we use
+> + * the smallest IOMMU page size to refcount the pages in the vmemmap.
+> + * That is important as both map and unmap has to use the same page size
+> + * to update the refcount to avoid double counting the same page.
+> + * And as we can't know from iommu_unmap() what was the original page size
+> + * used for map, we just use the minimum supported one for both.
+> + */
+> +static size_t iommu_debug_page_size(struct iommu_domain *domain)
+> +{
+> +	return 1UL << __ffs(domain->pgsize_bitmap);
+> +}
+> +
+>  void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size_t size)
+>  {
+> +	size_t off, end;
+> +	size_t page_size = iommu_debug_page_size(domain);
+> +
+> +	if (WARN_ON(!phys || check_add_overflow(phys, size, &end)))
+> +		return;
+> +
+> +	for (off = 0 ; off < size ; off += page_size) {
+> +		if (!pfn_valid(__phys_to_pfn(phys + off)))
+> +			continue;
+> +		iommu_debug_inc_page(phys + off);
+> +	}
+> +}
+> +
+> +static void __iommu_debug_update_iova(struct iommu_domain *domain,
+> +				      unsigned long iova, size_t size, bool inc)
+> +{
+> +	size_t off, end;
+> +	size_t page_size = iommu_debug_page_size(domain);
+> +
+> +	if (WARN_ON(check_add_overflow(iova, size, &end)))
+> +		return;
+> +
+> +	for (off = 0 ; off < size ; off += page_size) {
+> +		phys_addr_t phys = iommu_iova_to_phys(domain, iova + off);
+> +
+> +		if (!phys || !pfn_valid(__phys_to_pfn(phys)))
+> +			continue;
+> +
+> +		if (inc)
+> +			iommu_debug_inc_page(phys);
+> +		else
+> +			iommu_debug_dec_page(phys);
+> +	}
 
+This might loop for too long when we're unmapping a big buffer (say 1GB)
+which is backed by multiple 4K mappings (i.e. not mapped using large
+mappings) it may hold the CPU for too long, per the above example:
 
-On 1/7/26 4:16 PM, Alice Ryhl wrote:
-> This symbol is used from the Nova driver, so it needs to be exported to
-> avoid a build failure when building Nova as a module.
-> 
-> ERROR: modpost: "vrealloc_node_align_noprof" [drivers/gpu/nova-core/nova_core.ko] undefined!
-> ERROR: modpost: "vrealloc_node_align_noprof" [samples/rust/rust_dma.ko] undefined!
-> 
-> This error is only triggered if helpers are inlined into Rust.
-> Otherwise, Nova will call the exported symbol
-> 
-> 	rust_helper_vrealloc_node_align()
-> 
-> instead. There is no Fixes: tag as that feature is still WIP.
-> 
-> I used non-GPL EXPORT_SYMBOL to match the rest of the file, but let me
-> know if I should use EXPORT_SYMBOL_GPL.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+1,073,741,824 / 4096 = 262,144 iterations each with an iova_to_phys walk
+in a tight loop, could hold the CPU for a little too long and could
+potentially result in soft lockups (painful to see in a debug kernel).
+Since, iommu_unmap can be called in atomic contexts (i.e. interrupts,
+spinlocks with pre-emption disabled) we cannot simply add cond_resched()
+here as well.
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Maybe we can cross that bridge once we get there, but if we can't solve
+the latency now, it'd be nice to explicitly document this risk
+(potential soft lockups on large unmaps) in the Kconfig or cmdline help text?
+
+>  }
+>  
+>  void __iommu_debug_unmap_begin(struct iommu_domain *domain,
+>  			       unsigned long iova, size_t size)
+>  {
+> +	__iommu_debug_update_iova(domain, iova, size, false);
+>  }
+>  
+>  void __iommu_debug_unmap_end(struct iommu_domain *domain,
+>  			     unsigned long iova, size_t size,
+>  			     size_t unmapped)
+>  {
+> +	if (unmapped == size)
+> +		return;
+> +
+> +	/*
+> +	 * If unmap failed, re-increment the refcount, but if it unmapped
+> +	 * larger size, decrement the extra part.
+> +	 */
+> +	if (unmapped < size)
+> +		__iommu_debug_update_iova(domain, iova + unmapped,
+> +					  size - unmapped, true);
+> +	else
+> +		__iommu_debug_update_iova(domain, iova + size,
+> +					  unmapped - size, false);
+>  }
+
+I'm a little concerned about this part, when we unmap more than requested,
+the __iommu_debug_update_iova relies on 
+iommu_iova_to_phys(domain, iova + off) to find the physical page to
+decrement. However, since __iommu_debug_unmap_end is called *after* the
+IOMMU driver has removed the mapping (in __iommu_unmap). Thus, the
+iommu_iova_to_phys return 0 (fail) causing the loop in update_iova:
+`if (!phys ...)` to silently continue.
+
+Since the refcounts for the physical pages in the range:
+[iova + size, iova + unmapped] are never decremented. Won't this result
+in false positives (warnings about page leaks) when those pages are
+eventually freed?
+
+For example:
+
+- A driver maps a 2MB region (512 x 4KB). All 512 pgs have refcount = 1.
+
+- A driver / IOMMU-client calls iommu_unmap(iova, 4KB)
+
+- unmap_begin(4KB) calls iova_to_phys, succeeds, and decrements the
+  refcount for the 1st page to 0.
+
+- __iommu_unmap calls the IOMMU driver. The driver (unable to split the
+  block) zaps the entire 2MB range and returns unmapped = 2MB.
+
+- unmap_end(size=4KB, unmapped=2MB) sees that more was unmapped than
+  requested & attempts to decrement refcounts for the remaining 511 pgs
+
+- __iommu_debug_update_iova is called for the remaining range, which
+  ends up calling iommu_iova_to_phys. Since the mapping was destroyed,
+  iova_to_phys returns 0.
+
+- The loop skips the decrement causing the remaining 511 pages to leak
+  with refcount = 1.
+
+Thanks,
+Praan
 
