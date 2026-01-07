@@ -4,93 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 870A0CFD641
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 14:50:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ED50CFD647
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 14:53:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6E986B0005; Wed,  7 Jan 2026 09:49:59 -0500 (EST)
+	id 93EAC6B0096; Wed,  7 Jan 2026 09:53:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3C486B0095; Wed,  7 Jan 2026 09:49:59 -0500 (EST)
+	id 8EC376B0098; Wed,  7 Jan 2026 09:53:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C45906B0096; Wed,  7 Jan 2026 09:49:59 -0500 (EST)
+	id 7F8006B0099; Wed,  7 Jan 2026 09:53:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B5F976B0005
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:49:59 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5FFDB1403E3
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:49:59 +0000 (UTC)
-X-FDA: 84305452518.19.AFCD908
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A916C140010
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:49:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QisCsLOD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767797397; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B8E56B0096
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:53:45 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C35C5B837C
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:53:44 +0000 (UTC)
+X-FDA: 84305461968.10.EF4EE73
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 26B6114000E
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:53:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=QXotIqNN;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767797623; a=rsa-sha256;
 	cv=none;
-	b=6kDYN/pOe63yTFmJmU4XiES9KKd1uTMq4o/6fOHSjRG+ht9vaO/LA0VyV8YbR51jh9qorS
-	RAjRupReza+TwxlYWDicrA8mif6Fkjea7FUACwJeOGhVf/BJMMSfitIh5vj26ad9TW1CKj
-	zfQW2JMW8Wu4avkrj3bPr4Y3yMUBrpw=
+	b=PB7pnWWuOqs5EZj1OqFXGWnFtRfr64YQMEEkLXMfwZtxk0L6sWJZkTsKeUi8j2ge3FtXzh
+	uKsXaQaETo0Afy1evw9ef86kLPD81ITDyozEMnxeVXT2j/uw6Uhj01ALkR6oKsqt+e/L4S
+	0pk0y5mMG3wH42uS/+kaXtaYqe9y37w=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QisCsLOD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=QXotIqNN;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767797397;
+	s=arc-20220608; t=1767797623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3JMmNWmMHBBTwh/RdlLu4xg38+1vNB2/LngywvTsD10=;
-	b=TETO+lVpsN28EkzgRFG+IBMcjluh/LC66qZn2u/JzcXRCJ5CmAmOoQxUuDiDw+48ov5bvy
-	J2yEHwKjMA1k1u2YTPxtsVa9vT/Tu5K7fPek6p04edGFnKQIkrXxoCYA+0AuBHQkZyq3A0
-	f33X5x1N7dt6z41pXKE4NeEYvziA/kA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 100F56000A;
-	Wed,  7 Jan 2026 14:49:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46865C4CEF1;
-	Wed,  7 Jan 2026 14:49:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767797396;
-	bh=j66lzEexSpPcC3oYyLMGHNA0REWDjVJjs19BKH4bbz0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QisCsLODlmD8mwR9w0lTKYfsJJEsJtkfdC8i0SRZi8A4FyOzSL1LJaOfX164++05k
-	 eKxgdgbdRCvJYZu+jVHkK1beRfYXDyKmoRRCmYduZAl/SEUltttxQreUT7kXZPRUtQ
-	 Hmh4bnwFxOAVp1fie2HBHnhtF2rEBb5ol40wlSQDNt4I1uI9/ZUTsDrrpk37QZOXaJ
-	 zPl1B8lXa/X63dUXfxICcCkGwvR+AExXfQw1RHxHPmq7/QbfwOon7i2q8ZNAJAG7Sx
-	 EMrSTTOs7nTbbMrrG3iQWoHDvmEV/IvVklV2PMEu/5vcnaN2M15RviZLWIjb2GqJj1
-	 30lvLfERPC0HQ==
-Message-ID: <02acb8f9-e60b-413c-a0d3-f1f8dda00ca3@kernel.org>
-Date: Wed, 7 Jan 2026 09:49:55 -0500
+	bh=N/MSGdm4Pn94QVvbBIPMYP8yHiQacuBfDGzmKsc3hKc=;
+	b=0+LkbpnelxKvAD5Y7tICNj1ufeaBr87gJVQZrfIFq7HHggvKT8HggS7OTXMkfDubOsphUT
+	N+W9IlbCfBilW7CLJ1f3vPtxoj0GiapdXSNPKu9tkip8VpT9/W3ORYxExLvBPFVWHNSbUN
+	wZZno9bgePbLhhjufOjhiKCJcY9WH00=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=N/MSGdm4Pn94QVvbBIPMYP8yHiQacuBfDGzmKsc3hKc=; b=QXotIqNNT/HVDRTm2V+NGY3EYa
+	51N5hZPgpuLxtJc/LHnPBxl/SAfQlnN9EiZqwW91lt6SG4oT0y1pbCIloNr9Y/hWsMw7STAAe4npK
+	nC2LvHqAbtg6hDCrxDaTYAHkDZLK4GRO/50zGXLPnE+9BbsyXvCqCgEYZTPV3Lm/nmGyQWmgbyn/+
+	wvCItMwzoyGbzR3iNGVMOH1bpZ5blzltQHraCRhCaixsvCCqKNYRseljywpUuM+wzffDsMFlc4sX3
+	ZPovcnR+N2BzFJ8DaYtE3m6Kck9KyJGh+CK/S0YAP674BfGA919TGhR4KqA1DOo4vUXGW5s1fhG3i
+	Wg8XVBtQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vdUur-0000000DVzV-1s2j;
+	Wed, 07 Jan 2026 14:53:41 +0000
+Date: Wed, 7 Jan 2026 14:53:41 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: alexs@kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	"open list:GENERIC INCLUDE/ASM HEADER FILES" <linux-arch@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] mm/pgtable: remove unddefined
+ __HAVE_ARCH_P4D_ALLOC_ONE/__HAVE_ARCH_P4D_FREE
+Message-ID: <aV5zdQ2pX9vKM1aj@casper.infradead.org>
+References: <20260107063911.15299-1-alexs@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] NFSD: Add aggressive write throttling control
-To: Christoph Hellwig <hch@lst.de>
-Cc: Mike Snitzer <snitzer@kernel.org>, linux-nfs@vger.kernel.org,
- Chuck Lever <chuck.lever@oracle.com>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org
-References: <20251219141105.1247093-1-cel@kernel.org>
- <20251219141105.1247093-2-cel@kernel.org> <20260107075501.GA19005@lst.de>
- <cb269767-688d-46f1-8d82-1fd6dc32e94d@kernel.org>
- <20260107144243.GA15228@lst.de>
-Content-Language: en-US
-From: Chuck Lever <cel@kernel.org>
-Organization: kernel.org
-In-Reply-To: <20260107144243.GA15228@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107063911.15299-1-alexs@kernel.org>
+X-Rspamd-Queue-Id: 26B6114000E
+X-Rspamd-Server: rspam03
+X-Stat-Signature: knoguaues87m1x1arcpjx7cjj8gqgurz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A916C140010
-X-Rspamd-Server: rspam10
-X-Stat-Signature: cmgu98xtphp8i8y36odz84zty61kdktt
-X-HE-Tag: 1767797397-857016
-X-HE-Meta: U2FsdGVkX19GhzhqJWRZ8a3I3P/aeKMxhvAf5pWZJRACjODlA49Lp5pKWL5lW/7QKQcrIxF/O856FG4S7m7JvAGPjvdA6wp3kixIx7uu/SpoMQBDe3ZIwK52fwBA7XCTKkjlNDAUEr2rQb+2x0uYoZd7nC4gcz391VFgZZqAutqE7UQ8p3hU1PJTBi+M4NZNnPuIKlHIjusTK5T8V3aaNO8GRdoaPxCZydAClBlcGBU/EAmQPyujRneu1LBz3eKcniamPvm9mUcSYwDfJlV0IrjPoFhGKlrDZB5t/FPC1s5PyEcBt2QMlWQD3dh97nAGImQiYV0wa7OuYA2H7sVereQLzHe1Idwk4wpl2ObYmX+sYfeC5iQ83WCO7W3voPFA9/U+JzWakmbcFiZSXZZdW+R1N3EB2grv0SkFxvetdbUVm9t+F7Sq1rOQRFfomdBhyms/q2BHhCFPLUWADHPPe1lcIDPswgrc6If1iTwgJIXvI8DgJCpol3vJwLs8wslKkPKa4OuZv9VVKJ+HSRjP6LheLo2KeiLZFvTqFrK69VJOB9ggXJ2DnkqfUtQ3y/rZbAiQABbcDBk1u3fYqLawHl0Dqd9/DsSKdbvOMT93lo/W6twP79IhkA3xAU1bDixZgouJb3Te9V9CsihN0001YrAPWxNB6tFYSZ+xGTR5d0QrHXl2jAjG1OGngJbQ7lvsU5mKALMxwLuvikfQ393985ZuzsuJ++QPezxfqWMf382QbuR/EFpqTULBcNRt1MeWhmk65wSqDKL4yO9nY0HaaNz7aC8W8DbctjllPNcP2b/MlIQN90Grd0pIUBzg01dG3KjZ99/9qmPab7Uwh8st7D3eG+y8HByZZJ4LnLJV+axB7COK+CXGdhs4b5LDtPl/JGlCK6YJURMXh/ZQtHPOEcgN88fiDC/GKGqH5Rw6zGZkCpP1MOAqCnRQsdF0evGiuMPbG9KwAVT5+/hZS9e
- DoKrbm4Z
- A9hf4N9Yun6XH7szI8a+uLrYe+yQ/8L+egB5l6EZSrvBYEToKqDGO+Ls6MZYdbkY+lQglFg5nwlO+79i3V0G5tzmYrF6tklGO+KQbu1nXjE31/zwISSdYpo8NqqIl5KhAfpwTPCCetBR3m2Go4/g553h1DsliXaDEvR3/Z52dKh1v+RYcZ3vZTKzQeQ6BeEzHOSRnu+jVduMEgNkNakAdbdVkPcxOSjGwGT8+pfgEdybMcscPUSYLwiEK6N7+8xYpjKFXOIugTBmHnaShVOM1PyS+l1PiwComcbLC
+X-HE-Tag: 1767797622-682229
+X-HE-Meta: U2FsdGVkX19HN8q1h3WPrsobmtVB8tQkuSnRu0HeeLQFEAGE8Ls1+CQ+Q5pqACQ8Rzh2sgOn4yBWfqkVzr6CEXCeaZ0WleAfG7LaLCdq7djSkg4dhNvv+ZkPYPQBqWrYd8MHugB78dfSpN1kWShWRL9Rr1rG7GPI5KkguI02ZTbYzNdm6T8oi6L+6ag0vjWVgMPIOffDNSuiy7Bn8IN+lcyk+ZASfxApE7NhNOta09ndkje3x8Okq5cWe9jbrYMSalJnrpYhoRS4K5ZcX9F20XYV4IA+/hw9aXo9dNYfoQkEGvKLxfOTxNkGp5nglr4wnEn3LaksyzfpjFejvw97JQlDwTArRRy1A6nr4oicevZk7bQ9y4m5ybcxf5+kb7EVhD3p3Otf7YkGGbCQzx/aXyn7GriY0cNBy2ym1R8rH1btsc0ww9tvWDqTjTgajuSGAtGww+0si4FCmrYlz0SLX0jNn8hgQQcF63x4Lsk82WC3Lkkm4ynlEMM1cYwiELNLv38lQXPOspn+jc2XxUZ9XQ0qAb7Q6GD1iY9+6DucstLQbkBbTq+nYamtlp8D9fpMwg4sE63ucss48DpIfP0Q5N9vs2+HKDg4U6jjjP1VBlMnhOxCSVRrt6wfsGBNhp5NhTf/n9EyyZEB++e5u16ZQ5CMtPYWF+rt+ARcDlc2cTIq2cXa5bemGx/8FUljIl4mZF7f01KU3J0d+qPoVQ2O/y4Rd93qj+NBF/OHhJFl1o/hR0FtT3fH3KAytmfrK604ug/QbpzuXzlkE8DaioCTMqgOpLJKu7N/gFhPf+vmaYROuZS1LgvCVjqdUV26QJP9FwXVjoo/zJtxsej8mqZGWBV/EeQgxZpWbHpKa2nNIX+/PJGOjw/CuhS+al3f3lMq2MuuyW/EnNnRrHJ2dSY4lGUd96EJ1BAjrP1xwuR/eyiNT1FuU5LpxPzHkjKAN8KcdhsW5KB0KPTLW57OZSH
+ WjOYFxBd
+ 8CUzYwyj+cn5xDb/KTU/Ch7iunEQsi1UcnLZEPB/ctnaP0/nwlYQueTZ7Ij82zkATg2Hox34VCEdOFkjjDoYKKS6aWXDjXjCuAJwamX1XjA1SSwhqkuxo66g+IG689SQ/y1lwXlKmDaanQ+0IIQJFoicMCpTkY5+Z8lNtHzBaaFgV5ue8cJKdwbFnignGWDqtZvxU/EFj4QEt7BomF9BO3k5Z7HEth26uHiEoKXHxLR9lKBpj4LIgVR0pvKB4YKIPEfhWG2gVc3wRrfcVDPElNcMgA+cmHC600drzAtUX4Ymxo3vjkMz5V6JRw97Yvan4ArU/W0uSuWPZv6OC/sloYm875Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,25 +92,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/7/26 9:42 AM, Christoph Hellwig wrote:
-> On Wed, Jan 07, 2026 at 09:36:39AM -0500, Chuck Lever wrote:
->>> What makes NFSD so special here vs say a userspace process with a bunch
->>> of threads?  Also what is the actual problem we're trying to solve?
->>
->> The problem, as I see it, is that the system is not providing enough
->> backpressure to slow down noisy clients, allowing them to overwhelm
->> the server's memory with UNSTABLE WRITE traffic.
->>
->> This is the same issue, IMO, that Mike's direct I/O is attempting to
->> address. Our implementation of UNSTABLE WRITE is a denial-of-service
->> vector.
+On Wed, Jan 07, 2026 at 02:39:10PM +0800, alexs@kernel.org wrote:
+> From: Alex Shi <alexs@kernel.org>
 > 
-> But how is this different from Samba or a userspace NFS server?
-Well it might not be different. But at this point I don't think we know
-enough about the problem to say one way or another. I'm just trying to
-gather more experimental evidence about what is happening.
+> No any archs has ever define __HAVE_ARCH_P4D_ALLOC_ONE/__HAVE_ARCH_P4D_FREE
+> So let's remove them.
 
-
--- 
-Chuck Lever
+No, let's not.
 
