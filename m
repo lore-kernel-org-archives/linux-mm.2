@@ -4,107 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89816D0D179
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 22:58:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15D5AD0D17C
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 23:08:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B780A6B0092; Wed,  7 Jan 2026 17:58:26 -0500 (EST)
+	id 41F7A6B0092; Wed,  7 Jan 2026 18:08:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B259A6B0093; Wed,  7 Jan 2026 17:58:26 -0500 (EST)
+	id 3CCD66B0093; Wed,  7 Jan 2026 18:08:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A250B6B0095; Wed,  7 Jan 2026 17:58:26 -0500 (EST)
+	id 2A43E6B0095; Wed,  7 Jan 2026 18:08:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FA1E6B0092
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:58:26 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DAF1E13B09E
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:58:25 +0000 (UTC)
-X-FDA: 84306683370.04.CE055D6
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by imf17.hostedemail.com (Postfix) with ESMTP id EE33A4000D
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:58:22 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="VRD+/Ddu";
-	spf=pass (imf17.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 17DE66B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 18:08:47 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F9705837D
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 23:08:46 +0000 (UTC)
+X-FDA: 84306709452.23.371FEC8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B8B4440007
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 23:08:44 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qijEDvAX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767827324; a=rsa-sha256;
+	cv=none;
+	b=s0BUDctHZJcHAXovsfpEuZp5CFvV0kSZa7QMlxpwFakg9B6byvGXMDPyG9aNN+2h4lQx06
+	/fuQXheO349xxzpuUl3OJft1j82Q6ku8J4MmzIbfqZ5gg8zlBR9sB7u0E0RqsYN7Jwk/FO
+	x1my4xP5N3m31LCFNZ3dY1gHWqgU9gg=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qijEDvAX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767826703;
+	s=arc-20220608; t=1767827324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8hnvqPEHU52omac+VeWfKg3uyJtrT0juXVZSOaBY7xc=;
-	b=k1yS5jS9mro6o/BM/VJPAzJZgOKlGsejsBg00qgoAa/Y2OZn5ePhb1AFWrYQDghQGRTxol
-	qfiCHsaBF7zzUx0x5n5RlUYouQ17329DUF3ENkxQ5Rs+Bm5COD2aJ8js/wLutKOl4xh9x1
-	HfdbzRtdOcePzjHdV7oSzMHXvxtKnY4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767826703; a=rsa-sha256;
-	cv=none;
-	b=CwoRVxgy7Q21WwAcAKbxhpGP1PAGXeXdnw3vWYOqBVy4i1pmt7wEvP3+SWz3xsOfGbKpK5
-	rjZyj4LIx7bJpfXEME2U+y+Q47mVG5vlhzjhACSXfbVmT87+VVeZ7kvdC64NMFrPuIQNgf
-	R5YfUEbyAEedqVmxx4s6l51Ddo73IwA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="VRD+/Ddu";
-	spf=pass (imf17.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260107225820euoutp0168aa947d9301c81fed89b9546669b5ad~IlQR_8gG52825328253euoutp01c
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:58:20 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260107225820euoutp0168aa947d9301c81fed89b9546669b5ad~IlQR_8gG52825328253euoutp01c
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1767826700;
-	bh=8hnvqPEHU52omac+VeWfKg3uyJtrT0juXVZSOaBY7xc=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=VRD+/DdubYpFt1PzAZC9uL6ev3gYRmjj/YEpE6HGnk6pM3G6C2BPzh9m/QHBUlNDh
-	 5SnP8S8CIvjF9kdQJn0gGVvy0YtBkM4uapOk5nVwiMwLXtk+uUpwNuchVLXnvxNlXz
-	 1TRDDerWw5OWlZq+HXSshGcy1iKbtqBq0qLf+RLs=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260107225819eucas1p2de678d4e810fdbde87192b83033a814c~IlQQ2xSTS0857008570eucas1p24;
-	Wed,  7 Jan 2026 22:58:19 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260107225818eusmtip24181b50e59ca4bd4b7e2c9f57edab3fc~IlQQI8akI1368013680eusmtip2J;
-	Wed,  7 Jan 2026 22:58:18 +0000 (GMT)
-Message-ID: <6c61225a-f4ef-4b70-b34b-71fea7ae6cfc@samsung.com>
-Date: Wed, 7 Jan 2026 23:58:17 +0100
+	bh=d3XSPLGUx+aK/0Nlg0Qexb9xDqMw4oTr9esfmSDsbx8=;
+	b=zMdi3sqf7hRhjgcwRnE8CTTjFoGnq0SQiGpLQ9lETQKerkzOxv6n1ZkaJVnvdWbQ6qLG+e
+	F1dhijySDSyxlrXBKkF/uAT2PfUQGYewsdvmfVlXcffrmDEsDxHJ18z4HOYUH2V8fdih6q
+	TnqMZOtJ80OWSJ4NZVrCrfKzQPWgQN0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 81E42416B4;
+	Wed,  7 Jan 2026 23:08:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBAA8C19421;
+	Wed,  7 Jan 2026 23:08:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767827323;
+	bh=YCncmwLpuFDd321NxUtaZfeqnlyxrNQELRI0R3y9CQ0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qijEDvAXe8cjtvsNzyVD3d46f3BoJfAvJ3fM4RT5xX84aE9W+c+bqD1mRsmm1iOmn
+	 /t5LfuX8HaZpx5lvNCzT+zhOUJggsm5+tbQ2kkqWH6rtiuRaaACYB3+lM4Sav/UtDq
+	 DbKay1mpfP6GpuhNMS30I/XifPhU2SOOysMQNcpSgv/w+JUR34xbY3jtLD3kBqia2l
+	 ilOb7obGcT4WOegp4HqUjlYHyK63lFwihl1/KMGGiyFMNBj0CrCwgK2BpKLalkwKF7
+	 zjXTSRKLBOch5BPwJHjNF9aY0769FzHwqk9hxAm2Z5aukce3jgG/4wnqksuo3IHxcm
+	 TXAduN0mR9MRQ==
+Message-ID: <2ace6fc2-6891-4d6c-98de-c027da03d516@kernel.org>
+Date: Thu, 8 Jan 2026 00:08:35 +0100
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v5 mm-new 0/6] mm: hugetlb: allocate frozen gigantic
- folio
-To: Zi Yan <ziy@nvidia.com>, Mark Brown <broonie@kernel.org>, Claudiu Beznea
-	<claudiu.beznea@tuxon.dev>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Oscar
-	Salvador <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>,
-	linux-mm@kvack.org, sidhartha.kumar@oracle.com, jane.chu@oracle.com,
-	Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv2 02/14] mm/sparse: Check memmap alignment
+To: Kiryl Shutsemau <kas@kernel.org>, Matthew Wilcox <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
+References: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
+ <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
+ <4f82b8ef-77de-422b-a9a5-691c4eca24a3@kernel.org>
+ <glu3noshgeh7ktwwqofk7xcwkvhek2x3hrbdmyyo56gmctdx3t@adsfih557p7g>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <7253A444-97D1-4256-9AD9-BCFF66437510@nvidia.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260107225819eucas1p2de678d4e810fdbde87192b83033a814c
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260107225819eucas1p2de678d4e810fdbde87192b83033a814c
-X-EPHeader: CA
-X-CMS-RootMailID: 20260107225819eucas1p2de678d4e810fdbde87192b83033a814c
-References: <20251230072422.265265-1-wangkefeng.wang@huawei.com>
-	<4211be25-3fc0-4395-9b24-a5ff0b3caa34@tuxon.dev>
-	<13ad5888-2d53-40c8-9269-22bc6001754a@sirena.org.uk>
-	<7253A444-97D1-4256-9AD9-BCFF66437510@nvidia.com>
-	<CGME20260107225819eucas1p2de678d4e810fdbde87192b83033a814c@eucas1p2.samsung.com>
-X-Stat-Signature: pky34hkj5z6fraat6kzpecjpo335gwos
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EE33A4000D
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <glu3noshgeh7ktwwqofk7xcwkvhek2x3hrbdmyyo56gmctdx3t@adsfih557p7g>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1767826702-834324
-X-HE-Meta: U2FsdGVkX19Onapdu0/6Qr96Li7FOKJW6BTfgq6allDFyss/O8gvZ+b8Pqy4DptWYmviTZ6p7eXGJzYDyROpxCoEtJ+85ZexTC17IREhCE4MlWbk5IlF34I1PA38yUQb25swttJRNd0v3M42Cu54/TXfP7C7zQCC+ZCyFcy7z825sMco8nlyhVH5yNd7tiLnr4a2PlXz1ZcAtM4qZLbO/7woVnx8FcoipD0WJ5kecFlOtoT5qm1ixucEKp35ARA737QsG28rAQhPmsmAduS/wxFXsoYYW353Xh7KGFCMjjZdcwC3J8fze4XOvaYCNrDQohau4JQfnj4fMHCnGXkcDZAvrhstiDe3HjSzCqszQEudoYpgMMj0I7I4nZTPhR9Rj/PZf1WtnLhNoSDPwxISVPZyHd2OuuZkbb2sPkbQCtXyaBzyISqzv3lOzKLt4KayXWgz9eWIoEApsA1nuYydLtiTjSWa3MQCu2CDp7Pl7KC0JMzOuVrt/iGRTDYCRAusaBHF9nTt/7cH0lHBL0mrbW50/a9Qr9IqBM6xBRjfvroBM5ISc84eqRtve1frwCaX9OGZp5mD6+qdBwhYfn7wIvMKwN5e2xqB+Z56rELzNIvHw0E2eKMzp6RuxoKpiDiyATSgoZYx0/69+FqvpqSzKoBdWx7Rp8vnSE3hCsb7y5NclpTS/HIYBCTABcjOiqpuir1LOzqy/OfPx7GMkvYshShJCW9lpemAMWBPaeUgslWRpA7VpXzoa0rrGCIXny2HKeH8Nr3rXWawl1yaPs6OLvcTL0QR4OukoYNG3EuqIbdTAKvESjb9G6oD4uAFShwIgx23Hsn79bxcXUhYveclzqat1zsh1kfZYi/MuqDcyfIeH5ORY7Q6y/HzdM/b6GCcp49FJRhk0HQrZZySktuAfLnEQ7ukPMVErnO0z9PicHTIGnIRWo3cWG4odrffLSDzFn/2K5d6uxKt3vVD2lp
- pLRQWlML
- RMxofyZXlFRqW4HsyEPHdSNeIv5GNeaKtDLpBmQLg8BsS4mo7fO3n0MG0srSQxt8vehbePKy/kebuAJZ+dt7gtFKo5gI7Gv/ZYY4vk2XWcXXP1cMcLI3Cak51n35YBYZ5f/RD
+X-Rspamd-Queue-Id: B8B4440007
+X-Rspamd-Server: rspam10
+X-Stat-Signature: gqe6jcug3ndut5mmskw17qjq5wifhj8q
+X-HE-Tag: 1767827324-105606
+X-HE-Meta: U2FsdGVkX1+Iqq6HEQX9PRg6uw5ls0PImI1FLZYyvgfAlztn4SG5FjgVIA+NJ6k11dHmn2TgvCOTzJjNT3XCaT0J01f1vhTkJ/noQpsQ9kpUcgJpZkAjicur6DhGpL5TIPQo0gArhuLGXugdG+vlV2FqgOgU5xShRnQdPWawKf1vnlP+OdD3lt6A++6ojCaU2pRbMnIYoHOQwvHl4Rjd8vElgBnMG9reQAiwcQzQE40upVyDRV0Huw1c+JQnjU2Wwqfn1URZ0p6anTLJF2hNONpgNrVQr1mSajZG8VVwMj7RB4AmJPDAXC0mGIFEGMVhnZnL+hMZJpRdSX2mlW0QIN1V3MRLc2MX7kozXfQEZcl+KtB8DruX6ZpoySuodJ1xs5pDt/UXz/O/4KItPqrt5Xd2r4CGtkQky6xqt9geX+C0e8VMyMLlgBA6hBD97m45Q4/PghSBRCTNBU1yt1as+Ebad63/oMtpesOk4cbo9pAx5xxzHhyfFHQlswen3nS6MHlmb4UEc6YyX9pZDMIFg0i5H1mnrZlyUQHGsnYiYD4P/9YQbhMynyTtZWBsFGJBQbJDQi9TPos/Prfz4v3m08QF04cDqbKHl8YTNsaPrZbCIDK+q7hNbrKunV5o0ULutU6jA4uvyDZ28JA9akQyU6QX0YN2YqHM2qo0br9y/FPa6Ihvx85bxWtCCOIrdfo2eLOcOhbNeDZ8gO01fJaF6Fhw37XBypk+2sCmInK0SxI21D2sbqVrISm2LGrYcgx2nAip/8kFb3DTkLhDg6GcQR+Mwpqwuu/FKLE3NiCodfhIXt6L7Ff5qjRPsGxffSEi5H67A16LobKPUBycf4KMwb9i5vj8tu5hxn/lErmJiNLP4ktpDCw8+DgDGeRf8qVlUqicxObdOp/nH5T6tn4Au1SwpRCaD74Gk+J2cxETHMqR1HHGeTHYBLjRv+o31Nz16AD1b3LYHzjY2Iuuc45
+ 9oW2JpWC
+ DOLTbm6Y1LmO8ebMFJ//8ZNWGd4F7IEeIB3gPMEJv5RqqHIVAp0dvmvLQwVPbHh9LPuVAEAhe+a4MPyWYldCOeXQccmtFp+qYYlnV0Tw24MB/ZNuSNOstHONNjf61t5mEvTx/TvlW/A2TeLgmi/qYJ5d0WVGn3tku93PjPXCt5f2Gr7JeLXOrOhxlZZFt8v5bZQzWZ5xrHN5ynE7QTEePhzUE2vftLkEkKFALBL1g8M9ov0cvnIziibaQnF7HGRSY/oJm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,94 +146,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07.01.2026 20:38, Zi Yan wrote:
-> On 7 Jan 2026, at 13:39, Mark Brown wrote:
->> On Wed, Jan 07, 2026 at 07:31:30PM +0200, Claudiu Beznea wrote:
->>> On 12/30/25 09:24, Kefeng Wang wrote:
->>>> Introduce alloc_contig_frozen_pages() and cma_alloc_frozen_compound()
->>>> which avoid atomic operation about page refcount, and then convert to
->>>> allocate frozen gigantic folio by the new helpers in hugetlb to cleanup
->>>> the alloc_gigantic_folio().
->>> I'm seeing the following issues on the Renesas RZ/G3S SoC when doing suspend
->>> to idle:
->>>
->>> [  129.636729] Unable to handle kernel paging request at virtual address
->>> dead000000000108
->>> [  129.644674] Mem abort info:
->>> [  129.647456]   ESR = 0x0000000096000044
->> This is also introducing OOMs when doing at least audio tests (I don't
->> think these are super relevant) on Raspberry Pi 3B+ running NFS root
->> (probably more relevant):
->>
->> [   64.064256] Unable to handle kernel paging request at virtual address fffffdffc1000000
->>
->> ...
->>
->> [   64.087583] Call trace:
->> [   64.087586]  kmem_cache_free+0x88/0x434 (P)
->> [   64.087598]  skb_free_head+0x9c/0xb8
->> [   64.087608]  skb_release_data+0x120/0x174
->> [   64.087615]  __kfree_skb+0x2c/0x44
->> [   64.087622]  tcp_data_queue+0x948/0xe50
->>
->> Full log:
->>
->>    https://lava.sirena.org.uk/scheduler/job/2341856#L1721
->>
->> Bisection identifies:
->>
->> [fb9a328d30400dbc8b2ea5a57daeb28bedac398b] mm: cma: add cma_alloc_frozen{_compound}()
->>
->> as being the comit that introduces the issue.  Bisect log with links to
->> further test runs:
-> Hi Mark and Claudiu,
->
-> Can you try the patch below to see if it fixes the issue? Basically,
-> in cma_release(), count was used to drop page ref and decreased to 0,
-> but after the loop, count becomes -1 and __cma_release_frozen()
-> is releasing unnecessary pages.
+>> "Then we make page->compound_head point to the dynamically allocated memdesc
+>> rather than the first page. Then we can transition to the above layout. "
+> 
 
-I ran into the same issue on my test farm with next-20260107, then 
-bisected to this patchset. I can confirm that the below patch fixes it. 
-Feel free to add:
+Sorry for the late reply, it's been a bit crazy over here.
 
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> I am not sure I understand how it is going to work.
+> 
 
->  From ece23da65ea7210e1fcb51ee9c27aec19b84811c Mon Sep 17 00:00:00 2001
-> From: Zi Yan <ziy@nvidia.com>
-> Date: Wed, 7 Jan 2026 14:23:15 -0500
-> Subject: [PATCH] mm/cma: fix cma_release by not decreasing count to 0.
-> Content-Type: text/plain; charset="utf-8"
->
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->   mm/cma.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/cma.c b/mm/cma.c
-> index 5713becc602b..408b07f6fddd 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -1013,13 +1013,14 @@ bool cma_release(struct cma *cma, const struct page *pages,
->   {
->   	struct cma_memrange *cmr;
->   	unsigned long pfn;
-> +	unsigned long i;
->
->   	cmr = find_cma_memrange(cma, pages, count);
->   	if (!cmr)
->   		return false;
->
->   	pfn = page_to_pfn(pages);
-> -	for (; count--; pfn++)
-> +	for (i = 0; i < count; i++, pfn++)
->   		VM_WARN_ON(!put_page_testzero(pfn_to_page(pfn)));
->
->   	__cma_release_frozen(cma, cmr, pages, count);
+I don't recall all the details that Willy shared over the last years 
+while working on folios, but I will try to answer as best as I can from 
+the top of my head. (there are plenty of resources on the list, on the 
+web, in his presentations etc.).
 
-Best regards
+> 32-byte layout indicates that flags will stay in the statically
+> allocated part, but most (all?) flags are in the head page and we would
+> need a way to redirect from tail to head in the statically allocated
+> pages.
+
+When working with folios we will never go through the head page flags. 
+That's why Willy has incrementally converted most folio code that worked 
+on pages to work on folios.
+
+For example, PageUptodate() does a
+
+	folio_test_uptodate(page_folio(page));
+
+The flags in the 32-byte layout will be used by some non-folio things 
+for which we won't allocate memdescs (just yet) (e.g., free pages in the 
+buddy and other things that does not require a lot of metadata). Some of 
+these flags will be moved into the memdesc pointer in the future as the 
+conversion proceeeds.
+
+> 
+>> The "memdesc" could be a pointer to a "struct folio" that is allocated from
+>> the slab.
+>>
+>> So in the new memdesc world, all pages part of a folio will point at the
+>> allocated "struct folio", not the head page where "struct folio" currently
+>> overlays "struct page".
+>>
+>> That would mean that the proposal in this patch set will have to be reverted
+>> again.
+>>
+>>
+>> At LPC, Willy said that he wants to have something out there in the first
+>> half of 2026.
+> 
+> Okay, seems ambitious to me.
+
+When the program was called "2025" I considered it very ambitious :) Now 
+I consider it ambitious. I think Willy already shared early versions of 
+the "struct slab" split and the "struct ptdesc" split recently on the list.
+
+> 
+> Last time I asked, we had no idea how much performance would additional
+> indirection cost us. Do we have a clue?
+
+I raised that in the past, and I think the answer I got was that
+
+(a) We always had these indirection cost when going from tail page to
+     head page / folio.
+(b) We must convert the code to do as little page_folio() as possible.
+     That's why we saw so much code conversion to stop working on pages
+     and only work on folios.
+
+There are certainly cases where we cannot currently avoid the 
+indirection, like when we traverse a page table and go
+
+	pfn -> page -> folio
+
+and cannot simply go
+
+	pfn -> folio
+
+On the bright side, we'll lose the head-page checks and can simply 
+dereference the pointer.
+
+I don't know whether Willy has more information yet, but I would assume 
+that in most cases this will be similar to the performance summary in 
+your cover letter: "... has shown either no change or only a slight 
+improvement within the noise.", just that it will be "only a slight 
+degradation within the noise". :)
+
+We'll learn I guess, in particular which other page -> folio conversions 
+cannot be optimized out by caching the folio.
+
+
+For quite some time there will be a magical config option that will 
+switch between both layouts. I'd assume that things will get more 
+complicated if we suddenly have a "compound_head/folio" pointer and a 
+"compound_info" pointer at the same time.
+
+But it's really Willy who has the concept in mind as he is very likely 
+right now busy writing some of that code.
+
+I'm just the messenger.
+
+:)
+
+[I would hope that Willy could share his thoughts]
+
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Cheers
 
+David
 
