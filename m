@@ -4,111 +4,200 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4D1CCF6C1F
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 09:47:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E6FDCF6C1F
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 09:50:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB82F6B00A4; Wed,  7 Jan 2026 04:47:08 -0500 (EST)
+	id A15DB6B00A2; Wed,  7 Jan 2026 04:50:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8FC76B00A6; Wed,  7 Jan 2026 04:47:08 -0500 (EST)
+	id 9ED956B00A3; Wed,  7 Jan 2026 04:50:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB8E66B00A7; Wed,  7 Jan 2026 04:47:08 -0500 (EST)
+	id 8CF676B00A4; Wed,  7 Jan 2026 04:50:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C751D6B00A4
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 04:47:08 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 677EEB6FE2
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:47:08 +0000 (UTC)
-X-FDA: 84304689336.06.19AD0AC
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C46E1120002
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:47:05 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=R8tPF8Sl;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767779226;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 79CEE6B00A2
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 04:50:40 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0DB338A9CC
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:50:40 +0000 (UTC)
+X-FDA: 84304698240.14.2331992
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012031.outbound.protection.outlook.com [52.101.43.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0B7F7C0015
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:50:36 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=BjOQ5u5m;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf10.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.43.31 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767779437; a=rsa-sha256;
+	cv=pass;
+	b=D1A8oaCuq1zORjKXNcbhjbwX2k52nZau9mxopexAmMONUKKc/nuUXReVoGzk7l6oOBKEcT
+	UF7xzpUYt1x5fF4M1VCxkcnbfGK4Z/BGQqpdj4usE5o/ZXBAAp71RxR6nhxAQO+6A5FZ7t
+	jERuV7twmB0aNMy1y/AxwyWnVzsyDMQ=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=BjOQ5u5m;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf10.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.43.31 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767779437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=waSAWphj6QEXmMzbrIfZyab2Dy1N5rz1KjnogAtKrpI=;
-	b=WbUml2PvGX/wXL/uHKFvSWnPrYu56CeovnLmJHOkVULUOEYACbQvIhMrwNJz060mZfw4qn
-	7r45lfC7it2dZaU0UHZkYsRG9MOvAZSBtbIHzskFJQQx/ME8jNfmsUUk48WHvzANFJkwrk
-	anaziscxuVD4XD87dH/vM5wme3Jivk0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=R8tPF8Sl;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767779226; a=rsa-sha256;
-	cv=none;
-	b=PcESahPZZAr6ofX31WeAI3uB7fivLMIe1gCjLwOwj2xexcKjV17fQaLZ2MFb9/yFUAGIwV
-	S2EAFNpTD4lAGfmHMrp3voVGQv+f9YuW8VGmxB+XujWeWsps49VxGe2ZzRUUboqjchIFoL
-	hoPUx/onfp9Z0v4De0EwRy/mS7Y7plE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767779226; x=1799315226;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=a83o+wX7r90L4ywH9PsTkkN4tbWjpPaE9B8Y5qgLNgE=;
-  b=R8tPF8Sl+F+qunaqlZaKlXrZ6mUL2JPvW+QYs73YhscQIxVcN0DJnUsS
-   9Rwxxi74XCsYp9pD4LPW5uCRwETPvZCtGsdHld5kQXoUH12joFcjK+Daf
-   OV+FOrbtRfhf2LJ1/dZeyWuF0vX55w8GjLby2SNrH5PDWsFt8bqblF88u
-   daCxN9O6Ytwr80s5RYI2nVNReHCRmX2gWq0uVG5uV79Rxi7lBWAMUMkPA
-   fdiIy00SKHs3uCxwLvS+s9NdpwYRV15wxdp4il3LlQtZKTnmXWUnonsNJ
-   1YLIZG0TCF++YmjPgNLhdZZkaGmbnO/YTSyCl7DQHCX6b0AlTs2x13EMO
-   w==;
-X-CSE-ConnectionGUID: vdql81A/TBiRSq1kEANDfw==
-X-CSE-MsgGUID: I8nmpnHJSNS9uVYYdjwi1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69194212"
-X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
-   d="scan'208";a="69194212"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 01:47:04 -0800
-X-CSE-ConnectionGUID: jZSHIXi8QfuiQFR7GjwoYQ==
-X-CSE-MsgGUID: tChYKJK2Qp6DUXgcZ++UGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
-   d="scan'208";a="202899201"
-Received: from igk-lkp-server01.igk.intel.com (HELO 92b2e8bd97aa) ([10.211.93.152])
-  by orviesa007.jf.intel.com with ESMTP; 07 Jan 2026 01:46:57 -0800
-Received: from kbuild by 92b2e8bd97aa with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vdQ7y-000000001Xg-3SbX;
-	Wed, 07 Jan 2026 09:46:54 +0000
-Date: Wed, 7 Jan 2026 10:46:12 +0100
-From: kernel test robot <lkp@intel.com>
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
-Cc: oe-kbuild-all@lists.linux.dev, david@kernel.org, dave.hansen@intel.com,
-	dave.hansen@linux.intel.com, will@kernel.org,
-	aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, arnd@arndb.de, lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, shy828301@gmail.com,
-	riel@surriel.com, jannh@google.com, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	ioworker0@gmail.com, Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH RESEND v3 2/2] mm: introduce pmdp_collapse_flush_sync()
- to skip redundant IPI
-Message-ID: <202601071005.oEsmtf0J-lkp@intel.com>
-References: <20260106120303.38124-3-lance.yang@linux.dev>
+	bh=JeBqKp+YyWCvi4AlS0WCHf4yzro+BkkJQ6swbHsUvIc=;
+	b=3jj7G0k0jm2Mprm6kgfBmc4Gse3akYSVl92KgpQPAHd9CRAhgDAKHiqGYVXBuN2prVaCgQ
+	Xu1C64gu38tfcDv3CER3ufNymmmmt96MHVaRrNWtySxr83Dh9ivT9IuA4WWB+uy71gR+N6
+	xyd79WHfLXoidiWTbZlK3WMkgRICo/k=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yoHDt+dPC6+0X030nZkdEEg6duslaCGst3SHDWptyac9FNv5g7OOqPbQsXpEf8in4fxhSv1jR0AbwAXM01Y5Iov0AFtJyHZD4SWRGAvchIimOIB1O1DoeaMbd2mgW1vfkv2rW+NY8hDpU1pOXBjgUQQFkGZPv5Y4hDjD/cXSZcFhVCd0Vcdj6xEsf1t1r2dsOMSJB9b8UduwL1aoEuc3k4GFZRMD60FWZEtTi5Uxf2FCuRmAI1iylnG+7KDM9UQIPNjQx4cnrKLl2K/nobwmYt3Zu1dZ4xZQgGIG4h/zSfKs6gO1W6UB4Gp4/gZJtqipfQS/Aqx1xnTLT5jCfkkEhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JeBqKp+YyWCvi4AlS0WCHf4yzro+BkkJQ6swbHsUvIc=;
+ b=xoFJQMymWjM/49fQAKmMC3Fh9gng6jTdHCITsILBRrEOLMHLHamEiWnfVNitViUuHUMJfy70NaiLSj1FA/QF9k5Hgt7IkJtqAul1gcx+TugJygQ/rkEnhpHguMWpp01k/v6YNQZxqWdTtSH09nbogtRJiVwhktzVbr60UN34ONZrLqLCknb3v+hirwxFg3gKHPOm6o9t1a0SIFEVgeSaeLA/3wIxBxWEK8UCerA/CmN0E7ktsJhMfyGTJhvfhen1Qm1flxAR7kbWuAGX3RNRTPlr9FxFb1FGi49W0aBtTAIl4TIB9EfVa8WF6FftLg41hcWyElNoAJsOqi/myoimCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JeBqKp+YyWCvi4AlS0WCHf4yzro+BkkJQ6swbHsUvIc=;
+ b=BjOQ5u5mKpr4RO+UWjwje+7SJX/4hbeKXQ6PeCerRKMWo5cjrRxqnLhYx+5IeBkFFV3rwR79iTNX7wV2i4pZc2CAj9bAMUWKCz2xp5enwTUFZKB4Y1Yr0rzSvIDnAaSIYv9wtDIRXpUNWTJ3mF7yhL31vuDf5BALPqs6pUmeXZE=
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by IA1PR12MB6284.namprd12.prod.outlook.com (2603:10b6:208:3e4::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
+ 2026 09:50:32 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9499.002; Wed, 7 Jan 2026
+ 09:50:32 +0000
+Message-ID: <5c8ccd03-9a3a-47c0-9a89-be0abf6c1fb5@amd.com>
+Date: Wed, 7 Jan 2026 10:50:27 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] mm: only interrupt taking all mm locks on fatal
+ signal
+To: Mikulas Patocka <mpatocka@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, amd-gfx@lists.freedesktop.org,
+ linux-mm@kvack.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>
+References: <b672e17b-461d-16ae-e7d3-45d3c1aab142@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <b672e17b-461d-16ae-e7d3-45d3c1aab142@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YT4PR01CA0497.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10c::15) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260106120303.38124-3-lance.yang@linux.dev>
-X-Stat-Signature: f55ybyemxexe6xgh4mxo4rzkmi75rx3w
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|IA1PR12MB6284:EE_
+X-MS-Office365-Filtering-Correlation-Id: 55823367-c864-4a73-2083-08de4dd232ad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eXNWVTVCS2JzYTd5MFdKME5wd2p0MmhLL2xWd2dqNVBkMUFTOFg5WTRjWXMz?=
+ =?utf-8?B?RnF3K3ZRTktMWmxKWE45ekY4N3l4UlZqL2l0Z0xjUXk1bXZob0tMd3FWMUJx?=
+ =?utf-8?B?eVRNbThlRmZWWTh1NTJMMjFFSUx1a0RpUEJacm9HcFg4Z2twQVFBN1BBR1Fm?=
+ =?utf-8?B?UVVqTnVpYjN3WjdWQ25GM3hkY3N2UWoyYWx2ZitITTZtbWtwMFZ5TUlWQnpL?=
+ =?utf-8?B?REM5SVQzOVViRi9ZN1lsRmlpdlpHV1hITE5IdkhzSHlpOVNZVU0xSDR0TVNN?=
+ =?utf-8?B?eklKZkZvbDc1a2V0VGNEcWh5dW85OG05SkZWTnJmcm0xb2h2ODdBeHVXM3NN?=
+ =?utf-8?B?cmlPT01EN2xrNWwzQVIvWitNWXE3bFBxWVlIYmcxWkxvOFR2eXIwTmRKcEZW?=
+ =?utf-8?B?SE9kL2EyVXh1dk94Z1orL0IyYWZoQ3hsbW4vWGZmSlJLVVlUK3FpbDI5eXJI?=
+ =?utf-8?B?dFRScGRrbFNVUEZTTmxrSmRxM0hiSVlDZkVHb1dvMG12VmNVUGhFTjEycmtX?=
+ =?utf-8?B?Nk9Ja2RUUkw1UHA3WU9MUkxVaFBhU2hUbHQ5eGJsREpZcmFIMzJiN1BZUXBI?=
+ =?utf-8?B?Z3lMcHB3UGt4Qmt6cjBpMGlEMzRXTWdNaDBtT29HaldrNjNrNXVITmErajhl?=
+ =?utf-8?B?WExnNW94VWJPa2U0SUtHRkRJVHFxaU02dG1ZZkxKWTY3dTVMT3ZhTzZ1V2Rz?=
+ =?utf-8?B?RmFjOXZtTnRyN093T0JESDdlSW9OOFlkeWRRRGVLMm0vM1dSdHpmakZNUjFD?=
+ =?utf-8?B?L2FsWUpJVm81cm9hb0YzU0ZxVUFkNVM2ZmtSOW9uSlBmNU8rbitQc0ZVejdP?=
+ =?utf-8?B?QUdNQ2VIeDlIMTFOeWJpaHBHdC9SK29CMFNpSFlBWUNRdk1ZZ3ZTSmhVTTVY?=
+ =?utf-8?B?Q0dBaGZjOUh3WDZLblMrSXVTK0xEdzNoQnRuMmFMVitsbXlFUUtOcjdUZy9y?=
+ =?utf-8?B?LzhHYkNwOE1ySkRGMklWWHpva24wSENEOVkwYjZieTBPaC9pQjhkTm1KMVRa?=
+ =?utf-8?B?Z2QzTzQzTlFlM1JTRk1xTUg3bkpHVmN5MWdkRXdNTi9iM0kyb0JlOGNFUVp0?=
+ =?utf-8?B?bERDMnNCdlZQSHJSb3NPV0cvR3pvdk9YNHBiRThXVnJ4Yk1TRGdjeEVlVDI3?=
+ =?utf-8?B?cXBuYnhFM3psdUJLWmpnMmdvZk1jeG5YUkpWWm0xaFNWdlZ1NEFaS1QrWXpS?=
+ =?utf-8?B?WExBRXZXUklXNUJ6TWRqRDVVRmtBYmw3QmVvU1NZNTRabWpmVGR4SlljaFlL?=
+ =?utf-8?B?Y1daWXN2eTlCL3lOT3ZxUVJlVlZGeXE3TmFTU3d6Wis2Mm1oemlCQ1ZGUHo5?=
+ =?utf-8?B?cndyd0FHVXRrQVI1UVBUcXcveXkvYTFQTkVWNzR3K3BZUkJUUUREWVZoTy9r?=
+ =?utf-8?B?UEFYdGhCdllycXlpMnV1a1B5d1MvNlJjOVZ0ZE10bzc4L1A2T3VvTXUzM2F4?=
+ =?utf-8?B?RmZNUXFMQ3FsOUk2d3JTcUJDNnhUenQreHVhZUQvZ1lHMDRSMVF5S05FNzh5?=
+ =?utf-8?B?M21CQ3k1eFNHbi8wa1hWcTZYbW5JYzFCV1BocWlsU0xGd0RNWW9EOERjNGo1?=
+ =?utf-8?B?aytnQTNJUTN0a2lqUTdKdm5sZ21OOVJiZDRURkdjZzZHZlIxV3Z5dFE1U0t6?=
+ =?utf-8?B?TUdwUlBvTWxCdzZSN2V3b2ljYXJiWjQ1eWdaNzNDbnNqczdUTFhDeU5mb1l5?=
+ =?utf-8?B?UlhQTk10UHBrVHRyYUZ6YklERjlvVGRUbnhtN2g5aFlmLysvdEUrTnQwL3VT?=
+ =?utf-8?B?RkhpSU1SNC9UMmJ1dzZ5NUIrRGNXVm9EY0I4VEh1K0ZYUXZZM0d1N3F5eEVy?=
+ =?utf-8?B?U2dHM21TOW5WQlpudkJnVDlGRjV1RnFDbk03ZytxQW95TVFzZmNQNGIreGFq?=
+ =?utf-8?B?UDdsblpIMVhTME5aUlpWajhjWFBsejc5MmM2WGkwaEUyM1E9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SUZPK3d2S2VWUS8zMEpmeEdrOHllaXJURG9LR25rNmYycTB0d0JXYmR0d3lh?=
+ =?utf-8?B?SGpKd0lERU5ORHliVG5obDVaT0h6MTNqODdCeklsazlZSXZjVlJlSkx1QmUw?=
+ =?utf-8?B?KzNvVjg4WDBzUDNoMXg5WDFMaGVpL2JwV2JreXRPTjFRa1llQ3FYWlFlVlUv?=
+ =?utf-8?B?Q0t0MUFCcU5Fb2RkVGJRc09HeU1ST0FSSFBTN1B4cjRZVXRMcWhaSTV3UVBu?=
+ =?utf-8?B?TlVqN2ZJY0NxWEhxVkhUMkhmY1M5bEQ2MndtUXh1UzdTY0lnc1JwT0dUSnVs?=
+ =?utf-8?B?UWluZDIxMXFTZmtrNW1nMlZ4SHdza3JvTTh5T2dta2RzeDZnaCsvZ3ZSdm0v?=
+ =?utf-8?B?T3VPRWtyMDFES1QxS1MwMkc0a2dnTnZyS28yOTJ0T1B1YThMTlVRYStzbDg5?=
+ =?utf-8?B?SlJCaDY4ZXExWVlabFVFQ0FqdW9mS0p6S2hCc2VwQTFJaGRCWVJzTm5kcVNH?=
+ =?utf-8?B?ckF2eFZmcG8ySndRZ1hvQURXa3VKTm1ta0R2dzV4REdTWS9kaFhYV3ptLzli?=
+ =?utf-8?B?VVJTSUd3cXBpQ1pKWnNkeGlCRlVTMkpqWENJNHlnY0R5dTl6NjZ5Q3IyTmFE?=
+ =?utf-8?B?b3NKYmpZQWJNZWF3SGlNRUJkTU9ONUI0a0VoZnZydDNwKzdvcjhSa2pGZWRn?=
+ =?utf-8?B?bWpPQlNlVFV5ZFFtV211c2hFQ3RTZ2J4ZVlQWTQzUktaSUwvTG9oQlRUT1J6?=
+ =?utf-8?B?ZXhsVXk4NmRrZmFLZ0U0SXYxVkErMHpnNG5lNEdtdkxmV0tMSmpUVXVYUjJu?=
+ =?utf-8?B?UDFMTXU5MkpEdEJxM3pLdkJRV3NyR0d6N0lESjJ4djBUNzluL05iYzNLdVZu?=
+ =?utf-8?B?Z3hDU1NHWGp2Z1hFRmowOWFXUWxnbkNtczlsS2U4cUhKdXEva1ZHVDk5cTg4?=
+ =?utf-8?B?bjczZ2sxTEVMaVI3bHFYZzdYY1pLTFBpemx4NTRVeXpLMWZTbC82bHlIZ0c4?=
+ =?utf-8?B?RDQvTEVuNC81MnZFVHJCSG4zeFdMWGFZcSs0cURORllDc093SWdnQThmUkpD?=
+ =?utf-8?B?ODNKWThLN1J0eFFjVnI0VFk2OGJJQzFzQXN5N1ZVY0FLbDV4ZTRqaElid3Bv?=
+ =?utf-8?B?NXFjRXIvRGxhTjdoV21KZUdXMnc4NkpBRUNHSVQ0Q3lISDJpYkVpbHg3eGRQ?=
+ =?utf-8?B?NlFRcEVKcjgzdER3bUE4S3lNTm5xdE1vajRPaHFVN0ZwTFpDVldFTFlYN1kz?=
+ =?utf-8?B?VWI5bStqZ1pRbUZuZWd2L0cxRmEzVVI1eG9JMEJPdnBhcm1wc0ZpeGExOXh4?=
+ =?utf-8?B?YlNoVjRvUm55dlJZVGZIK3JnNXVnbGM4N1Q3MjNzS0FTODJPcEdxOUNqUUlS?=
+ =?utf-8?B?N2JvcGxCYVllQUFhNFU4YTNIWjkxUjZUSVpKYnNwWmxnTjhteHBDcXdaaU80?=
+ =?utf-8?B?Ly9SbzJIMXFrNmw3SUdZVElzcm5FSldzTXNzcFBKT29xcE82YkpVaWo0Mldz?=
+ =?utf-8?B?WVZ5N0tLRTAzb0FrVGl3WHNweE85VTFBcDdNUWQwWHFCRklKT1NWMUNhcVNQ?=
+ =?utf-8?B?S0JKYUhjanNsSlM4SWVid1gzMFJCdGRIM0xOWW4weXBpZkIzWE0vQitaSk1u?=
+ =?utf-8?B?dzJla0VXVXZwTE40WTRMWEhGU25ZZkxrVnVEdUpEYWRDdzc0bklhbzFudkU2?=
+ =?utf-8?B?UUhkYmVWT3c0cnkyTnFWUmQ5VTBTaExNQzl4N1RQMXNWMWxBaDlRNHRKUzEx?=
+ =?utf-8?B?VTdhZGJkNXBmcEw3QTNreXZLbW1mbEdFaThkOGozUTU5RVliaU0ydklHS1Bs?=
+ =?utf-8?B?WjdPb2ZWUTVjVVVQZGJMTldpYk1rZTJoMG5WdjF3aGpXVkNSeW5rZUpLUHpq?=
+ =?utf-8?B?OWdCcTFtckhUZFYxOE40cmczOTlDUmVCSzRnOCt3SmFaazd2TkJKSkhVY0Zr?=
+ =?utf-8?B?VnAxK1Jhc0hZbHlWWjlTdkI3a3Y1RUViU1NKN2hyUTNmanhNSytrS3pzUDJY?=
+ =?utf-8?B?NE5wRjNOQnFxZitkSzNqU0YyZXpHZVB3bnBLYjR0VUZsMk5qdGtlbCtmYVVl?=
+ =?utf-8?B?SmNLbjRzQVRUYkNNbmRCcHhHVWIxM25XTHRHZkp0UWVlNVI5bW0xZ0ZFTXB0?=
+ =?utf-8?B?bFFQOGM1ckxFcDRKUXhzeTBjOGZLTEdNOTk3bDUzaE1ZaHA4R01pa3didDdY?=
+ =?utf-8?B?ZDNWaHlPT1c4Ty9VNkxHSkQyVkpySi83QXVUbFhMcno0eXpnL3dKRmlFU29r?=
+ =?utf-8?B?TDAxelpvcXRMQnZrSWZnWmdhMkY5VGxrNWt6WEJGRDJyZkp4YVlTUVUvUGtL?=
+ =?utf-8?B?WTlyMUZqWUptVzhOdVYvT2h2SytRakY5VnVPZDNZaDZ3YlRVS3BhTTVxaXE0?=
+ =?utf-8?B?TEtGeHhySXVkZ0E2OG9yWEJmUDI1dHByaEp4YTVDZzJ0QktuNXFsQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55823367-c864-4a73-2083-08de4dd232ad
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 09:50:32.2972
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ocTJsko3LTp1Nca1uplRorCjoHQsrou5TOeQq+U1JnVYMrEhF3ALmHQKTiiq7b3Y
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6284
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C46E1120002
-X-HE-Tag: 1767779225-328344
-X-HE-Meta: U2FsdGVkX1++L2yjktdR7vTSMlo6UoSlJ1hEN4NgFx543af/gdy2SBkHKkq26B+X6Y2syA1wQ5dF/S2EGgCide3ukZUjF7pGHNqFjsv4Kd+VByyvblz17BO9yUu/Ceq8RcdzvQ829750Vrw1HqSsrY4UHu5w9iU5jA2gJazGtDuxMlNxwUXITYsSqHc9GxJDnmWeCQ9M9WAJPLxxffeEOv97VJIwaQgpgQzKJp2bVHmgOtlI13jU4STYrGO4ZWnFKK2jopS+Z2kLeQTO6cwaUsqM4rrm4vpXEmjKzLF1Ejd9qOIUkkI7wBxiy6Do7kam5dHVurI/RPkGo8l/GIy2DI7tpFFjcanlB66R+ZTiEivqQOJKjYOAyh/IU7gQD6B8iAHUg0R8BjOx+2yT3cRBRquZWl+qVwU/ZyJOcw8kyUikvjgaDGBrJW3vLVKqUGHLMPAvCzftu0FzeYQaFViCem8ddGf9c16VHI1ToT6r9VoiQMzDLlpWbcyl0e8Y4xfCYuno0eknqMKN3ZOtVi7tVbxCS0uVBIY8imoAoIDcVckygAAPjnKrVkEBQE7EubNUp3HDIlwR800terOg29s/nf0hYwGlZ+hdMWPB7SlIdayfGUPOH6In0Wi/fevHqptthv7nWz305zkuPjN3/ZWP998FFQz79i7BTs6Lvb49pQyJk1ozKlL/Gt+DX1FufVWPWqukbMP+onf+qWnNRTztiT+CUtLKXSEyhtb2V8yk1rchsCD0mBvNR+dYEYoioOSd9Yykcb9FWWOzcgyFjzgBz20u1awNNJCEeLwWzR7w9BpYGdafi4puAxogDJpVQEjOTYgoOaAmizdvdmu6UCwDVZi7qPjGI0nx3FC0RkxyXSFop0xsnyqKJdJWxdJ6mqkU75AIV1ri5mLNIW+R0R7//AsF64zeVE08maqs/Q7zRtXL9fTLAogrpd01tCrZJUk4Uq59EfRfs9sBtPNDYDw
- 4tftTxMt
- ChZsHFUeyZ5V4rZAJG/0O7D846eI5LiuGL/5DGsXPfYnL8KbAFQgWiSBFk/faxDkHkfbuN3EnNr5FOwhX5OuX7ERZNzbrltkgC6fRZmAybsKhyg+AgxUYJHuhDY/2BlT/DrryKmw71OcZdkNYB6/llEuYGWxBcz/sRsM8SNCbIsbQ4Xi4CkWvoDF0WUWNfSbtggJi883yh+LqwGqb/xBYIIawcCxn8Kl4Ey/vuaawRxz6L/NtTPW2dylxxwY3XeaL9EBbbyTVxU2yTcVsVmSsxmWOMrNLs6ngkf0pfSJfmmkF3R+D4EwgSft/6U2iLAhDqecFqcRC5t+z9PnRWhk1Ah5oRkj+wCTViCqh+AGxUuJEkYrjWfKMPjH2zNLgjzg7xh2lebPu9B4ThbU=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0B7F7C0015
+X-Stat-Signature: xji4qixgyubt3szq93m1fykwwt8fgf3i
+X-HE-Tag: 1767779436-381707
+X-HE-Meta: U2FsdGVkX1/SymBOhB7mzIpwosxqw1id8HyHOx8YbBWJyg2GxJp5tZLRaK+kCLr3tuFvnfth9b9nLSO7NJkxWCFlf3xoOWHg1iKaDspAbS1TuOGYtYMK0dMI1Hb+tGgVqgQyMUOqj7QuksStGzC8khGuqPn90x2s6wtfIT5zZrZQ978wZGJwhH507mTUMyUgJ6ilgmyfBlwNsutFVuffkaFW5fv6kip8q3qFtPapmBF/PICgMFhYC0Uod0OwxBNNUxQueuguPxlS6EXiHMVOo4A6xeCu1nKP8AU9ltqNFpkIX9tLqbrEHhTk2F9X4W01SN31UkeK+6walmxEoTk4qnE1qkzNirBTVpy3lHdmCBXtlGfGLowG3+0lXRZLYgBGeXq4rscvWTguCQ6sjLt0HZiK6otvu4qymf25gCZ3D/EWmrDQwozhQSf57Hf8vfVqpA7xibgQ5ZuCJe992D8iZJes/iGa1wS527P/pYTxaoEnSDRz4OKWuYcARmsYKaXyrG1bk0UHnXtv5YKKjbwI/g5S6QIDtug7+DCVxEgStZm5VfzxcP7bBXiElAxwQiJVwrCOH36C89KROmm1On2+dbHQjMKmqWGlqmAKuFgDB+ir9otP0Q/wgGIVqwbS9ffgnqqDO+XmZoJG2ZK+w5EmDKQWw8QODMBTGSo+2tG4Pl6yIUlFHpEMFIfmZXAmYkGPeguD5nqB2sTg+vnWvaFMTXkHSLIVIcJXF2vsKR1gtilz8Q+IkP2/ihzOictNdOu0YX1GHcNnmOAktRu8pwq8nWfGtGCPLHyL0PgreiQTTbTryCSTwW2o7iO5yFZtmTVw4aKa7XVgNMjLNvpC3JvV+DgOBBbuqzIB+AZ4okAc8SEgbidPauW/9cgmndLswsv1f3pA9ZAJfsp9Ip0m/DIFMDza4HL7TxzUdy+QdEQObgEpMD0Cye1E9BBq85gx2ZA/Cr5NwMN9W13cnrxrKyL
+ bK5d3/bp
+ SKvl2uBh7//iH8WRfCp0KECRJivr1Pp1V8xT6VSZ2LOwPNQkfe0V0UVTP+z4Mtn5aebH/vFqE7MjHXCSUPgXzjZYXicu8ya8NfW6Mz2oLng9PPWZ6JIfX3GqmW8s3InYJ3zFdSeTnpNBD3/AmVYutQKVGRDr74nswjtP+zevRJZJKEGdKRCjdq/V76Tb9MxCrxqtmSxH3+xg/4QWIOfipwTGIaJ6ULHPSuuRjPsR2TM9qz/ccN4IEiy/pKuLKBxTKcHejO4VsRDLgTymdavSJBwBmrwcTDEsCx0hdlcvMWB8z5ykmxtABCRgGTfj1sai38+p9WYwSzkaqwHtBw2yWc4fz+igkMC0zBYlxN5OGO5H9NAw1NSRlkCMkYsbN79ETrma/zI/YaGzUsKT9kYiWA+z8EvjkK6Yj2AsurdrSidg9qSIuSZzWExqUJht6IN0VBRJV4xLRwys2gKlHjiC5fvzZ1bZJkynRdgh3VGQpkH0YP/hDViZPhkojYy5JUKhKfiyYW2M3KXPtle6ruA6xNhfvWVGNB6EhUSKj+wleu8G+oS3ezZPwL/Ton24ItYIRtVJAvhSM+ucBIf0UfRr6N8mV2fE38KoPKRUBYWbGZeQFGwWcSdOMa+r6Bw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,199 +206,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lance,
+On 1/4/26 22:17, Mikulas Patocka wrote:
+> If a process sets up a timer that periodically sends a signal in short
+> intervals and if it executes some kernel code that calls
+> mm_take_all_locks, we get random -EINTR failures.
+> 
+> The function mm_take_all_locks fails with -EINTR if there is pending
+> signal. The -EINTR is propagated up the call stack to userspace and
+> userspace fails if it gets this error.
 
-kernel test robot noticed the following build errors:
+That is perfectly expected behavior.
 
-[auto build test ERROR on akpm-mm/mm-everything]
-[also build test ERROR on next-20260107]
-[cannot apply to tip/x86/core tip/x86/mm arnd-asm-generic/master linus/master v6.19-rc4]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> In order to fix these failures, this commit changes
+> signal_pending(current) to fatal_signal_pending(current) in
+> mm_take_all_locks, so that it is interrupted only if the signal is
+> actually killing the process.
+> 
+> For example, this bug happens when using OpenCL on AMDGPU. Sometimes,
+> probing the OpenCL device fails (strace shows that open("/dev/kfd")
+> failed with -EINTR). Sometimes we get the message "amdgpu:
+> init_user_pages: Failed to register MMU notifier: -4" in the syslog.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lance-Yang/mm-tlb-skip-redundant-IPI-when-TLB-flush-already-synchronized/20260106-200505
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260106120303.38124-3-lance.yang%40linux.dev
-patch subject: [PATCH RESEND v3 2/2] mm: introduce pmdp_collapse_flush_sync() to skip redundant IPI
-config: s390-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260107/202601071005.oEsmtf0J-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260107/202601071005.oEsmtf0J-lkp@intel.com/reproduce)
+Yeah, that's because the ROCm userspace components doesn't work well with signals (and that is documented) but that is not the fault of the kernel.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601071005.oEsmtf0J-lkp@intel.com/
+Could be that the kernel driver prints some incorrect error messages, but that's about it.
 
-All errors (new ones prefixed by >>):
+So as far as I can see you try to work around problems in ROCm userspace libraries. Please don't do that!
 
-   mm/khugepaged.c: In function 'collapse_huge_page':
->> mm/khugepaged.c:1180:16: error: implicit declaration of function 'pmdp_collapse_flush_sync'; did you mean 'pmdp_collapse_flush'? [-Wimplicit-function-declaration]
-    1180 |         _pmd = pmdp_collapse_flush_sync(vma, address, pmd);
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~
-         |                pmdp_collapse_flush
+If you find an issue like this the correct approach is to fix ROCm libraries instead, most likely the thunk component.
 
+Regards,
+Christian.
 
-vim +1180 mm/khugepaged.c
+> 
+> The bug can be reproduced with the following program.
+> 
+> To run this program, you need AMD graphics card and the package
+> "rocm-opencl" installed. You must not have the package "mesa-opencl-icd"
+> installed, because it redirects the default OpenCL implementation to
+> itself.
+> 
+> include <stdio.h>
+> include <stdlib.h>
+> include <unistd.h>
+> include <string.h>
+> include <signal.h>
+> include <sys/time.h>
+> 
+> define CL_TARGET_OPENCL_VERSION	300
+> include <CL/opencl.h>
+> 
+> static void fn(void)
+> {
+> 	while (1) {
+> 		int32_t err;
+> 		cl_device_id device;
+> 		err = clGetDeviceIDs(NULL, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
+> 		if (err != CL_SUCCESS) {
+> 			fprintf(stderr, "clGetDeviceIDs failed: %d\n", err);
+> 			exit(1);
+> 		}
+> 		write(2, "-", 1);
+> 	}
+> }
+> 
+> static void alrm(int sig)
+> {
+> 	write(2, ".", 1);
+> }
+> 
+> int main(void)
+> {
+> 	struct itimerval it;
+> 	struct sigaction sa;
+> 	memset(&sa, 0, sizeof sa);
+> 	sa.sa_handler = alrm;
+> 	sa.sa_flags = SA_RESTART;
+> 	sigaction(SIGALRM, &sa, NULL);
+> 	it.it_interval.tv_sec = 0;
+> 	it.it_interval.tv_usec = 50;
+> 	it.it_value.tv_sec = 0;
+> 	it.it_value.tv_usec = 50;
+> 	setitimer(ITIMER_REAL, &it, NULL);
+> 	fn();
+> 	return 1;
+> }
+> 
+> I'm submitting this patch for the stable kernels, because this bug may
+> cause random failures in any code that calls mm_take_all_locks.
+> 
+> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+> Link: https://lists.freedesktop.org/archives/amd-gfx/2025-November/133141.html
+> Link: https://yhbt.net/lore/linux-mm/6f16b618-26fc-3031-abe8-65c2090262e7@redhat.com/T/#u
+> Cc: stable@vger.kernel.org
+> Fixes: 7906d00cd1f6 ("mmu-notifiers: add mm_take_all_locks() operation")
+> 
+> ---
+>  mm/vma.c |    8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> Index: mm/mm/vma.c
+> ===================================================================
+> --- mm.orig/mm/vma.c	2026-01-04 21:19:13.000000000 +0100
+> +++ mm/mm/vma.c	2026-01-04 21:19:13.000000000 +0100
+> @@ -2166,14 +2166,14 @@ int mm_take_all_locks(struct mm_struct *
+>  	 * is reached.
+>  	 */
+>  	for_each_vma(vmi, vma) {
+> -		if (signal_pending(current))
+> +		if (fatal_signal_pending(current))
+>  			goto out_unlock;
+>  		vma_start_write(vma);
+>  	}
+>  
+>  	vma_iter_init(&vmi, mm, 0);
+>  	for_each_vma(vmi, vma) {
+> -		if (signal_pending(current))
+> +		if (fatal_signal_pending(current))
+>  			goto out_unlock;
+>  		if (vma->vm_file && vma->vm_file->f_mapping &&
+>  				is_vm_hugetlb_page(vma))
+> @@ -2182,7 +2182,7 @@ int mm_take_all_locks(struct mm_struct *
+>  
+>  	vma_iter_init(&vmi, mm, 0);
+>  	for_each_vma(vmi, vma) {
+> -		if (signal_pending(current))
+> +		if (fatal_signal_pending(current))
+>  			goto out_unlock;
+>  		if (vma->vm_file && vma->vm_file->f_mapping &&
+>  				!is_vm_hugetlb_page(vma))
+> @@ -2191,7 +2191,7 @@ int mm_take_all_locks(struct mm_struct *
+>  
+>  	vma_iter_init(&vmi, mm, 0);
+>  	for_each_vma(vmi, vma) {
+> -		if (signal_pending(current))
+> +		if (fatal_signal_pending(current))
+>  			goto out_unlock;
+>  		if (vma->anon_vma)
+>  			list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
+> 
 
-  1092	
-  1093	static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long address,
-  1094						   int referenced, int unmapped,
-  1095						   struct collapse_control *cc)
-  1096	{
-  1097		LIST_HEAD(compound_pagelist);
-  1098		pmd_t *pmd, _pmd;
-  1099		pte_t *pte;
-  1100		pgtable_t pgtable;
-  1101		struct folio *folio;
-  1102		spinlock_t *pmd_ptl, *pte_ptl;
-  1103		enum scan_result result = SCAN_FAIL;
-  1104		struct vm_area_struct *vma;
-  1105		struct mmu_notifier_range range;
-  1106	
-  1107		VM_BUG_ON(address & ~HPAGE_PMD_MASK);
-  1108	
-  1109		/*
-  1110		 * Before allocating the hugepage, release the mmap_lock read lock.
-  1111		 * The allocation can take potentially a long time if it involves
-  1112		 * sync compaction, and we do not need to hold the mmap_lock during
-  1113		 * that. We will recheck the vma after taking it again in write mode.
-  1114		 */
-  1115		mmap_read_unlock(mm);
-  1116	
-  1117		result = alloc_charge_folio(&folio, mm, cc);
-  1118		if (result != SCAN_SUCCEED)
-  1119			goto out_nolock;
-  1120	
-  1121		mmap_read_lock(mm);
-  1122		result = hugepage_vma_revalidate(mm, address, true, &vma, cc);
-  1123		if (result != SCAN_SUCCEED) {
-  1124			mmap_read_unlock(mm);
-  1125			goto out_nolock;
-  1126		}
-  1127	
-  1128		result = find_pmd_or_thp_or_none(mm, address, &pmd);
-  1129		if (result != SCAN_SUCCEED) {
-  1130			mmap_read_unlock(mm);
-  1131			goto out_nolock;
-  1132		}
-  1133	
-  1134		if (unmapped) {
-  1135			/*
-  1136			 * __collapse_huge_page_swapin will return with mmap_lock
-  1137			 * released when it fails. So we jump out_nolock directly in
-  1138			 * that case.  Continuing to collapse causes inconsistency.
-  1139			 */
-  1140			result = __collapse_huge_page_swapin(mm, vma, address, pmd,
-  1141							     referenced);
-  1142			if (result != SCAN_SUCCEED)
-  1143				goto out_nolock;
-  1144		}
-  1145	
-  1146		mmap_read_unlock(mm);
-  1147		/*
-  1148		 * Prevent all access to pagetables with the exception of
-  1149		 * gup_fast later handled by the ptep_clear_flush and the VM
-  1150		 * handled by the anon_vma lock + PG_lock.
-  1151		 *
-  1152		 * UFFDIO_MOVE is prevented to race as well thanks to the
-  1153		 * mmap_lock.
-  1154		 */
-  1155		mmap_write_lock(mm);
-  1156		result = hugepage_vma_revalidate(mm, address, true, &vma, cc);
-  1157		if (result != SCAN_SUCCEED)
-  1158			goto out_up_write;
-  1159		/* check if the pmd is still valid */
-  1160		vma_start_write(vma);
-  1161		result = check_pmd_still_valid(mm, address, pmd);
-  1162		if (result != SCAN_SUCCEED)
-  1163			goto out_up_write;
-  1164	
-  1165		anon_vma_lock_write(vma->anon_vma);
-  1166	
-  1167		mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, address,
-  1168					address + HPAGE_PMD_SIZE);
-  1169		mmu_notifier_invalidate_range_start(&range);
-  1170	
-  1171		pmd_ptl = pmd_lock(mm, pmd); /* probably unnecessary */
-  1172		/*
-  1173		 * This removes any huge TLB entry from the CPU so we won't allow
-  1174		 * huge and small TLB entries for the same virtual address to
-  1175		 * avoid the risk of CPU bugs in that area.
-  1176		 *
-  1177		 * Parallel GUP-fast is fine since GUP-fast will back off when
-  1178		 * it detects PMD is changed.
-  1179		 */
-> 1180		_pmd = pmdp_collapse_flush_sync(vma, address, pmd);
-  1181		spin_unlock(pmd_ptl);
-  1182		mmu_notifier_invalidate_range_end(&range);
-  1183	
-  1184		pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
-  1185		if (pte) {
-  1186			result = __collapse_huge_page_isolate(vma, address, pte, cc,
-  1187							      &compound_pagelist);
-  1188			spin_unlock(pte_ptl);
-  1189		} else {
-  1190			result = SCAN_NO_PTE_TABLE;
-  1191		}
-  1192	
-  1193		if (unlikely(result != SCAN_SUCCEED)) {
-  1194			if (pte)
-  1195				pte_unmap(pte);
-  1196			spin_lock(pmd_ptl);
-  1197			BUG_ON(!pmd_none(*pmd));
-  1198			/*
-  1199			 * We can only use set_pmd_at when establishing
-  1200			 * hugepmds and never for establishing regular pmds that
-  1201			 * points to regular pagetables. Use pmd_populate for that
-  1202			 */
-  1203			pmd_populate(mm, pmd, pmd_pgtable(_pmd));
-  1204			spin_unlock(pmd_ptl);
-  1205			anon_vma_unlock_write(vma->anon_vma);
-  1206			goto out_up_write;
-  1207		}
-  1208	
-  1209		/*
-  1210		 * All pages are isolated and locked so anon_vma rmap
-  1211		 * can't run anymore.
-  1212		 */
-  1213		anon_vma_unlock_write(vma->anon_vma);
-  1214	
-  1215		result = __collapse_huge_page_copy(pte, folio, pmd, _pmd,
-  1216						   vma, address, pte_ptl,
-  1217						   &compound_pagelist);
-  1218		pte_unmap(pte);
-  1219		if (unlikely(result != SCAN_SUCCEED))
-  1220			goto out_up_write;
-  1221	
-  1222		/*
-  1223		 * The smp_wmb() inside __folio_mark_uptodate() ensures the
-  1224		 * copy_huge_page writes become visible before the set_pmd_at()
-  1225		 * write.
-  1226		 */
-  1227		__folio_mark_uptodate(folio);
-  1228		pgtable = pmd_pgtable(_pmd);
-  1229	
-  1230		spin_lock(pmd_ptl);
-  1231		BUG_ON(!pmd_none(*pmd));
-  1232		pgtable_trans_huge_deposit(mm, pmd, pgtable);
-  1233		map_anon_folio_pmd_nopf(folio, pmd, vma, address);
-  1234		spin_unlock(pmd_ptl);
-  1235	
-  1236		folio = NULL;
-  1237	
-  1238		result = SCAN_SUCCEED;
-  1239	out_up_write:
-  1240		mmap_write_unlock(mm);
-  1241	out_nolock:
-  1242		if (folio)
-  1243			folio_put(folio);
-  1244		trace_mm_collapse_huge_page(mm, result == SCAN_SUCCEED, result);
-  1245		return result;
-  1246	}
-  1247	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
