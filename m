@@ -4,122 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09F40CF6BE4
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 05:43:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A34BDCF6BE4
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 05:48:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73F8F6B0093; Wed,  7 Jan 2026 00:43:52 -0500 (EST)
+	id 183CD6B0092; Wed,  7 Jan 2026 00:48:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 716056B0095; Wed,  7 Jan 2026 00:43:52 -0500 (EST)
+	id 131CD6B0093; Wed,  7 Jan 2026 00:48:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 615536B0096; Wed,  7 Jan 2026 00:43:52 -0500 (EST)
+	id 030E86B0095; Wed,  7 Jan 2026 00:48:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CC7A6B0093
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 00:43:52 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EADB91A71A
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:43:51 +0000 (UTC)
-X-FDA: 84304076262.17.ABA6525
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0A1C440003
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:43:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="iwhssG/Q";
-	spf=pass (imf07.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	by kanga.kvack.org (Postfix) with ESMTP id E71B46B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 00:48:17 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B83C1140149
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:48:17 +0000 (UTC)
+X-FDA: 84304087434.04.908E326
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4F73B40007
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:48:14 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=stu.xidian.edu.cn header.s=dkim header.b=jNu51oMK;
+	dmarc=pass (policy=quarantine) header.from=xidian.edu.cn;
+	spf=pass (imf12.hostedemail.com: domain of wangzhi_xd@stu.xidian.edu.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=wangzhi_xd@stu.xidian.edu.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767764895; a=rsa-sha256;
+	cv=none;
+	b=KIyQpvs2rXaS8m/sKO/5aOGYNevNqwWu8xQYm/BmN+QPsdzd3OYLuPGshiBsz6pZ+zP7MF
+	sU9IFzVovWAro3UQgF/YEwNPrMeknq31vy2eJT6TxHz84Sj575ONjrir/1P1/P6s9U5L4h
+	AfO+u8LCMjl2eKKvcltlLebupdGg+BY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=stu.xidian.edu.cn header.s=dkim header.b=jNu51oMK;
+	dmarc=pass (policy=quarantine) header.from=xidian.edu.cn;
+	spf=pass (imf12.hostedemail.com: domain of wangzhi_xd@stu.xidian.edu.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=wangzhi_xd@stu.xidian.edu.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767764630;
+	s=arc-20220608; t=1767764895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jm+UnvkV4Nkj86IV5YhkNGl+AQ7yBruyZpFq7iSiOQI=;
-	b=Yt2j818C+DNXwJ20RoXaiSm3N5PxL+ZpLkmOeDVoBjWvaXTHDfaFExerFrzFjvhYQU0glC
-	5C8cubGxgyZwt7AiwAQgow9V2REwocmFmiKdpjutfO5Mhjou9n+ZvfmGa+RJ7XbVp/OMqz
-	i0rw5EwmB3/RC5LaqYntemKOXzHphzw=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="iwhssG/Q";
-	spf=pass (imf07.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767764630; a=rsa-sha256;
-	cv=none;
-	b=1y5fikUyKHzSj6g9MnX4V2ULDQoo87ia4EjQDqlySEkYdoN3UeGR4JTD3HDINpfEcf09O1
-	vBBHHsjAkViWK29xk+o5K8+Uu9bF7eUlG03LZp2Y0oX9qk2+X/Kjqq67LE1uhFqUf4CYu4
-	cFReSfmPbQZtER3+wQ9/uAQuC72EDXI=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29f1bc40b35so22170435ad.2
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 21:43:49 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=GIj9mY2sobu2vYVVnyzaDGBHzr1Zh/Ll4Xn/j0eWQU8=;
+	b=zoUfrcoABu12u6RLA1D/27HD0j69XIhOHMEZAhZxnyMjZuAV5klicJrtRrxZf/FSeu1tV5
+	KWgokjQJQZxT+6c5CK4zpCSyJ6nMV/yttKbLkzCkipyNcEAjWTFrw08OYgBUPBCdrNrh7J
+	+YVJUbyM4bnHw4FY2EmUiLIKbV23R1Y=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767764629; x=1768369429; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jm+UnvkV4Nkj86IV5YhkNGl+AQ7yBruyZpFq7iSiOQI=;
-        b=iwhssG/QzOkF/s9QfUqzmIVuiIEZEsYct7HHvqJA5DYBGXQGovAxBQfYsq+/B6Y66B
-         Tt6i8rJV6aZcwBfVsB7MJfkRkENhiRlJHY095TDUrhDc82fsGCqJGko63H59JpgV5qoa
-         A4GX9Hczg+zNhisp5XOkB/tFC3nXtBAqyiPVA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767764629; x=1768369429;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Jm+UnvkV4Nkj86IV5YhkNGl+AQ7yBruyZpFq7iSiOQI=;
-        b=dSQ6W9KeD2Xz7rPxbYDIs5gDSXMjm9jIrB2CbfRJ4Zj0LCqc+5qWSE3gJ4ddtU559/
-         unPhhEWADrHAuo7iBxplxqXIB7ekwW+X9uw1LnJjzg8j4GIj1vPKmQ7MwgR/JqW+/jMp
-         8iGgJRPCHCnwA7ASW+12kgtf6ajq+ZSR9628x0xmQ04xhMddA1pWouVMiTPC6p1vw8M4
-         EqL3oTFPPhttUzG+W0a8HRyJZJFV8U4gsTchw2TS6JQntaieQ5oa4AUsYXWXQ2T/xOKE
-         T1Z0DChrMOyezXVibFh4vqaBjv/+HIDBXqKGSLdoAmK5AdI7VfTeDdovz+B7TztPlkiu
-         xL8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW68q87wfVfouMrGRt2BUR8O6DNIPxnStOQ+wKG2I9vAYcdzcUxgLejWP0IiSKNEsRjtwiKnRZ9og==@kvack.org
-X-Gm-Message-State: AOJu0YzQrUZfMYZkeO+7P20C5UNeshpLGe0yP3BtB8wCAr0aWwFw0g9Z
-	y2uC8d1b0uBn8RzDIV8ICDvFdsuXJZ+n7FkW3y3Eh/IbfsQMicymjIElvZNY3f7WmQ==
-X-Gm-Gg: AY/fxX7FuOzLqmIeW+R+muFPd3m/rSsTvkk8TRPNXDBZf1+QW0yCdZwpoO/oU3E3Fep
-	drRu2YVS7O5i/PyfQdk7X+tr1a/AGvEyyPx5SGsuLpO7mqUvW8PeZ0twhtAqDJbnkLkNdSV3y5U
-	MjM1Uxb5ASL1opL38UXw6F7g9r89eTssAgBQQTCcvelvEyaUocXWHhKvTry4gtgVRyXfjLJ8sdh
-	hB5IlFOirg54PHAjJJ6n7J+3eSSPrcKm5g8A2FQZOFAOmmJ5uAoy8kKPd2XVMIngPq7scl6hDvc
-	N6xJEQufQdYogRezTxZxMhyhF1NVAQaN8XkXgjmtQSa+yLejepOpPitcnBvO4viKtubpzhTO5HK
-	LNq8N9lymesCE0/gKr64ROzEwWQ8ixvHirPE8f7Rj2FfB88Ydj+WkbyekJ0sJi8hLkUVWYABNRc
-	pjJHwANWcZnonQfZab3S1Jz3IraJdl1ueWLbZgzqO9XhL4qgjZ/GPdKUO/Wie/qg==
-X-Google-Smtp-Source: AGHT+IFnhox+Pcm3BMZQmXBaYY5NIAJTxQ6sCrTZWaJcpq3tK6BSanAvCjFTf+57c7fZWXuiyRA7lQ==
-X-Received: by 2002:a17:903:4b4f:b0:295:3d5d:fe37 with SMTP id d9443c01a7336-2a3ee49a383mr13924225ad.41.1767764628955;
-        Tue, 06 Jan 2026 21:43:48 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:9f6a:2617:8891:93ff])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cb2e01sm37203925ad.46.2026.01.06.21.43.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 21:43:48 -0800 (PST)
-Date: Wed, 7 Jan 2026 14:43:42 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
- consider other metrics
-Message-ID: <53zplsrqc66z4ea64cosy53zvttuuhgxr2ik7uw6i2zgluegyz@d3ulgntwnyw4>
-References: <20260101013814.2312147-3-senozhatsky@chromium.org>
- <ddfs43qldaws5urlnpah3ibp5xeu7st37p5hgdfajvdtwor4sd@fkcm3brinygo>
- <gg5zdpzrk47tljbnaudcy2gnsodyhmmar23qb57b67bhx6ntje@eq2fcrl2dk4z>
- <v5veb673xrz6z3tevfdymhuik7nltojrvcqyjih4ds7co4p4hr@5e7ngdkrxo32>
- <5p4iyah6zlrnxpbsis32c4m5lrjj3pq7xwcugq35d2entwfai2@n2r6y3ga2ie5>
- <7q5gqpfshnc3lfhzxughpks3fc2knw2delpm5io2oe54monydl@5isuxnjputjr>
- <aVyYuS_usi-lpHkM@gondor.apana.org.au>
- <dou7g3n5fpynsab7hmxf4bgmqdewtdhkkiriwlghxzyduick7h@bsi3q2kivvbs>
- <aV3uXguDCaVAbY53@gondor.apana.org.au>
- <9b7d6e6292c64f21b8d09def1b6723f02faffe88@linux.dev>
+	d=stu.xidian.edu.cn; s=dkim; h=Received:Date:From:To:Cc:Subject:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID;
+	bh=d2EYuNqZrTHUae/ttK0jTaV6hQZFNZzEEZqf0PfS/hQ=; b=jNu51oMKck+uO
+	rQAznQyplFBlDiQKwdtgsd0/6kL6xXvmy7UlqlONbXX3h/y1pyBFRU1YYDB2XuSX
+	LIFnkprDa78jhc/UmeOJH3xbROATPCGQ8s1LfdysAnAWCtAjRJ2kBBB09PElO2aa
+	VwTaFO5MqtUWQEYDtrBBj7ZB0aPybY=
+Received: from wangzhi_xd$stu.xidian.edu.cn ( [113.200.174.102] ) by
+ ajax-webmail-hzbj-edu-front-4.icoremail.net (Coremail) ; Wed, 7 Jan 2026
+ 13:48:01 +0800 (GMT+08:00)
+X-Originating-IP: [113.200.174.102]
+Date: Wed, 7 Jan 2026 13:48:01 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?546L5b+X?= <wangzhi_xd@stu.xidian.edu.cn>
+To: linux-kernel@vger.kernel.org
+Cc: rcu@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+	x86@kernel.org, paulmck@kernel.org, tglx@linutronix.de,
+	peterz@infradead.org, akpm@linux-foundation.org,
+	syzkaller-bugs@googlegroups.com
+Subject: [BUG] rcu: stall detected in drm_ioctl with PREEMPT(full) during
+ DRM vblank and printk
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
+ 20250410(2f5ccd7f) Copyright (c) 2002-2026 www.mailtech.cn
+ mispb-8dfce572-2f24-404d-b59d-0dd2e304114c-icoremail.cn
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9b7d6e6292c64f21b8d09def1b6723f02faffe88@linux.dev>
-X-Stat-Signature: wbcupsc49dya6m15cquqqhobk9396p5a
+Message-ID: <277e7e8c.a60a.19b96ff6f72.Coremail.wangzhi_xd@stu.xidian.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:BrQMCkBWudyS811pE5j2AA--.15124W
+X-CM-SenderInfo: qstqimqsqqliuu6v33wo0lvxldqovvfxof0/1tbiAgUECGlaeE5zG
+	AAFsg
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VW3Jw
+	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+	daVFxhVjvjDU=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4F73B40007
+X-Stat-Signature: jgcbfuncmfhqcxpekqm9b844b43uonyy
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0A1C440003
-X-HE-Tag: 1767764629-838484
-X-HE-Meta: U2FsdGVkX1+hN8oo3BtW5nsPkZn5U7k4bSPWYlBYdse9b12CnR/Ozz0aHmE4MHkCT79UgdS3LMrUf0qregq9W2tkEbYYyyYB3ESmeVRI65dGuR3IRCkN9Q4/zNzytjyrqChGBvP+CMdyr3WHzkY+IJQyZ14VzEVDGasH0mj9TV0dtDLibFsSZZqf6HUius2Dteuq5uw7Ehqtn4vfhnBETbMU73q80BlhTBuq3iTine9+Pzmxp8qBeII6RTi0iCPCYIJJW0CmElJ40mUTTILXUA9Gk9ya9b3yoREdZj0PXTMYqQG149cgXqK/Tcq9pxk16O097JuREB+DlH1s6HfTKjiSzTbMB2J1yDttfB3fSkyprnOoyilk+jIzmeu81PrG5e5AZdqUu9zqEn/G1D6rAVchWYH3BJcD4TfSWw0AaXO5obUREz4MRhh3vMzT45vN93WOhOPcbj4GeIrFtJNmIQVn7C90lsDCDDpag9O1usahMe17Ra6AO/8ucAhFsgQ9UbPnQIrk47PUvArS0oJvwniNrGVyHD7+UF2W2ntgFAse/uCwhKJGBkKA/eF5tlp4zTCyYuQ/zgVK1Z1kWi3GMpnIaKpE6HtruiOyrH0IuXXCYEoYLphWtegWPzwyq+HEgxGzCGxspnUjDEFI2F8YtIyZv2iZQtF9tIVb4Zkv9NCb9BNNRX6pYcLEKiYEgzI1dSwIBIYCPno2gEBh5ga5FCU7LRdZScjo4xiJuPUJy6TpnJQG28ZcjyTe74+MvxDThGkrhvtWhOuHaz7vI9nOEPhE51yZKUOMaDphrU1ik0DimCyNLSatUcd0otqueT3HWtAfpieZ8oB5aQDGDrlm32WKPguIZsKKwoCixHkDapqeC45FRw8xS6SvTWyWL05Vg7pYUlzQkTuQMjmGTkroKkLX08edzQoQruVzcRhpw05dIQGO60CNkEm9NhNwUBZ51E5OuWED9E6Tx53YK6O
- CDHAcD8e
- 33SrmfrhFucqW4lei/fNyzhhb61YDdbWN3RYi6OWbk5jko2anXZ1q9qSinhvnGwv0Ia7Dj/1BV8ELrCoUCUIx+P6nUgqpB+nWh+9ujQrLvtDHgq5wzuQ4f0aE9lNLHc+2XWFr8/29obYzHMl2Bl/6NXe2b30F/e4yEI4fxJLvIoMgcxQpfVTnlC2/0uvL1AMcNg0q4vmxDS3p3z1mfqqubTl0xIq/0M1KhxTW7lqDkBVFlxrgVxRTXsFShktGLxDmEpikPwEyDUzLGRQFbjJ/7ZNKeniyBb3tfYlztJo/CB4t+9HeE5yD7+zUsHrL0kx2r4xQKDFF1kNLixb1EiDyoa6nBTZHPBrV0CJG8WQy+vFoWOQ=
+X-HE-Tag: 1767764894-211720
+X-HE-Meta: U2FsdGVkX19r+SY0Mg+yrUyk73+tbXDjIEUc6rOCwOHCSzB8xVL+poqYl+7SQM58R11p3RgvvuOrLSIy5xUbhxw4yIl1a60OiLbIUZVC0HFFSLrjpEo60QpNxLQJatB+yiToBfgY/RESJ6Ra7b3ZE+39wXw9CGd+EoL7JCcsa2LKn0oCrJXoW4znViYpu96/OcfW0z/8kIbPE1rodU7oGpaWlEdQg7rtOaubntjGt7U3A3WkgFp1ZPAjRj67ShDXvpt649yje7TLDZFyOKwxRM4mPxuof8tH3ownkiiajLXKpBIuQuL+LoF2DV6Y2qhG3mczI+krDxMU77aRu6Qw6MI/30HYWIu68UcA1rbuEChXcoED5talC3kZVxGTEK8iMv42o6WnvmK7pH1GalOV+hIgY4LrVO8G/zUNnCbgiEjxgCtLpe69RgJIED8mmVj8XtlzdDXDpHd9Xlsr4//9RsvuqlE6bq0aXVENZ6I7/T1Xmv0bVDgAPzsC7z/AtL+eAZl7THUM3I5WOSCY+u0zXTO1kAPELXgpAWtc8Acpy6OpwTFvdMc9VifrAhz+lX2eFS/jwi53ZulXSu9kopOUHBwf6vK781oWUEZ0aXVYwSldcZ5QLxqim3Lse+WPmg3HdNjFkkTxMvUVKAsKY5sHuDv1ovZ5r5aJEUXmrJ8krQzh0r1G6hdk0j14ZpdtD4tvBGTnMkvnGN6eMlhXPITjZbSecNzxO8qbpCJyxy/vqL7+pGb1hWILDbF6w9j4k4Y5jYoccz32dlGKIGCMIoKKx6UJORObXbjHZn1aYiKRWxrwpevk+67ZkERRWMEg/szHq7azXK7uy3ZpmCXRbv4TkASSf/gXuf4GYKq1T/j1782dFUqTlPR80EcjfUdceVZRWqyafvNEAOYJ/CDBIJJkH0AZrif75S905ntbyMyQrccpTkoNIBWuWyMHQ8a1vbjuxP1iOsfAWzLJ1TItRYb
+ eOK90v5/
+ BLGnDX+pvUnfpd6T9OXWqVin4BY0tMqcJ3bW9PdHHOLQJG/8sNzSuczbUBhbZFv3kZnPdnTQYMViGnzmxUB/+JSc7jB8rtW1Do5b1r0jH2zOfmbMy2Es5chjROGTKCc5qzY4GpLee6jNbMVjPk0L0cL1L2GVBkhWMUdq4LPsG7WpJWpWh2Liz/bhBKlB7rDpkp5ocZp8WPYlUbUPTXety3GSV1/U2G6J4wlzgih9yGR9VUzoMJTLlczyZtChdQ59EbKhhdoPtGZawQsQ1i2kKk2G9UKonvmjO3gHbIPWjh4DnsyJhFOlNG9eyZpi4MX2oK4C9RhyRDUXgdGqy7NilGlePA0klFgwG2bfCW00SIkgpXz6+ropK1oeFgRGDE9K6uPN8nujmBkIp7q8rlrVkKbsysxutF0ec72ChrKuqsWBhttffuys2N/Ye3scdIoRXvOL2YhVRkaxLTTQ8Do/EVqA34b44QHZdQqEu2liS/HKm8KHTHfKhLbc/KQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,18 +100,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/07 05:39), Yosry Ahmed wrote:
-> > On Tue, Jan 06, 2026 at 04:24:45PM +0000, Yosry Ahmed wrote:
-[..]
-> > Adding native SG support to LZO simply means removing the memcpy that
-> > scomp would otherwise have to do.
-> 
-> Yeah the effort to add native support to compressors can be done
-> separately. For zswap, I think the most common compressors are
-> actually zstd and LZ4.
-
-I think it's the same for chromeos: lz4 (primary) and zstd
-(secondary/recompression).  zstd looks very complicated,
-not sure if we really want to diverge its codebase from
-the upstream (meta github repo).
+SGVsbG8sCgpJIGFtIHJlcG9ydGluZyBhbiBSQ1Ugc3RhbGwgZGV0ZWN0ZWQgZHVyaW5nIHN5emth
+bGxlci1zdHlsZSBmdXp6IHRlc3RpbmcuClRoZSBzdGFsbCBpcyByZXBvcnRlZCB3aGlsZSBleGVj
+dXRpbmcgZHJtX2lvY3RsKCksIHdpdGggQ1BVcyBzcGlubmluZyBpbgpuYXRpdmVfcXVldWVkX3Nw
+aW5fbG9ja19zbG93cGF0aCgpIGluIERSTSB2YmxhbmsgaGFuZGxpbmcgYW5kIERSTSBmaWxlCmNs
+ZWFudXAgcGF0aHMuIFdpdGggUFJFRU1QVChmdWxsKSBlbmFibGVkLCB0aGUgcmN1X3ByZWVtcHQg
+Z3JhY2UtcGVyaW9kCmt0aHJlYWQgaXMgc3RhcnZlZCBmb3Igb3ZlciAxMCBzZWNvbmRzLgoKPT09
+IFN1bW1hcnkgPT09ClRoZSBrZXJuZWwgcmVwb3J0czoKSU5GTzogcmN1IGRldGVjdGVkIHN0YWxs
+IGluIGRybV9pb2N0bApyY3VfcHJlZW1wdCBrdGhyZWFkIHN0YXJ2ZWQgZm9yIG92ZXIgMTAwMDAg
+amlmZmllcwpNdWx0aXBsZSBDUFVzIGFyZSBvYnNlcnZlZCBzcGlubmluZyBpbiBuYXRpdmVfcXVl
+dWVkX3NwaW5fbG9ja19zbG93cGF0aCgpCmluc2lkZSBEUk0tcmVsYXRlZCBjb2RlIHBhdGhzLCB3
+aGlsZSB0aGUgUkNVIGdyYWNlIHBlcmlvZCBmYWlscyB0bwpjb21wbGV0ZS4KCj09PSBFbnZpcm9u
+bWVudCA9PT0KS2VybmVsOiA2LjE4LjAgKGxvY2FsbHkgYnVpbHQpCkNvbmZpZzogUFJFRU1QVChm
+dWxsKQpBcmNoOiB4ODZfNjQKSGFyZHdhcmU6IFFFTVUgU3RhbmRhcmQgUEMgKGk0NDBGWCArIFBJ
+SVgpCldvcmtsb2FkOiBzeXotZXhlY3V0b3IgKHN5emthbGxlci1zdHlsZSBmdXp6aW5nKQoKPT09
+IFRyaWdnZXJpbmcgY29udGV4dCA9PT0KVGhlIHN0YWxsIGlzIGRldGVjdGVkIHdoaWxlIGEgdXNl
+cnNwYWNlIHN5emthbGxlciBleGVjdXRvciBpc3N1ZXMgRFJNCmlvY3Rscy4gVGhlIG1haW4gdGFz
+ayBjb250ZXh0IGlzOgpkcm1faW9jdGwKZHJtX2lvY3RsX2tlcm5lbApkcm1fbW9kZV9jcmVhdGVi
+bG9iX2lvY3RsCmRybV9wcm9wZXJ0eV9jcmVhdGVfYmxvYgpfX2t2bWFsbG9jX25vZGVfbm9wcm9m
+CkF0IHRoZSBzYW1lIHRpbWUsIG90aGVyIENQVXMgYXJlIGV4ZWN1dGluZyBEUk0gdmJsYW5rIHNp
+bXVsYXRpb24gaW4KaW50ZXJydXB0IGNvbnRleHQgYW5kIERSTSBmaWxlIHRlYXJkb3duIHBhdGhz
+LgoKPT09IFdhcm5pbmcgZGV0YWlscyA9PT0KUkNVIHJlcG9ydHM6CklORk86IHJjdV9wcmVlbXB0
+IGRldGVjdGVkIHN0YWxscyBvbiBDUFVzL3Rhc2tzCnJjdV9wcmVlbXB0IGt0aHJlYWQgdGltZXIg
+d2FrZXVwIGRpZG4ndCBoYXBwZW4gZm9yIH4xMDQ1MCBqaWZmaWVzCnJjdV9wcmVlbXB0IGt0aHJl
+YWQgc3RhcnZlZCBmb3Igb3ZlciAxMDQ1MCBqaWZmaWVzClVubGVzcyByY3VfcHJlZW1wdCBrdGhy
+ZWFkIGdldHMgc3VmZmljaWVudCBDUFUgdGltZSwKT09NIGlzIG5vdyBleHBlY3RlZCBiZWhhdmlv
+ci4KCj09PSBDYWxsIHRyYWNlID09PQpDUFUgMiAoSVJRIGNvbnRleHQpOgpuYXRpdmVfcXVldWVk
+X3NwaW5fbG9ja19zbG93cGF0aApkcm1faGFuZGxlX3ZibGFuawp2a21zX3ZibGFua19zaW11bGF0
+ZQpocnRpbWVyX2ludGVycnVwdApzeXN2ZWNfYXBpY190aW1lcl9pbnRlcnJ1cHQKQ1BVIDIgKHRh
+c2sgY29udGV4dCk6CmNvbnNvbGVfZmx1c2hfYWxsCmNvbnNvbGVfdW5sb2NrCnZwcmludGtfZW1p
+dApzaG93X2ZyZWVfYXJlYXMKd2Fybl9hbGxvYwpfX3ZtYWxsb2Nfbm9kZV9yYW5nZV9ub3Byb2YK
+ZHJtX3Byb3BlcnR5X2NyZWF0ZV9ibG9iCmRybV9tb2RlX2NyZWF0ZWJsb2JfaW9jdGwKZHJtX2lv
+Y3RsCl9feDY0X3N5c19pb2N0bApDUFUgMSAodGFzayBjb250ZXh0KToKbmF0aXZlX3F1ZXVlZF9z
+cGluX2xvY2tfc2xvd3BhdGgKZHJtX2ZpbGVfZnJlZQpkcm1fY2xvc2VfaGVscGVyCmRybV9yZWxl
+YXNlCl9fZnB1dAp0YXNrX3dvcmtfcnVuCmV4aXRfdG9fdXNlcl9tb2RlX2xvb3AKUkNVIEdQIGt0
+aHJlYWQ6CnJjdV9ncF9mcXNfbG9vcApyY3VfZ3Bfa3RocmVhZAoKPT09IE9ic2VydmF0aW9ucyA9
+PT0KVGhlIHN0YWxsIGFwcGVhcnMgdG8gaW52b2x2ZSBjb250ZW50aW9uIGJldHdlZW46CkRSTSB2
+YmxhbmsgaGFuZGxpbmcgYWNxdWlyaW5nIHNwaW5sb2NrcyBpbiBpbnRlcnJ1cHQgY29udGV4dApE
+Uk0gaW9jdGwgcGF0aHMgcGVyZm9ybWluZyBtZW1vcnkgYWxsb2NhdGlvbiBhbmQgZW1pdHRpbmcg
+cHJpbnRrCkRSTSBmaWxlIGNsZWFudXAgcGF0aHMgaG9sZGluZyBEUk0tcmVsYXRlZCBzcGlubG9j
+a3MKUFJFRU1QVChmdWxsKSBzY2hlZHVsaW5nLCB3aGljaCBhbXBsaWZpZXMgbG9jayBjb250ZW50
+aW9uIGFuZCBkZWxheXMKdGhlIHJjdV9wcmVlbXB0IGdyYWNlLXBlcmlvZCBrdGhyZWFkCk11bHRp
+cGxlIENQVXMgc3BpbiBpbiBuYXRpdmVfcXVldWVkX3NwaW5fbG9ja19zbG93cGF0aCgpLCBwcmV2
+ZW50aW5nIHRoZQpSQ1UgR1Aga3RocmVhZCBmcm9tIHJ1bm5pbmcgYW5kIGNvbXBsZXRpbmcgdGhl
+IGdyYWNlIHBlcmlvZC4KCj09PSBSZXByb2R1Y2VyID09PQpObyBzdGFuZGFsb25lIHJlcHJvZHVj
+ZXIgaXMgY3VycmVudGx5IGF2YWlsYWJsZS4KVGhlIGlzc3VlIHdhcyBvYnNlcnZlZCBkdXJpbmcg
+c3l6a2FsbGVyLXN0eWxlIGZ1enogdGVzdGluZy4KCj09PSBFeHBlY3RlZCBiZWhhdmlvciA9PT0K
+RFJNIGlvY3RscywgdmJsYW5rIGhhbmRsaW5nLCBhbmQgZmlsZSBjbGVhbnVwIHNob3VsZCBub3Qg
+bGVhZCB0bwpwcm9sb25nZWQgUkNVIHN0YWxscywgZXZlbiB1bmRlciBhZHZlcnNhcmlhbCBvciBt
+YWxmb3JtZWQgdXNlcnNwYWNlCndvcmtsb2Fkcy4KCj09PSBBY3R1YWwgYmVoYXZpb3IgPT09ClJD
+VSByZXBvcnRzIHByb2xvbmdlZCBzdGFsbHMsIENQVXMgc3BpbiBpbgpuYXRpdmVfcXVldWVkX3Nw
+aW5fbG9ja19zbG93cGF0aCgpLCBhbmQgdGhlIHJjdV9wcmVlbXB0IGdyYWNlLXBlcmlvZAprdGhy
+ZWFkIGlzIHN0YXJ2ZWQgZm9yIG1vcmUgdGhhbiAxMCBzZWNvbmRzLgoKPT09IE5vdGVzID09PQpU
+aGlzIGlzc3VlIGhhcyBiZWVuIG9ic2VydmVkIG11bHRpcGxlIHRpbWVzIHVuZGVyIGZ1enppbmcg
+d29ya2xvYWRzLgpBZGRpdGlvbmFsIGxvZ3MsIGtlcm5lbCBjb25maWd1cmF0aW9uLCBvciBmdXJ0
+aGVyIHRyYWNlcyBjYW4gYmUKcHJvdmlkZWQgaWYgbmVlZGVkLgoKUmVwb3J0ZWQtYnk6ClpoaSBX
+YW5nCg==
 
