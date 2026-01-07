@@ -4,94 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E9C9CF6BE3
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 02:48:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAA9DCF6BE2
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 03:03:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D2EF6B0095; Tue,  6 Jan 2026 21:48:11 -0500 (EST)
+	id E614C6B0092; Tue,  6 Jan 2026 22:03:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9801C6B0093; Tue,  6 Jan 2026 21:48:11 -0500 (EST)
+	id E0E706B0093; Tue,  6 Jan 2026 22:03:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87C156B0095; Tue,  6 Jan 2026 21:48:11 -0500 (EST)
+	id CE69B6B0095; Tue,  6 Jan 2026 22:03:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 761386B0092
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:48:11 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 33C748E9A7
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 02:48:11 +0000 (UTC)
-X-FDA: 84303633582.20.D44B51C
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2B2D5C0002
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 02:48:08 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Y/QfcK3/";
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF8AC6B0092
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 22:03:45 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E8308EDFF
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 03:03:45 +0000 (UTC)
+X-FDA: 84303672810.21.2AE1937
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6BAC6160005
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 03:03:43 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=fN65JB14;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf08.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767755023; a=rsa-sha256;
+	cv=none;
+	b=wCq+faQL9N2QYde3i964a9P8KdGpvUVfq4vEo1ISfoJrDPcAtdNQtTBWf8eVIgj8GUyTOe
+	KGxFp6lj1Vb2QX4XHCyGANy1lwffZwC8/oYUhHQUrwN3lbRz0b4CAWOs3ltzVAok7JLxrt
+	R9c6M40B4cxcgYq8YC2FA65F9gX3ZaA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=fN65JB14;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf08.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767754089;
+	s=arc-20220608; t=1767755023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AFZrV5kmQftGED1K5FteX+JpgExPrbIhIEwJ9SC4Xfw=;
-	b=vVFWaF8+bq4NLthMVt26Ftr9aIRYNwPh4deVyyInHi3Y0szi7xddVuJrOZTQeV8j0Jkq/g
-	TD3K69L5M04BMfIupHX7G5c3i42PwAjX9tCadT+6xnsWyBb210abGPAnajXbWrwYqYF2xm
-	QKhO/FPTz+t7TrpP9TB5kGUH3q7ytws=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Y/QfcK3/";
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767754089; a=rsa-sha256;
-	cv=none;
-	b=VoFg+svcaGU9qKFwiNicb7idElUifZA9jPF4QEpwIjQQEwpqcKaMhVq1ZVFtYu8+zCMPDO
-	I4x2bk9wWKeSD4vzm4u+Lojb2NTK5pNTIMXVfrtBEGL1WsGoYbS0nG7m3u8asGDZgzYjYN
-	hMNsDckBUccjTp2wSyqSfpuLNlo7pC8=
-Message-ID: <2adc4355-f1e2-4355-b04e-efae4425a3d3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767754086;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AFZrV5kmQftGED1K5FteX+JpgExPrbIhIEwJ9SC4Xfw=;
-	b=Y/QfcK3/W+rQd+sxRh7PqPbB7Fy49kzT7B5aVJ2cZbpERAqVDPfd1qM1b/TlraC47629jf
-	RM+lT+TuFXRJPR0nzpKAcNg9sVx5vSid6LIqjBtD288mC/4iDei3J2SKN/lTaoyxvO0Ejz
-	CTPwD00Qi+CedL5Kcx28Z30m1Wz0L58=
-Date: Wed, 7 Jan 2026 10:47:50 +0800
+	bh=oFm+TF1fSwD6gkJ17GG1izhQnu21Fs82H/iuM6aPKB4=;
+	b=i+Te5J0CDsVDP3FLAIbnsdXzfQXmFGORXUtfdohxN/Wy5bz7B7NM2pZg8YiyDIV4qzo7oL
+	IU9HazCQSijaHOj/mEd9tJA0+3fZ+P7J2UhBW9DfzQRoZ89RmDH+hYJUmlJ4CypTAB7JGp
+	HkaFJV+GpiFiDp+6aj0h2Qw7SAOXZuk=
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b553412a19bso984769a12.1
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 19:03:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1767755022; x=1768359822; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oFm+TF1fSwD6gkJ17GG1izhQnu21Fs82H/iuM6aPKB4=;
+        b=fN65JB14j3icOSJ94+7glTLRLLTi+5MKcN+hKLOK700bu3NvGP4sefWHl5r8agE7M2
+         JPuwKOumfAYXoUfLge3L27YbQCrStL5X4ifkyKPiAR9farYcD5Jr41xGRvHEaBGGDXrc
+         sURvurvVyKqDKbA0Ovpg/qRybJgkgon0i8Qs0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767755022; x=1768359822;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oFm+TF1fSwD6gkJ17GG1izhQnu21Fs82H/iuM6aPKB4=;
+        b=uc5goNtxaQXz/71XXFNQ0FzOEJlEZqYNgHwil7M9sUVIq49N6fUFTWbE503QAP6BA7
+         SFFxwonh+0A0EsMk2GUwh0+bofbc0hHuzAaSRt/+Ta39ZN2oysp0Wi/h8CSZJI/oSbxn
+         JqYdX1qlJCZHZw5H+WfFZ3RGLq+29tWWWmvJEJOGOACrzntg5f8rZcDpjaoO8CFVfW+q
+         p3ypPeF8vNK5iv+zrlaL+ufFUZhfv8dCABFcTR3nn+br/F98r438h/x1FpK5YFGPRMN1
+         J24QSDlhk5UyTW6n8qRMhQQS6/HGsIusM23UiiBPsAeR13g8dQVqL6W1ZUuRT99FffGi
+         5hyg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHgiWqtNpV8YAr5acXeYKpEzhIgITkg7sKql9r7NyckHztA37ADj2RYNLjpqcv72zxxcQ9UzDBtQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywzvh72N8KcD4zsSy0WzmAdoH39uDDKfVxgJC5gzBnIOBQX4Q38
+	Dy7JJNjDTPDPXHrJiD92UmF0cZCiRAnKSU9FyIAB7SCe4wmKS521rF4hbvbSIEYA1A==
+X-Gm-Gg: AY/fxX6kbSAjjridMeWTrg7iFiG3Q1E1S1z1l+WfaSwQloaYSMhY1oTA4yOEJ/VadaS
+	pw+Uvb69+L7IDdSGHS9fgUfWijN/7gY90tDY5w4gtXP3ZKduRoHp6GQ2X/QF3WQiJNsF6RUG0im
+	eWPVWdqb+ybL9OpKs1CudONRi723+Q0m7bgJKE1ZSyYmm0RCZLc/YF74si7pTj9HBRI2TlLtk7V
+	ox9bkuHDcVEc2Vbwgsvm/hD0f0SU7eEEynXZEquQ0vwJ9U3GMVSCA5NAfBfiiOHTd6WybLBNMEm
+	80TXhndqRW4oTlHGFH9NYeNrHm7fjR3DH4SDEraRPttZ5kZ2bwTGNYo53Ehr5fE2pgCQMTsY4lV
+	mQirT59tc584fCn/l7xJ7Lz/BT0aJmuOpcQTWWpsgtQZSpLW+OkwE+q53wq5RsStOv8yLBX+/Cz
+	Xc1OBNGUH4lkBBCcuxDGuvFy7FnoO4UP4Olzi2UEbTxxf/YXSdMwqUzeiUF96nLQ==
+X-Google-Smtp-Source: AGHT+IFslC2wQrpaZjhs5gM2B/O2qMiajQgy0AcpounjmfjOvsvIjwo9ikquH6OU3ptcRz+G9un0kg==
+X-Received: by 2002:a05:6a20:4320:b0:371:5a31:e486 with SMTP id adf61e73a8af0-3898f8f5575mr934721637.6.1767755022155;
+        Tue, 06 Jan 2026 19:03:42 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:9f6a:2617:8891:93ff])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819c59e83bcsm3375258b3a.56.2026.01.06.19.03.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 19:03:41 -0800 (PST)
+Date: Wed, 7 Jan 2026 12:03:37 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH] zsmalloc: use actual object size to detect spans
+Message-ID: <3xsreqvvclcuqyllgdz5avxwdvhc3rqri4565xj2hbwk6r6uol@6mnhvdgaxfrl>
+References: <20260106042507.2579150-1-senozhatsky@chromium.org>
+ <qh2p3k5c2ulb5g2zmckhrm4o2eoruatb5lnumkrwrvmsxwcn3s@nh5vx4kjn5in>
+ <og2yztajena3ywyvus6xgc5vlrrecjaynyezygpsrt64kjkqlv@agceajv57eet>
+ <vkhwvmazwys7dz7m67fil7xlhevdsc4xbvq3h6nknb7rqojjis@vx2c57ylvl44>
+ <ofjlah554fgcc43e66djtysmnagd7gduqutueyauipovs35qb7@mw7keptebqau>
+ <5smqbald5bollibqjsvqw2tfngdoiiucurikdgqtz6xjb7u7vz@7p6hskoixaak>
+ <lupjar4x2wz25knuntywor5oyx3ksyhh7g7yv4apmztn47ayep@sncrwg4gjlut>
 MIME-Version: 1.0
-Subject: Re: [PATCH RESEND v3 1/2] mm/tlb: skip redundant IPI when TLB flush
- already synchronized
-Content-Language: en-US
-To: Dave Hansen <dave.hansen@intel.com>, david@kernel.org
-Cc: dave.hansen@linux.intel.com, will@kernel.org, aneesh.kumar@kernel.org,
- npiggin@gmail.com, peterz@infradead.org, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
- arnd@arndb.de, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com, akpm@linux-foundation.org
-References: <20260106120303.38124-1-lance.yang@linux.dev>
- <20260106120303.38124-2-lance.yang@linux.dev>
- <a20ab449-e6b4-45c7-86df-bb194304503c@intel.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <a20ab449-e6b4-45c7-86df-bb194304503c@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <lupjar4x2wz25knuntywor5oyx3ksyhh7g7yv4apmztn47ayep@sncrwg4gjlut>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6BAC6160005
+X-Stat-Signature: 7q443sctmgjwb6bjbt79kc7m7s6umuoh
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2B2D5C0002
-X-Stat-Signature: 8w5sof6dx33ar8hw7njg84cqjhxnimkt
-X-HE-Tag: 1767754088-305976
-X-HE-Meta: U2FsdGVkX1+1d/qgEs16q64By8MdgB8z/oCc2ODoYeXhRgP/Vc2KKRkZOXTtlRrABQhOfuK/7NQRD5vaSohyloyCHfwy6IEPDJpEuiBrVg/X/05g9T0FGts6RObgcub9f0HhWzvUtBkc3mj9l/KEFRPJbfSCHjeyvxGq4nOM/vBVAkDUpD25i/KjAf5aEY01t2t3jM+aXvmIIgo9hYPnuG3KZ6Vq1lbqzicQtdj/O907ahQH03/qZlZe/QA1FcqOU/8c1h8K7J53nsBuxf30hl/Pusv716wA5TqTeurSc56gi0ZQbMAgooqQaUzrLY5GaRkWPgLm6C3o521V8g9sl9K8cSfABrcSF/+Z4M+Opcyd2wji/FbcX9zf5CflfNFnK5CU56xnVo4MAeFC7DkJiU0J8GhCIFqCdEt+3mFUBKEzPMFh9L6WyhA2tljsnttbew0+QAoKnfs696ZdO1uFv+RN3a25WjSdNB3tQdyHyoIZA45bBbNoFZAPPPNVjKqq9swf3jR4e5O6PbU5wZf6cQMaFqsbQotBKGK4gZi8AwGPmgWlObvAKcj4E+yb0lJVtHZScaDSah8s5rZqbCHvq5P0gc9WkzX2rNLB7vcRc79AQCfx/XUzMi8COhqaPz47I1tqzTJHSpau0tUMM7DjXZ+e0p7dCOnYY00UnfGyfg5lcMgSRDzYHh+wBs0sSZ6o0rySxiTM6R37uKQhEjy3ZTbh5zFqXOeF9vpEZ86t1VmjSLT+gRSa1WfATEGInRioCtwS7ulpl/fW7rqyNzDNMDyglkmgHgXivafhx8YrQYdYAt5LWzUjy842XCsZsbAJGcgrYblwL+uGF3moD6J2GdomiV+12sCqK5Oer6GjoHd9SXxQ2cGKhZIHkAb28e4INXatGJwENUvrkzAAJqMOh1m4AkrixodEClIXq+g80KrP8FDv9P2TjlGdeYXC07f72e8wUZtFJHdgGHV2ATD
- 8qpp33EC
- 8+BNYiQNkqQDH2YeM7yDUDWy6nVBGVZ1rxEoyFbTGeOWEqTMzLPGi+1vtLuWTX8IG57rtya39S5gcWnDTMEl+2COkyGLpdCdx3NL1ziruso11YzwCLvympvMw24A1gMgDsoNVxw3SHeLeu+PaMvt+UjOiS2IRw6JjcuxcY6uWY0zZRFxn3/u757+XwZijRL9TVxW7y6ehb0hWKKQPEvPhD+AMEA==
+X-HE-Tag: 1767755023-941751
+X-HE-Meta: U2FsdGVkX18eo3tO5brApuXqJGYDiAbL19Py5Uirj0lk+QH6X3I8bhkkA8bMrsm0kLH9QTMgCxaeLhav/Ck8+I2yoyM7ob6GKjdsgPpESw1S/Bc54/ZQHlv7znNrKpBEd/UKLKUgSRVqMBR3nqfx+pW53lQ1HC2B6QoEjTGlSRZVaWV9XV+STUVPyrd/Ji+ApkkmqEhbjfCEgSOKzZm8uqNJpqy5APsdizGvqND9895YJZDnDUewO1znRwpOR1YZLLM9U0dO7k0P9eOP99Zht5xZ+F0jmKfZaJPMbjy30ZP9QhVvgHYc0LbT6GD+lIHryMMV5PpI4xoiSTiwOimuX1HWXK/GrlGWJ5hAF0UnuELYJSIuppa6H6rC1Zk6WI/mdOHeA3xXBmaIDaw0mxqP1agcGbc1prjLGibJuQfVq0c0ggYarnyyjdlxy+8ssiDQUW3w9clAIaswNxGW64U4PnMn+aaCO0KUTayHpRHKu4g5iNq+kxqjPNUhGWsCVsXHfoZvenkGQxsNpfaqH0BAfnEd+hkLBfWvfuxCHiShqnVdtR8RvpUn83Byr6LuB2nNAhM2xjvPLU+lmps1YGeZP87I+qTEawcb2LQBCA+oFUK6TIVQqSyt6gEac9VQE85+ohotn4PD33wi4AxQrL42miTQ69SgRjhuwaBGtbmed8tTm/bH3eOFVVJjT/HSjDRvOOH4NBHgGQwboCkWAvtR2Pk+2AtTB1S9vBUnY4ORl7iasiTu01RNAG+hnUhkY4gGV5Q7a7srPGTQ7D6YQ9tFISHYSTSuiiTHxpeecK/5Kzt6wdmBNz9nDBpLDlPN1BmrTINe9Ka+iy6G4XgPs8bgXzrFcMUyzypbYyObqpI1lIUYkeQQodUIqlWlBAiiKmjTCc+lZ9knWUV8GD2pjsjeddyjCDpWk8mEOLZxRB9nX3kLkMC6/o9JaqZ4auX1/xtqJNR/vwWHQEIWYMIAnMj
+ +3GDuJpJ
+ 9Ao3jxIk3FSznzESqMGnG9ljaav+MdCB/RmbWEeG5kpLXmP7WuAsMuvIwSy2kZ7Dsr3Nq+RR76sjtLKOwcHu9HaFJ5oxCsAanuBtVkDcmBsm0YrwTDG+TiwNO0lycRcE9YhfDRRRAH60RQcNk1TmvbxJS5xc6LreIj2ZbZxa0t1GJt0zKa+o24SUvQaWv7o3oLwLhJK8IjBuQFcSWTLxnR/u3wWESuT6MPKyRq7b6EIL/mndAhUuV0QC43h7anjqnqFGjS/kET6F7aJD++8lZ9ErQWKkVaV+AAIQMPhIJCWjvmkaHKsYsVj/EtB7gIfuC4c7ey8/D5NPHlWuwFFnCwWJgRAk6JP7J/5ExD6M3+2a1c7I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,94 +123,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On (26/01/07 02:10), Yosry Ahmed wrote:
+> I think the changes need to be shuffled around to avoid this, or just
+> have a combined patch, which would be less pretty.
 
+Dunno.  Do we want to completely separate HugePage handling
+and make it a fast path?  Then it seems things begin to work.
 
-On 2026/1/7 00:24, Dave Hansen wrote:
-> On 1/6/26 04:03, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
->>
->> When unsharing hugetlb PMD page tables, we currently send two IPIs: one
->> for TLB invalidation, and another to synchronize with concurrent GUP-fast
->> walkers via tlb_remove_table_sync_one().
->>
->> However, if the TLB flush already sent IPIs to all CPUs (when freed_tables
->> or unshared_tables is true), the second IPI is redundant. GUP-fast runs
->> with IRQs disabled, so when the TLB flush IPI completes, any concurrent
->> GUP-fast must have finished.
->>
->> To avoid the redundant IPI, we add a flag to mmu_gather to track whether
->> the TLB flush sent IPIs. We pass the mmu_gather pointer through the TLB
->> flush path via flush_tlb_info, so native_flush_tlb_multi() can set the
->> flag when it sends IPIs for freed_tables. We also set the flag for
->> local-only flushes, since disabling IRQs provides the same guarantee.
-> 
-> The lack of imperative voice is killing me. :)
+---
 
-Oops.
-
-> 
->> diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
->> index 866ea78ba156..c5950a92058c 100644
->> --- a/arch/x86/include/asm/tlb.h
->> +++ b/arch/x86/include/asm/tlb.h
->> @@ -20,7 +20,8 @@ static inline void tlb_flush(struct mmu_gather *tlb)
->>   		end = tlb->end;
->>   	}
->>   
->> -	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
->> +	flush_tlb_mm_range(tlb->mm, start, end, stride_shift,
->> +			   tlb->freed_tables || tlb->unshared_tables, tlb);
->>   }
-> 
-> I think this hunk sums up v3 pretty well. Where there was a single boolean, now there are two. To add to that, the structure that contains the booleans is itself being passed in. The boolean is still named 'freed_tables', and is going from:
-> 
-> 	tlb->freed_tables
-> 
-> which is pretty obviously correct to:
-> 
-> 	tlb->freed_tables || tlb->unshared_tables
-> 
-> which is _far_ from obviously correct.
-> 
-> I'm at a loss for why the patch wouldn't just do this:
-> 
-> -	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
-> +	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb);
-> 
-> I suspect these were sent out in a bit of haste, which isn't the first time I've gotten that feeling with this series.
-> 
-> Could we slow down, please?
-
-Sorry, I went too fast ...
-
-> 
->>   static inline void invlpg(unsigned long addr)
->> diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
->> index 00daedfefc1b..83c260c88b80 100644
->> --- a/arch/x86/include/asm/tlbflush.h
->> +++ b/arch/x86/include/asm/tlbflush.h
->> @@ -220,6 +220,7 @@ struct flush_tlb_info {
->>   	 *   will be zero.
->>   	 */
->>   	struct mm_struct	*mm;
->> +	struct mmu_gather	*tlb;
->>   	unsigned long		start;
->>   	unsigned long		end;
->>   	u64			new_tlb_gen;
-> 
-> This also gives me pause.
-> 
-> There is a *lot* of redundant information between 'struct mmu_gather' and 'struct tlb_flush_info'. There needs to at least be a description of what the relationship is and how these relate to each other. I would have naively thought that the right move here would be to pull the mmu_gather data out at one discrete time rather than store a pointer to it.
-> 
-> What I see here is, I suspect, the most expedient way to do it. I'd _certainly_ have done this myself if I was just hacking something together to play with as quickly as possible.
-> 
-> So, in the end, I don't hate the approach here (yet). But it is almost impossible to evaluate it because the series is taking some rather egregious shortcuts and is lacking any real semblance of a refactoring effort.
-
-The flag lifetime issue David pointed out is real, and you're right
-about the messy parameters :)
-
-And, yeah, I need to think more those. Maybe v3 can be fixed, or maybe
-v2 is actually sufficient - it's conservative but safe (no false positives).
-
-Will take more time, thanks!
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index cb449acc8809..9b067853b6c2 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -1077,6 +1077,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+        unsigned long obj, off;
+        unsigned int obj_idx;
+        struct size_class *class;
++       size_t sizes[2];
+        void *addr;
+ 
+        /* Guarantee we can get zspage from handle safely */
+@@ -1089,35 +1090,27 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+        zspage_read_lock(zspage);
+        read_unlock(&pool->lock);
+ 
++       /* Fast path for huge size class */
++       if (ZsHugePage(zspage))
++               return kmap_local_zpdesc(zpdesc);
++
+        class = zspage_class(pool, zspage);
+        off = offset_in_page(class->size * obj_idx);
+ 
+-       /* Normal classes have inlined handle */
+-       if (!ZsHugePage(zspage))
+-               mem_len += ZS_HANDLE_SIZE;
+-
++       off += ZS_HANDLE_SIZE;
+        if (off + mem_len <= PAGE_SIZE) {
+                /* this object is contained entirely within a page */
+-               addr = kmap_local_zpdesc(zpdesc);
+-               addr += off;
+-       } else {
+-               size_t sizes[2];
+-
+-               /* this object spans two pages */
+-               sizes[0] = PAGE_SIZE - off;
+-               sizes[1] = mem_len - sizes[0];
+-               addr = local_copy;
+-
+-               memcpy_from_page(addr, zpdesc_page(zpdesc),
+-                                off, sizes[0]);
+-               zpdesc = get_next_zpdesc(zpdesc);
+-               memcpy_from_page(addr + sizes[0],
+-                                zpdesc_page(zpdesc),
+-                                0, sizes[1]);
++               return kmap_local_zpdesc(zpdesc) + off;
+        }
+ 
+-       if (!ZsHugePage(zspage))
+-               addr += ZS_HANDLE_SIZE;
++       /* this object spans two pages */
++       sizes[0] = PAGE_SIZE - off;
++       sizes[1] = mem_len - sizes[0];
++       addr = local_copy;
++
++       memcpy_from_page(addr, zpdesc_page(zpdesc), off, sizes[0]);
++       zpdesc = get_next_zpdesc(zpdesc);
++       memcpy_from_page(addr + sizes[0], zpdesc_page(zpdesc), 0, sizes[1]);
+ 
+        return addr;
+ }
+@@ -1135,20 +1128,21 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
+        obj = handle_to_obj(handle);
+        obj_to_location(obj, &zpdesc, &obj_idx);
+        zspage = get_zspage(zpdesc);
++
++       /* Fast path for huge size class */
++       if (ZsHugePage(zspage)) {
++               kunmap_local(handle_mem);
++               goto unlock;
++       }
++
+        class = zspage_class(pool, zspage);
+        off = offset_in_page(class->size * obj_idx);
+ 
+-       /* Normal classes have inlined handle */
+-       if (!ZsHugePage(zspage))
+-               mem_len += ZS_HANDLE_SIZE;
+-
+-       if (off + mem_len <= PAGE_SIZE) {
+-               if (!ZsHugePage(zspage))
+-                       off += ZS_HANDLE_SIZE;
+-               handle_mem -= off;
++       off += ZS_HANDLE_SIZE;
++       if (off + mem_len <= PAGE_SIZE)
+                kunmap_local(handle_mem);
+-       }
+ 
++unlock:
+        zspage_read_unlock(zspage);
+ }
+ EXPORT_SYMBOL_GPL(zs_obj_read_end);
 
