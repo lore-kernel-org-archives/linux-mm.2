@@ -4,237 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D4A1D0D171
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 21:16:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8429CD0D171
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 21:19:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABCD56B0092; Wed,  7 Jan 2026 16:16:03 -0500 (EST)
+	id 990AF6B0088; Wed,  7 Jan 2026 16:19:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A94B46B0093; Wed,  7 Jan 2026 16:16:03 -0500 (EST)
+	id 914186B0092; Wed,  7 Jan 2026 16:19:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 940056B0095; Wed,  7 Jan 2026 16:16:03 -0500 (EST)
+	id 83D336B0093; Wed,  7 Jan 2026 16:19:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BDBD6B0092
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:16:03 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 31744160522
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:16:03 +0000 (UTC)
-X-FDA: 84306425406.19.88CB3F7
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1C172160004
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:15:58 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Z7UHM1Nx;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767820559; a=rsa-sha256;
-	cv=fail;
-	b=mc+BizLZuof+oMVNGnQ64M0kRaJZR72HLLXsRbbB6YOY2SkH5V/rubNDWBPyzpYkuTBgHY
-	RgzLTU2pjrr1WavYiKjDu2ZhxMBp8jHNjLfH23h9j4VAAHKtGjxJDRmYK1xP2btGhAlzLt
-	GNp7yxOA87zMY1xY7GbF0cMSa56ykEs=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Z7UHM1Nx;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767820559;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 706466B0088
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:19:32 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1E3A81404F5
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:19:32 +0000 (UTC)
+X-FDA: 84306434184.16.E875B35
+Received: from mail46.out.titan.email (mail46.out.titan.email [3.66.115.72])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B59BD140012
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:19:29 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=techsingularity.net header.s=titan1 header.b=GRT6GfwD;
+	spf=pass (imf09.hostedemail.com: domain of mgorman@techsingularity.net designates 3.66.115.72 as permitted sender) smtp.mailfrom=mgorman@techsingularity.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767820770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zQa3zA/Z9OlqFznFWSPW56HYj7wZekHjTEp9VHyhH4o=;
-	b=2sZJC+F/Bgg39VyBN6120ONFeOF8H6KkPUOD8BTx/Iw+RTn8AcNbwgxE4bKriZqz0Alrfs
-	5gWEfBqRbKSMfTmXLC/bNmXgdAq5yDb3QSzQo5OM9OC5Vb58HJ/qrGlmzCKiaSbyJdOVFD
-	v9PSnoIy5o2BSQTELIVojcir7X+PVSc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767820559; x=1799356559;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=v7DJlACh5AHpiIf9XTQ2fT3y1iIsfLCtEOAynXr6184=;
-  b=Z7UHM1NxhZyQMOVHXMuNXadUMb0CmXD2QdPsXqtXlej3uJGQvNhqNGmj
-   ceq746W2lNksa5d6PVTZpiRMn9IujvAamMv1Bm90ATIi0f0G9sW6zGdrb
-   pJGyC8FJmXNQE84lO9nDtgnaKZOfpr3atbJHe2jHinxhgI92B02xUSPip
-   cUQnEFB60rKLiVNDnoPessSm0S4aD75IbTtG9MO2G9b/M7XFATuOam2jL
-   qbZBHDARE4nN3GGcEa/42w4EDTHIXTFPAi3B+t2uxx3D2TusFgDaRRSPi
-   9skZbbMQhLYjZmlykpJnTLAGHnVreJjY4/VsKARdusiSnUHInKoRBH5fV
-   Q==;
-X-CSE-ConnectionGUID: fbymjF3bRpi+MXfDMD2E8w==
-X-CSE-MsgGUID: O3P1TgGYSceW/53i7ZEwSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="86785693"
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
-   d="scan'208";a="86785693"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 13:15:57 -0800
-X-CSE-ConnectionGUID: lWR57thTTTiXhE6R2693jA==
-X-CSE-MsgGUID: HaBjC9gZTw+c5oigYPxrPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
-   d="scan'208";a="234174081"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 13:15:57 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 7 Jan 2026 13:15:56 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Wed, 7 Jan 2026 13:15:56 -0800
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.34) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 7 Jan 2026 13:15:56 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n6Y8qRDfVAyGSJJ+laFmT5yHB8T8/nj1+OY62qZ5QJEXeG5em7BMt+1sJLhR39Os7DUwx0iLoF+PPYm03Y3b1WaxefcX/kl0PriJbh2BCwJQpte3KSI/6fXnRA6KdTeHFNzsqrcsDMBPIB4Th3Ohc4kq77CL6UjRZNHlOg3QDI90AHTK+9QPNfzFsG6uTUhOJ9zXR5R5EqmVF5iN7y9RvP9oGETVVQmdezyECc7F+NTxxzXeZnbCqs021iM36cfwNIpS2tLqTa9TDhrgDeCI5Tl7WgIoYNCdC++ykeDVXnn2CncPZBpEVikOsOrSGq9cqA1mgGJaILLaEgVTXtZ7kg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zQa3zA/Z9OlqFznFWSPW56HYj7wZekHjTEp9VHyhH4o=;
- b=Jw3bbLWavXZaE1UQN84drWjcZIzd5N5j+3ulTDQpanFW102oGSWeUfUmdfNJWtMVDm38Gr8jQrcVz5m0wdBfvdDIchFiWxlrDqEKo6LEUSSCcaMJP0yQhv6EzJVuSar3JRIyFuEqfJSEtTE0IhjOVcgTpcIXaIRwam0PDbbYCIJJMEq/kc+S6tXPfy8q5KDkpFCsGohM672w3at9ViUxKIczXDGPn3FFxxaB5rXatu7J+0i99sbjJ/n2lGD3yS7NAD+wT/d7FT5Bxf7HA1dcJwL765VOF4ZGMQS5N565YRdUVzT3N5gzIpVUnUztfLKFH7Sys8LUh6hSlPOYo1yKxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by IA0PR11MB7211.namprd11.prod.outlook.com (2603:10b6:208:43f::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
- 2026 21:15:50 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9456.015; Wed, 7 Jan 2026
- 21:15:50 +0000
-Date: Wed, 7 Jan 2026 13:15:48 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Zi Yan <ziy@nvidia.com>
-CC: Francois Dugast <francois.dugast@intel.com>,
-	<intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, Balbir Singh <balbirs@nvidia.com>,
-	<linux-mm@kvack.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Matthew Wilcox
-	<willy@infradead.org>
-Subject: Re: [PATCH 1/4] mm/migrate: Add migrate_device_split_page
-Message-ID: <aV7NBE3NS1wdsXBo@lstrano-desk.jf.intel.com>
-References: <20251216201206.1660899-1-francois.dugast@intel.com>
- <20251216201206.1660899-2-francois.dugast@intel.com>
- <F4EAA470-C922-4066-A115-13D6D055C73A@nvidia.com>
- <95BD5D5B-C8EB-4EFA-A895-CFD660504485@nvidia.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <95BD5D5B-C8EB-4EFA-A895-CFD660504485@nvidia.com>
-X-ClientProxiedBy: SJ0PR03CA0060.namprd03.prod.outlook.com
- (2603:10b6:a03:33e::35) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	bh=3Gsude5bCr/12iFzuhvBklS0UCcOFjMel4nHpQJlVUA=;
+	b=tOWuZ3J4jpb9rpRO0EmAc1eTPvPJx6rKEWDE9MSOTCng93eGpGVn4SFfWMF9mTD498wHcK
+	tVmifXSXBonM88DWwQpsAoJ4IzfciiSxCDnx09m4BPbk4djRmW+yqi4gu9BDE51quibNff
+	e4ZPPDKtNwhMqSIjxA6yaohkLuUGWk0=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=techsingularity.net header.s=titan1 header.b=GRT6GfwD;
+	spf=pass (imf09.hostedemail.com: domain of mgorman@techsingularity.net designates 3.66.115.72 as permitted sender) smtp.mailfrom=mgorman@techsingularity.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767820770; a=rsa-sha256;
+	cv=none;
+	b=8DgUwUOwwH1yfstejq7xeJQpyYMgZ73aGIkCareAseBWDCEfYWhoAzkncNezFT5TRRgVkx
+	a4DCWJ92EyGMkAJLT+lv2z7guzhul9ScsxD8s8FWYVn77yB2c4s7xx9T1jw+KG6/auDtag
+	GsiY5ztMdV0Bv3dajGm79hW8JhKXmUc=
+Received: from localhost (localhost [127.0.0.1])
+	by smtp-out0101.titan.email (Postfix) with ESMTP id 4dmgsD0gw6z4vxF;
+	Wed,  7 Jan 2026 21:19:28 +0000 (UTC)
+DKIM-Signature: a=rsa-sha256; bh=3Gsude5bCr/12iFzuhvBklS0UCcOFjMel4nHpQJlVUA=;
+	c=relaxed/relaxed; d=techsingularity.net;
+	h=date:cc:subject:references:from:to:message-id:mime-version:in-reply-to:from:to:cc:subject:date:message-id:in-reply-to:references:reply-to;
+	q=dns/txt; s=titan1; t=1767820768; v=1;
+	b=GRT6GfwDFe8MjeAHbU3WKrjHJH5MTG7P8YHkSbQMBx54D0v53MuQJdCG5+JS3kgyrGD8/SK4
+	0xIJuW6Q/2GJUf4qzG63maVHTQrzpMu5pRc9JTwzGkn0K8keeQZYXtRxc5kaz5DUiUGKzH0QJU5
+	uxSEYB1hDcy8bRcRj6eAeiQk=
+Received: from techsingularity.net (ip-84-203-20-110.broadband.digiweb.ie [84.203.20.110])
+	by smtp-out0101.titan.email (Postfix) with ESMTPA id 4dmgsB4LfWz4vxD;
+	Wed,  7 Jan 2026 21:19:26 +0000 (UTC)
+Date: Wed, 7 Jan 2026 21:19:20 +0000
+Feedback-ID: :mgorman@techsingularity.net:techsingularity.net:flockmailId
+From: Mel Gorman <mgorman@techsingularity.net>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, stable@vger.kernel.org, 
+	kernel test robot <oliver.sang@intel.com>, Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH mm-hotfixes] mm/page_alloc: prevent pcp corruption with
+ SMP=n
+Message-ID: <h33pscn2orhpb5dapttmo4vy4s3drfsjaahmjp4arsjjfngzno@bzbacqjvfe6r>
+References: <20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|IA0PR11MB7211:EE_
-X-MS-Office365-Filtering-Correlation-Id: efae8e66-67cc-4a8e-af49-08de4e31ef10
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MEx0UHYzdkFtRVJUdHEvdTk4T2lueHJ0TzE3dHVxWFJKNUdwVldFUVppRGFP?=
- =?utf-8?B?eTl2OTk0RndmTkxVK2tLdVlEUlk3SGxjUDRMSDNCVlNhdTd4aGM5dFdUMk9B?=
- =?utf-8?B?K3JWTDcvMldFS3BJQnVSZmNmZ0RxelY5UnJxbUpDeUF6eG1WQlhqOVhCbFVp?=
- =?utf-8?B?TldhdkxqNWZRaDBxamdyOXdTQWlmdXk3MFJWV0ZlWjdFUXFNK290aWVvMGFS?=
- =?utf-8?B?ei84THVrRlVTRTRQR3IxZmVIQnhvRi9Sc3JNVEhjZ2Z4UDZLQzUrbGgvZ3ZL?=
- =?utf-8?B?a2FjdEFBL2FzS2FzVEUzYS9sSHhJVmJIek5USEo3YklDQlZxVGZSWm1DL2V6?=
- =?utf-8?B?RDEwQ21PNHFsdzJ1UDAyeW51cVEwY054azZNdVFJRHZLWjZWNUpGOEJ3SDRt?=
- =?utf-8?B?clBpYnNXRS9YeWhhV0kyek9IaExBdzJuTDczZTJsRG5CUEhkWThoaTBwUXRi?=
- =?utf-8?B?c0tkSzhDa2FMQVpJb09Na2NTS3IxK3VvYTlKbHZXTi95QXF6QnNqZU02MXA1?=
- =?utf-8?B?bmYwcWtjc0JTcXVhRk1KMld2N1lLS0pvNXNNZk9SdTk2ZTg1dG55dGlEbkhB?=
- =?utf-8?B?RmJoa1UyVDFOSnJOVjFVWnJEdUFuL2NnV2V1ZUsxMU1nLzRwYk9xeUlvV2Ux?=
- =?utf-8?B?S1czNVNObGRvRkFZWW5SaVYrUjhOVnlSWHpMQ0xkdHJwZkFhcit5Uy9oKzZl?=
- =?utf-8?B?eFN2WUYrWmZpM0Nmd21NY3BWQW1jaUtsTkZvc1M4MVpyOVFydlhZbGRVVFdu?=
- =?utf-8?B?dSt1eHF6ajR2dFRtZ2xBSEFqY1Z2MDlwTllPMjhQTEVSa3ZXVnJsSUlNRW13?=
- =?utf-8?B?U095YzhiZktqbXZ4WWw3MDVmWjcyQVBmMnJRU1pVclRLSUNjWUdCUTI1Rm8x?=
- =?utf-8?B?SnF2TjVRNDc2VTdrbXRGSlhIYVJkUUFiL2gxMkdQdTd3WGdHOEQ2WUVCK3Iv?=
- =?utf-8?B?V1pweUJJVE1oa2VXOVlJN2hwdjlnVS9ySFo3cmlNbTRyUlRTZFFWUlBkSWpv?=
- =?utf-8?B?RUwvWS95dlZEZG1sRjRwK29iRHEySVVaeHZtRWlOdmpVdE1KWDk4Y3hCMVFD?=
- =?utf-8?B?NDMvcUl1M0VkSjgwai9Cb3JNSjNwWWNuMFVnbjNXQnpHWkZiMCtMYU5UOThr?=
- =?utf-8?B?V0dXTEdWWDdBL1pEM01jcHJ2Y3NYZmNCMzNzdmR2RWFNSnJCVW5VcDhXR3c4?=
- =?utf-8?B?YklPM3VpVWdEWTRyVXdlRlIxYWxUaExDR1pzUjVGUUpsVmxDZVU4aVVOSjZp?=
- =?utf-8?B?QXJxU2NXY0orVEFnUy9XYmNBcEtaaldodWxEc0VIbVhDWG5XN2JnajVBdHE2?=
- =?utf-8?B?VDFyaUdSa2xTTnZ3WTY4YUFYR0htbGcvRHlvaGpDSmh0NkIrWDdhd2QzSzRn?=
- =?utf-8?B?Sm5hOUs0UUwyN1l1OVEwelVOMGNHL1hKdnRoMjhlWnFFUUhQR3luRmczemJl?=
- =?utf-8?B?c2JHdXlJbzJtNUpjVlBmbkpwNVVWSlNKMEg4UlJOUGo3aHlNbmhDMXo2dkgw?=
- =?utf-8?B?c0xENFVnZlN6b0ZpcDdTRklVU3MrNVhNaU0rNnc4ZmtLTFgvaGxqZSs0UFFt?=
- =?utf-8?B?Q3h4WitVZUZrM3FpaGhqejBjRytzZ0p6aExrajJnTDR2aWpKOHNGTFRxVVFW?=
- =?utf-8?B?bE0wTUsvMmxiL0NoMURxbDRicnRpQWNreTQrR1F0SXRTNVNPWksxbGlQVEQx?=
- =?utf-8?B?dUFSNXRtUjBrV29maFF2MVFsQUVQanlzWFFyTzYzVjJuMzh2SFg0a3dod1Zj?=
- =?utf-8?B?QWJYN0pvdTlBdzlob3pnUkFhYnJVZkZiR1AraURXRU1EY0o3a005VDJaMEo0?=
- =?utf-8?B?by9DOHRQRklnaEdHYWptSFpWSysyUFVuMWs4SklFMDZyL2RkVVY4ZDFUZEFR?=
- =?utf-8?B?T1JlTEJjaEZQZ2lnVy9UMjJWUlluRGdndjV4WldLZEFzRDVGWGNyRjdCanF0?=
- =?utf-8?Q?+NnUeSTWohFSpIBQ4+rzrD/rQv+sYe0Q?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bHUrNld3cVpZTTl2RFoyNlFLdElwZ3ZlbW94MUtldGhBa3FaYWNheEdyKy82?=
- =?utf-8?B?NlFYa2RrVWhkWWVlQ1VaVGp2QnFTTlEzcGs5V1FLd3Y0aExQbit2Smk5L25p?=
- =?utf-8?B?SzVnMGI2VGIwTGNYZTJuWE9LRkJoZFdTUkVMTm05V3pIOFEzR3RDMmxNUGlF?=
- =?utf-8?B?b21DYUluaytnRUM1WnBMOHNXSFhYWXQyZDdTRU1Md3A4c3lPSXllc2tkQVZ5?=
- =?utf-8?B?T2hSSzdhSS9KOVQzd2ZMNE5UTHBqeFRDNS9ENEVLd294NVNYbjhTdXhLcDlU?=
- =?utf-8?B?eDZOWVNhVUNWSHRyWkJWc1VvR25xRzVzZFp1ZWdFY050U2VTNmpVUUJxaWtP?=
- =?utf-8?B?YjdHdDZualVEdHBLMWpudHU0clpuNTUzR2FMNHoxMFlmVldUYm13VGdINEcx?=
- =?utf-8?B?TVVRVWRwMnU5NFhmcnlZSDVkNzRKWXg2S29obGVUZ3JpWFNVUnEyNFhmVGZR?=
- =?utf-8?B?SDA2WmlFTnRCR3F6dEVuM2xvWGl2aHJucUJaNGxOc09CNjFzUTlTczU5dWlm?=
- =?utf-8?B?RmJvaWlReDdoTGxxK3JYbUYzN2lBV0ZrNVh5Q3k1TjAwUnhTYUxzK2QzU29M?=
- =?utf-8?B?NFhQa3h2ODJCcEE2SmtTNXNEOHo4cVhhRGk4UTgwR1FHOHlHdFhZTmZGdU1Q?=
- =?utf-8?B?V2JVdURxcTVkb2Z5eWpUKzl4VXNqdStQRTJVOW1FQ2Zsd05kZ0RkVVJ0UmRl?=
- =?utf-8?B?NVgzcnU4andQdFgxZCtCSjlzZ2QycnE0bXlORld6SlZZT3ppR2ZtK2V3NVIv?=
- =?utf-8?B?L3M5Zk1tWk54bkJOOUp4SkYzYzBLblF4YTRTNjBLbUlMZ3JqOGhGNWl0RW85?=
- =?utf-8?B?RjRJcEJHOW40T3B4NUZtclFaOEEwQnRJaUdGQnNKQ3J1aTNpK09hUGdiSEI1?=
- =?utf-8?B?aFA0eSsreVB3Nk5EQUpXNmJKcmt6aE4yZldkK0wxdGJkaGNlS1Yvd29Ld1lO?=
- =?utf-8?B?OWdWYktSUVNpdlZncUpxdXdaL2hWOUprVEc3dzJObkE0clcyZGJpZ1hOZzB2?=
- =?utf-8?B?NW5XK2FLWFhOSlFLaUliM2FDM3JJbHY5VzB2b3c5TVB0K01FMTNtTWMyK3E3?=
- =?utf-8?B?S1hkRHNTUU0zbkg0VEhld2xJWlJIZ29HeENVN2FFdTNDbFhIditoMEwvVC9C?=
- =?utf-8?B?K0xOdUZMVnpVNVNnMTFYSFM4WVd1RlNkQmx0ZTZsU29nV1hlTXlmUk9XNjUw?=
- =?utf-8?B?UGVlNEo4OVEvaVkyTHZpUWhVc08rdks0bjhoUVNIR3JrNmU3bnRzNVFJZDVP?=
- =?utf-8?B?ZFBidHRtcG1Ialc0elNRcndhTVRubHNwK1ZOaFRITXkwTW1PU0ZFTDd4MGdt?=
- =?utf-8?B?NFdkUUZOb3Vxa01sK1ZuN2dDc0FZTGMxaGVFZ1RXTk94WXJrYlJpZFk1WS9O?=
- =?utf-8?B?QmtzVDJBVnVpSVFJNjErNmhKdXFNcDZBYXpMa2JTTzdlMWJZT002S20zdmh0?=
- =?utf-8?B?SGFTMzZsc2MwWjVLVjNYKzJYVi9HZ1ZYRFZwTElkbWJNdkhMK2VWamgwZU4x?=
- =?utf-8?B?UTdRSjR5dGd1L1RVbGMvbmZZVFAwQUxaaVJoOWtEb1ZCUUlMMjZCQ0FCRmM5?=
- =?utf-8?B?b0haSkM2Q2d1Z3FqSDR3MDVtOE1LT0t1VDRmamNHZlhRdzNoWlNoUThxNEZW?=
- =?utf-8?B?Y3ZqSU5URU5kSCtMMXkvayt6VEtVWlJYRUUvRFNkVU1YbVZyZDI3S1V3aFJz?=
- =?utf-8?B?aFAwVlExaW0vUkdaWEdTcStGN2ErU0M1STgwcmJrakhUZFQ3bVJvM202eHVu?=
- =?utf-8?B?UDR4MHZGR1pLeURFR2trYWFJMXdWelkvY20vbmdOWUlLc1lLZkR2bEFCTTMv?=
- =?utf-8?B?UVV4aVMrWlVzRDlVOVVWbk9FTTJTelh5Tmh4cHgxL2g4c1JGOXcrdXZMMVVW?=
- =?utf-8?B?OW9wbllRcEdjYnNzN2hXcHI2cGNBcktCWmxjMVVnRTRKSFBNM09oaVB4TUFr?=
- =?utf-8?B?Sms4LzFRMkpYcU1WVU9wZFlSTFViaExsbmJocDJGQWRiMDg3OVNsRXF0bTh4?=
- =?utf-8?B?VW9XNElzWWYyNUVKVHRBQzROckU2dGpxRmt4WjVlVHRWa1BHNWtNVDQwd2pQ?=
- =?utf-8?B?WlVpbndMejIyZjVCNEZnQ2hzODA0WnpsWmExN0QxcUlremR4aXgzT0pwbXdH?=
- =?utf-8?B?S2Z5SDBHVC9CSVdTMUV2eEI5SHluZHliQ29uWEpveHlydU80TW1LRXBSdTNE?=
- =?utf-8?B?WmxtQ25EOU1sakJZTUZUM2pJdW1vNUpwWDQ0aWJqWjdremNRK0xIVC90bmdx?=
- =?utf-8?B?RkdzVEZLeDRwYjlReUtKZjllUnBIWnQ0MGRtWGdrS05Ya1JEenA2Zm5ZNVNq?=
- =?utf-8?B?WXQ4VFl3VFpBOHJhNmRMUWxiYlk1NDNsUnlLeFBuSExsOHhoT0ZhOTg5MW5M?=
- =?utf-8?Q?gIgqPYELZyc7mICc=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: efae8e66-67cc-4a8e-af49-08de4e31ef10
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 21:15:50.6049
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B+VLwM3gXSRBij2ypOTpKOEcUSchVx7+HrQQaURR2rjl2teOrUElR47twxvPbGwAY92YsFF6x6JLVIR6gHJAtA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7211
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1C172160004
-X-Stat-Signature: wgmwja44w1fhcxi5htd6adiymaw7ytt3
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz>
+X-F-Verdict: SPFVALID
+X-Titan-Src-Out: 1767820767945683141.1240.1245684775781968541@prod-euc1-smtp-out1002.
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B59BD140012
+X-Stat-Signature: 5u9ztrw7d99hp4pgrhnn71u8aitaikjq
 X-Rspam-User: 
-X-HE-Tag: 1767820558-239673
-X-HE-Meta: U2FsdGVkX181fQGPhmfVZ6VgP0JpkBEgcFEtTp+fRcrKrTy1dPzzZ7V2JpIWEGKhpVDMQeRXN/QSaMPxOhNJiqdNUnpZ6v5vhsUAob+tbhxjIYuh+4RtMjNnwHbc2OK+6Am2y6bjXXJXbXei1zOThhpTqiGa0XjDsTmMLwPRcwUyaE8LTZAPcuEGjegJVwvq/twGeAxoFUTFbG7bZrw6BVsTkg4dFGNWzGxWoo13O7aFabzdjppxmorlFluVkZBeYiX8giJsxz5t4DlOLQxQSg5WzXulAAy4HbTqILJ/lTLxJgcviYnbRJGI92qWZLSBY1NT7hdM4Xzt4wBEauB4fHcrlwdnP46/R8hW3dpSxnSAxuDUjV2dFoOV26VxSisYe8FXA/EOIMlD6LMC5ejeWx5tDl+kHufGVOZq/vsskooYcgwpvIcgkuaIPzknLUVX1HeEJ7WN+68JfVilj14Kzqwk7KKA5JpB4ukam8wLc0wN3hCHvFE6QIe8EW9HO19+psmdMRfEln4Nxo/shuQ58E6l3Wz/zJBN9EO52s7TK+l3Pz/BcR62tj2LQE9ASJ6fIuklFlWHVEdj+WoCWWmqCZ9lUfb5YoYgdtliatlM6otswJAzBv+rKvF/WRIH499eF+wyF92vY0Ue/LVAVPIztybXz3jZb5TqPWPAAWuoMNRpmHz2ZLK9qNjSZs4y/rlvestx84A5zb1mgHnNh2BJJBKOc+NIX8E7FVrNAUXPYtFquwtqZTadS3H/it0lLIlkQTmi2FVn4hfDb8EbifbgmQ86e1waBSksdb+F2LtRx+zJyJ97D4uujg3b7CGGdhwgHooMgdl8rp+m0t6oOuTYfKgXHHSfi7jXVkV+oYEoYsSaMxF60FEf/sCIiUyOLtzHtcxax49n07V8KJAxQANJMq8xIJ/Q1LY+M6o2TFWhZcrRzp/hgtWVo/SZ5hKMv/BvPQcq1LpYu/rg3bW8kRd
- ZWth7d0o
- im9dfEWFaj0XlqD0/2EO1rsr7iyPAh1SM7bNwrAGWZb6fevXWE8W2h8bdXwUCZtmtanZm63tEGm9ni8Yn0C4RSLBtzSdRhhoYQXQhL12w2x6bT2gy+9eRm1lb7gjh/gckpgZN6sKBSNpcUwTLs8XSoKGMOPHPORSlQdf/M45Pu6KVGeRBfJPhmlTRcjxHt/Ms1Nl+4frfYVQJ6/DTNjlJQnoBziarfpPOGjzZZMAN7xUPDZRUv3iDJBMhP3r5FD6ABUsmsN1I/S3DAud6sJCCTiSxk6dLSNh7ixMOKhiue/SxZXLXPqvDIolrMiUAEMRQsbalgnkF8/WKnr1u/PJN4n8wAKKnfSs5l7+16am7opBJZlxWtatOAoJQVoUVYe3Nm2sPxSXNZaNgCCzmUr+aGYjROyuv44szbcl9DZytFgSt37+xMprNXCYQ5IxBiR1uGgfVHEzkY1hgpPJLyyp1uKtPrxfqgHWPM/NIOubFjtgnhbbjjSZ/uqftAtYuKRq+/+x/Ygj93oRozKtfc5akCbDwCZdumKMZHBbDVngUjOjOIMSCvIrE2CJU4Cx/YXY66QG9xVTHkzevIi7dk4bPu+JOBih3nTalamE/4/9V3GoG8i3JDxhudOP8GPKvC0IByelmvs+jf2rDxE/onEaZS1VNj+SOX7PXZCc+eiobGuL+X6Z+wANwroM5DyK+G45elqt2jrb+RRi31tgioP3NBZTRg8s5dWPRpZmCkmtZfL4HpuxoHwYwYfD1cXX0nNU9rmdNEoF/f1NBWXK4+w4WOPzFug==
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.4 cv=T/SKTeKQ c=1 sm=1 tr=0 ts=695ecde2
+	a=5dAXIHdmPTy1nBlDlZrV4w==:117 a=ycgmuL0lqxUANBz+XI9aLQ==:17
+	a=Q9fys5e9bTEA:10 a=vUbySO9Y5rIA:10 a=CEWIc4RMnpUA:10 a=CDkG8U_cDq8A:10
+	a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=JfrnYn6hAAAA:8 a=R_Myd5XaAAAA:8
+	a=MC9sqzVPiPx8m3HZA18A:9 a=PUjeQqilurYA:10 a=1CNFftbPRP8L7MoqJWF3:22
+	a=L2g4Dz8VuBQ37YGmWQah:22
+X-HE-Tag: 1767820769-929072
+X-HE-Meta: U2FsdGVkX1+87npRkRl64MEvsfdHtpx9PbpTBLtdWXb3xuwPdAhdfpVkTeasTHmSsvdcH9hOl+G43PFXPGYVnifwLQf90gusBQcJ1TFrWAAZ7V5BKm3P68YOFmfS/3QnbI2DFhlPq24r0s6HBgPhZgbSDyoWkTdb0kRIQY6uc0MSc25zW0FHexyopdLbivGzpsCxeMjrmTaZ2qUFPUov0THdaCH+ulitkZUHamvbHViIwQ3wUmGdReNBWUDqDy1YgJiOH+P0cj3GYfgZF9Fqqz4YcexUhXpX3iOp/hVCAZcCqFLq+TnOZebYKkaUeskmJSQn/U/0UQPtCGpOPJhMkhekgVn0lRnW10MIdVYYIBYLAmR/Hx2rcxgo4hDGbVgU7qGH5MWqoT9WKvI/30tmETos+dVD8F7KW4Xyw4aZ9hFeE2z9Cu8atmXNJlC8whsyZCPQNj/nonVtNY37y12srJ6FgB1CTFYiIVxLO8U5mO2X/qdCwRjAqjXl3MX4BkSXudlQPGPrTduacckCVVviBS7ocs7CJJZdTZ6yg3kZnp/5PEonqs6wGFWtyHG9XTLW/nSf+1lBBVd9deX81tFiPndWdNzg58KEEgOJsb8/ub37b3+Ccri4qAhD53MJbQlmmVwN0Yf98bXbMrq5+zcTPasiaHCyTfMjaL1NJDTfSilCJEZ+FeESNB+UxxtdIYP5a4vNtcWAs+PyLvn7jI43MsQwHCEhaF74lai4GGY0EJqEH/JzJOZfDwzV3EBu0AP4FaT06c2sWCCXkw3SEYK/y8ho2lahRbsLAZYLjBXKWeBIL0J1IlyjlaTlKoU6BTStIQmxATuC87fasT1GJEe48CQwMuBmSNDnQi5gPt5XrOs0QhMuBEKpwx5b0d7Uc95BvHIdK0z/eu/p1r5rMbS6kIT2bXqC3PrD95v/27Ec2Dv9L6UMaMnueQCm1qGAWrxu1Eg6K2FbY65kqfdFImh
+ QmU8pxEx
+ nJi8loBLLJhc2LeD9A7HBVoD102Jvol2Sr6lbgBewMs5odykviWEHVcAoZeuI8buS8anWe317itETsm1r1BCreMUdayNuHktZAFDoUwdeUkBPDSoDqeFHGDC82yWfxYEHi70YcaOuYSQKsyhaQ7Cod0U6IN/cTA2ek6Hdm3xZLlBPk6a8Zj3NDKBLlgLu00u+r8BZnnyA83ZjvS7J5hUzfMnT3SG81HC4rQOQovtdb3HkMJmkHGY2iugKk93ueBuFW5v3SkkZtzDjbTOyoo0MbgUDvqYA+qmCMNakrE27tZc0tdB0ghd0xgy/ABauiSiGMgUjYw6Z7haskAxrVRJ+yeogUS/p4IiJU3G4CziwxP/ow4DTThTapqszVXgJYRsUY8Mmt3dK9qb8IUxbR5X8UpmrcXPlH3PxFVaiHviz2CWPf3GT10CSIu+S9BM25AIAx6sMD9mBJl8/w4OkrAJPytjMtMqT0CjyNVS/p6iu9ilpllKYtCN+O4AU3TqJhQr9x0BCYl5mLoiD5coVC4JWX0eZ43hiDAeV0wN6RcHeZH8KOeE3H1ZAjmitmqTS6bmHT85pnnKSXbJu/mlrGKpOZzDXtpkwROCczzmSrUvYl4i+WGC0QxXT4eIgXp6pVH0CD3XdNrbs0IKa8qXg9Q2hIEnfD5a8nv629B3KqBB6BSU4naDkHGsrikqiYvngpZjGQvee1s3GHmdLWarcxuuRvFMmcwxSsM7mnlN6sxZHZdXkrodprMpN4HZSwEkQLWt+d3y0koxPRUWE84bTdAjX06ybdiOpyxDsE+9VSzR49GcJTNh5sgHvUMm6PL2BiKhPW3aPRHjcl04i4m6q/SqJ6hlwPGRQ6f8DxQwUn6DiCOyAThasUWvWZvMO6vCNER0zMLWMl9qCdwSC/svLF2MK9nlJ8ni8YUk72I41sIjOK26bM04JuKSkus04r9Pa2gguNdQZUkKt2j8UHpjB04QEAzue3MG2
+ 328JRH1x
+ 0VQaaRHPZl5NZbacqae82U2R3QgrwhOXz7D1/P8Lu48gP0PHF77uY91P1vhkdSIyHYRVOXbqRe4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -243,203 +107,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 07, 2026 at 03:38:35PM -0500, Zi Yan wrote:
-> On 7 Jan 2026, at 15:20, Zi Yan wrote:
+On Mon, Jan 05, 2026 at 04:08:56PM +0100, Vlastimil Babka wrote:
+> The kernel test robot has reported:
 > 
-> > +THP folks
+>  BUG: spinlock trylock failure on UP on CPU#0, kcompactd0/28
+>   lock: 0xffff888807e35ef0, .magic: dead4ead, .owner: kcompactd0/28, .owner_cpu: 0
+>  CPU: 0 UID: 0 PID: 28 Comm: kcompactd0 Not tainted 6.18.0-rc5-00127-ga06157804399 #1 PREEMPT  8cc09ef94dcec767faa911515ce9e609c45db470
+>  Call Trace:
+>   <IRQ>
+>   __dump_stack (lib/dump_stack.c:95)
+>   dump_stack_lvl (lib/dump_stack.c:123)
+>   dump_stack (lib/dump_stack.c:130)
+>   spin_dump (kernel/locking/spinlock_debug.c:71)
+>   do_raw_spin_trylock (kernel/locking/spinlock_debug.c:?)
+>   _raw_spin_trylock (include/linux/spinlock_api_smp.h:89 kernel/locking/spinlock.c:138)
+>   __free_frozen_pages (mm/page_alloc.c:2973)
+>   ___free_pages (mm/page_alloc.c:5295)
+>   __free_pages (mm/page_alloc.c:5334)
+>   tlb_remove_table_rcu (include/linux/mm.h:? include/linux/mm.h:3122 include/asm-generic/tlb.h:220 mm/mmu_gather.c:227 mm/mmu_gather.c:290)
+>   ? __cfi_tlb_remove_table_rcu (mm/mmu_gather.c:289)
+>   ? rcu_core (kernel/rcu/tree.c:?)
+>   rcu_core (include/linux/rcupdate.h:341 kernel/rcu/tree.c:2607 kernel/rcu/tree.c:2861)
+>   rcu_core_si (kernel/rcu/tree.c:2879)
+>   handle_softirqs (arch/x86/include/asm/jump_label.h:36 include/trace/events/irq.h:142 kernel/softirq.c:623)
+>   __irq_exit_rcu (arch/x86/include/asm/jump_label.h:36 kernel/softirq.c:725)
+>   irq_exit_rcu (kernel/softirq.c:741)
+>   sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1052)
+>   </IRQ>
+>   <TASK>
+>  RIP: 0010:_raw_spin_unlock_irqrestore (arch/x86/include/asm/preempt.h:95 include/linux/spinlock_api_smp.h:152 kernel/locking/spinlock.c:194)
+>   free_pcppages_bulk (mm/page_alloc.c:1494)
+>   drain_pages_zone (include/linux/spinlock.h:391 mm/page_alloc.c:2632)
+>   __drain_all_pages (mm/page_alloc.c:2731)
+>   drain_all_pages (mm/page_alloc.c:2747)
+>   kcompactd (mm/compaction.c:3115)
+>   kthread (kernel/kthread.c:465)
+>   ? __cfi_kcompactd (mm/compaction.c:3166)
+>   ? __cfi_kthread (kernel/kthread.c:412)
+>   ret_from_fork (arch/x86/kernel/process.c:164)
+>   ? __cfi_kthread (kernel/kthread.c:412)
+>   ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
+>   </TASK>
 > 
-> +willy, since he commented in another thread.
+> Matthew has analyzed the report and identified that in drain_page_zone()
+> we are in a section protected by spin_lock(&pcp->lock) and then get an
+> interrupt that attempts spin_trylock() on the same lock. The code is
+> designed to work this way without disabling IRQs and occasionally fail
+> the trylock with a fallback. However, the SMP=n spinlock implementation
+> assumes spin_trylock() will always succeed, and thus it's normally a
+> no-op. Here the enabled lock debugging catches the problem, but
+> otherwise it could cause a corruption of the pcp structure.
 > 
-> >
-> > On 16 Dec 2025, at 15:10, Francois Dugast wrote:
-> >
-> >> From: Matthew Brost <matthew.brost@intel.com>
-> >>
-> >> Introduce migrate_device_split_page() to split a device page into
-> >> lower-order pages. Used when a folio allocated as higher-order is freed
-> >> and later reallocated at a smaller order by the driver memory manager.
-> >>
-> >> Cc: Andrew Morton <akpm@linux-foundation.org>
-> >> Cc: Balbir Singh <balbirs@nvidia.com>
-> >> Cc: dri-devel@lists.freedesktop.org
-> >> Cc: linux-mm@kvack.org
-> >> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> >> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> >> ---
-> >>  include/linux/huge_mm.h |  3 +++
-> >>  include/linux/migrate.h |  1 +
-> >>  mm/huge_memory.c        |  6 ++---
-> >>  mm/migrate_device.c     | 49 +++++++++++++++++++++++++++++++++++++++++
-> >>  4 files changed, 56 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> >> index a4d9f964dfde..6ad8f359bc0d 100644
-> >> --- a/include/linux/huge_mm.h
-> >> +++ b/include/linux/huge_mm.h
-> >> @@ -374,6 +374,9 @@ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list
-> >>  int folio_split_unmapped(struct folio *folio, unsigned int new_order);
-> >>  unsigned int min_order_for_split(struct folio *folio);
-> >>  int split_folio_to_list(struct folio *folio, struct list_head *list);
-> >> +int __split_unmapped_folio(struct folio *folio, int new_order,
-> >> +			   struct page *split_at, struct xa_state *xas,
-> >> +			   struct address_space *mapping, enum split_type split_type);
-> >>  int folio_check_splittable(struct folio *folio, unsigned int new_order,
-> >>  			   enum split_type split_type);
-> >>  int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
-> >> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-> >> index 26ca00c325d9..ec65e4fd5f88 100644
-> >> --- a/include/linux/migrate.h
-> >> +++ b/include/linux/migrate.h
-> >> @@ -192,6 +192,7 @@ void migrate_device_pages(unsigned long *src_pfns, unsigned long *dst_pfns,
-> >>  			unsigned long npages);
-> >>  void migrate_device_finalize(unsigned long *src_pfns,
-> >>  			unsigned long *dst_pfns, unsigned long npages);
-> >> +int migrate_device_split_page(struct page *page);
-> >>
-> >>  #endif /* CONFIG_MIGRATION */
-> >>
-> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >> index 40cf59301c21..7ded35a3ecec 100644
-> >> --- a/mm/huge_memory.c
-> >> +++ b/mm/huge_memory.c
-> >> @@ -3621,9 +3621,9 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
-> >>   * Return: 0 - successful, <0 - failed (if -ENOMEM is returned, @folio might be
-> >>   * split but not to @new_order, the caller needs to check)
-> >>   */
-> >> -static int __split_unmapped_folio(struct folio *folio, int new_order,
-> >> -		struct page *split_at, struct xa_state *xas,
-> >> -		struct address_space *mapping, enum split_type split_type)
-> >> +int __split_unmapped_folio(struct folio *folio, int new_order,
-> >> +			   struct page *split_at, struct xa_state *xas,
-> >> +			   struct address_space *mapping, enum split_type split_type)
-> >>  {
-> >>  	const bool is_anon = folio_test_anon(folio);
-> >>  	int old_order = folio_order(folio);
-> >> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> >> index 23379663b1e1..eb0f0e938947 100644
-> >> --- a/mm/migrate_device.c
-> >> +++ b/mm/migrate_device.c
-> >> @@ -775,6 +775,49 @@ int migrate_vma_setup(struct migrate_vma *args)
-> >>  EXPORT_SYMBOL(migrate_vma_setup);
-> >>
-> >>  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
-> >> +/**
-> >> + * migrate_device_split_page() - Split device page
-> >> + * @page: Device page to split
-> >> + *
-> >> + * Splits a device page into smaller pages. Typically called when reallocating a
-> >> + * folio to a smaller size. Inherently racy—only safe if the caller ensures
-> >> + * mutual exclusion within the page's folio (i.e., no other threads are using
-> >> + * pages within the folio). Expected to be called a free device page and
-> >> + * restores all split out pages to a free state.
-> >> + */
-> 
-> Do you mind explaining why __split_unmapped_folio() is needed for a free device
-> page? A free page is not supposed to be a large folio, at least from a core
-> MM point of view. __split_unmapped_folio() is intended to work on large folios
-> (or compound pages), even if the input folio has refcount == 0 (because it is
-> frozen).
+> The problem has been introduced by commit 574907741599 ("mm/page_alloc:
+> leave IRQs enabled for per-cpu page allocations"). The pcp locking
+> scheme recognizes the need for disabling IRQs to prevent nesting
+> spin_trylock() sections on SMP=n, but the need to prevent the nesting in
+> spin_lock() has not been recognized. Fix it by introducing local
+> wrappers that change the spin_lock() to spin_lock_iqsave() with SMP=n
+> and use them in all places that do spin_lock(&pcp->lock).
 > 
 
-Well, then maybe this is a bug in core MM where the freed page is still
-a THP. Let me explain the scenario and why this is needed from my POV.
+Bah, correct.
 
-Our VRAM allocator in Xe (and several other DRM drivers) is DRM buddy.
-This is a shared pool between traditional DRM GEMs (buffer objects) and
-SVM allocations (pages). It doesn’t have any view of the page backing—it
-basically just hands back a pointer to VRAM space that we allocate from.
-From that, if it’s an SVM allocation, we can derive the device pages.
-
-What I see happening is: a 2M buddy allocation occurs, we make the
-backing device pages a large folio, and sometime later the folio
-refcount goes to zero and we free the buddy allocation. Later, the buddy
-allocation is reused for a smaller allocation (e.g., 4K or 64K), but the
-backing pages are still a large folio. Here is where we need to split
-the folio into 4K pages so we can properly migrate the pages via the
-migrate_vma_* calls. Also note: if you call zone_device_page_init with
-an order of zero on a large device folio, that also blows up.
-
-Open to other ideas here for how to handle this scenario.
-
-> >> +int migrate_device_split_page(struct page *page)
-> >> +{
-> >> +	struct folio *folio = page_folio(page);
-> >> +	struct dev_pagemap *pgmap = folio->pgmap;
-> >> +	struct page *unlock_page = folio_page(folio, 0);
-> >> +	unsigned int order = folio_order(folio), i;
-> >> +	int ret = 0;
-> >> +
-> >> +	VM_BUG_ON_FOLIO(!order, folio);
-> >> +	VM_BUG_ON_FOLIO(!folio_is_device_private(folio), folio);
-> >> +	VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
+> Fixes: 574907741599 ("mm/page_alloc: leave IRQs enabled for per-cpu page allocations")
+> Cc: stable@vger.kernel.org
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202512101320.e2f2dd6f-lkp@intel.com
+> Analyzed-by: Matthew Wilcox <willy@infradead.org>
+> Link: https://lore.kernel.org/all/aUW05pyc9nZkvY-1@casper.infradead.org/
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> ---
+> This fix is intentionally made self-contained and not trying to expand
+> upon the existing pcp[u]_spin() helpers. This is to make stable
+> backports easier due to recent cleanups to that helpers.
 > 
-> Please use VM_WARN_ON_FOLIO() instead to catch errors. There is no need to crash
-> the kernel
+> We could follow up with a proper helpers integration going forward.
+> However I think the assumptions SMP=n of the spinlock UP implementation
+> are just wrong. It should be valid to do a spin_lock() without disabling
+> irq's and rely on a nested spin_trylock() to fail. I will thus try
+> proposing the remove the UP implementation first. It should be within
+> the current trend of removing stuff that's optimized for a minority
+> configuration if it makes maintainability of the majority worse.
+> (c.f. recent scheduler SMP=n removal)
+
+It would be fair. Maybe it'll take a performance hit because from a
+maintenance perspective, it would be preferable. It's true that
+spin_trylock within a lock protected region on UP is somewhat bogus, but
+not impossible either. Even if the resulting code is buggy anyway, it
+would be preferable to fail early than hide.
+
+> ---
+>  mm/page_alloc.c | 45 +++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 37 insertions(+), 8 deletions(-)
 > 
 
-Sure.
+With or without the renaming on top;
 
-> >> +
-> >> +	folio_lock(folio);
-> >> +
-> >> +	ret = __split_unmapped_folio(folio, 0, page, NULL, NULL, SPLIT_TYPE_UNIFORM);
-> >> +	if (ret) {
-> >> +	       /*
-> >> +		* We can't fail here unless the caller doesn't know what they
-> >> +		* are doing.
-> >> +		*/
-> >> +		VM_BUG_ON_FOLIO(ret, folio);
-> 
-> Same here.
-> 
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
 
-Will do.
+Thanks.
 
-Matt
-
-> >> +
-> >> +		return ret;
-> >> +	}
-> >> +
-> >> +	for (i = 0; i < 0x1 << order; ++i, ++unlock_page) {
-> >> +		page_folio(unlock_page)->pgmap = pgmap;
-> >> +		folio_unlock(page_folio(unlock_page));
-> >> +	}
-> >> +
-> >> +	return 0;
-> >> +}
-> >> +
-> >>  /**
-> >>   * migrate_vma_insert_huge_pmd_page: Insert a huge folio into @migrate->vma->vm_mm
-> >>   * at @addr. folio is already allocated as a part of the migration process with
-> >> @@ -927,6 +970,11 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
-> >>  	return ret;
-> >>  }
-> >>  #else /* !CONFIG_ARCH_ENABLE_THP_MIGRATION */
-> >> +int migrate_device_split_page(struct page *page)
-> >> +{
-> >> +	return 0;
-> >> +}
-> >> +
-> >>  static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
-> >>  					 unsigned long addr,
-> >>  					 struct page *page,
-> >> @@ -943,6 +991,7 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
-> >>  	return 0;
-> >>  }
-> >>  #endif
-> >> +EXPORT_SYMBOL(migrate_device_split_page);
-> >>
-> >>  static unsigned long migrate_vma_nr_pages(unsigned long *src)
-> >>  {
-> >> -- 
-> >> 2.43.0
-> >
-> >
-> > Best Regards,
-> > Yan, Zi
-> 
-> 
-> Best Regards,
-> Yan, Zi
+-- 
+Mel Gorman
+SUSE Labs
 
