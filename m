@@ -4,87 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8ABACF6BE9
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 04:08:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62F78CF6BE2
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 04:17:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE83C6B0092; Tue,  6 Jan 2026 23:08:00 -0500 (EST)
+	id AC5616B0092; Tue,  6 Jan 2026 23:17:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBF706B0093; Tue,  6 Jan 2026 23:08:00 -0500 (EST)
+	id A73196B0093; Tue,  6 Jan 2026 23:17:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF6CF6B0095; Tue,  6 Jan 2026 23:08:00 -0500 (EST)
+	id 97F496B0095; Tue,  6 Jan 2026 23:17:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BB87B6B0092
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 23:08:00 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 726B3160134
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 04:08:00 +0000 (UTC)
-X-FDA: 84303834720.22.5AA30A1
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AECB4C0004
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 04:07:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JChzz8JP;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of kent.overstreet@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=kent.overstreet@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767758879; a=rsa-sha256;
-	cv=none;
-	b=cFAmScYjvCHLeTiwB2HDFlfvKliONK8BodxaKEx2gkwB0N9Nu11PQP0eIQfV49GhoFohpo
-	9W8FyImNyPEYmACmwcVWDrNgXiezQgh6lUQTRRgS2+5/ZNP6CJj0Am1pLM/B7C97qMp2gM
-	JeEkXkmenX0652cCJrjmUy7SCIT2RY8=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JChzz8JP;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of kent.overstreet@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=kent.overstreet@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 856DE6B0092
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 23:17:24 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 34A9386941
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 04:17:24 +0000 (UTC)
+X-FDA: 84303858408.16.EAD90E8
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B829E120009
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 04:17:21 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XaWkb4R4;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767758879;
+	s=arc-20220608; t=1767759442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gpQ5rJZWPuYDYZOiEs7ucS7UwBx/7FvHyEGjqrQa6bU=;
-	b=xpBq9O9Fx9Kfeo6UpVEa6++TCyeJhcDtjyrpTeiFJiVs9pVD4kce+06XPg57l7XongBdVb
-	Pj7HI5CYmjo9bZa4LJ/8IdWzOWpD7lle+sCdwGGyYkwIcTOs+PnHgO4saD0XedevVArZcv
-	bfv/Ht2bCoLr82yrP2GYM71rnMuZyAo=
-Date: Tue, 6 Jan 2026 23:07:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767758876;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gpQ5rJZWPuYDYZOiEs7ucS7UwBx/7FvHyEGjqrQa6bU=;
-	b=JChzz8JPhTtft7tIloMgX1wvE/JiSsAUMmMhb6Cermsqcm1dL7/mzbjjbGuAowXHX70fW4
-	z62ipmFe8hARr9BTobOl8CHtBtAnjQWuVVyorJTe2QPvhsBrCgIGSLbLz0r/pfoP0p0UaU
-	k0fmQCLxIqSkeofX1Rma95c+gsHKT98=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: David Wang <00107082@163.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
-	hannes@cmpxchg.org, pasha.tatashin@soleen.com, souravpanda@google.com, 
-	vbabka@suse.cz, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC] alloc_tag: add option to pick the first codetag
- along callchain
-Message-ID: <aV3bykzqkyUcBJBf@moria.home.lan>
-References: <20251216064349.74501-1-00107082@163.com>
- <CAJuCfpEtZ2Ncpa4goKUcerruB67fALJ2v2KrbWB1_PB7iwwjSQ@mail.gmail.com>
- <75285cc4.3c52.19b916d9490.Coremail.00107082@163.com>
- <aVzorksJEyI0wlxh@moria.home.lan>
- <37169c79.a0e5.19b93a2768f.Coremail.00107082@163.com>
- <aV2VWbY4Rb_w-QTs@moria.home.lan>
- <4736b304.38a2.19b96888104.Coremail.00107082@163.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4736b304.38a2.19b96888104.Coremail.00107082@163.com>
-X-Migadu-Flow: FLOW_OUT
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=7Z8X2k2ZHiXhTj+ciwkCbJ2V/1UtEqHXkEI1hSU7ulg=;
+	b=pwR4+UmoW8CO09+f7gkm+kumdS/w/UamA9cVUckGTwKb15yVDcTrjz+nHNNCvP4MXESvHZ
+	E3bgRxDE9UDBBdLzA8oiaESr03Bl5zINt0lGY0CX9GsYuAayKacawHlJCHJHrS49orN7Rx
+	10Xe8ugv9GO/tMmrokNEWKs13nBUMyQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XaWkb4R4;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767759442; a=rsa-sha256;
+	cv=none;
+	b=juWaysCBUsyYQwX7e2YkUtbAv0YtWvdeJJWomYiLMBJrVHFZ/OoRCN3LLTYrDeyqBFJ1Jo
+	SMYmLOWciUVJXlLnZCeXjFyRl4eTF7Y4UJMvt1GVzoa/jHxtaxPQrmmcue8zFoMJ7pkhdo
+	Cml0ZImgDhlozMJFSee2qoWEfItLu1k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767759442; x=1799295442;
+  h=date:from:to:cc:subject:message-id;
+  bh=1yhgUgmRZZcreuJW0H3We4kN5GfIv91hoA140IVltVY=;
+  b=XaWkb4R4ICWcUkL5qrOnVK4eCZl6Kg7LIIucdGXo0UyMsLOvmUHw7dMe
+   WlHEQkULaj56lWQwboJFVuYQL74qOxkdScUrj6nWwZy6O3XtQTWvB7aBR
+   4dO9e9WKVIWdDsHk4AcEimO9lEQKaW8GQ61/GtOKBotY0GecpvRlvpwNn
+   Iv9u+RjlaHj+rmzbeTZubZoljMBNgIEX2afkaVB7GEuT6TlXyPBQx+GE6
+   onw2UxCIEHkulCTK0nAKVn51vtdsXldTmuMHZ4cvhsh1VUmXI13dqU3xX
+   BXD1j4s6vAPpOs87qPcaBksFklw1ZCw7/jJZz9Wgjr0B7gY7zrhXvOTYK
+   Q==;
+X-CSE-ConnectionGUID: +P59dChfRx2HATAo7x7mjg==
+X-CSE-MsgGUID: jQj6B9sLQxWv71ylq+Yhxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="80240846"
+X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
+   d="scan'208";a="80240846"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 20:17:20 -0800
+X-CSE-ConnectionGUID: sYkEDrnMRdC8IYmNf7JZsw==
+X-CSE-MsgGUID: Htfc/WchRde0Kho1fHG3eQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
+   d="scan'208";a="233525152"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 06 Jan 2026 20:17:19 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vdKyy-000000003S5-3EHy;
+	Wed, 07 Jan 2026 04:17:16 +0000
+Date: Wed, 07 Jan 2026 12:16:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 6cd6c12031130a349a098dbeb19d8c3070d2dfbe
+Message-ID: <202601071224.F09fvjXs-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam02
+X-Stat-Signature: ib43bc6juq1kxdhc1os74zfbzmp4ey4e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AECB4C0004
-X-Rspamd-Server: rspam10
-X-Stat-Signature: qusoss7pff7zhkmik5g6cax6s9w639j1
-X-HE-Tag: 1767758878-510823
-X-HE-Meta: U2FsdGVkX1+t51F8mHeQr/9uM1I+mEcTRx+JNk4aP6SX6W6W5YQRcTzWJsq5O0+iVoKgZhtYbb25BVGcO5PWjHe5MeRjAkoJorYwqgi9kZcq9hJS/aB4fjWk4cCkDkbjFghIk51o/d/lOQOO5EdKe9uZUoSVuobSime4RY7652y6dDKh+trsIBFl9uvYIY9mcITlMfUNiBjwEGGjwTbMIPDFbFyawwg0HnweIVcDyMUrEm1fi/VaFiVXoWlEXdiXb4Arvn4PwuE4s8dTvFMpMR4NttQCuQPo0rPxJJxNywF7Mn7hVzX5gkoEzkJRY2YmgVLTsVui50A7SYPT8wTlnFuPE0EgvGMwr3j2xutnA0D6mDTAD0AnzMxY852PN67ou/aG7LHfbbd6auICkXTgVCn7R9SA59leUhVyH+wau2sAI/dlEwuJfc7m5zJ3N7QKJ+wuN+ar/9L6tTHHp3b7KSlUq+akDzGuVpIg++7zaIGJs+OxmkhYWwTkxH3t335XumqKnQfH3bgcHEnqwQI7jLxXt1gJZi9QV/k2915MSN2fPVoEWcR0DZ1cbId+jNdVeRKuBS47wv0h6Et3avDIQc5KFtaaKhYSiLucu89rn5inY1LWp5rk2TJxcTchW6Y82HUR/tqNYPcxZA5VTqjSWWI18NrQ9ZEBnoLLNkaVs0tR1fvmvdnHZCKwX0HT0q80/BRgdzKsUY1t7f7k/80kSFgiNOh81OUEJnuKy/MzBQMhnrxoo3WPnvTyJFg6MdkoAcb5D1/sZAnCGa1x6jENeeEpdGcYWYzCi+pJok/u5yK7LbpX17HsGmltbEVYpTiCa//h+hHQOTa9924xR7Hc/EMdBGY8MLvgqZsHmnn/8bXccAaTbz5P6g==
+X-Rspamd-Queue-Id: B829E120009
+X-HE-Tag: 1767759441-986323
+X-HE-Meta: U2FsdGVkX19/1BUWBT++WcQWKlutcV/Mg+rwchCcxyaqhNS0JCWAm46M6WCF/lbMw7TOE1Kb40Kb0YC/dArDNcJe8DLGMm9AnTvNwFMkDnzQBE4q2kOX2TpgR7+BleHxNomPpkFHGcYKoNfLqvjHyKyX7vEbTqkbO8k0e9E0G9MHrgDo72PRT7gcv+gW39yJcg24VhQz6P6EXJIXwrKVImskmF/B0oE5nll45y98ngKm6JndSMdpnvyef+YIfDI6LdHPtfy2uGod/LghnY8/slKKwaW0theFuezZGpynPnHzUdphIGQuJ3xUJ/EHOQddnkmVccX732a0dKeUeMCyI5q7LAK9Tor+55A9pIoho7r3PqjqVZJUzc8mV3ZWKT/hkntiocXkG+IqXNvDVYk33dVUZCrvvtpCiaUjj/Amf/zrxlZfCD7ZFlgfIF/eHDjgchpMAUuhklYVwLH1orHFXYRItemy0V3QmBY1o7wdSO2l7LojHqLAE4RLdTeRj9+wUiH84zK3dwVRk4zYjWsFVUhXr6CI/X78IqfjursfDa22v7lt5Hjwqu3glaPQZVI6N+R6Tlcf4+mvsLpNW7ZuHJ5o4rYoBUBXsdzuytVs8K8VjQnthdLfwkInCVf3WlQdbl2AxbZ7h8Zem9HLAk8IJQUWzWcTmx/rLG+mecqSvpTLWiSqKRvysqxmCTkZbeqC0hh/6BnilP/WG7eltUbYlvuuJK2BIYL0Az5UVU2K/bgXnoaZFHAP7zZKjKf3fSV6/gSPfmMGxPkGYx+sPZ/OBe33o3n4tR6CaFlBtjFhh3pYv0GiCvCQfulbeSQWX4hdeCJpj/Azux+rqlWbcU6kI09pq7U6Q9w6ejnk4NMrl8Cj3mGeTE6vs5jU+cYxQqkJyIwX8WaBYSBYikrqveWiuzmyBOl05eYESOvwmgwYSoom3OcrBjUfXT6XBtgq2REThwVbqFN192/4x+tJJkR
+ MjkZ4xkO
+ 4HOYYulbyMpJatCzfftGffJOcsuvprv18FrAX0hHTYc1mxliRyQvKlH2JDs6a2QVyuwXIRyKyoojpr0cuxEtcnT3LPiJqwM3+BTO9EqS1Vi1FgIg+5+uWoqda9S+2oSzBABxVwvx4h7EYcwEAPEpC1gNLYpruSSUaOAO7k7ri2PReGO+Q4AKov0Y9qQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,94 +101,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 07, 2026 at 11:38:06AM +0800, David Wang wrote:
-> 
-> At 2026-01-07 07:26:18, "Kent Overstreet" <kent.overstreet@linux.dev> wrote:
-> >On Tue, Jan 06, 2026 at 10:07:36PM +0800, David Wang wrote:
-> >> I agree, the accounting would be incorrect for alloc sites down the callchain, and would confuse things.
-> >> When the call chain has more than one codetag, correct accounting for one codetag would always mean incorrect
-> >> accounting for other codetags, right? But I don't think picking the first tag would make the accounting totally incorrect. 
-> >
-> >The trouble is you end up in situations where you have an alloc tag on
-> >the stack, but then you're doing an internal allocation that definitely
-> >should not be accounted to the outer alloc tag.
-> >
-> >E.g. there's a lot of internal mm allocations like this; object
-> >extension vectors was I think the first place where it came up,
-> >vmalloc() also has its own internal data structures that require
-> >allocations.
-> >
-> >Just using the outermost tag means these inner allocations will get
-> >accounted to other unrelated alloc tags _effectively at random_; meaning
-> >if we're burning more memory than we should be in a place like that it
-> >will never show up in a way that we'll notice and be able to track it
-> >down.
-> 
-> Kind of feel that the same thing could be said for drivers: the driver could use more memory
-> than the data says....this is actually true....
-> Different developer may have different focus concerning the allocation site.
-> 
-> >
-> >> Totally agree.
-> >> I used to sum by filepath prefix to aggregate memory usage for drivers.
-> >> Take usb subsystem for example,  on my system, the data say my usb drivers use up 200k memory,
-> >> and if pick first codetag, the data say ~350K.   Which one is lying, or are those two both lying. I am  confused.
-> >> 
-> >> I think this also raises the question of what is the *correct* way to make use of /proc/allocinfo...
-> >
-> >So yes, summing by filepath prefix is the way we want things to work.
-> >
-> >But getting there - with a fully reliable end result - is a process.
-> >
-> >What you want to do is - preferably on a reasonably idle machine, aside
-> >from the code you're looking at - just look at everything in
-> >/proc/allocinfo and sort by size. Look at the biggest ones that might be
-> >relevant to your subsystem, and look for any that are suspicious and
-> >perhaps should be accounted to your code. Yes, that may entail reading
-> >code :)
-> >
-> >This is why accounting to the innermost tag is important - by doing it
-> >this way, if an allocation is being accounted at the wrong callsite
-> >they'll all be lumped together at the specific callsite that needs to be
-> >fixed, which then shows up higher than normal in /proc/allocations, so
-> >that it gets looked at.
-> >
-> >> >The fact that you have to be explicit about where the accounting happens
-> >> >via _noprof is a feature, not a bug :)
-> >> 
-> >> But it is tedious... :(
-> >
-> >That's another way of saying it's easy :)
-> >
-> >Spot an allocation with insufficiently fine grained accounting and it's
-> >generally a 3-5 line patch to fix it, I've been doing those here and
-> >there - e.g. mempools, workqueues, rhashtables.
-> >
-> >One trick I did with rhashtables that may be relevant to other
-> >subsystems: rhashtable does background processing for your hash table,
-> >which will do new allocations for your hash table out of a workqueue.
-> >
-> >So rhashtable_init() gets wrapped in alloc_hooks(), and then it stashes
-> >the pointer to that alloc tag in the rhashtable, and uses it later for
-> >all those asynchronous allocations.
-> >
-> >This means that instead of seeing a ton of memory accounted to the
-> >rhashtable code, with no idea of which rhashtable is burning memory -
-> >all the rhashtable allocations are accounted to the callsit of the
-> >initialization, meaning it's trivial to see which one is burning memory.
-> 
-> Not that easy, ....code keeps being refactored, _noprof need to be changed along.
-> I was trying to split the accounting for __filemap_get_folio to its callers in 6.18,  
-> it was easy,  only ~10 lines of code changes. But 6.19 starts with code refactors to
-> __filemap_get_folio, adding another level of indirection, allocation callchain becomes
-> longer, and more _noprof should be added...quite unpleasant...
-> 
-> Sometimes I would feel too many _noprof could be obstacle for future code refactors....
-> 
-> PS: There are several allocation sites have *huge* memory accounting, __filemap_get_folio is
-> one of those. splitting those accounting to its callers would be more informative
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 6cd6c12031130a349a098dbeb19d8c3070d2dfbe  Add linux-next specific files for 20260106
 
-I'm curious why you need to change __filemap_get_folio()? In filesystem
-land we just lump that under "pagecache", but I guess you're doing more
-interesting things with it in driver land?
+Error/Warning (recently discovered and may have been fixed):
+
+    https://lore.kernel.org/oe-kbuild-all/202601061424.nbKLNwC5-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202601061140.6GUe2frS-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202601071056.FusqsRx2-lkp@intel.com
+
+    include/linux/compiler_types.h:630:45: error: call to '__compiletime_assert_656' declared with attribute error: min(((pos + len - 1) >> 12) - (pos >> 12) + 1, max_pages) signedness error
+    sound/core/pcm_native.c:3308:6: error: cannot jump from this asm goto statement to one of its possible targets
+
+Unverified Error/Warning (likely false positive, kindly check if interested):
+
+    drivers/gpu/drm/amd/amdgpu/psp_v15_0.c:34:1: sparse: sparse: bad integer constant expression
+    drivers/phy/spacemit/phy-k1-usb2.c:199:1: sparse: sparse: bad integer constant expression
+
+Error/Warning ids grouped by kconfigs:
+
+recent_errors
+|-- arm64-randconfig-r113-20260105
+|   `-- drivers-phy-spacemit-phy-k1-usb2.c:sparse:sparse:bad-integer-constant-expression
+|-- i386-randconfig-017-20260106
+|   `-- include-linux-compiler_types.h:error:call-to-__compiletime_assert_NNN-declared-with-attribute-error:min(((pos-len-)-)-(pos-)-max_pages)-signedness-error
+|-- i386-randconfig-062-20260106
+|   `-- drivers-gpu-drm-amd-amdgpu-psp_v15_0.c:sparse:sparse:bad-integer-constant-expression
+|-- riscv-allyesconfig
+|   `-- sound-core-pcm_native.c:error:cannot-jump-from-this-asm-goto-statement-to-one-of-its-possible-targets
+`-- x86_64-randconfig-123-20260105
+    `-- fs-ntfs3-inode.c:sparse:sparse:symbol-ntfs_writeback_ops-was-not-declared.-Should-it-be-static
+
+elapsed time: 1566m
+
+configs tested: 141
+configs skipped: 2
+
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                               defconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                                 defconfig    gcc-15.1.0
+arc                   randconfig-001-20260106    gcc-13.4.0
+arc                   randconfig-002-20260106    gcc-8.5.0
+arm                               allnoconfig    clang-22
+arm                                 defconfig    clang-22
+arm                      jornada720_defconfig    clang-22
+arm                         nhk8815_defconfig    clang-22
+arm                   randconfig-001-20260106    gcc-11.5.0
+arm                   randconfig-002-20260106    clang-22
+arm                   randconfig-003-20260106    gcc-10.5.0
+arm                   randconfig-004-20260106    gcc-8.5.0
+arm                         s5pv210_defconfig    gcc-15.1.0
+arm64                             allnoconfig    gcc-15.1.0
+arm64                               defconfig    gcc-15.1.0
+arm64                 randconfig-001-20260106    clang-22
+arm64                 randconfig-002-20260106    gcc-8.5.0
+arm64                 randconfig-003-20260106    gcc-9.5.0
+arm64                 randconfig-004-20260106    gcc-10.5.0
+csky                              allnoconfig    gcc-15.1.0
+csky                                defconfig    gcc-15.1.0
+csky                  randconfig-001-20260106    gcc-10.5.0
+csky                  randconfig-002-20260106    gcc-11.5.0
+hexagon                           allnoconfig    clang-22
+hexagon                             defconfig    clang-22
+hexagon               randconfig-001-20260106    clang-22
+hexagon               randconfig-002-20260106    clang-17
+i386                              allnoconfig    gcc-14
+i386        buildonly-randconfig-001-20260106    clang-20
+i386        buildonly-randconfig-002-20260106    clang-20
+i386        buildonly-randconfig-003-20260106    gcc-14
+i386        buildonly-randconfig-004-20260106    clang-20
+i386        buildonly-randconfig-005-20260106    gcc-14
+i386        buildonly-randconfig-006-20260106    clang-20
+i386                                defconfig    clang-20
+i386                  randconfig-001-20260106    clang-20
+i386                  randconfig-002-20260106    gcc-14
+i386                  randconfig-003-20260106    clang-20
+i386                  randconfig-004-20260106    clang-20
+i386                  randconfig-005-20260106    clang-20
+i386                  randconfig-006-20260106    clang-20
+i386                  randconfig-007-20260106    clang-20
+i386                  randconfig-011-20260106    clang-20
+i386                  randconfig-012-20260106    gcc-14
+i386                  randconfig-013-20260106    gcc-14
+i386                  randconfig-014-20260106    clang-20
+i386                  randconfig-015-20260106    gcc-14
+i386                  randconfig-016-20260106    clang-20
+i386                  randconfig-017-20260106    gcc-14
+loongarch                         allnoconfig    clang-22
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260106    gcc-15.1.0
+loongarch             randconfig-002-20260106    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                                defconfig    gcc-15.1.0
+microblaze                       alldefconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260106    gcc-8.5.0
+nios2                 randconfig-002-20260106    gcc-11.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+openrisc                 simple_smp_defconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20260106    gcc-8.5.0
+parisc                randconfig-002-20260106    gcc-11.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                    gamecube_defconfig    clang-22
+powerpc               randconfig-001-20260106    clang-22
+powerpc               randconfig-002-20260106    gcc-8.5.0
+powerpc64             randconfig-001-20260106    gcc-8.5.0
+powerpc64             randconfig-002-20260106    gcc-8.5.0
+riscv                             allnoconfig    gcc-15.1.0
+riscv                               defconfig    clang-22
+riscv                 randconfig-001-20260106    gcc-8.5.0
+riscv                 randconfig-002-20260106    clang-22
+s390                              allnoconfig    clang-22
+s390                                defconfig    clang-22
+s390                  randconfig-001-20260106    gcc-8.5.0
+s390                  randconfig-002-20260106    gcc-14.3.0
+sh                                allnoconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                          r7780mp_defconfig    gcc-15.1.0
+sh                    randconfig-001-20260106    gcc-15.1.0
+sh                    randconfig-002-20260106    gcc-10.5.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20260106    gcc-11.5.0
+sparc                 randconfig-002-20260106    gcc-15.1.0
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20260106    clang-22
+sparc64               randconfig-002-20260106    gcc-15.1.0
+um                                allnoconfig    clang-22
+um                                  defconfig    clang-22
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260106    clang-22
+um                    randconfig-002-20260106    clang-22
+um                           x86_64_defconfig    clang-22
+x86_64                            allnoconfig    clang-20
+x86_64      buildonly-randconfig-001-20260106    clang-20
+x86_64      buildonly-randconfig-002-20260106    gcc-14
+x86_64      buildonly-randconfig-003-20260106    clang-20
+x86_64      buildonly-randconfig-004-20260106    gcc-14
+x86_64      buildonly-randconfig-005-20260106    clang-20
+x86_64      buildonly-randconfig-006-20260106    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260106    gcc-14
+x86_64                randconfig-002-20260106    gcc-14
+x86_64                randconfig-003-20260106    clang-20
+x86_64                randconfig-004-20260106    clang-20
+x86_64                randconfig-005-20260106    gcc-14
+x86_64                randconfig-006-20260106    gcc-14
+x86_64                randconfig-011-20260106    gcc-14
+x86_64                randconfig-012-20260106    gcc-13
+x86_64                randconfig-013-20260106    gcc-14
+x86_64                randconfig-014-20260106    gcc-14
+x86_64                randconfig-015-20260106    clang-20
+x86_64                randconfig-016-20260106    clang-20
+x86_64                randconfig-071-20260106    gcc-14
+x86_64                randconfig-072-20260106    clang-20
+x86_64                randconfig-073-20260106    clang-20
+x86_64                randconfig-074-20260106    clang-20
+x86_64                randconfig-075-20260106    gcc-14
+x86_64                randconfig-076-20260106    clang-20
+x86_64                               rhel-9.4    gcc-14
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    gcc-14
+x86_64                    rhel-9.4-kselftests    gcc-14
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20260106    gcc-8.5.0
+xtensa                randconfig-002-20260106    gcc-8.5.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
