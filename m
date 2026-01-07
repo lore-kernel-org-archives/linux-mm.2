@@ -4,133 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB18DD0D171
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 21:52:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7075D0D176
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 21:55:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D3FB6B0088; Wed,  7 Jan 2026 16:52:40 -0500 (EST)
+	id 0F27E6B0092; Wed,  7 Jan 2026 16:55:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1583A6B0093; Wed,  7 Jan 2026 16:52:40 -0500 (EST)
+	id 076656B0093; Wed,  7 Jan 2026 16:55:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 039486B0095; Wed,  7 Jan 2026 16:52:39 -0500 (EST)
+	id E8DFC6B0095; Wed,  7 Jan 2026 16:55:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E6A2C6B0088
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:52:39 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B47EFC0594
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:52:39 +0000 (UTC)
-X-FDA: 84306517638.20.8C1C4B0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id F2EFB1A0004
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:52:37 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kzuQX9u/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767822758; a=rsa-sha256;
-	cv=none;
-	b=HdB+eOEfAve7s4G/Foat1eVoITzNoxrLU8SWGN5lTQzTAl9E0OzvYiQ8du3bWGoaoFNAmQ
-	wx5eNn3NLJ1c1ozaW+VPh1uYSKwRFQzVyUtcITf8bIZj/yHZJfRjPxkV0vB6VN2Z7/46Om
-	Qk9YfFlxD4+SXm1xr1KBKCZmb+omu1s=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kzuQX9u/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767822758;
+	by kanga.kvack.org (Postfix) with ESMTP id D42E16B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:55:36 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 871E6B9B6E
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:55:36 +0000 (UTC)
+X-FDA: 84306525072.01.F36C5CD
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf30.hostedemail.com (Postfix) with ESMTP id ADC1F8000E
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:55:34 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=B0Rw9RYd;
+	spf=pass (imf30.hostedemail.com: domain of maze@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=maze@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767822934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hnvGIdzGyG3Yy1ao5VcTTPnTvVjJvcXej9UWaTrDP6c=;
-	b=SV8KbODUG2bIPdWQMqgYwCb0fJux9gtQGMNSZty3/gkzjJnOg/CkUKdMJQHeGuOmr2w3im
-	qTOxgEbP3vKkJ5wENc6FZDrqKgHDKc/+E7LfZa0zfuQNaXEBZ7NWygynE3x6mMMtOYyg47
-	5SoKfOCYLMc1clhLyShbMeA3FjYByJ0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 510BD6000A;
-	Wed,  7 Jan 2026 21:52:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FEFC4CEF1;
-	Wed,  7 Jan 2026 21:52:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767822757;
-	bh=RFll13xZ/a5vC1iqrVrPAUqu5AGsBMq8qegGaJ9IV3o=;
-	h=Date:Subject:To:References:From:Cc:In-Reply-To:From;
-	b=kzuQX9u/cZr0QC7rtGsqNU2g8oz3UN556bmK7px+7qe0KfaGafNnQSF2uKAobn4gn
-	 c5wZGdvUbvGUo9i0PJ3pb1Bj4HrPQQ4PEwKvP9Qggas/f/nKSy4vViL0IyEafDPObU
-	 rnf1Pb4C7Esc2PZ8u0sPSQ55JMiuG17wzQELDBoPvUpPIwzVBGM79vvR6r4bnefHE6
-	 OWCYAEgt2UBlH3gS3ZEI0/gUWw6yBU54EbRSfqP0iAGFDfj+SH+t4h9yJf817nmLer
-	 RgOaozskdLOCIerGzgT9YGtBPGAk12Q9ngyJlLnGMo2Oh+kvrY1G55YhWpgdRuFFzN
-	 Cdk8bCTPZqElA==
-Message-ID: <7737563a-c2b8-4e9e-ac18-3551ed9d1a33@kernel.org>
-Date: Wed, 7 Jan 2026 22:52:32 +0100
+	bh=6fRI8t9Yow/e3W/odLxxmoc1WYobO0D4rJNJUIXQBJM=;
+	b=ARrPm7r9swJ0IsQ6/ca0Tq9A9vtRgm9oRE6q/KeH3bncJ0oMkbpbTiv7zoMJXj/43efEAa
+	nnfk680xE0C4JgjvQ1XrK0rlIhHfiYkUAFrkwTyMqs2RlyiRkL6PqnXhUUaKFuWUnmNk80
+	TEl65hgJpLGXID3jjev12eOVqpXdYNc=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=B0Rw9RYd;
+	spf=pass (imf30.hostedemail.com: domain of maze@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=maze@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767822934; a=rsa-sha256;
+	cv=pass;
+	b=ZnLS1/Kz6DgbVZVpp2p1dtB/vCsIdcrZ5BH6Q9sS2EUPHJN4Vmh3rxpW1jztBuJKKCamxB
+	BKMl2qXeDov5VG+Xg/DK9uv1mkl9kjbTwvoRQDOphSSi8Zi1LGZ3YonllsYOrs1M5MK+8q
+	X1+NO7yFF5w8yXDeNTUIAOxyAP14TmU=
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4ee243b98caso535301cf.1
+        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 13:55:34 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767822934; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bVlRSL/nljkHo8nrvWOQtnIa5fJ5v33+R9fhfcv2XI7InfJuRumcyTN31KHp+FPyCs
+         SS6JbIfTJ1JI7elIs/7mDabqA5/ThNRRivy8BqvAChDYx38MBfdfwOBnb6HjpwgGrJez
+         AdfOkkMfKH2q4Yos3+JfycZipSHVNUTXzzgRAJZJueAXxSdaaBt8r6qQgKkUB1xA/7Kx
+         kdUBp9F7dTtVWsh1LQfwBGeey8Ar7ENl5Olt8K7H9aZ4dWS4mdp9BU6XpBdsMk7SSEzJ
+         ClMmI9fUwUR2oHvDyf7mh2IoJsI6zK1bo8D+ExGYVNpKUJS0ncSMqbZrZ6MuOI7Hvzjp
+         yUfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=6fRI8t9Yow/e3W/odLxxmoc1WYobO0D4rJNJUIXQBJM=;
+        fh=QEf7feLk+J0u2pq3Vt3Rt0zrz+D2nhWJzvevpo4SD6M=;
+        b=JgL7MGk01WUXrfg2NXefUSHKc1bm7S3sqXU9TiOZ6oTwmYJJeHTZowTqR+x370EIs2
+         c/rml6VCK6iGvTF81qw/tFikrXbZq3n4bQhciZW0MYsv/sMpZIQA8m6UrdG/Aks5hl0W
+         lWxK0zxhaS2CsnfajAttXwkko7fwV3vqjmXljiuVrQocpkIhpJ42mZEa+IF+TAPvmhCr
+         cxjSjVt10rTpPy5/5I/pcRYiY5mTK8hYpuYdqAv35WUnq3R192NqAHUqYRTdDPEsaSO+
+         /XHLREJXsu+BRxGMi8O5SLeE7ffv5EM72Fmnja9J9tvgoYOJfw/+9ZanTf6dQFp5ZrhX
+         yB6Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767822934; x=1768427734; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=6fRI8t9Yow/e3W/odLxxmoc1WYobO0D4rJNJUIXQBJM=;
+        b=B0Rw9RYd6SaBndotH9FclMhtN7/nipwS5090PglwCXtCp1nVIvbNYSQ5K1ycMAtFZE
+         yVwhUBLNvVO/aB+zbeeY0WLSBNlasKHSCFfEvrc8mXTlI0lMgoedzfiG5IviCUzc88zB
+         1EbGAVE9kWcpNWOZnB8B8vWtzYdHM/aobureINf+HviIoAd/SBXpGkJ7HWoZBloXHC13
+         LEKkcYGwNJ7n7Q9U70mDKwQbHzw/XZhBSE5roswK/GPFJIgiY0GV4VBJ7zd9VBu4Aw29
+         jpIr2rdk0gJNY3mXKeG9dXGp9q70omRYyncbIpN6aHPjrf6t468L3oX/cQEm6twZ6heO
+         Qr5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767822934; x=1768427734;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6fRI8t9Yow/e3W/odLxxmoc1WYobO0D4rJNJUIXQBJM=;
+        b=v8XuXiImP/yUaPJe4fOtlGK4QSM9rn/StuSO4pf05wPSz4AmVIFo0maRPGZnmQbxFP
+         +u2iwnT43d2EV82MPrX4ff1mdx/1ilrJiYX48TNjBiHXrySM+lQ7nuu1yBPAAofOBb1i
+         v5DHDsUF/24htEBjrGOgdwWoReH3ONlCO4/se4NYMSAVE+FoR21RdSQcGTKDrQmLfGFu
+         9a6tjp6HdlhxCgteh6LmtA92CNewIwWRaVnEQ2y2L8xuGtE8XtaaqBIb20svXSuYJddX
+         +vmjSprl+nERdV9LGg9y8QeBEUOAXsx0qFWejxaAF3RuIi1/mG7pxqarg0f4MtYmh1e8
+         TClQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX/T0VGTHId0IYBxRlMrEgUsXBdwui6QsDktXiEkMwdD9qd2S8jGXfwedRmFJgrXXzVHmafhll38Q==@kvack.org
+X-Gm-Message-State: AOJu0Yyt7dDAVp6IfX3FfB3C+lWS7Y33u03QLbCfFiaRgneITso0mQPv
+	JDjcWD+KPg7xQ9GB7IJ0K/RBOmUiIBhsfSvaADrMayenL8nRXG7v3EdqnTSTIQ6+SEUCF9qrJNB
+	Jsdns7TWy7/lHzeGJMVtmFVgRq/WjAHTwfX0HW1l+
+X-Gm-Gg: AY/fxX6Cq5LglJOZSeK0SyQ6KtF6v4cLXS07/yqyJNb9t1Otk2B4AbbuX+Zw06uFcK4
+	Zgae1ouNWifbp8N1J4+8Jrie0WmB9xZQKgGW/hW35nFXFpcQtQF7fL44oTiwGriRiuI12l7BJGx
+	zD/ehQpSxCWg9ATXgIPV1H15qtUjMtGZO4hyaslcEHg3TLM5LHUxjR7kwOGTFSkySBsKWEHQJAB
+	H5oCcqQT3Br1Xs1N/xHNBlq+FqWqbuppYvU+U+/QAzhhf2Oi+vKF9xIObPiOWETBve/iat9li/d
+	ILXJXv8dvMNnkslf5BAAdT/JRU0s
+X-Received: by 2002:ac8:57cb:0:b0:4ff:a98b:7fd3 with SMTP id
+ d75a77b69052e-4ffc091f255mr623981cf.2.1767822933523; Wed, 07 Jan 2026
+ 13:55:33 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2025-12-04
-To: dan.j.williams@intel.com,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-References: <66c32ad4-a59a-425e-8a00-bcfb918e7559@kernel.org>
- <695ec54cf5c3_875d1009d@dwillia2-mobl4.notmuch>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Cc: Ackerley Tng <ackerleytng@google.com>
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <695ec54cf5c3_875d1009d@dwillia2-mobl4.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
+ <202601071226.8DF7C63@keescook> <btracv3snpi6l4b5upqvag6qz3j4d2k7l7qgzj665ft5m7bn22@m3y73eir2tnt>
+ <CANP3RGfLXptZp6widUEyvVzicAB=dwcSx3k7MLtQozhO0NuxZw@mail.gmail.com> <CANP3RGeaEQipgRvk2FedpN54Rrq=fKdLs3PN4_+DThpeqQmTXA@mail.gmail.com>
+In-Reply-To: <CANP3RGeaEQipgRvk2FedpN54Rrq=fKdLs3PN4_+DThpeqQmTXA@mail.gmail.com>
+From: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
+Date: Wed, 7 Jan 2026 22:55:21 +0100
+X-Gm-Features: AQt7F2oohXGQVvxlmT23b9Uc5zteHdRxxTlRoo--luOtr2cVC6ZeMOEtT_AqGzY
+Message-ID: <CANP3RGcNFgLSgKYPjmro2s1Es04Pnhf+4wHpnSwRX4M8bLDW9g@mail.gmail.com>
+Subject: Re: KASAN vs realloc
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: Kees Cook <kees@kernel.org>, joonki.min@samsung-slsi.corp-partner.google.com, 
+	Andrew Morton <akpm@google.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Danilo Krummrich <dakr@kernel.org>, jiayuan.chen@linux.dev, 
+	syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com, 
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, 
+	Kernel hackers <linux-kernel@vger.kernel.org>, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F2EFB1A0004
-X-Stat-Signature: mmneyjkibr9nsp7k43y1jxzi1wey4tdt
-X-HE-Tag: 1767822757-772540
-X-HE-Meta: U2FsdGVkX1/8oyfc2zeZ9zcKZt5q5Vzh81jUtXM90GsJauue7SVQy1E19YCvw8XkCV5NtPuMnEkuuYvTPGz3YVitzSZJpFBufB8JsoE3zZWwMIGtGmr4SLszVqycWVOgacxZ79V5ZxQl/mjhVu/IKwMG1txCIpUEjWxjZGFBggjOd+WByXLVy6SFzw98Kr+wNV7Jq3gdPpn/l5cgqtfnMIOMOr4O8N4Y3fcpXj4fdtku9PHHwCOZm3vvrYE3gsqU7zK0M51dyPSajU/J2IJTMeajuIT9wAfDwKq8N3cb9/IoTm93XOKPNwyVC6lozgFWEz92M1QdQMagJtrlfRctIPSHVRczWxjeADIoIWH0WitRNJaDCTDq9cVIEFsksFIDKDknmiEYn/yKziFv1HollH+DDwM5A6zanf315M3YdadnVXS1HWKvCFfgoy1C/YW2qyzqHOhGfmbwHGNl3bfhwZCdYJ2/vfl+En2Q1QG5w5wN/f1wWGzWkfAdwc5TZMRQL/KVNjChm7u1fumn5kdg+hAoBHleDqagDNCplhM7t25Eg+ORRl85qfMUjwtNtCjUTSH7SCrotFDvpGhkcU3v1mnt7C8uQt2sf+qUYGfpeH0R9rUq4WK+7j4aW4HhRXGAt7s9JgOQfrxpxgE7ZqXSR7BxlwoHDlFDGUFy3KAUovy6NBUsT7uXYDQqRm14on8+nTdAOx4MTrKBuAfzekg8IQ2TASXIf+fLO2ddJDXjz/mROLj0Bdb+fdYJ6yM7IPeysl/4QK5gr3/ipMMAFhs0U0E6aNQstaPfWjudCric8Uylx4AgpJmAe7CwlRQPQThgkg4ZuFa4+sf0MB2Cpe5v6c0MKsPzOiAY9zei+wUYzuYBvz+WbijeoLVgX5sZrkZaogh5CLob4T0ufHwD5qW09DhhObObQH0PGD9kjpFPaNn5bqu6M38fiDQKw7snt6ZVoT2eI7N6VF8Dfke3Mlm
- V5yh5n/W
- 4sgX6uIoDCgxt4lsjH9vUYP6vkuQWidxRQ4g5ZHPj5J6seBBiuewNoIT2WSAiGLTJJzT6JoEkMKX1K51dBVi/SXYW5F9uDIkfBN3AknDvx0cfM9TYFSyA/L4neWfEJoV3q35J7ABKyd7Ow0WaWm9oBGq2zXLDspvBUNqdx0vHigdI1cLbhYFkmETdJSBRlfprJfktWWyfIjSEnUAzlpi6YOaWzRHWPsv/b2wuwgFlgUUUJRUkJjlRos3Lxayo5QSPTyoS4R6+g4dt5d/pRlQ4x34UClxFif4iawxqt96MYy4YZMJleSs9SW5BhRPm4Bkm0g2EnQm1WyrF0IGb5JUyKdZkbectqjhPEF3IaianxRQVcuo=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: ADC1F8000E
+X-Stat-Signature: bdjk5saws3o5yd8bq5cucohfe1jyqw71
+X-HE-Tag: 1767822934-571264
+X-HE-Meta: U2FsdGVkX191Y3RBTZ3+bGiq4Wbsl061jDHXYpEO7d6COaPY4RGlWBtdB5dxCjFExJSX1qq5ff8tHrXCJ54ztRVoN6Dmm74PyejFz/WjPyozORZbM6PDTEwF7DwFXgQULEnY4E2XcubvX0nSvhYbA4Q6WzK4KG97Olw9ERS26pTFxg/7zR/CYPLx5pNzSwKFrsyZicw+4O/OpD9m36jxu3zGKvQR/te4gYWp3OIUOWIR72myfsvuTnINkc3R3trV3vpDR9icNBl/hdJniGIVrSY5UGj2Y5NED1/mu4r8nn6DDf61FRWonGSw8aH53wXfKTsVrhGaqu7bpieOXjAYE1VzIEKPVyofM1c2yousQuTefOyZC0lwFkVeqJCtvDwzU2hF63IKq7Svi0oSefoOFLwucMidQu1QlIJgYFLoHnITD2saL/J4CRl2XMsfIko10Xc4xNz+96BrFE7vhyJXJjA/+AKEslarqZT9II+mg1UT1NWCvxw4bWot0+NQ+xPQxvNO6yoWK6OpOOt+bJbkA5gG0p/D1zMzdDXdEcjHUK3pzSXmcDlnxYeiGEYHOzY81nGgylf+7wHD353oYgFS8LPBN085JDofn6PyXCcOnb6eh5FZ1S75MM55ibaY4f/uU9IO6KvsqloQ7nqhiopLqIadHHWoohuaOcVSy4Lis0NjJLGJBpxtrCSHrNoq4SP09bShpH9gLYAR69DGNXzhs/8CpD+4xfaUnjQmR1WwBrd3UfBKPP8OB08OJlM/SIdE5SY1b8sXfMqr2nyKAwYybPOyWDEhNHDgD+ttIhasrDRs/hCItKeiq8UwYRNkrG56jEgbOowERtM8NJpgVNeyH3SF+C+cYyGXkYJPqp7b6fCrfHetUv+rVFxmn9EEMPaSr/UnmL3piPiZb1zD3IwoPKLIyGlTR3WQJs3F1sV4tML5Xldm12t1H0jYppQeEIdBeWNPtQvez2A9UVBuKLT
+ KqIiqIRp
+ fHOfEWDFMTeIWRmQlfe4/1CULlBC9ZtAWXGxT6HWI8xOYdSCggdvCcapy6d+DUCvF6cSEtR6CVEOM56ComBtARb3KRapDlJQpSuzeR1NVMx6hCwkfgcVtkS8e+KXu8e0mSx84L4LZ2ykG9hJ3VJDa5iiKnIENZFBfZAEdXyCpTclfzXvxt1oNk3DeUgX3ZgzfrWILDy730Bug3lgHH/SreV8gwREKwpM6KSaw4GWvTtAkI1Wrh6FbNE3hhdFoMEvPrfImNybVHkQS8ViyEx8sFtK9KIr7F7C7zOyJWB8Apxh9WjhfLsHTr3CED2wD/eHtxY22efLFIj6G9qL+SvX0L5cpO6T+unH4lQFKF5MK6sSYKGw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,48 +145,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/7/26 21:42, dan.j.williams@intel.com wrote:
-> David Hildenbrand (Red Hat) wrote:
-> [..]
->> This might be the last meeting this year: I will be traveling for LPC on
->> December 11 and December 18. Then, Christmas is already around the
->> corner and we'll skip the one on December 25. So we'll probably have our
->> next meeting then on January 8.
-> 
-> Hi David,
+> WARNING: Actually I'm not sure if this is the *right* stack trace.
+> This might be on a bare 6.18 without the latest extra 4 patches.
+> I'm not finding a more recent stack trace.
 
-Hi Dan!
+Found comments from Samsung dev:
 
-> 
-> Great seeing you at LPC! 
+But another panic came after those fixes [ie. 4 patches] applied.
+struct bpf_insn_aux_data is 88byte, so panic on warn set when old_size
+ends with 0x8.
+It seems like vrealloc cannot handle that case.
 
-Absolutely :)
+  84.536021] [4:     netbpfload:  771] ------------[ cut here ]------------
+[   84.536196] [4:     netbpfload:  771] WARNING: CPU: 4 PID: 771 at
+mm/kasan/shadow.c:174 __kasan_unpoison_vmalloc+0x94/0xa0
+....
+[   84.773445] [4:     netbpfload:  771] CPU: 4 UID: 0 PID: 771 Comm:
+netbpfload Tainted: G           OE
+6.18.1-android17-0-g41be44edb8d5-4k #1 PREEMPT
+70442b615e7d1d560808f482eb5d71810120225e
+[   84.789323] [4:     netbpfload:  771] Tainted: [O]=OOT_MODULE,
+[E]=UNSIGNED_MODULE
+[   84.795311] [4:     netbpfload:  771] Hardware name: Samsung xxxx
+[   84.802519] [4:     netbpfload:  771] pstate: 03402005 (nzcv daif
++PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+[   84.810152] [4:     netbpfload:  771] pc : __kasan_unpoison_vmalloc+0x94/0xa0
+[   84.815708] [4:     netbpfload:  771] lr : __kasan_unpoison_vmalloc+0x24/0xa0
+[   84.821264] [4:     netbpfload:  771] sp : ffffffc0a97e77a0
+[   84.825256] [4:     netbpfload:  771] x29: ffffffc0a97e77a0 x28:
+3bffff8837198670 x27: 0000000000008000
+[   84.833069] [4:     netbpfload:  771] x26: 41ffff8837ef8e00 x25:
+ffffffffffffffa8 x24: 00000000000071c8
+[   84.840880] [4:     netbpfload:  771] x23: 0000000000000001 x22:
+00000000ffffffff x21: 000000000000000e
+[   84.848694] [4:     netbpfload:  771] x20: 0000000000000058 x19:
+c3ffffc0a8f271c8 x18: ffffffc082f1c100
+[   84.856504] [4:     netbpfload:  771] x17: 000000003688d116 x16:
+000000003688d116 x15: ffffff8837efff80
+[   84.864317] [4:     netbpfload:  771] x14: 0000000000000180 x13:
+0000000000000000 x12: e6ffff8837eff700
+[   84.872129] [4:     netbpfload:  771] x11: 0000000000000041 x10:
+0000000000000000 x9 : fffffffebf800000
+[   84.879941] [4:     netbpfload:  771] x8 : ffffffc0a8f271c8 x7 :
+0000000000000000 x6 : ffffffc0805bef3c
+[   84.887754] [4:     netbpfload:  771] x5 : 0000000000000000 x4 :
+0000000000000000 x3 : ffffffc080234b6c
+[   84.895566] [4:     netbpfload:  771] x2 : 000000000000000e x1 :
+0000000000000058 x0 : 0000000000000001
+[   84.903377] [4:     netbpfload:  771] Call trace:
+[   84.906502] [4:     netbpfload:  771]  __kasan_unpoison_vmalloc+0x94/0xa0 (P)
+[   84.912058] [4:     netbpfload:  771]  vrealloc_node_align_noprof+0xdc/0x2e4
+[   84.917525] [4:     netbpfload:  771]  bpf_patch_insn_data+0xb0/0x378
+[   84.922384] [4:     netbpfload:  771]  bpf_check+0x25a4/0x8ef0
+[   84.926638] [4:     netbpfload:  771]  bpf_prog_load+0x8dc/0x990
+[   84.931065] [4:     netbpfload:  771]  __sys_bpf+0x340/0x524
 
-> Can I grab some time on the agenda to
-> brainstorm the next level of detail on the topic I briefly ran by you in
-> the hallway track? I.e. is there a path to decouple dependencies and
-> land some of the low level huge page support upstream while the
-> guest_memfd reworks for in place conversion and hugetlbfs backing
-> continue to mature?
+[   79.334574][  T827] bpf_patch_insn_data: insn_aux_data size realloc
+at abffffc08ef41000 to 330
+[   79.334919][  T827] bpf_patch_insn_data: insn_aux_data at 55ffffc0a9c00000
 
-Yes, Ackerley already added that to the meeting agenda :)
+[   79.335151][  T827] bpf_patch_insn_data: insn_aux_data size realloc
+at 55ffffc0a9c00000 to 331
+[   79.336331][  T827] vrealloc_node_align_noprof: p=55ffffc0a9c00000
+old_size=7170
+[   79.343898][  T827] vrealloc_node_align_noprof: size=71c8 alloced_size=8000
+[   79.350782][  T827] bpf_patch_insn_data: insn_aux_data at 55ffffc0a9c00000
 
-> 
-> As you said this at a minimum needs to be crippled / not production
-> worthy to maintain focus and momentum on the guest_memfd rework
-> completion. The observation that shifted my thinking is that, given the
-> timelines and remaining work, there are solid steps that the low level
-> implementations can be landing and maturing in advance of that
-> integration. All net progress for upstream.
+[   79.357591][  T827] bpf_patch_insn_data: insn_aux_data size realloc
+at 55ffffc0a9c00000 to 332
+[   79.366174][  T827] vrealloc_node_align_noprof: p=55ffffc0a9c00000
+old_size=71c8
+[   79.373588][  T827] vrealloc_node_align_noprof: size=7220 alloced_size=8000
+[   79.380485][  T827] kasan_unpoison: after kasan_reset_tag
+addr=ffffffc0a9c071c8(granule mask=f)
 
-Right, I think we're good as long as we don't start splitting folios on 
-partial truncation. That is: only allow truncation in THP granularity.
+I added 8 bytes dummy data to avoid "p + old_size" was not ended with
+8, it booted well.
 
-I might not be around tomorrow and Ackerley will likely lead the 
-meeting. I'll send out a reminder mail now that I realize I haven't ...
+diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
+index 4c497e839526..f9d3448321e8 100644
+--- a/include/linux/bpf_verifier.h
++++ b/include/linux/bpf_verifier.h
+@@ -581,6 +581,7 @@ struct bpf_insn_aux_data {
+        u32 scc;
+        /* registers alive before this instruction. */
+        u16 live_regs_before;
++       u16 buf[4];     // TEST
+ };
 
--- 
-Cheers
+maze: Likely if 8 bytes worked then 'u8 buf[7]' would too?
 
-David
+it will be 88bytes + 7 bytes = 95 bytes(=0x5f) which is in the range
+of granule mask(=0xf)
+
+I don't think it works, but it works.
 
