@@ -4,91 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0421CFD658
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 16:13:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53644CFD65D
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 16:19:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1B466B008A; Wed,  7 Jan 2026 11:13:37 -0500 (EST)
+	id 97F066B008A; Wed,  7 Jan 2026 11:19:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEF7B6B0093; Wed,  7 Jan 2026 11:13:37 -0500 (EST)
+	id 8FEB36B0093; Wed,  7 Jan 2026 11:19:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0F326B0095; Wed,  7 Jan 2026 11:13:37 -0500 (EST)
+	id 801936B0095; Wed,  7 Jan 2026 11:19:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BF19B6B008A
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 11:13:37 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3FE8C58A91
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:13:37 +0000 (UTC)
-X-FDA: 84305663274.27.F9A2585
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4661C100003
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:13:35 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7098D6B008A
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 11:19:26 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 078631AAD5F
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:19:26 +0000 (UTC)
+X-FDA: 84305677932.15.BDCACBD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2E629100002
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:19:23 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=chFS53lF;
-	spf=pass (imf14.hostedemail.com: domain of kent.overstreet@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=kent.overstreet@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767802415;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fPQWIADjQC4TwHC8EiEiCB9H2oAaqtO+F3440ryzkow=;
-	b=GJpdo/fSea0p4q7zm4JWT+Uie9IepMVNVptoWBHAvNd4eoZd/LyMbYKLRlQbF+araaE1nP
-	c3KniGpKo3O3HUTHtfXHIP7zM7JBxzhWwbRzZ9wShrXT5a/E1P4lpxBQ9PyhJ7f0udKVkg
-	YZmcVFaEBjdAYSDTjpmBbfADCkO45N8=
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hNTsXeCD;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767802764; a=rsa-sha256;
+	cv=none;
+	b=7GVQJQ4xVujfkZmKPflWyEENqsE71ct/PM5tcm6TU6c13Aa1qI8zj4P+/548T3Tlk9un9w
+	oXrAGlU9ZtqSVJgAXocqjOZ5qTGV4v+FDqTS/ZOW9K2f88AsaIQJJfgwGcGS6oKc0OGbtO
+	AQwNuMvXWu/QuP+1JbTGRBg6Kf7SE7c=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=chFS53lF;
-	spf=pass (imf14.hostedemail.com: domain of kent.overstreet@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=kent.overstreet@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767802415; a=rsa-sha256;
-	cv=none;
-	b=7MFyzX/fwhrKn6VwzFsX5yfRC/1xlXi5LbajTG8JzqMbxKMt2u8/fnQqwCtBcdPt8xQbnD
-	T4XxvpmdQr/wFpR6qDmM3pIewFRxTNUit2chwF0I4vKI94bJdWooVqO7OSfyVdjOzoB9UH
-	tBuGsk6WZCNDtZKyr1MJLusN6k1N53A=
-Date: Wed, 7 Jan 2026 11:13:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767802410;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fPQWIADjQC4TwHC8EiEiCB9H2oAaqtO+F3440ryzkow=;
-	b=chFS53lFvbAgqR/F2l0q9UIIt5jKIUa8bUnrVWOreRvouZxaQlayxNBmeNT8oJ2QJFNftd
-	Igbho/vMjGiYhwOWnd+IP23I2HreqRABjgaLhfODP+Gs3TfpAyDkksSxE2l0DlQlWufVpR
-	zHC9GRuKYT9b9iXvSzgcPp3kdn/xJEE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: David Wang <00107082@163.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
-	hannes@cmpxchg.org, pasha.tatashin@soleen.com, souravpanda@google.com, 
-	vbabka@suse.cz, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC] alloc_tag: add option to pick the first codetag
- along callchain
-Message-ID: <aV6BnhG9yjX10O27@moria.home.lan>
-References: <20251216064349.74501-1-00107082@163.com>
- <CAJuCfpEtZ2Ncpa4goKUcerruB67fALJ2v2KrbWB1_PB7iwwjSQ@mail.gmail.com>
- <75285cc4.3c52.19b916d9490.Coremail.00107082@163.com>
- <aVzorksJEyI0wlxh@moria.home.lan>
- <37169c79.a0e5.19b93a2768f.Coremail.00107082@163.com>
- <aV2VWbY4Rb_w-QTs@moria.home.lan>
- <4736b304.38a2.19b96888104.Coremail.00107082@163.com>
- <aV3bykzqkyUcBJBf@moria.home.lan>
- <5b356cfa.4ab3.19b97196d49.Coremail.00107082@163.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5b356cfa.4ab3.19b97196d49.Coremail.00107082@163.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4661C100003
-X-Stat-Signature: dcrkwbhiedj7d7n6do97h76q45165qa4
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hNTsXeCD;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767802764;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TnLlLWsoEoaUstNmkE/BV8bAFgpqkj4IgfCpGTmGKNQ=;
+	b=4eVUWKIvOmnlT2dCQB2MnW2lX4ekh176a0CHWh5/xlQ2APWeJP030Y9GpaMZwirrvR02NX
+	pJeIcDSQ+EkQBDsVMY804vrTaMzYgT4L8gTui8Z1g4/7rBkYdodKTPiSWZ4hAtAupKsv4g
+	YD9TAADKSCJAlhJXLXVUbdfD/zwgMwA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DCE4642E05;
+	Wed,  7 Jan 2026 16:19:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A2AC4CEF1;
+	Wed,  7 Jan 2026 16:19:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767802762;
+	bh=gd+v5+A9Bh9zbZ/0HpEvUqibh1+TbB0iDi23P/TTm/k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=hNTsXeCD1PbB7GIwsAyk6f+eQbR1sw/HfR4+E17JNvLZH4SZc7ETGFZQex1FnYdIO
+	 rc+YH1EpVmew3wTDYe46yVrnvRN2WkKlxdNipoiJ5gawQYkQqbenR+Xusk7wCeoweP
+	 fk8R7wn0gFjum/pJbV1oJSAhd1NE3vG6nhuIw/qQ=
+Date: Wed, 7 Jan 2026 08:19:21 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Li Zhe" <lizhe.67@bytedance.com>
+Cc: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>,
+ <fvdl@google.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
+Message-Id: <20260107081921.0e189904060f49a555142e28@linux-foundation.org>
+In-Reply-To: <20260107113130.37231-1-lizhe.67@bytedance.com>
+References: <20260107113130.37231-1-lizhe.67@bytedance.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2E629100002
+X-Stat-Signature: bt6pqox8w7qnz45asrxyqjsbd4d85gct
 X-Rspam-User: 
-X-HE-Tag: 1767802415-129756
-X-HE-Meta: U2FsdGVkX1+CsBDDxzIEkcD5HnecKy5BZo7Byaf9s0S2Dvg18jzY446m+jnv5PLEy1P70Vq8mtqwVPoH6wkaFzeX2aBV5ooNYuMo1Y1OqIt5gm7hksPTDzLg6oa/OmkVdnmK+7c3wBodquTaJFEoOllGxN9U1xs6qJHX2UpOzbSiBkEvcJx5n+0Ck3v0yt7erm4jUpkHZDRGwiPiZzprMPCfVz3gXbsRDX8HBfmCnaK2+z6tsAEyKGMTu6pXh+lFNVzLWcHo1EBfvEPlVvhJZRuC3ze1W+W2hj9jtyUkc9kghQwHOyLLt6SGpNYe4/L4pOOpPd1nx7tYqdLY49gIyGtRqVkLNzKTxikDgLO4n9nzt6RdkKG/IGx3GbGXw6y1AsH2EHBSxEBHBOixwxgE3Mcg4QlXKtBxU2FfZ/crH/yE0w+aUPhtqawLPpECJBqQ2AfWlLGPFISi6Wd3BPH967A9gRDIciCDQY71MhKedQ38TEwoSgGBjqG578wzYpOACIhp6oomon7b9fA08oODA8jfDnV2l8W3ubM39v7bPYjQAGloe2mHYLcHBl4DDXHM9+deViQkCJ2A5/FvE780w4DtPoHCgApbfmOMdszV0yOtB/X4kCDh0lKiMP9x3yADNgs6GI8JDvBqQuvtcbInvP+SC9F12GJ/qt9Cw3mCUKtEAtcpFOGmiiTF1TMnB++j4WJLc5hnDTHkK7DSEsv4Xg5MiOOftgYPgciZvbyAS/V3ppaAV/qwYS9Ta++rnMRhSQeEfbdyZdw4mFGZ+pbQNdoqe/YYb8p3wjWGDWP5Sr+/5dkC4xdQBZUJPtQdL11aCCwZ+IVzy0l2wdLQY0hJJf7gmK0gtEN1QY5uA0WYGHV0y6kbMpgxjb+ROU2BYNhSbWscDFS1+0DEQo+cDuR7exl77Jt0eZvVQOZRaC2TBi4Temzb3EJNoZ48YaU3lx29Yc3XMtR7ZbZg3hN4uZt
- rVPIkZ34
- uwIiOCEORQCncDcHQ/xqbV0+0OVVd+1udt1YMNxHuhJjJ2qb0lh9oVlootVZcGKlZrJXovrywPyIACLHoJMpdcBTrX5P9lKBft1vIxmjnj5ob2YgN37zu527/fMtWKJ2RnOua4BnsRnaAjOI/CFBf7w2Qd59zHWzNIE1BxuDahuzYj5ZtbiNoXsNbkdpZwSCMml3LCdpjZK4HHY08mfwZpOjKR+hcmoFfojjemtigknxR7qBS0nOes7QoBX4zgxDgYB6r2dW7UtlGcWHfE37VFF+1m0y89kT0twUTHtUEpcHSbQRzq/FmomdIhpawsZZYujqI
+X-HE-Tag: 1767802763-164202
+X-HE-Meta: U2FsdGVkX18cBFRprHWG82ByHgbcE1MTAE/YzdPIsxruLzFA+t4HYp2829JdiXXZ40qLz8gUv7WK+Fzx2jEkFITmuaQsvTJDiFXr+4YyhiFS83Sw6fVTrCxoLVvO/bhifAtvW7+IbRTjBXWYIlyUSuHqszRS9SUTaPtxaX8vKWddbPVXW7vxotgZyg4rWPFmPkcgIglpZqPxyWuI8mkja3gW1q8vFXseVlVJof6sOyRCVgydDtwg+zDcKWNsUUGv9iVZGi9A54LNV804mshzECgKfx3eyqOQB11NwVcrjRSuQM8Sjr8npqbKw5Zqb7Ux9pHNAA0d0q1ZIi/6uqmqpjejQDoo3jQaI0F9L8pIgIYmkUhA4UGO12kIhXYpJff8ERI9E3+4S7TK0gmCIIRZ6QGZJ+FMdi6VDdpaZ0Arst5WoZoXbmYPpfGKVw7asvYhHY9IwWY3+DFMyAL+8SM4+Fl71KFRiSXwoq6gCLt7whfdJe2z9VC7JCtGh5jvj0gBu6vzDOx/JjzBYOHo2uPzlGKTvJoaxP5UySql02g0+VmSc+kJd2+K24vkX8+0UIll8EJMKPp4oQZIv2S0XKSsVR7Y6u/WvgPIYoC7bYEs1neWBCCMC9Mp33tw6qUvWTf6h+vGUS3q3IQ6JtttcjTqJMzy+d733JAZMgVrTghdsYUSuzK651Vs32lM9NC9eQkxaMQbnLTxqgbJA/FTAzSxuNgLl2sIhg38AItJ5polBTxZ239VJBjlR3FdxWrTFoFSd6Ll6aUNQyyb4Y5nRDZxu5M7U9GLtAmIDVvaKLwf2E7f7j4URpzhvVs4TBO10ga7ZxOvu5wmTfPPucI53desYfsil7wophkUcQHnhIs07zwNBR4gfhFwSFa9NxbixFEMEooEHQ86rH7sO/YKWFfgzgx990QeJ1/2PhYv/TAkbVW887aKxeV3rH9W1h1tYwJ3R/li6jGwEAmETJthsCU
+ 1cxKMGNE
+ LJctfODYPaDmvJoBZ3KE0wlRdDV4JShglRxAD+zQEPlRMc6cIvzSrrOWr0KPz64XpIyndrmQsaEm4GdPYKNfsG6JHErGMLG1eYev8wAEedzbsvhW8HnWQS+xcfEmu7d7H/YThC9I1aMcTQ8rP7hcGnGJ8AJDAJ9wh3GWNFajYeGg85Y7rbzd5ZKUAhVTIFigk8OsjEWrJI3TBNF5/fWSEgKwXEkkiwKdpqvOiWaFY+J9sv+lNmezGQINo8HtWRthJQDVo/TZpY9/YpBsXAzeU9ahpxlqMr21bDuK2Z6tsv4TMjWc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,81 +90,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 07, 2026 at 02:16:24PM +0800, David Wang wrote:
+On Wed,  7 Jan 2026 19:31:22 +0800 "Li Zhe" <lizhe.67@bytedance.com> wrote:
+
+> This patchset is based on this commit[1]("mm/hugetlb: optionally
+> pre-zero hugetlb pages").
 > 
-> At 2026-01-07 12:07:34, "Kent Overstreet" <kent.overstreet@linux.dev> wrote:
-> >I'm curious why you need to change __filemap_get_folio()? In filesystem
-> >land we just lump that under "pagecache", but I guess you're doing more
-> >interesting things with it in driver land?
+> Fresh hugetlb pages are zeroed out when they are faulted in,
+> just like with all other page types. This can take up a good
+> amount of time for larger page sizes (e.g. around 250
+> milliseconds for a 1G page on a Skylake machine).
 > 
-> Oh,  in [1],   there is a report about possible memory leak in cephfs, (The issue is still open, tracked in [2].), 
-> large trunk of memory could not be released even after dropcache.
-> memory allocation profiling shows those memory belongs to __filemap_get_folio,
-> something like 
-> >> ># sort -g /proc/allocinfo|tail|numfmt --to=iec
-> >> >         12M     2987 mm/execmem.c:41 func:execmem_vmalloc 
-> >> >         12M        3 kernel/dma/pool.c:96 func:atomic_pool_expand 
-> >> >         13M      751 mm/slub.c:3061 func:alloc_slab_page 
-> >> >         16M        8 mm/khugepaged.c:1069 func:alloc_charge_folio 
-> >> >         18M     4355 mm/memory.c:1190 func:folio_prealloc 
-> >> >         24M     6119 mm/memory.c:1192 func:folio_prealloc 
-> >> >         58M    14784 mm/page_ext.c:271 func:alloc_page_ext 
-> >> >         61M    15448 mm/readahead.c:189 func:ractl_alloc_folio 
-> >> >         79M     6726 mm/slub.c:3059 func:alloc_slab_page 
-> >> >         11G  2674488 mm/filemap.c:2012 func:__filemap_get_folio
+> This normally isn't a problem, since hugetlb pages are typically
+> mapped by the application for a long time, and the initial
+> delay when touching them isn't much of an issue.
 > 
-> After adding codetag to __filemap_get_folio, it shows
+> However, there are some use cases where a large number of hugetlb
+> pages are touched when an application starts (such as a VM backed
+> by these pages), rendering the launch noticeably slow.
 > 
-> ># sort -g /proc/allocinfo|tail|numfmt --to=iec
-> >         10M     2541 drivers/block/zram/zram_drv.c:1597 [zram]
-> >func:zram_meta_alloc 12M     3001 mm/execmem.c:41 func:execmem_vmalloc 
-> >         12M     3605 kernel/fork.c:311 func:alloc_thread_stack_node 
-> >         16M      992 mm/slub.c:3061 func:alloc_slab_page 
-> >         20M    35544 lib/xarray.c:378 func:xas_alloc 
-> >         31M     7704 mm/memory.c:1192 func:folio_prealloc 
-> >         69M    17562 mm/memory.c:1190 func:folio_prealloc 
-> >        104M     8212 mm/slub.c:3059 func:alloc_slab_page 
-> >        124M    30075 mm/readahead.c:189 func:ractl_alloc_folio 
-> >        2.6G   661392 fs/netfs/buffered_read.c:635 [netfs] func:netfs_write_begin 
-> >
+> On an Skylake platform running v6.19-rc2, faulting in 64 × 1 GB huge
+> pages takes about 16 seconds, roughly 250 ms per page. Even with
+> Ankur’s optimizations[2], the time drops only to ~13 seconds,
+> ~200 ms per page, still a noticeable delay.
 > 
-> Helpful or not, I am not sure. So far no bug has been spotted in the cephfs write path, yet.
-> But at least, it provides more information and narrow down the scope of suspicious.
+> To accelerate the above scenario, this patchset exports a per-node,
+> read-write "zeroable_hugepages" sysfs interface for every hugepage size.
+> This interface reports how many hugepages on that node can currently
+> be pre-zeroed and allows user space to request that any integer number
+> in the range [0, max] be zeroed in a single operation.
 > 
+> This mechanism offers the following advantages:
 > 
-> https://lore.kernel.org/lkml/2a9ba88e.3aa6.19b0b73dd4e.Coremail.00107082@163.com/  [1]
-> https://tracker.ceph.com/issues/74156   [2]
+> (1) User space gains full control over when zeroing is triggered,
+> enabling it to minimize the impact on both CPU and cache utilization.
+> 
+> (2) Applications can spawn as many zeroing processes as they need,
+> enabling concurrent background zeroing.
+> 
+> (3) By binding the process to specific CPUs, users can confine zeroing
+> threads to cores that do not run latency-critical tasks, eliminating
+> interference.
+> 
+> (4) A zeroing process can be interrupted at any time through standard
+> signal mechanisms, allowing immediate cancellation.
+> 
+> (5) The CPU consumption incurred by zeroing can be throttled and contained
+> with cgroups, ensuring that the cost is not borne system-wide.
+> 
+> Tested on the same Skylake platform as above, when the 64 GiB of memory
+> was pre-zeroed in advance by the pre-zeroing mechanism, the faulting
+> latency test completed in negligible time.
+> 
+> In user space, we can use system calls such as epoll and write to zero
+> huge folios as they become available, and sleep when none are ready. The
+> following pseudocode illustrates this approach. The pseudocode spawns
+> eight threads (each running thread_fun()) that wait for huge pages on
+> node 0 to become eligible for zeroing; whenever such pages are available,
+> the threads clear them in parallel.
 
-Well, my first thought when looking at that is that memory allocation
-profiling is unlikely to be any more help there. Once you're dealing
-with the page cache, if you're looking at a genuine leak it would pretty
-much have to be a folio refcount leak, and the code that leaked the ref
-could be anything that touched that folio - you're looking at a pretty
-wide scope.
+This seems to be quite a lot of messing around in userspace.  Perhaps
+unavoidable given the tradeoffs which are involved, and reasonable in
+the sort of environments in which this will be used.  I guess there are
+many alternatives - let's see what others think.
 
-Unfortunately, we're not great at visibility and introspection in mm/,
-and refcount bugs tend to be hard in general.
+>  fs/hugetlbfs/inode.c    |   3 +-
+>  include/linux/hugetlb.h |  26 +++++
+>  mm/hugetlb.c            | 131 ++++++++++++++++++++++---
+>  mm/hugetlb_internal.h   |   6 ++
+>  mm/hugetlb_sysfs.c      | 206 ++++++++++++++++++++++++++++++++++++----
+>  5 files changed, 337 insertions(+), 35 deletions(-)
 
-Better mm introspection would be helpful to say definitively that you're
-looking at a refcount leak, but then once that's determined it's still
-going to be pretty painful to track down.
-
-The approach I took in bcachefs for refcount bugs was to write a small
-library that in debug mode splits a refcount into sub-refcounts, and
-then enumerate every single codepath that takes refs and gives them
-distinct sub-refs - this means in debug mode we can instantly pinpoint
-the function that's buggy (and even better, with the new CLASS() and
-guard() stuff these sorts of bugs have been going away).
-
-But grafting that onto folio refcounts would be a hell of a chore.
-
-OTOH, converting code to CLASS() and guards is much more
-straightforward - just a matter of writing little helpers if you need
-them and then a bunch of mechanical conversions, and it's well worth it.
-
-But, I'm reading through the Ceph code, and it has /less/ code involving
-folio refcounts than I would expect.
-
-Has anyone checked if the bug reproduces without zswap? I've definitely
-seen a lot of bug reports involving that code.
+Let's find places in Documentation/ (and Documentation/ABI) to document
+the userspace interface?
 
