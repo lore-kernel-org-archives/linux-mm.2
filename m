@@ -4,103 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EA64D0D171
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 21:30:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AC9AD0D171
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 21:30:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 996656B0092; Wed,  7 Jan 2026 16:30:00 -0500 (EST)
+	id C40D06B0005; Wed,  7 Jan 2026 16:30:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 977CD6B0093; Wed,  7 Jan 2026 16:30:00 -0500 (EST)
+	id C016E6B0093; Wed,  7 Jan 2026 16:30:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84F486B0095; Wed,  7 Jan 2026 16:30:00 -0500 (EST)
+	id B20B86B0095; Wed,  7 Jan 2026 16:30:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 726246B0092
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:30:00 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2C1731604FF
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:30:00 +0000 (UTC)
-X-FDA: 84306460560.24.B01FA41
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 48548C0002
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:29:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JhXvBhXX;
-	spf=pass (imf22.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A610F6B0005
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:30:42 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 417B1B852E
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:30:42 +0000 (UTC)
+X-FDA: 84306462324.30.67C20A8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8D0F8C0017
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:30:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G1cutN57;
+	spf=pass (imf10.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767821398;
+	s=arc-20220608; t=1767821440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ow7ejlnL76blgGovBd3isSBtOAsvSD2Rawb77QSvQFQ=;
-	b=G9fJJ7rnnB0o9Yx6QPeCJ+hrW9D8NCXZ7bGd4jxmx3D+v5RAs2HBWZ0KaBL0p4T4c2e3Ae
-	SkZNTXNwyLpiodP+O/rgewKmGKRHQ8kXs6f8gWhLQZn/LOyCyGBZu0MxUh4uBPX5gHOHw4
-	SLYGAezEU6tagA27AJnfsZbGJLy+aBU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767821398; a=rsa-sha256;
+	bh=M0F0ykQRUzmX7vtto5Og3xAc6u94UP2lfAAPfJJnqjk=;
+	b=XhgBdZxHcMGOo5esijO86n8Z5CNcpP1Tx7FHFzbTYp1N5SIug/NcyxEXtem7m5donTJ3SZ
+	Nx0BFSdJGzCChbk7xl7+Lh3Ihl4ihuyusXYySvLL+R5JYxYrsLEPelJHESeP6vRXB3QgAS
+	iqQ1J6gWMExaqVI22dXFJAtuj2Bn66U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767821440; a=rsa-sha256;
 	cv=none;
-	b=5GS8I8lilcsxfqdCJ00B0rxnvg3anLqEihFoaOteUrXZpCL/0TxIRsZHqUgzyJKsWqmb1T
-	amxTFhvZbpnK8zVFAxzVGkACsSxEiG3AB2+5cE8ZH1sl1MaUzQ6d8yhVla+Dl32xAUX3EY
-	fwZ0dAu7SwFdUCPiVXBB0/PcttJDg+M=
+	b=xDSA9Ncv5PU4Dt3z9/+fLXr7TgFd1kWC0oQ3UQBt6klpfFBZ1SiFj4Y6GnBS/x/aYjj4qF
+	rU3xuw7034NsYP9hZoumkXtn+VnJ3HKZkPQ7dWurXaiAGZmu9AxD42RlwGRGSOGaPC+2io
+	GpdfUNgDp10vK/h20YkxuocyKFtkTgU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JhXvBhXX;
-	spf=pass (imf22.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767821397;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ow7ejlnL76blgGovBd3isSBtOAsvSD2Rawb77QSvQFQ=;
-	b=JhXvBhXXvEeTqPFU8p4O6qfXvdq46v72e6P68PpZKUlNUn6ic0ln20XqnZQY1UQQzePJuB
-	6bDI8gXt/HibfqLri8JgwWFN8Vu4hi4I7HkF9eBHBT+DePsY5JJmHJHEr4LfbXNWlU/isX
-	5HE2tE7ld6jGwq+g/ZFKerC5k9S+XTE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-497-ENzFtFryNKKpqRGMa8A-nA-1; Wed,
- 07 Jan 2026 16:29:53 -0500
-X-MC-Unique: ENzFtFryNKKpqRGMa8A-nA-1
-X-Mimecast-MFC-AGG-ID: ENzFtFryNKKpqRGMa8A-nA_1767821391
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2CC6E195608F;
-	Wed,  7 Jan 2026 21:29:51 +0000 (UTC)
-Received: from [10.44.33.27] (unknown [10.44.33.27])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7950919560A2;
-	Wed,  7 Jan 2026 21:29:46 +0000 (UTC)
-Date: Wed, 7 Jan 2026 22:29:44 +0100 (CET)
-From: Mikulas Patocka <mpatocka@redhat.com>
-To: Matthew Wilcox <willy@infradead.org>
-cc: Andrew Morton <akpm@linux-foundation.org>, 
-    Pedro Falcato <pfalcato@suse.de>, 
-    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-    Alex Deucher <alexander.deucher@amd.com>, 
-    =?ISO-8859-15?Q?Christian_K=F6nig?= <christian.koenig@amd.com>, 
-    David Hildenbrand <david@redhat.com>, amd-gfx@lists.freedesktop.org, 
-    linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>, 
-    Jann Horn <jannh@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] mm_take_all_locks: change -EINTR to
- -ERESTARTSYS
-In-Reply-To: <aV7IO8-trMSI1twA@casper.infradead.org>
-Message-ID: <d3d77df6-931a-b97c-d551-a69ee5ca9493@redhat.com>
-References: <20260107203113.690118053@debian4.vm> <20260107203224.969740802@debian4.vm> <aV7IO8-trMSI1twA@casper.infradead.org>
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G1cutN57;
+	spf=pass (imf10.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 846BB42CBF;
+	Wed,  7 Jan 2026 21:30:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D15EC19423;
+	Wed,  7 Jan 2026 21:30:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767821439;
+	bh=FFWQa2LcrHTSBnqZDDDWTX3L98Pi6EsBlHPLyGqAVZg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G1cutN5774l/i6VO06Cm6RgMyY0ZBloUGp+vUZeYRcQ7s0hozsw0D2ZxzN7z/AjaF
+	 C/cKv2nvlGtySI61wwT+MHVNR02xCzPnbwIa498UgguWOGUaaMcS9VuORG8G+LtTbL
+	 jj7L4GMNKZHwztql++qSkaaMRYPAoy0nqp6EdTowwwfbJCANzn7EjyL1iNU8331eef
+	 mk/ILH2wnz9SesYAu5iRljZXGS1BI1BeM6eSDbyohPWwkqYEEbim3D8GNw4avWKGdE
+	 qs5Scd+uDIbKQwXDbJcKVdl8tVqnMZomYBLHBIqrqY4rXLAhpCOt2sy7GXEPFkaOCF
+	 fH987XZrxdvAw==
+Date: Wed, 7 Jan 2026 21:30:33 +0000
+From: Will Deacon <will@kernel.org>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: aneesh.kumar@kernel.org, akpm@linux-foundation.org, npiggin@gmail.com,
+	peterz@infradead.org, hca@linux.ibm.com, gor@linux.ibm.com,
+	agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+	svens@linux.ibm.com, arnd@arndb.de, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, linux-s390@vger.kernel.org,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH] mm/mmu_gather: remove @delay_remap of
+ __tlb_remove_page_size()
+Message-ID: <aV7QefpA5aYIfUGT@willie-the-truck>
+References: <20251231030026.15938-1-richard.weiyang@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Stat-Signature: d855o4heytbukb434hfjcapspee359yh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251231030026.15938-1-richard.weiyang@gmail.com>
+X-Stat-Signature: zn33ypyf4zxdcm1d6tk8d7ixbydpwiih
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 48548C0002
+X-Rspamd-Queue-Id: 8D0F8C0017
 X-Rspam-User: 
-X-HE-Tag: 1767821398-23641
-X-HE-Meta: U2FsdGVkX19JeRCg6IsqPjLl870BRx5h164Hom/q0//gp2K7RptR+r8/eg0lLWVvYfzwaHq7A5jpI/z/VAsfeKTVgi7SYR/ntZJ7zbWfe9GDGIAzKU2WAH/ZS4YquSoc7ZotjXlu4S7mdv75EAKoczBRpWRdawYP7rnRBuPWfkDwgQJAsICnxcDbS+NfVjG8vJPXFPEhByYY7yvs9pHe9n/AWPA6vkFLJyKT0eaOuLTyYbk0whJ5db1t8m+riW2I7KDXusTNeXNaD9KqNrbCjb0Lt3a3DmCp7WqKVN9o3vM8Y6z0qATXhNgzwsAIdSsYcK/3VI6Epv/9TOC/65C/kk0qVIV1Alqbm/0t8ojnPByBmdAIX1LD7aIEP619E3YgkfgvfwtqAr7yQfdJl9d6IAvLTJpdWDUkXL0UrBpL9v259fGJkPbA2Yk9v2IQgTtB+vAYu6OJDXe0hY+FGzXgI+NwCfHXOQ2Q+VhazBXCmh3FO1FayAiHaFh8M3TfnBgTvWMiyUgVGbcvcQN4W+wdrzmBpHoIY5GBQ9vOyTe5u3w1sTdDn4zISRajASw5bwJAy/Izo/gC7IcwWrda1+faz9cDLjnfIm18ZIwwUJQuKLBswZSmm/U9yyYgWlXdMZ9GYpEO+5wpUqnTkoDJs0nxErLQULJ6dCpj+LsenyDq8XeTNpOMnn49Lpr5Rj6p7R8ElSITEP11XuMf3b2X0QhEWgOPDa+22hIsBjuiiOYOv94l2Fni5iGXYkSBYZkOYyay3f65tEK2aMoWmsKHMblkJ1JzehxfQOYPje9Lr3YBapaM2qjChs8lWZEFWNLIziX3e2gWawE3blCt9yOtJMVEIdDW6u+t0eI22kUCZ4G9bXlS3xoiQ+OUdadBKBHaaLedpIPLWXvL+P9DNIGfmZKYRXgQxMGoQtSPUwlIDKrnP+ZG4kOGHySCebMGwYB4Z0VZ3amDu09lZDB+a4VhTKu
- i8T7frGs
- nkOTdCyrkvaeBEqvac//n+8odrtwQ0WNTEqFBz3XHvBs3VzcEVwUHnqRj6FBVByks3tAmhu6RygP78ACbJDr26gbNkoX2dGvG2HoOPGyjdZBKJ/phimqRzQOYJ1MzX4/8qtBVoGfg5GzSQDl/hmCLRBmDHBVnqM45pw9al/0jf/DlYRAT0iHdN5FWfNs2N074bO/BYWl3JdRFiMV8yxhNKKg8TOngKdN2iWDYuaQSl0e11eRPPZIjeE7CGs0wM+ZdluTfPC2rZLbrWpGmeLN1g1F6JdSnd6hKSpXMeHj9CMwN5MPXIVfu3uLGj2dbE2IpqiYMXOec67AYUqfKLfu9JiNnS4tKCWdkuDNbEdBjaSrHHRS08vwik7XQow==
+X-HE-Tag: 1767821440-2434
+X-HE-Meta: U2FsdGVkX1/Js3p1XlOBb4F3AOCszXUz7amwYnF4Xhly8tvPvR5/qQ7pfCRhjvWC67hkiTq7yz88dPkkV0ZL/nNewKPWpK6EfXc9G9zc8GxKAMafUmDsMu0GaJY7FLaF6hTKCEG6QrbToQIBhrrD8z6GUlBlZgc+1UCXneymWQhNRyrvXu4ld6OlDA22wwun7DE5sZA0oz+p5rBwZMKV5CZv8g9M2u42c8G8vyCVUNYXbjmheFCkqKb5ea3/D01z5Own27YIHH5tOzeh1/XtyBF+WjJAwKYUHPNzORJSubmYOIhxSZF6eqT39ap36eG0LwEpU24Fw+cU0VeAdg2Es5A92532RY8gUtiW9i551t/GOoR29AVWc6k6/mQ3UJbMF0UhQxbkFBILyZKFpY9PySXi95fpdcjQ2nIarDiqPFcQMc4rJLABnvhsrNznHkdWh9e0XXCZWdFRMxTjuk1/ZFOaHRVZ86z8SdR+3p4G6lVRKrO5ZYlyXbZU/GMkkeCVAMQVspXXgIPKgn1NxCZmjUXmpKwEQS68xSao04JchLJL/0/7QAuCJFTXL+12xJVjbLWKsLK2hyJGC9Z3nU1Onhw2GkfH/X5OER91kEb7S03DZpTWKGpGqo1mzTHasKwCH1zxh7pyZG/pfeZwhBjPvSQ4jju/N9d4TMS7gmeluKjaQ8n+cNcSj5AUfKR7+092zDGiDeMU2MrrVIRzWDrcCuo+Ge20vywCdxYbs8Queft2tsfsoSUdT+PjxJBV19x2LrXITfTSuh2GCBzH3Jzh8iMmQfqIJ59oGONqNinulKdFdjZrgxUU/0DdT/Ut9WqK0q/6vrlCfPWp3IsklCLmOoAXncTSvnuX5JL4QmUyFTGsAG8Te5JsnNJcFwsWhL0Lm2sE9Ocnp7qZj5H2+fOyq/wlad3TkxI/QzL4Dr4GK4KgphaTW0or/TcWwvc1Br3IEPbJhOdZSAyMugW0y4r
+ w+C7SRbQ
+ 8dEmgrQp2iWOSKoTm+tQ6ubmQI5HEjQ74UK0o3iZkjGx/7kFla+Me7D8j+QQ8ImTfIy/eEGbWnntPz6k/t5LkduZdiiQOmaKs9if7mxMxnud/sEIZ28jg+RgbhJbf/yKnFPuSjwkS2JW2V9Q3rof0XyTOWnoaO5SQ4qkAXmTTzI0ZbVTiFr0/DnoAmEXGUVHlquKujJ49KQx9LSav2p+800TAiWkA1hY2KyOW8Qx/KQYHYNd4V+94UlnUF5DkpipRDWKsRPWJPBMdJCeMSPe/g3vZLWkbd1tzoaykRjr5dJE8X+hCJ41X4sMi79PQ+rYpmVwxKH9SGoORtqQDnWtNnmkjs9ohwJA93BG/eerRYVEy3VKjjR8LPSHyMwJ1a9kWR0rUujpxXZHs8Mz+MWCaoZYKwiGtvvOhVeA7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,21 +96,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On Wed, 7 Jan 2026, Matthew Wilcox wrote:
-
-> On Wed, Jan 07, 2026 at 09:31:14PM +0100, Mikulas Patocka wrote:
-> > This commit changes -EINTR to -ERESTARTSYS, so that if the signal handler
-> > was installed with the SA_RESTART flag, the operation is automatically
-> > restarted.
+On Wed, Dec 31, 2025 at 03:00:26AM +0000, Wei Yang wrote:
+> Functioin __tlb_remove_page_size() is only used in
+> tlb_remove_page_size() with @delay_remap set to false and it is passed
+> directly to __tlb_remove_folio_pages_size().
 > 
-> No, this is bonkers.  If you get a signal, you return -EINTR.
+> Remove @delay_remap of __tlb_remove_page_size() and call
+> __tlb_remove_folio_pages_size() with false @delay_remap.
+> 
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> ---
+>  arch/s390/include/asm/tlb.h | 6 ++----
+>  include/asm-generic/tlb.h   | 5 ++---
+>  mm/mmu_gather.c             | 5 ++---
+>  3 files changed, 6 insertions(+), 10 deletions(-)
 
-Why?
+Makes sense to me:
 
-fifo_open returns -ERESTARTSYS, so why not here?
+Acked-by: Will Deacon <will@kernel.org>
 
-Mikulas
-
+Will
 
