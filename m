@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC054D0D143
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 16:49:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E929D0D143
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 16:49:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E70A6B0096; Wed,  7 Jan 2026 11:48:58 -0500 (EST)
+	id E57F86B0098; Wed,  7 Jan 2026 11:48:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E8446B0098; Wed,  7 Jan 2026 11:48:58 -0500 (EST)
+	id DD92B6B009B; Wed,  7 Jan 2026 11:48:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6750C6B0099; Wed,  7 Jan 2026 11:48:58 -0500 (EST)
+	id CA0256B0098; Wed,  7 Jan 2026 11:48:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 57E256B0096
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 11:48:58 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2E81A1AAD9F
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:48:58 +0000 (UTC)
-X-FDA: 84305752356.28.C1DFA36
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B18766B0098
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 11:48:59 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 685DC8B9CE
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:48:59 +0000 (UTC)
+X-FDA: 84305752398.14.D8AA037
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 99D98100005
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:48:56 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id C6B57140011
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:48:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767804536; a=rsa-sha256;
+	spf=pass (imf23.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767804537; a=rsa-sha256;
 	cv=none;
-	b=wxE79rQYbU2SKN2cmQLoVYVZcTMzCzlHwIONNXNIrL6GPO2RxHmsvZfy80Za1FN24KAJtc
-	cNWQNEuWVO6cQtJxDdPi6jqW6Xk1A8RtYL+waX+BgfkNQjsChTDfr0YRnNYTHB9yg7a4r3
-	KyVib/KPdOTze1GPZOO7UoGWWJ6j7Es=
+	b=1AzbzD+FK3zXCrkdsEVDbxt/CBfMOEz0zEsraCSSw6HLESwJ5+Ol6RCULt0upcja7/KUyM
+	iAm+Sw5CHFFbQqBh5JW3IUJEMVIywU2TSxw16c6J7GhC0Up5Q68Kp4PSGGvo5tN5a8Mw7x
+	7pUJPFSSkjnWHRkHR4z2lTYCm9ZXRTk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
+	imf23.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf23.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767804536;
+	s=arc-20220608; t=1767804537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=itqaKDb0L3ihII/ZhInIbjXsKbh+AcfS9nkCAGiEbLY=;
-	b=Q7zU38SLEjKvQ6nWxJN+1OpZxLZIft6Pe7ZxNnO78u3GfCcseRBB6oJkVJpYUl2+LdtvAU
-	uD9v7M5M/FjRtZGiAViDmhxY0BfieEPZFrzK8bDed2d15euEqSG0BNcOH7ZLb+yjrVD6HW
-	E4T0HWM+N3wG0VsqGiptnHQLC9dCEHw=
+	bh=9js0LGTCYWgRrJ28mS7Bf6CHYKmXb9OG0hKPXh8YdAs=;
+	b=X0q7NyvVsPE5Ra4IopO9mIZWgIgkNiIof8BZLOcIASTuCUaCdLQ/jEUaM74BAUVayygG+t
+	tA8o8we7clBycUavNC/gy3yMZDV9Y4Gppm4JAxB5Sw/UVNifkCLReHtB8y96MFX55WABzZ
+	4isPzptwdzhhUEQ8NSPd+rz4g34VNpo=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 10BF6165C;
-	Wed,  7 Jan 2026 08:48:49 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 85C241682;
+	Wed,  7 Jan 2026 08:48:50 -0800 (PST)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6DF0F3F5A1;
-	Wed,  7 Jan 2026 08:48:54 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 232CB3F5A1;
+	Wed,  7 Jan 2026 08:48:56 -0800 (PST)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org
@@ -64,25 +64,23 @@ Cc: linux-kernel@vger.kernel.org,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Mark Brown <broonie@kernel.org>,
 	Ryan Roberts <ryan.roberts@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v2 3/8] selftests/mm: pass down full CC and CFLAGS to check_config.sh
-Date: Wed,  7 Jan 2026 16:48:37 +0000
-Message-ID: <20260107164842.3289559-4-kevin.brodsky@arm.com>
+	Shuah Khan <shuah@kernel.org>
+Subject: [PATCH v2 4/8] selftests/mm: fix usage of FORCE_READ() in cow tests
+Date: Wed,  7 Jan 2026 16:48:38 +0000
+Message-ID: <20260107164842.3289559-5-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260107164842.3289559-1-kevin.brodsky@arm.com>
 References: <20260107164842.3289559-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 99D98100005
-X-Stat-Signature: 6dqifofkdieje6mso5iin6n566b5yukx
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C6B57140011
+X-Stat-Signature: bmspjmo6hyf4ura7mskjx589epc56mcc
 X-Rspam-User: 
-X-HE-Tag: 1767804536-685027
-X-HE-Meta: U2FsdGVkX193p/UYN6DFBpS6oWF+qJrFzxQikZqnkkbh2jmy/K9JYK7PuTNLrO4skrKHMNqNY91aIO11K7RSd0/bDZCGOMHO0pwATHX5ktJxuZPxVaRju33BD3R3oXkwBrirHr12SNiVIVTLSI98diU/TsC0qnSKINbJcp3m9l3kO7fIWRzsmby0jU/Sba0HbTwtQltNeqh7iANpWyTkyL459I5QnJLQst7W/8/F/T/QJLjgAW8/EuwERnd1cathvADv3Scwl2swRvIofmiMkJGIQXUVIGqLT4DmPfso5Szggejpdiusgtt6YxHz01Mc3CgHHGlx9Ikc1fo1yNnIT5JF2ARzkYeOLN5ElLklPkuhp8/z8fE/oBZVjSplwHbh+bjf5RO1SLuUonp8FqYnnenFLNii8iqO4btFabX/VJGaHCxCm+gV95FEa1wa4LAEya25XocyTnwDIfdS5fM9VEvrwdXWuEfAhpR2NBj3K+oAmVgmZOEJYmIsgsGbZrH8Eu46BCieaCqt71iCo9Y8Tyrp8WlxhETdySgy13PL0xBHZhNhm4+I7OyGRrh0wXGbDzQIlMQsvjXJPHrX6efzD57vmMXW52MTPtJF7cQJjhsH5CqpMNa+iG5XRpmXf71ytyaDnpMw5OelYzln/NJUBIdkW35hDRzM1G9jNoUVQDgwc+Hq55i91q2PcL798H03fXSx3mNxHGUTtOTeKBQ++eIgpj41OUB/EhOG0B+ya53xI8OM4D9eEP12pUPmT+sgf/iViV08od7afxzUpRLOrYw003efCB8MztL5kTIGAl1Aig+t7VtPQ0ZPSneGaCrhBg1ebGcZq+dPc2Ivn+8hCEsGggSxR/Ej8kTgeA9nPlZFEwWP2QYTQnCOFITRcX/mYkquhndLOPXgFRi3eYx5WXcvjVhjnidXUnil+yMN0l5/3uaqykPrIffhehHzQZDOGi1boMDZMLclm5oUsH/
- LNFsk9n1
- faT3GyflSks6MgSJO7w3XSfsFlulJyKOBxUcAB1Y/Q+TOVdL7mLxn6lybaKKE1FtduhFE6aTgwqdpq24jQZI5gu+l4PezJaT42ScYHStO7zJ7J3TCnPaW55k7QFX8nT/dBimNr2uluEZ75FuLXHOrFvX/8N0lR+btGCVR2nIHISyukaCtfYxiYC90Y34Y0MUHLhP1Wo+PHPory8n3Jszi/AA2xaLhoGTc4uTI5S+0dmOSWriunRtaZWFrcw==
+X-HE-Tag: 1767804537-478969
+X-HE-Meta: U2FsdGVkX18YpxU+0MeQZijhY7ZuNf0KXTeH4d+EojEfoVQJzU6t5bJf4j5TEtcHTy6s6lFkDKAu/FcAKl3hbxAlCoFI6YJ6QfgKhgwAWk5O6huydB6B6qFxv9fTmsjwmDAbCzIMQcyoaKjdlHzHyaXiYyo7fdbG/KC7MqACt1bgUzkUNH+j7ObtaB9E7HpP/3EGt7TpEh0rVMlVPguqZklNcdkJ/M4+cxZuUAvDmMOfHyahb9e7WcBYwr+6lrDmWywEujpJKV23iBMVikvRZVyQvMWo5zhnvLTbj+CpbCYIzNvxTP+rx93uYAhZr/6lKdRdyQ2Rq5VWkjyvv9xW6Kt68MK+t0qnAB0Ay+1JGR9frQwAIO1xXLVUJdOITjPVbcZR9Kmc2zEMhPtfwoLHX/GWuXNwdi6zvgfmhCoFaZ7useNc0INZVqloFx5fdbOO4J24q1ibVCtcuIC74Al1KMJc8dqe7gabjDn13sOWuMDOc901qxP7bxG9c0X20TO8x/AXrywTTxMnJdHoX6e1B1+6+NhH14mWDBAyb5udkjl6POVfNp4tnQtLgEadTuDFJugh6CXrYwDMWR8Tze3Tho/8Z9i2lt5xHbcKqyRPI+5SVa01J5o4DPTdyzoKMs0bo0UPgEcHm14EvYJFSUVRCrlt7WSgSkbrXIiBSpieZwOXsAIkfqoEBRwueyyLQfySBjoBnqNcL7RVY5vfzWLQ0sdwqjd2DBghIXNnBVr17shdhPSPhf03e3q9A84k3iostH9TyL5h8u1kSG/Kc7RhC0k01whXljGOxBLEOzhwEgnDS4JA4sqNpvwPV8w+aYurBnY1Isel0HofJmhUf2oHkiyj5c5i664+WXuHIRdTOXfTl4lF37RtsZiOJslBGRDQrqFH1iUGeZyO3nJJD/QNQ48YfVXcb4fgpHcEZmHGqYan7WU2EtLqMm9dAA0YihpQ2FuVVc/FD0LZ+2IjAVb
+ LIN7iIbl
+ Yzlxxd+vQgqlp0/HJ76habIUuRGt+RlY6P5ktc7fikt9ZlrIFef8a3g6xRqip9lcsOmQvPOz24TtQmrm9z8sFzMX6X4O2iSsZGSMKjDswyVeiYcleVOsOT+hc02gdwll1dNGCfvA0kBy3KqHflRBAMVRd/7UsQbcl8cbpsQkkkAkGIbf9DIlUYRw7iEv5CPfuKCKKewHUON7DuFA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,59 +89,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-check_config.sh checks that liburing is available by running the
-compiler provided as its first argument. This makes two assumptions:
+Commit 5bbc2b785e63 ("selftests/mm: fix FORCE_READ to read input
+value correctly") modified FORCE_READ() to take a value instead of a
+pointer. It also changed most of the call sites accordingly, but
+missed many of them in cow.c. In those cases, we ended up with the
+pointer itself being read, not the memory it points to.
 
-1. CC consists of only one word
-2. No extra flag is required
+No failure occurred as a result, so it looks like the tests work
+just fine without faulting in. However, the huge_zeropage tests
+explicitly check that pages are populated, so those became skipped.
 
-Unfortunately, there are many situations where these assumptions
-don't hold. For instance:
+Convert all the remaining FORCE_READ() to fault in the mapped page,
+as was originally intended. This allows the huge_zeropage tests to
+run again (3 tests in total).
 
-- When using Clang, CC consists of multiple words
-- When cross-compiling, extra flags may be required to allow the
-  compiler to find headers
-
-Remove these assumptions by passing down CC and CFLAGS as-is from
-the Makefile, so that the same command line is used as when actually
-building the tests.
-
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Fixes: 5bbc2b785e63 ("selftests/mm: fix FORCE_READ to read input value correctly")
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- tools/testing/selftests/mm/Makefile        | 2 +-
- tools/testing/selftests/mm/check_config.sh | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mm/cow.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 4e5c8a330a0c..de4afc34e3b1 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -230,7 +230,7 @@ $(OUTPUT)/migration: LDLIBS += -lnuma
- $(OUTPUT)/rmap: LDLIBS += -lnuma
+diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
+index accfd198dbda..83b3563be26b 100644
+--- a/tools/testing/selftests/mm/cow.c
++++ b/tools/testing/selftests/mm/cow.c
+@@ -1612,8 +1612,8 @@ static void run_with_huge_zeropage(non_anon_test_fn fn, const char *desc)
+ 	 * the first sub-page and test if we get another sub-page populated
+ 	 * automatically.
+ 	 */
+-	FORCE_READ(mem);
+-	FORCE_READ(smem);
++	FORCE_READ(*mem);
++	FORCE_READ(*smem);
+ 	if (!pagemap_is_populated(pagemap_fd, mem + pagesize) ||
+ 	    !pagemap_is_populated(pagemap_fd, smem + pagesize)) {
+ 		ksft_test_result_skip("Did not get THPs populated\n");
+@@ -1663,8 +1663,8 @@ static void run_with_memfd(non_anon_test_fn fn, const char *desc)
+ 	}
  
- local_config.mk local_config.h: check_config.sh
--	/bin/sh ./check_config.sh $(CC)
-+	CC="$(CC)" CFLAGS="$(CFLAGS)" ./check_config.sh
+ 	/* Fault the page in. */
+-	FORCE_READ(mem);
+-	FORCE_READ(smem);
++	FORCE_READ(*mem);
++	FORCE_READ(*smem);
  
- EXTRA_CLEAN += local_config.mk local_config.h
+ 	fn(mem, smem, pagesize);
+ munmap:
+@@ -1719,8 +1719,8 @@ static void run_with_tmpfile(non_anon_test_fn fn, const char *desc)
+ 	}
  
-diff --git a/tools/testing/selftests/mm/check_config.sh b/tools/testing/selftests/mm/check_config.sh
-index 3954f4746161..b84c82bbf875 100755
---- a/tools/testing/selftests/mm/check_config.sh
-+++ b/tools/testing/selftests/mm/check_config.sh
-@@ -16,8 +16,7 @@ echo "#include <sys/types.h>"        > $tmpfile_c
- echo "#include <liburing.h>"        >> $tmpfile_c
- echo "int func(void) { return 0; }" >> $tmpfile_c
+ 	/* Fault the page in. */
+-	FORCE_READ(mem);
+-	FORCE_READ(smem);
++	FORCE_READ(*mem);
++	FORCE_READ(*smem);
  
--CC=${1:?"Usage: $0 <compiler> # example compiler: gcc"}
--$CC -c $tmpfile_c -o $tmpfile_o >/dev/null 2>&1
-+$CC $CFLAGS -c $tmpfile_c -o $tmpfile_o
+ 	fn(mem, smem, pagesize);
+ munmap:
+@@ -1773,8 +1773,8 @@ static void run_with_memfd_hugetlb(non_anon_test_fn fn, const char *desc,
+ 	}
  
- if [ -f $tmpfile_o ]; then
-     echo "#define LOCAL_CONFIG_HAVE_LIBURING 1"  > $OUTPUT_H_FILE
+ 	/* Fault the page in. */
+-	FORCE_READ(mem);
+-	FORCE_READ(smem);
++	FORCE_READ(*mem);
++	FORCE_READ(*smem);
+ 
+ 	fn(mem, smem, hugetlbsize);
+ munmap:
 -- 
 2.51.2
 
