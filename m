@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F41FD0D163
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 18:57:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE1F4D0D167
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 19:04:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB66E6B0092; Wed,  7 Jan 2026 13:57:25 -0500 (EST)
+	id 2DCC76B0092; Wed,  7 Jan 2026 14:04:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8E956B0093; Wed,  7 Jan 2026 13:57:25 -0500 (EST)
+	id 260A26B0093; Wed,  7 Jan 2026 14:04:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C5336B0095; Wed,  7 Jan 2026 13:57:25 -0500 (EST)
+	id 162BC6B0095; Wed,  7 Jan 2026 14:04:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CA766B0092
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 13:57:25 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 26E5F8AE4B
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 18:57:25 +0000 (UTC)
-X-FDA: 84306076050.25.0FF9CFF
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1787040009
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 18:57:22 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CMkUXEAY;
-	spf=pass (imf07.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0787F6B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:04:01 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A23971604C6
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 19:04:00 +0000 (UTC)
+X-FDA: 84306092640.14.190E1BF
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D9F2140015
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 19:03:58 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xhN2N6vG;
+	spf=pass (imf01.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767812639; a=rsa-sha256;
+	cv=none;
+	b=0ALNhZJehaVRE8pfmICinIkFzEfgSMXQTYfSTnfNS1/ldXFjAJCYb+YjtopBQbZGH4QuCj
+	U5jCPFobLPo3bOlr3T1uCTolUcJbkmEPiV/PUGBO8BhLqm1pn/I3Bp8yj+h3IrF5S+Ax9U
+	8hsGH3UMHYqo0rU87FSMY/nT63mwzRo=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xhN2N6vG;
+	spf=pass (imf01.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767812243;
+	s=arc-20220608; t=1767812639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gzvQEjvJ1nzCkckYF+R3TxyHT/zA5TN2rQBRz+o11wM=;
-	b=sRUqciRIBhoTsbBwi8i+tXXUFD5vvNui8NNCYheDzKHe76QZ2AMcVkNRTZAzOyH4oaYNaf
-	jnwSmzVEKrNmrJdXODUy+jifXlvuKifjD9Jp5WY/LwCAx4+o8YDKdoZYoXELBPYwju9vWy
-	G38LHfb6+jwoEpmfRZauz8Vphn3NQM4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CMkUXEAY;
-	spf=pass (imf07.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767812243; a=rsa-sha256;
-	cv=none;
-	b=i37m/FZdPbjWhBOncgghj6BomER2bp9CHcmH3D2BJC4V7z6/frN9lJPP+oEWouOhYR1Sk/
-	cROUmFO5SuCzVt+2roqbRRCUjGrPU4axEJqDCicMEBIUNVVjiC01Ttg10MfWKk98CBmwcv
-	A/YWwA8+Kjv/YgMcPszmyHn10qDSWfY=
-Date: Wed, 7 Jan 2026 18:57:08 +0000
+	bh=lTti71TefD1o85qPpK4aAoODgyk6fvNwjRLBxcoRZW4=;
+	b=l3hT33pLp1Ekp4lzju5/jEoqRRnWL2hT7gyOBeVNkP5zHBtgY44oQIl8UjsCzc6Diju1ZD
+	4bjq7cx8xEBKXNCo8hAOGrmeRad/XThBIconOEqoSJeSzp4Lex503o0j2L72JWi7Gy/G+f
+	4nznuM2FSY+I1NLfRccXUr8HqIRhmX0=
+Date: Wed, 7 Jan 2026 19:03:51 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767812241;
+	t=1767812636;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gzvQEjvJ1nzCkckYF+R3TxyHT/zA5TN2rQBRz+o11wM=;
-	b=CMkUXEAYYNqBxYcZXulSyp716iBza11gQXm+bUQI4z4VwXkRiJf6OZnJQmUsISyiYVoq/F
-	I6lhOv9BodFQekf3nN14RJIgN/mMSkL9poHXIM9Sykf6ISsKffeBx1fM9Kra5m/DA8Y6bt
-	yj8yBoLJqiZNoAh57EyqRdK46QY2d2g=
+	bh=lTti71TefD1o85qPpK4aAoODgyk6fvNwjRLBxcoRZW4=;
+	b=xhN2N6vGKss+YT9Q8qnsBTdK4oC3+55lmjJYAAlwFx5lp02uZ3Nsk10WHm/C+Y2n9/yTVJ
+	CQGgYMpe5+jZ5X737tCfX+Gk+IHlhzlLeGYOZo6oLaAQ04sIamcb2F5M/XRdxb5EbLZLpR
+	9bfzgkepX9iyS725CZKF/vbW3zMg7hQ=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sergey Senozhatsky <senozhatsky@chromium.org>
@@ -65,22 +65,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org
-Subject: Re: [PATCHv2 1/2] zsmalloc: use actual object size to detect spans
-Message-ID: <dvdaf3cuwvk332nvds46uqqvpoo46bf34zgqorpq4ldwxjo7sk@uh5v5bn5nrab>
+Subject: Re: [PATCHv2 2/2] zsmalloc: simplify read begin/end logic
+Message-ID: <gl54caplknnljganmswspw3cggoyjxe2n7szvnwhhiyl5y7ynh@tzl2yz7bw725>
 References: <20260107052145.3586917-1-senozhatsky@chromium.org>
+ <20260107052145.3586917-2-senozhatsky@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260107052145.3586917-1-senozhatsky@chromium.org>
+In-Reply-To: <20260107052145.3586917-2-senozhatsky@chromium.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1787040009
-X-Stat-Signature: 77wpcrwzzxnfjchnz44uf83ijo4gbxcq
+X-Rspamd-Queue-Id: D9F2140015
 X-Rspam-User: 
-X-HE-Tag: 1767812242-67393
-X-HE-Meta: U2FsdGVkX1+2HDVxYbSAYABmJgCKrgVdUap9+TI4IZOZ7abNLfhoGiTDT58vq/ufiNr691gEJnoTGq+Eror7Yq7oi1coUM52l0ll67CWkCBIRzj4IblLXVnZSq9HJTVnWferdkGMuP9K+YdBOq1bv7Pjzr4tKQmKSUWzSDpkUZmCJrrwbRf1Wb/tCiGtu9U/RPMWCgb1JjPkH2NWrDCpU4g3O9qEB6Xzyy+EqI4XRRopRpi9UadF9l4RC20UnZQnb2UC8HpZq0LTnKHhx4oPJhHFWgLMFYi51eKI+3xOSjsQ4ilhnAZm5Lu6lxaa9kD/TFgjUTfryR+KYJb15rG9W4/KLWvROQRBv2WhHUvdeagGUL/Db3L4z05ZRoF2HZFDz1TRgg1dUxZE3wlZPHa1c/d8EAzVTzl+AROYHYMX90HXg6TagKgyNPpkZbTf7HyvBuxOATCbha0D7xiWElnsqiBMdwmosrWtix8EQtcej+3DF2Pj8ZMN3SscgMLcdjViEfP3cR2+OjJYuHDV6FBa5zF/I6AeurkTaIDb4A5+IgX6OACtauXjRb1A9/5FjPBdrSN83X6TrwRMqKUksYOJSvpbOBj58tS5NSm03ASZMKlkbRaF8qTAEN71d7sIYI6LaKRjDqq9Lc839UI8zmbOF3sb6b0sH9nqTQ5OywfWHaF1XQ5QThbxLr3/8R+B7OqvcGhLBC01/hIquCkIr5yx6muvNSY/ppqaOG+WHCUawBax5wSNUs08cFD2vG3OMT9ZLEULPCaaKj+F/5M6dLQ0JDGTymLKqK7q4OlfizJS9wDdefIskDjk/6vIogGJDYTuld8HZ5cH3gPZmO0jQXisdGxdfJiGGpo8CT2om28gP/B8dZCB3+gDW1mOcQ09egiQc42X4PjuWZDna4HPd0C2c9RUPYgoThPJRzmzo8+SxjmzJ2j4An5KGS4x6YC52wtXRgdkQduNG2PoVVx5M3H
- 57AgQxzI
- 63NIL7KRxByQvCrw+A/yeeu0k4TlVwyqt2d/qzyXBbheFVJa2XKdHd5WEWj0iPFLxKOpZEx4H3jRH4TY6pPlwVNn1YfaNcqQimdb0AFDm1m/xPyY4i56sBqrQubhMyiXpTyUR/319Cw4XFSy9KqM13+7dSGkL4yLs6wJ7qJ8Ot3yZn6tl8sfoMj/P2vpZrKN08yT/
+X-Stat-Signature: jj55pu8n5ey45mra7dgkjg5tzkokdz1e
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1767812638-187634
+X-HE-Meta: U2FsdGVkX18wkLg/jowJ7QvEWukr6dZDQKgcmN12q2DGZuslmDddk2pim6SPHIL72qnHNPAh9bbnfKO4izLi+l+yJ7RjrLQIVELiBuAuGFNqg4bl73QN9iIZbqW/o7zU6e8pupxmAenY6s+SD6n/3HSH4BGalvjqpDMtTWo3IT9XscT/wXcaYKbeunsVR7EhybUG1qnldICo3Q1bUEuZJtBTFKUc5QNexXVNhwws6isJUX4lNcTgPq7QLGBMIqoGFcjbVVGW4R53JftRhV5+r5FX9+BGZweCWbL3LCRSaK/QvOTIcCjYGA9djkDvGwDwA/iQ4MLzAV/NVkSZHGIWhgwHy/Zge4Mc0I26ZLopX5eLxzy9RSghZt59I9TSePzqJGycttdblRjxKTc3bzEcI0GBmXKHUJFgy3j8beE0ptjDhO7FK1mHZafwGtiXRIaLM5limDo7qG76gh8C+3O4lD/MNZumhnynPkwbyvZCfpiniNIIyAe4VfmZo0L7orS7Jx7vYKYdONv1yQglKptNxEoR11Idqy6EE4Mm9X4f7tasviUso7fnm/JElC1F5qj/JbUk+CS8L9IP1wu6F/0kg+qVsKhWOSJXchbusqD8he0qLq0KL0v64894wrKc17QxbzxC14aD0uMRoEnhwubHymVA29Mf/+AjM6UOUc3GJ+Bfplmk9jIBF/2rNj1BVhh0S1OB3bmg/KEZT5XuIxaCHxinubUeHotnxTx6X9QAeoReP+YCR4qaUw/NkAYGtOnla6AaKseMGThyIV6LfHkGGH8zjFnVhwBOSnqF8CZOj7G0T0bhpOKRceOFeB2/MA5zibwqnG8oCTHO1JIh7N3nY3nVapDl2d8SeUYjjvQ6vTI/DZOkpfpiGOJDMiZdw4+ySVJdFrJcKfxQ/v8JAdRW4WXTrR3wMfW+ZkyhPiLeUQccrk8XICFaqhgtvy8OZ2KxCwj8nAfTauSUYnuS6cq
+ 3RoGiIx4
+ OrfyLvlcByRa+lO3HprpUC0eMavBSwQ2yIWe/gqk43ehkybjN3dBGCrvFd0DUpW/OT2OMI2m/AuybcYL+w/KLmWXymrgQaWg+mj34u+NVvGRjNV6loDLjnxzhc0CAxe1TujS5LJa06CLxyYeqZXJ72MNAHHueHBa7jBG98x2S4lNqgsGm+kBAAMez4+ZmAOaVyYwjtH+68TjMXzg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,175 +90,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 07, 2026 at 02:21:44PM +0900, Sergey Senozhatsky wrote:
-> Using class->size to detect spanning objects is not entirely correct,
-> because some size classes can hold a range of object sizes of up to
-> class->size bytes in length, due to size-classes merge.  Such classes
-> use padding for cases when actually written objects are smaller than
-> class->size.  zs_obj_read_begin() can incorrectly hit the slow path
-> and perform memcpy of such objects, basically copying padding bytes.
-> Instead of class->size zs_obj_read_begin() should use the actual
-> compressed object length (both zram and zswap know it) so that it can
-> correctly handle situations when a written object is small enough to
-> fit into the first physical page.
+On Wed, Jan 07, 2026 at 02:21:45PM +0900, Sergey Senozhatsky wrote:
+> From: Yosry Ahmed <yosry.ahmed@linux.dev>
+
+While I appreciate this, I think for all intents and purposes this patch
+should be credited to you, it's different from the diff I said as it
+applies on top of your change.
+
+If you're feeling really generous, I think Suggested-by or
+Co-developed-by + Signed-off-by is sufficient :)
+
 > 
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> When we switched from using class->size (for spans detection)
+> to actual compressed object size, we had to compensate for
+> the fact that class->size implicitly took inlined handle
+> into consideration.  In fact, instead of adjusting the size
+> of compressed object (adding handle offset for non-huge size
+> classes), we can move some lines around and simplify the
+> code: there are already paths in read_begin/end that compensate
+> for inlined object handle offset.
 
-For zsmalloc and zswap bits:
-Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+I think the commit log is not clear in isolation.
 
+How about something like this:
+
+zs_obj_read_begin() currently maps or copies the the compressed object
+with the prefix handle for !ZsHugePage case.  Make the logic clearer and
+more officient by moving the offset of the object in the page after the
+prefix handle instead, only copying the actual object and avoiding the
+need to adjust the returned address to account for the prefix.
+
+Adjust the logic to detect spanning objects in zs_obj_read_end()
+accordingly, slightly simplifying it by avoiding the need to account for
+the handle in both the offset and the object size.
+
+> 
+> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 > ---
+>  mm/zsmalloc.c | 9 ++-------
+>  1 file changed, 2 insertions(+), 7 deletions(-)
 > 
-> v1->v2:
-> - use mem_len for second memcpy size calculation (Yosry)
-> - simplified read_begin/end logic (Yosry)
-> 
->  drivers/block/zram/zram_drv.c | 14 ++++++++------
->  include/linux/zsmalloc.h      |  4 ++--
->  mm/zsmalloc.c                 | 16 +++++++++++-----
->  mm/zswap.c                    |  5 +++--
->  4 files changed, 24 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-> index a6587bed6a03..76a54eabe889 100644
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -2065,11 +2065,11 @@ static int read_incompressible_page(struct zram *zram, struct page *page,
->  	void *src, *dst;
->  
->  	handle = get_slot_handle(zram, index);
-> -	src = zs_obj_read_begin(zram->mem_pool, handle, NULL);
-> +	src = zs_obj_read_begin(zram->mem_pool, handle, PAGE_SIZE, NULL);
->  	dst = kmap_local_page(page);
->  	copy_page(dst, src);
->  	kunmap_local(dst);
-> -	zs_obj_read_end(zram->mem_pool, handle, src);
-> +	zs_obj_read_end(zram->mem_pool, handle, PAGE_SIZE, src);
->  
->  	return 0;
->  }
-> @@ -2087,11 +2087,12 @@ static int read_compressed_page(struct zram *zram, struct page *page, u32 index)
->  	prio = get_slot_comp_priority(zram, index);
->  
->  	zstrm = zcomp_stream_get(zram->comps[prio]);
-> -	src = zs_obj_read_begin(zram->mem_pool, handle, zstrm->local_copy);
-> +	src = zs_obj_read_begin(zram->mem_pool, handle, size,
-> +				zstrm->local_copy);
->  	dst = kmap_local_page(page);
->  	ret = zcomp_decompress(zram->comps[prio], zstrm, src, size, dst);
->  	kunmap_local(dst);
-> -	zs_obj_read_end(zram->mem_pool, handle, src);
-> +	zs_obj_read_end(zram->mem_pool, handle, size, src);
->  	zcomp_stream_put(zstrm);
->  
->  	return ret;
-> @@ -2114,9 +2115,10 @@ static int read_from_zspool_raw(struct zram *zram, struct page *page, u32 index)
->  	 * takes place here, as we read raw compressed data.
->  	 */
->  	zstrm = zcomp_stream_get(zram->comps[ZRAM_PRIMARY_COMP]);
-> -	src = zs_obj_read_begin(zram->mem_pool, handle, zstrm->local_copy);
-> +	src = zs_obj_read_begin(zram->mem_pool, handle, size,
-> +				zstrm->local_copy);
->  	memcpy_to_page(page, 0, src, size);
-> -	zs_obj_read_end(zram->mem_pool, handle, src);
-> +	zs_obj_read_end(zram->mem_pool, handle, size, src);
->  	zcomp_stream_put(zstrm);
->  
->  	return 0;
-> diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
-> index f3ccff2d966c..5565c3171007 100644
-> --- a/include/linux/zsmalloc.h
-> +++ b/include/linux/zsmalloc.h
-> @@ -40,9 +40,9 @@ unsigned int zs_lookup_class_index(struct zs_pool *pool, unsigned int size);
->  void zs_pool_stats(struct zs_pool *pool, struct zs_pool_stats *stats);
->  
->  void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
-> -			void *local_copy);
-> +			size_t mem_len, void *local_copy);
->  void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
-> -		     void *handle_mem);
-> +		     size_t mem_len, void *handle_mem);
->  void zs_obj_write(struct zs_pool *pool, unsigned long handle,
->  		  void *handle_mem, size_t mem_len);
->  
 > diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> index 84da164dcbc5..119c196a287a 100644
+> index 119c196a287a..cc3d9501ae21 100644
 > --- a/mm/zsmalloc.c
 > +++ b/mm/zsmalloc.c
-> @@ -1065,7 +1065,7 @@ unsigned long zs_get_total_pages(struct zs_pool *pool)
->  EXPORT_SYMBOL_GPL(zs_get_total_pages);
->  
->  void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
-> -			void *local_copy)
-> +			size_t mem_len, void *local_copy)
->  {
->  	struct zspage *zspage;
->  	struct zpdesc *zpdesc;
-> @@ -1087,7 +1087,10 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
->  	class = zspage_class(pool, zspage);
+> @@ -1088,7 +1088,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
 >  	off = offset_in_page(class->size * obj_idx);
 >  
-> -	if (off + class->size <= PAGE_SIZE) {
-> +	if (!ZsHugePage(zspage))
-> +		mem_len += ZS_HANDLE_SIZE;
-> +
-> +	if (off + mem_len <= PAGE_SIZE) {
+>  	if (!ZsHugePage(zspage))
+> -		mem_len += ZS_HANDLE_SIZE;
+> +		off += ZS_HANDLE_SIZE;
+>  
+>  	if (off + mem_len <= PAGE_SIZE) {
 >  		/* this object is contained entirely within a page */
->  		addr = kmap_local_zpdesc(zpdesc);
->  		addr += off;
-> @@ -1096,7 +1099,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+> @@ -1110,9 +1110,6 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+>  				 0, sizes[1]);
+>  	}
 >  
->  		/* this object spans two pages */
->  		sizes[0] = PAGE_SIZE - off;
-> -		sizes[1] = class->size - sizes[0];
-> +		sizes[1] = mem_len - sizes[0];
->  		addr = local_copy;
->  
->  		memcpy_from_page(addr, zpdesc_page(zpdesc),
-> @@ -1115,7 +1118,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+> -	if (!ZsHugePage(zspage))
+> -		addr += ZS_HANDLE_SIZE;
+> -
+>  	return addr;
+>  }
 >  EXPORT_SYMBOL_GPL(zs_obj_read_begin);
->  
->  void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
-> -		     void *handle_mem)
-> +		     size_t mem_len, void *handle_mem)
->  {
->  	struct zspage *zspage;
->  	struct zpdesc *zpdesc;
-> @@ -1129,7 +1132,10 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
->  	class = zspage_class(pool, zspage);
+> @@ -1133,11 +1130,9 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
 >  	off = offset_in_page(class->size * obj_idx);
 >  
-> -	if (off + class->size <= PAGE_SIZE) {
-> +	if (!ZsHugePage(zspage))
-> +		mem_len += ZS_HANDLE_SIZE;
-> +
-> +	if (off + mem_len <= PAGE_SIZE) {
->  		if (!ZsHugePage(zspage))
->  			off += ZS_HANDLE_SIZE;
+>  	if (!ZsHugePage(zspage))
+> -		mem_len += ZS_HANDLE_SIZE;
+> +		off += ZS_HANDLE_SIZE;
+>  
+>  	if (off + mem_len <= PAGE_SIZE) {
+> -		if (!ZsHugePage(zspage))
+> -			off += ZS_HANDLE_SIZE;
 >  		handle_mem -= off;
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index de8858ff1521..a3811b05ab57 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -937,7 +937,8 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
->  	u8 *src, *obj;
->  
->  	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
-> -	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, acomp_ctx->buffer);
-> +	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, entry->length,
-> +				acomp_ctx->buffer);
->  
->  	/* zswap entries of length PAGE_SIZE are not compressed. */
->  	if (entry->length == PAGE_SIZE) {
-> @@ -966,7 +967,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
->  	dlen = acomp_ctx->req->dlen;
->  
->  read_done:
-> -	zs_obj_read_end(pool->zs_pool, entry->handle, obj);
-> +	zs_obj_read_end(pool->zs_pool, entry->handle, entry->length, obj);
->  	acomp_ctx_put_unlock(acomp_ctx);
->  
->  	if (!decomp_ret && dlen == PAGE_SIZE)
+>  		kunmap_local(handle_mem);
+>  	}
 > -- 
 > 2.52.0.351.gbe84eed79e-goog
 > 
