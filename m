@@ -4,125 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACAEFCFD62E
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 13:42:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66ACFCFD63C
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 13:54:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 119356B0093; Wed,  7 Jan 2026 08:42:43 -0500 (EST)
+	id 9760D6B0095; Wed,  7 Jan 2026 08:54:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09D966B0095; Wed,  7 Jan 2026 08:42:43 -0500 (EST)
+	id 9290B6B0093; Wed,  7 Jan 2026 08:54:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB6D26B0096; Wed,  7 Jan 2026 08:42:42 -0500 (EST)
+	id 7D1376B0095; Wed,  7 Jan 2026 08:54:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D80336B0093
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 08:42:42 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7AFE81A0317
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 13:42:42 +0000 (UTC)
-X-FDA: 84305282964.29.C1C37B6
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 65DA5180003
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 13:42:40 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ddNOvFUN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=aliceryhl@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767793360; a=rsa-sha256;
-	cv=none;
-	b=Q2tRAp3WpWH+hNuEvpXFgWQGUSE1xr57qWBTFjsaBYoJ7EQqKswc6/bE6xDkHcjRu2OuYw
-	XoVOcnQ3UJ7FVtlIeFEMgYswHEqYddbMQAMKijC0vmquKO/4b1NlMDssOZzNzlkj3ezijk
-	ZTEU7f0GfJ1GAjgfPEJTozl8oM+6zao=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ddNOvFUN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=aliceryhl@google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6B1526B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 08:54:22 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 14944C19F0
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 13:54:22 +0000 (UTC)
+X-FDA: 84305312364.14.7825D05
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9A10240017
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 13:54:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NUi+xZcW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=I2Zb2Tnw;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=STmjf0fs;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="446vAx/s";
+	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767793360;
+	s=arc-20220608; t=1767794060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VuezIgzsAyyNB5F641/r8/tOCfKBUN9xZVmivfP98JU=;
-	b=nOGHNIj3UyCN8x/ujZqpGYpOhaxWVGFY2sGzYYJ5XZiLE+xE/q4l3U7SKoOfIHPA5gfm2x
-	yNlFmzIpP1bSXTwW0LmSng1R325OTxMrnS9WDaB6sXoWG1EROlQspkezitFU5+k2gc8nU9
-	y7eHxzRWiHYipZUqRd9BHOegbFrb9Kw=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42fb4eeb482so1132749f8f.0
-        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 05:42:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767793359; x=1768398159; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VuezIgzsAyyNB5F641/r8/tOCfKBUN9xZVmivfP98JU=;
-        b=ddNOvFUNVaw2WbdfCujjJTI7smg/YUf0C54SUjngTWSwXMfnmlFWkw51ho651ZBi0T
-         KrPJFbbc+sU5aKqfzpjvyoaSpBUhAI0RFtqn1ltyKvNsq5O7fgokkx2Z9yVbQrFDt0lq
-         WISkzdYyRpg4CVStgnyTi/WmiMM23eWMoO3gkNlbidGOOG/eQnLYHiM4zTAqjnd3GYwv
-         CneKZ65wcrZZod2Ug4UrNz2n4UCvtEFJoPZ+Uq93o/X6YGqbMs5zEMPwClr8Y18B2bKp
-         HtHqxqjILSlbbcyq69aUwxRa7iuN+OpUpZqMcrf3f74nqnQI6bmGLw+cQE2pqODzEEhz
-         UhzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767793359; x=1768398159;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VuezIgzsAyyNB5F641/r8/tOCfKBUN9xZVmivfP98JU=;
-        b=cD2OZW77g/KNbE0P/zX/o4lmBIo9n+aLmizQYZS9LTWzSijVJwAMb9Ayttpxsa2XLS
-         FEIY8q8A/glP107nJ2n/IXAb9NXOfblQvm0BF0devGmWWlsUfQe1pip0IIrxOg04iFC1
-         wrILgiLXBTJ7OAD+YiMlmFRaaObpJqVJliMhUSHBn/D1S+qDAg3SXr3rmkBl6SAslKw7
-         48/lRAzxrAIv7426udhdWdr4uegnfYtSVhLi/p/3Wa6oFCU03U0ZIBvXkEZLXpooc0uE
-         9gDbh6XUsRoBRJQfhZFHfPFnTCrY/43uGaOYYuq2hwAjMwr9OAtNq4ruTluITprGPd4h
-         1bog==
-X-Forwarded-Encrypted: i=1; AJvYcCVuHpP3w06jNkWvBLT4wqxZ1TSfUkskgzB0iaBoNJpItOYS3nrC+GKbUCz9Jupfy6YxSO/Yfp3HpA==@kvack.org
-X-Gm-Message-State: AOJu0YxL77YvqmBdLYPXYqwhLB1KXEQ7FZFFco/d2bfulgTu70F+QwUu
-	Y428N2bnfIOBukQjJF8xfAyjkHynL+W61f0+PoYAzwaXoNWmxCpopXXUqaIJR3Vu3MT7/p4QQ7U
-	2CDhL1b37Ma56kCpNRdwuhGq0ONGRP7czIbZxBNNV
-X-Gm-Gg: AY/fxX5t13B9toxmZ0LHy8wO1pRg3NTlbJjDH6aal2+ZPnwweWsH+KuxMTIe+ZIocOi
-	tRKb7S3U2Tx6YoZRynSuK7UvtFn1q6HG+t5rfMj2dXIDPGa8E42eGfEMXVjBHow9kvRat/OP+FG
-	iOR9G0ihWJpwpiLi5ORGcgspp8Dri0SXwgvcaOGLSEfHLrh2vEsAJPNq/r/vEuP8O2E1LN7ukzw
-	83sVEgauBie7kHrrtib//WWTQbO073mW9UzyGxdHVDHZEGIFUHw/d/hosZ9RfvSIjLuiPdT1vi9
-	N2OitXqEISsQEmhIc9dcgpYYKhFuleR+50B+Qrk01V4k9pbpaw/Qy0kR1Q==
-X-Google-Smtp-Source: AGHT+IEAUc1mXQn7QPlaWNlhB+oC5uC/VKZi1CsDAujRYSITqdy4Y0I5rdAfjg0XLN3IVv+rgZqfa1hd3+1gv9RykyI=
-X-Received: by 2002:a05:6000:4301:b0:42b:5592:ebe6 with SMTP id
- ffacd0b85a97d-432c32f701cmr2574852f8f.0.1767793358358; Wed, 07 Jan 2026
- 05:42:38 -0800 (PST)
+	bh=UGuntV3J1idHYlamoG5JcaZ3RKqpek8czi0dvq5gqps=;
+	b=jHRtz3UbZifUF7lErCOojT7fNFyOMnlqQ2bKS+R9AL0z+6Ey9k8Yy2qwmhWE7xx6XpyU3P
+	KgiHw7U8Eb5+P8eFGZh8CB+RKM2xI4aQBiOERQqi4Y64nrtV/eSeP3GxWUigvNyBCS8ozs
+	ygSBGqoDO3h8xuz8Ci8ThSURyq2osJY=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NUi+xZcW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=I2Zb2Tnw;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=STmjf0fs;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="446vAx/s";
+	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767794060; a=rsa-sha256;
+	cv=none;
+	b=BQOHOmBaL+gVK6b1aVk6532YRhCsQFARJjSPxDuFl95S4w5Gccm+w/Kp25a/HIfLP8oQRX
+	zFBUVuoYQiLr9g8/oU8lCfs89eEkcLqcAcN+iVV43F9tET2criLz9U4V1gde8EZdbIIOYg
+	6GHbBandN4sfOWTKm5WeamJmQKAQBdo=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 76F535C123;
+	Wed,  7 Jan 2026 13:54:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767794057; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UGuntV3J1idHYlamoG5JcaZ3RKqpek8czi0dvq5gqps=;
+	b=NUi+xZcWM6llmAE3Js0C5j62nlWXEoYaCsdOxNbqSH7t6J+6afLJsVG7PPRHqJmRmD5my/
+	svsAkjFUGzTM89W3Bx3hIJN6M1mLvpxPTBcLOrzHipXfhE/yZ/bbugdAHgPHBfKuHUon15
+	SugQ1vJqZgDWqTJ96PRhnb0t1SN/TEo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767794057;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UGuntV3J1idHYlamoG5JcaZ3RKqpek8czi0dvq5gqps=;
+	b=I2Zb2Tnwks/vNrIxu3CJYRBQXTxoMXt11zJr0hfZmipQ+vc3ae3bQOeeNR9Kguc5HGsuew
+	70LqEko7PkrdSoBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767794056; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UGuntV3J1idHYlamoG5JcaZ3RKqpek8czi0dvq5gqps=;
+	b=STmjf0fshgU821QuLzB9IQCeTzOTfjeZDbqNRxxh0azeCAoX9DsdzSdE+0IHdwcLvd/B9U
+	4k/AaqQ2agbwDNPilH09YXH1oC3eReDiSyMF2OaPkPaITjaxu8ahFhd0vvjPyyf+lwiK5j
+	PQWhy3z4s10pgPxXEviZNaGdG2OGVkg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767794056;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UGuntV3J1idHYlamoG5JcaZ3RKqpek8czi0dvq5gqps=;
+	b=446vAx/sOr3QbHgE+/e4MkYKT6AEemfBAQM30r+Ybs96pXndLkdflt0KWNaOHJp1I/2FWi
+	k3ap2N9i/vxAHbCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4F3293EA63;
+	Wed,  7 Jan 2026 13:54:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Wz38EohlXmkxIgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 07 Jan 2026 13:54:16 +0000
+Message-ID: <e28c08e4-5048-429b-97a0-8d51e494efcd@suse.cz>
+Date: Wed, 7 Jan 2026 14:54:15 +0100
 MIME-Version: 1.0
-References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
- <87y0m9har9.fsf@t14s.mail-host-address-is-not-set> <QViERQV7XT0BjTfSSyP6vzQc4AYxosyF5TEZ5kRu8AVWjmGCP_5n5V2AV2hjqVza8-jvzyquH3JLJA1zvbRD9w==@protonmail.internalid>
- <20260107123528.GF2393663@noisy.programming.kicks-ass.net>
- <87sechh8id.fsf@t14s.mail-host-address-is-not-set> <un386uEr3TEFzLpGCdZg_Tzm63zO7Ze6IZN16Cz79EfWmEI_hZXbBvhG2enZmUXJ6DUnCMNm7QIz-agEYIDr9A==@protonmail.internalid>
- <20260107131822.GD3707837@noisy.programming.kicks-ass.net> <87pl7lh77v.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87pl7lh77v.fsf@t14s.mail-host-address-is-not-set>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 7 Jan 2026 14:42:25 +0100
-X-Gm-Features: AQt7F2pAZcR9-cuXntjPdly3bLnSH5zqd4_0Qf_i4GvgVh-5nOmI2NH4hmtXZLU
-Message-ID: <CAH5fLgjmjjroRf-eU+4UrTPeq3HJ7QoWoCimBW-Occf_f22ARw@mail.gmail.com>
-Subject: Re: [PATCH 0/4] Inline helpers into Rust without full LTO
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V5 3/8] ext4: specify the free pointer offset for
+ ext4_inode_cache
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org
+Cc: andreyknvl@gmail.com, cl@gentwo.org, dvyukov@google.com,
+ glider@google.com, hannes@cmpxchg.org, linux-mm@kvack.org,
+ mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com,
+ roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev,
+ surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com,
+ tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, hao.li@linux.dev
+References: <20260105080230.13171-1-harry.yoo@oracle.com>
+ <20260105080230.13171-4-harry.yoo@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260105080230.13171-4-harry.yoo@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam02
+X-Stat-Signature: g5pizmjtsc8xjgrj4e9atdaqo548xxh9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 65DA5180003
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 8druhgbp1dfu56nx16yz45gadfeb964e
-X-HE-Tag: 1767793360-825591
-X-HE-Meta: U2FsdGVkX1+a54/2BaVytwt5Ea7/JZY+5HqIl9mbHgqtveDIGlj6nYBi1O1UgycVg6b3UOlWFIPZ/8iq5o4Uo3dWia/kmKKLfM6Bu3tcASsI6cnQ/7qunjNS7sdtzohiTBcRQKfi0zFs/teDWmYEiFUDAIA4zVwXbYp2/ryMOaUUXwS7m2O5jY9QzoTUD174FLUq0VgDuAjd6E6bKNfvffZ5dT83g9gQ2MWdmEd4S/Uze60zphUv/885wBtIicOrlNtRavsovFNSCSG6Ha32LFI+cJDjT4djMroLOpKOshTWG4/OPVCgwR4Bq33yOP4wm5fQR4GxiRkd+P+7LhrESaYrjOqbqZBzi8GPH/MSIq9/yhGRRNi5t9PHL97v8Pfq4fdrge75bt8MDh6sx8g/tDZOByfty3bVNriQhYcnbNRiBxTozGcL+Jg268Qxmp8WSqrufqTzMm5DUrEHSoPgU9/+yDIZCysFPZKZnReguTt01yJQL55Jg2nWg9BSK27L/f14OaWipSl5kmHZh3VvlNeZ3DLQHO/LcmaBZ3nS4DnAox+8AaDYt/bkMpMd32JD9MqpTIEM+AG/S61kZlGLogVhUjjguMcgb3HX5RAHdUfPkMHD1cL+jY1guYC0K5Z3i5yeEDUk3ivhuPyOPi4+qoinUPvZ8vauV93ptuQUPPkec+xzDJysKw3pn14L4nSOi9UbDJoxXAiMP0jNb/uomegHsxv1D8vRi2chGO1/9Hn9WhCELUlehjL8SzdPk/aBE1EQFCy/PU/19DQ2XhoyT7yIQTn/2pOSAfXG/+S8YWCOsapRsSwkcu7MDYPA9seNpnDTrgQGGLxK7BT/J5SyTy3erux+VX0C8pwmkeauQH1rYOcSr5Wl2aSSj6RFsPve2mnZx7xYQvMPuUzPLQ0J/BXWes3RmjGGlkS7Q0hhIaQ3rusKypCipk21LCebgRucnmMTJaDXj+q+BpGPBLc
- PR7MpJE0
- x13RANtMlIotTzvGlONrqnwB6AuwRHZLZqnxaqNWrqZnKGakXQSGKxWCVyF/HvXifJ7BxYNPu80zxKge9Itjtxre/PLucBRrYx9oh5TvGKtOUXZ4ptM2UBaqVDVJUqHxH73pe345Atuvp10I8mXEEA9NjudMjA98wOWAnZccZFeU8o/y2OYwdpbrHIm1B5esJj6fhWMNgMRu3/RqDasEmoHRKbj1Im9HgEx0Yg66OCPw78gXxjEgEadT5IXn8eLFS+ARGT0/+aRtLNpbxZoLKJkRhp1KKWqSrxTgh171ZrfYZ4LO5UgmhlQd1wS4Td1J24Fg4RekCQLCf78XkMHdq0UtROD5V74qHUzXKk7D5sMJdknkoInzGnYCPQg==
+X-Rspamd-Queue-Id: 9A10240017
+X-HE-Tag: 1767794059-8390
+X-HE-Meta: U2FsdGVkX1/9r3t4xACieS4+U8EEfdJK8x9H7BkLRAl4S7wfpqS4oqBxQFa3mi8UvddFd22H1ZQGGmuIuTi6Qg5Xug6+20OkzibRUMh0pty3BL3Lp5VYeB1NT71ScyrBgWu6serPWFEmTf2YnluLJxxivusl6qyUGQprG1suFm2vCGQdfqMdNEVDNqYNdAYMVd9gnacg51uaWq9zb1/Kwj/DOAL3f48/qOgW2od5Bd9vmZCFccn3k5HZdzYZ65QpX4bxDdwmwURgVXvqpu6GSR/DM1Bo/pOKKdlna8hIkOiNH6EF2QCGIRej0XM57eizKbyJ2iGuCASjcUOkUiwVd8tluk31zQSa9mGsQHMLBMQQWfskvagZufAQ6CDnD2dNZYKV5iOMwBP9/0VGKszQ/52pH4Tk+OiIccWhFC3j/nou/7KhaCkddOj1BNH2sd544W99+8T9l4A1H1LA0XXUbqWNlhy08GoToNDuRrgqKYIVDfaU3rsP7DsBCnVIbqBDiE6H+utTTNWhLw6znk6Ox61jX8v1cRJsM1JUddMG3W6+tDwrWdtd3Qbp3zkdzEUmzPqrKtAqFE/gVu98xQcgmV2+yUS6jfbb/jnq2gv8alT6CsGRH8dyStp7/QzrfsX4E9lhXjg6SiBG70nNOUsPXERjOJmMXcYtC/Z0+T7NyW380ymBQa9lyeYV/pqmnYocpppN0NvaV9DUqAemwzB5b1afCYN7AhXt5yXcXGhK37grUqDds7vhuY0HPMDxxm0fsK1pzalimhGPR1f5HKua4IMry/VJBSrZeEZmJiZXwneffLLnsRVTKwSguvgTqX5Z2S/suepQp3v29b4dt448EuassCkF0zclw0c100eKGSGpfMnY4gXQeoNhpY0FufDSlPUo+oANze4hYZtKr6PvcOa6vVG99jlKQl8J0NkT0KrqLpaS+/7u2f+4r2nO+YabP6nn2xuQ5Nee6UtJVg1
+ 6nOTY6CU
+ 07BYewoVm+GCjU4PDUwBIaAq1SRhxYfy+XJmr1OhFQo30oZ7xGcuw3D2eECZQmU1rF9Y6w+7drKmNDw10pCAEwyeRIw/mVrsWhS7R07LsXuiaDdTVzJ4VLhthoi5ic0audrq1RpezthCeJvqEq0YCUDJ/mWQtYEA5q0jgnuwf23Qvf+50QsgRnyXPt5WGDFgIQMJWwj7GKBfLquzXtQAHsqw6X1PLVI5v1jzcMXZpTs9Ajcq+o4QVyvZNy1S3VsV7jlP3f+cjavMFjlariBihdybOPxJ/WmVgkhM1smKplUMcXgbKg83dpUkcnjzuCJ/CgoMNSEwTzRS8qowfxqT2ZlhfMlIsan6hOzHncOLBAFLH1HdObVH1pZNr5Tsd3DK8Yy8QLgcXj0PWtdb6hNJbUF7B5WGQ1LVduCBLrIkzn3cFn8o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,118 +184,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 7, 2026 at 2:40=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
-org> wrote:
->
-> "Peter Zijlstra" <peterz@infradead.org> writes:
->
-> > On Wed, Jan 07, 2026 at 02:12:10PM +0100, Andreas Hindborg wrote:
-> >> "Peter Zijlstra" <peterz@infradead.org> writes:
-> >>
-> >> > On Wed, Jan 07, 2026 at 01:23:38PM +0100, Andreas Hindborg wrote:
-> >> >> Hi Alice,
-> >> >>
-> >> >> Alice Ryhl <aliceryhl@google.com> writes:
-> >> >>
-> >> >> > Currently the only way for Rust code to call a static inline func=
-tion is
-> >> >> > to go through a helper in rust/helpers/. This introduces performa=
-nce
-> >> >> > costs due to additional function calls and also clutters backtrac=
-es and
-> >> >> > flame graphs with helper symbols.
-> >> >> >
-> >> >> > To get rid of these helper symbols, provide functionality to inli=
-ne
-> >> >> > helpers into Rust using llvm-link. This option complements full L=
-TO, by
-> >> >> > being much cheaper and avoiding incompatibility with BTF.
-> >> >> >
-> >> >> > I ran a microbenchmark showing the benefit of this. All the bench=
-mark
-> >> >> > does is call refcount_inc() in a loop. This was chosen since refc=
-ounting
-> >> >> > is quite hot in Binder. The results are that Rust spends 6.35 ns =
-per
-> >> >> > call vs 5.73 ns per call in C. When enabling this option, the two
-> >> >> > languages become equally fast, and disassembly confirms the exact=
- same
-> >> >> > machine code is used (in particular there is no call to
-> >> >> > rust_helper_refcount_inc). Benchmarking Binder also results in an
-> >> >> > improvement from this change.
-> >> >> >
-> >> >> > This patch is complementary to:
-> >> >> > https://lore.kernel.org/all/20251202-define-rust-helper-v1-0-a2e1=
-3cbc17a6@google.com/
-> >> >> >
-> >> >> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> >> >>
-> >> >> I get the following modpost errors when building with this applied =
-on top
-> >> >> of v6.19-rc4:
-> >> >>
-> >> >> ERROR: modpost: "__SCK__WARN_trap" [drivers/gpu/drm/nova/nova.ko] u=
-ndefined!
-> >> >> ERROR: modpost: "__SCK__WARN_trap" [drivers/gpu/nova-core/nova_core=
-.ko] undefined!
-> >> >> ERROR: modpost: "__SCK__WARN_trap" [drivers/block/rnull/rnull_mod.k=
-o] undefined!
-> >> >> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_minimal.ko] u=
-ndefined!
-> >> >> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_misc_device.k=
-o] undefined!
-> >> >> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_print.ko] und=
-efined!
-> >> >> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_dma.ko] undef=
-ined!
-> >> >> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_pci.ko=
-] undefined!
-> >> >> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_platfo=
-rm.ko] undefined!
-> >> >> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_faux.k=
-o] undefined!
-> >> >
-> >> > Looks like it used the wrong static_call_mod() version, was MODULE
-> >> > defined?
-> >>
-> >> CONFIG_MODULES=3Dy, yes
-> >>
-> >> I built without the patch first, then applied the series, enabled the
-> >> option via menuconfig and ran the build. I thought maybe some dependen=
-cy
-> >> check is messed up so I retried the build from a clean state. Same
-> >> result.
-> >
-> > No, I mean -DMODULE. Note how the quiet_cmd_bindgen target has -DMODULE=
-,
-> > but the new quiet_cmd_rust_helper target does not.
->
-> Ah, that did the trick, thanks!
->
->   diff --git a/rust/Makefile b/rust/Makefile
->   index 5365d53b6cf96..08d3dc1038cf5 100644
->   --- a/rust/Makefile
->   +++ b/rust/Makefile
->   @@ -483,7 +483,7 @@ $(obj)/bindings/bindings_helpers_generated.rs: $(sr=
-c)/helpers/helpers.c FORCE
->
->   quiet_cmd_rust_helper =3D HELPER  $@
->         cmd_rust_helper =3D \
->   -     $(CC) $(filter-out $(CFLAGS_REMOVE_helpers/helpers.o), $(c_flags)=
-) -c -g0 $< -emit-llvm -o $@
->   +     $(CC) $(filter-out $(CFLAGS_REMOVE_helpers/helpers.o), $(c_flags)=
-) -DMODULE -c -g0 $< -emit-llvm -o $@
->
->   $(obj)/helpers/helpers.bc: $(obj)/helpers/helpers.c FORCE
->     +$(call if_changed_dep,rust_helper)
->
-> Is -DMOUDLE always appropriate to pass to the helpers? The helpers are
-> also inlined into non module code.
+On 1/5/26 09:02, Harry Yoo wrote:
+> Convert ext4_inode_cache to use the kmem_cache_args interface and
+> specify a free pointer offset.
+> 
+> Since ext4_inode_cache uses a constructor, the free pointer would be
+> placed after the object to overwriting fields used by the constructor.
 
-With this option, helpers.bc gets linked into every Rust object file
-separately (and symbols are internalized). We might want a separate
-.bc file depending on whether the Rust object files is part of the
-core kernel or a .ko file.
+                             ^ prevent?
 
-Alice
+> However, some fields such as ->i_flags are not used by the constructor
+> and can safely be repurposed for the free pointer.
+> 
+> Specify the free pointer offset at i_flags to reduce the object size.
+> 
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
+>  fs/ext4/super.c | 20 ++++++++++++++------
+>  1 file changed, 14 insertions(+), 6 deletions(-)
+> 
+> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+> index 87205660c5d0..42580643a466 100644
+> --- a/fs/ext4/super.c
+> +++ b/fs/ext4/super.c
+> @@ -1491,12 +1491,20 @@ static void init_once(void *foo)
+>  
+>  static int __init init_inodecache(void)
+>  {
+> -	ext4_inode_cachep = kmem_cache_create_usercopy("ext4_inode_cache",
+> -				sizeof(struct ext4_inode_info), 0,
+> -				SLAB_RECLAIM_ACCOUNT | SLAB_ACCOUNT,
+> -				offsetof(struct ext4_inode_info, i_data),
+> -				sizeof_field(struct ext4_inode_info, i_data),
+> -				init_once);
+> +	struct kmem_cache_args args = {
+> +		.align = 0,
+
+Nit: it's implicit so not necessary.
+
+> +		.useroffset = offsetof(struct ext4_inode_info, i_data),
+> +		.usersize = sizeof_field(struct ext4_inode_info, i_data),
+> +		.use_freeptr_offset = true,
+> +		.freeptr_offset = offsetof(struct ext4_inode_info, i_flags),
+> +		.ctor = init_once,
+> +	};
+> +
+> +	ext4_inode_cachep = kmem_cache_create("ext4_inode_cache",
+> +				sizeof(struct ext4_inode_info),
+> +				&args,
+> +				SLAB_RECLAIM_ACCOUNT | SLAB_ACCOUNT);
+> +
+>  	if (ext4_inode_cachep == NULL)
+>  		return -ENOMEM;
+>  	return 0;
+
 
