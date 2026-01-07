@@ -4,134 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77F78CF6C1D
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 09:29:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4D1CCF6C1F
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 09:47:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E11D76B0099; Wed,  7 Jan 2026 04:29:25 -0500 (EST)
+	id EB82F6B00A4; Wed,  7 Jan 2026 04:47:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF3A96B00A2; Wed,  7 Jan 2026 04:29:25 -0500 (EST)
+	id E8FC76B00A6; Wed,  7 Jan 2026 04:47:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D13286B00AB; Wed,  7 Jan 2026 04:29:25 -0500 (EST)
+	id DB8E66B00A7; Wed,  7 Jan 2026 04:47:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C1A726B0099
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 04:29:25 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 97C1E1A0223
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:29:25 +0000 (UTC)
-X-FDA: 84304644690.07.7A6BD31
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A154C140002
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:29:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="gX/YIXjL";
-	spf=pass (imf23.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C751D6B00A4
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 04:47:08 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 677EEB6FE2
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:47:08 +0000 (UTC)
+X-FDA: 84304689336.06.19AD0AC
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C46E1120002
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:47:05 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=R8tPF8Sl;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767778163;
+	s=arc-20220608; t=1767779226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qAmBFvHljQCF3L3oXr+WZULma4DAz/lJTXBequgmr24=;
-	b=YB+vKefymQgbjV6ZZuzG2Zbdj3TU0VnvY/yMHjOmOEp8xd2yoZZqo57/J92gwKcoHef6YX
-	4dobh/ecqYRgWJFLoEyOxDFboGQdPywCij3aPVFT4s+oEd51pUEMXlyaasJ4I/h/PB+7SD
-	BVAc/919/zbRxOP8WHuZYepSY1UpgMg=
+	bh=waSAWphj6QEXmMzbrIfZyab2Dy1N5rz1KjnogAtKrpI=;
+	b=WbUml2PvGX/wXL/uHKFvSWnPrYu56CeovnLmJHOkVULUOEYACbQvIhMrwNJz060mZfw4qn
+	7r45lfC7it2dZaU0UHZkYsRG9MOvAZSBtbIHzskFJQQx/ME8jNfmsUUk48WHvzANFJkwrk
+	anaziscxuVD4XD87dH/vM5wme3Jivk0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="gX/YIXjL";
-	spf=pass (imf23.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767778163; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=R8tPF8Sl;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767779226; a=rsa-sha256;
 	cv=none;
-	b=AGnDPK5x4QU16512HqEsN0v6KmcBALFNNOeJJfK+ECDV9TXiuJhaTEYnaD0D1Di9i9s1rm
-	c54shodZMOx2P473/NejhXbFj6Ls3qCaKFhMs624ofLiqq1FMB1+VXgqpHriuJP6o8fcIH
-	lK3lw5pBvY97LWwlokzcvm/Thh5rM9U=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b725ead5800so257762166b.1
-        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 01:29:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767778162; x=1768382962; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=qAmBFvHljQCF3L3oXr+WZULma4DAz/lJTXBequgmr24=;
-        b=gX/YIXjLA5vnDSF8hF/EucYt1VcevubGTMV7PVTE3+pa7XuxKCqmS71FWUdF8YZmZW
-         Tc+XUfjNHK0pEETb2lDoc7BoF3zwap5tXZFVdBaZd4zuOnlCXEE5QCsNl65fDQ1OYWqb
-         eQzMQCJStqrAtbkTwbLCOKZMdYBmBhYQI+ZmkceJmUDwBsasBcYWPS6t0PwkNJvHesnq
-         lGcFP9u5psKK/cAq7i2xB+NTXrLaP5E84lQz9yB1yNsWCNrwfcLwm+1YD3EvB8BwdbCY
-         S7rHFLMkpc3ME7c5EFIkZb9ccg0piGpTIWt9pPVPG2gFyIjGnCtbssw7JtHsynHtQPDe
-         PQ1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767778162; x=1768382962;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qAmBFvHljQCF3L3oXr+WZULma4DAz/lJTXBequgmr24=;
-        b=pieWrmKecZWXJfMZCMirITrYxX9WVU8YzFX3RYJQ6zqUTEY2dpHbAvW6OWUAHquAzk
-         cINE1f7HQVIg5MbLPIODz4q/W1gy1oGwUZtfwsxweoAraLXk4hEWsG2kY/1cDgGB4KZO
-         5iBhlsJujcmvHp6x4oNF8aBSQJuAn+rBTDtEzLnap4yHRrbXWK0e/Qm5ZD3paHTEY5Jy
-         YgUC7+bD0d91oBB7VPqbBer2P9eJLZW4v/t0bzegOfwlBlu5oaQGGvFnRQ8XVXTUp9vO
-         i9Dd53Jwxsry7ZeElngXvDTgkrOEa1WnQg1ic+lZkPwUEu/LeJ8OHJvK8LliRgN3RAqY
-         b1tg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWFSs245XudTXZRdYHrJdoQhEc8yXx5bhpGC5SKEEIGIGF0i8b79EJnyajm3rEQgNA0ZpTPD0P0A==@kvack.org
-X-Gm-Message-State: AOJu0YzMC+oz6c4uVk/Qw5S7zMPalvUy3YUCYc9B+gVB1EJIKKoEAP4y
-	8M4SDj90pBLUI+R6T+pRig8GigsQxPajdy7iAW+1LbdZ9LE1qifUhQt6K7g3KCqxzA==
-X-Gm-Gg: AY/fxX41FwN6H/oOvvlaERvmVwJTQFRY8732YwTBia+gt+yjbcLQq3iggU1zgK1IFUv
-	bv0fViponyClrYuSm3DWGMoYocm7JKJn0Z5mENiMeIN4FGDwc4MCc/18u3SvEbQFo8rWqjaqow7
-	62MTXP/f07j02T0gPRFTOt6PVkNuTq2lTl0IrG7UnhdJjrUggSAVKlcjce32JGYsix+3cL7QZKv
-	MECe8/SU8ev7DFK5sHKHYwNZ0r108718hkXkx2idtHFU/5BsWT0lUL+tcZa7WOiwCIjNxXYXl+e
-	Y5M8E2c2IJMZZEaDR18TwfZWTwg7D+y4QaXP4Cvj2c9wzyCw6XAKxTVkNStYL+JMvSalBURmyAS
-	UC7DPervojzuFpYWeK2NaFnAtEfwhAQ6ch3GdlpDYMaJ8yQgLzIwBRdVXeXd2MTESBYl4RZm4LU
-	2M8dgFaYqBQaAMESwOAloRlKfYCO7cY73maroTyxPd7f83fMmuO69Gug==
-X-Google-Smtp-Source: AGHT+IEZ569HZDlJCwAETH6UvXRvz+tkMRRxeKTBnNpUb4XcosV6KbxuzsGMXy5rQgg3tcmEAr8VOQ==
-X-Received: by 2002:a17:907:cd0e:b0:b73:5b9a:47c7 with SMTP id a640c23a62f3a-b8445413775mr187603266b.51.1767778161682;
-        Wed, 07 Jan 2026 01:29:21 -0800 (PST)
-Received: from google.com (14.59.147.34.bc.googleusercontent.com. [34.147.59.14])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a4cfd97sm444211066b.36.2026.01.07.01.29.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 01:29:21 -0800 (PST)
-Date: Wed, 7 Jan 2026 09:29:16 +0000
-From: Matt Bobrowski <mattbobrowski@google.com>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>, g@google.com
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Tejun Heo <tj@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Subject: Re: [PATCH bpf-next v4 3/6] mm: introduce bpf_get_root_mem_cgroup()
- BPF kfunc
-Message-ID: <aV4nbCaMfIoM0awM@google.com>
-References: <20251223044156.208250-1-roman.gushchin@linux.dev>
- <20251223044156.208250-4-roman.gushchin@linux.dev>
- <aVQ1zvBE9csQYffT@google.com>
- <7ia4ms2zwuqb.fsf@castle.c.googlers.com>
- <aVTTxjwgNgWMF-9Q@google.com>
- <CAADnVQLNiMTG5=BCMHQZcPC-+=owFvRW+DDNdSKFdF8RPHGrqQ@mail.gmail.com>
- <aVts9hQyy-yAjlIK@google.com>
- <CAADnVQJr0WqmqA2fQeC0=Jn5F-ujWmUkL-GfT6Jbv8jiQwCAMw@mail.gmail.com>
- <aVwnUUXmgE1uOOj4@google.com>
- <CAP01T75ATFb_gjy5_fSwt6=QMxt7kGSS+12SJN9rz9SfJQ7Qyg@mail.gmail.com>
+	b=PcESahPZZAr6ofX31WeAI3uB7fivLMIe1gCjLwOwj2xexcKjV17fQaLZ2MFb9/yFUAGIwV
+	S2EAFNpTD4lAGfmHMrp3voVGQv+f9YuW8VGmxB+XujWeWsps49VxGe2ZzRUUboqjchIFoL
+	hoPUx/onfp9Z0v4De0EwRy/mS7Y7plE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767779226; x=1799315226;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a83o+wX7r90L4ywH9PsTkkN4tbWjpPaE9B8Y5qgLNgE=;
+  b=R8tPF8Sl+F+qunaqlZaKlXrZ6mUL2JPvW+QYs73YhscQIxVcN0DJnUsS
+   9Rwxxi74XCsYp9pD4LPW5uCRwETPvZCtGsdHld5kQXoUH12joFcjK+Daf
+   OV+FOrbtRfhf2LJ1/dZeyWuF0vX55w8GjLby2SNrH5PDWsFt8bqblF88u
+   daCxN9O6Ytwr80s5RYI2nVNReHCRmX2gWq0uVG5uV79Rxi7lBWAMUMkPA
+   fdiIy00SKHs3uCxwLvS+s9NdpwYRV15wxdp4il3LlQtZKTnmXWUnonsNJ
+   1YLIZG0TCF++YmjPgNLhdZZkaGmbnO/YTSyCl7DQHCX6b0AlTs2x13EMO
+   w==;
+X-CSE-ConnectionGUID: vdql81A/TBiRSq1kEANDfw==
+X-CSE-MsgGUID: I8nmpnHJSNS9uVYYdjwi1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69194212"
+X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
+   d="scan'208";a="69194212"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 01:47:04 -0800
+X-CSE-ConnectionGUID: jZSHIXi8QfuiQFR7GjwoYQ==
+X-CSE-MsgGUID: tChYKJK2Qp6DUXgcZ++UGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
+   d="scan'208";a="202899201"
+Received: from igk-lkp-server01.igk.intel.com (HELO 92b2e8bd97aa) ([10.211.93.152])
+  by orviesa007.jf.intel.com with ESMTP; 07 Jan 2026 01:46:57 -0800
+Received: from kbuild by 92b2e8bd97aa with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vdQ7y-000000001Xg-3SbX;
+	Wed, 07 Jan 2026 09:46:54 +0000
+Date: Wed, 7 Jan 2026 10:46:12 +0100
+From: kernel test robot <lkp@intel.com>
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
+Cc: oe-kbuild-all@lists.linux.dev, david@kernel.org, dave.hansen@intel.com,
+	dave.hansen@linux.intel.com, will@kernel.org,
+	aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+	dev.jain@arm.com, baohua@kernel.org, shy828301@gmail.com,
+	riel@surriel.com, jannh@google.com, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	ioworker0@gmail.com, Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH RESEND v3 2/2] mm: introduce pmdp_collapse_flush_sync()
+ to skip redundant IPI
+Message-ID: <202601071005.oEsmtf0J-lkp@intel.com>
+References: <20260106120303.38124-3-lance.yang@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAP01T75ATFb_gjy5_fSwt6=QMxt7kGSS+12SJN9rz9SfJQ7Qyg@mail.gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A154C140002
-X-Stat-Signature: rw9gj1c3ui9bpi8exdgemg6eif86jqfh
+In-Reply-To: <20260106120303.38124-3-lance.yang@linux.dev>
+X-Stat-Signature: f55ybyemxexe6xgh4mxo4rzkmi75rx3w
 X-Rspam-User: 
-X-HE-Tag: 1767778163-428800
-X-HE-Meta: U2FsdGVkX19bfR/ozdkAP6s14xObF7Q5r7CKsJnwfyJ1BcQK0vZT0mcKhFn6gSDlspU+F7Gz0NLpg2u3AQEjZKeHB1UpWxwgO2UB4qyU11eYhi99g1zev0ZwqwO+viWZSSkNLSZvazlTjVYkVUR/Ir+SPaNa39uOQn+M/SY8PRIWW2woBqCVrcyVHXt3QlPpg0JoD7MeMJn1HZ81Xj2/SQSEo8MHBX7RjsHQM/MU/6hJXdxwbfGb1JyF4psjlV3/DCctAU3tui3gVEbLCBWqeME8w6jopoTNKpWTNDAlP+2kpM7G2mXF40u6xRRjbSoDv2sC1uccFFo5+JnLg6eIR7EeGea3PSUESl0D/IlJ8dQa6x+936cCJ8w1SjAL5CNQ3L47W7QqvLEpX1+/1fScKSFS+SvItUEcoWuX9/PDEYTzExPYYowRlDmsJ2TTyYXT+2fjnI29k7UlOSQY0/IZZ1t8N4Z5p9fm8Uw4aYg9ssndCRp8txnNqmWzmeVxH2jy4V87gnoTi2jKQU08UzTkelBH21azIWJdkEWDTvmShpsLApIagnRlIv2qgZSb5yQx4pRzhQm7dqJyGIH/1s4wgEyLqnbcD8yM6Ti/EuDVSxbFeXGHAN2UyaHhGI/lxnrpvhFl6fPhoyHcQAtN0ieSFQD97vaC3NwOVM8Onw2nnRlB8utF80XWyqQ1bnNxeuq7Zfq/OUt9Ne8dye+5R++G7QlUz3v7p5MWHBGP9lXyXVl2/nySLFGHHqmotUc8PGYr++vHrjO/awvIneNZsBufAgqRqPKqi3ctJj4lzBZ55Bu1mbRARp0dED6eK7IPjcxNy9VdivLsh99atdWf+xfej7nDS7nZgvsVHNw00rYMPTUbSI1B5PUXfqwGV8m9yWDvexkKcJ2wWcCRz0zM3IcdjWP5a1fZvhz8e4qLEGjrVmjFM4HF6G+9W4lv+sqQnSkrk+xcE2ekzBeNeeP1dvB
- qFKbukZi
- +Dw51grPgiTbwh9wtZ592QLNFZnznhZCDZfyttizA545v21GKAwu5JWzJWEa/5Bv65ptGq9qTKOJCM3adOy31PA2tZ1otTukzA8JSNSx9+eIbQ8L+IyYkJjrDVXrisPyZXqsTKos0HXveTUwTXzTyOkGkj0OCYGVkfq8LIA8/6aqSi8TNN0qaqhx7g5S6Nz/bmlU4jGGQbv636eOLmg3QS7G7YVxiIQcjqHOj0WZ15cQpvgHYJuoSXmtt6D9L9P6SnC9YX2c9k6C8yqLZjcmHpR0zadW/Et3Bu/6kUqrAWz+CZTNLbAzrf8+5CGiGFiT6yohIouBq+ChTxwTJhXVpp51VgpHHLHBzKOoImAerlnvjKq8LHcayxSinWProJlMvwPqZgfBwBErOTJVg+sovw6FHtrCHrXp9j7WTYtoyW0RoONo2p9/CBBiuMbK+81CbUq9yjFYp8Ktv+2mfoPup/9tl5A/8yFJokOyAD/OoDbBUgnM=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C46E1120002
+X-HE-Tag: 1767779225-328344
+X-HE-Meta: U2FsdGVkX1++L2yjktdR7vTSMlo6UoSlJ1hEN4NgFx543af/gdy2SBkHKkq26B+X6Y2syA1wQ5dF/S2EGgCide3ukZUjF7pGHNqFjsv4Kd+VByyvblz17BO9yUu/Ceq8RcdzvQ829750Vrw1HqSsrY4UHu5w9iU5jA2gJazGtDuxMlNxwUXITYsSqHc9GxJDnmWeCQ9M9WAJPLxxffeEOv97VJIwaQgpgQzKJp2bVHmgOtlI13jU4STYrGO4ZWnFKK2jopS+Z2kLeQTO6cwaUsqM4rrm4vpXEmjKzLF1Ejd9qOIUkkI7wBxiy6Do7kam5dHVurI/RPkGo8l/GIy2DI7tpFFjcanlB66R+ZTiEivqQOJKjYOAyh/IU7gQD6B8iAHUg0R8BjOx+2yT3cRBRquZWl+qVwU/ZyJOcw8kyUikvjgaDGBrJW3vLVKqUGHLMPAvCzftu0FzeYQaFViCem8ddGf9c16VHI1ToT6r9VoiQMzDLlpWbcyl0e8Y4xfCYuno0eknqMKN3ZOtVi7tVbxCS0uVBIY8imoAoIDcVckygAAPjnKrVkEBQE7EubNUp3HDIlwR800terOg29s/nf0hYwGlZ+hdMWPB7SlIdayfGUPOH6In0Wi/fevHqptthv7nWz305zkuPjN3/ZWP998FFQz79i7BTs6Lvb49pQyJk1ozKlL/Gt+DX1FufVWPWqukbMP+onf+qWnNRTztiT+CUtLKXSEyhtb2V8yk1rchsCD0mBvNR+dYEYoioOSd9Yykcb9FWWOzcgyFjzgBz20u1awNNJCEeLwWzR7w9BpYGdafi4puAxogDJpVQEjOTYgoOaAmizdvdmu6UCwDVZi7qPjGI0nx3FC0RkxyXSFop0xsnyqKJdJWxdJ6mqkU75AIV1ri5mLNIW+R0R7//AsF64zeVE08maqs/Q7zRtXL9fTLAogrpd01tCrZJUk4Uq59EfRfs9sBtPNDYDw
+ 4tftTxMt
+ ChZsHFUeyZ5V4rZAJG/0O7D846eI5LiuGL/5DGsXPfYnL8KbAFQgWiSBFk/faxDkHkfbuN3EnNr5FOwhX5OuX7ERZNzbrltkgC6fRZmAybsKhyg+AgxUYJHuhDY/2BlT/DrryKmw71OcZdkNYB6/llEuYGWxBcz/sRsM8SNCbIsbQ4Xi4CkWvoDF0WUWNfSbtggJi883yh+LqwGqb/xBYIIawcCxn8Kl4Ey/vuaawRxz6L/NtTPW2dylxxwY3XeaL9EBbbyTVxU2yTcVsVmSsxmWOMrNLs6ngkf0pfSJfmmkF3R+D4EwgSft/6U2iLAhDqecFqcRC5t+z9PnRWhk1Ah5oRkj+wCTViCqh+AGxUuJEkYrjWfKMPjH2zNLgjzg7xh2lebPu9B4ThbU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,54 +117,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 06, 2026 at 04:13:24PM +0100, Kumar Kartikeya Dwivedi wrote:
-> On Mon, 5 Jan 2026 at 22:04, Matt Bobrowski <mattbobrowski@google.com> wrote:
-> >
-> > On Mon, Jan 05, 2026 at 08:05:54AM -0800, Alexei Starovoitov wrote:
-> > > On Sun, Jan 4, 2026 at 11:49 PM Matt Bobrowski <mattbobrowski@google.com> wrote:
-> > > >
-> > > > >
-> > > > > No need for a new KF flag. Any struct returned by kfunc should be
-> > > > > trusted or trusted_or_null if KF_RET_NULL was specified.
-> > > > > I don't remember off the top of my head, but this behavior
-> > > > > is already implemented or we discussed making it this way.
-> > > >
-> > > > Hm, I do not see any evidence of this kind of semantic currently
-> > > > implemented, so perhaps it was only discussed at some point. Would you
-> > > > like me to put forward a patch that introduces this kind of implicit
-> > > > trust semantic for BPF kfuncs returning pointer to struct types?
-> > >
-> > > Hmm. What about these:
-> > > BTF_ID_FLAGS(func, scx_bpf_cpu_rq)
-> > > BTF_ID_FLAGS(func, scx_bpf_locked_rq, KF_RET_NULL)
-> > > BTF_ID_FLAGS(func, scx_bpf_cpu_curr, KF_RET_NULL | KF_RCU_PROTECTED)
-> > >
-> > > I thought they're returning a trusted pointer without acquiring it.
-> > > iirc the last one returns trusted in RCU CS,
-> > > but the first two return just a legacy ptr_to_btf_id ?
-> > > This is something to fix asap then.
-> >
-> > No, AFAIU they do not. These simply return a regular pointer to BTF ID
-> > (PTR_TO_BTF_ID), rather than a formally "trusted" pointer (which would
-> > carry the PTR_TRUSTED flag or a ref_obj_id). scx_bpf_cpu_curr returns
-> > a MEM_RCU pointer (via KF_RCU_PROTECTED), which is somewhat considered
-> > to be trusted within a RCU read-side critical section *ONLY*.
-> >
-> > Kumar/Tejun,
-> 
-> Yeah, they don't return a trusted pointer. I think it would make sense
-> to change the behavior here by default.
+Hi Lance,
 
-Thanks for chiming in and confirming this Kumar! I also agree that any
-BPF kfunc returning a pointer should be treated as being implicitly
-trusted by default. I can't think of any scenario whereby a BPF kfunc
-would want to return a pointer that'd fundamentally be untrusted, but
-there always could be some exceptions. Anyway, I will work on this and
-send something through for review soon.
+kernel test robot noticed the following build errors:
 
-> A non-trusted pointer cannot be passed to kfuncs taking trusted
-> arguments, so hopefully it will only make things more permissive and
-> doesn't break anything.
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on next-20260107]
+[cannot apply to tip/x86/core tip/x86/mm arnd-asm-generic/master linus/master v6.19-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-We can only hope! ;)
+url:    https://github.com/intel-lab-lkp/linux/commits/Lance-Yang/mm-tlb-skip-redundant-IPI-when-TLB-flush-already-synchronized/20260106-200505
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260106120303.38124-3-lance.yang%40linux.dev
+patch subject: [PATCH RESEND v3 2/2] mm: introduce pmdp_collapse_flush_sync() to skip redundant IPI
+config: s390-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260107/202601071005.oEsmtf0J-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260107/202601071005.oEsmtf0J-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601071005.oEsmtf0J-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/khugepaged.c: In function 'collapse_huge_page':
+>> mm/khugepaged.c:1180:16: error: implicit declaration of function 'pmdp_collapse_flush_sync'; did you mean 'pmdp_collapse_flush'? [-Wimplicit-function-declaration]
+    1180 |         _pmd = pmdp_collapse_flush_sync(vma, address, pmd);
+         |                ^~~~~~~~~~~~~~~~~~~~~~~~
+         |                pmdp_collapse_flush
+
+
+vim +1180 mm/khugepaged.c
+
+  1092	
+  1093	static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long address,
+  1094						   int referenced, int unmapped,
+  1095						   struct collapse_control *cc)
+  1096	{
+  1097		LIST_HEAD(compound_pagelist);
+  1098		pmd_t *pmd, _pmd;
+  1099		pte_t *pte;
+  1100		pgtable_t pgtable;
+  1101		struct folio *folio;
+  1102		spinlock_t *pmd_ptl, *pte_ptl;
+  1103		enum scan_result result = SCAN_FAIL;
+  1104		struct vm_area_struct *vma;
+  1105		struct mmu_notifier_range range;
+  1106	
+  1107		VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+  1108	
+  1109		/*
+  1110		 * Before allocating the hugepage, release the mmap_lock read lock.
+  1111		 * The allocation can take potentially a long time if it involves
+  1112		 * sync compaction, and we do not need to hold the mmap_lock during
+  1113		 * that. We will recheck the vma after taking it again in write mode.
+  1114		 */
+  1115		mmap_read_unlock(mm);
+  1116	
+  1117		result = alloc_charge_folio(&folio, mm, cc);
+  1118		if (result != SCAN_SUCCEED)
+  1119			goto out_nolock;
+  1120	
+  1121		mmap_read_lock(mm);
+  1122		result = hugepage_vma_revalidate(mm, address, true, &vma, cc);
+  1123		if (result != SCAN_SUCCEED) {
+  1124			mmap_read_unlock(mm);
+  1125			goto out_nolock;
+  1126		}
+  1127	
+  1128		result = find_pmd_or_thp_or_none(mm, address, &pmd);
+  1129		if (result != SCAN_SUCCEED) {
+  1130			mmap_read_unlock(mm);
+  1131			goto out_nolock;
+  1132		}
+  1133	
+  1134		if (unmapped) {
+  1135			/*
+  1136			 * __collapse_huge_page_swapin will return with mmap_lock
+  1137			 * released when it fails. So we jump out_nolock directly in
+  1138			 * that case.  Continuing to collapse causes inconsistency.
+  1139			 */
+  1140			result = __collapse_huge_page_swapin(mm, vma, address, pmd,
+  1141							     referenced);
+  1142			if (result != SCAN_SUCCEED)
+  1143				goto out_nolock;
+  1144		}
+  1145	
+  1146		mmap_read_unlock(mm);
+  1147		/*
+  1148		 * Prevent all access to pagetables with the exception of
+  1149		 * gup_fast later handled by the ptep_clear_flush and the VM
+  1150		 * handled by the anon_vma lock + PG_lock.
+  1151		 *
+  1152		 * UFFDIO_MOVE is prevented to race as well thanks to the
+  1153		 * mmap_lock.
+  1154		 */
+  1155		mmap_write_lock(mm);
+  1156		result = hugepage_vma_revalidate(mm, address, true, &vma, cc);
+  1157		if (result != SCAN_SUCCEED)
+  1158			goto out_up_write;
+  1159		/* check if the pmd is still valid */
+  1160		vma_start_write(vma);
+  1161		result = check_pmd_still_valid(mm, address, pmd);
+  1162		if (result != SCAN_SUCCEED)
+  1163			goto out_up_write;
+  1164	
+  1165		anon_vma_lock_write(vma->anon_vma);
+  1166	
+  1167		mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, address,
+  1168					address + HPAGE_PMD_SIZE);
+  1169		mmu_notifier_invalidate_range_start(&range);
+  1170	
+  1171		pmd_ptl = pmd_lock(mm, pmd); /* probably unnecessary */
+  1172		/*
+  1173		 * This removes any huge TLB entry from the CPU so we won't allow
+  1174		 * huge and small TLB entries for the same virtual address to
+  1175		 * avoid the risk of CPU bugs in that area.
+  1176		 *
+  1177		 * Parallel GUP-fast is fine since GUP-fast will back off when
+  1178		 * it detects PMD is changed.
+  1179		 */
+> 1180		_pmd = pmdp_collapse_flush_sync(vma, address, pmd);
+  1181		spin_unlock(pmd_ptl);
+  1182		mmu_notifier_invalidate_range_end(&range);
+  1183	
+  1184		pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
+  1185		if (pte) {
+  1186			result = __collapse_huge_page_isolate(vma, address, pte, cc,
+  1187							      &compound_pagelist);
+  1188			spin_unlock(pte_ptl);
+  1189		} else {
+  1190			result = SCAN_NO_PTE_TABLE;
+  1191		}
+  1192	
+  1193		if (unlikely(result != SCAN_SUCCEED)) {
+  1194			if (pte)
+  1195				pte_unmap(pte);
+  1196			spin_lock(pmd_ptl);
+  1197			BUG_ON(!pmd_none(*pmd));
+  1198			/*
+  1199			 * We can only use set_pmd_at when establishing
+  1200			 * hugepmds and never for establishing regular pmds that
+  1201			 * points to regular pagetables. Use pmd_populate for that
+  1202			 */
+  1203			pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+  1204			spin_unlock(pmd_ptl);
+  1205			anon_vma_unlock_write(vma->anon_vma);
+  1206			goto out_up_write;
+  1207		}
+  1208	
+  1209		/*
+  1210		 * All pages are isolated and locked so anon_vma rmap
+  1211		 * can't run anymore.
+  1212		 */
+  1213		anon_vma_unlock_write(vma->anon_vma);
+  1214	
+  1215		result = __collapse_huge_page_copy(pte, folio, pmd, _pmd,
+  1216						   vma, address, pte_ptl,
+  1217						   &compound_pagelist);
+  1218		pte_unmap(pte);
+  1219		if (unlikely(result != SCAN_SUCCEED))
+  1220			goto out_up_write;
+  1221	
+  1222		/*
+  1223		 * The smp_wmb() inside __folio_mark_uptodate() ensures the
+  1224		 * copy_huge_page writes become visible before the set_pmd_at()
+  1225		 * write.
+  1226		 */
+  1227		__folio_mark_uptodate(folio);
+  1228		pgtable = pmd_pgtable(_pmd);
+  1229	
+  1230		spin_lock(pmd_ptl);
+  1231		BUG_ON(!pmd_none(*pmd));
+  1232		pgtable_trans_huge_deposit(mm, pmd, pgtable);
+  1233		map_anon_folio_pmd_nopf(folio, pmd, vma, address);
+  1234		spin_unlock(pmd_ptl);
+  1235	
+  1236		folio = NULL;
+  1237	
+  1238		result = SCAN_SUCCEED;
+  1239	out_up_write:
+  1240		mmap_write_unlock(mm);
+  1241	out_nolock:
+  1242		if (folio)
+  1243			folio_put(folio);
+  1244		trace_mm_collapse_huge_page(mm, result == SCAN_SUCCEED, result);
+  1245		return result;
+  1246	}
+  1247	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
