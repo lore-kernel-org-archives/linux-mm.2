@@ -4,116 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D2E1CD5822
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 10:15:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43430CD5829
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 10:20:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D04CB6B0005; Wed,  7 Jan 2026 05:15:03 -0500 (EST)
+	id 4DC326B0005; Wed,  7 Jan 2026 05:20:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB2076B0088; Wed,  7 Jan 2026 05:15:03 -0500 (EST)
+	id 4B2B36B0088; Wed,  7 Jan 2026 05:20:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8AEA6B0095; Wed,  7 Jan 2026 05:15:03 -0500 (EST)
+	id 3D6916B0093; Wed,  7 Jan 2026 05:20:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A622C6B0005
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:15:03 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4F8BEC0900
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 10:15:03 +0000 (UTC)
-X-FDA: 84304759686.18.ACF8ECE
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5923A4000F
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 10:15:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=dhv1A0HK;
-	spf=pass (imf07.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DC3E6B0005
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:20:47 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE5241A029A
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 10:20:46 +0000 (UTC)
+X-FDA: 84304774092.25.82D9F66
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4A3E2180002
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 10:20:45 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HG3UgZmi;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767780901;
+	s=arc-20220608; t=1767781245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8bceZUEvCu5KrQ/L330EZO18iOd4Vxp4vClh5tI+Gek=;
-	b=bJlECJWflt67EqXp9oXzqPb3aBEzQ70AEy0YTO/Nq5LCh+O/SyTqHdVBC3A3m+4aGMiUKw
-	2Ncz3EXLbFwZhWRP9pES5tYX7X6+usUwifM8aOqK/aGpLPNZRtjB3Qb/N2HO/WyPxBe9Fq
-	c9Ypna7OnASorOS4D+/JVRPxSal8AUQ=
+	bh=YAjWTfL5/3oXi6ADzeSFQa0DHNLHQ/Gxlrenv2YfAWg=;
+	b=QffWTUBYUO4a8PvT3o60bNIJ1OwAypI2lFYT1gOKUUkicP4pC4ZHwpIBk+PDFio8orn/xG
+	5JattatpNdT2pDh5l4CBtnsf6AK6y3WhdC+zOmk9wAY0EaBeLd34dtUdaNqcTzd4qBUMCS
+	GDV+sNW1/RAxM3UQpTGGR18jFUNtcYw=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=dhv1A0HK;
-	spf=pass (imf07.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767780901; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HG3UgZmi;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767781245; a=rsa-sha256;
 	cv=none;
-	b=dPUlVNuLz+wHfPUy5q9QjjDxSVWTy2MikD265OqMrX8VJS96hj+3woghMZUL98muZ35nK1
-	F5uR95T0wcn0mRd8JoKKLEyzr6hc8A/96LsU8IyfdFukK76hj1p4/hyyu6M2mfAet5k3S1
-	/ZZo/LynuyE3kGf9TT5pZPyZQdK0H/8=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a0834769f0so17258915ad.2
-        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 02:15:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767780900; x=1768385700; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8bceZUEvCu5KrQ/L330EZO18iOd4Vxp4vClh5tI+Gek=;
-        b=dhv1A0HKZXULTjg1l3WfIvCtC2i2ZyQe0zPnMVNjzuOxjwa15x85qZbn+A2tVSnzOV
-         0RdtuBC2nII2/YjL05tzDSBR5rbOFIo3oFuxj9zygSfiyjJXdtKjH3Z72TwmdWx2DMoM
-         C3KPejUEwfR4LXrvasZF3qui97T+QRjYwbGEY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767780900; x=1768385700;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8bceZUEvCu5KrQ/L330EZO18iOd4Vxp4vClh5tI+Gek=;
-        b=fm4AfoaalMrhR+Vw2GdkXmkH47euX231wYBz2JO+197NqoZ2Ogpq1pL34R23F9GRbK
-         uDhQTTjWYiszRQbU2ytE4R2On1STzp32p9BVeSsOA/Br4WVdhj4xzT5a+hTH9nqCeqSA
-         jVmljrctC6ZZ5Gr//uWoP2WRHb0dlwFQV3wLEg3h9l7EKOec3Rlqa0J9y6B74MkbQeg5
-         vcElnabE6IM1sLfiilZpo06TPq413x/+QmCu/ycv3PWAEOH9UVaOY52QcZb0KncWpOJP
-         WUStjx2QQ9XIAF6hTnhlzcxbTgiothkvM3un7EN0OnajCVRfouPV1gPuJIkAJa+/5G7R
-         /ZDA==
-X-Forwarded-Encrypted: i=1; AJvYcCW7kSNvN3CqWoooqSE4Y2eEuHyZLu5ku6rwKu7GIDFS2AH00bVEQWBsbtdeXsFRyHs2zaGI9QfSKg==@kvack.org
-X-Gm-Message-State: AOJu0YyaFI502zcYqKwA4KVZcd+GbMbaj5Ph5oScz8tmDZ2tupPQxhMN
-	fat992BR5zePX/AWmvQCzb8DrA61GOG+Umo0oZ+Hoxm788+fUgrowUAKLC5QpP4oMg==
-X-Gm-Gg: AY/fxX4fbG7yeB9EezdIbzX3JbqCDpyhYNHZaE+5W7SO3dOD4owrfrQWhXhy0VsX1xF
-	kIvziQwtwKkJN8q5BQdYqgxs9V/ZTX8pZi+GTR5kmM/AAqOnXHiMYAvcOk+0gSr784aN9lD2jK7
-	fv9PA1WjpXcuHdsldYQi7fbG4mvBVIU2uT8akd1VsoGuB2rr8m63tjwtLqXxCm6n/gdJHvLE/Yb
-	yNlgLgCjWf11+itpfu5QWOQats2+V3jgIeJbdAUig7Kt6/ZXnawJ9CdJNe92ckp/6E6urloZb4C
-	uVkVrlP9P5hM1YWFBepbKIC+FHxebLdA07uzvRz+Ea0XCsmZlnIU4XB7fJ5cxHRSNkYzzWm59/0
-	5thEUgVnTHFNIpxFd4md3BJ6kf6zcDnRmCDqjiSkmJ5SNHLM+srz/ynFJI4z/Fb4TpFKZ5HiZ69
-	xNFZwunjzNs/SYHUJ8vx8AwTEQ1/yYSEN7rE3kbBpoPXKwiFyJ4sHWBNxXq0+Gzw==
-X-Google-Smtp-Source: AGHT+IFQ1af01hhk8mScP/1n6gA5Kz+2eLZd+kVW9ydONrfQdZgC8g2moml33TCqjBCfPWZdXb3RBA==
-X-Received: by 2002:a17:903:2ac4:b0:2a1:3ee7:cc7a with SMTP id d9443c01a7336-2a3ee43434cmr16758185ad.17.1767780900130;
-        Wed, 07 Jan 2026 02:15:00 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:7bef:7c13:79b4:e9de])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c4795fsm47255015ad.33.2026.01.07.02.14.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 02:14:59 -0800 (PST)
-Date: Wed, 7 Jan 2026 19:14:54 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: zhangdongdong <zhangdongdong925@sina.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Richard Chang <richardycc@google.com>, 
-	Minchan Kim <minchan@kernel.org>, Brian Geffon <bgeffon@google.com>, 
-	David Stevens <stevensd@google.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-block@vger.kernel.org, Minchan Kim <minchan@google.com>
-Subject: Re: [PATCHv2 1/7] zram: introduce compressed data writeback
-Message-ID: <z22c2qgw2al73yij2ml2hlle2p24twgpmz4jemfqhjoiekc65f@pvap7olsolfp>
-References: <20251201094754.4149975-1-senozhatsky@chromium.org>
- <20251201094754.4149975-2-senozhatsky@chromium.org>
- <40e38fa7-725b-407a-917a-59c5a76dedcb@sina.com>
- <7bnmkuodymm33yclp6e5oir2sqnqmpwlsb5qlxqyawszb5bvlu@l63wu3ckqihc>
- <2663a3d3-2d52-4269-970a-892d71c966bb@sina.com>
+	b=7NJUfdKBV0UFJyY9cZ7IcS+DHknWI/nWqp29pOyaLcR6iWCXNtxeXBgGAJqDcW5osXdL4A
+	H+QcGWr00joWG6MBFsGcyTwN14IM7TjyKsScPqSbFa0uvp4QsG4PthaQXLoHi14D3MUWuE
+	zSW/J46GOsihaTnFK6a5aqX7cp/Wd+Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3697D60007;
+	Wed,  7 Jan 2026 10:20:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332F3C4CEF7;
+	Wed,  7 Jan 2026 10:20:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767781243;
+	bh=2N7QgaN9sMjltiFqaQG4UkyiWR5RDDQ2n4IgHLPouW4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HG3UgZmir72YPYFm/emlV/3aORPdbjLAnBvpX04p5XtFP762LStn/wPAzNuqOQyK8
+	 k7OnYBM5tMSwl6jbeHb8PLi19AGtC/53sTnfGuvHRwU1J5fTUCYLII+PuhChCRsuuP
+	 lesNvqozgo8UJHTVTNpJsDervk1O2VsPtftbzvVYNlT5k9C+Ou7zoWZDNLa9w7OL7l
+	 1I+dvThsPPRQrJPx2bNt/P7eQY786Hlh4y2DUZqzVomuI/Tc2vep7bqbTNymx1RDAb
+	 W1AWrPHPHnhn5oDQwiHOAOhH7g90DnMJIt+6Fqkfre323p/NzMyoEh/2zKKa/f4rTg
+	 6GL2C2ybj5rcA==
+Date: Wed, 7 Jan 2026 12:20:23 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Ritesh Harjani <ritesh.list@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Stafford Horne <shorne@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+	x86@kernel.org, linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 14/28] powerpc: introduce arch_zone_limits_init()
+Message-ID: <aV4zZ8D5eaLC6K-w@kernel.org>
+References: <20260102070005.65328-1-rppt@kernel.org>
+ <20260102070005.65328-15-rppt@kernel.org>
+ <87ldia9he1.ritesh.list@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2663a3d3-2d52-4269-970a-892d71c966bb@sina.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5923A4000F
-X-Stat-Signature: w4twwbcqdxgtj3qhqswfniu4i9kb1ys1
+In-Reply-To: <87ldia9he1.ritesh.list@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1767780901-739964
-X-HE-Meta: U2FsdGVkX1/K/cQ5YHOeAmj1pJUEO/4e21WjtaFGmFiVaj1ZvkykIdgvpGJXsWBlZTfOnaF5QpRqo+OZoX1GN0PnDleLIIBL5AVNLi1RIEQ0BJlUSKBkiC2RpsMzahu+wCBAbJhv9xRKkkwn0Z3oxwl/Tcjm6OzyODVDzlsBGO800GkRKmJdF3nWzrCHym/Q2vw1VM9gTnVzrY4+PM6EgQ2vZADKJ49xyU1/rELGGTBbBfV5DO6JwR753e07uAMpCDrZ8BuN3dPFNGtmzwcwIg87DGMabezy6VO/iIAMI6PywRLY8UMt0thT2/kzmcifpAAcMRN+c89vCZz/SIzoCWgItXTT+4xfKjs4HvsM+r00/YeArmLEkYR2TSnOlF6JqDolhBXXnaqjkqVLWvEDD1dW+8RkkyXWOh+zMMW4Ce64KsWdDZchWADybyP4jn5lgZe3wh603Hn5ZRUjGDY0SjtDitoVdn+8l/Fodv/dufJALj23qJNneeSW72+wqeSD1d2pNdqZpW9zw4nwzJt+z7Hwwga1gQ8RS00B8yohR0S6uRoQbDTsu2fAX5ntNQ6EvXttNMo68YI5paJEQ+2v5Hmt2TmVB0g+qC2aC7x4n5glKt0KkFfLYQvNxFoyMoM+m3hKAwL6qeP9bK86p3o2wAuaWggIwi7dtnz6LDgNdq4xZ9ifvqYxG0IrYPaNpOD80KXzdG9yl5zsxdeqDOGig5/kVezGbKMraowlCYM8o5AOYBXB1B1PtA1ikPQGBOi/FsF5e9c0Hk+pvki/QkJ1IWWEd5Sr5VfEfPB6iMUwZuhW+IMHh7my52vV6/qf7kDN/rONJJX1APkFRuLg4PxfSTln7YlZ5OQSe2LqoNyAtz/UNPGnbN3aUlaajeu0/M58TjCt71dX0nE+Z+wE2UWC/TtMSLTM0c92qaIojssR0rxOMIh4PBZ2uVnbHHCoWWRYIVvAOdRy6mmtT7MK2D9
- 6yNtJP8a
- Oau7omUW0RNU3TeqKQ77ZaX/msZ2nFibAqFdCkP+tYHu/WGKF8LudLTxsiXiA79o2pP1Xp9iipucII8ngJSsdXk2RxXzkEVmycREoDX3pYIGFL+zSdbwTB/SNTe4XJkG6Qoubkj8pZRlyN9hF7exrBAhaDzq+WmVCnHX/CFHHfL76IrkRQO5+lfZ9wbUOImySayzhW5RNtQdC2NCP3tgeI/0Z7lTbp90mjPCbG4Te97XvR2jgcuLB3vNTlpBa+L2PJ1bcf21QXNklWIaE8UAcX7020mZYNBxpXJhclQL9vKxwFpo//ldBSVKXmjbDtlAMsc2AItmKVbX0f5GbKcOyvYp0fFHdJCA3VttkFlC1yd3HgqE=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4A3E2180002
+X-Stat-Signature: cww1yoxaciwaabyf7wrbex9kixz48bzg
+X-HE-Tag: 1767781245-202197
+X-HE-Meta: U2FsdGVkX1/j/biQ+s2WS8jOlnALtzYola8zp3a67hvh3W7rf4r/LJdA+hKRmER3+61vUGs77ZHcOcEBCjdmyEukEd/AxZydHJc+qAVU6n0e5CcDuzMgC2CBlQ9XrMBpyh6POBeXytwtNjY857NNr7/mL7N0xseTZB3jIkXnz7IljYzUPQMjQzGw1y+wtQQqpaClmaKQsyjDkJ5il3k0KjbYasi/66eQY0Dk+8WOTDMN/MY0KekSxFLEizbQVZtdwDQJt/Kl+QSk6n3/mlrkkmV4hLQy5LzQltwOVy1JQ5ixxytvK1uDKuG0zhw5ZE8v+friuovZt9qB+8k3p5eucvKH/MC3FoXajBftbimI5UdJXxsHBSzn2pbZCqidYV31/D0t4NEPqavX4egdJudfmh6vKJn8RSBxwEHVEODDUQ9JJK9QTEUTw3Fyl6WxOgyebtsfHDQVnbWoeI3+c7nFHeIpmJrBjPIP2/zlANp34YR2RzMGuCOuIb6BwgLOXUjdHb+L9pXav9Hklc9cVm7dtGrV5y9V6Z0E/AGjOWbQdl1KxgL3RfuzwF6su4SKADheb6XJoK3EvLfXWMvapyAo+1pbEiOfS1FLMkZf3xJC1hsK8moTUnMx5V/T6Pw+LuqHcm0zywRFltGSdkqeLCrbWCpvBE60v/KTdtbdanHmYsQ5oQiOlNQk+uixVYtF6Jab+ZBpOG0G4322hmKWBUdIwAvFvkFVxiE8WjYmenRZnI11FtgUlwbPQKufS/Kk2Sl2t7o1HwDlX4czqc7WjDpJ5OhtRlWo7IRpNsw4l5u8dDUwmyYmSp8J2RFOEs+ucd/eEA8N7w8Uj71OY4IdXaNDNMxr9Nu90ShzU7vCcXyLpKs6pvvrMLkGloTDI/NHrPZCMUx1+qluTZla4QREhq++LZWLfk5RJiFani7Y4wVAz2gURSVAym0Ub9wO+TAJd7WjF1ZqQYQYiYKHGvT9T0F
+ yipLtO59
+ UhGUdKfcr7tLPOikvvk+obf2R4QPjwqmGoyAO6GwTQ4W/dOsb3rX16KyNd5aDBGAeEdsNYlorUnl/pTUsRDhD8LnqbJKYX6zX/jVY5NR4SPvuUvasSsoIsspRExlUfTmM8j5D3JKHbaaAM1hRnnQYa/pmtIZEH/y1l6FoH8e63zvQJefMrvew6g7bnNl25Z+HV2ZiPiJrzL98B29yRwJ74NiJ6qYrD8YEJ6Immb/ZtRb6kF/LHOJ9xpP/K+BYDod02aR1uyzD+1xgz4KSvvNTeR0YzcMAUx2bTd6S0w8vy2opHBRzV33t5nK/Alc2DyDWRtN8TYu5sIup0rVhuEqgl9eV5ZZnmTfUQQKK3AVCLX5VV5n7O9HIVDo/hyXetvAKSACxiYFJr1v+GZY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,30 +137,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/07 15:28), zhangdongdong wrote:
-> Hi,Sergey
-> 
-> Yes, we have tried high priority workqueues. In fact, our current
-> implementation already uses a dedicated workqueue created with
-> WQ_HIGHPRI and marked as UNBOUND, which handles the read/decompression
-> path for swap-in.
-> 
-> Below is a simplified snippet of the queue we are currently using:
-> 
-> zgroup_read_wq = alloc_workqueue("zgroup_read",
-> 				 WQ_HIGHPRI | WQ_UNBOUND, 0);
-> 
-> static int zgroup_submit_zio_async(struct zgroup_io *zio,
-> 				   struct zram_group *zgroup)
-> {
-> 	struct zgroup_req req = {
-> 		.zio = zio,
-> 	};
-> 
+Hi,
 
-zgroup... That certainly looks like a lot of downstream code ;)
+On Wed, Jan 07, 2026 at 09:57:34AM +0530, Ritesh Harjani wrote:
+> Mike Rapoport <rppt@kernel.org> writes:
+> 
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> >
+> > Move calculations of zone limits to a dedicated arch_zone_limits_init()
+> > function.
+> >
+> > Later MM core will use this function as an architecture specific callback
+> > during nodes and zones initialization and thus there won't be a need to
+> > call free_area_init() from every architecture.
+> >
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  arch/powerpc/mm/mem.c | 22 ++++++++++++----------
+> >  1 file changed, 12 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> > index 3ddbfdbfa941..32c496bfab4f 100644
+> > --- a/arch/powerpc/mm/mem.c
+> > +++ b/arch/powerpc/mm/mem.c
+> > @@ -221,13 +221,23 @@ static int __init mark_nonram_nosave(void)
+> >   * anyway) will take a first dip into ZONE_NORMAL and get otherwise served by
+> >   * ZONE_DMA.
+> >   */
+> > -static unsigned long max_zone_pfns[MAX_NR_ZONES];
+> > +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+> > +{
+> > +#ifdef CONFIG_ZONE_DMA
+> > +	max_zone_pfns[ZONE_DMA]	= min(zone_dma_limit, max_low_pfn - 1) + 1;
+> 
+> Hi Mike, 
+> 
+> This doesn't look correct. Isn't the zone_dma_limit value in bytes actually?
+> Shouldn't it be -
+> 
+>      max_zone_pfns[ZONE_DMA] = min((zone_dma_limit >> PAGE_SHIFT) + 1, max_low_pfn);
 
-Do you use any strategies for writeback?  Compressed writeback
-is supposed to be used for apps for which latency is not critical
-or sensitive, because of on-demand decompression costs.
+You are right, I'll update it for v3. 
+ 
+> -ritesh
+
+-- 
+Sincerely yours,
+Mike.
 
