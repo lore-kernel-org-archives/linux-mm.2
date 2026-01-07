@@ -4,179 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA0DBCD585A
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 11:43:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3894BCE9D48
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 11:57:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1348D6B0099; Wed,  7 Jan 2026 06:43:23 -0500 (EST)
+	id 7E3F76B0005; Wed,  7 Jan 2026 06:57:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 113FF6B009D; Wed,  7 Jan 2026 06:43:23 -0500 (EST)
+	id 791916B0088; Wed,  7 Jan 2026 06:57:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 015B36B00A0; Wed,  7 Jan 2026 06:43:22 -0500 (EST)
+	id 693CD6B0092; Wed,  7 Jan 2026 06:57:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E307E6B0099
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 06:43:22 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 56B2F6B0005
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 06:57:06 -0500 (EST)
 Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 959841A02E6
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 11:43:22 +0000 (UTC)
-X-FDA: 84304982244.24.716C589
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 16C7D160002
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 11:43:19 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=slLWsE6I;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+fH55pNq;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=slLWsE6I;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+fH55pNq;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14A801402F9
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 11:57:06 +0000 (UTC)
+X-FDA: 84305016852.24.9DAEF10
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5065414000D
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 11:57:04 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LeOVqk9+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of horms@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=horms@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767787024; a=rsa-sha256;
+	cv=none;
+	b=qUrj7tttvGM8yRsrRV9DgBcp9tcrsyNaYyeVZRr0xGnC1wVQn4MsUIw8YwZWTttzJ0Xou8
+	bWQv6pAWQj0nfI5k64l/Du5euh0jBKsZ68HmwfMBbENY7Iq4e+12SYNhKihG2s2iwXhlf2
+	RuFvBQ/dwxbhLtGoov+ZTvNeJRZujAg=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LeOVqk9+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of horms@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=horms@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767786200;
+	s=arc-20220608; t=1767787024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HP5iOFWigyyHdMk0fMVZgSA96wcLk4dUN4Yd9D7Dqac=;
-	b=1pBNW1VuvipWnxj+1qdDwZDiwAFgQAdQHvEzzuAfcAH39Au4S4oha/XjcxBNkFG9aTqqzJ
-	ct8df/MXPraIpYp5KinxMZRHnC02wEb7LIKpY+NEJ1rLQU7pXA+wSJ6ZvQuJ6sdiccs5vU
-	nltwDPpH9sH++Qs/rp8/mZ2nEykpDFc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=slLWsE6I;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+fH55pNq;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=slLWsE6I;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+fH55pNq;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767786200; a=rsa-sha256;
-	cv=none;
-	b=p1OluKOnytq8hRBQodTb0unoRG25g4R+yS3Ls5rMYOjKOYWQRzUNjLMdQlVPTEjKZhoBTC
-	TUlW32d6GTRuD4wqk0GwKY657WxMS0sFCUX2CRB6km5+8C3jhCGE2/JGfFF7n9ucITtF3T
-	83g4xBO9aCzySallXbytGW7Lp0+Rt2s=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 483715BE2D;
-	Wed,  7 Jan 2026 11:43:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767786198; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HP5iOFWigyyHdMk0fMVZgSA96wcLk4dUN4Yd9D7Dqac=;
-	b=slLWsE6IA4HrnC/+3AnDwSnNIC/SYT01MYQIHrNUvto4luJirwJuq9dJvdkjm0VTI799bq
-	t9iCPDYY7yLS3tpR24yJp67pJPVW9+Q+OGVuRnC15fsgJhihtFHlaUXPg5wKH0jmkIvZqq
-	GC8GF2kNjuvZ2rOKunBA61AlwoSDI9Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767786198;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HP5iOFWigyyHdMk0fMVZgSA96wcLk4dUN4Yd9D7Dqac=;
-	b=+fH55pNqLCtoXaA6LScKkANSV+qeZmJwHtoiylnmFutu8Syi1ilJnJMye5IF2mrWx+3vta
-	wT2LwOcMZs82I2DQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767786198; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HP5iOFWigyyHdMk0fMVZgSA96wcLk4dUN4Yd9D7Dqac=;
-	b=slLWsE6IA4HrnC/+3AnDwSnNIC/SYT01MYQIHrNUvto4luJirwJuq9dJvdkjm0VTI799bq
-	t9iCPDYY7yLS3tpR24yJp67pJPVW9+Q+OGVuRnC15fsgJhihtFHlaUXPg5wKH0jmkIvZqq
-	GC8GF2kNjuvZ2rOKunBA61AlwoSDI9Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767786198;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HP5iOFWigyyHdMk0fMVZgSA96wcLk4dUN4Yd9D7Dqac=;
-	b=+fH55pNqLCtoXaA6LScKkANSV+qeZmJwHtoiylnmFutu8Syi1ilJnJMye5IF2mrWx+3vta
-	wT2LwOcMZs82I2DQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 175853EA63;
-	Wed,  7 Jan 2026 11:43:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id e+dgBdZGXmlpIQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 07 Jan 2026 11:43:18 +0000
-Message-ID: <1372138e-5837-4634-81de-447a1ef0a5ad@suse.cz>
-Date: Wed, 7 Jan 2026 12:43:17 +0100
+	bh=ZIosEDTrE19jWddqbqxbORSLTyIFfzCItUOnBwUdn0Y=;
+	b=I16krAwN8mZu7ZG9x8hyvUc34V2Tm30xg2/2H9JnmO6ETjvFDs8SVpiK7MAsYXI0JS1QBy
+	fj9WMYS7hHbJBTILAbwvKjVCYdNtjsWKU3V2gA5Ojfo51acb7r3eQKPWSvFCT6njTe+iBa
+	LihYUM3RxJBnbiBrVREIxUFTeivmbt8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3D8D543883;
+	Wed,  7 Jan 2026 11:57:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7530C2BC86;
+	Wed,  7 Jan 2026 11:56:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767787023;
+	bh=mNpHcF+MwpeYkX9EkT3dgyo2t+tch8FndQ1ofJbAPRQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LeOVqk9+TU5kCP+FDRa6whXFCQVaVEbDllyqM6h//SAX5uiVAXQ8VG7Am0rvJsC1H
+	 GqoHmEPSiac74Rt53FFrHdVYKM4/rFVqh30AdgVeV6vLWbAjvELEI1HTUOnJqZhRcl
+	 WUKTPSBfeNtl/h9hRKM1nu0OKjKz29OOH9dTct1GoghBZrfukj/3dyGolifM9h+2bh
+	 wbVLW2c8CGbXntqacDOCLSp8UU61M7HCX59PbmrBJjXYcCtF5Cx56s4+CUuypQTiMs
+	 aUdEwgtI6C7dlhy4lPby3E841CBfyCwkeyWL2UmPv7fe8h0pBCK+OfBWitaUqoPHxs
+	 uX/nyikfJSLNw==
+Date: Wed, 7 Jan 2026 11:56:53 +0000
+From: Simon Horman <horms@kernel.org>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 13/33] sched/isolation: Convert housekeeping cpumasks to
+ rcu pointers
+Message-ID: <20260107115653.GA196631@kernel.org>
+References: <20260101221359.22298-1-frederic@kernel.org>
+ <20260101221359.22298-14-frederic@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 1/8] mm/slab: use unsigned long for orig_size to ensure
- proper metadata align
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org
-Cc: andreyknvl@gmail.com, cl@gentwo.org, dvyukov@google.com,
- glider@google.com, hannes@cmpxchg.org, linux-mm@kvack.org,
- mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com,
- roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev,
- surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com,
- tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, hao.li@linux.dev,
- stable@vger.kernel.org
-References: <20260105080230.13171-1-harry.yoo@oracle.com>
- <20260105080230.13171-2-harry.yoo@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260105080230.13171-2-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260101221359.22298-14-frederic@kernel.org>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5065414000D
+X-Stat-Signature: ohjpgd5cy4g8sz57kyhq5bifjhd17spc
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 16C7D160002
-X-Stat-Signature: ogrocxx18ncr65h7hnjeoyuatcrj7bfd
-X-HE-Tag: 1767786199-602428
-X-HE-Meta: U2FsdGVkX1/FQlQOzh/droYlL85wbKsfLtDj9KkiJpTzZOqxo39SYzIHZHQRG6UA+YY2J3zRZ7o/7EIhF6vtZXfBAuch3KLHt5MxIYBhufTdt7MvqolNUmsfuW6oPkXyBJxawqr0jTG1y9as0BuVTHhY+apzbZlTKYRF4yO3/KSeLWIVodCzhSICtEd4P13ARerjKYiTdWnPj/aJzT8NNsysATuJKv3Yj+wqLLygl7evNf95XjzNMjFqa5GmMcVCBV9ZTzOELQVUHmuKZI3+5YbLCkDJGSDh9iW9XYRPsRlZtRPRAYqt81N1uJEIrHWgihYxDEbYORDTnZYt7BYpukiu1NE8IhTO07xds+4PcT6oYqvTyPuaJFP1z+tqH0w+Lrj2FmHMwLQ3TcED2UE5i7R5dN07Rc0qugljTQVOUB+99YwKt8MtB8w0YB+88fiCHkFXPEYNsoCwjGeY/MFID+jJe8MQ9hnwxSo3aUL7jG8xJG5mSYfuCpk0HaPcR5xYDsQtSs4y0F7F4Ui4DLvMbmlGSXlgrVS5qxQcQdOEdTgEkav9cDOfsHRec4IuaLAKRCR9OdWzeC0GmzdrtfWH0s/NxP2ASeGxJRLoyEqRBaxwkO/UQ+YF6mjEJB7WiIzgnES0OtmhBncyYQRjabGqrAeEAgX3kf5BwS4Ve3UUby+k7O1CE71mNcr0dHE8ITq8fW2aLbHJH6gS8KYhZl076PE1EXMkRMLUJfqpk1/Y6ZaknF/t0ByOXR55VwOE2BdgF0wgsuIH6npkpkMVM+fHTewTopnFEjZ0x2J+70BuztSl/X7b8RKS+m3aIwQ1hO1CLJXTi80EfJCbNlR2crOkGWz7pWgOxZnVccaT7I3crpviaFD5OrFSQ5l9jY2aLk3iynBs7Ppu1uwUg94U22VHZa4NYcTQUIr228WHeUWapTUhfyoC0FtBQ+YyxWmj5TIkq+1Ho9hDfrKT1Ik3daZ
- E++KQM8c
- ZHJJ6YdbqfeuWU+si3QE2HdARcrk3UiDaRsiYR4AEdPb0o8Mu9Hw+zFPUqJ5njxUCvOT4qAaZEgBwd2d+a0kxNXtdw9emY4A5Tkqc1SfHYO6UAOLQGYDdktmjW4gbDBUkzBW97aUJCZZAJxs6Udl55v+bl70wUrWRAgq2S/5ln5Msu0CNVtmXoxGJAqh0WWmgkYb+RdGlq/8iOCJ6wWmucpBkKtqPIODmPZaJJgK1JmCxLR0j1d+kCR989GTD7It4j5FCdzx7Ve4HixON43ZKuuO4sfcgC5QkZthqWQY5C0crZFavZZogp88vYBS19D8YFSCs2KUbo5DnhZpBq7dW9KUyKVMBHW5W1araiFDciZltkIZ8TZt4JbwOgoVGIMJTTp/w8e+bl9s5yvFFd/iYQzUukspMrqDOl0yOG3aemjU02Ejete0HWNPUXRdsemkaRQrR/ACnaM9fVH6sMB6h8qyz37M0EgyVTUFB
+X-HE-Tag: 1767787024-691976
+X-HE-Meta: U2FsdGVkX18T0M6gspTmEGRnIJ56sB1wyKZ+FiYDP/Ii99xJBz7siAJKLvYIF6UGmGshC4YPbUiL3D3foT+AkO94Q9h816Xc5QR1tkyCEiEtXP780Zsos7lcT3skbmCtbOIwAv+y9Uc4s66Ye6n5ON6HLcjlervmb3xjMpbZFXfKQ3IYMld3GRsF2YdSpCtVzMtjFRbWaAtYRPgXWeD1tLWwNoABuwsRoqxabtVbiOkxInBlNtGpJHQI65aWmdampcEL9WJ1WHY5AQLs3s3r3q3zelEAk2nfLMJDqrw6K0BGuW7Ufc8PsoK4REG7+rfsQ1LCGdrEQ/dj0N5BEneKv0LzgaZdQODQWHgozPA5ss9UwITfck+0OPWVgYK9pMVrIhg9tJD80J0kcgdrCjUHAgC34iwtmEKVjkH1qv7FoU9VfGQ3IRc0w1vUULUGmurouAzEzGGOdvRbpvLi+SMwYYeS+td0mG+VYHtdh0mTueeOclIPA/8pncYTFAJa57nlf44e3FWYsdgNIjorv4FUUZ3gJ11grcHM5jZryeSTXhPSVtYVOg9MY3Yz8k4p0iwLCQpr7g9UnaMu9/mwrsXkLDVr/Z8nD/Rn35IYAkACGZgaBZpZS1wAHI0lRjBg6ADFeXbHSnbU1aODpSIrk5fe7gFZzLpgFRKW69NYc5kig1gsKZncavM8X3ZgL9aQrjPXn3iywVcUW1w+JO5Qhlvms8NhWpXWM/gaiAkx0dHX8pGmz6SHTGIp3hb0DEH7rmJhHKOgHN0c/IT/Y3C5uJ3zAgkyMa6x0kULLToidgjauqnFMwCFK06CRli5U177XIxKDFlDd7k6D1RTiNnjxwiz2RWOJRFamvS92zRa+ZJxne05zwyr4Rl9KYNTtAME7WjcTvydMLhJuyIl4+c+XAiC64uGTzSsNrZ/4vFFzEG3Cieyxzsm+PiC9eqWsFqIhtlOtBTQkFmXFLalM04mCEU
+ /nwQhi07
+ 9BuXOQEo7CQcgMppKJNFfZ0fCM2+rFA5ROE0f+WOUhI4u5E3mZPGMgR6PYXW7nY2KO3y+6wij+R4JTwnMpGMUhBWeETpUVUFKbTuP6fo4C7kaDbh5EhCP9lLKfySeu34JN2vHdTlOeMdivhmOoGx7pJ1apBEXxY5yUKSpWxNRIY2g9xKgR/7ITu5imopQYLUanxigf+2bjfdzCH4rTumRL9e1Uuux9vjlWWKGxHrOUgFlzj7/aBQHs6Y15zS8MEX2BYGqeZvLG3oJ6D1ZK7htQI/gpQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,40 +118,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/5/26 09:02, Harry Yoo wrote:
-> When both KASAN and SLAB_STORE_USER are enabled, accesses to
-> struct kasan_alloc_meta fields can be misaligned on 64-bit architectures.
-> This occurs because orig_size is currently defined as unsigned int,
-> which only guarantees 4-byte alignment. When struct kasan_alloc_meta is
-> placed after orig_size, it may end up at a 4-byte boundary rather than
-> the required 8-byte boundary on 64-bit systems.
-
-Oops.
-
-> Note that 64-bit architectures without HAVE_EFFICIENT_UNALIGNED_ACCESS
-> are assumed to require 64-bit accesses to be 64-bit aligned.
-> See HAVE_64BIT_ALIGNED_ACCESS and commit adab66b71abf ("Revert:
-> "ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"") for more details.
+On Thu, Jan 01, 2026 at 11:13:38PM +0100, Frederic Weisbecker wrote:
+> HK_TYPE_DOMAIN's cpumask will soon be made modifiable by cpuset.
+> A synchronization mechanism is then needed to synchronize the updates
+> with the housekeeping cpumask readers.
 > 
-> Change orig_size from unsigned int to unsigned long to ensure proper
-> alignment for any subsequent metadata. This should not waste additional
-> memory because kmalloc objects are already aligned to at least
-> ARCH_KMALLOC_MINALIGN.
+> Turn the housekeeping cpumasks into RCU pointers. Once a housekeeping
+> cpumask will be modified, the update side will wait for an RCU grace
+> period and propagate the change to interested subsystem when deemed
+> necessary.
+> 
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> ---
+>  kernel/sched/isolation.c | 58 +++++++++++++++++++++++++---------------
+>  kernel/sched/sched.h     |  1 +
+>  2 files changed, 37 insertions(+), 22 deletions(-)
+> 
+> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+> index 11a623fa6320..83be49ec2b06 100644
+> --- a/kernel/sched/isolation.c
+> +++ b/kernel/sched/isolation.c
+> @@ -21,7 +21,7 @@ DEFINE_STATIC_KEY_FALSE(housekeeping_overridden);
+>  EXPORT_SYMBOL_GPL(housekeeping_overridden);
+>  
+>  struct housekeeping {
+> -	cpumask_var_t cpumasks[HK_TYPE_MAX];
+> +	struct cpumask __rcu *cpumasks[HK_TYPE_MAX];
+>  	unsigned long flags;
+>  };
+>  
+> @@ -33,17 +33,28 @@ bool housekeeping_enabled(enum hk_type type)
+>  }
+>  EXPORT_SYMBOL_GPL(housekeeping_enabled);
+>  
+> +const struct cpumask *housekeeping_cpumask(enum hk_type type)
+> +{
+> +	if (static_branch_unlikely(&housekeeping_overridden)) {
+> +		if (housekeeping.flags & BIT(type)) {
+> +			return rcu_dereference_check(housekeeping.cpumasks[type], 1);
+> +		}
+> +	}
+> +	return cpu_possible_mask;
+> +}
+> +EXPORT_SYMBOL_GPL(housekeeping_cpumask);
+> +
 
-I'll add:
+Hi Frederic,
 
-Closes: https://lore.kernel.org/all/aPrLF0OUK651M4dk@hyeyoo/
+I think this patch should also update the access to housekeeping.cpumasks
+in housekeeping_setup(), on line 200, to use housekeeping_cpumask().
 
-since that's useful context and discussion.
+As is, sparse flags __rcu a annotation miss match there.
 
-> Suggested-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 6edf2576a6cc ("mm/slub: enable debugging memory wasting of kmalloc")
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+  kernel/sched/isolation.c:200:80: warning: incorrect type in argument 3 (different address spaces)
+  kernel/sched/isolation.c:200:80:    expected struct cpumask const *srcp3
+  kernel/sched/isolation.c:200:80:    got struct cpumask [noderef] __rcu *
 
-As the problem was introduced in 6.1, doesn't seem urgent to push as 6.19 rc
-fix, so keeping it as part of the series (where it's a necessary
-prerequisity per the Closes: link above) and stable backporting later seems
-indeed sufficient. Thanks.
-
+...
 
