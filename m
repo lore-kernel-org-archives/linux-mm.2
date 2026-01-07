@@ -4,76 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC984CF6BE4
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 05:43:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09F40CF6BE4
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 05:43:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 585CE6B0005; Wed,  7 Jan 2026 00:43:11 -0500 (EST)
+	id 73F8F6B0093; Wed,  7 Jan 2026 00:43:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55CE36B0096; Wed,  7 Jan 2026 00:43:11 -0500 (EST)
+	id 716056B0095; Wed,  7 Jan 2026 00:43:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 493556B0098; Wed,  7 Jan 2026 00:43:11 -0500 (EST)
+	id 615536B0096; Wed,  7 Jan 2026 00:43:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 34D2D6B0005
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 00:43:11 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DB5AA87BF1
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:43:10 +0000 (UTC)
-X-FDA: 84304074540.30.387B60D
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 936341C0011
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:43:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=Kw+G0TDb;
-	spf=pass (imf18.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767764589; a=rsa-sha256;
-	cv=none;
-	b=dJKDdHj/EuQncjs+ftm+Q5QaMWBazJwEmn/M4hU7TNekiozcVkTK/IH4OKg3b6FvfoBHZx
-	WCJb1hKCwYRHExuMlG8Mx31S/lTXq4etCfGwwwxyBop5Wd9MSd1K+AZ8HxSh5GFZDKxEkp
-	hP2PTJbaekHvQlC5PLGjq/PCrrRxCSU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=Kw+G0TDb;
-	spf=pass (imf18.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CC7A6B0093
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 00:43:52 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EADB91A71A
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:43:51 +0000 (UTC)
+X-FDA: 84304076262.17.ABA6525
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0A1C440003
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:43:49 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="iwhssG/Q";
+	spf=pass (imf07.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767764589;
+	s=arc-20220608; t=1767764630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iitbgM450gN2Z/tpWVzbqWUN/OZbgIFpKN7OaANwQPc=;
-	b=TQGbgJt41ZILt572jGMSwo5Ofm97nk02eU5pP6q8t4sQNS67Q5R73yLcJnEjk/b8BAoZBL
-	jSFsQ6jv9dT1tf+o15PqB5fzOVt43DH/ZNjZhpWXpgCIaDG6dRzRaI2SURGZKqNvEPaxpn
-	TKg4XVeD6QPaRPlAxqXaEjkHpXf9q7Y=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=iitbgM450gN2Z/tpWVzbqWUN/OZbgIFpKN7OaANwQPc=; 
-	b=Kw+G0TDb9MizjeijBu17cyEUZmBMLGJ5eJDX8C1FvTXcnXBZleoqwZ5FGGWaplpDy1QZdeiaMBU
-	Upa7Mp8TEAEWn3FCGauqurv1HXW0L6zXFJb3gCMtlUTRtJM+KZIxSioHyVQvRUlb+kpyx7Oq8YJ4F
-	+EE5yMomnnXEDuYgspieDgKk3JKw0FfFcQVZLluYZgvlv1G4faJGf4GAqkMziCO2cEOKyBwYKpf8x
-	nDakF0wFnCainV2v8qnD7YY9t/lZYdFXOU3JBG4VpGZBVDTIQowHPktq/7O1lJATUow87xjzLhwOO
-	tf0n+0PEMZBwR0gQoBBPNuaQPpGubH7i2gkg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1vdMJj-00EqNT-1f;
-	Wed, 07 Jan 2026 13:42:48 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 07 Jan 2026 13:42:47 +0800
-Date: Wed, 7 Jan 2026 13:42:47 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
+	bh=Jm+UnvkV4Nkj86IV5YhkNGl+AQ7yBruyZpFq7iSiOQI=;
+	b=Yt2j818C+DNXwJ20RoXaiSm3N5PxL+ZpLkmOeDVoBjWvaXTHDfaFExerFrzFjvhYQU0glC
+	5C8cubGxgyZwt7AiwAQgow9V2REwocmFmiKdpjutfO5Mhjou9n+ZvfmGa+RJ7XbVp/OMqz
+	i0rw5EwmB3/RC5LaqYntemKOXzHphzw=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="iwhssG/Q";
+	spf=pass (imf07.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767764630; a=rsa-sha256;
+	cv=none;
+	b=1y5fikUyKHzSj6g9MnX4V2ULDQoo87ia4EjQDqlySEkYdoN3UeGR4JTD3HDINpfEcf09O1
+	vBBHHsjAkViWK29xk+o5K8+Uu9bF7eUlG03LZp2Y0oX9qk2+X/Kjqq67LE1uhFqUf4CYu4
+	cFReSfmPbQZtER3+wQ9/uAQuC72EDXI=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29f1bc40b35so22170435ad.2
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 21:43:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1767764629; x=1768369429; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jm+UnvkV4Nkj86IV5YhkNGl+AQ7yBruyZpFq7iSiOQI=;
+        b=iwhssG/QzOkF/s9QfUqzmIVuiIEZEsYct7HHvqJA5DYBGXQGovAxBQfYsq+/B6Y66B
+         Tt6i8rJV6aZcwBfVsB7MJfkRkENhiRlJHY095TDUrhDc82fsGCqJGko63H59JpgV5qoa
+         A4GX9Hczg+zNhisp5XOkB/tFC3nXtBAqyiPVA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767764629; x=1768369429;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Jm+UnvkV4Nkj86IV5YhkNGl+AQ7yBruyZpFq7iSiOQI=;
+        b=dSQ6W9KeD2Xz7rPxbYDIs5gDSXMjm9jIrB2CbfRJ4Zj0LCqc+5qWSE3gJ4ddtU559/
+         unPhhEWADrHAuo7iBxplxqXIB7ekwW+X9uw1LnJjzg8j4GIj1vPKmQ7MwgR/JqW+/jMp
+         8iGgJRPCHCnwA7ASW+12kgtf6ajq+ZSR9628x0xmQ04xhMddA1pWouVMiTPC6p1vw8M4
+         EqL3oTFPPhttUzG+W0a8HRyJZJFV8U4gsTchw2TS6JQntaieQ5oa4AUsYXWXQ2T/xOKE
+         T1Z0DChrMOyezXVibFh4vqaBjv/+HIDBXqKGSLdoAmK5AdI7VfTeDdovz+B7TztPlkiu
+         xL8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW68q87wfVfouMrGRt2BUR8O6DNIPxnStOQ+wKG2I9vAYcdzcUxgLejWP0IiSKNEsRjtwiKnRZ9og==@kvack.org
+X-Gm-Message-State: AOJu0YzQrUZfMYZkeO+7P20C5UNeshpLGe0yP3BtB8wCAr0aWwFw0g9Z
+	y2uC8d1b0uBn8RzDIV8ICDvFdsuXJZ+n7FkW3y3Eh/IbfsQMicymjIElvZNY3f7WmQ==
+X-Gm-Gg: AY/fxX7FuOzLqmIeW+R+muFPd3m/rSsTvkk8TRPNXDBZf1+QW0yCdZwpoO/oU3E3Fep
+	drRu2YVS7O5i/PyfQdk7X+tr1a/AGvEyyPx5SGsuLpO7mqUvW8PeZ0twhtAqDJbnkLkNdSV3y5U
+	MjM1Uxb5ASL1opL38UXw6F7g9r89eTssAgBQQTCcvelvEyaUocXWHhKvTry4gtgVRyXfjLJ8sdh
+	hB5IlFOirg54PHAjJJ6n7J+3eSSPrcKm5g8A2FQZOFAOmmJ5uAoy8kKPd2XVMIngPq7scl6hDvc
+	N6xJEQufQdYogRezTxZxMhyhF1NVAQaN8XkXgjmtQSa+yLejepOpPitcnBvO4viKtubpzhTO5HK
+	LNq8N9lymesCE0/gKr64ROzEwWQ8ixvHirPE8f7Rj2FfB88Ydj+WkbyekJ0sJi8hLkUVWYABNRc
+	pjJHwANWcZnonQfZab3S1Jz3IraJdl1ueWLbZgzqO9XhL4qgjZ/GPdKUO/Wie/qg==
+X-Google-Smtp-Source: AGHT+IFnhox+Pcm3BMZQmXBaYY5NIAJTxQ6sCrTZWaJcpq3tK6BSanAvCjFTf+57c7fZWXuiyRA7lQ==
+X-Received: by 2002:a17:903:4b4f:b0:295:3d5d:fe37 with SMTP id d9443c01a7336-2a3ee49a383mr13924225ad.41.1767764628955;
+        Tue, 06 Jan 2026 21:43:48 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:9f6a:2617:8891:93ff])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cb2e01sm37203925ad.46.2026.01.06.21.43.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 21:43:48 -0800 (PST)
+Date: Wed, 7 Jan 2026 14:43:42 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org,
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org
 Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
  consider other metrics
-Message-ID: <aV3yVyoz508hmdEY@gondor.apana.org.au>
+Message-ID: <53zplsrqc66z4ea64cosy53zvttuuhgxr2ik7uw6i2zgluegyz@d3ulgntwnyw4>
 References: <20260101013814.2312147-3-senozhatsky@chromium.org>
  <ddfs43qldaws5urlnpah3ibp5xeu7st37p5hgdfajvdtwor4sd@fkcm3brinygo>
  <gg5zdpzrk47tljbnaudcy2gnsodyhmmar23qb57b67bhx6ntje@eq2fcrl2dk4z>
@@ -88,14 +112,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <9b7d6e6292c64f21b8d09def1b6723f02faffe88@linux.dev>
+X-Stat-Signature: wbcupsc49dya6m15cquqqhobk9396p5a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 936341C0011
-X-Rspamd-Server: rspam04
-X-Stat-Signature: daxcprdgxgsfqyzcikquoezqef4awin4
-X-HE-Tag: 1767764588-5762
-X-HE-Meta: U2FsdGVkX1/f94t6nNHJjEp8pC5X7BBl5x91JONBGuPBTchqcF7LLOtHYjYA6M9gDQeJ5adMDxe3yyunu05FgpVbefbQr7FOassID6p2fF4WsTsPrmBPXDvyQzu3ENggYIADUsZXrzGMjnussEXMVlPMMQavcN37pJL0G9S7Cxun8L9VIEsqGZEzZYqA81Z7NDjN/o+ubBHy3nAOPEWMJkOqUvo0CeeIxG7x6Io7+HIBz/slH7ttPGZn0psaBhqSgX60kH+uZOyTcwmhjWc57A5uIu70RfvxM4rL1en+0w56HdMqf1sehzXKa3jzeIufiDaM3UDr7adlCSROXMESv8D8czu5j1mBoaWHdgmp1DLs5ByXJhzNA5e5c46S11LrFwjEgh9xbfkcremy1vtJoYb/MmnWSv/DGu58d213pVyVuKhm2t9JWzOFvulU8oWERjsaOYp8gSHXM1dN1PyOndcz0GPyA3wrqOkFf2iLiNHXid+5VRwX9POFH6/rCzyUhoXwnSppmrwAAzEbxegF1N3UBqUUBXl/0qVutEsjVa1KvEROV0MbxEhuf5sDu8KpToRu7d8gZuIKprModsDEYAkvCRxPugphzeJ6ETZR+2N3TJOUZo5/JlvYptb5NkMT1R6n2IavqtzFoRUNrJByK0x+PqLdZAIS+KvukwO61JJu1wzenbwZw0FJvuajdbUbqFYPZixWNGMGcCW2km5NWLOaTH5LA0V/ADHtIjmFoFhA3vemXiRgmMHUPjRJnJx+pDrAd4fRHGyTvyJmEIZiGwgZHgGjmzTqwDx5ApBm0C3n9OXjTBjor+qh50FNym4++fdYVB0NYx4NkBtaA36GflaeDk52vY1XLM+pfGry5xrNFGFDFzlsRnBrx9dov7t6Rqblu1q+NEwpGxfAYD8/HQQKQWHohVFI+fcC4D6nhbv+QwEBX2K9b0is5Q+HbhZqM7TV56PBL1Pmq/UPE1y
- DVoHz2GE
- ssNiMDy8MwMyk6dVF7FicrJVhBd1pbbk6Tm1USbWni11p+CLS/n541p8lyzYs3D6zRjAQK0ygo9FvQBTSXPcmHNMAywWFC4GibeHaNSrCvkvC5g5FEfIGd0rVnKKnmF0kXekQ4SBzhyn5bmBwm8psLwEzFImQpnQSkjysorqE0l1CxhfKMV0ysRnAM3MyZr5h4AUaAMnYjcehTzqF78eetNf2FDett39jkmqoKawO4jImgTbLKSlErRKV3Q5+5qVRfKpWpaQwLYF+4m3gKS375NeE4urEuFNvFWx3
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0A1C440003
+X-HE-Tag: 1767764629-838484
+X-HE-Meta: U2FsdGVkX1+hN8oo3BtW5nsPkZn5U7k4bSPWYlBYdse9b12CnR/Ozz0aHmE4MHkCT79UgdS3LMrUf0qregq9W2tkEbYYyyYB3ESmeVRI65dGuR3IRCkN9Q4/zNzytjyrqChGBvP+CMdyr3WHzkY+IJQyZ14VzEVDGasH0mj9TV0dtDLibFsSZZqf6HUius2Dteuq5uw7Ehqtn4vfhnBETbMU73q80BlhTBuq3iTine9+Pzmxp8qBeII6RTi0iCPCYIJJW0CmElJ40mUTTILXUA9Gk9ya9b3yoREdZj0PXTMYqQG149cgXqK/Tcq9pxk16O097JuREB+DlH1s6HfTKjiSzTbMB2J1yDttfB3fSkyprnOoyilk+jIzmeu81PrG5e5AZdqUu9zqEn/G1D6rAVchWYH3BJcD4TfSWw0AaXO5obUREz4MRhh3vMzT45vN93WOhOPcbj4GeIrFtJNmIQVn7C90lsDCDDpag9O1usahMe17Ra6AO/8ucAhFsgQ9UbPnQIrk47PUvArS0oJvwniNrGVyHD7+UF2W2ntgFAse/uCwhKJGBkKA/eF5tlp4zTCyYuQ/zgVK1Z1kWi3GMpnIaKpE6HtruiOyrH0IuXXCYEoYLphWtegWPzwyq+HEgxGzCGxspnUjDEFI2F8YtIyZv2iZQtF9tIVb4Zkv9NCb9BNNRX6pYcLEKiYEgzI1dSwIBIYCPno2gEBh5ga5FCU7LRdZScjo4xiJuPUJy6TpnJQG28ZcjyTe74+MvxDThGkrhvtWhOuHaz7vI9nOEPhE51yZKUOMaDphrU1ik0DimCyNLSatUcd0otqueT3HWtAfpieZ8oB5aQDGDrlm32WKPguIZsKKwoCixHkDapqeC45FRw8xS6SvTWyWL05Vg7pYUlzQkTuQMjmGTkroKkLX08edzQoQruVzcRhpw05dIQGO60CNkEm9NhNwUBZ51E5OuWED9E6Tx53YK6O
+ CDHAcD8e
+ 33SrmfrhFucqW4lei/fNyzhhb61YDdbWN3RYi6OWbk5jko2anXZ1q9qSinhvnGwv0Ia7Dj/1BV8ELrCoUCUIx+P6nUgqpB+nWh+9ujQrLvtDHgq5wzuQ4f0aE9lNLHc+2XWFr8/29obYzHMl2Bl/6NXe2b30F/e4yEI4fxJLvIoMgcxQpfVTnlC2/0uvL1AMcNg0q4vmxDS3p3z1mfqqubTl0xIq/0M1KhxTW7lqDkBVFlxrgVxRTXsFShktGLxDmEpikPwEyDUzLGRQFbjJ/7ZNKeniyBb3tfYlztJo/CB4t+9HeE5yD7+zUsHrL0kx2r4xQKDFF1kNLixb1EiDyoa6nBTZHPBrV0CJG8WQy+vFoWOQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,23 +128,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 07, 2026 at 05:39:50AM +0000, Yosry Ahmed wrote:
->
-> In this case I think we can just make zsmalloc return an SG list and use it in both zswap and zram. We will fallback to the memcpy() in scomp instead of the memcpy() in zsmalloc, and we'll drop the memcpy() logic in zswap as a bonus.
+On (26/01/07 05:39), Yosry Ahmed wrote:
+> > On Tue, Jan 06, 2026 at 04:24:45PM +0000, Yosry Ahmed wrote:
+[..]
+> > Adding native SG support to LZO simply means removing the memcpy that
+> > scomp would otherwise have to do.
 > 
-> Will this for acomp though?
+> Yeah the effort to add native support to compressors can be done
+> separately. For zswap, I think the most common compressors are
+> actually zstd and LZ4.
 
-Yes it works for acomp too since scomp sits underneath acomp.
- 
-> Yeah the effort to add native support to compressors can be done separately. For zswap, I think the most common compressors are actually zstd and LZ4.
-
-OK once you start using it then I could add the native SG support
-to LZO and it should become a little bit faster (and eliminate the
-need for the scomp bounce page).
-
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+I think it's the same for chromeos: lz4 (primary) and zstd
+(secondary/recompression).  zstd looks very complicated,
+not sure if we really want to diverge its codebase from
+the upstream (meta github repo).
 
