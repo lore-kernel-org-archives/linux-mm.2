@@ -4,94 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8ECBD0D141
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 17:12:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FAF0D0D143
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 17:15:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC7AC6B0088; Wed,  7 Jan 2026 12:12:29 -0500 (EST)
+	id 6E9AF6B0088; Wed,  7 Jan 2026 12:15:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C74EF6B0093; Wed,  7 Jan 2026 12:12:29 -0500 (EST)
+	id 6A0A46B0093; Wed,  7 Jan 2026 12:15:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAB266B0095; Wed,  7 Jan 2026 12:12:29 -0500 (EST)
+	id 5F7376B0095; Wed,  7 Jan 2026 12:15:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A7CCF6B0088
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:12:29 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5F0F913AC04
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:12:29 +0000 (UTC)
-X-FDA: 84305811618.11.1F5CE8A
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 835B220004
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:12:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="X3/ew7Rg";
-	spf=pass (imf13.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F77F6B0088
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:15:39 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D166314044B
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:15:38 +0000 (UTC)
+X-FDA: 84305819556.05.C9E1D1F
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1113940003
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:15:36 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QOSrfjIM;
+	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767805947;
+	s=arc-20220608; t=1767806137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TJdK6eXQyVsQBxNRB9kThBuGis735HeC+Y10QgIj3N4=;
-	b=JsoslbbirTuOtSB+mict7mleoGOI3/Cr4JEdDm1T3Ru+F+wE8fQ6dd/FgVENIp0WBuHxWG
-	9Y5uuJesnsWGsi7gHMIB+WioDtqmKJmmEMRrpU2JzjtVjubTOAELEwz42kX9tqjRccmIM9
-	3ZeqdChKEHgagCEZw4R2AHe37iHl+Vg=
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=NKbve2SwUIpcAyLnGyzvhsAwSQlv2h8Y1ihQLiLxyzoMccWfIRSPOgmw+2b51xQq/cFOee
+	cF8sk5uonpkE7tmnsKNBtOb4hki0aJzOGzL8RxTRzHd9cuFLIOsMBQfpDQdCS8QsxF9Zuu
+	F8rCZgJFkJnbL0NEn/DTfHJJex5ZCNI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="X3/ew7Rg";
-	spf=pass (imf13.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767805947; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QOSrfjIM;
+	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767806137; a=rsa-sha256;
 	cv=none;
-	b=EQb0+aSrbZpw4ElmUvncKKAPi/Uwmqt0p5k2ZkY/jL2fDAE1gLG9kIy23PfAwLyyyjFAix
-	+ttqvsKtPsijgWR4C3SeiGZn96O0N7bM84pHkPLtltp+PVQ9WYbOSgqpgDmHvu3VzPPfaW
-	ZS43+3SPisuxdUhOCuOUB0WzvKhHFcs=
-Date: Wed, 7 Jan 2026 17:12:19 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767805943;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TJdK6eXQyVsQBxNRB9kThBuGis735HeC+Y10QgIj3N4=;
-	b=X3/ew7RgQIQjiwQmXTwXFThbDMFiz8fA9n/fXy1EFGcJVlBLMqeKGVL0HdPGwY3yiKcCub
-	uq8POEx90/kApBMcj4Zbe+qveftINkJ0e1dsyhUu+Bt4+k+PHKXkfiKEqMLX6mrtIoZyka
-	HMXCxIE4IwN3Rz0uTUi/bb+S7mTwG84=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
- consider other metrics
-Message-ID: <llj3jf5evsp7f2wl2hmm6mouqzwzolvdnu4yquhxbgsgaqvsda@ltct5tqpzmyo>
-References: <ddfs43qldaws5urlnpah3ibp5xeu7st37p5hgdfajvdtwor4sd@fkcm3brinygo>
- <gg5zdpzrk47tljbnaudcy2gnsodyhmmar23qb57b67bhx6ntje@eq2fcrl2dk4z>
- <v5veb673xrz6z3tevfdymhuik7nltojrvcqyjih4ds7co4p4hr@5e7ngdkrxo32>
- <5p4iyah6zlrnxpbsis32c4m5lrjj3pq7xwcugq35d2entwfai2@n2r6y3ga2ie5>
- <7q5gqpfshnc3lfhzxughpks3fc2knw2delpm5io2oe54monydl@5isuxnjputjr>
- <aVyYuS_usi-lpHkM@gondor.apana.org.au>
- <dou7g3n5fpynsab7hmxf4bgmqdewtdhkkiriwlghxzyduick7h@bsi3q2kivvbs>
- <aV3uXguDCaVAbY53@gondor.apana.org.au>
- <9b7d6e6292c64f21b8d09def1b6723f02faffe88@linux.dev>
- <53zplsrqc66z4ea64cosy53zvttuuhgxr2ik7uw6i2zgluegyz@d3ulgntwnyw4>
+	b=slw7ROabyr17HvekpflWpmzEXPkfkUesrCGZxp0ifBWlrKbueMIlUbuDNtNP+p7t+X33SN
+	c20I+ltNw0KFH2xWGlqVHAccCwL4LvpXzAEnodlZjT1yDvflhm6zvj2LH+kp8LyicR3WBs
+	0h7lWoyDAfI1z8kFmt6FOdUppfWueao=
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8907f0b447aso19628386d6.0
+        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 09:15:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767806135; x=1768410935; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=QOSrfjIMbCfOtjD4b+patybfkGbHFIELUuTmc6wRyZAFJeJT0Np5N4uqZrgAmP1eFU
+         J6EuWMMNVEhwg2qyBdK6SFB8JwisfYLGmQ6f2GUgBSWe9THD6qZYja9v/w4c2su64Aqn
+         WyVM2EV7wFeYcsg6DVTfp+ppGwNbRu1wHp4h7UXFqJ0zU07ZAI2/z8yDgqhB0bS7WPgg
+         AAGAoLuqDAE7idksP2LIzR70Tjv3IPk3B49u9IK+75zexeRuQShB/N8YSGN9cd69MI00
+         FkMqp1jCWsTPQ+1W+P1YUCDkELr7Ocog0zSd7IGT6ROCJOWIfntUTdDKWg2gyvpYcxXg
+         JuYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767806135; x=1768410935;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=axNwkBTgqw4IuToUIq5ktkuxA3OLCeXB+HwawJJwhx98Hakf4wh2Ha5r0ScrC5QgXT
+         NmTlHwyyoKIWAKj3m09UDgiq+Jn1pPqfnnFEhI4bs+SdYY0M3QnGNg2/TYmI/8lk3F19
+         RK126aYh+kCwfmfR/9CeipY+jXarJ5/DgHTbxsmHknow1QiLkBdwHhYKubiZk8P05/ZN
+         7b1mywKZLO+gyp6PJP3R17ln2z1gATC2NGsUkAE1Sd++jQeTx9OSpSppAxHV1ePABYZ2
+         9wZFKJkgcsevnbDkFm9Kjv4U6MkeNDJ6cidLKrnkY4Wm9qKMgrUrJNm75GphTD6AJ8+0
+         iZzw==
+X-Gm-Message-State: AOJu0Yz0f77vWDEA+Jwf6RRdVWcUIfTh33Bo7w0o7m3HPfUDGquMItmg
+	tfQSkI5+GgVzWxQ0427rTRv0g0AOQObb990GElflLJGT+chVxCtpHX7N+oaGFq5jKn8=
+X-Gm-Gg: AY/fxX4qOTngdV0BasxXWIgBjVgvf5m5rFtdmWA6Rtw0eD66GgGQBQgFKFPh1vtu74g
+	G1pTFYSdEyuykGNxiOHNoxL7NJMHvt2Hhi1RcqInfUpA27paBlQLo0iCKoFcYh6bbdH2q2YTK9t
+	csakfMB/Zq3hpDkut8UfP6f51UDSNHzq6ocr7KCnPzDqavfYjNYZwvAJl43MMOW6qexWaQ3JoRS
+	0mmA0kx5lSq2+xyyTais5OiqYUGMnrBUK2aFOCMNYfeKf3gEDDxKVyrHuJZ3nsGRKPr+QTvGkUv
+	VUTBXYNlwQw4hnh/Qnt9r68QdeAKkFB3FYB0Jf2oAMbqiTptJgTt/vDiZecys8nik3ESzJfvXEN
+	b98/89Ykbkes3THyC87Loam7ffmIr8XtD0VWAuKwRECLTsULRsdRezMFUsp2ZbRyMbxAbmrW8Ku
+	wR2aLiQMHRAFKKANgydZhYicux3UHm5TUot0kdf8lrDcdq7KI=
+X-Google-Smtp-Source: AGHT+IGBcD/eFtEImj7e5KYE8GOV6+e1HKiyKKDtFqn1cFCTIVq/A/5Pxj6UDNDHAc/7Yp4J5A1Nrw==
+X-Received: by 2002:a05:6214:20c4:b0:87c:152c:7b25 with SMTP id 6a1803df08f44-8908417a83emr46946426d6.13.1767806135006;
+        Wed, 07 Jan 2026 09:15:35 -0800 (PST)
+Received: from KASONG-MC4 ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8907726f1f1sm36313046d6.52.2026.01.07.09.15.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jan 2026 09:15:33 -0800 (PST)
+Date: Thu, 8 Jan 2026 01:15:29 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Linux Memory Management List <linux-mm@kvack.org>, 
+	kernel test robot <lkp@intel.com>
+Cc: oe-kbuild@lists.linux.dev, Dan Carpenter <error27@gmail.com>
+Subject: Re: mm/vmscan.c:784 __remove_mapping() error: uninitialized symbol
+ 'ci'.
+Message-ID: <aV6TfFOYng8mYzK6@KASONG-MC4>
+References: <202601010353.E7g5cCo8-lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <53zplsrqc66z4ea64cosy53zvttuuhgxr2ik7uw6i2zgluegyz@d3ulgntwnyw4>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 835B220004
-X-Stat-Signature: ihpfophdhpzhaynktgqqkcwzmwtqahf9
+Content-Disposition: attachment; filename="__Tagbar__.1"
+In-Reply-To: <202601010353.E7g5cCo8-lkp@intel.com>
+X-Stat-Signature: qdywqkk6naknf1b7b7o5a374uw97dot4
 X-Rspam-User: 
-X-HE-Tag: 1767805947-953171
-X-HE-Meta: U2FsdGVkX1+ev1nF2rbJmJ7xyzQQD0BGura0VL+7Mv3v17vCd6DOL0+m9otMyfDQyAmsY8Mv1ax2PsVVVTVxl1z7ytmqr0jFgmCQ9pr03eDsDEKYQBIkEbUJMas1FEeIaQblbGeLOqtY7PqF+/ezp7aBIwihve1PW7wL07ieiET8ANZBIlgDzpf1BMZfIGzjmLInDd6dg0AaJ+NT/HnqqhCQJ5axUJqXzJZFO3z+mzDPoEzrSqYLbBBk8TdoOQjT+FEMfwMr8NOfbPqud1qhhmORYJbjEjZPVvOKFF3FqBmVtZDXGz8D7HgnOOuPW1cNUEJ9HrwcA/YdUxMLLnfv6ugDurnbWj4tYhniQLs34bIB/F04inMHpk0gQ3cjNjgP7OhUVzNBPC39vl1N6jdmXyWTVMhues+mrxQ7m2wFC+zVQ4LdrLx0uYA0/NsXNCr+sQLfk1vV1Ferbc/MHOcpTbfBTvK6s0/nt70xNjyBjsYtYG0RY7hWYWeZpEVeroohcae4BPtEjgv5rn6WtIKZzo3U7fIDMkWHJ7v5t1Af2Ibr/miWJ+62OKpdfX9HoV4POP/xfGgx/xDB4H6u6V+5l4kRpxBM8493s77moHmoEWJsZRsZUWi+lqW8ax/xvAthwFL/OxhyewGOg/0B5crSmDQYZZom+SpX0JVvZkYiXCG8dxMK2RFKqaXhbqAcdrjTc0mAc9ZWbLPdttilgpV7FvWmBSBSdfVjEzdRjyO29z8z5dYegorarlhUW2ISqsasVTgeJQX4Xvp+6ToQK8uCyYwOU40i26rxX5JoH63bUCasZTTvzcRmygJz6//9islcmNyIUM/kLGCHZK00RmG+Ya6KH/ZZW+kAstHk3+3LrtR38iRXWtbTkXqEJTm6KPUhZNROO1SUQ1s5B3dYIB6IVeYTzLRGXPnRpFecf4Z9oOD1IU7/TR1eeeQoCTNB+j81JhYjR27gsJbd9qd8/b8
- OKHX5eN9
- tYuhS64EF8ri441hGx77wUkNhRtrPBmZpSidnWFbFbPuFwXEHnzGPLsrV8A0f98D8V3WrLQL93+Aw/lHDvHl+n6ciHP4jNqfC9oJWa4SuNXZ+sFuqaNzr4xFOtg50p2eKXTK4YBuYONxYWqkTslYjcQGo5E1Gk3tiLaDDVuY7iVIX7Ucl8dPB8g/VnObkUj0nGzX30xuzFkZ80Hk=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1113940003
+X-HE-Tag: 1767806136-59695
+X-HE-Meta: U2FsdGVkX18Kg/eJleio0vHvvBhwA1mrGsLQ3wydV5puS/Z+fPKT7SIXbtv3KjYoc0e3QvRk5SP/voulUvxgm33fMMvA9PPR7x+zi5tW2DxKp3I68NEtEvXh8bSvVaZEKxz8GgykK1j8B8aEmsiyrncspqw3i0HK9Atsv/S0f34Cj2EPSLJIh3gHvUJ0yKhe5Uf94dBfuGAHNGLqgdcNvh/mRn4gtpHoPg5wmd1YmIeg20T8Dxj1rMZ70rZftUUXrdYx1ikg6UOJRjTxV7PqtxsJhmd1iDT6smySXLZuULjl3pI8Zq8r9kQk5nYH1UdDNbHh6d2BDRzPj95v4/0d0WcHW+G2DuhTSlJyJDKazARSV5NbnhzwzjFB7lugvgRDMjB/BwgcHVfHwjSDeKZ2HbaiZmqOagUoQHpH4eF/hW9veaAR3ptYngBHmeAbRVpohIBL6hg9yIqEH1pbVaIY/7uz1QVAs+QJzdwoLdvJUJrtwVugDbPOTgLI/lPKx1PKLtnRN3Zmk2SF3D3vMrwhAwX48Stl+Rl9AzVs75qyICnUwGHZWnR+xxRnwiZvxQucFU49PmLS81wUDL+p+OBoeIGwyO/SK7ne6L6GkYQmmKykTa6JiwkIrVJWX04lDPYfnUjp9o6kkUKIaOPxsbefxgDntUGw0cAK6RwLrOOGBo0qJUBbqN8CXMtcuyMCYVT4tK8XBTRZSRRmbHhYkPWL9ZSCZOddTDTTFVkx6/G6OAoINI1XfrobnPZ1EHFZfOO3pH3Q9MJ1J9bHwMAu+lnk8mm0Sc4wCwAoE2dmVByCnK02K36OwlLDHS59dmw+AoJBfm7h94LbpSasgN3cBjMcY8Bgz/wzauVBn0Oy4CTZi3aoHVP9SiqI0INdZjaREM1c971sNQufRtD6hhu3Km7EcvpdZOXMOUDfBgWPd7aVDuarUEekEXtckZQPIli1lNZrS2EdCl8bAct6WT/bFmj
+ dtgauGCu
+ ocPM4o86IqJ/RlciTOAn1xUF545gaJLnhMTh3pT67lFD80wMDZiaj2ROIy4UsF8AXeCyDfDxnL/P7yRDYKyRhSV0T49fJ0KHG6AsdML6WPABPQ8XPfM/XQioluFFyQjek4b+4ZhJb1C6xzF2HloraHZ7+Vsvv8fGcZlCrIKIQF3mig0Z9dMWO/wShIh9JRqr6Z7ozvOm4q9McdpYG8R6NFh8RQAhSTl6JgAzz3LqbSIhOSq6tyF3oLxK5yuLXYZbucLjFHy7vY7mfae4pPVWPBmsNRn5u38vLhZxNykmawiqtAFvUnsM1Xy4pTDM94zK6O+wAfKrc96z6Ilp7/pSM+2x3bT2V14LpkP5lbhouSuc1NP/tbvY5p+E4pMei6CUDMzlgoyzwbGWjLM69raogCz1uDqlNCcY8NbG0gOGzTj6FfdimeJgZf3k85tYhgQKgSza8XIbNQHkavvrsQEcYXQVhSo8cKHKDIMWuJDpOMnHpb+MjBg8+Ajs+nMYPti50ZpoVfEiAHyIsms4=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000064, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,24 +118,4 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 07, 2026 at 02:43:42PM +0900, Sergey Senozhatsky wrote:
-> On (26/01/07 05:39), Yosry Ahmed wrote:
-> > > On Tue, Jan 06, 2026 at 04:24:45PM +0000, Yosry Ahmed wrote:
-> [..]
-> > > Adding native SG support to LZO simply means removing the memcpy that
-> > > scomp would otherwise have to do.
-> > 
-> > Yeah the effort to add native support to compressors can be done
-> > separately. For zswap, I think the most common compressors are
-> > actually zstd and LZ4.
-> 
-> I think it's the same for chromeos: lz4 (primary) and zstd
-> (secondary/recompression).  zstd looks very complicated,
-> not sure if we really want to diverge its codebase from
-> the upstream (meta github repo).
-
-I think there's value in using SG lists even if we do not have support
-for lz4 or zstd. We'll remove the memcpy() logic in zsmalloc and the
-kmap handling memcpy() in zswap if we just pass SG lists from zsmalloc
-to zswap/zram.
 
