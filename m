@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7587D0D177
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 22:08:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A1B7D0D171
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 22:11:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A6926B0005; Wed,  7 Jan 2026 17:08:41 -0500 (EST)
+	id 096D16B0092; Wed,  7 Jan 2026 17:11:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 355276B0093; Wed,  7 Jan 2026 17:08:41 -0500 (EST)
+	id 0426C6B0093; Wed,  7 Jan 2026 17:11:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22C166B0095; Wed,  7 Jan 2026 17:08:41 -0500 (EST)
+	id E66EE6B0095; Wed,  7 Jan 2026 17:11:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CBC86B0005
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:08:41 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AD0F01B827
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:08:40 +0000 (UTC)
-X-FDA: 84306558000.11.84D6064
+	by kanga.kvack.org (Postfix) with ESMTP id D46B86B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:11:02 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A30731B848
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:11:02 +0000 (UTC)
+X-FDA: 84306563964.25.BF309D3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C9F42A0011
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:08:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tRhx72pB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767823719; a=rsa-sha256;
-	cv=none;
-	b=VbXlEpxaNE1ISNJ2c+uSXp/Maj99H3OC83boW2yfGcD2X9drcZiItQ9E8OUlfg2YM7/mnU
-	32cRqX5zE4zG1xXhba/0zsHLlZeUS/kzMigwCykb7AAaKb1bxtVGq+dMuVBoS0lE6pyuNY
-	Fl7vJaZtN7ybreBe8i0kfrahKawE5ls=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tRhx72pB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id B7D344000B
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:11:00 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r1+tHxq9;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767823719;
+	s=arc-20220608; t=1767823860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Leg1NekVj34gHkDnfNWZo69lYGmnkkGlrerd3elLd1w=;
-	b=2koKbYC1mCW7/WsQyfubnthyh8IaqPcE6lhCP/gR0ZxJQwfQtbCS+7S6UpgW1NyNbXUjsz
-	0lBTB6x0D1BS19+oBTyrPYALXaz93r/gqobsXpyQ5CoOaYeeyrzxHxIq6eUX37EZOa/UJu
-	gsLqGdzwhyiYrzqG5rHRZ9Lazy6+dEQ=
+	bh=Ka1ScSk38mA1fQo+yrbPZPrURX90zxl66ux7yCgNOm8=;
+	b=rjZumOeyiyh6Fsw5X0di9AEyuenFTZtP4hAAnc91+t92udTwAXdiUIqdUsatnenjD5eiZo
+	WMAyeGjPUgXFdheqtduNpad/seufg2PcsOJRMFjerhptSymibT/PE1ff5Cga49dATNhzV8
+	q5wzzdeOKigkVycAa6VclSetQiHTQDo=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r1+tHxq9;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767823860; a=rsa-sha256;
+	cv=none;
+	b=HLkV2j8njo5PYf/wXVRE3beC8kGXTwlb09X+LemcTyvNgaZHT80oZGiYWxMZLXkiibGY3Y
+	3e/rFUyslJVWYbD/I8fLfBQCkqvoGoixy8HvKQqhdZIpZXJjB/olTlhsv2b1WvrKJ516BZ
+	djksteJbiQU+Ml9JYUPfsC2tHMW95Ho=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8994B403D8;
-	Wed,  7 Jan 2026 22:08:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF4CC4CEF1;
-	Wed,  7 Jan 2026 22:08:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C62CE4328A;
+	Wed,  7 Jan 2026 22:10:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF4DC4CEF1;
+	Wed,  7 Jan 2026 22:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767823717;
-	bh=EcHgfTbO7t8VeiVyN3BO6yckGe86xkojloHqHLnPFn0=;
+	s=k20201202; t=1767823859;
+	bh=+vXdLzxmfnTJBI30YS7jqs6X6r/7IlLvDsrcNG7TAL8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tRhx72pBwsDHXcMyUxJK2Z+HZ4xif+ezAPWVZHdUB2P2EiXRZMNhsX7UgckOW3NJR
-	 qkfrP7Gtie3R9wpWE6N78gEWzDCRsmMBlMEPSpDy6l2m5jxeCz/zgcTkK7Sazda6wv
-	 G+chKPR3nFMgYWaixGJ4y8EeJigzRPclEQJXv06L5Ya2HZlthHqrrE0hDHESbChvWs
-	 Xc/4ZPAJqfvO9dzLPKuqVfqlFjiFUlcW+xRFNEF3PnRSLrLfqwHV2ycSZEuRsdYLcR
-	 YJmBB+Xx7vcnESVGzF2OZaLnmrXpMtFWc4doGhEHD5lyGbqdq2Qu4TsnAY7q50W1WI
-	 +eBuwKBGxcdFw==
-Message-ID: <38c0fbaf-cbb1-4f43-9d45-31ca642d1ed6@kernel.org>
-Date: Wed, 7 Jan 2026 23:08:29 +0100
+	b=r1+tHxq9P0qHgFDrAAaRKsjj0Ykezt7Mg+D6Be0PoYSOJ5LOPWtbQsXYg/rJQXswp
+	 d5yE7UZ0N6FTPY2x/7OcvEvYH0TgKo8iE4lKRvB7kvNS95nUD8jix/IEwKfL59zk8n
+	 flevtrQXhT+zBjQFGMifKdJIEnhTJcn2z7Hd8qfh+uzTbEkpWUOnJ7oLdpZcPpxp1M
+	 N4MXxIR1xItoqd269Vr4vuiOfbmOx9x4Vo2nIyJgG1XHd1JZ6Us9m+UJmAMoLNv9zc
+	 pbEjU95rutp/ucZGkCpQ6XoaAajXuZ08i9Gkv2GHAHac9CEeJYR05ikBEDwtXQvyHZ
+	 g7W8oWxA87Crw==
+Message-ID: <2dc62426-f04d-4a40-98a7-e59965abecb8@kernel.org>
+Date: Wed, 7 Jan 2026 23:10:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 3/8] highmem: introduce clear_user_highpages()
+Subject: Re: [PATCH v11 6/8] mm: folio_zero_user: clear pages sequentially
 To: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, x86@kernel.org
 Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
@@ -77,7 +77,7 @@ Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
  raghavendra.kt@amd.com, chleroy@kernel.org, ioworker0@gmail.com,
  lizhe.67@bytedance.com, boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
 References: <20260107072009.1615991-1-ankur.a.arora@oracle.com>
- <20260107072009.1615991-4-ankur.a.arora@oracle.com>
+ <20260107072009.1615991-7-ankur.a.arora@oracle.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260107072009.1615991-4-ankur.a.arora@oracle.com>
+In-Reply-To: <20260107072009.1615991-7-ankur.a.arora@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C9F42A0011
-X-Stat-Signature: wi4foz1rbsikh97z1eui8sgcdpe6yb9j
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B7D344000B
+X-Stat-Signature: iqq5ptw95majxwkwxdbmahbjc7kftub8
 X-Rspam-User: 
-X-HE-Tag: 1767823718-513747
-X-HE-Meta: U2FsdGVkX1/+Ro3aksAkwYfhJMMJrcO1oal98ztEQoi0LNpgOD5RhjCxukbTgVIlOrcn1URpGD7ofsVcZ9pu6a6D7Lt2yCRV/ucf8ycPADF+6q3UoZKs0iafJ18UwWpHU9nUqEv9LtP0okodjO12BYSzoamf9zyxm3ANohGCiA6h85hlp8wW1I2aSYRcYtEHFk397zTESfbjy074BASChiVEItgEKtRpzxsgTucy1Gu2N8oxWWcxeDuuqbjfpWhcslxEldtxeMS9WBzYbGOrUbxP/hQfbnGWfnx3/ut5IYbWTm6e+db6EiiEk//iboantwkYlLwuE6/6dFTFge0gydqC8v37pVF34PVOUwn2PzZl8xFZF7AXP4jAOzIsncjnrKN1xbeZ1jWgi89V/lfWEWzCEPJF/upMVd/cWX4QjRXTcXMPsMC5HIfgQjxermbDc+7kCgu/jvbnwAx+CMFXhVTyIZdXIms8zyOcHzIDsi7skr9YZ8mv81VlqeCTFEbeJT8BS3cx6E/7EuYb91DunnHLhW4QgJA5HTE63MZz60JawR4+4eysYKHXFu+UugdGTrlWiaJsbZtcx8KiADwNi8R7mbov5GA0/88YOCd3EZtKu+hHv5li1ixwI1Js4pT/b5MEdtDSQTYtKtO5mELV7wkWd1ci8lhRh2T45OVAL4Waaa4Cnwc/1H/ZWg8HTPn0JnWuykyhqocsAreTr7cPTp9ErcUvgXliYzRf9MYB/OoXHUxonBiVg2bhXucGyULGE0kd+I+5ORCCpiw9k2p4jVqISTmJXc1SqRK7NRBJwlHD5Ahjys9qesWSn0a1JxC1338fRZSJDvzs2x6xSwMRHeqHp1wv1fZxxznTjMtUTKbfywvSsXOq8hBmtfVgUcwdrAvYfG8AlBiLT8gb69dTI1lgZyO+tg8s0TALVpatYc9KkDqQXtQaXMXqw90oCSsfbwEzWJyQvw/JJHwWtc8
- u4AxynM1
- iZLm9mUGQCgAdMcciI2HVNbSOHazIpbv+HNl6d2PYpnGBtbJkP8+VrWyUrOoVoFdiMAhKXe9uO5rWCBHDKq8LZch6CuQ8rDWnyxDEz9Dye1h2dMZVBdCpSuQfHIscSR//gnF6SSrJGQ7vqP4HMJj41bWvEdBTfzpRDfZZ8rl4FgdaiucW5Tq/6n5NDCbP5cb4xjJw+8TQXwqFO+ypWSRLe1KqiITCxR3zAoAwKgCKPBLWV5E3uZ6yfodewIAyBN5DdE0wv5V4lpqQov1OqJr0STWFUizyhePy9xeCk5qXIZek91aIkGj6mJCEkg==
+X-HE-Tag: 1767823860-282732
+X-HE-Meta: U2FsdGVkX1/V9yTsqjYQ5u7jmyhbJga9hRwH2BFV9LUCDBHfhNZ9lcXjEH5bz4m7HEQepRx2tT3MYGsD8rZ41ylGIKVMNBE+7IiUFsOen1RwmhfU4w2PivDI9BbdxPxKZm2MzxndlGgrhOdRf1u9N8gHsSzf6RFk4xmESjQmHnT7i7dYjqreak3CSnWZkNfFwyGuUNw6hEt7s3eAAGqsxmsIiFB3Z32YpjsNAxl6vefUG37QsxPIgyPHMESn4A6jrQM20uXlsfYzrWWDW4/AiPZeRAMwAN10wX+9nkC6L4akv3XPGeTF5xlovJd65OZXX4Hkylw5CYUP5gdN66CPVkjFzWm+E6PH3pRiMMMpJjNdv58zsFH5Q25lQ0LZgIemNbGkaiofYMNq+grDmaO3l17S2CKCCYcdDDGdV2NvgTkpRuHRhsuHB8bjUxR70PzDf8qHvqamkXYZcvv6nrts6E8PIUdAbsL+U+VL5F7/mR0+A5YzHlvAwSFvEvWYCMHqoKD2m8EPuwx2aEw2rpTsAwa91TjGy2QQCf9MV/rHlvCdSCa5A2hUIkCpkwPTnu0c+Lqhhk54I6jF7W5wDXuuKUYkATexIOc38m1P9qGxnWn/7SkCHuEdf/X9a2I0dcM4OJ60OExa0BdPlLt/XrkF6zFrGA6fXH9woVqA91JaIan0BNiWpJe+Zk5Q+Itqj2wWTAAn+78goeBdXfNHAKRu2gR4sgxxCruB3AmuoD+o0QnTlD4cbCPjFVJylajQrRzD5cVaJvo/58I4Mh2lIQpfBY2Plbvhg1UXuCnUIB+CTIO9kICOccUWG45GH+crq6j41TxjkKsZxDIqwysBzSdI7EzZf0jnyQAt3wxtDoedM3nqxZg986myTSNEEnMG0kSnXxiK859OoIYF3CIvgNry11MWYW1Je6uSmq4Ysj3e56zgk/sv2KV9ch0KPZ6vxYDCbNnabGXhCgxkD+s13PI
+ J8f/lk/+
+ 6no9/iRMQm8qHj5nkWdY6BkevIeHGqz15Dkt/xbL/AeuM0tGxhCltJL/kKtsWq0Kh3xOYER3RE5Cw/suD/koFMFydWtNtFz8m+y6xBWOCx4OdPCLSZllIAzW1YjG9U68eJmY5KkpvojzrTA9bNmadNcLdtRdQJhRSD+HHh1OxA4+L3IJGzuvHoAFbgmrw2/IrV9qZl9nEmOEXJ6opsc1tBJ4ZJaX4P7PByD26SPn2kB1W12dSBfR0qMcyK74aiDg3vA4f0sunGHI1xDhww5PNzzOY0za5MaUpm99YqFfQ1rmQkns1VjJz36CNzhyBpr6Y9vCd+F5amM4EGsBnUEk4v/ymU7onbNfGmI58RSyRqxV0DWYHDbyQaqCwksCHDjnjeq/k
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,38 +143,123 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 1/7/26 08:20, Ankur Arora wrote:
-> Define clear_user_highpages() which uses the range clearing primitive,
-> clear_user_pages(). We can safely use this when CONFIG_HIGHMEM is
-> disabled and if the architecture does not have clear_user_highpage.
+> process_huge_pages(), used to clear hugepages, is optimized for cache
+> locality. In particular it processes a hugepage in 4KB page units and
+> in a difficult to predict order: clearing pages in the periphery in a
+> backwards or forwards direction, then converging inwards to the
+> faulting page (or page specified via base_addr.)
 > 
-> The first is needed to ensure that contiguous page ranges stay
-> contiguous which precludes intermediate maps via HIGMEM.
-> The second, because if the architecture has clear_user_highpage(),
-> it likely needs flushing magic when clearing the page, magic that
-> we aren't privy to.
+> This helps maximize temporal locality at time of access. However, while
+> it keeps stores inside a 4KB page sequential, pages are ordered
+> semi-randomly in a way that is not easy for the processor to predict.
 > 
-> For both of those cases, just fallback to a loop around
+> This limits the clearing bandwidth to what's available in a 4KB page.
+> 
+> Consider the baseline bandwidth:
+> 
+>    $ perf bench mem mmap -p 2MB -f populate -s 64GB -l 3
+>    # Running 'mem/mmap' benchmark:
+>    # function 'populate' (Eagerly populated mmap())
+>    # Copying 64GB bytes ...
+> 
+>        11.791097 GB/sec
+> 
+>    (Unless otherwise noted, all numbers are on AMD Genoa (EPYC 9J13);
+>     region-size=64GB, local node; 2.56 GHz, boost=0.)
+> 
+> 11.79 GBps amounts to around 323ns/4KB. With memory access latency
+> of ~100ns, that doesn't leave much time to help from, say, hardware
+> prefetchers.
+> 
+> (Note that since this is a purely write workload, it's reasonable
+>   to assume that the processor does not need to prefetch any cachelines.
+> 
+>   However, for a processor to skip the prefetch, it would need to look
+>   at the access pattern, and see that full cachelines were being written.
+>   This might be easily visible if clear_page() was using, say x86 string
+>   instructions; less so if it were using a store loop. In any case, the
+>   existence of these kind predictors or appropriately helpful threshold
+>   values is implementation specific.
+> 
+>   Additionally, even when the processor can skip the prefetch, coherence
+>   protocols will still need to establish exclusive ownership
+>   necessitating communication with remote caches.)
+> 
+> With that, the change is quite straight-forward. Instead of clearing
+> pages discontiguously, clear contiguously: switch to a loop around
 > clear_user_highpage().
 > 
-> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
-> ---
->   include/linux/highmem.h | 45 ++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 44 insertions(+), 1 deletion(-)
+> Performance
+> ==
 > 
-> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> index 019ab7d8c841..af03db851a1d 100644
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -251,7 +251,14 @@ static inline void clear_user_pages(void *addr, unsigned long vaddr,
->   #endif
->   }
->   
-> -/* when CONFIG_HIGHMEM is not set these will be plain clear/copy_page */
-> +/**
-> + * clear_user_highpage() - clear a page to be mapped to user space
-
-Just a minor comment as I am skimming the patches: I recall kerneldoc 
-does not require the "()" here. But I also recall that it doesn't hurt :)
+> Testing a demand fault workload shows a decent improvement in bandwidth
+> with pg-sz=2MB. Performance of pg-sz=1GB does not change because it
+> has always used straight clearing.
+> 
+>   $ perf bench mem mmap -p $pg-sz -f demand -s 64GB -l 5
+> 
+>                   discontiguous-pages    contiguous-pages
+> 		      (baseline)
+> 
+>                     (GBps +- %stdev)      (GBps +- %stdev)
+> 
+>     pg-sz=2MB       11.76 +- 1.10%        23.58 +- 1.95%       +100.51%
+>     pg-sz=1GB       24.85 +- 2.41%        25.40 +- 1.33%          -
+> 
+> Analysis (pg-sz=2MB)
+> ==
+> 
+> At L1 data cache level, nothing changes. The processor continues to
+> access the same number of cachelines, allocating and missing them
+> as it writes to them.
+> 
+>   discontiguous-pages    7,394,341,051      L1-dcache-loads                  #  445.172 M/sec                       ( +-  0.04% )  (35.73%)
+>                          3,292,247,227      L1-dcache-load-misses            #   44.52% of all L1-dcache accesses   ( +-  0.01% )  (35.73%)
+> 
+>      contiguous-pages    7,205,105,282      L1-dcache-loads                  #  861.895 M/sec                       ( +-  0.02% )  (35.75%)
+>                          3,241,584,535      L1-dcache-load-misses            #   44.99% of all L1-dcache accesses   ( +-  0.00% )  (35.74%)
+> 
+> The L2 prefetcher, however, is now able to prefetch ~22% more cachelines
+> (L2 prefetch miss rate also goes up significantly showing that we are
+> backend limited):
+> 
+>   discontiguous-pages    2,835,860,245      l2_pf_hit_l2.all                 #  170.242 M/sec                       ( +-  0.12% )  (15.65%)
+>      contiguous-pages    3,472,055,269      l2_pf_hit_l2.all                 #  411.319 M/sec                       ( +-  0.62% )  (15.67%)
+> 
+> That sill leaves a large gap between the ~22% improvement in prefetch
+> and the ~100% improvement in bandwidth but better prefetching seems to
+> streamline the traffic well enough that most of the data starts comes
+> from the L2 leading to substantially fewer cache-misses at the LLC:
+> 
+>   discontiguous-pages    8,493,499,137      cache-references                 #  511.416 M/sec                       ( +-  0.15% )  (50.01%)
+>                            930,501,344      cache-misses                     #   10.96% of all cache refs           ( +-  0.52% )  (50.01%)
+> 
+>      contiguous-pages    9,421,926,416      cache-references                 #    1.120 G/sec                       ( +-  0.09% )  (50.02%)
+>                             68,787,247      cache-misses                     #    0.73% of all cache refs           ( +-  0.15% )  (50.03%)
+> 
+> In addition, there are a few minor frontend optimizations: clear_pages()
+> on x86 is now fully inlined, so we don't have a CALL/RET pair (which
+> isn't free when using RETHUNK speculative execution mitigation as we
+> do on my test system.) The loop in clear_contig_highpages() is also
+> easier to predict (especially when handling faults) as compared to
+> that in process_huge_pages().
+> 
+>    discontiguous-pages       980,014,411      branches                         #   59.005 M/sec                       (31.26%)
+>    discontiguous-pages       180,897,177      branch-misses                    #   18.46% of all branches             (31.26%)
+> 
+>       contiguous-pages       515,630,550      branches                         #   62.654 M/sec                       (31.27%)
+>       contiguous-pages        78,039,496      branch-misses                    #   15.13% of all branches             (31.28%)
+> 
+> Note that although clearing contiguously is easier to optimize for the
+> processor, it does not, sadly, mean that the processor will necessarily
+> take advantage of it. For instance this change does not result in any
+> improvement in my tests on Intel Icelakex (Oracle X9), or on ARM64
+> Neoverse-N1 (Ampere Altra).
+> 
+> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+> Reviewed-by: Raghavendra K T <raghavendra.kt@amd.com>
+> Tested-by: Raghavendra K T <raghavendra.kt@amd.com>
+> ---
 
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
