@@ -4,121 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAD9CD0D14B
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 17:31:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A0BD0D14B
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 17:33:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B0AE6B0092; Wed,  7 Jan 2026 12:31:37 -0500 (EST)
+	id DEF286B0092; Wed,  7 Jan 2026 12:33:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15E066B0093; Wed,  7 Jan 2026 12:31:37 -0500 (EST)
+	id D9CA06B0093; Wed,  7 Jan 2026 12:33:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06A596B0095; Wed,  7 Jan 2026 12:31:37 -0500 (EST)
+	id C7D906B0095; Wed,  7 Jan 2026 12:33:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E69AC6B0092
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:31:36 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7133AC1DA4
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:31:36 +0000 (UTC)
-X-FDA: 84305859792.21.EFA0DA2
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 529E4A0002
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:31:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=tuxon.dev header.s=google header.b=AVis+xHv;
-	spf=pass (imf25.hostedemail.com: domain of claudiu.beznea@tuxon.dev designates 209.85.218.52 as permitted sender) smtp.mailfrom=claudiu.beznea@tuxon.dev;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B51116B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:33:57 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 549761B1DF
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:33:57 +0000 (UTC)
+X-FDA: 84305865714.30.4AA5DF8
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C0F86C0005
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:33:54 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VwvCMpAP;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MeynhhRU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2gY2pQ7p;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=liITzl9A;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767807235; a=rsa-sha256;
+	cv=none;
+	b=hX07+yrAOfPqZ9k9mgMzFsZoqOw8YAKU9tmlt2NmF1pzm2IEodH2SKvZ23ukuplPpPxLuw
+	i7tvSdMMtG7lniAioFKuaPeXYXlCwaTkKeDzZtAZm0N7qLYk2uddo8fsYlLZCEc3ho4EvS
+	Fmd1FOIgwuMs1RNFlgVLadmEM7Wx7Iw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VwvCMpAP;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MeynhhRU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2gY2pQ7p;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=liITzl9A;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767807094;
+	s=arc-20220608; t=1767807235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0tJMiCWsBTgaBtX6YcmAD7SxE1pfFss1iT/w15mQpFA=;
-	b=6u40QI+deT+JADrNYjVCF7xh/XQLtuDo+fUKz6wPvDEQwdfmdMu14HaQW1qJcnYlyfef6S
-	WJeMp1VGdPGsyyVqJ8s/r2XQWrr/U3q7cWzY0JQyLox7yapOCi1TQ1GOzu68j6zTPJJkID
-	PxiuC+WDfbr4TRIaNcSuLBEqY1nzP9w=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=tuxon.dev header.s=google header.b=AVis+xHv;
-	spf=pass (imf25.hostedemail.com: domain of claudiu.beznea@tuxon.dev designates 209.85.218.52 as permitted sender) smtp.mailfrom=claudiu.beznea@tuxon.dev;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767807094; a=rsa-sha256;
-	cv=none;
-	b=b15cBoWDSq2iSFeisX8z3VFARRKq3RHQYS5cRCbFyO1Yn7buvlMPU9krRJEODu+l+th29D
-	htk+cgF/58kKBxe7mcw1WRaHG2IOthPnNIXADsAkqfViTzEK3hA/3l4ZOrYfOs1xn9WJas
-	motDb0LAoU/BdNRbwLsZ9xeVaPTb2tQ=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b7cee045187so197496366b.0
-        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 09:31:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1767807093; x=1768411893; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0tJMiCWsBTgaBtX6YcmAD7SxE1pfFss1iT/w15mQpFA=;
-        b=AVis+xHvjBzovDd9Zrrx4K55GkO4snst6qTWUFWp1aoWhcLKsx4XTnOC7ijrn5eAFH
-         vhmCKn/rTZ5NQFfeUmqnJ/Gvbg+PhUpozEZA2EIQTBhUoma9q/yxzDWx1HRIM9Azt/go
-         GotjwlhGOKK87PJjI6vk1cDrJUahRrjPd4Nn6p0GeUv51ZbkbB3RAQCjGb6GcQU9pjLD
-         xvF1cSabDqBPJmfBjAVViPa5rpA4EGJk3SWboYzRhhcQH3dLn3QOeLrPOxkwqaFEkEtz
-         63fEe9xJeHezsSYsqw9sEFR7vNWhbxfe7yEjKsYox+EF9GD0Yix5w5WI/F3EMKbgwkbk
-         17Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767807093; x=1768411893;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0tJMiCWsBTgaBtX6YcmAD7SxE1pfFss1iT/w15mQpFA=;
-        b=Ijec2NnkIjSa6C/bYmKlnEv1gHs5UH/rQjPVI8fJDJxqVoFU8b0fehLvketFFkkDTH
-         hHEANmlC42WHmkSy+Y/gLv1jLwIwAmjQr/CKpcP//86nnWgo7J4XeNcxVi4/9qFk4q12
-         u2Ir7BMrRMKS1tHSNxmhJCLBYPHFnfP113/V4/F6efHXMF1dBrOc+GrJYxMAIAABCR3x
-         fwevIrF6OzTpf4FKtoLf9vQLZ2kjNgd5fz14Pw3tXG4XFDlTa9P4EcntTWAMiL7qUtZX
-         tHnn4WOqBnrtAHFRI64w1Zlkjzj5q8HUake2m/RvrBuhQuSp607TartXi88u9l2KHYpD
-         zF7w==
-X-Forwarded-Encrypted: i=1; AJvYcCV8ilJTXW1yroSmrPQuscThftVHp+5JyBAt49fbmDPcegi41jp60yTfJUTTlnFg6HUp2rUoICA1EQ==@kvack.org
-X-Gm-Message-State: AOJu0YxaN5cWqYLFcG3+yxpVAODu2wby3JJtOeQi9byNyiXS/Lme1eU8
-	JclOEPw5s9fGfhQsFe9MeKnA6LI31WhySuSQgsHSpeJS3/anbR4orR7uBzhdJ/1wFjY=
-X-Gm-Gg: AY/fxX6sUDu0IF9KNHa/1myVccCJ/NqqH/XrBO13wTiLIDAjREhWghMdhxp4QcRkweW
-	dBDSnMmU+8fqKHn8AIK7V7hSRJVMfTFIBS48TcniWAAzURTkr3Lf0LVskACuCd+PRrxXE61/d25
-	Bdfl3nPxdEUhYISjIpv8zWEpmR8q5JQU7YQQKhZzEizzn9yJFObV+SUEGEZogj6a17TIwhyV9Ts
-	LZjpl/e1r0z5XNoHqWWds8MDNYGn7M4SXOvga3mvjXf215o179evouSBgBbrF9HHxvzA9ZTFWE1
-	Snz1SnSe2Bajf84b5g3sUq9HH6dIbP7oZN0HBTssCdSTilSp7x88DanQgWGDT1kN55mjVvKtMhg
-	YyjnMMxZGmq/t8riRU5b87vjlp0ZyrE2wUQctqtiFpRkjfZA88FihVbITDry+hDdr8Btm1ZHCXj
-	y6V+utxYXQEhbSamWnoQ==
-X-Google-Smtp-Source: AGHT+IEhKkW8HOYrig9DF3rTYl2qVie0SQ/p46EYCR9oSO7QhIdVsTeyvxAUdOoRH2Di4x3rN4ymmg==
-X-Received: by 2002:a17:907:9627:b0:b82:f808:3eb9 with SMTP id a640c23a62f3a-b8444c8f087mr341978766b.9.1767807092472;
-        Wed, 07 Jan 2026 09:31:32 -0800 (PST)
-Received: from [192.168.50.4] ([82.78.167.17])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a2338cbsm557322566b.14.2026.01.07.09.31.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jan 2026 09:31:32 -0800 (PST)
-Message-ID: <4211be25-3fc0-4395-9b24-a5ff0b3caa34@tuxon.dev>
-Date: Wed, 7 Jan 2026 19:31:30 +0200
+	bh=HzkHQmvrK/B1YkN+O5Sdmu0pHn50wpfwPqP+1PsfPWM=;
+	b=YvPHIe+NxvkxTB0JzKzbZaC6lWVEzae4/xaZZv5/pSA7kxKz9GjqG9ZGt5Fzq0sh56ZbN4
+	HQps7F5itZOXubDstWXO6uuZYzelw2NFvE/C5LuJ1HTTpDkzaifFFahWYUgez0zgMpTJDY
+	gmROw1WT/n6EbC8Xe3U0r0PW6tZE3hk=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EEE8F5BCD3;
+	Wed,  7 Jan 2026 17:33:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767807233; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HzkHQmvrK/B1YkN+O5Sdmu0pHn50wpfwPqP+1PsfPWM=;
+	b=VwvCMpAPQcx6BYiezhcexughsPtKPZcxFTeCCQ+ekQZFnIRFUf+1sY7MaKhP5u2mhPRDEv
+	wM50lYbg2QmIA8emYBLXjwWyLUac0gONEPIMFKLVtFK40N8PqhlLFPwZ+nToPuZoa9pUzd
+	cDmBVOa7qkaAIizyA3T04mMl/uD3hpw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767807233;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HzkHQmvrK/B1YkN+O5Sdmu0pHn50wpfwPqP+1PsfPWM=;
+	b=MeynhhRUmSAf9tODh6Bi7gWJSCpMDhpEe/R515HuxkoBSx8N17MIs+WDKlhat4adfBLQ3N
+	txVmohiYnnk9w9AA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767807232; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HzkHQmvrK/B1YkN+O5Sdmu0pHn50wpfwPqP+1PsfPWM=;
+	b=2gY2pQ7pGGYy05qp7vN2ZDagoEx5vBJF/Uj4t4A6T8cOP5kKvWku/uJV70/W5jX3vmeUfy
+	9btzwrrBEvlToiLRR7DXiOG62zSMjasI47rfjpMFO7UugIFN31aacOyfL4Gt13zgcI8sCc
+	wrNUWYFVCrKpc6yMDF1KRxZg/+Y0e/c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767807232;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HzkHQmvrK/B1YkN+O5Sdmu0pHn50wpfwPqP+1PsfPWM=;
+	b=liITzl9AwLfKI4RsqDQgBrXDOu4GDBY5oyhmRnUwYDk8WhDK1BBnjYJpUkImDU++XFuZo2
+	FwVYE3ADl3wH0UBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C36623EA63;
+	Wed,  7 Jan 2026 17:33:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 9b7qLgCZXmktfAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 07 Jan 2026 17:33:52 +0000
+Message-ID: <8c67dcbe-f393-4da6-8d24-f9da79c246c4@suse.cz>
+Date: Wed, 7 Jan 2026 18:33:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 mm-new 0/6] mm: hugetlb: allocate frozen gigantic folio
-To: Kefeng Wang <wangkefeng.wang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
- Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org
-Cc: sidhartha.kumar@oracle.com, jane.chu@oracle.com, Zi Yan <ziy@nvidia.com>,
- Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>
-References: <20251230072422.265265-1-wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH V5 8/8] mm/slab: place slabobj_ext metadata in unused
+ space within s->size
 Content-Language: en-US
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-In-Reply-To: <20251230072422.265265-1-wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org
+Cc: andreyknvl@gmail.com, cl@gentwo.org, dvyukov@google.com,
+ glider@google.com, hannes@cmpxchg.org, linux-mm@kvack.org,
+ mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com,
+ roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev,
+ surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com,
+ tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, hao.li@linux.dev
+References: <20260105080230.13171-1-harry.yoo@oracle.com>
+ <20260105080230.13171-9-harry.yoo@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260105080230.13171-9-harry.yoo@oracle.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 529E4A0002
-X-Stat-Signature: dguj5ckghki4e8z71wi637hctnatfpdf
 X-Rspam-User: 
-X-HE-Tag: 1767807094-972110
-X-HE-Meta: U2FsdGVkX1/92QiDatseTm91X/NkP5199cMlYMJPRrk+d8hsFQhkNjlQDuqH6cC0FYvKnSd6vo5F21JIW0l5KpALvaq/CJSZaSjqofo/VtEqvjmdagevo1wYkqrfmJe39Gsu19f8KH7TlHLLLynRFLGp2RkZk6C7dra5IeX7Jdlue/+Juq7uknIwhZovlstyZOzc1F0Mla/gCULJubqMakHCtl0mC+lgfOg4DxxDazAsG830uSUonrKBYlG4DeWNK/CuHJlvqTyqMAeMK86d0x7Z8ejTPVNoX1yPnZvq2lLeYgre4YZcibDJz70ZAy3u7cq+Bu0h8bSmkxItl/MwRkOaph3/4J9LI7GdV+lTyNah91KZDrTiGP9j1B8E97ULfx7KGn8vcHl7Gbk7Gioo8vNRmQbP+T0dz16hmgwHNK7fXtbtrJiPt3vPRFAVfCAzET+UF0r93+VgqMzYk8MoP5H+eSqtuaDqMV+9sy6igQMVDmCpeANIjYa6NQaXu2FnGfHOp0/9GvQk+ARe6S0FnD/1uzdMiodD8XhTq3EcnI0kt3qQG95A/Kik2QxAx1oUB0ZvjqmH2fzN/Pv5aw8H7bpxM3YUHYzhxLMr0yXva4nphXzSqgGE5KQmKdbz/fVZFFNNQN9d4HVTOWZVMeaY7u3WOmGuO3RQZVwu/Uc9R3o6lYMO49BiOfGmabJGX98lAtCtwJ6HV/jI8P4ZLCt+WckqI1jq2GGsz7S6EY+C0SxK7ARu0zsHYCX5o1pYXygRS4BIl7HhNavW8o8x6pYf35IgoVlF7g96r7zDGlNogDEaaV0SlL+ORtE3+lwUPd8UxEX9YSjKjblS/oOi3Tw9F/DYcqd0Qi3/kapSlhMNuJIrqYaRe33xIravCuyEQYsegX5E26v+IXyNkggKw+RYYC2L+XisGHiXX1Ti5+pu14dOzot4DNCbnFiZMLIv0E+++qUOH1jb0nxxVUjOmKr
- VRv6Lr9e
- jzosI8bMUryw29jRLBbxI5ALTK6PizLEKD8lIuIdTny8HG4uc1zyCU+n6a06uFJE3fMOnw8yRUWdiUBqRLaU8ZlcOW6aa2bQOXK0gW5D3uDD2Qcw9D6tDQFJ6JmZZ3QTy2TsiXmI7nueScgFqTq5yztNhXO8qHBcaeoVxPWgFwTT+TmeNW21y0Tl7kl6wHzAUuzGbw2hCiHwHLla2xc1PYhczyFelKJvCEs00Ru8RQGGiPWjERYSV56ubytOL7OgF2V6HJgmU7zi1HKE3vz9wepjQ9ljQbEZV9qMSDe6FHX9B8RKkJ2uekHICqYi1d1fygliAwnG0XdK7hglyHB4Sof89D6+Xxmpq9Xl1REC9rEaPye1lQSHtO2z1kPUZT1xE5kx8ByBKgjDhhns/H5Bi7fx+Tm6c+YtsZ1lW
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C0F86C0005
+X-Stat-Signature: ty833unwxz48y8a8assj1zrazurkjtij
+X-HE-Tag: 1767807234-736041
+X-HE-Meta: U2FsdGVkX18N6WoiEVTFIjyg43Sv3hLT/jj6WlseTBJ6Dao9hFceLzY72+vGVIvh500Zf4k31IZfej4AAYidsblDZH01IShYwKap7tdM4iMIFpnjMmGBuxOeWFGpJkdMZrIuILnMRfhEM9RPNGk0SUOAfg2GCOAk2iYs0rv9js9dybSt/mirfr/OeV2EFK0Czd10q8EEuGUjsUbMGSKPl2fNA8Bi/FMNh2FJdhXW9KDAZceQ5v5qK/nEcTBZBb2a57Hsye8jOrnzQlRYnye7atHF01IOjbFgegtLZY+Z6ntfVkweVAu9JEXcKQVvqUxSlpQpFEW5DFriYgl0Q1VFhSRubDTfj+slnZ1JfFLBrXFLCR+sBRXVdviPkwtxvRMIIPF9LO7p3RjvRjI0Q1Kgc8DWK3FF1rcPgDnd4qMS9YP2VvBaYY5EjWFg56uyuzjhKzj524mGrSGTBoV9g0SyJ5Nqa6rqDUY3jbejGyFrmp4N4T8nZ3WJdCPCUb0VGRSbDq2LQ26P6nT77kZilaWxlUG8Y/+GjOZqoSByVy7bTxZf+Q6u6MnSoWAOEN7R6tc5WKil/6fZTIZE75XXtbXYk/TfgAsUYxnsRkER+2KXeQd6Krxh9kW1WdVrPdjo63RgDA2xpilyDHEzCTeol8EQZsgRQBn79EMNnhsjpYJA2udgR+InB+rMmresLlBEyolkq9M4VeZy3Af6zV3eStIGhCUzCAMgGMhWx5Uzx5te7t42dhvjAQEFXWuTfw8s7ZT8FzIO8LSFNhVBxyx0x75lsll6vQG9IJ+TYjaFrFqkb8Unstue/wePP9u/0GchH/f7XxSFDpxw9BLshQB04xYoxBXcbBLdjE2mPhI98LDU+ns4IxHaPb+9GKS3Q6W+SS+yW0gIk/rUWYD554IhDDmV4+D2d0gUrTOMuqxe3eixiW+txNI8zAuKCUFnfnkq9Kzx6QZPYU7DauLGVg9LXZx
+ 3f0loUXa
+ UBtQU6bBut5K7hcV2Q0ZwgC7dyS0W3tDSDygrZu02ISrljNNm+Y8PHZz53OmhwXBKuyzxqOjMq4BBdzRJQWIMbKfSOb3ottM5MNSn0I995GhYYstXkBXWe3kfBsDilnIEeKFKK4Vz4lSFByc/fLg7hWKBucln8Kuq313Z8Gq/Iwap9XT2mznEZXfQ/ZCvtT08hfwO0talnm7q92kuQHOsLM3/l1T/bCvkpZPCpBBtJ4R+/r7MK75vt/iz2CXtkpnHZZjclIToyzsalSO/lDT7gKsYexeUU3QagPj7IWq0OFZiIeolk7YqHNwkvJneBAEXIw5QlsLXBiwjGus5GLrxFRBE8mTkPLn3hxDbSH23mSvEaXQVm5+2M3Hsy7RtFjlm6xjrUXZRUNvr2SBEinubst5z69EL27ojMGYdjbWrT9BEZ44=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,153 +183,248 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On 1/5/26 09:02, Harry Yoo wrote:
+> When a cache has high s->align value and s->object_size is not aligned
+> to it, each object ends up with some unused space because of alignment.
+> If this wasted space is big enough, we can use it to store the
+> slabobj_ext metadata instead of wasting it.
+> 
+> On my system, this happens with caches like kmem_cache, mm_struct, pid,
+> task_struct, sighand_cache, xfs_inode, and others.
+> 
+> To place the slabobj_ext metadata within each object, the existing
+> slab_obj_ext() logic can still be used by setting:
+> 
+>   - slab->obj_exts = slab_address(slab) + s->red_left_zone +
+>                      (slabobj_ext offset)
+>   - stride = s->size
+> 
+> slab_obj_ext() doesn't need know where the metadata is stored,
+> so this method works without adding extra overhead to slab_obj_ext().
+> 
+> A good example benefiting from this optimization is xfs_inode
+> (object_size: 992, align: 64). To measure memory savings, 2 millions of
+> files were created on XFS.
+> 
+> [ MEMCG=y, MEM_ALLOC_PROFILING=n ]
+> 
+> Before patch (creating ~2.64M directories on xfs):
+>   Slab:            5175976 kB
+>   SReclaimable:    3837524 kB
+>   SUnreclaim:      1338452 kB
+> 
+> After patch (creating ~2.64M directories on xfs):
+>   Slab:            5152912 kB
+>   SReclaimable:    3838568 kB
+>   SUnreclaim:      1314344 kB (-23.54 MiB)
+> 
+> Enjoy the memory savings!
+> 
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
+>  include/linux/slab.h |  9 ++++++
+>  mm/slab_common.c     |  6 ++--
+>  mm/slub.c            | 73 ++++++++++++++++++++++++++++++++++++++++++--
+>  3 files changed, 83 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index 4554c04a9bd7..da512d9ab1a0 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -59,6 +59,9 @@ enum _slab_flag_bits {
+>  	_SLAB_CMPXCHG_DOUBLE,
+>  #ifdef CONFIG_SLAB_OBJ_EXT
+>  	_SLAB_NO_OBJ_EXT,
+> +#endif
+> +#if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+> +	_SLAB_OBJ_EXT_IN_OBJ,
+>  #endif
+>  	_SLAB_FLAGS_LAST_BIT
+>  };
+> @@ -244,6 +247,12 @@ enum _slab_flag_bits {
+>  #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+>  #endif
+>  
+> +#if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+> +#define SLAB_OBJ_EXT_IN_OBJ	__SLAB_FLAG_BIT(_SLAB_OBJ_EXT_IN_OBJ)
+> +#else
+> +#define SLAB_OBJ_EXT_IN_OBJ	__SLAB_FLAG_UNUSED
+> +#endif
+> +
+>  /*
+>   * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+>   *
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index c4cf9ed2ec92..f0a6db20d7ea 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -43,11 +43,13 @@ DEFINE_MUTEX(slab_mutex);
+>  struct kmem_cache *kmem_cache;
+>  
+>  /*
+> - * Set of flags that will prevent slab merging
+> + * Set of flags that will prevent slab merging.
+> + * Any flag that adds per-object metadata should be included,
+> + * since slab merging can update s->inuse that affects the metadata layout.
+>   */
+>  #define SLAB_NEVER_MERGE (SLAB_RED_ZONE | SLAB_POISON | SLAB_STORE_USER | \
+>  		SLAB_TRACE | SLAB_TYPESAFE_BY_RCU | SLAB_NOLEAKTRACE | \
+> -		SLAB_FAILSLAB | SLAB_NO_MERGE)
+> +		SLAB_FAILSLAB | SLAB_NO_MERGE | SLAB_OBJ_EXT_IN_OBJ)
+>  
+>  #define SLAB_MERGE_SAME (SLAB_RECLAIM_ACCOUNT | SLAB_CACHE_DMA | \
+>  			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT)
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 50b74324e550..43fdbff9d09b 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -977,6 +977,39 @@ static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
+>  {
+>  	return false;
+>  }
+> +
+> +#endif
+> +
+> +#if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+> +static bool obj_exts_in_object(struct kmem_cache *s)
+> +{
+> +	return s->flags & SLAB_OBJ_EXT_IN_OBJ;
 
-On 12/30/25 09:24, Kefeng Wang wrote:
-> Introduce alloc_contig_frozen_pages() and cma_alloc_frozen_compound()
-> which avoid atomic operation about page refcount, and then convert to
-> allocate frozen gigantic folio by the new helpers in hugetlb to cleanup
-> the alloc_gigantic_folio().
+So this is a property of the cache.
 
-I'm seeing the following issues on the Renesas RZ/G3S SoC when doing 
-suspend to idle:
+> +}
+> +
+> +static unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
+> +{
+> +	unsigned int offset = get_info_end(s);
+> +
+> +	if (kmem_cache_debug_flags(s, SLAB_STORE_USER))
+> +		offset += sizeof(struct track) * 2;
+> +
+> +	if (slub_debug_orig_size(s))
+> +		offset += sizeof(unsigned long);
+> +
+> +	offset += kasan_metadata_size(s, false);
+> +
+> +	return offset;
+> +}
+> +#else
+> +static inline bool obj_exts_in_object(struct kmem_cache *s)
+> +{
+> +	return false;
+> +}
+> +
+> +static inline unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
+> +{
+> +	return 0;
+> +}
+>  #endif
+>  
+>  #ifdef CONFIG_SLUB_DEBUG
+> @@ -1277,6 +1310,9 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
+>  
+>  	off += kasan_metadata_size(s, false);
+>  
+> +	if (obj_exts_in_object(s))
+> +		off += sizeof(struct slabobj_ext);
+> +
+>  	if (off != size_from_object(s))
+>  		/* Beginning of the filler is the free pointer */
+>  		print_section(KERN_ERR, "Padding  ", p + off,
+> @@ -1446,7 +1482,10 @@ check_bytes_and_report(struct kmem_cache *s, struct slab *slab,
+>   * 	A. Free pointer (if we cannot overwrite object on free)
+>   * 	B. Tracking data for SLAB_STORE_USER
+>   *	C. Original request size for kmalloc object (SLAB_STORE_USER enabled)
+> - *	D. Padding to reach required alignment boundary or at minimum
+> + *	D. KASAN alloc metadata (KASAN enabled)
+> + *	E. struct slabobj_ext to store accounting metadata
+> + *	   (SLAB_OBJ_EXT_IN_OBJ enabled)
+> + *	F. Padding to reach required alignment boundary or at minimum
+>   * 		one word if debugging is on to be able to detect writes
+>   * 		before the word boundary.
+>   *
+> @@ -1474,6 +1513,9 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
+>  
+>  	off += kasan_metadata_size(s, false);
+>  
+> +	if (obj_exts_in_object(s))
+> +		off += sizeof(struct slabobj_ext);
+> +
+>  	if (size_from_object(s) == off)
+>  		return 1;
+>  
+> @@ -2280,7 +2322,8 @@ static inline void free_slab_obj_exts(struct slab *slab)
+>  		return;
+>  	}
+>  
+> -	if (obj_exts_in_slab(slab->slab_cache, slab)) {
+> +	if (obj_exts_in_slab(slab->slab_cache, slab) ||
+> +			obj_exts_in_object(slab->slab_cache)) {
 
-[  129.539064] Freezing user space processes
-[  129.545037] Freezing user space processes completed (elapsed 0.005 
-seconds)
-[  129.552078] OOM killer disabled.
-[  129.555335] Freezing remaining freezable tasks
-[  129.561405] Freezing remaining freezable tasks completed (elapsed 
-0.001 seconds)
-[  129.636729] Unable to handle kernel paging request at virtual address 
-dead000000000108
-[  129.644674] Mem abort info:
-[  129.647456]   ESR = 0x0000000096000044
-[  129.651190]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  129.656482]   SET = 0, FnV = 0
-[  129.659523]   EA = 0, S1PTW = 0
-[  129.662650]   FSC = 0x04: level 0 translation fault
-[  129.667507] Data abort info:
-[  129.670374]   ISV = 0, ISS = 0x00000044, ISS2 = 0x00000000
-[  129.675837]   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
-[  129.680867]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  129.686158] [dead000000000108] address between user and kernel 
-address ranges
-[  129.693267] Internal error: Oops: 0000000096000044 [#1]  SMP
-[  129.698905] Modules linked in: nvme nvme_core snd_soc_simple_card 
-snd_soc_simple_card_utils snd_soc_rz_ssi snd_soc_da7213 renesas_usbhs 
-snd_soc_core snd_compress snd_pcm_dmaengine snd_pcm snd_timer snd 
-soundcore rzg3s_thermal clk_vbattb rzg2l_adc rtc_renesas_rtca3 
-industrialio_adc sha256 cfg80211 bluetooth ecdh_generic ecc rfkill fuse 
-drm backlight ipv6
-[  129.730189] CPU: 0 UID: 0 PID: 282 Comm: python3 Not tainted 
-6.19.0-rc4-next-20260107-00002-g608ca48d0994 #1 PREEMPT
-[  129.740765] Hardware name: Renesas SMARC EVK version 2 based on 
-r9a08g045s33 (DT)
-[  129.748223] pstate: a04000c5 (NzCv daIF +PAN -UAO -TCO -DIT -SSBS 
-BTYPE=--)
-[  129.755160] pc : free_pcppages_bulk+0x12c/0x204
-[  129.759701] lr : free_pcppages_bulk+0x168/0x204
-[  129.764219] sp : ffff80008392b7e0
-[  129.767520] x29: ffff80008392b7e0 x28: ffff00003cff96b0 x27: 
-ffff00003fe25700
-[  129.774638] x26: ffff800081e66bd8 x25: 0000000000000001 x24: 
-0000000000000025
-[  129.781755] x23: ffff00003cff9680 x22: ffff00003cff9690 x21: 
-dead000000000100
-[  129.788872] x20: 0000000000000001 x19: 0000000000000000 x18: 
-0000000000000020
-[  129.795989] x17: ffff00000f3d0a00 x16: 0000000000000006 x15: 
-000000e7ebec93d2
-[  129.803106] x14: 0000000000000005 x13: dead000000000100 x12: 
-0000000000000038
-[  129.810223] x11: 0000000000000000 x10: 0000000000000001 x9 : 
-0000000000000000
-[  129.817339] x8 : 0000000000000000 x7 : ffff00003fe258a8 x6 : 
-dead000000000122
-[  129.824456] x5 : dead000000000122 x4 : ffff00003fe14628 x3 : 
-fffffdffc0f799c8
-[  129.831573] x2 : 0401010101010101 x1 : 000000000007de67 x0 : 
-fffffdffc0f799c0
-[  129.838691] Call trace:
-[  129.841129]  free_pcppages_bulk+0x12c/0x204 (P)
-[  129.845653]  free_frozen_page_commit.constprop.0+0x27c/0x478
-[  129.851300]  __free_frozen_pages+0x1a0/0x63c
-[  129.855562]  free_contig_frozen_range+0xd0/0x118
-[  129.860165]  cma_release+0x7c/0xd8
-[  129.863568]  dma_free_contiguous+0x2c/0x74
-[  129.867657]  dma_direct_free+0xd8/0x1b0
-[  129.871482]  dma_free_attrs+0x84/0xf8
-[  129.875140]  ravb_ring_free+0x5c/0x1b4
-[  129.878888]  ravb_close+0x12c/0x1d4
-[  129.882368]  ravb_suspend+0x60/0x16c
-[  129.885935]  device_suspend+0x148/0x3f4
-[  129.889766]  dpm_suspend+0x1b0/0x2ac
-[  129.893332]  dpm_suspend_start+0x54/0x70
-[  129.897245]  suspend_devices_and_enter+0x124/0x4b8
-[  129.902026]  pm_suspend+0x1a4/0x1f0
-[  129.905506]  state_store+0x8c/0x110
-[  129.908985]  kobj_attr_store+0x18/0x2c
-[  129.912727]  sysfs_kf_write+0x7c/0x94
-[  129.916384]  kernfs_fop_write_iter+0x128/0x1b8
-[  129.920815]  vfs_write+0x2ac/0x350
-[  129.924210]  ksys_write+0x68/0xfc
-[  129.927517]  __arm64_sys_write+0x1c/0x28
-[  129.931431]  invoke_syscall+0x48/0x10c
-[  129.935177]  el0_svc_common.constprop.0+0xc0/0xe0
-[  129.939871]  do_el0_svc+0x1c/0x28
-[  129.943180]  el0_svc+0x34/0x10c
-[  129.946319]  el0t_64_sync_handler+0xa0/0xe4
-[  129.950492]  el0t_64_sync+0x198/0x19c
+Here we check that property to determine if we can return early and not do
+kfree().
 
-Using ./scripts/decode_stacktrace.sh on this leads to the following output:
+>  		slab->obj_exts = 0;
+>  		return;
+>  	}
+> @@ -2326,6 +2369,23 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
+>  			obj_exts |= MEMCG_DATA_OBJEXTS;
+>  		slab->obj_exts = obj_exts;
+>  		slab_set_stride(slab, sizeof(struct slabobj_ext));
+> +	} else if (obj_exts_in_object(s)) {
+> +		unsigned int offset = obj_exts_offset_in_object(s);
 
-./scripts/decode_stacktrace.sh build-arm64/vmlinux < out
-[  490.453272] Call trace:
-[  490.455711]  free_pcppages_bulk (include/linux/list.h:203 
-include/linux/list.h:226 include/linux/list.h:237 mm/page_alloc.c:1525) (P)
-[  490.460234]  free_frozen_page_commit.constprop.0 
-(include/linux/spinlock.h:392 mm/page_alloc.c:2919)
-[  490.465881]  __free_frozen_pages (mm/page_alloc.c:3003)
-[  490.470143]  free_contig_frozen_range (mm/page_alloc.c:6977 
-mm/page_alloc.c:7379)
-[  490.474747]  cma_release (mm/cma.c:996 mm/cma.c:1025)
-[  490.478149]  dma_free_contiguous (kernel/dma/contiguous.c:430)
-[  490.482240]  dma_direct_free (kernel/dma/direct.c:351)
-[  490.486064]  dma_free_attrs (kernel/dma/mapping.c:688)
-[  490.489723]  ravb_ring_free 
-(drivers/net/ethernet/renesas/ravb_main.c:249 
-drivers/net/ethernet/renesas/ravb_main.c:260)
-[  490.493469]  ravb_close (drivers/net/ethernet/renesas/ravb_main.c:2406)
-[  490.496950]  ravb_suspend (drivers/net/ethernet/renesas/ravb_main.c:3225)
-[  490.500516]  device_suspend (drivers/base/power/main.c:504 
-drivers/base/power/main.c:1965)
-[  490.504347]  dpm_suspend (drivers/base/power/main.c:2049)
-[  490.507916]  dpm_suspend_start (drivers/base/power/main.c:2282)
-[  490.511829]  suspend_devices_and_enter (kernel/power/suspend.c:523)
-[  490.516609]  pm_suspend (kernel/power/suspend.c:621 
-kernel/power/suspend.c:644)
-[  490.520088]  state_store (kernel/power/main.c:819)
-[  490.523568]  kobj_attr_store (lib/kobject.c:842)
-[  490.527310]  sysfs_kf_write (fs/sysfs/file.c:143)
-[  490.530967]  kernfs_fop_write_iter (fs/kernfs/file.c:352)
-[  490.535398]  vfs_write (fs/read_write.c:593 fs/read_write.c:686)
-[  490.538793]  ksys_write (fs/read_write.c:738)
-[  490.542101]  __arm64_sys_write (fs/read_write.c:746)
-[  490.546014]  invoke_syscall (arch/arm64/include/asm/current.h:19 
-arch/arm64/kernel/syscall.c:54)
-[  490.549762]  el0_svc_common.constprop.0 (arch/arm64/kernel/syscall.c:70)
-[  490.554454]  do_el0_svc (arch/arm64/kernel/syscall.c:152)
-[  490.557763]  el0_svc (arch/arm64/include/asm/irqflags.h:55 
-arch/arm64/include/asm/irqflags.h:76 arch/arm64/kernel/entry-common.c:80 
-arch/arm64/kernel/entry-common.c:725)
-[  490.560901]  el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:744)
-[  490.565074]  el0t_64_sync (arch/arm64/kernel/entry.S:596)
+But we reach this only when need_slab_obj_exts() is true above. So there
+might be slabs from caches where obj_exts_in_object() is true, but still
+have obj_exts allocated by kmalloc, and we leak them in
+free_slab_obj_exts(). (and we perform some incorrect action wherever else
+obj_exts_in_object() is checked) AFAIU?
 
-Reverting this series leads to no more failures. Should things be 
-handled differently now in the drivers? Do you consider there is 
-something buggy in the ravb driver?
+So I think we need to check obj_exts_in_slab() (in the simplified way I
+suggested for patch 7/8) first, and only look at obj_exts_in_object()
+afterwards to distinguish the exact layout where needed? (i.e.
+free_slab_obj_exts() is fine to just check obj_exts_in_slab()).
 
-Thank you,
-Claudiu
+> +		obj_exts = (unsigned long)slab_address(slab);
+> +		obj_exts += s->red_left_pad;
+> +		obj_exts += offset;
+> +
+> +		get_slab_obj_exts(obj_exts);
+> +		for_each_object(addr, s, slab_address(slab), slab->objects)
+> +			memset(kasan_reset_tag(addr) + offset, 0,
+> +			       sizeof(struct slabobj_ext));
+> +		put_slab_obj_exts(obj_exts);
+> +
+> +		if (IS_ENABLED(CONFIG_MEMCG))
+> +			obj_exts |= MEMCG_DATA_OBJEXTS;
+> +		slab->obj_exts = obj_exts;
+> +		slab_set_stride(slab, s->size);
+>  	}
+>  }
+>  
+> @@ -8023,6 +8083,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+>  {
+>  	slab_flags_t flags = s->flags;
+>  	unsigned int size = s->object_size;
+> +	unsigned int aligned_size;
+>  	unsigned int order;
+>  
+>  	/*
+> @@ -8132,7 +8193,13 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+>  	 * offset 0. In order to align the objects we have to simply size
+>  	 * each object to conform to the alignment.
+>  	 */
+> -	size = ALIGN(size, s->align);
+> +	aligned_size = ALIGN(size, s->align);
+> +#if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+> +	if (aligned_size - size >= sizeof(struct slabobj_ext))
+> +		s->flags |= SLAB_OBJ_EXT_IN_OBJ;
+> +#endif
+> +	size = aligned_size;
+> +
+>  	s->size = size;
+>  	s->reciprocal_size = reciprocal_value(size);
+>  	order = calculate_order(size);
+
 
