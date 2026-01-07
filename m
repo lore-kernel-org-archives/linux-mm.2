@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ED50CFD647
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 14:53:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC852CFD641
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 14:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93EAC6B0096; Wed,  7 Jan 2026 09:53:45 -0500 (EST)
+	id 2A6526B0095; Wed,  7 Jan 2026 09:54:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EC376B0098; Wed,  7 Jan 2026 09:53:45 -0500 (EST)
+	id 2504E6B0098; Wed,  7 Jan 2026 09:54:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F8006B0099; Wed,  7 Jan 2026 09:53:45 -0500 (EST)
+	id 18AC66B0099; Wed,  7 Jan 2026 09:54:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B8E56B0096
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:53:45 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C35C5B837C
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:53:44 +0000 (UTC)
-X-FDA: 84305461968.10.EF4EE73
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 26B6114000E
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:53:42 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=QXotIqNN;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767797623; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 065916B0095
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:54:27 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A90D71B4A5
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:54:26 +0000 (UTC)
+X-FDA: 84305463732.07.4D58C9B
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf28.hostedemail.com (Postfix) with ESMTP id CE110C0003
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:54:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="tD414w/m";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767797665; a=rsa-sha256;
 	cv=none;
-	b=PB7pnWWuOqs5EZj1OqFXGWnFtRfr64YQMEEkLXMfwZtxk0L6sWJZkTsKeUi8j2ge3FtXzh
-	uKsXaQaETo0Afy1evw9ef86kLPD81ITDyozEMnxeVXT2j/uw6Uhj01ALkR6oKsqt+e/L4S
-	0pk0y5mMG3wH42uS/+kaXtaYqe9y37w=
+	b=DC7DxOHu58jXdlwaRy1EOfgvo+4/Ic647Q6GttZT/+6ENVurt3A62347OPQ9O6P1jqN+48
+	86ngJnRT8uChDGkyUZwH41pZ3rcaJDIiRXFHGwPfETZPMSrmQ6N8rOpC1AJJQ9lsI+vUDV
+	bZ1UP4vg9xro4vt78E8frZXjhT8tinw=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=QXotIqNN;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="tD414w/m";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767797623;
+	s=arc-20220608; t=1767797665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N/MSGdm4Pn94QVvbBIPMYP8yHiQacuBfDGzmKsc3hKc=;
-	b=0+LkbpnelxKvAD5Y7tICNj1ufeaBr87gJVQZrfIFq7HHggvKT8HggS7OTXMkfDubOsphUT
-	N+W9IlbCfBilW7CLJ1f3vPtxoj0GiapdXSNPKu9tkip8VpT9/W3ORYxExLvBPFVWHNSbUN
-	wZZno9bgePbLhhjufOjhiKCJcY9WH00=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=N/MSGdm4Pn94QVvbBIPMYP8yHiQacuBfDGzmKsc3hKc=; b=QXotIqNNT/HVDRTm2V+NGY3EYa
-	51N5hZPgpuLxtJc/LHnPBxl/SAfQlnN9EiZqwW91lt6SG4oT0y1pbCIloNr9Y/hWsMw7STAAe4npK
-	nC2LvHqAbtg6hDCrxDaTYAHkDZLK4GRO/50zGXLPnE+9BbsyXvCqCgEYZTPV3Lm/nmGyQWmgbyn/+
-	wvCItMwzoyGbzR3iNGVMOH1bpZ5blzltQHraCRhCaixsvCCqKNYRseljywpUuM+wzffDsMFlc4sX3
-	ZPovcnR+N2BzFJ8DaYtE3m6Kck9KyJGh+CK/S0YAP674BfGA919TGhR4KqA1DOo4vUXGW5s1fhG3i
-	Wg8XVBtQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdUur-0000000DVzV-1s2j;
-	Wed, 07 Jan 2026 14:53:41 +0000
-Date: Wed, 7 Jan 2026 14:53:41 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: alexs@kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	"open list:GENERIC INCLUDE/ASM HEADER FILES" <linux-arch@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] mm/pgtable: remove unddefined
- __HAVE_ARCH_P4D_ALLOC_ONE/__HAVE_ARCH_P4D_FREE
-Message-ID: <aV5zdQ2pX9vKM1aj@casper.infradead.org>
-References: <20260107063911.15299-1-alexs@kernel.org>
+	bh=2Y0xU9Dbp20DUGDHu2Ggngi6mIEuMC7eQW0YVbkY+7w=;
+	b=ND+A8ilPS3NeH02gKedeirCPY+UXGyICwG0mRWW8j5sH6SvUoSN9ICh5tM6ltXvUDQnUHf
+	Qtt8Zfabw9KvOaX6CmpaBBI69+NNalDxwyx3AZKGoGRaMXXsHwS1OZAlxAUuZ4BMtsEe8+
+	afQXGW1tlFYwvJZQMwn5XDrGLXLtv2w=
+Date: Wed, 7 Jan 2026 22:53:48 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767797662;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Y0xU9Dbp20DUGDHu2Ggngi6mIEuMC7eQW0YVbkY+7w=;
+	b=tD414w/mIde6l3B72sBn4u7OfuoErrciHo7366jQ9OQiSZdPl7UYhn3CD3s3k6cl6jtL9F
+	YoVuWbqKH/iaKAHu9nY01AndMcOJLJn1SJRu0Z6xhmp1jfly3LvY0h4tOVrqk8UbJBCZD3
+	+SJhBnie44tYPvVxQQghl1mJkAtZCVM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
+	cl@gentwo.org, dvyukov@google.com, glider@google.com, hannes@cmpxchg.org, 
+	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com, 
+	roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev, 
+	surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, tytso@mit.edu, 
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH V5 4/8] mm/slab: abstract slabobj_ext access via new
+ slab_obj_ext() helper
+Message-ID: <n6kyluk3nahdxytwek4ijzy4en6mc6ps7fjjgftww4ith7llom@cijm4who24w2>
+References: <20260105080230.13171-1-harry.yoo@oracle.com>
+ <20260105080230.13171-5-harry.yoo@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260107063911.15299-1-alexs@kernel.org>
-X-Rspamd-Queue-Id: 26B6114000E
-X-Rspamd-Server: rspam03
-X-Stat-Signature: knoguaues87m1x1arcpjx7cjj8gqgurz
+In-Reply-To: <20260105080230.13171-5-harry.yoo@oracle.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CE110C0003
+X-Stat-Signature: nu3zquzcyybbyewkkyftrcndcfib3juc
 X-Rspam-User: 
-X-HE-Tag: 1767797622-682229
-X-HE-Meta: U2FsdGVkX19HN8q1h3WPrsobmtVB8tQkuSnRu0HeeLQFEAGE8Ls1+CQ+Q5pqACQ8Rzh2sgOn4yBWfqkVzr6CEXCeaZ0WleAfG7LaLCdq7djSkg4dhNvv+ZkPYPQBqWrYd8MHugB78dfSpN1kWShWRL9Rr1rG7GPI5KkguI02ZTbYzNdm6T8oi6L+6ag0vjWVgMPIOffDNSuiy7Bn8IN+lcyk+ZASfxApE7NhNOta09ndkje3x8Okq5cWe9jbrYMSalJnrpYhoRS4K5ZcX9F20XYV4IA+/hw9aXo9dNYfoQkEGvKLxfOTxNkGp5nglr4wnEn3LaksyzfpjFejvw97JQlDwTArRRy1A6nr4oicevZk7bQ9y4m5ybcxf5+kb7EVhD3p3Otf7YkGGbCQzx/aXyn7GriY0cNBy2ym1R8rH1btsc0ww9tvWDqTjTgajuSGAtGww+0si4FCmrYlz0SLX0jNn8hgQQcF63x4Lsk82WC3Lkkm4ynlEMM1cYwiELNLv38lQXPOspn+jc2XxUZ9XQ0qAb7Q6GD1iY9+6DucstLQbkBbTq+nYamtlp8D9fpMwg4sE63ucss48DpIfP0Q5N9vs2+HKDg4U6jjjP1VBlMnhOxCSVRrt6wfsGBNhp5NhTf/n9EyyZEB++e5u16ZQ5CMtPYWF+rt+ARcDlc2cTIq2cXa5bemGx/8FUljIl4mZF7f01KU3J0d+qPoVQ2O/y4Rd93qj+NBF/OHhJFl1o/hR0FtT3fH3KAytmfrK604ug/QbpzuXzlkE8DaioCTMqgOpLJKu7N/gFhPf+vmaYROuZS1LgvCVjqdUV26QJP9FwXVjoo/zJtxsej8mqZGWBV/EeQgxZpWbHpKa2nNIX+/PJGOjw/CuhS+al3f3lMq2MuuyW/EnNnRrHJ2dSY4lGUd96EJ1BAjrP1xwuR/eyiNT1FuU5LpxPzHkjKAN8KcdhsW5KB0KPTLW57OZSH
- WjOYFxBd
- 8CUzYwyj+cn5xDb/KTU/Ch7iunEQsi1UcnLZEPB/ctnaP0/nwlYQueTZ7Ij82zkATg2Hox34VCEdOFkjjDoYKKS6aWXDjXjCuAJwamX1XjA1SSwhqkuxo66g+IG689SQ/y1lwXlKmDaanQ+0IIQJFoicMCpTkY5+Z8lNtHzBaaFgV5ue8cJKdwbFnignGWDqtZvxU/EFj4QEt7BomF9BO3k5Z7HEth26uHiEoKXHxLR9lKBpj4LIgVR0pvKB4YKIPEfhWG2gVc3wRrfcVDPElNcMgA+cmHC600drzAtUX4Ymxo3vjkMz5V6JRw97Yvan4ArU/W0uSuWPZv6OC/sloYm875Q==
+X-HE-Tag: 1767797664-571416
+X-HE-Meta: U2FsdGVkX1/MTWA0HPN8mCt4d+hDlKh7RdD7KcOU9myRe1npafBd8czsy1jbDLiNKXUlvQQCmJubebUXzdbr/osMinHTzZl6lmhilXFNKUKPkwdgCkvvRFbHzaY8hteN97RD0n0DiEt//Sk1qoWp5NMubTmItjj2kOoaacvOESmKKwtqf2JGvOTABQzedenKXCl86EQaVWSvvdjS2AEiCSBmtfWxgyrPrbEjigMKpT0X/Tkv2Q6v5vyV5rYXT5ppxyTPzID4VWubYu6hxIL4o4FFufg6zMgY0oorNhXkmbzd5sFz7jyalTc5brhfYGnSXDkcO2rPbwAngLXddxaAdrBS1X5FAvk1eekFe71aGtZt4/c1TkeybwCPP0MuY8AiIBQT2qPcTP0LMRZ39kBJdkmgh9KbGHMfZ0HyvmPSXBK5/o2ztaUiTeJIgPKYVMSdYz6tPq7Of1ZNXfwpJaXhAt46pMV5kzLT+43UdZdoKebnbVlvdiod1EIF95rs7q49bAwpW8tKPxC+DPBF+ZTIrR2LW0rqkTXI+1CMcAwx/fFG2wrsJ92OAcFG2OYvOLa2SjVKDRRPEugfaCpjUfbQjO/70nYrcmh7WLcO4fTJ9Ia88StNsPROIvRTQe3/XTkXUVyb1gv1JQIkBYIvCOi7IvcAsRPXRlVF+3sduH1W2zL06pNqhpjkYAejjLCSB1r84emyRCEyaqvGXFw48jnUoMAnkhc0+pYF6W975X9NT9lDj5VWS9PFN8RwAVEtxkZz6MdjVLOWLBURlP52HBXFecKx9o9SvuOQVLBeuiVYiXGceEBdtifv+oNConEnfd9bf/bVeD+b1p4dvQMlxNOFggxr8j54TGh2xjlwNi3afAZ/XxS35OeaBdRWZx1sljI5OrMobSU2RE1cvN8BCBBqoWKYiM4bNmZESCDx67vd0OVcHdmqCnfIdEG+OkeRwGsTxQ6l74m8KyXhe438NpV
+ ZgRQWRto
+ focAhX7Rkrl6gpYJyjmv2AenS51lJhP+btmj4HZsqiT60D4ZAntbyLOefKo+aZsuikNAKVzJegFOsf5Qgy0KzcJvdPIxQC9NyZhO0cGqJLbTNoBlJKrBTWaRniUgWa7Ckb3aEBZ0XhWO2M74Bw7CmEkOPJFxlVhhjqx++ho1eNnrWKj29I262lnWEw3/4dYvF/JtN696fGLjcbdXLatHTV+bbgpdUKi3OwxR6qlCLczVMEuuVSXhBZ3hvKHd/ZgSFQ/EUk6pgwb8KzThfC6IQrFO/Lua3TLBk67iRX5M0BlCYFmFAsjd9dIaTrXtzHNwmA9PuN2r5RNVyaEDS4c+LeU4g/yWuls2Umrd/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,11 +94,353 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 07, 2026 at 02:39:10PM +0800, alexs@kernel.org wrote:
-> From: Alex Shi <alexs@kernel.org>
+On Mon, Jan 05, 2026 at 05:02:26PM +0900, Harry Yoo wrote:
+> Currently, the slab allocator assumes that slab->obj_exts is a pointer
+> to an array of struct slabobj_ext objects. However, to support storage
+> methods where struct slabobj_ext is embedded within objects, the slab
+> allocator should not make this assumption. Instead of directly
+> dereferencing the slabobj_exts array, abstract access to
+> struct slabobj_ext via helper functions.
 > 
-> No any archs has ever define __HAVE_ARCH_P4D_ALLOC_ONE/__HAVE_ARCH_P4D_FREE
-> So let's remove them.
+> Introduce a new API slabobj_ext metadata access:
+> 
+>   slab_obj_ext(slab, obj_exts, index) - returns the pointer to
+>   struct slabobj_ext element at the given index.
+> 
+> Directly dereferencing the return value of slab_obj_exts() is no longer
+> allowed. Instead, slab_obj_ext() must always be used to access
+> individual struct slabobj_ext objects.
+> 
+> Convert all users to use these APIs.
+> No functional changes intended.
+> 
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
+>  mm/memcontrol.c | 23 +++++++++++++++-------
+>  mm/slab.h       | 43 +++++++++++++++++++++++++++++++++++------
+>  mm/slub.c       | 51 ++++++++++++++++++++++++++++---------------------
+>  3 files changed, 82 insertions(+), 35 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index be810c1fbfc3..fd9105a953b0 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2596,7 +2596,8 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
+>  	 * Memcg membership data for each individual object is saved in
+>  	 * slab->obj_exts.
+>  	 */
+> -	struct slabobj_ext *obj_exts;
+> +	unsigned long obj_exts;
+> +	struct slabobj_ext *obj_ext;
+>  	unsigned int off;
+>  
+>  	obj_exts = slab_obj_exts(slab);
+> @@ -2604,8 +2605,9 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
+>  		return NULL;
+>  
+>  	off = obj_to_index(slab->slab_cache, slab, p);
+> -	if (obj_exts[off].objcg)
+> -		return obj_cgroup_memcg(obj_exts[off].objcg);
+> +	obj_ext = slab_obj_ext(slab, obj_exts, off);
+> +	if (obj_ext->objcg)
+> +		return obj_cgroup_memcg(obj_ext->objcg);
+>  
+>  	return NULL;
+>  }
+> @@ -3191,6 +3193,9 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+>  	}
+>  
+>  	for (i = 0; i < size; i++) {
+> +		unsigned long obj_exts;
+> +		struct slabobj_ext *obj_ext;
+> +
+>  		slab = virt_to_slab(p[i]);
+>  
+>  		if (!slab_obj_exts(slab) &&
+> @@ -3213,29 +3218,33 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+>  					slab_pgdat(slab), cache_vmstat_idx(s)))
+>  			return false;
+>  
+> +		obj_exts = slab_obj_exts(slab);
+>  		off = obj_to_index(s, slab, p[i]);
+> +		obj_ext = slab_obj_ext(slab, obj_exts, off);
+>  		obj_cgroup_get(objcg);
+> -		slab_obj_exts(slab)[off].objcg = objcg;
+> +		obj_ext->objcg = objcg;
+>  	}
+>  
+>  	return true;
+>  }
+>  
+>  void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
+> -			    void **p, int objects, struct slabobj_ext *obj_exts)
+> +			    void **p, int objects, unsigned long obj_exts)
+>  {
+>  	size_t obj_size = obj_full_size(s);
+>  
+>  	for (int i = 0; i < objects; i++) {
+>  		struct obj_cgroup *objcg;
+> +		struct slabobj_ext *obj_ext;
+>  		unsigned int off;
+>  
+>  		off = obj_to_index(s, slab, p[i]);
+> -		objcg = obj_exts[off].objcg;
+> +		obj_ext = slab_obj_ext(slab, obj_exts, off);
+> +		objcg = obj_ext->objcg;
+>  		if (!objcg)
+>  			continue;
+>  
+> -		obj_exts[off].objcg = NULL;
+> +		obj_ext->objcg = NULL;
+>  		refill_obj_stock(objcg, obj_size, true, -obj_size,
+>  				 slab_pgdat(slab), cache_vmstat_idx(s));
+>  		obj_cgroup_put(objcg);
+> diff --git a/mm/slab.h b/mm/slab.h
+> index e767aa7e91b0..6bd8e018117d 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -509,10 +509,12 @@ static inline bool slab_in_kunit_test(void) { return false; }
+>   * associated with a slab.
+>   * @slab: a pointer to the slab struct
+>   *
+> - * Returns a pointer to the object extension vector associated with the slab,
+> - * or NULL if no such vector has been associated yet.
+> + * Returns the address of the object extension vector associated with the slab,
+> + * or zero if no such vector has been associated yet.
+> + * Do not dereference the return value directly; use slab_obj_ext() to access
+> + * its elements.
+>   */
+> -static inline struct slabobj_ext *slab_obj_exts(struct slab *slab)
+> +static inline unsigned long slab_obj_exts(struct slab *slab)
+>  {
+>  	unsigned long obj_exts = READ_ONCE(slab->obj_exts);
+>  
+> @@ -525,7 +527,30 @@ static inline struct slabobj_ext *slab_obj_exts(struct slab *slab)
+>  		       obj_exts != OBJEXTS_ALLOC_FAIL, slab_page(slab));
+>  	VM_BUG_ON_PAGE(obj_exts & MEMCG_DATA_KMEM, slab_page(slab));
+>  #endif
+> -	return (struct slabobj_ext *)(obj_exts & ~OBJEXTS_FLAGS_MASK);
+> +
+> +	return obj_exts & ~OBJEXTS_FLAGS_MASK;
+> +}
+> +
+> +/*
+> + * slab_obj_ext - get the pointer to the slab object extension metadata
+> + * associated with an object in a slab.
+> + * @slab: a pointer to the slab struct
+> + * @obj_exts: a pointer to the object extension vector
+> + * @index: an index of the object
+> + *
+> + * Returns a pointer to the object extension associated with the object.
+> + */
+> +static inline struct slabobj_ext *slab_obj_ext(struct slab *slab,
+> +					       unsigned long obj_exts,
+> +					       unsigned int index)
+> +{
+> +	struct slabobj_ext *obj_ext;
+> +
+> +	VM_WARN_ON_ONCE(!slab_obj_exts(slab));
+> +	VM_WARN_ON_ONCE(obj_exts != slab_obj_exts(slab));
+> +
+> +	obj_ext = (struct slabobj_ext *)obj_exts;
+> +	return &obj_ext[index];
+>  }
+>  
+>  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+> @@ -533,7 +558,13 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  
+>  #else /* CONFIG_SLAB_OBJ_EXT */
+>  
+> -static inline struct slabobj_ext *slab_obj_exts(struct slab *slab)
+> +static inline unsigned long slab_obj_exts(struct slab *slab)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline struct slabobj_ext *slab_obj_ext(struct slab *slab,
+> +					       unsigned int index)
 
-No, let's not.
+Hi Harry, just a small nit: the parameter list of slab_obj_ext() should
+include `unsigned long obj_exts`.
+
+-- 
+Thanks,
+Hao
+
+>  {
+>  	return NULL;
+>  }
+> @@ -550,7 +581,7 @@ static inline enum node_stat_item cache_vmstat_idx(struct kmem_cache *s)
+>  bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+>  				  gfp_t flags, size_t size, void **p);
+>  void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
+> -			    void **p, int objects, struct slabobj_ext *obj_exts);
+> +			    void **p, int objects, unsigned long obj_exts);
+>  #endif
+>  
+>  void kvfree_rcu_cb(struct rcu_head *head);
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 0e32f6420a8a..84bd4f23dc4a 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2042,7 +2042,7 @@ static bool freelist_corrupted(struct kmem_cache *s, struct slab *slab,
+>  
+>  static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
+>  {
+> -	struct slabobj_ext *slab_exts;
+> +	unsigned long slab_exts;
+>  	struct slab *obj_exts_slab;
+>  
+>  	obj_exts_slab = virt_to_slab(obj_exts);
+> @@ -2050,13 +2050,15 @@ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
+>  	if (slab_exts) {
+>  		unsigned int offs = obj_to_index(obj_exts_slab->slab_cache,
+>  						 obj_exts_slab, obj_exts);
+> +		struct slabobj_ext *ext = slab_obj_ext(obj_exts_slab,
+> +						       slab_exts, offs);
+>  
+> -		if (unlikely(is_codetag_empty(&slab_exts[offs].ref)))
+> +		if (unlikely(is_codetag_empty(ext->ref)))
+>  			return;
+>  
+>  		/* codetag should be NULL here */
+> -		WARN_ON(slab_exts[offs].ref.ct);
+> -		set_codetag_empty(&slab_exts[offs].ref);
+> +		WARN_ON(ext->ref.ct);
+> +		set_codetag_empty(&ext->ref);
+>  	}
+>  }
+>  
+> @@ -2176,7 +2178,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  
+>  static inline void free_slab_obj_exts(struct slab *slab)
+>  {
+> -	struct slabobj_ext *obj_exts;
+> +	unsigned long obj_exts;
+>  
+>  	obj_exts = slab_obj_exts(slab);
+>  	if (!obj_exts) {
+> @@ -2196,11 +2198,11 @@ static inline void free_slab_obj_exts(struct slab *slab)
+>  	 * NULL, therefore replace NULL with CODETAG_EMPTY to indicate that
+>  	 * the extension for obj_exts is expected to be NULL.
+>  	 */
+> -	mark_objexts_empty(obj_exts);
+> +	mark_objexts_empty((struct slabobj_ext *)obj_exts);
+>  	if (unlikely(READ_ONCE(slab->obj_exts) & OBJEXTS_NOSPIN_ALLOC))
+> -		kfree_nolock(obj_exts);
+> +		kfree_nolock((void *)obj_exts);
+>  	else
+> -		kfree(obj_exts);
+> +		kfree((void *)obj_exts);
+>  	slab->obj_exts = 0;
+>  }
+>  
+> @@ -2225,26 +2227,29 @@ static inline void free_slab_obj_exts(struct slab *slab)
+>  #ifdef CONFIG_MEM_ALLOC_PROFILING
+>  
+>  static inline struct slabobj_ext *
+> -prepare_slab_obj_exts_hook(struct kmem_cache *s, gfp_t flags, void *p)
+> +prepare_slab_obj_ext_hook(struct kmem_cache *s, gfp_t flags, void *p)
+>  {
+>  	struct slab *slab;
+> +	unsigned long obj_exts;
+>  
+>  	slab = virt_to_slab(p);
+> -	if (!slab_obj_exts(slab) &&
+> +	obj_exts = slab_obj_exts(slab);
+> +	if (!obj_exts &&
+>  	    alloc_slab_obj_exts(slab, s, flags, false)) {
+>  		pr_warn_once("%s, %s: Failed to create slab extension vector!\n",
+>  			     __func__, s->name);
+>  		return NULL;
+>  	}
+>  
+> -	return slab_obj_exts(slab) + obj_to_index(s, slab, p);
+> +	obj_exts = slab_obj_exts(slab);
+> +	return slab_obj_ext(slab, obj_exts, obj_to_index(s, slab, p));
+>  }
+>  
+>  /* Should be called only if mem_alloc_profiling_enabled() */
+>  static noinline void
+>  __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
+>  {
+> -	struct slabobj_ext *obj_exts;
+> +	struct slabobj_ext *obj_ext;
+>  
+>  	if (!object)
+>  		return;
+> @@ -2255,14 +2260,14 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
+>  	if (flags & __GFP_NO_OBJ_EXT)
+>  		return;
+>  
+> -	obj_exts = prepare_slab_obj_exts_hook(s, flags, object);
+> +	obj_ext = prepare_slab_obj_ext_hook(s, flags, object);
+>  	/*
+>  	 * Currently obj_exts is used only for allocation profiling.
+>  	 * If other users appear then mem_alloc_profiling_enabled()
+>  	 * check should be added before alloc_tag_add().
+>  	 */
+> -	if (likely(obj_exts))
+> -		alloc_tag_add(&obj_exts->ref, current->alloc_tag, s->size);
+> +	if (likely(obj_ext))
+> +		alloc_tag_add(&obj_ext->ref, current->alloc_tag, s->size);
+>  	else
+>  		alloc_tag_set_inaccurate(current->alloc_tag);
+>  }
+> @@ -2279,8 +2284,8 @@ static noinline void
+>  __alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
+>  			       int objects)
+>  {
+> -	struct slabobj_ext *obj_exts;
+>  	int i;
+> +	unsigned long obj_exts;
+>  
+>  	/* slab->obj_exts might not be NULL if it was created for MEMCG accounting. */
+>  	if (s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE))
+> @@ -2293,7 +2298,7 @@ __alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p
+>  	for (i = 0; i < objects; i++) {
+>  		unsigned int off = obj_to_index(s, slab, p[i]);
+>  
+> -		alloc_tag_sub(&obj_exts[off].ref, s->size);
+> +		alloc_tag_sub(&slab_obj_ext(slab, obj_exts, off)->ref, s->size);
+>  	}
+>  }
+>  
+> @@ -2352,7 +2357,7 @@ static __fastpath_inline
+>  void memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
+>  			  int objects)
+>  {
+> -	struct slabobj_ext *obj_exts;
+> +	unsigned long obj_exts;
+>  
+>  	if (!memcg_kmem_online())
+>  		return;
+> @@ -2367,7 +2372,8 @@ void memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
+>  static __fastpath_inline
+>  bool memcg_slab_post_charge(void *p, gfp_t flags)
+>  {
+> -	struct slabobj_ext *slab_exts;
+> +	unsigned long obj_exts;
+> +	struct slabobj_ext *obj_ext;
+>  	struct kmem_cache *s;
+>  	struct page *page;
+>  	struct slab *slab;
+> @@ -2408,10 +2414,11 @@ bool memcg_slab_post_charge(void *p, gfp_t flags)
+>  		return true;
+>  
+>  	/* Ignore already charged objects. */
+> -	slab_exts = slab_obj_exts(slab);
+> -	if (slab_exts) {
+> +	obj_exts = slab_obj_exts(slab);
+> +	if (obj_exts) {
+>  		off = obj_to_index(s, slab, p);
+> -		if (unlikely(slab_exts[off].objcg))
+> +		obj_ext = slab_obj_ext(slab, obj_exts, off);
+> +		if (unlikely(obj_ext->objcg))
+>  			return true;
+>  	}
+>  
+> -- 
+> 2.43.0
+> 
 
