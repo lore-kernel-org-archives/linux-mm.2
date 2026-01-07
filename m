@@ -4,112 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 268D4CF6BE1
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 00:59:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F545CF6BE3
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 01:12:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53B616B0092; Tue,  6 Jan 2026 19:59:40 -0500 (EST)
+	id B3C066B0092; Tue,  6 Jan 2026 20:12:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C87D6B0093; Tue,  6 Jan 2026 19:59:40 -0500 (EST)
+	id AE9DD6B0093; Tue,  6 Jan 2026 20:12:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F56D6B0095; Tue,  6 Jan 2026 19:59:40 -0500 (EST)
+	id 9CA976B0095; Tue,  6 Jan 2026 20:12:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C9E66B0092
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 19:59:40 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BBD4DC647A
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 00:59:39 +0000 (UTC)
-X-FDA: 84303360078.15.BC478D5
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CE26020005
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 00:59:37 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="n5dgifJ/";
-	spf=pass (imf13.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B77C6B0092
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 20:12:19 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2D669BE988
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 01:12:19 +0000 (UTC)
+X-FDA: 84303391998.19.3B7BAD1
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 03726140008
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 01:12:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="DfFSxG/0";
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767747577;
+	s=arc-20220608; t=1767748337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gJ5as4LhzcRllyAELyn/zLo0VkOA5iMY3p1arVVHAA8=;
-	b=1au9uM0A0PTlKRnIHibgWUFCQm8rFRJatGaBLJ6TXGmD9VSaRNmtOvGueSmZBIqoY+AW4g
-	QcfeBytWxHZOmw214aWpfdR+X0pkVDKSPUzxn6apfjjz4g1HmzO0f8zWa1LXvR6dbvOkQ/
-	LrVmBwUzddNfk7chwV8PGHSKkRS7HxI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767747577; a=rsa-sha256;
-	cv=none;
-	b=zhNiuhO5ahMY1UqN0/cUQWtPD8xAV7pff5V0ZPui2F5ZIls9ZFf2QehlgnJws12KUUNz9B
-	ka7F/h3LO8fpw4ML50sIwwmXZLxcvGgMIIE8zTeXQ4DSi2fyZ5sMTSY7/jgmVVAnl9f5vL
-	NIvCJa3cUhsLXk/CzFPho3t40C3hmao=
+	bh=+i3gGFDzaYHfwvORnJ8f6KFDJoSc7Htgc7Z9TbE2xJs=;
+	b=s5I6bnAU3CcBVXHuU9/EnlivXx11vILgZEk7aW0aHYTr8L9iWDaqrw5hUfWak8GCRR/l+V
+	JCksQzxMvvVAIrbZOCM+c75L3yvf3PerkiAJTRhPeZPYraqqbL1OpN5buMNPUqRbT74x3n
+	KBSSGqLbPZGMeGSIGt0+XJwrHPKrbqE=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="n5dgifJ/";
-	spf=pass (imf13.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7f651586be1so184039b3a.1
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 16:59:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767747576; x=1768352376; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gJ5as4LhzcRllyAELyn/zLo0VkOA5iMY3p1arVVHAA8=;
-        b=n5dgifJ/+elzXI6YICu4ZtTmAMLKx8ZU44Gup0ETrLmj/RT2fiVZKXH0GA09gTA2ki
-         eKhZMdmoFypQ8YOHimJJhAMqL5+LhTY1WQqEPEABPcOa72pUnD8FvXE/+xl+dE8c+DuU
-         SlFljvEvF7XLkgdTLHsM1nVes0TV3n7fVcwW4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767747576; x=1768352376;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gJ5as4LhzcRllyAELyn/zLo0VkOA5iMY3p1arVVHAA8=;
-        b=OcqJlw1m2+d2nerQRAr/Uu6nptWY15lGf+HjdNI+4y6AxSG7QcqHMMevJN1vp7Wn2C
-         fYUfTOk8ExBFqH2N/+dsX/8l5kBAQb+iP4vgH/MoDQV+iFX76PqDj1tRU/WVBs18584c
-         JzfbGpkavnQWv64SWwlui4KJZ8GAWKa9GxTzl9M6JL1W4sPRsuDhBfV0uitfJibqYGUL
-         gqGxnSM4qpfACXjvfdwSRu+jMntZaX1FyJvqwvMa42FkoWOtfe12ao1iejFuJ3AnKMeY
-         45KV11NG0o1MpbqZH4FuhIAfhhbJrfXd+9Joy21fmarf8RZOUqxSNc1CnBrv9UZjwr0y
-         t9TQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVF205DV/Zab7IYbiDSMHmhUZxi7Ux8be/GBCJNv4JgUOOoCC/sDALZngNi2Sf11YrbmwKBlU1zdg==@kvack.org
-X-Gm-Message-State: AOJu0YzuTV+vlpfVb355jt9HU+KCP+w4wr8djoIdfNL3eWH0+sXK5JYG
-	NimGF27q2KTpg4XO210jdY+RFYhb89o1eQgGJAOWZW6TExU6Ai6UWUtPG4L9zhYGsw==
-X-Gm-Gg: AY/fxX4SDoJr3c2UH24djf8hVxgG/IUlK67X/i7D5cSCOFJ70WfVJyg/bLkzAbU3a8S
-	NHa5Pyz7WEH8kQhKPJu4412B0kOL2QVrBRPRxMXIpgWMdGGdfQ/g+GzCxBI8VTGsCgtOx5oGlmC
-	bx7J0mpAKvgWl8ldkDdCS/jp+4xRyIAcz6SXMqM1hdjvOnrrTr0ObePNZx4cqJpE4l9Nmt8Idgp
-	aLnZxYkdY7hliCAnu3N6r3v2k1UZqwFdEOmSHAKjDf5d1zfDGMqAC6OdZPunAq9UIDeJbuD+06p
-	UGWyPXeibAjpHLx5hHpZZeficQJmXcIui2ZwUm39H75DHHlfxY18pC0RxNRKbMs4Q29PTpTc3n8
-	SRq+lnrT5E6OdK4C/gCl8a8eNX2O8s8Xr2c8r+6q9PYSQvIN+3u9cnEUCb2y6Bm2xf/0SRnoWhe
-	sBVJAFKIQP0zSBbsEdLFG9eGma9O1+EnFfHLrjspLvHeCeazhRgtI=
-X-Google-Smtp-Source: AGHT+IHiiFoo/hMdbf/XNJiS7/wHmzPvr2XbFk80T7AIPfNTradLcbzX8li7iFhBVjCO9rReLVFSaQ==
-X-Received: by 2002:a05:6300:218e:b0:2b9:6b0b:66be with SMTP id adf61e73a8af0-3898e9ea7aemr960993637.14.1767747576570;
-        Tue, 06 Jan 2026 16:59:36 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:9f6a:2617:8891:93ff])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f6af48d8esm10784a91.8.2026.01.06.16.59.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 16:59:35 -0800 (PST)
-Date: Wed, 7 Jan 2026 09:59:30 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH] zsmalloc: use actual object size to detect spans
-Message-ID: <og2yztajena3ywyvus6xgc5vlrrecjaynyezygpsrt64kjkqlv@agceajv57eet>
-References: <20260106042507.2579150-1-senozhatsky@chromium.org>
- <qh2p3k5c2ulb5g2zmckhrm4o2eoruatb5lnumkrwrvmsxwcn3s@nh5vx4kjn5in>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="DfFSxG/0";
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767748337; a=rsa-sha256;
+	cv=none;
+	b=egLhpzQY4Jt9HtHAYkwOitAQXDjr2PfvbhJ9qFOTLl78QzxhpmRk4o6iL/jOc/a8hJ6tpV
+	tin19ssmzlrcjmpKePSej+Z/F11wKSHElutMNdF8lICDaEtVUdNq2eq4zR0vfzTPrc7eCu
+	2JJswNMYaSNgy9xVAF9gXH/pWz5DpHg=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1767748333; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=+i3gGFDzaYHfwvORnJ8f6KFDJoSc7Htgc7Z9TbE2xJs=;
+	b=DfFSxG/0o/p43Obu1PgEVhTzbRkHVsp8vczq4Mk3mYfL9Ov6otXk8ux/0zf7l0tcJr/SeaCQEGI2svJ8G9OfvvqtNuKNfDg4Vtwm3igjV9xpoao7QE3VrhkcSnHNrnkgUxPNJhtOksgURbd/+QgQg0EDj9Qe+PYh6h5MvSqH1sw=
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WwWzou9_1767748331 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 07 Jan 2026 09:12:11 +0800
+Message-ID: <6da7b976-2f95-4fa3-be1c-0a2b7ac29277@linux.alibaba.com>
+Date: Wed, 7 Jan 2026 09:12:11 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <qh2p3k5c2ulb5g2zmckhrm4o2eoruatb5lnumkrwrvmsxwcn3s@nh5vx4kjn5in>
-X-Stat-Signature: xptxd4rjruc77szbmqzz6rkwmdczc1rx
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CE26020005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/shmem: fix uninitialized folio in shmem_symlink
+To: Brian Foster <bfoster@redhat.com>
+Cc: Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>,
+ akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Hugh Dickins <hughd@google.com>,
+ syzbot+178fff6149127421c2cc@syzkaller.appspotmail.com
+References: <20251224094027.65842-1-21cnbao@gmail.com>
+ <aUwcV2HhtdiXXxfJ@casper.infradead.org>
+ <CAGsJ_4whKLWiw6LNexFPHTFWB1QbSrAwrBtspuc=c8fM2=WnvQ@mail.gmail.com>
+ <bdb7f7c6-ecf5-4da1-a11a-cc19c77fe4f2@linux.alibaba.com>
+ <aVvDcEB583Yuolm_@bfoster>
+ <2b12f63b-ceab-4d3e-a06f-f41e6b1b2d23@linux.alibaba.com>
+ <aV0wqdi3L67LQrcF@bfoster>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <aV0wqdi3L67LQrcF@bfoster>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: bob84x5rugnxae9ge8d9xriipfzr5zcn
 X-Rspam-User: 
-X-HE-Tag: 1767747577-134153
-X-HE-Meta: U2FsdGVkX1/TxQd8CCcEOtYni6/SK2ZIFKwRWlBqyzc4+D2rs17pOeU1hj34dUhOw6+mU19ZzI3WuHWhASk5fz4PTu9UcN7E1yYWuThEz0VL0v8kGeXxJOVwf6j1XVnqSo8TDSIyl+VgD4Dhbp4UXNcTLAFYMCgPsLXOl8blUSMTbd3WngZhuIwLelAxvY14uaq0PDzDgt+DbwtIl3g5msH7NHwxbOqOXH447+9UUVZCIZQWLcL+eMTe3wbL2kMECoz6rRUV+O5+8ngVnejSpv0nd189yzPW/2TOH6d+hrH8RMGcQ4auiDW7PNGXb5qVcKQ6ex0aDKCugN4gjnpbjsntD2zpJeRaLBihGDdrClh5ZAcCxHwbo47dod/byYAYeLTThzwXkjZoBq0hOiVL9MdUsHMbBUh/+CJxi92IHfshgz2C4LHAIjBMQqWLVVbw7//rGqFtfmezqTVy/UY5IJxvSb7sSz4GNpDxJT6UKQ/pVU/xkBgOpNixSpzArF8cf3fKbS0ysbNh6He8lGjkOeZc+arVaEOnh2ErbyE2k6zZIwBsFAfb+lPFHuJJkUD6iZSGpBP/eN2Rd3kbUsob324m3FSPcYu+FMxsppUMMo65B9C+ySHbMEU0ROP1STQlX3PIA/UT+TeB2bKwToIy8E+khVAJr20y5uRX4cYZrG0+slDzS9sqQ5qAZMOUnSKZWTut5maiz0f4No5UXUtgWGaqT22eBPwyZSerHyEViCqUOwMqUMnwi0LPKRwbiumEY1K5zEiSnJLXAnzBlvYWCfoNMQyIcGvnNAohOMupydjnNi1Q20jjC2u0nNnqyF3LzWNoQr6RFdsnS+AANyvu2bFGIOps+5lwVMooMeDCaMAGFoq3oQaPLUVL4em+yH6ha3OzVjJVavUr9PX10yZaq2wTs+YBIzAexUzd0jqRbi90Y8V0sHDQ8V5jJvZpXkhCRCJBtSaVZ2Gz3Ro1PPd
- i2TWaalM
- mAxFudYK49cWxNs+kIzW4jNI44XaxcM01qv5cwTuG2/TbKwJ2kORqzeV3y/OOUPb4YrkAZfM/vMSpr/4uzzJZHIyeK+1xkXskcdnVbH3Wajh5mGxx0S/G0hr1rM9OPwKazOd+PXEi+E2ulK6gAo0EvEsMbjD7+HxBIEGNKUzfueqPQHZuEqzG/Ws7BBNaHz/luoPJwePMyHEwbDoFEEA6mS7RNhOY/oJFzoWtiZFiyThYNwpVE7UKERUcbme8k6jug0UgLX5ztAW5kH3OHIwupf6rd0Y3hpzNM4J3jSl72oZOo3jaZkuIfqHTshnXNcX0BrYzyOwPlGe4HYDNgyLgf4OQ8ggBUhLdOhVJ9vVRAN5NM/A=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 03726140008
+X-HE-Tag: 1767748335-717269
+X-HE-Meta: U2FsdGVkX1/YyQyc1/qp34L0GY2MGw7K5umUAqWcqHkQzxjr4PHS6GxSBkS+231Or9o75JcnBRqAFTWeU1zgHjBs+hCwcgCUd7cmnA7n/Q++sSU6zKD15yXcrueaqhG1K3e3pD9B/wo1spka6DrmOk8pMOLQwphgJfxVSLJ1KFyBKGEdmwz6LYGuPOV7KAo2Sg84K56qH1XRy4wsu2MZ8GbTPmwO7Vob7hKxN+cO512jxPT3YLzLrkpWVhwi9TRTbvhPOKH7yvtWcnJNo86qlQ2KWqKbijcl/qDqxaG08TP2g3AIT/FEvbwYh13wo6RUdM8kA3Y8+oDQBM6FPuIFFefcS6LDHZkE/jMktDhOqYYnDnsdjnCap6AGY2Tk5ammw/tMhP0gCGkE+cna8+onTFaCDJNJ+wADNTRkZfWX/UJM098q4ZS+6UZ8df0MJWrLvaOJDx995x5O2Avt+H8KSCtGLX90Y+B82kTNEYCB/IS2L8sZ0vKj6ynAWjpldvecRiOFS3H7VCNNSQwNLKMeLGv9yPIrgzyqNd5LhX3HeZcR3fEp1qC9W5EaWwQykOOwnKETCxx8qK0VFdGxNuaAzrGrIVV3HBCeNiHyhrSQSbJ1J5ytBxLvHoXyZj81Ar2xR6FaVB8QPbsfJdRuHlUSdw3YBmcIqsDuD8kWrtIO1So5fGrOwcfhLTpu+4M/u6s/3JBix4Bx1vs48PxYzGvg19C9t7/T8N2YEUa46I694hynKXhYilsm5mRnTEIah5dBzJNCG89NgQjUdDnqhJzD7PGg105+D+YGdpeCx52Nfx7Fq69FMK9rr6JwjBE702IdjZRzWeDbJji6pS2oLo3v7OnEBTOi18VGxNes29IEwB1+sTHh0A160PLYna3KBCnQwO42lCb7yiY9FYFw/vvpS9HFRLqbMfLgts2XyvPKpSLAfZZX/rx7wtic1g7o5hP8Sv6AjBh72xAfy1AOgsq
+ AiAvJZb0
+ ojwx1bfBlpuAXT3xS+xer+cNPnMhMklJhSR2Blhk5LUxOje2RwHMVft5moIrjUucifOxKDqqaVZxpQW7ML3LhszoQn/9NraUasXJTTcd8gRojH5NA9hfYWs8EbDHYaqpVG9PlCFAuhxBSVcsgPt9HH84CFwpyu9lmRevS/tdijHOq9FfAQzsQThNtbGjfw9yyqDexJUcSkZi/yodAxgUWUj0MKX+35D4Fo4fSDXIyUiia3xI05i6oO/Ai7R0FVl4x2hFGdKGflwuqLZxiNZWh3LY43lTVHkvR9XBaTYT9W/lbbis/Imxu2XsFWjsN1Chd17XZUMdUWi0pxdF37GffvJLFOfp8nQ2B/l5oMV/6IWc0l6RThTgqCPcSpX8LBn2qe+0ag5dfTjVJEBYTsOaBnIA6rcA/7LmD01EcL+b03afDX0NRy/0mKzYW58YrGxt8ZycqX65ooJ6r7cq6MLWtqMU7ZCfMghVeW9g1H2IYt9XzRmMEdcEc4APWAJtWFV1Hg9LlUiwQ8OP+rrA9ko2sYccwbgyoZ5gBgBo02GRGhNYibcgmnNhWHLMyQA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,90 +94,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/07 00:23), Yosry Ahmed wrote:
-> Instead of modifying mem_len, can we modify 'off' like zs_obj_write()
-> and zs_obj_read_end()? I think this can actually be done as a prequel to
-> this patch. Arguably, it makes more sense as we avoid unnecessarily
-> copying the handle (completely untested):
-> 
-> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> index 5bf832f9c05c..48c288da43b8 100644
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -1087,6 +1087,9 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
->         class = zspage_class(pool, zspage);
->         off = offset_in_page(class->size * obj_idx);
-> 
-> +       if (!ZsHugePage(zspage))
-> +               off += ZS_HANDLE_SIZE;
-> +
->         if (off + class->size <= PAGE_SIZE) {
->                 /* this object is contained entirely within a page */
->                 addr = kmap_local_zpdesc(zpdesc);
-> @@ -1107,9 +1110,6 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
->                                  0, sizes[1]);
->         }
-> 
-> -       if (!ZsHugePage(zspage))
-> -               addr += ZS_HANDLE_SIZE;
-> -
->         return addr;
->  }
->  EXPORT_SYMBOL_GPL(zs_obj_read_begin);
-> @@ -1129,9 +1129,10 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
->         class = zspage_class(pool, zspage);
->         off = offset_in_page(class->size * obj_idx);
-> 
-> +       if (!ZsHugePage(zspage))
-> +               off += ZS_HANDLE_SIZE;
-> +
->         if (off + class->size <= PAGE_SIZE) {
-> -               if (!ZsHugePage(zspage))
-> -                       off += ZS_HANDLE_SIZE;
->                 handle_mem -= off;
->                 kunmap_local(handle_mem);
->         }
-> 
-> ---
-> Does this work?
 
-Sounds interesting.  Let me try it out.
 
-> > +
-> > +	if (off + mem_len <= PAGE_SIZE) {
-> >  		/* this object is contained entirely within a page */
-> >  		addr = kmap_local_zpdesc(zpdesc);
-> >  		addr += off;
+On 1/6/26 11:56 PM, Brian Foster wrote:
+> On Tue, Jan 06, 2026 at 11:47:44AM +0800, Baolin Wang wrote:
+>>
+>>
+>> On 1/5/26 9:58 PM, Brian Foster wrote:
+>>> On Thu, Dec 25, 2025 at 06:08:08PM +0800, Baolin Wang wrote:
+>>>>
+>>>>
+>>>> On 2025/12/25 12:04, Barry Song wrote:
+>>>>> On Thu, Dec 25, 2025 at 6:01 AM Matthew Wilcox <willy@infradead.org> wrote:
+>>>>>>
+>>>>>> On Wed, Dec 24, 2025 at 10:40:27PM +1300, Barry Song wrote:
+>>>>>>> From: Barry Song <baohua@kernel.org>
+>>>>>>>
+>>>>>>> Uninitialized folio allocated in shmem_symlink() may be accessed
+>>>>>>> during swap-out, causing KMSAN BUG:
+>>>>>>
+>>>>>> This would be an unfortunate way to fix it.  The vast majority of
+>>>>>> symlinks are short, and we'll never access past the \0 in normal
+>>>>>> operation, so we'll be dirtying a lot of cachelines essentially to (1)
+>>>>>> shut up an automated tool and (2) optimise a corner case.
+>>>>>>
+>>>>>> How about this instead which delays zeroing to swapout?
+>>>>>
+>>>>> Matthew, thank you very much for your review, even during Christmas.
+>>>>> I would like to wish you a happy holiday!
+>>>>>
+>>>>> I am not quite sure, as shm symlinks do not seem very common. Since
+>>>>> allocating a folio requires a symname longer than 128 bytes (where
+>>>>> 128 == SHORT_SYMLINK_LEN), such cases appear even rarer.
+>>>>>
+>>>>> BTW, do we need to migrate the owner_2 flag in folio_migrate_flags()?
+>>>>> If so, I am not quite sure it is worth changing the hotpath to
+>>>>> accommodate this.
+>>>>
+>>>> +1. At least for me, using the 'PG_owner_2' flag alone to mark this uncommon
+>>>> case doesn't seem quite worthwhile.
+>>>>
+>>>
+>>> Also JFYI the post-eof swapout zeroing work (still pending) looks to me
+>>> like it would cover the swapout time case [1]. That's just if you wanted
+>>> to go that route here; creation time zeroing for the large symlink case
+>>> seems reasonable enough to me as well.
+>>
+>> IMHO, your post-eof zeroing work is intended to zero !uptodate or beyond EOF
+>> folios before swap-out, however, the symlink folio is uptodate and not
+>> beyond the EOF. I am not sure if it will make your code more complicated
+>> when you want to cover this symlink case.
+>>
 > 
-> In the else case below (spanning object), should we also use mem_len
-> instead of class->size to determine the copy size?
+> It already handles this particular case. The primary intent is to zero
+> all post-eof ranges that can be written out before that write out
+> happens. I.e., if you take a look at shmem_writeout(), if the folio
+> happens to straddle i_size we zero from i_size to the end of the folio.
 
-Good catch.
+Ah, yes. I’ve rechecked your patch set, and you’re right.
 
-> > @@ -1115,7 +1119,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
-> >  EXPORT_SYMBOL_GPL(zs_obj_read_begin);
-> >  
-> >  void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
-> > -		     void *handle_mem)
-> > +		     size_t mem_len, void *handle_mem)
-> >  {
-> >  	struct zspage *zspage;
-> >  	struct zpdesc *zpdesc;
-> > @@ -1129,7 +1133,11 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
-> >  	class = zspage_class(pool, zspage);
-> >  	off = offset_in_page(class->size * obj_idx);
-> >  
-> > -	if (off + class->size <= PAGE_SIZE) {
-> > +	/* Normal classes have inlined handle */
-> > +	if (!ZsHugePage(zspage))
-> > +		mem_len += ZS_HANDLE_SIZE;
-> > +
-> > +	if (off + mem_len <= PAGE_SIZE) {
-> >  		if (!ZsHugePage(zspage))
-> >  			off += ZS_HANDLE_SIZE;
+>> Why I prefer Barry's fix: First, the symlink folio is marked Uptodate after
+>> copying the symlink name, but the whole folio hasn’t been initialized, which
+>> seems unreasonable to me. Second, as I said before, using the 'PG_owner_2'
+>> flag to mark this uncommon case doesn’t seem worthwhile. Currently, IIUC the
+>> 'PG_owner_2' is only used by btrfs; if we ever want to remove the
+>> 'PG_owner_2', this uncommon symlink case shouldn’t block its removal.
+>>
 > 
-> With the proposed prequel patch, I think we won't need to handle
-> ZS_HANDLE_SIZE twice here. WDYT? Did I miss sth?
+> I think we're talking past eachother a bit here. ;) I'm pointing out
+> that outstanding work already covers writeout time zeroing so as to
+> avoid duplicate effort if this was trending that way. IOW, I think
+> there's no reason to consider the page flag thing, it's more of a
+> question of do you want the zeroing at creation time or not..
 
-Let me look more closely.
+Yes. It is very strange that a folio is marked uptodate but is not fully 
+initialized.
+
+> I again don't have a strong opinion on this, but I think I can see
+> justification either way. If the focus is a KMSAN splat at writeout
+> time, then it makes some sense to address it in that slower/less likely
+> path.
+> 
+> That said, if we step back and consider that if this were a buffered
+> write we'd tail zero the folio at write time before marking it uptodate,
+> this seems like more broadly consistent behavior with other fs' and
+> operations. This would be analogous to say XFS allocating a zeroed
+> metadata buffer on symlink creation to ensure the underlying block is
+> tail zeroed before it is eventually written to disk.
+> 
+> So to your point, maybe the most appropriate thing to do is cover
+> zeroing in both places..
+
+Agree.
+
+>> BTW, as I said before, I've reviewed and tested your post-eof work[1]. Maybe
+>> you could resend the patch set so that Hugh can take a look when he has
+>> time.
+>>
+> 
+> Yeah.. I know Hugh is busy and that isn't the highest priority series.
+> I'm just catching back up from time off myself so I can give it more
+> time before I repost it or anything.
+
+Sure.
 
