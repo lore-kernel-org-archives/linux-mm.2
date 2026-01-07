@@ -4,177 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A0BD0D14B
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 17:33:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81EDAD0D14D
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 17:40:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEF286B0092; Wed,  7 Jan 2026 12:33:57 -0500 (EST)
+	id E7BC96B0088; Wed,  7 Jan 2026 12:40:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9CA06B0093; Wed,  7 Jan 2026 12:33:57 -0500 (EST)
+	id DFF386B0092; Wed,  7 Jan 2026 12:40:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7D906B0095; Wed,  7 Jan 2026 12:33:57 -0500 (EST)
+	id D01416B0093; Wed,  7 Jan 2026 12:40:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B51116B0092
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:33:57 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 549761B1DF
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:33:57 +0000 (UTC)
-X-FDA: 84305865714.30.4AA5DF8
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C0F86C0005
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:33:54 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VwvCMpAP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MeynhhRU;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2gY2pQ7p;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=liITzl9A;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767807235; a=rsa-sha256;
-	cv=none;
-	b=hX07+yrAOfPqZ9k9mgMzFsZoqOw8YAKU9tmlt2NmF1pzm2IEodH2SKvZ23ukuplPpPxLuw
-	i7tvSdMMtG7lniAioFKuaPeXYXlCwaTkKeDzZtAZm0N7qLYk2uddo8fsYlLZCEc3ho4EvS
-	Fmd1FOIgwuMs1RNFlgVLadmEM7Wx7Iw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VwvCMpAP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MeynhhRU;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2gY2pQ7p;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=liITzl9A;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C1DA26B0088
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:40:01 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C95613AFBF
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:40:01 +0000 (UTC)
+X-FDA: 84305881002.13.05D18FF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A91C0180005
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:39:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2f1K5OSJ;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767807235;
+	s=arc-20220608; t=1767807599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HzkHQmvrK/B1YkN+O5Sdmu0pHn50wpfwPqP+1PsfPWM=;
-	b=YvPHIe+NxvkxTB0JzKzbZaC6lWVEzae4/xaZZv5/pSA7kxKz9GjqG9ZGt5Fzq0sh56ZbN4
-	HQps7F5itZOXubDstWXO6uuZYzelw2NFvE/C5LuJ1HTTpDkzaifFFahWYUgez0zgMpTJDY
-	gmROw1WT/n6EbC8Xe3U0r0PW6tZE3hk=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EEE8F5BCD3;
-	Wed,  7 Jan 2026 17:33:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767807233; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HzkHQmvrK/B1YkN+O5Sdmu0pHn50wpfwPqP+1PsfPWM=;
-	b=VwvCMpAPQcx6BYiezhcexughsPtKPZcxFTeCCQ+ekQZFnIRFUf+1sY7MaKhP5u2mhPRDEv
-	wM50lYbg2QmIA8emYBLXjwWyLUac0gONEPIMFKLVtFK40N8PqhlLFPwZ+nToPuZoa9pUzd
-	cDmBVOa7qkaAIizyA3T04mMl/uD3hpw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767807233;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HzkHQmvrK/B1YkN+O5Sdmu0pHn50wpfwPqP+1PsfPWM=;
-	b=MeynhhRUmSAf9tODh6Bi7gWJSCpMDhpEe/R515HuxkoBSx8N17MIs+WDKlhat4adfBLQ3N
-	txVmohiYnnk9w9AA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767807232; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HzkHQmvrK/B1YkN+O5Sdmu0pHn50wpfwPqP+1PsfPWM=;
-	b=2gY2pQ7pGGYy05qp7vN2ZDagoEx5vBJF/Uj4t4A6T8cOP5kKvWku/uJV70/W5jX3vmeUfy
-	9btzwrrBEvlToiLRR7DXiOG62zSMjasI47rfjpMFO7UugIFN31aacOyfL4Gt13zgcI8sCc
-	wrNUWYFVCrKpc6yMDF1KRxZg/+Y0e/c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767807232;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HzkHQmvrK/B1YkN+O5Sdmu0pHn50wpfwPqP+1PsfPWM=;
-	b=liITzl9AwLfKI4RsqDQgBrXDOu4GDBY5oyhmRnUwYDk8WhDK1BBnjYJpUkImDU++XFuZo2
-	FwVYE3ADl3wH0UBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C36623EA63;
-	Wed,  7 Jan 2026 17:33:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9b7qLgCZXmktfAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 07 Jan 2026 17:33:52 +0000
-Message-ID: <8c67dcbe-f393-4da6-8d24-f9da79c246c4@suse.cz>
-Date: Wed, 7 Jan 2026 18:33:52 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 8/8] mm/slab: place slabobj_ext metadata in unused
- space within s->size
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org
-Cc: andreyknvl@gmail.com, cl@gentwo.org, dvyukov@google.com,
- glider@google.com, hannes@cmpxchg.org, linux-mm@kvack.org,
- mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com,
- roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev,
- surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com,
- tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, hao.li@linux.dev
-References: <20260105080230.13171-1-harry.yoo@oracle.com>
- <20260105080230.13171-9-harry.yoo@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260105080230.13171-9-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=UTF-8
+	bh=YmIr4dzHC61lbm35kXh773bkeEbUlDp2phWyDKwKJR4=;
+	b=UHmlv5eLSDaUkfFJRrEicAKSkF6G1d/eNLV4jNjLT/gkDZPOZORB/DDQ22eQy2MnpThNeQ
+	yIUaVgN2bDNQgUs7hzMZW5CGiWjp1r+NIY4tO+uikeY7JLGcq9hpTujemLNN8ZBNqE1REu
+	5gIkLs1rjzTFcziXycp75Qo2Qxi0f88=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2f1K5OSJ;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767807599; a=rsa-sha256;
+	cv=none;
+	b=PiYeuLl6AypTHdN7jFGcisqoUZJ22QUNJfv023J1WMWpmTcFN9bFyVUt+9oG6MVVT37d/h
+	vEC4k5y7gopksghv9onXBLRSYAV0KSyaS8aPX5uUmU4mdOgMQShOGLtjRdmhYV+lgS3GKt
+	qFqaKHz/Opp6tk9Cyt0T7OqGVy8gz0Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 50F2E41B05;
+	Wed,  7 Jan 2026 17:39:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69E4C4CEF1;
+	Wed,  7 Jan 2026 17:39:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767807598;
+	bh=KfZfyEEKCtvxRu8W+wSUsbS3mWH7oGtOON/vMZdQN8E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=2f1K5OSJ8sn6yhAq/jUikcdALozL58hSRuhKS6YhXnZxESpg5BnmOITledFhtNxLi
+	 jhhZEzXiXcqusBfoa8EwPYZ+3tE3b18u8sqltR9sGn2DvJA4ltXogkIpYgEGBhGUst
+	 YSzZJ601r0oWZgSSJmuRTZ9Cff2p1C/bg9lihCrU=
+Date: Wed, 7 Jan 2026 09:39:57 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Bing Jiao <bingjiao@google.com>
+Cc: linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, David
+ Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng
+ <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 0/2] mm/vmscan: optimize preferred target demotion
+ node selection
+Message-Id: <20260107093957.12f7417670241f270783e2d1@linux-foundation.org>
+In-Reply-To: <20260107072814.2324646-1-bingjiao@google.com>
+References: <20260107072814.2324646-1-bingjiao@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A91C0180005
+X-Stat-Signature: 6car8tyziyxabkpfei4mmz8npoto4ouf
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C0F86C0005
-X-Stat-Signature: ty833unwxz48y8a8assj1zrazurkjtij
-X-HE-Tag: 1767807234-736041
-X-HE-Meta: U2FsdGVkX18N6WoiEVTFIjyg43Sv3hLT/jj6WlseTBJ6Dao9hFceLzY72+vGVIvh500Zf4k31IZfej4AAYidsblDZH01IShYwKap7tdM4iMIFpnjMmGBuxOeWFGpJkdMZrIuILnMRfhEM9RPNGk0SUOAfg2GCOAk2iYs0rv9js9dybSt/mirfr/OeV2EFK0Czd10q8EEuGUjsUbMGSKPl2fNA8Bi/FMNh2FJdhXW9KDAZceQ5v5qK/nEcTBZBb2a57Hsye8jOrnzQlRYnye7atHF01IOjbFgegtLZY+Z6ntfVkweVAu9JEXcKQVvqUxSlpQpFEW5DFriYgl0Q1VFhSRubDTfj+slnZ1JfFLBrXFLCR+sBRXVdviPkwtxvRMIIPF9LO7p3RjvRjI0Q1Kgc8DWK3FF1rcPgDnd4qMS9YP2VvBaYY5EjWFg56uyuzjhKzj524mGrSGTBoV9g0SyJ5Nqa6rqDUY3jbejGyFrmp4N4T8nZ3WJdCPCUb0VGRSbDq2LQ26P6nT77kZilaWxlUG8Y/+GjOZqoSByVy7bTxZf+Q6u6MnSoWAOEN7R6tc5WKil/6fZTIZE75XXtbXYk/TfgAsUYxnsRkER+2KXeQd6Krxh9kW1WdVrPdjo63RgDA2xpilyDHEzCTeol8EQZsgRQBn79EMNnhsjpYJA2udgR+InB+rMmresLlBEyolkq9M4VeZy3Af6zV3eStIGhCUzCAMgGMhWx5Uzx5te7t42dhvjAQEFXWuTfw8s7ZT8FzIO8LSFNhVBxyx0x75lsll6vQG9IJ+TYjaFrFqkb8Unstue/wePP9u/0GchH/f7XxSFDpxw9BLshQB04xYoxBXcbBLdjE2mPhI98LDU+ns4IxHaPb+9GKS3Q6W+SS+yW0gIk/rUWYD554IhDDmV4+D2d0gUrTOMuqxe3eixiW+txNI8zAuKCUFnfnkq9Kzx6QZPYU7DauLGVg9LXZx
- 3f0loUXa
- UBtQU6bBut5K7hcV2Q0ZwgC7dyS0W3tDSDygrZu02ISrljNNm+Y8PHZz53OmhwXBKuyzxqOjMq4BBdzRJQWIMbKfSOb3ottM5MNSn0I995GhYYstXkBXWe3kfBsDilnIEeKFKK4Vz4lSFByc/fLg7hWKBucln8Kuq313Z8Gq/Iwap9XT2mznEZXfQ/ZCvtT08hfwO0talnm7q92kuQHOsLM3/l1T/bCvkpZPCpBBtJ4R+/r7MK75vt/iz2CXtkpnHZZjclIToyzsalSO/lDT7gKsYexeUU3QagPj7IWq0OFZiIeolk7YqHNwkvJneBAEXIw5QlsLXBiwjGus5GLrxFRBE8mTkPLn3hxDbSH23mSvEaXQVm5+2M3Hsy7RtFjlm6xjrUXZRUNvr2SBEinubst5z69EL27ojMGYdjbWrT9BEZ44=
+X-HE-Tag: 1767807599-544998
+X-HE-Meta: U2FsdGVkX1/LkSJRdZyuf8zBqNMQih9WMxDY2OmAcp2v4hFFD2jX2GjyaxtC6UfuFZxOJqgf7pySp/OmEhiNjXlpgu8Ff/YeKR61Q52nQLKR73dlE7KFQv95opfp5yH0Cjou4WZmXdXFtYOt4+eoGu9WPEoDCe3FxmUuE51lM7BPmmemqCyV1NitX5KRRzQVsqbCxFEAd+C+yen4BYaoLLsDzDC6Cd0GqPIuqbJhp8Y3UTGdi+LotEQZ9rqNs+KI/CFwXN7kalV0eCVyjd0d4ZXRD4ZsEl6U15Uol6Pda50fvKMJKNVWVCimgFjB12GB4bRuMVg5Icxwlz6pqg7RM20b8KBA2IcpV0uGBxhntOporaxRnEQWZ44GtrMb5ZCl2+SN5wHiS4DtvXN1tFjw0rAeaLtovW17BH+VD9m4kWbyYJgAwJP4Hd4OgoiLIoqWPBOnbjfHUZVjmHHYVTmYWALhtCpKEmLL4iOay0FolaND1rVLLA+CscCecrhU3wwkGtyd+woAiNwDi2J+1OPHUseHWD48sf8ywdPQ86UeO/QsQ8nGiDAqT/eGJKzpXOkCuiucckMVuaJbZ69zkTheg0AmDF9Hu64oVc9HB21Jk9wubQVBZSPgaqxAt/zUnSntLQDiVywf6yBl4juTAjCgLqVccZ+LxDqOjvQxHx0qnCrqBghMEZcVSJLDwtGje/q44CUj8+WbqI3Wq562b+w8vLsK5Oe6hAh6ErK0p4nt2G+w5CngBoCLJ71A6d0wL1oAyJIxuQpnzZ1E6lEXLJacVXHur+xjdVUmZD40TE3kZDYW9kL8Eu3TLRoa2+hARRwwDEk5TQOs0BYT0akbh5v6WtcEvfBZa+r/+xGGd2bw30WSHTcLEaS/LDBjCmunbvH195YWplWS/l2iJEE4KR7Jw5WSQ96PiO4utz1FS6fuUqfVZAJawPOlyp9JtY0nSdK8jOdHhC214T2LOFn0CF0
+ RTY7wBQx
+ CmG6+Bn8qSSJOHK3XcNB3nCvuiEyyCKtx8BbN4HCohCdfyAHVu0vnqgSoquJZbaRlhPJnJg/GPrQ2DNUZUa0Ofu0ZYHrZM/oU9jyL6RdLDyyj1uEWn1EgQ1gKQESIcHEgOiFdLMd94WuUnr1JJSecU6Vc7sdvZ9dRDOQwCX8uFZbIRk4fgVtw3aUfGpgyLUQuuUf1FhIy3PRUxcT9we3DmP3XE8N0+qwDG06MDMlsBF6Fo+oZHSpjLMWbUN9F+xarkpwepoIuhS6yeOwtUNoEikLjug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,248 +95,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/5/26 09:02, Harry Yoo wrote:
-> When a cache has high s->align value and s->object_size is not aligned
-> to it, each object ends up with some unused space because of alignment.
-> If this wasted space is big enough, we can use it to store the
-> slabobj_ext metadata instead of wasting it.
-> 
-> On my system, this happens with caches like kmem_cache, mm_struct, pid,
-> task_struct, sighand_cache, xfs_inode, and others.
-> 
-> To place the slabobj_ext metadata within each object, the existing
-> slab_obj_ext() logic can still be used by setting:
-> 
->   - slab->obj_exts = slab_address(slab) + s->red_left_zone +
->                      (slabobj_ext offset)
->   - stride = s->size
-> 
-> slab_obj_ext() doesn't need know where the metadata is stored,
-> so this method works without adding extra overhead to slab_obj_ext().
-> 
-> A good example benefiting from this optimization is xfs_inode
-> (object_size: 992, align: 64). To measure memory savings, 2 millions of
-> files were created on XFS.
-> 
-> [ MEMCG=y, MEM_ALLOC_PROFILING=n ]
-> 
-> Before patch (creating ~2.64M directories on xfs):
->   Slab:            5175976 kB
->   SReclaimable:    3837524 kB
->   SUnreclaim:      1338452 kB
-> 
-> After patch (creating ~2.64M directories on xfs):
->   Slab:            5152912 kB
->   SReclaimable:    3838568 kB
->   SUnreclaim:      1314344 kB (-23.54 MiB)
-> 
-> Enjoy the memory savings!
-> 
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  include/linux/slab.h |  9 ++++++
->  mm/slab_common.c     |  6 ++--
->  mm/slub.c            | 73 ++++++++++++++++++++++++++++++++++++++++++--
->  3 files changed, 83 insertions(+), 5 deletions(-)
-> 
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index 4554c04a9bd7..da512d9ab1a0 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -59,6 +59,9 @@ enum _slab_flag_bits {
->  	_SLAB_CMPXCHG_DOUBLE,
->  #ifdef CONFIG_SLAB_OBJ_EXT
->  	_SLAB_NO_OBJ_EXT,
-> +#endif
-> +#if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
-> +	_SLAB_OBJ_EXT_IN_OBJ,
->  #endif
->  	_SLAB_FLAGS_LAST_BIT
->  };
-> @@ -244,6 +247,12 @@ enum _slab_flag_bits {
->  #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
->  #endif
->  
-> +#if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
-> +#define SLAB_OBJ_EXT_IN_OBJ	__SLAB_FLAG_BIT(_SLAB_OBJ_EXT_IN_OBJ)
-> +#else
-> +#define SLAB_OBJ_EXT_IN_OBJ	__SLAB_FLAG_UNUSED
-> +#endif
-> +
->  /*
->   * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
->   *
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index c4cf9ed2ec92..f0a6db20d7ea 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -43,11 +43,13 @@ DEFINE_MUTEX(slab_mutex);
->  struct kmem_cache *kmem_cache;
->  
->  /*
-> - * Set of flags that will prevent slab merging
-> + * Set of flags that will prevent slab merging.
-> + * Any flag that adds per-object metadata should be included,
-> + * since slab merging can update s->inuse that affects the metadata layout.
->   */
->  #define SLAB_NEVER_MERGE (SLAB_RED_ZONE | SLAB_POISON | SLAB_STORE_USER | \
->  		SLAB_TRACE | SLAB_TYPESAFE_BY_RCU | SLAB_NOLEAKTRACE | \
-> -		SLAB_FAILSLAB | SLAB_NO_MERGE)
-> +		SLAB_FAILSLAB | SLAB_NO_MERGE | SLAB_OBJ_EXT_IN_OBJ)
->  
->  #define SLAB_MERGE_SAME (SLAB_RECLAIM_ACCOUNT | SLAB_CACHE_DMA | \
->  			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT)
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 50b74324e550..43fdbff9d09b 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -977,6 +977,39 @@ static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
->  {
->  	return false;
->  }
-> +
-> +#endif
-> +
-> +#if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
-> +static bool obj_exts_in_object(struct kmem_cache *s)
-> +{
-> +	return s->flags & SLAB_OBJ_EXT_IN_OBJ;
+On Wed,  7 Jan 2026 07:28:12 +0000 Bing Jiao <bingjiao@google.com> wrote:
 
-So this is a property of the cache.
+> In tiered memory systems, the demotion aims to move cold folios to the
+> far-tier nodes. To maintain system performance, the demotion target
+> should ideally be the node with the shortest NUMA distance from the
+> source node.
+> 
+> However, the current implementation has two suboptimal behaviors:
+> 
+> 1. Unbalanced Fallback: When the primary preferred demotion node is full,
+>    the allocator falls back to other nodes in a way that often skews
+>    toward zones that closer to the primary preferred node rather than
+>    distributing the load evenly across fallback nodes.
+> 
+> 2. Suboptimal Target Selection: demote_folio_list() randomly select
+>    a preferred node from the allowed mask, potentially selecting
+>    a very distant node.
+> 
+> This series optimizes the selection logic while ensuring balanced
+> allocation across fallback nodes.
+> 
+> Patch 1/2 introduces a randomized fallback mechanism in
+> alloc_demote_folio() to prevent allocation hotspots when the preferred
+> node is under memory pressure.
+> 
+> Patch 2/2 updates demote_folio_list() to traverse the demotion targets
+> hierarchically, ensuring the perferred target is always the closest
+> available node.
 
-> +}
-> +
-> +static unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
-> +{
-> +	unsigned int offset = get_info_end(s);
-> +
-> +	if (kmem_cache_debug_flags(s, SLAB_STORE_USER))
-> +		offset += sizeof(struct track) * 2;
-> +
-> +	if (slub_debug_orig_size(s))
-> +		offset += sizeof(unsigned long);
-> +
-> +	offset += kasan_metadata_size(s, false);
-> +
-> +	return offset;
-> +}
-> +#else
-> +static inline bool obj_exts_in_object(struct kmem_cache *s)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
-> +{
-> +	return 0;
-> +}
->  #endif
->  
->  #ifdef CONFIG_SLUB_DEBUG
-> @@ -1277,6 +1310,9 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
->  
->  	off += kasan_metadata_size(s, false);
->  
-> +	if (obj_exts_in_object(s))
-> +		off += sizeof(struct slabobj_ext);
-> +
->  	if (off != size_from_object(s))
->  		/* Beginning of the filler is the free pointer */
->  		print_section(KERN_ERR, "Padding  ", p + off,
-> @@ -1446,7 +1482,10 @@ check_bytes_and_report(struct kmem_cache *s, struct slab *slab,
->   * 	A. Free pointer (if we cannot overwrite object on free)
->   * 	B. Tracking data for SLAB_STORE_USER
->   *	C. Original request size for kmalloc object (SLAB_STORE_USER enabled)
-> - *	D. Padding to reach required alignment boundary or at minimum
-> + *	D. KASAN alloc metadata (KASAN enabled)
-> + *	E. struct slabobj_ext to store accounting metadata
-> + *	   (SLAB_OBJ_EXT_IN_OBJ enabled)
-> + *	F. Padding to reach required alignment boundary or at minimum
->   * 		one word if debugging is on to be able to detect writes
->   * 		before the word boundary.
->   *
-> @@ -1474,6 +1513,9 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
->  
->  	off += kasan_metadata_size(s, false);
->  
-> +	if (obj_exts_in_object(s))
-> +		off += sizeof(struct slabobj_ext);
-> +
->  	if (size_from_object(s) == off)
->  		return 1;
->  
-> @@ -2280,7 +2322,8 @@ static inline void free_slab_obj_exts(struct slab *slab)
->  		return;
->  	}
->  
-> -	if (obj_exts_in_slab(slab->slab_cache, slab)) {
-> +	if (obj_exts_in_slab(slab->slab_cache, slab) ||
-> +			obj_exts_in_object(slab->slab_cache)) {
+Yes, those things sound rather suboptimal.  Do you have any data which
+will help us understand the performance benefit of these changes?
 
-Here we check that property to determine if we can return early and not do
-kfree().
-
->  		slab->obj_exts = 0;
->  		return;
->  	}
-> @@ -2326,6 +2369,23 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
->  			obj_exts |= MEMCG_DATA_OBJEXTS;
->  		slab->obj_exts = obj_exts;
->  		slab_set_stride(slab, sizeof(struct slabobj_ext));
-> +	} else if (obj_exts_in_object(s)) {
-> +		unsigned int offset = obj_exts_offset_in_object(s);
-
-But we reach this only when need_slab_obj_exts() is true above. So there
-might be slabs from caches where obj_exts_in_object() is true, but still
-have obj_exts allocated by kmalloc, and we leak them in
-free_slab_obj_exts(). (and we perform some incorrect action wherever else
-obj_exts_in_object() is checked) AFAIU?
-
-So I think we need to check obj_exts_in_slab() (in the simplified way I
-suggested for patch 7/8) first, and only look at obj_exts_in_object()
-afterwards to distinguish the exact layout where needed? (i.e.
-free_slab_obj_exts() is fine to just check obj_exts_in_slab()).
-
-> +		obj_exts = (unsigned long)slab_address(slab);
-> +		obj_exts += s->red_left_pad;
-> +		obj_exts += offset;
-> +
-> +		get_slab_obj_exts(obj_exts);
-> +		for_each_object(addr, s, slab_address(slab), slab->objects)
-> +			memset(kasan_reset_tag(addr) + offset, 0,
-> +			       sizeof(struct slabobj_ext));
-> +		put_slab_obj_exts(obj_exts);
-> +
-> +		if (IS_ENABLED(CONFIG_MEMCG))
-> +			obj_exts |= MEMCG_DATA_OBJEXTS;
-> +		slab->obj_exts = obj_exts;
-> +		slab_set_stride(slab, s->size);
->  	}
->  }
->  
-> @@ -8023,6 +8083,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
->  {
->  	slab_flags_t flags = s->flags;
->  	unsigned int size = s->object_size;
-> +	unsigned int aligned_size;
->  	unsigned int order;
->  
->  	/*
-> @@ -8132,7 +8193,13 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
->  	 * offset 0. In order to align the objects we have to simply size
->  	 * each object to conform to the alignment.
->  	 */
-> -	size = ALIGN(size, s->align);
-> +	aligned_size = ALIGN(size, s->align);
-> +#if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
-> +	if (aligned_size - size >= sizeof(struct slabobj_ext))
-> +		s->flags |= SLAB_OBJ_EXT_IN_OBJ;
-> +#endif
-> +	size = aligned_size;
-> +
->  	s->size = size;
->  	s->reciprocal_size = reciprocal_value(size);
->  	order = calculate_order(size);
-
+(2/2 has a typo in the subject and in the comment.  perferred->preferred)
 
