@@ -4,80 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CFEDD0D178
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 22:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65ED9D0D176
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 22:19:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAA506B0005; Wed,  7 Jan 2026 17:18:47 -0500 (EST)
+	id CD7936B0005; Wed,  7 Jan 2026 17:19:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6B9F6B0093; Wed,  7 Jan 2026 17:18:47 -0500 (EST)
+	id C93E36B0093; Wed,  7 Jan 2026 17:19:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4CC36B0095; Wed,  7 Jan 2026 17:18:47 -0500 (EST)
+	id BB7956B0095; Wed,  7 Jan 2026 17:19:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A2E346B0005
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:18:47 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47C1FC202B
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:18:47 +0000 (UTC)
-X-FDA: 84306583494.14.D4BB149
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AC2236B0005
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:19:52 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6359A1A04D0
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:19:52 +0000 (UTC)
+X-FDA: 84306586224.11.3BECB10
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 68B6A160003
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:18:45 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dVZhRQgH;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767824325; a=rsa-sha256;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 887B54000D
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:19:50 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kksnc29x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767824390; a=rsa-sha256;
 	cv=none;
-	b=DZzZZNAn+64+GKunoaFhFR6T6HF/CK5/w+K9lX36e92zSru+Zw6mV2hXw7XfLTODam58Lp
-	XONT0GQ0e4QHm6Gq9SqTaEBzdoEezX6WMNraQvg8w1Zsxz1cvijTocJ0DzzIZwtM2KAXJ8
-	jkVcm03U2DgTKS4bGOiL7hVLXu/smqM=
+	b=zL8wE3kL66dMlUpvlDTWcNOWf/yHEfBrZXsofliNcgjxkm/+Xn/mP8vhAfEWyM8wm2u6Kh
+	r2cIt1c/JEh/tbv5p0S5Mxrj/prmXRJujG0GUErsT6H4hYfx9T9i269FphCcw2VGISNkGW
+	OprZ9O4dFY+ttzLSRZNClujlP1e2D94=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dVZhRQgH;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kksnc29x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767824325;
+	s=arc-20220608; t=1767824390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LyU0F2lenJeJKtDs77BG62YKEEOPysLnmo/uHstuMUU=;
-	b=J/Y/g5fTQAEI681IL53A9LB8J6HOmp4ta31by6ZfneDefh8wGvmguIkxzpg9v+r/TZOlEW
-	lAnXESlJPuazXtJYLc1/GwkttMdavjs4IbV5frzGEoA/MYMPYtr80CsCVF3Pd0oSMLOR9q
-	UfWFdtlCYW6pS20HYrpmeaqFkqUkXis=
+	bh=QlfzTLYwYr/0aX4yVGoUr7AP88iACg9G/e7VhTU8WoE=;
+	b=YJQNWDrUArypYnDnhMdeH4UNZTJ1uc+oUGHkfHSw6UPwCEPQm9SN5kTIWEEzdnQqWTkqrT
+	Qn1dJnjELhfU/hnDM2yYWyeD+62rpV62YK4cOuZGTWzSApVsQYgDzIG+qJrf2uxDuFcT7z
+	xGFNQob4+jDJR7Y1rG7Rh5XvAIbifFc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 625EC40ACC;
-	Wed,  7 Jan 2026 22:18:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9176C4CEF1;
-	Wed,  7 Jan 2026 22:18:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 979BB41765;
+	Wed,  7 Jan 2026 22:19:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27543C4CEF1;
+	Wed,  7 Jan 2026 22:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767824324;
-	bh=KdSmcJ8/TbqJDKA+KiohOltt+WMWmZB4A/avr7C9dwU=;
+	s=k20201202; t=1767824389;
+	bh=zhOqkkbLugaasC0FIugMFKDX8x1sH2DgFAam8cl8VLg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dVZhRQgHuDJIGIg7EvZ3XelD0Qfr9oo2XXWqcGHPyrrPtyW3TfZaFfLtyYdPvBLVG
-	 j1WFpfM8ryqsFh7rYijXsWjspzyckhUJ6cmJ/C5JF4c98VN1CKwbcGaP5Xv4e+zp5H
-	 4NvVx2ZyOXeknhDsWgxG5xd60fzw/eZiwa165WiP2FP4nDqbAN0AuQtkCyc5dd5qfU
-	 6CUp5ZLk13h5IIfUweXEhwJVqaPYFf7r63y0dqoIBo8gClms6lCDyvE6ukjBZdKasV
-	 un91N7u1v7HiSjeXEgCXWOl6rP5tzrCokKbMkb0mkLut2hheRLpWzoG95uN5wC9bjz
-	 NW+UF8w55kltw==
-Message-ID: <d6f84476-e407-4d6b-a892-493c4359f86f@kernel.org>
-Date: Wed, 7 Jan 2026 23:18:36 +0100
+	b=Kksnc29x8KXtIay4NWkf+jDwhwF3VVeD1VDejDabJZFig/FSrVfdi+U/J9moIbIDG
+	 Y8b8jIgwuS0RJW175tfgD9BY3U+3nCdqibLiEK7bo3CrObT43L5XZ9dl8bxvabxmij
+	 IW0iJbShaOCz4ebFxudCBi6X0eFJxtj+6IhN2hqca1obKqHFVmvEMnKEtBlfbgXAUp
+	 HDezVJTNSOoDJhE5MRPpRTrebOs4DaFqCqQ0NwayJkys/dvnDHEMsIQTrwg0mejO37
+	 /xvsVART+BTCk7TVC9NFHSdPRsQuWku3fy4IfG8+p06b4vxHTdEVy07p7BE8zwjfca
+	 mw4SOmxC7aFxQ==
+Message-ID: <1ed7a709-27a7-4309-bb41-3f6eb933f6ad@kernel.org>
+Date: Wed, 7 Jan 2026 23:19:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 8/8] mm: folio_zero_user: cache neighbouring pages
-To: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, x86@kernel.org
-Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
- peterz@infradead.org, tglx@linutronix.de, willy@infradead.org,
- raghavendra.kt@amd.com, chleroy@kernel.org, ioworker0@gmail.com,
- lizhe.67@bytedance.com, boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
-References: <20260107072009.1615991-1-ankur.a.arora@oracle.com>
- <20260107072009.1615991-9-ankur.a.arora@oracle.com>
+Subject: Re: [PATCH v3 2/3] mm: only interrupt taking all mm locks on fatal
+ signal
+To: Vlastimil Babka <vbabka@suse.cz>, Mikulas Patocka <mpatocka@redhat.com>,
+ =?UTF-8?Q?Michel_D=C3=A4nzer?= <michel.daenzer@mailbox.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, amd-gfx@lists.freedesktop.org,
+ linux-mm@kvack.org, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>
+References: <b672e17b-461d-16ae-e7d3-45d3c1aab142@redhat.com>
+ <7whbqlfrwjr4z2d4bpny3rjyl5tetdyx7ccf52uvby7hgywoym@6l6m2xcytez7>
+ <e597171a-cc64-4811-a043-db2e539aaf94@mailbox.org>
+ <5dfbf2f9-0948-cd59-5c59-a6ee946ff9f2@redhat.com>
+ <16dd4c62-c763-42fd-9ff1-a6dfcdbab109@kernel.org>
+ <26ec5b50-1bea-4a62-97bf-56162bdac4b9@suse.cz>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260107072009.1615991-9-ankur.a.arora@oracle.com>
+In-Reply-To: <26ec5b50-1bea-4a62-97bf-56162bdac4b9@suse.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 68B6A160003
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: bfnarzxy3pdk6s65bi5c51drq5p7xkoa
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1767824325-555676
-X-HE-Meta: U2FsdGVkX19dn1xg5JHGQLkTCsR0szXyJemelYtKNSnvcMlf5j9KRT9qvyZqoSvOhxFI0NA1A1xnDn1zA3c2dznZiT1vtcErJFDv3YCrPOZRGqcMZb2fj6na6+R3dAU3FqqALkwdpsjvxVeIGmjkKouaT/HgClx4oqCw+ak9px8sqCR21UY8Ply6n831Bm/5RDjY7Six4uRPRWwUI/FRr8hEPeB/S5P4Lo68ezovO9bVONkV8IpoiQaN9YOeS6bAVsH///lJqKuyXFrg5LxtkiAY6vKsCksSPR7xJcxXeoheZeBdFoeonVzdH524jIKumQgzcZ8mPfLvny7HCB2klgaf6CbR/e1qLdrFJ7grrZw9lhcCSMI8nKr9hLdvNgvAA68NnAo71tVTw9D9mtjKpDDShqu8dqVwg1sjAZqczjJXAJHvy7iUBE6U6a6ihPEx/TDFxE0syyqicm356+YE+8Yr+3+MCy+9PmuMwYOZ0phVllNcU2N/BnT1puf9pIF4ikwZbN0/EVhLFwDWOmyhoO4+LSmpkXocttudusNX/dxVQh1fWGLm0mF28cTKjUGiNQVIm+NjriUA82xjNHYjF2YskAp2IM7oZuWF0wtyExZhTUu9jTMNl/L76PzyW5bFG5ZdhUZJTPdCY4E9/8fQGIfmPPo2HHlKtcw35H7gp83QxzG3uXYt2BQrPQP2OQ8ji63kGbKOqM9BkYg6yNpuOcH3NpZ129M3oHtsdRSJW6BO925cPOOKFT9eJX6WxPEG/Z8tSl9dyl5rWKmFwcpgVGSD6/MESaKLUJt7d7sri3Yc+NLTw+CjswMWUuxc7pJkhTuXoGO8qZfpe2OiD0ZJTl4eyhlQMLFGjTSM31ses5lzhHplsywI8FKstQJuPtVPbPQkPZzHYd0+inZpcz920gxkzWV+qMsmNEHVttXVaF9Z5hbTagSCI5UehxQNJueAC+eS/w6gPP93vj+Z5Ip
- ssFK6qhJ
- XDf4ip+isTETEu3/DAjhuwM+ouE2Dt3swc228bzYifRBPqZUvul0dHGyg7pjuIm52R9tEnLhUjtlEUFbun8Zf1ceHaJKUlWMkxedMLP3X2P0PQ6V3Ua5S2IlSw8HS7cAhHMAC4yWpvKhd8HAmectWLg9YTNFNAsrtyW+9rwMDH12ilCH0kOUymOf5H3p5lct0Os34OCHMJKs3qvcLd2UKZ2jVfyTkV08gdLeizhW3gi4JH3+AwrserEG+AXLEtL2fOzLDv6MjQ8Wqjvt9At12g9p/YZZMrSQQmmIkzJ2vfyNSHbDvzLQehhTH8YKkQPotoocDM/lLhIWs01TAGijJMEQ9g3hTbh+oCfeykSTa3Vxe82YcE+kIvesJPY/QJUA2qvq8
+X-Rspamd-Queue-Id: 887B54000D
+X-Rspamd-Server: rspam10
+X-Stat-Signature: pd8kmys7umn4uudkd7nktekep6o17n1n
+X-HE-Tag: 1767824390-307574
+X-HE-Meta: U2FsdGVkX1+BVtcX6LU5yulJwL6kv4GohVAZLt8Lyy75/bZTauBf+F+6UZEONjQ0q+zCQ+k+HaRhKIlt3Frr5z5eODreU8g+NinnxKrA1pz1m1REZQIyGEbnOSiQSW1652DvFNztxvqYPCmXjasgLKOB7E7k0A3MNPSeQ7vLQXchPulIabJFDs0FmT9c7rxr1xXBczw5VNqXrnoySlBJ+BtPKCQEWm7vgBPd/jpihrTGv2roO8Y/zs9I5DOyy975p03E8rFb/AwX6lC+U74NWJ615vwE63LYVt3jdzeKFUOcdKWT5bTlatgPitylRHUykjebJWI52Kkxat3Ig93fhI/bbSl4NhjpSxDG/yuet9iyOWsIU7sspWJMpumb1/afZu+5tp/eVODFQdtAh6Haow0MguWooRLTUfBNiS0mXCoi0TCvW6pF7Tq8oZxM/XEdw+hS+jVYTjm5LMCo5oMCjyAyWIdlJkNes0TSrahFT/Jsiq4Gvo4Mu+0S78pMmhzS+nqCWy75l2YjfUmyLO5SBbvA+eSrJSJ88lUanTj1suzrgJglZeV1CxcCFr9f8XXPCRvk5H+2LasOe9gRNHRQWoFrVyxGNw2cQTDuiFrH8icnGOT7xYzr9TDUExd8bbJ7/TajC48Qwy7N58o792/DW6CC7dN2pszUZh6y5cUu0ul+VoXmRQxWbEmKFqwqQFF1Vqy+N8r5l6387A68xOJuGMJkOeajbCvLOhXOlAULDcmJ+U0guAPozY5d0L2GMIWvGRLiUyby7R0cHDp5JVnhQ0lc9U/o2dEDpFRoFoXAEyBSYbujtm63merG+ijWervqTBOqN6nO0JyiKwgN/Vpja8bKRSNMp8eewAwwxFTHcJKX6KKjiqJg281OlLtVvK+8AyG6LZPGteZ2MDGCcNz4/ZCdiV5zMXYhMX5AnTeklUi5c4pht8q/norvsFEjt90jdsj1ke/OmdV9NNyId/u
+ +jeAgVeS
+ 56+Q4dhHx6MBsXD+JlL1WZ3As+GVkgxoG+jg5hqD04qijL4udkWv2Vv376p/09vT1s4c2USNpLoQOAbnisToQTigxB7m6zBp7yYGNxswg9HLlw0DOqFT68j4Uw6z+ILT9116LkyWd4AONblpA3hsTV4+pOvRlhNFE4vQbvKeYR/VhGb3/E3Ll8s70JkwDMdKky2O6l/HLwpfNXW4EZlvwq+wpKu1ww8gToOL00PpL5czB2b1ChFaLIbPppbgi96jxXRLh4VyTHtr11L1Qxc+nH7RP4zh6vVrAarWD50mymCDFbq+O+tHQ4EYF0A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,64 +149,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/7/26 08:20, Ankur Arora wrote:
-> folio_zero_user() does straight zeroing without caring about
-> temporal locality for caches.
+On 1/7/26 10:55, Vlastimil Babka wrote:
+> On 1/6/26 16:03, David Hildenbrand (Red Hat) wrote:
+>> On 1/6/26 13:52, Mikulas Patocka wrote:
+>>>
+>>>
+>>> On Tue, 6 Jan 2026, Michel Dänzer wrote:
+>>>
+>>>> On 1/5/26 19:15, Liam R. Howlett wrote:
+>>>>> * Mikulas Patocka <mpatocka@redhat.com> [260104 16:17]:
+>>>>>
+>>>>> I'm not saying it's wrong to change the signal handling, but this is
+>>>>> very much working around a bug in userspace constantly hammering a task
+>>>>> with signals and then is surprised there is a response that the kernel
+>>>>> was interrupted.
+>>>>
+>>>> I'd go further than that. If user space fails to retry the system call
+>>>> in response to -EINTR, that's a user-space bug, period. It can happen
+>>>> anytime for any number of other reasons. (That most system calls happen
+>>>> to get away without it most of the time doesn't make it not a bug)
+>>>
+>>> So, I tried this - just for fun - and the machine doesn't even boot. I get
+>>> a lot of errors about inability to open particular files on the console.
+>>>
+>>> Userspace is buggy, according to your definition, regardless of whether
+>>> you like it or not.
+>>>
+>>> Mikulas
+>>>
+>>> ---
+>>>    fs/open.c |    3 +++
+>>>    1 file changed, 3 insertions(+)
+>>>
+>>> Index: linux-2.6/fs/open.c
+>>> ===================================================================
+>>> --- linux-2.6.orig/fs/open.c	2025-12-31 20:10:31.000000000 +0100
+>>> +++ linux-2.6/fs/open.c	2026-01-06 13:28:01.000000000 +0100
+>>> @@ -1419,6 +1419,9 @@ static int do_sys_openat2(int dfd, const
+>>>    	struct filename *tmp __free(putname) = NULL;
+>>>    	int err;
+>>>    
+>>> +	if (current->pid != 1 && !(get_random_u8() & 0x1))
+>>> +		return -EINTR;
+>>
+>> Reading the man [1] page user space is only to expect EINTR in case it is
+>> prepared to deal with signals (install signal handlers), no?
+>>
+>> There are some exception documented:
+>>
+>>          On Linux, even in the absence of signal handlers, certain blocking
+>>          interfaces can fail with the error EINTR after the process is
+>>          stopped by one of the stop signals and then resumed via SIGCONT.
+>>          This behavior is not sanctioned by POSIX.1, and doesn't occur on
+>>          other systems.
+>>
+>>          The Linux interfaces that display this behavior are:
+>>
+>>          •  "Input" socket interfaces, when a timeout (SO_RCVTIMEO) has
+>>             been set on the socket using setsockopt(2): accept(2), recv(2),
+>>             recvfrom(2), recvmmsg(2) (also with a non-NULL timeout
+>>             argument), and recvmsg(2).
+>>
+>>          •  "Output" socket interfaces, when a timeout (SO_RCVTIMEO) has
+>>             been set on the socket using setsockopt(2): connect(2),
+>>             send(2), sendto(2), and sendmsg(2), if a send timeout
+>>             (SO_SNDTIMEO) has been set.
+>>
+>>          •  epoll_wait(2), epoll_pwait(2).
+>>
+>>          •  semop(2), semtimedop(2).
+>>
+>>          •  sigtimedwait(2), sigwaitinfo(2).
+>>
+>>          •  Linux 3.7 and earlier: read(2) from an inotify(7) file
+>>             descriptor
+>>
+>>          •  Linux 2.6.21 and earlier: futex(2) FUTEX_WAIT,
+>>             sem_timedwait(3), sem_wait(3).
+>>
+>>          •  Linux 2.6.8 and earlier: msgrcv(2), msgsnd(2).
+>>
+>>          •  Linux 2.4 and earlier: nanosleep(2).
+>>
+>>
+>> So I would expect that your test code hear breaks user space.
 > 
-> This replaced commit c6ddfb6c5890 ("mm, clear_huge_page: move order
-> algorithm into a separate function") where we cleared a page at a
-> time converging to the faulting page from the left and the right.
-> 
-> To retain limited temporal locality, split the clearing in three
-> parts: the faulting page and its immediate neighbourhood, and the
-> regions on its left and right. We clear the local neighbourhood last
-> to maximize chances of it sticking around in the cache.
-> 
-> Performance
-> ===
-> 
-> AMD Genoa (EPYC 9J14, cpus=2 sockets * 96 cores * 2 threads,
->             memory=2.2 TB, L1d=16K/thread, L2=512K/thread, L3=2MB/thread)
-> 
-> vm-scalability/anon-w-seq-hugetlb: this workload runs with 384 processes
-> (one for each CPU) each zeroing anonymously mapped hugetlb memory which
-> is then accessed sequentially.
->                                  stime                utime
-> 
->    discontiguous-page      1739.93 ( +- 6.15% )  1016.61 ( +- 4.75% )
->    contiguous-page         1853.70 ( +- 2.51% )  1187.13 ( +- 3.50% )
->    batched-pages           1756.75 ( +- 2.98% )  1133.32 ( +- 4.89% )
->    neighbourhood-last      1725.18 ( +- 4.59% )  1123.78 ( +- 7.38% )
-> 
-> Both stime and utime largely respond somewhat expectedly. There is a
-> fair amount of run to run variation but the general trend is that the
-> stime drops and utime increases. There are a few oddities, like
-> contiguous-page performing very differently from batched-pages.
-> 
-> As such this is likely an uncommon pattern where we saturate the memory
-> bandwidth (since all CPUs are running the test) and at the same time
-> are cache constrained because we access the entire region.
-> 
-> Kernel make (make -j 12 bzImage):
-> 
->                                stime                  utime
-> 
->    discontiguous-page      199.29 ( +- 0.63% )   1431.67 ( +- .04% )
->    contiguous-page         193.76 ( +- 0.58% )   1433.60 ( +- .05% )
->    batched-pages           193.92 ( +- 0.76% )   1431.04 ( +- .08% )
->    neighbourhood-last      194.46 ( +- 0.68% )   1431.51 ( +- .06% )
-> 
-> For make the utime stays relatively flat with a fairly small (-2.4%)
-> improvement in the stime.
-> 
-> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
-> Reviewed-by: Raghavendra K T <raghavendra.kt@amd.com>
-> Tested-by: Raghavendra K T <raghavendra.kt@amd.com>
-> ---
+> Since the patch is dead now, are we going to update this section in the manpage?
 
-Nothing jumped at me, thanks!
+Yeah, I think we should better clarify the man page to whatever the 
+result of this patch set (and v4 that was posted :) ) will be.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+I'm afraid I won't have any capacity for that. @Mikulas?
 
 -- 
 Cheers
