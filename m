@@ -4,202 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B877D0D163
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 18:55:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F41FD0D163
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 18:57:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA2666B0093; Wed,  7 Jan 2026 13:55:03 -0500 (EST)
+	id AB66E6B0092; Wed,  7 Jan 2026 13:57:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B76666B0095; Wed,  7 Jan 2026 13:55:03 -0500 (EST)
+	id A8E956B0093; Wed,  7 Jan 2026 13:57:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A272A6B0096; Wed,  7 Jan 2026 13:55:03 -0500 (EST)
+	id 9C5336B0095; Wed,  7 Jan 2026 13:57:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 914386B0093
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 13:55:03 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 37029160486
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 18:55:03 +0000 (UTC)
-X-FDA: 84306070086.22.3A0EEF2
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012039.outbound.protection.outlook.com [40.107.209.39])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 75E4CC0007
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 18:55:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PS8sjblm;
-	spf=pass (imf28.hostedemail.com: domain of jgg@nvidia.com designates 40.107.209.39 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767812100;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CA766B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 13:57:25 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 26E5F8AE4B
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 18:57:25 +0000 (UTC)
+X-FDA: 84306076050.25.0FF9CFF
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1787040009
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 18:57:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CMkUXEAY;
+	spf=pass (imf07.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767812243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t6L3QvaDzkxifxCtAms08ALjicfkDe8Q0xYJH4wy0ys=;
-	b=7Os9oaCARsm6ICyrB3aTthu+ylYuldXGPuXwN8633xnN4sChKCNhO6eUotCxTkl/dq8W+E
-	ViiJqrYtNDu8iAkLTYD7cPFLyUEGeMINNOFplnkkS+9cSqm+RmSocqnRM5PVd09H7HbKc+
-	5jenYJGYXzOrIKC9WjVouWuSN/8aWdk=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PS8sjblm;
-	spf=pass (imf28.hostedemail.com: domain of jgg@nvidia.com designates 40.107.209.39 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767812100; a=rsa-sha256;
-	cv=pass;
-	b=ClZkzmD23IEHmLXKwiovlgbR6SWva2fz6lftswBOaN8HNtYpPIQok1upyw9aBRXtxSVNxE
-	8v2FFcOghi6elRC2Py2jepWFq28JrjxLDM7m+oPi8qFuY+vrmwdh+ujBJ5R5/cH/mT53iR
-	OzQL6XYgOfxRZGwoo2ACcDxL5fd2V6M=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Zaz+72AbJEnkpN9w9gdA/3yZ1tzSbUpNyzKjNq6CpLBUK+wWB2t416Z27twgu00B2n/Jw60oweQBk9J/tdMoZdWKZ6OPqqUaqP/on1hpDmplDrtkTEv6ZP+DiueEHMQCGrAQjBCszz1CXiqPiXkbdpbPxwvWv+zNwXyUMRoYKF5GZVk9zkFXXFDI57f1qc8rLAg/tSNewVBZmW9gRiDm0WrxTXJY9KaRxCXLAYgx3pS5LfCMtvhAfWP/su819WmVnq/b5OS7dWwEC3qhnKGgLlqW+x4CHIhtbYhhcwLg3HuQ/EeybM8XMJ+qDyLMKERu1uYXSOtuVumTtfuXLFSeDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t6L3QvaDzkxifxCtAms08ALjicfkDe8Q0xYJH4wy0ys=;
- b=Szm/K/lgDO0NePQUYKz/41r7R9gj8QKIUWvNyH4r80qmtX1DWmZz1Thw0pecyfDW64ln6EjG5Wm6XevXLoNkrI0GW0Z8pLX/5NseJ8o5N7TOEm8PZuZrygg7RNpZnSrp+0sOPtUdxUT+fZXmCqolbZkF/Aa6YKEn8kwsvNYCTa/5CRTnUXD7T/DTXV340kYJSrqM8n7Ma08l+ln443ugFBJzZ5Cv4n1b7aRIMaOPzzPrHy6G7z+f/2g9cUhnQ2Zd6jiMxdlsKOq1ixE9axWRuMsEJggtu019DQA02s3seQqfRWZPDg96hMVQgEhavbVMttPkj4+TLShQeRIJpGov9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t6L3QvaDzkxifxCtAms08ALjicfkDe8Q0xYJH4wy0ys=;
- b=PS8sjblmp5LPfweDIGDuFuaV7LqzqXZlQpgud6bIsUweJ9sONzmtw9k35ZbASjf0U7F+gfq5E3AlJ6vsWszNtHWJPLolkZ/c6K/eqmh1BVJZT5pGoj6A5aQBC4+LTL5lQPKjkxn2NUEHxDeO9THum/3P+lOhyrjVpfyOb7FwTf1PFbIzJDXRVeSB7yXErdi6GaM+GvVNfHcROKg/XVqxwrywk8KHj2LM/EcWSlUupkabXWW9W0kqB9R9VXOlNxZrAdMZv7WzVlJD3o7xtaPZAk4SsddSWQHKGbSCtCZ0Y+r8f0nwJWaCltY4U2STc+feGiP8QGWFHSE1Xs0yaJHdXw==
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by SJ1PR12MB6315.namprd12.prod.outlook.com (2603:10b6:a03:456::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
- 2026 18:54:55 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::1b59:c8a2:4c00:8a2c]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::1b59:c8a2:4c00:8a2c%3]) with mapi id 15.20.9499.002; Wed, 7 Jan 2026
- 18:54:55 +0000
-Date: Wed, 7 Jan 2026 14:54:54 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	rppt@kernel.org, dmatlack@google.com, rientjes@google.com,
-	corbet@lwn.net, rdunlap@infradead.org,
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
-	vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
-	witu@nvidia.com, hughd@google.com, skhawaja@google.com,
-	chrisl@kernel.org
-Subject: Re: [PATCH v8 00/18] Live Update Orchestrator
-Message-ID: <20260107185454.GH293394@nvidia.com>
-References: <20251125165850.3389713-1-pasha.tatashin@soleen.com>
+	bh=gzvQEjvJ1nzCkckYF+R3TxyHT/zA5TN2rQBRz+o11wM=;
+	b=sRUqciRIBhoTsbBwi8i+tXXUFD5vvNui8NNCYheDzKHe76QZ2AMcVkNRTZAzOyH4oaYNaf
+	jnwSmzVEKrNmrJdXODUy+jifXlvuKifjD9Jp5WY/LwCAx4+o8YDKdoZYoXELBPYwju9vWy
+	G38LHfb6+jwoEpmfRZauz8Vphn3NQM4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CMkUXEAY;
+	spf=pass (imf07.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767812243; a=rsa-sha256;
+	cv=none;
+	b=i37m/FZdPbjWhBOncgghj6BomER2bp9CHcmH3D2BJC4V7z6/frN9lJPP+oEWouOhYR1Sk/
+	cROUmFO5SuCzVt+2roqbRRCUjGrPU4axEJqDCicMEBIUNVVjiC01Ttg10MfWKk98CBmwcv
+	A/YWwA8+Kjv/YgMcPszmyHn10qDSWfY=
+Date: Wed, 7 Jan 2026 18:57:08 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767812241;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gzvQEjvJ1nzCkckYF+R3TxyHT/zA5TN2rQBRz+o11wM=;
+	b=CMkUXEAYYNqBxYcZXulSyp716iBza11gQXm+bUQI4z4VwXkRiJf6OZnJQmUsISyiYVoq/F
+	I6lhOv9BodFQekf3nN14RJIgN/mMSkL9poHXIM9Sykf6ISsKffeBx1fM9Kra5m/DA8Y6bt
+	yj8yBoLJqiZNoAh57EyqRdK46QY2d2g=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCHv2 1/2] zsmalloc: use actual object size to detect spans
+Message-ID: <dvdaf3cuwvk332nvds46uqqvpoo46bf34zgqorpq4ldwxjo7sk@uh5v5bn5nrab>
+References: <20260107052145.3586917-1-senozhatsky@chromium.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251125165850.3389713-1-pasha.tatashin@soleen.com>
-X-ClientProxiedBy: BL1PR13CA0105.namprd13.prod.outlook.com
- (2603:10b6:208:2b9::20) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SJ1PR12MB6315:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63be3ad9-2476-41a4-41d1-08de4e1e3f5b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?oFuTuRjp6i2EfW5vB7bhzX/wZLBBshNTll+8RDiu1Ts8xTyOIrCQnjUxSZqs?=
- =?us-ascii?Q?jpvtxAaqzZN/dx9il92gjy9tdxtxV36aboAvFTE7FA/diVWBtWVyDTnWn6mp?=
- =?us-ascii?Q?WqAfwfvXRBI/JQEzrryqoQmIkvKMSwmTmxx80vE7lZW6PgEfgcmgffxnCH5K?=
- =?us-ascii?Q?1KrRxqaIKIbr/0IeIyt5zLpdOYqpTTNRn9f6bRoBhHCfpAS6esD9e4H2a/yL?=
- =?us-ascii?Q?Ldp6DTvE169MF/pxGHmLNpi7/qA5gLNf0ezEQfuKc9MkLyaAMZbddK4emfc9?=
- =?us-ascii?Q?6o2dBZK+Lre9/lQQ+Ki/p6DppHphLBW4bqBRBK+yLKT/19b2XGm05IRbt9BK?=
- =?us-ascii?Q?+tbHzrcwgi4J3Zz/jdB8JyqW9ys5Zfx3UpD82LowCmJ2wNevzd3mKdYrKAF+?=
- =?us-ascii?Q?dd+QhjMdJLT8k1Nq4qSI/W3gy1PG+dJJA+6ekv3F2rmqUu4gmuEzyGIRtzzg?=
- =?us-ascii?Q?enbHgbVwgmlvnfpnEgetjuYDh6AiN8BoloCbmoDL/p97cODBY6g20LahimeZ?=
- =?us-ascii?Q?UFZW1Drs+W3sjssdXN6mFQoGkN2M7lKaJA1ebmscofiO7drIujrMwmnaEikc?=
- =?us-ascii?Q?3Fu2QykbcR5Iaw+K5mrEf8qYuHgnqamg5pVot5LStfEOJuW65gWT1JrvToJc?=
- =?us-ascii?Q?OyaTrb++QkkJsCiL5pdfjOrAlXZlmWXBScXse34UGBouqJPlG3aWYUygicWj?=
- =?us-ascii?Q?kPnIgI4F5dvmjR5KEIyaYmzUFLkiUf8noGtpAB7O+IqqwP0pVbAUgEv3Lwm0?=
- =?us-ascii?Q?va0yUXXz72gxws7lbqAGo6nLW0uNbmLSwal4QfvUFehTURTkTGJAMEjAMx5T?=
- =?us-ascii?Q?nU78y8FG5PrNJw5ASv1V1EvgGxVW1Rx2SSYvJ3HUeFaE6Wo24kJFapiMsUNZ?=
- =?us-ascii?Q?7mrmyxCzesAZYukQBBDCpMMOi/JvokFeqC6gkR5vF1UDmzNwuNnuLWTctU5r?=
- =?us-ascii?Q?6PJpz54jQZdsnNKaH0b1+1JtW3q2um4mSCPm9uQf9m8vdn9Dc/61wfUYM5Mj?=
- =?us-ascii?Q?K8xD/2wgrHB3TJgqaNt5Nyls6cOpmmnyVcGIFacqYJLQfnpasPVKyIlvW8Z3?=
- =?us-ascii?Q?Whvc0QHALAdqV4btaGptRjBoHHPsDjaoM8dM4xd7ZMzHBNz8sOeMLtwLvn4+?=
- =?us-ascii?Q?s5xmdCsjlWsbdqOhHlaUwS60OL5U4VSysBhLNn+bz0VQMspoB9hn+7eEokYF?=
- =?us-ascii?Q?h/lpGj9GTNv/j2+esoX7MJO1GkSX4lUgeodhKj/m5EeKtZdYvUfaqJwLNiDX?=
- =?us-ascii?Q?eUuKHhRoR+3N6C8BnJRE9TVlwd1vYc0QFuEMr6lXBsnta+dUVf0X0NyBTD9P?=
- =?us-ascii?Q?6x+CzVBbYnWKKRsvOADrjv+KEWn6yeez5qi1inr22DAFwuHi8NyLn428V5fw?=
- =?us-ascii?Q?+3NWjovAExQDu6XrrVvvLT/ZD6ttDGhhKbBlepC2RJhXBcWEd9YnLARQIk2u?=
- =?us-ascii?Q?FkcZnhqko2TM+WsT08EJ49lsbpZwmsgN?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cdLE8nmCEyynsJ4/7t1kL1JeltnL0gmbSHWf+l3ET6pz1j+bhUaiMJ+pS86S?=
- =?us-ascii?Q?8/H8wYYPtVbNzv1/YJGYpLCzJTprniiXrk2FhrNQVoVURaqcag4qY8UnIMbi?=
- =?us-ascii?Q?QaW0PTkVymoaqLq0ZD//MAnjrqbXddxuL+oRsQ5cxCYpZTZhC23JyyWW6hi2?=
- =?us-ascii?Q?qSO8ek1X4zKyIknN3m4ad4+B3Z/ihng1pTfwGr3fy+5aGGf+E3nH/ZEuoi4K?=
- =?us-ascii?Q?giv2FmHgPVj2i3koHoK2jTrRMPt240Juw+YOqrvzo9QDPamoo3B9omNhORYm?=
- =?us-ascii?Q?10WQvbRF8HOoQPcvMJWXY6J2zS/OSrVEtVkBulI2w19/rnQOQQU6/LrQmq20?=
- =?us-ascii?Q?mHyvehMuCa3INqS+e/cJbsrqglNCo2qsgVBcpLiXmv2b6PDBeHn2BX37IitL?=
- =?us-ascii?Q?BLw+05ThfoTqV4twajW8JEJsap4D6hlb8aufva2w3GjYnM/RtCnsF176ZK+b?=
- =?us-ascii?Q?PZuSK7LydTbCJr8rppNGB9i2+kxyoIkB+w5ckTag/DoYrB0s2w5s4PoRebLR?=
- =?us-ascii?Q?NyisLtM7I604v7SYY7dwIfC9z7+20kSg/ofgxkX0KbNWzCZEF+uSljofUcBp?=
- =?us-ascii?Q?csLxYD+f5fBiShUCsfv+K9CrXVsQj0Go7GC6rJvB93at7jwCdUnv5VhLzM5e?=
- =?us-ascii?Q?sas6kevGTAgBpwGSBQJtMHYnsHVWEmoCgLF2FgHXGuL+SfdkGsbP+zujnqpc?=
- =?us-ascii?Q?r6G7DRwFradlqNc5uRhR+S/kIe2UiZnQm6FwSPpdCHK5+pvA1tx1IOTg+M+3?=
- =?us-ascii?Q?yTfgrAo1NwCX4FVtc8VNl9Uysn7gGWycb3InQM5p9ELIW5G0kyDmxOb1EwFG?=
- =?us-ascii?Q?4wcIL58vI1oGp+4oo68ANeAJHQ6bIp8ObFZ9qJKmgFLyVqZpqrpl4XJdRr20?=
- =?us-ascii?Q?MEV3EVKRV1lcmXilyum7VsrbM8rSN/Tw9ewQScW8/AyqjG6AUuAM9+0nxe5z?=
- =?us-ascii?Q?hbHygvMtQdIeSzJLnpvPKpEj4NQM5zy55trMUiqijv00h90Sj/lUGz5HWOgu?=
- =?us-ascii?Q?R9wRupARjV+qcKWT0G4JZNUtG/jeFCEOxH2DQ5OIL6u6PPXbJBtJj4zOtFlH?=
- =?us-ascii?Q?JGIYz0Pend2tELeLF28eD9B781gNaKKm0/DzUghm7aAsFNecsNq+1InF78Lt?=
- =?us-ascii?Q?vup2w+fkEIEhOg+SD7U4dsX0c8G/mGlbfUNaCz09oSJgyPNOLBsnjesP24eg?=
- =?us-ascii?Q?sn/WL+Pix/NsYiWGNkmeeWfaHHEOYzyQ/hHgERvv84Gcats52Yn3MAnfJUMh?=
- =?us-ascii?Q?WEdu4jO5IkBo5LSUEt4m/ii64Tzozlad94vrzOcZBgzI7+oB8r2biwOFQI+b?=
- =?us-ascii?Q?h6909lyRv9KpARQFfJDMCQ//qr6X3/tr0qT04VSRkrhHKSEVXfCalh+lgj6T?=
- =?us-ascii?Q?xz2WVtHXeV7uxMo1DvZsfDls63ltVCaa5ElSwS8XXNSi9lEaq8XCSy0VavpK?=
- =?us-ascii?Q?qnc7MbakPzumN3E4IJrsTdhk27V+2zaB4zGac+ZBypJjdO32S7/lyxTvGHZ2?=
- =?us-ascii?Q?0XyWHRDscp+oypRmHq2xeEmiE0SxEEWJLSJTbEtN6c5NfMscZxPiXmEYU3ax?=
- =?us-ascii?Q?Aw5xNpJUTpJH1LJR8VMdSVXI5Dy6rIr3fwAvZruH4ZbF1HzVqbltgi5UB3dD?=
- =?us-ascii?Q?dvRS54OsV2o2n8OZDEbBMPpTZ2PXo00g+HmVHStyzxSS3mtz16jJ1X7dBHPm?=
- =?us-ascii?Q?KDrGqLao/Havo4uhI3Z+Mns7gRv11c+uWVjI2kyedicLZn9Jj74C3QMNmfQk?=
- =?us-ascii?Q?qyLYLITEuw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63be3ad9-2476-41a4-41d1-08de4e1e3f5b
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 18:54:55.4377
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sJcG4XHg70YXR32AO0mCJsmbz6YzAniSDLUuE/J73+BGDrO5101NRIGn3ob5qTv1
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6315
+In-Reply-To: <20260107052145.3586917-1-senozhatsky@chromium.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1787040009
+X-Stat-Signature: 77wpcrwzzxnfjchnz44uf83ijo4gbxcq
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 75E4CC0007
-X-Stat-Signature: oz1myu1wwkei7hrqawgj7gfkdi5iwfj9
-X-HE-Tag: 1767812100-310290
-X-HE-Meta: U2FsdGVkX1+nXfGvLdLg3rGpiKJfpzQ4hPwUNexYsAWnHUtlK0hyrya7sRijX6klMdhwX5b/fLBjNkhQFfDK2floYkV270AHgIcFNdpsTsgpsu+qt0OxXbBl0zpBgoLc9tfd3s81zGILC5QcaOzUMGAll1lRJKksfodcCX9cOv9eOErkOxPMnI2g3m9c8++iIEJWHTspWwJgMxbwKYTMgTW9QSHnOPJAtCl2VjR2HlrI+TZyHztazfY4zP3NS64u9+MTXROLLXt1pT262Bf2FNufnj1K8UYnh82uNjb/tsgW1MJ+k2Ts3ajTzmNYHJXBtsEv8LBl+9sqrBxgzR7AqUkPQxWgvZCtmHy/7OYlsRTnz0JRqmC0vipH/kq1vb2cxSJZ1IoA3FiDh7bpSoBssQda/zUE2LDfO77xW2cMDsi2Spxbrh2tUSzQOUHkEZy5FiT0DuWMQKlyvHFakyUKBzRkNJjM1oyM7zwL+RqMQXK37qXnjsFZRkRHL1X6FER/7+I25y2I9Y94sCaeZwhHtBSuvMDj3tBgu6+h/PjOB0neDZEfjAzraEyctbCwprryntofSeejV4Dhh2vxXDTjsvMEUeSUdA84DeqcVGBlA2GRVBhScCuZ4SaJOb95x/Zf334ke74B5kVKReb3gpIjaitW5OACXkaGIe5hCJQdkueD/ptxOVieeuaiLVH3zm1VNZPD4enTg8Tgn7yhYiCr9dyc/FAG8K355Ni9rorPR+fxb+kdLuURg9A0+/LqSt06B1uBWJsQDyPJY0tYLUTtHMPWWeXFUdhMcMZllmlunbsQfvurul7brp1zc+6kevZEC8eVVdxN75ikHibLlIpA3wrEaIeRlgl4sSIuppr5HrpWAps8jNkwl+MzeEKziaShHcdvmFTRpTAR4A1B8GzYkt2WDOAazrCucdsWbtqqUgrD050nHRpTIDRfZH5qtogm9fshht8qgLf8xnjqhNA
- CV4xczl+
- 7/M6DVshEZOyFNlCP/XOpxMrCW1gm7yMoBRWjlaeYtRj0iNRosoSO1IafVrBsgZ5Gt9+nvTkud+YmJjMhvuLquPBD6G8VHOpmDC6EHcFi2fbO4B3RW8IFagB+BiO9l6D+LUWkL5UBOHYCOVj7o0PVuwyqoZhb2t6bjiiun5JOk028gXP9egVcRIg3n1pEGVFwdI2M+ysuj7AnENTuerrfMui/YTnVEfpzY4hoUFwZqE3pxCsqNYMsIfm//M3QPDOjIGxgt/tzzjOvar+aTz5Pu/pd2rn2dmQ5cOxWaGXS0TRQ7FeoWa3GVz7dHvD06xYEfgEdp+scxqN68aIMAFRzAjQxeSa8LMqDpEO52NjLhTzOjDdT7zYKbYWTOuxxxxvEQjpo8gHNHdrLJl2JFbbJfF4/DIBgphBEKnhlSBKkoLQH6kH35z2q6lBCxP6PntTUnHQNZ99og5HRLpNmHIZw3fodhM+lIIGn0oN/0vgoRlvvWaTjOG0oRnVHsiLUJUk4eV6D
+X-HE-Tag: 1767812242-67393
+X-HE-Meta: U2FsdGVkX1+2HDVxYbSAYABmJgCKrgVdUap9+TI4IZOZ7abNLfhoGiTDT58vq/ufiNr691gEJnoTGq+Eror7Yq7oi1coUM52l0ll67CWkCBIRzj4IblLXVnZSq9HJTVnWferdkGMuP9K+YdBOq1bv7Pjzr4tKQmKSUWzSDpkUZmCJrrwbRf1Wb/tCiGtu9U/RPMWCgb1JjPkH2NWrDCpU4g3O9qEB6Xzyy+EqI4XRRopRpi9UadF9l4RC20UnZQnb2UC8HpZq0LTnKHhx4oPJhHFWgLMFYi51eKI+3xOSjsQ4ilhnAZm5Lu6lxaa9kD/TFgjUTfryR+KYJb15rG9W4/KLWvROQRBv2WhHUvdeagGUL/Db3L4z05ZRoF2HZFDz1TRgg1dUxZE3wlZPHa1c/d8EAzVTzl+AROYHYMX90HXg6TagKgyNPpkZbTf7HyvBuxOATCbha0D7xiWElnsqiBMdwmosrWtix8EQtcej+3DF2Pj8ZMN3SscgMLcdjViEfP3cR2+OjJYuHDV6FBa5zF/I6AeurkTaIDb4A5+IgX6OACtauXjRb1A9/5FjPBdrSN83X6TrwRMqKUksYOJSvpbOBj58tS5NSm03ASZMKlkbRaF8qTAEN71d7sIYI6LaKRjDqq9Lc839UI8zmbOF3sb6b0sH9nqTQ5OywfWHaF1XQ5QThbxLr3/8R+B7OqvcGhLBC01/hIquCkIr5yx6muvNSY/ppqaOG+WHCUawBax5wSNUs08cFD2vG3OMT9ZLEULPCaaKj+F/5M6dLQ0JDGTymLKqK7q4OlfizJS9wDdefIskDjk/6vIogGJDYTuld8HZ5cH3gPZmO0jQXisdGxdfJiGGpo8CT2om28gP/B8dZCB3+gDW1mOcQ09egiQc42X4PjuWZDna4HPd0C2c9RUPYgoThPJRzmzo8+SxjmzJ2j4An5KGS4x6YC52wtXRgdkQduNG2PoVVx5M3H
+ 57AgQxzI
+ 63NIL7KRxByQvCrw+A/yeeu0k4TlVwyqt2d/qzyXBbheFVJa2XKdHd5WEWj0iPFLxKOpZEx4H3jRH4TY6pPlwVNn1YfaNcqQimdb0AFDm1m/xPyY4i56sBqrQubhMyiXpTyUR/319Cw4XFSy9KqM13+7dSGkL4yLs6wJ7qJ8Ot3yZn6tl8sfoMj/P2vpZrKN08yT/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -208,15 +89,176 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25, 2025 at 11:58:30AM -0500, Pasha Tatashin wrote:
-> Andrew: This series has been fully reviewed, and contains minimal
-> changes compared to what is currently being tested in linux-next
-> diff between v7 and v8 can be viewe, here: [8]
+On Wed, Jan 07, 2026 at 02:21:44PM +0900, Sergey Senozhatsky wrote:
+> Using class->size to detect spanning objects is not entirely correct,
+> because some size classes can hold a range of object sizes of up to
+> class->size bytes in length, due to size-classes merge.  Such classes
+> use padding for cases when actually written objects are smaller than
+> class->size.  zs_obj_read_begin() can incorrectly hit the slow path
+> and perform memcpy of such objects, basically copying padding bytes.
+> Instead of class->size zs_obj_read_begin() should use the actual
+> compressed object length (both zram and zswap know it) so that it can
+> correctly handle situations when a written object is small enough to
+> fit into the first physical page.
+> 
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-I didn't closely audit everything, but the overal design and operation
-looks right to me:
+For zsmalloc and zswap bits:
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-
-Jason
+> ---
+> 
+> v1->v2:
+> - use mem_len for second memcpy size calculation (Yosry)
+> - simplified read_begin/end logic (Yosry)
+> 
+>  drivers/block/zram/zram_drv.c | 14 ++++++++------
+>  include/linux/zsmalloc.h      |  4 ++--
+>  mm/zsmalloc.c                 | 16 +++++++++++-----
+>  mm/zswap.c                    |  5 +++--
+>  4 files changed, 24 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+> index a6587bed6a03..76a54eabe889 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -2065,11 +2065,11 @@ static int read_incompressible_page(struct zram *zram, struct page *page,
+>  	void *src, *dst;
+>  
+>  	handle = get_slot_handle(zram, index);
+> -	src = zs_obj_read_begin(zram->mem_pool, handle, NULL);
+> +	src = zs_obj_read_begin(zram->mem_pool, handle, PAGE_SIZE, NULL);
+>  	dst = kmap_local_page(page);
+>  	copy_page(dst, src);
+>  	kunmap_local(dst);
+> -	zs_obj_read_end(zram->mem_pool, handle, src);
+> +	zs_obj_read_end(zram->mem_pool, handle, PAGE_SIZE, src);
+>  
+>  	return 0;
+>  }
+> @@ -2087,11 +2087,12 @@ static int read_compressed_page(struct zram *zram, struct page *page, u32 index)
+>  	prio = get_slot_comp_priority(zram, index);
+>  
+>  	zstrm = zcomp_stream_get(zram->comps[prio]);
+> -	src = zs_obj_read_begin(zram->mem_pool, handle, zstrm->local_copy);
+> +	src = zs_obj_read_begin(zram->mem_pool, handle, size,
+> +				zstrm->local_copy);
+>  	dst = kmap_local_page(page);
+>  	ret = zcomp_decompress(zram->comps[prio], zstrm, src, size, dst);
+>  	kunmap_local(dst);
+> -	zs_obj_read_end(zram->mem_pool, handle, src);
+> +	zs_obj_read_end(zram->mem_pool, handle, size, src);
+>  	zcomp_stream_put(zstrm);
+>  
+>  	return ret;
+> @@ -2114,9 +2115,10 @@ static int read_from_zspool_raw(struct zram *zram, struct page *page, u32 index)
+>  	 * takes place here, as we read raw compressed data.
+>  	 */
+>  	zstrm = zcomp_stream_get(zram->comps[ZRAM_PRIMARY_COMP]);
+> -	src = zs_obj_read_begin(zram->mem_pool, handle, zstrm->local_copy);
+> +	src = zs_obj_read_begin(zram->mem_pool, handle, size,
+> +				zstrm->local_copy);
+>  	memcpy_to_page(page, 0, src, size);
+> -	zs_obj_read_end(zram->mem_pool, handle, src);
+> +	zs_obj_read_end(zram->mem_pool, handle, size, src);
+>  	zcomp_stream_put(zstrm);
+>  
+>  	return 0;
+> diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
+> index f3ccff2d966c..5565c3171007 100644
+> --- a/include/linux/zsmalloc.h
+> +++ b/include/linux/zsmalloc.h
+> @@ -40,9 +40,9 @@ unsigned int zs_lookup_class_index(struct zs_pool *pool, unsigned int size);
+>  void zs_pool_stats(struct zs_pool *pool, struct zs_pool_stats *stats);
+>  
+>  void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+> -			void *local_copy);
+> +			size_t mem_len, void *local_copy);
+>  void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
+> -		     void *handle_mem);
+> +		     size_t mem_len, void *handle_mem);
+>  void zs_obj_write(struct zs_pool *pool, unsigned long handle,
+>  		  void *handle_mem, size_t mem_len);
+>  
+> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> index 84da164dcbc5..119c196a287a 100644
+> --- a/mm/zsmalloc.c
+> +++ b/mm/zsmalloc.c
+> @@ -1065,7 +1065,7 @@ unsigned long zs_get_total_pages(struct zs_pool *pool)
+>  EXPORT_SYMBOL_GPL(zs_get_total_pages);
+>  
+>  void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+> -			void *local_copy)
+> +			size_t mem_len, void *local_copy)
+>  {
+>  	struct zspage *zspage;
+>  	struct zpdesc *zpdesc;
+> @@ -1087,7 +1087,10 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+>  	class = zspage_class(pool, zspage);
+>  	off = offset_in_page(class->size * obj_idx);
+>  
+> -	if (off + class->size <= PAGE_SIZE) {
+> +	if (!ZsHugePage(zspage))
+> +		mem_len += ZS_HANDLE_SIZE;
+> +
+> +	if (off + mem_len <= PAGE_SIZE) {
+>  		/* this object is contained entirely within a page */
+>  		addr = kmap_local_zpdesc(zpdesc);
+>  		addr += off;
+> @@ -1096,7 +1099,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+>  
+>  		/* this object spans two pages */
+>  		sizes[0] = PAGE_SIZE - off;
+> -		sizes[1] = class->size - sizes[0];
+> +		sizes[1] = mem_len - sizes[0];
+>  		addr = local_copy;
+>  
+>  		memcpy_from_page(addr, zpdesc_page(zpdesc),
+> @@ -1115,7 +1118,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+>  EXPORT_SYMBOL_GPL(zs_obj_read_begin);
+>  
+>  void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
+> -		     void *handle_mem)
+> +		     size_t mem_len, void *handle_mem)
+>  {
+>  	struct zspage *zspage;
+>  	struct zpdesc *zpdesc;
+> @@ -1129,7 +1132,10 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
+>  	class = zspage_class(pool, zspage);
+>  	off = offset_in_page(class->size * obj_idx);
+>  
+> -	if (off + class->size <= PAGE_SIZE) {
+> +	if (!ZsHugePage(zspage))
+> +		mem_len += ZS_HANDLE_SIZE;
+> +
+> +	if (off + mem_len <= PAGE_SIZE) {
+>  		if (!ZsHugePage(zspage))
+>  			off += ZS_HANDLE_SIZE;
+>  		handle_mem -= off;
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index de8858ff1521..a3811b05ab57 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -937,7 +937,8 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>  	u8 *src, *obj;
+>  
+>  	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
+> -	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, acomp_ctx->buffer);
+> +	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, entry->length,
+> +				acomp_ctx->buffer);
+>  
+>  	/* zswap entries of length PAGE_SIZE are not compressed. */
+>  	if (entry->length == PAGE_SIZE) {
+> @@ -966,7 +967,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>  	dlen = acomp_ctx->req->dlen;
+>  
+>  read_done:
+> -	zs_obj_read_end(pool->zs_pool, entry->handle, obj);
+> +	zs_obj_read_end(pool->zs_pool, entry->handle, entry->length, obj);
+>  	acomp_ctx_put_unlock(acomp_ctx);
+>  
+>  	if (!decomp_ret && dlen == PAGE_SIZE)
+> -- 
+> 2.52.0.351.gbe84eed79e-goog
+> 
 
