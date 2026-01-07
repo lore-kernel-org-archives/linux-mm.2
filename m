@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 989DBCF6BEF
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 05:24:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED9D5CF6BED
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 05:24:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E88196B0005; Wed,  7 Jan 2026 00:24:11 -0500 (EST)
+	id 573236B0092; Wed,  7 Jan 2026 00:24:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E487D6B0092; Wed,  7 Jan 2026 00:24:11 -0500 (EST)
+	id 53E876B0093; Wed,  7 Jan 2026 00:24:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D92456B0093; Wed,  7 Jan 2026 00:24:11 -0500 (EST)
+	id 4543B6B0095; Wed,  7 Jan 2026 00:24:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CC8646B0005
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 00:24:11 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E7BA51986
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 31A3F6B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 00:24:14 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D12071A00FB
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:24:13 +0000 (UTC)
+X-FDA: 84304026786.27.FDB82BC
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf06.hostedemail.com (Postfix) with ESMTP id F22C0180003
 	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:24:11 +0000 (UTC)
-X-FDA: 84304026702.14.D029BBA
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 759BE120004
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:24:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=ESfW+LXc;
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=bWc3kDOO;
 	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767763449; a=rsa-sha256;
+	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767763452; a=rsa-sha256;
 	cv=none;
-	b=5cgOQIIZT4BChDmdHzGodWuzbacbtvYpMV+r3ZaCEFTPj6e3eOhR9YsQWRQ+qQbiop3rm2
-	Yk8RRC2bFvJ2j0TMHzq/D3h0Mm7W27kOldH6ERA3pCrrnsBpRb9WyK5fNgDOv3rRhWskaH
-	jWUANyRStqPhRLmctFNL+iopXZSB6Fw=
+	b=2MFTC3PnzF9AmCB8AaVshWMZCvuEWNbFwnhcr9XAt1aiDckFkCKfTvjIm9BvGwrNHUzLWx
+	wRZsifz6zSLb9vts0ct0OhWUNmBysCN7OEnf8aZs6IhSrojYgv2X44W2MiLrATVncYG60Y
+	EXngL+SUzstG388WWYd6sjIgKBo2AmA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=ESfW+LXc;
+	imf06.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=bWc3kDOO;
 	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767763449;
+	s=arc-20220608; t=1767763452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=qX2M30eGHCk52mXySW1cyDnmcJCSqt9PD2ACDZL4eR4=;
-	b=D8/y/oF13awKU7uGCqJiAfOtxpVGvkUYvIZ8YVvQxA17lA+R+lK6/24rrLZgvCJF3CNMjH
-	ZlV5XroskMnaPtkCXIjrAOcZbkPhucGRpVcxRR4iEBol18DG+vfCNLCCfqrLiCzv8Z6vfe
-	Pety8Rhn71l0LLa/HEBb78E1mJo4mjk=
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-bde0f62464cso1092793a12.2
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 21:24:09 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sv3rzlPh+Sxzun7Up48as/ut3i6iXooXQR6hvJ48eOU=;
+	b=Il2phezhom0JMsduOMFcj8RrzGzXNlh/Q2+PZdRSQTlP/wN3fPD021aCy7++zSAdho+vsL
+	4Tyw24+pj8wvIKbdyO+SONmv2A2ggrD3EiVQgbcj62K5caxOW2RJAfAnDeFWRxtl1qMbtT
+	Ufxv8K+tcnfvBIXy2SJ6a/wO0uUCh3c=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a0bae9aca3so14785495ad.3
+        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 21:24:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767763448; x=1768368248; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qX2M30eGHCk52mXySW1cyDnmcJCSqt9PD2ACDZL4eR4=;
-        b=ESfW+LXcT5BJ0Dko/4hlxOvaXGU30yJbxDjIW9+7+2j9+kglwkQhJPIdZa7niOWXsn
-         yUEw5xsihUA96WGuYhPaDQXzL94GFxo0+ozBUI/cx7+oPnt771RXEFKVMV3c0QRI5Zv1
-         cRWzyqWfqjKM5RNDllWCdInncIByBRERT2Pxk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767763448; x=1768368248;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1767763451; x=1768368251; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qX2M30eGHCk52mXySW1cyDnmcJCSqt9PD2ACDZL4eR4=;
-        b=Z1rhlsdQKYx9D+btknWowgiP5oW1nptPAupeNz+VdBQtTaFIqFAN/VrRdlam/wlHC4
-         BUtyIQVHZH8Lf6NEOOpJ4yeKrqFL93U0MI0gqsSNJRWktewk0Q5i88ScyBkaV1e10S8+
-         nUoDclBIDwEe5ay7JEhbsVWqCYXq2+0zpgcHvHor0v9gA3IfHf+jQJFXe5Zhm+MLa5wp
-         ooDIjIhfg7L5q9H3aEHV8JntCSlvGrYFzPJpPmKyiBMwisRjh2+yJjV1zQ4AiUB2Ep0w
-         29UfKavTH7dBgRqg4m2fkhZFqDCzPBPtclPqXWaTyAmtOL+s8t5M+NW2fSj4bOReGutz
-         chGg==
-X-Forwarded-Encrypted: i=1; AJvYcCXGUC3X8UXoNKnPRGvuhlTWCFT3WZsrPA5CDyIop+CXRo8IFDmKkeAdunGslCX7c3nHEIBgrkodpQ==@kvack.org
-X-Gm-Message-State: AOJu0YwhIeZuVcLvp8UCWshtZj8updOBvWxr/EHgI5YcDKVlijYiMAa9
-	/rqZJITabwIQg6hLsf47MDjT6Diq48NU4kr/kkEtkxr7MQqAC3UKNG2tpdCyFDRPjQ==
-X-Gm-Gg: AY/fxX5wd0b55DnYNx49ogQpZnUIPJmbt+ec8Msr+ysu8d6s8h+c+RnvnJOsE2Ca+Lf
-	sifO0QBgl0mmL2dFYv1IyeKc9dH8quHHtxx0IZyf7wSyy/d6hKUH7DP6XDFZK2hx+Cyzbjm6ZVM
-	8f5a6ClLtLaSi9NYEp4M5akTIRAy0mh35ZgqkqSsvV7PBE5LGiblzgZL5Hxp+57WwNUH3lZbt83
-	FReJqrtyhYM0mYunGd/DwbrUNWxA34bMPQGhWUv3yrPseA8+PWAyCRJhagJD1PKPwyeUi7qolSB
-	QXZ4upyUCvxRHKfmin2mr5HmBdK5cdNfKVwUqTjdFkwVZBleV/r/k94s6kQJj/QJNYhFY+l9XKE
-	FW6Ff6+e2vc77yTE1k467Nd8ObQCxZ/wprkn/3imGBlun27cibcNCNFFF2YPLNJFszQ8tscFNSu
-	JcwbTz+8OQXC4vtX3g3Fem1Zmi0wo6dtWj5+vu9GiQtKTZnt1xY2wqMHKVgG8mUzsvfhWi4B7DB
-	g==
-X-Google-Smtp-Source: AGHT+IHb4V+g2TMe59SooynLMfTLVLZEH8yuk1niMC7+aXskKLk0m3usjjjR1GCoTPdIYVZTh/Yjjw==
-X-Received: by 2002:a05:6a20:6a05:b0:35d:3f07:ba34 with SMTP id adf61e73a8af0-3898f8f4860mr1272538637.31.1767763448264;
-        Tue, 06 Jan 2026 21:24:08 -0800 (PST)
+        bh=sv3rzlPh+Sxzun7Up48as/ut3i6iXooXQR6hvJ48eOU=;
+        b=bWc3kDOOVKRO/9Wsg4XdWPt/dGKi3XknL4VOnqwNPv+UUD2cKVn5l3Oq0XmMsE5yM2
+         1S3j3ADDz8kRtg7Fx4Vp3+XCAAg0dOl4l/jhpUsBXkQQ79ghpJD40WxIAPYie36ajonW
+         37GBZab0DHQ0bXPZ+ZtAf0I8Xj2UiPGZfX6qo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767763451; x=1768368251;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sv3rzlPh+Sxzun7Up48as/ut3i6iXooXQR6hvJ48eOU=;
+        b=sDMXNWU7x4DdQTtRlDQDbcF4B6CMHEstDUdFp8ShUKKKNC7bk8kQwK4CCiLnVnmVVP
+         YGoWckAAcizPHULb1NVp6PGlwZimJSwkJm13cxnz4+qgGb0XMz8nmPBMMZW9nsba9bZH
+         GWMK5cY7q4kEPexkFbAxrhkNr1VlLw9nu7DVTvzvjVwqWKE4CRFrlv4MPGprAJswR1YP
+         xwnHpmF+as0IGhsjKIv1abIa6sMevCrqKmGDolqtXo32zlCjvilQLOxh5wMdrSDKgShC
+         0kg3fMHL/exz79sRsWN5njLWCTWayv7rz2vQrqZEkGVEaVo+x84xuPT4Jh5xc4hxRB1r
+         9ing==
+X-Forwarded-Encrypted: i=1; AJvYcCW76qKaaoSNiy+E7MmUipJaoFvLR9OlD8bwhL8HJ5bg6iYPtQ4K59tkUfmrDoVhjE5CaVD3QF81Iw==@kvack.org
+X-Gm-Message-State: AOJu0YxUuGGfD6YiELlAB0rjVvVnS2bsWJ4Y428oVtqfo43Z56f6+vab
+	kT6m8xp8PGeq9/8dLr1s9nq36x3MDh0YodpR5NyTjF/UYaldjZ6QPifrUZZiURn2jA==
+X-Gm-Gg: AY/fxX709LGPZHAimmlGoKh582O3OH9M9o5ae/gcaBIR1uhuLsZYDZBO/ZC6j1d2azN
+	5JGXHXh0yei9sRoBCuKMi6FiQaAHBelOdK1Jf5N9xuqgN2j9DsfkQqcGLV6ALZhGMecejU+fPnk
+	WE0f14Xa96L+fNmXiDEmRFoPtTBGrXOsSZJoML59cwRXMARuWenZ5JBZZgYF6S5PmH3qQRMINfM
+	VJGhiRka1taPQPFNGsJEBOgT5HftfF7CucQ+s5RT5LiFwTEQ6Je/l2+WSfRv9U0Okjg+ER9L6t9
+	7lgmmakSFJJdyiLO9cy8znFraAW/yy06eBYRsc+9riS6NMOBRkAs/hzLOWayx44Xt2Bpa2XF3Lt
+	Jq3+0hRvlQYerk7wrhz0fg6CI75Plv4uZN4s4TmsU0RaVS5G1FfeHrzkWFuTQWBd2CWZRnxrHbK
+	+qyfzkP6uH9gfp0S6bLj7BA9P9D+aXN0QDq39djnYOLwXVuTTSp9TAxDrPEZEmeYD1r029ydPNg
+	A==
+X-Google-Smtp-Source: AGHT+IF5uENaBzAN2dwZYfZfxOQq2eGV5qh+qQg+WmoHQYfJuiGyFCQGA9VqkVlzEcQWJqj5TIepbQ==
+X-Received: by 2002:a17:903:3204:b0:298:1422:510d with SMTP id d9443c01a7336-2a3ee4db71dmr10638565ad.48.1767763450833;
+        Tue, 06 Jan 2026 21:24:10 -0800 (PST)
 Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:9f6a:2617:8891:93ff])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c47390sm37069545ad.25.2026.01.06.21.24.05
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c47390sm37069545ad.25.2026.01.06.21.24.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 21:24:07 -0800 (PST)
+        Tue, 06 Jan 2026 21:24:10 -0800 (PST)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
@@ -96,22 +97,23 @@ Cc: Minchan Kim <minchan@kernel.org>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Brian Geffon <bgeffon@google.com>,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCHv2 1/2] zsmalloc: use actual object size to detect spans
-Date: Wed,  7 Jan 2026 14:21:44 +0900
-Message-ID: <20260107052145.3586917-1-senozhatsky@chromium.org>
+	linux-mm@kvack.org
+Subject: [PATCHv2 2/2] zsmalloc: simplify read begin/end logic
+Date: Wed,  7 Jan 2026 14:21:45 +0900
+Message-ID: <20260107052145.3586917-2-senozhatsky@chromium.org>
 X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+In-Reply-To: <20260107052145.3586917-1-senozhatsky@chromium.org>
+References: <20260107052145.3586917-1-senozhatsky@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 759BE120004
-X-Stat-Signature: mcgrkfhmhokuqesuygsd4w5t6f9ikfk4
+X-Rspamd-Queue-Id: F22C0180003
+X-Stat-Signature: u6pcsseuu16t8hj1me78fteos1fmci9g
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1767763449-207624
-X-HE-Meta: U2FsdGVkX1/T+rKfqPAhe/Kg3qtVZ4EbGZkIGLknxqZZB9AbFu3hpcYMni6ACSK69gTFAzNsjeXDFySmh5hyu5Ihp0SCCovR/bXBpGLIxX7H15BrHN6kDaNUSuyLS65UBUU/OuuieHnvenormCej9PWbuVy91c/GLHuo5duE0ss3ZUE3FeLjuAamakR76GmQnv8mC4nG4anWO4GMSHCS0xVYuJ7YtO25aKrtaVxQ7ejcxM21AuzXHgeNfxafw+iYxl5kzpAchKZCsV914k7qJmZsDY6V9jxt8js4kfAQbwnHvuIF/TQgKKZiLI0XrQnPrpIOEax2Y0X5YIamGYjD82VhEdo+EuM3BtE0AblhWSO8X26+N+cN3zaRE4YM/usyqRzf7gI76IdngWSXPlCXqSA85j7O1EWYFy9ZqrHNBF/Abq9iy5Xs4Ddpu6twOq0WO3V4Zq+FAFS5ZqYqM/EIgcRCNIeGEAq3CayhrXLYXslkO3Oq2+KQG7nCWeBL8AdbRGdc64j+nVs91eGZFCVMDEusZdzapsRtmGdUodUQOh9jyrnaLf7hmGmresX0b4Ts23LBb6niPy8swKpHgEoSeN8WEsUAlFXhaaYZG4oDhcbuDY0F3INgxD+cWa7j9vbIJIhExEp3Tm3Ei0ZUOYPCxWCXgqRoocQ8x8D1M249m1bRvNc77s1kEcVV1y4fHwinHUcPCwvKNvE+TJghz83Jz7gLRGcTXFuZpE1oyU06jzLc39GwwChjR6FA+BYbFY4QR5pEt9bqKPhJTzi6iIhU8Q0YFVk39c4bpj1A5yQVoemnbX0j8/ikvWDRI2yRHMNuCunJusND2lDL5+PULGBt6RMIw2k7a1Dblt1E3or2QW3UKj0xzaMtiuy/7J+ZVzUdj/GsbnqPTcHc0xdb0Xwthv9BZYLw+DxsIneenqX1ZtREO3ZYqO0p4txdvjq7aJfp++MltWs/e78u/gMTBSn
- DPR+/L2H
- ZWlFiJq6KXxbnNhHc9ONs57n5EV/JUxKLTJmE8ZUqODvCx4geME435iCCm0yfDhT8mIp0hkL1+dIbp0Kbhp27AvE0gaiL84hheYLelLrgCQaJ2ICscUC9hj8BEfmZPhipsAkE2EEt9ojYiEyFMuVijdWjlKSevSbTS4fqi/diFhvZRGY1upQQerHI6bWHeoDL8ldaIlCrCUOfN5tZuiGDJrZ6T6tJWsS7kls0SIZmjZ7odfjfltiR102yjXLOMy5QxB0NreNWrUTM90k=
+X-HE-Tag: 1767763451-718178
+X-HE-Meta: U2FsdGVkX18rJ3iW9Z4eereT283SyDlGVN7Js96Q/UnAhBdB65DKwgJL+VAkFu49bv8M9ERHRgT8AKJQM2uPso0yLN6N6lXYKqsB++Z9MgGdJ3Yy9fWfNnC0vT2KD35kra4NDDWI4quytOBhTezSFYqh7q4pgCBbEjl4bWHP1V8XoNQ3VtDSJcWJGLlg2wqHGPc4P20tbWlWpT0S9nRJsIqgK29Zme8LsXtc9oXItOhohuD05tR3cad6UIQdPts54r7Dvp9YluY2WcdHdvvanMro57A/k5byC6EP5mZlrF/J6ZW1IqaavV/RTo1FhZEuNMUMU4rAzeoR73Y/OV7yhFHuANJSLu8jMwqoyEvqREtC8tMibNIJW09lhOJDabaVljYCwpMD2kNlT/nHR8oRofrcghA0Ax8iO+ue5X6X9hSQKEJdf5cRxjkhSuGf7Fpcch+mFb5MvM4zxbVlcVrEkNEmXnA7xdH2WVx6n7idEV/UmYH6I0sHpPZtGGECqaQTVnk2vvAax96c18K78EG++F6y8p3yWthfYt8NTv7dLson4zDPHLgK5r72dk5DcdAzPQ/T1lqI9uRh86bqQ+y4dHAh45Y1L5RqIFg5zETBE0O9vwCQkmrrPRygBZ48z/doSvRCRx1LsmyKwI2+hkkuwFZ8ocTHYDx3hHvH3PEYsGAh/KpfKI7CUVlPNh1SHqU9tTw7PrhDCmtp6EatmAjzmmUfv4olErgZ76MOsM5XFYcxGka5jDLVvfAghqJQQtIHS6fWTnaPunkhSoFRszijbpi2UAI2YeOiTNXmfmrey0hkuXhSGy/DpC6i4ycMTWFaUlVQAy2Oy6SsrjtwickpRq/rbhx0cZFYEErsUftizCU5us+27mvPsI5p6187XRjhsGV7w5o5Z/X9cm2e3OYkT7QDulvl/QQREW6a7NsZg/lJhcKBPjdmqkzDhbvz17sJYwzG5XbVvfBOxzEKLa8
+ 2nCYe78J
+ OZ+lSx4TA4GK3j5oCUyg6ruXa9TYIuYNW3CVNble+UVKHkBx1f1/1xKdXY41iBc+daTSW/TRFREDGZ+1MchQWWg3nBV1xtv766/qXRXm7PdP/8vWe6cITe51/3mJZxtSa4PD4tq9PHKHY/PjBvpErL0+MjS/jiiRnK8FYjyYX5Wtil6t0uuNqi0G7xTvIunAJb03ec8EFDuCtsq1MYSXNClaHxnhEFYXJ2mo0YO6o2HG5uIZdLUPWGc25jda4oUovDUhgxcQau1MI5IXY4/lEkzAhvdJhXk4y3zBSjyVQr4MMDtPeUEiaLGgo84MPeQMS3URdt+kxTDGHrFeAsFLfdqa9D7K+T/8AV2tI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,170 +122,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Using class->size to detect spanning objects is not entirely correct,
-because some size classes can hold a range of object sizes of up to
-class->size bytes in length, due to size-classes merge.  Such classes
-use padding for cases when actually written objects are smaller than
-class->size.  zs_obj_read_begin() can incorrectly hit the slow path
-and perform memcpy of such objects, basically copying padding bytes.
-Instead of class->size zs_obj_read_begin() should use the actual
-compressed object length (both zram and zswap know it) so that it can
-correctly handle situations when a written object is small enough to
-fit into the first physical page.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+When we switched from using class->size (for spans detection)
+to actual compressed object size, we had to compensate for
+the fact that class->size implicitly took inlined handle
+into consideration.  In fact, instead of adjusting the size
+of compressed object (adding handle offset for non-huge size
+classes), we can move some lines around and simplify the
+code: there are already paths in read_begin/end that compensate
+for inlined object handle offset.
+
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
+ mm/zsmalloc.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-v1->v2:
-- use mem_len for second memcpy size calculation (Yosry)
-- simplified read_begin/end logic (Yosry)
-
- drivers/block/zram/zram_drv.c | 14 ++++++++------
- include/linux/zsmalloc.h      |  4 ++--
- mm/zsmalloc.c                 | 16 +++++++++++-----
- mm/zswap.c                    |  5 +++--
- 4 files changed, 24 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index a6587bed6a03..76a54eabe889 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2065,11 +2065,11 @@ static int read_incompressible_page(struct zram *zram, struct page *page,
- 	void *src, *dst;
- 
- 	handle = get_slot_handle(zram, index);
--	src = zs_obj_read_begin(zram->mem_pool, handle, NULL);
-+	src = zs_obj_read_begin(zram->mem_pool, handle, PAGE_SIZE, NULL);
- 	dst = kmap_local_page(page);
- 	copy_page(dst, src);
- 	kunmap_local(dst);
--	zs_obj_read_end(zram->mem_pool, handle, src);
-+	zs_obj_read_end(zram->mem_pool, handle, PAGE_SIZE, src);
- 
- 	return 0;
- }
-@@ -2087,11 +2087,12 @@ static int read_compressed_page(struct zram *zram, struct page *page, u32 index)
- 	prio = get_slot_comp_priority(zram, index);
- 
- 	zstrm = zcomp_stream_get(zram->comps[prio]);
--	src = zs_obj_read_begin(zram->mem_pool, handle, zstrm->local_copy);
-+	src = zs_obj_read_begin(zram->mem_pool, handle, size,
-+				zstrm->local_copy);
- 	dst = kmap_local_page(page);
- 	ret = zcomp_decompress(zram->comps[prio], zstrm, src, size, dst);
- 	kunmap_local(dst);
--	zs_obj_read_end(zram->mem_pool, handle, src);
-+	zs_obj_read_end(zram->mem_pool, handle, size, src);
- 	zcomp_stream_put(zstrm);
- 
- 	return ret;
-@@ -2114,9 +2115,10 @@ static int read_from_zspool_raw(struct zram *zram, struct page *page, u32 index)
- 	 * takes place here, as we read raw compressed data.
- 	 */
- 	zstrm = zcomp_stream_get(zram->comps[ZRAM_PRIMARY_COMP]);
--	src = zs_obj_read_begin(zram->mem_pool, handle, zstrm->local_copy);
-+	src = zs_obj_read_begin(zram->mem_pool, handle, size,
-+				zstrm->local_copy);
- 	memcpy_to_page(page, 0, src, size);
--	zs_obj_read_end(zram->mem_pool, handle, src);
-+	zs_obj_read_end(zram->mem_pool, handle, size, src);
- 	zcomp_stream_put(zstrm);
- 
- 	return 0;
-diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
-index f3ccff2d966c..5565c3171007 100644
---- a/include/linux/zsmalloc.h
-+++ b/include/linux/zsmalloc.h
-@@ -40,9 +40,9 @@ unsigned int zs_lookup_class_index(struct zs_pool *pool, unsigned int size);
- void zs_pool_stats(struct zs_pool *pool, struct zs_pool_stats *stats);
- 
- void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
--			void *local_copy);
-+			size_t mem_len, void *local_copy);
- void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
--		     void *handle_mem);
-+		     size_t mem_len, void *handle_mem);
- void zs_obj_write(struct zs_pool *pool, unsigned long handle,
- 		  void *handle_mem, size_t mem_len);
- 
 diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 84da164dcbc5..119c196a287a 100644
+index 119c196a287a..cc3d9501ae21 100644
 --- a/mm/zsmalloc.c
 +++ b/mm/zsmalloc.c
-@@ -1065,7 +1065,7 @@ unsigned long zs_get_total_pages(struct zs_pool *pool)
- EXPORT_SYMBOL_GPL(zs_get_total_pages);
- 
- void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
--			void *local_copy)
-+			size_t mem_len, void *local_copy)
- {
- 	struct zspage *zspage;
- 	struct zpdesc *zpdesc;
-@@ -1087,7 +1087,10 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
- 	class = zspage_class(pool, zspage);
+@@ -1088,7 +1088,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
  	off = offset_in_page(class->size * obj_idx);
  
--	if (off + class->size <= PAGE_SIZE) {
-+	if (!ZsHugePage(zspage))
-+		mem_len += ZS_HANDLE_SIZE;
-+
-+	if (off + mem_len <= PAGE_SIZE) {
+ 	if (!ZsHugePage(zspage))
+-		mem_len += ZS_HANDLE_SIZE;
++		off += ZS_HANDLE_SIZE;
+ 
+ 	if (off + mem_len <= PAGE_SIZE) {
  		/* this object is contained entirely within a page */
- 		addr = kmap_local_zpdesc(zpdesc);
- 		addr += off;
-@@ -1096,7 +1099,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+@@ -1110,9 +1110,6 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+ 				 0, sizes[1]);
+ 	}
  
- 		/* this object spans two pages */
- 		sizes[0] = PAGE_SIZE - off;
--		sizes[1] = class->size - sizes[0];
-+		sizes[1] = mem_len - sizes[0];
- 		addr = local_copy;
- 
- 		memcpy_from_page(addr, zpdesc_page(zpdesc),
-@@ -1115,7 +1118,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+-	if (!ZsHugePage(zspage))
+-		addr += ZS_HANDLE_SIZE;
+-
+ 	return addr;
+ }
  EXPORT_SYMBOL_GPL(zs_obj_read_begin);
- 
- void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
--		     void *handle_mem)
-+		     size_t mem_len, void *handle_mem)
- {
- 	struct zspage *zspage;
- 	struct zpdesc *zpdesc;
-@@ -1129,7 +1132,10 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
- 	class = zspage_class(pool, zspage);
+@@ -1133,11 +1130,9 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
  	off = offset_in_page(class->size * obj_idx);
  
--	if (off + class->size <= PAGE_SIZE) {
-+	if (!ZsHugePage(zspage))
-+		mem_len += ZS_HANDLE_SIZE;
-+
-+	if (off + mem_len <= PAGE_SIZE) {
- 		if (!ZsHugePage(zspage))
- 			off += ZS_HANDLE_SIZE;
+ 	if (!ZsHugePage(zspage))
+-		mem_len += ZS_HANDLE_SIZE;
++		off += ZS_HANDLE_SIZE;
+ 
+ 	if (off + mem_len <= PAGE_SIZE) {
+-		if (!ZsHugePage(zspage))
+-			off += ZS_HANDLE_SIZE;
  		handle_mem -= off;
-diff --git a/mm/zswap.c b/mm/zswap.c
-index de8858ff1521..a3811b05ab57 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -937,7 +937,8 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	u8 *src, *obj;
- 
- 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
--	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, acomp_ctx->buffer);
-+	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, entry->length,
-+				acomp_ctx->buffer);
- 
- 	/* zswap entries of length PAGE_SIZE are not compressed. */
- 	if (entry->length == PAGE_SIZE) {
-@@ -966,7 +967,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	dlen = acomp_ctx->req->dlen;
- 
- read_done:
--	zs_obj_read_end(pool->zs_pool, entry->handle, obj);
-+	zs_obj_read_end(pool->zs_pool, entry->handle, entry->length, obj);
- 	acomp_ctx_put_unlock(acomp_ctx);
- 
- 	if (!decomp_ret && dlen == PAGE_SIZE)
+ 		kunmap_local(handle_mem);
+ 	}
 -- 
 2.52.0.351.gbe84eed79e-goog
 
