@@ -4,213 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FAF3CD585E
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 12:11:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E97CCE9D48
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 12:19:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C42C66B0092; Wed,  7 Jan 2026 07:11:05 -0500 (EST)
+	id 7F8BE6B0092; Wed,  7 Jan 2026 07:19:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEFD06B0093; Wed,  7 Jan 2026 07:11:05 -0500 (EST)
+	id 7A6AC6B0093; Wed,  7 Jan 2026 07:19:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC5276B0095; Wed,  7 Jan 2026 07:11:05 -0500 (EST)
+	id 650C56B0095; Wed,  7 Jan 2026 07:19:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9591C6B0092
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 07:11:05 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E7F7E13A6C6
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:11:04 +0000 (UTC)
-X-FDA: 84305052048.22.8921F38
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012017.outbound.protection.outlook.com [40.93.195.17])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 171A840002
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:11:01 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=citrix.com header.s=selector1 header.b=YEQ40pcp;
-	spf=pass (imf27.hostedemail.com: domain of andrew.cooper@citrix.com designates 40.93.195.17 as permitted sender) smtp.mailfrom=andrew.cooper@citrix.com;
-	dmarc=pass (policy=reject) header.from=citrix.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767787862;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 50A576B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 07:19:07 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E8FA558407
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:19:06 +0000 (UTC)
+X-FDA: 84305072292.05.8BF2A1A
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8C250C0015
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:19:04 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=WbN1bj2N;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=WbN1bj2N;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf10.hostedemail.com: domain of petr.pavlu@suse.com designates 195.135.223.130 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767788345; a=rsa-sha256;
+	cv=none;
+	b=Ah9/q9AFco9RNNlbtN6AZgIqqsrO0kbcJ4jc1WrP+WuEyZy5GD996Sr5GMRLSO12yDKCCy
+	h+AfJpYD8uE7t8XEkE86HiZbps7M6DMva4dMhYvXv51Jtx1rglt4qAhr5TqiVr9ju/n6gi
+	H9MxRHdvusUDnP02G8f1VW9A+qJ3IVc=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=WbN1bj2N;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=WbN1bj2N;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf10.hostedemail.com: domain of petr.pavlu@suse.com designates 195.135.223.130 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767788345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jMnmLy4ws50j+rhYtlqoj7KCsfnPl39S1vS1XBtCEy4=;
-	b=8rV4cF8NPn/paKoragyCc/5wkB/E6hHe1nINPMvOvA6WRzxaYkkMl7YHNI3TvZQctYH+iv
-	JbPHGZV6JbplRRt0A69mkkKlRFUlSbGEO6Nxo6q6KUgA0PVrhN/wQnB+R12r1QiG/S+Op3
-	yffWajyUQjW8C8PWyJgroOcudjkmumM=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=citrix.com header.s=selector1 header.b=YEQ40pcp;
-	spf=pass (imf27.hostedemail.com: domain of andrew.cooper@citrix.com designates 40.93.195.17 as permitted sender) smtp.mailfrom=andrew.cooper@citrix.com;
-	dmarc=pass (policy=reject) header.from=citrix.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767787862; a=rsa-sha256;
-	cv=pass;
-	b=dG4FYqoHk4ga9JF87PfmUkZpHhXHrQ02ZRjfIrn77nQgOduttEPsFMOr6tAzvXDMennlUg
-	jZA9IzcK5r5R5esKa8KcEDc6jCBfx/wgai3fq1x/YrvouHG/BX+NuIx8zvsVSLLlCrhes3
-	Ga/ShfDFAJum5AjYMnzfy4ko5Arlycc=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n0SLqxYgCzdo4siE5vD6l4UcDkIN/WOWpCUu6Xo3LC5OzhWv7ngq3q/AEv47orPx3lwpDTD4CQSPKmDLa6rp57i1RdHNH5/9dJ912k7Biw6u1eoNmLRFdQRnRuv44tQtNTauIF/NKH1MFhmm6GpR8KZ8d28lyaYE++W4SJQISIY51rhAMk1h4z6nfCQGtgYF/ba27rWpzVCFaLkyv31tPIOEEoV16OJB6qblLFT2B/IejLgbChidbooy8wG7MBfuQypEJFIzgH4qBUGDQi0UY5R5bEu+QOGqWn9ZIxDb3ap9g19thWFS/nyrN/R+GeqfSgZUbiEQ4Gzc96tF/i279g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jMnmLy4ws50j+rhYtlqoj7KCsfnPl39S1vS1XBtCEy4=;
- b=G20U5dW0wUEheWb3VeOHCIPk2dR+6T6P4WJZrYmiMwWDxhFp2AlqrCeNtkj4On/z38PvtlpEC08bbl+QzHr9frGNkvhTZjFWC66mDxtwS2JGeQ1+1bzA9SGIxxhlC0Kb/e07kSFia+IysSmRFcA5d/hmhWsJnTd6drCkqUAR+PJtS0RDiU1lQuyTuaggktHonYni0GTiIoFht1akEIvFRWDKngHd+HaNiQjjx8PYeiW9jXr2DBaCM+8N8mb/tfP+geU3l5UOucfMllce4G/+zDi26HnCj1kXtGWKSRUySSGX3ifzahK86vJpagHrSxZjruNF/KP1jlkO9dVwtgoWYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
- dkim=pass header.d=citrix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=citrix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jMnmLy4ws50j+rhYtlqoj7KCsfnPl39S1vS1XBtCEy4=;
- b=YEQ40pcpL7MjGJj6Af6YAcidqno/L/FYSyXuxbT5vd8Tp52yQxvLrF34/jQp5BzAErvcIgbTp2S9RtcrZ2X04Pa0smYFL8NlfejuYKTsdVBrsYflfpIQpF1NlobJ+ofDUm1LZ48cBsc9vVzKkInIYG+Wib6s9ir3+vkZzbheISY=
-Received: from CH8PR03MB8275.namprd03.prod.outlook.com (2603:10b6:610:2b9::7)
- by SA6PR03MB8000.namprd03.prod.outlook.com (2603:10b6:806:42f::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
- 2026 12:10:59 +0000
-Received: from CH8PR03MB8275.namprd03.prod.outlook.com
- ([fe80::a70d:dc32:bba8:ce37]) by CH8PR03MB8275.namprd03.prod.outlook.com
- ([fe80::a70d:dc32:bba8:ce37%4]) with mapi id 15.20.9499.002; Wed, 7 Jan 2026
- 12:10:58 +0000
-Message-ID: <0d53c80f-46e3-4e78-8d8b-cc36085229e4@citrix.com>
-Date: Wed, 7 Jan 2026 12:10:52 +0000
+	bh=1InH04BUhqu6lMlLWmyVtPrVr0o1jtu64a/MC1vmWxY=;
+	b=b5QTfENiYIp4lXQlRorzK9PC1bo1OENvu2zgmPtMO/mz3aeW2ZuxRtPF5A3sIE3aBhUjFQ
+	G1bnYW4tedRhw6vQvS43qlYaP/trjbb1LEWne8Sa+1slxl/lHI3EePqdO25suefsmx5gaA
+	hN1eKrLvcoL3hsI0CpMSEdIglBRjW3I=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 6354B33D84;
+	Wed,  7 Jan 2026 12:19:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1767788342; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1InH04BUhqu6lMlLWmyVtPrVr0o1jtu64a/MC1vmWxY=;
+	b=WbN1bj2NvmY+V7Jbi20SxuPQ/UHWer8r4OTn44HlYNZmRxL49sd5CkaVo8uYo4gmuSSJ0J
+	BbG+fRPzp1IReqgI6ZW/1fIGwbhzwQBSSzSEChftWtxrh9efKEwtUAeT4Yl3KXbLVAQYtU
+	i+p23blbGZYpxaaQSFnTz0TZ5Vu09JQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1767788342; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1InH04BUhqu6lMlLWmyVtPrVr0o1jtu64a/MC1vmWxY=;
+	b=WbN1bj2NvmY+V7Jbi20SxuPQ/UHWer8r4OTn44HlYNZmRxL49sd5CkaVo8uYo4gmuSSJ0J
+	BbG+fRPzp1IReqgI6ZW/1fIGwbhzwQBSSzSEChftWtxrh9efKEwtUAeT4Yl3KXbLVAQYtU
+	i+p23blbGZYpxaaQSFnTz0TZ5Vu09JQ=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F2AF53EA63;
+	Wed,  7 Jan 2026 12:19:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id auvPOjRPXmnfRAAAD6G6ig
+	(envelope-from <petr.pavlu@suse.com>); Wed, 07 Jan 2026 12:19:00 +0000
+Message-ID: <7afb6666-43b6-4d17-b875-e585c7a5ac99@suse.com>
+Date: Wed, 7 Jan 2026 13:19:00 +0100
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-Subject: Re: [PATCH v4.1 07/10] x86/entry/vdso: include GNU_PROPERTY and
- GNU_STACK PHDRs
-To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Theodore Ts'o <tytso@mit.edu>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Xin Li <xin@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Brian Gerst <brgerst@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, James Morse <james.morse@arm.com>,
- Jarkko Sakkinen <jarkko@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Kees Cook <kees@kernel.org>, Nam Cao <namcao@linutronix.de>,
- Oleg Nesterov <oleg@redhat.com>, Perry Yuan <perry.yuan@amd.com>,
- Thomas Gleixner <tglx@linutronix.de>, Thomas Huth <thuth@redhat.com>,
- Uros Bizjak <ubizjak@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-sgx@vger.kernel.org, x86@kernel.org
-References: <vdso-cleanup-patch-4.1@zytor.com>
- <20260106211856.560186-7-hpa@zytor.com>
-Content-Language: en-GB
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-In-Reply-To: <20260106211856.560186-7-hpa@zytor.com>
+Subject: Re: [PATCH v18 34/42] dept: add module support for struct
+ dept_event_site and dept_event_site_dep
+To: Byungchul Park <byungchul@sk.com>
+Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
+ damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+ adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
+ peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
+ rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
+ daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
+ tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+ amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+ linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+ minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+ sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+ penberg@kernel.org, rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
+ linux-block@vger.kernel.org, josef@toxicpanda.com,
+ linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
+ dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+ dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+ melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+ chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+ max.byungchul.park@gmail.com, boqun.feng@gmail.com, longman@redhat.com,
+ yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
+ netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
+ corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+ gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
+ arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, da.gomez@kernel.org,
+ samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+ neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, josh@joshtriplett.org,
+ urezki@gmail.com, mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+ qiang.zhang@linux.dev, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
+ vschneid@redhat.com, chuck.lever@oracle.com, neil@brown.name,
+ okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+ anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+ clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+ kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
+ kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
+ ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
+ baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
+ joel.granados@kernel.org, richard.weiyang@gmail.com,
+ geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
+ neilb@ownmail.net, bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+ dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251205071855.72743-1-byungchul@sk.com>
+ <20251205071855.72743-35-byungchul@sk.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20251205071855.72743-35-byungchul@sk.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0227.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:315::13) To CH8PR03MB8275.namprd03.prod.outlook.com
- (2603:10b6:610:2b9::7)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH8PR03MB8275:EE_|SA6PR03MB8000:EE_
-X-MS-Office365-Filtering-Correlation-Id: d2e61065-ae94-4655-88b0-08de4de5d108
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|921020|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZmxMZlJSM0F5Z3dQdS9uOWt1Um45RFlpc0E4VFZlZjd2RkZpYW1WYlA0RzBk?=
- =?utf-8?B?Z1BneXZTcEJ5Q1N4UlZSR1BWS0o2K212RDJLdDd3NXM1cFdQOStRWEx4YzhO?=
- =?utf-8?B?VE5GdG9NRjFhdjU2SENPM0JLckJKdTVRdjB0Um5GZ0huUTlaUnlvcklaYUtL?=
- =?utf-8?B?OWJnckg1WndhRWxHQWV6dE1xSUJaRHJvVmdsY2p1Ym5vVEFTV0FiZ0gra3lr?=
- =?utf-8?B?QnovZWFjQUNoQUlxTDVvSGdyZVE5Sll0TkxhTy9tNS9EVC9FTlQ5S0dYWXpT?=
- =?utf-8?B?ZmR6QkI2KytSa1o5WUpDQjI4cGZrTkZVYXFIM2VLYVpYTGlQSml2RWhGMGtt?=
- =?utf-8?B?V3ZNbVlXcGZOOWxEckZnY2piMHg2a1JjN1JYMlN1WTFseWxJdTRPV3lkZFJu?=
- =?utf-8?B?OTlqVkpORWtXTFduM0pNejU3Ty9yZzVybXpqM0FFMHZKdnd6YUtKcndLNmFD?=
- =?utf-8?B?VkcyOHNoRWVnazBoNWdxVk5YaTRQVnREbmVxeW9SUGhGYitNSm1seWpVMTNK?=
- =?utf-8?B?U1FSMXRxZHBQZFFGUmdaQjh6Y21mWCtCRlNEMjVRKzUxRENodHM2U2orakJh?=
- =?utf-8?B?bmxQZzN1M0NWNkxRam1tZSsvb1kvUEcyMUhkYWNneHRramlUTytiWVV4SzF5?=
- =?utf-8?B?SE91aFFRaXFNd1JCSGpteXBrckRVRDFzWEJtN2VwazZNQjB2V050ekpLbnJq?=
- =?utf-8?B?S2pHM3MwNVp3R1ZJbXpKREZrcFlmMFd2OFhPRVZBdE1vQldzMVFMMDhGcUE3?=
- =?utf-8?B?TjhwN1NWT0lqbGEveGU1bmQrb0xVd0h0UHh2OVR3UWJLVjIxdlJVb2c2S1pN?=
- =?utf-8?B?dGNBYVpwT0R4OGxiOUVPejB5WnJsVy9HdW1NbEhIMFdpSm9yMTJzYlR3YjVl?=
- =?utf-8?B?djY0WWVJcS9mdnI2eUJWNktJQy9xOFNtUFNNand1VVlWTFkrZ0RjZU1Na29t?=
- =?utf-8?B?dmIwM3FaV0VDQUc0dXBERkd0RXRkQ3Q2bHVoNm13WlEreVNuMFlEL3FvZXAz?=
- =?utf-8?B?NHcxR0FBRjBIREYxazVtTjBFS0h5SlNwWTlpajJyckpIMHNvTnM5NVJuT0Rl?=
- =?utf-8?B?NGhpakF3enZ3VnVwN1pWaGxrR1AwWHNmSVJacjN5VnlnUXFwVXhReGR0QXpD?=
- =?utf-8?B?bDBTUEJLQ1VZWGtxcHNsNkRsVGFEc3BGcjBsYWF2b0FzdXhhZ2tVNXg5NHUr?=
- =?utf-8?B?WEcyVWlBUVBXbXc4TWpJTHhzcXZCRng2NWYxRW5Fd2RRdW9kOHEwV09yN2lq?=
- =?utf-8?B?RjdiZnlOY1YvYVVNbGF2TStjV3ZldTB0TnpRMVlMU1kzS2JtdTFvQkRTUXZj?=
- =?utf-8?B?cmluMTdYNTdvb0ZRVGdNUUdjazJnOG1VLzVqcnN2bXlPVlUzSUM0dmMxUXFC?=
- =?utf-8?B?MEJiU0swS1E3UDNLYVErTUZLcjVVVXJoUittWmpia3o3ZDJTdkZFRmEzb1Fh?=
- =?utf-8?B?NGw5TVFZUHU4ZGROOGlLRVhVZk5kbFUvZ0lDaW5VYTZzelppcXcvKzFBU2Zi?=
- =?utf-8?B?NFJKVlBBa3MzV0FYSDVzSU51YkJTbXMrODJnME13OEg0clVkWmgxR1A2VVMw?=
- =?utf-8?B?WDVIb0wwMFFwa2loTFBpS1NMamFMYWVvSUYrYk0rSmN5T1BFVzg1RkFIS2ha?=
- =?utf-8?B?WTdoSy9zYU1PSVYzWWxPRE1nWEcyL2Q3ajJoN3dYTjBMV2NMdmJzZUEzVi9u?=
- =?utf-8?B?V0hhazY1ZHV6a3packszbXI4aTFFYm9yYzlhRlo0ZzNuSGNUeFlaMTJzcU9t?=
- =?utf-8?B?Uk51S1RVdVNia3FpbUVteFRtT3V2SnFEWDRERHNzN3N3WmdjeVVjYW5BTW9q?=
- =?utf-8?B?aXdIOEMwclhQdysxd1BhbWJja0krd3k5R3hUV2NKakhsRlhIc0VyYWRiZlgv?=
- =?utf-8?B?NjZOaVNaL0luR3FFQ1JYNjJ1Z3poTU5oTnBFQkN2d2pHRUJ3Z00venlLakdj?=
- =?utf-8?B?eFpSSVBrU2hkQk82dHF1RjVQcy92d2xIK2NNeEVTc0g3UTdQZWJKb0k5OHR1?=
- =?utf-8?Q?9ZuM7xC1+GehEVGLDDfuTLEjQSu+VU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH8PR03MB8275.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(921020)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?LzEwSi81cHNVa293WGViOHlhTEZLTmx0bnE2dTNiZnNoRmtrdlJyOGd4QkFG?=
- =?utf-8?B?UnYrakxoQlU3OUNUQ1Q3azlHMUZMd0JFL1c0UUxPNG9Kc3VTbnRkYWZQVzRZ?=
- =?utf-8?B?bXQ0RzZBakZLbng2M1RmYSttazZQVzl5VkFtSlM1cGRRc1ZQbEFCYllhVDhz?=
- =?utf-8?B?c3ZLb00rbkZJOG9oVXEvNW5UTTVHUVhDWi9PamRsMXRrU3ZSelNVRXFqcDV4?=
- =?utf-8?B?cytzT2ZUaDZpOVgyWjN1UFV3L3FheUwrWGFkTGxyYmdmVnZiNnVaankwekk4?=
- =?utf-8?B?MWhLTFErNG1Rc01YdjNoVU1rZGNnZmtpWnZRSUV5VHFtbXROSTBTc0lUNW5n?=
- =?utf-8?B?aW1xWjhaQTA2Vmc1OG00WXUzSlQycHQ3aHBCVStnM3dVMGZTY0JydjhjKzlh?=
- =?utf-8?B?MWE4Y3BsQUw5NWw4QTg0eEFoSVB4U2NPSGxPZHRzZGkrTmZGSmlEQVBOdGxx?=
- =?utf-8?B?bG9yWUQ2ZjN1b2VHZmU0VnJSOURPVEZnWHpMUkZWT1ViNy9PMUU3aTlWUGJk?=
- =?utf-8?B?VTMrMExXeVJ5KzJKSnRSL2YwSCtaYkVjemc3cVdBTHNIQ1pZL21OZmk5NkhD?=
- =?utf-8?B?MGlRU241ZlBEK3U3ZEpJWEZPbHppQkVDQjB5U3d1N1JFQWlFYXc4cWJ2SWEy?=
- =?utf-8?B?RnN0Z3EvOUVzSkEwVkpiTWtpUDRWcHU5U05OeVdmT1hrRTFUZmhiSTJ1eis1?=
- =?utf-8?B?TkljNFdjazV5eVQ5RktZdHp4anZOSHVGZFBVVVBXRFVUVGc4SWNqejNid1NQ?=
- =?utf-8?B?RmJNd3NmL0QyM0RzSFZoc0hLNnRoTm5ic0EvbWNRWkxNVW1vWUxKTjBUZlBE?=
- =?utf-8?B?eXBOSUZURnZxYmc1YmpydElwNnhLSDdONEM0cHlsU2FMdFVZS0tySWRDVWFr?=
- =?utf-8?B?Z1NzRTJuTVNDQ0xWZ0JSbkR4WXNmSmcxQnFCUFJYWlAvV0dXRFdHK3FJTjNO?=
- =?utf-8?B?VGM0L2hpb296VzZxSmhody9WU0FuakY1Z1gzcFR1WGg0a054aDN0aXI2VVZV?=
- =?utf-8?B?TGZmQ3E5REkzdXdIRVRxMDBiU05NeG9nNVNmT3A3b2lvR3M5T3k0ekNZcVZM?=
- =?utf-8?B?SU1oQjlQN2FsNDdoUS9qQjJsUW9QRXlEVWJ0c1Bsby9LSjRUN29Ka0YyUi9C?=
- =?utf-8?B?bnY3NW9IYlZ5ZFg5eHM2Q2Voalg4MWh6VGE2YVV6U1AxNUZwRTE1VVFsbEZN?=
- =?utf-8?B?UzYvMDBQY3BEWExRYjZDVjl3ZkJNNnhZdXVhL0V5YWxPR3Y3aEVVcmJ4bFRI?=
- =?utf-8?B?SnZDY1lHeVFqenBZOXo4eHRVL1lldnVWOEJpRmUrdG9hbGZ2OVpmcGpxZVFz?=
- =?utf-8?B?WmpKV2NsYWttQVVjZmJxendDVVhTdVdBaXc4SmdHM1JPUllBRUkvV0pSL0lF?=
- =?utf-8?B?Z1ZDcTExUWdBSlFmcEtidEFXWENETTJZb3EwaS9qU0k5NTlLeG1Wa2ErZi91?=
- =?utf-8?B?MDdCcGtSeGpSTHlOcnNlc2pWWFVlTkhqUERNcHJTV3lVM1NqODlKTGZkRWtr?=
- =?utf-8?B?OG5Ccit2KzV2UDc1VjY4VjROZ1ErcEZ1TmtRb1AzdVF0dWpadlpPaHdSZGs5?=
- =?utf-8?B?TWJIYytYbzVSNHgvU2NMRDVhM0h1dHNZbi9KcENQNCt5bHlQaVY1UFhEeVA1?=
- =?utf-8?B?UzQ5akVyN2xObjNRVXplZXY3YVBsRlZXcExKbXpqUGN6N2sxM08zOWRNTE4y?=
- =?utf-8?B?UHNFK1ZKMTJZaUNpWXFVWk5iR2dnTFVGeUR6NklyVGVNdk53blpPQ0Rubi93?=
- =?utf-8?B?SE5ldThXWjl3aVA2S2lsa2FEU3ZtNDJOaUtzY3ZZZmdXaW5ZZ255Z1h2cDdS?=
- =?utf-8?B?MlBoc0Uwd3E3a1BhdFYwWGU1NmV2NzFkc0VKSUdJNFlQbjdzZUZ3NjRvZFRL?=
- =?utf-8?B?L3pNSW5ZVCtIeGFMOEZib2o3Mk8vQXVPdVBjVmFiYXNOTXNEVlZ6OStCUGJi?=
- =?utf-8?B?NGJBdzhaQ0owUEl5amFaSEthNHlkcGpFTDFjYkxHNWMwU0MyNGx4MVBoa290?=
- =?utf-8?B?dUtRaDYyTHo0N0FDc3VJdjRwVWE0L2RrbkwzZVZwSHFmY3l6aEtmWE9CWFgv?=
- =?utf-8?B?UWlMRDFZaGVJWE1qV1pDem1iLzhNWnErTkxOWWh1NTBvQUx3am9aTW1tTXdw?=
- =?utf-8?B?SzRUS2krbk1Pcnk2cjdOcEVITVZYNDBIT3EySjViUlBUZEl3QVZTSXY2Y0lI?=
- =?utf-8?B?R3ZkTjYvLzVOZjNGcm5kd2U0aVpKRDcyZDZha0FWK01vYkZGaWRnN0J0dTl0?=
- =?utf-8?B?TnJaeXp1d0ZiNUYzK2d1M2tnWGJmTGoyQkJxMEFUZlRwYVhaSUxTZVUvd3FW?=
- =?utf-8?B?eXEwOGRnbWtDbTdYWVNjL1JicXFoYWxVMUNoTmtabDBHa1VnSUd1Z2N3UWZ6?=
- =?utf-8?Q?Qlm/SEEd4cG7BrG0=3D?=
-X-OriginatorOrg: citrix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2e61065-ae94-4655-88b0-08de4de5d108
-X-MS-Exchange-CrossTenant-AuthSource: CH8PR03MB8275.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 12:10:58.4635
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rbdM9oQo8Z8u24iZVkb065zsThVBxtRZkJ+cxyqjHnVhR4wI2VXU6A5dVLhMlz6cDyqB3ZXcr/MnZ9ibeRY7++FaojIEn1ewvQXrGJlV8J8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA6PR03MB8000
-X-Rspamd-Server: rspam02
-X-Stat-Signature: t7u4xdepfnmpeqc973tbbm5xmighytrc
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8C250C0015
+X-Stat-Signature: nfkxtdmrobqd7y1haprpqy1tip7s1wwh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 171A840002
-X-HE-Tag: 1767787861-905767
-X-HE-Meta: U2FsdGVkX1/9vr+KWlOyY1aIwTRqOm9otDbb2U0r6IOjm1MIFYqYpVW/7Ug2hL6w+uKWL9tDhjkcxXdw4YshqZ4IJbgOPjndK9ke8vw2Ggp6FRRtsol+MfbXa5ywC4i6opeiwMFiKmwrLVCquzEIxbKXJTTV6GBJgITbJJ1zrn7A5ELfVb7JFV47zR81JqD8k8za/aqaw4F6WDRgp2rDrjU7RZNz+H7Lm3t0qf/GTN4RQEmJnrnRZStLJ95gIwEsDiIOCirnuapzYBlFzZP51pJi/38dXCNEQoILvY/R5/8sX9zYwTYXh5Bex+sYGnB8pkaILUK8E2dguQE4Qwf2mGp3njJILhv8AJRyq5mxfgvHeJ+nuq0Xa8becUmWf153Ll/tygwLTOUltlqTmu7d7s+VRqZ+61x9DijzH64M8h0j9vd87DHBPIWHr76Kl8cdfwe2Oj115Z4qy/7WrfmISOg/t1i9B3q/Tet9MfbLfjSexwXS1aMMMw974YwGeEehQ1zvSjNriTnS+KT3KpmWefLzEqYbxVtPhfeBOdMnPq+Y8Z/2WZAVkF3Xtry6yMI976BgQV9KCu+EES4A+jBu3T5ugreRGsDu5J7SwjPZ6g5EsRtZO62/kLtvjsZRxg4Uk81V8lNmp6nqZK/A27ptWLRaKuzhlGWZqInQ6r+dpkcSbpGfmn50aqsvHfbmAF1armjRwSRY44sEjL2PZbVmcBgp+B7EDBgldOcY//H2vwyK9oAw1QJUjIRQufaHt1AUgxakUofT/MlImQW/zcWsNA85e5iBxWfesfhlwNIbGqbctHWkbhregm4JgJHwbOi/CbLDb/pW5oJnL5va455rOwEXjRoB83hRWBceJD4x8AgDvkyqhhnazfLhyfKVAlhhl3XX32B18lqv3/cyxYIkd8DI+K2q96qkMpDklcukUdQMW7LdYk8OwfAKcuQ5u78qiOrmUKsW7CA0h+0dx4B
- wWqFBMr0
- MOEqYxyTDCpGmVCx0NACkqWoz2XggQWtDsdGLZr4H8CXIiHXbT11kBQRrbcA22zOKUNWEI3j8+f+0fcb3upoY3ki68SqOHIctOyg314m5MW+OTpziHrAluoljb3o0WmdYo5YnWW61b+2jCZklIwbrt/tIdr3H759gkqhc6orw1snmcpQXmGySORbfU/znbMizyRXLmGNeTuW++letExcep1WSDyIKQbPSZKYFODxW+FuTAjychWHKEKReUpJCDutnL/+eG+9ZTYLZe5BhpKx5wQNhu72FahNaRizmLsq12JEQk7HX3n/rjLENlLKDXcAZU+nBMPFL/KwB4XkrKq+wJBl67+Jclyj7zukJNtR/a2l/H2g621mLmFkXzkX8xf7hHfNapW16TQEn2gapYbDoU/RP6ouhdSQ7Rk++2AhXcI0lVy8UaOND+59RCBYniJqDG6EN2fqVDzQIVzt4Y1Q9kSw6pnEmCX2Xq7PklOEMYx2TzaVuyVxLflHXOw65SMkvGieYYf27QJBEk9SFxuyIG7ehW1FL36KIh99Kf8F4z/WyGDrE3FNPWuRLshhwyyFTk4HrViUibi0za/SvOme/QBcSJtbmNS2p357KGyn1IQfI7teOa/tr0Agij9eyamw7HjZNAOoTi9GBzeTo9pv2nurUF4eBXQa75viN+ELmxjyJeDg6DoL1/793yA==
+X-HE-Tag: 1767788344-697247
+X-HE-Meta: U2FsdGVkX1/qr/8Ty0lM5+q3q4WgAOmwSc2EMiR59eYQX+2KCkiErWCVxxi4cAG4YfdIZDfUy7jHdsArMVPddErAvTLBZ6vn9aW1g19ebfHS3FIZqDr4ILSVgyr0RreVavJrUeJjqnbVPwuehH4FShDO+Ncex+drkaSvsN3xsQbH4EH7MM61wBH+zM1aFgSFtYXNIXINBq3A8Tv1UblTlJtQEotU3i5lMIk+JCKsHF0aJYMFNzqp8rP69EQs11im9FRmsbwYVIKJcGhmdq5iPcq2hRRDvyaFKJOopod8YGh4tS4842aqGtHnf2hP7Uls8pf+pBc1THrc5FFGbnLbWr0SynSpcuDZb0AT6DxBEGKD+LLpAyT8s5PS9x86aFit/yODGdjp2o963TMF/0j5YNqLlDuUj0df2Y0BzYRo6kd0aU8FDbRelHH+VmWc7TuDqW7C/zL+yTVfVCmyUsRRmW/aLP7+IHH7g3D2HjXccUDlKJgG/tvMBP3YIdMO49aGkHQ8sjY2y0cBySPdLIVK08tV+g+q+0PiDxa0PfvlRczjhD7zRUt5neum9ain4pk9Gb1Hlx/vyMGq+nSTpYnV5mNtATRf71AtAdjOtGEp3vXYUSsNnxus9sr2a8d5cHBGIumNzihY99yPG/WxuzE7r5mXQv1EgBQ9x9GNj7K9ag8T4tBClPQgiZ065tZ7zuQleqBGMeaClxBOBYSwzvgp5D2E/nA7YA4eV1RZA271WjRnd+sj3t8pa8Ukst3qJTUdrl/PnB0N8Ju0J+AzHeppIZ/6m1lqc9vZL4F0fAxnr5H/7afDBiH/I+uOdTdywq+r4UqNkNGA9nhTi7yW44M4CLHR/TN6/irWQhTUQ9I9nackwXBXzY5GC3TSu0BbYzRungWJOLAoszh1XNjl8iG0qQF6U2FDwE5dntJZF7/ndOxc6hk6w5vYUshPfLFldoabAf3qB45PRAGtFoGBhX4
+ S3jmqN5c
+ ZNqUwt1tLumuQ6i/6XtkkzjIxH9vD4GLwwXS5Dh8ApsS3VvreYQ5pDVTd0QTi+IZTwzCA00mgIkYMEt3NBk1d+cDESRDGnolH2Z6PUViEhSa6LhjkX9/C6OGn7pPEvDyrf6/mHgczwHoEM2Hc1QP+iGL5bkEhIoNJlRx/VBlFTWyYPyF+x77gebQEYqB1rBq73m3ASA6GB2/M1dawzNClF+TEm6fqOBenC8dBepFvpnrSanDDKL+7XtIl7y/fcg21yvANtZPFxlWL7qUbVd5LQLvFj4LyeT/9lGnb4Qd9GyQyl573dAhiordD7BP0nv+im6epVctcs8KDCLUrgdNTf69IkqvkIJS8SQwukrRJJDnluEucINMAQP0r7g0LD5fr6aIe/DaKneAzBURWoRqHDMJmWFeAyxZHDf66HuFng1kkVY5FAEyOwlCDXioFkLxO0DYfgRbL0sBzF0iiX2EWdL366eQXP2pcG1Bk+v7gCy0ndPHFeSx2QrqRnKMG301HAmjD/2x4DW0xOT2hEKl0xoE7eCIsZ7yVs3oGpsBxD2EPGZUlP+kceMJM9FyrxJCA5U24
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -219,25 +174,324 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06/01/2026 9:18 pm, H. Peter Anvin wrote:
-> Currently the vdso doesn't include .note.gnu.property or a GNU noexec
-> stack annotation (the -z noexecstack in the linker script is
-> ineffective because we specify PHDRs explicitly.)
->
-> The motivation is that the dynamic linker currently do not check
-> these.
->
-> However, this is a weak excuse: the vdso*.so are also supposed to be
-> usable at link libraries, and there is no reason why the dynamic
-> linker might not want or need to check these in the future, so add
-> them back in -- it is trivial enough.
->
-> Use symbolic constants for the PHDR permission flags.
->
-> [ v4: drop unrelated formatting changes ]
-> [ v4.1: drop one last bogus formatting change (Brian Gerst) ]
->
-> Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+On 12/5/25 8:18 AM, Byungchul Park wrote:
+> struct dept_event_site and struct dept_event_site_dep have been
+> introduced to track dependencies between multi event sites for a single
+> wait, that will be loaded to data segment.  Plus, a custom section,
+> '.dept.event_sites', also has been introduced to keep pointers to the
+> objects to make sure all the event sites defined exist in code.
+> 
+> dept should work with the section and segment of module.  Add the
+> support to handle the section and segment properly whenever modules are
+> loaded and unloaded.
+> 
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
 
-The v4/v4.1 notes will presumably want dropping before committing?
+Below are a few comments from the module loader perspective.
+
+> ---
+>  include/linux/dept.h     | 14 +++++++
+>  include/linux/module.h   |  5 +++
+>  kernel/dependency/dept.c | 79 +++++++++++++++++++++++++++++++++++-----
+>  kernel/module/main.c     | 15 ++++++++
+>  4 files changed, 103 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/linux/dept.h b/include/linux/dept.h
+> index 44083e6651ab..c796cdceb04e 100644
+> --- a/include/linux/dept.h
+> +++ b/include/linux/dept.h
+> @@ -166,6 +166,11 @@ struct dept_event_site {
+>  	struct dept_event_site		*bfs_parent;
+>  	struct list_head		bfs_node;
+>  
+> +	/*
+> +	 * for linking all dept_event_site's
+> +	 */
+> +	struct list_head		all_node;
+> +
+>  	/*
+>  	 * flag indicating the event is not only declared but also
+>  	 * actually used in code
+> @@ -182,6 +187,11 @@ struct dept_event_site_dep {
+>  	 */
+>  	struct list_head		dep_node;
+>  	struct list_head		dep_rev_node;
+> +
+> +	/*
+> +	 * for linking all dept_event_site_dep's
+> +	 */
+> +	struct list_head		all_node;
+>  };
+>  
+>  #define DEPT_EVENT_SITE_INITIALIZER(es)					\
+> @@ -193,6 +203,7 @@ struct dept_event_site_dep {
+>  	.bfs_gen = 0,							\
+>  	.bfs_parent = NULL,						\
+>  	.bfs_node = LIST_HEAD_INIT((es).bfs_node),			\
+> +	.all_node = LIST_HEAD_INIT((es).all_node),			\
+>  	.used = false,							\
+>  }
+>  
+> @@ -202,6 +213,7 @@ struct dept_event_site_dep {
+>  	.recover_site = NULL,						\
+>  	.dep_node = LIST_HEAD_INIT((esd).dep_node),			\
+>  	.dep_rev_node = LIST_HEAD_INIT((esd).dep_rev_node),		\
+> +	.all_node = LIST_HEAD_INIT((esd).all_node),			\
+>  }
+>  
+>  struct dept_event_site_init {
+> @@ -225,6 +237,7 @@ extern void dept_init(void);
+>  extern void dept_task_init(struct task_struct *t);
+>  extern void dept_task_exit(struct task_struct *t);
+>  extern void dept_free_range(void *start, unsigned int sz);
+> +extern void dept_mark_event_site_used(void *start, void *end);
+
+Nit: The coding style recommends not using the extern keyword with
+function declarations.
+
+https://www.kernel.org/doc/html/v6.19-rc4/process/coding-style.html#function-prototypes
+
+>  
+>  extern void dept_map_init(struct dept_map *m, struct dept_key *k, int sub_u, const char *n);
+>  extern void dept_map_reinit(struct dept_map *m, struct dept_key *k, int sub_u, const char *n);
+> @@ -288,6 +301,7 @@ struct dept_event_site { };
+>  #define dept_task_init(t)				do { } while (0)
+>  #define dept_task_exit(t)				do { } while (0)
+>  #define dept_free_range(s, sz)				do { } while (0)
+> +#define dept_mark_event_site_used(s, e)			do { } while (0)
+>  
+>  #define dept_map_init(m, k, su, n)			do { (void)(n); (void)(k); } while (0)
+>  #define dept_map_reinit(m, k, su, n)			do { (void)(n); (void)(k); } while (0)
+> diff --git a/include/linux/module.h b/include/linux/module.h
+> index d80c3ea57472..29885ba91951 100644
+> --- a/include/linux/module.h
+> +++ b/include/linux/module.h
+> @@ -29,6 +29,7 @@
+>  #include <linux/srcu.h>
+>  #include <linux/static_call_types.h>
+>  #include <linux/dynamic_debug.h>
+> +#include <linux/dept.h>
+>  
+>  #include <linux/percpu.h>
+>  #include <asm/module.h>
+> @@ -588,6 +589,10 @@ struct module {
+>  #ifdef CONFIG_DYNAMIC_DEBUG_CORE
+>  	struct _ddebug_info dyndbg_info;
+>  #endif
+> +#ifdef CONFIG_DEPT
+> +	struct dept_event_site **dept_event_sites;
+> +	unsigned int num_dept_event_sites;
+> +#endif
+>  } ____cacheline_aligned __randomize_layout;
+>  #ifndef MODULE_ARCH_INIT
+>  #define MODULE_ARCH_INIT {}
+
+My understanding is that entries in the .dept.event_sites section are
+added by the dept_event_site_used() macro and they are pointers to the
+dept_event_site_init struct, not dept_event_site.
+
+> diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
+> index b14400c4f83b..07d883579269 100644
+> --- a/kernel/dependency/dept.c
+> +++ b/kernel/dependency/dept.c
+> @@ -984,6 +984,9 @@ static void bfs(void *root, struct bfs_ops *ops, void *in, void **out)
+>   * event sites.
+>   */
+>  
+> +static LIST_HEAD(dept_event_sites);
+> +static LIST_HEAD(dept_event_site_deps);
+> +
+>  /*
+>   * Print all events in the circle.
+>   */
+> @@ -2043,6 +2046,33 @@ static void del_dep_rcu(struct rcu_head *rh)
+>  	preempt_enable();
+>  }
+>  
+> +/*
+> + * NOTE: Must be called with dept_lock held.
+> + */
+> +static void disconnect_event_site_dep(struct dept_event_site_dep *esd)
+> +{
+> +	list_del_rcu(&esd->dep_node);
+> +	list_del_rcu(&esd->dep_rev_node);
+> +}
+> +
+> +/*
+> + * NOTE: Must be called with dept_lock held.
+> + */
+> +static void disconnect_event_site(struct dept_event_site *es)
+> +{
+> +	struct dept_event_site_dep *esd, *next_esd;
+> +
+> +	list_for_each_entry_safe(esd, next_esd, &es->dep_head, dep_node) {
+> +		list_del_rcu(&esd->dep_node);
+> +		list_del_rcu(&esd->dep_rev_node);
+> +	}
+> +
+> +	list_for_each_entry_safe(esd, next_esd, &es->dep_rev_head, dep_rev_node) {
+> +		list_del_rcu(&esd->dep_node);
+> +		list_del_rcu(&esd->dep_rev_node);
+> +	}
+> +}
+> +
+>  /*
+>   * NOTE: Must be called with dept_lock held.
+>   */
+> @@ -2384,6 +2414,8 @@ void dept_free_range(void *start, unsigned int sz)
+>  {
+>  	struct dept_task *dt = dept_task();
+>  	struct dept_class *c, *n;
+> +	struct dept_event_site_dep *esd, *next_esd;
+> +	struct dept_event_site *es, *next_es;
+>  	unsigned long flags;
+>  
+>  	if (unlikely(!dept_working()))
+> @@ -2405,6 +2437,24 @@ void dept_free_range(void *start, unsigned int sz)
+>  	while (unlikely(!dept_lock()))
+>  		cpu_relax();
+>  
+> +	list_for_each_entry_safe(esd, next_esd, &dept_event_site_deps, all_node) {
+> +		if (!within((void *)esd, start, sz))
+> +			continue;
+> +
+> +		disconnect_event_site_dep(esd);
+> +		list_del(&esd->all_node);
+> +	}
+> +
+> +	list_for_each_entry_safe(es, next_es, &dept_event_sites, all_node) {
+> +		if (!within((void *)es, start, sz) &&
+> +		    !within(es->name, start, sz) &&
+> +		    !within(es->func_name, start, sz))
+> +			continue;
+> +
+> +		disconnect_event_site(es);
+> +		list_del(&es->all_node);
+> +	}
+> +
+>  	list_for_each_entry_safe(c, n, &dept_classes, all_node) {
+>  		if (!within((void *)c->key, start, sz) &&
+>  		    !within(c->name, start, sz))
+> @@ -3337,6 +3387,7 @@ void __dept_recover_event(struct dept_event_site_dep *esd,
+>  
+>  	list_add(&esd->dep_node, &es->dep_head);
+>  	list_add(&esd->dep_rev_node, &rs->dep_rev_head);
+> +	list_add(&esd->all_node, &dept_event_site_deps);
+>  	check_recover_dl_bfs(esd);
+>  unlock:
+>  	dept_unlock();
+> @@ -3347,6 +3398,23 @@ EXPORT_SYMBOL_GPL(__dept_recover_event);
+>  
+>  #define B2KB(B) ((B) / 1024)
+>  
+> +void dept_mark_event_site_used(void *start, void *end)
+
+Nit: I suggest that dept_mark_event_site_used() take pointers to
+dept_event_site_init, which would catch the type mismatch with
+module::dept_event_sites.
+
+> +{
+> +	struct dept_event_site_init **evtinitpp;
+> +
+> +	for (evtinitpp = (struct dept_event_site_init **)start;
+> +	     evtinitpp < (struct dept_event_site_init **)end;
+> +	     evtinitpp++) {
+> +		(*evtinitpp)->evt_site->used = true;
+> +		(*evtinitpp)->evt_site->func_name = (*evtinitpp)->func_name;
+> +		list_add(&(*evtinitpp)->evt_site->all_node, &dept_event_sites);
+> +
+> +		pr_info("dept_event_site %s@%s is initialized.\n",
+> +				(*evtinitpp)->evt_site->name,
+> +				(*evtinitpp)->evt_site->func_name);
+> +	}
+> +}
+> +
+>  extern char __dept_event_sites_start[], __dept_event_sites_end[];
+
+Related to the above, __dept_event_sites_start and
+__dept_event_sites_end can already be properly typed here.
+
+>  
+>  /*
+> @@ -3356,20 +3424,11 @@ extern char __dept_event_sites_start[], __dept_event_sites_end[];
+>  void __init dept_init(void)
+>  {
+>  	size_t mem_total = 0;
+> -	struct dept_event_site_init **evtinitpp;
+>  
+>  	/*
+>  	 * dept recover dependency tracking works from now on.
+>  	 */
+> -	for (evtinitpp = (struct dept_event_site_init **)__dept_event_sites_start;
+> -	     evtinitpp < (struct dept_event_site_init **)__dept_event_sites_end;
+> -	     evtinitpp++) {
+> -		(*evtinitpp)->evt_site->used = true;
+> -		(*evtinitpp)->evt_site->func_name = (*evtinitpp)->func_name;
+> -		pr_info("dept_event %s@%s is initialized.\n",
+> -				(*evtinitpp)->evt_site->name,
+> -				(*evtinitpp)->evt_site->func_name);
+> -	}
+> +	dept_mark_event_site_used(__dept_event_sites_start, __dept_event_sites_end);
+>  	dept_recover_ready = true;
+>  
+>  	local_irq_disable();
+> diff --git a/kernel/module/main.c b/kernel/module/main.c
+> index 03ed63f2adf0..82448cdb8ed7 100644
+> --- a/kernel/module/main.c
+> +++ b/kernel/module/main.c
+> @@ -2720,6 +2720,11 @@ static int find_module_sections(struct module *mod, struct load_info *info)
+>  						&mod->dyndbg_info.num_classes);
+>  #endif
+>  
+> +#ifdef CONFIG_DEPT
+> +	mod->dept_event_sites = section_objs(info, ".dept.event_sites",
+> +					sizeof(*mod->dept_event_sites),
+> +					&mod->num_dept_event_sites);
+> +#endif
+>  	return 0;
+>  }
+>  
+> @@ -3346,6 +3351,14 @@ static int early_mod_check(struct load_info *info, int flags)
+>  	return err;
+>  }
+>  
+> +static void dept_mark_event_site_used_module(struct module *mod)
+> +{
+> +#ifdef CONFIG_DEPT
+> +	dept_mark_event_site_used(mod->dept_event_sites,
+> +			     mod->dept_event_sites + mod->num_dept_event_sites);
+> +#endif
+> +}
+> +
+
+It seems to me that the .dept.event_sites section can be discarded after
+the module is initialized. In this case, the section should be prefixed
+by ".init" and its address can be obtained at the point of use in
+dept_mark_event_site_used_module(), without needing to store it inside
+the module struct.
+
+Additionally, what is the reason that the dept_event_site_init data is
+not stored in the .dept.event_sites section directly and it requires
+a level of indirection?
+
+In general, for my own understanding, I also wonder whether the check to
+determine that a dept_event_site is used needs to be done at runtime, or
+if it could be done at build time by objtool/modpost.
+
+>  /*
+>   * Allocate and load the module: note that size of section 0 is always
+>   * zero, and we rely on this for optional sections.
+> @@ -3508,6 +3521,8 @@ static int load_module(struct load_info *info, const char __user *uargs,
+>  	/* Done! */
+>  	trace_module_load(mod);
+>  
+> +	dept_mark_event_site_used_module(mod);
+> +
+>  	return do_init_module(mod);
+>  
+>   sysfs_cleanup:
+
+-- 
+Thanks,
+Petr
 
