@@ -4,84 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0708DCFD63E
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 14:39:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 043B5CFD646
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 14:42:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 582AF6B0093; Wed,  7 Jan 2026 09:39:49 -0500 (EST)
+	id 39B676B0088; Wed,  7 Jan 2026 09:42:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 530396B0095; Wed,  7 Jan 2026 09:39:49 -0500 (EST)
+	id 373236B0092; Wed,  7 Jan 2026 09:42:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4326F6B0096; Wed,  7 Jan 2026 09:39:49 -0500 (EST)
+	id 2A96D6B0095; Wed,  7 Jan 2026 09:42:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E96A6B0093
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:39:49 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E6B0F13AAFD
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:39:48 +0000 (UTC)
-X-FDA: 84305426856.02.4F4EC4D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B7C46B0088
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:42:50 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C09601B1EA
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:42:49 +0000 (UTC)
+X-FDA: 84305434458.20.B6D0D95
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1EBA920003
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:39:46 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 40427180008
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:42:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf03.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767796787; a=rsa-sha256;
+	spf=pass (imf16.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767796968; a=rsa-sha256;
 	cv=none;
-	b=Wc43Pul6oP9J9vzH526UAADowjvgstPa5sP7v7pfL+utBFN/2ZpVja+PoDlc46APT91IB/
-	MBUsqTO46FKJVtBIcRlLAKDjwTT9ImkUgT8htwZ7SHyh43Dj8MhFJeOwtt1bFrKwhlRONb
-	Ky6g5F/FEI/fkhwfSm+giLmmNGMtdMo=
+	b=0PvxvqP97ax6qoKAM0gehNErpghOjjTi/DA+vOydPJ+owcUCcNfQ82FnCC2m+bjorOWh00
+	G6gMgGbeLhgMyIkxWEpVI8cnqCbNFq4s53PgxDOPmKbToOwgscwBMiupE+B3FjcIvFdenm
+	lVZqWL2XdpszlYd/1cDINgFJQ1lE3vM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
+	imf16.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf03.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf16.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767796787;
+	s=arc-20220608; t=1767796968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QiA8bab2gSTtnOYPURRgtFfq07DQSxeH741s/Vj0WnU=;
-	b=uAHjkIKmmEE62SHFYaIbMeezpEDXSpF8zzLo9yjl5lK/zjB7NNxcaUH/fL7TKqd5YtDEUg
-	9q6YRk03P1N6Fdujqznf+CrzIt2cNrzpheA3mWTKGW7szGEst2RD+DyfBJnd3T2jq2nP+Q
-	xTFC9ntT0fYLgZCNteoOap4Jw5Suj7w=
+	bh=f0wWC8TE/hWdr1e40O7JPX4+48/35Q8yjX+wJXDlvlQ=;
+	b=Zj2hGx9e6uPt1vdR3NXah3746eTq0xL+Pro3UBebXXC6eHHqm0B5CiJkMeH20n5i497nou
+	t3PkinnbTA7QxHPWQ1buYXX3QtW4Nj/Wghz4UkqgCTZlAlAvBq4IjkXwApJ1Kdxz71zIRX
+	LRCcV7zwCW/YD5hGcotAsqI7DAiNvrc=
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id 36C0A227A87; Wed,  7 Jan 2026 15:39:42 +0100 (CET)
-Date: Wed, 7 Jan 2026 15:39:42 +0100
+	id 45DFD227AAA; Wed,  7 Jan 2026 15:42:44 +0100 (CET)
+Date: Wed, 7 Jan 2026 15:42:43 +0100
 From: Christoph Hellwig <hch@lst.de>
-To: Logan Gunthorpe <logang@deltatee.com>
-Cc: Hou Tao <houtao@huaweicloud.com>, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, Bjorn Helgaas <bhelgaas@google.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Tejun Heo <tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
-	houtao1@huawei.com
-Subject: Re: [PATCH 02/13] PCI/P2PDMA: Fix the warning condition in
- p2pmem_alloc_mmap()
-Message-ID: <20260107143942.GB14904@lst.de>
-References: <20251220040446.274991-1-houtao@huaweicloud.com> <20251220040446.274991-3-houtao@huaweicloud.com> <4a91cfe7-75f5-49a4-89a4-fd6717e7e9d2@deltatee.com>
+To: Chuck Lever <cel@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, Mike Snitzer <snitzer@kernel.org>,
+	linux-nfs@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 1/2] NFSD: Add aggressive write throttling control
+Message-ID: <20260107144243.GA15228@lst.de>
+References: <20251219141105.1247093-1-cel@kernel.org> <20251219141105.1247093-2-cel@kernel.org> <20260107075501.GA19005@lst.de> <cb269767-688d-46f1-8d82-1fd6dc32e94d@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4a91cfe7-75f5-49a4-89a4-fd6717e7e9d2@deltatee.com>
+In-Reply-To: <cb269767-688d-46f1-8d82-1fd6dc32e94d@kernel.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Queue-Id: 1EBA920003
-X-Rspamd-Server: rspam03
-X-Stat-Signature: d5qi3wq3irawoebfgxfu9osmyarss3er
 X-Rspam-User: 
-X-HE-Tag: 1767796786-798838
-X-HE-Meta: U2FsdGVkX194io4qQdCXZdGooEeM+VaonbdKcudvmD1vvpnVFAtx4lNJiG/+kbqr8QiQXulf8P460NHEoDeHs2bJbXUh+I9mjRwBb44G934NCKAhooUgRbS3nXgbjOH5EkBrttqXvgDHl/sn2q/mDAIabPj1wddACDiBX+p3wubRWKJ6EmNYm4dvBf3y67JvUpe9UZGmR++hMv6W8lC522ChODKDuzgyps43J9MtMWvpNlOY3pGK2Mmgy/JgJCnydeeuP1QI3VzQ2n2Dk1ad8dBeCcYdqvsWfI0tdvR5TD9SZLNSvOX3QLl6iYcDg8gJyGG29O/TCYTv29NmWeY6z4Me8vENAZ2cQrflRbMF3Fl35ywx3Y94M5JaI1vQpyVsPqgQlWNCv9woUCJJNdjQrdrd6HaM0mUN8sNRC+R/UQn0iYZZx6TdnkQhW/ec63iXH1gseKNvHvdQ6th7p/Oc5pksEx7J33L7nt8eOd1gVFChS4+m7djpb0Ds3Nz0AFUfk114t32wnaFIWExhzEngh2/1qLw3pDW9wWEI8tUiWn9QWBA1zxGxTHeX9eqR+CUZdZ+TxqNQYZ/H9q0lLXFMUK3Ka8oPtR7Uql26XgO8wAKHBhkgY0G9kgQaYnDuFlhpGPLsqCHS9VyQL+xmfU/ZFRn3iyOUvM/koCwCSie4WlDZksclQ0WesXp56Lxg4v4Rvo38BOHDpcb/htNS4qgvVzQ/gTy4H4pCgIjSVg3RFpAPw1I2GNwhrDha0zJpPWL/KYD6piW0c9hFc9WNnrEDcGeR9wM5yMFjxhjyVEv0GrcCJhfJaJ1NIpsGowygi203AubTCUUpUmqemE0tijCBUQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 40427180008
+X-Stat-Signature: gw4aymw8cz4m56419m6ps6cshoft4owo
+X-HE-Tag: 1767796968-134346
+X-HE-Meta: U2FsdGVkX1/cXJGbtnwobllZxXTdAXjV1dhLuX/DMzZXAji4zPiHd0F9bFAU4ITb4saIF3JWq42VMaW/WXlTsShmWvoek2sgFik1Clr4epLeoyJtvH/on7dLxjCDbkBL9GMUXpMOAum/JWD2n5WRqWpjz4CF7wDLiKH94UAam3xT1R7A7OgGxKnusK3R7JrY4s7zOoXvUPjxtFkRoa4fx3E+ufTVuzB6zTPi86Uz+J89ilWWqyVULvgUs0qlI2tvLppKmXPhmW6TJWeCNdu4ZTPJ/0jKeF39K1rlLhrrLesGegTj8rF+yQnFNOMTeEi6PXZJ5spdqXDXKbMbB1jWdQDOwiglk5PnRg/QX0gmkVk0rRERnTzrIWQ1ZORL3KXPHaLLqsBE9c2wTQZzRnEgjGWOn4JV8iRI5a21RWJPj0D/X2bQgcwthGnw5imTsSr6SUCAHQbF5jqBWI0aDhN5NAkGC2yMb80CRf1vXiE9DTiGU/U8VgfuwJzQG3jhG2HheqjPs0EGQbDgaSNBRf9+FAGiInG9DUEvg3WufYLmW1NLynjaD0PXYdVVueboPVitDnIBju1T1KVCwQUoBsQXH5AjWENsm/T366zHL1R5xLoXwCW1Xjix5FJ/yaSQvmoR7Gzf7zEdPQAuB1GlnzhqU0YsqKc9CpCP27VQ0gA+LpNPluNqZF9JHa1VyXhinDsnzFgGBVS9WoZh26LREh1xWq8jXBaArUv7CyoGnKIV0Npo2tVkSvJNlh5x7tkJAocC8GuYroyuJz3jEaqC6KgXZpfh3FVFKT+qXn4094+8v1Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,15 +78,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 22, 2025 at 09:50:18AM -0700, Logan Gunthorpe wrote:
-> > Fixes: b7e282378773 ("mm/mm_init: move p2pdma page refcount initialisation to p2pdma")
-> > Signed-off-by: Hou Tao <houtao1@huawei.com>
+On Wed, Jan 07, 2026 at 09:36:39AM -0500, Chuck Lever wrote:
+> > What makes NFSD so special here vs say a userspace process with a bunch
+> > of threads?  Also what is the actual problem we're trying to solve?
 > 
-> Thanks for the fix
+> The problem, as I see it, is that the system is not providing enough
+> backpressure to slow down noisy clients, allowing them to overwhelm
+> the server's memory with UNSTABLE WRITE traffic.
 > 
-> Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+> This is the same issue, IMO, that Mike's direct I/O is attempting to
+> address. Our implementation of UNSTABLE WRITE is a denial-of-service
+> vector.
 
-Can we get these fixes queued up ASAP while discussing the new
-feature?
+But how is this different from Samba or a userspace NFS server?
 
 
