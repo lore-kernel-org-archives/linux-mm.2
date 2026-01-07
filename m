@@ -4,83 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C74CD0D142
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 16:49:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DF00D0D142
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 16:54:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDC0D6B009E; Wed,  7 Jan 2026 11:49:05 -0500 (EST)
+	id 1405E6B0092; Wed,  7 Jan 2026 11:54:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C795B6B009F; Wed,  7 Jan 2026 11:49:05 -0500 (EST)
+	id 0EDFE6B0093; Wed,  7 Jan 2026 11:54:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5E6E6B00A0; Wed,  7 Jan 2026 11:49:05 -0500 (EST)
+	id F3BDB6B0099; Wed,  7 Jan 2026 11:54:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FA936B009E
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 11:49:05 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C400B94A1
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:49:05 +0000 (UTC)
-X-FDA: 84305752650.04.148131D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D0A9A140008
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:49:03 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767804544; a=rsa-sha256;
-	cv=none;
-	b=W1HHwJkbGoEgGhZhk2LsJyR2+wAHJYjysVWRib+peiIzJ0bmYOI+b7/IwSNXa7G1cWCuvQ
-	HVUwgK7pR9ecEwKby+mwaF+h7p2OMWO+vgT5n/5nY7eaaOvqUelkM6yAqSzqPgy9ZnwA9O
-	mX6hCWeZNY7AvjoYErJn96Oi0/Vuw64=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DFD986B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 11:54:02 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8FC998BA02
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:54:02 +0000 (UTC)
+X-FDA: 84305765124.03.1E15A8B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C8D43C001A
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 16:54:00 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VIC026HR;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767804543;
+	s=arc-20220608; t=1767804840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=03AZyPENj3xKxuMq8GafvX8nbZFbNBmiIe2gNxYbWfE=;
-	b=daVk8cPHMEsqpnYWcG20NXiPvZ0+NunMO/8KXKoKYMQYWDYbkfNRD8P6GuDhgZ0GbqsJbb
-	68SWdrnQSsHDy+fGdvVd2jTZuSLJCmsAtrDqwElqKU/qRktGY+migSpJXrQphB0N6ldd2e
-	jj8Er+sFdKbb/eLyG3WAVXZWT2WwCdU=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A97021595;
-	Wed,  7 Jan 2026 08:48:56 -0800 (PST)
-Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 43EA53F5A1;
-	Wed,  7 Jan 2026 08:49:02 -0800 (PST)
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-To: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mark Brown <broonie@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Shuah Khan <shuah@kernel.org>
-Subject: [PATCH v2 8/8] selftests/mm: report SKIP in pfnmap if a check fails
-Date: Wed,  7 Jan 2026 16:48:42 +0000
-Message-ID: <20260107164842.3289559-9-kevin.brodsky@arm.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260107164842.3289559-1-kevin.brodsky@arm.com>
-References: <20260107164842.3289559-1-kevin.brodsky@arm.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eXe5T45PWeFE4Slkc8bfTsXrqAd/nIKT+miT7WS5drg=;
+	b=X+j9iRniFDEyrbYHz36sMz7HBl4G7Wv3B4ubEFUGHCWqzqJtnTlP/zw4pIEEGjrgQrX+wQ
+	AMWZPrzW8OrdubGrojZajmg4FJBZsQd4tA7PAzdNjM12r2VEDDyXagpLHeBFshjeWbTv7R
+	b1Xx9YPLARkqHhW2JNvbMvjJ7qQna1I=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VIC026HR;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767804840; a=rsa-sha256;
+	cv=none;
+	b=esoo+syRMLo81VCL9ffiUGTA1jrzHm78vgd01jZE9Zk5a80DP4TbRKiOGgVvoPuTwQsq8U
+	c6GpctgqIWpSMNZg20xhchPNBQVn6wKJ93SE8cspV4QFcGGavbajfUj45Ylh48MNje98Hz
+	ZSAA6nQS7sDblPYcPHed93Y4J+XBvzU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D86FD60018;
+	Wed,  7 Jan 2026 16:53:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93191C4CEF1;
+	Wed,  7 Jan 2026 16:53:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767804839;
+	bh=igcM/mbFCK5S5KFQ8zrsNmn+iGbAx0HVWfuQ0JlSRE0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VIC026HRBah3/LsXLaAE3th9gYPyUI7/UJ+HecNvUect9qSGHiQUG+MPv+IJV7zNf
+	 9gdYifVQKJVPagLEqwd7OXb5JZBYyuFjakGvlHbX8fi/uIcHPYCQxk4oc2W97goHeG
+	 +Gay3ZH8tcIuXzGTIt51ZglUY2UPYKRU/fSXEUofKwu36OAgr6NuQ2EqlBzkPfGorn
+	 gmv7QFaki6yYwOxL6U7x5GawqWLqNANBUX1/uux1igWZwjohPmBxMedZ0RmidJXedK
+	 A1+Tg++rJ4Oxt+hSlMfq/RPmElqRzrLHi0khAyQ6m3DGxSob9Sp6uCt9xSdS3/7EG9
+	 GvTpxHuW80Jhw==
+Message-ID: <1a6aedcd-34c2-4e26-b07e-6eb8d423b759@kernel.org>
+Date: Wed, 7 Jan 2026 17:53:50 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D0A9A140008
-X-Stat-Signature: ojx9xkguyguph8eze15s6yh16pfgm9fz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/4] iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
+To: Mostafa Saleh <smostafa@google.com>, linux-mm@kvack.org,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
+ akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org,
+ xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org
+References: <20260106162200.2223655-1-smostafa@google.com>
+ <20260106162200.2223655-2-smostafa@google.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20260106162200.2223655-2-smostafa@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: wz3yotjbnk5g1htj5iydezdkuxdc7dsp
 X-Rspam-User: 
-X-HE-Tag: 1767804543-774849
-X-HE-Meta: U2FsdGVkX1+/d131KIx/XqHKtvXRFHXFpJEnoeGgzqDwpdsZKIsm92yAOeXPmdBJuGv3fhR/tFZNtWvU4iJiXkOmafmZP+g+ydCl2x63pi3nuZ0t/AZH/Ck7JpsQzhHYvurAZZTRkD126eWJgkADUCvwKNqorTGm7uRwCAfBspnSNqo9tkHjoIxBGltxHOwuXYhJbc82JuNQTobqqVN3kUUmpc5eEAVw6t4kjXsPkAm3zlPUN196HNYSONoh5ANfLIetzzCbd0ib+h3iYb6zt2N5eexCX/co1xS7vzrlH+WnqcCjIJyBoDZ2FCSACx4pbuHLSfQW4yCDjHlPS9my7I6M2zr6QV8o9Ad6zGV3+zm/Fln/fZHQDfzzev5N1TLwTlTBu+Rnr4/P24ZAsWDtUbIStKixLJzuE03G8cOcfCF9G5T+J30F/C3xF5unhFWPtbUGLmvJ4VrPjHSHy6idAAkhxNr3vQ8JiE5TPFAsEIl3U3YffQQFysazYqHOyxYLz32vrzveUsdk7laiXX8Qn3S9viEaPtiOba1onodF1BXOFE/t25hd2RmeOCeONPnztItA+37u9Agt6BDf91dLZq2fh9eFU61AL8LVBoYY2hfbqpwvP+99/696PtQKWX4zjp0wMzpFIxAA2LRlaSI5wHky0an8HfKQpTghiQ+R1P/hB+nU8JGdj0oEPBIHziQVTUpYypzUS9r0CueU7nlgnc56xcdLFnE5KHMREek/MTDx3xMrkFBsBrRGqCZ3aBYU9DYUa8m0+79/UP9hyVUmXBDKshOk4TvLVawyFPL2WJto+0uhr0aZrmls8qh7QOQvRKeGYHGoVcFd/1c3K8xHqj8j7DfwAJePGAwwD4CWPjbrfaIRkbDk6kRgpXTzRT5LrXN8OqW6r5AiF+ZA1oQXYGcR+YEpWvzGAtkfCDrO0QI6mUWo+OkvY9xpml07A0QLmSu7bNjQo4ARCKfexjI
- QHKoGG8y
- gRRyPouuWGGV0/xOlsYX/L+HgatxCKaAMHioRw4bNzr0GFBkwpuL//p8YgQkpRG3DQViDUm2nFmfj6q4p6BVJ76/eqk+bmiqvOQBdBea8Y8f1sWCrnlKZVD31wMoXD2bgbdZpumcZ1thd0/GdwbRiC1f6Iw==
+X-Rspamd-Queue-Id: C8D43C001A
+X-HE-Tag: 1767804840-393313
+X-HE-Meta: U2FsdGVkX1/b2oKSUBaqdjFCfsZLMKs950I+WXJYn2JTifxMO7SM6T15y6fzjs0zfogv9fAJtUFSvd/fjxFvH+1OpKs8dj6kpgdoZNWSOBCEzUlNZm2nTyIYQTy2pgsmoSWw9zfq7mSS1IpG3pArIQybUc5l1BHF270AX0laXanLDC6DVYuwispKOYD2PKgSeX0wCbxw6x9VMMRy2QpAWUlSi9q8a62tCfAPzGCJV6zjbzrvRG71mnQboPIF36OAOkb+0e7fCS766Y8AjDs+ELP+dH0DTVXGXfWu2jyFd6RFXzP+Y8oI/3uv2Aws2RWF1Ep/zXfJZdkYcnMuJz0yv6iUHTpKi1WKuaU/lB4NOYBGJ8LxpeDQU24HyeTk4nvRCHqkMNKSuttn7l33yLTF/e4O39y9MoLuQxiTFQ1uMtclDabyGz9+NDGY0VXhhqCOttqoLjPV9pJsHorJFa8kCIEmJXsi1zPaFqI4tqWslxcHenm6jTGFWiz7QbJfVXCv2O1zIIJd+iOpJK5MLyZlBdJrbuDalhw44JInluHw+iXRyabFMf2Zv2PTtZBxKuhx/ESQYbW5dDMgFWOgNB99c+brUqSS1wAa7rumRUepwp5eEBq5z0r91wk3l9x2oq2/xRvFOCDnCgRK8U9FpKOgNppxNj08SeMJWe06INLvjWqbVZXBQDUOKbW8Jp1GDHmTtNoY8guWmyTn6ZW7RZ1JYXByOwrehLtKbVv1BwJn8C2goDcOM0H9j8+HtZJIvLJswq7LDTF3b4LcMFCwZAA8Vh4TCphvFFocT2TcQHB2DtJVikUQ83RrDGQD5eQcBcfJ7b8pZ69nrGIXNFI+z/lFqO69AjM9eDc+oQvyAgfFCXC/hRmeAf2oLANWUSTqWfIWWTW5UqfwHXgwTTIfEW2RMwN397gMHV+bxir7bCp8D2ZNG+x4uak/jbkMPc4fvflIeSU/zMZYtUF/T5G6G9T
+ Q/fppVJZ
+ CDFd3rupXMub6j2NkkvgsMhL1NTQU/R/fyN7O6N7HRYjr1nlOwkMExiEZS+PffJ5MY3O4PnGN/0A8q3J2z5JanlBzWvkI+9GbV5mRVa4oI/8dqnsMv0mj9qc+bFTxmdb49xEM3CHxTucZW/a0JjrnuB2+k7ymOiDwlmlEOREaQZwuq2CgFor+QDM6RUPf8epUqDq02nL17QtQJ+YTdWa66sE8ySUE017IhYo4pM0GKjDsoF7295yYUXaPUIiIqjMSLyrWOu/rIU83EfGMDnMTV91rV7EkzD7oEhkK20uxZp7KIl60Q13DcLa4v4YXM5ClQ6Z+ycSNase24C8KZVySXHE5f5IxtcPWy8IPKgXNtw6QRsXbGmtqMRftvGsjO/LSNh1o
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,162 +143,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-pfnmap currently checks the target file in FIXTURE_SETUP(pfnmap),
-meaning once for every test, and skips the test if any check fails.
+On 1/6/26 17:21, Mostafa Saleh wrote:
+> Add a new config IOMMU_DEBUG_PAGEALLOC, which registers new data to
+> page_ext.
+> 
+> This config will be used by the IOMMU API to track pages mapped in
+> the IOMMU to catch drivers trying to free kernel memory that they
+> still map in their domains, causing all types of memory corruption.
+> 
+> This behaviour is disabled by default and can be enabled using
+> kernel cmdline iommu.debug_pagealloc.
+> 
+> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+> Signed-off-by: Mostafa Saleh <smostafa@google.com>
+> ---
 
-The target file is the same for every test so this is a little
-overkill. More importantly, this approach means that the whole suite
-will report PASS even if all the tests are skipped because kernel
-configuration (e.g. CONFIG_STRICT_DEVMEM=y) prevented /dev/mem from
-being mapped, for instance.
+I think I acked it, but maybe too late for you to spot it
 
-Let's ensure that KSFT_SKIP is returned as exit code if any check
-fails by performing the checks in pfnmap_init(), run once. That
-function also takes care of finding the offset of the pages to be
-mapped and saves it in a global. The file is still mapped/unmapped
-for every test, as some of them modify the mapping.
+for the MM bits
 
-Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
----
- tools/testing/selftests/mm/pfnmap.c | 81 ++++++++++++++++++++---------
- 1 file changed, 55 insertions(+), 26 deletions(-)
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-diff --git a/tools/testing/selftests/mm/pfnmap.c b/tools/testing/selftests/mm/pfnmap.c
-index 35b0e3ed54cd..e41d5464130b 100644
---- a/tools/testing/selftests/mm/pfnmap.c
-+++ b/tools/testing/selftests/mm/pfnmap.c
-@@ -25,8 +25,11 @@
- #include "kselftest_harness.h"
- #include "vm_util.h"
- 
-+#define DEV_MEM_NPAGES	2
-+
- static sigjmp_buf sigjmp_buf_env;
- static char *file = "/dev/mem";
-+static off_t file_offset;
- 
- static void signal_handler(int sig)
- {
-@@ -88,7 +91,7 @@ static int find_ram_target(off_t *offset,
- 			break;
- 
- 		/* We need two pages. */
--		if (end > start + 2 * pagesize) {
-+		if (end > start + DEV_MEM_NPAGES * pagesize) {
- 			fclose(file);
- 			*offset = start;
- 			return 0;
-@@ -97,9 +100,49 @@ static int find_ram_target(off_t *offset,
- 	return -ENOENT;
- }
- 
-+static void pfnmap_init(void)
-+{
-+	size_t pagesize = getpagesize();
-+	size_t size = DEV_MEM_NPAGES * pagesize;
-+	int fd;
-+	void *addr;
-+
-+	if (strncmp(file, "/dev/mem", strlen("/dev/mem")) == 0) {
-+		int err = find_ram_target(&file_offset, pagesize);
-+
-+		if (err)
-+			ksft_exit_skip("Cannot find ram target in '/proc/iomem': %s\n",
-+				       strerror(-err));
-+	} else {
-+		file_offset = 0;
-+	}
-+
-+	/*
-+	 * Make sure we can open and map the file, and perform some basic
-+	 * checks; skip the whole suite if anything goes wrong.
-+	 * A fresh mapping is then created for every test case by
-+	 * FIXTURE_SETUP(pfnmap).
-+	 */
-+	fd = open(file, O_RDONLY);
-+	if (fd < 0)
-+		ksft_exit_skip("Cannot open '%s': %s\n", file, strerror(errno));
-+
-+	addr = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, file_offset);
-+	if (addr == MAP_FAILED)
-+		ksft_exit_skip("Cannot mmap '%s': %s\n", file, strerror(errno));
-+
-+	if (!check_vmflag_pfnmap(addr))
-+		ksft_exit_skip("Invalid file: '%s'. Not pfnmap'ed\n", file);
-+
-+	if (test_read_access(addr, size))
-+		ksft_exit_skip("Cannot read-access mmap'ed '%s'\n", file);
-+
-+	munmap(addr, size);
-+	close(fd);
-+}
-+
- FIXTURE(pfnmap)
- {
--	off_t offset;
- 	size_t pagesize;
- 	int dev_mem_fd;
- 	char *addr1;
-@@ -112,31 +155,13 @@ FIXTURE_SETUP(pfnmap)
- {
- 	self->pagesize = getpagesize();
- 
--	if (strncmp(file, "/dev/mem", strlen("/dev/mem")) == 0) {
--		/* We'll require two physical pages throughout our tests ... */
--		if (find_ram_target(&self->offset, self->pagesize))
--			SKIP(return,
--				   "Cannot find ram target in '/proc/iomem'\n");
--	} else {
--		self->offset = 0;
--	}
--
- 	self->dev_mem_fd = open(file, O_RDONLY);
--	if (self->dev_mem_fd < 0)
--		SKIP(return, "Cannot open '%s'\n", file);
-+	ASSERT_GE(self->dev_mem_fd, 0);
- 
--	self->size1 = self->pagesize * 2;
-+	self->size1 = DEV_MEM_NPAGES * self->pagesize;
- 	self->addr1 = mmap(NULL, self->size1, PROT_READ, MAP_SHARED,
--			   self->dev_mem_fd, self->offset);
--	if (self->addr1 == MAP_FAILED)
--		SKIP(return, "Cannot mmap '%s'\n", file);
--
--	if (!check_vmflag_pfnmap(self->addr1))
--		SKIP(return, "Invalid file: '%s'. Not pfnmap'ed\n", file);
--
--	/* ... and want to be able to read from them. */
--	if (test_read_access(self->addr1, self->size1))
--		SKIP(return, "Cannot read-access mmap'ed '%s'\n", file);
-+			   self->dev_mem_fd, file_offset);
-+	ASSERT_NE(self->addr1, MAP_FAILED);
- 
- 	self->size2 = 0;
- 	self->addr2 = MAP_FAILED;
-@@ -189,7 +214,7 @@ TEST_F(pfnmap, munmap_split)
- 	 */
- 	self->size2 = self->pagesize;
- 	self->addr2 = mmap(NULL, self->pagesize, PROT_READ, MAP_SHARED,
--			   self->dev_mem_fd, self->offset);
-+			   self->dev_mem_fd, file_offset);
- 	ASSERT_NE(self->addr2, MAP_FAILED);
- }
- 
-@@ -258,8 +283,12 @@ int main(int argc, char **argv)
- 		if (strcmp(argv[i], "--") == 0) {
- 			if (i + 1 < argc && strlen(argv[i + 1]) > 0)
- 				file = argv[i + 1];
--			return test_harness_run(i, argv);
-+			argc = i;
-+			break;
- 		}
- 	}
-+
-+	pfnmap_init();
-+
- 	return test_harness_run(argc, argv);
- }
 -- 
-2.51.2
+Cheers
 
+David
 
