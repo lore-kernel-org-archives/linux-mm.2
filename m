@@ -4,97 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B12FCEFD1E
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 12:24:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 592BECFD620
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 12:24:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E9DD6B0005; Wed,  7 Jan 2026 07:24:00 -0500 (EST)
+	id C484A6B0088; Wed,  7 Jan 2026 07:24:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6945F6B0088; Wed,  7 Jan 2026 07:24:00 -0500 (EST)
+	id BC85F6B0092; Wed,  7 Jan 2026 07:24:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A4296B0092; Wed,  7 Jan 2026 07:24:00 -0500 (EST)
+	id AFEC96B0093; Wed,  7 Jan 2026 07:24:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 482506B0005
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 07:24:00 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1508B8B340
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:24:00 +0000 (UTC)
-X-FDA: 84305084640.06.A6E8FC4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 59AF910000E
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:23:58 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jsilMsD9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767788638; a=rsa-sha256;
-	cv=none;
-	b=CQXGLME4yqgFKQhyi2ZkaBnGrqGFg/+iC0YIqNkz4q8GPFsOUi7X85yGTTIsGX9XB93aRe
-	jE5/IVz7JhHGH6kNPo+sSpzO03yP7/DSLesxuz7hfHOT/iUu6bedfgHU2AJO3RoxlCn01g
-	ktuNsxVAqz2FuY/5THmsY6Zh+ZkcpWQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jsilMsD9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A09236B0088
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 07:24:05 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5A919B7FF9
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:24:05 +0000 (UTC)
+X-FDA: 84305084850.22.1D36999
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BB7AE4000F
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:24:03 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BlxGzu6R;
+	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767788638;
+	s=arc-20220608; t=1767788643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mZtM1KRXrNZPIjs0BP4nXfJn9/N+qtrTbb5tiAYIPzg=;
-	b=faZjRnR6DrAIGVI4NohHTOrHlGTgntD60mrcwONV17a5dmsN0rGzLYft0oiBsDzJRzHkai
-	xs+MMs7ft5xShewyVc2EjNXVyrPycnQh6DcUnJyzTCnqm+Ja6dmjVaDxcm1xOiOpbUXVep
-	/Gxbgl6W7BeH5il4Ojaawg47Mh+kKVE=
+	bh=7UcQNwJkF+MbVdWe7DyVVQMh+eIC4Yr7T83ZlhmMUc8=;
+	b=7s+DdMvTa+OytSZMbSb4gmhK6RQ88cXWa5RAgWOZ/rnwa+fP02iYmXqp+tJ2IM3aSBUOxj
+	JIADVpLVsiEhNQDTyhp8/eWk5hhlsIeva1mykTFNiFj6VGQ2H5Oh8wIUorQ3mqMYb94N+S
+	4CzIKjxSE6J9kEcHr/S6GTOpogShv0o=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BlxGzu6R;
+	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767788643; a=rsa-sha256;
+	cv=none;
+	b=vmKBEpC2veWEfo5au/lPuWipFPK8BD9cThHyPJyrUK5w6UPn0zT7Kg+BE1gp0Al4xeqJ3M
+	Cof0mznq9oLbfRDOg+mMeS9WmubGWRi91fOs5ZHB7h7cNZV3ZjSDOyGYMnUrPtV1GNvtHh
+	85zdu6t7w07JAF9Qn0yVbAK8/cUjXPI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 33A9B43403;
+	by tor.source.kernel.org (Postfix) with ESMTP id C8D8460145;
+	Wed,  7 Jan 2026 12:24:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A924DC4CEF7;
 	Wed,  7 Jan 2026 12:23:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0535EC16AAE;
-	Wed,  7 Jan 2026 12:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767788637;
-	bh=mZtM1KRXrNZPIjs0BP4nXfJn9/N+qtrTbb5tiAYIPzg=;
+	s=k20201202; t=1767788642;
+	bh=Bvupu5pKUncAhUJLwMsrNMafTyDGF9I/qKF4dtQzIQo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=jsilMsD9MU5vYOo+CLDlCD4K1PG/wWHtloGE+yTehzPOpuQxbC4VkaA5SDbLGwG+8
-	 NoGTAZRmkN3B/N39tcHxDRacYTzE26znGZWG6DK9P1a24yxnyGqNw0NGTEOhL1cCDn
-	 dVkYCJTcJdvV3AnC31ROUCNjK4WzEK0Rk0A3pfxYacTnTIJob6V5LNMiBdaFubd085
-	 h58fmGlG/jR4aWt0H5ONm3dEZ3oYNYGVyM2DPPqpSr3sUsMbKs8GEZ9tdE6s4vMFND
-	 iGZ/LYsMAQDMLzqD2kCZmCnwKYXfvcW8VkBSm798XIEDL42GwbPYWgMt8mfXEV8FTI
-	 M5SK7HdQJxaaw==
+	b=BlxGzu6RX/AW2lkS5MSu6xZbB2eEgdcN+jse48bS4whRSSv2gXFzrGqnwOdjnT+HF
+	 lNJoKD1g8jKBEA2Ba5fUCq1PURT3ARECFeQH7UH+I2hSuHX+xuHbMJucbYvK8jAiD5
+	 vvlA/RaA+em7AaVAdk11OllE9r8e6oAEQ9Ya/kFTUda5jKRkaHNufwgwbuBBcSRASL
+	 QtfYFxiHK4610hJBt39SFuFQcEd4LrhtviMsDshaFDyKbN07U51gDpOk1X84POnO6k
+	 UJvR8c1yqoaEWmS3SotJ9ymLG76mFHUtkEvALM9tt2q9jXsUpzg1rBn4cpkF1fdKJL
+	 tiAr5va5WK6og==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Mark Rutland
- <mark.rutland@arm.com>, Nathan Chancellor <nathan@kernel.org>, Nick
- Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Nicolas Schier
- <nicolas.schier@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
+To: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Will Deacon
+ <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Mark Rutland
+ <mark.rutland@arm.com>, Nathan
+ Chancellor <nathan@kernel.org>, Nick Desaulniers
+ <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>,
+ Justin
+ Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki
+ <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
  linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
- nouveau@lists.freedesktop.org, Alice Ryhl <aliceryhl@google.com>, Matthew
- Maurer <mmaurer@google.com>
-Subject: Re: [PATCH 0/4] Inline helpers into Rust without full LTO
-In-Reply-To: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
+ nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
+Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
+ into Rust
+In-Reply-To: <20251203180955.20b41904.gary@garyguo.net>
 References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
-Date: Wed, 07 Jan 2026 13:23:38 +0100
-Message-ID: <87y0m9har9.fsf@t14s.mail-host-address-is-not-set>
+ <20251202-inline-helpers-v1-4-879dae33a66a@google.com>
+ <20251203180955.20b41904.gary@garyguo.net>
+Date: Wed, 07 Jan 2026 13:10:07 +0100
+Message-ID: <87344hipy8.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 59AF910000E
-X-Rspamd-Server: rspam03
-X-Stat-Signature: f1tod9gmjqt6nwdtqqnpg8r4k4pe7cwt
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BB7AE4000F
+X-Stat-Signature: xr31w7rr7fwyaqyop8f3qzw9o6ihnpt7
 X-Rspam-User: 
-X-HE-Tag: 1767788638-32597
-X-HE-Meta: U2FsdGVkX1+Prh5N3nSHTfRAVYBgFPiGDiKmiTrZhbkDQ8WQYB2w8atxlwVBc1eQDVe8QBjmevJONfL0jLvna894yc6F9CtMtY2nbvJjB5DH8BYj2Zvz2PBXFK5T1KrfNv3u1VQcyqczfrRIfDrB0l1OCYWWe+ugA+RKhF3/A7lx9LNu9wNAXE8ZDg4l87/uPHBkUJYLyEHOp48VhOoqr0MXuvlbhQe4beGSCRb7N7tCQVrxpoRWSGngMpW3Sd6Bcfm4fYUKpzRIlIEkODH+lBbzvNlO/L/B5SgFnYzUmzke4p7bVGBk4cxXWz4v2i3FBxqElRNDIsYVCG3mv2s+dSznqrPj/R9dF2XBu217AONGnwl25/sG/irWMF45WtTypEmjjgcQEgM5oX4NeTHlRFW2rruPbvNQAC3v37ufefYLXevMxJHxicsoDRJ7Thu+c2wcHp9s5yxEaRU6m3zyFF9uF/yXJLQMt8US0kUHx9X4Q4YsPV7v+PHnbqW1mtXjEaJlv8bBR6q7vOHDePB6qB0y1kQORR5mtQ+jSLJJjTuqknmnfCE3G9aw1Fp9jayf4kEQAWqRJkSaM4+NOCVWLEk2bUY+h5pRz7MUvGQrYF2P8235YEnUirM0zYYY9Wcz31sPM/fO6cr9IbyhfNkVvY47T65QTmtI2hPYEH0wv2fVQHo8QYTaVqGcRwo1e2aBeS+HVllWfe/8NXU5ji3vtuePUkHNEXOIXqTk70txdK8UpZsHlTwqzNvHh6nIkmaj/QH1k2AMmxeKt44hufD7d4VKLZYBNBxsp/26M0f4vo8S5E4qaDSfJZMo6yFMjbKg9CP/rIyqIVoPBB+xYSNMc57zw7zP0ICa4JF3A9vOM2FnACvOVgBD5ox5XQ6+z1pC8O7J9RtPuEy4YvG1yDcYVsDVdqY2JJ3muhRCjDvhA/yjEiaevZgOZZ/Krt6gYJ6Jhwsl0gkva6tIQ6IKz1b
- S6rREix/
- 7cgZgL2UfEqnwqrocu/19oyskgBwNY5PqwyufoQxQwjEi9ROCfhtPBeBHYx4GsXmFcgqPOw+3MC6TeHnEJtonkQrT0j8YLpnoJOaIrflg1S+YS9JnjwyBA3CewXnwahYj0J58WDKMDV5UAzJvFdqG3Qlt26/08fGDHywZA7bxX6zcTHBY2l1a2Z2Vcgfg2tm7SdSJEtR/tXDrJR58/ryFTnjzr+ONb3PJkvmpZg7n0lx9tAep5OXeUrpzDVrMp3v8QLtt84qn47Ui3lXFeyGTZI0gBqJmwGBuI/gs
+X-HE-Tag: 1767788643-330060
+X-HE-Meta: U2FsdGVkX18MtqtJg+sYulvhN1odDWsGt1xynu/mv77LiRXoc7xp5Bb70ThJkfgL1kerxUB5eds6nVoKM+Dv5jiiJtHQ9F09jsFeDYiLSK/0EEcfummtm9lJNFknQJnntKvdnELLChu2jaiOO9nqjBe8mmSNJ78xe2ShLUi9DuQuyuuf3INqPA2Plx9fpVI/L4E46B2utteRmrOfkXuhCDmvBhWP7PfpUIbhFYM3w2AlsTnubdjr7U6yQC5aejcUjFv1bRkg3tV1+TkBGhNodbEeFbEyxcHpR7PQ/GC4usRqBOJKcNXf+1aC2f5O/rhbdLfaL9qepH4+WMZu5W3vpY2j6rVD+xizGkBKtt9MlcnsYi3OAN63InbFifEHh01yq8HWZdDgL/ne1YPidxElnjrYh9Uz2rlX0lsWZBwSq3bDnDX/FFVZwxW3P4Ov0y+OWKicFlMcVHxyEQy0HYyjmD+hztGBYJnGMOFaVCIc0XLV1TBQT9HIFDNm9YTiQRocMj3G/aw2w5nDO0uCz4sOHgROY1sSjqbIMP8+uKtIE5j6prdHN90+9qu9N9EyEmZH9QsNhgHfJo1kpfTKp/cHvE8PRasyQn8/PAfR4CYeW7Jq1WFaoqsUO8HywnK6/0OFLrOq+07w3Pvpz9Nl2OMfxp8m7jd9qLCnJh6EEFxEhA9Vo31p2lzmbbnlQosI/GjX1tfOC1syDyx2NKsj83P6mB+AjEoyWJTxR/GlFos1pyVU+y8mdJPhFZ3cXImORUffaAafpVCvLuC2KHXBBvnwoVHzI6+SdQ2+LTvZ2NMVNXcM6OMOWsYzRWi3W65zakMFao3B5aJFB1zi5Ul9PqqZNkCrl+RWUrteJ06vT9fYjP4x7bBK0n+/zs8hdlMIDmQizPPLfj0pWBK/AQHgHdh7tHd7WFLPrtmKrJV+yWuDPCemNDyQbcsl0KuQl/bVBLuGLYM6UvWrU75OItkom7h
+ 6Sii+rqS
+ 5pxfeLzIVG0SGMYIT53hy8MQMtB6iQ8xRBC9fFOvpUOkkQRX40rMc0wukBC0i5mD8oCUtETFM4+o2FCScpyl62mXLbXUnVzuH6Bys+YJZigYcxUgBTgen5MR8WTEJpM8VH0RfLZnf0eehfB2chhQAIy96Iax9oLHnzW1WDBxVwQqP23LMeOPtpMEJsJtRBfG/G81TSlmwYRf9ktVxAhEyx/o9v4dxC+CuzzJ4DItlQou24QcDfFxmQV1eqYQ2ltp6tjtmhaANFlGLYbevSDu8kI41Ea2ZOoOIM5twXxBEiNDkyV+YCqN6bl2QXr79gcbnMpIRS+eIerXW1OeFtswVEOdetw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,54 +106,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Alice,
+Gary Guo <gary@garyguo.net> writes:
 
-Alice Ryhl <aliceryhl@google.com> writes:
-
-> Currently the only way for Rust code to call a static inline function is
-> to go through a helper in rust/helpers/. This introduces performance
-> costs due to additional function calls and also clutters backtraces and
-> flame graphs with helper symbols.
+> On Tue, 02 Dec 2025 20:27:59 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
 >
-> To get rid of these helper symbols, provide functionality to inline
-> helpers into Rust using llvm-link. This option complements full LTO, by
-> being much cheaper and avoiding incompatibility with BTF.
+>> From: Gary Guo <gary@garyguo.net>
+>> 
+>> A new experimental Kconfig option, `RUST_INLINE_HELPERS` is added to
+>> allow C helpers (which were created to allow Rust to call into
+>> inline/macro C functions without having to re-implement the logic in
+>> Rust) to be inlined into Rust crates without performing global LTO.
+>> 
+>> If the option is enabled, the following is performed:
+>> * For helpers, instead of compiling them to an object file to be linked
+>>   into vmlinux, they're compiled to LLVM IR.
+>> * The LLVM IR is compiled to bitcode (This is step is not necessary, but
+>>   is a performance optimisation to prevent LLVM from always have to
+>>   reparse the same IR).
+>> * When a Rust crate is compiled, instead of generating an object file, we
+>>   ask LLVM bitcode to be generated.
+>> * llvm-link is invoked with --internalize to combine the helper bitcode
+>>   with the crate bitcode. This step is similar to LTO, but this is much
+>>   faster since it only needs to inline the helpers.
+>> * clang is invoked to turn the combined bitcode into a final object file.
+>> 
+>> The --internalize flag tells llvm-link to treat all symbols in
+>> helpers.bc using `internal` linkage. This matches the behavior of
+>> `clang` on `static inline` functions, and avoids exporting the symbol
+>> from the object file.
 >
-> I ran a microbenchmark showing the benefit of this. All the benchmark
-> does is call refcount_inc() in a loop. This was chosen since refcounting
-> is quite hot in Binder. The results are that Rust spends 6.35 ns per
-> call vs 5.73 ns per call in C. When enabling this option, the two
-> languages become equally fast, and disassembly confirms the exact same
-> machine code is used (in particular there is no call to
-> rust_helper_refcount_inc). Benchmarking Binder also results in an
-> improvement from this change.
+> Huge shout-out to Matthew for discovering this option, this makes thing
+> so much nicer and it feels way less hacky and more reliable now.
 >
-> This patch is complementary to:
-> https://lore.kernel.org/all/20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com/
+>> 
+>> To ensure that RUST_INLINE_HELPERS is not incompatible with BTF, we pass
+>> the -g0 flag when building helpers. See commit 5daa0c35a1f0 ("rust:
+>> Disallow BTF generation with Rust + LTO") for details.
 >
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Again this is a much nicer way to workaround the issue than changing
+> the language name in the DWARF info using text replacement that I come
+> up with :)
+>
+>> 
+>> We have an intended triple mismatch of `aarch64-unknown-none` vs
+>> `aarch64-unknown-linux-gnu`, so we suppress the warning.
+>> 
+>> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+>> Co-developed-by: Matthew Maurer <mmaurer@google.com>
+>> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+>> Signed-off-by: Gary Guo <gary@garyguo.net>
+>> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>> ---
+>>  Makefile               |  4 +++-
+>>  lib/Kconfig.debug      | 15 +++++++++++++++
+>>  rust/Makefile          | 26 ++++++++++++++++++++++----
+>>  rust/exports.c         |  5 ++++-
+>>  scripts/Makefile.build |  5 ++++-
+>>  5 files changed, 48 insertions(+), 7 deletions(-)
+>> 
+>> diff --git a/Makefile b/Makefile
+>> index 96ddbaae7e12de71bcfabef4639de3a13a6e4815..5834bfd568548d1bee34b328dccce5d60f85526f 100644
+>> --- a/Makefile
+>> +++ b/Makefile
+>> @@ -517,6 +517,8 @@ OBJCOPY		= $(LLVM_PREFIX)llvm-objcopy$(LLVM_SUFFIX)
+>>  OBJDUMP		= $(LLVM_PREFIX)llvm-objdump$(LLVM_SUFFIX)
+>>  READELF		= $(LLVM_PREFIX)llvm-readelf$(LLVM_SUFFIX)
+>>  STRIP		= $(LLVM_PREFIX)llvm-strip$(LLVM_SUFFIX)
+>> +LLVM_LINK	= $(LLVM_PREFIX)llvm-link$(LLVM_SUFFIX)
+>> +LLVM_AS		= $(LLVM_PREFIX)llvm-as$(LLVM_SUFFIX)
+>
+> I think this is no longer needed as we only use LLVM BC now without
+> having to round-trip between LLVM IR.
+>
 
-I get the following modpost errors when building with this applied on top
-of v6.19-rc4:
-
-ERROR: modpost: "__SCK__WARN_trap" [drivers/gpu/drm/nova/nova.ko] undefined!
-ERROR: modpost: "__SCK__WARN_trap" [drivers/gpu/nova-core/nova_core.ko] undefined!
-ERROR: modpost: "__SCK__WARN_trap" [drivers/block/rnull/rnull_mod.ko] undefined!
-ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_minimal.ko] undefined!
-ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_misc_device.ko] undefined!
-ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_print.ko] undefined!
-ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_dma.ko] undefined!
-ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_pci.ko] undefined!
-ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_platform.ko] undefined!
-ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_faux.ko] undefined!
-
-I also applied the series adding the inline macro [1].
+We should update the commit message to reflect this as well.
 
 
 Best regards,
 Andreas Hindborg
 
 
-[1] https://lore.kernel.org/rust-for-linux/20260105-define-rust-helper-v2-0-51da5f454a67@google.com/
 
 
