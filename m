@@ -4,119 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E490CF6BED
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 05:38:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B6FECF6BED
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 05:39:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A166D6B0092; Wed,  7 Jan 2026 00:38:45 -0500 (EST)
+	id E09A96B0088; Wed,  7 Jan 2026 00:39:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99A3A6B0093; Wed,  7 Jan 2026 00:38:45 -0500 (EST)
+	id DB3EB6B0092; Wed,  7 Jan 2026 00:39:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87B946B0095; Wed,  7 Jan 2026 00:38:45 -0500 (EST)
+	id CB7436B0093; Wed,  7 Jan 2026 00:39:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7635F6B0092
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 00:38:45 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 21CB4137DDB
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:38:45 +0000 (UTC)
-X-FDA: 84304063410.30.752596D
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3748C1A0004
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:38:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=iZQcobHV;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767764323; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B9A826B0088
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 00:39:57 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 674A3138162
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:39:57 +0000 (UTC)
+X-FDA: 84304066434.02.B2AB0E0
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7ED69180005
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 05:39:55 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=X809OQYx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767764395; a=rsa-sha256;
 	cv=none;
-	b=BwVxKJ8H1GfVU6GBT3PDPA+olvHnCXZy0ZJ07UZJw09vcv+PRBLf1QmaY/sMRJF6QJErNN
-	Y9eBz/x2bT3mhQir/ajhSA/gyK8wK5DyEFK9mFH9ilBqVNq0GfiBkrXmWkBFUNiaWBbP0u
-	cfYiI4+HButxvugFpELAKrGXDZ4a1C8=
+	b=FriYxKxUuaIBQU4oVk3RdIDrnv7h67L6MJHY1TDVhmVk2Heemr7vhoeiXDQp68uY6tq3xu
+	OauUMibhza670r/cHPsJyu/sjUQDdFlwJUVJRmrvX4AmHaI6j8bTz2Uq+zuFx/wQNs/qOp
+	v9kllKHPWHTV46g58JFFxq25T8yPxKg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=iZQcobHV;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=X809OQYx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767764323;
+	s=arc-20220608; t=1767764395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oQPq4dNJwxRb95saNeygoaZ8gFcR1vkqOSFcxL/Ow/8=;
-	b=H4t+xeAOTrKFhmFbl7WE6t0o9LTQrej0vDJX7F/z+VX1kUncoZXyk/pj4viIpIoV1yEW+d
-	y9LInOil6AEvy/f+Gp5GPZjkm+hI4nUzsnkfYt8eV8JIY5wvSVR7y3wSiFYRlYItcltYUY
-	DbElVpTi+jlirgQx4eh0GOMRzvvFdS4=
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7b9387df58cso2123787b3a.3
-        for <linux-mm@kvack.org>; Tue, 06 Jan 2026 21:38:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767764322; x=1768369122; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oQPq4dNJwxRb95saNeygoaZ8gFcR1vkqOSFcxL/Ow/8=;
-        b=iZQcobHV9Qv6CbQI0OtAFL90lKsJ4UR4e84/XGlag3BAivNEQcAXjgEqMLs8Pw05OP
-         WIk3VSyteZXbvq34LIrMLjzcl3CV9hqWdvzaA45LOVUKsHHVQPaAN+FUfChJ+v77xJ3j
-         YWnqsAGBa4e2+L0ZMh1RDeNK6VVm7jjZq5kDE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767764322; x=1768369122;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oQPq4dNJwxRb95saNeygoaZ8gFcR1vkqOSFcxL/Ow/8=;
-        b=fP4RSLvjgg+GTlZcCT0oXIA1AyrWht2zZLRPc/R+4hZDCfKS9Rldv3IE6ZuDPlQP+d
-         4uIvt75yOqM4PfuFWAa6lNuxXndW2v2Ung1HCx307+jkvvtFdsxZV40hWBjXeqcH9UgI
-         UdJkEBCVBzGRRa7odW1DUObaKRzWiQuugs7myIKruOnVKTVOMiPZZ88cxb05rOrx94ix
-         4sp/X4cH9UFcH4kQpYhVmv4xG/4KhcDLxNVhzOgK4xwepUvJHb2u4O/Jll8SMYEhf4EK
-         z30UE3HfyY2GGQX4Y58eYIioGJZIhTpftoI+xWU3rNP3RvUPBMb+8xB8H1wpZz8LZbRx
-         GDEw==
-X-Forwarded-Encrypted: i=1; AJvYcCVKoNVJEC9rgUp7gkvB3EvGFcUacSyyfT3626UhEZR1/OAPASwz8l+L+yIzKSrcZ+H5AjY5NwV+oQ==@kvack.org
-X-Gm-Message-State: AOJu0YyVNmzpCKTsqjjAZUPYdl4APGci8fr3bKLLBJvcvyVZffcfBp7j
-	CLAZPEcTExKirnlt3T2dEYBkow6F/JPbo1W33syFsfQyG6/2K1HcyWASh9+4Sc3tTg==
-X-Gm-Gg: AY/fxX790eUO42KnW3QKHs1Ht3LEb+DaO+mECVbE6AeHqNwg29Ix9UkMXnUv+1V3wIZ
-	0hVMvWrQeEcq2bScfMcY29I/k0in0bKxmJn6LZXGSmxLM18VBz4f0BK4EUBWmIy//4YLgRlDG1c
-	tFUo5KqmYtdn6dOZ2hqGoobGK9kXxEaCoHe3mvtiLK3iskTBRMLR3/hu9HD9zlmv8xxovqsCYnd
-	w00K3uHczRVdApuhdXskqWwygllqs6A5M/FQSF9vKdP+tQirijYDfzCzxcJ6vDqv2Ctyp+SSPAl
-	2lPA+R117fTxUvHPT45FtoKmD+1OLBCRtE6cp/jzT6LUADYooNw72tHzYAb90JUEA8wSYdPPtxS
-	YqNSLDD6hqK8UhDulAzzMmvtSZaUa3uoVRQXefdza7cVV8utf3If1im69hyhBg8zvj1muDFX88y
-	0vDexuBsh1L2b+Tl1NCbUZnKtCN5JyjvsSrj7MvdlX1HHKNliJVpY=
-X-Google-Smtp-Source: AGHT+IH36QHeZRJf03jTkhGbbb56PW6HvZEir1R4xQf1nA4piFwCu54+lXS4X1nyTNlfTxOsowdOrw==
-X-Received: by 2002:a05:6a00:4390:b0:7f7:5378:da2c with SMTP id d2e1a72fcca58-81b7de5d83bmr1467242b3a.25.1767764322086;
-        Tue, 06 Jan 2026 21:38:42 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:9f6a:2617:8891:93ff])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819bb0ddf97sm3655738b3a.19.2026.01.06.21.38.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 21:38:41 -0800 (PST)
-Date: Wed, 7 Jan 2026 14:38:36 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH] zsmalloc: use actual object size to detect spans
-Message-ID: <3tiwggkz53gkl3ysemobzny5ymvjzn7ssfxbevae6ptpfbdzph@riv2id277ctm>
-References: <20260106042507.2579150-1-senozhatsky@chromium.org>
- <qh2p3k5c2ulb5g2zmckhrm4o2eoruatb5lnumkrwrvmsxwcn3s@nh5vx4kjn5in>
- <og2yztajena3ywyvus6xgc5vlrrecjaynyezygpsrt64kjkqlv@agceajv57eet>
- <vkhwvmazwys7dz7m67fil7xlhevdsc4xbvq3h6nknb7rqojjis@vx2c57ylvl44>
- <ofjlah554fgcc43e66djtysmnagd7gduqutueyauipovs35qb7@mw7keptebqau>
- <5smqbald5bollibqjsvqw2tfngdoiiucurikdgqtz6xjb7u7vz@7p6hskoixaak>
- <lupjar4x2wz25knuntywor5oyx3ksyhh7g7yv4apmztn47ayep@sncrwg4gjlut>
- <3xsreqvvclcuqyllgdz5avxwdvhc3rqri4565xj2hbwk6r6uol@6mnhvdgaxfrl>
- <mumv2eouuqepj5btx4jeghevlleucdslt76erxtt4sm5ntavx5@oipdwrdhzlta>
+	bh=EO7QxiUX2cfRPRoeNoYBjPawt4DwoH+tri6kf2FLhqo=;
+	b=wAvoK4sXx0Z22q/1vtXjqiu4hAnkJ6+doOIphsd/fxp0nDtn8yg5+8wOl+BoZKPGv3BFtr
+	2XurutHOop6U446txWyK+2grch0+n7V4KTjyg5IKfZI6bHWPKQm5eWftLSItd8pTb5csLS
+	Fx+MXvuQ4ORTy2wIRAus7gpH8oc0F+Y=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <mumv2eouuqepj5btx4jeghevlleucdslt76erxtt4sm5ntavx5@oipdwrdhzlta>
-X-Rspamd-Queue-Id: 3748C1A0004
-X-Stat-Signature: ijtb3u8wetp9c75yiwkgrh7ug4jehs3f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767764392;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EO7QxiUX2cfRPRoeNoYBjPawt4DwoH+tri6kf2FLhqo=;
+	b=X809OQYxpxEtJBMzt9bxtE2GdVBcxsJeMUlsgsno7J8+5jGdHcVZA3JTm9kyHH1j6LJHnh
+	HtCnpz6EqlZtR1wwzqW8LJSOh0XReIoY0F9Oa0xtM508cMi4W19Y409dqPmepQ14/0cD8K
+	1FeEE88QoIwgL114di7k7jORkgjoOzY=
+Date: Wed, 07 Jan 2026 05:39:50 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Yosry Ahmed" <yosry.ahmed@linux.dev>
+Message-ID: <9b7d6e6292c64f21b8d09def1b6723f02faffe88@linux.dev>
+TLS-Required: No
+Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
+ consider other metrics
+To: "Herbert Xu" <herbert@gondor.apana.org.au>
+Cc: "Sergey Senozhatsky" <senozhatsky@chromium.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Nhat Pham" <nphamcs@gmail.com>, "Minchan
+ Kim" <minchan@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Brian
+ Geffon" <bgeffon@google.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+In-Reply-To: <aV3uXguDCaVAbY53@gondor.apana.org.au>
+References: <20260101013814.2312147-1-senozhatsky@chromium.org>
+ <20260101013814.2312147-3-senozhatsky@chromium.org>
+ <ddfs43qldaws5urlnpah3ibp5xeu7st37p5hgdfajvdtwor4sd@fkcm3brinygo>
+ <gg5zdpzrk47tljbnaudcy2gnsodyhmmar23qb57b67bhx6ntje@eq2fcrl2dk4z>
+ <v5veb673xrz6z3tevfdymhuik7nltojrvcqyjih4ds7co4p4hr@5e7ngdkrxo32>
+ <5p4iyah6zlrnxpbsis32c4m5lrjj3pq7xwcugq35d2entwfai2@n2r6y3ga2ie5>
+ <7q5gqpfshnc3lfhzxughpks3fc2knw2delpm5io2oe54monydl@5isuxnjputjr>
+ <aVyYuS_usi-lpHkM@gondor.apana.org.au>
+ <dou7g3n5fpynsab7hmxf4bgmqdewtdhkkiriwlghxzyduick7h@bsi3q2kivvbs>
+ <aV3uXguDCaVAbY53@gondor.apana.org.au>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1767764323-777200
-X-HE-Meta: U2FsdGVkX1+xCzdVolzkMs5eKLs1AXzIc4XjimUWuCz+qMskZh8uybt8EqSekeCoqkRMymmL+Ztw2l2bcEvIsN64p7EVxacl5YbjQdUIzOZFplRpj4jBKJBa1utyxSXo9i4iqrH2Rc6bG4/1b2sh6d9u/eJ9aOG6uW8NMx0zj+zul+AMbnpZlaVY4Trme6x4h42tEMWEWQJGMbZ3MjjcL6oXjFKeker96Qu3XcohkJwiIyeSztSK8eExM8s7HNA+8f/NcUHG/8B6gV/WVhMtSbsrRFDOMwF4vSLijM4gbxRUFqALo3kGHKqhrJdQD/wJQrNt2LEkd5GoI9twFrly1956GIQbwQ2bxmmRb1M2hPqzlil6k0lhO0wKw+fj3d/iKSN9Dgs06w4l3Z4o2eu1Yv4+Ru9LisH1SgiPz6hq4kI5kEH/bRpoBv6cOOiAyon8LEdcZVlnmZs5apO0wTuqRdJW0htpB85yb5qFEv+Z9tmX+b/fRN+eTu0+oq8AcHtvUVbt874RfUBf+fF8/dYx5K9HTgq3Qr6YTLZMg/a90pws0K62rsfXoPfmVnHwimpmd+7URs++5rn2iVOFys1NxnaCADLctEeEBNs3dgEbzKxZQX0UUB0r0ap+CJvFVYlkTHyXzyxtb0zKzJIPqpP1f75kvfCrdq5V6Xc/KIyvvFI0UPEBlr5tMGM0PsPftJuxRxYWRlGRJaST2Xv+qmtLLS0AfPnjH6bMC6Qq1xVVKYFSBShX/6GKylqH+/gLSK5SQWO8TrZCLx0Oj2q8rUfEJmyRaTUqn8sNKnFoI0R6FnJvw4RTMmVWsxKAJ+vUqUdvEn22yft9M3+Q6VhnTPWqolnfZuacjH7bcPzEOWC0iKVOkodzhIPaAphvx/nPHjqrqmqhjVJLmBYf6SCxzjoZJLQPyn1Fz1dMXlUxCv6N/SnndEXVQouQMAmjkKDrbKx7+PffvSXpWeBsPlw+zp1
- G8gwMHUu
- T01KJjktY90DXvKTcolvULBCZff/0zrf73QJ1ouyoppTnZKivWF1wa4VpBwNciD80ex9ds3G+DZ7L5gaIpb2O9TI8+PjwFXUjrrhONALRkls6R4jeomMajRvW839GbGNyTEwfZ/a8h8xxbFTCESPsj57iYj1j83jFYyEEdDjCMFSUpC/rjr4C7w7Qsbl6wnYEeQoTCvlB8Ask2QjyTfFA/9W8Qk+WLcFbWIFX+Bldj3YJ0IMa7wxjY2bowmj89yHE9PjE66scqqobgWdiNFwA7q5QSEo1O4KBuc4RSnmBs4ymga3MIlhOixya3S5AM4nu793z/jGHxs+Y4fXB9l5UVMoiR5aAQTL2GXgjcOu1PT8n3eI=
+X-Rspamd-Queue-Id: 7ED69180005
+X-Rspamd-Server: rspam10
+X-Stat-Signature: yqnzkdmy1qmhkidtn7hc9uj3dkwe47ag
+X-HE-Tag: 1767764395-434459
+X-HE-Meta: U2FsdGVkX19OmnVbSWQ25oxBGQDbBrXNUZlEYVaMIJx+8DFpcFLxwlts7yK9an6+/9tM10cJUl6NtrSYjx7Ysl9purpGT6J02t/cEwF7QXtUViSQZ2ciO+UCFFxW7BC3wbsvmFnU7jHUrve87cEzeF2oOpY4cbciZEiAxadvN9e4kffDFYosbyKzLqynCXIPp9SnqiILh8lzoJ2V/3vIfFdn3EB+jLmHH8ZNI9ccqK52zxj1qi0TQgBNOPiC1dF2ojqhxXAP6fmKt8D6ewqsujaMVBcI+Pg9tsfDa4kbEVh6AhsJEnWwVDaIM3diiWC8Tc/GXWs7IO5PO940J2rjwA2EVKE/HvSmQ+gDeLJs1jK5+I9yrBTcG+JFYJmFTiSNWFbKfWSKMUOF+jErnI/a7HVs7OKyOV/q2gS03H6iVkIf8VX/RYGKAaD4vaVt7U8bml4Wt/HjRXeWv2xV752eZJWOAtTc2kNSaHAtY/Ihic8Ej2WWJu9VsvVwuB4hLwbCRZFIT1Iyqt7YtP7bjW6lEyBgDkdDoDoEMx7wmRbs2WnSt1AjppSI/GUdbXoaZrLhR5b5rUxifSIxY0P8N8ADixtwf5xEzhVO7M29jyBbYsaAc/saT7P0z6aacV2siM0bwfDV842Tkfeeeorc92lyZ0sf9wF1hqtdhsszCTwMcqSJMrAT8nnFiJNLreAzGAq/TyUmkjJZyKBLEdA/E19WYclkUUza4l7nXO9ZVsnqYT/oX87ccTKD1iBQXQRCN1DKNRY/aLMNMJ4UJW2G490FNMmEwc7NMKO5zlzqpKum6O4klAl9jCNa7dqfe5o6oTN0ARWZKvYnYJhRHxT9kbRURlnP1Aw1U+mwQSCTw0AHAOFbMEKSJLcfFEey3wD4e6Ro/edPX1D+qpdpQAf8twFY7RjOwVSv3pTGNQ0VX8AiqLCc1uIqwnmp5uR6wbE23Ja4lq5jUcztbEWBP+MhMGV
+ /wcPDwif
+ XlMMqPVycBl9Cp+z9mGZLfiLIZmf4EqkMLtyKqWUJp+J/nEt9zq5626HeW9QydRskjHiYbqLqAiVA9gV2TowoneOZvo1dRdDxDi1Lw6TJPOaJIFvpitj5E56eFH8ozanZKZo7FXUVxz19H06c/bGg7xHPDHNwM7T/7UL/yjg1oMStOeQQQx4Ktu+8TNzik3nEpOwXNNq+xuBHdwZ6U2iWjBQFy5wOpomnahDK8d/WL93WzbHZKSvA/l5KHNGHKSr9UvSe2VBZRjTSI14=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,50 +103,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/07 05:22), Yosry Ahmed wrote:
-> On Wed, Jan 07, 2026 at 12:03:37PM +0900, Sergey Senozhatsky wrote:
-> > On (26/01/07 02:10), Yosry Ahmed wrote:
-> > > I think the changes need to be shuffled around to avoid this, or just
-> > > have a combined patch, which would be less pretty.
-> > 
-> > Dunno.  Do we want to completely separate HugePage handling
-> > and make it a fast path?  Then it seems things begin to work.
-> 
-> HugePage should always be PAGE_SIZE, so never spans two pages, right?
+January 6, 2026 at 9:25 PM, "Herbert Xu" <herbert@gondor.apana.org.au> wr=
+ote:
 
-Right
 
-  if (unlikely(class->objs_per_zspage == 1 && class->pages_per_zspage == 1))
-      SetZsHugePage(zspage);
+>=20
+>=20On Tue, Jan 06, 2026 at 04:24:45PM +0000, Yosry Ahmed wrote:
+>=20
+>=20>=20
+>=20> Just to clarify, IIUC the SG support would mean that zram or zswap =
+can
+> >  pass a non-contiguous SG-list to the crypto API, regardless of
+> >  compressor support. I assume that the crypto layer will either pass =
+the
+> >  SG-list as-is to the compressor if it supports it, or copy it into
+> >  scratch space to be contiguous if needed.
+> >=20
+>=20>  So zswap, for example, will get an SG list from zsmalloc and pass =
+it
+> >  directly to the crypto API for decompression. Then the effort to add
+> >  support to compressors can be done separately.
+> >=20=20
+>=20>  Did I get this right?
+> >=20
+>=20Correct, you can already do that today with the scomp layer providing
+> the fallback linearisation.
 
-> I like separating the logic because it's cleaner, but I want us to
-> understand the problem first (see my other reply) instead of just
-> papering over it.
+In this case I think we can just make zsmalloc return an SG list and use =
+it in both zswap and zram. We will fallback to the memcpy() in scomp inst=
+ead of the memcpy() in zsmalloc, and we'll drop the memcpy() logic in zsw=
+ap as a bonus.
 
-Sure.
+Will this for acomp though?
 
-> > diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> > index cb449acc8809..9b067853b6c2 100644
-> > --- a/mm/zsmalloc.c
-> > +++ b/mm/zsmalloc.c
-> > @@ -1077,6 +1077,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
-> >         unsigned long obj, off;
-> >         unsigned int obj_idx;
-> >         struct size_class *class;
-> > +       size_t sizes[2];
-> >         void *addr;
-> >  
-> >         /* Guarantee we can get zspage from handle safely */
-> > @@ -1089,35 +1090,27 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
-> >         zspage_read_lock(zspage);
-> >         read_unlock(&pool->lock);
-> >  
-> > +       /* Fast path for huge size class */
-> > +       if (ZsHugePage(zspage))
-> > +               return kmap_local_zpdesc(zpdesc);
-> 
-> Can we WARN here if somehow the HugePage is spanning two pages?
+>=20
+>=20Adding native SG support to LZO simply means removing the memcpy that
+> scomp would otherwise have to do.
 
-I can add a WARN, but that really cannot happen.  We always allocate just
-one physical page per zspage for such size classes.
+Yeah the effort to add native support to compressors can be done separate=
+ly. For zswap, I think the most common compressors are actually zstd and =
+LZ4.
+
+>=20
+>=20Cheers,
+> --=20
+>=20Email: Herbert Xu <>
+> Home Page: http://gondor.apana.org.au/~herbert/
+> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+>
 
