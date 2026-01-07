@@ -4,107 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 086EBD0D170
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 20:32:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B69FD0D171
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 20:34:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 730506B0093; Wed,  7 Jan 2026 15:32:46 -0500 (EST)
+	id 7D0826B0098; Wed,  7 Jan 2026 15:34:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DA256B0095; Wed,  7 Jan 2026 15:32:46 -0500 (EST)
+	id 754786B0099; Wed,  7 Jan 2026 15:34:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E9F36B0096; Wed,  7 Jan 2026 15:32:46 -0500 (EST)
+	id 660F06B009B; Wed,  7 Jan 2026 15:34:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F3C56B0093
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 15:32:46 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E569759039
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 20:32:45 +0000 (UTC)
-X-FDA: 84306316290.10.35412DF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0BC4B120006
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 20:32:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="hEbYo/MO";
-	spf=pass (imf29.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767817964; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 52F896B0098
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 15:34:44 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EF3888BD30
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 20:34:43 +0000 (UTC)
+X-FDA: 84306321246.04.32FA98D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4FD85180006
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 20:34:42 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Zkagjpi/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767818082; a=rsa-sha256;
 	cv=none;
-	b=vasgP/GIYL4brQX23m6Lhy8G/9ZwiE8HFYgxh3POXwYzvoAShvpx6xHohbTEUSs/REu3Tc
-	FYE1lW2ioCwfH2cXvhcsfQ746urmP5ts+xR50x1+GjkPYr66i2Ma1axkqsVhzl42ppbTao
-	iWV89n8LQgOFZ0XijILzAmFzYigGyxw=
+	b=Bsloyxa8IqujtquE7zHwE+XjbZtU86e8wEEdR+cFS8LVSfjyR1TvFos7pEbjvI8w0eahbJ
+	8LMpbCns6QT5S+3un3b9lEbjhY1oqy1OeMt1Dl24bqUXcSZtcprQptTWIYT0uyAuGC+1d/
+	9nCBDY4sircPkbE2bzjW4t/m1YaSRp8=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="hEbYo/MO";
-	spf=pass (imf29.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Zkagjpi/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767817964;
+	s=arc-20220608; t=1767818082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:references:dkim-signature;
-	bh=w4w0YXsQ4tHqn86Cdn9lgCFQXlRLiJdMmnLM/2nY/7I=;
-	b=Ttx8tl9+fmxrHy9RDug8RpQ1r+lEydiVmVn53d96QXugFCpUFkX0jyGv7BOyryQxP8l90B
-	o1EnFLI37YdeNJCjLLDY7nTbwGSYaajioo8RWCt2amnp0hl8jQ5LBMNFyxrMcQ2T5Jq1Og
-	2w2Lj9QEa39U3iPHZF+lDVy6YIMpJX0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767817963;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=w4w0YXsQ4tHqn86Cdn9lgCFQXlRLiJdMmnLM/2nY/7I=;
-	b=hEbYo/MOi17uwIfBoaoyQuC/QiIuTin3PVacR/F2e7kvmk4cjTGL3tyOfu1GL0ZWe5Ao5k
-	mYL4CdnY2KTw5NcWrgmLFsUyhcDM7VxnV7Ok1wvOaCoF01BHsQMau3shuPbe18ZHO4WN8g
-	6A+cGd3D4VPUnOSAu56PHyDwxyv5jnM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-397-tOaLPL9DOgKv2Mj1GCj-kA-1; Wed,
- 07 Jan 2026 15:32:38 -0500
-X-MC-Unique: tOaLPL9DOgKv2Mj1GCj-kA-1
-X-Mimecast-MFC-AGG-ID: tOaLPL9DOgKv2Mj1GCj-kA_1767817956
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 56EAF1955F34;
-	Wed,  7 Jan 2026 20:32:36 +0000 (UTC)
-Received: from debian4.vm (unknown [10.44.33.27])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 5091F18007D2;
-	Wed,  7 Jan 2026 20:32:32 +0000 (UTC)
-Received: by debian4.vm (sSMTP sendmail emulation); Wed, 07 Jan 2026 21:32:30 +0100
-Message-ID: <20260107203230.880324802@debian4.vm>
-User-Agent: quilt/0.68
-Date: Wed, 07 Jan 2026 21:31:15 +0100
-From: Mikulas Patocka <mpatocka@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Pedro Falcato <pfalcato@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- David Hildenbrand <david@redhat.com>,
- amd-gfx@lists.freedesktop.org,
- linux-mm@kvack.org,
- Vlastimil Babka <vbabka@suse.cz>,
- Jann Horn <jannh@google.com>,
- Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH v4 2/2] amdgpu: delete the "Failed to register MMU notifier" message
-References: <20260107203113.690118053@debian4.vm>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=zzo+3C/hPTxFw/xRNJRkyrKmK7xeVFmoq79bpzpX3Ls=;
+	b=nY1sFmhh29B4clmRUu/kx8RLcgCgEU6vaQFVwWLWikEugT4EtLExbplSgjgFhaEXkq5qDk
+	U8rsMQZczYqO7poQ9Bbx3jRI44A/vKVYPY6T9inW12yWhrkJNTsTOI6I+I2V9GBU3oEc4H
+	wOGtxae1IbZxkyRpfbGbEWCSexXhrkU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 091944414B;
+	Wed,  7 Jan 2026 20:34:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76CFC4CEF1;
+	Wed,  7 Jan 2026 20:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767818080;
+	bh=AOWaSug2G86K93bzxMiGRrg2OWHdAUJfYh0qmRde9cw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Zkagjpi/muS2VGzfUQjIxWGGH6i70N++9x5xZTIbkQuBU/DRrQKhH+4pJNASzSy7j
+	 VZVMqRapNWwBVu4ByYANDdpu5Sr1knnVuTrRyvvD9WvCdJEJGw7K64bSO0hKmfhQqY
+	 OThU+sNzp56YiPAIE2t6FI8X1MJjVuPhzRzGd7emskjfYVBBhV532eSF+mtSAlV4PM
+	 /Bk4PfbiIBZ6xke04u2/c0EbrakDa/8EflVBSSO3zKX1nL5AtFS09ovFmx7BrgOCgU
+	 tmdVAzw0ELBLL1dewvzFHL5enSxqyAR/O6JMjvEonF6tFvrO5qIZ2ZFH4+K24yXrjT
+	 cQqiR/XDuYSbQ==
+Date: Wed, 7 Jan 2026 14:34:39 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Logan Gunthorpe <logang@deltatee.com>, Hou Tao <houtao@huaweicloud.com>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tejun Heo <tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Sagi Grimberg <sagi@grimberg.me>, houtao1@huawei.com
+Subject: Re: [PATCH 02/13] PCI/P2PDMA: Fix the warning condition in
+ p2pmem_alloc_mmap()
+Message-ID: <20260107203439.GA446340@bhelgaas>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: TggXv5OKyuEByUSn_loSioTXr_yJVoXCD1EcWGtTHSM_1767817956
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107171724.GA432074@bhelgaas>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0BC4B120006
-X-Rspamd-Server: rspam04
-X-Stat-Signature: f37zkgogg3da4x4rqwixi6ixxypaciwo
-X-HE-Tag: 1767817963-400237
-X-HE-Meta: U2FsdGVkX19D0fJLTFybqs4jl3dOsZ/lBgCF2k0cIErYIuIdJKO1bWIm8S6sFxvk5ZD74yvK33M92T2IlZ8Xwxv96swfuT/m+HjNuZNtpaPRpUzgc962uSUIZJRBi2i4n7ZWZne1nwTHUPkcAStcVRIPS9ECXA+60IdxXdJm+t5g+7tXdDE8Zcbsn2kUfNJXfI4+Y2nW6R73LwGnlpxd/FabNUlLRsGdFVJRbRHyZ5I17TzcBldDJKiKFt04Yyp+9vPY4UX2h4v33+G21mgBShk1Ciu6Nnom/WyDiI/9zWviMLnDvpSftgGNQ2940vPesY4F7yahgp/p5p2lIocFNg6QBLvIOvQyzz5Vu7J3s1Wmi+RsAszyAm717Pnu5qCft+0KM6wTAWDKCDbBVwP3ud31v+OKDtEVNUQE2HVQEddva6ikveIwdnIT1NTEIqRfjOtcFPHQ/FzhJ3Q2rbLyeFqzWSnw33PM9QRKitlIzI2zN+kyYMHkcpToAeZtTjkUAa3RlanA7kdCRx3Yzg+1ZimdoPskD07nzKWHWV8orvrRgTTnhxwNCwgX3JAKsKieMoLF12DLJScDgU+jHRkYJkh5GnJedDw1M0iFO37g//F7bawENzkI0WOpZmHTKGiXeuCxvr2B1l0dwWdhD4RUF1uhiszpyXfa093Kt8rL6gckVdWHbAKIt1nv2DzP/9VEZdNxBEcgu/qeVnRlc2dQDWdiIgHAumMfiQAeYalJvtvF4uJ6eBrPBFJRyuTEFHqhOTKf8m1KhYwnR+bG3Kbcwe2JrDQ+dknbHmblj82TrNsX4ZjI2miF4j7PpTXDoHm81Z9wKvKqBp/irhOVK/g5Aw7mxCQqOdNcFSSU+VgnK2mYYjjgSnw3AhzTwfu3kny9IY+xJoDL2LoHvxco+qKSJCSIoC6rZ3dHpkDtH5Ec4pA5fif5owZ0fLRAJeeiTwGeG5OOoDsOsKGf3lQHY/P
- H08pVUZO
- xhDOGZetTgTcT9V3jrSPhCw0dK5XJ2Mp6p04dqLpYj79WRaht/MyPTsp0z0F1B+/TPoOdZC8DWmc0M2ho2Y3kp1hUIrKymd2ZgXmElza+S1mIfbqJ8tD9pDce+Ykw37vnGXpc4AFo2jDL6N8bMjbChmko5UtTyOnDKxX3mBxFBp4BnLNs861Id2aq7xNDU+0/NJ5LR8FbVLMReZoJcWSLWviUsV+HwjcjIOxvS5biNf1Mu4bi16AvtGDPo2C8fMYe8wllHaBpNUXkNiff0z8KHiiIo/k57+cQLqCvuqsNbQY7KSHL4imW3DoEflIJfFAmd5HgKDyKsR960r6usX2OdwEhCRTzW9fgdAOW0HgiyUW+UIekp7PeqNVjiOQUEXFGFtpS
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4FD85180006
+X-Stat-Signature: r8zkb8ba95ucmngsfwjuzibe7etepk6j
+X-HE-Tag: 1767818082-364926
+X-HE-Meta: U2FsdGVkX1/HopoYaOME4hDINAYbTYydoWTh7IJdyG+4BsrSJqMuMVrmNl7Ux04nitd3Gx9Sg8baGI+//YfMWB7+QplFsfTf5hAWxnrlqfMxV/G7goeaialDGvRBGXW0DNAH6OqgZY2dz66z9WgXpXAEiNVh5pfIafdj+gGrokyQx8ZRXExMGSTmYsXlM2g3kbomSmUOP+D3PJeOEntFiu3PcZUr/T95Pj7oFqjrCXlxlIwRhOUB4/4H8YG3cAk2iHVJ9Xe/oIhSpaax+0CdkyTTyP1atjrNJkDk9XQCGEEI9erAQJ6IFZrDmT4MxkFq5r+0Vo8Yz7zJQMyG/iX+h29E/z+J71gfl1UB1hClGaRJhkk6EUC9xPLrS5nEEcMlWCHiYrgvy9uEFt3fG+CbJZOuPTpE0CPnzFrae30uMVRJ7s3ewcjRzC01G+V0XvE3PpYJnikF97dpZGDF4CPv9QkPkJRyu5O6IJIJmE0Dph2uPk4QIT9yhhPZHiwLbBNKve+lBRIVzWBEn/ZmzdtFZoKGABuqXdA+XNQ9gkWCh661EclGg1Ah0cD/UNjGi/HhgKfAem6aHclJXpRNclIy+nqiT+5nHmIlMfTYDd9MpFnGUNrF0jP5guTBujhlp4aPumv2gHPFq7CAUXPCLe7P6l6dt/pKRl1T37sKoLR3Aaga7x+/PtuMvZiZPZCF06t9SlcfvaSKfyM4/5ikKEziadC7aY6L7ZG5U8TIaPpykc17T9w0epaEfnxsDYgGboIOVQrFbCeDSt94qtpEEYyhSBj3KYXjzK6aIVBqNU6k49xjvmLCBTaXu3GZckuw/Gd4NTCO33TVqyYQoOE+UJhtBISKdkve0kiWniPTa6s8SPlOpSLsHEVEZ+qm/fHbDnxWwCGVc+j9zpFkXYRI4OMZwhuqKMoGfTfyB22Xcsf6QIe8UCEBWHpU70v3UWOcmE67Xd6ja3yFpoX3tSuCLOA
+ U9ECNlBy
+ fEWyDOpSmX+y7ARKvE8hSCFxalZ3z9BM0ZrZEUx6wCAHx9Kr859+Lq66EOkx7tGCLPQvqxNbSzo9vCRiafKH262xLLNrErUDrxDuOiZ43JHhEcqb0cF8DN4bMatBHe4RbS58Eam4tZ94y/JLt5S2GbZD/j7BMcvp0XOGYWrHaL+WTGRqrEkfvoq2IRmGHoFlri5q3uXsdVGlECz/Hm4DD38G66jbtGPZKDAhhMcdG0E0LHaDsdxwutwahmqDVIzPXtZoLIOKgmT6gNKqS+ldZs5JxSnIS6FUBBswo0zvloys35vj8NYqtOjgYuaGAo806ggbiOHn+PRYuBdVTF68Z7jjaWDd0CO3wchnj1vxesERQjrteO0v328XpbE0xpbKnFxa2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,34 +103,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This error may happen if mm_take_all_locks was interrupted by a signal -
-the userspace will retry an ioctl that returned -EINTR, so there is no
-need to report it to the syslog.
+On Wed, Jan 07, 2026 at 11:17:24AM -0600, Bjorn Helgaas wrote:
+> On Wed, Jan 07, 2026 at 03:39:42PM +0100, Christoph Hellwig wrote:
+> > On Mon, Dec 22, 2025 at 09:50:18AM -0700, Logan Gunthorpe wrote:
+> > > > Fixes: b7e282378773 ("mm/mm_init: move p2pdma page refcount initialisation to p2pdma")
+> > > > Signed-off-by: Hou Tao <houtao1@huawei.com>
+> > > 
+> > > Thanks for the fix
+> > > 
+> > > Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+> > 
+> > Can we get these fixes queued up ASAP while discussing the new
+> > feature?
+> 
+> I assume you mean the first two patches:
+> 
+>   PCI/P2PDMA: Release the per-cpu ref of pgmap when vm_insert_page() fails
+>   PCI/P2PDMA: Fix the warning condition in p2pmem_alloc_mmap()
+> 
+> I can certainly queue these up.  The second is a warning fix, and the
+> first fixes a hang that has apparently been around since v6.2
+> (7e9c7ef83d78 ("PCI/P2PDMA: Allow userspace VMA allocations through
+> sysfs")).
+> 
+> Given that, I would ordinarily target the v6.20 merge window, but the
+> "ASAP" suggests more urgency.  Do you want one or both for v6.19?
 
-Christian König suggested to remove this message at all, so let's do it.
+I put the patches above on pci/p2pdma for v6.20 until I hear
+otherwise.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-Index: mm/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-===================================================================
---- mm.orig/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c	2026-01-07 20:09:51.000000000 +0100
-+++ mm/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c	2026-01-07 20:12:11.000000000 +0100
-@@ -1069,11 +1069,8 @@ static int init_user_pages(struct kgd_me
- 	}
- 
- 	ret = amdgpu_hmm_register(bo, user_addr);
--	if (ret) {
--		pr_err("%s: Failed to register MMU notifier: %d\n",
--		       __func__, ret);
-+	if (ret)
- 		goto out;
--	}
- 
- 	if (criu_resume) {
- 		/*
-
+Bjorn
 
