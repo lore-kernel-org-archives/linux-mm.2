@@ -4,84 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE1F4D0D167
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 19:04:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC5F8D0D167
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 19:05:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DCC76B0092; Wed,  7 Jan 2026 14:04:01 -0500 (EST)
+	id 1BF3B6B0092; Wed,  7 Jan 2026 14:05:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 260A26B0093; Wed,  7 Jan 2026 14:04:01 -0500 (EST)
+	id 1935F6B0093; Wed,  7 Jan 2026 14:05:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 162BC6B0095; Wed,  7 Jan 2026 14:04:01 -0500 (EST)
+	id 0C1866B0095; Wed,  7 Jan 2026 14:05:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0787F6B0092
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:04:01 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A23971604C6
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 19:04:00 +0000 (UTC)
-X-FDA: 84306092640.14.190E1BF
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D9F2140015
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 19:03:58 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xhN2N6vG;
-	spf=pass (imf01.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767812639; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EC8EA6B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 14:05:37 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B1B3B98DE
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 19:05:37 +0000 (UTC)
+X-FDA: 84306096714.28.F31D10F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 34202A0009
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 19:05:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A4RHJTdV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767812736; a=rsa-sha256;
 	cv=none;
-	b=0ALNhZJehaVRE8pfmICinIkFzEfgSMXQTYfSTnfNS1/ldXFjAJCYb+YjtopBQbZGH4QuCj
-	U5jCPFobLPo3bOlr3T1uCTolUcJbkmEPiV/PUGBO8BhLqm1pn/I3Bp8yj+h3IrF5S+Ax9U
-	8hsGH3UMHYqo0rU87FSMY/nT63mwzRo=
+	b=oT/AxnDuAF20G1qnaK+wHUcZ8dNwzEIlc5irWdmyYInnFG+BU2YB4BvST1T/1DyidEUVym
+	6QSFks8481Bl/UwGAyHQ74IJJ4jgXCv3QAcg/1pHRRuHRzpM0PX2sS5AMlYIpns/6g0PvU
+	y5AKdFvTEF8TOEkjSTDKBIYdfKDFEi4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xhN2N6vG;
-	spf=pass (imf01.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A4RHJTdV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767812639;
+	s=arc-20220608; t=1767812736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lTti71TefD1o85qPpK4aAoODgyk6fvNwjRLBxcoRZW4=;
-	b=l3hT33pLp1Ekp4lzju5/jEoqRRnWL2hT7gyOBeVNkP5zHBtgY44oQIl8UjsCzc6Diju1ZD
-	4bjq7cx8xEBKXNCo8hAOGrmeRad/XThBIconOEqoSJeSzp4Lex503o0j2L72JWi7Gy/G+f
-	4nznuM2FSY+I1NLfRccXUr8HqIRhmX0=
-Date: Wed, 7 Jan 2026 19:03:51 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767812636;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lTti71TefD1o85qPpK4aAoODgyk6fvNwjRLBxcoRZW4=;
-	b=xhN2N6vGKss+YT9Q8qnsBTdK4oC3+55lmjJYAAlwFx5lp02uZ3Nsk10WHm/C+Y2n9/yTVJ
-	CQGgYMpe5+jZ5X737tCfX+Gk+IHlhzlLeGYOZo6oLaAQ04sIamcb2F5M/XRdxb5EbLZLpR
-	9bfzgkepX9iyS725CZKF/vbW3zMg7hQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCHv2 2/2] zsmalloc: simplify read begin/end logic
-Message-ID: <gl54caplknnljganmswspw3cggoyjxe2n7szvnwhhiyl5y7ynh@tzl2yz7bw725>
-References: <20260107052145.3586917-1-senozhatsky@chromium.org>
- <20260107052145.3586917-2-senozhatsky@chromium.org>
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=MldaEfbjcVC2b7Y9Q7MdTrFDUGsg6SwZoadzt/x4YTI=;
+	b=O15jNbfgscPlx2wb0akmRQtvNRXLTp6wgC72LPGbaz3jq51kYsnpF1i40Ij1HXCtx+1BQ8
+	iOp4yEnKkXht77VNAz7pKJ1D3HxESRKNYb6P+GjgsLf6acf0sUrGbW2bDXSAjvtMY2VYC0
+	+Cm+oLENcnnX1z+qYED55t6LX8sEAJU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B20A96000A;
+	Wed,  7 Jan 2026 19:05:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F10CC4CEF1;
+	Wed,  7 Jan 2026 19:05:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767812735;
+	bh=cXrxAzv98+rTuAo6AZR2IpL01l/GgbnBK6hzUkgo918=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=A4RHJTdVg2eo8w4IuucYp7SsRoCH3YT//hVw93Zkkrf5yuY7VdVHzXn5p17rzjL12
+	 qFhnYO1sBxAF8pzvUHMpneAhxajxGMSSn/P5eWKV8DgEr+V8cC0I0it/mxBoIwnpzA
+	 ZTG5e65Y87dMZvAKJQ5K5dt9Ppt1bkZCnEZg46y9U/FleUdZZwCi/IwOgRoSRZueGl
+	 wWU3xb2cH5R7JKWBRu+isqhIrXzOJQiW5H8Z0OLzuYO0YHMw3moiytq6UZetkvnrs/
+	 q+BCtxWtQqAd1Xg6v3hFI08liH2/hzx+9bPTHbu7bb9UT4hw/68aVlXtLjWeg5+mZk
+	 TljZ3k+3lL8bg==
+Date: Wed, 7 Jan 2026 13:05:34 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org, Jinhui Guo <guojinhui.liam@bytedance.com>
+Subject: Re: [PATCH 01/33] PCI: Prepare to protect against concurrent
+ isolated cpuset change
+Message-ID: <20260107190534.GA441483@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260107052145.3586917-2-senozhatsky@chromium.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: D9F2140015
+In-Reply-To: <20260101221359.22298-2-frederic@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 34202A0009
+X-Stat-Signature: 5tzog8fffsgfaqngqt7hrkf3oe5jsdww
 X-Rspam-User: 
-X-Stat-Signature: jj55pu8n5ey45mra7dgkjg5tzkokdz1e
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1767812638-187634
-X-HE-Meta: U2FsdGVkX18wkLg/jowJ7QvEWukr6dZDQKgcmN12q2DGZuslmDddk2pim6SPHIL72qnHNPAh9bbnfKO4izLi+l+yJ7RjrLQIVELiBuAuGFNqg4bl73QN9iIZbqW/o7zU6e8pupxmAenY6s+SD6n/3HSH4BGalvjqpDMtTWo3IT9XscT/wXcaYKbeunsVR7EhybUG1qnldICo3Q1bUEuZJtBTFKUc5QNexXVNhwws6isJUX4lNcTgPq7QLGBMIqoGFcjbVVGW4R53JftRhV5+r5FX9+BGZweCWbL3LCRSaK/QvOTIcCjYGA9djkDvGwDwA/iQ4MLzAV/NVkSZHGIWhgwHy/Zge4Mc0I26ZLopX5eLxzy9RSghZt59I9TSePzqJGycttdblRjxKTc3bzEcI0GBmXKHUJFgy3j8beE0ptjDhO7FK1mHZafwGtiXRIaLM5limDo7qG76gh8C+3O4lD/MNZumhnynPkwbyvZCfpiniNIIyAe4VfmZo0L7orS7Jx7vYKYdONv1yQglKptNxEoR11Idqy6EE4Mm9X4f7tasviUso7fnm/JElC1F5qj/JbUk+CS8L9IP1wu6F/0kg+qVsKhWOSJXchbusqD8he0qLq0KL0v64894wrKc17QxbzxC14aD0uMRoEnhwubHymVA29Mf/+AjM6UOUc3GJ+Bfplmk9jIBF/2rNj1BVhh0S1OB3bmg/KEZT5XuIxaCHxinubUeHotnxTx6X9QAeoReP+YCR4qaUw/NkAYGtOnla6AaKseMGThyIV6LfHkGGH8zjFnVhwBOSnqF8CZOj7G0T0bhpOKRceOFeB2/MA5zibwqnG8oCTHO1JIh7N3nY3nVapDl2d8SeUYjjvQ6vTI/DZOkpfpiGOJDMiZdw4+ySVJdFrJcKfxQ/v8JAdRW4WXTrR3wMfW+ZkyhPiLeUQccrk8XICFaqhgtvy8OZ2KxCwj8nAfTauSUYnuS6cq
- 3RoGiIx4
- OrfyLvlcByRa+lO3HprpUC0eMavBSwQ2yIWe/gqk43ehkybjN3dBGCrvFd0DUpW/OT2OMI2m/AuybcYL+w/KLmWXymrgQaWg+mj34u+NVvGRjNV6loDLjnxzhc0CAxe1TujS5LJa06CLxyYeqZXJ72MNAHHueHBa7jBG98x2S4lNqgsGm+kBAAMez4+ZmAOaVyYwjtH+68TjMXzg=
+X-HE-Tag: 1767812736-297163
+X-HE-Meta: U2FsdGVkX1/R0dRByDfp4jgUiri2IsDtMAnOysEwqhdIafyKLBcHJvbhBJ727o9uFp4YJ30x/jLggEyGQTO2Rmyz9t+2aGdTNKaXfmzirK5CjA74fqhXU4RbgDwvcj045MmhiETEVRT7b/3UHTMIHnBSryl/Mh1ZEH5qa3GeVaPaNsB0SMgmy1prA0bIn3pd0IxftaWZRYTuex44AZ2wajkGr0r1KwykjdFzOh61ZspoExHCoiGt8ursAA/3g57FrsDDnGvrjv9XIXIR17wRvVnxQQ5BtvOGLh9YZ9I4Wjrt3HQGYEPaSWHProLkKZQ8qZx7u3V0zPjQSeisbX5rLS3xHCFYg4CNJ8ssfgOVlFq6qXCayEReCWtFg4YgCt9SReVeYVfoP1BMdtKgOvpNv1y5rZFkE0Nsqy4P52PqBomf9u1s3PKXoxz0AUrJiFJpFn606QodHv2jHqNTx3N09WZJ8yXPDKj+6Us+YYJbkQ+8FB7jj/feHHk4SV0LjFRkjfPXfhUVLI8teVznMRCzGTRzrs7+3xefa3IoOHyQx6TnOl6TE1cij+4i29tiqnTnpkM1wzqxMuTUNFpLyUNnv5/qnEztVA2XVsciitiqqWNhQtVDH59r3IiiF+grUCSUkLnYscgVof0yHbkWd9h4+zZ3V+seeLoyv+SIIwJI72qvRW/jbEZqsTXUftekCY3NY0b5dILxww9t5wSexjzpjZlqN3N6g8aGrgTufCft7aTL1K5Axe5j8nog2vfH4huuTujDpDh9lFa+I7034YDVF6ujaFfUfX/yo/EvWVLra6aMaNEHzSxb8RPAtiB/jIOdwDS/pwpEX6QmjLV3BPaFfEENGifB5deTtIl3+AwcNFjCqNZ3fy+mrHIcVnpk5tPSwhadXrnD2nEFr0lwx94Ab5oXyXLcHNyqUgpMgTxZ6zg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,83 +115,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 07, 2026 at 02:21:45PM +0900, Sergey Senozhatsky wrote:
-> From: Yosry Ahmed <yosry.ahmed@linux.dev>
+[+cc Jinhui]
 
-While I appreciate this, I think for all intents and purposes this patch
-should be credited to you, it's different from the diff I said as it
-applies on top of your change.
-
-If you're feeling really generous, I think Suggested-by or
-Co-developed-by + Signed-off-by is sufficient :)
-
+On Thu, Jan 01, 2026 at 11:13:26PM +0100, Frederic Weisbecker wrote:
+> HK_TYPE_DOMAIN will soon integrate cpuset isolated partitions and
+> therefore be made modifiable at runtime. Synchronize against the cpumask
+> update using RCU.
 > 
-> When we switched from using class->size (for spans detection)
-> to actual compressed object size, we had to compensate for
-> the fact that class->size implicitly took inlined handle
-> into consideration.  In fact, instead of adjusting the size
-> of compressed object (adding handle offset for non-huge size
-> classes), we can move some lines around and simplify the
-> code: there are already paths in read_begin/end that compensate
-> for inlined object handle offset.
-
-I think the commit log is not clear in isolation.
-
-How about something like this:
-
-zs_obj_read_begin() currently maps or copies the the compressed object
-with the prefix handle for !ZsHugePage case.  Make the logic clearer and
-more officient by moving the offset of the object in the page after the
-prefix handle instead, only copying the actual object and avoiding the
-need to adjust the returned address to account for the prefix.
-
-Adjust the logic to detect spanning objects in zs_obj_read_end()
-accordingly, slightly simplifying it by avoiding the need to account for
-the handle in both the offset and the object size.
-
+> The RCU locked section includes both the housekeeping CPU target
+> election for the PCI probe work and the work enqueue.
 > 
-> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> ---
->  mm/zsmalloc.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
+> This way the housekeeping update side will simply need to flush the
+> pending related works after updating the housekeeping mask in order to
+> make sure that no PCI work ever executes on an isolated CPU. This part
+> will be handled in a subsequent patch.
 > 
-> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> index 119c196a287a..cc3d9501ae21 100644
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -1088,7 +1088,7 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
->  	off = offset_in_page(class->size * obj_idx);
->  
->  	if (!ZsHugePage(zspage))
-> -		mem_len += ZS_HANDLE_SIZE;
-> +		off += ZS_HANDLE_SIZE;
->  
->  	if (off + mem_len <= PAGE_SIZE) {
->  		/* this object is contained entirely within a page */
-> @@ -1110,9 +1110,6 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
->  				 0, sizes[1]);
->  	}
->  
-> -	if (!ZsHugePage(zspage))
-> -		addr += ZS_HANDLE_SIZE;
-> -
->  	return addr;
->  }
->  EXPORT_SYMBOL_GPL(zs_obj_read_begin);
-> @@ -1133,11 +1130,9 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
->  	off = offset_in_page(class->size * obj_idx);
->  
->  	if (!ZsHugePage(zspage))
-> -		mem_len += ZS_HANDLE_SIZE;
-> +		off += ZS_HANDLE_SIZE;
->  
->  	if (off + mem_len <= PAGE_SIZE) {
-> -		if (!ZsHugePage(zspage))
-> -			off += ZS_HANDLE_SIZE;
->  		handle_mem -= off;
->  		kunmap_local(handle_mem);
->  	}
-> -- 
-> 2.52.0.351.gbe84eed79e-goog
-> 
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+
+Just FYI, Jinhui posted a series that touches this same code and might
+need some coordination:
+
+  https://lore.kernel.org/r/20260107175548.1792-1-guojinhui.liam@bytedance.com
+
+IIUC, Jinhui's series adds some more NUMA smarts in the driver core
+sync probing path and removes corresponding NUMA code from the PCI
+core probe path.
+
+Bjorn
 
