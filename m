@@ -4,113 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FAF0D0D143
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 17:15:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B363CD0D141
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 17:17:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E9AF6B0088; Wed,  7 Jan 2026 12:15:39 -0500 (EST)
+	id 101E06B0092; Wed,  7 Jan 2026 12:17:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A0A46B0093; Wed,  7 Jan 2026 12:15:39 -0500 (EST)
+	id 0E0106B0093; Wed,  7 Jan 2026 12:17:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F7376B0095; Wed,  7 Jan 2026 12:15:39 -0500 (EST)
+	id 00C5F6B0095; Wed,  7 Jan 2026 12:17:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F77F6B0088
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:15:39 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D166314044B
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:15:38 +0000 (UTC)
-X-FDA: 84305819556.05.C9E1D1F
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1113940003
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:15:36 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QOSrfjIM;
-	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E1E406B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:17:28 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8FACF13AB42
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:17:28 +0000 (UTC)
+X-FDA: 84305824176.28.9EB3D70
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id F3C9F40002
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:17:26 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eNubg6mC;
+	spf=pass (imf07.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767806137;
+	s=arc-20220608; t=1767806247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=NKbve2SwUIpcAyLnGyzvhsAwSQlv2h8Y1ihQLiLxyzoMccWfIRSPOgmw+2b51xQq/cFOee
-	cF8sk5uonpkE7tmnsKNBtOb4hki0aJzOGzL8RxTRzHd9cuFLIOsMBQfpDQdCS8QsxF9Zuu
-	F8rCZgJFkJnbL0NEn/DTfHJJex5ZCNI=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QOSrfjIM;
-	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767806137; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=qqRRXfsnDn/JT992sHlX9c5HhYEqI89XeJWo7L/gqTk=;
+	b=xxOnP+VCwuHBIZIcEtfRvQTpCh00p80Qr5ZLwq6t/aVxJCFXaZT8nD8VU743U5byvFsATz
+	twAEHfGKqKbO5Mv9seW3VctHtMa1ZTLGG5H0ZU5kY3yAd4w23gNqHpjW9Hxwg8+JtkaSHx
+	QSunv66qUjxdrr8/3FCwOmjl0LKBeug=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767806247; a=rsa-sha256;
 	cv=none;
-	b=slw7ROabyr17HvekpflWpmzEXPkfkUesrCGZxp0ifBWlrKbueMIlUbuDNtNP+p7t+X33SN
-	c20I+ltNw0KFH2xWGlqVHAccCwL4LvpXzAEnodlZjT1yDvflhm6zvj2LH+kp8LyicR3WBs
-	0h7lWoyDAfI1z8kFmt6FOdUppfWueao=
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8907f0b447aso19628386d6.0
-        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 09:15:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767806135; x=1768410935; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=QOSrfjIMbCfOtjD4b+patybfkGbHFIELUuTmc6wRyZAFJeJT0Np5N4uqZrgAmP1eFU
-         J6EuWMMNVEhwg2qyBdK6SFB8JwisfYLGmQ6f2GUgBSWe9THD6qZYja9v/w4c2su64Aqn
-         WyVM2EV7wFeYcsg6DVTfp+ppGwNbRu1wHp4h7UXFqJ0zU07ZAI2/z8yDgqhB0bS7WPgg
-         AAGAoLuqDAE7idksP2LIzR70Tjv3IPk3B49u9IK+75zexeRuQShB/N8YSGN9cd69MI00
-         FkMqp1jCWsTPQ+1W+P1YUCDkELr7Ocog0zSd7IGT6ROCJOWIfntUTdDKWg2gyvpYcxXg
-         JuYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767806135; x=1768410935;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=axNwkBTgqw4IuToUIq5ktkuxA3OLCeXB+HwawJJwhx98Hakf4wh2Ha5r0ScrC5QgXT
-         NmTlHwyyoKIWAKj3m09UDgiq+Jn1pPqfnnFEhI4bs+SdYY0M3QnGNg2/TYmI/8lk3F19
-         RK126aYh+kCwfmfR/9CeipY+jXarJ5/DgHTbxsmHknow1QiLkBdwHhYKubiZk8P05/ZN
-         7b1mywKZLO+gyp6PJP3R17ln2z1gATC2NGsUkAE1Sd++jQeTx9OSpSppAxHV1ePABYZ2
-         9wZFKJkgcsevnbDkFm9Kjv4U6MkeNDJ6cidLKrnkY4Wm9qKMgrUrJNm75GphTD6AJ8+0
-         iZzw==
-X-Gm-Message-State: AOJu0Yz0f77vWDEA+Jwf6RRdVWcUIfTh33Bo7w0o7m3HPfUDGquMItmg
-	tfQSkI5+GgVzWxQ0427rTRv0g0AOQObb990GElflLJGT+chVxCtpHX7N+oaGFq5jKn8=
-X-Gm-Gg: AY/fxX4qOTngdV0BasxXWIgBjVgvf5m5rFtdmWA6Rtw0eD66GgGQBQgFKFPh1vtu74g
-	G1pTFYSdEyuykGNxiOHNoxL7NJMHvt2Hhi1RcqInfUpA27paBlQLo0iCKoFcYh6bbdH2q2YTK9t
-	csakfMB/Zq3hpDkut8UfP6f51UDSNHzq6ocr7KCnPzDqavfYjNYZwvAJl43MMOW6qexWaQ3JoRS
-	0mmA0kx5lSq2+xyyTais5OiqYUGMnrBUK2aFOCMNYfeKf3gEDDxKVyrHuJZ3nsGRKPr+QTvGkUv
-	VUTBXYNlwQw4hnh/Qnt9r68QdeAKkFB3FYB0Jf2oAMbqiTptJgTt/vDiZecys8nik3ESzJfvXEN
-	b98/89Ykbkes3THyC87Loam7ffmIr8XtD0VWAuKwRECLTsULRsdRezMFUsp2ZbRyMbxAbmrW8Ku
-	wR2aLiQMHRAFKKANgydZhYicux3UHm5TUot0kdf8lrDcdq7KI=
-X-Google-Smtp-Source: AGHT+IGBcD/eFtEImj7e5KYE8GOV6+e1HKiyKKDtFqn1cFCTIVq/A/5Pxj6UDNDHAc/7Yp4J5A1Nrw==
-X-Received: by 2002:a05:6214:20c4:b0:87c:152c:7b25 with SMTP id 6a1803df08f44-8908417a83emr46946426d6.13.1767806135006;
-        Wed, 07 Jan 2026 09:15:35 -0800 (PST)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8907726f1f1sm36313046d6.52.2026.01.07.09.15.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 09:15:33 -0800 (PST)
-Date: Thu, 8 Jan 2026 01:15:29 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Linux Memory Management List <linux-mm@kvack.org>, 
-	kernel test robot <lkp@intel.com>
-Cc: oe-kbuild@lists.linux.dev, Dan Carpenter <error27@gmail.com>
-Subject: Re: mm/vmscan.c:784 __remove_mapping() error: uninitialized symbol
- 'ci'.
-Message-ID: <aV6TfFOYng8mYzK6@KASONG-MC4>
-References: <202601010353.E7g5cCo8-lkp@intel.com>
+	b=eYIQpLc5Q8JHib3LpCnNfExgOYH7LchLaBAuIjy3mh8/H5/S19NfV16us1qEGnJvozPFg2
+	29EtkhGq4PeIB7BpDt45IovQpbvmSB6t8UuV0xczwd5ak0IHN5x0YRI8ptVVuiDMSBnEg7
+	b+SRV56aOriv38hKnB7zvkTnLt5Htt8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eNubg6mC;
+	spf=pass (imf07.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5471E60007;
+	Wed,  7 Jan 2026 17:17:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80D5C4CEF1;
+	Wed,  7 Jan 2026 17:17:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767806246;
+	bh=q4ABnJ3CuJh6SWMrNmKQBlZ1gSO4Xo85FUt+DD5A26g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=eNubg6mCK0SobRhjYoJFNql7uzoEIcWdOyZJ+7syVmoIAFPWxpQ5qk1OOcXtWvMZ/
+	 EbPHNXCZGtKZWWLsyI8zNvbSgvEieOwFWos8HvgZ4qWEKGQTKr05nmNdPviq5otgrV
+	 JoQ/n69F/t8qi0aHv/HswTkB3At6+u3ybtrUr1olX76MWaOP4a8ReA8a6ROjFZW+WV
+	 QJ2qg+4PSGtZcaScVyLanjOBFEZqkgn8fNRL3vAt6Z6WgA/y3ZaRgAa8awY6iNpQcY
+	 4Ye4/PyvwQpPnPzETDMuanANGjYLf2TXtc13gr512AogQUIbY3aQO3Wdt+503UOuhx
+	 yoqZd+rSkrJdg==
+Date: Wed, 7 Jan 2026 11:17:24 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Logan Gunthorpe <logang@deltatee.com>, Hou Tao <houtao@huaweicloud.com>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tejun Heo <tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Sagi Grimberg <sagi@grimberg.me>, houtao1@huawei.com
+Subject: Re: [PATCH 02/13] PCI/P2PDMA: Fix the warning condition in
+ p2pmem_alloc_mmap()
+Message-ID: <20260107171724.GA432074@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="__Tagbar__.1"
-In-Reply-To: <202601010353.E7g5cCo8-lkp@intel.com>
-X-Stat-Signature: qdywqkk6naknf1b7b7o5a374uw97dot4
+Content-Disposition: inline
+In-Reply-To: <20260107143942.GB14904@lst.de>
+X-Stat-Signature: s51bam3diqqrrqdwmksbffd78ig7geya
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F3C9F40002
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1113940003
-X-HE-Tag: 1767806136-59695
-X-HE-Meta: U2FsdGVkX18Kg/eJleio0vHvvBhwA1mrGsLQ3wydV5puS/Z+fPKT7SIXbtv3KjYoc0e3QvRk5SP/voulUvxgm33fMMvA9PPR7x+zi5tW2DxKp3I68NEtEvXh8bSvVaZEKxz8GgykK1j8B8aEmsiyrncspqw3i0HK9Atsv/S0f34Cj2EPSLJIh3gHvUJ0yKhe5Uf94dBfuGAHNGLqgdcNvh/mRn4gtpHoPg5wmd1YmIeg20T8Dxj1rMZ70rZftUUXrdYx1ikg6UOJRjTxV7PqtxsJhmd1iDT6smySXLZuULjl3pI8Zq8r9kQk5nYH1UdDNbHh6d2BDRzPj95v4/0d0WcHW+G2DuhTSlJyJDKazARSV5NbnhzwzjFB7lugvgRDMjB/BwgcHVfHwjSDeKZ2HbaiZmqOagUoQHpH4eF/hW9veaAR3ptYngBHmeAbRVpohIBL6hg9yIqEH1pbVaIY/7uz1QVAs+QJzdwoLdvJUJrtwVugDbPOTgLI/lPKx1PKLtnRN3Zmk2SF3D3vMrwhAwX48Stl+Rl9AzVs75qyICnUwGHZWnR+xxRnwiZvxQucFU49PmLS81wUDL+p+OBoeIGwyO/SK7ne6L6GkYQmmKykTa6JiwkIrVJWX04lDPYfnUjp9o6kkUKIaOPxsbefxgDntUGw0cAK6RwLrOOGBo0qJUBbqN8CXMtcuyMCYVT4tK8XBTRZSRRmbHhYkPWL9ZSCZOddTDTTFVkx6/G6OAoINI1XfrobnPZ1EHFZfOO3pH3Q9MJ1J9bHwMAu+lnk8mm0Sc4wCwAoE2dmVByCnK02K36OwlLDHS59dmw+AoJBfm7h94LbpSasgN3cBjMcY8Bgz/wzauVBn0Oy4CTZi3aoHVP9SiqI0INdZjaREM1c971sNQufRtD6hhu3Km7EcvpdZOXMOUDfBgWPd7aVDuarUEekEXtckZQPIli1lNZrS2EdCl8bAct6WT/bFmj
- dtgauGCu
- ocPM4o86IqJ/RlciTOAn1xUF545gaJLnhMTh3pT67lFD80wMDZiaj2ROIy4UsF8AXeCyDfDxnL/P7yRDYKyRhSV0T49fJ0KHG6AsdML6WPABPQ8XPfM/XQioluFFyQjek4b+4ZhJb1C6xzF2HloraHZ7+Vsvv8fGcZlCrIKIQF3mig0Z9dMWO/wShIh9JRqr6Z7ozvOm4q9McdpYG8R6NFh8RQAhSTl6JgAzz3LqbSIhOSq6tyF3oLxK5yuLXYZbucLjFHy7vY7mfae4pPVWPBmsNRn5u38vLhZxNykmawiqtAFvUnsM1Xy4pTDM94zK6O+wAfKrc96z6Ilp7/pSM+2x3bT2V14LpkP5lbhouSuc1NP/tbvY5p+E4pMei6CUDMzlgoyzwbGWjLM69raogCz1uDqlNCcY8NbG0gOGzTj6FfdimeJgZf3k85tYhgQKgSza8XIbNQHkavvrsQEcYXQVhSo8cKHKDIMWuJDpOMnHpb+MjBg8+Ajs+nMYPti50ZpoVfEiAHyIsms4=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000064, version=1.2.4
+X-HE-Tag: 1767806246-350022
+X-HE-Meta: U2FsdGVkX1+qkHAR0a6sRqcpSSk1Zbe85W33JQsz5dXfnJfetOS0mw8rn37ZOnrvtKpqWBaQGAtKeJWAs9l77/LJt3jqbHUuWtvfatwsEUwmD2zbhVpUueBipHOwAYgnQDxVNiIuSM5Me5SCqfog+1vD6mm97+19vVgP7UNOC83HM5IusatlVCp7apGfOY44m78Fh6fDQWvM23lZPx71KUA5mnHwtHQMU7ito51Na6UPhcDeYP9K1//kVtw9ZatRyZDAjTTPjZ0zb+JkSp6sWBdFjBu8O9jF5zKk9k6p613BIdHKNvkpneAcZoAdW6nwc6tnwTwD3pgOMrj9DB89rNiCIDg7S72kEBcbITAYCi6psblHa2vHo0Hgkfjcb0K9HSZEDGG7VGBxNiGmKbG1J+TvS8IKLMwgBW2JG/KVZIWMn84GFXXNa7E7/w7XNCnnuhdTnMZd+n/MQZwgbSrh0JGK92chE1IHBWPNPF5hWnOnmGHN1Y1A2lk5QIVIVI9SACekgsIqxWhVgUA8rqOWPS9POh4zUKb+C7nkfExUHhMW8lVcnsAaIdXoGnHkC+aL5ARC9lG5CBLbzcdTDQ2R+o93ghJJNA6gtKpT1uNh+ftBZ61xU4MBG+2Nlznr23oI2JGntlI2uQUWSqluzS0jOxRNuk4D20LHtnoNDFhDJaNjAv3Qqmvoppntvk7Fw3c4h12pSbCJV543XRpHM3NWDaPIhCtPjhcXQGUUiXB5HxbEFtEGXfX/q3eh7zqx42QNUOtk0pSsZc0URwvOGUNOGrTB5TGu0cJz1tkMqeW2XbdXm35wyBkrMv9Zb6Yg2vvWgwqR/xUt5BU6EY62iU8N+7bQtGh2MfM9PKxkH8OC2swYZmoqnYCgzKgjvFTQ+AxsSfPXAjXvA5QoGq3klTkWiR5J7uB3ZxFfMEM0jGsqMZGSap+sHmwXTC55mV6+Qa8IpJgL7vH43pgrBTtyfIQ
+ lNARvV7N
+ YsGDvd/JpgB5r5rCOxJjAxEV4upn8Tecpy2RfgDreVxdHQ8BBZlczZ68Q5KM9KbMaxE5YocyY8i2h1XHLKGOWrLrK2tX//+WCud2HYteZbH/yw+sWzqonVvHQvZZqFHsrI3iRBQ2jEKyRjnnw8uJuMG522PBSJEd0Z0xhXI/lA3AVO8StEp4mu29L3eJg7OSOj2+dghTLghCVl29XVPiEfXm5v01yDoDNZRTv9dZPE95Fn0gtjgIolaDXw3LgGshpEsRzFwdy0rtOvIcvImwZqv47EOmj8tpIWCxSFxZQswtfHIBLVcvEp4m/wjClZyzxVvHbqh20IpDqfAtJ884iNapbXwYTInxM+bQB8us5zdKXcFOc3qw4DJo0JSpmnKn/7e+g
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,4 +103,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Jan 07, 2026 at 03:39:42PM +0100, Christoph Hellwig wrote:
+> On Mon, Dec 22, 2025 at 09:50:18AM -0700, Logan Gunthorpe wrote:
+> > > Fixes: b7e282378773 ("mm/mm_init: move p2pdma page refcount initialisation to p2pdma")
+> > > Signed-off-by: Hou Tao <houtao1@huawei.com>
+> > 
+> > Thanks for the fix
+> > 
+> > Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+> 
+> Can we get these fixes queued up ASAP while discussing the new
+> feature?
+
+I assume you mean the first two patches:
+
+  PCI/P2PDMA: Release the per-cpu ref of pgmap when vm_insert_page() fails
+  PCI/P2PDMA: Fix the warning condition in p2pmem_alloc_mmap()
+
+I can certainly queue these up.  The second is a warning fix, and the
+first fixes a hang that has apparently been around since v6.2
+(7e9c7ef83d78 ("PCI/P2PDMA: Allow userspace VMA allocations through
+sysfs")).
+
+Given that, I would ordinarily target the v6.20 merge window, but the
+"ASAP" suggests more urgency.  Do you want one or both for v6.19?
+
+Bjorn
 
