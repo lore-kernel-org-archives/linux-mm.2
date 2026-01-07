@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 321DDCF6BE4
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 02:25:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ED87CF6BE4
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 02:29:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94C046B0095; Tue,  6 Jan 2026 21:25:16 -0500 (EST)
+	id E5B6F6B0092; Tue,  6 Jan 2026 21:29:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90B276B0096; Tue,  6 Jan 2026 21:25:16 -0500 (EST)
+	id E09316B0093; Tue,  6 Jan 2026 21:29:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 838616B0098; Tue,  6 Jan 2026 21:25:16 -0500 (EST)
+	id CE1436B0095; Tue,  6 Jan 2026 21:29:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 775786B0095
-	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:25:16 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BC7746B0092
+	for <linux-mm@kvack.org>; Tue,  6 Jan 2026 21:29:28 -0500 (EST)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 25EDC8E587
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 02:25:16 +0000 (UTC)
-X-FDA: 84303575832.27.BB25973
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4F0B3C0013
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 02:25:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=eSoHDgAZ;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf10.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=longwei27@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767752714; a=rsa-sha256;
-	cv=none;
-	b=SeO00cNycU6EFGFSvN3O/Vl9Mb8kWMTmHouxFofQm2MwIgtgPwpUkPuSPwTKm7KX3gc7ub
-	NPUWJlQWnlScjgCMgTOcUqU7hldp3DK9WpTjikNueD4TNryet+UlBuOkpyv37lc5VX5eNZ
-	L/OBFNQDjOWJ4cWVYkVe4aesXNG5aVM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=eSoHDgAZ;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf10.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=longwei27@huawei.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 63751D0FEA
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 02:29:28 +0000 (UTC)
+X-FDA: 84303586416.27.B8E21D8
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 604E240007
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 02:29:25 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=m+2RnwjV;
+	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767752714;
+	s=arc-20220608; t=1767752966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=nPVPfkr/y2YYTpshmkF6KZTylgTLjqX2OuEnIKqe7Nc=;
-	b=xzlfS9PxHEbQK8e/QeXlqD39EbNg/Cq/DAWXlmDASjI6NNJ4YHoxARtDcYdlcQRy3/a+c2
-	A1V89i4fcSABvr4GFsbCt/VD2Oo8WcEDLf5dFn3vqrChCdI/jxvHB6nozXi7xGQXj816nm
-	tpu3tpxLDH8yzhvGgZ9/1cq1J2IsPj4=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=nPVPfkr/y2YYTpshmkF6KZTylgTLjqX2OuEnIKqe7Nc=;
-	b=eSoHDgAZDEdyakPtnm2r4lz14cJx1JhE389G5KPkFU0OloU6l16n0E1lB5q1iRsH14ch2eHPs
-	aynE6cbhCCN/lJi1pWZWgKOszrIZVfD5i2wWU/MxUZ4tilD4RKKQ40KyA5UEOp8ggUnR894tWeU
-	PAuSQorJ/HHw2n5/gfJhRdc=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4dmBcr1kQfz12LDj;
-	Wed,  7 Jan 2026 10:22:04 +0800 (CST)
-Received: from kwepemk100009.china.huawei.com (unknown [7.202.194.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id AB7874056A;
-	Wed,  7 Jan 2026 10:25:08 +0800 (CST)
-Received: from huawei.com (10.50.159.234) by kwepemk100009.china.huawei.com
- (7.202.194.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 7 Jan
- 2026 10:25:07 +0800
-From: l00580197 <longwei27@huawei.com>
-To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, Pasha
- Tatashin <pasha.tatashin@soleen.com>
-CC: Pratyush Yadav <pratyush@kernel.org>, <kexec@lists.infradead.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<hewenliang4@huawei.com>, Long Wei <longwei27@huawei.com>
-Subject: [PATCH] kho: test: clean up residual memory upon test_kho module unload
-Date: Wed, 7 Jan 2026 10:24:27 +0800
-Message-ID: <20260107022427.4114424-1-longwei27@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kvVNxl0vYanRjAda51MqOz06aqccjdsHpO3yOVybwFM=;
+	b=UeIM+SOomrk9mVYE3DNEZnXjqI76mXCmXMcp0TJnSTJ49l2I/dRaYfqizrjCenMyMO1nqn
+	WrYmsSNHn7X93RXjEamyXktk+/h0Vh0uONmJCNmujFW3jxMrDx0/6d62TRVkZAxunUzWgj
+	q5jKFeG72WJeKDGIgNm1tl3QS/cb+Pk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=m+2RnwjV;
+	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767752966; a=rsa-sha256;
+	cv=none;
+	b=WqWIPVHbsdFgjIHwjWm19Z6BPA/ZqFKI8dewKY8KlzQURMwKgPa5tRrdMRk9KXrGKJ1jb6
+	P6VdrI6JaylhlqoX6L9pAxKAhQqcg5elaBQLzlhvbtC9C/jx3syTFOK2cP3NCZK0o7/Q/2
+	fI6FhCptK9N1HuPjjSUdlYKiohM0BP0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1767752962; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=kvVNxl0vYanRjAda51MqOz06aqccjdsHpO3yOVybwFM=;
+	b=m+2RnwjVdne35Pr57bsmur2Mzvk5+Tdnj9bIOljNVHK7cQtRU562SVWzGgQ/q8vCsVIIOLd666N4DsSjQvtiSt2DgdK40BewGsNYfSYjpV684aQZ6kfYFFZNDV16evQiFg+s/USjd0aTQdPiPUGFk0BoF8zQrqb+HxLboucTjoQ=
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WwX9Qu3_1767752958 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 07 Jan 2026 10:29:19 +0800
+Message-ID: <cd626b19-2636-477e-ab01-26380b12d4b1@linux.alibaba.com>
+Date: Wed, 7 Jan 2026 10:29:18 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 5/5] mm: rmap: support batched unmapping for file large
+ folios
+To: Barry Song <21cnbao@gmail.com>, Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, catalin.marinas@arm.com,
+ will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
+ willy@infradead.org, dev.jain@arm.com, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
+ <142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com>
+ <20260106132203.kdxfvootlkxzex2l@master>
+ <CAGsJ_4yKRtyADU2ZxUMgvqdrhAEL4SpZxCMRt28gNJfUf--5zQ@mail.gmail.com>
+ <20260107014601.dxvq6b7ljgxwg7iu@master>
+ <CAGsJ_4xfVnPKSPvHYWa1cPK7kZC4F6hKreny9RsKfSCyC4RHuQ@mail.gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <CAGsJ_4xfVnPKSPvHYWa1cPK7kZC4F6hKreny9RsKfSCyC4RHuQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.159.234]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemk100009.china.huawei.com (7.202.194.57)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 604E240007
+X-Stat-Signature: qi8o3t7frj15gffa89qss373u4mzfbs3
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4F0B3C0013
-X-Stat-Signature: t6p8x3ijaustom1cpbwegtajj9rma63s
-X-HE-Tag: 1767752712-227025
-X-HE-Meta: U2FsdGVkX1/JvnOj0kgjSHYgeYmJzvu5ku4MP3dPy6AMhnTIBroJ3aC9s69uA/Lg6yJwlAFXRBs4w04Zyw0o1mZv8zduNu/FKBWj97IXkusGtnU1FL430EnqMYm0vi/FG0OV6HpsE6HgJVNuq6BucBNAFEuz9G+4tD0/F6Fk86GSw6ZQuLdaN1Y/LjQHekojj53Pa1LzbO+nnl+GUCWf29tNvF6eHsyjpggM/2TnFSjHiMLA4UO/o/CyEup3HC1eABlbXNWOpeMsy6WPa6OQEdeP9z6CRTQAdHc0wl2Gp+JAPKLC8Z+ZrW0R3k1e8P7AN7EyQBvpCAm7zVXtebINDLKyFD+4MEUvb0P1M+8/3+x3kgEcsn57GOYXBaWxuTztQar8gChH7nEHKFhN5aeoU9vyx/+oBI7/F8ZjMqSpzKIo9YHEEJ8N59xIPFQTWNdpEoiQf/rW3aTbMcMBWa8btGWI7+5yf/qCRUin9O21GhiA6NDCSvD/2rvF9W88T6QSKRAA0GXo8TLIrul3Qq1OjToPYFaM5J4c9L4ACXajJc1cob9CqkLK+4rewPafk7gkzcUdlTzk0FGECfaLv3eWSiUf2cxkdmkzQUdT9OVnaax9wS0xUZse9dFfi9kzpQtLavmn9qE0GFFcrih/RrTwvY6qvYksLjkRoUfjrqVFwxZiWXnjHVWjYDbWloyarnNf4C1UTxSfZr/LNnov0md971azhfCN+XhFno9JiW5aAVXe+e0OSO1dDZVFC+hz6VeURwkmzz5Tr9JuYTQ27R7RlmnkNCiITjBreH9wGAvUIaUhhgOJ3thIwfIkbEhxj2vEF6YBe+Ulmxnc1zTfkahH1MWaJGycPoSsThKsIrFcAcHPXIsWABSna2tZ4y7dquq/6aJUEqa2YVOctrOkz3Uyf1OWeTbYEbKGUUdHEPVudwK1VEm5WwSEofsL3PvEi4uxyM+/RRGK/snlsWSOZNp
- wbfEJEsv
- ijCIoU3AgYbfaL83n4qYbaBqAH3izsXp+rtqEmFlwWssdJx5ns+J07KhrYaWBSgOCdoD/dFb5Gu7vifi5JcClDaawTpQjAkHsiLzDfYlIr+OiYgjyPY6767EaoluFRGPQBlh6OIELIPN6G4CBaNKS8y/hd0lOy8LE4f4ek//qJJbVq9ZfXyoLxZM5se00LAx+edp5/S7uaMu0KhjiLI7qTjzgq9BAp+aaEDRrcnpkoDakd14h2P+n0QdunT6EHDFb+NUiKd6blUf9Nc9s9ADzHL2oRfAyKUzZyErJO0xMvSJsP1LXuKsqH0EiTfSLpCYS0kfVbBHBmAUtTQvJfU+MtNyxyA==
+X-HE-Tag: 1767752965-239155
+X-HE-Meta: U2FsdGVkX19WDKYDL4x4v/59+qXGNhRrl/iHbwaVSml2rbMjg6k9g5QblITdCFvPvteY7KWraE8Nwsg/PsAcvfcpZUOREKnEI9XHxjQf1oaJWOpeoPgBy640J9fT/h0diwMAHVRPg5w1NvbufbJ+11FrbfWlMvMVt2HhfCF9BEZkCd4Q4F1CdrVdBVuMhsoYt7UPdwtJGjwYkefjL46Qf80OU1Gg//5HMjoPpO8sojpCvkzi7iliohGVS7BesHvPS25K0uBCn9uIKUxFaunEHZ52kUQ5etL6b4TwmBowMVSqX132qUs2njjAYDAc+U2gQ4FuYCaIgEhceqBP1R9RzlumUxNk+HihyQ5zdIGaAXmPfYonK0o/2JR429nJZTrfjRu1gx26e6/Gm/XuujrGgHYUwqoiibXe7CNgVX7oZC29EaHMrMvOgOXpc8036VzfbBFg1Lyw8nJ1FWZGvxV8FS4NDywOegbc+Ud4yeHpG5yjzNWotp6IzbR0W4B/j4G07iWTbKCXZ9YPJS+cJ/2CyGCfuSzV+Kue5TvKjPahg1xb3IJBbfQTdRUOr4QjujIZ7JIEnrL/fmqgx33quTYRLJ5pu+uXsSV/JhvgbvOukDAhSoEDvv3oHPJiJ6sU2Ft+e5F1CfkFumL8Dpe7sDyoaPyZ7ZHvnr4hReA6fjd/IMi2NNXxksSsiOAx5b805T7EfDytPZtvcHh1N7Qaa0Fp/mIajiXLTHhGKKGJSUhdenj9OcP58NDYYpJu+bmPmDK5/frUOEApxPmUX45Vad2ERfZtaB0lUAnUiudLZ4H4Fzfy+px/YNDlH7pO47myIM7+4JhgrOKUCbxuDogtrh87FPIKRvB9atzJtU0BeMk0n4kpNBsgDMe9iRPlgV2VoZdMfztv32HpPSpG4m4Yx/fXz9AxEH2KyWBdKM9kPig8olw0qdpO94LvNIfN1FIwu1yOQTs3sNlqAkvAV7T8o4v
+ S9KXb3et
+ v8JQ3crHiraLtvViquMj9FagOR3H2+CeKnO3fTgYZRhgUhRxR0EPy6E+vDYfwT02bck/7Do4TjAh7HQy2njl757uArRqdNv0oeVFVk/R4C6e77sQqafqzTAsVptNHEgaV1YZA+V9wkzj6JBOJ5dJFc33r8LM6nhEvGkZrLMA81QiGppHLNTlba3FftQb1ufeNH0c6TVCWTV+oWygzEOPH1yOG/X4mQnipowlsdMxUhj8lUiFMl8Dqv53ngOR+H5a6h7n0EUsFQgtMw3bYEwGkBZxdCqLHde27i6TOaCyU5WVV+A2U6bL06VCTb3dO06pir6zyy24VYv/XpnnRDz2GaDoBXWRtMcp76TgkNckApKMGKd1ncxr+rvbwVSJruQ9hsHZVfpMVVkWii14u1hRifvLNg3e7KYaZjd5g8enbEfQ28qeuF94WHjpY9mKK69u12N4JTgqbE5sM7LMKqxvGrTC7zAAesnMHUAGLQyn7udB3kjxOFvc+FDDt/l87rGMw8atC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,41 +96,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Long Wei <longwei27@huawei.com>
 
-During the initialization phase, the test_kho module invokes the
-kho_preserve_folio function, which internally configures bitmaps
-within kho_mem_track and establishes chunk linked lists in KHO.
-Upon unloading the test_kho module, it is necessary to clean up
-these states.
 
-Signed-off-by: Long Wei <longwei27@huawei.com>
----
- lib/test_kho.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+On 1/7/26 10:21 AM, Barry Song wrote:
+> On Wed, Jan 7, 2026 at 2:46 PM Wei Yang <richard.weiyang@gmail.com> wrote:
+>>
+>> On Wed, Jan 07, 2026 at 10:29:25AM +1300, Barry Song wrote:
+>>> On Wed, Jan 7, 2026 at 2:22 AM Wei Yang <richard.weiyang@gmail.com> wrote:
+>>>>
+>>>> On Fri, Dec 26, 2025 at 02:07:59PM +0800, Baolin Wang wrote:
+>>>>> Similar to folio_referenced_one(), we can apply batched unmapping for file
+>>>>> large folios to optimize the performance of file folios reclamation.
+>>>>>
+>>>>> Barry previously implemented batched unmapping for lazyfree anonymous large
+>>>>> folios[1] and did not further optimize anonymous large folios or file-backed
+>>>>> large folios at that stage. As for file-backed large folios, the batched
+>>>>> unmapping support is relatively straightforward, as we only need to clear
+>>>>> the consecutive (present) PTE entries for file-backed large folios.
+>>>>>
+>>>>> Performance testing:
+>>>>> Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
+>>>>> reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
+>>>>> 75% performance improvement on my Arm64 32-core server (and 50%+ improvement
+>>>>> on my X86 machine) with this patch.
+>>>>>
+>>>>> W/o patch:
+>>>>> real    0m1.018s
+>>>>> user    0m0.000s
+>>>>> sys     0m1.018s
+>>>>>
+>>>>> W/ patch:
+>>>>> real   0m0.249s
+>>>>> user   0m0.000s
+>>>>> sys    0m0.249s
+>>>>>
+>>>>> [1] https://lore.kernel.org/all/20250214093015.51024-4-21cnbao@gmail.com/T/#u
+>>>>> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+>>>>> Acked-by: Barry Song <baohua@kernel.org>
+>>>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>> ---
+>>>>> mm/rmap.c | 7 ++++---
+>>>>> 1 file changed, 4 insertions(+), 3 deletions(-)
+>>>>>
+>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>> index 985ab0b085ba..e1d16003c514 100644
+>>>>> --- a/mm/rmap.c
+>>>>> +++ b/mm/rmap.c
+>>>>> @@ -1863,9 +1863,10 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>>>>>        end_addr = pmd_addr_end(addr, vma->vm_end);
+>>>>>        max_nr = (end_addr - addr) >> PAGE_SHIFT;
+>>>>>
+>>>>> -      /* We only support lazyfree batching for now ... */
+>>>>> -      if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
+>>>>> +      /* We only support lazyfree or file folios batching for now ... */
+>>>>> +      if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+>>>>>                return 1;
+>>>>> +
+>>>>>        if (pte_unused(pte))
+>>>>>                return 1;
+>>>>>
+>>>>> @@ -2231,7 +2232,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>>                         *
+>>>>>                         * See Documentation/mm/mmu_notifier.rst
+>>>>>                         */
+>>>>> -                      dec_mm_counter(mm, mm_counter_file(folio));
+>>>>> +                      add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
+>>>>>                }
+>>>>> discard:
+>>>>>                if (unlikely(folio_test_hugetlb(folio))) {
+>>>>> --
+>>>>> 2.47.3
+>>>>>
+>>>>
+>>>> Hi, Baolin
+>>>>
+>>>> When reading your patch, I come up one small question.
+>>>>
+>>>> Current try_to_unmap_one() has following structure:
+>>>>
+>>>>      try_to_unmap_one()
+>>>>          while (page_vma_mapped_walk(&pvmw)) {
+>>>>              nr_pages = folio_unmap_pte_batch()
+>>>>
+>>>>              if (nr_pages = folio_nr_pages(folio))
+>>>>                  goto walk_done;
+>>>>          }
+>>>>
+>>>> I am thinking what if nr_pages > 1 but nr_pages != folio_nr_pages().
+>>>>
+>>>> If my understanding is correct, page_vma_mapped_walk() would start from
+>>>> (pvmw->address + PAGE_SIZE) in next iteration, but we have already cleared to
+>>>> (pvmw->address + nr_pages * PAGE_SIZE), right?
+>>>>
+>>>> Not sure my understanding is correct, if so do we have some reason not to
+>>>> skip the cleared range?
+>>>
+>>> I don’t quite understand your question. For nr_pages > 1 but not equal
+>>> to nr_pages, page_vma_mapped_walk will skip the nr_pages - 1 PTEs inside.
+>>>
+>>> take a look:
+>>>
+>>> next_pte:
+>>>                 do {
+>>>                         pvmw->address += PAGE_SIZE;
+>>>                         if (pvmw->address >= end)
+>>>                                 return not_found(pvmw);
+>>>                         /* Did we cross page table boundary? */
+>>>                         if ((pvmw->address & (PMD_SIZE - PAGE_SIZE)) == 0) {
+>>>                                 if (pvmw->ptl) {
+>>>                                         spin_unlock(pvmw->ptl);
+>>>                                         pvmw->ptl = NULL;
+>>>                                 }
+>>>                                 pte_unmap(pvmw->pte);
+>>>                                 pvmw->pte = NULL;
+>>>                                 pvmw->flags |= PVMW_PGTABLE_CROSSED;
+>>>                                 goto restart;
+>>>                         }
+>>>                         pvmw->pte++;
+>>>                 } while (pte_none(ptep_get(pvmw->pte)));
+>>>
+>>
+>> Yes, we do it in page_vma_mapped_walk() now. Since they are pte_none(), they
+>> will be skipped.
+>>
+>> I mean maybe we can skip it in try_to_unmap_one(), for example:
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index 9e5bd4834481..ea1afec7c802 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -2250,6 +2250,10 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>                   */
+>>                  if (nr_pages == folio_nr_pages(folio))
+>>                          goto walk_done;
+>> +               else {
+>> +                       pvmw.address += PAGE_SIZE * (nr_pages - 1);
+>> +                       pvmw.pte += nr_pages - 1;
+>> +               }
+>>                  continue;
+>>   walk_abort:
+>>                  ret = false;
+> 
+> 
+> I feel this couples the PTE walk iteration with the unmap
+> operation, which does not seem fine to me. It also appears
+> to affect only corner cases.
 
-diff --git a/lib/test_kho.c b/lib/test_kho.c
-index 47de56280795..69230da5a056 100644
---- a/lib/test_kho.c
-+++ b/lib/test_kho.c
-@@ -339,11 +339,15 @@ module_init(kho_test_init);
- 
- static void kho_test_cleanup(void)
- {
-+	/* unpreserve and free the data stored in folios */
-+	kho_test_unpreserve_data(&kho_test_state);
- 	for (int i = 0; i < kho_test_state.nr_folios; i++)
- 		folio_put(kho_test_state.folios[i]);
- 
- 	kvfree(kho_test_state.folios);
--	vfree(kho_test_state.folios_info);
-+
-+	/* Unpreserve and release the FDT folio */
-+	kho_unpreserve_folio(kho_test_state.fdt);
- 	folio_put(kho_test_state.fdt);
- }
- 
--- 
-2.43.0
-
+Agree. There may be no performance gains, so I also prefer to leave it 
+as is.
 
