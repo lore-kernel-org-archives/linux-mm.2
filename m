@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89831D0D177
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 22:06:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7587D0D177
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 22:08:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF0666B0005; Wed,  7 Jan 2026 17:06:48 -0500 (EST)
+	id 3A6926B0005; Wed,  7 Jan 2026 17:08:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD7B46B0093; Wed,  7 Jan 2026 17:06:48 -0500 (EST)
+	id 355276B0093; Wed,  7 Jan 2026 17:08:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDDBD6B0095; Wed,  7 Jan 2026 17:06:48 -0500 (EST)
+	id 22C166B0095; Wed,  7 Jan 2026 17:08:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BCBD16B0005
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:06:48 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 646CD13AC33
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:06:48 +0000 (UTC)
-X-FDA: 84306553296.20.B2D8E7B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id ACB1C120004
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:06:46 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jFf6Jqxf;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CBC86B0005
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:08:41 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AD0F01B827
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:08:40 +0000 (UTC)
+X-FDA: 84306558000.11.84D6064
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C9F42A0011
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 22:08:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tRhx72pB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767823606; a=rsa-sha256;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767823719; a=rsa-sha256;
 	cv=none;
-	b=E5EGmG3AnO6dzlZY43T7BtzAlMMe+057pn9gj8vnn7mEoIiBZG23IVkxUeGhLK83OSrvqY
-	25erR7yLq32nZPPc6lPsdYnp2vofWNCmn1RikN/2Vm3Ezd8IE4zYT3sDlIERTgDUkC5EAG
-	tpu1sLVbM3MV8cCc1/7iNik42N9qQ0I=
+	b=VbXlEpxaNE1ISNJ2c+uSXp/Maj99H3OC83boW2yfGcD2X9drcZiItQ9E8OUlfg2YM7/mnU
+	32cRqX5zE4zG1xXhba/0zsHLlZeUS/kzMigwCykb7AAaKb1bxtVGq+dMuVBoS0lE6pyuNY
+	Fl7vJaZtN7ybreBe8i0kfrahKawE5ls=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jFf6Jqxf;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tRhx72pB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767823606;
+	s=arc-20220608; t=1767823719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ozm9MQ8/GpOglg6lLvQsQe1sICFhCN9FKM8IHVaBqUc=;
-	b=6/QnKlJwxS+S1jMHo9WTBp4oc8zYxoEi29yyCSXhQ9/csgys37/hwbyWADJeRAYnIdRE9A
-	1pcCBDY/0aQtjO+fNBLXk5L/nTNp7BquaS7LKYN0EHgJjidsa8FwabMu+qHYXSdcUEl8bw
-	bbRCdiykWusnSMfOehPKRPzE1GQjKhA=
+	bh=Leg1NekVj34gHkDnfNWZo69lYGmnkkGlrerd3elLd1w=;
+	b=2koKbYC1mCW7/WsQyfubnthyh8IaqPcE6lhCP/gR0ZxJQwfQtbCS+7S6UpgW1NyNbXUjsz
+	0lBTB6x0D1BS19+oBTyrPYALXaz93r/gqobsXpyQ5CoOaYeeyrzxHxIq6eUX37EZOa/UJu
+	gsLqGdzwhyiYrzqG5rHRZ9Lazy6+dEQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 257B560018;
-	Wed,  7 Jan 2026 22:06:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83138C4CEF1;
-	Wed,  7 Jan 2026 22:06:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8994B403D8;
+	Wed,  7 Jan 2026 22:08:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF4CC4CEF1;
+	Wed,  7 Jan 2026 22:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767823605;
-	bh=Nfvy1yrUUqnBfdePUv1Ij6X9WO9cx0Jz8V0B4zlU5/o=;
+	s=k20201202; t=1767823717;
+	bh=EcHgfTbO7t8VeiVyN3BO6yckGe86xkojloHqHLnPFn0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jFf6Jqxfric7rq6Q0NSYHZRHYcLnVM6W3Dy+iI1nnKMzxsAWBrGlUGCviBaI20rCw
-	 ysMFLuMEJ8KORtuB4b0ZFz33sWzLyEGbVuPhsgZKJisyI0OiQgm+kdo0tYJ8cPvKnU
-	 EwpEeDDl9twx1bJRu3WNd9E+6rcHum42NNe8kjkGEb/P0UDVrGgKTlCO58W1WQh+Uk
-	 NMwUZzTpKrgYQHTzBBNdYNX4dPJ1fp4iX55bhghSFV8funYyafzlZ3ag5gje1puIPk
-	 Jw1rWC+th7/Io9FbYJmcMfwbCa5IkhfHCR6VFDUM9dQ6nQsF8Fh+uJR7RTBK+yGGSb
-	 auvJVdOvWlcdg==
-Message-ID: <563a6f8f-7a8b-40a8-a553-a51c3e4b9a28@kernel.org>
-Date: Wed, 7 Jan 2026 23:06:38 +0100
+	b=tRhx72pBwsDHXcMyUxJK2Z+HZ4xif+ezAPWVZHdUB2P2EiXRZMNhsX7UgckOW3NJR
+	 qkfrP7Gtie3R9wpWE6N78gEWzDCRsmMBlMEPSpDy6l2m5jxeCz/zgcTkK7Sazda6wv
+	 G+chKPR3nFMgYWaixGJ4y8EeJigzRPclEQJXv06L5Ya2HZlthHqrrE0hDHESbChvWs
+	 Xc/4ZPAJqfvO9dzLPKuqVfqlFjiFUlcW+xRFNEF3PnRSLrLfqwHV2ycSZEuRsdYLcR
+	 YJmBB+Xx7vcnESVGzF2OZaLnmrXpMtFWc4doGhEHD5lyGbqdq2Qu4TsnAY7q50W1WI
+	 +eBuwKBGxcdFw==
+Message-ID: <38c0fbaf-cbb1-4f43-9d45-31ca642d1ed6@kernel.org>
+Date: Wed, 7 Jan 2026 23:08:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 2/8] mm: introduce clear_pages() and
- clear_user_pages()
+Subject: Re: [PATCH v11 3/8] highmem: introduce clear_user_highpages()
 To: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, x86@kernel.org
 Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
@@ -78,7 +77,7 @@ Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
  raghavendra.kt@amd.com, chleroy@kernel.org, ioworker0@gmail.com,
  lizhe.67@bytedance.com, boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
 References: <20260107072009.1615991-1-ankur.a.arora@oracle.com>
- <20260107072009.1615991-3-ankur.a.arora@oracle.com>
+ <20260107072009.1615991-4-ankur.a.arora@oracle.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260107072009.1615991-3-ankur.a.arora@oracle.com>
+In-Reply-To: <20260107072009.1615991-4-ankur.a.arora@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: ACB1C120004
-X-Rspamd-Server: rspam03
-X-Stat-Signature: hmotsi941ks9pauirsoftyh9tp4pnj5o
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C9F42A0011
+X-Stat-Signature: wi4foz1rbsikh97z1eui8sgcdpe6yb9j
 X-Rspam-User: 
-X-HE-Tag: 1767823606-121710
-X-HE-Meta: U2FsdGVkX18bZw0fHrXE0TM5Xdmky+lmQZ6tqhdwLuUTVTyBkWPFbh9QGLUTH8/+zFwD9X1bBQaKScs7iEaM+OUHPyDDwHlI6eXGf/niBJxGcAbGCy3l8098UBPXoPh+sTw2TzQfpWeF38ogJqeuv6x0Js254dcJLrfUeU05wzpZlrbXezVO8WzihiKkuDr+cG+kes7Fxtns38RJzLNI4f5h3h4uy9oR/mrvNVG8gBbm8FgBBkul505KxUdaLzE4xPL8RPZXz5TM9P8b/tgqZOj43yFJkgHWNey9SQ8a7/gUcNBBsh2SoWQxnTE1GQmVTZ2qByZc++80WwgkWxEodbTb4Qpp4GU1sX8P2PsRN0rqnajYFnSj0MOxki76ZaC7ReNcpaEAW07DO/2N4veUhMHKs6x9/Wv5R5Nme7H0suVfPhzMxBlm9oloEq4jw483uzIyKhlpMzwufCzgNpgzivWjlHI+wOISxBSMxFi7e5RL7eFRuO3thCkl4ghhloGPBVSOAp1E0u4iPrNpmaXWJ7gj8Lf7B0o+fLC647PC4+8ZswPOL6JQd4zTDjK6vK8pn1goV+0YvjeobZBLIv9ZOJwkxbgACv7dmnwl4pqA7yUZb6sALabeDKDiIxLtx3nE5DqiQsGSzsZ38+DiGNpRGc8V8kdHcIQCtuQCB4I0+bmh1gBfMKFiU2Vyquyh81CMwKEUklD92Akzr2eAsu/KirAZIegvHCVXCsvOOXWn8jNpopEcJNcV8GKo1UzOtvIRX7SSTfRFMAaOJFhXR3po4e6Y34W4TU4pGI7EM1hMa0RdjfST3Kntw3ulrSPpfCflSm6XAmewv/JDbOGFruzeqNOM4IxwyPRj/+DH8fa1+HV35tWsFhBcp52BzgOg5TW31jY7nqKqJsXSNPAnD08PTaGgwsn+RlzZunNq+VRt6Q9AVmU2fSJOTwGbGZYdKX2X6q9n0nu60yO+xHZ0bKZ
- B672G5YG
- xAGRLJRXwIgaM7cJOkB6nKKvlfxNCf2SyyTsmFj9QGi1yIgb/krZwXZ6VbjzUiEdfWcJxYmA+p7Bb3szQ0x9TxVCAKVY+vxyuYYes1nVODv87OHF1VQN+a+D61Mae07Z/zy3z5pdm8yHcq0LXWBA7/W5GWC6n2FrNbDPSb1hsLsmxikYWM8KlMUY3Uj4oNJuJohW23uSHAVwQ0/wIBB+WlU8mcJ68nh9LJo/Dpr1Ppn/4X3Z+BHhLsw3UsA3v7NS8x9rm/WkuMkDbo6fmqMWr/zvkHlDcBXn381Uwpt5qR8DQpDkxfxLQyUEw+TlgeT8fI+AJGJylOQLRt/T16t5zFrdftrqYlcHvs3Vp
+X-HE-Tag: 1767823718-513747
+X-HE-Meta: U2FsdGVkX1/+Ro3aksAkwYfhJMMJrcO1oal98ztEQoi0LNpgOD5RhjCxukbTgVIlOrcn1URpGD7ofsVcZ9pu6a6D7Lt2yCRV/ucf8ycPADF+6q3UoZKs0iafJ18UwWpHU9nUqEv9LtP0okodjO12BYSzoamf9zyxm3ANohGCiA6h85hlp8wW1I2aSYRcYtEHFk397zTESfbjy074BASChiVEItgEKtRpzxsgTucy1Gu2N8oxWWcxeDuuqbjfpWhcslxEldtxeMS9WBzYbGOrUbxP/hQfbnGWfnx3/ut5IYbWTm6e+db6EiiEk//iboantwkYlLwuE6/6dFTFge0gydqC8v37pVF34PVOUwn2PzZl8xFZF7AXP4jAOzIsncjnrKN1xbeZ1jWgi89V/lfWEWzCEPJF/upMVd/cWX4QjRXTcXMPsMC5HIfgQjxermbDc+7kCgu/jvbnwAx+CMFXhVTyIZdXIms8zyOcHzIDsi7skr9YZ8mv81VlqeCTFEbeJT8BS3cx6E/7EuYb91DunnHLhW4QgJA5HTE63MZz60JawR4+4eysYKHXFu+UugdGTrlWiaJsbZtcx8KiADwNi8R7mbov5GA0/88YOCd3EZtKu+hHv5li1ixwI1Js4pT/b5MEdtDSQTYtKtO5mELV7wkWd1ci8lhRh2T45OVAL4Waaa4Cnwc/1H/ZWg8HTPn0JnWuykyhqocsAreTr7cPTp9ErcUvgXliYzRf9MYB/OoXHUxonBiVg2bhXucGyULGE0kd+I+5ORCCpiw9k2p4jVqISTmJXc1SqRK7NRBJwlHD5Ahjys9qesWSn0a1JxC1338fRZSJDvzs2x6xSwMRHeqHp1wv1fZxxznTjMtUTKbfywvSsXOq8hBmtfVgUcwdrAvYfG8AlBiLT8gb69dTI1lgZyO+tg8s0TALVpatYc9KkDqQXtQaXMXqw90oCSsfbwEzWJyQvw/JJHwWtc8
+ u4AxynM1
+ iZLm9mUGQCgAdMcciI2HVNbSOHazIpbv+HNl6d2PYpnGBtbJkP8+VrWyUrOoVoFdiMAhKXe9uO5rWCBHDKq8LZch6CuQ8rDWnyxDEz9Dye1h2dMZVBdCpSuQfHIscSR//gnF6SSrJGQ7vqP4HMJj41bWvEdBTfzpRDfZZ8rl4FgdaiucW5Tq/6n5NDCbP5cb4xjJw+8TQXwqFO+ypWSRLe1KqiITCxR3zAoAwKgCKPBLWV5E3uZ6yfodewIAyBN5DdE0wv5V4lpqQov1OqJr0STWFUizyhePy9xeCk5qXIZek91aIkGj6mJCEkg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,24 +143,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 1/7/26 08:20, Ankur Arora wrote:
-> Introduce clear_pages(), to be overridden by architectures that
-> support more efficient clearing of consecutive pages.
+> Define clear_user_highpages() which uses the range clearing primitive,
+> clear_user_pages(). We can safely use this when CONFIG_HIGHMEM is
+> disabled and if the architecture does not have clear_user_highpage.
 > 
-> Also introduce clear_user_pages(), however, we will not expect this
-> function to be overridden anytime soon.
+> The first is needed to ensure that contiguous page ranges stay
+> contiguous which precludes intermediate maps via HIGMEM.
+> The second, because if the architecture has clear_user_highpage(),
+> it likely needs flushing magic when clearing the page, magic that
+> we aren't privy to.
 > 
-> As we do for clear_user_page(), define clear_user_pages() only if the
-> architecture does not define clear_user_highpage().
-> 
-> That is because if the architecture does define clear_user_highpage(),
-> then it likely needs some flushing magic when clearing user pages or
-> highpages. This means we can get away without defining clear_user_pages(),
-> since, much like its single page sibling, its only potential user is the
-> generic clear_user_highpages() which should instead be using
+> For both of those cases, just fallback to a loop around
 > clear_user_highpage().
 > 
 > Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
 > ---
+>   include/linux/highmem.h | 45 ++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 44 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index 019ab7d8c841..af03db851a1d 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -251,7 +251,14 @@ static inline void clear_user_pages(void *addr, unsigned long vaddr,
+>   #endif
+>   }
+>   
+> -/* when CONFIG_HIGHMEM is not set these will be plain clear/copy_page */
+> +/**
+> + * clear_user_highpage() - clear a page to be mapped to user space
+
+Just a minor comment as I am skimming the patches: I recall kerneldoc 
+does not require the "()" here. But I also recall that it doesn't hurt :)
 
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
