@@ -4,128 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C14ECF6C13
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 09:04:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4018CF6C18
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 09:06:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F0DE6B0092; Wed,  7 Jan 2026 04:04:55 -0500 (EST)
+	id 2DE876B0092; Wed,  7 Jan 2026 04:06:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79E4C6B0093; Wed,  7 Jan 2026 04:04:55 -0500 (EST)
+	id 2C9126B0093; Wed,  7 Jan 2026 04:06:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69D886B0095; Wed,  7 Jan 2026 04:04:55 -0500 (EST)
+	id 1A12B6B0095; Wed,  7 Jan 2026 04:06:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5892E6B0092
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 04:04:55 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 039E66B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 04:06:09 -0500 (EST)
 Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0759B1601F9
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:04:55 +0000 (UTC)
-X-FDA: 84304582950.08.2B2FADA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A215D140016
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:04:52 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MZPnVqBG;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of lbulwahn@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=lbulwahn@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767776692; a=rsa-sha256;
-	cv=none;
-	b=y2H0GJMGAX8YE4oEvrLaketvwGAXPIeWZQQ7wruIcxRsLGVff0tZNDsWsG8jyZCsytC8TV
-	yIytIUWppQC12VKAIxszJim1a+fFURkm4lObxK204xMLbRjadCtbkKE5jitbpyHGkURjLR
-	q4BXoINT7iTOnL/T6/z2KMdTb9l4lwo=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MZPnVqBG;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of lbulwahn@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=lbulwahn@redhat.com
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E9AC1A01B1
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:06:08 +0000 (UTC)
+X-FDA: 84304586016.08.721AD2D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E4F7B1C000A
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 09:06:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gp3clrex;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767776692;
+	s=arc-20220608; t=1767776766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=w7aIEirXSlFElRo5Y92xYAouNeJKNZztucm0IeXzII0=;
-	b=kMn0Q3OpxCkJsmYNNjKkR3IgPNtr60xki1ak/pGTLBJWfHZYViMFW2uWt++mOkTbhiFUe2
-	TmWlM40FXvNOcBajFg3BPbrPhGOHRi+dcO/ki29IOVkZS8FND4ZEfp2omsI1kZP2ro6NHQ
-	oljrRggxlEhz0hc0vSofPRLHQ/jyOZw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767776691;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=w7aIEirXSlFElRo5Y92xYAouNeJKNZztucm0IeXzII0=;
-	b=MZPnVqBGax8fQ++IRDxCcqcViDaPhm1Xf/zSksbLfkw0rW83fvtLDXMoTwEwx0c579NgdR
-	vumc64apvexZ6n8UfARaYDfDSeZRRZfTwbS3mGY0jxlhh43OZPPaz8CO84Dmw/RkPCvyHy
-	4rBuymrUzj+ZjEGkJQKcXTW5yFLQQCY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-182-WSEco0wXNaiO9QUU_U9nkg-1; Wed, 07 Jan 2026 04:04:50 -0500
-X-MC-Unique: WSEco0wXNaiO9QUU_U9nkg-1
-X-Mimecast-MFC-AGG-ID: WSEco0wXNaiO9QUU_U9nkg_1767776689
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-47a83800743so2778195e9.0
-        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 01:04:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767776689; x=1768381489;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w7aIEirXSlFElRo5Y92xYAouNeJKNZztucm0IeXzII0=;
-        b=ilqiofg2gp8xp+Enc5p3fRT4W1reXKvIWt0sE8ipty1koQVLMuOULPDGVyNX7fXAX8
-         JtGof4xSkMIi8l+74Q8H8yRapCpj5+Bs/i6JE77nYtoeWpJJHkK0BZ/pNOjP/ydOZEP2
-         d0kFWRsxS/cvL3ANj8Ejv+WE2DJyMbaEGndBg6sC1lR4wJ3ub/ZMPZtO8uVgF1BYw/Vr
-         SLJtpy+bzaT01EE0lLGHsQeMNpE/OXDwucM1siz+GCKQqtBkV31kj6Nso2v+HzgDn5Yd
-         gRoJhexd6QmmFALwnicxwIL5D5NqM9oDGW+hmMUd1K9J/WXuKyvaFImi3vZJ6HEPHDHM
-         rwyg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHGjOVothWocOQL22VJ+1s0N4w5CmLl0d+ti7q8/9524LS9C6leH1n52nw1vsj2zp0zCr0gTI3eA==@kvack.org
-X-Gm-Message-State: AOJu0YxzgmJEnEjZrZo6rFAtAL7KkEzlw5Sm72hsGoyyi8RkLdGRv0+P
-	1K5kz953UrqnOvp4qklMgdqzSKCMXKmgsP2hkMpPi7zVm0XtugSvnghfyL+NO4HuaGqDuHx9vFz
-	OaCaOr6ZoIhCZ8sxGbbHyaGARI5js63vgOao5h8+GDT6yhG/HhwKR
-X-Gm-Gg: AY/fxX7dkm5qkH3+TCIQMmSKB1hwEKxLp7tKbuN98BaFwdzAptlkSKV55B7rdwlM2qI
-	dRT1uMFYzsLIfJG4BXpTYdFvBeaEgO8GnMwluxAor0OFOGLrqejfZtnqsWAnqxYWYev3vTzg2ty
-	dcXHnHBMDzd5a1DQfPcGnW+HtVEHbgSJBSWoI4wXvVwXYBaHGwsC5WyvdTm1JORK0YMGqjbkY0W
-	u0G6Yda6aDItHOrhN3PUtXF1Jya6pPrhyZUPDLvFRWsbElc+akp6Z2lYHVivUi/pOS7MRj+9mj4
-	ib2W5LBquYBg24+FOnXYZkb5FNHkhx30o9r+tJ6OF6IAVzW5+dugR4hjHLI1rBpNO355Nmu7hpv
-	bRRi+Euqkk1dE8ab4g0oHFFGzxmQw3/RB61b6zLRCn6CuebCBrs8j0xSGBE0=
-X-Received: by 2002:a05:600c:4685:b0:46f:a2ba:581f with SMTP id 5b1f17b1804b1-47d848787d4mr19066385e9.16.1767776689294;
-        Wed, 07 Jan 2026 01:04:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEBxZvbctLk8Kb75sAgCNKupX5//pUrqHmf5E4ojGAgMRxBeSVD8oZNwP8f79+dr08mpm67VA==
-X-Received: by 2002:a05:600c:4685:b0:46f:a2ba:581f with SMTP id 5b1f17b1804b1-47d848787d4mr19066075e9.16.1767776688814;
-        Wed, 07 Jan 2026 01:04:48 -0800 (PST)
-Received: from lbulwahn-thinkpadx1carbongen12.rmtde.csb ([2a02:810d:7e01:ef00:1622:5a48:afdc:799f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f68f69dsm88569055e9.1.2026.01.07.01.04.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 01:04:48 -0800 (PST)
-From: Lukas Bulwahn <lbulwahn@redhat.com>
-X-Google-Original-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FvnEwkDYSB/jihgGeK4Vpiag8LQBrUYYgwlxuwDfTA8=;
+	b=5eb+UP/GwNiDoiuR43Fp90OKkFDU/cEqRYgY98gl/lGVSfMduIDepa6xZ+FvQ4BWyxShFw
+	wf3xXFJCsTzJ/NJrIA8eMQi5DgefI6nxFhcC4a6wEqnUYwy1RIyq0Yhfg9noLHJeROcX9y
+	fJEgUS7SMuiLms2iZNR5OpLDOepQLXE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gp3clrex;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767776766; a=rsa-sha256;
+	cv=none;
+	b=oT3kIcc9hw2PMs/79d3gIOuEASZabIMKzZA2hAf0OWeVTzH1PGEOU8ksBrg6dAFj+Cwsiz
+	lbuiLznoHw7dT0cmy/Eq+2tuoaZG5k1jv5d1yAZlOOZ1PlcAz2Q2+7OC4FA5YgOYi4AE6P
+	xav/2/7EqMc6gNMyP3GKmIez2nK+xJE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E95CD60141;
+	Wed,  7 Jan 2026 09:06:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E975C4CEF7;
+	Wed,  7 Jan 2026 09:05:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767776765;
+	bh=pMgU+C5FcOLCmP6ptKqgGVGjjrLsI8HbEkAssUEFqo0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gp3clrexlQYTflBjEroGcywSAtzuN1Rwv0/QCEq3+PrJVFxFCVnDuCiuhES9FxML1
+	 +DUJuEGclss/ATJRkynVca+Jnh3h6LZ1jKDlpzlWcRAo6+izc5O03Sz6x9cKrXFMgx
+	 Y9bLrHVqoYADWUH0XXdTVI1WfeT51LlKWgWoIjuvqFNTY1UuAQKsvL4rxcgKYa53RT
+	 HwvCsYN0oC3j7a2aYW9dIrhGAdIXV+DZgKRIozZxrf5fhJ5MEoUdXKbMDnSFYYNvLk
+	 A7qYfjWXWSXUlNaU2pK6XIEQpbQqJGgs3DYcZ5NSns73Gyit+KIQRcRWBuYWEkPzAs
+	 SZx9UZSS/0clA==
+Date: Wed, 7 Jan 2026 11:05:42 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: alexs@kernel.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Subject: [PATCH] MAINTAINERS: adjust file entry in MEMBLOCK AND MEMORY MANAGEMENT INITIALIZATION
-Date: Wed,  7 Jan 2026 10:04:38 +0100
-Message-ID: <20260107090438.22901-1-lukas.bulwahn@redhat.com>
-X-Mailer: git-send-email 2.52.0
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Michal Simek <monstr@monstr.eu>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>, David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	"open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
+	"moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+	"open list:MMU GATHER AND TLB INVALIDATION" <linux-arch@vger.kernel.org>,
+	"open list:MMU GATHER AND TLB INVALIDATION" <linux-mm@kvack.org>,
+	"open list:C-SKY ARCHITECTURE" <linux-csky@vger.kernel.org>,
+	"open list:QUALCOMM HEXAGON ARCHITECTURE" <linux-hexagon@vger.kernel.org>,
+	"open list:LOONGARCH" <loongarch@lists.linux.dev>,
+	"open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
+	"open list:MIPS" <linux-mips@vger.kernel.org>,
+	"open list:OPENRISC ARCHITECTURE" <linux-openrisc@vger.kernel.org>,
+	"open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+	"open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
+	"open list:SUPERH" <linux-sh@vger.kernel.org>,
+	"open list:USER-MODE LINUX (UML)" <linux-um@lists.infradead.org>
+Subject: Re: [PATCH] mm/pgtable: convert pgtable_t to ptdesc pointer
+Message-ID: <aV4h5vQUNXn5cpMY@kernel.org>
+References: <20260107064642.15771-1-alexs@kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: mshdit-gGtCJJy31VTsjbx762bWiF7AtJJ0yaDvUjrI_1767776689
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: A215D140016
-X-Rspamd-Server: rspam03
-X-Stat-Signature: gcjdu4tb171w115yguakc5pw85c1ynup
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107064642.15771-1-alexs@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E4F7B1C000A
+X-Stat-Signature: 61i7p73sopordmzhk6chdznnefc84non
 X-Rspam-User: 
-X-HE-Tag: 1767776692-995831
-X-HE-Meta: U2FsdGVkX180MgU+DMkbWvZR48Eypw0zgRtbAlbmm87mCrsvJkDPNdIwCOCMXfFkBoijXCmT/eOPpppKfghsK5Kd/zh7gxTj0Wkyn15179xDG4rsM/4zqGbs8ltH65DpE1MmeEmKvxVg781BC9Gt8XxIXN5P8oZiAi34VRiyTZcAvPFYZPVVdV7ahky/QgBJ54XVmOlpVxXKk0B+/JB/vwOPpWRGxDg7BdXSg08xohWLMMQhB5u1SDJBy7jcZ/Hp+kPZD18bkAIJIBustrvrDyG7klFoV7SJEQa/O8vR+eJDxDNqmzP6kH8w5x3rrcPJQ3nI3B5iXFPFylT7J3bmXOw3rmFeiRT7yq9Mj/Zx7fUPtdg4Q8kMGyvBVUqylKUiTpXbCK5/VUFfqKW2UkMeCEUtmyBNPcU5F7OCocjLgKvshy3smTMkTZE8Dn7I5/SgqIPemWSkFNeu0ESBrneRoyGAgsZa3TFQUm9O4cCSgL/0485Z7Ba4I9mBTXfQ11Ky3bQNLnKIW7V5YdA1Flrd08YGzRw8pHent6G4DCQ/g/1s5w5w5EfrYKtFpbrNvkz2xhFQtzEv88CrK+bTH1P5NAzafC4tK9JtmGjjhEOITTuKLooXMBHFHdkyqkWpMkA/0Ufie9eE5jKVPiqp3zphXnFRXcaH7n1wVy8SMRAiFqMj5Fr4pIKWoh2dIl02sETj1a6luZ+8FjgQhZdX7+sUPlp8SlDw5Ct7KLwacgWILySWs2J7UJ7RAkHF0/dq8SYv51hvqakdZw9GyhLDZ42mU199d2RNGpGgikM14OP5TA7HtEc8fHSlwieB5AG1iY4dro+Of9uP/dOEhoIH3qVqwS9NXmSb3usAtABJOnRltSGjCkfhP6dPLdlKCacGtJ2wgoEPNBkBU90RSnuwfwoSj1yD1KX0Roio3lYO8aZLIPJ2KDYYt5ecOY0mzuwESPETYDn2bMFbnHdbhx+hevP
- +Yeh1bQO
- NyGGQHkiBN/lNN9HgsYBoozGyZ/mYC7J06Ay5EZvppVH7VQ30JaRj04v6JcnK4SufvD5o8YqB1rBpMN28frl6wM/d2lCIzmoiEUXYduQLZZcPyzKCtaAYjptj9F0mBXfQTW1voDbqlYBXvcMpu2t+G4uAgXHsIuOY0J92s4afklitwgnAEKSIDIZpnqQCxvYMKrpY5TShpsG/FjPonC0AmlpnGiKhKEynnRyDtWMeAxlIhWnwA5vDygzrjIm+8bbbXdSAoCNlFugE86Fh51I9OlWQqbs15+1jyWYmbtQYHsBJrgjaycqdqCA8F512bEon8qFJqvkCiqy5b5xavk2ucNOGWm6Ki/mrdFKRKXVK6t4i2GWXPgT288OrGrdLRwkE8ytzkR4TZWReufkO279ZDb5RnQ==
+X-HE-Tag: 1767776766-548322
+X-HE-Meta: U2FsdGVkX1/aUy/GlRmMB1dCBbD8XPzu5rfmrfiEwyiXSvcP6Jka8t0BZwdmwOrnNUZjYfZ6m/q0kkcCcghB9+u0R56TQ0iN0ra6iO6ZnplcKqvhrrRgO85UOckystLnvDnlHWg9U+o6bh9uvhMLkLcdm7lht+Zwz7fGMyP8zSvvtAhcV06eTMmneiuF2ZwULpLb74kiU+qiNywllGEaZEEgBhlR/T84h1Pu6yWWXeI1V6LNmh32/v7NWgmxrQJw3oYSjlNDe3sIwHc6KeyXNLO0o+C6S5zmOdOL9yB6D8En5u7jmenn/DuOQ9+KwORmD6l1+98ChwqTZnbd8uFND7Jqx8VIww2VtaS3huQRigl+oMoiMlzWqZrrqGPDzFoJrCKAS1qqDxEnAcGpOGmIwARKO0AU867IURB4KrMP1nROtRjx+HjFB5ES9SuIfb9OMh8Z7y4O7xZSOkxqaosR3u4Fk/G+MTJx9rtfkI737vMnmZlCSsaGN4+2sggKzfXb2hD20uzVTQcnqTG32mTe0eheXaBj3NIk7UlzDXJjY41mDa07AsUcgc6u8phYPBXImesLi3D9ocj4w3dhzlQ7R0VcmIjFengtYnWQZ/BJlHLiRC5zeL09/Ig8H/uEu0ZFiaSXW6VLKrnlKYEWaWGbEz9hLnxg1CSOewwambsl8+pxq008QRNvG7iOuEam3+qobcQCF4G3G8o0KpvFL7qruGEipE5lVh0Zsmx/950S97K891xs/VoHigSRHVebfnB8C2+Bi38PgIb2469WTbHVcQhpKQpw7cDoqqFgHltnk4L5wGYFMneRsEePY1xu8uDLNTTOQYp0Ah7FjZl4ObP+hrbajaC5sUvZCpTftUH+v1Mh7HkHovA5AlpkkIzv+JJPvKHYJCXTetztR2hwZhuF9hHKffiQLoKgW6kyaYDNUZFwQ+Dk2Zte8FhZbBVJwg2ws9K8pFxtla08cyp4VNE
+ cvDlLY0P
+ R5/xxVkturLtCBbXJZd+c1ioxhfsBDfOFWu2HVXnHkwl6EUFBeAF/iXvV2GObWATmVZhIkjfs1a9RY+5HjFuNRIss9jSFggfkx/ZviEGoOY9OITRXVCwzrHcOyJxPlounTDLiM1wM/fvKms1OZ9S+6v8RhOngdjnv7nRYFHdzt047efVh+gSJjKZPiP8tI9u6kjNUEPRA9tEe1EsxJPAHIowCyJqwt8QUMRu5cZcf/Ofgdns1R7zaGCLVoffPzc98YVVr+fuu5qDIDyNj8x7PYMTOybAHVdWm+ymtAHe9p4vyPsBet0dH9KTAV1z7RTCDQsFQyn6tXps76HnUTSbfyTnokykSL64WmRf9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,35 +146,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+On Wed, Jan 07, 2026 at 02:46:35PM +0800, alexs@kernel.org wrote:
+> From: Alex Shi <alexs@kernel.org>
+> 
+> After struct ptdesc introduced, pgtable_t should used it instead of old
+> struct page pointer. The only thing in the way for this change is just
+> pgtable->lru in pgtable_trans_huge_deposit/withdraw.
+> 
+> Let's convert them into ptdesc and use struct ptdesc* as pgtable_t.
+> Thanks testing support from kernel test robot <lkp@intel.com>
+> 
+> Signed-off-by: Alex Shi <alexs@kernel.org>
+> ---
 
-Commit e8d87911a204 ("kho/abi: add memblock ABI header") removes the files
-in Documentation/core-api/kho/bindings/memblock/ and adds the corresponding
-content in include/linux/kho/abi/memblock.h, but misses to adjust the file
-entry in the MEMBLOCK AND MEMORY MANAGEMENT INITIALIZATION section of the
-MAINTAINERS file.
+...
 
-Adjust the file entry in accordance with the changes of the commit above.
+> diff --git a/arch/arm/include/asm/pgalloc.h b/arch/arm/include/asm/pgalloc.h
+> index a17f01235c29..1a3484c2df4c 100644
+> --- a/arch/arm/include/asm/pgalloc.h
+> +++ b/arch/arm/include/asm/pgalloc.h
+> @@ -96,12 +96,12 @@ pte_alloc_one(struct mm_struct *mm)
+>  {
+>  	struct page *pte;
+>  
+> -	pte = __pte_alloc_one(mm, GFP_PGTABLE_USER | PGTABLE_HIGHMEM);
+> +	pte = ptdesc_page(__pte_alloc_one(mm, GFP_PGTABLE_USER | PGTABLE_HIGHMEM));
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+When ptdesc will be separated from struct page, ptdesc_page() would fail if the
+allocation failed. This line should be split into something like
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b28650893f2b..1ec85c68dd4f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16454,7 +16454,7 @@ S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git for-next
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
- F:	Documentation/core-api/boot-time-mm.rst
--F:	Documentation/core-api/kho/bindings/memblock/*
-+F:	include/linux/kho/abi/memblock.h
- F:	include/linux/memblock.h
- F:	mm/bootmem_info.c
- F:	mm/memblock.c
+	struct ptdesc *ptdesc = __pte_alloc_one(...);
+	if (!ptesc)
+		return NULL;
+	pte = ptdesc_page(ptdesc);
+
+
+>  	if (!pte)
+>  		return NULL;
+>  	if (!PageHighMem(pte))
+>  		clean_pte_table(page_address(pte));
+> -	return pte;
+> +	return page_ptdesc(pte);
+>  }
+>  
+>  static inline void __pmd_populate(pmd_t *pmdp, phys_addr_t pte,
+
 -- 
-2.52.0
-
+Sincerely yours,
+Mike.
 
