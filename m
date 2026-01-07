@@ -4,121 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E97DD0D145
-	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 17:17:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAB44D0D141
+	for <linux-mm@archiver.kernel.org>; Wed,  7 Jan 2026 17:19:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 843256B0093; Wed,  7 Jan 2026 12:17:36 -0500 (EST)
+	id 0CA7D6B0092; Wed,  7 Jan 2026 12:19:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C19E6B0095; Wed,  7 Jan 2026 12:17:36 -0500 (EST)
+	id 082E66B0096; Wed,  7 Jan 2026 12:19:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C4196B0096; Wed,  7 Jan 2026 12:17:36 -0500 (EST)
+	id ED13F6B0098; Wed,  7 Jan 2026 12:19:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BB5B6B0093
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:17:36 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E06DC1CD1
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:17:36 +0000 (UTC)
-X-FDA: 84305824512.19.91902CF
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf05.hostedemail.com (Postfix) with ESMTP id BCEE9100004
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:17:33 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=SUZEDiTQ;
-	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DC68C6B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 12:19:10 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9748FB9605
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:19:10 +0000 (UTC)
+X-FDA: 84305828460.18.3A918B6
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9519C40002
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 17:19:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="EmUk/+Az";
+	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767806254;
+	s=arc-20220608; t=1767806348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D/fdL/etc/5J0Wt6U8Xe/ir/x7svKKT9Jhst6iTfdS8=;
-	b=e1cBKT7bepEk50Vk3X2A2bazL77+AWTEUbu7sYRxFHaTCbEHTTNe26YVf1Wj6RQeWAYOUU
-	+kfx9Z9SKW9OQ09+CGLbgEa3gnS7GXHCe+kvmnlpAAZXHBAHKpx+tFoY7Lt4s9g72elovV
-	j0q4noN2kdCInfWg1mwDWElxmY1jh7s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767806254; a=rsa-sha256;
-	cv=none;
-	b=QmPwsKg3LDG0dCJrQDOCbPwp/QfO6MdNwMvZwHM5U+RDfbIsnElLj+phveF+/QlWm2RskI
-	KmARCtJE6TMRxb1JmU212xq9LZCwzp6PtlW62NVTa1SNHF0uYHx0U4fJ8OevEelgwYW6Vn
-	/Y91mlxhQV+LEYb+gmEqv9AnWWaQ8bE=
+	bh=IZkL50mhnDpoFPWVVnY8H/NR1OQC1T5+YS9OD5apd4U=;
+	b=GAR+GpdyJY4eLwzIlh1MspbnjeONUvTm3NWYQPVpD/sw7ZjAkuBeyt6Ode95gKKcNvULDY
+	LubomaO8gb0zvKGY3ko3DcN53J1guU3klovI8oJcHEeBFsjTMHsz8KU0Eno/Icim87DrG2
+	WxesHTwTK6xssctb5n3Fq0PkyCL8OvQ=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=SUZEDiTQ;
-	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="EmUk/+Az";
+	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477ba2c1ca2so24697135e9.2
-        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 09:17:33 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767806348; a=rsa-sha256;
+	cv=none;
+	b=67aEfFGTQ/RvGobvcJlTQiu2E3xBSacyeOgmkjvFPTd60rjT/iSyE/5kBHWkrGblHZmCS7
+	CR44ofaVUiCn6JuU49baCEq3Kix3bWMwiw7oy7V+jg+ztQR+zIm6AHsLTreVWlz8SfiEdG
+	scrukrfap+OEmuDGAs4Rnc0xMb5CsvE=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-477563e28a3so8499965e9.1
+        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 09:19:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1767806252; x=1768411052; darn=kvack.org;
+        d=suse.com; s=google; t=1767806347; x=1768411147; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=D/fdL/etc/5J0Wt6U8Xe/ir/x7svKKT9Jhst6iTfdS8=;
-        b=SUZEDiTQorC1DfwpwfJRtewXXorOtHzVXZyGdlgyyAhFHCeDpJfBg4rRPfVgClOriS
-         18GsNqoa39ZwxLqVh/78dWuNVeR1TRGBcltKP30qZR19PNrFX8EazQy2jJaUnpPtpa69
-         /NisKO2IyyMh+KnIHOSbjXHaqeBSjHTkSln7LDTtqDPBekZiFCqvFxz/VHp4vz2MGjjh
-         hNoq2N+XMM8YtoSwVB3KPxRzZQEbWirhpOMw+P+F05TNs4fsWZP/hC1eW7TC5jTTyh3m
-         NKzKiNhQosUHvuHq5IOCiPJdAwSu8kTZHT1oFQJyU/wQkVKP8ZLt1ZSDVC7gS5/usCFr
-         9qZg==
+        bh=IZkL50mhnDpoFPWVVnY8H/NR1OQC1T5+YS9OD5apd4U=;
+        b=EmUk/+Az9OTGlGzmsmAIpat6iRb60QgOgoP+uL0DPy4LQ9PJvmwbdeRlo0SFb9HUI9
+         MU6Zo2dGcaT14BqsntTk2wWRzcPT0xp/zzzRwDbGZ7FP1pGu6yvNJfPXA8Jg/Vdzy9Uj
+         +5CRVaADGzGbxQWLNTOTqem31L3M2RjQ4KJ/01E6dMKJEOfnZU/yfHxNDpu9Nd3eklbB
+         OEIc84C2owFdoFTw4AcnZlYfdQL5PNnYWpTQ0B6eF+alS/zZXlgyfYFkKdGazTwVsYXo
+         nGNMUbC4xI6nhDsMXWbhi9Ev3V5JwMU2+UTbcI5pdwWCpJmxDd0dv89ibT68ik3oPC77
+         R9zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767806252; x=1768411052;
+        d=1e100.net; s=20230601; t=1767806347; x=1768411147;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=D/fdL/etc/5J0Wt6U8Xe/ir/x7svKKT9Jhst6iTfdS8=;
-        b=sSFZwy9WJu0ZeV7yaCYXfO+diW8M9YY0IoVKYvN4sm84U2Obn/wV0LhEinqbm77psA
-         fnGcKjCRSnA3xqwl448gFSZ32dyqfqPcHWAc0aMH7tEr78uGbsUIklbSzU/e6QNYS8y4
-         wAJqaztFCW20NWe9HGtSScTu0Ii9dvqqS8moZzunaGr8QunN4DsffGCS+Fz+RUOPaEpq
-         ufNoaphy6Ye0vfuY36EYNYnjuNf8G+EElTt02b8Nv3jQ5kQLv0YYZzUu5OWlQxEjRXtX
-         cfCz/TT+0RL9SLr+igfmIGRayfiKCzgWjiGKo4BEsMONz6pPNYPyRu9kY52Q3ciWSdmU
-         e2lQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+1KeGCdgrILLleTijMJ6GjzLCOUhoHHmPKtCSNGdN5OdsEjjPnObPi/RNyRVeCTXlZ3SBjGNyQw==@kvack.org
-X-Gm-Message-State: AOJu0YwGWbQd1ctzDRyTnMmOzwrlIcMqsSgKrkowXSxkGPRbHRwvR2vX
-	SeVzhOiHtUecKswTYDZgGQaOY031zdIjnJsZPhmWC74ClXDc84k38hWkDUtCmLpxSnM=
-X-Gm-Gg: AY/fxX5dAkxLYoVUBIjWSjL872Atiy9ef8+sXXakgZod8ZQjcbgJWuS4u5nprc16z5Z
-	Rp0CYfWtxGFJivGPCBbDnsjQMkNRCMZ+Xdjv0rnJon7znyCHjkgfIYHiw639LCHv2xzmnJaPXcT
-	mYi0gLWjFARNPrM3At2WYOz4B/hXQebpYEsuwpMBzZ/IJAg338PC0Rjvv4WeuEUhJVHv89g3NDw
-	Yi+mxnQp1oz03BZuHkDLTq5oHG59LdrwDOhY8J+BInc7b/hVCy0l5Z1WLc3+NTegRC2OGvDblFS
-	mmPccUA7jKHruC84Q9rsLYC/FmIxri+rPDxx4X38Nn/fTL3AC3rYktM8YnTl2T9YdSQRmkFPGQm
-	rUaEHnDhT6M/6TEzzYD/oI5Cm+N6HXg7XJWKTvopc2CEot0+wqtnx1Rfc54R5IvfTOyMp2cbpNK
-	iBYYQTgYzlveF57Fsrjhf+C2HWtAvtmJM/gjE=
-X-Google-Smtp-Source: AGHT+IGAM2YhqSXf2q/Y4D9ThH36pWbJsXQh96JsJ4kULL5c2nm4jv7EQU2Mtki1NW8Rnwb67HOalg==
-X-Received: by 2002:a05:600c:820f:b0:477:aed0:f40a with SMTP id 5b1f17b1804b1-47d84b31525mr38749425e9.19.1767806252079;
-        Wed, 07 Jan 2026 09:17:32 -0800 (PST)
+        bh=IZkL50mhnDpoFPWVVnY8H/NR1OQC1T5+YS9OD5apd4U=;
+        b=Mgt7AZQTjRK5t66hJ6JKBZx3iv1duiUMbMc9nLHxBIBNaOUlqJo2S0uMiE5D26NKhb
+         T1NfYTGcCKKnOhFqdJXx133/SW6ySRCsCxFXzZd4dRKdhNg1j5ZMtcmJxTyWRO9Dof9V
+         //CKLRUqS7AJimB6Pep7+4bhAVlMBMZxLKkkmzU1CODZ5L4sZa5i4p6i7ht9HGH5U3HL
+         Vxq9y60AiS70yq22i+eWuEszQlROI9rNHe45eSRaQ9nb2My+uV8T3/Nw1ItkTtgMsLFH
+         gCLFrTQBXQCzMbxBGYyWoukPmj6TI5DN1ooaRa3ythfR4TOqxdthMGD3CUGVjwb6Z+3d
+         X5NA==
+X-Forwarded-Encrypted: i=1; AJvYcCVuVz8K7YV1JU3jZotoJzFT1tuhN3qMhn7LoTNKHPBpb92dNXa72eh57KU3E0NHfxZMO3YTbr444A==@kvack.org
+X-Gm-Message-State: AOJu0Yx6qmWWmsnZ/xhUyI/xPB5endsQiT2JJHnqdQEQnIep3ZPETWO0
+	eC3tH+exofQV39T/qVdzayAa2XXXDzn1K8elHTFvs1VYjX1zUtJ8fW8j5nwSpqJ3oPw=
+X-Gm-Gg: AY/fxX6WJTXuwDtN0hg393TXG0jjw6YMkVF5qYAkDH/fpCZDcIWV/O52Ftj7/+MGN32
+	sTHoDpVc4F7dD41sxjoL3OtGE+Lx+9NKNFbawTrBaBbiAtFRkHcfHBCLMIEd8pgaqYJsKSxaekm
+	q4u18zo4rlUqSfQsPSmb5oVEwy5kshTdTAPx7tFhYeU+VL0AQoaKv3L6TocCibxCMg1mBsaqo0X
+	PXWSWrzWQf3r17sRyvIYfnnjHkqgrNjaIUfFdmnx1HlwQtq2UO6kGKSiInalu1SyKNdByHX29CM
+	Nhj9QJMj0yuJhYzvN777F1ZQeHto1VpbrkAE83mzoa/r8DkcXF2CwpqqMCqOWPcfE+x/Lw+qLBW
+	TzjIVcSV0ovG0WiDm4TfHvD9UKXwJDSgv1zVDO07jdBmRswLc1Krj9AklW2a8JeqckRhanp2mtu
+	owscuC0xomkVzmMC6XbT4I7UpV
+X-Google-Smtp-Source: AGHT+IEllamjyhFAQ4tTTzQKWVVKUc5/yvNYMGDOMELkUlpSdZ6gI98lAOXxkJFjDQicynDzogPRDQ==
+X-Received: by 2002:a05:600c:8b37:b0:47d:333d:99c with SMTP id 5b1f17b1804b1-47d84881c77mr38098245e9.18.1767806347146;
+        Wed, 07 Jan 2026 09:19:07 -0800 (PST)
 Received: from localhost (109-81-93-164.rct.o2.cz. [109.81.93.164])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f661a03sm117662475e9.13.2026.01.07.09.17.31
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0860f5sm11228980f8f.0.2026.01.07.09.19.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 09:17:31 -0800 (PST)
-Date: Wed, 7 Jan 2026 18:17:30 +0100
+        Wed, 07 Jan 2026 09:19:06 -0800 (PST)
+Date: Wed, 7 Jan 2026 18:19:05 +0100
 From: Michal Hocko <mhocko@suse.com>
-To: Hannes Reinecke <hare@suse.de>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Cc: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	david@redhat.com, osalvador@suse.de, gregkh@linuxfoundation.org,
-	rafael@kernel.org, dakr@kernel.org, akpm@linux-foundation.org,
+	osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
+	dakr@kernel.org, akpm@linux-foundation.org,
 	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com
+	rppt@kernel.org, surenb@google.com, hare@suse.de
 Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
  blocks to zone movable
-Message-ID: <aV6VKo5gRphgFQc-@tiehlicka>
+Message-ID: <aV6ViYWwA6OBdtMQ@tiehlicka>
 References: <20260105203611.4079743-1-gourry@gourry.net>
  <aV0kzBxg57Mlw8mx@tiehlicka>
  <aV0-ChclC7SCrxcg@gourry-fedora-PF4VCD3F>
  <aV1nPG1BgBQDWkjE@tiehlicka>
- <88dbe97c-3510-4ce7-ae85-067243a152bd@suse.de>
+ <39533aa8-ca78-41a8-b005-9202ce53e3ae@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <88dbe97c-3510-4ce7-ae85-067243a152bd@suse.de>
-X-Stat-Signature: kzk6c7w9picncyewxiiq8c88xk8dznof
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BCEE9100004
+In-Reply-To: <39533aa8-ca78-41a8-b005-9202ce53e3ae@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9519C40002
+X-Stat-Signature: axfmem9adwn9m37tw39jz7kmswbaba9b
 X-Rspam-User: 
-X-HE-Tag: 1767806253-184901
-X-HE-Meta: U2FsdGVkX1/4Jj+m3QQO5xfZc7isIUgQ6hqt/OnURtOLq5AJq4EvOiD02WPg1pliY9OVrZThJEH7wea2QpFTUhIZfpLWBf3Sw0UsT3qXBGXH7oErg4FliN2E+h+fYtClEJgNtDlEdCFcmQ9F5G+KNPi68qb8WgoI7DRqyNfXtnfe9QvdSk+CQ7T2gBSQpaC+HjZrG5tt5BiwiubPfFASf6TLBLAvY4ZlJjQ/uYFKsN/yAQIpfFBRsHR+0rbrz8Aq+/KeNjJOGOA0T66HWqFJpMceGq6rdQhdTBOPJSF9QJ5pqVruYqtznFY/Ppoz/LlMJSUIck8I1YFXP8haWcDxJcPNM5dISx50gqDqnOwc4C+VCU1+f0A/fLPRYgPN9NHRhzAcm8vwIsOdvgpEV8JWLpr8RTTsgTTUVUHkvlSDYrG8DmWDKgl1dZMJSYbiDapuBPXoY5aGlPbmdtANVFgf6YeeE24AiREcFFvJNMIx7Vsw/YVOEPfQsG+9BzxPsb30fe+zE9yCpKmJIYXwUxFBMcXB6mHHXWR5OpnuW/Ap2OMhlUNDj1GbRmCVnJPDgA6CIy+AWc9q5Db5JtYSpAbgREYwqG87jBhY0kXgDvcXmagltvACK/lnfWic34noio7Mdm0JnvtHxdjEe7ywPrsW4uH8LX3oaZSTfIZqCx3B2R6RqipeTucgJVwR1b4F+0WD9+Ucv2SBylor9IoQf312/JcUKNiRepq9AeZTsdQxIbDuCBMBEs15Y/zmauoLh+9Qn6aeiG+gkmHLAI3spSXdC8fGepS/+DKh6J6Y7QfzjjBFnn6eJhtLVbi4Gg47ATEY3obzTpUrtbX7jyBLd1QuHrjXHIOZbM33K1L+FlATOJ72rC1Ug+3U/k4RA/FJCi2OcvypjKUzRPc+ylwQLkVvYSlReZ+caqz0Tskh4Y6j+OmD3gfcziy2WGobo1DdfLE6E0MLeZ35R6cSBOkucAm
- 2rOxcWkH
- xe0GA6ushIPoBMX/uBdbwyLg40FLWpdwqMm0xAZiRgUrH3NQXLf6hk0q4C87GfYSlqcf76YWrRglAGe59o7jHDdlCiUWMnSP0YEyeKDinOC1Lu5HZC3S3sogKV94RXUctlD99XfaxxV4rRLhVsXThdAVvWLitzkSm4mdXEQlo40/Q49EjzGxxEfJbZ6cG7mALRZ1xGkubyMs7qeHMNh2pU0rn5M2GQT2oH8wC+Eok+CHEJqGJun5Uh6DdPEGVrarbQq99irVdfHr0othp5iP/etG2/efxq3hvkAchvbVdtfzOMZTiHqdVRsj/e5h40JAuy6kKTf1uyGY7ee0bTCPHdcqZUjj7fPqsIGyhkCnFdvHRpH0+ng5asela4UpGw2YDVbYBpsZ+rq7PqkNZv/ezUxnRjQ==
+X-HE-Tag: 1767806348-561207
+X-HE-Meta: U2FsdGVkX18UrwRclau6qBskh6zyqpP9dy71uc/abrMSnR4hF6+KEIGIlHqo3/cNWnSFX0jhMjQ2zHPX1MGIX4WI5v6hrDAFFtD9D4LSPtLrDWhuKxfAzUhgybMWnItMjN1sdVEXNZo2+hQK7LlkOsnx3Iti+xje04SmpkHYvYUDGIwAZCv2Zuifww8GUnOwEzycBjziyGWf00ZfWSVxMiZU/2RdSEpirAsKbsh40uct2SnJ+2ZEOI3sy61ejnHvq7/YlaLAaBdjLFvlzl0YDVohlZ7MF+Lp1oEyFpEbm88WMI8l1Vi6TfaRKlsW2MW0v/9ShgNCHLl1FArG4sHNcR+x8zZ+7WFPcJV65P4WN1RJtXTrwbpTuRm2f4DL90Udoe2xqwO1i3QCxoimYu9BRPoeEXehTTFkNZgJz+PPlvOANgmslKTgLeVklw9KBysDLrfFf2mWSdSz91q+qbap7Mpj5f/pDaebOOOLh20c9aqE95FJ33XJYCVRwNpSV58/ScMjKC4qqzsCGjdeGroby3DLzKHwWKmkEYLmd6ay+PXZHLcIkb2vrjnmL76LQi+XskBMvvlH/QR3Lm0U2CfgVnyewrSGGMFHkBoKAuplpCuPXGvBeuy/XaxjytJhrgeu7kR+OX656LspZuuJ/cLfStLMR1MCRUS/d1+etCr8oXt92MfgGR3to4YhnEmAT8LY54YaC9ErRUXJ3DEjzecrm/w1WllbgBVoTjqSycTY5yT/B0oPdhlGZpiEYufzzgLjv594NCEy9PHxSnwvmXAoTnDU4EoN9JYWXKPUtxltycMLmM4BZZ7H25WmVXEvdRrCsdJW19SlmM+bLolhFKE9Xoy7Xsy4H85aBKvlpIQc2p4t+fjL1Z+HdxyfQgrrkWmp52lUOWVHHXzpGq2F2i+3MHKQQ5GkieLLqmHMa2PLy468kcZMaIkXY3ebMslYX9QSfoWiaK9GMg+/vY2phDo
+ cX1tpcVx
+ 8vLYOjV3Y9WZX5RIx2WVzY6AtZO42kz1reCdYxh4/paXlSmwwVw1tKhdQ2+e3JXfAqtv8Vo42ITxeYnQTJMLGdUrPQa4EuKHtBYUvIBoK8O+XduR8VsZSNeZYWY2K1gdi2EV8wtFOXoZIwnR/VHHX8r3w9fxayypZkiBvIKS32ay1Q/n+4HkPRSKvJZJpjI1/yZgwxN3j2MiNt9EVicdeQ5NqD+vtTefhR7GNzKI9MwPkMdMgRRCV1eXKbJZIQ40Q+nkdS3KY5Nu2SKZlati9JsTWgKXAs64EYJr1Mlr/QU8FBpePjTOv6wKZZN2XdNl9X4qLOsE1ySGQu8h/SXGGIs+CRCDivEHhBV3cvhepEDmvAi11z3qBscar9emtfzCntHSzuCo3AVdmvlOdt49OHQHCoA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,7 +127,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 07-01-26 13:47:41, Hannes Reinecke wrote:
+On Wed 07-01-26 16:09:34, David Hildenbrand wrote:
 > On 1/6/26 20:49, Michal Hocko wrote:
 > > On Tue 06-01-26 11:53:30, Gregory Price wrote:
 > > > On Tue, Jan 06, 2026 at 04:05:48PM +0100, Michal Hocko wrote:
@@ -146,14 +146,34 @@ On Wed 07-01-26 13:47:41, Hannes Reinecke wrote:
 > > 
 > > I know of policies to online newly added memory blocks but I am not
 > > aware of policies to re-online something that has been made offline.
-> It's not a policy per-se, but rather a udev rule (which one could
-> argue _is_ a policy, mind). There is a rather long-running SLES bug
-> around this if you are interested...
+> > > > That being said, rather than movable_only, should we have a mask of
+> > > > online types supported for the mem block?
+> > > > 
+> > > 
+> > > I briefly considered this.  I went with this for RFC-v1 since it's
+> > > fairly simple and because movable is really the only zone with hotplug
+> > > guarantees (any other zone makes no hotplug guarantees).
+> > > 
+> > > It's also significantly more complex of a change for questionable value,
+> > > but if people see this as the way to go i'll happily pivot to that.
+> > 
+> > Sure, I wouldn't push for more complexity just for the sake of a
+> > theoretical extensibility. And I have to admit I have't tried to a quick
+> > PoC to see how complex this could grow. I was hoping this could get into
+> > a simple mask for online types with default MMOP_ONLINE_KERNEL|MMOP_ONLINE_MOVABLE
+> > and special cases just choosing one of the two and zone_for_pfn_range
+> > checking for the compatibility with the requested online type. But I do
+> > appreciate there might be some obstacles on the way to achieve that.
+> 
+> If we want to go down that path of failing onlining, we could likely do
+> without any core-MM changes: dax can simply register a memory notifier and
+> fail MEM_GOING_ONLINE of its memory with -EINVAL when it sees !ZONE_MOVABLE.
+> 
+> That works, because online_pages() does the move_pfn_range_to_zone() before
+> calling MEM_GOING_ONLINE.
 
-I am aware of udev rules which automatically online memory that is hot
-added. But I am not aware of any rules to re-online memory that has been
-offlined. The former makes some sense while the latter makes very little
-sense to me.
+Yes, that makes sense as well and it seems rather elegand way to go
+about that.
 
 -- 
 Michal Hocko
