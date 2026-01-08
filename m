@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18532D1D48A
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 20:39:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9515CD1D48A
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 20:39:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 670EF6B0088; Thu,  8 Jan 2026 15:39:13 -0500 (EST)
+	id E025F6B009E; Thu,  8 Jan 2026 15:39:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 649176B009B; Thu,  8 Jan 2026 15:39:13 -0500 (EST)
+	id DD61A6B009F; Thu,  8 Jan 2026 15:39:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51DA06B009D; Thu,  8 Jan 2026 15:39:13 -0500 (EST)
+	id CD9B06B00A0; Thu,  8 Jan 2026 15:39:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B0916B0088
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:39:13 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id BB86F6B009E
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:39:17 -0500 (EST)
 Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E3EE41A8FD
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 20:39:12 +0000 (UTC)
-X-FDA: 84309961344.14.EF3A347
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 242CD4000E
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 20:39:10 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=rJ+tcba0;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767904751; a=rsa-sha256;
-	cv=none;
-	b=nWtFN4mt9WyqAN62YsyZmCyippfeH3TKdAXuQc3voHE5CvGxA3sbnWlVEFxV207y3FyV2u
-	9bO/HRg4zTZgpqm7cK9US/TBqrHgtcACytGyvsW+vENUFTRUaJa3tmqkxhU97h/RINjORp
-	45XiTCjLZrokdVLgWibGJVH2MMLSkkU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=rJ+tcba0;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7B4971A029D
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 20:39:17 +0000 (UTC)
+X-FDA: 84309961554.14.6CDCCCB
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A236A180002
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 20:39:15 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=h0z57Wzu;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767904751;
+	s=arc-20220608; t=1767904755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5OTZsz9YEfzZ2R8Vdeqp1RCaOkKgwxKsmSu+J9FA9fQ=;
-	b=rZvawyz3hNilRLTTOVuOLf2gt8RkDKpZi1bo6foxEj7hhB+O0fyOUwI/42TgBCqsgNh4tV
-	E/gt8tAYsCMx0eph4Zqy8I/UW54PizV9gRhNGKqZZrrpaTn74jz767rrXVtH7bpS4O8Emj
-	xy7ALLWdICX5caH+sLCV9V4sgnqYySY=
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4fc42188805so37635931cf.3
-        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 12:39:10 -0800 (PST)
+	bh=hbAJPMgZOoJSjKjyh3GK6UyuoBx+8LBWNLKG00C3DPA=;
+	b=HAaSQfEgnICZ2XLw/gKKtPPv9zTey6LILZrk7ZSJaRmMlNZ828AwOCjUJaQkDJGGl8fXzJ
+	ozpgk6nUNW89bCMcY1qedXCzuGwdlWK02aRBNMa13BqLBr9z0ihZCD5qk5Ubyn/VJgS0Mi
+	LqMRNTsEQ7Nlu+4b902dfRB4We9RNko=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=h0z57Wzu;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767904755; a=rsa-sha256;
+	cv=none;
+	b=eOLwcMp87GGQCzJUd2cP9EOK8SUBh0hF2+b2Yyz17WJP+UU46/oJBqfYow8NoC9nIp/liZ
+	41rB47Go3h9/fNUhPlkj93wEr7q9w8tWXsdJ65ohNFM5IwebP/lM3Qgug6sxsSkAXc3m5o
+	FQOU6/orhzuuC/Zb9awfJeRmgyopdIM=
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-88a2ad13c24so32552186d6.1
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 12:39:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1767904750; x=1768509550; darn=kvack.org;
+        d=gourry.net; s=google; t=1767904754; x=1768509554; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5OTZsz9YEfzZ2R8Vdeqp1RCaOkKgwxKsmSu+J9FA9fQ=;
-        b=rJ+tcba0IhtX1A/g9wTstWh5TqS+Dwl52FlR1TRJ7tp1Th/PHXXJXb2s5Bvqi8KpEY
-         18Gl+aUlhf7ySjo2alN72ngtgkyn9gksPGplfOyaUFCDUbx9Ha9f4uVzLS6Lsve90bcY
-         Hd1woPTtjVgCw2zr9oXD9Jf2/TQwOA/ApGahq9osYL/kPVSw5la6158QHi9KtaI3YYO+
-         atqOm5Hf0aZHEzVyFGuCgK2S9/1igr0jLmZP0nGa2ljTEso1KvCFz9qTz6Tz6vGsuzDe
-         93AysGN7QtZurej/ATfdgdxRm5Lk3H0JQOcQyxEZazSHNU5O3+UaPteqc+Bcb4QxwGCO
-         rmRg==
+        bh=hbAJPMgZOoJSjKjyh3GK6UyuoBx+8LBWNLKG00C3DPA=;
+        b=h0z57Wzu/W3ktm2AHpf13tOzBIJTa0R+fCyy8EjkUECvqdauRhiz2Q8V8iimtRgkdA
+         YUornYuAO62QPyhOIO1IKcFNZinQjAAZuW+qw64Y6zpzymQdyS4n9tcSApABY4n2J6V+
+         qY+3SfLq2MiVZp5Tuay61P1WuuOYegZUpMur4S5LAebK2GVFbYTwnD5jq85ARb2t8w+n
+         qSRG2oyRGySRz199LvWQJLv5KmwP125lpruZvUmcskK16jNZ409+6vXLvDZerWjBH70C
+         xWNpYNo0g9njJSUC5VSdw19SlCyrIGGHuXpIbP/QOjZJAHSCT1iVj205796OEzbdPoFG
+         Cyaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767904750; x=1768509550;
+        d=1e100.net; s=20230601; t=1767904754; x=1768509554;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=5OTZsz9YEfzZ2R8Vdeqp1RCaOkKgwxKsmSu+J9FA9fQ=;
-        b=w7xK9PzOavbNflupTLY3G+jtUKBXpU6ootnn6YwmOtqatCqZWkaJziajqpugsPdZZE
-         apt7Os8xF8K1MFb4IqpntJClQEoXHVizYF6gn6rTHsENYmxx5Q7df62rWw9odQh3Wx5L
-         tEU2NGdGk7Q1kqguLvwoh2Riej84MU/kOEQ1oZbPwr4fARsbr1itZPi6TDgfadvVZ2w2
-         /AV+Xzwju3WH3IN4L42ty2KUI/YBBMBiFyZLSvddifYh2lURvm4IWNesrmTSVvFuqAQu
-         xWoWAWehMZRcQ7zdqDu4a/CobLlAw8qt+gYL+11NsrcotreRHa/kALss3ssg0KcrUHSO
-         28xw==
-X-Gm-Message-State: AOJu0YzhWOnJI+zUnfs3aXLudY0MHJFXLFSQnMY0bBAFwHmLjMFbhEkM
-	JXQ9UhOe9+OB2zlleM1xH/zi3eXmqf97URsG10JsV5sdSjuLx3xVKQ+JDsNaZjCGE+AMM+F+B1O
-	7/gyG
-X-Gm-Gg: AY/fxX7xcXMgyljJiv96IDasJWs7GxSioSBVOwLoTnFdnvh3eASnyIYQoOZ1kWw4+kb
-	buJD0SFSBVl4mf9Y2nGoewBnMKa6xy35heKBhplUedyKh//JwUEVHAkLGummjKcDPioVreFZKax
-	//M/lCRmJGJOYnDwZKuJaNfk+P89c7JMe7injuFAGzg9aDMbES2Ki8R24OpfYJ09oLyltqdLeNv
-	QCRzgeIh1g14vJPdWJ2TgGGLJiGMFK3B6iigUkWFWR4kTO70tER6peCybmD92iSpU6WPnU83gts
-	M39qhRiyY8Fnl5mVpqMtYqqtT1J9BYYFJep8O5LwWWijXLEbaj+LyYMkUFw1qmHwH9FZLbJRpGA
-	keukRLF0ISjUIST/8i75vcnUfqR1jIEICcgr9GDGNmg7ffNcg3IMB/WIyVB8J5kYNraeTYWuu+P
-	XBB0ONTtXGOMaClQ1xpjs34gwYHLXjrrILRuTYFu0aRkPrRhz8+0CIVMR494/s8qwvyv3hwBQBe
-	cQ=
-X-Google-Smtp-Source: AGHT+IHjrJedObjQLnkqlATuK0iiTd2ReDzXEhDuZpiEE8iScOlIeLDoodxwtlrvEQjvQ0kp+C8/HQ==
-X-Received: by 2002:a05:622a:554:b0:4ee:26bd:13fa with SMTP id d75a77b69052e-4ffb4a38073mr98924131cf.80.1767904749843;
-        Thu, 08 Jan 2026 12:39:09 -0800 (PST)
+        bh=hbAJPMgZOoJSjKjyh3GK6UyuoBx+8LBWNLKG00C3DPA=;
+        b=RFIsL9gU/nfjPrqIKfC9oSSESsW7z7AyjXJkKplCVv/vUa3WiJzsxI4T+KvtUCd8g8
+         w7CMxtodePMZkE7NnP86cG+zLzJoNBNgXSF/K/5k4+IZwVSEiOb+2e8i+GhBtwj42GWR
+         Wkxif/tZig4ENnc7uVlUGGe64756ssaohSbDwXA05h73bPTcA8C59bmJSiZr9BdQgCwl
+         ZW+aDvFvOCNJlcn3ZW+tyFbC1pmtk3uI5M2DnTrMVeMoJPa+iabL/RBpy08KKKRyP2zf
+         NmdM2vgfYucDRPweOzv/CauiydAbJ5IpSHCd03Jkpvne9Ql4vjYGjq9wLMWlc2sCPPJC
+         Ov+w==
+X-Gm-Message-State: AOJu0YxEq+woTai5AvzacX3i4rHPbkN9p4g4rlqjqz85PrZKlRakJXDQ
+	gsDhJOydVL0QeetlEmv5NsxerdibT5YGqpf0/OG8gigSeDTS7hWDCYBYmTerMLc3kbDFSeWD74M
+	KwBqm
+X-Gm-Gg: AY/fxX6suMp5CKr0fL7wkIFHWRD0ynvKMHTrCCyMsnHqesppF9VB/R4jX/CAqnuUYjI
+	IlVCFjgXcsM8DzZqqxkfoEJiXTHEuozN8BR62GCw/V2iybeRBF7okJwhc2icJUY9IS7DbBlyHhX
+	dTRKsiw1PwjfJDvfAIkvf8lF//gCAL+7Oa6MhYhtJjGgQIk+pUJu7f14/fEMU9eZUHHTlmfVvNe
+	5EQP9ZTtftG8soz/vRL4QjJLpuS6tC7nzLxkA9lHCMSsyc1P+XT7IXSUoYOENXgiGIH34z+oT38
+	63Y/eoVncXRhPt/Tx+mGWVnqXbQOMfAWGSUpCx0gNXjd0vHmWHrwKJ07TVOC1HND9JrOyBT7CzI
+	3iOy3B8AotpkxPn31ifNG6eEMpQfXPMIR39s+oRhLDcQMGSaF+89+mAN6/1gHiJe6OAl7mOOWi+
+	I6MEsoonIAootO5PRAwrYjfczN1hkgFDjenwxy57crtqWO9D+5g8qoOQV9jhPtACqkcFzvlI8FN
+	wQ=
+X-Google-Smtp-Source: AGHT+IETJUC85zNJ1zZIUFzv9QwdWQGaYClNK785q5YOPJAvYLx3d5ypHJ/HCEokjoFg0FJKBiPjgg==
+X-Received: by 2002:a05:622a:124f:b0:4ee:24b8:2275 with SMTP id d75a77b69052e-4ffb4913960mr88384181cf.1.1767904754417;
+        Thu, 08 Jan 2026 12:39:14 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770e472csm60483886d6.23.2026.01.08.12.39.06
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770e472csm60483886d6.23.2026.01.08.12.39.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 12:39:09 -0800 (PST)
+        Thu, 08 Jan 2026 12:39:13 -0800 (PST)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
@@ -153,22 +153,22 @@ Cc: linux-doc@vger.kernel.org,
 	cl@gentwo.org,
 	harry.yoo@oracle.com,
 	zhengqi.arch@bytedance.com
-Subject: [RFC PATCH v3 7/8] mm/zswap: compressed ram direct integration
-Date: Thu,  8 Jan 2026 15:37:54 -0500
-Message-ID: <20260108203755.1163107-8-gourry@gourry.net>
+Subject: [RFC PATCH v3 8/8] drivers/cxl: add zswap private_region type
+Date: Thu,  8 Jan 2026 15:37:55 -0500
+Message-ID: <20260108203755.1163107-9-gourry@gourry.net>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260108203755.1163107-1-gourry@gourry.net>
 References: <20260108203755.1163107-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 242CD4000E
-X-Stat-Signature: se644kzdmk43dztw1yqrysq3e8p78hwz
+X-Rspamd-Queue-Id: A236A180002
+X-Stat-Signature: ri1xu8f1w9xj1qrnkwsip7crqd4bxkzq
 X-Rspam-User: 
-X-HE-Tag: 1767904750-57759
-X-HE-Meta: U2FsdGVkX19g/HTJfnn3NL9uaewRVXeJd1m6DwryGdYL31Vy6CppIeF2zy58u/GeqB90tmJxusQm7sKBZ8K6BBEqwWW1/JjunFUi5ZTvAUYT4whfrPJtVC4xCQRgal6KL3D+Os7R2HP1Z8AF4CLh07kjmhtU1tyy50Hl/ljL9L/ToDtvsYtd2oJBAcdzsUkzg4CiJKAFJdTIp5ve8vH75/o2Gj7juxG9zH2iKKKGFBeqc3mpI73zy1h3P4pB81YI71R6Ibo9oXnZjCUbrZ9iIBEMvSB0OHhUgWUYFp8T10zfrlJixUwYG1JHjzUqUs+g0sNlIXzQ1Pi9U6mPGlz9D/5UOvD1pKfCS8d2nIscRYfBbRlJO8MsFvJwCmJ72rrSoRIJxFc05tSKEA98jf9eMqCG1kR1j0zCh2YRfQHswjkBiwA5f4WyqlnbUzfHI6ags6KkAtsIkY2Stxa2PMsIQstzAmcRLij9vNYWDHvjpHrpOCE3VqwkwIfxdTLnVyTocXA7HUtMGzUaic0SR4fRDewFZuXJDz4O7Ai98Jk8v1MA1RCb3A6jQDEbdqxCFt2XuESlmxvy07h1lnWU9swlWxD2lzIh4J5MW3UK1TFhV/D9Hm03Gm+iAi1ZzhEAbEwBp0P5rCne1cxyNOpM2obEW89+jRYR2HE9jkzZvv7/Y5pIPFbk85C3OyAGf3khhPgnf8badcyWbRaGBbtC4mpXXF2r6b7omN2HH9KQ1wuCx6QYyYvoD6Yj5ioOeXW/JmXYqTcT385WUEcrKbKkRSiZRiaDKJLY4glHlzmxMfZJZSmBxsfdPBH9Sik9Cluxp5U56o/Kd2LbHngwZll+Ak/b9kq9nJtiHiw16gGVaTIoIIaow4Bd8m7q2Mt02/DPVIpV2OOpVjgs1mIUT0+medes62UcLBwwpUpEngGq8F7R9IH6rxYHYOtYtRjrCenySlBRNViGWwG+v2oNx4uT2Al
- XkKIHvNC
- KUUS0Pw1nUFuH89Ehm4YbxITD5OwOyWN5HXGdYmkmTwYM1C1m2Y9K5ws7MFbLmFKEo/b6UfPfMDGmqCwC0FNon7ztEIcpugsSWoqa6QJ0DBkm3qeVOJkTwdnkQUCQjY8zxvmBebs7yjVJ381WV3oT3nbO5AhYf4f7XR6Tq6DGP5WLozGEhj3uO7wbPfj43sJTlbvTZdDj9+lDnb0yyantO9cDjIQfY7ZKs9Fz3SHXjtrACGb4AK8lQZNVb2hcUZx4vsjU8dtZf/f8jlB2hMX3WPojaF6zKcwPaNyESQJpztQHL3jyqzLVL2TKUwK6wLm8t8veevf7sbOxMNrBeoSpw4HR1f4nz2vVWOyzWGuyNYYp3ecqMg2GA4r1Wg==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1767904755-646498
+X-HE-Meta: U2FsdGVkX18r1a3TuozQ4Vm7bJEVADe7ty4+AftzM/laXmS+gNWGkFjPa0R1Su2oODBFfX3oSa1LaZYpWnMlk1ZmKDyla2PGxfPR1RJodB6APtmzVN6qQ22lcOKxyqeAqes3FMscAP70vJMylRPLkwdHnD6EJOO1luYL0r/T3NBX6zVQRqOoCXZsdS9eG5lrb3nOF8X+T3bUUUj3Hk/zzpYOQCL9jGhclWCs+V6lJHJTwW9CVcoV14ZynoPGQ1UhN2JrdPsCcGP2Oj/+oeFI8Xy0ggaySQyT+4rJzM7TzHYM/fB+72YAOtIYkXqrUyXmZ1UI02RS+eXZl7lU3QQ5YjexWP5rPH7HEBK55DzuFTkXb5dvGNZGHAUrTqrnh6IlzNJ816yMASAf3SwUrVAl/sFBpbjSdMof6gaWLVxuRSqq/0hNKcW3C5vPcZvrAoecOZp+5pAZpd7pDMGj9GqQcdGVMnJV5LGzWEoDt2u5iUjWEbh2wO5G10r4iv5F67u/KnrrJxuxZE5NoL+npkARIRW3r4mNQxDPsNlhd4qtMsvsxeugpDzIwA43KWYye6oBgOTcLXO82pVMMIRtJB9tt2V/23tnPTRbhGRUllkaaeKArfi93AOWtWXEpSXFrIfHj610JPS+mEqjFhZUEIJemHN+ZODxG6bZzczKU0l2udI5V7DcHia+PFt1a7R2eYbAHh8uRQvR9QQF0PRMvoEWN/TLF/pFhfzGvbRnGar/z6f8MYqWDt0t1a1vs0SK4L0vqQj4PbVr4fsBLMi9yGZDgJjQwYbLl6HXjLOG1wkK/+4A3EY/mg+oyLbwMpxiJcMhbZfUPI0fOGgQD5Dted/1DJTDLSjKGGEdx0NFl1/A/kgvoOV6/4kQixaYPAvVbbVdmekLgnKny+HSQ6VmWVxJqTElrQWEAxzI28X881e1sqyMGrKftXOH1ZUDLLIdVypSuTASHqLNa2813MMfR0Z
+ CvBD/3v4
+ kp64KwB/C2G952Iwa2SyVKZPt8kE22np+g9fQvQjtwGF0W2YE+CMWH/QFyuHcmlIDonLCy3jCG9x61BUuAcWHIrB3Wpnzj9D3e11cQ+41wqBht2yALd+aQ0WSlvGYUG2GKcKvY2awINtvX9z2JcN6rI7faJ5osQ1XBd0/TmnW3DUPvLCsv2opfIKymCCwo7bW7L8HoAPbLLCIKKu/zd/LB3uyr2OYZtDflyAs5a0ZVMYrORkEn23pJudpPe9YhHA/RXE766deL/14iyOJqe517BX17eEHJBcSP1rQimK1SYCqa7GD+sY9bE9VOM+wXOsCuyBl5lI1QKGHcUxhdeaZ2O68X7rHltBCzJ8tOA804zPg9ePwM5Egk4iyEE1C/rNq28a+S7DvwMGntiunpFj+w1lobaFF/Lz3QKYlC8epcV5C2J8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,227 +177,245 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If a private zswap-node is available, skip the entire software
-compression process and memcpy directly to a compressed memory
-folio, and store the newly allocated compressed memory page as
-the zswap entry->handle.
+Add a sample type of a zswap region, which registers itself as a valid
+target node with mm/zswap.  Zswap will callback into the driver on new
+page allocation and free.
 
-On decompress we do the opposite: copy directly from the stored
-page to the destination, and free the compressed memory page.
+On cxl_zswap_page_allocated(), we would check whether the worst case vs
+current compression ratio is safe to allow new writes.
 
-The driver callback is responsible for preventing run-away
-compression ratio failures by checking that the allocated page is
-safe to use (i.e. a compression ratio limit hasn't been crossed).
+On cxl_zswap_page_freed(), zero the page to adjust the ratio down.
+
+A device driver registering a Zswap private region would need to provide
+an indicator to this component whether to allow new allocations - this
+would probably be done via an interrupt setting a bit which says the
+compression ratio has reached some conservative threshold.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- include/linux/zswap.h |   5 ++
- mm/zswap.c            | 106 +++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 109 insertions(+), 2 deletions(-)
+ drivers/cxl/core/private_region/Makefile      |   3 +
+ .../cxl/core/private_region/private_region.c  |  10 ++
+ .../cxl/core/private_region/private_region.h  |   4 +
+ drivers/cxl/core/private_region/zswap.c       | 127 ++++++++++++++++++
+ drivers/cxl/cxl.h                             |   2 +
+ 5 files changed, 146 insertions(+)
+ create mode 100644 drivers/cxl/core/private_region/zswap.c
 
-diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-index 30c193a1207e..4b52fe447e7e 100644
---- a/include/linux/zswap.h
-+++ b/include/linux/zswap.h
-@@ -35,6 +35,8 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
- void zswap_folio_swapin(struct folio *folio);
- bool zswap_is_enabled(void);
- bool zswap_never_enabled(void);
-+void zswap_add_direct_node(int nid);
-+void zswap_remove_direct_node(int nid);
- #else
+diff --git a/drivers/cxl/core/private_region/Makefile b/drivers/cxl/core/private_region/Makefile
+index d17498129ba6..ba495cd3f89f 100644
+--- a/drivers/cxl/core/private_region/Makefile
++++ b/drivers/cxl/core/private_region/Makefile
+@@ -7,3 +7,6 @@ ccflags-y += -I$(srctree)/drivers/cxl
  
- struct zswap_lruvec_state {};
-@@ -69,6 +71,9 @@ static inline bool zswap_never_enabled(void)
- 	return true;
- }
- 
-+static inline void zswap_add_direct_node(int nid) {}
-+static inline void zswap_remove_direct_node(int nid) {}
+ # Core dispatch and sysfs
+ obj-$(CONFIG_CXL_REGION) += private_region.o
 +
- #endif
- 
- #endif /* _LINUX_ZSWAP_H */
-diff --git a/mm/zswap.c b/mm/zswap.c
-index de8858ff1521..aada588c957e 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -35,6 +35,7 @@
- #include <linux/workqueue.h>
- #include <linux/list_lru.h>
- #include <linux/zsmalloc.h>
-+#include <linux/node.h>
- 
- #include "swap.h"
- #include "internal.h"
-@@ -190,6 +191,7 @@ struct zswap_entry {
- 	swp_entry_t swpentry;
- 	unsigned int length;
- 	bool referenced;
-+	bool direct;
- 	struct zswap_pool *pool;
- 	unsigned long handle;
- 	struct obj_cgroup *objcg;
-@@ -199,6 +201,20 @@ struct zswap_entry {
- static struct xarray *zswap_trees[MAX_SWAPFILES];
- static unsigned int nr_zswap_trees[MAX_SWAPFILES];
- 
-+/* Nodemask for compressed RAM nodes used by zswap_compress_direct */
-+static nodemask_t zswap_direct_nodes = NODE_MASK_NONE;
-+
-+void zswap_add_direct_node(int nid)
-+{
-+	node_set(nid, zswap_direct_nodes);
-+}
-+
-+void zswap_remove_direct_node(int nid)
-+{
-+	if (!node_online(nid))
-+		node_clear(nid, zswap_direct_nodes);
-+}
-+
- /* RCU-protected iteration */
- static LIST_HEAD(zswap_pools);
- /* protects zswap_pools list modification */
-@@ -716,7 +732,13 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
- static void zswap_entry_free(struct zswap_entry *entry)
++# Type-specific implementations
++obj-$(CONFIG_CXL_REGION) += zswap.o
+diff --git a/drivers/cxl/core/private_region/private_region.c b/drivers/cxl/core/private_region/private_region.c
+index ead48abb9fc7..da5fb3d264e1 100644
+--- a/drivers/cxl/core/private_region/private_region.c
++++ b/drivers/cxl/core/private_region/private_region.c
+@@ -16,6 +16,8 @@
+ static const char *private_type_to_string(enum cxl_private_region_type type)
  {
- 	zswap_lru_del(&zswap_list_lru, entry);
--	zs_free(entry->pool->zs_pool, entry->handle);
-+	if (entry->direct) {
-+		struct page *page = (struct page *)entry->handle;
-+
-+		node_private_freed(page);
-+		__free_page(page);
-+	} else
-+		zs_free(entry->pool->zs_pool, entry->handle);
- 	zswap_pool_put(entry->pool);
- 	if (entry->objcg) {
- 		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
-@@ -849,6 +871,58 @@ static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
- 	mutex_unlock(&acomp_ctx->mutex);
+ 	switch (type) {
++	case CXL_PRIVATE_ZSWAP:
++		return "zswap";
+ 	default:
+ 		return "";
+ 	}
+@@ -23,6 +25,8 @@ static const char *private_type_to_string(enum cxl_private_region_type type)
+ 
+ static enum cxl_private_region_type string_to_private_type(const char *str)
+ {
++	if (sysfs_streq(str, "zswap"))
++		return CXL_PRIVATE_ZSWAP;
+ 	return CXL_PRIVATE_NONE;
  }
  
-+static struct page *zswap_compress_direct(struct page *src,
-+					  struct zswap_entry *entry)
+@@ -88,6 +92,9 @@ int cxl_register_private_region(struct cxl_region *cxlr)
+ 
+ 	/* Call type-specific registration which sets memtype and callbacks */
+ 	switch (cxlr->private_type) {
++	case CXL_PRIVATE_ZSWAP:
++		rc = cxl_register_zswap_region(cxlr);
++		break;
+ 	default:
+ 		dev_dbg(&cxlr->dev, "unsupported private_type: %d\n",
+ 			cxlr->private_type);
+@@ -113,6 +120,9 @@ void cxl_unregister_private_region(struct cxl_region *cxlr)
+ 
+ 	/* Dispatch to type-specific cleanup */
+ 	switch (cxlr->private_type) {
++	case CXL_PRIVATE_ZSWAP:
++		cxl_unregister_zswap_region(cxlr);
++		break;
+ 	default:
+ 		break;
+ 	}
+diff --git a/drivers/cxl/core/private_region/private_region.h b/drivers/cxl/core/private_region/private_region.h
+index 9b34e51d8df4..84d43238dbe1 100644
+--- a/drivers/cxl/core/private_region/private_region.h
++++ b/drivers/cxl/core/private_region/private_region.h
+@@ -7,4 +7,8 @@ struct cxl_region;
+ int cxl_register_private_region(struct cxl_region *cxlr);
+ void cxl_unregister_private_region(struct cxl_region *cxlr);
+ 
++/* Type-specific registration functions - called from region.c dispatch */
++int cxl_register_zswap_region(struct cxl_region *cxlr);
++void cxl_unregister_zswap_region(struct cxl_region *cxlr);
++
+ #endif /* __CXL_PRIVATE_REGION_H__ */
+diff --git a/drivers/cxl/core/private_region/zswap.c b/drivers/cxl/core/private_region/zswap.c
+new file mode 100644
+index 000000000000..c213abe2fad7
+--- /dev/null
++++ b/drivers/cxl/core/private_region/zswap.c
+@@ -0,0 +1,127 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * CXL Private Region - zswap type implementation
++ *
++ * This file implements the zswap private region type for CXL devices.
++ * It handles registration/unregistration of CXL regions as zswap
++ * compressed memory targets.
++ */
++
++#include <linux/device.h>
++#include <linux/highmem.h>
++#include <linux/node.h>
++#include <linux/zswap.h>
++#include <linux/memory_hotplug.h>
++#include "../../cxl.h"
++#include "../core.h"
++#include "private_region.h"
++
++/*
++ * CXL zswap region page_allocated callback
++ *
++ * This callback is invoked by zswap when a page is allocated from a private
++ * node to validate that the page is safe to use. For a real compressed memory
++ * device, this would check the device's compression ratio and return an error
++ * if the page cannot safely store data.
++ *
++ * Currently this is a placeholder that always succeeds. A real implementation
++ * would query the device hardware to determine if sufficient compression
++ * headroom exists.
++ */
++static int cxl_zswap_page_allocated(struct page *page, void *data)
++{
++	struct cxl_region *cxlr = data;
++
++	/*
++	 * TODO: Query the CXL device to check if this page allocation is safe.
++	 *
++	 * A real compressed memory device would track its compression ratio
++	 * and report whether it has headroom to accept new data. If the
++	 * compression ratio is too low (device is near capacity), this should
++	 * return -ENOSPC to tell zswap to try another node.
++	 *
++	 * For now, always succeed since we're testing with regular memory.
++	 */
++	dev_dbg(&cxlr->dev, "page_allocated callback for nid %d\n",
++		page_to_nid(page));
++
++	return 0;
++}
++
++/*
++ * CXL zswap region page_freed callback
++ *
++ * This callback is invoked when a page from a private node is being freed.
++ * We zero the page before returning it to the allocator so that the compressed
++ * memory device can reclaim capacity - zeroed pages achieve excellent
++ * compression ratios.
++ */
++static void cxl_zswap_page_freed(struct page *page, void *data)
++{
++	struct cxl_region *cxlr = data;
++
++	/*
++	 * Zero the page to improve the device's compression ratio.
++	 * Zeroed pages compress extremely well, reclaiming device capacity.
++	 */
++	clear_highpage(page);
++
++	dev_dbg(&cxlr->dev, "page_freed callback for nid %d\n",
++		page_to_nid(page));
++}
++
++/*
++ * Unregister a zswap region from the zswap subsystem.
++ *
++ * This function removes the node from zswap direct nodes and unregisters
++ * the private node operations.
++ */
++void cxl_unregister_zswap_region(struct cxl_region *cxlr)
 +{
 +	int nid;
-+	struct page *dst;
-+	gfp_t gfp;
-+	nodemask_t tried_nodes = NODE_MASK_NONE;
 +
-+	if (nodes_empty(zswap_direct_nodes))
-+		return NULL;
++	if (!cxlr->private ||
++	    cxlr->private_ops.memtype != NODE_MEM_ZSWAP)
++		return;
 +
-+	gfp = GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE |
-+	      __GFP_THISNODE;
++	if (!cxlr->params.res)
++		return;
 +
-+	for_each_node_mask(nid, zswap_direct_nodes) {
-+		int ret;
++	nid = phys_to_target_node(cxlr->params.res->start);
 +
-+		/* Skip nodes we've already tried and failed */
-+		if (node_isset(nid, tried_nodes))
-+			continue;
++	zswap_remove_direct_node(nid);
++	node_unregister_private(nid, &cxlr->private_ops);
 +
-+		dst = __alloc_pages(gfp, 0, nid, &zswap_direct_nodes);
-+		if (!dst)
-+			continue;
-+
-+		/*
-+		 * Check with the device driver that this page is safe to use.
-+		 * If the device reports an error (e.g., compression ratio is
-+		 * too low and the page can't safely store data), free the page
-+		 * and try another node.
-+		 */
-+		ret = node_private_allocated(dst);
-+		if (ret) {
-+			__free_page(dst);
-+			node_set(nid, tried_nodes);
-+			continue;
-+		}
-+
-+		goto found;
-+	}
-+
-+	return NULL;
-+
-+found:
-+	/* If we fail to copy at this point just fallback */
-+	if (copy_mc_highpage(dst, src)) {
-+		__free_page(dst);
-+		dst = NULL;
-+	}
-+	return dst;
++	dev_dbg(&cxlr->dev, "unregistered zswap region for nid %d\n", nid);
 +}
 +
- static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 			   struct zswap_pool *pool)
- {
-@@ -860,6 +934,17 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	gfp_t gfp;
- 	u8 *dst;
- 	bool mapped = false;
-+	struct page *zpage;
++/*
++ * Register a zswap region with the zswap subsystem.
++ *
++ * This function sets up the memtype, page_allocated callback, and
++ * registers the node with zswap as a direct compression target.
++ * The caller is responsible for adding the dax region after this succeeds.
++ */
++int cxl_register_zswap_region(struct cxl_region *cxlr)
++{
++	int nid, rc;
 +
-+	/* Try to shunt directly to compressed ram */
-+	zpage = zswap_compress_direct(page, entry);
-+	if (zpage) {
-+		entry->handle = (unsigned long)zpage;
-+		entry->length = PAGE_SIZE;
-+		entry->direct = true;
-+		return true;
-+	}
-+	/* otherwise fallback to normal zswap */
- 
- 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
- 	dst = acomp_ctx->buffer;
-@@ -913,6 +998,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	zs_obj_write(pool->zs_pool, handle, dst, dlen);
- 	entry->handle = handle;
- 	entry->length = dlen;
-+	entry->direct = false;
- 
- unlock:
- 	if (mapped)
-@@ -936,6 +1022,15 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	int decomp_ret = 0, dlen = PAGE_SIZE;
- 	u8 *src, *obj;
- 
-+	/* compressed ram page */
-+	if (entry->direct) {
-+		struct page *src = (struct page *)entry->handle;
-+		struct folio *zfolio = page_folio(src);
++	if (!cxlr->private || !cxlr->params.res)
++		return -EINVAL;
 +
-+		memcpy_folio(folio, 0, zfolio, 0, PAGE_SIZE);
-+		goto direct_done;
-+	}
++	nid = phys_to_target_node(cxlr->params.res->start);
 +
- 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
- 	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, acomp_ctx->buffer);
- 
-@@ -969,6 +1064,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	zs_obj_read_end(pool->zs_pool, entry->handle, obj);
- 	acomp_ctx_put_unlock(acomp_ctx);
- 
-+direct_done:
- 	if (!decomp_ret && dlen == PAGE_SIZE)
- 		return true;
- 
-@@ -1483,7 +1579,13 @@ static bool zswap_store_page(struct page *page,
- 	return true;
- 
- store_failed:
--	zs_free(pool->zs_pool, entry->handle);
-+	if (entry->direct) {
-+		struct page *freepage = (struct page *)entry->handle;
++	/* Register with node subsystem as zswap memory */
++	cxlr->private_ops.memtype = NODE_MEM_ZSWAP;
++	cxlr->private_ops.page_allocated = cxl_zswap_page_allocated;
++	cxlr->private_ops.page_freed = cxl_zswap_page_freed;
++	rc = node_register_private(nid, &cxlr->private_ops);
++	if (rc)
++		return rc;
 +
-+		node_private_freed(freepage);
-+		__free_page(freepage);
-+	} else
-+		zs_free(pool->zs_pool, entry->handle);
- compress_failed:
- 	zswap_entry_cache_free(entry);
- 	return false;
++	/* Register this node with zswap as a direct compression target */
++	zswap_add_direct_node(nid);
++
++	dev_dbg(&cxlr->dev, "registered zswap region for nid %d\n", nid);
++	return 0;
++}
+diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+index b276956ff88d..89d8ae4e796c 100644
+--- a/drivers/cxl/cxl.h
++++ b/drivers/cxl/cxl.h
+@@ -534,9 +534,11 @@ enum cxl_partition_mode {
+ /**
+  * enum cxl_private_region_type - CXL private region types
+  * @CXL_PRIVATE_NONE: No private region type set
++ * @CXL_PRIVATE_ZSWAP: Region used for zswap compressed memory
+  */
+ enum cxl_private_region_type {
+ 	CXL_PRIVATE_NONE,
++	CXL_PRIVATE_ZSWAP,
+ };
+ 
+ /**
 -- 
 2.52.0
 
