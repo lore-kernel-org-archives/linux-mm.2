@@ -4,141 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7CF2D185C0
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 10:36:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96CA7D185C2
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 10:41:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 193D66B0088; Thu,  8 Jan 2026 05:36:48 -0500 (EST)
+	id E82E06B0093; Thu,  8 Jan 2026 05:41:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14B256B0092; Thu,  8 Jan 2026 05:36:48 -0500 (EST)
+	id E5A966B0095; Thu,  8 Jan 2026 05:41:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04DA46B0093; Thu,  8 Jan 2026 05:36:48 -0500 (EST)
+	id D5D836B0096; Thu,  8 Jan 2026 05:41:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E7D346B0088
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 05:36:47 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8AADA8C129
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:36:47 +0000 (UTC)
-X-FDA: 84308443254.18.47E6790
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0FFFAC0003
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:36:44 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=L9PphSHv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EkjRTIoK;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=L9PphSHv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EkjRTIoK;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767868605; a=rsa-sha256;
-	cv=none;
-	b=vR0IrhGVRKag6WLn7p+1MkbEnpJjOnukXHpBCN1rHyqUVfW2MtM4XFuItBYxPqvqqf2Q3W
-	swID6CACUcABARlbXMWcY0otrNclm4tF1lM3RW3n3HwkUUkfZ8t1aA6CJBYiMUaONdJ9cb
-	aVNI4FsGQ3yHgZgybl+woRDnvIwE260=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=L9PphSHv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EkjRTIoK;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=L9PphSHv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EkjRTIoK;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C72786B0093
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 05:41:08 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 56BBE5A01C
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:41:08 +0000 (UTC)
+X-FDA: 84308454216.20.BD66774
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 19F4E80004
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:41:05 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="aYOWi/WD";
+	spf=pass (imf30.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767868605;
+	s=arc-20220608; t=1767868866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y7zhMg4dN+hDANKOVxoNd5LSGROZDwb68O8xAw3Tm4E=;
-	b=7T1K+81tAdsre/7bEahGdYI2Mq9oWikUKhWrVLAW+hCkKIQzaQCWWWUufeQq3x5kft6dgT
-	zRTlmGrNVQSGeBxmBNBL42ZTS+/xNr0SG1zgJBUIw4PBPr164CqAuaYs6md2ZIaO1pLxua
-	/RRJnBtRhidn54dThljOWrj7o/k8UVs=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4EAFA33CE2;
-	Thu,  8 Jan 2026 10:36:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767868603; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y7zhMg4dN+hDANKOVxoNd5LSGROZDwb68O8xAw3Tm4E=;
-	b=L9PphSHvE5aR8dH4x2yDWKzbzE7wgHTIPEJc1LruiiFeoKxe0rptToVkFsCWOKf0+iXdEN
-	BthFIq3+XrP+9YJvLraGvQZZ0YkbXpq/Wy86oN7Xn6hcghaaGXUsDuvybdBQneXBST1EjH
-	KbXkbXiZdrU+WKtZGpBN6oFPEZLh5bo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767868603;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y7zhMg4dN+hDANKOVxoNd5LSGROZDwb68O8xAw3Tm4E=;
-	b=EkjRTIoKt0pWVfhd22UD0qU7RDnjIEAUPdxkd5yjon7tdL6zZE2EbkeRZHDxuClMhzgOER
-	dfJvWLCKhLKlqSAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767868603; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y7zhMg4dN+hDANKOVxoNd5LSGROZDwb68O8xAw3Tm4E=;
-	b=L9PphSHvE5aR8dH4x2yDWKzbzE7wgHTIPEJc1LruiiFeoKxe0rptToVkFsCWOKf0+iXdEN
-	BthFIq3+XrP+9YJvLraGvQZZ0YkbXpq/Wy86oN7Xn6hcghaaGXUsDuvybdBQneXBST1EjH
-	KbXkbXiZdrU+WKtZGpBN6oFPEZLh5bo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767868603;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y7zhMg4dN+hDANKOVxoNd5LSGROZDwb68O8xAw3Tm4E=;
-	b=EkjRTIoKt0pWVfhd22UD0qU7RDnjIEAUPdxkd5yjon7tdL6zZE2EbkeRZHDxuClMhzgOER
-	dfJvWLCKhLKlqSAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 353253EA63;
-	Thu,  8 Jan 2026 10:36:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Erf3DLuIX2niXgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 08 Jan 2026 10:36:43 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id EB010A0CF3; Thu,  8 Jan 2026 11:36:34 +0100 (CET)
-Date: Thu, 8 Jan 2026 11:36:34 +0100
-From: Jan Kara <jack@suse.cz>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Jan Kara <jack@suse.cz>, akpm@linux-foundation.org, david@redhat.com, 
-	miklos@szeredi.hu, linux-mm@kvack.org, athul.krishna.kr@protonmail.com, 
-	j.neuschaefer@gmx.net, carnil@debian.org, linux-fsdevel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-Message-ID: <fhwhqvzs6rmn5zbazbbtcdr73tokykwy63lrorv4q5azbdg4hz@czkgoperhk4x>
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
- <20251215030043.1431306-2-joannelkoong@gmail.com>
- <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
- <CAJnrk1aYpcDpm8MpN5Emb8qNOn34-qEiARLH0RudySKFtEZVpA@mail.gmail.com>
- <ucnvcqbmxsiszobzzkjrgekle2nabf3w5omnfbitmotgujas4e@4f5ct4ot4mup>
- <CAJnrk1b-77uK2JuQaHz8KUCBnZfnQZ6M_nQQqFNWLvPDDdy4+Q@mail.gmail.com>
+	bh=4TTBroKnN0eLVOHeCy8YsD1wmF7ealrZ7/OBBXM8gtM=;
+	b=QaZTq8U5EXatOeWYQk1FFilAJddbXs1GgnS/RG58qZBfHeUyzYvvdhBImZRNZmDCbfd6/A
+	pfcMDMZmrsei5pASgJGhaZ3CB80y+6Ri8MPSQqiZFqodKey/iFXo63s6hg02Q97r7hxqUC
+	tkWPIg/CGRBPaU6rEKyNdTwssN/hfUs=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="aYOWi/WD";
+	spf=pass (imf30.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767868866; a=rsa-sha256;
+	cv=none;
+	b=fZZatyTniguEoBBBq3UDBpzh4QAKBpoYuLs3VYK3rZKrnvEHiDC3W9LWwynAKG7zok64Kv
+	Nlvk/+Nre6UtnXbC/3p6dYVr28k7HJyTy7b/bqS9y9FxpA8f/wQ7CsOF2OegXcOgif7vET
+	szREYbaf/DnQtzAa2aPj56BaZIbYii0=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 607K106Q003588;
+	Thu, 8 Jan 2026 10:40:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=4TTBroKnN0eLVOHeCy8YsD1wmF7eal
+	rZ7/OBBXM8gtM=; b=aYOWi/WDbsEI6QFGhzuBiObqdHsOaTK2Kc3HcoQ+zoovzX
+	2r75nvofMVCPDwbPyv5wPkaeODzKnO0wyvu+4tP59Gq+5oHSnCgONreEStsY1F09
+	RHWMjyc8yvGTApGtmyD3h3ro6ZeQOnd9Ad2DcmKJ15HIY4aQ/F2tBQ++SYvryniS
+	2oyA4uMNbrAYQCU41sot8qjPBl8ZbtkNlQW6pLXLE4KwKj1ro2Pj4f5Ezufwe1QL
+	EAgGcv3bIthcBgnBEMak5xqMRF2eLMycOp/2vLycVyceIsQY1Vu5N522lNqwSOpk
+	d/QbiOURcW0uEjCrtbktJCiAroKlkd3CjM1q17Cw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betsqdssu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jan 2026 10:40:54 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 608AdSul025029;
+	Thu, 8 Jan 2026 10:40:53 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betsqdsss-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jan 2026 10:40:53 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60871mDp019411;
+	Thu, 8 Jan 2026 10:40:52 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfg51e0yq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jan 2026 10:40:52 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 608AenKO39321866
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 8 Jan 2026 10:40:49 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E700C20040;
+	Thu,  8 Jan 2026 10:40:48 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3E21520043;
+	Thu,  8 Jan 2026 10:40:48 +0000 (GMT)
+Received: from osiris (unknown [9.111.54.4])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  8 Jan 2026 10:40:48 +0000 (GMT)
+Date: Thu, 8 Jan 2026 11:40:46 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: will@kernel.org, aneesh.kumar@kernel.org, akpm@linux-foundation.org,
+        npiggin@gmail.com, peterz@infradead.org, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        arnd@arndb.de, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        linux-s390@vger.kernel.org,
+        "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH] mm/mmu_gather: remove @delay_remap of
+ __tlb_remove_page_size()
+Message-ID: <20260108104046.9857B79-hca@linux.ibm.com>
+References: <20251231030026.15938-1-richard.weiyang@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJnrk1b-77uK2JuQaHz8KUCBnZfnQZ6M_nQQqFNWLvPDDdy4+Q@mail.gmail.com>
-X-Rspamd-Action: no action
+In-Reply-To: <20251231030026.15938-1-richard.weiyang@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: sCafAl5JZ-iCW3CEVShbxhFeg-5utwS-
+X-Authority-Analysis: v=2.4 cv=Jvf8bc4C c=1 sm=1 tr=0 ts=695f89b6 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=BpKC6iUb4ImYL19sRPUA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: zuf_APRcevyr7dXxP5ZWDs6PkNI1Voh9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA2OSBTYWx0ZWRfXzpscs6TxyynH
+ GM7L6OI3Ws+IgqfpA+zIxpv3g0cDNmEZ/IsLExpoUxgnppjOzx6AhaVUtaAgtU8mFbPuVL+rn+4
+ lrUL7rSb6nn6tSeCPET9w9tNZ8R2CTMAEA71UWmpMvWZL/2Mj1UMNshrUJH8rvDKQOcyC/DhtrU
+ 2uEGv2fR/6zrWtwG0ze7n83IBhVnSTYyTZNpzzScmGa36PKYWnytnvN7Qi1ZFMNySvxgGAGpUpc
+ gCFJarXBC02LdthiirYxfczNrqQV9dA3ica6qPpc7Hi3hLoKDVe756pxH9KvmrMfJVSWXtSzxqK
+ kpJ6N/TyFPzncHda6iQTQm+yGYWp8g7zk7GfyhNIlF+StvIRDgq5uNblcllPNRUFhBQmUWRZ7lp
+ l0EN6nLKcEHmxhg9xqnRNCZKfJKz0Kii0JRPB1+ord0BAPOHGtMyIF+5Gt8VeDQMex+gmOXkayF
+ TtB/BteVCNu8pUZqD2w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-08_02,2026-01-07_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 bulkscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
+ definitions=main-2601080069
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 19F4E80004
+X-Stat-Signature: koc97p4azrufbaaxtwd6tfyaf36qor6c
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0FFFAC0003
-X-Stat-Signature: pgniw43eiec16o4ee9ztmfujs8wtssi9
-X-HE-Tag: 1767868604-84112
-X-HE-Meta: U2FsdGVkX19h2UyOBqOmRQXtrbtaN/6HGktYUZRHweN5Emx8pRd734ficX6YMbgZaqvH/rP3SlszOcWk5TuQBYnpyAXOcRl5D1wmQO54Zipu70ojgma32f9gbVUQKWf5HeQBYDBwK/im+ofZ1UmNvrGwlfIDp+ROsNAxnIHeVgNClVPrDkX10gF3m087iFQdKFcwRLbg/7vlOANDvI2cOfjWr5UyIi17a5NBnkWXynDMj4RFwUyREVbtStty+lH/7G5BVc53oE9ZIm10LVGkhQ58LzgmibDImyz/EiHrWp2jqigyFls99OeSuVWognlvLNGRc3OHYjItGOqOozDy7a93UPUq55vznRHv1eJHSiuVVrwJFaCQ6qIVRasorhXirM70VqGU3AHsi9UUhosqMaFzD9nsyHs+HCwHaIjwZDkEVIaAUt809LnjQzSckH9RZfmWEeHOXLpIkz8QmHA14JX6PXbuQ6xuYzC98K1FHZbfS1Ni3MMVQYe/kuWEQcjcQtfrOPsiu9XAV+JT2aKOIHuucDaC3629p/A5wjKgWA9e4JG+3Ns/9xzVJ6UUgqF8lCJ7ntlnwpS/RBtfbxUI8qF+vfOxCQ4NHmWghjP+cg8ASGlZnPkk6jMbBD63zry4zuRfVRxXZYyQOXKCNDinM/nJpaX+I9WmAKd601Utxz+Xo9VdXOf6rp+5x1xjBPuXZZ7m8uMeIXG+k9lLFHbTLtSNhM8wG5kjtumtLUaG8+zzLZpOfPfktS55rqEliwudJ/oq9amQQmohVqnOad4GBQuLFYXNL2bRzDu9k69Jhg8CiiG838YchdR/IAzM4WKtz4nlyUSAYgRZPdWIXhc1dtPFbkFVNOOu26QD8VZhALnOytjVM2DZdBRknjhpyAs4V8lldu+DPhuHl1KubdECnVID3YFJUxZNx0BXmzRmQSv8OG5X6/17/yMOUJkR4J9NtRWcM9ffJLf7ACJWfEg
- 4y+my81s
- G49I7sR09/YmG+uHA4t/uhkLJx7ukx+77iBL9btT14x0Z7VPA5V792pwSUz7Qexrey1Vb+MiU36b/T/YX/kerwsjCpMMM7QpZ956oO5QS/fq7mXSyv5e7l6wydKowIQLJixKuB6opbnqOWd88nOk22xouCVVX6pJNA+sGmiOxoGlcKKInafKEJe822cBF8c1tgB8Mv/YNEAmbXxopLwYhqKyLoVButJ3GcWOSERjH4zoX0uGiApDX2NNdnlcLeZSn71oKm0Yam1iDWXdqbGJX7Aud5Y7OxmTgle5aLa/MN2kwlMipA6Rdv22Hh5zMU1wG891y1cPQ/G4RJ5CFCfvGPp1c8VAlQwShUhkD0SIgrM8AaV52ovbmIdYWgRXcGnOGQ3Ac9lPwKv/PrxXjLXc+OakmoCuABH2Z2XY6
+X-HE-Tag: 1767868865-137436
+X-HE-Meta: U2FsdGVkX18MVJFS5P22aqLOm6VcmxF6M2NU0jy6JruGeuI/UQKqDGGUw1D6wQRWFptbKe7sh1/mekleor2TpjaXKRXH9BCe4/UeYuU71yo0D5xJUPvWIX+IYBRWkdber8OPDEYVSbI8WQC9ym1mMOQL5UdWnH+w6Lvd1x6ytyR/cXW6VSrW+h3ZzxyPn7vZQEutbQFjxMe1grhJ7L/L+6X2wq0JOq6GQ1ZYiPdgppvDHxMInDxdVZxAW3Wz1oYsCRseETn6SZM6L7l25mN8b/dLTHD0dwJ0T/PrzVX5DzFkATIyScmkgsz8BkryfV8HcgInY3lNckNv0771TLGuHmOZFYQpUibJ1FXJ+4RxfhHuDFGOY2lk3b20IMsiARQapmrITnRkjstgyu3YHkWW4w1mDeqn2IuyTSOn/zebytUoZICt+8X6oBdQ80Pxr/4zBfUJ+Du8peJKDWtK2VaBGeopQCwfHniN8SdF+nAeX9LqUjIZWVEJBtKiKwjoImigicEvxCw7nGuxitlHYl5iP4qP1uzOiAKnmSEG+y5hvkfP9ISVUISd6rT0O3+bD1DLn/eUehFBJ6jQLJUHBdOxJ3o1Dj0lhm0d6vdiH/Jcoy4pcs085MNpaIgKg1wf5HqEtN9I25zsCuSO0kM6Sifa5tdpJAkb8+UJrrkh2fu5JyDX3C4r6zFtaFWNZk3A+sWRGZoZsJch1q4G5h0dXvxyE4R5iFmBFU2mCbhG1fc/VV4Cq6Hh7BWcIs19Apt662MVhlHhw8MPlFR/i9IUpAASLbg6Q5vCTAStq27vhbKQGGkLLmcUWSkjz1F3IH7dtqNCuXFW9KJ10TxwVz9foaXv7/B29RHeMad+S+uNFAQhp3ppYFh78BrHhkwijJ9B7bt42D+yFFQjKTAqshCbgen+K8/6DD2FakfeqrncSjz9+EMNF6Aw0Nb2hOzeH94bRWFM5qvK0GDgb+RzVnxwFsj
+ T/OwtWS2
+ bm7gIG0yz3X5xkGJtNkvOIP3AgN0g/qz/hi2deIuLkCgV5ul6dEfyKr4F8CKsY+e+ClD5MvHsyScicC95c8mmg2SoR2LZPdxQfasw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,64 +149,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 07-01-26 15:20:48, Joanne Koong wrote:
-> On Wed, Jan 7, 2026 at 2:12 AM Jan Kara <jack@suse.cz> wrote:
-> >
-> > On Tue 06-01-26 15:30:05, Joanne Koong wrote:
-> > > On Tue, Jan 6, 2026 at 1:34 AM Jan Kara <jack@suse.cz> wrote:
-> > > > [Thanks to Andrew for CCing me on patch commit]
-> > >
-> > > Sorry, I didn't mean to exclude you. I hadn't realized the
-> > > fs-writeback.c file had maintainers/reviewers listed for it. I'll make
-> > > sure to cc you next time.
-> >
-> > No problem, I don't think it's formally spelled out anywhere. It's just
-> > that for changes in fs/*.c people tend to CC VFS maintainers / reviewers.
-> >
-> > Thanks for the historical perspective, it does put some more peace into my
-> > mind that things were considered :)
-> >
-> > > For the fsync() and truncate() examples you mentioned, I don't think
-> > > it's an issue that these now wait for the server to finish the I/O and
-> > > hang if the server doesn't. I think it's actually more correct
-> > > behavior than what we had with temp pages, eg imo these actually ought
-> > > to wait for the writeback to have been completed by the server. If the
-> > > server is malicious / buggy and fsync/truncate hangs, I think that's
-> > > fine given that fsync/truncate is initiated by the user on a specific
-> > > file descriptor (as opposed to the generic sync()) (and imo it should
-> > > hang if it can't actually be executed correctly because the server is
-> > > malfunctioning).
-> >
-> > Here, I have a comment. The hang in truncate is not as innocent as you
-> > might think. It will happen in truncate_inode_pages() and as such it will
-> > also end up hanging inode reclaim. Thus kswapd (or other arbitrary process
-> > entering direct reclaim) may hang in inode reclaim waiting for
-> > truncate_inode_pages() to finish. And at that point you are between a rock
-> > and a hard place - truncate_inode_pages() cannot fail because the inode is
-> > at the point of no return. You cannot just detach the folio under writeback
-> > from the mapping because if the writeback ever completes, the IO end
-> > handlers will get seriously confused - at least in the generic case, maybe
-> > specifically for FUSE there would be some solution possible - like a
-> > special handler in fuse_evict_inode() walking all the pages under writeback
-> > and tearing them down in a clean way (properly synchronizing with IO
-> > completion) before truncate_inode_pages() is called.
+On Wed, Dec 31, 2025 at 03:00:26AM +0000, Wei Yang wrote:
+> Functioin __tlb_remove_page_size() is only used in
+> tlb_remove_page_size() with @delay_remap set to false and it is passed
+> directly to __tlb_remove_folio_pages_size().
 > 
-> Hmm... I looked into this path a bit when I was investigating a
-> deadlock that was unrelated to this. The ->evict_inode() callback gets
-> invoked only if the ref count on an inode has dropped to zero. In
-> fuse, in the .release() callback (fuse_release()), if writeback
-> caching is enabled, write_inode_now() is called on the inode with
-> sync=1 (WB_SYNC_ALL). This does synchronous writeback and returns (and
-> drops the inode ref) only after all the dirty pages have been written
-> out. When ->evict_inode() -> fuse_evict_inode() is called, I don't
-> think there can be any lingering dirty pages to write out in
-> trunate_inode_pages().
+> Remove @delay_remap of __tlb_remove_page_size() and call
+> __tlb_remove_folio_pages_size() with false @delay_remap.
+> 
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> ---
+>  arch/s390/include/asm/tlb.h | 6 ++----
+>  include/asm-generic/tlb.h   | 5 ++---
+>  mm/mmu_gather.c             | 5 ++---
+>  3 files changed, 6 insertions(+), 10 deletions(-)
 
-Right, that addresses my concern. Inode reclaim on FUSE shouldn't be able
-to see dirty / writeback pages. Thanks for explanation!
-
-							Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Acked-by: Heiko Carstens <hca@linux.ibm.com> # s390
 
