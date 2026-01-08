@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC5BDD1D48A
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 20:39:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18532D1D48A
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 20:39:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DB786B0098; Thu,  8 Jan 2026 15:39:02 -0500 (EST)
+	id 670EF6B0088; Thu,  8 Jan 2026 15:39:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B0616B0099; Thu,  8 Jan 2026 15:39:02 -0500 (EST)
+	id 649176B009B; Thu,  8 Jan 2026 15:39:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 253E96B009B; Thu,  8 Jan 2026 15:39:02 -0500 (EST)
+	id 51DA06B009D; Thu,  8 Jan 2026 15:39:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 13BEA6B0098
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:39:02 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B103057F1F
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 20:39:01 +0000 (UTC)
-X-FDA: 84309960882.24.4935256
-Received: from mail-qt1-f196.google.com (mail-qt1-f196.google.com [209.85.160.196])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 11DC4C0008
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 20:38:59 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=eznkfhrW;
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.196 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B0916B0088
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:39:13 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E3EE41A8FD
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 20:39:12 +0000 (UTC)
+X-FDA: 84309961344.14.EF3A347
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 242CD4000E
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 20:39:10 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=rJ+tcba0;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767904751; a=rsa-sha256;
+	cv=none;
+	b=nWtFN4mt9WyqAN62YsyZmCyippfeH3TKdAXuQc3voHE5CvGxA3sbnWlVEFxV207y3FyV2u
+	9bO/HRg4zTZgpqm7cK9US/TBqrHgtcACytGyvsW+vENUFTRUaJa3tmqkxhU97h/RINjORp
+	45XiTCjLZrokdVLgWibGJVH2MMLSkkU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=rJ+tcba0;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767904740;
+	s=arc-20220608; t=1767904751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rRDiJ+UlJzmE9gGlU0qCIeblmwRaclHqLNtsuAzr4HM=;
-	b=u/tC6Wm/PmQQaChhJywbebbPcf6qOGRXDTRZOCa8lWGzggD9u3ETHFkygU5ZO3KT2TplrF
-	OvVMVbOptSaXfmQQhUz+pSCpvWsZTAQzYYZUaGH9BcV/L3FGTGXZwqOslvM3xtE+mBL8uh
-	KMIz0pG9uNdXoq8wSrMh4RVPxebinNw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=eznkfhrW;
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.196 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767904740; a=rsa-sha256;
-	cv=none;
-	b=CegA4YysvONOGPd+DWICa8YrqjN2v94cCL1HC04hxoLAffharMeY6QAl0iohK12w9L8/F1
-	LhvogRZadeexnpcyFwZ8BupZ75jXrVypa4I0Pojrtvor7H5AXbt9uS4QxgFJ3+apsrPiki
-	TcZpjVr1Jt6O3Fxays8XliCeyUpNYEw=
-Received: by mail-qt1-f196.google.com with SMTP id d75a77b69052e-4ee1e18fb37so32808701cf.0
-        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 12:38:59 -0800 (PST)
+	bh=5OTZsz9YEfzZ2R8Vdeqp1RCaOkKgwxKsmSu+J9FA9fQ=;
+	b=rZvawyz3hNilRLTTOVuOLf2gt8RkDKpZi1bo6foxEj7hhB+O0fyOUwI/42TgBCqsgNh4tV
+	E/gt8tAYsCMx0eph4Zqy8I/UW54PizV9gRhNGKqZZrrpaTn74jz767rrXVtH7bpS4O8Emj
+	xy7ALLWdICX5caH+sLCV9V4sgnqYySY=
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4fc42188805so37635931cf.3
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 12:39:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1767904739; x=1768509539; darn=kvack.org;
+        d=gourry.net; s=google; t=1767904750; x=1768509550; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rRDiJ+UlJzmE9gGlU0qCIeblmwRaclHqLNtsuAzr4HM=;
-        b=eznkfhrW0Am/F1BD3otnhRghi0uvyjmI2eruJuik4xru7M7tQBu6z5NmL/kEJJWfo/
-         2UMMF553eDSiyCOjv/4xfDy5Xudmud+ZfHL2HW8dhYGf0SjFqd8xnIORF8VaTYO5A17U
-         5WQHyLMSBSQlu7J4xIA0Hd3ktoypmAPNWH+0mIWFJznAjeRDHUBv266GDQlCmtyGMOeL
-         DRR2Rh0gkh83Mr+0t/Ryn5lZ264i0tTKA5ZkSjq+uw5qfu0TD7f91r0+MuBvviy3AyxP
-         V4bsx0+STi/biddJ3HkVFn3y3P+vt8UsEyghooNgDuyVb5BRkihsn9z9dAidyvykH0Ju
-         nDqg==
+        bh=5OTZsz9YEfzZ2R8Vdeqp1RCaOkKgwxKsmSu+J9FA9fQ=;
+        b=rJ+tcba0IhtX1A/g9wTstWh5TqS+Dwl52FlR1TRJ7tp1Th/PHXXJXb2s5Bvqi8KpEY
+         18Gl+aUlhf7ySjo2alN72ngtgkyn9gksPGplfOyaUFCDUbx9Ha9f4uVzLS6Lsve90bcY
+         Hd1woPTtjVgCw2zr9oXD9Jf2/TQwOA/ApGahq9osYL/kPVSw5la6158QHi9KtaI3YYO+
+         atqOm5Hf0aZHEzVyFGuCgK2S9/1igr0jLmZP0nGa2ljTEso1KvCFz9qTz6Tz6vGsuzDe
+         93AysGN7QtZurej/ATfdgdxRm5Lk3H0JQOcQyxEZazSHNU5O3+UaPteqc+Bcb4QxwGCO
+         rmRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767904739; x=1768509539;
+        d=1e100.net; s=20230601; t=1767904750; x=1768509550;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rRDiJ+UlJzmE9gGlU0qCIeblmwRaclHqLNtsuAzr4HM=;
-        b=ji2MmU88KL9qFLsmIZ9KF9wDsQ5FWhVA3JkSveEXAHZqvjxHgnZmtNXt6uuz3nbCDD
-         ZyWBAVXIImKx4PqToqd3+bRsBzTC1GdVPy/2ECURHJGn/TKyVYLQzULxct/iTO7sXUAN
-         dF0nUse0qLnmiXtJq7EVZvxisrDNi9swOXgIFnYW4RSx9D70ryCtNax3M+XjH+fzAaLB
-         vC6OZ/qjIthFAniCi8GEsUvbhLA9W/6whdrC4CR56ndjQtlX5PZV69Pd+O+DSzL+82pB
-         Ib+r/Aqf77aXl42EOlCFCsyqFmZDvQAmYnGzobWfahLx1lX4G6unA7fn6c9j5R9D1lmm
-         d6Sg==
-X-Gm-Message-State: AOJu0Ywov1DQoTiej1uTIKjcCtlnoop8ZvrI0HK4ceYDpyrYKEsElyXv
-	jHFrfpixGi4Zica8/PNS523/lNMRqQGUkyCm2fGZO8rk62N8Jey4acmeeu7qMQyBHEaVF1wZ3CM
-	nHBu6Ah4=
-X-Gm-Gg: AY/fxX4bd0jhk/MfOXPDmjvqfrU06tUUMXI3Gb9SNfWGIj48TmmoM2iY17UYvkR+bAW
-	b/T2W73wAPOj43YTbU3FI5RPWAV9THGVp42KID3cym+cx2PQbrKrzk38xlWbyINu+xmvfF3TX9e
-	IFbXxFEN5r036R8JHWf3wvxhnn2fujJ590aXPFyjuvvhMR5hvOM7oKdYvJS9MkG0Tu+oDMAvNf5
-	uzoLUog9iDTFcBkfvMF8KWVUdEaQQNCrm2EocJfuRG0rOKw5BBlgW2sqbm9pE+qjhV6B1YqFTgx
-	YS7Rh61ni0IZMCzblZ1riRaAQvyr/+sBOWyNqW12ryTZf1o1dhWUyXW/Pk96FDjCVz6TBYumiTy
-	jQfij4y7hGlD7hI6bDHB2QDI2Ld5NlEs8c5feCLDa6AlgPMYaA9pIT7nHvB9qI57T/bv9wNKTun
-	XGmbLhLwmXw+eqX+eftrwmZ2zfE5IlaO3d6VoIuCvGPooOr9QKgYsZL9XACh7c6g78lWDMUeQVp
-	Fo=
-X-Google-Smtp-Source: AGHT+IFQyuUju0Z/aUbfqpVDbDingg5jj0Y3CKeme4WYcUfzCc6+dQALyvDYUzyj67d/yfod1gGU5A==
-X-Received: by 2002:a05:622a:1101:b0:4ed:df09:a6a6 with SMTP id d75a77b69052e-4ffb48a8a54mr84063441cf.25.1767904738761;
-        Thu, 08 Jan 2026 12:38:58 -0800 (PST)
+        bh=5OTZsz9YEfzZ2R8Vdeqp1RCaOkKgwxKsmSu+J9FA9fQ=;
+        b=w7xK9PzOavbNflupTLY3G+jtUKBXpU6ootnn6YwmOtqatCqZWkaJziajqpugsPdZZE
+         apt7Os8xF8K1MFb4IqpntJClQEoXHVizYF6gn6rTHsENYmxx5Q7df62rWw9odQh3Wx5L
+         tEU2NGdGk7Q1kqguLvwoh2Riej84MU/kOEQ1oZbPwr4fARsbr1itZPi6TDgfadvVZ2w2
+         /AV+Xzwju3WH3IN4L42ty2KUI/YBBMBiFyZLSvddifYh2lURvm4IWNesrmTSVvFuqAQu
+         xWoWAWehMZRcQ7zdqDu4a/CobLlAw8qt+gYL+11NsrcotreRHa/kALss3ssg0KcrUHSO
+         28xw==
+X-Gm-Message-State: AOJu0YzhWOnJI+zUnfs3aXLudY0MHJFXLFSQnMY0bBAFwHmLjMFbhEkM
+	JXQ9UhOe9+OB2zlleM1xH/zi3eXmqf97URsG10JsV5sdSjuLx3xVKQ+JDsNaZjCGE+AMM+F+B1O
+	7/gyG
+X-Gm-Gg: AY/fxX7xcXMgyljJiv96IDasJWs7GxSioSBVOwLoTnFdnvh3eASnyIYQoOZ1kWw4+kb
+	buJD0SFSBVl4mf9Y2nGoewBnMKa6xy35heKBhplUedyKh//JwUEVHAkLGummjKcDPioVreFZKax
+	//M/lCRmJGJOYnDwZKuJaNfk+P89c7JMe7injuFAGzg9aDMbES2Ki8R24OpfYJ09oLyltqdLeNv
+	QCRzgeIh1g14vJPdWJ2TgGGLJiGMFK3B6iigUkWFWR4kTO70tER6peCybmD92iSpU6WPnU83gts
+	M39qhRiyY8Fnl5mVpqMtYqqtT1J9BYYFJep8O5LwWWijXLEbaj+LyYMkUFw1qmHwH9FZLbJRpGA
+	keukRLF0ISjUIST/8i75vcnUfqR1jIEICcgr9GDGNmg7ffNcg3IMB/WIyVB8J5kYNraeTYWuu+P
+	XBB0ONTtXGOMaClQ1xpjs34gwYHLXjrrILRuTYFu0aRkPrRhz8+0CIVMR494/s8qwvyv3hwBQBe
+	cQ=
+X-Google-Smtp-Source: AGHT+IHjrJedObjQLnkqlATuK0iiTd2ReDzXEhDuZpiEE8iScOlIeLDoodxwtlrvEQjvQ0kp+C8/HQ==
+X-Received: by 2002:a05:622a:554:b0:4ee:26bd:13fa with SMTP id d75a77b69052e-4ffb4a38073mr98924131cf.80.1767904749843;
+        Thu, 08 Jan 2026 12:39:09 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770e472csm60483886d6.23.2026.01.08.12.38.57
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770e472csm60483886d6.23.2026.01.08.12.39.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 12:38:58 -0800 (PST)
+        Thu, 08 Jan 2026 12:39:09 -0800 (PST)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
@@ -153,22 +153,22 @@ Cc: linux-doc@vger.kernel.org,
 	cl@gentwo.org,
 	harry.yoo@oracle.com,
 	zhengqi.arch@bytedance.com
-Subject: [RFC PATCH v3 5/8] Documentation/admin-guide/cgroups: update docs for mems_allowed
-Date: Thu,  8 Jan 2026 15:37:52 -0500
-Message-ID: <20260108203755.1163107-6-gourry@gourry.net>
+Subject: [RFC PATCH v3 7/8] mm/zswap: compressed ram direct integration
+Date: Thu,  8 Jan 2026 15:37:54 -0500
+Message-ID: <20260108203755.1163107-8-gourry@gourry.net>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260108203755.1163107-1-gourry@gourry.net>
 References: <20260108203755.1163107-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 242CD4000E
+X-Stat-Signature: se644kzdmk43dztw1yqrysq3e8p78hwz
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 11DC4C0008
-X-Stat-Signature: si9agn1t7p6yxm8p5cxr7tkgtwbyieuh
-X-HE-Tag: 1767904739-2442
-X-HE-Meta: U2FsdGVkX1/ZQt9QY1ordeBEPvSwq9AqFf/zgazmpLFx/3X2aAlaA2TuwKBkV7mWl5gqrEHmJkoWr3vJr4wcmCZgdLH9gGQGJFl7fh1vS+ERKKddtPEEWyiTs70y+CRgsDQpEO+xBOyOCXHHxyf0ZkULseNtlZXi77hKtqZc3z/eQy4qyEGw0+Mdqf4jOmxOVosy1xo93dCSoLzOy4VIvqXFXdx1C/+tsetNloYDanzf2vxHMF3ua3T3V9pnOErGJcGb5T6lcqmdvrv3kOgCRiMYv2kBxWJZKPbmus2eIdEpB9voB5TUp4H4TCTRgn8haPME4nDAlYQnnVTwzN6b7OIs1AieutG38IKjbwOIGlWwjl4otG5hnhkvgCH1u12Jg7w3Rd0/0D378YyjjgARfTLXF/n2vVf6wKXSS3WtOBKb+soywpBlYfDrEBQaXTxDl7wkSLRyyGe26RIF0cW2NDjrefxc6h/sEUo38RWvUGTsTZ+yRlM5vQJ0SBCSB5dZmfrCyVRj7lWWzNIhACqaRwIiNTpNPqnfcbkuMeJ+BCERgN6biwhUTess42PeEzBZcDwBIeRIZLbA12ZHW7bxAAwE4K6nF9oMBRNFyh4Jz/8eoAaoWseVHYI3xXIr/yFUSqTimK92d+v9Ygc3jjeC2sbbmligAr9dcCblQYcReYLKEuOopCeOmUKx608pGITEEr3geZCcZFD76NB+RsWOJE7kCM9XxNf+9oiYwm1uFKMkrOUPZiwLPy0HQ31ONFGFISPzSuFYePLimJbrWGy0kNBqEX6pzFD6PFSoNghMRfe8HyBihDcP1ue8F4oxo8MJn1fIOdTL2LAzXHJJLcrAGwsnHnH/CxYkoy4pTJZw/reev04hqCbRrPxc63QluWnpOcJ52I7u+W0iOtVPgrsTe/tn5DxXJfOOFv/gY33pxbmpsWQkQoMXs8gLIKIBXlRu8aJ5SUnXwuQPTk/Cyer
- nLxj8oHs
- 5jroTsJ8mP6/yc2Ra3R6M6e0XD6bUaiqOslJmMNp0vi/7jqCXug9C0LtxysJy4nM39Smh+s2sAqK82HE560vMoZU7zKh7ttpxCxY18Ax/+AdIlV3su2UOWPugBfH/A4Kjemgya9E9AtE45aR7CyynJ6R9GYlXwRgYDp/lBZEty/MUtsoy/H0fj0YtyQeuupVUFz0MF3UOxNH7k40=
+X-HE-Tag: 1767904750-57759
+X-HE-Meta: U2FsdGVkX19g/HTJfnn3NL9uaewRVXeJd1m6DwryGdYL31Vy6CppIeF2zy58u/GeqB90tmJxusQm7sKBZ8K6BBEqwWW1/JjunFUi5ZTvAUYT4whfrPJtVC4xCQRgal6KL3D+Os7R2HP1Z8AF4CLh07kjmhtU1tyy50Hl/ljL9L/ToDtvsYtd2oJBAcdzsUkzg4CiJKAFJdTIp5ve8vH75/o2Gj7juxG9zH2iKKKGFBeqc3mpI73zy1h3P4pB81YI71R6Ibo9oXnZjCUbrZ9iIBEMvSB0OHhUgWUYFp8T10zfrlJixUwYG1JHjzUqUs+g0sNlIXzQ1Pi9U6mPGlz9D/5UOvD1pKfCS8d2nIscRYfBbRlJO8MsFvJwCmJ72rrSoRIJxFc05tSKEA98jf9eMqCG1kR1j0zCh2YRfQHswjkBiwA5f4WyqlnbUzfHI6ags6KkAtsIkY2Stxa2PMsIQstzAmcRLij9vNYWDHvjpHrpOCE3VqwkwIfxdTLnVyTocXA7HUtMGzUaic0SR4fRDewFZuXJDz4O7Ai98Jk8v1MA1RCb3A6jQDEbdqxCFt2XuESlmxvy07h1lnWU9swlWxD2lzIh4J5MW3UK1TFhV/D9Hm03Gm+iAi1ZzhEAbEwBp0P5rCne1cxyNOpM2obEW89+jRYR2HE9jkzZvv7/Y5pIPFbk85C3OyAGf3khhPgnf8badcyWbRaGBbtC4mpXXF2r6b7omN2HH9KQ1wuCx6QYyYvoD6Yj5ioOeXW/JmXYqTcT385WUEcrKbKkRSiZRiaDKJLY4glHlzmxMfZJZSmBxsfdPBH9Sik9Cluxp5U56o/Kd2LbHngwZll+Ak/b9kq9nJtiHiw16gGVaTIoIIaow4Bd8m7q2Mt02/DPVIpV2OOpVjgs1mIUT0+medes62UcLBwwpUpEngGq8F7R9IH6rxYHYOtYtRjrCenySlBRNViGWwG+v2oNx4uT2Al
+ XkKIHvNC
+ KUUS0Pw1nUFuH89Ehm4YbxITD5OwOyWN5HXGdYmkmTwYM1C1m2Y9K5ws7MFbLmFKEo/b6UfPfMDGmqCwC0FNon7ztEIcpugsSWoqa6QJ0DBkm3qeVOJkTwdnkQUCQjY8zxvmBebs7yjVJ381WV3oT3nbO5AhYf4f7XR6Tq6DGP5WLozGEhj3uO7wbPfj43sJTlbvTZdDj9+lDnb0yyantO9cDjIQfY7ZKs9Fz3SHXjtrACGb4AK8lQZNVb2hcUZx4vsjU8dtZf/f8jlB2hMX3WPojaF6zKcwPaNyESQJpztQHL3jyqzLVL2TKUwK6wLm8t8veevf7sbOxMNrBeoSpw4HR1f4nz2vVWOyzWGuyNYYp3ecqMg2GA4r1Wg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,134 +177,227 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add new information about mems_allowed and sysram_nodes, which says
-mems_allowed may contain union(N_MEMORY, N_PRIVATE) nodes, while
-sysram_nodes may only contain a subset of N_MEMORY nodes.
+If a private zswap-node is available, skip the entire software
+compression process and memcpy directly to a compressed memory
+folio, and store the newly allocated compressed memory page as
+the zswap entry->handle.
 
-cpuset.mems.sysram is a new RO ABI which reports the list of
-N_MEMORY nodes the cpuset is allowed to use, while
-cpusets.mems and mems.effective may also contain N_PRIVATE.
+On decompress we do the opposite: copy directly from the stored
+page to the destination, and free the compressed memory page.
+
+The driver callback is responsible for preventing run-away
+compression ratio failures by checking that the allocated page is
+safe to use (i.e. a compression ratio limit hasn't been crossed).
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- .../admin-guide/cgroup-v1/cpusets.rst         | 19 +++++++++++---
- Documentation/admin-guide/cgroup-v2.rst       | 26 +++++++++++++++++--
- Documentation/filesystems/proc.rst            |  2 +-
- 3 files changed, 40 insertions(+), 7 deletions(-)
+ include/linux/zswap.h |   5 ++
+ mm/zswap.c            | 106 +++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 109 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/cgroup-v1/cpusets.rst b/Documentation/admin-guide/cgroup-v1/cpusets.rst
-index c7909e5ac136..6d326056f7b4 100644
---- a/Documentation/admin-guide/cgroup-v1/cpusets.rst
-+++ b/Documentation/admin-guide/cgroup-v1/cpusets.rst
-@@ -158,21 +158,26 @@ new system calls are added for cpusets - all support for querying and
- modifying cpusets is via this cpuset file system.
+diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+index 30c193a1207e..4b52fe447e7e 100644
+--- a/include/linux/zswap.h
++++ b/include/linux/zswap.h
+@@ -35,6 +35,8 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
+ void zswap_folio_swapin(struct folio *folio);
+ bool zswap_is_enabled(void);
+ bool zswap_never_enabled(void);
++void zswap_add_direct_node(int nid);
++void zswap_remove_direct_node(int nid);
+ #else
  
- The /proc/<pid>/status file for each task has four added lines,
--displaying the task's cpus_allowed (on which CPUs it may be scheduled)
--and mems_allowed (on which Memory Nodes it may obtain memory),
--in the two formats seen in the following example::
-+displaying the task's cpus_allowed (on which CPUs it may be scheduled),
-+and mems_allowed (on which SystemRAM nodes it may obtain memory),
-+in the formats seen in the following example::
+ struct zswap_lruvec_state {};
+@@ -69,6 +71,9 @@ static inline bool zswap_never_enabled(void)
+ 	return true;
+ }
  
-   Cpus_allowed:   ffffffff,ffffffff,ffffffff,ffffffff
-   Cpus_allowed_list:      0-127
-   Mems_allowed:   ffffffff,ffffffff
-   Mems_allowed_list:      0-63
- 
-+Note that Mems_allowed only shows SystemRAM nodes (N_MEMORY), not
-+Private Nodes.  Private Nodes may be accessible via __GFP_THISNODE
-+allocations if they appear in the task's cpuset.effective_mems.
++static inline void zswap_add_direct_node(int nid) {}
++static inline void zswap_remove_direct_node(int nid) {}
 +
- Each cpuset is represented by a directory in the cgroup file system
- containing (on top of the standard cgroup files) the following
- files describing that cpuset:
+ #endif
  
-  - cpuset.cpus: list of CPUs in that cpuset
-  - cpuset.mems: list of Memory Nodes in that cpuset
-+ - cpuset.mems.sysram: read-only list of SystemRAM nodes (excludes Private Nodes)
-  - cpuset.memory_migrate flag: if set, move pages to cpusets nodes
-  - cpuset.cpu_exclusive flag: is cpu placement exclusive?
-  - cpuset.mem_exclusive flag: is memory placement exclusive?
-@@ -227,7 +232,9 @@ nodes with memory--using the cpuset_track_online_nodes() hook.
+ #endif /* _LINUX_ZSWAP_H */
+diff --git a/mm/zswap.c b/mm/zswap.c
+index de8858ff1521..aada588c957e 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -35,6 +35,7 @@
+ #include <linux/workqueue.h>
+ #include <linux/list_lru.h>
+ #include <linux/zsmalloc.h>
++#include <linux/node.h>
  
- The cpuset.effective_cpus and cpuset.effective_mems files are
- normally read-only copies of cpuset.cpus and cpuset.mems files
--respectively.  If the cpuset cgroup filesystem is mounted with the
-+respectively.  The cpuset.effective_mems file may include both
-+regular SystemRAM nodes (N_MEMORY) and Private Nodes (N_PRIVATE).
-+If the cpuset cgroup filesystem is mounted with the
- special "cpuset_v2_mode" option, the behavior of these files will become
- similar to the corresponding files in cpuset v2.  In other words, hotplug
- events will not change cpuset.cpus and cpuset.mems.  Those events will
-@@ -236,6 +243,10 @@ the actual cpus and memory nodes that are currently used by this cpuset.
- See Documentation/admin-guide/cgroup-v2.rst for more information about
- cpuset v2 behavior.
+ #include "swap.h"
+ #include "internal.h"
+@@ -190,6 +191,7 @@ struct zswap_entry {
+ 	swp_entry_t swpentry;
+ 	unsigned int length;
+ 	bool referenced;
++	bool direct;
+ 	struct zswap_pool *pool;
+ 	unsigned long handle;
+ 	struct obj_cgroup *objcg;
+@@ -199,6 +201,20 @@ struct zswap_entry {
+ static struct xarray *zswap_trees[MAX_SWAPFILES];
+ static unsigned int nr_zswap_trees[MAX_SWAPFILES];
  
-+The cpuset.mems.sysram file shows only the SystemRAM nodes (N_MEMORY)
-+from cpuset.effective_mems, excluding any Private Nodes. This
-+represents the nodes available for general memory allocation.
++/* Nodemask for compressed RAM nodes used by zswap_compress_direct */
++static nodemask_t zswap_direct_nodes = NODE_MASK_NONE;
 +
- 
- 1.4 What are exclusive cpusets ?
- --------------------------------
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index 7f5b59d95fce..6af54efb84a2 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -2530,8 +2530,11 @@ Cpuset Interface Files
- 	cpuset-enabled cgroups.
- 
- 	It lists the onlined memory nodes that are actually granted to
--	this cgroup by its parent. These memory nodes are allowed to
--	be used by tasks within the current cgroup.
-+	this cgroup by its parent.  This includes both regular SystemRAM
-+	nodes (N_MEMORY) and Private Nodes (N_PRIVATE) that provide
-+	device-specific memory not intended for general consumption.
-+	Tasks within this cgroup may access Private Nodes using explicit
-+	__GFP_THISNODE allocations if the node is in this mask.
- 
- 	If "cpuset.mems" is empty, it shows all the memory nodes from the
- 	parent cgroup that will be available to be used by this cgroup.
-@@ -2541,6 +2544,25 @@ Cpuset Interface Files
- 
- 	Its value will be affected by memory nodes hotplug events.
- 
-+  cpuset.mems.sysram
-+	A read-only multiple values file which exists on all
-+	cpuset-enabled cgroups.
++void zswap_add_direct_node(int nid)
++{
++	node_set(nid, zswap_direct_nodes);
++}
 +
-+	It lists the SystemRAM nodes (N_MEMORY) that are available for
-+	general memory allocation by tasks within this cgroup.  This is
-+	a subset of "cpuset.mems.effective" that excludes Private Nodes.
++void zswap_remove_direct_node(int nid)
++{
++	if (!node_online(nid))
++		node_clear(nid, zswap_direct_nodes);
++}
 +
-+	Normal page allocations are restricted to nodes in this mask.
-+	The kernel page allocator, slab allocator, and compaction only
-+	consider SystemRAM nodes when allocating memory for tasks.
+ /* RCU-protected iteration */
+ static LIST_HEAD(zswap_pools);
+ /* protects zswap_pools list modification */
+@@ -716,7 +732,13 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
+ static void zswap_entry_free(struct zswap_entry *entry)
+ {
+ 	zswap_lru_del(&zswap_list_lru, entry);
+-	zs_free(entry->pool->zs_pool, entry->handle);
++	if (entry->direct) {
++		struct page *page = (struct page *)entry->handle;
 +
-+	Private Nodes are excluded from this mask because their memory
-+	is managed by device drivers for specific purposes (e.g., CXL
-+	compressed memory, accelerator memory) and should not be used
-+	for general allocations.
++		node_private_freed(page);
++		__free_page(page);
++	} else
++		zs_free(entry->pool->zs_pool, entry->handle);
+ 	zswap_pool_put(entry->pool);
+ 	if (entry->objcg) {
+ 		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
+@@ -849,6 +871,58 @@ static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
+ 	mutex_unlock(&acomp_ctx->mutex);
+ }
+ 
++static struct page *zswap_compress_direct(struct page *src,
++					  struct zswap_entry *entry)
++{
++	int nid;
++	struct page *dst;
++	gfp_t gfp;
++	nodemask_t tried_nodes = NODE_MASK_NONE;
 +
-+	Its value will be affected by memory nodes hotplug events.
++	if (nodes_empty(zswap_direct_nodes))
++		return NULL;
 +
-   cpuset.cpus.exclusive
- 	A read-write multiple values file which exists on non-root
- 	cpuset-enabled cgroups.
-diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
-index c92e95e28047..68f3d8ffc03b 100644
---- a/Documentation/filesystems/proc.rst
-+++ b/Documentation/filesystems/proc.rst
-@@ -294,7 +294,7 @@ It's slow but very precise.
-  Cpus_active_mm              mask of CPUs on which this process has an active
-                              memory context
-  Cpus_active_mm_list         Same as previous, but in "list format"
-- Mems_allowed                mask of memory nodes allowed to this process
-+ Mems_allowed                mask of SystemRAM nodes for general allocations
-  Mems_allowed_list           Same as previous, but in "list format"
-  voluntary_ctxt_switches     number of voluntary context switches
-  nonvoluntary_ctxt_switches  number of non voluntary context switches
++	gfp = GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE |
++	      __GFP_THISNODE;
++
++	for_each_node_mask(nid, zswap_direct_nodes) {
++		int ret;
++
++		/* Skip nodes we've already tried and failed */
++		if (node_isset(nid, tried_nodes))
++			continue;
++
++		dst = __alloc_pages(gfp, 0, nid, &zswap_direct_nodes);
++		if (!dst)
++			continue;
++
++		/*
++		 * Check with the device driver that this page is safe to use.
++		 * If the device reports an error (e.g., compression ratio is
++		 * too low and the page can't safely store data), free the page
++		 * and try another node.
++		 */
++		ret = node_private_allocated(dst);
++		if (ret) {
++			__free_page(dst);
++			node_set(nid, tried_nodes);
++			continue;
++		}
++
++		goto found;
++	}
++
++	return NULL;
++
++found:
++	/* If we fail to copy at this point just fallback */
++	if (copy_mc_highpage(dst, src)) {
++		__free_page(dst);
++		dst = NULL;
++	}
++	return dst;
++}
++
+ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 			   struct zswap_pool *pool)
+ {
+@@ -860,6 +934,17 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 	gfp_t gfp;
+ 	u8 *dst;
+ 	bool mapped = false;
++	struct page *zpage;
++
++	/* Try to shunt directly to compressed ram */
++	zpage = zswap_compress_direct(page, entry);
++	if (zpage) {
++		entry->handle = (unsigned long)zpage;
++		entry->length = PAGE_SIZE;
++		entry->direct = true;
++		return true;
++	}
++	/* otherwise fallback to normal zswap */
+ 
+ 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
+ 	dst = acomp_ctx->buffer;
+@@ -913,6 +998,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 	zs_obj_write(pool->zs_pool, handle, dst, dlen);
+ 	entry->handle = handle;
+ 	entry->length = dlen;
++	entry->direct = false;
+ 
+ unlock:
+ 	if (mapped)
+@@ -936,6 +1022,15 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ 	int decomp_ret = 0, dlen = PAGE_SIZE;
+ 	u8 *src, *obj;
+ 
++	/* compressed ram page */
++	if (entry->direct) {
++		struct page *src = (struct page *)entry->handle;
++		struct folio *zfolio = page_folio(src);
++
++		memcpy_folio(folio, 0, zfolio, 0, PAGE_SIZE);
++		goto direct_done;
++	}
++
+ 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
+ 	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, acomp_ctx->buffer);
+ 
+@@ -969,6 +1064,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ 	zs_obj_read_end(pool->zs_pool, entry->handle, obj);
+ 	acomp_ctx_put_unlock(acomp_ctx);
+ 
++direct_done:
+ 	if (!decomp_ret && dlen == PAGE_SIZE)
+ 		return true;
+ 
+@@ -1483,7 +1579,13 @@ static bool zswap_store_page(struct page *page,
+ 	return true;
+ 
+ store_failed:
+-	zs_free(pool->zs_pool, entry->handle);
++	if (entry->direct) {
++		struct page *freepage = (struct page *)entry->handle;
++
++		node_private_freed(freepage);
++		__free_page(freepage);
++	} else
++		zs_free(pool->zs_pool, entry->handle);
+ compress_failed:
+ 	zswap_entry_cache_free(entry);
+ 	return false;
 -- 
 2.52.0
 
