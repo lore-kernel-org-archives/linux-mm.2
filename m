@@ -4,89 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 835F9D1D47D
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 16:19:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E77D0D1D482
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 16:26:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DFC26B0088; Thu,  8 Jan 2026 11:19:52 -0500 (EST)
+	id 541066B0092; Thu,  8 Jan 2026 11:26:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6891C6B0089; Thu,  8 Jan 2026 11:19:52 -0500 (EST)
+	id 4EED66B0093; Thu,  8 Jan 2026 11:26:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B9C56B0092; Thu,  8 Jan 2026 11:19:52 -0500 (EST)
+	id 3C67F6B0095; Thu,  8 Jan 2026 11:26:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C75B6B0088
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 11:19:52 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE6EF1AC32
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 16:19:51 +0000 (UTC)
-X-FDA: 84309307782.25.6D735CA
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DF902120010
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 16:19:48 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 298446B0092
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 11:26:03 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C6AE2572FA
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 16:26:02 +0000 (UTC)
+X-FDA: 84309323364.05.2A0298E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 66AF620008
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 16:26:01 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XrjTyWmG;
+	spf=pass (imf13.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767889189;
+	s=arc-20220608; t=1767889561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kIMvYTe41yGVEESOn1cMNdpMDw3Wgu/8iU/J+XaGs1s=;
-	b=q/wwgsK5dczJmICKaodGzZJTGA+F1t2LlRR1AZ6KxdFMmA2RxaM8g6PuQEd+x1sqqK6Cnf
-	ld8OeRMRnDsJvmHcQe7Q7p9OZgbzMk/nYXFsfec8Z4Moiwsz4+y/cBwVw7BNuljLlzEzo3
-	HtBpdfMJ0ckl2c0WpED9f4mUDUArj1Y=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DvwHNF0682S9ASkYk1ACbHMfBzqeS5w+nn/tykZmXjU=;
+	b=VU0Y0aHiJU7SKhBbBQL/chtznsTi58kOK3EyOABx2ctNbio3P6Jbc7VBTv6bpa/y8ZAUug
+	bPibW44X9YWLVf1VbeAvH+dyhhVozzXU55eoi2yvr9dOjDUY6a7QdTzY5m5dXJUDwJl25C
+	dnrI9V5njxKq7rL4dTe/h1QpfqyJ0TQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767889189; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XrjTyWmG;
+	spf=pass (imf13.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767889561; a=rsa-sha256;
 	cv=none;
-	b=BS4F7g4YpX3XvgmHf3wNf4xgTsHcXiVzRFbZl99Y7HmlGJOPZN30a/9RIZoyUk/OcxfFIb
-	jbBYXo97smamSjhfR3WehCYByQakoZk8jcTSKrBWePmWFLvUafOQ+7KqSL7YH32BvDd8ZS
-	DhyH07FE7o+UNiiSLZQZHDHz9Zm6RgY=
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dn98m6RNlzJ46CS;
-	Fri,  9 Jan 2026 00:19:36 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id F3E9540584;
-	Fri,  9 Jan 2026 00:19:41 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 8 Jan
- 2026 16:19:41 +0000
-Date: Thu, 8 Jan 2026 16:19:39 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Cui Chao <cuichao1753@phytium.com.cn>
-CC: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport
-	<rppt@kernel.org>, Wang Yinfeng <wangyinfeng@phytium.com.cn>,
-	<linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-Subject: Re: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID
- of CFMW
-Message-ID: <20260108161939.000026ec@huawei.com>
-In-Reply-To: <20260106031042.1606729-2-cuichao1753@phytium.com.cn>
-References: <20260106031042.1606729-1-cuichao1753@phytium.com.cn>
-	<20260106031042.1606729-2-cuichao1753@phytium.com.cn>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	b=Y/ndcqgKPRPQ4uQuo5tkRZn+kMm4KORHbqYVrDoBFUhnF3poWKGKg6kmeIdp/LRHuFoCkl
+	Z15XM4Lznr/kXML7egxTTx0vTnHPAqRy/bBONvt6cuL7fGQEXy2IOViWtHWWcncRyN4RKj
+	5ImNu4ZVdP+tSpzOclWlPJlFU9HuVV8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C9E86012B;
+	Thu,  8 Jan 2026 16:26:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1C6C116C6;
+	Thu,  8 Jan 2026 16:25:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767889560;
+	bh=OQxDuNgfE6e5tF4qpwq4v6IWP64NBvnqK3wmGYcyRBU=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=XrjTyWmGlM9ynS+kE26WK4jWibbKKPLMLH4CBpcdhpleY8DPE45SA/UTzeXmERy24
+	 mJ+bBrcHNSnuJqBMo+ZxKOtxxbkobRs0QELFpHk2Z7U3owKAcH3fcdtz0syeOcU61U
+	 z6dikvGvgVC7qTCzSXkLBy2Gjmac25yXoX7s7Y79wP8niEBFgC87wv5ceryJMxvtbQ
+	 PbUU9O8SUola85nvSNQju0ZcS+8OELA8AVILAo1bGJJHXBHP7pwHVwU5R7IuZVsKeG
+	 5NT85m/20ljCZqQrzL3XnjHB59ocPhq3OMPbh0ThCl2b812NDixOgLf0NFWIUrBAwy
+	 ijChpFvHraCQQ==
+Date: Thu, 8 Jan 2026 09:25:53 -0700 (MST)
+From: Paul Walmsley <pjw@kernel.org>
+To: Deepak Gupta <debug@rivosinc.com>
+cc: Paul Walmsley <pjw@kernel.org>, x86@kernel.org, 
+    Paul Walmsley <paul.walmsley@sifive.com>, 
+    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+    Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+    Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
+    Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+    Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+    Andreas Hindborg <a.hindborg@kernel.org>, 
+    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+    linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+    linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+    richard.henderson@linaro.org, jim.shu@sifive.com, 
+    Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com, 
+    charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com, 
+    cleger@rivosinc.com, alexghiti@rivosinc.com, samitolvanen@google.com, 
+    broonie@kernel.org, rick.p.edgecombe@intel.com, 
+    rust-for-linux@vger.kernel.org, Zong Li <zong.li@sifive.com>, 
+    Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
+    Valentin Haudiquet <valentin.haudiquet@canonical.com>, 
+    Charles Mirabile <cmirabil@redhat.com>, 
+    Jesse Huang <jesse.huang@sifive.com>
+Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
+In-Reply-To: <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
+Message-ID: <30f969d2-794f-937f-53b7-3af3f2b88ef7@kernel.org>
+References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com> <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org> <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com> <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- dubpeml100005.china.huawei.com (7.214.146.113)
-X-Rspamd-Queue-Id: DF902120010
-X-Stat-Signature: kkmrax7tscfxkqppxk7697y9p1k4gc3m
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: crw9ab4s7rkaar78kdzeqaiorbp6gy5o
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1767889188-923607
-X-HE-Meta: U2FsdGVkX1/yJ/oRwT/QaaQ9krfF72u2Ql2XH7A0hj4VK4qZo/1z6h6vc1niMzJyBS9c7FyU2/Fs6gTQkXCfS4KUOFGbomerkaY6n/qhVJTrp9rZVZQzasks5D+Go3PvdDAqPQFPIsjkTcPya5yR1s3s1kTgjaZ6cRu5iR6350aQNwjEXDcD633fzIJBvX3uOf4ubBpJp3q8nFWWib2BV5gKzc1Ef2Z+fHE9U8Kx8WmhEfdYEKuzcMvkHEkhsg2Gaorto73LlsC18yt9fzuG1sGCMsVsPIXkoSzBMuOVopq7gZn/7dAFx22t/k8eaNyo9yeo6HXEhw8qDypVDYXKtEGaax1mwZ/IAui/PUCcNc2ucbfnDVD/Sx5rVO27/Hxl5ubHj1jkiOuTZpKFr1SToft/XJ624YNXciwDqdExO5r6AtFdlDo2B8Y8u9YVNHYYtxPmJh3je+e+MOsruClsU+DTzdEETi5T+d2dz6OzznYZMbGCr6d4/HLuGwM/t1nwX3cPRj9oVZubjDBpkmkM05/hmXCB00/c5LxZgaMLBBP16vGwxaMxX44V0VqveIihOYde+qi+1+hTwvqLkQqKziWWBxFs3NyW462PfrsRk9XY5/mFfRolNj4s21mWjj1WL5ebEawrygCevftB4fOgYYgQoEoivkLlbIlnmO4uWpaC62DPIxIijNimLZr6tN0KLO8LM6OBTrnFVbXPIMS642y1DE2+XL/t41inHYmr0QZ5/ETpEPfoHT2JF98c2RnI2wKnthrs9B0cDixa8rn1ezmEavNiTa0yNjvc1T2GGSomrlg0/8n27nBfi7I0+IefTLCbj3mAyW+j8amctU+zJ4fHLr0WF5Q3Rx6Fwsol2CC84QZulaWBGq+eUa2BCeThvq2frgnH5XJOlyeAoZJ16kT5OItBlS9tXl0GT/MawHPu45JM0hPwbahblpEr1o9e6jojkEmxQYKV+Ixh/c0
- P1xirNlo
- hYF/ei+/tFKErZM4jG+25NIBh4qA+lX5zRo0GduGGG1rhl/k3K47M9etLohH99BcKeyF7ZMTiUoxvguqNVY27MipAsXeUmMFzR7WvXWIBQhyMfMwrWc2BxcTcAocoZT068NCWNVuB7Gv//h3aQEM4YMLyr1F4McOwk9XOJ/PQcpfP/GIpf2YAWrhrpZ8J+7U/eOnTSq3T6MkG6WOom8oBukrYHh8qxUGCq2WgxJTaYL57tHPF0Ot2PfHPYorqgWLmbxWJmx1+sXj9a+/M1NAGd4zsYbGjvI0Eh6NnT46Qo4u+QRwcUkV17W9HqB9GRqI/0LorGQd+jEHXjzL79CZfEFdv49vDavjmCCTF
+X-Rspamd-Queue-Id: 66AF620008
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1767889561-934098
+X-HE-Meta: U2FsdGVkX1+A2DuV0ufqH8hD65+umLRvU11M2YZr7KUTx3sYRL3mwc2/KriYbHU/p400PFQihwzQKmJvfXeetsGzMAGd1Yo+OjVnaL0StNao1q7qOr0Os584QAeD9esP+aqf4nllvchj14aDEEjdDwet8bwzenNAlQ7tlCr9ACwm4IfmhU0lSbzTqkQqu87ZzmiQKSbafmKlNuo8Xh3ltf0ouKwjaS69KHljwN3+9llkStBhV5Yvl7qRAhfHieWxDerZmXT9O8xD0K/ncp5FpfcAB1myzQqsId0Aq5Nf1oKenleqySmClcBLKkCYE49wClZTdtreN25OnWz+x7POD7Bxcu1Svx7ziEw62UrPHut55QF9+89lpkm+o7UqmXikG4Urkpp9delLY7mRdkFzYgKR6J6zGOnWb6P3jNGnBUc+RoUkP/WSGMDE4CgAdJ552G6LdmfrexEdLNEYbFVEUfi60yyYxQodC6bT3xTmiCHL0I1jjKYLPOU6Jvd4g7UJsoxf+uNpdY87Ai+CLAJwCJyoCYDAEOjSn8YxITQLHsitvjyDMS/xYehkWqVa8KCsLxQMCgIkNCMjntEp8wPU6RbPxAzKTHo/pz7BsPF+YLpu28MdNXFtJreBrUT54lQmamUZ1PKubVH7DFVwhGhs+qYmB1EVJh1/YvY85kZM0haye6tTQ1XSsXbZbbXPnV/U0RZFrnuLGXigcCpbXmsbKjTsvbtZqNArROCGsWEMenFtHaxlL1dMEMAQjRJdIkEjD2UI7aspUM8HwSXEJrcI4hmbOWTKveKJ3ZpmYwful36zCDwVYMRajSkTSKkTnKG1mkt2PS6kjyA7zaDOYIytuj8wfyLszXHKjKUGojemhBfbltzthenUSWbCXexQti1OOvV2i42zafzactLvfgx1TNTNcrp4CNp1kO1g75H4VwgCKpUVc9lPWEriMH0fpzV8yAMonubboKh8U4WiC19
+ ACEnINwm
+ zG3DP3khFdMNMxhd7roH+X5Kntg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,64 +118,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 6 Jan 2026 11:10:42 +0800
-Cui Chao <cuichao1753@phytium.com.cn> wrote:
+Hi Deepak,
+On Thu, 8 Jan 2026, Deepak Gupta wrote:
 
-> In some physical memory layout designs, the address space of CFMW
-> resides between multiple segments of system memory belonging to
-> the same NUMA node. In numa_cleanup_meminfo, these multiple segments
-> of system memory are merged into a larger numa_memblk. When
-> identifying which NUMA node the CFMW belongs to, it may be incorrectly
-> assigned to the NUMA node of the merged system memory.
+> I have a bugfix for a bug reported by Jesse Huang (thanks Jesse) in riscv
+> implementation of `map_shadow_stack`.
 > 
-> Example memory layout:
-> 
-> Physical address space:
->     0x00000000 - 0x1FFFFFFF  System RAM (node0)
->     0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
->     0x40000000 - 0x5FFFFFFF  System RAM (node0)
->     0x60000000 - 0x7FFFFFFF  System RAM (node1)
-> 
-> After numa_cleanup_meminfo, the two node0 segments are merged into one:
->     0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
->     0x60000000 - 0x7FFFFFFF  System RAM (node1)
-> 
-> So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
-> 
-> To address this scenario, accurately identifying the correct NUMA node
-> can be achieved by checking whether the region belongs to both
-> numa_meminfo and numa_reserved_meminfo.
-> 
-> Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+> Should I send a new series or only the bugfix-patch for implementation
+> of `map_shadow_stack`
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+If you just send the bugfix patch, I'll roll it in to the patches that I'm 
+applying.
 
-> ---
->  mm/numa_memblks.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-> index 5b009a9cd8b4..e91908ed8661 100644
-> --- a/mm/numa_memblks.c
-> +++ b/mm/numa_memblks.c
-> @@ -568,15 +568,16 @@ static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
->  int phys_to_target_node(u64 start)
->  {
->  	int nid = meminfo_to_nid(&numa_meminfo, start);
-> +	int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
->  
->  	/*
->  	 * Prefer online nodes, but if reserved memory might be
->  	 * hot-added continue the search with reserved ranges.
->  	 */
-> -	if (nid != NUMA_NO_NODE)
-> +	if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
->  		return nid;
->  
-> -	return meminfo_to_nid(&numa_reserved_meminfo, start);
-> +	return reserved_nid;
->  }
->  EXPORT_SYMBOL_GPL(phys_to_target_node);
->  
+Thanks for asking and happy new year,
 
+
+- Paul
 
