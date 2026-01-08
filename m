@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAB53D1D480
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 17:16:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B23ECD1D482
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 17:16:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 545BC6B00BF; Thu,  8 Jan 2026 12:16:25 -0500 (EST)
+	id 20E2C6B00C1; Thu,  8 Jan 2026 12:16:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 505896B00C1; Thu,  8 Jan 2026 12:16:25 -0500 (EST)
+	id 1CE846B00C3; Thu,  8 Jan 2026 12:16:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EC156B00C2; Thu,  8 Jan 2026 12:16:25 -0500 (EST)
+	id 0C7306B00C4; Thu,  8 Jan 2026 12:16:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B3C46B00BF
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:16:25 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E2FA8160215
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:16:24 +0000 (UTC)
-X-FDA: 84309450288.01.818B523
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 09AB740003
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:16:22 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N+KAwUSN;
-	spf=pass (imf04.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EF8606B00C1
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:16:32 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8EA95139D85
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:16:32 +0000 (UTC)
+X-FDA: 84309450624.06.2B08602
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D430E4000A
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:16:30 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ka0wy7tf;
+	spf=pass (imf07.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767892583;
+	s=arc-20220608; t=1767892590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YxI57s6/K+xSGvKm8JB2Aq9p64eelY1MHz0jZWF74oU=;
-	b=gi1iP52W4q3+FGncQY0nCj9uBCr3INsEZugH9NQApYvC4VYZrUt7b3WpC8cWU0MAqvM9zT
-	Z47StS9wk/6VeeqqmNJfhbVUxGzv8ti7YcjN1yk7thGcM/Wi18+GGps30nJNdkxidctcAk
-	m0O/vdS0PQzkN9eX0K6Vq3OB6sr1CFg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767892583; a=rsa-sha256;
-	cv=none;
-	b=O517UKjFMhIy2XlSS4ZWTDrskP5YH26Df/517PZYvP47T5rmevPR320GZNJ/Tuddzk0FPg
-	yJIOS0tU+TKT3jdFg4KhSCshWtlat+XV+xvarLXjsdAdERiuzPCX6KJW9pniXAoCSK9Adf
-	sNxH53JGYKrQUDYbdT6ul7qTcPkzYK4=
+	bh=mTP2GMbNVlF1e3foN13NRmrwrf+3zjUemaOdq32B5HY=;
+	b=mve1Swc0G3O3U9JEsgN/0GYHHk6KJckSQZfxxEL40WOL5O6jPQnek/BP4crsuuWjcnINjq
+	SDgpJQ7cH8IgK7TdDSXn4X5vhMAfiMIzUge9SYemfohDG79jEhHHs4kUX5HPpCgFIzRiVE
+	NtwIbEnVuZiUpUxss3zoOOLcHsuaJRg=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N+KAwUSN;
-	spf=pass (imf04.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ka0wy7tf;
+	spf=pass (imf07.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767892590; a=rsa-sha256;
+	cv=none;
+	b=MgB0CH1OfbFFWwTNHL+DUvOkQh9lllqDrA/DzJEAAiyLnJj7Chm8cN8DXF2tRq7JSTmRMW
+	zDbPlhDJJLMV0V8toWL5xvdoX1iOZgt2SIeETS7TrSaEL8BGZ5F162bGRWKRrLKcwpz8/V
+	uDFsJHh5IoQARhRNG/v5kydA9KsDwqw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3859A42BAD;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2F3396014F;
+	Thu,  8 Jan 2026 17:16:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5037FC19422;
 	Thu,  8 Jan 2026 17:16:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9066C2BCAF;
-	Thu,  8 Jan 2026 17:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767892582;
-	bh=uKAoYiUzb2k4mWk3DPDn1qw2MlMadC9ZK+Ro0COSfEk=;
+	s=k20201202; t=1767892589;
+	bh=31kaSpuGA79pOQvjYXOIwkMusZ5I/9kl0pI7vxo79B0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=N+KAwUSN5aLOeh58U18x1Ce3wnLpBZV5zhe4kxwBm8fPRX5wOYoSQkrqxYodHIYXJ
-	 aw/tNdkO6s3F+xmbKKmGdGwZPQ7OcAFF6cZu+pkYIBzXkHIXu/l1HGZ9m9oVzb233T
-	 pb1QsAcwbdSOEG0g3hYn9b8h5rMA3FQ1auQxixaZPSb3Gnid38yhHfa7DN45lRpFNy
-	 HnYLVP3j5rN6nuQ5tFXKqOBNLvl4XnhrEDVD/oaSpKYeACD6sLQ5WeBkAwtRRf89Oj
-	 Mszb3PGelES2eFWGjjvA1vTJCZKTNjzsErMgOooBsTzqIDIIX6sREpum3rJfPfbZjq
-	 ncrWyVUiaiNNQ==
+	b=ka0wy7tfVbqJ8biZkl1dnF7zdBNpw2I/HL9Z4qvT7canG8yWttWmWRQ8y2bA5H2Ne
+	 Hg1kLSaeL/MJqN/eLQrJ+0D74nyBul/1dg48cm4KybwYHPFxN2jDA0DG0JbZS9GgJH
+	 YX0bgPuTqTt2qOuABV3Sh0WjERkrVZ8mA5j1puaJ7vvJQEjbKd1eF8mVQZSJI+ZJKN
+	 +fRHCYR9Jhj0ZnSLSNSehLByTqec+/NNwTFW6FjkwP2zNBKgrJjpIbdazH4MUrGCoN
+	 YFM4uhC2WPpbzqLdGmh6J9z/myyIQ398y3DCiuGgy6lIDUaJ/QXycwYIOEvZGejZ9n
+	 yymoliwZ3EoMw==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Thu, 08 Jan 2026 12:13:16 -0500
-Subject: [PATCH 21/24] ufs: add setlease file operation
+Date: Thu, 08 Jan 2026 12:13:17 -0500
+Subject: [PATCH 22/24] xfs: add setlease file operation
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260108-setlease-6-20-v1-21-ea4dec9b67fa@kernel.org>
+Message-Id: <20260108-setlease-6-20-v1-22-ea4dec9b67fa@kernel.org>
 References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
 In-Reply-To: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
 To: Luis de Bethencourt <luisbg@kernel.org>, 
@@ -127,30 +127,30 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1554; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=uKAoYiUzb2k4mWk3DPDn1qw2MlMadC9ZK+Ro0COSfEk=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpX+W9x3bW7J65LYqA4RAoS8vIXUjkwwPn2jjsp
- UmXLATAbCmJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaV/lvQAKCRAADmhBGVaC
- FSNEEACZcBsWRq9qFYTe80h8vRRw2k3rdL23HiT2BsxfSAAZFyBsEvwK9+kuhY3wgeDrU4j9WnH
- /GIsJmvdTFgf55rZbEZRkM+UjSpTNkca8KYJYfCKqOUpyDrGNxHkRKAibGXOuEhKan0kUm3i96K
- UpbDBsdke1UPupTK3TAK6QO1LnUpZROD/waUOPEAqTpxmgOGUircRjljFXwTtS4WNtwDpwaw9/v
- 59rhsifvhQg50TiVS3DGlyav9p3uOTznw2pu1n016JFbPDKtUHQQTKWCFllVRGBBN0SrVjUZCvZ
- ysFLmyL6FEXsBc06lpevB/4OZTOHEMAKH6GCviniXzi/Q9mNaGzw7SywSs2UpLRuBEl1F0o2nC/
- gSEYJYJtSUyPrcLRO+sqctPdB0z0c9N5ja1qbzwPysDOGONbqHHZRAwl+/fAm03pvjcgj+Ek4y1
- z4l9I32yHoGA0elIfZ94CnUbSLjHhHp99E6+gneCtLeJNF/V2UdqW8YbC7syjZmYsL9/32uBR+F
- Y05Bwybcvu6omNnCSV8mOat6qwJVat/Xp9cczO7bcMz5ufYYpeQfx8tSA4zKqAhTV7fCQ+3WbrC
- B4bB30ktO7leILwAVHcE6hs0zFGzhxVYBn5+WP2mhpy5Eq42GL6xsEhdCeW6GB9eJoBmuml53dB
- 1zKY0MNAGgIkj8w==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1348; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=31kaSpuGA79pOQvjYXOIwkMusZ5I/9kl0pI7vxo79B0=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpX+W+/CMV6M0nr3SG7lwo2cpM9G7b0LqWdi9Ol
+ v2q/8PSRRqJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaV/lvgAKCRAADmhBGVaC
+ FVSQEAChykiIZZ2qCoDgb3e10KiOX4j3Kq9XSCEqphrg9Pr8U0yza5P36Vy+bUEGsdgKPjDLqTQ
+ q/949XOcYbiBcP+IEI7/gYaaYVJMEiIGImK6lABXNO2oMGOM6vLmEd3C+hnmhZlK8h2vCSnhIkw
+ CqkUAOpj20VyRsjZhxXC62TQQO8/8Y1QDjwRM24rZXa9NLMVNIb9Nn085XnNY8+Ppa3eFSktXW9
+ ihb7fODPt1Vn6Y+eTsFtU5FsC6SwCxOTMnfRJEfY2C9Yl+7ldIyvY+NSWFbd1iWDZ7EmBaqU6PK
+ qrBu72lJYpbsDQz6g8wjru4v4bG8N8o0uQm0wo9K5ZDw3DyjYaa3ja3+c2uHUSiA7BKqCAx4smU
+ Q5mE5CbEcfBU8OthZWBuIhfbrZeYXgiGW0722Wz/sF8uiPVXx0NNUtIVMw1iSvsgI2McyL2JLrj
+ 4VZm70XFpXu8ld9+0yoAZ/mUgmn4HBfNNG5qyOqJfFnnEteSMeBnpbPbC7mihmnqF+bUwfFMpx2
+ rPK/34X8VljljNjLqhFk7XbPZz6v6m6AhuTblY7PbDlKBRzMM6jNhafVfVXrC23FeDGkeeeS0wq
+ afbmnpmPSBOCXki9yf314rYtODExHP9j/c/bZvezn9USBq8VM89wiKzdf3Lm2UXyjR/QYwfw5Or
+ Ae8nSsnmq7yvMOQ==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 09AB740003
 X-Rspam-User: 
-X-Stat-Signature: q9x59b6dnndi4i9qmfbhiamyx8f5uxpd
-X-HE-Tag: 1767892582-975145
-X-HE-Meta: U2FsdGVkX19jYrxoKY9hFitDRCm3cBWMZwNnH4fo485zKqVibEvupXuXNy1Y4IizP87ScFU7voVA2Jj7zjlBzyXHNcbo1zBAUIZd598kW17QFdz5sTJb8iNWlb9/cWDZ4intvfrV8wELUp5dH0jOL5bLkQV6jgiv4A93ejpStYTj7N2HhMDRptg1kx1plyS8vwGiklRjRuCyHJVijkF0c2yc577uD/brfs0sZXvod/Vf7DQvCYe1NX4E5UjMttbehv+s63xCrwKo+VRWMZKmK3q7J0IjJlPyrgcPRCP38K5gatqe+yHA82UxwAfvVwSsm6vWuNQWLTzId9Svjk0jbKLnhy8dQ6Q+zBZz1D8aVwWkC1itHkfSHQe850xOWO8BaRPCAD5jD1wNtFhcZ/ap0MmKBWRKVTOeBb8LKjo0Y29V+F2DGHqNnc+KHUwxxVqdt/V+iq3u61Vdp4OjfiYPKdGDTdtzAhvG9gdqcVFxOTK1u7qHTYr314MHkMtUv+F49q/BC9kPfayqb3daMb6F1DmmvyGv2GpAngpzpCYhdR8pAy5BhsoFknFCma/wzAjXyPLeNqVIB3b48nt+/Hkiw5Rk0dXlwBvVKmJkfcC5kTIlapKtG3i2dtO8hqFLgRJSAfFBltdzUq6QCgocR9Ig52S4xnWCeiXnzhc+Qzlaj33gBbh+4P+uNlRn8WWZiKO6SiXd68jdMyxPgr0sDZ1cO563F7Ndf298cNqt8UKpF5xbiSjtzjkKXMXhwZhSX2cmx0NQ639eOEC7X4GoWEQskACSYkwWbYTDZm94IC8BTuVP5aDFTpeNujGkJh2Vd/4wAIjco4qqBcJE64t4mjriudH+xBvQuVeQEaNVOBDJc78ThOnZ7kP38D3QBzc2T1wDOtjdPcr2sgPT8fq3WBbx/EQICXF31QqkDJL8UEPgmGleAFyIpGua66QTRgsKZypv8LGiXRW24/4Kd6fRMTE
- lNTKqNey
- 1D9pgkcfG4zGEjsl0x8kR7bmUbqZRexpbQxuSimX5zhKURZqqQM1LRjs4KTrnwH97Y4fA2BmG7bcvAgxW0ETdHK6JxUbWXV1QmZVOBcezsOGt2ulNlYy9N1dZVTuvmeOp2aNN42uFacXkQwzOC2oYL4InQMTWkXl1dajENoqaajoXXNAInm84G+m5hNWi9Pdd1PH1JbvFAT3Xu5ZhO0RMS5dBmuqk30d+H+PG8LfHdiVZdSivbfS86A37rJdUYgNX34DytBf5tzDb0PA+xFfu2SNHMqoXa+oWLImC0+P9vYwUrY8revTm1+cxHv7J7eEAR/X7UxgSXB0bz6kyNeL6j/pvDXQM4R6mATlKxymGOddAupO9SsMdVVv/GQp8g7lJKyC+
+X-Stat-Signature: wn87fe1brmy67dea1mow1inrth6onpwq
+X-Rspamd-Queue-Id: D430E4000A
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1767892590-71255
+X-HE-Meta: U2FsdGVkX18NwcXUnUN1u72Txy0u8g42jn0E4eNUjB7FZbJFUX/FMKyLC38mAreYHlzZdNa+PN6m2PvXJI6v3glCvBaQmU6/kCkE/uPr+jRwNqWTxFMxPVIQQ22aN3B82OD45ksbC9rAqck+ybdEk2EI0bczoi5yAazJNwasxgvZiG1bMYlTbrktCgjXpiEdwt8nX1IE3a3WxBCg50T4x4cKX6V8huVmyI0NTPRzlTWiva9n7FgpYj5UIWBGnVEYae87qI2QkC6sIJX3dBQVHkL5TPcXr/8regCtosVuBefRuT4rYMzQDVAicvvG/0+ooC1uLI0s7F+m1vxDFEbeDQQ7UyrqobQy/ZKLHplcnHh584LKF71pAFS2ZA/8iqZyKJne7y+Nq9abVOoTh+LsDe6t8Zy4gP9MbRVrTucar0+nSq0UPAEAZ8eoZA8lOEMdhBwv4WgFijJ88iZDvTi6vD5kuPR3QIyi80nOzCNxIFjD9VUK3y9PGr6xr/c8AVxLd9SXRMiOi/7HIWH3D8DhV/sJI8hUv/Pa36zeNP//SP9nwPa3IRRoD2tkZuNpgewIqGZXnUVFrpbqjcSIRmCsn4KKsNUOapZOOLdPM6vZTP0h+2Rs4+MQvSQywhBXbbsdRTroPUnu5LYK0feKxqFn22tQ2Ud+HcKo70xYi8uWgcEgXYz3zdSaSmorHQod7sSXBVIIcJyn27ELqcTfEnaZrMCTOlexCtHN83OMBvJtm9ayLKhgVmUN0RavJ/SfOMoskgbuhHyvLE2d5k4LjQpf+O0l1shfsnkd25tt7TB1fyB5UMFkVhh0RgTawz8abuANStSMQGQTaxDp+Zlp+HYiaS+47zstNktcqWAuDlNpWHmfCdjD8Us/bHJ9h9cvyMJE/JtasZ3zzkjz2MYsa2j2ngj+MEPTer+SGaC7TBYt86lshprBdiGg6yKixRnt+Q6e/QJSKM1ejnXEWYu3ncS
+ f2NUruUV
+ juPL5PC6ql/yK3aD4ln80d+QSUs+PrVJ/tsLPXm5i1FDBv3pqTfi5QntPe8jjZKPPkkN2u/0SWCpUZjAB03uo5bKDXJMJjYKv2HvVIPMnGTQ6b+sQOYKCGXIZvHz8n2TGDlHC4w2qQU5Euhi+gnYYf/1oEvMNywKKTokvoD3zp8sw2uCaGh3v7CwvcM+hDQeG93qWrIrylwuWA/LhuqiN6gu9iXQcIMY76sXtviUlU80u1fsLmPgp2bJeNGih8TCZoMHUwa7NNsHiMkro1upRUtAGhLeNciBTLQBM5jkaLSqoSH5Rc1bDgdUDNU4aVRW2Yyx0H96H77y3CvEwKAYi/nb9LRJdRzu3Yfph
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,7 +159,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the setlease file_operation pointing to generic_setlease to the ufs
+Add the setlease file_operation pointing to generic_setlease to the xfs
 file_operations structures. A future patch will change the default
 behavior to reject lease attempts with -EINVAL when there is no
 setlease file operation defined. Add generic_setlease to retain the
@@ -167,44 +167,33 @@ ability to set leases on this filesystem.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/ufs/dir.c  | 2 ++
- fs/ufs/file.c | 2 ++
- 2 files changed, 4 insertions(+)
+ fs/xfs/xfs_file.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ufs/dir.c b/fs/ufs/dir.c
-index 0388a1bae326ba41bc03471fcb7ed01098a707d8..43f1578ab8666a9611d4a77f5aababfce812fbe4 100644
---- a/fs/ufs/dir.c
-+++ b/fs/ufs/dir.c
-@@ -19,6 +19,7 @@
- 
- #include <linux/time.h>
- #include <linux/fs.h>
+diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
+index 7874cf745af372fe8d90af09c6916d4c635472e0..ecd7bf42446b38e075986d1c774dea4e8c0c0d01 100644
+--- a/fs/xfs/xfs_file.c
++++ b/fs/xfs/xfs_file.c
+@@ -36,6 +36,7 @@
+ #include <linux/mman.h>
+ #include <linux/fadvise.h>
+ #include <linux/mount.h>
 +#include <linux/filelock.h>
- #include <linux/swap.h>
- #include <linux/iversion.h>
  
-@@ -653,4 +654,5 @@ const struct file_operations ufs_dir_operations = {
- 	.iterate_shared	= ufs_readdir,
- 	.fsync		= generic_file_fsync,
- 	.llseek		= ufs_dir_llseek,
+ static const struct vm_operations_struct xfs_file_vm_ops;
+ 
+@@ -2007,6 +2008,7 @@ const struct file_operations xfs_file_operations = {
+ 	.fop_flags	= FOP_MMAP_SYNC | FOP_BUFFER_RASYNC |
+ 			  FOP_BUFFER_WASYNC | FOP_DIO_PARALLEL_WRITE |
+ 			  FOP_DONTCACHE,
 +	.setlease	= generic_setlease,
  };
-diff --git a/fs/ufs/file.c b/fs/ufs/file.c
-index c2a391c17df7f34d9961973909d1985f5f786e92..809c7a4603f863025caa947b2e08f0c2922ad619 100644
---- a/fs/ufs/file.c
-+++ b/fs/ufs/file.c
-@@ -25,6 +25,7 @@
-  */
  
- #include <linux/fs.h>
-+#include <linux/filelock.h>
- 
- #include "ufs_fs.h"
- #include "ufs.h"
-@@ -43,4 +44,5 @@ const struct file_operations ufs_file_operations = {
- 	.fsync		= generic_file_fsync,
- 	.splice_read	= filemap_splice_read,
- 	.splice_write	= iter_file_splice_write,
+ const struct file_operations xfs_dir_file_operations = {
+@@ -2019,4 +2021,5 @@ const struct file_operations xfs_dir_file_operations = {
+ 	.compat_ioctl	= xfs_file_compat_ioctl,
+ #endif
+ 	.fsync		= xfs_dir_fsync,
 +	.setlease	= generic_setlease,
  };
 
