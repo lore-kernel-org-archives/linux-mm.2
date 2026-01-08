@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25AF9D1D482
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 17:15:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A3D8D1D482
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 17:15:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B4406B00A7; Thu,  8 Jan 2026 12:15:01 -0500 (EST)
+	id A9CDC6B00AA; Thu,  8 Jan 2026 12:15:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 881A16B00A9; Thu,  8 Jan 2026 12:15:01 -0500 (EST)
+	id A53BC6B00AB; Thu,  8 Jan 2026 12:15:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 701576B00AA; Thu,  8 Jan 2026 12:15:01 -0500 (EST)
+	id 91E446B00AC; Thu,  8 Jan 2026 12:15:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F5356B00A7
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:15:01 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0293457783
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:15:01 +0000 (UTC)
-X-FDA: 84309446802.30.145D853
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DE656B00AA
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:15:09 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A6B514019F
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:15:09 +0000 (UTC)
+X-FDA: 84309447138.16.5ACD3ED
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 19E99140009
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:14:58 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Yc4/t5lo";
-	spf=pass (imf23.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767892499; a=rsa-sha256;
-	cv=none;
-	b=wuBJWI9WjHCqRG6p4TxwZURChAIQ/LrcfqQ2xbQG/xqCsYQ5ONzQBUmdm0BTextTojTjKk
-	R9Uq7+53oMLAl1+74GC8U85gonk/Gb8dPHIvCsVTiyKRsH9N2NyO0xP/AfCkCQF7FlDSj9
-	OMgAAGRo8KmXBH3NXo3HPQ7nBFFmX2s=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Yc4/t5lo";
-	spf=pass (imf23.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5E2674000C
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:15:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TDNJcMd6;
+	spf=pass (imf01.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767892499;
+	s=arc-20220608; t=1767892507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8YtI+DzwDF0tnFdtfx//elv6GXPDJiavSmjVlMaJ3h4=;
-	b=pv2lkCbowwWAIjID+WqJrQzQpNcyG1Uv18WE1WsQivPAoEOz+CKOD4hJlpn+UKd4Vfsjil
-	kWmh8OuTJpfulkvs5vfZoWA213kn9L8E/WMgzxpEeK5THMzAhfVzQYl2W+rHi9y1io10Z3
-	TkhLA7sBAK7KLGRCFD3XFK5dQgo7W/Q=
+	bh=+8EkRoG1L9zjgQ1DOKG9mWDwPpbdMkoAIHjT4aDgnzY=;
+	b=IITSD152aBvJYi85UOn20qLMycNhyYAgQ1qFKrjcMXZvApvE7smwQzvCtjwc4HFnoJanBk
+	a0j7kvu4IYBn2pexA1ybUMCVyNJ4ACUOVZu7tF+c4FjRxjpczv0n+tkARyodruu4gzCo7b
+	6rf3pj+VTDWMNSNgWJazdmosQ1fYnZc=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TDNJcMd6;
+	spf=pass (imf01.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767892507; a=rsa-sha256;
+	cv=none;
+	b=0iKwmUNaDcFBFSfzBoWCGrz0EGtaObwaxKKHIAAIOVjW44p1uyiYXRv0TvaaVbMXZZp6dz
+	hsbtvr5HKFiACpshwMLioBGoa4NpGXtK/gYhar0OK25W9qvh/n058J3oDOFcEV5bZyjd8Q
+	lSLrKqFd2Mo5hRVd2OacO3zUw+88M8o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4335B44454;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4BBCF417B5;
+	Thu,  8 Jan 2026 17:15:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6360EC2BC86;
 	Thu,  8 Jan 2026 17:14:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B8EC116C6;
-	Thu,  8 Jan 2026 17:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767892498;
-	bh=WgBctrBD8RLFVYdXDqzWSCdo8NzR8JtstjicYPh/U9Y=;
+	s=k20201202; t=1767892506;
+	bh=f+f4o4ynYy+1SY/DeVfHq3onGDbY5zceG5AUdIXzRFo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Yc4/t5loZyezYaHDNXK9dd9JvafuBssh+sDSZ3exryKjh9p7XKLxOnlh0HZwejipA
-	 tmTIA9/0xJ8xrgH6Y0t7D/mGDf0AqOx/WxR5blHGNJ28gGiZsD17coCliZNvV/vsQQ
-	 6XXHPDcyYcOAYUAUaCsSzNRMecSySzNpEAlW8DnTJpjxE+2aVYhL1ZUMVLMRfcMxTd
-	 xcBwALhaSlls70OLDrhfnMlALrjEGcjhs7rFzNgirkNOyZkEjSq0YeHhTjU+YgFGXK
-	 0ZdpaO1Q0mxXKVnWoQw6OmB+h27qt7MwfOpTqYoFF0/0bFAfq9Vui9DQor/pHuo71X
-	 3yAVhPaaUcVtQ==
+	b=TDNJcMd6q902mahde+BO9wSWmbW9wjddkU26c1KViTrFBxwUdgE7cFhjS0dNF3jtf
+	 6Kk0r/OwVHpHX55siH6IZecEdrCSr2DCgPJoaSgr4zwLDXirwvkRHwnst7SJcRNLcL
+	 WwkGp1R5Oplpg8ID0G3hFXMyazl85w3U9ThrzJUR7nvfo0YAzzC84krpqTWECQ9+lI
+	 RRrPBQx4aAyUO/5pyOG0rGiL0sMaMgJkiuOt7MJqeLW4Ry9+VXvGVxqNaTjIopbLYy
+	 hGMNCDe+LUdCUZ/AYoAp6mt3lNoGuFLlkAljMn08t1i7ZscD156Xj/ScCXO0oBfPnT
+	 /HctkjSSFO3jA==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Thu, 08 Jan 2026 12:13:05 -0500
-Subject: [PATCH 10/24] gfs2: add a setlease file operation
+Date: Thu, 08 Jan 2026 12:13:06 -0500
+Subject: [PATCH 11/24] jffs2: add setlease file operation
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260108-setlease-6-20-v1-10-ea4dec9b67fa@kernel.org>
+Message-Id: <20260108-setlease-6-20-v1-11-ea4dec9b67fa@kernel.org>
 References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
 In-Reply-To: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
 To: Luis de Bethencourt <luisbg@kernel.org>, 
@@ -127,30 +127,30 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=777; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=WgBctrBD8RLFVYdXDqzWSCdo8NzR8JtstjicYPh/U9Y=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpX+W7rGRw7xJ9j9CSSmtKVJzAnrZ9HKw5x4g6Q
- fvlmyGGcu2JAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaV/luwAKCRAADmhBGVaC
- FehDD/9tUv+oBi/X1dqLnHkQjWAAqllp1O9XIJiC0Dmcj8NdKQjiIEJoahbDF1BoadzLSTlRIhG
- A4Ia4k0zHK75I3zk36XIzkn0YkeesqfVpCvK5vIKdcZPe4GPp3NEtPgWRDmyc9smykSu9lcxyGt
- o3l+UDqQoHxbqKwJZH9ShVgldb3vOGhWSCMI2sXQdc3CYDZ7ZxCc3YsKa5ZRB5LOjockkEKYWK8
- p6/cCQQ6VrgkzOzR6kcmCg4RDj2xDwpeWdoJT9ycfMG0UjbmiVkiDGAa4sRYDAVvfy03xNezHyU
- 5fyokGDABc5UKt/0cGAZdgST7O+ieCGQbEmmqZpU1+cx+UOOG/2pDPs7oDoXS4jukcCWY/H5GGR
- FUVOQ4/6u1giyiF91KGM6VNNqNpV8VEcv8MEgDz/SAyMMSpT4EVfVtQ4CfbKhLzJPALVtAZeUBG
- iSE5FEWPy5iiIR+EC/zcPL87/uOHshC0KlklvrdJMW94IKhSSDNyw3dkrUU9qEuYOxDTa2qfxvG
- /Hejpi55FfCCR0Ha8ZwN9NZvBz7U51fU3QOgjIbntwAC6kia2Na5SdIB9voB+3l3b9eoMRxPGxT
- biskjjTc1jw8WRjwPA9wlhGjmNGP4Vl8Db8cK9ZzgRfrZxP+iZ8N+sFHZS0E5jwImgp2j1lEnZX
- PrqPNklrdm/ygrQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1725; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=f+f4o4ynYy+1SY/DeVfHq3onGDbY5zceG5AUdIXzRFo=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpX+W7lCQZfgywIvw59WIEginzoekcq167e9p3d
+ FIoynspkAuJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaV/luwAKCRAADmhBGVaC
+ FdDKD/4znaNh5ZW6PAHUf642a8kepq5X6OHMfltH9Cc7L/Be4t+uhH2C2l8lp1cvjF3p8Rpi3oA
+ fZ+dR9bUW5GRyCJ3+vRKjVS5PRDra8bHdHtEx7mCNQeTzUhsLWKmjFoTVQ+2z6Dv47T6ZmLUrOW
+ vt2kqZpnLjWLWWiPlf0sOMJIeswKuv5uKd88OxRHUWG2kQSOKbcKfwQcQ4bjSnR08ZPqmkmOos0
+ TrsoXeTh7E52Ttx+5nLskrvumsAUMiLfNpAYGRnh5zS9deqJ/icejX/Tnm8rp/HfMYW9lZY1JLS
+ uAR1InznJLqI5Ra1WMIM+/c+6E9oW407IRy23SocSVro/Mua/BIjEJ7gOfORQmHMPu3+9VYfcyt
+ Dlxsr/Vz8PDZc+xqqrW5abevesTWIHsXWA6cp0lDEJG3JmUdmpVGPJ8g8DK8clPYo/rFC+9xN2e
+ w+Ol9y3A0g4mbiyDNQShnxdoWa8G24T+TC06gfvWatd7epKfvf+QiHukAAjTB1zsTXPxn1Y3LzI
+ +PZQPSYmATnn8m8nyY2wkZ8htVVohDBRW85B3Mp8M3jnGgMP0L7Ea5mp1wDVPTgyjwmRTpNCdV4
+ 18aUPXvyTh8KR3P0CgCnGA73VzPVfWcUEJ10+JBd6hS248f5/wSH14zMU2VeB2iNpgDdkeSQKbE
+ um2oXzdHyzfwuLA==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 19E99140009
-X-Stat-Signature: dit59au9mu6bk3fwm9nngrs6dmznx7i5
+X-Stat-Signature: 3449okibxckc5ddigk1s5asbnpn7my6t
+X-Rspamd-Queue-Id: 5E2674000C
 X-Rspam-User: 
-X-HE-Tag: 1767892498-822888
-X-HE-Meta: U2FsdGVkX19NcJBIGRO8j3ceJt+Ma+jgPQkFB145veK94KXt/2MzmaOcnVWqDsYhXK5kuzLX3+XkZY1q9OpxxdPhk65lL3XkeCJ3bIWV+eDOFaMof+NshwB5r71NhOcifpbwohFfEbIqvca25N1tlQHpgn3sa443LuJ7XZURvg/dRXXm05JFy7EnpKzwViJMP/VEs+n+9OPKRy2ACWZyR8Y9BWZ9WR9+QzknaSyh/OOi7UwAeWKw3BDBdOvjIywD9tu4nCBvZPDoiIIy59ODxhQ1xsxaHZd4kFeXnnD/DjcrmKmeopmu9ywcXaA63AgF1qUDGRpwDZdu0zceKD575Z8lN4El6XQ4B4rx5UfeXglXXaCHrtYjWxO6onIlIqOmTVBvQ5a4Hi+Rfx5eJKnUZ23NE6s/+zhNt14guXeEEyLwhIEOvjln34ttaoJ5/vNOCh3vrDsX/zaBOwDT/kfOMzK3UUy+LxP98xoePFXRiVp+ON3UMyal8wxKiotUrVkZb4v3z5W63SqmmJu/aNcb+iFPO/BnLw7a1odiQzwzjmZxFlt4o+fZHC4g4jmSaMxnj3Q89D/orv2MKXSzaCLSYIK345aiCQciK+i9jt9Sh5viU+oHKBAgMaSP+5UXu0/Sgtfvq1kzrpJpm6VsJwrPYiM0+w9gQRInTasq++2S9ms+VeF6NX6WGDjvbpkmu5c2jmwFz3LjBLOo8e0f9KJ+StnTMqL9b+WNQrc3KIyqrxNiv/ZfbGau50sn7ciuqcVyMqfMYFbLrSJGrAje8QYLCCbttO3EMocZQi/v2bedt9Df57lO33GEal3xJIzb1bsymZ5VCXBo7rRQkjybqGuK6lukRcH+wQtzzt0eooRHMP8x6Bdr/jzh7N5PK+iAKwAH3vKIQ/L5286VZib4YCjodhRbDlvppqvFICMFPz0GDzdfkZbsSq0y67B4KamJGbMpR8AWBD0X0FLtGxEy7h4
- sQ0jnGvf
- RJwhJuwAYR+40SbQ3FnV83DQxQ3+vWzWLHyF+PjYXvzSP6H2pDFUVaN+47gsXuClnkoS0NCrLvgzB7X85k8OGO1bXPB9qTDUgId71CBde6QxirG+eRyiAoU1WkFRGQkCJJNvMPY2oCus6+dL8B64Gj/L7hG5Fx3GBKYOGkqEpk0cmvQVCGVobxL1I+ZcEMkE5xcQKk7tIvEOAnuKsSgLNdlXDFC9UYVgHNmfPbhzRPvXRvnATcPvMUa8JE6tv533GhCBQWl5mTUHPsCSULFPEskd3XHif7/odFvcJBT31PoedPGprt/s9de4Idw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1767892507-177857
+X-HE-Meta: U2FsdGVkX19wZx4x+55PUXA3LA0d8SxybAhykEsDVEX7n541j8/TBP/nmrDO/YDJB8lQCRRG3WZ3H9SprsNwEX5LSfP1v1CZFeWCsV3k+Yw4kUgqoQkW5Gw0jLz4xeAoTH89ddgsZ9KabJvaEwKqsgEn0iS6YUKp3vMl3RS2yfhzCEDfl5d/pc/aiWX64bdvdFQ9wXQ6wHnNoswKfonT+roj4mxSAl1NT61wPagGde2LvrkOz2x5Gke5Nat8IlmBm6XW704acGSb7Q78foSkfhkwV7mncNglGEesGrhJnK5YaWd7qLGH3tNlqpxZABMmkdEI7A2VhpkwsxQJhXlmDKzObizR+dWu1c3aQBy8wKOKUcUNrJbmCwXdAY/5YWLC19P0QAw/5f/ldTNblkNzZCFhKGSRR6eVoiY2nm8voFTM5KU+0AjdrD3YUIIZrtx+wKkgwywniYQ/J5UzSICKe1WZ6BJuccRzRnKn4DwySXBNzMkokxN0TtEExg5yszSngMww5CU6gzQp+d4zLPD2NDh1nsY2dh2x1xymOJEv1fBJest7HruuHUuvauMl2kBtpmOYaDDUnKLFpH8xzBzyIHGp0B5UAoqmLeCFf2EXeZluwehI64pV1cGii5yfykBnVd2xqWamVFxDOJ23JM8ipDYyOkRvUi713PbFT8sDf1yXp9hIJXE+3jRO26NfPy4KQlegcIp1q+Tq8kxr0mAI7AVWP01kqbRhHQlyohgggCDhpfxCw4CTuCvnjtiYUOJbxnVzdnm3FJNRqs3f765W/lT/G47PJUiF/hXlV9yOR1wHl47MBPOlb5wX0e9AsXtnmRQsKTRfa0PwYJQOreQ6ghqKv82aPbQIcIheQgypmfXJUoqjWbkXIec/F00AlK95zXRxEf6J+MUotswmfH0rVjO//Z2h6FpLDYFInQflnC/FK9IvT9p5fiTsbAetN2bszycJ3x5lyAVmDyFyOPD
+ Gqko4AEM
+ LfaKNKKIhHlDLtFIQwaAWKKJ0bFNxkDDEzvKh9DMToXWrNf3r3HjjDX3hfKYeB1X9/c/QM3Qw8ZAWJJP7P9C9ZBRW0gCEy26ISiWydDAtNJc/Lb3YeXcvM6EZcEzxTFXG6KZjSd2lkgjSifGbDDFREqsIq4URthOYyfVXdC2hdsJK9CeKRZeuC+2/RDRFmI3t3vAk49TZ+yXlM3aGHHrkXYRtSgPxZp1eFbl6crOmevAeyVIWhcu6lAcL/IBgPMCL72YPRpplRZ/EX3t/q75/wLQk48X6nvVcNezV8yCqej9VsPHBSmoq9w0v1180Xim6lllvnjkBAUHCkqo03Ytu96N2vlZGSAICYbYIG04FbONJ5WFduizdB2vSxz0MfEPPLclm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,27 +159,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-gfs2_file_fops_nolock() already has this explicitly set, so it's only
-necessary to set this in gfs2_dir_fops_nolock().  A future patch
+Add the setlease file_operation to jffs2_file_operations and
+jffs2_dir_operations, pointing to generic_setlease.  A future patch
 will change the default behavior to reject lease attempts with -EINVAL
-when there is no setlease file operation defined.
+when there is no setlease file operation defined. Add generic_setlease
+to retain the ability to set leases on this filesystem.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/gfs2/file.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/jffs2/dir.c  | 2 ++
+ fs/jffs2/file.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/fs/gfs2/file.c b/fs/gfs2/file.c
-index 86376f0dbf3a553375b0064c9a1eff3bfa9651f5..6daa96d815e1e30f099938543a0ed19aa90c720c 100644
---- a/fs/gfs2/file.c
-+++ b/fs/gfs2/file.c
-@@ -1639,5 +1639,6 @@ const struct file_operations gfs2_dir_fops_nolock = {
- 	.release	= gfs2_release,
- 	.fsync		= gfs2_fsync,
- 	.llseek		= default_llseek,
-+	.setlease	= generic_setlease,
+diff --git a/fs/jffs2/dir.c b/fs/jffs2/dir.c
+index dd91f725ded69ccb3a240aafd72a4b552f21bcd9..2b38ce1fd8e8d8d59e80f6ffb9ea2935f8cb27e4 100644
+--- a/fs/jffs2/dir.c
++++ b/fs/jffs2/dir.c
+@@ -15,6 +15,7 @@
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+ #include <linux/fs.h>
++#include <linux/filelock.h>
+ #include <linux/crc32.h>
+ #include <linux/jffs2.h>
+ #include "jffs2_fs_i.h"
+@@ -48,6 +49,7 @@ const struct file_operations jffs2_dir_operations =
+ 	.unlocked_ioctl=jffs2_ioctl,
+ 	.fsync =	jffs2_fsync,
+ 	.llseek =	generic_file_llseek,
++	.setlease =	generic_setlease,
  };
  
+ 
+diff --git a/fs/jffs2/file.c b/fs/jffs2/file.c
+index b697f3c259ef25171ce30785d4584d5a53751a0d..5e1ef4bc009b6e5b4818a7467639fc328c137c12 100644
+--- a/fs/jffs2/file.c
++++ b/fs/jffs2/file.c
+@@ -14,6 +14,7 @@
+ 
+ #include <linux/kernel.h>
+ #include <linux/fs.h>
++#include <linux/filelock.h>
+ #include <linux/time.h>
+ #include <linux/pagemap.h>
+ #include <linux/highmem.h>
+@@ -60,6 +61,7 @@ const struct file_operations jffs2_file_operations =
+ 	.fsync =	jffs2_fsync,
+ 	.splice_read =	filemap_splice_read,
+ 	.splice_write = iter_file_splice_write,
++	.setlease =	generic_setlease,
+ };
+ 
+ /* jffs2_file_inode_operations */
 
 -- 
 2.52.0
