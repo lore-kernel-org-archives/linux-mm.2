@@ -4,83 +4,193 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4308CD185F9
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 13:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57E02D185FD
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 14:01:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACD576B0088; Thu,  8 Jan 2026 08:58:46 -0500 (EST)
+	id 83D3C6B0096; Thu,  8 Jan 2026 09:01:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8EA16B0095; Thu,  8 Jan 2026 08:58:46 -0500 (EST)
+	id 8153F6B0098; Thu,  8 Jan 2026 09:01:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BAAD6B0096; Thu,  8 Jan 2026 08:58:46 -0500 (EST)
+	id 6ECBF6B0099; Thu,  8 Jan 2026 09:01:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 882606B0088
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 08:58:46 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 30AC6437FB
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 13:58:46 +0000 (UTC)
-X-FDA: 84308952252.02.922CEB1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6719F40002
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 13:58:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IkeSLAkW;
-	spf=pass (imf07.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767880724; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BC926B0096
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:01:06 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D763138B2E
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:01:06 +0000 (UTC)
+X-FDA: 84308958132.23.C1F4FF6
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 55A73A0023
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:01:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=f61WHfum;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fwF0WUmQ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=f61WHfum;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fwF0WUmQ;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767880863; a=rsa-sha256;
 	cv=none;
-	b=eBa6HbfAHdNnX6+pjcsQ+g96Hl50mhagXHLTz/FR5Sh2dYuD18QlqE1I8Nv8vDU0j2zxRr
-	gXZDJrMr1RGNx7fhYZV7lC/YfZ51srp6m/zCEi4n7kRq2J00Z+ePAoZ10oqRdt/NePdRov
-	8X8engod1g+irFLxEe0CBY5XioBMLIQ=
+	b=KJAKnM5tjfnueUsKGrhYPDUgQLPIMFdc98XKYHEgezXyYocq/jVJyjjxWcA/+vbkkwsLS3
+	+YjCyM6audlEn2XFux9ZdIy6U3TYKmgK0a6+pB1+WcBC7LLVY3IDDVsTPkK4HnuABKSB1F
+	IY5rp7LtUWfG3pG7vLgs9z/IVm1iIO4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IkeSLAkW;
-	spf=pass (imf07.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=f61WHfum;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fwF0WUmQ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=f61WHfum;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fwF0WUmQ;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767880724;
+	s=arc-20220608; t=1767880863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=wWk4lBmrs0zqN2WoRXOb68EyrvZcwbCKpEBLCz2gMDo=;
-	b=MTnSMkfoGBtGibTOrTvRTyvYOxzEE56EnDOZ/4DBKAnpLtAFNe3ZwcZO43vywGTrm41x7I
-	aNQamssdEoLL5kYaOeLK4OD+WKFEaWuRVfqIngJHg2z8ZXrUQvPfktlqQWMZMGUpQtrMSW
-	I+kuytAeC/tAG/Piw6PwSDHcj2D2OvY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71D5541B28;
-	Thu,  8 Jan 2026 13:58:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE679C116C6;
-	Thu,  8 Jan 2026 13:58:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767880723;
-	bh=H8dQU+31z+RB92+oK/SDGHzzr2/P4FoToDpSxpydonI=;
-	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=IkeSLAkWY5Vz6a+nBcXCeus1/QyZLdCjBhjmGOv6JpOsDYEk4I6AifcHrIzHZGPBa
-	 uK/n/Siz/eUXgHWq5TTGnQkf7mQy7p/ksSst2xU8DmRs0HVYWcJEFP7mJXZ/tZc9Oa
-	 GzhHBH2e3w6vo+NIjIqEXyspbNAoQhSntWoXJ0Ak=
-Subject: Patch "mm/mprotect: use long for page accountings and retval" has been added to the 5.15-stable tree
-To: Liam.Howlett@oracle.com,aarcange@redhat.com,akpm@linux-foundation.org,axelrasmussen@google.com,baohua@kernel.org,baolin.wang@linux.alibaba.com,david@kernel.org,david@redhat.com,dev.jain@arm.com,gregkh@linuxfoundation.org,harry.yoo@oracle.com,hughd@google.com,jane.chu@oracle.com,jannh@google.com,jthoughton@google.com,kas@kernel.org,lance.yang@linux.dev,linux-mm@kvack.org,lorenzo.stoakes@oracle.com,mike.kravetz@oracle.com,nadav.amit@gmail.com,npache@redhat.com,peterx@redhat.com,pfalcato@suse.de,ryan.roberts@arm.com,songmuchun@bytedance.com,vbabka@suse.cz,ziy@nvidia.com
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 08 Jan 2026 14:56:34 +0100
-In-Reply-To: <20260106115036.86042-2-harry.yoo@oracle.com>
-Message-ID: <2026010834-cane-attire-310c@gregkh>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vBk9ih3r9seCOiNygirQu746xQraSi7ZSoKlBv+Xuu0=;
+	b=jOabw7B+lAgq93TDslhX8SqwiSfW5r386Lk87JXyfTeSvMlYkJDahAxs4bbd8D67VsIblY
+	+brwq6tePWxLXWfKPFOOROhqnhUvcN4tZXpTriiXQVJosL8gC3gL4dOLPg01mYUrA2OEMP
+	6I836Y4CV+7IUCg4Hpb5Jw4GWCyvUP4=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 889F7341AE;
+	Thu,  8 Jan 2026 14:01:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767880861; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=vBk9ih3r9seCOiNygirQu746xQraSi7ZSoKlBv+Xuu0=;
+	b=f61WHfumwhNs6hry5yoHQBa2/gl8BUg5Bt1YFhacbETnavMVLd+R3Kn6+QrHY13rsCXUMO
+	Sg1waxGFZXPvP/1L2DCVv8K5iVnsCS9QGvf2hcB3RZyKqj7FDPBGoPlst5v1vkbfvumaA3
+	Ocqk6cjGeQ3K8ecI7LyZmdwatTCkSQI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767880861;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=vBk9ih3r9seCOiNygirQu746xQraSi7ZSoKlBv+Xuu0=;
+	b=fwF0WUmQ1CkW4SoSy0UhBoGU7EXmMsXS1hIY993NUBqrWcvrHXaiwe3LzxR8wjVPbL13d2
+	4UeL6G7kpfLAYdAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767880861; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=vBk9ih3r9seCOiNygirQu746xQraSi7ZSoKlBv+Xuu0=;
+	b=f61WHfumwhNs6hry5yoHQBa2/gl8BUg5Bt1YFhacbETnavMVLd+R3Kn6+QrHY13rsCXUMO
+	Sg1waxGFZXPvP/1L2DCVv8K5iVnsCS9QGvf2hcB3RZyKqj7FDPBGoPlst5v1vkbfvumaA3
+	Ocqk6cjGeQ3K8ecI7LyZmdwatTCkSQI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767880861;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=vBk9ih3r9seCOiNygirQu746xQraSi7ZSoKlBv+Xuu0=;
+	b=fwF0WUmQ1CkW4SoSy0UhBoGU7EXmMsXS1hIY993NUBqrWcvrHXaiwe3LzxR8wjVPbL13d2
+	4UeL6G7kpfLAYdAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4A9703EA63;
+	Thu,  8 Jan 2026 14:01:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id q+PKEZ24X2lMKQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 08 Jan 2026 14:01:01 +0000
+Message-ID: <960729bb-0746-4709-a40c-2e254f963deb@suse.cz>
+Date: Thu, 8 Jan 2026 15:01:00 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
-X-Rspamd-Queue-Id: 6719F40002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/5] slab: Introduce kmalloc_obj() and family
+Content-Language: en-US
+To: Kees Cook <kees@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+ David Rientjes <rientjes@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+ "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Jann Horn <jannh@google.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, Marco Elver <elver@google.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
+ Randy Dunlap <rdunlap@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, John Hubbard <jhubbard@nvidia.com>,
+ Joe Perches <joe@perches.com>, Vegard Nossum <vegard.nossum@oracle.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Nathan Chancellor <nathan@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
+ Yafang Shao <laoar.shao@gmail.com>, Tony Ambardar <tony.ambardar@gmail.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Jan Hendrik Farr <kernel@jfarr.cc>, Alexander Potapenko <glider@google.com>,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+ linux-doc@vger.kernel.org, llvm@lists.linux.dev
+References: <20251203233029.it.641-kees@kernel.org>
+ <20251203233036.3212363-1-kees@kernel.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251203233036.3212363-1-kees@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 55A73A0023
+X-Stat-Signature: bcpriqq4y5ubyirxyuihh48chybjooey
 X-Rspam-User: 
-X-Stat-Signature: 9w7r9g7doh8fwyiauam5dzxgtgnm64f1
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1767880724-945589
-X-HE-Meta: U2FsdGVkX18dCK3BBV1Li/hg8jxq3J5xa03MuKj/obAWQxcJrrLrdwYeVFpn98759KIh24zh3B/EwYVDFyhZyYgUhlXw1mD3GqmWAIx6qW6V/uMC2U8KbLiWcDJ0G8J/DAJqA8Bp+MKOA43L1hG/X+7L5ZH0+goIyAk35FfUNe4/QF0DVNhEcoWAcv4Gv6njvFivfV62pYv592p8r7gpBOpqG949gTxBQPH/LqxjoSQQ0A4ROpZjRg+xDf5sBEGtwk1p/VQ6iE+vXzb1Q8XKT9KVsT5NRTu10jR7bcQMvkazMJvKfTDZZNda0wDgZNnT89oO5HbdMPXyK5ha2UV5B8dTi5KrA0w5GJf4CoAXVl9QRwmaZVtjQcjIPTnNQTgxC5cpNgKjl4DOy2Ktl4+HoYwzJEMkTCR/+ycHzGSebT/UJMcnemXxkfZ/eMS/jBsIJgmOxN7wN6Al5jLJFPesYEPVGdcin1+r5a8/f4QIs2Oiy8csxwMvei33B0ZAhM2e2qchxMCTiHTr9i1NEck7ui4yfJc0pPXgYkBECrkMqmyVCSL5f6XFvixGMval4URE6mh4YolQ8/PUJV6qJ5wGvkJL58G6tv3pPbLgsPPkEXpFxINZm5cpnrtn5P0g6XaqZvc5jVLDDodvIAi6b6lTCn9wi34KBd5OqeAJ/YKHJafa6fIiweBpyT+KrZRfLe5vzgUJKFVZjWG+9vsmHVOdKq5G0Yvh5n+wJ/puLlawhYU9slqq+yF2MBqXWShzWhmDu73mA+ho5oDFaL53qwD8UFjEWWM1NODJ+pSsh3JgGvEOEAPZbQmOeKcv8Duf/xziYGKw5/hdaD+BP4zSRMu2FWEYKQi1dTAhkqwIBNozcc8LZ22E+MFf9ZYiMjGLWHSKl30XtDCGbNanGlDEq16K931mFFi68CybzD1OxN4yJmIFgJjHJaxq0t6lnEf3EOCh7TUSnlCrDfOJ8tg+Q7V
- iy8adW8T
- jLIhd1MMK46hsVjh/njyqC9SDRKFoLkc7wFZ+AiUpVXTaS0TbcS6zVJL0DI3D22HYfgGOGv4ApvgN4px4IC8Aim/knSdvDOZvUdOBXfhrO2L0DMw6M67pzAlsseW1oR8I1/jaxP6eR5uTCxd3XylTXg0j14nmDScXcRYSgOcp6YV2CjJu4oVaPwYJmTCpIAl5qFKHjbldxoJCrIrVzMxOCyPuJshdph1VfW8FJm95KcSxqZmcwrl+kW4KyIc3j1k5DibcLbEf4LW99DLxOhaUD52fc3EM4NyVq4BTHFyGcxUnGDRHzq/U0l6+bi10PgSXPFWxsbUJwfJ2LMXgCZH6pGw/zlfjsFy/c9H+Dz5s/PEp4JrI7wd+MhkRxkJ0ByXMF6Wz43WV4q/ljyy8gFb+DLRjXnJ0Pr4qHnjnqQl/bA/iVQeIPx8/I8k84SIahXfZQt7e+/SAcRH8Ne4vMHLGGILftI1m5PWYVHM58pFaDqTzupszo0dZogqGdthZuXqNNX/q+JE7qnZX+/gV1fX0QuUU4wfICGCZhSfoKXrv5i5yNreBZSt7PWN7Ofhe7QU+Z3SBL/kkXYlYQl1tXNrIfvO+yN3JbN+pw3njYsBnas4VKjJ0kYqeocoJg/+fEa3u16JGtWiKFRgm7KVtjJiXw8hSqD6thi0DgENsHVGFnlKZsuD565G8PPaoU9FrLZ9rCj0MRvh+YT2w4TD5mkkh5PrAJGf78OdoDlzzABhHeLEowj8Xvw0kWHxBXnm7f0+B+UNpTTs8yq6RSlCZcX0B/Mfa4eEe5tiPDp3If2CeoLElog6iR++OcVr+wf58zbwZD6lbO1ie58oc0OjBzsb2IKJAXXAovGwUEu57pEs+a7hTZkUR2hDi0idrAg==
+X-HE-Tag: 1767880863-894162
+X-HE-Meta: U2FsdGVkX1+FQ9u9oNrLxZy/UrNVaChjyTGJHpIyErQ17qpTmANFOEDV/TcMRi7B1XgMrf/qSTYdD9Gf12HcepVsxQ84c0zJwccIJeSEXO/noUxmjBEzk3IkoDiq/wXJAJzj5gpEwRrSAgYfUvSpstsmg+4AwY90M9EXlPn9jZ/FF6Oi2joy5DJiz4mIMTR7TycwGYoJDUue/Ol4erQwEgdfMBssLryxWptoJJwMyCWap8w+f4B0hLCcT5dFlXqwyYAAHpBOVL7GmJYGPCT16OBIzy2n5tif5UWkUK6mvzv88nC4HwEkk4vz8ZHBSBaU0zs5bswvJOtGcv6U9cKTtilrbrBQaueWh6SyXWjMYdblSioVf3xKJ4uvMM1wN84ySEv3IkMoVOYq1G6GW+SgmOzZr1BHR2HgdVtcYJWnXgCxgszmulE5aRGaqN8ix62vJyE0Ixbpcw9KmVTRUF3CKJ0POlihuhV1ea2X6q2aqSdROoH6mX8NG2qy3aQxNHth0m6vI01Yu6hxDhZpqFKtK47jwcEPxm7/4Ip4zDT2ZPKnr8xk0JsTgAItWuOxhu5VonT41uNSYPyHGagRkFmXhkfa+sCj63MnHxwd9vqfB1MwdHe3E4LLIBPJUfulNfSy3KeEKBGdM7DcbR88z9oVZgCbtQ4ZiVdEr8xzShUCXpf5cEBFfbGHkU2uNExlxxdcm4kRVIXtJ333woqDT9i0kIz863FlkUH9sDjRTkdwmzeX5677IgJkf3GJOpgIbqDjE2fQ36CZbfOsblF7JsittsaF8m0YXIInsUkS14X9P79Czbomib7QJ2xRxkcIyBu0z187VvCTDVV4EaPZtOoECm3x4IDKpiCpGCHm9l1nfg/uUUPIdHEhzSf28x0pp+3fQBNRA+N5408EM00sW38VGG673QZDGXYXBohs1RBR+CPxin3A94q8QuRTJ6zpegblF4KnbstgNvhUyFma7xn
+ e1ZtnfKh
+ E9NBctwPKFB0czLW5I1Ffu4Ddtvh2D3MUK3f4p0mmZevYmVpxy1b08Z73Z52inBHybPgjai7uTbvJueWPjXNX4v8/2XkzA4coAiYLLuRCyXOxF85Jo1nieTBja3UZ+rxrolLieciEp8pGK+T9yl+uKAVuRc1FcNj4uGTuH4psm7Wi9dJoHlimkkpVh+NqUPEiijiUiLf7724Px1VPXt4pDSJ8FdfqxfcafA7b4ECFAAFq5lMF95M/4/3vFYLDI4dTo5FWBeEGweP22LA4uQKLlXkm7S1VQFcduHWrTGDkzfuuKytT7CdzwJ+qYNlE2gCgF9K6nJq5QqYaMg8qlTFWNJJMQEIurrc1gxK4PXEoLDDygwBIKQ723iZGfo7VIOjwnNGHm7HFLk6ZNtR96DAJnJGWi5KIrlFR5R/YwxlbvZd6Qs2Fqt32kOizn89h2+Rw+XkFynxZrVaJre8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,251 +199,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 12/4/25 00:30, Kees Cook wrote:
+> Introduce type-aware kmalloc-family helpers to replace the common
+> idioms for single object and arrays of objects allocation:
+> 
+> 	ptr = kmalloc(sizeof(*ptr), gfp);
+> 	ptr = kmalloc(sizeof(struct some_obj_name), gfp);
+> 	ptr = kzalloc(sizeof(*ptr), gfp);
+> 	ptr = kmalloc_array(count, sizeof(*ptr), gfp);
+> 	ptr = kcalloc(count, sizeof(*ptr), gfp);
+> 
+> These become, respectively:
+> 
+> 	ptr = kmalloc_obj(*ptr, gfp);
+> 	ptr = kmalloc_obj(*ptr, gfp);
+> 	ptr = kzalloc_obj(*ptr, gfp);
+> 	ptr = kmalloc_objs(*ptr, count, gfp);
+> 	ptr = kzalloc_objs(*ptr, count, gfp);
+> 
+> Beyond the other benefits outlined below, the primary ergonomic benefit
+> is the elimination of needing "sizeof" nor the type name, and the
+> enforcement of assignment types (they do not return "void *", but rather
+> a pointer to the type of the first argument). The type name _can_ be
+> used, though, in the case where an assignment is indirect (e.g. via
+> "return"). This additionally allows[1] variables to be declared via
+> __auto_type:
+> 
+> 	__auto_type ptr = kmalloc_obj(struct foo, gfp);
+> 
+> Internal introspection of the allocated type now becomes possible,
+> allowing for future alignment-aware choices to be made by the allocator
+> and future hardening work that can be type sensitive. For example,
+> adding __alignof(*ptr) as an argument to the internal allocators so that
+> appropriate/efficient alignment choices can be made, or being able to
+> correctly choose per-allocation offset randomization within a bucket
+> that does not break alignment requirements.
+> 
+> Link: https://lore.kernel.org/all/CAHk-=wiCOTW5UftUrAnvJkr6769D29tF7Of79gUjdQHS_TkF5A@mail.gmail.com/ [1]
+> Signed-off-by: Kees Cook <kees@kernel.org>
 
-This is a note to let you know that I've just added the patch titled
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-    mm/mprotect: use long for page accountings and retval
+How do you plan to handle this series? Given minimal slab changes (just
+wrappers) but there being also changes elsewhere, want to use your hardening
+tree? I wouldn't mind.
 
-to the 5.15-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -12,6 +12,7 @@
+>  #ifndef _LINUX_SLAB_H
+>  #define	_LINUX_SLAB_H
+>  
+> +#include <linux/bug.h>
+>  #include <linux/cache.h>
+>  #include <linux/gfp.h>
+>  #include <linux/overflow.h>
+> @@ -965,6 +966,63 @@ static __always_inline __alloc_size(1) void *kmalloc_noprof(size_t size, gfp_t f
+>  void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node);
+>  #define kmalloc_nolock(...)			alloc_hooks(kmalloc_nolock_noprof(__VA_ARGS__))
+>  
+> +/**
+> + * __alloc_objs - Allocate objects of a given type using
+> + * @KMALLOC: which size-based kmalloc wrapper to allocate with.
+> + * @GFP: GFP flags for the allocation.
+> + * @TYPE: type to allocate space for.
+> + * @COUNT: how many @TYPE objects to allocate.
+> + *
+> + * Returns: Newly allocated pointer to (first) @TYPE of @COUNT-many
+> + * allocated @TYPE objects, or NULL on failure.
+> + */
+> +#define __alloc_objs(KMALLOC, GFP, TYPE, COUNT)				\
+> +({									\
+> +	const size_t __obj_size = size_mul(sizeof(TYPE), COUNT);	\
 
-The filename of the patch is:
-     mm-mprotect-use-long-for-page-accountings-and-retval.patch
-and it can be found in the queue-5.15 subdirectory.
+I assume with the hardcoded 1 for COUNT, this size_mul() will be eliminated
+by the compiler and not add unnecessary runtime overhead? Otherwise we
+should have two core #define variants.
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+I also noted that the existing kmalloc_array() and kvmalloc_array() do
+check_mul_overflow() and return NULL silently on overflow. This AFAIU will
+make SIZE_MAX passed to the underlying kmalloc/kvmalloc and thus will cause
+a warning. That's IMHO a good thing.
 
+> +	(TYPE *)KMALLOC(__obj_size, GFP);				\
+> +})
+> +
+> +/**
+> + * kmalloc_obj - Allocate a single instance of the given type
+> + * @VAR_OR_TYPE: Variable or type to allocate.
+> + * @GFP: GFP flags for the allocation.
+> + *
+> + * Returns: newly allocated pointer to a @VAR_OR_TYPE on success, or NULL
+> + * on failure.
+> + */
+> +#define kmalloc_obj(VAR_OR_TYPE, GFP)			\
+> +	__alloc_objs(kmalloc, GFP, typeof(VAR_OR_TYPE), 1)
+> +
+> +/**
+> + * kmalloc_objs - Allocate an array of the given type
+> + * @VAR_OR_TYPE: Variable or type to allocate an array of.
+> + * @COUNT: How many elements in the array.
+> + * @FLAGS: GFP flags for the allocation.
+> + *
+> + * Returns: newly allocated pointer to array of @VAR_OR_TYPE on success,
+> + * or NULL on failure.
+> + */
+> +#define kmalloc_objs(VAR_OR_TYPE, COUNT, GFP)		\
+> +	__alloc_objs(kmalloc, GFP, typeof(VAR_OR_TYPE), COUNT)
+> +
+> +/* All kzalloc aliases for kmalloc_(obj|objs|flex). */
+> +#define kzalloc_obj(P, GFP)				\
+> +	__alloc_objs(kzalloc, GFP, typeof(P), 1)
+> +#define kzalloc_objs(P, COUNT, GFP)			\
+> +	__alloc_objs(kzalloc, GFP, typeof(P), COUNT)
+> +
+> +/* All kvmalloc aliases for kmalloc_(obj|objs|flex). */
+> +#define kvmalloc_obj(P, GFP)				\
+> +	__alloc_objs(kvmalloc, GFP, typeof(P), 1)
+> +#define kvmalloc_objs(P, COUNT, GFP)			\
+> +	__alloc_objs(kvmalloc, GFP, typeof(P), COUNT)
+> +
+> +/* All kvzalloc aliases for kmalloc_(obj|objs|flex). */
+> +#define kvzalloc_obj(P, GFP)				\
+> +	__alloc_objs(kvzalloc, GFP, typeof(P), 1)
+> +#define kvzalloc_objs(P, COUNT, GFP)			\
+> +	__alloc_objs(kvzalloc, GFP, typeof(P), COUNT)
+> +
+>  #define kmem_buckets_alloc(_b, _size, _flags)	\
+>  	alloc_hooks(__kmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, _b), _flags, NUMA_NO_NODE))
+>  
 
-From stable+bounces-205079-greg=kroah.com@vger.kernel.org Tue Jan  6 12:59:45 2026
-From: Harry Yoo <harry.yoo@oracle.com>
-Date: Tue,  6 Jan 2026 20:50:35 +0900
-Subject: mm/mprotect: use long for page accountings and retval
-To: stable@vger.kernel.org
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, hughd@google.com, jane.chu@oracle.com, jannh@google.com, kas@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, npache@redhat.com, pfalcato@suse.de, ryan.roberts@arm.com, vbabka@suse.cz, ziy@nvidia.com, Peter Xu <peterx@redhat.com>, Mike Kravetz <mike.kravetz@oracle.com>, James Houghton <jthoughton@google.com>, Andrea Arcangeli <aarcange@redhat.com>, Axel Rasmussen <axelrasmussen@google.com>, David Hildenbrand <david@redhat.com>, Muchun Song <songmuchun@bytedance.com>, Nadav Amit <nadav.amit@gmail.com>, Harry Yoo <harry.yoo@oracle.com>
-Message-ID: <20260106115036.86042-2-harry.yoo@oracle.com>
-
-From: Peter Xu <peterx@redhat.com>
-
-commit a79390f5d6a78647fd70856bd42b22d994de0ba2 upstream.
-
-Switch to use type "long" for page accountings and retval across the whole
-procedure of change_protection().
-
-The change should have shrinked the possible maximum page number to be
-half comparing to previous (ULONG_MAX / 2), but it shouldn't overflow on
-any system either because the maximum possible pages touched by change
-protection should be ULONG_MAX / PAGE_SIZE.
-
-Two reasons to switch from "unsigned long" to "long":
-
-  1. It suites better on count_vm_numa_events(), whose 2nd parameter takes
-     a long type.
-
-  2. It paves way for returning negative (error) values in the future.
-
-Currently the only caller that consumes this retval is change_prot_numa(),
-where the unsigned long was converted to an int.  Since at it, touching up
-the numa code to also take a long, so it'll avoid any possible overflow
-too during the int-size convertion.
-
-Link: https://lkml.kernel.org/r/20230104225207.1066932-3-peterx@redhat.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
-Acked-by: James Houghton <jthoughton@google.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: Nadav Amit <nadav.amit@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Adjust context ]
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- include/linux/hugetlb.h |    4 ++--
- include/linux/mm.h      |    2 +-
- mm/hugetlb.c            |    4 ++--
- mm/mempolicy.c          |    2 +-
- mm/mprotect.c           |   26 +++++++++++++-------------
- 5 files changed, 19 insertions(+), 19 deletions(-)
-
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -208,7 +208,7 @@ struct page *follow_huge_pgd(struct mm_s
- 
- int pmd_huge(pmd_t pmd);
- int pud_huge(pud_t pud);
--unsigned long hugetlb_change_protection(struct vm_area_struct *vma,
-+long hugetlb_change_protection(struct vm_area_struct *vma,
- 		unsigned long address, unsigned long end, pgprot_t newprot);
- 
- bool is_hugetlb_entry_migration(pte_t pte);
-@@ -379,7 +379,7 @@ static inline void move_hugetlb_state(st
- {
- }
- 
--static inline unsigned long hugetlb_change_protection(
-+static inline long hugetlb_change_protection(
- 			struct vm_area_struct *vma, unsigned long address,
- 			unsigned long end, pgprot_t newprot)
- {
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1910,7 +1910,7 @@ extern unsigned long move_page_tables(st
- #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
- 					    MM_CP_UFFD_WP_RESOLVE)
- 
--extern unsigned long change_protection(struct vm_area_struct *vma, unsigned long start,
-+extern long change_protection(struct vm_area_struct *vma, unsigned long start,
- 			      unsigned long end, pgprot_t newprot,
- 			      unsigned long cp_flags);
- extern int mprotect_fixup(struct vm_area_struct *vma,
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5644,7 +5644,7 @@ long follow_hugetlb_page(struct mm_struc
- 	return i ? i : err;
- }
- 
--unsigned long hugetlb_change_protection(struct vm_area_struct *vma,
-+long hugetlb_change_protection(struct vm_area_struct *vma,
- 		unsigned long address, unsigned long end, pgprot_t newprot)
- {
- 	struct mm_struct *mm = vma->vm_mm;
-@@ -5652,7 +5652,7 @@ unsigned long hugetlb_change_protection(
- 	pte_t *ptep;
- 	pte_t pte;
- 	struct hstate *h = hstate_vma(vma);
--	unsigned long pages = 0;
-+	long pages = 0;
- 	bool shared_pmd = false;
- 	struct mmu_notifier_range range;
- 
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -634,7 +634,7 @@ unlock:
- unsigned long change_prot_numa(struct vm_area_struct *vma,
- 			unsigned long addr, unsigned long end)
- {
--	int nr_updated;
-+	long nr_updated;
- 
- 	nr_updated = change_protection(vma, addr, end, PAGE_NONE, MM_CP_PROT_NUMA);
- 	if (nr_updated)
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -35,13 +35,13 @@
- 
- #include "internal.h"
- 
--static unsigned long change_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
-+static long change_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
- 		unsigned long addr, unsigned long end, pgprot_t newprot,
- 		unsigned long cp_flags)
- {
- 	pte_t *pte, oldpte;
- 	spinlock_t *ptl;
--	unsigned long pages = 0;
-+	long pages = 0;
- 	int target_node = NUMA_NO_NODE;
- 	bool dirty_accountable = cp_flags & MM_CP_DIRTY_ACCT;
- 	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
-@@ -219,13 +219,13 @@ static inline int pmd_none_or_clear_bad_
- 	return 0;
- }
- 
--static inline unsigned long change_pmd_range(struct vm_area_struct *vma,
-+static inline long change_pmd_range(struct vm_area_struct *vma,
- 		pud_t *pud, unsigned long addr, unsigned long end,
- 		pgprot_t newprot, unsigned long cp_flags)
- {
- 	pmd_t *pmd;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
- 	unsigned long nr_huge_updates = 0;
- 	struct mmu_notifier_range range;
- 
-@@ -233,7 +233,7 @@ static inline unsigned long change_pmd_r
- 
- 	pmd = pmd_offset(pud, addr);
- 	do {
--		unsigned long this_pages;
-+		long this_pages;
- 
- 		next = pmd_addr_end(addr, end);
- 
-@@ -291,13 +291,13 @@ next:
- 	return pages;
- }
- 
--static inline unsigned long change_pud_range(struct vm_area_struct *vma,
-+static inline long change_pud_range(struct vm_area_struct *vma,
- 		p4d_t *p4d, unsigned long addr, unsigned long end,
- 		pgprot_t newprot, unsigned long cp_flags)
- {
- 	pud_t *pud;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
- 
- 	pud = pud_offset(p4d, addr);
- 	do {
-@@ -311,13 +311,13 @@ static inline unsigned long change_pud_r
- 	return pages;
- }
- 
--static inline unsigned long change_p4d_range(struct vm_area_struct *vma,
-+static inline long change_p4d_range(struct vm_area_struct *vma,
- 		pgd_t *pgd, unsigned long addr, unsigned long end,
- 		pgprot_t newprot, unsigned long cp_flags)
- {
- 	p4d_t *p4d;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
- 
- 	p4d = p4d_offset(pgd, addr);
- 	do {
-@@ -331,7 +331,7 @@ static inline unsigned long change_p4d_r
- 	return pages;
- }
- 
--static unsigned long change_protection_range(struct vm_area_struct *vma,
-+static long change_protection_range(struct vm_area_struct *vma,
- 		unsigned long addr, unsigned long end, pgprot_t newprot,
- 		unsigned long cp_flags)
- {
-@@ -339,7 +339,7 @@ static unsigned long change_protection_r
- 	pgd_t *pgd;
- 	unsigned long next;
- 	unsigned long start = addr;
--	unsigned long pages = 0;
-+	long pages = 0;
- 
- 	BUG_ON(addr >= end);
- 	pgd = pgd_offset(mm, addr);
-@@ -361,11 +361,11 @@ static unsigned long change_protection_r
- 	return pages;
- }
- 
--unsigned long change_protection(struct vm_area_struct *vma, unsigned long start,
-+long change_protection(struct vm_area_struct *vma, unsigned long start,
- 		       unsigned long end, pgprot_t newprot,
- 		       unsigned long cp_flags)
- {
--	unsigned long pages;
-+	long pages;
- 
- 	BUG_ON((cp_flags & MM_CP_UFFD_WP_ALL) == MM_CP_UFFD_WP_ALL);
- 
-
-
-Patches currently in stable-queue which might be from harry.yoo@oracle.com are
-
-queue-5.15/mm-mprotect-delete-pmd_none_or_clear_bad_unless_trans_huge.patch
-queue-5.15/mm-balloon_compaction-we-cannot-have-isolated-pages-in-the-balloon-list.patch
-queue-5.15/mm-mprotect-use-long-for-page-accountings-and-retval.patch
-queue-5.15/mm-balloon_compaction-convert-balloon_page_delete-to-balloon_page_finalize.patch
 
