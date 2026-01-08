@@ -4,143 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21FB7D185F9
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 14:16:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 403E1D185FE
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 14:32:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B07F6B0089; Thu,  8 Jan 2026 09:16:34 -0500 (EST)
+	id 7DF916B0088; Thu,  8 Jan 2026 09:32:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74D346B0092; Thu,  8 Jan 2026 09:16:34 -0500 (EST)
+	id 78DDB6B0089; Thu,  8 Jan 2026 09:32:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 650796B0093; Thu,  8 Jan 2026 09:16:34 -0500 (EST)
+	id 66F196B0092; Thu,  8 Jan 2026 09:32:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 551936B0089
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:16:34 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0B82160163
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:16:33 +0000 (UTC)
-X-FDA: 84308997066.04.2FAC73D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 539766B0088
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:32:54 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E460188517
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:32:53 +0000 (UTC)
+X-FDA: 84309038226.21.24309D0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 225C5160004
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:16:31 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QlA+VBaT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767881792; a=rsa-sha256;
-	cv=none;
-	b=KjnwoGIhQVdwYzFdhWVhNd3DhYc+4I3KIrC+zclo25gDSam1ZixOnRz4mBzQlcOu/h2J+3
-	vLc++6h+KEFMZD5oojQNK4kNaJezLeXToPzSwe8znROophsVYiyrSEGI199SilwcLYZEr5
-	YOnkwf5Wr7vpUsrNhLvOBWzo1b5IsZ8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QlA+VBaT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1DC5280015
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:32:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j0rcOouU;
+	spf=pass (imf30.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767881792;
+	s=arc-20220608; t=1767882772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LN5869h+XGHbf7Ty9lNVIAcZQmcRFnSruHen02cKbYg=;
-	b=hg2J5yM2d995fbccHPUuOp84aACUBL0SPy1I9W7ByhHT3NiWjgt/9C+W5FamQAFtqvhqzP
-	RjVe/qhGbL6ix7df2nWLLrnWIO0boMUyQmqD1zCR4kAkLGLgyuYG70LmzYAdsals/gSSU3
-	leNjWAoUgnjjdD64oZAFiaRjbyxTnN8=
+	bh=4+fo4oqqy3XvCbNxaVIYZbVpnfs/PKyazstkZfcDtaA=;
+	b=HvaZETILOEnuLAhudzpjXZ4d/F4a7Kjt+yY4GwVXIWzPSJgcNpUnghbz+uLfp9zizBBvbE
+	weKo8PkpcstLNiXpJm6ov02S9hUdqseUapbj/AmUGwqPHQ1Qh1whbsdZn27mli31J5hu0G
+	8WtD7mjs0eCabyYDy1tG/va7RI/GGDI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j0rcOouU;
+	spf=pass (imf30.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767882772; a=rsa-sha256;
+	cv=none;
+	b=o5PGv04UzjXUzIn2Eh6B35oV5/l7x1M0PBNOQ/RpQEKaegmlLIUzd07KuLqZj36AaMt5FB
+	oNUpFoU3ShJs5fSSSe/8ScQeMAo8e/V5mcTz3ES9z6N/S/EPyFOa+T3UX1wU/t5aARlWYL
+	KojtbJe4uA3qPJE7va0MAOnpvyb7EOo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3544B42D58;
-	Thu,  8 Jan 2026 14:16:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31E2C116C6;
-	Thu,  8 Jan 2026 14:16:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0F45042B02;
+	Thu,  8 Jan 2026 14:32:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44FF6C116C6;
+	Thu,  8 Jan 2026 14:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767881791;
-	bh=D1VPIae4HqpKGPlvRnrymUWQHvCt3ne9aY+Sz53JXwc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QlA+VBaT4R/xIrb9lKqb9HjXtpalHV7p4RQgJMyoHa9HA6P+I1BG0tKcS/nIn592m
-	 JEDviuJIgZf/5cD9S8KmnCov54rIYtUbBj9/ZXmtS2DGCj/50i96d0tLIDnmiSv5Ek
-	 pG7NzkS1r+Rda1OSD3Kk42EgrbOaqR067Ijlv0VsOeBog79D5X+UrJq84m7k2yHI/k
-	 W7qSTzYFrTRmiGX3aClCN9ixvk9zVn1OyrqMVyixa3KKD5Hvtvup/DTpUpSFTf3sEd
-	 377nJAo2uuB+EaS5ld8ow6pU/PBsMJRiGLutpGOvFwBpjfCVuuZ4RrclrU6XcC806y
-	 LFqC5Bw1NC8ew==
-Message-ID: <65c246bc-fb10-4cef-8163-3a55bd96f326@kernel.org>
-Date: Thu, 8 Jan 2026 15:16:24 +0100
+	s=k20201202; t=1767882770;
+	bh=byixFr826bNoUVfEfgOc5fuYDNsV3ya0YDlGYcfLm10=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=j0rcOouUnJyejWkw7PDWaIAj/5BtvE4hHQdaZmaVtE/hZtTZbFy76PldBmv4P627j
+	 H+ztR6CF6o64VyyjgrSzH7nCBbDkF6r1z7L6MyPI2f7XxMJvJ8cixlvP2ZyzeUwYXT
+	 6jnTsNFv2BhH4ogRxYQBjHyzigb4Whsv5cc0gbfTEWDSoxlnBvbpnLyMtwMkwChxfE
+	 JixMwVX/P2D3FzKpmEMYXQN7CnqUAQEBSMa+XIMQU+F25Chjo0nC0PTV0Jx8fYxrmW
+	 443vFAl1eEVCvRBFkylhCddVemPhe8rXnZ5ZE/pSyQ8eG1phLLG5wDP+XTz/qPpRcS
+	 HkcT+AYac7lmg==
+Message-ID: <9ea6abb3-4b5d-4da5-9dcf-21ec520d1bca@kernel.org>
+Date: Thu, 8 Jan 2026 15:32:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
- blocks to zone movable
-To: Hannes Reinecke <hare@suse.de>, Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
- dakr@kernel.org, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com
-References: <20260105203611.4079743-1-gourry@gourry.net>
- <7f053290-6b9a-4d18-936e-0f28006c79c3@kernel.org>
- <aV0_SMq_I_R7ikF3@gourry-fedora-PF4VCD3F>
- <9575e042-39f4-4f01-80db-34aaaa9312e6@kernel.org>
- <aV1PQd3tyfSiH4xD@gourry-fedora-PF4VCD3F>
- <616f97b7-24e0-4134-a08d-5abaf07a8b09@kernel.org>
- <aV1pmeXP2pZ55g5i@gourry-fedora-PF4VCD3F>
- <fd21ebf7-d016-4729-8d23-a7c0f2a3d8c6@kernel.org>
- <20baab84-c8b0-4c46-a550-21b26b975d07@suse.de>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20baab84-c8b0-4c46-a550-21b26b975d07@suse.de>
+Subject: Re: [PATCH 1/4] arch/*: increase lowmem size to avoid highmem use
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>, linux-mm@kvack.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Matthew Wilcox <willy@infradead.org>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Michal Simek <monstr@monstr.eu>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Nishanth Menon <nm@ti.com>, Lucas Stach <l.stach@pengutronix.de>
+References: <20251219161559.556737-1-arnd@kernel.org>
+ <20251219161559.556737-2-arnd@kernel.org>
+ <6089e76b-80aa-4254-af70-12b96d115a2e@kernel.org>
+Content-Language: fr-FR
+In-Reply-To: <6089e76b-80aa-4254-af70-12b96d115a2e@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 225C5160004
-X-Stat-Signature: hmfpm37d66bpp5zrgqcd7cox61bsp4dr
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 7x3ipc7nubogz81uh5b65j4tjydua4xw
 X-Rspam-User: 
-X-HE-Tag: 1767881791-326740
-X-HE-Meta: U2FsdGVkX1/mQ+RUHmMHEjbCe6CvFrIo0zwZj9FpOaEBBhoxykxFs3FCLeuNCm/5Kk4Ha/qhppPNxiuapS0tlJcpknhn2dBLyBCUyjTVnspCB6w5Kg58mjhVqVGPlRh3gRI1LGRT3HBHo+9yDczzJNnjRsnepwt5Rp9pziuMUazGkrL1cD3daesQCUWUoEO2qyxHRhiDW4ymjMalIhwjBQWpCBgVKPNsIDIA6LFSeB9wanQ61cZQrXljX/E2EbpztJMXO8oh+3EZgYl/qv/y07szbKZYvjHRGatJOIOTHoNL92CqfjsN+RlIpZugerN20r9lRZ9029ZvhMUOqid+vfuHxYMsIHQOzEPUwX+EEuRjIlesIwh7ISPzPoZDr1ltnw5re4eYO4a0CnPseNdI5fy4bDvpE8kjveguYrDVqbtr73kaZyuGMz4FCWEyaIyWNiouK9PbJQu7wWZQlAfaRJEIlA/trnO9nVCzi1KisJRzgN0fresBTQ6FZmAwGWJCKIhgfgvfrwyQzbhswYYKzBe5qFyoxChTWH3wIqSNNuXmKgwnMayDmrBqbd96z89E1R+6Lxr5RKXkQJt8yYr8v8sJf3L6uSrSEXwOdOJhYbDcuHrXPp7ty5dh/277f9aAogqlelDH1rs/dZkrbJ/M7Rj97bkbUdq6ei51eKs7YO4wa/Wfk2PrRa9p8B4HAsUHX/XJNoq8QMhqMLZ/I3DjpFRA2aMad0VqJPyOpLThNRMuRwoXgvLltvVnv9gTJDbs1Q4LMAqaVIMoOR1yqrbVJ1qM5cNUzxuVxEP1Lc4PmI3fkMyipRco1yVUWO+LhWTupSaRW+yKzsNy+9DLbsUDjveqNWnzWRZ8QeBuQREvY+ZwFBbn+wh5i+Gif+u3KmHkIDzpO7Eq6c85YVaBBm8/kpFmNpMLUikS32uYLEZC/Z4CNLECY7BkqfA9UTtSLwxJgTQSqFFiiTQdcNSX5IR
- hiSW9M/x
- hOkAbQjDd5tuUdVsMcONtZt/46lUbV9fTRqLm47XjP/MIoLgVV4qd9uJQireNzcPeHk95R8UXIxMpPnlnmiGvWi8nL15JsHEum4sthqKQk5J1nNKJBJolPgzoBVftilGVigucHx+mgWYnFMnU783krQJ36/EkSzyNwFunRwwtS6DtB0g6zevKVxcL2Th4zD90WJwDl0oNoIv79LUVYEejvUBCClzdKy50AJghe1eb0BfWWRVwdjextWEkUBzndahnqwGczztewtJsETAiNhoSrYmlykCV9wr10k4rB6llexin4liFmuM2ZMoQp0OUQBJ7LSySo3kmHj2vWuY=
+X-Rspamd-Queue-Id: 1DC5280015
+X-HE-Tag: 1767882771-230478
+X-HE-Meta: U2FsdGVkX194HUKVSFWd3li46upQygn9Zj33x3Z7Q1pxrhWF0/6neAkBoaNLR7NSash4hAgCz6Qcugu0xfMvBovfdb/Z8tiYBM58VYX/zmMQr6vuAC10anjHBq6d6GpK0Famq7VRj908sgF36eHajjBPx6yiN7v62drbb0fPUrSJ/q/CBykRxCx94CfNxlgZ4z1wBS7/S+d/xMtd6gnd1BHfNMUrO7RwAswd1PKsAJRyGqD2rJUhdFDUx1VtvwJB6/DM4wvMnf1XJrEDV+jDHlhSS72qQgEyJUC3+HqXZtU3lmmCrlQ2pJHB7+gJxP37REirM38VHINgbInVTMsMRSjigAcwYKFllMJnqelM1UbtT6k4D5avsDfENvRXJRRFcuVzi0a8DYJ3tjUB4SfitJkp0UBoB5pzP1srWC2hsycWToim8G5lW7fekCEfKAgyxxxBCVfXUOrgYGyM17zbhHIptqdzPhTkfDZnl30TGSX2Obb2ZV/3/ftkbPXF2NNOI5J1CBj8Tw37g8a+WsMfUpeiCE4k4J2WBpT8g4VKVpdomY7Li+1orvjtcKI0NLaW2v7Hr0CreoOdGsmPwWFkbW9Qv2GKD+pSf2uosfvz8Q9pt81FjQdAhcwLJTdMD2TDlvtVJMLrrLpOzO4fSeiPY7W4/AUrpbtKXpeNPR/Aq0vJz3ANG43UQdAS+brR3+sQ+h20vUWLv3zu5vS33msUSr24AJkucq6yNTa3cZ5MoTCLN5lUFr1ia+lOMnVaA3k4BJV+AwWN6e5CsiyVIxceJW4YjXmuoErmW/LCL8Id3WY15LTRZlFgzLNGKYiqIoQnW3S2/tEBh5/qcBfaG6fNdcdClhnQfYJls187zMsrS7PAoVGBjx0aKQKjW8j7B8XGb/inxJA/3LUNHGOfmUxe5ZP9zq0zWHMugEn+0Bjr1RM1xhIi/6Vh/wJlMK3pQUn7k5yyRWQFhbAKIVW/LlS
+ ZKPOY/y8
+ XKSR6HJH7h5H53miWh1qFI+3MB0RrFx80dXx8Sw5i62cswQDz1sLWxvb+mzTmi6PRct8tKYMBWLAvgVwKar4FDICIZVtu4iv/BEgCYUmS3blDb5lfBx/T3c+qFa9TF+q18HIL4gt8yjH+ce+797TZSZNngpL6lPHLuqxecZRZ4KS8VIUtxeHnjfXs7+sdyNkoIy4vQr5c0NPLqwdcLmuTWetCPPGqDB9P3uETmqWgg1luoRONAZ4Xdb08eGf9ERfMmPg5f+Is8s943mH98Ft1uE1hM57BR2DPvwSlWjFYar0tDULUuAvjGi+zNH65NAJJF9sMH4FSwg6MOT4u2xGXEpaQ5k5yADmIZY3y1lfcIxMcDnc4QeR7y8OB5S6VezuqlLbCwfIRgS9n3YEMLEVRqGrHwOPIZ8mdxHWktXLAI5pvcW+pA2zgKPYxG4JCbZjP97e5b7tFVYWtjE3jV8vdJNuE048rk84laf9chnasbNGlzjJ4XOcImOb3Ex4RhpfSCtpVavEEOeUhQ5V/f8Wtkx8ecBVGnMoi7XtdWSLnKAntGeJQM2Xbc63dbaHrNIL0/N8Y5BByTqHzLixKEjimKR4EDwv3rIK4CKGPLz1+LHeqVX6ciFRKL2N7ZCVvky+rQ47qae2Lhpj9YPhTJphELwxuPC6BsJtYJdgfZDO57Z+Gmca0x+UTqirNWP1rgkfTi6We3DpsKlhhvg7Dc4Nml+b+MS5bLk30xmn5/T6YSrOQ8lTcsV1nKrcfG9B2L4tlwct0DO22AdrTWUoBzUWF8XnfJ2jL6wxyMYzTRqaoymtixpWGHnfuPzJJMIAcaImfg0zTwN27MpbP967NP+Q0Zr8i+kAimuKJlC6/UkoJq0eEPAQw63kO4J4fLaiHGnvP7fTUJPo3TpbWmj6hUWT7foyE+bbDrjPl2VHbY6AHsjkuK39h4sW8Nb03CE3XNH5QvCiJ7jjUNlCISIzk5CDKvO9Z6phW
+ n8JaEL/u
+ aMOtYVqGiebE3l3Av+s+00NWvSA7VKAZZ6l28i+lXw5cppro8BIiFKOX+icOveYRGviV1VyPYsZBxe5IUss46svznhZQv41iYKDm2OKIr0/UmLwdNtGiWpq+a+rIrrkZh5wZBoz27WsAJ4XSyFvea1449NfbVCGu19iY6oRKwVnb6Mf6GEUYAQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,105 +113,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/8/26 08:31, Hannes Reinecke wrote:
-> On 1/6/26 21:22, David Hildenbrand (Red Hat) wrote:
->> On 1/6/26 20:59, Gregory Price wrote:
->>> On Tue, Jan 06, 2026 at 07:38:54PM +0100, David Hildenbrand (Red Hat)
->>> wrote:
->>>> On 1/6/26 19:06, Gregory Price wrote:
->>>>> On Tue, Jan 06, 2026 at 06:52:11PM +0100, David Hildenbrand (Red
->>>>> Hat) wrote:
->>>>>> On 1/6/26 17:58, Gregory Price wrote:
->>>>>
->>>>> Fair, I'll revist this once Hannes gets a chance to chime in.
->>>>>
->>>>> This was effective at getting the discussion started though :P
->>>>
->>>> Hehe, yes.
->>>>
->>>> Another thing to look into would be to provide a way for ndctl to just
->>>> add+online the memory in one shot, without having to go back to walking
->>>> memory blocks to online them etc.
->>>>
->>>
->>> I think it's the opposite: offline+remove needing to be done in one step
->>> while holding the hotplug lock.  Right now, I think you have to do
->>> something like
+
+
+Le 24/12/2025 à 12:35, Christophe Leroy (CS GROUP) a écrit :
+> 
+> 
+> Le 19/12/2025 à 17:15, Arnd Bergmann a écrit :
+>> From: Arnd Bergmann <arnd@arndb.de>
 >>
->> That's what I note below, yes.
+>> Most of the common 32-bit architectures (x86, arm, powerpc) all use the
+>> default virtual memory layout that was already in place for i386 systems
+>> in the 1990s, using exactly 3GiB of user TASK_SIZE, with the upper 1GiB
+>> of addresses split between (at most 896MiB) lowmem and vmalloc.
 >>
->> For the udev vs. ndctl race to be handled in a
->> good way you need add+online be done in one operation.
+>> Linux-2.3 introduced CONFIG_HIGHMEM for large x86 server machines that
+>> had 4GiB of RAM or more, with the VMSPLIT_3G/2G/1G options added in
+>> v2.6.16 for machines that had one or two gigabytes of memory but wanted
+>> to avoid the overhead from managing highmem. Over time, similar options
+>> appeared on other 32-bit architectures.
 >>
->>>
->>> daxctl offline-memory ...
->>> daxctl destroy ...
->>>
->>> You can't destroy and have it offline the memory for you in one go IIRC.
+>> Twenty years later, it makes sense to reconsider the default settings,
+>> as the tradeoffs have changed a bit:
 >>
->> As noted below, we have offline_and_remove_memory().
+>>   - Configurations with more than 2GiB have become extremely rare,
+>>     as any users with large memory have moved on to 64-bit systems.
+>>     There were only ever a few Laptop models in this category: Apple
+>>     Powerbook G4 (2005), Macbook (2006), IBM Thinkpad X60 (2006), Arm
+>>     Chromebooks based on Exynos 5800 (2014), Tegra K1 (2014) and RK3288
+>>     (2015), and manufacturer support for all of these has ended in 2020
+>>     or (much) earlier.
+>>     Embedded systems with more than 2GiB use additional SoCs of a
+>>     similar vintage: Intel Atom Z5xx (2008), Freescale QorIQ (2008),
+>>     Marvell Armada XP (2010), Freescale i.MX6Q (2011), LSI Axxia (2013),
+>>     TI Keystone2 (2014), Renesas RZ/G1M (2015). Most boards based on
+>>     these have stopped receiving kernel upgrades. Newer 32-bit chips
+>>     only support smaller memory configurations, though in particular the
+>>     i.MX6Q and Keystone2 families have expected support cycles past 2035.
+>>     While 32-bit server installations used to support even larger memory,
+>>     none of those seem to still be used in production on any 
+>> architecture.
 >>
->> I added the comment:
+>>   - While general-purpose distributes for 32-bit targets were common,
+>>     it was rather risky to change the CONFIG_VMSPLIT setting because
+>>     there is always a possibility of running into device driver bugs or
+>>     applications that need a large virtual memory size. Presumably
+>>     a lot of these issues have been resolved now, so most setups should
+>>     be fine using a custom vmsplit instead of highmem now.
 >>
->> /*
->>    * Try to offline and remove memory. Might take a long time to finish
->> in case
->>    * memory is still in use. Primarily useful for memory devices that
->> logically
->>    * unplugged all memory (so it's no longer in use) and want to offline
->> + remove
->>    * that memory.
->>    */
+>>   - As fewer users test highmem, the expectation is that it will
+>>     increasingly break in the future, so getting users to change the
+>>     vmsplit means that even if there is a bug to fix initially,
+>>     it improves the situation in the long run.
 >>
->> Nothing speaks against letting dax use that, but the tricky part is that
->> offlining might take forever, so one has to be prepared to handle that
->> (and letting user space cancel the operation).
+>>   - Highmem will ultimately need to be removed, at least for the page
+>>     cache and most other code using it today. In a previous discussion, I
+>>     had suggested doing this as early as 2029, but based on the 
+>> discussions
+>>     since ELC, the plan is now to leave highmem-enabled page cache as an
+>>     option until at least 2029, at which point remaining users will have
+>>     the choice between no longer updating kernels or using a 
+>> combination of
+>>     a custom vmsplit and zram/zswap. Changing the defaults now should 
+>> both
+>>     speed up the highmem deprecation and make it less painful for users.
 >>
->> And for dax devices that consist of multiple ranges, it can be "fun" having
->> some regions removed and others not.
+>>   - The most VM space intensive applications tend to be web browsers,
+>>     specifcally Chrome/ChromeOS and Firefox. Both have now stopped
+>>     providing binary updates, but Firefox can still be built from source.
+>>     Testing various combinations on Debian/armhf, I found that Firefox 
+>> 140
+>>     can still show complex websites with VMSPLIT_2G_OPT with and without
+>>     HIGHMEM, though it failed for me both with the small address space
+>>     of VMSPLIT_1G and the small lowmem of VMSPLIT_3G_OPT when HIGHMEM
+>>     is disabled.
+>>     This is likely to get worse with future versions, so embedded users
+>>     may still be forced to migrate to specialized browsers like WPE 
+>> Webkit
+>>     when HIGHMEM pagecache is finally removed.
 >>
->> Something to think about :)
+>> Based on the above observations and the discussion at the kernel summit,
+>> change the defaults to the most appropriate values: use 1GiB of lowmem on
+>> non-highmem configurations, and either 2GiB or 1.75GiB of lowmem on 
+>> highmem
+>> builds, depending on what is available on the architecture.  As ARM_LPAE
+>> and X86_PAE builds both require a gigabyte-aligned vmsplit, those get
+>> to use VMSPLIT_2G. The result is that the majority of previous highmem
+>> users now only need lowmem. For platform specific defconfig files that
+>> are known to only support up to 1GiB of RAM, drop the CONFIG_HIGHMEM line
+>> as well as a simplification.
 >>
-> We had this discussion at LPC. The current interface of having to
-> individually offline every single memory block is not very
-> user-friendly. While it provides the best possible granularity, it
-> really only makes sense for virtual environments where you _can_
-> hotplug individual blocks.
+>> On PowerPC and Microblaze, the options have somewhat different names but
+>> should have the same effect. MIPS and Xtensa cannot support a larger
+>> than 512MB of lowmem but are limited to small DDR2 memory in most
+>> implementations, with MT7621 being a notable exception. ARC and C-Sky
+>> could support a configurable vmsplit in theory, but it's not clear
+>> if anyone still cares.
+>> SPARC is currently limited to 192MB of lowmem and should get patched
+>> to behave either like arm/x86 or powerpc/microblaze to support 2GiB
+>> of lowmem.
+>>
+>> There are likely going to be regressions from the changed defaults,
+>> in particular when hitting previously hidden device driver bugs
+>> that fail to set the correct DMA mask, or from applications that
+>> need a large virtual address space.
+>> Ideally the in-kernel problems should all be fixable, but the previous
+>> behavior is still selectable as a fallback with CONFIG_EXPERT=y
+>>
+>> Cc: Russell King <linux@armlinux.org.uk>
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>> Cc: Ingo Molnar <mingo@redhat.com>
+>> Cc: Borislav Petkov <bp@alien8.de>
+>> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+>> Cc: x86@kernel.org
+>> Cc: "H. Peter Anvin" <hpa@zytor.com>
+>> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>> Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Cc: Michal Simek <monstr@monstr.eu>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: David Hildenbrand <david@kernel.org>
+>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>> Cc: Mike Rapoport <rppt@kernel.org>
+>> Cc: Suren Baghdasaryan <surenb@google.com>
+>> Cc: Michal Hocko <mhocko@suse.com>
+>> Cc: Matthew Wilcox <willy@infradead.org>
+>> Cc: linux-mm@kvack.org
+>> Cc: Richard Weinberger <richard@nod.at>
+>> Cc: Linus Walleij <linus.walleij@linaro.org>
+>> Cc: Nishanth Menon <nm@ti.com>
+>> Cc: Andreas Larsson <andreas@gaisler.com>
+>> Cc: Lucas Stach <l.stach@pengutronix.de>
+>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>> ---
+>>   arch/arm/Kconfig                            |  5 ++++-
+>>   arch/arm/configs/aspeed_g5_defconfig        |  1 -
+>>   arch/arm/configs/dove_defconfig             |  2 --
+>>   arch/arm/configs/mv78xx0_defconfig          |  2 --
+>>   arch/arm/configs/u8500_defconfig            |  1 -
+>>   arch/arm/configs/vt8500_v6_v7_defconfig     |  3 ---
+>>   arch/arm/mach-omap2/Kconfig                 |  1 -
+>>   arch/microblaze/Kconfig                     |  9 ++++++---
+>>   arch/microblaze/configs/mmu_defconfig       |  1 -
+>>   arch/powerpc/Kconfig                        | 17 +++++++++++------
+>>   arch/powerpc/configs/44x/akebono_defconfig  |  1 -
+>>   arch/powerpc/configs/85xx/ksi8560_defconfig |  1 -
+>>   arch/powerpc/configs/85xx/stx_gp3_defconfig |  1 -
+> 
+> Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> 
+> Be aware that it will likely trivialy conflict with https:// 
+> lore.kernel.org/linuxppc- 
+> dev/6a2575420770d075cd090b5a316730a2ffafdee4.1766574657.git.chleroy@kernel.org/
+> 
+> Another point is that it will increase the overall memory usage when 
+> people activate KASAN as KASAN reserves 1/8 of RAM for lowmem memory. I 
+> think we need to look at the impact on available virtual memory, because 
+> 1/8 of 2G is 256M which is the size of the last segment shared by KASAN 
+> shadow mem and vmalloc.
 
-Yes.
+After testing I see two problems.
 
-> For hardware-based scenarios memory will always be removed in
-> larger entities (eg the CXL device), and it's always an 'all-or-nothing'
-> scenario; you cannot remove individual memory blocks on a CXL device.
-> So there the memory block abstraction makes less sense, and it
-> would be good to have a single 'knob' to remove the entire CXL
-> device and all memory blocks on it.
-> Sure, it might take some time, but one doesn't need to worry about
-> restoring the original state if the operation on one block fails.
+First one is on powerpc e500, increasing CONFIG_LOWMEM_SIZE is not 
+enough, CONFIG_LOWMEM_CAM_NUM also need to be increased, otherwise 
+additional lowmem is not mapped because e500 linux port is not designed 
+to handle additional lowmem with standard pages.
 
-That's not what I was getting at:
+For some details see commit 49e3d8ea6248 ("powerpc/fsl_booke: Enable 
+STRICT_KERNEL_RWX")
 
-offline_and_remove_memory() can be called on large regions, and it 
-properly handles whether we have to back out because some offlining failed.
+Second one is with KASAN, as anticipated above in my first response. 
+With a 2G+ kernel memory space, the KASAN shadow mem is 256M+, which 
+means we get an overlap between lowmem space [0x70000000-0xefffffff] and 
+KASAN shadow mem [0xee000000-0xffffffff].
+So when KASAN is enabled, either change CONFIG_PAGE_OFFSET and 
+CONFIG_TASK_SIZE to 0x60000000 instead of 0x70000000, or reduce 
+CONFIG_LOWMEM_SIZE from 0x80000000 to 0x70000000.
 
-The issue arises once dax would have to call offline_and_remove_memory() 
-multiple times, on non-contiguous areas. Of course, we could handle that 
-by providing an interface that consumes multiple memory ranges.
+Christophe
 
-For the DAX use case, I thing we'd really want a way to just use
-
-* add_and_online_memory() [does not exist yet, but ppc does something
-   similar]
-* offline_and_remove_memory()
-
-And not have user space to worry otherwise about onlining/offlining of 
-memory at all.
-
-Of course, that will require some new plumbing for ndctl to make use of 
-this functionality.
-
--- 
-Cheers
-
-David
 
