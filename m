@@ -4,130 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19601D185E9
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 12:32:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B31DCD185EC
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 12:41:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF3016B0088; Thu,  8 Jan 2026 07:32:51 -0500 (EST)
+	id CEAFA6B0088; Thu,  8 Jan 2026 07:41:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECAA46B0089; Thu,  8 Jan 2026 07:32:51 -0500 (EST)
+	id C99486B0089; Thu,  8 Jan 2026 07:41:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAC396B0092; Thu,  8 Jan 2026 07:32:51 -0500 (EST)
+	id B70AA6B0092; Thu,  8 Jan 2026 07:41:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C88FB6B0088
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 07:32:51 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6770E5A474
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:32:51 +0000 (UTC)
-X-FDA: 84308735742.07.DF39196
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7E99B1A0008
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:32:49 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Jv5MvU/u";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767875569; a=rsa-sha256;
-	cv=none;
-	b=V+DKdDPEOIMPwLXRubFS3znKMk61HqRz0ggv6OAWyIBDR2/AG2X4VUZuLA5lHMQEgYr7Hw
-	TTOg0AvvTs+3qQzmpMmebzlpMQONYO8d2Sski1PuqOmmRTfU6Xqtg9h1y91Qw4mY/pX5nS
-	BOLhic2TOSmXzeg1ayzeDVN/OOYZI9U=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Jv5MvU/u";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A86586B0088
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 07:41:40 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5A821140750
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:41:40 +0000 (UTC)
+X-FDA: 84308757960.30.BE36300
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 80C7CC0012
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:41:38 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nR4Ac5VK;
+	spf=pass (imf28.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767875569;
+	s=arc-20220608; t=1767876098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XBzToRd7/4bi2x9T22CPN9HGLJI5Gz+sukDSTPZ/xBk=;
-	b=UIL5PiRutY/mjG1pfyO1mHilHhk6CYuxMA0IGRmp7BtbF81a3ZPqw4G9wyHQ4oCp8daLWs
-	BfJ7W8pVw82yCfsK0K07DRPynrCdGR0mq3LJMEImPhozEOJ/O3Q6/Zjsiyt3gRHuMMQE2t
-	A1tK+DcorT2hYTTH3gw8OWP0AumEbFE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F353260136;
-	Thu,  8 Jan 2026 12:32:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1685AC16AAE;
-	Thu,  8 Jan 2026 12:32:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767875568;
-	bh=FQQ56dc+cW125BEbDqO1eWGFQ+p2e8tUVvYZ9ind02g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jv5MvU/uUBOzAWlAc8X6rAhyKlFViFZZ7Y2vkIf2UkFAjawmcKxsB9om7T6J8FzrH
-	 2xThXGT9x5frJMDDM5CKdT+bPVx4Ubrh4Z0SYoRT0qS07mOSTo7NANL/yrZYPAn7FZ
-	 joIx7Kcv8VKF9gWzjHDLCl+nWKHNscfxYRoY35Q0c6Mf1JxhR8lckDwSzLM2o3bmR5
-	 FWEB7+tEDUQeiD0XYF4PgCJfh87oucYVkqyyH6yClr4W0xy3xpRgi2bAEBtTl0tg2b
-	 XS0+0zPB6KtnS2qU+PmDhDXKTu00XX/AhI7RbgTxNz8r7w40X8s3Ovs78JX5CQK10v
-	 K8zT0pfsN7/Kw==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 37F5DF4006C;
-	Thu,  8 Jan 2026 07:32:47 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Thu, 08 Jan 2026 07:32:47 -0500
-X-ME-Sender: <xms:76NfafYCrtt7u_vvwnsjzJra0wcKjhQeeXCFT3uIPdkHRQuVqEwB5g>
-    <xme:76NfaZxlxwz9vW1NAS7-6zSNmqpv2eD1sOhoP6XE6bZhhBgzq0vp9E2JTu6mMD4U0
-    msiOTv7DKK9227e5bhCJLwg3Bz_kOqDPkbfFHHVVJ5V4WBfUloxCw>
-X-ME-Received: <xmr:76NfabVxsbbwOE4B3HM0xkR9S-GoOqj0VwCcjuXKslOu-PxlKchA3X1QFPdUjw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdehleeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopeifihhllhihsehinh
-    hfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhhutghhuhhnrdhsohhngheslhhinhhu
-    gidruggvvhdprhgtphhtthhopehoshgrlhhvrgguohhrsehsuhhsvgdruggvpdhrtghpth
-    htoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehvsggrsghkrgesshhu
-    shgvrdgtiidprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvg
-    drtghomhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomhdprhgtphhtthhopegs
-    hhgvsehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:76NfadZP_XEuzT_LKHTsotPFQev3DwdAw7hOtxpe1N8QhDim20U41g>
-    <xmx:76NfaWMthlHKty8RWBnWAVyAlA0aDCXw0p19TOtiosaI94PiSnAhKw>
-    <xmx:76NfaRtvkZIwzGpN1et9pbdgypp9iI4EjIROj6xFRLi7371MGiMGuQ>
-    <xmx:76Nfac1axLChg0ATyxXGvp34gUg2pz27KkQ-pI9NhiloPz1JJKwfQw>
-    <xmx:76NfafUxj_sqjDaRfg0Uk3JnW3ZO8xuXRnmNc9Zw6q3BwSkpqN1q7Ne8>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 8 Jan 2026 07:32:46 -0500 (EST)
-Date: Thu, 8 Jan 2026 12:32:45 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Usama Arif <usamaarif642@gmail.com>, 
-	Frank van der Linden <fvdl@google.com>
-Subject: Re: [PATCHv2 02/14] mm/sparse: Check memmap alignment
-Message-ID: <yup3hvfsn4tvfnv32mdf4yoabt4igb2lkvllfac72g3abdkovm@auqdaijzby7d>
-References: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
- <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
- <4f82b8ef-77de-422b-a9a5-691c4eca24a3@kernel.org>
- <glu3noshgeh7ktwwqofk7xcwkvhek2x3hrbdmyyo56gmctdx3t@adsfih557p7g>
- <2ace6fc2-6891-4d6c-98de-c027da03d516@kernel.org>
+	bh=KxCHi6k3BTAzPt+DiJG3qCrr7/A1NponVT67aJszG2c=;
+	b=lpYVstSlVbUPM2LCLrqpAwcuskh2R5sEZBXrxeXgx1srFd6J1+XnhTWzLQTxO+LbmWPNX+
+	uh0GcV+Zl7tsFbJ60ZPsGcqr733J4cUdhu2z+QdC1KAOn8fxBC3eUhhb9xisSM0iahI87f
+	iCAZY/42ikDrEjaKBzdKKXuO8g6WPk0=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nR4Ac5VK;
+	spf=pass (imf28.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767876098; a=rsa-sha256;
+	cv=none;
+	b=l2WbEl6I+pSlHIwIJ3prC+JzfAVuHKEUzLfq1MRmjiO6qDxuImhJ6H66skQWTG1dq7Npzj
+	lJamRIAPBGU/24508eQeaFV/hZ8+XkYdnbgycmjWjAJiU2ZhXS0K2Z1mS9AGBFBv54vZWV
+	gXFnZYCkjbSNLQnjTIt9tw/5lAipuuU=
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-81dbc0a99d2so5241b3a.1
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 04:41:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767876097; x=1768480897; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KxCHi6k3BTAzPt+DiJG3qCrr7/A1NponVT67aJszG2c=;
+        b=nR4Ac5VKkY5hEC7fnVTWCYg42tFCmCPQHh33w7mYfJfGL3KqsxfB+njLghQBVWZr2A
+         fAMgGro5EpIoK2YkW5NcZMQ5wYybKXuBPT4Ahfz1CSgccgaUyneXVoLZkgby/2WN4Ppr
+         4BQufMgqbJmg4Ok18+PDh4PP/3DgTIsMp4tVuGLlSlB1fCBt7NhE3FLeFCwvaAv50TxP
+         6bLOPQJ0awghozWuPmGE5/jYLFuRHFe87WEa1cCtSFLvzpTzrAlTrgAPnAKALiNS1XTz
+         mqL9xRLKENGsvtU31/YeDjGgIiORHOhgofCWrVmiwv8dicORidYqE6uhluDBvMZ2aCdg
+         +qZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767876097; x=1768480897;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KxCHi6k3BTAzPt+DiJG3qCrr7/A1NponVT67aJszG2c=;
+        b=SUvvRqFLj65ZhFlboNn/YyAFRFVLW6f/w/fSmwR95i1TvF39sKW7VrVvMbzHLZI7KM
+         epPmcrshoqZZve8bRVSPLxAStNb6p6/tj6suocBtK+GAs0ocGs7Lq9IPxZ07SK64XAXI
+         ui5eCYBxljJMSMcVzlXAuGLA4U0XFRhwdasUXRLJqp8efIVaT5sqFafvL64OJG+mkJfs
+         tlbgx1PEatrBQV2ypmNYF2lhsmmoSH/MsG7bdyMvTZ8ggki/2VYEq4EUT3u2SZ+jfs6v
+         CmixB5OBUDgr1ujHdNGgtb05+AbFzSodMynpMQ9Rj4Y0psccV9oSEyOwdEvw9icVeH4o
+         mh/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXEFQL3hhGCLFnqc/LBhRpZpENS8ZA9bbJhV1xMMKvduaCWjoeN6ZIL0gpSoMsNh4ENx2C/NGuTIQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz4ZXrcT40+ikIjtlVtHwzEcO+A/kFLe+BrpXSRAedhouJfHIhP
+	yEUBuAwl5ROlQvpweu0YUdY5BvkN/WcceZRo/wIR/T4DV3N4KYg7/YU7
+X-Gm-Gg: AY/fxX40710v9qCoVJ98g+RfRLJtf8FWqW3g2WDT8lwajouBBBn6uORuHHqGNM+6XcQ
+	kT6GS7zmk/BpsRRH/RQIPvMMp9kbKAxGmKPIknDHyvIPgxFkcFygx9ITefnq+WfmBgR0RUBjrMY
+	jSI+0Y9UacM8pyGkJfLMHta+fPPIHuLTCapLIKlnLzFo8xCKz3V/WULOwg+fSvAQtieaMqh5vWu
+	UJe/l0YzK2tSoFTVGWTntByA1CJ+V6BpZAhrhkhno0l68BWkupgQ4y5+e7Ev9BgfkxkSwxybP1G
+	45aynHTLM34chQGytVlQIW1eFw51INW8Uh4uR3FYsUBXXEkt3PrxUBkxaUXiX2hBwuwDjRQtRa8
+	9l4uoGJAFfhL362faxLr3yoZ8RC+NqXMUFkH5G1kUvpEc6EZjiwiiWG/bklga6GvouWGe2zDJcV
+	oRK7M=
+X-Google-Smtp-Source: AGHT+IGFPwjr7ZXnjyyaZYR82RM8pvdbLcnYiqzU0HmuuaMkGXIPbglQBcvVQCJYW+fo7AOVgmW9fg==
+X-Received: by 2002:a05:6a00:440a:b0:819:4284:365b with SMTP id d2e1a72fcca58-81b7d95f67emr5867252b3a.7.1767876097266;
+        Thu, 08 Jan 2026 04:41:37 -0800 (PST)
+Received: from localhost ([2a12:a304:100::205b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81c96d762f8sm2423491b3a.64.2026.01.08.04.41.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jan 2026 04:41:36 -0800 (PST)
+From: Jinchao Wang <wangjinchao600@gmail.com>
+To: Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Cc: Jinchao Wang <wangjinchao600@gmail.com>,
+	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+Subject: [PATCH 2/2] Fix an AB-BA deadlock in hugetlbfs_punch_hole() involving page migration.
+Date: Thu,  8 Jan 2026 20:39:25 +0800
+Message-ID: <20260108123957.1123502-2-wangjinchao600@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260108123957.1123502-1-wangjinchao600@gmail.com>
+References: <20260108123957.1123502-1-wangjinchao600@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2ace6fc2-6891-4d6c-98de-c027da03d516@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Stat-Signature: ezk57b7xxbuzajcgii3zqbhtk7o1tknp
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7E99B1A0008
-X-Stat-Signature: pi441yqo1ca8cfy65bmi3mhxitn6im6k
-X-HE-Tag: 1767875569-69049
-X-HE-Meta: U2FsdGVkX1/vrOYfWyGwHfdiH62TMdam99VqDqg3JUJeceEKI6g7AqdiwkEeL4s5/wlevgZSx773frsaEzrHVOA/LHlogyXCKynuGjPPlqtDVmU9gp8E0PmeTI777aOfzRfDC27FbOGfFqtbKBBHNfJoEJ2L5Jqek7cO6oGxjwt7XpZw84jWy4IilSVaoljW2koB1E7M6PqXasODTcrLirfam1VGg2lIj7+zCFNm/loCCU1MnWbYLEd4W+1PUp30el6TUBmgaRiTPmh+YH32oZR4bhx9pSHYQb1Rg7oGJh2DEIKsZZQJLRdjNnXoDjWP+JF8LyKlv5joHA1L/LhOC4aIYS4sRJggxcEJF2FVDa6YrhjAgNWkGlEG4oBj4qI5QuypFk7ulZfMbuISwZc8sz7ZJdZH59SoqOCUdSJKP4Jq/TQSrRjkSJcsL0O5LipXs9GQ91jZm/cc/3Q/PX7PDNiP0JBkQmMUgQCcAoG3Vowh3ZKfEmxuHFx65DYBiOGmwsA+8/nWqnmZ4mJlOmc5u4RvC9QwNrivSEZ0wjEZdALLO/pkE1c5V3KSiZuA5hO39P5q6T3WetDLEy6rW3+kfAbfCOxl0cNdo0y8teqIpNWhZh/O6hJXceCAYqj50m2All6hqhgQYfOwdifyh9kMI64HbazIshIzln0tWzyjyvmfJeHn4Gm43IS4hF6Xp+Mjff7fhwl9LijXOBPlP2sWfg4jzMZ5hupn92JQx3NvBRB1zkp7/FSOhM9/P4hKoY+AF31h9lffJIK7br8Jtgm+eU9pGoFxz/Zpo7PXO6W7zaT2rMOAfUUmSFV4lZv1Z/T+mceKwxzGAIxdZ9INuTLC9XDuye6Uy4XbOMxKqdcSdRgGV+kBpPQojX63SE/74kjqb3KDJo9sHoJE/kw1deW0EsAi7neZtZpSaVRzU63+EtBbxuSu1AYsQmaUj72weD4RCD6vQMliHpkulnUTnp8
- jX5OaIgX
- Mi67rTlNdxit7uAUhwEgddMUavhrL/MOuKpWcPMRWp12NYUjG7gHUC+AKhuXTvrtWK02Ka+JyTADchO66w/Ih8wBWtPWx9TWrM/3+/21SNr900/3z/gVgmIhlMF2/+lmCBYk65vH3vz8hlsMfs4DUUX/bD1JluJ2+07U/rpHzag0VDbe7Ew0XfashBsyMB75b8PsdfNAssiIRTWlbnnFJdqczZeQM7GGwSRRToPesSO4gISbU11t5k3MmInGdK1YMm9Oh6Z9DZkt9dXlif7yMYupd+A==
+X-Rspamd-Queue-Id: 80C7CC0012
+X-HE-Tag: 1767876098-274047
+X-HE-Meta: U2FsdGVkX19pppTTKFnPi5arTFoC5VrJLyg3y7k6gHdIi4e5Y8HkaZKQRk47APe8858ON+QV9grbggJwIpzeSHkuknC1n5ys4scTycfmPzaelDwCjKNe0xwbkqNMLBr/roM382nBRvD3u91PK3SI5YDSFVMFpaGDBOlgTYEYh/Qo1fbQYSB+ULmN9phjokd9DsmVugIoEt939ZIDeQWDfzXt+TOsdG/Ng0G5lIatbxiss/nv9ChqXuquKFDW+7euENr54xNNvxy82WiyrD7amt5+zBkfIxDRzzyo5IR7MqfajeOWDOHo2x2yw1c05gAgA7lvzCB2Cfj9MyxR/P48TIV+J1u5Hluxy4RszToe/lLUntIo2edMhk99cPXmU/TIw/WiEGMyWZpjnjXlmmVboEcqrWzHKrjmsAU6RVxUbaN4r0i7sVlJXmLZm8+UvbOhwOyvYAj4hVjw8OUEehGMFfb414ygx5A23KZWl4+XGu0YvWNIRVmMIKiAhu6aIX+3N/lZlCWc+Z/+RVQp6JD+3sDXFD1p6p8T4guqqPgW/v8gIRWz5Vv6bKNKzAX6jnvO6sAAoNWBx6hQDW8UI/G3V/+bCH38vF7IGdx/JmbPODCZSW/Q/dY6gTBs3hKY4Ghyp3SnUDFzLfVK+aAFCnjRgdBj19X3AAHfWp+K3H7xNg+JJeaj7oLc8KSmCErJ+a8OALHObUldU1G1aVB9KoQVjdqZLBf+0lIXhJadizzyKtzLyjFX0YlfJqBKZEVxgrw94l00ishn3Na5WfcE04Iz2N0okpmj8EltxZFhSd92R9S5Ge9PkJu8W0+nwnLqP0N1l1PuHr+iGsUUcGHETL0zOtZFO/4QHfQ7FL1Qyoxi7RkaLBbOh4+g1EyUmocUjkgUipXKaOo0SnUYhNJtr6/dprYFxr+Zc9GbWoPsyQYDE0h5rl9KhROY+JYIVWv/RwghMqWKFaB27oq9Xi4liMz
+ H+1mkiXj
+ C3myU7inrI5WwJMxlhB9y5F/25ZmyZtdCKQwDou7mgxKM4N8xmpDCL16HsdH6VPwWvLaKgbZtnY+6tMhzkT7ssLJZRBA0XYgWoIcIYAIF0bq4CnRBsKIfRvQ49hVoCKF27mjj1lOWl4RlnYMqb4jeHZM69zzwYgWFK28sxqfNxVI+GgO/GEtOno3gPCFZoRH3SEdxFMf7uea6f+EWGmAfOPUGKXJ8mXhGiEvGAZe9ZL7Yy2M6levp5zAKntYX9wOj/UQw+oY1zm9hVoc5XhTUnSUaUZRSC5CnZIlQXnmQF2Ltu/dQCtSbpzxl1jR2YXgFBAS+K33RaMgUa/OCgFzDlPm07hwA4Zlhd1TFNv4KdXXPT3lik6kfzjzpZSPQRuxR/jMuKtJOutpyee3T5O6IkFjYsfTdTdn/mURZF8PHrnWpDhR80CPlxXnlLjXTCi+AxE2OBDw8VmE6sA94h8oRyKc4OLBLHYSuFo0IcN5nj0cdTW7hRzj++Xnmp3mTYGcmR4UF5i2/AZf9wG/7I8x47WCQ+7kWUjDEU7HgX2gUBq22drVGNQA1UM0dkbWJMvSccg2hnTeW8lNOB5BTjHTjx12pV+1WfpVBeqrNS4D9z2NQzbUIwZRVHGHu+h/zZyIz+PkCTKPFByiZXTohalScTVugH5htUYMnGtDwYkvnDYTELWCiZE5wDX9VKfhHUGMzMh+Js6m9RCGCvNE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,122 +132,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 08, 2026 at 12:08:35AM +0100, David Hildenbrand (Red Hat) wrote:
-> > > "Then we make page->compound_head point to the dynamically allocated memdesc
-> > > rather than the first page. Then we can transition to the above layout. "
-> > 
-> 
-> Sorry for the late reply, it's been a bit crazy over here.
-> 
-> > I am not sure I understand how it is going to work.
-> > 
-> 
-> I don't recall all the details that Willy shared over the last years while
-> working on folios, but I will try to answer as best as I can from the top of
-> my head. (there are plenty of resources on the list, on the web, in his
-> presentations etc.).
-> 
-> > 32-byte layout indicates that flags will stay in the statically
-> > allocated part, but most (all?) flags are in the head page and we would
-> > need a way to redirect from tail to head in the statically allocated
-> > pages.
-> 
-> When working with folios we will never go through the head page flags.
-> That's why Willy has incrementally converted most folio code that worked on
-> pages to work on folios.
-> 
-> For example, PageUptodate() does a
-> 
-> 	folio_test_uptodate(page_folio(page));
-> 
-> The flags in the 32-byte layout will be used by some non-folio things for
-> which we won't allocate memdescs (just yet) (e.g., free pages in the buddy
-> and other things that does not require a lot of metadata). Some of these
-> flags will be moved into the memdesc pointer in the future as the conversion
-> proceeeds.
+The deadlock occurs due to the following lock ordering:
 
-Okay, makes sense.
+Task A (punch_hole):             Task B (migration):
+--------------------             -------------------
+1. i_mmap_lock_write(mapping)    1. folio_lock(folio)
+2. folio_lock(folio)             2. i_mmap_lock_read(mapping)
+   (blocks waiting for B)           (blocks waiting for A)
 
-> > > The "memdesc" could be a pointer to a "struct folio" that is allocated from
-> > > the slab.
-> > > 
-> > > So in the new memdesc world, all pages part of a folio will point at the
-> > > allocated "struct folio", not the head page where "struct folio" currently
-> > > overlays "struct page".
-> > > 
-> > > That would mean that the proposal in this patch set will have to be reverted
-> > > again.
-> > > 
-> > > 
-> > > At LPC, Willy said that he wants to have something out there in the first
-> > > half of 2026.
-> > 
-> > Okay, seems ambitious to me.
-> 
-> When the program was called "2025" I considered it very ambitious :) Now I
-> consider it ambitious. I think Willy already shared early versions of the
-> "struct slab" split and the "struct ptdesc" split recently on the list.
-> 
-> > 
-> > Last time I asked, we had no idea how much performance would additional
-> > indirection cost us. Do we have a clue?
-> 
-> I raised that in the past, and I think the answer I got was that
-> 
-> (a) We always had these indirection cost when going from tail page to
->     head page / folio.
-> (b) We must convert the code to do as little page_folio() as possible.
->     That's why we saw so much code conversion to stop working on pages
->     and only work on folios.
-> 
-> There are certainly cases where we cannot currently avoid the indirection,
-> like when we traverse a page table and go
-> 
-> 	pfn -> page -> folio
-> 
-> and cannot simply go
-> 
-> 	pfn -> folio
-> 
-> On the bright side, we'll lose the head-page checks and can simply
-> dereference the pointer.
-> 
-> I don't know whether Willy has more information yet, but I would assume that
-> in most cases this will be similar to the performance summary in your cover
-> letter: "... has shown either no change or only a slight improvement within
-> the noise.", just that it will be "only a slight degradation within the
-> noise". :)
-> 
-> We'll learn I guess, in particular which other page -> folio conversions
-> cannot be optimized out by caching the folio.
-> 
-> 
-> For quite some time there will be a magical config option that will switch
-> between both layouts. I'd assume that things will get more complicated if we
-> suddenly have a "compound_head/folio" pointer and a "compound_info" pointer
-> at the same time.
-> 
-> But it's really Willy who has the concept in mind as he is very likely right
-> now busy writing some of that code.
-> 
-> I'm just the messenger.
-> 
-> :)
-> 
-> [I would hope that Willy could share his thoughts]
+Task A is blocked in the punch-hole path:
+  hugetlbfs_fallocate
+    hugetlbfs_punch_hole
+      hugetlbfs_zero_partial_page
+        filemap_lock_hugetlb_folio
+          filemap_lock_folio
+            __filemap_get_folio
+              folio_lock
 
-If you or Willy think that this patch will impede memdesc progress, I am
-okay not pushing this patchset upstream.
+Task B is blocked in the migration path:
+  migrate_pages
+    migrate_hugetlbs
+      unmap_and_move_huge_page
+        remove_migration_ptes
+          __rmap_walk_file
+            i_mmap_lock_read
 
-I was really excited when I found this trick to get rid of fake heads.
-But ultimately, it is a clean up. I failed to find a performance win I
-hoped for.
+To break this circular dependency, use filemap_lock_folio_nowait() in
+the punch-hole path. If the folio is already locked, Task A drops the
+i_mmap_rwsem and retries. This allows Task B to finish its rmap walk
+and release the folio lock.
 
-Also, I try to understand what 32-byte layout means for fake heads.
-_refcount in struct page is going to 0 and refcounting happens on folios.
-So I wounder if we can all pages identical (no tail pages per se) and
-avoid fake heads this way?
+Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
 
+Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
+---
+ fs/hugetlbfs/inode.c    | 34 +++++++++++++++++++++++-----------
+ include/linux/hugetlb.h |  2 +-
+ 2 files changed, 24 insertions(+), 12 deletions(-)
+
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 3b4c152c5c73..e903344aa0ec 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -653,17 +653,16 @@ static void hugetlb_vmtruncate(struct inode *inode, loff_t offset)
+ 	remove_inode_hugepages(inode, offset, LLONG_MAX);
+ }
+ 
+-static void hugetlbfs_zero_partial_page(struct hstate *h,
+-					struct address_space *mapping,
+-					loff_t start,
+-					loff_t end)
++static int hugetlbfs_zero_partial_page(struct hstate *h,
++				       struct address_space *mapping,
++				       loff_t start, loff_t end)
+ {
+ 	pgoff_t idx = start >> huge_page_shift(h);
+ 	struct folio *folio;
+ 
+ 	folio = filemap_lock_hugetlb_folio(h, mapping, idx);
+ 	if (IS_ERR(folio))
+-		return;
++		return PTR_ERR(folio);
+ 
+ 	start = start & ~huge_page_mask(h);
+ 	end = end & ~huge_page_mask(h);
+@@ -674,6 +673,7 @@ static void hugetlbfs_zero_partial_page(struct hstate *h,
+ 
+ 	folio_unlock(folio);
+ 	folio_put(folio);
++	return 0;
+ }
+ 
+ static long hugetlbfs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+@@ -683,6 +683,7 @@ static long hugetlbfs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+ 	struct hstate *h = hstate_inode(inode);
+ 	loff_t hpage_size = huge_page_size(h);
+ 	loff_t hole_start, hole_end;
++	int rc;
+ 
+ 	/*
+ 	 * hole_start and hole_end indicate the full pages within the hole.
+@@ -698,12 +699,18 @@ static long hugetlbfs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+ 		return -EPERM;
+ 	}
+ 
++repeat:
+ 	i_mmap_lock_write(mapping);
+ 
+ 	/* If range starts before first full page, zero partial page. */
+-	if (offset < hole_start)
+-		hugetlbfs_zero_partial_page(h, mapping,
+-				offset, min(offset + len, hole_start));
++	if (offset < hole_start) {
++		rc = hugetlbfs_zero_partial_page(h, mapping, offset,
++						 min(offset + len, hole_start));
++		if (rc == -EAGAIN) {
++			i_mmap_unlock_write(mapping);
++			goto repeat;
++		}
++	}
+ 
+ 	/* Unmap users of full pages in the hole. */
+ 	if (hole_end > hole_start) {
+@@ -714,9 +721,14 @@ static long hugetlbfs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+ 	}
+ 
+ 	/* If range extends beyond last full page, zero partial page. */
+-	if ((offset + len) > hole_end && (offset + len) > hole_start)
+-		hugetlbfs_zero_partial_page(h, mapping,
+-				hole_end, offset + len);
++	if ((offset + len) > hole_end && (offset + len) > hole_start) {
++		rc = hugetlbfs_zero_partial_page(h, mapping, hole_end,
++						 offset + len);
++		if (rc == -EAGAIN) {
++			i_mmap_unlock_write(mapping);
++			goto repeat;
++		}
++	}
+ 
+ 	i_mmap_unlock_write(mapping);
+ 
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 019a1c5281e4..ad55b9dada0a 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -814,7 +814,7 @@ static inline unsigned int blocks_per_huge_page(struct hstate *h)
+ static inline struct folio *filemap_lock_hugetlb_folio(struct hstate *h,
+ 				struct address_space *mapping, pgoff_t idx)
+ {
+-	return filemap_lock_folio(mapping, idx << huge_page_order(h));
++	return filemap_lock_folio_nowait(mapping, idx << huge_page_order(h));
+ }
+ 
+ #include <asm/hugetlb.h>
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.43.0
+
 
