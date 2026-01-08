@@ -4,111 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22A6ED148B3
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 07:21:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 763F3D148A3
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 07:22:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F26D6B0098; Thu,  8 Jan 2026 02:21:58 -0500 (EST)
+	id DDBE36B0099; Thu,  8 Jan 2026 02:22:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A0556B0099; Thu,  8 Jan 2026 02:21:58 -0500 (EST)
+	id DB69C6B009B; Thu,  8 Jan 2026 02:22:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 474DD6B009B; Thu,  8 Jan 2026 02:21:58 -0500 (EST)
+	id C93F46B009D; Thu,  8 Jan 2026 02:22:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3164D6B0098
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 02:21:58 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C622B1A0140
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 07:21:57 +0000 (UTC)
-X-FDA: 84307952274.23.00ACD0D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BA1AE6B0099
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 02:22:15 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 620EA1405E2
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 07:22:15 +0000 (UTC)
+X-FDA: 84307953030.26.BE8E06B
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6930DC000C
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 07:21:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="k7sq2h/U";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YOJ2Gb22;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="k7sq2h/U";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YOJ2Gb22;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf28.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767856915; a=rsa-sha256;
-	cv=none;
-	b=WIhSpwgkGd+vvdqFyPoI6dh9iu+z5kO2U1neuZy3iOwFCttWHIEZ4oK0COz1DAHTXH6WFA
-	JhR/7i1cgk99Sot2UCk0STrPswzOlKPjAKRotVytxBGV4uKJ1rTg31nkdIhCgtFaojpn04
-	rMAollvNKRFaJ43lUwGpLDb3t1VUZb0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="k7sq2h/U";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YOJ2Gb22;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="k7sq2h/U";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YOJ2Gb22;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf28.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0CD45C0003
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 07:22:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bYJLhjlP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NxuYnSqq;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=a5NGxaQL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oeAAJ2iR;
+	spf=pass (imf22.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767856915;
+	s=arc-20220608; t=1767856933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
 	bh=hix/dMrgJrV/xdCA3OkWJsnhgRwjwab541MPc+utOIU=;
-	b=6shEiqTXs13XT45v9m0P7y3BcVNuzmFRY3BdOc0HA2RDko1JMqW1M/NcH1KBhcY8UpjRgW
-	u/z8IZEOYBxL1ODNTD+RrtXVGqwys+sLB373tpXWN3zp1VntfI9Ugw/La5U77DuSMu3zD/
-	1gB/YZjlgfT0Q32qmSgq7dhwq8+gPwk=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=7ix/10TDcZMd3tA9tsE2gqbvyIG/zE8jmod8PrE1TFJT0MMrP+UU9VJFyvK/vx5pMXe3eE
+	NugOTyyfzxSvA/LvM52bKFXj3P1ee2Rpyr+EQtvMwjVdD5fnQUv+RwcgxGFP4u2ho1Chmj
+	j7DK8rHP2MOguu7jqDLXCSYXYno801I=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bYJLhjlP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NxuYnSqq;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=a5NGxaQL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oeAAJ2iR;
+	spf=pass (imf22.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767856933; a=rsa-sha256;
+	cv=none;
+	b=swJOl0JX64v990MmLAKXF5lXGfEZ11Trc/DQYQNiLwxudM5SgnTR1j7XGcKcW2uToIr68A
+	nejRs2k2yENQH5Ad5n9yLOh7Gtizz9J3xpKL/vF6TzKPnxfMUWYvXLEdeO1IdkG/5HCG/J
+	S4SCFkTFrjbwglndREjPNR0PbYReT6k=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9B0B15BD4B;
-	Thu,  8 Jan 2026 07:21:53 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7A2165BD49;
+	Thu,  8 Jan 2026 07:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1767856913; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1767856931; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
 	bh=hix/dMrgJrV/xdCA3OkWJsnhgRwjwab541MPc+utOIU=;
-	b=k7sq2h/UYUEV+395NMvu+8QoM+uxG+8nkiywu1s4MIRrFciMVO136oRGxKroIDyT/pAi9b
-	ziMpFviiU/K6Fwi7NbpfBNiEkYH82NZUkLKDf4hUZy9VMEgR+IiCqyq1ac5kmjHzPos6dY
-	zRR2gneKqJnbx3Q6L6X9wWOgOOfhYkM=
+	b=bYJLhjlPNve1PywKtd98NxYNI+91QWQ0P8Ka2C+1NGgtuVtbovebu2/bflOgJn2SGfINtA
+	flyLtILhSMTY2+h1zu2Z7ke6yPlQpdobXCAhuNn0WMDss/ayAX/2bF/4rASMgZFELIPmwH
+	NxcJ9IfJq4lGc61ZhgtstUDQ6iGRAjA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1767856913;
+	s=susede2_ed25519; t=1767856931;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
 	bh=hix/dMrgJrV/xdCA3OkWJsnhgRwjwab541MPc+utOIU=;
-	b=YOJ2Gb22w66m5qNO2NFip+swTFNpyfFOy2FKAFmt/y6QVkaEfmNAR7jRd/e17lF9Q91/zc
-	sY+fVriCCQsWGTAw==
+	b=NxuYnSqqAybBeauf8DGpVEGKA4EfUFprxcklypRpPYHn+wXIlEbLAIinTompVCfke6cBWn
+	072b8DY5H+s/1cBw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1767856913; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1767856930; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
 	bh=hix/dMrgJrV/xdCA3OkWJsnhgRwjwab541MPc+utOIU=;
-	b=k7sq2h/UYUEV+395NMvu+8QoM+uxG+8nkiywu1s4MIRrFciMVO136oRGxKroIDyT/pAi9b
-	ziMpFviiU/K6Fwi7NbpfBNiEkYH82NZUkLKDf4hUZy9VMEgR+IiCqyq1ac5kmjHzPos6dY
-	zRR2gneKqJnbx3Q6L6X9wWOgOOfhYkM=
+	b=a5NGxaQLHR3iMA89x+BYxK2z2utTGOGQZtPgTdbvuCJzUqbGamHcP4y9gFyvmemlPlP4D6
+	r0Bk2c9rBqde43NZY3Mt9aamti0ZUCV3gdfGJUpmUKNFf2pmQ82EYsi/lT9Pvq0JqxB9PR
+	y9VBqUasT/DkeWXW4TkaV1XMV2+2Dls=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1767856913;
+	s=susede2_ed25519; t=1767856930;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
 	bh=hix/dMrgJrV/xdCA3OkWJsnhgRwjwab541MPc+utOIU=;
-	b=YOJ2Gb22w66m5qNO2NFip+swTFNpyfFOy2FKAFmt/y6QVkaEfmNAR7jRd/e17lF9Q91/zc
-	sY+fVriCCQsWGTAw==
+	b=oeAAJ2iRRDRE2nvq0Tf7JOOh1vIjud4fBzp7E6iKKOAcVC52SYPS6N2gIKJgGn+6I0gJH1
+	n9AlLo7Od6p5W0DQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0E63E3EA63;
-	Thu,  8 Jan 2026 07:21:53 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 001933EA63;
+	Thu,  8 Jan 2026 07:22:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BRrKARFbX2kqIAAAD6G6ig
-	(envelope-from <hare@suse.de>); Thu, 08 Jan 2026 07:21:53 +0000
-Message-ID: <b4ce3096-aa52-4cbb-8d5b-c787c1971147@suse.de>
-Date: Thu, 8 Jan 2026 08:21:52 +0100
+	id pxEGOiFbX2k8IAAAD6G6ig
+	(envelope-from <hare@suse.de>); Thu, 08 Jan 2026 07:22:09 +0000
+Message-ID: <f2322eb0-e21b-41c9-9063-2ed95c800a65@suse.de>
+Date: Thu, 8 Jan 2026 08:22:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
@@ -130,14 +130,15 @@ From: Hannes Reinecke <hare@suse.de>
 In-Reply-To: <aV1PQd3tyfSiH4xD@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6930DC000C
-X-Rspamd-Server: rspam03
-X-Stat-Signature: yspy5dtikdp5a3bwqbb4nytfsaorm5th
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1767856915-798367
-X-HE-Meta: U2FsdGVkX19RiFj8gFwc8xQcuZ46nZ+UmeRpsZG5fDGqWJDbczGXz5ahSnScjOl++3wn6nM8X+T4DC9k7C4ayBWiztl99uCayni8Ic7rdKAX5jHmTXE2lZvF3877zcxBU7jU1OVIrEoBH3qVt6H8pNUeE7Nj5xhuRBOGgEoe04k+3MFK+SRq2P4C20QnKUKQA8KHGarWNXqfvHX84GxqJjCi/qdPtOdhfQx5+hHD9DFaUXKsOgXsSxIS/J+at2weWiENG/CNrdlH6Yt7+lBWL3EfFPp1gqN0wGzECCiMrb6CuKSU8ilGfxOfdJFXx4830KhTvGwgFSns4HDhXrRbodjK0WM/Cqpa87oGMQL7sAY5o504kxPG+cgfTIyvg9f6D5umNmeWfncrJMntIspTf9I6ZHoJM7EeSojJwYQHuL24oP46GahpxNtjJN9RqDtVrvp2qC5YTKIYctpcpP/VLkB2yGEo5e4uH98KdPKVbK8fCiCOlsjaK+RfT+jf5k7xpERgfBJQ+8zNhYQymxiGP49C/wO3/yFNfGo34BBj84NfPZNzKDpfclSPXoJtlQRWXff6PJR8KiX1VbCSBnDSLhO/oWevwBEZRfHtUeJBltmlc823fhS+W6HgWbha9VKMQoEDi3/FNCKl+iEX9i4uOIKKgIZwxCCsASafSSP7DN+/wCjvbNLpHq+Y5FdkDn6F7mDDFEilUrk8YWxEbE4sN/sRETBoX70E6PFyDibOiT8fXUh/lItz26pGFuKrFboIJbKarZVV3O1dayhjgzJpP/N3Xejz0PllHuWx7FHv+dM/OpDO6sCCwZ3tpKFwW6DlDDblQlnGeYjFjL+4Afl+nW+84ayk8JJQWZh6h5Bd5OoFa7sRa2osy0SXN4eG9WBMAaVDnVfyj04Nh02Lrz8WKeoQw06dl6y/7Ql7I1XbL0H847uy8Z7uY8omT17ig83PAL6o576S+YtOG/K45x8
- vrBKxfYU
- 3wuS9Yxq7NCdX9JLSzGN6iAXU2URCib0PnaO2r6a5fcjj9qsezH2bhQXpkRZ3OZC4Nn7fjJwSdM1nIY4vPehpCtTte+uCxg2cdMRefg2kS2Kxzp5apbSCVZkgEvXzGpQnQEccpD5t4DFNX1NP0rHJdy1GVtsL7kswor2yiW5FcJbOTPWffguQHJiMkhABuyEKcizwyJ+K/jaeEv2OO67Mxhw/eeaEJQXOzH1yv+upFj0PMe5Dya39oMxP6K+wrP1vdRL448X2vfq697HgTgeq9/rtIONNRhYMyfEjPIYoApUoi5e6z3+HOBxtdRn39D7Lfg4qfAvZTg/IqWzA/zxdpgNBckF7SwdL8Tbay0hHKMgwW8+Ufrjvj7zYoiGyfiLRfB/z
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0CD45C0003
+X-Stat-Signature: nbazrk118qjo45waojyzatreokeocpm3
+X-HE-Tag: 1767856932-815430
+X-HE-Meta: U2FsdGVkX19dDFdyx8sC6cnDBJyE90pucmdzBIyfQ/ETcDk4XEcjxCpJ70CDApQiYbhLoOXmVx8d6qcqANfKX/w1dEhhUjgZxtTigbCQnL2s17QvLU91Lrr0vmDuZd4DjTdkY3vVgF7eSbmNAQHi3UHyDGFzgjhWqemBJoazI0ZkracvZl03N6kqkl1xd5cd40HDw7pVm17Tfc/1jcUGMtdV4UF5/yCA5I+kcvy6r4eJ0h1S6PzUsz9LxphffKIlqfSi9eSMcerN9UvuEqrVij6/h9S5R96TjtyxWdSCsYU/WCJySsmRrf7B+Gya4LY1yIuqTIuy9/7NHwKlZwzyNqg3AONVyYPgqBraZzLFV7tXclIMeIQv2BrFSiW10x8luyPIKZua+ueE3kkTbIQZwCLTal0mut/Hzre898POMm6DNGWzBPqyGolDSkylPPMqTYWjXTzG3/LQYlMcd5RmQ/dfLn4yS4PvdKC/K1ZnC1shoyUkBNkPZRDFmI3NMO78otNiXGu0EGRKJAfXGdXURrWnfhUhRWKa3VX/Gj89/zMp5eYn5taqHcVad0iZQCqA/zUxPymmvy9OtcwpgKMzvHjzyCtj9z4unwBnA3Hx0e7gKdz5Nk9S/DFBWOhbNfjMLM3HEgr7nVGvn8+jcr3ANyO2ly6aVLMwTyZjcO5yIWARJ0Zz4e+0By6mMBoi5TWFqBso3m5XVa4uLjfjalKRp/ek8kv7/++LODEpvlWhC3xbGuse/QsoQZ26KO79rPRThf5K2EQoh80ot2wIxe6Mr5yLxMWzRjOAzm6WeGZm2gCGjht1GR/f0Zm8qJze5r0O0xzF3NYF0FqKQS/VNaSml2LXmtyHLYxni+OQE4AASR6SYOwKS5vJUT8QlxEVqKwqmz2nQVLvC0OgzX1GAipvAsXK6ah4lpv11iVAViK22SSQeZS1U2IMAyZzo/MfAGRaqyG6usU9AI+Q+WyoRWg
+ +PtJ/g1X
+ 4VshNKZPG19o1OmhvfFFjS19w4ohWFF/be0176dCr8C48vD4OP5djao65SPTCw/2WRb5Rn0ZQX+B6hp7pj/GUiHr0lfxOsTwGJtdm3b7Nnx7GcZd4d/r8+cZR22YMzhsoYOJNrXVDK8BSLywMPnus2ElG9SYAzdmAIzdbbLnaUMi5KK8jlZm4x8wNfu09QEEtfDa0yV6B8qxE+tXEYceM5wmKvoQcREYoe3XbXx3ZdEZDE3C7bHdvKuQJN7jzeCfWgHVBunJRonHnyvBMJVMxfAikzqwQXJff4NpV6Px/NsOuwylD6fiXWQwZQ1pUApQA8EW/T9pSvoVV3zC6ayV1rkrdaO8Y451e3ZtVnuUXcBvtmqu4ZVFCbviOX6WuiSd5FNGA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
