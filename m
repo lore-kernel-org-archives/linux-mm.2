@@ -4,143 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96CA7D185C2
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 10:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72688D185C2
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 10:42:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E82E06B0093; Thu,  8 Jan 2026 05:41:08 -0500 (EST)
+	id C9C696B0088; Thu,  8 Jan 2026 05:42:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5A966B0095; Thu,  8 Jan 2026 05:41:08 -0500 (EST)
+	id C72816B0096; Thu,  8 Jan 2026 05:42:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5D836B0096; Thu,  8 Jan 2026 05:41:08 -0500 (EST)
+	id B72416B0098; Thu,  8 Jan 2026 05:42:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C72786B0093
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 05:41:08 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 56BBE5A01C
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:41:08 +0000 (UTC)
-X-FDA: 84308454216.20.BD66774
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 19F4E80004
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:41:05 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="aYOWi/WD";
-	spf=pass (imf30.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id A17A76B0088
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 05:42:28 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 637EA1A06CC
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:42:28 +0000 (UTC)
+X-FDA: 84308457576.25.C830229
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 941244000A
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:42:26 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4jPPnzlC;
+	spf=pass (imf27.hostedemail.com: domain of smostafa@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=smostafa@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767868866;
+	s=arc-20220608; t=1767868946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4TTBroKnN0eLVOHeCy8YsD1wmF7ealrZ7/OBBXM8gtM=;
-	b=QaZTq8U5EXatOeWYQk1FFilAJddbXs1GgnS/RG58qZBfHeUyzYvvdhBImZRNZmDCbfd6/A
-	pfcMDMZmrsei5pASgJGhaZ3CB80y+6Ri8MPSQqiZFqodKey/iFXo63s6hg02Q97r7hxqUC
-	tkWPIg/CGRBPaU6rEKyNdTwssN/hfUs=
+	bh=iCksppsN2qljq533bVWKBzGPs8aXT6gZzyjV+hGv2Fs=;
+	b=nFRPU+W5nry26I3KcORBclPlJN8CRaqzgEJs/IdPSM39sDosADVpuvnqdIo5xnUbBVRrgP
+	QiAIe6PtBdQXAx6MobsuGBtjBagQFrt0+c0JbGZSGNyQhxkXmxtfWMJXvL85NNNHDXjkWI
+	D8dO8TUwK84thjIxNBipHc366E7dfig=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="aYOWi/WD";
-	spf=pass (imf30.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767868866; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4jPPnzlC;
+	spf=pass (imf27.hostedemail.com: domain of smostafa@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=smostafa@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767868946; a=rsa-sha256;
 	cv=none;
-	b=fZZatyTniguEoBBBq3UDBpzh4QAKBpoYuLs3VYK3rZKrnvEHiDC3W9LWwynAKG7zok64Kv
-	Nlvk/+Nre6UtnXbC/3p6dYVr28k7HJyTy7b/bqS9y9FxpA8f/wQ7CsOF2OegXcOgif7vET
-	szREYbaf/DnQtzAa2aPj56BaZIbYii0=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 607K106Q003588;
-	Thu, 8 Jan 2026 10:40:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=4TTBroKnN0eLVOHeCy8YsD1wmF7eal
-	rZ7/OBBXM8gtM=; b=aYOWi/WDbsEI6QFGhzuBiObqdHsOaTK2Kc3HcoQ+zoovzX
-	2r75nvofMVCPDwbPyv5wPkaeODzKnO0wyvu+4tP59Gq+5oHSnCgONreEStsY1F09
-	RHWMjyc8yvGTApGtmyD3h3ro6ZeQOnd9Ad2DcmKJ15HIY4aQ/F2tBQ++SYvryniS
-	2oyA4uMNbrAYQCU41sot8qjPBl8ZbtkNlQW6pLXLE4KwKj1ro2Pj4f5Ezufwe1QL
-	EAgGcv3bIthcBgnBEMak5xqMRF2eLMycOp/2vLycVyceIsQY1Vu5N522lNqwSOpk
-	d/QbiOURcW0uEjCrtbktJCiAroKlkd3CjM1q17Cw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betsqdssu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jan 2026 10:40:54 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 608AdSul025029;
-	Thu, 8 Jan 2026 10:40:53 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betsqdsss-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jan 2026 10:40:53 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60871mDp019411;
-	Thu, 8 Jan 2026 10:40:52 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfg51e0yq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jan 2026 10:40:52 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 608AenKO39321866
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Jan 2026 10:40:49 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E700C20040;
-	Thu,  8 Jan 2026 10:40:48 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E21520043;
-	Thu,  8 Jan 2026 10:40:48 +0000 (GMT)
-Received: from osiris (unknown [9.111.54.4])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  8 Jan 2026 10:40:48 +0000 (GMT)
-Date: Thu, 8 Jan 2026 11:40:46 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: will@kernel.org, aneesh.kumar@kernel.org, akpm@linux-foundation.org,
-        npiggin@gmail.com, peterz@infradead.org, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        arnd@arndb.de, linux-arch@vger.kernel.org, linux-mm@kvack.org,
-        linux-s390@vger.kernel.org,
-        "David Hildenbrand (Red Hat)" <david@kernel.org>
-Subject: Re: [PATCH] mm/mmu_gather: remove @delay_remap of
- __tlb_remove_page_size()
-Message-ID: <20260108104046.9857B79-hca@linux.ibm.com>
-References: <20251231030026.15938-1-richard.weiyang@gmail.com>
+	b=PJZvVHevvB3bXtvFqkvvoE4Ceo8oSP6rrTXEPMWtTBOn2Bw+x+9cxE2pKdb0+4p/1WxUCC
+	XJ8UsEyv57e8sZO8GY/9aEL7A3Pdbhz0gI9abDLFp5NgJX/oR1srdNpJC4y3A+JlIG4u9i
+	+PIA5rs41t5JozsioTPOs270tZdcqRI=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4779a4fb9bfso118565e9.0
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 02:42:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767868945; x=1768473745; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iCksppsN2qljq533bVWKBzGPs8aXT6gZzyjV+hGv2Fs=;
+        b=4jPPnzlCnQoWoz0t4AAHS1f/Qw2lNhL6tCGeukDquEebN5WIL1qe590B2NbgpHI6wt
+         UbUNnEM2WskcCYq10wBcfuutOGESOjG5dLLI8zzlzil/TkGbrb5qcMlQKgHfpTXvf3zO
+         NsdUJKdBh2IC95Sr2T8MYbFyAK1qB4EbduxQdw+xCk3yCwdF5SS6nLqj1rX1r2E1UG+b
+         OsjQtuw77ipyZchMsXQFXj6lx5jsvM12Bvt1ztHvwFgpESzGqb9aRjhkJ+WhW0dOrwVX
+         us1fCOxVmi5rXKlT8G/gS0QHsvTDQkB/PaVTUpoZRzLrh4dQG9rPWPGjJAdddLfc9Jhh
+         Tugw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767868945; x=1768473745;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iCksppsN2qljq533bVWKBzGPs8aXT6gZzyjV+hGv2Fs=;
+        b=R852rV67RQCaTJjTUbBdOXMiEfLwBBQEtwXDouaAG05mjlaSahraCn6W8NTO6KxXcx
+         OhEpTh0Gh3xNq3u+VapzQGU5JUO13mpO2T42vwW0l4NCJTFBSNLhl2h/lwa/vA8Hibi0
+         0Gg5cOuuLCKTZiBHtp7fLovdepUrCFLZWLxmjWJScQFzUBSo1Htx98t2wgZKsc3+VuPu
+         98r8Jysx9jhrHjvDrARwIbhdLVheasW9DBolI2YFsQVFhJcgJZW80XKljK8vjtjjWwmy
+         aV5HOkxr8b+KlH7E1A3E+xwEZ53P+PJq6zih5Wt0Z6GqVNbAK/0rO1+s3F1ZoXNhnCqN
+         LzNg==
+X-Gm-Message-State: AOJu0YwA7SmOtct3+WMXVcxoila01o+Hbqcj3htOtV9hIFaqo0i9RzFY
+	TiyAYkjVIRb7aAhdXCbxxUNp38+2HCG7d8GYTOvg1hpVN9zbjP83WeoZWhhFAki94g==
+X-Gm-Gg: AY/fxX7vx14GMz7UzpjXQX7+GJ15IsmcnYbMYxhx/IHAxVoU3Wms/mfIjb2SURF51u6
+	//77ho2ijhZNYlE420dOvyIC/SDwYUvLzJ891pSHOnpvPNwjZs76shV9I/0Y+JJVVUQMaaBz0Mc
+	EfJhtlrIG8WjeQ333r43yYzMH7S5Y5y+Gq9sPW7pxjD0LpqDSTQ6GkakFWeV2ak0jk4Me35ezfE
+	SRhi0DC9EmgKYDrmnqWxj0p1cecDnyOFoZdSzlJPnviDKpCNBM2qbUyMLt7PROEUKCwA8r3qYO4
+	Hteu8qdnnIwQfvLhl17HXfMiJIUOaOBuJ6ENeG3bKFjxtPJWSttwtymu2pvBZOia4h+vKwCpqvB
+	7UlfSMuBgIrEjQUGkcRkakESJe3jcNakbC+ff9lAxQVTiQQfGWP2cw38kWtW6bpnIs4e68lXdUh
+	XAPAVm2HSjSPgc4yNPjlKvTsdO+1iIMRQZFDtL7NqP5gDjTb5Bg5U4
+X-Received: by 2002:a7b:ce90:0:b0:477:95a8:2565 with SMTP id 5b1f17b1804b1-47d8ac3eea6mr350785e9.16.1767868944788;
+        Thu, 08 Jan 2026 02:42:24 -0800 (PST)
+Received: from google.com (171.85.155.104.bc.googleusercontent.com. [104.155.85.171])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0daa84sm15517528f8f.2.2026.01.08.02.42.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jan 2026 02:42:24 -0800 (PST)
+Date: Thu, 8 Jan 2026 10:42:20 +0000
+From: Mostafa Saleh <smostafa@google.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
+	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	rppt@kernel.org, xiaqinxin@huawei.com, baolu.lu@linux.intel.com,
+	rdunlap@infradead.org
+Subject: Re: [PATCH v5 1/4] iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
+Message-ID: <aV-KDEGlplD5EkBx@google.com>
+References: <20260106162200.2223655-1-smostafa@google.com>
+ <20260106162200.2223655-2-smostafa@google.com>
+ <1a6aedcd-34c2-4e26-b07e-6eb8d423b759@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251231030026.15938-1-richard.weiyang@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: sCafAl5JZ-iCW3CEVShbxhFeg-5utwS-
-X-Authority-Analysis: v=2.4 cv=Jvf8bc4C c=1 sm=1 tr=0 ts=695f89b6 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=BpKC6iUb4ImYL19sRPUA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: zuf_APRcevyr7dXxP5ZWDs6PkNI1Voh9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA2OSBTYWx0ZWRfXzpscs6TxyynH
- GM7L6OI3Ws+IgqfpA+zIxpv3g0cDNmEZ/IsLExpoUxgnppjOzx6AhaVUtaAgtU8mFbPuVL+rn+4
- lrUL7rSb6nn6tSeCPET9w9tNZ8R2CTMAEA71UWmpMvWZL/2Mj1UMNshrUJH8rvDKQOcyC/DhtrU
- 2uEGv2fR/6zrWtwG0ze7n83IBhVnSTYyTZNpzzScmGa36PKYWnytnvN7Qi1ZFMNySvxgGAGpUpc
- gCFJarXBC02LdthiirYxfczNrqQV9dA3ica6qPpc7Hi3hLoKDVe756pxH9KvmrMfJVSWXtSzxqK
- kpJ6N/TyFPzncHda6iQTQm+yGYWp8g7zk7GfyhNIlF+StvIRDgq5uNblcllPNRUFhBQmUWRZ7lp
- l0EN6nLKcEHmxhg9xqnRNCZKfJKz0Kii0JRPB1+ord0BAPOHGtMyIF+5Gt8VeDQMex+gmOXkayF
- TtB/BteVCNu8pUZqD2w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-08_02,2026-01-07_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 impostorscore=0 lowpriorityscore=0
- priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 bulkscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
- definitions=main-2601080069
+In-Reply-To: <1a6aedcd-34c2-4e26-b07e-6eb8d423b759@kernel.org>
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 19F4E80004
-X-Stat-Signature: koc97p4azrufbaaxtwd6tfyaf36qor6c
+X-Rspamd-Queue-Id: 941244000A
+X-Stat-Signature: 9awzsgbj8uaicf7gupjx4hjpw3bxue53
 X-Rspam-User: 
-X-HE-Tag: 1767868865-137436
-X-HE-Meta: U2FsdGVkX18MVJFS5P22aqLOm6VcmxF6M2NU0jy6JruGeuI/UQKqDGGUw1D6wQRWFptbKe7sh1/mekleor2TpjaXKRXH9BCe4/UeYuU71yo0D5xJUPvWIX+IYBRWkdber8OPDEYVSbI8WQC9ym1mMOQL5UdWnH+w6Lvd1x6ytyR/cXW6VSrW+h3ZzxyPn7vZQEutbQFjxMe1grhJ7L/L+6X2wq0JOq6GQ1ZYiPdgppvDHxMInDxdVZxAW3Wz1oYsCRseETn6SZM6L7l25mN8b/dLTHD0dwJ0T/PrzVX5DzFkATIyScmkgsz8BkryfV8HcgInY3lNckNv0771TLGuHmOZFYQpUibJ1FXJ+4RxfhHuDFGOY2lk3b20IMsiARQapmrITnRkjstgyu3YHkWW4w1mDeqn2IuyTSOn/zebytUoZICt+8X6oBdQ80Pxr/4zBfUJ+Du8peJKDWtK2VaBGeopQCwfHniN8SdF+nAeX9LqUjIZWVEJBtKiKwjoImigicEvxCw7nGuxitlHYl5iP4qP1uzOiAKnmSEG+y5hvkfP9ISVUISd6rT0O3+bD1DLn/eUehFBJ6jQLJUHBdOxJ3o1Dj0lhm0d6vdiH/Jcoy4pcs085MNpaIgKg1wf5HqEtN9I25zsCuSO0kM6Sifa5tdpJAkb8+UJrrkh2fu5JyDX3C4r6zFtaFWNZk3A+sWRGZoZsJch1q4G5h0dXvxyE4R5iFmBFU2mCbhG1fc/VV4Cq6Hh7BWcIs19Apt662MVhlHhw8MPlFR/i9IUpAASLbg6Q5vCTAStq27vhbKQGGkLLmcUWSkjz1F3IH7dtqNCuXFW9KJ10TxwVz9foaXv7/B29RHeMad+S+uNFAQhp3ppYFh78BrHhkwijJ9B7bt42D+yFFQjKTAqshCbgen+K8/6DD2FakfeqrncSjz9+EMNF6Aw0Nb2hOzeH94bRWFM5qvK0GDgb+RzVnxwFsj
- T/OwtWS2
- bm7gIG0yz3X5xkGJtNkvOIP3AgN0g/qz/hi2deIuLkCgV5ul6dEfyKr4F8CKsY+e+ClD5MvHsyScicC95c8mmg2SoR2LZPdxQfasw
+X-HE-Tag: 1767868946-614143
+X-HE-Meta: U2FsdGVkX1+RUHlTSbZcQeNHL5AmMQY6aCDtBs5oisf+ZPORI/gefffz731V/0VRDsn3xSBn3Swl/xB/v6siur3jXs8gElvAK7anjdIk4AiVcTVo1mVpAfdALCtkDkG7mvQX2nCIAxS3lx7mKfNVzzUzKOCMTHFbVyI2iCJStqwsHQcai0empKu9epbwQH4PDbyk8fG+mL14wkV+gnl8WJTBa/eeOUvkUe7OCSfJhVLFVBBegCrW92XOklZmo2xVy6vkR3ipVQim2PXRWkY8f6IOF+tstcrP9kuhCr5RqlxIFFIU3qf5ggNQ/yqOYTHYWwSWsYWzv9lxFVqU92G2Dx1m8gyKsL/2XKqllpMFNhyGreptLa+lj3ohfoAzyNuFlqzW6cVA0zPXchN9Rrqi7mDq9piXQ/NA30z48Hi0Tq4eTy1jyJt8jyfUyEoJf1g1bvvjZOAq4riRBKgSaFdNjvT7Osx/Kq8J9mhbGjD8ZFERm+L+wX3wNaMtL/B/tb+z6vZzGND4uwogweunnU5S4nFMKo8y89pNxyzN9TWnjXFgwjdN0OkGXlDoem9ZrDBRMAdEo894AHvwUtE0ipQdmlE0938s/ga8KZQjveJBEmt5AmOEw4cJd12qCsnktqZF5SeXud/EIsWEEtI+m7z8Afm6sjfcqMYl9m04c1kUuGk/ilnTb84gFBpqnJISxb9QW1mSkvFABb9PvxkG69qn+aHJ2Mt1X1sgA0LlBq2Q3wqYLEBWPUkNDFc4xnDJPczuZZTmU2V6vK4kJobNYRIDp7JCmzaF91qwzwLANqD1IynRpCjkHX2lQcIj0cg/7AVloe6Krko+hshWCcVt+tS72GJSvEsUEnGNjtXaV7m3Hs9KVYXYfyjd1KV+2spFUZGk3mGcFGol8OpMNgCQcU/KEsL9Cj+Vbls2cwkb+FZ5cqoJtLpB+4zPxEY188wy3fJD6EYz4M0m6efi5OUE15f
+ 8REsoivh
+ rXRrWNY2YtcaViVM5NQ4QVESA66Yt3xmA1eH5eqdg1PlyqXfckelVlFAJD5qfqW19rbD9E/uLfhamaGSNSDzE89nQ6pIALQu20fV0mZRj+sEGC2B0NHuGKy6voGzGLtcmcVH4WMRIF3xnjwvi/DcNE1GbETEq8Xohmi9TgjjD1DWDLrBdnslLKJXlfXydEGFS8hT5Ljr94fAjNO3jUJZo2NRhSdvPVyu289a1A0T1ef8/+bijENukGGvIZYs4n6XpW2rtUEZk1ZQBdOVAyATInRjZDRncVorsad3pWfLrt2LLsGlFQdBIlTALdBzj5cJ/DmgJll0EGMhSS04uiY7JrEExpZdifQkMLW/J97pd59/DCcz1Qxh/76jBZPSTF15qcz1VRBvTIXjt4Z36CLlrQHl/EuoFr1Lr/LfF/3bpC8tbah4ITDLywoMjxzTK5kdri9lX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,21 +124,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 31, 2025 at 03:00:26AM +0000, Wei Yang wrote:
-> Functioin __tlb_remove_page_size() is only used in
-> tlb_remove_page_size() with @delay_remap set to false and it is passed
-> directly to __tlb_remove_folio_pages_size().
+On Wed, Jan 07, 2026 at 05:53:50PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 1/6/26 17:21, Mostafa Saleh wrote:
+> > Add a new config IOMMU_DEBUG_PAGEALLOC, which registers new data to
+> > page_ext.
+> > 
+> > This config will be used by the IOMMU API to track pages mapped in
+> > the IOMMU to catch drivers trying to free kernel memory that they
+> > still map in their domains, causing all types of memory corruption.
+> > 
+> > This behaviour is disabled by default and can be enabled using
+> > kernel cmdline iommu.debug_pagealloc.
+> > 
+> > Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+> > Signed-off-by: Mostafa Saleh <smostafa@google.com>
+> > ---
 > 
-> Remove @delay_remap of __tlb_remove_page_size() and call
-> __tlb_remove_folio_pages_size() with false @delay_remap.
+> I think I acked it, but maybe too late for you to spot it
 > 
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-> ---
->  arch/s390/include/asm/tlb.h | 6 ++----
->  include/asm-generic/tlb.h   | 5 ++---
->  mm/mmu_gather.c             | 5 ++---
->  3 files changed, 6 insertions(+), 10 deletions(-)
+> for the MM bits
+> 
+> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-Acked-by: Heiko Carstens <hca@linux.ibm.com> # s390
+Thanks! If my mail client is not acting, it seems that was the
+same version(v5) also.
+
+Thanks,
+Mostafa
+
+> 
+> -- 
+> Cheers
+> 
+> David
 
