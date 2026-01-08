@@ -4,137 +4,246 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA770D1D478
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 17:00:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA61BD1D482
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 17:02:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1C336B0088; Thu,  8 Jan 2026 12:00:35 -0500 (EST)
+	id 1E3AD6B0088; Thu,  8 Jan 2026 12:02:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC9936B0089; Thu,  8 Jan 2026 12:00:35 -0500 (EST)
+	id 1AAB16B0089; Thu,  8 Jan 2026 12:02:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAB8E6B0092; Thu,  8 Jan 2026 12:00:35 -0500 (EST)
+	id 036F96B0092; Thu,  8 Jan 2026 12:02:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A41D6B0088
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:00:35 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3CB02140216
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:00:35 +0000 (UTC)
-X-FDA: 84309410430.07.3445AFD
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 33048C001F
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:00:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=EzurTzmS;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf28.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=jiaqiyan@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767891633; a=rsa-sha256;
-	cv=pass;
-	b=2NF3YquYCDxIzA+bxArI1at4iD2SYjhoBCf+A//dqU3dw2J929IDFWZK0sIeoXNP/TIDRc
-	A/2wJHKiByN9GaeGjsmwH39ozMoqEDHvZFi5IZ890oCw4Ye8ZeQp1zxrqzWXXN1r9/yOeE
-	NuB1sqllDBTL33/DYUQlDP++X/9vAtA=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=EzurTzmS;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf28.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=jiaqiyan@google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E0F326B0088
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:02:54 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C086B7044
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:02:54 +0000 (UTC)
+X-FDA: 84309416268.14.4EC1859
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3486BA0007
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:02:51 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=cjnCnF9w;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=yWOYu9My;
+	spf=pass (imf25.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767891633;
+	s=arc-20220608; t=1767891771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MqePBLtbIicL/DWj2eUilSA1KB5F3elpw15Vvzk8jeM=;
-	b=XPjEJdgG3YzTDY5vfYUPZ3S3VGDAnqdS/cMSDOUBPMqBqsB1ZNTGn9OzS6/JJTiCefO36t
-	1V479FuhaSK5SGp7oCfa4WzjNBu2j9uTb58S9NsX46VE8szqDDymiyBXU/FK63MPfk+3zA
-	HtO8XrUwj1EgFiIcesqHAkLiKnAHAlI=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47a95a96d42so134165e9.1
-        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 09:00:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1767891631; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JGywbQbtrODqpwjCoR8fNMy2jKPDG/3O6heRo46OrmylPIEIIB5MUKb/2OPLxdWieI
-         ccqxXdHqabkeI3qbDmyXIKNqfltvVipBfCBDCFc/z2j3ldwenZDlSrlbsPGmDjxum5Cb
-         k+omQWjJNf+tusrfMnaRgKUga+LEg1TOplGbNQdHQ2d+TqrJUULF9M006mLcYzIomfZh
-         EOpLujDq6iIyqFJn9YdDifFT8NUfXknN+CTAPB7VhvbCOH5yinYAHLNH7y0gkYkB4h8z
-         CRQmvM0oYARXmRDExHy10WvLBW8EH8RNkRH1F27JPRc+jtakOXyr/T8x6bAWY1KtYMcG
-         GDew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MqePBLtbIicL/DWj2eUilSA1KB5F3elpw15Vvzk8jeM=;
-        fh=z0T/Jdb2XLSnwOaQM40nVu6d1zLhDU7FbVWSdNAu1XI=;
-        b=gtaAtUFtcRb8snusjls51+/75hd9Sno4X5dgO6epjQYnKgU/ibcEnKkzA8mgfjx0Hr
-         4Fq3tWipsz7Gm1CvMuonCDJY/674OBVe2appQbf1BPQYj8QFBY183/1B9f6x6Oi5OVVu
-         AYWpd8d83qvrfARXACc1mTO/qOP4bMKto/uJ0BVOkMwiXySct9LRBriD5vqaZKRK5fgg
-         ktg/VPkDqD1ti5s9gVrVy6w0Dz4dnc2XKledSXUaahdp8xZlbul2xoDAE1bcNObDcSGm
-         X93chtGJPTiJ47GJeyqu+OXm+Ki4gO2jCV8J6ot91A7KBDC+2ELjY1+R+cqaDZEfKb23
-         cDqA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=g5huMWBTvyYt5gwEGA2wmhynAcPsAnabAnsfkI/mqF4=;
+	b=J2vqydiaLuHaGv7fuAb53srmIurxylwfXXC0Vi8uhpA3Ut3nVGnrC8w6fFYcq/SefM1Gk1
+	8wrTQyMwM03gi2a1OfTtf7Shq7nWr32DR2gAoO2a8PXiJCML0OJzbhceACDOerWy72a5gA
+	/ZraApTXIc+Hg5jpjLiYa8Ldt4bkzJI=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=cjnCnF9w;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=yWOYu9My;
+	spf=pass (imf25.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767891771; a=rsa-sha256;
+	cv=pass;
+	b=4EK6FSZzXdQR5DvSggJA5t4gLPJDTLCRUVXVDYHNlDiEnhNxi/rs7ld3Nx93xQlFPm3VL+
+	eZovqfVGo3fPsUEvwUG2O2UzsFkOs/ATdFmdhF5vue9ee55LfPOcYFPFxQNFRU6NMD0vF5
+	Vl9tdgqY0RRl3nl9sUhEFSrls1Z7A6s=
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 608Fss8O1008991;
+	Thu, 8 Jan 2026 17:02:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=g5huMWBTvyYt5gwEGA
+	2wmhynAcPsAnabAnsfkI/mqF4=; b=cjnCnF9wKYjnbKyzoDBpxH2No+AcmhqiHL
+	vdUXz95WMZGKC2TAx6LtCRbksB5iSfFJ6PCFQlH5ejb4IJ0os99QahGXtKgArKqk
+	0KjOkKUfKOBZMyizOH6bHpQ5NU21PJSvyeNiO+ZZ5rS3OrLnGXgtCMSHxEB/jEzN
+	1vK4sTmtkRbEUksaFsP5nGOSYhA6uF2NRmUyWYgLHSMwZflK8KJARXWpj7X38ftC
+	sJhqdEwkrYvXuDazQLdCXRZow6aEyKZ3/NDOvGgBRlWoT+5SW4do9GTwDNAm/6d3
+	Cj8PQ5xUISU+DMEJH4dvgCMdeYGUo28vpgsaXR/FRR1CdaXusnuQ==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bjfn3841y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 08 Jan 2026 17:02:21 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 608G2cDB026266;
+	Thu, 8 Jan 2026 17:02:21 GMT
+Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazon11012061.outbound.protection.outlook.com [40.107.200.61])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4besjnk42q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 08 Jan 2026 17:02:21 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hrnitLsuKri4Tj8v3CmRxGEFR/dkJCYwY8sUN5i1WLJLP0T+T9Bh6prlygCMICMSI+DTDIOngGBh63ssuPQLK58ZHJGPl4RczHI143span7O1IKYM0x7oeFzN90DgYoJ4TQfvq8zbL3NMZMLUQu6/NlOoBX06KRs6dsDAZI9zOKRWYaW0lzE5sL/r8nXhEU9q78T9yrlgv/gTpqpmuohnq0JBwtMSj03I3O+IStecALMlw/jk98KSYeCddGQ6vAY1S6wsnVhfG/c+ibNu4xOzv/QPBDCayMsTx8ZFpoFstftkw8pgY37HKNJaS1FZ5kUzw8O6zOFmfZ7LUG+q8HSUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=g5huMWBTvyYt5gwEGA2wmhynAcPsAnabAnsfkI/mqF4=;
+ b=zT8wFtwqICjGa7cGKIoaEP+cZEHH9hDmWuC2T6j0+qmwJhtr9iTn68T5Bxh2vDL909EPHBLK4uhyuTravbPZl7l5tkQxLaDnATEaSFlNUP04JXTGYfdFPajfF8TWWmy8gxZGuQJsHunT8irt5TqXccah8a44hUe+7luy4MxmwX5NF0rP4Xyw0j+aoxQYCpLD0ojMPVZW6aBFzAtUkTYsSVd+d+4PwaBBAVws+N2Zk8u0A2ldYpckLQlvWUWdBx2Vn6aw+jckMzAAYyS3g3MiFHQ1l2ShEOGwHj1JDgg61nGsKj3lcm93fAJjqtXvJdYeh7dNVXJfX+wEVt4wyLcsqg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767891631; x=1768496431; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MqePBLtbIicL/DWj2eUilSA1KB5F3elpw15Vvzk8jeM=;
-        b=EzurTzmSZ+yKWkmLAsboovHtUoNaw76oZBU/Xd4BrPYShBrGCaMlcGD2RCyPlHdVES
-         0USeMKApVDRdYhjbx2ToyobOVMsBNetoxsXLt0NUowFuAT+203p8ATqfV+97U+jsgEwU
-         nlI4bOnEeSm6MpdGanWnYTanPGFbI/owQUTJsJDLxJqbTqTJ7LICKGRMeQsV37/W4XqG
-         /JG70XNBNv3NJCkazPxyZNLLSDI0DN11yTKxz6JXT/p5ie/mb/41HaJv1+ffIBVlGWhl
-         ynvRqGcQn7eyvEmi24ktTTXe82v7zTnwm56l1sLwp9sKcxLapJIZihhHhL6dbFYLGl3D
-         bPmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767891631; x=1768496431;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MqePBLtbIicL/DWj2eUilSA1KB5F3elpw15Vvzk8jeM=;
-        b=DC/P9GhSOlaCrj8A2DXTLD1j7yDbMxXSPB3qqgMwhK/v4+IusYej52+0uple5KqlZs
-         umeCFpn5/qd6WnB7JFXo+R5T9ZfFm64ZLfIe6m/kUXTwXQB8jkPN/0R1eVOZm+jK+yE+
-         cst7ryEjff7qnx/tMWnnNPhcXXYWX+BTdgcgYdXfERjUhOv8MBCwbPBbZCtOEK4J5R3L
-         YwINyTkuUOr4nWuvxC0HftwV1fLO1Ak/g8d7GFiPdIhr/Gh9i7kWPwiEWepBGeR2A+3M
-         wGjzAASeT4glEBpOozWENjJ0Al9J6rWg6aXOZ9ONZ58KN5liNgZrJI4sIgOhkgS8e/Rp
-         K2KA==
-X-Forwarded-Encrypted: i=1; AJvYcCX+6cjV9nzD49Hc9C7NHp96tZYl5N7S7ybr2msbdsnxCHUjhkPKtr3MVhyI7B8Vz4Kaz19rArgKZg==@kvack.org
-X-Gm-Message-State: AOJu0YymHC8aJPZu+hw9v1rrQtXkMpO5fmRZkB4/CsUHiFYPNAkc1u82
-	pQl97ZnAo+H6MXLZr+9K+KTF/HSWhUyYwXw3N9staH82RzS5KuCguDOSNjAT+a7CmIlaNSxsGyS
-	ppJiAptkJIG1b8GmtJ36bjAwGLtWNdquRhfKO0sij
-X-Gm-Gg: AY/fxX6XjdTJriku1qewl7lMpeN374YHzyd8whVPmBjCxyzvoIqh4gfxEy/jH5qipYC
-	YaN2N29hLmxx006OBUc7smddaYc0Vi9HZqeADxgsYrlMN2kp0/oLFXIi/MKjq+LmK1nCv2NrF/r
-	vvNzGZGWDU0w1upNF4+7WTiv1/BZcwwe+6Q7uRB9bxfpl9b08LANmkaoluVB6upxVVAxEwTKhZ8
-	MBsHNzqGDN0naXM7x/3SJoKrHDR1YcVcYDj8qWn7OaRi+c9EImo4qNW6bGsrK3HaairpqZxOD21
-	EyBwDXnMSu8VE6iUBVBUAayYTfkI
-X-Received: by 2002:a05:600c:c04f:b0:47b:e29f:c63f with SMTP id
- 5b1f17b1804b1-47d8ac29207mr513175e9.11.1767891631095; Thu, 08 Jan 2026
- 09:00:31 -0800 (PST)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=g5huMWBTvyYt5gwEGA2wmhynAcPsAnabAnsfkI/mqF4=;
+ b=yWOYu9MyzVaCcX1+ZmstQSfvi9x2vIT7ID2kJWo5VsxagsZudFn3MgNGvH81iB+2kXdZ7vgV+xcM7pGUZfzLAwqtVk7cxb0Cp77RKcgkr5KKlKOJDHDc6AtDGvkneDbsMXwNS8VaQoTDGXAgXtJM33IKKm6nS3tSY3CdeYpAlTk=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by SA6PR10MB8205.namprd10.prod.outlook.com (2603:10b6:806:43e::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Thu, 8 Jan
+ 2026 17:02:16 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711%6]) with mapi id 15.20.9499.002; Thu, 8 Jan 2026
+ 17:02:16 +0000
+Date: Thu, 8 Jan 2026 17:02:18 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com,
+        ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+        ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net,
+        rostedt@goodmis.org, mhiramat@kernel.org,
+        mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
+        baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
+        wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+        sunnanyong@huawei.com, vishal.moola@gmail.com,
+        thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+        kas@kernel.org, aarcange@redhat.com, raquini@redhat.com,
+        anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+        will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
+        cl@gentwo.org, jglisse@google.com, surenb@google.com,
+        zokeefe@google.com, hannes@cmpxchg.org, rientjes@google.com,
+        mhocko@suse.com, rdunlap@infradead.org, hughd@google.com,
+        richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz,
+        rppt@kernel.org, jannh@google.com, pfalcato@suse.de
+Subject: Re: [PATCH v13 mm-new 02/16] introduce collapse_single_pmd to unify
+ khugepaged and madvise_collapse
+Message-ID: <4e814686-4ec0-43b8-89c9-3f564e093d92@lucifer.local>
+References: <20251201174627.23295-1-npache@redhat.com>
+ <20251201174627.23295-3-npache@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251201174627.23295-3-npache@redhat.com>
+X-ClientProxiedBy: LO4P123CA0541.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:319::12) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-References: <20260108153548.7386-1-ankita@nvidia.com> <20260108153548.7386-3-ankita@nvidia.com>
-In-Reply-To: <20260108153548.7386-3-ankita@nvidia.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Thu, 8 Jan 2026 09:00:19 -0800
-X-Gm-Features: AQt7F2pWPhT0eCqMnR2VcSZQSmqDj9xv_IbsaURHMRa3NGydFYcQ5GkWfgoWDic
-Message-ID: <CACw3F52rHjxv8gWzz6_YdR038CiA1=JxUD6YuW4As=rQ2oMdag@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] vfio/nvgrace-gpu: register device memory for
- poison handling
-To: ankita@nvidia.com
-Cc: vsethi@nvidia.com, jgg@nvidia.com, mochs@nvidia.com, jgg@ziepe.ca, 
-	skolothumtho@nvidia.com, alex@shazbot.org, linmiaohe@huawei.com, 
-	nao.horiguchi@gmail.com, cjia@nvidia.com, zhiw@nvidia.com, kjaju@nvidia.com, 
-	yishaih@nvidia.com, kevin.tian@intel.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 33048C001F
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ez8818kf6soectynb8916mik6fehj6zw
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SA6PR10MB8205:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67b6ba24-1922-4e8d-9300-08de4ed7ad38
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?4USRwK9tzR9i4DUtkfOZUTzmi30kgs8dH0QmoJtdd4c9OMd34+KCgOubySBM?=
+ =?us-ascii?Q?CcLoZT3/30ymF/PfL3ok1BvUCTEtiPPx0B9IYig3BgE+MzE3V6sGNFjo41vA?=
+ =?us-ascii?Q?pB4ZOfXlW28Se4DeIL3JKGrqlDATktjiRCh4af8ifN027WTeDiSVm+wZQjWF?=
+ =?us-ascii?Q?bNTzeHSVLGfSI1PzuT5ApA6EvbMv9bZ4OChsd1gUftZnaH09vsqOM7Fmyx2a?=
+ =?us-ascii?Q?35tyBGStNDDM0noohfRelAGx3Nl4nXq3T0Uk5dzkixdkJ2JuUwbW6NPoXv/c?=
+ =?us-ascii?Q?4E4vnMCAGe4EMRwsWzRmjJTqpaP9jpjMfzOet+Q1rzjZDdBR/w2TRIMowj9Q?=
+ =?us-ascii?Q?5WVpeyYCOyWK8D1QxgnMhm3vDj+uYetlsMvcDlJJinRnbWg7+S1zqrd9szTg?=
+ =?us-ascii?Q?aZpVvjmL9bgEL5n78HLpu/c0hdofXYMl2tDUY9CYovJhmgzsswvk/xQi4AAG?=
+ =?us-ascii?Q?bt8bAbAxVrmQWKKQDAqDaIhHgGQkMW3E0bdk1RTDrbtRSUmb7cSaBQ7aEsWH?=
+ =?us-ascii?Q?cIQbK8IOdqfkyRK5IO6pbhlbKcLLFNEaqrMGyjlPeLgo7rP2g245w2irONQb?=
+ =?us-ascii?Q?mKC1Tpu47P6MO/1n90h4pCoMAbIJ+RJ9oR8XfTu+oAu8YeQ/XLjHbtC3F5hv?=
+ =?us-ascii?Q?8jHy+Ko89n/G2sAckcTO8FQaOZyB1iyvvzqEaFUccfsVMAvcl4Kw7ENYC89P?=
+ =?us-ascii?Q?nDbwP50ZtusmGSJnpL6gmdiJopPGwmcxl/ww4B4wf0ANXO0Z12alGSiaavzh?=
+ =?us-ascii?Q?ZtWnN1EkAaegaid9txKiVJFPAGqLJtNv5FMWIBjCKSCXkEOS2gRVkECKWH74?=
+ =?us-ascii?Q?20owwyDRstX7q8Tk3GBrsIWkqw17iIy6yUNeEcDThMUZ1DClp40Lkt5M2mkS?=
+ =?us-ascii?Q?GU3kbhwKnPp1cYkfFAvseOcvbYGq/oJYHyRrx+KfNqDYxKuY8c7UbOO6xkTC?=
+ =?us-ascii?Q?nf95r95Vj4VpIOlPjKoGFUOOAoI6lp0aXdxaocQ1/0dKs61i8YXUH4T7M7yA?=
+ =?us-ascii?Q?xSFZDJ3Y+6uqk10TYr4jbtWKdKLE0GpZPI2QmLckCzLCUdn/hLkZjgt+DssA?=
+ =?us-ascii?Q?OHPR3JmtWtj/K4EiQJ/DmPBM39ks7WGTzmbfAh4Zz2Gb67zKebdQk5QWdJFt?=
+ =?us-ascii?Q?fFm7/U+20v4Aduw8Gm60GxUHFlYHjMAvJdJJx/saEVzyHmYz21gCbGaC/XYW?=
+ =?us-ascii?Q?Xhi5EDNh+rFbGx1VkmyoPMOhGKQQXWczXhAFK8VT98pm5eJolhvJP120iGJC?=
+ =?us-ascii?Q?QNuTTZGQlPph9UnXUDDbrPSqSSmKUBv0a8AsP1bXDcXFHxFaClMRUYQ/90HE?=
+ =?us-ascii?Q?vJ+rJMvFG9jDFUey35UnX51qbmjktgqNK18baNXWIx5pOvf0pXDxOX4VHKco?=
+ =?us-ascii?Q?6KYQumxmvIgxZJkm+G45KDRwgS3DQrHrKBjNi6zXTc3/MRw0e3vkoOJ/uhXq?=
+ =?us-ascii?Q?bKcMDSwY4mZLoOIQT4LSMlfto03+VWCN?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?b6YFVo5YzqEf42kebKstvkYm628Wms4j6cd+e/0xnNFbOCBig/3OXznVgSYl?=
+ =?us-ascii?Q?7nNGcntuylo+KCm47x1IlPZ9vlAJiXLKmjgDGcVYzhH6CMZTvYL0Znjp4QxX?=
+ =?us-ascii?Q?LXbwTuIWQCTg2CcYGrfYhj37qCkvS556K9EWTTyZYQlHmR7OkfUdPDPGfiCl?=
+ =?us-ascii?Q?i+A3Mc7tWX3HxTqt2hxs44Ernwmh6QgQ/OOX0C8HQuQaH9aJjyQ4sGBZ7Ygp?=
+ =?us-ascii?Q?ajN7vzzBDz20XKg1esqA2G8wMrToPoghluPuPvT+X6F1QQPsah3oUt07jFCl?=
+ =?us-ascii?Q?wdPtmJGgwGNzT/P/LXaDn2xb5JdLdZ5nMUyFLQGfOefMjBbmkDW0rZA8S6Hi?=
+ =?us-ascii?Q?PnjYHs/KtN0GhkR6+MiM6eKWm/fI1N5YvskxnOf7KSGE3UwKhVSjldo37Zle?=
+ =?us-ascii?Q?HmPa8swrU8m2giuIhmQAnuAgOcDKcissTuxPnePLQPkl/yG9Nh4OmFP17wXQ?=
+ =?us-ascii?Q?R1GyWIH4PeoUMj6WMdI0JbBT6Z3CmjJtXGE4CyQi3MbwuPuTdzHBXdet2vNj?=
+ =?us-ascii?Q?rEEgu3NqtOFwXGFkQz83CvZ/LSvITeC6L4qFif1TWjT6XHXnAWSSVNYpQleg?=
+ =?us-ascii?Q?n1CvWM5yHX8D61UFZSt/XCUsimYKoFh2MMWcbF/mSZwzKiFTQPuRg3Oy1Yo6?=
+ =?us-ascii?Q?oHB1xFKY8jRwCvGOi5dJ35FIWoRvq4Bn/XxjD5YLWLyQE2iKDPCCBTcAufrk?=
+ =?us-ascii?Q?eETN4zsXi80AFRWBjf+KaA2q+uOnb/eiepdPVMq7kz1xRRChTqsq57PV3ycJ?=
+ =?us-ascii?Q?ZXeGG+0iqH8On5L94yA6Yc5zoTaBiMUSaNwa24qyXNGaZ8wfbE2rcclm5r7D?=
+ =?us-ascii?Q?dZICANgmWUJ34CXR7KWnaQ6pzfFYwflX5Ru681k7Jv2DMLH6/s8go2QLRtfR?=
+ =?us-ascii?Q?Txv44idMNeLnzfvRs/fTyHxYx9am/J61GhgWxHGtYNSpnMnAFgiV68RAO2pF?=
+ =?us-ascii?Q?w6UP9TDUYQhhBcBNDrd1WXAoRfuAfgdT7GtRlrdS9RZZtENpoyAiEpaAFh1B?=
+ =?us-ascii?Q?XcWEpMHSvYrc3AgkKlYA04acBJRtaAVXhAD75vtXNI+Uxa8C47zmXMyfXXUy?=
+ =?us-ascii?Q?jEtmqIjp2nLMeO/Ln10KrXUpdnZkQznPGhQTIE0JyJBKyWjt7uo38FUvrDQr?=
+ =?us-ascii?Q?GRLMayRI0IDl+udd7t7aW4655iSCS1PdZwogbvdwEXlU7u8PDoxWxnZSJAUm?=
+ =?us-ascii?Q?+sXkpEKrFYdajUldxMe5qg7/S7WsG5ztbJVtdMqHuK+KZTlHYwll9yXfY9pi?=
+ =?us-ascii?Q?Se5mkfUrxxRl+tCVnddJC4gfVPdEaxL+NtNYb48svcQQPwzgllfwrVQG1TEh?=
+ =?us-ascii?Q?gAVZOQTHRAjtmBgcc5nacp6hxQ+iU5d2Ox4yrfH7sAMKLwWk0OoD6NwIBbMp?=
+ =?us-ascii?Q?fZGUT1sRheAV0fztS1k/J5sxAL+CREaSUToccC0zx9ApmZLcRpfQN7K08qiI?=
+ =?us-ascii?Q?cJKx3uOJftvsP/T9iTBvfbrzt+fw5FWfHTrnwLMVztfkzRc4H5GENMSJSCAV?=
+ =?us-ascii?Q?fDwq8Ghg7lSUUFME2hbX0w2ZYiuD4NgIwCqmCO1sVt1JUy08/g047WyCY1GQ?=
+ =?us-ascii?Q?0s8CKEFwEniKIOKVYS+5qqJ954Rp86+9PPJQ1HXI84qbu5rxnwH/2OiY5pf0?=
+ =?us-ascii?Q?e+rwL/k7jhY7usph92SbDrogXDziSXZErCpr4bRbsjaL0/FHymG3kbQwWjeh?=
+ =?us-ascii?Q?rNQFblfgHpvjDeLZlRobHB/2k0ucxBo+lVgXGHq3y5r6X0kIsKFi2bFyhOR6?=
+ =?us-ascii?Q?Dka35QORDSHtpF0E2PFAofDahH1FDIc=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	kljLb675O3yGJJi+B5CvweqTDea46aYPR4oj3civ0xiWyvuFJrtr2iXCpgMoKaWXWG6lGM5RBFlJ/yS4Fqj46iliD4byNLHXomWEQ+Ph6jZdWBCHTwnzszB38NngiZDKlDuHulWmxuQP3jS8AJrIl7H6qJlqVDyb2Toy40oacIi3nwqrU4pgLfQvFODiiFUP3mCzaL8Hxz2lLrZaAHQejD7IK75dQVsE2J7dSKWsULMGkvV/CoXEstWHd9kbRzYLqhKqRW2TXw7FDaeRW1d1mZrXwbOQAOZ9S/8zwHssuo1tsgNQ0EKF6LfSPcGQmRVUllQqxEE98YZAZfJkU3eskz/Iwt9pWnFsc0xM1+x7MaYf2I3xRDjRACfuZoWclMdcU+mlwMkg1zc9IeHBjualXigxo8icA3XZDKOLpUqXYueLctP5KIb59x6dGErGm36VddduHz8VSHTlssa3sYXkHyN5VTyovZlbjlhRFkYxOZuTch/iSubIX8Llt7BoM7XtIIV9FSrWU7Z3XoWtGEpxvLvwEJRHppFfJxTR6vVbS8qefZW7hLXzztjmJokFYPSs2kP4dlkJH7RuEsfyANvCXah/JoowEr9kzj9pw7/rEoc=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67b6ba24-1922-4e8d-9300-08de4ed7ad38
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 17:02:16.6661
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dyzg37shFsPz43M0h1f72+0zyj+++vtXPvSd+dGaooD26b8wqfnkJ/500TetjlEGZ+M1RJuLBaXmG8KtpQOfMxFwonIiTC7rzxMUt9ddKtY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA6PR10MB8205
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-08_03,2026-01-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 malwarescore=0
+ spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
+ definitions=main-2601080125
+X-Proofpoint-GUID: c6XvlAmPIAuaqS-N0gSLQzIQjM1WeEXf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDEyNSBTYWx0ZWRfX0hcMBL/hp+Ae
+ esMbyEJp4HYEP7rKz9uOw3rshyNSHxEqnhfQaXeagsN2YM2mOcT1aKWobpyU0RLfTFqDBXbV3gs
+ QVaYj10VIcyXzUnfsnukz5Xrzh3cyz4ibCsYdQth3XwQyQ5SbjnK1tXaTk7fe+2E3CbGJ4+xyZc
+ Z1+qaEQgXRqZTBFk+n/0cGqxBW9HsfmzSUb97pTEIbUqTuJHNcH0Ex0m7AQFvZcLvMcMufa9wX4
+ TeDDXY5UuJ96wApQAxnZMtJWhrmpn1BZ1TRs1EgY3iwFlRW/gXlMz+7wwxuhRnG+CUJlZC4xQdJ
+ vY8JBH55dpeSbFTVMm51p+UPO4IicAGMWTFM2UbjzgXEOWFeOVJWURBk2jkBsmLeGPG1/UQCzK7
+ pYEB99f9aYiqdACdDbjDviASGy5XRfbpJuj7QnOrAdeH3jjuu9Jguv1F4FYuhh5oCmPkjBOb/o9
+ Gn54+aYMZxk7l1ERneowJCw5xTIHIUIsZ8sX35KQ=
+X-Authority-Analysis: v=2.4 cv=LsyfC3dc c=1 sm=1 tr=0 ts=695fe31d b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8 a=SRrdq9N9AAAA:8 a=20KFwNOVAAAA:8
+ a=2vAQrQ5ZaQAkiLoCx6cA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12110
+X-Proofpoint-ORIG-GUID: c6XvlAmPIAuaqS-N0gSLQzIQjM1WeEXf
+X-Stat-Signature: hyq74kb1txfrmmxcyieo91gcoupim1pi
+X-Rspamd-Queue-Id: 3486BA0007
 X-Rspam-User: 
-X-HE-Tag: 1767891632-304791
-X-HE-Meta: U2FsdGVkX1+pfpEzpI+d7dRTT2rvl2KAzTNrDrlTJ7zi4lfUD2zevUIVExesfr4q7tSSXm8RbQrJybob3r9qxbuly0ihWICx2ZbUWw5D4BuDK88UgT/5JBrg5HvoUrAzfgDwvqUS1iEQc0qhUTOvg6ESEt8WPtlKZymNgwcwbvcs8A4bmrKYolnwMZpVqtJCnzevxIpNsfQfDBdeXdii1LT9ylD3iKcOCGiYTknV1UQ10yVkjItwWQP6guh1oYP85tA3mhlwz1mHJ0By4GQCPHPAB+qMnQuc2IwrJzxkFDisEZHVSeu7NHfAWho92obd/ArFIPSZmKlyPZE4UMDa+E2NDrtyumSiXtL87P2raTkOogV3lI9nrXSnGcDTAaHEWnx0KDkthB2jiRHQx0QUlSqpQRADi6DVyuKsPmZ8+BF1xA4Y1CZVqdxdIALNdUzQbtNcUaPZKBXCmvrfvx3VSMd3RaAwC3+d8GFijLiIe+/LR8Pzr9/LmIKmgi53+w87+Ouoi4yyEQi02Vk60gzWeterTuh1KUJigKcnQgQL+b5ltGEWvMgkRuj6scLxAW3x4ms2tWZjaDkMfiWyRYicPFESvXVgJS0YIj47oNNVnPEPP4/yxDVd7CyzE/3FMk1J/6m3Xf1AZ15e23orWJjeLTmgIDszmmELvwgIldUN1qC+ZUbsC1McCcGQaZalxnJs9av3tMh4yzVa0P6gENTMuTUmJwZQfPkIGwVWOE6IGkJ6CmAEJXqOUayWiMvuindJh3+JYUgoii3ju9tDv86rJ6BN5t/C5qN3m/9hVAPvN+wd9+diClqf4x/HqNWvvwcKFpY2h7z5QRs8j451oyy9F7Y7KDKjkYkk/Bg5L9j/n11gfOxFuqahw/wCXobyO4QjmebCW/ViIpRjEmOBhRKb5vV0bxAz9a6K2GtlDxZckj8+Nu3m8hrSoVsE1kSsaRIYHe0iI2wKx6YYWlxZDdr
- Gtfe9IKQ
- 4FmD/7AFQyoZnE8UzM1SE2oRtQe1kEz/ntAaz+BGV9AWJbiwhNHg432Mh9Q==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1767891771-810362
+X-HE-Meta: U2FsdGVkX1/tAkw24ANuIIgVEhgJexBRvs54HGkxNBaMI+qjhWYiR7w4lAQ70oL+bsXJCo3rb4Gw9MMad6dpJBDn/v50DUMK28fVr9wjm4Re4TZDbbMhQ6h8JvONRlfqcgKnEl6a/dViqAbgjAqQn5BbD9g2EORGsu+6SW4NCIyG5PceMzmD/Nz5gT6sWexD6n2nBcKrSmtPUSOpLUwHFBhqXfmadShuHPrkqHXZ50kIafYuMTlXfkinklKssUVsaTw8jcB2YxzsXHNDShxvMmEJo3x0Mm8LNxsR7W0dGfW2E8gNd/FLTN8MYSsl0j8NNBPi5Z6kFdAAjI5qyyVKGGn+5A3MJulAm7IQODG8rfwyiH7sh799Ey7qI2I0ZDxvtBwAKUqEKuASyKHs8C88dPs1QetAYBz+TRfaF15KPn/tL8heUCL5mcOMxPtG7HBhQ4ZZGxzC47IQ5t7KD5zj6Vanoed6TMY5W39QgHpcCO8HLygJ/JB8COcrvdkdsI1EDcadtELJGHCfFf1fwgQcIptPaQ75mlGEmpeihwllHE1BQtAHlkkTZ4nb0r6GxpGDEDlPXQWdin3dxNWCdwf4QTsZtn5MBrfm6t4T0qnDPvBB0qTXzsP7ElkAhzEGVuWfQkdr15/6HlADHSAB96ripwsIvBZ+Sx14atSTzMSlkyl+n7kYKI3dAZtA9HiDk5jNCnVJeKEH0g7InBhKIKt9IBD1VgBUYrPUko0RASCnGFPRxqvVhh3wgEf+HCqkBJrrqID4GBzZ4DJi0KoL10MOvRR2lM3FU64VQ79yXWVXpR/wESbHT77F7ov6SAm+8HwFWdDcm1LfCWHunZgQfts7jt1xaFURpxLmluvhw2rdn4eOEZSnPkfUnkTFNFzoub/tJQfTZqu95bwdD4CUe+7cwFOkA65zmd+8Hdnke3i5bPYgEpw7S+FLtURUipOh0slDKO07AV9oqawaqSUQO72
+ 5cpKOtDB
+ tt4F38y9Hb82r6Q2BNAndcYRy+yGd3/AmmsNlt26FjOUTPJ2Q9NUHqpQK9b+jVa2n2TxFt2wulEGlmsNpmwJnHi1CMG65xL6pJV1c1FzWlY21NbXMmNNpQSo5TRtsoAxDehEp6RXMU6H+5lvKs0DugPOWFB8vKJJtOLqb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,229 +252,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 8, 2026 at 7:36=E2=80=AFAM <ankita@nvidia.com> wrote:
+Sorry I realise it's due to delay in review but, unsurprisingly got a knock-on
+merge conflict here:
+
+Looks like it's commit 823953d831d8 ("mm/khugepaged: use enum scan_result for
+result variables and return types").
+
+
+<<<<<<< HEAD
+
+static unsigned int collapse_scan_mm_slot(unsigned int pages, enum scan_result *result,
+		struct collapse_control *cc)
+=======
+/*
+ * Try to collapse a single PMD starting at a PMD aligned addr, and return
+ * the results.
+ */
+static int collapse_single_pmd(unsigned long addr,
+		struct vm_area_struct *vma, bool *mmap_locked,
+		struct collapse_control *cc)
+{
+	struct mm_struct *mm = vma->vm_mm;
+	int result;
+	struct file *file;
+	pgoff_t pgoff;
+
+	if (vma_is_anonymous(vma)) {
+		result = collapse_scan_pmd(mm, vma, addr, mmap_locked, cc);
+		goto end;
+	}
+
+	file = get_file(vma->vm_file);
+	pgoff = linear_page_index(vma, addr);
+
+	mmap_read_unlock(mm);
+	*mmap_locked = false;
+	result = collapse_scan_file(mm, addr, file, pgoff, cc);
+	fput(file);
+	if (result != SCAN_PTE_MAPPED_HUGEPAGE)
+		goto end;
+
+	mmap_read_lock(mm);
+	*mmap_locked = true;
+	if (collapse_test_exit_or_disable(mm)) {
+		mmap_read_unlock(mm);
+		*mmap_locked = false;
+		return SCAN_ANY_PROCESS;
+	}
+	result = collapse_pte_mapped_thp(mm, addr, !cc->is_khugepaged);
+	if (result == SCAN_PMD_MAPPED)
+		result = SCAN_SUCCEED;
+	mmap_read_unlock(mm);
+	*mmap_locked = false;
+
+end:
+	if (cc->is_khugepaged && result == SCAN_SUCCEED)
+		++khugepaged_pages_collapsed;
+	return result;
+}
+
+static unsigned int collapse_scan_mm_slot(unsigned int pages, int *result,
+					    struct collapse_control *cc)
+>>>>>>> introduce collapse_single_pmd to unify khugepaged and madvise_collapse
+
+
+On Mon, Dec 01, 2025 at 10:46:13AM -0700, Nico Pache wrote:
+> The khugepaged daemon and madvise_collapse have two different
+> implementations that do almost the same thing.
 >
-> From: Ankit Agrawal <ankita@nvidia.com>
+> Create collapse_single_pmd to increase code reuse and create an entry
+> point to these two users.
 >
-> The nvgrace-gpu module [1] maps the device memory to the user VA (Qemu)
-> without adding the memory to the kernel. The device memory pages are PFNM=
-AP
-> and not backed by struct page. The module can thus utilize the MM's PFNMA=
-P
-> memory_failure mechanism that handles ECC/poison on regions with no struc=
-t
-> pages.
+> Refactor madvise_collapse and collapse_scan_mm_slot to use the new
+> collapse_single_pmd function. This introduces a minor behavioral change
+> that is most likely an undiscovered bug. The current implementation of
+> khugepaged tests collapse_test_exit_or_disable before calling
+> collapse_pte_mapped_thp, but we weren't doing it in the madvise_collapse
+> case. By unifying these two callers madvise_collapse now also performs
+> this check. We also modify the return value to be SCAN_ANY_PROCESS which
+> properly indicates that this process is no longer valid to operate on.
 >
-> The kernel MM code exposes register/unregister APIs allowing modules to
-> register the device memory for memory_failure handling. Make nvgrace-gpu
-> register the GPU memory with the MM on open.
+> We also guard the khugepaged_pages_collapsed variable to ensure its only
+> incremented for khugepaged.
 >
-> The module registers its memory region, the address_space with the
-> kernel MM for ECC handling and implements a callback function to convert
-> the PFN to the file page offset. The callback functions checks if the
-> PFN belongs to the device memory region and is also contained in the
-> VMA range, an error is returned otherwise.
->
-> Link: https://lore.kernel.org/all/20240220115055.23546-1-ankita@nvidia.co=
-m/ [1]
->
-> Suggested-by: Alex Williamson <alex@shazbot.org>
-> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Nico Pache <npache@redhat.com>
 > ---
->  drivers/vfio/pci/nvgrace-gpu/main.c | 116 +++++++++++++++++++++++++++-
->  1 file changed, 112 insertions(+), 4 deletions(-)
+>  mm/khugepaged.c | 97 ++++++++++++++++++++++++++-----------------------
+>  1 file changed, 52 insertions(+), 45 deletions(-)
 >
-> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgra=
-ce-gpu/main.c
-> index b45a24d00387..d3e5fee29180 100644
-> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
-> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-> @@ -9,6 +9,7 @@
->  #include <linux/jiffies.h>
->  #include <linux/pci-p2pdma.h>
->  #include <linux/pm_runtime.h>
-> +#include <linux/memory-failure.h>
->
->  /*
->   * The device memory usable to the workloads running in the VM is cached
-> @@ -49,6 +50,7 @@ struct mem_region {
->                 void *memaddr;
->                 void __iomem *ioaddr;
->         };                      /* Base virtual address of the region */
-> +       struct pfn_address_space pfn_address_space;
->  };
->
->  struct nvgrace_gpu_pci_core_device {
-> @@ -88,6 +90,83 @@ nvgrace_gpu_memregion(int index,
->         return NULL;
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 959be77f2e65..433ea7283488 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2392,6 +2392,53 @@ static int collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+>  	return result;
 >  }
 >
-> +static int pfn_memregion_offset(struct nvgrace_gpu_pci_core_device *nvde=
-v,
-> +                               unsigned int index,
-> +                               unsigned long pfn,
-> +                               pgoff_t *pfn_offset_in_region)
+> +/*
+> + * Try to collapse a single PMD starting at a PMD aligned addr, and return
+> + * the results.
+> + */
+> +static int collapse_single_pmd(unsigned long addr,
+> +		struct vm_area_struct *vma, bool *mmap_locked,
+> +		struct collapse_control *cc)
 > +{
-> +       struct mem_region *region;
-> +       unsigned long start_pfn, num_pages;
+> +	struct mm_struct *mm = vma->vm_mm;
+> +	int result;
+> +	struct file *file;
+> +	pgoff_t pgoff;
 > +
-> +       region =3D nvgrace_gpu_memregion(index, nvdev);
-> +       if (!region)
-> +               return -EINVAL;
+> +	if (vma_is_anonymous(vma)) {
+> +		result = collapse_scan_pmd(mm, vma, addr, mmap_locked, cc);
+> +		goto end;
+> +	}
 > +
-> +       start_pfn =3D PHYS_PFN(region->memphys);
-> +       num_pages =3D region->memlength >> PAGE_SHIFT;
+> +	file = get_file(vma->vm_file);
+> +	pgoff = linear_page_index(vma, addr);
 > +
-> +       if (pfn < start_pfn || pfn >=3D start_pfn + num_pages)
-> +               return -EFAULT;
+> +	mmap_read_unlock(mm);
+> +	*mmap_locked = false;
+> +	result = collapse_scan_file(mm, addr, file, pgoff, cc);
+> +	fput(file);
+> +	if (result != SCAN_PTE_MAPPED_HUGEPAGE)
+> +		goto end;
 > +
-> +       *pfn_offset_in_region =3D pfn - start_pfn;
+> +	mmap_read_lock(mm);
+> +	*mmap_locked = true;
+> +	if (collapse_test_exit_or_disable(mm)) {
+> +		mmap_read_unlock(mm);
+> +		*mmap_locked = false;
+> +		return SCAN_ANY_PROCESS;
+> +	}
+> +	result = collapse_pte_mapped_thp(mm, addr, !cc->is_khugepaged);
+> +	if (result == SCAN_PMD_MAPPED)
+> +		result = SCAN_SUCCEED;
+> +	mmap_read_unlock(mm);
+> +	*mmap_locked = false;
 > +
-> +       return 0;
+> +end:
+> +	if (cc->is_khugepaged && result == SCAN_SUCCEED)
+> +		++khugepaged_pages_collapsed;
+> +	return result;
 > +}
 > +
-> +static inline
-> +struct nvgrace_gpu_pci_core_device *vma_to_nvdev(struct vm_area_struct *=
-vma);
-
-Any reason not to define vma_to_nvdev() here directly, but later?
-
-> +
-> +static int nvgrace_gpu_pfn_to_vma_pgoff(struct vm_area_struct *vma,
-> +                                       unsigned long pfn,
-> +                                       pgoff_t *pgoff)
-> +{
-> +       struct nvgrace_gpu_pci_core_device *nvdev;
-> +       unsigned int index =3D
-> +               vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
-> +       pgoff_t vma_offset_in_region =3D vma->vm_pgoff &
-> +               ((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
-> +       pgoff_t pfn_offset_in_region;
-> +       int ret;
-> +
-> +       nvdev =3D vma_to_nvdev(vma);
-> +       if (!nvdev)
-> +               return -ENOENT;
-> +
-> +       ret =3D pfn_memregion_offset(nvdev, index, pfn, &pfn_offset_in_re=
-gion);
-> +       if (ret)
-> +               return ret;
-> +
-> +       /* Ensure PFN is not before VMA's start within the region */
-> +       if (pfn_offset_in_region < vma_offset_in_region)
-> +               return -EFAULT;
-> +
-> +       /* Calculate offset from VMA start */
-> +       *pgoff =3D vma->vm_pgoff +
-> +                (pfn_offset_in_region - vma_offset_in_region);
-> +
-> +       return 0;
-> +}
-> +
-> +static int
-> +nvgrace_gpu_vfio_pci_register_pfn_range(struct vfio_device *core_vdev,
-> +                                       struct mem_region *region)
-> +{
-> +       int ret;
-> +       unsigned long pfn, nr_pages;
-> +
-> +       pfn =3D PHYS_PFN(region->memphys);
-> +       nr_pages =3D region->memlength >> PAGE_SHIFT;
-> +
-> +       region->pfn_address_space.node.start =3D pfn;
-> +       region->pfn_address_space.node.last =3D pfn + nr_pages - 1;
-> +       region->pfn_address_space.mapping =3D core_vdev->inode->i_mapping=
-;
-> +       region->pfn_address_space.pfn_to_vma_pgoff =3D nvgrace_gpu_pfn_to=
-_vma_pgoff;
-> +
-> +       ret =3D register_pfn_address_space(&region->pfn_address_space);
-> +
-> +       return ret;
-
-nit: I believe "ret" is unnecessary here.
-
-
-> +}
-> +
->  static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
->  {
->         struct vfio_pci_core_device *vdev =3D
-> @@ -114,14 +193,28 @@ static int nvgrace_gpu_open_device(struct vfio_devi=
-ce *core_vdev)
->          * memory mapping.
->          */
->         ret =3D vfio_pci_core_setup_barmap(vdev, 0);
-> -       if (ret) {
-> -               vfio_pci_core_disable(vdev);
-> -               return ret;
-> +       if (ret)
-> +               goto error_exit;
-> +
-> +       if (nvdev->resmem.memlength) {
-> +               ret =3D nvgrace_gpu_vfio_pci_register_pfn_range(core_vdev=
-, &nvdev->resmem);
-> +               if (ret && ret !=3D -EOPNOTSUPP)
-> +                       goto error_exit;
->         }
+>  static unsigned int collapse_scan_mm_slot(unsigned int pages, int *result,
+>  					    struct collapse_control *cc)
+>  	__releases(&khugepaged_mm_lock)
+> @@ -2462,34 +2509,9 @@ static unsigned int collapse_scan_mm_slot(unsigned int pages, int *result,
+>  			VM_BUG_ON(khugepaged_scan.address < hstart ||
+>  				  khugepaged_scan.address + HPAGE_PMD_SIZE >
+>  				  hend);
+> -			if (!vma_is_anonymous(vma)) {
+> -				struct file *file = get_file(vma->vm_file);
+> -				pgoff_t pgoff = linear_page_index(vma,
+> -						khugepaged_scan.address);
+> -
+> -				mmap_read_unlock(mm);
+> -				mmap_locked = false;
+> -				*result = collapse_scan_file(mm,
+> -					khugepaged_scan.address, file, pgoff, cc);
+> -				fput(file);
+> -				if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
+> -					mmap_read_lock(mm);
+> -					if (collapse_test_exit_or_disable(mm))
+> -						goto breakouterloop;
+> -					*result = collapse_pte_mapped_thp(mm,
+> -						khugepaged_scan.address, false);
+> -					if (*result == SCAN_PMD_MAPPED)
+> -						*result = SCAN_SUCCEED;
+> -					mmap_read_unlock(mm);
+> -				}
+> -			} else {
+> -				*result = collapse_scan_pmd(mm, vma,
+> -					khugepaged_scan.address, &mmap_locked, cc);
+> -			}
+> -
+> -			if (*result == SCAN_SUCCEED)
+> -				++khugepaged_pages_collapsed;
 >
-> -       vfio_pci_core_finish_enable(vdev);
-> +       ret =3D nvgrace_gpu_vfio_pci_register_pfn_range(core_vdev, &nvdev=
-->usemem);
-> +       if (ret && ret !=3D -EOPNOTSUPP)
-> +               goto register_mem_failed;
+> +			*result = collapse_single_pmd(khugepaged_scan.address,
+> +						      vma, &mmap_locked, cc);
+>  			/* move to next address */
+>  			khugepaged_scan.address += HPAGE_PMD_SIZE;
+>  			progress += HPAGE_PMD_NR;
+> @@ -2801,35 +2823,20 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>  			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
+>  		}
+>  		mmap_assert_locked(mm);
+> -		if (!vma_is_anonymous(vma)) {
+> -			struct file *file = get_file(vma->vm_file);
+> -			pgoff_t pgoff = linear_page_index(vma, addr);
 >
-> +       vfio_pci_core_finish_enable(vdev);
->         return 0;
+> -			mmap_read_unlock(mm);
+> -			mmap_locked = false;
+> -			result = collapse_scan_file(mm, addr, file, pgoff, cc);
+> -			fput(file);
+> -		} else {
+> -			result = collapse_scan_pmd(mm, vma, addr,
+> -						   &mmap_locked, cc);
+> -		}
+> +		result = collapse_single_pmd(addr, vma, &mmap_locked, cc);
 > +
-> +register_mem_failed:
-> +       if (nvdev->resmem.memlength)
-> +               unregister_pfn_address_space(&nvdev->resmem.pfn_address_s=
-pace);
-> +error_exit:
-> +       vfio_pci_core_disable(vdev);
-> +       return ret;
->  }
+>  		if (!mmap_locked)
+>  			*lock_dropped = true;
 >
->  static void nvgrace_gpu_close_device(struct vfio_device *core_vdev)
-> @@ -130,6 +223,11 @@ static void nvgrace_gpu_close_device(struct vfio_dev=
-ice *core_vdev)
->                 container_of(core_vdev, struct nvgrace_gpu_pci_core_devic=
-e,
->                              core_device.vdev);
->
-> +       if (nvdev->resmem.memlength)
-> +               unregister_pfn_address_space(&nvdev->resmem.pfn_address_s=
-pace);
-> +
-> +       unregister_pfn_address_space(&nvdev->usemem.pfn_address_space);
-> +
->         /* Unmap the mapping to the device memory cached region */
->         if (nvdev->usemem.memaddr) {
->                 memunmap(nvdev->usemem.memaddr);
-> @@ -247,6 +345,16 @@ static const struct vm_operations_struct nvgrace_gpu=
-_vfio_pci_mmap_ops =3D {
->  #endif
->  };
->
-> +static inline
-> +struct nvgrace_gpu_pci_core_device *vma_to_nvdev(struct vm_area_struct *=
-vma)
-> +{
-> +       /* Check if this VMA belongs to us */
-> +       if (vma->vm_ops !=3D &nvgrace_gpu_vfio_pci_mmap_ops)
-> +               return NULL;
-> +
-> +       return vma->vm_private_data;
-> +}
-> +
->  static int nvgrace_gpu_mmap(struct vfio_device *core_vdev,
->                             struct vm_area_struct *vma)
->  {
+> -handle_result:
+>  		switch (result) {
+>  		case SCAN_SUCCEED:
+>  		case SCAN_PMD_MAPPED:
+>  			++thps;
+>  			break;
+> -		case SCAN_PTE_MAPPED_HUGEPAGE:
+> -			BUG_ON(mmap_locked);
+> -			mmap_read_lock(mm);
+> -			result = collapse_pte_mapped_thp(mm, addr, true);
+> -			mmap_read_unlock(mm);
+> -			goto handle_result;
+>  		/* Whitelisted set of results where continuing OK */
+>  		case SCAN_NO_PTE_TABLE:
+> +		case SCAN_PTE_MAPPED_HUGEPAGE:
+>  		case SCAN_PTE_NON_PRESENT:
+>  		case SCAN_PTE_UFFD_WP:
+>  		case SCAN_LACK_REFERENCED_PAGE:
 > --
-> 2.34.1
->
+> 2.51.1
 >
 
