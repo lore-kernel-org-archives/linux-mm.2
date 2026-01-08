@@ -4,99 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12DA8D185C2
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 10:36:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7CF2D185C0
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 10:36:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7620D6B0005; Thu,  8 Jan 2026 05:36:15 -0500 (EST)
+	id 193D66B0088; Thu,  8 Jan 2026 05:36:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70FAA6B0092; Thu,  8 Jan 2026 05:36:15 -0500 (EST)
+	id 14B256B0092; Thu,  8 Jan 2026 05:36:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61BAE6B0093; Thu,  8 Jan 2026 05:36:15 -0500 (EST)
+	id 04DA46B0093; Thu,  8 Jan 2026 05:36:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D6086B0005
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 05:36:15 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BDAE01405E7
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:36:14 +0000 (UTC)
-X-FDA: 84308441868.07.5D5B771
-Received: from mail3-167.sinamail.sina.com.cn (mail3-167.sinamail.sina.com.cn [202.108.3.167])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 805F1C0006
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:36:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=mp7H+GJA;
-	dmarc=pass (policy=none) header.from=sina.com;
-	spf=pass (imf28.hostedemail.com: domain of zhangdongdong925@sina.com designates 202.108.3.167 as permitted sender) smtp.mailfrom=zhangdongdong925@sina.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767868573; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E7D346B0088
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 05:36:47 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8AADA8C129
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:36:47 +0000 (UTC)
+X-FDA: 84308443254.18.47E6790
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0FFFAC0003
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:36:44 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=L9PphSHv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EkjRTIoK;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=L9PphSHv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EkjRTIoK;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767868605; a=rsa-sha256;
 	cv=none;
-	b=qEoKn7pLa7hlylDv8faLQzk0Tn/nEpbnOqPY0IAH4j28ql2wTUm2Me45g81a/+NsD3uqVw
-	MYpVkKo3oRXuDwi4LWrYRqDi3u4I6AKMdr9hgne4sPUkCkHZ0wF1zN+G5WHFDp/7voIN+c
-	qopABDvizDBt7u6HEDs8lt7Rp3DeIvM=
+	b=vR0IrhGVRKag6WLn7p+1MkbEnpJjOnukXHpBCN1rHyqUVfW2MtM4XFuItBYxPqvqqf2Q3W
+	swID6CACUcABARlbXMWcY0otrNclm4tF1lM3RW3n3HwkUUkfZ8t1aA6CJBYiMUaONdJ9cb
+	aVNI4FsGQ3yHgZgybl+woRDnvIwE260=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=mp7H+GJA;
-	dmarc=pass (policy=none) header.from=sina.com;
-	spf=pass (imf28.hostedemail.com: domain of zhangdongdong925@sina.com designates 202.108.3.167 as permitted sender) smtp.mailfrom=zhangdongdong925@sina.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=L9PphSHv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EkjRTIoK;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=L9PphSHv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EkjRTIoK;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767868573;
+	s=arc-20220608; t=1767868605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dvlc7vqh4bhdCSEuA5TpLBp3Xu6DhQ+wjbFss0nogZw=;
-	b=yERr/4sZoPW9sptczeKDmtA3EiGjFewaqfJlcYcvB6AivNAym3tOmv1tLdp7gkzbH+FRiH
-	WcS2mgOCw64tHagbqJCnm9dKDfUeHzNs1p54uIiENzn+Coe3kdLPnMsAJwB1vADVDB93zy
-	wxUJljUhm60n50E1YnoUm+hjxoOgHXI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1767868571;
-	bh=dvlc7vqh4bhdCSEuA5TpLBp3Xu6DhQ+wjbFss0nogZw=;
-	h=Message-ID:Date:Subject:From;
-	b=mp7H+GJATBk5LF2AXGKhVS1wIvcm5GYQjKcdKX75BhYevyb4C8qrXKOPSzpdL32SJ
-	 qi2Xb8nm4t6fxgneAgz01o1D0JJkdfzGa7dGdZ5CjZ5ibnj6Eipy5hJbdWGht0RqAn
-	 r4kmyxplIivAAcfMFQdCOsGSxDxZ83MbUGgQCGic=
-X-SMAIL-HELO: [10.189.149.126]
-Received: from unknown (HELO [10.189.149.126])([114.247.175.249])
-	by sina.com (10.54.253.33) with ESMTP
-	id 695F8895000018B3; Thu, 8 Jan 2026 18:36:07 +0800 (CST)
-X-Sender: zhangdongdong925@sina.com
-X-Auth-ID: zhangdongdong925@sina.com
-X-SMAIL-MID: 117396685200
-X-SMAIL-UIID: 0A83DA6CFAD5406983CF226D49853D50-20260108-183607-1
-Message-ID: <731f6e5b-f678-49ef-ad8e-fe6ff85d5422@sina.com>
-Date: Thu, 8 Jan 2026 18:36:04 +0800
+	bh=Y7zhMg4dN+hDANKOVxoNd5LSGROZDwb68O8xAw3Tm4E=;
+	b=7T1K+81tAdsre/7bEahGdYI2Mq9oWikUKhWrVLAW+hCkKIQzaQCWWWUufeQq3x5kft6dgT
+	zRTlmGrNVQSGeBxmBNBL42ZTS+/xNr0SG1zgJBUIw4PBPr164CqAuaYs6md2ZIaO1pLxua
+	/RRJnBtRhidn54dThljOWrj7o/k8UVs=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4EAFA33CE2;
+	Thu,  8 Jan 2026 10:36:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767868603; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y7zhMg4dN+hDANKOVxoNd5LSGROZDwb68O8xAw3Tm4E=;
+	b=L9PphSHvE5aR8dH4x2yDWKzbzE7wgHTIPEJc1LruiiFeoKxe0rptToVkFsCWOKf0+iXdEN
+	BthFIq3+XrP+9YJvLraGvQZZ0YkbXpq/Wy86oN7Xn6hcghaaGXUsDuvybdBQneXBST1EjH
+	KbXkbXiZdrU+WKtZGpBN6oFPEZLh5bo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767868603;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y7zhMg4dN+hDANKOVxoNd5LSGROZDwb68O8xAw3Tm4E=;
+	b=EkjRTIoKt0pWVfhd22UD0qU7RDnjIEAUPdxkd5yjon7tdL6zZE2EbkeRZHDxuClMhzgOER
+	dfJvWLCKhLKlqSAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767868603; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y7zhMg4dN+hDANKOVxoNd5LSGROZDwb68O8xAw3Tm4E=;
+	b=L9PphSHvE5aR8dH4x2yDWKzbzE7wgHTIPEJc1LruiiFeoKxe0rptToVkFsCWOKf0+iXdEN
+	BthFIq3+XrP+9YJvLraGvQZZ0YkbXpq/Wy86oN7Xn6hcghaaGXUsDuvybdBQneXBST1EjH
+	KbXkbXiZdrU+WKtZGpBN6oFPEZLh5bo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767868603;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y7zhMg4dN+hDANKOVxoNd5LSGROZDwb68O8xAw3Tm4E=;
+	b=EkjRTIoKt0pWVfhd22UD0qU7RDnjIEAUPdxkd5yjon7tdL6zZE2EbkeRZHDxuClMhzgOER
+	dfJvWLCKhLKlqSAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 353253EA63;
+	Thu,  8 Jan 2026 10:36:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Erf3DLuIX2niXgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 08 Jan 2026 10:36:43 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id EB010A0CF3; Thu,  8 Jan 2026 11:36:34 +0100 (CET)
+Date: Thu, 8 Jan 2026 11:36:34 +0100
+From: Jan Kara <jack@suse.cz>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Jan Kara <jack@suse.cz>, akpm@linux-foundation.org, david@redhat.com, 
+	miklos@szeredi.hu, linux-mm@kvack.org, athul.krishna.kr@protonmail.com, 
+	j.neuschaefer@gmx.net, carnil@debian.org, linux-fsdevel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+Message-ID: <fhwhqvzs6rmn5zbazbbtcdr73tokykwy63lrorv4q5azbdg4hz@czkgoperhk4x>
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com>
+ <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+ <CAJnrk1aYpcDpm8MpN5Emb8qNOn34-qEiARLH0RudySKFtEZVpA@mail.gmail.com>
+ <ucnvcqbmxsiszobzzkjrgekle2nabf3w5omnfbitmotgujas4e@4f5ct4ot4mup>
+ <CAJnrk1b-77uK2JuQaHz8KUCBnZfnQZ6M_nQQqFNWLvPDDdy4+Q@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2 1/7] zram: introduce compressed data writeback
-To: Sergey Senozhatsky <senozhatsky@chromium.org>,
- Jens Axboe <axboe@kernel.dk>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Richard Chang <richardycc@google.com>, Minchan Kim <minchan@kernel.org>,
- Brian Geffon <bgeffon@google.com>, David Stevens <stevensd@google.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-block@vger.kernel.org, Minchan Kim <minchan@google.com>,
- xiongping1@xiaomi.com, huangjianan@xiaomi.com, wanghui33@xiaomi.com
-References: <20251201094754.4149975-1-senozhatsky@chromium.org>
- <20251201094754.4149975-2-senozhatsky@chromium.org>
- <40e38fa7-725b-407a-917a-59c5a76dedcb@sina.com>
- <7bnmkuodymm33yclp6e5oir2sqnqmpwlsb5qlxqyawszb5bvlu@l63wu3ckqihc>
- <2663a3d3-2d52-4269-970a-892d71c966bb@sina.com>
- <z22c2qgw2al73yij2ml2hlle2p24twgpmz4jemfqhjoiekc65f@pvap7olsolfp>
- <a527b179-263f-40ad-9d7c-bfa86731bfde@sina.com>
- <luzn25fgin43cnbmvmxwps7isqeq2pt5kfn26jqzly6hbnedlp@ojpw52ldzmuw>
-Content-Language: en-US
-From: zhangdongdong <zhangdongdong925@sina.com>
-In-Reply-To: <luzn25fgin43cnbmvmxwps7isqeq2pt5kfn26jqzly6hbnedlp@ojpw52ldzmuw>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 805F1C0006
-X-Rspamd-Server: rspam03
-X-Stat-Signature: jpyr6w88e8cf66yu9qx7bnjq5ms8m775
+In-Reply-To: <CAJnrk1b-77uK2JuQaHz8KUCBnZfnQZ6M_nQQqFNWLvPDDdy4+Q@mail.gmail.com>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1767868571-702963
-X-HE-Meta: U2FsdGVkX1865QjheCls06Djc2/Ix+vbClmd2SEUvw4C9EoD3JK/nPiLFGVd3Is/VZL27qQzyI1N9m+I0z1DKfZGijh91FcqDhyPCYW+6mI5Tf65MBaSqc65vVATTEWDr/di7wyrlP05EoC3xXSgejBdywUDcDiiQ7MzAN/EPeCiU9fSwtULC3dvovjvKUKhZtQHiwZvLVGI7rk0Z51gKjrnvPjyXhz6FDOLi/wm0V1GkQgQ57Y/NK3loMh1pGXAIj/fzgFAsk91ou/k47UWOUBpqP57ASgzm+XefuvuHD/vF/c5IsMsvdQXGwKsUT0UmzBLY2V7FC1Jq4b4GNnb9Xh+auDbePV2JsFtiReavILt7wQM1WMz9+eP2MxUBMUEr669K0sOuJAJZKl7944PqIV4Q+usV7H677kAx7fO7cKPYu8aVCLysHWfs3tCUvBq3+A72HUVrGxENVEuUTwEpT4FPwfl+Ex7STyo4A/IxECcap0W9A0x7HhxqH7gr44t+ISjkK72fKiNewwk1dntgm2Nqkj9Hs131ZIArQjzxSIw+9UNK8sV3eKBs+K1wtAEsDovWqvzgXamd2n/b5wkNbFsavznVO/nkKkiagcbL+xnKoMsV6szfRCexVeOPYQXbXgE8ovdY2KjbvtmjAUYsOjAI7t9OvZl+SnoldU3XOUTT2mSnIyLn6oFrFIlt6Wc3V2D9do3zFHyvjHpfdqOwIcfPUuFZGPtgFj1a+Qnu2P180CYW/RhLmxQlierLLQS6e7sf0/HS8CNk9kQc65j3bhg1uZ6mtLiKIbyHIATr0sPjs4XLbR7JvCj2E3Gpe0Hm5+/SYcJAnNcAJpHnikw6P3z3PdnaQt3iTncEythYXoONtjyULO9e1hV5zLXd1M5n/WKEJOZcPx9mQFzR8xBZZNGQ+Ey7oCAAscqrrqYUwEIvDbDGnM+hIYCHVaTtd10Mwa50Qqy3HNTp8nbF/L
- QHLKPnO3
- YNEWb2ZtjqXd/GpVFQ20Yr1O3Y1wJ3JAABf1iejHXBG/DHaQpee/Xiq8WaPQoSMIuXy9rNjKVCjDizAT9CDQdHpUea9PJZ+cuAZSn4GRvCqK8EwwW+hhrVy6CUwpKoVIsxZsPofKEvgGdqRO/1sjOtVd/F7ifvKjJDfBil0CmPB9/3FexMqKTTsr1YA3+GTkKdBQ/D4i5Ez858N4XbjalGzxFUQ29oeaRKk/nCp7N3oDrBJj6aYJEnxG9fABzfOs+w/BB3cesjWuZcnhd5xlvu4GbZUxF4IW1qeTZxSKbmQgD8KM6Vi5H15yj8V755wmK6q1Y1dSb1410D2ygT79UmFK7cRyAwTH4wq5eoAUXQGUQi29fIPbay4uJFBJunEx3JAclNWm1rlSImbDRXVoSvs5RP6xn7org+vwy
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0FFFAC0003
+X-Stat-Signature: pgniw43eiec16o4ee9ztmfujs8wtssi9
+X-HE-Tag: 1767868604-84112
+X-HE-Meta: U2FsdGVkX19h2UyOBqOmRQXtrbtaN/6HGktYUZRHweN5Emx8pRd734ficX6YMbgZaqvH/rP3SlszOcWk5TuQBYnpyAXOcRl5D1wmQO54Zipu70ojgma32f9gbVUQKWf5HeQBYDBwK/im+ofZ1UmNvrGwlfIDp+ROsNAxnIHeVgNClVPrDkX10gF3m087iFQdKFcwRLbg/7vlOANDvI2cOfjWr5UyIi17a5NBnkWXynDMj4RFwUyREVbtStty+lH/7G5BVc53oE9ZIm10LVGkhQ58LzgmibDImyz/EiHrWp2jqigyFls99OeSuVWognlvLNGRc3OHYjItGOqOozDy7a93UPUq55vznRHv1eJHSiuVVrwJFaCQ6qIVRasorhXirM70VqGU3AHsi9UUhosqMaFzD9nsyHs+HCwHaIjwZDkEVIaAUt809LnjQzSckH9RZfmWEeHOXLpIkz8QmHA14JX6PXbuQ6xuYzC98K1FHZbfS1Ni3MMVQYe/kuWEQcjcQtfrOPsiu9XAV+JT2aKOIHuucDaC3629p/A5wjKgWA9e4JG+3Ns/9xzVJ6UUgqF8lCJ7ntlnwpS/RBtfbxUI8qF+vfOxCQ4NHmWghjP+cg8ASGlZnPkk6jMbBD63zry4zuRfVRxXZYyQOXKCNDinM/nJpaX+I9WmAKd601Utxz+Xo9VdXOf6rp+5x1xjBPuXZZ7m8uMeIXG+k9lLFHbTLtSNhM8wG5kjtumtLUaG8+zzLZpOfPfktS55rqEliwudJ/oq9amQQmohVqnOad4GBQuLFYXNL2bRzDu9k69Jhg8CiiG838YchdR/IAzM4WKtz4nlyUSAYgRZPdWIXhc1dtPFbkFVNOOu26QD8VZhALnOytjVM2DZdBRknjhpyAs4V8lldu+DPhuHl1KubdECnVID3YFJUxZNx0BXmzRmQSv8OG5X6/17/yMOUJkR4J9NtRWcM9ffJLf7ACJWfEg
+ 4y+my81s
+ G49I7sR09/YmG+uHA4t/uhkLJx7ukx+77iBL9btT14x0Z7VPA5V792pwSUz7Qexrey1Vb+MiU36b/T/YX/kerwsjCpMMM7QpZ956oO5QS/fq7mXSyv5e7l6wydKowIQLJixKuB6opbnqOWd88nOk22xouCVVX6pJNA+sGmiOxoGlcKKInafKEJe822cBF8c1tgB8Mv/YNEAmbXxopLwYhqKyLoVButJ3GcWOSERjH4zoX0uGiApDX2NNdnlcLeZSn71oKm0Yam1iDWXdqbGJX7Aud5Y7OxmTgle5aLa/MN2kwlMipA6Rdv22Hh5zMU1wG891y1cPQ/G4RJ5CFCfvGPp1c8VAlQwShUhkD0SIgrM8AaV52ovbmIdYWgRXcGnOGQ3Ac9lPwKv/PrxXjLXc+OakmoCuABH2Z2XY6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,113 +147,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed 07-01-26 15:20:48, Joanne Koong wrote:
+> On Wed, Jan 7, 2026 at 2:12 AM Jan Kara <jack@suse.cz> wrote:
+> >
+> > On Tue 06-01-26 15:30:05, Joanne Koong wrote:
+> > > On Tue, Jan 6, 2026 at 1:34 AM Jan Kara <jack@suse.cz> wrote:
+> > > > [Thanks to Andrew for CCing me on patch commit]
+> > >
+> > > Sorry, I didn't mean to exclude you. I hadn't realized the
+> > > fs-writeback.c file had maintainers/reviewers listed for it. I'll make
+> > > sure to cc you next time.
+> >
+> > No problem, I don't think it's formally spelled out anywhere. It's just
+> > that for changes in fs/*.c people tend to CC VFS maintainers / reviewers.
+> >
+> > Thanks for the historical perspective, it does put some more peace into my
+> > mind that things were considered :)
+> >
+> > > For the fsync() and truncate() examples you mentioned, I don't think
+> > > it's an issue that these now wait for the server to finish the I/O and
+> > > hang if the server doesn't. I think it's actually more correct
+> > > behavior than what we had with temp pages, eg imo these actually ought
+> > > to wait for the writeback to have been completed by the server. If the
+> > > server is malicious / buggy and fsync/truncate hangs, I think that's
+> > > fine given that fsync/truncate is initiated by the user on a specific
+> > > file descriptor (as opposed to the generic sync()) (and imo it should
+> > > hang if it can't actually be executed correctly because the server is
+> > > malfunctioning).
+> >
+> > Here, I have a comment. The hang in truncate is not as innocent as you
+> > might think. It will happen in truncate_inode_pages() and as such it will
+> > also end up hanging inode reclaim. Thus kswapd (or other arbitrary process
+> > entering direct reclaim) may hang in inode reclaim waiting for
+> > truncate_inode_pages() to finish. And at that point you are between a rock
+> > and a hard place - truncate_inode_pages() cannot fail because the inode is
+> > at the point of no return. You cannot just detach the folio under writeback
+> > from the mapping because if the writeback ever completes, the IO end
+> > handlers will get seriously confused - at least in the generic case, maybe
+> > specifically for FUSE there would be some solution possible - like a
+> > special handler in fuse_evict_inode() walking all the pages under writeback
+> > and tearing them down in a clean way (properly synchronizing with IO
+> > completion) before truncate_inode_pages() is called.
+> 
+> Hmm... I looked into this path a bit when I was investigating a
+> deadlock that was unrelated to this. The ->evict_inode() callback gets
+> invoked only if the ref count on an inode has dropped to zero. In
+> fuse, in the .release() callback (fuse_release()), if writeback
+> caching is enabled, write_inode_now() is called on the inode with
+> sync=1 (WB_SYNC_ALL). This does synchronous writeback and returns (and
+> drops the inode ref) only after all the dirty pages have been written
+> out. When ->evict_inode() -> fuse_evict_inode() is called, I don't
+> think there can be any lingering dirty pages to write out in
+> trunate_inode_pages().
 
-On 1/8/26 11:39, Sergey Senozhatsky wrote:
-> Hi,
-> 
-> On (26/01/08 10:57), zhangdongdong wrote:
->>> Do you use any strategies for writeback?  Compressed writeback
->>> is supposed to be used for apps for which latency is not critical
->>> or sensitive, because of on-demand decompression costs.
->>>
->>
->> Hi Sergey,
->>
->> Sorry for the delayed reply — I had some urgent matters come up and only
->> got back to this now ;)
-> 
-> No worries, you reply in a perfectly reasonable time frame.
-> 
->> Yes, we do use writeback strategies on our side. The current implementation
->> focuses on batched writeback of compressed data from
->> zram, managed on a per-app / per-memcg basis. We track and control how
->> much data from each app is written back to the backing storage, with the
->> same assumption you mentioned: compressed writeback is primarily
->> intended for workloads where latency is not critical.
->>
->> Accurate prefetching on swap-in is still an open problem for us. As you
->> pointed out, both the I/O itself and on-demand decompression introduce
->> additional latency on the readback path, and minimizing their impact
->> remains challenging.
->>
->> Regarding the workqueue choice: initially we used system_dfl_wq for the
->> read/decompression path. Later, based on observed scheduling latency
->> under memory pressure, we switched to a dedicated workqueue created with
->> WQ_HIGHPRI | WQ_UNBOUND. This change helped reduce scheduling
->> interference, but it also reinforced our concern that deferring
->> decompression to a worker still adds an extra scheduling hop on the
->> swap-in path.
-> 
-> How bad (and often) is your memory pressure situation?  I just wonder
-> if your case is an outlier, so to speak.
-> 
-> 
-> Just thinking aloud:
-> 
-> I really don't see a path back to atomic zram read/write.  Those
-> were very painful and problematic, I do not consider a possibility
-> of re-introducing them, especially if the reason is an optional
-> feature (which comp-wb is).  If we want to improve latency, we need
-> to find a way to do it without going back to atomic read/write,
-> assuming that latency becomes unbearable.  But at the same time under
-> memory pressure everything becomes janky at some point, so I don't
-> know if comp-wb latency is the biggest problem in that case.
-> 
-> Dunno, *maybe* we can explore a possibility of grabbing both entry-lock
-> and per-CPU compression stream before we queue async bio, so that in
-> the bio completion we already *sort of* have everything we need.
-> However, that comes with a bunch of issues:
-> 
-> - the number of per-CPU compression streams is limited, naturally,
->    to the number of CPUs.  So if we have a bunch of comp-wb reads we
->    can block all other activities: normal zram reads/writes, which
->    compete for the same per-CPU compressions streams.
-> 
-> - this still puts atomicity requirements on the compressors.  I haven't
->    looked into, for instance, zstd *de*-compression code, but I know for
->    sure that zstd compression code allocates memory internally when
->    configured to use pre-trained CD-dictionaries, effectively making zstd
->    use GFP_ATOMIC allocations internally, if called from atomic context.
->    Do we have anything like that in decompression - I don't know.  But in
->    general we cannot be sure that all compressors work in atomic context
->    in the same way as they do in non-atomic context.
-> 
-> I don't know if solving it on zram side alone is possible.  Maybe we
-> can get some help from the block layer: some sort of two-stage bio
-> submission.  First stage: submit chained bio-s, second stage: iterate
-> over all submitted and completed bio-s and decompress the data.  Again,
-> just thinking out loud.
-> 
+Right, that addresses my concern. Inode reclaim on FUSE shouldn't be able
+to see dirty / writeback pages. Thanks for explanation!
 
-Hi Sergey,
-
-My thinking is largely aligned with yours. I agree that relying on zram
-alone is unlikely to fully solve this problem, especially without going
-back to atomic read/write.
-
-Our current mitigation approach is to introduce a hook at the swap layer
-and move decompression there. By doing so, decompression happens in a
-fully sleepable context, which avoids the atomic-context constraints
-you outlined. This helps us sidestep the core issue rather than trying
-to force decompression back into zram completion paths.
-
-For reference, this is the change we are experimenting with:
-https://android-review.googlesource.com/c/kernel/common/+/3724447
-
-I also noticed that Richard proposed a similar optimization hook recently:
-https://android-review.googlesource.com/c/kernel/common/+/3730147
-
-Regarding your question about memory pressure: our current test case
-runs on an 8 GB device, with around 50 apps being launched sequentially.
-This creates fairly heavy memory pressure. In earlier tests using an
-async kworker-based approach, we observed an average latency of about
-1.3 ms,but with tail latencies occasionally reaching 30–100 ms.
-
-If I recall correctly, this issue first became noticeable after a block
-layer change was merged; I can try to dig that up and share more details
-later.
-
-Best regards,
-dongdong
-
+							Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
