@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17C66D0D17B
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 08:24:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95200CF6A83
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 08:31:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 584806B0092; Thu,  8 Jan 2026 03:24:18 -0500 (EST)
+	id DF6D86B0092; Thu,  8 Jan 2026 03:31:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 531FD6B0093; Thu,  8 Jan 2026 03:24:18 -0500 (EST)
+	id DADBE6B0093; Thu,  8 Jan 2026 03:31:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E9056B0095; Thu,  8 Jan 2026 03:24:18 -0500 (EST)
+	id C85FC6B0095; Thu,  8 Jan 2026 03:31:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 259686B0092
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 03:24:18 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8D8DF59157
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 08:24:17 +0000 (UTC)
-X-FDA: 84308109354.13.5732D52
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B2BDC100003
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 08:24:13 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PLEBq8CL;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf05.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767860654; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B5CCF6B0092
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 03:31:24 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6F4141A061C
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 08:31:24 +0000 (UTC)
+X-FDA: 84308127288.09.CB1094E
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5092216000B
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 08:31:20 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NJvebwLl;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of tianyou.li@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767861081; a=rsa-sha256;
 	cv=fail;
-	b=NnDC9Xr3NbFsc9wwIh5+322s8p5qPo02AipG9KUz/jav4rsA+4nlku93YriFvJOMfT23Xw
-	HUXViP9iZzPmBe8fzrqLze3DPcfZbhtn2oYDfinUT7nqE40nib33SbydL+WaJQ5cV2/8Vq
-	lCuVVfMML6sgFD7s/snoFexUPq/ekwY=
+	b=BFGQRMyNaf2DZgH/zL/9TX+PRwmtM4shIV2DdFR6RCx6pQz4lvqyBV1w+hOt5AhAdEelkQ
+	h00xdIiIxm79SJEekYo69AViESloDTaq5/Jz9A9223rIxlaxEhSDPlS5vcPcKEYAetDwI7
+	l7kTmnPygU/FIxsRyGtxlbL8cL1IKkY=
 ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PLEBq8CL;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf05.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NJvebwLl;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of tianyou.li@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767860654;
+	s=arc-20220608; t=1767861081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RZBR2T0CatbCXPUBRawJGcUCRRGLjURMjqZA5y5Cg+o=;
-	b=iLyQEUCwLW3m0rhaGuUH5RIfJmbSxWDjZQIjqA1aJOcwb5EC4wIS2Z8I8KQl2+BxxOm4PM
-	ssAuCV9VHdIRsNDETgKOYPGyHfhQ3AId5kStZNBpqzu9yJnm/erhvWNGyhdLTurz85RtwN
-	x47KAsTvTqA7H99pGGclDtLm2XRXT5M=
+	bh=yv0eUydkaAXd0JTt6buRsuIguFIbwgwukrcDuJra6G0=;
+	b=hh8B7V+qFoDBxxFWH/VQNlhXoAtVReCyxcsDw1g3oSVrTiM0XqpbK2zWcCm4oDZ+XxfTTb
+	Biw15j1jUptRDrAt1bd3cicSxZ4/0KmVu320nIvyYiURu7qvMFpyH5jtFsTq4fRrBa+7EC
+	k6cCA2n9OMBnZRaS3c3RopgnZ6OQfUo=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767860654; x=1799396654;
+  t=1767861080; x=1799397080;
   h=message-id:date:subject:to:cc:references:from:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=jUlse/YNzoW/PiBqmz85P/cFAvlpoG2WsBobHut0S7Y=;
-  b=PLEBq8CLUgYQVJmel/nN4X8yBblaHTGzy84yX9LEP0FKAyC3wuV+eCIx
-   XHWFhuAYNnbweoRX9RWh+OzbQVqO3KSl/wQOwvQJaEcAJzOPRRtqdxomX
-   2kbMdaJZnXCCTYVXjgXv52Ln472v1Lzz55o6aiKdEH4YMdLrWdvDHxXuZ
-   iOcaf/3tWU7TZenFlFFKFrypBcaPxrwtzUExPmteJRKgpfZGhVIQrfPKY
-   sEX9wAxztPjlBTPc5mS1qzasNmaS86eIOOxIci/tK0Bu1og9m8bpXjp8m
-   NgU3BKAgB8pDqPITW7RMnWUyX74Ht+ShaYceIKVe/L8Ck/1z9/dP+wdde
-   g==;
-X-CSE-ConnectionGUID: O7ROMEk4TfSY4rcfi4UbDA==
-X-CSE-MsgGUID: j5q6XYOCQayuQAQIQXtSdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="91894820"
+  bh=Xk00/tCOfezyo1dX1kldbeouhGFi/PNbtldZp6hx1QQ=;
+  b=NJvebwLlDN+4ou0617U/AkzC+kvOX2yaPlQJ3fMr45bT4uo1FbDAXxnH
+   9ajM2fucw6Tx9rEMK2l05O0f3Yx5OL6cf6qRAl3NOrlcTmt8z+Pl3uHCU
+   TOlFXqbLkF9BU41I22DUS38GhkBpbEBtji+SOdZGxvmO2nhWQkQjs40BZ
+   uw876z+NHX5AKfcQ2koaPHZoyGyGBbdOa3hhD30dQvIJxh3WxcpU2NeDe
+   HTl3KnoSsnEfYlm+9WGDN7O/XZDwhjNVggW6FqE/pfcQf94Y3gPGkB+28
+   HKD/exQwY0x6+pHik5uLOToDNIE2u1Q6XyX8q6SPYl3zrK8YC33eFlsfH
+   Q==;
+X-CSE-ConnectionGUID: TmzUiLkTSGOE1QGwwkm/7w==
+X-CSE-MsgGUID: u1YJ407sT32bZSmSgWIVng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="69148576"
 X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; 
-   d="scan'208";a="91894820"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 00:24:12 -0800
-X-CSE-ConnectionGUID: X8ILFCy/TZ6RsKNHc8fedA==
-X-CSE-MsgGUID: 3+DiBdNSRFCJ4qxAP3jKKQ==
+   d="scan'208";a="69148576"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 00:31:18 -0800
+X-CSE-ConnectionGUID: mbPRdoglSHWO5+4MAHTo7Q==
+X-CSE-MsgGUID: 4euQhY4gTZuEE1ZIsswwEA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; 
-   d="scan'208";a="207281592"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 00:24:12 -0800
+   d="scan'208";a="208211544"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 00:31:18 -0800
 Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 8 Jan 2026 00:24:11 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ 15.2.2562.29; Thu, 8 Jan 2026 00:31:17 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
  FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Thu, 8 Jan 2026 00:24:11 -0800
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.17) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.29 via Frontend Transport; Thu, 8 Jan 2026 00:31:17 -0800
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.17) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 8 Jan 2026 00:24:10 -0800
+ 15.2.2562.29; Thu, 8 Jan 2026 00:31:17 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MIkCDmijckSSxeTGnDlWi60Pa8T7XSJ/9AkEuZD7hgsSnC6xDlIjh+0eXYO1lSb+xXDIRYzL/nn8H6CPK5wEUxtXbILqZHC3oJWKzaEp5Algrpjvo0huJYLAW/kdQep9dy9XnwA2FNgZ1iU5O3lyv2wxrgdtlhsw3+zdZpjcznHZSuPcDwP5nYfeBa/W32owew34eGEWwMk+v7IIuMwcw8Qm+VYfZyDOuyi09ut+HMzayKiiZONmtPuxAk4pHSYp5/+CIlM1cklE00h4jgQ7rd31xCR5f1S/CHFbhsTNyOXaG+epEarYqru5rooaA04/kGrqHJVWok7JExHN8qpd/Q==
+ b=Eze8CB4htBDdxpFV4nvePsRlDeiGa9gqJ5uhwqdTVH84vnP6nTnQdUx8VCiCSfKYp9uMEozOnveb3zQa/vqep8UQSGmlN214xEBCw/KznxBG84ALjpzjZgyZtECv4P2WvwZou1lssAV7rhqmgJUGyhy+S7v1BbOdX+679FF9T1CdANsMjqS9b6vE/9eqLY0sKP+dlenhynJSDkdVayw27RCRYNbzANokZYt1VpB+Czc5QRzl1FmUeZljuX8Mupnj/KPJh6rZ55Ckiz85B1QdTDoNe84gMrI8GkZe+vT6pZEOpkjKXs04YYiplKJdCwRBFgO/mWSR2cnuggnXViAe/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RZBR2T0CatbCXPUBRawJGcUCRRGLjURMjqZA5y5Cg+o=;
- b=km2L4t3G8qMu30G4zYT0SNMgXqNINqkk+5rmFZhfs7OEUhTlyF398ri7BpDH/FjvlEHkADSfEFa7Hmjj8cHNhUH7W5dHTjX19jYpyzynaRZSR5POas3TxgxeTAIns4Nd+NiIO0/DtbHNaZ2eDX/F7I4Vq/48oH06fhp5awvsCk+lwQRKoPq1MHGgvRMxt4gBwzIERqBlL4DRrnBFUbdzgH4BftRj2EZE1qLtP87JXRrz5ALNAbXFZVExYMUHAps5y/A9EnqLeVQ50eT7KchwOiWyjScc6g2OIS7PaJGG2mZ046sSh7vjNNQZ9uhl9kL0ljqo7pI/8CmSx8C55orf2A==
+ bh=yv0eUydkaAXd0JTt6buRsuIguFIbwgwukrcDuJra6G0=;
+ b=gikDBuiQJc2/3WpcReOrtW6ovY9rFBtOpondLYpFgr9SnncoxD3mm+F4eEePDJoD0OxYzIWQcz3jQ2JVxXmNWcfk+kPGRfBAzLMpNoVYv2p4WrAyc96cq0wXTt/wE9HSw2vSwdj3F52uk64Rx1iGwWcrUJq2K4UYAHpWvZaNmnpwigQjfIDN+bvxtb3Dv3CimWBOjtS1Z0KeiZYMx2k6vlCOAfMj7Wa+6SDbzFOeNQuVXnRs/fCnAqd138AQak1U1vnNgDaIzN8RSPq+8jrc4YvVdXgUdqciQn2fHX63QaP0OOhtnXFdvHhc/PIO0een5Dhbr9FWzLSCIzGw/+xDlA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -104,13 +104,13 @@ Received: from MW4PR11MB8289.namprd11.prod.outlook.com (2603:10b6:303:1e8::9)
  by IA1PR11MB7678.namprd11.prod.outlook.com (2603:10b6:208:3f4::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Thu, 8 Jan
- 2026 08:24:04 +0000
+ 2026 08:31:14 +0000
 Received: from MW4PR11MB8289.namprd11.prod.outlook.com
  ([fe80::d626:a4f8:c029:5022]) by MW4PR11MB8289.namprd11.prod.outlook.com
  ([fe80::d626:a4f8:c029:5022%6]) with mapi id 15.20.9499.002; Thu, 8 Jan 2026
- 08:24:03 +0000
-Message-ID: <e9d52093-d11e-4e0d-9bb9-88e0ffb78a19@intel.com>
-Date: Thu, 8 Jan 2026 16:23:53 +0800
+ 08:31:14 +0000
+Message-ID: <6d2cda3f-7fe1-4436-9760-fde0622e88ad@intel.com>
+Date: Thu, 8 Jan 2026 16:31:05 +0800
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v7 2/2] mm/memory hotplug/unplug: Optimize
  zone->contiguous update when changes pfn range
@@ -124,115 +124,115 @@ CC: <linux-mm@kvack.org>, Yong Hu <yong.hu@intel.com>, Nanhai Zou
 	<zhangchen.kidd@jd.com>, <linux-kernel@vger.kernel.org>
 References: <20251222145807.11351-1-tianyou.li@intel.com>
  <20251222145807.11351-3-tianyou.li@intel.com>
- <2786022e-91ba-4ac3-98ef-bf7daad0467a@kernel.org>
+ <e5d0eb99-bd1d-4350-a6f5-367a870b2d5c@kernel.org>
 Content-Language: en-US
 From: "Li, Tianyou" <tianyou.li@intel.com>
-In-Reply-To: <2786022e-91ba-4ac3-98ef-bf7daad0467a@kernel.org>
+In-Reply-To: <e5d0eb99-bd1d-4350-a6f5-367a870b2d5c@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: KUZPR02CA0028.apcprd02.prod.outlook.com
- (2603:1096:d10:31::16) To MW4PR11MB8289.namprd11.prod.outlook.com
+X-ClientProxiedBy: KUZPR02CA0017.apcprd02.prod.outlook.com
+ (2603:1096:d10:31::8) To MW4PR11MB8289.namprd11.prod.outlook.com
  (2603:10b6:303:1e8::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: MW4PR11MB8289:EE_|IA1PR11MB7678:EE_
-X-MS-Office365-Filtering-Correlation-Id: 92f07f3e-2ee4-4c34-152d-08de4e8f485c
+X-MS-Office365-Filtering-Correlation-Id: 81859a8d-628b-4f95-92b0-08de4e90494d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?S1JSV1ZSOFFnTktLWEFXWk4zbGVTL0M5NDRvMnQ5STQzNUhLdGxCUWYzalgx?=
- =?utf-8?B?ZnVvK2dJZWhSQ0d2OEVKYWgxUmRTU21TS0psay9iL2pVTC95ZllXemwyWkNs?=
- =?utf-8?B?VUxaV1J2cDVadEJXWHdrOXpPdDBUd3d6TXB3SUY1RXhzNXlrc0RBRnA2K2RT?=
- =?utf-8?B?RnhpbGY0d3dMb2hzNU9VQXNIWEFUZ2ZWVEhTM2FpdnVwaFVZVHBJQWR4TkhY?=
- =?utf-8?B?blJ1T1NyalM2TnNFeVlRRFlvVi9DWS9YamZIbVV6MlFCeCttbU1iRFVaN3E1?=
- =?utf-8?B?WGlLR2s4L1htLzQxQ0dBcUd2UWlpV1FvZ1h1RSs3ZVR1N1pnbDBreHVQUlY0?=
- =?utf-8?B?aTQyYURRSHBoU0VFWVBxdjVDNmlRNlZnRmkxYWxjWkw3Mzk5SjZaN1MyRm41?=
- =?utf-8?B?SlM4bWZ3LzZqeTJ3VUpZK3owaXpkdjVxRnFydy95a3VtVEhTY1dPRHBKak9m?=
- =?utf-8?B?QjgzaFlRUkpiM0w4ZjQxZUhpRHlCdVRqazBRVTZTMFZhdEpjUG5GK0RPTmkz?=
- =?utf-8?B?TGYvL1BNOVhQRkg2eWlPcitRUGlBelNoWVc0REMwb295RjVBa1NqcmlGU0Jr?=
- =?utf-8?B?bWhSVS9vL1JNSkJQTnQ2a0RLOFdBYTQyQlVDWmxBazhkMk1JZisxU1BSZ2dO?=
- =?utf-8?B?WGNENyt3aTlPV1FKQ3YxMlFIZHp0c01ocnA2K2pCdkYzcU02NnpQVktPcHZo?=
- =?utf-8?B?S3lGWllvc0VTSE16VFNIRDdiVFZoaVpVK0ZLTGs0ZWVqeTNEZHFrQW5vU29Z?=
- =?utf-8?B?cGFtbzRXVHdLZDczOTh1djhyUlhSdGVWOGRISFd4K0FpVnRocDZQOTdWVVVp?=
- =?utf-8?B?dG5YS3NVUDMxNFpTTjhWOTF5Zyt6ZnJXQjlKUFphYW8yUHBqVWZKUVFzbGJY?=
- =?utf-8?B?bGtPTFdhT1ZRWjNJZVZCOVBaYjJsa2hqblp3NG9jNVR6RDdKdU1uQ2NRSTBS?=
- =?utf-8?B?Nk9qekZFanJZa3lEcnF4ODh3QnBWME9qQ2w5MG43dkpnZGdEa3BXbTFUTWZT?=
- =?utf-8?B?T0RacFUrOHV4aks5ZnM0dkxYa2VWbE5oN05hU2UxSTE1TWh5WmRCcmFQZzdx?=
- =?utf-8?B?alZVQTB5RFBxQ09RdzhPK2pSaGM3OHZTM3RyMkx1WjhHTU5yZnhabjQ1elNR?=
- =?utf-8?B?b0VqZFA5bC9Pby9saDY1Ylg3V2VTOGRobkwrYnZWMStXbWozc1k0SzZnMURF?=
- =?utf-8?B?RkZTVzYwbTZYc2JaZmNuTlRXM2JwVm5SbXJYZ2ZsaGFzeGc3SDV1Q1Erbkg1?=
- =?utf-8?B?TzU2a0ZJWTUwbG5EVE9hT0dQVDU1ODJHdzh0OXJyakxvWEZkNjQ2WGloYUN1?=
- =?utf-8?B?ZzBZSXN6U0xlK1g5QnVHYVN5OVUrbzk1Smp2WHF4eVhIQUxBRjYrQ2E4ZDVN?=
- =?utf-8?B?SSttMlo3U1YrWHNuVXBsOGVRY2wzOWZ4dkxTamUxNFNvVU8rdGhweHFlMDhw?=
- =?utf-8?B?RTVQNkVGTlZCMUhZUG8yRWM2YXl6ZjkyTWlCb0pucFVnMFp3YkdYVVBZR0lL?=
- =?utf-8?B?bS8zMWs3RDU4TEo3SE8zbjdWTnlQT0R6QnlJZmZ0d1ZUbWg1a0RwS3hnRnFU?=
- =?utf-8?B?VFU2S3RubXQvbmxXV0crQnI4eFlxd0R4WFZzWmZuY0t0ZmU5cFpIQVVVdmpP?=
- =?utf-8?B?N0gyUEJsMWJSYnZyQS81K1JIdUlCUVh4NDFOT0F3eU5sREgySHZ4c0d3UndF?=
- =?utf-8?B?OFZXT0ZUeEJuTVd0aWgvcUc5K2Z0VENGM0tEVGlUZFhTcmlRaTNSdGwxYWZT?=
- =?utf-8?B?T2xoVTRXK2VkMkdJZmhmSDdMT0IxTVROcHRyWGxVVVZtNXMvcndRN3JoQlVs?=
- =?utf-8?B?bG1jbkFGUkVUSlQxWE55Y2tqQ3hYSHREdWphb21mM1pDK0cwam9HODUvT08z?=
- =?utf-8?B?RWJRbmFjMzFtcThkUVptN2wzR2YyaTI0UUVwZExFMEhzL1VXaXNsQXJHL2dV?=
- =?utf-8?Q?6wbDdL2Z2wX4hplE0koS6q3CGF5haQw/?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?L2NRTEc4K0NEZWZGc2tXNVloYzUrS2dhQ2FmM1ovY1pvZ3lwbVpqVng4SzBU?=
+ =?utf-8?B?bm8yUjdZNEt2aUhmaFJuaGJHRjR2L3dhOEtDL0wzRWVmTlFQMnVBZ1JQMHZp?=
+ =?utf-8?B?NVo3RXV1ZG9xZ0VPZS9LN0xlK05JUXlVWWRtakM2K2loZnlBNWJWNGFJbDYw?=
+ =?utf-8?B?KzhPRVdvb1dQcTZxa1ZtRi9LUHo4eFJNYVNEcFVVb1Era3JWQ2hFT2tIT2ZE?=
+ =?utf-8?B?a1pCajVTWk1aNWpzUlIwZGdYMWZiMXg1R21FSFFCQkhLWEYyN2J6Vks3VktS?=
+ =?utf-8?B?cWhQTktJWkd6eUtBTXR2TnFOaWY0Q0ROUGt5VGVqMFNzMHI1eXZmZ1JDSmph?=
+ =?utf-8?B?blJXUy9ldDBmUCtxa1FnUDlDTFNqNzhaNXE1Yy83REQ3SHRyQXd5bnFldXBj?=
+ =?utf-8?B?d2hQU0diTWQvQTlVUkZIQlpzQVNZT3grMSs2eVh1NDhqTXlmaWdJRXpXNnN6?=
+ =?utf-8?B?MVA1SXZZenlhc2dRYUViRm1yMGdBQkVnczNkY2UyeUtoZno2L3pFU1ROeTdD?=
+ =?utf-8?B?RlhDcERKNkxjb0pEb3NFY3BINTlkVElLSkQwQkplSm1DOUhpcTVxU3VTdXdW?=
+ =?utf-8?B?bE83bUozZlJWTUk4dW1zQVNwMlFqSzM0MEh1ZFNvNzNRTEkvdlBJR01pL0pO?=
+ =?utf-8?B?Sml2dzlmMTdJUjU0YUE1TjNkdjcvVXBrTllyQmR4R05IT1Y5Zm5iZk13MGpP?=
+ =?utf-8?B?STdYcXlXQVJ2ZXNwTk8yMmZiQWdqd2RFZG14MUZOZ0VJODZvd2tCTUIvZERX?=
+ =?utf-8?B?WW91bWtpWUQrT2hXTG5tYUZEVCttQ3pQUzZrVlRqamdDL2JMamg3bnZRUTRJ?=
+ =?utf-8?B?Wnk0d29ITkJPajZzNi9IUTN1Q25tVjlLQU5uRE8rMmtvTDlCMmhmbG1FeEdS?=
+ =?utf-8?B?TWROTXFyM0E4VThWQjFLT0x4RXNpNURra1M5ZVVlcm03Rk0wemtEc0g3TzNi?=
+ =?utf-8?B?bWwwTU9YWXB3NmJxaUVpWk5YM29IVE5ReUwvb2loU3ovdGV4NnlNTHJCRGlX?=
+ =?utf-8?B?M2JmZ1lSNkhmdjhDYStJS3VvUUdMQmlBa1pBcHlMbzZBWVVXOHdZaEVQNU54?=
+ =?utf-8?B?WUZSMkRtbnUyUlBCUHVFQW9GRWZRbWRyRkN2a0NENmtwU0R1cXBOWDB0S2hD?=
+ =?utf-8?B?djViWFc0MFlXbC9Ia3o3S3ROTE9GMWxNTGxEQmppVGM3enRXdndtei82SkJK?=
+ =?utf-8?B?RDZwTllUQnFMay9hR25pbk5FOHh2eU9WU29BKzg1Uzk5ejJUdERpV3Q2MzdP?=
+ =?utf-8?B?aHRpb3ViWUsvQlpRRnJaSWZTYklscnRkNFpkdy9KRjQydzlyVTM2U2gzQnV3?=
+ =?utf-8?B?UG14MW1BY2h3U3RkdWNGR3JKd2o3OEcxQjd4Rm9PRmpKU0N1bGJUaHh4VTBU?=
+ =?utf-8?B?RmRmRXQyc0sxLy9XRzVPdWpON285UURIbGNESE9nT3JQV3Y2cFdKOHMyd1ly?=
+ =?utf-8?B?eFppVzExcGJJQ0pqeSs4SlgxVnRYUkdVSkZvZ2NRZHRoRkpSaHFHMmd1aG1C?=
+ =?utf-8?B?NG4vR0REVVVzV1BIaWFOSFFkK3lXS0JlN1YzKy8rVG1LSmw2N2tUdTR5dThu?=
+ =?utf-8?B?c2wwYUN3dlZPK3NFenZMWHdKMHd6UmZPRnpLK2Vody9PTXUzQ3B1TVd3RVdZ?=
+ =?utf-8?B?Z3Y1YWwvbjZ0N2xnT1VaZGtjOWNKdHJNcU9pSVBCdHhCTGlNcWpJL3U2ZUdH?=
+ =?utf-8?B?dEtzS05TcDNSeGYxZ0JhM1RCUGZkWmdQQ2RITVA5M01YQ3o4Z2ZNSUxOaDRX?=
+ =?utf-8?B?c0tGUXFrOFYvRk1rTXBMTk9NS3pFZWtQYzRmajJ3MGV4cklHUFkrNE8ycDY3?=
+ =?utf-8?B?RmhQWEJOVVJnVHZ1bVdnOU9QL3RHRDFTZW1PL0VXTy9XVG1POGE3MVBMdnNh?=
+ =?utf-8?B?YXdUeTloQUpJUFA5NWRoOTJWRWhlSUlpTWRKY1J2eDZvaDQwQlRXT2tsdXNp?=
+ =?utf-8?Q?PdcCTZ6IPyVQvqsQA1XueE2e+ewuSRtk?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB8289.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WFlYcE5GSWpuR1dZYU91Q1BaTXJKYWhlc3o5ZThlS05KQVdEaks4UnUyN25K?=
- =?utf-8?B?MnNPVGFhelVLVzEvZTJRMjJ2RjV3dDlxS2RaUlhCM3JkeDdxRUNZblFkZjhr?=
- =?utf-8?B?SDBkeEFkejJwK3lCWFM0SElrZnl3RkJ3SWd2cXdXYTgvYjBFYzJSblQyVVRz?=
- =?utf-8?B?QS9JcHEyWFVocjNydzhva1pwVUFKOFhWcUhUd2xMZk9Gck4xNEY4aEpOOE0z?=
- =?utf-8?B?Mk83bkJGVWFCZUhEU08wZjh1dHppY1hhMDJJOUc3VW1IWmhOY252V1pTZDNk?=
- =?utf-8?B?ZHN0QjdySFFhZHk4VW9RenBzV0RrandBMHpkWEFNVENuUjAzdGFHMzgyZDJL?=
- =?utf-8?B?Q1pwWGZYc1JYMWt5emdYMHdrZ0Vralh2MC9BeWQwV0t3Q0pzSWxtK01TWWhF?=
- =?utf-8?B?dzVGcTI0bENkM0d1V3lMWmp6T0FkZStoYXI3K2p0TTkxZkdzVEdDZTF5ejNY?=
- =?utf-8?B?WG8xTWVIbzBaT2VKSmtPRzRLOVFnb0x2NUU5c2RkVjd4cnBHR3NsNGsrUEZ1?=
- =?utf-8?B?WGJWVkxxQWpFVnQ3RFRlLzhpQ1krM292aS9wczk3QW5pRmZraTcreFpYWFpQ?=
- =?utf-8?B?RU5mbjY1V0d3WXNaS1R5amdLZG1OYkZwWllYbVU2OGsxbnY4NTJvdzlNdVMy?=
- =?utf-8?B?ZjJ0TXk4UTNZV3RSaFEwZFBxbDcyczA0Mmd3MGozRG0vN0hkRVlGUEl4KzNX?=
- =?utf-8?B?NzBVMHlMem1SdUFOV1Ivb1doaGl2elgzUHZyT3J3L1RVZnl4WG5yL0RzaEpa?=
- =?utf-8?B?UnZydW1TcGt3NjlFOGowaG94djYzVmFYR0diV2FwVkdzcFBOWFA1dGxad2pY?=
- =?utf-8?B?bTJKa1RjMmR5UU1UeTNDTUZBdHhsMHBpT1kwM0JtclpYRUk1NEt0QUdSV0du?=
- =?utf-8?B?WWZNNDU0RVhnWUo1YmxZQ3hKQVYyaFpyUmIrNHA2UFBIYmgvN0xGdEZhekZD?=
- =?utf-8?B?anFKNzdrTjJoM2ZSUit4TzdVTW55aS9lN1dnZHkrVGVQcGlTdU5DSDdCb1ZN?=
- =?utf-8?B?U09NQWJwUllrZk9TeTI0ckRKV3NxMHlobkhrcVpCS1d4T2xQc3d6OFoyTmlO?=
- =?utf-8?B?SzF3V1dBZWZFa1B5V0VaOFljRHBReStSUG41b0RiREpqRDN6V2VyOWpNcXZS?=
- =?utf-8?B?bkhwNEdiVWxrSEh4d1BvM0hDT0cyUU9aOEI2UDBuVjFoajN3dDgrbTFNb2x5?=
- =?utf-8?B?RnpIcEpPbnZCRXJ2aE9iV0o1Mk5TS0x3cHNlc0RheGV4d29XSXRtM25acmNE?=
- =?utf-8?B?N2hsN3dMbUpBV2hGK1pNb0lYdlVrUHFYOXBlQVF6VkJQS3UyNFFieXQvd0pv?=
- =?utf-8?B?akJJaTFQUi92WmFDLzlFc0dNZXhXYld5U0FlUGFHZ2dQM092S2pUU2tXN2tP?=
- =?utf-8?B?b1NPS1BLeHlzbnhKdU9na0pvcHFRbjRBS1lwWkI0TkVHLzZueTVHV3FVaUIv?=
- =?utf-8?B?WHNFcTNwUlFmL1pFQ2tyTnQwRExDSXord2lXd09YcnFIZk9RbHkrZWFNT1VM?=
- =?utf-8?B?UCt4UVMya0k5ZS9ReUE5M0hHTW9jUTluNmZzOGFYdE51ODNiYzNCM3QrLzBO?=
- =?utf-8?B?Sm95RUZSUk5DMXpTdEhXR3U4cjdLMWJFZ3VZZ0FwMVgrRTVRWHl0WGhYQmRx?=
- =?utf-8?B?U3cwTlNKOEdZNkVURmFxRDdoK2JjT1NWRmdwdklEeEQrVXpZYkpmMmY5RXdW?=
- =?utf-8?B?bzhFbGRjRnFNOG1ud3lFYVFEd2FqUFJCemFqcUhQN3JIb2htamlPUkNTN05m?=
- =?utf-8?B?ZFovd2JoVmk3SVc4amtMOGJDZHJlTkQxSVlQd29tc0FVNURkQ2hibWp2bWlH?=
- =?utf-8?B?akNKVm5iZUhnYUIvNXc2dzFWVjMvcDBXOFdVUVM0WjFHVGYrS2RTaXRWMjZ3?=
- =?utf-8?B?VVFNdmNtRWY5YnZXSGtucGFLVlZCU2R2NEZUWjJvaE9xWmdYNysrZHVpVjZE?=
- =?utf-8?B?ZFQzWHpNejFsalJLRGFmZXV3ZDVVWmMwUGhVN1NPQUlGNEczK2U2L0tYMlhz?=
- =?utf-8?B?RUtxNDFIYlg3RzJrZ2x3OUpHUjhmQXVJN2x2NDRaZW1KTmdocUNXU0xGWFRV?=
- =?utf-8?B?MFUzWHkzbW10UFo4SzE4S1F1RDFaUUV4ajcvditoaGtQUUVxSkdNVGdwaU5R?=
- =?utf-8?B?bmJXQXFZV0cyY2NlemlCSGdhRXJFL1F5ajlHekpDNDViQU1VeGlxS2MwcTBZ?=
- =?utf-8?B?U0lUTUd0VXByYWpWUXppQUFNZjhONHo5c2N0RDV1YUd2Q0RGWlhVWFlTeTBV?=
- =?utf-8?B?bFdGTzY2cGpTVU9TWjltdXN2THA1Z3lLT3YxZWoxcnV2NFIvTElSU1UzSklS?=
- =?utf-8?B?RGpoWUl6YmgwNGFaRVEydHVWdEF0QWp4RUFrcjlKbEN4aUJadEJGUT09?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 92f07f3e-2ee4-4c34-152d-08de4e8f485c
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SEp3S3F2TGhzRzZubmppV24yb1hGdldLOXAwNTJJQk1iUW1UR1JtcVFvOEEz?=
+ =?utf-8?B?RTVFNWVnRjlQVkpUcG9OMGd6LzZab2RWOC9BeXNSRk9ScjlxalIzb1poU0tM?=
+ =?utf-8?B?WmdxSWNHc0ZUck0wZGZrbFZFZ2NhT2k1TFFWT3hmTHVTdGpGYkpoYUk2SVB3?=
+ =?utf-8?B?ZngzT1pjemI1R0xsVm5nMmU3bHFsUU9SaXYrVS9UTTd5Zmw2a29ERU52ZE9X?=
+ =?utf-8?B?c1krYVVDODIydzJ4dE1ueWFXcjR2cTRkWXVjYlQ0Uk9KSVRnTFJORkJLOWRK?=
+ =?utf-8?B?V2N6RWpvb0dKRG44NW1YMFVQaWtqT201M3V2ZkxvSHhGWWFCVDc4V1ZWU2s2?=
+ =?utf-8?B?RGRaUFlCZ2ZZL2RWYlYxdjhTNkdKSW50TFV6YUpISDJJM2JDZEV0NjVaZlNr?=
+ =?utf-8?B?ZkpubGR4NURPbWk5bTEvYVA0YlE3aVR3SEgzSW4vWCtyTWRQS0UxR0pydDVw?=
+ =?utf-8?B?cXloeXpLUTJObVJPYUhBYmx5VFR4QWQxYUIxVVc3OVhzTVVIbDFHVW01d3pj?=
+ =?utf-8?B?bzZkM1VhRTJUVWxJMGduT292MEszUFBIbUV4NjNTUWF2RWJjZVB4cWN6SUMz?=
+ =?utf-8?B?YlNWZlA5bmQrdzFJT1hHejNtSSt0TjlqT29GT09pam5rWi9tRmtTeS9iT2px?=
+ =?utf-8?B?K01EVmVCK0ptM1J4ODJxNVhDdDBWTXFLcGpDeWVkVUNRN0hReitOdFczMnF4?=
+ =?utf-8?B?a3FoRzRnR0NXenkrVlJhbHVrM3VuTzZHY0FTSWorR0JFbXhTZ1pDWUlIUnZT?=
+ =?utf-8?B?ZDlnRnVNdzRsZlluckwvenFGb1ZMNmdFamFQL29vWkpnai84M3hYbkpVY1pV?=
+ =?utf-8?B?RDFwMldYbkZOaTJ0WHBsRmlrdTRoSElWUWwwRVBqRUx6dUNzbVVCV1pzNlVG?=
+ =?utf-8?B?UDc2bXdycEc0NlBXQ3lSMktLVjYyMGUwS1YzK0lpR2N4OTFNSmpQWnlCRWdG?=
+ =?utf-8?B?M2kvTktOaElFMG5YSng3M0lLZ1B4V2ovTHY1c2UxZmhSaTFsWW9TdDU5L1Vh?=
+ =?utf-8?B?RHdvdTNGNytvSUZUMFQrSHJvdTVZdU82MUpCU0lUZ0RBM3duL2VPakxtUk5t?=
+ =?utf-8?B?SldoRXEvVnBxNzdHZTVxVWFib0FzY1JoWmNuZEpiVGpRekwrOXJxWFFzQjhU?=
+ =?utf-8?B?UjhMaGd4RkpRUWJEcjNIRWJ0UlFHN2Qxdzhtb3dXMmJyaCthV2kzbkdGdzFK?=
+ =?utf-8?B?K0syNklHbzcwelBNeVdUVFpCOWdrSExEcHZ3R2UwOVA4VVRTTGg1cm5BOTVz?=
+ =?utf-8?B?dzFwNzRoVyswdTRCME0zeHliUDhRVDd3STdaTDVRK083MXlINjFQTDc1WitC?=
+ =?utf-8?B?N2lXSldzMDhqeWM2NFpyR0RseEk3bzhUK21PVlFiaGhLWDhXbzZ2cDVSdXFx?=
+ =?utf-8?B?L2NnaUU1T3gzTTlET3R5b3BySGJvT1lxRW1FREZSSkVlb0RVRTF2T3hrQUlH?=
+ =?utf-8?B?cVFXVy9mNGFQODJ0aHBDeFBYTjNSUFhGQ1pJbjRrN1VmUzBiQ1dSZ0h5blBT?=
+ =?utf-8?B?Y3FTU0l6dVlXUkFyL2c1c0Zubkw3LzJ6S2lURGZ0WUhEMzNneTN4VkhRYlh3?=
+ =?utf-8?B?Tnh0dDQ3ZCtMSlJtbmlRRWRjMkFBd3Vid0FJM0JTQWhvMEFiS2JmWXEvQnFM?=
+ =?utf-8?B?Uk9Cci9CTDVTTlRKNnFXZDQ5WnJsaVFrUWpGQkNpWGJxdXVZM3k0WlJ6cnhy?=
+ =?utf-8?B?N005a1BIRyt3S2Q3TlBUQXJnTWRyeWV3TncrSUU5VTJWNTJ3eTNSWlNOdGxo?=
+ =?utf-8?B?T0htakF1ckFsTWQxaU9yR205dXdDRXFYUjF2V0xBeFN6VmhZYVA1YUhLemNw?=
+ =?utf-8?B?MThlZktyTmRleVBwbjc4T3BsMld5c2hvcmNFSGRET0xCMTJZdkNBSXkwU1lV?=
+ =?utf-8?B?Q1h5R010Sm9tU29xUnQ2M3RGNEp4YWRvTDRXNm85ejN6VlpIMlZCWlJpSGpo?=
+ =?utf-8?B?VkVzdXozNDhnNGJ1c0VFNlo0VzdLc1RLYm9nMlFJYWpwTi9ETUU1VFV0MnJw?=
+ =?utf-8?B?MW5vL3kzaWc2Mit3K2hMbzkyOWIyakM2dG9HVDdMNllXd0R4UEx0d0FHKytj?=
+ =?utf-8?B?di9jWUt2NnlpZDRRb0ZpR1Nzbm5kVnRERURrVHdsVlFReHVQYWpWcG5hTmtT?=
+ =?utf-8?B?RkFoQzYwdWdnMnNueXVhL0pRQlpJdjVWMTlIM05CVzZWRi9Cd2Nib1hNUlZE?=
+ =?utf-8?B?L3RVSklxRzFlY3BPNFp6dGRGb1o1ai9Fc0pqei8rNCsrb0NPUmRLSlVsK0dr?=
+ =?utf-8?B?Q0x2NUtSQkkwMWd3RkliWWo2K2dSWVByVis3SEFZZ2MyYm1WTGlhSmRrZkl1?=
+ =?utf-8?B?WXYwVTdGSmRVK1VIVG9EUDd3dVA4UStFdVAvd3k5Rm03YmFSbFZ0UT09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81859a8d-628b-4f95-92b0-08de4e90494d
 X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB8289.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 08:24:03.7524
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 08:31:14.7758
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZVlQ7DzPoaoD1ZjStf9KdTCuBgkv2UJQjbuAOFNkfbI4vLvStv3ZqmYJuGuoyqbUt7KkOTkOPbvBxt8XjANY9Q==
+X-MS-Exchange-CrossTenant-UserPrincipalName: sNztjaccsvAIxSk4ET/Duum2bTPI55Ed2LUejBddT18i/mEL3VpE3iIFqQ3lo68F3fyXrL/mdgt2EanfNtAVZg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7678
 X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: B2BDC100003
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5092216000B
+X-Stat-Signature: gwc845wqum5zywue1btpffwuxj3nuha8
 X-Rspam-User: 
-X-Stat-Signature: gojco4qzinumrwz8s93p459bz8h1fig6
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1767860653-21785
-X-HE-Meta: U2FsdGVkX1+4eTr4AXcMa5C5V1eMDQP8E49WC/amjJoxArlAZ4sOkBFTsYmGW5rcM8+jX59IHvQ6WwZPfJgYtP5rKYUu40UfiHegs8Hb8+7ie5nfFMPup6uo8Cpay13QqYF/MXYbanRvrOI2FMaDuRrOj2vuk1CB9WcJVDgwVDQHtCGca4mZIrzRAgXiBKaBNrX6Gvuq0mzABLdbuRMnJhBrzIcurgXRH7dJb1ZlWcEIfpevbS5ja+2gczYNYtYMMyBBFvRuB1thZLda7KYAPXUkt3dBFucQmbJgip3NG2gL5wBtwv4YKPRaF4fHuKFXWtMza8wEYRIp0xH2c8UtmE/ecNeiLX/JDLm1MZrQkCR4lGlNCM+CnfM3X45D/98Ht3CPb/nQJqtzsiONL5EGItWwKSVwYz93jnjUROqQOnqoNBDxDmZthi7scmEK1hEdOtFq/5Y1N8n8XE+FxQFbO0yyjbwe6An71skxHtg9qIwWuw2MtIqNPcLfY4qzteVDYMKeUJS4rtB+AL/NrBiJ0hyiGVwRYqi657qttx66ZotcRI7EunvG0YRc+ogeBlzz3adxvnxDWGT4AL3yFhM+QTT/l5X5xaTyv3Z9Mch0GN4Z5NuIflD5DCA93MmR62l+A6D2YGZ1n/eMEr/rH/oCKICwIohoLhkNHLFi6vCdyvcGceMBPEL24/0TDWH7P407oIhe83kGnL3ikZxEjfIBjQYtRkzMS68pnS5vt6JidMrjkRT/O0yIIyD/sEg4iqoJ48itMIJWBrYSzTUGSNKr6rwyVhCzDm8ZL0aARDpva0Abd71sM3tPF5viSZybvLWaNXb7t+i+6uOvPIOuEZ2K2xLBNKcSWXuLB08OCLqFW4++/tnNwTUS4tC4LYJojAo1pZPBF+Jeg0td+JqmLyC5UdFd8I2toh/n6DuYI3gxp/xrBYBknGYqTThjC0iz42ZBZ8UKdPbgM+CmfeX0gTH
- bxjz9Y/y
- GoFshTPrEqIexLBz6dOkjpHPBpjXwURYGIyPXi0vXv4ol9P77pswR8sifXlLx2SVMoFgp3SFd+kvtyqXtYHOsTayL2deuAhhIWAcZoeTwbUA0VwAOba3bc2BwrkLkFLmTgXePBzIstg0Fp0k5DFnaYgynT3TdA/DNweCPL0G7foLPooO6T4O4Y/142GQqhLLNYP7eWDLG73JkkFGkQNydehbZUKLUKt8QKYtbzjPVS6cyCCtSVQQeyGlLRdDvaZENIcIfSoiRMB0VopAK1n9pt63I7jgEbIQnVset7ECrUwX5bf2Y/0RSOVbfgzgARLlfSHnNyXRWQVmu0MbL71eFY9JAOKbRIdz378jZ2tFS5iHG0/TxEMC7Kep+DSgHMmgjPh+6KuSNGxMu5oagUNB1h4i+X3Axzh3nRBXhwGog9Eh0xMiU8VKY2UGmUDXl0tEoV7Mur2bmz6wW3F9pOrMOqS39IvcAS8y4rHdvxLt0Pni+YL0NSTEje3zuoWs2dL90284R3aLAOS3mWJXKLq8xKP4AwwJFaMK1h0WbVNlDUZ6vlve0AY6YEu9KVKAj27Onk0Dv
+X-HE-Tag: 1767861080-137017
+X-HE-Meta: U2FsdGVkX19kijrkufiTUeSgVhkUeZEPinIQkDgutFfK6eVS5WiAXu7E3Cym1m17/msjRy0+3hRcZz7UwXCgmqz/nzr/Cd8Cg8fx+lkKEAJ66aTm3VnUg8ecN6CkyBzaZy2vqlOm9pbjgXXaMaiHycYEelkhsAjQbd7W4icuGnKScLJFxIZi3DW7/JAQKdJ3XtWTNCSpAhRzluf9Y5T6ADq12B1TK+E0efoBRHyuQBEVfzmL/tZnh9gh6xP/njPXxLGgN3OV4oA/NNtVjt1HldLIrFjYsj7SRNnC3C9BOMTXoMOOGOdp4cLQh8RuT4JnfvtBVjaWA+gPAFaSOv9wDqzZoS6cC7gJEfYWjBmt3hHmX1FZt0X6ihhoy8Iof2THeXMdFwSrCNC7f0em85jFJzkQhHwinPUflqWP0s+H8180rtKunfbyS1+M4GlsLECmCWemPa7q69bVrjyRE69lELEWogNlIIHZAliXFQz0L1mKuIIj1r5K+ILLLRf/de1TvBqMBnxS+xXPGne5+2wDm8ZQ/m8jo7+SMBpmQ+1pXvsjjTS+hpCdtMyierogbz9l2JKtc90VQGfWSjKAE8wJnrkEQRSj5mj9HitsRC4sSGQlOzbvtHuUH/H7SfF9Q8uCVCPSKeVG+7WRK+a6UhbAr+X5G8LbUnTaeGN7dPnq0FlNrtmz6NdLAicPhCvTSJqD7AbxtWNdMJEwGD5MFB2HKU4M+gZTx2w6XFaxWUypv70Uh3PbTipyT9oZSVDwjDGcoC/1NvST/28uk3L6b2Qz/l+K4xixkAmGJX3WZuhTcA99ex/hg8bhA+jttjFW+5JiLpVrMO4pzL6dbP0PlzWG0aCcAF6BtGh1VCwzs+sWLQguHZsNvX2jA5lQkhQM4aS9UDUSPxG3QfsZfiSER3/l2+C3IWoL8sTGGWNvuL2FhGUseBg/d6PfUUENAizz85B2hoBWOlrVV/gQXRXXZaW
+ wT4YiCMh
+ 8FvT4gataTL90yiSQUJfS3LjiMTS+AruDuTrc+zLCwmzpbKiXDlruNb3jLB0D+4MGw59AoH/aY1nEytvpATsg+i+No78nIOOAWNzblN8kNEyiV6WCjIwp9pK8uj0F1o0HocCYj2/pmELMM1wd7w/TeJh9E8uV3ZgaB2HwyQIoqAHzDIt3zCs3mf6+LwK1uMlJ2Xl/yoDPM5aRcdtVSn4HCWShnqSxPKE+WKlJBbv/hKsYFailq6uS2OmmLxoLGMazrLLHE/jtqfhRPK8Kdx0okFoHgRcEu7HRyNM8R+5LY+inOOksq4baGBS18xfRGG/kwMGrlGe1KOvrJr5WT6DBlJs52zi2Nmg7MX2D7S64akA4DqnHCUlrhhRx4OjNDxqMEJAhwu/bQqBz3lnPoOyFSwOqH1sNHIb7hhn2eF8G8IafqWjDh/reLcStpl2a4DYn+0vpnJ/X/OZya53bWqeNW0sGIvbBYMZcCsmZUP6dztmx6jGa2yilzbXMDG+OkDiyjMncIVFENM7ui1xwV4lZD/BTD/sxeWL+ZMDcizMr/66a23IkKpEU1ElAW9mR69HVM48ooWkOhW4ESiE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -241,348 +241,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Resent to fix the format.
 
-On 1/7/2026 4:18 AM, David Hildenbrand (Red Hat) wrote:
-> On 12/22/25 15:58, Tianyou Li wrote:
->> When invoke move_pfn_range_to_zone or remove_pfn_range_from_zone, it 
->> will
->> update the zone->contiguous by checking the new zone's pfn range from 
->> the
->> beginning to the end, regardless the previous state of the old zone. 
->> When
->> the zone's pfn range is large, the cost of traversing the pfn range to
->> update the zone->contiguous could be significant.
->>
->> Add fast paths to quickly detect cases where zone is definitely not
->> contiguous without scanning the new zone. The cases are: when the new 
->> range
->> did not overlap with previous range, the contiguous should be false; 
->> if the
->> new range adjacent with the previous range, just need to check the new
->> range; if the new added pages could not fill the hole of previous 
->> zone, the
->> contiguous should be false.
->>
->> The following test cases of memory hotplug for a VM [1], tested in the
->> environment [2], show that this optimization can significantly reduce 
->> the
->> memory hotplug time [3].
->>
->> +----------------+------+---------------+--------------+----------------+ 
->>
->> |                | Size | Time (before) | Time (after) | Time 
->> Reduction |
->> | +------+---------------+--------------+----------------+
->> | Plug Memory    | 256G |      10s      |      2s      | 80%      |
->> | +------+---------------+--------------+----------------+
->> |                | 512G |      33s      |      6s      | 81%      |
->> +----------------+------+---------------+--------------+----------------+ 
->>
->>
->> +----------------+------+---------------+--------------+----------------+ 
->>
->> |                | Size | Time (before) | Time (after) | Time 
->> Reduction |
->> | +------+---------------+--------------+----------------+
->> | Unplug Memory  | 256G |      10s      |      2s      | 80%      |
->> | +------+---------------+--------------+----------------+
->> |                | 512G |      34s      |      6s      | 82%      |
->> +----------------+------+---------------+--------------+----------------+ 
->>
->>
+On 1/7/2026 4:25 AM, David Hildenbrand (Red Hat) wrote:
 >
-> Again, very nice results.
+> One more thing, the fact that the clear_zone_contiguous() happens in 
+> move_pfn_range_to_zone() is a bit suboptimal.
 >
-> [...]
->
-
-Thanks David.
-
-
->>   +static enum zone_contig_state 
->> zone_contig_state_after_shrinking(struct zone *zone,
->> +                unsigned long start_pfn, unsigned long nr_pages)
->> +{
->> +    const unsigned long end_pfn = start_pfn + nr_pages;
->> +
->> +    /*
->> +     * If the removed pfn range inside the original zone span, the 
->> contiguous
->> +     * property is surely false.
+> Maybe we need a comment here like
 >
 > /*
->  * If we cut a hole into the zone span, then the zone is
->  * certainly not contiguous.
+>  * Calculate the new zone contig state before move_pfn_range_to_zone()
+>  * sets the zone temporarily to non-contiguous.
 >  */
+>
+> Or something like that.
+>
+Will change accordingly. Thanks.
 
 
-Will change accordingly.  Thanks.
+> Alternatively, we have to rework the code a bit that this dependency 
+> is a bit clearer.
+
+
+Agreed, probably we can have this optimization first then explore a more 
+explicit approach for the zone contiguous state management.
 
 
 >
->> +     */
->> +    if (start_pfn > zone->zone_start_pfn && end_pfn < 
->> zone_end_pfn(zone))
->> +        return ZONE_CONTIG_NO;
->> +
->> +    /* If the removed pfn range is at the beginning or end of the
->> +     * original zone span, the contiguous property is preserved when
->> +     * the original zone is contiguous.
->
-> /* Removing from the start/end of the zone will not change anything. */
->
-
-Will change accordingly.  Thanks.
-
-
->> +     */
->> +    if (start_pfn == zone->zone_start_pfn || end_pfn == 
->> zone_end_pfn(zone))
->> +        return zone->contiguous ? ZONE_CONTIG_YES : ZONE_CONTIG_MAYBE;
->> +
->> +    return ZONE_CONTIG_MAYBE;
->> +}
->> +
->>   void remove_pfn_range_from_zone(struct zone *zone,
->>                         unsigned long start_pfn,
->>                         unsigned long nr_pages)
->> @@ -551,6 +573,7 @@ void remove_pfn_range_from_zone(struct zone *zone,
->>       const unsigned long end_pfn = start_pfn + nr_pages;
->>       struct pglist_data *pgdat = zone->zone_pgdat;
->>       unsigned long pfn, cur_nr_pages;
->> +    enum zone_contig_state new_contiguous_state = ZONE_CONTIG_MAYBE;
->
-> No need to initialize, given that you overwrite the value below.
->
-
-Will change accordingly.  Thanks.
-
-
->>         /* Poison struct pages because they are now uninitialized 
->> again. */
->>       for (pfn = start_pfn; pfn < end_pfn; pfn += cur_nr_pages) {
->> @@ -571,12 +594,14 @@ void remove_pfn_range_from_zone(struct zone *zone,
->>       if (zone_is_zone_device(zone))
->>           return;
->>   +    new_contiguous_state = zone_contig_state_after_shrinking(zone, 
->> start_pfn,
->> +                                 nr_pages);
->>       clear_zone_contiguous(zone);
->>         shrink_zone_span(zone, start_pfn, start_pfn + nr_pages);
->>       update_pgdat_span(pgdat);
->>   -    set_zone_contiguous(zone);
->> +    set_zone_contiguous(zone, new_contiguous_state);
->>   }
->>     /**
->> @@ -736,6 +761,39 @@ static inline void 
->> section_taint_zone_device(unsigned long pfn)
->>   }
->>   #endif
->>   +static enum zone_contig_state 
->> zone_contig_state_after_growing(struct zone *zone,
->> +                unsigned long start_pfn, unsigned long nr_pages)
->> +{
->> +    const unsigned long end_pfn = start_pfn + nr_pages;
->> +
->> +    if (zone_is_empty(zone))
->> +        return ZONE_CONTIG_YES;
->> +
->> +    /*
->> +     * If the moved pfn range does not intersect with the original 
->> zone spa
->
-> s/spa/span/
->
-
-My mistake:(
-
-Will change accordingly.  Thanks.
-
-
->> +     * the contiguous property is surely false.
->
-> "the zone is surely not contiguous."
->
-
-Will change accordingly.  Thanks.
-
-
->> +     */
->> +    if (end_pfn < zone->zone_start_pfn || start_pfn > 
->> zone_end_pfn(zone))
->> +        return ZONE_CONTIG_NO;
->> +
->> +    /*
->> +     * If the moved pfn range is adjacent to the original zone span, 
->> given
->> +     * the moved pfn range's contiguous property is always true, the 
->> zone's
->> +     * contiguous property inherited from the original value.
->> +     */
->
-> /* Adding to the start/end of the zone will not change anything. */
->
-
-Will change accordingly.  Thanks.
-
-
->> +    if (end_pfn == zone->zone_start_pfn || start_pfn == 
->> zone_end_pfn(zone))
->> +        return zone->contiguous ? ZONE_CONTIG_YES : ZONE_CONTIG_NO;
->> +
->> +    /*
->> +     * If the original zone's hole larger than the moved pages in 
->> the range
->> +     * the contiguous property is surely false.
->> +     */
->
-> /* If we cannot fill the hole, the zone stays not contiguous. */
->
-
-Will change accordingly.  Thanks.
-
-
->> +    if (nr_pages < (zone->spanned_pages - zone->present_pages))
->> +        return ZONE_CONTIG_NO;
->> +
->> +    return ZONE_CONTIG_MAYBE;
->> +}
->> +
->>   /*
->>    * Associate the pfn range with the given zone, initializing the 
->> memmaps
->>    * and resizing the pgdat/zone data to span the added pages. After 
->> this
->> @@ -1090,11 +1148,20 @@ int mhp_init_memmap_on_memory(unsigned long 
->> pfn, unsigned long nr_pages,
->>   {
->>       unsigned long end_pfn = pfn + nr_pages;
->>       int ret, i;
->> +    enum zone_contig_state new_contiguous_state = ZONE_CONTIG_NO;
->>         ret = kasan_add_zero_shadow(__va(PFN_PHYS(pfn)), 
->> PFN_PHYS(nr_pages));
->>       if (ret)
->>           return ret;
->>   +    /*
->> +     * If the allocated memmap pages are not in a full section, keep 
->> the
->> +     * contiguous state as ZONE_CONTIG_NO.
->> +     */
->> +    if (IS_ALIGNED(end_pfn, PAGES_PER_SECTION))
->> +        new_contiguous_state = zone_contig_state_after_growing(zone,
->> +                                pfn, nr_pages);
->> +
->
-> This is nasty. I would wish we could just leave that code path alone.
->
-> In particular: I am 99% sure that we never ever run into this case in 
-> practice.
->
-> E.g., on x86, we can have up to 2 GiB memory blocks. But the memmap of 
-> that is 64/4096*2GiB == 32 MB ... and a memory section is 128 MiB.
->
->
-> As commented on patch #1, we should drop the set_zone_contiguous() in 
-> this function either way and let online_pages() deal with it.
->
-> We just have to make sure that we don't create some inconsistencies by 
-> doing that.
->
-> Can you double-check?
->
-
-Agreed, it is very corner case that only when the end_pfn aligned with 
-the PAGES_PER_SECTION, all the memory sections will be onlined, then the 
-pfn_to_online_page will get non-NULL value thus the zone contiguous has 
-the chance to be true, otherwise the zone contiguous will always be 
-false. In practice it will rarely get touched.
-
-While this optimization relies on the previous contiguous state of the 
-zone, in the corner case the zone contiguous could be true, but without 
-set_zone_contiguous(), the zone's contiguous will remain as false, then 
-the fast path in the online_pages() could be incorrect.
-
-I agree in patch #1 we can remove the set_zone_contiguous because at 
-that time the online_pages did not depend on the previous contiguous 
-state. Now, after this optimization, this part of code seems necessary 
-to be kept here.
-
-One solution is to simplify it by change the code to 
-set_zone_contiguous(zone, ZONE_CONTIG_MAYBE) once IS_ALIGNED(end_pfn, 
-PAGES_PER_SECTION), but this part of code is still in the 
-mhp_init_memmap_on_memory(); If we want online_pages() to deal with this 
-corner case, then we might need to either pass the information 
-to online_pages() through additional parameter, or we need to have some 
-code in the online_pages() to get memory block information from pfn then 
-check the altmap, which seems not a good approach for the common code 
-path to deal with a very corner case in every call of online_pages().
-
-
-Solution1:
-mhp_init_memmap_on_memory(...)
-
-{
-     …
-     /*
-      * It's a corner case where all the memory section will be online,
-      * thus the zone contiguous state needs to be populated.
-      */
-     if (IS_ALIGNED(end_pfn, PAGES_PER_SECTION))
-         set_zone_contiguous(zone, ZONE_CONTIG_MAYBE);
-}
-
-Solution2.1:
-online_pages(..., nr_vmemmap_pages)
-
-{
-
-     ...
-     If (nr_vmemmap_pages > 0)
-         set_zone_contiguous(zone, ZONE_CONTIG_MAYBE);
-     ...
-}
-
-Solution2.2
-oneline_pages(...)
-
-{
-     ...
-
-     struct memory_block *mem = pfn_to_memory_block(start_pfn);
-     if (mem->altmap && mem->altmap->free)
-         set_zone_contiguous(zone, ZONE_CONTIG_MAYBE);
-     ...
-}
-
-
-Looking forward to hearing your advice. Thanks.
-
-
->> move_pfn_range_to_zone(zone, pfn, nr_pages, NULL, MIGRATE_UNMOVABLE,
->>                      false);
->>   @@ -1113,7 +1180,7 @@ int mhp_init_memmap_on_memory(unsigned long 
->> pfn, unsigned long nr_pages,
->>       if (nr_pages >= PAGES_PER_SECTION)
->>               online_mem_sections(pfn, ALIGN_DOWN(end_pfn, 
->> PAGES_PER_SECTION));
->>   -    set_zone_contiguous(zone);
->> +    set_zone_contiguous(zone, new_contiguous_state);
->>       return ret;
->>   }
->>   @@ -1153,6 +1220,7 @@ int online_pages(unsigned long pfn, unsigned 
->> long nr_pages,
->>       const int nid = zone_to_nid(zone);
->>       int need_zonelists_rebuild = 0;
->>       unsigned long flags;
->> +    enum zone_contig_state new_contiguous_state = ZONE_CONTIG_NO;
->>       int ret;
->>         /*
->> @@ -1166,6 +1234,7 @@ int online_pages(unsigned long pfn, unsigned 
->> long nr_pages,
->>                !IS_ALIGNED(pfn + nr_pages, PAGES_PER_SECTION)))
->>           return -EINVAL;
->>   +    new_contiguous_state = zone_contig_state_after_growing(zone, 
+>> +    new_contiguous_state = zone_contig_state_after_growing(zone, 
 >> pfn, nr_pages);
 >>         /* associate pfn range with the zone */
 >>       move_pfn_range_to_zone(zone, pfn, nr_pages, NULL, MIGRATE_MOVABLE,
@@ -593,55 +279,10 @@ Looking forward to hearing your advice. Thanks.
 >> -    set_zone_contiguous(zone);
 >> +    set_zone_contiguous(zone, new_contiguous_state);
 >>       adjust_present_page_count(pfn_to_page(pfn), group, nr_pages);
->>         if (node_arg.nid >= 0)
->> diff --git a/mm/mm_init.c b/mm/mm_init.c
->> index fc2a6f1e518f..0c41f1004847 100644
->> --- a/mm/mm_init.c
->> +++ b/mm/mm_init.c
->> @@ -2263,11 +2263,19 @@ void __init init_cma_pageblock(struct page 
->> *page)
->>   }
->>   #endif
->>   -void set_zone_contiguous(struct zone *zone)
->> +void set_zone_contiguous(struct zone *zone, enum zone_contig_state 
->> state)
->>   {
->>       unsigned long block_start_pfn = zone->zone_start_pfn;
->>       unsigned long block_end_pfn;
->>   +    if (state == ZONE_CONTIG_YES) {
->> +        zone->contiguous = true;
->> +        return;
->> +    }
->> +
 >
-> Maybe add a comment like
->
-> /* We expect an earlier call to clear_zone_contig(). */
->
->
-> And maybe move that comment all the way up in the function and add
->
-> VM_WARN_ON_ONCE(zone->contiguous);
 
+Regards,
 
-Will change accordingly.  Thanks.
+Tianyou
 
-
->
->> +    if (state == ZONE_CONTIG_NO)
->> +        return;
->> +
->>       block_end_pfn = pageblock_end_pfn(block_start_pfn);
->>       for (; block_start_pfn < zone_end_pfn(zone);
->>               block_start_pfn = block_end_pfn,
->> @@ -2348,7 +2356,7 @@ void __init page_alloc_init_late(void)
->>           shuffle_free_memory(NODE_DATA(nid));
->>         for_each_populated_zone(zone)
->> -        set_zone_contiguous(zone);
->> +        set_zone_contiguous(zone, ZONE_CONTIG_MAYBE);
->>         /* Initialize page ext after all struct pages are 
->> initialized. */
->>       if (deferred_struct_pages)
->
->
 
