@@ -4,133 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 279BCD1D46C
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 15:10:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9499CD1D478
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 15:18:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42B2C6B0088; Thu,  8 Jan 2026 10:10:47 -0500 (EST)
+	id D858B6B0088; Thu,  8 Jan 2026 10:18:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F55E6B0089; Thu,  8 Jan 2026 10:10:47 -0500 (EST)
+	id D5CAE6B0089; Thu,  8 Jan 2026 10:18:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E1206B0092; Thu,  8 Jan 2026 10:10:47 -0500 (EST)
+	id CB37C6B0092; Thu,  8 Jan 2026 10:18:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CAD76B0088
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:10:47 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC11E6B0088
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:18:06 -0500 (EST)
 Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C67F389A22
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:10:46 +0000 (UTC)
-X-FDA: 84309133692.06.D64A13D
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	by imf06.hostedemail.com (Postfix) with ESMTP id CCE4418000C
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:10:44 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=gakdwiuj;
-	dmarc=pass (policy=none) header.from=rivosinc.com;
-	spf=pass (imf06.hostedemail.com: domain of debug@rivosinc.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=debug@rivosinc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767885044; a=rsa-sha256;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 661171AAEF
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:18:06 +0000 (UTC)
+X-FDA: 84309152172.06.AB5DDC5
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
+	by imf07.hostedemail.com (Postfix) with ESMTP id ADB844000B
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:18:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf07.hostedemail.com: domain of 3q8pfaQkbABIAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3q8pfaQkbABIAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767885484; a=rsa-sha256;
 	cv=none;
-	b=ipf4YFcNVqtfFyyZoUGxL1egNKQEDND3XAaZZrwU2hm35QKie1Jh+gwapZipqUUouXXZMv
-	Np8BDKfY/ODWpg4JJhEOXMsRy3AfurB6/KTAMVjX/xM9VZFy7ZbxqG3skFW1gb0Eeouu6d
-	WOiKEa2CVnBXLxBrJO5ID8w8I2VkkJ0=
+	b=lrOix3ijTemdPzVVCEmHHNMcx6dWvYYpthqAMuWvnIIGZEObLUEDNzrYYM293s/gwCV0SA
+	pj2mg1UF/eC5czarRzkRo5nXmoQg0Ld+z7FsrtawJxHdMQBsbCArj1Jw1JjCvFmEktI9W4
+	45ZLz56zG6XzmuTMfcGYZ6EYhdZk60o=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=gakdwiuj;
-	dmarc=pass (policy=none) header.from=rivosinc.com;
-	spf=pass (imf06.hostedemail.com: domain of debug@rivosinc.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=debug@rivosinc.com
+	imf07.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf07.hostedemail.com: domain of 3q8pfaQkbABIAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3q8pfaQkbABIAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767885044;
+	s=arc-20220608; t=1767885484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QTkbey9LWC4b27P/G+EnN+lFuImbI+lYFoSxJEGXtiI=;
-	b=hZvOqbjdW4Q2BJ6Dx1C61usNqd8WFCSkKNf1Tt43rZO2CQW1dZeaLzwTWYKBfsrcft99jl
-	bUObO9vZxy6pD5I5fPSWeYjF5H2bF78WkGhYRxolZ/q8b8kRjbNFUZGeqfZUvnJxTeO0gP
-	oKefUCbF+p4xUbZt3Wc5f7AOR1KNodU=
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-6446fcddf2fso3505050d50.0
-        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 07:10:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1767885044; x=1768489844; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QTkbey9LWC4b27P/G+EnN+lFuImbI+lYFoSxJEGXtiI=;
-        b=gakdwiujc3MNIVWkLIVx8DiMBlg9l+a4p0w+rxiMBZFxgZs6gZzKM4xkryuwHfPfSi
-         VCG/CpWA+Mi6rm/Z+rtpQao6N0aSIRF+AwuoTG9zuOQshlmFoUc5iA/G+EUOVKtmezsX
-         LJ3unIiP7UvM2Rd6MB0DoDLjB6qeKDqxiADOc7O7fRLA6+9oVH1xG/R1fpIDX20J1xMV
-         HPuLfdK3BvllWMU/BOa1BLYiWMbjFx15XGm3nNY+asZtlpOm9toUntshWr8Gq/dQVujc
-         LCUpwkI7sUyRlZD5wtHXrRKREnQkRVRBQkb28RtrN8H8TZ9SzUOGNtmRZF7CzDCjDDdu
-         JM3Q==
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=hMtKSxagJ7fPc9Vyu3YcWP2X27nXblqxClZPeCdhI2I=;
+	b=LPTO5trXuX2pz7vHfNlzNo/+FRo8/oJUmJeyVSn0nurjobcmd4NWuHHT4OSVsoRlPMUjOv
+	8aJaM8CA8iCtIx/zrbNA2HzAB2Af616Xe8yrKnip65YsWbn7YSM71JPB6YpJUAu6O1JZEv
+	oH5IJDrDAnnqnZ13kVNTEVoCV3uigG4=
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-656ceb0c967so3732123eaf.1
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 07:18:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767885044; x=1768489844;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QTkbey9LWC4b27P/G+EnN+lFuImbI+lYFoSxJEGXtiI=;
-        b=sEKnLGLK8zt55V83oPaWhfIctjePMFfAGTM0juXWAp6eoNUpnsR883olMCjwU6R16S
-         lP835nFndTcV2gBecMsurAD0Uf0802R5l0A+kVcNo6A5uU/OVleCc3orV3HdSDx/UtR5
-         xZFPTRXOiFJFkAlGZ4RMagPPfEFafsRDC07d9jDhjvVr/qezvZXZdSwbkdOmYvjcH1Y6
-         EyXgQDthw6NXWtnizxruLg2C/q3HtlpGnigYAF2C/szFj0D68teIeq7c9JsI5Pcu7g33
-         ha7bxf5teJfMWKbgHTve+O37jdhPfBwsPSqGzcZHZPEpazv4CDQClMfYDswWJ8e2AilA
-         xkiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWk39+bF14jIrKA0OiHVvWWrte9nyrd1NXv5leCVyz1TwRoWGl6EwJ0emEpL3zdUpFKavpIH1ptYA==@kvack.org
-X-Gm-Message-State: AOJu0YydOTtksvCR4+VcB0Qz1GjuATAFfO85+Yj4oZ47Iq+tnuPk+zHF
-	GKXqi77hIsHIFXDUt7JuX4WI0RmLkKKsd2dZPZVbTxykz9BP8QSMY1NUzzRPlHEGX/+YTiYONVz
-	ZthJqj9MbHXdyByVpG8X2WUFGWNs8emRcHh93+DqF8A==
-X-Gm-Gg: AY/fxX4JwS/IpvUJ9eJRAismJpHcSnn+02twdzSyr9fgKSM9A6tTYw7YCMAIYzymMdz
-	BPzqnHysUHe1TU2FhsE1BRq2JQnirYjnuRV2uO26KrFBp2NPVoE4Qrdzf6QVlsF6PTpdymtAZVZ
-	XaadjXjP+fni3fom6cvMO1pZVzgweeSL5uGTKqgZUoQnZM1ArL7dAEd1ZDY4M8iyiiM6Uz7YS9p
-	ZXP/XhHrVaLVBvog60gzb5ZvF2o5wRZOVjrPIDfTgecm8diSWCOgFvoeDhEOJdT1pslLw==
-X-Google-Smtp-Source: AGHT+IHwlV11mJiZRvrc0ba9gyUKkJLs3Ivv5ZO/Sp66Caj6iICdWSs+vjcbtX7JeT7w+lz4Sr6DicIt8PKx9jaUzQk=
-X-Received: by 2002:a05:690e:b88:b0:644:6ad4:fdfd with SMTP id
- 956f58d0204a3-64716c14086mr5723963d50.71.1767885043558; Thu, 08 Jan 2026
- 07:10:43 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767885484; x=1768490284;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hMtKSxagJ7fPc9Vyu3YcWP2X27nXblqxClZPeCdhI2I=;
+        b=A35mUIl8rDCaI9K/sPJmh9QjaBDvx8eUS+KV0Nhz0kiHDKA7a3DjsTiYE2toLR+huP
+         +VoNBFaqJOh3KfxBNGGqA8g+CEnlkZtCLGnoaIPCWSqwn9f1wgJe8lKnnv30IRfo6zEM
+         P1I5H9fjPk/nxrwp86y8D78cKsqMmXcSu0/bKLUVE1A0Tx6nR4vdwF/VDRf1x4CL3F00
+         Invq1dWMFYAJihF6Rb/VZzKHugGm1GkEwCZEQQAl7CZaq6JYIMn4KTnoCDh8WWnMYVXQ
+         T1ZAgxRt6Lpsx2xZxbYos0a94086SzY3KuPgTzisaHrnL3RgAHRULKPvdZZbf0rygaBb
+         FOUA==
+X-Forwarded-Encrypted: i=1; AJvYcCVUDePISi7PUykc4tmprsBzCJ5gj/Ia7i+/KM/xxJOx8KN6lBPI/i/XPYD9noUb8F7scHSSQAPZLQ==@kvack.org
+X-Gm-Message-State: AOJu0YyyGDiq75iaoypYkqUIKV1I+vWOf8DKv35Rt3pP9jvnB107S1QZ
+	EegFGopoQ3O6vmhTxH/Fn0p0XHsR+BGL37kjHhngjNdQRQ/OsJfV/coNCmNLyUDzZe8FIZRqSmF
+	ASFLjk59ncOZw8J92meekK6Gem6x8/O9e+MHfowMeqYqWyGL9C+sHW9VkW+A=
+X-Google-Smtp-Source: AGHT+IHbc77QJfggjKHR96I9EwwIHfaQwT1qa+JgiWZh85mlXkTqiAGAItRL7bdXqL5mVNaQedgelLHwCAcwVit/iA+GwSB+Dbar
 MIME-Version: 1.0
-References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
- <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org> <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
-In-Reply-To: <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
-From: Deepak Gupta <debug@rivosinc.com>
-Date: Thu, 8 Jan 2026 07:10:32 -0800
-X-Gm-Features: AQt7F2r-MFLse9aM2Y-9SmWOvFLm93MsLbBkGvYnQc0D6QLcC_Q6_utP6Kihh0s
-Message-ID: <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
-Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
-To: Paul Walmsley <pjw@kernel.org>
-Cc: x86@kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, 
-	Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com, charlie@rivosinc.com, 
-	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
-	alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
-	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
-	Zong Li <zong.li@sifive.com>, Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
-	Valentin Haudiquet <valentin.haudiquet@canonical.com>, Charles Mirabile <cmirabil@redhat.com>, 
-	Jesse Huang <jesse.huang@sifive.com>
+X-Received: by 2002:a05:6820:a117:b0:659:9a49:8def with SMTP id
+ 006d021491bc7-65f54f602afmr2284080eaf.49.1767885483756; Thu, 08 Jan 2026
+ 07:18:03 -0800 (PST)
+Date: Thu, 08 Jan 2026 07:18:03 -0800
+In-Reply-To: <aV_BoaOogKt3fGGI@casper.infradead.org>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <695fcaab.050a0220.1c677c.03a2.GAE@google.com>
+Subject: Re: [syzbot] [mm?] INFO: task hung in __rmap_walk_file
+From: syzbot <syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@redhat.com, harry.yoo@oracle.com, 
+	jannh@google.com, liam.howlett@oracle.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, riel@surriel.com, 
+	syzkaller-bugs@googlegroups.com, vbabka@suse.cz, willy@infradead.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: rabynpxfjdw41aaaiyphnswmwqapdyf3
+X-Stat-Signature: 8hg6um4we316kx5abeq31sq7q378aq1s
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CCE4418000C
-X-HE-Tag: 1767885044-114305
-X-HE-Meta: U2FsdGVkX1/iy6F0tgggV8uQXS6R9PKMoazuFjipRBqLuURmpKfud4epav/+/JP/vHXRPQ6PHD7Wut0E1J0L4+86gnEogQTn/PFO10Qqjos2v4WxmigmzzCc8PLyXpXT5XK2d5qkIYggDARZ2SwLSjCauAw8pR45Y6tuF/m6Q31KCWnjc7VMuk+2c5JopeKRBDK+2YHwlI8SicpgAFiXstNN8S1X8/tt97NAFcNosL6vHpoOiv9fF8pxf2L8x91tM61ZATYIwv75JtRwiO74rxrStqt3UGpbMw6LWPcoEwrSGgKy/z4kykgenYFT0TtAeA9Vb0t85q9eWy4QMABR3TrtWAKm7TzS688gR3O8SaH4VMehAcD2xqnEWdp8rNzRCxb5r9Pd6KrrdDx54aqQu05j5LyKEwty4oNIUaiNiTEitTuH3r1K5Xt+uMj9NF6uoxIEoHSJzKhPJpzeVDii/FiuAg3YaQZTS+zFxD2vI4nFPHm1ff7GZtKAsZCYAS7VL5eT5gmoVAz8RPlIg/7c80eo4TyHif8aFj9b5cbpOTC0BUwCKXRXbPe/V3d+4aJe3NzO16vkxKJSysoHq5Pz8k4dg6mAKR1ideeyhxRRnF3DZ4y/mNtvacZt8yjTB8yJ5syvx6v/WN7bIhhNHSrLfLDlOY69GQVoPUnmNtkpIdPpoPV05Hs5LL7YBDLU1nzxyVMpkopi9HjD+ZBvRtLiVWAS7lNAxFcOZ1hJhFCfvOwL4uoN//H9UbD1mWgTuasHE990HcEmEXXZv6bICqsjo+KMwRW1OWDyR8aBuvmJVflimEpdefyQ0Xn4r4aBeRjQ1sMoQXM1Y+qEkx0wmpq5pcJrXP4bADcvF57esoER/CaXMulryC3a/mTANOYrbomEXBqORL6naAHluL+0KZGnKRoPhnfLNgCJGrnj3fX+zw3YcBExdSOskvjBNi0LpZjceLy79U+qmpZbaLFRWH8
- /EtkuKdO
- bV0FEDd/kMZrmfE4Zm6AHsyTDsGVJKLxOGvECiOyCfVNtgqoleAZPp1e1Yb/qA6C4XnSbMOlgFHwM4Vzcr1Q3e0ijxA3XEATO3GO0yW6hjwdKwrhBO+ZhuU5Fq4t2eILiLBdWIlmsZGYVYVLpYeIUOup76+snlCvKRPXSTTnCcMevJQVAmVIxQ1p0BZWdp22/IMDjeGMkyc5JrD38vZziguNG29JwnpmMYczFpmMGIiB4bBv6qw6Oeh2VtjT1JyR0xEIVZ0m4NKs8mgJ89t+ZBgYkpEyBk20jtQaz7V4fc+p1URcLxhsaJobj6BoBwDBy/B7lCnOzTrastoE=
+X-Rspamd-Queue-Id: ADB844000B
+X-HE-Tag: 1767885484-260024
+X-HE-Meta: U2FsdGVkX18XDH8GwsMQ0Adq+tmDoZUtfMlaOUSk+ZuC60UpZzyDzAdJ+z1qfhVutMxcvnKOEQ8aFL6OtPT6cPT0HW+I16k5zg+6VhCTGHVKheHiENelDs2s4U9VhcRGysqBdjdWAkzkZDeB1ejiEuYnYveriMXPFa2GU+A8T0FB0E4ZSPZAWHCBUrSYzIpNjWQhHXG+R4hO/55J0VU74KNf+KgLapbQZwur69Lcsfa5ljBB9nQGfl4Aar4OaXbDcPonu4wx9AmECet61YIEQxo4N+nNs85YjXGDDpYc/ORpRgFqp7aBwNUD5JHLkWFm0lQHwRL2z45mYnU4DVktWA2OnFOd/D9aYODhe99z7JzkZgLs2fE8SFJf2XZ0CW3RwIQivoO4lxmrusWMDbb9Nas3Ri6YMNFavne3IlUUk7rxICuvfvSXanwBjvX2wdcCONiOjN99f4eKoghqQ/i7bRF02B7SMa52Eh+rCheP3O/aQs3TQaw0F9P/WL7L3kQzte0Pw9zWAdlXgRMUF6fPuucfvc0PC0kvkyCI5i+DYINC0VoAz4h+SiAVc5UxWC0Zn3dmF/zc9sotqp4Pd663B+U3n/qRB3L58zjxzjlYlR6zPIic1hv7R1c1UVvr8WZQF7bcGpvL0FnHTxdi6Xwi+WbEbL4z8O+6ZZMkQDebxMLJkY9uHa6P8spmYta0bs5Pr+CNZ7xV6yXLsVIs34WIGH6fD00TpVgDiAn3flzKr/ULIN2z/oJEeMi5r8cqsVz2kfcFDhdBFku1tx6wbERJGz5sLuPXdcGt+WbBtWTprEqfdnD/HKRFSzIVxfdRZU5OQC0weHfhYZStEZUQJ/tkmCD5Uo+hMn9tUN0JgXAizqcaF6LQUq/mcOUUWE1vvKfJkV7MImcCgIVaGCwiZdDBbTaJu1P05O7sLQcYGiovlFjR7lT0DE9/rXUBzwzeP6MpfqtDYUn1Su98qr00U2X
+ Oanh0Rt5
+ le9tY2I+EmLcWzBjngOw+NchJW8pbuURDa8RKftvHVlCkKcG5r96gsJrtu11yev1JM8kxQYtqwnynyU3jgRumTxbLa4VWzJBI8AmkBsIMPgKlshIcmDcGYbH1bG6Rf3xTvRlIuqY+v2ViTxG6Y8YhHhsm9VY+5l62yz3N+kvMN2FeU5QWVFB8n70Dg1ivw9DFFGF9jRyIolpv8QGKZId83j7s+ajXrmvrTVzA2LdJeDq5jDKhmBKDS1GeaVe/VvbcvTMflGyJaGHUEBvB+sGtdmiwnIIp9mfvQuAFGKS+J02Unz73VBe26YTvjOOGlOa2rcesWOAo506edjle298JTiaOQ4JDdD7Mou9xF2ETCZ5z0U5Vu4CXeA7OnCiv7hnZMC1fGhst7ZT2zbKBBdVJp0j+FszTQdkm46DNdTgBUFi1BT+/K0GLi2uFYFplNrBKflqhv52Eb69JrxlkPiQDVZG3ZyW1cYKsL+qEXEMmRNkuy8RtlW2+Tbo+hG241jg9VbhY5Re3qm2QbDiTsR0Q17S+skFSYLY3A5h2DOnL2BrWHeohv5nw3zTYVgQ/sWCXAUgHpVRcZZUnLLUn5pQtvakz0+arcwd71Zhz+TY0C78lQ8WMG0JrCz2Deqb/kw5MJKoCc0gjoLW72JWr0ix2UOvOU8EK9kSWKulF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,91 +98,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Paul,
+Hello,
 
-I have a bugfix for a bug reported by Jesse Huang (thanks Jesse) in riscv
-implementation of `map_shadow_stack`.
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-Should I send a new series or only the bugfix-patch for implementation
-of `map_shadow_stack`
+Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+Tested-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
 
-Let me know. Thanks.
+Tested on:
 
--Deepak
+commit:         f0b9d8eb Merge tag 'nfsd-6.19-3' of git://git.kernel.o..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=13df11fc580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e5a01f6352682866
+dashboard link: https://syzkaller.appspot.com/bug?extid=2d9c96466c978346b55f
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=159dc19a580000
 
--Deepak
-
-
-
-On Fri, Dec 12, 2025 at 10:33=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> =
-wrote:
->
-> On Fri, Dec 12, 2025 at 01:30:29AM -0700, Paul Walmsley wrote:
-> >On Thu, 11 Dec 2025, Deepak Gupta via B4 Relay wrote:
-> >
-> >> v26: CONFIG_RISCV_USER_CFI depends on CONFIG_MMU (dependency of shadow=
- stack
-> >> on MMU). Used b4 to pick tags, apparantly it messed up some tag picks.=
- Fixing it
-> >
-> >Deepak: I'm now (at least) the third person to tell you to stop resendin=
-g
-> >this entire series over and over again.
->
-> To be very honest I also feel very bad doing and DOSing the lists. Sorry =
-to you
-> and everyone else.
->
-> But I have been sitting on this patch series for last 3-4 merge windows w=
-ith
-> patches being exactly same/similar. So I have been a little more than des=
-perate
-> to get it in.
->
-> I really haven't had any meaningful feedback on patch series except stall=
-ing
-> just before each merge window for reasons which really shouldn't stall it=
-s
-> merge. Sure that's the nature of open source development and it's maintai=
-ner's
-> call at the end of the day. And I am new to this. I'll improve.
->
-> >
-> >First, a modified version of the CFI v23 series was ALREADY SITTING IN
-> >LINUX-NEXT.  So there's no reason you should be resending the entire
-> >series, UNLESS your intention for me is to drop the entire existing seri=
-es
-> >and wait for another merge window.
-> >
-> >Second: when someone asks you questions about an individual patch, and y=
-ou
-> >want to answer those questions, it's NOT GOOD for you to resend the enti=
-re
-> >28 series as the response!  You are DDOSing a bunch of lists and E-mail
-> >inboxes.  Just answer the question in a single E-mail.  If you want to
-> >update a single patch, just send that one patch.
->
-> Noted. I wasn't sure about it. I'll explicitly ask next time if you want =
-me to
-> send another one.
->
-> >
-> >If you don't start paying attention to these rules then people are going
-> >to start ignoring you -- at best! -- and it's going to give the entire
-> >community a bad reputation.
->
-> Even before this, this patch series has been ignored largely. I don't kno=
-w
-> how to get attention. All I wanted was either feedback or get it in. And =
-as I
-> said I've been desparate to get it in. Also as I said, I'll improve.
->
-> >
-> >Please acknowledge that you understand this,
->
-> ACKed.
->
-> >
-> >
-> >- Paul
+Note: testing is done by a robot and is best-effort only.
 
