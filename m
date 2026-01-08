@@ -4,102 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B285D1488A
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 01:54:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7E50D1488F
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 02:05:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C0636B0092; Wed,  7 Jan 2026 20:54:07 -0500 (EST)
+	id 113E16B0092; Wed,  7 Jan 2026 21:05:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 098556B0093; Wed,  7 Jan 2026 20:54:07 -0500 (EST)
+	id 0C1E06B0093; Wed,  7 Jan 2026 21:05:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED9146B0095; Wed,  7 Jan 2026 20:54:06 -0500 (EST)
+	id ED7CD6B0095; Wed,  7 Jan 2026 21:05:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DB9AD6B0092
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 20:54:06 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 97CC31A05F2
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 01:54:06 +0000 (UTC)
-X-FDA: 84307126092.07.C22EA35
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf05.hostedemail.com (Postfix) with ESMTP id AD4BA100005
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 01:54:03 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=qZQ7AwSk;
-	spf=pass (imf05.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DBA986B0092
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 21:05:08 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 947221A0556
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 02:05:08 +0000 (UTC)
+X-FDA: 84307153896.08.8C2D0D0
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B734B4000E
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 02:05:06 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="NfTN3U/a";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767837906; a=rsa-sha256;
+	cv=none;
+	b=1Isjtq5bkrAg1iyAA3gaCABir+fQ5h6RpmAaa2rO0EZoLyrP2rZD3jjg+/BC5HP4JEL8qa
+	w7XMLFp5Y3FfPPEydGvyjjV1X09/5StsLFjQmNTxlCmiX5iJFP2mlr0RBOoehhLbr27EeT
+	ifUufLInGP/3NMHgh/F17H663TcG0ek=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="NfTN3U/a";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767837244;
+	s=arc-20220608; t=1767837906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+rD0zoOieZOqOtlkVgBVwio1Io4gWwc7IBLYiunUW/0=;
-	b=PixPSMRML/rs0KCZS1VmqPJ+ANqQWxsyW5O0ALnbi0polRRbNdAn+2zQip6oLs//BTC7Yl
-	LfAXnRu3L/WUs2EhFvuqTjHPGIRdZClI81fX/sXeC/2za/rkJuRdnl9WpV8+62+MGf/vxY
-	RcyYEVHetY6V3WCTx704tvuZX2c58c8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=qZQ7AwSk;
-	spf=pass (imf05.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767837244; a=rsa-sha256;
-	cv=none;
-	b=OE4pxwhyyjktAfZYK8mY0b/Cwt9ADeE9tHLO0J7yNdKAXrxk7ixP7NSKYPi3uNXuWJBZRl
-	tvZJsWobmUVUk5qJHX1mXh9JTUCT7nPVNM2sGY8bJH3DIIBC6rNUcevoG8g/aFQE5bnGWp
-	GIRzTA1n5vOwa2SV6t0i62qoLKjF/1o=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=+rD0zoOieZOqOtlkVgBVwio1Io4gWwc7IBLYiunUW/0=;
-	b=qZQ7AwSkdNdZ7mUsiIaKXu1EAIYj+8EqYn00de4ToPzsKsjMycE/BMSMJEQvq4LD2ivwFuaBK
-	AFrOIG/o8NotuzwqQFSzyRf8YVT4HKxmHquLVDX1g3LjhSSeQuI3fct7y1pU8vr7X+ci2T9L4wp
-	i/SMPh33lPWQiDGp91TRCYA=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dmnt76XXszKm6Y;
-	Thu,  8 Jan 2026 09:50:39 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6BEBF40565;
-	Thu,  8 Jan 2026 09:53:56 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 8 Jan 2026 09:53:53 +0800
-Message-ID: <7b0330e8-e42d-4aa8-91ab-1098a9f89c7e@huawei.com>
-Date: Thu, 8 Jan 2026 09:53:51 +0800
+	bh=6EiI4bUC7k1aPYBeEZacAnlQaKBQ93VS31it66ACRm4=;
+	b=r0VvvLkyI7LErc/rVvPFjL6WwOQvomkIOEjTYiK4xUIn06jGixBWYMELnk8bYSbPS84ZBt
+	9/tShHM0iDRqBS7nY22SWUIM0v5xZknEA/Hebt/Md4xGR9mkD4jIdILgtIgzVfnwq84DVM
+	NFxyzUF1XRYafPzsNgc3ovBjGak0uP0=
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-11dd2370722so4583744c88.1
+        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 18:05:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767837905; x=1768442705; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6EiI4bUC7k1aPYBeEZacAnlQaKBQ93VS31it66ACRm4=;
+        b=NfTN3U/aN3pJMf/uYiS+qlAo1VR5R2PQMjgBUEN15rkcgjbSRJ2Y1vsqqXQAfoV+1o
+         VQ5XJYoayhA+GnQvTmB9JQ6+y7nLbrR2Gnud3pyW9B5K35/+BX2jtacet+tAo/oqz7m4
+         HBTamTwc2bj6cj1Lqic27oW0DVFuQRqr5VjO1DfhGrllO4vJVnLQc9n03kC25mOjznxl
+         XdCYJlgbMrGpjDcOoQ5Ado6yFHtnaTBDZpNr3wDk03vc/5y7CG+ciSuNWmtXe/VBu6Ih
+         yw4Fh9cGePx+Ns4tQ86YlhQTiI82MeY1KfnyPzcU+Ji7gTVe0F4jWvzBosUw8nHpNTir
+         FG4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767837905; x=1768442705;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6EiI4bUC7k1aPYBeEZacAnlQaKBQ93VS31it66ACRm4=;
+        b=A73kfnxJyrWCgE+LAubzLodX5xIZYP2ubaBJ253uaEAj1xO2k2ENUJNghh1YIx570y
+         5985c0zf6kNzENZ+OUDKxXJAUsdI348tpUcRoKAQcIDvOnS/pmaMeqCxRxPEhuzaLok4
+         9/3EbkMMAVxmGG0ecjqLaB5TmEFzu4O03ZQ2xqnIKu/A4V4VITJT71bXK8HAlGSOm7Wm
+         oTaH7KEXyXYL66ZOsov03vKjXsGcckRDG0FNGvSPc037LPq4UG5hFVz+B3ZpAvgXEJJc
+         8pGhijr4W99iT7c/WU0PjF+88qJGo/2xOnk4Y38KyvqqklUHd1UNLXnGNoUn7Unc29Br
+         l6mg==
+X-Forwarded-Encrypted: i=1; AJvYcCWGwwHtgqsefMdSbt5dsIlecv24vQa0aH0+CUi7nBUI2WxbyMYrtOmyCy/n2t7QHpgo5dA/YDVqUA==@kvack.org
+X-Gm-Message-State: AOJu0Yy9THnAijl4ifjBgKeW3dsYLNJO/iHchLHvFAJSVVoQHl8o3kKv
+	7BIggmpq0KDSzLyfZt9VPBSN3y7Dz5SdHLeNamJ7hla0u7Lm2pcDIJq2
+X-Gm-Gg: AY/fxX6qhyssKkzR3eui9yaVJb4kLQpvcjgVv9KYkPzfzkGeUr80Z9TvCc4pl3MClTT
+	5Ab7cjyMg2Y7B0FhrmzI0HfDITrCAdhRS2Vx16aGI8OVQtokapxBrer/F7H2jI7CD3GmOGIyRyD
+	dy3kpmaciuR0I/wTErJGAuVwDpU0g1Geh/7IWm7Xw+CBqhrokethoapyXvrIOx67lALxm3rbvgL
+	8Bz+GaQMiQnW4QlN3kfLc/2WtAFyf5f5UTA5UsHu5fnlTOaRu2plXvHgJLyYQtoYb3DSx/iK3s5
+	gPJQAQ3Q+siZ83VYWKSMrvQhp2ZUfxw8fKKIDK0fjujAM9IWInXIJySJvvkN+UekwyfG+afLTA/
+	IvqoRM1O/3s2v93HFO3ZTLstaUow8EUN7HBGWegvzQKI/msOnBiPQheShk8UCPcjWM2lb9Zgr0r
+	Sd
+X-Google-Smtp-Source: AGHT+IFPhAbvKwIitO1U7vmQaIFqARcl+mHpOZz4NyI4VsagyZi5EQYcTiGLUETDH8hR/OBFlDAyLg==
+X-Received: by 2002:a05:7300:c7c5:b0:2b0:4c6c:9ff4 with SMTP id 5a478bee46e88-2b17d2e3395mr2610609eec.41.1767837905340;
+        Wed, 07 Jan 2026 18:05:05 -0800 (PST)
+Received: from localhost.localdomain ([2607:f130:0:11a::31])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b1706a53fbsm7955574eec.12.2026.01.07.18.05.02
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 07 Jan 2026 18:05:05 -0800 (PST)
+From: wang lian <lianux.mm@gmail.com>
+To: kevin.brodsky@arm.com
+Cc: akpm@linux-foundation.org,
+	broonie@kernel.org,
+	david@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	ryan.roberts@arm.com,
+	shuah@kernel.org,
+	wang lian <lianux.mm@gmail.com>
+Subject: Re: [PATCH v2 4/8] selftests/mm: fix usage of FORCE_READ() in cow tests
+Date: Thu,  8 Jan 2026 10:04:50 +0800
+Message-ID: <20260108020450.44953-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260107164842.3289559-5-kevin.brodsky@arm.com>
+References: <20260107164842.3289559-5-kevin.brodsky@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 mm-new 0/6] mm: hugetlb: allocate frozen gigantic folio
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Zi Yan <ziy@nvidia.com>, Mark Brown <broonie@kernel.org>, Claudiu Beznea
-	<claudiu.beznea@tuxon.dev>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
-	<muchun.song@linux.dev>, <linux-mm@kvack.org>, <sidhartha.kumar@oracle.com>,
-	<jane.chu@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
-	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox
-	<willy@infradead.org>
-References: <20251230072422.265265-1-wangkefeng.wang@huawei.com>
- <4211be25-3fc0-4395-9b24-a5ff0b3caa34@tuxon.dev>
- <13ad5888-2d53-40c8-9269-22bc6001754a@sirena.org.uk>
- <7253A444-97D1-4256-9AD9-BCFF66437510@nvidia.com>
- <eba617a5-6d8e-4998-bd6d-e25330657380@huawei.com>
-Content-Language: en-US
-In-Reply-To: <eba617a5-6d8e-4998-bd6d-e25330657380@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 4bg7w4bp5g13gg675m57g38u37ibhyda
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B734B4000E
+X-Stat-Signature: txoamdp4rd4w4xnb96rg6enoweikhhhr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AD4BA100005
-X-HE-Tag: 1767837243-376135
-X-HE-Meta: U2FsdGVkX18j8SWWPZ1zUNZIXNIAHhFpTIamQGQtPLcYF2Hjwzq+akhZT92cVatKi26V2iZO3cDJNv5m3QNJOQpbuyPiS+47acOA+Anb14gf0ZUNZhoSssi+BScBh1NGGG4fcazmxWZn00UKGVbBBu2K5DHQntMZ39GwF5FcO0igYAmKc43JigfIW+9YLH0JnGY75VNBQNnOQEDUR6QwgwqShyykT5O8MftrWZknwTKVMX02Zy5208DecmDJ7b0tROdREoslblMUgx/+XSH3Rd7Ew9YMPd8zPR2QbumNFHe7cZVPaWvBP7tFOX3ne4GkfDMXkaedsa8kb5rVjxMJkGQfPPbnMlpdzgdvqlZDOrGoVQMzVyMXVLWtbZ9f9MjY1vGyTAG1x0b6/I9ilIUoQ1PQxFcD4oVQK+coIZcpua76b+X5y2ne//DukwIe4UltRJLJT84vA3WCktwqAhDLKGmhgvoEuSqZwXmz7ARf6WCc2nYGqzfCEbk5yBGEGrEeiWFKdf0nb0u7jFMR0DtmHK9KaFMDlXQxxLPSSpB31DxbCweJZeazy4/3q9VMtMUl1zAMwlEKkLwaPntL/VMN29HEMwFXvoGmSzkGnUWxoZHxe/m/tms3b+tNHgj6Wx675x639Gdp7S/zW3odWnPfNgIyRorwROSdqaX3oG3ZYLZuFMfYkHVDSMeZJVwL4YHGF5Yq7Ehn1wjMFLNButYZMAT4PHI8s3ch17ZKbRmt998Xs4qHDTQT1GjxsqpeteV+kF3YqONMvMyDXPfXqik4dv2ESsdbFp5R3PIAIqmCIO31ta6ZGoPe379XSCzgLFiHb9Q1+xoljXKi56qEx7uHlZ7PIbgDy9CvDRaRfl3BNV4hrKTEu0xxMi2FmVCWdBIML65X/WppOSuADEvq/7sFk3Q3Q/cpNqtdppOBFeLHv9SQwYE7kp0C2h3TnSBET7O/eOXbu86CXI9VFtQpl3w
- oEz/lKxL
- MfaTLlF/LJneaGxi8fR4a6kJdqeCkASkajgWsqOzSYudlV5G014CbOD/adh5vbhyLau9m+3U2DWU0qHA+9oSo4oZmV0/ylIxQurBAIz0sYP1fjSJ+bM/Axgb91+LcjlfK6nQAoi/prt3jlyO+7Zw4DqwiAl5N1moIpGuhbwP2rhR6MvBHcEmYsrh2NwpkL4KqC2gnFGKtQDANdKl1xoz1rBsqepiaMJIOwkXwHcaSQcfI2fUJxyBL/FaAfxKEldhryO20gkIG2A1de3U52UDAxSRDhQ0+BPXPhSV5IflKfLZ0I/XxX92RNgFx17A/FSEVjUTpsFl3mO3KEPV8H+gqe5g8RibteF6jIR3aSVXEb3fhKMhHjjyKefXubnAeFiWnP7Bxi8zO8A1a+y61klrnKbh/Kw==
+X-HE-Tag: 1767837906-107319
+X-HE-Meta: U2FsdGVkX1+YWO6v7q1SZSL8t47h9sHKESyJ1r9nLLfkFb7uB7xUJGbRNrcv0DWE2PQ0tGU3sWHQIcEs5BCuy2//puvRDEpqdDVnafj9SnQILXmXoTYfoS3nhr+hXkXvVXhjLDCq/H59Oxw4wO1jmk1aOxvtQ+zVe5AyfO0KykDtr8EMZNA04/QpdtEcU7m7x7e8MugM4yLi3fiVK0Lyr5onO5pfiCKp8EcJ1OwRZtCF7ZaGRtv9Ppb0rOrGgbsU+nEXmlxlJTQR57UGPATENlaLzfJWqlgizQM4y/aD6/6YwTHjzz/g4ocjLnekhtRcRoAx1fNYq3UL7TlJBwFZJjocYKyV0m9eKFdIi0BdIA1z5+pOPe5TftPwY11hniHx9hAzcJ7K6N2S8/9XkfP95qAKucd38py6kxG+rA4/wreEb1JpQzHw2htpNNg6/JVJFgxDbMQcqSVg+7isZq4ZS8M9l4nmZap0+Jy87lE9RyR1sz2pOB8H0MZrg4jmYl10GerRFOmyl6/HhtklBIfe58xp6QAtwgZk41aQFkikk1uuouNwya3RpCL6o7cg46F6ORdG4DyN+ldVumc5gvMg53wRu4HtZ5Yo2TzblAI7GhrAwtyr5AXBLy9v7tezEsPy/BshrhXXXW43AGUCtaAluGO1XGp9y/qXksxF+Dl60dxqBxqinVKbLiMWEBlzaO3YYlwSjg2lWwmdUb5b3TX1+nvSTYKHfR2Y41I4OUYNkTyGmvhLwxkJwD4R7p+dYH7K4LB+2MpxSjIY7cEWsdfsykriybyBY4EWivYxjU2J9VZntclmuD2wANXZVd98d51UHglkxvUIlsU3QXF+/wbztfbMFK8oQIjjQbPlUgo/7peSwQBVMOXuOLTp8a2Jq5A4YuucaiXtvdYm1GY1yOxFA+xCBGKQNRds/9y8bKXy/k4tZJvQmEbjcTbh/0lmpTmEnxtJPc6slpHLrTawLWf
+ ZJ3jBP24
+ KCHIKK2CWnYDP1oJei9055lSB7gWzPHiipYDvqvvL6iX0aC7hFxqXJp1nzjWKLhUZmHCZtpoNxp2SN64kA3mLo6QpPVwjsXk85eLT94pI1cc4kC3Al/ZrCxjaZHHkZVY+tMmGkNu/rHmLAe2+7Co9CfIBkPwwSi3mxz1Buzeh3ovmL+o2Fx4x9qaMiuEXadKRaqo4QIbVktaTuJbM8PskTkYi0E4M9947RYattJKR7MLa787blfSZ4Gwb5RohRL5HVV3DueYMMzkMlgX3pfdkSbGc/J8IVrivc2mZEpSoh+WSe3FtbZ7D6BtmeyBNJYUFPvhANxijmsFWs6WNgjrTDQS/DWeajVAd2fAi03KwI6HFFyP74/t9eDy6V2fyLwckdJai9j0SyEcml6mUS1gl4Ggy5ZXvzYA8lo0PT/zo2eTTevt1d3hGIg992tJWpI4sg/FgAH8uWiFxP+1nnmjHr38nCxWL8aSB/pFxILH9I7vViiafrGWDkgyFf+LUN6Or6QVx3ZGEFWVZPagLgZ0AGS68IlEguNG5ep0yzQ5qyxlue/EbpYMoGXQq+o7qc2Ymc00Dkl9my+NcN8qdP06VMpnnun2wtb5gw5onRYW6mtmkUMlMX6zp+wnSgA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,83 +127,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/1/8 9:05, Kefeng Wang wrote:
+> Commit 5bbc2b785e63 ("selftests/mm: fix FORCE_READ to read input
+> value correctly") modified FORCE_READ() to take a value instead of a
+> pointer. It also changed most of the call sites accordingly, but
+> missed many of them in cow.c. In those cases, we ended up with the
+> pointer itself being read, not the memory it points to.
 > 
+> No failure occurred as a result, so it looks like the tests work
+> just fine without faulting in. However, the huge_zeropage tests
+> explicitly check that pages are populated, so those became skipped.
 > 
-> On 2026/1/8 3:38, Zi Yan wrote:
->> On 7 Jan 2026, at 13:39, Mark Brown wrote:
->>
->>> On Wed, Jan 07, 2026 at 07:31:30PM +0200, Claudiu Beznea wrote:
->>>> On 12/30/25 09:24, Kefeng Wang wrote:
->>>
->>>>> Introduce alloc_contig_frozen_pages() and cma_alloc_frozen_compound()
->>>>> which avoid atomic operation about page refcount, and then convert to
->>>>> allocate frozen gigantic folio by the new helpers in hugetlb to 
->>>>> cleanup
->>>>> the alloc_gigantic_folio().
->>>>
->>>> I'm seeing the following issues on the Renesas RZ/G3S SoC when doing 
->>>> suspend
->>>> to idle:
->>>>
->>>> [  129.636729] Unable to handle kernel paging request at virtual 
->>>> address
->>>> dead000000000108
->>>> [  129.644674] Mem abort info:
->>>> [  129.647456]   ESR = 0x0000000096000044
->>>
->>> This is also introducing OOMs when doing at least audio tests (I don't
->>> think these are super relevant) on Raspberry Pi 3B+ running NFS root
->>> (probably more relevant):
->>>
->>> [   64.064256] Unable to handle kernel paging request at virtual 
->>> address fffffdffc1000000
->>>
->>> ...
->>>
->>> [   64.087583] Call trace:
->>> [   64.087586]  kmem_cache_free+0x88/0x434 (P)
->>> [   64.087598]  skb_free_head+0x9c/0xb8
->>> [   64.087608]  skb_release_data+0x120/0x174
->>> [   64.087615]  __kfree_skb+0x2c/0x44
->>> [   64.087622]  tcp_data_queue+0x948/0xe50
->>>
->>> Full log:
->>>
->>>    https://lava.sirena.org.uk/scheduler/job/2341856#L1721
->>>
->>> Bisection identifies:
->>>
->>> [fb9a328d30400dbc8b2ea5a57daeb28bedac398b] mm: cma: add 
->>> cma_alloc_frozen{_compound}()
->>>
->>> as being the comit that introduces the issue.  Bisect log with links to
->>> further test runs:
->>
->> Hi Mark and Claudiu,
+> Convert all the remaining FORCE_READ() to fault in the mapped page,
+> as was originally intended. This allows the huge_zeropage tests to
+> run again (3 tests in total).
 > 
-> Thanks for the reports.
-> 
->>
->> Can you try the patch below to see if it fixes the issue? Basically,
->> in cma_release(), count was used to drop page ref and decreased to 0,
->> but after the loop, count becomes -1 and __cma_release_frozen()
->> is releasing unnecessary pages.
-> 
-> Oh，sorry for introducing the regression, my previous self-tests were
-> more focused on the hugetlb part, I should be more careful about this,
-> and thanks Zi Yan for the quick fix, I will do more check and test for
-> the non-hugetlb part.
-> 
-> 
+> Fixes: 5bbc2b785e63 ("selftests/mm: fix FORCE_READ to read input value correctly")
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 
-Based on the cma_debug interface, I performed quick tests to reproduce
-the issue before Zi's fix. With the fix applied, the crash was resolved,
-and no other issues were observed during testing.
+Hi Kevin,
 
+Thanks for the fix.
 
+This was indeed an oversight on my part. When we previously discussed this
+refactoring with Ziyan and Lorenzo (and the community) regarding commit
+3f6bfd4789a0 ("selftests/mm: reuse FORCE_READ to replace "asm volatile
+("" : "+r" (XXX));""), the intention was to switch FORCE_READ to take a
+value. I clearly missed updating these specific call sites in cow.c
+during that transition.
 
+Sorry for the trouble and the skipped tests. The changes look correct to
+me.
 
+Reviewed-by: wang lian <lianux.mm@gmail.com>
+
+--
+Best Regards,
+wang lian
 
