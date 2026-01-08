@@ -4,113 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CB8FD14886
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 01:14:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29002D14887
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 01:17:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B89BD6B0088; Wed,  7 Jan 2026 20:14:33 -0500 (EST)
+	id 6AA606B0005; Wed,  7 Jan 2026 20:17:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B37946B0092; Wed,  7 Jan 2026 20:14:33 -0500 (EST)
+	id 658316B0088; Wed,  7 Jan 2026 20:17:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A648D6B0093; Wed,  7 Jan 2026 20:14:33 -0500 (EST)
+	id 58E306B0093; Wed,  7 Jan 2026 20:17:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 91B596B0088
-	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 20:14:33 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49D0913B4EB
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 01:14:33 +0000 (UTC)
-X-FDA: 84307026426.17.610080B
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 62630180003
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 01:14:31 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=SI1ZIv8U;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767834871; a=rsa-sha256;
-	cv=none;
-	b=ezl8R0eU8LsCUVGxdlJCzB3utxGSspEwrzisp3IxKNMSE0Q5KbJP2cG+jbTHoKclfGaTbv
-	c+4ytDvxKAlyncy3abzpGNTC+JoTFaDvTGUkanMaSWjExCP9iee6L1FG0/HrL8kUNBvG23
-	bTOJtiSU0CyK24RJoIZzOgsRvjOeYH0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=SI1ZIv8U;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 46BDA6B0005
+	for <linux-mm@kvack.org>; Wed,  7 Jan 2026 20:17:50 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E6A1113B603
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 01:17:49 +0000 (UTC)
+X-FDA: 84307034658.27.D13E588
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 357A38000B
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 01:17:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="N7dyJaI/";
+	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767834871;
+	s=arc-20220608; t=1767835068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Qa5H3YqLWZz/L50NubALjjk+BG1b+DdKoYgOpQUnPY=;
-	b=8bSWydAVKb8FxHBcNcZVtpV3V0+eCfcnwLuI+1NUBqsXDI6d7g4VU2krOgXmMe19/xyqZg
-	QLhZTTnXRgXlNUKms3DKfw1JS62eMydsNxNpzyQoSV0fzPNpN8IcQHVI9iCmCx/HodAgrw
-	V4anDeDU+8vlX5QR7Xm4lexWI7jazdc=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a0ac29fca1so21090395ad.2
-        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 17:14:31 -0800 (PST)
+	bh=/+G/kn4RVfJsb6z80XJti1wtBnZoS4lSo01oUAVCvB4=;
+	b=nojSK0y2bVQ8z88EmON3LpjUGMeHTWAE0TjkeKbCFyWgTtxW/r+RtQgenHhNyXcp/+2m07
+	JvPvQpoHuT0s2wUU8vkJyCvFkshgOu3cvbzDjzoz8tdYDywUt4NpP09kbIlMDTC2War/R5
+	0HAswcRI2FcG4Aw4IbPP0pzC5tukReA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="N7dyJaI/";
+	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767835068; a=rsa-sha256;
+	cv=none;
+	b=VOg0Om68G4IhSj7Xsyr0sjCOeZ9di3WpaemzZntUmEDNwz/h2F77v0E3+Zoks9d2ClheTc
+	6sks+WAjoMaidQ3fMJ4CgUy+ib0/o4PLeAGJum7A2PvKTN5Al1cHTLeHEfdh3vW+aSK2Ax
+	KVsyt0WePUVCcU0NJ/Ym4Qh9pd0lEgY=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a09d981507so11691975ad.1
+        for <linux-mm@kvack.org>; Wed, 07 Jan 2026 17:17:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767834870; x=1768439670; darn=kvack.org;
+        d=chromium.org; s=google; t=1767835067; x=1768439867; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Qa5H3YqLWZz/L50NubALjjk+BG1b+DdKoYgOpQUnPY=;
-        b=SI1ZIv8UJ9Bdicm/7/uM4lYlpZupUkrcg14XR7mbveYKARG2rFrEcYmHg9/fHd/cpg
-         eVQcKOAi8Tua9w24aCd0kYe2HT4BcCejIhYj2DEuwuwYB0LYhuhv730jaToOLUvCP1HJ
-         M98/M8iaKgQU8XI5MFyM2zl6q54un/TmFdYM0=
+        bh=/+G/kn4RVfJsb6z80XJti1wtBnZoS4lSo01oUAVCvB4=;
+        b=N7dyJaI/Kf9eDs8+7b9KiIOwGELOCawU99HWYorFNMJATYcU49PDEf3DZ5lHg9zhht
+         ulk2qvP50AWEDEpnP/YrFWCpdSKoj65mGASzlDcYeVmQ3nX+tnAshzPMOtvAdWTX+SxG
+         WLPW1HszpoEzPXCHwd54ERvaz6PwKktwKIB5Y=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767834870; x=1768439670;
+        d=1e100.net; s=20230601; t=1767835067; x=1768439867;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6Qa5H3YqLWZz/L50NubALjjk+BG1b+DdKoYgOpQUnPY=;
-        b=kbDFiUg6xt1Ancjt2YwQXEpee1y0/y7os2pAoBgVaLLDxqFeGPpec8nccPicU7hzCE
-         6pUJJUmiWsylWxiVxCsG8U9QAgl7GH73BRDhSeRCD1Of1oWeDLOI47pAi8Is0LvrGQOx
-         5hkARY7AW3UgutOxHih0xaZKdErVw4yysC5/ShG5EnW+UpYddFGGXJ6Q8OnlLNLmhDD8
-         S8YAPx20X7vNTeTVxvHvQA52v/UzE6JDQqnNITnE6xSUTGf3TzjBr/BlsIFjkm1MiI86
-         lBzomxklXFA4XDbH1G8ieXP+/4Gxf+CydCRu5Sbx63lvTJ2uHnhuj4785LmlmFy1ckrw
-         5HJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW1+DQLTrBKYdzne+HDHuuQE1P838U29wWBAPLqDOreJDbW20AGeNCB11iLpG7rXHbGQcxF+OLqmQ==@kvack.org
-X-Gm-Message-State: AOJu0Yym8HQ2RyDtpm6wbyCNUBpmq/m98SS0MLA4RVYb0XkudrO0s7OZ
-	7kKhl+QJ2lAqv/NjsLWX0HqL7n/+gQoI7H1B7kM59IE1ZNQea5p6hutSUaPT0d5AZQ==
-X-Gm-Gg: AY/fxX4TzV6EvHESKWc/a1QcU8XMDY7tERCuVkLpk3P6zrN5ig8USt4OpijzUw0KbJ+
-	SDv7JzTKylhG2GVzfboYpSgX5DEit9LxHa3HtDcAG4wtUpMhPm5HdGLSbeCoedzMwV9ceto6KlT
-	0kakejDElbcDjpG06WRDT7reAqW1Ksj3Km2UJypt5IhS7ttWldAviRHZ+FuANzPuqdgaDn84F4C
-	0bGgjc1krUs7eViUbkMmifPOX32XGxvAUunjeyz8tqdYvfGFZ8eiTPZ6eWYLg+JepvxeT+MGIoC
-	shwtPz3oPZ90eXlq1sQlL2EmHhJEfSIpB+hvU/641aunJJaz5ixJx2+IgkjJZZX2GNwsCSrsEBu
-	KW3Dx1VP69GcLAj1v6ZOjVRhSg43az0uXfCzGC5oSQhcR2rA6SpX4LPvOqlUcDnEabAajvj4O4I
-	OGwCm/9kHrNZ/M4F2PHwYtNHNcH2yKJt34EFYI3nAPMvgkTaP1plM=
-X-Google-Smtp-Source: AGHT+IE1bMSpJX3dDjhml2fgLA+99h09J/MLfcj/Q7PcWlglaVsT76Srzn+b7bbnCIv/UodQXX3LOQ==
-X-Received: by 2002:a17:902:c942:b0:2a0:9fc8:a98b with SMTP id d9443c01a7336-2a3ee4bfbcbmr37936235ad.40.1767834870156;
-        Wed, 07 Jan 2026 17:14:30 -0800 (PST)
+        bh=/+G/kn4RVfJsb6z80XJti1wtBnZoS4lSo01oUAVCvB4=;
+        b=VSY0VvRHmWcVbq9dhCD3imVHbL4Gm941vLNzSY1c14NWDGeBfss2EPdH1eeYeWc9LW
+         hogY5TchDp8gWgHMNMAkLgGo8uiH0ecFVm0dWSm/2ai+sO7I8zJbuzKYg9VoFSE7o62K
+         FUQOc/TP3HMcgZPuOtFWzFAMXzyv26oVDLuPxDOh22rue/+T/PLT46OZ0JBrdv/ZzvUo
+         /7Dqizt5U3dkGvM9Wdqqp+Exxw/iF2Hdjl8TixwOXs8gRPX9xRDN+veX5ikWUvpPyQZR
+         lDqUyv+vTfReiLCrpEv+dPaaIpfIyWiw9ABBw0qwrwBHlw5h8u6JdzU3bYV+6h9HPBcv
+         wwrw==
+X-Forwarded-Encrypted: i=1; AJvYcCXqih0ITuD+tGOxc+2BxE0nqPha0Cg9UWkTKG2mUevfNgcKlk7Y6CDjdlEx0BHK+yXTjGOA4GQz7Q==@kvack.org
+X-Gm-Message-State: AOJu0Yz6vhzwUvBa8jcIDmyyNeOGAcnPH6a8AdNHwhtFYkYJ1+hETQto
+	qS8OQ+aH2H1j/4IfiPxbn9PiLPzc3IEdv/d/TuY2vWeceE8rqAjq2oAW709TTLxC6w==
+X-Gm-Gg: AY/fxX7qx7iLzdHN0uBKb65etIQ4Y8nZlJ3/u0raxhDAKbSH82hxCa4GXGLq14wgcId
+	BtdKpYLruI5zIN7TBo3QERgy89nYHulYcoUC/br4iAI0c4nxRJXHOWxJVKeHpPeV/CQ6eky0eS+
+	DfV2RsaSZYZXU+zeVUfvTx+GAdhkWZd5oTtg6dfs9wAesXcTKHsjbtQVyFhHmx2TJa7912LJpPv
+	+tYPU7uYo4tukFFwIVZHKYBIVFdeuAZC5JmVVZ4y5b2Ewtf/D7w1QNBKDZtAGYN+mev83sac0xz
+	SVGHttgnUCsEdoXM73Du0iWDAC3IWK5pDangzraNO2kmSxd+3H2lIPf7BxbB2raRb4MZu25rRe7
+	VP3PVWIigFlavg4SLxaPtHR1pKXG/4OFbGSRiFw0gB/xDEx2g8wp4A+tmtzAAEXZZVu0akc8bia
+	lzWWxArPtl9JYJCTk/8YHBVmIIZru6c/Jb26IomChWreztKv28YHA=
+X-Google-Smtp-Source: AGHT+IEsR8aExUZXdeUusQSsTjMpLN3nP6NIEIEvJNT8CI4eoDLhwSkNU7svDvm/2HfKkSranx1BwA==
+X-Received: by 2002:a17:902:e545:b0:298:639b:a64f with SMTP id d9443c01a7336-2a3edb0de06mr43730205ad.6.1767835067043;
+        Wed, 07 Jan 2026 17:17:47 -0800 (PST)
 Received: from google.com ([2a00:79e0:2031:6:7bef:7c13:79b4:e9de])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c5ceeasm60358825ad.45.2026.01.07.17.14.27
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c3a507sm60054065ad.3.2026.01.07.17.17.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 17:14:29 -0800 (PST)
-Date: Thu, 8 Jan 2026 10:14:24 +0900
+        Wed, 07 Jan 2026 17:17:46 -0800 (PST)
+Date: Thu, 8 Jan 2026 10:17:41 +0900
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
 Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org
 Subject: Re: [PATCHv2 2/2] zsmalloc: simplify read begin/end logic
-Message-ID: <vean7s7lfhcdnbs72efar2lt4isklhz4kt337kdbx7k2r4qbzn@rf7acedppq3v>
+Message-ID: <se3v2st4cr6vbqgw5y3a5egeq5zrkh5bede2rcheygpdsem5sm@j3k75zxt73ou>
 References: <20260107052145.3586917-1-senozhatsky@chromium.org>
  <20260107052145.3586917-2-senozhatsky@chromium.org>
- <20260107101705.0469e87ffc60120120500e76@linux-foundation.org>
+ <gl54caplknnljganmswspw3cggoyjxe2n7szvnwhhiyl5y7ynh@tzl2yz7bw725>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260107101705.0469e87ffc60120120500e76@linux-foundation.org>
+In-Reply-To: <gl54caplknnljganmswspw3cggoyjxe2n7szvnwhhiyl5y7ynh@tzl2yz7bw725>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 357A38000B
+X-Stat-Signature: 4ncj5jyabhhwdx8nebbtazh3rjfhbj7f
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 62630180003
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 4bqy88ftp8qfky7c7pxs9wawzyqmfg6n
-X-HE-Tag: 1767834871-697417
-X-HE-Meta: U2FsdGVkX1+1At02WzelX13PS5mnb2a9ZORe32qOrt7/cMmBsivbAL2lvBEOpcFqfZlO39Ka3uGqzpkAd16ywwItitdRAPs1Vvuqm1qNumQoR5Yb8Op6nMALsguTG0cV2R/0BqFeRhhfKFMP0IT2ZFHEmQWR+UVVG/idDy4tCkoI0s1sjZH0SwBcm8wNGfFXcb3vIGrag1AVxkS9AiWHoird34FUl76+VtvXSC72Hn85cgHfeVoevtprxNDeTaDH17Ug4aU9mlJCVGLgVLDdlxbliOMrEaN/cYVLpv/jF4cByST0E0Si8T0wLPxG/pylroO1cvSZKUFNqu9c3n8MQaDMQ/xGwsPdZPecWz9KAtawTNhU2kh8TjtEYkhqcTw8hm0bHWRSaNHVmIpId+e56msOoK+mWxfCfZhJ/zhFyi+9OIVczjoPV4J+iUJ2It7HbxRVHWs1Rc4z1xTFSGvlXC84cDu96zJeC/HtkDWoEkEz9YQSGNAkv8a2SafAp9wCk44lA4sYXVem7KNxKzHhv+Rl9w6iFwZXgFU18Evnb1nJwm8+Z+hc3a6oLJYzxjbwGQRsQnnP996bHDEMG7/1R7pIQ28Px0pKJTMmvTce/mVQNRuNASqBPFR3s8YK/M1Or7u0geWY5oq1H4gba2dzvLqFugz9fM3wJTxX7SBnPTZbm7M5CO8lDJ5XFZBs2jk32WwJDi8GNkpkYn4diTQuoVaiUT46xkxRnbvbADwU4O2LP/W4+37epOu27qBv03mZl5aRpZnTjbVSQgNsCaxYoxjh4/FHfjhwybzvS6w+I+LBdOBPA771IdMuqUw5OsFdL3l6JnQ+s/IAX/7XN62hddu/tHusRCuAbNO2yc93R2GXwF8bbp3YO8VqvbTVIeqFHenbi82kYaOD5rrtXItS9wR8WtLA0OIxJXW3m9J3ZPX1YTfc2YBPfidhcleKn7+09jDCmcVVsSNsT83i/wO
- tP5HHtNb
- dALcFKCDYUGx4DVEu3g9mQ/6LOAGmsRLxn59VNl6/S1hQc5StL8BO0ya0LJOWAqWZwSQAlSlxsPQEQwqqsB814CO2YenayC4/1lBw6W+1129y6m0wUX/hvWHzGu0Mx1h9zcToGczszavKvxZMIvjyS67eoiW3l++FE92kGvYOtnP1wV31fH3H+qR/1tFltyzO9VDKN+vuSQ/p9flMOQrmxFxzXEHHGRY5IMuYAE57nAnB3D/LBc7MyhpTmABF2WCgjVmKoSVdyUr3W0Qi+12ginEr4YS4m9kZI4HCOj/Bzykf75sHP2gob9+fdBStY0g3Y71pQeDVEMQPgPVt/I/WDdpOGHguMZnoCglWgymXbtA5ncY=
+X-HE-Tag: 1767835068-529671
+X-HE-Meta: U2FsdGVkX1/vnOARLoCPmyUT4iWi3mpPFjyJr3VtkZY2DF6+PWuRu/zDUs9joXgt8EWcvv+qet4eMebeyQT7X4yLKVqC7r4uVF75mnq5smaqMMPVvHaHDyIU6gdIv2hk0Rucrnhwi7x7M8/L3jvnUOYj/OCFirUcPnFqKC4nYk3FMHoMoT9wRSf7y84nIerik18GoVpmr2w2mqzXOVsZplVrb6RhVaSdOVMnpKLHvYrdS0Sf4hyITabXh5qSeBjdSABeKo2k2faPlNiVovDaZxtiH1Va4GBt7npisV3+WFOXHtpXjAPMVl1sFfxxSxzFKHbpNe7eLZcgoN38Bx9BCH0cf4MBTh2qhKqqwO+9iXQpARwl1HYfzdkzDWn6v94vyP1CoqoogyyWudLdnWG63VesPFs9qwqtPEsGHxCE8x2GUe7cMrhvx0wdyZHOBOr0o/w/KK4B1iJ1OdHCLqdZoh6ffF4udbIrgZ4JH6XA7NPoLiPd8K113JCVvpkAiiioQnI1PqQLjTOHSGCeHCxQEPacQtR81Ngf/ND4wx89egytHHLvKrFvVZ9G1u0M2zQzXvTI9GQ9OiwPHf9zlhoa6RBI7IoYZHdBN/K1Av5zTv5x2uZat2J1H0FVbUqLIi1iMXw0cCMCq9ZvPIEamZZRJmUkmkrhZhqHgK1/j/rYFNn6I1OzhOKR0TgpJD1zWA3UxD9+tR9lqf1vJxPDeqiZ1AZgOaKuTsgF5aB47FELtx3m91NPYzSOe3w0If/5OBnUS3vZNWeC1SRU0YkdeqktauwkE584eLSHN502zSvNEftVuw+r0PF4FzbIgGG2M9C9rtwOADfF5mLCTesUfXksjM393cdBCbIQYRJGNhoUYyabZFY55JySoSEjzxDzWqpfn0KfiBRLJ7mjZiOOadTiW76A6kvh2V82r7UTI//Vw6QCFjdPrvskJ+O558zAbrZkwl+J8EbGomux4BojERb
+ bihulRhI
+ EI9A/KLFrGJt5Vtg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,9 +119,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/07 10:17), Andrew Morton wrote:
+On (26/01/07 19:03), Yosry Ahmed wrote:
+> On Wed, Jan 07, 2026 at 02:21:45PM +0900, Sergey Senozhatsky wrote:
 > > From: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > 
+> 
+> While I appreciate this, I think for all intents and purposes this patch
+> should be credited to you, it's different from the diff I said as it
+> applies on top of your change.
+> 
+> If you're feeling really generous, I think Suggested-by or
+> Co-developed-by + Signed-off-by is sufficient :)
+
+Okey-dokey
+Co-developed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+
 > > When we switched from using class->size (for spans detection)
 > > to actual compressed object size, we had to compensate for
 > > the fact that class->size implicitly took inlined handle
@@ -131,13 +142,21 @@ On (26/01/07 10:17), Andrew Morton wrote:
 > > code: there are already paths in read_begin/end that compensate
 > > for inlined object handle offset.
 > 
-> Updated, thanks.
+> I think the commit log is not clear in isolation.
 > 
-> > Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > ---
+> How about something like this:
 > 
-> This patch should have had your Signed-off-by: also, as you were on the
-> delivery path.  I have made that change to the mm.gt copy.
+> zs_obj_read_begin() currently maps or copies the the compressed object
+> with the prefix handle for !ZsHugePage case.  Make the logic clearer and
+> more officient by moving the offset of the object in the page after the
+> prefix handle instead, only copying the actual object and avoiding the
+> need to adjust the returned address to account for the prefix.
+> 
+> Adjust the logic to detect spanning objects in zs_obj_read_end()
+> accordingly, slightly simplifying it by avoiding the need to account for
+> the handle in both the offset and the object size.
 
-Thanks!
+Looks good to me.
+
+Andrew, can we trouble you with commit message update or should I resend?
 
