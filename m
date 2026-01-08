@@ -4,126 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA821CF6A88
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 09:14:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 619E9CF6A8B
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 09:24:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61516B0092; Thu,  8 Jan 2026 04:14:35 -0500 (EST)
+	id B1E9F6B0092; Thu,  8 Jan 2026 04:24:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0F0D6B0093; Thu,  8 Jan 2026 04:14:35 -0500 (EST)
+	id AC8E26B0093; Thu,  8 Jan 2026 04:24:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE2B26B0095; Thu,  8 Jan 2026 04:14:35 -0500 (EST)
+	id 968BD6B0095; Thu,  8 Jan 2026 04:24:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A89336B0092
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 04:14:35 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2B5F08C0F5
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:14:35 +0000 (UTC)
-X-FDA: 84308236110.22.C6496F1
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1895440007
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:14:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="EU/Wnth7";
-	spf=pass (imf12.hostedemail.com: domain of konradybcio@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=konradybcio@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B6146B0092
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 04:24:15 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 215CC13B602
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:24:15 +0000 (UTC)
+X-FDA: 84308260470.27.4C023F7
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D822914000E
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:24:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jKV0KAaZ;
+	spf=pass (imf23.hostedemail.com: domain of kaleposti@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=kaleposti@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767863673; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767864253; a=rsa-sha256;
 	cv=none;
-	b=IB2MtS2z2dfp+D3H6/BGbPIKF8NobAGNVZbnX++FzH6YYb9i0safDQBqkTGmTJyVmdnI6T
-	zuszl+fGgJDwCNgfl5kbIqXLKlN9dPGpkv3tZaXNRO7qsspMxRVftG5cKAGTU10x8MhsMO
-	SzYAWj364YdeHkKihh6Si5BBmZqCDiw=
+	b=oIn4WlG/rhNAWjZpuivYt/1hWsiRkaJk7u9T1zwnKJsXyg/2Exiv6Tdl4hTr8eT26hPG2/
+	GVtpDW1085JYNeItu8tdkBBV514Vni5wxMNGBqlMfGViOyic4Fh6bSmqV5X/ZHps9raT5Z
+	gr8MnQjozlB6Z7O2HdPEW00pgj/eIOE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="EU/Wnth7";
-	spf=pass (imf12.hostedemail.com: domain of konradybcio@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=konradybcio@gmail.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jKV0KAaZ;
+	spf=pass (imf23.hostedemail.com: domain of kaleposti@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=kaleposti@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767863673;
+	s=arc-20220608; t=1767864253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TvT6iham5Ww2/L84OBKgeQ/5bsD2mDpDZmqVTbCTOc0=;
-	b=IEj9CJegqxODd6NI3Go1tlI7vxpQF1bgrT4I0J8Mi9Gs+PkY2eF4DDRK3/6GH+tVWMd+dv
-	7UTbxDqI7zWCr5yvj+IkYIgXS0vvRPu0dDKxyJVaXfKbZNY8cMAesHybDWXvCMDBcb7/cJ
-	+c7o+UmD1dHlag42kqOXbym6hKF9/ss=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-64c893f3a94so2671278a12.0
-        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 01:14:32 -0800 (PST)
+	bh=O50KBUnGST61ZefwYqUJR7pUIsjZIrmO+en74z/l02I=;
+	b=DCZtoMzjkhHAhO8o/mWx583lufT8364W4S5S+W1cOB/1nxQQCpKTK+bP5J8fEalUm0grN1
+	3+SQ3lNvcoQ4+0OxA0ePszmszgxCg7/k7N/bp7BU841gDaCLbe10rLt2qiphuC+AV7Ylbb
+	1jSFxWPNyWVyvyiG/vmRB5GJktBBYao=
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-59b786b2a5dso454802e87.3
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 01:24:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767863671; x=1768468471; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1767864251; x=1768469051; darn=kvack.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=TvT6iham5Ww2/L84OBKgeQ/5bsD2mDpDZmqVTbCTOc0=;
-        b=EU/Wnth74MUETjme19LiNeeFHaCkd6WG9q8ZaeVEvYT+/kzmmnS2gmDdruJfQ1GcEB
-         ur45K1h2etZMr8ju08L8KyicB7hrlZB/toe2MWtNKWjzaU+sUAnSXC53pWVZpaLNk74N
-         Bh1dEnFeaQaFjUh74XdNoNDH97UvMd8Owm+GUdXJtM9JzsxyfxoLh7ocO9RE2vKcZh7Y
-         7WkLVD6mABqow9eIE0MexctgZoqaS21GHqXgnRo1SpXc5gstaAfGs/aP6W0TzkPfyqQ7
-         C4UkiU9ejcKAfxgVwRjX2ekC3o/43oLT9MWxPZA4AAC5BBVuCH54wqujbrRIeIAam8JL
-         Ml/Q==
+        bh=O50KBUnGST61ZefwYqUJR7pUIsjZIrmO+en74z/l02I=;
+        b=jKV0KAaZmWx4BTW7R1sWFSUTjyBTzo8D9yAMFD1OBQ+WeEWZ6oPkslIYYgxFbjw4Np
+         xUG7NLDtavtlczrvDoU9CQrYEA1O4WTunAd55ZKaEd2HMzLSr9aIIMwKb+rwvbTQV6qq
+         9fNnMCkTinjWZUc0N0JCvKY5Gr5oR2pIGSmGaBbJ5nUvN1YunuL9dPrwmt/Isa+9a9is
+         AR1SJEwJusmqYi0Vr49JLAmB29qBwo2uCWLMZW88Vy5UFk99kcl3U7WnHyc62njOxwKs
+         ufHVig5YT3DnN/VZIkXPY7wWnpGfoTF6LKiJZwjDmnOrDmcPCFddunxOeyrRmGl1mXRi
+         TuQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767863671; x=1768468471;
+        d=1e100.net; s=20230601; t=1767864251; x=1768469051;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TvT6iham5Ww2/L84OBKgeQ/5bsD2mDpDZmqVTbCTOc0=;
-        b=hY2aMoROcsuv7OCv7VJ4WL5EnKRlLtKpKXq9poGY/lpDoHSEv2cuDEYdsqg33uH4zN
-         1aCA3ngQz/MXlSMZtzc+hhcELku1UrTVzLkDBxy37CW0gF/V/OL8ED9lN7evKmMStZr1
-         5O1pHEaceXIA40E8uw2RKRy0iUV9/aB2L6d51mYLHI4qX1LZoeOQ64frsQX7Aqda7uGW
-         z/XlHB9dTr8JOkplXEQ5lab7DR6MwhgKjDzMH66qWkwVPN105QX9tTW2Lx4TJUUMAgLD
-         JVTl7gOM8ajwjuyltGKP4LwraqdcjIU8uQHaMpFw18fyiwE1VHrbNGQ1wDHPg7JNatgh
-         f1qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXh2JL8LRzFUVs2EbWEtnQsUrNHSsrS+m+z24++qytCD6kLbvsjofsIoH1kxROnL5+os89Oc5PCmg==@kvack.org
-X-Gm-Message-State: AOJu0YwSANAPv/2kL2EOiai9VYMJ2a4GNhk3c7QuYpO3y/e5CnPVVFKT
-	Ip5+qkG3Zj0SZhxUvIq/YxYrF5VPWJlWHHq6aEgOKLkAtBm7wnGw5sf3
-X-Gm-Gg: AY/fxX6qgYDHbbAiDtV+bETse2fqaZsAT49v3Qfkc9q2vM4rVZ0fpcqG2iByoi6hHgn
-	7drb0fdrdJ4BPw94tYBM2OdYFH6Xxv2mj6mGoLjq1TAOou03k9eynKtYNBd8kMIutIt/8TXXfde
-	2ZduKTJem28QAEEJY0FlxY+Ji0KYtO+OY+TR0qQDK8Ltxqsgl/WeDwhdNxjV316oevENiCeIsuP
-	rRdDPEPR6dY2Gt38lK6dgD1zH/ttkbQrUiEfx63LNMKyh/IWeRHgwbx1QALIDjJjzggwd/jfxs5
-	NbFBga5JC9wvAqBEEWFV6EKGFayALz8OX5s5DoKQKczY6Nyzh59jutDfJoX4MdT2DX/OBdfZ06Q
-	DHIgzU0q6DiukqhU8zKYZgI0REvDHCSaT1Qj7E0R09Fm8LzJ6sxvdV3flCpndJCOhi0396WO03x
-	yauJ/3JlCFq5NQIs5kngyS5PLu3yXwbSJ65IfAnug8Em/V9We4oKO7TF+s
-X-Google-Smtp-Source: AGHT+IE5MxZ48wZVCbAJv0tXqges6F+BClCxqoh/5Ucc6OW9J6EO7DAwQFoEFR5x72E9cV+XRrv+ww==
-X-Received: by 2002:a17:907:3e1a:b0:b76:b928:eba1 with SMTP id a640c23a62f3a-b8444c59b86mr531643666b.7.1767863671000;
-        Thu, 08 Jan 2026 01:14:31 -0800 (PST)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a27c8f3sm754691366b.16.2026.01.08.01.14.29
+        bh=O50KBUnGST61ZefwYqUJR7pUIsjZIrmO+en74z/l02I=;
+        b=V8d6L489rJdrmMYFoZ7ks+Li4OdIS815/cI50tB/TP72aOP7rIpr6vApTolPgOSMIv
+         oOBKr877WgOs3scImcXRt1Rnt7Uz+PbHQAEl2TUGt446VF9DVWjsz38YuKH0z6vlYPVd
+         3ZVcKW5U3cW7h0j6mfm6HC6q5nGMCuo8uIqiBurJhKjnHOGCLUk7cHrYvJAdXYKkfsXU
+         W+kjxw0n381Cd26HdreiJBnWv189X2IXg5HMF1F11/7GVmI/6n7z3V5/iru4EKgo5pqb
+         bQF+lLUUaghlOaSaZ3xSU+JnVV3PZoxP1jiI9FqAgMQQQBXq2tzHtWaFRHmTsqlMw/+6
+         79fQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUgI6r3CncDF+vX9hqGgPlSuJfhuamjdOzY1ZhUtPDtU1rAsmC9x2POTAL8nYac8+6IASJZoPgrfw==@kvack.org
+X-Gm-Message-State: AOJu0YxV5NgcubILrLw+NcBw6NrSapd+QQMekLHP5FHvHgyWM13IYNaV
+	jKf+4xpHbZywQrUZSN9xeMF7yYEYOMl1f3ZTWa9T6X64swX21MJw08lS
+X-Gm-Gg: AY/fxX7N2G1ixhyYXqoNUWWBERuFJ4FeD1x15+C7hB1pgdTJp8mBogrBtMEAA4eX/8g
+	9dIt9YG6++l51V81JH4lOCVwM+lXJhv8XM60EzXXtYzfPleu02MQzyWpBCh19xATNyeuiXG7OEF
+	W0ZtoHmF8mh3Hc9ix7taQw/qYHOpolx0T66rlD1eUrekOQ84VepLzUFFgPzdJzlCErw0A5Xv9bj
+	d5l/QDYDr50py2L9g/5e3vRX6Wswmw6NVzyaSd8p4dcD3u68gsht+Mt+N5G/ls0GDXt1WGc6USp
+	0pxiGuc4DKRTVYYj2Wg0WQwIrvMRuJM4V2EP56HpdbSwabh9EJ6jEgL3faAYmdufkjB4+/FeLUI
+	IAwtWR85seUqC5AhWms0FUmxmy6V4uY9fNkBHbqzs3Wq+HbqgsQEak/tWwBERIVQWAMYTj7NdWK
+	/4FedHAS7+4mHl5w==
+X-Google-Smtp-Source: AGHT+IGdcXNcrSJMUo5rzOhpUERfjTIptDpq2P2C9H1U0wCIgEF/AiEiE+KdQDO/6ObzG0ofCqAsmQ==
+X-Received: by 2002:a05:6512:2350:b0:592:f8c0:c8de with SMTP id 2adb3069b0e04-59b6ef08fffmr1929382e87.13.1767864249992;
+        Thu, 08 Jan 2026 01:24:09 -0800 (PST)
+Received: from [10.38.18.76] ([213.255.186.37])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b6bebfa94sm1498950e87.55.2026.01.08.01.24.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Jan 2026 01:14:30 -0800 (PST)
-Message-ID: <acf3ae82-2cf3-4c85-bbb9-bbcbe2b7be3c@gmail.com>
-Date: Thu, 8 Jan 2026 10:14:28 +0100
+        Thu, 08 Jan 2026 01:24:09 -0800 (PST)
+Message-ID: <5f9a0269-f9d5-4ee0-bf57-62148d762f7f@gmail.com>
+Date: Thu, 8 Jan 2026 11:24:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 mm-new 0/6] mm: hugetlb: allocate frozen gigantic folio
-To: Zi Yan <ziy@nvidia.com>, Mark Brown <broonie@kernel.org>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
- Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
- sidhartha.kumar@oracle.com, jane.chu@oracle.com,
- Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>
-References: <20251230072422.265265-1-wangkefeng.wang@huawei.com>
- <4211be25-3fc0-4395-9b24-a5ff0b3caa34@tuxon.dev>
- <13ad5888-2d53-40c8-9269-22bc6001754a@sirena.org.uk>
- <7253A444-97D1-4256-9AD9-BCFF66437510@nvidia.com>
+Subject: Re: [PATCH v2 22/28] arch, mm: consolidate initialization of nodes,
+ zones and memory map
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Shi <alexs@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
+ Brian Cain <bcain@kernel.org>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
+ Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+ Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Jonathan Corbet <corbet@lwn.net>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Pratyush Yadav <pratyush@kernel.org>,
+ Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
+ Stafford Horne <shorne@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>,
+ Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, x86@kernel.org, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ sparclinux@vger.kernel.org, matti Vaittinen <mazziesaccount@gmail.com>
+References: <20260102070005.65328-1-rppt@kernel.org>
+ <20260102070005.65328-23-rppt@kernel.org>
 Content-Language: en-US
-From: Konrad Dybcio <konradybcio@gmail.com>
-In-Reply-To: <7253A444-97D1-4256-9AD9-BCFF66437510@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
+From: Kalle Niemi <kaleposti@gmail.com>
+In-Reply-To: <20260102070005.65328-23-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D822914000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1895440007
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 47eyr64ithggf6ewgcsigtnhwatgdwnh
-X-HE-Tag: 1767863672-818618
-X-HE-Meta: U2FsdGVkX1/Y6W+GA2A+7uMlK6NgCqov1r+SLEv1KLu1Nzum3J1tBNirSoh52p8sm2DXpxvsNaczYDD/ahmU5sh8Qz6nLt8P4KlIQvK/BE65fmUGgdNpgZibIFnxMBwzhqGP+nryd1+0JWYPyEBMxYPFkGxDlqX4WzRV4pys7TAUaPotFH8EngXQd4LIaEFhrZm6RNw12vri7oYZ4S/c8tIyaV5UGv9yf1A/J2hHX6IH1kYBEFccFuY3nUhlrsANEEa97FE+grtPK38O/Rh8bYaRy+C/8kO1ert+HNiL34WWZWLXeo6sYgY3lBHxDTGnLujURUcb2QeV83RGF+XnukFN9ccBNG0uRIQNX5WB+rFD/cZkzbyUiIX+3z7tpiZoyP52v1Y/sAqiZBNchjHMbiDrS8IsCSwIMoI2QzG1CZ/gzdxpV51wXyV7/Di+qRLB5azljiMShBUca5dOiFOfgI2A/qm5nThbBh5E1UXvM8qtfknRWINKP64I8UyDZPBSu9vUbZkx6JG3ypXEikzgT4gjaleQ3AFY6+5Nvcq4xD1sG4v+zj2Q8d/LdYA4sBW44yQu2eYvC0XlSdBF57YkSQDPK8bjmRHTGnjgb+/9TurNtHDXOfbFAbXNxHtd1YW6xPJ0o0c4SEBVs3hFT+ykzR/Qf5e1Z4VsiziKudl3a/nNFI1eJZkSZ6ZabcAMCWQBGQpKGuxP9eOoyeUvOByvyO32R7L7i9K4+6xdNdrcl0JCugptN+lPq34Y5d0Kt/3unTPqKqU8+IC7gO+an67p2cX4jw+m8N9VYTnubJzmYXutZ3qOdbC3F2Fdj9HI/7gaZsgdmD8BnHlWt2HtMfgIORh1aifyRotC5Js8Lipn0LSqjBDj1jSoadiT5xjNAoAIkwInt90l6YDS85lzXSYZVwjnUbz2GeFUeqY0uBXY2tLxy3tbDigwfsKLg6jKT/EwOaznu4pXsiP5kZmPhk7
- sLc5X+9+
- MJl4rQ3kicGfTIgNbveZLGv2GWQXdQUD/am7dqzCh6dPY5fH3P8IfOrsxaGT03Cgsnp8/NWXBCCnury9PJKvwYS1y7f6IF0LmnQ4piJy9kGiUkpyQseyL/vobV075uaEon+imi6f62dYzOJuEX0tXiBXDRpT/PX4IinRU5AzYGVGWyFLsWN07rgXwYcEojc/CZht1wXXi7yH7FhjXM1J9rieMQzcFrbvJVgkiCFoiJ1tKGIn4Eh6dLVU4f5Krg1YrfSFIy2TOBSELzGeGAC7Jt1kkGyW9MovKFsU+1EDafccAYFPPpzB1L/x7wz3N66/saXXaQ1uX9RYXzSGmxd6PhQyxEunq1sEraTyhmsUMXtlzoZIE8N/gknMJYOBWAfcEoCcx1wrpvTMqbLgj33jxTi1rzmJFLt5qMCK0PWd1VznAV2gsY+SRNP5b81J+E3wXd1n8uFBTcFpM2wY+CQaj9GJLIGfb2/U02zREctyPUYcvwLNs9jMR1scptkssGFSx+4BrtR7Xs6xa21XUrFZ8wC3fWT76Y5LJ9WwwvYIWMuo7nVo3hdb7OjsUNoA8cugjDceNkQLNlBCDDi0otCU9bzSWluUUxtunPXSbzoUV7onqGTBHCce45dzMHKqAACcXEqsk
+X-Stat-Signature: 4uyfd788mj6bjn63orgjmikkp9j4hbqt
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1767864252-57448
+X-HE-Meta: U2FsdGVkX18sO5D/oRxhO7X69vfofpRKhnHhudVbTuNOBncrPNBmIEj6RpagOEmiO9pDPQIdbJS7F0r8ZqKDcUWfWatfMHpfSSkXvywlkCJ+Tv7e7oMdyS5Shww40R8oFpOdtKi9P06OkJSTeegvHzud/6ujC2lQX3QDuJympRRUNEY93240QVU4fAGGoNyMuwBQ1mfnYCJpEnPRtJ/gu4cb0an2BhH493hMQHfWxbA8nILUJ84Wk7G3wNPXKfy/PtLk+Md03wec7ioSAjzGqDUFnjHwRLY76sw0M3CalXbTV/Q+zEqJ5jrf+uYGnVk4NprL8EfSI2DnwOrCWoVQPrj13SQ8YgjwhrcL+vMzl8cUmzvObaYHJEq8GxIXm/zMQFPr53pypSQ+OUc6++Dfs1/zPzT5XiIVdNatvPuB/Ht/74jvTk/oSqTmrK6NHwG8zeWIYbt53/oahrgcgrHP2WqUxId4Gfsx6t7iL/6vfwu2IGEm46tgHs64NkbRMZX1/zDRSHahm3jD/zg9tpfNcSM36PSeQmEIBp/TYiOAbF5yUxMhh8aOPFOewZFuz/yNZPVt9BaQ+c+C6X6RHR7kb39VIsLwyUNsxWXYV/fG4bDRzyb6GsDZHXxWfWqIw8hnWUVuPKcjAEA4xEtKTyXjX+ASPcw/hRW6T7Z4l3jN7p+ciKvJEP6k7eEWYUbColCh2d+jgcZOR6GVm/+AoqAogX5217P8qwKDKt4kodtAK5XPC1oLx+bpVPpgL6BAd5uGaxr97DmqyVJKgvigj57Gjt7MTOYtEV9URSMOKmOuM8aT9KwCVWimdtWg07+a3C0uYyJFdXyhAsVGYpTuUwD+EtUipyDhhfaMRZAb/XNkpzeAZk/ARcF0MEOOVjILeBMtRyKQLlKfFpd9z7ophoax5m8sLWHeI6GIK3MU7rs7ik+02KWxHa/LvSpy4nLQYEU+MpNzGXYgwtqhzyrySMD
+ DQViQFIU
+ 9GNbksi+Qu0DY9aPkRzGNsS1odN9FRyzaeYY7pxy75sThyAX9P1tWPSRv7m2BfWe6c0BL2xg1mAQpCLqawBQPwY096K4Tj5d9JQOrhSq8Uy+6pRTL7j/64aZyMAsOh3XCQApAgcukwcdaXdb1zwmB7hQI36xxVDT5zhkpD2GzBhT2K3WsbRxtNXhnTDacicicEf8Z8C27yw63nAx6/npdHRUTkX2/o17oiN/tnnYT+HmqzhCI8LQek5Lep3Xf0u7b1yLr2VyIKt8wShuzq1CpqijH5DjlKSOSdf01vpvmlYb7cpn39yu1942BrCSEf+3cohvZDqDogIa6Lp4hCOnHql3D/O8vq62n8QKuqY7s200SZNopIhwuUK+/7rxYx9m0kcKp5ZTj/hx/5FiExdonMgOB+CZ/8CT20CzOq2pS6aIflJYQg7ea4VDodOpUzaUpkTNqXPIRvlhJTrcv363+NZm1QQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,73 +159,839 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/7/26 8:38 PM, Zi Yan wrote:
-> On 7 Jan 2026, at 13:39, Mark Brown wrote:
+On 1/2/26 08:59, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
->> On Wed, Jan 07, 2026 at 07:31:30PM +0200, Claudiu Beznea wrote:
->>> On 12/30/25 09:24, Kefeng Wang wrote:
->>
->>>> Introduce alloc_contig_frozen_pages() and cma_alloc_frozen_compound()
->>>> which avoid atomic operation about page refcount, and then convert to
->>>> allocate frozen gigantic folio by the new helpers in hugetlb to cleanup
->>>> the alloc_gigantic_folio().
->>>
->>> I'm seeing the following issues on the Renesas RZ/G3S SoC when doing suspend
->>> to idle:
->>>
->>> [  129.636729] Unable to handle kernel paging request at virtual address
->>> dead000000000108
->>> [  129.644674] Mem abort info:
->>> [  129.647456]   ESR = 0x0000000096000044
->>
->> This is also introducing OOMs when doing at least audio tests (I don't
->> think these are super relevant) on Raspberry Pi 3B+ running NFS root
->> (probably more relevant):
->>
->> [   64.064256] Unable to handle kernel paging request at virtual address fffffdffc1000000
->>
->> ...
->>
->> [   64.087583] Call trace:
->> [   64.087586]  kmem_cache_free+0x88/0x434 (P)
->> [   64.087598]  skb_free_head+0x9c/0xb8
->> [   64.087608]  skb_release_data+0x120/0x174
->> [   64.087615]  __kfree_skb+0x2c/0x44
->> [   64.087622]  tcp_data_queue+0x948/0xe50
->>
->> Full log:
->>
->>   https://lava.sirena.org.uk/scheduler/job/2341856#L1721
->>
->> Bisection identifies:
->>
->> [fb9a328d30400dbc8b2ea5a57daeb28bedac398b] mm: cma: add cma_alloc_frozen{_compound}()
->>
->> as being the comit that introduces the issue.  Bisect log with links to
->> further test runs:
+> To initialize node, zone and memory map data structures every architecture
+> calls free_area_init() during setup_arch() and passes it an array of zone
+> limits.
 > 
-> Hi Mark and Claudiu,
+> Beside code duplication it creates "interesting" ordering cases between
+> allocation and initialization of hugetlb and the memory map. Some
+> architectures allocate hugetlb pages very early in setup_arch() in certain
+> cases, some only create hugetlb CMA areas in setup_arch() and sometimes
+> hugetlb allocations happen mm_core_init().
 > 
-> Can you try the patch below to see if it fixes the issue? Basically,
-> in cma_release(), count was used to drop page ref and decreased to 0,
-> but after the loop, count becomes -1 and __cma_release_frozen()
-> is releasing unnecessary pages.
+> With arch_zone_limits_init() helper available now on all architectures it
+> is no longer necessary to call free_area_init() from architecture setup
+> code. Rather core MM initialization can call arch_zone_limits_init() in a
+> single place.
 > 
-> Thanks.
+> This allows to unify ordering of hugetlb vs memory map allocation and
+> initialization.
 > 
+> Remove the call to free_area_init() from architecture specific code and
+> place it in a new mm_core_init_early() function that is called immediately
+> after setup_arch().
 > 
-> From ece23da65ea7210e1fcb51ee9c27aec19b84811c Mon Sep 17 00:00:00 2001
-> From: Zi Yan <ziy@nvidia.com>
-> Date: Wed, 7 Jan 2026 14:23:15 -0500
-> Subject: [PATCH] mm/cma: fix cma_release by not decreasing count to 0.
-> Content-Type: text/plain; charset="utf-8"
+> After this refactoring it is possible to consolidate hugetlb allocations
+> and eliminate differences in ordering of hugetlb and memory map
+> initialization among different architectures.
 > 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> As the first step of this consolidation move hugetlb_bootmem_alloc() to
+> mm_core_early_init().
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
+>   arch/alpha/mm/init.c                 |  9 +--------
+>   arch/arc/mm/init.c                   |  5 -----
+>   arch/arm/mm/init.c                   | 16 ----------------
+>   arch/arm64/mm/init.c                 |  4 ----
+>   arch/csky/kernel/setup.c             |  4 ----
+>   arch/hexagon/mm/init.c               | 12 ------------
+>   arch/loongarch/include/asm/pgtable.h |  2 --
+>   arch/loongarch/kernel/setup.c        |  2 --
+>   arch/loongarch/mm/init.c             |  8 --------
+>   arch/m68k/mm/init.c                  |  3 ---
+>   arch/m68k/mm/mcfmmu.c                |  3 ---
+>   arch/m68k/mm/motorola.c              |  6 +-----
+>   arch/m68k/mm/sun3mmu.c               |  9 ---------
+>   arch/microblaze/mm/init.c            |  7 -------
+>   arch/mips/loongson64/numa.c          |  4 ----
+>   arch/mips/mm/init.c                  |  5 -----
+>   arch/mips/sgi-ip27/ip27-memory.c     |  4 ----
+>   arch/nios2/mm/init.c                 |  6 ------
+>   arch/openrisc/mm/init.c              | 10 ----------
+>   arch/parisc/mm/init.c                |  9 ---------
+>   arch/powerpc/mm/mem.c                |  4 ----
+>   arch/riscv/mm/init.c                 |  9 ---------
+>   arch/s390/mm/init.c                  |  5 -----
+>   arch/sh/mm/init.c                    |  5 -----
+>   arch/sparc/mm/init_64.c              | 11 -----------
+>   arch/sparc/mm/srmmu.c                |  7 -------
+>   arch/um/kernel/mem.c                 |  5 -----
+>   arch/x86/mm/init.c                   | 10 ----------
+>   arch/x86/mm/init_32.c                |  1 -
+>   arch/x86/mm/init_64.c                |  2 --
+>   arch/x86/mm/mm_internal.h            |  1 -
+>   arch/xtensa/mm/init.c                |  4 ----
+>   include/linux/mm.h                   |  4 ++--
+>   init/main.c                          |  1 +
+>   mm/mm_init.c                         | 18 ++++++++++--------
+>   35 files changed, 15 insertions(+), 200 deletions(-)
+> 
+> diff --git a/arch/alpha/mm/init.c b/arch/alpha/mm/init.c
+> index cd0cb1abde5f..9531cbc761c0 100644
+> --- a/arch/alpha/mm/init.c
+> +++ b/arch/alpha/mm/init.c
+> @@ -220,17 +220,10 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfn)
+>   }
+>   
+>   /*
+> - * paging_init() sets up the memory map.
+> + * paging_init() initializes the kernel's ZERO_PGE.
+>    */
+>   void __init paging_init(void)
+>   {
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = {0, };
+> -
+> -	/* Initialize mem_map[].  */
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	free_area_init(max_zone_pfn);
+> -
+> -	/* Initialize the kernel's ZERO_PGE. */
+>   	memset(absolute_pointer(ZERO_PGE), 0, PAGE_SIZE);
+>   }
+>   
+> diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
+> index ff7974d38011..a5e92f46e5d1 100644
+> --- a/arch/arc/mm/init.c
+> +++ b/arch/arc/mm/init.c
+> @@ -102,8 +102,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfn)
+>    */
+>   void __init setup_arch_memory(void)
+>   {
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+> -
+>   	setup_initial_init_mm(_text, _etext, _edata, _end);
+>   
+>   	/* first page of system - kernel .vector starts here */
+> @@ -158,9 +156,6 @@ void __init setup_arch_memory(void)
+>   	arch_pfn_offset = min(min_low_pfn, min_high_pfn);
+>   	kmap_init();
+>   #endif /* CONFIG_HIGHMEM */
+> -
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	free_area_init(max_zone_pfn);
+>   }
+>   
+>   void __init arch_mm_preinit(void)
+> diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
+> index bdcc3639681f..a8f7b4084715 100644
+> --- a/arch/arm/mm/init.c
+> +++ b/arch/arm/mm/init.c
+> @@ -118,15 +118,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfn)
+>   #endif
+>   }
+>   
+> -static void __init zone_sizes_init(unsigned long min, unsigned long max_low,
+> -	unsigned long max_high)
+> -{
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+> -
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	free_area_init(max_zone_pfn);
+> -}
+> -
+>   #ifdef CONFIG_HAVE_ARCH_PFN_VALID
+>   int pfn_valid(unsigned long pfn)
+>   {
+> @@ -222,13 +213,6 @@ void __init bootmem_init(void)
+>   	 * done after the fixed reservations
+>   	 */
+>   	sparse_init();
+> -
+> -	/*
+> -	 * Now free the memory - free_area_init needs
+> -	 * the sparse mem_map arrays initialized by sparse_init()
+> -	 * for memmap_init_zone(), otherwise all PFNs are invalid.
+> -	 */
+> -	zone_sizes_init(min_low_pfn, max_low_pfn, max_pfn);
+>   }
+>   
+>   /*
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index 06815d34cc11..3641e88ea871 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -134,7 +134,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   
+>   static void __init dma_limits_init(void)
+>   {
+> -	unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
+>   	phys_addr_t __maybe_unused acpi_zone_dma_limit;
+>   	phys_addr_t __maybe_unused dt_zone_dma_limit;
+>   	phys_addr_t __maybe_unused dma32_phys_limit =
+> @@ -160,9 +159,6 @@ static void __init dma_limits_init(void)
+>   #endif
+>   	if (!arm64_dma_phys_limit)
+>   		arm64_dma_phys_limit = PHYS_MASK + 1;
+> -
+> -	arch_zone_limits_init(max_zone_pfns);
+> -	free_area_init(max_zone_pfns);
+>   }
+>   
+>   int pfn_is_map_memory(unsigned long pfn)
+> diff --git a/arch/csky/kernel/setup.c b/arch/csky/kernel/setup.c
+> index 8968815d93e6..4bf3c01ead3a 100644
+> --- a/arch/csky/kernel/setup.c
+> +++ b/arch/csky/kernel/setup.c
+> @@ -63,7 +63,6 @@ static void __init csky_memblock_init(void)
+>   {
+>   	unsigned long lowmem_size = PFN_DOWN(LOWMEM_LIMIT - PHYS_OFFSET_OFFSET);
+>   	unsigned long sseg_size = PFN_DOWN(SSEG_SIZE - PHYS_OFFSET_OFFSET);
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+>   	signed long size;
+>   
+>   	memblock_reserve(__pa(_start), _end - _start);
+> @@ -101,9 +100,6 @@ static void __init csky_memblock_init(void)
+>   	memblock_set_current_limit(PFN_PHYS(max_low_pfn));
+>   
+>   	dma_contiguous_reserve(0);
+> -
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	free_area_init(max_zone_pfn);
+>   }
+>   
+>   void __init setup_arch(char **cmdline_p)
+> diff --git a/arch/hexagon/mm/init.c b/arch/hexagon/mm/init.c
+> index e2c9487d8d34..07086dbd33fd 100644
+> --- a/arch/hexagon/mm/init.c
+> +++ b/arch/hexagon/mm/init.c
+> @@ -66,20 +66,8 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+>   }
+>   
+> -/*
+> - * In order to set up page allocator "nodes",
+> - * somebody has to call free_area_init() for UMA.
+> - *
+> - * In this mode, we only have one pg_data_t
+> - * structure: contig_mem_data.
+> - */
+>   static void __init paging_init(void)
+>   {
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = {0, };
+> -
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	free_area_init(max_zone_pfn);  /*  sets up the zonelists and mem_map  */
+> -
+>   	/*
+>   	 * Set the init_mm descriptors "context" value to point to the
+>   	 * initial kernel segment table's physical address.
+> diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
+> index f41a648a3d9e..c33b3bcb733e 100644
+> --- a/arch/loongarch/include/asm/pgtable.h
+> +++ b/arch/loongarch/include/asm/pgtable.h
+> @@ -353,8 +353,6 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+>   	return pte;
+>   }
+>   
+> -extern void paging_init(void);
+> -
+>   #define pte_none(pte)		(!(pte_val(pte) & ~_PAGE_GLOBAL))
+>   #define pte_present(pte)	(pte_val(pte) & (_PAGE_PRESENT | _PAGE_PROTNONE))
+>   #define pte_no_exec(pte)	(pte_val(pte) & _PAGE_NO_EXEC)
+> diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
+> index 20cb6f306456..708ac025db71 100644
+> --- a/arch/loongarch/kernel/setup.c
+> +++ b/arch/loongarch/kernel/setup.c
+> @@ -621,8 +621,6 @@ void __init setup_arch(char **cmdline_p)
+>   	prefill_possible_map();
+>   #endif
+>   
+> -	paging_init();
+> -
+>   #ifdef CONFIG_KASAN
+>   	kasan_init();
+>   #endif
+> diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
+> index 17235f87eafb..c331bf69d2ec 100644
+> --- a/arch/loongarch/mm/init.c
+> +++ b/arch/loongarch/mm/init.c
+> @@ -68,14 +68,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+>   }
+>   
+> -void __init paging_init(void)
+> -{
+> -	unsigned long max_zone_pfns[MAX_NR_ZONES];
+> -
+> -	arch_zone_limits_init(max_zone_pfns);
+> -	free_area_init(max_zone_pfns);
+> -}
+> -
+>   void __ref free_initmem(void)
+>   {
+>   	free_initmem_default(POISON_FREE_INITMEM);
+> diff --git a/arch/m68k/mm/init.c b/arch/m68k/mm/init.c
+> index 6b1d9d2434b5..53b71f786c27 100644
+> --- a/arch/m68k/mm/init.c
+> +++ b/arch/m68k/mm/init.c
+> @@ -69,13 +69,10 @@ void __init paging_init(void)
+>   	 * page_alloc get different views of the world.
+>   	 */
+>   	unsigned long end_mem = memory_end & PAGE_MASK;
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0, };
+>   
+>   	high_memory = (void *) end_mem;
+>   
+>   	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	free_area_init(max_zone_pfn);
+>   }
+>   
+>   #endif /* CONFIG_MMU */
+> diff --git a/arch/m68k/mm/mcfmmu.c b/arch/m68k/mm/mcfmmu.c
+> index 24a6f7bbd1ce..3418fd864237 100644
+> --- a/arch/m68k/mm/mcfmmu.c
+> +++ b/arch/m68k/mm/mcfmmu.c
+> @@ -39,7 +39,6 @@ void __init paging_init(void)
+>   	pte_t *pg_table;
+>   	unsigned long address, size;
+>   	unsigned long next_pgtable;
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+>   	int i;
+>   
+>   	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
+> @@ -73,8 +72,6 @@ void __init paging_init(void)
+>   	}
+>   
+>   	current->mm = NULL;
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	free_area_init(max_zone_pfn);
+>   }
+>   
+>   int cf_tlb_miss(struct pt_regs *regs, int write, int dtlb, int extension_word)
+> diff --git a/arch/m68k/mm/motorola.c b/arch/m68k/mm/motorola.c
+> index d6ccd23caf61..127a3fa69f4c 100644
+> --- a/arch/m68k/mm/motorola.c
+> +++ b/arch/m68k/mm/motorola.c
+> @@ -429,7 +429,6 @@ DECLARE_VM_GET_PAGE_PROT
+>    */
+>   void __init paging_init(void)
+>   {
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0, };
+>   	unsigned long min_addr, max_addr;
+>   	unsigned long addr;
+>   	int i;
+> @@ -511,12 +510,9 @@ void __init paging_init(void)
+>   	set_fc(USER_DATA);
+>   
+>   #ifdef DEBUG
+> -	printk ("before free_area_init\n");
+> +	printk ("before node_set_state\n");
+>   #endif
+>   	for (i = 0; i < m68k_num_memory; i++)
+>   		if (node_present_pages(i))
+>   			node_set_state(i, N_NORMAL_MEMORY);
+> -
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	free_area_init(max_zone_pfn);
+>   }
+> diff --git a/arch/m68k/mm/sun3mmu.c b/arch/m68k/mm/sun3mmu.c
+> index fdd69cc4240c..c801677f7df8 100644
+> --- a/arch/m68k/mm/sun3mmu.c
+> +++ b/arch/m68k/mm/sun3mmu.c
+> @@ -41,7 +41,6 @@ void __init paging_init(void)
+>   	unsigned long address;
+>   	unsigned long next_pgtable;
+>   	unsigned long bootmem_end;
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0, };
+>   	unsigned long size;
+>   
+>   	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
+> @@ -80,14 +79,6 @@ void __init paging_init(void)
+>   	mmu_emu_init(bootmem_end);
+>   
+>   	current->mm = NULL;
+> -
+> -	/* memory sizing is a hack stolen from motorola.c..  hope it works for us */
+> -	arch_zone_limits_init(max_zone_pfn);
+> -
+> -	/* I really wish I knew why the following change made things better...  -- Sam */
+> -	free_area_init(max_zone_pfn);
+> -
+> -
+>   }
+>   
+>   static const pgprot_t protection_map[16] = {
+> diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
+> index 54da60b81094..848cdee1380c 100644
+> --- a/arch/microblaze/mm/init.c
+> +++ b/arch/microblaze/mm/init.c
+> @@ -69,22 +69,15 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>    */
+>   static void __init paging_init(void)
+>   {
+> -	unsigned long zones_size[MAX_NR_ZONES];
+>   	int idx;
+>   
+>   	/* Setup fixmaps */
+>   	for (idx = 0; idx < __end_of_fixed_addresses; idx++)
+>   		clear_fixmap(idx);
+>   
+> -	/* Clean every zones */
+> -	memset(zones_size, 0, sizeof(zones_size));
+> -
+>   #ifdef CONFIG_HIGHMEM
+>   	highmem_init();
+>   #endif
+> -	arch_zone_limits_init(zones_size);
+> -	/* We don't have holes in memory map */
+> -	free_area_init(zones_size);
+>   }
+>   
+>   void __init setup_memory(void)
+> diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
+> index f72a58f87878..2cd95020df08 100644
+> --- a/arch/mips/loongson64/numa.c
+> +++ b/arch/mips/loongson64/numa.c
+> @@ -162,11 +162,7 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   
+>   void __init paging_init(void)
+>   {
+> -	unsigned long zones_size[MAX_NR_ZONES] = {0, };
+> -
+>   	pagetable_init();
+> -	arch_zone_limits_init(zones_size);
+> -	free_area_init(zones_size);
+>   }
+>   
+>   /* All PCI device belongs to logical Node-0 */
+> diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+> index ab08249cfede..c479c42141c3 100644
+> --- a/arch/mips/mm/init.c
+> +++ b/arch/mips/mm/init.c
+> @@ -417,12 +417,7 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   
+>   void __init paging_init(void)
+>   {
+> -	unsigned long max_zone_pfns[MAX_NR_ZONES];
+> -
+>   	pagetable_init();
+> -
+> -	arch_zone_limits_init(max_zone_pfns);
+> -	free_area_init(max_zone_pfns);
+>   }
+>   
+>   #ifdef CONFIG_64BIT
+> diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+> index babeb0e07687..082651facf4f 100644
+> --- a/arch/mips/sgi-ip27/ip27-memory.c
+> +++ b/arch/mips/sgi-ip27/ip27-memory.c
+> @@ -413,9 +413,5 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   
+>   void __init paging_init(void)
+>   {
+> -	unsigned long zones_size[MAX_NR_ZONES] = {0, };
+> -
+>   	pagetable_init();
+> -	arch_zone_limits_init(zones_size);
+> -	free_area_init(zones_size);
+>   }
+> diff --git a/arch/nios2/mm/init.c b/arch/nios2/mm/init.c
+> index 2cb666a65d9e..6b22f1995c16 100644
+> --- a/arch/nios2/mm/init.c
+> +++ b/arch/nios2/mm/init.c
+> @@ -51,15 +51,9 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>    */
+>   void __init paging_init(void)
+>   {
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+> -
+>   	pagetable_init();
+>   	pgd_current = swapper_pg_dir;
+>   
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	/* pass the memory from the bootmem allocator to the main allocator */
+> -	free_area_init(max_zone_pfn);
+> -
+>   	flush_dcache_range((unsigned long)empty_zero_page,
+>   			(unsigned long)empty_zero_page + PAGE_SIZE);
+>   }
+> diff --git a/arch/openrisc/mm/init.c b/arch/openrisc/mm/init.c
+> index 67de93e7a685..78fb0734cdbc 100644
+> --- a/arch/openrisc/mm/init.c
+> +++ b/arch/openrisc/mm/init.c
+> @@ -47,14 +47,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+>   }
+>   
+> -static void __init zone_sizes_init(void)
+> -{
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+> -
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	free_area_init(max_zone_pfn);
+> -}
+> -
+>   extern const char _s_kernel_ro[], _e_kernel_ro[];
+>   
+>   /*
+> @@ -145,8 +137,6 @@ void __init paging_init(void)
+>   
+>   	map_ram();
+>   
+> -	zone_sizes_init();
+> -
+>   	/* self modifying code ;) */
+>   	/* Since the old TLB miss handler has been running up until now,
+>   	 * the kernel pages are still all RW, so we can still modify the
+> diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
+> index dc5bd3efe738..ce6f09ab7a90 100644
+> --- a/arch/parisc/mm/init.c
+> +++ b/arch/parisc/mm/init.c
+> @@ -698,14 +698,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   	max_zone_pfns[ZONE_NORMAL] = PFN_DOWN(memblock_end_of_DRAM());
+>   }
+>   
+> -static void __init parisc_bootmem_free(void)
+> -{
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0, };
+> -
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	free_area_init(max_zone_pfn);
+> -}
+> -
+>   void __init paging_init(void)
+>   {
+>   	setup_bootmem();
+> @@ -716,7 +708,6 @@ void __init paging_init(void)
+>   	flush_tlb_all_local(NULL);
+>   
+>   	sparse_init();
+> -	parisc_bootmem_free();
+>   }
+>   
+>   static void alloc_btlb(unsigned long start, unsigned long end, int *slot,
+> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> index 32c496bfab4f..72d4993192a6 100644
+> --- a/arch/powerpc/mm/mem.c
+> +++ b/arch/powerpc/mm/mem.c
+> @@ -237,7 +237,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>    */
+>   void __init paging_init(void)
+>   {
+> -	unsigned long max_zone_pfns[MAX_NR_ZONES];
+>   	unsigned long long total_ram = memblock_phys_mem_size();
+>   	phys_addr_t top_of_ram = memblock_end_of_DRAM();
+>   	int zone_dma_bits;
+> @@ -269,9 +268,6 @@ void __init paging_init(void)
+>   
+>   	zone_dma_limit = DMA_BIT_MASK(zone_dma_bits);
+>   
+> -	arch_zone_limits_init(max_zone_pfns);
+> -	free_area_init(max_zone_pfns);
+> -
+>   	mark_nonram_nosave();
+>   }
+>   
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index 97e8661fbcff..79b4792578c4 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -87,14 +87,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+>   }
+>   
+> -static void __init zone_sizes_init(void)
+> -{
+> -	unsigned long max_zone_pfns[MAX_NR_ZONES] = { 0, };
+> -
+> -	arch_zone_limits_init(max_zone_pfns);
+> -	free_area_init(max_zone_pfns);
+> -}
+> -
+>   #if defined(CONFIG_MMU) && defined(CONFIG_DEBUG_VM)
+>   
+>   #define LOG2_SZ_1K  ilog2(SZ_1K)
+> @@ -1443,7 +1435,6 @@ void __init misc_mem_init(void)
+>   	/* The entire VMEMMAP region has been populated. Flush TLB for this region */
+>   	local_flush_tlb_kernel_range(VMEMMAP_START, VMEMMAP_END);
+>   #endif
+> -	zone_sizes_init();
+>   	arch_reserve_crashkernel();
+>   	memblock_dump_all();
+>   }
+> diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
+> index 1c11ad84dddb..9ec608b5cbb1 100644
+> --- a/arch/s390/mm/init.c
+> +++ b/arch/s390/mm/init.c
+> @@ -97,14 +97,9 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>    */
+>   void __init paging_init(void)
+>   {
+> -	unsigned long max_zone_pfns[MAX_NR_ZONES];
+> -
+>   	vmem_map_init();
+>   	sparse_init();
+>   	zone_dma_limit = DMA_BIT_MASK(31);
+> -	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
+> -	arch_zone_limits_init(max_zone_pfns);
+> -	free_area_init(max_zone_pfns);
+>   }
+>   
+>   void mark_rodata_ro(void)
+> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+> index 5e7e63642611..3edee854b755 100644
+> --- a/arch/sh/mm/init.c
+> +++ b/arch/sh/mm/init.c
+> @@ -271,7 +271,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   
+>   void __init paging_init(void)
+>   {
+> -	unsigned long max_zone_pfns[MAX_NR_ZONES];
+>   	unsigned long vaddr, end;
+>   
+>   	sh_mv.mv_mem_init();
+> @@ -325,10 +324,6 @@ void __init paging_init(void)
+>   	page_table_range_init(vaddr, end, swapper_pg_dir);
+>   
+>   	kmap_coherent_init();
+> -
+> -	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
+> -	arch_zone_limits_init(max_zone_pfns);
+> -	free_area_init(max_zone_pfns);
+>   }
+>   
+>   unsigned int mem_init_done = 0;
+> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> index fbaad449dfc9..931f872ce84a 100644
+> --- a/arch/sparc/mm/init_64.c
+> +++ b/arch/sparc/mm/init_64.c
+> @@ -2459,17 +2459,6 @@ void __init paging_init(void)
+>   
+>   	kernel_physical_mapping_init();
+>   
+> -	{
+> -		unsigned long max_zone_pfns[MAX_NR_ZONES];
+> -
+> -		memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
+> -
+> -		max_zone_pfns[ZONE_NORMAL] = end_pfn;
+> -
+> -		arch_zone_limits_init(max_zone_pfns);
+> -		free_area_init(max_zone_pfns);
+> -	}
+> -
+>   	printk("Booting Linux...\n");
+>   }
+>   
+> diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
+> index 81e90151db90..1b24c5e8d73d 100644
+> --- a/arch/sparc/mm/srmmu.c
+> +++ b/arch/sparc/mm/srmmu.c
+> @@ -970,13 +970,6 @@ void __init srmmu_paging_init(void)
+>   	flush_tlb_all();
+>   
+>   	sparc_context_init(num_contexts);
+> -
+> -	{
+> -		unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+> -
+> -		arch_zone_limits_init(max_zone_pfn);
+> -		free_area_init(max_zone_pfn);
+> -	}
+>   }
+>   
+>   void mmu_info(struct seq_file *m)
+> diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
+> index 2ac4e9debedd..89c8c8b94a79 100644
+> --- a/arch/um/kernel/mem.c
+> +++ b/arch/um/kernel/mem.c
+> @@ -91,16 +91,11 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   
+>   void __init paging_init(void)
+>   {
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+> -
+>   	empty_zero_page = (unsigned long *) memblock_alloc_low(PAGE_SIZE,
+>   							       PAGE_SIZE);
+>   	if (!empty_zero_page)
+>   		panic("%s: Failed to allocate %lu bytes align=%lx\n",
+>   		      __func__, PAGE_SIZE, PAGE_SIZE);
+> -
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	free_area_init(max_zone_pfn);
+>   }
+>   
+>   /*
+> diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+> index e7ef605a18d6..e52a262d3207 100644
+> --- a/arch/x86/mm/init.c
+> +++ b/arch/x86/mm/init.c
+> @@ -1011,16 +1011,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   #endif
+>   }
+>   
+> -void __init zone_sizes_init(void)
+> -{
+> -	unsigned long max_zone_pfns[MAX_NR_ZONES];
+> -
+> -	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
+> -
+> -	arch_zone_limits_init(max_zone_pfns);
+> -	free_area_init(max_zone_pfns);
+> -}
+> -
+>   __visible DEFINE_PER_CPU_ALIGNED(struct tlb_state, cpu_tlbstate) = {
+>   	.loaded_mm = &init_mm,
+>   	.next_asid = 1,
+> diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
+> index 8a34fff6ab2b..b55172118c91 100644
+> --- a/arch/x86/mm/init_32.c
+> +++ b/arch/x86/mm/init_32.c
+> @@ -655,7 +655,6 @@ void __init paging_init(void)
+>   	 */
+>   	olpc_dt_build_devicetree();
+>   	sparse_init();
+> -	zone_sizes_init();
+>   }
+>   
+>   /*
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index 9983017ecbe0..4daa40071c9f 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -843,8 +843,6 @@ void __init paging_init(void)
+>   	 */
+>   	node_clear_state(0, N_MEMORY);
+>   	node_clear_state(0, N_NORMAL_MEMORY);
+> -
+> -	zone_sizes_init();
+>   }
+>   
+>   #define PAGE_UNUSED 0xFD
+> diff --git a/arch/x86/mm/mm_internal.h b/arch/x86/mm/mm_internal.h
+> index 097aadc250f7..7c4a41235323 100644
+> --- a/arch/x86/mm/mm_internal.h
+> +++ b/arch/x86/mm/mm_internal.h
+> @@ -17,7 +17,6 @@ unsigned long kernel_physical_mapping_init(unsigned long start,
+>   unsigned long kernel_physical_mapping_change(unsigned long start,
+>   					     unsigned long end,
+>   					     unsigned long page_size_mask);
+> -void zone_sizes_init(void);
+>   
+>   extern int after_bootmem;
+>   
+> diff --git a/arch/xtensa/mm/init.c b/arch/xtensa/mm/init.c
+> index 60299f359a3c..fe83a68335da 100644
+> --- a/arch/xtensa/mm/init.c
+> +++ b/arch/xtensa/mm/init.c
+> @@ -126,10 +126,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>   
+>   void __init zones_init(void)
+>   {
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0, };
+> -
+> -	arch_zone_limits_init(max_zone_pfn);
+> -	free_area_init(max_zone_pfn);
+>   	print_vm_layout();
+>   }
+>   
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 628c0e0ac313..64d6f9c15ef1 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -45,6 +45,7 @@ struct pt_regs;
+>   struct folio_batch;
+>   
+>   void arch_mm_preinit(void);
+> +void mm_core_init_early(void);
+>   void mm_core_init(void);
+>   void init_mm_internals(void);
+>   
+> @@ -3536,7 +3537,7 @@ static inline unsigned long get_num_physpages(void)
+>   }
+>   
+>   /*
+> - * Using memblock node mappings, an architecture may initialise its
+> + * FIXME: Using memblock node mappings, an architecture may initialise its
+>    * zones, allocate the backing mem_map and account for memory holes in an
+>    * architecture independent manner.
+>    *
+> @@ -3551,7 +3552,6 @@ static inline unsigned long get_num_physpages(void)
+>    *	memblock_add_node(base, size, nid, MEMBLOCK_NONE)
+>    * free_area_init(max_zone_pfns);
+>    */
+> -void free_area_init(unsigned long *max_zone_pfn);
+>   void arch_zone_limits_init(unsigned long *max_zone_pfn);
+>   unsigned long node_map_pfn_alignment(void);
+>   extern unsigned long absent_pages_in_range(unsigned long start_pfn,
+> diff --git a/init/main.c b/init/main.c
+> index b84818ad9685..445b5643ecec 100644
+> --- a/init/main.c
+> +++ b/init/main.c
+> @@ -1025,6 +1025,7 @@ void start_kernel(void)
+>   	page_address_init();
+>   	pr_notice("%s", linux_banner);
+>   	setup_arch(&command_line);
+> +	mm_core_init_early();
+>   	/* Static keys and static calls are needed by LSMs */
+>   	jump_label_init();
+>   	static_call_init();
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index fc2a6f1e518f..ffc4a0f1fee9 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1810,7 +1810,6 @@ static void __init set_high_memory(void)
+>   
+>   /**
+>    * free_area_init - Initialise all pg_data_t and zone data
+> - * @max_zone_pfn: an array of max PFNs for each zone
+>    *
+>    * This will call free_area_init_node() for each active node in the system.
+>    * Using the page ranges provided by memblock_set_node(), the size of each
+> @@ -1821,17 +1820,14 @@ static void __init set_high_memory(void)
+>    * starts where the previous one ended. For example, ZONE_DMA32 starts
+>    * at arch_max_dma_pfn.
+>    */
+> -void __init free_area_init(unsigned long *max_zone_pfn)
+> +static void __init free_area_init(void)
+>   {
+> +	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+>   	unsigned long start_pfn, end_pfn;
+>   	int i, nid, zone;
+>   	bool descending;
+>   
+> -	/* Record where the zone boundaries are */
+> -	memset(arch_zone_lowest_possible_pfn, 0,
+> -				sizeof(arch_zone_lowest_possible_pfn));
+> -	memset(arch_zone_highest_possible_pfn, 0,
+> -				sizeof(arch_zone_highest_possible_pfn));
+> +	arch_zone_limits_init(max_zone_pfn);
+>   
+>   	start_pfn = PHYS_PFN(memblock_start_of_DRAM());
+>   	descending = arch_has_descending_max_zone_pfns();
+> @@ -2681,13 +2677,19 @@ void __init __weak mem_init(void)
+>   {
+>   }
+>   
+> +void __init mm_core_init_early(void)
+> +{
+> +	hugetlb_bootmem_alloc();
+> +
+> +	free_area_init();
+> +}
+> +
+>   /*
+>    * Set up kernel memory allocators
+>    */
+>   void __init mm_core_init(void)
+>   {
+>   	arch_mm_preinit();
+> -	hugetlb_bootmem_alloc();
+>   
+>   	/* Initializations relying on SMP setup */
+>   	BUILD_BUG_ON(MAX_ZONELISTS > 2);
+Hello,
 
-This also fixes booting on a number of Qualcomm platforms
+This patch got bisected to cause BeagleBone Black boot failure in 
+linux-next version next-20260107.
 
-Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+At the moment I cannot provide any helpful information about this.
 
-Konrad
+BR
+Kalle
 
