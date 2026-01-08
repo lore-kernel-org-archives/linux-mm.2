@@ -4,120 +4,220 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF174D1D482
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 16:41:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E5BCD1D478
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 16:45:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E8166B0089; Thu,  8 Jan 2026 11:41:26 -0500 (EST)
+	id D25E36B0089; Thu,  8 Jan 2026 11:45:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B3C56B0092; Thu,  8 Jan 2026 11:41:26 -0500 (EST)
+	id CFE506B0092; Thu,  8 Jan 2026 11:45:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 340DA6B0093; Thu,  8 Jan 2026 11:41:26 -0500 (EST)
+	id BB5166B0093; Thu,  8 Jan 2026 11:45:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 11D8D6B0089
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 11:41:26 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE5441AA5C8
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 16:41:25 +0000 (UTC)
-X-FDA: 84309362130.26.EF45EBD
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DC57A80010
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 16:41:23 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.210.49 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767890483; a=rsa-sha256;
-	cv=none;
-	b=piDWfq7cNy8hvV9r25nw+bKIPp2fVVxHOiPA7oFCOPQ28xoQ8K8TNZ41xf1n/otyG5ygee
-	YnLjXALkAzPVTv8F2ZCsBrmU6kRaByIxcmY+80hnwk0QIgCJjRUROTKixRbD+H+8+RjxfC
-	cCRn6y4rrGmvOWVKwxSJybWz30r+Dak=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.210.49 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767890483;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AAA626B0089
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 11:45:18 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3B47457391
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 16:45:18 +0000 (UTC)
+X-FDA: 84309371916.08.87CFEE2
+Received: from YQZPR01CU011.outbound.protection.outlook.com (mail-canadaeastazon11020128.outbound.protection.outlook.com [52.101.191.128])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4623E180003
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 16:45:15 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=selector1 header.b="t805U/73";
+	spf=pass (imf24.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 52.101.191.128 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767890715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iZ8umbGJ/p+Drr1QM9elVdtntyBO93C2g1yduoenlV8=;
-	b=0EAqRMXdxeK5vkX6qjCL6LAX2XonVWfQWgP86jFPuHrgEJdJBzZY+BtOJ2hb8IYpOCjXrs
-	4C+2nbly99LbN5E0NRFB5jruzSrF0uHNeac2bOw3h4wBrMb9RWJVy5K/x45LV5bCnSuScy
-	I11ukg0KikuduPZ9zeiH93nV2Tmp1jM=
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7c6d3676455so1772233a34.2
-        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 08:41:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767890483; x=1768495283;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=iZ8umbGJ/p+Drr1QM9elVdtntyBO93C2g1yduoenlV8=;
-        b=mbOXKNWUMjD8DU7qY+Gb1BCWXYDmbkOLlF6BRFcwwd5KbHL3cdG1sw8n+ydT8Mo07h
-         A/6jBob3hnUqQRWEzWPuuaqY1Dbf8339I80qcPjLCrRKi/+0JYRSCI8fX4rLLye9kTX4
-         bz8zkMmYrthSGHqTvRRUs95ImIOraY+J9I02sdbuqX2lSa5Mkyu//6X3zPlcIlIs1+77
-         i8YaqwAfKJ1xKqczR7VZCJO95WSw0Mvl34qSU51KxZkLG0FlXHfAz9KAqLO0sXYaX4MC
-         DDdk7x0cTXbJWhC677Tmha3f4PXC6BmlH2DeAU6X3q8+AIdkkPLqtUME1O4/rUB6W0DJ
-         2MOg==
-X-Forwarded-Encrypted: i=1; AJvYcCXzhhcjzV9phG2CAunPd2Htb5otfxpI/XFWYMWIX+wFZUltnZsUIXq0luIjfLGumVoBQ7JALGiBxg==@kvack.org
-X-Gm-Message-State: AOJu0YzSaU9A9h7mL/6m2SEgb3UfWbmvRnpCm6jHKiU0FNj6KhyCGuKG
-	xdZwJJ85ImPE8eWodRyPSYiZZ8oEsITIM1zSnwN+y9TfRFNGCSVUSiTh
-X-Gm-Gg: AY/fxX4MOeX7DrUn4cT92x5kr8En7p7hBWT56H1DmPkhSbjZujHZZtYJKwoeLCXzUQ/
-	EXE9Qk+HGCZPEkSCMrWau8uvYVTIbGzvsIZnrl7b5BnjHZPa94stuALFYL3Lpv3M9gN41JWqL2T
-	kfcI9nL4/7iAeYdoHZ+HV74Jl2tJ30zvJYUi8RrMlEW8/LXqDzPZ4pVYV01d9YbXEnXH8LeTBPq
-	pZ4pVNLQtUZRBO5LDnWUBGZvCgFFjBqA4u+Fdcf4ivZ3vcIb4KgWpoXdf41v3MAySVWCkdRGrR3
-	Qebatnne0pEQOPHyezon8CNzm4Vi8ZqeuDqEOzShQMVQOA4kGysofTRckZB08jFeWquAN0g3vF7
-	4ixJxpoG9dCQf7JEk3eVl8i2PQeUBxsQs/FZt3oXQmem+1JDSpdvMATcmEuFqp4bc/XZItUMSic
-	iEJA==
-X-Google-Smtp-Source: AGHT+IHCIuadUBoGbDl8lPNAk2Neo0/wiZHMcJrJn3lIxd7Vxi/rrb+Y2bIjsKx5NXNgYjuC3j6EEw==
-X-Received: by 2002:a05:6830:1cc2:b0:7c5:3045:6c6f with SMTP id 46e09a7af769-7ce50a28c93mr3497087a34.20.1767890482801;
-        Thu, 08 Jan 2026 08:41:22 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:43::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce478af8besm5595632a34.14.2026.01.08.08.41.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 08:41:22 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 08 Jan 2026 08:40:59 -0800
-Subject: [PATCH v3 2/2] kho: history: track kexec boot counter
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VQRsfdiHtQlOsfPLtu1EBiC8HHE5rV8i/JxC+Lnyd+k=;
+	b=3GJ62T02cDoBexREuy7+skG1irdQ7lzrrAwhfaGfbVxaqbTycLzYfbNLSuBhz4AX6CkKQm
+	xa1I119E9SKBvJ5JepDDZN9dyvhDVmTtTxPL8CYMl1zJ7b+nogMyTyXl8DocbliwUkr5c1
+	ELiDZ1kRFUnosyVIbOpAUw1y5bO99LA=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=selector1 header.b="t805U/73";
+	spf=pass (imf24.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 52.101.191.128 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767890715; a=rsa-sha256;
+	cv=pass;
+	b=0u75GgPVh6jkigH2dVHLfKMGi2+xhhnH7XDRSApDBJsHArE8rSZ8mZA3RjZfhYGrK8TUOj
+	rHnVpb4XP5TCdTjAm5Lq7X0NMCY9+M2BHAuWicsM5Nw1aeQ1/IINwsIE6gaAj/ljh/L+Y4
+	99tfV8dPPi9HmoO+qPJiv0CYsKiwb1s=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rLr3FacOhDHEFwNcRYP9P2DbVmI4JyPMiiWJr0XWlkXJoS78vK8MkK/ObjO9iHmDTFXJrwRWjQo5nwWiMNUVeQcdwFZIiYiJFES17SNL+Q1qmSFE2L6LSY4nUA9SRkjJOnL6DlK36PKHrW+Rqcf0vncJ6vaP9iyY7d6CKL3jS2+H4zijEdklJ7YydXlQ6rrCx3OLHwbaWbcDOmYkqmjLJBR2Ofvq7aWo2zDc5iW3/SF3arbrcWqyOPZT0g9N+G5EMvndcI1fPruscgqs5LdJGSUlaW8AWSWN7wtqu6J6JaPdkNl2PGkg5GS4msfU1W18LvQ7Tb+LVEz1Q324WGAoRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VQRsfdiHtQlOsfPLtu1EBiC8HHE5rV8i/JxC+Lnyd+k=;
+ b=VJryQAlea4hVR4xoYHf0HGBhmTPtfqy+al9H7nXZRcsS6vNocDoUM/UYTzWoq8BDaeMnZ7h/9rl4OlQz258vGb31g5n2wNJ780dUL4VragF1o9GajDBKKNZkUs/tJad1eAj9hQ2WqTrq1qYp7/qjLR5ddUqyOaM6SB+/MqYjU26Z/iINg3HSoWPzlC0ghlgj5B3D7sKBcOKLU9vdeyorPT1deTxxw7GdITymDTxN++6OmEWNlHnlAEyuLmGzYDwgGVms25NaaTQJ8u53BtcwUtrDTHpJQslZOubSiio6hddzKjs0mrBs5asDQCPi84Yu8BogUWTumk7SyKmcXrV6nA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
+ dkim=pass header.d=efficios.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VQRsfdiHtQlOsfPLtu1EBiC8HHE5rV8i/JxC+Lnyd+k=;
+ b=t805U/73sQ2govQdHspY5q9ptsr9pJBk4aDyTM/65+n6h0O3L176fXxgEGqFUsOfRhYftSBGtYZBGFlI1p9tBCDkdyc72lomh+pfHLbwwbrqiKnkCJO5rtWJyET+b550KyohooG/r06urw5H7JybC+HOT6qPD+E22esoNS2ETrR1lTMYvJ+1XMhupghphhcb1rcVOTiAMEiN/jRynoiFCpt6JavemfAJj2RSAK7cimH6pUzNxbCywumUd+s7mecBxQpoEqJ7SLPY7KlhTFtZrzD6cJICs/9tVW8Dzrk47ukSDYA/8W7oANMPJXXh7j91bMbEtLJRs+agvTvSQwahYw==
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
+ by YT3PR01MB8578.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:9f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Thu, 8 Jan
+ 2026 16:45:11 +0000
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::6004:a862:d45d:90c1]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::6004:a862:d45d:90c1%5]) with mapi id 15.20.9499.002; Thu, 8 Jan 2026
+ 16:45:11 +0000
+Message-ID: <fc0eaac9-930f-4692-b913-80e48dcdd301@efficios.com>
+Date: Thu, 8 Jan 2026 11:45:07 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 3/4] hazptr: Implement Hazard Pointers
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Joel Fernandes
+ <joel@joelfernandes.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Alan Stern <stern@rowland.harvard.edu>, John Stultz <jstultz@google.com>,
+ Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Lai Jiangshan
+ <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
+ Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, maged.michael@gmail.com,
+ Mateusz Guzik <mjguzik@gmail.com>,
+ Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>, rcu@vger.kernel.org,
+ linux-mm@kvack.org, lkmm@lists.linux.dev
+References: <20251218014531.3793471-1-mathieu.desnoyers@efficios.com>
+ <20251218014531.3793471-4-mathieu.desnoyers@efficios.com>
+ <aUO9KRaP0FXpm_l9@tardis-2.local>
+ <fcbc99d0-b7c7-45f7-9cf8-f5d3bfad966e@efficios.com>
+ <aUSfu4V9mrD7BQGl@tardis-2.local>
+ <6c96dbb5-bffc-423f-bb6a-3072abb5f711@efficios.com>
+ <aV_cms1mCPYq6jah@localhost.localdomain>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Content-Language: en-US
+In-Reply-To: <aV_cms1mCPYq6jah@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YQBPR0101CA0314.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:6c::27) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:be::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260108-kho-v3-2-b1d6b7a89342@debian.org>
-References: <20260108-kho-v3-0-b1d6b7a89342@debian.org>
-In-Reply-To: <20260108-kho-v3-0-b1d6b7a89342@debian.org>
-To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
- linux-mm@kvack.org, usamaarif642@gmail.com, rmikey@meta.com, clm@fb.com, 
- riel@surriel.com, Breno Leitao <leitao@debian.org>, kernel-team@meta.com
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3603; i=leitao@debian.org;
- h=from:subject:message-id; bh=EGjW1NDVm9NCUZnt/TocKG3VnYx6DZQuPLEer3uoR8g=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpX94vFhyv1+q5nq7d3U4aG09l2a2v9OVLjM38M
- Alw0viiRZ2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaV/eLwAKCRA1o5Of/Hh3
- bYQwD/9eHb6ErCrxXzsTuDNHlKgULxd03DOyrKRfmQu7kTOUtZlqSCyZ4P2EeLCfbluUpJnnESG
- UAVFWIxNs7YXzhUNd7cWqmoZH+mBLVOby7T8HD+MeG+8z6VuUQXpE9mQVEsS0N5g0L6+FWWFgAd
- VqezYtxXpJeV32vXCpcmBEcZpUE3od+8MAIK1LqWcUbsCKLy/0kXXemulGMzLks31aLqX86ni/i
- X+9lZpg99/gVXF8Jz3lqX+hNi9TIRsXWGaU281XTD1tF3BgTcXXCyHE8m15DjbelamQimU3chBg
- DMteI6JOK4sjOWjTLtutUHeHuUwcuuUpiTc2Zk+pvF6X4ij24/VQcoCVl9QLiHL4EjTlbYaXGMK
- eh6yLVMjs32YEVhnOxY850v6dWpXovo5PFQUd3ECljjlvTmrD6aLrQh1g92CX7sPIoJYTOEIl8x
- 81RtpCzW+Gky6ezAfpzbZfnGAJrQi2XvgB6Y7xvZEiDsGTKtnNKeHZ4uZDf2xt0EBZmbk8aP4Rd
- IQ/tPzLyEsBSAJTjlPDAIaeEFRFmBwoI1s/vu1zCB0DiRnm6/tnremV8GX/ewBSbiyaDWX2+8zH
- AzQ0hXXhX98UteCdW/+vC7v/59qftT+spmlGWRF8WqkY9v/ZZwZ3kMESQjBGioYQXj3Q3+SR7BB
- FQswweva+CDz0Zg==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT3PR01MB8578:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb14e212-da20-45e8-7b33-08de4ed549fb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Y2RTc2VqUzFsWXFYMW8rYnhicXY1cm5zN20weDJtMndic3gxcFV2bVg3anYy?=
+ =?utf-8?B?OU93YkUxSTVraVpzZDNvU1Z3ZVBqSklTWHRwR0dBbC8vTStBNEZBZzE2c1pJ?=
+ =?utf-8?B?bEF4QVAvbExZREozM040ZFNWSDk1T0F0YXI0UlZBa1gyRXFIYktUQnJKLzN1?=
+ =?utf-8?B?RlZwcFJCemh3MXc2S1FLZUh5QWdHMVpSTnBFbWNpbUFtYTJmZzZlSDRlNU5P?=
+ =?utf-8?B?VU1QY1hidWhuaUdwdjdTRlQwWnpxeWovVVRORVFrSnIxeFg0TzU4VW0xRWti?=
+ =?utf-8?B?UUhJb25nQ1ZkWlBtNDBwaGdETHBwOW9oQmp1dExkdmpZVHdITXF4Yng5emRD?=
+ =?utf-8?B?SnRESnNnRzIxb0g4cVVwUkxqZEpvcmFkSWliWkRLMjdLMkFtYmY1VCsydlRM?=
+ =?utf-8?B?L2s2RFpFNUtqSitaem5jQmIvZGpJcU8wSUFJMHhCVmdNRnpGZWIwYWRUclRM?=
+ =?utf-8?B?alNWeVpwVGo0UFNENE45djJrdE8zSlhEZGxwZS9aZGlFcm5CejlyTXBCZ3VV?=
+ =?utf-8?B?ODI1L1ROemVueHFBcjc5N2ljWEJrSng5NE9VSHRyUFlVbmh4ejhRRVF2Q2s1?=
+ =?utf-8?B?TUZYd09BNjQzNkJpYzNjYVBzVEJBRkpUQWhiY2pTbGRJMTduVnhpQkZkUDEv?=
+ =?utf-8?B?YVViRHlhSGdoSjBNNVQvbHZibTBRK0x1SEo4MzJLNElsSG5paVNYODVXc0di?=
+ =?utf-8?B?S1d0Q3ZKSWxzM3Z5MVVPOVBKUEJKTmNkQkNzb1RzeUVhUmdWOTUxTnBreUhU?=
+ =?utf-8?B?NEoweHZxSkN1ZVNQeWJPK3Rkck8rS1htMHhNOWxYUDgzSEM1OXJDaVMrK3U0?=
+ =?utf-8?B?cUM4SUljcTJNVnlVWlBsQ2o3TDFvQ1E1M3laeW1Yei9temxsVWNMdHBOMVEz?=
+ =?utf-8?B?QVRZaXlDaU5IY3JFTFM2NEJiWXVQWHUvQ2ljOCtPaHVXMzJIVWlFeGNMVXVW?=
+ =?utf-8?B?MkQvdm05akcrWkRjUS9qTVluWHFFa1h3Sm9WUXZ5R2V6YUJNaXkzaG1IZEkw?=
+ =?utf-8?B?bXVGYUljOWhtOFRDLzFNR09SejFjOWZBMDhaMkdqaVVJZVdRZU85dVMxK3k2?=
+ =?utf-8?B?OW5pUnlvTEFWaUFrZEpRT3BYeHdvWDVoWHdKTWd3Vk5uSzFZbXBwdmM2M0tm?=
+ =?utf-8?B?NUk0WitWWFNTc2hrZDdhRXFSeFJRblFwNHc5MjVIcDBPSkpya3h4c0JGVnZj?=
+ =?utf-8?B?dHR5U1lSc2E4cGl4YlEwdjdwSUIwNlZqRXljcjN1MlBhU0Z1TVlUQ0twOXYw?=
+ =?utf-8?B?cVQ5NElJRjJqOThWaGJoZnZZdkVmUVV2dXR3N2lLK0hDQlExcDFjTHNlZ1FX?=
+ =?utf-8?B?MDQrWGluRDFENW5EcGh5Y1cyNDczWVlCc0ptanlNT3ZvY24xOFlVTytOeVZ5?=
+ =?utf-8?B?VjN3a0FLbDdUNVFSU3k1ejRuUm03aFdrS0QzaEw2enJXckhNSGVPOEorcmtM?=
+ =?utf-8?B?UlJLNHNPcGViTDRVemhwTTlIOUN3VGZjMFJXTzdmMWhreEFVMWFRY1VTQlpL?=
+ =?utf-8?B?d2RRK3lWcFp5cDdEeVVCTTRQMzF6amxTc1llTEpOWFU5VHhFWmhDSk5wZDVa?=
+ =?utf-8?B?RnV2YS9laTF5T3lZd1N0dnZ1NkRNVTRhYU0wMkluc0lhKzk2L2FJRm9DY2hy?=
+ =?utf-8?B?N3ROeGpLcFRlQmpHc044UE5WRFpzZzltV2o3ajlheFpybEVKTi9tT2xzSWhT?=
+ =?utf-8?B?Y3piRWpuR3J4UndHUjIrM0hxekxWWU9acnpGbFZxQ1RIbWxNSDdLczh6RmxM?=
+ =?utf-8?B?UHZYMGt4NldxT1pDZWd0TjZsMFRVa0VBbmJiNjZyNUN3ZThxWlMxVjN2bUVr?=
+ =?utf-8?B?UzdDQkNFSGlFWnpXbDNFTFkyYXFzdzZuYmZyRUpWMGhYTm9WSUlBNEpkdS81?=
+ =?utf-8?B?b0RMUlJmSFRjRVhTSk9ZaHlaeWZjRXNldEh0VWxPUDM0a3c9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Wk01WmhwelV5SlEzU0h4aHltQzdWMDFyMktrMVF3RmZjVDkvbFBwSDBuTWpo?=
+ =?utf-8?B?UDFqSGFZZDdKNmRheGQ1SGp5cnp1dXlVb25ZZk96blB0YjUvbVNxREE3OUt2?=
+ =?utf-8?B?OHByd0s2QVVDMkhnTy9xaXpSVGhJd3AwMGhqRVBTRGw5b1ZhdnJud1NTZkZl?=
+ =?utf-8?B?L0t6UHhZNmFVeG9pby9CVXV5WDVKUnJLb2JMU203ZnpoMlErcEhVdm00SVp4?=
+ =?utf-8?B?ZUJQbVNYVDNxemljSVBvS3E2eXcrVlVpOEdibU5ncWZzTVN3M1ZXejdONHNX?=
+ =?utf-8?B?UlFSajE2N0g1WGRqQTNNblN3OW80VWNEbHBLWTVudkllbHNUbG5KZWhtQVA2?=
+ =?utf-8?B?Yjc1KzhHdit6ZUdxaVI0YkdVQUxyNVMvTkhsVS81dzdmQWNCN256MEVhTnBx?=
+ =?utf-8?B?ZlBySjFWSFNkekZSM1lDVlZ4NXhTb1FlQjJwNG9yOHo0anpMWmwxS01BN1du?=
+ =?utf-8?B?OXBmV3h0U2lzM2tYVEdKbjhKNUVuNWZMK1ZSQVpMQjYvVUI3RjZmVUVMK0Jk?=
+ =?utf-8?B?b0VuWHFQRTFJYkJjTWVtcHg2RSs5am5DYVVFZDdubGk2d1FSWm93d1ovRFlr?=
+ =?utf-8?B?b0FKM0Z0NVFPdnRiSXRnWGU1emFkVEx1RWsvYThLb09yUi9rS0hRQkpDaU9z?=
+ =?utf-8?B?Q1YxZjRBL3JQeXFWMUdHcXhlc1I4QTNnL2lCeG5GRlhpcFBIKytQM014bm9q?=
+ =?utf-8?B?OHhpVEEwNDNYa3lhNStmOVV2aFVPNk02UWRYcC9rL2lQbm9wRGNkeURGMm84?=
+ =?utf-8?B?VjZtUVFuQ2VYem5Gck9kWnlhdjVPSFBxV1AvZUFza0g0b3FZSXVnbklxcDk3?=
+ =?utf-8?B?ZnJCTHErdHJmUjZLM2I3TE9TVXZhbFc0OFVwVWlqYVdON29kOGxHSEdBS1Vy?=
+ =?utf-8?B?YThSZEdPZ1N1R05NaXJMVU15NCsxd0tpWXphclJVdEd0T2R5cG5iM24vT055?=
+ =?utf-8?B?WUxteUVjWU1vSVI3a1VsbmdjdTkxVm9QSnNmVzZhd3VxZmMxUWhRNi83a3lN?=
+ =?utf-8?B?TTdkODFRa1U4S3FXMEx1bWVtUmlveVpJWjN5Q1JzTnhWM0dCRDIzYVRUS2V4?=
+ =?utf-8?B?dmVrbytwZDk2ZFZkYWlJZEdhRW1zWEE5bWptVFlQbisyR2JHQWVVMkJGL1Bu?=
+ =?utf-8?B?Z0R0M2Q2b2Z1RGpEc3RGaGRrWFpjUTNUOWg3SkZzc2tBUjZHM3FTVlpDWVdj?=
+ =?utf-8?B?RTdrM2RtRXZPSTl1RzFsTXFPZ2ZHSTh3SHZTaGFJZHpJRmt1N3ZCR0pDTmpH?=
+ =?utf-8?B?WUFtT1FCUmdYOUVVNzFXaWZJeXpLb3gwR1hMdW1aY096d21OM0xkZHMyRDcw?=
+ =?utf-8?B?MHlLeVErUzQvMkMwczFzSDQ0M1VuVDk3NTdnU2lUQ3R4bHlXa3pML1g0VnFO?=
+ =?utf-8?B?WGpsaXdMVERZbml5eUh0QU9PaGJBcHJSSUJMbUplSzZTWXc0UHM1dEFQenNi?=
+ =?utf-8?B?RGw4VFdjeXZVb3dtS3lEVUVYTkhnazhUajVoOWtXV2ZNckFNK2hXZ1F0TjMw?=
+ =?utf-8?B?UERzVnlkNXZPQ3lZb3dubms4Z1NLT3dHdTJiV3lOWUJZdjdZdDRrS25ZRkNT?=
+ =?utf-8?B?bE16RlNIWG53ZmFHWm9WMkliK3RPRlVMRXVTMWt2bXlsMjYwTFBMVlpqNUJp?=
+ =?utf-8?B?SUJWdmZ3TUlibTdlbzYxLzNhNTZmaUhsekdRTkhOSXdZeDBKS2VLZTRoeTFW?=
+ =?utf-8?B?bGY2SHFHTTFURmNNZk5zS3hmVEdmeDBHMzRCNWMwQzgvbFM0LzZBMEpWNGU4?=
+ =?utf-8?B?bWtiSGZid29sTGlRaFhXNExmK0tiVVhUVTBNaFRYRThZOWxqY0FNR3Z4eEQv?=
+ =?utf-8?B?bmE1cElPeksxMnU3WXlmZDFwV1hrUDd2cjZQYUhFMmVnQ1lCV1BsZUliQ25r?=
+ =?utf-8?B?V1ZrTEZPa2RSelhmcVpFNERpb0g5QlBzb1JmKzVjQ0tHNUg5VjFCYXFrYzhz?=
+ =?utf-8?B?eDZjUDJMY3NNWUdqbUdxbXpzVElBV2lpRWxBa3VFcEs5b0sxR3RRL0VZZlVV?=
+ =?utf-8?B?ckRQbWRNU1EvOWxtb0h3eS8yZWxMT3RVdGVSM2YrZklOaW11ajZKd0d5NVAr?=
+ =?utf-8?B?Vk9KVHMrU0ZiVUFrZ1hzamRxVDN1VUEyZnV2R2JqQnIxRDJFTDVlSlBUZXVj?=
+ =?utf-8?B?VDlzMlltbjlERHFEbHhBakFiakttZDVGZkZwM0lPU2JaOVFScmJYRXEzVE5l?=
+ =?utf-8?B?dGkvcGZSdktlNnI5MSs0NDVwZC9IMUdweVBJWFh4cXgyUzhNcFFxc25taWl5?=
+ =?utf-8?B?TzBNWkR0Yy82N0NDY0loL1RRajk1dDUxdkFUajNwdnB5ZjZENjFNNnBpUjNv?=
+ =?utf-8?B?MWV0bkV1NDcwTDg4VU1RRWdGYkFxN2RXS01LNFdjeU1IRHRWQnRDem16d2gr?=
+ =?utf-8?Q?SV2zswepfAmHjkSUeJLqa6F4RWo1ZlIS1klwW?=
+X-OriginatorOrg: efficios.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb14e212-da20-45e8-7b33-08de4ed549fb
+X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 16:45:11.0922
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hcVnGe4KZ2Ep1WnqRe5pj/BPO0Kanehc+RWCS2WwQkxlsrZxHS2AjVzJSkd+MVSp61ZB6C4fs/4Q8OQtfGXa+tsjinu/djiEMsdiVCq7g/g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT3PR01MB8578
+X-Rspamd-Queue-Id: 4623E180003
+X-Stat-Signature: qswobh4o3u8m73ntsz5d44eufaz8yey7
 X-Rspam-User: 
-X-Stat-Signature: zrd41sumtjaxjg9x95pk9fht1qkmx8qf
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DC57A80010
-X-HE-Tag: 1767890483-664629
-X-HE-Meta: U2FsdGVkX19KjqBa2GLWl9ehpxwPu8cGqjVoRGQS4sYHVfO/X2S+j6yAgUztN32XA8OeiwYnxQyUM1E89fmGEzBZ3pGVJ5hUw1c5JGnqCsVYj95nCUDU88bWVgM3YcfQoKmlx8nzwKtAFWXDazTtlt4y7DDEa7CGLgCFd+JR0fenhqZpZeLldVLarIsPW3Swqq1FDAKMDMT6pLCoXPCM+oBhP+14hf/jXPEprc0tMUxjpKqJzLGLNDoG7S6YvRKOnR5vsvR4kDfOmUGdPdMIMnkyJykgZWLTvAd3o/cUcRhJCTkhQFrhcvUDKmmHKi0Gkx+uHuWMfkWlbZkdaqJk9c2c7jB718H2VQLfpD+FbWTiL4Khq9N4HYecrxzZxm3peePy3Nk8nr8sJ9RfyOjJ4sI1mloFID5fHvuKXfzoeFccb45L5qseN8eKWVXlX1Nao65N+p4Ec5Jh6aQpg7FcbRE/bQOB8K2Ds7EhgI2tRZYgk2Udju2wEmChNq9VcF/IwEDbAYjrXIqBidA5ikaN7A3r7dVa6tx/kfpRnnxFoVa2e+0uRMvdEpdkSY2WkMJXtPpACmWF7OtcJn28ONzSHmII6ZkTNXuIi4Ke6mi3zjlQpTblx0YVs/mGYKyY+ZaEUzjErVV8EhCY38NkmD/QNu07Gyze5F9N8qCY+qm6YVx2y71GeT4k7wGxlXIRuAS0X+x4WwHaC+Sx7q56H0q7zmpUrmdIAbJp1DF8CdVx1si+DGuhTbl/Nm1YydDTQWZVsoljuR2QoAYB6/5NY1/qrCLTLV0N7lfI29EWY2R3xZq4V0U5sTnLfFt4W4RBsgdedEL7yPfulAy9d8m0h2VJgEgW3Ep5hboT7fG9GQXL1KHbEsGjG/PPZHNzHbbvXkAAGldGKpU0qtvO/vG+JOUhTh2uBvUGOfutsN8brEMS1LJTH+MCQbaj36AGeqwVJv5nPkm68aNPqJneUsfda7m
- MJNEYzAl
- tBRwDEgf6IdsMVkmUjcEtvxHdXzlco/6fMJ9UKR6NEXUw8KxTCPDhactK/WteO0cAAsuD9NvpkG7yPC9hLUdRpXy0MeZ8uZRr3+S4gOit2/Gz5zFou59gyCnJ+AGPRpWbQsqAR0GA/193m7hTT12veH4037fECC+SdLOHJJxkFbZl0f/TxJHh79b3Ynmge2Y0tOQr1SeasVV1lCPsDyViy5AcAUboj3gRbDBPwMMJ/zfuK7C0hMRQ1cQ7QYtMGbJttLrYpxSzHAQeX3rgKxmdYDDA3XtNRGSW5XhtP+vAvmrzEPcdGIoC++mkSogzp/NeD+hthdg2EWaXugoW6Y3yn90UtFB8sugMXONjXiAZRvAjxle1FSpH6GR/87ZB/ymbPGQABkOJ/kE74xjYSGx1T0pEIrKEXTF3bGh3qoa/YirkR5ty4ocDh/5ZTg==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1767890715-658925
+X-HE-Meta: U2FsdGVkX19S2mBVul0QEnvEqe2VHucZlMcYwO7YNleX7B8Ixyuqww/BKaHUzLRNKORYesULSpiDN9rqt3W3QTdZB0Riy0cV20RDSOtwrf9CI9K0haBeMH4NHeZQmGWxzj7waf1P8Nwz7lhudY4l6DJTSQWc6PNrR9zkHpMHtQprDmJoV84YE1L+B+0/pJuulXTTCgMGHqZeKX1n12WTJ83temnaLRdzRCZYYUSnv3SWvHg6E7c7ymgnZWPTpKb4C+LyL0m6+4NCXkKk36saQtp7xwvUIPcEjeMFZmYK0ZX0KJNS4Nu+ddZnB9WXm5htFdpHeVJmOg9GE/9qogzJRolr0ezrLUvFtuut9VGhtJMekMwm6UYsvjC+VAm8bZOCCDaD2uUirDYywSRci576MtvxP8N4kNEifFGMEtiInC5PhWkUSuJFU/Iu+DYH7IRnboOGOTse2XwxfvRFUMzivZMUzx4ZUEuY77FXX8MFtzTufAyf6zsX8D2xewgR7Ak6n4F9Imt8zTaWRncQz2ziVTjjwdgO+F+1EppN4IFfnHCoKiWV83QIRIo2dmpIZXcptq8bWsUQet/jciVufgcHKMe5x7Wqb9i3WUcaAGByn8pNmol7z/7Gqaw3SpyGjjDvDlHV2P/jocqGYbkvUdUW1MGpTd6YW3PdbXjD4HnbXjFvmdvuvhLR6NmLhKfLDmMJM9+aCWYyigRmk6X66pspVWClscmM18zhbrQOzyz+KwTKM/wZKmU/xfHD+wBnXJaAbtiPAsSZGEjEBI6nmgcCSFwNdq+ZDnfgkzi8HtfhaAY+okn8PVZcZWgoEieBwg2OWRAOtWtt5BGVb8iLRzNAdiplYEu4zc6LjvSV3uPPLsuviN9qm834Cqso6FNY0hPbB1IfSSKNIiBuljs89VXs4nFCWbQ2OlLqG8QxlRtxZa/Sv8yOnopGmbTX1W99dxspqHnfxlFl7X9VNzCIiiA
+ byrJ+AYj
+ O/QzSwGS++JGnxnvVNoOJMCJ3pqe/emVHiR6+EPSD/+Xyr/YHcs3gt5lO0La8cWRMTlnX9gdoGgdcopXDyqXGEWfChfCeTdqlBPrzzFhEtLiXT1twA0wPq6MaiEO1Lf8lm7qxqBiSQ6D0+LTJfpooh0KgAvhbhlLDwjXr2N7UIefoaZlGiI8GkEOryK98HzDEUPKyycfJOXpd2MG/yWmtmSawhIpom7GZ2VdfT6wn0dnJhNj+Gh0rSx+lB6Rxb+u7j3Ky4Dv7iP5Uu74zS7jePX7dJBK9/eOJrX9mXLBuZDbJCv00eckxefvUS9Y7R3OCuIWkPY4zkGLcGVwDY8jUKMnnwTdwJcMApl2ZE+ScbmH/JoSJq+esM1cXfjZUcPNCDQyOXZJKEugtdbPga/tH9qiTfJJmQ8sPexjJsjne7CWhH7FMra/CQPxnfOgBx/3EMNzoGulbJSlJ1+4EQWWiC8b/S431EqdHzgCg0ZaweellZrszXK74KDYy/LgU68OdMfMzVuz3hXkXkP9fUSKEvHFBtD6Y2QskMAooM+vOtNX6bACkoB4ccMEOslfKf0QcklBXD7glGjIv3wbk/9dmsZadvBWXjhOcRsrZJ4nJuQwxiyQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,107 +226,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Track and display the number of kexec boots since the last cold reboot.
+On 2026-01-08 11:34, Frederic Weisbecker wrote:
+> Le Fri, Dec 19, 2025 at 09:22:19AM -0500, Mathieu Desnoyers a écrit :
+>> On 2025-12-18 19:43, Boqun Feng wrote:
+>>> On Thu, Dec 18, 2025 at 12:35:18PM -0500, Mathieu Desnoyers wrote:
+>>> [...]
+>>>>> Could you utilize this[1] to see a
+>>>>> comparison of the reader-side performance against RCU/SRCU?
+>>>>
+>>>> Good point ! Let's see.
+>>>>
+>>>> On a AMD 2x EPYC 9654 96-Core Processor with 192 cores,
+>>>> hyperthreading disabled,
+>>>> CONFIG_PREEMPT=y,
+>>>> CONFIG_PREEMPT_RCU=y,
+>>>> CONFIG_PREEMPT_HAZPTR=y.
+>>>>
+>>>> scale_type                 ns
+>>>> -----------------------
+>>>> hazptr-smp-mb             13.1   <- this implementation
+>>>> hazptr-barrier            11.5   <- replace smp_mb() on acquire with barrier(), requires IPIs on synchronize.
+>>>> hazptr-smp-mb-hlist       12.7   <- replace per-task hp context and per-cpu overflow lists by hlist.
+>>>> rcu                       17.0
+>>>
+>>> Hmm.. now looking back, how is it possible that hazptr is faster than
+>>> RCU on the reader-side? Because a grace period was happening and
+>>> triggered rcu_read_unlock_special()? This is actualy more interesting.
+>> So I could be entirely misreading the code, but, we have:
+>>
+>> rcu_flavor_sched_clock_irq():
+>> [...]
+>>          /* If GP is oldish, ask for help from rcu_read_unlock_special(). */
+>>          if (rcu_preempt_depth() > 0 &&
+>>              __this_cpu_read(rcu_data.core_needs_qs) &&
+>>              __this_cpu_read(rcu_data.cpu_no_qs.b.norm) &&
+>>              !t->rcu_read_unlock_special.b.need_qs &&
+>>              time_after(jiffies, rcu_state.gp_start + HZ))
+>>                  t->rcu_read_unlock_special.b.need_qs = true;
+>>
+>> which means we set need_qs = true as a result from observing
+>> cpu_no_qs.b.norm == true.
+>>
+>> This is sufficient to trigger calls (plural) to rcu_read_unlock_special()
+>> from __rcu_read_unlock.
+>>
+>> But then if we look at rcu_preempt_deferred_qs_irqrestore()
+>> which we would expect to clear the rcu_read_unlock_special.b.need_qs
+>> state, we have this:
+>>
+>>          special = t->rcu_read_unlock_special;
+>>          if (!special.s && !rdp->cpu_no_qs.b.exp) {
+>>                  local_irq_restore(flags);
+>>                  return;
+>>          }
+>>          t->rcu_read_unlock_special.s = 0;
+>>
+>> which skips over clearing the state unless there is an expedited
+>> grace period required.
+>>
+>> So unless I'm missing something, we should _also_ clear that state
+>> when it's invoked after rcu_flavor_sched_clock_irq, so the next
+>> __rcu_read_unlock won't all call into rcu_read_unlock_special().
+>>
+>> I'm adding a big warning about sleep deprivation and possibly
+>> misunderstanding the whole thing. What am I missing ?
+> 
+> As far as I can tell, this skips clearing the state if the state is
+> already cleared. Or am I even more sleep deprived than you? :o)
 
-This extends the previous kernel release tracking by adding a counter
-that increments with each kexec boot. The counter provides visibility
-into the kexec chain depth, which is useful for understanding boot
-history in production environments.
+No, you are right. The (!x && !y) pattern confused me, but the
+code is correct. Good thing I've put a warning about sleep
+deprivation. ;-)
 
-Add a new property "kexec-count" in KHO FDT alongside the existing
-"previous-release" property. The counter is:
+Sorry for the noise.
 
- - Initialized to 0 on cold boot (when kho_in is first instantiated)
- - Incremented by 1 on each subsequent kexec
- - Printed alongside the previous kernel release version
+Thanks,
 
-The counter is stored as a 32-bit unsigned integer in FDT format.
-
-This is different than counter for LUO, given KHO can be used
-independently from LUO.
-
-Also WARN() if KHO_PROP_PREVIOUS_RELEASE doesn't exist, because it
-must exist if KHO_PROP_PREVIOUS_RELEASE exists.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Suggested-by: Pasha Tatashin <pasha.tatashin@soleen.com>
----
- include/linux/kho/abi/kexec_handover.h |  3 +++
- kernel/liveupdate/kexec_handover.c     | 16 +++++++++++++++-
- 2 files changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
-index f4f31e8f575b..9c4fc4c6a212 100644
---- a/include/linux/kho/abi/kexec_handover.h
-+++ b/include/linux/kho/abi/kexec_handover.h
-@@ -87,6 +87,9 @@
- /* The FDT property to track previous kernel (kexec caller) */
- #define KHO_PROP_PREVIOUS_RELEASE "previous-release"
- 
-+/* The FDT property to track number of kexec counts so far */
-+#define KHO_PROP_KEXEC_COUNT "kexec-count"
-+
- /**
-  * DOC: Kexec Handover ABI for vmalloc Preservation
-  *
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index b2d57868d22f..34cfc98076b8 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -1248,6 +1248,7 @@ struct kho_in {
- 	phys_addr_t scratch_phys;
- 	phys_addr_t mem_map_phys;
- 	char previous_release[__NEW_UTS_LEN + 1];
-+	u32 kexec_count;
- 	struct kho_debugfs dbg;
- };
- 
-@@ -1319,6 +1320,7 @@ static __init int kho_out_fdt_setup(void)
- {
- 	void *root = kho_out.fdt;
- 	u64 empty_mem_map = 0;
-+	u32 kexec_count;
- 	int err;
- 
- 	err = fdt_create(root, PAGE_SIZE);
-@@ -1329,6 +1331,10 @@ static __init int kho_out_fdt_setup(void)
- 			    sizeof(empty_mem_map));
- 	err |= fdt_property_string(root, KHO_PROP_PREVIOUS_RELEASE,
- 				   init_uts_ns.name.release);
-+	/* kho_in.kexec_count is set to 0 on cold boot */
-+	kexec_count = kho_in.kexec_count + 1;
-+	err |= fdt_property(root, KHO_PROP_KEXEC_COUNT, &kexec_count,
-+			    sizeof(kexec_count));
- 	err |= fdt_end_node(root);
- 	err |= fdt_finish(root);
- 
-@@ -1443,15 +1449,23 @@ void __init kho_memory_init(void)
- static int __init kho_print_previous_kernel(const void *fdt)
- {
- 	const char *prev_release;
-+	const u32 *count_ptr;
- 	int len;
- 
- 	prev_release = fdt_getprop(fdt, 0, KHO_PROP_PREVIOUS_RELEASE, &len);
- 	if (!prev_release || len <= 0)
- 		return -ENOENT;
- 
-+	/* Read the kexec count from the previous kernel */
-+	count_ptr = fdt_getprop(fdt, 0, KHO_PROP_KEXEC_COUNT, &len);
-+	if (WARN_ON(!count_ptr || len != sizeof(u32)))
-+		return -ENOENT;
-+	kho_in.kexec_count = *count_ptr;
-+
- 	strscpy(kho_in.previous_release, prev_release,
- 		sizeof(kho_in.previous_release));
--	pr_info("exec from: %s\n", kho_in.previous_release);
-+	pr_info("exec from: %s (count %u)\n", kho_in.previous_release,
-+					      kho_in.kexec_count);
- 
- 	return 0;
- }
+Mathieu
 
 -- 
-2.47.3
-
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
 
