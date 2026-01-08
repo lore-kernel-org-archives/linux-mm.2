@@ -4,131 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88076D185F3
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 13:30:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28A73D185F8
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 13:36:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F1816B0088; Thu,  8 Jan 2026 08:30:44 -0500 (EST)
+	id 7EF6D6B0088; Thu,  8 Jan 2026 08:36:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79F366B0089; Thu,  8 Jan 2026 08:30:44 -0500 (EST)
+	id 79D8B6B0089; Thu,  8 Jan 2026 08:36:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64C926B0092; Thu,  8 Jan 2026 08:30:44 -0500 (EST)
+	id 69C826B0092; Thu,  8 Jan 2026 08:36:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 50D566B0088
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 08:30:44 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F2F0DC01A5
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 13:30:43 +0000 (UTC)
-X-FDA: 84308881566.09.591707C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 01BD718000D
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 13:30:41 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mFyDgKcN;
-	spf=pass (imf06.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767879042; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 55ED76B0088
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 08:36:49 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 24FD51A9159
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 13:36:49 +0000 (UTC)
+X-FDA: 84308896938.07.0C13F8A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3BBEDA0007
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 13:36:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=L9jPV4sC;
+	spf=pass (imf15.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767879407; a=rsa-sha256;
 	cv=none;
-	b=xdL0nexb+jk3mt4NbmdkfCHcq4OcQW55tzAWd6uJr7kVyjYfs1VEQsAC2bGPDQom60jI7l
-	Q+zVOPZGaak2fPoLehvrYV8674RQD7ugia7NQmNqNhjhPzRKELMUtV3xWqTmPi+Q0ZAtYk
-	TFrzq0oIxt9D0VLDhMfLTKCEAKjudFE=
+	b=ppBRAwsV5sa11idwmpyYfHk1ObmX4/btMM8ppe4zaFgZIppNrsqH//Am64FA4XbkhKJK22
+	ebrD/bE1i/YTXvUuMCeJtqztCI88XC9Q8HmPWjkvm2oqSYkbGYoif5psQBDe+RDg4C1YRu
+	+rTa6jifN3SA0VAY6aGRDU9eNiF6beA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mFyDgKcN;
-	spf=pass (imf06.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=L9jPV4sC;
+	spf=pass (imf15.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767879042;
+	s=arc-20220608; t=1767879407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aS54TiLLCnx92UY79GztGwo3oIuCVTm+qoJhyO33ftA=;
-	b=gyINuCuIyIC5Rx36OWDlj8bZo1Jl2bn1zwgdEPwzQMKN4xq2f2yJWujvUQADFupsZ3h3Kd
-	BqkGoln+ffiK47v/drNtIIQE+1+HHUGriCWw2ulYUiYQ24Uf/RnPKvgGn5lyqqSd9pM4D3
-	Sj5bJVJTDL4hr1vWBWVYcp5GbO7RmUM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=8KVa0TC7Lp2IvRqpsyGJ8JIZlHZ7VvEE/z8yzDPJ5iE=;
+	b=J33ZygkJsu1ELehY0amkycprSKI8/ddSF0UVqIPLEry8FRqerXQ37nXvE2gZxCLQlpwD0V
+	dZTlddS/Hc2T9UIiDn1dKSGK0vKLuYWuGc9GQsEg6mTeQRBWYCyEYvmENnmjoPHNfrMEwx
+	6KZjPrUtmLjjVuDopgB+FBb7qH5zagc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3E8F960133;
-	Thu,  8 Jan 2026 13:30:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA56C116C6;
-	Thu,  8 Jan 2026 13:30:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767879041;
-	bh=vRUk+XqHdvozmufdhhIaefKBZmKIIV937W1GpquE0Gg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mFyDgKcN5yJXMTtMLhfm/Nqm2ush1z+2cvJyRvNNR/hLsLuF0Lvff6GzwiQXBPVnb
-	 GMtX4ji9rGFN1LRfTnajht1i3eVEGSmj69plak3FtENocm5bh9n3giA1iJeAc8AykA
-	 xxZkZi0N2zNE3/j8GzWjIqaNTqk+Atyz+Hb0oRBsjqtH+0JdrfFoqTKBLpCKWAWgAF
-	 a4O2vFhe5GFtQjBQPIfaPjVnDhIcEgxHkb7qOib7SpJ/i9HeBn6jPY+Z82yvTALe4b
-	 WfqAh6jCMPxXbVoAlPupZ2U8bHKVKoKelDDIjfchzpHK6kcznoqohB+8A8BgrzG7BL
-	 zjzUH9n7TjqIg==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 7E85FF40068;
-	Thu,  8 Jan 2026 08:30:38 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 08 Jan 2026 08:30:38 -0500
-X-ME-Sender: <xms:frFfaSRVif06nMdRiz4KFPZI_aQ3K3I-IefcKid0aVrKPMCQuI-NNw>
-    <xme:frFfaTK3ZimaT6zVwlCW2sgm4lY_qU17X6P2uBP9M3hrOlly8W2aGl9PJwFy0G5vb
-    i5trDp2p6qQATtIxRuJr7gsURlICa6sw6o69Agbejqe3Y4boFGgo7Y>
-X-ME-Received: <xmr:frFfaZPyG1RB9djcAbCbCeBhwN2SzNjS8IXYKBrjxxsLWJzrPOqjVqLNimSPdA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdeitdejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopeifihhllhihsehinh
-    hfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhhutghhuhhnrdhsohhngheslhhinhhu
-    gidruggvvhdprhgtphhtthhopehoshgrlhhvrgguohhrsehsuhhsvgdruggvpdhrtghpth
-    htoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehvsggrsghkrgesshhu
-    shgvrdgtiidprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvg
-    drtghomhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomhdprhgtphhtthhopegs
-    hhgvsehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:frFfaVyixXgHd_9H9W4VAbjseEKGgabddGnqE47gOuP0zxIxTLM4AA>
-    <xmx:frFfaXG0fXZwzoOa8P9t2XHzZOEGDt6g8Qw89Yy2Q9vgZUVqOFRevg>
-    <xmx:frFfaRGENFgJrPnjS9W59vKz2_tB2_YDYBJsko9kRO8_XptEqycdjA>
-    <xmx:frFfaYtL0QLr5WGK5GuzkKcCBZ_x5-5pcaXDrn6vv5Dd6_zRFNM3Kw>
-    <xmx:frFfadtmhD6O7-VIj2avk77_ct4uJtnf7CyFVfN5Xr8QowIoRMDsLVQy>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 8 Jan 2026 08:30:37 -0500 (EST)
-Date: Thu, 8 Jan 2026 13:30:36 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Usama Arif <usamaarif642@gmail.com>, 
-	Frank van der Linden <fvdl@google.com>
-Subject: Re: [PATCHv2 02/14] mm/sparse: Check memmap alignment
-Message-ID: <fwgrsslq74vk4dhkuh5hji3xnrql7nxuia6wdeexjltzb4feh3@nbshswn3egkb>
-References: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
- <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
- <4f82b8ef-77de-422b-a9a5-691c4eca24a3@kernel.org>
- <glu3noshgeh7ktwwqofk7xcwkvhek2x3hrbdmyyo56gmctdx3t@adsfih557p7g>
- <2ace6fc2-6891-4d6c-98de-c027da03d516@kernel.org>
- <yup3hvfsn4tvfnv32mdf4yoabt4igb2lkvllfac72g3abdkovm@auqdaijzby7d>
+	by sea.source.kernel.org (Postfix) with ESMTP id D699B41730;
+	Thu,  8 Jan 2026 13:36:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144D1C116C6;
+	Thu,  8 Jan 2026 13:36:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767879405;
+	bh=Q7/q8AYOSnOVJrpD+TZvp0cbhaf9+ayvFlrnbyoQt6I=;
+	h=Subject:To:Cc:From:Date:In-Reply-To:From;
+	b=L9jPV4sC2eX0mVrVca5BBrzpNLXlUWVFJ1xRnoITrc0RN7sJjaRngre7Ih8IbfXmJ
+	 aquxTxsmo2KAKvuyCt1HzfNF2xFpPSUZ1rLhI9t3iaIxlEoSD1NlvkYGauZiuv8JOU
+	 Ovn1LaPUZNNmswOWjDG3xc/STV7/cfTVKSc0gEJo=
+Subject: Patch "mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()" has been added to the 6.1-stable tree
+To: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+	anshuman.khandual@arm.com, apopple@nvidia.com,
+	axelrasmussen@google.com, baohua@kernel.org,
+	baolin.wang@linux.alibaba.com, christophe.leroy@csgroup.eu,
+	david@kernel.org, david@redhat.com, dev.jain@arm.com,
+	gregkh@linuxfoundation.org, harry.yoo@oracle.com, hch@infradead.org,
+	hughd@google.com, ira.weiny@intel.com, jane.chu@oracle.com,
+	jannh@google.com, jgg@ziepe.ca, kas@kernel.org,
+	kirill.shutemov@linux.intel.com, lance.yang@linux.dev,
+	linmiaohe@huawei.com, linux-mm@kvack.org, lorenzo.stoakes@oracle.com,
+	lstoakes@gmail.com, mgorman@techsingularity.net,
+	mike.kravetz@oracle.com, minchan@kernel.org, naoya.horiguchi@nec.com,
+	npache@redhat.com, pasha.tatashin@soleen.com, peterx@redhat.com,
+	peterz@infradead.org, pfalcato@suse.de, rcampbell@nvidia.com,
+	rppt@kernel.org, ryan.roberts@arm.com, shy828301@gmail.com,
+	sj@kernel.org, song@kernel.org, steven.price@arm.com,
+	surenb@google.com, thomas.hellstrom@linux.intel.com, vbabka@suse.cz,
+	will@kernel.org, willy@infradead.org, ying.huang@int.kvack.org,
+	el.com@kvack.org, yuzhao@google.com, zackr@vmware.com,
+	zhengqi.arch@bytedance.com, ziy@nvidia.com
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 08 Jan 2026 14:36:37 +0100
+In-Reply-To: <20260106114715.80958-3-harry.yoo@oracle.com>
+Message-ID: <2026010837-antsy-skimpily-11f8@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yup3hvfsn4tvfnv32mdf4yoabt4igb2lkvllfac72g3abdkovm@auqdaijzby7d>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+X-Patchwork-Hint: ignore 
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 01BD718000D
+X-Rspamd-Queue-Id: 3BBEDA0007
 X-Rspamd-Server: rspam04
-X-Stat-Signature: ze45d1xydwcrrg1btasjh878uwxiifbg
-X-HE-Tag: 1767879041-542879
-X-HE-Meta: U2FsdGVkX19k1iV6bH1fSA/PBf7U6Db4ORYTIKRtSB4bIxYKViuFS+c3neJRW5HZrju+ZsmurkP8VRkCyIttigzGDko4UTU8AIl3p4zS8TpsZ4S5iAWfbDVHgz0L/0iPG3U0JU5wKXFQHExfnXDmKK3JdszqxW5XcT68mcbARnpslKdcLAmCmoJc28IY1Xa+R6/OU6aU++iUCWbmv+OBw4PunZz/Nk0jL65sRBrGUxQpr2SkVPSd+3fxfdV3TlIclvVSXzZSMd9y3TrIcewiPnFgpsOT5K7CzZ4EeEaPf05SpAusqi4ObsQzb/wGN57cGhn2oibkTDZS8NeiJh3uysOJA52Q0jJiWZOwKN5ZXd1MEsLLg5nfrI5Y3bqMkHgi54L5QT515NqkAiSv8PNGEhPLl3O/x/irn8aO02L0saVVhyQvpBbiFP51mLW9HfQQjulW1ZrQZoy0ppkP9NwyYYkqWe3KYJ+ZD1OusB68NA5X4kMiKqAYwwY5q+eQbPseaqZNxgWYa1aMWQG6Lc2gyV8N1tk+RJoOlMwFHU2zEcqdLJIn6Jf3bNXY3vpNGpsIKCuP7n9ZN5W5dOcLj3ab1R8BLPNVCxaURAFIBvT2wUyWunFkMQ7/SlU+dGBjrP6mQOPpkNhDr7FU/wU/weIXTHENW1EUPsR0cUuFSodwKACgo4QAJXpiDBYIcQNo6pAb1rFMFpbFclGDYHlZ5TL8pRQCl2pp6n/CNBu7E9BrBym1Ws2z9jbqQoYmhJPZkuHpNJbXwKG8iM7q055NNC8AmUH2ak5RzoGrIpdm1et/F8ipm3eHt8olbWx+V9DKoFTntKkaqsP0zMEkNzA+DGXWAHx4J6qQ/PZeG7jEHBZBwg7SblFBdz4/WoI6BzAsD9pMbD54/pVEuAVASyZSSUSS9F5ntDdxoRhlJnBVws2x14sLeUjvCYrZm/h6XjAfsjUxUtT5TUo51sLIb9I6oyE
- wHpl/KL4
- dMGDASuKSYnXxFoeoz9PH5vSfd6ctfayTlbUp1qPdjGlF2W42djN4hfPhKJO4oEL82xJH8vIgIpx+jbasrGtNHojHUhm8YgF/RhH6KOgbWj523EiaKmLCJcB6bjoHFzQWYj0m6BuNy1IEL5WHT89NJj3nsh0q/SSka3ZrEqpssm/Ny8py/nFqVxmY66FqMSj9Hfl7EDPQfeQLUEXH8NitzmI460GluYgCqeaYAK2y3kkEUtZf+32/zw0iCbOYcQs2cPC6ksXMt9oiC57+YN7kZx8QDw==
+X-Stat-Signature: h5edyftborm1kt59twa3n4gsxhaug14q
+X-HE-Tag: 1767879407-427342
+X-HE-Meta: U2FsdGVkX19u+BA1KzfeCv0GPC3UtcvvIsRvGN7yegaIY4Uem7U8epqHdcz7Sx3RqCdLB9L9znhJ9EBQdvw+j10FdqgtmgD110RbgzSjhPbTDvLyMc9rLWnWKzp0F6uKYpvRvoWgeCoTF+HnxhxRt9STWGM6Xc+JG0J1YRZxHnSpG9Pz89d3Bk7VuwroNbxeKhb7RSTJCXJjZG8CYmi9myRMWGGQWjIesEX85Z3iJRV08etuI87fyCL6LRA0BIQU58W9Y0beG6Xo8HjBxJE0BqkRlhNgsXGjtSOErPp1datzw9wqaLD6ye00tU/S/rf9QIe2oGWnFm8C4klTQgqbhHGjKGamaICUcIgbjggwA8HNum363t8SzYxAXO1/PZc0YyKimHzSLWkPEztQgz6ycSjxLjM7Nmkw3pXqxZaAlfYMpZScVGibJeaGAuRkrBW6YekAJZYI7wQWwm9LE+qs00uaWquK/SKzap3BjGFw5lbKKElMOscGyG+7DKp448jEv6UhBh266Cl3oDwAwfWnPBmPnAz4uMDYaPLymxw6Nf2OdGm9UMItCV/RztXuxvm/bJ6VM7KtDxefF0UgA26LG8NbK42rq1SF/ajPdtdea7QO11a6mUF9IubDdh26yR9fnhGmvRKpW7bxcOnvKVjEq0y/w3wDy/RH9dC3qTiKJuVJ8CrRr5IJIeVjiCuxM1Hl6zybEdHTbebxUoEXwuZUjQZCHhswLnhy/weNRDPFCnwHg0O7uDYr5Czyxl0KnVJ2QcxwafXLVHJuTPJqlC5Y5jaaQLgr9Dwc3JvdkdDXLWHKLSIMNe8J0EZ3DWqF6g+yma4+QreEaSx6+UOPNiwH8nHs9aik7UqZoDjglslH+IHURL7uhZ6INzZhNPdLt3IHKgRQuwVyX494TOg0khKtpFKeShEwmbcon4MoeICC4SN7jCiu7XZ8VPETCJNBGsr8+4Ph0wGoAWSqFDwnktL
+ //JCwrCu
+ E4QHzJ6zJfPtZKkOXqoijm3y4BFAwrh93qEIac+rsjXUYKfNQlp8bCtjq0cbhVlJBBOPiHdwHhNnQavVkiIEiYIT2hvnRqCW8zzUO2GCPZrfw547QA9cdbx7s/hEQKf/G1gQ2zJWfLF3WHCEtAnxIeMDaB0TnwBXpTbYsNBiv6aw4XE2pCyBGAV4SqDAju2cUkSInfjutNvvpkm8ZniGgEFqQBDeMCmIcTg98bT3KzhqGhJPm/02uCBh8l/5+U8JnXMHjsNLbx4zums0NaWC74cxw/MrahlmhFRmJtc8jkxC8/KcgXgBTX/eBN4wHOXXzk5ezVGhOCJAfNQfsp/Zw28QfKLDrMfdq4ozQilla6fZUrJKHYwLGgMlgiFbmr7OE+NqVGdLy8nLqNvFi6mfc8UjHPbMXQ4NdYfjzneBzI9Eq8C9vAd1SaPx8v0NTzJsAg65mkrCLfNMqyPm9cyq2DFvI6bflRilILBpTZE4gK/olyqcDqDJ5y1TOPxx+MQv2EDfss+3H6xmZVV2Eh99S7FuP4A1KPqwCFNHAuigOXRzxjx9osrJmyyqkoiUy4dfJPaQS8lYfQeb0YE6XRqKhXJnHyLa8N/jd6f1/CprGQtfw4T09YvTJlWBOR7yTAhskACCS01FEayaNgL/7eU4XqsSYoQcgAAz1z+pcws/H2JjW8xJGLBseOTdFyGYTsD97nM2nwGJoj8xjhpBQDCupRhs1iVWshwp9wbXE1/tXkFPxePf8bKe9mCzO3V1LG49FGlOTJxioJW/VFIGB+6Z01Qez7NFYP9z2NHk4AOsZo0AszxktUurbEqZdLOEZiO7HwZuj88U4Et/ZEPOsYmWx5D3iQeaKQXtu6/yA3idm0xs1SPe4wn/8rkiqO6VxB8sNbfUl0T/deyfQ6QpDRqd4pEEeepBMePEPDj3u3Hw++SC2jkcpj28Kv1gf6b1VV+5BJy2kLNrE3XZUtEiSEiY7OV19uwrA
+ 8vIKZF29
+ GBiV9iAQ7zN8aln11YInk4rLz8NKBPtkAWOVWvCyyop+O6/OlzvouvuArCWLfpcWu5t4vIT6NV6jy8kqbpWdZD/MlHWmzRGeZzpYPjL8PH9k3sj9vpK+si7fYRkxMcIcRyLkWzs0Z83witc/48UYzNIacyUbh2De9+ld2uKwtMSRXylTHVgP4SyhKAoNTohbhMEMP/CjWKINr5+T/hHrMO7f31XoHaFDyou9+bhS0A9Dfq1qEHcJxqVoiIh3gkrb25xXDWbFhGhcitiCJ7V2zQojAqdi5maBo4j2SxhejnU4NHhptxombQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,119 +110,314 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 08, 2026 at 12:32:47PM +0000, Kiryl Shutsemau wrote:
-> On Thu, Jan 08, 2026 at 12:08:35AM +0100, David Hildenbrand (Red Hat) wrote:
-> > > > "Then we make page->compound_head point to the dynamically allocated memdesc
-> > > > rather than the first page. Then we can transition to the above layout. "
-> > > 
-> > 
-> > Sorry for the late reply, it's been a bit crazy over here.
-> > 
-> > > I am not sure I understand how it is going to work.
-> > > 
-> > 
-> > I don't recall all the details that Willy shared over the last years while
-> > working on folios, but I will try to answer as best as I can from the top of
-> > my head. (there are plenty of resources on the list, on the web, in his
-> > presentations etc.).
-> > 
-> > > 32-byte layout indicates that flags will stay in the statically
-> > > allocated part, but most (all?) flags are in the head page and we would
-> > > need a way to redirect from tail to head in the statically allocated
-> > > pages.
-> > 
-> > When working with folios we will never go through the head page flags.
-> > That's why Willy has incrementally converted most folio code that worked on
-> > pages to work on folios.
-> > 
-> > For example, PageUptodate() does a
-> > 
-> > 	folio_test_uptodate(page_folio(page));
-> > 
-> > The flags in the 32-byte layout will be used by some non-folio things for
-> > which we won't allocate memdescs (just yet) (e.g., free pages in the buddy
-> > and other things that does not require a lot of metadata). Some of these
-> > flags will be moved into the memdesc pointer in the future as the conversion
-> > proceeeds.
-> 
-> Okay, makes sense.
-> 
-> > > > The "memdesc" could be a pointer to a "struct folio" that is allocated from
-> > > > the slab.
-> > > > 
-> > > > So in the new memdesc world, all pages part of a folio will point at the
-> > > > allocated "struct folio", not the head page where "struct folio" currently
-> > > > overlays "struct page".
-> > > > 
-> > > > That would mean that the proposal in this patch set will have to be reverted
-> > > > again.
-> > > > 
-> > > > 
-> > > > At LPC, Willy said that he wants to have something out there in the first
-> > > > half of 2026.
-> > > 
-> > > Okay, seems ambitious to me.
-> > 
-> > When the program was called "2025" I considered it very ambitious :) Now I
-> > consider it ambitious. I think Willy already shared early versions of the
-> > "struct slab" split and the "struct ptdesc" split recently on the list.
-> > 
-> > > 
-> > > Last time I asked, we had no idea how much performance would additional
-> > > indirection cost us. Do we have a clue?
-> > 
-> > I raised that in the past, and I think the answer I got was that
-> > 
-> > (a) We always had these indirection cost when going from tail page to
-> >     head page / folio.
-> > (b) We must convert the code to do as little page_folio() as possible.
-> >     That's why we saw so much code conversion to stop working on pages
-> >     and only work on folios.
-> > 
-> > There are certainly cases where we cannot currently avoid the indirection,
-> > like when we traverse a page table and go
-> > 
-> > 	pfn -> page -> folio
-> > 
-> > and cannot simply go
-> > 
-> > 	pfn -> folio
-> > 
-> > On the bright side, we'll lose the head-page checks and can simply
-> > dereference the pointer.
-> > 
-> > I don't know whether Willy has more information yet, but I would assume that
-> > in most cases this will be similar to the performance summary in your cover
-> > letter: "... has shown either no change or only a slight improvement within
-> > the noise.", just that it will be "only a slight degradation within the
-> > noise". :)
-> > 
-> > We'll learn I guess, in particular which other page -> folio conversions
-> > cannot be optimized out by caching the folio.
-> > 
-> > 
-> > For quite some time there will be a magical config option that will switch
-> > between both layouts. I'd assume that things will get more complicated if we
-> > suddenly have a "compound_head/folio" pointer and a "compound_info" pointer
-> > at the same time.
-> > 
-> > But it's really Willy who has the concept in mind as he is very likely right
-> > now busy writing some of that code.
-> > 
-> > I'm just the messenger.
-> > 
-> > :)
-> > 
-> > [I would hope that Willy could share his thoughts]
-> 
-> If you or Willy think that this patch will impede memdesc progress, I am
-> okay not pushing this patchset upstream.
 
-Or other option is to get this patchset upstream (I need to fix/test few
-things still) and revert it later when (if?) memdesc lands.
+This is a note to let you know that I've just added the patch titled
 
-What do you think?
+    mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+to the 6.1-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     mm-mprotect-delete-pmd_none_or_clear_bad_unless_trans_huge.patch
+and it can be found in the queue-6.1 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
+
+
+From stable+bounces-205076-greg=kroah.com@vger.kernel.org Tue Jan  6 12:49:13 2026
+From: Harry Yoo <harry.yoo@oracle.com>
+Date: Tue,  6 Jan 2026 20:47:14 +0900
+Subject: mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()
+To: stable@vger.kernel.org
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, hughd@google.com, jane.chu@oracle.com, jannh@google.com, kas@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, npache@redhat.com, pfalcato@suse.de, ryan.roberts@arm.com, vbabka@suse.cz, ziy@nvidia.com, "Alistair Popple" <apopple@nvidia.com>, "Anshuman Khandual" <anshuman.khandual@arm.com>, "Axel Rasmussen" <axelrasmussen@google.com>, "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Christoph Hellwig" <hch@infradead.org>, "David Hildenbrand" <david@redhat.com>, "Huang, Ying" <ying.huang@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, "Lorenzo Stoakes" <lstoakes@gmail.com>, "Matthew Wilcox" <willy@infradead.org>, "Mel Gorman" <mgorman@techsingularity.net>, "Miaohe Lin" <linmiaohe@huawei.com>, "Mike Kravetz" <mike.kra
+ vetz@ora
+ cle.com>, "Mike Rapoport" <rppt@kernel.org>, "Minchan Kim" <minchan@kernel.org>, "Naoya Horiguchi" <naoya.horiguchi@nec.com>, "Pavel Tatashin" <pasha.tatashin@soleen.com>, "Peter Xu" <peterx@redhat.com>, "Peter Zijlstra" <peterz@infradead.org>, "Qi Zheng" <zhengqi.arch@bytedance.com>, "Ralph Campbell" <rcampbell@nvidia.com>, "SeongJae Park" <sj@kernel.org>, "Song Liu" <song@kernel.org>, "Steven Price" <steven.price@arm.com>, "Suren Baghdasaryan" <surenb@google.com>, "Thomas Hellström" <thomas.hellstrom@linux.intel.com>, "Will Deacon" <will@kernel.org>, "Yang Shi" <shy828301@gmail.com>, "Yu Zhao" <yuzhao@google.com>, "Zack Rusin" <zackr@vmware.com>, "Harry Yoo" <harry.yoo@oracle.com>
+Message-ID: <20260106114715.80958-3-harry.yoo@oracle.com>
+
+From: Hugh Dickins <hughd@google.com>
+
+commit 670ddd8cdcbd1d07a4571266ae3517f821728c3a upstream.
+
+change_pmd_range() had special pmd_none_or_clear_bad_unless_trans_huge(),
+required to avoid "bad" choices when setting automatic NUMA hinting under
+mmap_read_lock(); but most of that is already covered in pte_offset_map()
+now.  change_pmd_range() just wants a pmd_none() check before wasting time
+on MMU notifiers, then checks on the read-once _pmd value to work out
+what's needed for huge cases.  If change_pte_range() returns -EAGAIN to
+retry if pte_offset_map_lock() fails, nothing more special is needed.
+
+Link: https://lkml.kernel.org/r/725a42a9-91e9-c868-925-e3a5fd40bb4f@google.com
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Thomas HellstrÃ¶m <thomas.hellstrom@linux.intel.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Zack Rusin <zackr@vmware.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Background: It was reported that a bad pmd is seen when automatic NUMA
+  balancing is marking page table entries as prot_numa:
+
+      [2437548.196018] mm/pgtable-generic.c:50: bad pmd 00000000af22fc02(dffffffe71fbfe02)
+      [2437548.235022] Call Trace:
+      [2437548.238234]  <TASK>
+      [2437548.241060]  dump_stack_lvl+0x46/0x61
+      [2437548.245689]  panic+0x106/0x2e5
+      [2437548.249497]  pmd_clear_bad+0x3c/0x3c
+      [2437548.253967]  change_pmd_range.isra.0+0x34d/0x3a7
+      [2437548.259537]  change_p4d_range+0x156/0x20e
+      [2437548.264392]  change_protection_range+0x116/0x1a9
+      [2437548.269976]  change_prot_numa+0x15/0x37
+      [2437548.274774]  task_numa_work+0x1b8/0x302
+      [2437548.279512]  task_work_run+0x62/0x95
+      [2437548.283882]  exit_to_user_mode_loop+0x1a4/0x1a9
+      [2437548.289277]  exit_to_user_mode_prepare+0xf4/0xfc
+      [2437548.294751]  ? sysvec_apic_timer_interrupt+0x34/0x81
+      [2437548.300677]  irqentry_exit_to_user_mode+0x5/0x25
+      [2437548.306153]  asm_sysvec_apic_timer_interrupt+0x16/0x1b
+
+    This is due to a race condition between change_prot_numa() and
+    THP migration because the kernel doesn't check is_swap_pmd() and
+    pmd_trans_huge() atomically:
+
+    change_prot_numa()                      THP migration
+    ======================================================================
+    - change_pmd_range()
+    -> is_swap_pmd() returns false,
+    meaning it's not a PMD migration
+    entry.
+                                      - do_huge_pmd_numa_page()
+                                      -> migrate_misplaced_page() sets
+                                         migration entries for the THP.
+    - change_pmd_range()
+    -> pmd_none_or_clear_bad_unless_trans_huge()
+    -> pmd_none() and pmd_trans_huge() returns false
+    - pmd_none_or_clear_bad_unless_trans_huge()
+    -> pmd_bad() returns true for the migration entry!
+
+  The upstream commit 670ddd8cdcbd ("mm/mprotect: delete
+  pmd_none_or_clear_bad_unless_trans_huge()") closes this race condition
+  by checking is_swap_pmd() and pmd_trans_huge() atomically.
+
+  Backporting note:
+    Unlike the mainline, pte_offset_map_lock() does not check if the pmd
+    entry is a migration entry or a hugepage; acquires PTL unconditionally
+    instead of returning failure. Therefore, it is necessary to keep the
+    !is_swap_pmd() && !pmd_trans_huge() && !pmd_devmap() check before
+    acquiring the PTL.
+
+    After acquiring the lock, open-code the semantics of
+    pte_offset_map_lock() in the mainline kernel; change_pte_range() fails
+    if the pmd value has changed. This requires adding pmd_old parameter
+    (pmd_t value that is read before calling the function) to
+    change_pte_range(). ]
+
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ mm/mprotect.c |  101 ++++++++++++++++++++++++----------------------------------
+ 1 file changed, 43 insertions(+), 58 deletions(-)
+
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -73,10 +73,12 @@ static inline bool can_change_pte_writab
+ }
+ 
+ static long change_pte_range(struct mmu_gather *tlb,
+-		struct vm_area_struct *vma, pmd_t *pmd, unsigned long addr,
+-		unsigned long end, pgprot_t newprot, unsigned long cp_flags)
++		struct vm_area_struct *vma, pmd_t *pmd, pmd_t pmd_old,
++		unsigned long addr, unsigned long end, pgprot_t newprot,
++		unsigned long cp_flags)
+ {
+ 	pte_t *pte, oldpte;
++	pmd_t _pmd;
+ 	spinlock_t *ptl;
+ 	long pages = 0;
+ 	int target_node = NUMA_NO_NODE;
+@@ -86,21 +88,15 @@ static long change_pte_range(struct mmu_
+ 
+ 	tlb_change_page_size(tlb, PAGE_SIZE);
+ 
+-	/*
+-	 * Can be called with only the mmap_lock for reading by
+-	 * prot_numa so we must check the pmd isn't constantly
+-	 * changing from under us from pmd_none to pmd_trans_huge
+-	 * and/or the other way around.
+-	 */
+-	if (pmd_trans_unstable(pmd))
+-		return 0;
+-
+-	/*
+-	 * The pmd points to a regular pte so the pmd can't change
+-	 * from under us even if the mmap_lock is only hold for
+-	 * reading.
+-	 */
+ 	pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
++	/* Make sure pmd didn't change after acquiring ptl */
++	_pmd = pmd_read_atomic(pmd);
++	/* See pmd_none_or_trans_huge_or_clear_bad for info on barrier */
++	barrier();
++	if (!pmd_same(pmd_old, _pmd)) {
++		pte_unmap_unlock(pte, ptl);
++		return -EAGAIN;
++	}
+ 
+ 	/* Get target node for single threaded private VMAs */
+ 	if (prot_numa && !(vma->vm_flags & VM_SHARED) &&
+@@ -288,31 +284,6 @@ static long change_pte_range(struct mmu_
+ 	return pages;
+ }
+ 
+-/*
+- * Used when setting automatic NUMA hinting protection where it is
+- * critical that a numa hinting PMD is not confused with a bad PMD.
+- */
+-static inline int pmd_none_or_clear_bad_unless_trans_huge(pmd_t *pmd)
+-{
+-	pmd_t pmdval = pmd_read_atomic(pmd);
+-
+-	/* See pmd_none_or_trans_huge_or_clear_bad for info on barrier */
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	barrier();
+-#endif
+-
+-	if (pmd_none(pmdval))
+-		return 1;
+-	if (pmd_trans_huge(pmdval))
+-		return 0;
+-	if (unlikely(pmd_bad(pmdval))) {
+-		pmd_clear_bad(pmd);
+-		return 1;
+-	}
+-
+-	return 0;
+-}
+-
+ /* Return true if we're uffd wr-protecting file-backed memory, or false */
+ static inline bool
+ uffd_wp_protect_file(struct vm_area_struct *vma, unsigned long cp_flags)
+@@ -360,22 +331,34 @@ static inline long change_pmd_range(stru
+ 
+ 	pmd = pmd_offset(pud, addr);
+ 	do {
+-		long this_pages;
+-
++		long ret;
++		pmd_t _pmd;
++again:
+ 		next = pmd_addr_end(addr, end);
++		_pmd = pmd_read_atomic(pmd);
++		/* See pmd_none_or_trans_huge_or_clear_bad for info on barrier */
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++		barrier();
++#endif
+ 
+ 		change_pmd_prepare(vma, pmd, cp_flags);
+ 		/*
+ 		 * Automatic NUMA balancing walks the tables with mmap_lock
+ 		 * held for read. It's possible a parallel update to occur
+-		 * between pmd_trans_huge() and a pmd_none_or_clear_bad()
+-		 * check leading to a false positive and clearing.
+-		 * Hence, it's necessary to atomically read the PMD value
+-		 * for all the checks.
++		 * between pmd_trans_huge(), is_swap_pmd(), and
++		 * a pmd_none_or_clear_bad() check leading to a false positive
++		 * and clearing. Hence, it's necessary to atomically read
++		 * the PMD value for all the checks.
+ 		 */
+-		if (!is_swap_pmd(*pmd) && !pmd_devmap(*pmd) &&
+-		     pmd_none_or_clear_bad_unless_trans_huge(pmd))
+-			goto next;
++		if (!is_swap_pmd(_pmd) && !pmd_devmap(_pmd) && !pmd_trans_huge(_pmd)) {
++			if (pmd_none(_pmd))
++				goto next;
++
++			if (pmd_bad(_pmd)) {
++				pmd_clear_bad(pmd);
++				goto next;
++			}
++		}
+ 
+ 		/* invoke the mmu notifier if the pmd is populated */
+ 		if (!range.start) {
+@@ -385,7 +368,7 @@ static inline long change_pmd_range(stru
+ 			mmu_notifier_invalidate_range_start(&range);
+ 		}
+ 
+-		if (is_swap_pmd(*pmd) || pmd_trans_huge(*pmd) || pmd_devmap(*pmd)) {
++		if (is_swap_pmd(_pmd) || pmd_trans_huge(_pmd) || pmd_devmap(_pmd)) {
+ 			if ((next - addr != HPAGE_PMD_SIZE) ||
+ 			    uffd_wp_protect_file(vma, cp_flags)) {
+ 				__split_huge_pmd(vma, pmd, addr, false, NULL);
+@@ -400,11 +383,11 @@ static inline long change_pmd_range(stru
+ 				 * change_huge_pmd() does not defer TLB flushes,
+ 				 * so no need to propagate the tlb argument.
+ 				 */
+-				int nr_ptes = change_huge_pmd(tlb, vma, pmd,
+-						addr, newprot, cp_flags);
++				ret = change_huge_pmd(tlb, vma, pmd,
++						      addr, newprot, cp_flags);
+ 
+-				if (nr_ptes) {
+-					if (nr_ptes == HPAGE_PMD_NR) {
++				if (ret) {
++					if (ret == HPAGE_PMD_NR) {
+ 						pages += HPAGE_PMD_NR;
+ 						nr_huge_updates++;
+ 					}
+@@ -415,9 +398,11 @@ static inline long change_pmd_range(stru
+ 			}
+ 			/* fall through, the trans huge pmd just split */
+ 		}
+-		this_pages = change_pte_range(tlb, vma, pmd, addr, next,
+-					      newprot, cp_flags);
+-		pages += this_pages;
++		ret = change_pte_range(tlb, vma, pmd, _pmd, addr, next,
++				       newprot, cp_flags);
++		if (ret < 0)
++			goto again;
++		pages += ret;
+ next:
+ 		cond_resched();
+ 	} while (pmd++, addr = next, addr != end);
+
+
+Patches currently in stable-queue which might be from harry.yoo@oracle.com are
+
+queue-6.1/mm-simplify-folio_expected_ref_count.patch
+queue-6.1/mm-mprotect-delete-pmd_none_or_clear_bad_unless_trans_huge.patch
+queue-6.1/mm-balloon_compaction-we-cannot-have-isolated-pages-in-the-balloon-list.patch
+queue-6.1/mm-mprotect-use-long-for-page-accountings-and-retval.patch
+queue-6.1/mm-balloon_compaction-convert-balloon_page_delete-to-balloon_page_finalize.patch
 
