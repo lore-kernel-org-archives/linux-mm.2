@@ -4,86 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A0AAD1D460
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 14:39:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 279BCD1D46C
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 15:10:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C8426B0088; Thu,  8 Jan 2026 09:39:37 -0500 (EST)
+	id 42B2C6B0088; Thu,  8 Jan 2026 10:10:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 775966B0089; Thu,  8 Jan 2026 09:39:37 -0500 (EST)
+	id 3F55E6B0089; Thu,  8 Jan 2026 10:10:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 680F06B0092; Thu,  8 Jan 2026 09:39:37 -0500 (EST)
+	id 2E1206B0092; Thu,  8 Jan 2026 10:10:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 538196B0088
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:39:37 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED6241A99C3
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:39:36 +0000 (UTC)
-X-FDA: 84309055152.08.DFF7EED
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 08669100004
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:39:34 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nS4FJzk0;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf14.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767883175; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 1CAD76B0088
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:10:47 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C67F389A22
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:10:46 +0000 (UTC)
+X-FDA: 84309133692.06.D64A13D
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	by imf06.hostedemail.com (Postfix) with ESMTP id CCE4418000C
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:10:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=gakdwiuj;
+	dmarc=pass (policy=none) header.from=rivosinc.com;
+	spf=pass (imf06.hostedemail.com: domain of debug@rivosinc.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=debug@rivosinc.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767885044; a=rsa-sha256;
 	cv=none;
-	b=0WUxaIhxu9uk5ixlNS3sZp6vbY5D0pDmIDlRQIfd4icvIzLrFkqVOY5Qdo2rA/C26GoAnL
-	ZT2H429yblgB5Uaibp1l9fUgCCOnNV70VY+0D47F1bto5L39XaK7dhcOHGALQkTe7k67Vo
-	0SNImole0FB4S/2coEqnGfO4ADzRmZU=
+	b=ipf4YFcNVqtfFyyZoUGxL1egNKQEDND3XAaZZrwU2hm35QKie1Jh+gwapZipqUUouXXZMv
+	Np8BDKfY/ODWpg4JJhEOXMsRy3AfurB6/KTAMVjX/xM9VZFy7ZbxqG3skFW1gb0Eeouu6d
+	WOiKEa2CVnBXLxBrJO5ID8w8I2VkkJ0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nS4FJzk0;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf14.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=gakdwiuj;
+	dmarc=pass (policy=none) header.from=rivosinc.com;
+	spf=pass (imf06.hostedemail.com: domain of debug@rivosinc.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=debug@rivosinc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767883175;
+	s=arc-20220608; t=1767885044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wTL8U1oUZwkghfEX1cr6pYgRbtEkFJeHOx0vM5v97j8=;
-	b=1HUovnrp+5CTQ6O+dQ7nYRhSFgdlW3AIciMWkoSS02cwkRa8K8qUl6Vnc9ajXumwk1Om+g
-	G1vKxYq3veAdMlKTneRcK1u/SBELUkZHGiMe3pEg0FuFu80MXUGWu6B6m9x6v1jPqzkbvT
-	UxqQmzvROG//EEmVz/Fka5ahP0ltWZk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wTL8U1oUZwkghfEX1cr6pYgRbtEkFJeHOx0vM5v97j8=; b=nS4FJzk0nUmfsQVHsnpEYh7IT4
-	hyypekP3TcURyqSfN/PrkuuM1fq1hwqkY0BT1bYBuZY2FmZTUsNWFX+bRYIEhbW92ZtUEXFpeDE9O
-	j8IcWoxLB+GGr+EQu9xixRIkURn7WYWrE6t9V33pF4dqn2JxFcz59ieYLTRf3GrwY2kQDirSTGxwm
-	T8W3z2S3epsMWgSsYxYh63yBlYKHQxZmdG4pn1IseIPHcDhYCw+C8XiwdTq1ctsPnDZbnDldO77/6
-	hhPunyLEyiB0qRyYitTINmYd/lyJVW/FvQpiV4FGs3zdCyp0s6Z8ecAtXqhyoOPqFD5Um6xZSTDlj
-	tHhtpCsQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdrAf-0000000F4Dq-0yvk;
-	Thu, 08 Jan 2026 14:39:29 +0000
-Date: Thu, 8 Jan 2026 14:39:29 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: syzbot <syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@redhat.com,
-	harry.yoo@oracle.com, jannh@google.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com, riel@surriel.com,
-	syzkaller-bugs@googlegroups.com, vbabka@suse.cz
-Subject: Re: [syzbot] [mm?] INFO: task hung in __rmap_walk_file
-Message-ID: <aV_BoaOogKt3fGGI@casper.infradead.org>
-References: <68e9715a.050a0220.1186a4.000d.GAE@google.com>
+	bh=QTkbey9LWC4b27P/G+EnN+lFuImbI+lYFoSxJEGXtiI=;
+	b=hZvOqbjdW4Q2BJ6Dx1C61usNqd8WFCSkKNf1Tt43rZO2CQW1dZeaLzwTWYKBfsrcft99jl
+	bUObO9vZxy6pD5I5fPSWeYjF5H2bF78WkGhYRxolZ/q8b8kRjbNFUZGeqfZUvnJxTeO0gP
+	oKefUCbF+p4xUbZt3Wc5f7AOR1KNodU=
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-6446fcddf2fso3505050d50.0
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 07:10:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc.com; s=google; t=1767885044; x=1768489844; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QTkbey9LWC4b27P/G+EnN+lFuImbI+lYFoSxJEGXtiI=;
+        b=gakdwiujc3MNIVWkLIVx8DiMBlg9l+a4p0w+rxiMBZFxgZs6gZzKM4xkryuwHfPfSi
+         VCG/CpWA+Mi6rm/Z+rtpQao6N0aSIRF+AwuoTG9zuOQshlmFoUc5iA/G+EUOVKtmezsX
+         LJ3unIiP7UvM2Rd6MB0DoDLjB6qeKDqxiADOc7O7fRLA6+9oVH1xG/R1fpIDX20J1xMV
+         HPuLfdK3BvllWMU/BOa1BLYiWMbjFx15XGm3nNY+asZtlpOm9toUntshWr8Gq/dQVujc
+         LCUpwkI7sUyRlZD5wtHXrRKREnQkRVRBQkb28RtrN8H8TZ9SzUOGNtmRZF7CzDCjDDdu
+         JM3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767885044; x=1768489844;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QTkbey9LWC4b27P/G+EnN+lFuImbI+lYFoSxJEGXtiI=;
+        b=sEKnLGLK8zt55V83oPaWhfIctjePMFfAGTM0juXWAp6eoNUpnsR883olMCjwU6R16S
+         lP835nFndTcV2gBecMsurAD0Uf0802R5l0A+kVcNo6A5uU/OVleCc3orV3HdSDx/UtR5
+         xZFPTRXOiFJFkAlGZ4RMagPPfEFafsRDC07d9jDhjvVr/qezvZXZdSwbkdOmYvjcH1Y6
+         EyXgQDthw6NXWtnizxruLg2C/q3HtlpGnigYAF2C/szFj0D68teIeq7c9JsI5Pcu7g33
+         ha7bxf5teJfMWKbgHTve+O37jdhPfBwsPSqGzcZHZPEpazv4CDQClMfYDswWJ8e2AilA
+         xkiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWk39+bF14jIrKA0OiHVvWWrte9nyrd1NXv5leCVyz1TwRoWGl6EwJ0emEpL3zdUpFKavpIH1ptYA==@kvack.org
+X-Gm-Message-State: AOJu0YydOTtksvCR4+VcB0Qz1GjuATAFfO85+Yj4oZ47Iq+tnuPk+zHF
+	GKXqi77hIsHIFXDUt7JuX4WI0RmLkKKsd2dZPZVbTxykz9BP8QSMY1NUzzRPlHEGX/+YTiYONVz
+	ZthJqj9MbHXdyByVpG8X2WUFGWNs8emRcHh93+DqF8A==
+X-Gm-Gg: AY/fxX4JwS/IpvUJ9eJRAismJpHcSnn+02twdzSyr9fgKSM9A6tTYw7YCMAIYzymMdz
+	BPzqnHysUHe1TU2FhsE1BRq2JQnirYjnuRV2uO26KrFBp2NPVoE4Qrdzf6QVlsF6PTpdymtAZVZ
+	XaadjXjP+fni3fom6cvMO1pZVzgweeSL5uGTKqgZUoQnZM1ArL7dAEd1ZDY4M8iyiiM6Uz7YS9p
+	ZXP/XhHrVaLVBvog60gzb5ZvF2o5wRZOVjrPIDfTgecm8diSWCOgFvoeDhEOJdT1pslLw==
+X-Google-Smtp-Source: AGHT+IHwlV11mJiZRvrc0ba9gyUKkJLs3Ivv5ZO/Sp66Caj6iICdWSs+vjcbtX7JeT7w+lz4Sr6DicIt8PKx9jaUzQk=
+X-Received: by 2002:a05:690e:b88:b0:644:6ad4:fdfd with SMTP id
+ 956f58d0204a3-64716c14086mr5723963d50.71.1767885043558; Thu, 08 Jan 2026
+ 07:10:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68e9715a.050a0220.1186a4.000d.GAE@google.com>
+References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
+ <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org> <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
+In-Reply-To: <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
+From: Deepak Gupta <debug@rivosinc.com>
+Date: Thu, 8 Jan 2026 07:10:32 -0800
+X-Gm-Features: AQt7F2r-MFLse9aM2Y-9SmWOvFLm93MsLbBkGvYnQc0D6QLcC_Q6_utP6Kihh0s
+Message-ID: <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
+Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
+To: Paul Walmsley <pjw@kernel.org>
+Cc: x86@kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+	richard.henderson@linaro.org, jim.shu@sifive.com, 
+	Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com, charlie@rivosinc.com, 
+	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
+	alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
+	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
+	Zong Li <zong.li@sifive.com>, Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
+	Valentin Haudiquet <valentin.haudiquet@canonical.com>, Charles Mirabile <cmirabil@redhat.com>, 
+	Jesse Huang <jesse.huang@sifive.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 08669100004
-X-Rspamd-Server: rspam10
-X-Stat-Signature: fu56k97g5rs6izkhgsdn7tuiip7f8yef
-X-HE-Tag: 1767883174-35950
-X-HE-Meta: U2FsdGVkX19/QnSGKjS3uookqNaRQ8j+cwk2r9Ux8murqf6J7Bf4c+uWOQR+3/ZSbWqKXLXlD3RLcXz7ajyNLM6TgHowdRWqzBdLm60mLh15J1Jviik5OG1izkMUYu/DtXm4AtoVVUQTN58DBBjajNtqDjnBvLi/vQUM067Cw4NbU0N804z96QQxXjl4SfpbqxcFkJZkxNGCz/40o4dpj+KqcuuBYzGfuuoxuTCr+vbPtv+ODOA6sfPtyhbB5vYvpVSx3uNv6HTEMPyvH/k9ULymcGCETv3a4XtfAv2FX3rcCv+dAU4fpBCp6t5laEqLKKKDnuvRFmEDsu6JjeYMJLWwisY0bZnIpQFu2ENmlE5tOn/+t4zJMG42ZU3XLxBxZscASOyTAMI6ZjKeRETP2qYDJG+6jfxPnOk+TwPdjAG2nikcZ6urATCWunCYOcjuN+eGplVRh3fFjih7kjiwWu5wIbyvmkXplkOTzdgym2l9LI25PqJnlXYOAKi/CCRk8851ruZlrkr4L2ek615Syw7uqQt+r9JWijPlBqsZGliduECSpj11WRD0WSw99WpsEJSy5B49Cj1ZOFt2ddndXCg2CDgnNgZ/AJYTULztcLNuNe7aot7eLK9obHu1vCHB/S8xqRkSYpz/zGKfeIIl6f4ViDXAMNaCZbR7bHA95EeIM2iSw5q2SuHYcb3qX4WqChAvu63pCNYpeBUZO9rvfajSkBOzszfSHOapEkSVh3Q845NY4B1QpvIXkBkkWF1gQW/hTJiZ1gbGsHi0+O87y/I+rEdSy5cv+QZaK7T728ZEfRd7cB+yKf5NSgcYmVnTODvbnSGWf2coriy0v5Uizzc5f96LrPNk6iZO4MbKr3W06tPl5sZ+NYF13w03qfgySyeDEx1xoeqoP0dfIzmADN8cQToGZ+Hl7u7KN529ybYeZ7jvMdUGVJyekyP28WYZ4veyLXFhkdcuPlcFQaO
- geDYIzh8
- eG3D6R6gBAdGNQk0bTkVNbocAPoApf/6Q8wooQ9isTxIu7OWx3iMKfJ292AIjh0+Udf9yaRUmUZ6AIt+aR0Z256Tjr19meFT4WrsTl/d01u2YNPzaZMJmrZUmfiKs9G1tr9ckpBogxXKoNXkpmja6kXiy2kZDRgPiUS1cuDoc4masJtqvdvSn6osdsq45u3MBrs3Eg8APzaiGIvxohVy8Vm/KoDGG1J24C4VRAHG8+YGr8kbxtoAsJ8J308Tq+kvfQ5L8uQ93G9f8kNi0Y1ZhRsNKlYPLxLaCW6KditmCYSPZ+l8XpSKjw+0Lp1rug0vsL+BtwUNrdjCNO8icbO/wef5bkl3QMeofm4EAsA0UteV4oI7s7YbnE4jhMkpWw4kK3+iAlsN/yM3xH3clVJQu4lu9gElh7RnQyDDqTybSij9bcPRgY83R06Am9bhW74Z3r+aTyzFT142Dx8HWtzFlpEcNKvFv4nHo7TETUl0TKemX26Xkva4akVsACg==
+X-Stat-Signature: rabynpxfjdw41aaaiyphnswmwqapdyf3
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CCE4418000C
+X-HE-Tag: 1767885044-114305
+X-HE-Meta: U2FsdGVkX1/iy6F0tgggV8uQXS6R9PKMoazuFjipRBqLuURmpKfud4epav/+/JP/vHXRPQ6PHD7Wut0E1J0L4+86gnEogQTn/PFO10Qqjos2v4WxmigmzzCc8PLyXpXT5XK2d5qkIYggDARZ2SwLSjCauAw8pR45Y6tuF/m6Q31KCWnjc7VMuk+2c5JopeKRBDK+2YHwlI8SicpgAFiXstNN8S1X8/tt97NAFcNosL6vHpoOiv9fF8pxf2L8x91tM61ZATYIwv75JtRwiO74rxrStqt3UGpbMw6LWPcoEwrSGgKy/z4kykgenYFT0TtAeA9Vb0t85q9eWy4QMABR3TrtWAKm7TzS688gR3O8SaH4VMehAcD2xqnEWdp8rNzRCxb5r9Pd6KrrdDx54aqQu05j5LyKEwty4oNIUaiNiTEitTuH3r1K5Xt+uMj9NF6uoxIEoHSJzKhPJpzeVDii/FiuAg3YaQZTS+zFxD2vI4nFPHm1ff7GZtKAsZCYAS7VL5eT5gmoVAz8RPlIg/7c80eo4TyHif8aFj9b5cbpOTC0BUwCKXRXbPe/V3d+4aJe3NzO16vkxKJSysoHq5Pz8k4dg6mAKR1ideeyhxRRnF3DZ4y/mNtvacZt8yjTB8yJ5syvx6v/WN7bIhhNHSrLfLDlOY69GQVoPUnmNtkpIdPpoPV05Hs5LL7YBDLU1nzxyVMpkopi9HjD+ZBvRtLiVWAS7lNAxFcOZ1hJhFCfvOwL4uoN//H9UbD1mWgTuasHE990HcEmEXXZv6bICqsjo+KMwRW1OWDyR8aBuvmJVflimEpdefyQ0Xn4r4aBeRjQ1sMoQXM1Y+qEkx0wmpq5pcJrXP4bADcvF57esoER/CaXMulryC3a/mTANOYrbomEXBqORL6naAHluL+0KZGnKRoPhnfLNgCJGrnj3fX+zw3YcBExdSOskvjBNi0LpZjceLy79U+qmpZbaLFRWH8
+ /EtkuKdO
+ bV0FEDd/kMZrmfE4Zm6AHsyTDsGVJKLxOGvECiOyCfVNtgqoleAZPp1e1Yb/qA6C4XnSbMOlgFHwM4Vzcr1Q3e0ijxA3XEATO3GO0yW6hjwdKwrhBO+ZhuU5Fq4t2eILiLBdWIlmsZGYVYVLpYeIUOup76+snlCvKRPXSTTnCcMevJQVAmVIxQ1p0BZWdp22/IMDjeGMkyc5JrD38vZziguNG29JwnpmMYczFpmMGIiB4bBv6qw6Oeh2VtjT1JyR0xEIVZ0m4NKs8mgJ89t+ZBgYkpEyBk20jtQaz7V4fc+p1URcLxhsaJobj6BoBwDBy/B7lCnOzTrastoE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,53 +139,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 10, 2025 at 01:49:30PM -0700, syzbot wrote:
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=133e89e2580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17f3ba7c580000
+Hi Paul,
 
-#syz test
+I have a bugfix for a bug reported by Jesse Huang (thanks Jesse) in riscv
+implementation of `map_shadow_stack`.
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 5169f9717f60..4688b9e38cd2 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1458,6 +1458,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
- 	int page_was_mapped = 0;
- 	struct anon_vma *anon_vma = NULL;
- 	struct address_space *mapping = NULL;
-+	enum ttu_flags ttu = 0;
- 
- 	if (folio_ref_count(src) == 1) {
- 		/* page was freed from under us. So we are done. */
-@@ -1498,8 +1499,6 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
- 		goto put_anon;
- 
- 	if (folio_mapped(src)) {
--		enum ttu_flags ttu = 0;
--
- 		if (!folio_test_anon(src)) {
- 			/*
- 			 * In shared mappings, try_to_unmap could potentially
-@@ -1516,16 +1515,17 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
- 
- 		try_to_migrate(src, ttu);
- 		page_was_mapped = 1;
--
--		if (ttu & TTU_RMAP_LOCKED)
--			i_mmap_unlock_write(mapping);
- 	}
- 
- 	if (!folio_mapped(src))
- 		rc = move_to_new_folio(dst, src, mode);
- 
- 	if (page_was_mapped)
--		remove_migration_ptes(src, !rc ? dst : src, 0);
-+		remove_migration_ptes(src, !rc ? dst : src,
-+				ttu ? RMP_LOCKED : 0);
-+
-+	if (ttu & TTU_RMAP_LOCKED)
-+		i_mmap_unlock_write(mapping);
- 
- unlock_put_anon:
- 	folio_unlock(dst);
+Should I send a new series or only the bugfix-patch for implementation
+of `map_shadow_stack`
+
+Let me know. Thanks.
+
+-Deepak
+
+-Deepak
+
+
+
+On Fri, Dec 12, 2025 at 10:33=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> =
+wrote:
+>
+> On Fri, Dec 12, 2025 at 01:30:29AM -0700, Paul Walmsley wrote:
+> >On Thu, 11 Dec 2025, Deepak Gupta via B4 Relay wrote:
+> >
+> >> v26: CONFIG_RISCV_USER_CFI depends on CONFIG_MMU (dependency of shadow=
+ stack
+> >> on MMU). Used b4 to pick tags, apparantly it messed up some tag picks.=
+ Fixing it
+> >
+> >Deepak: I'm now (at least) the third person to tell you to stop resendin=
+g
+> >this entire series over and over again.
+>
+> To be very honest I also feel very bad doing and DOSing the lists. Sorry =
+to you
+> and everyone else.
+>
+> But I have been sitting on this patch series for last 3-4 merge windows w=
+ith
+> patches being exactly same/similar. So I have been a little more than des=
+perate
+> to get it in.
+>
+> I really haven't had any meaningful feedback on patch series except stall=
+ing
+> just before each merge window for reasons which really shouldn't stall it=
+s
+> merge. Sure that's the nature of open source development and it's maintai=
+ner's
+> call at the end of the day. And I am new to this. I'll improve.
+>
+> >
+> >First, a modified version of the CFI v23 series was ALREADY SITTING IN
+> >LINUX-NEXT.  So there's no reason you should be resending the entire
+> >series, UNLESS your intention for me is to drop the entire existing seri=
+es
+> >and wait for another merge window.
+> >
+> >Second: when someone asks you questions about an individual patch, and y=
+ou
+> >want to answer those questions, it's NOT GOOD for you to resend the enti=
+re
+> >28 series as the response!  You are DDOSing a bunch of lists and E-mail
+> >inboxes.  Just answer the question in a single E-mail.  If you want to
+> >update a single patch, just send that one patch.
+>
+> Noted. I wasn't sure about it. I'll explicitly ask next time if you want =
+me to
+> send another one.
+>
+> >
+> >If you don't start paying attention to these rules then people are going
+> >to start ignoring you -- at best! -- and it's going to give the entire
+> >community a bad reputation.
+>
+> Even before this, this patch series has been ignored largely. I don't kno=
+w
+> how to get attention. All I wanted was either feedback or get it in. And =
+as I
+> said I've been desparate to get it in. Also as I said, I'll improve.
+>
+> >
+> >Please acknowledge that you understand this,
+>
+> ACKed.
+>
+> >
+> >
+> >- Paul
 
