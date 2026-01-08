@@ -4,90 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01435CF6AB9
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 09:52:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F6DBCF6AB9
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 10:15:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F28786B0092; Thu,  8 Jan 2026 04:52:53 -0500 (EST)
+	id 4AE6C6B0092; Thu,  8 Jan 2026 05:15:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED5B66B0093; Thu,  8 Jan 2026 04:52:53 -0500 (EST)
+	id 431A56B0093; Thu,  8 Jan 2026 05:15:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE20E6B0095; Thu,  8 Jan 2026 04:52:53 -0500 (EST)
+	id 3309B6B0095; Thu,  8 Jan 2026 05:15:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CFBE66B0092
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 04:52:53 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 78FAE160669
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:52:53 +0000 (UTC)
-X-FDA: 84308332626.08.08FA40E
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf18.hostedemail.com (Postfix) with ESMTP id EA5661C000A
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:52:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gUjrkfjA;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767865971; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E6756B0092
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 05:15:47 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7605513B690
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:15:46 +0000 (UTC)
+X-FDA: 84308390292.24.700D132
+Received: from imap5.colo.codethink.co.uk (imap5.colo.codethink.co.uk [78.40.148.171])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8C8111C0009
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:15:44 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=codethink.co.uk header.s=imap5-20230908 header.b=rZCB4ASo;
+	dmarc=pass (policy=reject) header.from=codethink.co.uk;
+	spf=pass (imf20.hostedemail.com: domain of srv_ts003@codethink.com designates 78.40.148.171 as permitted sender) smtp.mailfrom=srv_ts003@codethink.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767867345; a=rsa-sha256;
 	cv=none;
-	b=j9SG3X+O3As1d+mFirMW8Vwxu+YpRAG5Dv64KrylcK7jQXMbpiP6IDM/Ef3U0XT/ztWJwb
-	v0FLZcKZZ7MS7rvVNY9N2QmB95auK1vDwCDboRZuifRf0Up1AxeyYuiVNSlD1kAYML+Gjx
-	8IKAj9XHzd5qKpbfFwa2NhCfr35LTvU=
+	b=gQbNf2kAOFCifpCTbfI66jt6AdBylmK9GOdGOUBm5JMizLpijtyXNJ1d0qTbvkl8RV29mt
+	uBo7i/ta6EWC0d1HJYt07/fuo0ReSJ6qZDlPP9fXyTtfOzShdKzLpFb5bdDFrMJNpUv4PL
+	I8t+M4dR66oL/z6XXdBLJ6RS5zU1x5w=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gUjrkfjA;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+	imf20.hostedemail.com;
+	dkim=pass header.d=codethink.co.uk header.s=imap5-20230908 header.b=rZCB4ASo;
+	dmarc=pass (policy=reject) header.from=codethink.co.uk;
+	spf=pass (imf20.hostedemail.com: domain of srv_ts003@codethink.com designates 78.40.148.171 as permitted sender) smtp.mailfrom=srv_ts003@codethink.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767865971;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1767867344;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EvzdJy+9zMHN27Ed9/NnkvWwqWU86nRfgPXwwBdMWUY=;
-	b=RlRV/EAqy0T19fAsARJrdqkB7F6t2RNIVFmRKVnKC+hasKYU6RuEaxZxsLdk+wuOc5uA/L
-	R0mUmAibuCpjkTHvrifIlWHi5PLmerK5Lij2xUYu630tkFeEGOuBKzENj8jpIY1RHNWgOy
-	LJitvgyKggTAaHSkcgcdNWjkI5g17xA=
-Date: Thu, 8 Jan 2026 17:52:27 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767865966;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EvzdJy+9zMHN27Ed9/NnkvWwqWU86nRfgPXwwBdMWUY=;
-	b=gUjrkfjAhdKKfbMv/eiJaUta2YOhQyBJ7HZUUfgaP6FBr5rYm01/XZ+qMxw4ZMlMELB2dN
-	ibCm1rZ3M7V81o8nDuv4lyG91PsbFGgSzuu2WldMaCvevXx2lSVhYisgFCHJ6tiqFaXxOK
-	phROM+SBVI0qFg84BcCLqHKFaox/Il4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
-	cl@gentwo.org, dvyukov@google.com, glider@google.com, hannes@cmpxchg.org, 
-	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com, 
-	roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev, 
-	surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, tytso@mit.edu, 
-	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH V5 8/8] mm/slab: place slabobj_ext metadata in unused
- space within s->size
-Message-ID: <7uiizca4ejiqw6zegjwmou5va4kw7na7wivy4kxebrju7dsdwo@5brr7vhwf5oh>
-References: <20260105080230.13171-1-harry.yoo@oracle.com>
- <20260105080230.13171-9-harry.yoo@oracle.com>
- <fgx3lapibabra4x7tewx55nuvxz235ruvm3agpprjbdcmt3rc6@h54ln5tfdssz>
- <aV9tnLlsecX8ukMv@hyeyoo>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=HcBErMuoKxbW8X5+AK6nWr8Q6elg3ttkpZvtiCgCY20=;
+	b=uzBmOeBsrwzuJA4hrIT7g4s6llPYXMatTXQ4VxsFIL9JQfHyo4DTH2yMFEbTHO13rOWe97
+	nhY0fgBHrYB/igN5x527O4pqrRFlVaeSbOyQH2WtxeJNeAOeL4bENIEuuCLGkZN0tt6ZT9
+	5q7JmqTP6P7EY4KEZf2s/tJ+9IeQw8s=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=codethink.co.uk; s=imap5-20230908; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:In-Reply-To:
+	References; bh=HcBErMuoKxbW8X5+AK6nWr8Q6elg3ttkpZvtiCgCY20=; b=rZCB4ASofsI14v
+	k9Yki6MT2f5oboMYWNKL8DEmVg1h6RocVQnfZ4h5Gf0tihZLDVCTF6ZM/eVH/qXdhwZVkSrPrkADC
+	PDhA5bFVYHPdJlW/PMQtTx3K8LQvflpF1jjr46tWJWlJv+GnamGqEPqwxh/WDZlhY+NNK1e8QUl2m
+	zVYFKuzK2MbGw0QNdgsT61OH9TG6GPS4A0cfO1UjOSplZl5LuAMOQ7+wIsImmTzwZQJXHZXs6/TlZ
+	yOCMUK42wlF3Lb4KB/n8ie2mHcfwf960x9jQtK0zaHAs5g9Jd/of1FfXXqFOVQkl6OiEEkV4Y8Z94
+	iWqbu0HIOnWCAaMoqGtQ==;
+Received: from [167.98.27.226] (helo=rainbowdash)
+	by imap5.colo.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
+	id 1vdn3N-00BWZO-QW; Thu, 08 Jan 2026 10:15:41 +0000
+Received: from ben by rainbowdash with local (Exim 4.99.1)
+	(envelope-from <ben@rainbowdash>)
+	id 1vdn3N-00000000xcs-2HO6;
+	Thu, 08 Jan 2026 10:15:41 +0000
+From: Ben Dooks <ben.dooks@codethink.co.uk>
+To: akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.or,
+	linux-mm@kvack.org
+Cc: rppt@kernel.org,
+	Ben Dooks <ben.dooks@codethink.co.uk>
+Subject: [PATCH] mm: numa,memblock: include <asm/numa.h> for 'numa_nodes_parsed'
+Date: Thu,  8 Jan 2026 10:15:39 +0000
+Message-Id: <20260108101539.229192-1-ben.dooks@codethink.co.uk>
+X-Mailer: git-send-email 2.37.2.352.g3c44437643
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aV9tnLlsecX8ukMv@hyeyoo>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EA5661C000A
-X-Stat-Signature: qfe1qcr7eomoo881igxg77dbc4uwsxhe
+X-Rspamd-Queue-Id: 8C8111C0009
+X-Stat-Signature: kwepc6kqe5chuqtcudgbodyeh8sgf8ny
 X-Rspam-User: 
-X-HE-Tag: 1767865969-946128
-X-HE-Meta: U2FsdGVkX1/LT534kQfLYPEwLdW+984pWXPoRY+7sU526fywXmLQe5JakyEZ+IpVfE+kWLjGzIXjdM6/l5eejF6QvNjYXg660joue8XzIGOGfEKVBfbhEwSK8R05vQKXqKdK3wsQh4Jj1OgiLICfopp1t322JS7o2XwOL8raDvRl/G0tNs6sebRAcMsZX2xk9ZUqLX//NNJh1yFfVVB39/9Chzxb6SWQgsG211WV+OZovMitzAbfRXP5xGTdfh8BoNJz7fQBywIFkldlFEfDmE5bjKI6WZ8Zd9rel3G9Fzn76xBvFwNT1spGyXKUZ9G1fGIoZCeGv7DR5R7reDcdtQofFoz+zH1boC/oxqeBTwRNGzfBHA7gGnRdLz46LEgLQp5sOUNEdP5yuGam00VaDkQ+vDiuq5LdtBKc1N1Xoyy4jnlEbPysbsGj79F4OnKNgXqPCaF3Kh9xmD1ip54fuiSxoEadFj5zZOatxtr1dcOCNcn+mctlIGvRepEMSBQfSZg00TzC72U+igafDrua7m/Q1KYIBFVPEsiQyL5/57YjVo6CvGHSR3llKLac/nCO7dZEeFO6OjSpd9y0HTUR1lBZeu+bWtNTZOIrRou9FrbWrLzJJJM8sR/phWJvwcHStIYs4KSFTW3v5HrCiRDJt+/qAzgxbWmaC7j9flj0FmGzu9bDYQ0inPzWObTMy7SjDtRHuq6nBI6e7eBErjlJX4/jy5tlxE2m4sLREKC74q3+YTcd+A+CpDZfIai7ERfMssK9yYVyU293He23UhUmKBUi80CAZHscaCp6KO6C1JEKQ8plAF7Tig7CvIyJu4Q2inIT5QOwrWZBzvk/85FNCRYTYa6fO1f0FlxruKQML+AgMg98DP5OLlv2v7+T6ZvYRcaVAHefzMI7W3qDGt3VvPmGhTiguie+/2KOD8Siz2Ry3jWeCesXM4xUnH9rAo91dIGEzIfr9MwuS/hLjGz
- ZjhzNiL3
- 9JFu9Nrno90sQToADfGwOOap6z4nNCKk9RB/zm+dhsuUgW9P8YSGFARxoK94njuJZp7sue6g9c6UA4c3hCp65KY26MdgSx8eNOFLaJFQx2e2bMLVNZZpUp8nI7aLPFFRVzsmO6XlCZTc/5sHXHPXGp1jIoMHxK644SrfBAUA0DMym7wVaLF/oOYqr/e2r0B6NTkS9Ilm0LN8ndOJpVyYxfQLTWQXpX/X5g9FpdQHp6KVXRdM0O1aUy1Zt/QEQ1TIQIiWeKGgNDnXhMf1db8gBZgq/0cK54kSrQNACtDvmU2iueyflVOVGYPxl8lRh7GR9oxFyv0pSdb83A4c=
+X-HE-Tag: 1767867344-544260
+X-HE-Meta: U2FsdGVkX18cjA9M7v1hPkYG9k2aAjiNVRj2tokS7MP/DK5f5mqAhnwwSE3ecI6dVEiB2JisEIzMQzzot3mWb9s4onlNwWydRKKur498ceo4EEcsEZpTnhga5qQR/F6Btc+5KqBUDg8RZ7deaGTUp3c5w+2Ih/wLNdXVkK59/DiyXl/OYVlIqlIvUbR7TqHQaVADZE1wLVyW229Ao5ia1NdQOFiTsnaHA821b9EwTS5FbQ9G7g8zGT6cX2miXZHCPmFif+XPJjWoLjfwi8x2JZSPCfiLVfFf0UlN2oLLB86JnUb96ne47+7Y1r17FQbu6wmMNjxxOg7TWtzdb2PyrdtXsmjoHFcdipi3cqBMua0f7w4XCkZ4GIq9P9l6MbKl4Zla3JWLib9Fn+lSzyRagDewtGshslVMFc+ky7vtBECt60nSJLGK1MFGnQMxe/PD2SxV6yJw3zSzIYhZE6aq+HrFor/9LiUxLND7GXBJF1Q4vQzJDa0sQDtagGGViCv7+cWgYGZQmel7xwbsBD4LIeqOvNQmve8JBYqUKr7PprKaNzvosFgZyQK05ooF0M10PE6q0KIokXjjM6C493BaBQ+ygqXnoNgn0xxgTjhGVvQnDXnWczJYLKjmqAE9MUXFQU5pzINFLOu/kgL05hs3QfXc/eTvvNrQQaEdpM1GXaSZW3vtHtBXLR1D6utvsQc0UCVBcvfGuW+pA7MUVJVEfZpIsZZEFAazhxhHTbOAXsHVMlhm5pPm7sxmTVJJn5lOb9y0zsWlb6XMQy757bLdduR7pB7DMhtm9KERzG0LLumx/21lwTcS9z54ZhPE8Tk/z9+rU+/E63ssox1ZLu5tY/uUNYA7WPVRDB42ZQf6XGCQEsl2B8GhRNl/rDoub7Xubw+966WHoU4fR0+iPHAWl6H87i6bwJ53Vh/xh1fB2N73nnXpak/dCRwi35LKPswxy941eA5lB8whk4MNRXT
+ TI9xx3bo
+ ysjGndFGih9mnq3kolr/cUaxIqJB5CIYx5P8i/w+dbQLMAs/5M4aEmIySyJKVuzvS/lcu7BhI4eKj9qCAjCnrfZA0gImjttEA7PUwaw09esbIOqaGh+v5LvfwTerku8gGpmLpPmaFdXxrgfcL7/2lHSvbO1fbKqgjOMYax5YG36RvpfnSNKHhvGFXu4uamo0x+z9TsRvgJnqfo57HTxx7xPLZSV4n4ZgYFQMPiHXOdYW3+v0POSN6f2mS6jBBFY3BvMzN7v3/WY3PlH809BZtRkaMtAWdU4duAr++XgLwLB43HwBhfybUh2aeRobPxwGIXb6RwyVKnfZc6aTnOHaN5v6plFQd9T3EqOMsCDYmSF7oBwEnhhFy9iSB6b27j8GADLhzRzcNpyFH00DEbgteUDea+lE8N9Mka3cpPVXCa15YUyyeJpNPqwxEahcHhE43eEx2VpxWsZqFG9DtrVr9NNwIsRuxtNZtoB33dM507ZLnimYCPvCYhSeHbw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,49 +92,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 08, 2026 at 05:41:00PM +0900, Harry Yoo wrote:
-> On Thu, Jan 08, 2026 at 01:52:09PM +0800, Hao Li wrote:
-> > On Mon, Jan 05, 2026 at 05:02:30PM +0900, Harry Yoo wrote:
-> > > When a cache has high s->align value and s->object_size is not aligned
-> > > to it, each object ends up with some unused space because of alignment.
-> > > If this wasted space is big enough, we can use it to store the
-> > > slabobj_ext metadata instead of wasting it.
-> > 
-> > Hi, Harry,
-> 
-> Hi Hao,
-> 
-> > When we save obj_ext in s->size space, it seems that slab_ksize() might
-> > be missing the corresponding handling.
-> 
-> Oops.
-> 
-> > It still returns s->size, which could cause callers of slab_ksize()
-> > to see unexpected data (i.e. obj_ext), or even overwrite the obj_ext data.
-> 
-> Yes indeed.
-> Great point, thanks!
-> 
-> I'll fix it by checking if the slab has obj_exts within the object
-> layout and returning s->object_size if so.
+The 'numa_nodes_parsed' is defined in <asm/numa.h> but this file
+is not included in mm/numa_memblks.c (build x86_64) so add this
+to the incldues to fix the following sparse warning:
 
-Makes sense - I think there's one more nuance worth capturing.
-slab_ksize() seems to compute the maximum safe size by applying layout
-constraints from most-restrictive to least-restrictive:
-redzones/poison/KASAN clamp it to object_size, tail metadata
-(SLAB_TYPESAFE_BY_RCU / SLAB_STORE_USER) clamps it to inuse, and only
-when nothing metadata lives does it return s->size.
+mm/numa_memblks.c:13:12: warning: symbol 'numa_nodes_parsed' was not declared. Should it be static?
 
-With that ordering in mind, SLAB_OBJ_EXT_IN_OBJ should behave like
-another "tail metadata" cap: put the check right before `return s->size`,
-and if it's set, return s->inuse instead. Curious what you think.
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+---
+ mm/numa_memblks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index 5b009a9cd8b4..8f5735fda0a2 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -7,6 +7,8 @@
+ #include <linux/numa.h>
+ #include <linux/numa_memblks.h>
+ 
++#include <asm/numa.h>
++
+ int numa_distance_cnt;
+ static u8 *numa_distance;
+ 
 -- 
-Thanks,
-Hao
+2.37.2.352.g3c44437643
 
-> 
-> -- 
-> Cheers,
-> Harry / Hyeonggon
 
