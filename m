@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43303CF6AB4
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 09:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0C1FCF6AB6
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 09:37:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75DEC6B0092; Thu,  8 Jan 2026 04:36:26 -0500 (EST)
+	id 223EA6B0092; Thu,  8 Jan 2026 04:37:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70B216B0093; Thu,  8 Jan 2026 04:36:26 -0500 (EST)
+	id 1CD5C6B0093; Thu,  8 Jan 2026 04:37:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DFC66B0095; Thu,  8 Jan 2026 04:36:26 -0500 (EST)
+	id 0C63B6B0095; Thu,  8 Jan 2026 04:37:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4ABD76B0092
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 04:36:26 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F09546B0092
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 04:37:55 -0500 (EST)
 Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1186C25A9
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:36:25 +0000 (UTC)
-X-FDA: 84308291130.29.CE4729F
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E78E8180002
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:36:23 +0000 (UTC)
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ABDCACED13
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:37:55 +0000 (UTC)
+X-FDA: 84308294910.29.E5E2676
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D2265180002
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:37:53 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=InFiAS4D;
-	spf=pass (imf16.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767864984; a=rsa-sha256;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=X4rcv0E0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767865073; a=rsa-sha256;
 	cv=none;
-	b=vwJ9o5VDpopIXultBjYpBpujC1nY8OwHVEJM1wxQ6YX4H3nbcnBtIMuxtKiJXI+w+VNqPZ
-	epYdsDDRaE5eaX3tzOQpx/ULdUNfbEfiXPsNlfzdDWVI46GMk0bqTrVKvI6a8jodQxbzVg
-	0p7JLyWXoiNb3VSebEaFHYZhp7TW+O4=
+	b=hKEIh6tD8RKqS/rUkoasqIqaAd0Uu7BGpBGdqDO/tJvnbXmyZKS3TP2PlZGtSiguv4/OMp
+	DR1B+SOD6RStMlwQjkJL2/yGwSnsVUIlyKBlt+WblT0OJ+LDHNM+HU1w6GHq3J0lmFyZ4u
+	Nu0gRO+yShuRV37+IxLwUn1axioCQK4=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=InFiAS4D;
-	spf=pass (imf16.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=X4rcv0E0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767864984;
+	s=arc-20220608; t=1767865073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=miqdi3JWBKoxNnDoIDRRY9WTssFbqfALy728r5SCWyA=;
-	b=j6b0tox/fwCDHoyBGlnCyzAq8V1I22EJVobqzcYdrBtPWuqcLMP61IzrDChgZYvLmkK6sA
-	MIx5/o/oaBWUl8d4B0JdiPCQRI42cgHotzwKPQ2fvNAU8HENzbVDSYBsKIKkROWzQngMVn
-	+xEfLWXJWfsbhPt2we9tLZGVfd83+K0=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a09757004cso29821155ad.3
-        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 01:36:23 -0800 (PST)
+	bh=ik6S3AEviz5X31TZw7OV/Nia5XaM7NiA7FEx+an3VHo=;
+	b=uXYii0lBVjOhzXLUSDZUQyllBLslFdJ0Or+cLIzRK4eG64a67U5OLZD5ZgXnCMItdeUKoe
+	+ErizjW56FTE9kV7AbG76xYjVXgbbnECl0v5IflO0j1r3gFYOV9Dnp8upx9LbDKBh/MU88
+	2+M+AVjw43atMoWYl83mzHKjmrqZBcE=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-34c24f4dfb7so1710153a91.0
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 01:37:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767864983; x=1768469783; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1767865073; x=1768469873; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=miqdi3JWBKoxNnDoIDRRY9WTssFbqfALy728r5SCWyA=;
-        b=InFiAS4DKhCQUU7M+7ZvOgKa5uRLzHE8Lk7CM9p8MKVQZn9Ejwko9yfwAo+wGZFJHJ
-         R2aZi2GfghRXCYsZoYqG6dvI5dwI351Ds/MEVOleP+Q7f6WoBdCtLksNJ6VUOKelQYup
-         CqxDnThJ3fi4W9F5j0Z8nRc8uabdXZqqF7NkfLFbPWDpz+9hE88us/GYTkcHNbpIw272
-         ixjJnkXfzpQzbnhxDnSGnwHednYsw9O1go8zH40aJJtwATOEz25AcGkFUaJDNunvAXfg
-         kCCKRKmP1GfiD3Gxb/7W+AqCDSVHtKKILhKoLmDpD2gMKxH0FhHO+nJ5UAvjY6rcjFF6
-         rkmg==
+        bh=ik6S3AEviz5X31TZw7OV/Nia5XaM7NiA7FEx+an3VHo=;
+        b=X4rcv0E0349TO7Mbhp+jUtvD/t1hR20/nnWh4pQnm3cOAkVMPValqGcnKw4YE51GkV
+         PX6n0Irxb3huizU20dBJlQsCDmIsp/I2g+R1TmQcwMxUprO3AucR79zGCBuYhB2RPuCE
+         RJBBA5O//fu3So19WlLupnOcnlyeXzuFdXFQy5kPivC6wYR6sYI3w8Zi+L22LIn9CK9j
+         VAPZAsJwVTJLAn4hMdlp1f3+cGS/OO9UL8CST791gqZkD6PTRu/I7Gl1VVwOS+DYmT20
+         6fE8T1/mPgjooKQlq4a1Ugh7dJ3sM70H/XVrDeyIVySD9YlyrwmDiAGEhaNIRTQDYcHr
+         9lPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767864983; x=1768469783;
+        d=1e100.net; s=20230601; t=1767865073; x=1768469873;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=miqdi3JWBKoxNnDoIDRRY9WTssFbqfALy728r5SCWyA=;
-        b=nDybJA/DWAaNemjEnhW/aXjqo4S0S4dchKlK+IG31fpGZqqXYjO45P8xX/jX2p9UJt
-         CdSRIiZh22QublRqeElStGu+/kY/zUUUDDvontsp5TsSFaTc+SdNDtsJYBIlDQUyFTRf
-         /AnH+ihJy6CWE6UWJV/LxVyh/zZicyut8a9BQc3nNqZYQZrv1nBW42VYfUXr/Mrbq2CC
-         u1VMODuJuJEXypOOYpN3JL9wQI2yEGFlSfXhy0f9K4AyNxrQYCFpNCUJhj3Qdmyr+R16
-         6sTOzWbWZNbun5aMjgNCxk7pFQj3gchlWJ5AI8vAClXq8a8FNKcF06cIfRu8HxM0dUFD
-         N1dA==
-X-Forwarded-Encrypted: i=1; AJvYcCUO3+61J6lxzuuc7E53KiOENS03Dc1KSdGYBSRqeXPeKz6FkE7rDBYMhy9E2rCPaHIxfEEYNK/Vlw==@kvack.org
-X-Gm-Message-State: AOJu0YyNhZ+kCUUSOq83AjWmUwlqZNbNnwNxutXm+RJDpHv0ZhUR6DUc
-	5rhXtKFw51U4gN4zX7JFXn8BZNPJv2y6tf+UWurU2hJqXKAbRkKdqCeT
-X-Gm-Gg: AY/fxX4KWBsuUL5Um8hhMzQwVY4tIrrRDy0NBZ+kvwhnM9/zy3ZdLOsPOgCVJA3Wyxt
-	Oz8BuvcXIoSXel7oQzdnQPHV7R7OTL6i5HHSw+h5ZBCXRmtieiHPgfo9433uD+biCPlv0KLFENL
-	vM44T71orKW1McoRvI3QgI3VWAMU1Y8AsZ6MBj8K4szpukMmHz2pVB91Rp3g1KZ+Uw36ay7v7ag
-	Y88VHiJLbZdFc9Mxb/NulNOynlB5BDnXRG+T4SPpLATn6MIPRKg5YeWGjLuWOAMz45Ek5Ko+NQE
-	w8TdqQcKxrcDCcviAeGb0MV8v2x08d6uIABgFmdQ5U9+V9hfAC0hQEbM7/1QwwVAGuRDq/jtYXW
-	oHtOANXL6OTpQ/uo5vleNa2DCzAaSqrbqdkQRfNaYk0UfvULzdcz8g9pRTcN4OSEgr4wmMzhXCV
-	9viQnmrssAdHUohUnKAlYwmlI=
-X-Google-Smtp-Source: AGHT+IHSReaBoY0payJlLNXxYuXOcysW/4kuuotsiPj+TOOyIlWaCgj/F8BpW7CjLFi/EpDUUEbMPg==
-X-Received: by 2002:a17:903:1b4c:b0:2a1:3cd9:a734 with SMTP id d9443c01a7336-2a3ee49cfc7mr47710045ad.43.1767864982383;
-        Thu, 08 Jan 2026 01:36:22 -0800 (PST)
+        bh=ik6S3AEviz5X31TZw7OV/Nia5XaM7NiA7FEx+an3VHo=;
+        b=wjrvAsPjGpJ7CTcemOlr0dcyWxHCIBnXtn1Wv7bnxoFzkIQmx5azgf6tWBH0AY36pm
+         VDRbhSRPbqVadUFvpjpxd+JAmTaUYOoSTh875lh0tYFgOEYlLusKvlq8MBNitfhFJs9L
+         eo3WEQt9wpavUjRduexlfNs9rJhFNa92LRo/N1Ze3zPEwLDzs+r+rDDJfTpb4r8hkTRK
+         VY7yQRlujl43nyMMdobizAKRfvmHKPfSOaNfuBuriL1tWRrLZkQ+gXS/ko4pKzl2h025
+         OEwwx8+fmD/WN7MqUK8jyXEupt8ZMr7tAqz1008hAFBY8WvLYy7XwSAQ21lIgER0zgBP
+         Ns6w==
+X-Forwarded-Encrypted: i=1; AJvYcCXscxqSiszDb1O3vQ0jgqM+wx6/ood4g7FuTSPffSNKTGzRa0Ip20qz/ABQWmWpa0D3it/aAhOthg==@kvack.org
+X-Gm-Message-State: AOJu0YwDr7F8XBImrOBcJlw0TJNC79aPqLZhNjFzf4eSHYaOP86xkeXb
+	XfpBp6llyd0DDXzID6yB6q3mNzgbPuM8co0u6vxsUV1x5Uf2y6PvlTBM
+X-Gm-Gg: AY/fxX5ou50iAC8Gj8pE+fTx8oV2nVl/8yrQ/LNONgvBgTieFINDXl3lozL4XkC7ISE
+	SwUtOX2GLtKBHu7eS4NPTQRC0iGBTr1yq1N6u0CQRyY8zTlSxOxcGbTN+ZwafHWF21Y26vEF/zw
+	l3LyBHuspPgHuDvhaHN7o5OcB0EnwxXkhCsuomUUfxAdAVCNJTwyiRlsFG2cz9IgNZ7lgS1kAdS
+	SG8nnwaupjyqFUiRJAMYCH05n8kl/Id0c95RSFLcKQDuPZtqDYxGYiPL8mBDlIaXRG4Whh7y9Qx
+	d7FETcMtd8OM3oVmE+ZZvIrt30sBS2Vnh+E/GRp7oTSDoKoOr02SUJbvUZP6pLcyvOmF38TD+tv
+	WnGrxV4WmgCOAh0IEkm43dFRp9DaS7lmYWKzDpAc8damw4BQaslcthlNJVblVIuKYCAdBPw/unV
+	gCZVf0S5mYBhEjvdWye/Jly7s=
+X-Google-Smtp-Source: AGHT+IGkD4u4OKuGOJgEG43r3UTN8L33GIpPSdazeL3qKL9eMPR7k9R7p/x03ji4npCAFVH6SBCXCw==
+X-Received: by 2002:a17:90a:da8f:b0:340:f05a:3ec2 with SMTP id 98e67ed59e1d1-34f68cc2a86mr5562215a91.17.1767865072538;
+        Thu, 08 Jan 2026 01:37:52 -0800 (PST)
 Received: from NV-J4GCB44.nvidia.com ([103.74.125.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3f3115682sm37460985ad.55.2026.01.08.01.36.19
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f5f8b0d7esm7373677a91.16.2026.01.08.01.37.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 01:36:21 -0800 (PST)
+        Thu, 08 Jan 2026 01:37:51 -0800 (PST)
 From: Jianyue Wu <wujianyue000@gmail.com>
 X-Google-Original-From: Jianyue Wu <jianyuew@nvidia.com>
 To: jianyuew@nvidia.com,
@@ -104,19 +104,19 @@ Cc: Jianyue Wu <wujianyue000@gmail.com>,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Subject: [PATCH] mm: optimize stat output for 11% sys time reduce
-Date: Thu,  8 Jan 2026 17:36:02 +0800
-Message-ID: <20260108093610.212023-1-jianyuew@nvidia.com>
+Date: Thu,  8 Jan 2026 17:37:29 +0800
+Message-ID: <20260108093741.212333-1-jianyuew@nvidia.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E78E8180002
 X-Rspam-User: 
-X-Stat-Signature: gf13o1yzhpkaohwm7mbcfwd3sfx7ezwo
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1767864983-425619
-X-HE-Meta: U2FsdGVkX19o2oVLOt2IlEVi46e2O5HK0t9rA3S3BH/3o/M0Mgybx6wym8Su4AeRmdREQbqsOSJ5Qepivc34YVXfHS6rZN7e/JofKFEAifq9gmlFKTMRK7kwmlzjhF55WmVZnKArswiOzEJdBtLoonsjlYj3oulg7uW7ZLmyVyjv0SYcPK5rTvWB6KjiweOKQ6Iv7t3digh+S6cg7wNfAS03V8GK3ZgIfiHM/TcgoHW/eShAzgo4LhGI99HbouVntVPvZ38m04t8gndmeiT0rQOARXOG98eH+CXWhclM9eEaRQJm5Wvb79FiuhHtVW+8pn0/1swwXf4qCEleRcdDDjXmn6vivLPhxxXen/7sb4gKIcsMcosGBYFTXPCfkBfr5MtgZ90wXpdx60aqNwBBW7gQkSaYVfwq4ZrBpTW5LTV7FPePFPHPQqlalvkK5o21UGsYkGkmf/MET69ySlUMpdoEus+6q0dByxCcuK/obEBe7U52nnNbqo0OyiHoFF7EUBJ0AxhW1qGh3VgnEyt8LUe1T8tSI9wn7Lb+mnQYjy+vOnLcmzK8mD2ENvp9vkQw9upQLzTCPxvR1ul4YDr+xf4g9vXu3tLQsTf55DnvxQnwvaUHk1ik9ncn+tSZ51a61YGsTJwh538OQ4XRsX1RIPfKzOPFw1tAMCZQ5qMbdaGDBa17pmOR3mkttG745WjAMrC++UL64h9lkTMdHzGNc0XN0SzzoJg1ZFDcvKUt65GggKasAKWkJkKu8jvr7wS9QNjbsvFoekH2gbrDSpzKjPjtqJevCkxXyheDDQ/pHTZPUWzu/eczI+QCHMz1Mj4Dizzjp2vwWO951698RkoDPM7vhG7eeMHvrdrMgM8J549O1HTWQaz6nVB5hMUT4DlwqgtIiQHcWNcPfEY5NGHVyF5Ht3kx0RoZrGsmTd0qIe0nsWDwSIv2PydIP5gAs28RQDb8jeyQ5hKg8+plCVb
- Ju5Kmg6x
- M4hM7U38Z0vXbzWQU7yUAi7cxe0n93tyfHLB7/knVUmXJFZylIx2GkZYp6EESK+S+nFBmOMDsOcaM8RV8f8JUpGuIYxgwk1MTlSEHVoohWqNRxwZf6M/uZ/BFA5ONMYiRk89ND5U6LFYFezrse8eDTB+YNKwnXIGaPFvUUACfVbRMiiinB2IBF8pegRSx+siXM5x2gHMH7zH+0HLQQE6o9+MGLwspYZ+ZVp4kc+lzLC26iBLAn1IBtpy9wI4EZnw60ecDgRmKkuS/rcqA7yK1ZXmxV4b3bc2aPZg5lRUG0T+532V74w+bvxL1Tg6RdcCKr4AbBAIXhpOB4GRLcHmf4UWvFQW7Rv64Tr08T20YfBaxxIZoP6TDGhOUctRDWAuuO0BLph0Tyj3tTxsJEdYlU2C6fbsY4vvSxqdNmPqn3UaHaFr/24+cF9MTgyIjzaxFmluCryAtPv4VuBI=
+X-Rspamd-Queue-Id: D2265180002
+X-Rspamd-Server: rspam10
+X-Stat-Signature: qwcos7choumapiyzw3dkn6onfympe9pt
+X-HE-Tag: 1767865073-992921
+X-HE-Meta: U2FsdGVkX19oPkY6hXrcewH73FKDcR2jqgZN4kX3txeNy+wDon1WlY9rHxdi6mQn3rO4kgDCZVDEj2VRtn8j9+udyqf8lesl6ReKTi6STDjJf4XRGguOyvs/IvzHfyvOL4sXzKiGE2Z7vW7tGr2qL+nNnuwLhbIwtwwX+IroSruARWvmQcMzU2pGVzTNNQOgrQFTxuYF9Bacj1k6gcRvzUe0xVd9B/D+Ddoo5UBu/jS3RJfUgaKrwVfJFHBPr3gUdUzdDXHeWmkfTDBIj3WhT76XmIyct38WZy/bDin125dKZsWCIXY/kMOZBRhuKMUzTiU1QX3G4svrAEbNzk1j2RwPeNLZt4lPm0M3jw0Kg/zeptOAQm/PnzhKiSqvTKZ7oqAM/y33DWKyuAONMyoMtx6OIXXLqOKwXuqH5SQYuh3t0ZjAcMd5SkTQlusYJxZzDmsw2P/kiUFA95CRZNldeQsdl3GUtU4slz+cvoqxzhTIFmjlyf5fxexFC3t2LhBqj5aQVF3oSVfw9iBlqFzwYYlT9ySF7u4ZRlDW6PU9b40BN540f3LCkjojWZRe4BGXIyeDj/8ASG37TxGnX86mgnbgijlpxT93ulk/Btw2aYx8ZxzFdxci/xb8JWZS1U5owomFRbgZ2i7ZDqhOAJlE8JqGS0ZXy9C/1vAd+EAub05npMym5jwbq+MdFyC9T3KbzLM0mOZ85U+VdmfuaxCx6MVuV9Gf/s8A2Cd4i5FfkpXQwkGWBTN8KTL4b4ZwZS4eYETiNqYJvHm3rJXlbix/1iBfs9V78CDxaojyfJYiUWAi8UH8A6Ln+2jsZOCv5pDVoF6BdKublOR7XT9h9RgiaAgpkKOmdnV0rnbYU9E58zgUNSxUXqeLgKOmMpsybjihfvsTlGdzXw3a1Auzfyxj3AzvXOGbt1PQt2wgKs2WthJIY3PxhutROWobCklZH43NWvptDo0Wkq8SQqKoIEP
+ 4BeEiFNC
+ LxsnYfDXp3D4MwOOrdJD+rwcBiB4w+ccvZEuzplb4mXUUAMJFTwXWptxZtis/hgSULbLE01ncOPPEiK0+28tQSvalZKxeFTf6ZsOma14QrN4LHRCSDatS6KE9LlaEC71As38fQ+TNgk083bSnECAx9d7VBIpRKUWsip5xLLT1YQfjAfncOAgK2FN0A+J5ku34JcFejC3ysQwNGj+iIqfloRkPj391V+UYz3bSG+ZLwTHgO71nhaMObHtwR58xH3TJzBi1OetLT7yuCBnYLlbq15ESpKB4bwysClQrzL8eLlGY9HFKNg8XZJDwqhZsN4inUqoJRoOrlv6cq3hCkjcnz8F0mZhqU+7NdHL5Q3Ts5IqNbQork3jxUJs2ByOCRZaXu+aOuPUQfxvTPB3MlRXw6jqIBxDaDnMcXPdmbNFBX+O5nvb+B6gNIYwvyg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,7 +149,6 @@ Tests:
   done
 
 Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
-Signed-off-by: Jianyue Wu <jianyuew@nvidia.com>
 ---
  mm/memcontrol-v1.c | 97 ++++++++++++++++++++++++++--------------------
  mm/memcontrol-v1.h | 34 ++++++++++++++++
