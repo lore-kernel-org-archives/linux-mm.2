@@ -4,193 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B51D185FD
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 14:06:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45094CF6A81
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 14:09:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C73466B0093; Thu,  8 Jan 2026 09:06:37 -0500 (EST)
+	id A9F786B0088; Thu,  8 Jan 2026 09:09:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C21036B0098; Thu,  8 Jan 2026 09:06:37 -0500 (EST)
+	id A77736B0089; Thu,  8 Jan 2026 09:09:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD85E6B0099; Thu,  8 Jan 2026 09:06:37 -0500 (EST)
+	id 982DE6B0092; Thu,  8 Jan 2026 09:09:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 955F06B0093
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:06:37 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 21BFE1A7DB
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:06:37 +0000 (UTC)
-X-FDA: 84308972034.08.B62EA0B
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 835B1140019
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:06:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=G0E35x40;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PPQOD48M;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=s55YAOHo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+uW1vKPV;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 84F846B0088
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 09:09:30 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 21F1D1A016D
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:09:30 +0000 (UTC)
+X-FDA: 84308979300.24.6453415
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 732AC40008
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:09:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WGgf1BP0;
+	spf=none (imf12.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767881368; a=rsa-sha256;
+	cv=none;
+	b=Y8IRdJJhZePYA0lY9KiCUqwlNFfNQE0OLGRqzsAyDqY2qA8efe30TS+OwcCED/ALuxCeuv
+	zXqf9LqpR0zok05MD60h9BcX5P2elG7hpbzGedsFA6cJo4B2mGt3jxz1Oy+OVb+BASV+oH
+	i9E2aACAfnXDIpzhS8dexpRtrwinnkE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WGgf1BP0;
+	spf=none (imf12.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767881195;
+	s=arc-20220608; t=1767881368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wMbTKpF62EVlMIvP9rtTlI1EHLuFDiABCZ/3ZLwBSXU=;
-	b=HykU40slgd7VLqPBaLEkhscyuABgtoHilBI0nKq0V1n+uia8cp1JY9SfSj/tw9TAz83sou
-	kssvEgDI5bDKMwlCD7S2vMnj/od25PFe2l7hO31bBrxfbNoUAlWtDT+qtxPDZjtSCzjJ0A
-	5bxxscHATLSfkropWJoSj39RAtyy8xc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=G0E35x40;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PPQOD48M;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=s55YAOHo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+uW1vKPV;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767881195; a=rsa-sha256;
-	cv=none;
-	b=s26CbEOKcPOVz1kcCsI9dolXkd443nCODbYq4ccwIfjyDczK+oAr9O8QI9kCIdGYAiX7eS
-	WcBHbePFpQ+eu/zYOgeAJJgeZT+sJs3M5pTaZyOE4uyTzA1fyEoT30RBekPEblY0kkiTqh
-	ccvh4jA7V9PNnjAoyMM2yHrsvhWXesA=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C4DBB5C26E;
-	Thu,  8 Jan 2026 14:06:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767881193; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wMbTKpF62EVlMIvP9rtTlI1EHLuFDiABCZ/3ZLwBSXU=;
-	b=G0E35x40ABgPN7d1+hSLMpkhOXy+wYSw3ZDtIcDPS+FQwF23mhrRPgH/9PGGa1RXE2Xxm3
-	ULah/KYOrmmc0c+fopDjYWIAxgQTMquQx9ENYoCnH5ykA/L5RtvGO5M/6pOxHlUD0JzyPB
-	zYO54zK5XD2B/wKfFeuDRhmP0hzo73k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767881193;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wMbTKpF62EVlMIvP9rtTlI1EHLuFDiABCZ/3ZLwBSXU=;
-	b=PPQOD48MICWsjSFTJkfF8VoEWSxtifm8GqhaJLS4wIvbOGwh5y2ObjbaPyRzV7lLabqDCA
-	2pK71hGmsaXZGWBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767881192; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wMbTKpF62EVlMIvP9rtTlI1EHLuFDiABCZ/3ZLwBSXU=;
-	b=s55YAOHo9ZYPli6YQzIU1mejK2dZaw2pbIbEeExXeMOHQU+KOTJlAJaAhQm/loYLWq7w5Z
-	JJSEYe7gMWiFrZZCJzaSsi1a8kGEpW9q8RTCKYvfofMhUGjh6z5fM8QLJ8WqErmV2/jE/A
-	iPyFXCNIqiifXZlvcfJf6qg5LpGFM9w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767881192;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wMbTKpF62EVlMIvP9rtTlI1EHLuFDiABCZ/3ZLwBSXU=;
-	b=+uW1vKPVQAynozdn/ZUDUxZbcwDyfNzKQuHIXV7VEMzMa4hi8XlEAzdLnWwddCnWTC45MT
-	gSI5HgJUbbephDAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 59BBB3EA63;
-	Thu,  8 Jan 2026 14:06:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id fa07Fei5X2kpLgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 08 Jan 2026 14:06:32 +0000
-Message-ID: <f1f06db9-a12c-4999-9723-1fca5e8383a4@suse.cz>
-Date: Thu, 8 Jan 2026 15:06:31 +0100
+	bh=HojQq9q24AfBmZaxHNzm//OheDCcNKb2U02PaP3VG38=;
+	b=6nd19HGXmbBpA2oIykQDZEm9XlnDkTDqvn+SvtpCLzv70wJoI+LRjxN0h01mtrghamMUoZ
+	dnzXzF0ztf4NC33jeeW4o6kvv3G1ZCRy/4XQkwSZ84G1KmTK2dLhHxQvO0j0q0QLRllHnV
+	J7He3TAYgEsvs7AsF8yjF8HWws9gMn8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=HojQq9q24AfBmZaxHNzm//OheDCcNKb2U02PaP3VG38=; b=WGgf1BP0kF4qcijKfc8vvVP3KC
+	njFwdcyy/JN/17iRysUAEpbBQjgGtBsRnh3A3QoIOVu6tfdKfDsv8WZumYBh3GOUrUaZG8de67oYb
+	mHhWAaD9IkuUOeYkE9Ze4MrkwfsTu3rlUwTIF7Jdy10xVE52IAPVGdGL/09heNvDK3KSFCVNOCj3l
+	BotpXMjqnZbo1CGOYGlPqTvJeip/rUKuRlsHQ5cFilwiPPJDhgOe69xx7k/E7c0MQQj/ZmbWWefBd
+	MuQkhDuZpKNRr9+0MIo5xVzH13Slb7UxOc7KwHSEoHpM6/cErYDjlnPXrtXxFL2BF8fbjQEdjzGQa
+	xY6jfdTw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vdqhU-0000000F25b-090v;
+	Thu, 08 Jan 2026 14:09:20 +0000
+Date: Thu, 8 Jan 2026 14:09:19 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Jinchao Wang <wangjinchao600@gmail.com>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com,
+	Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH 2/2] Fix an AB-BA deadlock in hugetlbfs_punch_hole()
+ involving page migration.
+Message-ID: <aV-6j97kTobFdYwE@casper.infradead.org>
+References: <20260108123957.1123502-1-wangjinchao600@gmail.com>
+ <20260108123957.1123502-2-wangjinchao600@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/5] slab: Introduce kmalloc_flex() and family
-Content-Language: en-US
-To: Kees Cook <kees@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, workflows@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Matthew Wilcox <willy@infradead.org>, John Hubbard <jhubbard@nvidia.com>,
- Joe Perches <joe@perches.com>, Christoph Lameter <cl@linux.com>,
- Marco Elver <elver@google.com>, Vegard Nossum <vegard.nossum@oracle.com>,
- Pekka Enberg <penberg@kernel.org>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Jann Horn <jannh@google.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>, Yafang Shao <laoar.shao@gmail.com>,
- Tony Ambardar <tony.ambardar@gmail.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Jan Hendrik Farr <kernel@jfarr.cc>, Alexander Potapenko <glider@google.com>,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-References: <20251203233029.it.641-kees@kernel.org>
- <20251203233036.3212363-4-kees@kernel.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251203233036.3212363-4-kees@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Stat-Signature: hupmr41uu18kq9i7pmr3fgm9jiun6tz1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260108123957.1123502-2-wangjinchao600@gmail.com>
+X-Rspamd-Queue-Id: 732AC40008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 835B1140019
-X-HE-Tag: 1767881194-388267
-X-HE-Meta: U2FsdGVkX1+Fjr0ZRBs0ImGKv6IIU4c3tYF942dVKNwUUn5q6oqiLsM2rtuqOdjX/wjkDjmo6H8eq8Ivl3YbLrpK/eHfuprY40QsbA5jcRB7gWdXqcMWAFsoG8x7PsVahY++TWTfU4SKlSZAsAqaYhgDqiQqZRPBr4/BSCAk1YbijT6W66+594kv8VKappcxJiwD8KWP/I0z0paebUrLtjobdddTSxmVq/j4ahcUsURqQLnEJAyX4E8sx7PUrhdwXWEWu5aYOMcyH3nq3aFoh6vGL70vJkm9hM3T6SKfOCAL3vY9q1XuJiB49WuOv6g3A4JLm6G9Z7Pj3nXbSVeNT84ImrJQlD/4WxpvwpJLfO9igLFYz0xazRevu5M4kxSVsipNX4u1g8qCQu0Uvs3D1zTriyeKXwtKCXjCLulpNAXDq24UwFcbL0YD1bBEmSOwCMNtwtPrsSYsWSdZ2ioPmsufIGL3eY6ZR/S9Vzh9sfUURoO0+bYIx9S2apaghcYidItYyf7tTafYVvmUgFwFHwFObuKfAlomvMvp1PdmijSfDWn+Oi0dkTqLUE90aR6wxvbnXBf+90IkNT4bdI9hJj1eYVIFKsHQbONHqMmCd5m6Xz/1jhnXeC0/oWf1Hqzvl4MmLKa0VeutW5j0Inu9/7jLoewJRHp8/zPTBvEQsdgNe1u3m1QUN06O1eWM1ucGiZbDhlzESQblntA7XjzkcHcU1Ub4WG/T7BI0iIhyq+8Q37i2eVq7bAqcwuZUgQBPr/9IzDH3RVDYdaaIlDScQBnxL87njnE3CkadPJlmQqYsR8PJCyu2kS1Sy0iLsloZ0g4uzaehG5Zx/htywl3pl8qXSiKKk84unGRGGsJN9nyM4qhK0/an4RRBdfqbgBQevWKg/2XxOFnUrR8q963JUcoac7zksuIzGCL4mxZHCXIo5COHRldrYLMkuGcbZ6zfeJMyOOmAOLiXwoYbteD
- NsK2AfyU
- xZLhhNT/lMsYvR1GdaSUM/IPUWIqMKHs9Dt4cnjqiYA10NGLm6KAgkfQvnL8/mk5ToCzxlh9xGhbWCJeM8XfeoMaXCMwlsya21IjVFjAX/wKQh9tvW2bwt9f2Wya5bpZrQxjuWrC/0zLhf2dzJkxgxxOi7nKMDapFf6awrC53q+qzzZpuRW3REms4dY7u3uDsFW4+A1r/rQKqAWRtlgVVgSxUU6rQ6Ct78TVVIjVtjFgqPkYIB6GjQ6WZs1PDJ2YZnSlCYrA1O6AukEiszA6I4OZQko1yCpwp+fdwRPzXXRpsTfM0rUaLL8DRwAdIvnzAgNRJh5cI5NCPAzBd7peo5UTZa/bA2nfkLfwmPMRiEGbzIkbbejCsx736Ea3G1q2awbpP6kfMo+mcy7VdFB/BOl7NU3Jv2wEmcqHHLco42mzI/raRJrvZEzGbjSKqtFV0XnlkFGVJhx3iFF9B4jR/0a3BrW2cjjoRSkqZXACKqBVxsCqc0q4Mahiy17t+zltW0t32z4wY8x7edpxglAmOaL+k+/ahLPbuFdZz6fDMi6mQi2tVtUpkTqzMdZ5PE2lr7yojNgouZMDJUMU5LvkvrjUlnOG1kamoHG7a0ENwGsANOkdNuk2l34QJfYAeb2GjQYUG/g2Dr0T5siOs6Ybw4kqz/GPiCwME9AXMIB1WDAk+GUr1rOZzmW5Eggu4+cMKa0kLxmXCc3P9eQ4ic7NQHqrOnw==
+X-Stat-Signature: zi69j9zb5qpep1rfrzbt7b13wkcmop6m
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1767881367-477101
+X-HE-Meta: U2FsdGVkX19w3n9uF3C2hpDA3zXe/PSJQwIIRMIyaeP5mf9Le71PK/LqS8swbFaZu/so/3sG5e+42/H/SH6gAlwlBKwjbuJ0zlMlcn0ymmL+L2BRTHhhnnFt0zsjcjR/780mnyBazojKGmOsMV/jRJWw5KbSJWCJSA0tvnQaixpf/mhEnFP5SYFpiNSwufJ5vvObVPD7Yu//9PZn/4YSfvwWJroK4BtxneO51MWYAwe1UGSV9e/gcHA/4A47m/tmc44Sh7dszXwTOwcY2qCNcys1qformPE2TTRtYjKNZNJBNYfPVX2lY2Hi55UNCC54BAOwwoyskOTzL+ZdF7zpwls3GzJfUUtwOFwHaIjIFBME7y2/WkCqRm0nRkPKiwWXX3u5DFRcYrlRQnMZntGRVwE/gh0sYUt9Z5IFB1ZeRoV6TrG9hs4Df5enEkNctfKYBW2kSc+nonBkMPTzuNTm7WwJDAPDAtBFuohLAAY481ZSOyGtt2TD63KpSP+nLa95p26J2OWGpmEL3xvK4i+eekoY0o3JOTXd/oJMTamDXfwMGerh8iAtPfLUEm8Rr8Za7Np8ReSZNrYgXboDQ+Pwi91adt/s9nMcnwqe7q8OIt+hiz8Wo89A/2l92aArDOE8Feo51N5JhBFAqctcr5po6q12U7Fh+IXtXvBfG8yzTINqCHEJDOx9CrJ446l/tZ56x23AykfKEyO7vlFhkfWUhrRBH8rIM22GKw7wq9n64f36x6dVasiRfmCNa0D3qrlCzQpvHKvQv3wAxW6Koqsc0x8txVLO5drSB7GdG5kkW44QjMBrtt0AAVcRBxZfFzYBLl77hIY6P869yRr0VR4YPNfVdNL68iFr31K3m0UnoVUPrQJiLhqAOTV0Eh9535kBS8p+M+0jbrnUhEhcMyPPdaIZsMDU0IKPanuiUgmcZjx8ud38nPoAL/nNDSKhqICzlJDzWKILhP51Vuzgxfj
+ Lf6xtyER
+ yzsI7XrhBgfHDi/p0iZqnQSHs/vN038FWHd2DGrtDv0Nx/rcLMHzuWHEzcWOlnPd1z1rvySz6yFfGSXrrTPvw/iJnLfRmpaR/O3VeXmY4FDv+KfeBhrXnEKmTpiKGua8Qard7x/85xTgATuhIvMvr6rkk/iiur1JZcsA2hHb62MSTL9m/b61rLHqvCojrBvEeUx0qizmSf88Z3Uvja0Y70LbUvaLA6QWmMVzm98yOzZvIPqbpKMLjVE9x1fWLkP+svGS8XxjOS7zZW92EOdXLGJdDVElVfwcqZgFrpqJP2Jb6uscpv5q2Uj9FwbSnKOCoq6/1OQ/xkAzdTI9ueldiOmPb1dk5tx4G2J19oMeyWuBJ8pkwLRJNedD+DxTPCaNMRumquT+uVwyOoHg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -199,182 +100,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/4/25 00:30, Kees Cook wrote:
-> As done for kmalloc_obj*(), introduce a type-aware allocator for flexible
-> arrays, which may also have "counted_by" annotations:
+On Thu, Jan 08, 2026 at 08:39:25PM +0800, Jinchao Wang wrote:
+> The deadlock occurs due to the following lock ordering:
 > 
-> 	ptr = kmalloc(struct_size(ptr, flex_member, count), gfp);
+> Task A (punch_hole):             Task B (migration):
+> --------------------             -------------------
+> 1. i_mmap_lock_write(mapping)    1. folio_lock(folio)
+> 2. folio_lock(folio)             2. i_mmap_lock_read(mapping)
+>    (blocks waiting for B)           (blocks waiting for A)
 > 
-> becomes:
+> Task A is blocked in the punch-hole path:
+>   hugetlbfs_fallocate
+>     hugetlbfs_punch_hole
+>       hugetlbfs_zero_partial_page
+>         filemap_lock_hugetlb_folio
+>           filemap_lock_folio
+>             __filemap_get_folio
+>               folio_lock
 > 
-> 	ptr = kmalloc_flex(*ptr, flex_member, count, gfp);
+> Task B is blocked in the migration path:
+>   migrate_pages
+>     migrate_hugetlbs
+>       unmap_and_move_huge_page
+>         remove_migration_ptes
+>           __rmap_walk_file
+>             i_mmap_lock_read
 > 
-> The internal use of __flex_counter() allows for automatically setting
-> the counter member of a struct's flexible array member when it has
-> been annotated with __counted_by(), avoiding any missed early size
-> initializations while __counted_by() annotations are added to the
-> kernel. Additionally, this also checks for "too large" allocations based
-> on the type size of the counter variable. For example:
-> 
-> 	if (count > type_max(ptr->flex_counter))
-> 		fail...;
-> 	size = struct_size(ptr, flex_member, count);
-> 	ptr = kmalloc(size, gfp);
-> 	ptr->flex_counter = count;
-> 
-> becomes (n.b. unchanged from earlier example):
-> 
-> 	ptr = kmalloc_flex(*ptr, flex_member, count, gfp);
-> 	ptr->flex_count = count;
+> To break this circular dependency, use filemap_lock_folio_nowait() in
+> the punch-hole path. If the folio is already locked, Task A drops the
+> i_mmap_rwsem and retries. This allows Task B to finish its rmap walk
+> and release the folio lock.
 
-             ^ flex_counter ?
+It looks like you didn't read the lock ordering at the top of mm/rmap.c
+carefully enough:
 
-But if it was "too large", ptr is NULL so this will oops?
+ * hugetlbfs PageHuge() take locks in this order:
+ *   hugetlb_fault_mutex (hugetlbfs specific page fault mutex)
+ *     vma_lock (hugetlb specific lock for pmd_sharing)
+ *       mapping->i_mmap_rwsem (also used for hugetlb pmd sharing)
+ *         folio_lock
 
-> Note that manual initialization of the flexible array counter is still
-> required (at some point) after allocation as not all compiler versions
-> support the __counted_by annotation yet. But doing it internally makes
-> sure they cannot be missed when __counted_by _is_ available, meaning
-> that the bounds checker will not trip due to the lack of "early enough"
-> initializations that used to work before enabling the stricter bounds
-> checking. For example:
-> 
-> 	ptr = kmalloc_flex(*ptr, flex_member, count, gfp);
-> 	fill(ptr->flex, count);
-> 	ptr->flex_count = count;
-> 
-> This works correctly before adding a __counted_by annotation (since
-> nothing is checking ptr->flex accesses against ptr->flex_count). After
-> adding the annotation, the bounds sanitizer would trip during fill()
-> because ptr->flex_count wasn't set yet. But with kmalloc_flex() setting
-> ptr->flex_count internally at allocation time, the existing code works
-> without needing to move the ptr->flex_count assignment before the call
-> to fill(). (This has been a stumbling block for __counted_by adoption.)
-> 
-> Signed-off-by: Kees Cook <kees@kernel.org>
-> ---
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Christoph Lameter <cl@gentwo.org>
-> Cc: David Rientjes <rientjes@google.com>
-> Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Harry Yoo <harry.yoo@oracle.com>
-> Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-> Cc: <workflows@vger.kernel.org>
-> Cc: <linux-doc@vger.kernel.org>
-> Cc: <linux-mm@kvack.org>
-> Cc: <linux-hardening@vger.kernel.org>
-> ---
->  Documentation/process/deprecated.rst |  7 ++++
->  include/linux/slab.h                 | 48 ++++++++++++++++++++++++++++
->  2 files changed, 55 insertions(+)
-> 
-> diff --git a/Documentation/process/deprecated.rst b/Documentation/process/deprecated.rst
-> index 91c628fa2d59..fed56864d036 100644
-> --- a/Documentation/process/deprecated.rst
-> +++ b/Documentation/process/deprecated.rst
-> @@ -387,6 +387,7 @@ allocations. For example, these open coded assignments::
->  	ptr = kzalloc(sizeof(*ptr), gfp);
->  	ptr = kmalloc_array(count, sizeof(*ptr), gfp);
->  	ptr = kcalloc(count, sizeof(*ptr), gfp);
-> +	ptr = kmalloc(struct_size(ptr, flex_member, count), gfp);
->  	ptr = kmalloc(sizeof(struct foo, gfp);
->  
->  become, respectively::
-> @@ -395,4 +396,10 @@ become, respectively::
->  	ptr = kzalloc_obj(*ptr, gfp);
->  	ptr = kmalloc_objs(*ptr, count, gfp);
->  	ptr = kzalloc_objs(*ptr, count, gfp);
-> +	ptr = kmalloc_flex(*ptr, flex_member, count, gfp);
->  	__auto_type ptr = kmalloc_obj(struct foo, gfp);
-> +
-> +If `ptr->flex_member` is annotated with __counted_by(), the allocation
-> +will automatically fail if `count` is larger than the maximum
-> +representable value that can be stored in the counter member associated
-> +with `flex_member`.
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index 726457daedbd..2656ea610b68 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -982,6 +982,33 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node);
->  	(TYPE *)KMALLOC(__obj_size, GFP);				\
->  })
->  
-> +/**
-> + * __alloc_flex - Allocate an object that has a trailing flexible array
-> + * @KMALLOC: kmalloc wrapper function to use for allocation.
-> + * @GFP: GFP flags for the allocation.
-> + * @TYPE: type of structure to allocate space for.
-> + * @FAM: The name of the flexible array member of @TYPE structure.
-> + * @COUNT: how many @FAM elements to allocate space for.
-> + *
-> + * Returns: Newly allocated pointer to @TYPE with @COUNT-many trailing
-> + * @FAM elements, or NULL on failure or if @COUNT cannot be represented
-> + * by the member of @TYPE that counts the @FAM elements (annotated via
-> + * __counted_by()).
-> + */
-> +#define __alloc_flex(KMALLOC, GFP, TYPE, FAM, COUNT)			\
-> +({									\
-> +	const size_t __count = (COUNT);					\
-> +	const size_t __obj_size = struct_size_t(TYPE, FAM, __count);	\
-> +	TYPE *__obj_ptr;						\
-> +	if (WARN_ON_ONCE(overflows_flex_counter_type(TYPE, FAM,	__count))) \
-> +		__obj_ptr = NULL;					\
-> +	else								\
-> +		__obj_ptr = KMALLOC(__obj_size, GFP);			\
-> +	if (__obj_ptr)							\
-> +		__set_flex_counter(__obj_ptr->FAM, __count);		\
-> +	__obj_ptr;							\
-> +})
-> +
->  /**
->   * kmalloc_obj - Allocate a single instance of the given type
->   * @VAR_OR_TYPE: Variable or type to allocate.
-> @@ -1005,23 +1032,44 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node);
->  #define kmalloc_objs(VAR_OR_TYPE, COUNT, GFP)		\
->  	__alloc_objs(kmalloc, GFP, typeof(VAR_OR_TYPE), COUNT)
->  
-> +/**
-> + * kmalloc_flex - Allocate a single instance of the given flexible structure
-> + * @VAR_OR_TYPE: Variable or type to allocate (with its flex array).
-> + * @FAM: The name of the flexible array member of the structure.
-> + * @COUNT: How many flexible array member elements are desired.
-> + * @GFP: GFP flags for the allocation.
-> + *
-> + * Returns: newly allocated pointer to @VAR_OR_TYPE on success, NULL on
-> + * failure. If @FAM has been annotated with __counted_by(), the allocation
-> + * will immediately fail if @COUNT is larger than what the type of the
-> + * struct's counter variable can represent.
-> + */
-> +#define kmalloc_flex(VAR_OR_TYPE, FAM, COUNT, GFP)	\
-> +	__alloc_flex(kmalloc, GFP, typeof(VAR_OR_TYPE),	FAM, COUNT)
-> +
->  /* All kzalloc aliases for kmalloc_(obj|objs|flex). */
->  #define kzalloc_obj(P, GFP)				\
->  	__alloc_objs(kzalloc, GFP, typeof(P), 1)
->  #define kzalloc_objs(P, COUNT, GFP)			\
->  	__alloc_objs(kzalloc, GFP, typeof(P), COUNT)
-> +#define kzalloc_flex(P, FAM, COUNT, GFP)		\
-> +	__alloc_flex(kzalloc, GFP, typeof(P), FAM, COUNT)
->  
->  /* All kvmalloc aliases for kmalloc_(obj|objs|flex). */
->  #define kvmalloc_obj(P, GFP)				\
->  	__alloc_objs(kvmalloc, GFP, typeof(P), 1)
->  #define kvmalloc_objs(P, COUNT, GFP)			\
->  	__alloc_objs(kvmalloc, GFP, typeof(P), COUNT)
-> +#define kvmalloc_flex(P, FAM, COUNT, GFP)		\
-> +	__alloc_flex(kvmalloc, GFP, typeof(P), FAM, COUNT)
->  
->  /* All kvzalloc aliases for kmalloc_(obj|objs|flex). */
->  #define kvzalloc_obj(P, GFP)				\
->  	__alloc_objs(kvzalloc, GFP, typeof(P), 1)
->  #define kvzalloc_objs(P, COUNT, GFP)			\
->  	__alloc_objs(kvzalloc, GFP, typeof(P), COUNT)
-> +#define kvzalloc_flex(P, FAM, COUNT, GFP)		\
-> +	__alloc_flex(kvzalloc, GFP, typeof(P), FAM, COUNT)
->  
->  #define kmem_buckets_alloc(_b, _size, _flags)	\
->  	alloc_hooks(__kmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, _b), _flags, NUMA_NO_NODE))
+So page migration is the one taking locks in the wrong order, not
+holepunch.  Maybe something like this instead?
 
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 5169f9717f60..4688b9e38cd2 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1458,6 +1458,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 	int page_was_mapped = 0;
+ 	struct anon_vma *anon_vma = NULL;
+ 	struct address_space *mapping = NULL;
++	enum ttu_flags ttu = 0;
+ 
+ 	if (folio_ref_count(src) == 1) {
+ 		/* page was freed from under us. So we are done. */
+@@ -1498,8 +1499,6 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 		goto put_anon;
+ 
+ 	if (folio_mapped(src)) {
+-		enum ttu_flags ttu = 0;
+-
+ 		if (!folio_test_anon(src)) {
+ 			/*
+ 			 * In shared mappings, try_to_unmap could potentially
+@@ -1516,16 +1515,17 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 
+ 		try_to_migrate(src, ttu);
+ 		page_was_mapped = 1;
+-
+-		if (ttu & TTU_RMAP_LOCKED)
+-			i_mmap_unlock_write(mapping);
+ 	}
+ 
+ 	if (!folio_mapped(src))
+ 		rc = move_to_new_folio(dst, src, mode);
+ 
+ 	if (page_was_mapped)
+-		remove_migration_ptes(src, !rc ? dst : src, 0);
++		remove_migration_ptes(src, !rc ? dst : src,
++				ttu ? RMP_LOCKED : 0);
++
++	if (ttu & TTU_RMAP_LOCKED)
++		i_mmap_unlock_write(mapping);
+ 
+ unlock_put_anon:
+ 	folio_unlock(dst);
 
