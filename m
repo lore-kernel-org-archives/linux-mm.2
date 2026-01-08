@@ -4,120 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53661D1D486
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 19:01:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 915FBD1D486
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 19:10:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B88ED6B009E; Thu,  8 Jan 2026 14:01:20 -0500 (EST)
+	id AA6326B0092; Thu,  8 Jan 2026 14:10:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B53776B009F; Thu,  8 Jan 2026 14:01:20 -0500 (EST)
+	id A54006B0095; Thu,  8 Jan 2026 14:10:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A52EE6B00A0; Thu,  8 Jan 2026 14:01:20 -0500 (EST)
+	id 980F06B0096; Thu,  8 Jan 2026 14:10:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EFFF6B009E
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:01:20 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 33F9616027B
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 19:01:20 +0000 (UTC)
-X-FDA: 84309714720.11.43632C3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 46EDC40007
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 19:01:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CnAkSC6a;
-	spf=pass (imf12.hostedemail.com: domain of "SRS0=1jwM=7N=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=1jwM=7N=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767898878; a=rsa-sha256;
-	cv=none;
-	b=s0Y9Ho586hn3Ds0+/GWrcM0ICXy2cXzYffqWUBLLAGdwpjOxbgn6uGdKImWVQEejxTj343
-	6NggklRpYRllbLBM155pRPEHspOpqTh8MtlzCPRIlRAKUK0C6S9GHNw+kzNfCik7dZeNPs
-	MWOvsW90GGgXWbT+qEYYf6bwF69hvBE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CnAkSC6a;
-	spf=pass (imf12.hostedemail.com: domain of "SRS0=1jwM=7N=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=1jwM=7N=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 86ACE6B0092
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:10:31 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 26E6CC1483
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 19:10:31 +0000 (UTC)
+X-FDA: 84309737862.23.18B830D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 55FA940005
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 19:10:29 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=g3EeLTXU;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767898878;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1767899429;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PS2mUkfa56RM0HipNYeKA3Vd6mJdT10YIk4QUnjNGV4=;
-	b=R/RzL1qxFgmNztT55HFqJ2QujYwpYmWaUvPdqIf7+1F9ZsRD9BJB1cTtlvvMD07uqPy2dr
-	pA06ERBELqBgRIeztwkR8IaHASYbSAb8ynUxaSVwwv7cveanMr3L9bJJmcQ78RQ2tK/xOA
-	BJmeLgY/ERb1gLIaaBRv/NBDRdUHrow=
+	bh=ztKaoS2FV7UViH+R48ZyQnIZ1Y+jkrOUqgUswG2yE0w=;
+	b=JI8PyuOuaeCMcoewHZhU5lOF8ITVlgzmQ3AbvRmNPVHq44ZgGqj1h0PXczsMc0wWYHsMQA
+	RQ+iCN7nLS4fzDeepeiWDCrGPe7EiG+K2zjpswzXjOueFHvY8I0PVObCQo/30ssm1AbSJZ
+	/aFfbYVDSWEjI1FOaLkyjuuVRft9lHk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=g3EeLTXU;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767899429; a=rsa-sha256;
+	cv=none;
+	b=C2r4OYgox3QRVjqa8ZR7cCmc4hQ9xWcR7VFzvn0n8wSEJthu+dCXLLkbyzJK9ZYS25P7dT
+	+hH2p2Fgc3aX0oMfOQ2++VYSoQqwetFPJ/1HMuxCzjrBENEOBuTrasQuoyZ1jwMMx6YJ7K
+	vuyqHwdWxN7omshV/YYPw4nLIwRaubc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A81360133;
-	Thu,  8 Jan 2026 19:01:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4B1C116C6;
-	Thu,  8 Jan 2026 19:01:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767898877;
-	bh=85lqoq+CQJ2HM2BHYhQM6KPWo3GQyLWoKEtp5vriauY=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=CnAkSC6aCYPXrZfTNFoYj/UrHem2yIZRvLMEuBErPVex8IVONGzWUYHqfK20BUS1n
-	 uJcTwvY/iTb0C7SvSMi99I4unqgPDoRDt5U1AktB+91vOfCRQMH3vN1+Gj+rqn67xs
-	 Hzy5TmEqccfXdqjswjDJpbbD6OnvjpNt0KKB4RV0LvAsWBy8dU6YvAC0zZh4OHbBvN
-	 x9Lnt5OoppRhno5FMHaF+Rw/Vpsd2DtG59Np0gFbK7FEIv7fpaWoWbeUThmXWU4zwW
-	 uQCq8dlVWc9JDBrwWW9ZsTsOEbTb0lFG732B//kc1A+lk1R4NfY1NguDBr5x7n386a
-	 YhxfZwLlBinLg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 7F7BDCE0CB8; Thu,  8 Jan 2026 11:01:16 -0800 (PST)
-Date: Thu, 8 Jan 2026 11:01:16 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	John Stultz <jstultz@google.com>,
-	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang1211@gmail.com>, Ingo Molnar <mingo@redhat.com>,
-	Waiman Long <longman@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, maged.michael@gmail.com,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>,
-	rcu@vger.kernel.org, linux-mm@kvack.org, lkmm@lists.linux.dev
-Subject: Re: [RFC PATCH v4 3/4] hazptr: Implement Hazard Pointers
-Message-ID: <4f6fe051-b686-4ec4-8aff-4237b3007f33@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20251218014531.3793471-1-mathieu.desnoyers@efficios.com>
- <20251218014531.3793471-4-mathieu.desnoyers@efficios.com>
- <aUO9KRaP0FXpm_l9@tardis-2.local>
- <fcbc99d0-b7c7-45f7-9cf8-f5d3bfad966e@efficios.com>
- <aUSfu4V9mrD7BQGl@tardis-2.local>
- <6c96dbb5-bffc-423f-bb6a-3072abb5f711@efficios.com>
- <aV_cms1mCPYq6jah@localhost.localdomain>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aV_cms1mCPYq6jah@localhost.localdomain>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 46EDC40007
-X-Stat-Signature: ijp1ib6i946q76gabumu3xi1jjusic7z
+	by sea.source.kernel.org (Postfix) with ESMTP id 654EF40A1F;
+	Thu,  8 Jan 2026 19:10:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2662C116C6;
+	Thu,  8 Jan 2026 19:10:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767899428;
+	bh=VNrN8JUZQcrq/pnCYgjUgfyW0bmZkPgoeILN/bAbbMI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=g3EeLTXUeU3eKRuS7y4uPO7sanUqMNZ5VF1Qp663J3H3gUDLjN9dx6+io8FYXgDPU
+	 8NXIBIRdOMKfJwd4YfT+RwvyMLCa2/ZuyAwt01EYIQ5PjiSR4ZN3K+57VDA1VyHQPf
+	 oe6G5dewC7dXXQEN8iLnyIst4LRTtL+WbdH7HiJA=
+Date: Thu, 8 Jan 2026 11:10:27 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: jianyuew@nvidia.com, hannes@cmpxchg.org, mhocko@kernel.org,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: optimize stat output for 11% sys time reduce
+Message-Id: <20260108111027.172f19a9a86667e8e0142042@linux-foundation.org>
+In-Reply-To: <20260108093741.212333-1-jianyuew@nvidia.com>
+References: <20260108093741.212333-1-jianyuew@nvidia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: k9cwt94cjjkxgf9nuq3ohfg4km6kykzo
+X-Rspamd-Queue-Id: 55FA940005
 X-Rspam-User: 
-X-HE-Tag: 1767898878-486053
-X-HE-Meta: U2FsdGVkX1/o9U1ZZJt2BimLV4H8o5u0xMY4n16buaQFnINizOzPC3+WyHXGWTRoQJxS/PaFl3Hlg7Oek57OxJBsIIadn7XN4bNV+Vk2+W6GsrgIV6asJloX9GABokFwlm5u8JUxuKBPwq1183wr8xrb1EZtgHa4EA+nIZEVBBBQB4jKTsM70KbKj27yOHzPzTpVjpiaQjNWF+pOeCJPAFfoqGke4IiRqVi0LqdiEodHLF1o13bxFCuMr5y+3ylN0LFzidbqjdMnZVsAsPxT2KlFQbuCwVuLLEqsgwImV6ccD9eEChMB76wAmNd8ikJolmIW7yc6Azug8EqsysFPOh8SXDsWU6MGK+UILrs4vxaXi3Ojph7OtCiddmFfoANBAQ3Q5JlJ2loajG1k3lpxOP0+ySXC10SKm8XkJY1h9d2/C65DKNku9iMPEffFzBlxa++Ovwms14Ml3r2N/2c2soHqkvQ/p9ZZSdWLaLzBmGOLRcMatH74gMJVs0fNfeMe6L+2UFuyAr46aSF+UGWqd87dwvsQhnKQTQgMTJJJ9MxwFGK6xgYILMLHwQw6Z+32dekSM67bh2YX3NAtYDu9twR5tgGIhuW/eVejISqDT/MpTtg+3eDc3eDc2BBwf64/T7pKTaylf2Rnf/hBF9tuEC/AJBgzAFAcDNj5k/Z7NpN+OiIZrtLJyZ9xy1pfVmhMeBvnD3vBkRD6oyqg8A8bXsJ77SLjIxIw0yT6fFRAGQtaeJAgqzUKUgpVHI0cYhSXXHaeg+K2lhoZrdG4Bnaf1nocFp+SwlEQBF9rON6v6DBinYe6d72vM08kiHE1cu1/sdGBOw7jC5JI5fK0z0qyqt19nDjZKO7B03nRwA/awkMVJ82F4pjnTx+qR8jZi/iXgD51rYfLyzdkNJ3qeIw7BJJMOUGEEliHZFA+WEF+3f/cCQQpP+Z8pPBx7882axtmmdDeo6pSAj6VCLnh/kv
- hx5tS63S
- CTyBRNQ/OW2jK6lZMlHjFC+/5hM/++pddEYt0JyZVB2/Tj278SMCkuoBFWnnfuQJ42pYyVYNs6KEqrH7riJHHturlLz/+pXeH7X22JAWg/spHsL+LUsnX/HnzwBHjgnu4tV6xj08RjtA7psmIcqPVoHihN7BXns1LJxSXa2r2fEQ5XSRom2bT6UtBRKzLXEYZrBA6H6514h54bBWlkHWrdhdEF1KB3y5IsnZwdn5dtBWJNcTozuI8HzJY14KRY76OMpcxTvQYe3MT9ASafMT47zNgHmQRpNbNFOR29iGfHvNc+n2U+R7TIosixn3M994NlEp6ZBKGCjW3b/aT7MZdAKL5e2YCV2giDBIaKa2hQlCJdEzTRjLrlMzNj999QaEn+I8xOO6m37oL3F9hRArpAy9500rKFKv0TkwHoBDglo4wQ+YQXnb4ri2aKySSddytY8ctd5vfHykjvdBwf9dNiN7GV1qYjmlOxqzBnffHW6KlxTvILz4uxnK1eBm4gTxzjd3TYglFgMnzoMJf09MqghxJ8sT2B5byyTTUoEZBUXA71yCi6DZCprOlAmdo9tFgSIDmczkAI3LjLNnXSXuB4sdCOyFbjniZAxSU/eH/mADJZGWjx/SGInU19oiE6GbCPwnF4eI0gc35cQYXU1uf/uXQigmpKJgEj0SLL2zAgTPjvmzDjuJ9jM6QA4vKp4JzRHafE3BMxuD20atpMtPMa34/G/dowHkwcxBMvQWbaRGbGko=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1767899429-708778
+X-HE-Meta: U2FsdGVkX1/Xr5vHGkGP9qVqLM4KnFUNoSs0J78QGgb+XrOgvrSSiqBETGZkMpPPeDCH3cQzkGjUQmrFux3i0eMoVBGzME1yCR4qAPhegumvxX4XdKdSmMsyUep2WxnxhKpzSNMMpUhlGvwnnxhtbDvxPoRQ/X+MAqqV4a1mk9nNkxFKJVuQ4ba29kKyHAAlqXgg19LhJVrB8fEv2AorjqNiozJK0HoP4zgIns/w4c9mM70ulBlzGbrDPgXVEEQqjB/OSap/vBDZxBU0sTsFH89VqpooRB/OOoI0S5sl7FUUiq+av6BFOkwVEnxf4zxF/WevfUS7Z2seaHdH7XH+Ip/9ex5Jo3f9++Zj6wHdCfIWikX1L6ci250hcIpCHUMpahP7E3GxErOEiGT2y44KxR0uFDxBB3W565imWtuLKcs6zeVKTAjjrX3ATnVzXlSic1z9JYmMfKCtBJTbCCJHORfgcLInOAkvEygo4LTbeAswPHbvBYcO4MhVDbo01VAIQp8RoW3gvxT+IndY/RrChb/w6e4nTR1J33mVNeysCLiVUz02Y2lPCGuWDw/hyOzcTWReH+JlTQxN9AeYtWsUEhjkCKgHOMvbmMnk5X/PqI/+OqEPU/EmsGJSk/3ySJHq76mkEhf0Jl2R1owELf9HGz0P6Q+CL6g/6U9Moe4fdBOLM+VNGhJ2UZ6UTequRyMdcOfqyGnCmbJL0mphoDLALVp/kdMe1KV+SNUzI9Q4F/OCqRgtFwQoU+TDyez+dV3kNHobCmbWvhb3sjXTh8R7DDxlLaqOBmH5UOJCs7bQPGSefhHbWVN8HreCT3/U7i0E/agmyLuRYvw3y2ngwOCiDxbB92jgNngavcnz1wAc83RELidJE3u5wpQketRnqD0CVv2E5R2yrjaKBjaeT9kR+2h3lsFHr+vHC/NkAlFefPs3miQqKniJ1jYqwFuTo5QDvXTce2UO7SEnp9qin2f
+ B2X8rwFE
+ 6maETT+5uV9APT78Ee5N9GyNCNvu+VxkRf+cy+sVx47AtiM4cfZOGKRt8XzIvdbx3/L8lMcuciqalM+33G+4gz3aPiGX0UMvoyllWyca194i+bWqxZdBj6Sem+XJwQGbTBqGrFdzyFxVaTR+BdFyzduIPxowa1OmyvZ0F0gLFvb0cv0kroT6BsY4baA/H8valpIc/fW11zw4YAgIH9jI+SP7KY3R2wsM/mO22JRfxEySp2cy3B6a6Pm+VDMK4UcSJmsnxlnUduGnIvCqaIcwKQlkB+Yl3lmOw43vifwD/2MnVXJnc1YLl4HsCCg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,76 +91,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 08, 2026 at 05:34:34PM +0100, Frederic Weisbecker wrote:
-> Le Fri, Dec 19, 2025 at 09:22:19AM -0500, Mathieu Desnoyers a écrit :
-> > On 2025-12-18 19:43, Boqun Feng wrote:
-> > > On Thu, Dec 18, 2025 at 12:35:18PM -0500, Mathieu Desnoyers wrote:
-> > > [...]
-> > > > > Could you utilize this[1] to see a
-> > > > > comparison of the reader-side performance against RCU/SRCU?
-> > > > 
-> > > > Good point ! Let's see.
-> > > > 
-> > > > On a AMD 2x EPYC 9654 96-Core Processor with 192 cores,
-> > > > hyperthreading disabled,
-> > > > CONFIG_PREEMPT=y,
-> > > > CONFIG_PREEMPT_RCU=y,
-> > > > CONFIG_PREEMPT_HAZPTR=y.
-> > > > 
-> > > > scale_type                 ns
-> > > > -----------------------
-> > > > hazptr-smp-mb             13.1   <- this implementation
-> > > > hazptr-barrier            11.5   <- replace smp_mb() on acquire with barrier(), requires IPIs on synchronize.
-> > > > hazptr-smp-mb-hlist       12.7   <- replace per-task hp context and per-cpu overflow lists by hlist.
-> > > > rcu                       17.0
-> > > 
-> > > Hmm.. now looking back, how is it possible that hazptr is faster than
-> > > RCU on the reader-side? Because a grace period was happening and
-> > > triggered rcu_read_unlock_special()? This is actualy more interesting.
-> > So I could be entirely misreading the code, but, we have:
-> > 
-> > rcu_flavor_sched_clock_irq():
-> > [...]
-> >         /* If GP is oldish, ask for help from rcu_read_unlock_special(). */
-> >         if (rcu_preempt_depth() > 0 &&
-> >             __this_cpu_read(rcu_data.core_needs_qs) &&
-> >             __this_cpu_read(rcu_data.cpu_no_qs.b.norm) &&
-> >             !t->rcu_read_unlock_special.b.need_qs &&
-> >             time_after(jiffies, rcu_state.gp_start + HZ))
-> >                 t->rcu_read_unlock_special.b.need_qs = true;
-> > 
-> > which means we set need_qs = true as a result from observing
-> > cpu_no_qs.b.norm == true.
-> > 
-> > This is sufficient to trigger calls (plural) to rcu_read_unlock_special()
-> > from __rcu_read_unlock.
-> > 
-> > But then if we look at rcu_preempt_deferred_qs_irqrestore()
-> > which we would expect to clear the rcu_read_unlock_special.b.need_qs
-> > state, we have this:
-> > 
-> >         special = t->rcu_read_unlock_special;
-> >         if (!special.s && !rdp->cpu_no_qs.b.exp) {
-> >                 local_irq_restore(flags);
-> >                 return;
-> >         }
-> >         t->rcu_read_unlock_special.s = 0;
-> > 
-> > which skips over clearing the state unless there is an expedited
-> > grace period required.
-> > 
-> > So unless I'm missing something, we should _also_ clear that state
-> > when it's invoked after rcu_flavor_sched_clock_irq, so the next
-> > __rcu_read_unlock won't all call into rcu_read_unlock_special().
-> > 
-> > I'm adding a big warning about sleep deprivation and possibly
-> > misunderstanding the whole thing. What am I missing ?
+On Thu,  8 Jan 2026 17:37:29 +0800 Jianyue Wu <wujianyue000@gmail.com> wrote:
+
+> From: Jianyue Wu <wujianyue000@gmail.com>
 > 
-> As far as I can tell, this skips clearing the state if the state is
-> already cleared. Or am I even more sleep deprived than you? :o)
+> Replace seq_printf/seq_buf_printf with lightweight helpers to avoid
+> printf parsing in memcg stats output.
+> 
+> Key changes:
+> - Add memcg_seq_put_name_val() for seq_file "name value\n" formatting
+> - Add memcg_seq_buf_put_name_val() for seq_buf "name value\n" formatting
+> - Update __memory_events_show(), swap_events_show(),
+>   memory_stat_format(), memory_numa_stat_show(), and related helpers
+> 
+> Performance:
+> - 1M reads of memory.stat+memory.numa_stat
+> - Before: real 0m9.663s, user 0m4.840s, sys 0m4.823s
+> - After:  real 0m9.051s, user 0m4.775s, sys 0m4.275s (~11.4% sys drop)
+> 
+> Tests:
+> - Script:
+>   for ((i=1; i<=1000000; i++)); do
+>       : > /dev/null < /sys/fs/cgroup/memory.stat
+>       : > /dev/null < /sys/fs/cgroup/memory.numa_stat
+>   done
+> 
 
-Get some sleep!  A good night's sleep is one of the best debugging aids
-available, even in this brave new world of LLMs.  ;-)
+I suspect there are workloads which read these files frequently.
 
-							Thanx, Paul
+I'd be interested in learning "how frequently".  Perhaps
+ascii-through-sysfs simply isn't an appropriate API for this data?
+
+> @@ -1795,25 +1795,33 @@ static int memcg_numa_stat_show(struct seq_file *m, void *v)
+>  	mem_cgroup_flush_stats(memcg);
+>  
+>  	for (stat = stats; stat < stats + ARRAY_SIZE(stats); stat++) {
+> -		seq_printf(m, "%s=%lu", stat->name,
+> -			   mem_cgroup_nr_lru_pages(memcg, stat->lru_mask,
+> -						   false));
+> -		for_each_node_state(nid, N_MEMORY)
+> -			seq_printf(m, " N%d=%lu", nid,
+> -				   mem_cgroup_node_nr_lru_pages(memcg, nid,
+> -							stat->lru_mask, false));
+> +		seq_puts(m, stat->name);
+> +		seq_put_decimal_ull(m, "=",
+> +				    (u64)mem_cgroup_nr_lru_pages(memcg, stat->lru_mask,
+> +								  false));
+> +		for_each_node_state(nid, N_MEMORY) {
+> +			seq_put_decimal_ull(m, " N", nid);
+> +		seq_put_decimal_ull(m, "=",
+> +				    (u64)mem_cgroup_node_nr_lru_pages(memcg, nid,
+> +								       stat->lru_mask, false));
+
+The indenting went wrong here.
+
+The patch does do a lot of ugly tricks to constrain the number of
+columns used.  Perhaps introduce some new local variables to clean this
+up?
+
+
 
