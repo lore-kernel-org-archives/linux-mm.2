@@ -4,91 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DECAFD1D478
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 15:52:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F47DD1D47D
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 15:56:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A73C6B0005; Thu,  8 Jan 2026 10:52:05 -0500 (EST)
+	id 69F1E6B0092; Thu,  8 Jan 2026 10:56:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 453D96B0088; Thu,  8 Jan 2026 10:52:05 -0500 (EST)
+	id 64CBC6B0096; Thu,  8 Jan 2026 10:56:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37CEF6B0095; Thu,  8 Jan 2026 10:52:05 -0500 (EST)
+	id 54F906B0098; Thu,  8 Jan 2026 10:56:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 234066B0005
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:52:05 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CE93213975E
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:52:04 +0000 (UTC)
-X-FDA: 84309237768.30.B33CD41
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D6D2E40014
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:52:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 428886B0092
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 10:56:03 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D3220B6DDC
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:56:02 +0000 (UTC)
+X-FDA: 84309247764.28.27F7F1A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 577EB160002
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 15:56:01 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=smTz0YN5;
+	spf=pass (imf08.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767887523;
+	s=arc-20220608; t=1767887761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yQzyI1+3vWEDMdlaRLlj1x/3OvSgSmIKzwUdP25ft48=;
-	b=7LfLf7ytCJLS2sXypCMCWTH5JYd2J4RjSVWbiH7W3Xz1LzaN2zAvX5HxqXeWcd17nZHBll
-	aKLAm3sRQQSN9wu3zAErJXsoxxvahHpcgm8PyYLODX1H0RXVg0QSYxYNOyTYs2g1XH/MKa
-	15V4yq+zF/VY5CnlBSU4MlKVsa/xSgk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767887523; a=rsa-sha256;
-	cv=none;
-	b=6QEgGFbrJTSA/bgPQAQus5wTYIixeHkKVwzkJoOxGQrR6O5fGqct/kzw8428lJgJRxOTLp
-	/oh9fJUTVsYLHhXiQJ/zQBJRILYROgWRPLXQL4O7PeGiPSejl+PIfHiHLFZu5A/ZX0Kbcj
-	9YQsvG5urjmKU15a5Okoh9XX/2goNuQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=GL/JyBjUJmShYOyJwPO5n+a/X7IaKmCFq2H7t69Lepk=;
+	b=p5knRaFBEwJrQ/YX50tQv/YtLLIgcVGQ2ZEfR1Seuj/bfHyCZea6Rg6tfXx/VahPzX1hHC
+	i6zHXzgsabQY8BEnRKILZVQ/bp0K/imr9ofHd6puE4EQVEo9SWKFaVvIGZuY6J8ibngTUa
+	h9eERS2ko9fr7zzjUMyQ0JfnEQz4QLg=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dn8Xk75mbzHnGhc;
-	Thu,  8 Jan 2026 23:51:50 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5CD0240086;
-	Thu,  8 Jan 2026 23:51:59 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 8 Jan
- 2026 15:51:57 +0000
-Date: Thu, 8 Jan 2026 15:51:56 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Akinobu Mita <akinobu.mita@gmail.com>
-CC: <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <akpm@linux-foundation.org>,
-	<axelrasmussen@google.com>, <yuanchu@google.com>, <weixugc@google.com>,
-	<hannes@cmpxchg.org>, <david@kernel.org>, <mhocko@kernel.org>,
-	<zhengqi.arch@bytedance.com>, <shakeel.butt@linux.dev>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <bingjiao@google.com>
-Subject: Re: [PATCH v3 2/3] mm: numa_emu: add document for NUMA emulation
-Message-ID: <20260108155156.0000156b@huawei.com>
-In-Reply-To: <20260108101535.50696-3-akinobu.mita@gmail.com>
-References: <20260108101535.50696-1-akinobu.mita@gmail.com>
-	<20260108101535.50696-3-akinobu.mita@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=smTz0YN5;
+	spf=pass (imf08.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767887761; a=rsa-sha256;
+	cv=none;
+	b=lI5TMXgVfbh4sQIF9uGgor+HX+UGu3AffuYNio0CvgZHmWevMX6LwFnFap1pnLd3i1j0Et
+	qoVPbXCSZiUCkanRjf/+OusaXwEvSLcCwrRAXvqIBD+8cGNoyYcld86E0iZX3R7p9DWvLG
+	8VTxwPdARq7Sc3Y8F6fs35b1O3Cr2ls=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D35EF60130;
+	Thu,  8 Jan 2026 15:56:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFD6C116C6;
+	Thu,  8 Jan 2026 15:56:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767887760;
+	bh=GfulWa/ARu4Yr8rPC67SODwYIn35P8iw0erhJXUkXcY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=smTz0YN5YLFmAlOwB/XE8lSG6WmMP9wwqSDofdB02oq65EsOYfnBlUklxTr+EgvDK
+	 D8lBV6Neawx+hCoXcQ6EgI+F4Vv4Zrwc9mjuyRoN2D9iz15mp/8X/xXkIDpluV8Z1+
+	 2w9Aq1d0cFAIHm7EvNx2GH1ulX6+5eXLtIUGYofhwcoOT947MRxroquuxMdN+9IewD
+	 W929EV3dvo4vDZAvAU27sNCWOs2xaEra2+bel24JzUK8CDMgc77ZvAVp3//FojQ+v7
+	 kOs71Vya+liqOAZf8HJg6nkTyKyr+a/U1QkBeLh3lRWlYEt1McXz1ecpnZeMxewfMx
+	 W9fCRcqMSwgog==
+Date: Thu, 8 Jan 2026 09:55:58 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: Hou Tao <houtao@huaweicloud.com>, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tejun Heo <tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	houtao1@huawei.com
+Subject: Re: [PATCH 01/13] PCI/P2PDMA: Release the per-cpu ref of pgmap when
+ vm_insert_page() fails
+Message-ID: <20260108155558.GA482755@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46lz5szq44vz3chzj6unh2sff4cfnpyvih7zty6fcnitzyrulu@6a2xdopoafxt>
+X-Rspamd-Queue-Id: 577EB160002
+X-Stat-Signature: 69ntm183qwjbi36y7dsfiyofzoh31bso
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D6D2E40014
-X-Stat-Signature: 95wycz86xdcxwpff34rz6jxkchmodx9t
-X-HE-Tag: 1767887522-257925
-X-HE-Meta: U2FsdGVkX18u7WM+DoONFaUo8NzLY9mU0Mzdl8RqaXQXhPmQBKTGldNk13fYdwxMYL4JJR5bOJr8YREjH0GCL4/VjJ01MJlz2MceHDddy8CxPzv4J3aYuI7gN1dnPxTzTlRu5o44HePQnkq9DAoSroklRfARlNkBk3MF/efXFfTHPYB8ST8A/nQr4hGAlWaaAXHmY4XQSLKklIiyqllt6VauXkyAIySx/jbcOBnBIp10eX6nYGZAJPftde4SPUGABLVd7KcOsTyIGT874Ksu3ifHuFwhMMmVrfoQ0Jh+fYSWh37Ochanq7Y2BolwrDxXKGSJ7TtDG6U3uGNOWJllc1Tc53KmKpTsKkj7VZpCc4KGkZTtnqSjUZ8o3sXp8SaABOmLs11s+Hrb8PJL6/ziHnWQb6ir18qT0zcWci6falL6XABwq2fOjuLPUk42SPAMVw2xJ8M3Xl5xen2d0E5agLSsAJKpvukiBx2jSd1ECtA54vJQFfFw8VcgTCHaRCdTCOjDeRuviW9axKXCwqHcxfQkGYRMktqcSr3TsniKFk4ecfxg3wVYQmvh2GY+XTozK44ENXQetEeMLlfBw2jN+2Gs8YxMiIypNIlWTfBfxm1myrFXtDoQ+imgrDqx7eSt3hAD1rjYwELOH8JUlENrfT1YcFMD6SH310Oj3OVCUv2+PncQwJU5TJjEMLqI3tYi1lTxuSeST0cbsDrKkyzSV/64yLBzQm6LyprGZsyyDflJ38yOWb/EJN1TH/8JmUPwsIsIdzLQJxs4KPxVWJtcC7YNkF7YiXCnNTnxF/qof53kiISAaxWDMerd4r1RkIn3NWeFr5CDykNcU5awSFTblhbjsVUoZVYxbhC7eLk0CizcHseN8E+tZR6Pb7ryPxrgwA8VnOJZNPhcH5YofjNl4Xm8sAVxlI0OJyyprqmDAUrYS3pD7qiBqMzdHvzaqnvsz8WE2uhXn20iDI/CpwR
- UWNPO8Ys
- aMMjXTY2DeUp9mKzs31MEinvL/lW7hj4k7ZRH09a5IIilxIahoVexYxT/YPoxeZNe0tTNYyZymce4Q5eWUeB10sKGprVPB5ud9c4gFnd3CUTHmBpRD2wDpsY836Ma0qhHrSk5QF9sfNbQuqpKw4oEYWprEGnFgrtGSO3ILA2zxvh0O26KRnwZTunb0YLbYW5twwKCeGsXEQ3DaFedwV8BV6lm/Bau7tb2Q0mLZmMsS5RBYbkyeWSfg7qto8OPVHNpWyDNnr+RaKnGYd8WXjqAJf/dIlj+dawtZdDQhE4+/yZphLbfjjlyT2HlgyScR71NG7xFTBK9Dnl9na791vBdw5WSYuOgweqxqrBTECqWgMU1BR7ypACj5whTusrXbNo0yORY
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1767887761-774773
+X-HE-Meta: U2FsdGVkX18UH2YuiwBYk/iHbKKt8916dtJGsQnsVPK7PlaziiegwU6bdeBSgiaF7tm/uo2/gojKA2HUhyqiWe5/bHeSDuab+AxVbwxmyU+O/mEbIoClWzPrwSy+vfwAC5gbrEI6/chdd0MHUjJhmq4GGXQn4njXJ/itV5FyP13GUPDHkYY8GH7nw4oGfpNCey1U8/hzjMCBbmbPO1NLRhmWfZ01EbrIJWtYiy3ADCQh4NhOUmzE+5jY3/1A914kH63iYFDUjyCf9anmtLoZxP7SrU5+yvjBZPza237jm4A46mu/TzsGC6eErKR2GumP/PsmkwnmCZ63heelV4ucy9yLHAaXI+Eu0k9nIeM/iQyOJ2Mzb0mFp4Mija1rSoBI2nixV8TuwaKAaiwNkjKv8vwHalUKwBeP7N1FD2S5F+J9H6vjlGNxajIgSLP0vcj3GXDqfSRCmXbd+xbkWxaid5sY7+MN9AFc+5HBNucomAzVaB/vSkqnPXbPD1FNtTTmYu6TLHCvOZSC0CmK/KLfso/EVQ8Ob+/c22/Hp6e7Gym/Ujbpbj2jKoEZV8EAfWkW/YgHZMXZzCW+UXY/IzQaimXexut3BHsCI8BGcaK0iVfln9rOp3gcu2CJlHovnBXW8dkDkNggLCQVNCj3P+7N1p64lY/T03oViWBlCgNpQioBoxwvi+Q3m4sY9/LHMccWEADR0z1xx1jg5ZvpjWnUyrcV/8NjBjVg55d2K/TBxFhoC8F7oJWIFwZjUDv23ALp7WtzjZ2vHxFiD7M+JMgIY3vJ7doQs6Pv3dMPn8EMtgdF2Yey4YV32vWrjujPxBgDZoC+uoSqcVQXeBe62bAre7ujmmEC1OHKsPcToV0vLADNxaCawnADqdRpkjaRvaBiNxT5ChNCfvStQJtNTgXmNGpJZOroNgCgSM0P44I89Axy7yhNTQ41BaCKKauKoDyO7h4osqWEsiKkOxISoR3
+ gS+EMGfh
+ lHx5pARIhMwgeUr+F2u/PYYOyTXgYkph5ScGprfOpeSuzBld+b7+oSYyqAVpljNM0VySx8U6Sn8u1WDyaU6gI18yigXwtEh/t1YObZCeVY9uJAhnPmMyRvhhj9D4aSQ/oAva8dpHTawm00dSyqfE0kEAoyMyY1XazN3ABywW4pDm929Pz+267QjdDVCcDEKhK5zhQBFiHqtKtOhxmNa2RV3YeFAkdJsrjplNVo6X9HrjzNWAlgs0UGqK1unm5N2DVzC2FYwn5liwvVqviRbdUzSoi2DSL4nO7joPIEHiw4Ae243nFx8PJ/qtphGcSGw5xGmJZqscFTQZx/OrZg/+Dyeq5z5+nFpP+aPILsQUi5VI90Qt9IwCGn35ftQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,74 +103,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  8 Jan 2026 19:15:34 +0900
-Akinobu Mita <akinobu.mita@gmail.com> wrote:
-
-> Add a document with a brief explanation of numa emulation and how to use
-> the newly added "numa_emulation.adistance=" kernel cmdline parameter.
+On Thu, Jan 08, 2026 at 02:23:16PM +1100, Alistair Popple wrote:
+> On 2025-12-20 at 15:04 +1100, Hou Tao <houtao@huaweicloud.com> wrote...
+> > From: Hou Tao <houtao1@huawei.com>
+> > 
+> > When vm_insert_page() fails in p2pmem_alloc_mmap(), p2pmem_alloc_mmap()
+> > doesn't invoke percpu_ref_put() to free the per-cpu ref of pgmap
+> > acquired after gen_pool_alloc_owner(), and memunmap_pages() will hang
+> > forever when trying to remove the PCIe device.
+> > 
+> > Fix it by adding the missed percpu_ref_put().
 > 
-> Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
-I'm not sure on the benefit of a NUMA emulation doc that only really covers
-the new stuff in your series.  Feels like a more thorough doc with everything
-in one place would be better.  Still, what you have here is good to have so
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-
-> ---
-> v2:
-> - added in v2
+> This pairs with the percpu_ref_tryget_live_rcu() above right? Might
+> be worth mentioning that as a comment, but overall looks good to me
+> so feel free to add:
 > 
->  Documentation/mm/index.rst          |  1 +
->  Documentation/mm/numa_emulation.rst | 30 +++++++++++++++++++++++++++++
->  2 files changed, 31 insertions(+)
->  create mode 100644 Documentation/mm/numa_emulation.rst
-> 
-> diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
-> index 7aa2a8886908..7d628edd6a17 100644
-> --- a/Documentation/mm/index.rst
-> +++ b/Documentation/mm/index.rst
-> @@ -24,6 +24,7 @@ see the :doc:`admin guide <../admin-guide/mm/index>`.
->     page_cache
->     shmfs
->     oom
-> +   numa_emulation
->  
->  Unsorted Documentation
->  ======================
-> diff --git a/Documentation/mm/numa_emulation.rst b/Documentation/mm/numa_emulation.rst
-> new file mode 100644
-> index 000000000000..dce9f607c031
-> --- /dev/null
-> +++ b/Documentation/mm/numa_emulation.rst
-> @@ -0,0 +1,30 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +==============
-> +NUMA emulation
-> +==============
-> +
-> +If CONFIG_NUMA_EMU is enabled, you can create fake NUMA nodes with
-> +``numa=fake=`` kernel cmdline option.
-> +See Documentation/admin-guide/kernel-parameters.txt and
-> +Documentation/arch/x86/x86_64/fake-numa-for-cpusets.rst for more information.
-> +
-> +
-> +Multiple Memory Tiers Creation
-> +==============================
-> +
-> +The "numa_emulation.adistance=" kernel cmdline option allows you to set
-> +the abstract distance for each NUMA node.
-> +
-> +For example, you can create two fake nodes, each in a different memory
-> +tier by booting with "numa=fake=2 numa_emulation.adistance=576,704".
-> +Here, the abstract distances of node0 and node1 are set to 576 and 706,
-> +respectively.
-> +
-> +Each memory tier covers an abstract distance chunk size of 128. Thus,
-> +nodes with abstract distances between 512 and 639 are classified into the
-> +same memory tier, and nodes with abstract distances between 640 and 767
-> +are classified into the next slower memory tier.
-> +
-> +The abstract distance of fake nodes not specified in the parameter will
-> +be the default DRAM abstract distance of 576.
+> Reviewed-by: Alistair Popple <apopple@nvidia.com>
 
+Added your Reviewed-by, thanks!
+
+Would the following commit log address your suggestion?
+
+  When the vm_insert_page() in p2pmem_alloc_mmap() failed, we did not
+  invoke percpu_ref_put() to free the per-CPU pgmap ref acquired by
+  percpu_ref_tryget_live_rcu(), which meant that PCI device removal would
+  hang forever in memunmap_pages().
+
+  Fix it by adding the missed percpu_ref_put().
+
+Looking at this again, I'm confused about why in the normal, non-error
+case, we do the percpu_ref_tryget_live_rcu(ref), followed by another
+percpu_ref_get(ref) for each page, followed by just a single
+percpu_ref_put() at the exit.
+
+So we do ref_get() "1 + number of pages" times but we only do a single
+ref_put().  Is there a loop of ref_put() for each page elsewhere?
+
+> > Fixes: 7e9c7ef83d78 ("PCI/P2PDMA: Allow userspace VMA allocations through sysfs")
+> > Signed-off-by: Hou Tao <houtao1@huawei.com>
+> > ---
+> >  drivers/pci/p2pdma.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+> > index 4a2fc7ab42c3..218c1f5252b6 100644
+> > --- a/drivers/pci/p2pdma.c
+> > +++ b/drivers/pci/p2pdma.c
+> > @@ -152,6 +152,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+> >  		ret = vm_insert_page(vma, vaddr, page);
+> >  		if (ret) {
+> >  			gen_pool_free(p2pdma->pool, (uintptr_t)kaddr, len);
+> > +			percpu_ref_put(ref);
+> >  			return ret;
+> >  		}
+> >  		percpu_ref_get(ref);
+> > -- 
+> > 2.29.2
+> > 
 
