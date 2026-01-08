@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4576FD1D480
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 17:28:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12365D1D480
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 17:29:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE3CF6B0089; Thu,  8 Jan 2026 12:28:32 -0500 (EST)
+	id 7ABF86B0089; Thu,  8 Jan 2026 12:29:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAEFC6B00C0; Thu,  8 Jan 2026 12:28:32 -0500 (EST)
+	id 78B9E6B00BC; Thu,  8 Jan 2026 12:29:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 987796B00C2; Thu,  8 Jan 2026 12:28:32 -0500 (EST)
+	id 664586B00C2; Thu,  8 Jan 2026 12:29:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B9BB6B0089
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:28:32 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 30C0F1AE91
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:28:32 +0000 (UTC)
-X-FDA: 84309480864.01.F6DFC20
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf25.hostedemail.com (Postfix) with ESMTP id ED48BA0017
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:28:29 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 53E446B0089
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:29:16 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 21273139656
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:29:16 +0000 (UTC)
+X-FDA: 84309482712.16.5CFAB42
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D9689A0011
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:29:13 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PgM0qTCX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7I3Psqn1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PgM0qTCX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7I3Psqn1;
-	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=q98OikX8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jLiiYj1N;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=q98OikX8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jLiiYj1N;
+	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767893354; a=rsa-sha256;
+	cv=none;
+	b=Dlio7hElzSe5m9adryz3pK2idzM2CHP6NPtIznv09CekuOKdmg+ld0BxE6z4fMs+qxHvDo
+	PLoTCUZrona8d5SWreTXA2LHGnFd04/TZkTuLrdmYpMshzmL4SOyu2ub70iW4y8ZEGyM0u
+	NaGjsKRnTPAhotRfES7jsK+q8cxEsv0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=q98OikX8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jLiiYj1N;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=q98OikX8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jLiiYj1N;
+	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767893310;
+	s=arc-20220608; t=1767893354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LZmRq1jobUO8YamiQvtoLSiP3S45TLaZihc+2opPu78=;
-	b=ZYjzpZMgnv2U+hnPDnKYBEwgMPZf3vBGshmln3OR0fSnUUjtl9nKHwEGMY2zJQOD0KmfSA
-	xabMjn+fOsnzaBhfPbChOGwUmpw+5Jy1LoVj/aizACcA/9aYZkZipDUNendJNmhU5cMDiN
-	YgKz4RhyvzfdIvXcpxc7He2U9gDvnNo=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PgM0qTCX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7I3Psqn1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PgM0qTCX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7I3Psqn1;
-	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767893310; a=rsa-sha256;
-	cv=none;
-	b=51aieZ8AFCC+HrWmVtihJmOaNvCiXd0+ZdIf7I1KdMepbyrhCZmKUx71ATeFvqraWHBNq6
-	+6fZLTz4ux0r1W3gXaFNDV9dCHCgQOhxw24OL9+nbYjhJSz71ThLzGJcKFy+dtXBv88Lpl
-	1iG3GaaXNx+Et+NsxaOWw3699/ayunk=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=2FXB05KWinghyISdrGnDsHHRXJ2LLquCS7DmluRFvrw=;
+	b=T5ceLH/Vuf/dQJI69T+eZMgTz+7tI3zRjwV3hqHFwWZ9R+zGY/GsHeVPIhTGtXFny74YQR
+	8aWSIa6FXYm+1oGcLEZoV8bbse9w32pJmd/+3r0bsu9+DyXWlnD7GuXSTKJI9Z0KLEcyze
+	HBKxiRw5JGEIIzTRmbHL36xE9EUmrOQ=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 31252346D1;
-	Thu,  8 Jan 2026 17:28:28 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 58B935CB90;
+	Thu,  8 Jan 2026 17:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767893308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1767893352; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LZmRq1jobUO8YamiQvtoLSiP3S45TLaZihc+2opPu78=;
-	b=PgM0qTCXZ2X5Z3hkK3jtzjZOvDMZLm/E4JYhqQ6em+5IaD4UT31FECDXudaGiS5xM4DJ0y
-	CjQygviac/9t0aQvin8JilOeYO3xwSNnNhPdm0cnkvbpJgP68yJhD2J3X6sGHvKGWvyaXj
-	1+h9HLpBlNo8eR3zYHP8X4pAMSGnU84=
+	bh=2FXB05KWinghyISdrGnDsHHRXJ2LLquCS7DmluRFvrw=;
+	b=q98OikX8Rlp+tPfB2ZHxVR36nEhJ+HZD3bnqMRpYfLGtKGtaEncX/JNBcjEjloWK4bXk1i
+	cIWDAvSVP/sBQXMd6MLI6eFHRSDl9mCxqH52YzdYtVgcoOrPlWPoiERTin9dhH0ik9+24V
+	rDIl9wrHXO7t0NpcA3X/w+2/NXnTdMc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767893308;
+	s=susede2_ed25519; t=1767893352;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LZmRq1jobUO8YamiQvtoLSiP3S45TLaZihc+2opPu78=;
-	b=7I3Psqn1KNPxXCXm9PcU1P3QCaLnWDhGBG6oy6mEBBHZkBtmbJGI/TRrEDw+5SLm4knqEo
-	+ceMclR97Y1K14AQ==
+	bh=2FXB05KWinghyISdrGnDsHHRXJ2LLquCS7DmluRFvrw=;
+	b=jLiiYj1NB/KC2FKXGW0Rp8Gdggj+tWABL2abRsfkiJij0e8jQKly3ieKviRIh0zE1u83aY
+	WzA2A1lxr6mI77CQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767893308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1767893352; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LZmRq1jobUO8YamiQvtoLSiP3S45TLaZihc+2opPu78=;
-	b=PgM0qTCXZ2X5Z3hkK3jtzjZOvDMZLm/E4JYhqQ6em+5IaD4UT31FECDXudaGiS5xM4DJ0y
-	CjQygviac/9t0aQvin8JilOeYO3xwSNnNhPdm0cnkvbpJgP68yJhD2J3X6sGHvKGWvyaXj
-	1+h9HLpBlNo8eR3zYHP8X4pAMSGnU84=
+	bh=2FXB05KWinghyISdrGnDsHHRXJ2LLquCS7DmluRFvrw=;
+	b=q98OikX8Rlp+tPfB2ZHxVR36nEhJ+HZD3bnqMRpYfLGtKGtaEncX/JNBcjEjloWK4bXk1i
+	cIWDAvSVP/sBQXMd6MLI6eFHRSDl9mCxqH52YzdYtVgcoOrPlWPoiERTin9dhH0ik9+24V
+	rDIl9wrHXO7t0NpcA3X/w+2/NXnTdMc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767893308;
+	s=susede2_ed25519; t=1767893352;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LZmRq1jobUO8YamiQvtoLSiP3S45TLaZihc+2opPu78=;
-	b=7I3Psqn1KNPxXCXm9PcU1P3QCaLnWDhGBG6oy6mEBBHZkBtmbJGI/TRrEDw+5SLm4knqEo
-	+ceMclR97Y1K14AQ==
+	bh=2FXB05KWinghyISdrGnDsHHRXJ2LLquCS7DmluRFvrw=;
+	b=jLiiYj1NB/KC2FKXGW0Rp8Gdggj+tWABL2abRsfkiJij0e8jQKly3ieKviRIh0zE1u83aY
+	WzA2A1lxr6mI77CQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2203C3EA65;
-	Thu,  8 Jan 2026 17:28:28 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 446973EA63;
+	Thu,  8 Jan 2026 17:29:12 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9BtLCDzpX2lmdwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 08 Jan 2026 17:28:28 +0000
+	id OEmrEGjpX2kZeAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 08 Jan 2026 17:29:12 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id D507AA0B23; Thu,  8 Jan 2026 18:28:27 +0100 (CET)
-Date: Thu, 8 Jan 2026 18:28:27 +0100
+	id 008D9A0B23; Thu,  8 Jan 2026 18:29:11 +0100 (CET)
+Date: Thu, 8 Jan 2026 18:29:11 +0100
 From: Jan Kara <jack@suse.cz>
 To: Jeff Layton <jlayton@kernel.org>
 Cc: Luis de Bethencourt <luisbg@kernel.org>, 
@@ -145,23 +145,22 @@ Cc: Luis de Bethencourt <luisbg@kernel.org>,
 	linux-xfs@vger.kernel.org, linux-mm@kvack.org, gfs2@lists.linux.dev, 
 	linux-doc@vger.kernel.org, v9fs@lists.linux.dev, ceph-devel@vger.kernel.org, 
 	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, samba-technical@lists.samba.org
-Subject: Re: [PATCH 06/24] ext4: add setlease file operation
-Message-ID: <4vqji2aypves2bafiyxtpw442nxzhbipvayyl3jky6uogdks6s@l6tfwl272v7e>
+Subject: Re: [PATCH 15/24] ocfs2: add setlease file operation
+Message-ID: <ou554m23k22d2mswmhwxyhrhfnrhz6socc2jx7p2ef3w7zb56f@noumdopgdg5f>
 References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
- <20260108-setlease-6-20-v1-6-ea4dec9b67fa@kernel.org>
+ <20260108-setlease-6-20-v1-15-ea4dec9b67fa@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260108-setlease-6-20-v1-6-ea4dec9b67fa@kernel.org>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: ED48BA0017
-X-Stat-Signature: eiprowaszhe3iipjmjr81bbh7eogexb9
+In-Reply-To: <20260108-setlease-6-20-v1-15-ea4dec9b67fa@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D9689A0011
+X-Stat-Signature: kuj3f4w3g48ai4xbce49q5d8iikhjjrj
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1767893309-155235
-X-HE-Meta: U2FsdGVkX19i0SDxyALu60fQ7lsdY9rDH6Nd7Ltl4mmHeXCQsHUse0b5SWOVLnZSn2QOHEeA765LlWHcq58Q0KceRt4cogEYaEcXCQmIbwr6P52saS9rQJM7kXPptJGkAATyx1KdmlbNv9hrOGcAMChVaDaj+gOtkFYSBgeaWuNgc2MwHJ1fG7zXdxQWMIo2RAObceIyIW2CL91rOUuiAdtxjBRUTWBbyjZ7r21HOpsq1cAKvWq9G9OF6KGECWHmyOV7jUkpR0BTgRqVNHEJjWyZMqtdpnB0LQ2GGVjjisTXxFpsFGJnygCbz2sxwAMb/BK/5c0rkTOkqYory9GxuDEI0Vinb6X+1oQmgKfzfp80lhIJYvNI9zqVGplpGBbSn1ehPEDcbbtdT3PnUBDb2knax4SSHd+af1NbALpiNfXPJNz9D6Ij0m5VASOhIkbf+htm65XyTrHjISw8r1HMTOe8MaoFbF3pxLpj/o3ppB8ApnLaFFSDMHhgOeOCMI6W7nleq8d+0Vq7G9O4XvRQNxocZi141RYuLnqDRYY0ec4MKuP5w1ixZ6mLAqC/3WBg90XZu3xELoo97WHvMX9W1JgmDZdi77W6YGz0bqZQkpR+puT7biqQ/Udje+cRFYpvyqR7KItC5AC7r508917dTAoMnnnnPwVLhuADs53YRSWpXVhLsKnYWdzEm6aAfAH/3G9PWh2AaFNnMi0e1mPqHJxZxQWRidihtOLhMKEtLsgqIZRN8G6VccSaiV2U+AG8BgTSukCY/268UF8z1ZQqciG/QSENybgRmF2k5ZJY1kQhyqzbxM8axX5X8DcYVcez4GHGgIzOkTqPHYZ7FDs3q+fl+iYhzar4lMPzMshIsCIgX1RcQoYid0z6ZZDHdHNIrcgYvpQvfml5AF7jIiDOda2TFZM1eyI8Di5NXqtX6fnCkNy9R34q64O6w1/o8fQZTDP7XzXmGeAUdoa0NO5
- xG0dJ5y9
- F0rIcl7rNDdEnTKpbdSJbZHNPuUePkql5X5H8d8oR/fv0U9/XamFtWiv078szqaZZud23fJLyZ+kms18ps+5KadTz1RDR1lbhgOkhHSR21UTtFaUOzZT1V/Rlh8Hu8d4ed2iW5HYURYM47+QVjNjRN2n4gFfDgVTSwd6LAzrXnjbGb0qZ8CGvNGLhSlZkFxV2jkHs4M+mgWfLqfD4MtTZsBFLgIUEkjA1pT+U4ESUvT3mTFtx4aHa1ikv8CRpV0tNqx5kEbE+KXfQnx1Kw79U+PjJgL3p99wLJSfOZsBDJaLbJVu/Kggv2woYVb+YLueIJzZd/F/VeZoBHWMGPvuavJP7ZETLZC0OGHSrRi/ZESXMsrlavxt8tiLvhffMUEEZoGuwKRGN/xjrSqaMAwXVzSb0H3GKI75jAamjoe2z2HHlFl3ArsnyD5zQvKmcjsJRP0AjaV5yA9YmkJa5QQsP0EZk7A==
+X-HE-Tag: 1767893353-332291
+X-HE-Meta: U2FsdGVkX183XV4LvSLiW5p/1PqXaYn11UF8pnakhfwaWneH5nAJc/EcP2V/zeQZJZNFLzaBaq8jh7NeZLsnzBysgxy0stJ0gpUgjZ7jnsh4PxjbN7YokBQW51AAxHcfjlLa2nIJ4A2tMqNm1DZ8FFoRKhZ6ISCxMu6HFhTdgicStFobD7WPzN5sXNpxmJL6Es2pBR4ydF4cpubzCNiGaFI96p91fsGRYYrCbUga8oQ3A/yWDaCtp1YYNcoWp/6OPpkB/F+OIQEpke0gc8TjCjs3jBM5j2eEkWj2y0a2CMNEIQ2N9YdT5GG01aOZETKVvpOg2rns2bYkuZMCf4GyQnfScuaCW9rZdA+V2E5gHDbErmZSmsjFzH8k7Yw2v2sBrUZ6BUWW4n8V8L3XwE2EAq+X+niap3dFFw5PkEzo8vLUpm9KbVSz8+gHRR1FNShNKc5CduD17mi4HkyazIniJl73iVArgHhrjqcOl1FKyLmtZdgmkaWRsJl23g3mc3Y2z4TAEVGIMhiHeESsmO2MLUIqSWs1ge4l4O8t1dZZaEPlb3x/MbTGQ7Mel9mTeaYGPWi8ooBSwjFi4M0/C7jt0FwsJ5gJSaX8fzOyOzcGx3NiqsfwliXKZZFkGeXfaihnfrdOIm8kPeK9i8ctK80tXWHWSuhzw4okI86N7+mewnHX9lGaCitNaeczt3OBSr19PbgpIWBQ1pwfip1SE7S5c4CHZKeEbUZauuop6kAXs3FqIOvz9Z5BnDQk3jAQUZADXv1+OMvdZdWDBSotWlo/MT5yxn16Ib96QIlGJZlJr9cu8069HUw9oZ1m6bJIQPvlfJwotzhzFb3V/naZgWfhxqNTvNcFr4BgTIztLo/fw2xKemvEMT8OaDaDq18eRYTlbpkM4tVzhNsgCeAXqcSV5qw3xq967MTgoE2X4RfvLNGWcOuz6byCEA3TW0GKevFJZqcYTo3iU1hgJbJdQP0
+ +oiH0atS
+ 0BFC7icfz2tpoCQIpCVeoU1HvZnUDfSuwmF1yLDqFuCAuVAm+2M5kAR9uijXLwlrTc+gkuYGwhRZgWvIGeDV0DaRq7C0IVqVXf3PCYpeMjKZHSlmd7riatDZIxKUMmbpAfNBVOiE32cUofDmmKB6tPsN7IMOUt/X9E/3cRfDfPmhJPAq7VVoA+GLIhSwUzVtevw3DA9H3zYNNPGLHd6dTa2l5VvfkaMWchDF2yAa/6UI6K0LHwklr0zCCzeGqRfgDPDcC3HmJ+jQw/1bxdYqX0jKgYKgohUh4+hsdaKg0tmkvJPOysgRy6qXTupnSoV3CY4ia6bFJ2E7iH1Qk6XFsHRaSJXxrq47nIaM76rqLEWnW7i35n834ie2CY3nWdmpthHiqGTvEG62iHW195UgDu3kxoLV3bPjGYBYuLb9wrDBJ0d+tH2v3dVuU8g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -170,12 +169,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 08-01-26 12:13:01, Jeff Layton wrote:
-> Add the setlease file_operation to ext4_file_operations and
-> ext4_dir_operations, pointing to generic_setlease.  A future patch will
-> change the default behavior to reject lease attempts with -EINVAL when
-> there is no setlease file operation defined. Add generic_setlease to
-> retain the ability to set leases on this filesystem.
+On Thu 08-01-26 12:13:10, Jeff Layton wrote:
+> Add the setlease file_operation to ocfs2_fops, ocfs2_dops,
+> ocfs2_fops_no_plocks, and ocfs2_dops_no_plocks, pointing to
+> generic_setlease.  A future patch will change the default behavior to
+> reject lease attempts with -EINVAL when there is no setlease file
+> operation defined. Add generic_setlease to retain the ability to set
+> leases on this filesystem.
 > 
 > Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
@@ -186,48 +186,51 @@ Reviewed-by: Jan Kara <jack@suse.cz>
 								Honza
 
 > ---
->  fs/ext4/dir.c  | 2 ++
->  fs/ext4/file.c | 2 ++
->  2 files changed, 4 insertions(+)
+>  fs/ocfs2/file.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/fs/ext4/dir.c b/fs/ext4/dir.c
-> index 256fe2c1d4c1619eb2cd915d8b6b05bce72656e7..00c4b3c82b6534790962dc3964c0c557162b6dff 100644
-> --- a/fs/ext4/dir.c
-> +++ b/fs/ext4/dir.c
-> @@ -24,6 +24,7 @@
->  
->  #include <linux/fs.h>
->  #include <linux/buffer_head.h>
-> +#include <linux/filelock.h>
->  #include <linux/slab.h>
->  #include <linux/iversion.h>
->  #include <linux/unicode.h>
-> @@ -690,4 +691,5 @@ const struct file_operations ext4_dir_operations = {
->  #endif
->  	.fsync		= ext4_sync_file,
->  	.release	= ext4_release_dir,
-> +	.setlease	= generic_setlease,
->  };
-> diff --git a/fs/ext4/file.c b/fs/ext4/file.c
-> index 7a8b3093218921f26a7f8962f94739ba49431230..534cf864101f8d1e5f4106b61c0580c858bc0e27 100644
-> --- a/fs/ext4/file.c
-> +++ b/fs/ext4/file.c
-> @@ -25,6 +25,7 @@
+> diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
+> index 732c61599159ccb1f8fbcbb44e848f78678221d9..ed961a854983d5e7abe935e160e3029c48e6fca4 100644
+> --- a/fs/ocfs2/file.c
+> +++ b/fs/ocfs2/file.c
+> @@ -19,6 +19,7 @@
 >  #include <linux/mount.h>
->  #include <linux/path.h>
->  #include <linux/dax.h>
+>  #include <linux/writeback.h>
+>  #include <linux/falloc.h>
 > +#include <linux/filelock.h>
 >  #include <linux/quotaops.h>
->  #include <linux/pagevec.h>
->  #include <linux/uio.h>
-> @@ -980,6 +981,7 @@ const struct file_operations ext4_file_operations = {
->  	.fop_flags	= FOP_MMAP_SYNC | FOP_BUFFER_RASYNC |
->  			  FOP_DIO_PARALLEL_WRITE |
->  			  FOP_DONTCACHE,
+>  #include <linux/blkdev.h>
+>  #include <linux/backing-dev.h>
+> @@ -2823,6 +2824,7 @@ const struct file_operations ocfs2_fops = {
+>  	.fallocate	= ocfs2_fallocate,
+>  	.remap_file_range = ocfs2_remap_file_range,
+>  	.fop_flags	= FOP_ASYNC_LOCK,
 > +	.setlease	= generic_setlease,
 >  };
 >  
->  const struct inode_operations ext4_file_inode_operations = {
+>  WRAP_DIR_ITER(ocfs2_readdir) // FIXME!
+> @@ -2840,6 +2842,7 @@ const struct file_operations ocfs2_dops = {
+>  	.lock		= ocfs2_lock,
+>  	.flock		= ocfs2_flock,
+>  	.fop_flags	= FOP_ASYNC_LOCK,
+> +	.setlease	= generic_setlease,
+>  };
+>  
+>  /*
+> @@ -2871,6 +2874,7 @@ const struct file_operations ocfs2_fops_no_plocks = {
+>  	.splice_write	= iter_file_splice_write,
+>  	.fallocate	= ocfs2_fallocate,
+>  	.remap_file_range = ocfs2_remap_file_range,
+> +	.setlease	= generic_setlease,
+>  };
+>  
+>  const struct file_operations ocfs2_dops_no_plocks = {
+> @@ -2885,4 +2889,5 @@ const struct file_operations ocfs2_dops_no_plocks = {
+>  	.compat_ioctl   = ocfs2_compat_ioctl,
+>  #endif
+>  	.flock		= ocfs2_flock,
+> +	.setlease	= generic_setlease,
+>  };
 > 
 > -- 
 > 2.52.0
