@@ -4,196 +4,200 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA8E0D1D483
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 19:21:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C4E4D1D483
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 19:46:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4ADFA6B0005; Thu,  8 Jan 2026 14:21:30 -0500 (EST)
+	id E59926B0088; Thu,  8 Jan 2026 14:46:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 485D56B0088; Thu,  8 Jan 2026 14:21:30 -0500 (EST)
+	id DDD8D6B0089; Thu,  8 Jan 2026 14:46:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35DB46B0093; Thu,  8 Jan 2026 14:21:30 -0500 (EST)
+	id C94056B0092; Thu,  8 Jan 2026 14:46:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 271BA6B0005
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:21:30 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BF1E91AEB4
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 19:21:29 +0000 (UTC)
-X-FDA: 84309765498.06.2A1C91E
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013045.outbound.protection.outlook.com [40.93.196.45])
-	by imf10.hostedemail.com (Postfix) with ESMTP id AEFAEC000E
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 19:21:26 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="V/DPFdlT";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf10.hostedemail.com: domain of ankita@nvidia.com designates 40.93.196.45 as permitted sender) smtp.mailfrom=ankita@nvidia.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B338F6B0088
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 14:46:15 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3B7ABC15DB
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 19:46:15 +0000 (UTC)
+X-FDA: 84309827910.30.4C0A86B
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013021.outbound.protection.outlook.com [40.93.201.21])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1C4F340002
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 19:46:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=mwatL2s7;
+	spf=pass (imf01.hostedemail.com: domain of Felix.Kuehling@amd.com designates 40.93.201.21 as permitted sender) smtp.mailfrom=Felix.Kuehling@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767900086;
+	s=arc-20220608; t=1767901572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=llmq9Z18ar0dsWQ6dyCpiQawgDMNrg5xqKE8daOA2dQ=;
-	b=m+VLwrxJ8FIaiTGK5NZWBMHXI7ccG4gGZFCbV5X7eJdYTe3/HPGRd4lTBxJ08xVkRN/8VN
-	utNjwytgGDVQbnqn5tBbx8zJHoy8os7vDjmKLMYfFTrT588trx4xpr8L07IEUvDKdfXczW
-	T+6tX9oXO6iptCU5pn9mSeMmqJgZHeU=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767900086; a=rsa-sha256;
-	cv=pass;
-	b=HbtotTyk9Jb+UrM7slfi/J6jJfkti4DIIPNippBCDk/mtNuf/dzb0Gg21Kev5gEVMm6jB6
-	6N/t31ezh/JBRI7lk5evL2+u/4mHBsJZ/BhL227h/J0hjqwl62cPQvSb8flu9nt4H6ViyQ
-	v2BF6Z7Cvh8BL942o6zNDU50oEk8p8w=
+	bh=YxwGImQRPxL+Mb1cu1lTexsoyMd/BdGGPeJO9Fk61lM=;
+	b=kPguWlqKXCyyfyhyV8KvZ8xoxghQUI3clcrs6ZtFcvfbi3Zd2jCrSjChvL/eUOw9B3kSqq
+	LbFGDrkNU3qmdHJTfHTUFR2sVvZjijUSMvwG0R0pnTrcca0IunTbcG7Pj+1NMyndp0k/Qx
+	a9S/VNz1zy/NSZt4114Cnqen60rGbmg=
 ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="V/DPFdlT";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf10.hostedemail.com: domain of ankita@nvidia.com designates 40.93.196.45 as permitted sender) smtp.mailfrom=ankita@nvidia.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=mwatL2s7;
+	spf=pass (imf01.hostedemail.com: domain of Felix.Kuehling@amd.com designates 40.93.201.21 as permitted sender) smtp.mailfrom=Felix.Kuehling@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767901572; a=rsa-sha256;
+	cv=pass;
+	b=ulp+HaO/iDtqi4S0cq5q+HQaKloxUcQrWE95jiq06VhnZwDaxj2gW/H28Port9Uup8vTn+
+	IjsS9issbG1IbQtErv3z+MK3RRlKiKSCN5c/nTbt6wPIZHT0IXvVRL7Hhxs0RooISwF4qa
+	I9H27AHyhPerbKM7RSFiiGXQFDYfwRE=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Nl99ggabRKZ2EkdVJi3u2dv4ndSCYH+9rTxO5mmCx4iwfC4XfhdBVHnRRid5EqaMmWDBc4fdK+sKk2eHlS2UR8m7hwBLw/TDKFPTcC+Wl6q6TsBIBuXclpunOOIEkiMcOj8H0jvumynEIo0bGf57QO4d2u8bWAGMEqPu11kFk8l9dI7fq3jLIi2/CVjphm53szaLVoLGxqKJQZdASw9BC6AoYOmyrP26rGS7F6diE1lKUpcdyJ5jkwulOyBNzGcc0OvcS1dJ05ah4R2FBSWZn0zguIhiuqmRC/3/AJ8PSARe8g4ed8fhAqQy103g+g7AdOgzzEM9qMrgqvRUNizrxA==
+ b=kgr3BC5zgGGHQgJ959hkgAXqgIA2aGZ2+3J/CfwJcUc3YOLMhITGyJIdMhb2jDjMxnlf/9vNM6/tmVwHo7tClj81P3WVP361MXspVNQwZaUbqSrdGzDwtfpCjd9oOZZTPzoBWp045ZKJmBlJKLjfpo7W3Ii40mf3bsBhnUUSVi/ImT8HRbr+kew/AQRseornytcl3aaxa+BG1TPZSVfkLVV3lMd+NtSUlbuCpa+j/gOj1HRRI1CxYbwUSRmGM2jnOZajr+0kdN4bMtVp9tJWyK5afDHrML6OWLVUShoCQkiGsUYjHSCY2EB4d/xhB6H9FUCHriFgftUUH2s/hdgIYA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=llmq9Z18ar0dsWQ6dyCpiQawgDMNrg5xqKE8daOA2dQ=;
- b=Ug5uVISzUxmv6e0nvhpoqMz4DLpdL3ne6KnVJdtZwPRnzmGmeOtS8SuMTuDWZCXuM38UuWUgA3Ouwwwxp5o5owvUwOHTTm0qf40P1FGoML94hLFkcq2ejoS2JAeYDMJZOI1ty+nk2zVJS1HlUNOc3/fKUnQR3SDkSm/IEzQC0R5NexnMwVHz16zZAMsZFeSwTKqtXagi5daz5/tNwAaXdE7EuTyfwFK6DHTh3LazzJGEELLJGvTriruv4sL2aXZKWvmB9cj6vJIho3tK+qQ074ArR4GxgW5urhxZHd6Wo5KtPareE8b/Nmru7qafXwg3UsaONFBNYeBgwq1Z5L0nsA==
+ bh=YxwGImQRPxL+Mb1cu1lTexsoyMd/BdGGPeJO9Fk61lM=;
+ b=MmuJPSpu9oUUgS0ZVg/pthZZVHyVoYJimfn37UYUGGCzCmkqItsUVwQ7w5mcxXR48PVtxRf1OMSucPqmTKSr10XK5CpZpCatptDgztXlCsVIkeCnpiXbH/mySUs4qCgnMUvFdZhK/0GpEwNdCLcJ56jlDV9ucIy0c1Zhx/uM2biu0FXLFfrqcvna6C3ZCPCeH2nneag19SVbECqpOlnIpalDt+d/LNNOVb/2zfTaph0S/BjmeDvCtOQ5RUoqTmLV/QQo+47Sern1ZNYrWF23VAb5CVViPhqU9+aJQjpHpA4OYJpSywzCV+YFooFmU9xHYlyy2rJLtEOEfLfxUGmalw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=llmq9Z18ar0dsWQ6dyCpiQawgDMNrg5xqKE8daOA2dQ=;
- b=V/DPFdlTgyfPMl0p8sI9GeBJUNUHvIWIvuZHH79/9SkavlZQ6lcWfOgARPkr1LrWFAK6bSTVNQU0OSuYjc5yhXApwXHo/pm8OwTP2+VxpYDSYVGQ5sDW/cjOEZfyPcryYmjiqfI3E+aGef2hITZl4CbKhXOCQbPVVPJbZ1ZQuCQ/n+ryM+GIZ3nIPqoqGifoMnkkGO2CeOc8JBugfPbAhaIEEb0Xp2T4+6R6P4ngb6wsWZK83BIa2zULhmvYm1t/Kf+GnWr88wm6f1MadsUYrSFEDHdnkIW4mruP+MqPc1Dnz4jrzC71TNIXmxpvs9lD8GAjGaCSIswsnD3OLpKq4A==
-Received: from SA1PR12MB7199.namprd12.prod.outlook.com (2603:10b6:806:2bc::21)
- by MW6PR12MB8958.namprd12.prod.outlook.com (2603:10b6:303:240::15) with
+ bh=YxwGImQRPxL+Mb1cu1lTexsoyMd/BdGGPeJO9Fk61lM=;
+ b=mwatL2s7wB7mtjz0wY5dt3hpyKo1KciOGl9zTCyGwJqnKMGjp7Uh1v0rb9kIe48ykWbDy3OXdFewXWLSCjCyVJ2u1LABerCuXoR1tglOL77SqYHs0NuMDj3vfysNxPsb3PWcAQLjum9PMFThSmQlNt/cWktWQz55HtqIq0KrpPw=
+Received: from BN9PR12MB5115.namprd12.prod.outlook.com (2603:10b6:408:118::14)
+ by IA0PR12MB7628.namprd12.prod.outlook.com (2603:10b6:208:436::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Thu, 8 Jan
- 2026 19:21:22 +0000
-Received: from SA1PR12MB7199.namprd12.prod.outlook.com
- ([fe80::928c:89d8:e8d6:72dd]) by SA1PR12MB7199.namprd12.prod.outlook.com
- ([fe80::928c:89d8:e8d6:72dd%6]) with mapi id 15.20.9499.002; Thu, 8 Jan 2026
- 19:21:22 +0000
-From: Ankit Agrawal <ankita@nvidia.com>
-To: Jiaqi Yan <jiaqiyan@google.com>
-CC: Vikram Sethi <vsethi@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, Matt
- Ochs <mochs@nvidia.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>, Shameer Kolothum
-	<skolothumtho@nvidia.com>, "alex@shazbot.org" <alex@shazbot.org>,
-	"linmiaohe@huawei.com" <linmiaohe@huawei.com>, "nao.horiguchi@gmail.com"
-	<nao.horiguchi@gmail.com>, Neo Jia <cjia@nvidia.com>, Zhi Wang
-	<zhiw@nvidia.com>, Krishnakant Jaju <kjaju@nvidia.com>, Yishai Hadas
-	<yishaih@nvidia.com>, "kevin.tian@intel.com" <kevin.tian@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: Re: [PATCH v1 2/2] vfio/nvgrace-gpu: register device memory for
- poison handling
-Thread-Topic: [PATCH v1 2/2] vfio/nvgrace-gpu: register device memory for
- poison handling
-Thread-Index: AQHcgLSJfOLPRKJns0STpWKoDbujFrVIfyCAgAAkXSk=
-Date: Thu, 8 Jan 2026 19:21:22 +0000
-Message-ID:
- <SA1PR12MB7199A597C97F6A0DD4413799B085A@SA1PR12MB7199.namprd12.prod.outlook.com>
-References: <20260108153548.7386-1-ankita@nvidia.com>
- <20260108153548.7386-3-ankita@nvidia.com>
- <CACw3F52rHjxv8gWzz6_YdR038CiA1=JxUD6YuW4As=rQ2oMdag@mail.gmail.com>
-In-Reply-To:
- <CACw3F52rHjxv8gWzz6_YdR038CiA1=JxUD6YuW4As=rQ2oMdag@mail.gmail.com>
-Accept-Language: en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Thu, 8 Jan
+ 2026 19:46:09 +0000
+Received: from BN9PR12MB5115.namprd12.prod.outlook.com
+ ([fe80::9269:317f:e85:cf81]) by BN9PR12MB5115.namprd12.prod.outlook.com
+ ([fe80::9269:317f:e85:cf81%7]) with mapi id 15.20.9499.003; Thu, 8 Jan 2026
+ 19:46:09 +0000
+Message-ID: <64f0d21c-1217-4f84-b1ce-b65c1f5c2ef1@amd.com>
+Date: Thu, 8 Jan 2026 14:46:06 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/4] drm/amdkfd: Add batch userptr allocation support
+To: Honglei Huang <honglei1.huang@amd.com>, alexander.deucher@amd.com,
+ christian.koenig@amd.com, Ray.Huang@amd.com
+Cc: dmitry.osipenko@collabora.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+ daniel@ffwll.ch, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, akpm@linux-foundation.org, honghuan@amd.com
+References: <20260104072122.3045656-1-honglei1.huang@amd.com>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR12MB7199:EE_|MW6PR12MB8958:EE_
-x-ms-office365-filtering-correlation-id: 5fd1c3fc-3251-471e-2026-08de4eeb1bda
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700021;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?0O9ztIC1VH8JOuVxXA0i9VbqRP9ilSHS3QVNyp1M5PO7AqT5GZ8vG7n07j?=
- =?iso-8859-1?Q?hab00ji9pPd4hL4M2E7zcc7LEf5cO4FidkgIt/imVymkSIp40RQI/d1dV1?=
- =?iso-8859-1?Q?Vh6l2nGetRTdxHV+ATTIUs4iObzyObxlAWCeapVrCgewG9FCUfoK4qvZd2?=
- =?iso-8859-1?Q?LjaMM0P9djC4k1fkjch79AtGGLgR4NzIpkbdG+eQx02EBKfSvP0MSAA/Ew?=
- =?iso-8859-1?Q?H7iz38ayCLbbJk5A2FbjeWwwCLu6henccBmzJ6CoZMhVXcj5G7DV+bMaGI?=
- =?iso-8859-1?Q?WoZNWm5sfPZnJXlSr7yUMeb59fUItiOq2ZjcG4KpA7iK3eMzm7Po53qwoI?=
- =?iso-8859-1?Q?XFdJuAU4Rvz4sr3l88tJHDui0KcOo0a8V9rqtOEUQuvcuDqTm5XrO3ApWb?=
- =?iso-8859-1?Q?sac18P+F9pxx1fuf9pKBWXX1smZ2eaqays3G8H2flMx1UbuU9d38zH+uuM?=
- =?iso-8859-1?Q?aD22lF7Vj8RyyWuG45A5NVi/gdlouob0vc0krEhzogRqbnAbbBKDIP3V3R?=
- =?iso-8859-1?Q?nS2rWtGUR8GKzc+C6Kmdx4rOfvD/oGU4cHAvYO/QMQG4tQoqHyf8sNzGLk?=
- =?iso-8859-1?Q?twBe6F1ugZnDH5yT73eCuVaKzSiv/XpF2q+YlGU2jz0fGE4md3dlsqZL2o?=
- =?iso-8859-1?Q?1gaD72saLBJbtQlgbUtaYKJrr+uxjZPKPvroGuCo6z14IVMapcVYPKa7rX?=
- =?iso-8859-1?Q?ANG1e1rXx2Gy5oPNhiWuX4C8Bp97Cube7JcqObw3iumZgnVzB0lAZr4Hzw?=
- =?iso-8859-1?Q?wvrM8LSAgP+gYgvaoCj8vV8LpA9yhdEkmGmm3ecM4G+a9Iqdu0ZMaYNySx?=
- =?iso-8859-1?Q?Wh0zPtHyMNxIbFWusfEVqKSbd8wFmh8kA59XcN3oArH+LvDJZKRo7gI9FO?=
- =?iso-8859-1?Q?qwUD/ZPhwNS5vHS5NNkgNHAuKrlsK/4gD1H8aKz1kJqiE5km9JA1X4rwj/?=
- =?iso-8859-1?Q?ZWFbRZfH9fHEmZXI+8XTEn9yuoyH+Uk3DMjds3Ks6v0btPMI9mXMKb87Ez?=
- =?iso-8859-1?Q?oTG9yxx7hkOGd/dxC1VMdQnY8K7k9FZVacApMSUBzz4iOtiSEhuyHek0em?=
- =?iso-8859-1?Q?URAQpPDirkcz3IG5YWb+5phsTj8pWDo8TjVJlOhpYo8bdZSZN/3vwEhy5i?=
- =?iso-8859-1?Q?FHNRi22D/wsbzL4Vr9tM5J+TDicyNqmrAvr9HvUaUAFZiqVS/H99knBZpf?=
- =?iso-8859-1?Q?3lUfMSNE0D1pJrXAJfzYXyls9wke5nHfN5BSTR/Rm+M2nTyQmNu0etI+j9?=
- =?iso-8859-1?Q?3OFXHvHmCxm9L+SsCU8ZKjsn9Jmci8wra9lpflP1uhdjcE8GF44Fe5SzLR?=
- =?iso-8859-1?Q?PvkYZ/gsTPDt0P/aIsgVi3/ddec9KgSIkIdqOJPl4cPqttDUOYq9iAFHG7?=
- =?iso-8859-1?Q?3QjWXl43vPoXp4Jq17j4WIvaoahzcnov2Q3Wax7FX7fsoHb2bitgX07Y+B?=
- =?iso-8859-1?Q?21LRnOX7PJXVCaAh4VDEIooq/cJE/TMlIB6UPGvtpxTGaXCBr8YyhAPjlk?=
- =?iso-8859-1?Q?FzHWO4L5LefLH5jdFp4ZamrgsC+nMiAvbUzLcb13sXw99oRDygVx6DC/iO?=
- =?iso-8859-1?Q?i4L7Z5HkTT7ZkZ/aRYaYbUlIussQ?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB7199.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?lFVA0pivc7CHlnJTwfgkYyGNLGmUxRprM8T3/j8SsS4sGZcvPALiZWefwy?=
- =?iso-8859-1?Q?I4m7XmZXEflzTW2PrRhqYm0Wxsw+Vu3gJ0zoGBX4f3o+DhFomlMmWplB+Z?=
- =?iso-8859-1?Q?pyLfaVIQ3dikfVLAZ4SUAPOGqXVCwfsZvvIK/B4c4kbFZJT0xCzfscJdEv?=
- =?iso-8859-1?Q?Qacf50NBBvy70RewHrf6NeGyS3g/ZL4hQJ8EC4c0sYZOzZpNZmFI0ip98h?=
- =?iso-8859-1?Q?1pCQD0ljR0wjFiS87DigWwnOEN029xPbX7dnjzSSzzTpmgFVTQH7JtGdbz?=
- =?iso-8859-1?Q?QS9Mnb60giZJkcXB4v2pk+/wAZjqqLkCyW0ETinLndY9cigq4d0Eb5xhQg?=
- =?iso-8859-1?Q?gzAOJfzAnobl6Tugyx8SoK5B60Mdn+Sl1dTFFO4ymCVBZhLEDGAi0LxMZp?=
- =?iso-8859-1?Q?2vZQQvTWSJksLxHR+yYpMxcFlOeTabynGIDFSkxuVmzOu6WgGQO43XGHVQ?=
- =?iso-8859-1?Q?MfT1vKvlXv7xryVirVXi+YiXqsxrRkoEyQapoUKqrfV4mT4V4zpJRliz9j?=
- =?iso-8859-1?Q?hsnUaHedOSoElZ5wP6+TTKYRJ1b9Pq2Bl8rQS9CN6vyC1Y9xKXrEA+0HW9?=
- =?iso-8859-1?Q?L0aaT9kuYLXGXoSQUufuUwvk2WGoTHt9qZB4s2rN+84lhcOlbtfl2BhXyX?=
- =?iso-8859-1?Q?AaCuqfbmyKnNTgABX9NXbb2QIrTQszYAhSj4MDmCIAtCzfPOVFJ9XddzUo?=
- =?iso-8859-1?Q?7H3Aac0drsPyDNB2gUY/1fB9WRbbhb54fniWAkT6OySwP8aVJr4DR5eInz?=
- =?iso-8859-1?Q?JXFAQepcxDisiQCrub/JOHA7durhZmwwh2USCdOZVYK4ZBewNLUYWmTZvG?=
- =?iso-8859-1?Q?fRPws6N/qkoxeoE9VvQHjL/NFtUFlHIxIL5wg5TUJ/qgQpEEnIv6413uqv?=
- =?iso-8859-1?Q?9ONtxwisrCSfBUqGZadK6dNp2O+h/12YtMzADGMwiG/LhYPUEOcLQmt24W?=
- =?iso-8859-1?Q?lSqGS+Ixjx5+U1+hBOCeqds1JorRf6p2mX1N9jVFTv2LpRYxbLAwm7dBB9?=
- =?iso-8859-1?Q?t8EKZPcdn0dDgZEADpwNo+R1w7lkuZT3YGCRLfgrJd7y/7FfYTRsY8U8aT?=
- =?iso-8859-1?Q?bUTcGlML6S0pEdnhDe2qgHpihGslmhwBBQZ0WkBH+xAFykJOicY7aHxxfW?=
- =?iso-8859-1?Q?VXG6ZSnndqWZfLEqx1/jux/L15wWDREDfg0RVanJVMRPiQzi0xhro10/jq?=
- =?iso-8859-1?Q?jg+bicqh5WxZzasQc3QpkHiJ6x1ETcitZNuoG5+1m6ioB6DM0jofOOCgU1?=
- =?iso-8859-1?Q?/edpTqnRB8sXPYacG2iZ5cGkPq3gXf3t5XyZQFLpWZftKlXMmYg1rnoW3j?=
- =?iso-8859-1?Q?xCM6TzyC0U+sM8i9lWlmar0ZTLzZZwLHVwOyr693kOtBlFM7wtvEBtSXJM?=
- =?iso-8859-1?Q?FOleUcw/saIbP0necsjN6DSxNi3foiqDidXbM9FnBsIrdrIHSlOir07BJH?=
- =?iso-8859-1?Q?jVEd19DUJWQdFyG/+TujYF7VvHZ+blpezMA1Y1BFi3bb8nhb/AL0ocp/Zh?=
- =?iso-8859-1?Q?W7+f0/nlaGh0wEBQRrdx627XqSLdtoiUoKzBBbNKA6XGGVkZi2v8FaQ+lk?=
- =?iso-8859-1?Q?Q63UceoXIiDHCb6/UuVArDLkKFhnxJo15+CDm7EDhnTsev1QcxayK1Rwv6?=
- =?iso-8859-1?Q?N9p1ljNNqg48B8xj0jePV05i5UO0kX+JcmCyfcm7WxmK8pF44cV7tnH/IO?=
- =?iso-8859-1?Q?oAeulYqdasfyAqb6mGy/O8nItHHB1yzD4SgtpcLXkONZj6b4IebK8oxpGz?=
- =?iso-8859-1?Q?0NWtAg0FK2OMx83JIpir1d5Evb+19xy/6+nSkz3ylWEy7k?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+From: Felix Kuehling <felix.kuehling@amd.com>
+Organization: AMD Inc.
+In-Reply-To: <20260104072122.3045656-1-honglei1.huang@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YQZPR01CA0105.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:83::22) To BN9PR12MB5115.namprd12.prod.outlook.com
+ (2603:10b6:408:118::14)
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5115:EE_|IA0PR12MB7628:EE_
+X-MS-Office365-Filtering-Correlation-Id: 55be9875-de09-40bd-ab34-08de4eee91de
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QWhCYU1CTXFHN1RFMkRjcGVkUWoza2hYWWYydXU5cW1QMXE3cndJUXRrWWxN?=
+ =?utf-8?B?S2VWR0sxNHl5OG5TblpjOVg5RHN0ZzRCcDJ1dndEUmNNcW5JaElYb1RUZExQ?=
+ =?utf-8?B?R2diRU4yc2NPVCs1K0xiNnpablVnSTZwSVpHMG9MejBCNFg0bmREd05JZ3Vt?=
+ =?utf-8?B?SzkrSHZRTGs3Kzd4YW9DTUZPVEJiWG1PQTQwcldwTGUveEp1ZjViUitEaHhv?=
+ =?utf-8?B?cnBYa0VZNy9tYlFkWnkzVTZhb0EwM1prSytPWkFrM3ZQcHlyT2R3dDRnb0pY?=
+ =?utf-8?B?S3F0VHpkUlQ4U1VIbFc5eVRkemxNS2JJUEUwWjV6UTY3ZEpqOGdGcG16QWV6?=
+ =?utf-8?B?VjQydS9DczFzTzhBWGRkcndWdEdNWXZoNFUwZ1FQSjV1RHh3V012eTFPZzRv?=
+ =?utf-8?B?SUE3emdyaFFsd0M3YkRiRzNMNVB0MVVwNGRVNEVxZjI4dHVQOFMxYm93NFNx?=
+ =?utf-8?B?NXJNZXlrZGh1K3RjZUJJTUd0TUR1Z2liTkkrTWloM2M3b3E5bENzTlcxOW5W?=
+ =?utf-8?B?QlpsSUxTUlBUeE9vMStLbzdrN2E2ZGQ5TWxkZkpRUTY4YnUzdUhObTRtWElM?=
+ =?utf-8?B?NkVFMmFNMVVpVDQ1SzRLK2x0ZjFScC9nazMzcys3Q0s1K2R4dzFacnViemNY?=
+ =?utf-8?B?Uk1GMzJ2SGxGYjlrQjVmSDNkb1JYby93SXJMZUNMV3h3NUZKSnVBMG1xNzhj?=
+ =?utf-8?B?SUlWZnR2cXdCMnRvOFJ4Z2pWUXBLUEdacmd4VXpDWWlVVWs2Z3Nvb2w0SFMz?=
+ =?utf-8?B?SHA5UGN2UEVGajRpcjhxaVdOR1dNb3Q5Rlo5UzlGcjI3eEQveGhKUitYZmNS?=
+ =?utf-8?B?OXovYmgxenZhdURIalY3WWdtOU9JaVZkcUFIN1IxWDNqRzg2eFJtQXdjZWta?=
+ =?utf-8?B?Y2VJQ3RrdmhtM2xwbEt0dTB2V2lmamN5SlBkQkFSdG5YOUN4blZrZUwrQjRL?=
+ =?utf-8?B?ZlowaG5RekpTVTZZYmplMDUrdFF1WS9tYmFLeFVwbnBhdGtXaTB0d3Z5UmFY?=
+ =?utf-8?B?VStxZ1hqaHRiZ0NtZlU5TjRQZWpKQ1ExQU9PMHZqdHF1OWV1S2ZleWNyNXZh?=
+ =?utf-8?B?bUF0bVAxYnVIdStNem5YT1luUzFxZVU1SGFTSThvRWxhZ1puc3duMDYvVm1o?=
+ =?utf-8?B?MmpRY2lPNzlOR3dPQnJlViszekdPdlhpUW5FVUZ1UEZqbnlhZk1YRHp2MDVt?=
+ =?utf-8?B?SkNzc2hMNFd1K0xuYWlaNERNZVRmeHBkaVZvaHN6WExPamhUUHg2b0plUFRS?=
+ =?utf-8?B?M2VxcVJvcDFXQUVPUEhNUjNZd1pyMmw4eXJ6L0JoclNLLzcrcGxsZ0VpdStW?=
+ =?utf-8?B?Zmw2QTI4YzZKcG5ZUXhIZVV3aXY2RG1RZTlGWFhOdE4wT0NoelNiS1dhK2NJ?=
+ =?utf-8?B?aGhabktTUlVkbWV1UktOY1VURTRrWWdub0x3cEVVM0JtMC80aXRRZW1iK0lE?=
+ =?utf-8?B?dVNKMDZuaHZYV2pONldBTFcrRVJmVUgxZEk0RlNoZDdMS2UvTk9WYktVS2pm?=
+ =?utf-8?B?UENkV0ozWm1BeXVoZHMvaWVVWWRrc3NzcTlDRE5hVUVSU0d3bXM2TnVpaUNn?=
+ =?utf-8?B?SG5CSCsrRmVFUDhzM1IydHV0SUJsTnZHTzFEZWt5bTVmQXRlRkEvSm9nRTRY?=
+ =?utf-8?B?ZTJGNjA1QnBScngvNld3TXBabjY5OHZQRmw3cTJ0UnFaZnFtb2hlS0VLZUNh?=
+ =?utf-8?B?Nk90YkFjdXBoeVFvYlRhUVJBZVNCS2U2RGpBRnl3WGl2enV3QlMrTTFJckxw?=
+ =?utf-8?B?QlFQQjBrdjY0MFh6ZjlqNHlHMDJiYk83SzlhWTNHNEhsbjhwUjZqMWNYaEIv?=
+ =?utf-8?B?bnZPKzMvZ0ZjWHVHdGY1eGpUTHFvMU1wWWFkZFhXdjA2VGxwZFhTQUlka3d4?=
+ =?utf-8?B?cW15MkpQQTNtMzd0OE5zdkR3ZmVCMnJvNDA4eG1QOTMzN3hQMjNlRFp4UG1q?=
+ =?utf-8?B?U0JzVlJvaEtUVWFCUklPK1E4L042UDZhYjRvWmhWNXFwdWlLekdUQzMwMkVM?=
+ =?utf-8?B?aGZrMkRBWDJnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5115.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dHNkSFcwN2Iwa21ucThnR3NmQUU4ZUdOaUYzZHU5WWV6R0YyVmxaS1NlNDNh?=
+ =?utf-8?B?SmRIY2FLRDlUdTRwODV5TytLUnBpU1Voa2FqWmNXRHR2cmU2UHlRN016WjVJ?=
+ =?utf-8?B?RG42NTBkTVJXeXVGL1ZrRWJ2S1BaU0JzL2tZNCs2YWQ5ZitOTHRrdU94Z2V1?=
+ =?utf-8?B?ZWdXbU5ua3paZ1JRR3hoN0V2MnB6bGJYL3JkODNlbjF2NW5iTXl0Z1lMeFRt?=
+ =?utf-8?B?TjVTaDFkNWhlNkIzUGJWd2xQdGZHb0lqRmhmU3FWTlc3NXlrRmJOeFNUSTBJ?=
+ =?utf-8?B?Yi9La0Q5TDBzb05XOFQ1Zk9ja3FRcFkyd3pJZDMrbkxDczFTSmNZa21MTFlv?=
+ =?utf-8?B?YUFRN1hwTk9IRkFVNFNEZUo4Y0hFbll1bGw1aHlYTEk1NTNPYWNMVkhuSUZW?=
+ =?utf-8?B?OE5OOXJyZHBIcmR3ZjNVbDhxYUdYMVhDNTNGWjA2SUhNQmVqcnF1a3c3a3Fi?=
+ =?utf-8?B?Yk5Va08wVjBMajViZ2pPNkMyVGJaY0tzUFMwc3hqZEtkcGIzOUJpRHV3Q0NG?=
+ =?utf-8?B?QmdMNWI4cFlwT3RIRlR1aGN0QVZKNVB0VXBIeEJYbi9nTDF4dzFWdURNaGtq?=
+ =?utf-8?B?TWVkMFpvdWRWV2JVYmZkR2hKNS9Hb013ZUhBK2Y1ZGt3R3RKOVNrZ0lZVHlo?=
+ =?utf-8?B?YTRJd1ZydnJXU1k4SjI3eXFuY292SG13ZUN5YWVIdUZwMjBVRmxwSEFRTjZi?=
+ =?utf-8?B?Z3d1aTJKQjJ5RktDTnFUWnZkbGtOaTNLdWdTRjk1ZTU3bjlMTUVDeTdWbHJu?=
+ =?utf-8?B?TkxSeVMvd2NEc2NGMkZsZDMvTE1PV1BCWkxEY1BGV2xXSllqVE1TUnVjdXFu?=
+ =?utf-8?B?bDFBOVErU1FSbW15b3JuME80TlhMK0swR3BkKzNod0R2YlBjV0dPV1drTUdR?=
+ =?utf-8?B?ekw5YXVmRDRkVytVcUtBQ0tlSm1wLzRJV3RVVE1aQlhwajZDNmNkSVNwVXJH?=
+ =?utf-8?B?VUh0SG1VOWRHMURFRjM3TFdsZ3ZQcDdaU3VaRXJxL2h6SHpldVNOMzJnaDcy?=
+ =?utf-8?B?V0FMblNPYTZ6N0hsQlI4Y3lxRDNXTFgyVWxiYXF1bzJWUTVWTDNEcFI4YWFJ?=
+ =?utf-8?B?VExUZzJaMml6OXZKVURLS0p6Yno1MkI4U3NtS3VMY25RR3BuRC8wQ2JVZ3V4?=
+ =?utf-8?B?ZlU1SFY2Q0ozRUpEQ3paUkhMZHNKV2hhY0RReUw5anV2dGw0TzZUcEVPeDA5?=
+ =?utf-8?B?azM3TU1iMXlWa2YzZDhMYmVZb3dyZU9aUnNKcHlHbCtmL21HWGlJUEx4ZVJE?=
+ =?utf-8?B?dHc0QkFjRHpIVXBySWVsdE10Q3dBdldBaGN5b1F6MlVKOVIwbFlMdmhmWjJw?=
+ =?utf-8?B?MTFNeXRxWFJ6a2NrTndsVmhMTUZHR293NTRPa3l3RGdKL3FmMGZGY25paXpT?=
+ =?utf-8?B?aHFXd1dTRUdQVjdMWGYrR012VGRHQXptekZZMlRJNEtwTGxoNndyeXpYeDQ5?=
+ =?utf-8?B?V0ZCclY1SnEvNjVrM1BidkV2SGpXUUk4T3JMMzRzdGdDQVd0ZkdZbFkxZHZU?=
+ =?utf-8?B?dWZvWlRHSzhiQ3FiWTJQb01tWGowQTU2UE5YZ1JIM0JwUVpuMlFDVm8ySytP?=
+ =?utf-8?B?cHh2akxvQXNFY0ZoNmpUUnlGWVZvczNuSDVvbWUycndOeUdSOVh3ZEFvSjBB?=
+ =?utf-8?B?SzAzTkNKdFNFMjgvK2lWd1J0bVlmeWRiM2ErNEIvSGJQSnljaUIzVThCdCt6?=
+ =?utf-8?B?c01QYTBMWlI2QnBCSzlkcDNqaGROazlmSWZLMHFsRWZnQTU3TmhFbUcwY04x?=
+ =?utf-8?B?azVpaEFhSmdtSFYvVUJ0ZmxscjNFaEwxZXN5MmRxMUhzVzRXU1FFaHZEZmti?=
+ =?utf-8?B?OWR5MGExVHBwY3A5dGdrNEpIVWk3aUpWVENjSnhvN3RWVFhLVUNzelpadmN1?=
+ =?utf-8?B?MmQ2MkxCUVdZRkNlWkp4bjdNakUxS1JYM2YyUWFZRWJrWmJvQ0lUTkVmM2dB?=
+ =?utf-8?B?bnpsbkxwRUFCOEJ0dDVzcGxlSTBScm1pTHZnQVlrNmJMejVwQjZXOWtGQklY?=
+ =?utf-8?B?eEV4bW1KakFCTnd4b2lhcVhmVlhHMnhTVC9Jb3RzQTljZ0V0THE0TFl6UnU0?=
+ =?utf-8?B?c2Vad1RWQTBRbU9MV3ZQc3I2dzZoTFNCeTdNbDh1NEJYZkFNSTFVajJGWXdC?=
+ =?utf-8?B?WjFSK0xOL2JXMERUQVhlUU5LKzU3L1hJWEFZbmFERjJub1V4RFBVL3p1WStF?=
+ =?utf-8?B?NGpJaTYzZFF4Z2JrM1lEUEtJNTNuNFhHQjdEMStocGNxenhlZVIvZVcySFg1?=
+ =?utf-8?B?RlIzaHRrd1RDWi9HUVVrYm5YTDd3ZXl4UnBkRXBvK0N1S0d1UFdZMG05K2FW?=
+ =?utf-8?B?STVjSWpHTDZmQzhnclp1ZFFzdEVRUXhxUG1aYVRURThCR3FaNzlWUT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55be9875-de09-40bd-ab34-08de4eee91de
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5115.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB7199.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5fd1c3fc-3251-471e-2026-08de4eeb1bda
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jan 2026 19:21:22.4232
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 19:46:09.1116
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: kqfXNgtZ6bKZ7y8X/SA5EDqkfiJYfIiZz6SzGWxbAinHFYYLnmzr7gUdcIWOtR/scgoyyr8lrqneP9afKUqFpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8958
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TNu3C3wS669kpaMROr1/M5hDFHNRACvMdOYuw9XdA3S56173NaMs64UHv9h/qJhdsBYOSvH58motx19dB17JkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7628
+X-Rspamd-Queue-Id: 1C4F340002
+X-Stat-Signature: gxj57beofgyf6uywwojuqc13cfeuaryc
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AEFAEC000E
-X-Stat-Signature: gnncguf7omxkwq3bwz15yyufjwhb1s8z
-X-HE-Tag: 1767900086-251206
-X-HE-Meta: U2FsdGVkX19SFuuHZvPkIcjv3eul1QawruqyzfqE3tBH8aw9H1cuS3mCIZTragYx6EgyNzFyqaaQn2CIp4e/ipdP/R3esYr+j9j6npO3sMRrTbaJh6VWTDFjCJ0a8NTmHShShCIgA24xSOixk2WlXt8L+Ji+KhX6cHRUZ7DtED1mgM80KRAUkvzVK6MUVTnqzgnX2J2+JKbrIzPhl5AGu/4WcOW0Tb+lB5ByA4srOOeUsZcNk8dJ5Fec2LfBmwuB62U+Ol2kmYp+8oUUPQLNpagL+zrR26FBZTJ2pl4WEpJ3opNouDEwlHgC1SyzVSIKmEJ/51XHDAgkQ3orKDJ8lBUGgCVyYPWnsO4bgo+I9ItGqOR55l0NrNQhfI2GdF/PrvSXFz5et1DcY6RAnmuPsVNMvA/P1k50G2B7PVSzreTBkdILqf/6D3mlklb4y291GxMxDGGEo6lxYzPctFRh08iHG1JXiHvf4UaYy7cfUtYmX/XuWN9IqvYgcFbVqkI8JkWb6Qc4NSdc7x1/jMmPABd7wcDvpxKY20eSKPFWZsAr627/qyE56MaBvU6/KGhN7hm6SleCUJvwsuOiSX6MSjpAezgb9ZW2FtICkJn6ivBDKA/ARBCPEDhiM3c62sITXTgV4shTeQaOMU8HKe5d7a0kgIN8+p1LceNbFiMuDA1XN0+wbyq9hFamBNBo7j0dFDY0GMLrK+rWwRyodrx0sGPcTIgxp7YpyYVhugjU0BvDZW8iTFrsZxuhaoFUqg9XVvdfTHDpyeIwBUV+bGMVUjh4ZG/ipL9X9Hbab3+Gfl0hq6o3rv44X5DcOw3H5ckSB1TtFBPw9zAQaPQtXCtj+CFwdxQsiKn2RSmTiVciCex3xxN6CehYs1WLui/uaJhGvUeUdyVbsTknVYsKP2t5F3etDMSoA+e2oFE9WrtnW1UFkMDBMUZ5Z5gCtQzZUXBuaPFumu8JjnfBS8KVeIh
- PkKCd5Yu
- 1+qnNy8BV5+XPyT1OUT25p25pc7Qmp5YdFRH00MHNUk2wgTaviVe0LSfDEl6pPJoy+UxyBoMXjuhGORlSu4C24ye6RglRMyzzATGRn/CB9qt0AqkglzMaYCPqKUgSP8QVndl/R35qWPmqgUCRjTi3GWyJfBhGKlKfzpK4H7mbDa6Z1nLPAh/cuVB8aOGA1xHUHk0Xoj+PFh3ykQ0QYjkd7GgvfUMAq3vRt63XnbK9mfreTzGg2XofpnIvXLz96iu1XNcieAd48dXxWWj6ezcoVWlv3GbAL0bo5zqKv2maW5t4wYM61bmz9DYjkDGeGxatV19rjOEZ/O7Br/0Jx/kTiXoC7SYAHgTP7aq+yBbgnwMDd9pOKbAofIcSR4Gqb7ju8qAdH0qNYDFBd9ER0ZiLnH/YhPD2eYS7LkOetEc8hLkwc780D3FNEap+hOwksajGoJRabhDvtITZA3MZKl6Ugtdne5OHotw9rk34LzcsKpfjL7CytRqqiW2RQud1Cc/egQXweuFhHshwygo=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1767901571-492237
+X-HE-Meta: U2FsdGVkX1+t5wPiQ3a+svI3v2BzwXz1WOYmtL/bAmzU+cvgbkviiCPMbvvC9XWeF92II82L4uAZIymLdhZcacFnLDONZ9JWFT/ZDSr55GCeLo1lacCf/H5kKHaN74ZAz3DN9Icy0xWFwer3bVFXnaVoAYtrJvIgLI7STZXLyahC12pQtSGHU8l2/c4PVataQZ406w3N6rBuBip2TFajeyB6OJ4hY5k3S1hEhipVXOSW+gBkf+R31BEb5EyEanUb+ztlyhvCs4clzBq4n0OQY/zgRMAurv8EaiH0asn1sZOMSDy8f14/qLbwQ3btM2hBM3EhTce6x8suYABE84QBylRJvb+HZxwJCKVExkdfjsBlLFaCAqX6x/H3ZSAIXJL+Jq3y6rRF3UT7MqfCZl+BB0FKeqv23SgJISvJOLNSVF2WRSlG7A0R/SQxbXq2Zi9Lmjj4LrjdnjiYRSwRT/yYQoKvjaNY+JocrAEmkxkKWXEmKFCQQBbD6H0yPGCtVTQLxaRrr7oEqx7siLmsClOWjMMeQe0ir7/0w5g+yjtEO6m6rQpQaBfYCmzLf/DvAlnim1zGRbu9zFy1Z0bgqNjhdqvTN5G4RWvyaCqmR1WnrI7gNWu5cLeO32fUzmnObAQbVO8dC6SBi9VUkqIZ5c3nDpPAfKD95+XUnHEDppVlAwOCC2gHym9ns+MSqZng8RsdY+KwOkVoj4Q+KuDleGpCVd2dXXP7WlAzPN32agJmFZKr0gFNzcTQ6rKdXSokn5taYFWHXSytd1F3pGyB8enzC9m5B7SmMKi5NdgTthiOK+M6dfMtkDvwz0/FVWSutnMVuleXJwkQX19xFQYtK4hNhCC/2gDU+4PZRUYmXYXxK0PgQTFfqTc90bFl2TkMfzJM1FhbiwcwzX2XXGfFsmt+uVqE+pmJPi99TCwkqGTFB2sEoiARBCZHNcdYrOwnXwWMHQW3dfA2F+BYqLWEebq
+ AZgZWQNS
+ Tg0pJ30efYGD0x9OxgGtul4w8aH5PErtr2WHI0Eo+Ug1LZdkUSRfH916NZXCxcAVmtvtY/0Bpj5jnC5Gr/4dPD4OdTWMd6tj7lxssGLAwnQzvrB10USQbD13GSld9vTEEFFPxMT1gANZz1+5ynfyvUajMMevv2XGIIksXWa9jT2ZY5Svw3ifP2+wZN4lb66SXwesmVQtV9a392e8DO/PLwXKlm8A0FC0P7W/m8KrEWIwdyJCfPu9ol9EQwvuFP6rVWVf14dKR2cUK68af1C8dylxmtlyKrSr9Y4Ri9QYKIk7lOSzvhdAAxv6nb8Hz+5nqdLGoKbgviV+yNfapiAlTG2/O6BSA/nO5K8goxZHl87BTpqMiI+bXJMTm9inFY0/PFW+cC6OEY8XNejqYVgA4B266+ZczjwchTI/RSNRNUTuii8X40QgyX3zJoYM89X22JNX3PL/vBLaH28vF5x+UUnrKdgX8DJ18YDjqVVLan0V71HkzANjq2xgA1lURaoAoGJFp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -202,21 +206,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> +static inline=0A=
->> +struct nvgrace_gpu_pci_core_device *vma_to_nvdev(struct vm_area_struct =
-*vma);=0A=
->=0A=
-> Any reason not to define vma_to_nvdev() here directly, but later?=0A=
-=0A=
-Actually since it uses nvgrace_gpu_vfio_pci_mmap_ops; which the compiler=0A=
-complains to be undeclared if vma_to_nvdev is moved up.=0A=
-=0A=
->> +=A0=A0=A0=A0=A0=A0 ret =3D register_pfn_address_space(&region->pfn_addr=
-ess_space);=0A=
->> +=0A=
->> +=A0=A0=A0=A0=A0=A0 return ret;=0A=
->=0A=
-> nit: I believe "ret" is unnecessary here.=0A=
-=0A=
-Yes, I'll address that.=
+I don't have time to review this in detail right now. I am concerned 
+about adding new KFD API, when the trend is moving towards DRM render 
+node APIs. This creates additional burden for ongoing support of these 
+APIs in addition to the inevitable DRM render node duplicates we'll have 
+in the future. Would it be possible to implement this batch userptr 
+allocation in a render node API from the start?
+
+Regards,
+   Felix
+
+
+On 2026-01-04 02:21, Honglei Huang wrote:
+> From: Honglei Huang <honghuan@amd.com>
+>
+> Hi all,
+>
+> This is v2 of the patch series to support allocating multiple non-contiguous
+> CPU virtual address ranges that map to a single contiguous GPU virtual address.
+>
+> **Key improvements over v1:**
+> - NO memory pinning: uses HMM for page tracking, pages can be swapped/migrated
+> - NO impact on SVM subsystem: avoids complexity during KFD/KGD unification
+> - Better approach: userptr's VA remapping design is ideal for scattered VA registration
+>
+> Based on community feedback, v2 takes a completely different implementation
+> approach by leveraging the existing userptr infrastructure rather than
+> introducing new SVM-based mechanisms that required memory pinning.
+>
+> Changes from v1
+> ===============
+>
+> v1 attempted to solve this problem through the SVM subsystem by:
+> - Adding a new AMDKFD_IOC_SVM_RANGES ioctl for batch SVM range registration
+> - Introducing KFD_IOCTL_SVM_ATTR_MAPPED attribute for special VMA handling
+> - Using pin_user_pages_fast() to pin scattered memory ranges
+> - Registering multiple SVM ranges with pinned pages
+>
+> This approach had significant drawbacks:
+> 1. Memory pinning defeated the purpose of HMM-based SVM's on-demand paging
+> 2. Added complexity to the SVM subsystem
+> 3. Prevented memory oversubscription and dynamic migration
+> 4. Could cause memory pressure due to locked pages
+> 5. Interfered with NUMA optimization and page migration
+>
+> v2 Implementation Approach
+> ==========================
+>
+> 1. **No memory pinning required**
+>     - Uses HMM (Heterogeneous Memory Management) for page tracking
+>     - Pages are NOT pinned, can be swapped/migrated when not in use
+>     - Supports dynamic page eviction and on-demand restore like standard userptr
+>
+> 2. **Zero impact on KFD SVM subsystem**
+>     - Extends ALLOC_MEMORY_OF_GPU path, not SVM
+>     - New ioctl: AMDKFD_IOC_ALLOC_MEMORY_OF_GPU_BATCH
+>     - Zero changes to SVM code, limited scope of changes
+>
+> 3. **Perfect fit for non-contiguous VA registration**
+>     - Userptr design naturally supports GPU VA != CPU VA mapping
+>     - Multiple non-contiguous CPU VA ranges -> single contiguous GPU VA
+>     - Unlike KFD SVM which maintains VA identity, userptr allows remapping,
+>       This VA remapping capability makes userptr ideal for scattered allocations
+>
+> **Implementation Details:**
+>     - Each CPU VA range gets its own mmu_interval_notifier for invalidation
+>     - All ranges validated together and mapped to contiguous GPU VA
+>     - Single kgd_mem object with array of user_range_info structures
+>     - Unified eviction/restore path for all ranges in a batch
+>
+> Patch Series Overview
+> =====================
+>
+> Patch 1/4: Add AMDKFD_IOC_ALLOC_MEMORY_OF_GPU_BATCH ioctl and data structures
+>      - New ioctl command and kfd_ioctl_userptr_range structure
+>      - UAPI for userspace to request batch userptr allocation
+>
+> Patch 2/4: Extend kgd_mem for batch userptr support
+>      - Add user_range_info and associated fields to kgd_mem
+>      - Data structures for tracking multiple ranges per allocation
+>
+> Patch 3/4: Implement batch userptr allocation and management
+>      - Core functions: init_user_pages_batch(), get_user_pages_batch()
+>      - Per-range eviction/restore handlers with unified management
+>      - Integration with existing userptr eviction/validation flows
+>
+> Patch 4/4: Wire up batch userptr ioctl handler
+>      - Ioctl handler with input validation
+>      - SVM conflict checking for GPU VA and CPU VA ranges
+>      - Integration with kfd_process and process_device infrastructure
+>
+> Performance Comparison
+> ======================
+>
+> Before implementing this patch, we attempted a userspace solution that makes
+> multiple calls to the existing AMDKFD_IOC_ALLOC_MEMORY_OF_GPU ioctl to
+> register non-contiguous VA ranges individually. This approach resulted in
+> severe performance degradation:
+>
+> **Userspace Multiple ioctl Approach:**
+> - Benchmark score: ~80,000 (down from 200,000 on bare metal)
+> - Performance loss: 60% degradation
+>
+> **This Kernel Batch ioctl Approach:**
+> - Benchmark score: 160,000 - 190,000 (80%-95% of bare metal)
+> - Performance improvement: 2x-2.4x faster than userspace approach
+> - Achieves near-native performance in virtualized environments
+>
+> The batch registration in kernel avoids the repeated syscall overhead and
+> enables efficient unified management of scattered VA ranges, recovering most
+> of the performance lost to virtualization.
+>
+> Testing Results
+> ===============
+>
+> The series has been tested with:
+> - Multiple scattered malloc() allocations (2-4000+ ranges)
+> - Various allocation sizes (4KB to 1G+ per range)
+> - GPU compute workloads using the batch-allocated ranges
+> - Memory pressure scenarios and eviction/restore cycles
+> - OpenCL CTS in KVM guest environment
+> - HIP catch tests in KVM guest environment
+> - AI workloads: Stable Diffusion, ComfyUI in virtualized environments
+> - Small LLM inference (3B-7B models) using HuggingFace transformers
+>
+> Corresponding userspace patche
+> ================================
+> Userspace ROCm changes for new ioctl:
+> - libhsakmt: https://github.com/ROCm/rocm-systems/commit/ac21716e5d6f68ec524e50eeef10d1d6ad7eae86
+>
+> Thank you for your review and waiting for the feedback.
+>
+> Best regards,
+> Honglei Huang
+>
+> Honglei Huang (4):
+>    drm/amdkfd: Add batch userptr allocation UAPI
+>    drm/amdkfd: Extend kgd_mem for batch userptr support
+>    drm/amdkfd: Implement batch userptr allocation and management
+>    drm/amdkfd: Wire up batch userptr ioctl handler
+>
+>   drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    |  21 +
+>   .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 543 +++++++++++++++++-
+>   drivers/gpu/drm/amd/amdkfd/kfd_chardev.c      | 159 +++++
+>   include/uapi/linux/kfd_ioctl.h                |  37 +-
+>   4 files changed, 740 insertions(+), 20 deletions(-)
+>
 
