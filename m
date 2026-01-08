@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 277CFD1489D
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 05:14:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EB40D1489D
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 05:21:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8ED566B0005; Thu,  8 Jan 2026 00:14:18 -0500 (EST)
+	id 904496B0092; Thu,  8 Jan 2026 00:21:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BE0D6B0099; Thu,  8 Jan 2026 00:14:18 -0500 (EST)
+	id 8DBB16B0093; Thu,  8 Jan 2026 00:21:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E1426B009B; Thu,  8 Jan 2026 00:14:18 -0500 (EST)
+	id 7E8BF6B0095; Thu,  8 Jan 2026 00:21:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C6896B0005
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 00:14:18 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 23A49140575
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 05:14:18 +0000 (UTC)
-X-FDA: 84307630596.01.93BD53A
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011058.outbound.protection.outlook.com [40.93.194.58])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5E42EC0006
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 05:14:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hG7mNeNz;
+	by kanga.kvack.org (Postfix) with ESMTP id 6E30E6B0092
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 00:21:13 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F98BC2210
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 05:21:13 +0000 (UTC)
+X-FDA: 84307648026.27.DC30A39
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012029.outbound.protection.outlook.com [52.101.53.29])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7EAAB140007
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 05:21:10 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=nv1X6lht;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of apopple@nvidia.com designates 40.93.194.58 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	spf=pass (imf09.hostedemail.com: domain of apopple@nvidia.com designates 52.101.53.29 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767849255;
+	s=arc-20220608; t=1767849670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RSF9vzmnmNwBOYoOQZEJO5/l7w6JZ3zE4YTmjXWjRaY=;
-	b=hEPT19FjhyGijJ6D/Gu98+XLTfhG5fvVQdOvEzqVnGUjgJbAncwrg51SV9m21H6NgDIqv9
-	T86Ka3Lp+hGMcvvKffyurGUGMMTWHkY2CMdNklaXgg45hzWXoLymuKxIEpHYX92BnAM1C8
-	F4s1NW8Mc7aU7xwcMBQ5+sH7fEekO68=
+	bh=ZlRiDkGG84Gwsj4uUQXSCbXADGbX/b51+87euo3z0/g=;
+	b=nYe4GIWxB5N7DD/dqesO+cLgaq6f1NlBnANtEBgg6m0Zv7H+MOc4xX1nDeOaglXjrC6YXz
+	+wEQVFZ60P448qPw7mlRXfN+PQ/U+o373XH0egWHKEadkFahYFSB/bjseGQAv2l+1WJHlR
+	d0Dpnj/MSkqa+/vaHw2FLxDcvmCj1q4=
 ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hG7mNeNz;
+	imf09.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=nv1X6lht;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of apopple@nvidia.com designates 40.93.194.58 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	spf=pass (imf09.hostedemail.com: domain of apopple@nvidia.com designates 52.101.53.29 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767849255; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767849670; a=rsa-sha256;
 	cv=pass;
-	b=ZvaOqw8tJv993KJnfbL4VGWlLpDDBwkM3hYHD3O1LVbICmMoExZlD9KiX5BpSROi2hRqnf
-	3XLXraino4H1TSoWyJwN6EPrwxLaXxGoM4ONHvXw8ZdKV7KSKMYSrj/dr5+CLqpvlp7HwG
-	BplAGuxmDA8rL3KBwVw/d+DBLax5Ooc=
+	b=yJbEYVEe03IUdjoEqf1iW1adQJlzuktmccd98SdID1UtpDvmIql4NDOMKmnxJ7T0kbcp+L
+	vfNwo0fT9zF20SIgNhp0f2Oc/xr1IK0MsG6qOz7MgP25Hb6LzDUp2PB3NmpEdmD0e6iZrp
+	CnV4Z/ECZcjxmuIVWM4gyaWL/q+Uqbw=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nYusBwzvpoHLBTWwF/wziP/gUUV81qKQE/dGqdWfGBtpnhmimeqVf7mQAZX2MjSJ+S5WzhtIHGadaeiRvMIX8pSwxgDqQ6V7hoDEnyguQAjU7VKHRMf/7jo49btwAvLwTQL0C6Pm+DiEmT9HLYu+HYpAwo9fbNSLUziAuFtcZOP+1ZI+fXN0iyqMBY+bO15Fx7vNJuSRIHd5CK6MveVpfJhTfm3fdsARSTz7cn+z7+Qh1jB42TxwS0aUwlzmWybHstB8qYPB2ViPDNyLWG7ZTfcOGa0O5TGeXxgs3Mrssw+Ao0RwXaMO3uPE67Cb2VsjC4b+NeZQcH8rRdMjXpAhBQ==
+ b=Aqa8x9/9jXTUKO6iHccx98RcYZbZjOv38uAYk8vWJm1pxhud7WloU5fEMpgXKbWZF1jiQ0nU3sVh/bxuXJQ5jcAqebRzPO4B1+/hWIOg6aJYdwgKQeLi1Mw3zRLSj8+KKFzYHTRrYTeDncrhilMq8isuQ0WQ36F8HQgtNQ6nRtt1LrU30hKQgiwIfjSmIr18lG408CIJaZIWEKAIPtLVKoUviZ/bi5wS2W6GLmJxPGvfKhqgeFTWd5sKHzvPyfG/ht6WwA/EMcbGvuNMz1FA+/yKONgw9FEpBu+1cCM6xYZrEVs5ZIAdmDQiBxHH2M8tsPuDrvYBFZGwn8sFUmO8rw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RSF9vzmnmNwBOYoOQZEJO5/l7w6JZ3zE4YTmjXWjRaY=;
- b=Wri9zsW3OLvXVN7ERoeBHDnMIM7ZNyy22pIW1NEImtQHhwU/dKkHvoaf/e/KMdd0hWVX/uywwsAvidQxHbI2+awUlR9fh9K90quiyldcD8yJzpONu5vul4dEu900YgCR4uaifxgsqqfeMBhY0mG8RNE+Hm8mzjWlNeZQv46kq85fwzebOBNyNXx1Iz9anvDoby4/5HfeqLxXIe/pYIqvhTc8XsLthDc1wkXS1F+hY1cPrvFQEdU0ip6Kc4LEcqjrmxTpl7LGckTzquFT7oj5/qXDco7+pfKRgxyGJ6FiCplxNXVJ9FYphK5S0wKtE5H8HIsV2yx5vMK24CDbsovqUw==
+ bh=ZlRiDkGG84Gwsj4uUQXSCbXADGbX/b51+87euo3z0/g=;
+ b=hQlUU8V75QaXJMloEVwRTTjM7ipCvagvOJ66AsE2NcYfKLjjTmWb5U9Lw8/EBdP/A5ZcNmx/OeogHeuICMjOBF5EPm8ZWd44UCkjAif8Gtw3CBSG/DuBdEu2kROVFiL6Brnwnhgu8GZ7vt7YJ/03b3c637wCEueySW+dWRlqaeTREhicMA87ElVNaVj55TW1KgqO2NE/qSnpvmAUT2E3uxLASMmfChvzLRg5nz12CZI/uOl/L4WEOxcIRkDvb/YCilqunF13Xwr675GbUtIjtAIw3DECwnl3luTFG/8WMwwB+D7Smun/eY5EEhx02zPbueXro5lU0p6dtkav5DTvQQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RSF9vzmnmNwBOYoOQZEJO5/l7w6JZ3zE4YTmjXWjRaY=;
- b=hG7mNeNzIZ4Ue52PsUemO14ZOGvVLcDJt4kFihmLe9xd2lTPklFnI/rIdxHSuRbDJ9U/zYn7Y0iDHzn/VXacN8m440P1WCRJe2Nn2RvwhGon/xF81ohX4tWVpWOxjDwDFv8qDo1O1SxwnTcFclIE6PUlSZNbOl1s2Tae0B5KE4NxDRwb82VAIcu8PFLO2xbn1tzPY1U+U43fmWw3XTVT88jFWumtnNmlNppf5Xr1vhixpvmmdUGRVqJbuiTmnH3CyFyxfHjuzWXXxSLH0PpqXdTmn5lsuDJ87LJ0ykUryOVt7utGNXaYk8yvObd7gM66X78Hd/WZuTfKLkyCf3BZTw==
+ bh=ZlRiDkGG84Gwsj4uUQXSCbXADGbX/b51+87euo3z0/g=;
+ b=nv1X6lhthpeqSKhhaf9AO3BXmgIaTiaqACnghP9WcKEodo/Su3mwIDGDuDlzBBLN1pyStedgQ512n/NfsRvdGYRifxdzIFTZ3R4mTBB+yvM0NrGuSRok3WHEW2KqzWvZxnsvR7DcYaocV/olyq52yDiEjy86v67e7VYY1yQHyoJK7bA/a597u4jT6Vi57pqXMLmQdX9DrE7kGq9Qtu2TW5xOU6EfzVSyhngGqLcPaLP62U5qp5NxLaCsSWj5L3ph4EC7zRX2MjC7amEUWBRIu2wJaDoytWQnB/OZSRNqztdPFOR1+tIfWMkon07EDIbEr9L6IK/XsYRV5vW0GnDVKw==
 Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
  LV2PR12MB5992.namprd12.prod.outlook.com (2603:10b6:408:14e::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Thu, 8 Jan
- 2026 05:14:12 +0000
+ 2026 05:21:02 +0000
 Received: from DS0PR12MB7726.namprd12.prod.outlook.com
  ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
  ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.9499.001; Thu, 8 Jan 2026
- 05:14:12 +0000
-Date: Thu, 8 Jan 2026 16:14:07 +1100
+ 05:21:02 +0000
+Date: Thu, 8 Jan 2026 16:20:58 +1100
 From: Alistair Popple <apopple@nvidia.com>
 To: Hou Tao <houtao@huaweicloud.com>
 Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
@@ -86,104 +86,104 @@ Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
 	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
 	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, 
 	Sagi Grimberg <sagi@grimberg.me>, houtao1@huawei.com
-Subject: Re: [PATCH 07/13] PCI/P2PDMA: create compound page for aligned
- p2pdma memory
-Message-ID: <krs6qfjs2rle2ufoqdk65slnjkq55nbn23reptoij3je4gnb4d@pcbiqtz35hbh>
+Subject: Re: [PATCH 10/13] PCI/P2PDMA: support compound page in
+ p2pmem_alloc_mmap()
+Message-ID: <ru35ev2clily7277fh2uwxuiellerlocfexhjkqim7stixuact@7fp5h7fdmz5h>
 References: <20251220040446.274991-1-houtao@huaweicloud.com>
- <20251220040446.274991-8-houtao@huaweicloud.com>
+ <20251220040446.274991-11-houtao@huaweicloud.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251220040446.274991-8-houtao@huaweicloud.com>
-X-ClientProxiedBy: SY5P282CA0132.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:209::13) To DS0PR12MB7726.namprd12.prod.outlook.com
+In-Reply-To: <20251220040446.274991-11-houtao@huaweicloud.com>
+X-ClientProxiedBy: SY5P282CA0137.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:205::11) To DS0PR12MB7726.namprd12.prod.outlook.com
  (2603:10b6:8:130::6)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|LV2PR12MB5992:EE_
-X-MS-Office365-Filtering-Correlation-Id: fa1950aa-7d90-47e2-5ea9-08de4e74c250
+X-MS-Office365-Filtering-Correlation-Id: da66b8bc-7897-4f0b-cb5f-08de4e75b6eb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/0AmEL7XX2IIXD5+x4nBm8tn/M+W4FZ8be4zWbLSUrsNeJ0GyyeqtklL9H9r?=
- =?us-ascii?Q?cTOcOhsthN2ZuNAnJ7p/GTSa/z74zgTu5PGKkOAm9dCDLH4mxOSq6lYV8FTm?=
- =?us-ascii?Q?uj9Ps2SHHsfN34icGR70NACenBSxZcnSMwFcY446Er7w58HQuNUEpZMwosdp?=
- =?us-ascii?Q?L3tyY65n9mWfyapPbdu3YnjdgOkUPGJDe1CiIOniSaYlM9DivhBYg6glCGqj?=
- =?us-ascii?Q?MF3onwwjZfavEmvNu7I3IEZBG4n8xV1WkRI0X7zk6yK9hV0Hwys1h5B6v0Fe?=
- =?us-ascii?Q?pbkcCMfgxadSJAovmfvhnxUqhx4gl6CU7GkQZs5PqOv7+buyKLJlycgSVD2D?=
- =?us-ascii?Q?X+RywJh1ztlxIZnUgm++5cCK2wJ/Lbk5ZUSvxAQkgq13JAi0r72juEmhfl0W?=
- =?us-ascii?Q?j4gBlndCKqh3Nd8qUAyDVIjXe7Rn4/hOYTyvkY4OWDx3+jzDpBjgcZMKzEyw?=
- =?us-ascii?Q?QdNGyXiJ11hdqlnHvZf2o2zc88rR112qqJYdS7PiVeBabe7mOZSt/YdHelzS?=
- =?us-ascii?Q?j25vQRZe24vzqebctso5HOiEJZ+t4wmMxn1aFmHgV/f0j3s33tdMC/GUCDaz?=
- =?us-ascii?Q?7xWqdDHTXpcoFoKEDEP2E0CqLbhJsbdHM7J1yI8/9wDiMuHfy4cf8uO0Y4cY?=
- =?us-ascii?Q?92qDVn2tIfok342M+RU8rF4RY1N20oUR+E25KUDgMswMKAS2ldUNzs5FE6Bt?=
- =?us-ascii?Q?ZqJrRd+m3edb1d9hrDB1V7B7GLllhGTw3EVgkysIx06EuK9fZkHmGZzuFc7c?=
- =?us-ascii?Q?X37WdqopHPMHjIZMZVlieY7EF70QN7Q/Dfu5Bdjkx8A1lH9vRLGk0ZIsQjv7?=
- =?us-ascii?Q?5PAvbXJuwKcqxiEOPngniMxTfim6pSgzw+szfN7h1wS9bcnjgF4kBTS5uY5l?=
- =?us-ascii?Q?nBivMbpTQfINvOduKvUKucbXAr8NnnQzvWPKW82dti6erCXrCfMb30Fz7571?=
- =?us-ascii?Q?WaDIdK65MGN0qNyK0lfUFL59ZrPzrSoOExt3zfIGfjisXAMhRyFo4W5KRx5r?=
- =?us-ascii?Q?SBeYRdL/vwkK9w/hhmeTNcO+vXVZShasY8ZKHRxCyyd1xCzIJeghFVchfCgH?=
- =?us-ascii?Q?TwBC8wBne2lapg+/orqEP7YgfBletHNrpUJQ0ugMm0XCNNBiwGXdtDQ5ulAw?=
- =?us-ascii?Q?luK7hTzVQ1fqOwvXDduZRALsPKlzCuzBGQa+I6zVSpzOXmgbSdtvr+gRBX5n?=
- =?us-ascii?Q?A+LMBEQa5Nd0IJqxiJOo7187twBqPzpBn4BAtNh/6p0c4FenTAVpA3o+vvMj?=
- =?us-ascii?Q?j/Td3gzv0xL9q44A4C/c1BRqTM3xKh7zQHH62rT3R7bfXkKDFOkfbXa0Q6oD?=
- =?us-ascii?Q?ZQLW0ty+b+Md/LrRmkfKK5Y8KW2/veOfY4Y3MeZX6SLabgEpxfuwlj2nN4mS?=
- =?us-ascii?Q?+08JTrRVq9N/Jmje+jKdoSikR9vu0s5SnbY36tgNVLvNcZ122fjl2ilhnSaM?=
- =?us-ascii?Q?qa67Gwf7hPmbLX8JVtOcA/iAqcXYLPUW?=
+	=?us-ascii?Q?LpSP8yeaCzOPhsLDBKLwDZDUC0uSf5r0XI7UkitrMaKGHa0Rc2lQ6nuEXzzX?=
+ =?us-ascii?Q?iDjxJC+HcOO+1KudYFvemWqFseJqDPp3/iO7nXPCNqlDwHL+UKrbIdON/Tnj?=
+ =?us-ascii?Q?tahkFiorAY82Hnc4Z9umMBoMzY1OP5i+BmeKk+4QVxtg2uVTw76X6FIrjMG0?=
+ =?us-ascii?Q?eKMUhozIu9T/U7ezVQb7ezoQIbAV0tYGaij8gbxXNg1sE4OLAVPGhNfEiCg1?=
+ =?us-ascii?Q?/Oep5+7D8P9JwnWGyCwsw/1Yd38JQOBkCgjR0vXJ5j9dTLRy2gyIZSl3Gfdg?=
+ =?us-ascii?Q?mltiD7QW7ucinIB6kKkPUM9mc4YV2rfa4x8UIoCFt2yVrN/TLJsSG4ezz23s?=
+ =?us-ascii?Q?JkI8KUmJ/7uwamgVCcZ5jmAzVRClmDYjjfRmgIGAitDuUF9HdKozxB3VzxeM?=
+ =?us-ascii?Q?7m8vZP3v6NtFCX/sdz5gV9wL04E+Kn+E+EXAOZy2CC7kYSXyezSlVv2EQ/QW?=
+ =?us-ascii?Q?qyHaJqNsXCaBAGkrBlOznV59oXIyP/MEi8I3dlxCbSTV2CVw9718QrzXM1c5?=
+ =?us-ascii?Q?jLyGscBJSJSTqU5kG3qbf5HkSvyX07LAu/hZ4Nx7MDArbs0Ci47Svn4I7SFl?=
+ =?us-ascii?Q?OclRdCp7dSE1CGsBY/o+/7QPSoqRtHC1WJnfFhjxQkPjhzQYDLkpCZ981ncV?=
+ =?us-ascii?Q?NVxN8HZvH1aZep/fh4NKhfppjYksW85PGTPk02auyqtNaVWYVpZUbCwJ/mMT?=
+ =?us-ascii?Q?K8dNSKC0VGRyq3ol5z3gWXAEggjsy2whi2xZp/Hw3Sf53UU6QrLAtfj72DBz?=
+ =?us-ascii?Q?mV2WVDwSydso6vy4Vv8WTblLI8EV5SjWB21+rPNjMrXUqtnpAAMHG9KsQT1f?=
+ =?us-ascii?Q?1/yARA1hjVQtDV/fU/FJeLXYMWgfjxgVVg0NCW7UYpKgd0aTyqJlK/XvUREM?=
+ =?us-ascii?Q?8xKLnhavi85KrkMcTL3uGmdyadhM10ZNLspxsOqnHAAOcm+GmAYIdJP1KQTp?=
+ =?us-ascii?Q?2CSP44SmFAAN5dgUK0TOhXbOZJjUBsz6E9EAOPGESsoaEH9mma7r5WiyDRfj?=
+ =?us-ascii?Q?KQ3hcc2SkwZUiXqbU9WTM0/SN6mqfv2cBVaWFugbAEQjJBaslgXVi7kJu7Yi?=
+ =?us-ascii?Q?IKDb1WLUV3Ypz+gueRxdm6CaNYWXZsIRXtUugnCH8jq1CC1KixuBSVYbJ1yN?=
+ =?us-ascii?Q?4cmIz09sRSb72l7EH8S73ElPZO7xOPRXHAZpKv+f6pfA2yunRx2joIepaAgg?=
+ =?us-ascii?Q?/wu0/MzejVBHKe07kZ+cCvV3i+Cq/G2bnZVACx/srtENp3NNTht91jjkVK89?=
+ =?us-ascii?Q?RNXY5pTPVW/0ahMlD5pGz8GF4GCsIIzX5U3MULCsQU9s0grHAz9R6yp1U8Vg?=
+ =?us-ascii?Q?3mvXK0E5kQzyG4suTclJxKbXXPWtSsPl4EQVSL5KYyhgycNNbuf8Exj7IyOj?=
+ =?us-ascii?Q?cuNZseCYAbkjHuYjI71kqXSAgUnQfqdg57JUFF19bQNQKupn/3bd1016MFvE?=
+ =?us-ascii?Q?57H4bBiWwSkbzrdb7gpAMqFfxUSRfbdQ?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?K2zULAYxpaLOfts9s4+dR6pH++eR4Sy1LOFW4t3tvmcKKHtjzukqZwaRy9no?=
- =?us-ascii?Q?u/gulSoGe4917selRic6cdNEoFEu8qRwb0Szd3hU0r2LFOPKyZpuYCiYeCcu?=
- =?us-ascii?Q?rP7OGkMLzQHErvw53QObt8kvBh7VMm+LGwOrVd6RbB16IGhI7VYlUbov54dV?=
- =?us-ascii?Q?0uOf51Bs6iOSlyYyJA54ZySTp4dI6wkgOqXr+UJuP6i3qS0wRLFdjsDIBQcz?=
- =?us-ascii?Q?fuvqnDngInsc1fX9Eb2EiDvVvTEYUk3CdxdYOGaNZGJVQbzYrZHpARGBeYAz?=
- =?us-ascii?Q?rRhidPHbqp1FwahpqYDh3Chkqj2h2ngjuViz6NN3RXaKXqApIZhD7cJpQSLN?=
- =?us-ascii?Q?H3nRTAAwKijqpIQcy7Z5/a6Vku+9UlRSnh46clChhIE4oUJs3EYJJAAreoVF?=
- =?us-ascii?Q?z+Qe09nviBo3uMnJ4/OLdQeqxfWc9r3xcz0hhYDV+gUbbMCjoxTDu6BlbeYE?=
- =?us-ascii?Q?Pw6pOFXb4yCmsFQZLzqOxojcRgAJfX/pxzMvzdFNCB+4pwWrUm/GTPfz4qFr?=
- =?us-ascii?Q?8lqMXlkHv0MQl6K/KuOLyTwAW9VEQ3x6/dVpItibW+lT057fd2XiuYFPBEDT?=
- =?us-ascii?Q?kHep9C8uVDCG7jhaUwuO2/E2rwP/Mb5tql2uCepzw+s2+rsxKFBoJEFwoTWk?=
- =?us-ascii?Q?DIlUbsmvLThnVE4AY/651sbBgNW6devWEoHp1+cRcfkyKCPAMjJ9QYIaDcGc?=
- =?us-ascii?Q?rq1dfArrLqplFrsOEuq31LHy7Q7rB9dzhE3bH38ospITxlEXqTQ2iA30Biwd?=
- =?us-ascii?Q?DZO4nxL9tRYO1r/2uqsCQ04X8ntBPR2NltJjdIxI+Maf+6lbzP5Kt18FAIMC?=
- =?us-ascii?Q?YPpXulgVvqUOzEb3bdtzfjY9FIdut3Ma2sRovII5Aq7jl+St9m+lL53QG5th?=
- =?us-ascii?Q?j3ExeCmrElg5uRhms6sJDgRmato32FDHSECdPphNE1W6aRiv1pWS4CX3eHx6?=
- =?us-ascii?Q?PHwyL2abysySfL/BFWt0ccR5EhtU2V24Hc/4JRxTUv20CPuHa0cEEZiSN4+v?=
- =?us-ascii?Q?R8PH1yKaGSDyfedTNHlyOaUQvHxyPbR2l94Uw1KxdoQQuCSyoh2tvFS2+IUy?=
- =?us-ascii?Q?l5FlheTFPnrEvno7VR3NaZSFioUar87j5e1q0xxSNu60/A6XLtFNVeETwzb8?=
- =?us-ascii?Q?kcbAFC4g5H/xQWlLGjGsXfiMbQZiDC0hcXJjumS+QhLZLIABwUlkfCaByZhF?=
- =?us-ascii?Q?sZQDd8XJEgIRiJlLT1dgHu0NkDRC/UqdmN3X7BBA4gx1gsmUqHiOdw/cfWaw?=
- =?us-ascii?Q?CmEmXHW36xRDpJgh1fM0AFOcSaqde/y5MgV4X22Exbl+rT5qgcHq9YkTk/h+?=
- =?us-ascii?Q?zQaDfs1n+1ZYMeDB19FBZPZSrooeVMB/zWEgRzAB9ewJV0MuPIOESH+GRC6L?=
- =?us-ascii?Q?F4ByXYVPPPLfKqe25NRhBnFnAfOPw6pQ3OC5GRhS4bOmkPf182PaerYYLqpd?=
- =?us-ascii?Q?7gSnHM0Hw2n0w8lZrKzcDCKM87Lw2uqnTTZmPV0u74ecj1sig6xOB6x0evAt?=
- =?us-ascii?Q?ySrTwEHjze5U8ZMzzhsBHMTXn6k1HVQ+/B/QhkexGWtqemjNM9fW/54mfYGw?=
- =?us-ascii?Q?JocnBGSutPag/+1sRcYtYpZdabCxzoL0CPDYMNNMUlVhV8SrJrsHb3iWpeL4?=
- =?us-ascii?Q?4igwV6kqY8h8i9Alpwqt3ZVGopfQy42K1XoXJAIfhOhcvfCNK4UV8JQdhyrF?=
- =?us-ascii?Q?KpINtv/nuj4OdnhzM59KWD3/9p5ANGWE1p5ajknSA5kTQT1rojgZWS3CFefF?=
- =?us-ascii?Q?kHo7k2ShXQ=3D=3D?=
+	=?us-ascii?Q?a3u6xaTyqjDGxND80WZd6Kzmd1P5+V5NbNM8wCYA+yrvU0fk3cuChh44IPEN?=
+ =?us-ascii?Q?zQjIZ3E3HBBI9ZnABOXVtle9lSuRUsxBWCjUx/UqxtL8qIcxjv3tZ+iqx+Y9?=
+ =?us-ascii?Q?bFa4sTPw79xyKV0C2xw68jfmvJUsZtcRICXZgv8zIApc+enmLnvKlaKYTTTr?=
+ =?us-ascii?Q?oMIrOtFnOPp8PxF1QPwXUp+97ZtOCLQNgcPSqDOlb5m3INlS8bV3RKcRazzT?=
+ =?us-ascii?Q?304z08fxsw6ZfTyQeh6LG+ME8fQEKen5FuYGyikBwZqXqe/3Dbh0G5G4TkwZ?=
+ =?us-ascii?Q?+fkXg7cc6+zuAY5F2gj4m9nUTYpptQ/xaYvEANvhxK2MLigQRVDHfAn2yfMa?=
+ =?us-ascii?Q?8wB9mFiclLsTTcdpe6/K1qP/SEdx2wjS9pM+SA/zTk/+/vYYCS97vZW/RzOb?=
+ =?us-ascii?Q?ceKXUSichrF150uq01rrHturXcXUICe3SCgWyuzDLveRo0+roiIID9kBg2vU?=
+ =?us-ascii?Q?igT5twU6Z76eAGninqUx3AP2WqPA0lHIJ121dJRA17Ib7gJCO353GeyNdyyP?=
+ =?us-ascii?Q?nw3DNPInE4d1XD+gZE4ZGCW/Ay44zA94IosIwDABPwlU04+Wlhv5moz5scQX?=
+ =?us-ascii?Q?Nk3Vh4Ad/pUMinUy4XNFTxMuBcs00JAgCUJgYqO2DIuaw2YDmWdqAUrkfyx6?=
+ =?us-ascii?Q?kKlYyJ0G4ep9i8AeFKrqV6jRIV1KwgRF6LQJoW/OH1r+pYIzBDGQugtI1Y71?=
+ =?us-ascii?Q?jzMj84sXOvlGLguHeNC2IifMPc6ANjWg+WAvvQnjBcmWc2fT+M18tjIDR9Gl?=
+ =?us-ascii?Q?xRf+ZPFsYxMjnJS4GqPnt4YEyKpy/h8bvC2Xzsb1D5TSlbKzWXVoi7+D3Y+v?=
+ =?us-ascii?Q?jJFglIBsgJ5DT+ImMZG0tk7Pw5XW8gOt6B3eMrqIR7YHWY1riB73LaCGYdUo?=
+ =?us-ascii?Q?dhuobEJTde1qmBNbwuE/kojgRFnttRdU6tbE/eJkKdvNOxAwJtYGE+ypNMSG?=
+ =?us-ascii?Q?/kI0wgXIqgAeetwxD7mOsqUL53KUdTegYP5iSg8E3fJN+jxOFYCcBk53vo1X?=
+ =?us-ascii?Q?4dqFENnQxP27XODd5etsoUqCae94BLAmtl6sqFcJF849fyoIeBPdN+P+hpKy?=
+ =?us-ascii?Q?TmW9SMFQTPoEpdihx8Fk+NtDP0fIUw8KhfUSOrR3kDqr1Mn+RW4zjiPcOCvt?=
+ =?us-ascii?Q?s8V6vSE3Hsra8FpxfU57GOb2zAw3mdhxQyFazcQmhcdibIQ4cM6bsNGeKcNi?=
+ =?us-ascii?Q?IwM9I5nAIxAThwCeGEZhsD5BmRq/MDPYJyLvztQ26DRZizqiwb0teA+WJfe9?=
+ =?us-ascii?Q?MB/wOf8FvZwVSbYwMjvFEDAxLl0DpvezVreZnne60dFV0Px2ViU1mmkxGks1?=
+ =?us-ascii?Q?Bp0Oiup8pZ0bC4WAMNywsZ/Gxh1P0uZww5DZDZQOYZgfHztFw4UKsJ+AinX6?=
+ =?us-ascii?Q?AH3TKnWV2GEE8e7LxUkFMlqxGbfLExapiAMNJXlzc+ZQ9SlFHvdH2nJKj8vt?=
+ =?us-ascii?Q?kU06RkVIt63hAqOM8GpXL5Tlev1artJUmiGrgYMM1g+D3BEuCKWB6TqfoziP?=
+ =?us-ascii?Q?eP70RW/OCfT/cD9LV2vDM9hLMK7dMP1jRdLVLUwkpNrLejxbbrvhbBqWbUI8?=
+ =?us-ascii?Q?mwtN1g4Oiky7AXAkbKxFeAx/axBEbR9UWSeefDzA9U2kHKp50CZeVaDCPHBm?=
+ =?us-ascii?Q?Pr2ini2i3cAV2xnAYhNVQN5XLk8FVrtOhE5xWuwUzUssDmwmJy7eeGAHScx6?=
+ =?us-ascii?Q?tSEA+3y5iK9j2KCXNvuwfxq3+yIDhgTJvGwCDI1zrD1DjLhC0jZkT0rg03lE?=
+ =?us-ascii?Q?dSrYqEXA4g=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa1950aa-7d90-47e2-5ea9-08de4e74c250
+X-MS-Exchange-CrossTenant-Network-Message-Id: da66b8bc-7897-4f0b-cb5f-08de4e75b6eb
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 05:14:11.8528
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 05:21:02.2044
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aQZw/d+sW/6+dbRZ+HpNWsSN8byAZudw+MP6PXfVY1smH6qqZkw17y/0vn/TueYMwWUlVBrmhDnS2Z3jR6RrEQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8fqYuKuD944P9gOqYdpwH7r+zbLdw/0+8EOwm++XbhV7GG8tXleWIxbFu6OidPXeWl/9GliLLJ4ZNW0B9TXWxg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5992
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5E42EC0006
-X-Stat-Signature: s7ko1t9hc9oi881h9qm7fy1fukjatkp1
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7EAAB140007
+X-Stat-Signature: oz6qynoyhss9epra4w7opncuc5meothe
 X-Rspam-User: 
-X-HE-Tag: 1767849255-432452
-X-HE-Meta: U2FsdGVkX18ErkGOwqX0T8Z2nIjNRShrGqSW8Pmj0y6a+uE0jWldsK6/JURfQXrXeBC1vaAcBbzUhYPfB+hnt5HkCUwVr9bLtP8kb7mDX8GgHsJfYPMGXBJjBeyk94vk9Hzd7XpiKxw8cM61XeZNIWnlN0w/MEU+ULF38oKcHW+aRzLDAcHWzF5lE+nkNllCKVf1TSYLNFVoylYsk26YTYirzfz3TUSjWBw5mQN+7r0DH7ehEzlrIte/f6INvRo6pN1qDhT+7U4IUeT7hGdNFy2ikVuCIclGOaOemfGDNtIkIW3g7D+7E6ssCk5u+iUCMqu1IAvj8AMz574Qt7+pmOGnyCFY4nJossVVjp5wKaOBCUlqBPnycmKisztiW74JyCYgwZiyiQRnph6Kmw1iwU1o35Kva+Z6khVjBn2H0NXz5lqoUAeY3D4TvEytzwwgeNFs9ise6pMvhF2BDToZR6EREic4XWGseIyps3PWCTzHtTrLbWJmQ6U6oeyJKgPYvhqOPavDzhcVFRnQwiPkKYhsAu+VukSM7r1BAFMDCrHkmtnF9efqzaBZDbglbSFV8nyJ2u5T3q5WWfrB0Cj5dfCcbpbYw5ZUrjyKbulSfeyfyO4/cK8ZsD3gqVtcpySU740sJ/y5qcQPlHfodx9Vio7bYT24iMwZAhKCqoGUPfC5hFyRd6z7U7oNMAvjrDSpVMOF1Wq5DAztpS7AWCKBZUjnjXiHZYUJ+ifbCegTkUnu9W+f3caEBBiQ7ci0T8xgla7lbH2QwOxKlgzjxtAVK77oq+3Vqg5vUZWvEI/0l5YBWaClyEO4bjFB8AZBPLOs05tl9uIHCHs4OMIM2gjxgkMzIroir9+Uq+WxJQonUDUVaEEQeVIqrrmCVuPq6VAJ3iAnwDylE48nNvqTbFS6Ylt3dcGD3VxgI4J0QZs6Np5uRSUyKkyVdbKCh1PUSkXHOdP0QBF9xA6q3X6sYts
- moTXH2nZ
- RJFw2NiYNnPHmUeSXUNUdsrB04Q044nwn4G1DuJi2SKE79hwPLK+qA9v2nvlzZ4/HS2PGUMARj1mT2BqGVfOLYbemO8ViUSu3m19K+6M7g0QRWVMivZE8vz+S4p/qAlOujYXC2Akz2QX7f12TJUpXM/m9yZ8AxIYD3ZYiC6smVl1LteQadcBaJs44e/B7Z3bot+lA6r7wMchkhdYWRsscN+HL/V8E3QrU/nvcq1drA86cKq3dOi+DTISh782WDy3dV49lCgDy0YJDBuJgM+9IFDxw1WTofRkXIqOSrqwGmgGFBrg+6yfdiKpGcJP4eMdn2PL3jdtSUd+qlCERNvQ+deQAQxMl0IXrky4ncCbzt+7fGc+XQoecqQGv06g048tNEPZ4AfUDcPGIaSXZTENqoAFAFRLF4wF74A4mIB0EEervhMW1uTVV/4EJzWEAYqv+lwAN7kbNURqja1w=
+X-HE-Tag: 1767849670-243324
+X-HE-Meta: U2FsdGVkX19ZS5+jt+qrorDtw8C2W6DY19ylEmOiy/MFTfbhQNqVOHAmQlyl67Y5gs6SueI0RvlipXisPqmSzmLTTsawQwpjJIe9KQRbvyYZLYnRX4Wf1/SV5JKr2KhFD7gkg9MbooBx5BRJUYrw0j1ArYwvnuDr7TsAAD9wr+M6wUrPFo5/MPpUxuvPHdtqn92IWxpdY5jx+RLBghHtRZ6mWvCuiEIJkVKj8EaAr/e57nPIMvywwjDx2pPQLWwmaXxhxe1LqQvjv1bHlELZpRDxOo3CBR1lvh69kUG6d/1xx7SCvLPRTBg6jO/QwevmQHZPxDE1/bwPY9m1CSYr9F0Zy6TWO4SQSEKErCT9GIo3p5FeMdKUGr8zTaseef9GtPgS4ltBjdHAJWSXFrBC8E4FRlmpl8Kttvb1rmn7Q2MkUVaTOc1BebN8Gcl1Elvwp7JzPARlAQNhA3z7FKNqUDprl74CT0s2MZ6TNrptqScYaxhFcngIcex6sP9NqwblhWd0GS2jtKwZSeKnzWP4j/HOjF7k2kF4MOI9N256h0wjEWx0w5xjJlNtwFnWi2+TR7dPDFejdisJbr8FLbDxBiLydToVmuis/+EBpDWNQ2W7sd//f1I0d3wgLdU2xYBkp3hWhPqlUb8WhdzVbVbyTblx85IQugFKa32oBWY60e/rSzVZPBrjw/pHD5/5pktZhXasoNbYfnWtbvfuOTDrrzSGm119v9JMR83QSv8qOwEbMrfcq1B5f9q88gNDiO31W+7A3+D5mjCLfy3+VVeNyeE7Ln/U6nD1UI0a9OxbolZyuEpQxyEHB6NYlovqsWHhPV980Sitx7iaKFCrikKafIQkvrqIZjP1MnQ3ExtdS4BiWhCNDx10Heu8L8MTdkK/AJJ6C1MsDPj6Jb/cPJi3CtUbwdlKQBERb9c/G/jWmvSyAZiW4Mg2umuRobulqLarQyPK0X3FF1W8y6YlVLO
+ vQD2UMoP
+ /uYv8DgL64wXKHz8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -195,40 +195,130 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2025-12-20 at 15:04 +1100, Hou Tao <houtao@huaweicloud.com> wrote...
 > From: Hou Tao <houtao1@huawei.com>
 > 
-> Commit c4386bd8ee3a ("mm/memremap: add ZONE_DEVICE support for compound
-> pages") has already supported compound page for ZONE_DEVICE memory. It
-> not only decreases the memory overhead of ZONE_DEVICE memory through
-> the deduplication of vmemmap pages
-
-Is this true? I wouldn't expect supporting P2PDMA compound pages would change
-the vmemmap overhead - I think we'd still need a struct page in the vmemmap
-for each 4K of memory unless you were going to prevent anything smaller than a
-PMD/PUD sized BAR region from getting mapped.
-
-> , it also optimize the performance of
-> get_user_pages when the memory is used for IO.
+> P2PDMA memory has already supported compound page and the helpers which
+> support inserting compound page into vma is also ready, therefore, add
+> support for compound page in p2pmem_alloc_mmap() as well. It will reduce
+> the overhead of mmap() and get_user_pages() a lot when compound page is
+> enabled for p2pdma memory.
 > 
-> As for now, the alignment of p2p dma memory is already known, setting
-> vmemmap_shift accordingly to create compound page for p2pdma memory.
+> The use of vm_private_data to save the alignment of p2pdma memory needs
+> explanation. The normal way to get the alignment is through pci_dev. It
+> can be achieved by either invoking kernfs_of() and sysfs_file_kobj() or
+> defining a new struct kernfs_vm_ops to pass the kobject to the
+> may_split() and ->pagesize() callbacks. The former approach depends too
+> much on kernfs implementation details, and the latter would lead to
+> excessive churn. Therefore, choose the simpler way of saving alignment
+> in vm_private_data instead.
 > 
 > Signed-off-by: Hou Tao <houtao1@huawei.com>
 > ---
->  drivers/pci/p2pdma.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/pci/p2pdma.c | 48 ++++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 44 insertions(+), 4 deletions(-)
 > 
 > diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-> index 70482e240304..7180dea4855c 100644
+> index e97f5da73458..4a133219ac43 100644
 > --- a/drivers/pci/p2pdma.c
 > +++ b/drivers/pci/p2pdma.c
-> @@ -447,6 +447,8 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
->  	pgmap->nr_range = 1;
->  	pgmap->type = MEMORY_DEVICE_PCI_P2PDMA;
->  	pgmap->ops = &p2pdma_pgmap_ops;
-> +	if (align > PAGE_SIZE)
-> +		pgmap->vmemmap_shift = ilog2(align) - PAGE_SHIFT;
->  	p2p_pgmap->mem = mem;
+> @@ -128,6 +128,25 @@ static unsigned long p2pmem_get_unmapped_area(struct file *filp, struct kobject
+>  	return mm_get_unmapped_area(filp, uaddr, len, pgoff, flags);
+>  }
 >  
->  	addr = devm_memremap_pages(&pdev->dev, pgmap);
+> +static int p2pmem_may_split(struct vm_area_struct *vma, unsigned long addr)
+> +{
+> +	size_t align = (uintptr_t)vma->vm_private_data;
+> +
+> +	if (!IS_ALIGNED(addr, align))
+> +		return -EINVAL;
+> +	return 0;
+> +}
+> +
+> +static unsigned long p2pmem_pagesize(struct vm_area_struct *vma)
+> +{
+> +	return (uintptr_t)vma->vm_private_data;
+> +}
+> +
+> +static const struct vm_operations_struct p2pmem_vm_ops = {
+> +	.may_split = p2pmem_may_split,
+> +	.pagesize = p2pmem_pagesize,
+> +};
+> +
+>  static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+>  		const struct bin_attribute *attr, struct vm_area_struct *vma)
+>  {
+> @@ -136,6 +155,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+>  	struct pci_p2pdma *p2pdma;
+>  	struct percpu_ref *ref;
+>  	unsigned long vaddr;
+> +	size_t align;
+>  	void *kaddr;
+>  	int ret;
+>  
+> @@ -161,6 +181,16 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+>  		goto out;
+>  	}
+>  
+> +	align = p2pdma->align;
+> +	if (vma->vm_start & (align - 1) || vma->vm_end & (align - 1)) {
+> +		pci_info_ratelimited(pdev,
+> +				     "%s: unaligned vma (%#lx~%#lx, %#lx)\n",
+> +				     current->comm, vma->vm_start, vma->vm_end,
+> +				     align);
+> +		ret = -EINVAL;
+> +		goto out;
+> +	}
+> +
+>  	kaddr = (void *)gen_pool_alloc_owner(p2pdma->pool, len, (void **)&ref);
+>  	if (!kaddr) {
+>  		ret = -ENOMEM;
+> @@ -178,7 +208,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+>  	}
+>  	rcu_read_unlock();
+>  
+> -	for (vaddr = vma->vm_start; vaddr < vma->vm_end; vaddr += PAGE_SIZE) {
+> +	for (vaddr = vma->vm_start; vaddr < vma->vm_end; vaddr += align) {
+>  		struct page *page = virt_to_page(kaddr);
+>  
+>  		/*
+> @@ -188,7 +218,12 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+>  		 */
+>  		VM_WARN_ON_ONCE_PAGE(page_ref_count(page), page);
+>  		set_page_count(page, 1);
+> -		ret = vm_insert_page(vma, vaddr, page);
+> +		if (align == PUD_SIZE)
+> +			ret = vm_insert_folio_pud(vma, vaddr, page_folio(page));
+> +		else if (align == PMD_SIZE)
+> +			ret = vm_insert_folio_pmd(vma, vaddr, page_folio(page));
+
+This doesn't look quite right to me - where do you initialise the folio
+metadata? I'd expect a call to prep_compound_page() or some equivalent somewhere
+- for example calling something like zone_device_page_init() to set the correct
+folio order, etc.
+
+ - Alistair
+
+> +		else
+> +			ret = vm_insert_page(vma, vaddr, page);
+>  		if (ret) {
+>  			gen_pool_free(p2pdma->pool, (uintptr_t)kaddr, len);
+>  			percpu_ref_put(ref);
+> @@ -196,10 +231,15 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+>  		}
+>  		percpu_ref_get(ref);
+>  		put_page(page);
+> -		kaddr += PAGE_SIZE;
+> -		len -= PAGE_SIZE;
+> +		kaddr += align;
+> +		len -= align;
+>  	}
+>  
+> +	/* Disable unaligned splitting due to vma merge */
+> +	vm_flags_set(vma, VM_DONTEXPAND);
+> +	vma->vm_ops = &p2pmem_vm_ops;
+> +	vma->vm_private_data = (void *)(uintptr_t)align;
+> +
+>  	percpu_ref_put(ref);
+>  
+>  	return 0;
 > -- 
 > 2.29.2
 > 
