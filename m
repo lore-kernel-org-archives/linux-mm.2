@@ -4,87 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C477FD1D483
-	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 17:48:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBA2DD1D483
+	for <linux-mm@archiver.kernel.org>; Thu,  8 Jan 2026 17:56:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 308BC6B00B2; Thu,  8 Jan 2026 12:48:17 -0500 (EST)
+	id 3C2CF6B0089; Thu,  8 Jan 2026 12:56:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B5F86B00B6; Thu,  8 Jan 2026 12:48:17 -0500 (EST)
+	id 379B66B0095; Thu,  8 Jan 2026 12:56:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B8246B00B8; Thu,  8 Jan 2026 12:48:17 -0500 (EST)
+	id 2B0576B0099; Thu,  8 Jan 2026 12:56:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 09EF76B00B2
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:48:17 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BB77816024C
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:48:16 +0000 (UTC)
-X-FDA: 84309530592.28.9D936CF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F172C40003
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:48:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=M57mQ1lg;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 172736B0089
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 12:56:50 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B959B1AA7B9
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:56:49 +0000 (UTC)
+X-FDA: 84309552138.17.89ED53B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 568D340007
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 17:56:48 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a+78jq3R;
+	spf=pass (imf27.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767894495;
+	s=arc-20220608; t=1767895008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qk9S4KNKepzCX1eBVjxs5f/+OHMV9b4pDDFNJeSFV+0=;
-	b=eU4T14toC+H3q8/5VYNU1ogL77ossZkVWrz1pPdzoOzNbBBcYj+tynzHMdyc24bQVjDiEu
-	qP9HUhR8KrK+a1AoFint7OvLIgY9DvhGzOaihY4kM9Nb2/dzL1ukKuhuP2GRrkKRaa8TOK
-	Ykny4m0ayxozi81lniWgInIZQu4IBUA=
+	bh=OODmGsMJR8KkWVIwL3oduI42mZW6JkdE7mQV95TGWGk=;
+	b=MMxvSCymGoD2IGTJVIhPiZM7dAoB9HDbNNp/oWUcbVwzsq3bLMA6NrWlE1ma7zQwZtS1se
+	H73Ubcy+y9kZAPAfAJlj3uTcqU7usldp7zY4rbrGXf8n+NYH1LpP8+FIGSAhqfCcIRjxID
+	kpyVIlNGnDLvfWRUSXConnyk7v39b9w=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=M57mQ1lg;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767894495; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a+78jq3R;
+	spf=pass (imf27.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767895008; a=rsa-sha256;
 	cv=none;
-	b=IaZ7ZUzSxqU5hhloO0cuo26d5vSHXUULMXOLWJ2n+v8LyMjEAwUXqStbGBDvQ/mvquwKJY
-	KNyy/TzfDQ2uEuj/mdW+DLYhc/Qt+VMpf99ewxOZ/A3hrz9iSVF44xPO2ACUZMsOYr4n22
-	tyBoCtP0NDEKaMEhv7ottydWKDWxhzE=
+	b=CWWybYdnJkmTBn8N87Ti7brkFJqtNoLSZsiQTtL5V2coSsPwSROLnB1fUOY97x2HR4KxoJ
+	HGXcE9peOv0Z05zJcOulXtLyDkqBrWmZj5YhUp4mTp87LLSaFCovAMChU5zOz7TmCvuLZY
+	zfZaKE01B+WUYrxZp5Ub4zzS5w9Scas=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DFF1243354;
-	Thu,  8 Jan 2026 17:48:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8476AC116C6;
-	Thu,  8 Jan 2026 17:48:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767894493;
-	bh=p4zq5TLeaIF9oBTh+MeDW7ixwfbdKuP/Hlh1oSPZ4OA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=M57mQ1lgAvcDoFKMJagLrAPDOPLRGYbL54K0eggKgRhi+HLPrzU/+ou4rdo9OGqeM
-	 1ehjSVG0IY7mMD0hvPbVHFCjQl7f0aVtD6H/W9ELDFzfWT/yyWosIXwgaCmV7X3tEE
-	 OkiPvmjt6tir0FKmyOWOYrpazHopBAj2Zc+UEQRg=
-Date: Thu, 8 Jan 2026 09:48:12 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Cui Chao <cuichao1753@phytium.com.cn>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Mike Rapoport
- <rppt@kernel.org>, Wang Yinfeng <wangyinfeng@phytium.com.cn>,
- linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID
- of CFMW
-Message-Id: <20260108094812.8757ce3ad8370668eaafb29c@linux-foundation.org>
-In-Reply-To: <20260106031042.1606729-2-cuichao1753@phytium.com.cn>
-References: <20260106031042.1606729-1-cuichao1753@phytium.com.cn>
-	<20260106031042.1606729-2-cuichao1753@phytium.com.cn>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: j3unmwk16ippxktwccyfunt5xcfo7aig
+	by tor.source.kernel.org (Postfix) with ESMTP id 82EAF60132;
+	Thu,  8 Jan 2026 17:56:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BEA0C116C6;
+	Thu,  8 Jan 2026 17:56:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767895007;
+	bh=w/QLun24lbtHii2xsaLuuKpk/iaodRrWwMtJGRI8v2Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a+78jq3RqBJgK4cIrQuLNVR/+PIoAzqHbdf1iJY5WrJNo1abFBr86lp4LW7IGujGf
+	 7NqmWKUeZDNHD5CG29NJ8TnXtEDD/YyH6zzywPW+6zBaBftYsQuaXGDGXtkKEk7sWO
+	 9o4sWunISQpCrz9w2ezuPrfH2AePhh/IrwnTiO9mcmYROnjVcOiGQI7YOyAvL7ajlt
+	 YLw5m6RuGa388VqebBzQgZYooFD7zqe7IlVWUTG5oCyQVlrF+HhJGN4xunCJpJfXgT
+	 EYED+MQWHyIxG79yg9HHk7Xg/Nlv3hD2u+6bmmAqHVmdKA07TfrmlQkHUOW0HbWio4
+	 IK2OvPsjiBVmA==
+Date: Thu, 8 Jan 2026 17:56:39 +0000
+From: Will Deacon <will@kernel.org>
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v7 02/15] kasan: arm64: x86: Make special tags arch
+ specific
+Message-ID: <aV_v18YWCHXMETVK@willie-the-truck>
+References: <cover.1765386422.git.m.wieczorretman@pm.me>
+ <0db7ec3b1a813b4d9e3aa8648b3c212166a248b7.1765386422.git.m.wieczorretman@pm.me>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0db7ec3b1a813b4d9e3aa8648b3c212166a248b7.1765386422.git.m.wieczorretman@pm.me>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F172C40003
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1767894494-868982
-X-HE-Meta: U2FsdGVkX18aM30QlaKH6i5ygVNvJLn+44jdgh7KBWQ+BfLYyw9I/Fk79tKGzzmfRdMeCJcXQW2ZSbVIrcKorrg8uLIZXdhS+u+BuEhiKycPVhac7awZfVQvFWgBgkp1/1+SGqyk6jkwNDYn9F51UNMRaOJ9yae2qa8Oiim4ov17pK/I5kqTZhW6bVpskWkLSsDRrEV32Q0ZjjvBczy2O2un+ZTaF1j5wy01IVHyH7pKBmXDZdKNshrmmHHCZ5IrdenYDCrsc6mSGIIi37KRWrnnjRpKtHsy1G7wQkhlIIfUxeyg5mznPhaKltQmNbBvlMVWml52f/ZODOGlaCCXcUYMHKACrjniT7B10/zrGdn9C7MfoYkFzj8xhUgvjuVevfbiPWraxsAgN9+FfrK3vdo++PQ4FEMwrpzQt7A9vRnK/5DLWnPZMz+RgDACnqRCh8S8qwHOYsOLeflpuAn69H8DmcTjc8SpXjf/tGnE7w3msiFDYV5dum6k9Nsku/sYtZwncKzcgAcEtmOeos6qMbgsHYXWUSIs8Koe/tRIXGsMN2GBz5b8xuG6sKLy9PfuzuLQbxp9he8sSJq0J7eTFffnyAh89sPWWJiBca/ezrJMlpwsbVHszIHYbbnEDua12ddhiozRnnJajLVzpGfUb0VtOXLGFyaXlPlxYLfIJY/UuSYf5KZZCF1TRDZ4cu+yKSuxj0zBhnMn1qsrRKQGO7E+UVVbrY1w1tfPxfLY2zxzayom7FYWpo+ocetYBvbIklmJzIVDCTBUlJYBKUmi9uYkH0pKofCxpL60Z+ZA7inL9oAxPp4mQ/bHLzE3Xa4H97h/YCFBVAUepeHT6TOcNvDfr4XkjnSY540DeqbsTvO/29uNtFna7lB3lWf6+NHPsYTsqS0Yk6xM8m+0rlHx49EugCnkqaRgRVJnUNR5mAMNNr1wvJtwOaIXNuvPusHNoMvJJsv+R2WoULIxyGz
- LYQs3gT2
- 6yFLaQI53gp1ZmbybdyKYJCVmQFRMfsULFjSx0ATC4/hBGMFiMj4CmuLM5vPBR8Cd7jNPk9JoW4xiKT3DQ9YqmeQKnO7v2DYkZbtvCarjtefFMT6/4RI48VDgMx7CvKeMy/NLIaIKU5MCHY+RqQI0si8WcO8nRaOQg9mnNJVowwkWuRltgp//Op9ZXbLoj9xgB5UkZZHbunO1/O7mq6++CnoAF66fdK6s/9vDNbbtwJyFo0QGwGqk15ZWI7ILVHR3UbJpMkhqj9lTGrdeSQweTRIK9XX/aIW8lvexTpjtlrR0ioI4fStzQEB3C/6hPEDPn507zHfaB3ig/q6+yBz+In6mqgyWw/6ZfATG
+X-Stat-Signature: 61d7fnfo87artr9sd14dff1urijumjpx
+X-Rspamd-Queue-Id: 568D340007
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1767895008-728754
+X-HE-Meta: U2FsdGVkX19giGgCasLr5pR6t5lPmomJ7SGoTkEppPaRWu5JWWcjbXZ4ZLwMozNqGwIiXv6KwBo9kqsIuwrDaCnaO+uVbU2Quk538CAz154UE0Z2bhHni8VeBwdEI13bKUupOw3rQfZHpKdGWIEFJiwKUcg9Uo+iFj7IdxKwLPTiSXPsUcCPsW4fIjG9PvVtH3RRXvfn7ux/R29//pua+Llhrwtf201kzqou1uHRZotgZlb06h/MXK6KsKsWyNUv1HA2oOngLerBKjtzMxSViEvbgGXiYWOt6Ua010YiPmYravznPDu6A8ZdgxKMMckn5fYjnMSgPoW1KW8K7rHcdJNRy0X0J6AIIZ1RLPEwuQOTzGSUIVZ5CKxyNsAJ3GF2Y5895ccWGJ0RcAtibsG2FgpCAg0eWqKHalxkIBTeF4oZj/6U31p+fwM83iEVnPG+iUeG8SCMeauN3bINg4QjoIip/lHZ/kAdxGTgEvM2KL4z1RyEWIkJxrB5ZzIPTOTw2BOQKtobxJ09swgOOWsxF1/G2q1QYIYuOKT71XKncKfmxDGq2OAlGk10cID7fidpPqSfhvp1NEhohVENw+mESW5EjbblU/z78CS7lPFm/m3Q1CmACP9EL9I5jIKVdtAQYnDcp5EJ/+ucHUyzSpcRl0pnnxeFHx+q8ak3tHU+F+GvqGezkI4YTh6gVvQLq1xEJ3+06MBq3qOQEhmKLAHUA7nNyLnrupZELkVg7s05GQ2TXCPly9g0UDfDuq+8jjlYRbm3ujDDx5Buea00CeW/9ERTogAHf0vOedvgN5TIb9yNWCe9V/Q+YIoKCQlcjG/6XK+naqvAJlTsFaLpg3JZ+i9Ps3mWQE1z/ti0LKmq8mW94OB5oruzMaA6TQTcN/S+gcxu8YvkaJ/+fMbM/kQOvahDDzR6KuSTbXIfzCWO4P5Jwnx+IX+43VsMXSMpWiho10Yhz0kgUSa4NxxQg6z
+ 9aegouJs
+ WQ9xZtTCp9OCiRutP22k1wq88vw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,35 +112,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  6 Jan 2026 11:10:42 +0800 Cui Chao <cuichao1753@phytium.com.cn> wrote:
+On Wed, Dec 10, 2025 at 05:28:43PM +0000, Maciej Wieczor-Retman wrote:
+> From: Samuel Holland <samuel.holland@sifive.com>
+> 
+> KASAN's tag-based mode defines multiple special tag values. They're
+> reserved for:
+> - Native kernel value. On arm64 it's 0xFF and it causes an early return
+>   in the tag checking function.
+> - Invalid value. 0xFE marks an area as freed / unallocated. It's also
+>   the value that is used to initialize regions of shadow memory.
+> - Min and max values. 0xFD is the highest value that can be randomly
+>   generated for a new tag. 0 is the minimal value with the exception of
+>   arm64's hardware mode where it is equal to 0xF0.
+> 
+> Metadata macro is also defined:
+> - Tag width equal to 8.
+> 
+> Tag-based mode on x86 is going to use 4 bit wide tags so all the above
+> values need to be changed accordingly.
+> 
+> Make tag width and native kernel tag arch specific for x86 and arm64.
+> 
+> Base the invalid tag value and the max value on the native kernel tag
+> since they follow the same pattern on both mentioned architectures.
+> 
+> Also generalize KASAN_SHADOW_INIT and 0xff used in various
+> page_kasan_tag* helpers.
+> 
+> Give KASAN_TAG_MIN the default value of zero, and move the special value
+> for hw_tags arm64 to its arch specific kasan-tags.h.
+> 
+> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+> Co-developed-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+> ---
+> Changelog v7:
+> - Reorder defines of arm64 tag width to prevent redefinition warnings.
+> - Remove KASAN_TAG_MASK so it's only defined in mmzone.h (Andrey
+>   Konovalov)
+> - Merge the 'support tag widths less than 8 bits' with this patch since
+>   they do similar things and overwrite each other. (Alexander)
+> 
+> Changelog v6:
+> - Add hardware tags KASAN_TAG_WIDTH value to the arm64 arch file.
+> - Keep KASAN_TAG_MASK in the mmzone.h.
+> - Remove ifndef from KASAN_SHADOW_INIT.
+> 
+> Changelog v5:
+> - Move KASAN_TAG_MIN to the arm64 kasan-tags.h for the hardware KASAN
+>   mode case.
+> 
+> Changelog v4:
+> - Move KASAN_TAG_MASK to kasan-tags.h.
+> 
+> Changelog v2:
+> - Remove risc-v from the patch.
+> 
+>  MAINTAINERS                         |  2 +-
+>  arch/arm64/include/asm/kasan-tags.h | 14 ++++++++++++++
+>  arch/arm64/include/asm/kasan.h      |  2 --
+>  arch/arm64/include/asm/uaccess.h    |  1 +
+>  arch/x86/include/asm/kasan-tags.h   |  9 +++++++++
+>  include/linux/kasan-tags.h          | 19 ++++++++++++++-----
+>  include/linux/kasan.h               |  3 +--
+>  include/linux/mm.h                  |  6 +++---
+>  include/linux/page-flags-layout.h   |  9 +--------
+>  9 files changed, 44 insertions(+), 21 deletions(-)
+>  create mode 100644 arch/arm64/include/asm/kasan-tags.h
+>  create mode 100644 arch/x86/include/asm/kasan-tags.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 7bf6385efe04..a591598cc4b5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13420,7 +13420,7 @@ L:	kasan-dev@googlegroups.com
+>  S:	Maintained
+>  B:	https://bugzilla.kernel.org/buglist.cgi?component=Sanitizers&product=Memory%20Management
+>  F:	Documentation/dev-tools/kasan.rst
+> -F:	arch/*/include/asm/*kasan.h
+> +F:	arch/*/include/asm/*kasan*.h
+>  F:	arch/*/mm/kasan_init*
+>  F:	include/linux/kasan*.h
+>  F:	lib/Kconfig.kasan
+> diff --git a/arch/arm64/include/asm/kasan-tags.h b/arch/arm64/include/asm/kasan-tags.h
+> new file mode 100644
+> index 000000000000..259952677443
+> --- /dev/null
+> +++ b/arch/arm64/include/asm/kasan-tags.h
+> @@ -0,0 +1,14 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __ASM_KASAN_TAGS_H
+> +#define __ASM_KASAN_TAGS_H
+> +
+> +#define KASAN_TAG_KERNEL	0xFF /* native kernel pointers tag */
+> +
+> +#ifdef CONFIG_KASAN_HW_TAGS
+> +#define KASAN_TAG_MIN		0xF0 /* minimum value for random tags */
+> +#define KASAN_TAG_WIDTH		4
+> +#else
+> +#define KASAN_TAG_WIDTH		8
+> +#endif
 
-> In some physical memory layout designs, the address space of CFMW
-> resides between multiple segments of system memory belonging to
-> the same NUMA node. In numa_cleanup_meminfo, these multiple segments
-> of system memory are merged into a larger numa_memblk. When
-> identifying which NUMA node the CFMW belongs to, it may be incorrectly
-> assigned to the NUMA node of the merged system memory.
-> 
-> Example memory layout:
-> 
-> Physical address space:
->     0x00000000 - 0x1FFFFFFF  System RAM (node0)
->     0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
->     0x40000000 - 0x5FFFFFFF  System RAM (node0)
->     0x60000000 - 0x7FFFFFFF  System RAM (node1)
-> 
-> After numa_cleanup_meminfo, the two node0 segments are merged into one:
->     0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
->     0x60000000 - 0x7FFFFFFF  System RAM (node1)
-> 
-> So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
-> 
-> To address this scenario, accurately identifying the correct NUMA node
-> can be achieved by checking whether the region belongs to both
-> numa_meminfo and numa_reserved_meminfo.
+Shouldn't this be 0 when KASAN is not in use at all?
 
-Thanks.
-
-Can you please help us understand the userspace-visible runtime effects
-of this incorrect assignment?
+Will
 
