@@ -4,238 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DA83D26D94
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 19:08:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3753AD26D7D
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 19:15:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DF2D6B0005; Fri,  9 Jan 2026 14:08:21 -0500 (EST)
+	id 904E36B0005; Fri,  9 Jan 2026 14:15:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58BB16B0089; Fri,  9 Jan 2026 14:08:21 -0500 (EST)
+	id 8B2346B0089; Fri,  9 Jan 2026 14:15:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4355D6B008A; Fri,  9 Jan 2026 14:08:21 -0500 (EST)
+	id 7940E6B008A; Fri,  9 Jan 2026 14:15:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D9666B0005
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 14:08:21 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DE4AF5B323
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 19:08:20 +0000 (UTC)
-X-FDA: 84313361160.04.2F74022
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E1E6340014
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 19:08:16 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iMbZ0b2W;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf12.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767985697; a=rsa-sha256;
-	cv=fail;
-	b=CaaHCo7Ls6HWqvuzdgpCh9bIWokOyLNVLtVSZcPJ1VNyshY/aPtLtgjHvIPNwy+sRJdB5/
-	VnfBrW6E9cW+T4qL2NfJFFrcHdOO2q7iaj5xSDTW6k/FyfeLiwLlmG4hBov5cx+Lt/AV2c
-	/I059rGc+8lofy6ABTD99pEtslbaA8k=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iMbZ0b2W;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf12.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767985697;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 682C76B0005
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 14:15:31 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F78E13BC87
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 19:15:29 +0000 (UTC)
+X-FDA: 84313379178.19.755117F
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C57AD14000F
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 19:15:27 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zyLM9QGU;
+	spf=pass (imf23.hostedemail.com: domain of praan@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767986127; a=rsa-sha256;
+	cv=none;
+	b=PTulRysm/OBpUrKx8NX/qewNYfOW8sDDScliLHouD451kG9ezIOkrM0voPudlcackF9TK2
+	CKutwGDTxqiRnweGhRG96xmXwgx7hwI+cU4sIzm1TFCkuvmJ9MJY8llUKLevGETSpFY5l2
+	Qp66QtZL6Cu5AaHgfgCWnz3jrL/kLTo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zyLM9QGU;
+	spf=pass (imf23.hostedemail.com: domain of praan@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767986127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FYy4nKsSmWBB4XP7xi/2jbNRQ/3UaiJspMf5VqmcoXc=;
-	b=IazWH+69KcETVXO+YTf7Xj5tcm8XPbDGtbY7PbN9GHTLbqX3oUH4wID+JA2wiTipjqSolc
-	SXZgpg09eDWP+M5A+dtiMEeTSwu1ZXlq2EyGMvmLFd6rxui2RO8H/XzwOYbAxHbhPP9uUt
-	/42j8I7UHU2IOgD8oIGDZx4XYiAQR9o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767985697; x=1799521697;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=HABvYQPzGOyEHPdCwOCfxFHkIQlTYPwMNXzOKQQGUwk=;
-  b=iMbZ0b2W/RBjk7tEV0ysL21jeOHM2x3D8Q2HYGOrjaq2vODCafOB+3Dd
-   wAB1K2jZSBg79s9O01kA98SjCQyp+UGvr1r4x0YNfvmaGIaeEBNskPiXT
-   wPXWxkGTkmI35F5XMAXQaZjxpv3bvCDJA2L3deYyK2Fu08Z0DhWVEPsLK
-   +HUoE+VeaD8XUzvpwi/Vm87p9l9DjVH4wOA1iTmwyEaApcQlUvJUXJSf3
-   II/Y/VlbAyCOvIIgc0o8otJvvl8qpoeZTAANuwh64KlbJyqtD4Uj/n4lH
-   zCdOpnOit2w/YmCyY93xhMpLDZnjcqr7z51jPT4kBlWab3mVnkmE1UdgR
-   A==;
-X-CSE-ConnectionGUID: lfI6eY55RjO6ijsCfGWHhg==
-X-CSE-MsgGUID: IqZ87lhOQoyw+DnQsAst2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11666"; a="69271347"
-X-IronPort-AV: E=Sophos;i="6.21,214,1763452800"; 
-   d="scan'208";a="69271347"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 11:08:15 -0800
-X-CSE-ConnectionGUID: 8tCrfkHLTkyIBmiMyNCunA==
-X-CSE-MsgGUID: WU/pzeJdQBSNxvglBFHs6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,214,1763452800"; 
-   d="scan'208";a="203160809"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 11:08:15 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 9 Jan 2026 11:08:14 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Fri, 9 Jan 2026 11:08:14 -0800
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.6) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 9 Jan 2026 11:08:14 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BXQRWv7Zqf0Nc/mktjCEcchHqjUFZTMcKRJh4CGFdHnQ6Z+XimLV5rb2p4kdfKf3TkVFgQgl+Occnj3hI12tyy9gA5oiVFWfkrDf0v5xZwqDTTbH0VUqwXrcGGpPDYfFxPeQVFcysnAG6wQpgUVV85aRiy3aV6JDw1cw6x1XhqasdiKNShxhn8IZtklU6sY3ouP3zuQWXUYNNMah0Dgm0mCwxCXgozFdHDGLOwQZjsi/3rkGutx+rJlNTV4g2kIwfy8UocWcL/vnWfDHd4e1GrJlDZOPvZeUkTuzERswrPWxpBzT0XLz/ARRS2PPgySnE65hwQ8H0ILIyh/i5YMicg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FYy4nKsSmWBB4XP7xi/2jbNRQ/3UaiJspMf5VqmcoXc=;
- b=HfaBqvJ2VwPL/4Cf27a0td4WWD9ZQ4xBu+B11F9bVFiZ9KTrzfBgyxJsUsFE9DLH24Bh2rFxnL7mLgsMBRSvUxzOHzX0MgjMd1+kp38WnK53MRgdh65T+rw47OU6+ETe/NwI+/n8balC6PfnXw8vKksSdLu/LT9TJa69P5NXSSLAPMuykDTPXI1fzazJQGPBLOpm90fV6RrBWEyV3H8DCHcO3zt0PXl2cyAuQB6/F2WvbI/eHZAm/blYNyKqnEK5vljKzRnimffy7sX1Moy9eBi51Ol5VXM/K3r4X4qFmH37EoTtn08biCQQL2nff10jwSjq/EP4zZCCJuY7w9yjeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by IA3PR11MB9064.namprd11.prod.outlook.com (2603:10b6:208:57f::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.5; Fri, 9 Jan
- 2026 19:08:12 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9456.015; Fri, 9 Jan 2026
- 19:08:12 +0000
-Date: Fri, 9 Jan 2026 11:08:09 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Zi Yan <ziy@nvidia.com>
-CC: Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>, Francois Dugast
-	<francois.dugast@intel.com>, <intel-xe@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, Balbir Singh <balbirs@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>, Andrew Morton
-	<akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 3/7] mm: Split device-private and coherent folios
- before freeing
-Message-ID: <aWFSGc7MIUqVsilw@lstrano-desk.jf.intel.com>
-References: <20260109085605.443316-1-francois.dugast@intel.com>
- <20260109085605.443316-4-francois.dugast@intel.com>
- <d1d80b81-678d-4d28-9ac2-95cb74824e73@redhat.com>
- <DF5A6B81-7811-4654-855F-8EAB76CCCE51@nvidia.com>
- <aWFIW6XCKXPpIinv@lstrano-desk.jf.intel.com>
- <D9ED5F01-E758-4A89-87F2-ABFF5197231D@nvidia.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <D9ED5F01-E758-4A89-87F2-ABFF5197231D@nvidia.com>
-X-ClientProxiedBy: BY3PR10CA0022.namprd10.prod.outlook.com
- (2603:10b6:a03:255::27) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	bh=1zIYiJ3AeStpupvGSL4Hm+WwwUI7TJ76QSjzNdMxPRw=;
+	b=lbszKdQCiTsJo7oM66SzOhGHRVtKTo55xn+GRKAVYXnjNvkGPOnemF8AoAU7rM+MJEDVqV
+	RVOXy6iGnDOHdBSVJ/gOQA1n6iVsn09EBmU4VOEs0P9Efjf0R/6lqcJFOvKwq+LulXyw89
+	ydJMorDY2oBrIyB3WfHuToySWu8Xxfw=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a0d06cfa93so12825ad.1
+        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 11:15:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767986126; x=1768590926; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1zIYiJ3AeStpupvGSL4Hm+WwwUI7TJ76QSjzNdMxPRw=;
+        b=zyLM9QGUhrAJFylAVmrKnGFiwEuRqG0ou/Nbfi8AdWC0IyMiBLGHcdhygp04nTEelb
+         GP6h7ra76RuhdOwe+fEHoBfhho31URn0BvwOZXi3A/4mlxSHctp/ZVQt3fgIPuqYNEvx
+         zyxWZk4ns/WHvdWTbkiXtCDoUFz7pNsQGQ2bHPvKzqIkP6JW6KUwNOqISjKEZj0wLdB1
+         NBfwhSy5GP3fG0D+GrqwTyMBJkWBLhHxJyulk9jBpG5bnNSJTv5NTiVy5iaEmEK3EU90
+         Xha0FN5X94R0dfQamIoZzNFbSltTnUU/3ZvZH/uzEzoHmkUUZvA7Y5gZltbFZgkxpWRD
+         RooQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767986126; x=1768590926;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1zIYiJ3AeStpupvGSL4Hm+WwwUI7TJ76QSjzNdMxPRw=;
+        b=f1xQQaILZdVH0nQ0mf1EXlxrEviMJxMnPrKmBt9kbyz2sSC9ZCa67BOg47El5by5CR
+         OHpDTFmBWV3cCMu6Mi0cie9qhNYFeAuWDee3OTPQa2U+W15ynlMQVmjZhGyrkgBK/4eB
+         +Xe8ns5jhpFa6DynbA2/F8WQmoJIOr2OnfYup7q/NKnXUgANcjdBQpYCzNZwrDVaUR1E
+         ng+/d1gTmHuH4hdoGcrlMpeuROlhVrDPJCCxw3l8xTw/sL7y3gpzOZUL/psWdg5Rks67
+         GPVIhPhSZQbPQ6ALJiKiflzrw1TT5WTz67kRNnF1qExk+oos6VyOBSQraX7zUC3oB/0b
+         E7gQ==
+X-Gm-Message-State: AOJu0YyzTroFGgy95msfObWaVBh2WrWH575BVEWhgHDsvtB9dAK9NfRQ
+	vpedR/45gsCD+ScrCkNgDDmnLi7N1sHULXQTmOgtaAyrxjuiNa3+NCEIZZVzwTFPLw==
+X-Gm-Gg: AY/fxX4xRF5hHq4SZ8hKCuMbcN5LkfWPjsRop3mDzWQNEE5J8QcagE/UkeqVYBXfCrd
+	dyaAjVUSWcYx+rv5/Zgwki5krJTsBGStGKV2eYaHPeu+KLbnmbGM9Auo02q1PSj9On3ED91gVf2
+	aZShR8cNK7OLpYw2p7TN93+k8NeEal2K9rftuBcMPRQ8FywSu+ionS1es7EwJR4MWfbLphR6Fm2
+	nxFPwfWQEJyzasvl8b1olhLmms2/1VAVwRmc3Snr/0MZKYhh+wwWwWiJvQ2OB53bZtvSDYvuJjN
+	n5WVxXYqe0JiV7MCC1Lnor9T1ZP+VrXOxbZRu61zOzkiD/Y2vLJpgB7xVDVrFWYw5ylILkJvS4B
+	yEsGghtbocT6pyJUO3jLghM9Zzm2w0rUlgDurqoLpoW0Sj0/YNOecX2KCZY1MyLtn7A4nc9tF0H
+	aq9gEsmCw4c8y8BwE1KeCalQ+3SeVNW1MfCSGNZs2CY5N+1k6C
+X-Received: by 2002:a17:903:40ce:b0:292:b6a0:80df with SMTP id d9443c01a7336-2a414932d4bmr384275ad.10.1767986126281;
+        Fri, 09 Jan 2026 11:15:26 -0800 (PST)
+Received: from google.com (222.245.187.35.bc.googleusercontent.com. [35.187.245.222])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c3a2ecsm110215965ad.6.2026.01.09.11.15.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jan 2026 11:15:25 -0800 (PST)
+Date: Fri, 9 Jan 2026 19:15:18 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Mostafa Saleh <smostafa@google.com>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
+	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com,
+	baolu.lu@linux.intel.com, rdunlap@infradead.org,
+	Samiullah Khawaja <skhawaja@google.com>
+Subject: Re: [PATCH v6 3/4] iommu: debug-pagealloc: Track IOMMU pages
+Message-ID: <aWFTxlaGWy23R-Qs@google.com>
+References: <20260109171805.901995-1-smostafa@google.com>
+ <20260109171805.901995-4-smostafa@google.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|IA3PR11MB9064:EE_
-X-MS-Office365-Filtering-Correlation-Id: c512c716-7017-4e9c-594c-08de4fb26f11
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?azkvZ3E3WUZ1V1A1M1RTa044Vk1wSENtUGI3cFE5V0RNb1AzUmlXRlpjZ2pq?=
- =?utf-8?B?c2RMMVJuaE9vTXFGRFlMbVhacm1BTjEwc1FkUzV1dC8yZlp3djYzT0JKb2tv?=
- =?utf-8?B?OE9TY1hEeC8vWFdCVGhDeUY0dEQ1ZkdLZFh6NTZndUFma2tDei9mT0E2N25v?=
- =?utf-8?B?bjJwcEtiUytMalhQcnArQTFIVk04alNFSGtLZHc5ZElnaXZwdTE3eGtDeG93?=
- =?utf-8?B?dE03WXJsYmpEY09WRXlnYnhOZ0U4QmlkV1JFTXFiRHEyWjdndzU4R3RHUG9l?=
- =?utf-8?B?VUlCZkNlbzBtQ2RJNGtYOE5HY2MrOHRBM0N2OVQrODNuRGQ5d2R0OTJ0bTVJ?=
- =?utf-8?B?T3M2alY3aHZYRnBoSkN3VnZQc3hBRW5WK0JKK1hrVHlLQlRUU0dmbGpNU0FJ?=
- =?utf-8?B?TlJPRmZMMktRdWNnVE1acjFySUtjYStEQlJ3bnl5eWx1bDE1NHFDQlBSMlRu?=
- =?utf-8?B?dVY0WHVXZ1JvZVlIbElIbDNYTWlZOXY4YnAxSExySFh4cDBEMnp4VW5YYTRB?=
- =?utf-8?B?Kzdlc0o0RlpRMDlmMUFQNlQxeDNxS3F3Z1pxVFpMd20zNkEwSGdxblA4eVhQ?=
- =?utf-8?B?NjUwYzIxbFJzNExYWXljMlpISHNuUmhFMmVhS1oxRDdmeU9kL3gzTjR5UFVa?=
- =?utf-8?B?VHpQYTFTa3MxNnlzNFVSNi8rcWJDZFZzNWExRjRSR1V3bVp3YVcrVERWZFVR?=
- =?utf-8?B?NnNjcTRYNTFXT3Via2l1VWN4eDFGWHBOMXdVd3NIeWpyL1ZxZXI2OTl3TmNX?=
- =?utf-8?B?alhQZ0JVYTZCR01xWVEwa3dGbGVGbGd2aWlneE9RdmJuSU9xUjRVSXFKRVVi?=
- =?utf-8?B?OXExTHl6WHo1WDJkTVpVbjNTMFMvZ2VLKy9NQ0JzeXNjVE9GcEJaTE9NRHJw?=
- =?utf-8?B?Mmc0ZzNNVlNlYVlVWUlwZzZrT1RjQWVXME9FY1ZhUzh0ZjdMZHk4WWJPMmM5?=
- =?utf-8?B?REJQT0EybnZGT25McVY0NHJXWkxwVFY5TllYR01aekNZQVNqakU1ejF1SW4r?=
- =?utf-8?B?NGpoeUlQd0V0cVVLOFE2ekRJK2RSSHhjUnlVWlFqeVJHU2lPN1lhNHFHdk9w?=
- =?utf-8?B?cTZUZFRoVDVrejJ4T3NPQU1UZ1F3aTlzYjdQeWZJRTZsVGlZNTV2M3Vpc3lu?=
- =?utf-8?B?ZW40YlVvY1BwWkdBbllGdS9SRy9IZlBRWmdSNVozeTA4M0lSNzluT1hUWlJN?=
- =?utf-8?B?TUJHWUFtTk9kQ1dVTjlLYWwzYjJSdWsza1p6aXNtQW1tQkRzRlZxN2ZsVVVP?=
- =?utf-8?B?YWNubTVOQVpPZmljZ08wKzdvK3JPWmVHM000YXlIWkJlMSs4S3hjQmdEcVk2?=
- =?utf-8?B?UFN1M21GNUJsQ0RlL29WVUd0bllTd3ZxNFhXb3dtTTNCRWl3SHFwK0lMU2Fj?=
- =?utf-8?B?eEpzeURGWE9oeHZiUndZV3hIN1h3Q1JGMlRibWhsSU0rWjEvZTRUNU9GRkE3?=
- =?utf-8?B?QnZ3TkdoWllNTmp0MEpKS0pWcDBjZERUMU9OTVFZV3JCYlJIczlQb1UvT3pq?=
- =?utf-8?B?TTBKbjl5VCsvQjBJbHJEL3VMZm5OTm5kT0l5M09HbFpKNjh2NldsOGNHVURX?=
- =?utf-8?B?REhkdi9NMWxnY2NJM05jdjVrYXBXQkYzQmtMWG9QV3oxVUdaM2h0a0lTaUxt?=
- =?utf-8?B?NDJmU0IzTlk0MDFMczFLRmhjU213UjRCS1UrTUtiQTN2WFdncTRETDd0TjZu?=
- =?utf-8?B?YjVhaDNWYUJwMGttQmtMVWRhTXNSY3IvRWhsWTdLVTc3eXJWTnBjVkhaNDlJ?=
- =?utf-8?B?d0o4RGp2bkpTMENoODJXTjdKMnkvamMrbXFiaUd0b1RwVFp4YlJmamxaLzVz?=
- =?utf-8?B?eW5rTEY1OHFoai8zaVU0eGtBU0IyMWtUSnJTR0c1TzBQUFpHSnZCRGxYVTBY?=
- =?utf-8?B?R28vWmJ3MXpUTnc0dVpKZ0lJVnF0OGZVbVZtTjMzSHBhUTh3VTZSbGdwdFVn?=
- =?utf-8?Q?IoE6diC4E188hnP2P6mfcbjHPrbh+ffB?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UGhCZmp2QXhLN0hrbVpaMnFYRk1LWTdSMXB2RDQ3ZlNLYWE3Ky9TUUgzRGVW?=
- =?utf-8?B?WVp3eUZiV0FVWU1xVlVOeEpkOFkwSTFTUno0TFVCUHNLTHhwcVovZlBtU2dS?=
- =?utf-8?B?U0MrMFhndTZnTzZxV3U1RVJyTVRVSTR1MWJUU0ZhblFNRmQwYWhJaU1ZQUp6?=
- =?utf-8?B?VW90L3poWnJDdGJuYXpicVZCZm5pL2xvdWx5ODd4dnJiakU2b0RxNVhVaDFk?=
- =?utf-8?B?S2ZuZE91WnI1V2FNSno1c2JUSGMxRFFEWFlrbUFBZm40Z3kyTUpaLzY0VTZF?=
- =?utf-8?B?WGxodXJ6YjlnV3MzcklJTjhNUFhacXlZbHZJaHZhSkVvVm83TmhuTDJ1RExl?=
- =?utf-8?B?cHQxalhkK09Ga0thVzQ1bXIzKzhsQ2I2WlJQcVJUcmhhUHAvb0NZWEw4UUF5?=
- =?utf-8?B?cWd3MFdmSUo2YS9YNWVEbEthMk5UM3orb254VlNvSEZaNHJrQnpINUhFK0ox?=
- =?utf-8?B?WEIvZGIyMVVhd012cHFLZ0lJc3ROVFlQUXFpQm5YLzFhdXRpUXBYWVRxZ2Ju?=
- =?utf-8?B?bVJnV0tMUk9reGhEM3VqSWU4UlFHRnROK2MveHBkcXBtNk14bllGdjg3VFpK?=
- =?utf-8?B?cHJkanFyaU1oOWEyVkttWS94eGpDZ0tma25CVXpTb3F6ODNzbUUwMGg4WUFw?=
- =?utf-8?B?dHdzMFpTQUpMOEtNaEpRa3pONW1DSm9UeEppRnQzT3lYczNHWkRBOUFRcWZH?=
- =?utf-8?B?eEY4MmJtNEc4djhjVC9YRzVrMDlKTkMybHJnV3hDa0RkTkNDZlVxaHhDM05H?=
- =?utf-8?B?WmtLL2R1RFVvQ0Z5OTRacmtGVVplOXNDN2pPVG5xU0EvZUJBK0NjbTFqaGhC?=
- =?utf-8?B?NHM4MmN4WWVMUTFKbmdldmNyR3BZRHFRV3NReFlMTlF0V2VEY3FGbkZNbzZN?=
- =?utf-8?B?Nlk0TWNhb0RxdXJSNE9SajRIeXBqdkpOVTNONHJZbUFKaTZQT2wvZ3JuUW5p?=
- =?utf-8?B?MFFLMlF4NEY3TmJUdm1lNWtDelFsQVpITGVUSnhJVldpTnVIaVh0eHZESU5S?=
- =?utf-8?B?cnU2RURvVERsYWRLaVN1S1AwQ2cyWnYxRTkrY1E4Sk1teCt2aEY5SVc5NnF1?=
- =?utf-8?B?MDZrV21KN2RseE1TVHNsMWFSRjF0cjdtUUZOaitNMXpmbHdQb1Fkd210L0hP?=
- =?utf-8?B?d0pqbjNHU0ZtaGVVcDFMajlUR0oxL1Boby9Rb1F1ejZBMW92UE02c09LL3lP?=
- =?utf-8?B?QXdDejlGMXMrdERsU2ZHWGZOdkpzcy9Kc0RHZWRTZ2ZPU2pVNWJWWDJzVUd3?=
- =?utf-8?B?Um5xMjVpSUNMWEdhOVJheG54TnUyaW1KMVdhc2kzc0d1MzNZMVRIN0lTbEt3?=
- =?utf-8?B?Sm5uU0lGd1dqdllib0kzU2lBU1VMb3NFdGs4WUZmaGlGV2xJaTQ5WC9DWTd1?=
- =?utf-8?B?a0tuYVhQT0ZjV1loOVdhRzR2c1AvOFlaZlhrTzFwRHBvT2FvbmVlUnN0TFFR?=
- =?utf-8?B?bEpCMHgzNmF2OVZBYjhsVVRKVzRhb2VYZjRWSVZTTTBQQjBoOHRnZ0t6M2FH?=
- =?utf-8?B?ejBtWllRVmcyRnFtWnk1dVBmWW5OeElJQXB4WlN1KzlxUWlmcmZ5VHpZeTcy?=
- =?utf-8?B?ODkzRzdkemY2alZhMitsRVFMY3lSbGhRTjRZcFVrWVlBTXpmQUl3dDdYcktU?=
- =?utf-8?B?ejFaT200U1loaFlJQlFTcVhIcWhsTUVVM1U4MXphWDZVdGxaaVVEVUtJUUlV?=
- =?utf-8?B?enUycmVEeEx5dUVhaFFRQU5PbVJjamZiNzVVMTBHby9ndWp6aUxYNlk3UUVO?=
- =?utf-8?B?VEdGRVJTVnBuUjhqdXA5SEpYRXpiRlFBOSsxWGxjblN5T203WWVkTk5CL2ND?=
- =?utf-8?B?TjZGcWhOZWg3ekNLbUVKOGp5VnptejhmTDRNajBuV2pmWm9wYTN5RnJHcTlq?=
- =?utf-8?B?WDFxOHIwUk96UHBVWGplT21yaGl0VFhOYkMxMjVRYXp4UWRObFg1L3llTGgz?=
- =?utf-8?B?b2N1VDhsb1M0NWJQLzNCdU1lYnJjMzJLcHhDNmVCVDc0UWdEWVNnb3dyV2hN?=
- =?utf-8?B?OVozbXphalF0SnpwSmh6eUYvNlpxVGFBUU9DS2ZiZlFSbW9PdUNMZkIxRVN4?=
- =?utf-8?B?U0h6L05xcXpIL3JyVGc4UFBFYU1qNEVZeE9RazZkcWd0Z2ZqVnQ0Y0VCR0Ev?=
- =?utf-8?B?NEszQVFTTU0xaW50Q0ZrM0JBWEw2T1l2YTI2VHcycTFtNlhPZFBzU2ttWU0y?=
- =?utf-8?B?U0dPSE1iUHZuTFptMUpwUlp6bXVTL3p2WHRPaHRiS2RZb1E4d1BRU2tyWGlI?=
- =?utf-8?B?MjlUTUh0MGh0eEc3UFZseG1pWlpiL1hiRnVqKzJHcU5zaUxPWUErU25FTlg4?=
- =?utf-8?B?NnJES0ZJcHg1LzFDZG55bU1GN1Eya0wvUUdnUkxkZUM2WEw2UWpWZ0lzNWZt?=
- =?utf-8?Q?QP3264cRSZlBQaNY=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: c512c716-7017-4e9c-594c-08de4fb26f11
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 19:08:12.0816
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vK0NimWps5601KhL63HuA/V4s5jvBI1iT4XVKhHSE7A1BW6jUOuHg8cUzl1trpkGffcNa7v6N1grzAgSReM+Yg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9064
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: E1E6340014
-X-Rspamd-Server: rspam06
-X-Stat-Signature: nu6hqqctajrrzw9spqfgi9i9ca6xixmw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260109171805.901995-4-smostafa@google.com>
+X-Stat-Signature: eonkhdqgbj7bkcwjhhpaw6r5pyeojw5d
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C57AD14000F
 X-Rspam-User: 
-X-HE-Tag: 1767985696-887778
-X-HE-Meta: U2FsdGVkX19du43t8r1DNhZEVRmZNBtEMfwtSYPq358yDPGM5zwybqFzsairc67DH4wyRY9rhvGqa8Xop/A1rjNL0BtqHG+N2S1D2qrkgKYLVH2uBTzCvtDlD4Kqg/J543y4t/HtKgoTagNPnpaQXYHuemvkSnKn4H8KakxwCvT7iPNxKNk2OZk61NjYrBcB6eX2j2GBDS2rtGfEs9AC+PrcTj6PvdIGOvjU272ZKWB+8B6kLmhEdUcUhn5KROTP+39C+j5TBatwGYRtfAkWHLOgZYSaYHO8NmfhfkSIynGsbm8Wi3DNf0anx5qFVVs0i5/OTkpNcKBwNu85F88tiUTmusqxkrQDsMW62rjtLyNiPHxjBdBHhD76+YmyHqj6TqaCokpCU7TfVqHOqbOV3VVDAu6CWxTQ0XgDGldE3rsCd+RoxCQf0RESNPfVECWjtos0JHei01wZbipLilIdrTgm3siC4zKgN56U44emdwgqcHCDTlKK54FDZOQg2/7ljGGTIVv54CFuUQHAipOB0UMukb8701ZQc9e6jggJSbEDkQk1x23cATE5CNlvXiRYavEuz3U9l8HvptCLqc1Q7DtsIR8D+dP17ZyEgaa9arsSDxYo+1lfdHKZlmh8Dfhk2FO0j54iYv5k9F87OFP5/7MRhOFU7DTpei0VAGT6xiqTxB06q2OMht5UcP5DImMMgaxoqQtLrOzs/NYB1y5R19LLChOae3HED+Ihd3GnxsTk6lmnx041CfWDYR9KGD+8z472ESAr/kjWxRzQc+6U2wHC45BC32Cw+2N7npCD14pLbO6Mw+xB9bPNjw1O7rD45HqItCC7ekOlbrLIgMe3gFLqOXfWszx0OJ5zj4bS3gI4xj6UnQKpsLQyW5Vxlgrrn23Zvp1w1gQczysG45oGCKbSYInbgwEQKjGHZATXsw5eRW7SQftDNahuxH/rVcZkfyvkmauAvWD9wNfi0+g
- AupLPQNT
- 3mHEAimtfWmOSVJZ+7FesH7zvla8ihuFXgMuybwfXvtpaYUm0LLeo/KAF8X5n3Fq78+ghWMEhgt9Rg5tWZwOkrIDXLpHKTLfeohOHdH8D/VYI70s/Ahz2JqD0q9IWwijlGeDHKphYd8HoNSc/k3GEtEpA/ZwSyPjC90JizvKzowE8ZCtvHJvWxpQjLifuvRVOTHJV9I529DBNunlvYyV8OInTJ3kmy9Yhv4fL00QaUJv4Xivnwocsm081vkOcCXWIiRPVG8opv28AGQQchi8LzxLSKPgdddTRjqF/zuWpPtI80REerRium/MC4He4agJ3J/xl92VG0DRC/4C0Zv/IaZNfn6zm7ixk1BdSpY+hCz3ipWh/zvy4tGDU7stBP163HuNO9KS1WAL22KxPMQVuQLZgUbi+KMYeUN05mJzx0mmS7W9CIN21ZzL1dZz/lC9L2Njn38ovv9Q/A59HO8k5dfoRBELdRUXjR7BbIU4GTDfuUXisbWhQa0dsVYDUmxEZS3HzfPI4xwGdMomZ0NJkCY9ukSQBscMrE05qbYzR6dAT8jpnMdfA/lBATsBK/+bqcS9JLqHE9mxT+2pnByQa5z74nbVcrnjBUM3wAsjZtsfiE6NwDAPee4opEgpffO8hkeVkhHQ3Cy7Ux4a8HObp3KFYsQzbrKWIq/lu1sKHLmbIIAcblFQ1U9W1qWnz/dP6GkgK
+X-HE-Tag: 1767986127-538127
+X-HE-Meta: U2FsdGVkX19Hggq4eJ8B6VEUkl/sugTf+XrQIsuwohKSyqlypqzBcbljywVlsw4S5BFr1jYj6RA9NCPPyuCu681IJWeOp1QL4j8vfgCydAmjTnfN0nSMnV4sMcVJ0ilO88KzSTyn7ACbxP/1S3AlKRJwOC96iaJhNqWQ41QxiGYySIpGHFyXsx1e6shD8F1IhESOOtVr9qZQiPEFl0NgQ7uqPB5Xt1bFrWTjk8uB3sq7GgFdys9OX9FeBZgBCRCaB+yQB9ooKB57oKcWESMpACuWMHMQXcZ09r164OlOxSa9iQdsudH1gj0L5gVeKxN5C0lKYlE7LKTmWZtzHSXhF/0YNwyyzSRqWIEajlLtfMc/ND/0T6dsEZJesJ806de1rH3kKeQt/YhZ6+pKxX/ftMo5YhhuEjGH5DdT94omSCY33h9ZK9vEIhgGEndxAaNG00dnCQMeAl0EOKUtZwsC1XSw7zB1sY+gZ3k5q4omnLdwE6Zt/3KYUMf/DSLF8zvUWV8DgO6mK5RWjq+J+F8a5SHYyjjVMqaaE1Fy7/kq9CbsD0s3GO1W3Zr6jDsvOVqdCwxyg5mdYBkR4Nki0/U4VUWkKk6KfnX/D4XOjh69bdRDNqT09Uc0bI2Y7/KFNfBvm/lq1TJTnNhGgv7QaEm43f7r8PPGwkccMSTXcAjtRGAv9VBT9jZYqznGYTcbSgG2VuqiL9VwZJlM+b4T7kMimeiqxVO6h7iYiCBByGil91AYlKmthfdS2ik+jExRjDGM/vkUFJxfm5mxWa0jSyARduqX4y4kGaAWBr4BJ4uplY7W8Omku3sHWpZwi2ChAhfyPtarlC3xM3JF+yMRbZtWM5FxrJfJG6pRaLdI/9zIkYOnRMXBgiJP/Wi/VjX3Th8vmr5HgQ9OJmqnYuH2NronVq1venKITT3ipUnJe3bKB2HD6knrvWmRF95l1/G3fJqwcXv7j8XiRMGYx6+wCZO
+ 25note4x
+ XeZ9Q7YjIVc4+2hcESeuJI6hI7kV3DhYC5z3P3OVy3sE3wmfUgpaNk5YYFPSa5iOdHPlBkD/Ac0YZYnzN1xAyEIjDD6ZgeasfVSHq1LpyPMgaENVUU4nYf3l0ShyeS0oULOEL5wRQX3v4cqJz1tED7+QmzHS+6r2rZf8SVgRYiDtA/g2+j4vME/R01HAfCWuUq5Nmuq0YPY8bMGqWwd3j4j6jBq7o338rBLk9J4ny+8wn+eJETdiu67wUOTZcGbr1M5twMnwj9db8qiy/gxTBSjvOc7x3HHdU8NeAVIXJ9QkAh2SFUyAhd4kYrwW7+w3fXklwd4xi9K2qO3dK2b0t59AuTrUUIjCeBRE4y8bzMIk4Vdlll95EZirLdw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -244,99 +124,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 09, 2026 at 01:53:33PM -0500, Zi Yan wrote:
-> On 9 Jan 2026, at 13:26, Matthew Brost wrote:
+On Fri, Jan 09, 2026 at 05:18:04PM +0000, Mostafa Saleh wrote:
+> Using the new calls, use an atomic refcount to track how many times
+> a page is mapped in any of the IOMMUs.
 > 
-> > On Fri, Jan 09, 2026 at 12:28:22PM -0500, Zi Yan wrote:
-> >> On 9 Jan 2026, at 6:09, Mika Penttilä wrote:
-> >>
-> >>> Hi,
-> >>>
-> >>> On 1/9/26 10:54, Francois Dugast wrote:
-> >>>
-> >>>> From: Matthew Brost <matthew.brost@intel.com>
-> >>>>
-> >>>> Split device-private and coherent folios into individual pages before
-> >>>> freeing so that any order folio can be formed upon the next use of the
-> >>>> pages.
-> >>>>
-> >>>> Cc: Balbir Singh <balbirs@nvidia.com>
-> >>>> Cc: Alistair Popple <apopple@nvidia.com>
-> >>>> Cc: Zi Yan <ziy@nvidia.com>
-> >>>> Cc: David Hildenbrand <david@kernel.org>
-> >>>> Cc: Oscar Salvador <osalvador@suse.de>
-> >>>> Cc: Andrew Morton <akpm@linux-foundation.org>
-> >>>> Cc: linux-mm@kvack.org
-> >>>> Cc: linux-cxl@vger.kernel.org
-> >>>> Cc: linux-kernel@vger.kernel.org
-> >>>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> >>>> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> >>>> ---
-> >>>>  mm/memremap.c | 2 ++
-> >>>>  1 file changed, 2 insertions(+)
-> >>>>
-> >>>> diff --git a/mm/memremap.c b/mm/memremap.c
-> >>>> index 63c6ab4fdf08..7289cdd6862f 100644
-> >>>> --- a/mm/memremap.c
-> >>>> +++ b/mm/memremap.c
-> >>>> @@ -453,6 +453,8 @@ void free_zone_device_folio(struct folio *folio)
-> >>>>  	case MEMORY_DEVICE_COHERENT:
-> >>>>  		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
-> >>>>  			break;
-> >>>> +
-> >>>> +		folio_split_unref(folio);
-> >>>>  		pgmap->ops->folio_free(folio);
-> >>>>  		percpu_ref_put_many(&folio->pgmap->ref, nr);
-> >>>>  		break;
-> >>>
-> >>> This breaks folio_free implementations like nouveau_dmem_folio_free
-> >>> which checks the folio order and act upon that.
-> >>> Maybe add an order parameter to folio_free or let the driver handle the split?
-> >
-> > 'let the driver handle the split?' - I had consisder this as an option.
-> >
-> >>
-> >> Passing an order parameter might be better to avoid exposing core MM internals
-> >> by asking drivers to undo compound pages.
-> >>
-> >
-> > It looks like Nouveau tracks free folios and free pages—something Xe’s
-> > device memory allocator (DRM Buddy) cannot do. I guess this answers my
-> > earlier question of how Nouveau avoids hitting the same bug as Xe / GPU
-> > SVM with respect to reusing folios. It appears Nouveau prefers not to
-> > split the folio, so I’m leaning toward moving this call into the
-> > driver’s folio_free function.
+> For unmap we need to use iova_to_phys() to get the physical address
+> of the pages.
 > 
-> No, that creates asymmetric page handling and is error prone.
+> We use the smallest supported page size as the granularity of tracking
+> per domain.
+> This is important as it is possible to map pages and unmap them with
+> larger sizes (as in map_sg()) cases.
 > 
+> Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+> Signed-off-by: Mostafa Saleh <smostafa@google.com>
+> ---
+>  drivers/iommu/iommu-debug-pagealloc.c | 84 +++++++++++++++++++++++++++
+>  1 file changed, 84 insertions(+)
+> 
+> diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
+> index 1d343421da98..9eb49e1230ee 100644
+> --- a/drivers/iommu/iommu-debug-pagealloc.c
+> +++ b/drivers/iommu/iommu-debug-pagealloc.c
+> @@ -29,19 +29,103 @@ struct page_ext_operations page_iommu_debug_ops = {
+>  	.need = need_iommu_debug,
+>  };
+>  
+> +static struct page_ext *get_iommu_page_ext(phys_addr_t phys)
+> +{
+> +	struct page *page = phys_to_page(phys);
+> +	struct page_ext *page_ext = page_ext_get(page);
+> +
+> +	return page_ext;
+> +}
+> +
+> +static struct iommu_debug_metadata *get_iommu_data(struct page_ext *page_ext)
+> +{
+> +	return page_ext_data(page_ext, &page_iommu_debug_ops);
+> +}
+> +
+> +static void iommu_debug_inc_page(phys_addr_t phys)
+> +{
+> +	struct page_ext *page_ext = get_iommu_page_ext(phys);
+> +	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
+> +
+> +	WARN_ON(atomic_inc_return_relaxed(&d->ref) <= 0);
+> +	page_ext_put(page_ext);
+> +}
+> +
+> +static void iommu_debug_dec_page(phys_addr_t phys)
+> +{
+> +	struct page_ext *page_ext = get_iommu_page_ext(phys);
+> +	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
+> +
+> +	WARN_ON(atomic_dec_return_relaxed(&d->ref) < 0);
+> +	page_ext_put(page_ext);
+> +}
+> +
+> +/*
+> + * IOMMU page size doesn't have to match the CPU page size. So, we use
+> + * the smallest IOMMU page size to refcount the pages in the vmemmap.
+> + * That is important as both map and unmap has to use the same page size
+> + * to update the refcount to avoid double counting the same page.
+> + * And as we can't know from iommu_unmap() what was the original page size
+> + * used for map, we just use the minimum supported one for both.
+> + */
+> +static size_t iommu_debug_page_size(struct iommu_domain *domain)
+> +{
+> +	return 1UL << __ffs(domain->pgsize_bitmap);
+> +}
+> +
+>  void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size_t size)
+>  {
+> +	size_t off, end;
+> +	size_t page_size = iommu_debug_page_size(domain);
+> +
+> +	if (WARN_ON(!phys || check_add_overflow(phys, size, &end)))
+> +		return;
+> +
+> +	for (off = 0 ; off < size ; off += page_size) {
+> +		if (!pfn_valid(__phys_to_pfn(phys + off)))
+> +			continue;
+> +		iommu_debug_inc_page(phys + off);
+> +	}
+> +}
+> +
+> +static void __iommu_debug_update_iova(struct iommu_domain *domain,
+> +				      unsigned long iova, size_t size, bool inc)
+> +{
+> +	size_t off, end;
+> +	size_t page_size = iommu_debug_page_size(domain);
+> +
+> +	if (WARN_ON(check_add_overflow(iova, size, &end)))
+> +		return;
+> +
+> +	for (off = 0 ; off < size ; off += page_size) {
+> +		phys_addr_t phys = iommu_iova_to_phys(domain, iova + off);
+> +
+> +		if (!phys || !pfn_valid(__phys_to_pfn(phys)))
+> +			continue;
+> +
+> +		if (inc)
+> +			iommu_debug_inc_page(phys);
+> +		else
+> +			iommu_debug_dec_page(phys);
+> +	}
+>  }
+>  
+>  void __iommu_debug_unmap_begin(struct iommu_domain *domain,
+>  			       unsigned long iova, size_t size)
+>  {
+> +	__iommu_debug_update_iova(domain, iova, size, false);
+>  }
+>  
+>  void __iommu_debug_unmap_end(struct iommu_domain *domain,
+>  			     unsigned long iova, size_t size,
+>  			     size_t unmapped)
+>  {
+> +	if ((unmapped == size) || WARN_ON_ONCE(unmapped > size))
+> +		return;
+> +
 
-I agree it is asymmetric and symmetric is likely better.
+Looks good!
 
-> In addition, looking at nouveau’s implementation in
-> nouveau_dmem_page_alloc_locked(), it gets a folio from drm->dmem->free_folios,
-> which is never split, and passes it to zone_device_folio_init(). This
-> is wrong, since if the folio is large, it will go through prep_compound_page()
-> again. The bug has not manifested because there is only order-9 large folios.
-> Once mTHP support is added, how is nouveau going to allocate a order-4 folio
-> from a free order-9 folio? Maintain a per-order free folio list and
-> reimplement a buddy allocator? Nevertheless, nouveau’s implementation
+> +	/* If unmap failed, re-increment the refcount. */
+> +	__iommu_debug_update_iova(domain, iova + unmapped,
+> +				  size - unmapped, true);
+>  }
+>  
 
-The way Nouveau handles memory allocations here looks wrong to me—it
-should probably use DRM Buddy and convert a block buddy to pages rather
-than tracking a free folio list and free page list. But this is not my
-driver.
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
 
-> is wrong by calling prep_compound_page() on a folio (already compound page).
->
+Thanks!
 
-I don’t disagree that this implementation is questionable.
-
-So what’s the suggestion here—add folio order to folio_free just to
-accommodate Nouveau’s rather odd memory allocation algorithm? That
-doesn’t seem right to me either.
-
-Matt
- 
-> Best Regards,
-> Yan, Zi
+>  void iommu_debug_init(void)
+> -- 
+> 2.52.0.457.g6b5491de43-goog
+> 
+> 
 
