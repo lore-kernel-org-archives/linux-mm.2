@@ -4,93 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B835D26D70
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 16:03:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8510D26D6F
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 16:08:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD3D26B0089; Fri,  9 Jan 2026 11:03:02 -0500 (EST)
+	id 289AC6B0088; Fri,  9 Jan 2026 11:08:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA23C6B008A; Fri,  9 Jan 2026 11:03:02 -0500 (EST)
+	id 237396B0089; Fri,  9 Jan 2026 11:08:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCE476B008C; Fri,  9 Jan 2026 11:03:02 -0500 (EST)
+	id 143DD6B008A; Fri,  9 Jan 2026 11:08:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ACE766B0089
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:03:02 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 810E91A02E6
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:03:02 +0000 (UTC)
-X-FDA: 84312894204.03.AFCD40B
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A397CC0012
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:03:00 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KywQBmKy;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767974580; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 00AA06B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:08:31 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7C8045840B
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:08:31 +0000 (UTC)
+X-FDA: 84312908022.02.BFD5F34
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 792D68001C
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:08:29 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=dUjtTcqV;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767974909; a=rsa-sha256;
 	cv=none;
-	b=HodpVv1OZ3Ufp5NnGtGv0Dlx7kEsGJREQgogqc/pHalDQSJ5osGmQp0cGk1CF54XRL+HOw
-	5Mcd95Dbv0Sh/VfCLqF34y3/Imv+glHy6hCW654BuBCVVP+a3Y3XTs1MDOn5RcqRCLpKSg
-	jhlCe8OEbb7TrfbGfFUPY64GxDLDk6Q=
+	b=2B3/X/8FEsXiQ8aNFtMMAtjWHZL/P0bY9lTlrsKDvJihcvmBAI5TtKzqEcYWopGW6I5m8j
+	nzfR5UKYvJ93oMNSo9MmIb12MO1sWGYkj0W/AwfSLDIZ9P8y4Ld0C5UPVy+E7NiOFO2Yyj
+	tUJDRtM4VrSsW2GYe1okZGDZqifGGCE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KywQBmKy;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
+	imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=dUjtTcqV;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767974580;
+	s=arc-20220608; t=1767974909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HO9vyzWX0Ct8pEprBc6DFuRbfkLrbZ4emdg92O7zT0w=;
-	b=BleZEYRNuu72n7slLT5BwRVuevOjOu4caYiMJ2DENGgnJKic8/twLOONXuY4ZmW+a7lswg
-	4IgP/QNJDWkDkH+W9ZI07m8ee4EB+jf1DvKZsbGOihsW2pFSq0iAIU8J3tG4eVASamWANS
-	fHQUnCNzFt7ALQkQSJj01LUT8aW+ISA=
-Date: Fri, 9 Jan 2026 16:02:51 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767974578;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HO9vyzWX0Ct8pEprBc6DFuRbfkLrbZ4emdg92O7zT0w=;
-	b=KywQBmKym5GSn3EeJNWSqcIbpo9DQ4fzPmNQ5lQwgcXOJPWZKZ1zfMIx5be/zImMZ3j60Z
-	ADdkA8akfLqTCYNSrlAiN9h5yAEEc4PXDGsfK8KLJ492vcWXIqn1vB/ukAYgHRR6/ru3Yg
-	RZX7usDFvfocrW6xZLm28GHCw6d+Qfw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
- consider other metrics
-Message-ID: <mldy4ayvdlmdz2c6spsmbuwiekvqtnxoj2lzg2ktehmdefsees@wdi7vw7kliuq>
-References: <7q5gqpfshnc3lfhzxughpks3fc2knw2delpm5io2oe54monydl@5isuxnjputjr>
- <aVyYuS_usi-lpHkM@gondor.apana.org.au>
- <dou7g3n5fpynsab7hmxf4bgmqdewtdhkkiriwlghxzyduick7h@bsi3q2kivvbs>
- <aV3uXguDCaVAbY53@gondor.apana.org.au>
- <9b7d6e6292c64f21b8d09def1b6723f02faffe88@linux.dev>
- <53zplsrqc66z4ea64cosy53zvttuuhgxr2ik7uw6i2zgluegyz@d3ulgntwnyw4>
- <llj3jf5evsp7f2wl2hmm6mouqzwzolvdnu4yquhxbgsgaqvsda@ltct5tqpzmyo>
- <utnvn4oupcmohosp6d3qti54qmdppg2xfw622dq6zz7t66a6ma@2pentzdw3zgk>
- <yxpn4gan74uryy6huzulsqvqvbsqiehdqe6lu7m3hjf3tjjdop@a6cifoycstso>
- <2iophcy2e6vk72ypxeshmen66e7jhr52zr34parn4uw6vdyjef@frnpfrltrky2>
+	bh=V4vHEUNRYMXphH1rfrlOiSS0TJwDxNN0hMRXL63E6jo=;
+	b=WbVamKryKFaIIpi22gjuGZhyWR6z9OOTaXx66X4LzE96NrgeLyAS2d4Xrjt8NKmeiVs3Bb
+	X5eIhg/ECx/q+Y0Adm1Qfr7pd922rFQ2SKJggtlnmRE6IHCLnWXjx+viYdKJ6AaobBpERi
+	JQ5+sj+dBcW1cZyz+3Eg8RzFF1tQBbQ=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4ee14ba3d9cso46424871cf.1
+        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 08:08:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1767974908; x=1768579708; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=V4vHEUNRYMXphH1rfrlOiSS0TJwDxNN0hMRXL63E6jo=;
+        b=dUjtTcqVSKBici+Jqf411XGDXYhg2HUjM5xipyMYFC8kESUls+hFRH5lN+5G9h3uHe
+         Tes+zZ7WcPsaBLtKVfdUWa2+LRgGLr8Riki3DqOF9iYOS/GZR6kDt/kz9MlhlenkFTIt
+         kS4tigX+khdul0OS9QxSwYHIVkD9nHskO5f19rT+YQDFAsLEqZtx86UGE2iOTcNtk4eF
+         Nuj9JKwOcEiJ7tHuQXuLevc2/YHV32xP8+Dl9SNZL6qPDpmQWovxdR7QLkqwPjEz4Htf
+         2XkZsr9JgXSZ8wIm9qQ6QHYvPaavJn+BXEnSQS8VmgdyxdBnSgBKLs/CDbDHj0AJH31U
+         rBnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767974908; x=1768579708;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V4vHEUNRYMXphH1rfrlOiSS0TJwDxNN0hMRXL63E6jo=;
+        b=H+XQN7DZBEx2LAocB1DGXhcZ4/r5JUg/6FTTjJIorWIWcHOevrsoBglp7Vd3rT2Il+
+         u/eUGBUPqgvMfJGyAuS6VOssli0Ik4ddz9ihkfbwL45ekEWlNNMUp3pFnHz1PLPKCLbM
+         nIz8XHGbK+dYa//L8Vfc40Aq8hmYoWdUbUdnx6AVwETEbDfMkc+rja8zEILA0RSP//Iy
+         UHDqYBTf7qg19u95/96iTD5vKsyhWC39VN2ebBOcwbBD2szgKSmMTQOv9Cmow0U32OFX
+         +uIILOlvrjcOvxWpeCGvpGCjuZnqAgBrU/zEEReZwUKBDUECNsn6ZtsQ0hGY3yHFxVbM
+         dvwg==
+X-Forwarded-Encrypted: i=1; AJvYcCVQrNbkfOzkG4h4N8S0r8ebPUVLczL7/HayaoUi9FbFvYhxK0kWgLxdWl7fFF5UAgRH+fMbXVVhzg==@kvack.org
+X-Gm-Message-State: AOJu0YwJfVXJLQyu7cwxWxcHTSZHIHNjGyyFK5WJ0HToqxOPoWxKB9o0
+	6weclQ0aV75hF19JQH6B+I+45pFlM2TOQlCa+09uPuyoRrkBTsX0WBOXc8AHKHwb6o8=
+X-Gm-Gg: AY/fxX4wyl1HfU5wmEQJD2BtCLOhlzgUlMXeeTzYTFUbvjF8UCO32VOOTZSCHmSDweB
+	xqP6ptEIbsdugNf1hijycYTe2T3cUyqBruHlMTYQpk8Fp3Hq+xdrHyScai3eLkfDv3MNSqYPFE4
+	pFiayxuy3Et4Oa7UB00Ab8TY9lmQIxRUKCv6CJMMBaiDpGOktBsZ/91vR51DtnzLSnkzt1N/Kd6
+	n3H54oPL6bLGi6vR1ln8JNjz3O7PE8GjymS0m0WLAl7S1codLPXG9eamXUHmliuz3TkZPtZhVKR
+	K9iHgyLheT+zaKPPUD0hlRuxqOPrrn5k/tM9LhlMN4O5uQrN7mfylNJ0qOv9PkdcaYxcMeFGGBd
+	6ly+v5HXG+HCIfq++GWe/3/nQO5xiln4G0Q4WVKia/mbM7+RKpGT9oM3rKt9Bx4nIMyaaLrU3Ip
+	0HIj/aNABU4EMwDhCjwo8uVlLSHmv9P/WKMgRfEhYKvS7B8nbcolCSq6rDHp6U+eZLybE+cw==
+X-Google-Smtp-Source: AGHT+IEdvXZpwW/0Rj/zKD9Q0FT8JfSOnFbEdErwx/lCsZ0mgwmxjheOk0MqApSu4txhmwbpb7cX6Q==
+X-Received: by 2002:ac8:580f:0:b0:4ee:1db1:a60f with SMTP id d75a77b69052e-4ffb47d6537mr154025831cf.16.1767974908465;
+        Fri, 09 Jan 2026 08:08:28 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffb75d7916sm57189031cf.7.2026.01.09.08.08.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jan 2026 08:08:27 -0800 (PST)
+Date: Fri, 9 Jan 2026 11:07:52 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Akinobu Mita <akinobu.mita@gmail.com>
+Cc: linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, akpm@linux-foundation.org,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org,
+	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, bingjiao@google.com
+Subject: Re: [PATCH v3 3/3] mm/vmscan: don't demote if there is not enough
+ free memory in the lower memory tier
+Message-ID: <aWEn2ODG0gyej0Xr@gourry-fedora-PF4VCD3F>
+References: <20260108101535.50696-1-akinobu.mita@gmail.com>
+ <20260108101535.50696-4-akinobu.mita@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2iophcy2e6vk72ypxeshmen66e7jhr52zr34parn4uw6vdyjef@frnpfrltrky2>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A397CC0012
-X-Stat-Signature: 1f17k78efw3ujabhbcbaigmmsxmj7jqe
+In-Reply-To: <20260108101535.50696-4-akinobu.mita@gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 792D68001C
+X-Stat-Signature: zpgjbtsw8tgbnytxersh9qfk81egzr1m
 X-Rspam-User: 
-X-HE-Tag: 1767974580-496118
-X-HE-Meta: U2FsdGVkX1+GgnL2QDpV10R0gsN8/dqab+FKtMOZ2eZy6nVam7HOVdUZ3YIz/6JuqSL4CrrFwiyRDb+3WExyqY1T5lLl3AX+PVpCh3ldQD3Nv5ID6pSndny7uDxggJPwahVujMgur9l0uQKltsIop/hd4YnE/oNutopD4oUT/NdrrU6BsLZ1H3qyPs8G3CWDXX8CUp73O6OWJJuIPReXux9apH33DT7JMdh7a2cw4bbtQ5nd0e4WNIVvwNl3FMHRgz8oHLylrPXi+eJfKbinL71OJcuY7dwrP/jUTPpZAaoovZ/WnrryY19vqYlHxlQVF1eEo4rdTbVe8+LpN9QXFkhWjuCqP8Wne0iXem6ae4zpHqrxdTrYlaqwgCnpU64nUfz7sSsDzYQ/l7ZWfla5tw53b1TDpSwJ2cVcO8slumuZiX0qkOY7GPnYK33X8KBrfqXggKwbJL8cPCx66VoIKcnrG8H2qv1wtm7d4fhq/5s+uTsxN0Q9kvJTOU4mV5ZjLns+AatJFaQeVghLnUnCiN2doftgH/tHjkDwmf9uNclnrxE2bmYgZxrApXpXUj/J9BU8/EhJeAA5IlZHaQw1hBRInegzyBDkYxKfCXuqmyeOu7Z1LP3slBy5jhj6+JlrZD5ocSSq2nQKUdczv9G1jxANanghrRFzUvE+7fLiYrkecLgQ30aqVpWDI7WFicicsO8D2gfQPoen2Th1Oa/xh3eaij1iBj0Qx4z4gs/JiEXDHi//cYJ3RUzRBPZFwL/ieuIo0Dm9N4nCFXYE7EMLzver3WVVKUBbYQeHEskt+ceiR+tw+4T9oY9BhamNskggTYYHcPzW1mGbgqzRQbrSlfEKTBzvQ6ruEt/TdJ3DK0K//+6L2eIXeArNduj6fEjF8UulUMl/EUX7AqNShDXFhVWYiCAbCek03AXejp3nJ3n67bK86qxb7PFsBJ14iQ/GNt73X4v1piG3y9CZBR3
- fPG6N6nD
- xc6m8gNxmk2Y3HhQKvDVc0Kn3vqk+oG7l6u5TQpod+KhNNJTGNBmFzOlK3GeiInRdfBU8IynvMwiM0M2n7K8q1hDkIPyJY+/zI0B4pxpCiobENPfcKA33+vXxJ2gHfIcQ62iw2yZkPKRTDdjlzPsrVKOZQvkuT8xxweD2aj6zq18Vnx2B8d02gqtFftfIM4bS5kgEpm24MqWn68Cx+wJaCImAbPn13VmM9s6+V/rJQeiMiic=
+X-HE-Tag: 1767974909-450115
+X-HE-Meta: U2FsdGVkX1/tnYiPU72syPyLMsCVu0NwPkOXwHCxOBTNmCusSIut1TrtbeUy+TS0cp6eRTxptT6nTH6UlYNYMp1FEsNRW+dbq7rQGHeoLL/eDygfwgjtRLYFV+V8KxMuGhUHWQvO0gTQpDULYaAJVAN05sQK9NaZHJB7X+7JtNbAdgCoX6NrRMEC9brKIscVHF5w26HkcncIwCIg64+742N+Rh+5rEghzhCtmaU5QvnRjLLIsEuIiSKipKBZz1aXEHIKBqJvKymGJ7qWYsmX/yHGIO43O1S3cqaPqbr9NvjuiaLOQy/30p5Q8JFbCTnamgm5Ni3adOnglmvaJl2APowK556G0k1VqJ1TgeArILacrfaGUFfplExUtzWcqamwdKiHLRMlIESxswBshFdKySahuc42q8BRaWECv+e+hz4dOvuOtCfnHSm6P1BuOlPYu/wWwEH2rCJpLaE/c//vN7yYgtx0fj4PpFYc1pNQjEYtmLWpCacHVprbZCyCrjXWZUTovG5PIdjvt9IjusrOrFeIInh4/wEUjWMscKwzl1npbNQDcNNjnVYvvp3bc9+/Rgvmxt3AkvlSKPaMMBT2mJzGCBV7PBLxMSfur8q3wsfSh4hP+1G72vpy6mYIdn1OQhYhUCGP2alHIFf/LA9su8iYvmskTD+rHXLM4JHhGUJ/XbdWrlETxxBk9upvK0R01XNrA1cO/9YDn9a4WKIGXEQlk5QXm+kOuuOcFIeJJiJC1Q/aGBWxHPlpH/yy+t0jRkN6GEkbaeKkE3GVCYZ2O4URePPfp/I4fdAAAFiHdUQ2U9fIwk2lfUsXtLHj4tfSVLUee5BIjh5+ukf0QoMg9EQP3mmSdJ5kXIiIYV01Hrr/RdcJ3397sHv7TnwBD3upsc9Ep3Go3jc0TZlKfZBh+PdXcQPIYJtiKF5wrNYS3yAVanstuqJIAWpHaHD2A8zgL9VKBaanyAZ14pvp9JD
+ 2ZQKZIyc
+ oPO35O5jG7acdMr0Z3i0DXZmN0py9gDtggXGpkp0sItknNenwKFcKNgZr0W838uQ2OFroU+pU5XrwtVQwifxGYfTStyRNuLyb9aN4/8M8mRPFW7wWVe2SimcdiyM3vUVQA5TV4dbBWpSgqjqVP65Cwc3Ra2ttKnuujJhB/jOGNyTLJxq62Vc2SqyI1XsC2rf74JCW6+uN3/mSU/warzPuLbunx0zNFn2Ygu1sJgsYKlAx0zdfvEzlKmNVlq1ZeVBX+e52y5uVUEy5fWCHAO7FLMM4tuIquVVeAQ/QZSZ/d1xmjuFLpkLEg62buKTI2vR61Tq/pvgIGON3ru/yfLifgpLsdKtnc/ub66o+T4tlZH3DmedFIHj2B0PbINvmtzcMXWAlZhNAFj8e3GBvJW/F+wvIFVJdsk7KqoKw2mz16PXXGck=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,154 +125,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 09, 2026 at 12:29:58PM +0900, Sergey Senozhatsky wrote:
-> On (26/01/08 08:01), Yosry Ahmed wrote:
-> > > Yeah I agree, I guess I can cook something up.
-> > > 
-> > > For transition period we can have:
-> > > - current "memcpy" API
-> > >   for zswap
-> > > 
-> > > - SG-list API
-> > > 
-> > > I can vmap either on the zram side or have new zsmalloc vmap API
-> > > (alongside the memcpy and SG-list APIs).
-> > > 
-> > > Once crypto API supports SG-list and algorithms tunables I can
-> > > switch zram over from zcomp to crypto API and remove memcpy and
-> > > vmap APIs from zsmalloc.
-> > 
-> > IIUC based on Herbert's previous response, crypto and scomp already
-> > support passing in a discontiguous SG-list. So for zswap, if zsmalloc
-> > returns an SG-list, it will just be passed as-is to the crypto API.
-> 
-> Oh, okay,
-> 
-> Something like below?  Not really familiar with SG-list API.
+> +	for_each_node_mask(nid, allowed_mask) {
+> +		int z;
+> +		struct zone *zone;
+> +		struct pglist_data *pgdat = NODE_DATA(nid);
+> +
+> +		for_each_managed_zone_pgdat(zone, pgdat, z, MAX_NR_ZONES - 1) {
+> +			if (zone_watermark_ok(zone, 0, min_wmark_pages(zone),
+> +						ZONE_MOVABLE, 0))
 
-That makes two of us :P
+Why does this only check zone movable?  
 
-Herbert, do you mind taking a look at this? It looks sane to me except
-for one question below.
+Also, would this also limit pressure-signal to invoke reclaim when
+there is still swap space available?  Should demotion not be a pressure
+source for triggering harder reclaim?
 
-I can try to test this next week with zswap and see if it blows up.
-
-> 
-> ---
->  include/linux/zsmalloc.h |  4 +++
->  mm/zsmalloc.c            | 65 ++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 69 insertions(+)
-> 
-> diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
-> index 5565c3171007..11e614663dd3 100644
-> --- a/include/linux/zsmalloc.h
-> +++ b/include/linux/zsmalloc.h
-> @@ -22,6 +22,7 @@ struct zs_pool_stats {
->  };
->  
->  struct zs_pool;
-> +struct scatterlist;
->  
->  struct zs_pool *zs_create_pool(const char *name);
->  void zs_destroy_pool(struct zs_pool *pool);
-> @@ -43,6 +44,9 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
->  			size_t mem_len, void *local_copy);
->  void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
->  		     size_t mem_len, void *handle_mem);
-> +int zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
-> +		   struct scatterlist *sg, size_t mem_len);
-> +void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle);
->  void zs_obj_write(struct zs_pool *pool, unsigned long handle,
->  		  void *handle_mem, size_t mem_len);
->  
-> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> index 16d5587a052a..8f7569058147 100644
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -30,6 +30,7 @@
->  #include <linux/highmem.h>
->  #include <linux/string.h>
->  #include <linux/slab.h>
-> +#include <linux/scatterlist.h>
->  #include <linux/spinlock.h>
->  #include <linux/sprintf.h>
->  #include <linux/shrinker.h>
-> @@ -1146,6 +1147,70 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
->  }
->  EXPORT_SYMBOL_GPL(zs_obj_read_end);
->  
-> +int zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
-> +		   struct scatterlist *sg, size_t mem_len)
-> +{
-> +	struct zspage *zspage;
-> +	struct zpdesc *zpdesc;
-> +	unsigned long obj, off;
-> +	unsigned int obj_idx;
-> +	struct size_class *class;
-> +
-> +	/* Guarantee we can get zspage from handle safely */
-> +	read_lock(&pool->lock);
-> +	obj = handle_to_obj(handle);
-> +	obj_to_location(obj, &zpdesc, &obj_idx);
-> +	zspage = get_zspage(zpdesc);
-> +
-> +	/* Make sure migration doesn't move any pages in this zspage */
-> +	zspage_read_lock(zspage);
-> +	read_unlock(&pool->lock);
-> +
-> +	class = zspage_class(pool, zspage);
-> +	off = offset_in_page(class->size * obj_idx);
-> +
-> +	if (!ZsHugePage(zspage))
-> +		off += ZS_HANDLE_SIZE;
-> +
-> +	if (off + mem_len <= PAGE_SIZE) {
-> +		/* this object is contained entirely within a page */
-> +		sg_init_table(sg, 1);
-> +		sg_set_page(sg, zpdesc_page(zpdesc), mem_len, off);
-> +	} else {
-> +		size_t sizes[2];
-> +
-> +		/* this object spans two pages */
-> +		sizes[0] = PAGE_SIZE - off;
-> +		sizes[1] = mem_len - sizes[0];
-> +
-> +		sg_init_table(sg, 2);
-> +		sg_set_page(sg, zpdesc_page(zpdesc), sizes[0], off);
-> +
-> +		zpdesc = get_next_zpdesc(zpdesc);
-> +		sg = sg_next(sg);
-
-Is this stateful? Will the SG list be returned pointing at the second
-page now?
-
-> +
-> +		sg_set_page(sg, zpdesc_page(zpdesc), sizes[1], 0);
-> +	}
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(zs_obj_read_sg_begin);
-> +
-> +void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle)
-> +{
-> +	struct zspage *zspage;
-> +	struct zpdesc *zpdesc;
-> +	unsigned long obj;
-> +	unsigned int obj_idx;
-> +
-> +	obj = handle_to_obj(handle);
-> +	obj_to_location(obj, &zpdesc, &obj_idx);
-> +	zspage = get_zspage(zpdesc);
-> +
-> +	zspage_read_unlock(zspage);
-> +}
-> +EXPORT_SYMBOL_GPL(zs_obj_read_sg_end);
-> +
->  void zs_obj_write(struct zs_pool *pool, unsigned long handle,
->  		  void *handle_mem, size_t mem_len)
->  {
-> -- 
-> 2.52.0.457.g6b5491de43-goog
-> 
+~Gregory
 
