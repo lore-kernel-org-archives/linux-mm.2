@@ -4,142 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE6F4D16805
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 11:02:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B019ED16814
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 11:09:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CC1A6B008C; Fri,  9 Jan 2026 06:02:49 -0500 (EST)
+	id 091786B0088; Fri,  9 Jan 2026 06:09:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 480616B0092; Fri,  9 Jan 2026 06:02:49 -0500 (EST)
+	id 03F046B0089; Fri,  9 Jan 2026 06:09:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A3196B0093; Fri,  9 Jan 2026 06:02:49 -0500 (EST)
+	id E8D376B008A; Fri,  9 Jan 2026 06:09:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 287416B008C
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 06:02:49 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C49F7140432
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:02:48 +0000 (UTC)
-X-FDA: 84312137616.11.C982146
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CB6DEA0012
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:02:46 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D6C656B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 06:09:26 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 90EFE1A049C
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:09:26 +0000 (UTC)
+X-FDA: 84312154332.22.4B3FCBC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0CAACA0015
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:09:23 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="yRstko/6";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf25.hostedemail.com: domain of smostafa@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767956566;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aKOO1ICD;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767956964; a=rsa-sha256;
+	cv=none;
+	b=npbT2o+lmKAcPSrL8dtHe/xCpshUv4tdnBdcmPG6RFI0VbnVhLdMtdTgPZKDgyuIqQEs/s
+	IOTtwgVDVvviYxnV8KdOU0ynQO8ygbIGBdeDjSbSQ+GeSLt0sfRTqu9sZ6igoztuWc1nKN
+	0iWqkJw8W4rFkDGHp2Mvb/KGJJK9QiI=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aKOO1ICD;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767956964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jzCiSHIGOYpa7t9zzF/wcFfKhZV6nLFk0KAKRqVw7HA=;
-	b=DB/HiSPvRt4UxQPMslm4dYEMgJsW/9i0yLObXNlGMrcZFNDbi5TnZrPm932dPi5EHUa4dy
-	R5yVGgOliqb6YcA9HhoK4TK8fhxCzO5MVe/R7ITaodY1mrLhlxd0XP1+ZDhAaq2dpKl/jS
-	4pZb85+Vrw0RwHo96JK7hU3AbQJXp8M=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="yRstko/6";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf25.hostedemail.com: domain of smostafa@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767956566; a=rsa-sha256;
-	cv=pass;
-	b=HirN51ciuLe2+8+qw2myFPhGjreOkSaRVGPxWh1XpRAqBhJp6WtE4hhaEC4wmP/Ab56bCY
-	zrhXog7JS14FeEe8CPfoilojYe7PG2yI+5le3IuE+rWJdjPjKRYocNwyyZ7ZOI8JadJPOM
-	fmGOsdbwr27auh8rsZpKeh4d1mOd53o=
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4ee243b98caso269211cf.1
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 03:02:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1767956566; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BxgVIO7os9BICMt4zdfuJqPYfMVO/ZSPaf2BC8UUX/TFxleDDiYBaqEVgqM+aMf19/
-         qjDBPlJHWRqDOwTHIKJSEmm8CqPhF8K1ZtYvpT3TdhIgwcqYOCRJYnEdjArmdjbikiXP
-         kUHrPdeO2rTZlRQB/7q6KVNfBNI8TDHx5bJPg313XkJ+yf9P+zi4Uogh41EnpylyuuG0
-         ATHRoH8L5B6K4mgQZHjdyURH15DhAijBKC38t5h8f2kTPmjj+Q+XTEI0iFz9eAxSvQBp
-         kVHt8KqS8ZhFsGXf6/UYctn8Yb26lBJwGFNWRRa6AEoqQMrUWbIMos6LeiLMIGDcnRU1
-         YFXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jzCiSHIGOYpa7t9zzF/wcFfKhZV6nLFk0KAKRqVw7HA=;
-        fh=b2KkvOQEi44Nk7jZCtLBKdwGJ5V/mLLSFnsz/xOt7zY=;
-        b=T+nyKHoxjiIfOIr8z6/bUCjVS0tgsuG6dgZ2PLUEUo3ynTQgujY9rrBRYuXyUmLRpB
-         7plwffKbupmbn1mgAL5V8eguRq/r8azmoNh9H8jVeA5BI0JtuKT2Dj0/P7PXyPTwU++j
-         LI3NkkXU+g2m90n00KpJvdvkp+1pjCifc5Mm5e3GQ959Yv85tsBh08nYRMTbj/5kYzlN
-         77TiIzt1xHrQu2dYtfXZej2i8aXjtQYHGdo8oelBSSdhO3kjdsRj9Sq+HwgJRaSSeVtt
-         8gdFh/H2tGiVLka8NrAYyvktcwj1FKH8OXS94wKrBHUmYd8tmIaI+t0rtq6zTr/ipNGK
-         B7fQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767956566; x=1768561366; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jzCiSHIGOYpa7t9zzF/wcFfKhZV6nLFk0KAKRqVw7HA=;
-        b=yRstko/6N6oq6z0+F2GbONgojEzl7k9zxEL+lmGrkPIgOhB4fkrLq+5MUjjxlZwqOy
-         6R4jcsLe5gOPERNFBs0aIQ/7taXUN8X5Xoz6mOPVi1gaWxJrdEfGFU6Oxv02QHCIjh3U
-         kzENXOX9ncnMVqy6LXJpHbNUrOpg/fyYaONga1rSWaL+84c5ksNe0gSoJuyi3A8V6qCj
-         kphS9HOHJnUPNab5GH9HmBCazjnN3W2ElPlOvbbDbTZsCjBdet51IY/L3TcYBfwfCHOF
-         YN1lw2nsibTMiTtLQIOvFcTUo57ekxLuJw2styKxwXyX4nmnUOdjIa1LfF+zeypb8J0+
-         QdJQ==
+	bh=+WLh4YdMT4BQhhiGpX2c08r18nWKZ1SS4NAmL7UFi+k=;
+	b=y7+BTn1Crbq9S5J0BHWspAYq0ZsgRWRG0ULiuXy1Ru7gPX/GNc1z4yAwcdXFRaDdpfSvqR
+	t+fPOcn+cEPad82/e0qCAs7i7NGeUglJ/M0C/Mzk/QrBZvUBSeYG+k9pJKnHh+m4qL/onK
+	1MU+Hw5FGeOAy0mJ147weKyNONuDbOg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767956963;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+WLh4YdMT4BQhhiGpX2c08r18nWKZ1SS4NAmL7UFi+k=;
+	b=aKOO1ICDaLzOW/be1m+BMMUZTPefN/5RZwFT8Z3Rhslz6wNuuZ0TsgxyokgrHGQbdCGOPw
+	uZKJBfsnUalWPlwOqQqnR621LD/7M+w368DBtFlh0TiENOpLrgm0Z1LJOJ9zaIKzkbE+85
+	PPlYs46Ze8+DG7ZMGs2g59ywtq0I7fo=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-252-1NcQox6yNoCXRn4iSjj8Bw-1; Fri, 09 Jan 2026 06:09:20 -0500
+X-MC-Unique: 1NcQox6yNoCXRn4iSjj8Bw-1
+X-Mimecast-MFC-AGG-ID: 1NcQox6yNoCXRn4iSjj8Bw_1767956959
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-59b3b255ee8so3825977e87.3
+        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 03:09:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767956566; x=1768561366;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jzCiSHIGOYpa7t9zzF/wcFfKhZV6nLFk0KAKRqVw7HA=;
-        b=cvQkI4nkgrSTrlHseWLNnB1yrj9+9mPHeZNNeFkPrlN4Mur1azWEz9YXtkOOh/BuIw
-         87OkoyxccDLjZ98PPfMvevi2+bLue3fLl774cAogQV7vDh29hkSlCkWZN+YdpF4G20Vm
-         IQiJsTDy05W5tYZ08v1Mxat9/3ulQlBMcVvBA+k56HAxjV0OvJrkk6h1oRRuxZpWfXg9
-         d3Ti05UtRpGrJXlN6uPv+o0pQ1FZKnoZeu2HrTWIhoHuNl2om5bAj8QYM3JNWnCwafvH
-         jswn3wiinUWpQIS0ztqzDpUH2xfU15nIVorVs0oMxQhohilACiLvyMe0XEpFKLNdrGZJ
-         g9Bg==
-X-Forwarded-Encrypted: i=1; AJvYcCVCZUFe0kc2cJRp4IhI4HFDuExH/0Gi81LBbyKGpYDtKHxn5cFVmKaHQE79xOWr+NY7n1akEyo0PQ==@kvack.org
-X-Gm-Message-State: AOJu0YwUMs5IPG8D6/3wo3cKTlfV/WT6a/CGgQ9NwwFuZhX/7QIkXlOl
-	EEOxFCMluTGddkTzLfDi6pZQxYkECn/j3PrHDOgWfI3eQcVJmdSqGQzibpQwIoBuIPs5c7DA88m
-	oLl25I/0DXzD7C3q1Y1QbDYGDentGLIrXSMvbsVDr
-X-Gm-Gg: AY/fxX7Ce8gSC5k6Ey8E6zRoFgqTClJ43SgpXjxXpwodOJ4uO9osaseCZ2y8RJrZVfU
-	St/5Qi9WPub03JPnWh0nEuiJ0bZrwoDZP9AXhAtg+N44X0Gz6Bpmfwl8bp3bWQAePKbXvNHPHCS
-	lxEWhhdVO0TrX26WOSqiLecjfXY1ifLzy/r3DSjkd/eJfOoYLdxrd3RgyYISe4eP+Dh+VjmlwyG
-	w2iMbCrHXQxIsB7zQYHXqlBzvM0rT42YsOwR6RLHGYt72NZNkp9/9VNppTpDP6EiAtcNcJTanwG
-	KoP7HFBppbJrbGuE6K7H90LP88H1m7IYG7nNGnZ4
-X-Received: by 2002:ac8:5d8d:0:b0:4ed:70d6:6618 with SMTP id
- d75a77b69052e-4ffca3899e0mr9525541cf.10.1767956565345; Fri, 09 Jan 2026
- 03:02:45 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767956959; x=1768561759;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+WLh4YdMT4BQhhiGpX2c08r18nWKZ1SS4NAmL7UFi+k=;
+        b=n6sqBoBTb8R1pQno9YCYswlHZ3bzsDuvsFFCpDQ7s2Ds22Nj4YmSStPgE3HXWWHsTx
+         0x7WHCFYxxsf9JOSqDBmllBJTObda82CA+vHiAhrXvlomU99DowAYp5+N4lQd02bdhth
+         IQ/SbaLwCKX0GO7F1ghEfrDZLRQL6qN1i95GHCYwjVyj7Q7oJPAYfcBL3kWIBfRij39z
+         QxfDBGktEeSwhD691QkeotovR/Cdc+e3as2vF8TQb6qrBkWf+9fo6keuPAPaeV1os/bx
+         vgbqDDX8Awy2QLIRON9P8p3eMe1dYNKX9AaK19Ihfj8baKXyH8QX26fvz92KbAxLjp8I
+         izqw==
+X-Forwarded-Encrypted: i=1; AJvYcCXh9/MuxNISgUm68wRqMvYXL6Dr+TNTKxls3Y1IR7wEekInt42dWo4rW/1ZpCJvLgNpAjDUjMW8Cw==@kvack.org
+X-Gm-Message-State: AOJu0Ywm5muOhK+qH5O2xMOJe/YKOQFLp17ljySAHrFGDXHRJMDIIc3a
+	MQY0Hs2IJ2Mkyh7Zy2aAVAFzGy9/g+xsc71wnb5L3piXzCNlRL0akdc5EAaNGFonzcbaO6tyOJv
+	UjupiqBl+sRtWz3xQjeWtTWBLvlcuZZ0zeEQPXCZCBXlXgr6HEJI=
+X-Gm-Gg: AY/fxX7835CFx7PzxwAyTmQHG5RVHEf1jY6I2O0nl25JfpfweqM/MfScD1GbfWCpsDX
+	eqgt426TFkWqbSX2u7m2yrkfcP75sW3tucHZIFDLrezQXhUiYfs6ynIJYYX6IWyadwrJ7MDlmIL
+	S5jx5U0em5cvdkUU4dZyh9c1870XEGbjcxnKBG1whzS3qTBvRtwkUJp3JpzBdjAk4VGeAYKFwaC
+	J4D0pGpu5tIpeXzwuy9AyL1klrFtNFPueWNdBlFakhjDHNO1OixCyJNP7UuIA/lf7ALi/b19Vvy
+	pXEBcOTYOKsZLrxmYj/nlq8eOEa0ZAYbIWn3wZDqwRUq+k71hMiVB/vS4c9MVWQKG8JDd2xkage
+	Yt7OsgLrJ1Iew5mI8R/H6Iw0GWJdeXNCKC3w=
+X-Received: by 2002:a05:6512:138c:b0:595:840c:cdd0 with SMTP id 2adb3069b0e04-59b6ef23821mr2942328e87.2.1767956958655;
+        Fri, 09 Jan 2026 03:09:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE1Kdn6xqqEz7oS8njPdOYi3SCUUHgKoVYObUp3Vur8XucGkM8H4lTSJgH2gDE+3acZOyL3Ug==
+X-Received: by 2002:a05:6512:138c:b0:595:840c:cdd0 with SMTP id 2adb3069b0e04-59b6ef23821mr2942314e87.2.1767956958199;
+        Fri, 09 Jan 2026 03:09:18 -0800 (PST)
+Received: from [192.168.1.86] (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b65d0f6absm2716455e87.42.2026.01.09.03.09.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Jan 2026 03:09:17 -0800 (PST)
+Message-ID: <d1d80b81-678d-4d28-9ac2-95cb74824e73@redhat.com>
+Date: Fri, 9 Jan 2026 13:09:17 +0200
 MIME-Version: 1.0
-References: <20260106162200.2223655-1-smostafa@google.com> <20260106162200.2223655-4-smostafa@google.com>
- <aV56BWisUQTMK2Gk@google.com> <aV-PvBqQ0Ktiha8e@google.com>
- <CAFgf54o4Ja7jQwxo6XyW+JaT+aUuj3O2dvLqOTb+YSVCKTdvyQ@mail.gmail.com>
- <d6236413-7385-45c5-94ad-8b0f2007f1ac@linux.intel.com> <aWCviSCK7IBddLTn@google.com>
-In-Reply-To: <aWCviSCK7IBddLTn@google.com>
-From: Mostafa Saleh <smostafa@google.com>
-Date: Fri, 9 Jan 2026 11:02:33 +0000
-X-Gm-Features: AQt7F2oqTpF_L8hxvj3t4iE4ZAXrurkscrS9S6zaVPP7N-l_qQbRFrZajZBoJoU
-Message-ID: <CAFgf54quzFPtfXN0Tw5qO2HU0YExN3FBHK3uG2yiLxkNybfHfA@mail.gmail.com>
-Subject: Re: [PATCH v5 3/4] iommu: debug-pagealloc: Track IOMMU pages
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>, linux-mm@kvack.org, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, corbet@lwn.net, 
-	joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
-	xiaqinxin@huawei.com, rdunlap@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/7] mm: Split device-private and coherent folios
+ before freeing
+To: Francois Dugast <francois.dugast@intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
+ Balbir Singh <balbirs@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>, Andrew Morton
+ <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260109085605.443316-1-francois.dugast@intel.com>
+ <20260109085605.443316-4-francois.dugast@intel.com>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <20260109085605.443316-4-francois.dugast@intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 4uZV81KYpYIQ3ALwhQ3w02albYSeYurGt15lnMYUXPk_1767956959
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0CAACA0015
+X-Rspamd-Server: rspam06
+X-Stat-Signature: fhks417jpkc1fuidawodb71re4m4y97m
 X-Rspam-User: 
-X-Stat-Signature: 4y5pz3fa3ddtn6dqs7mngu3rmrjtarre
-X-Rspamd-Queue-Id: CB6DEA0012
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1767956566-985576
-X-HE-Meta: U2FsdGVkX1/YXqW223uc4oZy8pGK38v3geZVFkpt0XLZ58rmy4OpTgnMVWSRIy0D2gAuwCMzGUlQ7jZJEAEU2ixT6reZtA/toHP8Pm/t2/8h+BbZe5r2lbFcvjXQlkyKScjIF2PUUUWdZmWPk64v7eKhANBBeIGbR/LsbnnEH4aq6qnRaftOYO9blMFlZaiXxmAbGtopVWtoM/Ku4KjeK0AghEdxf3PhpxdHrjpRnpuTMT+WytQRRlt2obkENYaxtdyODPmqntMz9IgYUWi0GULNIMqWlQWH6Jqv/7VWlsE7Cy1YcI9hQ7F0kh6fR2ZxRO9oJ5J30uXL8I85SL4Pa5GB7Ce59Z4Oap/hxCbQ4xLoEIGKqPVEXdP3hh9m7fQFSUbNnnLNtauE7kv9ISAr2uU4245cnE34A2OkIcNGXaCntjVMC2JWWhHuK6lMqWl4CUTZJTThU6D3Eyg7VCi1dcX4x3XZzuXyy1i9qlHC1no5uRFpoy2KUKLMEOE8D4XKvbtm/t+X2nGYApbBg94eiiM3/M5OIB03I3JL1IQZDDzg54cSn/6WBHCluPbhjDyFeu1r221iTu8KC8Ib4J3MgZWJcJpbwr4lJIbPiZk4nCAEpKKB4YJXme0KPgtmvhheOLkLBEgT2pFqQTzXS9LP7xCdlvvZPu1igNx7004aUZxVOlAemgXXyIW4UZg4zPUZE/2jvYu7en/xAKOaizjqysDO23LTEIoiLiQ7n2OKXwOdae2dz3PE+7xRsDZR0Y3H/3BG0/lcj/3a3cLChc1OqmS563Sy2n860yBQG2LewFlcWR3tYeA+E7qTPzMTSrZ0i8VH8l5xdt5BJyKafdafy0bpSac2zzjtLPwEKdhIJCcq8/F/RkerWfwL6EvgRa08QtxLz5rhQ7C9VR8Xz3NiVIedkVFMwdK+dvHrBnCC0vFnbij2J5BlyL+OSgVcM1EtXJTjSBEbHvvL/AVEiVw
- JHv5loDr
- w4HNh53cra4Yj/8Js59IHuZBCKd6bhvqaqMhB/Npm/GLHVEdkQHSC6FQcmDrU+B2Anxxg8I1nuR7nlR7BEA06jtBqSnPvtYE7ZshaQZVLOHJ1YPKjrW06o6AVmeFvQJhAFOAY1bGOiUhPlqXGmG4D4GajM2KSfh7as3fLfiG1atY9rye2rSXeuiFr72Gj+tBIOb0Gkhqf95ykeTySkI2mOqsT82ikKjPq2dgHCRPFZuwqZmVktbjpIkWugjV/6ANc5j5UcEE4wLDQZ68=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.009233, version=1.2.4
+X-HE-Tag: 1767956963-700019
+X-HE-Meta: U2FsdGVkX1+DM27vcqxfO7j9D0VQ/cMjm8aXwJx9oBI5IJaoXH3ga+YsJejSYJSVbG7jKa+TXzMjfTVs23LxxxeozwXRp95Xao2RPDWeGhtW4Y95abar7mHerDessF5S0iG4Yk+S+fbwJEBwmfb+f1+GJsJjMbOJmyZiZc/Kzt00reP4dGKpv9NhB/mjjQKEkaEMIzztl74k2ng+Wh2B3JBYMIad8EBf1EE+FAXy/zjJTRYG4NV2hkypoF8pjqbwX9w9EHeQr+H5Z3BeZmsTjblC+J5Yckm7IrBVqSPPpoZngYxIJiXhLo8Z3XLYuxnk2FiG6cnFs37XfDrzuWqSnDkIYj8RwDh7MZ2hiKfMd1hZtW8HywW0NfexgkJbU8LHtqfIp1ehop3NeGKlKHviJJWK3rs0dMVmh3zySJ6kV7zpi2tsvd7JZ+/FPOGQ7+GMCIdG0FBZqhmvSp+0MYgNh+kI6v77Yuu+tNG7QcFZWLWenVIbClu/ptVi74DbkW8mEq2mlr/BJ46fjhH05Wld216UWzgTzbQlN2tdKXSftmMtp5Onxjpv7KToyKHPXaY1VHHYoGFnRm8ojqxNILyLJUmM+o3xviFWaIVJVxPbWzM2Ssmgd+VMBqrl6Bw7OjaSYEoCZontGxDIZq69I6+qfn1EMC30eYbfSr/CMMzVst6pbmjOC+8XfQg2zQAK/QO7N4JXw+kjrOgnYbPW/DY5X/tbDogBhhSY24XZJWAbM3BF5G/IU8omq6zhkAxOXmhNSDU0iLWodVEq2t31lyec89HAGY/qo4vX2HYhgRW4qOOlwctwewyNfxbT4DIL3MK0LOHdSQIuPOlY5i26CuGGgdKsDx3WT+buFEIgOoji7Ze+c/FnLkEXfudicMvKW4ebrpsPW9IxTGfaTz4Q5UlfApLEGX/zJ9SFD7Ia7qNa19FnzN+zWh50Ox1MG/FdCzlfZ/SuX/PafQS2wYeNxBM
+ PhJtS9FK
+ UVF+gPKPQ0wJpSs4yOybhBYQd9XJIPrIEqz25hHn6rfpiBYfhROqND0SIS+y9iV9bxfpnSEqErgjIzrOtZIkXQUyyhqCwJHeQIGwqlkXMviiTzHNiH7xG84saBleHcABnx/kneyMxR8bGeryVgAWF0dYMDZIUixuF7f2wOeEyEhD0Zg4YrsOhC76LNgildd4+WmM9bHsLj36Sh27vGJjGbrsi6+XKwSprIkFs57ehGTriAGrpA6dIm+7CQTNhYJgHLxGHCngF5v7o70vwfhhUnz6V6Ilo6zzCQeaWe9/tT+C5BOpa7L4cImKDG5AqgEIgU+QaMgL730SortCd/FEJW7DBAVj5dU6uxkJY2WtU0YabZEh6kK8aLdTHocRiZFVEOUMqz2TZNjjCPzlwN1kSQYMQ300KnXwjSTpHvC1ZtvShMTzfWnQUxg6S5uuyXwpyeG2sgPoz2D+lS0OTq5cFs+rzRMLB/6q69cOTsL42oHKpt3cZcXmYZiU8c7eGiQRRKOFQAzdpDSe/2CzV3xdEuTU3RxAGCladD1h1RV6g/NLUHdfawYHsajTwKDFbdqTGcuqvPg2waVVoEsRLU8nMNmv3H1BDGCYDnEEZGmjte7hY1pfkktPg8nm1BV4kjeNnhn0BWWee1xyUejo=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,71 +139,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 9, 2026 at 7:34=E2=80=AFAM Pranjal Shrivastava <praan@google.co=
-m> wrote:
->
-> On Fri, Jan 09, 2026 at 11:28:32AM +0800, Baolu Lu wrote:
-> > On 1/8/26 19:33, Mostafa Saleh wrote:
-> > > I have this, it should have the same effect + a WARN, I will include
-> > > it in the new version
-> > >
-> > > diff --git a/drivers/iommu/iommu-debug-pagealloc.c
-> > > b/drivers/iommu/iommu-debug-pagealloc.c
-> > > index 5353417e64f9..64ec0795fe4c 100644
-> > > --- a/drivers/iommu/iommu-debug-pagealloc.c
-> > > +++ b/drivers/iommu/iommu-debug-pagealloc.c
-> > > @@ -146,16 +146,12 @@ void __iommu_debug_unmap_end(struct iommu_domai=
-n *domain,
-> > >          if (unmapped =3D=3D size)
-> > >                  return;
-> > >
-> > > -       /*
-> > > -        * If unmap failed, re-increment the refcount, but if it unma=
-pped
-> > > -        * larger size, decrement the extra part.
-> > > -        */
-> > > +       /* If unmap failed, re-increment the refcount. */
-> > >          if (unmapped < size)
-> > >                  __iommu_debug_update_iova(domain, iova + unmapped,
-> > >                                            size - unmapped, true);
-> > >          else
-> > > -               __iommu_debug_update_iova(domain, iova + size,
-> > > -                                         unmapped - size, false);
-> > > +               WARN_ONCE(1, "iommu: unmap larger than requested is
-> > > not supported in debug_pagealloc\n");
-> > >   }
-> > >
-> > >   void iommu_debug_init(void)
-> >
-> > How aobut
-> >
-> >       if ((unmapped =3D=3D size) || WARN_ON_ONCE(unmapped > size))
-> >               return;
-> >
-> >       /* If unmap failed, re-increment the refcount. */
-> >       __iommu_debug_update_iova(domain, iova + unmapped, size - unmappe=
-d, true);
-> >
-> > ?
-> >
->
-> That's nice, We could also print the message as Mostafa mentioned, like:
->
->         if ((unmapped =3D=3D size) || WARN_ON_ONCE(unmapped > size,
->         "iommu: unmap larger than requested is not supported in
->         debug_pagealloc\n"))
->
-> An explicit "This is unsupported" warning makes it clear IMHO.
-> If a driver triggers this, at least we know the sanitizer state isn't
-> supported.
->
+Hi,
 
-I guess both are fine, the WARN points to the line which should be
-simple to deduce the cause anyway.
+On 1/9/26 10:54, Francois Dugast wrote:
+
+> From: Matthew Brost <matthew.brost@intel.com>
+>
+> Split device-private and coherent folios into individual pages before
+> freeing so that any order folio can be formed upon the next use of the
+> pages.
+>
+> Cc: Balbir Singh <balbirs@nvidia.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-cxl@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> ---
+>  mm/memremap.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/mm/memremap.c b/mm/memremap.c
+> index 63c6ab4fdf08..7289cdd6862f 100644
+> --- a/mm/memremap.c
+> +++ b/mm/memremap.c
+> @@ -453,6 +453,8 @@ void free_zone_device_folio(struct folio *folio)
+>  	case MEMORY_DEVICE_COHERENT:
+>  		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
+>  			break;
+> +
+> +		folio_split_unref(folio);
+>  		pgmap->ops->folio_free(folio);
+>  		percpu_ref_put_many(&folio->pgmap->ref, nr);
+>  		break;
+
+This breaks folio_free implementations like nouveau_dmem_folio_free
+which checks the folio order and act upon that.
+Maybe add an order parameter to folio_free or let the driver handle the split?
 
 Thanks,
-Mostafa
+Mika
 
-> Thanks,
-> Praan
 
