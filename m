@@ -4,131 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00442D16805
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 11:00:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE6F4D16805
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 11:02:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64A4F6B008A; Fri,  9 Jan 2026 06:00:45 -0500 (EST)
+	id 4CC1A6B008C; Fri,  9 Jan 2026 06:02:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 628E66B008C; Fri,  9 Jan 2026 06:00:45 -0500 (EST)
+	id 480616B0092; Fri,  9 Jan 2026 06:02:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 534EF6B0092; Fri,  9 Jan 2026 06:00:45 -0500 (EST)
+	id 3A3196B0093; Fri,  9 Jan 2026 06:02:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FC466B008A
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 06:00:45 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CCC741AB9A6
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:00:44 +0000 (UTC)
-X-FDA: 84312132408.20.34AF723
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B25BDA000A
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:00:42 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 287416B008C
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 06:02:49 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C49F7140432
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:02:48 +0000 (UTC)
+X-FDA: 84312137616.11.C982146
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CB6DEA0012
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:02:46 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=TtKgf9Ub;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf25.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mkoutny@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767956443; a=rsa-sha256;
-	cv=none;
-	b=cahksVbeDMBa3t8Lu/Ocmyng9ekwcdo/tnvIOUZZBS/F5lOQh2HdvzxBfpVe9lFqQ87Z2c
-	D/kkm1eavKkwXhpQgva+6fcuZHqU4/JSUYmmmOuIX5S6iVEvNthGvzZbfo8pxQOajKrX2Z
-	rRXsXFZ+DFI9CfSsl6CTdaVjXsbJOs0=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=TtKgf9Ub;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf25.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mkoutny@suse.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767956443;
+	dkim=pass header.d=google.com header.s=20230601 header.b="yRstko/6";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf25.hostedemail.com: domain of smostafa@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=smostafa@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767956566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WAxQ7MQdYxU/tGt0pWJm8Xb00GKZdoezyggvKWirzVw=;
-	b=OGORlaT4K04Q7hOeHCzaqXZEJMXTsd9lg0Iv0WPzK9G5E4xpKt16MupdWaES0gb0A3GtSt
-	JzbTIk9yL+Xn3XaUDnyZXrdkrm0E+/DxHXJ3rkOOi7xYMr73H7xYLdMAHHb9XJoiB5A6WS
-	WlfctY/yOBeug3EoXIYTKZ8AFKyUOyM=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-431048c4068so1743758f8f.1
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 03:00:42 -0800 (PST)
+	bh=jzCiSHIGOYpa7t9zzF/wcFfKhZV6nLFk0KAKRqVw7HA=;
+	b=DB/HiSPvRt4UxQPMslm4dYEMgJsW/9i0yLObXNlGMrcZFNDbi5TnZrPm932dPi5EHUa4dy
+	R5yVGgOliqb6YcA9HhoK4TK8fhxCzO5MVe/R7ITaodY1mrLhlxd0XP1+ZDhAaq2dpKl/jS
+	4pZb85+Vrw0RwHo96JK7hU3AbQJXp8M=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="yRstko/6";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf25.hostedemail.com: domain of smostafa@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=smostafa@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767956566; a=rsa-sha256;
+	cv=pass;
+	b=HirN51ciuLe2+8+qw2myFPhGjreOkSaRVGPxWh1XpRAqBhJp6WtE4hhaEC4wmP/Ab56bCY
+	zrhXog7JS14FeEe8CPfoilojYe7PG2yI+5le3IuE+rWJdjPjKRYocNwyyZ7ZOI8JadJPOM
+	fmGOsdbwr27auh8rsZpKeh4d1mOd53o=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4ee243b98caso269211cf.1
+        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 03:02:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767956566; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BxgVIO7os9BICMt4zdfuJqPYfMVO/ZSPaf2BC8UUX/TFxleDDiYBaqEVgqM+aMf19/
+         qjDBPlJHWRqDOwTHIKJSEmm8CqPhF8K1ZtYvpT3TdhIgwcqYOCRJYnEdjArmdjbikiXP
+         kUHrPdeO2rTZlRQB/7q6KVNfBNI8TDHx5bJPg313XkJ+yf9P+zi4Uogh41EnpylyuuG0
+         ATHRoH8L5B6K4mgQZHjdyURH15DhAijBKC38t5h8f2kTPmjj+Q+XTEI0iFz9eAxSvQBp
+         kVHt8KqS8ZhFsGXf6/UYctn8Yb26lBJwGFNWRRa6AEoqQMrUWbIMos6LeiLMIGDcnRU1
+         YFXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jzCiSHIGOYpa7t9zzF/wcFfKhZV6nLFk0KAKRqVw7HA=;
+        fh=b2KkvOQEi44Nk7jZCtLBKdwGJ5V/mLLSFnsz/xOt7zY=;
+        b=T+nyKHoxjiIfOIr8z6/bUCjVS0tgsuG6dgZ2PLUEUo3ynTQgujY9rrBRYuXyUmLRpB
+         7plwffKbupmbn1mgAL5V8eguRq/r8azmoNh9H8jVeA5BI0JtuKT2Dj0/P7PXyPTwU++j
+         LI3NkkXU+g2m90n00KpJvdvkp+1pjCifc5Mm5e3GQ959Yv85tsBh08nYRMTbj/5kYzlN
+         77TiIzt1xHrQu2dYtfXZej2i8aXjtQYHGdo8oelBSSdhO3kjdsRj9Sq+HwgJRaSSeVtt
+         8gdFh/H2tGiVLka8NrAYyvktcwj1FKH8OXS94wKrBHUmYd8tmIaI+t0rtq6zTr/ipNGK
+         B7fQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1767956441; x=1768561241; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WAxQ7MQdYxU/tGt0pWJm8Xb00GKZdoezyggvKWirzVw=;
-        b=TtKgf9UbtnITigmp+uMuOCzO2U7K9DZ6egkdAY3I0x4QzF5BIwJJ4dJByWSCJvV1GO
-         8X5SbcMDhY4FmWujLzf1knDEmU0tQh4HlCu8ggYH5qLHLG27WBnlEVR5oNBdoNX54uX2
-         7OwyXuiAOB/gSy3H7tGH59LOb7LsurMBKfMxhhZPoQT67wd+clVes7vij2Ag5qc6qn94
-         Q/akljjMnWsXdjhapxqud1YJon+fQyPf97DHMEAfvvvwoZgMXQOyqMAPvru2YPL0It+v
-         OlFcSAz0I5M89VblSMGerb8hdVDOmgrLxavS1cZUyukwI8NLlqDcWhAqcHK7fVfNPcvc
-         H86A==
+        d=google.com; s=20230601; t=1767956566; x=1768561366; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jzCiSHIGOYpa7t9zzF/wcFfKhZV6nLFk0KAKRqVw7HA=;
+        b=yRstko/6N6oq6z0+F2GbONgojEzl7k9zxEL+lmGrkPIgOhB4fkrLq+5MUjjxlZwqOy
+         6R4jcsLe5gOPERNFBs0aIQ/7taXUN8X5Xoz6mOPVi1gaWxJrdEfGFU6Oxv02QHCIjh3U
+         kzENXOX9ncnMVqy6LXJpHbNUrOpg/fyYaONga1rSWaL+84c5ksNe0gSoJuyi3A8V6qCj
+         kphS9HOHJnUPNab5GH9HmBCazjnN3W2ElPlOvbbDbTZsCjBdet51IY/L3TcYBfwfCHOF
+         YN1lw2nsibTMiTtLQIOvFcTUo57ekxLuJw2styKxwXyX4nmnUOdjIa1LfF+zeypb8J0+
+         QdJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767956441; x=1768561241;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WAxQ7MQdYxU/tGt0pWJm8Xb00GKZdoezyggvKWirzVw=;
-        b=ofg2dCw6m7yM1jNj9FvJ79Y8oyRA8g6zu5Ss9RXuCtwCZ+7Q7m4lQAKmw8PEIzM445
-         JZgjfF8atO/KY2KdFeeLlXSt6oCjFvd4EF7qT2l5E4xjBNGgwJIsQk2A741pPyOubftx
-         rAqFuLBwftN/w7jlkyiNhBd0N6wIglo7QHrgqPvCFv9V0tWg5/Q+TBtezq4ghTUj9Kd9
-         fR3Qbk8r6SluihSN+zfYHTaG5YsGrD9EeRQPIBCUijlu4FROJKnywWy4C3grbUQRaYsZ
-         6hfeoCaU6c48ubkG3LQUGs5vIc8uUFlP4HvhcQMPpq5Kq0CYERu3gON1hXgz0iP6MvBt
-         Wf5A==
-X-Forwarded-Encrypted: i=1; AJvYcCXkfPC/xhfxYZ3DleSk714ep7P5yzMil8NScXIcvrg/BrYF4THoqEzLzjpZieTNn1a4bcnTqa2yCA==@kvack.org
-X-Gm-Message-State: AOJu0YyBXxwDegAcbSDOhy9NrO3C2WFI2/m7EHg+vOdAKLQ7XkIk2ps4
-	BE7ypbsD4rx+2kPVYDX8YjY/q9qsP04XYjuHgbovOBk20xQKi9GCAeYQjp/2NExhleI=
-X-Gm-Gg: AY/fxX5R3skdwyuqlAZc47qhy5f3CGbc0q5ZEoblh3HWQG9HLuaJdtslx9xwwbOEK2o
-	tqcvZP8HKHcxQ6A/MtqRiIlOd0yCbCiXrvlENf9uNVAwJq5jQRGpIw3vESogEoENni+PttFeQOH
-	nl4zcMWuwcNUFk5Y2Yso6Rg3CKkLzUzLBUWsBrBXCIhji6aYQ3LWmJyars/qHyiaKtdrT7hUQE5
-	PdlMVgdETSoWwk/NFg4YU2Y65NeT/uIVi1uU1hx2uS5JOy5uTPTgtAU2t1Ua/WQgY9g+peR3No+
-	pBT480kndbtsQN02eSJ1LJPrtfa9RhvlO2w9HBUbJyZ2Xj/jKcTHO6ws9eMl+iMGXViXNMJmm4z
-	vuBZGkW+ewN6UHruHJK3PnC/3ycnDrmyFGjs4qbKX7PzJo05s2xHgF20IjPZR1J0elApNInEwCd
-	BZHJWQnq22JLT/D7rW9cH7eiD+S+vhmI0=
-X-Google-Smtp-Source: AGHT+IGRsE8Hv/AUhz+iHbvTJwK3vPHDZw2H+8Bf3HHUP23TuJFtXMnG1VVlGoGvmO2o8IeTQqDYgw==
-X-Received: by 2002:a05:6000:3106:b0:3ea:6680:8fb9 with SMTP id ffacd0b85a97d-432c362bf54mr11704014f8f.3.1767956440814;
-        Fri, 09 Jan 2026 03:00:40 -0800 (PST)
-Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0dad8bsm22304319f8f.8.2026.01.09.03.00.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 03:00:40 -0800 (PST)
-Date: Fri, 9 Jan 2026 12:00:37 +0100
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: hui.zhu@linux.dev
-Cc: chenridong@huaweicloud.com, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Jeff Xu <jeffxu@chromium.org>, Jan Hendrik Farr <kernel@jfarr.cc>, 
-	Christian Brauner <brauner@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Brian Gerst <brgerst@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, davem@davemloft.net, 
-	Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH v2 0/3] Memory Controller eBPF support
-Message-ID: <tuxit3rxedp5ujprdnkzqarwbjw37izpp45u5ryn3tg5h4z7hv@a73ydhb2gona>
-References: <cover.1767012332.git.zhuhui@kylinos.cn>
- <enlefo5mmoha2htsrvv76tdmj6yum4jan6hgym76adtpxuhvrp@aug6qh3ocde5>
- <a935563217affe85b2a6d0689914d7aba2ce127f@linux.dev>
+        d=1e100.net; s=20230601; t=1767956566; x=1768561366;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jzCiSHIGOYpa7t9zzF/wcFfKhZV6nLFk0KAKRqVw7HA=;
+        b=cvQkI4nkgrSTrlHseWLNnB1yrj9+9mPHeZNNeFkPrlN4Mur1azWEz9YXtkOOh/BuIw
+         87OkoyxccDLjZ98PPfMvevi2+bLue3fLl774cAogQV7vDh29hkSlCkWZN+YdpF4G20Vm
+         IQiJsTDy05W5tYZ08v1Mxat9/3ulQlBMcVvBA+k56HAxjV0OvJrkk6h1oRRuxZpWfXg9
+         d3Ti05UtRpGrJXlN6uPv+o0pQ1FZKnoZeu2HrTWIhoHuNl2om5bAj8QYM3JNWnCwafvH
+         jswn3wiinUWpQIS0ztqzDpUH2xfU15nIVorVs0oMxQhohilACiLvyMe0XEpFKLNdrGZJ
+         g9Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCVCZUFe0kc2cJRp4IhI4HFDuExH/0Gi81LBbyKGpYDtKHxn5cFVmKaHQE79xOWr+NY7n1akEyo0PQ==@kvack.org
+X-Gm-Message-State: AOJu0YwUMs5IPG8D6/3wo3cKTlfV/WT6a/CGgQ9NwwFuZhX/7QIkXlOl
+	EEOxFCMluTGddkTzLfDi6pZQxYkECn/j3PrHDOgWfI3eQcVJmdSqGQzibpQwIoBuIPs5c7DA88m
+	oLl25I/0DXzD7C3q1Y1QbDYGDentGLIrXSMvbsVDr
+X-Gm-Gg: AY/fxX7Ce8gSC5k6Ey8E6zRoFgqTClJ43SgpXjxXpwodOJ4uO9osaseCZ2y8RJrZVfU
+	St/5Qi9WPub03JPnWh0nEuiJ0bZrwoDZP9AXhAtg+N44X0Gz6Bpmfwl8bp3bWQAePKbXvNHPHCS
+	lxEWhhdVO0TrX26WOSqiLecjfXY1ifLzy/r3DSjkd/eJfOoYLdxrd3RgyYISe4eP+Dh+VjmlwyG
+	w2iMbCrHXQxIsB7zQYHXqlBzvM0rT42YsOwR6RLHGYt72NZNkp9/9VNppTpDP6EiAtcNcJTanwG
+	KoP7HFBppbJrbGuE6K7H90LP88H1m7IYG7nNGnZ4
+X-Received: by 2002:ac8:5d8d:0:b0:4ed:70d6:6618 with SMTP id
+ d75a77b69052e-4ffca3899e0mr9525541cf.10.1767956565345; Fri, 09 Jan 2026
+ 03:02:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6ugyd27enu6zatdi"
-Content-Disposition: inline
-In-Reply-To: <a935563217affe85b2a6d0689914d7aba2ce127f@linux.dev>
+References: <20260106162200.2223655-1-smostafa@google.com> <20260106162200.2223655-4-smostafa@google.com>
+ <aV56BWisUQTMK2Gk@google.com> <aV-PvBqQ0Ktiha8e@google.com>
+ <CAFgf54o4Ja7jQwxo6XyW+JaT+aUuj3O2dvLqOTb+YSVCKTdvyQ@mail.gmail.com>
+ <d6236413-7385-45c5-94ad-8b0f2007f1ac@linux.intel.com> <aWCviSCK7IBddLTn@google.com>
+In-Reply-To: <aWCviSCK7IBddLTn@google.com>
+From: Mostafa Saleh <smostafa@google.com>
+Date: Fri, 9 Jan 2026 11:02:33 +0000
+X-Gm-Features: AQt7F2oqTpF_L8hxvj3t4iE4ZAXrurkscrS9S6zaVPP7N-l_qQbRFrZajZBoJoU
+Message-ID: <CAFgf54quzFPtfXN0Tw5qO2HU0YExN3FBHK3uG2yiLxkNybfHfA@mail.gmail.com>
+Subject: Re: [PATCH v5 3/4] iommu: debug-pagealloc: Track IOMMU pages
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Baolu Lu <baolu.lu@linux.intel.com>, linux-mm@kvack.org, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, corbet@lwn.net, 
+	joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	xiaqinxin@huawei.com, rdunlap@infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: g1j9warzcmgnpc57b9ncg6omzq88rph5
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B25BDA000A
-X-HE-Tag: 1767956442-422439
-X-HE-Meta: U2FsdGVkX1/PsOVwqTrRHNLuvrVylpQh7rpgL+ncO3uqe4xTg3cRBxTdjl4aa1NelLq93+eZ1hmu9y5m04jGYvSiKx69ERsJmjttNpKWwV5px8MXC7Znr8mpEUupgAXcbxD1Z8Zwl3CvdtzJt3CK3vOT/kKvZ7vlPaRVcVd2X+agfb0gwjQuT0TQ6pJZCK9nLVNYztTad6/xqkHWTt06VIQDz8yqWL+jFfbwvfZcGsRCaWrryIqhNTPoMPSf05fo6VenJIB3dkRLI7RW/Eik7ZDeUxv/1nCKTWra1WWTQZGtr8QRUGDaQjF+wwY4lK4HylVSTbd9M2y2Wp1n+sHg+qttHfqE3pcQvYFkG5LvsNQxUfasuuDm1Cwd5UV31eT9yGB369qx+UJGF8xY//a2Fx+k4ALHI/Rpg6dgBDE37UqvqEmlsNYBAuFuSXlMmmqIxscAp8Ab7E1sveU4q+H3gVUeDzAnFS2GXQWFRlNYo0zfEFtVmu2JFjuvXjhrR7bWn1j5ATwzoz2jRzTJFrX28gIuCnkXGWWYSWILRxUM9EQyL9/HCthw2BDGmu1/as3//HRs+9TxnubwO1dGQoOroLWQZ/XYvLhhPvHG5TDLn5r88CrA/CS17vM05TVfs471MiZiNieItm5r5WwdtMbR2VjaP92DU5oslwvJf/T6ItyNkPfZEreoaSCM7Vb0+NUt5myCoSYkxXTTm5j8BbX8e54gGuWjriJeQ+n1V9ZxG5v5AHM2xQdSQxlcwJJWMHEaf2j0a82RH+Hc8c8OKqP7JqOjeBxWHEMrkUgzWHzqsir69tmVPgeil8qrCP9cgZhJwH4Cu5KhWenfl6eCArG9JYD7tb22EbXgoT3L3mNKlsZj2LprRWdPITDdJK9Mt9lsu3iw1o9ifTj3H8bGtPITmW7uBT4GBeMKr6UQ7oHaoDEnwp4NtVjoIXvjwCi4ZvKrD82QTRRvJhwHpuvRXXL
- Rlo9K/4c
- yx+ApzfgHBHPnfQq+t0ZF+wL0pJzDbsEniHDNbY6pFe5vptnyW0wmaBWhcpQO6fxE2zBdr4D4dcVCCyR7suuA3veekU7LHt6/dFaQRKAWZVkPsZVDJjFLKm3Iq/L82xoJ1I7qpG2rF6C2b7LnPkepQwoEcQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Stat-Signature: 4y5pz3fa3ddtn6dqs7mngu3rmrjtarre
+X-Rspamd-Queue-Id: CB6DEA0012
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1767956566-985576
+X-HE-Meta: U2FsdGVkX1/YXqW223uc4oZy8pGK38v3geZVFkpt0XLZ58rmy4OpTgnMVWSRIy0D2gAuwCMzGUlQ7jZJEAEU2ixT6reZtA/toHP8Pm/t2/8h+BbZe5r2lbFcvjXQlkyKScjIF2PUUUWdZmWPk64v7eKhANBBeIGbR/LsbnnEH4aq6qnRaftOYO9blMFlZaiXxmAbGtopVWtoM/Ku4KjeK0AghEdxf3PhpxdHrjpRnpuTMT+WytQRRlt2obkENYaxtdyODPmqntMz9IgYUWi0GULNIMqWlQWH6Jqv/7VWlsE7Cy1YcI9hQ7F0kh6fR2ZxRO9oJ5J30uXL8I85SL4Pa5GB7Ce59Z4Oap/hxCbQ4xLoEIGKqPVEXdP3hh9m7fQFSUbNnnLNtauE7kv9ISAr2uU4245cnE34A2OkIcNGXaCntjVMC2JWWhHuK6lMqWl4CUTZJTThU6D3Eyg7VCi1dcX4x3XZzuXyy1i9qlHC1no5uRFpoy2KUKLMEOE8D4XKvbtm/t+X2nGYApbBg94eiiM3/M5OIB03I3JL1IQZDDzg54cSn/6WBHCluPbhjDyFeu1r221iTu8KC8Ib4J3MgZWJcJpbwr4lJIbPiZk4nCAEpKKB4YJXme0KPgtmvhheOLkLBEgT2pFqQTzXS9LP7xCdlvvZPu1igNx7004aUZxVOlAemgXXyIW4UZg4zPUZE/2jvYu7en/xAKOaizjqysDO23LTEIoiLiQ7n2OKXwOdae2dz3PE+7xRsDZR0Y3H/3BG0/lcj/3a3cLChc1OqmS563Sy2n860yBQG2LewFlcWR3tYeA+E7qTPzMTSrZ0i8VH8l5xdt5BJyKafdafy0bpSac2zzjtLPwEKdhIJCcq8/F/RkerWfwL6EvgRa08QtxLz5rhQ7C9VR8Xz3NiVIedkVFMwdK+dvHrBnCC0vFnbij2J5BlyL+OSgVcM1EtXJTjSBEbHvvL/AVEiVw
+ JHv5loDr
+ w4HNh53cra4Yj/8Js59IHuZBCKd6bhvqaqMhB/Npm/GLHVEdkQHSC6FQcmDrU+B2Anxxg8I1nuR7nlR7BEA06jtBqSnPvtYE7ZshaQZVLOHJ1YPKjrW06o6AVmeFvQJhAFOAY1bGOiUhPlqXGmG4D4GajM2KSfh7as3fLfiG1atY9rye2rSXeuiFr72Gj+tBIOb0Gkhqf95ykeTySkI2mOqsT82ikKjPq2dgHCRPFZuwqZmVktbjpIkWugjV/6ANc5j5UcEE4wLDQZ68=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.009233, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,106 +147,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
---6ugyd27enu6zatdi
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [RFC PATCH v2 0/3] Memory Controller eBPF support
-MIME-Version: 1.0
-
-On Sun, Jan 04, 2026 at 09:30:46AM +0000, hui.zhu@linux.dev wrote:
-> memory.low is a helpful feature, but it can struggle to effectively
-> throttle low-priority processes that continuously access their memory.
->=20
-> For instance, consider the following example I ran:
-> root@ubuntu:~# echo $((4 * 1024 * 1024 * 1024)) > /sys/fs/cgroup/high/mem=
-ory.low
-> root@ubuntu:~# cgexec -g memory:low stress-ng --vm 4 --vm-keep --vm-bytes=
- 80% --vm-method all --seed 2025 --metrics -t 60 &=20
->                cgexec -g memory:high stress-ng --vm 4 --vm-keep --vm-byte=
-s 80% --vm-method all --seed 2025 --metrics -t 60
-> [1] 2011
-> stress-ng: info:  [2011] setting to a 1 min, 0 secs run per stressor
-> stress-ng: info:  [2011] dispatching hogs: 4 vm
-> stress-ng: metrc: [2011] stressor       bogo ops real time  usr time  sys=
- time   bogo ops/s     bogo ops/s CPU used per       RSS Max
-> stress-ng: metrc: [2011]                           (secs)    (secs)    (s=
-ecs)   (real time) (usr+sys time) instance (%)          (KB)
-> stress-ng: metrc: [2011] vm                23584     60.22      3.06     =
-16.19       391.63        1224.97         7.99        688836
-> stress-ng: info:  [2011] skipped: 0
-> stress-ng: info:  [2011] passed: 4: vm (4)
-> stress-ng: info:  [2011] failed: 0
-> stress-ng: info:  [2011] metrics untrustworthy: 0
-> stress-ng: info:  [2011] successful run completed in 1 min, 0.23 secs
+On Fri, Jan 9, 2026 at 7:34=E2=80=AFAM Pranjal Shrivastava <praan@google.co=
+m> wrote:
 >
-> stress-ng: info:  [2012] setting to a 1 min, 0 secs run per stressor
-> stress-ng: info:  [2012] dispatching hogs: 4 vm
-> stress-ng: metrc: [2012] stressor       bogo ops real time  usr time  sys=
- time   bogo ops/s     bogo ops/s CPU used per       RSS Max
-> stress-ng: metrc: [2012]                           (secs)    (secs)    (s=
-ecs)   (real time) (usr+sys time) instance (%)          (KB)
-> stress-ng: metrc: [2012] vm                23584     60.21      2.75     =
-15.94       391.73        1262.07         7.76        649988
-> stress-ng: info:  [2012] skipped: 0
-> stress-ng: info:  [2012] passed: 4: vm (4)
-> stress-ng: info:  [2012] failed: 0
-> stress-ng: info:  [2012] metrics untrustworthy: 0
-> stress-ng: info:  [2012] successful run completed in 1 min, 0.22 secs
-=20
+> On Fri, Jan 09, 2026 at 11:28:32AM +0800, Baolu Lu wrote:
+> > On 1/8/26 19:33, Mostafa Saleh wrote:
+> > > I have this, it should have the same effect + a WARN, I will include
+> > > it in the new version
+> > >
+> > > diff --git a/drivers/iommu/iommu-debug-pagealloc.c
+> > > b/drivers/iommu/iommu-debug-pagealloc.c
+> > > index 5353417e64f9..64ec0795fe4c 100644
+> > > --- a/drivers/iommu/iommu-debug-pagealloc.c
+> > > +++ b/drivers/iommu/iommu-debug-pagealloc.c
+> > > @@ -146,16 +146,12 @@ void __iommu_debug_unmap_end(struct iommu_domai=
+n *domain,
+> > >          if (unmapped =3D=3D size)
+> > >                  return;
+> > >
+> > > -       /*
+> > > -        * If unmap failed, re-increment the refcount, but if it unma=
+pped
+> > > -        * larger size, decrement the extra part.
+> > > -        */
+> > > +       /* If unmap failed, re-increment the refcount. */
+> > >          if (unmapped < size)
+> > >                  __iommu_debug_update_iova(domain, iova + unmapped,
+> > >                                            size - unmapped, true);
+> > >          else
+> > > -               __iommu_debug_update_iova(domain, iova + size,
+> > > -                                         unmapped - size, false);
+> > > +               WARN_ONCE(1, "iommu: unmap larger than requested is
+> > > not supported in debug_pagealloc\n");
+> > >   }
+> > >
+> > >   void iommu_debug_init(void)
+> >
+> > How aobut
+> >
+> >       if ((unmapped =3D=3D size) || WARN_ON_ONCE(unmapped > size))
+> >               return;
+> >
+> >       /* If unmap failed, re-increment the refcount. */
+> >       __iommu_debug_update_iova(domain, iova + unmapped, size - unmappe=
+d, true);
+> >
+> > ?
+> >
+>
+> That's nice, We could also print the message as Mostafa mentioned, like:
+>
+>         if ((unmapped =3D=3D size) || WARN_ON_ONCE(unmapped > size,
+>         "iommu: unmap larger than requested is not supported in
+>         debug_pagealloc\n"))
+>
+> An explicit "This is unsupported" warning makes it clear IMHO.
+> If a driver triggers this, at least we know the sanitizer state isn't
+> supported.
+>
 
-> As the results show, setting memory.low on the cgroup with the
-> high-priority workload did not improve its memory performance.
+I guess both are fine, the WARN points to the line which should be
+simple to deduce the cause anyway.
 
-It could also be that memory isn't the bottleneck here. I reckon that
-80%+80% > 100% but I don't know how quickly stress-ng accesses it. I.e.
-actual workingset size may be lower than those 80%.
+Thanks,
+Mostafa
 
-If it was accompanied with a run in one cg only, it'd help determning
-benchmark's baseline.
-
-> It seems that try_charge_memcg will not reach
-> __mem_cgroup_handle_over_high if it only hook calculate_high_delay
-> without setting memory.high.
-
-That's expected, no action is needed when the current consumption is
-below memory.high.
-
-> What do you think about hooking try_charge_memcg as well,
-> so that it ensures __mem_cgroup_handle_over_high is called?
-
-The logic in try_charge_memcg is alredy quite involved and I think only
-simple concepts (that won't deviate too much as implementation changes)
-should be exposed to the hooks.
-
-> Thanks for your remind.
-> This is a test log in the test environment without any extra progs:
-
-Thanks, it's similar to the example above (I assume you're after "bogo
-ops/s" in real time, RSS footprint isn't the observed metric), i.e. the
-jobs don't differ.=20
-But it made me to review the results in your original posting (with your
-patch) and the high group has RSS Max of 834836 KB (so that'd be the
-actual workingset size for the stressor). So both of them should easily
-fit into the 4G of the machine, hence I guess the bottleneck is IO
-(you have swap right?), that's where prioritization should be applied
-(at least in this demostration/representative case).
-
-HTH,
-Michal
-
---6ugyd27enu6zatdi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaWDf0xsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+AhD7gEAqbDeK7bs5Q5B6uh4H3ax
-vNaAumbDhzgQCFvmqk75yM8A/jgi6uwOxMpREcWR0EkkxBTGpymsLE7wBTJyBtKE
-ksMM
-=HyJ4
------END PGP SIGNATURE-----
-
---6ugyd27enu6zatdi--
+> Thanks,
+> Praan
 
