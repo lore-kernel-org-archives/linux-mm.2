@@ -4,133 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B019ED16814
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 11:09:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7848D16819
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 11:48:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 091786B0088; Fri,  9 Jan 2026 06:09:27 -0500 (EST)
+	id DC9286B0088; Fri,  9 Jan 2026 06:48:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03F046B0089; Fri,  9 Jan 2026 06:09:26 -0500 (EST)
+	id D76A36B0089; Fri,  9 Jan 2026 06:48:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8D376B008A; Fri,  9 Jan 2026 06:09:26 -0500 (EST)
+	id C58926B008A; Fri,  9 Jan 2026 06:48:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D6C656B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 06:09:26 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B5ADD6B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 06:48:47 -0500 (EST)
 Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 90EFE1A049C
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:09:26 +0000 (UTC)
-X-FDA: 84312154332.22.4B3FCBC
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0CAACA0015
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:09:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aKOO1ICD;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767956964; a=rsa-sha256;
-	cv=none;
-	b=npbT2o+lmKAcPSrL8dtHe/xCpshUv4tdnBdcmPG6RFI0VbnVhLdMtdTgPZKDgyuIqQEs/s
-	IOTtwgVDVvviYxnV8KdOU0ynQO8ygbIGBdeDjSbSQ+GeSLt0sfRTqu9sZ6igoztuWc1nKN
-	0iWqkJw8W4rFkDGHp2Mvb/KGJJK9QiI=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aKOO1ICD;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C38D13B42A
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:48:47 +0000 (UTC)
+X-FDA: 84312253494.22.8015378
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4CE5112000E
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:48:45 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DGG+debD;
+	spf=pass (imf29.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767956964;
+	s=arc-20220608; t=1767959325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+WLh4YdMT4BQhhiGpX2c08r18nWKZ1SS4NAmL7UFi+k=;
-	b=y7+BTn1Crbq9S5J0BHWspAYq0ZsgRWRG0ULiuXy1Ru7gPX/GNc1z4yAwcdXFRaDdpfSvqR
-	t+fPOcn+cEPad82/e0qCAs7i7NGeUglJ/M0C/Mzk/QrBZvUBSeYG+k9pJKnHh+m4qL/onK
-	1MU+Hw5FGeOAy0mJ147weKyNONuDbOg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767956963;
+	bh=oYF757VFZbjPp9+rgGQc+tuvo82+suocCGJ/1TmFUs0=;
+	b=YuYegY9aDs5kLu2SxXePu4fc9XKyXJpE+KzD1Z77xihP4KqqtpHfYKUL8QrfVUqI4s2/zD
+	lmbb27NS/oj0D12nNvbyIAOcOVOOrwXXcwJbcmPx7jK+1dKbN+bVXjpcqSnAU/faVhLkzp
+	ltaH27oZm5QkJT3ZK69l7NFTauqbSnw=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DGG+debD;
+	spf=pass (imf29.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767959325; a=rsa-sha256;
+	cv=none;
+	b=3zXEgaTUSTd1aycmAM5VpUPDGF3v+EJlCIQvF0V3bD059VK7OV4DrqeI7gFbYFj39uzyoU
+	6llCXX6rfSFXAAIDfC9E+OWwBOfXH/oWWhdWBi4TibGNz1+aK1Yp2k38PAwS0Xa7a9/GXi
+	6T+4IQetnx0HeHHmsqfZccoGxWBbGts=
+Date: Fri, 9 Jan 2026 19:48:20 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767959323;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+WLh4YdMT4BQhhiGpX2c08r18nWKZ1SS4NAmL7UFi+k=;
-	b=aKOO1ICDaLzOW/be1m+BMMUZTPefN/5RZwFT8Z3Rhslz6wNuuZ0TsgxyokgrHGQbdCGOPw
-	uZKJBfsnUalWPlwOqQqnR621LD/7M+w368DBtFlh0TiENOpLrgm0Z1LJOJ9zaIKzkbE+85
-	PPlYs46Ze8+DG7ZMGs2g59ywtq0I7fo=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-252-1NcQox6yNoCXRn4iSjj8Bw-1; Fri, 09 Jan 2026 06:09:20 -0500
-X-MC-Unique: 1NcQox6yNoCXRn4iSjj8Bw-1
-X-Mimecast-MFC-AGG-ID: 1NcQox6yNoCXRn4iSjj8Bw_1767956959
-Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-59b3b255ee8so3825977e87.3
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 03:09:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767956959; x=1768561759;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+WLh4YdMT4BQhhiGpX2c08r18nWKZ1SS4NAmL7UFi+k=;
-        b=n6sqBoBTb8R1pQno9YCYswlHZ3bzsDuvsFFCpDQ7s2Ds22Nj4YmSStPgE3HXWWHsTx
-         0x7WHCFYxxsf9JOSqDBmllBJTObda82CA+vHiAhrXvlomU99DowAYp5+N4lQd02bdhth
-         IQ/SbaLwCKX0GO7F1ghEfrDZLRQL6qN1i95GHCYwjVyj7Q7oJPAYfcBL3kWIBfRij39z
-         QxfDBGktEeSwhD691QkeotovR/Cdc+e3as2vF8TQb6qrBkWf+9fo6keuPAPaeV1os/bx
-         vgbqDDX8Awy2QLIRON9P8p3eMe1dYNKX9AaK19Ihfj8baKXyH8QX26fvz92KbAxLjp8I
-         izqw==
-X-Forwarded-Encrypted: i=1; AJvYcCXh9/MuxNISgUm68wRqMvYXL6Dr+TNTKxls3Y1IR7wEekInt42dWo4rW/1ZpCJvLgNpAjDUjMW8Cw==@kvack.org
-X-Gm-Message-State: AOJu0Ywm5muOhK+qH5O2xMOJe/YKOQFLp17ljySAHrFGDXHRJMDIIc3a
-	MQY0Hs2IJ2Mkyh7Zy2aAVAFzGy9/g+xsc71wnb5L3piXzCNlRL0akdc5EAaNGFonzcbaO6tyOJv
-	UjupiqBl+sRtWz3xQjeWtTWBLvlcuZZ0zeEQPXCZCBXlXgr6HEJI=
-X-Gm-Gg: AY/fxX7835CFx7PzxwAyTmQHG5RVHEf1jY6I2O0nl25JfpfweqM/MfScD1GbfWCpsDX
-	eqgt426TFkWqbSX2u7m2yrkfcP75sW3tucHZIFDLrezQXhUiYfs6ynIJYYX6IWyadwrJ7MDlmIL
-	S5jx5U0em5cvdkUU4dZyh9c1870XEGbjcxnKBG1whzS3qTBvRtwkUJp3JpzBdjAk4VGeAYKFwaC
-	J4D0pGpu5tIpeXzwuy9AyL1klrFtNFPueWNdBlFakhjDHNO1OixCyJNP7UuIA/lf7ALi/b19Vvy
-	pXEBcOTYOKsZLrxmYj/nlq8eOEa0ZAYbIWn3wZDqwRUq+k71hMiVB/vS4c9MVWQKG8JDd2xkage
-	Yt7OsgLrJ1Iew5mI8R/H6Iw0GWJdeXNCKC3w=
-X-Received: by 2002:a05:6512:138c:b0:595:840c:cdd0 with SMTP id 2adb3069b0e04-59b6ef23821mr2942328e87.2.1767956958655;
-        Fri, 09 Jan 2026 03:09:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE1Kdn6xqqEz7oS8njPdOYi3SCUUHgKoVYObUp3Vur8XucGkM8H4lTSJgH2gDE+3acZOyL3Ug==
-X-Received: by 2002:a05:6512:138c:b0:595:840c:cdd0 with SMTP id 2adb3069b0e04-59b6ef23821mr2942314e87.2.1767956958199;
-        Fri, 09 Jan 2026 03:09:18 -0800 (PST)
-Received: from [192.168.1.86] (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b65d0f6absm2716455e87.42.2026.01.09.03.09.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Jan 2026 03:09:17 -0800 (PST)
-Message-ID: <d1d80b81-678d-4d28-9ac2-95cb74824e73@redhat.com>
-Date: Fri, 9 Jan 2026 13:09:17 +0200
+	bh=oYF757VFZbjPp9+rgGQc+tuvo82+suocCGJ/1TmFUs0=;
+	b=DGG+debD1nXBpLE0MoRfyiShZtxYlLel08B5gTq+kCz48gVHJQcOg0/1PR9z7KH/fhJbRi
+	+YEQA1Le1H2Bu4DPWxSQyN7g6gxXcrzw9wUwJ68Z1KZtbsot2V9xdcPpeZsFkyVHo8vwrD
+	yusszebGfsODVk/Td+V3bNeApIR86+0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com
+Subject: Re: [PATCH RFC 14/19] slab: simplify kmalloc_nolock()
+Message-ID: <6lagtqkkxsnuphgmluwodah7nlhiuovw74fzdzr7xgq4nwdwup@eyfgwukzbynd>
+References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
+ <20251023-sheaves-for-all-v1-14-6ffa2c9941c0@suse.cz>
+ <4ukrk3ziayvxrcfxm2izwrwt3qrmr4fcsefl4n7oodc4t2hxgt@ijk63r4f3rkr>
+ <4fca7893-60bd-41da-844f-971934de19b6@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/7] mm: Split device-private and coherent folios
- before freeing
-To: Francois Dugast <francois.dugast@intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Balbir Singh <balbirs@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>, Andrew Morton
- <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260109085605.443316-1-francois.dugast@intel.com>
- <20260109085605.443316-4-francois.dugast@intel.com>
-From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-In-Reply-To: <20260109085605.443316-4-francois.dugast@intel.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 4uZV81KYpYIQ3ALwhQ3w02albYSeYurGt15lnMYUXPk_1767956959
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0CAACA0015
-X-Rspamd-Server: rspam06
-X-Stat-Signature: fhks417jpkc1fuidawodb71re4m4y97m
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4fca7893-60bd-41da-844f-971934de19b6@suse.cz>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1767956963-700019
-X-HE-Meta: U2FsdGVkX1+DM27vcqxfO7j9D0VQ/cMjm8aXwJx9oBI5IJaoXH3ga+YsJejSYJSVbG7jKa+TXzMjfTVs23LxxxeozwXRp95Xao2RPDWeGhtW4Y95abar7mHerDessF5S0iG4Yk+S+fbwJEBwmfb+f1+GJsJjMbOJmyZiZc/Kzt00reP4dGKpv9NhB/mjjQKEkaEMIzztl74k2ng+Wh2B3JBYMIad8EBf1EE+FAXy/zjJTRYG4NV2hkypoF8pjqbwX9w9EHeQr+H5Z3BeZmsTjblC+J5Yckm7IrBVqSPPpoZngYxIJiXhLo8Z3XLYuxnk2FiG6cnFs37XfDrzuWqSnDkIYj8RwDh7MZ2hiKfMd1hZtW8HywW0NfexgkJbU8LHtqfIp1ehop3NeGKlKHviJJWK3rs0dMVmh3zySJ6kV7zpi2tsvd7JZ+/FPOGQ7+GMCIdG0FBZqhmvSp+0MYgNh+kI6v77Yuu+tNG7QcFZWLWenVIbClu/ptVi74DbkW8mEq2mlr/BJ46fjhH05Wld216UWzgTzbQlN2tdKXSftmMtp5Onxjpv7KToyKHPXaY1VHHYoGFnRm8ojqxNILyLJUmM+o3xviFWaIVJVxPbWzM2Ssmgd+VMBqrl6Bw7OjaSYEoCZontGxDIZq69I6+qfn1EMC30eYbfSr/CMMzVst6pbmjOC+8XfQg2zQAK/QO7N4JXw+kjrOgnYbPW/DY5X/tbDogBhhSY24XZJWAbM3BF5G/IU8omq6zhkAxOXmhNSDU0iLWodVEq2t31lyec89HAGY/qo4vX2HYhgRW4qOOlwctwewyNfxbT4DIL3MK0LOHdSQIuPOlY5i26CuGGgdKsDx3WT+buFEIgOoji7Ze+c/FnLkEXfudicMvKW4ebrpsPW9IxTGfaTz4Q5UlfApLEGX/zJ9SFD7Ia7qNa19FnzN+zWh50Ox1MG/FdCzlfZ/SuX/PafQS2wYeNxBM
- PhJtS9FK
- UVF+gPKPQ0wJpSs4yOybhBYQd9XJIPrIEqz25hHn6rfpiBYfhROqND0SIS+y9iV9bxfpnSEqErgjIzrOtZIkXQUyyhqCwJHeQIGwqlkXMviiTzHNiH7xG84saBleHcABnx/kneyMxR8bGeryVgAWF0dYMDZIUixuF7f2wOeEyEhD0Zg4YrsOhC76LNgildd4+WmM9bHsLj36Sh27vGJjGbrsi6+XKwSprIkFs57ehGTriAGrpA6dIm+7CQTNhYJgHLxGHCngF5v7o70vwfhhUnz6V6Ilo6zzCQeaWe9/tT+C5BOpa7L4cImKDG5AqgEIgU+QaMgL730SortCd/FEJW7DBAVj5dU6uxkJY2WtU0YabZEh6kK8aLdTHocRiZFVEOUMqz2TZNjjCPzlwN1kSQYMQ300KnXwjSTpHvC1ZtvShMTzfWnQUxg6S5uuyXwpyeG2sgPoz2D+lS0OTq5cFs+rzRMLB/6q69cOTsL42oHKpt3cZcXmYZiU8c7eGiQRRKOFQAzdpDSe/2CzV3xdEuTU3RxAGCladD1h1RV6g/NLUHdfawYHsajTwKDFbdqTGcuqvPg2waVVoEsRLU8nMNmv3H1BDGCYDnEEZGmjte7hY1pfkktPg8nm1BV4kjeNnhn0BWWee1xyUejo=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4CE5112000E
+X-Stat-Signature: jp8313jxmpkdsncqc4xe7t18crbd5hso
+X-HE-Tag: 1767959325-404579
+X-HE-Meta: U2FsdGVkX1/c8eWZnSsY92cOX4JER6XyYjv4fa0HS+d3+PuStjjiT0PZRYUs9N7MZMkDgzqJZJLvwTErGzORTGgo+JIBy46OCAe86Etx4FG1ylp6LTg5wWSPZk/kO0TwNI85Fy2JJdIvcBwCrr21K6nadNyYtE2d5vGKg6iiJiCY9Jh8JUaRxUICTsc0Sq5mqhFAvCXIEYIDns8tGgDCkW03eLEvSA/vTkBCCJN84sRzWnXZ5hsM62G+3dMBWtJVLT0/5Lk97hfroIoumwodHPSgKfX+LLFpMcAiCv2T5JXFhByUYcP1cqXDjLaxtDOaLSTT4AMlbGrz4FoT7MbVcy6vuSjojpmjvYsj4quvzyYfv31dV+V1JnLIVOwrMgFmSnJa6Mo4zzq1ZsJ7Quq8vbQZ/1bY5XFS0W8gg3012BLrwcnvqfL8kO83AV58vDg4Imc1+y0Q5WYR8ruUGkAUvg1P1GU5gn7pof1sYgRReP1vCLKcMirlkm4XY6pCxrAJoWCk050CoBMnN5RE1nRXh/nChVH8W+TbavP8YW29sKApL3Q26fS8UuWfRsAIdescp8ivFLD3Me0GMFM26y2idakr2MaQsni4HzLqYVa9ajo5NJgG5XrrFTNEcjWubZO8+PcICM6+6sPENvwbHaTWEGSsaB2STElNLfVKkBbV40xrTKqcRgXK1FFFj+iBEB1BZNdjhQlsDZjOyTziW7ZNrOimEBz/C7CmzEeVLM/TUQGxflvkUb4IipMXTG0aTc1kZWF7gwdhbGRVjukNF8mDZjA++YEJ0p8SKJoJS5ZWYbjCRZ0ZD3l24akfFEos4g8e0p6h4W/7Nxt/vD+MNv4o/6BBYND6RMbR7sT9Cl/tqLJSE1J8HIxi4f4o/7Resc7DjnUaauwE5fijWtKuxjU+eulNDNoL3oDGlBRa96t6IqM3KeewsJFztz6XJuM7HHePYiSzqT8sMw/03Ie/oRe
+ AidpHzvo
+ ORzQXLGufU3Ew6J82Fw7K+sEoUa8cp8qc3mc0S2Wq8HM6jfd+UXdeVLbrpO0jSBHu+OlDxGGMoDgos1NCs0Dcm6/+DatbV8/nAflr7HXicDWYtEKjEG1M/CL64i/1PkCB6mU79W0cA6eX1cedV80AvMW9F8iS3o8UyhAqqSS6c7SHt+ZyUvD9CCcthMaW5sFcI9AfgODP9BQwGRjpOJ3KXGhHxt/VwLzsAKqef7DN1NFZQD3r8gsY/a6fDP/Gc7pnlFgG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,50 +95,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Fri, Jan 09, 2026 at 11:11:26AM +0100, Vlastimil Babka wrote:
+> On 12/16/25 03:35, Hao Li wrote:
+> > On Thu, Oct 23, 2025 at 03:52:36PM +0200, Vlastimil Babka wrote:
+> >> @@ -5214,27 +5144,13 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node)
+> >>  	if (ret)
+> >>  		goto success;
+> >>  
+> >> -	ret = ERR_PTR(-EBUSY);
+> >> -
+> >>  	/*
+> >>  	 * Do not call slab_alloc_node(), since trylock mode isn't
+> >>  	 * compatible with slab_pre_alloc_hook/should_failslab and
+> >>  	 * kfence_alloc. Hence call __slab_alloc_node() (at most twice)
+> >>  	 * and slab_post_alloc_hook() directly.
+> >> -	 *
+> >> -	 * In !PREEMPT_RT ___slab_alloc() manipulates (freelist,tid) pair
+> >> -	 * in irq saved region. It assumes that the same cpu will not
+> >> -	 * __update_cpu_freelist_fast() into the same (freelist,tid) pair.
+> >> -	 * Therefore use in_nmi() to check whether particular bucket is in
+> >> -	 * irq protected section.
+> >> -	 *
+> >> -	 * If in_nmi() && local_lock_is_locked(s->cpu_slab) then it means that
+> >> -	 * this cpu was interrupted somewhere inside ___slab_alloc() after
+> >> -	 * it did local_lock_irqsave(&s->cpu_slab->lock, flags).
+> >> -	 * In this case fast path with __update_cpu_freelist_fast() is not safe.
+> >>  	 */
+> >> -	if (!in_nmi() || !local_lock_is_locked(&s->cpu_slab->lock))
+> >> -		ret = __slab_alloc_node(s, alloc_gfp, node, _RET_IP_, size);
+> >> +	ret = __slab_alloc_node(s, alloc_gfp, node, _RET_IP_, size);
+> >>  
+> >>  	if (PTR_ERR(ret) == -EBUSY) {
+> > 
+> > After Patch 10 is applied, the logic that returns `EBUSY` has been
+> > removed along with the `s->cpu_slab` logic. As a result, it appears that
+> > `__slab_alloc_node` will no longer return `EBUSY`.
+> 
+> True, I missed that, thanks.
+> Since we can still get failures due to the cpu_sheaves local lock held, I
+> think we could just do the single retry with a larger bucket if ret is NULL.
 
-On 1/9/26 10:54, Francois Dugast wrote:
+Sounds good - this is a clean approach.
 
-> From: Matthew Brost <matthew.brost@intel.com>
->
-> Split device-private and coherent folios into individual pages before
-> freeing so that any order folio can be formed upon the next use of the
-> pages.
->
-> Cc: Balbir Singh <balbirs@nvidia.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-mm@kvack.org
-> Cc: linux-cxl@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> ---
->  mm/memremap.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 63c6ab4fdf08..7289cdd6862f 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -453,6 +453,8 @@ void free_zone_device_folio(struct folio *folio)
->  	case MEMORY_DEVICE_COHERENT:
->  		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
->  			break;
-> +
-> +		folio_split_unref(folio);
->  		pgmap->ops->folio_free(folio);
->  		percpu_ref_put_many(&folio->pgmap->ref, nr);
->  		break;
+> Whlle it may be NULL for other reasons (being genuinely out of memory and
+> the limited context not allowing reclaim etc), it wouldn't hurt, and it's
+> better than to introduce returning EBUSY into various paths.
 
-This breaks folio_free implementations like nouveau_dmem_folio_free
-which checks the folio order and act upon that.
-Maybe add an order parameter to folio_free or let the driver handle the split?
+I agree - it seems cleaner for __slab_alloc_node() to return only NULL
+or a valid pointer. If it could also return -EBUSY, the return semantics
+would be a bit less clear.
 
+-- 
 Thanks,
-Mika
+Hao
 
+> 
+> >>  		if (can_retry) {
+> >> @@ -7250,10 +7166,6 @@ void __kmem_cache_release(struct kmem_cache *s)
+> >>  {
+> >>  	cache_random_seq_destroy(s);
+> >>  	pcs_destroy(s);
+> >> -#ifdef CONFIG_PREEMPT_RT
+> >> -	if (s->cpu_slab)
+> >> -		lockdep_unregister_key(&s->lock_key);
+> >> -#endif
+> >>  	free_percpu(s->cpu_slab);
+> >>  	free_kmem_cache_nodes(s);
+> >>  }
+> >> 
+> >> -- 
+> >> 2.51.1
+> >> 
+> 
 
