@@ -4,127 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19E14D26D94
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 20:17:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37A6CD26D99
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 20:32:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59B9C6B0005; Fri,  9 Jan 2026 15:16:59 -0500 (EST)
+	id 4CB666B0088; Fri,  9 Jan 2026 15:32:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 579846B0089; Fri,  9 Jan 2026 15:16:59 -0500 (EST)
+	id 479416B0089; Fri,  9 Jan 2026 15:32:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47BF56B008A; Fri,  9 Jan 2026 15:16:59 -0500 (EST)
+	id 35ABB6B008A; Fri,  9 Jan 2026 15:32:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 33F4B6B0005
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:16:59 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 398B38C839
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:16:58 +0000 (UTC)
-X-FDA: 84313534116.27.53203CC
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3C7CC16000A
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:16:56 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=RjLtkJa1;
-	spf=pass (imf08.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767989816;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MWWlok8ve6te0Z1LFT3tDlJ2/NkqaoxHzzfJCelUW48=;
-	b=Sv9QlZ7rrb4e4fKt7LDwEvTThJocLvWR6qoK/+xsW5S3ZGsKR8EB1NHxF35IS8TqFjmOsg
-	zG3pCd12In/bLzFE/9sPX35ZWC5u9WZIQ4Nft/5mWoh5KqB7yVDPcQZDf2rx6VGMPm4Tpi
-	br6o0XmZrw/Ymdos5S6vLKvFypnviJ8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=RjLtkJa1;
-	spf=pass (imf08.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767989816; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 22D736B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:32:48 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9F0E7140886
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:32:47 +0000 (UTC)
+X-FDA: 84313573974.18.E153280
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 29ECCC0002
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:32:44 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=I8zR1A4L;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767990765; a=rsa-sha256;
 	cv=none;
-	b=pykjXHDnQzQlC+IKxN8llyTl2VgloezIaaK1binCV8zF5IjpfMsKL72TpBb1flvoEb/RIc
-	RZOKRhKUsslDzf/X+WCYyzJLeiVY75tZ5B3HJ++9tSqlGYtZLNMwBVQWuJqv1c0l9XLC3g
-	NzAG48AoPgC3O3ACwMpXecsKCuDqnvM=
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4dntN66qC7z1XSVtL;
-	Fri,  9 Jan 2026 20:16:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1767989807; x=1770581808; bh=MWWlok8ve6te0Z1LFT3tDlJ2
-	/NkqaoxHzzfJCelUW48=; b=RjLtkJa1D0QD6TAtBF7G2Jt4AHXQc+brZdc/5Tt3
-	jLo0eDAvbJmHIgNEXvLWEKHxTHRyVyb8D/Q06Ur+0T8jENUFddkat1ZKTy3z3SCC
-	yDf86qyZn7Mw6O42JTSazct3a+5P6OhdLUxYoG2N+K1nLDa+zdW6XgfbDJXsR7ng
-	jwo0GO2ay6yXtRwcQHBbI2rYmhtkOiawoqZQXc3Ti/WgrYqhAEUZOdNAs9KC7uUn
-	Qq0xxt6q5wZuMIdq5Cl7pFCXgskRMzaEvQTOGgVF3O1ctVoejnnjZWNZJ35Ht4/9
-	VhXFXR50Omzjcooxo8ojFKm5X7x9JePv61sq2YtntHteEg==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id JY_Dc9oQqhZL; Fri,  9 Jan 2026 20:16:47 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4dntMk3WPZz1XT1Zk;
-	Fri,  9 Jan 2026 20:16:33 +0000 (UTC)
-Message-ID: <05c77ca1-7618-43c5-b259-d89741808479@acm.org>
-Date: Fri, 9 Jan 2026 12:16:33 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 20/36] locking/ww_mutex: Support Clang's context
- analysis
-To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Will Deacon <will@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
- Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
- Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
- <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
- Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Josh Triplett <josh@joshtriplett.org>, Justin Stitt
- <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
- Kentaro Takeda <takedakn@nttdata.co.jp>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
- <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
- Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
- kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-21-elver@google.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20251219154418.3592607-21-elver@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: kiqzuc413kz794m5keac16cy465jpnbs
-X-Rspamd-Queue-Id: 3C7CC16000A
+	b=Gr3cWsVZuNwdt4vk9VGkzl1w8TI86zUjNL+8tCUa07IeRq5JXsMLyIynsUzTbw5UQ8+iTT
+	iZxRZo3zQTWNBmldhGdFQ183eHRFR0qX40Ghuc6IwkpUmvsm74h3CSn5tjeHtybGFEdzdM
+	3b65B0oeMQvgfBENcZxU5cIXIkOznHg=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=I8zR1A4L;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767990765;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=4QuaRTWoTORHl3RpVORzjau54BYa8Erv15y/Uth7+NU=;
+	b=A430fE6AG+JDRdAxF9Vg/FN+ZZBX5Sx7vv3PhmF/OH45hCj3C6MdeeU6pXBlSoWhJVnFqn
+	f9296x+w0wYyvoWnMaYXR2GnBvweZfQ5fhN8lXTq6KVtlnJmDVcURtx2f5KacdCrdGCDu0
+	ozq/dbbxgmGaIsqh01WdZ49JXHsyMeI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767990766; x=1799526766;
+  h=date:from:to:cc:subject:message-id;
+  bh=vfTuY7p0m0K6CNSUC1cZoGmv3GGrNFOdYUFAV8eZnYo=;
+  b=I8zR1A4LLag1BswObNvGb1Fwxjtw677G2hHx8/Tz4DvvWLxJdDwVfyI9
+   qFUiGwQImwVfIBIHDFg38f1splyJparU6DzBbECaXdv1lufmqK4a6xV3b
+   lByadAoV1hNEUCprdPC7A09RCia5zk9ejCXPiCD7qwuBibxsHRdMDvNYw
+   XCLUM8W4GwESjv7CP40K9JgADjfEA4z1LDB81W0Z2XQhK/AjPI5aJ9f+D
+   w1vzKMw0rzfwQhUs1R9bO5w0P528zUWzZFHuaMu5bxolCpT81rPj1Xrev
+   KmYE9AJjGHjC0vLrhyjNRqkuzhGMfFg2MR0335xxS0EldXB9s9HHGSoNP
+   A==;
+X-CSE-ConnectionGUID: YP45L177Toqx8wY4xCKREw==
+X-CSE-MsgGUID: 1oiENuZ4TDedtbTHG+R0Tg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11666"; a="86794156"
+X-IronPort-AV: E=Sophos;i="6.21,214,1763452800"; 
+   d="scan'208";a="86794156"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 12:32:44 -0800
+X-CSE-ConnectionGUID: CPLooFm5RNG9KJApWhnMIQ==
+X-CSE-MsgGUID: OANIqPalSd+ziDQGckD+DA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,214,1763452800"; 
+   d="scan'208";a="241059785"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 09 Jan 2026 12:32:42 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1veJ9z-000000007hd-2odQ;
+	Fri, 09 Jan 2026 20:32:39 +0000
+Date: Sat, 10 Jan 2026 04:32:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: {standard input}:20429: Error: operand out of range
+ (0xffffffff not between 0 and 0x3f) `l.slli r17,r17,-1'
+Message-ID: <202601100448.3PrAP6KQ-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Queue-Id: 29ECCC0002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: yo8ira9hzwia18oarr5ytxf6f1fwq8pc
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1767989816-674768
-X-HE-Meta: U2FsdGVkX18pupdgGXwwkQynv2cUhvMVc4lptWzlRDbraRp9CWz4fW8/54vNj933lsGT4GWlGVGVX91hnb9ZFbUfl6YUvl9GjIXqv3ptR5REmhB5GjdXGMhJterJ6fk+ISMYbW5OpIgF4JFWgyLMehOxOD3l0yc0+rjWZv4stxOu4V8BbAGLm0MBq3bk40DeoUXxq4l/Bh1OVzTkkqJHSCEo2gFQMgqs051FyQJkZhaNmoi0yASVzR2l7MWIhAcEUM0Pk5qay+08Wi+sygVfAmvmFBmGy3kykKG9XY6vOQE9C1Itrr/3qZiAcuCplzTj7+EkLDI5mgaI30LFz42n55zbf4/MklUWey96MA8NGHYyQa6ktDUSrJGSz/W477F7dJsFCow/rgx8qdZM4YCnkJrwNn2o6EvcHunrhLQzj3yiFkiF4fFSx4wB5+7RjdnDX5Ytdr3nnNAWcTM0lDpaRdRM84i+nekiXwEWTHpY9eCtbCZ1p9exBnva3PjKDIYWStIgRPE2Ik/4YMexZ504QClriJEx3mjPX3g2PuYzHlx0od7LuN1oAZ+bRfxHjX2YGRdKRmm4tBZpO7smcgWScxs5KNW0MjayyXBH5MgVlrwRKwbbJAypUI+THcJwa8y6eAP9+4DU8Qgq+dzrDAHUgRG3b/ma/etoX+4UFpzqRYFa/iwTEitqRvmnyCNtTESainFmQqP0ppEDldKANjOHwKWiAyxGs6HQwKHgH50Oc160njsVghQiMpoTdSQQv4z7WAnBzzgF0cR8/yVtM6QM1zFWg+R2ZXvgbzkrF3zp57jrKXk/wCO5D0D7YTxa4mDgm1hhEB9AE+nLzVtzd7lAhalRbPYVPRBaSo/+Pu1jl6Peq5eEM4JRDEuI9yoASVHmpEzkP2aauUUbhy9+1Qv89l7kTI6rlFHOtTdALbM3R72wKGpXn6FV4xJ8CejCe0DpFcBQNN5UZhLHyjTCOuP
- pXpfx3U2
- M0xASv4fZx+o6XKHYEPAnEGFWG44c0jo/HR6OQKOC6rwIlVd2wlVwzlDNzvTfzs4aAAGJgqVP7M0aY5KrlAZrpGoYd0UBhPgw74ouJmupmIt3sebwlfQz1MDng3LL9k7sj+WDbd93QK6+SR55ZYfHiFkfQBvGV8G2QjEOfO3e46YTRNS31xOe70rLXDqDwmYqlSngVr64VGBXQ9VehzxGEO4y9qAPkgqoIAtG5wPv+Zn0TUKjzql7Vp81+G6bgpm8L1S9n7NUeQElob7BxLiePJlktO7sM0/6bD9/MWeAW+S2BBc5BeTGtb18cd1pjO4QLSlJR6+ll6Wz+j0ymXDFp+lHqnxLyM/JCUBiKYz3NYD9FdXb5AjEIgyltRocRpfyc0ycMU7GPygmg47XyqAJwQY/wg==
+X-HE-Tag: 1767990764-409364
+X-HE-Meta: U2FsdGVkX19dNv5hFJboWrMLR4KEhkVPmHmxQ2nTCDCiUdjN5S+YmIpLLYn+zp6k6IYbnyFUS22FgU+xMcKFEiCjwrOl8RR1S6uxyNCZ7URJoFbiOPp5wI7ntKX3DthOHReXv6I/Zrzjtb24Z/wYTI5KShBdHWR7BCN84LI0/Rdn5EnG/NS5Qq/BNRDHp/EVHtSVPgad4r8v2n6e6X4m2fqrsIJCJlTHfEG+tK/24mWBWty+b4o7xb8pZXMOSqcRQpWlSnzhe2R3kf834w/pxHEloalNyUFpIpyuygkOmHmpYWFBjh9Leov/ONEHSh/RS2IWMYvsWw7HxOUfBWyVmpH7UtbwgyMYsUN18A35xdqzCX3bHI6FVhRPoEPltkr4sBNmAolg1Ij5s8IDVqjMFHovjH9SehNjvsQi7snhSJWVUO5D9lElXNN8/tf7xY0Azypa1rC5J7Pk8uIv4zlFyi1lQrolQ/a+OVseH9RjEz0jKlY68FppvIebRT4K9cDwVuSn+oDmwjrbhRYkOTeMGAIGb0EZdjnlj+AeaIV/G22mughgo6zVb+AENOOXd/QjtUyiCjLceSfIJRZtsAIvW/JEeDj+n9ZOPSj/Mba1X5g3x84lCfo34IIZoarxmeoXh2zDugD9RbX9HFtnqPwnRSUCgMoxz9Rnh+wZXYnefgoRiT+mFyZ1oDo5H4tIYe9mWCX62InUPquY+SzglTKMNIl8pm9SmVekPBr0yYPymn/A4klOUaI5dZXcch/4Gj4ynWdQo7ymyjZ+WBXM5ejcG+CRV78uMlbUW6u61V9JPA/jrWW9e7O1fCgpYL/Y9mAkRVgs9cyZb4iN2BuEmD1iK6y1CHTJyy/pFkToc3wpJiV4xrkBpVd74epaHq0jXWpTI14bvgUBYXHR6c13PWbBV5vbAYTKfNm7xfbGrqkBvIOBlOSnvV6YqOgnw4WMkyEu9D1POeqI0MTsMlL3np3
+ saaD9s5L
+ HfmHdNtwKryp+Poh8uGTibOZhdobTifADhlJHqxftd3M/NzgGmcJagrWHgdxTpCNgF4e0RDQWSvq2VMSuWoQs4tqDpThcgdSF2/NR8KipnW+St+5qhphDUqgbIyIMU7ovevIE7bWaqn4sK4zIRISAr98sgQlFHhKuPW8aQo8dCK1P7gPs00yWaRTl8hdj/3dl6XE0HdRYgK0FJis0m1aMUI6mwBzDy0X1kYtuyA+eC6hH0ethRIeFiq9KwZcDXiXGulHKcMEfn5Wi09JodMtjp8jS1w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,37 +103,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/19/25 8:40 AM, Marco Elver wrote:
-> Add support for Clang's context analysis for ww_mutex.
-> 
-> The programming model for ww_mutex is subtly more complex than other
-> locking primitives when using ww_acquire_ctx. Encoding the respective
-> pre-conditions for ww_mutex lock/unlock based on ww_acquire_ctx state
-> using Clang's context analysis makes incorrect use of the API harder.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   372800cb95a35a7c40a07e2e0f7de4ce6786d230
+commit: a211c6550efcc87aa2459ca347bda10721c7a46a mm: page_alloc: defrag_mode kswapd/kcompactd watermarks
+date:   10 months ago
+config: openrisc-randconfig-r063-20260109 (https://download.01.org/0day-ci/archive/20260110/202601100448.3PrAP6KQ-lkp@intel.com/config)
+compiler: or1k-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260110/202601100448.3PrAP6KQ-lkp@intel.com/reproduce)
 
-That's a very short description. It should have been explained in the
-patch description how the ww_acquire_ctx changes affect callers of the
-ww_acquire_{init,done,fini}() functions.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601100448.3PrAP6KQ-lkp@intel.com/
 
->   static inline void ww_acquire_init(struct ww_acquire_ctx *ctx,
->   				   struct ww_class *ww_class)
-> +	__acquires(ctx) __no_context_analysis
-> [ ... ]
->   static inline void ww_acquire_done(struct ww_acquire_ctx *ctx)
-> +	__releases(ctx) __acquires_shared(ctx) __no_context_analysis
->   {
-> [ ... ]
->   static inline void ww_acquire_fini(struct ww_acquire_ctx *ctx)
-> +	__releases_shared(ctx) __no_context_analysis
+All errors (new ones prefixed by >>):
 
-The above changes make it mandatory to call ww_acquire_done() before
-calling ww_acquire_fini(). In Documentation/locking/ww-mutex-design.rst
-there is an example where there is no ww_acquire_done() call between
-ww_acquire_init() and ww_acquire_fini() (see also line 202). The
-function dma_resv_lockdep() in drivers/dma-buf/dma-resv.c doesn't call
-ww_acquire_done() at all. Does this mean that the above annotations are
-wrong? Is there a better solution than removing the __acquire() and
-__release() annotations from the above three functions?
+   {standard input}: Assembler messages:
+>> {standard input}:20429: Error: operand out of range (0xffffffff not between 0 and 0x3f) `l.slli r17,r17,-1'
 
-Bart.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
