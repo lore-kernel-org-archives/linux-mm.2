@@ -4,134 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23886D1A627
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 13:42:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA0D7D1A627
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 13:43:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 887446B0089; Fri,  9 Jan 2026 08:41:59 -0500 (EST)
+	id 60A9E6B0089; Fri,  9 Jan 2026 08:43:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 835046B008A; Fri,  9 Jan 2026 08:41:59 -0500 (EST)
+	id 5B8526B008A; Fri,  9 Jan 2026 08:43:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7377F6B008C; Fri,  9 Jan 2026 08:41:59 -0500 (EST)
+	id 4E5E16B008C; Fri,  9 Jan 2026 08:43:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 60CE46B0089
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:41:59 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 11E521AC8CA
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:41:59 +0000 (UTC)
-X-FDA: 84312538758.25.C325838
+	by kanga.kvack.org (Postfix) with ESMTP id 3E9576B0089
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:43:37 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 04DCD1BE27
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:43:36 +0000 (UTC)
+X-FDA: 84312542874.10.4EC8929
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 323CA140002
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:41:56 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mCmf/qFA";
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767966117; a=rsa-sha256;
-	cv=none;
-	b=FKAKSw5UKkp1XUs7Q/wI9G+Py2/KIYAa00HnVw8PZwEc2wzjawAz6poDG7v0vBaRryhUmp
-	0CO39KhupA1o5vR7agwOoN1GSlhqI6upn4ckWRcRzw23CtPGlZ99zn/uHJxyerPSopkWlc
-	UXJTl927SMN33Xlk/VUZXG0c6zbfuys=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mCmf/qFA";
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 49C39C0002
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:43:35 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jq8+HDoW;
+	spf=pass (imf22.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767966117;
+	s=arc-20220608; t=1767966215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dXHIwmnL5409tJBaiYRklVMiFgqGfnFpWNAtJQKYBig=;
-	b=pziBXRKj++ThVKntjfyegPTDTDgpHgywie6Z4S/DffSmNN6IlczbsXup4OvRryA+C2OWAn
-	YYTOvJf6T2pIdpQrit3eL5n5vV8+sKdcceqbsyu2QB2MvYAHisAMqXBaMpycwpOxgO3rUq
-	5+86y0NaF4V54tfrlfkcrgVlH2IEwVA=
+	bh=FWIjlFv6jJqppx2LoyUbbHVPgKacvPuyCBOajXnJvKU=;
+	b=lZAerN69bzupzcldWygKisruogGQMguKHwkeJwWoV/wrB4CohpB2mjUQJO52sfZFlWcFjN
+	fyj0Mh+p0Fe7fEFhoPVE85aAK42MtvAT1nHXtyfqCvNOJIwYChLSvxeJRMVaA+B4hfqlb2
+	/0OerLPv+iufdRNI0K3kJaOO18UPwco=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jq8+HDoW;
+	spf=pass (imf22.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767966215; a=rsa-sha256;
+	cv=none;
+	b=c5rDtT59qqrzxkP7syji+vD3ukD7KgzAUli4ZEMgP7L7ogBasg1KvhsRv+IYIB6wmdt+Ts
+	xc4Qs+ftBBL1VCAt5CSkgrbMj/Ax3bbYFNqt85SdNlS95Qmnabn9IxNWQPLTeZ7VIRNJl5
+	wZvTmbbtiD1ypbr6Q/5R+jPNekMZGa4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2EEA6439DD;
-	Fri,  9 Jan 2026 13:41:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127F9C4CEF1;
-	Fri,  9 Jan 2026 13:41:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A75D40539;
+	Fri,  9 Jan 2026 13:43:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0C6C4CEF1;
+	Fri,  9 Jan 2026 13:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767966116;
-	bh=85W2k/vZ6p+6iy0+yFWg6C8malR33X2ekz9QgywhdHg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mCmf/qFAVz66FGjo+1VfRjKDgm9C2YWUh/58ThjZTg1c3qbTdFenCDdpXC5sul1xA
-	 NEinrrPqz1ENk859Qij7ccldBetl/K8nhPAZsHEI/WGyU17lEsKkQE3zj2J+gLMfwF
-	 Sjx1xESmbA9GzXyMj1Lfi/BjDSbn+P8bHM/5S4ETldvoBCPT9Wj23mwBe5hoj2wwY+
-	 oK2l8L3c9w78ggaUMnaxi18GaJAgToAzNL1Uc0Vin/Kif3762G/gwAh3MhdZAhLX1T
-	 jv83fvYBoYK9v3r0KqOR+CdrHj2mmE34RZvYEfa3JqDPL7lRXm1uasdfX7/glbDzuf
-	 r+Z1asmNqwGrQ==
-Message-ID: <3cd08409-8c6b-42ab-97d5-e4440efe4f6a@kernel.org>
-Date: Fri, 9 Jan 2026 14:41:51 +0100
+	s=k20201202; t=1767966214;
+	bh=ijLJjYW1cc6SO67EopKRqCC5IeK0M9dJP6RDnaTpVqU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jq8+HDoWfq+dnQNCjupi8t3wJr3s2gFU/PZ+Mw9p2emhpnvQ4wtgBty04uXbNk61D
+	 pNNPamcF60pYnh283bb1GkqvMttXrjLp8u7mPUIvt9NWaV3fpMZbPRnkTuEPT0Llrj
+	 8Yt3UjdNFby5p8HerssTXgGz6oX8DulSCX0Auw4wa5TWQHIbb7ZQlnH/wloeDJ6jtW
+	 yant4tlpZ7jRtbPwfiDiCLKl1YaqQ1cVNNNBicAEjsz+Qb/Tj7rv3d3L591HucBl9T
+	 j/jWJ/WBZe7w9ztoI5e6doC/wmtuASzCC/PVJHwCuzCs4X98ZeSZ/riOmzgPWfP7oR
+	 CwUWQShgEQbxg==
+Date: Fri, 9 Jan 2026 13:43:25 +0000
+From: Will Deacon <will@kernel.org>
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v7 02/15] kasan: arm64: x86: Make special tags arch
+ specific
+Message-ID: <aWEF_eJ9Bnn5-8dZ@willie-the-truck>
+References: <cover.1765386422.git.m.wieczorretman@pm.me>
+ <0db7ec3b1a813b4d9e3aa8648b3c212166a248b7.1765386422.git.m.wieczorretman@pm.me>
+ <aV_v18YWCHXMETVK@willie-the-truck>
+ <aWEDDjQms8zbMgsB@wieczorr-mobl1.localdomain>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: run_vmtests.sh: fix relative path handling
-To: sun jian <sun.jian.kdev@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260108031604.12379-1-sun.jian.kdev@gmail.com>
- <20260108132851.bb6b7813277a5b40ba3aec8f@linux-foundation.org>
- <CABFUUZGinC04zPEtwq3+maN-iNVNdc1p_BFnTdPNTsLXcQ1hnA@mail.gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <CABFUUZGinC04zPEtwq3+maN-iNVNdc1p_BFnTdPNTsLXcQ1hnA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 323CA140002
-X-Stat-Signature: xut4k75kb6gtcquhk59c3ifpxo4hqj86
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWEDDjQms8zbMgsB@wieczorr-mobl1.localdomain>
+X-Stat-Signature: ez8ja9iq6nf87hsz4rpu7fhku45yz6ei
 X-Rspam-User: 
-X-HE-Tag: 1767966116-524798
-X-HE-Meta: U2FsdGVkX1+ls1WioWu7N6lbnN7BIuPcG0xPaFm9BE/iGdRTRJKjS9SVFeZq3MmlciYHhe2Ig5PFNB07QjqcGy5HPSsk50HeWk2SQudWnq5Q5WmDx8dmw0FJEPklXEnAonqI+41gavhd5bayNpXzANVQ8TpZEKl7qa1xB3rfHfeRwyUOzUdx+4+5zIwRQE1dc+vru2biNAIrfAOBSv5qkY9SiSOkjj30Qu9hr2IF0TcE1ct+ev2OvWgcGYI+eerN5Dk6nhGwLYwxcxxH36sJmjNR720gG/FAO03q+wKB4DC4/S86TVgCQyDC9XCPHb6azI68w1R7LlOBTmlq3W5mkw6rIUkW350ndYisAVkX6j6mCIneM8XfbMLAk/hX9j252p3oWahAe4bJhtzpKW8g4Khvpk0hxsQqSLL4Tkx62PM5FkD4m1TmFiHrzhdN+/TXfaKx/UGiyN4cF7G6JBNTntVfPKKbEZrSJ5EensxQx7DuiNWLPlSNr+aqldTvdPHPHDQn7UN7vaeZe3/U7/Coz9D1leVvt68VqUxo0YodBtwowgXmDAOp3uY6Q04/RS0LazjitsMY7Z/nFaTDCDQep87u+/eR7+PfSeY/oBhSr+oFTKmjF7hIWWgXIWmD/51KJOfAPk/ktRsHVt+HYb5d4lMl4+GYVF2VmwqQM4bKN0ot1jTE11yyMxG95E3gFSmrzPL8mW0bplxnYbygcvz20XRhu2LnpC30TjCa8o2RPckuGhmY3NGdL+mG74kuPsaKZuiTiP3n9mrNvy8C4ePWAM+NlAPb8TUICQDsxvmRixFmqMnmnrV3snssP7WAmJd2nF+Xq7QdTPjTqxCLSgCmwIZ+e2799kmtACUFEKgnabWIVhkfTo41D7ymW2IXhmKlGzpRqN/YWheaVmrk+RiFqjwOBQrbkxifFiuhs6ym/pUq2d1IrODlqUCo1O9DcF24nVbUj2Gwek1uLIo2SDW
- dzbZvIqN
- S0hIdEJC10S3kHjRo8pLMIjpprknGP1m9F54ybfyrYOtsQKhvgs+CJN1C0OY3LSV3BttUdKRgMH8aeJL7OJpaj+wif+yVx8lbR+5u2pIlfw8CJMs8KwcHijIA2rYsdzCvypNkoxhNHiwgmrSNiES/qjy/tOsPyrUMumJzJibRBU6Ja5XS/dnG+WAi7gHoPsTvNP0i9y7qH2BbuCTc0I/Acmy0L/EswwiNr79DRYkK2B/GVPzYiNgUWobKw6BtYkCn4eDrnb6kB6/M2vjOc4TwCl+4pNyxjFTdZmRUqEm5O2oMwZCB/42tdCA3K+aaTDswT9ziRNQxib3A66mRbdYdQBffoAZ6M4gggi3PZJeEKJdT7p5Hpqyscg12/qFdTHoPXU4OtIKDplL6izA=
+X-Rspamd-Queue-Id: 49C39C0002
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1767966215-626770
+X-HE-Meta: U2FsdGVkX18j2m6JmXx35pQJbySd/amzHAgT14zocPvHlLzRH8nLAt16I2vHkYCcDW6VaJYfv/JDpsuqqjY9QnLHZUMfFJIvpvMLv64n4KjR/aBUhNwEdDmv90fmBRzLi/pnfzjjG8sK2GZMC0P2kRKYYujAVeRNR2xHoDvcmeh73j1wDbf8EnsrkB9W8nbKVi84ykn+CKvq/21ea0Xl/Az87IACBPdandestfsrA7pL3ddGJwPkXTQZYYPZcfhyx+OzlJCzE3tP7ktyud5d5F8pJznnc5UkpcaAvo4ye6ai9ha5RYg62oRCh9iVB+Jiwyx8xcMMKsLArepr9hIEzZ3W1J65EJuC2LnuJXmoPuAMwCftTFXFggMx6nc+lWKWfDv9KkVl52nseQECbCcVlnDNkUhJD5e1Svptkl4D6jr2D7qzmjA4n96ovqCL392UpFTRy2GM8FqXGH1a5Fya5nLDLXxIRMrGwzgBj9Ft1ASi2+yESKJyCEpPT5oW3JMGxJpm7wHAr04bqDYmsvAO5PD5RcSYj+3/Xp/7bo4sGJG1bWn2O0zicn9TpedlkYYABJ7o+J2tFo/1Kcx2BkaF0c4ZCRllD+xjKVITZsFdKL9fBBwRlumWs1DQJAv/SzQHHcqfr3CW+DlTg0uP1c5lgswAnGn6h84WQTMMl7uKzbk1rcI2YviQj8F8RSf4Q1jGDOvkM4f2NZkT+BZhUEQFwUTTk8LXG+dZUBX4oH/CaA3CzNrTK4zsdaFkq0QoaagbPNxJcXse18RdmceyKQ32utUwbtLB++YdzbLQk0G8cXZo6edqkJaqr82fapvNm8oVcrEvcetF8g2FQfPi8PaDNEXXXd+vme2XANxAsNrR3NR4MCpaiGCIXMeW+8Ba//ZXvwQa4GRMRqxo1o4eKyubEESR9QYk28hw5yoBMPmifcNhq/zX2Z/M1MWKdhtNp5K38NdbUUq2Ti1j7c8rJbh
+ QyAJhHdp
+ 46g3ukKjNwg3m59+ZpGdzkYshg5rvdRPTNyrOPyYBas+3TPRdzYaxzWppWXIVMy6uc70UnLM8pQH2sO0jBoXlv67/0LelKAg1S3ZKSQL+8yaYSXuW0LhBhU8jGJXcRs+Iufk4z17svv2Z+HSVq8RLEj/vXcCMfLS4TXf4NWlW+MqCa8tsg7BUGJdDA1CmR9OVMenpRmvlIbaH5VwDhjUMDPuCQHzZD1FAANObv3P/QYPrVYaBJMK8K5JYqserQldVCwbnI5FYM6OW2fhEY+w9gqqJfxiI631P5z/qcLRJo8TaCjRYPuQBwhS0FKTzVbUX1+Ve2hS5vbMJ4GiFnFgDyO4fbmHUXplT81RVD8qLhfgKHaBmxb+vn8rZaVb5/MPihKopOuYuV5zoY6j/GdqNoSoUbA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,33 +114,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/9/26 03:08, sun jian wrote:
->> hm, why?  Is that a thing people actually do?
->>
->> Is anyone going to actually test this feature?
+On Fri, Jan 09, 2026 at 01:37:49PM +0000, Maciej Wieczor-Retman wrote:
+> Hi, and thanks for looking at the patches!
 > 
-> Yes — invoking selftests directly from the kernel root can easily happen in
-> practice, for example::
+> On 2026-01-08 at 17:56:39 +0000, Will Deacon wrote:
+> >On Wed, Dec 10, 2025 at 05:28:43PM +0000, Maciej Wieczor-Retman wrote:
+> >> From: Samuel Holland <samuel.holland@sifive.com>
+> ...
+> >> +#ifdef CONFIG_KASAN_HW_TAGS
+> >> +#define KASAN_TAG_MIN		0xF0 /* minimum value for random tags */
+> >> +#define KASAN_TAG_WIDTH		4
+> >> +#else
+> >> +#define KASAN_TAG_WIDTH		8
+> >> +#endif
+> >
+> >Shouldn't this be 0 when KASAN is not in use at all?
+> >
+> >Will
 > 
->    sudo tools/testing/selftests/mm/run_vmtests.sh
+> This file (as well as the x86 version) gets included in
+> include/linux/kasan-tags.h:
 > 
-> This currently results in false failures because relative paths being resolved
-> against the caller's cwd instead of the script directory.
->>
->> Alternatively we could check that we're in the correct directory and
->> error out if not.
+> 	#if defined(CONFIG_KASAN_SW_TAGS) || defined(CONFIG_KASAN_HW_TAGS)
+> 	#include <asm/kasan-tags.h>
+> 	#endif
 > 
-> That would also be reasonable, but I slightly prefer auto-cd because it
-> avoids an easy invocation pitfall and makes the runner more robust for
-> wrappers/CI
-> where the cwd is  not stable. That said, I'm happy to switch to a fail-fast cwd
-> check if you prefer the behavior.
+> 	#ifndef KASAN_TAG_WIDTH
+> 	#define KASAN_TAG_WIDTH		0
+> 	#endif
+> 
+> So the 8 or 4 value is only assigned if SW_TAGS or HW_TAGS are enabled.
+> Otherwise it's set to zero.
 
-I'd prefer to just fail for the case that we never supported instead of 
-adding support for it.
+Thanks for the explanation, I'd missed the conditional inclusion of the
+arch header.
 
--- 
-Cheers
+In which case, the arm64 side looks fine to me:
 
-David
+Acked-by: Will Deacon <will@kernel.org>
+
+Cheers,
+
+Will
 
