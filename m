@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E77A5D167EA
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 09:32:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A6C1D167E9
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 09:32:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3787A6B0093; Fri,  9 Jan 2026 04:32:02 -0500 (EST)
+	id 0F0F36B0096; Fri,  9 Jan 2026 04:32:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30C4C6B0095; Fri,  9 Jan 2026 04:32:02 -0500 (EST)
+	id 09A9E6B0095; Fri,  9 Jan 2026 04:32:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E3626B0096; Fri,  9 Jan 2026 04:32:02 -0500 (EST)
+	id DCB5E6B0099; Fri,  9 Jan 2026 04:32:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 008D56B0093
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 04:32:01 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B93AB58D56
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:32:01 +0000 (UTC)
-X-FDA: 84311908842.29.7D6C87C
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 42A42100005
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:31:58 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=YXBLydfx;
-	spf=pass (imf05.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B8C326B0095
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 04:32:02 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 873161AB518
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:32:02 +0000 (UTC)
+X-FDA: 84311908884.22.80C4690
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 152FD20002
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:31:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=OxeJ76x+;
+	spf=pass (imf03.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767951119;
+	s=arc-20220608; t=1767951120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dfBSKVXmaQuEa1Phc6XcArUvGTJjA+7Yt1DNG8AvHdM=;
-	b=0SjevsMWnKqVJdbv5tifTfrm3lYjzpJ3RqO7CJxYYgiOrfL/islZFbzfiI55P0VLcOz4ox
-	txqZWnGxJzaxXZwZqEW1XFVDXYrdlxQgUsSpfMUUN2TbaqGujRDguloPokkaxkoPEGY4SD
-	0zXzfs8sXnKLqJ3j7Ap27kJKONmLPUg=
+	bh=5ju413pk+X7OZOjx7Isz69EdS2j8wMMLZdWEnm2KwEk=;
+	b=4yE2XR1DUTFwDVqAEDIXR95fiyXxKc1bo3HSZA01btg0i18qZy1poOfJ7Pyc3Za0/qh1qs
+	2Pm8pZk4Nq+O1HIeRYvxmQeE7+dWFZcUpqpCHlZrnwTOabaIm/CyOg9fu+ptapbp6VWe27
+	p+Mof2LdCGf5JWURyYJZlJ2qp69rtFM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=YXBLydfx;
-	spf=pass (imf05.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=OxeJ76x+;
+	spf=pass (imf03.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767951119; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767951120; a=rsa-sha256;
 	cv=none;
-	b=4qj/6FyQkSfmbgWlpbZY2SM786gvG4jnLuBf2DcINYr4SydteIxoo/ykDqI7htqomwHPg0
-	Q33aDvotwjkTQ55doGDPLSQXbj0lUOm53zT7py8oshUUmf3z1nHmliqZzqUWxN5WOp7/Ss
-	bp1IQXtODgbCGSOptMC1JBvTmiVlo7E=
+	b=Nnt3PX6y4KGUeogCEK4YJLNduOQ596BeO5GIzRm+sj/X7N/1yWJerURpamqpQ+YPfCJKkG
+	9+OjIZMO4hv17BRQoDIeErZlVtwY9AfLULAl+J/ecPaBW7xXVZ/ahs+HbR+NTVg+90B2W5
+	bJ0DsaWEiNP1970DmqrjL81tWhYfhfc=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=dfBSKVXmaQuEa1Phc6XcArUvGTJjA+7Yt1DNG8AvHdM=;
-	b=YXBLydfxOIXurFFHgjLGA4ZRvImYnWprhlXJGAYcgw3DrtbMwmAQq0XkEXMHS3KjVKtqf6Wkn
-	uJTjbHOFZGtdnPCkuxRP7m/YI4rH+iBiCxjjycPQh6HhkcpH+rfcWqzWb1ukg55C4nJT+Rja3I3
-	zWWCZnzwvkgKdEgleIlWeyg=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4dnbzz2dL0zpSvL;
-	Fri,  9 Jan 2026 17:28:31 +0800 (CST)
+	bh=5ju413pk+X7OZOjx7Isz69EdS2j8wMMLZdWEnm2KwEk=;
+	b=OxeJ76x+Ft0GO46Y63/oQb9vbNDWyxP9/wkzY/cQtIX1DHdwFWKWDljZRlZ3glE5502FWYltr
+	vv1fmOslpZVlSrL88Pur7ilqgajHEfflN2/bwEoEYk1MqAiHilHRxVZwfQALp0XYatuHtbNpoAi
+	v47jcFKvUknad5Np+YOfFb8=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dnc0L3642znTWV;
+	Fri,  9 Jan 2026 17:28:50 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 200DD404AD;
-	Fri,  9 Jan 2026 17:31:56 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 868A6402AB;
+	Fri,  9 Jan 2026 17:31:53 +0800 (CST)
 Received: from localhost.localdomain (10.50.87.83) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 9 Jan 2026 17:31:55 +0800
+ 15.2.1544.11; Fri, 9 Jan 2026 17:31:52 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
@@ -75,9 +75,9 @@ CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan
 	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox
 	<willy@infradead.org>, <broonie@kernel.org>, Claudiu Beznea
 	<claudiu.beznea.uj@bp.renesas.com>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH v6 5/6] mm: cma: add cma_alloc_frozen{_compound}()
-Date: Fri, 9 Jan 2026 17:31:35 +0800
-Message-ID: <20260109093136.1491549-6-wangkefeng.wang@huawei.com>
+Subject: [PATCH v6 2/6] mm: page_alloc: add __split_page()
+Date: Fri, 9 Jan 2026 17:31:32 +0800
+Message-ID: <20260109093136.1491549-3-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20260109093136.1491549-1-wangkefeng.wang@huawei.com>
 References: <20260109093136.1491549-1-wangkefeng.wang@huawei.com>
@@ -87,14 +87,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.50.87.83]
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Queue-Id: 42A42100005
-X-Stat-Signature: s9ascwquk9eqsniz8doyo7c87n3ou3zh
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1767951118-32366
-X-HE-Meta: U2FsdGVkX1/4fSmlZGkjyJ4H/MhoqOv2XtaCKPhMG49pdHJ4IKLrgppJpi5tR+3rTNYRQmwHGVPZjKBo1TPTKpnf38LpDtDgL0DYQc1NmgMyYvtGfyWblLP5+MuY7b8MXfNW6UH4fgGmLqr+MkTve6zhqetp9vpnkqqtWngALMK/5CRRyNz5R2XdslpGp5duM2GylgUV37jFedml2sotn5FOAnBZVUr3F72yeAeLHD8HGuZT0AXqshnzfupiF9bvMbq20eQ2QEzeqVobGlJMGTG1kjQXWWKcaSVsg9AwidqlW+9ur5qVMzOcGc07+XIxdKZ08wcwm2F0zilf/l1Ehq7bXXUz6OhNB+OikeIbIl15YjiYkYMypJz+ZBzovIZRGT1dnoh5AL1EBCma6lT5KsnjEoYC506zL3iQcvkPA8YZx4gZym3htKWoHs9O7lI+GBMfRjQibCkT9/vLQt+DkvCH0RW4MFM2MLiooH070NedFZvY1tNh1VhMk0a/IxvSdLwT0Iq1jMJr2yzkASY0b9a+27l6tu+9i3V2EHoyR8tAMpe9qvszFr1xh99xH8SpnFNraStzISyvI/+ho39Ej61icSfEqFwVfY58ZoDcsYkVydMnxKYe+vlg7TklYEUeLzUcEPP4U2KO/iN2E90odKUjELa9nl2oZ9kAm/4YYMfye9GVNKimmRT/zIiz1ioDg1UGA6SLtqR/fLHK4LqBESqZd+7d985Bqn6/sseeqPZ1vHM+NCDV5Io0ueupoDW39B/kFtBzn0woQkk+/Rj6pFN7JpHq8jmqWkaIx9uUUUZw8vO+fpNGsdPm9UHf91P+IXOMmXOE0YUKTm0gQqzcE8H2+9Q5AosHAHCVrfWZIHk6wiFmWLegizIEmg4/M9Y6wxsjYP+6wlpbPl4nPg1qqHmWpfXlKWV4L+qa+4I3CRG0GKdG8PcQkISW3oK2bqmyoDkE/5gKOfPpX/2iPDK
- dBFqWGHq
- 4iWESzikGaFW9PH8xwDUceuSBcwG5B6m4bfpbAp8iPVl4hQR0pAxl0AdR8IJ1L/PhIEKEqV5J5jHdy9okTki9bC8Gc4IS/FRb/l289qJPuLBC97Ukj3Z47mYQx0A4U1ZI/HNFTB/Io+EGCgMlS7cWkUnB+NpwmHVpe1KsckgMOlSztgEFjr6nKiaRDg/dHKFeZXgFvNqzkJdH8eh98n8aVWffNAxolKbAk/wpPbr4fm9zu9OIhmcaVnpts0r3VAoi3l0yS+KRxexyThz1HUiumM0ZWpIITb5bbki/Tv34DciurACmcOqWz/R4kby40X6JCIqgDgSUD60yqlTIfIlZu/PjP4MNqXQ2QWQQ4ouCJbOUllFt4x7rRtRNmpu4NG7eVM5qnTIw++R4azaTToGGD1RzJ+TbiTdqA9ihm4gqg77wjWkEjYN0aAonOvWT5TvHgmOCe3qUI3t2o/1knpQ67pamX0wXRUxr0lMzkDE9EXwNv0yrJGTGnRqWpGSj5krFs3Vqg2OJFloiImqF+RjWEhXt5tLJhCQWGglKcqlLVyHVh3wqlpHhFR5wmJLs6OQUOSO+AaynQ9CDWQ35GDDIPwPOvyj/P/F7rbqcID5+vHO1New=
+X-Stat-Signature: qwub8pypcbjr4syzn41ry8mes6nj17w9
+X-Rspamd-Queue-Id: 152FD20002
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1767951119-729497
+X-HE-Meta: U2FsdGVkX18p++d0P5RV+jjLXtzjZ+5dYUDsKXw8vFmkBQw7th4OGsnVWA4ttl2aFdTzj9qRUD/0hRZwBIycrtK213Nh8jzmXgtOFpgBaJ/GfdUJAKnWWO+0/apNt7OVqUbdqAG4yDZNbGmFahIPwrigPIVlHfZqYa9R1kBmOwN4C0fiK1C6nfEe0s+VsxrD8S6hPCC7XP3dqQ2iIITc57yHAhNjaMHhhJi5J5a13UKMLgKv/4XLEODqfdC53djP4DwxRnMLJOUwHyYX6NVGfe1B4CMrMG9oOLWRQlGLIT27r7L53IoM+gSiMsV1/lI4VWqfkPbN8cx3gJOecGRPlpb3xAle5Y5adkmM1T6K1JEvp6uoAJeNpwxr33pfJK2Qj1c599fzUPRq0fV8xBnwrxajJw1S2i7rvC/ZfnkIkKoU7e54ME9rXIaHgD3PujeqNeKh5HadgGnI4pzPsqqZweV4C0jMu7X8jCybanWd1RNqVo+j5mAfM3vyjPIno9DJrDQRfTwf9bTHwXNnLIHQfPFkDAD+Iy5W5Rk9Sf/It3BBXQCYwy65k76sHzZetfe1iaxB9iIvvqGwvdYzfxnd2J1EANBKaOz+AxhE3X8qwN+QFm0J+QVlqoRV7S6VGlp8RF13VuJJSDi9L56ORytjbDV6gf4RsBIBIjjbl8ZYkzi0xwfltUKtbmslDauU3KCzmRqNI8XsVHtvBOjK4n7kkP02lOEY9lIMxGY6Wka+n1ZaPZ7TT43djR3qDs4Nukk/hdtiYqdjGgi/vNPAywaFR8MtNquWJzbzBhYyJP4qgqBwU07GunRikr0QALyF8Tkzeb9MB2fhS0q4/hdJvYiv58QtyJyllkLDH45o1JLvMszP9bjVHJ3RnS+/r9IA3PW7g3thBMaXCjJqrqFpv0WPFojXyLCjkhXoGEp31DxxhewjXIUAuf0eACE3a6SwgOe6YvTryV68z09MEk8FJOy
+ YmdUntB0
+ WY4ORfslUTFpGW+FovxowK6gjW8MKtL1tM9DJdhneyNKeVSvvEdzazpXfpPiyy1zWuNJ6Ijp6EZpqS5mLGti8Kuau1xqCNxGojeNRt67MUqUx6X0L7FjBSokd0maDs8pXa2p7Bng9Xk6hh1sBmOJJnqfCKgqm56Ic38zfj2KSEbF5EM8CpwvvZwGyEMjftMzcJe+G1LZN84/ziLSHbEv3/4JM/+SAABsKjjvpAngNFra6hMJGPnQG9tMbrcOHVDNVszi10v23TJfLpVBuMbdw8+Tjje7fn9LzDgJkd7b509CMOsD3i3+pdvEd4ipJu89beuTrvZFPrP8QUGoPGqlo5riN5LjqddHY8VQj47v3BuVFAk66a84w1rtk7RJhuHul152VbHWysNXt7zK1B6cC2QrF3e8vyPUs5Yx+pIf4+Syss5oMo+2DvlcY/zqAkWL85Xs1xkH9nZ1AObO1RjxgfOuxm35EEgQZyF23jEc7oUBidYz3c+yMOK+zQFXwVVCryZZRZO2BW52qyLwmm33LTsEyRzzGuWpcuqcze55XFfumyevfU2y0kstKaBvIyBfReZ3r
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,331 +103,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce cma_alloc_frozen{_compound}() helper to alloc pages without
-incrementing their refcount, then convert hugetlb cma to use the
-cma_alloc_frozen_compound() and cma_release_frozen() and remove the unused
-cma_{alloc,free}_folio(), also move the cma_validate_zones() into
-mm/internal.h since no outside user.
+Factor out the splitting of non-compound page from make_alloc_exact() and
+split_page() into a new helper function __split_page().
 
-The set_pages_refcounted() is only called to set non-compound pages after
-above changes, so remove the processing about PageHead.
+While at it, convert the VM_BUG_ON_PAGE() into a VM_WARN_ON_PAGE().
 
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
 Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 Cc: Brendan Jackman <jackmanb@google.com>
-Cc: David Hildenbrand <david@redhat.com>
 Cc: Jane Chu <jane.chu@oracle.com>
 Cc: Johannes Weiner <hannes@cmpxchg.org>
 Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
 Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 Cc: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- include/linux/cma.h |  26 +++--------
- mm/cma.c            | 107 +++++++++++++++++++++++++++++---------------
- mm/hugetlb_cma.c    |  24 +++++-----
- mm/internal.h       |  10 ++---
- 4 files changed, 97 insertions(+), 70 deletions(-)
+ include/linux/mmdebug.h | 10 ++++++++++
+ mm/page_alloc.c         | 21 +++++++++++++--------
+ 2 files changed, 23 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/cma.h b/include/linux/cma.h
-index e5745d2aec55..e2a690f7e77e 100644
---- a/include/linux/cma.h
-+++ b/include/linux/cma.h
-@@ -51,29 +51,15 @@ extern struct page *cma_alloc(struct cma *cma, unsigned long count, unsigned int
- 			      bool no_warn);
- extern bool cma_release(struct cma *cma, const struct page *pages, unsigned long count);
- 
-+struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
-+		unsigned int align, bool no_warn);
-+struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order);
-+bool cma_release_frozen(struct cma *cma, const struct page *pages,
-+		unsigned long count);
-+
- extern int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data);
- extern bool cma_intersects(struct cma *cma, unsigned long start, unsigned long end);
- 
- extern void cma_reserve_pages_on_error(struct cma *cma);
- 
--#ifdef CONFIG_CMA
--struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp);
--bool cma_free_folio(struct cma *cma, const struct folio *folio);
--bool cma_validate_zones(struct cma *cma);
--#else
--static inline struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp)
--{
--	return NULL;
--}
--
--static inline bool cma_free_folio(struct cma *cma, const struct folio *folio)
--{
--	return false;
--}
--static inline bool cma_validate_zones(struct cma *cma)
--{
--	return false;
--}
--#endif
--
- #endif
-diff --git a/mm/cma.c b/mm/cma.c
-index 0e8c146424fb..b80b60ed4927 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -856,8 +856,8 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
- 	return ret;
+diff --git a/include/linux/mmdebug.h b/include/linux/mmdebug.h
+index 14a45979cccc..ab60ffba08f5 100644
+--- a/include/linux/mmdebug.h
++++ b/include/linux/mmdebug.h
+@@ -47,6 +47,15 @@ void vma_iter_dump_tree(const struct vma_iterator *vmi);
+ 			BUG();						\
+ 		}							\
+ 	} while (0)
++#define VM_WARN_ON_PAGE(cond, page)		({			\
++	int __ret_warn = !!(cond);					\
++									\
++	if (unlikely(__ret_warn)) {					\
++		dump_page(page, "VM_WARN_ON_PAGE(" __stringify(cond)")");\
++		WARN_ON(1);						\
++	}								\
++	unlikely(__ret_warn);						\
++})
+ #define VM_WARN_ON_ONCE_PAGE(cond, page)	({			\
+ 	static bool __section(".data..once") __warned;			\
+ 	int __ret_warn_once = !!(cond);					\
+@@ -122,6 +131,7 @@ void vma_iter_dump_tree(const struct vma_iterator *vmi);
+ #define VM_BUG_ON_MM(cond, mm) VM_BUG_ON(cond)
+ #define VM_WARN_ON(cond) BUILD_BUG_ON_INVALID(cond)
+ #define VM_WARN_ON_ONCE(cond) BUILD_BUG_ON_INVALID(cond)
++#define VM_WARN_ON_PAGE(cond, page)  BUILD_BUG_ON_INVALID(cond)
+ #define VM_WARN_ON_ONCE_PAGE(cond, page)  BUILD_BUG_ON_INVALID(cond)
+ #define VM_WARN_ON_FOLIO(cond, folio)  BUILD_BUG_ON_INVALID(cond)
+ #define VM_WARN_ON_ONCE_FOLIO(cond, folio)  BUILD_BUG_ON_INVALID(cond)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index b0eba56a40d3..2a16c2833439 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3110,6 +3110,15 @@ void free_unref_folios(struct folio_batch *folios)
+ 	folio_batch_reinit(folios);
  }
  
--static struct page *__cma_alloc(struct cma *cma, unsigned long count,
--		       unsigned int align, gfp_t gfp)
-+static struct page *__cma_alloc_frozen(struct cma *cma,
-+		unsigned long count, unsigned int align, gfp_t gfp)
- {
- 	struct page *page = NULL;
- 	int ret = -ENOMEM, r;
-@@ -904,7 +904,6 @@ static struct page *__cma_alloc(struct cma *cma, unsigned long count,
- 	trace_cma_alloc_finish(name, page ? page_to_pfn(page) : 0,
- 			       page, count, align, ret);
- 	if (page) {
--		set_pages_refcounted(page, count);
- 		count_vm_event(CMA_ALLOC_SUCCESS);
- 		cma_sysfs_account_success_pages(cma, count);
- 	} else {
-@@ -915,6 +914,21 @@ static struct page *__cma_alloc(struct cma *cma, unsigned long count,
- 	return page;
- }
- 
-+struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
-+		unsigned int align, bool no_warn)
++static void __split_page(struct page *page, unsigned int order)
 +{
-+	gfp_t gfp = GFP_KERNEL | (no_warn ? __GFP_NOWARN : 0);
++	VM_WARN_ON_PAGE(PageCompound(page), page);
 +
-+	return __cma_alloc_frozen(cma, count, align, gfp);
++	split_page_owner(page, order, 0);
++	pgalloc_tag_split(page_folio(page), order, 0);
++	split_page_memcg(page, order);
 +}
 +
-+struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order)
-+{
-+	gfp_t gfp = GFP_KERNEL | __GFP_COMP | __GFP_NOWARN;
-+
-+	return __cma_alloc_frozen(cma, 1 << order, order, gfp);
-+}
-+
- /**
-  * cma_alloc() - allocate pages from contiguous area
-  * @cma:   Contiguous memory region for which the allocation is performed.
-@@ -927,43 +941,27 @@ static struct page *__cma_alloc(struct cma *cma, unsigned long count,
-  */
- struct page *cma_alloc(struct cma *cma, unsigned long count,
- 		       unsigned int align, bool no_warn)
--{
--	return __cma_alloc(cma, count, align, GFP_KERNEL | (no_warn ? __GFP_NOWARN : 0));
--}
--
--struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp)
+ /*
+  * split_page takes a non-compound higher-order page, and splits it into
+  * n (1<<order) sub-pages: page[0..n]
+@@ -3122,14 +3131,12 @@ void split_page(struct page *page, unsigned int order)
  {
- 	struct page *page;
+ 	int i;
  
--	if (WARN_ON(!order || !(gfp & __GFP_COMP)))
--		return NULL;
--
--	page = __cma_alloc(cma, 1 << order, order, gfp);
-+	page = cma_alloc_frozen(cma, count, align, no_warn);
-+	if (page)
-+		set_pages_refcounted(page, count);
+-	VM_BUG_ON_PAGE(PageCompound(page), page);
+-	VM_BUG_ON_PAGE(!page_count(page), page);
++	VM_WARN_ON_PAGE(!page_count(page), page);
  
--	return page ? page_folio(page) : NULL;
-+	return page;
+ 	for (i = 1; i < (1 << order); i++)
+ 		set_page_refcounted(page + i);
+-	split_page_owner(page, order, 0);
+-	pgalloc_tag_split(page_folio(page), order, 0);
+-	split_page_memcg(page, order);
++
++	__split_page(page, order);
  }
+ EXPORT_SYMBOL_GPL(split_page);
  
--/**
-- * cma_release() - release allocated pages
-- * @cma:   Contiguous memory region for which the allocation is performed.
-- * @pages: Allocated pages.
-- * @count: Number of allocated pages.
-- *
-- * This function releases memory allocated by cma_alloc().
-- * It returns false when provided pages do not belong to contiguous area and
-- * true otherwise.
-- */
--bool cma_release(struct cma *cma, const struct page *pages,
--		 unsigned long count)
-+static struct cma_memrange *find_cma_memrange(struct cma *cma,
-+		const struct page *pages, unsigned long count)
- {
--	struct cma_memrange *cmr;
-+	struct cma_memrange *cmr = NULL;
- 	unsigned long pfn, end_pfn;
- 	int r;
+@@ -5392,9 +5399,7 @@ static void *make_alloc_exact(unsigned long addr, unsigned int order,
+ 		struct page *page = virt_to_page((void *)addr);
+ 		struct page *last = page + nr;
  
- 	pr_debug("%s(page %p, count %lu)\n", __func__, (void *)pages, count);
+-		split_page_owner(page, order, 0);
+-		pgalloc_tag_split(page_folio(page), order, 0);
+-		split_page_memcg(page, order);
++		__split_page(page, order);
+ 		while (page < --last)
+ 			set_page_refcounted(last);
  
- 	if (!cma || !pages || count > cma->count)
--		return false;
-+		return NULL;
- 
- 	pfn = page_to_pfn(pages);
- 
-@@ -981,27 +979,66 @@ bool cma_release(struct cma *cma, const struct page *pages,
- 	if (r == cma->nranges) {
- 		pr_debug("%s(page %p, count %lu, no cma range matches the page range)\n",
- 			 __func__, (void *)pages, count);
--		return false;
-+		return NULL;
- 	}
- 
--	if (PageHead(pages))
--		__free_pages((struct page *)pages, compound_order(pages));
--	else
--		free_contig_range(pfn, count);
-+	return cmr;
-+}
-+
-+static void __cma_release_frozen(struct cma *cma, struct cma_memrange *cmr,
-+		const struct page *pages, unsigned long count)
-+{
-+	unsigned long pfn = page_to_pfn(pages);
-+
-+	pr_debug("%s(page %p, count %lu)\n", __func__, (void *)pages, count);
- 
-+	free_contig_frozen_range(pfn, count);
- 	cma_clear_bitmap(cma, cmr, pfn, count);
- 	cma_sysfs_account_release_pages(cma, count);
- 	trace_cma_release(cma->name, pfn, pages, count);
-+}
-+
-+/**
-+ * cma_release() - release allocated pages
-+ * @cma:   Contiguous memory region for which the allocation is performed.
-+ * @pages: Allocated pages.
-+ * @count: Number of allocated pages.
-+ *
-+ * This function releases memory allocated by cma_alloc().
-+ * It returns false when provided pages do not belong to contiguous area and
-+ * true otherwise.
-+ */
-+bool cma_release(struct cma *cma, const struct page *pages,
-+		 unsigned long count)
-+{
-+	struct cma_memrange *cmr;
-+	unsigned long i, pfn;
-+
-+	cmr = find_cma_memrange(cma, pages, count);
-+	if (!cmr)
-+		return false;
-+
-+	pfn = page_to_pfn(pages);
-+	for (i = 0; i < count; i++, pfn++)
-+		VM_WARN_ON(!put_page_testzero(pfn_to_page(pfn)));
-+
-+	__cma_release_frozen(cma, cmr, pages, count);
- 
- 	return true;
- }
- 
--bool cma_free_folio(struct cma *cma, const struct folio *folio)
-+bool cma_release_frozen(struct cma *cma, const struct page *pages,
-+		unsigned long count)
- {
--	if (WARN_ON(!folio_test_large(folio)))
-+	struct cma_memrange *cmr;
-+
-+	cmr = find_cma_memrange(cma, pages, count);
-+	if (!cmr)
- 		return false;
- 
--	return cma_release(cma, &folio->page, folio_nr_pages(folio));
-+	__cma_release_frozen(cma, cmr, pages, count);
-+
-+	return true;
- }
- 
- int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index f5e79103e110..58ceb6c9e410 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -20,35 +20,39 @@ static unsigned long hugetlb_cma_size __initdata;
- 
- void hugetlb_cma_free_folio(struct folio *folio)
- {
--	int nid = folio_nid(folio);
-+	folio_ref_dec(folio);
- 
--	WARN_ON_ONCE(!cma_free_folio(hugetlb_cma[nid], folio));
-+	WARN_ON_ONCE(!cma_release_frozen(hugetlb_cma[folio_nid(folio)],
-+					 &folio->page, folio_nr_pages(folio)));
- }
- 
--
- struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
- 				      int nid, nodemask_t *nodemask)
- {
- 	int node;
--	struct folio *folio = NULL;
-+	struct folio *folio;
-+	struct page *page = NULL;
- 
- 	if (hugetlb_cma[nid])
--		folio = cma_alloc_folio(hugetlb_cma[nid], order, gfp_mask);
-+		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
- 
--	if (!folio && !(gfp_mask & __GFP_THISNODE)) {
-+	if (!page && !(gfp_mask & __GFP_THISNODE)) {
- 		for_each_node_mask(node, *nodemask) {
- 			if (node == nid || !hugetlb_cma[node])
- 				continue;
- 
--			folio = cma_alloc_folio(hugetlb_cma[node], order, gfp_mask);
--			if (folio)
-+			page = cma_alloc_frozen_compound(hugetlb_cma[node], order);
-+			if (page)
- 				break;
- 		}
- 	}
- 
--	if (folio)
--		folio_set_hugetlb_cma(folio);
-+	if (!page)
-+		return NULL;
- 
-+	set_page_refcounted(page);
-+	folio = page_folio(page);
-+	folio_set_hugetlb_cma(folio);
- 	return folio;
- }
- 
-diff --git a/mm/internal.h b/mm/internal.h
-index 0597d9012e03..8baa7bd2b8f7 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -584,11 +584,6 @@ static inline void set_pages_refcounted(struct page *page, unsigned long nr_page
- {
- 	unsigned long pfn = page_to_pfn(page);
- 
--	if (PageHead(page)) {
--		set_page_refcounted(page);
--		return;
--	}
--
- 	for (; nr_pages--; pfn++)
- 		set_page_refcounted(pfn_to_page(pfn));
- }
-@@ -1022,9 +1017,14 @@ void init_cma_reserved_pageblock(struct page *page);
- struct cma;
- 
- #ifdef CONFIG_CMA
-+bool cma_validate_zones(struct cma *cma);
- void *cma_reserve_early(struct cma *cma, unsigned long size);
- void init_cma_pageblock(struct page *page);
- #else
-+static inline bool cma_validate_zones(struct cma *cma)
-+{
-+	return false;
-+}
- static inline void *cma_reserve_early(struct cma *cma, unsigned long size)
- {
- 	return NULL;
 -- 
 2.27.0
 
