@@ -4,154 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C116CD232EF
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 08:49:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B784ED232EF
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 08:56:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18E7D6B0089; Fri,  9 Jan 2026 03:49:37 -0500 (EST)
+	id 1206E6B0088; Fri,  9 Jan 2026 03:56:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1664C6B008A; Fri,  9 Jan 2026 03:49:37 -0500 (EST)
+	id 0C98D6B0089; Fri,  9 Jan 2026 03:56:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03F1C6B008C; Fri,  9 Jan 2026 03:49:36 -0500 (EST)
+	id F15A26B008A; Fri,  9 Jan 2026 03:56:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E58836B0089
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:49:36 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7D06B1AB43B
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:49:36 +0000 (UTC)
-X-FDA: 84311801952.23.A46F1F1
-Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 69FA1160009
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:49:34 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	spf=pass (imf08.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at
+	by kanga.kvack.org (Postfix) with ESMTP id DD3CE6B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:56:38 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7F26458CF0
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:56:38 +0000 (UTC)
+X-FDA: 84311819676.04.33DDF03
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 534AC140009
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:56:35 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=A5HnMYwz;
+	spf=pass (imf23.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767948574;
+	s=arc-20220608; t=1767948996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N/41tXXyY58j/0Q0aF6dwot8qrNnnx5K4/PUFO5dd2g=;
-	b=R1u0RoNTosRTLBhtsx3RkaJ0TTWZtWliCPQiJ9OhFk9XbxaoNDqK9errC0mUoWLpFXQaXp
-	36d3CE9v+MJKH6B/V+JVM8xlT5tJdr+Z4qoL04EtHWpt9wiqkyHII0OqXqS8JUJc2fddcw
-	DsHvDgkdRjjxKf4gjJ4NtSqRtY1b7UU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1C4SXc9txWHarrSa+EN97vKZ2VSa84XrNklAGg0RSHw=;
+	b=AG371hooJuDUCNa54W+QnP9Uzvw8qsKnTayptajFSTYRsbFf8LRyTEC64RHYBi1Pp6gzSK
+	sjvq9di/vX+cXDcV0AvsRxTgB4DLq+w9nrglKD+neyLpUJqKgZ0UJs9iODfJ5nP9Fhsc8g
+	6kw3fs7/pFYVJ0h5h7uiE/H0IuMuzEo=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767948574; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=A5HnMYwz;
+	spf=pass (imf23.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767948996; a=rsa-sha256;
 	cv=none;
-	b=YMquUT4EmXeT7n/MwDLcNlol4Zk86IoBlV02Zx5A0vwIi16g4P6Gf19WcBOqJrkk64AXGq
-	NfCRXprkcaapB59xF+Nh0Ix/pMULZglu8iVFRa3HTziEBKxflcIYTQhVI41KKiSmjde9ct
-	jCkoM+z8+LzepgsZBEAiiGtJFQkiwCA=
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 13ABC29ABD6;
-	Fri,  9 Jan 2026 09:49:33 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id ATPC6i9pWXNZ; Fri,  9 Jan 2026 09:49:32 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id A870929ABDC;
-	Fri,  9 Jan 2026 09:49:32 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 50WQivczX82j; Fri,  9 Jan 2026 09:49:32 +0100 (CET)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 2BED829ABCA;
-	Fri,  9 Jan 2026 09:49:32 +0100 (CET)
-Date: Fri, 9 Jan 2026 09:49:32 +0100 (CET)
-From: Richard Weinberger <richard@nod.at>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
-	Nicolas Pitre <nico@fluxnic.net>, 
-	Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Anders Larsen <al@alarsen.net>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, 
-	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>, 
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, 
-	Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, 
-	Jan Kara <jack@suse.com>, tytso <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, 
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
-	David Woodhouse <dwmw2@infradead.org>, 
-	Dave Kleikamp <shaggy@kernel.org>, 
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
-	Viacheslav Dubeyko <slava@dubeyko.com>, 
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Mike Marshall <hubcap@omnibond.com>, 
-	Martin Brandenburg <martin@omnibond.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, 
-	Amir Goldstein <amir73il@gmail.com>, 
-	Phillip Lougher <phillip@squashfs.org.uk>, 
-	Carlos Maiolino <cem@kernel.org>, hughd <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	Namjae Jeon <linkinjeon@kernel.org>, 
-	Sungjong Seo <sj1557.seo@samsung.com>, 
-	Yuezhang Mo <yuezhang.mo@sony.com>, 
-	chuck lever <chuck.lever@oracle.com>, 
-	Alexander Aring <alex.aring@gmail.com>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, 
-	Matthew Wilcox <willy@infradead.org>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, 
-	Dominique Martinet <asmadeus@codewreck.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, 
-	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, 
-	Trond Myklebust <trondmy@kernel.org>, anna <anna@kernel.org>, 
-	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
-	Shyam <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
-	Bharath SM <bharathsm@microsoft.com>, 
-	Hans de Goede <hansg@kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
-	linux-btrfs <linux-btrfs@vger.kernel.org>, 
-	linux-erofs <linux-erofs@lists.ozlabs.org>, 
-	linux-ext4 <linux-ext4@vger.kernel.org>, 
-	linux-f2fs-devel <linux-f2fs-devel@lists.sourceforge.net>, 
-	linux-mtd <linux-mtd@lists.infradead.org>, 
-	jfs-discussion <jfs-discussion@lists.sourceforge.net>, 
-	linux-nilfs <linux-nilfs@vger.kernel.org>, 
-	ntfs3 <ntfs3@lists.linux.dev>, 
-	ocfs2-devel <ocfs2-devel@lists.linux.dev>, 
-	devel <devel@lists.orangefs.org>, 
-	linux-unionfs <linux-unionfs@vger.kernel.org>, 
-	linux-xfs <linux-xfs@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	gfs2 <gfs2@lists.linux.dev>, 
-	Linux Doc Mailing List <linux-doc@vger.kernel.org>, 
-	v9fs <v9fs@lists.linux.dev>, ceph-devel <ceph-devel@vger.kernel.org>, 
-	linux-nfs <linux-nfs@vger.kernel.org>, 
-	linux-cifs <linux-cifs@vger.kernel.org>, 
-	samba-technical <samba-technical@lists.samba.org>
-Message-ID: <235309114.88543.1767948572101.JavaMail.zimbra@nod.at>
-In-Reply-To: <20260108-setlease-6-20-v1-11-ea4dec9b67fa@kernel.org>
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org> <20260108-setlease-6-20-v1-11-ea4dec9b67fa@kernel.org>
-Subject: Re: [PATCH 11/24] jffs2: add setlease file operation
+	b=ResnWMv41scSeDTRs2F0gYQoq3QKXlXhFMFMXow/v2FulhIpeXDU/qlWa/WLZ2QHq6f5bN
+	nqC0fbubeLwnAjBEtzMPeRcFOIfUKdW99gpLY6w8qs3MSfUUak6ddpQ/ma69DxTxDVBqgs
+	0GPW14VmiX5f0ySp2ErMrbDWS0bVe0s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767948995; x=1799484995;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Ei3iOPS+myBqtT5xuA9JKyEL9TietkXXYAr7sL9XrQ0=;
+  b=A5HnMYwzOHyqAg2aoMTvmQl7rjMBYRuhW9cUzDHTmFh/vnAafAWwetHo
+   Ade8lHb++1IIsENJWmlydS77p5EmrzYMV57fS2ocDQ8R9Bs4l7vAqvTpU
+   APShkCUDF2Rs66GC0Sg/L49D9eJFWhgY8TULePvC9HrnLvp+dtURulp0W
+   CZVW4YEJT1SWFxQ3k1/cMVxtOaZRR9X1NJwL9Q5adC95ovAxmQ5nSXlgi
+   23Se/wYwHxAGHUwceeqhOx1j5HwicCYo7b3XDGIsaidTVd6jNb7YXwg+q
+   o/wDXPQbCmaRQlvCY8PM3dEdFzZpcVu/4WGgcOUNWV0BS3rtmYvjbvXfC
+   w==;
+X-CSE-ConnectionGUID: 5aLJGP2iTFiDCfHcB2AdGA==
+X-CSE-MsgGUID: 1f7VRPHRSWCPjF7Z8I98Qw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="79625970"
+X-IronPort-AV: E=Sophos;i="6.21,212,1763452800"; 
+   d="scan'208";a="79625970"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 00:56:34 -0800
+X-CSE-ConnectionGUID: LgJ4gWLiSTGmrZf/2pruUQ==
+X-CSE-MsgGUID: CFcs2tEXQX2urP2N69BAeg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,212,1763452800"; 
+   d="scan'208";a="202538591"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO fdugast-desk.intel.com) ([10.245.244.83])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 00:56:30 -0800
+From: Francois Dugast <francois.dugast@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org,
+	Matthew Brost <matthew.brost@intel.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Alistair Popple <apopple@nvidia.com>,
+	Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH v3 1/7] mm: Add folio_split_unref helper
+Date: Fri,  9 Jan 2026 09:54:21 +0100
+Message-ID: <20260109085605.443316-2-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260109085605.443316-1-francois.dugast@intel.com>
+References: <20260109085605.443316-1-francois.dugast@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [195.201.40.130]
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF146 (Linux)/8.8.12_GA_3809)
-Thread-Topic: jffs2: add setlease file operation
-Thread-Index: 1XfajkHy73ekR8RzfIWJ5jINW3wE1g==
-X-Stat-Signature: y8yb9s8suhz1uex3mmwhw7o3eerzg7sw
-X-Rspamd-Queue-Id: 69FA1160009
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1767948574-178660
-X-HE-Meta: U2FsdGVkX18ADyN/QZuzGIwDOnDi3z6ZHhdE4wK9hqI0c4bhyVp5ImDBJyJcYETE4Y2SxCn8TViFGwcrsgjdgLNLUFIhvupmYpoXkYTzjt5UrfLSS7GHMcDx6jmIZKyWVrKm6wpphKJ9xofjGThuH7DtjYz3Z/Y2abbTv7wJq1norFCkbRHtQMpnWiEnzaQ9elDrPhc++dol7FcYDDfakHE8Wkdppd3sRL36Nf78uBwmPH6bKspkwscTfVnf5jBTR6O6viyCJZqItLOch0gDzL+UjzJkPCRDgZtpn14RGWS/DKb7bgmfWPAHYTWZTMy7XjDTejq+CmbgZqTEqnHqOh/l7vq/CyGGWVLqfUorQPWiQItpkSrs9EGfDSJKhqiXa7jdW8V9Y90VdpG1vMbl4DWhLwWCCoYZhQi5ltBXZsq4NbzDcD6kP8V87oEvYD3yCrof/qArGheay4FJV56qMHgdJ6R2lAtsI04Ji/QU8DanolbArDUOgit3f2AugdcoK3F17U4k+3Mrc6MBVdtwmZdt6iqJJMT+lTTJe7qNKHMykDAWJGnP9+E8OQ4Zuf2tuIt0lYgXBIlyHd5CafNRAbDidLmHzChhN5LBVYnSb8b2OsA4ZZn4SVpQfGSo7IX/TnmJsNH7e9vZCzHPmm5dlb8Gm54+8jF6BBQ2SJm7XTxIi4p58V7Xt0Z9W1is2nJghAJ2U2+GqqzETu0h4Ojrq8iuJ1UzVtX3XREglhVJkM5kanp5buSaVu+XE7g4kAr8yRTox6yAa+2Qh8K+vLSTnSkeGmDRpu5dzUab1Gp2htUmMh6wn5KyfOx5A3G7xj04tEg/4t8Ze31etP+VntnFKIHfiyVPM9ODxnV1stiaMrgYehv0zkQGnlJdyZtnAtexRkGngHmCCkzki8BRy9mLyfzUFPFYC5Llc9iUI4YXR2mUSC8MDzNEYy6/d5QWMiCkbyrTKe+f+olraQxECpk
- XEm+s1Ao
- n+sJq+wp3g5uAbXD/94/6Wcz+sOOTdGRPjWJKQEPSnKevfxsyDftS2QMSBE8LjlfaD8ta9Fl/h0WwOTC34dwNGFzgjUxlIneTTJOxAweT71AVctgKyBYo2OWg18+nrO2PW1sM157HVYlgGDAdLYrQGqcvJptAamgw6kk2WtX+8TseXLEfSFxTVVWCn7B/n8ejYFSp0K7tgnIDb2hbJVQmTNScjVZ5x2mXuXuaZbxHTyf89/GvqiLrH2wmHHjl3aQuj4sm1LDpXZXUj5CnLkHTvOfACyLwCdx5Nxr/M6idEVZCQulUve+dlDmnqZ04wO+p5q0fm8VbP0Z+uq59ydEpBP9ZpNeopyFw4OgN+uwzFsx6vauMS8BrEa3v2g==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 534AC140009
+X-Stat-Signature: zcjbxgbpjo3cx9h3zrnb5gfy4fqeopm8
+X-HE-Tag: 1767948995-207792
+X-HE-Meta: U2FsdGVkX18k97tfMwXbqb8kMthAPnqiNgxRDhhhNICQH3cHo8V48SBb6jia4SKiv2gokAxJ/raEgrayEGPonzkJvS5jRU6M9GZHdhvq5htFO2E9I8uEyxlUqu4UKiE2ZC3W4N7S8YPMOoUIYsjR+fXYdMdKDBkyGnWby/21X08tK0K4BVtb+gI0RtDn8DIYv3XE+EETxLq0pTGqm0WQdSYbYu/UdIiNc7MkEt2nhzeU9htQLtA6Ib5QoFvyldSjaMPLPRR3uR2YW/wA6RnNoW/VmhJs9T+xKHxX4O4zg1Kvb9gC3ngYchToI41V3SlwA8rm+Ecc5RpHAWSHd9Vaex1zxB2UEiY1TFM0yhlMOwv3UXcSv4jG84HhNJ6/DqgrPMZ+1Dv9flkWvxFxJERUm3ipDgS1AnReA4RMACAACukM6kY7elJcHD3AGZTi0y0zx4Z1ed0diYR17TLts6l2anUkZaIfy2gNoKTJ0L6gxM+XeD3fle6uW79pgNEYYL2X1X1BzwjEmg6F5kjOelyKnNGSF7hn9mHct00DhRnyoc6yWuSEQtlo5/q0yhRIKfi+Th1Ilbp+73WVj3DGFP/eYlceAToBZSrtGQ+wyzAJAGgb6G+y+2fp6fP/xPYo30nbqvw1kTi6ZBR/QVaJNtJ84PiwXBEKihs/4z+ZR9CDLIGk4TzAv8hEYSOPW/8lCl/qExl9uUoe6v3EwxM5oX8UOUJzywTJJDRAmx9jjVrNzfoXos5IUfV0KpJ75fIhJzIzNClEqHhTePa2iBZLl6Z9I7ZJoagY48tSer+cNPBU+0EN+SiXapMvRDp7NgIDc0iFW+pEIV91oVAI+RXXIzPBJBLeeeOuYun9gwLoRMQ6B8ZgPFxs8Uh/iPI6oxClG/a1fGOPK7AxDlPZFSQpgSrLLco7+IL3D3YomUGt8w3L5aRfAx4RQRtKA/9/FugUKNeSiYQ6NAUG1S+kv61Lvw7
+ 4bto52BE
+ MhTdB36JND1g1bMY/mQTbDYw0jVBBxtPoJAvGEe5VoF3tcf56YT/XPtEFgJsOepQJJEo964BFv14DEv0TbzwYLWvfbKOyA2ctg4aBz5wxQNzmL2OxYDdePtar3jqCG5N8BLwJnIULm/azsKVieDiheVuTH3hx7FctNJsEPUHX7jRwX0qY6w7dcyArWnePz14CDgj9C+T5ZjIqEi7zfIEewfR9Z3W+LgW29dp3etd1AB7ts3i8thRKJCo70jTC6TUWTII80Na9h8HJWk4XNIPEnah57b02FTLy0SQDmRDVv0Bq90b4eaZQBPByfBLrY03ZnFksPUovSo83whRwinvLC8EjMAM+pJgdDaE44bGtGdan///5Iy2+sY4MZvLiABR/AYRLY0uOukTl28tjUIiqmLH+EsqmhK09Lo6+3B11WW6VZnoiOcwvrMTdbZ3xtCtRcth8Nsky7dwtaDzplHafPmdsX9vYQZZHrKWlG/i8x8zAR1J7LKXDPMwBhGiUJveuSQiGkqDLeXZNbG0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -160,15 +119,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
------ Urspr=C3=BCngliche Mail -----
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> ---
-> fs/jffs2/dir.c  | 2 ++
-> fs/jffs2/file.c | 2 ++
-> 2 files changed, 4 insertions(+)
+From: Matthew Brost <matthew.brost@intel.com>
 
-Acked-by: Richard Weinberger <richard@nod.at>
+Add folio_split_unref helper which splits an unreferenced folio
+(refcount == 0) into individual pages. Intended to be called on special
+pages (e.g., device-private, DAX, etc.) when returning the folio to the
+free page pool.
 
-Thanks,
-//richard
+Cc: Balbir Singh <balbirs@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Suggested-by: Alistair Popple <apopple@nvidia.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+---
+ include/linux/huge_mm.h |  1 +
+ mm/huge_memory.c        | 39 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 40 insertions(+)
+
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index a4d9f964dfde..18cb9728d8f1 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -369,6 +369,7 @@ enum split_type {
+ 	SPLIT_TYPE_NON_UNIFORM,
+ };
+ 
++void folio_split_unref(struct folio *folio);
+ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+ 		unsigned int new_order);
+ int folio_split_unmapped(struct folio *folio, unsigned int new_order);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 40cf59301c21..0eb9e6ad8639 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3580,6 +3580,45 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+ 		ClearPageCompound(&folio->page);
+ }
+ 
++/**
++ * folio_split_unref() - split an unreferenced folio (refcount == 0)
++ * @folio: the to-be-split folio
++ *
++ * Split an unreferenced folio (refcount == 0) into individual pages.
++ * Intended to be called on special pages (e.g., device-private, DAX, etc.)
++ * when returning the folio to the free page pool.
++ */
++void folio_split_unref(struct folio *folio)
++{
++	struct dev_pagemap *pgmap = page_pgmap(&folio->page);
++	int order, i;
++
++	folio->mapping = NULL;
++	order = folio_order(folio);
++	if (!order)
++		return;
++
++	folio_reset_order(folio);
++
++	for (i = 0; i < (1UL << order); i++) {
++		struct page *page = folio_page(folio, i);
++		struct folio *new_folio = (struct folio *)page;
++
++		ClearPageHead(page);
++		clear_compound_head(page);
++
++		new_folio->mapping = NULL;
++		/*
++		 * Reset pgmap which was over-written by
++		 * prep_compound_page().
++		 */
++		new_folio->pgmap = pgmap;
++		new_folio->share = 0;	/* fsdax only, unused for device private */
++		VM_WARN_ON_FOLIO(folio_ref_count(new_folio), new_folio);
++	}
++}
++EXPORT_SYMBOL_GPL(folio_split_unref);
++
+ /**
+  * __split_unmapped_folio() - splits an unmapped @folio to lower order folios in
+  * two ways: uniform split or non-uniform split.
+-- 
+2.43.0
+
 
