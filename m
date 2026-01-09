@@ -4,99 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 592C2D26D60
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:08:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00715D26D60
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:11:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFFD96B008C; Fri,  9 Jan 2026 10:08:13 -0500 (EST)
+	id 4F2746B0088; Fri,  9 Jan 2026 10:11:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD76E6B0092; Fri,  9 Jan 2026 10:08:13 -0500 (EST)
+	id 475B36B008C; Fri,  9 Jan 2026 10:11:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD9CB6B0093; Fri,  9 Jan 2026 10:08:13 -0500 (EST)
+	id 34DF16B0092; Fri,  9 Jan 2026 10:11:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AAF56B008C
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:08:13 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F23F1A9ABB
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:08:13 +0000 (UTC)
-X-FDA: 84312756066.19.92B9FEF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 93799100014
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:08:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D5A49i8X;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 21D566B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:11:34 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C0DCA1AAAA
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:11:33 +0000 (UTC)
+X-FDA: 84312764466.02.8C88CE3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1400D8000B
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:11:31 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fSZakySj;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767971291;
+	s=arc-20220608; t=1767971492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2O5PgS3h7rUMfW8zetc6lr+7DUQ51Nxsxl6VimhpPuw=;
-	b=cRuCo96UmV7aKrnydAYu7QG8T797cffMTdJEP3vd+vCeSPR1p+7YMsfvXd3AsvEZw0MHYG
-	3AqsPevoRJUF2G/GrkoRFisaH7YlE85v2XW8K+FSmzLBuyq1toCd7XPDzvPjwe1bTqPDep
-	KFVoql3XryGzQBqhG3ZvofgJAyG7NEE=
+	bh=khwm/bSHN3PX1PjrnS+3+ckVaSBmWQQcHL+HzPjFWbg=;
+	b=KjYlmwnWzCYfmJVLfV8XsOHvp/VRfQSz4VAFDFLEPK1dXT528letal+6lRZTx9ia05mwsj
+	ka1kHn+G6IfIYNxfegxFJj6F/Md+3WjYgbnY75Bo+YlnYXXUzA9srIAQywG8mFdm+tq+5h
+	WW9DkOPb2SJEW26P2LITRqy0u2zV29k=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D5A49i8X;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fSZakySj;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767971291; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767971492; a=rsa-sha256;
 	cv=none;
-	b=p+yxMM34HY8W8hmBRI3yLUc6bIDIE4+iqTfe5vNJoWfpxL57ltZhQci9RDDRPe+lCguWoh
-	Wctos/OvrylDxRUTp6UVsb8BBf/7RzmC1UL3g7bSwqWzGLXoaTpohx5wPN/OjyE2VHgdho
-	8QrYuOWC/Q3d9tqxD9VkLkC131zKKgA=
+	b=dvm9d8sGGBOlVGwvfPhMOdCRzIYcM53TSsBtYdIqDjzjzo83uLrrPkG/Te6Dd5QobXyaGi
+	FsO+My7VzxBEovizma8nMfiJp/WOMRYNW5vyQ3wl6OCtC7msXPkz7LncFVK9nxP+AS3/Vi
+	cz2qJkELCdrVWimRuZGCmRMPDR4oBcs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7CEBC42AC6;
-	Fri,  9 Jan 2026 15:08:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1067FC4CEF1;
-	Fri,  9 Jan 2026 15:07:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 748E360151;
+	Fri,  9 Jan 2026 15:11:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6881BC4CEF1;
+	Fri,  9 Jan 2026 15:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767971290;
-	bh=3Z8L26dcTskZ3ZdCQN0iSI+dIODX6q9MdBtGUwgu/Fc=;
+	s=k20201202; t=1767971491;
+	bh=2FBHrNHxevA7xEit3psQVoy33Em494KJnTdG6Fnk1wY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=D5A49i8XZ+WWgc3yo8WpoToMpiFiiYIORsD5kdhtfLHgOWLJ+teHa3YKmPfqvZQto
-	 EOjbH06xY/Y2D1tuKVkl4Bn9mfBj2pRUINZJHsmiBlwwDKMfmgPNBdydHY/WcoODaP
-	 hXTbfv9bYAipERXqMFeW7thazUf0MBtEe10dcKDUEhB49l5TpS6DuQJGLnLWIPw35L
-	 /A7EpMCyhB3OpiWJ4xcCGJauiqHLzHAPYo90gEXDJEGp6mJ/mQ/yOKD0hyaBuAIhmW
-	 2g9u3gE5rzMBGVklkmAIGwRJV3u8nzhfd1IwpNssclwPUhgU0okSyNsciYIOrvSviH
-	 Q73z6sh0NFzwA==
-Message-ID: <1e123306-0efe-457f-953b-d4a27ce6bc60@kernel.org>
-Date: Fri, 9 Jan 2026 16:07:57 +0100
+	b=fSZakySjexp8G8Uu0Qz+AYFvOBvbPowqbgQ+u6hdU2jft9SSsnDPMWYRtoerKCThb
+	 Tppz6LSNxEvQN4B9A9LDh6y0sc3f2AHa9NEU/RBwVUABwOaxQrIpJoHb8n6XJ7WFEN
+	 c/ZU1/QBoUtebaWN/Ju+kycH1+Cly3f4wJTUCBLvHX3BPt/2aqZLfjlYuD/oGHE0GG
+	 m6s+4abpx0NmFh77ux70vvjS9d0q4YDTJHvM6PTOQjb0F77l3ZCZEUTqcLuAjB3XZB
+	 RLJEluiUmxXo9lCYUf9xDgtCZDZB5UFvabEDn0SngYXQVnYrio2l5wgUDbENPT+rIt
+	 W0mlzL2k1ZzRA==
+Message-ID: <85033126-c60a-4cac-8f6f-5bd2f6102fec@kernel.org>
+Date: Fri, 9 Jan 2026 16:11:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 14/14] mm: Add basic tests for lazy_mmu
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
+Subject: Re: [PATCH v3 1/7] mm: Add folio_split_unref helper
+To: Zi Yan <ziy@nvidia.com>
+Cc: Francois Dugast <francois.dugast@intel.com>,
+ intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ Matthew Brost <matthew.brost@intel.com>, Balbir Singh <balbirs@nvidia.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>,
- David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251215150323.2218608-1-kevin.brodsky@arm.com>
- <20251215150323.2218608-15-kevin.brodsky@arm.com>
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Alistair Popple <apopple@nvidia.com>
+References: <20260109085605.443316-1-francois.dugast@intel.com>
+ <20260109085605.443316-2-francois.dugast@intel.com>
+ <59fb1669-2908-4cab-b3c0-b97479da3fb9@kernel.org>
+ <1319a24a-bcfc-47e5-a022-f5d00994acc9@kernel.org>
+ <A5512463-283A-4137-B4A8-780783C5DF0E@nvidia.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -142,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20251215150323.2218608-15-kevin.brodsky@arm.com>
+In-Reply-To: <A5512463-283A-4137-B4A8-780783C5DF0E@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pkj1etg5rydqtj49731bktr41p5pqm7x
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 93799100014
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1767971291-294875
-X-HE-Meta: U2FsdGVkX1/0+ihRYS5uUxnvpMZ39czxA+z5x2N3cOXSRZzHVrL7ESbHQYri/I38bSsir/4hHSz9XDIzX+Ez6FOVhT8QKTQ5jdH/qAUi5mJBwTg6zJ4T/Hq95tkI2R3e4VdPeWmC4A//LuZqeT7mcuOYmALXG2BZerEtjYBK7wC1yaUPaJAv/J2YfYPrt6vbCMzMUlS3BNdwm1cTEC7YvZ/QpYiSZO4+FcmLVBUvmdOPV5Y5vOpc6jgj994WRKx8iH0tUTrXrMfDLT4xrCoZKxzcP48oImjyppzKIj9j0sOyi/kUwjWhZ4NsHTxWYVchp2AJPqjSDP6FEARTIHXJhSPidlVvsp/khq+Uj2CJpJ7NBkCJl1p2Dc6TmYgWBNJEwMGwgU49/MafApfCjyI8eql8JdMmHeAAY/R19zrDvsGveZUQVsTBVx56lOepof4UHBpIIyNopMKYY2DxfKbOk4ybeo6CHJhq6OI6UoWLkAig3dllXK5WMBBTJCWt07Ia/W2We+wxPDA8qRhkd3CoNixAzXEK+1zEoL9QMu0g7rNsPFCjaWw2TQdw2K5E0RgpBnLf8IqDuq/CencCpomg7ir6UtNUxeepyP7s3i8aVR7hT4vp6gZnEVbRmhfgKoKwte3D29ObDGJ7VZznTPMxzdwQjPZ9KVzDi8I+0P8t4WCngCyzwzszFSFphdhTdR9v19L/1HZvPC2wiNKAcE2XiXz6u0wvxOuxMtWCaF3uhYbokgqJ1NzI3nlnrdA9HjAqEfI8Oiy+C8tZDtHsT+rWGZWwiD7cthahyMylbFgen646U9gUr3g6ChYbRuRysofn5JY0PPQuzL9Xe552X/Cf6V6BTYIgErywwi3uao3+x4ePMRBCVoOrHjw8xRVLdDCj6rPGhe2eFv2GWg/TkKEA19hsks9Z2/d6xweMzapWgu1BcX479ZutIx9eAhItSYU8pVZhlXafSiwDl7fJ6Ju
- Sji85KFJ
- kAruY0vryi6BLXhhQBNsZ8G2kpfcNK1sIqSSivUvkGuRnvNl3+uD9V2sKHr5so1pYlDp8Ciozq3tbk6fAEeOHOVGXw1jZEUT0WWHRO8/mV0AOHA7+9+LEtyhGU2vzEaapc/Jq4q+GAJLpSNwLY/hAXFKxG/keIH8tAWi2n2Ak2gt3xVYzqmvj/RsKl1XuShxQhG30WG/h+B9y+MqZHVIluPDuYqOCKCAcI1WBs+Duf9spD/IGH1ylGta/KbWF7cKUeaJ2K7/5O4XBdcBz0tDbbLQnm8IVBByA3HxEThCbpx6QsRtlb8aC0P0E/DY5elZGCHjxQBsHarZDb/kWG2LJ9LsJZH21eunIl+ZiFf/lvxPsjcyYliZ0aDEImXs5enhRZ1Ns0ByxOTJV3X4A/P0soIdJ9Ls5w9S9byddfdeQFjo81E6uIfok30xoqs/HyUGVMkVQyoPPJWfy+dE=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1400D8000B
+X-Stat-Signature: cogbd3wiyf4yj7fxu8rpquo5yf5ofsoh
+X-HE-Tag: 1767971491-839085
+X-HE-Meta: U2FsdGVkX1+Yd4pVPtiq6/mXPMbtQj0ucNwscLi1xbGSgs9AkxirGzsE14NqEpnjUMx4vmOsXAnDcIQTOdIOU4EiZrm0XhIPbcG9QNOOTmofcn0j2qXS5K3FtJnZlAAiZqzyzV/2G1yINNk53dhjMr5fkr2+pqm6G3Y5CS+UJxPiglXtpNZCAgntW9wDOfWxRm1VJfvFq2Jaj0tlpKWxH5C00BWhmC7SM9+kFt+DvlxgytCH21dtPv06kUHUYqioIAo8EwJ3OyxujyfsVMFmWrobCg014piht3c6wKByWrYnQp6edHMEShG7lcj8VMaUhxhLcKpyp87xFstMuV5KvVYwEJfJ937FTjnHyM5o560pgeIJy0Q3RO4UUgxE+8gDqVJkJ/t4EYXh2sGi3yl4Xg9cWCyMtw517SuDyTS8xm5bRhQMnBgGRA4ZwUXNu0EC5COtKgccIbDqt25yLW9Ao6lfRmEnKT9r9JJKYVZbcbXcecMf+9hX/NJyj7Wh2XDjErTJGNG2Jc7lDak7Wd62yiKeyrc3UFgaspGgmoeqF9U2Zb4GOnnAJYF3cQQutLXAEm49uBQeo7Hq32icLt8xQ6CHqdDqsbLYhXSXxmSmsyOr9zLom7//GI/B00Lr2XBNtAR6EppOcF16blgFTsccPogXELSRiiqEfsjg41RTZQgonAYThFlywiTHB4RpeVSanZ2bQD8FblYVQmGYPq60iBa+QA3WpgXZRnkIvVYGXIXB2rkSrr7rqSv/D1ErdY8dh4X2eA7kYqyGl55hx9wdsBmdA80u53Gjf+sL9RS5EDfr7Bjizv7J6bg/fDGJYXvfr2WfHF71ZTArSvm7tXuWGL1WKvRtVU7ZfaX3/HHoNU+FXGRAgIcpxBCb4fTmRjRNG03CEQVDhFQeXOL3UzcN21ARj3/t/KECc+dRdqJPKgu2ZplsxZRr1EzX+D4eAhyHxUDRc4gA5foyb73g15F
+ veFKf2t4
+ iBT6CsMSvzKX6H2vWW/C6n65Fz2tgDRztIVMRDEV3ZlYT0QQegTVmuw6Ji93pneF2h+mzAWxRY5+aDMYWHvQL93toErZfdwcuQ6fIaitAY57ZFeZBIkyPHuTnpacWvjajh6xrMEWvTufZLwcUksfOoHFIIGYpbktmUVWlxVqfmMga38Dq3cQQHO6A+RfkzyDIoD6ZFrie/+RPy8xH7ZuhBuVXgRg2EhjjIhmKPI3xYL2CPvXTbWte03mPLxnCn2sGfZRgH1GRGu7deXb5AFP8qQDvXi7gQRTnB3FfGKjvPdWuw6f1xSwufa6RBP5T+ertoalCML87qJNg0mA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -161,140 +150,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/15/25 16:03, Kevin Brodsky wrote:
-> Add basic KUnit tests for the generic aspects of the lazy MMU mode:
-> ensure that it appears active when it should, depending on how
-> enable/disable and pause/resume pairs are nested.
+On 1/9/26 15:30, Zi Yan wrote:
+> On 9 Jan 2026, at 8:26, David Hildenbrand (Red Hat) wrote:
 > 
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
->   mm/Kconfig                     | 12 ++++++
->   mm/Makefile                    |  1 +
->   mm/tests/lazy_mmu_mode_kunit.c | 71 ++++++++++++++++++++++++++++++++++
->   3 files changed, 84 insertions(+)
->   create mode 100644 mm/tests/lazy_mmu_mode_kunit.c
+>> On 1/9/26 14:19, David Hildenbrand (Red Hat) wrote:
+>>> On 1/9/26 09:54, Francois Dugast wrote:
+>>>> From: Matthew Brost <matthew.brost@intel.com>
+>>>>
+>>>> Add folio_split_unref helper which splits an unreferenced folio
+>>>
+>>> split_unref reads like "split and unref".
+>>>
+>>> You probably want to call this something like "folio_split_frozen" ?
+>>>
+>>> The very definition of "frozen" is "refcount = 0 ", so you can simplify
+>>> the documentation.
+>>>
+>>> Are the folios you want to pass in there completely unused (-> free) or
+>>> might they still be in use (e.g., migration entries point at them during
+>>> folio split)
+>>>
+>>> So I am not sure yet if this should be "folio_split_frozen()" or
+>>> "folio_split_freed()" or sth like that.
+>>>
+>>> I'm not CCed on the other patches in the series or the cover letter, so
+>>> I don't see the context.
+>>>
+>>
+>> Ah, I was CCed on #3 where we call this function on folios that are getting freed.
+>>
+>> In that case it would be acceptable to initialize folio->mapping (and folio->index?) of the split folios. Do we also have to initialize folio->flags, folio->private etc?
+>>
+>> See __split_huge_page_tail().
+>>
+>> folio_split_freed() would likely be best, because then it is clearer that there is absolutely no state to copy from the large folio.
 > 
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 62073bd61544..ac48deb44884 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -1471,6 +1471,18 @@ config ARCH_HAS_LAZY_MMU_MODE
->   	  MMU-related architectural state to be deferred until the mode is
->   	  exited. See <linux/pgtable.h> for details.
->   
-> +config LAZY_MMU_MODE_KUNIT_TEST
-> +	tristate "KUnit tests for the lazy MMU mode" if !KUNIT_ALL_TESTS
-> +	depends on ARCH_HAS_LAZY_MMU_MODE
-> +	depends on KUNIT
-> +	default KUNIT_ALL_TESTS
-> +	help
-> +	  Enable this option to check that the lazy MMU mode interface behaves
-> +	  as expected. Only tests for the generic interface are included (not
-> +	  architecture-specific behaviours).
-> +
-> +	  If unsure, say N.
-> +
->   source "mm/damon/Kconfig"
->   
->   endmenu
-> diff --git a/mm/Makefile b/mm/Makefile
-> index 2d0570a16e5b..9175f8cc6565 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -147,3 +147,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
->   obj-$(CONFIG_EXECMEM) += execmem.o
->   obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
->   obj-$(CONFIG_PT_RECLAIM) += pt_reclaim.o
-> +obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
-> diff --git a/mm/tests/lazy_mmu_mode_kunit.c b/mm/tests/lazy_mmu_mode_kunit.c
-> new file mode 100644
-> index 000000000000..2720eb995714
-> --- /dev/null
-> +++ b/mm/tests/lazy_mmu_mode_kunit.c
-> @@ -0,0 +1,71 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +#include <kunit/test.h>
-> +#include <linux/pgtable.h>
-> +
-> +static void expect_not_active(struct kunit *test)
-> +{
-> +	KUNIT_EXPECT_FALSE(test, is_lazy_mmu_mode_active());
-> +}
-> +
-> +static void expect_active(struct kunit *test)
-> +{
-> +	KUNIT_EXPECT_TRUE(test, is_lazy_mmu_mode_active());
-> +}
-> +
-> +static void lazy_mmu_mode_active(struct kunit *test)
-> +{
-> +	expect_not_active(test);
-> +
-> +	lazy_mmu_mode_enable();
-> +	expect_active(test);
-> +
-> +	{
-> +		/* Nested section */
-> +		lazy_mmu_mode_enable();
-> +		expect_active(test);
-> +
-> +		lazy_mmu_mode_disable();
-> +		expect_active(test);
-> +	}
-> +
-> +	{
-> +		/* Paused section */
-> +		lazy_mmu_mode_pause();
-> +		expect_not_active(test);
-> +
-> +		{
-> +			/* No effect (paused) */
-> +			lazy_mmu_mode_enable();
-> +			expect_not_active(test);
-> +
-> +			lazy_mmu_mode_disable();
-> +			expect_not_active(test);
-> +
-> +			lazy_mmu_mode_pause();
-> +			expect_not_active(test);
-> +
-> +			lazy_mmu_mode_resume();
-> +			expect_not_active(test);
-> +		}
-> +
-> +		lazy_mmu_mode_resume();
-> +		expect_active(test);
-> +	}
-> +
-> +	lazy_mmu_mode_disable();
-> +	expect_not_active(test);
-> +}
-> +
-> +static struct kunit_case lazy_mmu_mode_test_cases[] = {
-> +	KUNIT_CASE(lazy_mmu_mode_active),
-> +	{}
-> +};
-> +
-> +static struct kunit_suite lazy_mmu_mode_test_suite = {
-> +	.name = "lazy_mmu_mode",
-> +	.test_cases = lazy_mmu_mode_test_cases,
-> +};
-> +kunit_test_suite(lazy_mmu_mode_test_suite);
-> +
-> +MODULE_DESCRIPTION("Tests for the lazy MMU mode");
-> +MODULE_LICENSE("GPL");
+> Yes, basically, we do not have a reverse function of prep_compound_page() and
+> open codes the reverse process in free_pages_prepare(). For zone devices,
+> zone_device_page_init() calls prep_compound_page() to form a folio but
+> free_zone_device_folio() never does the reverse. FS DAX has its own
+> dax_folio_put() to do it. Alistair suggested to come up with a helper
+> function for both FS DAX and free_zone_device_folio().
+> 
+> Maybe free_zone_device_folio_prepare() is better. And put it in mm/memremap.c.
 
-
-Very nice test :)
-
-I think I prefer the EXPORT_SYMBOL_IF_KUNIT over disabling the test for 
-PPC and over making lazy_mmu_mode_enable() non-inlined functions with an 
-exported symbol.
-
-With the EXPORT_SYMBOL_IF_KUNIT stuff added
-
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-
+That would be even better, if we can limit this completely to zone_device.
 -- 
 Cheers
 
