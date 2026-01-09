@@ -4,179 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B054D232EE
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 08:16:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93657D232EC
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 08:21:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C16E6B0088; Fri,  9 Jan 2026 03:16:43 -0500 (EST)
+	id 014866B0088; Fri,  9 Jan 2026 03:21:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 799606B0089; Fri,  9 Jan 2026 03:16:43 -0500 (EST)
+	id F042A6B0089; Fri,  9 Jan 2026 03:21:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 650456B008A; Fri,  9 Jan 2026 03:16:43 -0500 (EST)
+	id DDC1D6B008A; Fri,  9 Jan 2026 03:21:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 52B076B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:16:43 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DEA55C1AF8
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:16:42 +0000 (UTC)
-X-FDA: 84311719044.11.EF0BB1C
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5B675C0010
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:16:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FkPvOdy0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VpF9TpUl;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FkPvOdy0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VpF9TpUl;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767946600; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CAE4D6B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:21:14 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 704128B876
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:21:14 +0000 (UTC)
+X-FDA: 84311730468.26.6ECB7AD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CCD62A0003
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:21:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gk+RzwZJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767946872; a=rsa-sha256;
 	cv=none;
-	b=hoqNLNmJC8A8rrqXqv7MUEW6A740lBhqwxWtSPohEu9NuZharSjthbdm2xQYMC+wCOYB+G
-	JvUiFXgG7KRtSpaz7U58YU0jU1/CYezR9smbUJxiPp6ysr2oepnv7s9koH9HZ7ixgiRWcN
-	2wpGpthUDFlWlmYwGUlz1+Ku3yulwsQ=
+	b=HDYqK8VvKc37Vx7GLY+v1C323cliYgF9erCduYzj0SvFKWmY6FmrLMg79U+wOYREVhwg2F
+	ukdyaFB/r1GOvB0vCpLPqq3x7hxzDqWWtiDZ2F631QUcuXusLJgUEOX4+CV6GOOJ6Ozj1Y
+	J/dg0rEKlJqqgLdwD204u9hnKAPBHQY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FkPvOdy0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VpF9TpUl;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FkPvOdy0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VpF9TpUl;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gk+RzwZJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767946600;
+	s=arc-20220608; t=1767946872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G1ZOpYG1RRBOh0980GoYceIDOSrHq5NcrrJc5uKkl0U=;
-	b=5D/xZ8CUqkc7UvjaH6mtKv081qy8it4jBoJHbmkSpxjhq69VtAhAKRHFvvDw83an6sgQDF
-	IGNxKUfydwAgRqt/xq5zt6Bj/0p7UfIk5O6m7TPz6ik2AmhdDxaopfLeJxsRBcY7fTPCH4
-	8kA6tv6ZP2UPr0oOc5ZA97tC61VrYz8=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5C7B55D26F;
-	Fri,  9 Jan 2026 08:16:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767946598; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=G1ZOpYG1RRBOh0980GoYceIDOSrHq5NcrrJc5uKkl0U=;
-	b=FkPvOdy0sQddOf6QKdCSucqMynteBedhjGe6uj9PAiZ+ZmNNI0oCkifZLBtrU7HstPOTJJ
-	l7YWlb/769veZh12glwpf5g9xHUMT0KzR7UmJj3Kl0icR9BRH/QXS6yfXyeMuVb8PKnf86
-	++LEsCh4NhnkwqPQE3llKVxPbJJMnUs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767946598;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=G1ZOpYG1RRBOh0980GoYceIDOSrHq5NcrrJc5uKkl0U=;
-	b=VpF9TpUlE4adfKB6l/UFaCwK2gdFSlC9NRGvz2X73c3sPaXQ4QRI3AarSUs0Ww5IX7FoDu
-	GwM6mM4bmajdHVAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767946598; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=G1ZOpYG1RRBOh0980GoYceIDOSrHq5NcrrJc5uKkl0U=;
-	b=FkPvOdy0sQddOf6QKdCSucqMynteBedhjGe6uj9PAiZ+ZmNNI0oCkifZLBtrU7HstPOTJJ
-	l7YWlb/769veZh12glwpf5g9xHUMT0KzR7UmJj3Kl0icR9BRH/QXS6yfXyeMuVb8PKnf86
-	++LEsCh4NhnkwqPQE3llKVxPbJJMnUs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767946598;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=G1ZOpYG1RRBOh0980GoYceIDOSrHq5NcrrJc5uKkl0U=;
-	b=VpF9TpUlE4adfKB6l/UFaCwK2gdFSlC9NRGvz2X73c3sPaXQ4QRI3AarSUs0Ww5IX7FoDu
-	GwM6mM4bmajdHVAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3D9E33EA63;
-	Fri,  9 Jan 2026 08:16:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id rTO2Dma5YGnkOwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 09 Jan 2026 08:16:38 +0000
-Message-ID: <28e6827e-f689-45d9-b2b5-804a8aafad2e@suse.cz>
-Date: Fri, 9 Jan 2026 09:16:37 +0100
+	bh=7bwCvYNVWz131ksEKOnghAOgppy+qUVLkrHVAB2GisI=;
+	b=r+WK3JNIiAVp+PCoqo5CHB2dvR2sH7qNT8jC+Ntan0jIxD5ga43t1SZ5aIMKguLF73yYqO
+	TfZR3UW5ax9+zOrBgqtZbPRRXI2BYRrlPQofV5Tdhog9WxepLtlEh9Ietrz78rP79bG67l
+	r9IczRleE8tpO44TGAz83skCN65CY+A=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 96BEE404ED;
+	Fri,  9 Jan 2026 08:21:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA62C19422;
+	Fri,  9 Jan 2026 08:21:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767946871;
+	bh=KUFuE5V8UAiIurL6g3Fp/lJo2ewluF8KzNFw5f5PUjk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gk+RzwZJgqFqDXbdeT7Ij2ANvkctK08svhshZT4R6yu6GK6U5FU7oH4Xe+zv8qwMi
+	 4CjPgeTPbBjv8HsMIltG5ewdwonA8kjSIA667gREwSdMJ3RS+7Buq5U6Eos8SvbK+J
+	 nKkrMxUoT4X8Q0FyxCy4EZdhe4iqJhr4V6t7/UJCAhTlbVpUQXR/gm208md0TMmWZM
+	 HkmXt9IdJ7rCxhmZTAD0oRgGfDs7xzYOTVswLzOoZ7GMgJgYq9abd0Ivcl84yf5tq9
+	 J4AmlCsrCF8YDst8YMFTNmMfuhpye4VlBUo7YM7KAkx0A9LACF/F+ezsCZLKZlQrcl
+	 B6Hco6Rs0QnpA==
+Date: Fri, 9 Jan 2026 10:21:00 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Lain Fearyncess Yang <fearyncess@aosc.io>
+Cc: Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+	Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH] loongarch: wire up memfd_secret system call
+Message-ID: <aWC6bIEg6UqvX1DO@kernel.org>
+References: <20260109051054.188030-1-fearyncess@aosc.io>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 10/19] slab: remove cpu (partial) slabs usage from
- allocation paths
-Content-Language: en-US
-To: Chris Mason <clm@meta.com>, Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com,
- Petr Tesarik <ptesarik@suse.com>, "Paul E . McKenney" <paulmck@kernel.org>
-References: <20251024142927.780367-1-clm@meta.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251024142927.780367-1-clm@meta.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260109051054.188030-1-fearyncess@aosc.io>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CCD62A0003
+X-Stat-Signature: f8mofzk5cn7eobsfx618jtqxwgazxwm4
 X-Rspam-User: 
-X-Stat-Signature: d7u5un1k64stym5rbb9ty1hbeq7g643g
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5B675C0010
-X-HE-Tag: 1767946600-53367
-X-HE-Meta: U2FsdGVkX1+Fe1OFqt3DHuRaBr8/oIRCiohKHYo9A+4XJGlMCMNwjnlN9XwhpqOSdn34f9fKGJk3545lHIRVLZ6nKPyveT9noFq3Pbwe2PkMlE99leWw0TLu5LsFOtX+7WniBEslpFCxcUCEQsB17aeLMCcQPjVbrAmky4sdHYEdjgG4/cY136/hMHYpG3s5r3YLH7KfIE4Hd/ONvSMjfNGJgdUEaIcC2XoeuAHeu+w+wo3H5FiArNvMw1mXXJiZ6X7AXyaBkKHwSRzcG1a2jb256eGheLb0diS7xh363AH6kTKcDbc/ACf8gsrP12QCQsr++avh0uvt3khEnjUCiTTB6qjrVpAlkncQHALRxS5IcXb01drfAK2payVcVzwfTfOG1lIjyIFqQPMxUJU5C9JtAkVwYu0cL8wDPmQVm9pm1Il98/JJCYxzKm7DD8+pB8sliaMB52OW24vPfOA6B6KzSa/GpXUnfLO7DRee4mFJHGKlNR9AL65NRglsFbTbouaQuVqwjPFr8xcQiqZZ033ETvShi4yXdyCrTkcF8bdXv/Pd0vvvqTz/60NUzIqmVnovt9XQ8EOLSEBldMgCtZFgcMUGDzaswfXwYNgeMm3pbhVvDOASCsUsqo3opqp/SoOalW6VR7rrxack6SbUUQ8aBu4iV7OynSGv7pUpM7FA13WEFqOCMZn7g/9fOPJWOxFVCmvWNDsPQRpGMAe3aOPeZRayMbILEefdakTbA0b65KFhgyCrQDwsqsrTbDSe/ko7lsITNnRyOu5ZUQQzklnxdVCcG40pl38aUOQrHkQo+VjdvOsNtXTIzFf1w0qKIZzq4b9Td47r51SBWyYB3EMTvhiOprBdx5aBzl1whDdSvKpnAO3DO9RC07PYAHRNka0nLB+Yoae3L3kpEGNDbrbp3qaY16jLhNyZhr/LXnImbJncicyktwkT/CcSkggf7KZT7+xfx1z81yEqeOX
- GzVyZ8Gy
- XlLltKaWw8BymBosdPbg8M2TL/HMZZCljt8oktH9xuBNRPj4y5NCXdNOJ2H0G7QP/hxPQTrwsVGyYiDr3LeeiVIz7Ca2UBnewjYyIAspGOIuF0J/2iBmkGf6H05kIt8LYj4BEIZRWeqWQTfgUpN1mc2hnHu9h8qGFoSl5dw8GLdktLjZD56kPgGtSiWKLzZfMsZc1ueJwBCr5Ico+NoWqYM3ThHTyfALVxCmioqqbLhJT875JIBiqSIO6z7cjPn1TsEitZoEn1aiavJDjUFXm6+PpS9mUWQJPRSUM
+X-HE-Tag: 1767946872-395718
+X-HE-Meta: U2FsdGVkX18szA5YkI9tyT5i0jvOc0+AE86fmR5q9ja/r1XZ9bAtFrDd/7SR9w/hFcr/iieAxjJbAFh8DjkFs1P/qKeaiKrihCZ5sVh4MOhPPQ2cPeqQrC6Cb2Cs4aijPLNoCDlCFd5IAMqt8yicgGsB8LNci2PSd7ZytK4Gx8r+3/I9VCfQjY0OKBL0IXdf5bCcvufD0zMvR+7lZkwFeddz+r3GCR6+Cw1WHbR0mm87IrxjVGJz9T1jrNsWi9vuIbGNhgGWCBZIb7gWYPgcctRRCImrx6XSPEY48SUjbmMaavvOw/5zS/PHYBYJleIR5BkLQmj+rCiR/Q7Ph2q0JZzN1BQ65XJ645EV4E0qqPnCLLw8DwABPc1ZRvyWkq82CKFlpOREy+kHqtMMFehC0sIXANJIiKdXf4RJ7eNgWIpX6qC0QPyKWGeQGl+Jvykp+RMSDfto6fC6zH2IWgr7pyqRXzquuN+Hm8NeiI8akg9I0Qw2SBDkeYUPT5u0Cp+oOrtuHWYe9WYrcZzeyvqWGscHA5HLqQqQWsxCKNGPTWqWcMFnuFGhdl6clnOJKN+Fl+nYB8+wMOghXJf00zVsW9x9rPhdLwXwK1XH4Uj9FkBY8wWbp3XL8PgD2haQPRGVgAkOK7tjSvc/xrXqCRqDa30DqFwW+dcLnwSmRjiScFkX9shnTm6u04vc6Jt0lnzFVeDUbniaizRvqCq0zHQCcX8W3v+qeBGGnad9BBnaVgFn3S4onWwio0UKZTCA4n+jRT9C3CkbkTyNt3V3/R3dVwuE8faTk+9ZG42WV3Cc+rDgqg+XSkR8v6rYlfqfEgP7eE9DBvjj38ThUk2sTQhpc/aF7x0SVrJucziW0cDndNI/g/PHKbIQI6J2DTKriuoWZajlTU5nfZaqbkMbRbzaGZBM6Fj9DN6yIc0SoKWC1a5yHceZGmLAV4O31s0n7aWNcrQ/xIqmQ8v9X3UbeZ3
+ KNdIy4AM
+ mMViRun08yx7MxIcvVYLsQUob1kY+IPmZooIDRT9qtVjXbptWeZ0voghUyr//7+MfnWh37753oMVnzd2VB7soqPK8OmzJRESeNUltH4b3PF/S/B1dIGJF2KRZ7wAUHYR2+XPlRdFVCIcQUbbKBD0M5irQX7JIlBgPC1Mz7rFPosyy9XnfJH4FiScRYti5aYEcVxDMTKoE2b3KsBvUPZo9vwOVRAF+txT4uTZlpD1ZGcp/KIe2JMFUuIT7XcTptOQEdv4uqx2d7Wgr0Jw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,151 +104,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/24/25 16:29, Chris Mason wrote:
-> On Thu, 23 Oct 2025 15:52:32 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
+On Fri, Jan 09, 2026 at 01:10:51PM +0800, Lain Fearyncess Yang wrote:
+> From: "Lain \"Fearyncess\" Yang" <fearyncess@aosc.io>
 > 
->> We now rely on sheaves as the percpu caching layer and can refill them
->> directly from partial or newly allocated slabs. Start removing the cpu
->> (partial) slabs code, first from allocation paths.
->> 
->> This means that any allocation not satisfied from percpu sheaves will
->> end up in ___slab_alloc(), where we remove the usage of cpu (partial)
->> slabs, so it will only perform get_partial() or new_slab().
->> 
->> In get_partial_node() we used to return a slab for freezing as the cpu
->> slab and to refill the partial slab. Now we only want to return a single
->> object and leave the slab on the list (unless it became full). We can't
->> simply reuse alloc_single_from_partial() as that assumes freeing uses
->> free_to_partial_list(). Instead we need to use __slab_update_freelist()
->> to work properly against a racing __slab_free().
->> 
->> The rest of the changes is removing functions that no longer have any
->> callers.
->>
-> 
-> Hi Vlastimil,
-> 
-> We're trying out the AI patch review automation on the BPF commits and it had
-> some questions about a few of these.  Since the goal is to actually test the
-> automation, I'm putting them in unedited, but I did try and make sure they
-> were valid before sending.
-> 
-> This one seems pretty unlikely but still worth fixing:
-> 
->>
->> diff --git a/mm/slub.c b/mm/slub.c
->> index e2b052657d11..bd67336e7c1f 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
-> 
-> [ ... ]
-> 
->> @@ -3575,15 +3532,15 @@ static bool get_partial_node_bulk(struct kmem_cache *s,
->>  }
->>
->>  /*
->> - * Try to allocate a partial slab from a specific node.
->> + * Try to allocate object from a partial slab on a specific node.
->>   */
->> -static struct slab *get_partial_node(struct kmem_cache *s,
->> -				     struct kmem_cache_node *n,
->> -				     struct partial_context *pc)
->> +static void *get_partial_node(struct kmem_cache *s,
->> +			      struct kmem_cache_node *n,
->> +			      struct partial_context *pc)
->>  {
->> -	struct slab *slab, *slab2, *partial = NULL;
->> +	struct slab *slab, *slab2;
->>  	unsigned long flags;
->> -	unsigned int partial_slabs = 0;
->> +	void *object;
->>
->>  	/*
->>  	 * Racy check. If we mistakenly see no partial slabs then we
->> @@ -3599,54 +3556,54 @@ static struct slab *get_partial_node(struct kmem_cache *s,
->>  	else if (!spin_trylock_irqsave(&n->list_lock, flags))
->>  		return NULL;
->>  	list_for_each_entry_safe(slab, slab2, &n->partial, slab_list) {
->> +
->> +		unsigned long counters;
->> +		struct slab new;
->> +
->>  		if (!pfmemalloc_match(slab, pc->flags))
->>  			continue;
-> 
-> Can get_partial_node() return an uninitialized pointer? The variable
-> 'object' is declared but never initialized. If all slabs in the partial
-> list fail the pfmemalloc_match() check, the loop completes without
-> setting 'object', then returns it at the end of the function.
-> 
-> In the previous version, the equivalent 'partial' variable was explicitly
-> initialized to NULL. When all slabs were skipped, NULL was returned.
+> LoongArch supports ARCH_HAS_SET_DIRECT_MAP, therefore wire up the
+> memfd_secret system call, which depends on it.
 
-By the way, there was another bug in this patch, causing a severe memory
-leak, which the AI unfortunately didn't flag. Petr reported it during
-performance testing and it took me more than a day to find it. Oh well :)
+LoongArch version of set_memory* does not support splitting of leaf PMD
+entries. Does LoongArch always use PTE-level mappings in the direct map?
+ 
+> Signed-off-by: Lain "Fearyncess" Yang <fearyncess@aosc.io>
+> ---
+>  arch/loongarch/include/asm/unistd.h     | 1 +
+>  arch/loongarch/kernel/Makefile.syscalls | 6 +++---
+>  tools/testing/selftests/mm/Makefile     | 2 +-
+>  3 files changed, 5 insertions(+), 4 deletions(-)
 
-Wonder if things got better since then perhaps, and your or Roman's tools
-would find it today? :)
-
->>
->>  		if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
->> -			void *object = alloc_single_from_partial(s, n, slab,
->> +			object = alloc_single_from_partial(s, n, slab,
->>  							pc->orig_size);
->> -			if (object) {
->> -				partial = slab;
->> -				pc->object = object;
->> +			if (object)
->>  				break;
->> -			}
->>  			continue;
->>  		}
->>
->> -		remove_partial(n, slab);
->> -
->> -		if (!partial) {
->> -			partial = slab;
->> -			stat(s, ALLOC_FROM_PARTIAL);
->> -
->> -			if ((slub_get_cpu_partial(s) == 0)) {
->> -				break;
->> -			}
->> -		} else {
->> -			put_cpu_partial(s, slab, 0);
->> -			stat(s, CPU_PARTIAL_NODE);
->> -
->> -			if (++partial_slabs > slub_get_cpu_partial(s) / 2) {
->> -				break;
->> -			}
->> -		}
->> +		/*
->> +		 * get a single object from the slab. This might race against
->> +		 * __slab_free(), which however has to take the list_lock if
->> +		 * it's about to make the slab fully free.
->> +		 */
->> +		do {
->> +			object = slab->freelist;
->> +			counters = slab->counters;
->> +			new.freelist = get_freepointer(s, object);
->> +			new.counters = counters;
->> +			new.inuse++;
->> +		} while (!__slab_update_freelist(s, slab,
->> +			object, counters,
->> +			new.freelist, new.counters,
->> +			"get_partial_node"));
->> +
->> +		if (!new.freelist)
->> +			remove_partial(n, slab);
->>  	}
->>  	spin_unlock_irqrestore(&n->list_lock, flags);
->> -	return partial;
->> +	return object;
->>  }
-> 
-> [ ... ]
-> 
-> 
-> 
-
+-- 
+Sincerely yours,
+Mike.
 
