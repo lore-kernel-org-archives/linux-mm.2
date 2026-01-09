@@ -4,122 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C37AAD26D7D
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 19:16:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98C56D26D98
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 19:22:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 284686B0089; Fri,  9 Jan 2026 14:16:21 -0500 (EST)
+	id EC8826B0005; Fri,  9 Jan 2026 14:22:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25C7A6B008A; Fri,  9 Jan 2026 14:16:21 -0500 (EST)
+	id E76296B0089; Fri,  9 Jan 2026 14:22:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 172936B008C; Fri,  9 Jan 2026 14:16:21 -0500 (EST)
+	id D57BA6B008A; Fri,  9 Jan 2026 14:22:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 039A36B0089
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 14:16:21 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 611491A082A
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 19:16:20 +0000 (UTC)
-X-FDA: 84313381320.15.48046E6
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 780A1C0002
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 19:16:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=N0pbCl0Q;
-	spf=pass (imf22.hostedemail.com: domain of praan@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id C5B2E6B0005
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 14:22:58 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 78E31BB760
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 19:22:58 +0000 (UTC)
+X-FDA: 84313398036.11.780156E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D29C4140008
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 19:22:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rKkJ1pP+;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767986178;
+	s=arc-20220608; t=1767986576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OY298V/mlr0e0R/jNCYCk/cEMiQwxaFCVZQ5rO28hR8=;
-	b=0C9Lz+D9E+FLhNl6XNMDQcJYZC+o8XFsXWftgEt4gDNuRHp2Vzsi7nwkwjyLUyr1uzD2q3
-	X7SoUuUw5G8Nr5NX3GTRaNjN4HL7GMBBLPcrYSjiK8eEef7W39PtaJfz5FS4x2WpGM9nxO
-	J359IBJa3OfJ1s/l4onSqQx0dt0Yft8=
+	bh=dmz9+2NrdkbPh4HuhBaBl3w7A0XsLAuyEM30qxYb1aw=;
+	b=VxneBWAFTvRS2qoCDyfH8rCYLrI94jpokrISXcMV3Q/FH/FesxRHlzxw5e3fDXnSXSNqXp
+	BuZviSuSuLRjYxBOjPYNVT40YOVfbqhnDsHpqYl7cgvvOppT7XznhzgrolNJ5ZDMqm0dd3
+	99TuqZ3xMG28a+XCMOxFH7To/q7Viw0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=N0pbCl0Q;
-	spf=pass (imf22.hostedemail.com: domain of praan@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767986178; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rKkJ1pP+;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767986576; a=rsa-sha256;
 	cv=none;
-	b=nH4fbn9GJg82aYC3ODg5NycW1j/OfZrQy+LZ7aYBokViD1mmj9TwNLPyB6TZfH38cZqrLy
-	XFo4YMIHM3IjiPCUAupGzPHCDrq/l9Qr245yenGGY2nkYDdGOMyrw5DsJDXlt0KCeXbvQb
-	vreWl6vxtvpN4y/qOaNrcrxylpycR5U=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-29f02651fccso13095ad.0
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 11:16:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767986177; x=1768590977; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=OY298V/mlr0e0R/jNCYCk/cEMiQwxaFCVZQ5rO28hR8=;
-        b=N0pbCl0QUBEdE8jBRVojqGZVHOCbWS8bnakvM3btbmPryreBE3bH0C70LozkUJIfi1
-         9ej8NzTRXdeINpE9pable2JcbhgB1SnRrq/aRgu20LIherC9bsmhZOf3rThO2DvwOnD7
-         Teqx2ghND67sdOOlQyzr6e+6K8ghpGGpRxuYt+g9buRL6Z3fJy4bd73i8S2sePKnhFzB
-         acD+a0Qz/6LxUJAH9o5ccceJt0Fjvs3x09M+fEFFeSoUoo5Gqhc+Y+AG35Br5GHLpILE
-         qmGaX5QT3sJvwbGTs1iy5ji27XsrObjihYd3MJ6DLmMRSsFSC5oRYu+1BlmCRhHR/REX
-         Da9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767986177; x=1768590977;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OY298V/mlr0e0R/jNCYCk/cEMiQwxaFCVZQ5rO28hR8=;
-        b=MeS8sLq2TsPc9tMzf7W9HeTf/4JOdjDXlrIStRn688aK4SCFQNsHyIua7qzOcN3ZTP
-         GvxjYVo9uxXzkqKwbK6DyRrgPwlPP+sAzzgtpU+T4vdoCdXRq9nZfMB3PEYdcV9VQbD1
-         mvwLZQINhz6C1iIQSVqoNEpNG5EIpW6SYgDW+4aRUcYZcyf9lByX/xEYliLBFca/Bd6u
-         Oi0wuGfdToSH+nkjp0UceAlZuqgccMmxTGLeBwDUM0OzKlrEWPrKUM2nEFRus+kdWDnc
-         x1Hcg2KAmPfrf0ziztLpT+21VYZhwb3WlJNZlkPqaKv3PVj1XfdXnOju8c/ImIwk4EL6
-         FmSQ==
-X-Gm-Message-State: AOJu0YzfslcPF9zAvRWoLuE06O5iIxUvVjKSjE9Z5UhfKALQ0MFGiqsy
-	KP/NSdoqFznBixGl9FKDBmrS17QxkxR+lZosiTWsr7lWouWvaiop2bKYRd2FEE54MA==
-X-Gm-Gg: AY/fxX5zxEEmb4twrGDQHLoYRTvOCZH2k5pqRsQyVmfcjCGatZQ7vn102fMXMj6W2b3
-	M7mUM5DW0l0mk+vGKuB7VfGoCrPbw15N+AtQecAvxYN9Qy9RnrNc4MZK+N8Mc3I8bk0HDczn/gx
-	HNHHYtEf0j8smUnK/yTSgjiUn70XAulTdwrz0tq9CW2WDU45Y5R3ghb9yLGhwB8NK+HwwJB9Czm
-	skJMmIRRE0tY5zKxd6111W4LCYnxu2INFXEkYRttzfMlpoKqwCys4EDJqEjCmz7PvPQJfBRgW52
-	kmrJLW68cD19d2rSPIbqVgXXCkFvxKjw12MQBgO6xBxOflC8hH2dWG1RqvIpJXEYtrgxvr1CGqR
-	KhxVcI6+6cV/wFLfj3p6CMV6090NFkiMifJKGN0NMq+VbaMG/KnywSsPBIbVb0oDJY99U9CWx+D
-	Tg6wIoNU0ngiuAsCC2KT0Pt5m2vOVlfbYd+sdRzl0mf82wFoXV
-X-Received: by 2002:a17:902:f690:b0:2a1:3cda:8e99 with SMTP id d9443c01a7336-2a4149da4e3mr360525ad.21.1767986176660;
-        Fri, 09 Jan 2026 11:16:16 -0800 (PST)
-Received: from google.com (222.245.187.35.bc.googleusercontent.com. [35.187.245.222])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81d87955bb6sm4087620b3a.50.2026.01.09.11.16.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 11:16:16 -0800 (PST)
-Date: Fri, 9 Jan 2026 19:16:08 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Mostafa Saleh <smostafa@google.com>
-Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
-	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
-	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com,
-	baolu.lu@linux.intel.com, rdunlap@infradead.org,
-	Samiullah Khawaja <skhawaja@google.com>
-Subject: Re: [PATCH v6 4/4] iommu: debug-pagealloc: Check mapped/unmapped
- kernel memory
-Message-ID: <aWFT-Oh9bQsbqrXj@google.com>
-References: <20260109171805.901995-1-smostafa@google.com>
- <20260109171805.901995-5-smostafa@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260109171805.901995-5-smostafa@google.com>
-X-Rspamd-Queue-Id: 780A1C0002
-X-Stat-Signature: 8uz4isgx144ew5tjcyhnfbsqxdb3wj79
+	b=tGedSfXpf2K0tqXTFfCrpIbnCgKCMrhHuWwfSGo3rlp8H2KCM5i5UZZkrezBVXm/Wsmh1d
+	8dwGj1WvCe0zp9+84qwEgBNHWiby0s8U/khmFPXxoXS9ckAX3VOiKbLhn9boeklEgFpvsb
+	dA1uO3Pf0XpMki+DaswR5m91+l/qyIU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3B2BF60150;
+	Fri,  9 Jan 2026 19:22:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55EEAC4CEF1;
+	Fri,  9 Jan 2026 19:22:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767986575;
+	bh=ZeAEQhQExtiQtbODK1SLMrltdmBdVELv64P6A1sK9Z4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rKkJ1pP+KZkWVh7sdaCZwlcc/XvO4rCGsHk2kJX8XODV3x9Lv3ZZRDyY1kT9XzDfY
+	 /80DgjZwjVPxJgWeM0U0vslpwnhN1gwTZKDWY0790fUVkPTietwm3vCdvERX1eqmMm
+	 dh8O4OeHSaywQQsOQUX4iETerEM2c6PSm+/+HGCo=
+Date: Fri, 9 Jan 2026 11:22:54 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, Francois Dugast
+ <francois.dugast@intel.com>, <intel-xe@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, Balbir Singh <balbirs@nvidia.com>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Alistair Popple
+ <apopple@nvidia.com>
+Subject: Re: [PATCH v3 1/7] mm: Add folio_split_unref helper
+Message-Id: <20260109112254.3d831aff9f27ebe986536a4d@linux-foundation.org>
+In-Reply-To: <aWFMOvGldokHHgIn@lstrano-desk.jf.intel.com>
+References: <20260109085605.443316-1-francois.dugast@intel.com>
+	<20260109085605.443316-2-francois.dugast@intel.com>
+	<59fb1669-2908-4cab-b3c0-b97479da3fb9@kernel.org>
+	<20260109103741.533c1b807f3ccf9a6f0264de@linux-foundation.org>
+	<aWFMOvGldokHHgIn@lstrano-desk.jf.intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D29C4140008
+X-Stat-Signature: d8p5x5memmwd5a8fft6t89i4q6fd7rh9
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1767986178-254123
-X-HE-Meta: U2FsdGVkX19N8MWD4VNmx/wY/fBpHh+e+Gqkdrht6SUktr+K1trC85CFi8hS5rHYdYfSQJ4dxJpx3FJUSIaiJWFg4DJ+Mbd58oKpksP44i20sk6hTavUyYrVRc2XgJM9I/rCag0Az5iyT74VEAPxNO8Edfqu8Lwy3TdOwc7JjbKTp1rScA2AypxBwizYcgilNN2vUVwp4YCGaxQHD1a44vkPcy9/V+ZnjgHbRlDFYBKbdD3ed+Havbh6S08pC7IIdfuY3Bif+z4+PoKVsct87KmUW58KHVrPzNMWMJ6Vw60mcCdNmv3Wom221YMV+VvWtCtNJaEE54hmi3uZRCjRRH79DdCTjPWNABEzt0vEHgCbl+cLVs/fss1lwbo8zZnwNu4d0bFpPq3wb4DJQQX5BPpi4SPJzQT4+Z76MexBTrtNO8vipFTwfuM+a3y8lli+OmNshPl+rZiUUx/kZFyvqn/pJiUgQIgsqbqBqVk33VJah5QtFU9ye2XVpgnT4aRHWubrO5FgylNcSVLIdImd8kicJLTG/s9iVwe1b6HEY7YBhwUPGtLcrsGZSLdJ/Qlng8teXdjageRkxwPDT+CROLiXya2k3NtK8vxpuw/bgowll3hr4BN9yhSa1j2iExsPw4AODlu7Z3LSC9Q+Hv6M1u5ykzHuG0jn5ooHUmaxabbHpO8MgtIm/HK+cX/MHENSTyLPxjpvJFLoULWgj1ionRod2/c4hFttt3hW4yFpKp3+2SGPtrvTgA9lVugE/m63HB6bhYiBYwNKf9JpTKNUf8/1huJpiTEUl32WQeQ2oE+RUivCNsmLvGhGp0qEGAkwi32A69rNNhsfnju81Kkv3KDx/SYjX2tIG4GEL1iDH/wYEwEQIUAfFoSBEJHVuABQwWgDUvC/BeQaVJSLSBJznvp7ffblIEpz5wepc6HUkxhxwwoNV9TXv53Y4WzoIg6uDPPsHBBOp/mWKEiu3ID
- Lu8IpxP1
- T7lMbQsopP++RuWFQNPpuW4zMPsOFheOcz1bay92oS0ptbxU45HAed56Rl2pFkmKqZy+spiWMF0xE2lMVpMElf1b2YOKkXWNHVXVPgU8DywanBz8u2qoA9M3Jsuid/I5z7GjiEM7JMPH8Duvhu78XVVoFKj5Yoi6Wn9leIFAcYsR94nc4awaesUMxKbdwXw/TQIF2rh2p2SWkTiTEmXWZCwMO2a47cmTnrp7efg+26UbhUFDN8DXbfauESeGn8Zt4fuQmUhJ9pAtS9iOH1gn/u0BV1kQl87SVoTRAJ/OYSIXUZe6fdR66MiQSN0u1+pug6MBkxCbKemqNmop3rFBEb9XAzBFujKuWq30la+8qqqslC8NOWYeXs2gcqgPm5Byj9nG9e2Q+SBgu2RTfJ+jomg8ROTc2N7nazcXbxFDUDwwXaoVdx+bf4s4YiA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1767986576-279272
+X-HE-Meta: U2FsdGVkX18hWxu2xFuvlg77EGHnmS9a2olEeySrxTvrHrkmF6KzU4k4P4eSOTNxiCuxf7IU4kwwaXav/N1KEu7ZFad8ebotrrPC02+SCdzlZfB69q2ywXJP2Zd4J2u+Go99RRB0huBRlziyMyt1vREhn2gfwvvSGSMT2hisL44tzfIadf4Ytkvfqyxl9VypzI2eKcVdoHDBNYLsozhAlG5a785SAFYOADtjC5Wf89Dv2ChN/ZhkC/1ZPrh9c2zW9jTwVK7YMXzIsJx5eyMotQ9KAq73pSErpTrsbwvOuM+rmzy6Ma9KymhHeHQE2Ftng3Sg+x7cKgANWMb8/VXwzMJ2lreNslEIkosfcHvqR05VtL4PIesDq9bok5b26EwgeZSYXZS1HbytikNfPsjNXKbijENTNZ3i800uCtDOytyjaV9aSRtu3h7uZ/kLmll7Rk0l8nv1AKoGm7Izsg6NJQW/lKUMFL7WPsshVCQ2zXADf8XYYtYoQjlyVSi0d7rKRrHoT6X7XHTS7np+SQl3qRbRsWTFd2Gsr/aEbJiw+DmMFyVe+9LWf7UdGCdgaTA3NuE09LgA+G5gP1TLMcZkKG5t4bkAAyttq2wzWGQvu+MwCawXRhyjgWvyHVDUNPF781sWlhYAh7D2wKgtxasdjnmFU4Z+C2rWR1iWYqfjcds1CR3r4ZTMMROTXoCjrdKvwVYaM1ZWexGo7PGFa8hKXU12GAxbiwXQt3L/i0PXb8yTgOVU38HOE2QaFMoicszjJDNFxzZa6n4p2kW7hkE2URZiJ35SAC1LJVDfdv2rjplkONyorgjUFMSxcr14sY8jhF/bWqpqcgrtETXOJOPiMJmne8q/c1/aUp7dgKJWTfB9EcJg8EqPl4AEM4xrsyvVLUvoFFwWnzwDlHWA46NvXz1IpZ+07zcpsKl8+pIGdMhbEknS1gKqBPeit9k+ZHZSHxtOz18mZK3yISu2wz8
+ Fc5uAX7O
+ vRfx62hFBbvKLDRTo9DiE8QZo0YDWtFE7WQDxqfdMOvNmxuTlHmI1cVE8ZwdpOq2j/efmOzKczLCK2P2+SVv6ikq415n/6P/A6TMumRuDocS6tUB0jzJSDe8xiAHniC4lo+cwffZvJioI2ED9C7SqhMzV0sGNtkCt7uS5iTcsItBT/1mzaNnxJqVnzxJPej2KYAM466Qg+B6dS619eeduiqB+/r08DQ1erzUtnkQtpDKNlWqzT/qhk56mVi/eg8c5A/40ZzrtKCpgAy96KDn0RAhhJaiPum2k6RUsoDkJDLs3YwxTJYpPqeRB1zohV9gTQliWwAYq5y5o3FahBlGYXwK5CA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,126 +102,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 09, 2026 at 05:18:05PM +0000, Mostafa Saleh wrote:
-> Now, as the page_ext holds count of IOMMU mappings, we can use it to
-> assert that any page allocated/freed is indeed not in the IOMMU.
-> 
-> The sanitizer doesn’t protect against mapping/unmapping during this
-> period. However, that’s less harmful as the page is not used by the
-> kernel.
-> 
-> Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-> Signed-off-by: Mostafa Saleh <smostafa@google.com>
-> ---
->  drivers/iommu/iommu-debug-pagealloc.c | 23 +++++++++++++++++++++++
->  include/linux/iommu-debug-pagealloc.h | 14 ++++++++++++++
->  include/linux/mm.h                    |  5 +++++
->  3 files changed, 42 insertions(+)
-> 
+On Fri, 9 Jan 2026 10:43:06 -0800 Matthew Brost <matthew.brost@intel.com> wrote:
 
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-
-Thanks,
-Praan
-
-> diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
-> index 9eb49e1230ee..c080a38f45a4 100644
-> --- a/drivers/iommu/iommu-debug-pagealloc.c
-> +++ b/drivers/iommu/iommu-debug-pagealloc.c
-> @@ -9,6 +9,7 @@
->  #include <linux/iommu-debug-pagealloc.h>
->  #include <linux/kernel.h>
->  #include <linux/page_ext.h>
-> +#include <linux/page_owner.h>
->  
->  #include "iommu-priv.h"
->  
-> @@ -73,6 +74,28 @@ static size_t iommu_debug_page_size(struct iommu_domain *domain)
->  	return 1UL << __ffs(domain->pgsize_bitmap);
->  }
->  
-> +static bool iommu_debug_page_count(const struct page *page)
-> +{
-> +	unsigned int ref;
-> +	struct page_ext *page_ext = page_ext_get(page);
-> +	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
-> +
-> +	ref = atomic_read(&d->ref);
-> +	page_ext_put(page_ext);
-> +	return ref != 0;
-> +}
-> +
-> +void __iommu_debug_check_unmapped(const struct page *page, int numpages)
-> +{
-> +	while (numpages--) {
-> +		if (WARN_ON(iommu_debug_page_count(page))) {
-> +			pr_warn("iommu: Detected page leak!\n");
-> +			dump_page_owner(page);
-> +		}
-> +		page++;
-> +	}
-> +}
-> +
->  void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size_t size)
->  {
->  	size_t off, end;
-> diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/iommu-debug-pagealloc.h
-> index a439d6815ca1..46c3c1f70150 100644
-> --- a/include/linux/iommu-debug-pagealloc.h
-> +++ b/include/linux/iommu-debug-pagealloc.h
-> @@ -13,6 +13,20 @@ DECLARE_STATIC_KEY_FALSE(iommu_debug_initialized);
->  
->  extern struct page_ext_operations page_iommu_debug_ops;
->  
-> +void __iommu_debug_check_unmapped(const struct page *page, int numpages);
-> +
-> +static inline void iommu_debug_check_unmapped(const struct page *page, int numpages)
-> +{
-> +	if (static_branch_unlikely(&iommu_debug_initialized))
-> +		__iommu_debug_check_unmapped(page, numpages);
-> +}
-> +
-> +#else
-> +static inline void iommu_debug_check_unmapped(const struct page *page,
-> +					      int numpages)
-> +{
-> +}
-> +
->  #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
->  
->  #endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 6f959d8ca4b4..32205d2a24b2 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -36,6 +36,7 @@
->  #include <linux/rcuwait.h>
->  #include <linux/bitmap.h>
->  #include <linux/bitops.h>
-> +#include <linux/iommu-debug-pagealloc.h>
->  
->  struct mempolicy;
->  struct anon_vma;
-> @@ -4133,12 +4134,16 @@ extern void __kernel_map_pages(struct page *page, int numpages, int enable);
->  #ifdef CONFIG_DEBUG_PAGEALLOC
->  static inline void debug_pagealloc_map_pages(struct page *page, int numpages)
->  {
-> +	iommu_debug_check_unmapped(page, numpages);
-> +
->  	if (debug_pagealloc_enabled_static())
->  		__kernel_map_pages(page, numpages, 1);
->  }
->  
->  static inline void debug_pagealloc_unmap_pages(struct page *page, int numpages)
->  {
-> +	iommu_debug_check_unmapped(page, numpages);
-> +
->  	if (debug_pagealloc_enabled_static())
->  		__kernel_map_pages(page, numpages, 0);
->  }
-> -- 
-> 2.52.0.457.g6b5491de43-goog
+> On Fri, Jan 09, 2026 at 10:37:41AM -0800, Andrew Morton wrote:
+> > On Fri, 9 Jan 2026 14:19:16 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+> > 
+> > > I'm not CCed on the other patches in the series or the cover letter, so 
+> > > I don't see the context.
+> > 
+> > Both linux-mm and I received a random subset of this series.  Something
+> > went wrong.
 > 
-> 
+> Apologies for the list workflow issues. Here is the link to the entire
+> series [1].
+
+Cool.  It might be best to spray it all out again, after any IT issues
+are fixed.
+
+> For future reference, when we submit core MM patches in a series, should
+> we CC linux-mm plus MM maintainers on all patches in the series, even
+> those that do not touch core MM?
+
+I think that's best.  I personally don't like seeing just a subset,
+although it's trivial to go find the rest on the list.  I've heard
+others state that preference, I don't know where the consensus lies.
+
 
