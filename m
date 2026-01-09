@@ -4,122 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AF17D232DC
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 05:17:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45482D232C5
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 05:26:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FBA86B0088; Fri,  9 Jan 2026 00:17:29 -0500 (EST)
+	id 8E3E26B0088; Fri,  9 Jan 2026 00:26:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A9C96B0089; Fri,  9 Jan 2026 00:17:29 -0500 (EST)
+	id 89A7E6B0089; Fri,  9 Jan 2026 00:26:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58B916B008A; Fri,  9 Jan 2026 00:17:29 -0500 (EST)
+	id 7A63B6B008A; Fri,  9 Jan 2026 00:26:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 48C256B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 00:17:29 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D24FE1AC33
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:17:28 +0000 (UTC)
-X-FDA: 84311267376.01.5BF8F23
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F1AAB40009
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:17:26 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mDl46hoo;
-	spf=pass (imf11.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767935847; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 672846B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 00:26:24 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E2823140346
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:26:23 +0000 (UTC)
+X-FDA: 84311289846.26.28CEF3E
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E9F72180004
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:26:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Yc1NINFP;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of konishi.ryusuke@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=konishi.ryusuke@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767936382; a=rsa-sha256;
 	cv=none;
-	b=RM1olCIkP/C9TWREF+SBzJL1NGEuORbZ6Iin/oWsHL9k22duQxQwCw3XbK5oext+9wemKU
-	UJTtwovnJeahakshjIhTqC4ix7ntsiP2PywrH0trCyvSsU1sfcX9mvhqRcAvAxavI3AQfR
-	9EMkVYEj5lz5VusJS1bN7PCgY37Erlk=
+	b=ZIM6cSPM5E8v4zzFlcD6KqR7sp673Wr6BfAzMha5qOA1JPfWaKhOjIXcfNGRz/s+SwVTi2
+	4/hvj/y5gIm4yITTxOSeEQEVmJLicidwvZJDA/DsykgypDorLJa+bBxyBekSclaeSRBHF/
+	enrQWMqTIaGBYBIPyt9P0A9g3mPwDcs=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mDl46hoo;
-	spf=pass (imf11.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Yc1NINFP;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of konishi.ryusuke@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=konishi.ryusuke@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767935847;
+	s=arc-20220608; t=1767936382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WUdR4J2NcEwRabitt5lFfdi3Imf8JYD/I9QAXQ0Qcts=;
-	b=vyJ91IgTmp7psfeERy1RNnCbzH3tQ60y8TSRQszMhknZTyEVLF/RLcSvCTyXIqeCKXNGHE
-	TQN0j376NRDmyWAIn3Wpp4WQCLlhUiLmcm2hk+QI+tGSgj6882UwzNLrreJnTxU/fiEMh4
-	m3tAs0lexLOaPN6zb1ERiFbTBwjWvoo=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a099233e8dso28823915ad.3
-        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 21:17:26 -0800 (PST)
+	bh=EEF8CAf2dAOD+neWtLdI+w7NxCIZ2WohswMXxqPrdck=;
+	b=f1sdW35OEycRfjekT78SdRHnMCNhojUP/Hgbn5egPr84VlY+U7MUTb9KpkT+54Dma/Ohk6
+	6Wf94eObqIA2Rwu8RCp4tewY9JQ4BwHy80nePqNEEBC8Ynie4w3KFSYldcCqcPLWQ1BjvL
+	GnNWu/hCIoXpnLdGGhioUWNMxjDq9qM=
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38305d006faso18161341fa.3
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 21:26:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767935846; x=1768540646; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WUdR4J2NcEwRabitt5lFfdi3Imf8JYD/I9QAXQ0Qcts=;
-        b=mDl46hooQP2SVIFWyG6yj9z/w4G6isWxUgKhfbWSJRuqeqmJ/AMBXXkv9S6e/Q+5lh
-         q+hnrXF3QfTviMkhR7ecsCqxg+RiMNyXiu3QGmj4te5Rsk+vPzaPyXJUbX9t7s30hKxC
-         7ShUk5d7+qH+PLGuNM/1c+24uImSmxy43HN3Z0ERbosMySsew+BOly59XHiqAy6vE1FW
-         CWB3t8OvpGlQkPpxA/WPN+8Kkq7eA8Fe9fRShkFPpCPUVGKTUy1D4Bm/WVZkqf+9W88e
-         WicHH2L9jbKCXw/wZe5g90kAQfGIcdtjkYA6+wSpBs+C2pwYedTwUxaH//cgWg9hlKIZ
-         bfWg==
+        d=gmail.com; s=20230601; t=1767936380; x=1768541180; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EEF8CAf2dAOD+neWtLdI+w7NxCIZ2WohswMXxqPrdck=;
+        b=Yc1NINFPsFxgPQVkYlO4dMgnRAQooUOhm5SziGx/BAJvFZRnCysVy1vT8bbQHF62Qv
+         05k+t7eHTddR15of5bZeCN8jSyBk+DnJrB/Mx/KEqhnxhp4XbmTIUqAiThte827NQ0Cy
+         h2gmY6SNAsIfdtvT7K/NJO2Ji4AN+ZKUEnw+l+mMl2Kim11hHZDhxH89DfGfBYw0wbTl
+         4jZSQEv+2SGLPI/pTVMxM14qsD7ig/qR3ihayDeUWYU7FeoXKM2e+sqlz5LD1btguj9l
+         h/9L5SwWb2fYRSS/1wrvF+0sWvR+da/68YWTiznHCSGTxfHhnMC73CpO4AOZHsbpFYD/
+         yVjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767935846; x=1768540646;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WUdR4J2NcEwRabitt5lFfdi3Imf8JYD/I9QAXQ0Qcts=;
-        b=WjGIq4kYQetT9FibEVk8vs3jNEHmfXFTivWsiv+Lu1sBRWDBWcxdxhZWEDtIDfCMKS
-         cvsDMjuOxSdvTgDKDUruz1s5Phbg/cgGAzX5736IKuNR2niU+wVVLZXYoCls6FYoOChv
-         X3qOzglwzkaHxqXvjMQCEVxfEC3Bk62t2RxmCQNi0GmuXbMOuXBh/6kljhoOwcZs3pb2
-         7qF6jkCKhbxmaIoNkYAYqlyKLxm7tfTX1+KUfODKUoh8f0YrHdFqiY3Q/Epk/cEjU6/g
-         Eh2xuhxSeawlM9nqUs5F8iIW0li0t4HXtZW7sfZnopteVO2iR5Uux3uE2I0lnYk69MST
-         f9OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEZ86zSt7S8jOVMlLmA+xOhCywGTx0Fj4SAlKi+bWbea50+pwyBRQRUh0sxZWEmtcBNkQTJSHSRw==@kvack.org
-X-Gm-Message-State: AOJu0Yz5NWNaWvmLLDZc/+au39BvXjQyRbgF4qkIfrdkX3L32TBINeC+
-	io0osDCydUvvw+r2iQbxCXx7Tqm+2GvF/5TyNHuPGChDBQLb99NjX0At
-X-Gm-Gg: AY/fxX58yPfVgn/uD0H5wpA6AB7rY3Q8MiPqRGcl6OjlARWvDKrbmWmoOFBR6c5tldm
-	VgSgQxR94RHqVdtOfUQBSliLpk2i+q/A6fOjrM5gtdXjCz5/KTAIxpga866g/zS9COISChCa2b2
-	8XN1tL6mh3xfXAqmZo9FhL+lOYxFewWC7fglBQMDHFeF5lFXYkw/GqmUR/NBZ/0PbkkIvA+BlsJ
-	LPaaOjg+EsX7/X+i0fzWOfJOlYpAtxJekBzFDXXHBSPqJG692VZSKKNpNGE4/H15Jv/YeqpjKsZ
-	msI800f1z7PFACia/1QpqPBzSs6PT2Ib5a8Od1HfknPhHW0Z+/lOPb/tkj0mieYffvrhHHUCzZy
-	RfZy0D4faiTH5cHXEyt0sXF858oeN9d9n3XFGSAc37OI/bophp5B9wOKYBEQEbFY8pfrVVBpUtv
-	HCSG8=
-X-Google-Smtp-Source: AGHT+IFtYDJf2r2F0XZHmYKqp0iQiXW5S1YwUq9AbEmuZXrtS5/mtv+bWO+/b2KsmnDWRU8bOawHkA==
-X-Received: by 2002:a17:903:3504:b0:2a0:c58b:ed6 with SMTP id d9443c01a7336-2a3ee48fcc5mr85152645ad.29.1767935845695;
-        Thu, 08 Jan 2026 21:17:25 -0800 (PST)
-Received: from localhost ([2a12:a304:100::205b])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c4796asm94372225ad.34.2026.01.08.21.17.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 21:17:25 -0800 (PST)
-Date: Fri, 9 Jan 2026 13:17:21 +0800
-From: Jinchao Wang <wangjinchao600@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/migrate: fix hugetlbfs deadlock by respecting lock
- ordering
-Message-ID: <aWCPQKQk-nTKJwFZ@ndev>
-References: <20260109034723.1342798-1-wangjinchao600@gmail.com>
- <aWB-vt6VUJ6fQPcC@casper.infradead.org>
+        d=1e100.net; s=20230601; t=1767936380; x=1768541180;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EEF8CAf2dAOD+neWtLdI+w7NxCIZ2WohswMXxqPrdck=;
+        b=o5VfH/SwoMeDj7rNzp/tR39KZ5LbjKE484e+nw/w4DyHRrkrN9W3a+jb9UgQ12ZrL1
+         syBaYYPOQf8I/a0SKaojCzgGZmPE/twHendmXG7owuYsk+JuiI0g61OJqLl1mXyQhaUW
+         gzG77PcDqS2W1Mc7loCwvKjTEL++ZxBUn+2hzQz4q4dwoOl3nbCr5K9/GLRZkV9Tzgcx
+         SZQr4n2+NiVe0CueCbW87bePIo5m6v4AfjoGVspqiQYHhtHxfpgTHhDad7LsOZ9AAU19
+         sHVVdqSAdcGRfdQietoMbWLGM40MiP/8lhReJzI446SbIz9c6CWwJeRjQXuWKZQ/2YlT
+         YTRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUjuuaxTLFOXKWfFCKRErguiJPSaU85Eh0vB4RwbT3xOi9kqHm/K1y7W1JXRHaE8GNvytAYAjDEpA==@kvack.org
+X-Gm-Message-State: AOJu0Yz17vA7UUPV3WgXqpsWjTJayxh7md3/AcfZEtKbwK8/f+7zw8d6
+	fX/rYM+17Kr/8/4ZBDCB23oNQGIBJkU2NHX5mbCyfFSLECNid0GccpUtsKelwDyMiHXNCwpUILj
+	xk/yDbrYCz9T7yHdFdkhQr97T+TvW4Mo=
+X-Gm-Gg: AY/fxX7UBENZhrTEInSZ4QJl68tiyebcfIjvblMv+ylcO9thTkMzoJq5TMKFzYGlgjL
+	r6Vkp6HulvnNG9INUnaYW4H1z1/c/bJ85exQrHxEWSXL9HuuB14eS8+cWyImBbcCZ/JUUg7YvV1
+	mS7dAdQ3fpVDUTm+s22ieq7uzinNyby+ymU3a4Am3KU28flJ1JjPCirRGS/bDuRMG+73hSmwvX7
+	tOM0XkdeF3PEw5U67GTSnokOqCJStoSrkNXTkDvV66jSVZ4C0O9Yx/irJTMmRCHSr9+61qc
+X-Google-Smtp-Source: AGHT+IFacKbx/HloTRDyL3KNE+dISSFeSIeO5gnLVmi9ry+Gc3uB4ma+c7Q9oZoxnNZINjg1j054MzA1urN4ujLkRdE=
+X-Received: by 2002:a05:651c:419b:b0:378:e3f9:2d26 with SMTP id
+ 38308e7fff4ca-382ff823bdamr21702801fa.39.1767936379607; Thu, 08 Jan 2026
+ 21:26:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aWB-vt6VUJ6fQPcC@casper.infradead.org>
-X-Stat-Signature: 3wqombnc7sthntqu9o4smdhbjg49bm76
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: F1AAB40009
+References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org> <20260108-setlease-6-20-v1-13-ea4dec9b67fa@kernel.org>
+In-Reply-To: <20260108-setlease-6-20-v1-13-ea4dec9b67fa@kernel.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Date: Fri, 9 Jan 2026 14:26:03 +0900
+X-Gm-Features: AQt7F2pmUKGJKWpVwxhIrI-U32G4ALuqYGKPCGsBpfUc51GGTfk1sxJMQ_5a6zs
+Message-ID: <CAKFNMok9FG=hhzr8YrHYws5z3jTWOf2TXtFWvSfYbNy6+XLHxw@mail.gmail.com>
+Subject: Re: [PATCH 13/24] nilfs2: add setlease file operation
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
+	Nicolas Pitre <nico@fluxnic.net>, Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Anders Larsen <al@alarsen.net>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>, 
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>, 
+	"Theodore Ts'o" <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Dave Kleikamp <shaggy@kernel.org>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>, 
+	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>, 
+	Phillip Lougher <phillip@squashfs.org.uk>, Carlos Maiolino <cem@kernel.org>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Sungjong Seo <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>, 
+	Chuck Lever <chuck.lever@oracle.com>, Alexander Aring <alex.aring@gmail.com>, 
+	Andreas Gruenbacher <agruenba@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
+	Christian Schoenebeck <linux_oss@crudebyte.com>, Xiubo Li <xiubli@redhat.com>, 
+	Ilya Dryomov <idryomov@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
+	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
+	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
+	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
+	linux-f2fs-devel@lists.sourceforge.net, linux-mtd@lists.infradead.org, 
+	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, 
+	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
+	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
+	gfs2@lists.linux.dev, linux-doc@vger.kernel.org, v9fs@lists.linux.dev, 
+	ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1767935846-958220
-X-HE-Meta: U2FsdGVkX1+tacUZn3qqp57EQYDP2lNx/vjh4OfGfDE5m6cyJAQDgKUPlrH7kUYKPCQH+9GRzyto9FidTK3nBg5L1zOhq8WOIv4AaMI7t0Pz3VQTocogNY74smMgJsTmEzBpXcb1k1oeZU9c0gfVqnNtPFzRsm/RCLkKRAIIcsodNxelTVVKdKJCLOupLPfkqEAaMGgHHtnfzr8GAWt40MqUqxFUi79lbxjRX3aBKU74wu6Ni7B6RdMKMhkrlvxWPJi1BDSF57VmNPdveB6Nb7xOJluuCXl79xjg07NjwfIVseM1ze2YG2Oxt4U7Uq6MFjVkGyuGSGgbUqevL2MXq26jDEXndfNPYWKaK1Q8i1PSmA+3EMOtDKDoxru7xqoHmHJudtmw5WO0Sj8vCrvoEtP8tj6xMsERvf6r23vYisChQt15wQvXL1uGK+E8v7GjlF/teOx4Iqp5k85pUzVt1xIAxGgYYeLIYjTugY/Ws4KI1gmVBsgvka8mkksicd7YaW/kEAb4YBpfSAPv39iyL25fEdaqZdRRwudCiGor5EzmewDsb4g18Bqbd5mZdXKQ4Xf+mxoxMuybDlQPVxUQEEg7jJYjR6uMNCpT1YM+Q0FvCZ9Q7QtRM0rQKV04G5z4gDcQ8HjUk6eNGCtjGmxKyuy9NQtZEOCjc6UgsNTTl+U5IwfAUpw314ao35wknv6O9SIoUgFvPGpveC1a4i3s2C0BWEhC1vF6KAOyPgnCncCfgGoGdQHcwcEatPG++mR4UyTMiHvLW9FwrURtrhHWTCky6pWeQHlYXdISckAyrEbeJSIuS4rWwp5raiygcRR23EmOlQNVmxedaVQ+JohiBBDiSHLv8uRlV1ot64bEgY9kGuhQ2aiPZf40F6W+atu54sxAPnJFxKHZ1Q04sq3vGLPV2K4E+tpSeoOdI8NGfe4XViEf+8C8fFxSveK1XDeLUF/Q2nnb/izgwV3W2JT
- awQK4Sv+
- 7LTXSuBDlBUt3qBNGtU/3lOw4DrR8aUyNrT1+CH9Hz0Qh8n/ji0DlmzvzjZ2ctrvpKTRzBa+mKJKqTB5pAfz6niL8zgCMnWpwxRAHE7GQ36Ba6eS8AeTMloM2euKrNmgr/UEL8IGQl7y9Qp78R2rZwWJzk2WIDegVXrulE0oa2ZQK5Oyw4tU7Dzii6KP9YNBmra3VXCbVdmNW6oh66qmnH7f/WUW9CFGMMdSWnJzDxFs0mUbYYbM1oPILufylf3zlwdTSkpxhGvtkmCQ1iVP1IUPXsKCQkUlNYMdfXQmKPse9dj7LxsxhzKr92xoELbbBJFDe8LghdeOLFGfh3iRjuJlGzcGxp5ZT/t9ftJ0M5pWZoG06HbNAo77nsdwzXtiod9ugkdJT8qUjyG1uKhj+xIBsTUdjyt9aJz4AoQnrrtcAFJu2xEWK9egQW0lLHhAiGyE0l2GFGtqjPVgs0KYOwDuKW6yksqZDlHP6oQg+bKZY0UGH9VgsDgvA5U9kngAI/VfGSINvmgfA0GNbHbDicETg9s6Bx+BmAnr0+pJdnD6l7KpgIYFNFn8MkGF5OCB9r8Au7sVxO4PO66mKd43lFYeQEDgA1Nikb63HLlTkpHAETtIFqSANTo7emWUh41VeEq4J9tpZF6QWo+0tmVMSisCzKnjouEWS1gXyZ0oG7fba7RtX38fC7snHQONPssYfjzYwcbkeSIc1xk0aHv8B6X5KTA313jqwMcX2CS+6fgUAPkq6ahOGHbvUF9alVmeTVVJ8
+X-Stat-Signature: rrigekg7b7wwbfzhwwjw7jdru8mjn58u
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E9F72180004
+X-HE-Tag: 1767936381-43692
+X-HE-Meta: U2FsdGVkX18idT4lD+ZqLtzLeq5Ou8r9DRgD1vQ5tWubhVy8VkvO1AGsJL6i29BBYvSNs9v0e66a1ZB+DvJVCrklCjW6AM3+Te4DRbuegCpvV487J7nTY7knWHq1E4uhiWz0zcr3iaIGae7AyFIztHkuJPikn0I1hfHrU0D3QjE0YnH13dAgvOVa+QwOBw/M3q+Sy9WIXug+W6LMhZz5Ky+p9ClTKEwzw5Qx5LWdE3L5gRFkEdfaRZQhN7ypPybVusLQvvyzq6scJsEcXfrx9h0SEnK1cspZEaIB+AxV8VYN7TnJdmCTaC8CYB75gyU2wjnjcbiCPth/gRB0q640wWEvjbSK8V1tWZaYXmu+09u1jCTqCz5lT/Ysgk6JCRU5bRCY37jyj6EaBElXWzHeDQNnNnVHVALbEWgRaWRYit05BRcc96NdY+OJklcWLd6rOwbaYwJYB7oaNkL1TiuzdWTKmDtBI/zqBejaaDwba0Zk+JxksjcBGQwb2c11qn6G+yhe2X8oyECNbRD+S8knxIb8npVoyHv7fcqZYeTO7SauHvRLWPNbC7mnegeyDcR3IaXi+IDqzo2SuNyO7yDtMVNG9O1XxeFwUM5jFMyuUbvGMkFW+e6T4WVIhx3pEkDOUAGkuCmCxbG62wNhK6DmukBP1lteYnfDRuGuSKt7a1cnftJkwUngXAIzSRZtd7DNCuzra6Wg2OkXmCJN37rmYbWkLNkcTxAqj3NaAtjniqIIZW8u0A+r5vHQcjls5Qnf4I8Q966ThbhFAJRdwHXuQyClPXCXtE3QXlRTLaeYqqTLlTOAfd3ywJEGQyfnpSvqbPvoanUO4Gyuu+kKhAyOGXogPctv18Ue+pmN1/yph/l8tnIREzVJnmv1THMUDuTbKhC8VGfbsKYFU/O05mPP7FBfum5lm4K+4t/VQqX+aLoRC2xGMuAFec0fKtinGhl+X/zAK8tkTDIk0uSzBy/
+ J8TWYOsn
+ Xg+GxHZL1mxjwsJQEfYp1JpA3jAX8duad0EEwriDxHYGG77KZceW2TZTfTyFhLA/gYEOeY+sXy3kQOBW4jgA01Y59pgMPc0Xw80JbUBbdKmhYWK4+sPVftk9Rvx7wJRaDFGDlwzxVYVOIY59drhSIl5ckHrmtVQqihARRZJXSrIjfA5i137p14LciWmtEXiQYEhI2NLsK7sJx2Pi8qaRiiZ8Bktor+Xfyo129D4b0toV1ScpvrZFGxnlXyPoBldFdWqtguC+QQykWrJ15nf4N6a/F8bI8Ic9Z68oofSWzo55wBDTsiVSCCRgKU2DYcKMe7BWB8wwAKJK82wgM6n0ckJV1G6DpqmA07bnMoOMZAswf+eQmhfgpUcWaB2mC2HsS6zR+CQQnZNmkQxlFWPvGJRBnsS8om47KQTsPa37xh+IBF8oVNwvyHFBIhXOZlszTYuqCmxfCmXrqjDcItfMtfzqwbnipmcM53lhR9J24J7nBBTinsmtTsfo4T5oaRg9AvO/WVbaCbLHF383Jf66xXmpuj1sH8VRdfBcT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,26 +152,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 09, 2026 at 04:06:22AM +0000, Matthew Wilcox wrote:
-> On Fri, Jan 09, 2026 at 11:47:16AM +0800, Jinchao Wang wrote:
-> > Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com/
-> > Link: https://lore.kernel.org/all/20260108123957.1123502-2-wangjinchao600@gmail.com
-> > Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
-> > Suggested-by: Matthew Wilcox <willy@infradead.org>
-> > Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
-> 
-> ... and by "Suggested-by", you mean "completely written by", right?
-> 
-> Or did you change it in some way?
+On Fri, Jan 9, 2026 at 2:15=E2=80=AFAM Jeff Layton wrote:
+>
+> Add the setlease file_operation to nilfs_file_operations and
+> nilfs_dir_operations, pointing to generic_setlease.  A future patch
+> will change the default behavior to reject lease attempts with -EINVAL
+> when there is no setlease file operation defined. Add generic_setlease
+> to retain the ability to set leases on this filesystem.
+>
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-Yes, it is completely written by you. I verified it against the syzkaller
-reproducer and reviewed the code logic.
+Looks good, Thanks!
 
-If you prefer, I am happy to update the attribution, for example by replacing
-Suggested-by with Co-developed-by, or by listing you as the author instead.  I
-can also drop my patch if that is more appropriate.
+Acked-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-Please let me know what you prefer.
+Ryusuke Konishi
 
-Thanks.
+> ---
+>  fs/nilfs2/dir.c  | 3 ++-
+>  fs/nilfs2/file.c | 2 ++
+>  2 files changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
+> index 6ca3d74be1e16d5bc577e2520f1e841287a2511f..b243199036dfa1ab2299efaaa=
+5bdf5da2d159ff2 100644
+> --- a/fs/nilfs2/dir.c
+> +++ b/fs/nilfs2/dir.c
+> @@ -30,6 +30,7 @@
+>   */
+>
+>  #include <linux/pagemap.h>
+> +#include <linux/filelock.h>
+>  #include "nilfs.h"
+>  #include "page.h"
+>
+> @@ -661,5 +662,5 @@ const struct file_operations nilfs_dir_operations =3D=
+ {
+>         .compat_ioctl   =3D nilfs_compat_ioctl,
+>  #endif /* CONFIG_COMPAT */
+>         .fsync          =3D nilfs_sync_file,
+> -
+> +       .setlease       =3D generic_setlease,
+>  };
+> diff --git a/fs/nilfs2/file.c b/fs/nilfs2/file.c
+> index 1b8d754db44d44d25dcd13f008d266ec83c74d3f..f93b68c4877c5ed369e90b723=
+517e117142335de 100644
+> --- a/fs/nilfs2/file.c
+> +++ b/fs/nilfs2/file.c
+> @@ -8,6 +8,7 @@
+>   */
+>
+>  #include <linux/fs.h>
+> +#include <linux/filelock.h>
+>  #include <linux/mm.h>
+>  #include <linux/writeback.h>
+>  #include "nilfs.h"
+> @@ -150,6 +151,7 @@ const struct file_operations nilfs_file_operations =
+=3D {
+>         .fsync          =3D nilfs_sync_file,
+>         .splice_read    =3D filemap_splice_read,
+>         .splice_write   =3D iter_file_splice_write,
+> +       .setlease       =3D generic_setlease,
+>  };
+>
+>  const struct inode_operations nilfs_file_inode_operations =3D {
+>
+> --
+> 2.52.0
+>
 
