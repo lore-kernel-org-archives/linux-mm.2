@@ -4,109 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0B53D232C5
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 03:28:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B641D232D3
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 03:30:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B40546B0088; Thu,  8 Jan 2026 22:28:27 -0500 (EST)
+	id 80C376B0089; Thu,  8 Jan 2026 22:30:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B190A6B0089; Thu,  8 Jan 2026 22:28:27 -0500 (EST)
+	id 7B6C16B008A; Thu,  8 Jan 2026 22:30:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A44E96B008A; Thu,  8 Jan 2026 22:28:27 -0500 (EST)
+	id 6E29F6B008C; Thu,  8 Jan 2026 22:30:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 94FE56B0088
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 22:28:27 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E97F08B780
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:28:26 +0000 (UTC)
-X-FDA: 84310992612.05.DFBF141
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2109880007
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:28:23 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ECAPy3G6;
-	spf=pass (imf02.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767929304; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D06E6B0089
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 22:30:07 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E20B51AAE43
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:30:06 +0000 (UTC)
+X-FDA: 84310996812.16.6C47855
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 22261C0006
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:30:04 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=g+Sk44UO;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf28.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767929405; a=rsa-sha256;
 	cv=none;
-	b=x90v2chELljiWWh6t6Qw6aGqwGrsOD2DIBYayy5H7DCqd1z6xxjtM9o0vwX5WRjm5jHIWf
-	GXttECq5k/0KEFHjK6qf/OynELpLPrRlJ36XPpkSE+NrV+b7JtNr3lIj7DTfGcY8hYuiOG
-	XXEQpTdPq8DfnVyq9kjS/vDveuNROog=
+	b=Z+LAbcht6P7nyR8Ymld63+fHLSfhoXeU5+Efhqh+hBuk5GidWdl1uLmv4Dr83gDTUiqgCJ
+	iN3ZHjIu5cTjY61cN+0YNd0DsdsStBfbm4z880ABsl71fRi0Aqr6OKiGl9JzInM7ZiS32n
+	1nkQSUF+Z1w6J4J33V8YlkU3DnAc+9w=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ECAPy3G6;
-	spf=pass (imf02.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=g+Sk44UO;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf28.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767929304;
+	s=arc-20220608; t=1767929405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=934FMIAHkZdmG/fzMaUyDBNki9zD3MykHmfZ8LCMxGw=;
-	b=fkJQ4xy7gR7x5UW6eqETfRv7Mv60ZIk5Q0SxWyhd6nRtjGNwbIsuHg5TVfmtWOXZ5AOYsx
-	Iyb5+OwURtllGWzWmEcXOVi7bTAIvWtBfeQGH3X+0P5zQGangFjjvpiJREehFUBB9v0Dtn
-	BNx8bmKIb5jUd/44XKvK/g6WM3tMXiA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767929305; x=1799465305;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=y4tYwPF3ZC63Ir+4yC1KcSfjvehP4llbqhsh9Bjl7/k=;
-  b=ECAPy3G66miSAeKnSizbhwINhK9R1W+AUphclGN4ns8+CBLu6XNdxl4Z
-   wM1vppiFj1zR7whBnZnTgFIDC13f76QMVHxR4C5DoU7w0Xb8lfZzDRUDT
-   WZIZ59pzuQf5iDgnbciipCWYzZDpEPkMZ8iPm0XqBF2uRHih2hUmF1dWR
-   xSY9fXYui+WCn5Uh5v+qh/fjPqA/5shacBbHuSoPYfa9vr/Urm2lg2Z7a
-   GqIEA7/rjMb1HxCJdoT3HiEexKCyPifjk7kOb5uGJxhgehJ/jYdzKEqnF
-   +Ze5OPWZtIHVrGqagVRA2Wch3Z9DQ4oL7k56HSsNUZ0NnnvtXBIsBjGrx
-   g==;
-X-CSE-ConnectionGUID: we5iJ02SSQumsLi4EX6dVQ==
-X-CSE-MsgGUID: ES7HiIaQT1uzNodXIGQ3Yw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="69296295"
-X-IronPort-AV: E=Sophos;i="6.21,211,1763452800"; 
-   d="scan'208";a="69296295"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 19:28:23 -0800
-X-CSE-ConnectionGUID: 2d2ZBL/rTb2r1726moL31A==
-X-CSE-MsgGUID: A7Och2SKQ2eaTHkkLOcU4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,211,1763452800"; 
-   d="scan'208";a="234075920"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 19:28:18 -0800
-Message-ID: <d6236413-7385-45c5-94ad-8b0f2007f1ac@linux.intel.com>
-Date: Fri, 9 Jan 2026 11:28:32 +0800
+	bh=CnnuOtcQSFVMOFNXUJxFTPuY0l07gNLISRT9Z4l4S6E=;
+	b=aWtE+wwCzajMs7vB5gpSkqPC3hZw5BNQujNq1ULBw+B06i9eHMjR3TzX6aTZibbxLM8rBL
+	5cP8O34ncUY7Mtp/N1pwXeHawrkjC/Y0YkRNmI9lZ4ZVwFJUY7ibk6I6H4G1ybIhjUTSN1
+	xakpUyVM8gPEIhr3tqerD/yqzAmYm3A=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-29f1bc40b35so44738225ad.2
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 19:30:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1767929404; x=1768534204; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CnnuOtcQSFVMOFNXUJxFTPuY0l07gNLISRT9Z4l4S6E=;
+        b=g+Sk44UO3HqK70f9FGP29LpSzo5z+XV3KMlVq7dry25k25zqlSdJgyJsKQGhpUdOXj
+         ATsJFa8PPHEvB9hApotKJs1bHYoQLt3z9ZRrrP/KiTMbZkOIWiSexF770yu1o7SBgAF8
+         09GIKS7In4cn/UiOur3R7DE/GgJNowXkaqhuc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767929404; x=1768534204;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CnnuOtcQSFVMOFNXUJxFTPuY0l07gNLISRT9Z4l4S6E=;
+        b=VEdlUV22DS+Ydx7B98QuHFmlrD/IShjIvPW0pTBE5VUt7ahJhuI5UtY7d5jn749p7V
+         JMVw7xJ/Iaw66D+4Px0vCsW4ufS46EzByHzorKTk4b2Na0ziYI1yBwPjrFSS8q3dnxPt
+         0SVFDCZ1y1OKje9xUFGlxmYfGCOPtEwIPwLj+rJMlPOhSVCHcJmtzZzdRnSGYIB5xLGu
+         SW710J+R8KX9O/wU9OLHOoiEEZsjSVj/IuUob7z1yvWyDaTZhJqQSVrRZ7KnpzujcBjJ
+         4l+FmrLz4nE/qHNyfvt5wzp8XjvUmPuwuToD2FXDu+qn3Xhr6JeQ5g0vfuwJd2zPsWgz
+         +zOA==
+X-Forwarded-Encrypted: i=1; AJvYcCUxP+w4CCplFxcesru99WLQMjuDcWHqzxt1FW5OX2kqVc/CX65iECogG/eCjrLu9cEv8Cbk8M9j0A==@kvack.org
+X-Gm-Message-State: AOJu0YynPrMWjPWX87Wyt/NPfKHuVRGn2mob8efpUAoNEDqR4F8W6Gwj
+	4M255LoBofLHSZ0wThna93BwNw4cdhD3mTm5VFI0g/+5cbTp9IX6P90XlzZJMaQISg==
+X-Gm-Gg: AY/fxX5D+yvsuRmn0aZCQXG9OTD8Soz+bqw8eS8bhfsPz1z9gJz04leQWIyAZ2N1UDM
+	33yuIUtJSkc4SG82mAQQGjTZyakM2RrY2UY08Yh792UKEHhKKxBtD1unUIBsKcABije8zcJsQB9
+	vnZgOy0qfnCGfGcCADVTN1fDkfXqaWMgZQUWDS7IOBbJm0FtgNXyOyi01oyehYCB3B5ofSbVod+
+	lom29D/Me9EXYvcFnXah4sXBVMryR+jr6h0yrw6Ly4LmNCg8+R0Sql3J+fc+REI9NEPBqI7R0Pj
+	bNSGt1DqeKnIRe0l1gP6Wh+SVZEUZQt5Oah6PEYIA9VaKCARyPG7TsjN5DJ2Hy18kdmUr2i9nfB
+	41v1Zp7q6kK8dipzqiQ/xT7SoMgYTyqIhki5TugwdkgyYaNaTD2EwGFNgVjmQRxmQKNlp61NJH/
+	TTYu5WTLxGh/qMd3wbuDqp+tx98yFxsPjTFAra2NTTHTp3a5E0Nzw=
+X-Google-Smtp-Source: AGHT+IEIY/uUSaX5NVDnZd9LM4ieLPIkk1BGZaa5TEPDlqlwi7AdEIO+VuPIRJg4ciwqiQifAOjLOw==
+X-Received: by 2002:a17:903:2f8a:b0:24b:270e:56c7 with SMTP id d9443c01a7336-2a3ee4137cdmr83808065ad.7.1767929403996;
+        Thu, 08 Jan 2026 19:30:03 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:d2de:ca1f:efcc:43e3])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81e6772688asm223118b3a.45.2026.01.08.19.30.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jan 2026 19:30:03 -0800 (PST)
+Date: Fri, 9 Jan 2026 12:29:58 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Andrew Morton <akpm@linux-foundation.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
+ consider other metrics
+Message-ID: <2iophcy2e6vk72ypxeshmen66e7jhr52zr34parn4uw6vdyjef@frnpfrltrky2>
+References: <5p4iyah6zlrnxpbsis32c4m5lrjj3pq7xwcugq35d2entwfai2@n2r6y3ga2ie5>
+ <7q5gqpfshnc3lfhzxughpks3fc2knw2delpm5io2oe54monydl@5isuxnjputjr>
+ <aVyYuS_usi-lpHkM@gondor.apana.org.au>
+ <dou7g3n5fpynsab7hmxf4bgmqdewtdhkkiriwlghxzyduick7h@bsi3q2kivvbs>
+ <aV3uXguDCaVAbY53@gondor.apana.org.au>
+ <9b7d6e6292c64f21b8d09def1b6723f02faffe88@linux.dev>
+ <53zplsrqc66z4ea64cosy53zvttuuhgxr2ik7uw6i2zgluegyz@d3ulgntwnyw4>
+ <llj3jf5evsp7f2wl2hmm6mouqzwzolvdnu4yquhxbgsgaqvsda@ltct5tqpzmyo>
+ <utnvn4oupcmohosp6d3qti54qmdppg2xfw622dq6zz7t66a6ma@2pentzdw3zgk>
+ <yxpn4gan74uryy6huzulsqvqvbsqiehdqe6lu7m3hjf3tjjdop@a6cifoycstso>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/4] iommu: debug-pagealloc: Track IOMMU pages
-To: Mostafa Saleh <smostafa@google.com>,
- Pranjal Shrivastava <praan@google.com>
-Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org, will@kernel.org,
- robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz,
- surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
- ziy@nvidia.com, david@redhat.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com,
- rdunlap@infradead.org
-References: <20260106162200.2223655-1-smostafa@google.com>
- <20260106162200.2223655-4-smostafa@google.com> <aV56BWisUQTMK2Gk@google.com>
- <aV-PvBqQ0Ktiha8e@google.com>
- <CAFgf54o4Ja7jQwxo6XyW+JaT+aUuj3O2dvLqOTb+YSVCKTdvyQ@mail.gmail.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <CAFgf54o4Ja7jQwxo6XyW+JaT+aUuj3O2dvLqOTb+YSVCKTdvyQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2109880007
-X-Stat-Signature: ar46937di3hmt9igo1fckf1wiahsgipf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yxpn4gan74uryy6huzulsqvqvbsqiehdqe6lu7m3hjf3tjjdop@a6cifoycstso>
 X-Rspam-User: 
-X-HE-Tag: 1767929303-495549
-X-HE-Meta: U2FsdGVkX191nX2lGojtMF2deipHibgILBNy8c3AnSnmlp6dDhUOO0LfPYuZcBHb83ESrxNBfemlmLLe/7JY+8XmOWBBhtR9XRq51cpFEZ1UhdvZXIuQ5GD2vg2JpHtLLfAP0CEttoJv7M5OnrAVBb+a/zljdizYNrPb7EmGQT3O3JqLkZ58tl1MuRvRCfA70vM7rNzBWTche5Ugnjzuqq8WUTvXxMP3bz1J/1AB6qN80qw8zHj/luoWHCIXTwVSzLovrNDdcKhBig+Qbu4W1oFG5fGno1wrt4ITSbDCZGCCo0lA9yVj4fiHNudeN4NmqmbxgsYKw4T3LfTWjpTz+0zFAPs8+upVsBBN1pDYxrefhlDmSh0ERymIelt8q+RHvGnWNfRUv+Y6//6sR5FM5rZTKGk4VArRF+CqBnQEGeiTY3xGUG+M929vAspgizMI9Moq2HqtAK2q2+ByM3uBbtSFob6DI2/edu79DVknOiSqcbUv409aeM5vHCPEkCWi+7yGWcUAVA992tYuKCSrDSfQ+xDjPQ+lf88C1MzGEm0vG4ewCwQBjYEtRTi+webY58TTBxfAI5iGhA9aZRjptod5xrXvKIYqZ4Xd+P1PisIlGuNxjJExnKpLwZdcteIkwVAELTTg+PloMPuJrbLqqCjysUusuVzbhWde6SNSMq860g0vqnrx6ero244jciUGJyM3EaSQnS0mb8HbIP4pSdUowk71hj8t1Tpp2VJqI31MJPFWwIHtMy8iESAdbUfwNoGW3tY5SNLYRPg4ColqZU0EuDGt2JP3pbmdxiiT5sxjt5ksJVy01ltUCEloFBuNqsEJzhWz8t/ZWtHhr0bDTzvR47U7k5F6Tjv6qNzgJV00VFSbp9Po2jfpW0LW2reTtDtuGzdhhaSCwT+zC03oRd+ZW4dPRgQ2F8Fo2iE1D6l4qw931UhCIkBJtNB72x7UOf/dxRk3lCJ2MkTxznm
- Wnpo3xPB
- tWoQujceo8ZQy6/Nb1+/+mOCmUsvkVXV9CYe6PvM9e08TrSwWadA8WMhQ+9V1e36naZvvn2qNu/8vFkDrth7h6igz8pC6VNc/yyUjwnnUhrM/fcrcu6KaCLwxOdXaXFq5WXJCuHeo2u3g+ShZVrr3wIIad8yNJzRMhBFQncF+xtOru08uslRP1TzRdd95KvZgm+dWZB6q01iW+bw=
+X-Stat-Signature: r1yixtii9wtdkzcyzkp66amay5omr7ne
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 22261C0006
+X-HE-Tag: 1767929404-921879
+X-HE-Meta: U2FsdGVkX1/g1H4pzP/IsJOBB6WVbXgAMkb+nZN8idKhrpFlcfKoL+2VHoebESl6Q1iPUFSTd0M7r0FRIRdvMduUu4r3RU3XrC6V+Mp9FE5Djpr6Ui603KzQJiBaYhZ7deNlJleHBT7ICJAY0GxqNCs6MA4t585D947YhbHmUgqUt2UEv6X/+czOLuxMVmG6U1pgXWHsQaM8YHfhxcJPKbfgpiObnErBSd6+LzhDV882+0+Eqw7j/5f67L0IE+OL5mwqvZv7GrLzo+f1cdeML1mu6y4wZpxRAj2skl7uJc/cEgjKpXapseG+SA8av7LYxOHA4u+pObxijdq4u5hnInj3yiVuzn96eh9Hi/7IeRerfTonPH6Dh04vunvIR4XCWQvKVEqS0KFAW/dLsH/bIBBWc3+VyzS4wThPWDaYQ6k1L/JCXFK66bCwXJWryW+XXKcCjwes454yHG64R2reqe7LnLOJTZxd0V/w+6QQrWLCgv0kGRtzw/9AQsNbM2yBmBHWkSFJW6fLpWOhIT7Ot4GUi6IqPxb/rOCGWIPbK0tPPJxq2I2XwJ7V9VDr7/xVhdVz2QVY4ydkDwBX9WpMhvjM2ZVLRukNSUN0L0ybm3xtNqunjsPOv/hvZXkmelGFUQfIyMnUeBM6WBuKKbor/ddJZXmKi35jJUoFI3ATWvgAIaQwSW273TcIM2/ygi3lN/BItRNJ/Kynsn4hLAn5elF91BxAVPhigSCTbGpdwcSunjkCCRqbc740BrIdWrcVEBql8oazL8ywbh0heAImsRBFd8sn7gn2AFMdAZgWVJKKp4WFuGvstu1b6xrFrwfHAXbKhZUewh79IemisSPaOmWMas7VXHNc3rLvOy3QKCGLcawu94IlTvBQ5u1FTjRfSFwy7yG9IJsgqv3uBdx8u6HtLdU0NEGPo1MaXQn3zpl4Ryh8Qo0kE37BI52K3029Yr4iM4btKePbxbPNHZF
+ gInKXsQg
+ 2Q6XQqxQPpp5W9vfrlcwHGrHydefUlCVr9tlKdB9iHygmD/yVCRBPUv+jvQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,46 +128,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/8/26 19:33, Mostafa Saleh wrote:
-> I have this, it should have the same effect + a WARN, I will include
-> it in the new version
+On (26/01/08 08:01), Yosry Ahmed wrote:
+> > Yeah I agree, I guess I can cook something up.
+> > 
+> > For transition period we can have:
+> > - current "memcpy" API
+> >   for zswap
+> > 
+> > - SG-list API
+> > 
+> > I can vmap either on the zram side or have new zsmalloc vmap API
+> > (alongside the memcpy and SG-list APIs).
+> > 
+> > Once crypto API supports SG-list and algorithms tunables I can
+> > switch zram over from zcomp to crypto API and remove memcpy and
+> > vmap APIs from zsmalloc.
 > 
-> diff --git a/drivers/iommu/iommu-debug-pagealloc.c
-> b/drivers/iommu/iommu-debug-pagealloc.c
-> index 5353417e64f9..64ec0795fe4c 100644
-> --- a/drivers/iommu/iommu-debug-pagealloc.c
-> +++ b/drivers/iommu/iommu-debug-pagealloc.c
-> @@ -146,16 +146,12 @@ void __iommu_debug_unmap_end(struct iommu_domain *domain,
->          if (unmapped == size)
->                  return;
-> 
-> -       /*
-> -        * If unmap failed, re-increment the refcount, but if it unmapped
-> -        * larger size, decrement the extra part.
-> -        */
-> +       /* If unmap failed, re-increment the refcount. */
->          if (unmapped < size)
->                  __iommu_debug_update_iova(domain, iova + unmapped,
->                                            size - unmapped, true);
->          else
-> -               __iommu_debug_update_iova(domain, iova + size,
-> -                                         unmapped - size, false);
-> +               WARN_ONCE(1, "iommu: unmap larger than requested is
-> not supported in debug_pagealloc\n");
->   }
-> 
->   void iommu_debug_init(void)
+> IIUC based on Herbert's previous response, crypto and scomp already
+> support passing in a discontiguous SG-list. So for zswap, if zsmalloc
+> returns an SG-list, it will just be passed as-is to the crypto API.
 
-How aobut
+Oh, okay,
 
-	if ((unmapped == size) || WARN_ON_ONCE(unmapped > size))
-		return;
+Something like below?  Not really familiar with SG-list API.
 
-	/* If unmap failed, re-increment the refcount. */
-	__iommu_debug_update_iova(domain, iova + unmapped, size - unmapped, true);
+---
+ include/linux/zsmalloc.h |  4 +++
+ mm/zsmalloc.c            | 65 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 69 insertions(+)
 
-?
+diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
+index 5565c3171007..11e614663dd3 100644
+--- a/include/linux/zsmalloc.h
++++ b/include/linux/zsmalloc.h
+@@ -22,6 +22,7 @@ struct zs_pool_stats {
+ };
+ 
+ struct zs_pool;
++struct scatterlist;
+ 
+ struct zs_pool *zs_create_pool(const char *name);
+ void zs_destroy_pool(struct zs_pool *pool);
+@@ -43,6 +44,9 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+ 			size_t mem_len, void *local_copy);
+ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
+ 		     size_t mem_len, void *handle_mem);
++int zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
++		   struct scatterlist *sg, size_t mem_len);
++void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle);
+ void zs_obj_write(struct zs_pool *pool, unsigned long handle,
+ 		  void *handle_mem, size_t mem_len);
+ 
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index 16d5587a052a..8f7569058147 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -30,6 +30,7 @@
+ #include <linux/highmem.h>
+ #include <linux/string.h>
+ #include <linux/slab.h>
++#include <linux/scatterlist.h>
+ #include <linux/spinlock.h>
+ #include <linux/sprintf.h>
+ #include <linux/shrinker.h>
+@@ -1146,6 +1147,70 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
+ }
+ EXPORT_SYMBOL_GPL(zs_obj_read_end);
+ 
++int zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
++		   struct scatterlist *sg, size_t mem_len)
++{
++	struct zspage *zspage;
++	struct zpdesc *zpdesc;
++	unsigned long obj, off;
++	unsigned int obj_idx;
++	struct size_class *class;
++
++	/* Guarantee we can get zspage from handle safely */
++	read_lock(&pool->lock);
++	obj = handle_to_obj(handle);
++	obj_to_location(obj, &zpdesc, &obj_idx);
++	zspage = get_zspage(zpdesc);
++
++	/* Make sure migration doesn't move any pages in this zspage */
++	zspage_read_lock(zspage);
++	read_unlock(&pool->lock);
++
++	class = zspage_class(pool, zspage);
++	off = offset_in_page(class->size * obj_idx);
++
++	if (!ZsHugePage(zspage))
++		off += ZS_HANDLE_SIZE;
++
++	if (off + mem_len <= PAGE_SIZE) {
++		/* this object is contained entirely within a page */
++		sg_init_table(sg, 1);
++		sg_set_page(sg, zpdesc_page(zpdesc), mem_len, off);
++	} else {
++		size_t sizes[2];
++
++		/* this object spans two pages */
++		sizes[0] = PAGE_SIZE - off;
++		sizes[1] = mem_len - sizes[0];
++
++		sg_init_table(sg, 2);
++		sg_set_page(sg, zpdesc_page(zpdesc), sizes[0], off);
++
++		zpdesc = get_next_zpdesc(zpdesc);
++		sg = sg_next(sg);
++
++		sg_set_page(sg, zpdesc_page(zpdesc), sizes[1], 0);
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(zs_obj_read_sg_begin);
++
++void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle)
++{
++	struct zspage *zspage;
++	struct zpdesc *zpdesc;
++	unsigned long obj;
++	unsigned int obj_idx;
++
++	obj = handle_to_obj(handle);
++	obj_to_location(obj, &zpdesc, &obj_idx);
++	zspage = get_zspage(zpdesc);
++
++	zspage_read_unlock(zspage);
++}
++EXPORT_SYMBOL_GPL(zs_obj_read_sg_end);
++
+ void zs_obj_write(struct zs_pool *pool, unsigned long handle,
+ 		  void *handle_mem, size_t mem_len)
+ {
+-- 
+2.52.0.457.g6b5491de43-goog
 
-Thanks,
-baolu
 
