@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A6C1D167E9
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 09:32:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2758AD167E7
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 09:32:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F0F36B0096; Fri,  9 Jan 2026 04:32:03 -0500 (EST)
+	id 2C5E36B0095; Fri,  9 Jan 2026 04:32:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09A9E6B0095; Fri,  9 Jan 2026 04:32:02 -0500 (EST)
+	id 1BF986B0099; Fri,  9 Jan 2026 04:32:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCB5E6B0099; Fri,  9 Jan 2026 04:32:02 -0500 (EST)
+	id 022856B009B; Fri,  9 Jan 2026 04:32:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B8C326B0095
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B96D66B0096
 	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 04:32:02 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 873161AB518
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8AFED160406
 	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:32:02 +0000 (UTC)
-X-FDA: 84311908884.22.80C4690
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 152FD20002
+X-FDA: 84311908884.24.EA698EE
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E72BA14000B
 	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:31:59 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=OxeJ76x+;
-	spf=pass (imf03.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=MLiA0Mc5;
+	spf=pass (imf23.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1767951120;
@@ -35,37 +35,37 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5ju413pk+X7OZOjx7Isz69EdS2j8wMMLZdWEnm2KwEk=;
-	b=4yE2XR1DUTFwDVqAEDIXR95fiyXxKc1bo3HSZA01btg0i18qZy1poOfJ7Pyc3Za0/qh1qs
-	2Pm8pZk4Nq+O1HIeRYvxmQeE7+dWFZcUpqpCHlZrnwTOabaIm/CyOg9fu+ptapbp6VWe27
-	p+Mof2LdCGf5JWURyYJZlJ2qp69rtFM=
+	bh=wvXKuJ9eWQP+n7Fr1VxcukpX9jYAGn+2FU2i3Bfv2Bs=;
+	b=i8Hn0eL7ygj509rDJKzZvCcg24J9gOJnYZOdOR5JKerhACRkjjzQ3Lr156vPV4pr67s9b1
+	VXVP67XBnfYTDUWiHJhG2yRw59Qm9jJPAVSA8SXICGpz8NvkWbC6Bv/TADtU8Seh/+NtNG
+	eeK4NkDvefVUM2IdgMcL/p56Y8PXhw8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=OxeJ76x+;
-	spf=pass (imf03.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=MLiA0Mc5;
+	spf=pass (imf23.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767951120; a=rsa-sha256;
 	cv=none;
-	b=Nnt3PX6y4KGUeogCEK4YJLNduOQ596BeO5GIzRm+sj/X7N/1yWJerURpamqpQ+YPfCJKkG
-	9+OjIZMO4hv17BRQoDIeErZlVtwY9AfLULAl+J/ecPaBW7xXVZ/ahs+HbR+NTVg+90B2W5
-	bJ0DsaWEiNP1970DmqrjL81tWhYfhfc=
+	b=3mFAFb5SHh/QNDUxFfph1ZL/uUiiZcjfRFlt7SiUTpHmddiCP7TEr0yb+Q07tNujasAK2M
+	zJuDjFkm5VQeoUpPGjyjolDRJf5W3oCDWEd034PFSmQiSHikfUwWRb3rQMvdwsgL2FAtc4
+	DV5mqCJS+Z4a1/NI74VQ8M4OCM2XtbY=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=5ju413pk+X7OZOjx7Isz69EdS2j8wMMLZdWEnm2KwEk=;
-	b=OxeJ76x+Ft0GO46Y63/oQb9vbNDWyxP9/wkzY/cQtIX1DHdwFWKWDljZRlZ3glE5502FWYltr
-	vv1fmOslpZVlSrL88Pur7ilqgajHEfflN2/bwEoEYk1MqAiHilHRxVZwfQALp0XYatuHtbNpoAi
-	v47jcFKvUknad5Np+YOfFb8=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dnc0L3642znTWV;
-	Fri,  9 Jan 2026 17:28:50 +0800 (CST)
+	bh=wvXKuJ9eWQP+n7Fr1VxcukpX9jYAGn+2FU2i3Bfv2Bs=;
+	b=MLiA0Mc5AKlQG8IxeFz3w+Oeh+/Yb34EqrUFjIWJwn8y5XtKQndr8HwXOmJOsxOCjgjMqFdi0
+	CWytbVyXfrcrRWpLCnaYhewzfosw9unATa2rslUcQ1BKnpzzndrBv5dV+lr49W+IopE2udh0wA4
+	qlSe7bQ1vK9kd6uoTd/tJok=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4dnc001hVvzpSvL;
+	Fri,  9 Jan 2026 17:28:32 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 868A6402AB;
-	Fri,  9 Jan 2026 17:31:53 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id F273E4036C;
+	Fri,  9 Jan 2026 17:31:56 +0800 (CST)
 Received: from localhost.localdomain (10.50.87.83) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 9 Jan 2026 17:31:52 +0800
+ 15.2.1544.11; Fri, 9 Jan 2026 17:31:56 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
@@ -75,9 +75,9 @@ CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan
 	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox
 	<willy@infradead.org>, <broonie@kernel.org>, Claudiu Beznea
 	<claudiu.beznea.uj@bp.renesas.com>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH v6 2/6] mm: page_alloc: add __split_page()
-Date: Fri, 9 Jan 2026 17:31:32 +0800
-Message-ID: <20260109093136.1491549-3-wangkefeng.wang@huawei.com>
+Subject: [PATCH v6 6/6] mm: hugetlb: allocate frozen pages for gigantic allocation
+Date: Fri, 9 Jan 2026 17:31:36 +0800
+Message-ID: <20260109093136.1491549-7-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20260109093136.1491549-1-wangkefeng.wang@huawei.com>
 References: <20260109093136.1491549-1-wangkefeng.wang@huawei.com>
@@ -87,14 +87,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.50.87.83]
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Queue-Id: E72BA14000B
+X-Stat-Signature: q89kcnqddxp75ebe4g3zip898p49phkd
 X-Rspam-User: 
-X-Stat-Signature: qwub8pypcbjr4syzn41ry8mes6nj17w9
-X-Rspamd-Queue-Id: 152FD20002
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1767951119-729497
-X-HE-Meta: U2FsdGVkX18p++d0P5RV+jjLXtzjZ+5dYUDsKXw8vFmkBQw7th4OGsnVWA4ttl2aFdTzj9qRUD/0hRZwBIycrtK213Nh8jzmXgtOFpgBaJ/GfdUJAKnWWO+0/apNt7OVqUbdqAG4yDZNbGmFahIPwrigPIVlHfZqYa9R1kBmOwN4C0fiK1C6nfEe0s+VsxrD8S6hPCC7XP3dqQ2iIITc57yHAhNjaMHhhJi5J5a13UKMLgKv/4XLEODqfdC53djP4DwxRnMLJOUwHyYX6NVGfe1B4CMrMG9oOLWRQlGLIT27r7L53IoM+gSiMsV1/lI4VWqfkPbN8cx3gJOecGRPlpb3xAle5Y5adkmM1T6K1JEvp6uoAJeNpwxr33pfJK2Qj1c599fzUPRq0fV8xBnwrxajJw1S2i7rvC/ZfnkIkKoU7e54ME9rXIaHgD3PujeqNeKh5HadgGnI4pzPsqqZweV4C0jMu7X8jCybanWd1RNqVo+j5mAfM3vyjPIno9DJrDQRfTwf9bTHwXNnLIHQfPFkDAD+Iy5W5Rk9Sf/It3BBXQCYwy65k76sHzZetfe1iaxB9iIvvqGwvdYzfxnd2J1EANBKaOz+AxhE3X8qwN+QFm0J+QVlqoRV7S6VGlp8RF13VuJJSDi9L56ORytjbDV6gf4RsBIBIjjbl8ZYkzi0xwfltUKtbmslDauU3KCzmRqNI8XsVHtvBOjK4n7kkP02lOEY9lIMxGY6Wka+n1ZaPZ7TT43djR3qDs4Nukk/hdtiYqdjGgi/vNPAywaFR8MtNquWJzbzBhYyJP4qgqBwU07GunRikr0QALyF8Tkzeb9MB2fhS0q4/hdJvYiv58QtyJyllkLDH45o1JLvMszP9bjVHJ3RnS+/r9IA3PW7g3thBMaXCjJqrqFpv0WPFojXyLCjkhXoGEp31DxxhewjXIUAuf0eACE3a6SwgOe6YvTryV68z09MEk8FJOy
- YmdUntB0
- WY4ORfslUTFpGW+FovxowK6gjW8MKtL1tM9DJdhneyNKeVSvvEdzazpXfpPiyy1zWuNJ6Ijp6EZpqS5mLGti8Kuau1xqCNxGojeNRt67MUqUx6X0L7FjBSokd0maDs8pXa2p7Bng9Xk6hh1sBmOJJnqfCKgqm56Ic38zfj2KSEbF5EM8CpwvvZwGyEMjftMzcJe+G1LZN84/ziLSHbEv3/4JM/+SAABsKjjvpAngNFra6hMJGPnQG9tMbrcOHVDNVszi10v23TJfLpVBuMbdw8+Tjje7fn9LzDgJkd7b509CMOsD3i3+pdvEd4ipJu89beuTrvZFPrP8QUGoPGqlo5riN5LjqddHY8VQj47v3BuVFAk66a84w1rtk7RJhuHul152VbHWysNXt7zK1B6cC2QrF3e8vyPUs5Yx+pIf4+Syss5oMo+2DvlcY/zqAkWL85Xs1xkH9nZ1AObO1RjxgfOuxm35EEgQZyF23jEc7oUBidYz3c+yMOK+zQFXwVVCryZZRZO2BW52qyLwmm33LTsEyRzzGuWpcuqcze55XFfumyevfU2y0kstKaBvIyBfReZ3r
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1767951119-572133
+X-HE-Meta: U2FsdGVkX19puB6C47xJnyojKMVIoRS7EfTfSbRpw/sYSLKFyXIwQviyteOFDV2Yjc5roj6lXRERIF54rChRTlPzt25T1Fc/9wTl5O7Bc4dOIlmJVX+DDmSQtv6el1wkfym6tm3Cnv8d+9qD9pj5Em76MrnG140DfAI+TWWHWLpyDSkYVv7uhMjxHNOvYw7a5jc6Jo+daQrLp+36mRHKjR+t7t/UtKiCiZWyvspRq7Wpww7U7NBBmrpaUAMnslJw8EmxZJ/pmWG0oxNpkPWnDc/oahF5pI/lyDBozzE86GC1d7vR5f9GBiELnnO56sD7goS/WsjpR7oUxSo8FPiN883ApyW39Fzdx+JMMeEEJgu1BUQySE8wghTZhjCKE5twlEOjOcnizK1MzEm6YFY1s+ox4KcA3GNnC0HtDRMh+PO5aoqQNxSS3vZiEMUiHtCcHMQotMmzAlgIIfNrsTJmzhdwMo3frBpgAM5jdpdFqT19ff8kmqWf4evQyRAZCauD88ODbGAdnDpiRFcAKsxRYiT82y99ACHfVm8viUsfpM4mA6Je43U29qICiOEmg/V2Hvng0guFNRRsc3c9DcYEv7Y2lH48lZLqfSDLX+0HDdbjpP/oGGM+009bNoXr5fKJMHWb8MUjpzh/+Jv8k0BvA9gB6+hYqB8/q/lnrYSKG2gonJxH48Hanywy/6YMwbQmjoXHwKNTkcN7cpeZv+HtU5HRk+avzNfthWg1T3Ej4JbLsYGDiTsyGX2hOudCdF0qhCCaL6C0Mdh2a/ZYVN/V2k2nxk/338K78kusXPujaJWvXGC0U8c/P4mdkWuoi8NKyp2VyNghwMkMUjMvP3YzfLvW4ZL6DzfW/vNY18GwRrQzj2oTqvrGNd4EAVkMPwaQaFlOxyjKkjUmUqj/lhasCevgIjPvINY0Q+Ud+qh8Gzolbe5nDfvlhcTfw89V0ftCju0v4PHWnrg0WbsnfPZ
+ g/pz4qIP
+ WLWGHjkJsUbnkLV42BGWM/5gMwV8gwv8UuWDXoh/KNve7PTtQJ5IqAA5DrpkuR1XBrdJw3mbh/3PxsCz1rLk5VDU5OIQojStp5aT0nI7eKSUlUhDlICq43vHZgFoXStWJ03hsPTNa5ilAEVAPvpBgHwKIguujbbpBdIfX7W2rKhK1lCPjPkM3dS3RvKTEiZf8ohh5hBRqJmgMSIiTY0Q6Dw/FyO9OsDNut9jTowrJjZ2EvJ+u1f3AaA26fMW8eUv/6ymINzQlMFnywlr4IxwVh2Bf+N3cL22jz+nlhT8bnnmfd/2feEB4vdwAJAbkmt7Mn7fPjZrEBm1EyYJrk1liq5mz0s8mXbSgG/iWNxX6ThN5gn5OTk3S89eSbesw3Muj6i6/Q4pMMZHMzq14rJWOtoEaUZylgA9UtAqcphf2IhQAWnujw/CjKUTwg+aeUhL7a1IheqDZ/KGe18OnqYmAOQxabufUMTRqiyq/h/c++8dItHTM4Y66UstbCKeQ8rQoS3yTsyEJfNjmPn3H0sGxTQOgU/LRyFZDuvOUlDjg2KixJvb4dZDsy7Snkdywfzpf9O32x/kPjMhPt/YaD7d7oU7PUQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,105 +103,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Factor out the splitting of non-compound page from make_alloc_exact() and
-split_page() into a new helper function __split_page().
+The alloc_gigantic_folio() allocates a folio with refcount increated and
+then freeze it, convert to allocate a frozen folio to remove the atomic
+operation about folio refcount, and saving atomic operation during
+__update_and_free_hugetlb_folio() too.
 
-While at it, convert the VM_BUG_ON_PAGE() into a VM_WARN_ON_PAGE().
+Besides, rename hugetlb_cma_{alloc,free}_folio(), alloc_gigantic_folio()
+and alloc_buddy_hugetlb_folio() with frozen which make them more
+self-explanatory.
 
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
 Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
 Cc: Brendan Jackman <jackmanb@google.com>
+Cc: David Hildenbrand <david@redhat.com>
 Cc: Jane Chu <jane.chu@oracle.com>
 Cc: Johannes Weiner <hannes@cmpxchg.org>
 Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
 Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 Cc: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- include/linux/mmdebug.h | 10 ++++++++++
- mm/page_alloc.c         | 21 +++++++++++++--------
- 2 files changed, 23 insertions(+), 8 deletions(-)
+ mm/hugetlb.c     | 75 +++++++++++++-----------------------------------
+ mm/hugetlb_cma.c |  9 ++----
+ mm/hugetlb_cma.h | 10 +++----
+ 3 files changed, 28 insertions(+), 66 deletions(-)
 
-diff --git a/include/linux/mmdebug.h b/include/linux/mmdebug.h
-index 14a45979cccc..ab60ffba08f5 100644
---- a/include/linux/mmdebug.h
-+++ b/include/linux/mmdebug.h
-@@ -47,6 +47,15 @@ void vma_iter_dump_tree(const struct vma_iterator *vmi);
- 			BUG();						\
- 		}							\
- 	} while (0)
-+#define VM_WARN_ON_PAGE(cond, page)		({			\
-+	int __ret_warn = !!(cond);					\
-+									\
-+	if (unlikely(__ret_warn)) {					\
-+		dump_page(page, "VM_WARN_ON_PAGE(" __stringify(cond)")");\
-+		WARN_ON(1);						\
-+	}								\
-+	unlikely(__ret_warn);						\
-+})
- #define VM_WARN_ON_ONCE_PAGE(cond, page)	({			\
- 	static bool __section(".data..once") __warned;			\
- 	int __ret_warn_once = !!(cond);					\
-@@ -122,6 +131,7 @@ void vma_iter_dump_tree(const struct vma_iterator *vmi);
- #define VM_BUG_ON_MM(cond, mm) VM_BUG_ON(cond)
- #define VM_WARN_ON(cond) BUILD_BUG_ON_INVALID(cond)
- #define VM_WARN_ON_ONCE(cond) BUILD_BUG_ON_INVALID(cond)
-+#define VM_WARN_ON_PAGE(cond, page)  BUILD_BUG_ON_INVALID(cond)
- #define VM_WARN_ON_ONCE_PAGE(cond, page)  BUILD_BUG_ON_INVALID(cond)
- #define VM_WARN_ON_FOLIO(cond, folio)  BUILD_BUG_ON_INVALID(cond)
- #define VM_WARN_ON_ONCE_FOLIO(cond, folio)  BUILD_BUG_ON_INVALID(cond)
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index b0eba56a40d3..2a16c2833439 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3110,6 +3110,15 @@ void free_unref_folios(struct folio_batch *folios)
- 	folio_batch_reinit(folios);
- }
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 762aeebf85d2..8c197307db0c 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -121,16 +121,6 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+ 		unsigned long start, unsigned long end, bool take_locks);
+ static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
  
-+static void __split_page(struct page *page, unsigned int order)
-+{
-+	VM_WARN_ON_PAGE(PageCompound(page), page);
-+
-+	split_page_owner(page, order, 0);
-+	pgalloc_tag_split(page_folio(page), order, 0);
-+	split_page_memcg(page, order);
-+}
-+
- /*
-  * split_page takes a non-compound higher-order page, and splits it into
-  * n (1<<order) sub-pages: page[0..n]
-@@ -3122,14 +3131,12 @@ void split_page(struct page *page, unsigned int order)
+-static void hugetlb_free_folio(struct folio *folio)
+-{
+-	if (folio_test_hugetlb_cma(folio)) {
+-		hugetlb_cma_free_folio(folio);
+-		return;
+-	}
+-
+-	folio_put(folio);
+-}
+-
+ static inline bool subpool_is_free(struct hugepage_subpool *spool)
  {
- 	int i;
- 
--	VM_BUG_ON_PAGE(PageCompound(page), page);
--	VM_BUG_ON_PAGE(!page_count(page), page);
-+	VM_WARN_ON_PAGE(!page_count(page), page);
- 
- 	for (i = 1; i < (1 << order); i++)
- 		set_page_refcounted(page + i);
--	split_page_owner(page, order, 0);
--	pgalloc_tag_split(page_folio(page), order, 0);
--	split_page_memcg(page, order);
-+
-+	__split_page(page, order);
+ 	if (spool->count)
+@@ -1417,52 +1407,25 @@ static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
+ 	return NULL;
  }
- EXPORT_SYMBOL_GPL(split_page);
  
-@@ -5392,9 +5399,7 @@ static void *make_alloc_exact(unsigned long addr, unsigned int order,
- 		struct page *page = virt_to_page((void *)addr);
- 		struct page *last = page + nr;
+-#ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+-#ifdef CONFIG_CONTIG_ALLOC
+-static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask,
++#if defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE) && defined(CONFIG_CONTIG_ALLOC)
++static struct folio *alloc_gigantic_frozen_folio(int order, gfp_t gfp_mask,
+ 		int nid, nodemask_t *nodemask)
+ {
+ 	struct folio *folio;
+-	bool retried = false;
  
--		split_page_owner(page, order, 0);
--		pgalloc_tag_split(page_folio(page), order, 0);
--		split_page_memcg(page, order);
-+		__split_page(page, order);
- 		while (page < --last)
- 			set_page_refcounted(last);
+-retry:
+-	folio = hugetlb_cma_alloc_folio(order, gfp_mask, nid, nodemask);
+-	if (!folio) {
+-		struct page *page;
+-
+-		if (hugetlb_cma_exclusive_alloc())
+-			return NULL;
+-
+-		page = alloc_contig_frozen_pages(1 << order, gfp_mask, nid, nodemask);
+-		if (!page)
+-			return NULL;
+-
+-		set_page_refcounted(page);
+-		folio = page_folio(page);
+-	}
+-
+-	if (folio_ref_freeze(folio, 1))
++	folio = hugetlb_cma_alloc_frozen_folio(order, gfp_mask, nid, nodemask);
++	if (folio)
+ 		return folio;
  
+-	pr_warn("HugeTLB: unexpected refcount on PFN %lu\n", folio_pfn(folio));
+-	hugetlb_free_folio(folio);
+-	if (!retried) {
+-		retried = true;
+-		goto retry;
+-	}
+-	return NULL;
+-}
++	if (hugetlb_cma_exclusive_alloc())
++		return NULL;
+ 
+-#else /* !CONFIG_CONTIG_ALLOC */
+-static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask, int nid,
+-					  nodemask_t *nodemask)
+-{
+-	return NULL;
++	folio = (struct folio *)alloc_contig_frozen_pages(1 << order, gfp_mask,
++							  nid, nodemask);
++	return folio;
+ }
+-#endif /* CONFIG_CONTIG_ALLOC */
+-
+-#else /* !CONFIG_ARCH_HAS_GIGANTIC_PAGE */
+-static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask, int nid,
++#else /* !CONFIG_ARCH_HAS_GIGANTIC_PAGE || !CONFIG_CONTIG_ALLOC */
++static struct folio *alloc_gigantic_frozen_folio(int order, gfp_t gfp_mask, int nid,
+ 					  nodemask_t *nodemask)
+ {
+ 	return NULL;
+@@ -1592,9 +1555,11 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
+ 	if (unlikely(folio_test_hwpoison(folio)))
+ 		folio_clear_hugetlb_hwpoison(folio);
+ 
+-	folio_ref_unfreeze(folio, 1);
+-
+-	hugetlb_free_folio(folio);
++	VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
++	if (folio_test_hugetlb_cma(folio))
++		hugetlb_cma_free_frozen_folio(folio);
++	else
++		free_frozen_pages(&folio->page, folio_order(folio));
+ }
+ 
+ /*
+@@ -1874,7 +1839,7 @@ struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio)
+ 	return NULL;
+ }
+ 
+-static struct folio *alloc_buddy_hugetlb_folio(int order, gfp_t gfp_mask,
++static struct folio *alloc_buddy_frozen_folio(int order, gfp_t gfp_mask,
+ 		int nid, nodemask_t *nmask, nodemask_t *node_alloc_noretry)
+ {
+ 	struct folio *folio;
+@@ -1930,10 +1895,10 @@ static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
+ 		nid = numa_mem_id();
+ 
+ 	if (order_is_gigantic(order))
+-		folio = alloc_gigantic_folio(order, gfp_mask, nid, nmask);
++		folio = alloc_gigantic_frozen_folio(order, gfp_mask, nid, nmask);
+ 	else
+-		folio = alloc_buddy_hugetlb_folio(order, gfp_mask, nid, nmask,
+-						  node_alloc_noretry);
++		folio = alloc_buddy_frozen_folio(order, gfp_mask, nid, nmask,
++						 node_alloc_noretry);
+ 	if (folio)
+ 		init_new_hugetlb_folio(folio);
+ 	return folio;
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index 58ceb6c9e410..0ddf9755c090 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -18,16 +18,14 @@ static unsigned long hugetlb_cma_size_in_node[MAX_NUMNODES] __initdata;
+ static bool hugetlb_cma_only;
+ static unsigned long hugetlb_cma_size __initdata;
+ 
+-void hugetlb_cma_free_folio(struct folio *folio)
++void hugetlb_cma_free_frozen_folio(struct folio *folio)
+ {
+-	folio_ref_dec(folio);
+-
+ 	WARN_ON_ONCE(!cma_release_frozen(hugetlb_cma[folio_nid(folio)],
+ 					 &folio->page, folio_nr_pages(folio)));
+ }
+ 
+-struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
+-				      int nid, nodemask_t *nodemask)
++struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
++		int nid, nodemask_t *nodemask)
+ {
+ 	int node;
+ 	struct folio *folio;
+@@ -50,7 +48,6 @@ struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
+ 	if (!page)
+ 		return NULL;
+ 
+-	set_page_refcounted(page);
+ 	folio = page_folio(page);
+ 	folio_set_hugetlb_cma(folio);
+ 	return folio;
+diff --git a/mm/hugetlb_cma.h b/mm/hugetlb_cma.h
+index 78186839df3a..c619c394b1ae 100644
+--- a/mm/hugetlb_cma.h
++++ b/mm/hugetlb_cma.h
+@@ -3,8 +3,8 @@
+ #define _LINUX_HUGETLB_CMA_H
+ 
+ #ifdef CONFIG_CMA
+-void hugetlb_cma_free_folio(struct folio *folio);
+-struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
++void hugetlb_cma_free_frozen_folio(struct folio *folio);
++struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
+ 				      int nid, nodemask_t *nodemask);
+ struct huge_bootmem_page *hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid,
+ 						    bool node_exact);
+@@ -13,12 +13,12 @@ unsigned long hugetlb_cma_total_size(void);
+ void hugetlb_cma_validate_params(void);
+ bool hugetlb_early_cma(struct hstate *h);
+ #else
+-static inline void hugetlb_cma_free_folio(struct folio *folio)
++static inline void hugetlb_cma_free_frozen_folio(struct folio *folio)
+ {
+ }
+ 
+-static inline struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
+-		int nid, nodemask_t *nodemask)
++static inline struct folio *hugetlb_cma_alloc_frozen_folio(int order,
++		gfp_t gfp_mask,	int nid, nodemask_t *nodemask)
+ {
+ 	return NULL;
+ }
 -- 
 2.27.0
 
