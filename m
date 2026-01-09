@@ -4,83 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46E45D1A627
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 13:39:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23886D1A627
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 13:42:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABDED6B0089; Fri,  9 Jan 2026 08:39:18 -0500 (EST)
+	id 887446B0089; Fri,  9 Jan 2026 08:41:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A68576B008C; Fri,  9 Jan 2026 08:39:18 -0500 (EST)
+	id 835046B008A; Fri,  9 Jan 2026 08:41:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97DB16B0089; Fri,  9 Jan 2026 08:39:18 -0500 (EST)
+	id 7377F6B008C; Fri,  9 Jan 2026 08:41:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 872706B0089
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:39:18 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3207413BBCF
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:39:18 +0000 (UTC)
-X-FDA: 84312531996.12.36F5A76
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6AEA914000E
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:39:16 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 60CE46B0089
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:41:59 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 11E521AC8CA
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:41:59 +0000 (UTC)
+X-FDA: 84312538758.25.C325838
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 323CA140002
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:41:56 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tfOOTzSR;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mCmf/qFA";
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767965956; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767966117; a=rsa-sha256;
 	cv=none;
-	b=6CXZ6p4570VeqSAOenRMtHpKnpVrHeH1dZ6bM/ZY+1lEOzSYJQtG5rmUwsBRy1/5vcbmvx
-	1V/NGG7c4xb94o4Br9f5WsGr2b+O+4V1MQc2048CWCfE5ch++xRAgj/ok44R5OljGHsruS
-	QgnIzRkwjuBugXUiTKg4LZ5nyYiDxrM=
+	b=FKAKSw5UKkp1XUs7Q/wI9G+Py2/KIYAa00HnVw8PZwEc2wzjawAz6poDG7v0vBaRryhUmp
+	0CO39KhupA1o5vR7agwOoN1GSlhqI6upn4ckWRcRzw23CtPGlZ99zn/uHJxyerPSopkWlc
+	UXJTl927SMN33Xlk/VUZXG0c6zbfuys=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tfOOTzSR;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mCmf/qFA";
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767965956;
+	s=arc-20220608; t=1767966117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LYB6Gh4JQVQNRZ1NAYwohtN0GLTwbut5r93d9lqZjD4=;
-	b=MlILu0ZDD5+L0UYhQBo6mdS89AT6aZAQH+4JhXx2jIHzpgVevDZ/p0eHOpzj54P6zYeYDY
-	qjFzeh0QKT0gZwfOg76skQQT2YDbJ7boFzb82pv4Chxd4s0hRbk4rtZoGm3VlVa1egA6fn
-	O/OJ4oBYA5tKIYhGMIkGnoBNinr0BrI=
+	bh=dXHIwmnL5409tJBaiYRklVMiFgqGfnFpWNAtJQKYBig=;
+	b=pziBXRKj++ThVKntjfyegPTDTDgpHgywie6Z4S/DffSmNN6IlczbsXup4OvRryA+C2OWAn
+	YYTOvJf6T2pIdpQrit3eL5n5vV8+sKdcceqbsyu2QB2MvYAHisAMqXBaMpycwpOxgO3rUq
+	5+86y0NaF4V54tfrlfkcrgVlH2IEwVA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D7FB860122;
-	Fri,  9 Jan 2026 13:39:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10482C16AAE;
-	Fri,  9 Jan 2026 13:39:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2EEA6439DD;
+	Fri,  9 Jan 2026 13:41:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127F9C4CEF1;
+	Fri,  9 Jan 2026 13:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767965955;
-	bh=1dPK506i2U9+WjR9nExbFYZAgBn/2wtpSi+tYqMsfpU=;
+	s=k20201202; t=1767966116;
+	bh=85W2k/vZ6p+6iy0+yFWg6C8malR33X2ekz9QgywhdHg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tfOOTzSR0lNSJxCRfGRDE6qkkN79kEa+28zbT7JNP9L9D+DfDzq3leP+uyflJww/n
-	 a6nFO5vo65KQk30H0/sUTgm1dd9xIFSFOWwp1TIvdvoNGAAEwAIeeTMzDm+FTT6Vkp
-	 QWovGhbbmg6LpiSFQuXAuEpva4aESEQ8CCPG9jnr09Nl5fEOHPTULOMC8wUJtBZPzb
-	 Ie6aRjxkVC+gP0fELUkHSx8UJIcBk92oBnOjQIpQ9OWBiDO35mDVAjln+6hP7Iq0A5
-	 0vamyVvetJJeeWnHLdeGmpLJec19ygROhxOak9cvvTO8QgQUGBB2PXIVGfvLgMzq15
-	 kCtR1JQDNWO2g==
-Message-ID: <920c641e-e092-46f0-89cb-0f1c130d979a@kernel.org>
-Date: Fri, 9 Jan 2026 14:39:08 +0100
+	b=mCmf/qFAVz66FGjo+1VfRjKDgm9C2YWUh/58ThjZTg1c3qbTdFenCDdpXC5sul1xA
+	 NEinrrPqz1ENk859Qij7ccldBetl/K8nhPAZsHEI/WGyU17lEsKkQE3zj2J+gLMfwF
+	 Sjx1xESmbA9GzXyMj1Lfi/BjDSbn+P8bHM/5S4ETldvoBCPT9Wj23mwBe5hoj2wwY+
+	 oK2l8L3c9w78ggaUMnaxi18GaJAgToAzNL1Uc0Vin/Kif3762G/gwAh3MhdZAhLX1T
+	 jv83fvYBoYK9v3r0KqOR+CdrHj2mmE34RZvYEfa3JqDPL7lRXm1uasdfX7/glbDzuf
+	 r+Z1asmNqwGrQ==
+Message-ID: <3cd08409-8c6b-42ab-97d5-e4440efe4f6a@kernel.org>
+Date: Fri, 9 Jan 2026 14:41:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate: fix hugetlbfs deadlock by respecting lock
- ordering
-To: Jinchao Wang <wangjinchao600@gmail.com>,
- Matthew Wilcox <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
-References: <20260109034723.1342798-1-wangjinchao600@gmail.com>
+Subject: Re: [PATCH] selftests/mm: run_vmtests.sh: fix relative path handling
+To: sun jian <sun.jian.kdev@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260108031604.12379-1-sun.jian.kdev@gmail.com>
+ <20260108132851.bb6b7813277a5b40ba3aec8f@linux-foundation.org>
+ <CABFUUZGinC04zPEtwq3+maN-iNVNdc1p_BFnTdPNTsLXcQ1hnA@mail.gmail.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260109034723.1342798-1-wangjinchao600@gmail.com>
+In-Reply-To: <CABFUUZGinC04zPEtwq3+maN-iNVNdc1p_BFnTdPNTsLXcQ1hnA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6AEA914000E
-X-Stat-Signature: b1ioh7p1kwnac8be5gxuknae3i4t1pni
+X-Rspamd-Queue-Id: 323CA140002
+X-Stat-Signature: xut4k75kb6gtcquhk59c3ifpxo4hqj86
 X-Rspam-User: 
-X-HE-Tag: 1767965956-918757
-X-HE-Meta: U2FsdGVkX1/EoM6xwKRuyjrSUpATq6B6ZyV18YZLHBo1Bcq3T5CHrMC17AF4QF6eNyIyZhSbBxts5q/R6wTc08YjxyKN5x7Yj+yIX/ezAWfCpteZHd03YEnP5iJ0HsClPKukKJVyQvpttvPDw+MCwIJ90YXii16lhOVDH1xcCInVyXCH2VRH2hygKx4r6eK1Y4DPYWL2EdLUZp0DwVBQhPKlhKUaSf4ZUdbNxt8H1DnskGejvryCNH/i++vfcUIdZaVfoxRoR/uJ1td3RxQOM6E/bldKdEbFH44eWCXBV4XM7U7TpHsvP80YcCkVuSfDnBwgb5MLvQQ3D8/qxLDIRgMeTD6r+QFb+MjOE9RxVl8DGKQrjZyeb2NZKLIDVLYA3MgCilDcEWcAcsOqD7MNwumFAsof3boY1iZ+JuxDBBMXKbnfUly1zU4KWdaW4iZGdGGfqCm7Rl1UteXzGdSJjoMua9rMP1L6Ld7tMHqOtLSsYzCviqgDEENbRwFEkFrDstkLUhz1M9j8fGDUm0I1NGnag/qgIByyECTKhXfZnQXVkZXktwMA1gMDzLJQRFxUmm+y9f6Dio2cUqtTb9KWOWtM0WuRy1Rs+8Vfisqj4aAOiOK5oLLIZRAwztw5tLeoF/mKxMgQEcCIB9BaLpuvVZctl1KW/6tILR+ZFdBUtdf3hh9YVercrqaTq7U/pMqyWJcSxF4q68ksmm59jt9G/wATAx5babbhLs2Hb8o5AIi8jkGqny3OKDkWL/aqSJQl32taUA7VKxtlSFGzOWDc2WEnS6ztVD6zAUCJyq3MnlfjnzafmsBmoRYTwVlrLzw6LrNrvcpUdQ2Nr+7BqT3SbVAMT9K5OJaNr2LG6aqS7N5Xx9nYxavn5nIkWIuShhVVuunxyaBf5RIAV8DVYqQnyN4S5llVhkW6aICG/ZlxsRsp0bAJoycYLpnc5m/rjGha23OLQ5uzM+oYCz3hCEG
- tyuAQs+8
- JK3bJTVnJuqaeMCZfVaF7VppWm7BSWh90TweV/izn817DHMuubwUO1DBi8TtuzspuWmSCrgcMYOKlUL3VKoGjpe+0+XncCgA/CEo2YT2Q0jFsfzuH239ZZv7jjjPA2wlJbUJX7v/NlSihyGb/LTO/JRHawTBzCxPVhie01hnxsy0UdHjmAEf0kNIweRytT/8OiZ96PCpSMHJW4+qADb54+hnzqo8Og8Gu8J1WD1cM27G+apj2gGilEfSvpBc1vxrUhpqw4KvJzOfBVu2PG36yhm4oJ71b7Q6k5RpK1ddfuc7G1PJDQru+qtSL3WR4/JQZzaO0NyTI+p7/wOtM8dFfdr8tniUCN/5kuX8TPrUcCoW5FMk=
+X-HE-Tag: 1767966116-524798
+X-HE-Meta: U2FsdGVkX1+ls1WioWu7N6lbnN7BIuPcG0xPaFm9BE/iGdRTRJKjS9SVFeZq3MmlciYHhe2Ig5PFNB07QjqcGy5HPSsk50HeWk2SQudWnq5Q5WmDx8dmw0FJEPklXEnAonqI+41gavhd5bayNpXzANVQ8TpZEKl7qa1xB3rfHfeRwyUOzUdx+4+5zIwRQE1dc+vru2biNAIrfAOBSv5qkY9SiSOkjj30Qu9hr2IF0TcE1ct+ev2OvWgcGYI+eerN5Dk6nhGwLYwxcxxH36sJmjNR720gG/FAO03q+wKB4DC4/S86TVgCQyDC9XCPHb6azI68w1R7LlOBTmlq3W5mkw6rIUkW350ndYisAVkX6j6mCIneM8XfbMLAk/hX9j252p3oWahAe4bJhtzpKW8g4Khvpk0hxsQqSLL4Tkx62PM5FkD4m1TmFiHrzhdN+/TXfaKx/UGiyN4cF7G6JBNTntVfPKKbEZrSJ5EensxQx7DuiNWLPlSNr+aqldTvdPHPHDQn7UN7vaeZe3/U7/Coz9D1leVvt68VqUxo0YodBtwowgXmDAOp3uY6Q04/RS0LazjitsMY7Z/nFaTDCDQep87u+/eR7+PfSeY/oBhSr+oFTKmjF7hIWWgXIWmD/51KJOfAPk/ktRsHVt+HYb5d4lMl4+GYVF2VmwqQM4bKN0ot1jTE11yyMxG95E3gFSmrzPL8mW0bplxnYbygcvz20XRhu2LnpC30TjCa8o2RPckuGhmY3NGdL+mG74kuPsaKZuiTiP3n9mrNvy8C4ePWAM+NlAPb8TUICQDsxvmRixFmqMnmnrV3snssP7WAmJd2nF+Xq7QdTPjTqxCLSgCmwIZ+e2799kmtACUFEKgnabWIVhkfTo41D7ymW2IXhmKlGzpRqN/YWheaVmrk+RiFqjwOBQrbkxifFiuhs6ym/pUq2d1IrODlqUCo1O9DcF24nVbUj2Gwek1uLIo2SDW
+ dzbZvIqN
+ S0hIdEJC10S3kHjRo8pLMIjpprknGP1m9F54ybfyrYOtsQKhvgs+CJN1C0OY3LSV3BttUdKRgMH8aeJL7OJpaj+wif+yVx8lbR+5u2pIlfw8CJMs8KwcHijIA2rYsdzCvypNkoxhNHiwgmrSNiES/qjy/tOsPyrUMumJzJibRBU6Ja5XS/dnG+WAi7gHoPsTvNP0i9y7qH2BbuCTc0I/Acmy0L/EswwiNr79DRYkK2B/GVPzYiNgUWobKw6BtYkCn4eDrnb6kB6/M2vjOc4TwCl+4pNyxjFTdZmRUqEm5O2oMwZCB/42tdCA3K+aaTDswT9ziRNQxib3A66mRbdYdQBffoAZ6M4gggi3PZJeEKJdT7p5Hpqyscg12/qFdTHoPXU4OtIKDplL6izA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,52 +140,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/9/26 04:47, Jinchao Wang wrote:
-> Fix an AB-BA deadlock between hugetlbfs_punch_hole() and page migration.
+On 1/9/26 03:08, sun jian wrote:
+>> hm, why?  Is that a thing people actually do?
+>>
+>> Is anyone going to actually test this feature?
 > 
-> The deadlock occurs because migration violates the lock ordering defined
-> in mm/rmap.c for hugetlbfs:
+> Yes — invoking selftests directly from the kernel root can easily happen in
+> practice, for example::
 > 
->    * hugetlbfs PageHuge() take locks in this order:
->    * hugetlb_fault_mutex
->    * vma_lock
->    * mapping->i_mmap_rwsem
->    * folio_lock
+>    sudo tools/testing/selftests/mm/run_vmtests.sh
 > 
-> The following trace illustrates the inversion:
+> This currently results in false failures because relative paths being resolved
+> against the caller's cwd instead of the script directory.
+>>
+>> Alternatively we could check that we're in the correct directory and
+>> error out if not.
 > 
-> Task A (punch_hole):             Task B (migration):
-> --------------------             -------------------
-> 1. i_mmap_lock_write(mapping)    1. folio_lock(folio)
-> 2. folio_lock(folio)             2. i_mmap_lock_read(mapping)
->     (blocks waiting for B)           (blocks waiting for A)
-> 
-> Task A is blocked in the punch-hole path:
->    hugetlbfs_fallocate
->      hugetlbfs_punch_hole
->        hugetlbfs_zero_partial_page
->          folio_lock
-> 
-> Task B is blocked in the migration path:
->    migrate_pages
->      unmap_and_move_huge_page
->        remove_migration_ptes
->          __rmap_walk_file
->            i_mmap_lock_read
-> 
-> To fix this, adjust unmap_and_move_huge_page() to respect the established
-> hierarchy. If i_mmap_rwsem is acquired during try_to_migrate(), hold it
+> That would also be reasonable, but I slightly prefer auto-cd because it
+> avoids an easy invocation pitfall and makes the runner more robust for
+> wrappers/CI
+> where the cwd is  not stable. That said, I'm happy to switch to a fail-fast cwd
+> check if you prefer the behavior.
 
-
-I'm confused. Isn't it unmap_and_move_huge_page() that grabs the 
-i_mmap_rwsem during hugetlb_page_mapping_lock_write() (where we do a 
-try-lock)?
-
-
-We now handle file-backed folios correctly I think. Could we somehow 
-also be in trouble for anon folios? Because there, we'd still take the 
-rmap lock after grabbing the folio lock.
-
+I'd prefer to just fail for the case that we never supported instead of 
+adding support for it.
 
 -- 
 Cheers
