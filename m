@@ -4,193 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01926D26D7A
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 17:12:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F05A9D26D6F
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 17:18:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F3A96B0005; Fri,  9 Jan 2026 12:12:20 -0500 (EST)
+	id 271F26B0005; Fri,  9 Jan 2026 12:18:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A1946B0089; Fri,  9 Jan 2026 12:12:20 -0500 (EST)
+	id 21F736B0089; Fri,  9 Jan 2026 12:18:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4593C6B008A; Fri,  9 Jan 2026 12:12:20 -0500 (EST)
+	id 0F73D6B008A; Fri,  9 Jan 2026 12:18:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 310BE6B0005
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 12:12:20 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C45D8140470
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:12:19 +0000 (UTC)
-X-FDA: 84313068798.03.0A59D83
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 53FAA10000C
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:12:17 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dD0Qlq5v;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cJKN681x;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dD0Qlq5v;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cJKN681x;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F18926B0005
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 12:18:15 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 92147B9C2D
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:18:15 +0000 (UTC)
+X-FDA: 84313083750.21.BA3834C
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A78C340009
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:18:13 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=jYZE2i5g;
+	spf=pass (imf04.hostedemail.com: domain of 3VDhhaQgKCJsNHJNO5A5BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--smostafa.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3VDhhaQgKCJsNHJNO5A5BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--smostafa.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767978737;
+	s=arc-20220608; t=1767979093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hqC+IvhivAp+vymnjjyxSHw6MxxDRHN2PRL011syc3I=;
-	b=sVlVoyFd/phcRYXpGy5c+KtHHhN4rb/T4HoMRtsxmtCPjZgDDbz9/CYwIe1fNyMR8BL/FJ
-	OUWeuoNjb5ZdeO5gdjyC09nNnoZId4ls5vhYPFdu1W/u9ClsMBhc5DcSGLz+a2a+h4pDD5
-	fDMUZj23SFEgNGiYGb/XMPSf9m6lo5I=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=EFPXi9jlv9rMnyA0grBQkKfopvHJmF7zvIc7VHv8N58=;
+	b=8WCKLTjm8ev+gmKhXydcjy+AwmAWmkiYAM5frq3wOyOPIcc1UXjUiRxvX5uGPJ03FdhY1Q
+	53BBlU33hVBfjZQkKEUVLk6rss+dCEc2Ku5qX0WgGeg60GCvQcJ0O3DQv37FJMHpU2zSgK
+	FTIoB7hgSZPc2aA1FrSwRh7RnJVvcCU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dD0Qlq5v;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cJKN681x;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dD0Qlq5v;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cJKN681x;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767978737; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=jYZE2i5g;
+	spf=pass (imf04.hostedemail.com: domain of 3VDhhaQgKCJsNHJNO5A5BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--smostafa.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3VDhhaQgKCJsNHJNO5A5BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--smostafa.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767979093; a=rsa-sha256;
 	cv=none;
-	b=aknHw5sqq94Gj6f/Oifs5wVXXoKoxhyhwR83j5MfbOcEpQx/qW0ZY9J2A+47FPog2B9keQ
-	ccUBQ0oITougHCOd/+VOrvFkSQ/CspbxYHiN4g+B3tJrYvEaq4ckUgoz3ObI+2aupuEdDo
-	x4ZNMveAzticbZzwdvUxDJPBWa3Ytlo=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6AE145BFFC;
-	Fri,  9 Jan 2026 17:12:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767978735; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hqC+IvhivAp+vymnjjyxSHw6MxxDRHN2PRL011syc3I=;
-	b=dD0Qlq5v9SNvqqSvgEfI4qbjuYCdo4CM3z6ABwVYFqpp8Hn4YNteJzFdpBIRyzOJYFpo0F
-	NSgIJR6ea+Srro/TcskbfDShLRvwDRO1RmyvSAdrH2+mfDYatPgxXGPq+GDRArqzJSuWLV
-	YZkE3k3DSsOI6BwlqsLK/xilP6QtbXU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767978735;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hqC+IvhivAp+vymnjjyxSHw6MxxDRHN2PRL011syc3I=;
-	b=cJKN681xCoDAR1CGporHgMHuGduZH2q4h/VhpEdBXyNlQ0OwxXLh9FPVvO2d4r7KQq+d+6
-	GZ45cwAdogz5ErAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767978735; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hqC+IvhivAp+vymnjjyxSHw6MxxDRHN2PRL011syc3I=;
-	b=dD0Qlq5v9SNvqqSvgEfI4qbjuYCdo4CM3z6ABwVYFqpp8Hn4YNteJzFdpBIRyzOJYFpo0F
-	NSgIJR6ea+Srro/TcskbfDShLRvwDRO1RmyvSAdrH2+mfDYatPgxXGPq+GDRArqzJSuWLV
-	YZkE3k3DSsOI6BwlqsLK/xilP6QtbXU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767978735;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hqC+IvhivAp+vymnjjyxSHw6MxxDRHN2PRL011syc3I=;
-	b=cJKN681xCoDAR1CGporHgMHuGduZH2q4h/VhpEdBXyNlQ0OwxXLh9FPVvO2d4r7KQq+d+6
-	GZ45cwAdogz5ErAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2798F3EA63;
-	Fri,  9 Jan 2026 17:12:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 83bICO82YWlxTgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 09 Jan 2026 17:12:15 +0000
-Message-ID: <379d2aaa-7b5f-4deb-9c1a-f2721851a0ae@suse.cz>
-Date: Fri, 9 Jan 2026 18:12:14 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/5] slab: Introduce kmalloc_flex() and family
-Content-Language: en-US
-To: Kees Cook <kees@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, workflows@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Matthew Wilcox <willy@infradead.org>, John Hubbard <jhubbard@nvidia.com>,
- Joe Perches <joe@perches.com>, Christoph Lameter <cl@linux.com>,
- Marco Elver <elver@google.com>, Vegard Nossum <vegard.nossum@oracle.com>,
- Pekka Enberg <penberg@kernel.org>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Jann Horn <jannh@google.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>, Yafang Shao <laoar.shao@gmail.com>,
- Tony Ambardar <tony.ambardar@gmail.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Jan Hendrik Farr <kernel@jfarr.cc>, Alexander Potapenko <glider@google.com>,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-References: <20251203233029.it.641-kees@kernel.org>
- <20251203233036.3212363-4-kees@kernel.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251203233036.3212363-4-kees@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zdnj7rtho3kq3kcn6dn5xyupyfx1w61e
-X-Rspamd-Queue-Id: 53FAA10000C
+	b=WtUJVvvvTCUmVAVTXyfMxydosFMpeXhJjuQCshJx/FbWvLWTYAYqy8CuTfezg24y83M/SI
+	+CzZs7/Q+0w+byz3ou0jjrZD1hIMsRoO4h4hxpCrx8Y9HUqb6P/e+23kxMbdtHybTlswxs
+	yhlbcTUpwIrKXd0hax6JgGmZci8pkF4=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47d17fff653so20608445e9.0
+        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 09:18:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767979092; x=1768583892; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EFPXi9jlv9rMnyA0grBQkKfopvHJmF7zvIc7VHv8N58=;
+        b=jYZE2i5gOKNQmrozFaikLn1mcn+M4bs8Y7+33H7I1+IHibS1asrozmMDHnTPNZzq3/
+         StkWw+05ZNcqOstDnSfJ/9GMT2h3ehrwjiqemFxg5Hswml1bDF9x4JIIXMorKBk1L1ma
+         EbDT8+Iedt74NEu+Rb9DyAFUEHG5BiXg44sd5UAOEtiHwaN88CGgx5++n83earGnYHY6
+         CG5xtupRoKj7bS4pqQKGSFX3LERvB26ojyBJLj343JHA4rO32SO9prlx/T7c0dDdM7UW
+         duPhmgwcebIKpFKL94SwOE+b79vS6mtt+CgPm/ek7X0TI7WwLt1pGhfHJ/hsZ82bbvGG
+         hIBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767979092; x=1768583892;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EFPXi9jlv9rMnyA0grBQkKfopvHJmF7zvIc7VHv8N58=;
+        b=HTOMrVMYj/ZyihB4G9CIY8nlPm2X+rG0I7Sz4kgJFyg+PR/GPsBcDDaR10BvPsyaw8
+         ljwbPUc33mX9zNSzImxx9S7hp3svJJ5LjSOnpI9Cp0JIm9jq3z55OzE9aSV6oxizHjfS
+         Bxc7nqLPjNvDnAgRcof70+XYrSV1n4qJr0bavGXmrILP7HKHOdEUikgdDkGPCQvNbBnu
+         Ue8Ctkmfu/K82dRrrpXvJiSSzzT7sr923mR4pTAzTlbx9VG24FmaSGRdJf5UqUyeh5Hd
+         EKs9pwSKXX0kbnpqazBZGSmmymX8HWWHI16QBtvXqlMEH9Upxz/xPYmObVnD71lItGsZ
+         RwWQ==
+X-Gm-Message-State: AOJu0Yw6Rqi373SR6k/PdAW4q0etafNJlFvyGR9mLjNjxFPjy7s+nW/X
+	kv43R2BpSrN0xBlaZLmkcFe1N1hGwrEtJhgjoVjaBuNZMP1pZbZCV/7ksDOPjZgcvzExzJXQroB
+	1zUum0rxy3qarohC2o3F70erKAPI7AZv7WiVDlGM4kq6nQwFnYZzbYGz0VsSc+7ruC/kSy0yuE4
+	wERESdc43qGMm1La2o/kadK3hG61F5HijCbfKp1chlBA==
+X-Google-Smtp-Source: AGHT+IFocuqh4xf3N3PNsIA9bVyZchbl85zeIdFnVspAH2mPKuFwxxYp6oh+Bwc2UYAh9iIB3e8vzhQ1q9OD3A==
+X-Received: from wmba20.prod.google.com ([2002:a05:600c:6dd4:b0:47b:d5ad:dd7f])
+ (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1d14:b0:477:97c7:9be7 with SMTP id 5b1f17b1804b1-47d84b0a7bdmr116367135e9.1.1767979092009;
+ Fri, 09 Jan 2026 09:18:12 -0800 (PST)
+Date: Fri,  9 Jan 2026 17:18:01 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260109171805.901995-1-smostafa@google.com>
+Subject: [PATCH v6 0/4] iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
+From: Mostafa Saleh <smostafa@google.com>
+To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org, 
+	Mostafa Saleh <smostafa@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1767978737-752964
-X-HE-Meta: U2FsdGVkX1+CjddN6Lmx2G1q+gBhKOuEPYSHHDDFE5AT2uNEdeP8Xvn9klceW+8i1TEImotNsi8kYL1kcLayHINMMgKsJRtj0KKZNMEXomTPDiM5kA/wP+PmjC3e0MPljMu0Ppf1QzZUhhmKy9mnTYCQxihpdQVsEYsF1d9NLCQ9cWxgGAZW1HGxaRcCA49CsNdxduA/xGDOrFm6iERaEzO4ztDbfNFTRAWZ2cGDjHuiHgYeVfDvfErBC1p+zh5BSHvPvcpCwVbDjCL5mqsyZCChSD+m1XrR1oF3rDMMJOlhDJ9LT55E5QqtZUD8z15mRhKxuQ9mvLxBOc55XTgI1stCIoH3inl+KZ/1i4IOXC+l13Q18YMUdKP/OaAnRSJCfcLKjwrWVwZow1ErYYZJCep0rY/FGHnpKaWyAQiqdhJybH3aKRTcv+xVJEP91TzxYMkx1bHDB+L5PJGNQCHr6ghxT9aeh6WgGspPsGD9JrPVKNt2Bd4bMPn+7YgqpZJONVmC6+dIWqJNzqyQUGDQu/5cXLiA9HzU56ldYb/7+8CbYr+S3vB4wdOCl3RAp4XQlWEqlKv46cTJfRR3mc5/BBtgxhDODVAaHght7W3CrzhiZ5qNvDrgX9RSAWXbGbyv2QUvmve7kOSIA1NbISDkj8iOReybbctzphXYj00j0fknvF9IBJAN+fGZH696YKa3qm+cHN43JyONRE0XDvVujA8SHAyM9SRC4ZgO/ucjfd4ggT9L/wgCPJal1cVi1Oi9g7X/PeLmnRj6ensvguyiUzcxBIaCsUz+W1NkRF3x0ttH+g6lyl2CJ/zrLRJpIhokWlzVKU584ZhK7pETxSxfaYv+8wqpDNvpWneNGp3TqvqUIfQpifNaNrNkKALSuVV1IsG2hR1kkuZmViWrHcFotTed5KoA4fTQZgVvxLEYq3Q6/xQUYxaqk05FnEmked2bEWvsVbEE5Olm+yAyeGH
- UMccLi20
- iRuW08DPqy4zj4tnU4EqgsibNkx+lfroiPggFBesqJq6hGY0WuW1pulSGQAr8bUoKqcxXq0p8RkoVTlq9TBh1cmcdY8NW6JDsqBlZiagaelCSr4uKh2uF/aui2IbhBk/O4bKOxhwRSYKYqH9G93fYHORfP3c6Syq+ZeA2qDkkSJvJhzSLXU4nwhnKIdw65jmuINZxaXdGX1wV1OxdQC3mXZPJqZKLbx30LUEKBtxyO/6+02DAzaXNFeiQnIF539dyVJxJk37bDxfXGJkhYIBufXHJnJVDKRUscKRe+uKv7bVAR9OSMsP5xRybEkRaTAf33uGw8vT49gm0FeNKZLvLmNJvxuheMxk1+rjMM2A6aUCpW9rVrPgDUifnVBODFxFj75Ar9/qodisYuE7NhW2uIYats1tPypidLYRRCR/RYXOohWFMOAcuIi9IGPq/Al6ehL8T4OOYUcFqz2NbWnLD6HN7dgm17v3IHkR9igeh9wP5ZpFSCtfuEF9GzgiRr+z/N4IDdpuXy7SYlbizr8F0b0zhG582MPUkdkZ3wdQIUCCpRV69Q9X/z9mrERQTAyfO9WveUNr74d4j05PxlJZnV8SjlAujWF2GN/5jbwgFCU4o+TOi5XNroCHEg9pAgWAUHyqEl9uOe/zu08WOCxmkCIqJ/odSUx3jfqR5ujTdk+ptWJFFe/aweYrR9APkElPYmBZlVyMPsGrkflIwSqiBZxLiIw==
+X-Stat-Signature: u5bcesxo5tkwxsc1y777kxnswaaoar8m
+X-Rspamd-Queue-Id: A78C340009
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1767979093-147388
+X-HE-Meta: U2FsdGVkX19snWoT5Ybk8KNMxR2K2om4RIkDTW++lwzteyEFkVlNeUiOE0IyvovwBZBfztS/YvmBd6+NJmOzRjHxRWH7SAbqgIuoJNsjgRHXMQpuA0jtG4rEn8Dr2/82nUuZvO9g/lnhXRJr8bIJ/Zv3KqwwBwa2bQbUqA8ElkrAc8Jxk/t/yCOkZtxAe9t/fRPS9RubcoQiaF2NlND+H6wHAMIRYkV9hwid7lU1gdLDCHIyX9D4M+DBuQCEfB7ZU3rd5IXzEo218wdNw5EYc7oojdL91kHqiNDMx8kfEdi9OcMMrOEdhC3KbcAhcquXXNgkeIgysIrKnizBKar5I5gl3gWoLb2Lv/z4rJ05XwW6/eud/+M0VsiUetojbpOzBsICVmHTr+bUuMuXIdSbxYLmGWH7JHXFRoRAmZQBE3BHv3xiCzTUlv3xZRrKpUxnD/JNBC26wjXidKjCiWevNxCRHDYtYiLJxs/HQzHc4NwWLByJaU5mfQNL6SosxA99dKgzYJRF7uwzdyUt1v0AWEHaBqVg59f4h5qEBC4+s56l9/Om5wxJV1SOV1+Eh8yHi6aP2Fa6jTGtjyd2h0xWGx/obCwWYBtX/ou2PCI013Yza8Geam5m5CvJFh4bfDcYEVhDPhiat6LjBytAKLKPb3tx03gY46Hk2ugPfiIR+CrfYC1jjdyfYnHIllOsfIO2OSuvrnffjXsfK9RPdmLOx8UxvJ8qWY6hSLVMqAeteNYHk6Nja3vyJEwrk2lGbGVjDkcUZMtGa4YXf95DqjJERFlVCv0GmW/bNWXFo1mK0shwG2ozWgL4adStH6Xs4rUdQaeeLGZhgCyDar60T86U6r6QjC+Nkqu/8Fx6lLGAttJqK5MvyaO01iZBmLdhTLuzHtb/7chyFBi64BuUQqRgW8TB93Drn0QFKZTfKiYuR2ebIFlCcDYPvpJeOKhMKuUPhQ2jsuOddaRUCRoZRtS
+ ye1A0WGv
+ 6i7lSzAxLYyh2N37Nj5NJ09p7BfKnOnr9nKqP8JOpzQK6zHtE/MwiNP7X+X4g/c0CH5UMXr3UaRzAsCQ01UfB4l868QwDOaMAEpQadISyvTYXCfQCNK8s6PqvftrQteEDpAgc+9+LQ8DBjR7NFAo4IwHvD9vbz3vrLOnxpCMxVtBe9QIamF+tClQlCIppXYLO3quzlUXwjByMRVAfZnXmcikenlB65Gf+eaUZqy7FJu/iF+1SEhf/rYTP58XzsYfdh14ErISyHGuOCdCUynNWP63tQHMzMBE0CysOh4bkv4mu+ItccLJ/Rh1YlDvdUUBADXqsLGF9vXSxqgWDweTx+YpcjDC0JYyHBH98YlIPnOSE38kduFFSqknK1890VEZmfLqIKsq0Li2T5zVv4Arl5kX3m5gEQ/dXd+z1dowY1AHpzpuA+jsZ3XTZ/E/KphiCI2bZD0k4UXlSya4quepGV/EX/H1gGewKOja9A+4Hpb8hcAZVQ8Qspy8ddKOPWEzQF6wjgJC9+spF3xtiSvbMqrlJC3TT7nc50FukyXZooPqWpJa8iZXkdV3AtZpil3Z2MWEIOz1NcHkM3GTzLL6aDPcIFwUXoeQbciMFEaJKZ304kARYxRy4f1t5+Vko/aIoyKZB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -199,181 +114,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/4/25 00:30, Kees Cook wrote:
-> As done for kmalloc_obj*(), introduce a type-aware allocator for flexible
-> arrays, which may also have "counted_by" annotations:
-> 
-> 	ptr = kmalloc(struct_size(ptr, flex_member, count), gfp);
-> 
-> becomes:
-> 
-> 	ptr = kmalloc_flex(*ptr, flex_member, count, gfp);
-> 
-> The internal use of __flex_counter() allows for automatically setting
-> the counter member of a struct's flexible array member when it has
-> been annotated with __counted_by(), avoiding any missed early size
-> initializations while __counted_by() annotations are added to the
-> kernel. Additionally, this also checks for "too large" allocations based
-> on the type size of the counter variable. For example:
-> 
-> 	if (count > type_max(ptr->flex_counter))
-> 		fail...;
-> 	size = struct_size(ptr, flex_member, count);
-> 	ptr = kmalloc(size, gfp);
-> 	ptr->flex_counter = count;
-> 
-> becomes (n.b. unchanged from earlier example):
-> 
-> 	ptr = kmalloc_flex(*ptr, flex_member, count, gfp);
-> 	ptr->flex_count = count;
-> 
-> Note that manual initialization of the flexible array counter is still
-> required (at some point) after allocation as not all compiler versions
-> support the __counted_by annotation yet. But doing it internally makes
-> sure they cannot be missed when __counted_by _is_ available, meaning
-> that the bounds checker will not trip due to the lack of "early enough"
-> initializations that used to work before enabling the stricter bounds
-> checking. For example:
-> 
-> 	ptr = kmalloc_flex(*ptr, flex_member, count, gfp);
-> 	fill(ptr->flex, count);
-> 	ptr->flex_count = count;
-> 
-> This works correctly before adding a __counted_by annotation (since
-> nothing is checking ptr->flex accesses against ptr->flex_count). After
-> adding the annotation, the bounds sanitizer would trip during fill()
-> because ptr->flex_count wasn't set yet. But with kmalloc_flex() setting
-> ptr->flex_count internally at allocation time, the existing code works
-> without needing to move the ptr->flex_count assignment before the call
-> to fill(). (This has been a stumbling block for __counted_by adoption.)
-> 
-> Signed-off-by: Kees Cook <kees@kernel.org>
+Overview
+--------
+This patch series introduces a new debugging feature,
+IOMMU_DEBUG_PAGEALLOC, designed to catch DMA use-after-free bugs
+and IOMMU mapping leaks from buggy drivers.
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+The kernel has powerful sanitizers like KASAN and DEBUG_PAGEALLOC
+for catching CPU-side memory corruption. However, there is limited
+runtime sanitization for DMA mappings managed by the IOMMU. A buggy
+driver can free a page while it is still mapped for DMA, leading to
+memory corruption or use-after-free vulnerabilities when that page is
+reallocated and used for a different purpose.
 
-> ---
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Christoph Lameter <cl@gentwo.org>
-> Cc: David Rientjes <rientjes@google.com>
-> Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Harry Yoo <harry.yoo@oracle.com>
-> Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-> Cc: <workflows@vger.kernel.org>
-> Cc: <linux-doc@vger.kernel.org>
-> Cc: <linux-mm@kvack.org>
-> Cc: <linux-hardening@vger.kernel.org>
-> ---
->  Documentation/process/deprecated.rst |  7 ++++
->  include/linux/slab.h                 | 48 ++++++++++++++++++++++++++++
->  2 files changed, 55 insertions(+)
-> 
-> diff --git a/Documentation/process/deprecated.rst b/Documentation/process/deprecated.rst
-> index 91c628fa2d59..fed56864d036 100644
-> --- a/Documentation/process/deprecated.rst
-> +++ b/Documentation/process/deprecated.rst
-> @@ -387,6 +387,7 @@ allocations. For example, these open coded assignments::
->  	ptr = kzalloc(sizeof(*ptr), gfp);
->  	ptr = kmalloc_array(count, sizeof(*ptr), gfp);
->  	ptr = kcalloc(count, sizeof(*ptr), gfp);
-> +	ptr = kmalloc(struct_size(ptr, flex_member, count), gfp);
->  	ptr = kmalloc(sizeof(struct foo, gfp);
->  
->  become, respectively::
-> @@ -395,4 +396,10 @@ become, respectively::
->  	ptr = kzalloc_obj(*ptr, gfp);
->  	ptr = kmalloc_objs(*ptr, count, gfp);
->  	ptr = kzalloc_objs(*ptr, count, gfp);
-> +	ptr = kmalloc_flex(*ptr, flex_member, count, gfp);
->  	__auto_type ptr = kmalloc_obj(struct foo, gfp);
-> +
-> +If `ptr->flex_member` is annotated with __counted_by(), the allocation
-> +will automatically fail if `count` is larger than the maximum
-> +representable value that can be stored in the counter member associated
-> +with `flex_member`.
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index 726457daedbd..2656ea610b68 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -982,6 +982,33 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node);
->  	(TYPE *)KMALLOC(__obj_size, GFP);				\
->  })
->  
-> +/**
-> + * __alloc_flex - Allocate an object that has a trailing flexible array
-> + * @KMALLOC: kmalloc wrapper function to use for allocation.
-> + * @GFP: GFP flags for the allocation.
-> + * @TYPE: type of structure to allocate space for.
-> + * @FAM: The name of the flexible array member of @TYPE structure.
-> + * @COUNT: how many @FAM elements to allocate space for.
-> + *
-> + * Returns: Newly allocated pointer to @TYPE with @COUNT-many trailing
-> + * @FAM elements, or NULL on failure or if @COUNT cannot be represented
-> + * by the member of @TYPE that counts the @FAM elements (annotated via
-> + * __counted_by()).
-> + */
-> +#define __alloc_flex(KMALLOC, GFP, TYPE, FAM, COUNT)			\
-> +({									\
-> +	const size_t __count = (COUNT);					\
-> +	const size_t __obj_size = struct_size_t(TYPE, FAM, __count);	\
-> +	TYPE *__obj_ptr;						\
-> +	if (WARN_ON_ONCE(overflows_flex_counter_type(TYPE, FAM,	__count))) \
-> +		__obj_ptr = NULL;					\
-> +	else								\
-> +		__obj_ptr = KMALLOC(__obj_size, GFP);			\
-> +	if (__obj_ptr)							\
-> +		__set_flex_counter(__obj_ptr->FAM, __count);		\
-> +	__obj_ptr;							\
-> +})
-> +
->  /**
->   * kmalloc_obj - Allocate a single instance of the given type
->   * @VAR_OR_TYPE: Variable or type to allocate.
-> @@ -1005,23 +1032,44 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node);
->  #define kmalloc_objs(VAR_OR_TYPE, COUNT, GFP)		\
->  	__alloc_objs(kmalloc, GFP, typeof(VAR_OR_TYPE), COUNT)
->  
-> +/**
-> + * kmalloc_flex - Allocate a single instance of the given flexible structure
-> + * @VAR_OR_TYPE: Variable or type to allocate (with its flex array).
-> + * @FAM: The name of the flexible array member of the structure.
-> + * @COUNT: How many flexible array member elements are desired.
-> + * @GFP: GFP flags for the allocation.
-> + *
-> + * Returns: newly allocated pointer to @VAR_OR_TYPE on success, NULL on
-> + * failure. If @FAM has been annotated with __counted_by(), the allocation
-> + * will immediately fail if @COUNT is larger than what the type of the
-> + * struct's counter variable can represent.
-> + */
-> +#define kmalloc_flex(VAR_OR_TYPE, FAM, COUNT, GFP)	\
-> +	__alloc_flex(kmalloc, GFP, typeof(VAR_OR_TYPE),	FAM, COUNT)
-> +
->  /* All kzalloc aliases for kmalloc_(obj|objs|flex). */
->  #define kzalloc_obj(P, GFP)				\
->  	__alloc_objs(kzalloc, GFP, typeof(P), 1)
->  #define kzalloc_objs(P, COUNT, GFP)			\
->  	__alloc_objs(kzalloc, GFP, typeof(P), COUNT)
-> +#define kzalloc_flex(P, FAM, COUNT, GFP)		\
-> +	__alloc_flex(kzalloc, GFP, typeof(P), FAM, COUNT)
->  
->  /* All kvmalloc aliases for kmalloc_(obj|objs|flex). */
->  #define kvmalloc_obj(P, GFP)				\
->  	__alloc_objs(kvmalloc, GFP, typeof(P), 1)
->  #define kvmalloc_objs(P, COUNT, GFP)			\
->  	__alloc_objs(kvmalloc, GFP, typeof(P), COUNT)
-> +#define kvmalloc_flex(P, FAM, COUNT, GFP)		\
-> +	__alloc_flex(kvmalloc, GFP, typeof(P), FAM, COUNT)
->  
->  /* All kvzalloc aliases for kmalloc_(obj|objs|flex). */
->  #define kvzalloc_obj(P, GFP)				\
->  	__alloc_objs(kvzalloc, GFP, typeof(P), 1)
->  #define kvzalloc_objs(P, COUNT, GFP)			\
->  	__alloc_objs(kvzalloc, GFP, typeof(P), COUNT)
-> +#define kvzalloc_flex(P, FAM, COUNT, GFP)		\
-> +	__alloc_flex(kvzalloc, GFP, typeof(P), FAM, COUNT)
->  
->  #define kmem_buckets_alloc(_b, _size, _flags)	\
->  	alloc_hooks(__kmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, _b), _flags, NUMA_NO_NODE))
+Inspired by DEBUG_PAGEALLOC, this sanitizer tracks IOMMU mappings on a
+per-page basis, as it=E2=80=99s not possible to unmap the pages, because it
+requires to lock and walk all domains on every kernel free, instead we
+rely on page_ext to add an IOMMU-specific mapping reference count for
+each page.
+And on each page allocated/freed from the kernel we simply check the
+count and WARN if it is not zero, and dumping page owner information
+if enabled.
+
+Concurrency
+-----------
+By design this check is racy where one caller can map pages just after
+the check, which can lead to false negatives.
+In my opinion this is acceptable for sanitizers (for ex KCSAN have
+that property).
+Otherwise we have to implement locks in iommu_map/unmap for all domains
+which is not favourable even for a debug feature.
+The sanitizer only guarantees that the refcount itself doesn=E2=80=99t get
+corrupted using atomics. And there are no false positives.
+
+CPU vs IOMMU Page Size
+----------------------
+IOMMUs can use different page sizes and which can be non-homogeneous;
+not even all of them have the same page size.
+
+To solve this, the refcount is always incremented and decremented in
+units of the smallest page size supported by the IOMMU domain. This
+ensures the accounting remains consistent regardless of the size of
+the map or unmap operation, otherwise double counting can happen.
+
+Testing & Performance
+---------------------
+This was tested on Morello with Arm64 + SMMUv3
+Did some testing Lenovo IdeaCentre X Gen 10 Snapdragon
+Did some testing on Qemu including different SMMUv3/CPU page size (arm64).
+
+I also ran dma_map_benchmark on Morello:
+
+echo dma_map_benchmark > /sys/bus/pci/devices/0000\:06\:00.0/driver_overrid=
+e
+echo 0000:06:00.0 >  /sys/bus/pci/devices/0000\:06\:00.0/driver/unbind
+echo 0000:06:00.0 > /sys/bus/pci/drivers/dma_map_benchmark/bind
+./dma_map_benchmark -t $threads -g $nr_pages
+
+CONFIG refers to "CONFIG_IOMMU_DEBUG_PAGEALLOC"
+cmdline refers to "iommu.debug_pagealloc"
+Numbers are (map latency)/(unmap latency), lower is better.
+
+			CONFIG=3Dn    CONFIG=3Dy    CONFIG=3Dy
+			            cmdline=3D0   cmdline=3D1
+4K - 1 thread		0.1/0.6     0.1/0.6     0.1/0.7
+4K - 4 threads		0.1/1.1     0.1/1.0     0.2/1.1
+1M - 1 thread		0.8/21.2    0.7/21.2    5.4/42.3
+1M - 4 threads		1.1/45.9    1.1/46.0    5.9/45.1
+
+Changes in v6:
+v5: https://lore.kernel.org/linux-iommu/20260106162200.2223655-1-smostafa@g=
+oogle.com/
+- Remove wrong logic for handling unmap with bigger size than requested
+  and warn instead.
+- Collect R-bs and Acked-by
+
+Changes in v5:
+v4: https://lore.kernel.org/all/20251211125928.3258905-1-smostafa@google.co=
+m/
+- Fix typo in comment
+- Collect Baolu R-bs
+
+Main changes in v4:
+v3: https://lore.kernel.org/all/20251124200811.2942432-1-smostafa@google.co=
+m/
+- Update the kernel parameter format in docs based on Randy feedback
+- Update commit subjects
+- Add IOMMU only functions in iommu-priv.h based on Baolu feedback
+
+Main changes in v3: (Most of them addressing Will comments)
+v2: https://lore.kernel.org/linux-iommu/20251106163953.1971067-1-smostafa@g=
+oogle.com/
+- Reword the Kconfig help
+- Use unmap_begin/end instead of unmap/remap
+- Use relaxed accessors when refcounting
+- Fix a bug with checking the returned address from iova_to_phys
+- Add more hardening checks (overflow)
+- Add more debug info on assertions (dump_page_owner())
+- Handle cases where unmap returns larger size as the core code seems
+  to tolerate that.
+- Drop Tested-by tags from Qinxin as the code logic changed
+
+Main changes in v2:
+v1: https://lore.kernel.org/linux-iommu/20251003173229.1533640-1-smostafa@g=
+oogle.com/
+- Address J=C3=B6rg comments about #ifdefs and static keys
+- Reword the Kconfig help
+- Drop RFC
+- Collect t-b from Qinxin
+- Minor cleanups
+
+Mostafa Saleh (4):
+  iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
+  iommu: Add calls for IOMMU_DEBUG_PAGEALLOC
+  iommu: debug-pagealloc: Track IOMMU pages
+  iommu: debug-pagealloc: Check mapped/unmapped kernel memory
+
+ .../admin-guide/kernel-parameters.txt         |   9 +
+ drivers/iommu/Kconfig                         |  19 ++
+ drivers/iommu/Makefile                        |   1 +
+ drivers/iommu/iommu-debug-pagealloc.c         | 167 ++++++++++++++++++
+ drivers/iommu/iommu-priv.h                    |  58 ++++++
+ drivers/iommu/iommu.c                         |  11 +-
+ include/linux/iommu-debug-pagealloc.h         |  32 ++++
+ include/linux/mm.h                            |   5 +
+ mm/page_ext.c                                 |   4 +
+ 9 files changed, 304 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/iommu/iommu-debug-pagealloc.c
+ create mode 100644 include/linux/iommu-debug-pagealloc.h
+
+--=20
+2.52.0.457.g6b5491de43-goog
 
 
