@@ -4,82 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 947DED1A623
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 13:50:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FE62D1A623
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 13:52:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1BA96B0089; Fri,  9 Jan 2026 08:50:35 -0500 (EST)
+	id 862836B0088; Fri,  9 Jan 2026 08:52:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9F556B008A; Fri,  9 Jan 2026 08:50:35 -0500 (EST)
+	id 80CDE6B008A; Fri,  9 Jan 2026 08:52:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C82366B008C; Fri,  9 Jan 2026 08:50:35 -0500 (EST)
+	id 70F8A6B008C; Fri,  9 Jan 2026 08:52:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B6DBA6B0089
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:50:35 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6C6B91AC947
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:50:35 +0000 (UTC)
-X-FDA: 84312560430.27.EDBE149
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A02BD40004
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:50:33 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PhXFGafi;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 5F5C86B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:52:55 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 26530BB716
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:52:55 +0000 (UTC)
+X-FDA: 84312566310.13.605A658
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3FC0E180011
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:52:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qMxuWgOI;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767966773; a=rsa-sha256;
+	cv=none;
+	b=nVk1K+1yaBVjKtySBylxMbm9mu0pNmz9wEB+LM/cU1Bv00ytCI0zc3whX+AfDLPMG+9Jkf
+	Hm9X8oeAcyKoeQhn98fHCTutRkT6oMANsW5I1n+e+GAlDStarRB9L//LMNRnOuCJMRGYks
+	/OOspB0fp+RD336g4BcPDeK5FtpFXZk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qMxuWgOI;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767966633;
+	s=arc-20220608; t=1767966773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4aTRtHQuHNN1JHplXrPj0SqfdShsMzMRKml5/spVXtU=;
-	b=xA3C2Ry6xzvGXGBCX7DvErvkjWOsPLpRdjv4VmkyYI32WaaBbFfuzVoFANfXePWjxcsDcQ
-	USU0fvo63D7kHV5934SW4nuqoBCwbv6jzJs5hzae01fKZZecLWbEET8G6vREXvQBEUPF3I
-	U2o6MRTcB8RuORSH3Cw3A3fG48M6CSM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PhXFGafi;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767966633; a=rsa-sha256;
-	cv=none;
-	b=05TjWlaRGBtf5ENSIYjxFE1jIEcqtXgYm3R4+gEuWaxxN1cba+iEmuQQd1l416um33puZg
-	mAZJa3m7LHZ/k+cipvU4mHwvPyhE5X+coMT8B0zJk/vE0hTYJ79tGAA30Cjrv1D8nY0tZ+
-	yTFgI9zngnGVr+KPr3Cwpr08iMKSzVs=
+	bh=moFShJ9itfhDP+qA/U5SBjPWvjTAJ3KcsA3bkPwBhOA=;
+	b=GzKDo589MDnFMhaNIEeTsYE4orcOndCxnznSNYAS30zwfxL+KhfGC0OxnG9ly36/HLQViQ
+	8AtZdw5AbRpNi0GRZYPmZ2s+Dy2QFn9iB9h2ccFUNU4B2ltgSPi3lWkRNh8Qioum/Hr8N3
+	ieAulD3Z4p+61OcqA0Sp/Tgj0bf3w84=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 25B6360122;
-	Fri,  9 Jan 2026 13:50:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491ACC19423;
-	Fri,  9 Jan 2026 13:50:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4201A40539;
+	Fri,  9 Jan 2026 13:52:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9728FC19422;
+	Fri,  9 Jan 2026 13:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767966632;
-	bh=QRvCDtIt9FY0lIy6CkBLbcgCIbaVCMHdCdDA4vRtluk=;
+	s=k20201202; t=1767966772;
+	bh=JH9XjapIZO5yP9HHn9OGfo224MGZj1vCS/GPh0RYrTg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PhXFGafiwpuu6FCohCNJs5NTLwUgruXRPWdi1r+BOSag3o/2zjDcjir3tAqeIOQfY
-	 ZPlZc/WFppmbdrSYB7x0FNnZl8btpy9SdOrSllVm5VmOxrJDgKyvibOMiSEHbu4Uoa
-	 FKKL1bFxd5wXQJ1E89u9pI1umuSK1FtQEBIoAAfdfUCFydc02HaSLL2571Y8fmh/s4
-	 EX/XAR1F8TmMj87g5aCelA2TV0DQsVXTTpq0Sh8L4Wbci3EY70def56ZIZnqY+PVcI
-	 vWFA3JXOIVvuep+7DHQYxpbBSgTTQ/2nPN2sHgdEZBKvaMb0txbyyGxYYVjfQLZ9v2
-	 DfmbdTDG3o2jQ==
-Message-ID: <509ac447-e5a7-4cba-86b8-e9c0e72fc93c@kernel.org>
-Date: Fri, 9 Jan 2026 14:50:26 +0100
+	b=qMxuWgOIm2vhTr8qnmo5KZOoSpasRO95DweFjWDgKtnG3xslMCqlfKAUOyT9HL54D
+	 rOpg24kSi4XSYcLxjWtRn2siBuaf2lvP3i/Q2SL/80gu9scTh3AZTIqtsq0ZJ0jW/7
+	 4SQPdPgWrfBKwR+TdfsqjUlMc66Kx9LsvRrFCWx4/3zWbDR2uESubfbi9ZgtmALkPU
+	 Rl+PjUneSW+lQ7MxdMOUfRN92OMuFVsNztAsxsQichjoE60YkPLsa5MfDsX5zAUp1a
+	 b+mvl0YAQq3GFPZBfRxRZqKQ2aLuZJvJ2hdyB/1GiXRLkNJHNZNYbCJ1MIIzJ9NiFO
+	 MUHMKEolx27gQ==
+Message-ID: <d9508cee-26ff-4e22-9ab8-a9b3812a15e2@kernel.org>
+Date: Fri, 9 Jan 2026 14:52:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] migrate: Correct lock ordering for hugetlb file
- folios
+Subject: Re: [PATCH 2/2] migrate: Replace RMP_ flags with TTU_ flags
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Rik van Riel <riel@surriel.com>, "Liam R. Howlett"
  <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
  Harry Yoo <harry.yoo@oracle.com>, Jann Horn <jannh@google.com>,
- linux-mm@kvack.org, syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com,
- Lance Yang <lance.yang@linux.dev>, stable@vger.kernel.org
+ linux-mm@kvack.org
 References: <20260109041345.3863089-1-willy@infradead.org>
- <20260109041345.3863089-2-willy@infradead.org>
+ <20260109041345.3863089-3-willy@infradead.org>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260109041345.3863089-2-willy@infradead.org>
+In-Reply-To: <20260109041345.3863089-3-willy@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: yqtu6anjwuuktqbnu1asqrwr79otsf7h
-X-Rspamd-Queue-Id: A02BD40004
+X-Stat-Signature: p7r6i4nndpgrk8rzk7feo5otc1uyou7n
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3FC0E180011
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1767966633-597936
-X-HE-Meta: U2FsdGVkX1/8l3NGT2LWziswulC6XBFPn7PZjmQXxBvywLT4UVN3AaGQmdfPXkbzFsF0WgVFjm837WpfXmyTiFzYHV5Qi6+Is5LeaL5uKYoS6YnkC32ZqAfX8da1b/0XloxMun08BTmUG86wy/QPAS/uK9E9O4Lh/Xyf10glXbfp4Qt9HJhnVTPXn2ucOIyxCfuHH0ZD6C3nnFXawY3FG4/5wv2LHs7OuRxdruazP9L1Su1SOYo7BQOOkj2dkHnoaNf0Klaqu42MjYYNof5on/afl0Ysz5EdV2OqgbLSvB/QRqvQDypCm29/SAiGk3s8Qmv4QaQYeAe8FIJZki0rqsETqIwASPvDI5X+Z+kgeNjVFTbPExQMlt096OHcy9NHk6txFyc7uB8Nq9yXt+WEXjklMakM6f8y20B+0fDegnCF9tcJG13HU3P/mHetK24gsPjefd6NKFkMWYxpmw/hmkir6c2Hy3cskMQXXI6OZX6+C9kimYY/Eer0TkkLmrUo7mDhNAJT2R7y0ZZm8aW7Sr0epkqQjW/klYwdJRppoiwDWzbtOH1En/m/nBScopC5f3HMFChNHqI91iwitfXZhfI2oV804dsaIwcTmuLNW5/An1yVMfAB76G69l4UQe4QouSVFcLCCZbjPVyWY1waLlK9vM8IyQFk5n0+/Kfc0iYJWW2y88OTNvjbYAqyctS6xAYFJ6BymPp5MfPrEuS1YTKlDKRWu2EQOVu258WNmlL2M/pMTyM4BDfORTmh+WfpwKLcU5iEAkcrmHWY8uLjGRjO2yQ/KIejhUHjmA9iVIdwtz5w0SlcyCPJAR3iAnV5mEcBnMGmogap+1eg0/8Y1hCWY9W33P2USdZYF2e2IFPzbzPgQQYFHfsBLhOF7h959BAP6p52BUndSJ8eob40R0dM7IXNKqTYLs1Ps3cOKnw83+qJTPBsGpnl6EncLqWjrTkOhoLDqA9nJYKa1VJ
- QGQwnZhz
- ekYxY2ARU5Yq7XuYw+3ZwuLAoA2Gdm4rEtrjJYjS8OZ24pX1Hh2a8486CTwEzSt1KTVpvpixrcmJ8tXYG1RJSUyDjT3lmJNca4CyIGMWAhc0aKP5mKdR641PlUtufVExZfF1bzW1qTZcv6xgJ2p9MgS38BNmVh/4FNWJRF15WvDLzlK/Net4VqU7d/2uOz1m70uigmwIKrT0qMZPZfLl9VTAtgdEQkzMs7uObN1GVxN7DrafExPX2thLH+VNO8FODifiZhjbQh23ODBNgRmt4LbvKmsGUWIn9lF6bR25bd1JgmCy0yyT2+mlNYFEtnQOB7ROxf5egJsdIhQl6lKI+IwWyx9KmJRtpZfy04M7SKBReHuLnOv/sdRJ3a0meObdBIUMwckoXz4hCccp7Ear1KbNjotyBHpe7tvIFhqSqm91AXG3HxdCs+zagsXbyZA/BOYG3dVhlCSbAS0/ntAuU2jg+i1vzIdo9uz9rfdqGcyTWe0xSxCbk6vKrDObwwZAtOMKhtskT4vo5zuM=
+X-HE-Tag: 1767966773-337689
+X-HE-Meta: U2FsdGVkX1/4XmO1VMX/GmjiRufOCejfGbBnLvQwXY4/tQhIonyXvwUYTXIUpn0+e4/sSa9tnM6Jt5aO4p9NAwLhbsvTUqucQKJJ9dYsjbpXFqCsgF5Y4kbQFhugKIj1S6IE28lyRrJvBlV1C99pTqIdwtUewYX4XiqdLNwWiIz7j0vE/byC3R1f0hjhuaDD47m3E6X++DDxkbXYCMCu4z6So/kkwVz0u8rxNl70RKwWtfe1OdpMCoXSWuqN6NnFJtd2yEWQc+cp40qc8h2f6hEYMKn1aLZP/wMQFr1+kugo5bY6erhBRRf3rRdYxxy+JuAr2dPTjP6l6qIYEVfwjMFV/R3QnpJFXEL3VcC6WQ60SDoJuLN9bvyr5Wr74JHYkuy26slwHGV6XdBvtiKTmotEBfO+OAnA56+/UhMymjSgOCJNwliCF1Yp955qrz1DqE4/9qY1bBJY9wwM7bWE9nJPw3+u9WrF/r+KXctGSFXhb1IFiR7GXnFWejAE+Hj8ZiSL4Z8SW7RZX5p0Cd7uZGNrG27nDDk6ioR3+U9lXxbjM5qtoMRZniC0+Oh2hNX1P/aDHt09Ud0Gad228W7KtJpZ3nFWw+i0eDzZgHj0Tap2cko2LBfiEICYHhvBRQoUWehWGNu0BvYyseepEwPWsl3MynjNlxtrIVUVA8eQo5ubxxf1PL3zXWcXhNb4vxuxtvie6vjxdfSoF44DRLX84SxLUyzepsFex/NesiKMGeEO8FH/OVMzzaf9v1G0A4fsuLgPy4fTWj0+o6+Cz7A5JggLpPgBvKVPDuejhZ+4LDVmXIK8WI0+0KzcJopa3cBMgZAQr0UJGgJ3UZnhxJ5iBRr7WYPF9qE9OyWeZ3ER53upymhAT0XIkuaOFoUwt8f1UJCiw+Xbp2DrmVIoRyhj0vKFSI9bb8Egu8rj6aQAOYKKIFxRWrPOrrLSPGKZFMOjJnv64dqQ6t/BgoMr7ic
+ MlKusjv+
+ +ZYdGuBxHHipQ3prlSWiLAMknmWjBAxh/hLzoi2WRttJhaZrzli9k3FbJFUuqf3dLLU87AV6W1Xq1KNCFIupxvMROZfbb9SC4/v3zF4tkP5qjeqWqLfW3xZ0PXAIhu1LPLeYTgUuUruJ3Y8DG4JMPwPZIPMaV8GfQir/2+/dA63LYmbKKh2DeVxTwX9C/LC7U/bOrumU6Z37AJflOSVm3jg0bnzGfSAOuuV1/Pb5GRGL1tvSUg5vHLf9Btk0aL3gj/Y7m8xdZ48qiQ4XzvuKlJLqIX0al1XvucfqICUS0m8nufmqgcwdqd4ig1zXAjPnacej8AP2Ypx1b+YQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,94 +143,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 1/9/26 05:13, Matthew Wilcox (Oracle) wrote:
-> Syzbot has found a deadlock (analyzed by Lance Yang):
+> Instead of translating between RMP_ and TTU_ flags, remove the RMP_
+> flags and just use the TTU_ flag space; there's plenty available.
 > 
-> 1) Task (5749): Holds folio_lock, then tries to acquire i_mmap_rwsem(read lock).
-> 2) Task (5754): Holds i_mmap_rwsem(write lock), then tries to acquire
-> folio_lock.
-> 
-> migrate_pages()
->    -> migrate_hugetlbs()
->      -> unmap_and_move_huge_page()     <- Takes folio_lock!
->        -> remove_migration_ptes()
->          -> __rmap_walk_file()
->            -> i_mmap_lock_read()       <- Waits for i_mmap_rwsem(read lock)!
-> 
-> hugetlbfs_fallocate()
->    -> hugetlbfs_punch_hole()           <- Takes i_mmap_rwsem(write lock)!
->      -> hugetlbfs_zero_partial_page()
->       -> filemap_lock_hugetlb_folio()
->        -> filemap_lock_folio()
->          -> __filemap_get_folio        <- Waits for folio_lock!
+> Possibly we should rename these to RMAP_ flags, and maybe even pass them
+> in through rmap_walk_arg, but that can be done later.
 
-
-As raised in the other patch I stumbled over first:
-
-We now handle file-backed folios correctly I think. Could we somehow
-also be in trouble for anon folios? Because there, we'd still take the
-rmap lock after grabbing the folio lock.
-
-
-> 
-> The migration path is the one taking locks in the wrong order according
-> to the documentation at the top of mm/rmap.c.  So expand the scope of the
-> existing i_mmap_lock to cover the calls to remove_migration_ptes() too.
-> 
-> This is (mostly) how it used to be after commit c0d0381ade79.  That was
-> removed by 336bf30eb765 for both file & anon hugetlb pages when it should
-> only have been removed for anon hugetlb pages.
-> 
-> Fixes: 336bf30eb765 (hugetlbfs: fix anon huge page migration race)
-> Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
-> Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
-> Debugged-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: stable@vger.kernel.org
-> ---
->   mm/migrate.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 5169f9717f60..4688b9e38cd2 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -1458,6 +1458,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
->   	int page_was_mapped = 0;
->   	struct anon_vma *anon_vma = NULL;
->   	struct address_space *mapping = NULL;
-> +	enum ttu_flags ttu = 0;
->   
->   	if (folio_ref_count(src) == 1) {
->   		/* page was freed from under us. So we are done. */
-> @@ -1498,8 +1499,6 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
->   		goto put_anon;
->   
->   	if (folio_mapped(src)) {
-> -		enum ttu_flags ttu = 0;
-> -
->   		if (!folio_test_anon(src)) {
->   			/*
->   			 * In shared mappings, try_to_unmap could potentially
-> @@ -1516,16 +1515,17 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
->   
->   		try_to_migrate(src, ttu);
->   		page_was_mapped = 1;
-> -
-> -		if (ttu & TTU_RMAP_LOCKED)
-> -			i_mmap_unlock_write(mapping);
->   	}
->   
->   	if (!folio_mapped(src))
->   		rc = move_to_new_folio(dst, src, mode);
->   
->   	if (page_was_mapped)
-> -		remove_migration_ptes(src, !rc ? dst : src, 0);
-> +		remove_migration_ptes(src, !rc ? dst : src,
-> +				ttu ? RMP_LOCKED : 0);
-
-	(ttu & TTU_RMAP_LOCKED) ? RMP_LOCKED : 0)
-
-Would be cleaner, but I see how you clean that up in #2. :)
+Yes, the TTU prefix is a bit misleading.
 
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
