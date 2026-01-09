@@ -4,86 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FC1BD1680C
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 10:52:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B675D1680B
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 10:59:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDB816B0088; Fri,  9 Jan 2026 05:52:16 -0500 (EST)
+	id DA7746B0088; Fri,  9 Jan 2026 05:59:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B89306B0089; Fri,  9 Jan 2026 05:52:16 -0500 (EST)
+	id D54556B0089; Fri,  9 Jan 2026 05:59:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC3FC6B008A; Fri,  9 Jan 2026 05:52:16 -0500 (EST)
+	id C0C686B008A; Fri,  9 Jan 2026 05:59:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B8156B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:52:16 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D2A4C1A0445
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:52:15 +0000 (UTC)
-X-FDA: 84312111030.28.EF514EA
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1020B40012
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:52:13 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eZaCSV4R;
-	spf=pass (imf17.hostedemail.com: domain of yajun.deng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767955934;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AE8246B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:59:07 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F43B1A0479
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:59:07 +0000 (UTC)
+X-FDA: 84312128334.01.F28584F
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 83C2DC0003
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:59:05 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=FabLcLrR;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf28.hostedemail.com: domain of smostafa@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=smostafa@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767956345; a=rsa-sha256;
+	cv=pass;
+	b=jzSZlhj6b4pVOdxz/O51oI1yRqDmkd6I+ZNaHypm3WppZTXBPMiaOrRlKxudbsl5USW8ir
+	zuIIZTdK0nF2vMM3JlX3cTmj5lO0vIAus+S2ceCnMuR5XtS9S5SBycwNLFCOfAVvYNwj9U
+	BbgmrP28jnnQhsCzl5EW5qtULsBC6YI=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=FabLcLrR;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf28.hostedemail.com: domain of smostafa@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=smostafa@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767956345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=1TQfjl1Oyg8oTFGlG7k+ntvES7Gvx/vdSZ107UMkTkk=;
-	b=HBWeAc9tOQ2NWjfuZ8shbjptORVJaJWCZrXhKGOIuBY8Q+iB3NDvnwCBTA6nkoh8MUwwfV
-	Wo0CxRlm0NmEAOFKj9UgXa5CTV2R+hlR4cTkLFNjsUBKd/uLfYJjq1tKOVtCqdkntRbx2T
-	/nr1jE3llP8B6UAlyoa8FvN7aWMg8ZM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eZaCSV4R;
-	spf=pass (imf17.hostedemail.com: domain of yajun.deng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767955934; a=rsa-sha256;
-	cv=none;
-	b=fJ4DFXPAGUwsPtnmFHFcADwLaoYhBdEYc/wr6B7j0bXToj6TWaCoc2uV9YV7FtfUoWbc+j
-	yXsi1XUAMZ7NBVMbuW5t1Qp1eDHpaHC3LQ+w9cvFfMlg9ccBPDxgMoCt/2i5yzaRJ7VSF0
-	f/U8tUjTbRd6rcs3Gcn46vRcW/H3bC4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767955931;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1TQfjl1Oyg8oTFGlG7k+ntvES7Gvx/vdSZ107UMkTkk=;
-	b=eZaCSV4R0Xi5F60N89Kd3yCS91+f00jluNA0tHPTGxReDiNpEL4Hm0eVG95mPaEN4TYduJ
-	ioG4iPz0nUFlMzoGhxoyKORf6+IkyjCi/j9STFNx6Vx2Pg4Hnqi/PLTDqDvfW87c8hAOps
-	e0CtIN2T6e+xF825mbZcFua9+hn/V9E=
-From: Yajun Deng <yajun.deng@linux.dev>
-To: akpm@linux-foundation.org,
-	vbabka@suse.cz,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Yajun Deng <yajun.deng@linux.dev>
-Subject: [PATCH] mm/page_alloc: Avoid duplicate NR_FREE_PAGES updates in move_to_free_list()
-Date: Fri,  9 Jan 2026 18:51:21 +0800
-Message-Id: <20260109105121.328780-1-yajun.deng@linux.dev>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vjKpspm5EV7YLDthnD1/PcikwGNL6s6nU4SX0hD4quE=;
+	b=Mhd1mO0F5MspDPr+vI+q4lr3ctukVeanGMj53kGzTwgRGP3kud8rFwytZGAmQYvZNCmXRi
+	4cs8qpL5wlosWljoD+hnlO3vGfzPm8L2DrFEbdXtlkcK2t4y73CeZgs1QyG/RWvAbZrF35
+	uqQtF42e5o/QGlTzW9QikecOMxdBWJs=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4ee147baf7bso322061cf.1
+        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 02:59:05 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767956344; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EUg9bNJCAb+OLbDIe7FeLXq0oVQYzrUaaLOhHZiN8/kltKfUezknoTjrNr8D/Fq1Im
+         yEOJGTurZ6QQ+OjfKTlUANkmU93yD1j20UPK9yTxQz3iVt9koAr2pT1/+iZT8vzpyE0V
+         A1BU9d8aU+LYNdBwr9celkwkbJ9+xAgP32sEOXC3jBPh3An0/qGmSzcSnb9PZvYhFZRr
+         rCMdw+5inJqrF4e5INuAsSTCnpJdNhZAV3ws0mCA84+xbqkuJHvFcmaOVZyDD3udOxZv
+         wJCVzd7QrZcW7mNOm9my8x61nD8Lkxs7NlHQewkOpMkxLyTMZwGdE5FHBnVd/oOgQxsK
+         LxpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=vjKpspm5EV7YLDthnD1/PcikwGNL6s6nU4SX0hD4quE=;
+        fh=5+AFV9XZ0puVnUwvP9M00PFOtv3FO1LeLex0LaxwMiY=;
+        b=KtAK6o5A3m1V+SGl+8YtMWV4bvyAYjgw2JFBdFY0Ky7TpNEsYSuTytm2tu6VbY/k5h
+         A/DROdZAh/QM6zHIllO+IRHyGc75voUR9h2/2FtBST5+wnTzjMlPfIQJEtEY9cPHMI6u
+         ki0JjvBT1ZGBfYfnozVAqf37J5A9essDJwBIy65Wc+weX2Vhhb3IQTrNqkO5prQtZ8EJ
+         ZUwcSZDByjt7i4JAFoqzi2FIz4XXPFJUX3Mnfr2s+LmCLnfVo6HOkxFuCeltsGMWTAmw
+         ac3k+DOck8sVteYYhJx7ddt7IkXqfWZUNotc+PYekQFQEAtCZ3rm7dn4rs6FwS/A5pub
+         mx9w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767956344; x=1768561144; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vjKpspm5EV7YLDthnD1/PcikwGNL6s6nU4SX0hD4quE=;
+        b=FabLcLrR/kb4KuXIHYZiSsxzh+IgPyknZVSwvYKGixt7kP3wUwZwxl2I50KoVGtdac
+         ZfK9hd5A82VXG6xcuLOM3F+ntjKzOKY+pWlWc0WRz26UH8xl2IL9BqNcqjdJAWD6MAMI
+         IqN8pbYJ7xgqSCcHATM3Gta3Itn23PJIXf4+cgHUyf9joLtLz9LM6jZbxiLaRDvfRdpv
+         llO8HYNbrw7/cxAA0hILxc2/WIQgZo6NUxmKgrRBWT8sqQbt85mDhomQvVJGg7vli1bA
+         ew15itP7Mh4atp4POjkUYls5OGIyaIAqId0xvzetXWEQlUFpGbKbEv8FXWdsa5ObM8+g
+         bFdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767956344; x=1768561144;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vjKpspm5EV7YLDthnD1/PcikwGNL6s6nU4SX0hD4quE=;
+        b=DJsMuVtN9kDMgJ57bCvo1cYY/8BGEM/DcZJMoosuCiHrfKqYXpY+ZcgKnn9KTIF7Yv
+         HMa3G5jyMVcgS8JLYaHD/gTxNTyxJm80RO0Xbv7mMOeUmHDGunzK+0ekrL4Lz8JchHfJ
+         hg/D5jQB3iY+nYzNyoCuLslMnrHq/AvQcuq915Vcsrzq755GwohgmrV57YavQ2nOE4UI
+         5S6clKaVihKZqvSu653xqsiAiqS3F0wWp4Y1hP7aqpb8sjCQgJeRN/69DeD+Dp+km7CJ
+         NpYXqjaqsItNHUqAMeojGo4qu6jrkQxsWK4ZG6NNv/Y4bByyrgqTJDLig052rnJFkwG+
+         I4bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVRTqiLmX/ULQIrjQ3nO+r9YNSOEeimLTQjKNWz6ev2wBLvT1mPDkvFoAisN7ysyySkE80xrJ54CA==@kvack.org
+X-Gm-Message-State: AOJu0Yx4k6bjyymp1nwtFZOFmsWJr0Uv4BsLE1ZJDYy/3d3HRNpTom+t
+	gy2npjFRJcrReZlVHtLWhZPxTLvMPb9bnVc/6H3QqSbJ7kO4n2xxs1fKA7p7zaarLyGfe+Cos/f
+	8u1qVrps6olQ3rNS9nju0PCCpMlgWAWjI/VB1XYDl
+X-Gm-Gg: AY/fxX64XN8Swe87iYGQeDAuqsBT4Q0ek+vB6dcAtu6rdC5LYQubjCQr71JtPoDQxJj
+	Pl3WcX0dJYpORWcecCgJBxytQboHX1fzixdDB0MniX1o1pDn+Ed7EaV0FadjAfjtX29Idk+As1F
+	fZ9AGpU16hhxAR1T4uscmMna3k3XQsIIURW1slpR1ZZcnFVWajyiKaOKlm8tao8AmHi0STMo8zK
+	K+z/oXEfnRIiP/QIwDtw5IozuT+vhLXwNmhdaZj+eGVOP8hwp5t6eGFzb/3ibYS3QqTlrLUkRgb
+	mcaFH9NGghUW2nsmXGINj9omUkmh9A==
+X-Received: by 2002:ac8:5813:0:b0:4f1:9c3f:2845 with SMTP id
+ d75a77b69052e-4ffcb1dbcb5mr7737871cf.9.1767956344270; Fri, 09 Jan 2026
+ 02:59:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: hupoew5z5j9sx8q4qp5t1x9fsyaubmg6
-X-Rspamd-Queue-Id: 1020B40012
+References: <20260106162200.2223655-1-smostafa@google.com> <20260106162200.2223655-4-smostafa@google.com>
+ <aV56BWisUQTMK2Gk@google.com> <aV-PvBqQ0Ktiha8e@google.com>
+ <CAFgf54o4Ja7jQwxo6XyW+JaT+aUuj3O2dvLqOTb+YSVCKTdvyQ@mail.gmail.com>
+ <d6236413-7385-45c5-94ad-8b0f2007f1ac@linux.intel.com> <aWCviSCK7IBddLTn@google.com>
+In-Reply-To: <aWCviSCK7IBddLTn@google.com>
+From: Mostafa Saleh <smostafa@google.com>
+Date: Fri, 9 Jan 2026 10:58:51 +0000
+X-Gm-Features: AQt7F2pEeWJ6MSDs-bAsV_zgpkJn7JOAuCuT0pnnsMA7dTDj8j2QHY6aPfJ6_44
+Message-ID: <CAFgf54pWkz19B3TYCqoBTwPLDzV9FfpchC6PrEa5BZ2J52fb+A@mail.gmail.com>
+Subject: Re: [PATCH v5 3/4] iommu: debug-pagealloc: Track IOMMU pages
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Baolu Lu <baolu.lu@linux.intel.com>, linux-mm@kvack.org, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, corbet@lwn.net, 
+	joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	xiaqinxin@huawei.com, rdunlap@infradead.org
+Content-Type: multipart/alternative; boundary="000000000000e173480647f269a6"
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1767955933-119858
-X-HE-Meta: U2FsdGVkX19RQPF1uMZTRSdPaOuoOOpPIEkTbvCQrJ5AFR3xA5qyZIV4wlqd6v1s6IKn4z2t5Rz15xi43FlDhla04QPRKvQeiWCCe7Y+7ViHYyG+jXME8u4SvuyYAaDUnn87s60TzihK2hGvc+YtXtdMRe5K/6qLK0mCsFINQ3yhbh/T7nX9zTjMFAbaUwcP628MS86ASRDq1CRMOBcEXiAPaCftaJQoMNIO1m1VrbtVWtfRqRXNVO7u0w7C6jQU4rJ7yGY3nGnFfEJ2nZ9eU8iNHM4PdnJTgrj8NfCx4linuOZLYKv5XAPAtMydfwT8s7z/rRcQ5l/0nz2Z382CBrm+h99gV29VOJpb5XYZTWiqYcyiY/7gSJZD6y+x2zJy+ShMNf0PEuR3jvnYkjOELUNbxVmTiwPP2JeveciEfPmZbXRyvqHfA0tegtr4Jef7BLAzxnf/8fpi9GIefZ1TtDf99ElmKMOlSxHohe13uQDxkTQ8MLjet10RHjs0d5+k0aJi0+lN+yNNhCofW7jX49uIoQAi+nj1C6KAatynwUKI5s3rrdSvJl9OAQfNdtj+8l2i096fG5j4/NaqgH20wrV/4mCQhPlm+RZQ2nVZu9jB3Hvg1JSFjLGxhXOxPYmCUisPjFShALI4N88ejicAHoIA6pqVObqj2K6ZTtLk2VwbdBVWMjmLTkFD7wPfODhCreXYJ+JII4nqHUCsRGVMyUW2GoSP2Oh7FEqdF0v17rySrc4L6N8d8yURXHal5n9+Qp52JW8jNbpZXHsxb4galoPSOSxyTR2e/NbASy1crw76k57vfKq8jgQlNXeMpcecwnpIEGKQDtMwm21HrG5flxBu1hwYo4G3yh+bNerJJkh50ASzoJfuUezjyZfZ6mV1wicjbXFG7Jp3BkfEmzhJiN1QlbdAJ4oxNm4ukT4mmCoHkZSiBexWsin9itFw4XMLObrAPaZZRmDcxCAU6Yz
- gYjuyk2/
- 8i3J2DCY4F5LPi3gUyC/tH1l1mMmDLYRf3cZUYOMrAEWbDmy6/KllLHc35LDJfw4SPk7MF0JBQxSyahtIjnB3kTrcIthTMbU5lPOE60rr/cOnIepiBUgHZ5nKgfuh01PXUln0KtDm1Vya4ggJbagOEhvNZmFOsSIpAE5iUE5j2qGL/lc28793EzNd5E0MWlcyZBtCXth5FHu0+SdN6+/jBzCcK3PZZeUxGi4Ovof+xWYVmzG+XPQ6Tqcpe4eINrbizAPJhbyaD5q2foB5tFgRUkwXBQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Stat-Signature: dpniwseazmewqe9ij8f3efye9pthh44f
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 83C2DC0003
+X-HE-Tag: 1767956345-96166
+X-HE-Meta: U2FsdGVkX1+KHXH2HfPRbImxBtrmFGUuS2mOK3GljrmrnxYKGwmO2T5+cQ706H+pNjWiQAMB6Mb+SBu3lv3QVVDSoYCGDX1xw6zcWyv/ASjH4eb6RG9wvrAxYtNl3Dc1OAKRqXc18WjzVgXKx08VZN+qYmTxqBcUtZrESg3rtkTZ6Xuw5IKTa88JGBYtblT1oDAI9S9E54+ij4bDBGn/XVevSrBnf3gE+0LAydVK3FGNsfYFkbOTkFFa8LX8iVA2D0TfIZuDkOTPYpxlZWWE5nN/3zKvUK9epxB0J2gpiJtuCnozZlmwcRJNhevzelNB8FYGZYRw9+NnR6uKKTkLc1ufmpPa1N8htJdEw5cod7+yUYI7laP0MmSgkv2jSaNxpf7dRBdr8sBLhWWbk/5/RuVd4fZPdV/zyd813akE22yciRIMBaqXIQ4WzF3xlqTv4yZcVwOEI2A/tM4DgcXpAwYjOx24/o7VudXmGDMKmj/SDgpm7PfN79ds7lZllXe7+tAKZKPXUicqhxF3PRgt4/UqoFK9xm35rch6nIi6FNMeqkkffHWaO1tNfB+/Dv3voKrxkGwACViqJ9V0Ia3lyR4/TABBCU+z6HHHtFmRc4Obui1UaTd1IJ1m9YO6uTE2MIf8nvmylSWKoVb8WUO3B+pml4MdTc7ZlPqMLl9txaTHeuDAOwBtIzGLEysqLA6iv21Rgza95rw5XGkiVwlun6S6mTh/LRquwiVqnBJlQGVg7vtEn96bVMKlVE3N/KdZMwAYkkG4/tCu8Cjz35t8M+sBvFsJKsTE6gslHCVG3H8cH3gutqXQ0lA0FZr5qAFjiLkeh7kj+1SGmR37em74hBrh/o01WS7wfbfX0nUBNB/+GPsvlHw7+/Q/yvd5vKhxTzVRGqfrm58CYgAKZ2d4MIVCObzhclZS0UJiLvSrFZWvEP/U6E5DZzK6l3EJeYxJP7Ts/O4GtwFUqHKMzhc
+ WiE9tpvJ
+ SB3ycMR7iXB0KaxLE+lZPqnYKdpyGBtKBDPBLdDP7ymF1Fox3GmyXdcyjT+Q1OmFj/pPbjRsceW1Hv0BuJnDH4pJKAPwOVMKbVr0BOx66/SCh5T0PfCMqdH1KBKmYmHLFQywV4L5rhhmKSFin18kHa4r+LrQusrpDwhg7AlU3l7kIX8E2tb+mXNqhISgsyigvMTx78540gNBBqwlaMrXhgyei2zA81dbzggdEcj634tV+jSWVefufOCfLDNulsc30W4/RH3EYKCM4BwtDijtydvWEAa9NpMNbhAqB2M0Z6XLOIqJ7PQXAm0rwDUdq7USUcgREG4VOV0WfPTvBvJLP5XHaVn87vvoLr+w4cnki1e29pYc=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000002, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,89 +144,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In move_to_free_list(), when a page block changes its migration type,
-we need to update free page counts for both the old and new types.
-Originally, this was done by two calls to account_freepages(), which
-updates NR_FREE_PAGES and also type-specific counters. However, this
-causes NR_FREE_PAGES to be updated twice, while the net change is zero
-in most cases.
+--000000000000e173480647f269a6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This patch introduces a new function account_freepages_both() that
-updates the statistics for both old and new migration types in one go.
-It avoids the double update of NR_FREE_PAGES by computing the net change
-only when the isolation status changes.
+I guess both are fine, the condition is so simple that anyone looking at
+the code can figure it out.
 
-The optimization avoid duplicate NR_FREE_PAGES updates in
-move_to_free_list().
+Thanks,
+Mostafa
 
-Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
----
- mm/page_alloc.c | 37 ++++++++++++++++++++++++++++++-------
- 1 file changed, 30 insertions(+), 7 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ebfa07632995..e51d8bd7ab7d 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -812,6 +812,16 @@ compaction_capture(struct capture_control *capc, struct page *page,
- }
- #endif /* CONFIG_COMPACTION */
- 
-+static inline void account_specific_freepages(struct zone *zone, int nr_pages,
-+					      int migratetype)
-+{
-+	if (is_migrate_cma(migratetype))
-+		__mod_zone_page_state(zone, NR_FREE_CMA_PAGES, nr_pages);
-+	else if (migratetype == MIGRATE_HIGHATOMIC)
-+		WRITE_ONCE(zone->nr_free_highatomic,
-+			   zone->nr_free_highatomic + nr_pages);
-+}
-+
- static inline void account_freepages(struct zone *zone, int nr_pages,
- 				     int migratetype)
- {
-@@ -822,11 +832,25 @@ static inline void account_freepages(struct zone *zone, int nr_pages,
- 
- 	__mod_zone_page_state(zone, NR_FREE_PAGES, nr_pages);
- 
--	if (is_migrate_cma(migratetype))
--		__mod_zone_page_state(zone, NR_FREE_CMA_PAGES, nr_pages);
--	else if (migratetype == MIGRATE_HIGHATOMIC)
--		WRITE_ONCE(zone->nr_free_highatomic,
--			   zone->nr_free_highatomic + nr_pages);
-+	account_specific_freepages(zone, nr_pages, migratetype);
-+}
-+
-+static inline void account_freepages_both(struct zone *zone, int nr_pages,
-+					  int old_mt, int new_mt)
-+{
-+	lockdep_assert_held(&zone->lock);
-+
-+	bool old_isolated = is_migrate_isolate(old_mt);
-+	bool new_isolated = is_migrate_isolate(new_mt);
-+
-+	if (old_isolated != new_isolated)
-+		__mod_zone_page_state(zone, NR_FREE_PAGES,
-+				      old_isolated ? nr_pages : -nr_pages);
-+
-+	if (!old_isolated)
-+		account_specific_freepages(zone, -nr_pages, old_mt);
-+	if (!new_isolated)
-+		account_specific_freepages(zone, nr_pages, new_mt);
- }
- 
- /* Used for pages not on another list */
-@@ -869,8 +893,7 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
- 
- 	list_move_tail(&page->buddy_list, &area->free_list[new_mt]);
- 
--	account_freepages(zone, -nr_pages, old_mt);
--	account_freepages(zone, nr_pages, new_mt);
-+	account_freepages_both(zone, nr_pages, old_mt, new_mt);
- 
- 	if (order >= pageblock_order &&
- 	    is_migrate_isolate(old_mt) != is_migrate_isolate(new_mt)) {
--- 
-2.34.1
+On Fri, Jan 9, 2026 at 7:34=E2=80=AFAM Pranjal Shrivastava <praan@google.co=
+m> wrote:
 
+> On Fri, Jan 09, 2026 at 11:28:32AM +0800, Baolu Lu wrote:
+> > On 1/8/26 19:33, Mostafa Saleh wrote:
+> > > I have this, it should have the same effect + a WARN, I will include
+> > > it in the new version
+> > >
+> > > diff --git a/drivers/iommu/iommu-debug-pagealloc.c
+> > > b/drivers/iommu/iommu-debug-pagealloc.c
+> > > index 5353417e64f9..64ec0795fe4c 100644
+> > > --- a/drivers/iommu/iommu-debug-pagealloc.c
+> > > +++ b/drivers/iommu/iommu-debug-pagealloc.c
+> > > @@ -146,16 +146,12 @@ void __iommu_debug_unmap_end(struct iommu_domai=
+n
+> *domain,
+> > >          if (unmapped =3D=3D size)
+> > >                  return;
+> > >
+> > > -       /*
+> > > -        * If unmap failed, re-increment the refcount, but if it
+> unmapped
+> > > -        * larger size, decrement the extra part.
+> > > -        */
+> > > +       /* If unmap failed, re-increment the refcount. */
+> > >          if (unmapped < size)
+> > >                  __iommu_debug_update_iova(domain, iova + unmapped,
+> > >                                            size - unmapped, true);
+> > >          else
+> > > -               __iommu_debug_update_iova(domain, iova + size,
+> > > -                                         unmapped - size, false);
+> > > +               WARN_ONCE(1, "iommu: unmap larger than requested is
+> > > not supported in debug_pagealloc\n");
+> > >   }
+> > >
+> > >   void iommu_debug_init(void)
+> >
+> > How aobut
+> >
+> >       if ((unmapped =3D=3D size) || WARN_ON_ONCE(unmapped > size))
+> >               return;
+> >
+> >       /* If unmap failed, re-increment the refcount. */
+> >       __iommu_debug_update_iova(domain, iova + unmapped, size -
+> unmapped, true);
+> >
+> > ?
+> >
+>
+> That's nice, We could also print the message as Mostafa mentioned, like:
+>
+>         if ((unmapped =3D=3D size) || WARN_ON_ONCE(unmapped > size,
+>         "iommu: unmap larger than requested is not supported in
+>         debug_pagealloc\n"))
+>
+> An explicit "This is unsupported" warning makes it clear IMHO.
+> If a driver triggers this, at least we know the sanitizer state isn't
+> supported.
+>
+> Thanks,
+> Praan
+>
+
+--000000000000e173480647f269a6
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">I guess both are fine, the condition is so simple that any=
+one looking at the code can figure it out.<div><br></div><div>Thanks,</div>=
+<div>Mostafa</div><div><br></div></div><br><div class=3D"gmail_quote gmail_=
+quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Jan 9, 2026 =
+at 7:34=E2=80=AFAM Pranjal Shrivastava &lt;<a href=3D"mailto:praan@google.c=
+om">praan@google.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
+te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
+);padding-left:1ex">On Fri, Jan 09, 2026 at 11:28:32AM +0800, Baolu Lu wrot=
+e:<br>
+&gt; On 1/8/26 19:33, Mostafa Saleh wrote:<br>
+&gt; &gt; I have this, it should have the same effect + a WARN, I will incl=
+ude<br>
+&gt; &gt; it in the new version<br>
+&gt; &gt; <br>
+&gt; &gt; diff --git a/drivers/iommu/iommu-debug-pagealloc.c<br>
+&gt; &gt; b/drivers/iommu/iommu-debug-pagealloc.c<br>
+&gt; &gt; index 5353417e64f9..64ec0795fe4c 100644<br>
+&gt; &gt; --- a/drivers/iommu/iommu-debug-pagealloc.c<br>
+&gt; &gt; +++ b/drivers/iommu/iommu-debug-pagealloc.c<br>
+&gt; &gt; @@ -146,16 +146,12 @@ void __iommu_debug_unmap_end(struct iommu_d=
+omain *domain,<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (unmapped =3D=3D size)<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ret=
+urn;<br>
+&gt; &gt; <br>
+&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0/*<br>
+&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 * If unmap failed, re-increment the =
+refcount, but if it unmapped<br>
+&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 * larger size, decrement the extra p=
+art.<br>
+&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0/* If unmap failed, re-increment the =
+refcount. */<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (unmapped &lt; size)<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 __i=
+ommu_debug_update_iova(domain, iova + unmapped,<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 size - unmapped, true);<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 else<br>
+&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0__iommu_d=
+ebug_update_iova(domain, iova + size,<br>
+&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0unmapped - size, false);<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0WARN_ONCE=
+(1, &quot;iommu: unmap larger than requested is<br>
+&gt; &gt; not supported in debug_pagealloc\n&quot;);<br>
+&gt; &gt;=C2=A0 =C2=A0}<br>
+&gt; &gt; <br>
+&gt; &gt;=C2=A0 =C2=A0void iommu_debug_init(void)<br>
+&gt; <br>
+&gt; How aobut<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if ((unmapped =3D=3D size) || WARN_ON_ONCE(u=
+nmapped &gt; size))<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return;<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0/* If unmap failed, re-increment the refcoun=
+t. */<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0__iommu_debug_update_iova(domain, iova + unm=
+apped, size - unmapped, true);<br>
+&gt; <br>
+&gt; ?<br>
+&gt; <br>
+<br>
+That&#39;s nice, We could also print the message as Mostafa mentioned, like=
+:<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if ((unmapped =3D=3D size) || WARN_ON_ONCE(unma=
+pped &gt; size, <br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;iommu: unmap larger than requested is not=
+ supported in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 debug_pagealloc\n&quot;))<br>
+<br>
+An explicit &quot;This is unsupported&quot; warning makes it clear IMHO.<br=
+>
+If a driver triggers this, at least we know the sanitizer state isn&#39;t<b=
+r>
+supported.<br>
+<br>
+Thanks,<br>
+Praan<br>
+</blockquote></div>
+
+--000000000000e173480647f269a6--
 
