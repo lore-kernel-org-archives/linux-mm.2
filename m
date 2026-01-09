@@ -4,153 +4,203 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78F85D26D9D
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 21:07:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF6EDD26D9E
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 21:14:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB4FA6B0088; Fri,  9 Jan 2026 16:07:02 -0500 (EST)
+	id 4BC386B0088; Fri,  9 Jan 2026 16:14:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C62EE6B0089; Fri,  9 Jan 2026 16:07:02 -0500 (EST)
+	id 46AB06B0089; Fri,  9 Jan 2026 16:14:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6E0A6B008A; Fri,  9 Jan 2026 16:07:02 -0500 (EST)
+	id 33E9E6B008A; Fri,  9 Jan 2026 16:14:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A5F426B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:07:02 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4ADCC160ADB
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 21:07:02 +0000 (UTC)
-X-FDA: 84313660284.29.79CD503
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3C2C01A000B
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 21:06:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ufPWwSPa;
-	spf=pass (imf19.hostedemail.com: domain of elver@google.com designates 209.85.221.66 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767992820;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F5256B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:14:26 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A0C438CD10
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 21:14:25 +0000 (UTC)
+X-FDA: 84313678890.22.902784B
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013071.outbound.protection.outlook.com [40.93.201.71])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9AF2D14000A
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 21:14:22 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="x4f/j37Q";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of Felix.Kuehling@amd.com designates 40.93.201.71 as permitted sender) smtp.mailfrom=Felix.Kuehling@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767993262; a=rsa-sha256;
+	cv=pass;
+	b=vWE4Ac7l7iM7xwflFf1fyMJ4gQP89H8U4FK3i+LMAqpVXZMoPI5s6p2WE9edBlzHCwVsdM
+	4CBmjrstgzto2OffOeAwB9R2Bh+N77GsqC874emBEa2RO/0CasTqwtsiSqs/7mpcVHNx8G
+	I4Zle7sDlJ6i1nI9o3/0hT3HcwfU53Q=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="x4f/j37Q";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of Felix.Kuehling@amd.com designates 40.93.201.71 as permitted sender) smtp.mailfrom=Felix.Kuehling@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767993262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5YiRRXuPlaLabH8Y/4leOeBvuw8o8W+AqfnKT5Dc7EA=;
-	b=n402kziVRS5Dvkg4yJDV5UigheeWIYLjFkna9mBUb4Z5zjMF063xKrEIllzf+2tBNofo3G
-	ZvXaJFQvH4Wxc0WKRxX9huPUMxAfYLzvyB1QWlGCBsnTTQfOdf+9rlB22Q94hByeyIH+XF
-	oebyetGY5/2IOz0bjTI2CQsBeZSRUAA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ufPWwSPa;
-	spf=pass (imf19.hostedemail.com: domain of elver@google.com designates 209.85.221.66 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767992820; a=rsa-sha256;
-	cv=none;
-	b=KkQNUt33uP7qsZRKBOr3GaFrgMFvl7U42QYx/UaBxF9YiM+pF//AbCxHRxKXWtJbh+gId2
-	21SzXDHZ2VcXvboIfQx7oK5sDaLfgp6Oo9XCzC5LbWg+r55W+Hg62+8HQcFhr6KeeZAPFz
-	Uf/6nqr44cqJBEZHqnftA11OGC5+pik=
-Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-4327778df7fso2896828f8f.3
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 13:06:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767992818; x=1768597618; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5YiRRXuPlaLabH8Y/4leOeBvuw8o8W+AqfnKT5Dc7EA=;
-        b=ufPWwSPalbMXKR/dBvYZUGFF+D9wv+sDeGgIMWL6klOt2sn7AQhrhGcKIIoovD50fX
-         tUOQ2mMcFUS3UcakpcCQOcsqjprIBcP/mGH8CQTk0/woh7NpLC9XPgi0KL+aseTDw+Zo
-         mo0gpLH3f/ME8I3AvfIja9XH/r1hzXa6VljkeGpQ/l73kwQuZRm0cjPqwT0jPuiro2U5
-         cJCsdXJUtMgZavXphmjh9iGz1t/ClRMOfrX1JPp3iCTD3drSMTf0fBC+IfnbyN0fPUVD
-         gB7IV8GXkv2kHLC5r8d08Hxsd7RX7Y1/sBScLWHqzHRTwTtjT0kwqGFZuGpQ3/k5qiHm
-         b1gQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767992818; x=1768597618;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5YiRRXuPlaLabH8Y/4leOeBvuw8o8W+AqfnKT5Dc7EA=;
-        b=KZW1aUcpaau/NVZfp9JJxoF7gId0PyIdM/g5V9hkyy176G9hQTNkU3nxib7M9b/788
-         zCHQ35HsC8JnwohxjRigUKr+i7y657VOYLKshIB47zIIPzAPi9m0G3ftF9SN9iLuhMwF
-         VH7K51aUk+1H670OdKIZvLWaW/TMrFzrQlh6mh4nS6A+TgQY+lj662mtBeJPt4qPj7uJ
-         Tal1IsLbd/XAQiDTv1DM+2G6Bel1Ej/maOLG7um4eKM7m562TEei/TeumvuU6PeZztS6
-         nLCb7JKP5QVMqFJcN5bgpzIT8yK5Ez5PN8QQHp2/iMTU1DZLFzzYAeKQx9+MMfU1gE/s
-         S6QA==
-X-Forwarded-Encrypted: i=1; AJvYcCW799C2+lsVOanpSklW2a2TUmVLonam4jCzWm03aBXPXe0hUB5fy+wiEc/CPrgX15KscT51X7QiyQ==@kvack.org
-X-Gm-Message-State: AOJu0YwAw73AfgrGWDf41iGwgaENRb5jzwoIt3WWMb+ITmAwoFh9EHwB
-	wuLlXuOK4KSI+wTvTZJ4T0gKxlHZ8D+jzMdMP8PkPbByiUJ/96fQmsyvHlmVcll0bQ==
-X-Gm-Gg: AY/fxX5KmKtDi7wH7pD0QpZMQHmCF6IO4awc3Rl6qrhtiuhOgEa+gvwNiO4Iihm1aHN
-	/FMkeAzT0tZvzMCqOdzGg8ZCAp1GHsX7cezHN9paXtr+bB2Tn3vOwDYfz9lnKtblwTjVmKVMl+T
-	i+2FmAV9oJoskj0L4h9oRXJ6Psr9XDFwne+77wBMFUEAulxpDpakobEYqjOgFJQVH8kFN5Owbu7
-	Ou+1Tx+yFUOXjwamSzPCI4zWEBdQbvFeg72GLqLyRDgQE24vDm5Z61U3plqtmYeA/dYEdcLg+kI
-	kYJT1S4gcz6S7DLEZbWDjS4dBZHkaGO+a8hvHtjzRcS3BKFudD8Lpoh6ThrDuo+UuniGGrF3Bgd
-	OosY6wbYslx8kvhH6pdWwTEcpdhTkg0V5lmttwzb5bdZItVSQJSZcdLzBSIlFM7eI07Q0W6V/9d
-	gEgOe6MwsZUxuXwvqo8NxrdcGFRXc6rcvDZholfFRPtUSP31Qy
-X-Google-Smtp-Source: AGHT+IGq/RRhgqPG360sNev62yK5kDA+HwwG1xM6/+WULZOG4/KY3n5LdCQUAGWoCEcUzU7iAOtzbQ==
-X-Received: by 2002:a05:6000:4023:b0:432:b951:e9fc with SMTP id ffacd0b85a97d-432c37636b0mr12665932f8f.47.1767992817879;
-        Fri, 09 Jan 2026 13:06:57 -0800 (PST)
-Received: from elver.google.com ([2a00:79e0:2834:9:2965:801e:e18a:cba1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5df9c5sm25214398f8f.22.2026.01.09.13.06.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 13:06:57 -0800 (PST)
-Date: Fri, 9 Jan 2026 22:06:50 +0100
-From: Marco Elver <elver@google.com>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	Chris Li <sparse@chrisli.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
-	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v5 20/36] locking/ww_mutex: Support Clang's context
- analysis
-Message-ID: <aWFt6hcLaCjQQu2c@elver.google.com>
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-21-elver@google.com>
- <05c77ca1-7618-43c5-b259-d89741808479@acm.org>
+	bh=Lvb8DKqMBf0o2frilaZd7JE9cOUAvmxxiPnXJnwzf8w=;
+	b=KAD6z6b+Zqna6SX+dFBnr5Zx8klBghVlI9IYqbGNYFjX4gO9SQsAOM/0SucW06U5IuKnNl
+	AaO88u0Tl7SRoOWnpGwZRqXu/QpC4VpJyVigTHbxII3vDNaUEGrukEiLuXgWV7viy2HvHa
+	M+3OxBEHEOXIAAYnHZX4Rrk6vmh4Ufs=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JkWnKRA5ojF9I3V2YAE4ZPJfN4Da54WeHgNNcLf+Vo41z2H6/XgaYK222OqOF074dzj+ZJJiQoReqmp6DmRjm8eICuV869dObhdCkU5KTaNkb0+ehmGPo824psc8GUdPfBcAzd9lqyNKLq5HSyxpFjABVvBLHvm2E8PU6/Q+bIpQ91UKWbcipWydoV1MHw2Xip+T9zVSE2qkmki91ovaJ2y2q31OZomZC1Hc+l+PIPgxht2zd7daXd9uvLiaOSt+FEDSxWB29T6Zr++SP2XibnyxEWPvDzApnHVhKRa/OqxlqmNCKiQseEJuEOPWVxI3s7BGSeR/mvnzcbwXG2CD6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Lvb8DKqMBf0o2frilaZd7JE9cOUAvmxxiPnXJnwzf8w=;
+ b=kd8lZbMcVsQKSL8AMdmEdap9HJpCaKbgwydPaut8oAOlVvCFG8/xTpIRvNjv+PcMjZaOcY7Hjwimr+tZCzEIQcD88PSjn5v3bvuTqVwM75Wwhd7EHsIHG02SvYfIpbWARFt5IHNi3zr7xiI4R+j21uUONffetXnc7O0JC6VQ7FykfiK6NK3mZtk+g7tg10cvtR6yzJHsx3ap37BU35rjs2HK48iL/lROZPg6mmNBYgklyFlHInW+4kcw9kASBY8h4VJZCz1ngu6oimuyzDIX8n+ArldBamuck9+CajwKwFJCbSxlbsOXNRTz2rJphgFu27e0AVZMy+JNHnPWsm7k8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Lvb8DKqMBf0o2frilaZd7JE9cOUAvmxxiPnXJnwzf8w=;
+ b=x4f/j37QJXiBjRiUsOYsVQzLiw158K1KSrhQqI96ku/94Jcnw/1oZhE16+NN0HGrTB5As+RJczTMZlxrcj820h4NcmiUP7TNIyCICaNgapdNK15Bo+KxIbRdBMh64NSdlMmDionfZcveGch3iVTEYpTB32uRfwirNh8LQ2jRURA=
+Received: from BN9PR12MB5115.namprd12.prod.outlook.com (2603:10b6:408:118::14)
+ by IA0PR12MB8328.namprd12.prod.outlook.com (2603:10b6:208:3dd::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.4; Fri, 9 Jan
+ 2026 21:14:19 +0000
+Received: from BN9PR12MB5115.namprd12.prod.outlook.com
+ ([fe80::9269:317f:e85:cf81]) by BN9PR12MB5115.namprd12.prod.outlook.com
+ ([fe80::9269:317f:e85:cf81%7]) with mapi id 15.20.9499.004; Fri, 9 Jan 2026
+ 21:14:19 +0000
+Message-ID: <ab5d1bb7-7896-49fd-a9ea-19294f4f57ca@amd.com>
+Date: Fri, 9 Jan 2026 16:14:16 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/4] drm/amdkfd: Add batch userptr allocation support
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Honglei Huang <honghuan@amd.com>
+Cc: dmitry.osipenko@collabora.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+ daniel@ffwll.ch, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, akpm@linux-foundation.org,
+ Honglei Huang <honglei1.huang@amd.com>, alexander.deucher@amd.com,
+ Ray.Huang@amd.com
+References: <20260104072122.3045656-1-honglei1.huang@amd.com>
+ <64f0d21c-1217-4f84-b1ce-b65c1f5c2ef1@amd.com>
+ <b6004bee-ffef-48ea-ba0d-57b390cb771c@amd.com>
+ <76c44385-bcf8-4820-a909-569bd2d36198@amd.com>
+Content-Language: en-US
+From: "Kuehling, Felix" <felix.kuehling@amd.com>
+In-Reply-To: <76c44385-bcf8-4820-a909-569bd2d36198@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YQBPR0101CA0298.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:6d::25) To BN9PR12MB5115.namprd12.prod.outlook.com
+ (2603:10b6:408:118::14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <05c77ca1-7618-43c5-b259-d89741808479@acm.org>
-User-Agent: Mutt/2.2.13 (2024-03-09)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5115:EE_|IA0PR12MB8328:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0361ec00-756d-41a9-52ff-08de4fc40d8c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?V05uVGlrNXlrRlRWbENRdDFlc0doUTgzaFloUTVJZHZGSHRwaHVhdWkrMGI0?=
+ =?utf-8?B?MXZydXFnTkZmbm5IVk01ZzNob1EvK1NlZnk0UWRVaTBDSjQ4bzVwWlpmN0k0?=
+ =?utf-8?B?SXc2V0YwME5EZ1dVMlRHMmdQeTcvQWQ5UHpzelRqV0MraVR5ZXFkUVZwS1VU?=
+ =?utf-8?B?T2RONDJMcVhtbUk4YTQra1FwdGptOHMzeDhRNmQzeVZyM2J4S2YrTzFhUm5E?=
+ =?utf-8?B?UkdCQnIrTkhxUE1Fb0ZXK0FwOUhqTDExeVE0UENQRk84STFkMms0S3BsMVpP?=
+ =?utf-8?B?MVhGV2VSNVk4cThrOFlxRUtFekl1cHFRbDZHRDE4YndTRFFzN2UwT3RkbzE4?=
+ =?utf-8?B?SzdJNitxUlNVK0J2cnZIN0R2VWdWYzBzd295UE1nbnp3KzlwdUQ0aEZmL1Rw?=
+ =?utf-8?B?a1J2TURlanpaQm5QY01GS1ZDbXlYamQvNUpoRkp2cmJZUkZRdTJTYWVmRnpD?=
+ =?utf-8?B?MVVGeThHRWdETFNueUloekc0OGNZa1JLbzE1cCtoUWNVVWhuMzJyVnpWTCsv?=
+ =?utf-8?B?dGZMd2ZYdkEwTGZrTTFFckFzdHVnZEFDNnZPK2tXTUwrQXlvdzlCeko2TmZL?=
+ =?utf-8?B?RlpLZ3lwYXJoTGl0V0o1RnhtMUJTdFpOYzBWclg1LzAzeVhqa3czay92WHlz?=
+ =?utf-8?B?UlJ2YjlIK2E1S2RzTm9oRXkvbmFuY0ptazlzTGhLUi9VcHh0bmNIZTBnUG5L?=
+ =?utf-8?B?OUFadzlEdk9CZkNMWHVLVXI1U0xOeVZoMC9maWhMZGd1WWFHWWVEU3BmL042?=
+ =?utf-8?B?OWl5VDRqOU1xaFAwTGxic01TT0tlV0YvS2tBZlpJOWFzZ01YQnllb2pPVnVS?=
+ =?utf-8?B?RWY1WjNYLy9ERUMxNlRra3lQQ1I3Z2lXUGQ2dmlnU2xTQXNUT0lKWFcvVzZo?=
+ =?utf-8?B?MVB6RktMVlpsakFxM2l2aUdmbkZVanFpQmUvdks0SlRidytBRWYxeFJPU21S?=
+ =?utf-8?B?bFBFU2VSeDdqN2M4OUdHSTJDamh0aUhRdTcrT1ZvUnlBejJpSG9GcUV3Yi8w?=
+ =?utf-8?B?LzNBdEN4QXd5V01mSWxQUXBYUitzb1hYWWJDTThUVTM4WnhWUlVZcVllaGNz?=
+ =?utf-8?B?VDdGQUg3RU9SWU5QVUdGc2wzR3pwR2ZoN0NkZktwV2tVeVIxRXJoVTgwUElr?=
+ =?utf-8?B?WVNQK3c3UmkxRVhSbHM4Wk00VGZyRExGUUZaWWhwSFdpQkNFSHJJbkp0R1Fh?=
+ =?utf-8?B?MHJrbjhCaEZKaUJLTTBxeE0rd0cwZTBMVHlJaksrbHFITEpMUHlQVHhQMUFP?=
+ =?utf-8?B?aklDWEI1QnF1eExVdU9mK3NxVXVPWEhEUm1JSUk5VjUwVWs4M3VwWGhOZUZS?=
+ =?utf-8?B?NnQ0Z3p4UGMrTmN6alk3ZzZhNGkzRWU3eHhMZEFQUEd0c05DbkpPWjIxN3VH?=
+ =?utf-8?B?dXl2bi96MnZxc3M1U25ab3ZmR01BeTFrTkliclVqK2RkNHR2TjJoZC9vYzgr?=
+ =?utf-8?B?anRQSHkyWHpsdllMTTd2NnE5Y2d6QXFXTm1DbEg0RnBsdFhoWVFtNVdMZW5C?=
+ =?utf-8?B?QitMbnB2cHJ6eTVmd3oxVmhrU2k0WEt0QktMYit6S3dyTER6RDY4NmxWZ2N4?=
+ =?utf-8?B?Z25lUFYzVEdMNk84Nm51N1YweHFLTm10WGxSaGV2bW0wbXZtcGZvM1NDWWVE?=
+ =?utf-8?B?eE5hc2QxWVMwNldNcDQwUEpHYUZvRERtQ2JiV0Via29DRSs0TjFMUUxZU2hw?=
+ =?utf-8?B?Z3NYTnEwbFNPdlhOY0w1cFB6aEZxeXh5WEdFWitXYjdiTmp5ZGJucEY5TUts?=
+ =?utf-8?B?WGM4T3N2UWsrQnNKaUJTeFkvNzVMSmhRNzRtT0xvR0FTb1paTjUzd2xFU2xk?=
+ =?utf-8?B?cUhzSkpBNmhTVzFlaHRrdURKbUlSWnRSOExUZTU0aFFiNmg5aTg0TzREN0tU?=
+ =?utf-8?B?RlRHa1ZQMWMzdXVyUkRXemlYNWZQcGxaWkUyOGRYZEdtd3U4d0ZOZHpTOGNo?=
+ =?utf-8?Q?KwZwTyRlgQY/aWs9z8B6TZuMLsYUmZ85?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5115.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YWJWSkh2Ly9iWEtnWklzQlJmaTlraU9CRFVnNy9vbXpJeGwwNklHekRuQzNE?=
+ =?utf-8?B?cVNKcUNyRWFISExXSDhPQW9wVTV6eHdFeW5DRXFvem9ycWxmaVpiV2xrbHBB?=
+ =?utf-8?B?aFN3UHNmN1NkMC8zUUJDOGdQais0S00rVmF0bVhGQ3JIL0tWN0xtNEM5bkcz?=
+ =?utf-8?B?cUFWQVJETy9DdUFhcEhyaCszRFR1ZjIxb2V2b3FJbm5tN0VieDF4ejYzWEhh?=
+ =?utf-8?B?b252MFJLa2g2dEZYK2k1VHBOMzQwRHYvMENFZnRNZVR2LzJ3QkFSQTJSbmo2?=
+ =?utf-8?B?RXRQeXVtK1pHZkc1ZXkyVW5oeHQ5dU1pOTdyRnhvZWFmRnJ0NHA4T1ExM3NT?=
+ =?utf-8?B?QlhWcGFmTVJva1ZDUG02ZlpydGxQWjFWODhDd2d2OVFLaE1Mdm13T2ZySk4x?=
+ =?utf-8?B?eGhtVkZoK2Z5Z0VSSmRTOXMrUDlOMGFqQkxYOGhNOWlWQVE0QTJuUmlRNGFi?=
+ =?utf-8?B?bHRzM0l5UTJBd0dKcDQxclB3SVVCT3UreHJRb1BsSXM5NEgzWVJJTWlnSnV5?=
+ =?utf-8?B?bkRmRHg2VDBtR2ZqSUlFejNrWDhhajFyTjl4N0RqNXNSMFl3c0pqMTZ4SlRy?=
+ =?utf-8?B?NlJLOGt1bE9JaTFTRTZQOTdzakVoc2o0YjhDL1M2Z0JYUm1YQVdGZzllZ0tq?=
+ =?utf-8?B?Y3FiSi9jTEg3OTZickFSbytFblQvTVFwSTY2eklydXhEeUxsVG53VU1aT2kv?=
+ =?utf-8?B?a01RZmZ0YzEwM1cxek0wUmtBQy82N2dHcGZtM2srb0NVdnQwMzhDQU94VGZh?=
+ =?utf-8?B?MUd5WGp6cUp4U1lKQjVhNVRaejZGMXY4dTFTdWRtWGthdDJNUmE0U3QzTTlz?=
+ =?utf-8?B?Ymt6Zkt5anhWbWhzaFhPRWdyRnFpcmVLNUF6MGE5ZDZGK2ljRjV2Ri93QTVP?=
+ =?utf-8?B?VFpmcXdDblo1cFd0bS84Zk5MR255WHBZaFpWd1FVYlk3NTIzSmNraXFjcDRN?=
+ =?utf-8?B?cndHaTdHdy90Sm5xdjQ3VUo3SkliUlJzaXpJdFQra0tvR25rVVQ0Uk9kUDB0?=
+ =?utf-8?B?aUZ1cFI5WGxuL29kSUxjZmpSK3pqaU11aHk1UlV5ZzE1cVRFSHhGalB3VUFS?=
+ =?utf-8?B?K1lndkN1MC9JK1dZT0FmRGlIZ2Rqd016cmlOT084cXlqcmhKbWk3VDg1OEZh?=
+ =?utf-8?B?MzE3eGRDUWJZbTZCV1RJS3RuVWE1OGp5WmxiWW0vN25RalRlaTRWeWx1eEJ5?=
+ =?utf-8?B?d092YVpScmcwTVR6emx5SVFxOWFHNHkrY2lNemc5cHRQeTdZQ1Q5NnBuVWFq?=
+ =?utf-8?B?YnpvMmoraU1FRWhrbEVpeDIvbUhJODUxYUlLcFUrVU8rY0k5aGRad1FjQ0RW?=
+ =?utf-8?B?MDFITjJ4eGJqMXRuZXc0Qjd6RWJVYkVGbzErZ21FMkZZM3VyVzVnUFJJclVr?=
+ =?utf-8?B?VzU0WlNWS1huTkQ3bnVmUTcwVmsxTVEwUWthaFVaMjhNaDk3ckxBT1VsVWFH?=
+ =?utf-8?B?ZHBzdGQrTUpDVC9CUWJVV3FFYTk3WGtuRmh4SzJUVWpYelFIcE0rdzBraWo4?=
+ =?utf-8?B?T1FnK20zVkdpYzN5TVprRVJQMExHbTNwUXJrSjJHLzA0RHd3NHY2b29OdzNC?=
+ =?utf-8?B?Tmk2VGwzakRnaUhBWnJOdmEzMHczdHBWSlkwbkVUOER4RERCYmFSWmMzQ0lh?=
+ =?utf-8?B?Nzg5UWdaUkdVejdJYW1LTW9SeGJCc0F6Qy9vd25jN3dRT3R3MlNtTTZoT2xZ?=
+ =?utf-8?B?RVNhTGdQeWlFTHR1aHJqU2JaQjd1U0RudzRoeU0yQndERGJjM3FpU3RMNFhn?=
+ =?utf-8?B?MElobFdBSjJ1dEJrYUVWTkRoTXN5YlFzNUp6cSs3M3psdG01VldOWXdTekRO?=
+ =?utf-8?B?U2RTR0lZZE8zQ3JUOFlwMXRlY3lqYml2d0lIS2FmMDh4YnNkOVpBOVZEekoy?=
+ =?utf-8?B?a1BqVUdHMmlCbGFCeUhCN0ROOE1QcDJ1aGw0bnNFNEkzNmJpUldQeEoyVUgr?=
+ =?utf-8?B?YkxaOUxJNXVVVDJ2NzVLV2dRWittbkRCdFg2NTEwUDhOSWw5cEt2QXJZYU9G?=
+ =?utf-8?B?R3lrQVNnS2lWeUZvdXJETHlXZkI2Z1ZVZVkzUjZBY1BjTmNzU25kUmFJVmlp?=
+ =?utf-8?B?K1F4bUJ0QUEvemVWYnFqeDdMS2puYkpNU3ZDWXBwcGRBcHpScGdid2l6MjUr?=
+ =?utf-8?B?UmdqcGtUSUNFbzRKYkVXWnY0eTZ0WUJ5NU5DOFVzMXowZDNsdGFaSXlLcnh3?=
+ =?utf-8?B?Ym8zeXFLYjd1a21FbGl6K0tyN3gyU3Y2ZmhXdXZPZ0dBcVlYa2ZDRUtZQTBz?=
+ =?utf-8?B?eEV0MkNtOXVIbTMybjhUSFdiVUNQL0pXM0wxRTBrUWVYeVJvMnpINkFhR21K?=
+ =?utf-8?B?cXQwYmZEV3RXQUhnTGhpd2VpWUZuY2tKaUtBalRubGV2eFcwSHg0QT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0361ec00-756d-41a9-52ff-08de4fc40d8c
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5115.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 21:14:19.3959
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zPGN9idpa0W8tZYPiM40ONQth+dfQbaNbvZN3RUWbeyv7JoCOliqRQl3b5/qd5kJhtt4DWrACNUp7tFI/OyPNA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8328
+X-Stat-Signature: qpza1775gja4713nc78h54dyuhd9iism
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9AF2D14000A
 X-Rspam-User: 
-X-Stat-Signature: yg6ckkkmux6e5hefm6iecz9qakifk4t1
-X-Rspamd-Queue-Id: 3C2C01A000B
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1767992819-97429
-X-HE-Meta: U2FsdGVkX19xP+t0591fI2PvybUUlB1wH02sIPVLpM441EmdelVkEhbNIcaToMXVTRYirLz5ZDog0Tp8f5HRWSEP22uia0OOEV3fZIWXabb/JVcSC74nbnDFtCjvSIeEV5WWTfj+zpWWYIwxEnC96rc+mw8kZLSKfxxdG1YrY+feKnx77iiCwNeV2bmJ2cBRUSk/+FFJgPCERalzS2dHGnoiPrfJKqWX37ydMZJ8tp6AiDNg709fdMnBXW4mn/Xzf46+LNntjlpYo07mIQjIy32O8drtcslCYpOd6uFH7p6+RhcP/DRib+pMC8Ifw1gIuQlYTJZZMZLLlVa79R/pyx4DTs5ou4EIJBVQgPWlBZUq9EPM0eAsLduOG2+/O56Rsrp4jHqwuB0anHKR1HMR7pEC9rCiHbUKeDDxrQ6utRtnO335lJ7TEgwnvFo+RrtTn/FoRRhT4F6gl9xj/ypCqMpFbmq4bqJlFmJ1yvW9Gj73MHanV4RRmoWUidIhSUJp7gNx5NMBu0A3Q9sRn2pq2mqmN/PdYtv+LpR9qljdLqiLwQ162xo+vRG9lizlfgMwjOCnGkGI/0JiRrl/DQKvwtxsgkBkQAi5o/imZYVuahAhYUCGYxGk5ZvgDKC2hMxVj2iP+aHjGkplbVXfm8uBDg/q2m9y0VsU9KzVkbX0FXl+zt+CIm3JiSLAK4crjAf9qmalCQFpgbYdFJp7R6si5A+PxNuSNGUnmKAg1x2INBAkMCVjdigCVVGILjmkacClvaxLPZPFQWNTYvNSB8ny3ev2DNVuICLL8Db+hQXMcxV3DAWZOmfbG9ILUYgUI5dA8vSjkctQrRqp94ejou6uK1AENoBoUOw1hGpTeRyxacxG/GNJtYr0AAuHDvVtFntHOCyBGrDVVP6BCoGEA81mEvM8JXlTgxO1jMYzCvX3EybU+pF7t3jCcv6qMp8SZ6N5GzaU9rSEx+hb0w+h2nC
- 7iAMCAQ6
- WVaNTtL+MLZ8go6FE8YsD0goUbM0fRsSTxFJp+TuocFXD9cBmm9SvRp1e8YtEb6IJvHmopnV2Gts3b0IY835mtskcIzzMFZV+gcb/9T+xgwkJn/m+V5Ir0/PrC5RZh6cEQxlEoiYCUlpsCdzeS7Tu8xtDswbC0xwI6gDljJMJhVsLz83vg19RDJsPlOg48WEtmu9jy2H/YSDqfXXklqe11Yt4EDzQHTuL82auA+MC4eL3v1mH2jxEq0UzRTlUdBLixCBInq/uCGuk2XdhBMmqzK0z6m1s+yAJyNIV4yV4IzIwocDs4W6znjwIB7lQyNjJfja8G0cbPFE4u/LD4LknL+jhVc2UJaP3dcQchkz0Cx/1Kfg0GoeKxWt8rPs279U1mS66Hm0DmuntOVhvrKLxNfI4le9MtVMqGUFfg8Jc1WCIEn+Xg8H8AfR8470enB3gGac9C+W0bMqxSP6FjuQJYxRp2fMQUqL04DpuOMK3Upz416iZexdNPg6MPhWvC4bKmqODeDd5ypvHdHCtQDuLmUFXjb5VdJiWWYRqnD7f1wFtK/8=
+X-HE-Tag: 1767993262-194892
+X-HE-Meta: U2FsdGVkX1+aSMepzpuU+vs7TQ7plKrlw7z689pz12WhewUMQsZDFLyUVVu1a2IUpiVP8bjWbAr6CYy6yAmRCV8LigB+PibgHwr3CLbYibLAcz7ZaUaCr9cRAzgYkHaZO+fG0R4J8AotDJbu5XYuZIaxtOQsv0Fz8o58649keeeTcFW1qx4tlplmwBBS6tKiWhTi+cfWFTX/tbtFzhtxY2yojwGvCrYkAvTqBrpLtJq8DAVogB3869rFY5inl0Ssr3iR5vKHENrKYrVCy3jg4bXfqAimpMA+XIB5+Z7+3c9zJGR02pCZbRxIstxrovW1sfAAc2flyyXu7ETqKh6VCnJzCwnavjsjpw40T3xnaU21YTUvgwuOeblb0PIx6PJd6Wff7gm2VbY0FTKU37RdgP6GRkVP6KBRD7YBlih/RS13JGyeZpGYxY6qe3akLVyR7kEeAtDEx/Xm2hbtSNLfL8KJSMxttCnMEiGL9dHAEWSiKziUAxOb/tUvWTH/mxVIGcdgHS0IViSmuAPlmqLZE0INmjEUaZBQq7MnVjWtwuITaJTomck0GRNeqkHyaWHkPSCzE42wOARcamgk1y3AO9bTbikWbPuDaa39sHpSQS/IxVd5UAN/LEqXdWzijBX1lzsiu6gf0fsr6Cx6CDZjnsO0kAJ38MpkFOThPIUoF+kEqYtzQ3qrYq5PZb1PIfNlOrxXX5rYU7EqOXcecTW3G9cjH+3ksorg08HAUc5jKBSX7BTAMsWM+R4jRVHiaoG+nnjk+LiJUITW84LTeso9kNahJhFjTTrbO3AD3nXLvGw8OuR1yhrXmxARQtX+6P90QZO3drc7EobyxMKgpmovkpyFGc+ZTywe1x/F+k07QYJp1lkMsHqrLNsbsSB0gjIMqrACVhQYZ76u39eLlxDBUL/wBQ3Ic4v5ZjPKcFaBX4+Vh9zeK+GaceOPIOfjLB5rDVk9iPpTa43nQdR1hBT
+ MHi5E7JT
+ SIaR8Z33hMysolapcRrs4BEAvCueC9QGQl3s9lVJTfDFz1mdGdIi7IiXTnsp+rHz/QD4KQLhicHYP1JyFV+TzwiJ4C5KAL4wvU+nhP1EuWwGzpRYRNQdqkyW7RtykPa4LD/agETlopehYTYjL26lnfsNDI7gWw3egqR4XPKl2wmPTMI0UVb+toxK5HmBULZ9eSSOsVIV6JoRnLnVfnj6EU9xB7uWaFnRczWEJzsZXF12wFkzHhT1DATYsUr92p1Qt8sphybOc6vYa+HP5ZRIM0/9b9vf4p936mh7Rjrqf4yMhaR+psKBueyY8e3L+JfYR4FyWcm8U7uDiBRawGom75GshlDUW6cmYGjfr95g8kjhh4y8zP72u5aZLH2hqcYH1AoAen4d2s3rH3D/Mq6swuZhfrsBnp/sp3rQmV+uT1/5MQVNHRbTAXcKJDfPzFtJ9SXXI+xYSGcuwhJaKxqK6OszN+TPR0f8qzvfM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,83 +209,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 09, 2026 at 12:16PM -0800, Bart Van Assche wrote:
-> On 12/19/25 8:40 AM, Marco Elver wrote:
-> > Add support for Clang's context analysis for ww_mutex.
-> > 
-> > The programming model for ww_mutex is subtly more complex than other
-> > locking primitives when using ww_acquire_ctx. Encoding the respective
-> > pre-conditions for ww_mutex lock/unlock based on ww_acquire_ctx state
-> > using Clang's context analysis makes incorrect use of the API harder.
-> 
-> That's a very short description. It should have been explained in the
-> patch description how the ww_acquire_ctx changes affect callers of the
-> ww_acquire_{init,done,fini}() functions.
+FWIW, ROCr already uses rendernode APIs for our implementation of the 
+CUDA VM API (DMABuf imports into rendernode contexts that share the VA 
+space with KFD and VA mappings with more flexibility than what we have 
+in the KFD API). So the transition to render node APIs has already 
+started, especially in the memory management area. It's not some far-off 
+future thing.
 
-How so? The API is the same (now statically enforced), and there's no
-functional change at runtime. Or did I miss something?
+Regards,
+   Felix
 
-> >   static inline void ww_acquire_init(struct ww_acquire_ctx *ctx,
-> >   				   struct ww_class *ww_class)
-> > +	__acquires(ctx) __no_context_analysis
-> > [ ... ]
-> >   static inline void ww_acquire_done(struct ww_acquire_ctx *ctx)
-> > +	__releases(ctx) __acquires_shared(ctx) __no_context_analysis
-> >   {
-> > [ ... ]
-> >   static inline void ww_acquire_fini(struct ww_acquire_ctx *ctx)
-> > +	__releases_shared(ctx) __no_context_analysis
-> 
-> The above changes make it mandatory to call ww_acquire_done() before
-> calling ww_acquire_fini(). In Documentation/locking/ww-mutex-design.rst
-> there is an example where there is no ww_acquire_done() call between
-> ww_acquire_init() and ww_acquire_fini() (see also line 202).
-
-It might be worth updating the example with what the kernel-doc
-documentation recommends (below).
-
-> The
-> function dma_resv_lockdep() in drivers/dma-buf/dma-resv.c doesn't call
-> ww_acquire_done() at all. Does this mean that the above annotations are
-> wrong?
-
-If there's 1 out of N ww_mutex users that missed ww_acquire_done()
-there's a good chance that 1 case is wrong.
-
-But generally, depends if we want to enforce ww_acquire_done() or not
-which itself is no-op in non-lockdep builds, however, with
-DEBUG_WW_MUTEXES it's no longer no-op so it might be a good idea to
-enforce it to get proper lockdep checking.
-
-> Is there a better solution than removing the __acquire() and
-> __release() annotations from the above three functions?
-
-The kernel-doc comment for ww_acquire_done() says:
-
-	/**
-	 * ww_acquire_done - marks the end of the acquire phase
-	 * @ctx: the acquire context
-	 *
->>	 * Marks the end of the acquire phase, any further w/w mutex lock calls using
->>	 * this context are forbidden.
->>	 *
->>	 * Calling this function is optional, it is just useful to document w/w mutex
->>	 * code and clearly designated the acquire phase from actually using the locked
->>	 * data structures.
-	 */
-	static inline void ww_acquire_done(struct ww_acquire_ctx *ctx)
-		__releases(ctx) __acquires_shared(ctx) __no_context_analysis
-	{
-	#ifdef DEBUG_WW_MUTEXES
-		lockdep_assert_held(ctx);
-
-		DEBUG_LOCKS_WARN_ON(ctx->done_acquire);
-		ctx->done_acquire = 1;
-	#endif
-	}
-
-It states it's optional, but it's unclear if that's true with
-DEBUG_WW_MUTEXES builds. I'd vote for enforcing use of
-ww_acquire_done(). If there's old code that's not using it, it should be
-added there to get proper lockdep checking.
+On 2026-01-09 04:07, Christian König wrote:
+> Hi Honglei,
+>
+> I have to agree with Felix. Adding such complexity to the KFD API is a clear no-go from my side.
+>
+> Just skimming over the patch it's obvious that this isn't correctly implemented. You simply can't the MMU notifier ranges likes this.
+>
+> Regards,
+> Christian.
+>
+> On 1/9/26 08:55, Honglei Huang wrote:
+>> Hi Felix,
+>>
+>> Thank you for the feedback. I understand your concern about API maintenance.
+>>
+>>  From what I can see, KFD is still the core driver for all GPU compute workloads. The entire compute ecosystem is built on KFD's infrastructure and continues to rely on it. While the unification work is ongoing, any transition to DRM render node APIs would naturally take considerable time, and KFD is expected to remain the primary interface for compute for the foreseeable future. This batch allocation issue is affecting performance in some specific computing scenarios.
+>>
+>> You're absolutely right about the API proliferation concern. Based on your feedback, I'd like to revise the approach for v3 to minimize impact by reusing the existing ioctl instead of adding a new API:
+>>
+>> - Reuse existing AMDKFD_IOC_ALLOC_MEMORY_OF_GPU ioctl
+>> - Add one flag: KFD_IOC_ALLOC_MEM_FLAGS_USERPTR_BATCH
+>> - When flag is set, mmap_offset field points to range array
+>> - No new ioctl command, no new structure
+>>
+>> This changes the API surface from adding a new ioctl to adding just one flag.
+>>
+>> Actually the implementation modifies DRM's GPU memory management
+>> infrastructure in amdgpu_amdkfd_gpuvm.c. If DRM render node needs similar functionality later, these functions could be directly reused.
+>>
+>> Would you be willing to review v3 with this approach?
+>>
+>> Regards,
+>> Honglei Huang
+>>
+>> On 2026/1/9 03:46, Felix Kuehling wrote:
+>>> I don't have time to review this in detail right now. I am concerned about adding new KFD API, when the trend is moving towards DRM render node APIs. This creates additional burden for ongoing support of these APIs in addition to the inevitable DRM render node duplicates we'll have in the future. Would it be possible to implement this batch userptr allocation in a render node API from the start?
+>>>
+>>> Regards,
+>>>     Felix
+>>>
+>>>
+>>> On 2026-01-04 02:21, Honglei Huang wrote:
+>>>> From: Honglei Huang <honghuan@amd.com>
+>>>>
+>>>> Hi all,
+>>>>
+>>>> This is v2 of the patch series to support allocating multiple non- contiguous
+>>>> CPU virtual address ranges that map to a single contiguous GPU virtual address.
+>>>>
+>>>> **Key improvements over v1:**
+>>>> - NO memory pinning: uses HMM for page tracking, pages can be swapped/ migrated
+>>>> - NO impact on SVM subsystem: avoids complexity during KFD/KGD unification
+>>>> - Better approach: userptr's VA remapping design is ideal for scattered VA registration
+>>>>
+>>>> Based on community feedback, v2 takes a completely different implementation
+>>>> approach by leveraging the existing userptr infrastructure rather than
+>>>> introducing new SVM-based mechanisms that required memory pinning.
+>>>>
+>>>> Changes from v1
+>>>> ===============
+>>>>
+>>>> v1 attempted to solve this problem through the SVM subsystem by:
+>>>> - Adding a new AMDKFD_IOC_SVM_RANGES ioctl for batch SVM range registration
+>>>> - Introducing KFD_IOCTL_SVM_ATTR_MAPPED attribute for special VMA handling
+>>>> - Using pin_user_pages_fast() to pin scattered memory ranges
+>>>> - Registering multiple SVM ranges with pinned pages
+>>>>
+>>>> This approach had significant drawbacks:
+>>>> 1. Memory pinning defeated the purpose of HMM-based SVM's on-demand paging
+>>>> 2. Added complexity to the SVM subsystem
+>>>> 3. Prevented memory oversubscription and dynamic migration
+>>>> 4. Could cause memory pressure due to locked pages
+>>>> 5. Interfered with NUMA optimization and page migration
+>>>>
+>>>> v2 Implementation Approach
+>>>> ==========================
+>>>>
+>>>> 1. **No memory pinning required**
+>>>>      - Uses HMM (Heterogeneous Memory Management) for page tracking
+>>>>      - Pages are NOT pinned, can be swapped/migrated when not in use
+>>>>      - Supports dynamic page eviction and on-demand restore like standard userptr
+>>>>
+>>>> 2. **Zero impact on KFD SVM subsystem**
+>>>>      - Extends ALLOC_MEMORY_OF_GPU path, not SVM
+>>>>      - New ioctl: AMDKFD_IOC_ALLOC_MEMORY_OF_GPU_BATCH
+>>>>      - Zero changes to SVM code, limited scope of changes
+>>>>
+>>>> 3. **Perfect fit for non-contiguous VA registration**
+>>>>      - Userptr design naturally supports GPU VA != CPU VA mapping
+>>>>      - Multiple non-contiguous CPU VA ranges -> single contiguous GPU VA
+>>>>      - Unlike KFD SVM which maintains VA identity, userptr allows remapping,
+>>>>        This VA remapping capability makes userptr ideal for scattered allocations
+>>>>
+>>>> **Implementation Details:**
+>>>>      - Each CPU VA range gets its own mmu_interval_notifier for invalidation
+>>>>      - All ranges validated together and mapped to contiguous GPU VA
+>>>>      - Single kgd_mem object with array of user_range_info structures
+>>>>      - Unified eviction/restore path for all ranges in a batch
+>>>>
+>>>> Patch Series Overview
+>>>> =====================
+>>>>
+>>>> Patch 1/4: Add AMDKFD_IOC_ALLOC_MEMORY_OF_GPU_BATCH ioctl and data structures
+>>>>       - New ioctl command and kfd_ioctl_userptr_range structure
+>>>>       - UAPI for userspace to request batch userptr allocation
+>>>>
+>>>> Patch 2/4: Extend kgd_mem for batch userptr support
+>>>>       - Add user_range_info and associated fields to kgd_mem
+>>>>       - Data structures for tracking multiple ranges per allocation
+>>>>
+>>>> Patch 3/4: Implement batch userptr allocation and management
+>>>>       - Core functions: init_user_pages_batch(), get_user_pages_batch()
+>>>>       - Per-range eviction/restore handlers with unified management
+>>>>       - Integration with existing userptr eviction/validation flows
+>>>>
+>>>> Patch 4/4: Wire up batch userptr ioctl handler
+>>>>       - Ioctl handler with input validation
+>>>>       - SVM conflict checking for GPU VA and CPU VA ranges
+>>>>       - Integration with kfd_process and process_device infrastructure
+>>>>
+>>>> Performance Comparison
+>>>> ======================
+>>>>
+>>>> Before implementing this patch, we attempted a userspace solution that makes
+>>>> multiple calls to the existing AMDKFD_IOC_ALLOC_MEMORY_OF_GPU ioctl to
+>>>> register non-contiguous VA ranges individually. This approach resulted in
+>>>> severe performance degradation:
+>>>>
+>>>> **Userspace Multiple ioctl Approach:**
+>>>> - Benchmark score: ~80,000 (down from 200,000 on bare metal)
+>>>> - Performance loss: 60% degradation
+>>>>
+>>>> **This Kernel Batch ioctl Approach:**
+>>>> - Benchmark score: 160,000 - 190,000 (80%-95% of bare metal)
+>>>> - Performance improvement: 2x-2.4x faster than userspace approach
+>>>> - Achieves near-native performance in virtualized environments
+>>>>
+>>>> The batch registration in kernel avoids the repeated syscall overhead and
+>>>> enables efficient unified management of scattered VA ranges, recovering most
+>>>> of the performance lost to virtualization.
+>>>>
+>>>> Testing Results
+>>>> ===============
+>>>>
+>>>> The series has been tested with:
+>>>> - Multiple scattered malloc() allocations (2-4000+ ranges)
+>>>> - Various allocation sizes (4KB to 1G+ per range)
+>>>> - GPU compute workloads using the batch-allocated ranges
+>>>> - Memory pressure scenarios and eviction/restore cycles
+>>>> - OpenCL CTS in KVM guest environment
+>>>> - HIP catch tests in KVM guest environment
+>>>> - AI workloads: Stable Diffusion, ComfyUI in virtualized environments
+>>>> - Small LLM inference (3B-7B models) using HuggingFace transformers
+>>>>
+>>>> Corresponding userspace patche
+>>>> ================================
+>>>> Userspace ROCm changes for new ioctl:
+>>>> - libhsakmt: https://github.com/ROCm/rocm-systems/commit/ ac21716e5d6f68ec524e50eeef10d1d6ad7eae86
+>>>>
+>>>> Thank you for your review and waiting for the feedback.
+>>>>
+>>>> Best regards,
+>>>> Honglei Huang
+>>>>
+>>>> Honglei Huang (4):
+>>>>     drm/amdkfd: Add batch userptr allocation UAPI
+>>>>     drm/amdkfd: Extend kgd_mem for batch userptr support
+>>>>     drm/amdkfd: Implement batch userptr allocation and management
+>>>>     drm/amdkfd: Wire up batch userptr ioctl handler
+>>>>
+>>>>    drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    |  21 +
+>>>>    .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 543 +++++++++++++++++-
+>>>>    drivers/gpu/drm/amd/amdkfd/kfd_chardev.c      | 159 +++++
+>>>>    include/uapi/linux/kfd_ioctl.h                |  37 +-
+>>>>    4 files changed, 740 insertions(+), 20 deletions(-)
+>>>>
 
