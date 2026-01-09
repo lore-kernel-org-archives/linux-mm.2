@@ -4,201 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0686BD232FC
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 09:07:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 245A3D232FF
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 09:27:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B4DC6B0088; Fri,  9 Jan 2026 04:07:42 -0500 (EST)
+	id 48FC76B0088; Fri,  9 Jan 2026 04:27:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 662556B0089; Fri,  9 Jan 2026 04:07:42 -0500 (EST)
+	id 446C66B0089; Fri,  9 Jan 2026 04:27:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EFB66B008A; Fri,  9 Jan 2026 04:07:42 -0500 (EST)
+	id 31E6D6B008A; Fri,  9 Jan 2026 04:27:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 398116B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 04:07:42 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D4CC013AD6F
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:07:41 +0000 (UTC)
-X-FDA: 84311847522.12.475598A
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012028.outbound.protection.outlook.com [52.101.43.28])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CE7D9160005
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:07:38 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=OldKE9IH;
-	spf=pass (imf08.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.43.28 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767949659;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2214A6B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 04:27:05 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C142D13A799
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:27:04 +0000 (UTC)
+X-FDA: 84311896368.15.5C00225
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 649EC180007
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:27:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KXI2iTWi;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=I+3h+YTM;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=16e6Tram;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PGw8o01N;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767950822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a/OBtaalu9ZOynch7oOzKE1J1xRuAUVW0ulkwuiSN5k=;
-	b=zVeGz924aFtSpp7QP6+W+UicWF0WeQD8PqX5dwO1e3oCw6iKikXde/8j1RuHQH1/okpHU+
-	Nh9FtvTgI9lpzhfxnezsopDkQGE380t6yIwzPgcF3kwi4e6GYNcd9M0a34TFMAf/dZuKuh
-	k6TPeMyyLN3tXFf7RwHfkV9EDLbCoXE=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=OldKE9IH;
-	spf=pass (imf08.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.43.28 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767949659; a=rsa-sha256;
-	cv=pass;
-	b=hBkgxKXGU8LSnXIDgI3+i8wGc2xTP9LutelmM6CnVT3mqVUOij0mBxdg5JnDcKsX8xP5mP
-	9DnG2OgG5EBjusGVKQYlxcGIzO7GH7tuJ9BFePMQi8kjSrpDgU/VRTMtbj89KzaDs22GDJ
-	G5M/f3LOviKf18cmEbR9ylvqLSjIVY8=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QME1TEoP0+yFuwPGoZ5hQ9XQqVwxdpTWmu4ZAsnAyxYEXBUanv8xN+Ijo19Tfw/GDCmxlDhhIqNnZhlC8cGpuvKnEpi6m8TkZd9u7weiUDe/XxwmiURq5FZHXfBHomrTwQvTDd3kvZdxPh3Om2TiqBL37UmMQncLO2H0M3j0/57y12UDrdNKjnnbqShsON1gXVmjI5xXCyOxoDJu9cIriaq4/urfGF5v0t7h8+VnlgWtuCB2k16nH6bTiEMfEMeKsegzzgI2Kim2pMSFXmiOtGnuZYUT3XmFvSPJSpk+MMKwlnUgTt4abY6SeSBp/dOaRXb0w9CfAgBOAVryIHAb5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a/OBtaalu9ZOynch7oOzKE1J1xRuAUVW0ulkwuiSN5k=;
- b=CI2EJIAfNuuTuPfCcbCMJdY2BwgKgtCTgWLmycuaB04HQ2Wvj8GlHO9TjknEaRW/A2CtC0w+cWr7zzUlnjR9xhXE8UAIco6HjeGHN2CBjjzedva7p4bAYy3MCAdZOi49bqViavWP6XNlTLkvxIgdE+7Eaq0dlpASweKMZGCaKuRwLkhGAXFDzzzhpoeRu4+x9hbmRhI8GFSTwAhmUgtNHM0Drlm0HHmxsAEeGkVrFfKEKiMfjky9suQoTwxABk05rD+XtC8/isHHp3mzBr5evjZXzWvX5VDgeCbTVLIn6htX5V18h/yZBVHvRqYl0XL508hhXkL/VbB3D2jaHOw7bA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a/OBtaalu9ZOynch7oOzKE1J1xRuAUVW0ulkwuiSN5k=;
- b=OldKE9IH420ekKnlZg0LLXrkffWPgELu+CPqxd+JxNHiM+yY95F+WkXeP9NXKJYrtvcUUysK0/ya7Nw29bSwOhwfeRkLtLc5KDP2/vBop/0/6QeAR3u3QHAT9/gbq4wFCjmRiwQgPI4Y4rK7zI5CpidQTrU0qcXBL2mWDUj/sb8=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by CY8PR12MB7217.namprd12.prod.outlook.com (2603:10b6:930:5b::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.5; Fri, 9 Jan
- 2026 09:07:34 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9499.003; Fri, 9 Jan 2026
- 09:07:34 +0000
-Message-ID: <76c44385-bcf8-4820-a909-569bd2d36198@amd.com>
-Date: Fri, 9 Jan 2026 10:07:26 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] drm/amdkfd: Add batch userptr allocation support
-To: Honglei Huang <honghuan@amd.com>, Felix Kuehling <felix.kuehling@amd.com>
-Cc: dmitry.osipenko@collabora.com, Xinhui.Pan@amd.com, airlied@gmail.com,
- daniel@ffwll.ch, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, akpm@linux-foundation.org,
- Honglei Huang <honglei1.huang@amd.com>, alexander.deucher@amd.com,
- Ray.Huang@amd.com
-References: <20260104072122.3045656-1-honglei1.huang@amd.com>
- <64f0d21c-1217-4f84-b1ce-b65c1f5c2ef1@amd.com>
- <b6004bee-ffef-48ea-ba0d-57b390cb771c@amd.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <b6004bee-ffef-48ea-ba0d-57b390cb771c@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0285.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e6::19) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	bh=6ix79vpLIssdL500RHYujbFB++xsIiyUcELipWU4WwU=;
+	b=2Wfqlkf2o0xs6r3ukmFmGh3Q9ct3cJP6aN9YRtPnm3JTQNrSoh1YGFYM7bAppTa0h6MICR
+	x4XyfVs4M7QrX1HqWyMmtlySbMHg1nCSt85e2qKACT/Zhz9H5HYF1GlLztUGc7OyfFhKk7
+	PPan2qV31/bS+8efEA1xRPIxA+z62Fk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KXI2iTWi;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=I+3h+YTM;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=16e6Tram;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PGw8o01N;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767950822; a=rsa-sha256;
+	cv=none;
+	b=KV4Pa4/4DHC054zCxd5+4z/kmQs+rwagIkD3Yk5Nk4Lt+qtBo6HfafoefWXREu4Jxw8Hg5
+	n0v6uphu++d47tDK4N4xQ8sCGUXsdlLY7p0lolvNW3nWu/X0rY7tJtDfxEXJ2DLM3kDZ60
+	YE8kXGXOiL8IkfCGH1zq0llKzesB7Rw=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 43CDB33820;
+	Fri,  9 Jan 2026 09:26:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767950820; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6ix79vpLIssdL500RHYujbFB++xsIiyUcELipWU4WwU=;
+	b=KXI2iTWiAJmOz21iis4yFqf5NnYhRDof3J19rqsZwYRuWlpBv5dcGDcz+rPkZ2NFQ7sBw3
+	6F/yzH+m9ddnb9SROmmw6miQVWUavs2Eg8AGGPV1EpMQQU6h2S4XjYW76fJh6lzGTBRt02
+	shHABFz4+AgJcXRKWJA4UpNzrHl4hCE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767950820;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6ix79vpLIssdL500RHYujbFB++xsIiyUcELipWU4WwU=;
+	b=I+3h+YTMi7XyTBxg0nKsfasYi3xNLsyRViTjEJI4hA7/0Kr4xASdVvjM5NCcFY8z/BXHig
+	gtG0FCWUIYgZrHDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767950819; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6ix79vpLIssdL500RHYujbFB++xsIiyUcELipWU4WwU=;
+	b=16e6TramPJH4Gs7875HDbzGuy8ICZI2BILnT1SGRvVAXeI5sQUjzAFlNaNR9kACorpHpXM
+	nei3ptJVD2BUcQ5r+hV5aj5YMzGmHUhxPPheHPPJgtr2K4a0j9TnIfXo+9hSNy8lOl3XCf
+	SJ1RxzU1924fXlBtLP3laUNrmhN+RXw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767950819;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6ix79vpLIssdL500RHYujbFB++xsIiyUcELipWU4WwU=;
+	b=PGw8o01N9jcoRQmfnP+ZoeS9HgNB1q6FOHcZJKmgTM6SnO2dBelSCiHyvByrrSDNihQRUj
+	Pa0cf4D023nkzOAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3206F3EA65;
+	Fri,  9 Jan 2026 09:26:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TGXGC+PJYGkWAgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 09 Jan 2026 09:26:59 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id D22A1A0A4F; Fri,  9 Jan 2026 10:26:58 +0100 (CET)
+Date: Fri, 9 Jan 2026 10:26:58 +0100
+From: Jan Kara <jack@suse.cz>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, Luis de Bethencourt <luisbg@kernel.org>, 
+	Salah Triki <salah.triki@gmail.com>, Nicolas Pitre <nico@fluxnic.net>, 
+	Christoph Hellwig <hch@infradead.org>, Anders Larsen <al@alarsen.net>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>, Gao Xiang <xiang@kernel.org>, 
+	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>, 
+	Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, 
+	Dave Kleikamp <shaggy@kernel.org>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall <hubcap@omnibond.com>, 
+	Martin Brandenburg <martin@omnibond.com>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Amir Goldstein <amir73il@gmail.com>, Phillip Lougher <phillip@squashfs.org.uk>, 
+	Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>, 
+	Yuezhang Mo <yuezhang.mo@sony.com>, Chuck Lever <chuck.lever@oracle.com>, 
+	Alexander Aring <alex.aring@gmail.com>, Andreas Gruenbacher <agruenba@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
+	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
+	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
+	linux-f2fs-devel@lists.sourceforge.net, linux-mtd@lists.infradead.org, 
+	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev, 
+	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, linux-unionfs@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, linux-mm@kvack.org, gfs2@lists.linux.dev, 
+	linux-doc@vger.kernel.org, v9fs@lists.linux.dev, ceph-devel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, samba-technical@lists.samba.org
+Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
+ lease support
+Message-ID: <qzdy4ipzuxl3exs26tr3kd5bloyp7lrr3fqircgcxltvoprd6k@shasgtm4zncv>
+References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
+ <m3mywef74xhcakianlrovrnaadnhzhfqjfusulkcnyioforfml@j2xnk7dzkmv4>
+ <8af369636c32b868f83669c49aea708ca3b894ac.camel@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|CY8PR12MB7217:EE_
-X-MS-Office365-Filtering-Correlation-Id: cbf45704-46b5-4cd2-3ce2-08de4f5e8692
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?V21wQ2FDN1Awc3duNGppQ0o0MmI5K29wcnpydTQrQWJPMTRHTFpJc1FUM084?=
- =?utf-8?B?ZmJCeU1WVzhtanpubjJuNTlrcG91RThERldoeUdPcnB6Z2lkWkNaNEpXSHVW?=
- =?utf-8?B?Rk80dWlvUnhxc2NBVFVMOFYxa25DdDk1OTdJdFFpckRCa0xkd0lLaURaRU5D?=
- =?utf-8?B?T1RCOE5DTm9jR29sSS9hS2MrNWNKUGlhVzgrNjZmMDQwTnY3dkJKK2pLSjZ6?=
- =?utf-8?B?dS9ldDB1VnhXYThxS0tZbkx3d1lSK0h2VjNtQ3ZCaEFNcHZmMTBpWEt3bUQr?=
- =?utf-8?B?YU5WSzR3QWFHME04cE93YUtnYVFRSEM4KzNySis3SisyVnhDRm4wY3N4SDk5?=
- =?utf-8?B?WVpGR2tjNkN3MDNlQmh6S21ZdlM3UEs3WWl0Y1Rscm84eWxLTW9JbjlncllI?=
- =?utf-8?B?Slo0N1NVTlIwaEFCY09vMVJJUjR0UW12dytSdENvTnZyaDlGTG9hYTUxcWtZ?=
- =?utf-8?B?bUF2OGk1WVNlY3dVR29NY3hqOFZ1MnB5RlZRMldzM3JJdUxJTExRUnkrOFRT?=
- =?utf-8?B?N2U1d2NGckVTZjRHTW5WcHdwNytuS3lxTFRKdFJYSm5ibkYrcnNjbVM0TkZk?=
- =?utf-8?B?dGFZWElrelc3S2pYd0VaOVV3V1o1RDFkYVpNenpvektZa3I1WnlvLzd3aFph?=
- =?utf-8?B?L2xMNnNScFplOVd4aUtjbll0eUZITGtkL2JKU2dzUEp5SzEvVHFscWltMG1H?=
- =?utf-8?B?MmxLNU95UTBpQy91RjRDcVFlZEUxakdaNUw4TFJQZHlTN2p6VG10eE5qbWhC?=
- =?utf-8?B?SVcyQWJlVncxTi85d3pCcGw3b0l5eDNmVGV0TnpEK2RGSjgxd01xSzJtak9y?=
- =?utf-8?B?YVRmWTBIdDZta2EwM0RDUW51NzNubDgyTjVzRjFTNmZ0bUZYNVUxZ2sxaFBq?=
- =?utf-8?B?QktFdUwrZ0tQMkVIeXN6cDVqdlVnYXFTVEZvNThvMmlEVEN4ZmlwNXluT3Y5?=
- =?utf-8?B?cFRIUUtBb3l0TXg3REh6VVpEL1lqSmdzblNTemY2bU1LWWcvMGl2RjJhblll?=
- =?utf-8?B?WXV6UE9sMnpNbzFyYjdtdE44cTViRTczQ2ErMEJyUlRzYUJGNFFMdXBqVjBi?=
- =?utf-8?B?ZnMwZ3NwRWRaMWZTcXQ0VzJRZ2tTMDZMZkZKalNKb3JOdkFhME1LTUl1TWVN?=
- =?utf-8?B?U1NFMy8xd1NvcUVIQ0VsVU1lNThKQnYvaENkWWpxVS9HdEVqVDFoSXNxYlVB?=
- =?utf-8?B?UEtNUzBYSlh5d0M1KzN6YXVRM3lKUktEaVptQklWbVprVm52M2xacG5yOVcw?=
- =?utf-8?B?dE94cXdCVU9WcmhzVzdYV25rd3htd0Zta0hMWWdtYmM3VHNwVDBHUlcyaTJ1?=
- =?utf-8?B?NDA5d1dqK1g3WnJ3Nzc5ME5lZ21PVzlEMis3dUJoaWRpRWNLeXBOdkNVZTVp?=
- =?utf-8?B?VitpaDlXdWg3RTkyM3NBZk9LOTFxZXcvejBSeDhKNlgycHVxMDIya0tWR3ZM?=
- =?utf-8?B?OSt5ZEpFNVlaeEpHY2dpVDh1dzhYOHJwd1lrYW1reU82dU1QWE9OczUxSFNt?=
- =?utf-8?B?RW5nYmV3SHhhak5nUXRNMmZXbTZ5VjdabThsUTN5OEVGRGhQMmpVRmZlQjVu?=
- =?utf-8?B?NS9PdU9sd01Uelh0T2FFSnR0OERuV2tTd3pZTnplTTJNdXZob1dUM0VFV0V1?=
- =?utf-8?B?WmdiSUZ4MkxmOVFXSnR0RWpoTWFEMk5YRWtwbTlveXZhZjYvWExpcjNWT2FL?=
- =?utf-8?B?Q2pvWFVmb2lsVWNrRU5pYldyQWxpWmhjalFrZFNTZ0dRSDI3SWRPdThiRk4x?=
- =?utf-8?B?SitkYm5BaWRKVnFGT2lkOGpxNzRXZWlZRVk3RkJ6ZUxrMENBLzNJUnpPMjhy?=
- =?utf-8?B?cWpSNHBRVXBhTmVxc2R0RHJpT1huTyttNWtSeG5VOFNqMW9STi9IdXN0ZE9H?=
- =?utf-8?B?SEVYWTlMaTMrZ2ZyZWxMdVBDeFhERVI4ZDJ5VDRiRmdyazI1TENtb1laaXhW?=
- =?utf-8?Q?fHzaigKNWi0I0BbT5PnZ1fEImT4HQblp?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NS9SUzNJVUt1d3plb25yU0J5dXJQSTBFcFcwTWozaWUzL2FPdUhQV29iQk5M?=
- =?utf-8?B?TzVpQmp6Tk5ONzJIU1IwV2Njd21CWWFrVXV4K2VKa3NSbFlzdk00bWhacjE0?=
- =?utf-8?B?cW9EelRyOC9XWm1oeFkyQlN5SG92dmZENHZGd1Q2dlo5U0NwRXFoVmp0eFh0?=
- =?utf-8?B?cFpHZGZnSUFsRTZyeTNwQW11MVBQTTFIT01kM1Z6ckZmSXZhU3BSNWpjT1V4?=
- =?utf-8?B?V0cwVWR0WHpkU1ZHMWwvY2xnc0tTd0dOU0tmVVNTV2JtTHpqSmcvdjFic2VT?=
- =?utf-8?B?cVNXWWM4ZS9CWXQ5RW5UYm9jYlh4bmw2RG5PcGZCZ3ZNbW5ET1ZFbFFTejdX?=
- =?utf-8?B?eWQvbVp3ZjN2U1hRSjdHR1NoS09EZzdkTmVsWWR4eWl6bHZubEN4dXNScjJD?=
- =?utf-8?B?aWxlWnpSb1p3QU5BSldJTWRnaDh4NXhPeDQ5VWlocG5pamxqZnlmMVhCTisr?=
- =?utf-8?B?MVVFV1U4NkRsdHZKeUdYVWFvTjZCK0xteGVBU3RwTUMyZUJKczRBRmFQamh2?=
- =?utf-8?B?b1AwS3BRV1RzUGd4R3BpaktvKzdKbGRqT1JtbndnSjR2MlhjSTNYcnlRUTlu?=
- =?utf-8?B?RkcvbSs4WlduUXI3ek5kVW5lYno4TTBLaU5UTGdaMlFlQ3JIM29aUmhYSGpW?=
- =?utf-8?B?WnpkUEVkWDcwL3lOcFl2dUZDSVVRUDdwL1dCQU1NeE9oY1VjUU41ckQzdG80?=
- =?utf-8?B?Q05WdWhwM2xEK0oxaEFVdTdqMTd5V09kWXZCYllScWxwWkpXVWJBSkp0QWl4?=
- =?utf-8?B?T3RDMXEzbC9vQlJpbUg0MnFpR0tRUy9zYk9IVVJsWURiQ1VGRUdkSUhmeDdL?=
- =?utf-8?B?OEJxRnVMZ21CRklGeU1MTjNUNkk0b0l0dmNjUE4razJTdk51ZndXbi9BZU0x?=
- =?utf-8?B?UUsybFJXT2x5bTBuUWFoYTlOYVhWcGtrblhMRGc0dW1GZ3hwWklObnBqeWg1?=
- =?utf-8?B?T3ZhQzdxMklJc3I5VkpjZlFqYUx3aXlZZXUxOGRJYlRsM09wdE9peURqRW8z?=
- =?utf-8?B?b05vMUlRU3ZBdnkwaUt4MkRtVlkrTGVHeTN0bXFOV20xR05iK2RQNkNyWGVS?=
- =?utf-8?B?ZmtTQ3F3ZHcwZlViWlVLcVBvQU5MS3BnQWRCZndIN0Q5SEFsTi9UTEVwL1dG?=
- =?utf-8?B?RXZJS3ROcGtJeUF2YjQ3d1ZsTVk0RGN6M0F6QjQ2eWNFOGhnazUyNm1SQWdH?=
- =?utf-8?B?elpXMjZHQ2tHOG1MbkFLb1hDTGxaN0NQYnJ3YlBnaERuSHlyS0ljMkdRMUxX?=
- =?utf-8?B?UTl3OGR1bnhCZ1hnNDBSbXQvTUZaM3F6ZFpFWmNMUVhOemlmc244N0hiOXdY?=
- =?utf-8?B?WDk0TEdNVFVGQkowOGVlWDNkaVlTeHgxQStFTUJLMVE0dzJhTDZKck16blZ1?=
- =?utf-8?B?dllxZEVoeWp4aGE5aXhSVlNEOUJEUG1NWlFCYjBBbTZDdld0dEY2YndNbU1o?=
- =?utf-8?B?YjhlMmJiRjFWR2xTZXY1TFBmUTBLVC8wdFNPN2svMnM3NE0yc3RCaDRDZTBK?=
- =?utf-8?B?YzR5SVVLVlNJS0xnbW9UN2ZMSy9pS0F0akJSN1QvQWRtT0REcUhjclBoNUFa?=
- =?utf-8?B?TW80b3ZtWVpaak9tbUVrS3AvZDlhUmZ6SzNndUc0cWVMckxrVkkzNTlGbmNO?=
- =?utf-8?B?MlpuNUtXZ0czN04ySVo3bGU0VFg4V0NsZnpEdTlmZ0dyUWJJSTgzR2NmbCtJ?=
- =?utf-8?B?OG9oeFloZUt4dXlWTEw3Uzl6ZEpVTmxkckVON2piZXJzbVUxd1B0eXh4b0tG?=
- =?utf-8?B?ZXlOZS9yQS84RnlCZXRXdDAyd3NmWCtETzVNMlRNSUN6Rm1TdXhWV3NNQkVM?=
- =?utf-8?B?eDVzdlFVdjIveTlxZDUyMk1aTEhaOXM1cVB5dytMMzllbDJpZ1ppM0tESHRU?=
- =?utf-8?B?UHBaUEtHMHY4VFNBRVIzVHlnQzYvbGEwMUlmZlQzVWk0TStUVndld0RQR2pH?=
- =?utf-8?B?QXpZTW4xRWhuNGZxZ3hRcUw2bXI2QjBScEllQWF1UVYrYUxYdkFPUllFdmtp?=
- =?utf-8?B?ZDJTRFY0cUViUkJnV0RnVHhST0lNUHVnN0k3QW1MclRDTXpZNE1ETDl4cGgw?=
- =?utf-8?B?RHVwa1RCVWNoVDY5Y0Jmc203SGdVelRacEdEbE9NTmNNSzV5TS9PUEMrOSs0?=
- =?utf-8?B?SjlJdFZFcXVmL1p1YmF4VHovQ1ltWnoxeGd0OGwyKzZMMkMvNlVvbVZiYmZ2?=
- =?utf-8?B?b3pnR3hrcVBQbjg5Vy92MkkzZ0R5aTBUUnBKU1lidVdrbndBbm5HU3pGQ0g4?=
- =?utf-8?B?ZllUamZURmJBU05wb1p6M3lvekNueG5ET2ZtU1AxdFRVOVk1RFhwQlBTSEJn?=
- =?utf-8?Q?bKmDDXpnRzafHcOckM?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cbf45704-46b5-4cd2-3ce2-08de4f5e8692
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 09:07:33.9919
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pJmNe6MoMqMdokLxcpfrRhWsY9CqSnBYMj3lj/n5WnKpt8MzXbG5HJohrXHWY+ai
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7217
-X-Stat-Signature: x9fifgwfjjmbw76nkxywb8psq6pxaiy1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8af369636c32b868f83669c49aea708ca3b894ac.camel@kernel.org>
+X-Rspamd-Queue-Id: 649EC180007
+X-Stat-Signature: 433te3sqcojq57rtp5xxp6fbrbboisfw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CE7D9160005
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1767949658-465789
-X-HE-Meta: U2FsdGVkX19/BoRiu5DiradjbSg3kKYbI8JE0h4OclFVf9FphaGSqKhj/ZgHFJ5l6rdejGPZ8TAA8IZqhNYTNY2BBJao2D8mJhWdGK5ZYeVlrAErWN7VzIkSWL+WyCXfmjvBBp4qZGgFzMmCv98ffaYVbsBz2fGHEqW/IyUiw/gxUi+iI63BKD6HB6GfMpL+CVYx6pmw88m83QwERKpLMFIJw4UZTOBnqd99h9H84RnNJbj7kPg4XriYb0aedQNTNBlwQN4sYyj/AJQPv6vaxuU4q0sNV085nm0lqIQa8Fz1DV5WdiVLFgx6JzsMb+6Z/Y0k9D8VAJ/8Ac/rZXiJnOfZA8Ry5wqG9iXxdeMepCGJm5E4DkrJqMOD8IZWKw9WvvDrb2IPgw9f/FBa5NN4jtm8/TgIFx6rlKqcJgJZpl8CCF37ZuIEkdIkGQiKtY//PF1PZPa9dNpKXcLcPW+Fs9RZy1uW/YJYLMfGlIarNLMc6HvyTW+ZlDCbL1KcoVanbHBkKeHbImOMwwRskQJgXiAfYlTUHmLLFmLNtt17YnnOTUdMLz+VQT7AH0ncK5J64pv6V07hJSxCvxXWKvJaQGqJ5YipMw/OJ4YpiBIntzsUpkK1OD8/ZW6NRUSJy5VSrv4Ov+sERrKyeoc8TG9NAF8jop85Xh40QB7pVbcnhDH2Zmgr+jHxkYwT0Ey7FjXwoLMV1kLKfx7WCNCkFj1y++jBLIYKExgCZOHQW7ttajWoTijE/eVbqODeiqAftZ4y0CWFnNu8oxCs9uvCYv+Uzfa4pmaQcutFqa2u7h53/D329d4mxICt2XLPjAwjjSc2hBCTRf/9U9C0BszmZQR+BYlkXq2cOslgAaRkK94B28nnBftnuM0G1T+nGHtV4vslEEgTup+6dk0KSFluI/MHW0vWma6R11d6JQ1T1UZeh5BJW0UeBfxFb/Jwzj04xRSy6b6kv2+CfN9RTzbI4Cv
- bynekgIv
- zBOxR6XHloM8I8YwcJPuQu925FfFpArdwdsnQFuUW0nRhHOixopiRlUP0mryluQd5tsM1uFl9VE4RJj4F9Qhk4zL5wQMuCgiDRugYXkgNGuWAIOj6aTlsK7JMZV6ScLuOyyDejQe2ec5BumsbWHzgz6olJ3uZa1nPRXxTWmhFkBwB4TLY0koWBsKcZ+6/PDUndcpS5i0KJEjpAwP3qPpNp71X7rK+v8NU4P/y5ZVmwlX5dCmZlcc2jS9CcOOziMeYzWdmEmKqB/PAZ7eKPQ86N9ShzoA0HNkFIHsKDWY/9w9x/3Dw17tOSIiyaxyL9kUl/0NRWYSLjVkWFJjA/IQymxhtSa+8wGU9ef9qKHscqGChL5N+uLA8DwgCVm7bv+eyUImQSNuc1htcmdQjqoh4yX8dN+JTOqccPG0IWtjrjJvt8yk8ukq6xFrgSaaaTh8S0/Y1cPOgbefnrtRxUnzuRVF2p80ZQe84KEWmnG1+PRrXVh8kfDJIi+Z7CQ==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1767950822-308403
+X-HE-Meta: U2FsdGVkX1/NTNnSJAgFpQKzcZGKizKh0o0Mj8xEZ+RaZzn6z7en1aDAKtMW2P4xCGCLzKCIKqPvED0Jvb0VD2+3ERbVM1Hb1iawFId+8MZLM8gxAwSu7OoJcH1jd4ZvMes9E/fH9vaMYme+c8wFqQTEl2zgU12XMn0U2wn9QzDWSvjhs1bXuI6vogDqRzJqD/cQsZoPQCuFMzAFD+xOjXCoen43eTi9O7pEQysY8f242AXdOdIJENLFvjcuksPn4JP5o0g83uFFJjBWKjQfAyY5GlKOdY8ZMdHf1nZZ4LRQKj6tBYlgOSAnu3bR2pX2MKdEH1BIek+H5yu8zIvXUcR/Jvwoo3vJb4K9UYMKuuZSRn4L282UoIEm/ShBEIkhT7tcGsKGCGvmGstuAHUD+OYWbvtO4yoR+iyZxVUQBrCr4pBFMDaJY4zCQ7bGu31H8llE4BfEE2oJLN2PrpCxLrQa9dIr+fpdIukqTN9hHe4K7h9LTqck7/+kNOYiUNg06hH86jUHsARRNskPr3JvbuPlU6AhBUUr+5ohrvXnz61pfUQAxs27kMNl9VYNg0cQFhHCyNOHbvXFFBN/c7hqPVE5CS4+CRduhckZrRfmwz56UKcCiSIcYDMFstfsLAk0JwA/NRIPRCgUBaz0wkEZDz8uDrwlzGhNKbK1xvnLBG2F8UT6xXw4mJJeFG8d0vZDHKoUxC4I3jGGJowowmCnUQS/JeR76wxfXYRp6ThhFvGhMp41Dde5zh3dRNg/t5Qd1DhrgUp1ST8hxRGPYrWHMtI/DR2AHwbqrYhatJZjtcOJH03CGngFedYQbMfySq7EeRxbhFYVztLMCVyphtXVihVIxDGWHQRJsGSDQLaGv/OHjkgPCy3Wnma1XccY0GVIrFNUKd2KtTO13RLUlmpJuYa24XStCHdDH1k6DCvOTMOwFZJeZL9iEnoXelsS2Tc4A2POQrxKxD/12Mlxh4W
+ 4nAhVe+A
+ Zu9lX3LW4b6ql1yl55c7TzhVhZnrNzqRgDnj3zESMyd+lcEt4kZifnZzp2SSzIv80/G/MSFEP8C7VNS36/saJlERW6x2QGHR68CUWVfYdJIr+/zxvXCPs42NloudCx2ncJf1WRe1sCPy5kJN5R7HaAODXob2JIHfNrOJZ/LGxT4b5N0HEviLzsUXs+VNRl3ZuyBGKi4IO7MSWybW1twnfQEaiJPhXi8CwHwQgmse260AZANDP2dXIJRw30z5X4Qtn2Ey0toXazXbnj4xxQiRl4GUaQ462OugwOcXr84RSw0fByPm3NtUK2e9g2Bz4+2YiHuM5hfSAls+vlDccAQG+WPjkZcNUDmtVmxDpvMODTgohXLAHewIK5RDadQdn3QGzNHIyg9F+Bk5i7c0AvSQ6VCtc2FJFvQn4kaBo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -207,182 +171,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Honglei,
+On Thu 08-01-26 13:56:57, Jeff Layton wrote:
+> On Thu, 2026-01-08 at 18:40 +0100, Jan Kara wrote:
+> > On Thu 08-01-26 12:12:55, Jeff Layton wrote:
+> > > Yesterday, I sent patches to fix how directory delegation support is
+> > > handled on filesystems where the should be disabled [1]. That set is
+> > > appropriate for v6.19. For v7.0, I want to make lease support be more
+> > > opt-in, rather than opt-out:
+> > > 
+> > > For historical reasons, when ->setlease() file_operation is set to NULL,
+> > > the default is to use the kernel-internal lease implementation. This
+> > > means that if you want to disable them, you need to explicitly set the
+> > > ->setlease() file_operation to simple_nosetlease() or the equivalent.
+> > > 
+> > > This has caused a number of problems over the years as some filesystems
+> > > have inadvertantly allowed leases to be acquired simply by having left
+> > > it set to NULL. It would be better if filesystems had to opt-in to lease
+> > > support, particularly with the advent of directory delegations.
+> > > 
+> > > This series has sets the ->setlease() operation in a pile of existing
+> > > local filesystems to generic_setlease() and then changes
+> > > kernel_setlease() to return -EINVAL when the setlease() operation is not
+> > > set.
+> > > 
+> > > With this change, new filesystems will need to explicitly set the
+> > > ->setlease() operations in order to provide lease and delegation
+> > > support.
+> > > 
+> > > I mainly focused on filesystems that are NFS exportable, since NFS and
+> > > SMB are the main users of file leases, and they tend to end up exporting
+> > > the same filesystem types. Let me know if I've missed any.
+> > 
+> > So, what about kernfs and fuse? They seem to be exportable and don't have
+> > .setlease set...
+> > 
+> 
+> Yes, FUSE needs this too. I'll add a patch for that.
+> 
+> As far as kernfs goes: AIUI, that's basically what sysfs and resctrl
+> are built on. Do we really expect people to set leases there?
+> 
+> I guess it's technically a regression since you could set them on those
+> sorts of files earlier, but people don't usually export kernfs based
+> filesystems via NFS or SMB, and that seems like something that could be
+> used to make mischief.
 
-I have to agree with Felix. Adding such complexity to the KFD API is a clear no-go from my side.
+I agree exporting kernfs based filesystem doesn't make a huge amount of
+sense.
 
-Just skimming over the patch it's obvious that this isn't correctly implemented. You simply can't the MMU notifier ranges likes this.
+> AFAICT, kernfs_export_ops is mostly to support open_by_handle_at(). See
+> commit aa8188253474 ("kernfs: add exportfs operations").
+> 
+> One idea: we could add a wrapper around generic_setlease() for
+> filesystems like this that will do a WARN_ONCE() and then call
+> generic_setlease(). That would keep leases working on them but we might
+> get some reports that would tell us who's setting leases on these files
+> and why.
 
-Regards,
-Christian. 
+Yeah, this makes sense at least for some transition period so that we
+faster learn if our judgement about sane / insane lease use was wrong.
 
-On 1/9/26 08:55, Honglei Huang wrote:
-> 
-> Hi Felix,
-> 
-> Thank you for the feedback. I understand your concern about API maintenance.
-> 
-> From what I can see, KFD is still the core driver for all GPU compute workloads. The entire compute ecosystem is built on KFD's infrastructure and continues to rely on it. While the unification work is ongoing, any transition to DRM render node APIs would naturally take considerable time, and KFD is expected to remain the primary interface for compute for the foreseeable future. This batch allocation issue is affecting performance in some specific computing scenarios.
-> 
-> You're absolutely right about the API proliferation concern. Based on your feedback, I'd like to revise the approach for v3 to minimize impact by reusing the existing ioctl instead of adding a new API:
-> 
-> - Reuse existing AMDKFD_IOC_ALLOC_MEMORY_OF_GPU ioctl
-> - Add one flag: KFD_IOC_ALLOC_MEM_FLAGS_USERPTR_BATCH
-> - When flag is set, mmap_offset field points to range array
-> - No new ioctl command, no new structure
-> 
-> This changes the API surface from adding a new ioctl to adding just one flag.
-> 
-> Actually the implementation modifies DRM's GPU memory management
-> infrastructure in amdgpu_amdkfd_gpuvm.c. If DRM render node needs similar functionality later, these functions could be directly reused.
-> 
-> Would you be willing to review v3 with this approach?
-> 
-> Regards,
-> Honglei Huang
-> 
-> On 2026/1/9 03:46, Felix Kuehling wrote:
->> I don't have time to review this in detail right now. I am concerned about adding new KFD API, when the trend is moving towards DRM render node APIs. This creates additional burden for ongoing support of these APIs in addition to the inevitable DRM render node duplicates we'll have in the future. Would it be possible to implement this batch userptr allocation in a render node API from the start?
->>
->> Regards,
->>    Felix
->>
->>
->> On 2026-01-04 02:21, Honglei Huang wrote:
->>> From: Honglei Huang <honghuan@amd.com>
->>>
->>> Hi all,
->>>
->>> This is v2 of the patch series to support allocating multiple non- contiguous
->>> CPU virtual address ranges that map to a single contiguous GPU virtual address.
->>>
->>> **Key improvements over v1:**
->>> - NO memory pinning: uses HMM for page tracking, pages can be swapped/ migrated
->>> - NO impact on SVM subsystem: avoids complexity during KFD/KGD unification
->>> - Better approach: userptr's VA remapping design is ideal for scattered VA registration
->>>
->>> Based on community feedback, v2 takes a completely different implementation
->>> approach by leveraging the existing userptr infrastructure rather than
->>> introducing new SVM-based mechanisms that required memory pinning.
->>>
->>> Changes from v1
->>> ===============
->>>
->>> v1 attempted to solve this problem through the SVM subsystem by:
->>> - Adding a new AMDKFD_IOC_SVM_RANGES ioctl for batch SVM range registration
->>> - Introducing KFD_IOCTL_SVM_ATTR_MAPPED attribute for special VMA handling
->>> - Using pin_user_pages_fast() to pin scattered memory ranges
->>> - Registering multiple SVM ranges with pinned pages
->>>
->>> This approach had significant drawbacks:
->>> 1. Memory pinning defeated the purpose of HMM-based SVM's on-demand paging
->>> 2. Added complexity to the SVM subsystem
->>> 3. Prevented memory oversubscription and dynamic migration
->>> 4. Could cause memory pressure due to locked pages
->>> 5. Interfered with NUMA optimization and page migration
->>>
->>> v2 Implementation Approach
->>> ==========================
->>>
->>> 1. **No memory pinning required**
->>>     - Uses HMM (Heterogeneous Memory Management) for page tracking
->>>     - Pages are NOT pinned, can be swapped/migrated when not in use
->>>     - Supports dynamic page eviction and on-demand restore like standard userptr
->>>
->>> 2. **Zero impact on KFD SVM subsystem**
->>>     - Extends ALLOC_MEMORY_OF_GPU path, not SVM
->>>     - New ioctl: AMDKFD_IOC_ALLOC_MEMORY_OF_GPU_BATCH
->>>     - Zero changes to SVM code, limited scope of changes
->>>
->>> 3. **Perfect fit for non-contiguous VA registration**
->>>     - Userptr design naturally supports GPU VA != CPU VA mapping
->>>     - Multiple non-contiguous CPU VA ranges -> single contiguous GPU VA
->>>     - Unlike KFD SVM which maintains VA identity, userptr allows remapping,
->>>       This VA remapping capability makes userptr ideal for scattered allocations
->>>
->>> **Implementation Details:**
->>>     - Each CPU VA range gets its own mmu_interval_notifier for invalidation
->>>     - All ranges validated together and mapped to contiguous GPU VA
->>>     - Single kgd_mem object with array of user_range_info structures
->>>     - Unified eviction/restore path for all ranges in a batch
->>>
->>> Patch Series Overview
->>> =====================
->>>
->>> Patch 1/4: Add AMDKFD_IOC_ALLOC_MEMORY_OF_GPU_BATCH ioctl and data structures
->>>      - New ioctl command and kfd_ioctl_userptr_range structure
->>>      - UAPI for userspace to request batch userptr allocation
->>>
->>> Patch 2/4: Extend kgd_mem for batch userptr support
->>>      - Add user_range_info and associated fields to kgd_mem
->>>      - Data structures for tracking multiple ranges per allocation
->>>
->>> Patch 3/4: Implement batch userptr allocation and management
->>>      - Core functions: init_user_pages_batch(), get_user_pages_batch()
->>>      - Per-range eviction/restore handlers with unified management
->>>      - Integration with existing userptr eviction/validation flows
->>>
->>> Patch 4/4: Wire up batch userptr ioctl handler
->>>      - Ioctl handler with input validation
->>>      - SVM conflict checking for GPU VA and CPU VA ranges
->>>      - Integration with kfd_process and process_device infrastructure
->>>
->>> Performance Comparison
->>> ======================
->>>
->>> Before implementing this patch, we attempted a userspace solution that makes
->>> multiple calls to the existing AMDKFD_IOC_ALLOC_MEMORY_OF_GPU ioctl to
->>> register non-contiguous VA ranges individually. This approach resulted in
->>> severe performance degradation:
->>>
->>> **Userspace Multiple ioctl Approach:**
->>> - Benchmark score: ~80,000 (down from 200,000 on bare metal)
->>> - Performance loss: 60% degradation
->>>
->>> **This Kernel Batch ioctl Approach:**
->>> - Benchmark score: 160,000 - 190,000 (80%-95% of bare metal)
->>> - Performance improvement: 2x-2.4x faster than userspace approach
->>> - Achieves near-native performance in virtualized environments
->>>
->>> The batch registration in kernel avoids the repeated syscall overhead and
->>> enables efficient unified management of scattered VA ranges, recovering most
->>> of the performance lost to virtualization.
->>>
->>> Testing Results
->>> ===============
->>>
->>> The series has been tested with:
->>> - Multiple scattered malloc() allocations (2-4000+ ranges)
->>> - Various allocation sizes (4KB to 1G+ per range)
->>> - GPU compute workloads using the batch-allocated ranges
->>> - Memory pressure scenarios and eviction/restore cycles
->>> - OpenCL CTS in KVM guest environment
->>> - HIP catch tests in KVM guest environment
->>> - AI workloads: Stable Diffusion, ComfyUI in virtualized environments
->>> - Small LLM inference (3B-7B models) using HuggingFace transformers
->>>
->>> Corresponding userspace patche
->>> ================================
->>> Userspace ROCm changes for new ioctl:
->>> - libhsakmt: https://github.com/ROCm/rocm-systems/commit/ ac21716e5d6f68ec524e50eeef10d1d6ad7eae86
->>>
->>> Thank you for your review and waiting for the feedback.
->>>
->>> Best regards,
->>> Honglei Huang
->>>
->>> Honglei Huang (4):
->>>    drm/amdkfd: Add batch userptr allocation UAPI
->>>    drm/amdkfd: Extend kgd_mem for batch userptr support
->>>    drm/amdkfd: Implement batch userptr allocation and management
->>>    drm/amdkfd: Wire up batch userptr ioctl handler
->>>
->>>   drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    |  21 +
->>>   .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 543 +++++++++++++++++-
->>>   drivers/gpu/drm/amd/amdkfd/kfd_chardev.c      | 159 +++++
->>>   include/uapi/linux/kfd_ioctl.h                |  37 +-
->>>   4 files changed, 740 insertions(+), 20 deletions(-)
->>>
-> 
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
