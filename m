@@ -4,67 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26EEDD167EA
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 09:32:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3167D167E9
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 09:32:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 108986B0089; Fri,  9 Jan 2026 04:32:01 -0500 (EST)
+	id 2CE256B008A; Fri,  9 Jan 2026 04:32:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A77A6B0095; Fri,  9 Jan 2026 04:32:00 -0500 (EST)
+	id 270146B008C; Fri,  9 Jan 2026 04:32:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6F0B6B008C; Fri,  9 Jan 2026 04:32:00 -0500 (EST)
+	id 080696B0096; Fri,  9 Jan 2026 04:32:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BDBFD6B008A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DC16F6B008A
 	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 04:32:00 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 697DB1403AD
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 805AC1AB56F
 	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:32:00 +0000 (UTC)
-X-FDA: 84311908800.19.7DD06EC
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C18094000D
+X-FDA: 84311908800.12.1E7C3A4
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 081D640004
 	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:31:57 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="zP/0GRwZ";
-	spf=pass (imf01.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="y9EKT//z";
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf27.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767951118; a=rsa-sha256;
+	cv=none;
+	b=27nrdSt6RoXhRLsTgVGInaMtUfYXkHyhSvSyltZjhJKkR0GqIE1NYi/00mUzk3MD1ZUJ3J
+	lHVW2uj5vkvz6E/cERqkWzNUr6QCT82eiEw0C8fqUlUA26MRBA+WSqXcsCD/8zEXNOIBdP
+	UW1CnO9WpBgOquawsOyYe5FdbXtQGr0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="y9EKT//z";
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf27.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1767951118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=lkNDHLiP6cFwi6jAkoaTwV369nkoEi9jsL/b3FDfgr4=;
-	b=dFBX79k+d5n84kgV/FeSPUgjuznRnjrpGd/41+Ca3y1XS86YDfHMVTsqdIbuGAVn2h/dQd
-	MUSsrCpguLqh0QthLnT492BDbg82W6UcSZqUNe1uPp5523A4oR+l1OkBlh4/rGxYKkKW4x
-	Q04Ygmxnr69W4roz/Yb83zmwWjt64eo=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="zP/0GRwZ";
-	spf=pass (imf01.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767951118; a=rsa-sha256;
-	cv=none;
-	b=olIbVygY8PTra0JGLARFscRxL/W10ZdOBJaquRHEz56//MsKwr6eyimdLEvK14zJqJhwoB
-	1qe14GET53aTLs5gyOxgCIFiQM/kpTuRHQSbQMPlXeOOFOcDsfex2TQBhuBujkkzBW6MSQ
-	AV2iIf+EM1XPx2Kqjp8TOGCPC6irldY=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=y7EVPQEBKSRZMRRlMzWlmgWzFSCz0HCbPGnBlFaEuVs=;
+	b=KdgzuBo7Vidj2jMHTVllFhzbqgOk5nnzPWRTDHJE6lSMQKB5zU4j0HdN8VB5DymFPH96TD
+	hjYnlJA9utoQgy1L/Lv64bjUn0SdoT9gsMGrwzdnVXgqf6CtVVKRBAmJ6xnFibYE2Los5f
+	jDR4tt7+2qjm/mWtePWC0+VCNvxVP7c=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=lkNDHLiP6cFwi6jAkoaTwV369nkoEi9jsL/b3FDfgr4=;
-	b=zP/0GRwZ/rUxAZQHZ/XIkw89rcBmApgl3khACIM6V3m0RFRz7bxC7bGgBars0HATsDMRuYi8l
-	ak7qcxYx4+fNT91C529U6MUOV8CiQpJ636DqwNdiC+pPqs2pHhnz/U2GZhoA/qZU49t07ICNFJE
-	iTgW4vyK/q4SOxMMSt8TPsQ=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4dnc05284rz1K96q;
+	bh=y7EVPQEBKSRZMRRlMzWlmgWzFSCz0HCbPGnBlFaEuVs=;
+	b=y9EKT//zqf+sUuAGD0O/ESeVm4/cnS4A32Gk5Tw9qoG4PSzMhwU+yJRwmNrEQBY0gQUxvWplg
+	yxvMAO8gp+UD+FPjPjJHexO78Ui1VMI9PpZlh/j+nZryTzbfQd5TzyBOB2U39Ycm/XZ7UuhC/EM
+	humorhiH3wc4Nfwl0/whB+U=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dnc050q5KzKm6J;
 	Fri,  9 Jan 2026 17:28:37 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id D42A640565;
-	Fri,  9 Jan 2026 17:31:51 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 6319B40565;
+	Fri,  9 Jan 2026 17:31:54 +0800 (CST)
 Received: from localhost.localdomain (10.50.87.83) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 9 Jan 2026 17:31:50 +0800
+ 15.2.1544.11; Fri, 9 Jan 2026 17:31:53 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
@@ -74,24 +75,26 @@ CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan
 	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox
 	<willy@infradead.org>, <broonie@kernel.org>, Claudiu Beznea
 	<claudiu.beznea.uj@bp.renesas.com>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH v6 mm-new 0/6] mm: hugetlb: allocate frozen gigantic folio
-Date: Fri, 9 Jan 2026 17:31:30 +0800
-Message-ID: <20260109093136.1491549-1-wangkefeng.wang@huawei.com>
+Subject: [PATCH v6 3/6] mm: cma: kill cma_pages_valid()
+Date: Fri, 9 Jan 2026 17:31:33 +0800
+Message-ID: <20260109093136.1491549-4-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20260109093136.1491549-1-wangkefeng.wang@huawei.com>
+References: <20260109093136.1491549-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.50.87.83]
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  dggpemf100008.china.huawei.com (7.185.36.138)
-X-Stat-Signature: k7cpcqx541t46ij1iya7nqfpawek39q6
+X-Rspamd-Queue-Id: 081D640004
+X-Rspamd-Server: rspam06
+X-Stat-Signature: zfq1m6kz7ctx11dcygekb9q4j6ef97s7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C18094000D
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1767951117-772727
-X-HE-Meta: U2FsdGVkX1/cMDuN687QvDVkL9Vxp6Dwv/I1OsjmYNJPX4+ka6hXcRa1VDTnG6q1Zv2UfCPIuiVAlhE5BaHuYY3a8OmgQzkEA4mUSc9pZKhaMBlR83m01ZYCj6Ec+BAldxceOy75EVS5eG6t/1XveXL+uYgf14/KX63jfe6SJglxicZZUo+MkvZTBFhq9Pe9AXc2225DAeWsGk51Ibougw+UQnzl59B2ky6bs86Sa0wFITFaVllGAPSJ6fWl9Q9rVzocHUMOsgUQBFbr0wrkpFi0Xkkzg6tJ/zlC8GU2yWXy5ditatIYQJZLqpFrd9nMv1PiW8kFsDGffa6qh1wVSTNiHloThcUwcG1tM+4o8Yy5R4nyrFKX8PIPC/DgIQQGyzB0cRISfBbg0nUhrMeNSy7+IGaFwCskDBSNjsdqh6xmXWWOnCLNa5X4Iygi2Gdtx9GAjr4ll2ZbV5L8AxH2JPZIfYnEbK+GoiZx8s0hSbhcMElsVk2eiOHeDYzVSG7u3heeyPsrct0P7ytPMB/eph/6alc04wKN+29wYeCzEa2SZJjBm9ag96ge6iwm/DIzcTVtk69uk7mWxaVp84blaF6PIBKm6KmL3iQQ95Ndipxe5Hj+mzxJpBB3QJO2QLBegruHwn9plvtiMuxW22dQc6OUn132Om9qORfRUv2WWTVu/9ISPJ6iJi4KMkTFEXFpfMKwNrhVy2w1bh5SyZVmac9AoeVKvh7fUJ3C0g2QOwFebvsuTM7bbnX3ytLFdPyyYJE77m+5/EUtll3SsHcwQd3oHHY/N0tAyY455C4ZKyFbhfHYHAwG/iJkJQmxmAcWelyjaEmWS68moBtci6zIzzQYv0Z8hfnrX+5dLnQtFJsPW2e3PmHhuCMBHMvtVO3Yu7QAq2mA3YxXcJuSvEIr1SLb+QZwiFbWwaPBLbvTSImGJQWglQAk8Dc2zLw4kek1cYva9ktgcrF9BNwja1L
- mkEviRbv
- M1X1x4iiTlbcpmdvWnMumGfkooSrkJNLMCJ4D9OleJCva8xb1hg13toBjOHJqYAAVsyo13poQlEbyIyQG27WPvHou1F0T07A9vyFwTnkEZYhK744+9WHHVw0L55HKZ33Zo68cyeEd7b1I5jbj3HrBmXAU1Gh4gZ1FZY36/lH5UDnDn3+ZQOZaM7M4kXNTkz9fYCvR3Y4sONf5viK1ic1iirCUxnwIgom5mNVyxl66yvUy5YwZPNwGsw1eMXE1/D3Ibj1iwMOaq7Qy3o1f2AdZTI7t7kKiwZxW84TDScRfqxb89yM=
+X-HE-Tag: 1767951117-499504
+X-HE-Meta: U2FsdGVkX1/UPr9fzHlFBlutbQKAI9AuQgFCzKsGzMEwDQaIaFd/D1XZHTwIm2uHODoads5RA41EcAEMlSSBwpbuexyr0SAXUsqqgj1Z2J80TTxr3xMgzeejB4lCvnnGz5iV7Qv1ocZaCekSLdm2USc/yFGVvSSJkF8cgYf4lVgy5xvXWlZaO/0tojE8qx6snC1W288TE9CJdOMLKob0WZeiSfgGR7stqqR43rM9g0FAuyMw8JwNmGASA3KOw/SVFqsinsCvqfjDN6drdu2MSzbg3/XJM3fZ+ggUXuCm+ZxYKJuecX2CXVEH6n4Y5/7iSfYUJJBHLGRok/ZocSRWAosCecEXNsSNWSopx43sktlWKoCvQyc2oJ1br6jGjS3xw3kx/9YjE3AHbre13V5n/68mpv3Q5MBIbItzcbcec2oiGRgz45JqONvsWZPEbwiNVYvMgOIFwDSqXGLLzRKfnKx97m6fdh+E8GAADEBqZIEpALx6HBv04AId49h+jI+6A4x2uK2bDWnuKya0kNy0tNqeYJiyWM4VepXgvMCM/Mvj/WijTpIgm3E9jfukhIwIxgOQlHqOjdv/0pESmwa/e6hzjmuTmjwKSLzVTWrs2hsIA9jgNXWpVCmeFZH5cKvS9l5aSqgdywOTeKsXLwUBaf6bCvaXZvdtNv59ALh34MrLBTFBLdbU8xejyOHuI8SCZRRlIvc95jo5elhzORN+XfXDdCTeeoIVKt8JsRmzQhPl689d42xhp1pPGwWH4BXSOodlWWZ3PT8F1M9oqBYi7393Agd8M/yBJpUad+5C7nvq9gq873/j1bwSSvwSDq3TtfdgRDNwwPkENyppst3EqJ47GAEXt9iCBPOEz3itQSkieYV+Fxd8nyfOcYgjHr3iC+N2cI0/NkPDMxAbfemn0MSv8+ZHgx87FW48mKC/2WNLFW6Qxo3b4asf7jXPlx6IR09rrzimXQzmo9lgoXJ
+ ncO7szHB
+ NoueJjDFG88dNbIxTfWwT0hlhrJfzBSJLl8tdu2t38NqLn12giHc8PpJe2eO4zYLrqL7D/jSRB2g1BVjbBbgLiaBuWVzYHnlXK6ADC1qPlvjL3jH/FkJF6/Q/MSLyR/bCiCl6W/gy6H0HlowMBvoLKxxVbNRK7FmSAH3t/dQZ5KhUzX4JRzc+StlZyBV2BSzwe67Ki58+5O6X6wyAmI+8wj0tcuom728uJGQa4zdu5TyaygxrWS7Tl3kFg5vufrU9kfM8zPe8MuQAFGq4dtyCvMO0Rifj+8P1+xeJQVNKy7GNUmHkRWwh6KeJ2TLRAXn+pDqE8ipW3hvngTncLQGOWXB/V5qXVlw5m6uwJatcgO0Lj226j/1D9/x4aztGX7P/yjKLLyjZucWSfEnnEZhDcCfCh3jNtg6dL/jdu1UGK4+Rk9RAWWDEW7mqZ6SWgc/JcYXyYHXE4QkeljX1mp+lKs1hzs+rRUxQAOjjHTeNESmyBPlUgtEgA5p/Sdxc06LF09Ge9UjICoKtl8MBcro1kaR1gk29lrc2TfqMKMZvMnP7BrL29uzRjuyHCjwgH5PpnB81IhSwr0qkZU0WTkpqgtq5BeJbao2dmWeVc3NxS+dclNk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,82 +103,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce alloc_contig_frozen_pages() and cma_alloc_frozen_compound()
-which avoid atomic operation about page refcount, and then convert to
-allocate frozen gigantic folio by the new helpers in hugetlb to cleanup
-the alloc_gigantic_folio().
+Kill cma_pages_valid() which only used in cma_release(), also cleanup code
+duplication between cma pages valid checking and cma memrange finding.
 
-v6:
-- fix crash due to wrong count passed to __cma_release_frozen() in
-  patch5
-  - thanks for the report from Mark/Claudiu/Dmitry and Zi's quickly fix
-- besides hugetlb/hugetlb_cma tests, do more testing with cma_debug interface
-- rebased on mm-new and collect RB
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+ include/linux/cma.h |  1 -
+ mm/cma.c            | 48 +++++++++++----------------------------------
+ 2 files changed, 11 insertions(+), 38 deletions(-)
 
-v5:
-- address Zi Yan's comments 
-  - convert one more VM_BUG_ON_PAGE to VM_WARN_ON_PAGE in split_page()
-  - add a check to catch a tail page in free_contig_frozen_range()
-  - remove __cma_release() and update patch3's changelog
-  - put each page’s refcount in cma_release() and add find_cma_memrange()/
-    __cma_release_frozen() to unify release path, which make the release
-    pattern matches allocation patter
-  - rename alloc_buddy_hugetlb_folio() and alloc_gigantic_folio() with frozen
-- fix wrong node id passed to cma_alloc_frozen_compound() in
-  hugetlb_cma_alloc_folio(), found by lkp
-- collect ACK/RB from Zi Yan/Muchun
-- rebased on mm-new
-
-v4 RESEND:
-- fix set_pages_refcounted() due to bad git-rebase
-- rebased on next1215, also could be apply to mm-new.
-
-v4:
-- add VM_WARN_ON_PAGE and instead of VM_BUG_ON_PAGE in __split_page() 
-- add back pr_debug part in __cma_release()
-- rename alloc_contig_range_frozen to alloc_contig_frozen_range, and
-  make alloc_contig_{range,pages} to only allocate non-compound pages,
-  the free_contig_range() adjusted accordingly
-- add set_pages_refcounted helper to reduce code duplication
-- collect ACK
-
-v3:
-- Fix built warn/err, found by lkp test
-- Address some David's comments,
-  - Focus on frozen part and drop the optimization part
-  - Rename split_non_compound_pages() to __split_pages()
-  - Adding back debug print/WARN_ON if no cma range found or the
-    pfn range of page is not full match the cma range.
-
-v2:
-- Optimize gigantic folio allocation speed
-- Using HPAGE_PUD_ORDER in debug_vm_pgtable
-- Address some David's comments,
-  - kill folio_alloc_gigantic()
-  - add generic cma_alloc_frozen{_compound}() instead of
-    cma_{alloc,free}_folio
-
-
-Kefeng Wang (6):
-  mm: debug_vm_pgtable: add debug_vm_pgtable_free_huge_page()
-  mm: page_alloc: add __split_page()
-  mm: cma: kill cma_pages_valid()
-  mm: page_alloc: add alloc_contig_frozen_{range,pages}()
-  mm: cma: add cma_alloc_frozen{_compound}()
-  mm: hugetlb: allocate frozen pages for gigantic allocation
-
- include/linux/cma.h     |  27 ++----
- include/linux/gfp.h     |  52 ++++------
- include/linux/mmdebug.h |  10 ++
- mm/cma.c                | 122 +++++++++++++----------
- mm/debug_vm_pgtable.c   |  38 ++++----
- mm/hugetlb.c            |  70 ++++----------
- mm/hugetlb_cma.c        |  29 +++---
- mm/hugetlb_cma.h        |  10 +-
- mm/internal.h           |  13 +++
- mm/page_alloc.c         | 209 ++++++++++++++++++++++++++++------------
- 10 files changed, 326 insertions(+), 254 deletions(-)
-
+diff --git a/include/linux/cma.h b/include/linux/cma.h
+index 62d9c1cf6326..e5745d2aec55 100644
+--- a/include/linux/cma.h
++++ b/include/linux/cma.h
+@@ -49,7 +49,6 @@ extern int cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+ 					struct cma **res_cma);
+ extern struct page *cma_alloc(struct cma *cma, unsigned long count, unsigned int align,
+ 			      bool no_warn);
+-extern bool cma_pages_valid(struct cma *cma, const struct page *pages, unsigned long count);
+ extern bool cma_release(struct cma *cma, const struct page *pages, unsigned long count);
+ 
+ extern int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data);
+diff --git a/mm/cma.c b/mm/cma.c
+index 813e6dc7b095..fe3a9eaac4e5 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -942,36 +942,6 @@ struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp)
+ 	return page ? page_folio(page) : NULL;
+ }
+ 
+-bool cma_pages_valid(struct cma *cma, const struct page *pages,
+-		     unsigned long count)
+-{
+-	unsigned long pfn, end;
+-	int r;
+-	struct cma_memrange *cmr;
+-	bool ret;
+-
+-	if (!cma || !pages || count > cma->count)
+-		return false;
+-
+-	pfn = page_to_pfn(pages);
+-	ret = false;
+-
+-	for (r = 0; r < cma->nranges; r++) {
+-		cmr = &cma->ranges[r];
+-		end = cmr->base_pfn + cmr->count;
+-		if (pfn >= cmr->base_pfn && pfn < end) {
+-			ret = pfn + count <= end;
+-			break;
+-		}
+-	}
+-
+-	if (!ret)
+-		pr_debug("%s(page %p, count %lu)\n",
+-				__func__, (void *)pages, count);
+-
+-	return ret;
+-}
+-
+ /**
+  * cma_release() - release allocated pages
+  * @cma:   Contiguous memory region for which the allocation is performed.
+@@ -991,23 +961,27 @@ bool cma_release(struct cma *cma, const struct page *pages,
+ 
+ 	pr_debug("%s(page %p, count %lu)\n", __func__, (void *)pages, count);
+ 
+-	if (!cma_pages_valid(cma, pages, count))
++	if (!cma || !pages || count > cma->count)
+ 		return false;
+ 
+ 	pfn = page_to_pfn(pages);
+-	end_pfn = pfn + count;
+ 
+ 	for (r = 0; r < cma->nranges; r++) {
+ 		cmr = &cma->ranges[r];
+-		if (pfn >= cmr->base_pfn &&
+-		    pfn < (cmr->base_pfn + cmr->count)) {
+-			VM_BUG_ON(end_pfn > cmr->base_pfn + cmr->count);
+-			break;
++		end_pfn = cmr->base_pfn + cmr->count;
++		if (pfn >= cmr->base_pfn && pfn < end_pfn) {
++			if (pfn + count <= end_pfn)
++				break;
++
++			VM_WARN_ON_ONCE(1);
+ 		}
+ 	}
+ 
+-	if (r == cma->nranges)
++	if (r == cma->nranges) {
++		pr_debug("%s(page %p, count %lu, no cma range matches the page range)\n",
++			 __func__, (void *)pages, count);
+ 		return false;
++	}
+ 
+ 	free_contig_range(pfn, count);
+ 	cma_clear_bitmap(cma, cmr, pfn, count);
 -- 
 2.27.0
 
