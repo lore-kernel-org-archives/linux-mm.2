@@ -4,146 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45482D232C5
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 05:26:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7FE0D232E4
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 05:59:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E3E26B0088; Fri,  9 Jan 2026 00:26:24 -0500 (EST)
+	id E8A236B0088; Fri,  9 Jan 2026 00:59:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89A7E6B0089; Fri,  9 Jan 2026 00:26:24 -0500 (EST)
+	id E37BF6B0089; Fri,  9 Jan 2026 00:59:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A63B6B008A; Fri,  9 Jan 2026 00:26:24 -0500 (EST)
+	id D44D76B008A; Fri,  9 Jan 2026 00:59:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 672846B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 00:26:24 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E2823140346
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:26:23 +0000 (UTC)
-X-FDA: 84311289846.26.28CEF3E
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E9F72180004
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:26:21 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Yc1NINFP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of konishi.ryusuke@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=konishi.ryusuke@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767936382; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C1A676B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 00:59:42 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D6CC1603B4
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:59:42 +0000 (UTC)
+X-FDA: 84311373804.19.FBB08A8
+Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6FA13100006
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:59:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=g1Y3HnKo;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3SplgaQgKCFEu16z21t7z77z4x.v75416DG-553Etv3.7Az@flex--bingjiao.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3SplgaQgKCFEu16z21t7z77z4x.v75416DG-553Etv3.7Az@flex--bingjiao.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767938380; a=rsa-sha256;
 	cv=none;
-	b=ZIM6cSPM5E8v4zzFlcD6KqR7sp673Wr6BfAzMha5qOA1JPfWaKhOjIXcfNGRz/s+SwVTi2
-	4/hvj/y5gIm4yITTxOSeEQEVmJLicidwvZJDA/DsykgypDorLJa+bBxyBekSclaeSRBHF/
-	enrQWMqTIaGBYBIPyt9P0A9g3mPwDcs=
+	b=5R3x/tctgp+hqD+xcIj4v+9JOorW08zYh66eXJRZEn+H3JRTy5HzsCm3r7dsuHrMPJ5SA/
+	XN8XWi0kEJYvvbsh+UR2ryMcvLwcigJORlu/YClFTQ4fXd32xpA/NvFCLQTn2xM+++US5x
+	39xuip/XB0bxCQUdm2XQuL8MfpUVGzo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Yc1NINFP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of konishi.ryusuke@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=konishi.ryusuke@gmail.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=g1Y3HnKo;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3SplgaQgKCFEu16z21t7z77z4x.v75416DG-553Etv3.7Az@flex--bingjiao.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3SplgaQgKCFEu16z21t7z77z4x.v75416DG-553Etv3.7Az@flex--bingjiao.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767936382;
+	s=arc-20220608; t=1767938380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EEF8CAf2dAOD+neWtLdI+w7NxCIZ2WohswMXxqPrdck=;
-	b=f1sdW35OEycRfjekT78SdRHnMCNhojUP/Hgbn5egPr84VlY+U7MUTb9KpkT+54Dma/Ohk6
-	6Wf94eObqIA2Rwu8RCp4tewY9JQ4BwHy80nePqNEEBC8Ynie4w3KFSYldcCqcPLWQ1BjvL
-	GnNWu/hCIoXpnLdGGhioUWNMxjDq9qM=
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38305d006faso18161341fa.3
-        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 21:26:21 -0800 (PST)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=VJ52X8DJw4332ZGcvwO1T13NvF/pxnQEOtkap7ms7B8=;
+	b=i9WdAE+5Z3bWtnLq8LwBL2rofFNZOfswduUTnlvnb8PlJLj+c+XbOe2cV8tEnosfJ9FUgu
+	6J/E4wpazm8K0msoUw0g1ExrTxweqSvQz3TUQFtBa+3fPpkJmh2L2kU8K01MqNhFq0lqkr
+	Y4J3GqchPtjm63lHOzpenyBk2Giqv5I=
+Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-12055b90b7bso2949180c88.0
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 21:59:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767936380; x=1768541180; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EEF8CAf2dAOD+neWtLdI+w7NxCIZ2WohswMXxqPrdck=;
-        b=Yc1NINFPsFxgPQVkYlO4dMgnRAQooUOhm5SziGx/BAJvFZRnCysVy1vT8bbQHF62Qv
-         05k+t7eHTddR15of5bZeCN8jSyBk+DnJrB/Mx/KEqhnxhp4XbmTIUqAiThte827NQ0Cy
-         h2gmY6SNAsIfdtvT7K/NJO2Ji4AN+ZKUEnw+l+mMl2Kim11hHZDhxH89DfGfBYw0wbTl
-         4jZSQEv+2SGLPI/pTVMxM14qsD7ig/qR3ihayDeUWYU7FeoXKM2e+sqlz5LD1btguj9l
-         h/9L5SwWb2fYRSS/1wrvF+0sWvR+da/68YWTiznHCSGTxfHhnMC73CpO4AOZHsbpFYD/
-         yVjw==
+        d=google.com; s=20230601; t=1767938379; x=1768543179; darn=kvack.org;
+        h=to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VJ52X8DJw4332ZGcvwO1T13NvF/pxnQEOtkap7ms7B8=;
+        b=g1Y3HnKog3iSe0rOjJlEGdRVeoou3o1RDEIFbx+RULeYwTzwFtQPz4WE7O7kzJ9tKS
+         KyYJuTyUmFpJXU/UVjUNCX7bIBSjj9hNW5T8LIRw3A/Nn+VO28Lss1Y5EoCnyAhNT2vc
+         BLwGdVjktFtMee31hryFvmlSmNZnoIHzbxO8tjaW9bpvcWEUnON6Zwk7Qe2sUavnAKpz
+         tMgcXSshzu+AYiTRWywP4sY/V49Pm2XeEWfAmNmJA/5zlMddoGygxj6nOIIkp+uZhxoG
+         0CXs3LzPDAkJUt0rqD9sltHvPmRYkciVUeHSLPu1I6J+Z7txMXinK90ICNVgZx58LQLw
+         5Rjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767936380; x=1768541180;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EEF8CAf2dAOD+neWtLdI+w7NxCIZ2WohswMXxqPrdck=;
-        b=o5VfH/SwoMeDj7rNzp/tR39KZ5LbjKE484e+nw/w4DyHRrkrN9W3a+jb9UgQ12ZrL1
-         syBaYYPOQf8I/a0SKaojCzgGZmPE/twHendmXG7owuYsk+JuiI0g61OJqLl1mXyQhaUW
-         gzG77PcDqS2W1Mc7loCwvKjTEL++ZxBUn+2hzQz4q4dwoOl3nbCr5K9/GLRZkV9Tzgcx
-         SZQr4n2+NiVe0CueCbW87bePIo5m6v4AfjoGVspqiQYHhtHxfpgTHhDad7LsOZ9AAU19
-         sHVVdqSAdcGRfdQietoMbWLGM40MiP/8lhReJzI446SbIz9c6CWwJeRjQXuWKZQ/2YlT
-         YTRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUjuuaxTLFOXKWfFCKRErguiJPSaU85Eh0vB4RwbT3xOi9kqHm/K1y7W1JXRHaE8GNvytAYAjDEpA==@kvack.org
-X-Gm-Message-State: AOJu0Yz17vA7UUPV3WgXqpsWjTJayxh7md3/AcfZEtKbwK8/f+7zw8d6
-	fX/rYM+17Kr/8/4ZBDCB23oNQGIBJkU2NHX5mbCyfFSLECNid0GccpUtsKelwDyMiHXNCwpUILj
-	xk/yDbrYCz9T7yHdFdkhQr97T+TvW4Mo=
-X-Gm-Gg: AY/fxX7UBENZhrTEInSZ4QJl68tiyebcfIjvblMv+ylcO9thTkMzoJq5TMKFzYGlgjL
-	r6Vkp6HulvnNG9INUnaYW4H1z1/c/bJ85exQrHxEWSXL9HuuB14eS8+cWyImBbcCZ/JUUg7YvV1
-	mS7dAdQ3fpVDUTm+s22ieq7uzinNyby+ymU3a4Am3KU28flJ1JjPCirRGS/bDuRMG+73hSmwvX7
-	tOM0XkdeF3PEw5U67GTSnokOqCJStoSrkNXTkDvV66jSVZ4C0O9Yx/irJTMmRCHSr9+61qc
-X-Google-Smtp-Source: AGHT+IFacKbx/HloTRDyL3KNE+dISSFeSIeO5gnLVmi9ry+Gc3uB4ma+c7Q9oZoxnNZINjg1j054MzA1urN4ujLkRdE=
-X-Received: by 2002:a05:651c:419b:b0:378:e3f9:2d26 with SMTP id
- 38308e7fff4ca-382ff823bdamr21702801fa.39.1767936379607; Thu, 08 Jan 2026
- 21:26:19 -0800 (PST)
-MIME-Version: 1.0
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org> <20260108-setlease-6-20-v1-13-ea4dec9b67fa@kernel.org>
-In-Reply-To: <20260108-setlease-6-20-v1-13-ea4dec9b67fa@kernel.org>
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Fri, 9 Jan 2026 14:26:03 +0900
-X-Gm-Features: AQt7F2pmUKGJKWpVwxhIrI-U32G4ALuqYGKPCGsBpfUc51GGTfk1sxJMQ_5a6zs
-Message-ID: <CAKFNMok9FG=hhzr8YrHYws5z3jTWOf2TXtFWvSfYbNy6+XLHxw@mail.gmail.com>
-Subject: Re: [PATCH 13/24] nilfs2: add setlease file operation
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
-	Nicolas Pitre <nico@fluxnic.net>, Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Anders Larsen <al@alarsen.net>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>, 
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>, 
-	"Theodore Ts'o" <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
-	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Dave Kleikamp <shaggy@kernel.org>, 
-	Viacheslav Dubeyko <slava@dubeyko.com>, 
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>, 
-	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>, 
-	Phillip Lougher <phillip@squashfs.org.uk>, Carlos Maiolino <cem@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Namjae Jeon <linkinjeon@kernel.org>, 
-	Sungjong Seo <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>, 
-	Chuck Lever <chuck.lever@oracle.com>, Alexander Aring <alex.aring@gmail.com>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, Xiubo Li <xiubli@redhat.com>, 
-	Ilya Dryomov <idryomov@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
-	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, linux-mtd@lists.infradead.org, 
-	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, 
-	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
-	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
-	gfs2@lists.linux.dev, linux-doc@vger.kernel.org, v9fs@lists.linux.dev, 
-	ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org
+        d=1e100.net; s=20230601; t=1767938379; x=1768543179;
+        h=to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VJ52X8DJw4332ZGcvwO1T13NvF/pxnQEOtkap7ms7B8=;
+        b=G83pk9nCIR/W3rHYRrI0+2G+YKoPlk76ZUgTZZ7iKtsBgrKUK70o+2wG66cG8auMAI
+         WcUt5gDZi384Lz2HlctgVlVAsrQusMSKorVpmaZHfS4M8bA4t9C2DlurTSBGS8+kjqHY
+         YUV1TRvZtJGVvp4TLSa/twAKucU9H8wJxlIzWflShck9GVFCA96T1XgK7Ud/AH/HcR66
+         mJ2lpQYCekTbCW+758rALLlGPP1+ZCyfUc6beui6Pf3k4E7Q/FMUZbr4iPvgmzFur6Od
+         QK3ywZWbm+QEXgZFpNzzJNKJGuAyBPZrYBkerPYx2PfizS61KALF/DIKaMi75XbF8IgA
+         bhlw==
+X-Gm-Message-State: AOJu0Yy3fdesPh+6iy3NK0VY7baEjRLp0Q/NTssvtbMZQt37LvIgnoZ3
+	e8Bfhr71CviXAJL3Xaiw9xNqvOWGEog/oqRhRfj/XbV6O/nO8mNgJU+bKUVvYPY7LdBb43LqSG5
+	RTLb85Ce+erPJW8bvQkvqKPdfh7nOaWwlc8kJGslvw5li0Y6Avwdd3M98pI6AiL3vs5NOpW794P
+	0xUgzui1awyhhg4gxOj0/QHdnPuZ/I0e9VBp0MHvgP0g==
+X-Google-Smtp-Source: AGHT+IF0mQn4MseMrVOa8p8Zv/hsH//maZC0uffsHloMQe6o/1cJy2BKOd5wYY8oJTAqJA82ez4XIf9m13dkEQ==
+X-Received: from dlbbo38.prod.google.com ([2002:a05:7022:43a6:b0:11b:65e:f6a])
+ (user=bingjiao job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:e08:b0:11b:4351:2687 with SMTP id a92af1059eb24-121f8ad0889mr8025015c88.17.1767938378896;
+ Thu, 08 Jan 2026 21:59:38 -0800 (PST)
+Date: Fri,  9 Jan 2026 05:59:37 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260109055937.3739860-1-bingjiao@google.com>
+Subject: [PATCH] mm/vmscan: fix uninitialized variable in demote_folio_list()
+From: Bing Jiao <bingjiao@google.com>
+To: linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6FA13100006
+X-Stat-Signature: e7p1c66bfaxm1srmkiw9rpj1poqj5y1r
 X-Rspam-User: 
-X-Stat-Signature: rrigekg7b7wwbfzhwwjw7jdru8mjn58u
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E9F72180004
-X-HE-Tag: 1767936381-43692
-X-HE-Meta: U2FsdGVkX18idT4lD+ZqLtzLeq5Ou8r9DRgD1vQ5tWubhVy8VkvO1AGsJL6i29BBYvSNs9v0e66a1ZB+DvJVCrklCjW6AM3+Te4DRbuegCpvV487J7nTY7knWHq1E4uhiWz0zcr3iaIGae7AyFIztHkuJPikn0I1hfHrU0D3QjE0YnH13dAgvOVa+QwOBw/M3q+Sy9WIXug+W6LMhZz5Ky+p9ClTKEwzw5Qx5LWdE3L5gRFkEdfaRZQhN7ypPybVusLQvvyzq6scJsEcXfrx9h0SEnK1cspZEaIB+AxV8VYN7TnJdmCTaC8CYB75gyU2wjnjcbiCPth/gRB0q640wWEvjbSK8V1tWZaYXmu+09u1jCTqCz5lT/Ysgk6JCRU5bRCY37jyj6EaBElXWzHeDQNnNnVHVALbEWgRaWRYit05BRcc96NdY+OJklcWLd6rOwbaYwJYB7oaNkL1TiuzdWTKmDtBI/zqBejaaDwba0Zk+JxksjcBGQwb2c11qn6G+yhe2X8oyECNbRD+S8knxIb8npVoyHv7fcqZYeTO7SauHvRLWPNbC7mnegeyDcR3IaXi+IDqzo2SuNyO7yDtMVNG9O1XxeFwUM5jFMyuUbvGMkFW+e6T4WVIhx3pEkDOUAGkuCmCxbG62wNhK6DmukBP1lteYnfDRuGuSKt7a1cnftJkwUngXAIzSRZtd7DNCuzra6Wg2OkXmCJN37rmYbWkLNkcTxAqj3NaAtjniqIIZW8u0A+r5vHQcjls5Qnf4I8Q966ThbhFAJRdwHXuQyClPXCXtE3QXlRTLaeYqqTLlTOAfd3ywJEGQyfnpSvqbPvoanUO4Gyuu+kKhAyOGXogPctv18Ue+pmN1/yph/l8tnIREzVJnmv1THMUDuTbKhC8VGfbsKYFU/O05mPP7FBfum5lm4K+4t/VQqX+aLoRC2xGMuAFec0fKtinGhl+X/zAK8tkTDIk0uSzBy/
- J8TWYOsn
- Xg+GxHZL1mxjwsJQEfYp1JpA3jAX8duad0EEwriDxHYGG77KZceW2TZTfTyFhLA/gYEOeY+sXy3kQOBW4jgA01Y59pgMPc0Xw80JbUBbdKmhYWK4+sPVftk9Rvx7wJRaDFGDlwzxVYVOIY59drhSIl5ckHrmtVQqihARRZJXSrIjfA5i137p14LciWmtEXiQYEhI2NLsK7sJx2Pi8qaRiiZ8Bktor+Xfyo129D4b0toV1ScpvrZFGxnlXyPoBldFdWqtguC+QQykWrJ15nf4N6a/F8bI8Ic9Z68oofSWzo55wBDTsiVSCCRgKU2DYcKMe7BWB8wwAKJK82wgM6n0ckJV1G6DpqmA07bnMoOMZAswf+eQmhfgpUcWaB2mC2HsS6zR+CQQnZNmkQxlFWPvGJRBnsS8om47KQTsPa37xh+IBF8oVNwvyHFBIhXOZlszTYuqCmxfCmXrqjDcItfMtfzqwbnipmcM53lhR9J24J7nBBTinsmtTsfo4T5oaRg9AvO/WVbaCbLHF383Jf66xXmpuj1sH8VRdfBcT
+X-HE-Tag: 1767938380-713054
+X-HE-Meta: U2FsdGVkX18a8/Y+DjHq/KyWwK62H3Bu9/GvTdvL6bhClsPP+oe89qss57HtKXpWm0z/c7nA+i55r1d2oH99X9FA5woa01zagerYqasUXBF3Rec5BPZw0knDZqFIzTDpRcHW7a9QoStBw7Kg1Bjn+9v44RqaEAuasBjPNukw5r29y5rmf0g7sG98GvpeBCSLlZr1onR8oJDOgZ87QQTuFtgS6bJ/TNL/efHwM2VMemATrq4tuE8WJM8ud7cVENpsyZbSR5AIMCbajjILtCAVvT+gcPxEW9+iQuKWjm+sj2O77ouAhENeIZUAlZvRdgfa1STgNnOOBsXC4xDD0Wk5qTFEoMSAz32kZqslXMbwCcHDCkJAT6w5pipgjIm6oz1phNVYZCIVhrMnt2lR70MqN2Xbo3iTue8lpkxZlLGiNdwEleyeiyT3aPtI3axY0kCLUawnzlIoYSs832rlT57ABaHrkTvUk907xAH/S76QZqp+2v1iw2BQmlZZrxAcL4pz7FDVXk9/pfL6vcEeNShrzrdooxiEBPJmyH9okoP0XPojA05pGTWW/4ogf7wVOy+K4NXTRLfzIDdc676m1P1Y4L+g7idkss0damNtJLJll6aBvtqeD4v+gzsl6Sv9RTXsDA/y6sW+bR4WPDly0oLncx/DuEEV6fJMJtyINbt7qxjirEKkHGj4VKimOKymI8yHj42ctsFqi9hZYC7DI8DL3sodWhvWkwleIaUAkUsJ4490EH9B1m40qZVygkJUzZLSMhdsgTxWcry7g5Ru9mykGaB92QVN70O9234ZuL51jC5GZsD4VB4R8fkv6Cdyy97258B05ns3nLOETsHvR4bMNLEnahbAK5VdR1Egpbbjeu4F27hDRwIEPz5g0EYVMU0XXppED8WsV8jDZuw/XS8LQSfJh15Re1B7gOjiTCVe7BMNklxNAzdUlU48tHBeNBgksg0vrfytG8a0qIMPyTc
+ OfnirKSE
+ u98lV6I5vG72qF61WHgTP+5vZc58Be36XRXR0OhrrUKsWUV45RfshNLv2O9Re8xcwKOwEsfYUGGUFu/fyKNqfeku0TqCxfTf+QiTKbXpnpv0n+LJnQ508Ny+tBgVtub9AXkPnRzDCBm+OZcNuI188bn5V2Czc5MLZcrLilTRz3COncA2aIR0h2ZtKK06Vq+uCVrcfS7xJ+KhQN3M4CaEzHGan+UcFnG893n7yJ0Mf1LEtDz0072g61RfAqlTJ+DvIQRKKdPhR+SThbNlmldsUSwECqRFYuad1XawNlgPNPIK8FqP1/hFx75SvQRJLu7uUE8W6q2JGXOP0F9dcr/n3JGqJ9oWCA+v2/NirRc80aXcp6FT0KqZP5pQB0CXLi/b89KloN9WA8jABsO8K02RzZz5hkP4QMftUVZWZobSRTGVePXFOthVogz9MJCcc1pNUK+q1h845g95RdBVEQu9XKyfXU1i5y+YaLuZg2fp5CZ05+JsuIeMrZjBW9m1gH3rLhT8mxOWq3Ae22P6z9HSmS83JJSfqbXUy+k1rNZqp2+yEbiTeZ3uwHI888LMoCJVUHIfw44gryO+vOlPYkcsSVq3lVvpuxn9qCRVGmJcbHdbDolu04lSCwxEz7+7Quq94PlIJDFOkPwaEKhEwoMx2+Dyfvp3Pc3rDo9boZNvNDD86yko=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,72 +104,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 9, 2026 at 2:15=E2=80=AFAM Jeff Layton wrote:
->
-> Add the setlease file_operation to nilfs_file_operations and
-> nilfs_dir_operations, pointing to generic_setlease.  A future patch
-> will change the default behavior to reject lease attempts with -EINVAL
-> when there is no setlease file operation defined. Add generic_setlease
-> to retain the ability to set leases on this filesystem.
->
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Commit d92027a5f30a6c ("mm/vmscan: select the closest preferred node in
+demote_folio_list()") refactored the selection logic for demotion target
+nodes. However, it removed the initial assignment of 'target_nid' while
+leaving a premature check for 'NUMA_NO_NODE' in place.
 
-Looks good, Thanks!
+Since 'target_nid' is now assigned further down in the function based on
+preferred and allowed node masks, the initial check at line 1046 is
+redundant.
 
-Acked-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Remove the redundant check to resolve the compiler warning.
 
-Ryusuke Konishi
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202601091037.vUSHeJCH-lkp@intel.com/
+Fixes: d92027a5f30a6c ("mm/vmscan: select the closest preferred node in demote_folio_list()")
+Signed-off-by: Bing Jiao <bingjiao@google.com>
+---
+ mm/vmscan.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-> ---
->  fs/nilfs2/dir.c  | 3 ++-
->  fs/nilfs2/file.c | 2 ++
->  2 files changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-> index 6ca3d74be1e16d5bc577e2520f1e841287a2511f..b243199036dfa1ab2299efaaa=
-5bdf5da2d159ff2 100644
-> --- a/fs/nilfs2/dir.c
-> +++ b/fs/nilfs2/dir.c
-> @@ -30,6 +30,7 @@
->   */
->
->  #include <linux/pagemap.h>
-> +#include <linux/filelock.h>
->  #include "nilfs.h"
->  #include "page.h"
->
-> @@ -661,5 +662,5 @@ const struct file_operations nilfs_dir_operations =3D=
- {
->         .compat_ioctl   =3D nilfs_compat_ioctl,
->  #endif /* CONFIG_COMPAT */
->         .fsync          =3D nilfs_sync_file,
-> -
-> +       .setlease       =3D generic_setlease,
->  };
-> diff --git a/fs/nilfs2/file.c b/fs/nilfs2/file.c
-> index 1b8d754db44d44d25dcd13f008d266ec83c74d3f..f93b68c4877c5ed369e90b723=
-517e117142335de 100644
-> --- a/fs/nilfs2/file.c
-> +++ b/fs/nilfs2/file.c
-> @@ -8,6 +8,7 @@
->   */
->
->  #include <linux/fs.h>
-> +#include <linux/filelock.h>
->  #include <linux/mm.h>
->  #include <linux/writeback.h>
->  #include "nilfs.h"
-> @@ -150,6 +151,7 @@ const struct file_operations nilfs_file_operations =
-=3D {
->         .fsync          =3D nilfs_sync_file,
->         .splice_read    =3D filemap_splice_read,
->         .splice_write   =3D iter_file_splice_write,
-> +       .setlease       =3D generic_setlease,
->  };
->
->  const struct inode_operations nilfs_file_inode_operations =3D {
->
-> --
-> 2.52.0
->
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 213ee75b3306..590ab3ec1998 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1044,10 +1044,6 @@ static unsigned int demote_folio_list(struct list_head *demote_folios,
+ 	if (list_empty(demote_folios))
+ 		return 0;
+
+-	if (target_nid == NUMA_NO_NODE)
+-		/* No lower-tier nodes or nodes were hot-unplugged. */
+-		return 0;
+-
+ 	node_get_allowed_targets(pgdat, &allowed_mask);
+ 	mem_cgroup_node_filter_allowed(memcg, &allowed_mask);
+ 	if (nodes_empty(allowed_mask))
+--
+2.52.0.457.g6b5491de43-goog
+
 
