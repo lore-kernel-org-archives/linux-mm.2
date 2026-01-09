@@ -4,92 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C36DAD16805
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 10:43:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FC1BD1680C
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 10:52:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D069A6B0088; Fri,  9 Jan 2026 05:43:21 -0500 (EST)
+	id BDB816B0088; Fri,  9 Jan 2026 05:52:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB4D06B0089; Fri,  9 Jan 2026 05:43:21 -0500 (EST)
+	id B89306B0089; Fri,  9 Jan 2026 05:52:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC09C6B008A; Fri,  9 Jan 2026 05:43:21 -0500 (EST)
+	id AC3FC6B008A; Fri,  9 Jan 2026 05:52:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A8B176B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:43:21 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2BD251A0446
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:43:21 +0000 (UTC)
-X-FDA: 84312088602.11.C61441D
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8D1774000D
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:43:18 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B8156B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:52:16 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D2A4C1A0445
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:52:15 +0000 (UTC)
+X-FDA: 84312111030.28.EF514EA
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1020B40012
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:52:13 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Th7qhJpA;
-	spf=pass (imf17.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767955399; a=rsa-sha256;
-	cv=none;
-	b=MONmiwXx3jRbEUvusPF09q9dJ+OmdzgBtJz6bML3FmOG+iG3UHr804cpdoDLBTxLliatWH
-	YVw+R1MP88XwFloytj1gFGQVHXmdVgtuN35Vn0L/41iEAFhZ6Qu21UcfET7vZAf2OXQ9kD
-	N0wDozISZYgkFmyRkX3W20jMTLV68Sc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Th7qhJpA;
-	spf=pass (imf17.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eZaCSV4R;
+	spf=pass (imf17.hostedemail.com: domain of yajun.deng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767955399;
+	s=arc-20220608; t=1767955934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=UMSWWS1xemY2qzOpfGQyi+YC3F7gxVgrd+oftHsiSGM=;
-	b=tIZjpEfGZP9TNr40E0em7JyIkNlkCwXH0OwCGaz8cZaHxbraGKkCblwAaHZ0NkSl8Tk5yM
-	lRhuauctKXnhXTkfvQWwFRsym3GWvGYQ07jocz22s7MrKTrMccdV0+IkdxpdZ5rYcpzKqK
-	be770Zx2mRWHXGNv/2aqlSrmSy5FhKE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=UM
-	SWWS1xemY2qzOpfGQyi+YC3F7gxVgrd+oftHsiSGM=; b=Th7qhJpAIrAk3DDEpd
-	x1cmCFonCnUnap0z9I64wocaYDT5kNojEw4/hWEK0k4crNmwaqqmoPh3RKiqTv1b
-	yzgNCvbGaikev28ToeS1MjO3PthIPqcTXD6t/zRi4FNjWJ9cVbHNMWc2v+axcJDK
-	2mxbSDdxZsMibYVZCnFvN2F20=
-Received: from ubuntu24-z.. (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgD3vxit22BpF9M4Kw--.163S2;
-	Fri, 09 Jan 2026 18:42:55 +0800 (CST)
-From: ranxiaokai627@163.com
-To: graf@amazon.com,
-	rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	akpm@linux-foundation.org,
-	surenb@google.com
-Cc: kexec@lists.infradead.org,
-	linux-mm@kvack.org,
+	bh=1TQfjl1Oyg8oTFGlG7k+ntvES7Gvx/vdSZ107UMkTkk=;
+	b=HBWeAc9tOQ2NWjfuZ8shbjptORVJaJWCZrXhKGOIuBY8Q+iB3NDvnwCBTA6nkoh8MUwwfV
+	Wo0CxRlm0NmEAOFKj9UgXa5CTV2R+hlR4cTkLFNjsUBKd/uLfYJjq1tKOVtCqdkntRbx2T
+	/nr1jE3llP8B6UAlyoa8FvN7aWMg8ZM=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eZaCSV4R;
+	spf=pass (imf17.hostedemail.com: domain of yajun.deng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767955934; a=rsa-sha256;
+	cv=none;
+	b=fJ4DFXPAGUwsPtnmFHFcADwLaoYhBdEYc/wr6B7j0bXToj6TWaCoc2uV9YV7FtfUoWbc+j
+	yXsi1XUAMZ7NBVMbuW5t1Qp1eDHpaHC3LQ+w9cvFfMlg9ccBPDxgMoCt/2i5yzaRJ7VSF0
+	f/U8tUjTbRd6rcs3Gcn46vRcW/H3bC4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767955931;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=1TQfjl1Oyg8oTFGlG7k+ntvES7Gvx/vdSZ107UMkTkk=;
+	b=eZaCSV4R0Xi5F60N89Kd3yCS91+f00jluNA0tHPTGxReDiNpEL4Hm0eVG95mPaEN4TYduJ
+	ioG4iPz0nUFlMzoGhxoyKORf6+IkyjCi/j9STFNx6Vx2Pg4Hnqi/PLTDqDvfW87c8hAOps
+	e0CtIN2T6e+xF825mbZcFua9+hn/V9E=
+From: Yajun Deng <yajun.deng@linux.dev>
+To: akpm@linux-foundation.org,
+	vbabka@suse.cz,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	ran.xiaokai@zte.com.cn,
-	ranxiaokai627@163.com
-Subject: [PATCH] kho: init alloc tags when restoring pages from reserved memory
-Date: Fri,  9 Jan 2026 10:42:51 +0000
-Message-ID: <20260109104251.157767-1-ranxiaokai627@163.com>
-X-Mailer: git-send-email 2.43.0
+	Yajun Deng <yajun.deng@linux.dev>
+Subject: [PATCH] mm/page_alloc: Avoid duplicate NR_FREE_PAGES updates in move_to_free_list()
+Date: Fri,  9 Jan 2026 18:51:21 +0800
+Message-Id: <20260109105121.328780-1-yajun.deng@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgD3vxit22BpF9M4Kw--.163S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtrW7Cr4fXF4rXw1xGrW5trb_yoWkGwb_XF
-	4UJw4jgryqkFnIkan0ywsaqFW5K3yYgFWjyw1aqFW3Ja4Uta1q9a12vrnxZry5Wrs8CFZ8
-	Crn0gF90yrySqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRta0PUUUUUU==
-X-Originating-IP: [117.176.243.134]
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbCxg+U4Glg268gtgAA3W
-X-Stat-Signature: kduhug65ru7bdw1uwqfk9634w3afwdti
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8D1774000D
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: hupoew5z5j9sx8q4qp5t1x9fsyaubmg6
+X-Rspamd-Queue-Id: 1020B40012
 X-Rspam-User: 
-X-HE-Tag: 1767955398-883679
-X-HE-Meta: U2FsdGVkX18My1xvKGUOwJYEVZTR2JxjQ+gCwulUT1t0qKypGspYh5OYrHnsz+aVS3NMyOahTEdb0jzXPuWNVJs2bUqWOVWydTCRjmc9E184QVFQP4IWh11VlHdbRzWpK/PtL1HSPxUbL0eVnPKxMu1IXieLj0iRgefkSbwNcoimtClslHnbS32PR3bBL0Z4+dhpdwEzVmU6395zepBiMEjCBQGFbtXoE78ArOVTgy+ZwdhRRwAnQoeeqGrCgp77ePhR3mHiRehCaEgwkfMLVNQwoJ9Ewp81bSMB/OCnv+imts8efNS6s3oecKKB9u06d8WnKiEFa7qkViCZ1w3Tpo1Srr7ieoUH1ufYLX6SJdgMbPbQBGYiBzz2vYJ+tt8iwD5ol8gUyViV2SruN9ni991zLI1EHOX7nqwGtpulD58fIGxBg+PLY8cyU1vE4+ggQmLim1C+ECREuL4/Jh7QP2aEsTG8QnKe8yWmFWBQwyaxihRbPIXm5Sz90wb6f40OyaoljbUbfm9BJCbjE2JdYK5iuHZhIVnmOhySABoypvwWp4Jhabsj0q0YPQHYOewi4H2LRggEcvvoAPSjBib/uO3Tbk7FMEFML3GskkWfHv4ZtRXXfTntNEEObYp7OSAv+OkET0d53LODcSl6cA85eolIf0HRExRElg4qNKtSwIXjLIFii+NGbc+9qKu9BoxtjefK0QKoElymz5dBP4lcGQbs7m3UgLxtkH3MsBZ5ew1geqo18JpcVT9ejTZ4o4Pgufka9r9bzMosfOf0GGbz/EHZRUNWnCQl0l9vIsf8VePvWXuloM0UXLvuUoc+wKvy798tgNSoX9egZYcq46NBsSVkNZfxtdYXv1hyBPlynZ7QSQRyIlpeUY8tj3uRwuwK4XnJkqfxZQlYPAPnoKko6XPr9lBcvB7TUvhSaPEH0GYNbbpB+A6I92WSqaiW2KaL8kmdbLiEKsrDR8jKP7h
- S9jeJG/N
- v+/sWwMnUMZ6pAxPH1VgfY2Jbvo3tc0Go+0WwD5GIDcusY8D0UuPOjW6mfkzpV1JR9jp8l+XzmFMBefs8wLJOc4uasG6fO4q+rVkAcYCmxla6M8mPk2uyVvlo2ih4JPvFwWqq506LqHO1vd/Y7LT4FqE3Nu8HIXidy/vLX127lEWi4hvOh4opBzPORL3vFhjRrcRVXkdw7EXeyKPABfEG8+PYFtU6KIJsjSLZ1DcsXaoQM4z3SipkLfx898a1k/8yQW1I2SG5DiBoLm+GUHwxYsYchOk/JTJyEwp/loIhjMZonmcXpGenGVZFVoqpDQPkOCrP7ALLfvpa4OVJGcaXBPhj30Daeqpsrf65OjTtU6mMxAEEbXT4i3ojCY/WFXjyzZ5Lkyo9Q3eMlsA=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1767955933-119858
+X-HE-Meta: U2FsdGVkX19RQPF1uMZTRSdPaOuoOOpPIEkTbvCQrJ5AFR3xA5qyZIV4wlqd6v1s6IKn4z2t5Rz15xi43FlDhla04QPRKvQeiWCCe7Y+7ViHYyG+jXME8u4SvuyYAaDUnn87s60TzihK2hGvc+YtXtdMRe5K/6qLK0mCsFINQ3yhbh/T7nX9zTjMFAbaUwcP628MS86ASRDq1CRMOBcEXiAPaCftaJQoMNIO1m1VrbtVWtfRqRXNVO7u0w7C6jQU4rJ7yGY3nGnFfEJ2nZ9eU8iNHM4PdnJTgrj8NfCx4linuOZLYKv5XAPAtMydfwT8s7z/rRcQ5l/0nz2Z382CBrm+h99gV29VOJpb5XYZTWiqYcyiY/7gSJZD6y+x2zJy+ShMNf0PEuR3jvnYkjOELUNbxVmTiwPP2JeveciEfPmZbXRyvqHfA0tegtr4Jef7BLAzxnf/8fpi9GIefZ1TtDf99ElmKMOlSxHohe13uQDxkTQ8MLjet10RHjs0d5+k0aJi0+lN+yNNhCofW7jX49uIoQAi+nj1C6KAatynwUKI5s3rrdSvJl9OAQfNdtj+8l2i096fG5j4/NaqgH20wrV/4mCQhPlm+RZQ2nVZu9jB3Hvg1JSFjLGxhXOxPYmCUisPjFShALI4N88ejicAHoIA6pqVObqj2K6ZTtLk2VwbdBVWMjmLTkFD7wPfODhCreXYJ+JII4nqHUCsRGVMyUW2GoSP2Oh7FEqdF0v17rySrc4L6N8d8yURXHal5n9+Qp52JW8jNbpZXHsxb4galoPSOSxyTR2e/NbASy1crw76k57vfKq8jgQlNXeMpcecwnpIEGKQDtMwm21HrG5flxBu1hwYo4G3yh+bNerJJkh50ASzoJfuUezjyZfZ6mV1wicjbXFG7Jp3BkfEmzhJiN1QlbdAJ4oxNm4ukT4mmCoHkZSiBexWsin9itFw4XMLObrAPaZZRmDcxCAU6Yz
+ gYjuyk2/
+ 8i3J2DCY4F5LPi3gUyC/tH1l1mMmDLYRf3cZUYOMrAEWbDmy6/KllLHc35LDJfw4SPk7MF0JBQxSyahtIjnB3kTrcIthTMbU5lPOE60rr/cOnIepiBUgHZ5nKgfuh01PXUln0KtDm1Vya4ggJbagOEhvNZmFOsSIpAE5iUE5j2qGL/lc28793EzNd5E0MWlcyZBtCXth5FHu0+SdN6+/jBzCcK3PZZeUxGi4Ovof+xWYVmzG+XPQ6Tqcpe4eINrbizAPJhbyaD5q2foB5tFgRUkwXBQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,37 +91,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+In move_to_free_list(), when a page block changes its migration type,
+we need to update free page counts for both the old and new types.
+Originally, this was done by two calls to account_freepages(), which
+updates NR_FREE_PAGES and also type-specific counters. However, this
+causes NR_FREE_PAGES to be updated twice, while the net change is zero
+in most cases.
 
-Memblock pages (including reserved memory) should have their allocation
-tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-released to the page allocator. When kho restores pages through
-kho_restore_page(), missing this call causes mismatched
-allocation/deallocation tracking and warning message:
-alloc_tag was not set.
+This patch introduces a new function account_freepages_both() that
+updates the statistics for both old and new migration types in one go.
+It avoids the double update of NR_FREE_PAGES by computing the net change
+only when the isolation status changes.
 
-Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-fix this.
+The optimization avoid duplicate NR_FREE_PAGES updates in
+move_to_free_list().
 
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
 ---
- kernel/liveupdate/kexec_handover.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/page_alloc.c | 37 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 30 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index cd6b3fb9dcae..2d47f2c50bd8 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -268,6 +268,7 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
- 	else
- 		kho_init_pages(page, nr_pages);
- 
-+	clear_page_tag_ref(page);
- 	adjust_managed_page_count(page, nr_pages);
- 	return page;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index ebfa07632995..e51d8bd7ab7d 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -812,6 +812,16 @@ compaction_capture(struct capture_control *capc, struct page *page,
  }
+ #endif /* CONFIG_COMPACTION */
+ 
++static inline void account_specific_freepages(struct zone *zone, int nr_pages,
++					      int migratetype)
++{
++	if (is_migrate_cma(migratetype))
++		__mod_zone_page_state(zone, NR_FREE_CMA_PAGES, nr_pages);
++	else if (migratetype == MIGRATE_HIGHATOMIC)
++		WRITE_ONCE(zone->nr_free_highatomic,
++			   zone->nr_free_highatomic + nr_pages);
++}
++
+ static inline void account_freepages(struct zone *zone, int nr_pages,
+ 				     int migratetype)
+ {
+@@ -822,11 +832,25 @@ static inline void account_freepages(struct zone *zone, int nr_pages,
+ 
+ 	__mod_zone_page_state(zone, NR_FREE_PAGES, nr_pages);
+ 
+-	if (is_migrate_cma(migratetype))
+-		__mod_zone_page_state(zone, NR_FREE_CMA_PAGES, nr_pages);
+-	else if (migratetype == MIGRATE_HIGHATOMIC)
+-		WRITE_ONCE(zone->nr_free_highatomic,
+-			   zone->nr_free_highatomic + nr_pages);
++	account_specific_freepages(zone, nr_pages, migratetype);
++}
++
++static inline void account_freepages_both(struct zone *zone, int nr_pages,
++					  int old_mt, int new_mt)
++{
++	lockdep_assert_held(&zone->lock);
++
++	bool old_isolated = is_migrate_isolate(old_mt);
++	bool new_isolated = is_migrate_isolate(new_mt);
++
++	if (old_isolated != new_isolated)
++		__mod_zone_page_state(zone, NR_FREE_PAGES,
++				      old_isolated ? nr_pages : -nr_pages);
++
++	if (!old_isolated)
++		account_specific_freepages(zone, -nr_pages, old_mt);
++	if (!new_isolated)
++		account_specific_freepages(zone, nr_pages, new_mt);
+ }
+ 
+ /* Used for pages not on another list */
+@@ -869,8 +893,7 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
+ 
+ 	list_move_tail(&page->buddy_list, &area->free_list[new_mt]);
+ 
+-	account_freepages(zone, -nr_pages, old_mt);
+-	account_freepages(zone, nr_pages, new_mt);
++	account_freepages_both(zone, nr_pages, old_mt, new_mt);
+ 
+ 	if (order >= pageblock_order &&
+ 	    is_migrate_isolate(old_mt) != is_migrate_isolate(new_mt)) {
 -- 
-2.25.1
-
+2.34.1
 
 
