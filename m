@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 438CED232EF
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 08:48:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C116CD232EF
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 08:49:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1069E6B0088; Fri,  9 Jan 2026 03:48:52 -0500 (EST)
+	id 18E7D6B0089; Fri,  9 Jan 2026 03:49:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08A516B0089; Fri,  9 Jan 2026 03:48:52 -0500 (EST)
+	id 1664C6B008A; Fri,  9 Jan 2026 03:49:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAE7D6B008A; Fri,  9 Jan 2026 03:48:51 -0500 (EST)
+	id 03F1C6B008C; Fri,  9 Jan 2026 03:49:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D57256B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:48:51 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 73A0A13AD34
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:48:51 +0000 (UTC)
-X-FDA: 84311800062.25.4CB503A
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E58836B0089
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:49:36 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7D06B1AB43B
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:49:36 +0000 (UTC)
+X-FDA: 84311801952.23.A46F1F1
 Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 39EAD180003
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:48:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	spf=pass (imf16.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at
+	by imf08.hostedemail.com (Postfix) with ESMTP id 69FA1160009
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:49:34 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	spf=pass (imf08.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767948529;
+	s=arc-20220608; t=1767948574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hi6ZwA10nQeVVLVHSSKeYbeNuIjA/FZtJQ9gk2yneq8=;
-	b=VrrfW8k4YsGjJvVY0IDoiqWXRB/eeqOnMHDQLdBa6ijy1j426nNPdWDLDiQOi9PprJAxXE
-	Moj63R7lWO+gZUKu0eUW4t+NzcKIkLi7k9no0MUURV2brMUTD+UON8xtZJ+hV8Uc/aDGrC
-	ENLCUkGWCRGD563wnRVSt9Io0FnELBI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767948529; a=rsa-sha256;
-	cv=none;
-	b=z/h98ceeZqWIdkdnCAlLqVmOb1cJOlp0NyJa+mJB8DlvhWgyRqhW15WDSE1sWxBkEhhm4S
-	DNPJGUFxy+1SnRtAE/u+Nw0UcSACZGON4giZYRj6Qi4y+UNJsK+qwctzHxzFnzoebuNG4P
-	WVp2OSdg43RnPkHFGU/fu12gTdzBSC8=
+	bh=N/41tXXyY58j/0Q0aF6dwot8qrNnnx5K4/PUFO5dd2g=;
+	b=R1u0RoNTosRTLBhtsx3RkaJ0TTWZtWliCPQiJ9OhFk9XbxaoNDqK9errC0mUoWLpFXQaXp
+	36d3CE9v+MJKH6B/V+JVM8xlT5tJdr+Z4qoL04EtHWpt9wiqkyHII0OqXqS8JUJc2fddcw
+	DsHvDgkdRjjxKf4gjJ4NtSqRtY1b7UU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
+	imf08.hostedemail.com;
 	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at;
+	spf=pass (imf08.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at;
 	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767948574; a=rsa-sha256;
+	cv=none;
+	b=YMquUT4EmXeT7n/MwDLcNlol4Zk86IoBlV02Zx5A0vwIi16g4P6Gf19WcBOqJrkk64AXGq
+	NfCRXprkcaapB59xF+Nh0Ix/pMULZglu8iVFRa3HTziEBKxflcIYTQhVI41KKiSmjde9ct
+	jCkoM+z8+LzepgsZBEAiiGtJFQkiwCA=
 Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id A047A29ABD6;
-	Fri,  9 Jan 2026 09:48:46 +0100 (CET)
+	by lithops.sigma-star.at (Postfix) with ESMTP id 13ABC29ABD6;
+	Fri,  9 Jan 2026 09:49:33 +0100 (CET)
 Received: from lithops.sigma-star.at ([127.0.0.1])
 	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id PY1yWc1jnPcz; Fri,  9 Jan 2026 09:48:46 +0100 (CET)
+	with ESMTP id ATPC6i9pWXNZ; Fri,  9 Jan 2026 09:49:32 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id E0C0628F9E9;
-	Fri,  9 Jan 2026 09:48:45 +0100 (CET)
+	by lithops.sigma-star.at (Postfix) with ESMTP id A870929ABDC;
+	Fri,  9 Jan 2026 09:49:32 +0100 (CET)
 Received: from lithops.sigma-star.at ([127.0.0.1])
 	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id BZO6SamqYTTM; Fri,  9 Jan 2026 09:48:45 +0100 (CET)
+	with ESMTP id 50WQivczX82j; Fri,  9 Jan 2026 09:49:32 +0100 (CET)
 Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 30C7B29859D;
-	Fri,  9 Jan 2026 09:48:45 +0100 (CET)
-Date: Fri, 9 Jan 2026 09:48:45 +0100 (CET)
+	by lithops.sigma-star.at (Postfix) with ESMTP id 2BED829ABCA;
+	Fri,  9 Jan 2026 09:49:32 +0100 (CET)
+Date: Fri, 9 Jan 2026 09:49:32 +0100 (CET)
 From: Richard Weinberger <richard@nod.at>
 To: Jeff Layton <jlayton@kernel.org>
 Cc: Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
@@ -133,23 +133,25 @@ Cc: Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>
 	linux-nfs <linux-nfs@vger.kernel.org>, 
 	linux-cifs <linux-cifs@vger.kernel.org>, 
 	samba-technical <samba-technical@lists.samba.org>
-Message-ID: <393733638.88534.1767948525135.JavaMail.zimbra@nod.at>
-In-Reply-To: <218403128.88322.1767944438487.JavaMail.zimbra@nod.at>
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org> <20260108-setlease-6-20-v1-12-ea4dec9b67fa@kernel.org> <218403128.88322.1767944438487.JavaMail.zimbra@nod.at>
-Subject: Re: [PATCH 12/24] jfs: add setlease file operation
+Message-ID: <235309114.88543.1767948572101.JavaMail.zimbra@nod.at>
+In-Reply-To: <20260108-setlease-6-20-v1-11-ea4dec9b67fa@kernel.org>
+References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org> <20260108-setlease-6-20-v1-11-ea4dec9b67fa@kernel.org>
+Subject: Re: [PATCH 11/24] jffs2: add setlease file operation
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Originating-IP: [195.201.40.130]
 X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF146 (Linux)/8.8.12_GA_3809)
-Thread-Topic: add setlease file operation
-Thread-Index: Ijb4veyM6wDb0tIeqxd8skdz5qkIYBNsmijj
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 39EAD180003
+Thread-Topic: jffs2: add setlease file operation
+Thread-Index: 1XfajkHy73ekR8RzfIWJ5jINW3wE1g==
+X-Stat-Signature: y8yb9s8suhz1uex3mmwhw7o3eerzg7sw
+X-Rspamd-Queue-Id: 69FA1160009
 X-Rspam-User: 
-X-Stat-Signature: mfham4rz7b6qssq58jo4qzugkixcfwgj
-X-HE-Tag: 1767948529-899036
-X-HE-Meta: U2FsdGVkX1/BtHSiAvDOHSxFQO95ePmp1tRJrBOAdqLhOh0iXJMXzZaupM6iyCmquxksJapJacTO7Puz/YeapOMu95oLPAnsbvFdUBR+mDTTuW9a03y5EIcjrn30tA431x9AWvnmPAreIZ7UQiazGqbdOJaaIYUSeDCcDXmSt3OEGdHcukQVEGwwxf8zwokxNW4YIvpz7A+QLBl4JUo02Pw0pTpESColWDMYRGDX3p35YDHWmglQL7n1x1L6+by17LAbQV1qh5ZjfSZt0xzobMpgMsCkl/+8sncgkcRFG8Jno0u6i2vOAkmXnwdlf7YIObPNBAHAoXHF5yFbr8fuMwV6VBX9Mt/a0KIek0utnNn0PEPb08Zyd4MXboahgPmA04ggoA7YpHy1vENmAq6H8560Vxpj5VBLlEYvyrI0QpYBJgJxbPQ6E+uLeMIf8stDz90zO8bYhNPbpA7C6EJ3JryEpE+1UPiwTzIqGvNhgUZDpUoQYwBiyw6rFuwH0fOm/QbUICol9/SflLU6/m1MnAJz15g0vLmt4JNgWI6p2iTuNWdgn9p6rfLCvO0dwXfUv/6j6qvJXr2BUqqELGXpbM3Rig//BvgGJ4C6TlmNm7cvzl+z7mAjgPkYwlC1hTLlzkGAh55bNoDw0AcE5rDFZmUkjALzUHHWY/Zdt5dvqqsS5UWsgRp+fMzT8Eg6XWoBLQHDVqF1VZ63ybyWncc0mpnH5M4OUXjkjttXatf4jkTraZO9Ubai6kjLNG/gy6K27K7T18MPKANdDx9NMBAJHzQfKWX+Fq8ccRJwPKaj6PdfFavicCdvPWdgHk7TX/nKhKJwQgVaO7cud4HjvO6cV+/Wf+Pc9Hz8mp7jkxqV1egRtMf0rpjH12G3816biLNWPrAeLwh0Cge9pLfpF//qZA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1767948574-178660
+X-HE-Meta: U2FsdGVkX18ADyN/QZuzGIwDOnDi3z6ZHhdE4wK9hqI0c4bhyVp5ImDBJyJcYETE4Y2SxCn8TViFGwcrsgjdgLNLUFIhvupmYpoXkYTzjt5UrfLSS7GHMcDx6jmIZKyWVrKm6wpphKJ9xofjGThuH7DtjYz3Z/Y2abbTv7wJq1norFCkbRHtQMpnWiEnzaQ9elDrPhc++dol7FcYDDfakHE8Wkdppd3sRL36Nf78uBwmPH6bKspkwscTfVnf5jBTR6O6viyCJZqItLOch0gDzL+UjzJkPCRDgZtpn14RGWS/DKb7bgmfWPAHYTWZTMy7XjDTejq+CmbgZqTEqnHqOh/l7vq/CyGGWVLqfUorQPWiQItpkSrs9EGfDSJKhqiXa7jdW8V9Y90VdpG1vMbl4DWhLwWCCoYZhQi5ltBXZsq4NbzDcD6kP8V87oEvYD3yCrof/qArGheay4FJV56qMHgdJ6R2lAtsI04Ji/QU8DanolbArDUOgit3f2AugdcoK3F17U4k+3Mrc6MBVdtwmZdt6iqJJMT+lTTJe7qNKHMykDAWJGnP9+E8OQ4Zuf2tuIt0lYgXBIlyHd5CafNRAbDidLmHzChhN5LBVYnSb8b2OsA4ZZn4SVpQfGSo7IX/TnmJsNH7e9vZCzHPmm5dlb8Gm54+8jF6BBQ2SJm7XTxIi4p58V7Xt0Z9W1is2nJghAJ2U2+GqqzETu0h4Ojrq8iuJ1UzVtX3XREglhVJkM5kanp5buSaVu+XE7g4kAr8yRTox6yAa+2Qh8K+vLSTnSkeGmDRpu5dzUab1Gp2htUmMh6wn5KyfOx5A3G7xj04tEg/4t8Ze31etP+VntnFKIHfiyVPM9ODxnV1stiaMrgYehv0zkQGnlJdyZtnAtexRkGngHmCCkzki8BRy9mLyfzUFPFYC5Llc9iUI4YXR2mUSC8MDzNEYy6/d5QWMiCkbyrTKe+f+olraQxECpk
+ XEm+s1Ao
+ n+sJq+wp3g5uAbXD/94/6Wcz+sOOTdGRPjWJKQEPSnKevfxsyDftS2QMSBE8LjlfaD8ta9Fl/h0WwOTC34dwNGFzgjUxlIneTTJOxAweT71AVctgKyBYo2OWg18+nrO2PW1sM157HVYlgGDAdLYrQGqcvJptAamgw6kk2WtX+8TseXLEfSFxTVVWCn7B/n8ejYFSp0K7tgnIDb2hbJVQmTNScjVZ5x2mXuXuaZbxHTyf89/GvqiLrH2wmHHjl3aQuj4sm1LDpXZXUj5CnLkHTvOfACyLwCdx5Nxr/M6idEVZCQulUve+dlDmnqZ04wO+p5q0fm8VbP0Z+uq59ydEpBP9ZpNeopyFw4OgN+uwzFsx6vauMS8BrEa3v2g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,15 +161,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 ----- Urspr=C3=BCngliche Mail -----
-> Von: "richard" <richard@nod.at>
->> ---
->> fs/jfs/file.c  | 2 ++
->> fs/jfs/namei.c | 2 ++
->> 2 files changed, 4 insertions(+)
->=20
-> Acked-by: Richard Weinberger <richard@nod.at>
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> ---
+> fs/jffs2/dir.c  | 2 ++
+> fs/jffs2/file.c | 2 ++
+> 2 files changed, 4 insertions(+)
 
-Whoops! I meant to reply to the jffs2 patch...
+Acked-by: Richard Weinberger <richard@nod.at>
 
 Thanks,
 //richard
