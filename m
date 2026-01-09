@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C0FD1A639
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:04:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 592C2D26D60
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:08:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 178936B0089; Fri,  9 Jan 2026 10:04:01 -0500 (EST)
+	id BFFD96B008C; Fri,  9 Jan 2026 10:08:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 125C96B008A; Fri,  9 Jan 2026 10:04:01 -0500 (EST)
+	id BD76E6B0092; Fri,  9 Jan 2026 10:08:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0287E6B008C; Fri,  9 Jan 2026 10:04:00 -0500 (EST)
+	id AD9CB6B0093; Fri,  9 Jan 2026 10:08:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EABD86B0089
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:04:00 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BA5F216010F
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:04:00 +0000 (UTC)
-X-FDA: 84312745440.17.88176BB
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AAF56B008C
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:08:13 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F23F1A9ABB
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:08:13 +0000 (UTC)
+X-FDA: 84312756066.19.92B9FEF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1061320010
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:03:58 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Uu2xDZmK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767971039; a=rsa-sha256;
-	cv=none;
-	b=bWwP61leGJm9Bnjnjuhxt09AccMnFBGtqtM4FdVWS/OmW/GcxAbXsOoOH0D+fBTADNQEWW
-	gYyorlunsDEiRaOeHrIGoSr44U4iT2ydv10vOoGX66jbJVAzspA7UGoeqgO2TO1wP49Mq/
-	EnSmh9aRQx6CjTeOz10NOA8K1hDot94=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Uu2xDZmK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 93799100014
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:08:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D5A49i8X;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767971039;
+	s=arc-20220608; t=1767971291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H6ssEdcHkr4lhwyK2u97S+QH0RFj6bQRJ9iwKKkYmk8=;
-	b=dUhAtYHZlqFQAywO6dxTM86sIw9sbS2ssV7eRHpm/i28c5OVvoxXWAoOORGP0wJ6ayPXxJ
-	A4AQSKFDl6AeupDPlpC/vXW/8k4yAYWSf/Z+RhnY1BALMCbEqEEbz5tuWSQTy3QMCqN8z+
-	1TmZvz8n+bcO1VfTjKOjS8pxcqOXbac=
+	bh=2O5PgS3h7rUMfW8zetc6lr+7DUQ51Nxsxl6VimhpPuw=;
+	b=cRuCo96UmV7aKrnydAYu7QG8T797cffMTdJEP3vd+vCeSPR1p+7YMsfvXd3AsvEZw0MHYG
+	3AqsPevoRJUF2G/GrkoRFisaH7YlE85v2XW8K+FSmzLBuyq1toCd7XPDzvPjwe1bTqPDep
+	KFVoql3XryGzQBqhG3ZvofgJAyG7NEE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D5A49i8X;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767971291; a=rsa-sha256;
+	cv=none;
+	b=p+yxMM34HY8W8hmBRI3yLUc6bIDIE4+iqTfe5vNJoWfpxL57ltZhQci9RDDRPe+lCguWoh
+	Wctos/OvrylDxRUTp6UVsb8BBf/7RzmC1UL3g7bSwqWzGLXoaTpohx5wPN/OjyE2VHgdho
+	8QrYuOWC/Q3d9tqxD9VkLkC131zKKgA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1F23D41AAF;
-	Fri,  9 Jan 2026 15:03:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B859DC4CEF1;
-	Fri,  9 Jan 2026 15:03:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7CEBC42AC6;
+	Fri,  9 Jan 2026 15:08:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1067FC4CEF1;
+	Fri,  9 Jan 2026 15:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767971038;
-	bh=9LFMVxyFsOw43Q6k6Eff0i7Pwixa+RzRx4DsbI5AqD4=;
+	s=k20201202; t=1767971290;
+	bh=3Z8L26dcTskZ3ZdCQN0iSI+dIODX6q9MdBtGUwgu/Fc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Uu2xDZmK3PKrblsrsZL8LIcmnB0lca1ztGkSrwKnR3k1T+w3GGUw72vEWmRnJLC84
-	 04PN8WJ3tZU0qJxzKPXK/jIY9eHM/FkWJFfqFlKmAMwFCu8bAOMnLGGisVhDa+VPC1
-	 Hkm58qx6FwRjuIwh2iTdkxqN5OiOQDU6WIuS4LlqAy4eDc3QabNZxuLBa/iS/+tV6V
-	 fS5P07RUWs0rl3AKweG2OOOgL7ak053o/aoA2ECEjLInVqvpv88XZvchTU2IlUt4fg
-	 Y4VqP9kXVaCjmME3a4NjLke27874qGSfQHgAkzTpVnrAxfNYoR24aDyxZOKRFuYlCS
-	 Zo9TfPAXHUzMg==
-Message-ID: <0c72913e-9708-4675-a421-06ed82b7802a@kernel.org>
-Date: Fri, 9 Jan 2026 16:03:45 +0100
+	b=D5A49i8XZ+WWgc3yo8WpoToMpiFiiYIORsD5kdhtfLHgOWLJ+teHa3YKmPfqvZQto
+	 EOjbH06xY/Y2D1tuKVkl4Bn9mfBj2pRUINZJHsmiBlwwDKMfmgPNBdydHY/WcoODaP
+	 hXTbfv9bYAipERXqMFeW7thazUf0MBtEe10dcKDUEhB49l5TpS6DuQJGLnLWIPw35L
+	 /A7EpMCyhB3OpiWJ4xcCGJauiqHLzHAPYo90gEXDJEGp6mJ/mQ/yOKD0hyaBuAIhmW
+	 2g9u3gE5rzMBGVklkmAIGwRJV3u8nzhfd1IwpNssclwPUhgU0okSyNsciYIOrvSviH
+	 Q73z6sh0NFzwA==
+Message-ID: <1e123306-0efe-457f-953b-d4a27ce6bc60@kernel.org>
+Date: Fri, 9 Jan 2026 16:07:57 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 05/14] mm: clarify lazy_mmu sleeping constraints
+Subject: Re: [PATCH v6 14/14] mm: Add basic tests for lazy_mmu
 To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
@@ -96,7 +96,7 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
  xen-devel@lists.xenproject.org, x86@kernel.org
 References: <20251215150323.2218608-1-kevin.brodsky@arm.com>
- <20251215150323.2218608-6-kevin.brodsky@arm.com>
+ <20251215150323.2218608-15-kevin.brodsky@arm.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -142,17 +142,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20251215150323.2218608-6-kevin.brodsky@arm.com>
+In-Reply-To: <20251215150323.2218608-15-kevin.brodsky@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: pkj1etg5rydqtj49731bktr41p5pqm7x
 X-Rspam-User: 
-X-Stat-Signature: q6b5mz8tnnyrua48y6nfdyp1c4fsdbnn
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1061320010
-X-HE-Tag: 1767971038-957570
-X-HE-Meta: U2FsdGVkX1/Y5bQkceElWFBGFH60R6SButzqUtagXvMduRYXTxRkeofhEDQCyhz/boK8pGrLEd9TpZZFxVBzYBdUNH6N5uVNLrUo3QMYFJaVvBYaZ4aTMeLGkQ9Yvhi/Q3H2BYQnM5uv+0SlmlU3ijiBeOSTGbWErbwTSJICQy5DaCWW6hzr7MqaHepBipWBkZevvflpCqLcznaS4431AVezkvKWZQ4vXUGzvmit1QHvbshNd84jcojbu0W/SAIwyXDwK+CynLdfhUwH9aeIChyrlD4fFpeuvgmOMBok7Lj+BSFymNuJoh/mxEaB4cWkrsqYxF5kH1IqItGIj016MXjGYfAPfXt39F1wDgz4dBExE7IaDal5OZMJ+/RsnIaC7p6W1WH6Kvd8EQLy41zwR80AI1yt4UNpGZKsbmDt6JSXQpwC8bVPAnhcP5zJNgu70+VCu9Ui5y/ho6JmKpeSKcgK4qL0RNmLBO2YXrbUbGTgUQUA4NysInFHCvGSHcOQmJ3yp5goBrvvg0exuxcW4/ixbn9Ii5VMcdWn465rMPF8MuoqvTvXgleuOejikcKr+gtHE8/6laKffNU991BCRLQTBr680pJ/3EGGMqLf396J62YcdwVUzxgKFZUJsocrXbbpkOZ28j1sZlc39dx6FN2mtLGSUVHrqmRfmXbyCYPOTbP+mj4eYIbGAR7nZSx0jxRpEJjj6DhEKHO2cQF8Om0oqn6grnVlGC7vTVsmMsZ6ll2wQNbVj3Mdc7EE7E2LXz2ggvU9qBKGMRb9eaeZZhRsEZyGYzeQmNaDlazt4lH+12iztYnSRjGjPT7QWgswx3zEla7nMxRMbb/PfTG+jk8NIiIBaTRkawTXf19uLqniMUtQrVGpejPKlMPmSEEwRkG1xnOGEGv76soW6oK2lsP+0VQKnYfnJhqWIVo8S39jDf3YPzrLx8mI3yHNH5ONXCLrrmCUqgtCnEWNaC8
- K3G1H/Vz
- YqI0NHQLnEXHuy1KlZ5SCn5zzWeuorlUQB4PMl6dMUvafWpQ=
+X-Rspamd-Queue-Id: 93799100014
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1767971291-294875
+X-HE-Meta: U2FsdGVkX1/0+ihRYS5uUxnvpMZ39czxA+z5x2N3cOXSRZzHVrL7ESbHQYri/I38bSsir/4hHSz9XDIzX+Ez6FOVhT8QKTQ5jdH/qAUi5mJBwTg6zJ4T/Hq95tkI2R3e4VdPeWmC4A//LuZqeT7mcuOYmALXG2BZerEtjYBK7wC1yaUPaJAv/J2YfYPrt6vbCMzMUlS3BNdwm1cTEC7YvZ/QpYiSZO4+FcmLVBUvmdOPV5Y5vOpc6jgj994WRKx8iH0tUTrXrMfDLT4xrCoZKxzcP48oImjyppzKIj9j0sOyi/kUwjWhZ4NsHTxWYVchp2AJPqjSDP6FEARTIHXJhSPidlVvsp/khq+Uj2CJpJ7NBkCJl1p2Dc6TmYgWBNJEwMGwgU49/MafApfCjyI8eql8JdMmHeAAY/R19zrDvsGveZUQVsTBVx56lOepof4UHBpIIyNopMKYY2DxfKbOk4ybeo6CHJhq6OI6UoWLkAig3dllXK5WMBBTJCWt07Ia/W2We+wxPDA8qRhkd3CoNixAzXEK+1zEoL9QMu0g7rNsPFCjaWw2TQdw2K5E0RgpBnLf8IqDuq/CencCpomg7ir6UtNUxeepyP7s3i8aVR7hT4vp6gZnEVbRmhfgKoKwte3D29ObDGJ7VZznTPMxzdwQjPZ9KVzDi8I+0P8t4WCngCyzwzszFSFphdhTdR9v19L/1HZvPC2wiNKAcE2XiXz6u0wvxOuxMtWCaF3uhYbokgqJ1NzI3nlnrdA9HjAqEfI8Oiy+C8tZDtHsT+rWGZWwiD7cthahyMylbFgen646U9gUr3g6ChYbRuRysofn5JY0PPQuzL9Xe552X/Cf6V6BTYIgErywwi3uao3+x4ePMRBCVoOrHjw8xRVLdDCj6rPGhe2eFv2GWg/TkKEA19hsks9Z2/d6xweMzapWgu1BcX479ZutIx9eAhItSYU8pVZhlXafSiwDl7fJ6Ju
+ Sji85KFJ
+ kAruY0vryi6BLXhhQBNsZ8G2kpfcNK1sIqSSivUvkGuRnvNl3+uD9V2sKHr5so1pYlDp8Ciozq3tbk6fAEeOHOVGXw1jZEUT0WWHRO8/mV0AOHA7+9+LEtyhGU2vzEaapc/Jq4q+GAJLpSNwLY/hAXFKxG/keIH8tAWi2n2Ak2gt3xVYzqmvj/RsKl1XuShxQhG30WG/h+B9y+MqZHVIluPDuYqOCKCAcI1WBs+Duf9spD/IGH1ylGta/KbWF7cKUeaJ2K7/5O4XBdcBz0tDbbLQnm8IVBByA3HxEThCbpx6QsRtlb8aC0P0E/DY5elZGCHjxQBsHarZDb/kWG2LJ9LsJZH21eunIl+ZiFf/lvxPsjcyYliZ0aDEImXs5enhRZ1Ns0ByxOTJV3X4A/P0soIdJ9Ls5w9S9byddfdeQFjo81E6uIfok30xoqs/HyUGVMkVQyoPPJWfy+dE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,44 +162,136 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 12/15/25 16:03, Kevin Brodsky wrote:
-> The lazy MMU mode documentation makes clear that an implementation
-> should not assume that preemption is disabled or any lock is held
-> upon entry to the mode; however it says nothing about what code
-> using the lazy MMU interface should expect.
-> 
-> In practice sleeping is forbidden (for generic code) while the lazy
-> MMU mode is active: say it explicitly.
+> Add basic KUnit tests for the generic aspects of the lazy MMU mode:
+> ensure that it appears active when it should, depending on how
+> enable/disable and pause/resume pairs are nested.
 > 
 > Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 > ---
->   include/linux/pgtable.h | 14 +++++++++-----
->   1 file changed, 9 insertions(+), 5 deletions(-)
+>   mm/Kconfig                     | 12 ++++++
+>   mm/Makefile                    |  1 +
+>   mm/tests/lazy_mmu_mode_kunit.c | 71 ++++++++++++++++++++++++++++++++++
+>   3 files changed, 84 insertions(+)
+>   create mode 100644 mm/tests/lazy_mmu_mode_kunit.c
 > 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 652f287c1ef6..1abc4a1c3d72 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -225,11 +225,15 @@ static inline int pmd_dirty(pmd_t pmd)
->    * up to date.
->    *
->    * In the general case, no lock is guaranteed to be held between entry and exit
-> - * of the lazy mode. So the implementation must assume preemption may be enabled
-> - * and cpu migration is possible; it must take steps to be robust against this.
-> - * (In practice, for user PTE updates, the appropriate page table lock(s) are
-> - * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
-> - * and the mode cannot be used in interrupt context.
-> + * of the lazy mode. (In practice, for user PTE updates, the appropriate page
-> + * table lock(s) are held, but for kernel PTE updates, no lock is held).
-> + * The implementation must therefore assume preemption may be enabled upon
-> + * entry to the mode and cpu migration is possible; it must take steps to be
-> + * robust against this. An implementation may handle this by disabling
-> + * preemption, as a consequence generic code may not sleep while the lazy MMU
-> + * mode is active.
-> + *
-> + * Nesting is not permitted and the mode cannot be used in interrupt context.
->    */
->   #ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
->   static inline void arch_enter_lazy_mmu_mode(void) {}
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 62073bd61544..ac48deb44884 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1471,6 +1471,18 @@ config ARCH_HAS_LAZY_MMU_MODE
+>   	  MMU-related architectural state to be deferred until the mode is
+>   	  exited. See <linux/pgtable.h> for details.
+>   
+> +config LAZY_MMU_MODE_KUNIT_TEST
+> +	tristate "KUnit tests for the lazy MMU mode" if !KUNIT_ALL_TESTS
+> +	depends on ARCH_HAS_LAZY_MMU_MODE
+> +	depends on KUNIT
+> +	default KUNIT_ALL_TESTS
+> +	help
+> +	  Enable this option to check that the lazy MMU mode interface behaves
+> +	  as expected. Only tests for the generic interface are included (not
+> +	  architecture-specific behaviours).
+> +
+> +	  If unsure, say N.
+> +
+>   source "mm/damon/Kconfig"
+>   
+>   endmenu
+> diff --git a/mm/Makefile b/mm/Makefile
+> index 2d0570a16e5b..9175f8cc6565 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -147,3 +147,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
+>   obj-$(CONFIG_EXECMEM) += execmem.o
+>   obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+>   obj-$(CONFIG_PT_RECLAIM) += pt_reclaim.o
+> +obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
+> diff --git a/mm/tests/lazy_mmu_mode_kunit.c b/mm/tests/lazy_mmu_mode_kunit.c
+> new file mode 100644
+> index 000000000000..2720eb995714
+> --- /dev/null
+> +++ b/mm/tests/lazy_mmu_mode_kunit.c
+> @@ -0,0 +1,71 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +#include <kunit/test.h>
+> +#include <linux/pgtable.h>
+> +
+> +static void expect_not_active(struct kunit *test)
+> +{
+> +	KUNIT_EXPECT_FALSE(test, is_lazy_mmu_mode_active());
+> +}
+> +
+> +static void expect_active(struct kunit *test)
+> +{
+> +	KUNIT_EXPECT_TRUE(test, is_lazy_mmu_mode_active());
+> +}
+> +
+> +static void lazy_mmu_mode_active(struct kunit *test)
+> +{
+> +	expect_not_active(test);
+> +
+> +	lazy_mmu_mode_enable();
+> +	expect_active(test);
+> +
+> +	{
+> +		/* Nested section */
+> +		lazy_mmu_mode_enable();
+> +		expect_active(test);
+> +
+> +		lazy_mmu_mode_disable();
+> +		expect_active(test);
+> +	}
+> +
+> +	{
+> +		/* Paused section */
+> +		lazy_mmu_mode_pause();
+> +		expect_not_active(test);
+> +
+> +		{
+> +			/* No effect (paused) */
+> +			lazy_mmu_mode_enable();
+> +			expect_not_active(test);
+> +
+> +			lazy_mmu_mode_disable();
+> +			expect_not_active(test);
+> +
+> +			lazy_mmu_mode_pause();
+> +			expect_not_active(test);
+> +
+> +			lazy_mmu_mode_resume();
+> +			expect_not_active(test);
+> +		}
+> +
+> +		lazy_mmu_mode_resume();
+> +		expect_active(test);
+> +	}
+> +
+> +	lazy_mmu_mode_disable();
+> +	expect_not_active(test);
+> +}
+> +
+> +static struct kunit_case lazy_mmu_mode_test_cases[] = {
+> +	KUNIT_CASE(lazy_mmu_mode_active),
+> +	{}
+> +};
+> +
+> +static struct kunit_suite lazy_mmu_mode_test_suite = {
+> +	.name = "lazy_mmu_mode",
+> +	.test_cases = lazy_mmu_mode_test_cases,
+> +};
+> +kunit_test_suite(lazy_mmu_mode_test_suite);
+> +
+> +MODULE_DESCRIPTION("Tests for the lazy MMU mode");
+> +MODULE_LICENSE("GPL");
+
+
+Very nice test :)
+
+I think I prefer the EXPORT_SYMBOL_IF_KUNIT over disabling the test for 
+PPC and over making lazy_mmu_mode_enable() non-inlined functions with an 
+exported symbol.
+
+With the EXPORT_SYMBOL_IF_KUNIT stuff added
 
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
