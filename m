@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F05A9D26D6F
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 17:18:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DC73D26D7B
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 17:18:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 271F26B0005; Fri,  9 Jan 2026 12:18:16 -0500 (EST)
+	id EDB116B0089; Fri,  9 Jan 2026 12:18:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21F736B0089; Fri,  9 Jan 2026 12:18:16 -0500 (EST)
+	id E98C96B008A; Fri,  9 Jan 2026 12:18:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F73D6B008A; Fri,  9 Jan 2026 12:18:16 -0500 (EST)
+	id CF10F6B008C; Fri,  9 Jan 2026 12:18:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F18926B0005
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 12:18:15 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 92147B9C2D
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:18:15 +0000 (UTC)
-X-FDA: 84313083750.21.BA3834C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B42E16B0089
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 12:18:16 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 614BAC1DA9
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:18:16 +0000 (UTC)
+X-FDA: 84313083792.11.D799175
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A78C340009
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:18:13 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=jYZE2i5g;
-	spf=pass (imf04.hostedemail.com: domain of 3VDhhaQgKCJsNHJNO5A5BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--smostafa.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3VDhhaQgKCJsNHJNO5A5BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--smostafa.bounces.google.com;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8CB5010000C
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:18:14 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=eFbsb4rx;
+	spf=pass (imf14.hostedemail.com: domain of 3VThhaQgKCJwOIKOP6B6CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--smostafa.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3VThhaQgKCJwOIKOP6B6CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--smostafa.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767979093;
+	s=arc-20220608; t=1767979094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=EFPXi9jlv9rMnyA0grBQkKfopvHJmF7zvIc7VHv8N58=;
-	b=8WCKLTjm8ev+gmKhXydcjy+AwmAWmkiYAM5frq3wOyOPIcc1UXjUiRxvX5uGPJ03FdhY1Q
-	53BBlU33hVBfjZQkKEUVLk6rss+dCEc2Ku5qX0WgGeg60GCvQcJ0O3DQv37FJMHpU2zSgK
-	FTIoB7hgSZPc2aA1FrSwRh7RnJVvcCU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yMbvILs8sdDM+X7Y87HU9ypohayabztkjgZL2Mm3bR4=;
+	b=T89QhjfXSEKVOZEWSxm6psuAZhjrf1oXktYfobAeSxvaOgJrsaViqdcSKdSPU9PNkkF4mk
+	gAmS8zKN18sXQEL3l765puoxQwaDn2A8yonVhSZ8Tsf8xqOmGmMEcK9JaK2FjTRcZOYY26
+	SNvDlfcO0zu/C1YfvNx/0kYVcYoEL9g=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=jYZE2i5g;
-	spf=pass (imf04.hostedemail.com: domain of 3VDhhaQgKCJsNHJNO5A5BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--smostafa.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3VDhhaQgKCJsNHJNO5A5BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--smostafa.bounces.google.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=eFbsb4rx;
+	spf=pass (imf14.hostedemail.com: domain of 3VThhaQgKCJwOIKOP6B6CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--smostafa.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3VThhaQgKCJwOIKOP6B6CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--smostafa.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767979093; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767979094; a=rsa-sha256;
 	cv=none;
-	b=WtUJVvvvTCUmVAVTXyfMxydosFMpeXhJjuQCshJx/FbWvLWTYAYqy8CuTfezg24y83M/SI
-	+CzZs7/Q+0w+byz3ou0jjrZD1hIMsRoO4h4hxpCrx8Y9HUqb6P/e+23kxMbdtHybTlswxs
-	yhlbcTUpwIrKXd0hax6JgGmZci8pkF4=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47d17fff653so20608445e9.0
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 09:18:13 -0800 (PST)
+	b=Qnw6vvUMdNA258f2DMsiiQacKJFPOY4nj1jTAnYD1tLNuJgJvwnv6iHsOKCMchOfmjEnvo
+	UwO2MalBo7X6X7Asf+KeT/g+sbwVvOHXFrmhA2CTmG7cXv0fV3HkW+hATUjtQmGb3C5/uu
+	wnvGb5IrKIEkf1iS0pYsz8TVMQFetNo=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477b8a667bcso49500885e9.2
+        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 09:18:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767979092; x=1768583892; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EFPXi9jlv9rMnyA0grBQkKfopvHJmF7zvIc7VHv8N58=;
-        b=jYZE2i5gOKNQmrozFaikLn1mcn+M4bs8Y7+33H7I1+IHibS1asrozmMDHnTPNZzq3/
-         StkWw+05ZNcqOstDnSfJ/9GMT2h3ehrwjiqemFxg5Hswml1bDF9x4JIIXMorKBk1L1ma
-         EbDT8+Iedt74NEu+Rb9DyAFUEHG5BiXg44sd5UAOEtiHwaN88CGgx5++n83earGnYHY6
-         CG5xtupRoKj7bS4pqQKGSFX3LERvB26ojyBJLj343JHA4rO32SO9prlx/T7c0dDdM7UW
-         duPhmgwcebIKpFKL94SwOE+b79vS6mtt+CgPm/ek7X0TI7WwLt1pGhfHJ/hsZ82bbvGG
-         hIBg==
+        d=google.com; s=20230601; t=1767979093; x=1768583893; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yMbvILs8sdDM+X7Y87HU9ypohayabztkjgZL2Mm3bR4=;
+        b=eFbsb4rxqQnqnJ8k4PJ4OWtVPllr5YLMnpbAXkEjpOyot+0Nb/T6F6XsQms+gOnvi0
+         trO+J61P/JlGK0BP/O9m6vhQiTVWDm6sNE51DjKfx5GxfSoK8vCEBviwCJbC2pLMAtcC
+         /6ROgTQiBcWYYH/OhGyX433d+wKUKPzsoVXRXy7X+W50iGxJNmZnh3H1e+YxZGwYuw+t
+         7PRU1Lc0N7I+dHv8oHtJBT+yJCwD2l0ODLKjXEqZz5G6JhF43TDE9nQAsddhcPFHHA2w
+         dOtnv+IF6a/148IhhyIAz2cP4j7ZPi662PZhf2SvH3PHyz3FgTWuIeqwzdatlTFnKUR6
+         wYaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767979092; x=1768583892;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EFPXi9jlv9rMnyA0grBQkKfopvHJmF7zvIc7VHv8N58=;
-        b=HTOMrVMYj/ZyihB4G9CIY8nlPm2X+rG0I7Sz4kgJFyg+PR/GPsBcDDaR10BvPsyaw8
-         ljwbPUc33mX9zNSzImxx9S7hp3svJJ5LjSOnpI9Cp0JIm9jq3z55OzE9aSV6oxizHjfS
-         Bxc7nqLPjNvDnAgRcof70+XYrSV1n4qJr0bavGXmrILP7HKHOdEUikgdDkGPCQvNbBnu
-         Ue8Ctkmfu/K82dRrrpXvJiSSzzT7sr923mR4pTAzTlbx9VG24FmaSGRdJf5UqUyeh5Hd
-         EKs9pwSKXX0kbnpqazBZGSmmymX8HWWHI16QBtvXqlMEH9Upxz/xPYmObVnD71lItGsZ
-         RwWQ==
-X-Gm-Message-State: AOJu0Yw6Rqi373SR6k/PdAW4q0etafNJlFvyGR9mLjNjxFPjy7s+nW/X
-	kv43R2BpSrN0xBlaZLmkcFe1N1hGwrEtJhgjoVjaBuNZMP1pZbZCV/7ksDOPjZgcvzExzJXQroB
-	1zUum0rxy3qarohC2o3F70erKAPI7AZv7WiVDlGM4kq6nQwFnYZzbYGz0VsSc+7ruC/kSy0yuE4
-	wERESdc43qGMm1La2o/kadK3hG61F5HijCbfKp1chlBA==
-X-Google-Smtp-Source: AGHT+IFocuqh4xf3N3PNsIA9bVyZchbl85zeIdFnVspAH2mPKuFwxxYp6oh+Bwc2UYAh9iIB3e8vzhQ1q9OD3A==
-X-Received: from wmba20.prod.google.com ([2002:a05:600c:6dd4:b0:47b:d5ad:dd7f])
+        d=1e100.net; s=20230601; t=1767979093; x=1768583893;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yMbvILs8sdDM+X7Y87HU9ypohayabztkjgZL2Mm3bR4=;
+        b=WEH+/+ixIEd4vp/xjm++sh+6/bDnje/jYCsYD2+1JIQhc+ye6pHN2+eatKE7EVeMz4
+         EXhBJq5/sKMs3lOy/V6Qz7hwMq8jQiDIH1GAnotooWddl5uDU6VOt+onLO2RS6lbzwd/
+         j+cUDNWat62lnsu3Bdd5+Yezo0J8Ez7aCuypU+oS9NPLH3udgHAdaZnOkUe5rpfSGoY1
+         7kmy1nwsQIIEg4daolBIenksUGtk/ufMpzTz054Nu0drT7yNVQUdavwRhg88P+y5MfmN
+         Qbbq2I3pLxIVZ/A7B5dDER83XfEXctisFRcA+x51w/5geUDWHUTge3W78+tJQwXh/a2e
+         25Mw==
+X-Gm-Message-State: AOJu0YyhyfT556Rft2qjX0zu01sY5Ocbs0SLY6y/0lzzdk7qdSitbk+H
+	LSB8TeV59oQQ9yHvb6XTRDkdhlcvC0duLHn6ISPU6uFoJACzyvZ2HZo0ANmEn8+Cb8913yicJ2M
+	0YEBcEXlvFeUX2sSk/dCMoJDRQU2Nr0fz4+qG9GphLTVvs0SlLjphpiWVBAJCHgEH54DeYhibZD
+	ciaO+SFOatWs/M209J3f3hEQYaVmJ9bM6/fVmcsgo2fg==
+X-Google-Smtp-Source: AGHT+IFQrKO26j/Md4KslqSM57emYB9l/vej4SFg9X38oEIjTZGmUcvdSgmghLEuHbXJHuTDMuZHlNVKSr6pZw==
+X-Received: from wrbdr2.prod.google.com ([2002:a5d:5f82:0:b0:430:f6bf:b2c3])
  (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d14:b0:477:97c7:9be7 with SMTP id 5b1f17b1804b1-47d84b0a7bdmr116367135e9.1.1767979092009;
- Fri, 09 Jan 2026 09:18:12 -0800 (PST)
-Date: Fri,  9 Jan 2026 17:18:01 +0000
+ 2002:a05:600d:103:b0:47d:403e:9cd5 with SMTP id 5b1f17b1804b1-47d84b1fce2mr91839245e9.11.1767979093084;
+ Fri, 09 Jan 2026 09:18:13 -0800 (PST)
+Date: Fri,  9 Jan 2026 17:18:02 +0000
+In-Reply-To: <20260109171805.901995-1-smostafa@google.com>
 Mime-Version: 1.0
+References: <20260109171805.901995-1-smostafa@google.com>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260109171805.901995-1-smostafa@google.com>
-Subject: [PATCH v6 0/4] iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
+Message-ID: <20260109171805.901995-2-smostafa@google.com>
+Subject: [PATCH v6 1/4] iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
 From: Mostafa Saleh <smostafa@google.com>
 To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org
@@ -95,17 +96,17 @@ Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
 	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
 	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
 	xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org, 
-	Mostafa Saleh <smostafa@google.com>
+	Mostafa Saleh <smostafa@google.com>, "David Hildenbrand (Red Hat)" <david@kernel.org>, 
+	Pranjal Shrivastava <praan@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: u5bcesxo5tkwxsc1y777kxnswaaoar8m
-X-Rspamd-Queue-Id: A78C340009
+X-Stat-Signature: 9uetpznngsnaoqf5tji5yzqcc3x9gxt5
+X-Rspamd-Queue-Id: 8CB5010000C
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1767979093-147388
-X-HE-Meta: U2FsdGVkX19snWoT5Ybk8KNMxR2K2om4RIkDTW++lwzteyEFkVlNeUiOE0IyvovwBZBfztS/YvmBd6+NJmOzRjHxRWH7SAbqgIuoJNsjgRHXMQpuA0jtG4rEn8Dr2/82nUuZvO9g/lnhXRJr8bIJ/Zv3KqwwBwa2bQbUqA8ElkrAc8Jxk/t/yCOkZtxAe9t/fRPS9RubcoQiaF2NlND+H6wHAMIRYkV9hwid7lU1gdLDCHIyX9D4M+DBuQCEfB7ZU3rd5IXzEo218wdNw5EYc7oojdL91kHqiNDMx8kfEdi9OcMMrOEdhC3KbcAhcquXXNgkeIgysIrKnizBKar5I5gl3gWoLb2Lv/z4rJ05XwW6/eud/+M0VsiUetojbpOzBsICVmHTr+bUuMuXIdSbxYLmGWH7JHXFRoRAmZQBE3BHv3xiCzTUlv3xZRrKpUxnD/JNBC26wjXidKjCiWevNxCRHDYtYiLJxs/HQzHc4NwWLByJaU5mfQNL6SosxA99dKgzYJRF7uwzdyUt1v0AWEHaBqVg59f4h5qEBC4+s56l9/Om5wxJV1SOV1+Eh8yHi6aP2Fa6jTGtjyd2h0xWGx/obCwWYBtX/ou2PCI013Yza8Geam5m5CvJFh4bfDcYEVhDPhiat6LjBytAKLKPb3tx03gY46Hk2ugPfiIR+CrfYC1jjdyfYnHIllOsfIO2OSuvrnffjXsfK9RPdmLOx8UxvJ8qWY6hSLVMqAeteNYHk6Nja3vyJEwrk2lGbGVjDkcUZMtGa4YXf95DqjJERFlVCv0GmW/bNWXFo1mK0shwG2ozWgL4adStH6Xs4rUdQaeeLGZhgCyDar60T86U6r6QjC+Nkqu/8Fx6lLGAttJqK5MvyaO01iZBmLdhTLuzHtb/7chyFBi64BuUQqRgW8TB93Drn0QFKZTfKiYuR2ebIFlCcDYPvpJeOKhMKuUPhQ2jsuOddaRUCRoZRtS
- ye1A0WGv
- 6i7lSzAxLYyh2N37Nj5NJ09p7BfKnOnr9nKqP8JOpzQK6zHtE/MwiNP7X+X4g/c0CH5UMXr3UaRzAsCQ01UfB4l868QwDOaMAEpQadISyvTYXCfQCNK8s6PqvftrQteEDpAgc+9+LQ8DBjR7NFAo4IwHvD9vbz3vrLOnxpCMxVtBe9QIamF+tClQlCIppXYLO3quzlUXwjByMRVAfZnXmcikenlB65Gf+eaUZqy7FJu/iF+1SEhf/rYTP58XzsYfdh14ErISyHGuOCdCUynNWP63tQHMzMBE0CysOh4bkv4mu+ItccLJ/Rh1YlDvdUUBADXqsLGF9vXSxqgWDweTx+YpcjDC0JYyHBH98YlIPnOSE38kduFFSqknK1890VEZmfLqIKsq0Li2T5zVv4Arl5kX3m5gEQ/dXd+z1dowY1AHpzpuA+jsZ3XTZ/E/KphiCI2bZD0k4UXlSya4quepGV/EX/H1gGewKOja9A+4Hpb8hcAZVQ8Qspy8ddKOPWEzQF6wjgJC9+spF3xtiSvbMqrlJC3TT7nc50FukyXZooPqWpJa8iZXkdV3AtZpil3Z2MWEIOz1NcHkM3GTzLL6aDPcIFwUXoeQbciMFEaJKZ304kARYxRy4f1t5+Vko/aIoyKZB
+X-HE-Tag: 1767979094-631098
+X-HE-Meta: U2FsdGVkX19BmLGL7rA/8K/7/yom2z/GigKerbyjfxdKNsMtBW0l6towtaldT+nKYZAhp8lnaC8+x9mJG24cCU4xR8nkfSM+SD7/QzLp1DcWXsD9M0YXV/EM+oeTVvo2iNZ3csVMTYhQmEH1Mi+xWbpodQ1gfwalaNTPeMmVt8slmC1k5AKdM8H+snucLlDvkFZI8qfwAE28K2KWswe+CeQVurZUGPPL1XiA5Ta6sMDdSOHlcdyW4plNWug1C70T11px0ifJZXfGEcifDILWKmUHxUXtjnu44ekWa2h/4i2Ev+xUUy6RRpFD6NwL6U9qXrS6TnJJVFX28OBeTC4SEgQZ5a9bGX9pGfl4iNh6zdvk93/aEQOzw/zAes9BiY8fL/Z2phrv9AWH/39GuYNbnIAkhI0rc70PH0pFkLD7D2vsV7kjjSXbrvxeRpjVjONmqwpFkgjCwtXmHOKO8M/Qdy2r3n94xYnYOLX8a/D83dhegqJw5r15yPB62KprAE/29exGs3hD+X4ZGzAFCNvMXGY5ng5kACs7ILif9Oij4Fn0jsUct/hg+tDTHxCdG/MdwPnwhmqCnYPLI/unxm0qwsxF3m19v4fRL33337P7QJ/PjW/Vj99aVQAkA5snXWGHyHFIdikqNWH0rNG3kA7eo2hrytbWG0F6Zlk+Xnhway/9AagUhRLRExPG1PsBXHlSi7/NSRIk68VJZ9Mdr44r9Vu5BteNoPteVZgz3bV/oBMTHPNLkHaihRNTqqk7ZcsJRnsslZ5tnksDQ2SQhenHQZzL3ufCmFbL4GHkNu9Fn83xpWngdEC1pqWrmCC3lckX4nMfU365e7W9HP6NfRJUavL1YiwCHnDeuiD8VtJsW9jb3m/AaXk0q/zsPVjYkSjsD3FMq3ZTyfSUBSf2iN5l+nSSwIAPlfIwyXPPrzGNigcwhc7rFHqZndNpe9Doi89VLSQZ+shaWg/B8dWTCtR
+ VHQr3gx4
+ +Kw0WvDvBZpG1vzqVmLsRgWhEZdpKOXRn1E80rfkDolrTPmb44sLxC/vNjaumueOi79Nqucdn+58S6Gi8Kkht5aS2JqD20epGbeLm7XEmW+BjOtwN/4/6M+hy0Hp0UBuv4gsOPGJohtYt03mEJT7W08NN8HaarhteCvnRXiT4fHsqTlAQpjfDABtsfoWnWNP5bbORgV7FSq3+b68fhbXQyDv11dosQvbDmNlsEVKBEMq9DPRjCyLGbsYbhkr87DasuSCpwe29laQ/VAQzqUSULzTn8rGQYTIhF9wGU8+CAr0TJZKQdfuD44J0uQndD8WANO/RGB3Rw8ofYFDkbQsho8UU49eF7QhM+mdENFtwY467FfbtB5lVQw1uRmCL111ghlN9tjdTizAVD0oTQQkSsyo7gvIaK1Mc3XCx1gJNNtecGRetrmr+G5j9PoSJiVndkhH8tDBNAK0WyHUVlmaMPEZPhVLO2OJLO2w5nSt6vqLd8vHtQERx0JS8RIxhMLShmcEVjdp3AQHreMtu4dq1KcAFnwgcz9Ft8niFaH7IwCTFjPLLtn2QcVcm/Xm34cCAB5EnmiNKIg02TVdkbylRq8ex20+WFAA+a0hxmQGsqXzgZRyXyex0GlJLQTgv4UYbj4NITVLWCT8m1MAheb0KSvD2RA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,136 +115,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Overview
---------
-This patch series introduces a new debugging feature,
-IOMMU_DEBUG_PAGEALLOC, designed to catch DMA use-after-free bugs
-and IOMMU mapping leaks from buggy drivers.
+Add a new config IOMMU_DEBUG_PAGEALLOC, which registers new data to
+page_ext.
 
-The kernel has powerful sanitizers like KASAN and DEBUG_PAGEALLOC
-for catching CPU-side memory corruption. However, there is limited
-runtime sanitization for DMA mappings managed by the IOMMU. A buggy
-driver can free a page while it is still mapped for DMA, leading to
-memory corruption or use-after-free vulnerabilities when that page is
-reallocated and used for a different purpose.
+This config will be used by the IOMMU API to track pages mapped in
+the IOMMU to catch drivers trying to free kernel memory that they
+still map in their domains, causing all types of memory corruption.
 
-Inspired by DEBUG_PAGEALLOC, this sanitizer tracks IOMMU mappings on a
-per-page basis, as it=E2=80=99s not possible to unmap the pages, because it
-requires to lock and walk all domains on every kernel free, instead we
-rely on page_ext to add an IOMMU-specific mapping reference count for
-each page.
-And on each page allocated/freed from the kernel we simply check the
-count and WARN if it is not zero, and dumping page owner information
-if enabled.
+This behaviour is disabled by default and can be enabled using
+kernel cmdline iommu.debug_pagealloc.
 
-Concurrency
------------
-By design this check is racy where one caller can map pages just after
-the check, which can lead to false negatives.
-In my opinion this is acceptable for sanitizers (for ex KCSAN have
-that property).
-Otherwise we have to implement locks in iommu_map/unmap for all domains
-which is not favourable even for a debug feature.
-The sanitizer only guarantees that the refcount itself doesn=E2=80=99t get
-corrupted using atomics. And there are no false positives.
-
-CPU vs IOMMU Page Size
-----------------------
-IOMMUs can use different page sizes and which can be non-homogeneous;
-not even all of them have the same page size.
-
-To solve this, the refcount is always incremented and decremented in
-units of the smallest page size supported by the IOMMU domain. This
-ensures the accounting remains consistent regardless of the size of
-the map or unmap operation, otherwise double counting can happen.
-
-Testing & Performance
----------------------
-This was tested on Morello with Arm64 + SMMUv3
-Did some testing Lenovo IdeaCentre X Gen 10 Snapdragon
-Did some testing on Qemu including different SMMUv3/CPU page size (arm64).
-
-I also ran dma_map_benchmark on Morello:
-
-echo dma_map_benchmark > /sys/bus/pci/devices/0000\:06\:00.0/driver_overrid=
-e
-echo 0000:06:00.0 >  /sys/bus/pci/devices/0000\:06\:00.0/driver/unbind
-echo 0000:06:00.0 > /sys/bus/pci/drivers/dma_map_benchmark/bind
-./dma_map_benchmark -t $threads -g $nr_pages
-
-CONFIG refers to "CONFIG_IOMMU_DEBUG_PAGEALLOC"
-cmdline refers to "iommu.debug_pagealloc"
-Numbers are (map latency)/(unmap latency), lower is better.
-
-			CONFIG=3Dn    CONFIG=3Dy    CONFIG=3Dy
-			            cmdline=3D0   cmdline=3D1
-4K - 1 thread		0.1/0.6     0.1/0.6     0.1/0.7
-4K - 4 threads		0.1/1.1     0.1/1.0     0.2/1.1
-1M - 1 thread		0.8/21.2    0.7/21.2    5.4/42.3
-1M - 4 threads		1.1/45.9    1.1/46.0    5.9/45.1
-
-Changes in v6:
-v5: https://lore.kernel.org/linux-iommu/20260106162200.2223655-1-smostafa@g=
-oogle.com/
-- Remove wrong logic for handling unmap with bigger size than requested
-  and warn instead.
-- Collect R-bs and Acked-by
-
-Changes in v5:
-v4: https://lore.kernel.org/all/20251211125928.3258905-1-smostafa@google.co=
-m/
-- Fix typo in comment
-- Collect Baolu R-bs
-
-Main changes in v4:
-v3: https://lore.kernel.org/all/20251124200811.2942432-1-smostafa@google.co=
-m/
-- Update the kernel parameter format in docs based on Randy feedback
-- Update commit subjects
-- Add IOMMU only functions in iommu-priv.h based on Baolu feedback
-
-Main changes in v3: (Most of them addressing Will comments)
-v2: https://lore.kernel.org/linux-iommu/20251106163953.1971067-1-smostafa@g=
-oogle.com/
-- Reword the Kconfig help
-- Use unmap_begin/end instead of unmap/remap
-- Use relaxed accessors when refcounting
-- Fix a bug with checking the returned address from iova_to_phys
-- Add more hardening checks (overflow)
-- Add more debug info on assertions (dump_page_owner())
-- Handle cases where unmap returns larger size as the core code seems
-  to tolerate that.
-- Drop Tested-by tags from Qinxin as the code logic changed
-
-Main changes in v2:
-v1: https://lore.kernel.org/linux-iommu/20251003173229.1533640-1-smostafa@g=
-oogle.com/
-- Address J=C3=B6rg comments about #ifdefs and static keys
-- Reword the Kconfig help
-- Drop RFC
-- Collect t-b from Qinxin
-- Minor cleanups
-
-Mostafa Saleh (4):
-  iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
-  iommu: Add calls for IOMMU_DEBUG_PAGEALLOC
-  iommu: debug-pagealloc: Track IOMMU pages
-  iommu: debug-pagealloc: Check mapped/unmapped kernel memory
-
- .../admin-guide/kernel-parameters.txt         |   9 +
- drivers/iommu/Kconfig                         |  19 ++
- drivers/iommu/Makefile                        |   1 +
- drivers/iommu/iommu-debug-pagealloc.c         | 167 ++++++++++++++++++
- drivers/iommu/iommu-priv.h                    |  58 ++++++
- drivers/iommu/iommu.c                         |  11 +-
- include/linux/iommu-debug-pagealloc.h         |  32 ++++
- include/linux/mm.h                            |   5 +
- mm/page_ext.c                                 |   4 +
- 9 files changed, 304 insertions(+), 2 deletions(-)
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+---
+ .../admin-guide/kernel-parameters.txt         |  9 ++++++
+ drivers/iommu/Kconfig                         | 19 +++++++++++
+ drivers/iommu/Makefile                        |  1 +
+ drivers/iommu/iommu-debug-pagealloc.c         | 32 +++++++++++++++++++
+ include/linux/iommu-debug-pagealloc.h         | 17 ++++++++++
+ mm/page_ext.c                                 |  4 +++
+ 6 files changed, 82 insertions(+)
  create mode 100644 drivers/iommu/iommu-debug-pagealloc.c
  create mode 100644 include/linux/iommu-debug-pagealloc.h
 
---=20
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index a8d0afde7f85..d484d9d8d0a4 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -2675,6 +2675,15 @@ Kernel parameters
+ 			1 - Bypass the IOMMU for DMA.
+ 			unset - Use value of CONFIG_IOMMU_DEFAULT_PASSTHROUGH.
+ 
++	iommu.debug_pagealloc=
++			[KNL,EARLY] When CONFIG_IOMMU_DEBUG_PAGEALLOC is set, this
++			parameter enables the feature at boot time. By default, it
++			is disabled and the system behaves the same way as a kernel
++			built without CONFIG_IOMMU_DEBUG_PAGEALLOC.
++			Format: { "0" | "1" }
++			0 - Sanitizer disabled.
++			1 - Sanitizer enabled, expect runtime overhead.
++
+ 	io7=		[HW] IO7 for Marvel-based Alpha systems
+ 			See comment before marvel_specify_io7 in
+ 			arch/alpha/kernel/core_marvel.c.
+diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+index 99095645134f..f86262b11416 100644
+--- a/drivers/iommu/Kconfig
++++ b/drivers/iommu/Kconfig
+@@ -384,6 +384,25 @@ config SPRD_IOMMU
+ 
+ 	  Say Y here if you want to use the multimedia devices listed above.
+ 
++config IOMMU_DEBUG_PAGEALLOC
++	bool "Debug IOMMU mappings against page allocations"
++	depends on DEBUG_PAGEALLOC && IOMMU_API && PAGE_EXTENSION
++	help
++	  This enables a consistency check between the kernel page allocator and
++	  the IOMMU subsystem. It verifies that pages being allocated or freed
++	  are not currently mapped in any IOMMU domain.
++
++	  This helps detect DMA use-after-free bugs where a driver frees a page
++	  but forgets to unmap it from the IOMMU, potentially allowing a device
++	  to overwrite memory that the kernel has repurposed.
++
++	  These checks are best-effort and may not detect all problems.
++
++	  Due to performance overhead, this feature is disabled by default.
++	  You must enable "iommu.debug_pagealloc" from the kernel command
++	  line to activate the runtime checks.
++
++	  If unsure, say N.
+ endif # IOMMU_SUPPORT
+ 
+ source "drivers/iommu/generic_pt/Kconfig"
+diff --git a/drivers/iommu/Makefile b/drivers/iommu/Makefile
+index 8e8843316c4b..0275821f4ef9 100644
+--- a/drivers/iommu/Makefile
++++ b/drivers/iommu/Makefile
+@@ -36,3 +36,4 @@ obj-$(CONFIG_IOMMU_SVA) += iommu-sva.o
+ obj-$(CONFIG_IOMMU_IOPF) += io-pgfault.o
+ obj-$(CONFIG_SPRD_IOMMU) += sprd-iommu.o
+ obj-$(CONFIG_APPLE_DART) += apple-dart.o
++obj-$(CONFIG_IOMMU_DEBUG_PAGEALLOC) += iommu-debug-pagealloc.o
+diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
+new file mode 100644
+index 000000000000..4022e9af7f27
+--- /dev/null
++++ b/drivers/iommu/iommu-debug-pagealloc.c
+@@ -0,0 +1,32 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2025 - Google Inc
++ * Author: Mostafa Saleh <smostafa@google.com>
++ * IOMMU API debug page alloc sanitizer
++ */
++#include <linux/atomic.h>
++#include <linux/iommu-debug-pagealloc.h>
++#include <linux/kernel.h>
++#include <linux/page_ext.h>
++
++static bool needed;
++
++struct iommu_debug_metadata {
++	atomic_t ref;
++};
++
++static __init bool need_iommu_debug(void)
++{
++	return needed;
++}
++
++struct page_ext_operations page_iommu_debug_ops = {
++	.size = sizeof(struct iommu_debug_metadata),
++	.need = need_iommu_debug,
++};
++
++static int __init iommu_debug_pagealloc(char *str)
++{
++	return kstrtobool(str, &needed);
++}
++early_param("iommu.debug_pagealloc", iommu_debug_pagealloc);
+diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/iommu-debug-pagealloc.h
+new file mode 100644
+index 000000000000..83e64d70bf6c
+--- /dev/null
++++ b/include/linux/iommu-debug-pagealloc.h
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2025 - Google Inc
++ * Author: Mostafa Saleh <smostafa@google.com>
++ * IOMMU API debug page alloc sanitizer
++ */
++
++#ifndef __LINUX_IOMMU_DEBUG_PAGEALLOC_H
++#define __LINUX_IOMMU_DEBUG_PAGEALLOC_H
++
++#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
++
++extern struct page_ext_operations page_iommu_debug_ops;
++
++#endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
++
++#endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
+diff --git a/mm/page_ext.c b/mm/page_ext.c
+index d7396a8970e5..297e4cd8ce90 100644
+--- a/mm/page_ext.c
++++ b/mm/page_ext.c
+@@ -11,6 +11,7 @@
+ #include <linux/page_table_check.h>
+ #include <linux/rcupdate.h>
+ #include <linux/pgalloc_tag.h>
++#include <linux/iommu-debug-pagealloc.h>
+ 
+ /*
+  * struct page extension
+@@ -89,6 +90,9 @@ static struct page_ext_operations *page_ext_ops[] __initdata = {
+ #ifdef CONFIG_PAGE_TABLE_CHECK
+ 	&page_table_check_ops,
+ #endif
++#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
++	&page_iommu_debug_ops,
++#endif
+ };
+ 
+ unsigned long page_ext_size;
+-- 
 2.52.0.457.g6b5491de43-goog
 
 
