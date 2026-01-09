@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39B8CD1A623
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 13:26:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 665FCD1A623
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 13:28:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66E6B6B0089; Fri,  9 Jan 2026 08:26:16 -0500 (EST)
+	id B0AE86B0089; Fri,  9 Jan 2026 08:28:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61C546B008A; Fri,  9 Jan 2026 08:26:16 -0500 (EST)
+	id AB86D6B008A; Fri,  9 Jan 2026 08:28:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FDAC6B008C; Fri,  9 Jan 2026 08:26:16 -0500 (EST)
+	id 9BB3D6B008C; Fri,  9 Jan 2026 08:28:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 411886B0089
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:26:16 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E59A51AC77E
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:26:15 +0000 (UTC)
-X-FDA: 84312499110.13.8B3D9C7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 002AE1C0006
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:26:13 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EC11Tbxf;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C5246B0089
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:28:56 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31D2BC2993
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:28:56 +0000 (UTC)
+X-FDA: 84312505872.22.2E4A14D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 73D00160002
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:28:54 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=llL55zqj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767965334; a=rsa-sha256;
+	cv=none;
+	b=dSSqpOJozX+a1S9lOKfnaj3ObCXTJbWEfGf9v91MWUgCcQ6zH/cqBmoYmUD92SwYpq0+wF
+	xWFkmIxscfPX11wWKhwiZTd/IoF4ERXhzhWdKHW2o7TkpBda/GhFa6Ci+dz13ham1zkXhl
+	UYJIgfNno/1FmB1dwJP6MZfUtgViWhk=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=llL55zqj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767965174;
+	s=arc-20220608; t=1767965334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CGGUJRc5W9PjkPDSow9ZwoIBiKmD804d9WqiLU62KGQ=;
-	b=G+kcSH4z/fZW9QY1leLUnAChmMhUdkKSA2ZG1NsU2srcz4Hd1rwOOGI/35zQPhfFMCmuyv
-	2wc1qu6iWBwH8Wy3mEbvaDZV3CpWft/z2wmHte/OVHHRniPLxlcd0S3mjnNLvWO8s0YYoE
-	dDK7b949kdVF3aL3zt/bDb/DiLAV3CE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EC11Tbxf;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767965174; a=rsa-sha256;
-	cv=none;
-	b=BmuYdQzg31IIMJwsQpybJQiCP5m61em77h4CLYSVwOI9bjLHqCni6ZKNlrczjnZiU8Vtjh
-	mRyeDjJke+UrVQfZgqpHcoqwZayFyp15/RKo4j5/f/kMO+hsq7bgBxkpp2gnKXn28eK5L9
-	OFdLMwAOdKSMiwJFC+vsjHAfHI6NA7k=
+	bh=MKmbcn10H1mEhEs2eiNwJ5Ru6s5QxvJ0PmBOOC5wp9Q=;
+	b=5S8JOVXy2lcLmIKigLg8EC01Knrm1ooNKpbwo281Y7hhPicx+O1Ks2PpdIyBQHGIWWQwvG
+	gEfEZanYDunUVM0HwarHk/L8H1yyKOPwHUKvv2tiOh4FRm1Sp2sQVzUSGqM1YotAEAyvSo
+	Uki8e+xD2cIGQXnakl3PLvO8iKNVQmE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CD3D643524;
-	Fri,  9 Jan 2026 13:26:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDB3C4CEF1;
-	Fri,  9 Jan 2026 13:26:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5EFDD60130;
+	Fri,  9 Jan 2026 13:28:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD68AC4CEF1;
+	Fri,  9 Jan 2026 13:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767965172;
-	bh=rSrNZz5QuO35JMfXkvRl29RhRhrRLAhpa1h/+u6Awa4=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=EC11TbxfibS1rBJPwUU4vRuK8VxuKYxP9cvyX8DaK2CEm8mfuCEZOQwc4FOovjNzm
-	 0dHm04BVq+fpWRcZQY8g1rtsOtp1Th8tVI9DF5yvZzC8om5m8NAUZaMgicpbOGGbdr
-	 vws+agyWs6qGOT/DwErVkiWe19qf9F1K+jkIvgs89LwjCIx+Cbd9OUgxPlBjx67hhw
-	 3D8cDOJlkUpuw7+OZb4MrDTdHL0jr32bSoJgFvRSfgtnSw6obeGFwCMgv+OcTPTG3U
-	 cfDOcjYLTbVrw7QYMEsq/4VzoiU6E/DXEKBqyu0kl44nimp8bCQoDLWLIKihODpLcE
-	 R9JyrmzsmDy0A==
-Message-ID: <1319a24a-bcfc-47e5-a022-f5d00994acc9@kernel.org>
-Date: Fri, 9 Jan 2026 14:26:05 +0100
+	s=k20201202; t=1767965333;
+	bh=KbGNKDR58KSn4+oTOJL1NdoFtGGmzkqP2D4O9W11qko=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=llL55zqjqi+MT92LPRj4SFMimqMF6ITiHAVUU1cLWrTf0TVZfjetX53J3dPEPjAXj
+	 qV6WzGKL/23BEdDanD9wA02+lSX8dh15NzcDjdSFtCINTReIC8Q58OYORr6GSgRWD+
+	 UH8oRGbB6lpl/lLZBF350wdYHN0k5GXOPIb/JWfwiyi0PXkG8YZopbVSo6UqrZqzWq
+	 PYGawZf6RL8p96oA1+TcxhOs9sqGB4HQlalFlKqLh2b3PATLisuPYZJIWni/C+1tI/
+	 0RgeEYAP8hGhpHJMUaLcmGXkvrGSdxxKXykY5kxxsb9Om5YN5pi183VK+ZRZpnYel/
+	 bzwLe8wPPcrxw==
+Message-ID: <b5502d6c-62c2-41bb-9564-3741656e07e2@kernel.org>
+Date: Fri, 9 Jan 2026 14:28:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/7] mm: Add folio_split_unref helper
+Subject: Re: [PATCH] loongarch: wire up memfd_secret system call
+To: Lain Fearyncess Yang <fearyncess@aosc.io>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>
+Cc: Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org
+References: <20260109051054.188030-1-fearyncess@aosc.io>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-To: Francois Dugast <francois.dugast@intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Balbir Singh <balbirs@nvidia.com>, Andrew Morton
- <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Alistair Popple <apopple@nvidia.com>
-References: <20260109085605.443316-1-francois.dugast@intel.com>
- <20260109085605.443316-2-francois.dugast@intel.com>
- <59fb1669-2908-4cab-b3c0-b97479da3fb9@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -128,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <59fb1669-2908-4cab-b3c0-b97479da3fb9@kernel.org>
+In-Reply-To: <20260109051054.188030-1-fearyncess@aosc.io>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 73D00160002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 6stiyajq8norck1njw881b5fgn6ijhzo
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 002AE1C0006
-X-Stat-Signature: t1zhjx7bxn7o3h74szsnabpbpzdbi1co
-X-HE-Tag: 1767965173-11433
-X-HE-Meta: U2FsdGVkX18Ubr/BItgALwVGzyZkJ0UV7dqiQxrZneqx7Po4zCYybdYGFwzdzezPvQMgfnTQhwgNhOnBKKW06k+TTYLABmhixhmlqGGdCCcEndjufSvsV1HDL0Heb+K3P6KHy5qS9CZqhoFARI9K1KARXwuTCO04Esn9X/K1PV06VZMzXnP0j8Hmm0rJo1vDfUyU254W2+rTsKxzq56G9wF4JNUOyE3K9PptLO/2du12uA/PiUGzyecW2gNpNJKpDKAEuDs9XmVlxkWPcNPmcquhtak31v7FImY0NzADqp81r/N4m1trRi58lQBJ+u4/MHCPnu0Jul1idaPmHIgayNXFjs7OiD0wyDGz8R/IULwbf9YfjDoYHbg3zeNvjwNqPa9hr+e97+6FNdODoZ/fzbb1HZ0w/B1O+dtjN99p++kGw5XKVNoz6DIV7fGazw1BfKMuebfHx+NA1WiwxtffpoVa+suXz0gmyMkLJD7CMOOHpZ2gsEiK9jz8bPYkju0IOBMxuFn0mhYD0k1HwjS1tw3gbTPmqvnKGzcovU7kEmStSrft1PnLi+jSDyEVrGV5cNWbcI/BO7rybCkLyWbNWBVhDRNi+4lr5++hJV73AxziPXDe8I8HSshTMVyPkb3VtqWADoiHyg1FSapnn84YmGedLWK7y5n2SJVUGLpaVcyzXWBrQIZm3x9qPHdRJksMpxA70gdS4jJVm6RXSI4FezgvV1UH/N/NdvNTX5pzkLGuGwBxcpvz/Jjqs1PPr/6TQE3Gqptcguhc/dgWAVGRpq6F005GoMdtABgM9Oq+HO8g/O9I1U/KF21LXAylsCCeAGTQ+x44PhgvaviflMfeBJ8rwxrbMRZmLCABXBQJni/+WSFTMBNjqs3Ym6Vg5Vyv+rY40PjsQnrqWL7yhfFeJk07pFyNiJwUE4ejTp5yZXPKTgWRZUluiJJguXlC7Lzk+h88L9v4FFVFrIZmIuI
- +KHGwL6M
- nRiOh0SypjPPo5C6cU/X4VUfiqlGeah+v7aINzz3VMkHmNbgfQBjw/HHrs04TT+Cky7fHtjy5eHvutg7ZY6PSHuxjadwWLcIoGIZIVrPwRBSZgs6m3DWhe5kC/MpxOrL4rKVKDwMeGAJrQJU5LL0ykjvrrQYCvE7ZdCQM6/TuuxPbrBXLNsobdVr3+wyu87Yy4X1dLeMmbqC/JbLoi4zl3ewWBhxGLQdi0n/GzxSS+brG7+OpjfKAEfBeOuMnBlDRhzOaAc1eC9zivGuECRywmrQPyMXDFf+0mGz41VD+VsdpWjR45mMJlmrNUvJSkkIW2yY0KJjVz2flPTQ=
+X-HE-Tag: 1767965334-611309
+X-HE-Meta: U2FsdGVkX19C1hX9MD8P6GlWIdLi8LgbJE3TghVGqQzj7bUKQvV6i1yXM5YvUKtKpZEdVF56B3hokjwR24pR2cQwpjKIGObM2GgSCRVfJakfA9oBgk3yySS9khale2WbELAOdGqUi8TIzt3agHqB/tI5VLf/ZPUdHo08QpYNpy+bl7fk8zbbJ6MNmv7YkZlXqQ+Aeg0Kw6jlgF5yuHLvCJct2wHe2+KTZs1H2I2IgVdlSD+hwEU0d0thr8QQM/D57Qh8hkkMP86Ydem0BAOyzu+TWH7w9joucfFuXeSDqz8xtB09Jep3MTGNejeE2Jpoq3WdYC0DmjUepfWoxJ7wAuLOg4CWj6RKkd2AWZCiRejtLDhWy1ZEaJQxHAXBaHFAbIRmHeo/pS/Y9b9y+47ggKnkH/ceADDDdTIsBBKyNLVkBneF9gR5gAWlaLxpo+liQK/os7HFhyR36lAcNzbXAGR+PKY7/flh2xJC30buuOHPz42mPRAsKuvB2UuMce7SD1Cj2R7IXhM1tYkaLPdisAQrqH33Xw5MkSEJIdB+FMgPtymSlHS6pTXPX1+YzBcz8pjBnv1of8/Gc0MWco06KvrCA5cYye87vKvcRCXSBS1sZgpwmpDMmfPPmD1zFca+KpLuaG0uTCTU6bsHItBI5oI5+u91JoL2GE00EMBR8LMHmXkZMdG5uB49W9MgcEYLYb8ORiXCvkWPzc0u0fcYfqOYUmmVHu0c1hzkLS4IIaQyFW9ho9vEgkssqIAmcveG9YSEoU3ug91IfbHg9HJDRTZsIlmrNa0RFeq5E1+IrIIP7SmkldA77l4+DzMHZOSsE4ZEPA1rl0AAZPXOiYzcAU9mlF5L8qCsNtKNPB/0HQ4Jggs/xX+EahnRItYKF/uK3lcYvNG2p2PWoLmyCkI8CLuW68pDllls3wZeuNjhrNy+trz1auqD2HJ4v36dvyS5FN5cpi/k3h/Cko1tMZn
+ KwvWDVZk
+ D0d/LDr10BBWQIqenEi/1moJlq+D1KY8q0EoU1CPEogtRgiISKYy40wqGp2IGqyiDo5FEgg3VftRBOEj2m5t4HE6fhWU25Z2DERVo+yMjZCciky6eh/O8jgxeL9IEL7DAXa5Ti8NcB24w3S7ZLB2Ropz8BQZQYaPIx1451PcoozJTTsdSH1yL5GO/19qQJ6Iwk9QSH4ZqMzeRMumSsrr6crM7/YzPP177lC8kypeGXvLXyGwS6/zoVz8y+dt9Zc7A/4m0lxQtLSgXgAFUI764KL75rRc06+gWFkjMpS6G9qo72kuIYUlKFB3Yj9Nq8iO8v3pdsNtv6s4YEk8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,44 +148,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/9/26 14:19, David Hildenbrand (Red Hat) wrote:
-> On 1/9/26 09:54, Francois Dugast wrote:
->> From: Matthew Brost <matthew.brost@intel.com>
->>
->> Add folio_split_unref helper which splits an unreferenced folio
+On 1/9/26 06:10, Lain Fearyncess Yang wrote:
+> From: "Lain \"Fearyncess\" Yang" <fearyncess@aosc.io>
 > 
-> split_unref reads like "split and unref".
+> LoongArch supports ARCH_HAS_SET_DIRECT_MAP, therefore wire up the
+> memfd_secret system call, which depends on it.
 > 
-> You probably want to call this something like "folio_split_frozen" ?
+> Signed-off-by: Lain "Fearyncess" Yang <fearyncess@aosc.io>
+> ---
+>   arch/loongarch/include/asm/unistd.h     | 1 +
+>   arch/loongarch/kernel/Makefile.syscalls | 6 +++---
+>   tools/testing/selftests/mm/Makefile     | 2 +-
+>   3 files changed, 5 insertions(+), 4 deletions(-)
 > 
-> The very definition of "frozen" is "refcount = 0 ", so you can simplify
-> the documentation.
-> 
-> Are the folios you want to pass in there completely unused (-> free) or
-> might they still be in use (e.g., migration entries point at them during
-> folio split)
-> 
-> So I am not sure yet if this should be "folio_split_frozen()" or
-> "folio_split_freed()" or sth like that.
-> 
-> I'm not CCed on the other patches in the series or the cover letter, so
-> I don't see the context.
-> 
+> diff --git a/arch/loongarch/include/asm/unistd.h b/arch/loongarch/include/asm/unistd.h
+> index e2c0f3d86c7bd..e7649c1582482 100644
+> --- a/arch/loongarch/include/asm/unistd.h
+> +++ b/arch/loongarch/include/asm/unistd.h
+> @@ -10,5 +10,6 @@
+>   
+>   #define __ARCH_WANT_NEW_STAT
+>   #define __ARCH_WANT_SYS_CLONE
+> +#define __ARCH_WANT_MEMFD_SECRET
+>   
+>   #define NR_syscalls (__NR_syscalls)
+> diff --git a/arch/loongarch/kernel/Makefile.syscalls b/arch/loongarch/kernel/Makefile.syscalls
+> index cd46c2b69c7fd..6360381baf931 100644
+> --- a/arch/loongarch/kernel/Makefile.syscalls
+> +++ b/arch/loongarch/kernel/Makefile.syscalls
+> @@ -1,5 +1,5 @@
+>   # SPDX-License-Identifier: GPL-2.0
+>   
+> -# No special ABIs on loongarch so far
+> -syscall_abis_32 +=
+> -syscall_abis_64 +=
+> +# Add memfd_secret explictly for la64 and la32
+> +syscall_abis_32 += memfd_secret
+> +syscall_abis_64 += memfd_secret
+> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+> index eaf9312097f7b..79582438efc4d 100644
+> --- a/tools/testing/selftests/mm/Makefile
+> +++ b/tools/testing/selftests/mm/Makefile
+> @@ -72,7 +72,7 @@ TEST_GEN_FILES += madv_populate
+>   TEST_GEN_FILES += map_fixed_noreplace
+>   TEST_GEN_FILES += map_hugetlb
+>   TEST_GEN_FILES += map_populate
+> -ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64))
+> +ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64 loongarch32 loongarch64))
 
-Ah, I was CCed on #3 where we call this function on folios that are 
-getting freed.
+For the core-mm bits
 
-In that case it would be acceptable to initialize folio->mapping (and 
-folio->index?) of the split folios. Do we also have to initialize 
-folio->flags, folio->private etc?
-
-See __split_huge_page_tail().
-
-folio_split_freed() would likely be best, because then it is clearer 
-that there is absolutely no state to copy from the large folio.
-
-> You should describe in this patch here in which context the function is
-> supposed to be used in later commits.
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
 Cheers
