@@ -4,142 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 665FCD1A623
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 13:28:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36E09D1A61D
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 13:32:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0AE86B0089; Fri,  9 Jan 2026 08:28:56 -0500 (EST)
+	id 9ABDF6B0088; Fri,  9 Jan 2026 08:32:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB86D6B008A; Fri,  9 Jan 2026 08:28:56 -0500 (EST)
+	id 962FD6B0089; Fri,  9 Jan 2026 08:32:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BB3D6B008C; Fri,  9 Jan 2026 08:28:56 -0500 (EST)
+	id 88C356B008A; Fri,  9 Jan 2026 08:32:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C5246B0089
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:28:56 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31D2BC2993
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:28:56 +0000 (UTC)
-X-FDA: 84312505872.22.2E4A14D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 73D00160002
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:28:54 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=llL55zqj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767965334; a=rsa-sha256;
-	cv=none;
-	b=dSSqpOJozX+a1S9lOKfnaj3ObCXTJbWEfGf9v91MWUgCcQ6zH/cqBmoYmUD92SwYpq0+wF
-	xWFkmIxscfPX11wWKhwiZTd/IoF4ERXhzhWdKHW2o7TkpBda/GhFa6Ci+dz13ham1zkXhl
-	UYJIgfNno/1FmB1dwJP6MZfUtgViWhk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=llL55zqj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 73C366B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:32:15 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0A0D3140700
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:32:14 +0000 (UTC)
+X-FDA: 84312514230.17.554656F
+Received: from out28-99.mail.aliyun.com (out28-99.mail.aliyun.com [115.124.28.99])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B1951180006
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:32:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=antgroup.com header.s=default header.b=Usj2yAlP;
+	spf=pass (imf24.hostedemail.com: domain of houwenlong.hwl@antgroup.com designates 115.124.28.99 as permitted sender) smtp.mailfrom=houwenlong.hwl@antgroup.com;
+	dmarc=pass (policy=quarantine) header.from=antgroup.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767965334;
+	s=arc-20220608; t=1767965533;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MKmbcn10H1mEhEs2eiNwJ5Ru6s5QxvJ0PmBOOC5wp9Q=;
-	b=5S8JOVXy2lcLmIKigLg8EC01Knrm1ooNKpbwo281Y7hhPicx+O1Ks2PpdIyBQHGIWWQwvG
-	gEfEZanYDunUVM0HwarHk/L8H1yyKOPwHUKvv2tiOh4FRm1Sp2sQVzUSGqM1YotAEAyvSo
-	Uki8e+xD2cIGQXnakl3PLvO8iKNVQmE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5EFDD60130;
-	Fri,  9 Jan 2026 13:28:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD68AC4CEF1;
-	Fri,  9 Jan 2026 13:28:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767965333;
-	bh=KbGNKDR58KSn4+oTOJL1NdoFtGGmzkqP2D4O9W11qko=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=llL55zqjqi+MT92LPRj4SFMimqMF6ITiHAVUU1cLWrTf0TVZfjetX53J3dPEPjAXj
-	 qV6WzGKL/23BEdDanD9wA02+lSX8dh15NzcDjdSFtCINTReIC8Q58OYORr6GSgRWD+
-	 UH8oRGbB6lpl/lLZBF350wdYHN0k5GXOPIb/JWfwiyi0PXkG8YZopbVSo6UqrZqzWq
-	 PYGawZf6RL8p96oA1+TcxhOs9sqGB4HQlalFlKqLh2b3PATLisuPYZJIWni/C+1tI/
-	 0RgeEYAP8hGhpHJMUaLcmGXkvrGSdxxKXykY5kxxsb9Om5YN5pi183VK+ZRZpnYel/
-	 bzwLe8wPPcrxw==
-Message-ID: <b5502d6c-62c2-41bb-9564-3741656e07e2@kernel.org>
-Date: Fri, 9 Jan 2026 14:28:43 +0100
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=vjbCs+Tbn7fqSeAHdJK8sFAOmv8QqKu3U51GXVFpxco=;
+	b=mQc7Hfw/9w0jwIGvG+XSDcKJJ2NsT9wzTf2CbgzFr/KQMmpag9h3OvW3b3P9AK5rcAfDVB
+	fm5lSVb5A4Zbaotzj09Aayf5CSnuSFKzWSQA3j+hB8eTH4jliK/ZPkoyw1zPXRRuls5hET
+	vYavEJAzM4Ay/e6omZ3n5YpOeF1PQd8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=antgroup.com header.s=default header.b=Usj2yAlP;
+	spf=pass (imf24.hostedemail.com: domain of houwenlong.hwl@antgroup.com designates 115.124.28.99 as permitted sender) smtp.mailfrom=houwenlong.hwl@antgroup.com;
+	dmarc=pass (policy=quarantine) header.from=antgroup.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767965533; a=rsa-sha256;
+	cv=none;
+	b=cKAPYfUiiKteh4IoVt0Uz8rCsYRepqjSmlw4OWBM87OQR8DHHFW/ztEIi8xDqvD5/wTAna
+	ApVhBC+fwqYLq1uiipotEU7p9n4nLAL/n7rqJf1FR3qElc1sLM7txuP95GwvVWqjDpGg/u
+	SE2TlaSKwHCuX8Zl9I3i/vteAPDLhS8=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=antgroup.com; s=default;
+	t=1767965527; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=vjbCs+Tbn7fqSeAHdJK8sFAOmv8QqKu3U51GXVFpxco=;
+	b=Usj2yAlPlNq/u2V/G71XePJEYvEXO38WchQT5VFPng+sJbjaYlGh19/0W++E81P3yDwTjokEKVy1HRO7G3m21O68CbI2Y4jpH8dpeoY+HcHJxmbLdb/9Wkdq2k/oVb5/obEDm7MWEcTwWVaT42o/oDJrqFU/+MS2Qb3h5E8PGgQ=
+Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.g2TRMK0_1767965526 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 09 Jan 2026 21:32:06 +0800
+From: Hou Wenlong <houwenlong.hwl@antgroup.com>
+To: linux-kernel@vger.kernel.org
+Cc: Hou Wenlong <houwenlong.hwl@antgroup.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/early_ioremap: Print the starting physical address in __early_ioremap()
+Date: Fri,  9 Jan 2026 21:31:51 +0800
+Message-Id: <aa2d44c34f44c31b50285b7592ed4fd78d6f59ba.1767965415.git.houwenlong.hwl@antgroup.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] loongarch: wire up memfd_secret system call
-To: Lain Fearyncess Yang <fearyncess@aosc.io>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org
-References: <20260109051054.188030-1-fearyncess@aosc.io>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260109051054.188030-1-fearyncess@aosc.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 73D00160002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 6stiyajq8norck1njw881b5fgn6ijhzo
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1767965334-611309
-X-HE-Meta: U2FsdGVkX19C1hX9MD8P6GlWIdLi8LgbJE3TghVGqQzj7bUKQvV6i1yXM5YvUKtKpZEdVF56B3hokjwR24pR2cQwpjKIGObM2GgSCRVfJakfA9oBgk3yySS9khale2WbELAOdGqUi8TIzt3agHqB/tI5VLf/ZPUdHo08QpYNpy+bl7fk8zbbJ6MNmv7YkZlXqQ+Aeg0Kw6jlgF5yuHLvCJct2wHe2+KTZs1H2I2IgVdlSD+hwEU0d0thr8QQM/D57Qh8hkkMP86Ydem0BAOyzu+TWH7w9joucfFuXeSDqz8xtB09Jep3MTGNejeE2Jpoq3WdYC0DmjUepfWoxJ7wAuLOg4CWj6RKkd2AWZCiRejtLDhWy1ZEaJQxHAXBaHFAbIRmHeo/pS/Y9b9y+47ggKnkH/ceADDDdTIsBBKyNLVkBneF9gR5gAWlaLxpo+liQK/os7HFhyR36lAcNzbXAGR+PKY7/flh2xJC30buuOHPz42mPRAsKuvB2UuMce7SD1Cj2R7IXhM1tYkaLPdisAQrqH33Xw5MkSEJIdB+FMgPtymSlHS6pTXPX1+YzBcz8pjBnv1of8/Gc0MWco06KvrCA5cYye87vKvcRCXSBS1sZgpwmpDMmfPPmD1zFca+KpLuaG0uTCTU6bsHItBI5oI5+u91JoL2GE00EMBR8LMHmXkZMdG5uB49W9MgcEYLYb8ORiXCvkWPzc0u0fcYfqOYUmmVHu0c1hzkLS4IIaQyFW9ho9vEgkssqIAmcveG9YSEoU3ug91IfbHg9HJDRTZsIlmrNa0RFeq5E1+IrIIP7SmkldA77l4+DzMHZOSsE4ZEPA1rl0AAZPXOiYzcAU9mlF5L8qCsNtKNPB/0HQ4Jggs/xX+EahnRItYKF/uK3lcYvNG2p2PWoLmyCkI8CLuW68pDllls3wZeuNjhrNy+trz1auqD2HJ4v36dvyS5FN5cpi/k3h/Cko1tMZn
- KwvWDVZk
- D0d/LDr10BBWQIqenEi/1moJlq+D1KY8q0EoU1CPEogtRgiISKYy40wqGp2IGqyiDo5FEgg3VftRBOEj2m5t4HE6fhWU25Z2DERVo+yMjZCciky6eh/O8jgxeL9IEL7DAXa5Ti8NcB24w3S7ZLB2Ropz8BQZQYaPIx1451PcoozJTTsdSH1yL5GO/19qQJ6Iwk9QSH4ZqMzeRMumSsrr6crM7/YzPP177lC8kypeGXvLXyGwS6/zoVz8y+dt9Zc7A/4m0lxQtLSgXgAFUI764KL75rRc06+gWFkjMpS6G9qo72kuIYUlKFB3Yj9Nq8iO8v3pdsNtv6s4YEk8=
+X-Stat-Signature: f5r3xu4xs4wa84yk4tz1cds184mhyq4a
+X-Rspamd-Queue-Id: B1951180006
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1767965530-157297
+X-HE-Meta: U2FsdGVkX1+O8pcmvIoyZxrWM0+Tk+tCveJuT/ZLL4rAhu5IoAfoeHclibGhHZe1Rk+J577+Hq+ovAZKE9uUNa3ZInxwXyJqW+7Ai3SrK+KGLPLd5/ezOR9iEu2zNb5GmqCbNnL8Fgjraix6Q2+DwJoTLXwu9lTk64afWw6vQmJ6Tvhvp8U0fcqCQbd926/my5rfrRjktq60umK+eaNfEaVfT814Zy7FZLv6/CiHDB/6Da6Rx9PO9tCvgS3gDxqwyHWhxwCVI+mG4Nf3UrqrxNx4kmn/FTMpbH9gCaVAbLHoW1RemcwTIytx6DbaCCXoNeTmEog5lFnHnsxsT1f2o43ouhuVmvfvaHz5I2dESkqd6Hfd4Wp064flElXMgUkTidjqQJ7Y0Mg53jhZ10WpD0YRw//BCjbdM06zJ2nk0l/CXKgVLEhuCotYYsDtAqcFjpGZKgeE8Aq41GpAm52Ei9yxCF/Ngk+yWpcHXDygqBVCxSLrdQFTs3BARewbCnjTh5Rhj21dErsOTOog6CQRx85UbzJFErcms7WgGB/AJtMvvUOwhwxJ8Gsd5BmjjPpj4cL7SwM7oW/F515AArKlO99eR1tF653+eS/T8ap/LEqNBpta4BnNDjYbmJ+5yXVqqsdlrN2J27I706Dc3oAeNZbAM6j54jDzDbXoDv6JZqeQNf1vHBDJhT5i2CLcloihbyYhV6s8j6ij5nKKzFOVWhwpqR6g5tqosdofA6xfv7LyghMct+DgH0HBb+wpIPWrLab1c4ODKW7agAFJpEkBbYejFiiym2XIWA61sIDgL6y110UQpeTN+iuOzjI2AoTj6z/dhS4ot8QtnIAxVu1ec8hI2Zdu6PdLx4Zh6bPk/7ijxcIgHyGp1G3XJUMPVjW04wTV1nzVFYFrdzA3J+XLzZIa/UWrJdXIMQ+QBY9xdcVUdbWD2mImEzXd/+6dkXO1rBlgSZGnfqA4tHuSDSO
+ 2pSKpOu0
+ Fi4ZlQAJbnskRXzhr3e9eo/8iaApm/pM/9VSP1V6F6tKHZkDyE/cOm7dgrlNNiBcMnpkoHcxeVIg67Ti/e8TiIb3nCTtPSO1bun1KfJdSgKFSxGafVYwiHYIx2VGY/T3sPDoqd3VTeTinOV2EOxZerSPO+WS9u3EjcpaeX53HFHdoIy28Qj7cL9FHbQTHj98s/HTZwRCEXkJ/YD846Uh/rmC1+vj2Rdy0BP+I4k1KuwZibFKTPRn03324rdvNkr67a7haf2FTKC776eiJV3ski9I35DXfmdJDrBNQ4yxJ8MiPDJiOOBSdCYZBYX45/0ENFHsr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,60 +90,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/9/26 06:10, Lain Fearyncess Yang wrote:
-> From: "Lain \"Fearyncess\" Yang" <fearyncess@aosc.io>
-> 
-> LoongArch supports ARCH_HAS_SET_DIRECT_MAP, therefore wire up the
-> memfd_secret system call, which depends on it.
-> 
-> Signed-off-by: Lain "Fearyncess" Yang <fearyncess@aosc.io>
-> ---
->   arch/loongarch/include/asm/unistd.h     | 1 +
->   arch/loongarch/kernel/Makefile.syscalls | 6 +++---
->   tools/testing/selftests/mm/Makefile     | 2 +-
->   3 files changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/loongarch/include/asm/unistd.h b/arch/loongarch/include/asm/unistd.h
-> index e2c0f3d86c7bd..e7649c1582482 100644
-> --- a/arch/loongarch/include/asm/unistd.h
-> +++ b/arch/loongarch/include/asm/unistd.h
-> @@ -10,5 +10,6 @@
->   
->   #define __ARCH_WANT_NEW_STAT
->   #define __ARCH_WANT_SYS_CLONE
-> +#define __ARCH_WANT_MEMFD_SECRET
->   
->   #define NR_syscalls (__NR_syscalls)
-> diff --git a/arch/loongarch/kernel/Makefile.syscalls b/arch/loongarch/kernel/Makefile.syscalls
-> index cd46c2b69c7fd..6360381baf931 100644
-> --- a/arch/loongarch/kernel/Makefile.syscalls
-> +++ b/arch/loongarch/kernel/Makefile.syscalls
-> @@ -1,5 +1,5 @@
->   # SPDX-License-Identifier: GPL-2.0
->   
-> -# No special ABIs on loongarch so far
-> -syscall_abis_32 +=
-> -syscall_abis_64 +=
-> +# Add memfd_secret explictly for la64 and la32
-> +syscall_abis_32 += memfd_secret
-> +syscall_abis_64 += memfd_secret
-> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-> index eaf9312097f7b..79582438efc4d 100644
-> --- a/tools/testing/selftests/mm/Makefile
-> +++ b/tools/testing/selftests/mm/Makefile
-> @@ -72,7 +72,7 @@ TEST_GEN_FILES += madv_populate
->   TEST_GEN_FILES += map_fixed_noreplace
->   TEST_GEN_FILES += map_hugetlb
->   TEST_GEN_FILES += map_populate
-> -ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64))
-> +ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64 loongarch32 loongarch64))
+The debug WARN() printing occurs after the while loop, so the
+'phys_addr' reflects the last physical address rather than the actual
+starting physical address, which is not useful for debugging. To
+simplify, the WARN() statement could be moved up before the loop instead
+of introducing a new variable to record the original 'phys_addr' value.
+Additionally, swap the print order of 'slot_virt[slot]' and 'offset', as
+this will enhance output readability.
 
-For the core-mm bits
+Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
+---
+ mm/early_ioremap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-
+diff --git a/mm/early_ioremap.c b/mm/early_ioremap.c
+index ff35b84a7b50..3fdde074c9da 100644
+--- a/mm/early_ioremap.c
++++ b/mm/early_ioremap.c
+@@ -139,6 +139,9 @@ __early_ioremap(resource_size_t phys_addr, unsigned long size, pgprot_t prot)
+ 	if (WARN_ON(nrpages > NR_FIX_BTMAPS))
+ 		return NULL;
+ 
++	WARN(early_ioremap_debug, "%s(%pa, %08lx) [%d] => %08lx + %08lx\n",
++	     __func__, &phys_addr, size, slot, slot_virt[slot], offset);
++
+ 	/*
+ 	 * Ok, go for it..
+ 	 */
+@@ -152,8 +155,6 @@ __early_ioremap(resource_size_t phys_addr, unsigned long size, pgprot_t prot)
+ 		--idx;
+ 		--nrpages;
+ 	}
+-	WARN(early_ioremap_debug, "%s(%pa, %08lx) [%d] => %08lx + %08lx\n",
+-	     __func__, &phys_addr, size, slot, offset, slot_virt[slot]);
+ 
+ 	prev_map[slot] = (void __iomem *)(offset + slot_virt[slot]);
+ 	return prev_map[slot];
 -- 
-Cheers
+2.31.1
 
-David
 
