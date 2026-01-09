@@ -4,106 +4,217 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF6C4D232C6
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 00:11:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A7EFD232C1
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 00:31:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09D2F6B0092; Thu,  8 Jan 2026 19:11:39 -0500 (EST)
+	id 4D6EF6B0089; Thu,  8 Jan 2026 19:31:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F35276B0095; Thu,  8 Jan 2026 19:11:38 -0500 (EST)
+	id 484756B008A; Thu,  8 Jan 2026 19:31:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF6326B0092; Thu,  8 Jan 2026 19:11:38 -0500 (EST)
+	id 32FB06B0092; Thu,  8 Jan 2026 19:31:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF9276B0092
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 19:11:38 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6742B13A6A1
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 00:11:38 +0000 (UTC)
-X-FDA: 84310496676.12.BA3296D
-Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9D04140007
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 00:11:36 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=4DB89sEa;
-	spf=pass (imf17.hostedemail.com: domain of 3t0dgaQgKCBo90IEDC8K6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--jasonmiu.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3t0dgaQgKCBo90IEDC8K6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--jasonmiu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767917496;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 204156B0089
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 19:31:53 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C5D7758508
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 00:31:52 +0000 (UTC)
+X-FDA: 84310547664.11.B732579
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9F23D20002
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 00:31:48 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YO9YjBiT;
+	spf=pass (imf13.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767918709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EKgMKBT5OFHokoCGrW4c5BW1nZH0a8FU1Tg2IfU9qt0=;
-	b=s+UCbD11FtWUDehVONwcggiy2x8HNVTukgjf9AauZGATuCtIlXy3TlKrQqkVvXGF7E7r+z
-	FmNfpg38vFtY2/83OAqy3JOVj+rPrFlK4i6uToLW6zVbh4ccs1JVlIKn0aGTzdr7Xmm/sP
-	2BK8QR2UH2i8kh7Tya0Gr/cAS/eqNtk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=4DB89sEa;
-	spf=pass (imf17.hostedemail.com: domain of 3t0dgaQgKCBo90IEDC8K6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--jasonmiu.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3t0dgaQgKCBo90IEDC8K6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--jasonmiu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767917496; a=rsa-sha256;
-	cv=none;
-	b=wxBYQQHlXCDvJcDA+VlOSyIy6FMxaGumxjpNOFKi5BO112Wsh21BsYc9I2J4J9ozdTrZeu
-	LxBLGjbTyg2LBFT0ukfWQHHcsnNyCslDSPTLtbCpWITIBNlhRRri0YDRTvY3S6eixkghFw
-	LA4l/PPJUiAPXKssTEXP+Xtkq4Bwzmo=
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2b04f8c5e84so3498353eec.1
-        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 16:11:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767917495; x=1768522295; darn=kvack.org;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EKgMKBT5OFHokoCGrW4c5BW1nZH0a8FU1Tg2IfU9qt0=;
-        b=4DB89sEaj8dGFNWb8/1LbjFtjRTEWAcEDBmYmHKTaeNBcIIj4hoyRBXi+F8SmXP71J
-         Whw1soQKAqbR5df3J4abhtBClkP89CxM7ehmf8LgbfmYXqQYHtZzzDU9yfUA1KZP1Cgm
-         m1CgZKMk3B+MSUmApXrlSSmO6EdR151uLpjLdho6BQ6Hyo24mI/7wE3p33p8rVEXstfD
-         claDLR/JUwU8YLxQG6FgPxCqa4Q+KZxEakgY3WKzXjxq28XrEGJ0Jzu7OEguQGQQ5Mz9
-         efaoEpNmAP+eLOhD3Y0Ea8n1FR0HszacjNJ9WuUeRyI1gktHhv/R+n4J/0Z35LZzCoub
-         lXzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767917495; x=1768522295;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EKgMKBT5OFHokoCGrW4c5BW1nZH0a8FU1Tg2IfU9qt0=;
-        b=Immmf/S/kegxdl2bhm8dStTrZfSfg74ahDaJepPUpWK6+tEQOlMn4tbf16UI0B+Qld
-         b/HSEbz1r980EKTdy+qQtYqFXhaU4mxtAmeYIP1wALact4eE+o9CmKWV6OzA3TtQxSBb
-         1RvaLQ4vg+xCXMhZxKWan8epHfDhNXhDHwlSCDp96vq/rzghfA+cr0UWSXAB5WFxWEvN
-         4w4Xfcs7dBinLhkCXUmg9ZW1BH/ZHEhNDp+YXkC6MJxKEZIPWr+j4KyHvcl1J1JhSSj/
-         4Eo2RzKV/Qxo7kF+BkccrTN+i+iQAmFPmQD21cFvK6Z1GiTTp7VGTFqDdoWpfZNwvSWI
-         bHTw==
-X-Forwarded-Encrypted: i=1; AJvYcCUdsqMpjn0uQO60PmJkdgzzmsG3Ni3gS3M70IDs3kqckjJQq65RkPV5bMowx7K15RPlw+9/GdW5rQ==@kvack.org
-X-Gm-Message-State: AOJu0YwNdvdSkgD612ky6tfKfpFUIRr+/uN6Ebgk0swkaCXOFxXJCIUg
-	mNRV2Egg4wnZz7GwUk6MQ7U5LfGFLRJjxJIqDAsmikb7cHJ2SUzPhdzBSnJvOlDeVabraevUDz6
-	Fdt7Fz8a3hJOYqg==
-X-Google-Smtp-Source: AGHT+IEFOtcW4jk0aXhAffgAIqkI0UKGPAV2Ujq35QNsvPluSbvTyZRl2dRJINPWfimpz9fDoX9MuIGSXj0PtA==
-X-Received: from dlbdx12.prod.google.com ([2002:a05:7022:e0c:b0:11d:cc5a:2cd0])
- (user=jasonmiu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:985:b0:11b:99a2:9082 with SMTP id a92af1059eb24-121f8adcfe2mr5422835c88.15.1767917495328;
- Thu, 08 Jan 2026 16:11:35 -0800 (PST)
-Date: Thu,  8 Jan 2026 16:11:27 -0800
-In-Reply-To: <20260109001127.2596222-1-jasonmiu@google.com>
-Mime-Version: 1.0
-References: <20260109001127.2596222-1-jasonmiu@google.com>
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260109001127.2596222-3-jasonmiu@google.com>
-Subject: [PATCH v4 2/2] kho: Remove finalize state and clients
-From: Jason Miu <jasonmiu@google.com>
-To: Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>, 
-	David Matlack <dmatlack@google.com>, David Rientjes <rientjes@google.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Miu <jasonmiu@google.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 9D04140007
-X-Stat-Signature: ma1ysibjcm4qeu5pk7c583g33agna6a3
+	bh=wcoJhXRbWXUEj06rw/RzJG9JYUY6e+jLITIfNzNbmjc=;
+	b=SsmIFWeeEuNLbQ7ZdkTSKPFsEDzHf8qPVNyABHezynPTFTroeEBRLt7qanEX2P78a97UrS
+	oQc9iJC/mQVUsos1qJt529Sbw4n1dxAD40mffTUjYvwUGsV0AFy1mbSutviLRfYD1EFu1+
+	NUEXeG0crYjrGR+C14t2CEObi2jsGws=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YO9YjBiT;
+	spf=pass (imf13.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767918709; a=rsa-sha256;
+	cv=fail;
+	b=MGT6ioyk916oEXVDS17g9sUiGr3pelaoPee344k0P1MQ89AF5gc9+yAapU2HOylPCvE5MG
+	qGKeKWIxDAjGbWvcmkj4+1qkOxxRDEj1/UlJFrPnpeedTzQuA/NeldJRHs2oWLQhylhym4
+	sc9QVuGAN+/7EZDff8lUT5JzyPGw6VI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767918709; x=1799454709;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=Ll5ZL1Dsgl3u8TfWRO9J5EPkKE5tgG6z5YEKRipD10M=;
+  b=YO9YjBiTxvo688KNniB8Cj+v8FwWRIGo3zVO/YgDoGBirbijqq3y0O5r
+   UxUIDA9V8YtFhq7JdyUgOEQL8NCP4DsAJcwj4KYU5B+7sonvFFn55EZ9h
+   Np6kgs8lfKzAAyCfpJbkjyzRl9npRp/STBDgfmgqFxUTtxKRYSvD0XNxu
+   VxTKw7PN/POxU/zl02h4V/FFO5s0bxQ1q4NC2ni5syERnln/TVO+PXFGH
+   cGFxGlcRqMvVcLS+/6luYO+JnHO7+qc8DhlSJvzIJH2nmBpz8s4OsZjAO
+   Rnalov49SNM/YjNGdOI6kznu0KUft+t26680irCF7g9byvAD/E095/rgc
+   Q==;
+X-CSE-ConnectionGUID: 3hoQtn7pTM2ZZKBGZ8Vy3w==
+X-CSE-MsgGUID: lLxon1FpTOuCGOz8sSMlrA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="69350204"
+X-IronPort-AV: E=Sophos;i="6.21,211,1763452800"; 
+   d="scan'208";a="69350204"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 16:31:47 -0800
+X-CSE-ConnectionGUID: mijFVALhT9WcweDAlU1Img==
+X-CSE-MsgGUID: qLAuO+XHTBKJMWF4nxZqRw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,211,1763452800"; 
+   d="scan'208";a="234512412"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 16:31:47 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 8 Jan 2026 16:31:45 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Thu, 8 Jan 2026 16:31:45 -0800
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.53) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 8 Jan 2026 16:31:45 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UQvHeVHnX/c+GPpbbQOWEcJRyk09eVEVwPWhvwlZn2oJ8DnebQ4fdh7bKnPQahcYj0zYOzCrxg85stBrevRSh12bP8+M/Kir5ZuEZ9NwNr6pHWMPEIHghBN89J986BLcQ3X5tjPf7NZU3irh9hsNbTM50FO9RSEm4vAMPWwCx1rNyRvHg12S2wVfxh1CGE2YtYd8crQpGFQrsOa8Z0BgnzBUNkiWgfUOsxH8ghHYoQSpMRMZVpTFB6tE7ydlHVd34Ok0EhTVSXZ0qMGkzxlf3EjltwX708TTgL/eW7Xg8l6yBxenE0zfW0P7jsDpKX8oaVchksjWYqU3+kC+Ore+zg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wcoJhXRbWXUEj06rw/RzJG9JYUY6e+jLITIfNzNbmjc=;
+ b=gHIIDb5Y7PzotheB5g7FPTLDts8kBv0XHoasTiSFesOQaeI9eYu8lls2UMCadm0oQONJA0yMyKRD2U40yhUhNiAsTGknlCUC6W6PDRn74ROVyUVD7vPp3iKtngy0TYZGnlV/LNNW1FOXEfsrHloWDsdx2qCVAcopGvwNTXxfJO3tLy+vdo82bqfuSThnNKfLcVErJK+0wcPvaZp85R30etPVl1N/8s+gMKLSINpfj+veiPctYmBGp+KmB4Q3xmp4HAykDGva4pdUii+b4+bwOHiyzjN5nngrbW6k2nkTSwQmcRu2EWXMMyZRoeOC29k3sI9IxiX6lIbQf0+THczVPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by CH3PR11MB8465.namprd11.prod.outlook.com (2603:10b6:610:1bc::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Fri, 9 Jan
+ 2026 00:31:43 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9456.015; Fri, 9 Jan 2026
+ 00:31:43 +0000
+Date: Thu, 8 Jan 2026 16:31:40 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Jordan Niethe <jniethe@nvidia.com>
+CC: <linux-mm@kvack.org>, <balbirs@nvidia.com>, <akpm@linux-foundation.org>,
+	<linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<david@redhat.com>, <ziy@nvidia.com>, <apopple@nvidia.com>,
+	<lorenzo.stoakes@oracle.com>, <lyude@redhat.com>, <dakr@kernel.org>,
+	<airlied@gmail.com>, <simona@ffwll.ch>, <rcampbell@nvidia.com>,
+	<mpenttil@redhat.com>, <jgg@nvidia.com>, <willy@infradead.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <intel-xe@lists.freedesktop.org>,
+	<jgg@ziepe.ca>, <Felix.Kuehling@amd.com>
+Subject: Re: [PATCH v2 00/11] Remove device private pages from physical
+ address space
+Message-ID: <aWBMbGQApg81Kxba@lstrano-desk.jf.intel.com>
+References: <20260107091823.68974-1-jniethe@nvidia.com>
+ <aV6nvCw2ugAbSpFL@lstrano-desk.jf.intel.com>
+ <3586d8f1-a25f-4087-a987-162ccd97c25f@nvidia.com>
+ <6a911224-05e5-45ee-8008-e36ef35cbc7b@nvidia.com>
+ <eb45fb36-4f0b-4a83-8852-abac3205a988@nvidia.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <eb45fb36-4f0b-4a83-8852-abac3205a988@nvidia.com>
+X-ClientProxiedBy: SJ0PR13CA0235.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c1::30) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|CH3PR11MB8465:EE_
+X-MS-Office365-Filtering-Correlation-Id: 26f5005e-b1bd-44a6-44d6-08de4f1676bc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?zHN/8Yi9debhYUIEQcZwcl/VaASTT9trAsb8ub25fureQCmX64p9w84MdMb6?=
+ =?us-ascii?Q?K/8VzTzoO3xWvkEQKaiqgvL744+xF2awURYXVtBXFsmEw6ZAY3knpJbnYpzv?=
+ =?us-ascii?Q?313kmcyf6pKK3Bpb9mlF6PzxPm3RBhD8Bi1b5Ay9DaOdugRCaylNS0X308Y5?=
+ =?us-ascii?Q?+ldz/KPYKm7k41Xx5PQWdaYu4M2vtHcRGGetkKh+CUjtD0AOXDOBU1N70SlQ?=
+ =?us-ascii?Q?uff0DUGirIV2ZUTY5ojLaMmGzYRTRIt/mJmjUOx1MZd+AGXpNvj5t0M2Pgfp?=
+ =?us-ascii?Q?OnKm0pD8xMXBrEi3ZM2/WutlJTL/hlYuuIJG0lEdmdjKCh58Kal5SnmldjUK?=
+ =?us-ascii?Q?+cNmReVRkEao/i5YCVNEOsdb1i+L/dA+YYDmxEA88tJ6FuWtbgP3oWKxdOjy?=
+ =?us-ascii?Q?rM/ZpZoIgew+WjKbLDmUycBrx0FdruztfRQVCp+cnDfTC8AOncH66SK/peOi?=
+ =?us-ascii?Q?5yoh9bFeb5Jf17CSyVPILmk5enqGe11XqCxmutswITk9EgCGaGoonFLQXDt9?=
+ =?us-ascii?Q?LJdUWt/8Vvl+Ny+VKLcwo1f1ZmLBp/PykAEPy9cNcgylHgh8eejMvlulibGW?=
+ =?us-ascii?Q?Iau5Wl90qumsD4plyySJa3EfckZbOVlnC9kviwNNskbp3up1wiW+/mN3RvIq?=
+ =?us-ascii?Q?BLixqJGeV2l+k3KZnLTMnZMW+wjxhp5DXX5KsHUHrXfU7+OF6rLvKKHuia6z?=
+ =?us-ascii?Q?8tAzad40RUnYkAukI3RQy/ygc6W/Mbjpq94mL0LdTZAfAhSpLF9/QBbmU6ft?=
+ =?us-ascii?Q?EupK8iuwDYbPeW1VmfsKjY17YALeM9XMuEL5zPdq+254RLGiieBtjTWsd13I?=
+ =?us-ascii?Q?LQzEPGL1gC6xvHzjPzzObKxhu/n/97+BQgHaZC/2sDIsggbRth5JUSU8FBeP?=
+ =?us-ascii?Q?Pfe3y3qTWQHxqQf1D16D9uVqCXqlzgi1R6ZOOLCeEN2R2bbMc9vY0+Uazx7K?=
+ =?us-ascii?Q?VmsxHggak5O17GofzFTdGc+LG++AM4Mwoy//WxADoEvLZE8E7UgeI1ZVv+FE?=
+ =?us-ascii?Q?CnFzfSoohmCa6Xu3qK+QUhXm+dWsgwlGdzIR7dsW3GTY2LcV+XpF9nrr8dlj?=
+ =?us-ascii?Q?sCCv8uqvF/5RRqkBZpzMXExQOVCx4JXd5XnTGG+LHJLgrl2UVO0ZgNZKLJAl?=
+ =?us-ascii?Q?5lRSN9p64MMR3we8ZtVSPfnHMbZKo7EkpLjkDs6NEmhoNhPmmp3nNOnwmH9M?=
+ =?us-ascii?Q?D5jAXBRiBRUSv6eNu2pB+uvkl+rc+/IYJd21lCnIjqsowHGNl1cKaBRvpUv9?=
+ =?us-ascii?Q?gc1OVhIJWY5ry5duY+xg9S3vf1ErpvxdoDuNUideiMxeRF5a3lqJGWWWKxsL?=
+ =?us-ascii?Q?QrecJVd1HfaEremusSb8IN6eFRxSrTaVuRKtlaTZCEXSYB30C2MrinViZX6/?=
+ =?us-ascii?Q?Q+QGH7Wt97S2SXq/ErNYNMT4k4w7rRORsjbptnx57VEiSphlDg=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?lgQCQ4aCV5IIxw7eanSmn7eo98S51IEK63AqYV6+qA1VX2wJ3ZbzoqHLwtpX?=
+ =?us-ascii?Q?pSEPmLSs5bRKbAaxuacGojpYjcx4MKzFE0X43JrYiIPcZzlfKKXz375f1ZuI?=
+ =?us-ascii?Q?0mrw1Arzi3r50Tihcdo5ug6WyGXljg8YPk3ckHQ6bnNTczkiBtry8iwp4D3g?=
+ =?us-ascii?Q?yARbOm9Xy39HfIt9VNzoPefEsMO0VimmT2/WdumVtAN1VQUXgDDkY1G8e7IX?=
+ =?us-ascii?Q?ndMN2KpfzHyxUee+mNlIHmoSncCUmGQh43zzYb9pygnpnDDazFzgSAviZ1J4?=
+ =?us-ascii?Q?SKLOsZBBSB6go2YaZQDpCXxNaky7/HFIRnImBIu8iB5jeLqrS+il0Db94z5Q?=
+ =?us-ascii?Q?RYWp/N6HqUnkaChEo3G0AAVpzeJexUslUx+IexvsaRJp5cZkPC/7UMtnBJVD?=
+ =?us-ascii?Q?vgX2AbfUnFy5bzmESPOKPtw7EJL3PN1qLlwQmG7oFG67fSPh25meoLRX8t/J?=
+ =?us-ascii?Q?nSrBg5A11JwYu2tub57fanlvRVsWfeyP7SdhUVeKGFTxDyVcGLwjJRhgDQLl?=
+ =?us-ascii?Q?ZoK/UnMIsmafhfbrkClvxpj4uqrcKcwKkJyx13WaqvUUWnq8Ph3WtFJStnZa?=
+ =?us-ascii?Q?TimjUDwajLaJl32PN57MBR/cCozF2CVR2ExZbzXfy4W9PgGvtMfeMRuJxKqv?=
+ =?us-ascii?Q?+d8309dsHrDyUCjYExV4uC6mLN/EngOj/AXVAx71sD7A3CO/bHIq6AXau9Bo?=
+ =?us-ascii?Q?XzNCYjrEmjDG5bBYZXlvXvo4bZvf4NNTfjTFwpMPxsfS8l2RNwC9wKsvw87E?=
+ =?us-ascii?Q?JRve5xWHJvw0s9dPJEF9VaTPgZQTd6N4PrdAUo1G94FRsoO+0X3xrxf18xiX?=
+ =?us-ascii?Q?HDBQ3O9KMhajIO8ubv2LCPU4pLJgwLo+6XaVnY7Lumg6kysw99kHs/IIBopK?=
+ =?us-ascii?Q?jdgy/UFzVwzJbFES807zyov4E5fRKOMaK0rJ6ycfDnocPMvcslu/0zkezNy5?=
+ =?us-ascii?Q?+gBbkVbD0+QHSt0qKxECH85DmLmu4Swmqya1RLRnSaNaMYfctXAGZcoyh/+M?=
+ =?us-ascii?Q?rAFQtg9o2wgClHHPEr+hKYkz7mwiY83gAPJv5DmJGig+uvz/MqlqbTCtY6SL?=
+ =?us-ascii?Q?PtpOdlOcYI+op8cuib+rggHxUORfCF0P1P1q85vqAy2bRcI0QU0Ih6xwMsEa?=
+ =?us-ascii?Q?7KF8gYDZz9bANHK7zEsSJx06NNDk3yTSueOCABRWjg10s4nHPNx/kXTV5VrG?=
+ =?us-ascii?Q?TYAv0VmuhHUayQVW8eFwo60A7SLqzle9nCMWCK5hTGnRdme8Kq4gyFegrWkE?=
+ =?us-ascii?Q?zgeeYwxRaO4SnaSgC9kWyAPKhLGDj4VOjwRCcKgT/89BJcPMxfs/XaFdD4nJ?=
+ =?us-ascii?Q?WF6DNvf9fC05sl4t5+O0bYHyXt+2i9sSGjc0dEIMbH949zeE/lAhhRLM7Z55?=
+ =?us-ascii?Q?tL+mDd/+fDrqRgoWG0Vfelj4Bweuc5JYfh5f0hbVP1Kd4OONspXm3F/AFaBc?=
+ =?us-ascii?Q?chnXzeWX75c1xHHIg4D7fVDIPaM/qli7+VylWal8vc5HNBjQDXXfdVvO3pJG?=
+ =?us-ascii?Q?rvFxPjgNTbAPv1ILVanQgUXikhHFmjjNrpe6c7VTukC5kslV3Ds25hhrQ09l?=
+ =?us-ascii?Q?mNpTWo68IfU0z4Xtf/9Xx9D54n9Gqa0NsEUi97/opuWgNCM7epECc9zMdy6t?=
+ =?us-ascii?Q?jvoA2a9nlNnbOYpOZJGiULxJmwXNt6sjEOS1c5h+9TfFvfUZlMcKvfUP6TEz?=
+ =?us-ascii?Q?S8LMDup5ntvATOIXVRTKwFBf7sr/M56ZPuUsgYDQnsSmO9o/JAUCL14Kjmf0?=
+ =?us-ascii?Q?vsh9vfTCsOwr4RfxbftkVa6ihhAEim0=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26f5005e-b1bd-44a6-44d6-08de4f1676bc
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 00:31:43.4693
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i4BJbeostnNl3HsUFunY/Mn8Pb78LwnFOJFb00tQWg1srTNim9SQL1rBdepCW0OXFtL+3PrErlvcg4Le3jpnyw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8465
+X-OriginatorOrg: intel.com
+X-Stat-Signature: tfg6h7pktrwxsfxjynkdts9iuy69iwb5
+X-Rspamd-Queue-Id: 9F23D20002
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1767917496-194681
-X-HE-Meta: U2FsdGVkX1+McuJTM2uucQV1YjuGxjMKBwxmjRK/S5+1nzVRFDz700wMF+s99xJdK66Y6Y2gXxs5UDS9Y9I4JQiqfSvAFqINp7/MlRZbzhOIMCCCG/mRztdgzGx5+ePTovg+/3IrEzJqxmcpMw7tojVoywNBVd0A1l0ae5gVt4W+HVU65hTCNnb6bROGdnasmmR8DxSjKU1h4kat9bRrFbXQoz3+Bi8V39RnVoZUNmyjOjFGyLLHg0o0C+8CJafQKfz0LHHJXsJlbzS8G+76V1AElw2H0JsRKQI1HpbPnC6AFKoJUYQ4cOvpJ9ll3lKPf+RPiw8tEDCpUHJmtq6d9ewM0KheG1XIqHe7xj47/DBSvjQdlNWM7u0QfvHqF810Mt7ghTsL60Tfy4jkUaSoTI+0OLwUTzVgFWd++EKWB5ZrMOXuZapQd/V0CTrri59zX/oXSw4C/DUs9zKjbBm+TZee2wT2eYHlnEio6/ZFRYphFFImw2Tnho70qazm4sBQFy+btWp6WQfGjT0KF1Y0cEmICDY5joqo8DQvMA6DsZfBJaXT2WSPxNL4IOd3cVk52y9bCz949sYtRFfu9f3rznCGv9Ev4keW4AYHvOT9Zs+93mUC2FGhKKY9R1OfBmKR5gCzg2uXiApQog1TqvZiwbDnDMiIBwY9KrfEtB8Y64nb99vYEWiGOFe1MpTfctVtsbOOBQyVG+IAqMzv5HV9tDLrT1Uww3BMK5jjdJPNm16x9fplDjd1Gu7QUKl3mahOtYRI8sI/bpmLPspVGeJMdgtu7h3akeh0bFHk+pJQpICCBwufnPU9lNURpDzEGpM1xTAvh7l/sMj5mJTf+cpBb9Ptr1Dwe27S7bAGpmX0yqWB541QzoKbHvdZqV3f2TJUgj6RgvcG82ft9TxbkTl9lwGg7sEbsMLHULkOjSPrS/HylO2i+vWoQkj1dlFiinNCWJQim4imKJJ/Njm7pxS
- DT6Sa06L
- whIo9AJcWGRY5iIma6z4DftylsBumKOAcLXrpy2pgwWItyzD8jilMeOLjMwzwnufTrQ2jCs//OF8cIa/DBTq/ZSc/XlOTuh3PzlxNO6jn+wE3b0ogN10PD6cuXguLlEVpZ8lFjAoR807kX4Mt73ePfx1pmfZI6s8JdwfhyVRUJ1vh1K7xPpeepbl6jvLBd5cIIHB3bA9FqiPUykb/oHVulpNQ2TomSo5Zrm4Wm41G1qMBURu5EJw3wHcYkshrjc6XY4GJtWeC+Df4ePSudJtKgMHUTk58WNDQSaaXI152nl0Fua6eHqEYpeqvaRuOoGd6w9TKngLxYDgSTnEyEu3TwEscwEc0hf2gADWBvZKmETOzGI3ER8q+AJBAQ5tpOlTPtUtJHkSEQUp3mQ6Y/icp+tFwbW6Ejr3ZOsPafbjyKAjcm2v80nYi/4QVpZkj1KTcx9c3sTSx3GAi6ecD4wWkR97p9Lf4z+d+uJ7RAHQ57p1O+6UQG0E2YADc8OxqdtwDd41rGjhSsCjJfRJrrA9UWne6RB5mqgCpjIm43s0xXNk1xRu9i9BU3IvT3A==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1767918708-107524
+X-HE-Meta: U2FsdGVkX18mVfMfXSarGkVv9QKs1LhQpqYTCIJTCslkexl4OtB5Y80q+hnV+XW6P4wiAeJKOQ4z3TqijYv0KY0zWgj1GmDddWsjmQ7lc/UKr/0fnONwAzoMDPilNGNB2+tFQXVmQJKEOLAL5Wna4t7elOfBP0oxBTdq8qX+YHeSc+rtPkRGF3tdY/sAcpDkOL4+LfjjInGiCsOic1fB6ktmv3RxTYeZu7EU9i7n/y0bz5ZT+F3DhzkBy4oYaJzG5r5Bh4vVExAYfzhwcFDpUyWTCKdHtgZk/DvM2MEvvGA04COyh/YQUekR1i2iGTNBZqftiQAlh58EzTyCsb6blQqj9YR3XsFpPl+Bq2SHeZCHsoweXNuKaS7vQk/e8IXjCsCJhY/AcZUohwO752iSXXNEaXa0I7jwM8lZiER0ewAGnRJJYuSbBT7q2GHNx/+o7YlLTxhHTAelz4qsjXanj50tu54jv00AdYr7YWR5DK0y9MB//haIpQvvOs6xoDl6NGCxpLTdCFEWnUz3cFGaA9mkzkmMlyCzfVC2DyRWo7wwjCvzaXxiqKGCPd4xNAd+MmaVbY48SdyYpLeKxvuLPnHv+XsYx1svFzBdMttzdxCCrPZD8Jfy5uh9qttVNivNO9QulEWLDg5TG0emh+zPpeIhU/+XWOatMGSfEqpguR9hKIoGdSkMIv8Ql6OzgKqAT/IsT8xpEVcMl/KZ+pjF1o1lgCPuRBqdD5kbuzu1Ehd5qCHodB51Sb63oLBWXh8SAQlJeJs38VbihGxDjJIYblTLzpMj7hrkwaXY9L1Wd2a4hXlAjMgK1zeSY8RY7VsEQ0cGuRc6QlFNGe2EuBFyCNxQ3lDuIXgX2Yfma6o0LLQ1jtqZRVfAt9w1If/nvROk76YZKeAnPjw9AQQYor51lPGK+ueceIm3pnPAhI4OmSfJl0HoYQco/TZtDoBLWzkKdHAhpeWxGXCBqYK6CjN
+ azrDRTjc
+ Zmc+/8ElLFJ6K0z1Yf5bkBaxgntfO9mgT3OFhh0XT3q4DcwApEU138NXhiPqlGP8mxRsQgbCOSedVU42ESNw0DL4Y5OF3oCmiJAtz0s82HsYDWGDap1C2mwZC49/yz1Eekienxa4QZp8IdNmD2lg9vq6LzjCZjMuEcC1t47EBf3+xkBMi7uH0O6JMk5tRx4j2BGVghLGcfzsoQ1HaxaMlphPN+Qlg2lqBTMf5fIWJ0Nr/25kSCUHSIEst2i+tQVo1zTWMPZ/WqXTOcIOxtFKTch9wEUqt6eq8j8tqd2AV7A0sNCe8T8Dea+Yh6iTcp70yYH0Fj0ye5hJ/KOz3RLbG4N2vrCoZ7FcbkYDCJP6RmPda8se4hf1GDMnPEUJAjsXFyW8PWmvNRlh2o1IW52pgDBuzoULx0F6QSQ/6fIyQuELfD1LYTggE98uIh1f/FCiVmc4nP6CZmKjGix6MuYEpzEE8TMNvl+ZsEQFo9Oz3joIzQ1nLzTvPcvTaW85Z1tHBWRTDdsje+TZjP3mOqD6OlSsrTR0pTyAnitgx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,333 +223,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Eliminate the `kho_finalize()` function and its associated state from
-the KHO subsystem. The transition to a radix tree for memory tracking
-makes the explicit "finalize" state and its serialization step
-obsolete.
+On Fri, Jan 09, 2026 at 11:01:13AM +1100, Jordan Niethe wrote:
+> Hi,
+> 
+> On 8/1/26 16:42, Jordan Niethe wrote:
+> > Hi,
+> > 
+> > On 8/1/26 13:25, Jordan Niethe wrote:
+> > > Hi,
+> > > 
+> > > On 8/1/26 05:36, Matthew Brost wrote:
+> > > > 
+> > > > Thanks for the series. For some reason Intel's CI couldn't apply this
+> > > > series to drm-tip to get results [1]. I'll manually apply this
+> > > > and run all
+> > > > our SVM tests and get back you on results + review the changes here. For
+> > > > future reference if you want to use our CI system, the series must apply
+> > > > to drm-tip, feel free to rebase this series and just send to intel-xe
+> > > > list if you want CI
+> > > 
+> > > Thanks, I'll rebase on drm-tip and send to the intel-xe list.
+> > 
+> > For reference the rebase on drm-tip on the intel-xe list:
+> > 
+> > https://patchwork.freedesktop.org/series/159738/
+> > 
+> > Will watch the CI results.
+> 
+> The series causes some failures in the intel-xe tests:
+> https://patchwork.freedesktop.org/series/159738/#rev4
+> 
+> Working through the failures now.
+> 
 
-Remove the `kho_finalize()` and `kho_finalized()` APIs and their stub
-implementations. Update KHO client code and the debugfs interface to
-no longer call or depend on the `kho_finalize()` mechanism.
+Yea, I saw the failures. I haven't had time look at the patches on my
+end quite yet. Scrabling to get a few things in 6.20/7.0 PR, so I may
+not have bandwidth to look in depth until mid next week but digging is
+on my TODO list.
 
-Complete the move towards a stateless KHO, simplifying the overall
-design by removing unnecessary state management.
+Matt 
 
-Signed-off-by: Jason Miu <jasonmiu@google.com>
----
- Documentation/admin-guide/mm/kho.rst        | 52 ++++-----------------
- Documentation/core-api/kho/index.rst        | 17 ++-----
- kernel/liveupdate/kexec_handover.c          | 21 +--------
- kernel/liveupdate/kexec_handover_debugfs.c  | 23 ---------
- kernel/liveupdate/kexec_handover_internal.h |  3 --
- kernel/liveupdate/luo_core.c                | 12 +----
- kernel/liveupdate/luo_flb.c                 |  2 +-
- tools/testing/selftests/kho/init.c          | 20 --------
- 8 files changed, 16 insertions(+), 134 deletions(-)
-
-diff --git a/Documentation/admin-guide/mm/kho.rst b/Documentation/admin-guide/mm/kho.rst
-index 6dc18ed4b886..57d5690dce77 100644
---- a/Documentation/admin-guide/mm/kho.rst
-+++ b/Documentation/admin-guide/mm/kho.rst
-@@ -28,20 +28,10 @@ per NUMA node scratch regions on boot.
- Perform a KHO kexec
- ===================
- 
--First, before you perform a KHO kexec, you need to move the system into
--the :ref:`KHO finalization phase <kho-finalization-phase>` ::
--
--  $ echo 1 > /sys/kernel/debug/kho/out/finalize
--
--After this command, the KHO FDT is available in
--``/sys/kernel/debug/kho/out/fdt``. Other subsystems may also register
--their own preserved sub FDTs under
--``/sys/kernel/debug/kho/out/sub_fdts/``.
--
--Next, load the target payload and kexec into it. It is important that you
--use the ``-s`` parameter to use the in-kernel kexec file loader, as user
--space kexec tooling currently has no support for KHO with the user space
--based file loader ::
-+To perform a KHO kexec, load the target payload and kexec into it. It
-+is important that you use the ``-s`` parameter to use the in-kernel
-+kexec file loader, as user space kexec tooling currently has no
-+support for KHO with the user space based file loader ::
- 
-   # kexec -l /path/to/bzImage --initrd /path/to/initrd -s
-   # kexec -e
-@@ -52,40 +42,19 @@ For example, if you used ``reserve_mem`` command line parameter to create
- an early memory reservation, the new kernel will have that memory at the
- same physical address as the old kernel.
- 
--Abort a KHO exec
--================
--
--You can move the system out of KHO finalization phase again by calling ::
--
--  $ echo 0 > /sys/kernel/debug/kho/out/active
--
--After this command, the KHO FDT is no longer available in
--``/sys/kernel/debug/kho/out/fdt``.
--
- debugfs Interfaces
- ==================
- 
-+These debugfs interfaces are available when the kernel is compiled with
-+``CONFIG_KEXEC_HANDOVER_DEBUGFS`` set to y.
-+
- Currently KHO creates the following debugfs interfaces. Notice that these
- interfaces may change in the future. They will be moved to sysfs once KHO is
- stabilized.
- 
--``/sys/kernel/debug/kho/out/finalize``
--    Kexec HandOver (KHO) allows Linux to transition the state of
--    compatible drivers into the next kexec'ed kernel. To do so,
--    device drivers will instruct KHO to preserve memory regions,
--    which could contain serialized kernel state.
--    While the state is serialized, they are unable to perform
--    any modifications to state that was serialized, such as
--    handed over memory allocations.
--
--    When this file contains "1", the system is in the transition
--    state. When contains "0", it is not. To switch between the
--    two states, echo the respective number into this file.
--
- ``/sys/kernel/debug/kho/out/fdt``
--    When KHO state tree is finalized, the kernel exposes the
--    flattened device tree blob that carries its current KHO
--    state in this file. Kexec user space tooling can use this
-+    The kernel exposes the flattened device tree blob that carries its
-+    current KHO state in this file. Kexec user space tooling can use this
-     as input file for the KHO payload image.
- 
- ``/sys/kernel/debug/kho/out/scratch_len``
-@@ -100,8 +69,7 @@ stabilized.
-     it should place its payload images.
- 
- ``/sys/kernel/debug/kho/out/sub_fdts/``
--    In the KHO finalization phase, KHO producers register their own
--    FDT blob under this directory.
-+    KHO producers can register their own FDT blob under this directory.
- 
- ``/sys/kernel/debug/kho/in/fdt``
-     When the kernel was booted with Kexec HandOver (KHO),
-diff --git a/Documentation/core-api/kho/index.rst b/Documentation/core-api/kho/index.rst
-index 7ddc4d3ecac5..286a6d0b9956 100644
---- a/Documentation/core-api/kho/index.rst
-+++ b/Documentation/core-api/kho/index.rst
-@@ -9,8 +9,9 @@ Kexec Handover Subsystem
- Overview
- ========
- 
--Kexec HandOver (KHO) is a mechanism that allows Linux to preserve memory
--regions, which could contain serialized system states, across kexec.
-+Kexec HandOver (KHO) is a mechanism that allows Linux to preserve
-+memory regions, containing kernel data structures in their live,
-+in-memory format, across kexec.
- 
- KHO uses :ref:`flattened device tree (FDT) <kho_fdt>` to pass information about
- the preserved state from pre-exec kernel to post-kexec kernel and :ref:`scratch
-@@ -71,18 +72,6 @@ for boot memory allocations and as target memory for kexec blobs, some parts
- of that memory region may be reserved. These reservations are irrelevant for
- the next KHO, because kexec can overwrite even the original kernel.
- 
--KHO finalization phase
--======================
--
--.. _kho-finalization-phase:
--
--To enable user space based kexec file loader, the kernel needs to be able to
--provide the FDT that describes the current kernel's state before
--performing the actual kexec. The process of generating that FDT is
--called serialization. When the FDT is generated, some properties
--of the system may become immutable because they are already written down
--in the FDT. That state is called the KHO finalization phase.
--
- Kexec Handover Radix Tree
- =========================
- 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 440f6de65eb2..8d9cf939790c 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -69,8 +69,7 @@ early_param("kho", kho_parse_enable);
- 
- struct kho_out {
- 	void *fdt;
--	bool finalized;
--	struct mutex lock; /* protects KHO FDT finalization */
-+	struct mutex lock; /* protects KHO FDT */
- 
- 	struct kho_radix_tree radix_tree;
- 	struct kho_debugfs dbg;
-@@ -81,7 +80,6 @@ static struct kho_out kho_out = {
- 	.radix_tree = {
- 		.lock = __MUTEX_INITIALIZER(kho_out.radix_tree.lock),
- 	},
--	.finalized = false,
- };
- 
- /**
-@@ -1191,23 +1189,6 @@ void kho_restore_free(void *mem)
- }
- EXPORT_SYMBOL_GPL(kho_restore_free);
- 
--int kho_finalize(void)
--{
--	if (!kho_enable)
--		return -EOPNOTSUPP;
--
--	guard(mutex)(&kho_out.lock);
--	kho_out.finalized = true;
--
--	return 0;
--}
--
--bool kho_finalized(void)
--{
--	guard(mutex)(&kho_out.lock);
--	return kho_out.finalized;
--}
--
- struct kho_in {
- 	phys_addr_t fdt_phys;
- 	phys_addr_t scratch_phys;
-diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
-index 2abbf62ba942..430c9521d59c 100644
---- a/kernel/liveupdate/kexec_handover_debugfs.c
-+++ b/kernel/liveupdate/kexec_handover_debugfs.c
-@@ -75,24 +75,6 @@ void kho_debugfs_fdt_remove(struct kho_debugfs *dbg, void *fdt)
- 	}
- }
- 
--static int kho_out_finalize_get(void *data, u64 *val)
--{
--	*val = kho_finalized();
--
--	return 0;
--}
--
--static int kho_out_finalize_set(void *data, u64 val)
--{
--	if (val)
--		return kho_finalize();
--	else
--		return -EINVAL;
--}
--
--DEFINE_DEBUGFS_ATTRIBUTE(kho_out_finalize_fops, kho_out_finalize_get,
--			 kho_out_finalize_set, "%llu\n");
--
- static int scratch_phys_show(struct seq_file *m, void *v)
- {
- 	for (int i = 0; i < kho_scratch_cnt; i++)
-@@ -198,11 +180,6 @@ __init int kho_out_debugfs_init(struct kho_debugfs *dbg)
- 	if (IS_ERR(f))
- 		goto err_rmdir;
- 
--	f = debugfs_create_file("finalize", 0600, dir, NULL,
--				&kho_out_finalize_fops);
--	if (IS_ERR(f))
--		goto err_rmdir;
--
- 	dbg->dir = dir;
- 	dbg->sub_fdt_dir = sub_fdt_dir;
- 	return 0;
-diff --git a/kernel/liveupdate/kexec_handover_internal.h b/kernel/liveupdate/kexec_handover_internal.h
-index 0202c85ad14f..9a832a35254c 100644
---- a/kernel/liveupdate/kexec_handover_internal.h
-+++ b/kernel/liveupdate/kexec_handover_internal.h
-@@ -22,9 +22,6 @@ struct kho_debugfs {};
- extern struct kho_scratch *kho_scratch;
- extern unsigned int kho_scratch_cnt;
- 
--bool kho_finalized(void);
--int kho_finalize(void);
--
- #ifdef CONFIG_KEXEC_HANDOVER_DEBUGFS
- int kho_debugfs_init(void);
- void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt);
-diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
-index 7a9ef16b37d8..2df798e07668 100644
---- a/kernel/liveupdate/luo_core.c
-+++ b/kernel/liveupdate/luo_core.c
-@@ -231,17 +231,7 @@ int liveupdate_reboot(void)
- 
- 	luo_flb_serialize();
- 
--	err = kho_finalize();
--	if (err) {
--		pr_err("kho_finalize failed %d\n", err);
--		/*
--		 * kho_finalize() may return libfdt errors, to aboid passing to
--		 * userspace unknown errors, change this to EAGAIN.
--		 */
--		err = -EAGAIN;
--	}
--
--	return err;
-+	return 0;
- }
- 
- /**
-diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
-index 4c437de5c0b0..ddc9110a2b45 100644
---- a/kernel/liveupdate/luo_flb.c
-+++ b/kernel/liveupdate/luo_flb.c
-@@ -630,7 +630,7 @@ int __init luo_flb_setup_incoming(void *fdt_in)
-  * data handle, and the final reference count. This allows the new kernel to
-  * find the appropriate handler and reconstruct the FLB's state.
-  *
-- * Context: Called from liveupdate_reboot() just before kho_finalize().
-+ * Context: Called from liveupdate_reboot() just before return.
-  */
- void luo_flb_serialize(void)
- {
-diff --git a/tools/testing/selftests/kho/init.c b/tools/testing/selftests/kho/init.c
-index 6d9e91d55d68..88a41b6eba95 100644
---- a/tools/testing/selftests/kho/init.c
-+++ b/tools/testing/selftests/kho/init.c
-@@ -11,7 +11,6 @@
- /* from arch/x86/include/asm/setup.h */
- #define COMMAND_LINE_SIZE	2048
- 
--#define KHO_FINALIZE "/debugfs/kho/out/finalize"
- #define KERNEL_IMAGE "/kernel"
- 
- static int mount_filesystems(void)
-@@ -22,22 +21,6 @@ static int mount_filesystems(void)
- 	return mount("proc", "/proc", "proc", 0, NULL);
- }
- 
--static int kho_enable(void)
--{
--	const char enable[] = "1";
--	int fd;
--
--	fd = open(KHO_FINALIZE, O_RDWR);
--	if (fd < 0)
--		return -1;
--
--	if (write(fd, enable, sizeof(enable)) != sizeof(enable))
--		return 1;
--
--	close(fd);
--	return 0;
--}
--
- static long kexec_file_load(int kernel_fd, int initrd_fd,
- 			    unsigned long cmdline_len, const char *cmdline,
- 			    unsigned long flags)
-@@ -78,9 +61,6 @@ int main(int argc, char *argv[])
- 	if (mount_filesystems())
- 		goto err_reboot;
- 
--	if (kho_enable())
--		goto err_reboot;
--
- 	if (kexec_load())
- 		goto err_reboot;
- 
--- 
-2.52.0.457.g6b5491de43-goog
-
+> Thanks,
+> Jordan.
+> 
+> > 
+> > Thanks,
+> > Jordan.
+> > 
+> > > 
+> > > Jordan.
+> > > 
+> > > > 
+> > > > I was also wondering if Nvidia could help review one our core MM patches
+> > > > [2] which is gating enabling 2M device pages too?
+> > > > 
+> > > > Matt
+> > > > 
+> > > > [1] https://patchwork.freedesktop.org/series/159738/
+> > > > [2] https://patchwork.freedesktop.org/patch/694775/?series=159119&rev=1
+> > > 
+> > > 
+> > 
+> 
 
