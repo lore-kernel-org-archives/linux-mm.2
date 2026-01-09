@@ -4,88 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BB70D26D6A
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:40:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D502D26D6A
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:41:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AF926B0088; Fri,  9 Jan 2026 10:40:33 -0500 (EST)
+	id 00B4A6B0005; Fri,  9 Jan 2026 10:41:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65D476B0089; Fri,  9 Jan 2026 10:40:33 -0500 (EST)
+	id ECD906B008A; Fri,  9 Jan 2026 10:41:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53EE46B008A; Fri,  9 Jan 2026 10:40:33 -0500 (EST)
+	id DCFDE6B008C; Fri,  9 Jan 2026 10:41:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 418826B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:40:33 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D36BF1A0241
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:40:32 +0000 (UTC)
-X-FDA: 84312837504.29.B663509
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C9A0B6B0005
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:41:16 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5D644577E1
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:41:16 +0000 (UTC)
+X-FDA: 84312839352.05.60F455E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F003E40003
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:40:30 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K11C6Tgv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767973231; a=rsa-sha256;
-	cv=none;
-	b=bCtDnUICOSwWncg3RORPDJwNnbVQHW+Q6Ueu7d5HQHb0uwkAdPbE/676IgLYj7CoPaVitD
-	Xrh5jaDApOOLX7HLkowcGoqzIk/i7jaNGUeDHcJjfuTqywmhLLZTaS4j+mhGNFwn/UawN2
-	BTKxKucY4/QQQGqEgjY7FqL+l3WsvE0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K11C6Tgv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 76DDAC0013
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:41:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LJx/Awqs";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767973231;
+	s=arc-20220608; t=1767973274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ti4yVHUrx+jeohwN8YsvGO7hvE00mHXcQo/2klPesLU=;
-	b=YVNbG2h0Owkrq/hTE//e5HIygbxOgJ0fV+zPY8rI8kO5HHUyRo2HkhgCyaOCNd+tNRQX4X
-	6zmdK6UVwvXUlD8hczGNYWYMOrTi9c7QKaBQL8CatoE3YzwF8RX7A8b5Yi4/m7xai+V4nz
-	bP7Qlii7pUaC5Cy47C7Rs8LnSw4W44w=
+	bh=aQs+Ey+VtfOqF5nOIC8X49iirsiw+1QczYlsJqHnQM4=;
+	b=8Affa4BFX0TE9O8U3oZzlKLa42FhmqwTASi6nyQKuzTxvs4qhCwUfB/1weLkWU4cpHsV3T
+	HjSQ9DjXl6PfbLW5fYopR5z8XzMlrDCNY0aghEP2ueN0bCodJkyO35NUVjaRNGQWe6n+wz
+	tXOgV7mtbX6QBwxr98XmjNC1GTxPAG0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767973274; a=rsa-sha256;
+	cv=none;
+	b=eKR4EEV4MLoN0nCtas3ad4YehjRRO567dSxWiUz/wji+nIm9wHFRP7aLxrt21URIdItW0F
+	8kMOrWw6xSBIP1hPCP0dcNWx3HlZy1+dxGbNrjLroVN2KNb4hXcMZ0tyI9fVUwcsH0gucL
+	FfNjq+WB/lo5oJky0eQKt1JGvrCxedE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LJx/Awqs";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCB90419B7;
-	Fri,  9 Jan 2026 15:40:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3379C4CEF1;
-	Fri,  9 Jan 2026 15:40:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9A30F4029F;
+	Fri,  9 Jan 2026 15:41:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDDEC4CEF1;
+	Fri,  9 Jan 2026 15:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767973229;
-	bh=MClLfcW/LlA2fAjKxgewmcykTxQMbVVC8RBgYHlNmE4=;
+	s=k20201202; t=1767973273;
+	bh=zjirbLzk5y4/eQmZlP5l5XZ6LrVCdp2/2cmDJBEPpGE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=K11C6TgvxC8lsO0GRbqPjDBs0iDEYVVrnJ9KHwUsxL4dFqHYpSfmz2qn8S1nwvtS2
-	 TqRxYkFkIdC4lOBszkOcY9dmC8sBAUaCanbxtGAW0Tu4Qb/3OZd/rVMKhgoti9NdVp
-	 Uo1FoJNzVH6K2/DQ9O/AnIfl7x16z73RqMb565AtUaaMDru6CUZwdHcB0gbrn5KMta
-	 LuM7SVgKVjSXmVfyU7KWxLUnyxx1zAVY3sbea0QBgfZoJnIKNhcy9ad75bGaoASXUn
-	 3L5LfheloI+TrzIbPYDnbDmjuw43JcK4oQ0mN411rebJExnd+4WrP/4oVNEV06Uy5y
-	 zqGxX7ux9jmKQ==
-Message-ID: <bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org>
-Date: Fri, 9 Jan 2026 16:40:19 +0100
+	b=LJx/Awqs0W8dnmRGPKis4lRGYO1YtKIv2LCgMk3hfDNR1EFX3sXp6duz0kcaTGMky
+	 H76mUFClbAmZdOaQd3ccOYADKsFcIeqkB6jX0X1GRj0JmAr9WlOQHL5UzFnAueaD/S
+	 XolUvioNXor2OXyarOz0L8T2YbvP0TrU1XhrAMWQMZtUKDqsGOfNo4sg96KSUTnBRA
+	 X6NuW57vsAdLtnbDPvjdhvU4oTXRFF8saqcL+cYLk7A6KYBwDRptIvyY3es+8suu40
+	 S7bl8DlcxqDipdPTzcUFD5q4VC/PHQxd5Eq47chTB+ju6df/v7RiRWzHZKIrJ5EQAu
+	 Y2DuG/oHLU9tQ==
+Message-ID: <a14a7d81-7f87-42a0-9b3c-1a71e765cfe0@kernel.org>
+Date: Fri, 9 Jan 2026 16:41:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v3 1/2] mm/tlb: skip redundant IPI when TLB flush
- already synchronized
-To: Lance Yang <lance.yang@linux.dev>, dave.hansen@intel.com
-Cc: dave.hansen@linux.intel.com, will@kernel.org, aneesh.kumar@kernel.org,
- npiggin@gmail.com, peterz@infradead.org, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
- arnd@arndb.de, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, shy828301@gmail.com, riel@surriel.com, jannh@google.com,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com
-References: <20260106120303.38124-1-lance.yang@linux.dev>
- <20260106120303.38124-2-lance.yang@linux.dev>
- <da1e8a00-99fe-46d9-b425-c307ea933036@kernel.org>
- <7472056a-3919-429a-845d-c2076496d537@linux.dev>
- <4d94363b-5b3b-4401-a9d8-da136d71f8c3@kernel.org>
- <f45a1760-7fa6-4e2c-ba5a-90e250a5792a@linux.dev>
+Subject: Re: [PATCH] mm/migrate: fix hugetlbfs deadlock by respecting lock
+ ordering
+To: Jinchao Wang <wangjinchao600@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+References: <20260109034723.1342798-1-wangjinchao600@gmail.com>
+ <920c641e-e092-46f0-89cb-0f1c130d979a@kernel.org> <aWENkov0R-1nIB8M@ndev>
+ <e792db5f-5ec4-4960-a2f8-fde490e0e366@kernel.org> <aWEfjVqVpoatvOpI@ndev>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <f45a1760-7fa6-4e2c-ba5a-90e250a5792a@linux.dev>
+In-Reply-To: <aWEfjVqVpoatvOpI@ndev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F003E40003
-X-Rspamd-Server: rspam06
-X-Stat-Signature: nikswpm6ebnfwa1ayp1rt5h5yjfsh8wd
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 76DDAC0013
 X-Rspam-User: 
-X-HE-Tag: 1767973230-536427
-X-HE-Meta: U2FsdGVkX1+HGKNqqrK3NoZpMX8n3Lh6fTyMDHdLAhORiXUrQQrjOaJGGD44dR1OBMgIfB5FaOuQGZLFac1sQec1DNhN24gDCj5+3dklxLQBncCzMV5epPVjE866L73mBeQvUsnmYHB2L00nNHPmnLNq2lGyaqkD0hsNDxyxXwZFw4ckNmUSUgROwN2zL9aZqz9TvNrZhxv8yC+YpAnF8sOOk6AiRRAy2atOBh59GaDLWHilSDrMrkcKZ6ovSflo8W/oHNEkz6lVtd3ezut8TpT0bvcLT0Yv1ue4bsEZvA/D1JyCaX7z2mMgFsVrryUvhyq5GPpB7WNiasZXi7ZiW+j8BvuDw5l5f3kGPzbEGBSj6umSUkxEoBp2CHtDuwlYtnntQW0zfteQsHrHjvOyQ4MnFae+1sREPtKzw4oq8Nga7YG0ke4QUEe1AXW0FLowY85n/NiLtuY8ClsfjxeLsOFHTCn21+9u+MgTvzAAShYJZtGfNKK28WTqbh0rML922JoIPJwcONZi8q+ylFI0iqTYztRpFCsmskM/mtyyZqcIbSrZ8YR97LFjox7Q35CE8UGx5iOcu66twQ1G1iQs5W+yPXOm5BHzix2LTXnm5/psC73imrqW5A9Xetg4PmoqST9beMoQKaXtBjsYP0UZQ/1eEauhSJq4b8vfYl4PpdU8ytHrZMm9g0D2iyY+Jl86vwjoNoydrpYCD4n70eiio+VUfSmkt92HT00qcpNbuUcE4aDti/JtvwjwA9S9uUwTsZ6v89LHBvV9ypQHG52SvscnVE3VtschW3h6Pa3GMdsI/sZo5HsbDuOLprunrC4wJd4Liv+fjrFLkPr0ZCSkxSfQPzc7+g4ktMpAHuvU17LxIUIikL8Xa8osZ7MgaODSdx+hWjWcTDc1B/qgk6ORUGDD2esKCZCSZd14kZcs6ayfU1BZgYOT7qZePovLmt+2gnivLM85d0QGCEA3c/T
- h/QjRh3Y
- /p6nN2YWR2l/QhxYT1wu0zuxus9JAfp4MYXqbBK4Bd3AfnksqeCPFVmsPCm4lyI8fNg44G3GH2bvoY3T/SRQu2yfUfixj1EleZDMh4cpXwOKOt9VmDM8rHCYW96fnGXRgY7AotMuFGVclq2OzDGm9mby4sdxcGDsLiG96z4khPBMi2nPsriOvg0xXK67WqIuHjyXc6kF1AzhnKAcnxLSEdJW4i/FPkxW8ejA9YYlWNDb2a7efHYkm2mQJvGybOl1+MvNr
+X-Stat-Signature: 47kfx3fypouk6e7nwcuc8qj6k89ubenr
+X-HE-Tag: 1767973274-414663
+X-HE-Meta: U2FsdGVkX18AOSwBStz3CuSrL2OzSkeVfXS7jFPlLLNPoLqPMXrSmoiTcHo7x43vK9olrgT+HWUdgQH/O55cHpEYU2MfJRni0rL7/LPQ1mM/JnhWEph25W3/d3VlKNGZhxezgUMD/U4R02ZC8CfoESOt9GAz8G4LFj7jMG7c0gYK4YKtIvLYHgflRDtR/e2bb4PG1yJSIWxy56UC3FjjgjU7E4sTs4PJslU9FhXEA+8llYIIyJiF3MpBk9Zth1Wb9u+afz+Gv+BbNM0YIBiwO2lEfPK/ZNDx2HZzsKzAQIzBQTS9ve4ha+L98DRUr5hhnDEpmIfOWkHjV3/G3zRhTuqND8jqUT5a+vm/kNeBVeZksn5g3f+xajD4oV+YFqhUMAiydbRgBqaqvINJ9zrzDnH/yyn7ok2koYOau2EVSVAP1Nci7pI9TaAJHAH7vW5sYszTAJrRZVNHci16Wq6at69SpcNE+SRWoiIAoNLSEfwGxcjVIPA4rGrgpNJTVly4qqZWMFydQaSqhiNwIEaAo6yyFlCT3xgXMHysA9yPU/XrKknz/TIEsY+VPUmhrs9S035DzCLBD6Ia0dvqzY9ghCFkrDS/DsJohnlrFzSJwcOUDNsJweAmN3n42UlG2QQ1AJo6LJBDKUVvlZvNTIfpNIF4CM7Vwc3NlusMgJjMmF4g+ci0pBhIt8TirUZoO9gPo1htvPYKNceBlGoO7VMiwSOt0A414Volhl35yz5SofZ1dDQFpgp7ud0HFGJpWxVmwgmpU9MntoEyj/DWC/4knIg/XF/fe5tEx/COI1L/phcJ39Mu67JDH5jMc4WwgaW9OjmCacY6cXrtWgefaITyeysuY5CXplvqEL9GeLtX4SibGinc5RAV2jsTedeE6ATtJO/w0A3vAQJ8ohRLaRuCP+DFZhz6UhR+SD0kXnF+1B5WOCrQ3flAJJwQcQ48qEka/oLwZ9AIfTNSexmAAOw
+ 1Kpo4f3L
+ 9NPOP+asMdSflZ9BlsY3BRHHRGUb8RnaeflISFHYNQc0tPicjVlldeGqCkbgu6sIN+YwAVQWfdvPcXIwXudMkOL3ui4ixWaa3Wj7GpHAEHFhb9Rwtg5Pzg9tCBmYh9c7CHqvJjrORHikrC8vNWEVXVeNL1K1/tj1oeAkX40XFBqD+0u4g4AxxeeiKyagxm0XbqIQBHh616sxJajiAMv3CiE+u1YdPDw0cTWvNbnN23Ef73egCWPJZlV0D4T/Hss2Jsa3MojGuvgzQ9fw9W71HINQ27CvmQ8mcoP+/lDW/N+ufsu1xJ1vKqyui/uSGeCMjdfd2w1ZSLHHFmKggl5rzb9HBHWWHoxsIib568jSYKbQ24/V0OKHShKs62iMO6HTvPrbQaV2BtlwhHL/jib7CX6KSOI0A5mFcbhD0GCX6eV6uhs4ZywxoF8Hu/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,81 +147,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/9/26 16:30, Lance Yang wrote:
-> 
-> 
-> On 2026/1/9 22:13, David Hildenbrand (Red Hat) wrote:
->>
->>>> What could work is tracking "tlb_table_flush_sent_ipi" really when we
->>>> are flushing the TLB for removed/unshared tables, and maybe resetting
->>>> it ... I don't know when from the top of my head.
->>>
->>> Not sure what's the best way forward here :(
->>>
+On 1/9/26 16:32, Jinchao Wang wrote:
+> On Fri, Jan 09, 2026 at 03:18:37PM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 1/9/26 15:16, Jinchao Wang wrote:
+>>> On Fri, Jan 09, 2026 at 02:39:08PM +0100, David Hildenbrand (Red Hat) wrote:
+>>>> On 1/9/26 04:47, Jinchao Wang wrote:
+>>>>> Fix an AB-BA deadlock between hugetlbfs_punch_hole() and page migration.
+>>>>>
+>>>>> The deadlock occurs because migration violates the lock ordering defined
+>>>>> in mm/rmap.c for hugetlbfs:
+>>>>>
+>>>>>      * hugetlbfs PageHuge() take locks in this order:
+>>>>>      * hugetlb_fault_mutex
+>>>>>      * vma_lock
+>>>>>      * mapping->i_mmap_rwsem
+>>>>>      * folio_lock
+>>>>>
+>>>>> The following trace illustrates the inversion:
+>>>>>
+>>>>> Task A (punch_hole):             Task B (migration):
+>>>>> --------------------             -------------------
+>>>>> 1. i_mmap_lock_write(mapping)    1. folio_lock(folio)
+>>>>> 2. folio_lock(folio)             2. i_mmap_lock_read(mapping)
+>>>>>       (blocks waiting for B)           (blocks waiting for A)
+>>>>>
+>>>>> Task A is blocked in the punch-hole path:
+>>>>>      hugetlbfs_fallocate
+>>>>>        hugetlbfs_punch_hole
+>>>>>          hugetlbfs_zero_partial_page
+>>>>>            folio_lock
+>>>>>
+>>>>> Task B is blocked in the migration path:
+>>>>>      migrate_pages
+>>>>>        unmap_and_move_huge_page
+>>>>>          remove_migration_ptes
+>>>>>            __rmap_walk_file
+>>>>>              i_mmap_lock_read
+>>>>>
+>>>>> To fix this, adjust unmap_and_move_huge_page() to respect the established
+>>>>> hierarchy. If i_mmap_rwsem is acquired during try_to_migrate(), hold it
 >>>>
->>>> v2 was simpler IMHO.
+>>>>
+>>>> I'm confused. Isn't it unmap_and_move_huge_page() that grabs the
+>>>> i_mmap_rwsem during hugetlb_page_mapping_lock_write() (where we do a
+>>>> try-lock)?
+>>> Yes, but the lock is released before remove_migration_ptes().
 >>>
->>> The main concern Dave raised was that with PV hypercalls or when
->>> INVLPGB is available, we can't tell from a static check whether IPIs
->>> were actually sent.
+>>> Task A can enter the race window between
+>>> 	i_mmap_unlock_write(mapping)
+>>> and
+>>> 	remove_migration_ptes() -> i_mmap_lock_read(mapping).
+>>>
+>>> This window was introduced by the change below:
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/mm/migrate.c?id=336bf30eb765
 >>
->> Why can't we set the boolean at runtime when initializing the pv_ops
->> structure, when we are sure that it is allowed?
-> 
-> Yes, thanks, that sounds like a reasonable trade-off :)
-> 
-> As you mentioned:
-> 
-> "this lifetime stuff in core-mm ends up getting more complicated than
-> v2 without a clear benefit".
-> 
-> I totally agree that v3 is too complicated :(
-> 
-> But Dave's concern about v2 was that we can't accurately tell whether
-> IPIs were actually sent in PV environments or with INVLPGB, which
-> misses optimization opportunities. The INVLPGB+no_global_asid case
-> also sends IPIs during TLB flush.
-> 
-> Anyway, yeah, I'd rather start with a simple approach, even if it's
-> not perfect. We can always improve it later ;)
-> 
-> Any ideas on how to move forward?
+>> try_to_migrate() is not the problem, but remove_migration_ptes() ?
+>>
+>> Anyhow, I saw that Willy sent out a version.
+> Thank you for letting me know.
 
-I'd hope Dave can comment :)
+For reference:
 
-In general, I saw the whole thing as a two step process:
-
-1) Avoid IPIs completely when the TLB flush sent them. We can achieve
-    that through v2 or v3, one-way or the other, I don't particularly
-    care as long as it is clean and simple.
-
-2) For other configs/arch, send IPIs only to CPUs that are actually in
-    GUP-fast etc. That would resolve some RT headake with broadcast IPIs.
-
-
-Regarding 2), it obviously only applies to setups where 1) does not 
-apply: like x86 with INVLPGB or arm64.
-
-I once had the idea of letting CPUs that enter/exit GUP-fast (and 
-similar) to indicate in a global cpumask (or per-CPU variables) that 
-they are in that context. Then, we can just collect these CPUs and limit 
-the IPIs to them (usually, not a lot ...).
-
-The trick here is to not slowdown GUP-fast too much. And one person 
-(Yair in RT context) who played with that was not able to reduce the 
-overhead sufficiently enough.
-
-I guess the options are
-
-a) Per-MM CPU mask we have to update atomically when entering/leaving 
-GUP-fast
-
-b) Global mask we have to update atomically when entering/leaving GUP-fast
-
-c) Per-CPU variable we have to update when entering-leaving GUP-fast. 
-Interrupts are disabled, so we don't have to worry about reschedule etc.
-
-Maybe someone reading along has other thoughts.
+https://lkml.kernel.org/r/20260109041345.3863089-1-willy@infradead.org
 
 -- 
 Cheers
