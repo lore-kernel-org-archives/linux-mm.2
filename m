@@ -4,96 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D78B4D26D6A
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:31:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BCB4D26D6A
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:33:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 474316B0088; Fri,  9 Jan 2026 10:31:14 -0500 (EST)
+	id A0A076B0005; Fri,  9 Jan 2026 10:32:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 421A86B0089; Fri,  9 Jan 2026 10:31:14 -0500 (EST)
+	id 9B7E06B008A; Fri,  9 Jan 2026 10:32:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 357FD6B008A; Fri,  9 Jan 2026 10:31:14 -0500 (EST)
+	id 8B96D6B008C; Fri,  9 Jan 2026 10:32:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 257136B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:31:14 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CAB4F1A01E4
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:31:13 +0000 (UTC)
-X-FDA: 84312814026.10.A70BC7A
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B11374001C
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:31:11 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xOPnIlh5;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 794446B0005
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:32:59 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2E04513938F
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:32:59 +0000 (UTC)
+X-FDA: 84312818478.21.5628305
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4B5824000D
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:32:57 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KkSdvwBq;
+	spf=pass (imf12.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767972672;
+	s=arc-20220608; t=1767972777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4FEO03nU3lunGBMTB9f9/hv+IjcT/lwasWMosM27ke0=;
-	b=F8afoOxLOu6owraaYQXF+wKuBx/qVxkGqcSzokGTbEyWPrLAIfhxqCn9njOd/vFqu/KESG
-	KXokCdv+SmdqU0JqRzpADF2XdsRVH5da5w8tJeBApmqvOJuX1xMHrzTPi/8cbvuYo6gP7s
-	BpiGlxrHEKu4iNoD+TOLEJzY9JoBYBs=
+	bh=pi9MBBtLQ+Z6Az6ZIrDOMPEc6YOFfVuBvcpyenL6HZw=;
+	b=BSwEV98W4hzPaVbEN3r7DY0rQY0qyunQ2LwbBNkLm5gNeZQBovVrUxqE2gvHv7kB/MHjzZ
+	ZErXjNQB5Mgx96Q1quouz3Vy0gypIYsEQ/k/booDqFv7P4nVQ5QlOxQq26rHmglh/UxiCs
+	vCRm8pIFrZXQpc8AaUq1oONquXuySyU=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xOPnIlh5;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767972672; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KkSdvwBq;
+	spf=pass (imf12.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767972777; a=rsa-sha256;
 	cv=none;
-	b=PbWjDHW+tXvVoWFFZmKF3cMSm/UsJAIv2+bLqxPBhNoeCHZyb6zmPw7KeHoeVDrSTk8ATW
-	7jOtUt/33H01lGU1s98xECB0OGs/KbSRyhJFSaTaWmQRC2JYm2JUuzpdE6bsHCMIiapmKa
-	Q3cbAfOZ8NdENMDTFOfj5qpzDo7IX/o=
-Message-ID: <f45a1760-7fa6-4e2c-ba5a-90e250a5792a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767972669;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4FEO03nU3lunGBMTB9f9/hv+IjcT/lwasWMosM27ke0=;
-	b=xOPnIlh5FqZsn91jKIxYC3Z9+oplXNrgqQGMxNCC3FOU27HuGA1Z2ZkeHqpwes8Ix0X83b
-	1Cc8jM7UiW2qVphjJvQ/sLfoFRJuCx8uRcnzejAuOkdZkfP00BzrlsMX/fY4ropVVhslz+
-	E7HqBxXQUW6higVM/BLRB9wyeIn1DY0=
-Date: Fri, 9 Jan 2026 23:30:51 +0800
+	b=zDa5hZnbpyApVY6bbi2URV5LupNl0hgJsviuEP9OFTWkd1Ky3/OpvgWZO+b3CkhNJLYkt4
+	5Guq5LtKZkIuHosDtfSIL+LvjGW3yB7/6ESXtXVtfce5UFD34LjUAtc9tiio4eNuKBFR3q
+	ZCriMarowXtCy+N33338/ospd7eBC0g=
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-34c2f335681so2649404a91.1
+        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 07:32:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767972776; x=1768577576; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pi9MBBtLQ+Z6Az6ZIrDOMPEc6YOFfVuBvcpyenL6HZw=;
+        b=KkSdvwBqjDuhoem8wpQWMqqiIJjIO8wdGUBYl81a1h1F73BptyQi4JazqJcno8bQXS
+         piZJo0+28gwtXJxsMF1yhrultRcqJC2pCWd7/cN55Q1wF5vfPNBnoyHiLUW9NyYogXXA
+         9/IZwYCQOycxM/V/SyMSLzP88bI33XbqAOlmGgDDQ8OXRjDg4/+QACQALlwhAQv/nzy/
+         zdBsz8CC62b8HfQd+hbPzbblzZSeOU0LRdD9OwLNyyib5ud154KgHnh9T+ZR5QZ5HTT5
+         0hYKsWRlsqbjGzAqhVy0bXfWdZw8N6vqNqiEa/Vw834Ujo5uoRTLXoDePvRRQJZF2EQr
+         RwNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767972776; x=1768577576;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pi9MBBtLQ+Z6Az6ZIrDOMPEc6YOFfVuBvcpyenL6HZw=;
+        b=DCRMZZMPPDD0ejS3h1tSWZHvHaHRclQmOspPC38Tn0rxl078PqR2AJrvyeryE9TzvY
+         LwrHP+bo1VNfc8BHHNLh//ofHEG50j1bEj7JjAojttIBW9EC8rv2PW+DkzDpxIGXNQWG
+         aINyj14I2KpYM7Afe9CIG9c4zO9+1SwVJxJ/U5JGd/XO0BWVimsiTohv20zJf4KTy3fI
+         WcvmxMBLM3cVFpD83UN1wsXBK2LpEgZYzcNgapG06mONjcAQ3WiMXi04g+GJB9cV7oXi
+         R0hYFg01AACnJbHlatXl5bXWVpqFpSexepURb57vZBu3p1/pc1jeGZst23Hp/wLDeZfa
+         u6OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW3R38fWHzjXp5LVyCQieVmgrm900zVb8Ldok9G7LLNy1Mpjq8CsC3ppDw5aA5hXpxTDfC4OfQ9TQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxh/fy/P3qDgzAnVIB1zeE6j/EsZbtRpfDluLGGwgjUHbQTr4qq
+	AiEAEi0X0WosUO9B/j9AB0Zqp5YU5xQ0/fGee6MdJVIDP1uWWBFQjzY9
+X-Gm-Gg: AY/fxX6QTe/MA5/2kh8mQNXr8gnBWth/DGWnjGkhHDaz9hE8d1rilyjU1Tc1SYa7gQ6
+	nvDTETRedehjkKSc1RZBrr7he3mIfqe0MOroJare9DDOpogJGtQAgCATLwlGEDW8VkZqG7highK
+	IS1aR3m0Qd3j/5DeZ8uxMYFPcuhPeBeTjqLg7+hGUX44jLL1Co9hppQ1SxvpiZ4cG8IxOpkpYAz
+	wBGyj+yy4GMlxN7ifuzh50ab9tgLdROX88bXi0LYF2Qate6f6v/PaCfferE5BENmEWGs1ZOofuR
+	ZHzCYZi7/KJTpNs4uge2dwbRbqzQDhfq+5FrdipknYU3pYCvcvr+aGB0xUxKpmlpfzk7odeSSKX
+	aYOupcsVNyEqn+9powLXaKnoHi88kSM8MgUTkLpzk14Vn+bU+71YI6ch/m81eqoojyc39zdf3tS
+	Nla6o=
+X-Google-Smtp-Source: AGHT+IHcrtzAO+bIMCp7VJf6cVvYL7KCtM3NjFt78OIqdmkQu1Q/tiqyGp2Jn9iJI2z7jDarLLplnw==
+X-Received: by 2002:a17:90b:4986:b0:330:bca5:13d9 with SMTP id 98e67ed59e1d1-34f68cee7f2mr8136123a91.32.1767972775949;
+        Fri, 09 Jan 2026 07:32:55 -0800 (PST)
+Received: from localhost ([2a12:a304:100::105b])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f6b9602d4sm3055529a91.12.2026.01.09.07.32.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jan 2026 07:32:55 -0800 (PST)
+Date: Fri, 9 Jan 2026 23:32:50 +0800
+From: Jinchao Wang <wangjinchao600@gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/migrate: fix hugetlbfs deadlock by respecting lock
+ ordering
+Message-ID: <aWEfjVqVpoatvOpI@ndev>
+References: <20260109034723.1342798-1-wangjinchao600@gmail.com>
+ <920c641e-e092-46f0-89cb-0f1c130d979a@kernel.org>
+ <aWENkov0R-1nIB8M@ndev>
+ <e792db5f-5ec4-4960-a2f8-fde490e0e366@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH RESEND v3 1/2] mm/tlb: skip redundant IPI when TLB flush
- already synchronized
-Content-Language: en-US
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, dave.hansen@intel.com
-Cc: dave.hansen@linux.intel.com, will@kernel.org, aneesh.kumar@kernel.org,
- npiggin@gmail.com, peterz@infradead.org, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
- arnd@arndb.de, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, shy828301@gmail.com, riel@surriel.com, jannh@google.com,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com
-References: <20260106120303.38124-1-lance.yang@linux.dev>
- <20260106120303.38124-2-lance.yang@linux.dev>
- <da1e8a00-99fe-46d9-b425-c307ea933036@kernel.org>
- <7472056a-3919-429a-845d-c2076496d537@linux.dev>
- <4d94363b-5b3b-4401-a9d8-da136d71f8c3@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <4d94363b-5b3b-4401-a9d8-da136d71f8c3@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 1genu4aatubkqp7jjzeosygrwrpssz3z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e792db5f-5ec4-4960-a2f8-fde490e0e366@kernel.org>
+X-Stat-Signature: zu3k3pg17sqijzpatadd1m6xg616zsjp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B11374001C
+X-Rspamd-Queue-Id: 4B5824000D
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1767972671-310256
-X-HE-Meta: U2FsdGVkX1/8LziEWfs0vychdnJKdLhb6nJAtLchldEgotZkcmluWlsRdSm9ydIDdTgzxZ9lKY1N2kSKGqYsNg15VN9B/hSPlfL7d33IH/hACXxPuQQmhUNKMwtwTPObvcyJTYGabLJ1vHSPn616/zEiSNnsoDZk5OSkp/De7VkbQUodV8LwHC6fjKwcRlEqW1Co79R2LfheRw8ydh5ApJ0mxc/Hk+6NAzTRSKRaG1rpXt3EydtB6n8661rBBbeUasUE5OIUQ0MsRVrmLz5K2cmweDf/AaSTj5YnhgA1xc9ErTY9RZ1Te+R6QGXA2yHX26A2ttnmnQ40aBkVysgsVkWJVEHCQ8OTBrmYD+KNfeOxwM8A2PVJfok7NOof/FaGNwsGY86e7tLPefZIJckB+EqsLtXQJB6IfqZLptvfRa1F2mDyeAiOQZ/uWIITKdzpjEZ6mV0KoTd//0PwWiTqvJPLq7qCG6HXSvhpB8+29vuSAMNR5gcNhgsiKtLYkWcdHrHHd4UdCl8WcGRavyjJruDjxlvNVYh1NJRiZy4YFWIKrVwxmcYUJWT7RqfVXfa6bgn2tYlv23+TgMH3MEeC8YhvA4OdImIsos7oiJ7HdRYc/r2b+uVaiEVJB2FSYziAo+kjJhNsF9V90igr4BXhTSxAeTYsOSuFGmlz4X7Ynxe5+eRZ4L/ULDnRz2NZCkNxtFBIPkgkalq1OCYBtwGpqQaM4Jog8wzaK0dLfwzcow4pvaXqAwPXTqNcWQ0l0fTcPRPuIsf8mjkMj5ZprrWGT3OWjd0rZrLjkafbk2yM/rXChygLIN/kp/Ti+GJP41rVeuLWPc7cad5BJaQqCZ8TWDfCHl51QyNWLyj8PU/deBdT6B6Qu4YCVRohtB3u3iaQxyMEdqEXDanmssdCb/vVYAa/BiYYT7QBPQsz9y+Ih2hmXWvEfxU0kWjs4SgBZm+NJtaC/4Op8FWq7Tkpn1s
- E4O0d21R
- CqVmUh6s5mHXmJoxzHJ+n9w151qW5F11YE1HFe87K9UNhnEhxma+JQ/CSWjBbgsw79OWYxSEIN5m71Sy0TfGaHF0fY8nbc+RBtQiIycVOV1yCTAhZItCRUlPkpVQ5BxwZ3wkc9eoKhpFY+LRf3LMZL3t3sLd/C5lhZNZodPs3SkXXStq5clljgAKpql4i3N9EHeyL6sdNYWS7r3K+qlgi/4HzlA==
+X-HE-Tag: 1767972777-167213
+X-HE-Meta: U2FsdGVkX1/3AH0kch+3jl9lJCqjoCbleHcK7fPg9E1A9PeMSQU9Lg3jg3/Msf7WwictrwQj6i9Q6JJ9gmPSZ+bPXOT0uY5VLu/89qe0pyHZF0e/p+gFE2eahC4+3JN+zR3NRF5Sx5DWwAQ8eCU4wpg+et0lB0g3n1ODmFWiywgCRUkpW7ZJplzDTk/hLgU0JETVhQks6UuarnXLNzB+CKnfO8W6P3QgNIW6Iz4P2wDt50/StcZoUL14+iXQWnspJ4d8hszScnm2vgLa/k2hM2yBl1g0iIz5XM+2wvIyTAqLF27KDMgjhV1IUODVaAciDXOsceHA8LbkKVUBC7K/C2fLepBrU3kIInKEDNsALPPZ6dOS6n1exQ3cX3k1nz2TUWjdLqGz8Z2RGhLe9bagpIdP6m1G/OTpaM2eF3Iu3Hqee0HQh2QUWbxV7XbkIDHpJ6MlOTkzRRtICa7j3SLkbhUtGzHPOYNlOnC7UzPs2zMdJbnManWunjcXJpOWqE5aWxOUliJDzRS/zvI3uVcxZHnMdTFisSwCZbvZGpcDj4S+Qd8ohaWhScqDi0eUgMWtZgNALhyS8aOgKi+aAn40p6jh75B2RnP5iNh2/vqNoMw+2XYJHXo4Twq1ougRhBSGmXpq2ArC+Y2suJfoyRsGDjVDsAvQEyLu+DIDzUsS8+wI80JH8Qx0hTW4ldUkQG3ISzxSuKbrntEpag4/WNNQ9VRO6V9msVcOKECrrOXrGyL7R+l03I6AFhtpSnSljovfUhi63ZlJ2ezMEAShL3z9Ig7nIwbyHijAUjBuMFiEwKMik7cV+K9mjCFZUHO5tyf7E69LQJTiv55whKHlCBlguswZqvejUiQaVl7LuTgDVbEabVAkKlJ7+Kw2udBSEOVofwV/y04yA5ntRP47APVJumLf0RHaewUrSLcwJloizQa9JGI+MZ9OFiSEXPO44MjOUOJmV48aLN1Mqm6C0MW
+ PBM+bSoM
+ tGzImVumFT6fBefN4DWWPegq3kzMSa6k8hqp8X0LEFpgjpl/HK0NhbpgnQNvQKIiTWWaZlGPoT7bQySANYsUGdBHqS7XO990/d+OL4dzHkpUUipiX4N+I8dcmyEHm7RvoQB1Ezm+yePFP2mhmeCR5COIesqueplWKE5GwxGjQENRa7N4UV2cfHmAHjCJQs6cF0HGBqhLljyXC8ZzEHx3zyAXm7P1ptBZ5nrbjnBT7+W6jP5wRwa1XtoiKfNBwY8RAGIeU+LsOISeKZpOJxgCXvygv4NHyt5Giew3WhCzDTsyHWE6EXea7OdY/w0rxXi3vImW8CU/5yqeagXzimOY7/mHN51G4qHj3crM6OIdBp4pmx+OWma6oDmvkyUFnuKbVPwcIC3HWxW6CN0GD0akOHR0bK+2VfsczcNHM0cQkfqut2eA4E4p3ZRkOKnYmufEpEnBkkTkF6WEpX1SQd6VqxL9ZyRCDV1J046sg1SC7jSfg/uBxvYQqydVKzpw038KcnRfEouP8hDTeZTKe0gdpaz+G5YdCwWEkmuGuyK8Wzarer9KokUhDMF7guKj1TxsGFOR05YLqyVQj4jVIu+2kF/9bOLvLrIGPaoVdeoIG+EB5O1BbVxZN65Ytrd5a2YMEueW2Py6DGz2EdsbrPDzUt9zI7yA6XAkPZvBX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,42 +130,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/1/9 22:13, David Hildenbrand (Red Hat) wrote:
+On Fri, Jan 09, 2026 at 03:18:37PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 1/9/26 15:16, Jinchao Wang wrote:
+> > On Fri, Jan 09, 2026 at 02:39:08PM +0100, David Hildenbrand (Red Hat) wrote:
+> > > On 1/9/26 04:47, Jinchao Wang wrote:
+> > > > Fix an AB-BA deadlock between hugetlbfs_punch_hole() and page migration.
+> > > > 
+> > > > The deadlock occurs because migration violates the lock ordering defined
+> > > > in mm/rmap.c for hugetlbfs:
+> > > > 
+> > > >     * hugetlbfs PageHuge() take locks in this order:
+> > > >     * hugetlb_fault_mutex
+> > > >     * vma_lock
+> > > >     * mapping->i_mmap_rwsem
+> > > >     * folio_lock
+> > > > 
+> > > > The following trace illustrates the inversion:
+> > > > 
+> > > > Task A (punch_hole):             Task B (migration):
+> > > > --------------------             -------------------
+> > > > 1. i_mmap_lock_write(mapping)    1. folio_lock(folio)
+> > > > 2. folio_lock(folio)             2. i_mmap_lock_read(mapping)
+> > > >      (blocks waiting for B)           (blocks waiting for A)
+> > > > 
+> > > > Task A is blocked in the punch-hole path:
+> > > >     hugetlbfs_fallocate
+> > > >       hugetlbfs_punch_hole
+> > > >         hugetlbfs_zero_partial_page
+> > > >           folio_lock
+> > > > 
+> > > > Task B is blocked in the migration path:
+> > > >     migrate_pages
+> > > >       unmap_and_move_huge_page
+> > > >         remove_migration_ptes
+> > > >           __rmap_walk_file
+> > > >             i_mmap_lock_read
+> > > > 
+> > > > To fix this, adjust unmap_and_move_huge_page() to respect the established
+> > > > hierarchy. If i_mmap_rwsem is acquired during try_to_migrate(), hold it
+> > > 
+> > > 
+> > > I'm confused. Isn't it unmap_and_move_huge_page() that grabs the
+> > > i_mmap_rwsem during hugetlb_page_mapping_lock_write() (where we do a
+> > > try-lock)?
+> > Yes, but the lock is released before remove_migration_ptes().
+> > 
+> > Task A can enter the race window between
+> > 	i_mmap_unlock_write(mapping)
+> > and
+> > 	remove_migration_ptes() -> i_mmap_lock_read(mapping).
+> > 
+> > This window was introduced by the change below:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/mm/migrate.c?id=336bf30eb765
 > 
->>> What could work is tracking "tlb_table_flush_sent_ipi" really when we
->>> are flushing the TLB for removed/unshared tables, and maybe resetting
->>> it ... I don't know when from the top of my head.
->>
->> Not sure what's the best way forward here :(
->>
->>>
->>> v2 was simpler IMHO.
->>
->> The main concern Dave raised was that with PV hypercalls or when
->> INVLPGB is available, we can't tell from a static check whether IPIs
->> were actually sent.
+> try_to_migrate() is not the problem, but remove_migration_ptes() ?
 > 
-> Why can't we set the boolean at runtime when initializing the pv_ops 
-> structure, when we are sure that it is allowed?
+> Anyhow, I saw that Willy sent out a version.
+Thank you for letting me know.
 
-Yes, thanks, that sounds like a reasonable trade-off :)
-
-As you mentioned:
-
-"this lifetime stuff in core-mm ends up getting more complicated than
-v2 without a clear benefit".
-
-I totally agree that v3 is too complicated :(
-
-But Dave's concern about v2 was that we can't accurately tell whether
-IPIs were actually sent in PV environments or with INVLPGB, which
-misses optimization opportunities. The INVLPGB+no_global_asid case
-also sends IPIs during TLB flush.
-
-Anyway, yeah, I'd rather start with a simple approach, even if it's
-not perfect. We can always improve it later ;)
-
-Any ideas on how to move forward?
+> 
+> -- 
+> Cheers
+> 
+> David
 
