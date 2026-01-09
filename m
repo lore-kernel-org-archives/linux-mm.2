@@ -4,97 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F41A3D26D6A
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 16:00:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B835D26D70
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 16:03:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 082C76B0088; Fri,  9 Jan 2026 11:00:24 -0500 (EST)
+	id CD3D26B0089; Fri,  9 Jan 2026 11:03:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02F686B0089; Fri,  9 Jan 2026 11:00:23 -0500 (EST)
+	id CA23C6B008A; Fri,  9 Jan 2026 11:03:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E53976B008A; Fri,  9 Jan 2026 11:00:23 -0500 (EST)
+	id BCE476B008C; Fri,  9 Jan 2026 11:03:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D17B36B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:00:23 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 728ED14025B
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:00:23 +0000 (UTC)
-X-FDA: 84312887526.15.F1A8131
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 28B904001C
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:00:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=duTcYuly;
-	spf=pass (imf27.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id ACE766B0089
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:03:02 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 810E91A02E6
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:03:02 +0000 (UTC)
+X-FDA: 84312894204.03.AFCD40B
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A397CC0012
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:03:00 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KywQBmKy;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767974580; a=rsa-sha256;
+	cv=none;
+	b=HodpVv1OZ3Ufp5NnGtGv0Dlx7kEsGJREQgogqc/pHalDQSJ5osGmQp0cGk1CF54XRL+HOw
+	5Mcd95Dbv0Sh/VfCLqF34y3/Imv+glHy6hCW654BuBCVVP+a3Y3XTs1MDOn5RcqRCLpKSg
+	jhlCe8OEbb7TrfbGfFUPY64GxDLDk6Q=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KywQBmKy;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767974421;
+	s=arc-20220608; t=1767974580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q5LAdhOCCc8N41wLK+KHHr42/lhH/TW4Y/qOP6oJbhM=;
-	b=mqsJuPuI+282LRcdjMaP6NRSsdusnGr6mRamafxi8ny8yc2yK/tCHSiYkXNDIzugDQ+f1M
-	g3oVV6Bve/iJtHMySO3w8rEgRIHRJNjuqwwRgE/3o55TmQ7nm2NfRf9yDi/jFoRbAlfWgs
-	WqRTTugEMTejw8bL3DQ0IkV4XIRYfu4=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=duTcYuly;
-	spf=pass (imf27.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767974421; a=rsa-sha256;
-	cv=none;
-	b=DfYP6rZDR4E1NUbiUcuQNveQ3/soA/zGV/+sck7KSE/BwTqiem52tG8/DzvSgpJcSyBJgT
-	qviW1X+nSXjZgaO0plkopb7d5H3Q+BfPEtnCOKHhzIoKVDHuQ97GtGUnEI+JPQMTxMKCgG
-	0/0lvq3i5LxGWI2nZRis3MInR3emxBg=
-Date: Fri, 9 Jan 2026 16:00:00 +0000
+	bh=HO9vyzWX0Ct8pEprBc6DFuRbfkLrbZ4emdg92O7zT0w=;
+	b=BleZEYRNuu72n7slLT5BwRVuevOjOu4caYiMJ2DENGgnJKic8/twLOONXuY4ZmW+a7lswg
+	4IgP/QNJDWkDkH+W9ZI07m8ee4EB+jf1DvKZsbGOihsW2pFSq0iAIU8J3tG4eVASamWANS
+	fHQUnCNzFt7ALQkQSJj01LUT8aW+ISA=
+Date: Fri, 9 Jan 2026 16:02:51 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767974418;
+	t=1767974578;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=q5LAdhOCCc8N41wLK+KHHr42/lhH/TW4Y/qOP6oJbhM=;
-	b=duTcYulyLdWHtvP4Q8YAlW6mTv845miu1bdA/mIk/vToHI6CugjQw322Jf709n/7q2LkUI
-	iwmuedRmZe5i0/w1YslWme1xHC/2GmJcu7XkAYZ/3pLBQhCZ2036aJeXlSsk37SEdcMIDP
-	VHyJwH0lH61D2s6KyefTV3iQPtSt5wU=
+	bh=HO9vyzWX0Ct8pEprBc6DFuRbfkLrbZ4emdg92O7zT0w=;
+	b=KywQBmKym5GSn3EeJNWSqcIbpo9DQ4fzPmNQ5lQwgcXOJPWZKZ1zfMIx5be/zImMZ3j60Z
+	ADdkA8akfLqTCYNSrlAiN9h5yAEEc4PXDGsfK8KLJ492vcWXIqn1vB/ukAYgHRR6/ru3Yg
+	RZX7usDFvfocrW6xZLm28GHCw6d+Qfw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	kernel-team@meta.com, longman@redhat.com, tj@kernel.org, hannes@cmpxchg.org, 
-	mkoutny@suse.com, corbet@lwn.net, gregkh@linuxfoundation.org, rafael@kernel.org, 
-	dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com, 
-	dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com, 
-	ira.weiny@intel.com, dan.j.williams@intel.com, akpm@linux-foundation.org, 
-	vbabka@suse.cz, surenb@google.com, mhocko@suse.com, jackmanb@google.com, 
-	ziy@nvidia.com, david@kernel.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, rppt@kernel.org, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk, 
-	rientjes@google.com, shakeel.butt@linux.dev, chrisl@kernel.org, kasong@tencent.com, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, 
-	chengming.zhou@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev, 
-	osalvador@suse.de, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, cl@gentwo.org, harry.yoo@oracle.com, zhengqi.arch@bytedance.com
-Subject: Re: [RFC PATCH v3 7/8] mm/zswap: compressed ram direct integration
-Message-ID: <i6o5k4xumd5i3ehl6ifk3554sowd2qe7yul7vhaqlh2zo6y7is@z2ky4m432wd6>
-References: <20260108203755.1163107-1-gourry@gourry.net>
- <20260108203755.1163107-8-gourry@gourry.net>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, 
+	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
+ consider other metrics
+Message-ID: <mldy4ayvdlmdz2c6spsmbuwiekvqtnxoj2lzg2ktehmdefsees@wdi7vw7kliuq>
+References: <7q5gqpfshnc3lfhzxughpks3fc2knw2delpm5io2oe54monydl@5isuxnjputjr>
+ <aVyYuS_usi-lpHkM@gondor.apana.org.au>
+ <dou7g3n5fpynsab7hmxf4bgmqdewtdhkkiriwlghxzyduick7h@bsi3q2kivvbs>
+ <aV3uXguDCaVAbY53@gondor.apana.org.au>
+ <9b7d6e6292c64f21b8d09def1b6723f02faffe88@linux.dev>
+ <53zplsrqc66z4ea64cosy53zvttuuhgxr2ik7uw6i2zgluegyz@d3ulgntwnyw4>
+ <llj3jf5evsp7f2wl2hmm6mouqzwzolvdnu4yquhxbgsgaqvsda@ltct5tqpzmyo>
+ <utnvn4oupcmohosp6d3qti54qmdppg2xfw622dq6zz7t66a6ma@2pentzdw3zgk>
+ <yxpn4gan74uryy6huzulsqvqvbsqiehdqe6lu7m3hjf3tjjdop@a6cifoycstso>
+ <2iophcy2e6vk72ypxeshmen66e7jhr52zr34parn4uw6vdyjef@frnpfrltrky2>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260108203755.1163107-8-gourry@gourry.net>
+In-Reply-To: <2iophcy2e6vk72ypxeshmen66e7jhr52zr34parn4uw6vdyjef@frnpfrltrky2>
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A397CC0012
+X-Stat-Signature: 1f17k78efw3ujabhbcbaigmmsxmj7jqe
 X-Rspam-User: 
-X-Stat-Signature: xy9ztu4wfnq839b8p6zizucs19q417hx
-X-Rspamd-Queue-Id: 28B904001C
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1767974420-4389
-X-HE-Meta: U2FsdGVkX1/ocYqodaevpsHNdQGiKi/rctnN9qJtpk/uQzltwhPLh3Gv+Rkejehz0fbRXtZN/JPy8CStm1zxV9cfHxWSBcKn0bWepdpgnf9AaO94i3dbcbehPu4pkMyn5cJQ9b5GBB5uJT3oMpjW2u/E69zXxVI9QccqnJr5AwZhgsbv3TpdiBcKwe4u0xceED0u7FqXjSAO96fGD0u//t4FeY8xsc7cl3BdiHA/ZFYsnaPjVgf9spNcwimExQHa5bWbIsf7WLAi2WVujJsiotLq++w5bbANJHhYdaKtdcttZcgUEd/nxYE6P/UeFoA8hgdZgWQQd1Y+A2Xik6dAiZbWZZoihMUNRZeYbLgDj65LwhEK8Ez8HI7nT/wZnqrOFUtvkeaJEecq5gZ6C6rhBx9Qoj53JBttxxrtW1Xsu8fQrojJLI45Hu1GtS2vJLT05f8tSgca5/cnf+vVdZumbOCSXAolTuROkRFq98BG87uChMbBw6VnFD5C8d4nwuNZ1jvVNgpOonUfVsbLcgyTsWuO8pE+vRLNKc4Z3/ukPxDsVaEhvx8xWpIFaBolJ1pGfR7dtaQ4AaI82UDuq35tiCaC6Ph/q25AGdXftcRiq61Q2xuKDH3a0GuPH5bFJWniqYkRLr2UoiJz5spMkJj/lorlYRGZti6BPXYCIAr66ZfzNE9aj1gI2Uy7+15XM008hlAP4S7SACoqnz0XODgrUxWm70zFACopfy9oXQaCY17DX569XGryqnPZT1Y45CiSKXY8/XesbauJnqjklrWS/W/U6AjEfF2muQpGtPwJiZRmCInLm0MbdZvSIEKSA9Hnv4Tvqo5sKQxMtsWF99XKhpKkavQzDodUKVwtobjpteRTQmbNke7hO7lvI+ZY6LMFoM7JW6C644guw7fXkzSUnyzUyIb9ynfDhdzs/hjMZTJVuDdsyibfxwAsGzHyTtQucie9BRwQRsOluSsTKd3
- dAKufvSX
- jVxjLeFsZEo0aT/zU//dMY/OQR+6nnKZiLKz2+QxhqH+z0rKtgB91peOLAYW2wW02cc/zr5Pl45k/36s2PqMoutLCzodGTszZxhfEMGcTH8LJJpEPXgvsNLwaP3drxKcThvjouv9wOsr0E1ay0itU8VGwYKalQgaPjrB0TcJfRCFC1YR4VXiz5nypiuuOFApbT6IkRU2K9KCaicLtJTitkfW/y7g/zqaYF7eF0Icb0umrWE5ag9QtI3oGGb/4Y76x+7qJYBn8auvxmWy7hmY1Lnes5R3PMqgpM+W1h+JK0dQaXtB4Q6UZ/jybvYDlSNxmDgBLiEwv2IANBFkpzju83EFw5Q==
+X-HE-Tag: 1767974580-496118
+X-HE-Meta: U2FsdGVkX1+GgnL2QDpV10R0gsN8/dqab+FKtMOZ2eZy6nVam7HOVdUZ3YIz/6JuqSL4CrrFwiyRDb+3WExyqY1T5lLl3AX+PVpCh3ldQD3Nv5ID6pSndny7uDxggJPwahVujMgur9l0uQKltsIop/hd4YnE/oNutopD4oUT/NdrrU6BsLZ1H3qyPs8G3CWDXX8CUp73O6OWJJuIPReXux9apH33DT7JMdh7a2cw4bbtQ5nd0e4WNIVvwNl3FMHRgz8oHLylrPXi+eJfKbinL71OJcuY7dwrP/jUTPpZAaoovZ/WnrryY19vqYlHxlQVF1eEo4rdTbVe8+LpN9QXFkhWjuCqP8Wne0iXem6ae4zpHqrxdTrYlaqwgCnpU64nUfz7sSsDzYQ/l7ZWfla5tw53b1TDpSwJ2cVcO8slumuZiX0qkOY7GPnYK33X8KBrfqXggKwbJL8cPCx66VoIKcnrG8H2qv1wtm7d4fhq/5s+uTsxN0Q9kvJTOU4mV5ZjLns+AatJFaQeVghLnUnCiN2doftgH/tHjkDwmf9uNclnrxE2bmYgZxrApXpXUj/J9BU8/EhJeAA5IlZHaQw1hBRInegzyBDkYxKfCXuqmyeOu7Z1LP3slBy5jhj6+JlrZD5ocSSq2nQKUdczv9G1jxANanghrRFzUvE+7fLiYrkecLgQ30aqVpWDI7WFicicsO8D2gfQPoen2Th1Oa/xh3eaij1iBj0Qx4z4gs/JiEXDHi//cYJ3RUzRBPZFwL/ieuIo0Dm9N4nCFXYE7EMLzver3WVVKUBbYQeHEskt+ceiR+tw+4T9oY9BhamNskggTYYHcPzW1mGbgqzRQbrSlfEKTBzvQ6ruEt/TdJ3DK0K//+6L2eIXeArNduj6fEjF8UulUMl/EUX7AqNShDXFhVWYiCAbCek03AXejp3nJ3n67bK86qxb7PFsBJ14iQ/GNt73X4v1piG3y9CZBR3
+ fPG6N6nD
+ xc6m8gNxmk2Y3HhQKvDVc0Kn3vqk+oG7l6u5TQpod+KhNNJTGNBmFzOlK3GeiInRdfBU8IynvMwiM0M2n7K8q1hDkIPyJY+/zI0B4pxpCiobENPfcKA33+vXxJ2gHfIcQ62iw2yZkPKRTDdjlzPsrVKOZQvkuT8xxweD2aj6zq18Vnx2B8d02gqtFftfIM4bS5kgEpm24MqWn68Cx+wJaCImAbPn13VmM9s6+V/rJQeiMiic=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,332 +99,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 08, 2026 at 03:37:54PM -0500, Gregory Price wrote:
-> If a private zswap-node is available, skip the entire software
-> compression process and memcpy directly to a compressed memory
-> folio, and store the newly allocated compressed memory page as
-> the zswap entry->handle.
+On Fri, Jan 09, 2026 at 12:29:58PM +0900, Sergey Senozhatsky wrote:
+> On (26/01/08 08:01), Yosry Ahmed wrote:
+> > > Yeah I agree, I guess I can cook something up.
+> > > 
+> > > For transition period we can have:
+> > > - current "memcpy" API
+> > >   for zswap
+> > > 
+> > > - SG-list API
+> > > 
+> > > I can vmap either on the zram side or have new zsmalloc vmap API
+> > > (alongside the memcpy and SG-list APIs).
+> > > 
+> > > Once crypto API supports SG-list and algorithms tunables I can
+> > > switch zram over from zcomp to crypto API and remove memcpy and
+> > > vmap APIs from zsmalloc.
+> > 
+> > IIUC based on Herbert's previous response, crypto and scomp already
+> > support passing in a discontiguous SG-list. So for zswap, if zsmalloc
+> > returns an SG-list, it will just be passed as-is to the crypto API.
 > 
-> On decompress we do the opposite: copy directly from the stored
-> page to the destination, and free the compressed memory page.
+> Oh, okay,
 > 
-> The driver callback is responsible for preventing run-away
-> compression ratio failures by checking that the allocated page is
-> safe to use (i.e. a compression ratio limit hasn't been crossed).
+> Something like below?  Not really familiar with SG-list API.
+
+That makes two of us :P
+
+Herbert, do you mind taking a look at this? It looks sane to me except
+for one question below.
+
+I can try to test this next week with zswap and see if it blows up.
+
 > 
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-
-Hi Gregory,
-
-Thanks for sending this, I have a lot of questions/comments below, but
-from a high-level I am trying to understand the benefit of using a
-compressed node for zswap rather than as a second tier.
-
-If the memory is byte-addressable, using it as a second tier makes it
-directly accessible without page faults, so the access latency is much
-better than a swapped out page in zswap.
-
-Are there some HW limitations that allow a node to be used as a backend
-for zswap but not a second tier?
-
-Or is the idea to make promotions from compressed memory to normal
-memory fault-driver instead of relying on page hotness?
-
-I also think there are some design decisions that need to be made before
-we commit to this, see the comments below for more.
-
 > ---
->  include/linux/zswap.h |   5 ++
->  mm/zswap.c            | 106 +++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 109 insertions(+), 2 deletions(-)
+>  include/linux/zsmalloc.h |  4 +++
+>  mm/zsmalloc.c            | 65 ++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 69 insertions(+)
 > 
-> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-> index 30c193a1207e..4b52fe447e7e 100644
-> --- a/include/linux/zswap.h
-> +++ b/include/linux/zswap.h
-> @@ -35,6 +35,8 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
->  void zswap_folio_swapin(struct folio *folio);
->  bool zswap_is_enabled(void);
->  bool zswap_never_enabled(void);
-> +void zswap_add_direct_node(int nid);
-> +void zswap_remove_direct_node(int nid);
->  #else
+> diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
+> index 5565c3171007..11e614663dd3 100644
+> --- a/include/linux/zsmalloc.h
+> +++ b/include/linux/zsmalloc.h
+> @@ -22,6 +22,7 @@ struct zs_pool_stats {
+>  };
 >  
->  struct zswap_lruvec_state {};
-> @@ -69,6 +71,9 @@ static inline bool zswap_never_enabled(void)
->  	return true;
+>  struct zs_pool;
+> +struct scatterlist;
+>  
+>  struct zs_pool *zs_create_pool(const char *name);
+>  void zs_destroy_pool(struct zs_pool *pool);
+> @@ -43,6 +44,9 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
+>  			size_t mem_len, void *local_copy);
+>  void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
+>  		     size_t mem_len, void *handle_mem);
+> +int zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
+> +		   struct scatterlist *sg, size_t mem_len);
+> +void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle);
+>  void zs_obj_write(struct zs_pool *pool, unsigned long handle,
+>  		  void *handle_mem, size_t mem_len);
+>  
+> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> index 16d5587a052a..8f7569058147 100644
+> --- a/mm/zsmalloc.c
+> +++ b/mm/zsmalloc.c
+> @@ -30,6 +30,7 @@
+>  #include <linux/highmem.h>
+>  #include <linux/string.h>
+>  #include <linux/slab.h>
+> +#include <linux/scatterlist.h>
+>  #include <linux/spinlock.h>
+>  #include <linux/sprintf.h>
+>  #include <linux/shrinker.h>
+> @@ -1146,6 +1147,70 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
 >  }
+>  EXPORT_SYMBOL_GPL(zs_obj_read_end);
 >  
-> +static inline void zswap_add_direct_node(int nid) {}
-> +static inline void zswap_remove_direct_node(int nid) {}
-> +
->  #endif
->  
->  #endif /* _LINUX_ZSWAP_H */
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index de8858ff1521..aada588c957e 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -35,6 +35,7 @@
->  #include <linux/workqueue.h>
->  #include <linux/list_lru.h>
->  #include <linux/zsmalloc.h>
-> +#include <linux/node.h>
->  
->  #include "swap.h"
->  #include "internal.h"
-> @@ -190,6 +191,7 @@ struct zswap_entry {
->  	swp_entry_t swpentry;
->  	unsigned int length;
->  	bool referenced;
-> +	bool direct;
->  	struct zswap_pool *pool;
->  	unsigned long handle;
->  	struct obj_cgroup *objcg;
-> @@ -199,6 +201,20 @@ struct zswap_entry {
->  static struct xarray *zswap_trees[MAX_SWAPFILES];
->  static unsigned int nr_zswap_trees[MAX_SWAPFILES];
->  
-> +/* Nodemask for compressed RAM nodes used by zswap_compress_direct */
-> +static nodemask_t zswap_direct_nodes = NODE_MASK_NONE;
-> +
-> +void zswap_add_direct_node(int nid)
+> +int zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
+> +		   struct scatterlist *sg, size_t mem_len)
 > +{
-> +	node_set(nid, zswap_direct_nodes);
-> +}
+> +	struct zspage *zspage;
+> +	struct zpdesc *zpdesc;
+> +	unsigned long obj, off;
+> +	unsigned int obj_idx;
+> +	struct size_class *class;
 > +
-> +void zswap_remove_direct_node(int nid)
+> +	/* Guarantee we can get zspage from handle safely */
+> +	read_lock(&pool->lock);
+> +	obj = handle_to_obj(handle);
+> +	obj_to_location(obj, &zpdesc, &obj_idx);
+> +	zspage = get_zspage(zpdesc);
+> +
+> +	/* Make sure migration doesn't move any pages in this zspage */
+> +	zspage_read_lock(zspage);
+> +	read_unlock(&pool->lock);
+> +
+> +	class = zspage_class(pool, zspage);
+> +	off = offset_in_page(class->size * obj_idx);
+> +
+> +	if (!ZsHugePage(zspage))
+> +		off += ZS_HANDLE_SIZE;
+> +
+> +	if (off + mem_len <= PAGE_SIZE) {
+> +		/* this object is contained entirely within a page */
+> +		sg_init_table(sg, 1);
+> +		sg_set_page(sg, zpdesc_page(zpdesc), mem_len, off);
+> +	} else {
+> +		size_t sizes[2];
+> +
+> +		/* this object spans two pages */
+> +		sizes[0] = PAGE_SIZE - off;
+> +		sizes[1] = mem_len - sizes[0];
+> +
+> +		sg_init_table(sg, 2);
+> +		sg_set_page(sg, zpdesc_page(zpdesc), sizes[0], off);
+> +
+> +		zpdesc = get_next_zpdesc(zpdesc);
+> +		sg = sg_next(sg);
+
+Is this stateful? Will the SG list be returned pointing at the second
+page now?
+
+> +
+> +		sg_set_page(sg, zpdesc_page(zpdesc), sizes[1], 0);
+> +	}
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(zs_obj_read_sg_begin);
+> +
+> +void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle)
 > +{
-> +	if (!node_online(nid))
-> +		node_clear(nid, zswap_direct_nodes);
-> +}
+> +	struct zspage *zspage;
+> +	struct zpdesc *zpdesc;
+> +	unsigned long obj;
+> +	unsigned int obj_idx;
 > +
->  /* RCU-protected iteration */
->  static LIST_HEAD(zswap_pools);
->  /* protects zswap_pools list modification */
-> @@ -716,7 +732,13 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
->  static void zswap_entry_free(struct zswap_entry *entry)
+> +	obj = handle_to_obj(handle);
+> +	obj_to_location(obj, &zpdesc, &obj_idx);
+> +	zspage = get_zspage(zpdesc);
+> +
+> +	zspage_read_unlock(zspage);
+> +}
+> +EXPORT_SYMBOL_GPL(zs_obj_read_sg_end);
+> +
+>  void zs_obj_write(struct zs_pool *pool, unsigned long handle,
+>  		  void *handle_mem, size_t mem_len)
 >  {
->  	zswap_lru_del(&zswap_list_lru, entry);
-> -	zs_free(entry->pool->zs_pool, entry->handle);
-> +	if (entry->direct) {
-> +		struct page *page = (struct page *)entry->handle;
-
-Would it be cleaner to add a union in zswap_entry that has entry->handle
-and entry->page?
-
-> +
-> +		node_private_freed(page);
-> +		__free_page(page);
-> +	} else
-> +		zs_free(entry->pool->zs_pool, entry->handle);
->  	zswap_pool_put(entry->pool);
->  	if (entry->objcg) {
->  		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
-> @@ -849,6 +871,58 @@ static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
->  	mutex_unlock(&acomp_ctx->mutex);
->  }
->  
-> +static struct page *zswap_compress_direct(struct page *src,
-> +					  struct zswap_entry *entry)
-> +{
-> +	int nid;
-> +	struct page *dst;
-> +	gfp_t gfp;
-> +	nodemask_t tried_nodes = NODE_MASK_NONE;
-> +
-> +	if (nodes_empty(zswap_direct_nodes))
-> +		return NULL;
-> +
-> +	gfp = GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE |
-> +	      __GFP_THISNODE;
-> +
-> +	for_each_node_mask(nid, zswap_direct_nodes) {
-> +		int ret;
-> +
-> +		/* Skip nodes we've already tried and failed */
-> +		if (node_isset(nid, tried_nodes))
-> +			continue;
-
-Why do we need this? Does for_each_node_mask() iterate each node more
-than once?
-
-> +
-> +		dst = __alloc_pages(gfp, 0, nid, &zswap_direct_nodes);
-> +		if (!dst)
-> +			continue;
-> +
-> +		/*
-> +		 * Check with the device driver that this page is safe to use.
-> +		 * If the device reports an error (e.g., compression ratio is
-> +		 * too low and the page can't safely store data), free the page
-> +		 * and try another node.
-> +		 */
-> +		ret = node_private_allocated(dst);
-> +		if (ret) {
-> +			__free_page(dst);
-> +			node_set(nid, tried_nodes);
-> +			continue;
-> +		}
-
-I think we can drop the 'found' label by moving things around, would
-this be simpler?
-
-	for_each_node_mask(..) {
-		...
-		ret = node_private_allocated(dst);
-		if (!ret)
-			break;
-
-		__free_page(dst);
-		dst = NULL;
-	}
-
-	if (!dst)
-		return NULL;
-
-	if (copy_mc_highpage(..) {
-		..
-	}
-	return dst;
-		
-
-> +
-> +		goto found;
-> +	}
-> +
-> +	return NULL;
-> +
-> +found:
-> +	/* If we fail to copy at this point just fallback */
-> +	if (copy_mc_highpage(dst, src)) {
-> +		__free_page(dst);
-> +		dst = NULL;
-> +	}
-> +	return dst;
-> +}
-> +
-
-So the CXL code tells zswap what nodes are usable, then zswap tries
-getting a page from these nodes and checking them using APIs provided by
-the CXL code.
-
-Wouldn't it be a better abstraction if the nodemask lived in the CXL
-code and an API was exposed to zswap just to allocate a page to copy to?
-Or we can abstract the copy as well and provide an API that directly
-tries to copy the page to the compressible node.
-
-IOW move zswap_compress_direct() (probably under a different name?) and
-zswap_direct_nodes into CXL code since it's not really zswap logic.
-
-Also, I am not sure if the zswap_compress_direct() call and check would
-introduce any latency, since almost all existing callers will pay for it
-without benefiting.
-
-If we move the function into CXL code, we could probably have an inline
-wrapper in a header with a static key guarding it to make there is no
-overhead for existing users.
-
->  static bool zswap_compress(struct page *page, struct zswap_entry *entry,
->  			   struct zswap_pool *pool)
->  {
-> @@ -860,6 +934,17 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
->  	gfp_t gfp;
->  	u8 *dst;
->  	bool mapped = false;
-> +	struct page *zpage;
-> +
-> +	/* Try to shunt directly to compressed ram */
-> +	zpage = zswap_compress_direct(page, entry);
-> +	if (zpage) {
-> +		entry->handle = (unsigned long)zpage;
-> +		entry->length = PAGE_SIZE;
-> +		entry->direct = true;
-> +		return true;
-> +	}
-
-I don't think this works. Setting entry->length = PAGE_SIZE will cause a
-few problems, off the top of my head:
-
-1. An entire page of memory will be charged to the memcg, so swapping
-out the page won't reduce the memcg usage, which will cause thrashing
-(reclaim with no progress when hitting the limit).
-
-Ideally we'd get the compressed length from HW and record it here to
-charge it appropriately, but I am not sure how we actually want to
-charge memory on a compressed node. Do we charge the compressed size as
-normal memory? Does it need separate charging and a separate limit?
-
-There are design discussions to be had before we commit to something.
-
-2. The page will be incorrectly counted in
-zswap_stored_incompressible_pages.
-
-Aside from that, zswap_total_pages() will be wrong now, as it gets the
-pool size from zsmalloc and these pages are not allocated from zsmalloc.
-This is used when checking the pool limits and is exposed in stats.
-
-> +	/* otherwise fallback to normal zswap */
->  
->  	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
->  	dst = acomp_ctx->buffer;
-> @@ -913,6 +998,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
->  	zs_obj_write(pool->zs_pool, handle, dst, dlen);
->  	entry->handle = handle;
->  	entry->length = dlen;
-> +	entry->direct = false;
->  
->  unlock:
->  	if (mapped)
-> @@ -936,6 +1022,15 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
->  	int decomp_ret = 0, dlen = PAGE_SIZE;
->  	u8 *src, *obj;
->  
-> +	/* compressed ram page */
-> +	if (entry->direct) {
-> +		struct page *src = (struct page *)entry->handle;
-> +		struct folio *zfolio = page_folio(src);
-> +
-> +		memcpy_folio(folio, 0, zfolio, 0, PAGE_SIZE);
-
-Why are we using memcpy_folio() here but copy_mc_highpage() on the
-compression path? Are they equivalent?
-
-> +		goto direct_done;
-> +	}
-> +
->  	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
->  	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, acomp_ctx->buffer);
->  
-> @@ -969,6 +1064,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
->  	zs_obj_read_end(pool->zs_pool, entry->handle, obj);
->  	acomp_ctx_put_unlock(acomp_ctx);
->  
-> +direct_done:
->  	if (!decomp_ret && dlen == PAGE_SIZE)
->  		return true;
->  
-> @@ -1483,7 +1579,13 @@ static bool zswap_store_page(struct page *page,
->  	return true;
->  
->  store_failed:
-> -	zs_free(pool->zs_pool, entry->handle);
-> +	if (entry->direct) {
-> +		struct page *freepage = (struct page *)entry->handle;
-> +
-> +		node_private_freed(freepage);
-> +		__free_page(freepage);
-> +	} else
-> +		zs_free(pool->zs_pool, entry->handle);
-
-This code is repeated in zswap_entry_free(), we should probably wrap it
-in a helper that frees the private page or the zsmalloc entry based on
-entry->direct.
-
->  compress_failed:
->  	zswap_entry_cache_free(entry);
->  	return false;
 > -- 
-> 2.52.0
+> 2.52.0.457.g6b5491de43-goog
 > 
 
