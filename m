@@ -4,118 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 839A1D26D7A
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 17:29:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 074A6D26D7B
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 17:31:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0BC26B008A; Fri,  9 Jan 2026 12:29:06 -0500 (EST)
+	id 69ECC6B008A; Fri,  9 Jan 2026 12:31:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEB456B008C; Fri,  9 Jan 2026 12:29:06 -0500 (EST)
+	id 655456B0092; Fri,  9 Jan 2026 12:31:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF7536B0092; Fri,  9 Jan 2026 12:29:06 -0500 (EST)
+	id 57EC46B0093; Fri,  9 Jan 2026 12:31:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AE40E6B008A
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 12:29:06 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D6920593C6
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:29:04 +0000 (UTC)
-X-FDA: 84313111008.04.C2F0C72
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0057614000F
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:29:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MV1hAfyz;
-	spf=pass (imf23.hostedemail.com: domain of sun.jian.kdev@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=sun.jian.kdev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767979743; a=rsa-sha256;
-	cv=none;
-	b=YEiMe7jj67xjhmIT+PJNm2JYlW/Gh+A9dGtOPgbhxXhh6AIcyaT+RNJykqB2njTIaQchv1
-	iqo0U8pLVOFfJoKR376ZUFsAH8n1IFyWkBNfLdXBUZe7L/BS/YVDRy5U4CgHMHGMMLgXnR
-	Wq9i1mz2VIhwRZgXKUkkTmxBB4Uz9ts=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MV1hAfyz;
-	spf=pass (imf23.hostedemail.com: domain of sun.jian.kdev@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=sun.jian.kdev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4815F6B008A
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 12:31:07 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D60731A04E0
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:31:06 +0000 (UTC)
+X-FDA: 84313116132.07.BF2059F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 255FE20008
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:31:04 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zb3uH6ZB;
+	spf=pass (imf03.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767979743;
+	s=arc-20220608; t=1767979865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CKdaUjJqG8oeq2ClRcu/iEJwRqPBhkw6Zp5ahsqycmE=;
-	b=HpxoqezVKnmg8n5bVJw7U+5CcJauXPbzcuLWp45UWiiEFVve4H3G5zoDYvDMVHOZuMsiPY
-	jZaF1jVjvII+KmPSeZVPh2Hz2NgDoSlfjY70F2iV72CkF6RJyqgAdY8yAbqE0eJ5MZj0iN
-	lClz6Rbn+N8L9R4jvSuOQ+EOAHvDhao=
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-6455a60c12bso4310272d50.3
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 09:29:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767979742; x=1768584542; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CKdaUjJqG8oeq2ClRcu/iEJwRqPBhkw6Zp5ahsqycmE=;
-        b=MV1hAfyz6NZc10g8/TzVqAQDgDSEHbojB1EHXkEnJ9tSe1XcysSlL8shgce+zPkduB
-         I7X/RBEXRKGLJ2w634nNRAfF3hUK/gg9HYT2VG4nxna4gs2T7hdaYjYKIALDadzbUwGn
-         hsZWrKFSyIcxoIwa2TOc2cGS3F6skRyXDMufOjfuEgZja0D8XBDR+QQE1RcDRuRf1dfC
-         +lyBN8wkD8icT2Yk/uBtVZDDjoljsHAmIdGHbWPOb/xBR9u6+5lXaB8HC+T7EaX5Rf4q
-         XSetmAKe95Wg2z25WNrmQjZZUTX9SVE49U+ODgremZCw3zLpbxrtUWtRpLzr8nXziw0f
-         gN7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767979742; x=1768584542;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CKdaUjJqG8oeq2ClRcu/iEJwRqPBhkw6Zp5ahsqycmE=;
-        b=MJULDWUoeLscBPZC2FdWIh6RTZ44qq5Wkecw+6An6NOo9BPKO8QRCDDCfj4+ovC6g9
-         16F/MnIV28iPg7lAjd/8vXqJ3zsKSEedviLsjLNCICqnPvqpiLjJOSA+2HXqNnr/aYbX
-         vWZK+feGcpxVtVfBcvaP6uau6Vlp2IOaZLHADo4Enrgfk6GIcCHy2NiR0TRJpsxxVV1M
-         YIYcXf1VF/+CXIqQJ99vmlRQkGSzCzKKKXdukqffgBDykd7jXVPOgZZX6cAKnhxZ5Qp+
-         /ncUL7b6dB2NBXGLx60bZhp6KM+Pa13Bs0eeiblKg75n4LxOaElyOzKRsx1tAMOGH6LM
-         0QLg==
-X-Forwarded-Encrypted: i=1; AJvYcCWXfOFOTG2F9GXKykOYsirN3ZEy4Zy3Tgoi8elj6uP4r+ytktg5cWlTWQ03vMTRxlWM6xw06acz3Q==@kvack.org
-X-Gm-Message-State: AOJu0YxX16w7cYfLrRT9TlXGvRDMNdLsG3ApcOJsYxDG7pdBwzUVoHJS
-	cbx6HFa7zpM2Y3mptIkDGvQm/wGnlcc4M5ak4d3z0QPoweDr1A9nl8IO
-X-Gm-Gg: AY/fxX4aGzof0cHJM3oTGFHf/LNsRXNJJpFs3I0C6BmGkwDfDwImt+xXRg9w9C1G28H
-	XgSsEbESipbV1TwtYUzjcpOtw/BTfUu+1YaESd1OvnKCgbl7dt9JzJHGSFnGQLvwKmE1FQIcFaT
-	SixCHq//Ki2O3KCBLIDhNviKd9Z/4+pPDRDKZqpIp6UYJnOyF5dvXHUh/VqcARsaJHnMUiqY/Q7
-	BypzFDDUA6Qb4+UtHdFjOoidyu5H7kBfd9Zo/5yKbIgOSzEuDr+tEw4uNlCvjbFIR2BfYPUr/t1
-	XahG4QuCjkptuNyxB9bX6tqJOKrqEG0SzGLqhguwtj+8lQaA4+LvEwfUdmKMphkvZWBKcidUEKF
-	Qu0I44uf7okAIBlwPtch/XisvcbdSYoPk2M1OGxAQoW8zG6AzpimrSt92cECtMRWWUEgVVIOHO1
-	VWH/u2HopdjUGqgY8URIUW2Bs5941hQv3tFmsa4PJuOzWz0axtfsk0tvNtnLJ1smaQK5B+ZpHkp
-	I+6gW89JWuyZg==
-X-Google-Smtp-Source: AGHT+IHucay935+PHPaRqMUBculLyFxfPX0jedTkWAnBd1oYEZ+/yHB0cl9/8egf4uBxzRx82kDPfg==
-X-Received: by 2002:a53:e03b:0:b0:644:6c79:62d5 with SMTP id 956f58d0204a3-64716c797b6mr7021100d50.83.1767979741960;
-        Fri, 09 Jan 2026 09:29:01 -0800 (PST)
-Received: from localhost.localdomain (108-214-96-168.lightspeed.sntcca.sbcglobal.net. [108.214.96.168])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6470d89d607sm4721595d50.12.2026.01.09.09.28.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 09:29:01 -0800 (PST)
-From: Sun Jian <sun.jian.kdev@gmail.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sun Jian <sun.jian.kdev@gmail.com>
-Subject: [PATCH v2] selftests/mm: run_vmtests.sh: fail if invoked from the wrong directory
-Date: Sat, 10 Jan 2026 01:28:33 +0800
-Message-ID: <20260109172833.2989-1-sun.jian.kdev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260108031604.12379-1-sun.jian.kdev@gmail.com>
-References: <20260108031604.12379-1-sun.jian.kdev@gmail.com>
+	bh=40Ey/3HPItE71dh6jwnm5qreFl/HUxRow6GBKJqmy5w=;
+	b=x0OyoF0vVsuifR84kt4swTQZmvZYOfEWfDtPTesnwmDJSgHEKLv6buXI8hpi6L7vsXUBsU
+	dGvRYkPX180euZEjif2M7BRE8JEC+7zJXVzkPYLmM2/kibnchNWwdoxzLl/ZawpUccK3F0
+	SJWf2uCijjvOJQfTzgE9xE+aA381enM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767979865; a=rsa-sha256;
+	cv=none;
+	b=a+5+CKwIPXDCEmBXG7B+pDQ6Lbnwx9Qke48rjVwifLhNzCw68jMNfMB/kfvIDCBckFT7vJ
+	N0unoYG58OBe4xlRxjQNNehNkpYmJZjbCGGclWYmpmDCoUqTjiC7dpdxZSYh5lpHnf1Bpm
+	GS7zPyTzstWfP9+l6bBPcORP4fJBl8Q=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zb3uH6ZB;
+	spf=pass (imf03.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id F203943CB3;
+	Fri,  9 Jan 2026 17:31:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A50C4CEF1;
+	Fri,  9 Jan 2026 17:31:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767979863;
+	bh=YnLjCzKnQER3FuCe6ES9oXxik4owd0B4EMad2UIfiEw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zb3uH6ZBwZfeObknlMhLXz6y0O7Yd+lcbqIxtpbkgUGG6UavcGoHaRkBQvHZSNF2n
+	 pQStdXJI1VohLDeR1qpGF74WFMxDsP/uXeJR+ObR3RrmnJaCqkS95C+Hw0RpNuFcf5
+	 GoPAEEt/X36hy1dO8AoxU3CZSoGH+q/jL1yiONf0HXzyNofTsQ2jvKOxGds4kh8Yhz
+	 XVSGdZy9JI1VUWHgjUrbt0jIjhucw841A0LBiPb8vTymFKMiKsqN6rHciHgyobsQQ3
+	 nf6x6z0AGWB9ZAu1Tb/cMu8zbewvjfXfN+ipM7+VPadMwl1+2i0KkND8uJpI3Sk4hA
+	 Gw6D4gc9Kd9pQ==
+Date: Fri, 9 Jan 2026 09:31:03 -0800
+From: Kees Cook <kees@kernel.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marco Elver <elver@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	John Hubbard <jhubbard@nvidia.com>, Joe Perches <joe@perches.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Alexander Potapenko <glider@google.com>,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	linux-doc@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v6 1/5] slab: Introduce kmalloc_obj() and family
+Message-ID: <202601090928.5CFF95F@keescook>
+References: <20251203233029.it.641-kees@kernel.org>
+ <20251203233036.3212363-1-kees@kernel.org>
+ <960729bb-0746-4709-a40c-2e254f963deb@suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zsohbkwtsrjet38cq3a3s5qqjpcfrtu1
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0057614000F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <960729bb-0746-4709-a40c-2e254f963deb@suse.cz>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 255FE20008
 X-Rspam-User: 
-X-HE-Tag: 1767979742-411261
-X-HE-Meta: U2FsdGVkX19A425LCaG4JkylHz+YBSm4FoB2t1llctY7dwaCeSO56RyPVFGI4lKLBOQzjsv4i/OfW0b+0pmP4hYOIvDZjkAi5BLcx8g7bWjf+/7xqcQTmKO4hs4Y12QNHrwvKoTWRKqG70qu4kWSl6OFJGv8hPxfW9vsagpRRBg13VmBOlhZGA+TwVQDy/0BhJTfepr8v1+dJdLAbSlWtSqNN2LDMphoZvTcu4pYjubUBUJwG9Tmg6H9icj5JB7Y7U16dP+aBU226xUiquuEAa30qsiZ6WKxi8YWj71vw908pI2spsfnLPsCqhzu7tPur8KFBSn2bfesWFMJjRCk/eyjvTBdKRnkgiqqE5lhAW8PsZkDQduGpEzS+i9TNfS872lFd9RYvwOmKyM3fA74acIx1q5ODt3KW2Ji6/npgqIax/AfxauKiG+KSr+KviA2URTX6FiKvO2XfUeXpaIPwcLnpszG7l0FMvfzK2ybbVMnKa5RZSBS+JeHcs57DkXxllStvaC9K9RSvNsn4NRUIvkKfoBlIm8KoUHLD48zZip0OZK6NdxZMJhe2+S4MoNrbAbu+flJtrHTEbgICjO9FUm7J5ZQHRd/2GOlj+PeTGk1hgdh5RmVnD38PuJqFVWfX3nX0kFrQHftx2K7cvYFVOy4ZOeO2sgFFCRt+SYpi9sbFF402AXbSCOCWfYuSeU71Xgg3tJaSPSonMkQqh99g/SKepMUmeGZaKKYICwwB3REA+Lw3p0Gg6h3D7n3ftvFpagRdzgPZirr1S7xrhQXdRX5+pRMMc0x3d6WGQ1wV8MDCV8Uj40PVeK89PKEgM3/5dQpg0U179pixkPTKfX+nNVfujBgXawvwnn0ClZic4Yk+G4dXvWpGrBU/7bEPsLZs/UaXfU/Yu9A9h3u/yPEE7tyl9o35xrBSluFaHH9ZFqVliDN8Har1QnpWtuOb2Q9gXVVkbn7Fqe9JNLYa7q
- eaqGKd8M
- jlVhzrosDsj2pnRiDugpzfYq+ZLir8KSB+vP1Imfdk29kuzKM8qcE6AHv+/IbnNDCf16WgXZKLAHWfsZKWbdlhHd5OsCUmq5mQpeknb2ALZ9NNDLdAKntDj0h9nHPOnzns6xM4U/qYInqNGkfkqKgEDNsqfyC9k581Tpz//5ZOIE4W2Vb0/VQpp9CRyGSxujdrJYGv9uu/CNj+KU4m1HiakoEWYaWMl+uopG+axMsBZVHYqxka2qZWcZYQnQ+F7VL/F2yNMkh6BX0+vW/CZeolgzTizGimcUvqZoaMX/grBBlSxZdO4FzkWKXE/RFHbf8GUiDQKWZf343XV3F+mngRB+FNKJ3cCQ72EeVLzRyCqh55B7npFl9flOqqfyZd0QDhjiK/rIGi2oaN8gPoO5tSnNnFfba9LaPh/vm8AP74fIY/Qwv58Ovn85DJ01cLq5EZHFkJRrxtKj0W9uF7kvZjTWwbv98JVJR61rNY0yBV7OxKyyvLoh2fI5qKud2Qf8AN1moEKkaZ8LG9tg0tWGkpDFMY0mhOPa9q4Gw0zaGScAq2id+fi1/N6UWhtk4fwQX7tjSa6z8pdRp1t0=
+X-Stat-Signature: 9w3zzf1xmau7iwtjgdgp5kh9r8q8jeo3
+X-HE-Tag: 1767979864-742239
+X-HE-Meta: U2FsdGVkX19e7Dnpg8oeryA6UKUrqxeqrZxey2w05QdrP5KwrvHj3934BLux5iUbx/Cq7qIYJpxsQS1oWu/2YBordbaI4XbQ0otLbI6hO+yRUl+Xhg4pJ0dsM5W4FQYYU1fh3fencghYNFZ/qpERHXgOEqJGRcuHphuZL0EeH9iEGomgRJTnpdwRALv0VSsP8zhMB4gVQUKF21yV30zv5/lYeb5iztepQymuGpIiWIAoompmYvy46cNDBr8u2OrZx+7Sy8KvEhJ0BLW48vCCW2iC7VA6Yp3BeL93Up250XsIYXrE7uS4WstW6JC1kVWENGEcwdgZtHB9Z29rkc2BkN6k3HFglYtzaJpeWPSuziDybVXKc8uoWjW02HwPTVC8HBQu5b/JMdlJIKUD3/mzK0T6cmBO/pxcyToN4Oenubl5XEkOvCpYIIKlzLRsLP2/VWbN3/14HsIzgt5+txAP5PSbc2ykeJfVSvEj0S9ZqyaFQmD85VCVE1NrcZcxUAhEePg31wKukDBV0HWf49Isf/ZLD8y+J9RfcGFD1lTpWHLHKpV0BrGAbCvjhK8abWrEaklXGqcG7Ksmep/MNJZ1tijUQK+jRUMkKAcNFg1mcQuNFfFDSG7R8KDFyDSFFj+MABaMtUCXrsuUFL5RGkF9yHaQP7Xt1Cd/hq9eTYQa+Zme3CeIiJ5NcjGpr85vRdArwq+PY86VIoOO+UuunrlQT3h6drhpSerUgu0CpeQt3qfxoWtr8hCRzymicfw6qv7MofVZEzDf7eLgds38JZg4OsNCssPROngOphg/OT1htZboKkUDJcQVPmOcjMiOiwIOWBdXcsW9FkPa9nwmgpCYdX1Wo8shZh919XhFVzJh2tHK3bN/YL6gt9gps8wr53pfunT9BSuqYT88DN9Nfh25C55L0Q+pA7O4fLxn+FOw+7v6o8waBbMTUMTIkHP1WN01Be6r+U8BRZgh9pjUmnJ
+ WRtRSp7G
+ PNowz0L7wJh12jjlL3URwq5f5qSC/KVsQELG3CJ78CrtL3UM2SdXB5/bizgYFiS7lugh4SIu4cElBVaMKPbxkInUBqY1geJvJk4LBdzmmEjE4Ew/kROt9yO+c1yLfAZyq7S1cA5Lv/5o7eExXOjj0fOn7o9TXaiXG9Kfe49+L2u7rdPeBeN6vpqfHusDL28sHPknBWikQOmUu9uTyBrk+UdkC6g1zW238N9vrunCEUnoUvx3Opep0m34hWfv+QqbnlzZBKqzU+XIBhCenexIpeL3wOHZbePn9FVDmWss6KhiOHPRVlC7+cbqvWC1klIjXXO86Xe4Eii4pyO8KRx2IfuvyGFRfXxg3wwnFa0i269c81k1AZdMD6VjPmuEAyUopTnC8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,34 +122,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-run_vmtests.sh assumes it is invoked from tools/testing/selftests/mm.
-When run from another working directory, relative paths can lead to
-confusing failures. Detect this case and abort with a clear message.
+On Thu, Jan 08, 2026 at 03:01:00PM +0100, Vlastimil Babka wrote:
+> On 12/4/25 00:30, Kees Cook wrote:
+> > [...]
+> > +/**
+> > + * __alloc_objs - Allocate objects of a given type using
+> > + * @KMALLOC: which size-based kmalloc wrapper to allocate with.
+> > + * @GFP: GFP flags for the allocation.
+> > + * @TYPE: type to allocate space for.
+> > + * @COUNT: how many @TYPE objects to allocate.
+> > + *
+> > + * Returns: Newly allocated pointer to (first) @TYPE of @COUNT-many
+> > + * allocated @TYPE objects, or NULL on failure.
+> > + */
+> > +#define __alloc_objs(KMALLOC, GFP, TYPE, COUNT)				\
+> > +({									\
+> > +	const size_t __obj_size = size_mul(sizeof(TYPE), COUNT);	\
+> 
+> I assume with the hardcoded 1 for COUNT, this size_mul() will be eliminated
+> by the compiler and not add unnecessary runtime overhead? Otherwise we
+> should have two core #define variants.
 
-Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
----
- tools/testing/selftests/mm/run_vmtests.sh | 7 +++++++
- 1 file changed, 7 insertions(+)
+You're correct: the compiler completely collapses it with 0 runtime
+overhead; a variant is not needed.
 
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index d9173f2312b7..b7025afb56fd 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -5,6 +5,13 @@
- # Kselftest framework requirement - SKIP code is 4.
- ksft_skip=4
- 
-+# Verify invocation from the script directory.
-+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
-+if [ "$(pwd -P)" != "$SCRIPT_DIR" ]; then
-+    echo "Please run this test from $SCRIPT_DIR" >&2
-+    exit 1
-+fi
-+
- count_total=0
- count_pass=0
- count_fail=0
+> I also noted that the existing kmalloc_array() and kvmalloc_array() do
+> check_mul_overflow() and return NULL silently on overflow. This AFAIU will
+> make SIZE_MAX passed to the underlying kmalloc/kvmalloc and thus will cause
+> a warning. That's IMHO a good thing.
+
+Right -- I prefer seeing the SIZE_MAX yelling from the allocator. Should
+we change how k*malloc_array() behaves?
+
+-Kees
+
 -- 
-2.43.0
-
+Kees Cook
 
