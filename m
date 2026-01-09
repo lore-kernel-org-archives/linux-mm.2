@@ -4,122 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B641D232D3
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 03:30:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D93DD232D5
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 03:47:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80C376B0089; Thu,  8 Jan 2026 22:30:07 -0500 (EST)
+	id AB37E6B0088; Thu,  8 Jan 2026 22:47:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B6C16B008A; Thu,  8 Jan 2026 22:30:07 -0500 (EST)
+	id A8B456B0089; Thu,  8 Jan 2026 22:47:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E29F6B008C; Thu,  8 Jan 2026 22:30:07 -0500 (EST)
+	id 997B26B008A; Thu,  8 Jan 2026 22:47:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D06E6B0089
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 22:30:07 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E20B51AAE43
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:30:06 +0000 (UTC)
-X-FDA: 84310996812.16.6C47855
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 22261C0006
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:30:04 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=g+Sk44UO;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf28.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767929405; a=rsa-sha256;
-	cv=none;
-	b=Z+LAbcht6P7nyR8Ymld63+fHLSfhoXeU5+Efhqh+hBuk5GidWdl1uLmv4Dr83gDTUiqgCJ
-	iN3ZHjIu5cTjY61cN+0YNd0DsdsStBfbm4z880ABsl71fRi0Aqr6OKiGl9JzInM7ZiS32n
-	1nkQSUF+Z1w6J4J33V8YlkU3DnAc+9w=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=g+Sk44UO;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf28.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 861566B0088
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 22:47:32 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 135FB14032D
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:47:32 +0000 (UTC)
+X-FDA: 84311040744.28.78ADCEA
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 39096100002
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:47:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VgAO0vVY;
+	spf=pass (imf14.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767929405;
+	s=arc-20220608; t=1767930450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CnnuOtcQSFVMOFNXUJxFTPuY0l07gNLISRT9Z4l4S6E=;
-	b=aWtE+wwCzajMs7vB5gpSkqPC3hZw5BNQujNq1ULBw+B06i9eHMjR3TzX6aTZibbxLM8rBL
-	5cP8O34ncUY7Mtp/N1pwXeHawrkjC/Y0YkRNmI9lZ4ZVwFJUY7ibk6I6H4G1ybIhjUTSN1
-	xakpUyVM8gPEIhr3tqerD/yqzAmYm3A=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-29f1bc40b35so44738225ad.2
-        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 19:30:04 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Uuf9znc2JXT64dK1OAwjInh6+QxOWgZX8hjVTojr7X4=;
+	b=1VKLmPLyqV9EFNqKiSPPlc2iKtk5vbUeNgsLCXYiTWLD/wOWo0+4eCcB95zfHhY6/crvEB
+	Lu2NqUk2LZY823l+xXszN13SNm6UmPD7k7CoCbB7PJ0n1SfqdG2AnROiBVNhLIUNFmv3I3
+	V6zH0yv/BzNZ1FAdykTPBN/7662FtNU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VgAO0vVY;
+	spf=pass (imf14.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767930450; a=rsa-sha256;
+	cv=none;
+	b=ToejFvh9W4WPtCnoDyXgwraDfXcbUiMsPh51uTHZfgVT4LmD2fRMKEDRlrJa5P5Hecz4+H
+	gvCusopUbKlO2h2wsrcIwYAKBe/5UT9r/ku+9aCryrE1wMqv0W7jRzKLO2qoGtlrk93Wt7
+	Ssn1fVpc7UL6yGaJnuP7SXXXyLSixC8=
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7bc248dc16aso2335917b3a.0
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 19:47:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767929404; x=1768534204; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CnnuOtcQSFVMOFNXUJxFTPuY0l07gNLISRT9Z4l4S6E=;
-        b=g+Sk44UO3HqK70f9FGP29LpSzo5z+XV3KMlVq7dry25k25zqlSdJgyJsKQGhpUdOXj
-         ATsJFa8PPHEvB9hApotKJs1bHYoQLt3z9ZRrrP/KiTMbZkOIWiSexF770yu1o7SBgAF8
-         09GIKS7In4cn/UiOur3R7DE/GgJNowXkaqhuc=
+        d=gmail.com; s=20230601; t=1767930449; x=1768535249; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Uuf9znc2JXT64dK1OAwjInh6+QxOWgZX8hjVTojr7X4=;
+        b=VgAO0vVYNaJv7rRUPFLbvaySIM6Aau+amUHQU6mkzWDJbnALCjpim84B4kFjfqgdrP
+         bubqA2lGtOAt2kX+xMk7hpWmiSA30m2ppimK2C+sO3SZVKY/v1pCQoe8FZceFvOuz+1W
+         v0vnydSntufmYN3KU3SkIsXgU9Kd4eLK4JlF5E2tZaZq3XmVOf8uxZW6t1gOzpibAmyd
+         DEylLBrpHMMRkSVhjp+theaIHTeEUYjTYFfqpUYvLLBpi9UYu69QLMrzZqaShwKpzT2f
+         30SYGR4df9PB6vd1ZBpqghVKbJrUG7bPxt2qNG7fyGXH5w3fyemYAoDs2VdiuimAeGRg
+         3hkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767929404; x=1768534204;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CnnuOtcQSFVMOFNXUJxFTPuY0l07gNLISRT9Z4l4S6E=;
-        b=VEdlUV22DS+Ydx7B98QuHFmlrD/IShjIvPW0pTBE5VUt7ahJhuI5UtY7d5jn749p7V
-         JMVw7xJ/Iaw66D+4Px0vCsW4ufS46EzByHzorKTk4b2Na0ziYI1yBwPjrFSS8q3dnxPt
-         0SVFDCZ1y1OKje9xUFGlxmYfGCOPtEwIPwLj+rJMlPOhSVCHcJmtzZzdRnSGYIB5xLGu
-         SW710J+R8KX9O/wU9OLHOoiEEZsjSVj/IuUob7z1yvWyDaTZhJqQSVrRZ7KnpzujcBjJ
-         4l+FmrLz4nE/qHNyfvt5wzp8XjvUmPuwuToD2FXDu+qn3Xhr6JeQ5g0vfuwJd2zPsWgz
-         +zOA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxP+w4CCplFxcesru99WLQMjuDcWHqzxt1FW5OX2kqVc/CX65iECogG/eCjrLu9cEv8Cbk8M9j0A==@kvack.org
-X-Gm-Message-State: AOJu0YynPrMWjPWX87Wyt/NPfKHuVRGn2mob8efpUAoNEDqR4F8W6Gwj
-	4M255LoBofLHSZ0wThna93BwNw4cdhD3mTm5VFI0g/+5cbTp9IX6P90XlzZJMaQISg==
-X-Gm-Gg: AY/fxX5D+yvsuRmn0aZCQXG9OTD8Soz+bqw8eS8bhfsPz1z9gJz04leQWIyAZ2N1UDM
-	33yuIUtJSkc4SG82mAQQGjTZyakM2RrY2UY08Yh792UKEHhKKxBtD1unUIBsKcABije8zcJsQB9
-	vnZgOy0qfnCGfGcCADVTN1fDkfXqaWMgZQUWDS7IOBbJm0FtgNXyOyi01oyehYCB3B5ofSbVod+
-	lom29D/Me9EXYvcFnXah4sXBVMryR+jr6h0yrw6Ly4LmNCg8+R0Sql3J+fc+REI9NEPBqI7R0Pj
-	bNSGt1DqeKnIRe0l1gP6Wh+SVZEUZQt5Oah6PEYIA9VaKCARyPG7TsjN5DJ2Hy18kdmUr2i9nfB
-	41v1Zp7q6kK8dipzqiQ/xT7SoMgYTyqIhki5TugwdkgyYaNaTD2EwGFNgVjmQRxmQKNlp61NJH/
-	TTYu5WTLxGh/qMd3wbuDqp+tx98yFxsPjTFAra2NTTHTp3a5E0Nzw=
-X-Google-Smtp-Source: AGHT+IEIY/uUSaX5NVDnZd9LM4ieLPIkk1BGZaa5TEPDlqlwi7AdEIO+VuPIRJg4ciwqiQifAOjLOw==
-X-Received: by 2002:a17:903:2f8a:b0:24b:270e:56c7 with SMTP id d9443c01a7336-2a3ee4137cdmr83808065ad.7.1767929403996;
-        Thu, 08 Jan 2026 19:30:03 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:d2de:ca1f:efcc:43e3])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81e6772688asm223118b3a.45.2026.01.08.19.30.01
+        d=1e100.net; s=20230601; t=1767930449; x=1768535249;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Uuf9znc2JXT64dK1OAwjInh6+QxOWgZX8hjVTojr7X4=;
+        b=lMEkm1OwghZ/I8cwefYhGQCCE1nvYK7MNJ8Spguftf9Iqdy3tgGPfVDNv5MAybYF4W
+         vraSpneO/G6DxsN5Yv67wOPufIF54NgHTlIjx1MfxDAnZ3qXQYQlJBxcI3IrdiEq2XKR
+         tjIgb05CHAJD0pXLqzFbx8jsKVyLGTsK00jeeQ44bwK5z6Mm8lJZDwYOTD4PGLEPk/T4
+         ZJbxDEMcPtled0bSjfJuSvkCReNk01NxfzAPiZ97rcUijKy6GKBPIzjuWxVr0Zof5/zk
+         bpDpd8ODOLjtArU2DYVJIR5M20WG/GPreGw4vvktc0nysRMfWBkNe29v4LBEAGYkRAw1
+         kkpw==
+X-Forwarded-Encrypted: i=1; AJvYcCUohyyE/Ct5IDZ9GwYcgwaLhTyG/OfPjC0wsoqb7EQLwYEMzVtos0LOSCfxSNyj9nEcNniVqMnOkQ==@kvack.org
+X-Gm-Message-State: AOJu0YzCttCv3gpSP139fHL2B3CMC99fA5BXG0L+HrdGuNjSD9D5+gBn
+	6/7wkVk1uzwQaC+6vXPEwtwi9Bzbmj5pTZ7M4eg5cChg8EZCaABlWziB
+X-Gm-Gg: AY/fxX6eUnTeXHApgIrdOjCXyZRYfkLBOs7DFJjroYV5BsFo6JqpK4qp6zbZaAVMH1o
+	pNmXNspcfja9TD19ZsgTuPnsRxxE/7F2cEwunFhybo+VvnuylP3m9kzY24dakGuTrr6Xz/fk5R9
+	OUadEgpOqeU0Cxq5ZFPbe0g0prSgbaCf7TgjUZMnkE1Xm4YgFPLZflqYiWJdEkTvSrwB/Q4GXLf
+	cKOQ1tnJMFAN6djbMQ2vnw4DiXOth4Ib0+pNp73rxiCVw0g6+mw+Hbr3BlXygQk3GV+q8Opcf2x
+	ffBbzc2GiuQ0V3t0BrIbluUphBCSuOFoz0sh+1dJc9f3AtgSCxfGTyYTd27aZv+3tfeAus8xAZo
+	1QbebYQWaIfj2vYIb6k1fyFcY5o368EJC6Z8E97p7ny+O0YAcY/hU/ulsTjqRQviRFs5iTHbN3m
+	uHbV8=
+X-Google-Smtp-Source: AGHT+IE8gWRX3DrNuMIGM8r39xNhzYOGAPewp+igde1G05i6UeVcSmYtk7n600bzgjyxna2PYCCSGQ==
+X-Received: by 2002:a05:6a00:ad89:b0:7b7:631a:2444 with SMTP id d2e1a72fcca58-81b7f101bb8mr8011069b3a.22.1767930448890;
+        Thu, 08 Jan 2026 19:47:28 -0800 (PST)
+Received: from localhost ([2a12:a304:100::205b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819c5de6405sm8958856b3a.61.2026.01.08.19.47.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 19:30:03 -0800 (PST)
-Date: Fri, 9 Jan 2026 12:29:58 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 2/2] zsmalloc: chain-length configuration should
- consider other metrics
-Message-ID: <2iophcy2e6vk72ypxeshmen66e7jhr52zr34parn4uw6vdyjef@frnpfrltrky2>
-References: <5p4iyah6zlrnxpbsis32c4m5lrjj3pq7xwcugq35d2entwfai2@n2r6y3ga2ie5>
- <7q5gqpfshnc3lfhzxughpks3fc2knw2delpm5io2oe54monydl@5isuxnjputjr>
- <aVyYuS_usi-lpHkM@gondor.apana.org.au>
- <dou7g3n5fpynsab7hmxf4bgmqdewtdhkkiriwlghxzyduick7h@bsi3q2kivvbs>
- <aV3uXguDCaVAbY53@gondor.apana.org.au>
- <9b7d6e6292c64f21b8d09def1b6723f02faffe88@linux.dev>
- <53zplsrqc66z4ea64cosy53zvttuuhgxr2ik7uw6i2zgluegyz@d3ulgntwnyw4>
- <llj3jf5evsp7f2wl2hmm6mouqzwzolvdnu4yquhxbgsgaqvsda@ltct5tqpzmyo>
- <utnvn4oupcmohosp6d3qti54qmdppg2xfw622dq6zz7t66a6ma@2pentzdw3zgk>
- <yxpn4gan74uryy6huzulsqvqvbsqiehdqe6lu7m3hjf3tjjdop@a6cifoycstso>
+        Thu, 08 Jan 2026 19:47:28 -0800 (PST)
+From: Jinchao Wang <wangjinchao600@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Jinchao Wang <wangjinchao600@gmail.com>,
+	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+Subject: [PATCH] mm/migrate: fix hugetlbfs deadlock by respecting lock ordering
+Date: Fri,  9 Jan 2026 11:47:16 +0800
+Message-ID: <20260109034723.1342798-1-wangjinchao600@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yxpn4gan74uryy6huzulsqvqvbsqiehdqe6lu7m3hjf3tjjdop@a6cifoycstso>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: r1yixtii9wtdkzcyzkp66amay5omr7ne
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 22261C0006
-X-HE-Tag: 1767929404-921879
-X-HE-Meta: U2FsdGVkX1/g1H4pzP/IsJOBB6WVbXgAMkb+nZN8idKhrpFlcfKoL+2VHoebESl6Q1iPUFSTd0M7r0FRIRdvMduUu4r3RU3XrC6V+Mp9FE5Djpr6Ui603KzQJiBaYhZ7deNlJleHBT7ICJAY0GxqNCs6MA4t585D947YhbHmUgqUt2UEv6X/+czOLuxMVmG6U1pgXWHsQaM8YHfhxcJPKbfgpiObnErBSd6+LzhDV882+0+Eqw7j/5f67L0IE+OL5mwqvZv7GrLzo+f1cdeML1mu6y4wZpxRAj2skl7uJc/cEgjKpXapseG+SA8av7LYxOHA4u+pObxijdq4u5hnInj3yiVuzn96eh9Hi/7IeRerfTonPH6Dh04vunvIR4XCWQvKVEqS0KFAW/dLsH/bIBBWc3+VyzS4wThPWDaYQ6k1L/JCXFK66bCwXJWryW+XXKcCjwes454yHG64R2reqe7LnLOJTZxd0V/w+6QQrWLCgv0kGRtzw/9AQsNbM2yBmBHWkSFJW6fLpWOhIT7Ot4GUi6IqPxb/rOCGWIPbK0tPPJxq2I2XwJ7V9VDr7/xVhdVz2QVY4ydkDwBX9WpMhvjM2ZVLRukNSUN0L0ybm3xtNqunjsPOv/hvZXkmelGFUQfIyMnUeBM6WBuKKbor/ddJZXmKi35jJUoFI3ATWvgAIaQwSW273TcIM2/ygi3lN/BItRNJ/Kynsn4hLAn5elF91BxAVPhigSCTbGpdwcSunjkCCRqbc740BrIdWrcVEBql8oazL8ywbh0heAImsRBFd8sn7gn2AFMdAZgWVJKKp4WFuGvstu1b6xrFrwfHAXbKhZUewh79IemisSPaOmWMas7VXHNc3rLvOy3QKCGLcawu94IlTvBQ5u1FTjRfSFwy7yG9IJsgqv3uBdx8u6HtLdU0NEGPo1MaXQn3zpl4Ryh8Qo0kE37BI52K3029Yr4iM4btKePbxbPNHZF
- gInKXsQg
- 2Q6XQqxQPpp5W9vfrlcwHGrHydefUlCVr9tlKdB9iHygmD/yVCRBPUv+jvQ==
+X-Stat-Signature: c89craepc7raag3zkdi7si75pc7moxg1
+X-Rspamd-Queue-Id: 39096100002
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1767930450-487020
+X-HE-Meta: U2FsdGVkX1+M1CbXz57ymitL63sUEyES4TNSrFq2OF9+Z34vyIVsEQcPDzW93pwsTCzvAPPP0whYDwsj6UP/SVaTaXdKYe0UIZIIugew40TvVmAYHjqe9LPOMy45pHxxCuKZIqjpZYmAhO8JRZjQ3d9R7jboILzoGldN1vvzItaOW7LfXzcNnHksK2JJIuHMJfNAf2SlJ7H7oq2JbEl1tfPZZMUMHf4jd4zCMfBxWwCScIOYF4bwarXlRg5sTvNlA5FgEQYQCu3xYuloKqh7yeDnn4Lvq/J/EB2nA87WeADpLkZpg8XuVM1baShElZiYbvEB6RqscwR1EJFxT4xNX//kVbEDvW4Y3Vlcj0r6EAdYbrP8bXoff3rdkJA3hZ8H1CWaN8UeYiDJnb4PGKmaQyPjEY+eoolhrcFJBpwsgmFQ7Y16aB6wTH68GOey/Vrt2pcQdGXbOvGGKc/ZBCPDcivtcd3CjXilWYipfRCMwOxvg4q3A0rvY5QOM6D04MHW8POBHCLpVvtqv38SHgE1ZWkALyMOsoLkaP8B83XxjDVNTwGerU0T7QNk23LO7KXWkPHu6+yZHqN97HcmpCMgOi2WPcq56NhqV9XqtLh5zKpEWSC0MDkHpw0n74V97cWLjwBI3zSvW7qCXqTfaSL9xHN7qvUIabqydj7l89+PpVVsMT7mRynF0ovk5cBX3V07YdJmRA2YwnmqhXmG00sLY5zeowsP1gBty8Af05bsMoV3lig31slYj4EPkVyBVZqJCaa57cSXykRf0CVPEPlMUKoeFaMdYA/uxfZNRis4FhWV0VQ+EriWK/Ie6aeNAukWX5tVJAM5shB0Kg15Np3hRKK2moTLkTCgj6/XIYCSXvsBt2X3hGdtRfmViyhIx2fYCkdoISGTwl8avoNC9893kKbpzs/fukB67pL5H4/y2PUc1EkIbkXWsZZJvOUy+UwKOMrCHvG5gY+cSgmJtbk
+ zPEceXzb
+ EnLlp+hDc/gPotL1k+YN7KUyL+BIBGqDSq5uHcMeofOtDw8bmk3Bm6znjXj7Q1dwCykUsNk4ChFCuxQ9lAqrjzJe/0lR3ALZINMFo32Pptc1D+qJ889O7W4H3cPPZcPp9Xv0AMnZBzzzjaOuxNH7P9Fn2BjwEZtN9HIBhYT9nmrYL1ZoLbplamPQyScB5s6KMPqs3N7xo+pT6BinYqhUvNOfCneqILlhpc1OhXmXnynmkvoyctI/6/c1DBiT6L4bgl8qtkUFCdEmR6bi/ItTN9t9ytK/dgWzWuCn5dQVpMZ24/Geda/zHe0b3VRI3viJGTo0GBUarr4NM4oxNUQhhbxG1Mgnw7oGoi7nQOs2cRz0FKMqRXZhaZrTJQbBV4WefWP2RFKzTfCY29F3a7Z0r/DudSk0HZ+D36f/scGCpf4s3wR0eLSa1DRdUUChRZeiBFJXPHXTwBFhRorUekKrdUFCn18bdaiXX4LvCQLhdmVVIjcrO8KWx4LnG02BITrlHrL4D7ojVfUX9FiDQzbTzX4u7OR1gAutLdjguACgidUPsblIIP6kbLhpElQqwm/sLSfyVSBRn6JxQaqy+1ahf2HW0W6hGt134xoIyBKxmlfd/QfUhmcDuDSweYHL6eteOooO79Bu0UUR0gXTSbqjaYPMlTnBTl0/1Tq4YZhOj5rAlqcqtgT9dfNI1aT9GrwbvnnaQ/8UTKEDxTHJ5vEfbAfHVfRfdDjeTDq+ugdBgJRZLwrLHfL21msGFqCHtGlVgc6jy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,141 +128,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/08 08:01), Yosry Ahmed wrote:
-> > Yeah I agree, I guess I can cook something up.
-> > 
-> > For transition period we can have:
-> > - current "memcpy" API
-> >   for zswap
-> > 
-> > - SG-list API
-> > 
-> > I can vmap either on the zram side or have new zsmalloc vmap API
-> > (alongside the memcpy and SG-list APIs).
-> > 
-> > Once crypto API supports SG-list and algorithms tunables I can
-> > switch zram over from zcomp to crypto API and remove memcpy and
-> > vmap APIs from zsmalloc.
-> 
-> IIUC based on Herbert's previous response, crypto and scomp already
-> support passing in a discontiguous SG-list. So for zswap, if zsmalloc
-> returns an SG-list, it will just be passed as-is to the crypto API.
+Fix an AB-BA deadlock between hugetlbfs_punch_hole() and page migration.
 
-Oh, okay,
+The deadlock occurs because migration violates the lock ordering defined
+in mm/rmap.c for hugetlbfs:
 
-Something like below?  Not really familiar with SG-list API.
+  * hugetlbfs PageHuge() take locks in this order:
+  * hugetlb_fault_mutex
+  * vma_lock
+  * mapping->i_mmap_rwsem
+  * folio_lock
 
+The following trace illustrates the inversion:
+
+Task A (punch_hole):             Task B (migration):
+--------------------             -------------------
+1. i_mmap_lock_write(mapping)    1. folio_lock(folio)
+2. folio_lock(folio)             2. i_mmap_lock_read(mapping)
+   (blocks waiting for B)           (blocks waiting for A)
+
+Task A is blocked in the punch-hole path:
+  hugetlbfs_fallocate
+    hugetlbfs_punch_hole
+      hugetlbfs_zero_partial_page
+        folio_lock
+
+Task B is blocked in the migration path:
+  migrate_pages
+    unmap_and_move_huge_page
+      remove_migration_ptes
+        __rmap_walk_file
+          i_mmap_lock_read
+
+To fix this, adjust unmap_and_move_huge_page() to respect the established
+hierarchy. If i_mmap_rwsem is acquired during try_to_migrate(), hold it
+until remove_migration_ptes() completes.
+
+This utilizes the existing retry logic, which unlocks the folio and
+returns -EAGAIN if hugetlb_folio_mapping_lock_write() fails.
+
+Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com/
+Link: https://lore.kernel.org/all/20260108123957.1123502-2-wangjinchao600@gmail.com
+Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+Suggested-by: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
 ---
- include/linux/zsmalloc.h |  4 +++
- mm/zsmalloc.c            | 65 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 69 insertions(+)
+ mm/migrate.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
-index 5565c3171007..11e614663dd3 100644
---- a/include/linux/zsmalloc.h
-+++ b/include/linux/zsmalloc.h
-@@ -22,6 +22,7 @@ struct zs_pool_stats {
- };
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 5169f9717f60..bcaa13541acc 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1458,6 +1458,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 	int page_was_mapped = 0;
+ 	struct anon_vma *anon_vma = NULL;
+ 	struct address_space *mapping = NULL;
++	enum ttu_flags ttu = 0;
  
- struct zs_pool;
-+struct scatterlist;
+ 	if (folio_ref_count(src) == 1) {
+ 		/* page was freed from under us. So we are done. */
+@@ -1498,8 +1499,6 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 		goto put_anon;
  
- struct zs_pool *zs_create_pool(const char *name);
- void zs_destroy_pool(struct zs_pool *pool);
-@@ -43,6 +44,9 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
- 			size_t mem_len, void *local_copy);
- void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
- 		     size_t mem_len, void *handle_mem);
-+int zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
-+		   struct scatterlist *sg, size_t mem_len);
-+void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle);
- void zs_obj_write(struct zs_pool *pool, unsigned long handle,
- 		  void *handle_mem, size_t mem_len);
+ 	if (folio_mapped(src)) {
+-		enum ttu_flags ttu = 0;
+-
+ 		if (!folio_test_anon(src)) {
+ 			/*
+ 			 * In shared mappings, try_to_unmap could potentially
+@@ -1516,16 +1515,17 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
  
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 16d5587a052a..8f7569058147 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -30,6 +30,7 @@
- #include <linux/highmem.h>
- #include <linux/string.h>
- #include <linux/slab.h>
-+#include <linux/scatterlist.h>
- #include <linux/spinlock.h>
- #include <linux/sprintf.h>
- #include <linux/shrinker.h>
-@@ -1146,6 +1147,70 @@ void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
- }
- EXPORT_SYMBOL_GPL(zs_obj_read_end);
+ 		try_to_migrate(src, ttu);
+ 		page_was_mapped = 1;
+-
+-		if (ttu & TTU_RMAP_LOCKED)
+-			i_mmap_unlock_write(mapping);
+ 	}
  
-+int zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
-+		   struct scatterlist *sg, size_t mem_len)
-+{
-+	struct zspage *zspage;
-+	struct zpdesc *zpdesc;
-+	unsigned long obj, off;
-+	unsigned int obj_idx;
-+	struct size_class *class;
+ 	if (!folio_mapped(src))
+ 		rc = move_to_new_folio(dst, src, mode);
+ 
+ 	if (page_was_mapped)
+-		remove_migration_ptes(src, !rc ? dst : src, 0);
++		remove_migration_ptes(src, !rc ? dst : src,
++				      ttu ? RMP_LOCKED : 0);
 +
-+	/* Guarantee we can get zspage from handle safely */
-+	read_lock(&pool->lock);
-+	obj = handle_to_obj(handle);
-+	obj_to_location(obj, &zpdesc, &obj_idx);
-+	zspage = get_zspage(zpdesc);
-+
-+	/* Make sure migration doesn't move any pages in this zspage */
-+	zspage_read_lock(zspage);
-+	read_unlock(&pool->lock);
-+
-+	class = zspage_class(pool, zspage);
-+	off = offset_in_page(class->size * obj_idx);
-+
-+	if (!ZsHugePage(zspage))
-+		off += ZS_HANDLE_SIZE;
-+
-+	if (off + mem_len <= PAGE_SIZE) {
-+		/* this object is contained entirely within a page */
-+		sg_init_table(sg, 1);
-+		sg_set_page(sg, zpdesc_page(zpdesc), mem_len, off);
-+	} else {
-+		size_t sizes[2];
-+
-+		/* this object spans two pages */
-+		sizes[0] = PAGE_SIZE - off;
-+		sizes[1] = mem_len - sizes[0];
-+
-+		sg_init_table(sg, 2);
-+		sg_set_page(sg, zpdesc_page(zpdesc), sizes[0], off);
-+
-+		zpdesc = get_next_zpdesc(zpdesc);
-+		sg = sg_next(sg);
-+
-+		sg_set_page(sg, zpdesc_page(zpdesc), sizes[1], 0);
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(zs_obj_read_sg_begin);
-+
-+void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle)
-+{
-+	struct zspage *zspage;
-+	struct zpdesc *zpdesc;
-+	unsigned long obj;
-+	unsigned int obj_idx;
-+
-+	obj = handle_to_obj(handle);
-+	obj_to_location(obj, &zpdesc, &obj_idx);
-+	zspage = get_zspage(zpdesc);
-+
-+	zspage_read_unlock(zspage);
-+}
-+EXPORT_SYMBOL_GPL(zs_obj_read_sg_end);
-+
- void zs_obj_write(struct zs_pool *pool, unsigned long handle,
- 		  void *handle_mem, size_t mem_len)
- {
++	if (ttu & TTU_RMAP_LOCKED)
++		i_mmap_unlock_write(mapping);
+ 
+ unlock_put_anon:
+ 	folio_unlock(dst);
 -- 
-2.52.0.457.g6b5491de43-goog
+2.43.0
 
 
