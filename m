@@ -4,141 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D502D26D6A
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:41:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F41A3D26D6A
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 16:00:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00B4A6B0005; Fri,  9 Jan 2026 10:41:17 -0500 (EST)
+	id 082C76B0088; Fri,  9 Jan 2026 11:00:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECD906B008A; Fri,  9 Jan 2026 10:41:16 -0500 (EST)
+	id 02F686B0089; Fri,  9 Jan 2026 11:00:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCFDE6B008C; Fri,  9 Jan 2026 10:41:16 -0500 (EST)
+	id E53976B008A; Fri,  9 Jan 2026 11:00:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C9A0B6B0005
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:41:16 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5D644577E1
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:41:16 +0000 (UTC)
-X-FDA: 84312839352.05.60F455E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 76DDAC0013
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:41:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LJx/Awqs";
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D17B36B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 11:00:23 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 728ED14025B
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:00:23 +0000 (UTC)
+X-FDA: 84312887526.15.F1A8131
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 28B904001C
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:00:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=duTcYuly;
+	spf=pass (imf27.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767973274;
+	s=arc-20220608; t=1767974421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aQs+Ey+VtfOqF5nOIC8X49iirsiw+1QczYlsJqHnQM4=;
-	b=8Affa4BFX0TE9O8U3oZzlKLa42FhmqwTASi6nyQKuzTxvs4qhCwUfB/1weLkWU4cpHsV3T
-	HjSQ9DjXl6PfbLW5fYopR5z8XzMlrDCNY0aghEP2ueN0bCodJkyO35NUVjaRNGQWe6n+wz
-	tXOgV7mtbX6QBwxr98XmjNC1GTxPAG0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767973274; a=rsa-sha256;
-	cv=none;
-	b=eKR4EEV4MLoN0nCtas3ad4YehjRRO567dSxWiUz/wji+nIm9wHFRP7aLxrt21URIdItW0F
-	8kMOrWw6xSBIP1hPCP0dcNWx3HlZy1+dxGbNrjLroVN2KNb4hXcMZ0tyI9fVUwcsH0gucL
-	FfNjq+WB/lo5oJky0eQKt1JGvrCxedE=
+	bh=q5LAdhOCCc8N41wLK+KHHr42/lhH/TW4Y/qOP6oJbhM=;
+	b=mqsJuPuI+282LRcdjMaP6NRSsdusnGr6mRamafxi8ny8yc2yK/tCHSiYkXNDIzugDQ+f1M
+	g3oVV6Bve/iJtHMySO3w8rEgRIHRJNjuqwwRgE/3o55TmQ7nm2NfRf9yDi/jFoRbAlfWgs
+	WqRTTugEMTejw8bL3DQ0IkV4XIRYfu4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LJx/Awqs";
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9A30F4029F;
-	Fri,  9 Jan 2026 15:41:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDDEC4CEF1;
-	Fri,  9 Jan 2026 15:41:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767973273;
-	bh=zjirbLzk5y4/eQmZlP5l5XZ6LrVCdp2/2cmDJBEPpGE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LJx/Awqs0W8dnmRGPKis4lRGYO1YtKIv2LCgMk3hfDNR1EFX3sXp6duz0kcaTGMky
-	 H76mUFClbAmZdOaQd3ccOYADKsFcIeqkB6jX0X1GRj0JmAr9WlOQHL5UzFnAueaD/S
-	 XolUvioNXor2OXyarOz0L8T2YbvP0TrU1XhrAMWQMZtUKDqsGOfNo4sg96KSUTnBRA
-	 X6NuW57vsAdLtnbDPvjdhvU4oTXRFF8saqcL+cYLk7A6KYBwDRptIvyY3es+8suu40
-	 S7bl8DlcxqDipdPTzcUFD5q4VC/PHQxd5Eq47chTB+ju6df/v7RiRWzHZKIrJ5EQAu
-	 Y2DuG/oHLU9tQ==
-Message-ID: <a14a7d81-7f87-42a0-9b3c-1a71e765cfe0@kernel.org>
-Date: Fri, 9 Jan 2026 16:41:07 +0100
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=duTcYuly;
+	spf=pass (imf27.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767974421; a=rsa-sha256;
+	cv=none;
+	b=DfYP6rZDR4E1NUbiUcuQNveQ3/soA/zGV/+sck7KSE/BwTqiem52tG8/DzvSgpJcSyBJgT
+	qviW1X+nSXjZgaO0plkopb7d5H3Q+BfPEtnCOKHhzIoKVDHuQ97GtGUnEI+JPQMTxMKCgG
+	0/0lvq3i5LxGWI2nZRis3MInR3emxBg=
+Date: Fri, 9 Jan 2026 16:00:00 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767974418;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q5LAdhOCCc8N41wLK+KHHr42/lhH/TW4Y/qOP6oJbhM=;
+	b=duTcYulyLdWHtvP4Q8YAlW6mTv845miu1bdA/mIk/vToHI6CugjQw322Jf709n/7q2LkUI
+	iwmuedRmZe5i0/w1YslWme1xHC/2GmJcu7XkAYZ/3pLBQhCZ2036aJeXlSsk37SEdcMIDP
+	VHyJwH0lH61D2s6KyefTV3iQPtSt5wU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	kernel-team@meta.com, longman@redhat.com, tj@kernel.org, hannes@cmpxchg.org, 
+	mkoutny@suse.com, corbet@lwn.net, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com, 
+	dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com, 
+	ira.weiny@intel.com, dan.j.williams@intel.com, akpm@linux-foundation.org, 
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com, jackmanb@google.com, 
+	ziy@nvidia.com, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk, 
+	rientjes@google.com, shakeel.butt@linux.dev, chrisl@kernel.org, kasong@tencent.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, 
+	chengming.zhou@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	osalvador@suse.de, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, cl@gentwo.org, harry.yoo@oracle.com, zhengqi.arch@bytedance.com
+Subject: Re: [RFC PATCH v3 7/8] mm/zswap: compressed ram direct integration
+Message-ID: <i6o5k4xumd5i3ehl6ifk3554sowd2qe7yul7vhaqlh2zo6y7is@z2ky4m432wd6>
+References: <20260108203755.1163107-1-gourry@gourry.net>
+ <20260108203755.1163107-8-gourry@gourry.net>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate: fix hugetlbfs deadlock by respecting lock
- ordering
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
-References: <20260109034723.1342798-1-wangjinchao600@gmail.com>
- <920c641e-e092-46f0-89cb-0f1c130d979a@kernel.org> <aWENkov0R-1nIB8M@ndev>
- <e792db5f-5ec4-4960-a2f8-fde490e0e366@kernel.org> <aWEfjVqVpoatvOpI@ndev>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <aWEfjVqVpoatvOpI@ndev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 76DDAC0013
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260108203755.1163107-8-gourry@gourry.net>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: 47kfx3fypouk6e7nwcuc8qj6k89ubenr
-X-HE-Tag: 1767973274-414663
-X-HE-Meta: U2FsdGVkX18AOSwBStz3CuSrL2OzSkeVfXS7jFPlLLNPoLqPMXrSmoiTcHo7x43vK9olrgT+HWUdgQH/O55cHpEYU2MfJRni0rL7/LPQ1mM/JnhWEph25W3/d3VlKNGZhxezgUMD/U4R02ZC8CfoESOt9GAz8G4LFj7jMG7c0gYK4YKtIvLYHgflRDtR/e2bb4PG1yJSIWxy56UC3FjjgjU7E4sTs4PJslU9FhXEA+8llYIIyJiF3MpBk9Zth1Wb9u+afz+Gv+BbNM0YIBiwO2lEfPK/ZNDx2HZzsKzAQIzBQTS9ve4ha+L98DRUr5hhnDEpmIfOWkHjV3/G3zRhTuqND8jqUT5a+vm/kNeBVeZksn5g3f+xajD4oV+YFqhUMAiydbRgBqaqvINJ9zrzDnH/yyn7ok2koYOau2EVSVAP1Nci7pI9TaAJHAH7vW5sYszTAJrRZVNHci16Wq6at69SpcNE+SRWoiIAoNLSEfwGxcjVIPA4rGrgpNJTVly4qqZWMFydQaSqhiNwIEaAo6yyFlCT3xgXMHysA9yPU/XrKknz/TIEsY+VPUmhrs9S035DzCLBD6Ia0dvqzY9ghCFkrDS/DsJohnlrFzSJwcOUDNsJweAmN3n42UlG2QQ1AJo6LJBDKUVvlZvNTIfpNIF4CM7Vwc3NlusMgJjMmF4g+ci0pBhIt8TirUZoO9gPo1htvPYKNceBlGoO7VMiwSOt0A414Volhl35yz5SofZ1dDQFpgp7ud0HFGJpWxVmwgmpU9MntoEyj/DWC/4knIg/XF/fe5tEx/COI1L/phcJ39Mu67JDH5jMc4WwgaW9OjmCacY6cXrtWgefaITyeysuY5CXplvqEL9GeLtX4SibGinc5RAV2jsTedeE6ATtJO/w0A3vAQJ8ohRLaRuCP+DFZhz6UhR+SD0kXnF+1B5WOCrQ3flAJJwQcQ48qEka/oLwZ9AIfTNSexmAAOw
- 1Kpo4f3L
- 9NPOP+asMdSflZ9BlsY3BRHHRGUb8RnaeflISFHYNQc0tPicjVlldeGqCkbgu6sIN+YwAVQWfdvPcXIwXudMkOL3ui4ixWaa3Wj7GpHAEHFhb9Rwtg5Pzg9tCBmYh9c7CHqvJjrORHikrC8vNWEVXVeNL1K1/tj1oeAkX40XFBqD+0u4g4AxxeeiKyagxm0XbqIQBHh616sxJajiAMv3CiE+u1YdPDw0cTWvNbnN23Ef73egCWPJZlV0D4T/Hss2Jsa3MojGuvgzQ9fw9W71HINQ27CvmQ8mcoP+/lDW/N+ufsu1xJ1vKqyui/uSGeCMjdfd2w1ZSLHHFmKggl5rzb9HBHWWHoxsIib568jSYKbQ24/V0OKHShKs62iMO6HTvPrbQaV2BtlwhHL/jib7CX6KSOI0A5mFcbhD0GCX6eV6uhs4ZywxoF8Hu/g==
+X-Stat-Signature: xy9ztu4wfnq839b8p6zizucs19q417hx
+X-Rspamd-Queue-Id: 28B904001C
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1767974420-4389
+X-HE-Meta: U2FsdGVkX1/ocYqodaevpsHNdQGiKi/rctnN9qJtpk/uQzltwhPLh3Gv+Rkejehz0fbRXtZN/JPy8CStm1zxV9cfHxWSBcKn0bWepdpgnf9AaO94i3dbcbehPu4pkMyn5cJQ9b5GBB5uJT3oMpjW2u/E69zXxVI9QccqnJr5AwZhgsbv3TpdiBcKwe4u0xceED0u7FqXjSAO96fGD0u//t4FeY8xsc7cl3BdiHA/ZFYsnaPjVgf9spNcwimExQHa5bWbIsf7WLAi2WVujJsiotLq++w5bbANJHhYdaKtdcttZcgUEd/nxYE6P/UeFoA8hgdZgWQQd1Y+A2Xik6dAiZbWZZoihMUNRZeYbLgDj65LwhEK8Ez8HI7nT/wZnqrOFUtvkeaJEecq5gZ6C6rhBx9Qoj53JBttxxrtW1Xsu8fQrojJLI45Hu1GtS2vJLT05f8tSgca5/cnf+vVdZumbOCSXAolTuROkRFq98BG87uChMbBw6VnFD5C8d4nwuNZ1jvVNgpOonUfVsbLcgyTsWuO8pE+vRLNKc4Z3/ukPxDsVaEhvx8xWpIFaBolJ1pGfR7dtaQ4AaI82UDuq35tiCaC6Ph/q25AGdXftcRiq61Q2xuKDH3a0GuPH5bFJWniqYkRLr2UoiJz5spMkJj/lorlYRGZti6BPXYCIAr66ZfzNE9aj1gI2Uy7+15XM008hlAP4S7SACoqnz0XODgrUxWm70zFACopfy9oXQaCY17DX569XGryqnPZT1Y45CiSKXY8/XesbauJnqjklrWS/W/U6AjEfF2muQpGtPwJiZRmCInLm0MbdZvSIEKSA9Hnv4Tvqo5sKQxMtsWF99XKhpKkavQzDodUKVwtobjpteRTQmbNke7hO7lvI+ZY6LMFoM7JW6C644guw7fXkzSUnyzUyIb9ynfDhdzs/hjMZTJVuDdsyibfxwAsGzHyTtQucie9BRwQRsOluSsTKd3
+ dAKufvSX
+ jVxjLeFsZEo0aT/zU//dMY/OQR+6nnKZiLKz2+QxhqH+z0rKtgB91peOLAYW2wW02cc/zr5Pl45k/36s2PqMoutLCzodGTszZxhfEMGcTH8LJJpEPXgvsNLwaP3drxKcThvjouv9wOsr0E1ay0itU8VGwYKalQgaPjrB0TcJfRCFC1YR4VXiz5nypiuuOFApbT6IkRU2K9KCaicLtJTitkfW/y7g/zqaYF7eF0Icb0umrWE5ag9QtI3oGGb/4Y76x+7qJYBn8auvxmWy7hmY1Lnes5R3PMqgpM+W1h+JK0dQaXtB4Q6UZ/jybvYDlSNxmDgBLiEwv2IANBFkpzju83EFw5Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,71 +103,332 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/9/26 16:32, Jinchao Wang wrote:
-> On Fri, Jan 09, 2026 at 03:18:37PM +0100, David Hildenbrand (Red Hat) wrote:
->> On 1/9/26 15:16, Jinchao Wang wrote:
->>> On Fri, Jan 09, 2026 at 02:39:08PM +0100, David Hildenbrand (Red Hat) wrote:
->>>> On 1/9/26 04:47, Jinchao Wang wrote:
->>>>> Fix an AB-BA deadlock between hugetlbfs_punch_hole() and page migration.
->>>>>
->>>>> The deadlock occurs because migration violates the lock ordering defined
->>>>> in mm/rmap.c for hugetlbfs:
->>>>>
->>>>>      * hugetlbfs PageHuge() take locks in this order:
->>>>>      * hugetlb_fault_mutex
->>>>>      * vma_lock
->>>>>      * mapping->i_mmap_rwsem
->>>>>      * folio_lock
->>>>>
->>>>> The following trace illustrates the inversion:
->>>>>
->>>>> Task A (punch_hole):             Task B (migration):
->>>>> --------------------             -------------------
->>>>> 1. i_mmap_lock_write(mapping)    1. folio_lock(folio)
->>>>> 2. folio_lock(folio)             2. i_mmap_lock_read(mapping)
->>>>>       (blocks waiting for B)           (blocks waiting for A)
->>>>>
->>>>> Task A is blocked in the punch-hole path:
->>>>>      hugetlbfs_fallocate
->>>>>        hugetlbfs_punch_hole
->>>>>          hugetlbfs_zero_partial_page
->>>>>            folio_lock
->>>>>
->>>>> Task B is blocked in the migration path:
->>>>>      migrate_pages
->>>>>        unmap_and_move_huge_page
->>>>>          remove_migration_ptes
->>>>>            __rmap_walk_file
->>>>>              i_mmap_lock_read
->>>>>
->>>>> To fix this, adjust unmap_and_move_huge_page() to respect the established
->>>>> hierarchy. If i_mmap_rwsem is acquired during try_to_migrate(), hold it
->>>>
->>>>
->>>> I'm confused. Isn't it unmap_and_move_huge_page() that grabs the
->>>> i_mmap_rwsem during hugetlb_page_mapping_lock_write() (where we do a
->>>> try-lock)?
->>> Yes, but the lock is released before remove_migration_ptes().
->>>
->>> Task A can enter the race window between
->>> 	i_mmap_unlock_write(mapping)
->>> and
->>> 	remove_migration_ptes() -> i_mmap_lock_read(mapping).
->>>
->>> This window was introduced by the change below:
->>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/mm/migrate.c?id=336bf30eb765
->>
->> try_to_migrate() is not the problem, but remove_migration_ptes() ?
->>
->> Anyhow, I saw that Willy sent out a version.
-> Thank you for letting me know.
+On Thu, Jan 08, 2026 at 03:37:54PM -0500, Gregory Price wrote:
+> If a private zswap-node is available, skip the entire software
+> compression process and memcpy directly to a compressed memory
+> folio, and store the newly allocated compressed memory page as
+> the zswap entry->handle.
+> 
+> On decompress we do the opposite: copy directly from the stored
+> page to the destination, and free the compressed memory page.
+> 
+> The driver callback is responsible for preventing run-away
+> compression ratio failures by checking that the allocated page is
+> safe to use (i.e. a compression ratio limit hasn't been crossed).
+> 
+> Signed-off-by: Gregory Price <gourry@gourry.net>
 
-For reference:
+Hi Gregory,
 
-https://lkml.kernel.org/r/20260109041345.3863089-1-willy@infradead.org
+Thanks for sending this, I have a lot of questions/comments below, but
+from a high-level I am trying to understand the benefit of using a
+compressed node for zswap rather than as a second tier.
 
--- 
-Cheers
+If the memory is byte-addressable, using it as a second tier makes it
+directly accessible without page faults, so the access latency is much
+better than a swapped out page in zswap.
 
-David
+Are there some HW limitations that allow a node to be used as a backend
+for zswap but not a second tier?
+
+Or is the idea to make promotions from compressed memory to normal
+memory fault-driver instead of relying on page hotness?
+
+I also think there are some design decisions that need to be made before
+we commit to this, see the comments below for more.
+
+> ---
+>  include/linux/zswap.h |   5 ++
+>  mm/zswap.c            | 106 +++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 109 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+> index 30c193a1207e..4b52fe447e7e 100644
+> --- a/include/linux/zswap.h
+> +++ b/include/linux/zswap.h
+> @@ -35,6 +35,8 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
+>  void zswap_folio_swapin(struct folio *folio);
+>  bool zswap_is_enabled(void);
+>  bool zswap_never_enabled(void);
+> +void zswap_add_direct_node(int nid);
+> +void zswap_remove_direct_node(int nid);
+>  #else
+>  
+>  struct zswap_lruvec_state {};
+> @@ -69,6 +71,9 @@ static inline bool zswap_never_enabled(void)
+>  	return true;
+>  }
+>  
+> +static inline void zswap_add_direct_node(int nid) {}
+> +static inline void zswap_remove_direct_node(int nid) {}
+> +
+>  #endif
+>  
+>  #endif /* _LINUX_ZSWAP_H */
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index de8858ff1521..aada588c957e 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -35,6 +35,7 @@
+>  #include <linux/workqueue.h>
+>  #include <linux/list_lru.h>
+>  #include <linux/zsmalloc.h>
+> +#include <linux/node.h>
+>  
+>  #include "swap.h"
+>  #include "internal.h"
+> @@ -190,6 +191,7 @@ struct zswap_entry {
+>  	swp_entry_t swpentry;
+>  	unsigned int length;
+>  	bool referenced;
+> +	bool direct;
+>  	struct zswap_pool *pool;
+>  	unsigned long handle;
+>  	struct obj_cgroup *objcg;
+> @@ -199,6 +201,20 @@ struct zswap_entry {
+>  static struct xarray *zswap_trees[MAX_SWAPFILES];
+>  static unsigned int nr_zswap_trees[MAX_SWAPFILES];
+>  
+> +/* Nodemask for compressed RAM nodes used by zswap_compress_direct */
+> +static nodemask_t zswap_direct_nodes = NODE_MASK_NONE;
+> +
+> +void zswap_add_direct_node(int nid)
+> +{
+> +	node_set(nid, zswap_direct_nodes);
+> +}
+> +
+> +void zswap_remove_direct_node(int nid)
+> +{
+> +	if (!node_online(nid))
+> +		node_clear(nid, zswap_direct_nodes);
+> +}
+> +
+>  /* RCU-protected iteration */
+>  static LIST_HEAD(zswap_pools);
+>  /* protects zswap_pools list modification */
+> @@ -716,7 +732,13 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
+>  static void zswap_entry_free(struct zswap_entry *entry)
+>  {
+>  	zswap_lru_del(&zswap_list_lru, entry);
+> -	zs_free(entry->pool->zs_pool, entry->handle);
+> +	if (entry->direct) {
+> +		struct page *page = (struct page *)entry->handle;
+
+Would it be cleaner to add a union in zswap_entry that has entry->handle
+and entry->page?
+
+> +
+> +		node_private_freed(page);
+> +		__free_page(page);
+> +	} else
+> +		zs_free(entry->pool->zs_pool, entry->handle);
+>  	zswap_pool_put(entry->pool);
+>  	if (entry->objcg) {
+>  		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
+> @@ -849,6 +871,58 @@ static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
+>  	mutex_unlock(&acomp_ctx->mutex);
+>  }
+>  
+> +static struct page *zswap_compress_direct(struct page *src,
+> +					  struct zswap_entry *entry)
+> +{
+> +	int nid;
+> +	struct page *dst;
+> +	gfp_t gfp;
+> +	nodemask_t tried_nodes = NODE_MASK_NONE;
+> +
+> +	if (nodes_empty(zswap_direct_nodes))
+> +		return NULL;
+> +
+> +	gfp = GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE |
+> +	      __GFP_THISNODE;
+> +
+> +	for_each_node_mask(nid, zswap_direct_nodes) {
+> +		int ret;
+> +
+> +		/* Skip nodes we've already tried and failed */
+> +		if (node_isset(nid, tried_nodes))
+> +			continue;
+
+Why do we need this? Does for_each_node_mask() iterate each node more
+than once?
+
+> +
+> +		dst = __alloc_pages(gfp, 0, nid, &zswap_direct_nodes);
+> +		if (!dst)
+> +			continue;
+> +
+> +		/*
+> +		 * Check with the device driver that this page is safe to use.
+> +		 * If the device reports an error (e.g., compression ratio is
+> +		 * too low and the page can't safely store data), free the page
+> +		 * and try another node.
+> +		 */
+> +		ret = node_private_allocated(dst);
+> +		if (ret) {
+> +			__free_page(dst);
+> +			node_set(nid, tried_nodes);
+> +			continue;
+> +		}
+
+I think we can drop the 'found' label by moving things around, would
+this be simpler?
+
+	for_each_node_mask(..) {
+		...
+		ret = node_private_allocated(dst);
+		if (!ret)
+			break;
+
+		__free_page(dst);
+		dst = NULL;
+	}
+
+	if (!dst)
+		return NULL;
+
+	if (copy_mc_highpage(..) {
+		..
+	}
+	return dst;
+		
+
+> +
+> +		goto found;
+> +	}
+> +
+> +	return NULL;
+> +
+> +found:
+> +	/* If we fail to copy at this point just fallback */
+> +	if (copy_mc_highpage(dst, src)) {
+> +		__free_page(dst);
+> +		dst = NULL;
+> +	}
+> +	return dst;
+> +}
+> +
+
+So the CXL code tells zswap what nodes are usable, then zswap tries
+getting a page from these nodes and checking them using APIs provided by
+the CXL code.
+
+Wouldn't it be a better abstraction if the nodemask lived in the CXL
+code and an API was exposed to zswap just to allocate a page to copy to?
+Or we can abstract the copy as well and provide an API that directly
+tries to copy the page to the compressible node.
+
+IOW move zswap_compress_direct() (probably under a different name?) and
+zswap_direct_nodes into CXL code since it's not really zswap logic.
+
+Also, I am not sure if the zswap_compress_direct() call and check would
+introduce any latency, since almost all existing callers will pay for it
+without benefiting.
+
+If we move the function into CXL code, we could probably have an inline
+wrapper in a header with a static key guarding it to make there is no
+overhead for existing users.
+
+>  static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+>  			   struct zswap_pool *pool)
+>  {
+> @@ -860,6 +934,17 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+>  	gfp_t gfp;
+>  	u8 *dst;
+>  	bool mapped = false;
+> +	struct page *zpage;
+> +
+> +	/* Try to shunt directly to compressed ram */
+> +	zpage = zswap_compress_direct(page, entry);
+> +	if (zpage) {
+> +		entry->handle = (unsigned long)zpage;
+> +		entry->length = PAGE_SIZE;
+> +		entry->direct = true;
+> +		return true;
+> +	}
+
+I don't think this works. Setting entry->length = PAGE_SIZE will cause a
+few problems, off the top of my head:
+
+1. An entire page of memory will be charged to the memcg, so swapping
+out the page won't reduce the memcg usage, which will cause thrashing
+(reclaim with no progress when hitting the limit).
+
+Ideally we'd get the compressed length from HW and record it here to
+charge it appropriately, but I am not sure how we actually want to
+charge memory on a compressed node. Do we charge the compressed size as
+normal memory? Does it need separate charging and a separate limit?
+
+There are design discussions to be had before we commit to something.
+
+2. The page will be incorrectly counted in
+zswap_stored_incompressible_pages.
+
+Aside from that, zswap_total_pages() will be wrong now, as it gets the
+pool size from zsmalloc and these pages are not allocated from zsmalloc.
+This is used when checking the pool limits and is exposed in stats.
+
+> +	/* otherwise fallback to normal zswap */
+>  
+>  	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
+>  	dst = acomp_ctx->buffer;
+> @@ -913,6 +998,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+>  	zs_obj_write(pool->zs_pool, handle, dst, dlen);
+>  	entry->handle = handle;
+>  	entry->length = dlen;
+> +	entry->direct = false;
+>  
+>  unlock:
+>  	if (mapped)
+> @@ -936,6 +1022,15 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>  	int decomp_ret = 0, dlen = PAGE_SIZE;
+>  	u8 *src, *obj;
+>  
+> +	/* compressed ram page */
+> +	if (entry->direct) {
+> +		struct page *src = (struct page *)entry->handle;
+> +		struct folio *zfolio = page_folio(src);
+> +
+> +		memcpy_folio(folio, 0, zfolio, 0, PAGE_SIZE);
+
+Why are we using memcpy_folio() here but copy_mc_highpage() on the
+compression path? Are they equivalent?
+
+> +		goto direct_done;
+> +	}
+> +
+>  	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
+>  	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, acomp_ctx->buffer);
+>  
+> @@ -969,6 +1064,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>  	zs_obj_read_end(pool->zs_pool, entry->handle, obj);
+>  	acomp_ctx_put_unlock(acomp_ctx);
+>  
+> +direct_done:
+>  	if (!decomp_ret && dlen == PAGE_SIZE)
+>  		return true;
+>  
+> @@ -1483,7 +1579,13 @@ static bool zswap_store_page(struct page *page,
+>  	return true;
+>  
+>  store_failed:
+> -	zs_free(pool->zs_pool, entry->handle);
+> +	if (entry->direct) {
+> +		struct page *freepage = (struct page *)entry->handle;
+> +
+> +		node_private_freed(freepage);
+> +		__free_page(freepage);
+> +	} else
+> +		zs_free(pool->zs_pool, entry->handle);
+
+This code is repeated in zswap_entry_free(), we should probably wrap it
+in a helper that frees the private page or the zsmalloc entry based on
+entry->direct.
+
+>  compress_failed:
+>  	zswap_entry_cache_free(entry);
+>  	return false;
+> -- 
+> 2.52.0
+> 
 
