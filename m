@@ -4,98 +4,214 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA7EAD26D9B
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 21:49:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 932B2D277C0
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 22:11:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AD606B0088; Fri,  9 Jan 2026 16:49:10 -0500 (EST)
+	id B03336B0005; Fri,  9 Jan 2026 17:11:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45BCD6B0089; Fri,  9 Jan 2026 16:49:10 -0500 (EST)
+	id AA38D6B0089; Fri,  9 Jan 2026 17:11:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33D346B008A; Fri,  9 Jan 2026 16:49:10 -0500 (EST)
+	id 93D816B008A; Fri,  9 Jan 2026 17:11:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2001D6B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 16:49:10 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD5B18CEE3
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 21:49:09 +0000 (UTC)
-X-FDA: 84313766418.10.F2426B9
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 51948120009
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 21:49:07 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CIblYblt;
-	spf=none (imf29.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767995348; a=rsa-sha256;
-	cv=none;
-	b=yx02iGYVDHJNWF1Dp+3orqY9ceL7/J6t8FF1bq65CVTADv2uGDNxHLpkawO68SM4+XRmu+
-	9Uf48MpyNJ8G8DKovlc5O0TWzoLbx583weWXegdVO1ts6FZ9ES967haX/EO4tFPFWbjHJ9
-	ZGcWEb17PnvLIUF+3wgGaRclcFjK3x4=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CIblYblt;
-	spf=none (imf29.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767995348;
+	by kanga.kvack.org (Postfix) with ESMTP id 81EAC6B0005
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:11:45 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 281648CBC8
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 22:11:45 +0000 (UTC)
+X-FDA: 84313823370.06.CB19409
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012034.outbound.protection.outlook.com [52.101.48.34])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 476A940013
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 22:11:42 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="FAPuOo/R";
+	spf=pass (imf27.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.48.34 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767996702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=orAWW0c9GM9UfFj1bpBTGics8DndOWhf3L60HJQWvmU=;
-	b=DRyHnVtAcgLopa9JtkuoW9mUdfYTlGmF3bPxY300liYjU1UY1ZahlLtf7uB+n2kaDz1pDw
-	xjcPadcY/c4vjshLAoYIxPW4RJdljyFC66hIFXZ9Ryv+JlFNxtcKMerbUhGGMFz//jx9le
-	9n0a0+shymrE0obaZra/6447OZoZFRk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=orAWW0c9GM9UfFj1bpBTGics8DndOWhf3L60HJQWvmU=; b=CIblYblt2QgPrKx3QV6je9i5NO
-	b5D9A+fy3pKImVmulgWOInglXBy/bZ+pIiHIz2jHFd5YFQ+fikGiN+Ebi4kSv1olSUOb49gcwx63T
-	ddfzoRqj/5wVX7Hxniu1P+CkJa+3A60OThU0xO0Bkubl32FVEl9jrdMebeUKAwVZBcxEhPzJ3E2nP
-	OW5vKQx1mkaWU0c+13X3ju4UD8T4pRoV7EdhMolpqFfB6CzLvz1OswWlprXwekbvUKsy8aFavslul
-	yMf/csPpYE8oxci/ITWIWs5gEhVzDS0rwDv6uz9mwcIMP8VvjEQI2t36t8ON+8vUOrlR5kQHJfp05
-	mmY9OKQw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1veKLm-0000000HO7U-26lC;
-	Fri, 09 Jan 2026 21:48:54 +0000
-Date: Fri, 9 Jan 2026 21:48:54 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Frank van der Linden <fvdl@google.com>
-Subject: Re: [PATCHv2 02/14] mm/sparse: Check memmap alignment
-Message-ID: <aWF3xg-72SV4tmLk@casper.infradead.org>
-References: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
- <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
- <4f82b8ef-77de-422b-a9a5-691c4eca24a3@kernel.org>
- <glu3noshgeh7ktwwqofk7xcwkvhek2x3hrbdmyyo56gmctdx3t@adsfih557p7g>
- <2ace6fc2-6891-4d6c-98de-c027da03d516@kernel.org>
+	bh=VoDg5vb8nhYPfc7Hyg5Pm7TWZg8oXgf6lUGmqVXvXsQ=;
+	b=MTzeyp1HpIn923nJY9ahvmnBZfd5LkjtuB1VWgIrUbFmEQ0d/dEemC/jKRQzkR9VkjrVb2
+	czSNxnCuL8rIHD0sIIb6+hMLcQAPUJ7kuxESpFEt5fFFm/6ulXPuIRN8qcQSnEx1Ax0Hu1
+	Tz7ZK+vkXtolCDjw+Kjwvfwu4lGPw4c=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="FAPuOo/R";
+	spf=pass (imf27.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.48.34 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767996702; a=rsa-sha256;
+	cv=pass;
+	b=lCPzY7mEjqNFr+tus5WpE91p5+cPXo4H6cR916qic7gXJv3/jDc4jOASI7QNc9EAjby7hR
+	9skrkxnRHtSwgtr4vJ1zWKwZsDx2g4a1oOr531b6A+6D1RcXFADWVDfsZ+0uDFVTAfk3u/
+	v9MIHTITZ5NeOzndXLC+c9phLJeOiak=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YGLfLUEDTia+tXLmJynhs8ioKd9nWlJ9Z/HBMe4XdSa8id7sswlm0+cEi/mtALOiZg2+KGDtyBg8qWJ8ksjEGAAmP9eS9dcKQ6PIA3qYNpYJem3pUXhkfQU8+gQqzsPkrBG1+cVW9b5edOrWyfuXQN/WIsdYKrmflbXtQRYJA6Yw2QZAg/gwUOfWQipkwjpG33RYi23iakVJWwZpBl7EOTz9FNQ8ovm34ga3xzVhOXN8gM8Rcur2pftJRf/DstaCdKeG6XnJEIUmYThcEhoOE4GwyIZFaBn0y/LsgASzTrwO7oxjeTwmhVPZEpTDN7z0BQnhoydLVYUXnky3xjREMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VoDg5vb8nhYPfc7Hyg5Pm7TWZg8oXgf6lUGmqVXvXsQ=;
+ b=zB/btfOcMr+4zLCtDVqZ3HbajBLV6lk5RN46IlHK++h4qgeWfYoV0KXNDqbUjQ6jdgB/q9RBUBwNIuElvn1eJ+g7HaWHCy9wBkUnm8rMa8o9RAZ2B8IQPZMYhJ30NHNkACkBpK8wVdV5WyP/euk3VXKGmz/ujo/k3M+VxRNy/zVjV0n8XMYnqBvRQySRMLsluFSFZspdUJU2eO2LM+g7K1Yq0bHGCXkSZlJeQfgIAdcruJvhNSy2oJJbAY3HutqvPCpZy03dORTY6M104tA1h4tprGhRxf2T/kSzgISfHPYihQNnx85iGwLRXs2CUk8/RDS5lr6G87JBuPXyfOt5pQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VoDg5vb8nhYPfc7Hyg5Pm7TWZg8oXgf6lUGmqVXvXsQ=;
+ b=FAPuOo/R9tdH6nw3rwljeXBwkNCu2NGIxfixVZaNMZ1zQGkjrkSauKQzNuclN9C+/z384HrfyZE4EevZGDIF0V72N5+HYFzYrNDfFAHiAFxQneMPM+7QMDfgCqQxKHMM7MwMegzVbozstc7O25DGP+yb7uAr3tiKtudPvkvks9n5+XkCQlan1CDEkOZnxZzfqTa635cnD3w7yxGBueB7sfXsgyYBkPeVj1ahshBUS3EvGFcW0TpdDm4trLxqLhZfPh7GUhiq3KA76w91xPeVITV4O2Yox8wb9lL3OF5I54uzKCVu7EAmRlXU2chIIIZZQSApRErImXeuqvNNsUv1vA==
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
+ by BL3PR12MB6474.namprd12.prod.outlook.com (2603:10b6:208:3ba::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Fri, 9 Jan
+ 2026 22:11:38 +0000
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9478.004; Fri, 9 Jan 2026
+ 22:11:37 +0000
+Message-ID: <5c9f17ce-7174-4e74-92d7-8249f309f756@nvidia.com>
+Date: Sat, 10 Jan 2026 09:11:32 +1100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/7] mm: Split device-private and coherent folios
+ before freeing
+To: Zi Yan <ziy@nvidia.com>
+Cc: Matthew Brost <matthew.brost@intel.com>,
+ =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
+ Francois Dugast <francois.dugast@intel.com>, intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, Alistair Popple <apopple@nvidia.com>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260109085605.443316-1-francois.dugast@intel.com>
+ <20260109085605.443316-4-francois.dugast@intel.com>
+ <d1d80b81-678d-4d28-9ac2-95cb74824e73@redhat.com>
+ <DF5A6B81-7811-4654-855F-8EAB76CCCE51@nvidia.com>
+ <aWFIW6XCKXPpIinv@lstrano-desk.jf.intel.com>
+ <D9ED5F01-E758-4A89-87F2-ABFF5197231D@nvidia.com>
+ <aWFSGc7MIUqVsilw@lstrano-desk.jf.intel.com>
+ <12A9DCBB-0B59-4D63-9BA8-9F99570AFA80@nvidia.com>
+ <aWFe9S2DGwfD2smO@lstrano-desk.jf.intel.com>
+ <B8B15539-F97A-4D6B-BF58-FC75397C429F@nvidia.com>
+ <4485ba83-a8c7-478f-953f-78d66e84d730@nvidia.com>
+ <18E78790-4996-4151-821B-8A1D784A3F7D@nvidia.com>
+Content-Language: en-US
+From: Balbir Singh <balbirs@nvidia.com>
+In-Reply-To: <18E78790-4996-4151-821B-8A1D784A3F7D@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR03CA0028.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::33) To PH8PR12MB7277.namprd12.prod.outlook.com
+ (2603:10b6:510:223::13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2ace6fc2-6891-4d6c-98de-c027da03d516@kernel.org>
-X-Stat-Signature: rd1gcp1zj1ozm3bt9jctgb5ce67y9qxr
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 51948120009
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|BL3PR12MB6474:EE_
+X-MS-Office365-Filtering-Correlation-Id: ffbbb180-d461-49a7-ef9c-08de4fcc0f14
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SUNvVTMza0EvQjB3Q2k0dFNQKzdTcmkxdlE1TkNpbzE1MWtXOXcycXI1Y3JB?=
+ =?utf-8?B?YzJvK3MreEIwaWxQSzlSQ1lOb0V1MGtHWU9VTmlCeno5djk2WVY0c2YvVTBy?=
+ =?utf-8?B?ZXVaREVTTW1LTjczUDBydWxVcVBnK1RqUFdjaGkvL2F2T1Vla0VPY01nM01u?=
+ =?utf-8?B?WnVhUUcrTzE1NGxla3c2MXpPdUxTSTNvczRDNmhJbGorZGNGTzVoOU9nNlpB?=
+ =?utf-8?B?NjVRQTFzeEtpd2xqUWo4akRpbU94SVhjd092ZDN4aVJta3FQRGRyejRGNzdj?=
+ =?utf-8?B?TEtvSlhXQlRaZmFiejJuQWE0dUZVRmxiSVl3amI3VUloZnV3VjhEMW8zT2Rr?=
+ =?utf-8?B?U2hLSHVPT2dRdFZMczE5bVZjWjVpVEJqQUdBZkthKzY3Skp1dFlrcWZnTld4?=
+ =?utf-8?B?YmllL29MVk1MUVZzcmgxdDB1VFBPWHl4LzBlNC8zVllHdmhiK1ZvdGU5VnZH?=
+ =?utf-8?B?RVk0NHV6RHJXQitPUTdDZ2pidWRzUU4xRW5BSmJOOGN6QkJDdTd5bll2eFU0?=
+ =?utf-8?B?LzVYQWtwL0c2bWdsa3hQSjlqQUl4WXNrd2Q5bmdUS1FlNGl3cU9VNUkxNDRE?=
+ =?utf-8?B?aWVBbVR0a1pmTXNBcGR3aHgzMi9qNWFYcDh6TkYzejFUeXFRZ0hhQzRzdS9j?=
+ =?utf-8?B?Qjg2Q2F5NXlDRnE1SEp3RXRGZmdFUUJKUlJxK0EwcmdzcGJBdXhmdFEvckcy?=
+ =?utf-8?B?UG1BNVNGR1BFNUFtQmZjYS9xRmRoeGVkRjgxaHd3eno0VXJMSjkzemhYSkxZ?=
+ =?utf-8?B?UFpYV0JzY2ZrVC90NjZGRmpGNVQ4ZnczUUpQOStHY0FYZjh2NDRybEdvNWRm?=
+ =?utf-8?B?MTVWLzE4emRpWHBUdUlSbU9DNnJuMGRZZmh2OExhdUFENkRCc1BhV05YaVds?=
+ =?utf-8?B?MmlrYWRJQlZpQzJCaDdNbG9Mekc2em0vQnQyUUI3aXBvSFo5NUxyZENWb0w2?=
+ =?utf-8?B?NkVPY3pValh0ZnJWa1NLN0RxdHZwOFR5L0t3S2JXZWpoNHluekQ0NmxZME0y?=
+ =?utf-8?B?MnZEMnBtWlE4K1BUWExmWExFZW43WVc0SG5KaThVTk5RckMvS05qamZXQk5W?=
+ =?utf-8?B?MzgyOUwwcXBTT21KaUpUNUlTYUVtUXQ4VkZkaENPR0dxeUtobnp6a0ZrT1J1?=
+ =?utf-8?B?REZHd0dwZ2FhZHRoV0Z0NE9sanZwTDd4cWM2cDQ3S0tCditNVWg3UGtobG5V?=
+ =?utf-8?B?S0Vpb0l4Sm4zdmRiYlhwbkx4TzlkajB2WXliSkpYMlNQcG9jWThwSlgxR3lK?=
+ =?utf-8?B?WUtDWkhqd21MN0dERGhyYjRKclhQSTRSOHIvQ2xhTHhYWlh5TzR0REZKdzlo?=
+ =?utf-8?B?Um1rS21QQ1RIZ2kvTkFyS1liek9jMk42SEVPakZBUXAzZXlsZnR5Ynh6M2pU?=
+ =?utf-8?B?aEM5eHNRK2NPM2dXOEtxRUE4UGVDUDZkVDhDWTJzWlhGblhnMkszdWRVOWtp?=
+ =?utf-8?B?QlRnR1FvMGI0aURBKzBjRTViUi9KVkYzdW03cUZBdzBmVThkYVRMMWJjQTBY?=
+ =?utf-8?B?WGFZeVE5a3BKbjhLYzhpZW1ZbmM4akVFa3JwQ2NxeWlYN1RTdG5ySXRGZXYz?=
+ =?utf-8?B?STNEd2lJb21FTEtsOTAxem4yMXVzSlFQdTcrMTYrUVZqd0lxdXZZNVdEU0lJ?=
+ =?utf-8?B?NkJKa1I3Vk5FTDRhRzc4a3AvOXU5OWUvRkdLazQ5OTBOTXR4c0NlS3NlZEM5?=
+ =?utf-8?B?eVN0aGJoZGh2b3pDM09JYlRIQm5xME5YVW01Rk1NMWdYaU00NmNBTjJZZlJO?=
+ =?utf-8?B?MDZ3K3I0akdqSU1qNGVROXUvd0k3YnFsaCt3OHNKblBFMU9UTXVUTFFza1Zv?=
+ =?utf-8?B?OEZoSU9vOEJOTnBoM1ZnbU9UQmgyNU5HN3FyKzlRdkZsbWZQVldTQVZWQm90?=
+ =?utf-8?B?NHFuRjlsUVRqODVYTkpObkFGVHJYQ3VEdGhoNkc4eXUvcEptWUl2MXRJNTYy?=
+ =?utf-8?Q?ufr6LCZR7z6+XUZkgK1QN9M97vF210Dy?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QUtkaXhyWTJSY3J3K0plOEdhUm5kTXY0R1JXWmY2bjlaOERIVXNWR2tEaGJK?=
+ =?utf-8?B?blhJQlBzeFhzeUxpQ2dQakxickZQcTZuTDRWUit2TlpNSXlPdlJqdHRjbzNS?=
+ =?utf-8?B?b2V0NXNRTlZQT1BjQzVzZGVpZEVIUGhiTm9odHU2cnJnRERQRFV6aDdVZ3hD?=
+ =?utf-8?B?MkZCcmQ2N1Z3R1R0My9LeFhUQnNkVkw3OG0xM0VPczMzRG5RS0ZObFUvMmZ2?=
+ =?utf-8?B?WjVKY21nSmF1d0IwSDVnK2JsT3h6b29Eb3VDNXdOR3p6RmNvLzZMSjFaa0FF?=
+ =?utf-8?B?SWRRdmVRQ1hvZHNiL0x6eEd4Tm5tUUdIQ2ZkM2E5amZvTXpnb2N2NkhoYmdV?=
+ =?utf-8?B?TDNZVGF4c0ZRQnJQalBHVzFZaTVIN3BENVAxdTNOcE9MT2FjdFl0RWlSRlBv?=
+ =?utf-8?B?SmN1aG9BU1I3NU8vanZyM1liejlxelpDTUsrNjlNMWFycldxSDlzUFZybGNQ?=
+ =?utf-8?B?dlcveExRNXNaa2J0bGdXUFB0QytaWnJRTnZuOFlUYTByd1ZFQjZwWC9JSHQ5?=
+ =?utf-8?B?cFVPQjNYeTVoVGRFTXpXYnpkMlRHYjZlMnlTczRDd3BWLzU2eVBEc01QckVr?=
+ =?utf-8?B?akJicHc5SnhoaEZnSnBRWlAvZXpqS1BxZGZKOExNUzBCZTBIN2p2NENsMWVK?=
+ =?utf-8?B?alN6cERyUzdxSHh5VHZEYTRkTHhVa3pyN1NUVGs2Q1Zmd1IyYzdLczEwTjVI?=
+ =?utf-8?B?SW9sb2owSE5MR3RhYkFYeHRFVXg4aXVwN2dtbzJENGZha0tsYVlIamRiVVF4?=
+ =?utf-8?B?VXNnS1FQdzdYR0RJa3dQZGRsT1REZ0YwZ3Z4b2RVcERKZGpjbHpZU094UFVI?=
+ =?utf-8?B?VHp0MDdJOTlrc1A4RkxUQmhaejVjM3dGVFNmT3NKSWJqYnZrRjR2VWRob3pt?=
+ =?utf-8?B?T2NhbGcrVHc0WFdITHJjeEVVNGl3aDZMUmZDMkpIcElSWUVSWDFqZ1BVREYz?=
+ =?utf-8?B?b1lQV2lLWnpWb2M1N0xROFB6N1o2NGVCSU8xR0NuQ05Xc2lsNWJGcWR3QnJz?=
+ =?utf-8?B?VzJsUThNcVlSZ1l2YTRGZkhCNjkyTElvUnhjSjR5VCtGQW05aWxucEp4RW1J?=
+ =?utf-8?B?UFV6ZC9EVXVHNlg5TVJveTBZRDd6RXlwbS9SYXVVZzJpMHpSMzByMUVuMnJx?=
+ =?utf-8?B?SkhxelhjN055WGVXVjQ2SXdiS1Q2Ym1Wd2ZDZzIxUWZEWml2Wms1Qkx0dW90?=
+ =?utf-8?B?VHJNeWtOM3JOZjRLeURFVnBUT0NaVUF6WWhjQTFhWFo0OG9lK3MwQjRZRFhv?=
+ =?utf-8?B?blhCeVRYakZSQ0tWMklZSE5KbWJRM21aeldJUEJxWUJSTGVhbUtmb0FTdHRn?=
+ =?utf-8?B?MU9pcHhJWE1XWUI4TCszUDdzam9STjlnQ0hyQXI4bWJsalArZ0pMNUJMNnFo?=
+ =?utf-8?B?NWJxcW02dkpUSkFyYUdqU3ZReVprdFVtSHVvQWlZVjN2SjlsWlFjTk5MSk81?=
+ =?utf-8?B?aXM2NGptMGRqN3ZFRzEreWl2b1Q0eEQ2bGJuRnVoakQyY2hDWWFkbk5OTWhU?=
+ =?utf-8?B?TTlwSXkzL1podGNibUd1d1FCekFuWTRxWjYyOUFJSmQ5MWVTK1drYXl4WVpC?=
+ =?utf-8?B?Ykw1QjQyVEM3U3gxU2VRVTlsR3NRd2RCd0tUTEVlRGV0OW8rUk9GdEVWL00w?=
+ =?utf-8?B?TklBY0grVmhrYVhNWTRJci9BOWZBcTFrMm1DbHhOTVhYbC9kNTNVK0xkNkdt?=
+ =?utf-8?B?c0o1SnYrQ3BlSW42UTh0ek5lUEVtUVZkcXFvcDJoamE5dmE5MFJlNlJaVE5M?=
+ =?utf-8?B?TmJzbUVCV29wN1poVXJJMFJtSDVKOEVzcnlRV2xHMU10a0FlVDVYUWxkV1hK?=
+ =?utf-8?B?NUMvSjUrZm9LSmQvUjNlZE9vajFWMjFQcSs0ODlnenQvekVPcWhRdnd3U1Ew?=
+ =?utf-8?B?L2MrR1ZvZEtnb0ZIeTNURWtLUHNweVcrdjZTdmtiQkJnY2VQM1B1bEl0dW5X?=
+ =?utf-8?B?TU5GSHpTOFVDcHhCZTV6NlhBdi9YV1hHMnMrbllUMkpQUXZYaG9PNFYzcHFo?=
+ =?utf-8?B?WUNHa0k3VlV0WDBNRThCNUc2UitmOTRWbFNUZ29NbUJaUHkva01tVU1oWEtG?=
+ =?utf-8?B?S2Z1a016RXVkTk5ZYjFQOHp6Mk1qSHBsNWVIUmd6eXFWSFRJWDJac3dhRGp1?=
+ =?utf-8?B?cEtXQkQyWEFaRlRiOHJ6c293K2NvUE9OY2ROd0RVbFJoVTZqRDB2c0lZQ2tw?=
+ =?utf-8?B?M1pSS1pKY3Vya0JMTjAwM01oampMU0cwRjNjUmJxYWNSNHlRTlExRThsYURi?=
+ =?utf-8?B?enFxTWNRS1d1eU5VSWtxc2VuR3lxZ0dZMXN3MzZSZXp3MjhaakJ4R2wrL1Q3?=
+ =?utf-8?B?T0JmR3g5ejE4bi9qa3VuUjNoY2lzVyt5anlkVGVNbXBhTUx2ZDAyVVNaeXRX?=
+ =?utf-8?Q?opIS5SmvuVjsjj3WH8tT2e1s1BEqc7hS8KtGOwpOETLlq?=
+X-MS-Exchange-AntiSpam-MessageData-1: pg9iwkBxuBLv7g==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffbbb180-d461-49a7-ef9c-08de4fcc0f14
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 22:11:37.8970
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AL5EhAxtdwdxsFdruGABHPcaFrDNFj1QviuWa0ArghUbStD014TkEBngI0E1pWgeXaWRztRVl24DHuuy0sZ2sw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6474
+X-Rspamd-Queue-Id: 476A940013
+X-Stat-Signature: gebayee8hju41g5mkyfnc3adomsw6g8h
 X-Rspam-User: 
-X-HE-Tag: 1767995347-941551
-X-HE-Meta: U2FsdGVkX194ezIGyuQi5J9kuWJtGKJjmdeSTtCOrw6dImb/r3FLMzwPXYOzzyQRLVM5+L29jLxHZdHkb9iUzEoF616OLV2MCqpAaxF2DvNRqzlZAF2a5nCMaWs41dMb89qB469Ey32NvOuZ8NG75l0yUQ4/bf8MVHEOuNSAmeBLks5h4TtS/aFaI/2SqUbTNwj1zkAdO8GgOBSxonmLzeEkQKnZ1gXGgz2Eo7do4E36SQlx2Lb/Rj3YOwK1ARJHiEZmxVewMtTFIerwAQH8ywU3RkXLmniCLoI9cjhygMWR+Q82dWuvgVa5VnTxIQkflRv74cRx8T4JQSWPtUeiQqcmA+waAlh4DL1UeBIqw8ha/hpmeeCghrJ1wt47i710B4jCULnpX8RJSJZYRwbiVetN+e1fg8jIL7S+Y3JTc5zePohOZ0d4XOPRk6W8VQVg55g6F2kgtyZRo1nlX/RLdy0/gxjZdNRHSoqzoeRkFYJLHX/huMjoFNaOWN1kAmb388Qx2PrFm7y4gyxvsonXGo4zvtmgj4VcE+fvHs2l8GSg45WLjtFQ/iLtq7DFoI2cjoCeXDexjWPbw05dIxDhkyJznxsww5vtS7dIwLecRTgNKaSzEf72cxUngiMjywaU1HgLygU4u/KfJCqoM/VBBaUf5qXcI3tW4AjY4xWhQX8QEJF5F69In0ASIIKQkZkmx2WcsDAvcQUeytnPyWNjlMsLVh3YkaMcaXgiTGM6S2CXD9WL2ZA92Cqj6AxAMKc5nzKwtQYPsmVfE2e7VOsQLnS9ofPhmFPD5QMR6sj4iw/F3pbdRBAtHPywDhNEkYfdnLzPtvDnNIHV0zkdmMDAwa8XxemPsLpe0Vo6b+p6GJssWYttByXYd5IHnLZp1wvf0qt+niz3z6fjQzI421gvAi7+R77ClamGOUMpqqGE03LPqjJ79+KCqK9rWdWviBaXYAK2y5FaeMsN7oyXj1Q
- AZPnBOut
- +E1dMpZKBBwFoqdq0+LUAzd23oNkk48poQOs+UN+shwo2Ns0oqPbNIH14DoUhcqJwXaRlYTTB31HT5Loqh8DXcCD3k26UakPkxv8vZQD8YbyRMJ3z1vHmd8GVf7WGyDyzwT/HbKIMtdJtM7BfaoFX+R6mTpOg0sCgG+tnMsP/yvVhU2n2kIpipoBCOGliARiF4u1vqsTkA5Vpkt5rLcKoUL1nNg==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1767996702-997774
+X-HE-Meta: U2FsdGVkX19v/HgtxRA4I0TV2MBxQs6uXJkhWNge1eb+aN3gmULixtoxY1Ea20ZfV19Z9p7KwbM5B/g3dziHlXg0zbI/tLd3a/sSn8+9wrP5VyR+C8XudGB5ziTMEl482GA/MmQ9QcVN4wVEgTCz0a/WEJhno+zAxvaGd4DYDwKVP7bQyHOOWHIRdnj+EVkH6+ADH+WPCXEQYq4DEPuKn+rrlOxBkh4XVh/YaZtSKmTbuIMxR1wmHY6kQH1J9UDslj8oyHDuhkbrGIAHOxMcIVW46o/okT6zmOA+1IQOpqpyUmBJmS7YrHBu6UO83miuZF/3c5ivhsieBWOHHnDzzEPjC6P4o6xJolLSlZXoCOq1V19wYMKIi7+SqeL6W/xDzkirCM+fRZgxlVyf2l+A1WKsRTQs9vZgh73QsS4Fru/6ffvuNkehRBpg80crpeSV3tJIKvuxbgIWJlyy1QXHAW8/uIkRJqo1QFpVN4Ugz/VQ/5MYAvlqiFukg4soE4UP7eagvZNuH4U03xjALiEjPqH9Rcw29WsaZWpsFM+8fXvLD3r7VaEpEayVBw/GjU18fup1IOVmFyirz2BoYDE228w1qka5/uIj2v76/hglupKKdJjSkvTKztcwQF6G9se6UmMYZctpn1emBGrvIwuZCFMlE6+Z2sTT+BjFfv/u0ihtluE5nsaK9GklYXb9BmyFFT2+tTwfc61Yx8euBLrFdVvZ/wxImoKkaVqgSwKATH6arvuWp/lgBweGD1gWukUUM5kD5EMexV/5HGNbyJ0HMDNad8f3wFLhOOZdno6sSwUWTesvDONJHsYzl7FjqxKAZ4+zWlFbO964DjuTDVY8EWnCGrjRl2Mjroo0FN/QHhAToFvdXZ+riuOm1rzcsT3J6eqL1mIMejoWsBN6y4PtO4k3KgH4ODi4i2PBlQUw2S0UaoMFDXgc+kDPcqzMA3K8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,66 +220,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 08, 2026 at 12:08:35AM +0100, David Hildenbrand (Red Hat) wrote:
-> > > "Then we make page->compound_head point to the dynamically allocated memdesc
-> > > rather than the first page. Then we can transition to the above layout. "
-> > 
+On 1/10/26 07:43, Zi Yan wrote:
+> On 9 Jan 2026, at 16:34, Balbir Singh wrote:
 > 
-> Sorry for the late reply, it's been a bit crazy over here.
+>> On 1/10/26 06:15, Zi Yan wrote:
+>>> On 9 Jan 2026, at 15:03, Matthew Brost wrote:
+>>>
+>>>> On Fri, Jan 09, 2026 at 02:23:49PM -0500, Zi Yan wrote:
+>>>>> On 9 Jan 2026, at 14:08, Matthew Brost wrote:
+>>>>>
+>>>>>> On Fri, Jan 09, 2026 at 01:53:33PM -0500, Zi Yan wrote:
+>>>>>>> On 9 Jan 2026, at 13:26, Matthew Brost wrote:
+>>>>>>>
+>>>>>>>> On Fri, Jan 09, 2026 at 12:28:22PM -0500, Zi Yan wrote:
+>>>>>>>>> On 9 Jan 2026, at 6:09, Mika Penttilä wrote:
+>>>>>>>>>
+>>>>>>>>>> Hi,
+>>>>>>>>>>
+>>>>>>>>>> On 1/9/26 10:54, Francois Dugast wrote:
+>>>>>>>>>>
+>>>>>>>>>>> From: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>>>>>
+>>>>>>>>>>> Split device-private and coherent folios into individual pages before
+>>>>>>>>>>> freeing so that any order folio can be formed upon the next use of the
+>>>>>>>>>>> pages.
+>>>>>>>>>>>
+>>>>>>>>>>> Cc: Balbir Singh <balbirs@nvidia.com>
+>>>>>>>>>>> Cc: Alistair Popple <apopple@nvidia.com>
+>>>>>>>>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>>>>>>>>> Cc: David Hildenbrand <david@kernel.org>
+>>>>>>>>>>> Cc: Oscar Salvador <osalvador@suse.de>
+>>>>>>>>>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>>>>>>>>>> Cc: linux-mm@kvack.org
+>>>>>>>>>>> Cc: linux-cxl@vger.kernel.org
+>>>>>>>>>>> Cc: linux-kernel@vger.kernel.org
+>>>>>>>>>>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>>>>> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+>>>>>>>>>>> ---
+>>>>>>>>>>>  mm/memremap.c | 2 ++
+>>>>>>>>>>>  1 file changed, 2 insertions(+)
+>>>>>>>>>>>
+>>>>>>>>>>> diff --git a/mm/memremap.c b/mm/memremap.c
+>>>>>>>>>>> index 63c6ab4fdf08..7289cdd6862f 100644
+>>>>>>>>>>> --- a/mm/memremap.c
+>>>>>>>>>>> +++ b/mm/memremap.c
+>>>>>>>>>>> @@ -453,6 +453,8 @@ void free_zone_device_folio(struct folio *folio)
+>>>>>>>>>>>  	case MEMORY_DEVICE_COHERENT:
+>>>>>>>>>>>  		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
+>>>>>>>>>>>  			break;
+>>>>>>>>>>> +
+>>>>>>>>>>> +		folio_split_unref(folio);
+>>>>>>>>>>>  		pgmap->ops->folio_free(folio);
+>>>>>>>>>>>  		percpu_ref_put_many(&folio->pgmap->ref, nr);
+>>>>>>>>>>>  		break;
+>>>>>>>>>>
+>>>>>>>>>> This breaks folio_free implementations like nouveau_dmem_folio_free
+>>>>>>>>>> which checks the folio order and act upon that.
+>>>>>>>>>> Maybe add an order parameter to folio_free or let the driver handle the split?
+>>>>>>>>
+>>>>>>>> 'let the driver handle the split?' - I had consisder this as an option.
+>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> Passing an order parameter might be better to avoid exposing core MM internals
+>>>>>>>>> by asking drivers to undo compound pages.
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>> It looks like Nouveau tracks free folios and free pages—something Xe’s
+>>>>>>>> device memory allocator (DRM Buddy) cannot do. I guess this answers my
+>>>>>>>> earlier question of how Nouveau avoids hitting the same bug as Xe / GPU
+>>>>>>>> SVM with respect to reusing folios. It appears Nouveau prefers not to
+>>>>>>>> split the folio, so I’m leaning toward moving this call into the
+>>>>>>>> driver’s folio_free function.
+>>>>>>>
+>>>>>>> No, that creates asymmetric page handling and is error prone.
+>>>>>>>
+>>>>>>
+>>>>>> I agree it is asymmetric and symmetric is likely better.
+>>>>>>
+>>>>>>> In addition, looking at nouveau’s implementation in
+>>>>>>> nouveau_dmem_page_alloc_locked(), it gets a folio from drm->dmem->free_folios,
+>>>>>>> which is never split, and passes it to zone_device_folio_init(). This
+>>>>>>> is wrong, since if the folio is large, it will go through prep_compound_page()
+>>>>>>> again. The bug has not manifested because there is only order-9 large folios.
+>>>>>>> Once mTHP support is added, how is nouveau going to allocate a order-4 folio
+>>>>>>> from a free order-9 folio? Maintain a per-order free folio list and
+>>>>>>> reimplement a buddy allocator? Nevertheless, nouveau’s implementation
+>>>>>>
+>>>>>> The way Nouveau handles memory allocations here looks wrong to me—it
+>>>>>> should probably use DRM Buddy and convert a block buddy to pages rather
+>>>>>> than tracking a free folio list and free page list. But this is not my
+>>>>>> driver.
+>>>>>>
+>>>>>>> is wrong by calling prep_compound_page() on a folio (already compound page).
+>>>>>>>
+>>>>>>
+>>>>>> I don’t disagree that this implementation is questionable.
+>>>>>>
+>>>>>> So what’s the suggestion here—add folio order to folio_free just to
+>>>>>> accommodate Nouveau’s rather odd memory allocation algorithm? That
+>>>>>> doesn’t seem right to me either.
+>>>>>
+>>>>> Splitting the folio in free_zone_device_folio() and passing folio order
+>>>>> to folio_free() make sense to me, since after the split, the folio passed
+>>>>
+>>>> If this is concensous / direction - I can do this but a tree wide
+>>>> change.
+>>>>
+>>>> I do have another question for everyone here - do we think this spliting
+>>>> implementation should be considered a Fixes so this can go into 6.19?
+>>>
+>>> IMHO, this should be a fix, since it is wrong to call prep_compound_page()
+>>> on a large folio. IIUC this seems to only affect nouveau now, I will let
+>>> them to decide.
+>>>
+>>
+>> Agreed, free_zone_device_folio() needs to split the folio on put.
+>>
+>>
+>>>>
+>>>>> to folio_free() contains no order information, but just the used-to-be
+>>>>> head page and the remaining 511 pages are free. How does Intel Xe driver
+>>>>> handle it without knowing folio order?
+>>>>>
+>>>>
+>>>> It’s a bit convoluted, but folio/page->zone_device_data points to a
+>>>> reference-counted object in GPU SVM. When the object’s reference count
+>>>> drops to zero, we callback into the driver layer to release the memory.
+>>>> In Xe, this is a TTM BO that resolves to a DRM Buddy allocation, which
+>>>> is then released. If it’s not clear, our original allocation size
+>>>> determines the granularity at which we free the backing store.
+>>>>
+>>>>> Do we really need the order info in ->folio_free() if the folio is split
+>>>>> in free_zone_device_folio()? free_zone_device_folio() should just call
+>>>>> ->folio_free() 2^order times to free individual page.
+>>>>>
+>>>>
+>>>> No. If it’s a higher-order folio—let’s say a 2MB folio—we have one
+>>>> reference to our GPU SVM object, so we can free the backing in a single
+>>>> ->folio_free call.
+>>>>
+>>>> Now, if that folio gets split at some point into 4KB pages, then we’d
+>>>> have 512 references to this object set up in the ->folio_split calls.
+>>>> We’d then expect 512 ->folio_free() calls. Same case here: if, for
+>>>> whatever reason, we can’t create a 2MB device page during a 2MB
+>>>> migration and need to create 512 4KB pages so we'd have 512 references
+>>>> to our GPU SVM object.
+>>>
+>>
+>> I still don't follow why the folio_order does not capture the order of the folio.
+>> If the folio is split, we should now have 512 split folios for THP
 > 
-> > I am not sure I understand how it is going to work.
-> > 
+> folio_order() should return 0 after the folio is split.
 > 
-> I don't recall all the details that Willy shared over the last years while
-> working on folios, but I will try to answer as best as I can from the top of
-> my head. (there are plenty of resources on the list, on the web, in his
-> presentations etc.).
+> In terms of the number of after-split folios, it is 512 for current code base
+> since THP is only 2MB in zone devices, but not future proof if mTHP support
+> is added. It also causes confusion in core MM, where folio can have
+> all kinds of orders.
 > 
-> > 32-byte layout indicates that flags will stay in the statically
-> > allocated part, but most (all?) flags are in the head page and we would
-> > need a way to redirect from tail to head in the statically allocated
-> > pages.
 > 
-> When working with folios we will never go through the head page flags.
-> That's why Willy has incrementally converted most folio code that worked on
-> pages to work on folios.
 
-A little more detail here:
+I see that folio_split_unref() to see that there is no driver
+callback during the split. Patch 3 controls the order of
 
- - Zone/Node/Section stay in page->flags and are replicated to
-   folio->flags
- - HWPoison stays in page->flags
- - Reserved stays in page->flags
- - AnonExclusive stays in page->flags
- - Writeback/Referenced/Uptodate/Dirty/LRU/Active/Workingset/Owner1/
-   Owner2/Reclaim/Swapbacked/Unevictable/Dropbehind/MLocked/Young/Idle
-   all exist only in folio->flags
- - Head/Private/Private2 all go away
- - Locked & Waiters are ... complicated.  I'll elaborate if there's
-   demand.
- - I haven't put any effort into analyzing the Xen flags.
- - HasHWPoisoned/LargeRmappable/PartiallyMapped all move to folio->flags
++		folio_split_unref(folio);
+ 		pgmap->ops->folio_free(folio);
 
-> When the program was called "2025" I considered it very ambitious :) Now I
-> consider it ambitious. I think Willy already shared early versions of the
-> "struct slab" split and the "struct ptdesc" split recently on the list.
+@Matthew, is there a reason to do the split prior to free? pgmap->ops->folio_free(folio)
+shouldn't impact the folio itself, the backing memory can be freed and then the
+folio split?
 
-ptdesc, yes.  Slab is still in progress.
 
-> For quite some time there will be a magical config option that will switch
-> between both layouts. I'd assume that things will get more complicated if we
-> suddenly have a "compound_head/folio" pointer and a "compound_info" pointer
-> at the same time.
-
-What I'm hoping to get to is a point where calling compound_head() on
-a page which is part of a folio is a BUG.  You should only be calling
-page_folio() on a page which is part of a folio -- because there's nothing
-useful to find in the head page.  So compound_head (or compound_info) can
-share space with page->memdesc.  For now I've actually put page->memdesc
-adjacent to page->compound_head, for no reason that I can recall.
-
-I had thought that calling page_folio() on a page that's not part of
-a folio would also be a BUG(), but now I think it's better to quietly
-return NULL.  That's based on my experience working with slab and ptdesc.
-
+Balbir
 
