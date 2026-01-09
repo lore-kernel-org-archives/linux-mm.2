@@ -4,236 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AB3DD26D87
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 18:26:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78D94D26D93
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 18:37:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F4256B0005; Fri,  9 Jan 2026 13:26:47 -0500 (EST)
+	id AA6D56B0005; Fri,  9 Jan 2026 13:37:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79E8D6B0089; Fri,  9 Jan 2026 13:26:47 -0500 (EST)
+	id A544B6B0089; Fri,  9 Jan 2026 13:37:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6356E6B008A; Fri,  9 Jan 2026 13:26:47 -0500 (EST)
+	id 960046B008A; Fri,  9 Jan 2026 13:37:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D79E6B0005
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:26:47 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BB0A11606B2
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 18:26:46 +0000 (UTC)
-X-FDA: 84313256412.23.42DAD50
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7EB5DA0011
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 18:26:42 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HjGBGxUS;
-	spf=pass (imf25.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767983203;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 821F56B0005
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:37:46 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C85F3D09B5
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 18:37:45 +0000 (UTC)
+X-FDA: 84313284090.10.412A531
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2B6F218000B
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 18:37:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="cKq/4w7g";
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767983864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ov4TlI8JxZKQ/mqwmH29ZLZ4uNJYjYEwkhe50zs/dhw=;
-	b=nRjFnzK27cAyWIevwmV1xFIJqegvqO3il7SG9Ix8yrnh/R98rkAUIJvQ3IXVANZ0H6aQ2t
-	RlU4eF15gwvSJIMK/+xn+yT7E+XGQay0wqLQh1BQOojBlUHlvBa3F12Xvl3/kXBnzEDL3H
-	9o/iZOL4SlB+gVpdDmAC2YXvzsiE1gY=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HjGBGxUS;
-	spf=pass (imf25.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767983203; a=rsa-sha256;
-	cv=fail;
-	b=5LR1QzWTgEwsd4TU/ER7kZ5Rf/oUXiH5v8J1slQHbtjkOvVyY3cTBS+tvHroBpXzRSP6JP
-	m1PCHi/9DNkke2Wh5F3Bfo2uxQbq/Th2VXApB6pE7qOBvcD0NCSxRIYWMTqPTJYH4eq4zH
-	h+4TPcngeJQxr/fyd6ZTBarFmI9LZvk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767983202; x=1799519202;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=NywDssrIOiaDtbjw9j2JeKFheiiZWfjlwzZ7Fd9zJ9A=;
-  b=HjGBGxUS9oguXta0qGEAqHijoZHukOF2BoepdM42chBGLrrHlNderALM
-   vSV7dxqHV5ZcX/T9HVFsT3ACG1+vJEnKZb95v8dy2UF+Zff4JYUNd4+tt
-   lgluqwRPbEOa2c/UuDNBndNvSUZy24Ssnu2RPKCr6uTII5tSQwIS+oZTd
-   KuJR2AXDKGq4FDNm+d5NvBxQu2p7l4i91Y4cuXFr6UlEvzTT6VvUWnHgz
-   wAKHTvyDi0MfzYbY7VAhrdoEWmJ31lv51+lzPJxBV6VWi9pcGanRkBjXr
-   DRn/z9t1hc/lTz5IyOA37ngOAyB70GJjxcMaz24c1+PmbWAsV1T8eN8kG
-   w==;
-X-CSE-ConnectionGUID: c6YIfozjQgCUkjnQc3VZcg==
-X-CSE-MsgGUID: 9c00WvJrRk6zJUSOOaJ2FQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11666"; a="80819916"
-X-IronPort-AV: E=Sophos;i="6.21,214,1763452800"; 
-   d="scan'208";a="80819916"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 10:26:41 -0800
-X-CSE-ConnectionGUID: 5djmvjdXRWSN+hNypdqYrw==
-X-CSE-MsgGUID: 7HMJNa8jQCCHO7BTwnkn0A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,214,1763452800"; 
-   d="scan'208";a="203326458"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 10:26:41 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 9 Jan 2026 10:26:40 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Fri, 9 Jan 2026 10:26:40 -0800
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.56) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 9 Jan 2026 10:26:40 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JlLaShTy6D+hz9FeINUmObkUZFa3uNt7yT7Zz2q0X+2d4t3ntbTN0cVNa3LaiipibWLVyGbSTamhwktRcvcNhDasNV5mDgCHasG7pZ67uqyXoOlc9ml1DGSOj/S2suEFovbk0qBoUHH0vvOsVG7L9iMC1wwhrWuP6Ye/8RHu5WbF5wMk2tcUe9/9WYUjcIIbpWtGChMSptZug3w/bi1a3M8IifSSxxwLUU01IY9RtzJLL/NOQMt4FGn61uOlfi5ZjwEQFhOuvf4a/DWYICceSOZAOBjbtS38nHakQ+sIo5GsF2ei1l2ks2j7nDgs43MxPgnEE+1xlxod/2mu93Staw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ov4TlI8JxZKQ/mqwmH29ZLZ4uNJYjYEwkhe50zs/dhw=;
- b=yLYI7P7VT0pjENLRStUH+roxhwoGu88THaJ/rSZdY8REf/oI619NRke7I28ldSu4YYa4uyYiYfFPQR5Mks8n2AKzJ3XA4dIEB2a7sY0Rv1lDR1sqI4lUVkr8heonaSsybKx3amcAerc5TQokngMmDBF9dL2iZ0uJ5myWCNSHrhtA1IAIV8p03aldJG8SHuocqxQv6gz6LCz3+saEdTFZz2f3Lmcofr6Bzo23rrengy/1IES/mF1bopyV+XQQk++0pozul0yMldxd8c1DmISNLLbiwcwhsugGL8T9MJVbRpAqZVR1kJrl1X8kPd4XioWJqgDF+IQI2TNNL2gtiZb3ag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by MW3PR11MB4522.namprd11.prod.outlook.com (2603:10b6:303:2d::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Fri, 9 Jan
- 2026 18:26:38 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9456.015; Fri, 9 Jan 2026
- 18:26:38 +0000
-Date: Fri, 9 Jan 2026 10:26:35 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Zi Yan <ziy@nvidia.com>
-CC: Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>, Francois Dugast
-	<francois.dugast@intel.com>, <intel-xe@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, Balbir Singh <balbirs@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>, Andrew Morton
-	<akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 3/7] mm: Split device-private and coherent folios
- before freeing
-Message-ID: <aWFIW6XCKXPpIinv@lstrano-desk.jf.intel.com>
+	bh=KhWmQqM56gLrKE1FuzjHhji8nQ+pitm6bhi8nQvgHiE=;
+	b=V8QueTu9Bxynwn1UyovlmpW2w64AcuJH626V5eOURbIpuxhCMwY+NwJRew3eGSnSf1Vn4p
+	OdLUyt0ZCm0kT8z7nvZusndtKFYKzziRdsG/WswaDfp2oIs117g0B6WFJ8hUDmxSMStEe1
+	neNH7N4uQKLFME6TztW++f4Iqb5FA6w=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="cKq/4w7g";
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767983864; a=rsa-sha256;
+	cv=none;
+	b=0ph8mG4jde1Jck9ZRUSGZSzI9LhYzUGcnXzY0NdcFC3l8egqIcYtyuF1icbrdOWgdmR0fs
+	d+kriMf/N3QpOpyBeDM7TcwvDQRUjVSUgmrwvgJYn2hV7CA+E/aFYaVb/Gn04eaJOQQ+IO
+	6S9L6+77Be9FnYVyvRso72pGxLQbbZ0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3A08460160;
+	Fri,  9 Jan 2026 18:37:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602F1C4CEF7;
+	Fri,  9 Jan 2026 18:37:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767983862;
+	bh=ARzqSTrB4mFRoJEjpwqfD7XvlHCDD3ZE6XeoURLYd8g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cKq/4w7gGX95/qxZpKSvwIsa09ufoQFCR4/Y9FL0I8olI1SnCnQzQpwg1S3mCWVVs
+	 fajeQx6jMNNGo8G7kMsAbEd0MC7fMHF/ztwPL66zbVw9ppWO5gaoYQ86zcxHeG59MP
+	 FlZEs7fuDVbcUF9xgvE6Fs9QTch66UtAMgMDUxjk=
+Date: Fri, 9 Jan 2026 10:37:41 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Francois Dugast <francois.dugast@intel.com>,
+ intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, Matthew
+ Brost <matthew.brost@intel.com>, Balbir Singh <balbirs@nvidia.com>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Alistair Popple <apopple@nvidia.com>
+Subject: Re: [PATCH v3 1/7] mm: Add folio_split_unref helper
+Message-Id: <20260109103741.533c1b807f3ccf9a6f0264de@linux-foundation.org>
+In-Reply-To: <59fb1669-2908-4cab-b3c0-b97479da3fb9@kernel.org>
 References: <20260109085605.443316-1-francois.dugast@intel.com>
- <20260109085605.443316-4-francois.dugast@intel.com>
- <d1d80b81-678d-4d28-9ac2-95cb74824e73@redhat.com>
- <DF5A6B81-7811-4654-855F-8EAB76CCCE51@nvidia.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DF5A6B81-7811-4654-855F-8EAB76CCCE51@nvidia.com>
-X-ClientProxiedBy: SJ0PR03CA0115.namprd03.prod.outlook.com
- (2603:10b6:a03:333::30) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|MW3PR11MB4522:EE_
-X-MS-Office365-Filtering-Correlation-Id: ae8813d5-95dd-4252-d7a5-08de4faca0bc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?OFhsYWx3Qlh1ZzVLK09DR3FvQXVHc1NVQkppbVR4RERaWC9aOHRaTU5YSVdN?=
- =?utf-8?B?Z0VPdVpsODJlanJheFZMZ05uNk4rUk15OWJUek05cmV3RThmNEo2a1lvTXE5?=
- =?utf-8?B?Zk1MSk94ZG1qQmZtak5JMC9sK0cxcVdpcGkwMUY0bW8rMUpvRmxCWHJnZDRn?=
- =?utf-8?B?Tk1OTHJPSkp5WW9uTlJGWUZrdkZ1Q0FJVVdpRmtFYzc2L1ZnVHNPZFdGb1Zw?=
- =?utf-8?B?V3BybURkUVJSSWJKdUR0VVdZU3Nnd2NkazRTQkFld1QzT090RFpMMWFKWk1O?=
- =?utf-8?B?Z3lzMnF2YkNVK2Y2WkNUZzdNWTJRdTR2cmowZEZrblFwSjcrNERFZVpSbWx2?=
- =?utf-8?B?ZU9JMHVWZGRPV25HWlE2QXZIM2xJQUxaMTYzRUM2bmd0bDhjZi9wN21pNzkv?=
- =?utf-8?B?QzNrd3l1VHJmOWhidGNTaW1nS1h6Y2ZBL29VdmtNUGJiWjRHcG54eWg0djJE?=
- =?utf-8?B?MWhjL2RkRmRvNWl4VHllam9vdVBFb0RVK3pGb3Z1dlhwTHUyRzQxZW45T1NQ?=
- =?utf-8?B?dUJ5dTlJSmtQWHQrZDJUY3JCK1UwL3MzWFNLU21nYnExSWp3TDdjanZ2QWh6?=
- =?utf-8?B?aVhDSGcwZjFzaDNmSTBqTjFNUkVBWkQydko1WVBRT3ByYnJHaWdQZklReW5k?=
- =?utf-8?B?RjlnaFRJZnhiR1hPdlA2VVZmMXF4dStOdW1vZFBubVRzK1c0YnVGZ21meG1y?=
- =?utf-8?B?MUdDSmMzanRyS0pnb0R5em5hak85aWZOQThmYnAwRVN4aG1JdHFLditvV1Rn?=
- =?utf-8?B?aGIwZ3NzbXNhU2VMOEgwWFI2RUlqYng5LzI5L1QwSDFRa1BKK2lHc3hwSkVH?=
- =?utf-8?B?WDJndUtQY3Y0ZmRmbDduOG9kWHVFMlp5UjZoRndXV2xnNFFJK2tNY09lRk1Q?=
- =?utf-8?B?dllSR3NsRlZ0QVByZElJb3ltdXRBZmRTOStVMkd0Mkh0ZTlpc0tYTkh0dlM4?=
- =?utf-8?B?VjhWcGxuVlZHZi91WlZGQ01ZamJaekttRTRJZC9VVytoSjRMK2w1R2RUaTBN?=
- =?utf-8?B?QVUxdkkxNmdJdWVwL0YyWXY5d1hwaHhWRmpzLzZlR1YyZ3NxMFFDUDVmWnoy?=
- =?utf-8?B?RERiK1JpK21ZTi9SZDI0cjdSWExpRG5ic1dnU0o5NlFiM2p4ZWg5ZllGYXVV?=
- =?utf-8?B?d05Pa0l6emMwNWFUZ0xNZFlnQytPVEV6alh4eGlvRWNGQmY3dFErdDFDTkZh?=
- =?utf-8?B?RzBhRWhLb2cyMTFFNklXUDdrVUpRL1A3NG84RDNJVWs5WURMdzhhYThSdHE1?=
- =?utf-8?B?WHZkbm51c1phd0lFY1kxYkFtSnZEYWlMN0pxOEs3Q2NTdGh3NVpWTGVaekNv?=
- =?utf-8?B?ekZJV3c0aXFyUXVTdnM1RjVReWx1ZXQ3VlhBWWxuZFZmUko0R2xVeEx1Nyta?=
- =?utf-8?B?c293OTJxdjNHRVNQYk1OMTlSTWMwd3JzVUYvTmdjdVJBc2hjdi82OTh0REsw?=
- =?utf-8?B?UnRQSzNyR2hXQVQzSTFjU2tUT21td2wxdWR1NzNrNTRVYmliZUNndjNGM1ZR?=
- =?utf-8?B?bFdqSGJPVGtGSGpvUFJlSlN5RXg1RFJQaWxWMm5Hd2hLQTljUDllTVN0Nm9M?=
- =?utf-8?B?U1kyaXZscE5MajJjQktSMHZTZkIzN1d0eFE4VnpmYk5ZZnZ0QnVSSlBmaFAw?=
- =?utf-8?B?TnNaRjN1VmpaZlZGYXVlUEt0c3I1SDNXWkNHL0lvMUMrbC9SY0s3Wi9zTnNE?=
- =?utf-8?B?MWo3QXdqU2kvb1NmTXdMaFpyL3UrN3JnOE5XN3UwWkdDc0FnN1pMdXdmL0Q3?=
- =?utf-8?B?WEcrSTB4ZG1jdHhLZk1zSmZEK0hnUHg5YU1LWkVZdElTRjVRKzg0TUtYbXhZ?=
- =?utf-8?B?MnVGUVRWQVhQZmJPVDJTVE82cmo3bXlLd2ZEbDNEWURKL0NZbXR6SGJoWjg1?=
- =?utf-8?B?WGRURUQ2d25tekhkUzJlSWFSS1JHTTdSMGJ3SUViKzZNektZQmRWcS9YUUZL?=
- =?utf-8?Q?X08cDVf9KqnT8bZiQuUDMELMESvbjbsi?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VEszNmFKZ2JWMGpUM083bjNadTJHa3drM0FCM1VTUjhqV3RNbFowTUdycE1P?=
- =?utf-8?B?b0M0ZWgzZnJoSEhKZEVhWXNPVHh1Y0JoYXNnZ3V0RXcrUmdTOGlWNi84emF2?=
- =?utf-8?B?eXlyU2xYMVlkcmsrZHpCUUI4RytBTC9GamhjZ3pSR1I1NG1XcHdNMWJieFVm?=
- =?utf-8?B?ZGRyamU1NTB1aW5xeHVoUkhudGRVVlFxMVNEcmFlVitrcHREWXBpN2pCN2d5?=
- =?utf-8?B?NXExRGJCbjI5YksxWUR0UXF0TndXbC9aNkxGdUErZkJZRlVMUEZmTE1sSkJT?=
- =?utf-8?B?azNFQnZUTnB4RDVwK0x4K2VrUnhZVGlXU3E0KzdzNUZ5QWZzNEphU3lwYmxV?=
- =?utf-8?B?Z1FCNzY0OXFOVnJSYXZyUmM5UFBIOUhvbWlRNE1nZWF2bS9Mbm5ZNUFtWWpO?=
- =?utf-8?B?RFlDbjI3VEdTSm9Kb2ZtQzR5Y0lWY2pONTdSL2JjcVYrbE15cjBzWUZZcVdk?=
- =?utf-8?B?ck5TSm9VZ1QxRnN4VzRJKzBxbUozOE0rL1hidTdOc3JGa3RkQkxiWlJwc1Vk?=
- =?utf-8?B?aUQ0dEp6RHpOYjZNRWFaTi9pZVZhU3ZXUGgycDYySTJTT082cEl6WVZkSWxH?=
- =?utf-8?B?VWduVys0SDl2S05rdDVyam9oV05JTm45VitPdEk1TWNabEE5aFVKSTRyRXNQ?=
- =?utf-8?B?dXN5WDZmMFV0WWR1a3dhK1hWQnRzWUFQZlhQNHlqNENjWGVRbVZGMEIyaEV6?=
- =?utf-8?B?MkdvVnc5NzJOMjcyQmlDc052Z25qYVI5dU41SlpvdEFyYVVOelRRSC9zYTln?=
- =?utf-8?B?blpUYm1pZnRwbFllSE1TVytlUmFteG1GVUkzU3hGZFd1U0tmdmNTVEJtNWNZ?=
- =?utf-8?B?T2cybWQybFJ1bW5LT2szN0o0eG1mZVJONTU2NXFGdXpXNFdBc0NHblk2N3Rt?=
- =?utf-8?B?dnpLUnVnYjdaSzZlVnRuNmFOOWdvT1JhcVY3aWczaytCdU9Lc2Y5UFNpTWVO?=
- =?utf-8?B?aXN4MHk3MHZKMUpoWG5HaTd4QkVqV3owbWRRQ01YbllCc1ZGbXI3QVlNa04z?=
- =?utf-8?B?djYraGF0cENuRGdvNXc3N2lrbUpCYi8xVkMwbjgxeThSeHNFc3JoY2VXU1Ew?=
- =?utf-8?B?UWJQUlp4eXkzYUo3RWxuL3NoRktVLzB4QjZVZ1JscnRCMjl3N3pod2w5bjBp?=
- =?utf-8?B?ZStadDgrRUJGeDFrcHV4dkxhUnBoZTBveXB4c0pFS2hnNy8vWGxCbEY0aVRq?=
- =?utf-8?B?WXphVnRnRXN4c0pYVnhNVEYrMDVlRGJYbmdjK2poRkh3STNMMjNxa3J0elFN?=
- =?utf-8?B?TFV6aThVc205T3F2N1BBdllhQkEwTGFxemVneVphdG5KZ3Z4VGNUQ0wzYy9D?=
- =?utf-8?B?WXlyMGF0NEhjYkpiSHNvRm5BM2Z0dy84VEJ6MHkxdGRNY3BDYzZsbi8rYXVO?=
- =?utf-8?B?enBhZGttNlkzZlU5ZnlrZTQ4V2dnc0xsVFRJVjZvdXBNY2NLMU9ZdStYcDVW?=
- =?utf-8?B?RXRUMC83TXNOd2FDSmYxUkhBbUxMTHhuM3AwcWpoVTVMWk5mWnZqVFJLcUtw?=
- =?utf-8?B?emhMQnBNR0pJSUdPdnJwd3lPSDVYT1VRdHE2RlZ5dlkxTVdWSVJlVzluL3pY?=
- =?utf-8?B?cmNZc3BxMUxTLzhtd1N2WkVRMzY1bWx2bk5Ebk1RR3hPMzhsV01MQ3VVanB3?=
- =?utf-8?B?bmFJKzFRYklRelBVUFdkOThlRTFwbzlaNWd1UXk1NVRaVTlkK2EzN3NnVk5o?=
- =?utf-8?B?NmhQYng1ZUdyeVU5SER4Zm5NdFZ3WlhkbkxsTEpkWDhsd0I2TjY1MGZNQzhw?=
- =?utf-8?B?TnVXL29MNUNDUFhQTXhUQkgxdFdEWEZaRTVKdHdFMWs1VDNta2VCSk5uUkc1?=
- =?utf-8?B?eVNKQ1FySEFvMkRUSjR5ZTBnZU9vZkJEZXhoQ0VOdmkyOVdjSm1xaDNKS1dM?=
- =?utf-8?B?UlF4ZlFxYXlsT00wSEQrYXZybEhxamd1MTB5WGFuZG5uZ2lqMWVmYlRwdDh4?=
- =?utf-8?B?WUtKLzhYdDMvUDVjZ1IxQVY1Y2pIY0Q3SVJaY3BJT2J2dG5nd080WFVFb0ps?=
- =?utf-8?B?bW9XdGVTcUl3Q3lSVll6a1FFa3MyT0w4OVpRRWFyTVhob0JxUnlQcmo5amF4?=
- =?utf-8?B?c2dkT3k5b3BUTDNMTTA5dmVMQmZyejJ2dlpYY0hORWxrekpJUWpwVDd3QVpJ?=
- =?utf-8?B?OU81Q2w5YmxLMlArc0llb1JNU1pWTTJheG1ISU1VTzh6OGQ3Q2FIVEdzekI4?=
- =?utf-8?B?ZlZFSzNiS3JlOHlQMU42RTdQeW9pRkhYUk5LQlpCK2d2WW5uRk90ais5Zk1G?=
- =?utf-8?B?ZklCMC95b1RTd0tCOWI5d011WExRendTbUpCQ2g5cFlIeElnS2RUbjVjeXFt?=
- =?utf-8?B?YTluck1CVjRHalFtUDQyVzJTeGVnd29qNlE2eXRjTDZ6N1YvVG5UZHNqYUJY?=
- =?utf-8?Q?aDUFsI+sRi2RP4rA=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae8813d5-95dd-4252-d7a5-08de4faca0bc
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 18:26:38.4269
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 44cB4V6sfBlzr2O3zAi6mrLAS+hrdSHDWYG8tETAH/sFpivMvfm3zJz0pT1dSKQQNTaRqYbkroYbaj+1yRqz4g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4522
-X-OriginatorOrg: intel.com
-X-Stat-Signature: za51duokzn68x6gmqoj5wq65s1h5fnqc
-X-Rspamd-Queue-Id: 7EB5DA0011
+	<20260109085605.443316-2-francois.dugast@intel.com>
+	<59fb1669-2908-4cab-b3c0-b97479da3fb9@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1767983202-78761
-X-HE-Meta: U2FsdGVkX1/RGMoAVv53ZmM7ZGvfdrxCaympStenbMZbpdcpxdPoVbU4+XXBkX3OegRZeJuSKDfWxA0W2mzjyrIpgEl2kkWnplJmC0fvGWX6A5ZNE3jpXReRwma3feIMluCe3xs7a3hhh+mYtrmavGvE5zLwiMllU+G2ybrywRhWqArXCm2w6W0N2+14nO2bcXga4Hxuw7L0x2V7Igw81DAjQql2vbkDvwt5RGmZ/CDlLCZO/a83GoUg44sTTZFYC2Kb/JRCrWuh7OPWRHuTjUE1Nx5HArLXoMARScXzypT5EMqEXP0g4xGIj271+MSJwZFpJTfLEMDpM5GuFCxTZHl+QzR81mhRkuGJa7XFNwGFX6boiJB4AQnDpIfVOU+V+o8/z8wOlNdj0iSt9F7Zq6VxqoU4QOJkvSbGXEIUEPkop95JnQ4ijsybVq007MpxhuqQxnbzvIWxvv/PPu4+t/jInzK9LDA7WMLipEiC0bdMW228yebTRd0rnTNl9s5ckWClVRJNEdluqYnfZe3T1tKACdywosuuECgSMfQjxD4khberalXcTT3ix71jAwSJEbWV3dPgkysGw2S3TeNeVpIEFWHE9Z+MO3gM0UKKxJlOMbVRabCB3qZqMViRjUDtC+5+mkxIJ9uCyppzhbMNLrkzyxibNYrT6hgwusYQUofNCfv6HQmjwXul2J6b7ez7vifBknhd39p3IWeVfR4sjL0uqcvF89yAH6EzP16O/VsnxarmD67ntk1YBzHewfWz1GvAIWV/yhL8mPWX4/uN5+NHqc4QYti/TBg6YrNKqyIRFJ6aSGGm7azReY3GXhyQijJ57Hwsv7lcSWhIruiqULdM04H8Px1ZIWGup7WGD3lXGigFEsUXXqocDgqw0FcRaPM9CmdABxQ6pVoq49INe4B2PfFI/okzmnQgyMcp8DnKOYhd+A8Joclm/0AfEI6fKSeO3JSaTz3wKWTNrR/
- izB/kzHW
- KW6JQKW4S70yxypLKcIZjbIg8pA30pF7SIRbA/JCfWI8wkMF4WJ7k9MRYgOqFQvlTl35i1Z+Pq25pFvEk9huFlCiEjkhYyrBxILYOCfVoCro5JQzdrySk3WrFTOylCxFNidwml0dn1FYm54B/MYbracGsmreGE1mIsK4k6Enf+hn/rNdD+Tn5EQPMas29hwm2ToC7SyBHRE4RjxiLCD52+UKoS9ATmZY5YCGrGo5N2sd7rOTIbfRmf+OeGruMvqy7RPmtHGq6mEVkMZT9Sh+vIVajw4S9JGFbBSWX6ypNoUNJOuD2QRbtETnEGAM8HvXdvKweYaHl1Gh7udNR2r1zD8TTqf8HDFr9xaC+dZoMZJ9aoiYy5t9sgdZD5Vd1fyszxTIyf1kGcty1Is5L1psvJLpe62PGQ7Fx1/FCoMplDCu65E292P56owNJrNPj0WoWLACkNE2RwaIwF465lOXNkuKJrmx4n7uE2hktSFu1/pWgQ4p2rmaeuCzEAr5I86xfKqMpUpgNWU47eB5KbQtitM7NMHZvqxpwxUO9sj0QDjrlEHXqDDlUUUJr1dX5IxgZukpxYEbNc6Vq6PbIHCpAhwNDigz5UhtolYNy42+SmDzblR+MeDgQAKIht0OxZmEvWgk7md3CSUSpvuFkQJDU0t+g2bbN+LCE7GW7Dg1iVgOLTnRh5peXn7B5LXJ4+eYXztY+
+X-Stat-Signature: dg5xswzr57ak5fw4jd41fpqiusny83m6
+X-Rspamd-Queue-Id: 2B6F218000B
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1767983864-632594
+X-HE-Meta: U2FsdGVkX1+hfj3ESwRSJjONoYWAULHot476r2izDD58Rn0UiYUzmBxPN6svJDUrSGpXhr3qWtc0WC9cGq8nGcSPzrgz/9xdjnUKyqNyd1M5oMr8Lu0AZtYM64J7zN5hhyTfGrmVsLWy1FKl7HWnDD6hC09Z+CZPQz8y9KF7I0rniVPyT7Ucpf5S6QN+t+nqE46HHC+7V6kusrBp5ZCTn99Vl17FbHFgLjZf2h/jzOPthEeL/hc3K1bU4oXYusA3tviUJISt5SJTxVdMLs6kk11SXAswdxmUyaSbRTVzBfx09iSJj99q+bdOis/QUfErslJFAvslJzZiTm4t+yhdzBM+GsjlR6CG28VnTga9xsKFJvcDe51LwsZ8LPCQL+38iSx80dMpKM89h+mjcmdLOndfYyBUX8YLlNdE6riCw9hghZsY6RPW90+VmOU/QDExJKt8X+pKteeHuNn16JYIKy9CWYwkWXhLzr2m9hYOQRYVCEDcTte+n3WnEgfHMFqT+imq4KWpH0hWBcYrXI5G+gJUM7YQQGvKkXsTTPRvhawNMm3rjuOI6M0c1g5DAroqQo8mU+zfDcVqLu7/PRnSja/k/rYF9hFGaBYMuIRwjZvdhJnut3SG2/L6eNV24BwUJtsNUgUMK5HGUJPFxLh99cDsHRMC56hn37E3HQmz37JVKfBbt6iHXhASIfj/aS8bNh4BGtrhlynYpePYFTnN1gbmvh7eqHKe6t7pdkCbw8zfL1008LBRf03ZlYoNXmMRefWeQVTaS3eLIVN6+PZ8B0ZNfThi82OKj2M2ozPJV5za8RXumGgJxDOWFQaRIc7AAzF/Vtf7mBCSU6Bm4EjhZkSK+bIUHH7y/dGdm7Tx1125cVH+eFwRP/Vd1TcbcnCuI7MGDbf9ebaJERGrCvtHj7B74mXC1mano2cLiKhye4UEdUpwOk4av/VS8Akaeq88qBRp9obfZxShTnrAJif
+ PS1bzdRF
+ bq/g3dQhMtL3QVppvYAvh1MfSvwtm5FgJwj/hHijJcRIyMpt68kfcDm7b1HQxi5bDD1YUkciz7fwsLBzuHBltJ+RtM2+DwbKjg+04Aru6c/HF2eeDpfHyQqELgn2hKldyQ9R7GP7MCIJ2XbFuQwKQHmvZSklaZKz76+4YOpYE4uDL5xAmxcLjjUsQP9dwI/AVRGB0SLUrOH1OP26uuwEgLNCE6R5sCj2Shr4SXA4T/Iy8AmyD4Tn79R25cuMrve1WvBgW7N2fwp4Lz6uWvj1r7zYBtRvrUv3e05Efc+vaxwb+mo/fpyxNtUeHR+mx9cMyWX39u+KSXs8CZPagL595PAxmMA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -242,68 +99,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 09, 2026 at 12:28:22PM -0500, Zi Yan wrote:
-> On 9 Jan 2026, at 6:09, Mika Penttilä wrote:
-> 
-> > Hi,
-> >
-> > On 1/9/26 10:54, Francois Dugast wrote:
-> >
-> >> From: Matthew Brost <matthew.brost@intel.com>
-> >>
-> >> Split device-private and coherent folios into individual pages before
-> >> freeing so that any order folio can be formed upon the next use of the
-> >> pages.
-> >>
-> >> Cc: Balbir Singh <balbirs@nvidia.com>
-> >> Cc: Alistair Popple <apopple@nvidia.com>
-> >> Cc: Zi Yan <ziy@nvidia.com>
-> >> Cc: David Hildenbrand <david@kernel.org>
-> >> Cc: Oscar Salvador <osalvador@suse.de>
-> >> Cc: Andrew Morton <akpm@linux-foundation.org>
-> >> Cc: linux-mm@kvack.org
-> >> Cc: linux-cxl@vger.kernel.org
-> >> Cc: linux-kernel@vger.kernel.org
-> >> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> >> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> >> ---
-> >>  mm/memremap.c | 2 ++
-> >>  1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/mm/memremap.c b/mm/memremap.c
-> >> index 63c6ab4fdf08..7289cdd6862f 100644
-> >> --- a/mm/memremap.c
-> >> +++ b/mm/memremap.c
-> >> @@ -453,6 +453,8 @@ void free_zone_device_folio(struct folio *folio)
-> >>  	case MEMORY_DEVICE_COHERENT:
-> >>  		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
-> >>  			break;
-> >> +
-> >> +		folio_split_unref(folio);
-> >>  		pgmap->ops->folio_free(folio);
-> >>  		percpu_ref_put_many(&folio->pgmap->ref, nr);
-> >>  		break;
-> >
-> > This breaks folio_free implementations like nouveau_dmem_folio_free
-> > which checks the folio order and act upon that.
-> > Maybe add an order parameter to folio_free or let the driver handle the split?
+On Fri, 9 Jan 2026 14:19:16 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
 
-'let the driver handle the split?' - I had consisder this as an option.
+> I'm not CCed on the other patches in the series or the cover letter, so 
+> I don't see the context.
 
-> 
-> Passing an order parameter might be better to avoid exposing core MM internals
-> by asking drivers to undo compound pages.
-> 
-
-It looks like Nouveau tracks free folios and free pages—something Xe’s
-device memory allocator (DRM Buddy) cannot do. I guess this answers my
-earlier question of how Nouveau avoids hitting the same bug as Xe / GPU
-SVM with respect to reusing folios. It appears Nouveau prefers not to
-split the folio, so I’m leaning toward moving this call into the
-driver’s folio_free function.
-
-Matt
-
-> Best Regards,
-> Yan, Zi
+Both linux-mm and I received a random subset of this series.  Something
+went wrong.
 
