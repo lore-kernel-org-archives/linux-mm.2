@@ -4,83 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9379D26D67
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:22:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD893D26D69
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:24:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4913F6B0088; Fri,  9 Jan 2026 10:22:36 -0500 (EST)
+	id 2C7F66B0088; Fri,  9 Jan 2026 10:24:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 472A46B0089; Fri,  9 Jan 2026 10:22:36 -0500 (EST)
+	id 27C196B0089; Fri,  9 Jan 2026 10:24:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39EED6B008A; Fri,  9 Jan 2026 10:22:36 -0500 (EST)
+	id 161206B008A; Fri,  9 Jan 2026 10:24:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 276406B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:22:36 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8080F1A01CB
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:22:35 +0000 (UTC)
-X-FDA: 84312792270.05.AA0C681
-Received: from relay.hostedemail.com (unirelay02 [10.200.18.65])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BA00D1C0018
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:22:33 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 066B86B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:24:49 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C43556B64
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:24:48 +0000 (UTC)
+X-FDA: 84312797856.09.470779C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id BC331C0002
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:24:46 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pU/2H1dF";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767972286; a=rsa-sha256;
+	cv=none;
+	b=JnRK5UohpBW7IRgskbwkvkTsAI4gBOlsPeqZckrXIEoNOV6/a+Nhubc7iKym9tBuTGxSBQ
+	KFk4mmlgCIdzCP3iuD2xAWrwmtkxLdkhu8rzY8Lj6t2BlnRHs1ZQaq+PR59KZARlKmSRAD
+	xdDhR1Vw8YiwNGlTV1/meBQb1G0RQZQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pU/2H1dF";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767972153;
+	s=arc-20220608; t=1767972286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rAozNa/Z+tqH/giXVo/fp/b7+Zy4Dz4yZ8ziQWD3XhE=;
-	b=SdurPNXIMnfylTG9JZ8Xoi8w/7tItZJkPfxYFy4PLIlI2nCFJ5q+fds0+vhF9loLDt7G/P
-	rIti80DavvVAqNGfYBozQPLMc9rjqVDVl+YaUYS/VAADFIhjchvWSSK/B11gX6G4L4ur+/
-	Owdyc/C7nKEP4dL3xEN3BxPSMM28ZAw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767972153; a=rsa-sha256;
-	cv=none;
-	b=Zjlv5XQDMbFsgvlO2IE8+S99/s+wLZBrBcfKWZ7yyzdQTzBUfYoukzcn5etdqMjxZ0pCej
-	P/86zguA5vGLEdxPd1imO5GgLfTDi2oiba3bgbkSrsJlzJjHpZoEaPUY291BbSL3kHvRwt
-	YlSkGng9OhFT6IffglplKEX1sJiHarc=
-Received: from omf07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 32F721398C3;
-	Fri,  9 Jan 2026 15:22:32 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf07.hostedemail.com (Postfix) with ESMTPA id D407020037;
-	Fri,  9 Jan 2026 15:22:29 +0000 (UTC)
-Date: Fri, 9 Jan 2026 10:23:01 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: oe-kbuild@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, lkp@intel.com,
- oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>, Mark
- Rutland <mark.rutland@arm.com>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Andrew Morton
- <akpm@linux-foundation.org>, Linux Memory Management List
- <linux-mm@kvack.org>
-Subject: Re: [PATCH 3/5] tracing: Have tracer option be instance specific
-Message-ID: <20260109102301.19daeb27@gandalf.local.home>
-In-Reply-To: <202511071533.domGENBS-lkp@intel.com>
-References: <20251105161935.545400234@kernel.org>
-	<202511071533.domGENBS-lkp@intel.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jr519NhIZ8nfRVS4g4szsjBfthpQD7dsETmCRLPVmI8=;
+	b=O/Qk2SQThUYN842pyOnl5d9FRI2Z3fkXS6z9JUMc5s6R+8Ht5RUcqAnWhIEIufCWtujXRX
+	pTh+3Oi4Axkt3MobmcZ49KZJ7IY6BcOAaRR4UKhiSyIOGWPd0SGBjCmnt2A8ENun61MOmj
+	J4orXU/ffQbScuUIvXJE57GdiRpg5gc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CC592442D4;
+	Fri,  9 Jan 2026 15:24:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D52C4CEF1;
+	Fri,  9 Jan 2026 15:24:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767972285;
+	bh=axvy6DYVP2agzRnl6Zhjb8bX4J+s/WNM34OMhZ6lfpA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pU/2H1dFfG93kpEUPYu7w7/VXmb/gCiR8gQewSBXnKe7C5c4PF13ehhOoFbpYoyja
+	 WDQ5yuTteGs4Ne/v+LHD95mctIe9ZXiABGUWlCzbI96OatJTh7TUC2kQfsTcrOCQ5A
+	 MnnrqwAX2OCoFXiTaArGYxiyC+ZVHKSfJpXYF+s6ARfOY1q/4/Ol1fMvuk3t08IIsM
+	 WUIczW4dq6yEy6fGrE7HUFUa8zIbX/aucAWzmld+iwpa5dguBZr9Ec5tQvYJoMQgS1
+	 VzubOeshaPJ9CVip+imoA2w5haEZAr9lrvKJ3KXAjL3LjmYBB/16YrhPKpjxL5W8ie
+	 Kz6tThsSMaS1A==
+Message-ID: <bed4daf8-9a35-4a88-bb35-2f178d8afa73@kernel.org>
+Date: Fri, 9 Jan 2026 16:24:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv2 02/14] mm/sparse: Check memmap alignment
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Muchun Song
+ <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
+References: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
+ <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
+ <4f82b8ef-77de-422b-a9a5-691c4eca24a3@kernel.org>
+ <glu3noshgeh7ktwwqofk7xcwkvhek2x3hrbdmyyo56gmctdx3t@adsfih557p7g>
+ <2ace6fc2-6891-4d6c-98de-c027da03d516@kernel.org>
+ <yup3hvfsn4tvfnv32mdf4yoabt4igb2lkvllfac72g3abdkovm@auqdaijzby7d>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAa2VybmVsLm9yZz7CwY0EEwEIADcWIQQb2cqtc1xMOkYN/MpN3hD3
+ AP+DWgUCaKYhwAIbAwUJJlgIpAILCQQVCgkIAhYCAh4FAheAAAoJEE3eEPcA/4Naa5EP/3a1
+ 9sgS9m7oiR0uenlj+C6kkIKlpWKRfGH/WvtFaHr/y06TKnWn6cMOZzJQ+8S39GOteyCCGADh
+ 6ceBx1KPf6/AvMktnGETDTqZ0N9roR4/aEPSMt8kHu/GKR3gtPwzfosX2NgqXNmA7ErU4puf
+ zica1DAmTvx44LOYjvBV24JQG99bZ5Bm2gTDjGXV15/X159CpS6Tc2e3KvYfnfRvezD+alhF
+ XIym8OvvGMeo97BCHpX88pHVIfBg2g2JogR6f0PAJtHGYz6M/9YMxyUShJfo0Df1SOMAbU1Q
+ Op0Ij4PlFCC64rovjH38ly0xfRZH37DZs6kP0jOj4QdExdaXcTILKJFIB3wWXWsqLbtJVgjR
+ YhOrPokd6mDA3gAque7481KkpKM4JraOEELg8pF6eRb3KcAwPRekvf/nYVIbOVyT9lXD5mJn
+ IZUY0LwZsFN0YhGhQJ8xronZy0A59faGBMuVnVb3oy2S0fO1y/r53IeUDTF1wCYF+fM5zo14
+ 5L8mE1GsDJ7FNLj5eSDu/qdZIKqzfY0/l0SAUAAt5yYYejKuii4kfTyLDF/j4LyYZD1QzxLC
+ MjQl36IEcmDTMznLf0/JvCHlxTYZsF0OjWWj1ATRMk41/Q+PX07XQlRCRcE13a8neEz3F6we
+ 08oWh2DnC4AXKbP+kuD9ZP6+5+x1H1zEzsFNBFXLn5EBEADn1959INH2cwYJv0tsxf5MUCgh
+ Cj/CA/lc/LMthqQ773gauB9mN+F1rE9cyyXb6jyOGn+GUjMbnq1o121Vm0+neKHUCBtHyseB
+ fDXHA6m4B3mUTWo13nid0e4AM71r0DS8+KYh6zvweLX/LL5kQS9GQeT+QNroXcC1NzWbitts
+ 6TZ+IrPOwT1hfB4WNC+X2n4AzDqp3+ILiVST2DT4VBc11Gz6jijpC/KI5Al8ZDhRwG47LUiu
+ Qmt3yqrmN63V9wzaPhC+xbwIsNZlLUvuRnmBPkTJwwrFRZvwu5GPHNndBjVpAfaSTOfppyKB
+ Tccu2AXJXWAE1Xjh6GOC8mlFjZwLxWFqdPHR1n2aPVgoiTLk34LR/bXO+e0GpzFXT7enwyvF
+ FFyAS0Nk1q/7EChPcbRbhJqEBpRNZemxmg55zC3GLvgLKd5A09MOM2BrMea+l0FUR+PuTenh
+ 2YmnmLRTro6eZ/qYwWkCu8FFIw4pT0OUDMyLgi+GI1aMpVogTZJ70FgV0pUAlpmrzk/bLbRk
+ F3TwgucpyPtcpmQtTkWSgDS50QG9DR/1As3LLLcNkwJBZzBG6PWbvcOyrwMQUF1nl4SSPV0L
+ LH63+BrrHasfJzxKXzqgrW28CTAE2x8qi7e/6M/+XXhrsMYG+uaViM7n2je3qKe7ofum3s4v
+ q7oFCPsOgwARAQABwsF8BBgBCAAmAhsMFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAmic2qsF
+ CSZYCKEACgkQTd4Q9wD/g1oq0xAAsAnw/OmsERdtdwRfAMpC74/++2wh9RvVQ0x8xXvoGJwZ
+ rk0Jmck1ABIM//5sWDo7eDHk1uEcc95pbP9XGU6ZgeiQeh06+0vRYILwDk8Q/y06TrTb1n4n
+ 7FRwyskKU1UWnNW86lvWUJuGPABXjrkfL41RJttSJHF3M1C0u2BnM5VnDuPFQKzhRRktBMK4
+ GkWBvXlsHFhn8Ev0xvPE/G99RAg9ufNAxyq2lSzbUIwrY918KHlziBKwNyLoPn9kgHD3hRBa
+ Yakz87WKUZd17ZnPMZiXriCWZxwPx7zs6cSAqcfcVucmdPiIlyG1K/HIk2LX63T6oO2Libzz
+ 7/0i4+oIpvpK2X6zZ2cu0k2uNcEYm2xAb+xGmqwnPnHX/ac8lJEyzH3lh+pt2slI4VcPNnz+
+ vzYeBAS1S+VJc1pcJr3l7PRSQ4bv5sObZvezRdqEFB4tUIfSbDdEBCCvvEMBgoisDB8ceYxO
+ cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
+ EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
+ qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
+In-Reply-To: <yup3hvfsn4tvfnv32mdf4yoabt4igb2lkvllfac72g3abdkovm@auqdaijzby7d>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19jdSeoFBztHLOMU/lMm14vAteYNKPwXT0=
-X-HE-Meta: U2FsdGVkX19ilsxq7u3MRtKL3dJWwByiZPh/dNykQoGfoiGRpH0i/9tNzbovF3etCkRCiRnHo67ShzJFR/TraY0X0a9rM0tfe2y6bnDYxcu0iNSbLdNupEDNpoREIG8kiiV2i0pLDtLKSY8sKgGq0GEuZauFHyo4PITU50uRah6+FlLoS8w5Qyivk6Ee+beVybcCb7dexIMQy2UaVsru7qRMocTetT5YY+f2ZfBaBdn9FI0gDV25+4Mcn4mWhfr3Q/0CJd8HA68QvRB3EjoCMa9AX9JXcPu+3ezm/eGMG2WDkxQMuCckiyUEIvqbV3rrGoh9OFBNR6KXtvyT8FzvabHby38Ah4Wc3MGLKpJhF68+U9PWPpv6gwZpjzPdzv5Zhleh7hguR73jsagOpzzOhgaj25IoZY7Pf0i1lB3A5ROKNBONjkfzbHQXswos25UOP7DjiG+U+l55bw7GCXi+W7A6UTqnz/VcizWk5Q2JAFmq6RhP7PU6BaVhFOzmiM6zQwqiT3rbbzdHA/1gHeXNng==
-X-Rspamd-Queue-Id: BA00D1C0018
-X-Stat-Signature: 5ts5jgdwjg7an8rtt8yece7cajhzc5r6
-X-HE-Tag-Orig: 1767972149-424104
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1767972153-555630
-X-HE-Meta: U2FsdGVkX189e/lRfq1X7XDuy+Kf4Cn0AMcT/wnPa7NhI1qYR0w354dHx4HAElHxzUl5Pjlig171n5gc/00GPloXA3k2nWdk3SiELysVgjt4EXQs4OGBT7fdhmrtpdBofdUl6pfCfDYIWPmoorcPug+QBGganf3fpzg8vm9xxy25qxUUAQVOgVn2sMyjAZhPFyCbFuzgXhy53D/TXaEpvoPZLsKyDtlANfwFk70snVVQPTu3wuqogfaw1EKpyUsJuNcLz7BRa1CqEVyG0txTc7/aGPorIH5J9RAUfpBt0/IyWemSoEJJSUN6kZaMh2C7BkAEOtJzF4dfk3PMUfUQQ0wO2XrC4LiyVndYsq41XY3319QH7zhVNS9IYGkxwOiLIxGvoqOxjtljGVB086jX9Sd08m8NOT4FJCOQBcGfZdRB2zbDtulwlRuRIYqD60ptKfATrCK4bTKpxG8l+qJ9NsSe1TzNZtgyN8YPpG/Fpv719rT5RtdbeVQUBd36PRvkN7F2Mb8DZ5P/2Trx6z60rPOBkTG74mFyCN7nob6eon5Ov66ffqJ+2lx0uo9EzyL9Pki3/4z1xti8Dxcw+wRWE6Jbccq9DM+yfOCLAXw4ndCjvFwY7v+OEriiTJX7kejHu9B5JkUE/h/+P7okgfAGJRV2GceTJC+47VQCQ4QCUgul0TpZG1e2Cfek9M0zSnWXPryb8AVDx79Y1lkz8WC09q82rBfOS77t/SjifC9uQueAKkFveKiDNUW8qJR8LIRdpvRbpKeGSBtE8LzJiovDhoa1mj/sK5FwTRr4SLEhADoPf9b7yOu2ys1E7YTlZg7dAbyxpntZoazMVe/aLqdDOTjM0jQ6OkZUl8srNCarNV3wyaU9YzhYbl9fBqwiQDuQ2+juO9TAdIP9/DDCHnXFGo1TClXuaAgm2JjAvPdkhML2DdF2Co0uHlCcy/uE7NXhpfN+wxXkw+xfDfKHxQu
- giIhUGqK
- lx0uYwjEX4Y50q1B6ye7KhcxB2ZGXUwkmJsE/1osdgsrvRDbVGzKzUgZERHImCwc7fFmZPm/WNMQVc6sB196uvLRpys10SZWC69geZ7QIe9Oo1C7lBhn1+9CU0hg9ctF7V1iEOYHSnD7MGRs=
+X-Stat-Signature: px78qta81996aio9oh66hq1jbagnuxgf
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BC331C0002
+X-HE-Tag: 1767972286-524879
+X-HE-Meta: U2FsdGVkX1+A1No8XF7/BwvaFDKUaOUwcnBuZQyiLdbkplvi+twsoeg+nMbyGgmEu54bkoWaTNAlrnolV9EhrVkzuaI52Knh/vGirGmwP4z6z9dWhyfoj/7CuWUe7xeUeO1CA8/kouIK7T+bQFa8bHd1V8JxH+VK19RqMuID4+LZ6FwWb1IgeOt0iDJmnxc+ADHN9rxlK8h6KHFKoSKd7eTooIDWGngNbtRm8NASu++eFIuRZ3wy9RqahchSGJE8Ew7V9g4YoC+Fo185s7i/CHhto0bPx1K/LwQMdNeBgoCkFkyCYoNqZxiEJ2maLHlBGAGMzqZlxsYnYh5FCmyj19p7IV8fcvUpTUA1aycAzdPTTYnYGrXcRNn7E5blOoUjSrGvOUmWMKV55GZaoCnEbSU/xCJziCSQUxvto0uGAktVhHaJZ8IOsrBQWSyKbYkf95JDGckGX6vBBzN2YtxvHfran2lrbUEiuh7VXBKyflXKq9qFrG/+WcEfXGthjdSz1YySPImEC+JnumgayS7S+OuwggwPY/DF03NFyheBfHjLQzXtEr7GRpX9FZRX5JIK+OYtI/YisZLfvzduChtjqufD9Bsf/bz7U5uzpPxqR1ZW28gbUn4X3EtPJJriBjIvOUQbh9ry+PRp3/98JEYg0T1pbkP2mWBWkk1wQqC3KyOvATrvlUj5kOYbyQ0GYhKcxDd31KpSqkhwG4kfE6Qd3PMg9gsCeClVvvsABBPMTdVSReyj6PKb6+MIv/EpVgJCveq75oV49H5cy6p79/CixSfljppYQFj2r5mIntU3SfHTr/rl+xZCYz8GQtMBdP7CdQ4jX4V2tc+WlHlica4Vmqakw61DdZYS8HD9doEDXG0CNxgH5no/EiG+jgw5ZOr1y3GNuWoWaYFbk6w24Syy/+HR2U9zVNdSMNJRmSiNVkHXbDo77E8a8XhOY5+QWGCwC0F4bGV2mcBwzdc6A4e
+ D7/riCzw
+ uEuOWADEEiAT7k8RfxliulhJaUVZiI1eCcCyZP5IroCWGoMlSSrgJshLrpUiUtFScnrnlEh5rtQEMqBMLSK2CD+ZGN1YGFXIaZEnmQo2Mz2xi4h7OLa1nQxqGiWwbcKSeiUbud94j0KZWZwHKkUnwsZgwcqo6y1zKwFI0SaRroSyFHhrrfsWf9FiKxk6T1PnCM2W6E8MILvyJ9O0oe31H1nGdEncgjWJTvqD3cmhTw//QJpqv3DVtBk2TntBnSu9v9mOD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,85 +149,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 5 Jan 2026 18:23:31 +0300
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+>> For quite some time there will be a magical config option that will switch
+>> between both layouts. I'd assume that things will get more complicated if we
+>> suddenly have a "compound_head/folio" pointer and a "compound_info" pointer
+>> at the same time.
+>>
+>> But it's really Willy who has the concept in mind as he is very likely right
+>> now busy writing some of that code.
+>>
+>> I'm just the messenger.
+>>
+>> :)
+>>
+>> [I would hope that Willy could share his thoughts]
+> 
+> If you or Willy think that this patch will impede memdesc progress, I am
+> okay not pushing this patchset upstream.
 
-> Hi Steven,
-
-Hi Dan,
+I pinged Willy.
 
 > 
-> kernel test robot noticed the following build warnings:
-> 
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Remove-dummy-options-and-flags/20251106-010511
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
-> patch link:    https://lore.kernel.org/r/20251105161935.545400234%40kernel.org
+> I was really excited when I found this trick to get rid of fake heads.
+> But ultimately, it is a clean up. I failed to find a performance win I
+> hoped for.
 
-This is an old patch (v1) and v3 fixed this issue:
-   https://lore.kernel.org/all/20251110234341.767135255@kernel.org/
+I think it's quite nice as a cleanup, and if we wouldn't have memdescs 
+on the horizon that essentially change the code completely in another 
+direction (having all pages point to a struct folio, not just the tail 
+pages), I wouldn't be bringing this up :)
 
- and v4 was applied and is now in mainline.
+> 
+> Also, I try to understand what 32-byte layout means for fake heads.
+> _refcount in struct page is going to 0 and refcounting happens on folios.
 
-The patch you are reporting on was sent Nov 5th, the fix was sent Nov 10th.
+Yes, for folios.
 
-Why is this sending reports about an old patch that is obsolete? Is there
-something wrong with your setup?
+> So I wounder if we can all pages identical (no tail pages per se) and
+> avoid fake heads this way?
 
--- Steve
+That's the ultimate goal, yes. Essentially, all pages will point to the
+memdesc, and there will not be a reason to check for head/fake-head etc.
 
-> patch subject: [PATCH 3/5] tracing: Have tracer option be instance specific
-> config: i386-randconfig-r072-20251107 (https://download.01.org/0day-ci/archive/20251107/202511071533.domGENBS-lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> | Closes: https://lore.kernel.org/r/202511071533.domGENBS-lkp@intel.com/
-> 
-> smatch warnings:
-> kernel/trace/trace.c:6313 tracing_set_tracer() warn: iterator used outside loop: 't'
-> 
-> vim +/t +6313 kernel/trace/trace.c
-> 
-> 9c5b9d3d65e4858 Masami Hiramatsu         2020-01-11  6285  int tracing_set_tracer(struct trace_array *tr, const char *buf)
-> 09d23a1d8a82e81 Steven Rostedt (Red Hat  2015-02-03  6286) {
-> 4699bbb369ba1d3 Steven Rostedt           2025-11-05  6287  	struct tracer *trace;
-> 4699bbb369ba1d3 Steven Rostedt           2025-11-05  6288  	struct tracers *t;
-> 12883efb670c28d Steven Rostedt (Red Hat  2013-03-05  6289) #ifdef CONFIG_TRACER_MAX_TRACE
-> 34600f0e9c33c9c Steven Rostedt           2013-01-22  6290  	bool had_max_tr;
-> 12883efb670c28d Steven Rostedt (Red Hat  2013-03-05  6291) #endif
-> d33b10c0c73adca Steven Rostedt           2024-12-24  6292  	int ret;
-> bc0c38d139ec7fc Steven Rostedt           2008-05-12  6293  
-> d33b10c0c73adca Steven Rostedt           2024-12-24  6294  	guard(mutex)(&trace_types_lock);
-> 1027fcb206a0fb8 Steven Rostedt           2009-03-12  6295  
-> 7a1d1e4b9639ff0 Steven Rostedt (Google   2024-06-12  6296) 	update_last_data(tr);
-> 7a1d1e4b9639ff0 Steven Rostedt (Google   2024-06-12  6297) 
-> a1f157c7a3bb342 Zheng Yejian             2023-09-06  6298  	if (!tr->ring_buffer_expanded) {
-> 2b6080f28c7cc3e Steven Rostedt           2012-05-11  6299  		ret = __tracing_resize_ring_buffer(tr, trace_buf_size,
-> 438ced1720b5840 Vaibhav Nagarnaik        2012-02-02  6300  						RING_BUFFER_ALL_CPUS);
-> 73c5162aa362a54 Steven Rostedt           2009-03-11  6301  		if (ret < 0)
-> d33b10c0c73adca Steven Rostedt           2024-12-24  6302  			return ret;
-> 73c5162aa362a54 Steven Rostedt           2009-03-11  6303  		ret = 0;
-> 73c5162aa362a54 Steven Rostedt           2009-03-11  6304  	}
-> 73c5162aa362a54 Steven Rostedt           2009-03-11  6305  
-> 4699bbb369ba1d3 Steven Rostedt           2025-11-05  6306  	list_for_each_entry(t, &tr->tracers, list) {
-> 4699bbb369ba1d3 Steven Rostedt           2025-11-05  6307  		if (strcmp(t->tracer->name, buf) == 0)
-> bc0c38d139ec7fc Steven Rostedt           2008-05-12  6308  			break;
-> bc0c38d139ec7fc Steven Rostedt           2008-05-12  6309  	}
-> d33b10c0c73adca Steven Rostedt           2024-12-24  6310  	if (!t)
-> 
-> t can't be NULL here.  It needs to be if (list_entry_is_head()) return;
-> 
-> d33b10c0c73adca Steven Rostedt           2024-12-24  6311  		return -EINVAL;
-> d33b10c0c73adca Steven Rostedt           2024-12-24  6312  
-> 4699bbb369ba1d3 Steven Rostedt           2025-11-05 @6313  	if (t->tracer == tr->current_trace)
-> d33b10c0c73adca Steven Rostedt           2024-12-24  6314  		return 0;
-> bc0c38d139ec7fc Steven Rostedt           2008-05-12  6315  
-> 4699bbb369ba1d3 Steven Rostedt           2025-11-05  6316  	trace = t->tracer;
-> 4699bbb369ba1d3 Steven Rostedt           2025-11-05  6317  
-> 
+I think initially, the compound-page concept might
+still co-exist for some memdescs that we won't initially allocate 
+separately.
+But I don't know the details of that.
 
+I know that the transition phase is tricky :)
+
+Regarding reference and folios: yes exactly. When trying to get a 
+reference, we'll spot in the memdesc field that this is a folio and try 
+on the folio instead.
+
+In the future, most pages will either be permanently frozen and not have 
+a refcount (e.g., struct ptdesc), or have a refcount in their memdesc. 
+In the transition, the location of the refcount depends on memdesc type 
+(in memdesc vs. in page).
+
+-- 
+Cheers
+
+David
 
