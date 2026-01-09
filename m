@@ -4,209 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EB75D26D94
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 20:15:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19E14D26D94
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 20:17:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 114726B0005; Fri,  9 Jan 2026 15:15:29 -0500 (EST)
+	id 59B9C6B0005; Fri,  9 Jan 2026 15:16:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CBB76B0089; Fri,  9 Jan 2026 15:15:29 -0500 (EST)
+	id 579846B0089; Fri,  9 Jan 2026 15:16:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB2916B008A; Fri,  9 Jan 2026 15:15:28 -0500 (EST)
+	id 47BF56B008A; Fri,  9 Jan 2026 15:16:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D71556B0005
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:15:28 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 67CAC5BDC3
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:15:28 +0000 (UTC)
-X-FDA: 84313530336.14.A449B8D
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012013.outbound.protection.outlook.com [52.101.43.13])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CA2DBA0012
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:15:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ADwrk51p;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.13 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1767989725; a=rsa-sha256;
-	cv=pass;
-	b=3HIicKL8/0U0sN/ezHfG4SYifiL1/dELloCVG9/HcKnGGvXwnUlNJ8TCKiK7iw5RHuUpLu
-	f56xO069EpURu2KRA+hWInWbZSYl7vo2rfCPeO7H0Hu1DQqj2pKe/BRXIDYba6G/h0uLrC
-	y7WUNmtjbOfW57DuBYQgvwV2AOJLuuY=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ADwrk51p;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.13 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767989725;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 33F4B6B0005
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:16:59 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 398B38C839
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:16:58 +0000 (UTC)
+X-FDA: 84313534116.27.53203CC
+Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3C7CC16000A
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:16:56 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=RjLtkJa1;
+	spf=pass (imf08.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
+	dmarc=pass (policy=reject) header.from=acm.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1767989816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e4j1IasKNduDsp0BX4CNZcgqjAGISS9CoBCDSAjQBeI=;
-	b=OclFQZKIhvwgAUyX+/c822zC2PNjcvN57DKBISMU0+1/5zZhsz+SQ0sjnqCRWInwpF8w16
-	P1tANs/ESf9LdcPQ1W2VhAYpkFxfckAeMFLR8YTUrlurQEAxnKvnT4J/sGJgqqQjk79ZPh
-	/WpAQPU5Vwb4+uLh2V8sRUnldf23W+o=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bXla5m6sAfAd9CGOJ481uz5NefanjDlCzwCkFPsNcKC/qJsnW1kLw1TnDrNzls7xC8H4ZdbzNVwAv8whnCnDmbNF7PFofDBWJNiQl71N0bX2wL2zbbuCylEboZLqPvFg9mdea4zOMdxhhJy0fJ/i6drFEe9KsVLmjqCsCpV7KxnlxvkS+MENylhns+SQiwHYlRDXjoIzu52pUN8Hyt7XhBTaI33nWCcA50Sg+SFR/QZzZ5AxTE4UKKXVsBbiIccx+zQhQQIiy2q6xJP5wZqB7jI5fWESqFJTCgGBUXmz8yW6ALR1SdeWZShjvCnaGJ9PlFzRwDbodHniHholwdtIXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e4j1IasKNduDsp0BX4CNZcgqjAGISS9CoBCDSAjQBeI=;
- b=T+MslHbofn8iSWzu0ThwARlVtSz1SLsaCOILjxlf5X5feYppG1tm/2D6h2EEthsadjZY8fStSnMG1ZGimI/rvgtMbKgGvWG40wT71KWzFGB1zyrkdh1ejHmGO1bBEY0+XeBkJz/juRxcCEcSxwrvE3yhk5vbxuBy9lo4iz0IKqOz1QNpVL8m/3iEW3bQA333bjaxBv/d3EzkhRzaQ+4qRWn4Yk+zKESPYwY4ykvW1hDIbq4Vmjekylb+1HZwIETFQ4T6HvitZIB3yzjEu8NeYb2L/DPKer7xUI3yfSVKTFKHiPFyTLwZ65xfPUw8XLBV5W41I8AqcWizJ6DBZDXBGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e4j1IasKNduDsp0BX4CNZcgqjAGISS9CoBCDSAjQBeI=;
- b=ADwrk51p3Vgezo8sxV+4BLWaiR2n1stb92bAU7NNsO9jNBc7OFTMReOhGVHjpTie9Jwnv4V0uAI8q/Tu74BzfAdCwz2ktQiClen8hIAPLCAZbbPfzZc4jvHYTzT96WLHREthj/9ohhaLQl5+719YeDHdglCG+0iIkCsNem7TsUO+Mc4l1Oa5ggBAs/5K71Djqbmy/gpPmrER4Hh6eaXN/F4A9jR2J26Cij2DCKRoErVdIoW31qP2KjMeZ0RPomDFLHvEcls00JrJX86snW80YscBL365xEKjTYHd+IQ/pRkT7aYJhpq6tXnEI0lyF1pQ6/TLRNgOSMxoPTMTTr6svg==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9499.4; Fri, 9 Jan 2026 20:15:20 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9499.002; Fri, 9 Jan 2026
- 20:15:20 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: =?utf-8?q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Francois Dugast <francois.dugast@intel.com>, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, Balbir Singh <balbirs@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/7] mm: Split device-private and coherent folios
- before freeing
-Date: Fri, 09 Jan 2026 15:15:15 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <B8B15539-F97A-4D6B-BF58-FC75397C429F@nvidia.com>
-In-Reply-To: <aWFe9S2DGwfD2smO@lstrano-desk.jf.intel.com>
-References: <20260109085605.443316-1-francois.dugast@intel.com>
- <20260109085605.443316-4-francois.dugast@intel.com>
- <d1d80b81-678d-4d28-9ac2-95cb74824e73@redhat.com>
- <DF5A6B81-7811-4654-855F-8EAB76CCCE51@nvidia.com>
- <aWFIW6XCKXPpIinv@lstrano-desk.jf.intel.com>
- <D9ED5F01-E758-4A89-87F2-ABFF5197231D@nvidia.com>
- <aWFSGc7MIUqVsilw@lstrano-desk.jf.intel.com>
- <12A9DCBB-0B59-4D63-9BA8-9F99570AFA80@nvidia.com>
- <aWFe9S2DGwfD2smO@lstrano-desk.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ2PR07CA0013.namprd07.prod.outlook.com
- (2603:10b6:a03:505::15) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=MWWlok8ve6te0Z1LFT3tDlJ2/NkqaoxHzzfJCelUW48=;
+	b=Sv9QlZ7rrb4e4fKt7LDwEvTThJocLvWR6qoK/+xsW5S3ZGsKR8EB1NHxF35IS8TqFjmOsg
+	zG3pCd12In/bLzFE/9sPX35ZWC5u9WZIQ4Nft/5mWoh5KqB7yVDPcQZDf2rx6VGMPm4Tpi
+	br6o0XmZrw/Ymdos5S6vLKvFypnviJ8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=RjLtkJa1;
+	spf=pass (imf08.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
+	dmarc=pass (policy=reject) header.from=acm.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767989816; a=rsa-sha256;
+	cv=none;
+	b=pykjXHDnQzQlC+IKxN8llyTl2VgloezIaaK1binCV8zF5IjpfMsKL72TpBb1flvoEb/RIc
+	RZOKRhKUsslDzf/X+WCYyzJLeiVY75tZ5B3HJ++9tSqlGYtZLNMwBVQWuJqv1c0l9XLC3g
+	NzAG48AoPgC3O3ACwMpXecsKCuDqnvM=
+Received: from localhost (localhost [127.0.0.1])
+	by 011.lax.mailroute.net (Postfix) with ESMTP id 4dntN66qC7z1XSVtL;
+	Fri,  9 Jan 2026 20:16:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1767989807; x=1770581808; bh=MWWlok8ve6te0Z1LFT3tDlJ2
+	/NkqaoxHzzfJCelUW48=; b=RjLtkJa1D0QD6TAtBF7G2Jt4AHXQc+brZdc/5Tt3
+	jLo0eDAvbJmHIgNEXvLWEKHxTHRyVyb8D/Q06Ur+0T8jENUFddkat1ZKTy3z3SCC
+	yDf86qyZn7Mw6O42JTSazct3a+5P6OhdLUxYoG2N+K1nLDa+zdW6XgfbDJXsR7ng
+	jwo0GO2ay6yXtRwcQHBbI2rYmhtkOiawoqZQXc3Ti/WgrYqhAEUZOdNAs9KC7uUn
+	Qq0xxt6q5wZuMIdq5Cl7pFCXgskRMzaEvQTOGgVF3O1ctVoejnnjZWNZJ35Ht4/9
+	VhXFXR50Omzjcooxo8ojFKm5X7x9JePv61sq2YtntHteEg==
+X-Virus-Scanned: by MailRoute
+Received: from 011.lax.mailroute.net ([127.0.0.1])
+ by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id JY_Dc9oQqhZL; Fri,  9 Jan 2026 20:16:47 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4dntMk3WPZz1XT1Zk;
+	Fri,  9 Jan 2026 20:16:33 +0000 (UTC)
+Message-ID: <05c77ca1-7618-43c5-b259-d89741808479@acm.org>
+Date: Fri, 9 Jan 2026 12:16:33 -0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DM3PR12MB9416:EE_
-X-MS-Office365-Filtering-Correlation-Id: e5352e50-763e-4fd6-2656-08de4fbbcff5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dVFPclQ4amFGUFpHYnAycG9PSXVjdjYxMlVSc0dSS3J4clkyNE1OTzJiNGpq?=
- =?utf-8?B?SkovTXI4dEpyd2lzbXNtRFNqL2kyYm9JVkxSc3JCM2tFeHdiMUZ1aDdyTWtk?=
- =?utf-8?B?YVBIdTRoWTgvVzhEeWFvT2dDL3lkTDlsc1J6M284SjBJZmJ0d1puck82bGhJ?=
- =?utf-8?B?OFUxdGJhK3BqY2preGpReEhYYUh6Z0h6UWMvOVNBMTBIRTBCdURSM21pQnJH?=
- =?utf-8?B?L3daUEFvQ0tGSEJ6b3laZG1Kc28yRFNBbjZBOG1MM0d1Y0ZhcjFCQTE3USs2?=
- =?utf-8?B?WTNkQ3ZXY1gvblJTakp4UlVxNFM3d2dwODRSRWovTEZ3OEJ0YXc1QzdhYzU4?=
- =?utf-8?B?M21Xenc5WGxjYzljcFVSMVpVVlF3cG9SK1U1OVA0VU5Zc1ZTaHVoc1BLWWRm?=
- =?utf-8?B?YURNNFVXek9nTGI3TUYrZGNaaDJlRWVqY3VJbDNsWExITmhIaXVVQnBVMDlj?=
- =?utf-8?B?bVI0cFoybTEzR3NrdTNkZFRnMUQ5dExodnF5VkxNaUQ4THJIdlJlV2FPRnBw?=
- =?utf-8?B?aHhFeUE2MElJZWI2aHBYV0Q4TTZSQjNlbGFSRWJRRjdobDNocmlyUFZKbUlv?=
- =?utf-8?B?UGZtckRsajk5TGpwMk9LTlF3SG5zWkk4ekJFSDM3eU83aUZGOTlVUllTUGll?=
- =?utf-8?B?c0F0UzFQbktOWlRFR3VXc2tjaW5EN1l5ZzNYOVJzNnZWMUJ0aTNNU25FMyt3?=
- =?utf-8?B?Z2E5UTRNQmpGWUtRQTJnQzZhN3NZWTJsNzZvZFVmTkVXbHdlKzZHWTF5M3FW?=
- =?utf-8?B?c041cXI4WXR5U0hQc3ljOGdYZ1FwUkIzK3lmdWxMV3NKMkNHQXFUSUtNNkgx?=
- =?utf-8?B?bW1SMnpJcTRwUVI3MmdUT2Z5R3BsSkcreUdITVJ6eFZqeE8wRVFkK0VCcGJH?=
- =?utf-8?B?SHdzaGdxenNSUVg4UzZkaFVlNDZ3OUNoOElmU0JzMUpGSG9sK2ViZnlKaHpV?=
- =?utf-8?B?dWQ1dzc3clRxRHd0OXdWY0JoamYwT0NHZUJtdlVsTkxMaWRYTTgvQmRMak1X?=
- =?utf-8?B?Y2srTXJSOTBtNjNtM3VlTkxhYnE1MTZRbXVWK1FJb3k4Z0Y3VjA1clAyalZF?=
- =?utf-8?B?LzE3a1diMzM4UkVzSHcxR1hkYktYOWdSalRoUVFxYWxKZUZTNVl3UDFqU215?=
- =?utf-8?B?M2oxK0VOWHloNjIzWExTZ1NEUlVxa3BuQjl3d2ZZYml3WjN2OXRDaW1YbkZa?=
- =?utf-8?B?aG5CRVAyeFNMNENUZEt2VDBWUDNXMFQ1dElyZVp0Ni9nMGFTVjZhWWY4N2Yz?=
- =?utf-8?B?VnBqQzMzbkIvZ1ZmN0x2cDQ5eVVheWgvamh2N29iT3FoS1p0dURHWVFBdSty?=
- =?utf-8?B?YWF6NnRPMGNia290dXdMRzM3MFpGemludlM2VjEvQVVKTVFFelM3aDhwSDFP?=
- =?utf-8?B?MWVJMllzbmp3ejJTSWV2ckxRaElxZHlZbE9sV1pxR3oraW5LTktNRHRYTXVR?=
- =?utf-8?B?QW42UE8rU2ZUN1ptQXZ5QWRmWGk2b25xWjFJSlZJMUdoTjdjNUswMEJ1UklW?=
- =?utf-8?B?N3JqM0xNQU01TFIwTkJ2c29zNm5rNnNaNjR3OHhLZUtCNTRTZFlPTzk3eDJs?=
- =?utf-8?B?cnE0QXlTZVZEa0tNODZTRVZVWXhUZXJrVFpkWnVRdG9RYTBGMUwwejNIdUMy?=
- =?utf-8?B?VG9lZlRFRzN3VzhCdzA3TzJwc1VYYTFvbnZ6Q1pRR1N2M3E4SnM1U2FzYkJm?=
- =?utf-8?B?M0FGdXdrd2dmWFRQcjhQbUZXenNsUEZTYW9WTzlUL3h4SXp4TVMwVjZCcXJt?=
- =?utf-8?B?M3R5Rld5WGhkc216bDBNQ3RUSUhzTGU3V05RYU9ZY01BYVlsOEdrSExlZXVp?=
- =?utf-8?B?S2thcDd5RVdwMVIvZlpZV3ArVmZiWXZpQ0oyS1p2U3lVUjBKeVhTUUMyLzFX?=
- =?utf-8?B?cEVMNHA3S3p5dG9HNHEzQ0lrWDU0cVNDTkFXblRuS2JDNnhQTm9wVnFVQXdD?=
- =?utf-8?Q?Bk6oH56PPHPKeuUxogb+yZEtdVCXYBaH?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K0pCWU0rb0J6WFk0VHk2MkFHTUlaS2t2bERiUTRYSE9Sa3FQeVpFUVArbmZ4?=
- =?utf-8?B?b3F1ZmJCOTdsUXg1UzZYZm9rdDJDTzl4ZjhHR0E2L1lTSHNBdHplcHZlSXVx?=
- =?utf-8?B?S3RabUgvSXNGL0ZGYjloTUMzYVhvMmozckxRSis4RDNjUzZlVmxOY2tUdFg3?=
- =?utf-8?B?aFpMODBCbFhqK1F3a2tMaHBSMVVkZUk2cm1IeVBNU2YwQU42Y0xRVFowSkEz?=
- =?utf-8?B?enBFOEpqT1lOK1BYK0tZSVZRQVJZQ2RpYmVvSGhYbFVHZGV6dSt6bG94WDRQ?=
- =?utf-8?B?RjExcmh6MXVzWGhmWTVCaHJtV0hZc1FLSUFsZEVVWThKandLM2ZQR2VXZHJL?=
- =?utf-8?B?RHlicUN6TUhJM2FiQUJOYUJUNXp0N2tyWmVYSEFUWmcwU0E2Q1FVaTRmSXAy?=
- =?utf-8?B?b1I0cm1KM0VHc0RVSHZNS0dGcWRXZ3dGWWlaMjFjNFA3c1ZVS0w2eHZYSjJJ?=
- =?utf-8?B?Y0tGb3JrR0NMNTVGMDUyc2NjeDJVYUF2a0tvMDFEa0dYSGkxR1Vqa1MrWHFY?=
- =?utf-8?B?ZVhkNjh1aGdsWUIyamhVRG9vS0JGcURqZWxNZlpzMnRmUVRKMUNZU2U4VHFZ?=
- =?utf-8?B?cDZZNmxrMEdna1gxVGF1T0FtcVJZTWo2dW9qUHQxaHptS005Q1E4M0U2UUhi?=
- =?utf-8?B?UVpmQWZaZE93ZU1hbWUyQnVOaVV4S21xa3U1SGNCVUNQRnY3c1lGalNmc1FR?=
- =?utf-8?B?MnhBTDZ2L1kxRVIxMTczb3lKL094MFJrSE90L3pEdU9kMm1vSU1jOE1nN3dK?=
- =?utf-8?B?TXNXWFdPTHBRRWJuQ3pha0V5bVFmczZIaFVjaVV5L1d6dU1qR09aeHBWbGhQ?=
- =?utf-8?B?RkNMajU2U2tkQ21RUzY4UHMreGVsSy9iZ3dKMkJXSHRkeVNLOVUzU1dpdUZp?=
- =?utf-8?B?TlhYUTJOT1E4RmtUMHlmbWM5bjVtVnlLQ0Q2L2VFTExSL3R2MHloR2dRZExv?=
- =?utf-8?B?bG1tWXBjNllvRkthQWdnbzhLelluQUZGOVp4UEhYZ3dIK01TMTZuVm9zL3NI?=
- =?utf-8?B?TE5hK3JUSWN4UEZ2M1hhV2xDSVFLTzN6Zm1OUmNtc1dFQ0JqMUw4cU5ySlo0?=
- =?utf-8?B?WDZKMG5QZXZHYmdpMjBjdDB0akJPQ2RHdXhUd3NIanAwS0ZXOUt1MEZ0L0Uz?=
- =?utf-8?B?QXQ5UlhMdkhqK3lSeDNhYWliRVV0aE5UNFNqdEkyNlZJZVg2YzJxRjNNUzNM?=
- =?utf-8?B?Vi9TYlQ2di9sWkpkOGZDMG83R25ySHdQdHFXR2V3NlUrR1hWcVV3elRBSDg2?=
- =?utf-8?B?TFByWWdZQlBTQk5DNU9zTGk4Z1Y3elZ6ejNFU1ZsTFAxR1lZRGI3YzNzdW5O?=
- =?utf-8?B?QzNkdzE1b093Z2ZOT2lPTWcxR1RRblVabWdQKzZLVTFlQVpDdjZySjd4cDlo?=
- =?utf-8?B?dytHWHMwMmh6cjVOT1R1cW5PVlNzamsrQ1BQQXFETTJDcFdqUUkxV0wweVM0?=
- =?utf-8?B?TU1VcEVvM2RoTjZ3VWZLU1puUmR3dzgydDFUZ0Y0Tmx1S1BGZVJ3YTZtaGd6?=
- =?utf-8?B?dldwN3g2U2ZXaXVmK05wbSsvVFVlUTRYUlVubUVDN2lQSDhSNWZhRzREQXNz?=
- =?utf-8?B?aEo5Ti9kMmdwRGcvNzZvUjJHY2NGdzA2aGtNR1RQdmFxRW01TGpJUndjYnZY?=
- =?utf-8?B?YlZhTzJUbUtoTGtNNS85WERqMDRialYvVmVTMm92MUVPRzliUW90eHVNdlcx?=
- =?utf-8?B?TzZHcVViOGlLNUs0Q2FhMHUvNEREc2hZUGo1VDlaT0VuWTQ3dVprWWZiUHdK?=
- =?utf-8?B?ekdQOExKNW5VREhzVnRFNE1ZMlNkQVZBcFYza1N6bm4zd1hNR25Ed3d1bmNF?=
- =?utf-8?B?SEIwdkozTzZERE80eFkzSXpZd2wvS3dwVUlNYjNGek0wbWdOUzBlTXhHc3pJ?=
- =?utf-8?B?U0pNUWZ6OXo1MTVhOU5rbE1LeVRtUm1Ta2R4aDNoV3BaMkl6cTMybnlwakRQ?=
- =?utf-8?B?TXhUU1dRR0h3c2dLNXhoWm05Z2N4Q0YvN2NRR1NIVXBrclo1RUxKRUliRnhR?=
- =?utf-8?B?RGxuSjhPMy84RXZqanl0UzYrUk41RllsSm1nR3RkT0Y0TVBXM2pOS1F6MXB3?=
- =?utf-8?B?ejRKbEYxVnl4aEx5WnNTSUhMNUZjZ0dVbVRQM1FqZjR2YW91VzNkNHQ0UkFq?=
- =?utf-8?B?TUJ4d2NhVERkZkVJdGdWZEl6c0FTd2dFSUFaalBneENVZ2pTQTBlN0pCekgv?=
- =?utf-8?B?L3NPTVFIRnVkWnp2RjA5TGdZNmgweEZUR05INjJDaEp4WVQ3MDluTWg0MkFa?=
- =?utf-8?B?eVFTQVhuVTkwR2Z5MmZ1N0QyVEVHVCt4Wi9zZTZkQ0RobVFmRkMxYmtOOEFM?=
- =?utf-8?B?NGw0dmw1WVNSOFErQmhPb3liY1ZTOGdEQVg2d0hzeEhPL0ZMOUVVUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5352e50-763e-4fd6-2656-08de4fbbcff5
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 20:15:20.1010
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: db0ngft63O0Qtyn9LgN7bjvJuLmqOSgJeGOOqFVj/BN1JHpQTQIrCPCNlbe+AqEA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9416
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CA2DBA0012
-X-Stat-Signature: 9317f1697icwus84comwuyok4d9f1nfs
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 20/36] locking/ww_mutex: Support Clang's context
+ analysis
+To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Will Deacon <will@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+ Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
+ Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
+ Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
+ <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
+ Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
+ Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ Josh Triplett <josh@joshtriplett.org>, Justin Stitt
+ <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+ Kentaro Takeda <takedakn@nttdata.co.jp>,
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
+ <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+ Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
+ kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
+ linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+References: <20251219154418.3592607-1-elver@google.com>
+ <20251219154418.3592607-21-elver@google.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20251219154418.3592607-21-elver@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: kiqzuc413kz794m5keac16cy465jpnbs
+X-Rspamd-Queue-Id: 3C7CC16000A
 X-Rspam-User: 
-X-HE-Tag: 1767989723-384069
-X-HE-Meta: U2FsdGVkX1/3poqrh2zL4tqtsTLb5GXcaKy9v9JreeE/wpyadBbiXoWT0jtJwrzies0Hx2kfxrpB3qYLLDESAE8p1WE5SieuMpqmH8zrWORoHZdGgH2Fgb9xSdHF5LzAfOQzu5iH3EawGdLfInFfllIu06JJ7V2jrIcxqDBHbeMMH51hfEMgboAU1hTL2LsG0NAeecykIWKF/r1tnUD7DIqjfWCb5nn1zbqcR/CKbXJ7oI3d8C15dpCPyLdQXnS3n/FEEnbPK/A1Y1nlfM7rNArAlyTHBCrNDaai5EStufvCpgg0ubQm43SQ7l/Jn7DX80Q0LJ1ctSua84aP2oq5bGDuDVFaPK0dfovnaDs+jGRIJjzH5mTXa5WxX8vrhc4GRKTx4tE9bbVuYmhLyfWLrvfzriGIb1OigHeM6Y0D8pdmzttWIexcq4UAdVAygAUG1U0V/x0PeXcdIl/6GYsT7V0Uwbptsq8u1c9cf20VGXVJG02XiIIZQA+I49+m/qJaFTMKyclBToU4lhOKen6wwjBUO5+sL2zchWkA2/S9FvRe4tHIYlxiE9C0MivP2zl662lm24fCjIMuAg2v1Y8WAMUZ3oCfZC4831MmHFeebwb1pxXTs2qqrv1E6Skmom44Jb/nNLtZ/kuIMRQtEivg3k952WtIzpat1qGt5HXFm6bUB0ZHpRpV3Wh2XeIOJ0DBq56aOSghVmB8IL737/4H7MCqL/1NL+/qlwJEwH5eJO/PA86/4cOQxiQLFww+BlsWlmQq2HkQBJSwyPtYVcVmVBygMSYbJ3zaQnch5kIKI82jMI8wbFI+ocipJrmzCmcE7cRs1U+xHb46woM5BOePLE2cRvcZ8I2UCv3/NybRHl9V2NLfLWSaopdBrrrwr3RhZP69QD+0t+39p4YkMbFAVOGmD6jiErIbVfyrpkaeBEJaFKafhYDabEEbHYKIwz7ZNDnM7yFACV5O+mjJpaC
- IdEVpb8x
- 9WEd7jBoL3MMSEauTVxamQgEllaRPaewi+tpDF8XYteCnWKJYfgvC51ojL0ltzixX01n0t75J7Am1WtqAiK0kw7hgPgyIDMg24VXsB41NQe8nGqQaFDLhHHLImeeF4ptPXPiY1A+CQQ/vNYkFk85tradfFscDHsmjC6AUdirBMqGALtPkJ0+BDK5l7SMeVaX1HqkbpKGAGEby11CR9OH9PGF49QNtmwtUcOvdzBKJy++RzgntCkPHlZ+aVMjHpMalCC0pfWo+6Y4x8JwVSbEdl1s7RfZ810AQRzj5D+ryO+H9XgMnUkBsKQoIYQVt5an5xp2yL5+3hwR3PfEFO5ewyujC3bWymCWi+0jQfRgUyiqKdbdTjdWM/wpCaPWiXZ2dBxBNy2v5JoiT9q02urRwUpT0Tn2yWOqdxpuyi7g3ctU3KS/eml7OaSXDlaQ/IvBsaQlS4bjZL+VMXIxTgRc+8Ti3gatUz0JXtyxAYgETzychTfh3Ekp+5r/JGyj3hYJQI4qk19ST0k52wfPEBA0BR+mFmwCXsza29souLnlEutNYhWOY8hEkkKLCaBoCZUuT92qEcTjYDqnpbFM+xhAA6JQxuw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1767989816-674768
+X-HE-Meta: U2FsdGVkX18pupdgGXwwkQynv2cUhvMVc4lptWzlRDbraRp9CWz4fW8/54vNj933lsGT4GWlGVGVX91hnb9ZFbUfl6YUvl9GjIXqv3ptR5REmhB5GjdXGMhJterJ6fk+ISMYbW5OpIgF4JFWgyLMehOxOD3l0yc0+rjWZv4stxOu4V8BbAGLm0MBq3bk40DeoUXxq4l/Bh1OVzTkkqJHSCEo2gFQMgqs051FyQJkZhaNmoi0yASVzR2l7MWIhAcEUM0Pk5qay+08Wi+sygVfAmvmFBmGy3kykKG9XY6vOQE9C1Itrr/3qZiAcuCplzTj7+EkLDI5mgaI30LFz42n55zbf4/MklUWey96MA8NGHYyQa6ktDUSrJGSz/W477F7dJsFCow/rgx8qdZM4YCnkJrwNn2o6EvcHunrhLQzj3yiFkiF4fFSx4wB5+7RjdnDX5Ytdr3nnNAWcTM0lDpaRdRM84i+nekiXwEWTHpY9eCtbCZ1p9exBnva3PjKDIYWStIgRPE2Ik/4YMexZ504QClriJEx3mjPX3g2PuYzHlx0od7LuN1oAZ+bRfxHjX2YGRdKRmm4tBZpO7smcgWScxs5KNW0MjayyXBH5MgVlrwRKwbbJAypUI+THcJwa8y6eAP9+4DU8Qgq+dzrDAHUgRG3b/ma/etoX+4UFpzqRYFa/iwTEitqRvmnyCNtTESainFmQqP0ppEDldKANjOHwKWiAyxGs6HQwKHgH50Oc160njsVghQiMpoTdSQQv4z7WAnBzzgF0cR8/yVtM6QM1zFWg+R2ZXvgbzkrF3zp57jrKXk/wCO5D0D7YTxa4mDgm1hhEB9AE+nLzVtzd7lAhalRbPYVPRBaSo/+Pu1jl6Peq5eEM4JRDEuI9yoASVHmpEzkP2aauUUbhy9+1Qv89l7kTI6rlFHOtTdALbM3R72wKGpXn6FV4xJ8CejCe0DpFcBQNN5UZhLHyjTCOuP
+ pXpfx3U2
+ M0xASv4fZx+o6XKHYEPAnEGFWG44c0jo/HR6OQKOC6rwIlVd2wlVwzlDNzvTfzs4aAAGJgqVP7M0aY5KrlAZrpGoYd0UBhPgw74ouJmupmIt3sebwlfQz1MDng3LL9k7sj+WDbd93QK6+SR55ZYfHiFkfQBvGV8G2QjEOfO3e46YTRNS31xOe70rLXDqDwmYqlSngVr64VGBXQ9VehzxGEO4y9qAPkgqoIAtG5wPv+Zn0TUKjzql7Vp81+G6bgpm8L1S9n7NUeQElob7BxLiePJlktO7sM0/6bD9/MWeAW+S2BBc5BeTGtb18cd1pjO4QLSlJR6+ll6Wz+j0ymXDFp+lHqnxLyM/JCUBiKYz3NYD9FdXb5AjEIgyltRocRpfyc0ycMU7GPygmg47XyqAJwQY/wg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -215,147 +133,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9 Jan 2026, at 15:03, Matthew Brost wrote:
+On 12/19/25 8:40 AM, Marco Elver wrote:
+> Add support for Clang's context analysis for ww_mutex.
+> 
+> The programming model for ww_mutex is subtly more complex than other
+> locking primitives when using ww_acquire_ctx. Encoding the respective
+> pre-conditions for ww_mutex lock/unlock based on ww_acquire_ctx state
+> using Clang's context analysis makes incorrect use of the API harder.
 
-> On Fri, Jan 09, 2026 at 02:23:49PM -0500, Zi Yan wrote:
->> On 9 Jan 2026, at 14:08, Matthew Brost wrote:
->>
->>> On Fri, Jan 09, 2026 at 01:53:33PM -0500, Zi Yan wrote:
->>>> On 9 Jan 2026, at 13:26, Matthew Brost wrote:
->>>>
->>>>> On Fri, Jan 09, 2026 at 12:28:22PM -0500, Zi Yan wrote:
->>>>>> On 9 Jan 2026, at 6:09, Mika Penttilä wrote:
->>>>>>
->>>>>>> Hi,
->>>>>>>
->>>>>>> On 1/9/26 10:54, Francois Dugast wrote:
->>>>>>>
->>>>>>>> From: Matthew Brost <matthew.brost@intel.com>
->>>>>>>>
->>>>>>>> Split device-private and coherent folios into individual pages before
->>>>>>>> freeing so that any order folio can be formed upon the next use of the
->>>>>>>> pages.
->>>>>>>>
->>>>>>>> Cc: Balbir Singh <balbirs@nvidia.com>
->>>>>>>> Cc: Alistair Popple <apopple@nvidia.com>
->>>>>>>> Cc: Zi Yan <ziy@nvidia.com>
->>>>>>>> Cc: David Hildenbrand <david@kernel.org>
->>>>>>>> Cc: Oscar Salvador <osalvador@suse.de>
->>>>>>>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>>>>>>> Cc: linux-mm@kvack.org
->>>>>>>> Cc: linux-cxl@vger.kernel.org
->>>>>>>> Cc: linux-kernel@vger.kernel.org
->>>>>>>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
->>>>>>>> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
->>>>>>>> ---
->>>>>>>>  mm/memremap.c | 2 ++
->>>>>>>>  1 file changed, 2 insertions(+)
->>>>>>>>
->>>>>>>> diff --git a/mm/memremap.c b/mm/memremap.c
->>>>>>>> index 63c6ab4fdf08..7289cdd6862f 100644
->>>>>>>> --- a/mm/memremap.c
->>>>>>>> +++ b/mm/memremap.c
->>>>>>>> @@ -453,6 +453,8 @@ void free_zone_device_folio(struct folio *folio)
->>>>>>>>  	case MEMORY_DEVICE_COHERENT:
->>>>>>>>  		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
->>>>>>>>  			break;
->>>>>>>> +
->>>>>>>> +		folio_split_unref(folio);
->>>>>>>>  		pgmap->ops->folio_free(folio);
->>>>>>>>  		percpu_ref_put_many(&folio->pgmap->ref, nr);
->>>>>>>>  		break;
->>>>>>>
->>>>>>> This breaks folio_free implementations like nouveau_dmem_folio_free
->>>>>>> which checks the folio order and act upon that.
->>>>>>> Maybe add an order parameter to folio_free or let the driver handle the split?
->>>>>
->>>>> 'let the driver handle the split?' - I had consisder this as an option.
->>>>>
->>>>>>
->>>>>> Passing an order parameter might be better to avoid exposing core MM internals
->>>>>> by asking drivers to undo compound pages.
->>>>>>
->>>>>
->>>>> It looks like Nouveau tracks free folios and free pages—something Xe’s
->>>>> device memory allocator (DRM Buddy) cannot do. I guess this answers my
->>>>> earlier question of how Nouveau avoids hitting the same bug as Xe / GPU
->>>>> SVM with respect to reusing folios. It appears Nouveau prefers not to
->>>>> split the folio, so I’m leaning toward moving this call into the
->>>>> driver’s folio_free function.
->>>>
->>>> No, that creates asymmetric page handling and is error prone.
->>>>
->>>
->>> I agree it is asymmetric and symmetric is likely better.
->>>
->>>> In addition, looking at nouveau’s implementation in
->>>> nouveau_dmem_page_alloc_locked(), it gets a folio from drm->dmem->free_folios,
->>>> which is never split, and passes it to zone_device_folio_init(). This
->>>> is wrong, since if the folio is large, it will go through prep_compound_page()
->>>> again. The bug has not manifested because there is only order-9 large folios.
->>>> Once mTHP support is added, how is nouveau going to allocate a order-4 folio
->>>> from a free order-9 folio? Maintain a per-order free folio list and
->>>> reimplement a buddy allocator? Nevertheless, nouveau’s implementation
->>>
->>> The way Nouveau handles memory allocations here looks wrong to me—it
->>> should probably use DRM Buddy and convert a block buddy to pages rather
->>> than tracking a free folio list and free page list. But this is not my
->>> driver.
->>>
->>>> is wrong by calling prep_compound_page() on a folio (already compound page).
->>>>
->>>
->>> I don’t disagree that this implementation is questionable.
->>>
->>> So what’s the suggestion here—add folio order to folio_free just to
->>> accommodate Nouveau’s rather odd memory allocation algorithm? That
->>> doesn’t seem right to me either.
->>
->> Splitting the folio in free_zone_device_folio() and passing folio order
->> to folio_free() make sense to me, since after the split, the folio passed
->
-> If this is concensous / direction - I can do this but a tree wide
-> change.
->
-> I do have another question for everyone here - do we think this spliting
-> implementation should be considered a Fixes so this can go into 6.19?
+That's a very short description. It should have been explained in the
+patch description how the ww_acquire_ctx changes affect callers of the
+ww_acquire_{init,done,fini}() functions.
 
-IMHO, this should be a fix, since it is wrong to call prep_compound_page()
-on a large folio. IIUC this seems to only affect nouveau now, I will let
-them to decide.
+>   static inline void ww_acquire_init(struct ww_acquire_ctx *ctx,
+>   				   struct ww_class *ww_class)
+> +	__acquires(ctx) __no_context_analysis
+> [ ... ]
+>   static inline void ww_acquire_done(struct ww_acquire_ctx *ctx)
+> +	__releases(ctx) __acquires_shared(ctx) __no_context_analysis
+>   {
+> [ ... ]
+>   static inline void ww_acquire_fini(struct ww_acquire_ctx *ctx)
+> +	__releases_shared(ctx) __no_context_analysis
 
->
->> to folio_free() contains no order information, but just the used-to-be
->> head page and the remaining 511 pages are free. How does Intel Xe driver
->> handle it without knowing folio order?
->>
->
-> It’s a bit convoluted, but folio/page->zone_device_data points to a
-> reference-counted object in GPU SVM. When the object’s reference count
-> drops to zero, we callback into the driver layer to release the memory.
-> In Xe, this is a TTM BO that resolves to a DRM Buddy allocation, which
-> is then released. If it’s not clear, our original allocation size
-> determines the granularity at which we free the backing store.
->
->> Do we really need the order info in ->folio_free() if the folio is split
->> in free_zone_device_folio()? free_zone_device_folio() should just call
->> ->folio_free() 2^order times to free individual page.
->>
->
-> No. If it’s a higher-order folio—let’s say a 2MB folio—we have one
-> reference to our GPU SVM object, so we can free the backing in a single
-> ->folio_free call.
->
-> Now, if that folio gets split at some point into 4KB pages, then we’d
-> have 512 references to this object set up in the ->folio_split calls.
-> We’d then expect 512 ->folio_free() calls. Same case here: if, for
-> whatever reason, we can’t create a 2MB device page during a 2MB
-> migration and need to create 512 4KB pages so we'd have 512 references
-> to our GPU SVM object.
+The above changes make it mandatory to call ww_acquire_done() before
+calling ww_acquire_fini(). In Documentation/locking/ww-mutex-design.rst
+there is an example where there is no ww_acquire_done() call between
+ww_acquire_init() and ww_acquire_fini() (see also line 202). The
+function dma_resv_lockdep() in drivers/dma-buf/dma-resv.c doesn't call
+ww_acquire_done() at all. Does this mean that the above annotations are
+wrong? Is there a better solution than removing the __acquire() and
+__release() annotations from the above three functions?
 
-Thank you for the explanation. Adding folio order to ->folio_free() makes
-sense to me now.
-
-Best Regards,
-Yan, Zi
+Bart.
 
