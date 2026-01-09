@@ -4,92 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60D0DD1A639
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 14:45:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5902CD1A639
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 14:46:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1C4B6B0089; Fri,  9 Jan 2026 09:45:04 -0500 (EST)
+	id B062B6B0089; Fri,  9 Jan 2026 09:46:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE7256B008A; Fri,  9 Jan 2026 09:45:04 -0500 (EST)
+	id AD0886B008A; Fri,  9 Jan 2026 09:46:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A06306B008C; Fri,  9 Jan 2026 09:45:04 -0500 (EST)
+	id 9DCE96B008C; Fri,  9 Jan 2026 09:46:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 923CF6B0089
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:45:04 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 419AB13BF97
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 14:45:04 +0000 (UTC)
-X-FDA: 84312697728.21.0D55F96
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E1C9DC0002
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 14:45:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=BHJcKxj2;
-	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DA736B0089
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:46:37 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4CEBF1ACE2D
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 14:46:37 +0000 (UTC)
+X-FDA: 84312701634.09.868689B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8B1C340013
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 14:46:35 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uZUjYGj2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767969995; a=rsa-sha256;
+	cv=none;
+	b=u/SHpRtA+9D9AOMjAnX2msteoPPy0/rr6ZnVDejAvUK+PSQAq3v6A4ribXDiWxjdpHl8sC
+	MydSeSlTN9yGI/54nJKzvzU0pigTnMIW2gUc0k8/f6BgPyJT6sPrjf32KxZ2JPvddlBYo3
+	F54bzLtaMSvyo9idfWcW63oyRdfBnJE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uZUjYGj2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767969902;
+	s=arc-20220608; t=1767969995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YoZEkcP81J9S3LDfhd18FIDcOfNOHxVwqIdavyFjCcY=;
-	b=ju/oc+xGuch4Iak0YnKEXCZNVsJj9Fgi1ogiJ4/79wPTpZhZpjUp2IjikEU10AOFpYhvX7
-	kv2Wx8mlfhz/G+NgiNXv6EYs+i7yXCXz403CuYP8AaqZM7r9NPtXL+rpvI+y00gvmSpuE+
-	NKXFCoyTkTL/gmyES4QXtfyksawOerM=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=BHJcKxj2;
-	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767969902; a=rsa-sha256;
-	cv=none;
-	b=eufm7T2NDRDF0N+4iv7jmrTMf8oxGL4pnX9abe6SRFCQOIqr+cgTMmNprty/tr1tNGCcdJ
-	3eN3v80p710BtN4qZgcVRaoCWsoqbsDM8D7A4dUWlOvxe6Wltblor86Inmmdg8SwOZL2OL
-	ar+7j+kvB1oohEGH77+tNiVrwNVy3pM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=YoZEkcP81J9S3LDfhd18FIDcOfNOHxVwqIdavyFjCcY=; b=BHJcKxj2yeh95VRAEMy+WwO+hX
-	ucUCoR6gGGXhz/d2SOVoCO1+FR/lX5MJzHmYTJV9BOP5ugNsAenGQkjSFok27X94Wyypa/Z+zBboy
-	gqQJwG5kdFbvRp0H/WlrlbiQ8clbkMRQlQQU3veYfj961e5yof7tzKWuUb+6NUnkSywc//0jnCdy5
-	eEGai36Ud9I+LLKFHormnIRTX/PVJewliP66fCB5C+OVGshRIe6Ko/2mRQC5fuSI7fodvXZgazijl
-	0I1+VYC4OsYGkMdajZiMc9+FoY0pd2esYb7DU4SxY05QZASZi3FxgREgpQATFGNLncSgTLz+WE2U3
-	oRGX8OEQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1veDjT-0000000GuRO-018d;
-	Fri, 09 Jan 2026 14:44:55 +0000
-Date: Fri, 9 Jan 2026 14:44:54 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Rik van Riel <riel@surriel.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
-	Jann Horn <jannh@google.com>, linux-mm@kvack.org,
-	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com,
-	Lance Yang <lance.yang@linux.dev>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] migrate: Correct lock ordering for hugetlb file
- folios
-Message-ID: <aWEUZiKX7QC0xtMy@casper.infradead.org>
-References: <20260109041345.3863089-1-willy@infradead.org>
- <20260109041345.3863089-2-willy@infradead.org>
- <509ac447-e5a7-4cba-86b8-e9c0e72fc93c@kernel.org>
+	bh=n1P/dCqO1tgBzOYNKJaI6BoPW82uloKdtpWKI9Dc1bY=;
+	b=qBXlLTl+/QAN28U5x4Nt9Fci+5tx/FHH+VCR++b5XvCrri2fPyhJwtm/C28L3KWw6VHCIX
+	dFz1wc2RHy/9Rjn2DawrwWVqqdq5ybFN9MF1U4anbX4M6McvWo51yY4PdFLo+gt/Xr/PIE
+	4DtoXlt0WpTS2AvrHdQDBxFMln4loZc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D769A60145;
+	Fri,  9 Jan 2026 14:46:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE468C4CEF1;
+	Fri,  9 Jan 2026 14:46:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767969994;
+	bh=TiX3+Mf2/1XrF5Wi9iq9L5ZAotC8Ji5SdKgsf6S+mLw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uZUjYGj2vzAU/895Kp1TsSc1LFPAvhNfYFyiQDT/1sHdc86Fb7CYXvrSKCDHqJ9l9
+	 OSWqCHO0/cYPa3ylDhqf6y820RTSZtL93ba0/jGN1oVlEHjGaHVVykQ3MCU+Z6yj5W
+	 Stp2vxGoONL9lIG5qlLIvwPqw495ZXWRGOcbNNcduB2d9QF46/J+RZy3jhW8UW+Yoe
+	 5lypxi/zl4Ku7tZnxaxkw12IeQII5MIXEcGtCs7SxEBmWncna6ityUGGr3As4XirRc
+	 zrtFEF64kiJCzQIJjj/FtQi84qhO0pj2g1lozr3UvVSKZgWbxb5zl5K461ANhI+fVX
+	 rz+yJMFWSC3+A==
+Message-ID: <3cc27720-8f53-4b6f-9202-42b3b73928b8@kernel.org>
+Date: Fri, 9 Jan 2026 15:46:26 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <509ac447-e5a7-4cba-86b8-e9c0e72fc93c@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V4 2/2] mm/khugepaged: retry with sync writeback for
+ MADV_COLLAPSE
+To: Shivank Garg <shivankg@amd.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ Branden Moore <Branden.Moore@amd.com>
+References: <20251215084615.5283-3-shivankg@amd.com>
+ <20251215084615.5283-7-shivankg@amd.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20251215084615.5283-7-shivankg@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8B1C340013
+X-Stat-Signature: d3mkcway5y7t7zjt3gmn1ubec5y7kxiu
 X-Rspam-User: 
-X-Stat-Signature: kromfzgqdunsncm9pzssoaniz1w9kh7b
-X-Rspamd-Queue-Id: E1C9DC0002
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1767969901-69979
-X-HE-Meta: U2FsdGVkX1/aBFvA71n2O1GlGR/5B0MOrg41FwKkTPjQzHO88RUvV4iuYl4kfkVdq5feI003kG2ryxFSLiZTsjH9aiVLnMBEt1EwM9PNoKTx1ahqtkI0qfa8tgVlhLJVxJ07lNnCqwKJSuvoIKoSSPsrCnkI874VnVdMWjqZ7PJjXTGGY/8PqXGyp7GOENonUyAA0veR7qN95gU7S/uc6nheExkIWyDqsuWIH8lPJ54ornxKMmS4R39aP47ZlequTBgZ4jNuZTcV1j9LWTltwn0EsRv/ig22TQZ81Sep3TvVTglp/IsLJI5kKLWmbo/sF5uVuk0MFgTtSDHQy0WD/Pg9RbYesWbrCfs+goNVVqvlZCz1HvXMB3U6Z9j+wdbiyfpam4TjC6G79AiuKNM9M2ExNhnuBTTRRhJEt65Y0MKI3AFH8E5ZqO7k+OINi5+gVzqgz4NaErD9uM/RPJO9YdJ4Gy773TS3PZCvb+fUBSKSP91x+UUsozk3oXlksfuv/mwO4BF3l8ovGBDOhN+R9sCCabhAmWhJvSpMeMpi+TZGCX0+pQv8NfkIkKU0Y9We9Kfqld0cPkMOnl0+PIxFvA51yZr0De6HOYfYlWRMjaXm6CLliNIlP2xzcCatlwpuZe1ZLefkVg3NiF8BdbweUCxy5zHdLX6734boVSANPomWDc6g/SrTh2syzDkfakenSOxochMFRbUG/PtgDlneYyCR9qSMIeffe0toD65l/liSBpO12T0gDyXJA0TAjYivvSSeygUO4C+8fYZrDO+jw0Zfz9LESlPAvQ+9sKLOH/v9rj4M1eHM8mEUJiJO2mKXxH7ojiir8nBmkj9hNqwRrCsFuvHTzCom5sV0LueyFGJlWRd28QMfb9ZRd750W1XbAl0qhyvW9vfQZfj7hq/lhleqoANNKR9ZkOeK55tsmumsQWidMyp1vc8K1mSfTTpCF3KvosCJOj2NmesG8n/
- QeMbomo3
- B69GcCTX4aVK1aGImzoIyZ3WiN+NcgQT4VEE1VWYxYTbU3ZccqLFdgD04d+VUvHtQUI/7GQesM13S4vsDQv4gz8w01gm294gxBQxhKrvG95cbALX6JPmAjCPeI2W9nIKeBdQU/ihElgcknyhRmVZhd5vAVHarSaZaP6JqhmJyb9ujHM8vQ/j1eLEtIGmeECT1pfO0zzB7jP8+Ir9fSADFrmMmqzK0M6dQGCkdLUMfXzUZfq8QRBDVFP7twJaO/OGGnudym47wcyuNvdwcKaqFet3EnSck/kz0fso9g/JBhq503stCDXz/yRAEKdFVZ3xHB0sxH14dFX5UcIZ3LJ+6SmX5yh8KcrvMDcyGbJlI1QTtc0PnLNnWtnBxYw==
+X-HE-Tag: 1767969995-979471
+X-HE-Meta: U2FsdGVkX1/5aGVmuZ1J2UeTwMYbz+1l38CTdbt8t/ItKqv3PggPVcvNXc+m+Z+CpBof6QIOX2RgNsKY67xMQ8jT8b6IpNSQiBigTRgHsPAUc8TlkB98o7B5os4vEP6j9IkjGPumGh8kywNxjv3o2tYqhE2By8OCgGmAzHlnpJIsMKqILjWiNLm+/+b0dTS/vdInxQ2oMODpMDEUKBRgV8p5PBnWf1kHiambvQ6urk+BV6cDD//2vHPX1edGhmxyGrX97iqLnlHFb5asKXzuTEe1mNpKVcM0rdSLFnpQHJygWwGW8lUW8u7+Du4s28QvARQPm/yPs+UiOOAhEW+9OqWdpmdf4+lvxPy0BTMuC4a1r5mxb82fMI+PhxD0Omu+/ckbuFscyJExxIFMLojihyFlG42q/IGTWox6cynGSGs8FX8C68F1bVtB6t2xuSRVG68P6DMxC8MNuf6gOSYLRrZex8LAzJ+dUz2iPWmCJ3/WO2WGlKg6UbsrM88iRIep8gIN6uAYWx7T08jwh0rJTFiV42q2OiQXPxXenadmf6SVclDz+mepepMQ5TMSoI26Vt7JdGX0+H80oFSVUiJERxA9lHTO/PKZe6+TgyB58y8SPk2bDBQ935fpGg7Y+RhDq8Gu5MooCoygNpCiWIqtMmI3vhwUu/TRSNjYCUjZ/Bxtr2tF89W5GNFeHR3aHGFFpzfmb3YfjwSHCLWYWn1ZeaSXpPkXqtqdAk3fMdwQXNEzp5F9Mi4xdFLxzlbmhGSO6FZ067RCS+HT/Fps4hVv8/yogkbTZzkwPPH/idEbIAwpJRKH4a3bJEfGt6N3RjDMa8pWMl1cYHTUrcBPXu405G/lacdE+kGMH0KSnZIJe785POIPNEVJtxWTa1JxdY20K4BADIv4Ngsy9aJCAT4W3snEck9Z+SsxT/it3JDLGubRGfdY+H5r0fX6TZlDH72BwvL0dMXVYc5Luwfmod6
+ OARiA3NU
+ iyLJLXjBVvA9JGKGukc0DT4U7focGyiopBQUZ24LYfZWhxtgN295WOFHOBOZtlRQYyCrZguRWsa4cOHd5xpaHBXRRE9yF93Yk7NNnynElTOarUaa2NdaIyMysulCEIdm1OCkkON/js9YFw5/9N6IaBL4mC8pPnVrCGUROKWtWehvcdGgZ4dsjPMmjfzNiCAhS6XE05f0LOg+Vd3Iv21jJ0QTVAzGeAzPEpEz8o/kBYiHkKiDKNqr4kTEXBlAAiarwPQCHx6EX6A2FvW/0ms9SdzgTMUi3iH5WpHelzFJw/ylyxH1jbf/54MgBjbpVzJOns+0EwD//KpC+xn4AWugqr/82Q1ulUwazmku+GFWnMK/t7yjnC9Ke+rNVNjTrt9MrSEwQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,32 +148,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 09, 2026 at 02:50:26PM +0100, David Hildenbrand (Red Hat) wrote:
-> We now handle file-backed folios correctly I think. Could we somehow
-> also be in trouble for anon folios? Because there, we'd still take the
-> rmap lock after grabbing the folio lock.
-
-We're now pretty far afield from my area of MM expertise, but since using
-AI is now encouraged, I will confidently state that only file-backed
-hugetlb folios have this inversion of the rmap lock and folio lock.
-anon hugetlb folios follow the normal rules.  And it's all because
-of PMD sharing, which isn't needed in the anon case but is needed for
-file-backed.
-
-So once mshare is in, we can remove this wart.
-
-> >   	if (page_was_mapped)
-> > -		remove_migration_ptes(src, !rc ? dst : src, 0);
-> > +		remove_migration_ptes(src, !rc ? dst : src,
-> > +				ttu ? RMP_LOCKED : 0);
+On 12/15/25 09:46, Shivank Garg wrote:
+> When MADV_COLLAPSE is called on file-backed mappings (e.g., executable
+> text sections), the pages may still be dirty from recent writes.
+> collapse_file() will trigger async writeback and fail with
+> SCAN_PAGE_DIRTY_OR_WRITEBACK (-EAGAIN).
 > 
-> 	(ttu & TTU_RMAP_LOCKED) ? RMP_LOCKED : 0)
+> MADV_COLLAPSE is a synchronous operation where userspace expects
+> immediate results. If the collapse fails due to dirty pages, perform
+> synchronous writeback on the specific range and retry once.
 > 
-> Would be cleaner, but I see how you clean that up in #2. :)
+> This avoids spurious failures for freshly written executables while
+> avoiding unnecessary synchronous I/O for mappings that are already clean.
+> 
+> Reported-by: Branden Moore <Branden.Moore@amd.com>
+> Closes: https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
+> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>   mm/khugepaged.c | 40 ++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 40 insertions(+)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 219dfa2e523c..6c8c35d3e0c9 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -22,6 +22,7 @@
+>   #include <linux/dax.h>
+>   #include <linux/ksm.h>
+>   #include <linux/pgalloc.h>
+> +#include <linux/backing-dev.h>
+>   
+>   #include <asm/tlb.h>
+>   #include "internal.h"
+> @@ -2787,9 +2788,11 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>   	hend = end & HPAGE_PMD_MASK;
+>   
+>   	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+> +		bool retried = false;
+>   		int result = SCAN_FAIL;
+>   
+>   		if (!mmap_locked) {
+> +retry:
 
-Yes, that would be more future-proof, but this code has no future ;-)
+Jumping into an if block is nasty :)
 
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>   			cond_resched();
+>   			mmap_read_lock(mm);
+>   			mmap_locked = true;
+> @@ -2819,6 +2822,43 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>   		if (!mmap_locked)
+>   			*lock_dropped = true;
+>   
+> +		/*
+> +		 * If the file-backed VMA has dirty pages, the scan triggers
+> +		 * async writeback and returns SCAN_PAGE_DIRTY_OR_WRITEBACK.
+> +		 * Since MADV_COLLAPSE is sync, we force sync writeback and
+> +		 * retry once.
+> +		 */
+> +		if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !retried) {
+> +			/*
+> +			 * File scan drops the lock. We must re-acquire it to
+> +			 * safely inspect the VMA and hold the file reference.
+> +			 */
+> +			if (!mmap_locked) {
+> +				cond_resched();
+> +				mmap_read_lock(mm);
+> +				mmap_locked = true;
+> +				result = hugepage_vma_revalidate(mm, addr, false, &vma, cc);
+> +				if (result != SCAN_SUCCEED)
+> +					goto handle_result;
+> +			}
+> +
+> +			if (!vma_is_anonymous(vma) && vma->vm_file &&
+> +			    mapping_can_writeback(vma->vm_file->f_mapping)) {
+> +				struct file *file = get_file(vma->vm_file);
+> +				pgoff_t pgoff = linear_page_index(vma, addr);
+> +				loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
+> +				loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
+> +
+> +				mmap_read_unlock(mm);
+> +				mmap_locked = false;
+> +				*lock_dropped = true;
+> +				filemap_write_and_wait_range(file->f_mapping, lstart, lend);
+> +				fput(file);
+> +				retried = true;
+> +				goto retry;
+> +			}
+> +		}
+> +
 
-Thanks!
+This looks a bit complicated. Can't we move that handing up, where we have most of that
+information already? Or am I missing something important?
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 97d1b2824386f..c7271877c5220 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -22,6 +22,7 @@
+  #include <linux/dax.h>
+  #include <linux/ksm.h>
+  #include <linux/pgalloc.h>
++#include <linux/backing-dev.h>
+  
+  #include <asm/tlb.h>
+  #include "internal.h"
+@@ -2786,7 +2787,9 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+  
+         for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+                 int result = SCAN_FAIL;
++               bool triggered_wb = false;
+  
++retry:
+                 if (!mmap_locked) {
+                         cond_resched();
+                         mmap_read_lock(mm);
+@@ -2809,6 +2812,16 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+                         mmap_locked = false;
+                         result = hpage_collapse_scan_file(mm, addr, file, pgoff,
+                                                           cc);
++
++                       if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
++                           mapping_can_writeback(file->f_mapping)) {
++                               loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
++                               loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
++
++                               filemap_write_and_wait_range(file->f_mapping, lstart, lend);
++                               triggered_wb = true;
++                               goto retry;
++                       }
+                         fput(file);
+                 } else {
+                         result = hpage_collapse_scan_pmd(mm, vma, addr,
+
+
+-- 
+Cheers
+
+David
 
