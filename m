@@ -4,98 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93657D232EC
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 08:21:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4630ED232ED
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 08:32:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 014866B0088; Fri,  9 Jan 2026 03:21:15 -0500 (EST)
+	id 9CA096B0088; Fri,  9 Jan 2026 03:32:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F042A6B0089; Fri,  9 Jan 2026 03:21:14 -0500 (EST)
+	id 94DE96B0089; Fri,  9 Jan 2026 03:32:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDC1D6B008A; Fri,  9 Jan 2026 03:21:14 -0500 (EST)
+	id 8580B6B008A; Fri,  9 Jan 2026 03:32:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CAE4D6B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:21:14 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 749886B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 03:32:21 -0500 (EST)
 Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 704128B876
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:21:14 +0000 (UTC)
-X-FDA: 84311730468.26.6ECB7AD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CCD62A0003
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:21:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gk+RzwZJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767946872; a=rsa-sha256;
-	cv=none;
-	b=HDYqK8VvKc37Vx7GLY+v1C323cliYgF9erCduYzj0SvFKWmY6FmrLMg79U+wOYREVhwg2F
-	ukdyaFB/r1GOvB0vCpLPqq3x7hxzDqWWtiDZ2F631QUcuXusLJgUEOX4+CV6GOOJ6Ozj1Y
-	J/dg0rEKlJqqgLdwD204u9hnKAPBHQY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gk+RzwZJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2CB141B772
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:32:21 +0000 (UTC)
+X-FDA: 84311758482.26.D74F076
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4165D40007
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 08:32:17 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DM7J+SxL;
+	spf=pass (imf27.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767946872;
+	s=arc-20220608; t=1767947539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7bwCvYNVWz131ksEKOnghAOgppy+qUVLkrHVAB2GisI=;
-	b=r+WK3JNIiAVp+PCoqo5CHB2dvR2sH7qNT8jC+Ntan0jIxD5ga43t1SZ5aIMKguLF73yYqO
-	TfZR3UW5ax9+zOrBgqtZbPRRXI2BYRrlPQofV5Tdhog9WxepLtlEh9Ietrz78rP79bG67l
-	r9IczRleE8tpO44TGAz83skCN65CY+A=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 96BEE404ED;
-	Fri,  9 Jan 2026 08:21:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA62C19422;
-	Fri,  9 Jan 2026 08:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767946871;
-	bh=KUFuE5V8UAiIurL6g3Fp/lJo2ewluF8KzNFw5f5PUjk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gk+RzwZJgqFqDXbdeT7Ij2ANvkctK08svhshZT4R6yu6GK6U5FU7oH4Xe+zv8qwMi
-	 4CjPgeTPbBjv8HsMIltG5ewdwonA8kjSIA667gREwSdMJ3RS+7Buq5U6Eos8SvbK+J
-	 nKkrMxUoT4X8Q0FyxCy4EZdhe4iqJhr4V6t7/UJCAhTlbVpUQXR/gm208md0TMmWZM
-	 HkmXt9IdJ7rCxhmZTAD0oRgGfDs7xzYOTVswLzOoZ7GMgJgYq9abd0Ivcl84yf5tq9
-	 J4AmlCsrCF8YDst8YMFTNmMfuhpye4VlBUo7YM7KAkx0A9LACF/F+ezsCZLKZlQrcl
-	 B6Hco6Rs0QnpA==
-Date: Fri, 9 Jan 2026 10:21:00 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Lain Fearyncess Yang <fearyncess@aosc.io>
-Cc: Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
-	Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org
-Subject: Re: [PATCH] loongarch: wire up memfd_secret system call
-Message-ID: <aWC6bIEg6UqvX1DO@kernel.org>
-References: <20260109051054.188030-1-fearyncess@aosc.io>
+	bh=H5FICVbCdpL28fxRZxhccvb+qo60S0uzBKWHTrHtW50=;
+	b=cnFEwJn1pSKN6Y9ctLxs7Ij2VwYeCGYbiZVUzDlM1yRuTN/Mnanq3rgaonIK84jHJo/i86
+	xZKBTpOtpteCGY+zVt6GYbLmvoHAjuzEArxGl7g85nK0NKMIKcWjtQ3JTje07dwxnouYqE
+	IxI71cJqVMwQ+Ch8e47Fwl8iMiY780w=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DM7J+SxL;
+	spf=pass (imf27.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767947539; a=rsa-sha256;
+	cv=none;
+	b=jP7LRN33JLHUbimSvSGCtBQ7ojImiMyj0BdZFmtINEtf4C0/ETl3fDMRAK0qqtrvS071lW
+	YifOYof7OZqY/UIqaEbF433pcBuHEeAWaEGKcl/DKSNoMuYy0qgLcFLrxV9xTo5RBKrScw
+	K6r8P9cHSNiDKVSm4mbotCIk5TxA6m0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1767947535; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=H5FICVbCdpL28fxRZxhccvb+qo60S0uzBKWHTrHtW50=;
+	b=DM7J+SxLxkANJgLXHCwJyfkQ/DnkOAs3JErng4HZZhLz6DTMUmoF3ZSv+zju2sHvlMQiw3fG2F5Q9CnMeaHVyaFVJRjC6msoV/OTH/fKECVhk5W1JvtnDD2knjsVfkn9H2cj/IiBz/KtGcrScQxCga/Fgg5nUg3a6RVyuvoDBno=
+Received: from 30.74.129.18(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0WwgBVo0_1767947533 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 09 Jan 2026 16:32:13 +0800
+Message-ID: <f9d1c2d2-a6d9-47b7-9f1d-382a28bb88b8@linux.alibaba.com>
+Date: Fri, 9 Jan 2026 16:32:12 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260109051054.188030-1-fearyncess@aosc.io>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CCD62A0003
-X-Stat-Signature: f8mofzk5cn7eobsfx618jtqxwgazxwm4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] arm64: Kconfig: enable ARCH_WANTS_THP_SWAP for all
+ pagesizes
+To: Barry Song <21cnbao@gmail.com>, Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+ baolin.wang@linux.alibaba.com
+References: <20251226063759.4020782-2-tongweilin@linux.alibaba.com>
+ <CAGsJ_4zd+SMa4Mj23tjF5OwsP3LQyvYTrwN4y81=k8FSFgbH3Q@mail.gmail.com>
+ <aV_3fxlzwOSz8B0t@willie-the-truck>
+ <CAGsJ_4waQsxPKTcGvtpTAF4kVbYQXeH_iHaQX3aAYDNo-8oDLQ@mail.gmail.com>
+Content-Language: en-US
+From: Weilin Tong <tongweilin@linux.alibaba.com>
+In-Reply-To: <CAGsJ_4waQsxPKTcGvtpTAF4kVbYQXeH_iHaQX3aAYDNo-8oDLQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 71he6j9bjyyjs1bzcqe89wfmwn3e8poe
+X-Rspamd-Queue-Id: 4165D40007
 X-Rspam-User: 
-X-HE-Tag: 1767946872-395718
-X-HE-Meta: U2FsdGVkX18szA5YkI9tyT5i0jvOc0+AE86fmR5q9ja/r1XZ9bAtFrDd/7SR9w/hFcr/iieAxjJbAFh8DjkFs1P/qKeaiKrihCZ5sVh4MOhPPQ2cPeqQrC6Cb2Cs4aijPLNoCDlCFd5IAMqt8yicgGsB8LNci2PSd7ZytK4Gx8r+3/I9VCfQjY0OKBL0IXdf5bCcvufD0zMvR+7lZkwFeddz+r3GCR6+Cw1WHbR0mm87IrxjVGJz9T1jrNsWi9vuIbGNhgGWCBZIb7gWYPgcctRRCImrx6XSPEY48SUjbmMaavvOw/5zS/PHYBYJleIR5BkLQmj+rCiR/Q7Ph2q0JZzN1BQ65XJ645EV4E0qqPnCLLw8DwABPc1ZRvyWkq82CKFlpOREy+kHqtMMFehC0sIXANJIiKdXf4RJ7eNgWIpX6qC0QPyKWGeQGl+Jvykp+RMSDfto6fC6zH2IWgr7pyqRXzquuN+Hm8NeiI8akg9I0Qw2SBDkeYUPT5u0Cp+oOrtuHWYe9WYrcZzeyvqWGscHA5HLqQqQWsxCKNGPTWqWcMFnuFGhdl6clnOJKN+Fl+nYB8+wMOghXJf00zVsW9x9rPhdLwXwK1XH4Uj9FkBY8wWbp3XL8PgD2haQPRGVgAkOK7tjSvc/xrXqCRqDa30DqFwW+dcLnwSmRjiScFkX9shnTm6u04vc6Jt0lnzFVeDUbniaizRvqCq0zHQCcX8W3v+qeBGGnad9BBnaVgFn3S4onWwio0UKZTCA4n+jRT9C3CkbkTyNt3V3/R3dVwuE8faTk+9ZG42WV3Cc+rDgqg+XSkR8v6rYlfqfEgP7eE9DBvjj38ThUk2sTQhpc/aF7x0SVrJucziW0cDndNI/g/PHKbIQI6J2DTKriuoWZajlTU5nfZaqbkMbRbzaGZBM6Fj9DN6yIc0SoKWC1a5yHceZGmLAV4O31s0n7aWNcrQ/xIqmQ8v9X3UbeZ3
- KNdIy4AM
- mMViRun08yx7MxIcvVYLsQUob1kY+IPmZooIDRT9qtVjXbptWeZ0voghUyr//7+MfnWh37753oMVnzd2VB7soqPK8OmzJRESeNUltH4b3PF/S/B1dIGJF2KRZ7wAUHYR2+XPlRdFVCIcQUbbKBD0M5irQX7JIlBgPC1Mz7rFPosyy9XnfJH4FiScRYti5aYEcVxDMTKoE2b3KsBvUPZo9vwOVRAF+txT4uTZlpD1ZGcp/KIe2JMFUuIT7XcTptOQEdv4uqx2d7Wgr0Jw=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1767947537-418080
+X-HE-Meta: U2FsdGVkX1+GKsJlkGBHoMJrOY+lAPfJqQNiGjaigPA/rPAMtfdVlHKv+3e2O8k7kWusPp+wnAOFCw6ii1rrCHnP2a5W0QYLJQwBCj+Wd/mafFqNe+AJWMZ0+c6NV/8MYfeLakDvXBe+CPvYU8qniPYylh7V0rt8u4opJtMpu7fB0H+PKmbQBm4Zms9Vrmg9peQ9hZLtEn0OLQc5BKqkF7cMxXT9lng4EXqetX4uEfFADz2BtDhsGNXke0u++8mAPmGj5Q0SdYZLpLbl97QMHaYJokbqXXfs3Eg6P3YDm33IRPL9Lp/8NnlPINi5IFrbuZtp1afWDtLVICXlbG7n7P/YdyxkON6pmCCBobT7pymNk/DxpTRwhBbd+rcfMV6U1/nJ7qcISmQ9SIaziCQB84treiDHz9f+bxf3fruePnQEUJ8gVTiem5y66xdknFS4Grvj4qQfwLT75gTPki0t57q8hmERicGcP/kNwyE/C7yx5mcSMqJpXA3L9YdgWdlE+37Fe4Tax25VPtbEbx5vmIMszqEw3vyLU5fyGPc6WQqHSmB2UlIj8FFnAKTXff9ju9okh7BzAKOe27zAP0FHFNP9d7dLl6y+jASNGODLRGHf6uMohQkJBgGd6DFKuYZX9ZUCI2g+3+QIpuZjapRfEyu824nQNm1efonHHWRHM9aI9oC7L9qN6P4P3iShU9Jpu4o5uUPf95hUuo1G07Ve/JQkt2Fq+OWviCte1NXB17KxvL+24JFYugQ+pwkuLW1ttjwiYC3JKb2MLrvhgc2kIbL8YvNZXmuLRzMaCiRk/tVhzJJbgZjrUs4cY7AyIbMnZgl5ABoUknAevrClnfd2aveSvBc/rUDNvPFCy4qtXxO8jz4aGvoZvHhagg4vvUuzJ9cUBTYa4OTiEK+8HG209yaaeDMereINPAdOt5RlsCfCC7IuPF4545BEEm6KxXoysw4EBR8+jPKYu/Vw6o+
+ tIVXWgPD
+ jaD+D4j4+3IgzxplyE8wTS1f9SWj7pqDUfLocJnWAc3Oo6HigEQM7DBCxFh9TDB8EWtG6qQm2oCLthJxaXsgZRdPz5Lc4xblqYO5j5HxSggZFVBgavV59MFxE2d0eOPeQ3li5tGANM5+WeJ64MN0NqM8eq+Lkzz31GMTg0wWMGcrvKurIloqatfc5vL6oASprMghfna6LGNlSxSAcFAqt12vXu2OkutMoRH93kiC3tTNnQHWZvJmuzvtRHyOuroKJMpcbuvgVvQyuya+d1zvWRS47xNfq6aeFvL7jLyau7bfo5jC9H0oPUJ5pJDz+TOVuNNwjsZpjkbBEnbZ5t/Df6/ZZwYHR5NqgD/VNxFKWi62SYhFVUwvbI1bgo9RY7+S37ToBvTYv3puKJMx0hO3ncoJRybdpPHn0OPDO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,23 +94,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 09, 2026 at 01:10:51PM +0800, Lain Fearyncess Yang wrote:
-> From: "Lain \"Fearyncess\" Yang" <fearyncess@aosc.io>
-> 
-> LoongArch supports ARCH_HAS_SET_DIRECT_MAP, therefore wire up the
-> memfd_secret system call, which depends on it.
 
-LoongArch version of set_memory* does not support splitting of leaf PMD
-entries. Does LoongArch always use PTE-level mappings in the direct map?
- 
-> Signed-off-by: Lain "Fearyncess" Yang <fearyncess@aosc.io>
-> ---
->  arch/loongarch/include/asm/unistd.h     | 1 +
->  arch/loongarch/kernel/Makefile.syscalls | 6 +++---
->  tools/testing/selftests/mm/Makefile     | 2 +-
->  3 files changed, 5 insertions(+), 4 deletions(-)
+在 2026/1/9 07:11, Barry Song 写道:
+> On Fri, Jan 9, 2026 at 7:29 AM Will Deacon <will@kernel.org> wrote:
+>> On Fri, Dec 26, 2025 at 07:52:44PM +1300, Barry Song wrote:
+>>> On Fri, Dec 26, 2025 at 7:39 PM Weilin Tong
+>>> <tongweilin@linux.alibaba.com> wrote:
+>>>> Currently, ARCH_WANTS_THP_SWAP was limited to 4K page size ARM64 kernels, but
+>>>> large folios requiring swapping also exist in other page size configurations
+>>>> (e.g. 64K). Without this config, large folios in these kernels cannot be swapped
+>>>> out.
+>>>>
+>>>> Here we enable ARCH_WANTS_THP_SWAP for all ARM64 page sizes.
+>>> I no longer recall why this was not enabled for sizes other than
+>>> 4 KB in commit d0637c505f8a ("arm64: enable THP_SWAP for arm64"), but
+>>> it appears to be fine, and the swap cluster size should also be
+>>> more friendly to PMD alignment.
+>> You seemed to be worried about I/O latency in your original post:
+>>
+>> https://lore.kernel.org/all/20220524071403.128644-1-21cnbao@gmail.com/
+> Will, thanks for pointing this out! With a 16KB page size, a PMD
+> covers 32MB; with 64KB pages, a PMD covers 512MB. So, Weilin, are
+> we ready to wait for 32MB or 512MB to be written out before
+> memory can be reclaimed? By splitting, we can reclaim memory
+> earlier while only part of it has been swapped out.
 
--- 
-Sincerely yours,
-Mike.
+I got your point. In our production envs using 64K pagesize kernel, we 
+only enable 2M and below size
+
+mthp, so swapping out as a whole is a better way. Or maybe we can set 
+the SWAPFILE_CLUSTER by arch.
+
+I will do some tests of this concern.
+
+Thanks a lot.
+
+> While splitting down to order-0 is not ideal, splitting to a
+> relatively larger order appears to strike a balance between I/O
+> latency and swap performance. Anyway, I don't know :-)
+>
+> Thanks
+> Barry
 
