@@ -4,124 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82828D232CE
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 02:17:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC8A8D232D1
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 02:24:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D90136B0005; Thu,  8 Jan 2026 21:17:27 -0500 (EST)
+	id A77526B0005; Thu,  8 Jan 2026 21:24:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3E386B0089; Thu,  8 Jan 2026 21:17:27 -0500 (EST)
+	id A4EFC6B0089; Thu,  8 Jan 2026 21:24:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1F696B008A; Thu,  8 Jan 2026 21:17:27 -0500 (EST)
+	id 95CC36B008A; Thu,  8 Jan 2026 21:24:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B0F556B0005
-	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 21:17:27 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5AA2713A9A2
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 02:17:27 +0000 (UTC)
-X-FDA: 84310813734.05.236FE7D
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7800540004
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 02:17:25 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cPCxGldf;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767925045; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8478A6B0005
+	for <linux-mm@kvack.org>; Thu,  8 Jan 2026 21:24:43 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4655C1AB73
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 02:24:43 +0000 (UTC)
+X-FDA: 84310832046.06.CE8CD99
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A6DD240005
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 02:24:40 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=lawQ+N1C;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767925481; a=rsa-sha256;
 	cv=none;
-	b=hn+PoVPQpqXRXxsDoDB7T122Tm7Yl+HdH0v2osEqd+GCcAPegW15oXx401+Sd/EXcJZlTE
-	2Lp3XGC69jya6+RsWKq6YHp6gzZ9KMk4o3iDVni4dkVd9WbcNyf3rQ+gqtqrUFR9ExIPZG
-	lUnGy/TXu/pcALzZZjpTPIPBrj5kYAQ=
+	b=iXp2tybv25poowFGsNuvIn/XRXn75ZM+mp2z7XNWZb5NCtSVcLv7xaeE/6VdNRCMctyXsL
+	xiEUgHacbbwtAwnUaUUi7fEOvEhcD/1hOJQqvZPakHeVwCnoR3t7b9VG0IiUoGASzyIku0
+	MGR2gxwy8pV6TEzfi9ZuQ3c6PSmy88U=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cPCxGldf;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=lawQ+N1C;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767925045;
+	s=arc-20220608; t=1767925481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PwRw5BMh44S+CRA0S+aM2X056BQ3MKgakAszDLhEDMA=;
-	b=iB0wzVtjvLP2jn5blNCWJCQCAuhUxx3pyYbWJbTvzwZ5ZJ0AkLqGFnY7cNP9zvX0tD5h2w
-	3LJehtv2hqbX7kXvENMCwXvo0L8TzzcOjDCnB1K8bUkcmTC+gXtauAQqiEkOPjrcuFhCQE
-	RKkrvMhX+38IISKtKc0YHzIJw/h4EX4=
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso2718700b3a.2
-        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 18:17:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767925044; x=1768529844; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PwRw5BMh44S+CRA0S+aM2X056BQ3MKgakAszDLhEDMA=;
-        b=cPCxGldfY7rafVQitKFOW0nT/vKILJN5YIqnyLRfa8h3a7qQMpQbDGXDUZrd+4Yg2i
-         aaOw06Y4Mfpy08i/X0QQdPP7tysWkF6LS3htfu4fyySsL9NF2kpnAyvVup/+Pzd8IJcc
-         zqaZqmKLyql7RMtOASPtrQfY61A9UC29L0bAWw1ZA8bvughQDsd10wRbhV9dOtJmzxxr
-         Y53JhFuUvNU5S48nE9K8rIn5XHWw/MSFCaX4Q1WBUKo9iI5O/Qpt54ReBlWHEjazJRK+
-         HPqjvbEuyCUt/moMVu3XgYxUREWlJ9SagLj52G5tshsuYzdgWFuRZNA7oyG0BUdewrEJ
-         YAHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767925044; x=1768529844;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PwRw5BMh44S+CRA0S+aM2X056BQ3MKgakAszDLhEDMA=;
-        b=H5nAf7qnWdg25JwiyHA3q5JrBrP3bn2MXvxTzkEdw2HXQcGvDr2rvFmp94fWGDP4G0
-         9sNyeOL9mEIhGYrp2VzZf7f5HNK7PCdAPJYPfXEtekumv1TjXQKhKJ2nWCbNgzmf9dHz
-         1fKL/rVXHMHAa/2VtqI82odKJKT2vW8YgGGlHaTzJEEvYn15nJTHuCnBtFQpcZNdqJSn
-         SkxlYCJ2yoPpxq2gAIe5cANZHDHirAcW7XaTRnFxzLWL2gHo1tNRWhqJYvF8NbjxVhsl
-         4eIk0n9GAWzxC68KEwDZPJdKDM+0PW/UVrf0UztEvC2tNCWzsM5r7jouvGbTBycs74/P
-         vrJg==
-X-Forwarded-Encrypted: i=1; AJvYcCX5SVfAbvE9O+gkF+vVq46Yz8txgVx/v+loKTkT+fkILBjyCJqCv5A4cgkRbASZ1aGGAq1hSXySMQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzphp3g1WQ8ChEup3c1/UqLre/93yMy0mFwzG2bkWyBSvPcL0FI
-	TGQlX2ZkZA2JB29fy6RJbQkDB9GyNucCDI4PgG4W2Kah5xUAlr5vqINN
-X-Gm-Gg: AY/fxX4+XksnWLApDWN/oNc0UwZfoHcbS/LFvPRphDKqECLVtbwuhllhJkyperUov7m
-	QC+HFvB/6l3rKUZ97lmlFOGkkfcXu6kk16ZlIE6sFFwFJL/MkMh+csPz6Dw9zBaqEPnlv9e17xH
-	RZfDMgM6Qxca9dFIPELsoyFUqk80oBRQexCzh4f4hipoHgDzj/JTSlI/chZTiHvAQfBpWWTWLu5
-	8BYtocAU50ZSp55FZwslHV7S43/YA1Ffk5rylvnUAs5k3ymyNUAFX09NhaCXOpdTi7BVQ9wx3tT
-	aAaRJ/EeeJMfzFOOaBKUhQAkpmFA8vKk5M54bIWwJU5zxeIARj+iswbeGyQAazetpMc3w7m83Dd
-	mpKM6egFOy8eUS/0yDdRpJYaeK/uaVnV6wfmBLvaZGvb+Ioc0XSu3TGjwTiGL3J0NkDv8mxPP+B
-	dBUAQ=
-X-Google-Smtp-Source: AGHT+IGy2Z6iLGjL3DNp/CTf0kZT8VLqMc/3PkmnlEsgK70K/KkuQcvlpg+/MgjiWVU0E9PF5h/8+A==
-X-Received: by 2002:a05:6a20:244a:b0:35b:b97f:7bd2 with SMTP id adf61e73a8af0-3898f8f5711mr7503947637.10.1767925044125;
-        Thu, 08 Jan 2026 18:17:24 -0800 (PST)
-Received: from localhost ([2a12:a304:100::205b])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cbf28ebe4sm9133374a12.4.2026.01.08.18.17.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 18:17:23 -0800 (PST)
-Date: Fri, 9 Jan 2026 10:17:19 +0800
-From: Jinchao Wang <wangjinchao600@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com,
-	Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH 2/2] Fix an AB-BA deadlock in hugetlbfs_punch_hole()
- involving page migration.
-Message-ID: <aWBlFhsivdK1rLTu@ndev>
-References: <20260108123957.1123502-1-wangjinchao600@gmail.com>
- <20260108123957.1123502-2-wangjinchao600@gmail.com>
- <aV-6j97kTobFdYwE@casper.infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aV-6j97kTobFdYwE@casper.infradead.org>
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=wc9Ry/+z0B8fdPNAEzjTbrzoNDQ532ZonOXMhGFKItk=;
+	b=0E2M9SoxJTqFf3zZDxbrIULJvydQ99YAJ4eJaLDJP86RIlaDklTm8nmhid1tJ1N104Em5M
+	q/X0dEZaoMlKOkiNruEZkLi4hjmZ3k8m3m/TdGd6spUWZMI0UVD16H5pOCiCs7sOT4pzRg
+	nrU1Rjpf55iAuh26Fj+U1fxBeRCMgk8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767925481; x=1799461481;
+  h=date:from:to:cc:subject:message-id;
+  bh=lQ4GGjt0Rj3i0mrurqMR6fqMwzGvomMJPo78swHAmzc=;
+  b=lawQ+N1CN7WMhKyftfiD0Jn+m5M7HlJKfxNlDIgdKA7Tw94+3wVwS6ry
+   LRQaYtYK8stdKstPBPRoXVI1Yitx2p+kUBGLS645CdE9P00MqSHrZvzRk
+   qHA3+DKj2tNzQVgkk1JgKJ3uTZfeOQZX0ijvFuXnn7Hq+Zs1TKwfZuMhM
+   531BIHd9dLsVUVPuthVPNl26Gx23pJoiEkxkQYP6MgthiGrJSQfd5LXqO
+   E5WToTjni/L51t6J8YpLghK6wtECtttVBXjuw9wiaSBcywqXoO8BX4l3e
+   bxdaObiOMDvme8vJwCUzf0IwqGgqm16bzFmznVLFXRxzOSJqyDIUJt0uc
+   Q==;
+X-CSE-ConnectionGUID: EQAeens9TYKgaYJNDozuUg==
+X-CSE-MsgGUID: 9febi4OwSDSeKw/lbsTFDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="69384679"
+X-IronPort-AV: E=Sophos;i="6.21,211,1763452800"; 
+   d="scan'208";a="69384679"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 18:24:39 -0800
+X-CSE-ConnectionGUID: aaUwJGcGQkeQo8yW3hsZsA==
+X-CSE-MsgGUID: jdjLckdMTwuSmtf3ZCoP2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,211,1763452800"; 
+   d="scan'208";a="203387294"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 08 Jan 2026 18:24:37 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1ve2Az-000000005Ka-3wjx;
+	Fri, 09 Jan 2026 02:24:33 +0000
+Date: Fri, 09 Jan 2026 10:24:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Bing Jiao <bingjiao@google.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-new 259/263] mm/vmscan.c:1046:6: warning:
+ variable 'target_nid' is uninitialized when used here
+Message-ID: <202601091037.vUSHeJCH-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Stat-Signature: arpehpbfwfhchibuxwjztc1ud4aqq17q
+X-Stat-Signature: qyf67ub7bnw3dczwwidz4ymp8r47sunt
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7800540004
-X-HE-Tag: 1767925045-494424
-X-HE-Meta: U2FsdGVkX19dRzXXCYx/QGyBpjoPpTvL8Lxra2te7vsy73DasQM/bq0UKeZN+tz4z5Q73uq/jxDeObHLtI/+Xr4VW7Lwn5CLWCsZD54CrIDFalBCy81Hb0oRulv+LxNwaPRPe8e3yoZtCQR9FfvRfLg944i3rvlPVKqRKDri1KLy+RXG3xGswTTtqe2knQAWBE6q4b6/V1qQ4RC5zGTpMdm0e923T7ktAPPx6eACGkjjBNPknzCozFzpQcsYYn9zivpkNhB3TioKCCeJY0dZKuKVBqaD0Pufc7CFD0WBTX+0UnbiCdRy1AcPnBC7zdxroGCBcr8bjwaUZgNqFfJqK9EtoRBTR/Gz18G/QImrfXD7iKyzyrVjQw8dnzeXH89WRwKAKCgevStXVla917YTPunU9W+avC0Fw5nCEtCXW2A+Ia7/5vMkXuCmyBnaWacyD8QzzPhbuCFFMyeAbEDbIxCIQ9VcHQG5bdw/9N476rCVa4IdyUX8iDvmC/F6ZI3HmNevSusQhiRk1yvh777m2n6OiKG5+HUXqtd7/qJ2j8GVwAtMlX0v3HZ+j4XogYhf0xxZWeCXqlPW0j3OxL0WmMkN47P6+PHsMxOP0eKbiXhc44JQJ3IH8W3icHpqk9PHImRseFQxLo68X/Wsi1bslUcHKbBBVlU7PIoarQ10ioCVKREe8c2uLPOBkJOQP9LONK8vZ5zd1nvAur5EPVL5ISrNvKZrjsKjJXTC1h7pFDdLbqdeq7pfb+qAl0MqgsG9j7LhFg66pssVrjotRWeW+oVddTRvrC9ZED6iiROytDKCryrA6m4t44FRLxRGcHhETGijBaOJdlVJM8tDv7GSoHMxCHM/seRcul0NBh1atFFMSjm0Thz1OYZQNvSKJSWSW7TxpEq4zB6J7947TZI599OiqCwdo4Cbn8X3qWL+j7rJWpbreglqbg/l/Vp5ghfevw2RkIRdj0VCkNKvftv
- 63GFWmGI
- GCt11ndudUTNTV57p45xug81b9ZQfOWlNLrB7fo83E9a9diMr48DooWfqML3CQbWlMFY3uTLGTT+X6XSLSS0nUZGR5zj1hlpjTEY6eBANMkeXObWlxfKsVcdOuVjO93Qziv3xBBwKjSkFVV3JowO7t/iaqJFqCMoD9HzpSUb+95atd7cUq9UOeu5XTr5LehQSXfmJINvDHcyIgTpQRqaV9OElhVZ2jpCnkhBpjShkJy80dUnMXuPL0YbZQJX92o20jWV5xlkMiljFBwEujqA1TTIhXh9HScEC+0n9EcJHIaYR/p/sOCTHsmFCOLVqa1WPfcgPAifvNzJWV7GnplLEHNShkEuE7aY8cqJgqlOK9sdYeI/KJrA8AmDxB2gLKoGUurddNyy6TfVttAqCxmCuhdycMdp8KezWg9DebkIIwh29RjDrMWsYuGtPBCAH4UpnADlshXXKg0FY9BsXYSykaONaWdqCAqBmwop2Vam054M7fHt8A/v+cjq/iVrnH1oqnu+zzlX7tUD14Bc3z2fAI/P8WGHS7IdCBJGIlt+FNQm/ZDTTVExRb14w6zJsB52UxLRNdv4qevssUwqqw25qiLuytAjeyrulpLcGs9Nz7Q9Q9xtKRYowzdRsLW5GRvw8il90fOv+8vPAUyQ0XID6GkAWXQUNtQBSVSQJFxEF+QH2pJDjWAIGI/IHtA==
+X-Rspamd-Queue-Id: A6DD240005
+X-HE-Tag: 1767925480-781654
+X-HE-Meta: U2FsdGVkX1/yBn0v28mxUEVM5IjNGhU8cQzIhT0So4AWnIHwg+Uzr2BDh17dXGImgQpe3yAghQuXx49bCcT4HfZf4rYRi9eD/ypAKkCWSJzcWrWC4VNcXg/RZk8VMJL+4hK0isgDcjRBjqk0RbCO9nMwwwUIaA2eF3iGuUxO2kwaYVlhw3LG1XKkHJ//IWZcczl+HP3XJvLORcK5YQm+Vpich2z9eDPS8Sq/tH4PCepVcHY5f91A+fMvT+7pc68DmHoQeFouS4TxkhGSltP7SteFNF7b+0ithd9UL0SrYXrHrnRvKBQgCtpDuuiG49SjUanCTlaZ3XB2ru+80k/SuggRBc+NO+HjFj1/cyJH9fVSpuZ2ReSJQKlY2N7H0OHoyYymze35huk+/f5VjzpRp0nH+eSoozW9WtK94DCd0vRFB6DouXVKQLtlv6Y5fAhNusbfYIRx6T6WAUFAv+wDuGoGTuOyabURVFwGMYK1WwnTSooWczu9GZAfWAIolOkod1No6BS4/E4tezdTc3OtS4/2GM2v7iTWX/exDKqtOQ4TYHKjF726Zu4/pgWtFB4GJPW4yBEewsx/wrzTem8dYk45w8mmboq0MgmskChww19sKwSsqT6DKShSfnm57RcW5opZY9wM6FYP8P2ZLdOAkHQd8+pNjDOFODtDLE40g3vTkGR0mu/R1KQ6xZsnMS1Yt8CtfVGxkXA3UpBfRu1ZbE9B/IUY9YQKqwAluCKfcZnHJ0SHINU1qiAPnrHZ8IfCGivI/OG6mf/arqS9hSoWBq3J6xIZpxhAcW2nps5FtUQdkAG6o+K7m+5AmJ2uXY3sDi/G/63JPKHK7UuckNEH6K3Uwdu0mZ8H3CYXF+21UkDcwGVDC9LVYTax6gszxPtkdfsokQ365adQAD5sVY1A2RmHkKbrtY0k12LNu+cr3YYcEltdwdjg9dMzhFKsXHjTkhOizesLLm/QG5LNd/K
+ NXUWN/FT
+ oLHEKYzOfpITnYHRdDEW18juZvrL1TUTIh5k4GT4PAZXkIq1BV4wpCgCyC1x9BOw86W9Wb4sD2GvMyGdKfMpr/fYbOicK0g5kNLqnnj/62Yqf2LgQEIGztr/Z9T83StWWqasl69EF8DoW/YUiDBjLzy4h4ctldFJdDUMhrHLP4JY7XFxi72Z2ycJ3W+nvsS20stb9ElK1LJ3vCAUpsurNw1ypUA4t0dhU68MvGH/Jm3GwGmRfSt6dA63z6CnBM56vXW9SCoTETSLKpQXRlTmiB/SGWJngB0LHfQDlJrhmAYP8GfVBioEcMLPnUgfebPyM9OE8casXjTvEkgEab8aBL/wxDlUBzSiGXvoY/u3OWZ4di1KYtKWYA2Eny+ZcZKS9B1Db
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,96 +104,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 08, 2026 at 02:09:19PM +0000, Matthew Wilcox wrote:
-> On Thu, Jan 08, 2026 at 08:39:25PM +0800, Jinchao Wang wrote:
-> > The deadlock occurs due to the following lock ordering:
-> > 
-> > Task A (punch_hole):             Task B (migration):
-> > --------------------             -------------------
-> > 1. i_mmap_lock_write(mapping)    1. folio_lock(folio)
-> > 2. folio_lock(folio)             2. i_mmap_lock_read(mapping)
-> >    (blocks waiting for B)           (blocks waiting for A)
-> > 
-> > Task A is blocked in the punch-hole path:
-> >   hugetlbfs_fallocate
-> >     hugetlbfs_punch_hole
-> >       hugetlbfs_zero_partial_page
-> >         filemap_lock_hugetlb_folio
-> >           filemap_lock_folio
-> >             __filemap_get_folio
-> >               folio_lock
-> > 
-> > Task B is blocked in the migration path:
-> >   migrate_pages
-> >     migrate_hugetlbs
-> >       unmap_and_move_huge_page
-> >         remove_migration_ptes
-> >           __rmap_walk_file
-> >             i_mmap_lock_read
-> > 
-> > To break this circular dependency, use filemap_lock_folio_nowait() in
-> > the punch-hole path. If the folio is already locked, Task A drops the
-> > i_mmap_rwsem and retries. This allows Task B to finish its rmap walk
-> > and release the folio lock.
-> 
-> It looks like you didn't read the lock ordering at the top of mm/rmap.c
-> carefully enough:
-> 
->  * hugetlbfs PageHuge() take locks in this order:
->  *   hugetlb_fault_mutex (hugetlbfs specific page fault mutex)
->  *     vma_lock (hugetlb specific lock for pmd_sharing)
->  *       mapping->i_mmap_rwsem (also used for hugetlb pmd sharing)
->  *         folio_lock
-> 
-Thanks for the correction, Matthew.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   ba756a5e4580859e0b26f6679d882f81935a7b14
+commit: d92027a5f30a6c5c582169114b1e56d6536ca8f8 [259/263] mm/vmscan: select the closest preferred node in demote_folio_list()
+config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260109/202601091037.vUSHeJCH-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260109/202601091037.vUSHeJCH-lkp@intel.com/reproduce)
 
-> So page migration is the one taking locks in the wrong order, not
-> holepunch.  Maybe something like this instead?
-> 
-I will test your suggested change and resend the fix.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601091037.vUSHeJCH-lkp@intel.com/
 
-> 
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 5169f9717f60..4688b9e38cd2 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -1458,6 +1458,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
->  	int page_was_mapped = 0;
->  	struct anon_vma *anon_vma = NULL;
->  	struct address_space *mapping = NULL;
-> +	enum ttu_flags ttu = 0;
->  
->  	if (folio_ref_count(src) == 1) {
->  		/* page was freed from under us. So we are done. */
-> @@ -1498,8 +1499,6 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
->  		goto put_anon;
->  
->  	if (folio_mapped(src)) {
-> -		enum ttu_flags ttu = 0;
-> -
->  		if (!folio_test_anon(src)) {
->  			/*
->  			 * In shared mappings, try_to_unmap could potentially
-> @@ -1516,16 +1515,17 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
->  
->  		try_to_migrate(src, ttu);
->  		page_was_mapped = 1;
-> -
-> -		if (ttu & TTU_RMAP_LOCKED)
-> -			i_mmap_unlock_write(mapping);
->  	}
->  
->  	if (!folio_mapped(src))
->  		rc = move_to_new_folio(dst, src, mode);
->  
->  	if (page_was_mapped)
-> -		remove_migration_ptes(src, !rc ? dst : src, 0);
-> +		remove_migration_ptes(src, !rc ? dst : src,
-> +				ttu ? RMP_LOCKED : 0);
-> +
-> +	if (ttu & TTU_RMAP_LOCKED)
-> +		i_mmap_unlock_write(mapping);
->  
->  unlock_put_anon:
->  	folio_unlock(dst);
+All warnings (new ones prefixed by >>):
+
+>> mm/vmscan.c:1046:6: warning: variable 'target_nid' is uninitialized when used here [-Wuninitialized]
+    1046 |         if (target_nid == NUMA_NO_NODE)
+         |             ^~~~~~~~~~
+   mm/vmscan.c:1026:16: note: initialize the variable 'target_nid' to silence this warning
+    1026 |         int target_nid;
+         |                       ^
+         |                        = 0
+   1 warning generated.
+
+
+vim +/target_nid +1046 mm/vmscan.c
+
+26aa2d199d6f2c Dave Hansen             2021-09-02  1017  
+26aa2d199d6f2c Dave Hansen             2021-09-02  1018  /*
+49fd9b6df54e61 Matthew Wilcox (Oracle  2022-09-02  1019)  * Take folios on @demote_folios and attempt to demote them to another node.
+49fd9b6df54e61 Matthew Wilcox (Oracle  2022-09-02  1020)  * Folios which are not demoted are left on @demote_folios.
+26aa2d199d6f2c Dave Hansen             2021-09-02  1021   */
+49fd9b6df54e61 Matthew Wilcox (Oracle  2022-09-02  1022) static unsigned int demote_folio_list(struct list_head *demote_folios,
+059c4bb2dc3b93 Bing Jiao               2026-01-08  1023  				      struct pglist_data *pgdat,
+059c4bb2dc3b93 Bing Jiao               2026-01-08  1024  				      struct mem_cgroup *memcg)
+26aa2d199d6f2c Dave Hansen             2021-09-02  1025  {
+d92027a5f30a6c Bing Jiao               2026-01-08  1026  	int target_nid;
+26aa2d199d6f2c Dave Hansen             2021-09-02  1027  	unsigned int nr_succeeded;
+32008027289239 Jagdish Gediya          2022-08-18  1028  	nodemask_t allowed_mask;
+d92027a5f30a6c Bing Jiao               2026-01-08  1029  	nodemask_t preferred;
+32008027289239 Jagdish Gediya          2022-08-18  1030  
+32008027289239 Jagdish Gediya          2022-08-18  1031  	struct migration_target_control mtc = {
+32008027289239 Jagdish Gediya          2022-08-18  1032  		/*
+32008027289239 Jagdish Gediya          2022-08-18  1033  		 * Allocate from 'node', or fail quickly and quietly.
+32008027289239 Jagdish Gediya          2022-08-18  1034  		 * When this happens, 'page' will likely just be discarded
+32008027289239 Jagdish Gediya          2022-08-18  1035  		 * instead of migrated.
+32008027289239 Jagdish Gediya          2022-08-18  1036  		 */
+bd63d0fde2a2c3 Fushuai Wang            2025-10-06  1037  		.gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
+32008027289239 Jagdish Gediya          2022-08-18  1038  			__GFP_NOMEMALLOC | GFP_NOWAIT,
+e42dfe4e0a51b4 Baolin Wang             2024-03-06  1039  		.nmask = &allowed_mask,
+e42dfe4e0a51b4 Baolin Wang             2024-03-06  1040  		.reason = MR_DEMOTION,
+32008027289239 Jagdish Gediya          2022-08-18  1041  	};
+26aa2d199d6f2c Dave Hansen             2021-09-02  1042  
+49fd9b6df54e61 Matthew Wilcox (Oracle  2022-09-02  1043) 	if (list_empty(demote_folios))
+26aa2d199d6f2c Dave Hansen             2021-09-02  1044  		return 0;
+26aa2d199d6f2c Dave Hansen             2021-09-02  1045  
+26aa2d199d6f2c Dave Hansen             2021-09-02 @1046  	if (target_nid == NUMA_NO_NODE)
+059c4bb2dc3b93 Bing Jiao               2026-01-08  1047  		/* No lower-tier nodes or nodes were hot-unplugged. */
+26aa2d199d6f2c Dave Hansen             2021-09-02  1048  		return 0;
+26aa2d199d6f2c Dave Hansen             2021-09-02  1049  
+32008027289239 Jagdish Gediya          2022-08-18  1050  	node_get_allowed_targets(pgdat, &allowed_mask);
+059c4bb2dc3b93 Bing Jiao               2026-01-08  1051  	mem_cgroup_node_filter_allowed(memcg, &allowed_mask);
+059c4bb2dc3b93 Bing Jiao               2026-01-08  1052  	if (nodes_empty(allowed_mask))
+059c4bb2dc3b93 Bing Jiao               2026-01-08  1053  		return 0;
+059c4bb2dc3b93 Bing Jiao               2026-01-08  1054  
+d92027a5f30a6c Bing Jiao               2026-01-08  1055  	target_nid = next_demotion_node(pgdat->node_id, &preferred);
+d92027a5f30a6c Bing Jiao               2026-01-08  1056  	while (target_nid != NUMA_NO_NODE &&
+d92027a5f30a6c Bing Jiao               2026-01-08  1057  	       !node_isset(target_nid, allowed_mask)) {
+d92027a5f30a6c Bing Jiao               2026-01-08  1058  		/* Filter out preferred nodes that are not in allowed. */
+d92027a5f30a6c Bing Jiao               2026-01-08  1059  		nodes_and(preferred, preferred, allowed_mask);
+d92027a5f30a6c Bing Jiao               2026-01-08  1060  		if (!nodes_empty(preferred)) {
+d92027a5f30a6c Bing Jiao               2026-01-08  1061  			/* Randomly select one node from preferred. */
+d92027a5f30a6c Bing Jiao               2026-01-08  1062  			target_nid = node_random(&preferred);
+d92027a5f30a6c Bing Jiao               2026-01-08  1063  			break;
+d92027a5f30a6c Bing Jiao               2026-01-08  1064  		}
+d92027a5f30a6c Bing Jiao               2026-01-08  1065  		/*
+d92027a5f30a6c Bing Jiao               2026-01-08  1066  		 * Preferred nodes in the lower tier are not set in allowed.
+d92027a5f30a6c Bing Jiao               2026-01-08  1067  		 * Recursively get preferred from the next lower tier.
+d92027a5f30a6c Bing Jiao               2026-01-08  1068  		 */
+d92027a5f30a6c Bing Jiao               2026-01-08  1069  		target_nid = next_demotion_node(target_nid, &preferred);
+d92027a5f30a6c Bing Jiao               2026-01-08  1070  	}
+d92027a5f30a6c Bing Jiao               2026-01-08  1071  
+d92027a5f30a6c Bing Jiao               2026-01-08  1072  	if (target_nid == NUMA_NO_NODE)
+d92027a5f30a6c Bing Jiao               2026-01-08  1073  		/* Nodes are gone (e.g., hot-unplugged). */
+d92027a5f30a6c Bing Jiao               2026-01-08  1074  		return 0;
+059c4bb2dc3b93 Bing Jiao               2026-01-08  1075  	mtc.nid = target_nid;
+32008027289239 Jagdish Gediya          2022-08-18  1076  
+26aa2d199d6f2c Dave Hansen             2021-09-02  1077  	/* Demotion ignores all cpuset and mempolicy settings */
+29ea04095b9697 SeongJae Park           2025-06-16  1078  	migrate_pages(demote_folios, alloc_demote_folio, NULL,
+32008027289239 Jagdish Gediya          2022-08-18  1079  		      (unsigned long)&mtc, MIGRATE_ASYNC, MR_DEMOTION,
+26aa2d199d6f2c Dave Hansen             2021-09-02  1080  		      &nr_succeeded);
+26aa2d199d6f2c Dave Hansen             2021-09-02  1081  
+26aa2d199d6f2c Dave Hansen             2021-09-02  1082  	return nr_succeeded;
+26aa2d199d6f2c Dave Hansen             2021-09-02  1083  }
+26aa2d199d6f2c Dave Hansen             2021-09-02  1084  
+
+:::::: The code at line 1046 was first introduced by commit
+:::::: 26aa2d199d6f2cfa6f2ef2a5dfe891f2250e71a0 mm/migrate: demote pages during reclaim
+
+:::::: TO: Dave Hansen <dave.hansen@linux.intel.com>
+:::::: CC: Linus Torvalds <torvalds@linux-foundation.org>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
