@@ -4,124 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BCB4D26D6A
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:33:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BB70D26D6A
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 15:40:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0A076B0005; Fri,  9 Jan 2026 10:32:59 -0500 (EST)
+	id 6AF926B0088; Fri,  9 Jan 2026 10:40:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B7E06B008A; Fri,  9 Jan 2026 10:32:59 -0500 (EST)
+	id 65D476B0089; Fri,  9 Jan 2026 10:40:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B96D6B008C; Fri,  9 Jan 2026 10:32:59 -0500 (EST)
+	id 53EE46B008A; Fri,  9 Jan 2026 10:40:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 794446B0005
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:32:59 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2E04513938F
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:32:59 +0000 (UTC)
-X-FDA: 84312818478.21.5628305
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4B5824000D
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:32:57 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KkSdvwBq;
-	spf=pass (imf12.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 418826B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 10:40:33 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D36BF1A0241
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:40:32 +0000 (UTC)
+X-FDA: 84312837504.29.B663509
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id F003E40003
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 15:40:30 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K11C6Tgv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767973231; a=rsa-sha256;
+	cv=none;
+	b=bCtDnUICOSwWncg3RORPDJwNnbVQHW+Q6Ueu7d5HQHb0uwkAdPbE/676IgLYj7CoPaVitD
+	Xrh5jaDApOOLX7HLkowcGoqzIk/i7jaNGUeDHcJjfuTqywmhLLZTaS4j+mhGNFwn/UawN2
+	BTKxKucY4/QQQGqEgjY7FqL+l3WsvE0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K11C6Tgv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767972777;
+	s=arc-20220608; t=1767973231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pi9MBBtLQ+Z6Az6ZIrDOMPEc6YOFfVuBvcpyenL6HZw=;
-	b=BSwEV98W4hzPaVbEN3r7DY0rQY0qyunQ2LwbBNkLm5gNeZQBovVrUxqE2gvHv7kB/MHjzZ
-	ZErXjNQB5Mgx96Q1quouz3Vy0gypIYsEQ/k/booDqFv7P4nVQ5QlOxQq26rHmglh/UxiCs
-	vCRm8pIFrZXQpc8AaUq1oONquXuySyU=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KkSdvwBq;
-	spf=pass (imf12.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767972777; a=rsa-sha256;
-	cv=none;
-	b=zDa5hZnbpyApVY6bbi2URV5LupNl0hgJsviuEP9OFTWkd1Ky3/OpvgWZO+b3CkhNJLYkt4
-	5Guq5LtKZkIuHosDtfSIL+LvjGW3yB7/6ESXtXVtfce5UFD34LjUAtc9tiio4eNuKBFR3q
-	ZCriMarowXtCy+N33338/ospd7eBC0g=
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-34c2f335681so2649404a91.1
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 07:32:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767972776; x=1768577576; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pi9MBBtLQ+Z6Az6ZIrDOMPEc6YOFfVuBvcpyenL6HZw=;
-        b=KkSdvwBqjDuhoem8wpQWMqqiIJjIO8wdGUBYl81a1h1F73BptyQi4JazqJcno8bQXS
-         piZJo0+28gwtXJxsMF1yhrultRcqJC2pCWd7/cN55Q1wF5vfPNBnoyHiLUW9NyYogXXA
-         9/IZwYCQOycxM/V/SyMSLzP88bI33XbqAOlmGgDDQ8OXRjDg4/+QACQALlwhAQv/nzy/
-         zdBsz8CC62b8HfQd+hbPzbblzZSeOU0LRdD9OwLNyyib5ud154KgHnh9T+ZR5QZ5HTT5
-         0hYKsWRlsqbjGzAqhVy0bXfWdZw8N6vqNqiEa/Vw834Ujo5uoRTLXoDePvRRQJZF2EQr
-         RwNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767972776; x=1768577576;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pi9MBBtLQ+Z6Az6ZIrDOMPEc6YOFfVuBvcpyenL6HZw=;
-        b=DCRMZZMPPDD0ejS3h1tSWZHvHaHRclQmOspPC38Tn0rxl078PqR2AJrvyeryE9TzvY
-         LwrHP+bo1VNfc8BHHNLh//ofHEG50j1bEj7JjAojttIBW9EC8rv2PW+DkzDpxIGXNQWG
-         aINyj14I2KpYM7Afe9CIG9c4zO9+1SwVJxJ/U5JGd/XO0BWVimsiTohv20zJf4KTy3fI
-         WcvmxMBLM3cVFpD83UN1wsXBK2LpEgZYzcNgapG06mONjcAQ3WiMXi04g+GJB9cV7oXi
-         R0hYFg01AACnJbHlatXl5bXWVpqFpSexepURb57vZBu3p1/pc1jeGZst23Hp/wLDeZfa
-         u6OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW3R38fWHzjXp5LVyCQieVmgrm900zVb8Ldok9G7LLNy1Mpjq8CsC3ppDw5aA5hXpxTDfC4OfQ9TQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxh/fy/P3qDgzAnVIB1zeE6j/EsZbtRpfDluLGGwgjUHbQTr4qq
-	AiEAEi0X0WosUO9B/j9AB0Zqp5YU5xQ0/fGee6MdJVIDP1uWWBFQjzY9
-X-Gm-Gg: AY/fxX6QTe/MA5/2kh8mQNXr8gnBWth/DGWnjGkhHDaz9hE8d1rilyjU1Tc1SYa7gQ6
-	nvDTETRedehjkKSc1RZBrr7he3mIfqe0MOroJare9DDOpogJGtQAgCATLwlGEDW8VkZqG7highK
-	IS1aR3m0Qd3j/5DeZ8uxMYFPcuhPeBeTjqLg7+hGUX44jLL1Co9hppQ1SxvpiZ4cG8IxOpkpYAz
-	wBGyj+yy4GMlxN7ifuzh50ab9tgLdROX88bXi0LYF2Qate6f6v/PaCfferE5BENmEWGs1ZOofuR
-	ZHzCYZi7/KJTpNs4uge2dwbRbqzQDhfq+5FrdipknYU3pYCvcvr+aGB0xUxKpmlpfzk7odeSSKX
-	aYOupcsVNyEqn+9powLXaKnoHi88kSM8MgUTkLpzk14Vn+bU+71YI6ch/m81eqoojyc39zdf3tS
-	Nla6o=
-X-Google-Smtp-Source: AGHT+IHcrtzAO+bIMCp7VJf6cVvYL7KCtM3NjFt78OIqdmkQu1Q/tiqyGp2Jn9iJI2z7jDarLLplnw==
-X-Received: by 2002:a17:90b:4986:b0:330:bca5:13d9 with SMTP id 98e67ed59e1d1-34f68cee7f2mr8136123a91.32.1767972775949;
-        Fri, 09 Jan 2026 07:32:55 -0800 (PST)
-Received: from localhost ([2a12:a304:100::105b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f6b9602d4sm3055529a91.12.2026.01.09.07.32.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 07:32:55 -0800 (PST)
-Date: Fri, 9 Jan 2026 23:32:50 +0800
-From: Jinchao Wang <wangjinchao600@gmail.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/migrate: fix hugetlbfs deadlock by respecting lock
- ordering
-Message-ID: <aWEfjVqVpoatvOpI@ndev>
-References: <20260109034723.1342798-1-wangjinchao600@gmail.com>
- <920c641e-e092-46f0-89cb-0f1c130d979a@kernel.org>
- <aWENkov0R-1nIB8M@ndev>
- <e792db5f-5ec4-4960-a2f8-fde490e0e366@kernel.org>
+	bh=Ti4yVHUrx+jeohwN8YsvGO7hvE00mHXcQo/2klPesLU=;
+	b=YVNbG2h0Owkrq/hTE//e5HIygbxOgJ0fV+zPY8rI8kO5HHUyRo2HkhgCyaOCNd+tNRQX4X
+	6zmdK6UVwvXUlD8hczGNYWYMOrTi9c7QKaBQL8CatoE3YzwF8RX7A8b5Yi4/m7xai+V4nz
+	bP7Qlii7pUaC5Cy47C7Rs8LnSw4W44w=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BCB90419B7;
+	Fri,  9 Jan 2026 15:40:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3379C4CEF1;
+	Fri,  9 Jan 2026 15:40:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767973229;
+	bh=MClLfcW/LlA2fAjKxgewmcykTxQMbVVC8RBgYHlNmE4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=K11C6TgvxC8lsO0GRbqPjDBs0iDEYVVrnJ9KHwUsxL4dFqHYpSfmz2qn8S1nwvtS2
+	 TqRxYkFkIdC4lOBszkOcY9dmC8sBAUaCanbxtGAW0Tu4Qb/3OZd/rVMKhgoti9NdVp
+	 Uo1FoJNzVH6K2/DQ9O/AnIfl7x16z73RqMb565AtUaaMDru6CUZwdHcB0gbrn5KMta
+	 LuM7SVgKVjSXmVfyU7KWxLUnyxx1zAVY3sbea0QBgfZoJnIKNhcy9ad75bGaoASXUn
+	 3L5LfheloI+TrzIbPYDnbDmjuw43JcK4oQ0mN411rebJExnd+4WrP/4oVNEV06Uy5y
+	 zqGxX7ux9jmKQ==
+Message-ID: <bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org>
+Date: Fri, 9 Jan 2026 16:40:19 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e792db5f-5ec4-4960-a2f8-fde490e0e366@kernel.org>
-X-Stat-Signature: zu3k3pg17sqijzpatadd1m6xg616zsjp
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v3 1/2] mm/tlb: skip redundant IPI when TLB flush
+ already synchronized
+To: Lance Yang <lance.yang@linux.dev>, dave.hansen@intel.com
+Cc: dave.hansen@linux.intel.com, will@kernel.org, aneesh.kumar@kernel.org,
+ npiggin@gmail.com, peterz@infradead.org, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+ arnd@arndb.de, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, shy828301@gmail.com, riel@surriel.com, jannh@google.com,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ioworker0@gmail.com
+References: <20260106120303.38124-1-lance.yang@linux.dev>
+ <20260106120303.38124-2-lance.yang@linux.dev>
+ <da1e8a00-99fe-46d9-b425-c307ea933036@kernel.org>
+ <7472056a-3919-429a-845d-c2076496d537@linux.dev>
+ <4d94363b-5b3b-4401-a9d8-da136d71f8c3@kernel.org>
+ <f45a1760-7fa6-4e2c-ba5a-90e250a5792a@linux.dev>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <f45a1760-7fa6-4e2c-ba5a-90e250a5792a@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: F003E40003
+X-Rspamd-Server: rspam06
+X-Stat-Signature: nikswpm6ebnfwa1ayp1rt5h5yjfsh8wd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4B5824000D
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1767972777-167213
-X-HE-Meta: U2FsdGVkX1/3AH0kch+3jl9lJCqjoCbleHcK7fPg9E1A9PeMSQU9Lg3jg3/Msf7WwictrwQj6i9Q6JJ9gmPSZ+bPXOT0uY5VLu/89qe0pyHZF0e/p+gFE2eahC4+3JN+zR3NRF5Sx5DWwAQ8eCU4wpg+et0lB0g3n1ODmFWiywgCRUkpW7ZJplzDTk/hLgU0JETVhQks6UuarnXLNzB+CKnfO8W6P3QgNIW6Iz4P2wDt50/StcZoUL14+iXQWnspJ4d8hszScnm2vgLa/k2hM2yBl1g0iIz5XM+2wvIyTAqLF27KDMgjhV1IUODVaAciDXOsceHA8LbkKVUBC7K/C2fLepBrU3kIInKEDNsALPPZ6dOS6n1exQ3cX3k1nz2TUWjdLqGz8Z2RGhLe9bagpIdP6m1G/OTpaM2eF3Iu3Hqee0HQh2QUWbxV7XbkIDHpJ6MlOTkzRRtICa7j3SLkbhUtGzHPOYNlOnC7UzPs2zMdJbnManWunjcXJpOWqE5aWxOUliJDzRS/zvI3uVcxZHnMdTFisSwCZbvZGpcDj4S+Qd8ohaWhScqDi0eUgMWtZgNALhyS8aOgKi+aAn40p6jh75B2RnP5iNh2/vqNoMw+2XYJHXo4Twq1ougRhBSGmXpq2ArC+Y2suJfoyRsGDjVDsAvQEyLu+DIDzUsS8+wI80JH8Qx0hTW4ldUkQG3ISzxSuKbrntEpag4/WNNQ9VRO6V9msVcOKECrrOXrGyL7R+l03I6AFhtpSnSljovfUhi63ZlJ2ezMEAShL3z9Ig7nIwbyHijAUjBuMFiEwKMik7cV+K9mjCFZUHO5tyf7E69LQJTiv55whKHlCBlguswZqvejUiQaVl7LuTgDVbEabVAkKlJ7+Kw2udBSEOVofwV/y04yA5ntRP47APVJumLf0RHaewUrSLcwJloizQa9JGI+MZ9OFiSEXPO44MjOUOJmV48aLN1Mqm6C0MW
- PBM+bSoM
- tGzImVumFT6fBefN4DWWPegq3kzMSa6k8hqp8X0LEFpgjpl/HK0NhbpgnQNvQKIiTWWaZlGPoT7bQySANYsUGdBHqS7XO990/d+OL4dzHkpUUipiX4N+I8dcmyEHm7RvoQB1Ezm+yePFP2mhmeCR5COIesqueplWKE5GwxGjQENRa7N4UV2cfHmAHjCJQs6cF0HGBqhLljyXC8ZzEHx3zyAXm7P1ptBZ5nrbjnBT7+W6jP5wRwa1XtoiKfNBwY8RAGIeU+LsOISeKZpOJxgCXvygv4NHyt5Giew3WhCzDTsyHWE6EXea7OdY/w0rxXi3vImW8CU/5yqeagXzimOY7/mHN51G4qHj3crM6OIdBp4pmx+OWma6oDmvkyUFnuKbVPwcIC3HWxW6CN0GD0akOHR0bK+2VfsczcNHM0cQkfqut2eA4E4p3ZRkOKnYmufEpEnBkkTkF6WEpX1SQd6VqxL9ZyRCDV1J046sg1SC7jSfg/uBxvYQqydVKzpw038KcnRfEouP8hDTeZTKe0gdpaz+G5YdCwWEkmuGuyK8Wzarer9KokUhDMF7guKj1TxsGFOR05YLqyVQj4jVIu+2kF/9bOLvLrIGPaoVdeoIG+EB5O1BbVxZN65Ytrd5a2YMEueW2Py6DGz2EdsbrPDzUt9zI7yA6XAkPZvBX
+X-HE-Tag: 1767973230-536427
+X-HE-Meta: U2FsdGVkX1+HGKNqqrK3NoZpMX8n3Lh6fTyMDHdLAhORiXUrQQrjOaJGGD44dR1OBMgIfB5FaOuQGZLFac1sQec1DNhN24gDCj5+3dklxLQBncCzMV5epPVjE866L73mBeQvUsnmYHB2L00nNHPmnLNq2lGyaqkD0hsNDxyxXwZFw4ckNmUSUgROwN2zL9aZqz9TvNrZhxv8yC+YpAnF8sOOk6AiRRAy2atOBh59GaDLWHilSDrMrkcKZ6ovSflo8W/oHNEkz6lVtd3ezut8TpT0bvcLT0Yv1ue4bsEZvA/D1JyCaX7z2mMgFsVrryUvhyq5GPpB7WNiasZXi7ZiW+j8BvuDw5l5f3kGPzbEGBSj6umSUkxEoBp2CHtDuwlYtnntQW0zfteQsHrHjvOyQ4MnFae+1sREPtKzw4oq8Nga7YG0ke4QUEe1AXW0FLowY85n/NiLtuY8ClsfjxeLsOFHTCn21+9u+MgTvzAAShYJZtGfNKK28WTqbh0rML922JoIPJwcONZi8q+ylFI0iqTYztRpFCsmskM/mtyyZqcIbSrZ8YR97LFjox7Q35CE8UGx5iOcu66twQ1G1iQs5W+yPXOm5BHzix2LTXnm5/psC73imrqW5A9Xetg4PmoqST9beMoQKaXtBjsYP0UZQ/1eEauhSJq4b8vfYl4PpdU8ytHrZMm9g0D2iyY+Jl86vwjoNoydrpYCD4n70eiio+VUfSmkt92HT00qcpNbuUcE4aDti/JtvwjwA9S9uUwTsZ6v89LHBvV9ypQHG52SvscnVE3VtschW3h6Pa3GMdsI/sZo5HsbDuOLprunrC4wJd4Liv+fjrFLkPr0ZCSkxSfQPzc7+g4ktMpAHuvU17LxIUIikL8Xa8osZ7MgaODSdx+hWjWcTDc1B/qgk6ORUGDD2esKCZCSZd14kZcs6ayfU1BZgYOT7qZePovLmt+2gnivLM85d0QGCEA3c/T
+ h/QjRh3Y
+ /p6nN2YWR2l/QhxYT1wu0zuxus9JAfp4MYXqbBK4Bd3AfnksqeCPFVmsPCm4lyI8fNg44G3GH2bvoY3T/SRQu2yfUfixj1EleZDMh4cpXwOKOt9VmDM8rHCYW96fnGXRgY7AotMuFGVclq2OzDGm9mby4sdxcGDsLiG96z4khPBMi2nPsriOvg0xXK67WqIuHjyXc6kF1AzhnKAcnxLSEdJW4i/FPkxW8ejA9YYlWNDb2a7efHYkm2mQJvGybOl1+MvNr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,67 +150,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 09, 2026 at 03:18:37PM +0100, David Hildenbrand (Red Hat) wrote:
-> On 1/9/26 15:16, Jinchao Wang wrote:
-> > On Fri, Jan 09, 2026 at 02:39:08PM +0100, David Hildenbrand (Red Hat) wrote:
-> > > On 1/9/26 04:47, Jinchao Wang wrote:
-> > > > Fix an AB-BA deadlock between hugetlbfs_punch_hole() and page migration.
-> > > > 
-> > > > The deadlock occurs because migration violates the lock ordering defined
-> > > > in mm/rmap.c for hugetlbfs:
-> > > > 
-> > > >     * hugetlbfs PageHuge() take locks in this order:
-> > > >     * hugetlb_fault_mutex
-> > > >     * vma_lock
-> > > >     * mapping->i_mmap_rwsem
-> > > >     * folio_lock
-> > > > 
-> > > > The following trace illustrates the inversion:
-> > > > 
-> > > > Task A (punch_hole):             Task B (migration):
-> > > > --------------------             -------------------
-> > > > 1. i_mmap_lock_write(mapping)    1. folio_lock(folio)
-> > > > 2. folio_lock(folio)             2. i_mmap_lock_read(mapping)
-> > > >      (blocks waiting for B)           (blocks waiting for A)
-> > > > 
-> > > > Task A is blocked in the punch-hole path:
-> > > >     hugetlbfs_fallocate
-> > > >       hugetlbfs_punch_hole
-> > > >         hugetlbfs_zero_partial_page
-> > > >           folio_lock
-> > > > 
-> > > > Task B is blocked in the migration path:
-> > > >     migrate_pages
-> > > >       unmap_and_move_huge_page
-> > > >         remove_migration_ptes
-> > > >           __rmap_walk_file
-> > > >             i_mmap_lock_read
-> > > > 
-> > > > To fix this, adjust unmap_and_move_huge_page() to respect the established
-> > > > hierarchy. If i_mmap_rwsem is acquired during try_to_migrate(), hold it
-> > > 
-> > > 
-> > > I'm confused. Isn't it unmap_and_move_huge_page() that grabs the
-> > > i_mmap_rwsem during hugetlb_page_mapping_lock_write() (where we do a
-> > > try-lock)?
-> > Yes, but the lock is released before remove_migration_ptes().
-> > 
-> > Task A can enter the race window between
-> > 	i_mmap_unlock_write(mapping)
-> > and
-> > 	remove_migration_ptes() -> i_mmap_lock_read(mapping).
-> > 
-> > This window was introduced by the change below:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/mm/migrate.c?id=336bf30eb765
+On 1/9/26 16:30, Lance Yang wrote:
 > 
-> try_to_migrate() is not the problem, but remove_migration_ptes() ?
 > 
-> Anyhow, I saw that Willy sent out a version.
-Thank you for letting me know.
+> On 2026/1/9 22:13, David Hildenbrand (Red Hat) wrote:
+>>
+>>>> What could work is tracking "tlb_table_flush_sent_ipi" really when we
+>>>> are flushing the TLB for removed/unshared tables, and maybe resetting
+>>>> it ... I don't know when from the top of my head.
+>>>
+>>> Not sure what's the best way forward here :(
+>>>
+>>>>
+>>>> v2 was simpler IMHO.
+>>>
+>>> The main concern Dave raised was that with PV hypercalls or when
+>>> INVLPGB is available, we can't tell from a static check whether IPIs
+>>> were actually sent.
+>>
+>> Why can't we set the boolean at runtime when initializing the pv_ops
+>> structure, when we are sure that it is allowed?
+> 
+> Yes, thanks, that sounds like a reasonable trade-off :)
+> 
+> As you mentioned:
+> 
+> "this lifetime stuff in core-mm ends up getting more complicated than
+> v2 without a clear benefit".
+> 
+> I totally agree that v3 is too complicated :(
+> 
+> But Dave's concern about v2 was that we can't accurately tell whether
+> IPIs were actually sent in PV environments or with INVLPGB, which
+> misses optimization opportunities. The INVLPGB+no_global_asid case
+> also sends IPIs during TLB flush.
+> 
+> Anyway, yeah, I'd rather start with a simple approach, even if it's
+> not perfect. We can always improve it later ;)
+> 
+> Any ideas on how to move forward?
 
-> 
-> -- 
-> Cheers
-> 
-> David
+I'd hope Dave can comment :)
+
+In general, I saw the whole thing as a two step process:
+
+1) Avoid IPIs completely when the TLB flush sent them. We can achieve
+    that through v2 or v3, one-way or the other, I don't particularly
+    care as long as it is clean and simple.
+
+2) For other configs/arch, send IPIs only to CPUs that are actually in
+    GUP-fast etc. That would resolve some RT headake with broadcast IPIs.
+
+
+Regarding 2), it obviously only applies to setups where 1) does not 
+apply: like x86 with INVLPGB or arm64.
+
+I once had the idea of letting CPUs that enter/exit GUP-fast (and 
+similar) to indicate in a global cpumask (or per-CPU variables) that 
+they are in that context. Then, we can just collect these CPUs and limit 
+the IPIs to them (usually, not a lot ...).
+
+The trick here is to not slowdown GUP-fast too much. And one person 
+(Yair in RT context) who played with that was not able to reduce the 
+overhead sufficiently enough.
+
+I guess the options are
+
+a) Per-MM CPU mask we have to update atomically when entering/leaving 
+GUP-fast
+
+b) Global mask we have to update atomically when entering/leaving GUP-fast
+
+c) Per-CPU variable we have to update when entering-leaving GUP-fast. 
+Interrupts are disabled, so we don't have to worry about reschedule etc.
+
+Maybe someone reading along has other thoughts.
+
+-- 
+Cheers
+
+David
 
