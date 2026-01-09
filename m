@@ -4,144 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39EADD26D6F
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 17:32:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8331AD26D7B
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 18:04:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A26C86B008A; Fri,  9 Jan 2026 12:32:11 -0500 (EST)
+	id 7D4866B0005; Fri,  9 Jan 2026 13:04:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FB396B0092; Fri,  9 Jan 2026 12:32:11 -0500 (EST)
+	id 782246B0089; Fri,  9 Jan 2026 13:04:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DFE86B0093; Fri,  9 Jan 2026 12:32:11 -0500 (EST)
+	id 659976B008A; Fri,  9 Jan 2026 13:04:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 799186B008A
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 12:32:11 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 32440140142
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:32:11 +0000 (UTC)
-X-FDA: 84313118862.23.F881A4C
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 548216B0005
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 13:04:28 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 010A11A0646
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 18:04:27 +0000 (UTC)
+X-FDA: 84313200216.15.D669347
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DA43618000E
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 17:32:08 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0paO9x2M;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EoaAnKnY;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0paO9x2M;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EoaAnKnY;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7D71E20011
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 18:04:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dFFwszp+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LS50mZS6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WRdQlsj+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RUiNhuFm;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767981866; a=rsa-sha256;
+	cv=none;
+	b=K6qhpDTv95b74D+oEUXmS0Jno+oE08y5sXvx4sChjt+pohNdf37mrbOAESGG6crcri3vhK
+	u+PPFdfXu9qflUfmWIBybKQGLp9asGgTWGo9XUmTSMmWhDsIBpCtBkJdj58s0hXAUsw0Nu
+	0576tDxtM2Y3ZMF72laVPOjCwMpaoS8=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dFFwszp+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LS50mZS6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WRdQlsj+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RUiNhuFm;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767979929;
+	s=arc-20220608; t=1767981866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5zCq2OTfcTJVPbD8p+G8IRGuj0yyLL6oHSOSXWHKJZY=;
-	b=JKLVOTaKSh3UNS+1rsohpUjfZeGqxVm4LPDaVlqW5CL6EkzqFhODQw6TSoQoXcgVAZtHZB
-	qFr8KCK9OW4fRBenXW0a7szfV3KI+Xx5DbbM5EiTMKTwscyTvP4on0SRgMnZA1G98J7Po4
-	ojATy7p3ukgtw307J0L+hRXK5imD1cw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0paO9x2M;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EoaAnKnY;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0paO9x2M;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EoaAnKnY;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767979929; a=rsa-sha256;
-	cv=none;
-	b=pmB3Ya8jhoab0z2S3JU7XbQp7D/NbzD5l56WHs81ZuaATA8g1NxPh/VH8MwyCoVijyCfGh
-	l6DtKghiRUFOXGLNraEMVtK9uxyQef5rQZcyZAkBFMWFaLxPwT3+ALa/7uihU8LflS4OW/
-	9ETpPFS5S+NY/ZEmr9I4NV8GPIWwQGE=
+	bh=vv0VnsmMmyE79Xc5xSQkqZYloaKJ0tliKpSFrNzoeG4=;
+	b=YWHoxzGFvVlClUwEyzmuzbkNzC21D0QkTvIVvo07617KYh/fOcsCSm89ljb3Tts30pgPsn
+	f+NgarJGm3b7QAbGy7+JVgIH0R8C/RzSeyE1xGf1uQTgG0dWYBC8CLMhEJe4ED5N/iSGMl
+	Xmr9+MQ6LiQk+k48foka57R4uFnEBxM=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3CE7F5C00A;
-	Fri,  9 Jan 2026 17:32:07 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E10995C261;
+	Fri,  9 Jan 2026 18:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767979927; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1767981863; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5zCq2OTfcTJVPbD8p+G8IRGuj0yyLL6oHSOSXWHKJZY=;
-	b=0paO9x2MbfTZQKPT0KM7RFiiVikh8DHnNFafVHAGjNCOMY6pyPNHGe0sd8SanalbaT+ox3
-	bWq0iQKF0gDQsWBseLE/eJzfEdFyhL2vuDzUQ49jMN9RlYOdg6ZTdqP6Cif9VI0x5nxu3J
-	oxhGC5SIo6h0jiZUEfFK0/nRh0UCKUE=
+	bh=vv0VnsmMmyE79Xc5xSQkqZYloaKJ0tliKpSFrNzoeG4=;
+	b=dFFwszp+FeeBGMnTqNxDjRDMI0iYtvejFrZIuKrHuMnkEsjLlb1r56kWYdK+o30CWe5S4p
+	XUAgCqxVlLqYzM8tBchLS+3bKyVXEZaf2ljnQAY8Mcu4PGOkpiTYFixHm/eh1IAIp/r8G6
+	nHvG8n4FFipT/9iCE+Ua7bekatUpi7k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767979927;
+	s=susede2_ed25519; t=1767981863;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5zCq2OTfcTJVPbD8p+G8IRGuj0yyLL6oHSOSXWHKJZY=;
-	b=EoaAnKnYjQjbkHVAssXPlT6tDOy6kI5QvUZwl6ptoj1GjC3IeD6ysF7bd2fvVnTQzZBpa4
-	rIFA/O5TvVuZarDQ==
+	bh=vv0VnsmMmyE79Xc5xSQkqZYloaKJ0tliKpSFrNzoeG4=;
+	b=LS50mZS614meUqeaxzTmSIFICAEXQ1faiQ4vUFI9tjpWb2KpVXJ7zR2Y+ZoEYO9mJJTYdN
+	weAy5CczDTt/jMBw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767979927; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1767981861; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5zCq2OTfcTJVPbD8p+G8IRGuj0yyLL6oHSOSXWHKJZY=;
-	b=0paO9x2MbfTZQKPT0KM7RFiiVikh8DHnNFafVHAGjNCOMY6pyPNHGe0sd8SanalbaT+ox3
-	bWq0iQKF0gDQsWBseLE/eJzfEdFyhL2vuDzUQ49jMN9RlYOdg6ZTdqP6Cif9VI0x5nxu3J
-	oxhGC5SIo6h0jiZUEfFK0/nRh0UCKUE=
+	bh=vv0VnsmMmyE79Xc5xSQkqZYloaKJ0tliKpSFrNzoeG4=;
+	b=WRdQlsj+ig0bnQV3MIBnGbZHO3pczt090NXj6O9KtK3bqvcDnrLocPK0YlqLieYIFWMYY6
+	xlXOZb2UANazeJj6OZ2c/IMnWarjWJKtyqSGW1M5V9v6USOhYtNTG0ctcgBQTSks0ck0zy
+	U1DFBa/WHMUD0/sBvHnwxoNECWv/1qY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767979927;
+	s=susede2_ed25519; t=1767981861;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5zCq2OTfcTJVPbD8p+G8IRGuj0yyLL6oHSOSXWHKJZY=;
-	b=EoaAnKnYjQjbkHVAssXPlT6tDOy6kI5QvUZwl6ptoj1GjC3IeD6ysF7bd2fvVnTQzZBpa4
-	rIFA/O5TvVuZarDQ==
+	bh=vv0VnsmMmyE79Xc5xSQkqZYloaKJ0tliKpSFrNzoeG4=;
+	b=RUiNhuFmgtkm7VWJfpf8arbVB4WP80xkuDpSb+pJc/f385SwYknFlnPPmdQqr2ql+YjlDo
+	yTgnWPAVMObYOsAA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EEC183EA63;
-	Fri,  9 Jan 2026 17:32:06 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C60373EA63;
+	Fri,  9 Jan 2026 18:04:21 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id n33YOZY7YWm4YQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 09 Jan 2026 17:32:06 +0000
-Message-ID: <a144cd1e-8bfc-4380-8f1b-071db0af0b2c@suse.cz>
-Date: Fri, 9 Jan 2026 18:32:06 +0100
+	id OH/4LyVDYWkRAgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 09 Jan 2026 18:04:21 +0000
+Message-ID: <4de2c1e7-73f3-4aa9-81ac-4de39f60c95e@suse.cz>
+Date: Fri, 9 Jan 2026 19:04:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/5] slab: Introduce kmalloc_obj() and family
+Subject: Re: [PATCH v2 1/4] mm/vma: fix anon_vma UAF on mremap() faulted,
+ unfaulted merge
 Content-Language: en-US
-To: Kees Cook <kees@kernel.org>
-Cc: Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
- David Rientjes <rientjes@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Hyeonggon Yoo <42.hyeyoo@gmail.com>,
- "Gustavo A . R . Silva" <gustavoars@kernel.org>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Jann Horn <jannh@google.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Marco Elver <elver@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
- Randy Dunlap <rdunlap@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, John Hubbard <jhubbard@nvidia.com>,
- Joe Perches <joe@perches.com>, Vegard Nossum <vegard.nossum@oracle.com>,
- Harry Yoo <harry.yoo@oracle.com>, Nathan Chancellor <nathan@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
- Yafang Shao <laoar.shao@gmail.com>, Tony Ambardar <tony.ambardar@gmail.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Jan Hendrik Farr <kernel@jfarr.cc>, Alexander Potapenko <glider@google.com>,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
- linux-doc@vger.kernel.org, llvm@lists.linux.dev
-References: <20251203233029.it.641-kees@kernel.org>
- <20251203233036.3212363-1-kees@kernel.org>
- <960729bb-0746-4709-a40c-2e254f963deb@suse.cz>
- <202601090928.5CFF95F@keescook>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn
+ <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>,
+ Jeongjun Park <aha310510@gmail.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry.yoo@oracle.com>
+References: <cover.1767638272.git.lorenzo.stoakes@oracle.com>
+ <b7930ad2b1503a657e29fe928eb33061d7eadf5b.1767638272.git.lorenzo.stoakes@oracle.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -182,17 +164,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <202601090928.5CFF95F@keescook>
+In-Reply-To: <b7930ad2b1503a657e29fe928eb33061d7eadf5b.1767638272.git.lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: o9jaz4os1pkfjtxm6hmmncinncxe6xoi
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7D71E20011
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DA43618000E
-X-Stat-Signature: 4wtxehhza7efy9ndjwee6qyhabhjoqwx
-X-HE-Tag: 1767979928-713482
-X-HE-Meta: U2FsdGVkX19GI58+1XX7xmsJX3QDdBB8DjJ3Pn3d4Z8GfG+E1xLGQMy7KWUhfN12WQDW+iKbTi1HqHUuLz5c/+uhNqI18GgsmRZdRJm4tN1OKgWeOKU0pXZ0S4IztXjTXM1TmkD6xWcYOHKdI3e5/wIiyp82ZTtNIur3RB6ejGh+mayLzQFFKeL761kk8iNAS/DA4slkYK3avGvOa4TIaJkIG2Cz8NzVCXUvMTMAorh0R/x+i7bwrFw495XzmVRCTsbXexXYYr/Ybo8Ym2CJGJNKkxDF/oHWFrEolP8QqRdrBoRJT1TNGO3haPSgI5YYtcHhzAPQ4zc2nqTyZ2/6IjdQmkSQwMygfrSlBQmsPPNCGT2VXOiz5CIePlMQl7z8IhattoSOt/alc2wB959oTxZlnLZYOk9l7ebHRZN8ylCZaljb0eWgQtzZ/FCdE4sinqri/wVqm8dPfGRUYLWuyICn7LLI++0RbSi36d9ue3wqUCvMSyRUBHrDJBZkxCVEJIVhYtcQzbTWYyqJeqskWLnlprvMEUFvBic7dJZxE/ZfT808QtupnDHUNDs2+qMGhE5KGMg02geK27GjVx+86hntLNMqUCWJU86i1R8+sr5XLtvVmQ4WiwKkkatY8fqbu0ZzessBLDn7wV4aDtLiHoD6oc1YW8yqWuPWO7Jx/oZfPmq18E8PoXvwCwxl5134dGe47f6T6yKoq7WMB8x67vgckaIOVUsjBl6QRNETryn+zJeY0QZSTXB1Qqz+UaLV4Y7D6beA6vMd7vuQJy+aZuHhwWrNZjzij/JiYHmPQ3/FC292reJw6XYW7ndqgtj3Id7nv86dD47dwAoqOrLYdj1IIh9IrxKhBKIi33zjxrpqFYJYDE9uS6q6hLPb6Ww0BS1YYquKqjFmI69ucm96tut8s4WCeIzOaXi1fDI1FR16Ac20bekg29xr+b1T9GefGF3M2IdJcVw41qHr7nD
- YBKs7ywS
- K68foK/6gt+cZq7hvnJz/EbDRbLWIQdaXl/GW7rH5K4WtkVqkUfqA6B3GqEKWGKDQOUu2Qw/kom/T5F18y86LWLzAo0NBeP6cGjuglUTcKX/qux+lfUHksRFpC/6miB4Vprr/cQlE5e61MOpS5EE7Kj0wCp/1Bau/FuhyRUXgR96TmxQrnZpGaqF3ajETYQ9PGUs+Sg5pBBjziHzzFU3hpAMdd8Ic85NpUN8QVcGTE8M1CWu0Ai9n0aLKsGxIBwPb+3VLcg/nXwniBS2OPz8b149luLG2WHZfA6XuH8n5ul2GfluJt4OAY8zLiXWOjMgu4tn8DMNWfkhRc7c/XIUVj7kLGU6/UuA3hb12omyU+Nd7Xt8qkqTkGF2biIf+Nt9nKPDZvqQxBP6uVWVtZZa92X829JqtaPBH60ra
+X-HE-Tag: 1767981865-411569
+X-HE-Meta: U2FsdGVkX18Imx1AYeDjGz16rmNtBbIk9ymeJ6nlRmFEuEiudEuX/jJdFJQcJV9tjHlm+w3E13C/eva+Y2nn3RHPDRLvLjlU0yPPlzKuaPY6aTNSdL4bh4WtpxHnkkDMIJs0eFzPo4FvLk1iQ6G+Dpl119G/PzJS17jkIUz9wf6FSR/zNAC+ygrbQBIg7q8vznGTr4U8XQTHNnY2f5pD13RFuG6UAFvpJ3G/JtSbIAxp3cqwZdU6YSsiAhrhmt9rfSyk78gD3lmaGFQIvOkGRh69/QK5+l17cSrRE98H5oNOWAnp/K47HwdsJEDAfzmtihxbMcEaySEENHMLH85VZfVtYoxq/xDdkz74mj4gH0vrT3lGwhC11+L/sFeldaqLTSOvNDQ17tAhghfD/VbbXzq10do7dYMR2ghUeRZ0RwAskTYsCmzYc3hSdDVz8Tn3c2OE16NskJRhXqMQn1UJif3uR2HGx40lCyeJgrWUPfXdwr94WRECAKLdWQp3a3BOheDWCr8ekVTc7cGU3FOJwjIdGlf0ZmRjMGpBhZs2oCLYWFPIZhfusk9GHCelfhvIPX5+ucDtTqDkhS/FM+0szk0Spz2J92JtLRejZqeCrN8ix82Tk/sJWhmV7i6mLeu7tWUz49klsBL0hVt0V9p3nqRJWkxkO2q71MtB5AXybXRo45ncU8ys4FwBX/Ki1pF8mz2/RcEpfvv4pQBlnkqAJP/gSu6be7vsX0lOp7+49S1/NSHyZdSPFVQi2TbOqbUD9YBNi9AZmzcGVTnwl3h7MuMsuUr0xnxHi2dGhuGn67K5ZXGSYYjJcK45/txpup1Yx6AD2gWYCzze5LokVOCN3TpDdTfcYiKknJIOZCrmVFeNyoSFzt5yrRSBM8r1aEUgX2Nb7htOYC6JxGOc6nu9llI8kOwDeRNT7YK5lE6jQvPJHRIamTVOVGH/WWuYbmr+Xpot2TMdwpVlBwCrLVB
+ hOwfL692
+ Wl938wOneSkIXZvBOLA2/Sq72TU5T7uSwoLyd7sbxATr+Ie6ysM/8skPlWi681pmp8qlSbviDcyH1zRaBN+gqxPJXies2hQ+44q6VGGDrapd9YREJdWyPehjIe/11KbEJu518qtHci7wsgnGlE649o4VtQIGOrcOap+bikTyc8I0ztY4liv3951fjzOZMLs4xj8ZNmbIRkiU0RDUhcMsCg+Q7oJHkzs8UqJ+x14CLQmRoxErbjDKk7P7ZzVSnukk05YLJMz3dYs/L8CCE2hCr6bPiQ7LNbfxGhINfU8r+niWQWzxr0G8jzl51qEEBpJ/UwHUddmAOPq1tBtkKnUBn17p9YxTQTJ2M5NZ6a4FszElnluExXI7usHQM7Pnvyrf8927XmeTbzTzVt0nE1h694NiBC7tfOiI0lrAKg/jFV7038BqibrzNAtvmOOpX3JHNGrC8YonIz0eaCygVUbGw8euVeA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -201,42 +183,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/9/26 18:31, Kees Cook wrote:
-> On Thu, Jan 08, 2026 at 03:01:00PM +0100, Vlastimil Babka wrote:
->> On 12/4/25 00:30, Kees Cook wrote:
->> > [...]
->> > +/**
->> > + * __alloc_objs - Allocate objects of a given type using
->> > + * @KMALLOC: which size-based kmalloc wrapper to allocate with.
->> > + * @GFP: GFP flags for the allocation.
->> > + * @TYPE: type to allocate space for.
->> > + * @COUNT: how many @TYPE objects to allocate.
->> > + *
->> > + * Returns: Newly allocated pointer to (first) @TYPE of @COUNT-many
->> > + * allocated @TYPE objects, or NULL on failure.
->> > + */
->> > +#define __alloc_objs(KMALLOC, GFP, TYPE, COUNT)				\
->> > +({									\
->> > +	const size_t __obj_size = size_mul(sizeof(TYPE), COUNT);	\
->> 
->> I assume with the hardcoded 1 for COUNT, this size_mul() will be eliminated
->> by the compiler and not add unnecessary runtime overhead? Otherwise we
->> should have two core #define variants.
+On 1/5/26 21:11, Lorenzo Stoakes wrote:
+> This bug was discovered via a syzbot report, which this patch resolves.
 > 
-> You're correct: the compiler completely collapses it with 0 runtime
-> overhead; a variant is not needed.
+> We further make a change to update the mergeable anon_vma check to assert
+> the copied-from anon_vma did not have CoW parents, as otherwise
+> dup_anon_vma() might incorrectly propagate CoW ancestors from the next VMA
+> in case 4 despite the anon_vma's being identical for both VMAs.
 > 
->> I also noted that the existing kmalloc_array() and kvmalloc_array() do
->> check_mul_overflow() and return NULL silently on overflow. This AFAIU will
->> make SIZE_MAX passed to the underlying kmalloc/kvmalloc and thus will cause
->> a warning. That's IMHO a good thing.
-> 
-> Right -- I prefer seeing the SIZE_MAX yelling from the allocator. Should
-> we change how k*malloc_array() behaves?
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Fixes: 879bca0a2c4f ("mm/vma: fix incorrectly disallowed anonymous VMA merges")
+> Reported-by: syzbot+b165fc2e11771c66d8ba@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/694a2745.050a0220.19928e.0017.GAE@google.com/
+> Cc: stable@kernel.org
 
-Yeah it should best behave the same I think.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-> -Kees
-> 
+Nit below:
+
+> @@ -1117,46 +1146,52 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
+>  int vma_expand(struct vma_merge_struct *vmg)
+>  {
+>  	struct vm_area_struct *anon_dup = NULL;
+> -	bool remove_next = false;
+>  	struct vm_area_struct *target = vmg->target;
+>  	struct vm_area_struct *next = vmg->next;
+> +	bool remove_next = false;
+>  	vm_flags_t sticky_flags;
+> -
+> -	sticky_flags = vmg->vm_flags & VM_STICKY;
+> -	sticky_flags |= target->vm_flags & VM_STICKY;
+> -
+> -	VM_WARN_ON_VMG(!target, vmg);
+> +	int ret = 0;
+>  
+>  	mmap_assert_write_locked(vmg->mm);
+> -
+>  	vma_start_write(target);
+> -	if (next && (target != next) && (vmg->end == next->vm_end)) {
+> -		int ret;
+>  
+> -		sticky_flags |= next->vm_flags & VM_STICKY;
+> +	if (next && target != next && vmg->end == next->vm_end)
+>  		remove_next = true;
+> -		/* This should already have been checked by this point. */
+> -		VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
+> -		vma_start_write(next);
+> -		/*
+> -		 * In this case we don't report OOM, so vmg->give_up_on_mm is
+> -		 * safe.
+> -		 */
+> -		ret = dup_anon_vma(target, next, &anon_dup);
+> -		if (ret)
+> -			return ret;
+> -	}
+>  
+> +	/* We must have a target. */
+> +	VM_WARN_ON_VMG(!target, vmg);
+> +	/* This should have already been checked by this point. */
+> +	VM_WARN_ON_VMG(remove_next && !can_merge_remove_vma(next), vmg);
+>  	/* Not merging but overwriting any part of next is not handled. */
+>  	VM_WARN_ON_VMG(next && !remove_next &&
+>  		       next != target && vmg->end > next->vm_start, vmg);
+> -	/* Only handles expanding */
+> +	/* Only handles expanding. */
+>  	VM_WARN_ON_VMG(target->vm_start < vmg->start ||
+>  		       target->vm_end > vmg->end, vmg);
+>  
+> +	sticky_flags = vmg->vm_flags & VM_STICKY;
+> +	sticky_flags |= target->vm_flags & VM_STICKY;
+>  	if (remove_next)
+> -		vmg->__remove_next = true;
+> +		sticky_flags |= next->vm_flags & VM_STICKY;
+>  
+> +	/*
+> +	 * If we are removing the next VMA or copying from a VMA
+> +	 * (e.g. mremap()'ing), we must propagate anon_vma state.
+> +	 *
+> +	 * Note that, by convention, callers ignore OOM for this case, so
+> +	 * we don't need to account for vmg->give_up_on_mm here.
+
+It's called "give_up_on_oom". It was already wrong so this comment move
+would be a chance to fix it. I think Andrew can just edit locally?
+
+> +	 */
+> +	if (remove_next)
+> +		ret = dup_anon_vma(target, next, &anon_dup);
+> +	if (!ret && vmg->copied_from)
+> +		ret = dup_anon_vma(target, vmg->copied_from, &anon_dup);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (remove_next) {
+> +		vma_start_write(next);
+> +		vmg->__remove_next = true;
+> +	}
+>  	if (commit_merge(vmg))
+>  		goto nomem;
+>  
+> @@ -1828,10 +1863,9 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+>  	if (new_vma && new_vma->vm_start < addr + len)
+>  		return NULL;	/* should never get here */
+>  
+> -	vmg.middle = NULL; /* New VMA range. */
+>  	vmg.pgoff = pgoff;
+>  	vmg.next = vma_iter_next_rewind(&vmi, NULL);
+> -	new_vma = vma_merge_new_range(&vmg);
+> +	new_vma = vma_merge_copied_range(&vmg);
+>  
+>  	if (new_vma) {
+>  		/*
+> diff --git a/mm/vma.h b/mm/vma.h
+> index e4c7bd79de5f..d51efd9da113 100644
+> --- a/mm/vma.h
+> +++ b/mm/vma.h
+> @@ -106,6 +106,9 @@ struct vma_merge_struct {
+>  	struct anon_vma_name *anon_name;
+>  	enum vma_merge_state state;
+>  
+> +	/* If copied from (i.e. mremap()'d) the VMA from which we are copying. */
+> +	struct vm_area_struct *copied_from;
+> +
+>  	/* Flags which callers can use to modify merge behaviour: */
+>  
+>  	/*
 
 
