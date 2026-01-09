@@ -4,80 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B344D1A62D
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 14:17:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE865D1A62D
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 14:18:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F1056B008A; Fri,  9 Jan 2026 09:17:05 -0500 (EST)
+	id 5143E6B0088; Fri,  9 Jan 2026 09:18:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09B5F6B008C; Fri,  9 Jan 2026 09:17:05 -0500 (EST)
+	id 497C36B008C; Fri,  9 Jan 2026 09:18:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDFC66B0092; Fri,  9 Jan 2026 09:17:04 -0500 (EST)
+	id 36F1D6B0092; Fri,  9 Jan 2026 09:18:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DE6576B008A
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:17:04 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7B96016095E
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 14:17:04 +0000 (UTC)
-X-FDA: 84312627168.17.2E6D192
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 23C066B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:18:46 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CE497C2DB6
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 14:18:45 +0000 (UTC)
+X-FDA: 84312631410.18.2BF6F0B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B9EFE160009
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 14:17:02 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bvwk+ZHf;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1FB02120005
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 14:18:43 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Em9yl8Wd;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767968324; a=rsa-sha256;
+	cv=none;
+	b=GbYmqt51RTyD2ssDwjz2hkMCh/RpvcdpNs81B1ZwENG2YH5pvYU2nkcDAaGSDIZb0MzxaT
+	vG0MC05CXiPQPh1heUSYKcnbC/QVxfxuKXH2gk+SJKISVeIGAaJd40VEITk5pkmbJqwvcS
+	RE4JQsDOiOxo2J8uNwdYa3pzAE7Sj2A=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Em9yl8Wd;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767968222;
+	s=arc-20220608; t=1767968324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9PWTennRpZy73mk2FUlHWs0NRdiYSKcn9xWPWNly+F0=;
-	b=TAQ9bFpyl5WSE+UykQJApLL8+Znuuy6x/1VvgDnrn2bkkyr+0VxqaeQqxOI7rAnidL5ha1
-	nxH8RYB6tfxuEeqnXQdZdXBV56S1qlWisS7bQ0ho17SVgcoXN2p7OTmzsV+sYSoMx96ixo
-	EWzl4NkzAVkBiscqNwZ8o2WF7VOETJ4=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bvwk+ZHf;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767968222; a=rsa-sha256;
-	cv=none;
-	b=4EdBi8nmbe1C6k63Ne0SZl1h48wIDY/EZFdZEXET2JQPT+x2tS1NPqMAF+Gssa3ipJ+0vm
-	qVghkPLLNxDnZ2v8mn6ZbLQOUwGxER/8ySv215yJX5x18l/pk2aZWE59H8wNc9Iin0cS1x
-	4e0AoCNAaWiPEq6CBbhW3Mvytzfl3OA=
+	bh=H0QM+4yIBKhcWTbESsYGFIDaoauIHXGA5MDaFYzeD2g=;
+	b=jEuMJYbkEjDri8jVgUJtdqw6wfuuDfiJIOaDQLciEmBfsPab2mDygBURh4rLJoUz06qNwo
+	mVenZrSL2opd33xDgNE1OMX5YKlfVkkIZy2QuQPi61/xT5RWvQWP9MmAp1kSjN+FBHfNzc
+	Sljnj5RKn1Co+dJxjuE0TT1WBZ4Af54=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1D23460122;
-	Fri,  9 Jan 2026 14:17:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECE6C4CEF1;
-	Fri,  9 Jan 2026 14:16:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 94C6260122;
+	Fri,  9 Jan 2026 14:18:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED19C4CEF1;
+	Fri,  9 Jan 2026 14:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767968221;
-	bh=lr1JN13vUxnGXW4XZwSMKMxzqKHEMDUAlP0/wEVAxZI=;
+	s=k20201202; t=1767968323;
+	bh=UDfqyU5R4oLLX8JH9TDhDkX5WS5UHEQCcMVVXXhb5Rk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bvwk+ZHfeNASAzWxoMstgupKUoz+ibbXXstF8aJ7qI8Rs8xuy/m0jRYFnKcD2dvW+
-	 61E8Jxr30IHaKRibBD4xVogyOzourgwuvJFep/aC6P3OPnoxGIPtw9rPJGuQuonhyo
-	 Zvq9DhJ3uEcZxYKjC9X4IbiYrvjv7jY4j//r3LT2mzcIdZucNCo4EMxPnGNFIwIshj
-	 /UzT0b9qbHldfAWFLh3Phmb7s7MlmGAoIIlhinIVF6iTgYBB0VZaK7JheDNwNJ9aSA
-	 ttUCNU89c73+bSa4Wcac34KmA4fRkKOOIKA0CMY4i5rqXzT3HIlclCLskaC8e2zvML
-	 BCFvmYUHFA7YQ==
-Message-ID: <746bd1ff-b3fd-459e-b491-c62b160a956f@kernel.org>
-Date: Fri, 9 Jan 2026 15:16:57 +0100
+	b=Em9yl8Wd0UCElsUBhOZ0qvCWAxk1C4K9p5Lvje1H3awjUuSqe2lvpWqlksPe+z/Li
+	 0JkJjbM9U3Rr6t/ZaPhfVOWqZCPW5OwXQxfTWuZGb1psUVwBj+Nm/SOnXcA7vtKhwB
+	 OuQ4twfmRIWt/3kCMRvMFoW5fO3HncSuXTuFTgkXSrcVdLUJAGyfHCEVx00yi6fghr
+	 bscwS8QE4EtbRtcAj8ZuXOVM8j/u8h1EGDuKOiipdaPHO4GImJY5DYgGBqxCQg6HrX
+	 H6SjFQyUhBqcoNKm57PVRLpyOZ0IPeVVGf0VkqjpkteSERIX5DlDFmRY4POzeHZp+h
+	 vaIhRUI1CFLGA==
+Message-ID: <e792db5f-5ec4-4960-a2f8-fde490e0e366@kernel.org>
+Date: Fri, 9 Jan 2026 15:18:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Finding mm patches to review before those are pulled into the
- mainline (was "Re: [PATCH v2] fix AMDGPU failure with periodic signal")
-To: SeongJae Park <sj@kernel.org>, Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Mikulas Patocka <mpatocka@redhat.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- amd-gfx@lists.freedesktop.org, linux-mm@kvack.org
-References: <20260108062637.82125-1-sj@kernel.org>
+Subject: Re: [PATCH] mm/migrate: fix hugetlbfs deadlock by respecting lock
+ ordering
+To: Jinchao Wang <wangjinchao600@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+References: <20260109034723.1342798-1-wangjinchao600@gmail.com>
+ <920c641e-e092-46f0-89cb-0f1c130d979a@kernel.org> <aWENkov0R-1nIB8M@ndev>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260108062637.82125-1-sj@kernel.org>
+In-Reply-To: <aWENkov0R-1nIB8M@ndev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: re1yfdnbjmfb9iceo5ep8ibm1bjcw34d
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1FB02120005
 X-Rspam-User: 
-X-Stat-Signature: zeicb4iefi5neenqi68srabiqiey65rn
-X-Rspamd-Queue-Id: B9EFE160009
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1767968222-296745
-X-HE-Meta: U2FsdGVkX18ep/u2HCQeMdM9ZJelIbiQ4rjjYH05turKzQC52hZUwQnGiw8IXO+1EHIent8R2yRAgDpjswx7Nm8Ag2ibD3AgALOV0gurWsi57QVq4qduirhFWceLoGJNKqeBdJbw/deLuNmgjS9f1F50mZCmFOmM4VdB2Czyx3fwNJlq38BrthV2jj5fHe72ZyQJdNTXKbXdNJW+T/J+zqss6S645rBq7b1WLFHba6AnoN42JjK0OArulF9oXOm8a7ISDPnvIoee6xsCTI1PHAMdJNWAVu4bIKkEwfVMhm5Iavz0UWFZUYtySeorxF1ksjdYJxjuQLGdCCHyfuTCdGYf9ZyXtaZdjC/VChcV8qKixj9ZDUhtMI8rfudWajXvLCPhRZUpE47zy0UKxXmw0XYjRxwtevGp8Ld29G3e9sitBg1H5YIWkuFe58Q1kEczt/CXJ5Z1PEuMUJmsogmYzBzNz8eJbTnp3px9F1Oqgm6o2LCid7L8kDxcqhfy+YSnQKJLkqaBDssk5x204ADZL8LRu4qUckFymELSxq6tT7kB+Tg7q/ZSGiKjc9LxtvjaIQ9CANkzoiu9umLbAL4XwVrvb6QBpAJxUvZcJsdeDpC/aZTsG0zZ4GGZupws+8ZW9XJC/l4XUJYGXkXAnN+4RgGz9s9woqhsG1hldSpuiKIJlb6rg75aWVodU/zGCjK4WvTCrXvQ5qEJKqX3QCHVePPJNupOAxOUYCF9xoUxlVu3c+vWLm4T8aHZHT77XRikjcQu5mlfS6r0WYEmEsOWCe1JSPuqwwRhZPt47/JrUwSKVRlFKcatcsxAeV5VRnBGwiUkNmwsmc1GdNLsbvzf575XclSFT1Jb0pPdPiZoYBeL2J1WPV54f36zEhfgS/O+lDRWp6ku5k0yXcVeMm0r7UHPZdsjvuep5QUSdiwRxQYLkCyRguc1Uil0a1gfUmF1jZty19T6dRvD3N8HfjK
- 4+xjUWwF
- 8Nz+XRh0C7qQLKBC340SjiqKgz/F4LL/H1DLVgq1ZFu5sWqFuMOM27syFnW8dB3oGTCmrH5ihY04YtPnr8dA8gGxKuDyMQ+sf/3d7VYqbPgbL+ey3MkAGYHK71DjSq5qPtpO7KZa/CJSMSS0tiASBQvN/1ehUKMG/Xzs50iPoGiiDXyf312jZjy4okDVWQBq3376+JFfeCcdiu2So5gsKK8MWWZr/Meh8lhrmJBkdbFRoExoeuK5fQjwwbynletZl/VT4
+X-HE-Tag: 1767968323-371301
+X-HE-Meta: U2FsdGVkX1/+Eza+zpQL9hzSEwoU6NwoVHL8Mn/Ko1eFY5iUknG4EmHgSJhBgM3FOJUscYiSdPifUEGgkVEVEONzDvvWhcz9G9MpA8Fi0+JPHNJaAu1E2fgscX7gMTbDerk2ZA4ojIe/LWFMS8h/RLYhtsncNJmwk+HXajAF2esMw11S5BwCBaHPiW+Vmh2iNWFJdov7OYYqn5VLyF8LZOsF+LYXwIxKgI/Twwpou7L861Aa18dq8cmIV0U+5TVMIWnLIdYqX7V4k8EbJ7cLDjWb2p+zjIkKZGPA8naazozIKEgOvFeqQyA5MpUxEUFj2TkML/Y5j8Nqy494T2aSdkPxsdfgNKdE/ETRbn849zmbBLErNFmlv4Bqyox7EOO7GlMU/+l/OwxnNd64jL2TXRrCRV7SC4o4b4Bqf6Nd+7JGpPYKehw9VsB6OIq0kyLRGn2NrgE20mTQM5q8Ttg2vkiVyvG7GYFFzPr0LHIMl9RJ07w4X8NCI0ICWq6VmoTWmtA6aaHPPH8/1/sl6JZKefnesXL8vtEOBc1T0VPVqX5cCfdC1Y/pRL5EBIohr+eCOBtsprXPZv4WU9w/4ExnnCUlJ8R806Ic0WkDLl9mORS4kHJPEl4aRdjW40apR3fYnJRjiqC5+wGu7MskChGELoc9LJ/zENoBD6kYm2RhbRPAC38NN61sIbh3Ccd9eYYdhWX9lpzl914RRG6sNlPdpV0rh16NLVFw4fqCayojq3Agn/8VmSFguufiJZzp5huttSiX1VTfjst1LOJ5FiB1KtD4Qxul+Yio+l4bu4GiB7YdXW0nucPGrQOJqJHw6/6aWltqg3+Jh8lCjCE49WmL1Q7HaRvAUDaI+3TTdEUN0A9y919SHOCIhkC+Xhn9kV/qysLvcMtoc2Tb7fPX3DxBldkRf6CqAN3kGSIzkU1VckLY+WrXaIevOExq82t5lseuW/xs/87rPvJRZak2m0m
+ 66UWVY4s
+ 6szAou8uOg4SgOxf+xZnvRKd2hg6M8C6ZbAoiX9OzPsA3iyUAQ5M5vn40OjOLgACTP656keglUJ/AW7BgZv3JsasZbWQGOnunfcsimsJ2hrYsBi/9x+BYa/ncpkUA/6NrHW0P7BbOjDPEh+3qxLJfUaaes4a++hdm6qkEizpDJtS+SvSq6k0/UHHV8iT/xZBhlnA5sy/bafrOIHlHAP5OvqBxEVxNtb+pIXpJqdFu3lXc+2fSCGmI5a42S7b1rJEhqP9YhjxJ7ka9ON/vtFpDl80D8rkXmO3Or+gDD3f/NZzY02vIHWI4aOigMYyiJpqvVHe4bAIVAmneJLEdtPBX5kSvqd62YP2TkkBC9rqfIZ2Ny6SiagFC6JmfcFg0MnUDO9Aj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,55 +146,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/8/26 07:26, SeongJae Park wrote:
-> On Tue, 6 Jan 2026 21:52:25 +0000 Pedro Falcato <pfalcato@suse.de> wrote:
-> 
-> [...]
->> I understand your point. I don't think anyone wants to see patches falling
->> through the cracks. But we also don't want patches to get applied without
->> any review.
-> 
-> I can also clearly see both Andrew and Lorenzo are trying their best to make
-> Linux kernel better with only good faiths.  I always appreciate their such
-> efforts.  And both their opinions make sense to me in their ways.
-> 
+On 1/9/26 15:16, Jinchao Wang wrote:
+> On Fri, Jan 09, 2026 at 02:39:08PM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 1/9/26 04:47, Jinchao Wang wrote:
+>>> Fix an AB-BA deadlock between hugetlbfs_punch_hole() and page migration.
+>>>
+>>> The deadlock occurs because migration violates the lock ordering defined
+>>> in mm/rmap.c for hugetlbfs:
+>>>
+>>>     * hugetlbfs PageHuge() take locks in this order:
+>>>     * hugetlb_fault_mutex
+>>>     * vma_lock
+>>>     * mapping->i_mmap_rwsem
+>>>     * folio_lock
+>>>
+>>> The following trace illustrates the inversion:
+>>>
+>>> Task A (punch_hole):             Task B (migration):
+>>> --------------------             -------------------
+>>> 1. i_mmap_lock_write(mapping)    1. folio_lock(folio)
+>>> 2. folio_lock(folio)             2. i_mmap_lock_read(mapping)
+>>>      (blocks waiting for B)           (blocks waiting for A)
+>>>
+>>> Task A is blocked in the punch-hole path:
+>>>     hugetlbfs_fallocate
+>>>       hugetlbfs_punch_hole
+>>>         hugetlbfs_zero_partial_page
+>>>           folio_lock
+>>>
+>>> Task B is blocked in the migration path:
+>>>     migrate_pages
+>>>       unmap_and_move_huge_page
+>>>         remove_migration_ptes
+>>>           __rmap_walk_file
+>>>             i_mmap_lock_read
+>>>
+>>> To fix this, adjust unmap_and_move_huge_page() to respect the established
+>>> hierarchy. If i_mmap_rwsem is acquired during try_to_migrate(), hold it
 >>
->> Perhaps it's time to deploy something like Patchwork to help track
->> outstanding patches?
+>>
+>> I'm confused. Isn't it unmap_and_move_huge_page() that grabs the
+>> i_mmap_rwsem during hugetlb_page_mapping_lock_write() (where we do a
+>> try-lock)?
+> Yes, but the lock is released before remove_migration_ptes().
 > 
-> Nooo...  I'm too dumb and lazy to learn how to use Patchwork...
+> Task A can enter the race window between
+> 	i_mmap_unlock_write(mapping)
+> and
+> 	remove_migration_ptes() -> i_mmap_lock_read(mapping).
 > 
-> I believe we always have rooms to improve, though.  One way to resolve concerns
-> raised here would be asking Andrew, someone, or some tools pinging relevant
-> reviewers of patches that Andrew wants to add to mm tree.  But I think that
-> might be too much request for a signle human, especially for mm, which is a
-> huge subsystem that many reviewers exist.  And because the reviewers have their
-> own tastes, the solution may not fit very well to all the reviewers.  For
-> example, someone might dislike directly getting such notification mails in
-> their inbox.
-> 
-> In the past, I actually considered making and running a tool that scans patch
-> mails that not Cc-ing relevant reviewers based on get_maintainers.pl and
-> forward those to the missing reviewers.  But I didn't make it because I worried
-> polluting someone's inbox.  I should also confess I worried my electricity bill
-> :)
-> 
-> As an alternative way, I was wondering what if reviewers consider mm tree as a
-> kind of compacted and curated version of the mailing list.  That is, using the
-> mm tree as the useful place that we can more easily find patches that we need
-> to review asap.  If it turns out there is no time to review immediately, the
-> reviewer can always ask Andrew to wait.
+> This window was introduced by the change below:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/mm/migrate.c?id=336bf30eb765
 
-I have my inbox full with stuff that needs review. As long as I am 
-properly getting CCed, I am well aware.
+try_to_migrate() is not the problem, but remove_migration_ptes() ?
 
-What needs review is at least not my problem. And people can feel free 
-to be listed as Reviewer to get CCed :)
-
-The problem I have is that if I am not fast enough to review/ack, things 
-might go upstream.
-
-It sucks. Hard.
+Anyhow, I saw that Willy sent out a version.
 
 -- 
 Cheers
