@@ -4,157 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAC65D167ED
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 09:35:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 117FAD167E7
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 09:41:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B0396B0088; Fri,  9 Jan 2026 04:35:48 -0500 (EST)
+	id 77E8E6B0088; Fri,  9 Jan 2026 04:41:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35D816B0089; Fri,  9 Jan 2026 04:35:48 -0500 (EST)
+	id 72BCC6B0089; Fri,  9 Jan 2026 04:41:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 260106B0092; Fri,  9 Jan 2026 04:35:48 -0500 (EST)
+	id 60D4B6B008A; Fri,  9 Jan 2026 04:41:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 14DFF6B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 04:35:48 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CBF441A0405
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:35:47 +0000 (UTC)
-X-FDA: 84311918334.08.621E48C
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 65351160004
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:35:45 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=gD4d7LD7;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=Bv4g+m5K;
-	spf=pass (imf08.hostedemail.com: domain of pratyush.brahma@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pratyush.brahma@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FEF06B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 04:41:46 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E04978B8A8
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:41:45 +0000 (UTC)
+X-FDA: 84311933370.13.5996CFD
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf19.hostedemail.com (Postfix) with ESMTP id DAF591A0009
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 09:41:43 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sI+e2yT7;
+	spf=pass (imf19.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767951345;
+	s=arc-20220608; t=1767951704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3iojzp7AXQH0u6ZxuwGy4zWDgaqOjTe75g7N5AkccBk=;
-	b=sMXdDYr1oEujPasybd/F/b0PnOTkltN72YZdFln/undqRYtfOHBIDKs7E3m17CEeYyC/GX
-	L/hHXvSzTwSsJQXCSlTIYGO50XwyGxv6xlvw8TXrfInnk8monzQKzJySH5JxEFEHQViY93
-	bGv4ocjtogu6cdh9Sx0HshiCXWVT2K8=
+	bh=H+5FiipzRYj/oIjJJysJmQ8HBc7MSXAZ4RNJB55yPyY=;
+	b=eXdtL/x7SX2SyIv0DHpJ+yUqBdb7YPBosro0UcgJNVVVt/TUcg3M3Xl97AcNGYN80IB2fh
+	mU/Zc00ASh8qjwKSxY4Xki/dostR2KnFBLFMoGJ2+Fxk9qKuXREh/QavrTUtzVPdvNw4pg
+	FJEorkbJj89KOF9Xy4RloPeqDZaNLAo=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=gD4d7LD7;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=Bv4g+m5K;
-	spf=pass (imf08.hostedemail.com: domain of pratyush.brahma@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pratyush.brahma@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767951345; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sI+e2yT7;
+	spf=pass (imf19.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767951704; a=rsa-sha256;
 	cv=none;
-	b=iqzuEiAT7bZ6Bnzl1wcWQ/jEWId4EGy6Cp+jontXj2hsDLsgNJglKTRh6pNth4wbov7uZ8
-	Qa48MXaO5p9PK+euU7jE9qfcGJkHekCe1Ow0g5Lf4hcMo3DYOFW61a27s9auWTcREtig1Q
-	LA7HgrhRJatBmoXkhUqmYtt/vVPYU+4=
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60952kWA3542137
-	for <linux-mm@kvack.org>; Fri, 9 Jan 2026 09:35:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	3iojzp7AXQH0u6ZxuwGy4zWDgaqOjTe75g7N5AkccBk=; b=gD4d7LD7EbNkJqqu
-	xUth1YS5fdXr8zijS7aw1rBu87Jz1IEM8J2sK5jDvF69O/cbY4jezCxnMiOUEfb9
-	FaA0z/LG2zpF2k9mYjfnp2jzJdxNUTYGwa+qCMyLCpKQKQZ3xoclx34Srt1+TftA
-	34i3StxR3/WBMTs3vymv7js76dfMiMTJj6os0SISfcsxE2/eo7yhj2APcLp/hLm7
-	fz6ihDKFAhkDVG8tStsaKa2zCeXsBBvWU8oiWtF4l014wJcfwt4DQjl3zlSZ1dqP
-	LqmSYApNjRZ0xAEcYjL53nbB1Z+m6j4ICiYqattICWBySAElbUkLp7+y8i7C7shV
-	Z5fznw==
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bju6b0rsr-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Fri, 09 Jan 2026 09:35:44 +0000 (GMT)
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-2adc3990fecso1471714eec.1
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 01:35:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767951343; x=1768556143; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3iojzp7AXQH0u6ZxuwGy4zWDgaqOjTe75g7N5AkccBk=;
-        b=Bv4g+m5KTbQfgxzOUgxr+vumZrxhTPDWC3prxaSJgIZXA9Av+UNzOAto4AZoIFC+wd
-         +xZnhMU+07Hj2Q+ci9M32w/wZoy9/nYnlUwoTbOdW2mHalqEbq/VDgmqAEwztTeUGyht
-         IroVKeAuE3ew1sxntm7Zo6imeqBC6W6Uip2OGHhCIeEheRS9OSJDc7tUGn+etyeMkACL
-         AYi5JYe9fNVGWfXWL0NqHhJ+9g7Tt2Px7Mz/h4Bs0/4MZ+YbseDc4dM7wF3VVYH/O7G3
-         SNDrtSHfqjYU7ULsFjgwklSpYpHhXGKUB10cLBA2YDJPhIR2HLXbzMyhd3rPkbtHfoUC
-         NGSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767951343; x=1768556143;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3iojzp7AXQH0u6ZxuwGy4zWDgaqOjTe75g7N5AkccBk=;
-        b=GTWGRwHAQmbm85CVZKi8/ZfuhpBhC2nPFHZ4ccPDKs5xgEwQ/cBHTZnHZE47PlmeX2
-         vK2sAnf2MCgAjbEjhD2YQF1l4dIDdVbWKdFnvmC7XwBUCYKCRXxOVObdLzbRo4o54QWB
-         fnGrbMKCzrCbvxeeVvBP6OrHLAA76bQUqw1Ts7e5Fr1S8YcghihgIZkpog+uu70yXYw3
-         1lsGJma6PReGEC7vZRVplVA+zfEEUpkvh4O+B1vkws9he29ZLOBvREUsvZD6YNp+VQk7
-         tRqDlBAqIkxlSLpcgrZdc30/mqRb977l4vZsCk4ONsjTu3baPWQ90jkMNQKfLl2PqdTv
-         T+Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCVreyZs4JYHZxkPtZqHwFKkxypUvaoT0P8pQVb0sI1l+RT4H+L7PvdFUXjS/eMfcUYqKB+MLwD1KA==@kvack.org
-X-Gm-Message-State: AOJu0YxrxNcUu2fFESNRX97E8A+2UrNdVH+bix4cmvGecx8vBvx9iuGb
-	NyEFlmoVaDXzoG3gPLZ37akkbBWLZcpxCO9lF83HsIp+BFCfNgZfJlehscYpCaV4PG89ZL3lOCt
-	sucTduQnFGu/xX682FpoVwRSp+LQjOgoQrx4ojzBbcnX9IUMC5xM3HHPhZwalrM2PCZ0AgesaKB
-	VNJfn5fcgGfeo4hW5WGRge9G8f7Y26
-X-Gm-Gg: AY/fxX6LRtA2bqn39JMxj3dEp6lbVEsbK9brxZzR2JOwxsyI2xhLxB2c/6L970q0DhR
-	km4OYYqezcOzaGV2No2NUVM+7vd+G3k8A+KdbkbPkDJReuz5Vyjhvt+6pXOVxOvXRr3f4Z8TaR9
-	77Q0IOPTrl/4cfdEptzY4Q8caiQpY4wAvFI9B5T3tVwpCmA1cMeAMv9Oe4NOGUmex+A4bz
-X-Received: by 2002:a05:7300:551:b0:2a4:6c74:c54a with SMTP id 5a478bee46e88-2b17c89636cmr6203031eec.18.1767951343065;
-        Fri, 09 Jan 2026 01:35:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGjsjc9X4TtkDjvpzzyEN7YVy2fVy4g1x1T/tHe1z5/FLBJR6gO6kMr0v+2FZd0uUGsy+noJHHR+bOIdZeaBZ8=
-X-Received: by 2002:a05:7300:551:b0:2a4:6c74:c54a with SMTP id
- 5a478bee46e88-2b17c89636cmr6203015eec.18.1767951342522; Fri, 09 Jan 2026
- 01:35:42 -0800 (PST)
-MIME-Version: 1.0
-References: <20260106031042.1606729-2-cuichao1753@phytium.com.cn>
-In-Reply-To: <20260106031042.1606729-2-cuichao1753@phytium.com.cn>
-From: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
-Date: Fri, 9 Jan 2026 15:05:31 +0530
-X-Gm-Features: AZwV_Qg8GSORLSmZAk-i5FV38NWIPnQziFHC1lSE5ORre2DCBTsVGVLGkQhEY7M
-Message-ID: <CALzOmR2z0noh74aCAd=QVUBgdn7Q+Hbevs-cr1EtV_zXCuQ=PA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
-To: Cui Chao <cuichao1753@phytium.com.cn>
-Cc: Wang Yinfeng <wangyinfeng@phytium.com.cn>, linux-cxl@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Mike Rapoport <rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+	b=dNqX1/mF82DzXkWz+93N/FvfDABHz0KGgHC8lWS79GAXDBgxRpR0aWci5jT4qyDNzCPk+L
+	rOusBPs2hh3yJKrR8sJByyOnxnbFgtBFY+0yEMYENV30jpeBBRmOwGjp5HalsBVaGqNxZP
+	Q3n6RTFVWgfTDYl1ThoTpkq3puAYMsg=
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767951701;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H+5FiipzRYj/oIjJJysJmQ8HBc7MSXAZ4RNJB55yPyY=;
+	b=sI+e2yT7/nZDArPgy8eiHaymz5EezHYFHyu0NJ6rmCLH8yjTShwgyHzFSj1UwbIjydzr7c
+	1kJIzCPOLTs+EUR5zLUH9s+RDftQPHWmHhzz0jjuhvbPXyNNu1e7mC54TFgYpszg6VIJH2
+	beFzsfBmxCn4xiofn0KDApdwZ0CwMPs=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCHv2 02/14] mm/sparse: Check memmap alignment
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <fwgrsslq74vk4dhkuh5hji3xnrql7nxuia6wdeexjltzb4feh3@nbshswn3egkb>
+Date: Fri, 9 Jan 2026 17:40:47 +0800
+Cc: Matthew Wilcox <willy@infradead.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA5MDA2NiBTYWx0ZWRfX8VAJOzrB9aCD
- /WvJs6+3l7z/c0Abm+zdTU8FXDUUqWB9JxIRLJ0lilb2Ntevn7+c1rVh49r0S+dqXKmt28g0B0F
- YRuqQTjC6E+gNmKf/vRvJ4eplkIp5h19kT0M80eHQFsjm0+KZz+RfYhMTOelVcRo7S+Bx7xXyb/
- jHsU9w0ho8FHvuv8j3bPdXT0eGXkyJUmpb14ofPkXpcrqUQtEhlf/SiMpK548dUtmLaEDZR8vCI
- RMPQ6UfH2IzNZo3dAxb54s8tibNRDqUF8CW0+BmZBepXGNZH/8IMBIXt83ody1h94goxrn+BPfV
- eSn4NKsJtW0xis8xj4K+XWLwSJEb2tnNoyNmtAXJvGOv4ZDTTDd4uRvZ+lozXXCPrpy540ykuC1
- bhHcKXf62XLsdxa+DhJ6d84rryZ2c8I34Le+YuFceTz2FA7srHF+viVv7tbU8cyLg6znMKhXABt
- Ygx8/64YLK9BrfV2Pog==
-X-Proofpoint-ORIG-GUID: oGRyeHrYhSPhGE2wjRPAlUIWuBY6dkur
-X-Authority-Analysis: v=2.4 cv=V+5wEOni c=1 sm=1 tr=0 ts=6960cbf0 cx=c_pps
- a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=fgrLqfBXAAAA:8 a=i0EeH86SAAAA:8
- a=zSqqh9NAIYBvi6e2emAA:9 a=QEXdDO2ut3YA:10 a=6Ab_bkdmUrQuMsNx7PHu:22
- a=_Ge82aPy-h_wFa7gWU4u:22
-X-Proofpoint-GUID: oGRyeHrYhSPhGE2wjRPAlUIWuBY6dkur
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-09_02,2026-01-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0
- adultscore=0 clxscore=1015 suspectscore=0 malwarescore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601090066
+Message-Id: <BFCB39D2-20F9-4059-8F54-9029208C37BE@linux.dev>
+References: <3b758468-9985-49b8-948a-e5837decf52d@kernel.org>
+ <CDAEC896-E3EB-4EAB-9F0F-70BC448B3B9A@linux.dev>
+ <4f82b8ef-77de-422b-a9a5-691c4eca24a3@kernel.org>
+ <glu3noshgeh7ktwwqofk7xcwkvhek2x3hrbdmyyo56gmctdx3t@adsfih557p7g>
+ <2ace6fc2-6891-4d6c-98de-c027da03d516@kernel.org>
+ <yup3hvfsn4tvfnv32mdf4yoabt4igb2lkvllfac72g3abdkovm@auqdaijzby7d>
+ <fwgrsslq74vk4dhkuh5hji3xnrql7nxuia6wdeexjltzb4feh3@nbshswn3egkb>
+To: Kiryl Shutsemau <kas@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: 4h7bw78oz5mhnueui7d8k1z8k5kg8sxp
-X-Rspamd-Queue-Id: 65351160004
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1767951345-869717
-X-HE-Meta: U2FsdGVkX19GUXZj4G6ofNjvmFKySz58YIo2sQd04Krpw3VtWkqc/Tua3t/JqCWb0PaZjRrE5baVv51Ex7Q+Vy9E7Hz6aColmb1tytVtCd++j/3wDABcyjh9BJ7ass/ixoWHIHHqNTPYrJSQFy5T6j7+Bp7NROdWr5+E1UIuVOqtEZCcpQgt9wskk7q3GlW6rl0AOmy/6Qumuy6Q/XtnkkTByfqtF0UDez3HxYnm8MAQgno+y93pyAs6AwXAgnCGIVtLlscKIFB4LToRrupx/aId+XiqHsUCM4DuZytxpoP8iMP1bD0IxjBpUTBecXKYalaCmeUCRToJABg42Um2B68kr5+Asty1T+Ok0IK45+yYzoxUR64tKNJ0i/sTEhBOrWSzIRAnh+bwJSZN4OUvQ0h1bI19DVOAfSaLLvRu+vu2CKxYz68gKJldFh0RIRm7//ylJ4KscTkFxNb8LXr8yQ44I5M+pxBaz/AsaRkdbNHfYCXUwQopYx6tZqzljgrhfcPDvhNJr0DuYzLozOuwgdqBvosgH/mTi+RWFYEyoFQ69py0zkntCPtkkDkFJnZ1uHU1m6nfL2kxB8KdWL1+272KGOSH/ObXgyDY28A2q0BelUK9rQeSV/uUmBqBSx2UyM6lzyVjVBF8PCfstXHkUSD9Ky2meaYQaqFJtWSW8VqU9iwXKqG5fUJoevRyUIID02s21oSFgOZZv5VBdzyfZx5kOtUFdjYYUfNilwb5iedBdqRjFZ24VDk20d5EpgrZldHRYLAFBYfbrpYiVEImLqn02lAwXymbxsR35v+XUEQgzsYcsQV7oZL2HvEiAoIjKye4s/wonW/w+nV7iSDaT35hxcLNccIgrFkKFE5kMACPEKIPmKVuj3juASKvCr2Wn60WDE6txqFAs8hU3fSQydaESEwiersBQjOC0Fpb6opnktUdY1ExAxVwI1X0bn7vUgkZ80g1WEBlFX7T7xO
- 2hqGwVBt
- 1CdkHctfjRhaqraTN4toFMMqQJAeqWAuHOa2qBvfCGOJJSvesY01OotnGpF//ZF+UHlugzDG38lxZ9XYKPaHJmBAr8SJ/NtmL2HQO49OMWHMeZcIGHfwqVRcPYIXfuilBqEEL9wX/xo2Q3rJRN+ha0tFVosbHXNQPLeUkmMZPJjJ0lNW50XUMXhSjWMLEg3bvmczwaP8ZfViHcZxx1IY4N5zmGdi1+OrjgSFgRBI6OGOuG2F/GDUwmdhoZpuUjLdSNH6dAvbGsN7aOKTI3g/JxWD3cW7CP2AE9BbDLk+CHL+CtJTfHPAH6JEtvID5kQC6bFoXMqm8b7GiO2/T0Psxe0kRmUSbFjLjwuB4cGeQO5RLCq0uYIzQRpingUSEbGhUUumpsHa6hU/GIi/bPJ6jO3JbzTxVIoaOUXpW7wq8p0wt8e/jPUhNN+GnLEaQM4bZjGOoF9yYY9D7EsBTMJCVVpt3gPPK3N0jeBZ/QOZylgqWLk4XjvILAwvgNQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DAF591A0009
+X-Stat-Signature: c9crux8ndg5a1o3x333kogdzbtgif5w1
+X-HE-Tag: 1767951703-299016
+X-HE-Meta: U2FsdGVkX1+1HH4CLn06XjmFAW/aj6B1IhmWWjaLTX0tXEDsIFAXeSn4d+VsZ0jgsYKtX2Ggi9TqME6vBQRen2ZBKXDi1NnMj0qTyO/t8pQ0VscbDebUyRwbKokCBfCBCdcEQ9IFlvsf4poUn5AvrEfDpB0g9aQglcIW0mC7SekaFuWU4z/IDx8mPGN30pbEW8yI6YD61DkaKycqAYXxxnck7RIcBk4PQ70Pd1u7Aa6JNnP7QbJZm8LT2U/rRJerz1f4kUxEJCwRDKpYLzHqDxBpmrdDXxLM+UWOT6SzPc/PbUhZSh5dNqZ62QZurZ0wZJPeTLbidda4tSJE0TXjhXyjhaKzOylo/4J4KBh8cEMdZFtT3xCKo9BRZL0DYdV1r+bJS8v3vpBPguKRZfXkVgo4Joumu2LtAEym/PW70JQObxA4RuqUiQVtI31k9iv9WRzT5mXyuOYoTL05kvDxLj9vmHVkqiS/elDXBdA77/zErd8eOfXJ5XQwNUNeog8u4Pwo80vooX4ETxnm9XHTrW/qvQgv3r7KF9D3X1hqG+9DzJ526Jtg2HA0Gr4JO0jVy1RItpVCvke35AOp+iMpVvAwrb6Yp/a9BQDacSUFxqrZYhL3ZdxHR9WWeVKITwWdxD4R5sEIgQK6jQCtwaf++xdE3LTz5qkkLezdP3bHaavZ6P/d0G3KDH5iRquBNskXKy7+LTt+ZZgaEd7d5hOlk4QPZHKAhua44LU/iAJazVpInrT30E+A4/nPCR+tmp23LOPs9kuPJ9Gya3QiTkSsaOxKiSVBKhq9PgCz9eJbacRIRjo2I53ocX0f6qsljid0ahsDzprUK4nUvjvCdlx+CX6azzdrANmaVMcdfinGRwlL0KCrN/lvRNy3tkY1GFAHcKtU/CxgUpB5BBvBlTe2kl0WNPNZHAuLr4WuuebOKYLYQ/jPYLeLAjWMmL5SxKg7j9Wbe03lUVG6/KZguW2
+ fgqu8tlY
+ 5hauoVakmSLAFATwURXegFALfnx02h+ykYbHJ645UePu7A2k+hPjVxjM7rgRv2EBpb45drdBfKhjMTVim4s8KGQ1mw0KSCkLtXzHWOvnqyNjLoaBQzv5W23L3CsaYSnEQxdjv+XHAJeKuw347KpVPGrZTRZgGXyvfxryH0T3kprBI0vfQkSfkcdrBlAviYxrswTXttkIRWsF4kehIQUNvqWKIsedTXwWiFvE+StVSuCE/JdOOJsKhM4L1s3G075tW2IhM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -163,75 +111,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 9, 2026 at 12:44=E2=80=AFPM Cui Chao <cuichao1753@phytium.com.c=
-n> wrote:
->
-> In some physical memory layout designs, the address space of CFMW
-> resides between multiple segments of system memory belonging to
-> the same NUMA node. In numa_cleanup_meminfo, these multiple segments
-> of system memory are merged into a larger numa_memblk. When
-> identifying which NUMA node the CFMW belongs to, it may be incorrectly
-> assigned to the NUMA node of the merged system memory.
->
-> Example memory layout:
->
-> Physical address space:
->     0x00000000 - 0x1FFFFFFF  System RAM (node0)
->     0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
->     0x40000000 - 0x5FFFFFFF  System RAM (node0)
->     0x60000000 - 0x7FFFFFFF  System RAM (node1)
->
-> After numa_cleanup_meminfo, the two node0 segments are merged into one:
->     0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the ran=
-ge
->     0x60000000 - 0x7FFFFFFF  System RAM (node1)
->
-> So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0=
-.
->
-> To address this scenario, accurately identifying the correct NUMA node
-> can be achieved by checking whether the region belongs to both
-> numa_meminfo and numa_reserved_meminfo.
->
-> Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> ---
->  mm/numa_memblks.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-> index 5b009a9cd8b4..e91908ed8661 100644
-> --- a/mm/numa_memblks.c
-> +++ b/mm/numa_memblks.c
-> @@ -568,15 +568,16 @@ static int meminfo_to_nid(struct numa_meminfo *mi, =
-u64 start)
->  int phys_to_target_node(u64 start)
->  {
->         int nid =3D meminfo_to_nid(&numa_meminfo, start);
-> +       int reserved_nid =3D meminfo_to_nid(&numa_reserved_meminfo, start=
-);
->
->         /*
->          * Prefer online nodes, but if reserved memory might be
->          * hot-added continue the search with reserved ranges.
-It would be good to change this comment as well. With the new logic
-you=E2=80=99re not just "continuing the search", you=E2=80=99re explicitly =
-preferring
-reserved on overlap.
-Probably something like "Prefer numa_meminfo unless the address is
-also described by reserved ranges, in which case use the reserved
-nid."
->          */
-> -       if (nid !=3D NUMA_NO_NODE)
-> +       if (nid !=3D NUMA_NO_NODE && reserved_nid =3D=3D NUMA_NO_NODE)
->                 return nid;
->
-> -       return meminfo_to_nid(&numa_reserved_meminfo, start);
-> +       return reserved_nid;
->  }
->  EXPORT_SYMBOL_GPL(phys_to_target_node);
->
-> --
-> 2.33.0
->
+
+
+> On Jan 8, 2026, at 21:30, Kiryl Shutsemau <kas@kernel.org> wrote:
+>=20
+> On Thu, Jan 08, 2026 at 12:32:47PM +0000, Kiryl Shutsemau wrote:
+>> On Thu, Jan 08, 2026 at 12:08:35AM +0100, David Hildenbrand (Red Hat) =
+wrote:
+>>>>> "Then we make page->compound_head point to the dynamically =
+allocated memdesc
+>>>>> rather than the first page. Then we can transition to the above =
+layout. "
+>>>>=20
+>>>=20
+>>> Sorry for the late reply, it's been a bit crazy over here.
+>>>=20
+>>>> I am not sure I understand how it is going to work.
+>>>>=20
+>>>=20
+>>> I don't recall all the details that Willy shared over the last years =
+while
+>>> working on folios, but I will try to answer as best as I can from =
+the top of
+>>> my head. (there are plenty of resources on the list, on the web, in =
+his
+>>> presentations etc.).
+>>>=20
+>>>> 32-byte layout indicates that flags will stay in the statically
+>>>> allocated part, but most (all?) flags are in the head page and we =
+would
+>>>> need a way to redirect from tail to head in the statically =
+allocated
+>>>> pages.
+>>>=20
+>>> When working with folios we will never go through the head page =
+flags.
+>>> That's why Willy has incrementally converted most folio code that =
+worked on
+>>> pages to work on folios.
+>>>=20
+>>> For example, PageUptodate() does a
+>>>=20
+>>> folio_test_uptodate(page_folio(page));
+>>>=20
+>>> The flags in the 32-byte layout will be used by some non-folio =
+things for
+>>> which we won't allocate memdescs (just yet) (e.g., free pages in the =
+buddy
+>>> and other things that does not require a lot of metadata). Some of =
+these
+>>> flags will be moved into the memdesc pointer in the future as the =
+conversion
+>>> proceeeds.
+>>=20
+>> Okay, makes sense.
+>>=20
+>>>>> The "memdesc" could be a pointer to a "struct folio" that is =
+allocated from
+>>>>> the slab.
+>>>>>=20
+>>>>> So in the new memdesc world, all pages part of a folio will point =
+at the
+>>>>> allocated "struct folio", not the head page where "struct folio" =
+currently
+>>>>> overlays "struct page".
+>>>>>=20
+>>>>> That would mean that the proposal in this patch set will have to =
+be reverted
+>>>>> again.
+>>>>>=20
+>>>>>=20
+>>>>> At LPC, Willy said that he wants to have something out there in =
+the first
+>>>>> half of 2026.
+>>>>=20
+>>>> Okay, seems ambitious to me.
+>>>=20
+>>> When the program was called "2025" I considered it very ambitious :) =
+Now I
+>>> consider it ambitious. I think Willy already shared early versions =
+of the
+>>> "struct slab" split and the "struct ptdesc" split recently on the =
+list.
+>>>=20
+>>>>=20
+>>>> Last time I asked, we had no idea how much performance would =
+additional
+>>>> indirection cost us. Do we have a clue?
+>>>=20
+>>> I raised that in the past, and I think the answer I got was that
+>>>=20
+>>> (a) We always had these indirection cost when going from tail page =
+to
+>>>    head page / folio.
+>>> (b) We must convert the code to do as little page_folio() as =
+possible.
+>>>    That's why we saw so much code conversion to stop working on =
+pages
+>>>    and only work on folios.
+>>>=20
+>>> There are certainly cases where we cannot currently avoid the =
+indirection,
+>>> like when we traverse a page table and go
+>>>=20
+>>> pfn -> page -> folio
+>>>=20
+>>> and cannot simply go
+>>>=20
+>>> pfn -> folio
+>>>=20
+>>> On the bright side, we'll lose the head-page checks and can simply
+>>> dereference the pointer.
+>>>=20
+>>> I don't know whether Willy has more information yet, but I would =
+assume that
+>>> in most cases this will be similar to the performance summary in =
+your cover
+>>> letter: "... has shown either no change or only a slight improvement =
+within
+>>> the noise.", just that it will be "only a slight degradation within =
+the
+>>> noise". :)
+>>>=20
+>>> We'll learn I guess, in particular which other page -> folio =
+conversions
+>>> cannot be optimized out by caching the folio.
+>>>=20
+>>>=20
+>>> For quite some time there will be a magical config option that will =
+switch
+>>> between both layouts. I'd assume that things will get more =
+complicated if we
+>>> suddenly have a "compound_head/folio" pointer and a "compound_info" =
+pointer
+>>> at the same time.
+>>>=20
+>>> But it's really Willy who has the concept in mind as he is very =
+likely right
+>>> now busy writing some of that code.
+>>>=20
+>>> I'm just the messenger.
+>>>=20
+>>> :)
+>>>=20
+>>> [I would hope that Willy could share his thoughts]
+>>=20
+>> If you or Willy think that this patch will impede memdesc progress, I =
+am
+>> okay not pushing this patchset upstream.
+>=20
+> Or other option is to get this patchset upstream (I need to fix/test =
+few
+> things still) and revert it later when (if?) memdesc lands.
+>=20
+> What do you think?
+
+It seems the merge of memdesc is still some time away? If it=E2=80=99s =
+going to
+take a while, my personal preference is to merge it first and then =
+decide
+whether to revert the changes based on actual needs.
+
+Thanks.
+
+>=20
+> --=20
+>  Kiryl Shutsemau / Kirill A. Shutemov
+
+
 
