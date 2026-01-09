@@ -4,109 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 664ABD232C5
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 05:11:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AF17D232DC
+	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 05:17:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 879F66B0088; Fri,  9 Jan 2026 00:11:50 -0500 (EST)
+	id 6FBA86B0088; Fri,  9 Jan 2026 00:17:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 827646B0089; Fri,  9 Jan 2026 00:11:50 -0500 (EST)
+	id 6A9C96B0089; Fri,  9 Jan 2026 00:17:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 726436B008A; Fri,  9 Jan 2026 00:11:50 -0500 (EST)
+	id 58B916B008A; Fri,  9 Jan 2026 00:17:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 605166B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 00:11:50 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F1B431AAFA0
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:11:49 +0000 (UTC)
-X-FDA: 84311253138.17.293B69B
-Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.66.162])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 056521C0007
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:11:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=aosc.io header.s=default header.b=MKmBQjpf;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of fearyncess@aosc.io designates 217.182.66.162 as permitted sender) smtp.mailfrom=fearyncess@aosc.io
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767935508; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 48C256B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 00:17:29 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D24FE1AC33
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:17:28 +0000 (UTC)
+X-FDA: 84311267376.01.5BF8F23
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf11.hostedemail.com (Postfix) with ESMTP id F1AAB40009
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 05:17:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mDl46hoo;
+	spf=pass (imf11.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1767935847; a=rsa-sha256;
 	cv=none;
-	b=M1AVqsKKKPbvtIbGhQMTuSZMnoDgpVuqMWuyU210hAXL8MtpFktePfHDGfB7AdLaT6hrG1
-	rUjtmrm/auJgrZj8tzTu/RmH+xbhLOjDT0S90mnrYfQyWyOJOAbXhtSfFQSe3zJ59OXvxy
-	19/519ahzo8H9RzSDxeiIUhVvda2KQU=
+	b=RM1olCIkP/C9TWREF+SBzJL1NGEuORbZ6Iin/oWsHL9k22duQxQwCw3XbK5oext+9wemKU
+	UJTtwovnJeahakshjIhTqC4ix7ntsiP2PywrH0trCyvSsU1sfcX9mvhqRcAvAxavI3AQfR
+	9EMkVYEj5lz5VusJS1bN7PCgY37Erlk=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=aosc.io header.s=default header.b=MKmBQjpf;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of fearyncess@aosc.io designates 217.182.66.162 as permitted sender) smtp.mailfrom=fearyncess@aosc.io
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mDl46hoo;
+	spf=pass (imf11.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1767935508;
+	s=arc-20220608; t=1767935847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=v/Fy4AITARxh2wJvTshydR2rSDzjkImzaXl4F/e3eHc=;
-	b=7jcdS/n4pYADYZ7TmhtKALEAJFZZ9Lv77d36O6POJTrA/zF9PQanzGYwt/KN1VKXMQfxz/
-	wqOobH+8X5jk4ieaI7viJqibmAoHuSiCZMAEDKNBj6zYlf3hYqobNC9zFeGHoh3MjctZjh
-	4RMRYRNM8POcYGARCtPBbatAM/C/42g=
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay2.mymailcheap.com (Postfix) with ESMTPS id 434793E877;
-	Fri,  9 Jan 2026 05:11:46 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 4B996400D4;
-	Fri,  9 Jan 2026 05:11:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1767935504; bh=XUGcHWBeKsSGyKahv/f9EJ/2cAIemFw0hvMY1sSvpLA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MKmBQjpfw3rjzq1XIKddnhmvXl4W21WgFm7GKA2WJWuobYtzF5ETYkoBj70Jj8GhW
-	 iPZfi6ThuPeUymAoQVr1kVKaGmROIxh/81TWsCWF0z0HTroQu+iKirfg0oJ1YwZ+Jl
-	 jyEq0RexZEMVlx7+MKKp8jEhf5OYpr3p7c1h9ZVE=
-Received: from Mir.wok.cipunited.com (unknown [130.162.235.122])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 3DAFC407DF;
-	Fri,  9 Jan 2026 05:11:37 +0000 (UTC)
-From: Lain Fearyncess Yang <fearyncess@aosc.io>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	"Lain \"Fearyncess\" Yang" <fearyncess@aosc.io>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	loongarch@lists.linux.dev,
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WUdR4J2NcEwRabitt5lFfdi3Imf8JYD/I9QAXQ0Qcts=;
+	b=vyJ91IgTmp7psfeERy1RNnCbzH3tQ60y8TSRQszMhknZTyEVLF/RLcSvCTyXIqeCKXNGHE
+	TQN0j376NRDmyWAIn3Wpp4WQCLlhUiLmcm2hk+QI+tGSgj6882UwzNLrreJnTxU/fiEMh4
+	m3tAs0lexLOaPN6zb1ERiFbTBwjWvoo=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a099233e8dso28823915ad.3
+        for <linux-mm@kvack.org>; Thu, 08 Jan 2026 21:17:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767935846; x=1768540646; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WUdR4J2NcEwRabitt5lFfdi3Imf8JYD/I9QAXQ0Qcts=;
+        b=mDl46hooQP2SVIFWyG6yj9z/w4G6isWxUgKhfbWSJRuqeqmJ/AMBXXkv9S6e/Q+5lh
+         q+hnrXF3QfTviMkhR7ecsCqxg+RiMNyXiu3QGmj4te5Rsk+vPzaPyXJUbX9t7s30hKxC
+         7ShUk5d7+qH+PLGuNM/1c+24uImSmxy43HN3Z0ERbosMySsew+BOly59XHiqAy6vE1FW
+         CWB3t8OvpGlQkPpxA/WPN+8Kkq7eA8Fe9fRShkFPpCPUVGKTUy1D4Bm/WVZkqf+9W88e
+         WicHH2L9jbKCXw/wZe5g90kAQfGIcdtjkYA6+wSpBs+C2pwYedTwUxaH//cgWg9hlKIZ
+         bfWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767935846; x=1768540646;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WUdR4J2NcEwRabitt5lFfdi3Imf8JYD/I9QAXQ0Qcts=;
+        b=WjGIq4kYQetT9FibEVk8vs3jNEHmfXFTivWsiv+Lu1sBRWDBWcxdxhZWEDtIDfCMKS
+         cvsDMjuOxSdvTgDKDUruz1s5Phbg/cgGAzX5736IKuNR2niU+wVVLZXYoCls6FYoOChv
+         X3qOzglwzkaHxqXvjMQCEVxfEC3Bk62t2RxmCQNi0GmuXbMOuXBh/6kljhoOwcZs3pb2
+         7qF6jkCKhbxmaIoNkYAYqlyKLxm7tfTX1+KUfODKUoh8f0YrHdFqiY3Q/Epk/cEjU6/g
+         Eh2xuhxSeawlM9nqUs5F8iIW0li0t4HXtZW7sfZnopteVO2iR5Uux3uE2I0lnYk69MST
+         f9OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVEZ86zSt7S8jOVMlLmA+xOhCywGTx0Fj4SAlKi+bWbea50+pwyBRQRUh0sxZWEmtcBNkQTJSHSRw==@kvack.org
+X-Gm-Message-State: AOJu0Yz5NWNaWvmLLDZc/+au39BvXjQyRbgF4qkIfrdkX3L32TBINeC+
+	io0osDCydUvvw+r2iQbxCXx7Tqm+2GvF/5TyNHuPGChDBQLb99NjX0At
+X-Gm-Gg: AY/fxX58yPfVgn/uD0H5wpA6AB7rY3Q8MiPqRGcl6OjlARWvDKrbmWmoOFBR6c5tldm
+	VgSgQxR94RHqVdtOfUQBSliLpk2i+q/A6fOjrM5gtdXjCz5/KTAIxpga866g/zS9COISChCa2b2
+	8XN1tL6mh3xfXAqmZo9FhL+lOYxFewWC7fglBQMDHFeF5lFXYkw/GqmUR/NBZ/0PbkkIvA+BlsJ
+	LPaaOjg+EsX7/X+i0fzWOfJOlYpAtxJekBzFDXXHBSPqJG692VZSKKNpNGE4/H15Jv/YeqpjKsZ
+	msI800f1z7PFACia/1QpqPBzSs6PT2Ib5a8Od1HfknPhHW0Z+/lOPb/tkj0mieYffvrhHHUCzZy
+	RfZy0D4faiTH5cHXEyt0sXF858oeN9d9n3XFGSAc37OI/bophp5B9wOKYBEQEbFY8pfrVVBpUtv
+	HCSG8=
+X-Google-Smtp-Source: AGHT+IFtYDJf2r2F0XZHmYKqp0iQiXW5S1YwUq9AbEmuZXrtS5/mtv+bWO+/b2KsmnDWRU8bOawHkA==
+X-Received: by 2002:a17:903:3504:b0:2a0:c58b:ed6 with SMTP id d9443c01a7336-2a3ee48fcc5mr85152645ad.29.1767935845695;
+        Thu, 08 Jan 2026 21:17:25 -0800 (PST)
+Received: from localhost ([2a12:a304:100::205b])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c4796asm94372225ad.34.2026.01.08.21.17.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jan 2026 21:17:25 -0800 (PST)
+Date: Fri, 9 Jan 2026 13:17:21 +0800
+From: Jinchao Wang <wangjinchao600@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH] loongarch: wire up memfd_secret system call
-Date: Fri,  9 Jan 2026 13:10:51 +0800
-Message-ID: <20260109051054.188030-1-fearyncess@aosc.io>
-X-Mailer: git-send-email 2.52.0
+	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/migrate: fix hugetlbfs deadlock by respecting lock
+ ordering
+Message-ID: <aWCPQKQk-nTKJwFZ@ndev>
+References: <20260109034723.1342798-1-wangjinchao600@gmail.com>
+ <aWB-vt6VUJ6fQPcC@casper.infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWB-vt6VUJ6fQPcC@casper.infradead.org>
+X-Stat-Signature: 3wqombnc7sthntqu9o4smdhbjg49bm76
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F1AAB40009
 X-Rspam-User: 
-X-Stat-Signature: mq4gubxedc9asb1rehmw9qursn84693w
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 056521C0007
-X-HE-Tag: 1767935507-949953
-X-HE-Meta: U2FsdGVkX19U/Eg21xYxdgA8MnCHxT/4I+A69g1DUoNtYzgAhUiJuxtHbqCP9OF7T/lITWEpB51wFRAIw8UTiMARqCr10Sde1OXyS1sAUMsiNwgYTMjYFjkH4IivcVST2hkPmDRDvxG0fAobtezgsAmNso4+BTXkJUxw8vbDkiRdsOOMDDySrtNhxR0hAB0fkBvUdIgRRe2xjwoOF7hgtb6zGQt7KOS+ZZzkT31IidSv1TPVIEiai4UTDFQ3DCB0bxIa95cBP7slIqDubuH8Ptas1sDG3LLe5uZptBEA/8kUt3UgQBoKUX/p/Hm56mtR1+edM1JBCcG1yHmdX0uYncHjw44PSSz6B14UpTpEQmTZqrE+vSFEwfQ9jvajVa24S7R4u63yBoPX9TeVBg/OuYvtMe+RUs+cBw1K0Si5ZL3pbJ/rCWlfqdl5OB7nAi/k+onk4R5o9I8Bs6bU0A8O5+eom30WSpnGnKVDysnuIIcbw2CY7ZxQRm8s33iZxc8GO8Ye3CMyTGHBT1uWGeAH/1/5bVxEw5ffy29Qv78+dlrG2yHXjxEIlvi4J8Hkmsr/39o14CMkG19Wkc0j0uLUpEvnsyS8BlpGJRQ3XbUkkKn90ZXvAlDvF5QybHO3kCRhxIHJTw4O/zUfVDiZ8O38r4wJgQssU3ap72nXpQI1DrVZcw024Tnmq45r1XKFe373DLdA6AIgzjMk1+h/pKOA1USmLk4CAhdI9Huqq7Kd9ZlXba05VWL6IdKShWmIuMbvkH0+D+WV0o3EFRwfuc/uKC+bh1ND0ANpDyG3yIDALJj3tsZ8p0k85ZpxyAkbqdO2I1emPocWNBjDFHUBSYVHEs6ihmXgfwV643+VHn4MxRZBwlZfxsneuBhBLJXrR/BbpbcsMZe1kTPGpF94QZlmr1e5iL1GmfEZxnAeGmTS+xVIuXvGmGPclhgZVXc67NSo7nRtGBw2Zl3P2lrC4fL
- KPnatW0b
- e/Kcwyuj+7uIF4cPbYx6yM30gfFzC+gROT5GMwRVavCl8S7r+Jk3iFrKHYLJyDeot45VLzI3wXF8aKUJ47lAnotNIUZlrrPtSPxhnXFtZv1gKIWJ7a7uQny6l+U0tKeybE2AIDZrOQ3Zi0thF9CjwHeY1YdQskeZmxjpqbtVEz0On/CSAGhv9OjzK45XaEAYQELuWVbhHSHp/LKOJrA5BMv/2CN5qpTRSvmRP
+X-HE-Tag: 1767935846-958220
+X-HE-Meta: U2FsdGVkX1+tacUZn3qqp57EQYDP2lNx/vjh4OfGfDE5m6cyJAQDgKUPlrH7kUYKPCQH+9GRzyto9FidTK3nBg5L1zOhq8WOIv4AaMI7t0Pz3VQTocogNY74smMgJsTmEzBpXcb1k1oeZU9c0gfVqnNtPFzRsm/RCLkKRAIIcsodNxelTVVKdKJCLOupLPfkqEAaMGgHHtnfzr8GAWt40MqUqxFUi79lbxjRX3aBKU74wu6Ni7B6RdMKMhkrlvxWPJi1BDSF57VmNPdveB6Nb7xOJluuCXl79xjg07NjwfIVseM1ze2YG2Oxt4U7Uq6MFjVkGyuGSGgbUqevL2MXq26jDEXndfNPYWKaK1Q8i1PSmA+3EMOtDKDoxru7xqoHmHJudtmw5WO0Sj8vCrvoEtP8tj6xMsERvf6r23vYisChQt15wQvXL1uGK+E8v7GjlF/teOx4Iqp5k85pUzVt1xIAxGgYYeLIYjTugY/Ws4KI1gmVBsgvka8mkksicd7YaW/kEAb4YBpfSAPv39iyL25fEdaqZdRRwudCiGor5EzmewDsb4g18Bqbd5mZdXKQ4Xf+mxoxMuybDlQPVxUQEEg7jJYjR6uMNCpT1YM+Q0FvCZ9Q7QtRM0rQKV04G5z4gDcQ8HjUk6eNGCtjGmxKyuy9NQtZEOCjc6UgsNTTl+U5IwfAUpw314ao35wknv6O9SIoUgFvPGpveC1a4i3s2C0BWEhC1vF6KAOyPgnCncCfgGoGdQHcwcEatPG++mR4UyTMiHvLW9FwrURtrhHWTCky6pWeQHlYXdISckAyrEbeJSIuS4rWwp5raiygcRR23EmOlQNVmxedaVQ+JohiBBDiSHLv8uRlV1ot64bEgY9kGuhQ2aiPZf40F6W+atu54sxAPnJFxKHZ1Q04sq3vGLPV2K4E+tpSeoOdI8NGfe4XViEf+8C8fFxSveK1XDeLUF/Q2nnb/izgwV3W2JT
+ awQK4Sv+
+ 7LTXSuBDlBUt3qBNGtU/3lOw4DrR8aUyNrT1+CH9Hz0Qh8n/ji0DlmzvzjZ2ctrvpKTRzBa+mKJKqTB5pAfz6niL8zgCMnWpwxRAHE7GQ36Ba6eS8AeTMloM2euKrNmgr/UEL8IGQl7y9Qp78R2rZwWJzk2WIDegVXrulE0oa2ZQK5Oyw4tU7Dzii6KP9YNBmra3VXCbVdmNW6oh66qmnH7f/WUW9CFGMMdSWnJzDxFs0mUbYYbM1oPILufylf3zlwdTSkpxhGvtkmCQ1iVP1IUPXsKCQkUlNYMdfXQmKPse9dj7LxsxhzKr92xoELbbBJFDe8LghdeOLFGfh3iRjuJlGzcGxp5ZT/t9ftJ0M5pWZoG06HbNAo77nsdwzXtiod9ugkdJT8qUjyG1uKhj+xIBsTUdjyt9aJz4AoQnrrtcAFJu2xEWK9egQW0lLHhAiGyE0l2GFGtqjPVgs0KYOwDuKW6yksqZDlHP6oQg+bKZY0UGH9VgsDgvA5U9kngAI/VfGSINvmgfA0GNbHbDicETg9s6Bx+BmAnr0+pJdnD6l7KpgIYFNFn8MkGF5OCB9r8Au7sVxO4PO66mKd43lFYeQEDgA1Nikb63HLlTkpHAETtIFqSANTo7emWUh41VeEq4J9tpZF6QWo+0tmVMSisCzKnjouEWS1gXyZ0oG7fba7RtX38fC7snHQONPssYfjzYwcbkeSIc1xk0aHv8B6X5KTA313jqwMcX2CS+6fgUAPkq6ahOGHbvUF9alVmeTVVJ8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,56 +128,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Lain \"Fearyncess\" Yang" <fearyncess@aosc.io>
+On Fri, Jan 09, 2026 at 04:06:22AM +0000, Matthew Wilcox wrote:
+> On Fri, Jan 09, 2026 at 11:47:16AM +0800, Jinchao Wang wrote:
+> > Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com/
+> > Link: https://lore.kernel.org/all/20260108123957.1123502-2-wangjinchao600@gmail.com
+> > Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+> > Suggested-by: Matthew Wilcox <willy@infradead.org>
+> > Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
+> 
+> ... and by "Suggested-by", you mean "completely written by", right?
+> 
+> Or did you change it in some way?
 
-LoongArch supports ARCH_HAS_SET_DIRECT_MAP, therefore wire up the
-memfd_secret system call, which depends on it.
+Yes, it is completely written by you. I verified it against the syzkaller
+reproducer and reviewed the code logic.
 
-Signed-off-by: Lain "Fearyncess" Yang <fearyncess@aosc.io>
----
- arch/loongarch/include/asm/unistd.h     | 1 +
- arch/loongarch/kernel/Makefile.syscalls | 6 +++---
- tools/testing/selftests/mm/Makefile     | 2 +-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+If you prefer, I am happy to update the attribution, for example by replacing
+Suggested-by with Co-developed-by, or by listing you as the author instead.  I
+can also drop my patch if that is more appropriate.
 
-diff --git a/arch/loongarch/include/asm/unistd.h b/arch/loongarch/include/asm/unistd.h
-index e2c0f3d86c7bd..e7649c1582482 100644
---- a/arch/loongarch/include/asm/unistd.h
-+++ b/arch/loongarch/include/asm/unistd.h
-@@ -10,5 +10,6 @@
- 
- #define __ARCH_WANT_NEW_STAT
- #define __ARCH_WANT_SYS_CLONE
-+#define __ARCH_WANT_MEMFD_SECRET
- 
- #define NR_syscalls (__NR_syscalls)
-diff --git a/arch/loongarch/kernel/Makefile.syscalls b/arch/loongarch/kernel/Makefile.syscalls
-index cd46c2b69c7fd..6360381baf931 100644
---- a/arch/loongarch/kernel/Makefile.syscalls
-+++ b/arch/loongarch/kernel/Makefile.syscalls
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
- 
--# No special ABIs on loongarch so far
--syscall_abis_32 +=
--syscall_abis_64 +=
-+# Add memfd_secret explictly for la64 and la32
-+syscall_abis_32 += memfd_secret
-+syscall_abis_64 += memfd_secret
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index eaf9312097f7b..79582438efc4d 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -72,7 +72,7 @@ TEST_GEN_FILES += madv_populate
- TEST_GEN_FILES += map_fixed_noreplace
- TEST_GEN_FILES += map_hugetlb
- TEST_GEN_FILES += map_populate
--ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64))
-+ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64 loongarch32 loongarch64))
- TEST_GEN_FILES += memfd_secret
- endif
- TEST_GEN_FILES += migration
--- 
-2.52.0
+Please let me know what you prefer.
 
+Thanks.
 
