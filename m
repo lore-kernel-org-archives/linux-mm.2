@@ -4,124 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C8FCD277C9
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 00:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BC9BD277C1
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 01:00:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4042D6B0088; Fri,  9 Jan 2026 19:52:34 -0500 (EST)
+	id BAE006B0088; Fri,  9 Jan 2026 20:00:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E6EF6B0089; Fri,  9 Jan 2026 19:52:34 -0500 (EST)
+	id B5BAA6B0089; Fri,  9 Jan 2026 20:00:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30F936B008A; Fri,  9 Jan 2026 19:52:34 -0500 (EST)
+	id A67A86B008A; Fri,  9 Jan 2026 20:00:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E7D86B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 19:52:34 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AB8C01AE505
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 00:52:33 +0000 (UTC)
-X-FDA: 84314228586.27.182D409
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DAC204000A
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 00:52:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=c5HO5r4E;
-	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768006351; a=rsa-sha256;
-	cv=none;
-	b=6vCMua/xOH/2IK900k+rJQFO1BEl0YT3ckTcU0xvBSVQjECEWDIESaX/x1lLGZZi4aM1NS
-	G7r0hqHwMcKsfzREY96RBUYjQ+eX7i9ZhA2RwzajFqFP/saUgeQlN0jUFGX73D5zKNKvD6
-	qorLaIUzPeQrrh575LfcXoMHjfCSazQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=c5HO5r4E;
-	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 95B536B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:00:49 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 43C575DD66
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:00:49 +0000 (UTC)
+X-FDA: 84314249418.20.7A34926
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A84EDA0011
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:00:47 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HlR0bOOC;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768006351;
+	s=arc-20220608; t=1768006847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xh0zcKAqQroU1tp1p4pimwYJeCFYqvdejY8GmA8WI20=;
-	b=Q4yeaypohQ3Tqr4zrDHzeaeJe1jxsYQFIGKo42W3Gqm9ORnxLZSZk//sKGPVFmm1AzpWkF
-	bJMNTEE0Cht1Of5nzIHIVZYdM77VTkmQV/TTMlDXAxBzucm1++i5WYM972xd8qiY3F18yz
-	toG0hWQ2TIZ2hZTKvZDTApHewmfo86I=
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6420c08f886so6861267d50.3
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 16:52:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768006351; x=1768611151; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xh0zcKAqQroU1tp1p4pimwYJeCFYqvdejY8GmA8WI20=;
-        b=c5HO5r4E3DHsyA8YGFFsrYvhfBdRV4Cc1Q+r0z17CAAtKVrLuz/EdZ0IWWINb5pEEW
-         LKSi1oGqt+mUbSYiUJAK8729rWwR27DENsNE2yQrlhl5W8A5cLKdmjUQ6nTwBT3G6GX3
-         VAImpq1LX95M7M4o5pGUng3e7vYxSHKTSKSf0Afnvctpg2v0PExY4kN6rOsLuwO7NPmE
-         UwnUF8J/ngqQyrYWAZ++HaaImy2Dr4M9iHxcOfCWRThtZpxmAEQe4DG4JBl99q9yW4mQ
-         7TcdIfwVCpJa4kJiv51UaYtuAlYT+nHKjY/drOxrTtSxfcM6tOSF5NwiG7c20PeI/ar4
-         haAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768006351; x=1768611151;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xh0zcKAqQroU1tp1p4pimwYJeCFYqvdejY8GmA8WI20=;
-        b=ZG/AHp+0OdridGfniL3m7Di0BVW70tj3PnkUqd/kcNsvYtFmP3JklhDWTBxzAM+ztF
-         b6KDAfyGvYgm80wVTAPkYyupkK4AobcEL/7iQYoFmVCXzJ6URoPvscbB72hJ6Dir5Mkt
-         aUyMPcqcQzehVHkY7S/ESJijR5LAMwnd/XxVIKYSr4qg6VzazL49mBfFYhLAiBCRpC7z
-         /pSXKZXydw2xLiyPblitkN5ltpkyaIxVdHllkgF3JQqUYYFSh7cfu8YCdCtJUAi49zkO
-         k7Xj+kPPDoL0cUe+JNyZH+R9H/eWscL9LrH8V07MK9iiSiJq7un8mpYbPto/CoFmzD0F
-         2pPA==
-X-Forwarded-Encrypted: i=1; AJvYcCVM1G0Y9eUJUBS1eTg1yLS3UTLw8PYCfm1qjFxuTM8akzzmQWobrHKg9WYFGfjf0bQM9HciFN0oPg==@kvack.org
-X-Gm-Message-State: AOJu0Yz3dN6ctpiFb3Xl/GqX+O9XFQELJ75bj6y012dcapS44Z5Tla4R
-	IpXbghl+33eQIv6+tkUDM5hWhVLfk7kgmb3+YXRl27hMRjINfGvtu9RS
-X-Gm-Gg: AY/fxX4JD2vVzW2P6JsAUXd0kl2ZMtYJSIJkNSHyFYBWNhmlVELQPZlYH/zhd140396
-	p68LW83/WNEGeJRQVF3eIdXYalCPjKrzy0jXb/yfIeKO4i8uFjA2EuBxYq8mTlqpWXF+SuMxWS1
-	ibkefMnP2WRDLZoLugy/M6FobaW0KEb0oJn7a9sZIku6EufXPuXWe8ZY8v/koq+xKxDHP3IGNbD
-	kuOSjZnIHHfYoPSwzMUYIiszuI9sa+lzsvOE/EULMrw+lTk+0M346+ksjeEa7V3AwYGjGA8GWKu
-	wxYcgzxGeHt5WvUkbENox1rJsP+eVUlA2DsuT25cHcOMe+B03ZRor6EYOQmmWevfJD3FYwH68sh
-	CjOWUa4Fzavqfl0A6aVB2blGoIlhnzlHps/f0/TjVnDxOx6zGdbrPZ9Mff358zZqs4e98oJDb/F
-	jgOCtJI4KKmA==
-X-Google-Smtp-Source: AGHT+IEzdhwxbsfQJvT+TvlDMVhfQHhV/8zH5/GstRRQwXcsCbM5ULAqTAR9M7X0213MG2Ra2+1EWA==
-X-Received: by 2002:a05:690e:c4c:b0:644:3850:9062 with SMTP id 956f58d0204a3-64716c75477mr9285804d50.72.1768006350765;
-        Fri, 09 Jan 2026 16:52:30 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:4b::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6470d8c51bcsm5128601d50.22.2026.01.09.16.52.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 16:52:30 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Bing Jiao <bingjiao@google.com>
-Cc: Donet Tom <donettom@linux.ibm.com>,
-	linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
+	bh=0dY6Ov2UdQLt919gxtLxlyF64jqXl1RoJoqrsq+bVY0=;
+	b=fMfQ+P5VDpZ0owOr3ouZ57fNW56KnmqP2oF5/2qPOe9gay6fR1LnlOICDGOB8JSScYv7PP
+	FvaT6A4uXykoP7TVVgp/d0SyPp05R+0mLblwdCSfe8rs1ETYMEEGww7M7JwRFKX85hjuuz
+	bhRx4OgjirtzM6i00K5wj2e2chA8dH4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HlR0bOOC;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768006847; a=rsa-sha256;
+	cv=none;
+	b=oXUipRMmZ8Owr0ZKAPAgakYMtATNHUMMRQj9oCdYEacI2dN94fyTAOaDk4WAum8Ddv3vtm
+	YhMQ46Z82dLCf0a0U99aY/rRVWZ7TiE22FZACIz/dYoIhDv+AuGZwGKq2aYTbY6Us/N+Bf
+	NctBOunSSOVyam7x7mErXeakz+hxJTc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C1BEB60052;
+	Sat, 10 Jan 2026 01:00:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4DDC4CEF1;
+	Sat, 10 Jan 2026 01:00:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768006846;
+	bh=8aEYqTxr0J54u22VUMYWBDE5QKYiAhl26ZI9/MaymeI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HlR0bOOCV6CXoMwvHju+GiBQph7JGA3JPhcidDf0e7j8ZSdfMQCMvR9sOr6igaBxL
+	 lr4E+h3zFQj1LB8PBHoPm0rTQDffVYcZMplmVsxcBsT56E4SIOFrmsZnY7nCGMntuS
+	 b3k5k/J+olc+eyt/QDUmurAKl2D7e1rl204gXIet3fMHBodiTGDMJ+UWzoSKa1h44F
+	 qLRPqqJpEgdqIzX6i9IZWghWVMhWX95QKdWbpztnb4mX6SofUy+OaAmJ2eOXFN43ee
+	 apRsH9v8mDAxrtMAiDzZXe+LTuOBIURxmltGbqyiV+NARYp8R3N/UYPg1QV+nbi3Bz
+	 9v/ipgwxRBrDA==
+From: SeongJae Park <sj@kernel.org>
+To: Sun Jian <sun.jian.kdev@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
 	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] mm/vmscan: balance demotion allocation in alloc_demote_folio()
-Date: Fri,  9 Jan 2026 16:52:28 -0800
-Message-ID: <20260110005229.1348817-1-joshua.hahnjy@gmail.com>
+Subject: Re: [PATCH v2] selftests/mm: run_vmtests.sh: fail if invoked from the wrong directory
+Date: Fri,  9 Jan 2026 17:00:43 -0800
+Message-ID: <20260110010044.80694-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aWGTNfrLBhCM3_-9@google.com>
+In-Reply-To: <20260109172833.2989-1-sun.jian.kdev@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 817rrer6ez5q5384mpfiut3cd4egp1tj
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DAC204000A
+X-Rspamd-Queue-Id: A84EDA0011
+X-Stat-Signature: gpmktmk5uqr56d61bpc9qw9oskwypc3i
 X-Rspam-User: 
-X-HE-Tag: 1768006351-665121
-X-HE-Meta: U2FsdGVkX1/jYMMTu28h2IU6+WWT+u6FqVrEtBpzBoAHKI68imT77ePSOrJjuupwb9ZdHnllNMzhSq21Mgz9Jjp6mt+tl1iiZJ68cfjDwnI9UmIoFQx5g9SBO9JVfHNY3ekK1qzVOhXM8JINu8TJlPOEa7vpyLL+TC8/0mVcZ884xGEl4UD/sHM0qThAhARJMYyFeodGBCsZQBehqCYVoLYdGJUfTRJLzQjeWqFs9Klm8PkXTg3nLxApzjIxPTrf7JUyOhGPp7wiRRolLVgJgyFFmqk/iqUwyci5PQblhUdR10kqGleLrdTBg2b4Cw0gse4jvU417i8jUjmesf/bnuHz1IkZAHDgUF8QytqZQinjBJOIkUOM9ydgTMZsTRd2CtTgyfXLdxUORAQ2i0ruYUiQumbySb41oO46aXNQ1nVXyLDj6VYx/777m+k6lTG76eOGvTkpvDwyLN3yz1urtFPzjBRhUW1EXLJpl7De8LVXCaaQtBJ4bY1q1Z8/Su8WbSq++hXQjw1LYyFPs+t3MVzLVlnJdnvF0kSFDM+T/RzzI5xm8LvVLbEl/0+A5BnZ2Rp7VmPSVb/3n3bjZaA77U/zUuogf6nScT5gJaZY5yrFeWz7C8DTq0iX9ggjDWAIsoGLerKBaPDJQ+aJ4TxwuzQFt4LIJ8JnowommhflOTWDYl182BRyqJfhjuVn3YAZXgDywF53rEFp9M1aO+CppuFAF/g0NIV927438K/G6gQIXnb/vYhEn+V9HgWVHt9QEGhIEOqnUsW8f7hqaUA5/uuGOZEknvQuxQ0QXfJbKP/ocT2fwnwc+pswUYEnBZw5cBxWTbDO7g0JQdL9BYdct3EdjjtDFyEDoibThG+R/yasf6W+vA6RbFe9/4lC6JKhGx3+8zignhVzxnXMfl+kQkBxO+R3+/y5uElbZNwm8QvtCaD7/QMI+reIQWJNTJu+f5vVNqdjfQ1ia6CTbW5
- WZwyiixV
- KPMQ87lDGmKjh0SEpI6RPJM2KtsCdkOkXC5GndBfMN+QwmTAR1CjB2i6Lo087a3+l0EKOrRfQ2GSuIGX2vMZKumxLCoPTFqV6cCNdkIoUU6ecUq3U2EgdkH3gwlq6c2qonPJtfsFnIMKL0yNHRiKFY3w6h2CEXJaZX6U+WJFq3DQ1pU+Uph0P1wuph6nyfYiXmG1qmK3snigg8Cj8otaHWJLB8e7ifBTg2gwrOba+8+dimFMWTPvU0bra6/s/El4WwWVf1Sh9i1SlZwWFxFM6MmlUbTak0CAV7NoiC1F4wsscuM+PWpogEPxXvSYstGlz61/WNEBgWXAYmV8GBNksMW6R9F8/cMLNuey+PbkmR+u8TFCtvNBEvO6RMm+8Pds7KUbX7wqizbeaOd9dnp2dhLQRJ1aMz11Yr7ZUF1uVOgdNuMz0Yx4OLU6L9SO+7XacH45ZP/4aDLih9Dq/pR0LI1KsR3pR6AqYSPyUxEfVh6WoyRstMvL2jRDHuSOkHk+fgIDJQ8PeB6mJtIAIkof9kbLHoC4dvjI56QvXDmCGaq3nO5b6EAjozVi7J/mEuIApci/kZm4xeh84+rOtPBk51TGCWGi/6UKW07uBH35RMhul9AX+NeaOr4UuNWx3E2j37yQvIP2UVF/zK3BMJYbFB3AnvQ==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768006847-540476
+X-HE-Meta: U2FsdGVkX18LrdaFvBZAYcoLe1IMbhbCCvLGl718Fpi7jA8ntoi3/cjQZN+B/VGP1ObUAyy1G/mh3D8sUlNdVxqO+8Ivgpcwb7qg+m+/Rcb8C7Az7WBCOnFT1QhLAR9qhSbSA57RkctRadJBszj69usCcq2qxf7IVWmEEr0PISLAVtYbSWNt9qLQXdmtPlXmoqurhFR1vKqpLy2wny8Vg1mr0dGwGDklsdqwjRxpPBoyQYX3nge/2qa5lEVydFWg+5XTuEIhpGY3NA5w+awLF+i7TzBlzZAU6QHK+O095GMttrEhHpwKGPTMr9LU4rRe5bDBXcoRpvroXoTzdJ2f9t7gWjqKXN4iGCeggr/eqP3Yl/0y2Br+/eHpnurMPzdjI4SQU4KGY+W7CzFl7YAWL9/nFQmcS6HUtqoRNUysml/P09GfzB03yIBb4e/SGPozpOuLiLgwJqe+IDxxCqBJEEjy2k5W3w7yidFqEkBd8+QsTQ1o+i5hFzbvXZ4YNXCno4HqUwlHElXqrcdKjvmSQTifihaH/WH5y3brfhPa7fl0BoJAkriEDcQ6EjuAXH4yCJVhAc78FHFMmLXd03iMN8HEY1BmQKL1VzH9cWjVbsQT01mzWfGNAbBLIwNRSNkIQqmP1wCPikELhdTcUGyTs81qXneCwcogGllX562thq47uQSY8GleFmA6xwrRWDqsbJafyGtCu6Z9k8YdQ0Vt1tASTbGJ3DNP2teaBHqPZ/w6ChrmHun0Js9x6oq6/AFpidPnwOhytNGv+57daISN8NZ/GAE+2iVu5Qz3I7iBhxorTDY2kp3PEDX+bUlQXTBWwrsDDeRqrHKanhs3vRpguZZKqHOT/17mkV9uSIvqRlG9xJzLcMma+zlgXloeLLpnXeg5dw3/C6H9nXb2mdzocSfJ4zyZjoYAPMlbnlXkKMTh45PP6kztD26VbgeGT+NJU84dAOeWuULGLINvWOY
+ L07F5P+A
+ PSoUZD5DQ1zypP/EhpVQHjwyI9QXiFqgvVwwljRAMpLUqtTKg0kiLs5mLKwlbemTaHF8xOBma4UcyLPlGjLFIqhgmUDCaw5/WXxPkjUlaQmbCF/tRr4gxiTmTy4Dbinagvf8MCojuQ/uXzcRrhN6qrh29Y4Vp+Q3j5OrWct0/IARzWz93QYoQyQ5tdPkluvvEaAOZtfeUngWPC/HG1pzv5HI/tPa5CPrYYxcgEs9boHblLpufvU3MyvJlKqCeWGz92HweYcCGoOgJyLpm5p7fcnHTr5VKOhvu9PG4NSpgFTSD/g54qipzRxbaxTK8OM3ueNjECQ5DdsLyS/E9E+n3s2C9PHrSI8X3BPw/g5W/z2WLkrb8gSk6V6UtdA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,67 +96,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 9 Jan 2026 23:45:57 +0000 Bing Jiao <bingjiao@google.com> wrote:
+On Sat, 10 Jan 2026 01:28:33 +0800 Sun Jian <sun.jian.kdev@gmail.com> wrote:
 
-> On Thu, Jan 08, 2026 at 06:14:02PM +0530, Donet Tom wrote:
-> >
-> > On 1/7/26 12:58 PM, Bing Jiao wrote:
-> > > +	/* Randomly select a node from fallback nodes for balanced allocation */
-> > > +	if (allowed_mask) {
-> > > +		mtc->nid = node_random(allowed_mask);
-> >
-> >
-> > This random selection can cause allocations to fall back to distant memory
-> > even when the nearer demotion target has sufficient free memory, correct?
-> > Could this also lead to increased promotion latency?
+> run_vmtests.sh assumes it is invoked from tools/testing/selftests/mm.
+> When run from another working directory, relative paths can lead to
+> confusing failures. Detect this case and abort with a clear message.
 > 
-> Hi Donet,
-> 
-> Thanks for your questions.
-> 
-> Yes, the random selection could select a distant node and lead to
-> incresed promotion latency.
-> 
-> I just realized that the the fallback allocation should not weighted
-> by a single metric, such as node distance, capacity, free space.
+> Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
 
-Hello Bing, I hope you are doing well!
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
-Yes -- this is also what I believe, and I think this idea of "how should we
-select demotion / allocation targets" is something that is a difficult problem
-(and one that may not have a single solution that "just works").
 
-It's also a question that I have been thinking about, and what was discussed
-in part at LSFMMBPF last year. At the time, I made some auto-tuning weights [1]
-for weighted interleave based on bandwidth capacity, since the main benefit of
-weighted interleave is to distribute memory accesses across multiple nodes
-to maximize how much bandwidth the system can use at once. A follow-up was to
-think about how these weights could change over time, and what heuristics
-should be used to determine how the weights are selected.
+Thanks,
+SJ
 
-Ultimately, we agreed that the heuristics should probably be delegated to
-userspace, since there are just so many scenarios that could change what
-metrics should take priority. (Jonathan Corbet wrote a great summary of the
-discussion in an LWN article [2])
-
-Coming back to this patchset, I think that all of the ideas above apply
-nicely here as well. What nodes should be selected for demotion and how they
-should be weighted is a difficult question, and one that is probably best
-answered by userspace and what workload they expect to use on their specific
-system.
-
-What I do believe though, is that an unweighted random selection / round-robin
-approach to selecting demotion targets might lead to some unexpected
-performance implications.
-
-> We need a thoroughly study before changing alloc_demote_folio().
-
-So I think this is the way to go : -)
-Although, I'm not actively exploring this at the moment ;)
-
-Please let me know what you think, I hope you have a great day!
-Joshua
-
-[1] https://lore.kernel.org/all/20250109185048.28587-1-joshua.hahnjy@gmail.com/
-[2] https://lwn.net/Articles/1016842/
+[...]
 
