@@ -4,85 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 080BFD277C9
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 01:28:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8279CD277C9
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 01:47:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F7D06B0088; Fri,  9 Jan 2026 20:28:21 -0500 (EST)
+	id DEFB36B0088; Fri,  9 Jan 2026 20:47:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07B5C6B0089; Fri,  9 Jan 2026 20:28:21 -0500 (EST)
+	id DD12F6B0089; Fri,  9 Jan 2026 20:47:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC91B6B008A; Fri,  9 Jan 2026 20:28:20 -0500 (EST)
+	id CCF726B008A; Fri,  9 Jan 2026 20:47:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DA0156B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:28:20 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 659F4C5544
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:28:20 +0000 (UTC)
-X-FDA: 84314318760.30.3F2A556
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C6612140007
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:28:18 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B7E236B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:47:36 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4AA8A13C605
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:47:36 +0000 (UTC)
+X-FDA: 84314367312.21.404B01D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 74750140007
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:47:34 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jDHEbAhO;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="aS1PPg/D";
+	spf=pass (imf23.hostedemail.com: domain of chao@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chao@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768008498;
+	s=arc-20220608; t=1768009654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lhGnR0/vx0hEQCQvVcoVyJuFaz/ljeBIfw1XoZd+LS8=;
-	b=td1NytQ2m8dkLpYieCMegKDnDNdUIEkY7+5RKJiPqQyyXKv2HyaQwTzLc4O08gQVkuSC32
-	V8a370fiufZun7U2aysYp+hUMOVQXwng3ZndED6B9BzHWgH+y1WWaDzKzUkWLRQDOsd9pK
-	F3ffgmEo+Vosd2Q7LPmTiYt/5+3p0t0=
+	bh=vZWEW1mD3/NQHrMS1jEqwJg9xM6fxd6FqkwiyYjKSIw=;
+	b=NoqKcbETPwMpqPsLXDDc4nUw5viaHYsGlipKRsKHeQPXyjHTvsPGbGbMAGILxK1Q/KD0Kj
+	fT0XTs2jI4vWzUgvanUmV6agWgqvVI5sQ0ez+YYeymJ3+MYw0bTpk34gadC4qwdRW6p+mO
+	YBkTAXb1/pCV/rmWe/3ncxXGqhtXv50=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768009654; a=rsa-sha256;
+	cv=none;
+	b=FftmuUNdWoVnRumxAyBkHYDa59/qcT+CWA1aYU29WqKvmAPE3ZFkf5tdXmPKg1qNQvb4a6
+	QVD6/V3PlllDzA8wDEeVpaEIx37FBjE6SwYEFDGqEQ6RyDbuHPoM63C3/lw/myZJLOGwet
+	DgDhpmgzWVgAun9y65v1Zyr9fVTjR08=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jDHEbAhO;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="aS1PPg/D";
+	spf=pass (imf23.hostedemail.com: domain of chao@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chao@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768008498; a=rsa-sha256;
-	cv=none;
-	b=DwlpQnMhvulooHaY9Vxr1M0X2anyJDL4McbgIvsy021UakHJ6O2jEQ9LmJ3rWZ7hG0nzSx
-	M+KEK4WG5r6+8fXc6RVbovF3O77HYHWUTULB7MUoNI4A5+FvTQVnq2sbIkpFZMEyElYwI8
-	xyI46ir+8GKYoXjPt7tP4Q3MjSqr3Oc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 436AF600B0;
-	Sat, 10 Jan 2026 01:28:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D936CC4CEF1;
-	Sat, 10 Jan 2026 01:28:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 35A03409EE;
+	Sat, 10 Jan 2026 01:47:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9FBC4CEF1;
+	Sat, 10 Jan 2026 01:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768008498;
-	bh=2c/sFQx3dFKJ8r7R25DAkJMqmSpmkAbap/ZQrLMjgI0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jDHEbAhOrZSqrtBSfjCBhsa0UL/MbVfi1+bzpRDI0dAHNw/TWqCYWnwDEod9RbyHD
-	 YMfbYSYRZ+QqHCvy0CkWqHel+2P5M22ZaO1QpxNq6YKh6RF8NmdOL7etLRFp48GSP7
-	 76spMzXs6ds4cMrfbHQS29vpJzfDN1FyiGlTCExJjWMtikUjLuz1AipcQj+DK3C8Xp
-	 tPO/XoVg8AnYDjz32RGkhHdzSBT0FI87/fQFPho9TM+YkBa3QLHDFoV3pazm8V9DBH
-	 EOOYBNSmo1VNXLxiCaFtzz/4cFL0IWCI5IUQ/aKiDXymwSLXxWBVQGx8YmUhFJ1l/3
-	 f18RP4v2xdsDA==
-From: SeongJae Park <sj@kernel.org>
-To: Bing Jiao <bingjiao@google.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/vmscan: fix uninitialized variable in demote_folio_list()
-Date: Fri,  9 Jan 2026 17:28:11 -0800
-Message-ID: <20260110012812.81501-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260109055937.3739860-1-bingjiao@google.com>
-References: 
+	s=k20201202; t=1768009653;
+	bh=OKPFCC1ojmEDlLwUQA1PrvgWaqI/QFfkYIRaHHjgLI8=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=aS1PPg/Dg2j3WlAEK5nHwD5i8kCTebxLR+i8vwa1Umz+Wef0tfIentBS0klMYZA/0
+	 jcNMCTW2byAj+2+1CuaM8xxEVkIBoJHlppRtjIGo5fLkKKWAuHZa5JPyHvx4sw6t+e
+	 +SwwuwOcEtWTrjgtkf/FhomVQK8mNq+RpWJtAVY8ZEyUrj+ucRRxGYTYp7Xp/qex4E
+	 afNMjdvfkLqjaXQpbL974EbmrZMtjQ5HekIFhOGbzOSFgVlWcBwV3eO4AhalhUZOEB
+	 rsyBo6s8Gp7OWORYRudl7fUPvCO3D2sc+9CFLGsHY1Zv/TiLZVK9d43+cGel2wVRPX
+	 PWiI+/c4aq5zQ==
+Message-ID: <35b959e6-a91a-409b-ac3e-f78aaf60148a@kernel.org>
+Date: Sat, 10 Jan 2026 09:47:29 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C6612140007
-X-Stat-Signature: 6ursdr3hzh3tj77utsbmeirxnjs3si3w
+User-Agent: Mozilla Thunderbird
+Cc: chao@kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, linux-mtd@lists.infradead.org,
+ jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org,
+ ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+ devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
+ linux-xfs@vger.kernel.org, linux-mm@kvack.org, gfs2@lists.linux.dev,
+ linux-doc@vger.kernel.org, v9fs@lists.linux.dev, ceph-devel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ samba-technical@lists.samba.org
+Subject: Re: [PATCH 04/24] erofs: add setlease file operation
+To: Jeff Layton <jlayton@kernel.org>, Luis de Bethencourt
+ <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>,
+ Nicolas Pitre <nico@fluxnic.net>, Christoph Hellwig <hch@infradead.org>,
+ Jan Kara <jack@suse.cz>, Anders Larsen <al@alarsen.net>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, David Sterba <dsterba@suse.com>,
+ Chris Mason <clm@fb.com>, Gao Xiang <xiang@kernel.org>,
+ Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+ Sandeep Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>,
+ Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>,
+ Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
+ Jaegeuk Kim <jaegeuk@kernel.org>,
+ OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+ David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>,
+ Dave Kleikamp <shaggy@kernel.org>,
+ Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+ Viacheslav Dubeyko <slava@dubeyko.com>,
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+ Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+ Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall
+ <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>,
+ Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>,
+ Phillip Lougher <phillip@squashfs.org.uk>, Carlos Maiolino <cem@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>,
+ Yuezhang Mo <yuezhang.mo@sony.com>, Chuck Lever <chuck.lever@oracle.com>,
+ Alexander Aring <alex.aring@gmail.com>,
+ Andreas Gruenbacher <agruenba@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>, Xiubo Li
+ <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>,
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+ Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+ Bharath SM <bharathsm@microsoft.com>, Hans de Goede <hansg@kernel.org>
+References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
+ <20260108-setlease-6-20-v1-4-ea4dec9b67fa@kernel.org>
+Content-Language: en-US
+From: Chao Yu <chao@kernel.org>
+In-Reply-To: <20260108-setlease-6-20-v1-4-ea4dec9b67fa@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 74750140007
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768008498-174483
-X-HE-Meta: U2FsdGVkX1++J15QxOY20CebmFqJz66MxxDmzpENPFDYybi27RL+4XBFfVCE9ISnmtU/9Mm9Fk3uB54HUxEGZ1wmFgebT2HpzYCrCDzfvyiWYe7LovxR82dj8PQOwUl2w+A2YtBa7fHK5+5z5ZESjlFgHVa9y2xUtxKsOSmrDTvUrBvXf7xlOi1qI3RYg1IF9iajXxE9X8qOaF8QRh0VZMDDZOUwHlaLMWV3ve1jvves4WNnHboyWg/ugFCj15vx9sbHGPoDXKHmTJPLDaWqDmR++dzofRsicYLXk4ixAwSbISNEIbUvTc623mH0Qd/zgCUD4zcTMMioTJtmksvNBXnw6UN8m+mkebdcgmNkZsfPqiy6btUJ/jNM33Sz/jXdKZrzsX3y4caR+rl/pevOGVANaJhC4+7cI2F97+z4a/QlmdXoXSopLvhBByegUInRzU2oXdkiAX7SaUW4FzAL7QKT3bKX6aZycqN1t9a/+PMqPLocBmRIxq/qjOMGZU+ljmjprDRs3FQFm/VbXuowOVGF+31Z6bv+1IxCOmRbNWpT3M6tYli56R2petcvjYBcbolB/nnXTB3rMVCIp81kHrFoV7/NzAjp/eC/Do7dkeH9xFo3HeynG31GvXY4pqAXONnLdq9tki+NAfSeMaPe+fL5a65BIdiMmYQHuLeV53HHmM6ihyTXoWE/W2L0FwVVKbbgw2wk7bejrAgHKk9ELsqJisTgBvq6pRKAnb1MplITuiRBv3Gh0foxelzKQRhJu4DXfEt+BEpHR/O1ex6qbEcOHSTR/ca+Nej73JHn3PEDWXnp22PMBzM53VCkZVZ4/29JS9elymnfv5MoE8gjGc2ERdZWS7Uh3R5xFd+VSroIPACW4MsJMX71uqMdX+g8diH+QQARxx2jLPkow5hlKhbH4LXH9hQLedGSTCmBkH8V2RyXJwtX6NaPV0ZOSftuTpN6BQ9vat3IQoxTLU8
- ukg5Gx5S
- GszFUZeEnA9hJCGFo+9zrE/u5JkLFylvUXw0ETTtd1A4rKbxW2ovSjDgBYiG1IhfF5AiJxiB4fGR9GhdQUhLg1CFyBx9xgVLcQt9q0NtsF5fUJYvc6rhowZMdo+6OxwEY8IWbvTbcVMTPKF8wtIL7zUierOXxSWcafimVnrOt16lOPtmK1V6YjhT/97c1eydwSFGqSOhbG0pHyLa1Vk1MVFYpeuLyTSVjli7OMqlEzSWoCwZNzu0iLBHK+2iUpEly8DyIJLdvt+OXKrzs6GPNe4QSzh/veNbiFhYhEKdFGtp++N2Xepuv0CW3pBXLiv3pAeAe
+X-Stat-Signature: wnhx4cc1xebzgfghrdobjd3gf851s4nq
+X-HE-Tag: 1768009654-659718
+X-HE-Meta: U2FsdGVkX18ojbxdt5i4Dz0oqGWQa3qAZEqjEmjOH5myVbDbOWREDEu9RTpMPWrU/wG1vupoapEm68MevdoI8u0Go7JCYEb0pyEmoeGAqwPgtFiNAWkqo3NgwHwEDZwvFNmTgmQsnsbYQ+D8Vc1KAqs6Np27HBRT/pD25rCECYcR3K342qHrLkhZb0yAefuUm2fv8uIZp8pbOrnMUE/+q+SaZNgqqO7jDqX86YfDfS6Q1u4lOy8Wzko0K5EZ6TQqqPWJkx8poHNHsbln3sKeejZKrHXjkWBSaVJSR/F6THrYb9Sx4N8JBUK63KqlGs9q+zjBSATUbrAV93arLaHJZ3ctTaFYDHc1RD4evlfVDrylFn1r0eJTUKbjiksVxItugiVX6M2FcEOcuDPerK1fVSK3XuNFj+tjtUl10nAVXfa5Qd5OKtkCQ9cOgp8a/7iauPRHz76EIEFYiBF7ncxkTm0PGtKp3Zo+wQc27ocRsDVi2g/eDuGCWk34vzZGOm99TpIui9dW/exXdEE1EqUQMb6hHUNom6nJDxsuGceMw123bWW+lAJ3qsDa/gCu+LmG9l/gTLjCi6K9gmM/a8oZMCSfyGnWZErj3FKogrXjJQoipgbVfGnXJe5cjBuOoBupp4rVaUSB09wbehH0GcYbCwr1HvnDItrE0Zs5VVB9t9KhAW+nRMLxIBi2sgM8sV+tnJXfKNfQpkXd8ox9JEgBcZtWyWFIt4IkbWfDgEC6sunJFRdwIdshAYJGUiGkceuzNxioiuAz2MVRv90EDeqPC/E7wwM/VsYAIR2C8nuoe5yyOwRFWGpNLoPxy1ncxT53nfJIxNAk4tgKEUFhvRlXlNfAG9t6honV5SUpMEo/jS/r20TrYXsqkJ0RAozNgUXRAUd4hgmd+TMsKPix+prAAk0e5ea0v8qjItxdGU5r75VP9tAPnnCZO5fb+IzV3xehaTz72gtX2n9RTLM3QgL
+ pwbsRY+m
+ hMhEtterRs2h3kuuohR+0IXHLcSFWh041HQIFm9GShQGlgp4V70ozXjEC2EL19KN+pCjIMrPgKGHIrAl9e0aZvw0JxfBTuAqVxdy77mt6Tu2vm4RBjDQ2FxACV18zyWzDAn8VmB5a33PJajK1/jLPNtSsGqZl6l81qAxMLBoatdQNvz0ttIYsfdJaExSjQDPYM9zTssMkHgcXFNHnnmCm4SLz/0+lHmI5IvHgIoNYb2XmQf9ot2QIV65gKAf5BezyK7hr1u+6MYhpaD7E18iWKrGysyXAa3hlh6DfAeFNJrhQFFWyPECC6up+AWiSdDla30QkSnrV/zpjAlK1G31DaCpS0VSCl2Yt8myHo/2Mcl/O6i6e6V7LnObNq6gVpK7J0aG5RvBwawPlo0jBEAFu+VtZNcTXdsQzuh7ACMNOBF5k43fr40+ASU8xeAmbSampK7Ky3cM2v7YV+OFJBhgZ8bd7+w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,38 +142,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  9 Jan 2026 05:59:37 +0000 Bing Jiao <bingjiao@google.com> wrote:
-
-> Commit d92027a5f30a6c ("mm/vmscan: select the closest preferred node in
-> demote_folio_list()") refactored the selection logic for demotion target
-> nodes. However, it removed the initial assignment of 'target_nid' while
-> leaving a premature check for 'NUMA_NO_NODE' in place.
+On 1/9/2026 1:12 AM, Jeff Layton wrote:
+> Add the setlease file_operation to erofs_file_fops and erofs_dir_fops,
+> pointing to generic_setlease.  A future patch will change the default
+> behavior to reject lease attempts with -EINVAL when there is no
+> setlease file operation defined. Add generic_setlease to retain the
+> ability to set leases on this filesystem.
 > 
-> Since 'target_nid' is now assigned further down in the function based on
-> preferred and allowed node masks, the initial check at line 1046 is
-> redundant.
-> 
-> Remove the redundant check to resolve the compiler warning.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202601091037.vUSHeJCH-lkp@intel.com/
-> Fixes: d92027a5f30a6c ("mm/vmscan: select the closest preferred node in demote_folio_list()")
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-Seems the broken commit is on mm-new, and therefore no need to Cc stable@.  I
-think explicitly clarifying that would be nice.  Also, as this fixup may need
-to be squashed into the broken commit before it is pulled into the mainline,
-sending this kind of fixup as a reply to the patch mail [1] of the commit would
-also be nice, and usual in mm.
-
-[1] https://lkml.kernel.org/r/20260108033248.2791579-3-bingjiao@google.com
-
-> Signed-off-by: Bing Jiao <bingjiao@google.com>
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
+Reviewed-by: Chao Yu <chao@kernel.org>
 
 Thanks,
-SJ
-
-[...]
 
