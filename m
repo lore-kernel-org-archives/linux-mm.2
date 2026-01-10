@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8279CD277C9
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 01:47:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A90C2D277C9
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 01:48:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEFB36B0088; Fri,  9 Jan 2026 20:47:36 -0500 (EST)
+	id 1E2656B0089; Fri,  9 Jan 2026 20:48:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD12F6B0089; Fri,  9 Jan 2026 20:47:36 -0500 (EST)
+	id 1B6856B008A; Fri,  9 Jan 2026 20:48:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCF726B008A; Fri,  9 Jan 2026 20:47:36 -0500 (EST)
+	id 0C3186B008C; Fri,  9 Jan 2026 20:48:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B7E236B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:47:36 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4AA8A13C605
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:47:36 +0000 (UTC)
-X-FDA: 84314367312.21.404B01D
+	by kanga.kvack.org (Postfix) with ESMTP id EF16E6B0089
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:48:04 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AEF0F1A1079
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:48:04 +0000 (UTC)
+X-FDA: 84314368488.24.AC7DF81
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 74750140007
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:47:34 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="aS1PPg/D";
-	spf=pass (imf23.hostedemail.com: domain of chao@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chao@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1262C1A0008
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:48:02 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fu7FxrUR;
+	spf=pass (imf19.hostedemail.com: domain of chao@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chao@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768009654;
+	s=arc-20220608; t=1768009683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vZWEW1mD3/NQHrMS1jEqwJg9xM6fxd6FqkwiyYjKSIw=;
-	b=NoqKcbETPwMpqPsLXDDc4nUw5viaHYsGlipKRsKHeQPXyjHTvsPGbGbMAGILxK1Q/KD0Kj
-	fT0XTs2jI4vWzUgvanUmV6agWgqvVI5sQ0ez+YYeymJ3+MYw0bTpk34gadC4qwdRW6p+mO
-	YBkTAXb1/pCV/rmWe/3ncxXGqhtXv50=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768009654; a=rsa-sha256;
-	cv=none;
-	b=FftmuUNdWoVnRumxAyBkHYDa59/qcT+CWA1aYU29WqKvmAPE3ZFkf5tdXmPKg1qNQvb4a6
-	QVD6/V3PlllDzA8wDEeVpaEIx37FBjE6SwYEFDGqEQ6RyDbuHPoM63C3/lw/myZJLOGwet
-	DgDhpmgzWVgAun9y65v1Zyr9fVTjR08=
+	bh=AGJ7du8VQFjwWoJPHie5gQy0pHDdQ8AKRzAoeeB3cHU=;
+	b=DTN7/Ao/zt1wwzpMp77CBImq0C/juwnhtfIl1fTEhCPO1mCPaPothMc9iUGwf5WOt42k4y
+	hFx6H+TdKs1wu8Or9UfzsBWDF7r2T4uUJc/lqs6MwgJec4GADeX9nIId7n5GIPlN6mq0GE
+	XvOJnL+bth+H9fcYYIoOYsZLh7MmHYs=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="aS1PPg/D";
-	spf=pass (imf23.hostedemail.com: domain of chao@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chao@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fu7FxrUR;
+	spf=pass (imf19.hostedemail.com: domain of chao@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chao@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768009683; a=rsa-sha256;
+	cv=none;
+	b=A33DnD9IEtD5raLLhoO9ZrsOyRtHtMAzjK+TVYDzKUI295JC42CMH6Jh3wIOGAhat6ZeYR
+	M8aloALYqEPpxiiIKWIxAz028485aXtzgp9ctl4OKgi97hWvAnSQnINOTMIM/QmgDjIG+s
+	njbBIh5w9I7ueTicQfivsRdnexQz9Vc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 35A03409EE;
-	Sat, 10 Jan 2026 01:47:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9FBC4CEF1;
-	Sat, 10 Jan 2026 01:47:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1AC574021D;
+	Sat, 10 Jan 2026 01:48:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AAB1C16AAE;
+	Sat, 10 Jan 2026 01:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768009653;
-	bh=OKPFCC1ojmEDlLwUQA1PrvgWaqI/QFfkYIRaHHjgLI8=;
+	s=k20201202; t=1768009682;
+	bh=cdF01HTymcjwXfQS8AcBirvW01pDXmvEycM3L47DM38=;
 	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=aS1PPg/Dg2j3WlAEK5nHwD5i8kCTebxLR+i8vwa1Umz+Wef0tfIentBS0klMYZA/0
-	 jcNMCTW2byAj+2+1CuaM8xxEVkIBoJHlppRtjIGo5fLkKKWAuHZa5JPyHvx4sw6t+e
-	 +SwwuwOcEtWTrjgtkf/FhomVQK8mNq+RpWJtAVY8ZEyUrj+ucRRxGYTYp7Xp/qex4E
-	 afNMjdvfkLqjaXQpbL974EbmrZMtjQ5HekIFhOGbzOSFgVlWcBwV3eO4AhalhUZOEB
-	 rsyBo6s8Gp7OWORYRudl7fUPvCO3D2sc+9CFLGsHY1Zv/TiLZVK9d43+cGel2wVRPX
-	 PWiI+/c4aq5zQ==
-Message-ID: <35b959e6-a91a-409b-ac3e-f78aaf60148a@kernel.org>
-Date: Sat, 10 Jan 2026 09:47:29 +0800
+	b=Fu7FxrURqv63o/6rCcdW5OUCW4q5tJDwdMX16lkstwj96Y3ue96Q6p+PXYcAkBSTE
+	 UuBIQcMoCb8UBhZ3VgYGY9Hs+mposZy8O/TAd1t9B2FHXb83g+J13cZy/S+COvLI7A
+	 AVzdxtl+7sZ+ARe92YM2Pq5SJrqPzbyS3fbZcI0XyVKr6eLq08Q3Rx/Lu5Az1QejVf
+	 c5L1AD5mIN6/tM9/vPJ6O4DOb+2koTVlkEeccrf23n1J/Asfg2W7yZt4cZtExuiJ/F
+	 dREajCpoYlb46NKuspiGJYA2YFWhQ/LnSHS5B/M4V94u/4Hn/t/pnkaQiawh8m0Fnu
+	 nh/QGL+jmgSBA==
+Message-ID: <772e9b7d-6d83-4495-864d-f506211a9d62@kernel.org>
+Date: Sat, 10 Jan 2026 09:47:58 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Cc: chao@kernel.org, linux-kernel@vger.kernel.org,
@@ -79,7 +79,7 @@ Cc: chao@kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, v9fs@lists.linux.dev, ceph-devel@vger.kernel.org,
  linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
  samba-technical@lists.samba.org
-Subject: Re: [PATCH 04/24] erofs: add setlease file operation
+Subject: Re: [PATCH 08/24] f2fs: add setlease file operation
 To: Jeff Layton <jlayton@kernel.org>, Luis de Bethencourt
  <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>,
  Nicolas Pitre <nico@fluxnic.net>, Christoph Hellwig <hch@infradead.org>,
@@ -120,20 +120,20 @@ To: Jeff Layton <jlayton@kernel.org>, Luis de Bethencourt
  Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
  Bharath SM <bharathsm@microsoft.com>, Hans de Goede <hansg@kernel.org>
 References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
- <20260108-setlease-6-20-v1-4-ea4dec9b67fa@kernel.org>
+ <20260108-setlease-6-20-v1-8-ea4dec9b67fa@kernel.org>
 Content-Language: en-US
 From: Chao Yu <chao@kernel.org>
-In-Reply-To: <20260108-setlease-6-20-v1-4-ea4dec9b67fa@kernel.org>
+In-Reply-To: <20260108-setlease-6-20-v1-8-ea4dec9b67fa@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 74750140007
 X-Rspam-User: 
-X-Stat-Signature: wnhx4cc1xebzgfghrdobjd3gf851s4nq
-X-HE-Tag: 1768009654-659718
-X-HE-Meta: U2FsdGVkX18ojbxdt5i4Dz0oqGWQa3qAZEqjEmjOH5myVbDbOWREDEu9RTpMPWrU/wG1vupoapEm68MevdoI8u0Go7JCYEb0pyEmoeGAqwPgtFiNAWkqo3NgwHwEDZwvFNmTgmQsnsbYQ+D8Vc1KAqs6Np27HBRT/pD25rCECYcR3K342qHrLkhZb0yAefuUm2fv8uIZp8pbOrnMUE/+q+SaZNgqqO7jDqX86YfDfS6Q1u4lOy8Wzko0K5EZ6TQqqPWJkx8poHNHsbln3sKeejZKrHXjkWBSaVJSR/F6THrYb9Sx4N8JBUK63KqlGs9q+zjBSATUbrAV93arLaHJZ3ctTaFYDHc1RD4evlfVDrylFn1r0eJTUKbjiksVxItugiVX6M2FcEOcuDPerK1fVSK3XuNFj+tjtUl10nAVXfa5Qd5OKtkCQ9cOgp8a/7iauPRHz76EIEFYiBF7ncxkTm0PGtKp3Zo+wQc27ocRsDVi2g/eDuGCWk34vzZGOm99TpIui9dW/exXdEE1EqUQMb6hHUNom6nJDxsuGceMw123bWW+lAJ3qsDa/gCu+LmG9l/gTLjCi6K9gmM/a8oZMCSfyGnWZErj3FKogrXjJQoipgbVfGnXJe5cjBuOoBupp4rVaUSB09wbehH0GcYbCwr1HvnDItrE0Zs5VVB9t9KhAW+nRMLxIBi2sgM8sV+tnJXfKNfQpkXd8ox9JEgBcZtWyWFIt4IkbWfDgEC6sunJFRdwIdshAYJGUiGkceuzNxioiuAz2MVRv90EDeqPC/E7wwM/VsYAIR2C8nuoe5yyOwRFWGpNLoPxy1ncxT53nfJIxNAk4tgKEUFhvRlXlNfAG9t6honV5SUpMEo/jS/r20TrYXsqkJ0RAozNgUXRAUd4hgmd+TMsKPix+prAAk0e5ea0v8qjItxdGU5r75VP9tAPnnCZO5fb+IzV3xehaTz72gtX2n9RTLM3QgL
- pwbsRY+m
- hMhEtterRs2h3kuuohR+0IXHLcSFWh041HQIFm9GShQGlgp4V70ozXjEC2EL19KN+pCjIMrPgKGHIrAl9e0aZvw0JxfBTuAqVxdy77mt6Tu2vm4RBjDQ2FxACV18zyWzDAn8VmB5a33PJajK1/jLPNtSsGqZl6l81qAxMLBoatdQNvz0ttIYsfdJaExSjQDPYM9zTssMkHgcXFNHnnmCm4SLz/0+lHmI5IvHgIoNYb2XmQf9ot2QIV65gKAf5BezyK7hr1u+6MYhpaD7E18iWKrGysyXAa3hlh6DfAeFNJrhQFFWyPECC6up+AWiSdDla30QkSnrV/zpjAlK1G31DaCpS0VSCl2Yt8myHo/2Mcl/O6i6e6V7LnObNq6gVpK7J0aG5RvBwawPlo0jBEAFu+VtZNcTXdsQzuh7ACMNOBF5k43fr40+ASU8xeAmbSampK7Ky3cM2v7YV+OFJBhgZ8bd7+w==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1262C1A0008
+X-Stat-Signature: jmcbaok8dhp556hzikibm89kkzap3yhc
+X-HE-Tag: 1768009682-568651
+X-HE-Meta: U2FsdGVkX19VhljievAPUPDLaDwzIFuqzs5RDn0R1hOwHiFpXRhzZNadnM6zH+jOTTrZoAYZWmm1wMwkZCJqROacrtwz5GugZrhi7zV4TNh310UgNmLqLmkrgy/sok1xtGpp3VjRk29715rSayD6TzvFgj68SijtX7SSSNlfknRU/fpYV0ny6wV5uEZfUE2X9iokEBOdDap6oF29CwumJRjTQSr43UWrDS7wdNXN9U9NNxIo17/jmSRk8eVfIo4WK0udlskfCctAdnWuFu+KOGJlOf2o9M1Qq86JtTPsAg6jqWq90pq7/C2ECKDL8QqKyApgR/m5iluw6P4q4/aL9yMHtUzzZa76wb9T6kmVKhNBmqV7U3pyUADKIzLDteErvFxf5rznnYt5ZUJTfiRGR23vxxneJ6uG385xYsvZG/PcvtFvER/KLBN/C8naU4qNtiqOKbvl7oFmy/KkRSGtKCPIJwYubclwY3rSkHKLfqkgCwHbdfnnc3nWwCTTiEOdFVHcbZSXmkIhZ+2T49R8FjX/ec/ZoPF5LkG38mzC30bH2a3kCMO8fEy4ajv2y3cmCX0BHnH91TxRo4N6D3n2n8kDVYUUYEXeRkQj7hsenfUz1E2rsel7gEWxlC2s1Uny6UYWNf1rB+DYnKOv3zUGPewnqHne3sGDgZKAKTW9C2p+7myVkOjdPWNcb+tvf487lgMF7dQlKOPcgNykizfiL35UDeI/REXwYFxYOtufpnm0llnezFTH/Z8c78TKnPfhLRO53FR9Ack6qzIZROLVpOF6tH9aJyekhcjf+VVnkG3VIkGPT6Fg5xvkVXLzAxoyyXXDWpjOIDB0MQxUeiktgi+Y8Oe9lBUDtBP7MQ190FC9qn1IPxy/yzTG/IFiTillYw3l70z3QvOLQ2Ra/PRHkYDiDcmDRx19LKLT/49Pj3jE/JgsEpxOxQNVN28VWK3aQgJMsy2cUAaI9+KZZXK
+ FLQqPRdJ
+ cTVXsUz1JT1YVpqETMC1phfOmuSPwQmIcfw13i/pDNDkBwt02DY3JXEfDUcsAUCB4Ni6uH0+Bpwwth+R7Dv18q365lnL8EkRhFfYiuIQnzMJ9CW5lDG5sQNBLxUrsHYUSe9YJipOVBQk07XSsL4sjwyH01g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,12 +142,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/9/2026 1:12 AM, Jeff Layton wrote:
-> Add the setlease file_operation to erofs_file_fops and erofs_dir_fops,
-> pointing to generic_setlease.  A future patch will change the default
-> behavior to reject lease attempts with -EINVAL when there is no
-> setlease file operation defined. Add generic_setlease to retain the
-> ability to set leases on this filesystem.
+On 1/9/2026 1:13 AM, Jeff Layton wrote:
+> Add the setlease file_operation to f2fs_file_operations and
+> f2fs_dir_operations, pointing to generic_setlease.  A future patch will
+> change the default behavior to reject lease attempts with -EINVAL when
+> there is no setlease file operation defined. Add generic_setlease to
+> retain the ability to set leases on this filesystem.
 > 
 > Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
