@@ -4,179 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03582D277EE
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 15:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C373FD277EE
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 16:30:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54B5D6B0088; Sat, 10 Jan 2026 10:41:20 -0500 (EST)
+	id 9F8326B0088; Sat, 10 Jan 2026 11:30:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CE186B0089; Sat, 10 Jan 2026 10:41:20 -0500 (EST)
+	id 9AFA86B0089; Sat, 10 Jan 2026 11:30:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 386976B008A; Sat, 10 Jan 2026 10:41:20 -0500 (EST)
+	id 903466B008A; Sat, 10 Jan 2026 11:30:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 23F6B6B0088
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 10:41:20 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC67DC04AE
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 15:41:19 +0000 (UTC)
-X-FDA: 84316468278.22.3ADB60A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5C2A220002
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 15:41:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="cAZlr1/q";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wNsGH+7G;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="cAZlr1/q";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wNsGH+7G;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768059677; a=rsa-sha256;
-	cv=none;
-	b=iTINCYSh7a4TkTbvzLIrqBqZPkTXO2QNNL89PaXvKCzayV09kMjlA4tI75/NQL4UPoy0+x
-	rs4kVZWWqPinx+pVfMFEqvKH+WJU1its0Xv8bNK8HQOYgn6XFoEMG9pKBo/ZsEdMrqbRFm
-	JMZdV/OaGjkzAK/qpSASg0wSrNpdunI=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="cAZlr1/q";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wNsGH+7G;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="cAZlr1/q";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wNsGH+7G;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DF3F6B0088
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 11:30:35 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0292F1AC31A
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 16:30:34 +0000 (UTC)
+X-FDA: 84316592430.10.E24FE9D
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DD2411C000D
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 16:30:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YiED6Shy;
+	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768059677;
+	s=arc-20220608; t=1768062633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DMaASs04EH1I7HUqtZvbF7q1RZcgi+PtUryM4O8whrk=;
-	b=MzMym8ZjtdbBMjKSiGRKHxgZzvNswCZWED90pB77H+srupF98rbSlWu033BDeQNXc3URnl
-	qWs5aXm8aGHP9r9IaCfbHpOZzUsTe66RMbfx4u48j9+TDfAiLT1UUZ4G0LpxI0tlvynCp5
-	Hah0jOj2vkXLfKwsvUi+YGkhulD8lnk=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2D3F55BCF9;
-	Sat, 10 Jan 2026 15:41:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768059675; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DMaASs04EH1I7HUqtZvbF7q1RZcgi+PtUryM4O8whrk=;
-	b=cAZlr1/q6mvAbPN7LBM8pdU8zIRaw0pLkwrT65nKFHaa5sUtuP9gkcR4wlHqaDhk7DXAmo
-	EjDC7ALn5UoCRdoZympBKtXSgd2ssOcPL3SX2Ir84BQV1MyTjGP5LWJOGGnh5TFFsN1IZx
-	AzRnj6kuIRBFKZODCY5hDzPluoh4oa4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768059675;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DMaASs04EH1I7HUqtZvbF7q1RZcgi+PtUryM4O8whrk=;
-	b=wNsGH+7GfFgmC33WbycxXp23WRqqV4aK/Lt9vtpwZc66eG9E4DQ0MZURT/g36t8zct7tRj
-	hzUH5YR8uNjbFWAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768059675; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DMaASs04EH1I7HUqtZvbF7q1RZcgi+PtUryM4O8whrk=;
-	b=cAZlr1/q6mvAbPN7LBM8pdU8zIRaw0pLkwrT65nKFHaa5sUtuP9gkcR4wlHqaDhk7DXAmo
-	EjDC7ALn5UoCRdoZympBKtXSgd2ssOcPL3SX2Ir84BQV1MyTjGP5LWJOGGnh5TFFsN1IZx
-	AzRnj6kuIRBFKZODCY5hDzPluoh4oa4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768059675;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DMaASs04EH1I7HUqtZvbF7q1RZcgi+PtUryM4O8whrk=;
-	b=wNsGH+7GfFgmC33WbycxXp23WRqqV4aK/Lt9vtpwZc66eG9E4DQ0MZURT/g36t8zct7tRj
-	hzUH5YR8uNjbFWAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F3E5B3EA63;
-	Sat, 10 Jan 2026 15:41:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wxerOhpzYmlFPgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Sat, 10 Jan 2026 15:41:14 +0000
-Message-ID: <01cf95d7-4e38-43c6-80ef-c990f66f1e26@suse.cz>
-Date: Sat, 10 Jan 2026 16:41:14 +0100
+	bh=UKdNQinLdfkQ5ZjIhnHbKnawUimweEFVSRdn+zzu4Ck=;
+	b=3C16GFIWuD5f0fCmOtuw6uyZ0T83Jgmq99vn+tZFOV+ZhBExiUkShimiUJ9jaRUhMxDgGT
+	ITdU3M4Ayzz4sSgV5qmiXkoIoZ7UaGF+uA3kFRikn1xnYoKHp+s9g7hJB0cNxdGzeoWf6z
+	7lqKsTEVUCBYOzZoocATXNHx9luh2Qk=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YiED6Shy;
+	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768062633; a=rsa-sha256;
+	cv=none;
+	b=Bc4BOa51Kl3sGGISCXZ5IrsBvfU4VeUI59W50WX8YI9RlvYyUyxoxbUrFzOiYHLdDDGCPF
+	FMfhP9p8mXG2b3xJZsMiVwTPtdCKCn2l3epZpn1KrFjGCmtBAYZiMloqnCBwxE/KgYE7es
+	REPmLPeTBtCzh/l95vgDGGiPI5a7DQM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=UKdNQinLdfkQ5ZjIhnHbKnawUimweEFVSRdn+zzu4Ck=; b=YiED6ShyrW/Jomgy26B8DzLXHP
+	E7TYHMotPXdP8MCQ32/eMItOuyzLZhWnTnn/PxvUsiVVjr7Fnzi4tmKNcJ3lfSRuAeY0IosQShC2g
+	+tYAncMiSoMUGVg2Shm+JRv4YOdYKQDcMLx/CBmrOyD3G4Bl7TJLdSabaa07LXYYPVWku2RmfDac7
+	+nERb8LxtuajjysfONvYqXcnwPaN/+BB9MNrBKsbUVBpH4vil0kaejDgJai5PJRMo7QfpTYDYDZZk
+	BwhKhknhJrntXyvk0gUBdKFZ/poaHj+Z73UAbndNVaeUZmr0YV+scrOFAKsqoSyYo4xBZqyIkrE1V
+	vRFK8jQA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vebrA-00000000pLa-1too;
+	Sat, 10 Jan 2026 16:30:28 +0000
+Date: Sat, 10 Jan 2026 16:30:28 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Bernd Schubert <bernd@bsbernd.com>, Jan Kara <jack@suse.cz>
+Cc: Joanne Koong <joannelkoong@gmail.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Horst Birthelmer <hbirthelmer@ddn.com>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: __folio_end_writeback() lockdep issue
+Message-ID: <aWJ-pHIY8Y8sjLeC@casper.infradead.org>
+References: <9b845a47-9aee-43dd-99bc-1a82bea00442@bsbernd.com>
+ <b7b72183-f9e1-4e58-b40f-45a267cc6831@bsbernd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 10/19] slab: remove cpu (partial) slabs usage from
- allocation paths
-Content-Language: en-US
-To: Chris Mason <clm@meta.com>, Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com,
- Petr Tesarik <ptesarik@suse.com>, "Paul E . McKenney" <paulmck@kernel.org>
-References: <20251024142927.780367-1-clm@meta.com>
- <28e6827e-f689-45d9-b2b5-804a8aafad2e@suse.cz>
- <9a00f5c2-7c9b-44c3-a2ac-357f46f25095@meta.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <9a00f5c2-7c9b-44c3-a2ac-357f46f25095@meta.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5C2A220002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 3ynngyxfystrmdx3btuag49p1wzy5jhb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b7b72183-f9e1-4e58-b40f-45a267cc6831@bsbernd.com>
+X-Rspamd-Queue-Id: DD2411C000D
+X-Stat-Signature: fwphm7zi73u3jfdfkrwfyrjdx9ogr89j
 X-Rspam-User: 
-X-HE-Tag: 1768059677-202942
-X-HE-Meta: U2FsdGVkX18Y8OKbpz0xfA2IT7MvMCbvbzo6TA2HBETiDoWNKRZF7WwuglSH5aHdTr/50yMa3OcFKeTqGrbuKXmOCdxwSM9LFZTlFde+HjX8raF0nZZInVc0YIv1ATBpvQFNROjDn5gr/pmU7ztfWksg2TeqirXWWXXpufL3r7Nr/0JR1SZqikLwlHTVYXJp4zm/wlXpq8wPUoHfabP1lCcSSYKtA1QMDETkRwbxGJxq4x1ENqtMr8X8KPgU4SsIVrX4iP0G6Wkd/FyWCmfitcP4QA/+kRWDlKULtpPJXEqpzvxKPg77jhBmBH7JFsGwf8l1zJXbfBMa39hCFn2a7iq3b14EHIRlryuSqxLIKIXH6k2wFid2Tk9HRb70PaNGePig09KvMxcM+vMWMnboFfzNKtUDAj62NddeJ50nAnX/eV8+Bj+ClBQtByToj+DzR33XPOdhsMKP1C+9tyxGPtFiOEoAtdCTBHOPqk+knroU8d93NhiP/mVWoQCTRY4yWHZWrWbW/1cfkQkBT6Cssvw0VxNOU2OsQxVLWs0SbGUzGnWMm7ymDe/SCn/B99sUhxnLImbY3kgD9DOv1f1JB48kd6Fly2UWQrr60VRieCZO9GweT4th28UxDhulp/NTHTopBKH4nuVZbUn6V0Ahst9RGNNvMIlmFjgCtdRr+pWXxmBb58KWGY2EGlkZO8zheWoHbCx8QMuGkL0PmOkn8UqKd34i5iJGiK19cdmAfK2z/3k8wBY3LogMHNUOR9KZyl4WRkq3MN+fGdonBzW9vp2P8Yxrfy+UKQCTOuLz3ao5lrGx62+eb3P1MoUNPOh9e3jApVmmrARzCRU3ePtGPvDVq1+Z4BPj3N/Y6VhkOG/hw2BSUrtj0UN+vE0xDPoYQ36yK7COFwF14SThjHytRSN2eQA8mo4mvxzKAVytrzPzCj12aHW3l7m0U1nDDu7x
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768062632-697358
+X-HE-Meta: U2FsdGVkX180N46CD2QC8lPafBSN6NXUCmWxwHuca7VRKVvjn2+0eJ1dJzLvGdcbrYlFhwcGNWZSHEOEt/bgLkeMC6+a72oWqhUys4raSL0+Fy+O753ediTMfmJ/FI49TQ6hf2fhu84eJg6tPLPH7bkag+7omQkiELT64IBNpQCmnO4MjLzybNyJeZ08CDNkM9TwqA/N4pxsJZl6xIRmxJGY+n3chl6qXkxz23RibdQUHSNp/DmWJLBacGYtZ0iJgGGhI5AIPIhN+oDKL1wyoP1stfz2l3TKu9giG7t/NZ65ZNiS8H4sFlYbDcdjBQ6z1gc/U5lyZcZsqSOa7E99NTuurfXNzoZYl2M5Rg8hI62qFUADyOWy58K7AvHk2MnOyCstK6WBAba9hpKoyKCXSEItwW+Ug8EiVNItsZSF+lwxeo0TgKKjNsVAagdARJQW5OlLRmz3ObEKvU3rDDIpgMNNANiH5C1TG4s9w5YwYjVVSmoWJ8X48BkvsolsCnUgA7n07okWtn+bUpUyrMTnrbnKige4G5L14dwe0QtzblXldpaMWwYvWpOrXfkGAo+2Q9Ptgv1YwKarr69wxZzk4rXIRnxgk4FNh8F7f7YStr/NLqXiRsKvU9jFrJSO7eU45GeUVqY0zMT+RLGbMFICtxBkAFoLgCd81KxTLW2y89Sj6iyoDoXHM90XhwMfvf2UPj3R0xXiak4VEUAW1MXAhp7lZQ8Xibg1VO1V6GLn/VLxxUMjDe+WXrWD81PcHb0yU0R/BcdSWf2jPvs3rpS3j1va+iHKdaUi9kDaXmghWPynjPikp/CzkmAYbGlTY/1AQYL8k3Jr696t+eAZXLHcxtUVaXOM/Fe4S2R61+r36VI+lQLSb0LT2UlkBwx2dDDG3pnNhgcOyOjMR0bMtTcAC0CzamPSHwv55gFp72xpjo5sLsepf69800klszZIVObY+55C4gP7bRV591cz3lj
+ nXU5OZTG
+ CQqYnjR50QE0Kil6O31FvE1zD1OyEQ8lQbhNOn0ZflEpcaU3mVdPKPzbtVgXCSBezSSVRSGEsWsk0JU0gEyX/TNr4ltnHg+vFcazbMAEqmzhgg0yO5pPUZNb54xmxaLQx88CdQSBlZoiiW9RyhOEc3nTa//pOlzKmft0kFcXvnNx598+1gCaLFWWaaV1yppHUz8u6rRKbcOFkiDExbg75O0j1Rc6E7UCP3P0BIGJdGW2ss7RIySMkIymyx9R8wCUxNmaMAlqojPekJfYZSjcs1b9lD/uN2NjcIJYMOxjx5IsBiWsaINTZIe2QH7KMWtHYd+0KQH6eH0eukiN4p7NC9Tv0X/GiD7AHtbC8l8vmUU161jbS0RrGKUTY/Znl8XL+fOTNBcFzz3A8/y0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,88 +95,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/10/26 14:20, Chris Mason wrote:
-> On 1/9/26 3:16 AM, Vlastimil Babka wrote:
->> On 10/24/25 16:29, Chris Mason wrote:
->>> On Thu, 23 Oct 2025 15:52:32 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
+On Sat, Jan 10, 2026 at 04:31:28PM +0100, Bernd Schubert wrote:
+> [  872.499480]  Possible interrupt unsafe locking scenario:
+> [  872.499480] 
+> [  872.500326]        CPU0                    CPU1
+> [  872.500906]        ----                    ----
+> [  872.501464]   lock(&p->sequence);
+> [  872.501923]                                local_irq_disable();
+> [  872.502615]                                lock(&xa->xa_lock#4);
+> [  872.503327]                                lock(&p->sequence);
+> [  872.504116]   <Interrupt>
+> [  872.504513]     lock(&xa->xa_lock#4);
 > 
-> [ ... ]
 > 
->> By the way, there was another bug in this patch, causing a severe memory
->> leak, which the AI unfortunately didn't flag. Petr reported it during
->> performance testing and it took me more than a day to find it. Oh well :)
->> 
->> Wonder if things got better since then perhaps, and your or Roman's tools
->> would find it today? :)
-> 
-> Yes and no.  It didn't find the leak until I changed the prompt to say:
-> "there is a leak, find it".  I'll see if I can improve things...
+> Which is introduced by commit 2841808f35ee for all file systems. 
+> The should be rather generic - I shouldn't be the only one seeing
+> it?
 
-Thanks. Hmm even if it has to be done like this, it could be a substantial
-time saver vs finding the leak myself.
+Oh wow, 2841808f35ee has a very confusing commit message.  It implies
+that _no_ filesystem uses BDI_CAP_WRITEBACK_ACCT, but what it really
+means is that no filesystem now _clears_ BDI_CAP_WRITEBACK_ACCT, so
+all filesystems do use this code path and therefore the flag can be
+removed.  And that matches the code change.
 
->> diff --git a/mm/slub.c b/mm/slub.c
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
-> 
-> [ ... ]
-> 
->> @@ -3592,54 +3549,53 @@ static void *get_partial_node(struct kmem_cache *s,
->>  	else if (!spin_trylock_irqsave(&n->list_lock, flags))
->>  		return NULL;
->>  	list_for_each_entry_safe(slab, slab2, &n->partial, slab_list) {
->> +
->> +		struct freelist_counters old, new;
->> +
->>  		if (!pfmemalloc_match(slab, pc->flags))
->>  			continue;
->>
->>  		if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
->> -			void *object = alloc_single_from_partial(s, n, slab,
->> +			object = alloc_single_from_partial(s, n, slab,
->>  							pc->orig_size);
->> -			if (object) {
->> -				partial = slab;
->> -				pc->object = object;
->> +			if (object)
->>  				break;
->> -			}
->>  			continue;
->>  		}
->>
->> +		/*
->> +		 * get a single object from the slab. This might race against
->> +		 * __slab_free(), which however has to take the list_lock if
->> +		 * it's about to make the slab fully free.
->> +		 */
->> +		do {
->> +			old.freelist = slab->freelist;
->> +			old.counters = slab->counters;
->> +
->> +			new.freelist = get_freepointer(s, old.freelist);
->> +			new.counters = old.counters;
->> +			new.inuse++;
->> +
->> +		} while (!__slab_update_freelist(s, slab, &old, &new, "get_partial_node"));
->> +
->> +		object = old.freelist;
->> +		if (!new.freelist)
->> +			remove_partial(n, slab);
-> 
-> Is there a missing break statement here? The debug path above breaks out
-> of the loop after successfully allocating an object, but this non-debug
-> path continues iterating through the partial list. Each iteration overwrites
-> the object variable, so previously allocated objects would be leaked.
-> 
-> The commit message says "Now we only want to return a single object" which
-> matches the debug path behavior, but the non-debug path appears to allocate
-> from every matching slab in the list.
-> 
->> 	}
->>  	spin_unlock_irqrestore(&n->list_lock, flags);
->> -	return partial;
->> +	return object;
->>  }
-> 
+So you should be able to reproduce this problem with commit 494d2f508883
+as well?
 
+That tells me that this is something fuse-specific.  Other filesystems
+aren't seeing this.  Wonder why ...
+
+__wb_writeout_add() or its predecessor __wb_writeout_inc() have been in
+that spot since 2015 or earlier.  
+
+The sequence lock itself is taken inside fprop_new_period() called from
+writeout_period() which has been there since 2012, so that's not it.
+
+Looking at fprop_new_period() is more interesting.  Commit a91befde3503
+removed an earlier call to local_irq_save().  It was then replaced with
+preempt_disable() in 9458e0a78c45 but maybe removing it was just
+erroneous?
+
+Anyway, that was 2022, so it doesn't answer "why is this only showing up
+now and only for fuse?"  But maybe replacing the preempt-disable with
+irq-disable in fprop_new_period() is the right solution, regardless.
+
+> So this?
+> 
+> mm: fix HARDIRQ-safe -> HARDIRQ-unsafe lock order in __folio_end_writeback()
+> 
+> __wb_writeout_add() is called while holding xa_lock (HARDIRQ-safe),
+> but it eventually calls fprop_fraction_percpu() which acquires
+> p->sequence (HARDIRQ-unsafe via seqcount), creating a lock ordering
+> violation.
+> 
+> Call trace:
+>   __folio_end_writeback()
+>     xa_lock_irqsave(&mapping->i_pages)     <- HARDIRQ-safe
+>       __wb_writeout_add()
+>         wb_domain_writeout_add()
+>           __fprop_add_percpu_max()
+>             fprop_fraction_percpu()
+>               read_seqcount_begin(&p->sequence)  <- HARDIRQ-unsafe
+> 
+> Possible deadlock scenario:
+> 
+>        CPU0                    CPU1
+>        ----                    ----
+>   lock(p->sequence)
+>                                local_irq_disable()
+>                                lock(xa_lock)
+>                                lock(p->sequence)
+>   <hardirq>
+>     lock(xa_lock)
+> 
+>                    *** DEADLOCK ***
+> 
+> Fix by moving __wb_writeout_add() outside the xa_lock critical section.
+> It only accesses percpu counters and global writeback domain structures,
+> none of which require xa_lock protection.
+> 
+> Fixes: 2841808f35ee ("mm: remove BDI_CAP_WRITEBACK_ACCT")
+> Signed-off-by: Bernd Schubert <bschubert@ddn.com>
+> 
+> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> index ccdeb0e84d39..ab83e3cbbf94 100644
+> --- a/mm/page-writeback.c
+> +++ b/mm/page-writeback.c
+> @@ -2994,7 +2994,6 @@ bool __folio_end_writeback(struct folio *folio)
+>  
+>                 wb = inode_to_wb(inode);
+>                 wb_stat_mod(wb, WB_WRITEBACK, -nr);
+> -               __wb_writeout_add(wb, nr);
+>                 if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK)) {
+>                         wb_inode_writeback_end(wb);
+>                         if (mapping->host)
+> @@ -3002,6 +3001,7 @@ bool __folio_end_writeback(struct folio *folio)
+>                 }
+>  
+>                 xa_unlock_irqrestore(&mapping->i_pages, flags);
+> +               __wb_writeout_add(wb, nr);
+>         } else {
+>                 ret = folio_xor_flags_has_waiters(folio, 1 << PG_writeback);
+>         }
+> 
+> 
+> 
+> Thanks,
+> Bernd
+> 
+> 
+> 
 
