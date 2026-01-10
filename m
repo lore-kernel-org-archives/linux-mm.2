@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C373FD277EE
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 16:30:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95315D277F1
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 17:00:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F8326B0088; Sat, 10 Jan 2026 11:30:35 -0500 (EST)
+	id CD88C6B0088; Sat, 10 Jan 2026 12:00:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AFA86B0089; Sat, 10 Jan 2026 11:30:35 -0500 (EST)
+	id C86BC6B0089; Sat, 10 Jan 2026 12:00:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 903466B008A; Sat, 10 Jan 2026 11:30:35 -0500 (EST)
+	id B92186B008A; Sat, 10 Jan 2026 12:00:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DF3F6B0088
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 11:30:35 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0292F1AC31A
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 16:30:34 +0000 (UTC)
-X-FDA: 84316592430.10.E24FE9D
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DD2411C000D
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 16:30:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YiED6Shy;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A4E266B0088
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 12:00:24 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38069B702F
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 17:00:24 +0000 (UTC)
+X-FDA: 84316667568.29.14733EE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 800B980007
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 17:00:22 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bDpCNj8k;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768062633;
+	s=arc-20220608; t=1768064422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UKdNQinLdfkQ5ZjIhnHbKnawUimweEFVSRdn+zzu4Ck=;
-	b=3C16GFIWuD5f0fCmOtuw6uyZ0T83Jgmq99vn+tZFOV+ZhBExiUkShimiUJ9jaRUhMxDgGT
-	ITdU3M4Ayzz4sSgV5qmiXkoIoZ7UaGF+uA3kFRikn1xnYoKHp+s9g7hJB0cNxdGzeoWf6z
-	7lqKsTEVUCBYOzZoocATXNHx9luh2Qk=
+	bh=F00Fdss0UcKVhP5HxZTbtV9Abfn61eKwFnOA+LShqp8=;
+	b=0uHAgpdrBvPb3D5xKm1eaeR5/dB95azQ6zR7JdU9C3H8FQvgT+du7XvDmmIjRkniP4Wdlc
+	MnRhgMa1gYSDs+ueQjCXPcWAy1qSYMR3Fv8S34K6oOZOgYBI2vDteGPbyZxL5LeeE+sKZx
+	K1JtXcsFkUeRMl7QcoiGlb76mKrT/BE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YiED6Shy;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768062633; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bDpCNj8k;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768064422; a=rsa-sha256;
 	cv=none;
-	b=Bc4BOa51Kl3sGGISCXZ5IrsBvfU4VeUI59W50WX8YI9RlvYyUyxoxbUrFzOiYHLdDDGCPF
-	FMfhP9p8mXG2b3xJZsMiVwTPtdCKCn2l3epZpn1KrFjGCmtBAYZiMloqnCBwxE/KgYE7es
-	REPmLPeTBtCzh/l95vgDGGiPI5a7DQM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=UKdNQinLdfkQ5ZjIhnHbKnawUimweEFVSRdn+zzu4Ck=; b=YiED6ShyrW/Jomgy26B8DzLXHP
-	E7TYHMotPXdP8MCQ32/eMItOuyzLZhWnTnn/PxvUsiVVjr7Fnzi4tmKNcJ3lfSRuAeY0IosQShC2g
-	+tYAncMiSoMUGVg2Shm+JRv4YOdYKQDcMLx/CBmrOyD3G4Bl7TJLdSabaa07LXYYPVWku2RmfDac7
-	+nERb8LxtuajjysfONvYqXcnwPaN/+BB9MNrBKsbUVBpH4vil0kaejDgJai5PJRMo7QfpTYDYDZZk
-	BwhKhknhJrntXyvk0gUBdKFZ/poaHj+Z73UAbndNVaeUZmr0YV+scrOFAKsqoSyYo4xBZqyIkrE1V
-	vRFK8jQA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vebrA-00000000pLa-1too;
-	Sat, 10 Jan 2026 16:30:28 +0000
-Date: Sat, 10 Jan 2026 16:30:28 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Bernd Schubert <bernd@bsbernd.com>, Jan Kara <jack@suse.cz>
-Cc: Joanne Koong <joannelkoong@gmail.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Horst Birthelmer <hbirthelmer@ddn.com>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	b=zSWwXGQf+RH8LH4/QJfBH7imLj2Igq3biCMA6rHq4qEMwkqXOg/bJbld6ncvXRamF8Rs49
+	nAEOPtrbQAswfUMAhjJ4AzHzOTkKtK4NRj3AHZGt9QKfl7EnylL8ELqhx7nUHC9Kx5hHyG
+	hb36SVJQPmAMnQYcxKZc0cT4EqY5sSY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A63136016A;
+	Sat, 10 Jan 2026 17:00:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325CDC4CEF1;
+	Sat, 10 Jan 2026 17:00:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768064421;
+	bh=V2EsbQnIGOXbiEaBQhRAkmCEvxvJGLXrXAm5c9fgeXA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bDpCNj8kZgAWpTJOtgR8EHYMVkM9W990TxrbO5nQHj4I1tnCLZlVyNZ5wc6zzj63a
+	 7Z1mEc6jfXOZKMY9WjDQBp+dzJX2atByn3604GYQxnFJFfWnDPY7SPAc+GOwzWhB0/
+	 IrpXHMGZnhhBSBLHA75fDXqFecv4rAyamIOvaxf7bmsrEkCWPc9vN2KoZ8HM30bwGO
+	 QPszjTas/Si9CzyTXrbWTF69Lwlu4/b8Acgt5R1YD/oREOW9IX+Gj5H6riCJ0gmNgy
+	 hyWEp76NVfebHSwa0K0dOuz3dlggJZ2z6hjL0b+fHqnz7/XCIB9VPK4ItofIFwRDLR
+	 RhquU7OX72eTA==
+From: SeongJae Park <sj@kernel.org>
+To: sun jian <sun.jian.kdev@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
 	Andrew Morton <akpm@linux-foundation.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>
-Subject: Re: __folio_end_writeback() lockdep issue
-Message-ID: <aWJ-pHIY8Y8sjLeC@casper.infradead.org>
-References: <9b845a47-9aee-43dd-99bc-1a82bea00442@bsbernd.com>
- <b7b72183-f9e1-4e58-b40f-45a267cc6831@bsbernd.com>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: ksm_tests: skip when not run as root
+Date: Sat, 10 Jan 2026 09:00:10 -0800
+Message-ID: <20260110170013.88614-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CABFUUZE50X=PXAK0nFC1qhj4GhZ1FQJ2T2Jf8M0APE6s5-mgvA@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b7b72183-f9e1-4e58-b40f-45a267cc6831@bsbernd.com>
-X-Rspamd-Queue-Id: DD2411C000D
-X-Stat-Signature: fwphm7zi73u3jfdfkrwfyrjdx9ogr89j
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3awizgp97suupnzqyex6nneohqohhrx6
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768062632-697358
-X-HE-Meta: U2FsdGVkX180N46CD2QC8lPafBSN6NXUCmWxwHuca7VRKVvjn2+0eJ1dJzLvGdcbrYlFhwcGNWZSHEOEt/bgLkeMC6+a72oWqhUys4raSL0+Fy+O753ediTMfmJ/FI49TQ6hf2fhu84eJg6tPLPH7bkag+7omQkiELT64IBNpQCmnO4MjLzybNyJeZ08CDNkM9TwqA/N4pxsJZl6xIRmxJGY+n3chl6qXkxz23RibdQUHSNp/DmWJLBacGYtZ0iJgGGhI5AIPIhN+oDKL1wyoP1stfz2l3TKu9giG7t/NZ65ZNiS8H4sFlYbDcdjBQ6z1gc/U5lyZcZsqSOa7E99NTuurfXNzoZYl2M5Rg8hI62qFUADyOWy58K7AvHk2MnOyCstK6WBAba9hpKoyKCXSEItwW+Ug8EiVNItsZSF+lwxeo0TgKKjNsVAagdARJQW5OlLRmz3ObEKvU3rDDIpgMNNANiH5C1TG4s9w5YwYjVVSmoWJ8X48BkvsolsCnUgA7n07okWtn+bUpUyrMTnrbnKige4G5L14dwe0QtzblXldpaMWwYvWpOrXfkGAo+2Q9Ptgv1YwKarr69wxZzk4rXIRnxgk4FNh8F7f7YStr/NLqXiRsKvU9jFrJSO7eU45GeUVqY0zMT+RLGbMFICtxBkAFoLgCd81KxTLW2y89Sj6iyoDoXHM90XhwMfvf2UPj3R0xXiak4VEUAW1MXAhp7lZQ8Xibg1VO1V6GLn/VLxxUMjDe+WXrWD81PcHb0yU0R/BcdSWf2jPvs3rpS3j1va+iHKdaUi9kDaXmghWPynjPikp/CzkmAYbGlTY/1AQYL8k3Jr696t+eAZXLHcxtUVaXOM/Fe4S2R61+r36VI+lQLSb0LT2UlkBwx2dDDG3pnNhgcOyOjMR0bMtTcAC0CzamPSHwv55gFp72xpjo5sLsepf69800klszZIVObY+55C4gP7bRV591cz3lj
- nXU5OZTG
- CQqYnjR50QE0Kil6O31FvE1zD1OyEQ8lQbhNOn0ZflEpcaU3mVdPKPzbtVgXCSBezSSVRSGEsWsk0JU0gEyX/TNr4ltnHg+vFcazbMAEqmzhgg0yO5pPUZNb54xmxaLQx88CdQSBlZoiiW9RyhOEc3nTa//pOlzKmft0kFcXvnNx598+1gCaLFWWaaV1yppHUz8u6rRKbcOFkiDExbg75O0j1Rc6E7UCP3P0BIGJdGW2ss7RIySMkIymyx9R8wCUxNmaMAlqojPekJfYZSjcs1b9lD/uN2NjcIJYMOxjx5IsBiWsaINTZIe2QH7KMWtHYd+0KQH6eH0eukiN4p7NC9Tv0X/GiD7AHtbC8l8vmUU161jbS0RrGKUTY/Znl8XL+fOTNBcFzz3A8/y0=
+X-Rspamd-Queue-Id: 800B980007
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768064422-792916
+X-HE-Meta: U2FsdGVkX1+l2D7v017EobgNFgFmmjngxgDAlxFC8v15xBg8ZZjS2iGhuWagENKQhT8WMJEVWrw+tJ+QoX/izHt36nwtFGuneRVTUHG+gfQj1aYa29FP6u2Xwiu3671Hx65ithwsvrEyuPeg8pdysPgx8lB+mpB/yl1qKMCM/pJe5eqKAcmK93Tsj91m7z/z9xj1zQPD600ETY2Hx1NzatGCCs9xN3aZ+VORx91nKnYUGphJAkDuaFPF0nzALRmM9YyfYuBbmGEbibRV6v46x2nSfps+POuVIdNgYMPEXswG5LTz9vjMQtXNSKO/etUEiy1dYWpwgzkAZZogzgqrfHDfGvIyQg/WPWaFzdWh25EvlREOS8z9zugLl+odkzhmpMzQCUFiPLa5pQwDj1rrVPKQTooat7SQNmM7B5SQfLMFMpRnI1EWeAgaCKzDD0zFtk/n9380426vS9KsU54kCxrwpua0i182ruygEEG6grc/PgY6umaV4tgsbdaohsBgn4bvjpmsArMIe8DRYCPTt4PYdVsHBYS5OnH9S5A1JSzJLO7IEPPteTofmVsIqUceYWtbNOMYHZAbP4y3y9EKKnwCrKxGCrabWMFFy2JLkN3/AKwgpR/pHvmF9YWmuxTZh82NQ4o3kzThmLCUtGwoz1Mkb4M+obSXrVICwZd/uC6oavj118Pky5rFGiGQ9i8iqJcgq8nTfLAd4o2Z4LoOHPx9XN1OAJU+LJWVHOl/vA94LkXotfrvn4ScE4pFQUhA4H1E5xXKmEIIvVYSxh37an2Woq7pzWTD+tVR3OFpb3h0GVQ1O0HItaYUk2MGh+lCqNlDuOEEFKkJJQ3gMiEbEqYMYr/YI67RfOVjDMcBa+7dIn3Sl9rcIWOfr6p0d/Spr2i05DUMXun6hXMG03rqoBT8dmRVr6dW7yGv4K4xGxLhBsFSTvXPduWj784TeK9QhOO+Sry9lvTleO/fZzS
+ XgBME7Xc
+ fhbpTkqxtGD+13oH8PhkKQscJ0r/FcJoy0SPyS3GzP+AMNrXRVeOEzXlFkaCHhMhyK6ikhaYWP9/5YFKCii2Vvr03SjCU7eQwm+tdgNzIVLeMkNBay76ITbOrnaOHzdPAlEN9aNgxg9urhId/jWbn74n68Cajb0xQ1+E9P5rQ0xyEvBbQNAW90epC4yXQbYusJe+dKVIptwvFVVO6AfVoDBHKtjJ6cS99tKujo2wjbq601jKitX3PW1k01W8jPePsXtYBOKJq58u7S11g8c3yxUQx47e5STuREBXAvUZNw0ndkZkxxLf/LAZZx5QwelGqYzHqp3MiqgG1xfWV0rPFnkhz0S9hwaqcUk9KatZxtDUAQbaqLtpzkEEJvF4kme5JUXzBods9wI88xDTsX3IOxk2+Dw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,114 +97,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 10, 2026 at 04:31:28PM +0100, Bernd Schubert wrote:
-> [  872.499480]  Possible interrupt unsafe locking scenario:
-> [  872.499480] 
-> [  872.500326]        CPU0                    CPU1
-> [  872.500906]        ----                    ----
-> [  872.501464]   lock(&p->sequence);
-> [  872.501923]                                local_irq_disable();
-> [  872.502615]                                lock(&xa->xa_lock#4);
-> [  872.503327]                                lock(&p->sequence);
-> [  872.504116]   <Interrupt>
-> [  872.504513]     lock(&xa->xa_lock#4);
-> 
-> 
-> Which is introduced by commit 2841808f35ee for all file systems. 
-> The should be rather generic - I shouldn't be the only one seeing
-> it?
+On Sat, 10 Jan 2026 20:44:21 +0800 sun jian <sun.jian.kdev@gmail.com> wrote:
 
-Oh wow, 2841808f35ee has a very confusing commit message.  It implies
-that _no_ filesystem uses BDI_CAP_WRITEBACK_ACCT, but what it really
-means is that no filesystem now _clears_ BDI_CAP_WRITEBACK_ACCT, so
-all filesystems do use this code path and therefore the flag can be
-removed.  And that matches the code change.
+> On Sat, Jan 10, 2026 at 9:16 AM SeongJae Park <sj@kernel.org> wrote:
+> > What about using ksft_exit_skip() instead, like compaction_test.c does?
+> ksm_tests is a legacy selftest binary and doesn't use kselftest harness/TAP
+> APIs. It only includes kselftest.h for the KSFT_* exit codes.
+> 
+> This patch is a minimal prerequisite fix. Returning KSFT_SKIP already
+> provides the correct semantic to the runner, without pulling ksm_tests into the
+> harness model, which would be a larger refactor.
 
-So you should be able to reproduce this problem with commit 494d2f508883
-as well?
+I agree such refactoring would be unnecessary for this small change.  But you
+can use ksft_exit_skip() without such refactoring, isn't it?  The function is
+declared in kselftest.h, not kselftest_harness.h.  ksm_functional_tests.c is
+also using ksft_exit_skip() without the harness model.
 
-That tells me that this is something fuse-specific.  Other filesystems
-aren't seeing this.  Wonder why ...
 
-__wb_writeout_add() or its predecessor __wb_writeout_inc() have been in
-that spot since 2015 or earlier.  
+Thanks,
+SJ
 
-The sequence lock itself is taken inside fprop_new_period() called from
-writeout_period() which has been there since 2012, so that's not it.
-
-Looking at fprop_new_period() is more interesting.  Commit a91befde3503
-removed an earlier call to local_irq_save().  It was then replaced with
-preempt_disable() in 9458e0a78c45 but maybe removing it was just
-erroneous?
-
-Anyway, that was 2022, so it doesn't answer "why is this only showing up
-now and only for fuse?"  But maybe replacing the preempt-disable with
-irq-disable in fprop_new_period() is the right solution, regardless.
-
-> So this?
-> 
-> mm: fix HARDIRQ-safe -> HARDIRQ-unsafe lock order in __folio_end_writeback()
-> 
-> __wb_writeout_add() is called while holding xa_lock (HARDIRQ-safe),
-> but it eventually calls fprop_fraction_percpu() which acquires
-> p->sequence (HARDIRQ-unsafe via seqcount), creating a lock ordering
-> violation.
-> 
-> Call trace:
->   __folio_end_writeback()
->     xa_lock_irqsave(&mapping->i_pages)     <- HARDIRQ-safe
->       __wb_writeout_add()
->         wb_domain_writeout_add()
->           __fprop_add_percpu_max()
->             fprop_fraction_percpu()
->               read_seqcount_begin(&p->sequence)  <- HARDIRQ-unsafe
-> 
-> Possible deadlock scenario:
-> 
->        CPU0                    CPU1
->        ----                    ----
->   lock(p->sequence)
->                                local_irq_disable()
->                                lock(xa_lock)
->                                lock(p->sequence)
->   <hardirq>
->     lock(xa_lock)
-> 
->                    *** DEADLOCK ***
-> 
-> Fix by moving __wb_writeout_add() outside the xa_lock critical section.
-> It only accesses percpu counters and global writeback domain structures,
-> none of which require xa_lock protection.
-> 
-> Fixes: 2841808f35ee ("mm: remove BDI_CAP_WRITEBACK_ACCT")
-> Signed-off-by: Bernd Schubert <bschubert@ddn.com>
-> 
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index ccdeb0e84d39..ab83e3cbbf94 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -2994,7 +2994,6 @@ bool __folio_end_writeback(struct folio *folio)
->  
->                 wb = inode_to_wb(inode);
->                 wb_stat_mod(wb, WB_WRITEBACK, -nr);
-> -               __wb_writeout_add(wb, nr);
->                 if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK)) {
->                         wb_inode_writeback_end(wb);
->                         if (mapping->host)
-> @@ -3002,6 +3001,7 @@ bool __folio_end_writeback(struct folio *folio)
->                 }
->  
->                 xa_unlock_irqrestore(&mapping->i_pages, flags);
-> +               __wb_writeout_add(wb, nr);
->         } else {
->                 ret = folio_xor_flags_has_waiters(folio, 1 << PG_writeback);
->         }
-> 
-> 
-> 
-> Thanks,
-> Bernd
-> 
-> 
-> 
+[...]
 
