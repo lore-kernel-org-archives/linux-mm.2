@@ -4,98 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2B46D277C9
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 01:04:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C1A9D277CA
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 01:16:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 411296B0088; Fri,  9 Jan 2026 20:04:08 -0500 (EST)
+	id 742B86B0088; Fri,  9 Jan 2026 20:16:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BECF6B0089; Fri,  9 Jan 2026 20:04:08 -0500 (EST)
+	id 71A846B0089; Fri,  9 Jan 2026 20:16:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BD836B008A; Fri,  9 Jan 2026 20:04:08 -0500 (EST)
+	id 647C96B008A; Fri,  9 Jan 2026 20:16:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 186B36B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:04:08 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5123F13C52E
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:04:07 +0000 (UTC)
-X-FDA: 84314257734.03.AE4C453
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BF30E8000B
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:04:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lkNw2Wfx;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768007045;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=ia/zGr4zK2tSXh/eQUyGt78vFSsoQ6cgD77qMzz2GuM=;
-	b=LZR2X3IbKmCdZjXWRvm/0SPKmXoA3UC+Carwmp6KT06PoU/m+/brb4PrMkKlmKOf49uQOl
-	6hFl30Ci4udOG6wwIHvorkVURepV4IX51957yALUq6RDzV9WjUcClDnYR+b91E/iWf0AWG
-	g/Rkugok8hgMYkSrILDE9AjTHDvvQLk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768007045; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 521056B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:16:53 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B749413C574
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:16:52 +0000 (UTC)
+X-FDA: 84314289864.25.3E16CA7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0CFD618000C
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:16:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZsyTwe/z";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768007811; a=rsa-sha256;
 	cv=none;
-	b=GoZyRhN8fdhadY8kFLPcxmK/ipwBX+fvGTCDL/EXiEQa9BEPLPG0ukE6zfizspPrmOru3t
-	RqHhmE4uJY0/gdUHZAAh0jzByJ1pXhEcWVAqkY2sZz2BaPGgRh3UWbC8Cq6WLCgD70bmN3
-	QRLH0+2vochFDIlpsPU14v530CeorOQ=
+	b=s/KmB1cMPkN9pgnaSZ8Agcy8tq/57cYIhYd/RF3cPAjF8b+7P6c2B8bwZ7faovv58aFlGL
+	SgII/s1NQqciSe6sa5cQFaDHONUPeJH/7NKhQoY5fHNpKLQzCGLKrzpw0OV6t2ImGKJROG
+	GPLNrTFBzAUJlt36S4meNsmeNpvcJjU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lkNw2Wfx;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768007045; x=1799543045;
-  h=date:from:to:cc:subject:message-id;
-  bh=j6KVbHQs8FIdO2Qtc0Sp4iOhfIJayw1AX0HpbB9e20M=;
-  b=lkNw2Wfxt3fonfCSOGKWgT2oTZD72h4wYugCqrH+FzD3OhHNOkjRsca0
-   zl+4FABPJPgpCOvEst2tyFmMdrT7ZxUR8tABZd0bS0/Xpa7tCr5PkM1K3
-   YlDBOIds1Z5y77fzG2Oc+3X6l26RHw7lUflsGCaEZrAUJsfKT9sbd2pkG
-   L6emE+I38wV5Imh7Xem8fZU3EOVq4PzAAi247VOH4mWPcIo2Lh3UHkUIJ
-   CENXTAbFEgssr+UkihoNg66nvEC8JYmNIF9J9Mnod/ZYDN2KJdkXeJeR/
-   qOkrIQNo3OvcHCFqCgUbQbphxGj4kCYm1ezoSZ67RBQo6sEG77WO/4rOa
-   g==;
-X-CSE-ConnectionGUID: tsxljKeHTVyWnaB1aRFYxA==
-X-CSE-MsgGUID: wdtONaTETeKJ1+6zDSAjZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11666"; a="80755814"
-X-IronPort-AV: E=Sophos;i="6.21,215,1763452800"; 
-   d="scan'208";a="80755814"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 17:04:03 -0800
-X-CSE-ConnectionGUID: SNmmDZSfSk+D5LuIffXhgA==
-X-CSE-MsgGUID: R9UqJAKMTnajVrB/5fZaCQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,215,1763452800"; 
-   d="scan'208";a="203893315"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 09 Jan 2026 17:04:01 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1veNOZ-000000007uL-0Thb;
-	Sat, 10 Jan 2026 01:03:59 +0000
-Date: Sat, 10 Jan 2026 09:03:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Brendan Jackman <jackmanb@google.com>, Vlastimil Babka <vbabka@suse.cz>
-Subject: {standard input}:26675: Error: operand out of range
- (0xffffffff not between 0 and 0x3f) `l.slli r21,r21,-1'
-Message-ID: <202601100812.QjhXvtfv-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BF30E8000B
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZsyTwe/z";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768007811;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dNwrfv93yNM5Mf+/QZ5yYprIsysA3544XDewzLBkcpU=;
+	b=347zy7/NjUIrOmiuq3ki6QvGesQQVNFv1iQ2Bv9JDQVAARzephW64o9FKS8G4i01H9kRKx
+	G//BjFBn1Xn/pWReX4YV/Y2I8UXtxfTS00lLHKHGohDDHyd8l8QWIusDVUbEH6B5+zAdcZ
+	hLNuU3lLgsu5CXc8OZdNFQmNDTeOjX0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CEC2E43A13;
+	Sat, 10 Jan 2026 01:16:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE73C4CEF1;
+	Sat, 10 Jan 2026 01:16:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768007809;
+	bh=1yqAuwPlUfRbkywsOHYeC8zQzYiMnx9T0dqkU24ak7M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZsyTwe/zSpke6a9XZ6AKLa6ZQ3ADLRwY8NzsYMoo9vtCM3McMX3RZNQR+YG/YJvjR
+	 +Kojk+cRQFG/GZcRFeJ3+4dRApBG4Q9p1BQWOcS0lpfCb5Kv8bB2c/GXgr+TXFa+R6
+	 Ho0hzcKyk6cAA/6uifqZ0/bE/wR/EMwh98DG/nk3KFRkzUc5JJQ1uvFFsZ9Ybfs9fB
+	 PBXZi2e60iSAjHuQryLCZ025oRuwIf7gLFgOHEwVxAcMyC+QpDFzMfI6GZOap9rXZ7
+	 pwCARKTqLLedq/a7gA6X06GdaXr9Kr9bAEaSMNC55mAdfRzhfk5OX+QW21X87BYV2u
+	 SZbtvQNv34LXg==
+From: SeongJae Park <sj@kernel.org>
+To: Sun Jian <sun.jian.kdev@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: ksm_tests: skip when not run as root
+Date: Fri,  9 Jan 2026 17:16:40 -0800
+Message-ID: <20260110011641.81278-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260109094313.52307-1-sun.jian.kdev@gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: a9cff9o5fofb1777dg9fwww154myottb
-X-HE-Tag: 1768007044-861809
-X-HE-Meta: U2FsdGVkX1+vIfeurubVKA8X5uWHYPjJcmvMe0GX8FGusYSq6oixOpl4lh7DRzSu4HtZx1NsO4nEfYZFWSFI8cChGPzkHGEQbNRdUzKhHl/CMcLqWWbKr587ddV4ubeCe2ohNTFNPVkp/Q3X0AKOfZppmdLtzOIx3VOYJ9YkJccU8FAXs45NS3+g1Bo4qLe/dKJKhHcTFFkfVAoK7P1+22ICJw/9tzg8kKKrJR2Wfou+RFCFe76EX1farLM/zdxIlDCIJg0y/XiviZ6iHGhpKDq9qmXuIEb38gTe0hkV7pLM9/4z5hi+7rPu7RsSccI6gbIPa+5HIpG2pQKWTQIZpQj167TQTLJgDb1OIk0EW5B9MEXOZ7nKoPuaC2rd0RLMYYgrXX6zBS38ZQuvxyZDk3WmHN87dZPqZRw4Cuj9UX8htFpFU+CysdyMQCZ6iVziXV6o35Fr4EJkuuXw2kaBgDN/5dZXYUQsl2vihzwotvVASqHPqR+eLi7fNeIasr5blR6cu5Yt4ym1RVFzHMUGHewImgAPPHDur5k5wWwmoC53zzT7r+5n81u8DVYM18n938RGnq54P6GnE0t55KEbiBoRmQmMoYvfiN+2aJjuk57OmfSsUBhDCamkOWnmt/jF9SAqs2vaEBoudBWCa4VG0+A4fCA+Uod5eNr0zWwE061IY+KeifD1U8QNzUQVjjKjJP5V/3Qo+6/RY3wq7K+BOMnmcfjcATkVyCZw0nQyYyGoU8VKbxg0N0CFKsyImWpct+oF9Zj1a+qFlFvPVZ5WcWvnxdeVeO4mY7ZXAaRtPs5IJo/y5yrkzbTlZmvc/bz+6OCXxE5MvJ9GstMqrF/AqL60uPcEtmIF2XXxCTH8ZtBdoD3V0R0PImekgIMsH01Oafln0ra/80CpnyLUpxEtEmaFy4TAmlJpEER6ji8nWk5QXxDdjkWtJ7PDTfh8cd37HCDP4LagDt7W3DsZPHR
- UsIfUMHo
- tARt+T3uTsx92LuuzjDPB7jGFZyfsZuiXwr32zTDCRw1b8vBZ1vYHNR0w/HhszhXTK+/8dA3g25yJys/McvQXpflZ3X7YGWZHDn9008E5nSTdhWWFQUst5rq1QcQg6gqqyxBYmf7N+CcROe7AakMMlvALbGYFHwkHhZsNGVwMgX6UtFQQcGeDL1/wINPl04lMKARFze6liY8pudMkxxwnNB1t5noZ3rc/4MRih7zorrdaQ9j/6KCTDZY4jwDzzF0AAvkhItjVOo4YUFQGfq6ujtnFVA==
+X-Stat-Signature: czgquc94q6z89dw71cajughhuhh38ze5
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0CFD618000C
+X-HE-Tag: 1768007810-961538
+X-HE-Meta: U2FsdGVkX19G/RyZDV9JahdGsczSbjw18WLU3ulTVaVEr4tYHLQkJ1c9hkCFBTNqK23x7y/yTBBcqilZUAlPMRxeUAX1Mr8AQL1sC0X613inJpjdu8/DSu8DSPuT36T7KJ2OV1/dfle2K75KDIQ6SqnX2kFlXyidB1+41t4hmxm1dqxlUU/6NVgX+5UF74FgnhsfrYRNs3a8YYn4Sb4hH4WcD7BEpB8/jM/EVrYIPuhoWioemEimojWIiAcrqXLxOGJFdge6Tt9M7eA5LN2UayToUxiqYwyDYmHk+fNKrZPcNn11YKQgQXq/71biUSqoZ5NSWnrh+fG6RKLDDS+ktNJM1UHrXrzhX66GAbAkHijFpTSsxfe1hDljYRp7JMrg4s0Vwot3tLK6ySysJk8CCPhrPAq5HzfS33zMxjbdrwWRA+NmaMj8DJ3qPICdkHggSrhrfFBIoY5aIpoBPw22vVRkDPb+RbirSPQVmciBACICAPiL4v5sgL2lA3tgqibXS5A0wp2WpQ/RPgD2f0UiflYWFkFtrGSDh4VBAPliKzf28kWDpHqyoBN5Z17QB9hqOdzHVjm6iA/k1mhtC0OMA/EUQ/r9cj3TRYCTO2rplZzIKB8jBb2EJEikd03hGHbKKdf1ileQon9wX1aaVbjwKECNaD6F+l9Q+sA3zvksQwXxARL+DoKYIVb/fvON3Nb4dCEacUCTAEVhYjccVcCAluWpynsR5qqNbDg2lLB9/UaOxeLpi8UlgHw+i/1N9xt8+0dvvtPnV/oyEENa8/3MEb+6f6qtiq5BINNAZDp4K6I7+WcryoXwg3DW/IhFTWleTQmSGnp9N8E4ALwU4DLs/75VOUR/3IupyYn1c9ybKhG2m6N4b1Y8+HhAC4Q69yiiSDSYK5IMEBMjxCwIEtVC32fVby3a/qw1pslPH5U0e5q5WUfNT/6+sJqriSvxQnHLdhwqs6hPWA47OkdWIr8
+ U/WkAKqX
+ zSJ5amI+lZaOEDmfO1gFijc7wOnD0L/B90ncCOgkqiOdArFYmY/qGKqUJnCYEJHt9+Apc8re3x4kKJNy1XSCyyRkx9bQnc3eErbc9jYJwalCjM2jM0nHxqfdHcFTgQBTdwRE+hw60fv3q4GLH/uRrEw6i10FNedLzvVL44e4yANXhQ1rLLK0eeCD8hs0tPrematzyAMYphdMy4dd5Xe8h/NQhz0p7upI5+bff+3T8PJ9lUIrkQLOezK1DHAihMwRJcPdGu2TL8HjYnZmXBLXRtFsoxSIa/oaljv10+LJt9BQZ5t8hNmWrpaq4Yb8q60hAtF0fAKmr0N9ul/QgCjqwyzhL8zBsr4ADmegx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,26 +95,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   372800cb95a35a7c40a07e2e0f7de4ce6786d230
-commit: ee414bd97b3fa0a4f74e40004e3b4191326bd46c mm: page_alloc: tighten up find_suitable_fallback()
-date:   8 months ago
-config: openrisc-randconfig-r063-20260109 (https://download.01.org/0day-ci/archive/20260110/202601100812.QjhXvtfv-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260110/202601100812.QjhXvtfv-lkp@intel.com/reproduce)
+On Fri,  9 Jan 2026 17:43:13 +0800 Sun Jian <sun.jian.kdev@gmail.com> wrote:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601100812.QjhXvtfv-lkp@intel.com/
+> ksm_tests writes KSM sysfs knobs under /sys/kernel/mm/ksm, which requires
+> root privileges. When run unprivileged, it fails with permission errors
+> and reports FAIL, which is misleading.
+> 
+> Skip the test early when not run as root to avoid false failures.
+> 
+> Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
+> ---
+>  tools/testing/selftests/mm/ksm_tests.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/selftests/mm/ksm_tests.c
+> index a0b48b839d54..c22cd9c61711 100644
+> --- a/tools/testing/selftests/mm/ksm_tests.c
+> +++ b/tools/testing/selftests/mm/ksm_tests.c
+> @@ -766,6 +766,11 @@ int main(int argc, char *argv[])
+>  	bool merge_across_nodes = KSM_MERGE_ACROSS_NODES_DEFAULT;
+>  	long size_MB = 0;
+>  
+> +	if (geteuid() != 0) {
+> +		printf("# SKIP ksm_tests requires root privileges\n");
+> +		return KSFT_SKIP;
 
-All errors (new ones prefixed by >>):
+What about using ksft_exit_skip() instead, like compaction_test.c does?
 
-   {standard input}: Assembler messages:
->> {standard input}:26675: Error: operand out of range (0xffffffff not between 0 and 0x3f) `l.slli r21,r21,-1'
-   {standard input}:31576: Error: operand out of range (0xffffffff not between 0 and 0x3f) `l.slli r17,r17,-1'
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+SJ
+
+[...]
 
