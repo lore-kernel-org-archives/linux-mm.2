@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DB23D277D0
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 04:01:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A95BD277CA
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 04:01:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69CB46B0089; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
+	id 976A26B00A0; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41F596B009D; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
+	id 6674C6B009F; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6C536B009F; Fri,  9 Jan 2026 23:01:02 -0500 (EST)
+	id 3F57A6B0089; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 726C86B0098
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 755246B009D
 	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 23:01:02 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 310B1C01BB
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 32297140119
 	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 04:01:02 +0000 (UTC)
-X-FDA: 84314703564.13.1699D7E
+X-FDA: 84314703564.14.E507D1D
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 68D77100009
+	by imf04.hostedemail.com (Postfix) with ESMTP id 535954000E
 	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 04:01:00 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=TFa5gVdr;
-	spf=none (imf14.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=f7gmULfr;
+	spf=none (imf04.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1768017660;
@@ -34,33 +34,33 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ISNZFsbhMluGOOgPJOf7PuXZbW/+Y33dgsD1DeUdNV0=;
-	b=71z3ELUL9v9rbvYPPbXwGBP1geuIJFH8Botq7F1T79NS7nmKs8Gj02jWS38dw7Fif/WsIo
-	eb38eUyMZwFxKMmtY2Pun16PcoPPCdTSS2AypUrQaeif39u3aP1G4zjzxwSaKTJ5zvjffp
-	Zie7sgOjtKf4UA8sJtZoeD36UYi/Ia0=
+	bh=l2LUE689TUBjRJhqWoI4FSTJJqCMuaDthYKZkiYtSho=;
+	b=KvnOgOQBoI5rpVEG0UWvu6cmu77q5wVkYR0rluXfLHblB1/xMDOh1ISTz/d0N9ppFVwxrh
+	WomEvhrqMalUSQ/RuInRE95p+K2BLDOx4F4Y5ybmlNxpc8/v4AEeZE4N+bSI6323u/jmOc
+	JLUrdrpLCb4NjlJRA9tcARpgBKBVUSA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=TFa5gVdr;
-	spf=none (imf14.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=f7gmULfr;
+	spf=none (imf04.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768017660; a=rsa-sha256;
 	cv=none;
-	b=ABWFmGyGYdGd0yHGHujep7KWHJoBryt2s7W4P4W1/USv4faEZv25BANbu5H5E72gEzjLUl
-	bC/U5LMeunhdscgrJ2SX5fBDJK9zI7AxaXZcyMjzeE+QcJKH9LH9GTtacsMj1CR/i9KynD
-	kiqqwYg9TIJEY7YvX75siwUBHvGPsKs=
+	b=aAnnCa90fz3k0lVLpi3FEpDxDRbZzRheRg2wsZKJnCbkmiSCBfPfvpfOCcY9hFW9k+EO7u
+	WwlX3whrwwTQv2uMyOZVlN2rqspqd8MjU9G1NjNhhetMK3Illw8evGg7eEFOzRXmTXkqby
+	qk+9lfhxuCC4KxBH24TyA0+1TudNW6w=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=ISNZFsbhMluGOOgPJOf7PuXZbW/+Y33dgsD1DeUdNV0=; b=TFa5gVdrJvHVBG1sACtJpPQTOx
-	+glfX5twmsJHBvGQUd7Lw6Y+eEtRTXV77LC0AUyJHDPFml5kDOFay7oyDroqQn4vCJRcljjNA0aSz
-	+QxWiTMVa86jafeoaXLMOWXtREF0YYii1VtGCQNHJh1BFZtaezyAEKZpJWWDXIm0Ld71UF4NIazsu
-	GqDPFmAj1U/RyGs0YUSxdga4Vb0FbVSPchaXbqR40LpZ96DTfeku9RnQvxIVIwt4DEl3yIAUpfWmI
-	4Ca+Fwlz7Q31GJeuKZ2e9DoUwKZLhy+hSK5pcPJPtymhmyfb1WBOr8Uia9RNWzOz5VlLooAzzSV/i
-	JZInNl/g==;
+	bh=l2LUE689TUBjRJhqWoI4FSTJJqCMuaDthYKZkiYtSho=; b=f7gmULfr1QczamnpQvpHORoB4Y
+	cZlsW62CiHl2hZNjtSkrAMYnzAg+3ee4NzKQD0cwRhquSK8F9gIfJ55AnPDVTVn9irnM/Z4tVByIo
+	mNFfBFW/wtmlpUsXUkMbOAMkVaYS+Plk/C56B9IAwv6/tGEwb/U8D4KAW4Rmy84/s1u/9SnOxy/Yg
+	OW32w/DQT73dGjLsm4GxcsQqJZJEflD08QiKHs0aH4w1/hmnRzseN7XuTSLbTjuX3oWpFMtUSiJhS
+	xuXBl4Li9Uu6V4rIOFZ2+yJcSbT9wwml/ntSivby0LL+rtss9AuCL2xRHuodRJy6wp38eRtGM5k4a
+	Qj0W5Xpw==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1veQB8-000000085ZD-1yqq;
-	Sat, 10 Jan 2026 04:02:18 +0000
+	id 1veQB9-000000085aJ-2fZG;
+	Sat, 10 Jan 2026 04:02:19 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-mm@kvack.org
 Cc: Vlastimil Babka <vbabka@suse.cz>,
@@ -71,22 +71,22 @@ Cc: Vlastimil Babka <vbabka@suse.cz>,
 	Jan Kara <jack@suse.cz>,
 	Mateusz Guzik <mguzik@gmail.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 02/15] allow static-duration kmem_cache in modules
-Date: Sat, 10 Jan 2026 04:02:04 +0000
-Message-ID: <20260110040217.1927971-3-viro@zeniv.linux.org.uk>
+Subject: [RFC PATCH 12/15] turn task_struct_cachep static-duration
+Date: Sat, 10 Jan 2026 04:02:14 +0000
+Message-ID: <20260110040217.1927971-13-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
 References: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: u8eaitizj7pobbwk3t5fjk76rojbt7rc
+X-Stat-Signature: ns3q6stf39akw4baiwz6yb7f953xuqof
+X-Rspamd-Queue-Id: 535954000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 68D77100009
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768017660-712933
-X-HE-Meta: U2FsdGVkX19tYOLZReHOQ54SQdUlIhow3ELvR79gpLftfwDcyFfb/SCiI0uK/70VihcWhRy4d3VT+PnNaHm5t1CEMybw1NHklJx281cOW/irhYOapxtZhtweetox65HoHymnVDzhuv7DIBCh+crQmabUbZkPL8uz3KZ9TLZ5QGKZESUlZgA147Qsfik43pw6cAqz/5KQI71Mnn+WbzV+2O4aooJE0OVcBsTufxWaqATje52BAunyqVifRQKGz/ks/3VFJxVV3DXg1jBNBl3mjmP3NnXPyu0T9HgfzdAUUgTxa9jnVAZf0cdmaDZ3uCbOHeBl0Ufl1Cy0GTAEEfWlJfTnxVgn9x3NOxV7ORHbhrbW07wzzCXdXhEkjIpNvv9qsOQH310U65qNG5O0hgYsRjoFyTbjrHRCN7uuHjoehXAau9MsCd8opTcWRN8+Pm1ua6qUkOy1O2/FJ4w3gGnXrn+QNoTrLobFbfhKsJer7tUnBAkOoOQYwzEnZBruxPTUbBT0s3s31AB6NGNY3xAVkRW9P9ec3Yb1Bh+nhU+1aO3gIKHmUVPqDOlnfo9DH/pqllwylXjJ/lSEg1IBm4+zXmIjddG82fnUZErfpnw8F7oUA6IbxRRHu5D0qyycyRtqbShm/Uzp/QIfNuS25Oq/OwnxJz9O3INuzBuERICdBAXcecdr3MHEfXMtS0q7051ZC1pQyhnowWTAUqmCM6ludqY87rgWfh1P3cc6jdUWwoPzGJVQe4IpKjINLaWlhjLtyUJFpIySlB5PipVv4rTg7GkaSgVzy7vWNcLkY4N1RoAUXQ+2iO8Th798eoyJvBCM1FTcvXiD9UffXzbjTj8WywVVCxHmtYAd9/WE9yLiXR8YC64ocgnxbAmsAmbSpQj4+K9pcdkG7Yn6mohmHvtiggM1TvxnTNkAqd+WxtkDoYNKaf+4KtrQv5JK9ipk6SaVHL+kLrCOouCc5vF3B6d
- +5+pFLCb
- MmdWq282NYPh1cMZM9/L+VJW31AH3yqPuLjtiMq9FKgDO4Z8WVR6D9hCc61YxCYvQIdn3sYtAxBQvI/cXVLm4q4Qbffw7GLPzt4tHmSz1BrSKWhLKTRdQfQHH3DUol8ZrgZDZrhlM4krKN3CqZchifDXwrNinU9RhByxCx/u39H3dZ96dN0UdDBldkzJNzyvELVgMp8QETETsv0d3iooF6Ii73cDQhwj3X73EjGAjLYwc2AEzLd9tFFwMd1H//3x61515bdLGahj0J+YsrDCDyUINX2tjC9tEgHDd4B0bBcsUGW3JIs6z3krxerJeFsnBDcemyKWEJeG7Y51F/+mlQuhHLdk2feLOwcQpiMjGKMc+LaNOPQOTvype15vabKlunC5/obpoEGuEhpMw25d6QrKrHtKQVPgG1BOflujAU8iT8dY=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768017660-703836
+X-HE-Meta: U2FsdGVkX1+eLoGpYfz8dUmIj36GQkla5c5HS+EMZZ2eE+xcP96LxJZG0v78XsU9etOmTGT4tnOV7mvUJIqGEV3axFqTiP7UHuWPOWpfSnikfmpvQ4aPCxYdBDwvLehGh4Rp3kocpCJO1XGXboXuxFbEMVV4UqN3Jb2E0ZOMOHDDuBn11u/MeU8EDfR9pRLbjpGyhFxXf1BNup9y0O7PHOzYovxN5XXeqEstZ8roIo6L86cCwL0P+JtTg+HxfNX4q2IPOnL+DqJNxGwVt/jI4MHCdrkDRRGzcdpXAmxojpL5r+TNBdfEqJhjQ15kG3nLZrj53G+gTCP2fdRa9cZR6EtUFWWmhQDPDuAcmM1Bv/iKCV1tWtWG4qtuzrPIGwLiZuZ9mDAQZyWbTqVey2bSYJgGO+60R+yzPYysMcHsyye/CNduVZXi4/oIA9AemrU8evYU9Pk/dkiW2FutBThKLt2D5zqp9qNr8FBd/YNBu8XM8MDNWWLouzxBu07dOkhHiJT1m9346Tw6r5vr9WCbsReGy6T/YbAVfZ2awvso9pAoBVFvjxI0T1HkVZ1qAujZ8Ixu4pu1KO/0ejOQ9cFnC+uISNOjudoJQpiIpCSvpvWGC8mt5nHkFXx1RMosXtrdxqXcGF2jQZEAUZYNuThwu5PEihul7ObkoSU12zsXUR+TDRaP+tQUDlMeUUN+gBoVd7xoPxxmUyAoWQnJKMSc96IcNlg50oym2CvTWFcy8o7BMujs9jPoXxTGzsmENA3vMUQZZxeWGKZrKCUK+KLc+P5RqKsXdxusr5Uszx9NTeWjMvzYgMw6HD8KBuYYVpeaudaQEWK4JtO/BS2s92lP37BqwqtZXd+rjhbVkrnvBr6RItLVizVP9EBgqOTPRXgQi2xv/3Or8fxmYjCz8vS3XPHChGujQTzvZ7PR648lMWkMfuiNT9SRPIYzP849rK7RjIibdUkP3UmaV82Mm1/
+ GqY38/Qx
+ 3DYzds3ahZ/pfsZbeKyUy1egHOQi/d068Ey42HS5okbhhHx1aAHP4+91Ne1BEFP5oh7UO1LCipwojCX2trgUa7BhmREQvWii9jFoxrigKSMrWE/JC7quQWSAmJzK3+jgpyTPBoa0EFWe0OeoH/j8/clF4QeUd4mkz/VRHR/a7yDjDfpSJNPTtdiBTsPYyb2Y6pyav9Loo+dX2fn87GoV0hFoL8dr/D70j7eaGDi/S7xYXIptHECKuMi5Fpsv1l6A8hi6jYlbk1Uwk9jKmliCpnJlpKxtZS0UWqF64Lf6csH0LTaV07gMK40Cw32yjQqdCsNsobcVVNNKpdvwD57SXUC8b9h6QMvN2a9NTZmihlBwm2XiGZJKaW7+JZJByymCd/ajINCY+4abNzdkrXING7CqAm+S1o6pCd0S773T9ZRPY8pWkfZtx74NY5ZS4H6YfBMvE7GFAnJ0QNB2Xd/mW5ksvVVnhUAHcqq2c2KyP2qkc77vsm6OkAIIHuQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,151 +95,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-	We need to make sure that instance in a module will get to
-slab_kmem_cache_release() before the module data gets freed.  That's only
-a problem on sysfs setups - otherwise it'll definitely be finished before
-kmem_cache_destroy() returns.
-
-	Note that modules themselves have sysfs-exposed attributes,
-so a similar problem already exists there.  That's dealt with by
-having mod_sysfs_teardown() wait for refcount of module->mkobj.kobj
-reaching zero.  Let's make use of that - have static-duration-in-module
-kmem_cache instances grab a reference to that kobject upon setup and
-drop it in the end of slab_kmem_cache_release().
-
-	Let setup helpers store the kobjetct to be pinned in
-kmem_cache_args->owner (for preallocated; if somebody manually sets it
-for non-preallocated case, it'll be ignored).  That would be
-&THIS_MODULE->mkobj.kobj for a module and NULL in built-in.
-
-	If sysfs is enabled and we are dealing with preallocated instance,
-let create_cache() grab and stash that reference in kmem_cache->owner
-and let slab_kmem_cache_release() drop it instead of freeing kmem_cache
-instance.
-
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- include/linux/slab-static.h | 12 ++++++++----
- include/linux/slab.h        |  4 ++++
- mm/slab.h                   |  1 +
- mm/slab_common.c            | 16 ++++++++++++++--
- 4 files changed, 27 insertions(+), 6 deletions(-)
+ kernel/fork.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/slab-static.h b/include/linux/slab-static.h
-index 47b2220b4988..16d1564b4a4b 100644
---- a/include/linux/slab-static.h
-+++ b/include/linux/slab-static.h
-@@ -2,10 +2,7 @@
- #ifndef _LINUX_SLAB_STATIC_H
- #define _LINUX_SLAB_STATIC_H
- 
--#ifdef MODULE
--#error "can't use that in modules"
--#endif
--
-+#include <linux/init.h>
- #include <generated/kmem_cache_size.h>
- 
- /* same size and alignment as struct kmem_cache: */
-@@ -13,9 +10,16 @@ struct kmem_cache_opaque {
- 	unsigned char opaque[KMEM_CACHE_SIZE];
- } __aligned(KMEM_CACHE_ALIGN);
- 
-+#ifdef MODULE
-+#define THIS_MODULE_KOBJ &THIS_MODULE->mkobj.kobj
-+#else
-+#define THIS_MODULE_KOBJ NULL
-+#endif
-+
- #define __KMEM_CACHE_SETUP(cache, name, size, flags, ...)	\
- 		__kmem_cache_create_args((name), (size),	\
- 			&(struct kmem_cache_args) {		\
-+				.owner = THIS_MODULE_KOBJ,	\
- 				.preallocated = (cache),	\
- 				__VA_ARGS__}, (flags))
- 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index f16c784148b4..dc1aeb14a12b 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -60,6 +60,7 @@ enum _slab_flag_bits {
- #ifdef CONFIG_SLAB_OBJ_EXT
- 	_SLAB_NO_OBJ_EXT,
- #endif
-+	_SLAB_PREALLOCATED,
- 	_SLAB_FLAGS_LAST_BIT
- };
- 
-@@ -244,6 +245,8 @@ enum _slab_flag_bits {
- #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
- #endif
- 
-+#define SLAB_PREALLOCATED	__SLAB_FLAG_BIT(_SLAB_PREALLOCATED)
-+
- /*
-  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
-  *
-@@ -373,6 +376,7 @@ struct kmem_cache_args {
- 	 */
- 	unsigned int sheaf_capacity;
- 	struct kmem_cache *preallocated;
-+	struct kobject *owner;
- };
- 
- struct kmem_cache *__kmem_cache_create_args(const char *name,
-diff --git a/mm/slab.h b/mm/slab.h
-index e767aa7e91b0..9ff9a0a3b164 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -249,6 +249,7 @@ struct kmem_cache {
- 	struct list_head list;		/* List of slab caches */
- #ifdef CONFIG_SYSFS
- 	struct kobject kobj;		/* For sysfs */
-+	struct kobject *owner;		/* keep that pinned while alive */
- #endif
- #ifdef CONFIG_SLAB_FREELIST_HARDENED
- 	unsigned long random;
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 81a413b44afb..a854e6872acd 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -245,6 +245,12 @@ static struct kmem_cache *create_cache(const char *name,
- 			kmem_cache_free(kmem_cache, s);
- 		return ERR_PTR(err);
- 	}
-+#ifdef CONFIG_SYSFS
-+	if (flags & SLAB_PREALLOCATED) {
-+		s->owner = args->owner;
-+		kobject_get(s->owner);
-+	}
-+#endif
- 	s->refcount = 1;
- 	list_add(&s->list, &slab_caches);
- 	return s;
-@@ -322,7 +328,7 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
- 		args->usersize = args->useroffset = 0;
- 
- 	if (args->preallocated)
--		flags |= SLAB_NO_MERGE;
-+		flags |= SLAB_NO_MERGE | SLAB_PREALLOCATED;
- 
- 	if (!args->usersize && !args->sheaf_capacity)
- 		s = __kmem_cache_alias(name, object_size, args->align, flags,
-@@ -481,7 +487,13 @@ void slab_kmem_cache_release(struct kmem_cache *s)
+diff --git a/kernel/fork.c b/kernel/fork.c
+index f83ca2f5826f..8f0dfefd82f0 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -178,7 +178,8 @@ void __weak arch_release_task_struct(struct task_struct *tsk)
  {
- 	__kmem_cache_release(s);
- 	kfree_const(s->name);
--	kmem_cache_free(kmem_cache, s);
-+	if (!(s->flags & SLAB_PREALLOCATED)) {
-+		kmem_cache_free(kmem_cache, s);
-+		return;
-+	}
-+#ifdef CONFIG_SYSFS
-+	kobject_put(s->owner);
-+#endif
  }
  
- void kmem_cache_destroy(struct kmem_cache *s)
+-static struct kmem_cache *task_struct_cachep;
++static struct kmem_cache_opaque task_struct_cache;
++#define task_struct_cachep to_kmem_cache(&task_struct_cache)
+ 
+ static inline struct task_struct *alloc_task_struct_node(int node)
+ {
+@@ -860,7 +861,7 @@ void __init fork_init(void)
+ 
+ 	/* create a slab on which task_structs can be allocated */
+ 	task_struct_whitelist(&useroffset, &usersize);
+-	task_struct_cachep = kmem_cache_create_usercopy("task_struct",
++	kmem_cache_setup_usercopy(task_struct_cachep, "task_struct",
+ 			arch_task_struct_size, align,
+ 			SLAB_PANIC|SLAB_ACCOUNT,
+ 			useroffset, usersize, NULL);
 -- 
 2.47.3
 
