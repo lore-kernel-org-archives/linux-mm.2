@@ -4,94 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 588A1D277C1
-	for <linux-mm@archiver.kernel.org>; Fri,  9 Jan 2026 23:46:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C8FCD277C9
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 00:52:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43C676B0005; Fri,  9 Jan 2026 18:46:07 -0500 (EST)
+	id 4042D6B0088; Fri,  9 Jan 2026 19:52:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EA3C6B0089; Fri,  9 Jan 2026 18:46:07 -0500 (EST)
+	id 3E6EF6B0089; Fri,  9 Jan 2026 19:52:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CBF36B008A; Fri,  9 Jan 2026 18:46:07 -0500 (EST)
+	id 30F936B008A; Fri,  9 Jan 2026 19:52:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E87A6B0005
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 18:46:07 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B2AB81A0E5D
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 23:46:06 +0000 (UTC)
-X-FDA: 84314061132.07.190BB02
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E5F3B4000B
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 23:46:04 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=OB5Xpsk2;
-	spf=pass (imf04.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=bingjiao@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E7D86B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 19:52:34 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AB8C01AE505
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 00:52:33 +0000 (UTC)
+X-FDA: 84314228586.27.182D409
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	by imf27.hostedemail.com (Postfix) with ESMTP id DAC204000A
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 00:52:31 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=c5HO5r4E;
+	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768006351; a=rsa-sha256;
+	cv=none;
+	b=6vCMua/xOH/2IK900k+rJQFO1BEl0YT3ckTcU0xvBSVQjECEWDIESaX/x1lLGZZi4aM1NS
+	G7r0hqHwMcKsfzREY96RBUYjQ+eX7i9ZhA2RwzajFqFP/saUgeQlN0jUFGX73D5zKNKvD6
+	qorLaIUzPeQrrh575LfcXoMHjfCSazQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=c5HO5r4E;
+	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768002365;
+	s=arc-20220608; t=1768006351;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9C6cJ5xC1qmhxW2t2YZM9EJ2lpuou7pguCgEPd3I+cc=;
-	b=KmGkAyIC9eouBu2UvJaw7MB3QeAOHuNC7eZCQqKiMXJ1Ei12/+X7fqTIYUt4ZeanTXGziA
-	OvMSSXRDJQYv3hJhnJt7UGtLUhx15y87DdfqExl6CV0sUc+xyM9u0Dr2f4XYaqNdIMSj//
-	j7vdWcbCmWN84/+nhIgNSAiPyLq5pjQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=OB5Xpsk2;
-	spf=pass (imf04.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=bingjiao@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768002365; a=rsa-sha256;
-	cv=none;
-	b=zPi8MXkooYX0DakjwkGDeYdxQNTI4hWBWRBuW7wNYyyNzdbMif9jFxbPbpQt+roSOjOhRx
-	pwqXiq9x2jKwntKAj1uB5QaGVgA5jaQf0T88AfREB9Qolor4d6goEfVmoUfM4W4OBUvEzs
-	Z/P3Qys6s4HP5/gYQtZamOGfEeDIPRg=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a1462573caso31315ad.0
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 15:46:04 -0800 (PST)
+	bh=xh0zcKAqQroU1tp1p4pimwYJeCFYqvdejY8GmA8WI20=;
+	b=Q4yeaypohQ3Tqr4zrDHzeaeJe1jxsYQFIGKo42W3Gqm9ORnxLZSZk//sKGPVFmm1AzpWkF
+	bJMNTEE0Cht1Of5nzIHIVZYdM77VTkmQV/TTMlDXAxBzucm1++i5WYM972xd8qiY3F18yz
+	toG0hWQ2TIZ2hZTKvZDTApHewmfo86I=
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6420c08f886so6861267d50.3
+        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 16:52:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768002364; x=1768607164; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9C6cJ5xC1qmhxW2t2YZM9EJ2lpuou7pguCgEPd3I+cc=;
-        b=OB5Xpsk2rfyQW0JuUWycFJlxmlWyOTfcHT4rYpFZsx67EX2HPn3C4/Ge7lu3j6ephn
-         TEMxSx1ZNl/Kp0lpdAudfc7zEriVyRDzo1u6D4HBCGk3bQNIYD5Zk7efRkvOvtCyQxTr
-         MvdFujai4XPahcwlA9d/hD/rW6ALDQpCVQOaqrekJn2eOCkv7pK2bbiN4C50oVKVqWDC
-         IAzYG661FvVDNsqiz9W1nf6sS+r4yN92dWVU9nGOlXFIOwvXEGWmuZnJcy68FyLV7WqM
-         IRFJf7QVzHfY1wRWJJ/IyI8lql0vgYTi16h0s1rnQRmnh2fjW1Q1lcS+X1+BBNYPFcSs
-         B1Qw==
+        d=gmail.com; s=20230601; t=1768006351; x=1768611151; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xh0zcKAqQroU1tp1p4pimwYJeCFYqvdejY8GmA8WI20=;
+        b=c5HO5r4E3DHsyA8YGFFsrYvhfBdRV4Cc1Q+r0z17CAAtKVrLuz/EdZ0IWWINb5pEEW
+         LKSi1oGqt+mUbSYiUJAK8729rWwR27DENsNE2yQrlhl5W8A5cLKdmjUQ6nTwBT3G6GX3
+         VAImpq1LX95M7M4o5pGUng3e7vYxSHKTSKSf0Afnvctpg2v0PExY4kN6rOsLuwO7NPmE
+         UwnUF8J/ngqQyrYWAZ++HaaImy2Dr4M9iHxcOfCWRThtZpxmAEQe4DG4JBl99q9yW4mQ
+         7TcdIfwVCpJa4kJiv51UaYtuAlYT+nHKjY/drOxrTtSxfcM6tOSF5NwiG7c20PeI/ar4
+         haAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768002364; x=1768607164;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9C6cJ5xC1qmhxW2t2YZM9EJ2lpuou7pguCgEPd3I+cc=;
-        b=UuAbFuGWH2SYydQTHBn2V5bfmCsMRIlFAHDnGfeR40TV42aDR4I3UvSihYzPRSmREK
-         hfOmnav//481k/J3OquoNQRqmUX8wrMvBxTSGkdv2ugcLSS1cdCtghpdIZV1fanJ7Kid
-         tzTdTl8CIQFXDwZm8iL+gw+lx9MlVd7IsUrLIoA5Wmd4mrqVDhNwAGVkWWt9ljKC74Il
-         TRw3Z1Ai+9QIiJm1GhecqM2JlEGlXeEfAk36WKbRYgw+kVH+7xXHnGGljTgn9uxfiEXi
-         Nupd+/o4gqCzmGzs8ri66mvjjTZBCsVjifoqmTDABoLj7HX0kXU+9L6R9e/RaZLNcst4
-         tnDw==
-X-Gm-Message-State: AOJu0YyWEMPJYB4rjIoaTNW0dPBcR+giJTWRnRzs4clZarmPab0RQy4w
-	2acntbPA5br3FY9irYBM9QVVAwfLEvqVdBL3XLwEu7ali52JnrffNE3fepslmcC+Ww==
-X-Gm-Gg: AY/fxX7/BIiCy6/DiLY5hEsgXcV6M43W5QbpR2wpHrMKd8s7b1rmn/dqrvF+YCha6ux
-	NSWt8mo98UjD6nJJNAZSUP/vbeEZ9/vRjbNK6v2VgC6/4ddNy+hDlu1ucArRb7We68M7t0pABGe
-	bxfJMY9RAAbKQQCT01KLxfzMDdGwnFpwT88iuKdW5ce7HvtPP1LsrvnFBHyFvi5578Bhj2azAcT
-	WtV1JsrhR3W0Wh5q6x5hrJxVKrKhk7owkEEQtoTCYzCVmuNInLd0OeEr0x9i1cqk+9v6ayzIQYU
-	K28iOZz3Zk5qlWwZgHFuTGLx1QpF6PJ0gtDfOfBNaptwuWwpWqLkIssB39wiOjUWrg9bHdhdSrJ
-	OTjeezTFQlVGruBtkpWwwJCKsLjQ38Y5R23pfBm52cfgBoE9TmVbh7IOz260++Nx8L1h9c1649Y
-	cWBQHlQUgceVPY8XIZ3WxYOEnZEMUnTHhgTVnF7jXkKDKKbyAcPm1q
-X-Received: by 2002:a17:903:987:b0:2a0:7fac:c031 with SMTP id d9443c01a7336-2a414932ea9mr1154085ad.14.1768002363484;
-        Fri, 09 Jan 2026 15:46:03 -0800 (PST)
-Received: from google.com (248.132.125.34.bc.googleusercontent.com. [34.125.132.248])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cd2ac2sm115208825ad.90.2026.01.09.15.46.02
+        d=1e100.net; s=20230601; t=1768006351; x=1768611151;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xh0zcKAqQroU1tp1p4pimwYJeCFYqvdejY8GmA8WI20=;
+        b=ZG/AHp+0OdridGfniL3m7Di0BVW70tj3PnkUqd/kcNsvYtFmP3JklhDWTBxzAM+ztF
+         b6KDAfyGvYgm80wVTAPkYyupkK4AobcEL/7iQYoFmVCXzJ6URoPvscbB72hJ6Dir5Mkt
+         aUyMPcqcQzehVHkY7S/ESJijR5LAMwnd/XxVIKYSr4qg6VzazL49mBfFYhLAiBCRpC7z
+         /pSXKZXydw2xLiyPblitkN5ltpkyaIxVdHllkgF3JQqUYYFSh7cfu8YCdCtJUAi49zkO
+         k7Xj+kPPDoL0cUe+JNyZH+R9H/eWscL9LrH8V07MK9iiSiJq7un8mpYbPto/CoFmzD0F
+         2pPA==
+X-Forwarded-Encrypted: i=1; AJvYcCVM1G0Y9eUJUBS1eTg1yLS3UTLw8PYCfm1qjFxuTM8akzzmQWobrHKg9WYFGfjf0bQM9HciFN0oPg==@kvack.org
+X-Gm-Message-State: AOJu0Yz3dN6ctpiFb3Xl/GqX+O9XFQELJ75bj6y012dcapS44Z5Tla4R
+	IpXbghl+33eQIv6+tkUDM5hWhVLfk7kgmb3+YXRl27hMRjINfGvtu9RS
+X-Gm-Gg: AY/fxX4JD2vVzW2P6JsAUXd0kl2ZMtYJSIJkNSHyFYBWNhmlVELQPZlYH/zhd140396
+	p68LW83/WNEGeJRQVF3eIdXYalCPjKrzy0jXb/yfIeKO4i8uFjA2EuBxYq8mTlqpWXF+SuMxWS1
+	ibkefMnP2WRDLZoLugy/M6FobaW0KEb0oJn7a9sZIku6EufXPuXWe8ZY8v/koq+xKxDHP3IGNbD
+	kuOSjZnIHHfYoPSwzMUYIiszuI9sa+lzsvOE/EULMrw+lTk+0M346+ksjeEa7V3AwYGjGA8GWKu
+	wxYcgzxGeHt5WvUkbENox1rJsP+eVUlA2DsuT25cHcOMe+B03ZRor6EYOQmmWevfJD3FYwH68sh
+	CjOWUa4Fzavqfl0A6aVB2blGoIlhnzlHps/f0/TjVnDxOx6zGdbrPZ9Mff358zZqs4e98oJDb/F
+	jgOCtJI4KKmA==
+X-Google-Smtp-Source: AGHT+IEzdhwxbsfQJvT+TvlDMVhfQHhV/8zH5/GstRRQwXcsCbM5ULAqTAR9M7X0213MG2Ra2+1EWA==
+X-Received: by 2002:a05:690e:c4c:b0:644:3850:9062 with SMTP id 956f58d0204a3-64716c75477mr9285804d50.72.1768006350765;
+        Fri, 09 Jan 2026 16:52:30 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:4b::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6470d8c51bcsm5128601d50.22.2026.01.09.16.52.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 15:46:02 -0800 (PST)
-Date: Fri, 9 Jan 2026 23:45:57 +0000
-From: Bing Jiao <bingjiao@google.com>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Fri, 09 Jan 2026 16:52:30 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Bing Jiao <bingjiao@google.com>
+Cc: Donet Tom <donettom@linux.ibm.com>,
+	linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	David Hildenbrand <david@kernel.org>,
 	Michal Hocko <mhocko@kernel.org>,
@@ -99,26 +103,25 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] mm/vmscan: balance demotion allocation in
- alloc_demote_folio()
-Message-ID: <aWGTNfrLBhCM3_-9@google.com>
-References: <20260107072814.2324646-1-bingjiao@google.com>
- <20260107072814.2324646-2-bingjiao@google.com>
- <761533a9-b188-43b1-a24a-1893622ce18c@linux.ibm.com>
+Subject: Re: [PATCH v1 1/2] mm/vmscan: balance demotion allocation in alloc_demote_folio()
+Date: Fri,  9 Jan 2026 16:52:28 -0800
+Message-ID: <20260110005229.1348817-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <aWGTNfrLBhCM3_-9@google.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <761533a9-b188-43b1-a24a-1893622ce18c@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 817rrer6ez5q5384mpfiut3cd4egp1tj
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DAC204000A
 X-Rspam-User: 
-X-Stat-Signature: hnbufb3m45sdeur4efgjhd4au4xuwjau
-X-Rspamd-Queue-Id: E5F3B4000B
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768002364-729348
-X-HE-Meta: U2FsdGVkX1+fHGDe5h051Ag8NZeZyJpMi+wQKWM4QjpavQTb/o8rcnVf81kaWg/q+NYSiZrZ0DhXVae5G9+vHzbUD4wrHXLCNIf1z3N9j/5Mk6FowKikFFzB4Coi9WRFSyE7PM+TXVlROBjl/tFx9ZQOYDu2uhz3tzpTKHA9IuO30crc/p0qBfRhaR3kTXPJDhusmFKidIVF/Bl/toR02Kx3JW//7TdgVsrFUj8Tm4PLt0MIg2K+s+7r04cK0B7nHdmWoTDFPRVF/zhn3qGs/zpPbDVUD0Gg27LbUPi/abSH7AKj4qpoonRCB8/bAo+rKOzh0QNOumaVHlmzP6S6R2s9ZBDWoh2Y3Z0aPVn/RzL0l54TzSDZ0wayz+QJ8rdKqWQNbdAS59OQ7b+Jq8GS5qQEqxUtGtUy0R/948LGbSOkBI/N2UMRvV4q+aF5CkqP86JKsQycDCJ2y+PMuyxSQpAuDKcWVY1rUobHrr4sQ1Gq2Xqg3GPHzsP9+JyweznCGfPYQKe2o+79fbpqWWPXV1oRLYST6tIUoIcbn+EhYh5YZwnJmFYc/8JKecGzkhrNriaQbuTRqv/zOoWBbTBRY64Rnz+wG8BbicIExcpidQSXMsUac9/YIGawAh5DpxWhrAFE++8NtHAGQmkyZzpItXlX0++H628w8BQRuwsfPV511wHZ7H1X+gYZLPFmGBrM+A57xzMUaV4S8Vqa9WYwlwxje8CplJMnQijsDyFaVRFJYDXSWbFWoUyYxRSXSz58cQUGNBtDpEGRWqGcihTa5OARm8sqzQz0EAdYSYJ1hFECVRrbY7AAAZhN+RLegjU+6KFxnC9Np2Rhhjxg6B8U7xJBUYlJgiinB6IDpkE8h0teioSB0S6KZXFFsXy1EN4vP2akMIuhG2oZr8Ard4eHIyCcfkAJsspVaoO399ciQDI7rz+FOFrbhGMgFwZlW0zGK7mr8A1b6lusUYQWN03
- 4F09agnj
- UZ0NHXg9sqU3bY+HfHwi6IgWRpetfNnTG1YNCjSJeea3H+QVdqWRnqPJ6q8cdbOHiafJbw5b2KqREOqMgA5M4m9VqRPzDBPgSyq/58scL3Wj4JvdNz0M4XMtkxBVPFNf5SaMaCcMEGbCwthlGR5zpvhMU3xzUcX4T4f5B/5B2L9iuBshYTeN7L9NLRuXUOliXSehtAh30q+Rz09o3D4738vJp5t+psmCJrgAqY35cZX1NymnP5B9Z/+/DXFW3Fn7QYSCZfCYxWRZep3ZQEl96CBLIwO8GQc182kKW3H9ydEDQbixyylX+DclXez0u3Kv2pGf83ZNIGo4LKKOhJ4lqtIZ/WHuyI1T+Myp5P62pTxAshl588ZrgUr5oonvtkEjQ+qxzqmOgEzOW7aqjjMDXY1A5/A==
+X-HE-Tag: 1768006351-665121
+X-HE-Meta: U2FsdGVkX1/jYMMTu28h2IU6+WWT+u6FqVrEtBpzBoAHKI68imT77ePSOrJjuupwb9ZdHnllNMzhSq21Mgz9Jjp6mt+tl1iiZJ68cfjDwnI9UmIoFQx5g9SBO9JVfHNY3ekK1qzVOhXM8JINu8TJlPOEa7vpyLL+TC8/0mVcZ884xGEl4UD/sHM0qThAhARJMYyFeodGBCsZQBehqCYVoLYdGJUfTRJLzQjeWqFs9Klm8PkXTg3nLxApzjIxPTrf7JUyOhGPp7wiRRolLVgJgyFFmqk/iqUwyci5PQblhUdR10kqGleLrdTBg2b4Cw0gse4jvU417i8jUjmesf/bnuHz1IkZAHDgUF8QytqZQinjBJOIkUOM9ydgTMZsTRd2CtTgyfXLdxUORAQ2i0ruYUiQumbySb41oO46aXNQ1nVXyLDj6VYx/777m+k6lTG76eOGvTkpvDwyLN3yz1urtFPzjBRhUW1EXLJpl7De8LVXCaaQtBJ4bY1q1Z8/Su8WbSq++hXQjw1LYyFPs+t3MVzLVlnJdnvF0kSFDM+T/RzzI5xm8LvVLbEl/0+A5BnZ2Rp7VmPSVb/3n3bjZaA77U/zUuogf6nScT5gJaZY5yrFeWz7C8DTq0iX9ggjDWAIsoGLerKBaPDJQ+aJ4TxwuzQFt4LIJ8JnowommhflOTWDYl182BRyqJfhjuVn3YAZXgDywF53rEFp9M1aO+CppuFAF/g0NIV927438K/G6gQIXnb/vYhEn+V9HgWVHt9QEGhIEOqnUsW8f7hqaUA5/uuGOZEknvQuxQ0QXfJbKP/ocT2fwnwc+pswUYEnBZw5cBxWTbDO7g0JQdL9BYdct3EdjjtDFyEDoibThG+R/yasf6W+vA6RbFe9/4lC6JKhGx3+8zignhVzxnXMfl+kQkBxO+R3+/y5uElbZNwm8QvtCaD7/QMI+reIQWJNTJu+f5vVNqdjfQ1ia6CTbW5
+ WZwyiixV
+ KPMQ87lDGmKjh0SEpI6RPJM2KtsCdkOkXC5GndBfMN+QwmTAR1CjB2i6Lo087a3+l0EKOrRfQ2GSuIGX2vMZKumxLCoPTFqV6cCNdkIoUU6ecUq3U2EgdkH3gwlq6c2qonPJtfsFnIMKL0yNHRiKFY3w6h2CEXJaZX6U+WJFq3DQ1pU+Uph0P1wuph6nyfYiXmG1qmK3snigg8Cj8otaHWJLB8e7ifBTg2gwrOba+8+dimFMWTPvU0bra6/s/El4WwWVf1Sh9i1SlZwWFxFM6MmlUbTak0CAV7NoiC1F4wsscuM+PWpogEPxXvSYstGlz61/WNEBgWXAYmV8GBNksMW6R9F8/cMLNuey+PbkmR+u8TFCtvNBEvO6RMm+8Pds7KUbX7wqizbeaOd9dnp2dhLQRJ1aMz11Yr7ZUF1uVOgdNuMz0Yx4OLU6L9SO+7XacH45ZP/4aDLih9Dq/pR0LI1KsR3pR6AqYSPyUxEfVh6WoyRstMvL2jRDHuSOkHk+fgIDJQ8PeB6mJtIAIkof9kbLHoC4dvjI56QvXDmCGaq3nO5b6EAjozVi7J/mEuIApci/kZm4xeh84+rOtPBk51TGCWGi/6UKW07uBH35RMhul9AX+NeaOr4UuNWx3E2j37yQvIP2UVF/zK3BMJYbFB3AnvQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,29 +130,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 08, 2026 at 06:14:02PM +0530, Donet Tom wrote:
->
-> On 1/7/26 12:58 PM, Bing Jiao wrote:
-> > +	/* Randomly select a node from fallback nodes for balanced allocation */
-> > +	if (allowed_mask) {
-> > +		mtc->nid = node_random(allowed_mask);
->
->
-> This random selection can cause allocations to fall back to distant memory
-> even when the nearer demotion target has sufficient free memory, correct?
-> Could this also lead to increased promotion latency?
+On Fri, 9 Jan 2026 23:45:57 +0000 Bing Jiao <bingjiao@google.com> wrote:
 
-Hi Donet,
+> On Thu, Jan 08, 2026 at 06:14:02PM +0530, Donet Tom wrote:
+> >
+> > On 1/7/26 12:58 PM, Bing Jiao wrote:
+> > > +	/* Randomly select a node from fallback nodes for balanced allocation */
+> > > +	if (allowed_mask) {
+> > > +		mtc->nid = node_random(allowed_mask);
+> >
+> >
+> > This random selection can cause allocations to fall back to distant memory
+> > even when the nearer demotion target has sufficient free memory, correct?
+> > Could this also lead to increased promotion latency?
+> 
+> Hi Donet,
+> 
+> Thanks for your questions.
+> 
+> Yes, the random selection could select a distant node and lead to
+> incresed promotion latency.
+> 
+> I just realized that the the fallback allocation should not weighted
+> by a single metric, such as node distance, capacity, free space.
 
-Thanks for your questions.
+Hello Bing, I hope you are doing well!
 
-Yes, the random selection could select a distant node and lead to
-incresed promotion latency.
+Yes -- this is also what I believe, and I think this idea of "how should we
+select demotion / allocation targets" is something that is a difficult problem
+(and one that may not have a single solution that "just works").
 
-I just realized that the the fallback allocation should not weighted
-by a single metric, such as node distance, capacity, free space.
-We need a thoroughly study before changing alloc_demote_folio().
+It's also a question that I have been thinking about, and what was discussed
+in part at LSFMMBPF last year. At the time, I made some auto-tuning weights [1]
+for weighted interleave based on bandwidth capacity, since the main benefit of
+weighted interleave is to distribute memory accesses across multiple nodes
+to maximize how much bandwidth the system can use at once. A follow-up was to
+think about how these weights could change over time, and what heuristics
+should be used to determine how the weights are selected.
 
-Best,
-Bing
+Ultimately, we agreed that the heuristics should probably be delegated to
+userspace, since there are just so many scenarios that could change what
+metrics should take priority. (Jonathan Corbet wrote a great summary of the
+discussion in an LWN article [2])
+
+Coming back to this patchset, I think that all of the ideas above apply
+nicely here as well. What nodes should be selected for demotion and how they
+should be weighted is a difficult question, and one that is probably best
+answered by userspace and what workload they expect to use on their specific
+system.
+
+What I do believe though, is that an unweighted random selection / round-robin
+approach to selecting demotion targets might lead to some unexpected
+performance implications.
+
+> We need a thoroughly study before changing alloc_demote_folio().
+
+So I think this is the way to go : -)
+Although, I'm not actively exploring this at the moment ;)
+
+Please let me know what you think, I hope you have a great day!
+Joshua
+
+[1] https://lore.kernel.org/all/20250109185048.28587-1-joshua.hahnjy@gmail.com/
+[2] https://lwn.net/Articles/1016842/
 
