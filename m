@@ -4,117 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C300D277CB
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 06:46:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E493D277CA
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 07:10:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 105816B0088; Sat, 10 Jan 2026 01:46:25 -0500 (EST)
+	id 596366B0088; Sat, 10 Jan 2026 02:10:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B2D16B0089; Sat, 10 Jan 2026 01:46:25 -0500 (EST)
+	id 547526B0089; Sat, 10 Jan 2026 02:10:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEA5C6B008A; Sat, 10 Jan 2026 01:46:24 -0500 (EST)
+	id 441E36B008A; Sat, 10 Jan 2026 02:10:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E147C6B0088
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:46:24 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 702161A0182
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 06:46:24 +0000 (UTC)
-X-FDA: 84315120288.02.5A98A62
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AA78EC000C
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 06:46:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="jWDP/9oc";
-	spf=pass (imf28.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 32DF06B0088
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 02:10:24 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D74BE1A0169
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 07:10:23 +0000 (UTC)
+X-FDA: 84315180726.26.E3B6CF6
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E78824000A
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 07:10:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="PpSsU/vh";
+	spf=pass (imf27.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.172 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768029022; a=rsa-sha256;
+	cv=none;
+	b=5ST571IRzukImdxbTaOD7z3MPMCyIBBrP2ez7okTDNjHgOihXKaqQLvNSW3zfqMdmeqLML
+	7C4GIatpLZh+4b/gZn5Y8KbAFDyQZZqtOh/6UihUbpoAv4Ftm8B077asxP3SGRZ24GvGCd
+	EgMBGa28ISBq+fc5W3fIRvZ/+9UV/ck=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="PpSsU/vh";
+	spf=pass (imf27.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.172 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768027582;
+	s=arc-20220608; t=1768029022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=9Ou5lC76BYaJdteXUTMwt+L2/JNxHr6qaLeaM9sIinw=;
-	b=QnVM0ga1W6uChY8TCIKPlwraq96idXg3Y9A0IMrsJ6IhWQ1XfpZsEWys+S4wYDggshjluB
-	tSsANXZZmohPB28d4pJ1N277J57XdiDtfOu8xKuImeXozA2qY01tuGy60YH6pIJSguG4vn
-	iOsA379a8HScgRrq7hj4K22ZphLxY5A=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="jWDP/9oc";
-	spf=pass (imf28.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768027582; a=rsa-sha256;
-	cv=none;
-	b=Vd3aFahe16vxl7nWBhwern8UZDFgJaLIPAMDqBB8tLZK6qS9OS1CMkXwrOv318OwfPggMM
-	8C6x0CEqueUkE7i1Z2SPNHKDdiwd/gEbLtYIDTVZhJrmLMHNZMtCU+zETDwf8VceMzvS09
-	ptwP7Cs9Rrtu5nqeOc2kPfEYAydW3Zo=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a0fe77d141so38135425ad.1
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 22:46:22 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=b9zhJ/KnJ4nuVYRbgh5GHLh2WMXnDEuhfiTbk330bQs=;
+	b=eM/t8VbQVlaQXq6XF2tk9R0x0l0Z/E3A6vHyLFRVjts8xDUn93aGTBh/hOx0hmtK3Vt11F
+	3C/6aecdAvBKbPXDXF+JTYJ0xcfp/80EcP6hjE6rndr7AepM0cmrvEKSrLW+qZdNs1yikr
+	c3bAj3BTgaSyeCz2IuxwM1MAUgmaaMc=
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-78fc84772abso54977067b3.1
+        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 23:10:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768027581; x=1768632381; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Ou5lC76BYaJdteXUTMwt+L2/JNxHr6qaLeaM9sIinw=;
-        b=jWDP/9octG0dag3Kj33FEW90qAfNd14JF/KcBJ/kf1/4Nm9GCCONLrMKYntPUko04/
-         ZWuceS4cmjJpDGx6PvD8R68r0XWYLFL7QSBVgyM0hjyWixcO1oP96OLzVTe17ROS/sbh
-         7PMKGD92r8tI1wbwkxnlVQjP24qnYNZSLdZM9IvxRQ+w+qRqWmyjA4rpBusorSpfZfOc
-         P/EeUicVK7q77zxhuND/zxsJ+dSpVKXFy6TVaMkZ3PRGZcH6IL3l3uev+dNxBUnr2COT
-         dxpH4yOeSHsQKXaZlA/+kWXT72Rpmx0CXEEwSnTEKdZ0mh+nkQDxatI29bhiSiJQWqvl
-         brkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768027581; x=1768632381;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768029021; x=1768633821; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9Ou5lC76BYaJdteXUTMwt+L2/JNxHr6qaLeaM9sIinw=;
-        b=YluAQWT+xHaTfCWPD8+0h+yBW9e6Wq7cPWc1pEifNiDijfyS6ujbvPmEaHtQQAkb4h
-         eDlcBnKpsU3+YVbmg6nJqba1PahuJB3ypxsZdH37U9kdv9rVg8wiix1BcvxdsTXXKf/I
-         YZUgM0r6EhlH9Mq9PE7qPLS7fEYYDcnWGw/ciVUl0AIhNpRoz6n0Wj2mtcUd2+pnYKir
-         iUxsFJb8bQjjCHb5L8B4m/Fh4EtfLzhYYT8cnYeOrS1q+wRu3ilbjsyIldfcz5aCThuG
-         6kgPL88Z2NR6RtuCBLyIAGwDBIPPEX6W37pr/hYw+S4pNDW0KFjl1uToKL8ItlDcX/yH
-         R69Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWgjDUB3Ula6+lPfN70NncDaEuWJCIEWyYhcyMkBitizb1ppV7ClpPK8f7cvdXlEZkv2h5EWMVNyA==@kvack.org
-X-Gm-Message-State: AOJu0Yyz3TfXkcpGOsmKvrFpKJk//hI8T6htRNtkrVuNb4ktNtUJ3sHT
-	uyzBKvNjb7iyPR/9op77XN7I21kNyHV11SLEuxnP0E3WtpKD1aVRSIP6
-X-Gm-Gg: AY/fxX7MxbCeLya7Obb621ZmBKghOeo/MWEvBd/xX9DjcmpSrd3NOAEtMGWwUA4fxfQ
-	nnIfIIpa+v22SPwLeB20V5TO6f5aa+ax0vztduO/mYOYrBo27ewYmkp702Dl9ebYYkorm0nddpo
-	A6hleSlM/Gc3tRBkPhq5xubyuZxF7WOhAYkuFo7i5DpN18ebkga61PU0vri8B0nFdNccGUXrBdb
-	vxXq/5Lzs/oNwMsxxHUnG0YPEc7V/v4BQy5KZlp3NavDp2iblvdFDHyiNy/jEDB0vMy66oQ2caW
-	ywA+W/jY6s86wJ1eF8oerhCwfkXIClyHZ50LRBzQQRHHFozs2FJPN/aBflcAT+j2xhtkf5T3vUN
-	/guQCF3lFIxi2HI6gSodj+dX0RMvrFPJEd5rTrXacMqKG6nQR72x9OedFm0dI+W/iNI/8QLQmCz
-	R+9MD9AOzUsFwwVq+keNeVjrS5EtBud9wCuzNABUwQ5fhDoPg5QWeMgerXJ2bfw3uZa0I=
-X-Google-Smtp-Source: AGHT+IHGuQt22SdTcAc4PZYM+XsESzmpxcEWJWs9UUXAO5SJX6AiSx1GNlfqbJQp7/JvjdqURXdu0A==
-X-Received: by 2002:a17:903:32d1:b0:2a1:3895:e0d8 with SMTP id d9443c01a7336-2a3ee50926fmr104894095ad.60.1768027581447;
-        Fri, 09 Jan 2026 22:46:21 -0800 (PST)
-Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:3fae:1049:5d45:ed6a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c3a512sm122712385ad.10.2026.01.09.22.46.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 22:46:20 -0800 (PST)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	akpm@linux-foundation.org
-Cc: cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+d97580a8cceb9b03c13e@syzkaller.appspotmail.com
-Subject: [PATCH] mm/swap_cgroup: fix kernel BUG in swap_cgroup_record
-Date: Sat, 10 Jan 2026 12:16:13 +0530
-Message-ID: <20260110064613.606532-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=b9zhJ/KnJ4nuVYRbgh5GHLh2WMXnDEuhfiTbk330bQs=;
+        b=PpSsU/vhB3QpbPO91RAq3Kvinn3a9I3S5wux663GK2k4iZWDmKEXLK1YttrzRQdvqL
+         9AlW4g4mPg8zX6rmYU+zVV2TqNvH2kUo55tY8JgdCDAAvktN+9uL5DhcxfR4LN4hKbFi
+         xQfLSuVTaNLLkhfN3WLAXpf+q7SxAjwkh1UhceB/PETYdqyqdgTdQv0NIBpkBA/5LdVi
+         8Rv6Howg5Zvi2GQiGfqNWrdghJV/oXBwrJWOqhyKLwyaqBavP6XiPweRqN6/sIJiPMmS
+         zuzsz8JFSvWfH37XJ22XzyaL8m0Zdr1N28t9kLLU4yVVGFWDf/UNNbsss7b5VKS1EESP
+         fUnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768029021; x=1768633821;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=b9zhJ/KnJ4nuVYRbgh5GHLh2WMXnDEuhfiTbk330bQs=;
+        b=Ymp4YxaKpN8u38/HKrd33HpOb3HgcpdyHXropHoYC9V9vbiL2PnpAZIAYYgsT3qBfq
+         V1nmzWzTR6/akpZc4pHBmEtOGurHdyXRvK2oS6AQbB7A8wubLnUiXWNGzxyTtAOOM5sr
+         OevUYIVxxVRa4ZX7K0kwpGBGUt1DKrK7xtbPsorp891ILueu8s2OySWeza6b7nN8GRX/
+         F65fs1UAUfOZdTipthpyyoBdA5T4YJxmwJlEXEJaLMj3g4nv4xNVVcoMAO8vkCPmw4nH
+         CJecD3dJ6JzZnEMedtupQenNnKRdsdAykcvasyl/Fc0LKO7mpUNvYYI8rxo2+Fyfrrn6
+         0KXA==
+X-Forwarded-Encrypted: i=1; AJvYcCV2sBesP7kme/2T8f84Pp1A6lidq4XJIn7+oYUdpdiuJsbWnXzPdyItV1TIepohjTcamspZdx9Zaw==@kvack.org
+X-Gm-Message-State: AOJu0Yy4n0DyeJRjyH3F1nj+FGNJmw1RmLmQpW4k5Z4WBUzMPnXwmxH3
+	IUDOW7JhZsQUi2eK1mF78ye3jxPp+qsyrUPCC3hU6o4dK75a4FlXjsBN7JxtoCFFYUUpAp4Oys0
+	mA/1VsaDaRK+Gdlt2PxYyO/GUv7yv+Vk=
+X-Gm-Gg: AY/fxX53v0y4xnpwvLS0E/E24Lt4vljGfGdGjWxadN8ugTeEnu0JJEFE1AIm29qzCkt
+	NSWWhLux85HhNDQwWQcHPOjzSjIu8GdMZnIgFfISrYw4iC4q+YKq6rdUaz3+tcgspE8bRqAyGMe
+	n52dbAgURKjg18N0Np9efNtt0/2AZ9rzfW+slXk3H/eAaH38lZt8KKv2G+mz+D4EmCyPS7ZJSAn
+	FRIpLeqGvy3AItDf9lifx+El1EcqUwscdHgtZc68ZvAP71pXJU7YGch6Uno/Q5PYhaQYwc=
+X-Google-Smtp-Source: AGHT+IHIllpd7q/rJGzUdqWFNm+J7R1gHevcr8pWramX8OHrYLw1D8uVZpNDk+w/jhy+xG+xc7kXdV+AyejbU7TMxbs=
+X-Received: by 2002:a05:690c:7a1:b0:78c:29aa:2798 with SMTP id
+ 00721157ae682-790b55d779emr116634487b3.24.1768029020880; Fri, 09 Jan 2026
+ 23:10:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: goqgeomwqxibshanrtw4ubkucj1iqi4a
-X-Rspamd-Queue-Id: AA78EC000C
+References: <3f3d871a-6a86-354f-f83d-a871793a4a47@redhat.com>
+ <20251211182429.3300562-1-safinaskar@gmail.com> <eb3a9746-83a0-8271-6bd6-867ecfa49aad@redhat.com>
+In-Reply-To: <eb3a9746-83a0-8271-6bd6-867ecfa49aad@redhat.com>
+From: Askar Safin <safinaskar@gmail.com>
+Date: Sat, 10 Jan 2026 10:09:45 +0300
+X-Gm-Features: AZwV_QgfwDamsOA316OsYVlATivpkfom3nXeSEAkD6V9RwdTqcHdaK1zQEU0IxI
+Message-ID: <CAPnZJGAvA+SpkMeOdZx+SZG=qZxSXOThO+Or1bgw=3QqCoEDgw@mail.gmail.com>
+Subject: Re: Hard system lock-ups when using encrypted swap and RAM is exhausted
+To: Mikulas Patocka <mpatocka@redhat.com>
+Cc: adrelanos@whonix.org, arraybolt3@gmail.com, cryptsetup@lists.linux.dev, 
+	dm-devel@lists.linux.dev, gmazyland@gmail.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E78824000A
+X-Stat-Signature: dhu1348s9kx3133ha4f1s6631paojgkw
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768027582-886073
-X-HE-Meta: U2FsdGVkX1//isySsP99x/p7xbYuBZHnQW3E09uMuD1MnwaFGwylU4+kCzUX79HqIUSxRIXUMi+++GmKAemdyl/8Z3pUnpvHaap0blOdXnaIM7/n1NV8CUIAQmx3zzkqwea2Nv5ZklI1kLM5L2430M4gFum2MyOrTBKFiFaNCecBlWMKwMGjwAcp5Hpy9Psu8efczqkDo94BD5yUMDoU6dfP9GJujXOoQeU3nyOE/jinBHRghK800L6LMJDJk9smz+aISh0ErhncGCPMhIqmOdheEkAoe6D1PlkZWUqPmMPi2WeBa77QbnPGg/baGOBV9Md0s/7WoQiVNorVDnh09dk3dqpY6czpMbXLEJcq9k9STnErup8CaOLDTNu9XGEQw3L5+g36HGSGeFjcMDkZK0MlCAa9A4m57k4u/FX+KB/G23KWsQCG4DmPWYdgDjc2N54tCL06GB3aHKNgxTCf2gol0SUv0JteH2vP0L9eVZXk3G0yNz5mbmVo6G9L17D/Eaczz8scCBr5ng2+5Tp4+qbSCisWOOVQEoXiCHfeoMHvIyVSHIbxrlBumewBjiq9ODI13ckDmkX4qr61rfy9+7XAdLS0cXN9votVTT2hm62huBhSZ5Dpu+TvUAfP64O2jKJO+Baf+sMuqnIfNy8m8P2l2TLgkxgliRHr4AD+1TleZ/qmQ7T2TQWe/mklYEpqwJdl7pU15DmBZQSPZ7YIvk2YvOiE+zTiqAdzrsV06rcUEoSblhOLlnur8RQ5TOpfsw6kpy9w/NXRrhbXAZBpWnDmhIzn9Z0+Y0O7t6hCZnHQ2qU7LmD5Uk31/Hkl8aSY6ullOjD/84TOJPacJIby+w620L68bZ5uI1w/gkNPdK/5CTo6M6iYItpQTrdXtjZ6DzS5S/UOXWPWtxMD/hLJzeu0irXBCW6Yaauygd7/wmj7hD2EToWvkzFu6telJtIH0vcPYFpK2h5k+y3od4y
- V2l5nlVA
- 5JnDZJF4R3A881K3AXlAA/pEm+Xvc5TJJGiJKaQI3f1I6t2UdYMAskTC/2QazuwfrhlkT2I6RQVHGh0l6j8rhjMxZgXApvMwz28kriX2QIa5OzOlkBIwceKNgdSVrCYfYOdKeJ9isJSFNesiB1z9w5TIsmeRVXkINNxAII5CflFBtmcjeprueLTc26OhxQRRgR9JqJywS3itXO1mXAPHLKZVuMtQ5AwCSs/+jPbfUBxFumPAEYZIgBCdhio/UDMkgE8RHX0Bgl2kQcNs8l09xha+jLPX5j4/TTcvlYlXUF8FkuqnC3beGOsytoi6nfTkoa0EG7rKV4CaKAxhn9yOHfNOKJiFv49LZIriqofoh7eVh5bjDAzpa54cttF8dPKoTlR9o8SyJX/qEdp04U1QXBoTQ/xKqrRsjjThx2eNxKqD3ZlQpbaQKCnOUx4QU1QqJf1Xu6FL4OZXt5Eg2Xg14qJgfEkWP6XEJ9diXdY/6rnUDdOup/HDwhBolW211OyZWI673Qn4n6QF3RB+8HpzpcPxfdNeFDDvdYjvLkYav7dcWxHmXAeDBkIy6BIlRxHVjw93Tnxzv2mSnXD2hX7/QPkfmb7xu2eaYu4oQ8cLWTCm+tqmuhbwFEx/LVG1wv4BTsCdVJWlqCGFKbtHiwoQ+O0aev1zAqYO5bbEyUy3bfJGzV10=
+X-HE-Tag: 1768029021-666087
+X-HE-Meta: U2FsdGVkX19R69sEKw4xZWJkXEDHjDjLa4cd5DcQk1JCdC+RiYMCmNJw5G7Nyr71aKJVQlETwzxyU//Ce0okOLxGEJV990y6IISRJ+ay2v9tiqWx8LgIp9QOUpuhzpppmjBnlMrwGXlRAuf+2hwAz5MSU9f0fdvCvEN3vflh0e6P9FYPxZ2bNn5ccdGJoRZjUBUIFDApWv4/Br+WCHAvk4IPcawNuUDzmKSDgMBv05petUGGgoZYYouWTxpNaiy9KeiGSffX9iluj8JZPgxmeWPbiaeXRZjKiEPniUGYQ+MvHwER1tsKxvHUsR/IGPDkFwBh70d9qZ//U0FlmkpMnqG20G1VTf38R59XeK6GJ5p0GuGxjwZzws1WcmAWfJAjqOBZHpFSonPp6W6JMY/3zJXBx+qyORIL+w8O7Mh4vga0JsWrXhQTFQXDBTzLvWTVdzmvOeMXsavKTMnDw4QIr5Ym59t1utkcwOgtwhUKZrj9Crs2gx/o3Y4o8PJXGe/uxkqDXJ4GHaROP0hzdFS2FGq9jdnQ186JBWqnw7E1n552EEcrX53P5mKuGsOkaIG2Qi6he4Qwybz5PFQ0ZtPdBfvOq3tap8o7DWo4pzhQJM/ZOk80BJI9emgWLcYWFIrPGrJpJMCVFvmQCuLacdn9muhWhpckQ763HSOsEsI5oEbrqZ0MFRPmv6vs7d8/rUpWS6lOL4nX7mWnZCNVMb1UovTTbRWSnKIjtiMMwbAMhU0tP8oJH24t8BBPKUorAO8nMCLX2rQ6KgZmhCApoZrMsr00y2ycMMvislUuJldtz2wJemdrViDWfGDu/bNmz+tMnt/7lmMKgFAFGSg53nsAvYyAlN1Ni2cgS+0YE2XWLdNZ+FqtOKC4mg0z03EJBvsS8a1p6EknayCyZN7/70WmiABxvz58KuzsMoTpzgADMgsAgOgpltNgCpVNVHtPI476TWFcR/VietT0HW9Sipa
+ Gg0WAbxe
+ 8h7hoh9RKINGVg0xliV2A2scfwbQ+SPYM1kEE4AooVmTkpp47DpUA0sQj9VqJ+y9uWxTo1IVIU4NXn13tlr6QIdz1v11JNIO4Yk73nWDOxg1m1LULeNtzWnvcdPcu3Jz3AcYktIKRu3zYqsOd+Xbg9wwv+Fxvsh1X8jOI5O3fKqS+LzXL7r/w/MOi3zk/djixD2IADYPM1GGh7LIasnfuJpJAoEv6NK0Sql3hBPdu2QEP2uJ8sJLFFJIKDwVb6opQE5zahjntjOX/dl/pWyKVUJQRtzGKsJVTVCW6/f55SgJPUMEI7i4tIDLC3yIkLYQfto5ccCrz7hvLyDmywq5xSYASnCojeF5jEmgOZizov8+EVjkEboZ+nGDD0Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,84 +118,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When using MADV_PAGEOUT, pages can remain in swapcache with their swap
-entries assigned. If MADV_PAGEOUT is called again on these pages, they
-reuse the same swap entries, causing memcg1_swapout() to call
-swap_cgroup_record() with an already-recorded entry.
+On Fri, Jan 2, 2026 at 4:47=E2=80=AFPM Mikulas Patocka <mpatocka@redhat.com=
+> wrote:
+> Hi
+>
+> Dm integrity doesn't need to allocate memory when processing I/O requests
 
-The existing code assumes swap entries are always being recorded for the
-first time (oldid == 0), triggering VM_BUG_ON when it encounters an
-already-recorded entry:
+Thank you for answer!
 
-  ------------[ cut here ]------------
-  kernel BUG at mm/swap_cgroup.c:78!
-  Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-  CPU: 0 UID: 0 PID: 6176 Comm: syz.0.30 Not tainted
-  RIP: 0010:swap_cgroup_record+0x19c/0x1c0 mm/swap_cgroup.c:78
-  Call Trace:
-   memcg1_swapout+0x2fa/0x830 mm/memcontrol-v1.c:623
-   __remove_mapping+0xac5/0xe30 mm/vmscan.c:773
-   shrink_folio_list+0x2786/0x4f40 mm/vmscan.c:1528
-   reclaim_folio_list+0xeb/0x4e0 mm/vmscan.c:2208
-   reclaim_pages+0x454/0x520 mm/vmscan.c:2245
-   madvise_cold_or_pageout_pte_range+0x19a0/0x1ce0 mm/madvise.c:563
-   ...
-   do_madvise+0x1bc/0x270 mm/madvise.c:2030
-   __do_sys_madvise mm/madvise.c:2039
+Unfortunately, my experience shows the opposite thing.
 
-This bug occurs because pages in swapcache can be targeted by
-MADV_PAGEOUT multiple times without being swapped in between. Each time,
-the same swap entry is reused, but swap_cgroup_record() expects to only
-record new, unused entries.
+[[ TL;DR: my experience shows that dm-integrity journaled mode is buggy, an=
+d
+non-journaled mode is not. I. e. journaled mode seems to allocate memory, a=
+nd
+this causes temporary (for 4 minutes) lockups (on high specced
+machine). Or maybe journaled mode has
+some another bug, which causes such lockups. They are not reproducible in
+non-journaled mode. ]]
 
-Fix this by checking if the swap entry already has the correct cgroup ID
-recorded before attempting to record it. Use the existing
-lookup_swap_cgroup_id() to read the current cgroup ID, and return early
-from memcg1_swapout() if the entry is already correctly recorded. Only
-call swap_cgroup_record() when the entry needs to be set or updated.
+2025-11-06  I started to use swap on dm-integrity on my main system in
+journaled mode. My kernel
+is Debian's 6.12.48 with some local patches. As always, I had a lot of
+browser tabs opened, and
+my virtual memory didn't fit into physical memory, i. e. the system
+actively used swap.
+Note that this is very high-specced machine.
+Swap is on SSD. Swap size is 378 Gb. Memory size is 64 Gb.
+This is Dell Precision 7780.
+CPU is Intel Core i9. 32 cores.
+Then somewhere around 2025-12-15 I opened even more browser tabs.
+And soon the system started to misbehave. The system froze for 4
+minutes in some moment.
+Then the system thawed on its own and I saw in journalctl:
 
-This approach avoids unnecessary atomic operations, reference count
-manipulations, and statistics updates when the entry is already correct.
+Dec 17 10:29:01 comp kernel: INFO: task pipewire:1303 blocked for more
+than 120 seconds.
+Dec 17 10:29:01 comp kernel:       Not tainted 6.12.48+deb13-amd64 #1
+Debian 6.12.48-1
+Dec 17 10:29:01 comp kernel: "echo 0 >
+/proc/sys/kernel/hung_task_timeout_secs" disables this message.
+Dec 17 10:29:01 comp kernel: task:pipewire        state:D stack:0
+pid:1303  tgid:1303  ppid:1254   flags:0x00000002
+Dec 17 10:29:01 comp kernel: Call Trace:
+Dec 17 10:29:01 comp kernel:  <TASK>
+Dec 17 10:29:01 comp kernel:  __schedule+0x505/0xc00
+Dec 17 10:29:01 comp kernel:  schedule+0x27/0xf0
+Dec 17 10:29:01 comp kernel:  io_schedule+0x46/0x70
+Dec 17 10:29:01 comp kernel:  folio_wait_bit_common+0x132/0x320
 
-Link: https://syzkaller.appspot.com/bug?extid=d97580a8cceb9b03c13e
-Reported-by: syzbot+d97580a8cceb9b03c13e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d97580a8cceb9b03c13e
-Tested-by: syzbot+d97580a8cceb9b03c13e@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
----
- mm/memcontrol-v1.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+(this repeats for multiple tasks.)
 
-diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index 56d27baf93ab..982cfe5af225 100644
---- a/mm/memcontrol-v1.c
-+++ b/mm/memcontrol-v1.c
-@@ -614,6 +614,7 @@ void memcg1_swapout(struct folio *folio, swp_entry_t entry)
- {
- 	struct mem_cgroup *memcg, *swap_memcg;
- 	unsigned int nr_entries;
-+	unsigned short oldid;
- 
- 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
- 	VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
-@@ -630,6 +631,16 @@ void memcg1_swapout(struct folio *folio, swp_entry_t entry)
- 	if (!memcg)
- 		return;
- 
-+	/*
-+	 * Check if this swap entry is already recorded. This can happen
-+	 * when MADV_PAGEOUT is called multiple times on pages that remain
-+	 * in swapcache, reusing the same swap entries.
-+	 */
-+	oldid = lookup_swap_cgroup_id(entry);
-+	if (oldid == mem_cgroup_id(memcg))
-+		return;
-+	VM_WARN_ON_ONCE(oldid != 0);
-+
- 	/*
- 	 * In case the memcg owning these pages has been offlined and doesn't
- 	 * have an ID allocated to it anymore, charge the closest online
--- 
-2.43.0
+Here is "free -h" output:
 
+|               total        used        free      shared  buff/cache
+ available
+|Mem:            62Gi        42Gi       2.6Gi       2.9Gi        20Gi
+      19Gi
+|Swap:          378Gi        87Gi       290Gi
+
+I noticed similar freezes multiple times.
+
+Then 2025-12-24 I changed dm-integrity mode from journaled to
+non-journaled. And I rebooted.
+(Note that I reboot very rarely. In other words, my system worked
+without any reboot from 2025-11-06 to 2025-12-24 with zillions
+of browser tabs opened. During this time I never rebooted, but
+I sometimes suspended and hibernated.)
+
+Okay, so, 2025-12-24 I changed dm-integrity mode. In fact,
+I changed two things:
+
+1) dm-integrity mode
+2) I upgraded BIOS from 1.24.1 -> 1.26.0
+
+Everything was the same. No software updated. Same kernel
+binary with same patches.
+
+And I didn't do any reboot since then. I. e. I didn't reboot from 2025-12-2=
+4
+to 2026-01-10 . And during this time I never noticed long freezes. Sometime=
+s
+my system freezes for 1-3 seconds, but never more than that.
+
+Note that my load is very big, similar to that Dec 17 freeze.
+
+(And I'm totally sure culprit is dm-integrity mode change, not BIOS update.=
+)
+
+So, it seems that there is some bug in journaling mode.
+
+But this bug is not important for me. I simply plan to use
+non-journaling mode.
+
+Moreover, even if you provide a fix, I likely will not test it,
+because this would require me to use my system for
+several days with high load. I simply don't want to do this.
+I'm sorry about that.
+
+But note that another bug I reported recently, namely
+that "dm-integrity + hibernation" bug is important for me.
+And I totally will test any patches if needed.
+
+--
+Askar Safin
 
