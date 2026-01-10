@@ -4,92 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 040F1D277D7
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 13:25:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23123D277E8
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 13:55:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 460956B0089; Sat, 10 Jan 2026 08:25:00 -0500 (EST)
+	id 02F5E6B0088; Sat, 10 Jan 2026 08:55:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E3E66B008A; Sat, 10 Jan 2026 08:25:00 -0500 (EST)
+	id F1EB86B0089; Sat, 10 Jan 2026 08:55:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E35D6B008C; Sat, 10 Jan 2026 08:25:00 -0500 (EST)
+	id E21A06B008A; Sat, 10 Jan 2026 08:55:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B0B76B0089
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 08:25:00 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A593B1AB4A1
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 13:24:59 +0000 (UTC)
-X-FDA: 84316124718.06.D94B070
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DFCE420004
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 13:24:57 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jdjV/hI9";
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768051498; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CE2BC6B0088
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 08:55:16 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8E46BC118A
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 13:55:16 +0000 (UTC)
+X-FDA: 84316201032.19.8CD9FD3
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B658440009
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 13:55:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=E86uzEDB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768053314; a=rsa-sha256;
 	cv=none;
-	b=eGI1ePYVCWMv2/LxI7KZzz8jf/zcvg/ptLqb4fbQCrV2aqDVLcOXLIey/GhMP+c/KRtbM/
-	OT8zHPTg2BECUrAIac1i01YESAPW6Ubov1oWpQodqQ65ms/t9jF/Ug972snDFvG6jIukn9
-	KJHM2a44TyRpACf1PNAX4Y+2p6W9lBw=
+	b=GevI2tTIbXUXoKwDQET8YJ+In3dcQvowQ114gXmgj7TvL6ojJEWDLLnfTPw16nIy8PoXZb
+	DN8zuV0Mx00bDI9kpBB25/XfvTbPrnoy2G56E0rnlNFq5LXu/bzbyXInzsvpH3d4F2yqP9
+	OyqCwm2VtF1JqbddS1na0KTDJTEOL0I=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jdjV/hI9";
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=E86uzEDB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768051498;
+	s=arc-20220608; t=1768053314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=t8hmhKecuVTGXZjRDkn2ex5jlI1GPUMbmXgngKLupKI=;
-	b=bIde5RPkXwGILLteuK090a38uebCRBCS3ui2o3Ti6yEX8TU+LyoYik0jPGC3Uh021Tk779
-	wW8sEOmSy4CMuRx/VuwMwaAej59s5k1bmhHKkDat+pBywDu3I3sfsZc4WPvCzIvJpnkttB
-	sXAt8t7waQrtExlcpgaYcmXv0yIvUuY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8CF5F418B9;
-	Sat, 10 Jan 2026 13:24:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66204C4CEF1;
-	Sat, 10 Jan 2026 13:24:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768051496;
-	bh=XA4YqUHgVUeiBE4BwIy5hjNCCWAzL6nLNBDSXX3oIa4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jdjV/hI9oazcXsnapq++rNYBetnJTCDRp1y0SsdGZQ9mJvOp4uDsRJuu9Aplp/pjE
-	 HIli9Mc6YG1zVJccQyojy4dbZEm0u0u4oqLZIIaPPqIQk1gEft9lfyQr1QjAxOKyRZ
-	 LkDNJd8y+kK6sZhx41M5sHN/+wXzT6K9oHq22GKAvQtGfMG0ZOQ5pXrFSqjvIamnoA
-	 sbYPtzN3H0SeI5hZFjpVtV4Xs09wTfH9c+M9in87y58XFTClsTJumtBme2vHTUZXd0
-	 +xxvB8838GPVI5655N+E1lN3bAxlk1c269Qf3gVOwp/Phtu80PA3RUhJ7ImjXJNgsr
-	 DgFUeKAtm/45w==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-block@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-nvme@lists.infradead.org,
-	bpf@vger.kernel.org
-Cc: lsf-pc@lists.linux-foundation.org,
-	linux-kernel@vger.kernel.org
-Subject: LSF/MM/BPF: 2026: Call for Proposals
-Date: Sat, 10 Jan 2026 14:24:17 +0100
-Message-ID: <20260110-lsfmm-2026-cfp-ae970765d60e@brauner>
-X-Mailer: git-send-email 2.47.3
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6bF15tgDtFzb7B//rb6r4Znze3ckqkWQR0unvRLAwiw=;
+	b=XQ+4BDOU9Lcry9cypAzcfvDTC6X6l4PRZgy+hHSYv1kvP4moPRbIkFFuxGMkB9yKa3JULX
+	MMQUHTjxX4yaBteWKIB2EgMKj7/Kv54m6s/a2jZzxoqnXDlQMiljK51k5IOrTtB/5SqHij
+	XN6nx84nPBa51p1J6CdUdn3gXIrXL14=
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8907f0b447aso55166456d6.0
+        for <linux-mm@kvack.org>; Sat, 10 Jan 2026 05:55:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768053314; x=1768658114; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6bF15tgDtFzb7B//rb6r4Znze3ckqkWQR0unvRLAwiw=;
+        b=E86uzEDBmsUw0h0fDYsB2jSNVE7IIxFMI3HjD02mkuT+d/O2g/NihumXA9l2OLTUFC
+         V/ohybIV1tsXXn41gnEG0IUEpnVPlL/rYEbCa/zZfj7Vpj7stmeKiJ5ejRXqbTeoMbXc
+         MXVLvmFhQE6wFJJH/8/MCxxX4feRr9wrko2lof4WgyhE9XKOOTok05R0uIQK0Qs4NIf0
+         nHzTLrfS4CUiwSyI4PtWm605KtWyePFEDaUE7SSh8ibfh2jAUs4HB8yOO2GVaBM0aMKD
+         Jbh45fyrb/es62qMEjcBgrRxK9NfuT4uv/FphOPMbA6s4Uqn1/05pC7/demvrAMoBdvJ
+         ACdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768053314; x=1768658114;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6bF15tgDtFzb7B//rb6r4Znze3ckqkWQR0unvRLAwiw=;
+        b=hwxMFItRI2UDM4jijlyPuXV15gM+jV8r26KZTmZCoYr7WwAtyQtZV0WfesMUzfjS0I
+         8E5xCtuYc03OI+SKgBAB6sRV4YBM/suasU/E2V5H93We5juF61qQ9jmDr1R8Du2JbJqI
+         LC55MvqBoHM//4NnsxI/CeAf3XzU3EGbE2QQV+QKJJDMFT1gcqRRncVJ9zZjdxyYuQsO
+         jcCfnZQzWsyhpyPAzGCE3K7W+Ihr8EE4yUbh6zAgjJt7GWiTw5HQ5YJ6FNC/ZtaHbF5k
+         FB5pVEngffLlTejMqzI90oVEIDFuViWtBJ2ys5ch0nchfQElM4ioqaEE5iCzE0EVWOcC
+         CxwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWgnD9MjcTcHo6trtSNHsUA1Ppk8o/iGbvxtDIpQJVr5hFVFk/bW6/iQwKIVLsRa7BKNCFFG8vXjw==@kvack.org
+X-Gm-Message-State: AOJu0YyznWrS1Z5SMTTvb+A74PtRzTS8ej/0tHg/XAxsPQx54KzPpkLg
+	nlKfGEjSdgEBXdf6SMy5R2m0vtn+cRdx1ZoBSIImo3BSawfjpXBfn9C266DdNUf+ADbPFKvYHfn
+	Vog9rl3EGbDrOXxayIWRl6bkXIzZj6RI=
+X-Gm-Gg: AY/fxX4OUvoW6LlWgpulIoFRlaxd8Nu5Io7pkfdgMxWG066IPWhGYrOGbrlDOK3U63L
+	Hrxjcm5c+KGJi29mGhVokDFy0yIxf4P4WOyKzatWoOesxZa+bxVLy0E3LdDr6Ujm+yEEmH5NAGK
+	opQZn71V/LNlAl/w+yB236y8vh25F8ezTBtJ0i4EFdAaPdl3hx9eymkOOyQIML7aVIKVKrzCsHu
+	8jiH1SxHBeTVdZGYfEXVIiCGdEvbcEuCtML1EgVyJpEs6SixBrLgvP/Y+y2Y19TTE+/z+ucnefT
+	P/PKdxFQmFc7GZfcN41wtk9yyxjzxYC8OA==
+X-Google-Smtp-Source: AGHT+IEDYC3cY6soBRLQg0jrKD+eKmTD2ovAt2yrZmq93YN5K8GrT0NaJGJRys7cFEZm4N+ttZhDuYFIVnybaRJXjUM=
+X-Received: by 2002:a05:6214:27c2:b0:87c:1d24:7b7f with SMTP id
+ 6a1803df08f44-890841aa05fmr191022996d6.23.1768053313735; Sat, 10 Jan 2026
+ 05:55:13 -0800 (PST)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3604; i=brauner@kernel.org; h=from:subject:message-id; bh=XA4YqUHgVUeiBE4BwIy5hjNCCWAzL6nLNBDSXX3oIa4=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQmBTNfW5TyusdikYe/c1Vxhbhzj9Yb+TkB+0RNHjjt4 fm3coN6RykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwEQEmxgZzpoGuQadvLVQvthV 6leEY91rxzlTngl7mvFk9XC9OZz4iJHh/sXdHe69W85W2X1VetGk33XRcSeThHbBCvFFKWFM3Yu 5AQ==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DFCE420004
-X-Stat-Signature: hq6uwo3mxrpuz9z1c5mamqpoewp43oxf
+References: <20260108101535.50696-1-akinobu.mita@gmail.com>
+ <20260108101535.50696-4-akinobu.mita@gmail.com> <aWEn2ODG0gyej0Xr@gourry-fedora-PF4VCD3F>
+In-Reply-To: <aWEn2ODG0gyej0Xr@gourry-fedora-PF4VCD3F>
+From: Akinobu Mita <akinobu.mita@gmail.com>
+Date: Sat, 10 Jan 2026 22:55:02 +0900
+X-Gm-Features: AZwV_QiB1arM2112x9CFryUSneEVqs_KakkkX2Yd9ULOgdOZCKyZki0KapMs8FI
+Message-ID: <CAC5umyhoMi_J_Ford2M_1fB-qCuPEDopAK1OF=AisZyDZ8duJQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] mm/vmscan: don't demote if there is not enough
+ free memory in the lower memory tier
+To: gourry@gourry.net
+Cc: linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, akpm@linux-foundation.org, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org, david@kernel.org, 
+	mhocko@kernel.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
+	rppt@kernel.org, surenb@google.com, bingjiao@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B658440009
+X-Rspamd-Server: rspam06
+X-Stat-Signature: xir8oq5fitmeg7qcrkggagp9r8ig91aj
 X-Rspam-User: 
-X-HE-Tag: 1768051497-406855
-X-HE-Meta: U2FsdGVkX1/j3yigzIhSy5xc9CNnW6PlEGPpgAgWEsyIJ4qweKHpjFpGpoIuNX0k5g0EbPr/3NzDn9iswJ5Bw380xovVmZggms73A2OSWhn1hphuzgaEG6hXL86Nwda0JD+Nf9CqanUW1lyqVamD6VkQ/oxr6dtchL3B7xVLmCzUGGMirXzskb0vQIbsm/ZjnnQvuhsO7mr+2etN+DFYb9j6CuWV6iih3AmAa7EgwHEL7tSVVcsArTYuu0H/BTBV7UYnHLuKP4PhatsWwTZx9wHO364YiO82Jg4ssWmpDO2ZDgwZ/BVc4+woqemRgJK+AjdM1ho5oSsTwcqOH/jQxYWlS8qu5P1N1Yf0nB9Zy6mAldzefcb/r8mNDBB/JWP7ax1udZWoOv46k8TVENBQdMlAh3qkQYhOfbslSqwjk5Z0mZ2T92msmMp27Y8x0Nd9aICA2geREHabMDc8Xw+ZNDJIBh0R8WNIYIoMrrqh7WLKMzL1HbnOHEx9pbhq8tgyi8UuttkSlhdebSOuG5PkbuPCXGtxSih8u9GO1JQIfP9XV3v11/afGQwwnN7fLcfh0gsvq5IE4eiJ4FePBwpsqTHlxMXBr3iW5T9T7Kg10B0QuTinmsmNKaV/kGeLl8qpHV6gVoBNQMmta5/2tocdTP4A3wSnkI6+BSaeeh6MHQVDnJes4l5xyBVgqD1VQeCpFpZBEhnq5JZiwzPUGGjeg+z0D3mIgWWgQT8dveN8hYwILyM5VqbY7Iss9iyuixjcqQhaCWXPOJF1Bayxv3xi+rO9m98+cJcma00WDZXkkTQyW0auubo3QS06dXkKZ5SZfvzk4KOZHnQF8d3B6wzCCvYM1c6gwtbMw6efuQNbzZEDUx/IjmXFx6YONIR5m+gMnzUJC4N+85+ofkAEMXKflNIaGpQFhQeBTQLDpr8jcIeMSEnHHu0Wuu47Vw62Lyqa3jQwnBdOeFll9oRcdwb
- d7n8APFW
- KpyjYlbqM/32dwXpoxnKGaxexbAP8NuvKg5R6fO82exKohjxcIjQdwRW3di6CC3urDT6xu95Opp3zKjK8rwTzP63o/aMdXwGLXRKklDLkEllWP/KQ5X7KldutF8vhZIVb/KGSZAACF66U7JMIji+B9z5vVUC4UR7Mgnc26DRAJnFpXzmO12C2TEjmMHRVvWslKFiv+F4aO8MtgkR7B+73+0Cvh/pVSk30nyWdajEM4lOaKFhPPxc+HnEFb7TuVvLhPcdLv7nkUkK+mXPcz/p3SRaQbWEWlcTS8palpT6xD1wLwGJHJO7VEFzyk3p3pgp4HpkDxGvecPf2uza7xWkQ/ZY2YuTrsZw/oHFqa/IFY1LSmZXXG6dcGkOnn5CEevEGWG2AVGlXfxiytqJHXt6kDOy29wvy3vRNSXUKfJ9lc0303EBGmWfTawiyL1H2kabBONdAqyYqMcc3xOwTDmTXleBI/hwqasKhFJqeHw0KUZ0G1x/RTsqhVyTrLjLUzL0OhoOZgAnwhQwHgzHQ+dZvtc4lh24CvLTUDgJ7xvWQsULXty3I7UwhzpU2jaReN1d269gwVl5ILLt9KGP3hE13tc7LHGe+SaKxpijALbrjihLEz5i2QG++mRWR/+ARwidUkVG2DCBBKlBkZeo4xGtXRqwjcz4FO9nQplmIvULUOG8Yg6XyatPdaIjb/5LAEmdWCbqqRCn4aXmm7apu07jn1hiQFZy1m7qEeWO6QPH9oD1g/6Inla//kv3Ck2styFwevWRLnTjn1Rtkvj5hlkkIuyvJ6LYfHwDGVegVXZ+TdOAGbatR2rGX7JQyk4ztHxrHo1/dDwKi8LI9oizVosg46nfXsMQ7WWfujaactJ+v/m7yt5hEkaia38ugdoDkFPclyzUc
+X-HE-Tag: 1768053314-404436
+X-HE-Meta: U2FsdGVkX1+mfceVIIH4mKEUGs+yLlbmiWShdNx/Wab4cox9QZHclqmfJ6mOqFz0yA5dBd6s+9V2HdVDHXjpcGnPoJsEEMAXJq/NrqMwS67ovJq+85RKlI+d/yCU0OFBYXKWJnkFxMud/3o+X43c0+cJ4XaEfOYgOQ0GHViYW83Jmabt9l/FJcva+DGuOU1ABjQW//mWcAkyhALhz7nU8sYhmpkT9sn7wPwONMo8+PdwTzQDTmWG1chugHKwxi7FEq3TMknJ68tZ6EylQrYvuzPO1SV283KFxP1PtgczEFlthCJD+D8pj2wdPNfRinvn9apNmtC/+/TmQRcGvQQf3kZyNvjV6hKOH/JHEt9Pp7i0bxCt84tFalRgAcySMjiju9TDAPSzlaYQISfZH4Xf9x7GrXsg149g9+shZkOtzIjLyVLlxXz/HbzJp3821rMST4MEuuxmCabQqt3q81UVhPOmjb4hV4GzWF2qohuPfYGgjmCsp6Gg8mCPrWHx7Y4ySKuqUoDOlAUv2dpWD56Q9S7RgG9hTHPbncF8Osfz5sghf9Ocn57Hvg4NHIyxr5NmHg87sdci/rTUR5gxznGWQCaGNxGkabxYNSU+5UAMaqb1tVmt5/A0NHPAo/swV2pEIGEzSsV+9Oq1FmvSBPC5PwandIvn9i2njswjsst+hQWXrY04TS5OC7uNuxhFxIC+sX6PxSl4o1xDRTerAHFXqrWOQvrUciMWWaBNvLt8UzYOviYviiPtxUtvGfil1ePCRwn5ayaKurkUnrLFrQaNDQrLxNjfYrACkqDDyw6gDiULGXt6FHCFN8gmWjN282NiEk5/lytOvsZioUdun9LHmN7/ZxO/fKDOSC4BiS/a9wUjv10DUADUzY3fuuoqiqoAqBHGnAgtVvkFgGSAiG1ahl0uoNIN3Pm04sEh95PAI5uC0bOEbKfSk/DAf9W+Tu0pOL2qQ2FIse68UrARfNg
+ 8EzYQSTJ
+ Tpt1FXtFX5lridnHYmjrgpuSIQbnY1BtMgb1FyH9w4z48A3S6fJ6p7wEj48FLE7RQMw1I3EhZeZ0TN01sRaP9iO41FA7aKJ0whZNRhoqqmcwv5hOxU1vpgUmeIbBRRTYdIVsZgn+WOrQYrczYjjZU5WJRTTErLvUNR6P2nWWRQyKfuhljSlbj+Ye4PCdutJy4CDlURxF8q91waVocl110dFgOIfe4TEo+afYTnH4BetuOiD5pPSbeRutGJrGdc7TzzeWthfUNU+wNVjqG8TdBfJLJkDFfKzYRUsrFlH9dIMMDt9v5b2iIS9niSNv7pLZtFqb2b39PhIb61+qC9zK1AkAghQ5tg7kkj/9/+ew1PXHJRP6QaT+BGjfn4YxLxKgBhq+VETEtb2oslBRyQuwbavgM9y8XveyLUiO472JAbYd/pBMGb67Yr127IEeNzS898f5GqU8HKX5H90FWMKYxbarygwj19uiOYbuG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,94 +123,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The annual Linux Storage, Filesystem, Memory Management, and BPF
-(LSF/MM/BPF) Summit for 2026 will be held May 4–6, 2026 in Zagreb,
-Croatia.
+2026=E5=B9=B41=E6=9C=8810=E6=97=A5(=E5=9C=9F) 1:08 Gregory Price <gourry@go=
+urry.net>:
+>
+> > +     for_each_node_mask(nid, allowed_mask) {
+> > +             int z;
+> > +             struct zone *zone;
+> > +             struct pglist_data *pgdat =3D NODE_DATA(nid);
+> > +
+> > +             for_each_managed_zone_pgdat(zone, pgdat, z, MAX_NR_ZONES =
+- 1) {
+> > +                     if (zone_watermark_ok(zone, 0, min_wmark_pages(zo=
+ne),
+> > +                                             ZONE_MOVABLE, 0))
+>
+> Why does this only check zone movable?
 
-LSF/MM/BPF is an invitation-only technical workshop to map out
-improvements to the Linux storage, filesystem, BPF, and memory
-management subsystems that will make their way into the mainline
-kernel within the coming years.
+Here, zone_watermark_ok() checks the free memory for all zones from 0 to
+MAX_NR_ZONES - 1.
+There is no strong reason to pass ZONE_MOVABLE as the highest_zoneidx
+argument every time zone_watermark_ok() is called; I can change it if an
+appropriate value is found.
+In v1, highest_zoneidx was "sc ? sc->reclaim_idx : MAX_NR_ZONES - 1"
 
-LSF/MM/BPF 2026 will be a three-day, stand-alone conference with four
-subsystem-specific tracks, cross-track discussions, as well as BoF and
-hacking sessions. Please check out:
+> Also, would this also limit pressure-signal to invoke reclaim when
+> there is still swap space available?  Should demotion not be a pressure
+> source for triggering harder reclaim?
 
-          https://events.linuxfoundation.org/lsfmmbpf/
-
-for further details on the venue and hotels.
-
-This is a call for proposals for technical topics for this year's event.
-
-We are asking that you please let us know you want to be invited by
-February 20, 2026. We realize that travel is an ever-changing target,
-but it helps us to get an idea of possible attendance numbers.
-
-(1) Fill out the following Google form to request attendance and
-    suggest any topics for discussion:
-
-          https://forms.gle/hUgiEksr8CA1migCA
-
-    If advance notice is required for visa applications, please point
-    that out in your proposal or request to attend, and submit the topic
-    as soon as possible.
-
-(2) Please send topics to
-
-          lsf-pc@lists.linux-foundation.org
-
-    and to the relevant technical audience:
-
-          FS:     linux-fsdevel@vger.kernel.org
-          MM:     linux-mm@kvack.org
-          Block:  linux-block@vger.kernel.org
-          ATA:    linux-ide@vger.kernel.org
-          SCSI:   linux-scsi@vger.kernel.org
-          NVMe:   linux-nvme@lists.infradead.org
-          BPF:    bpf@vger.kernel.org
-
-(3) Please tag your proposal with [LSF/MM/BPF TOPIC] and ensure that
-    each topic is a separate thread.
-
-(4) The Google form has an area for people to add required/optional
-    attendees. Please encourage new members of the community to submit a
-    request for an invite as well. Maintainers or long-term community
-    members can add nominees to the form to help make sure that new
-    members get the proper consideration.
-
-(5) For discussion leaders, slides and visualizations are encouraged to
-    outline the subject matter and focus the discussions. Please refrain
-    from lengthy presentations and talks in order for sessions to be
-    productive; the sessions are supposed to be interactive, inclusive
-    discussions.
-
-LWN has covered previous iterations of LSF/MM/BPF extensively:
-
-          2014: https://lwn.net/Articles/LSFMM2014/
-          2015: https://lwn.net/Articles/lsfmm2015/
-          2016: https://lwn.net/Articles/lsfmm2016/
-          2017: https://lwn.net/Articles/lsfmm2017/
-          2018: https://lwn.net/Articles/lsfmm2018/
-          2019: https://lwn.net/Articles/lsfmm2019/
-          2020: 404 - Cancelled by The Plague
-          2021: 404 - Cancelled by The Plague
-          2022: https://lwn.net/Articles/lsfmm2022/
-          2023: https://lwn.net/Articles/lsfmmbpf2023/
-          2024: https://lwn.net/Articles/lsfmmbpf2024/
-          2025: https://lwn.net/Articles/lsfmmbpf2025/
-
-The program committee for this year consists of:
-
-          Javier González    (Storage)
-          Martin K. Petersen (Storage)
-          Christian Brauner  (Filesystems)
-          Amir Goldstein     (Filesystems)
-          Jan Kara           (Filesystems)
-          Vlastimil Babka    (MM)
-          Matthew Wilcox     (MM)
-          Daniel Borkmann    (BPF)
-          Martin KaFai Lau   (BPF)
-
-Thank you,
-Christian Brauner
+Since can_reclaim_anon_pages() checks whether there is free space on the sw=
+ap
+device before checking with can_demote(), I think the negative impact of th=
+is
+change will be small. However, since I have not been able to confirm the
+behavior when a swap device is available, I would like to correctly underst=
+and
+the impact.
 
