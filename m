@@ -4,117 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BA2DD277D0
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 04:04:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFAB8D277CE
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 04:19:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0C236B00B4; Fri,  9 Jan 2026 23:04:00 -0500 (EST)
+	id 0AFA96B0088; Fri,  9 Jan 2026 23:19:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB94D6B00B5; Fri,  9 Jan 2026 23:04:00 -0500 (EST)
+	id 05D306B008C; Fri,  9 Jan 2026 23:19:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9A326B00B6; Fri,  9 Jan 2026 23:04:00 -0500 (EST)
+	id E9E316B0092; Fri,  9 Jan 2026 23:19:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A77276B00B4
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 23:04:00 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60BF7140139
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 04:04:00 +0000 (UTC)
-X-FDA: 84314711040.30.52EA50B
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 83143A000D
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 04:03:58 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iGYWtQJX;
-	spf=pass (imf15.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768017838;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WZauXH+MPa+G5mIjej9+lL+y3hp8looiMpGaZ3G0SjY=;
-	b=NnZhPQgSyUuJpMi+jtR3PPkU1xzI7VHyCRiHdBLjS/AM9WQT/zrNw7wF5oXdN4UQ4fVPIN
-	0scEO95zGUgb3H0YbLVfJRzyqKht7PDOhHnRUCPUkcBP+4Va8oW/eW7OZ2WiBmyZMmL2JY
-	ZCmDEMwSXC7pZuIeMKXYCySJKCwoum0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iGYWtQJX;
-	spf=pass (imf15.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768017838; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D7EF36B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 23:19:40 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6A48516011D
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 04:19:40 +0000 (UTC)
+X-FDA: 84314750520.18.5D81F60
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2E036C0006
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 04:19:37 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=CtBErUQT;
+	spf=none (imf22.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768018778; a=rsa-sha256;
 	cv=none;
-	b=TpZF0k/n3ooXNyDq/xezJmopYvl7jAkaNFCmZOWJp3m3j2ZDH44WBCHpJRmfDdXrOHM/iK
-	qBcE/UeZwwXfD2vp8/hqliZIfiwNzVU/usxa66jjKONofikebrEqeFUkKEa/la6cNerw0t
-	MVJbDGCEPbgXzDXBcTbPZDnI1pKR6RE=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8b31a665ba5so584978185a.2
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 20:03:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768017837; x=1768622637; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WZauXH+MPa+G5mIjej9+lL+y3hp8looiMpGaZ3G0SjY=;
-        b=iGYWtQJXxQ9avkmo7OHUUixH57/up611rV/1OMBWGIgCPVihYlGWwUm1XuIvuGwphX
-         St+9cuxnkx1FLN8c3cUf6++xAfncbAN9cJhW5c+Y1tfhaUnBNG0Y1SNWlbmOinrTpZU6
-         m2ib74iAxYdcVpucGoG9unCjOj3JLnzOlGnT+GIdFHRSFm3+ye/k9c8RPLCeOxvSdf2w
-         FgibG2+E53MkpuxuWTU6hV1F6lHIXBEiS4jVwDDhFGpQBN1bN6DML0QgJtbbdPQ4Dp6Q
-         XeBJjOHn8qAjNG5lLCiXRZxTKRkDA7Hi/AjFvU9WJAkse5PbLPKc+fl582mRo1GlhVRa
-         TR1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768017837; x=1768622637;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WZauXH+MPa+G5mIjej9+lL+y3hp8looiMpGaZ3G0SjY=;
-        b=HU8LlFSCDVaPaECoZTUxHHheJiL23E+WFFt80yDKDNEPiRExMiFZHFahSI7nGfahA3
-         U06y2r6E+0Y+LBAtyUjWONLOl15J9/YChxasM7y8w06Oe6I+fQSB073Aj1Ek9G+DUhzK
-         Xv18McR7c/s9JdVC8QQDFhDOB9Zif6hl4CRm0g8G3ohwH4w4x91fNR4yPnSJwEwial5v
-         bA5GwyJzDJr273NjpS8kQvyjNqLPnpCFL8lvyuFwqj5mTOZ1wohq4ySbkehRXc7VpWjE
-         rHDs9VCvaCAx/qyYrBr4HjBwD2fn/Cxwy7eST6Hit7U/uBYnDYeZJ8a70vSpJG3HqRCU
-         pXjg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUc3349JjALW/n7PjGEDLktBzTDp/R4BNkij2vpLNbA7wseA95yBka0cFM60AQne8xVU8RRrlCaw==@kvack.org
-X-Gm-Message-State: AOJu0YwGED0RnvjNouKGKpFJxveV77/zsdXKBOJ2NPWIIPxQeUsi0XMN
-	ympEpTAt8qHxBnPy9XweJlSJ799KgV2AMxQHhW2um5AUXBN8iYpzi2wpMZl9GRIcXGvPn+CeOt4
-	bqbVC6lEV/cI8wB9uuDV7YwXKZkk2fww=
-X-Gm-Gg: AY/fxX7F4268DOct1ZCZmUnvzlURq5bqACOcM4u/yF0q0g3aCfn/qeJyVlKhdqh/PTi
-	nJONPwcayb3+AyRgzjFK6vX9/PiSfRIxqYo5rOBNykkenTFahJZe0/cC+nfyPDyeURmeBdJjwfH
-	vVNE+jqfJ10DF3P2agdI+waIvyxljAb3AxBapeXG2IxSL+zGvBpECIYywRN3yAPTzmCW0PKfLKL
-	f3xcfRM5Zrm1TlA9tNZd4/Tvpi1HzVOJV4UDdXW8N67g1IRrsF4LaHaEb5vtVmygG3kW0BnXXg2
-	qBD+IQ+z7fqkgLlZR+qcz+8=
-X-Google-Smtp-Source: AGHT+IGkoL2AF8SQKFOHJCmnDdpS23VSI9v0VXX4sG8uoPW2wp+fzBtIvWSsAOWNdGOX02I4Xj+89b2hG49Vj20t4K8=
-X-Received: by 2002:a05:620a:4444:b0:8b2:e177:fb17 with SMTP id
- af79cd13be357-8c3893dca80mr1563823485a.45.1768017837553; Fri, 09 Jan 2026
- 20:03:57 -0800 (PST)
+	b=IY7V7nA0xXdTUI2l76DDMSdubmIz8miavtD/7y0mwJRg7lS6vuLQLi/6kMNWZRWyEFrIox
+	gps6whEqrBGk+rwDZur07xy2ziCLjuYaoLG9dN+yKpnlRZQTxzdRhcpKMIdDNAPeCkVIc+
+	8jeLd/3t24YlkrS2IYGdaskrtT2KrMU=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=CtBErUQT;
+	spf=none (imf22.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768018778;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FrXzQAEQRN298A9NQXfa3gY+X4zzBUHVMqaG/R1D29c=;
+	b=q8nILDB2vKzNgIZ3xO42WIJf70pduJmTaseMJtGB183XudtVGMBPXnB4Ysv5O5nZco8F/l
+	iEf5TmboE++pxL5JP8Vy4DgLBkFU5ZP/Ohr5QJU46yLJvjaZPHAo36t3T4WFKiyr/bnrPO
+	OV2v0CtjmTOC42GPlAdaap1SAVWysCA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=FrXzQAEQRN298A9NQXfa3gY+X4zzBUHVMqaG/R1D29c=; b=CtBErUQTAXH/3cLPj67RwvcyhW
+	ryWQnyPYSRafAowodNlS0AvWy733kBuE9+h7IhJiHjAQ9iU/yzwCBuEe8F9jJckk+7N3MRq5J+Cnc
+	6IwEOdL3DsgX8jug7rORJZdd8zNsU4/hbYM8jU8H3QZKyBgAiYLrC9TVmW8ZVYszNLtwTgdYBxV0b
+	nVsa1mbnwlBePuWqPJGK4vsLG5AP55DHst4o9End3tQgKWjANgtlkKkqy4fHB9DRjGYfXl5WXsOb+
+	tJnj58l3hruE99YoqpFDJxbiiAcPgVIcDL78yinTJkivfey8BoG2BHhvIRtgq7o9XpLtFHn3xyIgt
+	J6F7Pp9g==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
+	id 1veQB9-000000085b2-38Zo;
+	Sat, 10 Jan 2026 04:02:19 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-mm@kvack.org
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	linux-fsdevel@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Mateusz Guzik <mguzik@gmail.com>,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 13/15] turn fs_cachep static-duration
+Date: Sat, 10 Jan 2026 04:02:15 +0000
+Message-ID: <20260110040217.1927971-14-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
+References: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
-References: <20260108101535.50696-1-akinobu.mita@gmail.com>
- <20260108101535.50696-2-akinobu.mita@gmail.com> <cb77c9eb-6dab-4147-a0bb-ce488524beb2@oss.qualcomm.com>
-In-Reply-To: <cb77c9eb-6dab-4147-a0bb-ce488524beb2@oss.qualcomm.com>
-From: Akinobu Mita <akinobu.mita@gmail.com>
-Date: Sat, 10 Jan 2026 13:03:46 +0900
-X-Gm-Features: AZwV_QhMXanhtxvUY1a9f2Zu9D6Y77eXyKKzmP_0rDRPiP7b2vD0NAhLFhC1j3w
-Message-ID: <CAC5umyhC_zN4jFTTfz0DiJuZAd_8eC=E_a+aPiBVXDPhGToa3w@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] mm: memory-tiers, numa_emu: enable to create
- memory tiers using fake numa nodes
-To: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
-Cc: linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, akpm@linux-foundation.org, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org, david@kernel.org, 
-	mhocko@kernel.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
-	rppt@kernel.org, surenb@google.com, bingjiao@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 83143A000D
-X-Stat-Signature: j78niyecq3itpkfk68q71dw3ob1w7nj4
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2E036C0006
+X-Stat-Signature: 41eg31q81nco8ookzoie543afsp9ajoi
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768017838-312364
-X-HE-Meta: U2FsdGVkX1/lK+RsY9G+4Tbzic+EqxmVo9bEIOr1l54XJS+CwFv91nUf6aKs9GVf2pINXWG0T/sZK9yne2UUCmInYc/TcxdW9lSVfMz7l9asyyseRLBe51fGYqqSDgMfgYKuyN/rxqP/csKN9TvLp3xUZwy7hYug3kdrPqhcAjLDo1NglUyOSi8D0HvtRuGhWKpBQPpaxOLvs+GQHhAiPDKfNKIZoNcu+Y/OJiwGlaaq3qu9nvZ8mUwvlgITO/E6kAyKGMlH1BG4pRSRcxi6P4k+isRGfnGCBpjc91yxPRoxgHwzOgyojwQWlSpHVCUx7iJe8kJHUHsuxoWIIu1jPQ07TCCIVgiq67JQ8wLD/bEOtrBnQGhPX2Q3XBtxp3PTl94dLE7Tc2+4sqjF9w6zX8nPrMtvfbHvkYx7ueELdpVCa3M0lW4kcpAOLYFT/JNfKxfbd2Sn4f8IgzXcVCtP8QLoYGsO+khmbiRvttH91V8I2n+h9avrbg5gVCCmepmtLwS5CFf7ThTEUHNxynIil8ygfPXyzHZfH8I7HDvICUr+OPIHPiewHMuzqjQYk0kqfus1y4UnQeQW3OkeK5vWSXI1DMEltSy/17sRXoo6SwFgjfKBRY/B/XsZV1GM16cmMrZ4/Av7aKucHs4QrUrd7br2AQhM7KmjRU+b//AVAl5W9R81O+HPJEsigPvCQ2WCleNIHdcoUdYUp/4bmGaEIgwQB93jeld5VbPrg4/EZqkq1TtuZAA+j/47tuYGAkH/ZF1pDldGorMKLYREEiaPxNQ3R8oI3WFFChXb6AHLIgDr8vtS1LQg9lpb7D9zuthNu9kMDPNE392mtwVPPTbjPdS0siMz3lVGuh2IWuy2mCm8h13Eor9wxDIRW4V9NVSHAbH1hWUxqz1JOlY+iqp+guh+vHKD55pgXCqL4chfzNnIJHjh9kB0sBVzYn+ZY/x+51GqPzeIhlTjdr18LZX
- qlZ11ITL
- x2JU5fCv724cc+n/tIReQta9E1BZQhYO3NvBuEQna5rI1Q8yI1EUhde+YihViDRf5pQXXb/TjVE0kKXGfT01aXXCXRzj8Ef17fAznFdX+E7dVo0VN342qgqSgWoPyMAcXtk3ETFDsD4GqU/riZlfU/1aXihfUK2WmNyeqszYq80w0B2xLO4WLYj0J0qR1eGWi/pzg20Mhv6siX5nr9VNAxS9JuR9kncx8cYZtC4zqEJdosjNiaNwdurxWzm9m/fUSGbXN9CQgdH3D5ydQYs7I4qkFR00QSM/v9kJclpwKTQnUZJYGYs89Haq7KqQKXduD4Ep23AE618fGVU5KgjS90Qc/xfyHKydcJILqFqA2rcxAgwJCTT+yjNxu4HnnSBsbHT9PO5N9Olu1aVdZr5q1efxGAs/B/imObvIkAdnzgVLJbOeUPOQU2BXW5JdADBYvEhzPlvEtLqZRhJg=
+X-HE-Tag: 1768018777-731447
+X-HE-Meta: U2FsdGVkX19+nLW8VTX5Ggh4XQVgvF/a6oWJxvQOJ4yNSK05cVtxBWbjaCrx67XpsXwinWgCu3oaW9Ea6y+2bdj5Hx1P5oyOGjluJvNzfi6xqyYTIiljjCeGI7nloxx7qfVbfzqefYjYQCJrLJi/Bb6Rlw3HHAancZx2mpwPfFM6xLUvDB7TnYkRNVoxPNF3u+x8c813zbK4sN7TCFP6/NeFOjOuFKMU3C+y4/UZNoOvUsdDe7KtIDK/V41ZCASyWTY2seMeaHUe+lJwOU6MZmUR6gW1DlI+F1tRyCrOkDns5AnzOGAj+4nSLOLJ1CY/u0/J7fnV7gEnjY5+fig7QM1ss9DB6Xmo4Nh9yXKRg1LTelR5tthcKWuBnHnn/Q4L+rqkaHv3I3r7QNyVLh7ptAnAVf94YNEfBFehiJus0pIWyB70tNB3c17TqJequk4Y2C7X+n5racSrf14MPJQWCglXX6bRmeeTETDluE5SzUBAmCnyW9MFUYsR5VKHaBilqr+n47fSaZwKbnZVunvdreMydW5x3Ar6dcIocgsuLDteBSeup0ZHyrYQsiHBmgyfAY0UCG0riZx90xpkiXYWP7EtLSQ3yPzbFAs9+nXyrh6P4WXD4UbvQAMxIkx3sFJZK1lUfFEdx/PPPbtbXrPVXfQ10ADmJs0yWkm0suIkkEEYJxtyeDmUqEmzLtq3KNv4/z3g9br5p9NxC7d6V7B1sPsMcaVKLqYA4lWPdeiM0j7uRQL6Y3c3uZgBDOucYRtNEDPGkWAH2MIclmmNq8in81nnzsGMM6TZYSo/Xg2R+3y+vDAuOo+DvU0ubPSBoOPnKVGJrKHee1nYalzmZXK1xKhakh8S08T3/nyiFDtb0EZj+1cO/poUMzUSJFxOOAwSdD8aF+fHPdxvHrTbSECRcWFPHyX6NjhF1IcNZHT+fv6c8G8Jyh7oePxQnVXXahTOsw6Pb/Xf+TjRxF5Ha5/
+ FjfFFQuH
+ +MNicit/BwYdaijD0vQb02puf6NItZh6wvsgV3K7ACwt49wTRsUeGR7ROpWic568qYS+DyKyOWMEiPrE8OAYPV2ry5NXpgN7Ed4OwqhvB3X0IdQ7Vmqmn7NA5tZaFULB/ztU3batXm6xMCMqDMb2dnryYbNIMoCYQ3u4gE6vK5LD5goIdxlFE1cHjhjAz+k2xSOA/cFu/9DdX/xZQRmpydcwRsvcZMyOP7oK4BrAOYr2IyiUkgGwMlShyvlcU0GsKlxhMAATKxiZLpl/bcFGUsQ0sO61QpJ4KB5VX3n7OWae2QyaK++CZmdhpy5bxIU3czzslzfOWRW9+jYxJvwaomujPNooE2ylPYMo+77gqOPmDyhGX6CNEwTD5M39+FDvE0u8xQ6DKqTNAXfyw6qMmgUK2v2OoF4qZtXALGHT5ZV9IvzUBSV/zZgKYb+YRQef/rqCALkrah3lQSJmGeov/2UsSIodIgvjQL0ENCQERAFkipZrtTIevJmCcRQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,32 +95,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2026=E5=B9=B41=E6=9C=889=E6=97=A5(=E9=87=91) 13:44 Pratyush Brahma <pratyus=
-h.brahma@oss.qualcomm.com>:
->
->
-> On 1/8/2026 3:45 PM, Akinobu Mita wrote:
-> > This makes it possible to create memory tiers using fake numa nodes
-> > generated by numa emulation.
-> >
-> > The "numa_emulation.adistance=3D" kernel cmdline option allows you to s=
-et
-> > the abstract distance for each NUMA node.
-> >
-> > For example, you can create two fake nodes, each in a different memory
-> > tier by booting with "numa=3Dfake=3D2 numa_emulation.adistance=3D576,70=
-4".
-> > Here, the abstract distances of node0 and node1 are set to 576 and 706,
-> You mention 704 in the cmdline but then mention 706 in the following text=
-.
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ include/linux/fs_struct.h | 3 ++-
+ kernel/fork.c             | 4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-Thanks for pointing that out. It was an obvious typo.
+diff --git a/include/linux/fs_struct.h b/include/linux/fs_struct.h
+index 0070764b790a..e8c9fac5b7b7 100644
+--- a/include/linux/fs_struct.h
++++ b/include/linux/fs_struct.h
+@@ -15,7 +15,8 @@ struct fs_struct {
+ 	struct path root, pwd;
+ } __randomize_layout;
+ 
+-extern struct kmem_cache *fs_cachep;
++extern struct kmem_cache_opaque fs_struct_cache;
++#define fs_cachep to_kmem_cache(&fs_struct_cache)
+ 
+ extern void exit_fs(struct task_struct *);
+ extern void set_fs_root(struct fs_struct *, const struct path *);
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 8f0dfefd82f0..7262abd0d2a4 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -476,7 +476,7 @@ struct kmem_cache_opaque sighand_cache;
+ struct kmem_cache_opaque files_cache;
+ 
+ /* SLAB cache for fs_struct structures (tsk->fs) */
+-struct kmem_cache *fs_cachep;
++struct kmem_cache_opaque fs_struct_cache;
+ 
+ /* SLAB cache for mm_struct structures (tsk->mm) */
+ static struct kmem_cache_opaque mm_cache;
+@@ -3035,7 +3035,7 @@ void __init proc_caches_init(void)
+ 			sizeof(struct files_struct), 0,
+ 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
+ 			NULL);
+-	fs_cachep = kmem_cache_create("fs_cache",
++	kmem_cache_setup(fs_cachep, "fs_cache",
+ 			sizeof(struct fs_struct), 0,
+ 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
+ 			NULL);
+-- 
+2.47.3
 
-> Please correct the typo. Btw I am not entirely sure if this example is
-> required
-> in the commit text here. The Documentation seems to the right place for
-> this.
-
-This example is also included in the next 2/3 documentation patch.
-The same typo exists there, so I'll fix it.
 
