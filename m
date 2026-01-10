@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DCD8D25028
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 23:29:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B1ACD2502A
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 23:33:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D33496B0089; Sat, 10 Jan 2026 18:29:29 -0500 (EST)
+	id 7C5F96B0092; Sat, 10 Jan 2026 18:33:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE1556B008A; Sat, 10 Jan 2026 18:29:29 -0500 (EST)
+	id 7736F6B0093; Sat, 10 Jan 2026 18:33:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BECE46B008C; Sat, 10 Jan 2026 18:29:29 -0500 (EST)
+	id 69FB06B0095; Sat, 10 Jan 2026 18:33:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AFD686B0089
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 18:29:29 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 522D5C18FA
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 23:29:29 +0000 (UTC)
-X-FDA: 84317648058.11.61447E0
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C1D16B0092
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 18:33:46 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC8971AC5B4
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 23:33:45 +0000 (UTC)
+X-FDA: 84317658810.05.B4C3383
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A9426100005
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 23:29:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2ASNKvMY;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768087767; a=rsa-sha256;
-	cv=none;
-	b=PpSCKpDv9vFQrajtyyDZT6+L8HFfcyvr2RCQGDwQ9syBILnDCRAvKhw1Pbva5h/Ren0Ei5
-	dursLVzNGa/cyn8C1y7S+7zl9txzFWbk7bVuXycBq/bjcl5LlQfvVareWtPHfQS4l+AGZf
-	ifElslfrcStNvRBoxwACJx3gmxhsZ1A=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2ASNKvMY;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3D9A08000B
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 23:33:44 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=H6KSlHuT;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768087767;
+	s=arc-20220608; t=1768088024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7YEo1xQMK8bKYKlyiNTa+nPJAamcxkd3bSPBhcxLleA=;
-	b=MUuAwQ5ah28uSvGZBE58Ip0sicSnroIm2C/+uCYFL8LxkdLqQiW36kztNLt7FQidB24ove
-	ESwbRl9lQPNPX+/4AqJ5Cq8mRdz+k8vbVbW3nCd99nFIQJJRIJDN1CffJ5+kDXImILPz19
-	lA9CWVEHzzM3MP99VuRns+iASOHllWo=
+	bh=t6q7M0IjRmz0e4y2OvFw1dUdAZG4DPwgAu9x6yI2TYE=;
+	b=CYfv37LmDLPcVYQ01o+Z7azq0oKh5sJrHOlMkk0ZnKBtsy2po4pAwnzGxJIfb5/SwTUqaQ
+	0etshSh/6BZx9a8uWbG0yR+QZCJ9G9ImGrTyLe34Usqzb6kRecyENMsWhsASPOwM8rEtNH
+	Xe09teU/qXxbNd46fTYWjvSn2o0HrYQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=H6KSlHuT;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768088024; a=rsa-sha256;
+	cv=none;
+	b=OfkR/t3BMv7ikzwdskrbSEQFf9Q6+7pJCGdz2XHIp0VcTc5osRU4CYnnr0HrW7MRACbJa1
+	guH49CvTdXeFzInI5U6Ew/RTIIoDeZRlb7rQRVKZqpS6fsudiroOx3cqx5wPa22ybpp3sA
+	sxYmF/nQciE8sT92ViqXkzBf66h0vDg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D368560010;
-	Sat, 10 Jan 2026 23:29:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F2DC4CEF1;
-	Sat, 10 Jan 2026 23:29:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A6A3860010;
+	Sat, 10 Jan 2026 23:33:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A32C4CEF1;
+	Sat, 10 Jan 2026 23:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768087766;
-	bh=8feMRPd7kn/QU8hVFk5c80/pgbFRqhrP8JeGJi4HKKo=;
+	s=korg; t=1768088023;
+	bh=e2sYFvxqf2oXVRxryUmtDGwxS+F7IW+fdW8ehSlHuC8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=2ASNKvMY/09pxE3gVtRyni1RtnWh7WNCcnBqDVsO8H4jx32rQTeIhsrsO2mVgQQ2F
-	 LvOSWCm606uCj9CmtdJk4WRXEsxAj1FCf/sYSDUjHFu1Fanx/Wcm8vLEPbqPmj/xJd
-	 Ycm/hbHm+qIpKzbB1MRyf1eYlcpw6lNy+EJGBKhw=
-Date: Sat, 10 Jan 2026 15:29:25 -0800
+	b=H6KSlHuTQuj+XO6tT+K97n6UdIUpCQNL5xOzjBZtL/XVGYgcnn3SdwVNcMe3K39SB
+	 zfzmPAHYElbee7Hjx5MuvVlhj3dQQhL4cH/DaohiwWVQSfonVbQ8mHmdS5ALMMRAht
+	 +zPpclEJOZVKbM0sXj1MaKDj5sIYq4gUFYM/MwsQ=
+Date: Sat, 10 Jan 2026 15:33:42 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, muchun.song@linux.dev, cgroups@vger.kernel.org,
- linux-mm@kvack.org, syzbot+d97580a8cceb9b03c13e@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/swap_cgroup: fix kernel BUG in swap_cgroup_record
-Message-Id: <20260110152925.a2f98e1be21fac5bc8bc0bd5@linux-foundation.org>
-In-Reply-To: <20260110064613.606532-1-kartikey406@gmail.com>
-References: <20260110064613.606532-1-kartikey406@gmail.com>
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, hannes@cmpxchg.org,
+ mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm: optimize stat output for 11% sys time reduce
+Message-Id: <20260110153342.7e689e794ce43a0a39c699fc@linux-foundation.org>
+In-Reply-To: <20260110042249.31960-1-jianyuew@nvidia.com>
+References: <CAJxJ_jioPFeTL3og-5qO+Xu4UE7ohcGUSQuodNSfYuX32Xj=EQ@mail.gmail.com>
+	<20260110042249.31960-1-jianyuew@nvidia.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A9426100005
-X-Stat-Signature: dx4xoi87hdjhsjisn3q1b3kqskcr1xny
 X-Rspam-User: 
-X-HE-Tag: 1768087767-612635
-X-HE-Meta: U2FsdGVkX1/n2bFSe7oeBen8WXxNyr/rFHGpF3tZxxkTSyfta1vwUWUZYB2bLMSUGoDC5/OlKUZFkhGTirwZAX6H39b1FWzFYlnRBZ4UqL+amSqH3+X/dPCTqdTg4LJDv6Om21lJ4RU5kRpObG2Frp0635CdNB2j3rUkxkiDdrs11J6N9/S5R0QiNFQdipPZBQMBAhxMTiSUz7zd0AuGzYMtAql2q07ssoqNNx5DX6bH0CAegijqAlOZDWjEofNX6zJA1dCbEzCYlZNgGs6NpPPjXsD47i2HizSL5p129SLeEFdCQ+FPP/SAg6TG0FpY0wQHL/IVtTIvplTiCZgsqgwUW3UhwbUT2jGQhd5QxLeJ4HeBvD3/x3QoMrQmQFLB2wT1j1ofvdqsGOI28B8wE26IDJ3BGx7r3xWWJfvCcAYK9B+SXu4Qr96i+PlXl7JuJB/Euzp9R8R881u7VHZSGCkAhh1zzcfj9RzvhT9ABPQ4nUcEVegzw4bCMTl5SVqJl7SNd01tSlvQnl8raH/vUx3xSZL7fiAlR2mG+nPoz+7QbvGEUgHEcGh4Airy9/gC/n68UWpohYGddl+BJYM2XBLDHWVGRd7/YCOqHDvDeeXviSV/Hh2DvRU0lK+1t8CiiAckLH49aSoF0dnhFsqet7Flf7kCma2M87c6JVhPuUNIK5f87PdZWMgrZVvDqE9quYcESqFZ2Rx52mWMrD07dhTPh2RjeGIDfOO+Fit2aXhv4CXUxEUtLFFE/HhYZ+bvmQy9a3pMtC0bTaqkIDpkcBxbIcjFqbc8Inh6iyF3OeeYDbA6Q3tdr4wR6UsfCfDb3A1+YetDwcb7FUKakzv87Z019QotrroYk5CpS7HG0F+7oqqU3icKLsK0xVNFWscOxzpI55NYdse3r8M58qdtMbB6+oQNECd1iApp8ySBXo/+BF2oTbt3lzAaB+vwrTZZIyxdVq3lSrJAagonuhp
- rHWfL2SJ
- xMGNXymZAGQ6tWv/VsKtTH6uD0vGHpGYnMExYARAN/F+zATIHrmcYtbBYaxPfSC70HChVRpjrHzk8zPWTP6wv+1CTZBqnlEIB7phK4qgcuco53OnfxSz45yhI0cTG9cDCI/jqs/QTQaHxDMFpO4RS5mMMHwn1QjXPvBSFsdtFf1qjnZS5poeYwharnNOrNqAIDtUa2tykEjc8BatmLXmDqSsghhxrSkgUE5EtyWP6fG7JCIynxHQET8chpPauRHyQJ57Jo4QV8nzWLHCnOGfTImHm3ZhZJa4IyrB20fhr+zVtz/tFHHRZBbg+Y4l6Rx+tczQYRWKvFsCpZgUVNRwp6z5JCtbHim3iQvXlkud4cJKMLBcalb44No7Ec4WBx4D50R7PRNf7NDgAavPYjCgmAW3aVkN5BBWuszC/
+X-Stat-Signature: u485x6gy3i8tah9sg9cr88wke3dbz57a
+X-Rspamd-Queue-Id: 3D9A08000B
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768088024-720147
+X-HE-Meta: U2FsdGVkX1/JhfTpU1pYQAhtCxqCU/NXvKhCU2BkYpzo4zdDQSl5HmQ8T8CcsDkwwPFgQe0BtWWR0vo2ms+VLBUrSagDyB58ynmaMB4PIC8hvax8uchQAcE7tobSJW8isD5nXjiW5ngKhrV6jqmOSh4iWQl1TG+/ys+ziKRnTrlpUeIfN1z9kc2MsARLmaJbwyy28cr4FTZVFAsQiOAum7XkK8b65+v3dBIBX74gaRYyDIcnt2XXuPM19awZzjA7hiZtpoC0MqLln9ZPPZmBpLRa7ZF3e0f8pIaVSq9c5lgWxexbRpJn85RjCCfQiW2kyamGoOtTk/zs2eeYYagHgyjW/oqFNsYDZqUG8pREIsDqkvIkaUytmYK4AuNS6twK5MSeNFuBgx1Sg6ZcsajEKUvISbm9Wcbj1GHW7NeQd/Up/L69h0Co03kFEdb7Op3yYa7MXSYlC9cFC1pMnfua+q5PMKrWLCG8+MNUl1E1QGa1zYCO7yz6cQuohtB1K8Wgy5wnyb9wJ7aSwZ7MIZm1KD5y5kOV+YYP1fpEe8lBtqCuRjWpXGWWxH2l/P9n8awIT2Dbr6r6Jn8/8vN3ZenZ1vkLvMNsvxBeTtGk8yGKFfiEKGjwX94j4A68MpSPO6O5rDkwUBv5SJhEJrZGWxn9PIuWvX5vKLnqxyCt5Q+NPkiqSqg+tveM0XDoWnsz7tLExAsTJYK+TfYA7m3bKHXJC5mEJ0ajzJbvOn0lbfsYOk1km1lSe0fcmd1BHBrLl3fAoUiLbGFqbrdzMywXuHPlwoefSHTWK4k9XBpuMQWNRYZEaq+Epn3pRLVmtZwXJSZm1y+iuOXnEizmzTQrIL7T99GfV8XS1AdT0tO5i0NdrU4SgYn7ycJu1DpEAWYK10Oebxfp2A7F8HIAFPWg9bKt6egHLS8uVZ1haY0mDeHCuac7Ij38yZkYRigko8NALg0z6ca/0UctVMs1nknT7fF
+ GUhhin6Q
+ okkuzHTQtDvijGazANzUabqFvor4DD3N3pJQNQ33fFCzrHYfIgVGfEw4syHXKU6ghnW8VXTJGAgSsz6K88oeVWIcT8ccQ/8xHVPNycKh3vCmho/Q49Ja93NAEyVhZExO/3oZyL5hcd9/EtdriHewfvXcF1qxov3dl0NVQzI7hJq8wIE3jn9egsRm/Fsu5GlvoqdUHSSmJtUtXMzifst5KMqU8tXaMBezyd8DtGqLBbJ6qKJuc0sU5vV9nb1CckoQ+z5dNyWvCQb1figMVE5yI9okhhpUzqyZtjmSnVNOsmDlwnZ/d/4zPMVSCBw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,57 +92,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 10 Jan 2026 12:16:13 +0530 Deepanshu Kartikey <kartikey406@gmail.com> wrote:
+On Sat, 10 Jan 2026 12:22:49 +0800 Jianyue Wu <wujianyue000@gmail.com> wrote:
 
-> When using MADV_PAGEOUT, pages can remain in swapcache with their swap
-> entries assigned. If MADV_PAGEOUT is called again on these pages, they
-> reuse the same swap entries, causing memcg1_swapout() to call
-> swap_cgroup_record() with an already-recorded entry.
+> Replace seq_printf/seq_buf_printf with lightweight helpers to avoid
+> printf parsing in memcg stats output.
 > 
-> The existing code assumes swap entries are always being recorded for the
-> first time (oldid == 0), triggering VM_BUG_ON when it encounters an
-> already-recorded entry:
+> Key changes:
+> - Add memcg_seq_put_name_val() for seq_file "name value\n" formatting
+> - Add memcg_seq_buf_put_name_val() for seq_buf "name value\n" formatting
+> - Update __memory_events_show(), swap_events_show(),
+>   memory_stat_format(), memory_numa_stat_show(), and related helpers
+> - Introduce local variables to improve readability and reduce line length
 > 
->   ------------[ cut here ]------------
->   kernel BUG at mm/swap_cgroup.c:78!
->   Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
->   CPU: 0 UID: 0 PID: 6176 Comm: syz.0.30 Not tainted
->   RIP: 0010:swap_cgroup_record+0x19c/0x1c0 mm/swap_cgroup.c:78
->   Call Trace:
->    memcg1_swapout+0x2fa/0x830 mm/memcontrol-v1.c:623
->    __remove_mapping+0xac5/0xe30 mm/vmscan.c:773
->    shrink_folio_list+0x2786/0x4f40 mm/vmscan.c:1528
->    reclaim_folio_list+0xeb/0x4e0 mm/vmscan.c:2208
->    reclaim_pages+0x454/0x520 mm/vmscan.c:2245
->    madvise_cold_or_pageout_pte_range+0x19a0/0x1ce0 mm/madvise.c:563
->    ...
->    do_madvise+0x1bc/0x270 mm/madvise.c:2030
->    __do_sys_madvise mm/madvise.c:2039
+> Performance:
+> - 1M reads of memory.stat+memory.numa_stat
+> - Before: real 0m9.663s, user 0m4.840s, sys 0m4.823s
+> - After:  real 0m9.051s, user 0m4.775s, sys 0m4.275s (~11.4% sys drop)
 > 
-> This bug occurs because pages in swapcache can be targeted by
-> MADV_PAGEOUT multiple times without being swapped in between. Each time,
-> the same swap entry is reused, but swap_cgroup_record() expects to only
-> record new, unused entries.
-> 
-> Fix this by checking if the swap entry already has the correct cgroup ID
-> recorded before attempting to record it. Use the existing
-> lookup_swap_cgroup_id() to read the current cgroup ID, and return early
-> from memcg1_swapout() if the entry is already correctly recorded. Only
-> call swap_cgroup_record() when the entry needs to be set or updated.
-> 
-> This approach avoids unnecessary atomic operations, reference count
-> manipulations, and statistics updates when the entry is already correct.
+> Tests:
+> - Script:
+>   for ((i=1; i<=1000000; i++)); do
+>       : > /dev/null < /sys/fs/cgroup/memory.stat
+>       : > /dev/null < /sys/fs/cgroup/memory.numa_stat
+>   done
 
-Thanks.  This looks like a fairly old bug and it annoyingly predates a
-lot of memcg code movement.
-
-What do people think?  Should we backport this into -stable kernels? 
-If so, can some intrepid soul please help figure out what it Fixes:?
-
-Deepanshu, if we do decide to put a cc:stable on this then some -stable
-maintainers will complain that the patch alters things in a file which
-doesn't exist and they'll hope that you can help.  Which means
-backporting the fix into kernels which predate 89ce924f0bd44.
-
-
+I don't understand - your previous email led me to believe that the new
+BPF interface can be used to address this issue?
 
