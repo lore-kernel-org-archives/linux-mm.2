@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91EC6D277D1
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 04:01:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9C3FD277D0
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 04:01:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C91F96B009E; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
+	id E0E596B009F; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB14F6B009F; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
+	id C8D9F6B009D; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EEBA6B00A1; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
+	id 96D3E6B009D; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F9066B00A1
+	by kanga.kvack.org (Postfix) with ESMTP id 7F1F96B00A0
 	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 23:01:02 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4158385E48
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4625B1DDE99
 	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 04:01:02 +0000 (UTC)
-X-FDA: 84314703564.17.E05F095
+X-FDA: 84314703564.01.BF08739
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7324140008
+	by imf08.hostedemail.com (Postfix) with ESMTP id 56E9A160003
 	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 04:01:00 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=SxSiiOot;
-	spf=none (imf12.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=fZ4Ftxdd;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf08.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768017660; a=rsa-sha256;
+	cv=none;
+	b=CSzEhDkg/rqX83YRDZVoTSLCO/+EqmrhKvGMY8tceWwknut9noXKYGUmcxcNgnSOYlUqcp
+	+TWyv5ijKsoV7wOmmLz0BJ2gFiL17UIVBQinXN0Sol4uMrXF9cWJUgj+z9J8cO4OQjyV9Q
+	FYX6oCz6c5IVR4E7rLarXVZKtdYIdC4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=fZ4Ftxdd;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf08.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1768017660;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W8Fdz/ANVjFzaC5C2LEX2ZRigSyjCLczPh/9G8T8FCI=;
-	b=LID4oP6khuFdV0JDPXSQ3G0hlpHNa2Om9wHEkyj3ATayCVZL8ZMMzsiqlc0VzK4LBQsFwt
-	L8eI8kcfLJXqfERcN9l6oVyJiaDxdGgWAjeO645X5JU+x8kI7dnt7biZAM/aAXnRPng2vh
-	AlIRQbTZ8MdIYHcA/Qd08uV9Fy3CT9A=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=SxSiiOot;
-	spf=none (imf12.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768017660; a=rsa-sha256;
-	cv=none;
-	b=vRtJsfNzmPxX8rt5Qz5rOcMa7OkDuM+2aR6MQzFBmfhIeLxQOeNGE6QeAEhTv/LSrs0wUP
-	X7xgCpy/7j+ucj4TChYft2LKYGxPY6nBPnL3W99xAv160OOTjL+a0/EhcbLuKS401cNbKz
-	xJLlalYpJHSfc7Fp196umZUcB+4/dSo=
+	bh=CTpW02raswBuv7j7RpZQuDcsunwQZN7ImQgsqrvpB7w=;
+	b=14AChn+AFLQ2J1i7SnRmR09mIoeXrAum5f65ihTw9DghjEUCCHDzaGYWWsw1O7LPqrTKsU
+	wQRTgUesVdxpWutFu3DGUTC7bYDH+6WZsjFxyVkepMAzR+WLCR3ucpRHrDOxH+QsLIppdr
+	CqERHATm6zM4q+fesYFvLg6oPlJ5IAI=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=W8Fdz/ANVjFzaC5C2LEX2ZRigSyjCLczPh/9G8T8FCI=; b=SxSiiOot8AA10l4sV3FTpcNVzq
-	ZE0zHgefZleVJgi6kBLkLofKrHPFazzukPus92tmZxNb5439rkcKmReOtnbF+5Q3lbm97QlLUTupS
-	ic7hmMaryQL9yU95IjWGQ2xIYSp+NkXLaZtUR0LjAtizMR+fJQ/p7+4Sn5dTBqhye+EKo3k0824WB
-	3hWOEbzWMIaNo3kSKqmDqd71OIHpwQGrz4NH97LPBhdRgKC5UiM30ovJtgU+H/4ivS34HkRlBvtKE
-	xfHp0U4XFPRWVzxYbbhOZm6aeA+lmMhcu4x4sNd+RGXv3GAhl9KO6H6WPagEoVPs3BDQxqOwq6MVd
-	RcYsnavg==;
+	bh=CTpW02raswBuv7j7RpZQuDcsunwQZN7ImQgsqrvpB7w=; b=fZ4FtxddXrGcwLpzr5s/FIqFbB
+	tMxLMY7PP8xJ+h3pkLDGWDJvBfoOPykJWICv5M7n6CLyrscU/1vvKkICS5fMdQLksiYTpks+lAT/j
+	yaf2Nck2v1MEaSrOQ51NyY9XDb4xxQCLA4120symgE1+/jEwVxScShqAC9f52Ssn/Yv35gz0uT5aM
+	M2ial3P8740gYYBH5gtpEAtVq+7kXYjvo+u2th+jqNf5tw4iZBYAspR/JZzscHqYDZD8wYhS4d7T1
+	TbgyA/Y7GhBQsaDBIzXriLR41PDddd4ajz3E3AFYlJQiaiDAbjN8IqxW+ZvLCB0UcR/sHIicmC8d8
+	Ustmky9w==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1veQB8-000000085ZK-2mo4;
-	Sat, 10 Jan 2026 04:02:18 +0000
+	id 1veQB9-000000085Zv-10L5;
+	Sat, 10 Jan 2026 04:02:19 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-mm@kvack.org
 Cc: Vlastimil Babka <vbabka@suse.cz>,
@@ -71,22 +71,22 @@ Cc: Vlastimil Babka <vbabka@suse.cz>,
 	Jan Kara <jack@suse.cz>,
 	Mateusz Guzik <mguzik@gmail.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 03/15] make mnt_cache static-duration
-Date: Sat, 10 Jan 2026 04:02:05 +0000
-Message-ID: <20260110040217.1927971-4-viro@zeniv.linux.org.uk>
+Subject: [RFC PATCH 08/15] turn files_cachep static-duration
+Date: Sat, 10 Jan 2026 04:02:10 +0000
+Message-ID: <20260110040217.1927971-9-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
 References: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7324140008
-X-Stat-Signature: 1s53u71kn5p3pa9ogwf955gyqqf341oi
-X-HE-Tag: 1768017660-651232
-X-HE-Meta: U2FsdGVkX19ftMYTThwnBtH3/F/nrJB7fj9YqLZPBVDmF9L+WA45OzVM9dZgTtny0qpxAjEW0W8yzr6R/8NJeowHcePZiBdH/MB0rb83lqVPcDuh4i0DDPwQwIBKqvslLSB5Ua4Kteeif6wv9Y2J8iaPiy+TqRjn/QRJJRY6Hq+930O0XFxBqCtzLj77nd+q15KAz3SKojkITHZrayWNy5rcWZ5/p1fiNJap/wVUB8hUhqR6InncfxzNUJsEbq75BlQ4qWO0WRz/rrzytDtoqFCHnVTXFGYdx8pCubQjyp4H5nTecGI8JoOTO4JnrHZzyBtGXYd+WVaqAN7kkC4LJgnEY344aJohW6Jb7tYL8l1pDKHMYOVxqc5UtchiyMtYep0t3pp+htjdnqosQxz4eJVAvH0cZgHB1Zr/Q/cYemZ+NfEhQIP4d2cJ/viAW2cBtGXqwhJq9cAIbubEp7OzxdVpD8dPHr6VAfC1subIT9A/pG7UUWLrt8VdX4r1xxPZtx7UY/SezT4yER3E83IsVK+Theec0DCo9rG+iEcvDa505iVhJwkjberc+bgNMUuXJQJpIGlTbatiImzUXwy9FiBDev42FsKzKXcWzTyO6THhpRiO+XJ7HgYw5gxmT/MwKsSoZ0COCJwsNEG2NjsmNwJc5ZTLIQl02ocWpqLKbYofrVZ+PE7Gfs4+qwWa25MJY7m2y/bxAtbKK83gweo96Ufe0nFWzKiZfO2sIa7L+UCPTo/dpFqa7Q0/RGyhyzdJL1LZxgW4O9hCIiyJ6dcI+RhgW9bmx0iCH0SlDyPxNoG87jB7EIw1Pzh1wF9nEv9EhE1Fhn557pMH0tzFBibeGwl/qAeT7zSQGyi6nuI/XeweS5qaigxtXr7e4j03kBPFVugUZpmmGV4L9FYEdlzIfBb30a8PxgbiY9wMra1hCNFxvwNwQxN2AjTxujrVhDkYA8Qcj7wK7JkhrJW9j/B
- x0gd+eUo
- JPt8AkGSR/ctFDQuPSNeCBQh0oJ0CiON3sQLI18aGdFGJmudJj87uOUOq6VXsOeplMhSB47LImkFKE4pIDjOz5JAseN3yxZyKMZZV/xkP4nOqESf7rMArKqZI7rQziEZH0FxqgCMyn1DSpX0MH2w3YjjtRcaSqwgQab+clK0TM5Uvs1kUBAtoRyuDK3cC9CMERXPwuaR4f26oByYjVcA0j1VHasVqAqCVFkfx4Mk0wyJ/PkB4ejM0K986ZQ5JehByoI2yAC9aWCXeTLLwEbTtBezUerMu97HZf/wbKwhDJtpk2xXQZE0UsTooQovrG/RljWh9NAsYZmLOM8qLuXrHSqxy31G7F6C6yzeSkfoeYgPA6VR8C63L3ztaAvVOCdYG/kT4SG9lSVw77lObeQdIKdwCGLVe3cN8xJ10gclDfZOygs0aONXE/50CkuIDqI55e4UtUzkS6F2cuN7QRI7YjUErfSn5VePFsDiceinCo128wdHT/wn+vUdBU/b4JkjTyG5PxjUikOO8E0aqq3dnkbOGzqNUBE8LCGlk
+X-Stat-Signature: shdguujykzc3cjprm7mxmrtjq1i9b7dk
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 56E9A160003
+X-HE-Tag: 1768017660-30058
+X-HE-Meta: U2FsdGVkX18GTcJqIQmcWj9gQexmsFf5kPQvT80lceS/DLdNwUgR0Tno98x9nJgfoaXDPyX7FaIRwJAb4k3NWJYxPYepjZMvs13WKSZkpjRX6rIbn0GbVpHnoLFPEOyn2R8ek+4d0EQNgeh8jkLlEkLu0EeZIALkqJLFbP1/t4XZ3qgw0vs+ScYOeQFxzxaBiKcPisMTBQc5xbZ/xMj4HyoddATvp1e3453IXG1AMMjzOZb5Q5Ma0uziaCJ+Aac0Ixywe7UW5hfZtot7KQuqBGFCqajvSOZUEOGqZdUM+pERBA/C8AW9/OcBBqveJu8xy0rY807JIGVHAKQO3DiFOxlA01+JwAqiF5RhHRm2R6abl8mbjzpqrK+5iGIW1AK7IQUtSS9Sngjm69NiFkZJCMpZAzx4Y1giO4v9wkETPFJazs+UHfhauVSjvW50KYBMsBff0shfjHMVv84pvDYhtMPUJCCTn0Eb9OClpKtSaOshZx6YzXLUQR/2D63/9lYafnueSqVcRpWm7gHOSa1/9q90qHmScx6Vn3H0c9fXs3ahPGLXiJLaM18N3XObX3gg6onvpp4HVuAbAxdBAYYx8/FjyPvqd70GDzzmxsPpJULnfeK9iMIl0HiODXj/6J8z79eDaeDQpE0iexGHhjFTDsVkUpDpCMfG0XStrMuqvWTAqZ4PNsIhGiUHxA23Yb2p0LAU8Otv3G/ajolZmpvLmZsh9hChAhZyO+NNRDUcKgmtNm9qNApgIxtYf2vCFjroLe8OfHP2+mwbtV9sT+Gf+z5jllTscbBaobKxDSAN7k4pO0AKfHJvVic1JXRCcxKIAXsyr0xTJT/GoIev1oAgs/2x2jK4aaeIORZIu9nVVgsuabcRHhxZ1MJjfip1orcRIHM9mLUftDjND136x63mebMECMIm9MtbkN0YwSQUjK0CjmkCk1XFXdeeD4cRQxdwW3OUgvZp5YnNYh+OCkY
+ whrm+WdB
+ RUFWKEyt3+BN2snLVQhlr/ITGb4yaO8T0HQ2ZtAYZ5j/TjMmIo/M7Szd6ATU/qfVsm4lXdz4j3DhlNe8gGAYyvZ8JelDvaDi4CBH+qKQee6gA1OA8eEj61W2w/d0n5bSWOPKnj0DXpzzL3o+K+kDS+wwoBZxbISZol8q1z2vVeUOWuol6z9LdVx80j8BjmJDivQ3RZ64SidGo2+jlqJ4xrV5gnarE9HdAKrrCVrQlAxYcSfUIkW3e4aFMkPRJiTRQV7r06JqUXgtbv3dJXa5Li1lqecjka3VCDr+ouP4wuX7+yWRCra5Aa0GJ4hFSIH77Y3kQ7gCXkolKnZ2n2DHRGXnJj2RilWnYoeKwFq13Uja6lEPqJE+tdONbsdoz2HiGrCaKhCb8Vrlg4mQPWpZjoyQP5WRmwOlwrEui1nS8+dn1cAhVat9Vl71aVvoTXJ6LUg+px2UoYOuxa8dgR6WACbHsGvSMonFeJLhD7GTqEBNXWbQ8rIfOnsMmig==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,40 +97,45 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/namespace.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/fdtable.h | 3 ++-
+ kernel/fork.c           | 4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index c58674a20cad..9a9882df463d 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -34,6 +34,7 @@
- #include <linux/mnt_idmapping.h>
- #include <linux/pidfs.h>
- #include <linux/nstree.h>
-+#include <linux/slab-static.h>
+diff --git a/include/linux/fdtable.h b/include/linux/fdtable.h
+index c45306a9f007..f2d553f99c58 100644
+--- a/include/linux/fdtable.h
++++ b/include/linux/fdtable.h
+@@ -113,6 +113,7 @@ int iterate_fd(struct files_struct *, unsigned,
+ extern int close_fd(unsigned int fd);
+ extern struct file *file_close_fd(unsigned int fd);
  
- #include "pnode.h"
- #include "internal.h"
-@@ -85,7 +86,8 @@ static u64 mnt_id_ctr = MNT_UNIQUE_ID_OFFSET;
+-extern struct kmem_cache *files_cachep;
++extern struct kmem_cache_opaque files_cache;
++#define files_cachep to_kmem_cache(&files_cache)
  
- static struct hlist_head *mount_hashtable __ro_after_init;
- static struct hlist_head *mountpoint_hashtable __ro_after_init;
--static struct kmem_cache *mnt_cache __ro_after_init;
-+static struct kmem_cache_opaque __mnt_cache;
-+#define mnt_cache to_kmem_cache(&__mnt_cache)
- static DECLARE_RWSEM(namespace_sem);
- static HLIST_HEAD(unmounted);	/* protected by namespace_sem */
- static LIST_HEAD(ex_mountpoints); /* protected by namespace_sem */
-@@ -5997,7 +5999,7 @@ void __init mnt_init(void)
- {
- 	int err;
+ #endif /* __LINUX_FDTABLE_H */
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 23ed80d0d6d0..8c4d9a81ef42 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -472,7 +472,7 @@ static struct kmem_cache_opaque signal_cache;
+ struct kmem_cache *sighand_cachep;
  
--	mnt_cache = kmem_cache_create("mnt_cache", sizeof(struct mount),
-+	kmem_cache_setup(mnt_cache, "mnt_cache", sizeof(struct mount),
- 			0, SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT, NULL);
+ /* SLAB cache for files_struct structures (tsk->files) */
+-struct kmem_cache *files_cachep;
++struct kmem_cache_opaque files_cache;
  
- 	mount_hashtable = alloc_large_system_hash("Mount-cache",
+ /* SLAB cache for fs_struct structures (tsk->fs) */
+ struct kmem_cache *fs_cachep;
+@@ -3029,7 +3029,7 @@ void __init proc_caches_init(void)
+ 			sizeof(struct signal_struct), 0,
+ 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
+ 			NULL);
+-	files_cachep = kmem_cache_create("files_cache",
++	kmem_cache_setup(files_cachep, "files_cache",
+ 			sizeof(struct files_struct), 0,
+ 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
+ 			NULL);
 -- 
 2.47.3
 
