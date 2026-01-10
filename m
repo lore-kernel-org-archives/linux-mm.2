@@ -4,89 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C1A9D277CA
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 01:16:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 080BFD277C9
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 01:28:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 742B86B0088; Fri,  9 Jan 2026 20:16:53 -0500 (EST)
+	id 0F7D06B0088; Fri,  9 Jan 2026 20:28:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71A846B0089; Fri,  9 Jan 2026 20:16:53 -0500 (EST)
+	id 07B5C6B0089; Fri,  9 Jan 2026 20:28:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 647C96B008A; Fri,  9 Jan 2026 20:16:53 -0500 (EST)
+	id EC91B6B008A; Fri,  9 Jan 2026 20:28:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 521056B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:16:53 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B749413C574
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:16:52 +0000 (UTC)
-X-FDA: 84314289864.25.3E16CA7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0CFD618000C
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:16:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZsyTwe/z";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768007811; a=rsa-sha256;
-	cv=none;
-	b=s/KmB1cMPkN9pgnaSZ8Agcy8tq/57cYIhYd/RF3cPAjF8b+7P6c2B8bwZ7faovv58aFlGL
-	SgII/s1NQqciSe6sa5cQFaDHONUPeJH/7NKhQoY5fHNpKLQzCGLKrzpw0OV6t2ImGKJROG
-	GPLNrTFBzAUJlt36S4meNsmeNpvcJjU=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZsyTwe/z";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DA0156B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 20:28:20 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 659F4C5544
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:28:20 +0000 (UTC)
+X-FDA: 84314318760.30.3F2A556
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C6612140007
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:28:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jDHEbAhO;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768007811;
+	s=arc-20220608; t=1768008498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dNwrfv93yNM5Mf+/QZ5yYprIsysA3544XDewzLBkcpU=;
-	b=347zy7/NjUIrOmiuq3ki6QvGesQQVNFv1iQ2Bv9JDQVAARzephW64o9FKS8G4i01H9kRKx
-	G//BjFBn1Xn/pWReX4YV/Y2I8UXtxfTS00lLHKHGohDDHyd8l8QWIusDVUbEH6B5+zAdcZ
-	hLNuU3lLgsu5CXc8OZdNFQmNDTeOjX0=
+	bh=lhGnR0/vx0hEQCQvVcoVyJuFaz/ljeBIfw1XoZd+LS8=;
+	b=td1NytQ2m8dkLpYieCMegKDnDNdUIEkY7+5RKJiPqQyyXKv2HyaQwTzLc4O08gQVkuSC32
+	V8a370fiufZun7U2aysYp+hUMOVQXwng3ZndED6B9BzHWgH+y1WWaDzKzUkWLRQDOsd9pK
+	F3ffgmEo+Vosd2Q7LPmTiYt/5+3p0t0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jDHEbAhO;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768008498; a=rsa-sha256;
+	cv=none;
+	b=DwlpQnMhvulooHaY9Vxr1M0X2anyJDL4McbgIvsy021UakHJ6O2jEQ9LmJ3rWZ7hG0nzSx
+	M+KEK4WG5r6+8fXc6RVbovF3O77HYHWUTULB7MUoNI4A5+FvTQVnq2sbIkpFZMEyElYwI8
+	xyI46ir+8GKYoXjPt7tP4Q3MjSqr3Oc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CEC2E43A13;
-	Sat, 10 Jan 2026 01:16:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE73C4CEF1;
-	Sat, 10 Jan 2026 01:16:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 436AF600B0;
+	Sat, 10 Jan 2026 01:28:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D936CC4CEF1;
+	Sat, 10 Jan 2026 01:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768007809;
-	bh=1yqAuwPlUfRbkywsOHYeC8zQzYiMnx9T0dqkU24ak7M=;
+	s=k20201202; t=1768008498;
+	bh=2c/sFQx3dFKJ8r7R25DAkJMqmSpmkAbap/ZQrLMjgI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZsyTwe/zSpke6a9XZ6AKLa6ZQ3ADLRwY8NzsYMoo9vtCM3McMX3RZNQR+YG/YJvjR
-	 +Kojk+cRQFG/GZcRFeJ3+4dRApBG4Q9p1BQWOcS0lpfCb5Kv8bB2c/GXgr+TXFa+R6
-	 Ho0hzcKyk6cAA/6uifqZ0/bE/wR/EMwh98DG/nk3KFRkzUc5JJQ1uvFFsZ9Ybfs9fB
-	 PBXZi2e60iSAjHuQryLCZ025oRuwIf7gLFgOHEwVxAcMyC+QpDFzMfI6GZOap9rXZ7
-	 pwCARKTqLLedq/a7gA6X06GdaXr9Kr9bAEaSMNC55mAdfRzhfk5OX+QW21X87BYV2u
-	 SZbtvQNv34LXg==
+	b=jDHEbAhOrZSqrtBSfjCBhsa0UL/MbVfi1+bzpRDI0dAHNw/TWqCYWnwDEod9RbyHD
+	 YMfbYSYRZ+QqHCvy0CkWqHel+2P5M22ZaO1QpxNq6YKh6RF8NmdOL7etLRFp48GSP7
+	 76spMzXs6ds4cMrfbHQS29vpJzfDN1FyiGlTCExJjWMtikUjLuz1AipcQj+DK3C8Xp
+	 tPO/XoVg8AnYDjz32RGkhHdzSBT0FI87/fQFPho9TM+YkBa3QLHDFoV3pazm8V9DBH
+	 EOOYBNSmo1VNXLxiCaFtzz/4cFL0IWCI5IUQ/aKiDXymwSLXxWBVQGx8YmUhFJ1l/3
+	 f18RP4v2xdsDA==
 From: SeongJae Park <sj@kernel.org>
-To: Sun Jian <sun.jian.kdev@gmail.com>
+To: Bing Jiao <bingjiao@google.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: ksm_tests: skip when not run as root
-Date: Fri,  9 Jan 2026 17:16:40 -0800
-Message-ID: <20260110011641.81278-1-sj@kernel.org>
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/vmscan: fix uninitialized variable in demote_folio_list()
+Date: Fri,  9 Jan 2026 17:28:11 -0800
+Message-ID: <20260110012812.81501-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260109094313.52307-1-sun.jian.kdev@gmail.com>
+In-Reply-To: <20260109055937.3739860-1-bingjiao@google.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C6612140007
+X-Stat-Signature: 6ursdr3hzh3tj77utsbmeirxnjs3si3w
 X-Rspam-User: 
-X-Stat-Signature: czgquc94q6z89dw71cajughhuhh38ze5
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0CFD618000C
-X-HE-Tag: 1768007810-961538
-X-HE-Meta: U2FsdGVkX19G/RyZDV9JahdGsczSbjw18WLU3ulTVaVEr4tYHLQkJ1c9hkCFBTNqK23x7y/yTBBcqilZUAlPMRxeUAX1Mr8AQL1sC0X613inJpjdu8/DSu8DSPuT36T7KJ2OV1/dfle2K75KDIQ6SqnX2kFlXyidB1+41t4hmxm1dqxlUU/6NVgX+5UF74FgnhsfrYRNs3a8YYn4Sb4hH4WcD7BEpB8/jM/EVrYIPuhoWioemEimojWIiAcrqXLxOGJFdge6Tt9M7eA5LN2UayToUxiqYwyDYmHk+fNKrZPcNn11YKQgQXq/71biUSqoZ5NSWnrh+fG6RKLDDS+ktNJM1UHrXrzhX66GAbAkHijFpTSsxfe1hDljYRp7JMrg4s0Vwot3tLK6ySysJk8CCPhrPAq5HzfS33zMxjbdrwWRA+NmaMj8DJ3qPICdkHggSrhrfFBIoY5aIpoBPw22vVRkDPb+RbirSPQVmciBACICAPiL4v5sgL2lA3tgqibXS5A0wp2WpQ/RPgD2f0UiflYWFkFtrGSDh4VBAPliKzf28kWDpHqyoBN5Z17QB9hqOdzHVjm6iA/k1mhtC0OMA/EUQ/r9cj3TRYCTO2rplZzIKB8jBb2EJEikd03hGHbKKdf1ileQon9wX1aaVbjwKECNaD6F+l9Q+sA3zvksQwXxARL+DoKYIVb/fvON3Nb4dCEacUCTAEVhYjccVcCAluWpynsR5qqNbDg2lLB9/UaOxeLpi8UlgHw+i/1N9xt8+0dvvtPnV/oyEENa8/3MEb+6f6qtiq5BINNAZDp4K6I7+WcryoXwg3DW/IhFTWleTQmSGnp9N8E4ALwU4DLs/75VOUR/3IupyYn1c9ybKhG2m6N4b1Y8+HhAC4Q69yiiSDSYK5IMEBMjxCwIEtVC32fVby3a/qw1pslPH5U0e5q5WUfNT/6+sJqriSvxQnHLdhwqs6hPWA47OkdWIr8
- U/WkAKqX
- zSJ5amI+lZaOEDmfO1gFijc7wOnD0L/B90ncCOgkqiOdArFYmY/qGKqUJnCYEJHt9+Apc8re3x4kKJNy1XSCyyRkx9bQnc3eErbc9jYJwalCjM2jM0nHxqfdHcFTgQBTdwRE+hw60fv3q4GLH/uRrEw6i10FNedLzvVL44e4yANXhQ1rLLK0eeCD8hs0tPrematzyAMYphdMy4dd5Xe8h/NQhz0p7upI5+bff+3T8PJ9lUIrkQLOezK1DHAihMwRJcPdGu2TL8HjYnZmXBLXRtFsoxSIa/oaljv10+LJt9BQZ5t8hNmWrpaq4Yb8q60hAtF0fAKmr0N9ul/QgCjqwyzhL8zBsr4ADmegx
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768008498-174483
+X-HE-Meta: U2FsdGVkX1++J15QxOY20CebmFqJz66MxxDmzpENPFDYybi27RL+4XBFfVCE9ISnmtU/9Mm9Fk3uB54HUxEGZ1wmFgebT2HpzYCrCDzfvyiWYe7LovxR82dj8PQOwUl2w+A2YtBa7fHK5+5z5ZESjlFgHVa9y2xUtxKsOSmrDTvUrBvXf7xlOi1qI3RYg1IF9iajXxE9X8qOaF8QRh0VZMDDZOUwHlaLMWV3ve1jvves4WNnHboyWg/ugFCj15vx9sbHGPoDXKHmTJPLDaWqDmR++dzofRsicYLXk4ixAwSbISNEIbUvTc623mH0Qd/zgCUD4zcTMMioTJtmksvNBXnw6UN8m+mkebdcgmNkZsfPqiy6btUJ/jNM33Sz/jXdKZrzsX3y4caR+rl/pevOGVANaJhC4+7cI2F97+z4a/QlmdXoXSopLvhBByegUInRzU2oXdkiAX7SaUW4FzAL7QKT3bKX6aZycqN1t9a/+PMqPLocBmRIxq/qjOMGZU+ljmjprDRs3FQFm/VbXuowOVGF+31Z6bv+1IxCOmRbNWpT3M6tYli56R2petcvjYBcbolB/nnXTB3rMVCIp81kHrFoV7/NzAjp/eC/Do7dkeH9xFo3HeynG31GvXY4pqAXONnLdq9tki+NAfSeMaPe+fL5a65BIdiMmYQHuLeV53HHmM6ihyTXoWE/W2L0FwVVKbbgw2wk7bejrAgHKk9ELsqJisTgBvq6pRKAnb1MplITuiRBv3Gh0foxelzKQRhJu4DXfEt+BEpHR/O1ex6qbEcOHSTR/ca+Nej73JHn3PEDWXnp22PMBzM53VCkZVZ4/29JS9elymnfv5MoE8gjGc2ERdZWS7Uh3R5xFd+VSroIPACW4MsJMX71uqMdX+g8diH+QQARxx2jLPkow5hlKhbH4LXH9hQLedGSTCmBkH8V2RyXJwtX6NaPV0ZOSftuTpN6BQ9vat3IQoxTLU8
+ ukg5Gx5S
+ GszFUZeEnA9hJCGFo+9zrE/u5JkLFylvUXw0ETTtd1A4rKbxW2ovSjDgBYiG1IhfF5AiJxiB4fGR9GhdQUhLg1CFyBx9xgVLcQt9q0NtsF5fUJYvc6rhowZMdo+6OxwEY8IWbvTbcVMTPKF8wtIL7zUierOXxSWcafimVnrOt16lOPtmK1V6YjhT/97c1eydwSFGqSOhbG0pHyLa1Vk1MVFYpeuLyTSVjli7OMqlEzSWoCwZNzu0iLBHK+2iUpEly8DyIJLdvt+OXKrzs6GPNe4QSzh/veNbiFhYhEKdFGtp++N2Xepuv0CW3pBXLiv3pAeAe
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,32 +91,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  9 Jan 2026 17:43:13 +0800 Sun Jian <sun.jian.kdev@gmail.com> wrote:
+On Fri,  9 Jan 2026 05:59:37 +0000 Bing Jiao <bingjiao@google.com> wrote:
 
-> ksm_tests writes KSM sysfs knobs under /sys/kernel/mm/ksm, which requires
-> root privileges. When run unprivileged, it fails with permission errors
-> and reports FAIL, which is misleading.
+> Commit d92027a5f30a6c ("mm/vmscan: select the closest preferred node in
+> demote_folio_list()") refactored the selection logic for demotion target
+> nodes. However, it removed the initial assignment of 'target_nid' while
+> leaving a premature check for 'NUMA_NO_NODE' in place.
 > 
-> Skip the test early when not run as root to avoid false failures.
+> Since 'target_nid' is now assigned further down in the function based on
+> preferred and allowed node masks, the initial check at line 1046 is
+> redundant.
 > 
-> Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
-> ---
->  tools/testing/selftests/mm/ksm_tests.c | 5 +++++
->  1 file changed, 5 insertions(+)
+> Remove the redundant check to resolve the compiler warning.
 > 
-> diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/selftests/mm/ksm_tests.c
-> index a0b48b839d54..c22cd9c61711 100644
-> --- a/tools/testing/selftests/mm/ksm_tests.c
-> +++ b/tools/testing/selftests/mm/ksm_tests.c
-> @@ -766,6 +766,11 @@ int main(int argc, char *argv[])
->  	bool merge_across_nodes = KSM_MERGE_ACROSS_NODES_DEFAULT;
->  	long size_MB = 0;
->  
-> +	if (geteuid() != 0) {
-> +		printf("# SKIP ksm_tests requires root privileges\n");
-> +		return KSFT_SKIP;
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202601091037.vUSHeJCH-lkp@intel.com/
+> Fixes: d92027a5f30a6c ("mm/vmscan: select the closest preferred node in demote_folio_list()")
 
-What about using ksft_exit_skip() instead, like compaction_test.c does?
+Seems the broken commit is on mm-new, and therefore no need to Cc stable@.  I
+think explicitly clarifying that would be nice.  Also, as this fixup may need
+to be squashed into the broken commit before it is pulled into the mainline,
+sending this kind of fixup as a reply to the patch mail [1] of the commit would
+also be nice, and usual in mm.
+
+[1] https://lkml.kernel.org/r/20260108033248.2791579-3-bingjiao@google.com
+
+> Signed-off-by: Bing Jiao <bingjiao@google.com>
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
 
 Thanks,
