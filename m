@@ -4,117 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0DBDD277CE
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 03:47:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3170D277D0
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 03:56:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDC266B0088; Fri,  9 Jan 2026 22:47:38 -0500 (EST)
+	id 08CC86B0088; Fri,  9 Jan 2026 22:56:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E928F6B0089; Fri,  9 Jan 2026 22:47:38 -0500 (EST)
+	id 03B636B0089; Fri,  9 Jan 2026 22:56:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBB916B008A; Fri,  9 Jan 2026 22:47:38 -0500 (EST)
+	id E727B6B008A; Fri,  9 Jan 2026 22:56:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C9D7D6B0088
-	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 22:47:38 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68DF3BEC57
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 03:47:38 +0000 (UTC)
-X-FDA: 84314669796.06.E01E5F2
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8BCD4A0005
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 03:47:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YFBgcLar;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768016856; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D68846B0088
+	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 22:56:44 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8698D1A004B
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 03:56:44 +0000 (UTC)
+X-FDA: 84314692728.21.BC83B57
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 95059140003
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 03:56:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=claGbCex;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=claGbCex;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf09.hostedemail.com: domain of wqu@suse.com designates 195.135.223.131 as permitted sender) smtp.mailfrom=wqu@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768017403; a=rsa-sha256;
 	cv=none;
-	b=TxFVzskMIGxsFcUt9Pi7QIyodvgxcnSQu3HL6Resai+sT6Soe/Sw8dtHV11jvVwjIgKftp
-	FnKrcLeeZ3chPYSD+aQNxG0X0GNUv7knkzvVGKOq7K2XfCj5kgfPuTLcNpGVPRGmDhiAbM
-	JL9nSVoYbtSml0DoGd18RbyNzKRfBu8=
+	b=X594d23BFlB1oGe4BK4xPr42vew2cOO1YtL9wrKbEhTDuaC94rH7ZVEylTAi1vHLqTs7G0
+	c8YkhP9slxX65csEi/pqbU8pVQhRGjyBlYVD6q+8sbObfHfp1j5ztLSYQ2EK1ON/nUXlOX
+	BgouaZLFBcnTIylmuRfPpJnbPQ4Dq2A=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YFBgcLar;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=claGbCex;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=claGbCex;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf09.hostedemail.com: domain of wqu@suse.com designates 195.135.223.131 as permitted sender) smtp.mailfrom=wqu@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768016856;
+	s=arc-20220608; t=1768017403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AnhmeVyJEO3jTJeUnrIAC1snCzGO0yrfi4KApdK0DYg=;
-	b=ELv5uXH2IFmD2qfQK8fWwkiByG2M5Vw8bHQZkO8KBDs0INKM71KETavkr47v1KV4F6Xs5F
-	WH1qGymHQKCo8TWVUxMTZ0XpoZxumH6YzQsir2XVLJp8sTwydPdn50OqZKIMku4gyC//Fw
-	6IKK4lpQF7rK8MSuOdmiTWwn2dx3rfM=
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-88a37cb5afdso42799206d6.0
-        for <linux-mm@kvack.org>; Fri, 09 Jan 2026 19:47:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768016855; x=1768621655; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AnhmeVyJEO3jTJeUnrIAC1snCzGO0yrfi4KApdK0DYg=;
-        b=YFBgcLarg+YGylZ93S1HDhN9cDpB2IWiqzhKdrjxJdnXB0KApvvewV+BczwiRt2Kwk
-         dSqI9rUbaPnefAdTZDT4FlUi7fqKikKzkQkPXxM7wx8bFDjF95wkBaW0VRfHRBLGbsdv
-         LOIPTuvYreGs5mHSz1FoQUKkmuxt6qM8bX/5jRfrm+wwRbAJ5bey7WhCwHluFw5V6QCa
-         gqQdFino7YYbmcYG3tZ/2ThkWRDFQBbJUd/rMvHc+76m4fM70j08HYI3qzX8ZhSA2c4s
-         pZoFCTCMbMtafXc6Rq5zEIg77M/WW+dOFa0YEFeXc51lOCr+Plr3LSCM672ahHJxKy4K
-         xkwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768016855; x=1768621655;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AnhmeVyJEO3jTJeUnrIAC1snCzGO0yrfi4KApdK0DYg=;
-        b=LBLtkxgpwt6SOGUOuqfM9Q+gglJL7HfArzCYbIuWRdl/CLMZK5sLmk4RzGOmU315vl
-         iNBO8bycGAgPvfUPMuZwesk1ovoYIe7i/fSzuOvMCof3gm/RVy7V3Fd7iojPC8bi3Drm
-         iw4cxBYFGBEKIhGhOb8fWCThahoVbje81skAZqLRxa8G5YIL23QhsvRZNBg36A55+Jdy
-         PQn7kp37eQXeYpLTgmHSgncjetsIfCaw3mtKKEX6NxixslrueBYObxllPndJ6rzy8deI
-         2xKp5sweFR6F136r8Phyi2OK6URvZ9mCCDNUbr6TwsFTKQh6DodFVLrp7zsJa8VKMS/w
-         jfaw==
-X-Forwarded-Encrypted: i=1; AJvYcCU8gwtTkX4srijQ7zhz1Ow4nJgi1d9WEth50cGcP5Y6N9Mvm8mSHAFa6r8K1dde4rIuGsQaVPuNSw==@kvack.org
-X-Gm-Message-State: AOJu0YxH42xFym6XT4HRNaFzEpTpVmeRxcBv/zjSoKdY4nyPSRXDJWAs
-	/vxVgx8Sivv7XJUy0b3kr4zWUuxGNnJdeqGONKyYdHGrLhdc8Eo/32bTd5UmbQ1hbS3uiZEwLKZ
-	uGPMkIEzHWvo0WZeEpumtDozxcH2xGDM=
-X-Gm-Gg: AY/fxX4tHqbSE7fP58Ml96UcPDsu5nsmtBAjn9Esmq7D6perZ4+ZFYxvW9PDO3iJxdD
-	Ege0rBewMACwn9tEGns4NKIl32qsz7IKk2LEtjPxL9g/5dxDeB2HjUt/xK23YGN0AJxl0Kj4WWo
-	pSFSBkUkijk0KUTJGPiBva2w3E2tpK2oM5x4SvJOXXUoBZXtq6WElFalsi7Epd5Fa05OaQwne81
-	15bsiUNaHA4JBlJusvRN3JJZ9gIQRyx1/wWrezW77Qq4bPdAyAcuZC+2msvNhjR7TqCRvdmppoD
-	0c7AP8eM2HNL3o8aOZnCA8U=
-X-Google-Smtp-Source: AGHT+IHDD1bDtbiDilddrvwoiudcMJs16uFjR+L1wKNN1BewBSLw5FdomEQhwTNOHfkVtMMdFR85t+kBvMJ8rtFh3Fs=
-X-Received: by 2002:a05:6214:80f:b0:890:7f85:81d1 with SMTP id
- 6a1803df08f44-8907f858293mr162757706d6.13.1768016855637; Fri, 09 Jan 2026
- 19:47:35 -0800 (PST)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=BkKRg0H2aQvVi5KZeNt/pJBKRmCQD8wH3dhNnd5HYJ8=;
+	b=J9HmuRfWQ5roZP5taG/7+CQad81/WUEkOM3xP192g0BNF3u8WQMq6ZctEuzv8s9KknptYM
+	DmUr17jgCTCUPQCJAQqgABcJrdH+Y5OAETMs+0ZC67uuFTTykcQ7vgSL0BfR0BaIWXgfEF
+	5KiutLbBrPLt9EiqUhHqRMYGIsW6d5c=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id CAE9E5BCE4;
+	Sat, 10 Jan 2026 03:56:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1768017400; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=BkKRg0H2aQvVi5KZeNt/pJBKRmCQD8wH3dhNnd5HYJ8=;
+	b=claGbCex7LJ9d9+an3htNbiT6gXsmhHjYlZ5aBITBWUazgerz1O0sgnEBo4punTP4MGjnB
+	Uz1/cJyXG0MWYE8WzR/AFFZiJsMGq3Jn9CGWJImFgCfFuiq42uw9sCY5MMfA+Tq98fHp1A
+	zXVrGTPRaQrKRa/bcqDjlhu5jK7+zw4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1768017400; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=BkKRg0H2aQvVi5KZeNt/pJBKRmCQD8wH3dhNnd5HYJ8=;
+	b=claGbCex7LJ9d9+an3htNbiT6gXsmhHjYlZ5aBITBWUazgerz1O0sgnEBo4punTP4MGjnB
+	Uz1/cJyXG0MWYE8WzR/AFFZiJsMGq3Jn9CGWJImFgCfFuiq42uw9sCY5MMfA+Tq98fHp1A
+	zXVrGTPRaQrKRa/bcqDjlhu5jK7+zw4=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 534003EA63;
+	Sat, 10 Jan 2026 03:56:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id f2fFBffNYWlqLgAAD6G6ig
+	(envelope-from <wqu@suse.com>); Sat, 10 Jan 2026 03:56:39 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/3] btrfs: only use bdev's page cache for super block writeback
+Date: Sat, 10 Jan 2026 14:26:18 +1030
+Message-ID: <cover.1768017091.git.wqu@suse.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-References: <20260108101535.50696-1-akinobu.mita@gmail.com>
- <20260108101535.50696-2-akinobu.mita@gmail.com> <20260108154738.00000e47@huawei.com>
-In-Reply-To: <20260108154738.00000e47@huawei.com>
-From: Akinobu Mita <akinobu.mita@gmail.com>
-Date: Sat, 10 Jan 2026 12:47:24 +0900
-X-Gm-Features: AZwV_QhOcBPU4vb7ub0Bi4ys4AL1T23koUjpp82dgsgXLynGVT42jcEOxUlrmCM
-Message-ID: <CAC5umyiwO=b91=A0zAJ=p9uryW1po9D3FoMhfidVjX3yjm=GpQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] mm: memory-tiers, numa_emu: enable to create
- memory tiers using fake numa nodes
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, akpm@linux-foundation.org, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org, david@kernel.org, 
-	mhocko@kernel.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
-	rppt@kernel.org, surenb@google.com, bingjiao@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: uqgtydan4owei9yt1i4ks476r7gbd4ye
+X-Stat-Signature: 5x98ai4ja3t1xhq4cpqorwropry55kfz
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8BCD4A0005
-X-HE-Tag: 1768016856-998370
-X-HE-Meta: U2FsdGVkX18WiR9btR9Ud1Vb3Qgjqbo90pqv1xnuoBLrDETHxF1hdHakYE5RjWGCNgoUWdKU2naHGAtctFOFKflEy8YyGvgqT8Yokta2k91sq+4JMAtc1oSdBIds2PJt1icUp3qvAv2WI6xGFyALGm6yT0EhRUCtnhWEEfxWDo4UP1bSycQz6Jm5kFpQff8qDC8waRN9gf5N/HFt/8JRAQ24GfazVHcWWbMcXcgl6yl2Uc66mjO4RbhoI0B5TwkHBXvHgxM/l0FxJoQ5nnWKPxCbJxa/dq3DTkntnnaRB+iVLJ3C6Qp4w6dm4PXlJ0zXnpxY0vr0KFvgaR5FnFR8hsk7TpAw/YTX0pr4gMjYnhi56rzP+XTmjuMgXFeE1ToBhwLaqB15qVFUZFwxCZM4CBcWj8Y3UkT+OSUZoMcS6zrKNJSXwEDFX1dAAlvW7qHph9cWcsoILoJgOmdHW0HMK0Vt5t4BEJBqzUdQzfgcA5ebsvlG9PjIgnT9UufhkowKFN0s6/bjZUrerqt9Z5pDMD/cBC965SvN9Kx4oW0QVa2nBLUXgbygx9YbEeod0eNrEJY7LEWAbXiCKbtmXVLHxciOwzD0uVU1GdXp4VW9F4y1sREFA/J9rwhT4CHxARqRXNZxkkEqOCkxa9irywXipAXp6eeskp2W84vmaFHp4hBJ/wDyY/xB4+kFA2fDS7F3lXMiUMFrexGqmWQk6fEFR4mnuJLSL4zYZ9vU2XzApdQ+58mKoX+yTMuKAyBTmPDyyHJVyPDnU36u7kdLbzG1HGLGcMhnbQAauNR0pJSEMtgG1SoL7v72azqj6pfdgO8VlLA/U/vKfwQI8ytoDp14ZvvxJbQRySmau04AbfCXz3A+d/oRAxB716zgLPYgqNAzSuyJnc9okdmgsQWd/G0b7eDTGpIj4IR1b3jSLEcazldgHSJMfA5rYeOxwUjHDSKG0mPrKar+/lNgFteaP3s
- sGRECeph
- yy5uqiZiyeC4Zslx99tmtY3NrRx2sz+LsNHHpkg8BxLC03/0zb0hJ/J3MA2pIR/qxkjkzai1ZeUPeun56LfxUU6ljsAH2WAE5Ia9cc81Kl4DETmbafjcVjNRRIpfpIZAvC6wkUA1VXgcGQHTaTduG8myR1w0qM4v319fNIG0zCrtAtop7yFSto+xexx5T5GHqIh6UhPhUZhU71xRRtTqUX/jcMe9CNLxzbDfqJ0Z0l+LUdKtegf9tQ9NoFB+YmjzjWc+iEY9mSTW4tneCCATh4PkALHF6avFfnKPcnAr+ZF+JUphMleWW4WJ42NvxVyr7Cf9VeRUl6lkefyLBUxZt421laR2BlcTyZ7sVycD0GgbqKV0QVWcolYRo/b6CsFvoUeX1P2jHFVZ2kQQ+7l53BeFOcvCWp3ecENt9W8fYZmssltFJFz4mRC8aGyQgntWOLN5paZGuXckIXBuaeZhMGIbBECJzrlyRv/rJCIg/Vorco8A=
+X-Rspamd-Queue-Id: 95059140003
+X-HE-Tag: 1768017402-881135
+X-HE-Meta: U2FsdGVkX1/WLfzAvOynV6WxZyyrSeAt35//SkUMCOO52Ot+DWnGIPAVHMpSxxPbbfldBOrg+73ixprZlxXRE3gA66ZCWgY8yXiPF9GZBNZocGBSq8ZdUCF14utYsQ+B7fvMx67gNQ/UEYgGwkP7w182Zx3YN7clK4sNfdrHoA2pqIXAtESQVGo3GZEh6GUIo2yoKnssYdEYE6qMKAia1xlU4/7486X9VDHXqWxEbYa3kh1luWX2aXFwZkp5NVlqFvrug8V03vq95GLGAxSvJ3GC4Wob+cU6M0rDVe1GMPdyf8f7Pt+lCKu/YQ5g1r4pludsJtWXarioYeWPx/k1lscpQLlNZbE0Woh+jF/avpDP+SfnQqOBEx8whDLzQOkEe4tio4QMNudcrB/KhYIVe0cPEQJWUhcOb0PZRrR4H9DIohTZQja36Cakpl4elOfX+v78yRPCc62xEmXHwb2C7ACROVrUFDDmkccXmlK6Wg8z+G//aixRdsf80fgLYRnX03LmHy7rwyTqDC5G5/4x1Z85mml8AW0P+a1CL4JERaFoD3uOPt6Gpd+7GHovtuvOM6OTxbdhgkYF7rnyyiKOrjlLmahvUU5MszNZS5mEF3PMEpMwwTEySLu5y427QDRbA2J9UmhUVY0x7XAAugoPDNObbdOOOfAn8nuKSdhNyiN09ZeddNpjBafF/Ud9K2QXepznHeO1PUqx3CspOVi6tF4F66L/A/Jubx6w61fyLcE8ECRBlb/q4Yd2FT1yhsjcoYLBOQENJXR8Rp3MgS6B3vqXx5LNaz/lH9tHScktYJrqXFtj807uylt9kQPbeSipnpBzJ4/s4g6n2nGYFVW4g8EBWxWH+inHSn/ZlHyVK4xXlYANK6oQ0FyXRbMzKfCcmIaeP9SINYP6KMeDZpGVYYwZfDLklHAm4xnIE51ZpMZqigLU6w7ZNg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,65 +104,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2026=E5=B9=B41=E6=9C=889=E6=97=A5(=E9=87=91) 0:47 Jonathan Cameron <jonatha=
-n.cameron@huawei.com>:
->
-> On Thu,  8 Jan 2026 19:15:33 +0900
-> Akinobu Mita <akinobu.mita@gmail.com> wrote:
->
-> > This makes it possible to create memory tiers using fake numa nodes
-> > generated by numa emulation.
-> >
-> > The "numa_emulation.adistance=3D" kernel cmdline option allows you to s=
-et
-> > the abstract distance for each NUMA node.
-> >
-> > For example, you can create two fake nodes, each in a different memory
-> > tier by booting with "numa=3Dfake=3D2 numa_emulation.adistance=3D576,70=
-4".
-> > Here, the abstract distances of node0 and node1 are set to 576 and 706,
-> > respectively.
-> >
-> > Each memory tier covers an abstract distance chunk size of 128. Thus,
-> > nodes with abstract distances between 512 and 639 are classified into t=
-he
-> > same memory tier, and nodes with abstract distances between 640 and 767
-> > are classified into the next slower memory tier.
-> >
-> > The abstract distance of fake nodes not specified in the parameter will
-> > be the default DRAM abstract distance of 576.
-> >
-> > Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
-> > ---
-> > v2:
-> > - fix the explanation about cmdline parameter in the commit log
-> A couple of comments on includes, with those resolved LGTM.
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
->
-> >
-> >  mm/numa_emulation.c | 26 ++++++++++++++++++++++++++
-> >  1 file changed, 26 insertions(+)
-> >
-> > diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
-> > index 703c8fa05048..a4266da21344 100644
-> > --- a/mm/numa_emulation.c
-> > +++ b/mm/numa_emulation.c
-> > @@ -6,6 +6,9 @@
-> >  #include <linux/errno.h>
-> >  #include <linux/topology.h>
-> >  #include <linux/memblock.h>
-> > +#include <linux/memory-tiers.h>
-> > +#include <linux/module.h>
-> > +#include <linux/node.h>
->
-> I can't immediately spot why the new code needs node.h
+[CHANGELOG]
+v3:
+- Rebased to the latest for-next
+  There is minor conflicts against the recent fix on
+  read_cache_page_gfp().
 
-The first version used the access_coordinate struct, but that is no longer
-used, so including linux/node.h is no longer necessary.
+- Still use the folio locked flag to track writeback
+  There is a patch that reduced the size of btrfs_device to exactly 512
+  bytes, adding new wait and atomic is not that worthy anymore
 
->
-> Should also include
-> linux/notifier.h for the notifier_block definition.
+- Delete read_cache_page_gfp() function completely
+  Btrfs is the last user of that function.
 
-I will fix these includes in the next version.
+v2:
+- Still use page cache for super block writes
+  This is to ensure the user space won't see any half-backed super block
+  caused by the race between bio writes and buffered read on the bdev.
+
+  This is exposed by generic/492 which user space command blkid may
+  fail to see the updated superblock.
+
+  This also brings a slight imbalance, that our super block read is
+  always uncached, but the superblock write is always cached.
+
+RFC->v1:
+- Make sb_write_pointer() use bdev_rw_virt()
+  That is the missing location that still uses bdev's page cache, thanks
+  Johannes for exposing this one.
+
+- Replace btrfs_release_disk_super() with kfree()
+  There is no need to keep that helper, and such replace will help us
+  exposing locations which are still using the old page cache, like the
+  above case.
+
+- Only scratch the magic number of a super block in
+  btrfs_scratch_superblock()
+  To keep the behavior the same.
+
+- Use GFP_NOFS when allocating memory
+  This is also to keep the old behavior.
+
+  Although I'd say btrfs_read_disk_super() call sites are safe, as they
+  are either scanning a device, or at mount time, thus out of the write
+  path and should be safe.
+
+  The sb_write_pointer() one still needs the old GFP_NOFS flag as they
+  can be called when writing the super block.
+
+Btrfs has a long history using bdev's page cache for super block IOs.
+It looks even weird in the older days that we manually setting different
+page flags without going through the regular dirty -> lock -> writeback
+-> clear writeback sequence.
+
+Thankfully we're moving away from unnecessary bdev's page flag
+modification, starting with commit bc00965dbff7 ("btrfs: count super
+block write errors in device instead of tracking folio error state"),
+we no longer relies on page cache to detect super block IO errors.
+
+But we're still using the bdev's page cache for:
+
+- Reading super blocks
+  Reading a whole folio just to grab a 4KiB super block can be
+  overkilled.
+  And this is the easiest one to kill, just kmalloc() and bdev_rw_virt() will
+  handle it well.
+
+- Scratching super blocks
+  We can use bdev_rw_virt() to write a super block with its magic
+  zeroed.
+
+  However we also need to invalidate the cache to ensure the user space
+  won't see the out-of-date cached super block.
+
+- Writing super blocks
+  We're using the page cache of bdev, for a different purpose.
+  We want to ensure the user space scanning tools like blkid seeing a
+  consistent content.
+
+  If we just go the bdev_rw_virt() path, the user space read can race
+  with our bio write, resulting inconsistent contents.
+
+  So here we still need to utilize the page cache of bdev, but with
+  comments explaining why we need to.
+
+However this brings one small change:
+
+- Device scan is no longer cached
+  For mount time it's totally fine, but every time a btrfs device is
+  touched, we will submit a 4K sync read from the disk.
+  The cost may not be that huge though.
+
+Qu Wenruo (3):
+  btrfs: use bdev_rw_virt() to read and scratch the disk super block
+  btrfs: minor improvement on super block writeback
+  mm/filemap: remove read_cache_page_gfp()
+
+ fs/btrfs/disk-io.c      | 45 +++++++++++++++----------
+ fs/btrfs/super.c        |  4 +--
+ fs/btrfs/volumes.c      | 74 ++++++++++++++++-------------------------
+ fs/btrfs/volumes.h      |  4 +--
+ fs/btrfs/zoned.c        | 26 +++++++++------
+ include/linux/pagemap.h |  2 --
+ mm/filemap.c            | 23 -------------
+ 7 files changed, 74 insertions(+), 104 deletions(-)
+
+-- 
+2.52.0
+
 
