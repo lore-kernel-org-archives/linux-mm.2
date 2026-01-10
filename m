@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF752D277D0
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 04:01:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04063D277D0
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 04:01:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0E676B009D; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
+	id 140526B00A1; Fri,  9 Jan 2026 23:01:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3AEB6B00A5; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
+	id DE4A96B00A4; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD4FB6B00A1; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
+	id BB1186B00A3; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 818D76B00A2
+	by kanga.kvack.org (Postfix) with ESMTP id 997CA6B009E
 	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 23:01:02 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 404871A00E8
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 55466135D5F
 	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 04:01:02 +0000 (UTC)
-X-FDA: 84314703564.06.071EF10
+X-FDA: 84314703564.03.D2A67B5
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 71CAD14000D
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4F61580013
 	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 04:01:00 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=D8udur4h;
-	spf=none (imf09.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=I22B2mc1;
+	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1768017660;
@@ -34,32 +34,32 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NYQE0/4xpxjm8d68deKwDm3nKFoSSIOI589+d+MkqSY=;
-	b=qq6Y87OvoYATwavcun51Yi6tnXz3qYl7Vbu7vc3MmzUm36qoQ7xghIPrCm5lGtmZLcaXw7
-	81NsStZ2Ituu3Bo8IIMINnTU/PXvlU4p5b9svYaBu6e7dG3cR0mxlWdlruidDXxHkDcWEK
-	p+0Ry9b6e9Zn4GDPyIg206/5BUIai8c=
+	bh=FG22dGTQn9arEKy7RAkcNwMcoAOPOCF9+5yic6HqZ3A=;
+	b=khcvMY/7LY8UnenpdLStzFEqslPjJAHYUesUCYWmbD01Fle5vRxUNqfPB7/k+9t8SJVtsI
+	2iOUW2e1yeQm76a7KNQjh0EPgpt6cSRJncqp8UHfqzzIuAdgeTC+CEEAzK4PzlGOaRSdXf
+	XHWOw7RgNqHB5dupzT7SaI/k2cUhPnA=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=D8udur4h;
-	spf=none (imf09.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=I22B2mc1;
+	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768017660; a=rsa-sha256;
 	cv=none;
-	b=nHHRzaqTtar06WzjVnP8R5B4B9Ytj1j3gXVlVxJ1X/8DNzhOU2iaV7nFI1ZMeR3aCLSOmV
-	p2H3R2npyrMM9IyMmw6lAteGnW+/SOsRl0OLxi2jO1cpRtaChbsPNUBLFwmfH499GB0Prf
-	mD2qpylqacCPPSbLzvUMYSnVCm+c5Z8=
+	b=c7Iq4FqX3hHJvcy33X6l3b3OH1Y7WTeoLBfe+dp+aOuIgMHA2mmT11N5sZ7Ex6kXEzc0t/
+	p0gsrMej04rZ0ZgdiZXy/aXxiv8NDcjKUp1c31Lkkn2j4nlDQq32jvOjoeSq1/bVoOxMU8
+	TtaPj/9AqBrlPfftIuHTVQ5PgPt6EFo=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=NYQE0/4xpxjm8d68deKwDm3nKFoSSIOI589+d+MkqSY=; b=D8udur4huObW0MeP2JD6P+gkIU
-	SeFREtW5He2AXWOlxBjfeigmkmEF53QTJmJUzNh7IDQh3PHtwQg4A5AXBUUv6GjfnZlBt+WcJkVg8
-	YKdX97Mm1CugfdSPg3qM6Wk3l+aoysR1sXWj6d6U3lrFF/vJ3lMvrr+kqxZymEAVmrKEmfk8RRE/g
-	co+NMA+99yF9cshfrQlFS6mnZ/zDYCFVyw/FjAvGbuNza6QvjOA36iDXrLf20r7/kANoHmlsYG3nG
-	Ag1HnDnZndRzj1D/IMAt4lmQid3tIeOG/9qNnpmZP+h3wdLuQySYSVGKMvyHk8yZUvdNE/rDWUVM/
-	bl+lQdPw==;
+	bh=FG22dGTQn9arEKy7RAkcNwMcoAOPOCF9+5yic6HqZ3A=; b=I22B2mc10P0NblsrYHwgUXsHoq
+	P4jKS1TQaWbO2FMIiN5/ZAIZmASvGnV19AMyUa8iI4VzAEqXXPphq+j4n9oQeiAXrGNTK1pvOhDcG
+	p7lVVYdoS6mtT/4voowpR1gV2Iz0TSYnRJVfchF8xtAXwmjE+ztiVDckGM8IVMhWf0mv2EIc6r9mB
+	dqEqFa1gohVw3az/3xdOpWauCJxDD5w5hPdTCBeE+seEu0PG+zbkBB4+Or+Yrdqm431zzV/1BOBTH
+	5VHuSn11VGESC/F007GJdw5QeeKg/CdiwVvqxvkMeO1uu3wFkGYjjEU+SU4DdbyZwICnrCpWnkbs+
+	Af9eiCzg==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1veQB8-000000085ZV-3ZAL;
+	id 1veQB8-000000085ZO-3DkR;
 	Sat, 10 Jan 2026 04:02:18 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-mm@kvack.org
@@ -71,22 +71,22 @@ Cc: Vlastimil Babka <vbabka@suse.cz>,
 	Jan Kara <jack@suse.cz>,
 	Mateusz Guzik <mguzik@gmail.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 05/15] turn signal_cache static-duration
-Date: Sat, 10 Jan 2026 04:02:07 +0000
-Message-ID: <20260110040217.1927971-6-viro@zeniv.linux.org.uk>
+Subject: [RFC PATCH 04/15] turn thread_cache static-duration
+Date: Sat, 10 Jan 2026 04:02:06 +0000
+Message-ID: <20260110040217.1927971-5-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
 References: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 71CAD14000D
-X-Stat-Signature: ui1f8u4wd7p8uy9a8ttqke5p3goznfiz
+X-Rspamd-Queue-Id: 4F61580013
+X-Stat-Signature: 41zjo15cdjs6feq7u7nzm594xdxteq4n
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768017660-446469
-X-HE-Meta: U2FsdGVkX197n2tu4EOlKFGxoRal4rVSWpYplFQ59DLecOdHxI4G64SM/+oDxJ+Kwpq0CFxnPrGdXijCTwNQ5sr09/ggJflFO+gD9VjpziBatzCMhSLulK1hiVQWRWYU0Y6FUwnQDWLMEiONjOF/NwJJMYzejuee/AMYYidClF09T+TnZIe2POp39fPUDzyKqv5pfLsySLDWNnVa+6/0cr9v7DzJ4EtpqbWD3ys2tpArnA5iIrpzTU3MpyZsb0PjvI6LrkZ5tR2BO+lvoIu+8Z9irTcqU9xPmruwMAyP07XQKSLDwA2l6D1ejD7IzcsQvAKipk7y0wztefOvI8PPsGsvEj4b2WNv9cELdLwYoS30eEtfAgeCmbkh6N0/obWy/6UOLia1qxk4Cj989WD1+oQrbrpGPXiQfoA1xH2XE1CXbrifJfIRolrLd6j+VM1gWP8C21opGYfEBdOdeOIb+AASCLk8eb1+COm9OsabyyP2aHZgidNqrunNPYA7dWibzBmHYPmUzbOCovgjRHwqzh9g2khkA9jPpFQ0BSLRCVK0R8icrmLJxzW9fFRVZjvPFpSr4rqXqeG/+d94vRZ32xiHxihu56037MxgW0PU/xQRbjouZjd1xhbiucgrfKZM3XidFxQ2lBlSxjpD6hBjdEqhk3kTiEBzSWGNDK7awOGgu9kdc7NA+yrdwOPctyEYhZwffr8IPL2uUtTim9932r2AaIY0PB4G14Zwl+83dtsNPwighcmrBk2J4OjyGCjD7NCVutiCOHpZOEKMWhnb7ar/xQmHZlItAMFA53prX4fWpHod2Q74n9DFJJ7GEmOxA4Hd1iWkCLbcjZp3T8HJBI/cuhoA9om39nI8u1MxOACwP4CYtm3qT39z1gdxFZ8jjlFKTt7181tij4/rxePNFnV2vHTbWrU54cL87JSCDrq93riJH+Yg5S+9Wi0TEzMPx57YiA9cqPJAqpY3Ji7
- lQeBV8Ud
- O+JnLD7BTxWXWBxl/wdolXNtnamIAq0WJXi+FxrFK0kWRmWoYwRVvdZbwOaLtikWl67E0fAAX1QilgarV2uV+DuwsVK3DvQ3Q/1sWBaYH1+bUY0/gd+Wkhl8iFWLvRv/5MOnfGqiyrm30UTNu5vMvpeQoEgseGxeT6uCZmuq6WTcGVJlhdL0E8/v5QTC0EtJTSWCN7+OtNsg99Uag5H02C/yjGtvIsPRwDfVDxdiCzOfM54HZwSlBRXrHdk80H0imrIjC8ETWXnPW0nHw6FHmp8Lu9vLsHMEC5PptG1rO+3i6COGo4u6awKlPbbw9MRCPu0AVcoekFHdHih3SkvgSawKug+EtJfBXl5l+ts4kgMJ4M6YgddTxazo2gLxXnFbaBgMAfprK9PX+jUyH2HtcvZ6HYTpLbJm6IvNCgAa9h2pEvkhYyQIHGCB+wyQFgwQzf1W9OqqTJc/xfxi4pSkXQKk+ju00d9uiVg+KdkWM0egBm0F1vOEB039RyA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768017660-64226
+X-HE-Meta: U2FsdGVkX19W8SsAFLVqch1mTVLfDg181yqx0ZnGCCcE9PGOQ1/RbWb/Wj/4DmedsksiQu+mILuNKrGOtVRYtKxkvJ13yHI0X6+d64S6AS5OAKmsh6aXtj029ORG/MZCu26AykCyixt6c/2JArXaL3osOktIDM4QzJcoBICCW1ro5a+OtAd7bzT3WtV/QXgbnBqwHmlSB5cFG+irbqBlsE2Ey1rvw75TWU5FOWz1eLV/3xw6lZraw1/EyfDw/pI8mHY3eQI5RxsoLeChT+pJz/kLiyLldz5QKqiAGurn+C0Yeu8ogB9hWifeWB7vmQdYq4+jLYd7mMQfLBIbTPEim1vvkqTFlnROp/XAECvOZuOYYwtsz6mdKSXYcag6xzhXxSxsZbxGRAvAbmOrSfnYyhYZA71RLPnKHeaVvC8Fcy5Ts9O5R1wDOgZbjx5L4I8OibNbQtYhe8guPZKjbTh0kdYITbl7SMu1VNxBCDZqaxB9NsbPuzLpDBkuPtJSWW1q/BJQP3vDkqliYOxqrSMKZCgU1mIhHFBeO8o11lg4Yw5GyK5OeOZXtxas/maeXV+aDclaxxx9RBvLqHDm0sFeCKJTtEFj4mlqewWpHtSttZXMv2RyW9FG4lcySms6ZdgAuD4cEsT076dJtrXjYK2eyR0rhqDOmyU0NYbKXU8CP57mrk6fifzFqacdApXjDlD9g4weolo5xbtG3kKMqaoYzsDKEZ8SzzI+TyIsJBE9A/h4ETFrmOlAq8+WQcIKekPlU14V3MVjzdMKhXbNHQeiBOxYA06Y+r/xgJwu6YleU10eslCpCdgC5z/OJrIba4a2wZekxZQ1Hl0apHo6BZqxR5bSBoYabjmKcfhiRtE1U+PIdzAPeQPFljiPXi76Cz7iUTxznzYgferEKbId26RS12m+Tye2YPbFINvx9YuFAR7I3XsHrp+VE8T1tY9NAR+rQvx2wc656zXCNnE6Yhh
+ eL1OhISc
+ CGGOzEnvPXyLZTdFF94H27g7OS+eWP6GbEBTcV2aRFnixp5VBQBI9HLU/un1bIRFNnC5strJ6wUWeKYNHfwET6Mh5TJMNgRh+BrHwspcRIAvM6lrR0vyffbRJi7BeGQ8sQUyogV+YQx4p59MZpmCkTkBUo5p3v6JYq0uraAKRBDf4oBB/jO/aXIyb0tmNi+NMTrIpkMTHn7Vz2l7jylxSTsdd+1XX+5OyiuEYb6tz8E39YiDsfQtzvguPxx+zXzpcVW0eqTnsDPrCAUq0o6kcwatGj+lHjO3gEMvTfWfEFUvoRnyiVuc0OLPJe0020vZfMben1QKJdVAZqnrDn3dUye+2CNG3A3LkYkx/UIhEl2moGJIODg7LSvtxwN5+DdjHQpMwhYyQ7AHglKEhriVp8W9GgcBAWiJREIYJvwwU0W9CB1MU41yMxyfZku4p/aQhTMdyUHcrrPEYfbGOnLBuDBZGzuW2iOgFYjqw9iq/WswactYDIJDftRv1MPEFMk53vNGuAOT5AX9/Esv8Gb08E2Jlt6F5Xh05iADI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,34 +95,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+... and make is SLAB_PANIC instead of simulating it with BUG_ON() -
+the boot is not going to get to kernel threads, nevermind userland...
+
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- kernel/fork.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/fork.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/kernel/fork.c b/kernel/fork.c
-index ddd2558f9431..23ed80d0d6d0 100644
+index b1f3915d5f8e..ddd2558f9431 100644
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -465,7 +465,8 @@ void thread_stack_cache_init(void)
- #endif /* CONFIG_VMAP_STACK */
+@@ -108,6 +108,7 @@
+ #include <linux/unwind_deferred.h>
+ #include <linux/pgalloc.h>
+ #include <linux/uaccess.h>
++#include <linux/slab-static.h>
  
- /* SLAB cache for signal_struct structures (tsk->signal) */
--static struct kmem_cache *signal_cachep;
-+static struct kmem_cache_opaque signal_cache;
-+#define signal_cachep to_kmem_cache(&signal_cache)
+ #include <asm/mmu_context.h>
+ #include <asm/cacheflush.h>
+@@ -422,7 +423,8 @@ static void free_thread_stack(struct task_struct *tsk)
  
- /* SLAB cache for sighand_struct structures (tsk->sighand) */
- struct kmem_cache *sighand_cachep;
-@@ -3024,7 +3025,7 @@ void __init proc_caches_init(void)
- 			sizeof(struct sighand_struct), 0,
- 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_TYPESAFE_BY_RCU|
- 			SLAB_ACCOUNT, sighand_ctor);
--	signal_cachep = kmem_cache_create("signal_cache",
-+	kmem_cache_setup(signal_cachep, "signal_cache",
- 			sizeof(struct signal_struct), 0,
- 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
- 			NULL);
+ #else /* !(THREAD_SIZE >= PAGE_SIZE) */
+ 
+-static struct kmem_cache *thread_stack_cache;
++static struct kmem_cache_opaque __thread_stack_cache;
++#define thread_stack_cache to_kmem_cache(&__thread_stack_cache)
+ 
+ static void thread_stack_free_rcu(struct rcu_head *rh)
+ {
+@@ -453,10 +455,10 @@ static void free_thread_stack(struct task_struct *tsk)
+ 
+ void thread_stack_cache_init(void)
+ {
+-	thread_stack_cache = kmem_cache_create_usercopy("thread_stack",
+-					THREAD_SIZE, THREAD_SIZE, 0, 0,
++	kmem_cache_setup_usercopy(thread_stack_cache, "thread_stack",
++					THREAD_SIZE, THREAD_SIZE,
++					SLAB_PANIC, 0,
+ 					THREAD_SIZE, NULL);
+-	BUG_ON(thread_stack_cache == NULL);
+ }
+ 
+ #endif /* THREAD_SIZE >= PAGE_SIZE */
 -- 
 2.47.3
 
