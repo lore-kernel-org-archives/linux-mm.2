@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45BA7D277D1
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 06:14:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67479D277D0
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 06:21:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 796256B0088; Sat, 10 Jan 2026 01:14:45 -0500 (EST)
+	id C8DA86B0088; Sat, 10 Jan 2026 01:21:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 744656B0089; Sat, 10 Jan 2026 01:14:45 -0500 (EST)
+	id C3B8B6B0089; Sat, 10 Jan 2026 01:21:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 650706B008A; Sat, 10 Jan 2026 01:14:45 -0500 (EST)
+	id B67BA6B008A; Sat, 10 Jan 2026 01:21:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 553EB6B0088
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:14:45 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EEB511AB6AD
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 06:14:44 +0000 (UTC)
-X-FDA: 84315040488.02.F4A2EF8
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A77B86B0088
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 01:21:52 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6191C1AB6AF
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 06:21:52 +0000 (UTC)
+X-FDA: 84315058464.24.053731E
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 221341C000A
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 06:14:42 +0000 (UTC)
+	by imf18.hostedemail.com (Postfix) with ESMTP id B8FEC1C000A
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 06:21:50 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Op07DxHr;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=NzRVfO1f;
 	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768025683; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768026110; a=rsa-sha256;
 	cv=none;
-	b=pjjU7KRhzLp4snHqSWmw5f4vxMwWwgDUv/VQ+6aMwKRsXMWEz07akn3mw2cWIMIxz/w1Gz
-	/cHpWREZtOEwRI4ZM9ii++c1O21Ql86MOsB6nXLLWC6iBNN0OwLwU82Am8hvjMtCArMWJJ
-	NKT5nw5lJ5PqkD8gWUDlBH2yIs04TBc=
+	b=NJ7Xm6X1dMNdulx5UKQzUYxSEzkL3pjKYSqRFa2Vpo3N9fT8iSvZ12k1CI2vsARJqvwIgI
+	KKPY67jSdpCgdDizvRCUZn0ywrVch037NziW2YaUgLu2gkxUhvEfQehOlBhEiUD0qg1dYU
+	1f9kOG8DtmLEJBynDxp/Yxz8d7Je2aE=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Op07DxHr;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=NzRVfO1f;
 	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768025683;
+	s=arc-20220608; t=1768026110;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FOhqKXHOHZ1Z6TQIHPMQELoPwFKMupQNtk/UZRAYy4E=;
-	b=f/Ib7SAd6t+DxM2+3dU5uj2bZduzzXEw89hi7KCrgUR5K/A14XrTet/3EcyN6fb6+rV2Ki
-	9uCS/45DHRsEYfBRcVzPdf01WOml3BD551OpuOWByWnH398oHQgSmdDunBMFBm17AiIhqW
-	pm4cSw9Ahko3kgNtKQ9tusom/FTkRIk=
+	bh=9xkWVls6+KFJL2JcAkE3SJmOEdcgb6zz8s6dWCZPtvA=;
+	b=VMX5xozwjxv6rOUidwsIAZ632I7nB+onQ6Z9vtI7wjvPd7bWFzRgldVSZ12pVYriX1Fzdo
+	9QT36hYepHzEWNWx9c4hKfFsh679NmEo7DD0kDkm/cNNIQTbc1cJVMEmjmFtSfOwUzy762
+	/Z+ZUjGzAiKW71jW8R+aI8gAiUjuzP8=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=FOhqKXHOHZ1Z6TQIHPMQELoPwFKMupQNtk/UZRAYy4E=; b=Op07DxHryHEQHOQfCxhuLT0fY9
-	WNaAXKfd9891rqZM+6MEvtsS+Fe/U+xGzEbYU7ODsh6NPEIyQDzwsNG0fvwrPa5u68baOnLZM0aiY
-	I6LdC/gHGicIJOigkt7R6CeVn+VYPBdQFoMXcBbssAwPQ8FSDCVbxB1RwgJLyP3LZQOvh2mWVh0Jz
-	6v4DIx4k6FLMGlnfC/sHajw1Fuju9A+8YgrHhmKSW2OmKXiHxSK0mugHRudzUtZ5sY0BoSC4gtbHi
-	XI29GLxeUyHBe5/Og/FaWixZO7HQS1O50EDNt7TaBZvvYCpaIvH5na5lrZKk5P61QllGPOA58pXMu
-	OrsqIdIQ==;
+	bh=9xkWVls6+KFJL2JcAkE3SJmOEdcgb6zz8s6dWCZPtvA=; b=NzRVfO1fE//pP+qWkt3bWbEBao
+	EqYWX1neqj3N8YIXQcbEOQLOQftwAPkER97QXcIMEWi8vTeZko5vKEnqRBokcVvqN9QgBhj2b4arB
+	nLh72gi0JvCiPxpxMTjZe/ZT3Pjtkz/tKlZm5hW5hxCW9ETB8bVTyjFOrvXFBKKywMbGlwROdsgev
+	4s9n/zkBTWxofPHK2Xtv2+/ikEZ1MyGzFWAVeVSBQo1XJdqO2adGUjpo/xmQMY6ZMVZRa7ze5LoOE
+	UFahIcRtMi7ScQEdf4AHUfXVi/NoJPbJ1MbmmxQ+VqNTsI9wQneH3EE0JHv0x1CfHfVEHJaBwF0Wy
+	CUOAWpTw==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1veSGW-000000099BJ-3qur;
-	Sat, 10 Jan 2026 06:16:01 +0000
-Date: Sat, 10 Jan 2026 06:16:00 +0000
+	id 1veSNQ-00000009DX3-3CAl;
+	Sat, 10 Jan 2026 06:23:08 +0000
+Date: Sat, 10 Jan 2026 06:23:08 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
-To: Linus Torvalds <torvalds@linux-foundation.org>
+To: Matthew Wilcox <willy@infradead.org>
 Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
 	Harry Yoo <harry.yoo@oracle.com>, linux-fsdevel@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
 	Mateusz Guzik <mguzik@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 00/15] kmem_cache instances with static storage
- duration
-Message-ID: <20260110061600.GB3634291@ZenIV>
+Subject: Re: [RFC PATCH 01/15] static kmem_cache instances for core caches
+Message-ID: <20260110062308.GC3634291@ZenIV>
 References: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
- <CAHk-=wiibHkNcsvsVpQLCMNJOh-dxEXNqXUxfQ63CTqX5w04Pg@mail.gmail.com>
+ <20260110040217.1927971-2-viro@zeniv.linux.org.uk>
+ <aWHmUsxQDGHOdflq@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wiibHkNcsvsVpQLCMNJOh-dxEXNqXUxfQ63CTqX5w04Pg@mail.gmail.com>
-X-Stat-Signature: hpq1mjn1hphr88g8nryp5uza4yts9zan
+In-Reply-To: <aWHmUsxQDGHOdflq@casper.infradead.org>
+X-Stat-Signature: rxspzcjktujwypsz4swjf8bn35xwxdba
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 221341C000A
+X-Rspamd-Queue-Id: B8FEC1C000A
 X-Rspam-User: 
-X-HE-Tag: 1768025682-405079
-X-HE-Meta: U2FsdGVkX18alqo9qh0QxtLlmHJOVEkKeBnWMOCdaWnzRyD3rWNsOnLgRmU5TxW7new932C00qKs88vyAzV0GdraPeJtd2s9kIzMjtl1zUKjNs8S7iAf9ILB8A4n9qbAeI8NXBVD5eOQIuzqZRxI30u4YK0L5N5VReQdjo6s2jtAcsxSlKjeQMrHxjY2OmnxJWSOPUfk+3AcGAtgv5I7DixzNOuiVZPwKdztd2pYdq0iFOreDwpKudROT7TCV4T8ixocb9WLNIm3gKLlaT2CLitnJnxf0s6el7y04m785F6+KQyZW28coNX4FV+SbiutcmMVmUeOa+qEHUDcsU8yOLFpAm2zLpp0bkCthOxfzmrNoBqWvb7RbMK2VrLRHOtOEE84KgRCkTF7LRTQImybYNs4FMPUSgZXURLX1qKcdPQkow0xrTGMQh1U3zfGzuUgxsJ4HyzjFrRMHsBlX3lryPbZ7hFjtM7VytrWu+Sz6+93G4xKuIjjuJoNNWldafTpTfOr+/KLctQIQM0O0fT8OKK1GZI7BfKTHGtCXcjGobiqtmWEQk3f5JS+lHbZnatSpGF57LXmJ1DD+BhOQb3+e/lsYJR/hoZFekRp2Se2N1HX3fsgvhWLRdzAPEBCp/xKRb5JWYu10yOizKah6A/xvccwxyg+yRFxG//hsNAw6DYPyXa7vdO7ulnuKeTZOqMgWawk6OJKpny6kbJNsDOuS5Ik9zCKtVnaMDn0td01AGy9sxLtEIZYmofxOJpi2IzGOM4TgFGk8D5awtpQCwkigkFgX5Q0aE6XQOGjr4MLr9brAlKAB7dHTBvMVh5UHpHWkIZlF3d8XAapLyQVhVNiK0sZ1oLFwfwegWUm+xSEM2UiEpZGGDpO0m0W+NjJz5SDZUEzqwlE9t67FpvEioQ4ZfKOsiFZZMMiiNI+7gIUDIFb0vFl4f11uin7NY56RWG/d8PZz5Fi16jMOrNKK/S
- 9BGtfhJ/
- gM6IAk2wlBV3paXRhncRB3gqrFtOlhRIjkSvwjgJXAZee08oZsW+Cxd/svpYNTev6mKSaC/VO4WUnVOzB/6v0KGi5ffbKGzgjbS9oq73b01G/xyG99HG9rgKy11eRcYZdlOrZU/WBC1ORX2OI5G/IwHywgCBrCrsZhLUOdhb/XwhA76RjKv2d4CsHJ3n/ApD0fpXKqaCetMMOa6ChIu/mCRzmnyc4XTPEbAQMpzLFYA8uZRUdZzmm0sbQhQR9FtwShypP/XDaVSOc2rmXVz9okDvEIgXiHqxSJ910T7Ae1PZH17iQOCo6vfoO1W/7HftzicOMKsPvkkY5oortNETEw3ezwWztNpyh8MnXCEYA4gRTaoK/cGldLMXm/in9FFfDi3RlTLQVeUlHdGQrCA23u708o/HD3ZihuMUxOSPpBbGB2yhXnBYu2K9FkDzMxIe8az1LjHu6ZgfDfQt7JIIlZxu+1gOCYLiyDXyAIzQmz4kLnt+xdVlEJzMtEkL4twapBNc75cyBPmiGCKYdUJhS+bq7ndK7dlYvV8qc
+X-HE-Tag: 1768026110-852310
+X-HE-Meta: U2FsdGVkX1+vTQV47+WHml2KtXseBOk7jDJIww6xjxHg/SSRfFlrWnUyFqqza+DidaXCtMDdLcDiWAxtQo6egKkhdyX5eBBmjv9FWq4kPpqKqAEY1KkXR1zkvmDlyGqqxt1eSQHwokb7LEPVcKRrA2b5VxtYdJmDCr+CJccjkRZRt17fKqnMvkz20aCGWKPp30fbPCigpRY7JOCuFUGn6+l6qIq4ll7Pw3nCSg1s5Bl+cbaH58DyVYulGBB2H2u/aUSjH/ixO1PpVdShaQZJ+UrerYAIBV8Z3R5+uoME3G6ENnswyQOpNLACtRNhaLu9YsQ5PZ9krso6pbJXyCGjthCq0CG3rIDxsogFWm912F48NXVcNaXTj99D2KUwzepaVyLuZxpFi+e/H5hKeYU7LHerglLkP52QhK6j6Rnj7ajXyy1K0yIO43CuRSWBLuq8EMWaB6PMnNVA9MwSbrdk9PykDgT9uR2Poqyn/qgSZ/dYfhztwWIZATFR3+Of/kw7q/lTWkXQ3TUPI5PNU7v/xOH4YyysXXmc07tZQfHYoJUi3VhS4azHSMtKOoEfxEA9hDS8clK6OZ3uvbKjzGH9BCkJN6jrYOrAgHP6RDLHGaoJ+LKQnCWi8H5ry5/FtlnaFiLqy4qQNtW9YTPG8FuASS6GbyeBGq8/IR5bz7e+YBzBOhRt/24PI0F5Ub0tF0lCOze2k0lL6rXJgz2w42fg9Gf5yY489/J1q3ervlcLNT4/y4C6vaHLcW7cGSmq4dR3cRXJSNFg/8Je7nYKIF8gO21R7aK9IOnUFwnWwtMkvEtuhk3Ki4me0+OUmPlKFfuNm/tNvHp8/PzU1iximXdw/a8lBNPM5Q7vAno94rmPVFZ84Rx1R3iB4I0CdBhquOC/8V9OO/5e84NT5vz4Ftux7MwPQenAEYH8rw9sHev0zMAjyQbgG5f7kg34R9qI99tzYTXYPXwBXYV0IaCYLsb
+ 3xFVgiar
+ 7pfEbp5BO1n4Xa3uHZgCg5xHboyTNCoMdIS2mPtBGd2ZOlNASF3geFp6esEm8wBk9BpQTSH89qbu3uSCY+LajVYIei5ZXJ9rFtruKMGcz/rEYU2W88HztoUMC+0BXbORHCVTwuwNjWkvXFAx+Z0b1Q2oZid1SgtwQtMKSU7hjazylBF16bi1GhSeIm/A1S90yE/yoQ/uDYt6b4X+VQ4OwJpFHxo2m4CnLFXjqkw5cMmX4QaXZ4m4P6DjmvDkClj0Gin2XgT4PH+WrnhNEMJ1ilR7bd5ORQprZWUo1kS7DAvhh+zXKdVuI18nTY7SZuaVyH4QK/JO4wmOj2IsTy81VlNCyLOZTd0SAfPsiHoSDJgICT0kkxpZKcly2x0di278sEkyS4WMtDKWJcDgqaE3zCAQ4+rzqN/m6+U0/bIadU7uHI8vQnOZTUbwKl1wuFNh8FjD2ThjS4fbEgEvu0BC3PIhZKPh0CmW8niQMs07y24EEVtU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,36 +94,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 09, 2026 at 07:33:41PM -1000, Linus Torvalds wrote:
-> On Fri, 9 Jan 2026 at 18:01, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> >
-> >         There's an alternative approach applicable at least to the caches
-> > that are never destroyed, which covers a lot of them.  No matter what,
-> > runtime_const for pointers is not going to be faster than plain &,
-> > so if we had struct kmem_cache instances with static storage duration, we
-> > would be at least no worse off than we are with runtime_const variants.
+On Sat, Jan 10, 2026 at 05:40:34AM +0000, Matthew Wilcox wrote:
+> On Sat, Jan 10, 2026 at 04:02:03AM +0000, Al Viro wrote:
+> > +++ b/Kbuild
+> > @@ -45,13 +45,24 @@ kernel/sched/rq-offsets.s: $(offsets-file)
+> >  $(rq-offsets-file): kernel/sched/rq-offsets.s FORCE
+> >  	$(call filechk,offsets,__RQ_OFFSETS_H__)
+> >  
+> > +# generate kmem_cache_size.h
+> > +
+> > +kmem_cache_size-file := include/generated/kmem_cache_size.h
+> > +
+> > +targets += mm/kmem_cache_size.s
+> > +
+> > +mm/kmem_cache_size.s: $(rq-offsets-file)
+> > +
+> > +$(kmem_cache_size-file): mm/kmem_cache_size.s FORCE
+> > +	$(call filechk,offsets,__KMEM_CACHE_SIZE_H__)
+> > +
+> >  # Check for missing system calls
+> >  
+> >  quiet_cmd_syscalls = CALL    $<
+> >        cmd_syscalls = $(CONFIG_SHELL) $< $(CC) $(c_flags) $(missing_syscalls_flags)
+> >  
+> >  PHONY += missing-syscalls
+> > -missing-syscalls: scripts/checksyscalls.sh $(rq-offsets-file)
+> > +missing-syscalls: scripts/checksyscalls.sh $(kmem_cache_size-file)
+> >  	$(call cmd,syscalls)
 > 
-> I like it. Much better than runtime_const for these things.
-> 
-> That said, I don't love the commit messages. "turn xyzzy
-> static-duration" reads very oddly to me, and because I saw the emails
-> out of order originally it just made me go "whaa?"
-> 
-> So can we please explain this some more obvious way. Maybe just "Make
-> xyz be statically allocated". Yes, I'm nitpicking, but I feel like
-> explaining core patches is worth the effort.
+> Did you mean to _replace_  rq-offsets-file rather than add
+> kmem_cache_size-file ?
 
-Point, but TBH the tail of the series is basically a demo for conversions
-as well as "this is what I'd been testing, FSVO".  In non-RFC form these
-would be folded into fewer commits, if nothing else...
+Insert kmem_cache_size-file into the chain, actually.  At the moment, mainline has
+$(bounds-file): kernel/bounds.s FORCE
+        $(call filechk,offsets,__LINUX_BOUNDS_H__)
 
-I'd really like to hear comments on the first two commits from SLAB
-maintainers - for example, if slab_flags_t bits are considered a scarce
-resource, the second commit would need to be modified.  Still doable, but
-representation would be more convoluted...
+$(timeconst-file): kernel/time/timeconst.bc FORCE
+        $(call filechk,gentimeconst)
 
-Another question is whether it's worth checking for accidental call
-of e.g. kmem_cache_setup() on an already initialized cache, statically
-or dynamically allocated.  Again, up to maintainers - their subsystem,
-their preferences.
+arch/$(SRCARCH)/kernel/asm-offsets.s: $(timeconst-file) $(bounds-file)
+
+$(offsets-file): arch/$(SRCARCH)/kernel/asm-offsets.s FORCE
+        $(call filechk,offsets,__ASM_OFFSETS_H__)
+
+kernel/sched/rq-offsets.s: $(offsets-file)
+
+$(rq-offsets-file): kernel/sched/rq-offsets.s FORCE
+        $(call filechk,offsets,__RQ_OFFSETS_H__)
+
+missing-syscalls: scripts/checksyscalls.sh $(rq-offsets-file)
+        $(call cmd,syscalls)
+
+with prepare having deps on $(offsets-file) and missing-syscalls, which
+orders the entire sequence.
 
