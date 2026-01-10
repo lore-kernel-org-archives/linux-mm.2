@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA623D277CA
-	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 04:01:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70370D277D0
+	for <linux-mm@archiver.kernel.org>; Sat, 10 Jan 2026 04:01:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 162536B0096; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
+	id 3F8576B0093; Fri,  9 Jan 2026 23:01:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00A856B0093; Fri,  9 Jan 2026 23:01:02 -0500 (EST)
+	id 133116B00A4; Fri,  9 Jan 2026 23:01:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C663C6B00A5; Fri,  9 Jan 2026 23:01:02 -0500 (EST)
+	id CCE836B0089; Fri,  9 Jan 2026 23:01:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 72D416B0099
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CC6C6B009F
 	for <linux-mm@kvack.org>; Fri,  9 Jan 2026 23:01:02 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3C72551986
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3172D13539B
 	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 04:01:02 +0000 (UTC)
-X-FDA: 84314703564.08.C8B6D20
+X-FDA: 84314703564.23.211A894
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 50C9A40009
+	by imf07.hostedemail.com (Postfix) with ESMTP id 52D9C40010
 	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 04:01:00 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Ph0ALkCK;
-	spf=none (imf11.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=A02pHIap;
+	spf=none (imf07.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768017660; a=rsa-sha256;
+	cv=none;
+	b=vxdtiuts3Tr9aQJX303SFoI8uFuRJM56oXRqDbAb6B8qNbcwMxBTHSZWZjli/b4TEV4r7u
+	SC+pBmbZ8r1cbzj25mCab4HzFchEtxH27yzhxsjmwYpliWLG4ArAel4IaMVV6mKwX2Gvk5
+	MWgGGUjOlUUh+avSRvZfsOeco+dmBK4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=A02pHIap;
+	spf=none (imf07.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1768017660;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yUfjq/cQTQJkqeTRHOq+fL1zvjNTzJMLDYauRTOdnO4=;
-	b=Mxk1F3OYKwRDCKYirQ/t5fqmdoyFRIgdDyEBYotth0H0p9qG8zdPW3TCkLl9TKYRUOhFoa
-	4KOEEofHBI5jJFXyQOFhhm/Q+DLc/rLrREblwOjsLcrKKC4NJVslJA9Fy24nZEIqw8hMpS
-	pDzaB32kKu9dZbkXlBddOoLy0GDXcXk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Ph0ALkCK;
-	spf=none (imf11.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768017660; a=rsa-sha256;
-	cv=none;
-	b=1bShTLA3BlMB1T0D6xjhKYGN3NLnpS9DNQXRvVrSWIUGuJRhbIeeKelXb73vctKLVsqQzs
-	X0eruce8887VGTZjXEeuJ75RiEVO0Ud8WZItMH1vY0dtI5VRJPlEnQx790QG2oosD247UN
-	HI0/FmL/2bTo5gQeQdNQInW5oliy9vA=
+	 in-reply-to:references:dkim-signature;
+	bh=SAMItpZq/8UWwpFL77MgX7nTOQ8V2DCdFRU+BfI9C6U=;
+	b=hPfsynRduPD+l6HQRXDPJqDjTRx9mzKnw8DSC+oQa1v24hgx2vH8WKAKHVHaLd3NzU1vy8
+	abIxr7QOnVmmYN7sx/yqya4mRiM2VWWnJZamwf4eiy8NqD/RUFYs7Dc7wO3btjPehZoL4H
+	hRAmdMMto2+dF5rDLFg60KTYL58Re9Y=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=yUfjq/cQTQJkqeTRHOq+fL1zvjNTzJMLDYauRTOdnO4=; b=Ph0ALkCKCYTptUv3Vhh2Nuf1mQ
-	UzC/xvzrJz+R3J3N/IkPvbgNT1VUADc/P60p4M/p/Tfq6b9AXo6PGR3Of00BGb+nbV9qVolGywIbS
-	4qlo33yOoLuLmpyw2pOMWqa7n9v2oYj6UNpSK8TyJ6IALmXPL1V6S4wGvXIRu3c2PHMAszgXra1Zx
-	RDyZOAVhrtqim+rwGW5UZwP8r462a3XK7qSyBsjUm18blsC9tazRwWxQ0q9Xo3rZJ1umbB3Y4ABzA
-	Ng6Ot50qgrd/rdusNTPlFmP8ns+Dg58Djbg2pW6P5sCBpbxN/X4RCmKJDjInPW6qJ88rFRRYXE8Rh
-	V7y4NNhA==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=SAMItpZq/8UWwpFL77MgX7nTOQ8V2DCdFRU+BfI9C6U=; b=A02pHIapz+/ZRHrStmehokVOoO
+	VrM1ZLnvCP3Q2kmEX3nK3l1OP3VQ1WxkbQGHjtUPpyriiZ7wcoMt1lytyeKMIINPNAiwWGWoTmiWj
+	dw4AL7A6B14n03dfwWtkawM8nT6XYOHGgEUfxDhyWg/xrhEpXMZqCsYsNgADDRGtUSKyd7BSm60JY
+	Sfq2WNTWQ+il7s9LXlyLT/K5fh8/WDuC2tMPXoVIuO2lZCg6FgGy6FvGvNdPuOSsyLUq4NJM3sJg/
+	BHX+G73hbNfZecrdNUSrjMu5/13gf0SPfH5JtUJ4Nbjh4pZ9oaOww9w1e0VzKCAyogDcK5GZPRyVz
+	hlbGvAyA==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1veQB9-000000085Zl-0In6;
-	Sat, 10 Jan 2026 04:02:19 +0000
+	id 1veQB7-000000085Yf-1opA;
+	Sat, 10 Jan 2026 04:02:17 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-mm@kvack.org
 Cc: Vlastimil Babka <vbabka@suse.cz>,
@@ -71,22 +71,20 @@ Cc: Vlastimil Babka <vbabka@suse.cz>,
 	Jan Kara <jack@suse.cz>,
 	Mateusz Guzik <mguzik@gmail.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 07/15] turn dentry_cache static-duration
-Date: Sat, 10 Jan 2026 04:02:09 +0000
-Message-ID: <20260110040217.1927971-8-viro@zeniv.linux.org.uk>
+Subject: [RFC PATCH 00/15] kmem_cache instances with static storage duration
+Date: Sat, 10 Jan 2026 04:02:02 +0000
+Message-ID: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
-References: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bfgafrr4orm3w8ugkogazzb1576gq37w
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 52D9C40010
+X-Stat-Signature: x998rw3pzyb4ztutbicj3pbka7qsfe1g
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 50C9A40009
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768017660-220284
-X-HE-Meta: U2FsdGVkX1/e2+tqaJuO8sGsbHYehbo68trXOrZRLOzBceLicmgezHrtEdpukUlc+ePLvIHSazRe7uYxk7OYee9L0Ngbx60VOdCBmQLqgL7S2nJgoolExU33am6/YMxXC5gPUwtQQuRCaNe6WKpDpV7ej3kx+llNtCVoTb0GlWnYN36pw8zI6JwvTrSbtsq1PD9ZLqnqzs0DsIOebMyBl9lJTrnA2wnNVjNeoTF7npJGzGg4nfV5ZAVMJpsCXC1+BnyU0e4ODgYLNvd5aHEyUijAS9sUHZzfVpSq3W/JoS9Lmk+qusYkwQ/1vnJpGICqTU7e+MZ4tux3FbpyhIDliQgJdL+PV6fAE42Oqw9Yb5Pzob2gh7IDycZcKC2CSw2NtV+VQFFiKv1kNVR5H9WZL+U6Mv51ZCcu/Zofu0P1U/W/pqyHSGqUwh+5jQpqLAE9krHf08DkHBCPgpNOFYqFbHQS70IaYYbJSbcPExKHXO1BRnTS8+Rrpbjap9MQV6riKrf+PABxbayFENtcM3hJkMj4W2+lzDFgQTWn16vF+ex381pTJpo41sto9Ai5s7GyUWCw5oM94SdgsJx2+iPGSHlPDFWbliZeaUhcI9NTYUfD6O7HCua8Uqsw7oPUA6ulIXrCPFVfUU/PqpvpLCu4q3AlqcvrHtAd++9SHWyWJdwB9GgC/hc14At49hXTJXnyWsYE9zBxPOezH3uVPzR7cVVH1g1jcuRnfHjBdZdN1m++6OY0FX5N7FuoqDKPN6WaLHJlAuGTal9qSQKsRnLwEBv0s1PK7bm7TEslPpv6tZ+gOsnfdohqMOnW/xGhGTEh2LgsE2SvEXsRGhG9e0mP7BCk7r4CZKEOZ5pztrH4lBO5dnvz7A9XRUMDdd1/1Cv2P2Fm9KfoBmbNGMSIfcfHJ1yz56u0CBgKbRScw9hdVbwTMoIbsJyZFZokMMk78NPCEI9JNRDtTW+NwSoepi+
- JrPYbuQ5
- 0w7oTJUiodZcnCVKCj0HLiSm23ywO48CR0J2gEToptieXJ0x9n6Y6RSG6A2pkfaU91sUUGrp32jIbH5OabkmuQTWIoMGphUZj73TllbioaPdaqjoepBTia7xngAk6jaZjNJb8OOOYdVqBLWpPKovcolkIixoloDIu4SJjw+jJL0l9sNAoofzjnlPPYPR5U8FT7PXOHmY5hmeIBwfcB/aHIvoB7RT5+LHPr91fiuFMjvNXVCiLbNGhNQKv873DUCQ8HOQLMdFkNVS87rIiBpf5qaMp9/zk1fo4tYEtbSuPeVvaHeA+HAe8yCt3DsDpC9BTno0C+Aod7gDD4Lt9YTEl2PN5cuDgeSCA2+YN3RiEZ9X51fGVmV3bRh6SARVslG2P2YwWRbcuNsm7v8+v1nft8UZx9HpsqXzvXwE9/wTV0Qnk0iJknS5PzL1Ng0YEy5XWcD1zS3oJPmsjRHWKs1n+PtjOOebz1X8x8KoMi4qX0Um1iGPTm76Q4LUixwhDfSU4u60K3c0wZgVlx9ZWkAc8wk3rE1dNHi9o0W4l
+X-HE-Tag: 1768017660-873184
+X-HE-Meta: U2FsdGVkX1/V9n33nNnyZA0dRnlPo2GSOs39SEbpTENwBimyGD4iWA+mKKn3JIIQYKJRYo1mlTRrQNBOOlMS+r7M9+X4hj+MMesCpuOTc4rMBia0x1BlUWl6N+bYy5LWVZZ6MyJ9e/UASwKKdzCn/Ei7L0zBObiiandmgUHwSTqDQCsOxjjCMsZsjPg6v3jBwkkIX/qfo7+L0CHLolTlXRoqCBi1fTVUTEDBU+B9pHPBZ2pRvZ0YO2ZH6CS/6jqnfpe/ZCBiAtiGTodNbIpsr7b6YYQtTsI93ysGJTn5Hzvg6T6fH5rD2CnzxEsOm4tXX/eVjX7rWgeJsEdrxhaLlN69wY/AQB6XBexNyvYhGoUg/6zTSUEuRz+4qv9x/zCpdm73q7bAfzA2b214zIf4wfwz4Pddnv/Xv3LHpdX6yGt/xhHeMEuM5pH6w+1b5WW02CKALr+/lk3juxz1xUA8BeLFks0JiQFd+eIoq8nsvSVK/fzqpJGWdNzBZcuhAJUF5GBrrnFOhOuLYcGkrIDumkekI39l6aPrRJJ5Qqjgsf/gZZiHclQI6a548pKVyc1UnjgqlZrPAI+99YjRU5rj51RGBQ3GkNuAcdcdPBjnWJOOL8Vb/rMDhfMQeArEX5kcoxAVi2ofEwdmSnTLn99sb31620fF1cRb7lqsg4nf/yv7bf3jx+Qx7FR06LlEpWvuwS+CDs3EhfxEe2IxT2ztkM3CBx5LT8jMs6lHIS4bbtMSB4RrPXn8MxeT1K2hiSPYx52kPLtai8cKSw79UQoNB+BNzqq7xkNN/daoaQdvF2znJ1UN/avTYYY4mQ/xq86ZaG5DMqD8JUp3nN6sGQ1sH/mikKR/fSoEMxubgaukt4rs2n4w25m2Y+uIAl7gekgNeTAk7LroHSWElABZ7nr5LDrz6/7/O2QtLllEsnAGjNoRpOTNtKvl6gowxaQlqS0aEYC0QfvF8JghgLCK9PG
+ F/mhprVy
+ u0vjI78kw1XUdG43tFhSPjOk+FrzO/bHcuhVq9uT5sxCVMfudzmAWcLpJlZNjchWc7nYzhzvq7WxIbZB4B8dstBMdDKbDl3ro3Lgtz73fyGuviIuvvrygPvhRZV4E5MU3PSXVoH4kbNAjv2sce9m587clfmp8tZKaEx9j3K0vccTlzij4cFytnwQo8TXq8ru+KHR4M5pFHGO1MtpRCv0tXaUqeMSoYFKxsKwoeWApsvotSaC2xEXWZgbhDyoUl3D0/SddVo6PH2nM8R3VJLQrW1KKG3TEqFGtmyzl8GcpzNblZwlrZBnm7Fpp+QTljcKPTQEpR61mdwfnghHsACEUVAeAOavak10ennoWXeiVJLKrHMbKa0229OauAbs5HJsUc8RVuPQUQtL3+CmiLX9JsgEv9w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,63 +93,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-No need to bother with runtime_const() for it anymore...
+        kmem_cache_create() and friends create new instances of
+struct kmem_cache and return pointers to those.  Quite a few things in
+core kernel are allocated from such caches; each allocation involves
+dereferencing an assign-once pointer and for sufficiently hot ones that
+dereferencing does show in profiles.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- fs/dcache.c                       | 8 ++++----
- include/asm-generic/vmlinux.lds.h | 3 +--
- 2 files changed, 5 insertions(+), 6 deletions(-)
+        There had been patches floating around switching some of those
+to runtime_const infrastructure.  Unfortunately, it's arch-specific
+and most of the architectures lack it.
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index dc2fff4811d1..43d3b4fbedcc 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -32,6 +32,7 @@
- #include <linux/bit_spinlock.h>
- #include <linux/rculist_bl.h>
- #include <linux/list_lru.h>
-+#include <linux/slab-static.h>
- #include "internal.h"
- #include "mount.h"
- 
-@@ -86,8 +87,8 @@ __cacheline_aligned_in_smp DEFINE_SEQLOCK(rename_lock);
- 
- EXPORT_SYMBOL(rename_lock);
- 
--static struct kmem_cache *__dentry_cache __ro_after_init;
--#define dentry_cache runtime_const_ptr(__dentry_cache)
-+static struct kmem_cache_opaque __dentry_cache;
-+#define dentry_cache to_kmem_cache(&__dentry_cache)
- 
- const struct qstr empty_name = QSTR_INIT("", 0);
- EXPORT_SYMBOL(empty_name);
-@@ -3265,10 +3266,9 @@ static void __init dcache_init(void)
- 	 * but it is probably not worth it because of the cache nature
- 	 * of the dcache.
- 	 */
--	__dentry_cache = KMEM_CACHE_USERCOPY(dentry,
-+	KMEM_CACHE_SETUP_USERCOPY(dentry_cache, dentry,
- 		SLAB_RECLAIM_ACCOUNT|SLAB_PANIC|SLAB_ACCOUNT,
- 		d_shortname.string);
--	runtime_const_init(ptr, __dentry_cache);
- 
- 	/* Hash may have been set up in dcache_init_early */
- 	if (!hashdist)
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 8ca130af301f..6997f6301260 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -971,8 +971,7 @@
- 
- #define RUNTIME_CONST_VARIABLES						\
- 		RUNTIME_CONST(shift, d_hash_shift)			\
--		RUNTIME_CONST(ptr, dentry_hashtable)			\
--		RUNTIME_CONST(ptr, __dentry_cache)
-+		RUNTIME_CONST(ptr, dentry_hashtable)
- 
- /* Alignment must be consistent with (kunit_suite *) in include/kunit/test.h */
- #define KUNIT_TABLE()							\
+        There's an alternative approach applicable at least to the caches
+that are never destroyed, which covers a lot of them.  No matter what,
+runtime_const for pointers is not going to be faster than plain &,
+so if we had struct kmem_cache instances with static storage duration, we
+would be at least no worse off than we are with runtime_const variants.
+
+        There are obstacles to doing that, but they turn out to be easy
+to deal with.
+
+1) as it is, struct kmem_cache is opaque for anything outside of a few
+files in mm/*; that avoids serious headache with header dependencies,
+etc., and it's not something we want to lose.  Solution: struct
+kmem_cache_opaque, with the size and alignment identical to struct
+kmem_cache.  Calculation of size and alignment can be done via the same
+mechanism we use for asm-offsets.h and rq-offsets.h, with build-time
+check for mismatches.  With that done, we get an opaque type defined in
+linux/slab-static.h that can be used for declaring those caches.
+In linux/slab.h we add a forward declaration of kmem_cache_opaque +
+helper (to_kmem_cache()) converting a pointer to kmem_cache_opaque
+into pointer to kmem_cache.
+
+2) real constructor of kmem_cache needs to be taught to deal with
+preallocated instances.  That turns out to be easy - we already pass an
+obscene amount of optional arguments via struct kmem_cache_args, so we
+can stash the pointer to preallocated instance in there.  Changes in
+mm/slab_common.c are very minor - we should treat preallocated caches
+as unmergable, use the instance passed to us instead of allocating a
+new one and we should not free them.  That's it.
+
+	A set of helpers parallel to kmem_cache_create() and friends
+(kmem_cache_setup(), etc.) is provided in the same linux/slab-static.h;
+generally, conversion affects only a few lines.
+
+	Note that slab-static.h is needed only in places that create
+such instances; all users need only slab.h (and they can be modular,
+unlike runtime_const-based approach).
+
+
+	That covers the instances that never get destroyed.  Quite a few
+fall into that category, but there's a major exception - anything in
+modules must be destroyed before the module gets removed.  Note that
+unlike runtime_constant-based approach, cache _uses_ in a module are
+fine - if kmem_cache_opaque instance is exported, its address is available
+to modules without any problems.  It's caches _created_ in a module
+that offer an extra twist.
+
+	Teaching kmem_cache_destroy() to skip actual freeing of given
+kmem_cache instance is trivial; the problem is that kmem_cache_destroy()
+may overlap with sysfs access to attributes of that cache.  In that
+case kmem_cache_destroy() may return before the instance gets freed -
+freeing (from slab_kmem_cache_release()) happens when the refcount of
+embedded kobject drops to zero.  That's fine, since all references
+to data structures in module's memory are already gone by the time
+kmem_cache_destroy() returns.  That, however, relies upon the struct
+kmem_cache itself not being in module's memory; getting it unmapped
+before slab_kmem_cache_release() has run needs to be avoided.
+
+	It's not hard to deal with, though.  We need to make sure that
+instance in a module will get to slab_kmem_cache_release() before the
+module data gets freed.  That's only a problem on sysfs setups -
+otherwise it'll definitely be finished before kmem_cache_destroy()
+returns.
+
+	Note that modules themselves have sysfs-exposed attributes,
+so a similar problem already exists there.  That's dealt with by
+having mod_sysfs_teardown() wait for refcount of module->mkobj.kobj
+reaching zero.  Let's make use of that - have static-duration-in-module
+kmem_cache instances grab a reference to that kobject upon setup and
+drop it in the end of slab_kmem_cache_release().
+
+	Let setup helpers store the kobjetct to be pinned in
+kmem_cache_args->owner (for preallocated; if somebody manually sets it
+for non-preallocated case, it'll be ignored).  That would be
+&THIS_MODULE->mkobj.kobj for a module and NULL in built-in.
+
+	If sysfs is enabled and we are dealing with preallocated instance,
+let create_cache() grab and stash that reference in kmem_cache->owner
+and let slab_kmem_cache_release() drop it instead of freeing kmem_cache
+instance.
+
+
+	Costs:
+* a bit (SLAB_PREALLOCATED) is stolen from slab_flags_t
+* such caches can't be merged.  If you want them mergable, don't use that
+technics.
+* you can't do kmem_cache_setup()/kmem_cache_destroy()/kmem_cache_setup()
+on the same instance.  Just don't do that.
+
+Al Viro (15):
+  static kmem_cache instances for core caches
+  allow static-duration kmem_cache in modules
+  make mnt_cache static-duration
+  turn thread_cache static-duration
+  turn signal_cache static-duration
+  turn bh_cachep static-duration
+  turn dentry_cache static-duration
+  turn files_cachep static-duration
+  make filp and bfilp caches static-duration
+  turn sighand_cache static-duration
+  turn mm_cachep static-duration
+  turn task_struct_cachep static-duration
+  turn fs_cachep static-duration
+  turn inode_cachep static-duration
+  turn ufs_inode_cache static-duration
+
+ Kbuild                            | 13 +++++-
+ fs/buffer.c                       |  6 ++-
+ fs/dcache.c                       |  8 ++--
+ fs/file_table.c                   | 32 +++++++-------
+ fs/inode.c                        |  6 ++-
+ fs/namespace.c                    |  6 ++-
+ fs/ufs/super.c                    |  9 ++--
+ include/asm-generic/vmlinux.lds.h |  3 +-
+ include/linux/fdtable.h           |  3 +-
+ include/linux/fs_struct.h         |  3 +-
+ include/linux/signal.h            |  3 +-
+ include/linux/slab-static.h       | 69 +++++++++++++++++++++++++++++++
+ include/linux/slab.h              | 11 +++++
+ kernel/fork.c                     | 37 ++++++++++-------
+ mm/kmem_cache_size.c              | 20 +++++++++
+ mm/slab.h                         |  1 +
+ mm/slab_common.c                  | 44 +++++++++++++-------
+ mm/slub.c                         |  7 ++++
+ 18 files changed, 214 insertions(+), 67 deletions(-)
+ create mode 100644 include/linux/slab-static.h
+ create mode 100644 mm/kmem_cache_size.c
+
 -- 
 2.47.3
 
