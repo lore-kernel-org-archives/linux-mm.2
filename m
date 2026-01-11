@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69BCDD25030
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 08:27:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BABCD25037
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 08:28:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB0D06B00BE; Sun, 11 Jan 2026 03:27:44 -0500 (EST)
+	id EE87E6B00AD; Sun, 11 Jan 2026 03:27:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4E6E6B00C0; Sun, 11 Jan 2026 03:27:44 -0500 (EST)
+	id EAF076B00C0; Sun, 11 Jan 2026 03:27:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B70BE6B00C1; Sun, 11 Jan 2026 03:27:44 -0500 (EST)
+	id D87886B00C2; Sun, 11 Jan 2026 03:27:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A3C526B00BE
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 03:27:44 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E67E1B57C
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 08:27:44 +0000 (UTC)
-X-FDA: 84319004448.21.E447DCB
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C6E616B00AD
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 03:27:59 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8D7AE1403AD
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 08:27:59 +0000 (UTC)
+X-FDA: 84319005078.02.F70FF01
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D460F20002
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 08:27:42 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cucgyfK5;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id EED1240006
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 08:27:57 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IGnsApOe;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768120062;
+	s=arc-20220608; t=1768120078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kBBKJwrcTjhhjxH1pyy/2Lv9SOwm9YyMZRAlSFGYa0Q=;
-	b=BjUqTgVCvU4u2Zi9i2lNXYCf3JlKm3Y+ycDry56Cia7LmhXwIFQxwYMBloTDGXs79V0k8G
-	aGlsxbsVZY3aj+VaovG8cbXzcn/WvCR487YtowVhsKHN7Wr798k5yS/xuElXCpfEItuoi2
-	NAxy3HXkKW1ozntgHz641evMDnSNVH4=
+	bh=NMuEVnl163nXTa+O/OHvtDDMLzmwllm0L4yo7sEJ3YQ=;
+	b=5VrDjDX19U7zalbFw+5oeRwSMAVjr7yB8xyuYGkXFQJ/i9+UzoLjP1Xw1H95+0u9JFrNSw
+	/vapuZVee+jUvrt/8lpN9JbB6ZEkdEwDORApFN+K4D4DQ7wjLpCDyL1cvUuvs6sJWG0Epf
+	nulW5euU2grnpnYqdB02nkajNZ5O/Jc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cucgyfK5;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IGnsApOe;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768120062; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768120078; a=rsa-sha256;
 	cv=none;
-	b=XXO36XdwN+YbAG0V2ribXqwmdEi9uSAvVKw4X13eOSwi6eg4S5BmYrBiA1Zx68yDu6dMdm
-	hrDvKnQUdM/lpPBQVhzxrZKatkkNfnDhZ9J4YzcHoyC21Kf2PESPMU31xCb7N7BViaFmDU
-	ysOsfsZyIEU7bUXuJ20DGyciS7q3lfw=
+	b=JAxI9aTBZ76kzaPHwc2+KOX1xPFU2PplZu4FbCkg2ym68FCR8MzJGfAIjwLMwkR+PWHPzx
+	zFVoCb06tK/UASQsK2orNJZD9jSfz6QeyzHCP5Cik7KD3/JubUinW8VtMoS5lGBaWbkuzz
+	swvqwgLGpSp3p/i2dLKCYO8LVc/rWsI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5EDF460121;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8073A60127;
+	Sun, 11 Jan 2026 08:27:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D8CC4CEF7;
 	Sun, 11 Jan 2026 08:27:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B0AC4CEF7;
-	Sun, 11 Jan 2026 08:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768120062;
-	bh=zd5p0i2OlJkjqXnS1oV6Bjn1onLoj8/4tNSvugcI3Wg=;
+	s=k20201202; t=1768120077;
+	bh=q+M5A50bBS7JfetqFByPT+KJrphXgISZqTpM92eTenA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cucgyfK549u/HKU9sXOhtGyxmUzXaeQo6OcfMmBauoICa2ALqFD4CHcgssCffdtz0
-	 jNR5GmojmKPSKMXaxzTVfIKcpg4AhT3GBI9gKFSlU99+ajBqkW87jen695O6x8QgyW
-	 qqFORooblG61KNiQrUz0ViZwhnArOqE+rUf8POn7T1L4C49wdI+cVoEUkJVPyN1phL
-	 DB6aLqdi3kVV0WLbCcSIvN7kGg9TuKq12+ybRyVObguRL0q+vGXwqyNaQkOT629PZh
-	 4zn7LMoAz8MYeLMbgJf6kw8eNAuufEeYwPLbjRlaWuHnzdOzixI9umBE0hkN04bQGL
-	 GyVogLrYtnLyQ==
+	b=IGnsApOe52UMwQH9rU0QdFDUAygZdjQbcEkT+VcFh+f2uIPc0Movv0hadDZtysGLu
+	 JMYTBeuroBlSJGszS2K8JW23cEU1tXtb89wIKkYD2uNZvvSMDgnuNSbEAJkkMWfugW
+	 cwtKO3+xV3d/K2hNCc4wGnvGVjpj4mSjlL71LyU4btVNuDx9MwMhZ5QsDvVpKtmQNN
+	 2EAcaKe/SBeeqJy3AZisKps+dHlJ9rGGk1wbkEMkkumkaTeOfnRjlxc0fyDYFkNWJz
+	 /+oWBnCcEaIsUnQb4PUJdVub3TiaSeyalOMYoRZBztcTqMfYM7Z+CzPCQ4YeR/ZN6x
+	 o9YVaMIgO5ztg==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -131,22 +131,22 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH v3 25/29] mips: drop paging_init()
-Date: Sun, 11 Jan 2026 10:20:59 +0200
-Message-ID: <20260111082105.290734-26-rppt@kernel.org>
+Subject: [PATCH v3 26/29] x86: don't reserve hugetlb memory in setup_arch()
+Date: Sun, 11 Jan 2026 10:21:00 +0200
+Message-ID: <20260111082105.290734-27-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260111082105.290734-1-rppt@kernel.org>
 References: <20260111082105.290734-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: fyy13m69u5ts55ze5cm7g7radwnrorty
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D460F20002
-X-Stat-Signature: uodssctodymxk31otqe744rptijz7wfq
-X-HE-Tag: 1768120062-372511
-X-HE-Meta: U2FsdGVkX19QDYg1z/34p36bQObKMO83Cyhw6JsGZ+PMoGYaJn/xBfkX/Rqu7aRpud/JdYETIimCw00cvVzp+Eugrh5nUyawD0qYjPkvejIzamZGdztDn19Yru6bU1GiaVdFyAkPxsxoRSb4clzJjNH+aa9XN9bcTXT7e0HkJtLfCutkjTEbYHiZgeN1+SRMQWlQTmLoSNu5aCtt01qMiACcPoEuLB44/AQQnQV7wK5LY1vbl9LaMMGrcDJZzI5woqKSeqYDKThVdQDY5xJ4gfURW4GP3s3C1zbpJX1ZbMeNvaQDfCsWn9YGbiy8emWu/MswZXcTVjaOksnyTP8PmGUUM+o95Iq/YkaEJFg2FtsS6/TCE8Za0m4VnpAZziaGuK4cd+er5ShojODslGMYxU0SdGPgmXBqdkOdrqA86XwMOxkCy9730JsQjZvWRvutz2hk10VZ4TLWmJEBlsa00RMrqUQbs/0uvANny6e7a7ZVOa3KpmXR5eBBgURWO4gvinrtYj6Oz/UHaMEESrowmJM3/OD6oyP+XF9TBUxcHjHjk53NPTvy/gGhinRwmQ/GMY9aCR3Pd0+scNaVDPFgvNMTl/uRKBG3/tIfQKKUTSBt33xnRWKGXKTiyb/GXbKiKMpt8maM++f7SBLEteYhPzKvga8Vqf88TB7KZyExVNoQwJJC7BwFIZ2bo8vT7TeWrrhPFvSYN7IE1RLxrTkmuc3J0nfSBUTzh11/39VrFNdv5oy1os//MAcK7Z04Rp7GPTibTKWjXNMFsqZJh8l4dpzxGitTMWiOtVgyBRkxTccgS/8i2X7Uq+vi4Iy5GIgXCqjj73OK0NRN4i1Hegcgbl7yUnBkhXQ3xqHE/8d7/08vj0ntBW3uKjOULWCSUgZSyiq4DDOb0oVXbJ/bSJ763/aW6nA1SpHTUlcknf1/7JccR90q0AWhS9lUJiH45vwAgOQmzpx9T3egu6nXHoj
- iwP50No9
- kSPdvxqYbzi6qTsEi75g29RUSSDRWlddG0KM4e2vl9p12EFLn+s8O5tdMsMsgkPVUo4Wl3KuyXJjkehAm34QGLl/fzU7/npxb81uHrFdxqBrT6Cd8GrW1y8MTiDeftbbyRZcspoBzaMO+Zm0eaA94taR2CUhPOQpxlmqaUraNqqgtk1afjt6Vyyjg7cFfAH8bU8GYlRpvTn2QL5HbdtG8ffoWjmXye0Eyh/FwN236H8VBzXCbl13DVgdevNH+O+6jh2nCi/aqo5DiShPLH5sWLe2mrjoZQq2HewHcCo2JcHuOYvOvlWLVm6XBMVMd8cgMiUI+cRtrWO5o3TOgzlmXEpfas4pDOt8ReJhY
+X-Rspamd-Queue-Id: EED1240006
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768120077-132759
+X-HE-Meta: U2FsdGVkX18Wl99x9k4w1Ld7opDg85Jf2/mqBenFqIwW1PYlftj41Lfor+qVsggSc0mR26grlmnxXhQSU7Z3oHmPeCxpnNJPwUV83fLY0NWlCVtheb9XM1uPxgqIzgjP2KnJlwR5MsQA52PUyXyYvrmpZh9dzBRQXRePFYwMkBRuirbU62qBXMn0UHgsvshO4uy27bd6Vf4vSmknd0y8MQoEbgm/PHv8lc+EYn/7kfGztkh8Usjpb8n92+594Cv/1nQv6JT9KUH15bqSn6k0BMAdOuiauEpxAhhBSXCUfIqdXqfvOINN3zLFPbAcWpsIHtxCYTDabzQKwmKUzdM/YqBeA/9wotfo5svrqFZCH1gusp4nadSlDC45F9HV/Cx095FiaIpV2XI/AOJOBGbfvufjhofM1X3Cp2y86fzkcrXs0K83K2OPeZKD1n1VwsRBcfMzBwtPIwlan1KjMRw5/Q1ZeuS3ApG94Wphcj8QfAUKBnSvTazKfTscRm+aI9gxIEgp08yeg8tRzMotnq+cskF15+zVwvAHgvGsJTcNSMw9CHF3r92krd65CHzvJ1TjGq3G1FxVi5uga+r5tB0203xOX7fMHvhmTqd3sL/qvdoiVrtg0tRfm+dQ6w+/zF2D+yT6dbeS07ipz+RVFyJTICYn+YLTU8m1vOLsQKTMaOMObEaBLMZRi6P9PQSkZ1I0uiO9e+g9dJotRstWc4+Or3s7l2D+cOHSy2H/3Y3lgOOZrrTW9g+Uw6Y5FqK04kFp+gKwT8DahMWgrJnV0FuHOampT19R3GbahrYbTZGcp1jZoYjDk3MXEqw3jxIGHy7nHivp6zFHIR583Xz5lzXuyhHsb4eRbPGH1rRMc9lwlaFckbgJ3VKCQAIXqQs1hzX9BsBo+RDdSBumkjg5dJBEkBXreYuOW1tLXDYbcpdRJ2sX+swM/OHYO+69t1cUpkauhyQophGv/ny2dNBDx+x
+ Om9RlLgd
+ Kkj/64AjNi8kuT7nSD6AI6laqjidOGkSmVVesBhsYGWzvm4CMHRKdLLppnxNHgXYdsDih2zbt3HEN7HKXEJN8j+iFIVuQhmMDS9IosvoyXRgS9yBw3r1ZbdOQ7oqduhdL89d4IomEp4gtHdhTu9By7RGKwweSnNz9/UclsjbCiEAihockvN7YQy24j4bC/bkEZPw7HxujKeplMzMfH2c37XT/nIKhNB5PnNHLYAEjhzYE89A+wqwMCi6K4sr01yaLQJMvMdPYveF/NK6ZAt/6YL7HaLdFG0pMPTdHqagwtED76PnAFqYrZIl+DyoLOAG8swsa3RkeWgxyk8ehCILyxJKh+b19rXzrTwNA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,113 +157,33 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-All three variants of paging_init() on MIPS are wrappers for
-pagetable_init().
+Commit 665eaf313314 ("x86/setup: call hugetlb_bootmem_alloc early")
+added an early call to hugetlb_bootmem_alloc() to setup_arch() to allow
+HVO style pre-initialization of vmemmap on x86.
 
-Instead of having three identical wrappers, call pagetable_init() directly
-from setup_arch() and remove the unnecessary paging_init() functions.
+With the ordering of hugetlb reservation vs memory map initialization
+sorted out in core MM this no longer needs to be an architecture specific
+quirk.
+
+Drop the call to hugetlb_bootmem_alloc() from x86::setup_arch().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/mips/include/asm/pgalloc.h  | 2 --
- arch/mips/include/asm/pgtable.h  | 2 +-
- arch/mips/kernel/setup.c         | 4 ++--
- arch/mips/loongson64/numa.c      | 5 -----
- arch/mips/mm/init.c              | 5 -----
- arch/mips/sgi-ip27/ip27-memory.c | 5 -----
- 6 files changed, 3 insertions(+), 20 deletions(-)
+ arch/x86/kernel/setup.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/pgalloc.h b/arch/mips/include/asm/pgalloc.h
-index 7a04381efa0b..6efd4a58bf10 100644
---- a/arch/mips/include/asm/pgalloc.h
-+++ b/arch/mips/include/asm/pgalloc.h
-@@ -101,6 +101,4 @@ static inline void p4d_populate(struct mm_struct *mm, p4d_t *p4d, pud_t *pud)
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 1b2edd07a3e1..e2318fa9b1bb 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1191,7 +1191,6 @@ void __init setup_arch(char **cmdline_p)
  
- #endif /* __PAGETABLE_PUD_FOLDED */
+ 	if (boot_cpu_has(X86_FEATURE_GBPAGES)) {
+ 		hugetlb_cma_reserve(PUD_SHIFT - PAGE_SHIFT);
+-		hugetlb_bootmem_alloc();
+ 	}
  
--extern void pagetable_init(void);
--
- #endif /* _ASM_PGALLOC_H */
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index 9c06a612d33a..fa7b935f947c 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -56,7 +56,7 @@ extern unsigned long zero_page_mask;
- 	(virt_to_page((void *)(empty_zero_page + (((unsigned long)(vaddr)) & zero_page_mask))))
- #define __HAVE_COLOR_ZERO_PAGE
- 
--extern void paging_init(void);
-+extern void pagetable_init(void);
- 
- /*
-  * Conversion functions: convert a page and protection to a page entry,
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index d36d89d01fa4..7622aad0f0b3 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -614,7 +614,7 @@ static void __init bootcmdline_init(void)
-  * kernel but generic memory management system is still entirely uninitialized.
-  *
-  *  o bootmem_init()
-- *  o paging_init()
-+ *  o pagetable_init()
-  *  o dma_contiguous_reserve()
-  *
-  * At this stage the bootmem allocator is ready to use.
-@@ -778,7 +778,7 @@ void __init setup_arch(char **cmdline_p)
- 	prefill_possible_map();
- 
- 	cpu_cache_init();
--	paging_init();
-+	pagetable_init();
- 
- 	memblock_dump_all();
- 
-diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
-index 2cd95020df08..16ffb32cca50 100644
---- a/arch/mips/loongson64/numa.c
-+++ b/arch/mips/loongson64/numa.c
-@@ -160,11 +160,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
- 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
- }
- 
--void __init paging_init(void)
--{
--	pagetable_init();
--}
--
- /* All PCI device belongs to logical Node-0 */
- int pcibus_to_node(struct pci_bus *bus)
- {
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index c479c42141c3..cd04200d0573 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -415,11 +415,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
- #endif
- }
- 
--void __init paging_init(void)
--{
--	pagetable_init();
--}
--
- #ifdef CONFIG_64BIT
- static struct kcore_list kcore_kseg0;
- #endif
-diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-index 082651facf4f..4317f5ae1fd1 100644
---- a/arch/mips/sgi-ip27/ip27-memory.c
-+++ b/arch/mips/sgi-ip27/ip27-memory.c
-@@ -410,8 +410,3 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
- {
- 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
- }
--
--void __init paging_init(void)
--{
--	pagetable_init();
--}
+ 	/*
 -- 
 2.51.0
 
