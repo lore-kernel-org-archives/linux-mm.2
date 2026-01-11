@@ -4,85 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A93DD25028
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 00:37:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC22BD2502D
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 02:12:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA6956B008A; Sat, 10 Jan 2026 19:37:08 -0500 (EST)
+	id B1D476B00A2; Sat, 10 Jan 2026 21:12:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B546F6B00A0; Sat, 10 Jan 2026 19:37:08 -0500 (EST)
+	id ACAD36B00A3; Sat, 10 Jan 2026 21:12:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A55D76B00A1; Sat, 10 Jan 2026 19:37:08 -0500 (EST)
+	id 9D6B86B00A4; Sat, 10 Jan 2026 21:12:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F1C96B008A
-	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 19:37:08 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 40ABE140317
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 00:37:08 +0000 (UTC)
-X-FDA: 84317818536.13.967D125
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A6983180004
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 00:37:06 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VkHIdnuq;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D38C6B00A2
+	for <linux-mm@kvack.org>; Sat, 10 Jan 2026 21:12:55 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2DABFD047D
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 02:12:55 +0000 (UTC)
+X-FDA: 84318059910.19.F24F86F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6537B40002
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 02:12:53 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0KUqpSQx;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768097573; a=rsa-sha256;
+	cv=none;
+	b=8BsZagEeWpSF40X1HSBA2uFEd64/+ptVAx7DGnxVx+Ot/1SFL+Ez4YsOH3kbrzd6QOKyJP
+	Dzgk7Bjs8Y5iyWSKmjj2q50eS+boiCHgc+DqUq+vfB2lKNYCm2RIw2sGeKujzCygwvNtv0
+	Smd69csNTsO4QY0o6z6CF69+XR+rNJo=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0KUqpSQx;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768091826;
+	s=arc-20220608; t=1768097573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ed77fT0jWqn7aNCaUtA/CjbWE3seiVpdrCE+vdQ4nG0=;
-	b=W6JTS6c4rPnS2mkdbdvdtuRaL0PBjyRTKp1KpvAzTDODMvLQyQJpxWwMpk7HoZKUlo9VS/
-	lQMwJYq6TUQA63adW92bUBj2ieeEnQqeWmOUNTWfg88BcUT3P+RWRd4RJTpLMp+/dFf+hk
-	j/1X3Q3vRLi/FK4r/0KEKzKvV9qycpI=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VkHIdnuq;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768091826; a=rsa-sha256;
-	cv=none;
-	b=4JB2t5poRUUEF+VDxxJaBIZR6+tbgkpcqHWMrCmwM5CAvEHsXXFU/gdrrXqshfx8jV0lE2
-	QHzaQRmcgPgBSDRTNjYH3XrIZvqR1msiiyMQ8JYvJlnlapFgovIGrvsa0lxRG3tXroFe0x
-	fqj6ZT30JC6vNdTmSvpjKKD+5nbfqZ4=
+	bh=QnXP43oXXFqD1GG5k6na1+iwsgZMmPqpzUjUDVCVa6w=;
+	b=HFHu/MNcDYbRBTcs7EvIJsydEoUfubiTvMlFSTuPMqKGc0rulddalyoybaWKlawMJvS9AJ
+	Lkcf4x/lgqMRa85Mo0LkiUW5Ayq4z1k05RLQtAr1eHmOhspWhfgOZWt1GvC1x8ikpKw2Fg
+	rjrU3/V+h75H/t+JbcA2YxKsAiYw/Gw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F011360010;
-	Sun, 11 Jan 2026 00:37:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166B3C4CEF1;
-	Sun, 11 Jan 2026 00:37:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3B4C6440A2;
+	Sun, 11 Jan 2026 02:12:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99609C116C6;
+	Sun, 11 Jan 2026 02:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768091825;
-	bh=RP/QQUt3xOSF4p4BUNnPlwK6BDXZRjUEGy8pztaa+OM=;
+	s=korg; t=1768097572;
+	bh=lKv7dTKmsmPzbUbXlyvG4jikBT3XnIDEBzDSFJ5GSOw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VkHIdnuqbLB+mjbkjrPTaSTMAZDlBdV8QV5FamIkRBGy5iTcGOjTs6O+y5OxQne4v
-	 dFr/obRcQ3BwaD8droZfw9DOzQUXclknXRiRFod0uOAlam2QhHqZw4QK5s/2DiyA+M
-	 4V5MEJOh7e7MJXYxNQkxgVCRAUX+tA4a3EXdluuo=
-Date: Sat, 10 Jan 2026 16:37:04 -0800
+	b=0KUqpSQxHtzpnLJPWAGB+So7Bw/iZVr7fy5J0ZRU0Cyo1jdy+nEC3toM6g64FvHk4
+	 VDgF3d7447QzWOBU3g5WmLRsZmGXB8TvEYlEjYuekV/uq8TpCdnEzQ7GOqNhLStwCN
+	 wEnUb52wC8HgIZgDz0V/JA5SkIkptBkWXfOMTHns=
+Date: Sat, 10 Jan 2026 18:12:50 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Sun Jian <sun.jian.kdev@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, SeongJae Park
- <sj@kernel.org>
-Subject: Re: [PATCH] selftests/mm: ksm_tests: skip when not run as root
-Message-Id: <20260110163704.7b5e1e10735113baa23f42ef@linux-foundation.org>
-In-Reply-To: <20260109094313.52307-1-sun.jian.kdev@gmail.com>
-References: <20260109094313.52307-1-sun.jian.kdev@gmail.com>
+To: ranxiaokai627@163.com
+Cc: surenb@google.com, vbabka@suse.cz, kent.overstreet@linux.dev,
+ david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, mhocko@suse.com, corbet@lwn.net, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ran.xiaokai@zte.com.cn
+Subject: Re: [PATCH] alloc_tag: remove sysctl prefix from mem_profiling boot
+ parameter
+Message-Id: <20260110181250.429195a2afa08ed61b5bbb4f@linux-foundation.org>
+In-Reply-To: <20260109062419.157284-1-ranxiaokai627@163.com>
+References: <20260109062419.157284-1-ranxiaokai627@163.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7utoj7poqe7xkkswa54djgj9ndjdahi7
-X-Rspamd-Queue-Id: A6983180004
+X-Rspamd-Queue-Id: 6537B40002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ezr7zgb64mahg7cyknawzqcjzzaewfum
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768091826-27730
-X-HE-Meta: U2FsdGVkX1/lLbVrOgmYUwj2inAapFjIbSU+K+WKe082WiMgi7EsSB61Dfc4zeWrj+9bosVdNTm5X9wx/5X4jGdkuwNJV7W0B+U9RUUz5cmw1kRHOyrJYvdi1qRfBuB+i6mBRvxeTk1pZ/CMeEZ2LkfXd5w9eiEwGuy4h9cr4lFuyQbFVjNzX6/ka8tJlEQJqxzidasQ7KToOiQuHE0ft8d7ECE8U/pEPmngQb3Sz70WBmrhMqYuJSnoQvs2X6Av5XjYq6j7SStifwvoPm45s1qeQeJWs6Wf61insd2o5dkRDMsjMgqw1+az3IsgbbqpYmyig80c06FRhI7Y2VRmWCGFNMngHXv062U8gN1sg0fYTyXhfsLqu5Q7X9C4QJI4sCIKpWdtnmHKyMA7rHX0Bld3btmSw+6aOU0vLQSPLNkIc7DiBOELH/dhFC0woPXJP5C7iaHOqxeq82iSGkKRKo3QkpalBzVDZQw48anmf4iWdYtBc/C3QdI2YvnO907nj1kDSTJJujXcIzlBKy1xbiuQtImx45rafs3IGpKjc8J1gh3tp78ACUuM01iPAlTiOvZHZGHHPD9X/pR2Rq4/DCfd2jdaQ+cR5/Iw4kqYjkLN79hsDDwgUuUXd/th6A0ojaF+lN2Hw943aqQnT5yHko5ZHRBYZ77/OiUq391GKruXYGyrhnOmXKvDeZBRozx3Bnwq3HwNTmoHQ4Im0OcYErjX9rCf+10BFoAYIpTU/jn6I83HfIcCtF38Y9teNCnRNpiGN45VlGSPZKy+7HJtEFKPxiLKWe/qe7ILvSyVDF1+QhkYQhLgDahhy6ieQB7o5z8Cg559Br3Cx7rBUlXx30pgw05WegE/pxUB17xbmZD7DQkHO1N/J8zOn8t1vI/+Y0KNgLS8hx8oNNfCpTgDfVzljDHipEm8bEjGXfNQFHzrT84DOXqWq3CG486TC4jh0z5dDig4Q3ZmZ4x768j
- sQwYmwqP
- mNw6WgcpUr/CSrwIRLGuHyOfmcxVj1d9iBVqhLgHcCu+JqIMMaheyKDAGQw4Go5r15lTW1FtiyLvzxz08x8GOr8x1K7DeNIhG8sH1E/ARG9iRRmHQ0mTXrejdFx+jRbAAoWX4E1gTHwZYdl2AYDil+kT5TUWABm9AIOM5yiLuvX8MFByqNuXj1HkBd/F07WPNkL+O41nMJzZXh/1CndDEetV4tkZLDoVmSxfn5vc5uE05mYpuFgPJWD7rej5VJ09jpfGgvKWU0wiw6UdkzJoLkknsB+2LMMB0WOCbtcRWd28rulukxApifdf212zuQGsoZ66hJHY/sMzdWj57kC7UPwN5ItBi5Ik8WViN
+X-HE-Tag: 1768097573-996013
+X-HE-Meta: U2FsdGVkX1/UXcqMF9yhBxBK/3nkfQbrwbLj3EkmoJPraooH0CMvMIxcBWvltbUvPD5NrRHr0n4r0i32R4RYHCP9pC2KLJB9/S0oH9RgFFXoA6g2mkpY+btUQsMuSAxHIbPY9wlEc0QcC0vdBXbREfDok3K+W2yIl9MAgdEDysej0gK8fkm/e75ejYlf12zaHnwUHj6fvUfqPsmcaxcF/toGhIwIgi4mIEFCHrUGQI369NiSAU267iX0xkwhO1b2jRrM/yS31TLTMh+5iXwSTpmH84PEu7KGsszSNTnn5d7oBgves1Ob/mw3lX9AFri8tdBzlJne6COJHPef+Y7cULhP/yKylexnWx3uYo97Vt9ytFLrL8f5jhR20/LKqdco042Mpw9bFm2AyYLVn4rhZbWhfIPwctqQiWARE9NbXepBQNmM3c3GuK5cR2b4oFbcoK43glMTc/ayjtpYhSfJ6mm0iOH5U2gLGC9Dd2Fm9+tdvNDp3scMJIHs61t/Gaiga9qzxvY0GeMsHSpoPokmwnMCXAHKR7j7Bu1/7AdVf6zyacKP1R2thcXa7CLil4i6vcUfy27v6XXy23RuTKy4vocO9aEL75EDMmEVApuCJolDtyyoLXVjXiwOEr0BhZikhFkW+31lKZI0x929IuBNyrZLEydHY5pjIyxsnH9B1en37vJo3Ugyn66K+jk23hPQCY+6w6wiUP44bbBU4BFzjnK9daDXvkCX/BV8t3znsAbx5ihK2HiOTnVK2o/Lwo5Egr2O2eLOCXmYy7yUWiHnev7qA54updwXva0ySUnJzRPDtnzLqJbFxJ001W7XVUVa2LcyHCZ0SF7UD5SiPOqMOyXXboQZtZMUqB27TUh0NBGBx1/2gbI1fIIqrhq1UtDfFBu0eiazrVdtjzTwgP+GZG3mEKtjp4UFMHvFYyQyzMwRBuTZzaqGLG2HnrcC49jU0e2TkCNX/c8ZSHCXNgH
+ XttIoIPp
+ P8bcGnHQQXZVxfE6IP9RfJXEZwFjPl/1oUCM5grp3lY5XEeMuvp4CLqzIxy5uH89lEnzbUYpljtdRkBaeTzDBO416rixemFdlnw7n1AKSnq9NbGjhQO47cMjKG0mUOUhUeHSB5YxLZEIjZEvwDOkw8l47kEcQLI0Mh+bXeY2KNkYuxlMIv6cubEK6xn2Izm4pIHH6ptMgZHf21xknUquJ45fOC4TjfbbLI4dISEddpTYX6PU28QPD4El6HjMCtFwiDn75w2zUouWiLp2v+Xsr1KqVM9NODemx+w1xSQ1bMXPit6oDb+L1r30XEDSqGT8sjzN3LzxfEgM5I+Bs6Ohb9rG0JqRIocbNyQznTh/uShOATqxx4u4Pe3JUUeDqTFBlQ9U4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,32 +94,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  9 Jan 2026 17:43:13 +0800 Sun Jian <sun.jian.kdev@gmail.com> wrote:
+On Fri,  9 Jan 2026 06:24:19 +0000 ranxiaokai627@163.com wrote:
 
-> ksm_tests writes KSM sysfs knobs under /sys/kernel/mm/ksm, which requires
-> root privileges. When run unprivileged, it fails with permission errors
-> and reports FAIL, which is misleading.
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 > 
-> Skip the test early when not run as root to avoid false failures.
+> Boot parameters prefixed with "sysctl." are processed separately
+> during the final stage of system initialization via kernel_init()->
+> do_sysctl_args(). Since mem_profiling support should be parsed
+> in early boot stage, it is unsuitable for centralized handling
+> in do_sysctl_args().
+> Also, when CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled,
+> the sysctl.vm.mem_profiling entry is not writable and will cause
+> a warning. To prevent duplicate processing of sysctl.vm.mem_profiling,
+> rename the boot parameter to "mem_profiling".
 
-Thanks.
+Isn't this a backwardly-incompatible change?  What happens to existing
+steups which are using sysctl.vm.mem_profiling=?
 
-When reissuing a patch it's nice to cc those individuals who commented
-on previous versions.
-
-> --- a/tools/testing/selftests/mm/ksm_tests.c
-> +++ b/tools/testing/selftests/mm/ksm_tests.c
-> @@ -766,6 +766,11 @@ int main(int argc, char *argv[])
->  	bool merge_across_nodes = KSM_MERGE_ACROSS_NODES_DEFAULT;
->  	long size_MB = 0;
->  
-> +	if (geteuid() != 0) {
-> +		printf("# SKIP ksm_tests requires root privileges\n");
-> +		return KSFT_SKIP;
-> +	}
-> +
-
-lgtm.  selftests/ code performs this test in about 20 places already,
-all different.  In the interests of consistency and code cleanliness,
-perhaps some kind person will centralize this check in some fashion!
 
