@@ -4,129 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82C2BD2502E
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 07:45:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8ED6D2502E
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 08:21:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D180A6B008A; Sun, 11 Jan 2026 02:45:23 -0500 (EST)
+	id 188456B0088; Sun, 11 Jan 2026 03:21:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC6156B008C; Sun, 11 Jan 2026 02:45:23 -0500 (EST)
+	id 135FD6B0089; Sun, 11 Jan 2026 03:21:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC4A96B0092; Sun, 11 Jan 2026 02:45:23 -0500 (EST)
+	id 00DA26B008A; Sun, 11 Jan 2026 03:21:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AA6676B008A
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 02:45:23 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F7161B589
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 07:45:23 +0000 (UTC)
-X-FDA: 84318897726.21.FC04A00
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 624B9C0002
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 07:45:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iPFbCbDg;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768117521; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E1D1D6B0088
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 03:21:27 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 025E1C1B3F
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 08:21:26 +0000 (UTC)
+X-FDA: 84318988614.23.40317E5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5F00740003
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 08:21:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fqKHBj52;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768119685; a=rsa-sha256;
 	cv=none;
-	b=N3bD+YrA3Mr1X/BuF9jrk2xJVGz9b18E9PcVlbOTa/I8pe2SkucV+BAWIqP87jStqU9815
-	rpECpvu6L03JrJFIkeMEdG5asyem/Pnl4xr1iLBiKIU0Jrnhz5WsfxVldd8hzwxLXwCrgG
-	5q5syQeAfQ1KXiJ9aFWaD8LdC6thSKA=
+	b=L889bymz+4J3izSSobknAwxEDQ+AStCRGjUyqREgXh8cBEDifxpzPVwT4TolCdrEgEtfmP
+	T7pi8BSCl6U+SJzkuubk09n/PMhVfhRtP49AYbFBiltdfGtrywD21/0SmQkpIKGNSuKbG4
+	VVMYqkLEUEHBdyhzrq54t3zT1mhmqUg=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iPFbCbDg;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fqKHBj52;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768117521;
+	s=arc-20220608; t=1768119685;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3W1VRgdJWZtP/35+X4BFxHc1/Q/0kqoYu2dyr3n8ICY=;
-	b=R3hLK3wLsRGq1qVs4JcPlyHMNVkab8Ga7ZzYS1SFkMY1SMTmAQF4TViXgPd4i/2SSukmnM
-	z5cGP65T1EABrM6zoB9HLJ7nBHDeol4lAOV73i69ZYD6NadiQ/VIftBP5TF8G/h6spUaPZ
-	0yR3ByCReIzXG1BSIYTdSeVE+ubHfkg=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a09a3bd9c5so37915515ad.3
-        for <linux-mm@kvack.org>; Sat, 10 Jan 2026 23:45:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768117520; x=1768722320; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3W1VRgdJWZtP/35+X4BFxHc1/Q/0kqoYu2dyr3n8ICY=;
-        b=iPFbCbDg+mWUK+HcPTTfhfHjXqByA+3V8y1qUWfeZpTbaDnD36lNIkG80cY84Tt13c
-         SKdXJ3nCPYthlIOAL6G6z0iI0Uu9WwlA7pmqgWjX7CoV6hMt63h8t4ya77M7NaAZAwTS
-         qnid6tHViAZAHdslFkRV/kaPCqdaJxx6UKKV5PNLEoQt+lvGZHlrRR2f8W5a8nobW2Hq
-         S/EWb/kTPrhDseMpo7v9q+V9tzKW+nxhukhxKyUpQf2JjVfMHIYKeenjx80sctd9g2aQ
-         eO+metx6or2P5AGOpt82c8W3VFaKgS7uK8lKUXErRPigYnmwiawSrd0DMG0j4yt2HXc5
-         hSzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768117520; x=1768722320;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3W1VRgdJWZtP/35+X4BFxHc1/Q/0kqoYu2dyr3n8ICY=;
-        b=sbeQjg4M2/2P3PVxDcNPFuZLeaf76+qkQErHGlpWOJ4KegRSdgsVVA9N+x7t4QUOL9
-         EBPW9yRgl/X+X39ivAEqkuuhQ7RhPFupEZV248O8gVWMCqxzgpENCIMFdDK/pkcKxcIW
-         999pPaK9qCgEEAOK58b5+RV3Po4iAZEEu/iDsUDjDGdpSesCemIpFnB7nUPVitLCO1Nm
-         jviXfymvS1QQ9MH0Pw7KVT6G11Kl8c0ZN7UGhv5mv1F6EiQ3zgPvRLpyL6j5LOZ+Y7I9
-         V0RfT3nc30JWoyPtPuXcBpehSaM2N5ebghQ2WlOVVwJhLptOV9hrRxj3yTFcb5XXS8bj
-         +ZOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWF1EZIiLH+lv/NESXTtAAmL5VXsP+HSL7j0uu4ZSQva7NmdRuSBiqDiXo5eDWYzJ7GlzdGZdWFgw==@kvack.org
-X-Gm-Message-State: AOJu0YwCp81v6Jzc2Jcyh6Dv+/Kl3UKID5Yyi09RfrxchGLqMZBIFY1H
-	mHOfuNqab/SEGz6dBXPx+Y470R2CUJn90TbpQhcWmArx+yd5UUK+xca9
-X-Gm-Gg: AY/fxX7XsOkhViIa7xcVXKHpkbkBiBwrHCaePyiaqK5Z6teVR/SiT+1uRKDL4wkqhxf
-	Ih582xCgU1Uqkup+RDQ6AEYWagIX3vYS1F79S1LYqYlb/NXez3IS2m1sU4yQhwQ/lm6v+vi0OIv
-	3Jzcjkct4VqlAQYh8HSDxq5gTHJX3kQKXza5ULHNRD5MkIPopBzt+RMh02RlDMkIOMpyk7N3g3/
-	G6j1ULvaLTHZTR2EhlNEG4S5SPV2HWIJi2OJxV+pBjQUbaRV7M/xFLZ0e/IAaOsBwC4TT/0tzhV
-	pHQyxF4W0PGCdXpUPfz5XyPItSCzfmIvS5NRt8GPUNbddeNq46mQZlB70tbKMNE3upglCvE/XiS
-	yEEPWsIxxIb2aqpGUnGClynp5Xioje4tse74MjdfXN1ShwMf6BUqCQTJ4W+Rp8ljf6TJ86WNXfA
-	HdbuyQ8IGVCcPtqot+Y/5I9RoQBcFEow7FesILGaal
-X-Google-Smtp-Source: AGHT+IFOxUt1YWvqb3kir1Ky7DSpkYbp7DHua/UbMFooiLjcrZeFDAph0g0fbWDK+tgumDDxk8azBQ==
-X-Received: by 2002:a17:903:2348:b0:2a0:d431:930 with SMTP id d9443c01a7336-2a3ee4b244dmr150938675ad.47.1768117520166;
-        Sat, 10 Jan 2026 23:45:20 -0800 (PST)
-Received: from localhost.localdomain ([113.218.252.40])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cb2f8asm145284015ad.57.2026.01.10.23.45.13
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 10 Jan 2026 23:45:19 -0800 (PST)
-From: chengkaitao <pilgrimtao@gmail.com>
-To: davem@davemloft.net,
-	andreas@gaisler.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com
-Cc: kevin.brodsky@arm.com,
-	dave.hansen@linux.intel.com,
-	ziy@nvidia.com,
-	chengkaitao@kylinos.cn,
-	willy@infradead.org,
-	zhengqi.arch@bytedance.com,
-	sparclinux@vger.kernel.org,
+	 in-reply-to:references:dkim-signature;
+	bh=sNY1u8U36qiG0h+Ok0Z0ctU2PTuG5/hsQY7jBFGhezQ=;
+	b=Mwvalg4lXW8iRchk1gY6348HFeMJdy6li5GeJ14+pRSPCGYhzHS2pmV0MkTNa6JYEg4tpW
+	sgt0PM/1uC9gKiQ7xUm89mQPVm/PJ1w6ZS9a7nH8XzUUQ9hDKK3oDGz9KDR/OG+rSpZXZj
+	XusbWGTOiCsxEfsS+Gx1l84c/kj2kGM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E369543F6E;
+	Sun, 11 Jan 2026 08:21:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1837CC4CEF7;
+	Sun, 11 Jan 2026 08:21:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768119683;
+	bh=15VB+6hE09IpORerfJ9cs3QzayYtdIP5ByWTlGt3qZ0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=fqKHBj520f2MDgk71DmE5pqtB/pBMemGe6ljrad1JZT4TjuKzKTHs3xUpJ0K4Tlv7
+	 kS7/A7Qj7f6FHcIqZOCnTKWbxC4liAYLtpcFU2lTPOu6nAiYlDoYoUkFsbagYk4hjx
+	 /oeAeIyD4g/6QlmHRXuiPhGuV0z/TfFiVYiZjEtj2+8KVb2ZpA5QnWSqMsk5vvuf9z
+	 2zZGEX+f1wmTWFlirbnVw4Z57ZhFPuOpza3yBonfV6hLgXOimHNXs2/zTsLzh0SIA+
+	 XoqGttk/l45ZEV1dW3wg6KCyo98ksi4A7G6uUd+LsrXwkQfZV/ycd0xkOa/n8lvRu2
+	 u3qAfKtz7b0cw==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Shi <alexs@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Klara Modin <klarasmodin@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>,
+	Michal Simek <monstr@monstr.eu>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Stafford Horne <shorne@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vineet Gupta <vgupta@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Will Deacon <will@kernel.org>,
+	x86@kernel.org,
+	linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v5 2/2] mm: Convert vmemmap_p?d_populate() to static functions
-Date: Sun, 11 Jan 2026 15:44:53 +0800
-Message-ID: <20260111074453.66728-3-pilgrimtao@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260111074453.66728-1-pilgrimtao@gmail.com>
-References: <20260111074453.66728-1-pilgrimtao@gmail.com>
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org
+Subject: [PATCH v3 00/29] arch, mm: consolidate hugetlb early reservation
+Date: Sun, 11 Jan 2026 10:20:34 +0200
+Message-ID: <20260111082105.290734-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: j1s8z9zxbf96yd4k8o83bayh4jrjp6ap
+X-Stat-Signature: idpznx6o6h3zpraxfbkc8fmnd51ct4xz
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 624B9C0002
-X-HE-Tag: 1768117521-284600
-X-HE-Meta: U2FsdGVkX18uq/zH6Q1QiS7Fslv8616XLELSOjVvZaPsfp9247HZVjATj4+HOMJ6PCl02+HEMTJqpAmqKSkoxraRSKIPD3XMfsvt4mIAIGAOKaY4VRAxVjynxkSMqLZF3em3BUzr39sPyO3YRZ56FPnOdTxqMMSSIEUNiIe2Cm1SWrx7rZ5+L2WdknGNb6SJu4thwVCsj6/W/efuyd5u8iemNnzuUZZ8anOQROsLvpBukt+XQMIivxe9WcqRYIlnf/fpqoLTXbv/X+QOudOTunFLy1Zw6g2+BrkMhsawabAQPHnaW05qWRWFS6yV9jn5biLdPmVjlDRQIS15csyMSKnvjm5acGziAmjR3svGVBv16tzDaQrbcoGzY9ib9QDJDXoLdwFMrbJU6o3DWlQ3+wHaq363Rq3V3qlPNdobN8eFHYhps1/LvKxZVGK0zpJT2C/N3GP1iFZwF42uJglnI1kpldNG4qzrHElo8vykhsG2sNFvQQfp7Xy31jPvZFodR67Ww3sQ3x6ypOtPS2NmdKIxnmU1R7HcHomFLqpDuiLsLCZqwp2pbMaJy/01QO/hi+AvvzZkPczGT7ZrPj2yc5l+jb3+M/5TtQbw4mEVDT+ogUEzer+8kzdwsJR+YX+ivBFFhmhH6HQSHaByr2wk8R58wniolw97hsiDXJtJuAPlVUof/v2nyb2kaT1UUaltkzc4lqR6wFCQ1yecVitG+PC5QchxBR6Vd2dk8HRbbC8NBM2K/K0h2i3ujawSS0VddKdXFbN5F2d2HIT9krpRQF0NGFHbndk17uH0SS+ulMEhZP8wXnwvExjbuxqPuN4Uv1UM/k0lk4MgJcGE30r7NlJBfXzGyt1tPyQHqwwl9sbDQ6FhDYRjxHsWhJeB+NDe7nmuk6xH4dASLtuJ5/t9g3/PC1pFHP7VTZTm9uzRWX87R6XRkakyafieFYm6S53cStcS5p33p7WMc+TluBm
- nmEtrhJs
- V5mKA//XgNL9UVzDta7gGsXy1vceeHqV1zPb+cfifK8ZDtJWIIQ4pAT0028Q0QUws4zpKvSejLC+G4wzIZ102YhtLCCCr51j4IHI74h6LADbEfsz0HPZZi6wOuQxmsETfQAUy3bmgD0plwv6OqnHoSRswvoCaIAs/DHJzrKbOhc0TXWVsHrTHgQE5RYXaTx7f26Dm9R8Po6Lxy0DRUx3ohn1BUmydGOBPYitCB/0EqgTVKQVB1X0Itk836+BNxcjywTbHpjxT2jlxF5d7whvl0jsQTTfVi58Q4HWeAl1bKsPXtmKhAk5/rhELQIbDPFGCVCevHrI2gsB86zwuni/PW+04cYDmn1XGXe2rzOAFO94PBrfcI065GHYnvGEoiBlyVhjKkF0UaDe6yNw2uvjkN8D7CcDxAIprffta3WDJR9hsA1Qbb+XhORqTQHKsef1tgGtVRyYIBmqm2d4PRSimntCkIRdMBKWLsrBLoOs50IUmAPbOIh2s/l1ddhY7+Hzc/TUqEqT2pEsMFL4U+m435MHKPOpa6CRDdBGoWSHpG3DCDew=
+X-Rspamd-Queue-Id: 5F00740003
+X-HE-Tag: 1768119685-426852
+X-HE-Meta: U2FsdGVkX1/otHWI+QoZvVpOxoEDoRQjBdD3P6IeBWXai1wf27A7Se1+c0LXMqZjHzM01WpdAkR1cMb35dpuc6zijtAOBxfimHOJ8YkL1PfX3Pk/g2BFZi+ZE+XaGy6OzfEV1AXr0zyKolMbfxhPyei7PXfBlkBmjDwJHA1sLVS3zPOqMNIGWiYhZZEZKSKZdpY6FaA94XO+t0AlOvhL9wbl706FyFYNcWRKm94/zLj/YYWq/giej5ozVik2f2VssXH5rQH2Y5aNb8+cyB3fth+UCLcxUqaFucMQRVw4kAHt1P20RyFfx/I8yvgehIt3u6qNfkIzJvMkvFs00KbSkehAj7z+HbDXUD87SNUK3vDLGebuACewV2R+qpAaS8NDvdMJS/4bFd0xpcNMV4J7I7p674GPWtk9kSVP3OsMI2DAq8YdvJ60/5gtf89eVqTkRcxkaMmy7z+US4I5PHTtRaDWRVWLyrQlyz2T//wSk15bzfhuyXLR1EeRHYPcNyng1lSu2CNIsc7N85ciPBN/+GG+ETZ/fj8svC+t52K1cv0yF/Q7RhWqyg1YCJUhyClxatTI3nPunAg1A3/CLN6OOVe6v/zn2IaS+XMMUzecEydhSj9xw34iTgbijppVjH1ejuKeF2Mklsxlfa2kr2KKAE6gXpDdhvQYFrMobDkUkCWmqp+8dqBQavJYoNYKdUJyXRBFISF2Zbm1G07/4NrF1ThWpGQPdcXf1M5I4y9wA9EH8QJReeIZQBL5AnQmyGhAu7GFmRLt6vqmH+u7sfq0qF/T6713h51wKA9k8PJaMSMrBV51kOnuMglg8glVhQ5PVncFu/+KuSaDTK4/om+j554MocDL/ecpq9gzr+QCqQEnkEmYMSEtOFCh+ic8Qlxz9DTHQw5zUjf7P7Llwu/8KR6LN+E1/OtCCDFOOpfNLMX2kBgycjcNKlLvrGIw5m7W2Ccq5pNSvyxzjH5Vbt4
+ Fa+wzNW3
+ SYRyi346YMLmNN6lIm5kSdPOOAMmFrrZfJhSoen/B5MafEfE4owfoVrtpWUMT3wwiA/MRk0J0sMvgqNn9bzwwQ9OVpi94bBNbFZamC0j4P3sZ5We4phGP4cqQlm3NM0hxxQ+ESkfNTVyHaKk0/enC08MLNU6EEzEdcfCJzqRawROyGamxwcnTHjmhDunOggX32+N8PIJANthYOksk7A6nAhZj/MVK7iig+9FnA99XUaDJg4rglAbNzJxvA+jdVN+YyBuWD3jH+3YG7t54p7xjQNrpKt77t2WHro9eXnr0PDsHEpCcc0lqCaXLtg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,87 +153,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Chengkaitao <chengkaitao@kylinos.cn>
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Since the vmemmap_p?d_populate functions are unused outside the mm
-subsystem, we can remove their external declarations and convert
-them to static functions.
+Hi,
 
-Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- include/linux/mm.h  |  7 -------
- mm/sparse-vmemmap.c | 10 +++++-----
- 2 files changed, 5 insertions(+), 12 deletions(-)
+Order in which early memory reservation for hugetlb happens depends on
+architecture, on configuration options and on command line parameters.
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 6f959d8ca4b4..322fe72b6ebd 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4234,13 +4234,6 @@ unsigned long section_map_size(void);
- struct page * __populate_section_memmap(unsigned long pfn,
- 		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
- 		struct dev_pagemap *pgmap);
--pgd_t *vmemmap_pgd_populate(unsigned long addr, int node);
--p4d_t *vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node);
--pud_t *vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node);
--pmd_t *vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node);
--pte_t *vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
--			    struct vmem_altmap *altmap, unsigned long ptpfn,
--			    unsigned long flags);
- void *vmemmap_alloc_block(unsigned long size, int node);
- struct vmem_altmap;
- void *vmemmap_alloc_block_buf(unsigned long size, int node,
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 37522d6cb398..67f9a08c2376 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -151,7 +151,7 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
- 			start, end - 1);
- }
- 
--pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
-+static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
- 				       struct vmem_altmap *altmap,
- 				       unsigned long ptpfn, unsigned long flags)
- {
-@@ -195,7 +195,7 @@ static void * __meminit vmemmap_alloc_block_zero(unsigned long size, int node)
- 	return p;
- }
- 
--pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
-+static pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
- {
- 	pmd_t *pmd = pmd_offset(pud, addr);
- 	if (pmd_none(*pmd)) {
-@@ -208,7 +208,7 @@ pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
- 	return pmd;
- }
- 
--pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
-+static pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
- {
- 	pud_t *pud = pud_offset(p4d, addr);
- 	if (pud_none(*pud)) {
-@@ -221,7 +221,7 @@ pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
- 	return pud;
- }
- 
--p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
-+static p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
- {
- 	p4d_t *p4d = p4d_offset(pgd, addr);
- 	if (p4d_none(*p4d)) {
-@@ -234,7 +234,7 @@ p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
- 	return p4d;
- }
- 
--pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
-+static pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
- {
- 	pgd_t *pgd = pgd_offset_k(addr);
- 	if (pgd_none(*pgd)) {
+Some architectures rely on the core MM to call hugetlb_bootmem_alloc()
+while others call it very early to allow pre-allocation of HVO-style
+vmemmap.
+
+When hugetlb_cma is supported by an architecture it is initialized during
+setup_arch() and then later hugetlb_init code needs to understand did it
+happen or not.
+
+To make everything consistent and unified, both reservation of hugetlb
+memory from bootmem and creation of CMA areas for hugetlb must be called
+from core MM initialization and it would have been a simple change.
+However, HVO-style pre-initialization ordering requirements slightly
+complicate things and for HVO pre-init to work sparse and memory map should
+be initialized after hugetlb reservations.
+
+This required pulling out the call to free_area_init() out of setup_arch()
+path and moving it MM initialization and this is what the first 23 patches
+do.
+
+These changes are deliberately split into per-arch patches that change how
+the zone limits are calculated for each architecture and the patches 22 and
+23 just remove the calls to free_area_init() and sprase_init() from arch/*.
+
+Patch 24 is a simple cleanup for MIPS.
+
+Patches 25 and 26 actually consolidate hugetlb reservations and patches 27
+and 28 perform some aftermath cleanups.
+
+I tried to trim the distribution list and although it's still quite long
+if you feel that someone was wrongly excluded please add them back.
+
+The changes also available in git:
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=hugetlb-init/v3
+
+v3 changes:
+* fix empty_zero_page initialization on arm
+* fix ZONE_DMA limit calculation on powerpc
+* add Acks
+
+v2: https://lore.kernel.org/all/20260102070005.65328-1-rppt@kernel.org
+* move the hugetlb and memory map initializaion to mm_core_init_early()
+* add Acks
+
+v1: https://lore.kernel.org/all/20251228124001.3624742-1-rppt@kernel.org
+
+
+Klara Modin (1):
+  arm: make initialization of zero page independent of the memory map
+
+Mike Rapoport (Microsoft) (28):
+  alpha: introduce arch_zone_limits_init()
+  arc: introduce arch_zone_limits_init()
+  arm: introduce arch_zone_limits_init()
+  arm64: introduce arch_zone_limits_init()
+  csky: introduce arch_zone_limits_init()
+  hexagon: introduce arch_zone_limits_init()
+  loongarch: introduce arch_zone_limits_init()
+  m68k: introduce arch_zone_limits_init()
+  microblaze: introduce arch_zone_limits_init()
+  mips: introduce arch_zone_limits_init()
+  nios2: introduce arch_zone_limits_init()
+  openrisc: introduce arch_zone_limits_init()
+  parisc: introduce arch_zone_limits_init()
+  powerpc: introduce arch_zone_limits_init()
+  riscv: introduce arch_zone_limits_init()
+  s390: introduce arch_zone_limits_init()
+  sh: introduce arch_zone_limits_init()
+  sparc: introduce arch_zone_limits_init()
+  um: introduce arch_zone_limits_init()
+  x86: introduce arch_zone_limits_init()
+  xtensa: introduce arch_zone_limits_init()
+  arch, mm: consolidate initialization of nodes, zones and memory map
+  arch, mm: consolidate initialization of SPARSE memory model
+  mips: drop paging_init()
+  x86: don't reserve hugetlb memory in setup_arch()
+  mm, arch: consolidate hugetlb CMA reservation
+  mm/hugetlb: drop hugetlb_cma_check()
+  Revert "mm/hugetlb: deal with multiple calls to hugetlb_bootmem_alloc"
+
+ .../driver-api/cxl/linux/early-boot.rst       |  2 +-
+ Documentation/mm/memory-model.rst             |  3 --
+ .../translations/zh_CN/mm/memory-model.rst    |  2 -
+ arch/alpha/kernel/setup.c                     |  1 -
+ arch/alpha/mm/init.c                          | 16 ++++----
+ arch/arc/mm/init.c                            | 37 +++++++++---------
+ arch/arm/include/asm/pgtable.h                |  4 +-
+ arch/arm/mm/init.c                            | 25 ++----------
+ arch/arm/mm/mmu.c                             | 10 +----
+ arch/arm/mm/nommu.c                           | 10 +----
+ arch/arm64/include/asm/hugetlb.h              |  2 -
+ arch/arm64/mm/hugetlbpage.c                   | 10 ++---
+ arch/arm64/mm/init.c                          | 39 ++++++++-----------
+ arch/csky/kernel/setup.c                      | 16 ++++----
+ arch/hexagon/mm/init.c                        | 19 +++------
+ arch/loongarch/include/asm/pgtable.h          |  2 -
+ arch/loongarch/kernel/setup.c                 | 10 -----
+ arch/loongarch/mm/init.c                      |  6 +--
+ arch/m68k/mm/init.c                           |  8 ++--
+ arch/m68k/mm/mcfmmu.c                         |  3 --
+ arch/m68k/mm/motorola.c                       |  6 +--
+ arch/m68k/mm/sun3mmu.c                        |  9 -----
+ arch/microblaze/mm/init.c                     | 22 +++++------
+ arch/mips/include/asm/pgalloc.h               |  2 -
+ arch/mips/include/asm/pgtable.h               |  2 +-
+ arch/mips/kernel/setup.c                      | 15 +------
+ arch/mips/loongson64/numa.c                   | 10 ++---
+ arch/mips/mm/init.c                           |  8 +---
+ arch/mips/sgi-ip27/ip27-memory.c              |  8 +---
+ arch/nios2/mm/init.c                          | 12 +++---
+ arch/openrisc/mm/init.c                       | 10 +----
+ arch/parisc/mm/init.c                         | 11 +-----
+ arch/powerpc/include/asm/hugetlb.h            |  5 ---
+ arch/powerpc/include/asm/setup.h              |  4 ++
+ arch/powerpc/kernel/setup-common.c            |  1 -
+ arch/powerpc/mm/hugetlbpage.c                 | 11 ++----
+ arch/powerpc/mm/mem.c                         | 27 +++++--------
+ arch/powerpc/mm/numa.c                        |  2 -
+ arch/riscv/mm/hugetlbpage.c                   |  8 ++++
+ arch/riscv/mm/init.c                          | 10 +----
+ arch/s390/kernel/setup.c                      |  2 -
+ arch/s390/mm/hugetlbpage.c                    |  8 ++++
+ arch/s390/mm/init.c                           | 13 +++----
+ arch/sh/mm/init.c                             | 12 +++---
+ arch/sparc/mm/init_64.c                       | 17 +++-----
+ arch/sparc/mm/srmmu.c                         | 17 ++++----
+ arch/um/kernel/mem.c                          | 10 ++---
+ arch/x86/kernel/setup.c                       |  5 ---
+ arch/x86/mm/hugetlbpage.c                     |  8 ++++
+ arch/x86/mm/init.c                            |  8 +---
+ arch/x86/mm/init_32.c                         |  2 -
+ arch/x86/mm/init_64.c                         |  4 --
+ arch/x86/mm/mm_internal.h                     |  1 -
+ arch/xtensa/mm/init.c                         | 14 +++----
+ include/linux/hugetlb.h                       | 12 ++----
+ include/linux/mm.h                            |  5 ++-
+ include/linux/mmzone.h                        |  2 -
+ init/main.c                                   |  1 +
+ mm/hugetlb.c                                  | 13 -------
+ mm/hugetlb_cma.c                              | 33 ++++++++--------
+ mm/hugetlb_cma.h                              |  5 ---
+ mm/hugetlb_vmemmap.c                          | 11 ------
+ mm/internal.h                                 |  6 +++
+ mm/mm_init.c                                  | 20 ++++++----
+ 64 files changed, 223 insertions(+), 414 deletions(-)
+
+
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
 -- 
-2.50.1 (Apple Git-155)
+2.51.0
 
 
