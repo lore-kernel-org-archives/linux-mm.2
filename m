@@ -4,132 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E4F4D2502F
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 13:34:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17212D2502E
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 13:42:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D13316B0088; Sun, 11 Jan 2026 08:34:34 -0500 (EST)
+	id 62E646B0088; Sun, 11 Jan 2026 08:42:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEB346B0089; Sun, 11 Jan 2026 08:34:34 -0500 (EST)
+	id 5B1DA6B0089; Sun, 11 Jan 2026 08:42:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEA976B008A; Sun, 11 Jan 2026 08:34:34 -0500 (EST)
+	id 4BE206B008A; Sun, 11 Jan 2026 08:42:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AF3A86B0088
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 08:34:34 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7D589D0B99
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 13:34:34 +0000 (UTC)
-X-FDA: 84319777668.24.43EEEED
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id EB66FC0004
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 13:34:31 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DCQw6yH1;
-	spf=pass (imf22.hostedemail.com: domain of zkabelac@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=zkabelac@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C3CA6B0088
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 08:42:19 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C655B13BAEA
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 13:42:18 +0000 (UTC)
+X-FDA: 84319797156.20.3407CF1
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B621F20003
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 13:42:16 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jxPsPKHi;
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768138472;
+	s=arc-20220608; t=1768138937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1iIwW7B3/vGlG96EY9fov8v0A5KtPeBu8NxLAHkqFGo=;
-	b=K4p+TZEaVXPmQaPHdMvqE6uSIPcf61oowmJkQYiJ8Dper+0ysfCuuufRcs+DQl3oE3zgrH
-	cc/wJonmgaoPMSawCwxYYdtxNe2w3qodtJ003f2jGq4Yvjq3E4h2Ed4INQPEDd+8if3TKo
-	NdyuPezTf3Pt+siFIDGuIA3l8wMNy8g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768138472; a=rsa-sha256;
-	cv=none;
-	b=jO4aAZaJ6xgeS6HZ0H2QAW1a9nqCtsn1IkPXpR8qOpnG44ib2ynlH3rowUwTPejwTpXUml
-	3Q6PHs8w6kQc4aigUDRAayu+PmVzovFmz0cW8gp/HcJW2MvPPIBsSY1314sY86mqrSOdEj
-	tX+/CXu+2NfBUxDN8Ggep/RLlgV1FAc=
+	bh=AcaRG6W2GHf2TJkOHLOa6E9Px941H/52oDWSAloAQHQ=;
+	b=pEBASW7cdx6xBmn2yyHSnOwxvmN81EXpMILM0eiLAukX8CBoWbMtV63wlT2rezGh3PEdH8
+	Wqk5pvI8E+iHeHr1VOf1J/eq0CyN7bcgT7QcCbYr3sCCOd2HDGeouZhEk0AaxFaA9fr3uP
+	5gmEJsJO2z3c14WexGhBRjtO+EqgtCk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DCQw6yH1;
-	spf=pass (imf22.hostedemail.com: domain of zkabelac@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=zkabelac@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768138471;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jxPsPKHi;
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768138937; a=rsa-sha256;
+	cv=none;
+	b=UC8+mgRPkAbWQ8C7YSEiLWTKgJNCZOWOCmP1Kh8Zz7Tea2T7plEHKnr2Ug83AzwFIfXCpy
+	nVMYbrOeKiFkSZzXyyAGn82Xd781QVIvAYD9B1HjT1WO9+gO8eemp/leOie4HOE5uhkqcl
+	QuE8QII+UMMP0AevfkcaBEiWmgemsMU=
+Message-ID: <78a2ab5b-5ece-4d82-a229-594fb8672108@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768138934;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1iIwW7B3/vGlG96EY9fov8v0A5KtPeBu8NxLAHkqFGo=;
-	b=DCQw6yH1XGpPBxa94dHiD2wOv4JKEFWe+xRTQxI+Mj2X7CWKzUr4G/43ESdu5NNyPVtDVo
-	aVUcrSiIAtlWp1yv99faP/6vZx+DIFgX9dLcSG6L/7C1GOIW5LsbK6FZJXermh+OAEKPzb
-	KvwDieFRVA98+cf+yka8GEjJGiqIHJw=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-zqu6TYphOVCfQ8JX3Q3UPg-1; Sun, 11 Jan 2026 08:34:24 -0500
-X-MC-Unique: zqu6TYphOVCfQ8JX3Q3UPg-1
-X-Mimecast-MFC-AGG-ID: zqu6TYphOVCfQ8JX3Q3UPg_1768138464
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43284f60a8aso3143608f8f.3
-        for <linux-mm@kvack.org>; Sun, 11 Jan 2026 05:34:24 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768138463; x=1768743263;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1iIwW7B3/vGlG96EY9fov8v0A5KtPeBu8NxLAHkqFGo=;
-        b=LgRyRMBU5ZnkV7BangfSxc5czl+rVEafNPX7s1ls47M5bihhHmfQcSDyrhOqnOTpJt
-         onZ2RsBSGhB31E2nH/W0jfzATWY5N7YgE1bfA3ZsoB+1itrI06kj6rseZQuAvjztmuCt
-         fvcGrBFVyx+s+HUBZ7kt6HSYuvpAwDAU6+xPn6dLQfRB3eACR7Zg4aEBNviOWRdhOVsJ
-         vP+3slQJoHoVyYeVVK1ldKRQu738zuoYIDMY+EgfHZ/cCd/oYCfz8DAhtj+2uZIzwAPU
-         9y89ZNfXxqWrmfQd6EUXscd8uRhpRd2MfGFgsvfOn1+7+XVFuTyCcK3SKFs8547pHX9Y
-         foPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV/3F3pwraN6netYDULZonPTYQMTTVoSPz45fVOT9kB102bLsZU2x25dQt9D45EL8whS6Q4tZIBaw==@kvack.org
-X-Gm-Message-State: AOJu0YzbhebYykUaXgNBEpCLoDoRsCsRXX2zw1ZGDACnUdxnAC3cv5V0
-	aqO8T0SkAUdOsPAuTXYc49BNvItcsW37OinHT6VuVh6YbjgI8J1UN6fi/HvxaD/kO1hsK/YP2yo
-	9gNYS9KUvyAcNvbIvNGx0LtSH1nYVnvmkyQOS46N2E1uiGhD56a9q
-X-Gm-Gg: AY/fxX6J8XG46S2Y6BDDTG+Hqs7in8MgnqBGAEVtm2jChmUvQcGAyfedJEiR4v+BlOi
-	/6pOoBVaJ5RtIAFlHQzwRlcOH9kw+ZSwivSQisC1d5aAKa04uyJNmg1cEXt2u0jfhRhOY1YrEQD
-	wT3O3FQ/Pf/psXPVLfDy6/1HV/fHT5S0DD0vdCN2yXNiuXqU6lW+/j5kjpbhPFFjHPr141RGasi
-	iik3LO0Y5G0v8y7Q/sQYEhRkQXwkd7o/aWHPSqJeOdJzrsmFn6+MWFkNXxko6dEwRB7oVt+X8VO
-	Hl+5YhhL81LqX3f2mGR04w/Ra8BJqR1V1bDuR9ie/SXRNzfYtUlsLq1gcsoDgOiLf4Vedw096BY
-	duzcEmG9ok5fJ
-X-Received: by 2002:a05:6000:18a5:b0:431:8f8:7f17 with SMTP id ffacd0b85a97d-432c362830dmr16282394f8f.10.1768138463561;
-        Sun, 11 Jan 2026 05:34:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEUrdZET3rEay41v44TRADbajgxRdDNJp4A+SRYJqr3oi8KK+Jf1Lh89iqwj9E2Qa02SJMCbA==
-X-Received: by 2002:a05:6000:18a5:b0:431:8f8:7f17 with SMTP id ffacd0b85a97d-432c362830dmr16282379f8f.10.1768138463142;
-        Sun, 11 Jan 2026 05:34:23 -0800 (PST)
-Received: from [192.168.0.99] ([212.20.115.16])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0dacdcsm32760448f8f.1.2026.01.11.05.34.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Jan 2026 05:34:22 -0800 (PST)
-Message-ID: <fc1d7900-3a5f-4b31-8aa3-8c8cd317d646@redhat.com>
-Date: Sun, 11 Jan 2026 14:34:22 +0100
+	bh=AcaRG6W2GHf2TJkOHLOa6E9Px941H/52oDWSAloAQHQ=;
+	b=jxPsPKHivZ9cUz8HAyuKq24MJq+Bq95285K4NFNc5HaVLwyGwesCTyUZ6RtBMrVTjAOnOI
+	zS20FEQMVyGJtTKK/A/V+2eq+DwbQzemBDt+iyjUCNPf5tH8eNrSY7owefBeHlojoVmRrD
+	ut6TdBDAyUh9BAWiopZG1jVSWGBVuwI=
+Date: Sun, 11 Jan 2026 21:41:59 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Hard system lock-ups when using encrypted swap and RAM is
- exhausted
-To: Askar Safin <safinaskar@gmail.com>, Mikulas Patocka <mpatocka@redhat.com>
-Cc: adrelanos@whonix.org, arraybolt3@gmail.com, cryptsetup@lists.linux.dev,
- dm-devel@lists.linux.dev, gmazyland@gmail.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <3f3d871a-6a86-354f-f83d-a871793a4a47@redhat.com>
- <20251211182429.3300562-1-safinaskar@gmail.com>
- <eb3a9746-83a0-8271-6bd6-867ecfa49aad@redhat.com>
- <CAPnZJGAvA+SpkMeOdZx+SZG=qZxSXOThO+Or1bgw=3QqCoEDgw@mail.gmail.com>
-From: Zdenek Kabelac <zkabelac@redhat.com>
-Organization: RedHat
-In-Reply-To: <CAPnZJGAvA+SpkMeOdZx+SZG=qZxSXOThO+Or1bgw=3QqCoEDgw@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ldPssGpadpX1SbLQjoj2VvHJlWaDCE1peK4oF2co7ko_1768138464
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, cs
+Subject: Re: [PATCH mm-new v4 4/6] mm: add folio_is_lazyfree helper
+Content-Language: en-US
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, akpm@linux-foundation.org,
+ dev.jain@arm.com, baohua@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>,
+ david@kernel.org
+References: <20260111121909.8410-1-yanglincheng@kylinos.cn>
+ <20260111121909.8410-5-yanglincheng@kylinos.cn>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260111121909.8410-5-yanglincheng@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EB66FC0004
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: xymuyzggi1rprj65ho6uho36r885ennc
-X-HE-Tag: 1768138471-68654
-X-HE-Meta: U2FsdGVkX19WKLnMLl0OhcF9GfNP8h9miUIsodRsJMaJXeUBWazOU+YFleDadq3elBVmozH6OPiX+u42Z5vwY6GlvhQIgA1Hpqm9vwhpFOPIxPo0aJSzSSSkJ1lbkybrUxX38gMJTm9pAfemDpzLqEL070faAEVXRfWcjwRL3G8TyRu7Bffdk5yUiDv0Fa6pQSMDLTQjbpRN5P99LBIpW+KEdQEIjrNr+ItfsVtkW9uDGfYRAVQOii4JSodR7RtMrnKIkiwRheI18zRowAZ7JYo9uz7SY3S1EuxJkEffjPNC3niye1floFfSawbd0eI4wtaYcQfrQePIiLJdqriT73XSqbZjy2IL2PMbcZQlk9KE0wtSiKftVCREWtTcTT1F4eNZ4O4UQnNnPTFvirg9aiceX5kprcQar3BwuYvklbXyl7AbGLakY0Par7Vyc7dl7D3QYwmrrMVEME4K+MaOYt1Tgy8wPIPkFq9vvxo+kYXrIrnNx9mXDi8jt7wvH8ofrboDYVysSpE50iWn4kC6W3eGi+GxOmUOMcfNuN9kBFFpgqbJsKBheEpY95u+IWBXZ2wXAYqT5ctEKi16RTGgD3K2Vl05KSqglkmcvjYnkntsDv8BkQwndff4Wopf9gF6xINUjriseSldMpPrWldFGLZwRbv5OYLpOeL8cLebyXn/U1N+XEHbc3Yt3Rd7BMuAjovriUAJUHpdAw+t7dtSQDQNnEaBXFPxK/rsMxMx0r6pepQe+8LVgMIlmaVM3aF3hclU6eYx8zGrdr+6ZZKQi8rtZa16mdM2txRmTZHACrXLGk/m7R8FM7TlYTQFKQIxLdCdDp4K8+oyeEoWzTOk7TmEcZVXEe8tmcyMiKyTEbEi0N/+b1n+eYjOwQ6m05JNyXyl4dkqmQ4NFb3bxYGZsJWWnQdLNxB75YDSCRyAdPNitxdEULcZKboc5huJFxxWJ0i4MdIpPIxFeMOnrSf
- CGM58CFK
- sqeYMQ+qMWYhxm2kOrXkJQAcSvQr5GpKFz9AivIHEONftah7TltaDna+4F9K3juWhHuLovorR5I1eFFYRFnAFD0MwJfDItHwNvmKPCWS2DtmT4CjWAbMts3AQCkveXXybJd3oF/1jHSRCipdX19oZg8fNoMmOD6CLaDgc/QqvpMFu7ukmF72rX58Zp9dIRn2IIAOQiwDUAAB8WFdQ3xMxQ0QHBqPrr40WafkxTb5I9a+qMAfo482tSjqvc1Uu/tmwySoOvnbZFRadFvQJz9PX/FMKzPrVjPgHWHTnAOC/U9/pYXIE0WbDWJENxtnbwdEdsTRnOB8zwqHqAVWkGGqvUmXzT0nF+45T0pFfosO1ZgVOz3pMplNOJHO/hCwSlf7HcenjK9GfL8t7l+bjYpDpPh/UslRA3tt30VJSgay0I/tt6uQ=
+X-Stat-Signature: iuhd6tc9pa8o98paox8dwfxws5cnjent
+X-Rspamd-Queue-Id: B621F20003
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768138936-944073
+X-HE-Meta: U2FsdGVkX18xs3E7klh7d8jJmYaXM6d76PMbUr3jOkyiD/E5alfNJ43dp69p4/vy6TNk/gIZJhF/2Rk0b4XMx7cWoHXslk4Og8y/as0z5h5dEitVHCrfzUCqWM5SxxLBfbHqRSCm+r43lZI6mjX3bvh6YdbdQpHG/eJU4bk9XZ1njBx0w66SGyjBytaY6lPbYxF/81JCJAbGWKFgggTBx015CcmsP679BWgxrTEUrPs0v69TyFZu0eEoouz+pRqRncWDbxAHb0uAnvQm+RtsMEIBaoz1PpBJTyYxz4TVDkPULA6Zb/Xpg90oP957RLq+H4byoCI+EHzdhdKUBrp6UBNx6at3dMmwq3Sm1TX8E5JQbcwAbP6ZNd4SgRYvFuFhWPiINPasd36p3nJbHUHhq4RfJ3GCIWwamJdA0PAwDaoyJOkGJTDt39+C5pokTRtG7Ctcyn4J2CT5BfHUYHhigEUrgHkernmnvpEVHJV/M4BnfEQZN81ODz3VLXA6ToI7IVqKjI1pmKq8fuyFBXEWV6lI62jt9HreMYJmY/UQg6inf4fiUQ3xQRdirTqJZCjvZRkbovw2h7Z0DTlIBN8qrI2rWm9J5/O4tmw/n9HgDtQSfMRiw9lClBhRCZYbj2kM0fH+xPch//EzY8nNiouJca4Mct1HklR72d2N02Ry36/5ewMPUbcJMvUecNQmnnpEd7tNaS7PUAiuJd/vnRE9HT9sqSdsSwoNQAf+BmmY6fwR5lJZ1CZQum8TInmNApM9F513i0NJZLF+MntX1Ikz+NpZ9FlLmpI/TBXZgs+RrYW2yZFkRYa5yOyrqf5/19RgGNTipLE5kc3XaoDYJr02Gyh4mrMSJndISzrQJWoHaGe4wxjlePmU9Zhrd9Wv/mFV493I5l0kKYORBapbueDjifiLQeRGbf1m/FVpA6Q99oo6P/srwGjkDYaaUTg5IdwUwEmnWRiKXp2UKEKdvq/
+ TzDUhlXT
+ HX/t7vtYiZZaiVveYWfuWJLa4M4x0q8PzHxfk8P0glIzIXglQsOlxRsycCIBWJMjhtl/idG1bNVE3qnV3V+9y7tUKZXF7yyEpytLdVXElvu7UhnVh6Abdrp32U+A0b2Xw/LzitS9H017goba/dEmytEgEaVWwp2S5ZKyDzfWMATfZDRH7A3zOnil41SFII5sFR3cd8nypN0DDQMVZgGnfMBtPzhFbLqf8JQFI9BaaksaZvPCU8dEQGjhJfwsNTZbuaHXSb9/6ugodTBI2Ssj2PfbVhAxYdlSRexE8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,40 +93,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Dne 10. 01. 26 v 8:09 Askar Safin napsal(a):
-> On Fri, Jan 2, 2026 at 4:47 PM Mikulas Patocka <mpatocka@redhat.com> wrote:
->> Hi
->>
->> Dm integrity doesn't need to allocate memory when processing I/O requests
+
+
+On 2026/1/11 20:19, Vernon Yang wrote:
+> Add folio_is_lazyfree() function to identify lazy-free folios to improve
+> code readability.
 > 
-> Thank you for answer!
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> ---
+>   include/linux/mm_inline.h | 5 +++++
+>   mm/rmap.c                 | 2 +-
+>   mm/vmscan.c               | 5 ++---
+>   3 files changed, 8 insertions(+), 4 deletions(-)
 > 
-> Unfortunately, my experience shows the opposite thing.
-> 
-> [[ TL;DR: my experience shows that dm-integrity journaled mode is buggy, and
-> non-journaled mode is not. I. e. journaled mode seems to allocate memory, and
-> this causes temporary (for 4 minutes) lockups (on high specced
-> machine). Or maybe journaled mode has
-> some another bug, which causes such lockups. They are not reproducible in
-> non-journaled mode. ]]
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> index fa2d6ba811b5..65a4ae52d915 100644
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+> @@ -35,6 +35,11 @@ static inline int page_is_file_lru(struct page *page)
+>   	return folio_is_file_lru(page_folio(page));
+>   }
+>   
+> +static inline int folio_is_lazyfree(const struct folio *folio)
+> +{
 
+It's 2026, could we use bool instead of int?
 
-I think it's important to decipher what and how it's blocked - I kind of 
-suspect your system is not blocked on 'dm-integrity' itself - rather some 
-userland app being swapped out of CPU.
+Yeah, I see folio_is_file_lru() uses int but that's legacy ...
 
-You probably do need to configure your systemd-oom killer to prevent getting 
-your system to it's knees - if you run your system to the moment whether it 
-takes 4 minutes to run a task - there is something seriously wrong with the 
-configuration - as OOM is supposed to kill userland RAM hogging task much 
-earlier (possibly even your overbloated google chrome APP if it run out of 
-bounds).
+> +	return folio_test_anon(folio) && !folio_test_swapbacked(folio);
+> +}
+> +
+>   static __always_inline void __update_lru_size(struct lruvec *lruvec,
+>   				enum lru_list lru, enum zone_type zid,
+>   				long nr_pages)
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 336b27e00238..fd335b171ea7 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2042,7 +2042,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>   		}
+>   
+>   		if (!pvmw.pte) {
+> -			if (folio_test_anon(folio) && !folio_test_swapbacked(folio)) {
+> +			if (folio_is_lazyfree(folio)) {
+>   				if (unmap_huge_pmd_locked(vma, pvmw.address, pvmw.pmd, folio))
+>   					goto walk_done;
+>   				/*
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 81828fa625ed..ad3516ff1381 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -964,8 +964,7 @@ static void folio_check_dirty_writeback(struct folio *folio,
+>   	 * They could be mistakenly treated as file lru. So further anon
+>   	 * test is needed.
+>   	 */
+> -	if (!folio_is_file_lru(folio) ||
+> -	    (folio_test_anon(folio) && !folio_test_swapbacked(folio))) {
+> +	if (!folio_is_file_lru(folio) || folio_is_lazyfree(folio)) {
+>   		*dirty = false;
+>   		*writeback = false;
+>   		return;
+> @@ -1506,7 +1505,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>   			}
+>   		}
+>   
+> -		if (folio_test_anon(folio) && !folio_test_swapbacked(folio)) {
+> +		if (folio_is_lazyfree(folio)) {
+>   			/* follow __remove_mapping for reference */
+>   			if (!folio_ref_freeze(folio, 1))
+>   				goto keep_locked;
 
-So I think you should also show whole device tree of your system and some more 
-information - so there is even 'remote' chance trying to reproduce your scenario.
+Otherwise, LGTM.
 
-Regards
-
-Zdenek
-
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
