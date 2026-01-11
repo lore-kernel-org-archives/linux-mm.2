@@ -4,135 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14E33D2502D
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 19:50:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37219D2502E
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 19:51:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55FD96B0088; Sun, 11 Jan 2026 14:50:54 -0500 (EST)
+	id 6BCEB6B0089; Sun, 11 Jan 2026 14:51:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F63B6B0089; Sun, 11 Jan 2026 14:50:54 -0500 (EST)
+	id 65CF96B008A; Sun, 11 Jan 2026 14:51:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F9526B008A; Sun, 11 Jan 2026 14:50:54 -0500 (EST)
+	id 528646B0092; Sun, 11 Jan 2026 14:51:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E5776B0088
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 14:50:54 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 984EB140E7B
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 19:50:53 +0000 (UTC)
-X-FDA: 84320725986.11.FA43398
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A48CB20003
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 19:50:51 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=sksIvq9O;
-	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768161051;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 415B66B0089
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 14:51:16 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CA0075DD74
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 19:51:15 +0000 (UTC)
+X-FDA: 84320726910.12.99C5B68
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 390CBC0003
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 19:51:14 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=QoqeIcBs;
+	spf=pass (imf28.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768161074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Rxaqcbxsoz2fcbOT7lRZNWfqn5zW6QshB87oNyAzGY=;
-	b=xCJwLAp8ld4NGyDmmpk9TKgBge+zpGE2axvOtF/Qw2xxWkuQ9MoRdVvmgiDfQn1Z5IMQYd
-	/7lX9qV/2oRhIPHpOpTip4ysU9NNTSB+eJqSS7vRIBhCbwR1FIkexUj/cNrxtSE4RxCe00
-	dR10VJGUPIpryBAQDlorWFdr96dZ8xs=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=sksIvq9O;
-	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768161051; a=rsa-sha256;
-	cv=pass;
-	b=QrEuu/qMpy9nLvLMmmSn33oafHIRvNhn8l0mpwAqLNUnSqLtTWPTsBQq6KKTCSV/K6QAuL
-	bVrFDaXKl3PcvrgkS8EA9ZPdYVZUpJJrkR7HM1o0JoVnHgpYBnZbBFj1YM2g+Ji1xHQYpg
-	hESSXzD3+N+q+j1zDEzYwU6/QZS3IhM=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4ee243b98caso549921cf.1
-        for <linux-mm@kvack.org>; Sun, 11 Jan 2026 11:50:51 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768161051; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Vloh0BmIVWbRqdIHIU25647i1JbGjAvBxVXw4h8WE1W1qhZFul+cQJNZewDrfBFuTq
-         giUbc+xyrzl13p5b8f02PXZa/VwcYFaunL9cMWOrG/pynRR/wTkoSjRrZq1PptT5cfvT
-         mPq/a/LD0Li7xeTjsbUPtGef9lJVuEVPQ6veXTv8SGVI2FF37NQdnpA4Q0AU+5FJJYdF
-         BZUsn4Ys/ewhlQ3Tq5VLvH+U9SR04tAf8YHl4ESC/hZB5c+jizabwu/2e2rHHWWWFxKa
-         Vw+NtTTXxcxPhs/6PcrprMcV6uTsgHEammCUJ9tY+FhBL1Ms5Mj5JQs7Br/ufYpEDKdF
-         J/3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4Rxaqcbxsoz2fcbOT7lRZNWfqn5zW6QshB87oNyAzGY=;
-        fh=LYj2T9EEmZ2rVGdjLSA7A9wxNq0tHfeMtGcJqCycOco=;
-        b=XlgE8M31UMmogddS8gvC0FIlvEm39F72jfyf72DCeOBHMKX+OObOxJs5kdxybNsq8L
-         IpGaV3faW0Fs6Fr/3AjRrlnDiKnt9a2HNGxIEWg1yFYdWf/6k0lBs77yAXZ13+/XKoda
-         lvGeDPvpf5iu0U24UQU48bHsJqAhaMwjHENrevMZaSdM2xLusj+oQ5y/FwRihEaeSUK6
-         N1ZZfVKGX91sqe5JEeFTOHSfpNUFMApq5aUobTGP1s8dI2TrRLTyIXPs9kIUsXZwxnJ2
-         mEeBTmswcRgK6FLf94y+liRWaN7sgI/Sr9GJsV/ZCq7qiyvwkTVtzxw/Iuz9NQwin9cW
-         8nIQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768161051; x=1768765851; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4Rxaqcbxsoz2fcbOT7lRZNWfqn5zW6QshB87oNyAzGY=;
-        b=sksIvq9OGi1OaLTYDS7mIje4YKhgab7pB/zi7nxv+tedYLzd5L++S5nZ/jZN+nDhm9
-         wrg5Z6CYpJh8Yh3aqfFvAsXCM+uB4erDqbpRX5+lVsjsM53BIWhfX+23jLpXUhiym9Sa
-         FXSBHZOw4FYY5UCDARRwoe3Fd5AsaVj+9XXYHcXBBBMAZzHTwFBnUO9oZLanswYT2clQ
-         E7UnOTsabV3padFc20L1Wo5f/wEdQdISMGDQ6D09Dy0Wtk5T15VlqF3+ZiYzyYyvlGqn
-         H+Zovz1WgXrBLvJqmoQwWAvzrbl8/O0meQEyIclsNPGDnnBORVZnZWTd1DEOVjEYKLh1
-         oodg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768161051; x=1768765851;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4Rxaqcbxsoz2fcbOT7lRZNWfqn5zW6QshB87oNyAzGY=;
-        b=lXZYlzAL023OHelhmInqieTPLqSEKA7LllNxELXty6/fbKoe6kul2c5ijUvZn0yaES
-         UJScD9NKpP0BHSSZpztma1JsO9CvTY2U0ig9M3RmZeDTBDw9h3BNaiTIoRnNLemncN2s
-         bGT5edscjDZ3El5enh2bY3x5gO4s5httmqWmqxj2UhEiHzgYH4IgRAJ0ejk1lfw5jObo
-         2Cwa9nqzhPWeWuLW1ecSgcgN3VhwmUtDnYRoq2ja8MLHHjGzHDAyYp+ojHTzwnaHcAad
-         dD/kJ5Xcate61tQeSgSMtQDzN7H3DsQz73vWDvCiSG1xn6j58L/TXFa+NzR6unBw/l00
-         QH1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUHPhpzoNURnQhr/qEyMXrFIoeaDsbLslVaOK/kNrIVzNHtsC8VZUjuzPUA7rHzQuxI32ZpgX0gCw==@kvack.org
-X-Gm-Message-State: AOJu0YyDDfEWMtQcIKXKroag/er5VFhu2WeXMApnTA8WFD5+EqWjVjnL
-	SFhO3ygs70ba37lFmuaA7TdCNdcpORMTf0JOEWIy9bd8gx2uEVF/IGVGXEtJa07bCyed0f4SsGw
-	iU1rYOQ9Nqsy6Qy1t/olyp1ZcGyGBBPmiqHmZP/ZFLqYTa30d74ScQgt08uk=
-X-Gm-Gg: AY/fxX4MUZIpt8fqxB0mTjmcXN+PIImKJZreaY5eIaTp6ZJzDbGABtdETy1zOC2HU65
-	eO4M0A4WemcT8Ohnv8Quo6Mpg6x4Y4oOAjfYgOB7nqvU8ZXUZptwkGpnvw7P3o1hcSTpk1N77+U
-	0RzVL+S+hwfyiEsYwQQ3EwnvhbP4eKk+S8178lKC6pUCNlDJijvfGKvXOSWdlXwMf9QmhArgNTK
-	znG1bN9oNs3vMO1S0wt3RKKgvrJnzQnICEmJDLsAW6laUoAoQAre8e1hhbPaG9VhUZ3ZQ==
-X-Received: by 2002:a05:622a:1213:b0:4f3:5474:3cb9 with SMTP id
- d75a77b69052e-501183f4374mr12942481cf.14.1768161050037; Sun, 11 Jan 2026
- 11:50:50 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=yAwiRqrdAmP8pCSKjbC3edGBSXcyUKNWIDaZWn2p4dg=;
+	b=vWXbH1buGvc68v6MLoNRBJUTHxWLZNWhV/XBhlvRPAAFn4x8L3VLzqNADcUTsmAo/HAGNk
+	N/inrGVK+RMtC+muJHUe2Mz1Epr089tx2UfdLPnzitB11oRGOjOjtiaS4WXBpAJB/0nUjB
+	xouvSLUPkgMxv+SjAGNkHnfbtoQ9Ydo=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=QoqeIcBs;
+	spf=pass (imf28.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768161074; a=rsa-sha256;
+	cv=none;
+	b=DplSpQNJI3l7w9AwUqNNVqRMwoQpmgWloCH9Xh1LjCdG9O35X/9meUu11z26Yl/+A+bfPK
+	WkDnC4gj7y2ojUq51sixf0ABf47ytvR9EOR3JBgtrfYgjwsdSvxdSYeJIs/bmlX9gIpnvE
+	x5/BxkzYYaHm/o5gni4y0cITEuhXkm4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+	s=smtpout1; t=1768161073;
+	bh=yAwiRqrdAmP8pCSKjbC3edGBSXcyUKNWIDaZWn2p4dg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QoqeIcBsomscMEWl6UFvKLKSjdGrB/L/u8ilIsfEOdkIUYWJrWKdIVz9b4BM9jBjv
+	 s4gz/ukju0XEw9MDXasZfATLQOdI4k26IB262IYchd1Mb1YLy2AfSn0iqeNFN8c9Pq
+	 2xzOYAn7rS1G+abXDmrKRIFS6zvSjwUnmX3hjmj/cYbur50XVOXiVAMX1osTD5uj65
+	 LaiFvhHdoawj1Lg5LNqHn0bloODuhfQNULHC47ozBADImXuSfnW4kSAUVHpX8OIp3q
+	 ZRywuGZdZ39zr8bizMa+aC1jdaHuJHD3rxuuu05OVzarnE0WdEYgPcWZiMDaEqX1tb
+	 9lT3YJRHZ1ITw==
+Received: from thinkos.internal.efficios.com (unknown [IPv6:2606:6d00:100:4000:a253:d09e:90e7:323f])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dq5jY1Vltzl6t;
+	Sun, 11 Jan 2026 14:51:13 -0500 (EST)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>,
+	christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	Yu Zhao <yuzhao@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>
+Subject: [PATCH v13 0/3] mm: Fix OOM killer inaccuracy on large many-core systems
+Date: Sun, 11 Jan 2026 14:49:55 -0500
+Message-Id: <20260111194958.1231477-1-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <20260109062419.157284-1-ranxiaokai627@163.com> <aWMLQkvushKidjQQ@moria.home.lan>
-In-Reply-To: <aWMLQkvushKidjQQ@moria.home.lan>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sun, 11 Jan 2026 11:50:39 -0800
-X-Gm-Features: AZwV_QgnIj5jxqjZWPNyZ1aQJCUUVXKREdt5QrSWlYWPGsMwNuUxgnEOGHpRL-k
-Message-ID: <CAJuCfpGo4wYcMChX_xJJ04pHYKJ8vMPrkN9GFxXhW-1xQEmfiQ@mail.gmail.com>
-Subject: Re: [PATCH] alloc_tag: remove sysctl prefix from mem_profiling boot parameter
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: ranxiaokai627@163.com, vbabka@suse.cz, akpm@linux-foundation.org, 
-	david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
-	rppt@kernel.org, mhocko@suse.com, corbet@lwn.net, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ran.xiaokai@zte.com.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 390CBC0003
+X-Stat-Signature: rynyhupwiife1539troanxezr875hgoq
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A48CB20003
-X-Stat-Signature: 4btqnswdxuh765hos3m69fgzqts5jcwn
-X-HE-Tag: 1768161051-336490
-X-HE-Meta: U2FsdGVkX19ybmTYLEdKF0w7E/NXZKIfrmcDqAMDjw6ThxMcsyjv7Opts2gVUjIEW2r9pT88p7hFTgxTroDyq5ornOtgNb93AmckRbdPmjUbWlWSt/r4KxVGuRGFBN7AJ82ucEDkg5yPbv8X68a1SewcXVEugnNBEQdPbxLwIltXBh3/bSMzKH8OHoN6URgMeO9WQ/PLLBuWW3vRUK8iTvRb2ak4WYhOLe7K9QmL9hDY5jZN6jFObV6la2WQfS++Z7EFhJ2cyyTIuDVMBGeLPiJ9wvJ28GRFW7bhoKlZziUX7JxsUjd5vv/cLj0lQKwyynG+XwAshlCqhCXkq7SOsA5a2H9uCBoeONihiC5jfL/W0Iy/cSmNJK2NUg0zj1g1yjgyRdlLWtwq/zSX1BsIIZFfLdg6+kNTstgKTa1MgDYoWHBeOd/D1V/2VUo+buuhhtW01eFez2JyR7Zz5LSb3cpVP5+PNgyjmc/qLsxhQ9wgS3X8Y9YaiOLOO6wHg3eCdflYrryTyF8tQQcqi2WsM3vru1sACA85eDqvsRXukxiwJoweTursDlY3FumOYK5AbXM74fRdw7HCfbVbUAA4NR4r2MrReLrq2Pt4M32gnA634zdeFm2iY5qZ7IQ7iDg7h60GShH7r2Hwbn69J/54FtlAC4Ps3SiAXJeK59jCSGUB5cZe8brarnzP53KSBN1F8vO53Nd8g7DLjBElWZnnHLEDTG6z4NF0hXyfHuqDrNMai7vLOo2gLRSe6NprGWMLFA9J47V2jDSIgFIxgPdFNQGVvR3CD0PBrJCT5AtztYsRSi/YVFziTuUXUtvr6Jp7V/QRQWF1zx5O8Wb8lNPt9da0dBfWLyhtW3iV+JsMWwEszuaPMmodKLIRzwKxqZVDZ1B3vOkk4j/RoevF3rDsvhEKJD4qnhqXHhKg9uqbOIEyNd/0sv5llsowu2MSlqpxCYR/+I6716kLu8I/UMs
- YxqMU0uL
- 6GVwizOw3tqFIX1WCUJOQngzgX4Mt2aFzRprzmMiTA6UosvY1SqVShev/ACDDJNliIVQmC2qK2t1igJ1pB06tWYTusyMHN7O3T9UW+zJz6Qy+T8W/HoNKaHgqsGFCh/I8PermGaqzuCYX+pto/QckZfJWMn8vRUM+gx1Gifts+a37RVG2LxufrzfaO5kZlmInwlqdWlDBezRHcLsCBlIqbf3R/y0wm5fFwsES974vwIkC3vL3+Kala5W8WfEQqJD5Bab7E/IPeewOZnEQqco4YzpNMjGvvmXOjJ+R/yR8vBqi0rh9ZPzCmGeU+eb/35B6YYBr2WZ0aaj3tbU+6wkyQPBO+ArhUbGOsBD/XGIH/MESl763VJ2fFvBecw==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768161074-947962
+X-HE-Meta: U2FsdGVkX1+do8mvEsmP+iIGXTcwaWkATxRcS6fELkLx7gK1gqG9fAT0JWznnjhwLIwvDjkr48o72yQaFwLfK1wM3qtagdqbPgbrrgYdi8Ohm3XFK1qUxcr5wn8DaHZwmGLsJJMTNs6cn5dCuHrRjytL5ktG7Da0TnLMZ494PEY0eRrh26NJ38NHCFE7NnntnGeNUDtv7AlXEnsesjOwlMn8yp1nUKOEhBAEDnLf10zqSGeUBCUj54McSZrWcKmM4aWxzXZV+WK++eVzy6fuimMvi1FD/YxzIfzPULAMJi+48tNGWe/6MpE30QlJ7pYAsjSN9ufLqkEKdEt7y9iwR1VswlCzrK5G1c89pwYQXtK5JFn9w4M1Q2xwyWuUsM7YbkLKm/McauTW+ErgIC4XAlCwYmx/oQyV7gum/5ILUaI1+5StMemrk2qm0EXRJe6hhdyCPiGupZTGv+erGsFqs7FVCH67Oi0N/ADORhx1bfgToycYAs2hkz4dhlUlmIN4NWs0PR56SABrF/N3aX9fSGgKBkewPKNddAcIgqWxvjbCtA/e4NokjXBauHPtaUijcoKnI3TD+8oMbdq4vgzbwL+JVjn5SmOh5JfZho4mix2shvD4DNGPkOK7DDLkdbHJfQfnazVg+t54o1Vop1n7EW4MPSItZrhdLxu4QUj1i6RYw7e0epJo2p+7WCubkz/HephXgPATWlzgFIdLpUw95bI8rZ41m8ng7Ce9qKj965rtJssNgfvd9zftUBG+C1EkaBTnmgEggBms/usgqvopcwp1mEFAnNVg5YPHgaxuPvKCjxTlwnKqNUbFzRGWlbzBgJr2P8b0IF0o1PTy/5nl1jP0avkEuHj//lvKYlFDUzm4mD2Cryh8ToNo3PA3Jib5T1xIz0O3zqhWeFBwnwKjHt96jmKna89HqHjm/i2UzauLBSI2wsuFgxayIelH5lF6iRGq/2YMAZRJyBIVrb5
+ DiBqwNuu
+ jjQyH4fGsrIfExWYHH84bWIgGXDbxtXcl7SzzRRmGJNUfjX/wQvN+E73dix2hvzdCknTmB+Q4147ncH8sOccesYdlZ3RA8ld39Odjif4s2kH4+Hu5/6gOVreVU7MMpuY8mq54Q4WoTBJgXYHDjhga2SWg5CX45mWAFY9bwFByc/9oWAnCjymId7ZzOXlYuMzGXTqR7Hl9mxerwfTsEGLkE1uzZAFaFqGIWYATTeBSb7ytMsx+ZBzX3tpoBXi5koeoySlzpJGg8+llSIgju/ooXdaCMhjb55PHAz1auE7vCrtGqYxgio66zC2CaK/iTTBEvjUb5ldXHOewSYU04zus9BOlMto1BC8i5bcv7vTib9XSVI1px2gSfLlhM/WRt5DEFp2RZfu3/gY5rkZqyWTItvHwflhhE/OLPFJacc0dUtcpcCtjM6oYCs6iklNloaVRaZnyqDWxNIvGeOHk/HjRDgPmKr17IHQA0KzXRqolNywMFgCurlp0CJ7LOeyZYZFgVeYNwGTX7LPt27KZPgh/yocI84BFqk+/zFEwCbSprpf8KSxnxLSqEXUc1I9rWeSDbNy/nT+pZuU/ZyDdJp9KuPM3/4dd6JvfNAexLoQwdkkFYuFbyxlnXZ6Z2rdZpozK/MuEbGB2W+gKwXHLSQKUi4fMIeTMdxkZaJowPHvJ4AUU0h3+oe6inr+lHX6dq6rcGUqw22UeRl97cou/zZM4lL4nZhP9I0z18uxbmwuX9o8xiPPjUVA1eMshYItLF4z933Obxn9eDYePRDUtQsla+9tgzJB19fCrPIiUKbf99DwZHEWV2hl6j4Q9FP43YEXcDglg6FvuWucUhrkzrMQQzOKpMjRd7eyC8k/NnxvtvKITcQgHgW6ckKAYi4t9IsDJjC8YMGq4rhlMpvk+1p7pHPdCbIsR0p65gtSGhQioeDQtNBpg8x8/+lgRJmfqV63DLiq+yNWVcOvfzmaPRwI26zugVRfC
+ Ps+lGk1D
+ HX2a34dUpEwHB8ATbVUzLkslEOwxwbKtl0+o8I7sx3fKn1DcWDtsj3FKF/21xNYXsQ+I9YcyjpCj3Ub8gX8guZZ9X73qElCrILN04hJs9rI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,40 +121,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 10, 2026 at 6:34=E2=80=AFPM Kent Overstreet
-<kent.overstreet@linux.dev> wrote:
->
-> On Fri, Jan 09, 2026 at 06:24:19AM +0000, ranxiaokai627@163.com wrote:
-> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> >
-> > Boot parameters prefixed with "sysctl." are processed separately
-> > during the final stage of system initialization via kernel_init()->
-> > do_sysctl_args(). Since mem_profiling support should be parsed
-> > in early boot stage, it is unsuitable for centralized handling
-> > in do_sysctl_args().
-> > Also, when CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled,
-> > the sysctl.vm.mem_profiling entry is not writable and will cause
-> > a warning. To prevent duplicate processing of sysctl.vm.mem_profiling,
-> > rename the boot parameter to "mem_profiling".
-> >
-> > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->
-> How was this observed/detected?
->
-> My reading of early_param() would seem to indicate that
-> setup_early_mem_profiling() is getting called at the appropriate time -
-> and then additionally a second time by do_sysctl_args(), which then
-> becomes a noop.
->
-> So the only bug would seem to be that the sysctl is not writeable in
-> debug mode? There's an easier fix for that one...
+Introduce hierarchical per-cpu counters and use them for RSS tracking to
+fix the per-mm RSS tracking which has become too inaccurate for OOM
+killer purposes on large many-core systems.
 
-Sorry for the delay.
-That's not a bug. We want this sysctrl to be read-only when the debug
-option is enabled. Otherwise if user toggles mem_profiling sysctrl off
-and then on again, all allocations that were made between these events
-will be missing their tags and our debug mechanism will generate
-warnings for each such occurrence when freeing these allocations.
-I'll look closer into this warning. Maybe we can suppress it when the
-read-only sysctrl is already set to the value being assigned to it?
+The following rss tracking issues were noted by Sweet Tea Dorminy [1],
+which lead to picking wrong tasks as OOM kill target:
+
+  Recently, several internal services had an RSS usage regression as part of a
+  kernel upgrade. Previously, they were on a pre-6.2 kernel and were able to
+  read RSS statistics in a backup watchdog process to monitor and decide if
+  they'd overrun their memory budget. Now, however, a representative service
+  with five threads, expected to use about a hundred MB of memory, on a 250-cpu
+  machine had memory usage tens of megabytes different from the expected amount
+  -- this constituted a significant percentage of inaccuracy, causing the
+  watchdog to act.
+
+  This was a result of commit f1a7941243c1 ("mm: convert mm's rss stats
+  into percpu_counter") [1].  Previously, the memory error was bounded by
+  64*nr_threads pages, a very livable megabyte. Now, however, as a result of
+  scheduler decisions moving the threads around the CPUs, the memory error could
+  be as large as a gigabyte.
+
+  This is a really tremendous inaccuracy for any few-threaded program on a
+  large machine and impedes monitoring significantly. These stat counters are
+  also used to make OOM killing decisions, so this additional inaccuracy could
+  make a big difference in OOM situations -- either resulting in the wrong
+  process being killed, or in less memory being returned from an OOM-kill than
+  expected.
+
+The approach proposed here is to replace this by the hierarchical
+per-cpu counters, which bounds the inaccuracy based on the system
+topology with O(N*logN).
+
+Notable changes for v13:
+
+- One uninitialized variable fix for oom_task_origin case.
+- percpu_counter_tree_set needs to use atomic_long_set in UP build.
+- percpu_counter_tree_precise_sum needs to return long type.
+
+I've done moderate testing of this series on a 256-core VM with 128GB
+RAM. Figuring out whether this indeed helps solve issues with real-life
+workloads will require broader feedback from the community.
+
+This series is based on v6.19-rc4, on top of the following two
+preparation series:
+
+https://lore.kernel.org/linux-mm/20251224173358.647691-1-mathieu.desnoyers@efficios.com/T/#t
+https://lore.kernel.org/linux-mm/20251224173810.648699-1-mathieu.desnoyers@efficios.com/T/#t
+
+Andrew, this series replaces v12, for testing in mm-new.
+
+Thanks!
+
+Mathieu
+
+Link: https://lore.kernel.org/lkml/20250331223516.7810-2-sweettea-kernel@dorminy.me/ # [1]
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Martin Liu <liumartin@google.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: christian.koenig@amd.com
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-mm@kvack.org
+Cc: linux-trace-kernel@vger.kernel.org
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+
+Mathieu Desnoyers (3):
+  lib: Introduce hierarchical per-cpu counters
+  mm: Fix OOM killer inaccuracy on large many-core systems
+  mm: Implement precise OOM killer task selection
+
+ fs/proc/base.c                      |   2 +-
+ include/linux/mm.h                  |  49 +-
+ include/linux/mm_types.h            |  54 ++-
+ include/linux/oom.h                 |  11 +-
+ include/linux/percpu_counter_tree.h | 344 ++++++++++++++
+ include/trace/events/kmem.h         |   2 +-
+ init/main.c                         |   2 +
+ kernel/fork.c                       |  22 +-
+ lib/Makefile                        |   1 +
+ lib/percpu_counter_tree.c           | 702 ++++++++++++++++++++++++++++
+ mm/oom_kill.c                       |  84 +++-
+ 11 files changed, 1223 insertions(+), 50 deletions(-)
+ create mode 100644 include/linux/percpu_counter_tree.h
+ create mode 100644 lib/percpu_counter_tree.c
+
+-- 
+2.39.5
 
