@@ -4,81 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37F97D2502D
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 20:59:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A8B1D2502E
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 20:59:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A00F26B0095; Sun, 11 Jan 2026 15:59:33 -0500 (EST)
+	id C1DD16B0096; Sun, 11 Jan 2026 15:59:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D8816B0096; Sun, 11 Jan 2026 15:59:33 -0500 (EST)
+	id BCA7C6B0098; Sun, 11 Jan 2026 15:59:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C3786B0098; Sun, 11 Jan 2026 15:59:33 -0500 (EST)
+	id ACAB36B0099; Sun, 11 Jan 2026 15:59:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 797CF6B0095
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 15:59:33 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0C989BE966
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 20:59:33 +0000 (UTC)
-X-FDA: 84320899026.15.67502F0
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E4F46B0096
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 15:59:37 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3797D161103
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 20:59:37 +0000 (UTC)
+X-FDA: 84320899194.09.0BAD77F
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B478914000A
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 20:59:30 +0000 (UTC)
+	by imf26.hostedemail.com (Postfix) with ESMTP id F2C5C140008
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 20:59:34 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Q7xsbdJO;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SzSKHB50;
 	spf=pass (imf26.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768165171;
+	s=arc-20220608; t=1768165175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o/qJmeS0rGJ37ioXyFKLvguUKECmB8xbwehwoETQHrE=;
-	b=7OrOXFruRNjKHv4YR6v58G9VY41e/UPXoP8RpnzVVol8NoZBJ2s6Vlyl5WKey9cKLmCgEt
-	TzQJxaLMgU/0YRbNeXs6RsMMXSUIcAeM/5WNgN9urRGSkZhqVT/s8y+Ch13Ja/LskW199z
-	MvF1xgpcAmqfaHxkDB1k9CSUrk9Pka0=
+	bh=9JfC3qieKRZPW35H3VN9P7qd5JwVZ8HARW1C54cb5Gc=;
+	b=A3D9GhOBLwcwvsOEdrVoQHueKMtL8mEupnFjWJTLW0+nU6nLzjHo7+xO+eHToC4VYX7YfU
+	pHueKKIVqjkvmvUgi8OICQt41KL7zRtcTezlkY2TRyqG2cVoNPZhHs9k9uuI/fpfri+vD2
+	G9aDvgXNHQlTP0VjQ6L8oQ/UFs65Qt4=
 ARC-Authentication-Results: i=1;
 	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Q7xsbdJO;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SzSKHB50;
 	spf=pass (imf26.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768165171; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768165175; a=rsa-sha256;
 	cv=none;
-	b=38E2LosT6tdjQ8uR9VJZ8PUkGO4S0eyQTfl5YHr0Gf7MlZ1dCpdA0Sfv9XJ3u/5aQOCQTV
-	5p6ll4AOU/+zCoH9kMphzx9XBRhyQ8GMT9lgrHNqWE3zvsq4uBYwHzXlELRORCmuGCU+G8
-	Pgn+S0IoF4JDw+LUPcP15ytIcuMFcVI=
+	b=BqSUhyDqXza4CfVrnF2fCpVWP8rBshmHB5kkLGP6TPfM0Kbe40xQqrVVTXI2I/GnjlI+9B
+	DQWo/CAU8dlcXClVO6CaJaCWkR2nz34Zwwt5+zTm5ialT/FvO72vKgIQjeGWl6qf9rnNHW
+	cw41D3sUTOXnN+jJrlzLzxKxXIGl5SM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768165171; x=1799701171;
+  t=1768165175; x=1799701175;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=dkxdN34VvfdBFndpQ0gAnBJpqBFw5MZRAtUXsBQrZmU=;
-  b=Q7xsbdJOrJX+d6GIzJJWuaJgvqZwMqNc1YQ7ZHrOls0ex7zJrN+QVzff
-   SKR/EKqqKERdZvqw2rwqCPayCMKvdBLEeCC+JOa2sI3BCH19dvsWdUgBY
-   hqvAaQZj5tlNm8h0NfOHp83QtOSduVUrN3tvGqOmnNasl5NoJBslHDRRf
-   5Wc3EiGB+/mTSeNJLaaEBBwcRgxChhtncNgE6bGUwC3BxXipbMEWU7R2A
-   DkJXXA91x+DzNylhwGQAJtVJcpCVHvJdwvCuPVHR1MkLu6FCJa/la2AgJ
-   R+NsbuFpnMoWG2XM5pm+g7TeROezUNwnW+Pn/nRAVZcvxW0ucPvBYFMRQ
-   A==;
-X-CSE-ConnectionGUID: fnR7zWxhRmWMq23qeC8+Fw==
-X-CSE-MsgGUID: 660nuzBzSO+ZHAFsNAZ94g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="80904745"
+  bh=hAh63sxJfHR+2jFYzblu/7vnwjEDzyW+pJw9NejHTlE=;
+  b=SzSKHB50NWpyaXTLm7+ivTI6HNpHtiL4/o6CK4Jurj6SVMHD5IwWJ2wV
+   E6fNzvh9BtnG0ip2Gj8TAYEn9fLXwa/AEqXbMJZ5GlOfpDTltXZJ5D2VK
+   DETwkipqfNDoD5nRTtDIFzlMsxZ0KVziCl59p6onPYJTwf6yWEfQ50zrN
+   6q9GnPPENTnJUZQuKwdX+EkmlCd3UR2I2E+DxyVj1cga6FWEaTqLE6bxf
+   h6/dReQDAaDUDUZV2SjBVeeJDRzt4gDPSdExZkOU40tzHqDtA3lRbhKCT
+   qgPtIsECrERlVs1tPkLe4PrIZ53inK5aCmod/6e6GEIkic7gQQ8P7i9BP
+   Q==;
+X-CSE-ConnectionGUID: Ehj351qAQ3GJIZWBF9Iplw==
+X-CSE-MsgGUID: CROr1JwnSRCvTGTChpAIgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="80904763"
 X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="80904745"
+   d="scan'208";a="80904763"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 12:59:31 -0800
-X-CSE-ConnectionGUID: yguL52m2SWK5qQ9OZYrOnQ==
-X-CSE-MsgGUID: RB8LwdxQR0qMHbiwr7DZwQ==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 12:59:34 -0800
+X-CSE-ConnectionGUID: meo9RvFhTDWHSCU88aXVHw==
+X-CSE-MsgGUID: iP/Re7xLQRywjeJezxYahw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="208420030"
+   d="scan'208";a="208420043"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO fdugast-desk.home) ([10.245.245.11])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 12:59:27 -0800
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 12:59:30 -0800
 From: Francois Dugast <francois.dugast@intel.com>
 To: intel-xe@lists.freedesktop.org
 Cc: dri-devel@lists.freedesktop.org,
+	Francois Dugast <francois.dugast@intel.com>,
 	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
@@ -90,24 +94,24 @@ Cc: dri-devel@lists.freedesktop.org,
 	Zi Yan <ziy@nvidia.com>,
 	Alistair Popple <apopple@nvidia.com>,
 	Balbir Singh <balbirs@nvidia.com>,
-	linux-mm@kvack.org,
-	Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH v4 6/7] drm/pagemap: Correct cpages calculation for migrate_vma_setup
-Date: Sun, 11 Jan 2026 21:55:45 +0100
-Message-ID: <20260111205820.830410-7-francois.dugast@intel.com>
+	linux-mm@kvack.org
+Subject: [PATCH v4 7/7] drm/pagemap: Enable THP support for GPU memory migration
+Date: Sun, 11 Jan 2026 21:55:46 +0100
+Message-ID: <20260111205820.830410-8-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260111205820.830410-1-francois.dugast@intel.com>
 References: <20260111205820.830410-1-francois.dugast@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: w71n66pxex4mrmy8yn7pu3injwfeddok
-X-Rspamd-Queue-Id: B478914000A
+X-Stat-Signature: cthxwwpd4ppxrqjbkwbwg4aad9bcpuko
+X-Rspamd-Queue-Id: F2C5C140008
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1768165170-837188
-X-HE-Meta: U2FsdGVkX1+xIfeOPuKYsApVsxwGxgkWxTjBRCuqi/XWUQxX4qnE02GJJhSFxRQhuzcB7laywOnydMLSd6yVkTlToMrST3eXEG3GqQkKtsWtxqdrXm3ytRsod8xNeGhFBoip45rQpAtl4kuTP+CWbcEAXrfiP51cmyAs4bR6/BHR+eZqDDiWyuvPUqkUk9DMEks+1Ptymi/F3EyiGsuWs6z/AVAhXn8ygWZr2syMN7UBU1n6PgyNnhbseMTs3zdUPM0AUADs1neZDPQnK771HtnY3owkOTSylnjdEb9Q08yNGqgBejbHXs7kkxDpsdxTCqTDfngrMTCWzEdRLA12bTGBK1vNedSRyoseNnncXVTQDjY/Z43Yw6YC7cNdc/+bL87cIJB03Cb1kG8T8PcyySOqQ9wBczGUg510hi25Ax5HkCUM6ePDurZQ9HJcwRFJcCor/uANqVUdUn2YqZvlFw+3AVH/JWrir7Ey24A83yd5YGetPaZbMW0AlN+Xc6J0mWJa9xi0vYc+JmDm/L9LHALOPAUcLUcI77oORPalrxLv0hSolVIT4SnfHc+w9Ll/xpwHsvJPrF28Y/ht48sYW6FoZZg1J85ZEYU+m8t6Am3mYpjkpso7+RLCWhKVcZQvju9NdD80hK0gndLS8109aMKyzhX8Wvrua0iax9uCr1jloyvYkcwMkAQSCRxpVlK/HOt/4z3OCXwvq2OgyRD4Jhabpe2vVs31DngRU/id/OdCOLKuX2y2hsJ5VFwhCiM9Uongz9ngm8DrFR36EcfSH6vathig4hQS3ABZqQsCwUpos5bb0rpdID3UX8WQrAswqnmINuTIng0o4+/NCHM23BdE69yYojonPCB7ZkLm9QuhZ37tgMAJplCXwfNGlPxyANM2nlSw9MWbn5YxzbBVPGGo+bp+iE3TqbBNRdDazeecdT1j3k0TpnwQPV26NwmTXr4Ab48Yk4AqQ2bHAKQ
- oUmD6WG6
- p+8iDfxXQQopPjwtTorBtImNkvI0Fvppmpem6c0m2P4qjTorHgX2m7L47uOs2Ht/vEeuQBil+obaAPfphghsYf8BqYXBAsqvhImlEt1IBJzYyLXhY2Q1dOvufu9cld3kTAhnVsE0QgOb3nFt5PDjGrQeYKcAMWdzpD7xZqgYXL39lUrP4yDfz/y21JoOIiDE8sI9DcATLmCl5mkSTV6FRsmD4Rzlq6PTvX/9mmkO+Xy9z7Ac00hgruK1Oa1LNDfqjO6FCoWaViCtLfPKaamFAjk5obCd+HPQyhAP7xtZhj63NVr9upB0EvAetfeEnYaSG7CwBsPlK9txNrm2Q0aiyCl9bunSHD4CAh67Qns43saehDMIljd13yu4712wUDidpkH/yOF93qbxLPAfsmHdqPyEpZnYFp2mmqYNv20LVIb/A9BxH/C6LW8XxlBAJXUhsIkLwbwc0FgmtI4IOQj+mVzpzyN/B0JPlnFBuZ/RG0dibWmK7x4eVcE3B6g==
+X-HE-Tag: 1768165174-599035
+X-HE-Meta: U2FsdGVkX1811HGDmkZd0QR3d3fLvUPRhJxVv3wotmjYgKsjQVUGZmCZXU7E9QJMAs3pWzARi3mAKFuGEofn+d66pTmgkUbETfFhQj0G6v+/rk60coKuM0ETDjg9ibslSBKVkQ76PMeM3oPkEWc3NMKL5xLwvHNPgg0qBWxQ1xDLLKcxRjftUKo9noJ6v50wtWtIAXEPrNqV3OPQ5GPRKLemz8mOvuRzOxu51kJXR9zPfpnpKHWvjTBL/wdDfYeltyoDw7/qOttpP1w0mQ0MbCXNugS/Ss24iHiPHE5x82Pr9AfWMHbybrtKkAoh0dZICFdLfxm811cjIrII3iD8hl+Qf5by7DQp43Wm9n94eEI8GbB2qbSQoJspyVXGEjmA8m9ILbuDW7ux+2yVa1f1Lua/fEu1qTTuZdPSyRZ7+xiHP+8LrqL1GJUa7ZyYtcYOsVF/iaZZkyCwIndi9iSTVh1ggkW2aLjwEVYdLqEWRtVeCxo1OJ8aF7n41dZK1kFjE5Iu5Zw699K3knSxddarvD5woK3Na8aBfm44k/yf85hoHANNHKbiWQmW2H/o+u+J0RwYZ7afcEA2bjuvxQRwxu0NdY7ezMzHQog4FhU0EGogTF68ymwbGPjk/zHoD1T2aJyKpXaVOSy8ukaLPDCuHxz6mK9HGYlfv9UR7ex9ay1w2EkJ4QduyoJPQML32YAyt/vp8NOSAvKzC42MahdgCr8QBvO5cMN2NusHuG3TJVe6fisQdgORwzxIoBu69DylxFrjgrRPjuwDtuftKGhOzwfXiZnZVp/GkhGCIu7LHmvqR4OoMcx2IRqya7wwgO5wHRlbeMugV6AnBZgECf4/vF9RMhWZLuTezqHIGlLVJeZFFTXIdLH7Q9+GjFf4rYHgXRiX24pHD6bSvE0otmTIeOQ+hhE6fcYWsxLDCZJAHsUTvzcA4ft7JGsGnoXMpvklMnO9bhYKVmhpSHJIYXN
+ 9OKZgmhN
+ D4W3u8nnxf1Snon8t2qzbkPcBm7nRKi64hOckfdbMbkcSPTlUgwp22Mr6E7I1DsnUaNGU0/jdrb0D3+MDl1cl8+/YLDh6UvFsagX3Ehstf4APjxYVJMZMYWYj6hlrV4l9CzHJiYQIpGW9CKPHc+RCiSKpL8mtZFr0uHQc1so2zo6GMfkZd3qOqlWlpGBe8Q9lMjYmm5RU/KhpjkE9Vali3APiinEvVIiOXZI/rlLzY7/tJCdtR3WrWYogIoe6txiNdYxQm9m2y/e1wWrr+qFRac64zjCstmQd5NfOXvu1jf7p8fbZ7aKjoSaYBNeblYvFweqRuelJi5q3w23ocVs0mPtmzmcvulHswOnQjy4SUnkl1jav/BpGplBUsj4uBfPmPx4QKmlVu01d4F8+QD9Gpne5ckrWEeDN/s/dc9S81AEsfBY1Eut/aUKAkvMlYVwMNmZQ2Dv5+qG4FoetmTt8IsuUm4s/wSGpRBTXgdCVThKi7IE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,16 +120,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Matthew Brost <matthew.brost@intel.com>
+This enables support for Transparent Huge Pages (THP) for device pages by
+using MIGRATE_VMA_SELECT_COMPOUND during migration. It removes the need to
+split folios and loop multiple times over all pages to perform required
+operations at page level. Instead, we rely on newly introduced support for
+higher orders in drm_pagemap and folio-level API.
 
-cpages returned from migrate_vma_setup represents the total number of
-individual pages found, not the number of 4K pages. The math in
-drm_pagemap_migrate_to_devmem for npages is based on the number of 4K
-pages, so cpages != npages can fail even if the entire memory range is
-found in migrate_vma_setup (e.g., when a single 2M page is found).
-Add drm_pagemap_cpages, which converts cpages to the number of 4K pages
-found.
+In Xe, this drastically improves performance when using SVM. The GT stats
+below collected after a 2MB page fault show overall servicing is more than
+7 times faster, and thanks to reduced CPU overhead the time spent on the
+actual copy goes from 23% without THP to 80% with THP:
 
+Without THP:
+
+    svm_2M_pagefault_us: 966
+    svm_2M_migrate_us: 942
+    svm_2M_device_copy_us: 223
+    svm_2M_get_pages_us: 9
+    svm_2M_bind_us: 10
+
+With THP:
+
+    svm_2M_pagefault_us: 132
+    svm_2M_migrate_us: 128
+    svm_2M_device_copy_us: 106
+    svm_2M_get_pages_us: 1
+    svm_2M_bind_us: 2
+
+v2:
+- Fix one occurrence of drm_pagemap_get_devmem_page() (Matthew Brost)
+
+v3:
+- Remove migrate_device_split_page() and folio_split_lock, instead rely on
+  free_zone_device_folio() to split folios before freeing (Matthew Brost)
+- Assert folio order is HPAGE_PMD_ORDER (Matthew Brost)
+- Always use folio_set_zone_device_data() in split (Matthew Brost)
+
+v4:
+- Warn on compound device page, s/continue/goto next/ (Matthew Brost)
+
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>
 Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
@@ -138,68 +174,186 @@ Cc: Zi Yan <ziy@nvidia.com>
 Cc: Alistair Popple <apopple@nvidia.com>
 Cc: Balbir Singh <balbirs@nvidia.com>
 Cc: linux-mm@kvack.org
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- drivers/gpu/drm/drm_pagemap.c | 38 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_pagemap.c | 77 ++++++++++++++++++++++++++++++-----
+ 1 file changed, 67 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
-index 308c14291eba..af2c8f4da00e 100644
+index af2c8f4da00e..bd2c9af51564 100644
 --- a/drivers/gpu/drm/drm_pagemap.c
 +++ b/drivers/gpu/drm/drm_pagemap.c
-@@ -452,6 +452,41 @@ static int drm_pagemap_migrate_range(struct drm_pagemap_devmem *devmem,
- 	return ret;
+@@ -200,16 +200,20 @@ static void drm_pagemap_migration_unlock_put_pages(unsigned long npages,
+ /**
+  * drm_pagemap_get_devmem_page() - Get a reference to a device memory page
+  * @page: Pointer to the page
++ * @order: Order
+  * @zdd: Pointer to the GPU SVM zone device data
+  *
+  * This function associates the given page with the specified GPU SVM zone
+  * device data and initializes it for zone device usage.
+  */
+ static void drm_pagemap_get_devmem_page(struct page *page,
++					unsigned int order,
+ 					struct drm_pagemap_zdd *zdd)
+ {
+-	page->zone_device_data = drm_pagemap_zdd_get(zdd);
+-	zone_device_page_init(page, 0);
++	struct folio *folio = page_folio(page);
++
++	folio_set_zone_device_data(folio, drm_pagemap_zdd_get(zdd));
++	zone_device_page_init(page, order);
  }
  
-+/**
-+ * drm_pagemap_cpages() - Count collected pages
-+ * @migrate_pfn: Array of migrate_pfn entries to account
-+ * @npages: Number of entries in @migrate_pfn
-+ *
-+ * Compute the total number of minimum-sized pages represented by the
-+ * collected entries in @migrate_pfn. The total is derived from the
-+ * order encoded in each entry.
-+ *
-+ * Return: Total number of minimum-sized pages.
-+ */
-+static int drm_pagemap_cpages(unsigned long *migrate_pfn, unsigned long npages)
-+{
-+	unsigned long i, cpages = 0;
-+
+ /**
+@@ -534,7 +538,8 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+ 		 * rare and only occur when the madvise attributes of memory are
+ 		 * changed or atomics are being used.
+ 		 */
+-		.flags		= MIGRATE_VMA_SELECT_SYSTEM | MIGRATE_VMA_SELECT_DEVICE_COHERENT,
++		.flags		= MIGRATE_VMA_SELECT_SYSTEM | MIGRATE_VMA_SELECT_DEVICE_COHERENT |
++				  MIGRATE_VMA_SELECT_COMPOUND,
+ 	};
+ 	unsigned long i, npages = npages_in_range(start, end);
+ 	unsigned long own_pages = 0, migrated_pages = 0;
+@@ -640,11 +645,16 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+ 
+ 	own_pages = 0;
+ 
+-	for (i = 0; i < npages; ++i) {
 +	for (i = 0; i < npages;) {
-+		struct page *page = migrate_pfn_to_page(migrate_pfn[i]);
-+		struct folio *folio;
++		unsigned long j;
+ 		struct page *page = pfn_to_page(migrate.dst[i]);
+ 		struct page *src_page = migrate_pfn_to_page(migrate.src[i]);
+-		cur.start = i;
 +		unsigned int order = 0;
 +
-+		if (page) {
-+			folio = page_folio(page);
-+			order = folio_order(folio);
-+			cpages += NR_PAGES(order);
-+		} else if (migrate_pfn[i] & MIGRATE_PFN_COMPOUND) {
++		drm_WARN_ONCE(dpagemap->drm, folio_order(page_folio(page)),
++			      "Unexpected compound device page found\n");
+ 
++		cur.start = i;
+ 		pages[i] = NULL;
+ 		if (src_page && is_device_private_page(src_page)) {
+ 			struct drm_pagemap_zdd *src_zdd =
+@@ -654,7 +664,7 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+ 			    !mdetails->can_migrate_same_pagemap) {
+ 				migrate.dst[i] = 0;
+ 				own_pages++;
+-				continue;
++				goto next;
+ 			}
+ 			if (mdetails->source_peer_migrates) {
+ 				cur.dpagemap = src_zdd->dpagemap;
+@@ -670,7 +680,20 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+ 			pages[i] = page;
+ 		}
+ 		migrate.dst[i] = migrate_pfn(migrate.dst[i]);
+-		drm_pagemap_get_devmem_page(page, zdd);
++
++		if (migrate.src[i] & MIGRATE_PFN_COMPOUND) {
++			drm_WARN_ONCE(dpagemap->drm, src_page &&
++				      folio_order(page_folio(src_page)) != HPAGE_PMD_ORDER,
++				      "Unexpected folio order\n");
++
 +			order = HPAGE_PMD_ORDER;
-+			cpages += NR_PAGES(order);
++			migrate.dst[i] |= MIGRATE_PFN_COMPOUND;
++
++			for (j = 1; j < NR_PAGES(order) && i + j < npages; j++)
++				migrate.dst[i + j] = 0;
 +		}
++
++		drm_pagemap_get_devmem_page(page, order, zdd);
+ 
+ 		/* If we switched the migrating drm_pagemap, migrate previous pages now */
+ 		err = drm_pagemap_migrate_range(devmem_allocation, migrate.src, migrate.dst,
+@@ -680,7 +703,11 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+ 			npages = i + 1;
+ 			goto err_finalize;
+ 		}
++
++next:
++		i += NR_PAGES(order);
+ 	}
++
+ 	cur.start = npages;
+ 	cur.ops = NULL; /* Force migration */
+ 	err = drm_pagemap_migrate_range(devmem_allocation, migrate.src, migrate.dst,
+@@ -789,6 +816,8 @@ static int drm_pagemap_migrate_populate_ram_pfn(struct vm_area_struct *vas,
+ 		page = folio_page(folio, 0);
+ 		mpfn[i] = migrate_pfn(page_to_pfn(page));
+ 
++		if (order)
++			mpfn[i] |= MIGRATE_PFN_COMPOUND;
+ next:
+ 		if (page)
+ 			addr += page_size(page);
+@@ -1044,8 +1073,15 @@ int drm_pagemap_evict_to_ram(struct drm_pagemap_devmem *devmem_allocation)
+ 	if (err)
+ 		goto err_finalize;
+ 
+-	for (i = 0; i < npages; ++i)
++	for (i = 0; i < npages;) {
++		unsigned int order = 0;
++
+ 		pages[i] = migrate_pfn_to_page(src[i]);
++		if (pages[i])
++			order = folio_order(page_folio(pages[i]));
 +
 +		i += NR_PAGES(order);
 +	}
+ 
+ 	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
+ 	if (err)
+@@ -1098,7 +1134,8 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
+ 		.vma		= vas,
+ 		.pgmap_owner	= page_pgmap(page)->owner,
+ 		.flags		= MIGRATE_VMA_SELECT_DEVICE_PRIVATE |
+-		MIGRATE_VMA_SELECT_DEVICE_COHERENT,
++				  MIGRATE_VMA_SELECT_DEVICE_COHERENT |
++				  MIGRATE_VMA_SELECT_COMPOUND,
+ 		.fault_page	= page,
+ 	};
+ 	struct drm_pagemap_migrate_details mdetails = {};
+@@ -1164,8 +1201,15 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
+ 	if (err)
+ 		goto err_finalize;
+ 
+-	for (i = 0; i < npages; ++i)
++	for (i = 0; i < npages;) {
++		unsigned int order = 0;
 +
-+	return cpages;
+ 		pages[i] = migrate_pfn_to_page(migrate.src[i]);
++		if (pages[i])
++			order = folio_order(page_folio(pages[i]));
++
++		i += NR_PAGES(order);
++	}
+ 
+ 	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
+ 	if (err)
+@@ -1224,9 +1268,22 @@ static vm_fault_t drm_pagemap_migrate_to_ram(struct vm_fault *vmf)
+ 	return err ? VM_FAULT_SIGBUS : 0;
+ }
+ 
++static void drm_pagemap_folio_split(struct folio *orig_folio, struct folio *new_folio)
++{
++	struct drm_pagemap_zdd *zdd;
++
++	if (!new_folio)
++		return;
++
++	new_folio->pgmap = orig_folio->pgmap;
++	zdd = folio_zone_device_data(orig_folio);
++	folio_set_zone_device_data(new_folio, drm_pagemap_zdd_get(zdd));
 +}
 +
- /**
-  * drm_pagemap_migrate_to_devmem() - Migrate a struct mm_struct range to device memory
-  * @devmem_allocation: The device memory allocation to migrate to.
-@@ -564,7 +599,8 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
- 		goto err_free;
- 	}
+ static const struct dev_pagemap_ops drm_pagemap_pagemap_ops = {
+ 	.folio_free = drm_pagemap_folio_free,
+ 	.migrate_to_ram = drm_pagemap_migrate_to_ram,
++	.folio_split = drm_pagemap_folio_split,
+ };
  
--	if (migrate.cpages != npages) {
-+	if (migrate.cpages != npages &&
-+	    drm_pagemap_cpages(migrate.src, npages) != npages) {
- 		/*
- 		 * Some pages to migrate. But we want to migrate all or
- 		 * nothing. Raced or unknown device pages.
+ /**
 -- 
 2.43.0
 
