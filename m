@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B65D2502F
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 08:22:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD029D2502E
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 08:22:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22D706B0093; Sun, 11 Jan 2026 03:22:27 -0500 (EST)
+	id 1E96E6B0095; Sun, 11 Jan 2026 03:22:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FADF6B0095; Sun, 11 Jan 2026 03:22:27 -0500 (EST)
+	id 1B6F36B0096; Sun, 11 Jan 2026 03:22:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E6AB6B0096; Sun, 11 Jan 2026 03:22:27 -0500 (EST)
+	id 0A2FB6B0098; Sun, 11 Jan 2026 03:22:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F14616B0093
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 03:22:26 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BCF461B548
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 08:22:26 +0000 (UTC)
-X-FDA: 84318991092.07.7906E0A
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EC9DB6B0095
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 03:22:41 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB3B91403A4
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 08:22:41 +0000 (UTC)
+X-FDA: 84318991722.22.A777427
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2C08280013
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 08:22:25 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c7lICoEa;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 370031C0004
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 08:22:40 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lw1lU3Ew;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768119760; a=rsa-sha256;
+	cv=none;
+	b=JHQ/asKGxq009m8oO0TJz2RCcUqkPilLeGdqVGoxPoe5VemcHEmcQAscezo8N42cKk+sRe
+	UvdZLxG7Lq9FvAKubdacsob9MHz5/omqPojl1O0WnlHMg8F1oXOP8FyUNFLWTN+YgR79SD
+	EiR+FsaxEGAwyaM+MbMy28poGxx1UsQ=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lw1lU3Ew;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768119745;
+	s=arc-20220608; t=1768119760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U9EN8P3acoDv0e0P4EVIlls8TUWgxf/J3foZHd7o2bM=;
-	b=uvWmFrE5dw0nFlFPh9lgEFRDXqvTd5wl4PKQ6zwBSectCIvDDgKqXSQXMHXuXFJSMAu/XP
-	nfaNWWoXEaCUxzz5p3ME86dYE/00giK4VpDzHfvvkp6MupptHhpD/hQIVuq0KQJ9Wbkj8F
-	spMiwiYAdpGFgQ/DCN+faIZJokYFXVk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c7lICoEa;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768119745; a=rsa-sha256;
-	cv=none;
-	b=8IA6jd9EjnFSPGP6ye5tCrYuUUjZvscFZuwCZbCpQWWYc+rAMcQ+ezD27UlOSabqMUh4cN
-	R/eBAKNIzETwfTxwA/wP1LzFGXkwo6Xl37hUjLZWX58ZffecjYcniA9i483yhQCp908+nI
-	JTOeA/EEMMs8P8fncguMinmGnO66VV0=
+	bh=pXj0Z2NgAtnlunEa9AvDDLLh6y0q3hS/njeAcboUK1o=;
+	b=wI4EKk63DEOMR7BMzBD87jkv08kcDwtkYy7vnj1STHMColhk92Kx0NUDCASgb81hhxyTCy
+	bnVLHCDcvZAT3UqzefpGDwPqfYplvVdGQALIFGFnP5hFKH82EYU9MURfb0zckraBlpU1cm
+	40q9Wy0RK197NiUTxtAFQvlmTnbdV+k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8612860127;
+	by tor.source.kernel.org (Postfix) with ESMTP id A5E5D60129;
+	Sun, 11 Jan 2026 08:22:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA77CC16AAE;
 	Sun, 11 Jan 2026 08:22:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5B3C4CEF7;
-	Sun, 11 Jan 2026 08:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768119744;
-	bh=tQxK3c7Hkef7Ih3mT/PwmwcYPHyFic1JpOQ4F9wr//s=;
+	s=k20201202; t=1768119759;
+	bh=djQarGwsnsMGImsgSQVJ5sD5jo+ZigjiDeQZakHIJZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c7lICoEawjuGlfAsC2qFFo0dYZjPTTHf6ZsKHEUok91SlgxJeaE0+xUcEvDNupyt3
-	 5Br9cYXmHoDXcMAya3BF4ypvrXlUGSih9s9+iBDKvjwhuneZTRDmN8ONDbWct/rDHQ
-	 5QoYlxyIJuLHIwjKBtJvt0vr+DnaCDPdkgGm0WnDnqGt5kiFGneMx+DwA0ClLjLb/V
-	 /wEtIezdVvzMPd8UCllgRT69ka6QmeOMOK8t6oMkgPq8KwqkbxZp11vTvUC5GGqoAl
-	 ayAX9QigC5taTQ49Jj6N2sxw6qFmAMp9L7M3/3wbbjKYkatCZdLZOULWFYtqCB5Eas
-	 /JSzikIr1W04w==
+	b=lw1lU3Ewc+dtv3vDYJfQvcR3SFOO3fNdQZbUcukOU8uBYk43EPjoMNLHvS+ZVTXFY
+	 kFiAwsUS0cL97IqVcj9lfrxTQhOT2vwhsvZsYZ978UiUZIG/ymSeKzXUMCvGav2t3T
+	 vM5MZTJCCtREKdgx/Ctorld3QmD4G38UlxAV/FKOUGToSqJ9W/z041Qg3ZqaKRg0C6
+	 0pqyd0jXlvxFbMeJVINiPfxlP57E5VlMoy0DwyzLHcSHXAWp+XP+b3aDLtpYYqQcns
+	 gv9MGzAi0TPrvCroxyxabPW1rlLFsb8P84S1OTpkxsCAf7ZizWZpxO+8YyP01fxPJX
+	 jR8BRtnoVff+g==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -131,22 +131,22 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH v3 04/29] arm: make initialization of zero page independent of the memory map
-Date: Sun, 11 Jan 2026 10:20:38 +0200
-Message-ID: <20260111082105.290734-5-rppt@kernel.org>
+Subject: [PATCH v3 05/29] arm64: introduce arch_zone_limits_init()
+Date: Sun, 11 Jan 2026 10:20:39 +0200
+Message-ID: <20260111082105.290734-6-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260111082105.290734-1-rppt@kernel.org>
 References: <20260111082105.290734-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2C08280013
-X-Stat-Signature: 89hhi7chygophkraja48tai6ga96k46t
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768119745-516762
-X-HE-Meta: U2FsdGVkX188UuyXLdZqfm3rL49TYCJtBKw9u58IYA16/y0h2tzSLbAudxq2KPiyP8bFQmcavJiD4jLGlGHNKDNh66bJbuzLUF2O4DJu+Pd64EM5ABy6/N8soAeZR0FKBiLIV3NegaMKAnTQf/ZYPRhtQzwqqugBhoM1YRM1C0k6DYUQt1HRYtxtkO+mrC3EAAm1niAOyoxOCl73+RDD8GulhgptKeIzL2TQuOXpyMV6DEAPqixrs0VAlfe+JmDA4vhgjHx2tlXzAifs8RuAgV0EhY/HR0y+SK4Y02JYk4PsNO5sNg0ksBLEo+7cDNiorucMKErpMdrdBQNOkSgEU0BzoJtoGzoZgxeXIKM3OzwacrtPfsZfBGTZSB9IXDBzRHLiIpdDwcfvtE0cCaPyyFpHbk/lUYJler+xUJOzE4Q4kndsd6rGzWmy8+tTFGEbTF81KOblSDOF0n1LGTzikC3/dMD6kLzfDwTDEmVVI07suv4S1GVDP45+Xab/imePqBXWP5hwqWWbgsna8goKFaQq8RY28qx/Qpt+mslHbgeMOpvf/v21/j64JVQcQnnb6KThKt7x4aEj6PXN6QjhZBugdfbZEJOEr1am4gnCYvBtDBsI9Ng10h5i1yf25f/Jk0yI6J2v16516pZuzDYi15jf6ywRPM0mzmgjkmrSyz3m48BcBOs5ksj26ACT8ncFiJalJaARVYLgc9pl82suY+dAbrCe7H/Uap1ineeRh0texcEGOWGH/WR5dR9b48SeHX1rj52281JPAANhudxuJAHzGOvw65/hMeUD9+k1MniS1fuPG22/8EZ2888Yqq/adVoGtxUXeqGGCIDy5OK6QYfLXaPaA+NiPDXD3/bzd2zqX7Oz/ErBQtQ57m9PypVZuRhI+jru8pwkewBL7lHFh8RDH7I/II8/xsg0Da8s5LYuZgQzpPV8WUDegYAEilXB7H4ZWW7mockAmz8ZkpI
- R2OiXncO
- 3kQ+TkOLy7yggYLgicGRCS6xypmHn4kuakLXo8DouRdiYvo3E/h47v519kW2S4zY/ObbJYXQQES9c2PMALN23rmYXOf7ueNO02hiChSC0kK8MMbTSm4sj4AVmLYT/ef6IFdRpUJYIa6sZ0If87CVgC3FxuSlwH2vRefxLLI/tnZjVU7hOju3t+OFLDkPe3PjGdqM/QNszcQquUmZYIh7+LbtWZyMd8r8v1O5FY6I0seuowb172Dy6fRcc2AQRGT3KblDJS0bBh5IMWYLb2SwJJUwNDfuL8XQHEccDPpHaRopYOXupMhPPs6CByAGUlV0lQjzsm4stl+7ZNYc=
+X-Stat-Signature: cn9keigr7o9yow9r9anai8szubxhwmkj
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 370031C0004
+X-HE-Tag: 1768119760-653418
+X-HE-Meta: U2FsdGVkX19ZLNvd+g2DwEbwADA8HFuZhHYWti55TNnlArl6dl9hDRFI9OjswSlUPNrbZYlLwVKib1/m6S5CRMhg9F5hkRUezc1tpAGY26b3ZO4zj1BhHnNEgTAqzHF0FL/fHuTUSXskLS6qwQEL9U/07WM/E+US0FiNEKdYz8Wet51hfYiND3ynA0+p4h6IywuY1fXBJ4p1izGnXD7aQIdtfqZCgvi6hhBLswGWajLIiqVgvA5advk1LjcaWD7w/rA++MCiDNDOyE0gubjjWiaMlnxrenZ2hsuXAquqVqYnsKcVnrHd3vpUu4ZzYppGpb27DTeSs/pcIdgI+i5jH0kROGYNczv2NrnhSmZY7JwN4dKs4TRAPbWy0t4Nn9dr/nWpVnVU5z42W0w1/MdtEGCm2R/XIJht9noloFv+zku/batJGZGHgzd3ZBVcA9zuxcgMp7iTOfUx7SR86AWKzIEzpkzwqa7euRSweaiJ5abbyE1jrzkqDVCA5B8esjIh90QxtOSuXNQEP0Pocex1L+0pBNqXCWL4I9r2VOFrS6IWFnJsOvotTEO3bW5Kp9Jq74ZLIvwPBeyoPipt4/KEVCrFg09OQbqAR1M+14R9NBMOn9fAYSdsmOR7iqlh27IkE5uKWFC0K5/7OgYMhuUKxcYz8BZjzl+RD/W0+sawdAARAk65v1ySjGrBJeaD5u0rZot+0nVP5i3dINIrN86fsqK1wzv0t18LYj8P2s/3flplPkI4N8B8VTQlNJoXvFMgGymVBJZCG+QBLHTsJP6CuoqP+Deurm3Gm8XHy1Jp+irWTBB9GOlrFzhLu7Y3mHrdMAmoakf8nuKNXJIW7r8GZnoGc5GQolJmHlcqhmpcO5eFJW1vItjZ7mVAykViRvql+RdWjntVTxERRTyUAbHmoyCaBTIs9uXfQVLnB3eNuGkXeskEkTNSKcf45n1W+DgAcPhwYGLMys9EX/7TrOi
+ EU60Vi6O
+ +Cmog4GbFCb8JEuGI4dCzz4/uByrqvUNZn+MORa+GS4VWg7SvQzj+O8GYmkScDtXzpCsm28yL4iMmSLZtCubdoUanHZIzkvE8HPjwt/YRsYyyDooycT9V3WLK6OTzLYriDZJqFcsjf5gFS0z6qk/pR9levMHj5YYVYYDB6cE8O1xlbmf1JV0QpsD+paR1sgkO66eMYEbPykr/D/5Xd+BdzHPrQ6k0+2h1eOXCsKVLHlGQ/6mNLHsa3aDZ/T45KXCXDz4yQozeUiR8HZehX8vZ7g032iJxiATU0zzwfrjbb9pIy8gIKP2ic1tMb2XNCT6J2YQ5Mt4ZtN5MIlMk4TYv4ijW0VHe6hi45Iko
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,109 +155,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Klara Modin <klarasmodin@gmail.com>
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Unlike most architectures, arm keeps a struct page pointer to the
-empty_zero_page and to initialize it requires conversion of a virtual
-address to page which makes it necessary to have memory map initialized
-before creating the empty_zero_page.
+Move calculations of zone limits to a dedicated arch_zone_limits_init()
+function.
 
-Make empty_zero_page a stataic array in BSS to decouple it's
-initialization from the initialization of the memory map.
+Later MM core will use this function as an architecture specific callback
+during nodes and zones initialization and thus there won't be a need to
+call free_area_init() from every architecture.
 
-This also aligns arm with vast majorty of architectures.
+While on it rename zone_sizes_init() to dma_limits_init() to better
+reflect what that function does.
 
-Signed-off-by: Klara Modin <klarasmodin@gmail.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/arm/include/asm/pgtable.h |  4 ++--
- arch/arm/mm/mmu.c              | 10 +---------
- arch/arm/mm/nommu.c            | 10 +---------
- 3 files changed, 4 insertions(+), 20 deletions(-)
+ arch/arm64/mm/init.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
-index 86378eec7757..6fa9acd6a7f5 100644
---- a/arch/arm/include/asm/pgtable.h
-+++ b/arch/arm/include/asm/pgtable.h
-@@ -15,8 +15,8 @@
-  * ZERO_PAGE is a global shared page that is always zero: used
-  * for zero-mapped memory areas etc..
-  */
--extern struct page *empty_zero_page;
--#define ZERO_PAGE(vaddr)	(empty_zero_page)
-+extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
-+#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index 524d34a0e921..06815d34cc11 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -118,7 +118,21 @@ static phys_addr_t __init max_zone_phys(phys_addr_t zone_limit)
+ 	return min(zone_limit, memblock_end_of_DRAM() - 1) + 1;
+ }
+ 
+-static void __init zone_sizes_init(void)
++void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
++{
++	phys_addr_t __maybe_unused dma32_phys_limit =
++		max_zone_phys(DMA_BIT_MASK(32));
++
++#ifdef CONFIG_ZONE_DMA
++	max_zone_pfns[ZONE_DMA] = PFN_DOWN(max_zone_phys(zone_dma_limit));
++#endif
++#ifdef CONFIG_ZONE_DMA32
++	max_zone_pfns[ZONE_DMA32] = PFN_DOWN(dma32_phys_limit);
++#endif
++	max_zone_pfns[ZONE_NORMAL] = max_pfn;
++}
++
++static void __init dma_limits_init(void)
+ {
+ 	unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
+ 	phys_addr_t __maybe_unused acpi_zone_dma_limit;
+@@ -139,17 +153,15 @@ static void __init zone_sizes_init(void)
+ 	if (memblock_start_of_DRAM() < U32_MAX)
+ 		zone_dma_limit = min(zone_dma_limit, U32_MAX);
+ 	arm64_dma_phys_limit = max_zone_phys(zone_dma_limit);
+-	max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
  #endif
+ #ifdef CONFIG_ZONE_DMA32
+-	max_zone_pfns[ZONE_DMA32] = PFN_DOWN(dma32_phys_limit);
+ 	if (!arm64_dma_phys_limit)
+ 		arm64_dma_phys_limit = dma32_phys_limit;
+ #endif
+ 	if (!arm64_dma_phys_limit)
+ 		arm64_dma_phys_limit = PHYS_MASK + 1;
+-	max_zone_pfns[ZONE_NORMAL] = max_pfn;
  
- #include <asm-generic/pgtable-nopud.h>
-diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
-index 8bac96e205ac..518def8314e7 100644
---- a/arch/arm/mm/mmu.c
-+++ b/arch/arm/mm/mmu.c
-@@ -45,7 +45,7 @@ extern unsigned long __atags_pointer;
-  * empty_zero_page is a special page that is used for
-  * zero-initialized data and COW.
-  */
--struct page *empty_zero_page;
-+unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)] __page_aligned_bss;
- EXPORT_SYMBOL(empty_zero_page);
- 
- /*
-@@ -1754,8 +1754,6 @@ static void __init early_fixmap_shutdown(void)
-  */
- void __init paging_init(const struct machine_desc *mdesc)
- {
--	void *zero_page;
--
- #ifdef CONFIG_XIP_KERNEL
- 	/* Store the kernel RW RAM region start/end in these variables */
- 	kernel_sec_start = CONFIG_PHYS_OFFSET & SECTION_MASK;
-@@ -1781,13 +1779,7 @@ void __init paging_init(const struct machine_desc *mdesc)
- 
- 	top_pmd = pmd_off_k(0xffff0000);
- 
--	/* allocate the zero page. */
--	zero_page = early_alloc(PAGE_SIZE);
--
- 	bootmem_init();
--
--	empty_zero_page = virt_to_page(zero_page);
--	__flush_dcache_folio(NULL, page_folio(empty_zero_page));
++	arch_zone_limits_init(max_zone_pfns);
+ 	free_area_init(max_zone_pfns);
  }
  
- void __init early_mm_init(const struct machine_desc *mdesc)
-diff --git a/arch/arm/mm/nommu.c b/arch/arm/mm/nommu.c
-index d638cc87807e..7e42d8accec6 100644
---- a/arch/arm/mm/nommu.c
-+++ b/arch/arm/mm/nommu.c
-@@ -31,7 +31,7 @@ unsigned long vectors_base;
-  * empty_zero_page is a special page that is used for
-  * zero-initialized data and COW.
-  */
--struct page *empty_zero_page;
-+unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)] __page_aligned_bss;
- EXPORT_SYMBOL(empty_zero_page);
+@@ -319,7 +331,7 @@ void __init bootmem_init(void)
+ 	 * done after the fixed reservations
+ 	 */
+ 	sparse_init();
+-	zone_sizes_init();
++	dma_limits_init();
  
- #ifdef CONFIG_ARM_MPU
-@@ -156,18 +156,10 @@ void __init adjust_lowmem_bounds(void)
-  */
- void __init paging_init(const struct machine_desc *mdesc)
- {
--	void *zero_page;
--
- 	early_trap_init((void *)vectors_base);
- 	mpu_setup();
- 
--	/* allocate the zero page. */
--	zero_page = (void *)memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
--
- 	bootmem_init();
--
--	empty_zero_page = virt_to_page(zero_page);
--	flush_dcache_page(empty_zero_page);
- }
- 
- /*
+ 	/*
+ 	 * Reserve the CMA area after arm64_dma_phys_limit was initialised.
 -- 
 2.51.0
 
