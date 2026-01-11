@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88DDED2502F
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 09:11:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 904B3D2502E
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 09:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E83616B009E; Sun, 11 Jan 2026 04:11:52 -0500 (EST)
+	id 010C96B0088; Sun, 11 Jan 2026 04:14:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5A4F6B00A1; Sun, 11 Jan 2026 04:11:52 -0500 (EST)
+	id F2A596B0089; Sun, 11 Jan 2026 04:14:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D66096B00A2; Sun, 11 Jan 2026 04:11:52 -0500 (EST)
+	id E1F536B008A; Sun, 11 Jan 2026 04:14:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C4DE86B009E
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 04:11:52 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 87EC11A0306
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 09:11:52 +0000 (UTC)
-X-FDA: 84319115664.07.990897A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D02C36B0088
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 04:14:45 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F940D021C
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 09:14:45 +0000 (UTC)
+X-FDA: 84319122930.15.AC38FC9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id F3AC91A000A
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 09:11:50 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="XBx97/xK";
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id DC287140009
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 09:14:43 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JjqqupCp;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768122711;
+	s=arc-20220608; t=1768122883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=29aQ501ejql1AKGWkAKWOMmDDfQPHcgIHX+O5IkPtmg=;
-	b=0+KvMyl7Sv51+2MVW08tohJP/918bVSdOrAz7W8AbnD9bHb0xha7+3SQ6sj5pQvpJMLKH1
-	T+9VDypniI9s6kxyRnKzjl6OYhn2OvILFjqBFit/tMFmm9FKVOzkQ9ykhx3ZN1y8Fczccg
-	my56qD5BLx4n9yCMGxGVXEpVaY8xD74=
+	bh=ovxgaWEWtvoH4l4+eP0byrY57HYSCoOWbDCKt0O04Bw=;
+	b=xFnzVe5yBn+dOoPLD+FF0yzYbYFstTypAwmYGpMgEcf51HQgoZ3cJ1GHVyx1Wi98XIUv7x
+	2sYHre86oDWX1hbu2hG/BTPk12063oIEWr9zcFExtP2DJ0SKfV+l3+/69bBl3q0im5WIJB
+	3yBC+/wfobu8vRkE9f9QO81si4dR+2Y=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="XBx97/xK";
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JjqqupCp;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768122711; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768122883; a=rsa-sha256;
 	cv=none;
-	b=yknuZzTfwmwDA/tP/YZswmRs1zHmvTfGxvlfRZiW1vJkGK8PqLdSydWo6gcXtWXw93pedL
-	OUMjoy7ioqK0WHhmVG4rUF83bkClg5hOlEmz8BpEoQnVkU7OHxYvMQTQMU0e+wq9N1FkBu
-	8VHiN8Su6F2Fp4vir5MsUGtEuRG3bps=
+	b=Q7W1qNFQtgUPLTzmAyYEAB1gsQI+HZlxAfvZGr8VX4CDmNVjrny2bG4FbXNrfRIUV5z05z
+	3/mtd3f9cwLT+ubZhcob+uq6v8Gqa7CD0IiZr7o7QvOzapwuONVMcUEFdf2OXWL+Q8gm2M
+	tKuPaBNVZDxZ6PGFiyCkRJJhDrCHQw8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 71DED60010;
-	Sun, 11 Jan 2026 09:11:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD5DC4CEF7;
-	Sun, 11 Jan 2026 09:11:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5278860010;
+	Sun, 11 Jan 2026 09:14:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1ACC4CEF7;
+	Sun, 11 Jan 2026 09:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768122709;
-	bh=uZsS9eMgw1qIS04QngwB711PIkKR14sDba+wAXFooJs=;
+	s=k20201202; t=1768122882;
+	bh=+eIiB8wmKtBPZLFPA5HPpiKv0zBcRE9iGummK/Yx3RU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XBx97/xKW55BHFhSVToAhSY74nwEwwCtS78dADYRniDyX4CCS+3en/HYGMkyrXmoV
-	 /AuPJB3Y2UD40BzYuaBuU1jtdVgm9eTzkA5RElTPjcTOCpNVq5sSYYp6Dk99gditdt
-	 3M6U8KdpHXpkSSryv8WSVPFLVJFtZPDmWbsJm+2MyeoVvwSUP5+yJHQyvE+DvBLKCR
-	 hIUoLfNEZvCsRTUjPlIeBfo3bK/hQ0ujKZrqXZe+/+BLDgjSa23ix6CXF1Jw0Wl2gc
-	 5alBnwzzdT2yyhiSc2/ET4a+K+T/6OUo2CHG7R++XQrj1+wOBneVJ8fdWC/d1VSHRz
-	 62nNZ6eZ6EuzQ==
-Date: Sun, 11 Jan 2026 11:11:42 +0200
+	b=JjqqupCpx9hXZySMzpTrZ5nm4UXE/3Ks73i14xJ2Px8oi8W0uD7ogFg4fPNv+YLXb
+	 FysJcwQAH9ajB/A0X7wY24nfNFv4I22VKrilRzG4YdukB6qQArOguyYYPu6UEE0iiL
+	 apihL5iIilppttMfk0l+UMqrCm80DSKAEMhdLcW4YMaFq/iHMQWxgtu86wM1NT412B
+	 o5bUneTj98sjivf7ZBKD6cYS7n0eZ/c5CofLNkh8Hbw/5LXj1uDsKoyxDaX7nwkYat
+	 iqdIfnK1hQcT/JD9tDxq24QIPalsPil06kaOHPbVDmF06wT9XhqT2SM0Vx0XhUlTVG
+	 31SwIM8MwyUMQ==
+Date: Sun, 11 Jan 2026 11:14:36 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: ranxiaokai627@163.com, graf@amazon.com, pasha.tatashin@soleen.com,
-	pratyush@kernel.org, surenb@google.com, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH] kho: init alloc tags when restoring pages from reserved
- memory
-Message-ID: <aWNpTnZKfjb6yLHp@kernel.org>
-References: <20260109104251.157767-1-ranxiaokai627@163.com>
- <20260110162843.ecd8e731bdc281f4cd8e4764@linux-foundation.org>
+To: Hou Wenlong <houwenlong.hwl@antgroup.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/early_ioremap: Print the starting physical address in
+ __early_ioremap()
+Message-ID: <aWNp_PRovaLO97zt@kernel.org>
+References: <aa2d44c34f44c31b50285b7592ed4fd78d6f59ba.1767965415.git.houwenlong.hwl@antgroup.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260110162843.ecd8e731bdc281f4cd8e4764@linux-foundation.org>
-X-Rspamd-Queue-Id: F3AC91A000A
-X-Stat-Signature: tk7h346sydmcyuwkqfnoeekrphzas8h4
+In-Reply-To: <aa2d44c34f44c31b50285b7592ed4fd78d6f59ba.1767965415.git.houwenlong.hwl@antgroup.com>
+X-Rspamd-Queue-Id: DC287140009
+X-Stat-Signature: 7yiyt57qrtw8m9dmourn9kcej1czc97u
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768122710-968057
-X-HE-Meta: U2FsdGVkX18DgQaTWjPkTFJtT+8AkXnv1i2FfBASTtwRsi+xbOYaTETqfHr7OboIoT6pSg3VhKMTpS1xz540bFCfGc8gwKvEEymi7wHlBxyWbOEpw+66KIVo2lYtz8l0EYlVPWRnY7l9mmHW9cc1UNLN3cQ1h6CYE11OzbWDnAU6Lyk5qRiuqZLgg9nYiqTighLdbq+fTydxJQlZsFrbX8+qn7Z59gP98rd3OhRS00Lf0nsedLhk0wD+qzZ7CW2mS9i92bQFYv08VQLXNlmBwy5mD+GlXfGMYNXxyOjU40VUIK07j6U7c5H5KrUpRQHuZ1uJtpzyMg3hU/5LvNKtuhVVu1OQTR4TLeFBSLXYWWlGCLam9WilU4/XwAuXl4czs5DOOpJMc1nVzOhqrL5Kb29dv/QaA8D1J4bnTFjPfrTOS3QNXZ1N7i9PHzPtlepHMpQEoaFu/GTk8UeaUJNAeF/hbgBd5RW/i+LejvYSmWd2kEpHaEfZWw6SDj068Oc3VIBQCRAS2hIZWEC60/96tz11rlcdCJNG0PL/hrPcKF02nWms2EVjXs4JGuctaddPD2DV3TZfzbV2Mgn+/WHlSrUMNPYjgJN0HaxL9RPz7H1X6gYDu299XkJvN07QjUMJu+ZHdUQJ3KiS51OmLJgmW8Q66yMJPYXpijdRCYX/NJmIHfMGjIEWkgsVErliVsMek+VbfTUa6iNVzVYhRI7zMwvpfbiGnn5iQNyoe1yfC9siUpYrXQb5Gw7jQtxlB8xrIwvlsWCkGQ5VWcl165uSTo5asj3rzp2r4ekp3Ir0r+neGf1Je6Bmio8KFznZ1hf1nrW00URnJpW7b+V46vTrmMa+Lvyug7Ltk9+haQ0ZvZaa30B+fIj9Qw6AgbLEtseboo33ujxscHK/nMVyIIqq1dXxohqAbCYBjsBBmK2UqSertb3CZeooOO5hLHXKEPVA7huIGmZ3dffM2BZcsp8
- 9q1V8b0H
- vumq7xsLOuFqZAEP/QhWMcHtjl0VbgHYX9DOKC0S9LDNQoDZh50XfPox1iJmqqo7rLepnDvBteMU20BuhhVGbLrsaBjd9cKLDV/MmV+H+oCX9m7uuTdS05PhPnYY6U446awk3cFoIFtk6fR9mVCq9lFmcK9ttWnJifY9W7XaVycqLEDdI2sJxO+1aAOdEWZB1Xb7/R82RVtED4/FnTg5PCTRvEqDjLihhyBevR5Hay8mrp/vEFGs7FUNEdo2WQfAVWBUcAHOnfoJQZwsEdLogTerpZ9WkesMR/QITGTIafFASWYo7+V7aVuNqd8Rok+lKWAW4XvYhLkBnECjP7eUF0DvAVw==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768122883-879893
+X-HE-Meta: U2FsdGVkX19K5iojMmERK6mdr68uJlxYp1BlkoydUPljpocMJlLBdVTzoO0Akmt22X6rI7jkheaFgSYVsFxv6Rm7lI1WP+yBgl6D4K4eG/3EXrCGrKrv6xR9ULpgG/3iw+Ne/kel2byj16D5xqcVdn2Yqwcq6jwolcN3TiiYK0P3t/l/N/tOgPBKXn6U8xn+Yra/tLuVPXqnRwXklVLm4BKUEwVwuNKS2umexPNuRcnkrUXOC2f7YfyCue8zA3xILqAd1tD1BE71wOmyBgGcNllzSwqOl6VGLEMh0ueaociLOpSdLv6XzzZPaosa7gvVtt9OJq5fPwHZYr+lBaEr9Spr1KpA4Cxt6uF5b1ZcQvkhk7yXeEdrugbtZh4qEK9Z9ahzcAnbz0fzLRQBr5yUQzK+CumimiJrz8F7Hjmz+dqKoRdnLyaNSAt2xJF5GE6suikpLhS21i/nh2T/OCc/tiGeXdBa8l2INsdjgnzMNMsmrmv6dAC5Eem9bPweBpC9NUwGyjIM1C6V/He79QrGbwLPp1x9qM73rwfhRdFGj73Y2HpmiAdxcLBI0KWXEq4OH6FZXKB/DaUHW93sM9qID/wiI6bbzsW/YX1yfVY4XzyGHfmgABujb/zi4vGkM2+H+vOm1NPKdCRWu5JYXzyeJ5/hAMo0srO8GLl3DzzXpDM6dS/q37JVnm6rKD/vPB0EsY7OeQnGhxyHcz8JbZ3Ngpy31o0OxI68R0acj8ILmME/E05IMIq0EZn+PPBK3EbHVFrDt8dQZ93dHQOzy9pcgONygBqyIIZNeLA85hRVBsWXj+xnZbpkoWnJ3BDogEz9ym7ucpsAnD3tuppvcle3CVNw18zXHmxmW+07NxpXAMhCKIiS5E8C39NnokYk8OXc/2TBHIA0PHj1zMjK/unzxPXHLz866TbmS5kKELDFR5JKV6+HTqowlYZKPKe/OmeiXXq+sk1MkFztFrZB26G
+ JEfqks9y
+ /jyEE5PjBMtTOlQX+tUQsGjCt5T33PNtU9PsU173Axhr7Ri/T/aMBQYLxlW63Yqpxs8715raHrxRfFM64FLXgUPKy428j9ESLdjYENdMacyib/YCB34bHfUTEv83dgM8+FMVBo1Rf8+oFJdN1cZA+3oRBHNZS4DHycZgOXz9Q0Pnkyk1q/Xh4jPgnKO2CK8y8/YmnOC8lHEwYqOd/hemaote8SSooxcmhy4NzgRhH5KGtuQGfaRNJzwgpx73igJXyr9DbfEOVYHH7gIBLTyjOvSk5JusUTrZq/iQcx5kWdUZLqJeHte8vcmv9Bli3CFW8/EiT7M7EgwaMv5p8V/Wm3bNTqnSujdvtDEyOLZCBKqRBy7is9TIlTqOenXkF+qAmjrGf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,52 +97,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 10, 2026 at 04:28:43PM -0800, Andrew Morton wrote:
-> On Fri,  9 Jan 2026 10:42:51 +0000 ranxiaokai627@163.com wrote:
+On Fri, Jan 09, 2026 at 09:31:51PM +0800, Hou Wenlong wrote:
+> The debug WARN() printing occurs after the while loop, so the
+> 'phys_addr' reflects the last physical address rather than the actual
+> starting physical address, which is not useful for debugging. To
+> simplify, the WARN() statement could be moved up before the loop instead
+> of introducing a new variable to record the original 'phys_addr' value.
+> Additionally, swap the print order of 'slot_virt[slot]' and 'offset', as
+> this will enhance output readability.
 > 
-> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> > 
-> > Memblock pages (including reserved memory) should have their allocation
-> > tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-> > released to the page allocator. When kho restores pages through
-> > kho_restore_page(), missing this call causes mismatched
-> > allocation/deallocation tracking and warning message:
-> > alloc_tag was not set.
-> > 
-> > Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-> > fix this.
-> 
-> Great, thanks.
-> 
-> It would be helpful to quote that warning message in the patch
-> changelog, please.
-> 
-> > --- a/kernel/liveupdate/kexec_handover.c
-> > +++ b/kernel/liveupdate/kexec_handover.c
-> > @@ -268,6 +268,7 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
-> >  	else
-> >  		kho_init_pages(page, nr_pages);
-> >  
-> > +	clear_page_tag_ref(page);
-> >  	adjust_managed_page_count(page, nr_pages);
-> >  	return page;
-> >  }
-> 
-> Warning splats are pretty bad and it's desirable to fix this in
-> previous kernel versions.
-> 
-> To do that it's best for us to identify which kernel version(s) should
-> be patched, via a Fixes: tag in the changelog.
-> 
-> From a quick look, it appears that Pratyush's 12b9a2c05d1b ("kho:
-> initialize tail pages for higher order folios properly") is a suitable
-> anchor, what do people think?
+> Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
 
-I think it should be even earlier:
-fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
- 
-> Meanwhile I'll queue this up for some testing while awaiting maintainer
-> feedback.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+> ---
+>  mm/early_ioremap.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/early_ioremap.c b/mm/early_ioremap.c
+> index ff35b84a7b50..3fdde074c9da 100644
+> --- a/mm/early_ioremap.c
+> +++ b/mm/early_ioremap.c
+> @@ -139,6 +139,9 @@ __early_ioremap(resource_size_t phys_addr, unsigned long size, pgprot_t prot)
+>  	if (WARN_ON(nrpages > NR_FIX_BTMAPS))
+>  		return NULL;
+>  
+> +	WARN(early_ioremap_debug, "%s(%pa, %08lx) [%d] => %08lx + %08lx\n",
+> +	     __func__, &phys_addr, size, slot, slot_virt[slot], offset);
+> +
+>  	/*
+>  	 * Ok, go for it..
+>  	 */
+> @@ -152,8 +155,6 @@ __early_ioremap(resource_size_t phys_addr, unsigned long size, pgprot_t prot)
+>  		--idx;
+>  		--nrpages;
+>  	}
+> -	WARN(early_ioremap_debug, "%s(%pa, %08lx) [%d] => %08lx + %08lx\n",
+> -	     __func__, &phys_addr, size, slot, offset, slot_virt[slot]);
+>  
+>  	prev_map[slot] = (void __iomem *)(offset + slot_virt[slot]);
+>  	return prev_map[slot];
+> -- 
+> 2.31.1
+> 
 
 -- 
 Sincerely yours,
