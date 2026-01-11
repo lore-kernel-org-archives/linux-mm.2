@@ -4,97 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68DEED2502E
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 20:55:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4500CD25036
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 20:59:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E5CA6B0088; Sun, 11 Jan 2026 15:55:06 -0500 (EST)
+	id A474C6B0088; Sun, 11 Jan 2026 15:59:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0936B6B0089; Sun, 11 Jan 2026 15:55:06 -0500 (EST)
+	id 9CA9A6B0089; Sun, 11 Jan 2026 15:59:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE0D86B008A; Sun, 11 Jan 2026 15:55:05 -0500 (EST)
+	id 8AB8D6B008A; Sun, 11 Jan 2026 15:59:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DCD4F6B0088
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 15:55:05 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 74ACC6B0088
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 15:59:08 -0500 (EST)
 Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 40CFD140FD2
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 20:55:05 +0000 (UTC)
-X-FDA: 84320887770.07.EDDC39E
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7F26640008
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 20:55:02 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=FlNwjV8B;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 38F051AE95F
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 20:59:08 +0000 (UTC)
+X-FDA: 84320897976.07.5431BAB
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 148F8140002
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 20:59:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KCr9Phyf;
+	spf=pass (imf26.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768164903;
+	s=arc-20220608; t=1768165146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=V9YGdrtNXEMofXC2VYRvZrlGXD05bJauOufvject7tk=;
-	b=57ywF8dr466bUTT15l+Dgxuj2ykhvoTeV5zKGZxazo7heKeTKjAct9dWGRJqx3JSa2R1zG
-	qZyuhHnjPUbsFMcZKWEC5gjXYaL7sW5NZcs9b17OXoJwa31LuX5zhqokMs3Q3N3rj3Waij
-	sDBseabXCOx2ct7T2EFjW9TYS9Jbrqc=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZEv8icGYn2/NvIbauvVBK2h6w5hpiY+WnWQJBv0zutE=;
+	b=FYDcVpnVjh6EqcnP/CDz/e+PN0Vg9ydmw0gyxemBTU2QclscZ9qWgIKiVcSaaC0ss/9q+D
+	xU4/0qQ6UuZV+1JwUDL0rOIeSzwt/B/ixHouJqW0q/fqvU2dIPKzuweAFxPfMTxCCRX1z3
+	GW1shJPs8xl36RU58FGOoHqhrPfDkxY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=FlNwjV8B;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KCr9Phyf;
+	spf=pass (imf26.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768164903; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768165146; a=rsa-sha256;
 	cv=none;
-	b=jhVwP12m1VSLbBuQKem02G45yxmUG0C8wf7j5J47D6Rt8JLOt/8fEpowFQg0FcosKoX6yf
-	8ljqj/Yn4wO6wOebNs5LZSZauWbfgvnEcny8GzUV/5fHEUShGzqNGxrnf7cbX0pRQoOSfl
-	I12gIB+RwDtcCynvSEAKcNcrrsANKvE=
+	b=iDp5OzzlUytRiC0ixeYRai3Mt2L6bligJ/sgNxnyDOEhyvg2tq+yXd3rTIV6XcmF8UwFFy
+	Vx8IOqloK7+zpN9uYy1lJscNQRrRR+g3y1dD1aoM0ohsvKtWU+XPUXGQcqCjLhFfg9Ldde
+	bJyS3myTSOdyB0tJ2p5suh/Pv8Rr6mQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768164902; x=1799700902;
-  h=date:from:to:cc:subject:message-id;
-  bh=azs1KeAwl/jOwE0Um03liCx5f9eIs2ftpl4R+vKv6O0=;
-  b=FlNwjV8BoE0lCRk+I896i0UNMrc/jZcoddmgNhsnvgZL12N29sQnh//M
-   mxq8UfHo1Zf6r6vQ87mfraV39cuXWzYJCpZWH5FhqRqCp3ve3XFPft1el
-   IeD1w6XSvAdPS3lHDAtYNfm/FKk+SgRvSmHyYIKwxF6NjHu5xPp8cguy6
-   qAqwKXergPnGV9gXsc60+Bgn8geeoVC6uf0LiDcqSU7LnzLUIl7vTII0A
-   W2hATBwuPiZfqn5dARLx0NVbL/SxMVA44WgGENmNhteFDEadmVodLcVWl
-   zRTT2TuEoa1uMWy7rq+gLKlpCG0PNvsJyoVUiTj4ZIbE1ADyQoKa5xFvO
+  t=1768165146; x=1799701146;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=JowSG+4tQQyTE47Rbtpcgaez8ldKvXlCh+DCDwat3uA=;
+  b=KCr9PhyfERHVC0FFL5f0bUnE3VBF21GzZpnAjMAEHSHGUNj4X7Jm2EGl
+   VFilqUcSVnIwPkpWjd7hqBrKVMahXaa9YJbdJILBKrGQLJmjnOpG2eOPw
+   ikQgRZStF+jT3w5YWGcPtxb4T9hVTXL2Bd0T+HNhYp/+L1aQFbgJgrCiZ
+   2ceIyJ/X907T9eoDxrv4WDdvTw1Vd+Oe7J6QNQ8b9//uMD9CRPWv6ty4L
+   AmvClJoQCX74BlkxIVUB1P5fxuSriiV/lJThwnBbrmrm3qvdFdeekJwls
+   8N1kYtUAvDP5IhtYmGWSTk177GpTV5OyWfR+2zmM/NRixi/nXE5ob2x+P
    A==;
-X-CSE-ConnectionGUID: 79+QbMejQ+++07RNDoRBOg==
-X-CSE-MsgGUID: G9H7K4OKRNuHzQiqxCD4SQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="69349110"
+X-CSE-ConnectionGUID: 2jK6HMX8T8C2dnLnWPsHPA==
+X-CSE-MsgGUID: jG/8izoRQFmhGXIPqeRB6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="80904648"
 X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="69349110"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 12:55:00 -0800
-X-CSE-ConnectionGUID: WP7RanmIRyapg5mr5SkDXQ==
-X-CSE-MsgGUID: WcgF09mnRfO4qlqmJ19KsA==
+   d="scan'208";a="80904648"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 12:59:05 -0800
+X-CSE-ConnectionGUID: D5xpyBpvRRC3zs7F9qTySg==
+X-CSE-MsgGUID: /4GjZEskTMOj7ia6RpYfqg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="203941795"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 11 Jan 2026 12:54:59 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vf2Se-00000000Ch2-3KPJ;
-	Sun, 11 Jan 2026 20:54:56 +0000
-Date: Mon, 12 Jan 2026 04:54:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master 4952/5095]
- arch/loongarch/net/bpf_jit.c:1322:14: error: implicit declaration of function
- '__bpf_address_lookup'; did you mean 'bpf_address_lookup'?
-Message-ID: <202601120429.Bvdp1mP1-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: fyo8rci6uj8syr5qw3e3yrnb131d3xu9
+   d="scan'208";a="208419944"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO fdugast-desk.home) ([10.245.245.11])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 12:58:55 -0800
+From: Francois Dugast <francois.dugast@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org,
+	Francois Dugast <francois.dugast@intel.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lyude Paul <lyude@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-pci@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH v4 0/7] Enable THP support in drm_pagemap
+Date: Sun, 11 Jan 2026 21:55:39 +0100
+Message-ID: <20260111205820.830410-1-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: mkd43xatozh7k8dfzy1kqgtu7ez6a6ed
+X-Rspamd-Queue-Id: 148F8140002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7F26640008
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768164902-499225
-X-HE-Meta: U2FsdGVkX1/p45zkTrIsoMstO8bjOHILfIcTElGXkZADT1U6psYrGUs3x09KXhfVpBSi+/ZzX2Y5Cf0Cv4u35n/ui5Al/yFDOR0cs5oq453H8ts/KNI2jSlUO8GAj+pWqtOK2hZQbCliT8xFCzwK+wwG1jfXWU2s7CDzbqrvhi41rIbEoNot4j+7JyoLsTybJuPAriFGj0ECbP2sydVbMKLgt7dhOVhla9v/wAjQ7xuRqY5ZF8xntkwbgymxFHPkluVBoD6etHgtA79+Y9IEmSqagP3p1Vv3GTnKrIF6l6e+u6UgPscHcWZEK6qpLiIHs3THnFdBCTqOSzSn5+oCe27bVdvQYMMFO/CkYgKrtNdJoi4ThboHiBkRNIG8V9NQYWvtfdJCts0aSVZnYRJLiyVmbicy6eXMRhCNlD30G3pcFW9p/q2iUfQa38gVkJviVy5EX0zGWzzFalDIy7Hp5Z+/qnr1WFMSpLiYauT+EEfEEfyQQY/L0lgm0Zn1qPXa6KcQELg3F1UxRkZ4JY7IZdTJ6hgsHAEoVxfOMWcXlwm82dscRi08sKVmE0WVQVnF/PiHNHTG/MRO+OD2OydQUx7Xjh4GuCtG/tnX6e5ilBIOl7GpJW659B+isd367CBm/dKHsnOk0vbPkrKt2fJfN7O7AnK0ov/yy134pFL32KW++3N/T0mogikYuqXjOrOp7MG2ioHgHpXiQBUhyM+3ixUbHVhXTJElLHXSGsIyx4lgD095qqNa823XSO4Wj3rDXZGfUCg5C+INszTuFx4QwcHwN7N+xrF8FnJE+rEj6UDXeq19Uhd47vYzPR+jc9q0ZygbJWRcQSYO6NnZ5AhLMHR+/DHSHtIL7sAYqLzzzURbq6uLbMrL0Yvl2lZLjsvLSic4rE0oS/gEp57BYykc3fq6BvuO+7ryVRP+U8zfAtJ+ESdsuS5EsruUizNDYF0Fvn1EKiaQGQRToS1htPm
- 62q9gxQa
- WUWpE2eppNtlwSHjD4UR2xNODFmqt9L30KgkdgOL90JKDBC+uwgvGxHDeJada1ZrZPYrvolT0gYw2KTpCxVVvpVAtmN1fXFXcmm0HQshqia/e9B/19bj0oAuAGiMEw/CJuHnzoqFquGqr77CvGOQkRaVZTMfa8+vGB1hUFjG/DjqO1d4eZaLWOwPqs83K69WZOG63ZR5EDYnkdSnH73+HPw86OIm9VOYI56J/KhNzCSEoHyD4gM5+PfeZLFYyP8CfOalBbjDDaIrxEHxUv65wIznW4TKV2rrr0C0un6PoPBGMBtc=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768165145-554127
+X-HE-Meta: U2FsdGVkX18AefiJCpYPT59+QywclDXMGQbc78icJD/ITk9+XHOkFbxB1PhuKg8GAXM3Tkf7QjnAAfErB5nEY1xt79NMTtuSEFM1cNrUK+32awXsPFFgxJVnzohBxH7kSkWVtw/Dv732HaXVA+vodTLUKKwOZGe8yrgzWcEUqoG/IbVmOEFfDDGCKLwbfuy2tSboHDVhW1/tD2afhK2YAQ3bkGuDjWSog+tmzJNCxdSKrFvGMPNAgZszYrVbQQ9lLPzAC+Wh43LqdE/KUE4CUVpwB+CKWXEP2y0B87rUye8tpw/94RMOYBT4lITD7q3q1Iq09LflSYvYhtacgPP8N2FNA+AQn9yH7AvYzC1eSaxr9iifB2mB7YTtbteWrlkIXiNf4gVgvzRHXT4KEWMwGmQk42K5eX4pL50QpAmM68tNiltv7pytxcDL5LhyzdSq/I/Rem1SSzWN9ufV7KtfmZq2fiOJLgueBTL8OWkOujRYnDMCqL/xBaI7FUH78X1ysU8qFynG0i8O/mCK0TUTGlFis6a93SeBm18vCqeNldfTNlonrtowOX2539wrctm3n9giRKodkEfd0EuC3t2GQ9t0QXSJDw1MQ7SNeTlzXFCYTs0qBUSn+R5BpBnoal5moYE+rNcdAnJG+Eq1aMBGeThoZqoMDey7yPLCoxwf3FV02Hy+mc5AUYsIQjrKKndld1AU7a7+xxT6jZArzrSfK54vJTyxcCV5ytZEZuZwK3UGOBBwZc3pdSOhK4reCoDvfDSvewhFzvtbd9uraFpRxsmb9pG+aNyH8awY4UWAf7hRGgHsN/jdX5XsWiDS+ifGHD9Owr/DcnnNN8u2xbLFT7GRcqb7qtvCpE+/foHKg0NSpO/aUgfXtfAN+4ryPb/7ipgxax52cbxkV9oPehiQhdeguyRpbM5bVRIwE62D1K4JNT8u6EhdbpmEvoYGzI/Qb/Is5okWdgQG4iMlYOJ
+ GAaVmeFe
+ 9yrb6Ch4yNAy9Z9k5FKK36o+bYpDItK517s9XBPNyfq1Xo8ok01diL/rLzVBnOUchzGjv6Yx8eLpnqkwI+9vD9scy1WtKbLbHW3q4P9SGOKKtQFcRgMlVT29PB00Tc86tf1SH1mJaljdmgyGhOb55v9bnkh/AHKWdsE6SNNdqAGQSOKONrzko7a1bLvNOB8q6ma7kTDqp9GDzIpU+8JDXpH1BPjrYHQZfftIs8J9wPWNoOjrywBpm0FSKaiitMG9q6kDQt107z52zKrQG7UTFJvVaoPoQC9Gqhe0zvU/IEt3VmcjNJYwxwAYvmZNGKi3lRWGwnW9YZRhKkS+nc+gycwkb5+EsR/vmJ6rEegLU7U/zgLO6aOlumSzKVQ6xoe+ZkiI5A0wECa4aKqfiQZPo8CyRf7NvdG5ZCpPmnxKnwlNfhW1CKcLp/lHHhEXqWZtzWcNCK+dLszen1cWK8xUY0BA4QGUIHLfo5XrTgfpSVooxXSgQugMkfsYn/rF+08ODfdmynRwXZFNCTw087tcAd4V3gbSby5DUEEBBP3jdxGCYAKrCPtolxvYv30Hgk+re8t9qCOwR01+M/Q4+uLqU69LJ3/RRfyel6EmTeWBLMHDza09af9O1QD+SupgRje/SI2hDc7glPgZIhnodPvaOctLArdmGlTY+WDYiUL2dVulvMJLeho3UsRJYPaSt6LHyWj4V3xggaEEugD9LVIQ1UwXOc+3jNI9q7+7Pvg28yTwXdnMCaChOAqAeeJzWJmp2maAyrvRCWGTsroyCMPQgOY1pHdILsof3WPipQjik0pJ38BGr/iBfjgWK3W1vSL92PNDU73o6JzXm0takGxRNGrP9F9gGmsBBym56Ww1SpgX30OEUGQ8G7YHjni0HZtYByQZCrh6nN/neY43WODlaXHKgtCdMULu+mLc01LsyQ8iqpFslNk9M50TF3lwOuxWXa6TTD6RDDt8EBuDooPZeaue7u6B+
+ u0VYloOD
+ v8WwDRiZzLDo+IUMjUQFwVe9/sc4nWU/CEXLijC+bRk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,89 +149,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   f417b7ffcbef7d76b0d8860518f50dae0e7e5eda
-commit: 90914704bb11e24b42bd368b91e4a1e69d42e72c [4952/5095] Merge branch 'mm-nonmm-unstable' of https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-config: loongarch-randconfig-002-20260112 (https://download.01.org/0day-ci/archive/20260112/202601120429.Bvdp1mP1-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260112/202601120429.Bvdp1mP1-lkp@intel.com/reproduce)
+Use Balbir Singh's series for device-private THP support [1] and
+previous preparation work in drm_pagemap [2] to add 2MB/THP support
+in xe. This leads to significant performance improvements when using
+SVM with 2MB pages.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601120429.Bvdp1mP1-lkp@intel.com/
+[1] https://lore.kernel.org/linux-mm/20251001065707.920170-1-balbirs@nvidia.com/
+[2] https://patchwork.freedesktop.org/series/151754/
 
-All errors (new ones prefixed by >>):
+v2:
+- rebase on top of multi-device SVM
+- add drm_pagemap_cpages() with temporary patch
+- address other feedback from Matt Brost on v1
 
-   arch/loongarch/net/bpf_jit.c: In function 'bpf_arch_text_poke':
->> arch/loongarch/net/bpf_jit.c:1322:14: error: implicit declaration of function '__bpf_address_lookup'; did you mean 'bpf_address_lookup'? [-Wimplicit-function-declaration]
-    1322 |         if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
-         |              ^~~~~~~~~~~~~~~~~~~~
-         |              bpf_address_lookup
+v3:
+The major change is to remove the dependency to the mm/huge_memory
+helper migrate_device_split_page() that was called explicitely when
+a 2M buddy allocation backed by a large folio would be later reused
+for a smaller allocation (4K or 64K). Instead, the first 3 patches
+provided by Matthew Brost ensure large folios are split at the time
+of freeing.
 
+v4:
+- add order argument to folio_free callback
+- send complete series to linux-mm and MM folks as requested (Zi Yan
+  and Andrew Morton) and cover letter to anyone receiving at least
+  one of the patches (Liam R. Howlett)
 
-vim +1322 arch/loongarch/net/bpf_jit.c
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Logan Gunthorpe <logang@deltatee.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Balbir Singh <balbirs@nvidia.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: amd-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: nouveau@lists.freedesktop.org
+Cc: linux-pci@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-cxl@vger.kernel.org
+Cc: nvdimm@lists.linux.dev
+Cc: linux-fsdevel@vger.kernel.org
 
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1305  
-ae4a3160d19cd1 Menglong Dong 2025-11-18  1306  int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type old_t,
-ae4a3160d19cd1 Menglong Dong 2025-11-18  1307  		       enum bpf_text_poke_type new_t, void *old_addr,
-ae4a3160d19cd1 Menglong Dong 2025-11-18  1308  		       void *new_addr)
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1309  {
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1310  	int ret;
-ae4a3160d19cd1 Menglong Dong 2025-11-18  1311  	bool is_call;
-73721d8676771c Chenghao Duan 2025-12-31  1312  	unsigned long size = 0;
-73721d8676771c Chenghao Duan 2025-12-31  1313  	unsigned long offset = 0;
-73721d8676771c Chenghao Duan 2025-12-31  1314  	void *image = NULL;
-73721d8676771c Chenghao Duan 2025-12-31  1315  	char namebuf[KSYM_NAME_LEN];
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1316  	u32 old_insns[LOONGARCH_LONG_JUMP_NINSNS] = {[0 ... 4] = INSN_NOP};
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1317  	u32 new_insns[LOONGARCH_LONG_JUMP_NINSNS] = {[0 ... 4] = INSN_NOP};
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1318  
-3d770bd11b9430 Hengqi Chen   2025-10-02  1319  	/* Only poking bpf text is supported. Since kernel function entry
-3d770bd11b9430 Hengqi Chen   2025-10-02  1320  	 * is set up by ftrace, we rely on ftrace to poke kernel functions.
-3d770bd11b9430 Hengqi Chen   2025-10-02  1321  	 */
-73721d8676771c Chenghao Duan 2025-12-31 @1322  	if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1323  		return -ENOTSUPP;
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1324  
-73721d8676771c Chenghao Duan 2025-12-31  1325  	image = ip - offset;
-73721d8676771c Chenghao Duan 2025-12-31  1326  
-73721d8676771c Chenghao Duan 2025-12-31  1327  	/* zero offset means we're poking bpf prog entry */
-73721d8676771c Chenghao Duan 2025-12-31  1328  	if (offset == 0) {
-73721d8676771c Chenghao Duan 2025-12-31  1329  		/* skip to the nop instruction in bpf prog entry:
-73721d8676771c Chenghao Duan 2025-12-31  1330  		 * move t0, ra
-73721d8676771c Chenghao Duan 2025-12-31  1331  		 * nop
-73721d8676771c Chenghao Duan 2025-12-31  1332  		 */
-73721d8676771c Chenghao Duan 2025-12-31  1333  		ip = image + LOONGARCH_INSN_SIZE;
-73721d8676771c Chenghao Duan 2025-12-31  1334  	}
-73721d8676771c Chenghao Duan 2025-12-31  1335  
-ae4a3160d19cd1 Menglong Dong 2025-11-18  1336  	is_call = old_t == BPF_MOD_CALL;
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1337  	ret = emit_jump_or_nops(old_addr, ip, old_insns, is_call);
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1338  	if (ret)
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1339  		return ret;
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1340  
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1341  	if (memcmp(ip, old_insns, LOONGARCH_LONG_JUMP_NBYTES))
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1342  		return -EFAULT;
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1343  
-ae4a3160d19cd1 Menglong Dong 2025-11-18  1344  	is_call = new_t == BPF_MOD_CALL;
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1345  	ret = emit_jump_or_nops(new_addr, ip, new_insns, is_call);
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1346  	if (ret)
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1347  		return ret;
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1348  
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1349  	mutex_lock(&text_mutex);
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1350  	if (memcmp(ip, new_insns, LOONGARCH_LONG_JUMP_NBYTES))
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1351  		ret = larch_insn_text_copy(ip, new_insns, LOONGARCH_LONG_JUMP_NBYTES);
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1352  	mutex_unlock(&text_mutex);
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1353  
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1354  	return ret;
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1355  }
-9fbd18cf4c69f5 Chenghao Duan 2025-08-05  1356  
+Francois Dugast (3):
+  drm/pagemap: Unlock and put folios when possible
+  drm/pagemap: Add helper to access zone_device_data
+  drm/pagemap: Enable THP support for GPU memory migration
 
-:::::: The code at line 1322 was first introduced by commit
-:::::: 73721d8676771c6c7b06d4e636cc053fc76afefd LoongArch: BPF: Enhance the bpf_arch_text_poke() function
+Matthew Brost (4):
+  mm/zone_device: Add order argument to folio_free callback
+  mm/zone_device: Add free_zone_device_folio_prepare() helper
+  fs/dax: Use free_zone_device_folio_prepare() helper
+  drm/pagemap: Correct cpages calculation for migrate_vma_setup
 
-:::::: TO: Chenghao Duan <duanchenghao@kylinos.cn>
-:::::: CC: Huacai Chen <chenhuacai@loongson.cn>
+ arch/powerpc/kvm/book3s_hv_uvmem.c       |   2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |   2 +-
+ drivers/gpu/drm/drm_gpusvm.c             |   7 +-
+ drivers/gpu/drm/drm_pagemap.c            | 165 ++++++++++++++++++-----
+ drivers/gpu/drm/nouveau/nouveau_dmem.c   |   4 +-
+ drivers/pci/p2pdma.c                     |   2 +-
+ fs/dax.c                                 |  24 +---
+ include/drm/drm_pagemap.h                |  15 +++
+ include/linux/memremap.h                 |   8 +-
+ lib/test_hmm.c                           |   4 +-
+ mm/memremap.c                            |  60 ++++++++-
+ 11 files changed, 227 insertions(+), 66 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
