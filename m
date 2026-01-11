@@ -4,29 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ADC8D25031
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 19:51:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1641FD2502D
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 19:51:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDC356B0092; Sun, 11 Jan 2026 14:51:16 -0500 (EST)
+	id 1E4C86B008C; Sun, 11 Jan 2026 14:51:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C50356B0095; Sun, 11 Jan 2026 14:51:16 -0500 (EST)
+	id F40286B0095; Sun, 11 Jan 2026 14:51:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C8966B0093; Sun, 11 Jan 2026 14:51:16 -0500 (EST)
+	id CD9A36B008C; Sun, 11 Jan 2026 14:51:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F66E6B0092
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AFE146B0092
 	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 14:51:16 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3BB6F13C5AB
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6E0CA1AE692
 	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 19:51:16 +0000 (UTC)
-X-FDA: 84320726952.02.60D2EF6
+X-FDA: 84320726952.24.C38A133
 Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A7AFD140002
+	by imf08.hostedemail.com (Postfix) with ESMTP id D5A40160003
 	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 19:51:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=lT6x8Vok;
-	spf=pass (imf23.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=g4NqCAua;
+	spf=pass (imf08.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768161074; a=rsa-sha256;
+	cv=none;
+	b=pqzyau+2Tf2n1UJq17aSKzq3xrYI/g0OGkFBGjqih35TBxuKl5QI3zJ9LN7KD168G+380h
+	1uSe/kU8bOO2ZBsZIN4BgypN+GiKUHKEI9FyCGN3/KPsBNbF2ZIzHuoW7ypvGdv0d4Fv0f
+	bxEjvEyQC0iuwxOXd5n3KZxK0puWTMU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=g4NqCAua;
+	spf=pass (imf08.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
 	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1768161074;
@@ -34,33 +44,23 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Eb1gb6rvz6OV1woaUXBjvGSCB+OU/GBfNfCaTfNrdA=;
-	b=dcI2lXbLGwVs7X9Vuo16XXrpd32uXdRbAq0BIhJNUI9HPbMqBem3czYuCBJ5czX6nH1qlk
-	lwJmcioYX+CJH/T8MHGexHlx+nRjxRnOVIDhwkY6Bths5J1yCl2ufmLA8b+Ziocbjb70za
-	Z/TTPLCgvFjNBOrF02Oe1JuIzBBUfIA=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=lT6x8Vok;
-	spf=pass (imf23.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768161074; a=rsa-sha256;
-	cv=none;
-	b=oDUcXYWoT2Nh8/og2u1tDwkjlgsX9mhgVlYWUTX2ozJdlZ/KoUIzkSr6j9wtVrjrZ8RSqy
-	ZtstvTZaHmUZT/McKn7s22j/Fstu6MTj5cfnmDW+2dJCDALfm18OeCsZm6VEe+Tz4OC2aZ
-	p9Afb8qT625APQaesL5Gfs9Ghe32rqk=
+	bh=71qP32Q+0FoHRVf+esBKAZs7V8h3G65XwRno5EW6lQ4=;
+	b=sFxPm6daIfyD/fCLK62b6Ql9v1q8T3aE0URSwjAHHcMx7w5cYIF7w4L79pr/cDn7kHZyjx
+	gwG2viX4A1T9hFIPVVwTstMp2W9/9T9RWL94HlIc/VqpZvqWo/HCl/UXduFwvjt6lxizTm
+	KHE8S25V80VczDI6jpsivTXmleGydYY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-	s=smtpout1; t=1768161073;
-	bh=8Eb1gb6rvz6OV1woaUXBjvGSCB+OU/GBfNfCaTfNrdA=;
+	s=smtpout1; t=1768161074;
+	bh=71qP32Q+0FoHRVf+esBKAZs7V8h3G65XwRno5EW6lQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lT6x8VokHoarYv57oAg0vpkGGtzux4eOIc3zT3ZZz1RCpvebmoIKhv2lhKBRCJSm6
-	 ulrQlt7hMn/DjsQTcSTctn0EbMc3zb/kuD0im72iHd08LkG7bUWuWnj2LvcND1ccq8
-	 zB+YphqjQxQF9spJ6HxTvhjqelZqF5/HsaFwg5LXkxFEaeQQyXVEUpZii4fToJS1Yl
-	 XzlNb8gO+RUogd3jYeP9tLe38MjfI0q7dugJ4UlN2Utfb5WbkMvR9yjpy5pmIYpBTE
-	 8jc5/3TKRbJhu2uJ468In625xVfBbXmSv9/BBgWfkqxh9tjELMxkem0na+U7mZtGhp
-	 9dnT63khQ/OvQ==
+	b=g4NqCAuaHj3GxfkGUElDznjTsC0xbL3/wTeCXNX41+84V772EVhPvOUE4sMfq6V26
+	 RgYwk2sexAVo08cQEhw+2TugXJMnFiO6FKFUWC4tN7kopp36OlCIQt3FOr+ke1jYp8
+	 hKb8Aux/z4q+iMzTcaDLQZ0eZPfwttARgcJVnlZzLRHUUBdxEoWznXWptM+moLoV35
+	 bbAnCq0ABYdVaIgCFEGrrju+fP8Ivpdpam+qv651XiaWNAjP4PDMABqclnjoS5rbh/
+	 fbYyWQUAaRmG8dEgAjWZT2MMxOK1DyTghWFWJEqNaTsx9dTSkDDRKdeXt+5duwCsWF
+	 /TSCdRUYDkyWA==
 Received: from thinkos.internal.efficios.com (unknown [IPv6:2606:6d00:100:4000:a253:d09e:90e7:323f])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dq5jY5Zq7zlML;
-	Sun, 11 Jan 2026 14:51:13 -0500 (EST)
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4dq5jZ0Yl4zlMM;
+	Sun, 11 Jan 2026 14:51:14 -0500 (EST)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
@@ -97,24 +97,24 @@ Cc: linux-kernel@vger.kernel.org,
 	Matthew Wilcox <willy@infradead.org>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: [PATCH v13 2/3] mm: Fix OOM killer inaccuracy on large many-core systems
-Date: Sun, 11 Jan 2026 14:49:57 -0500
-Message-Id: <20260111194958.1231477-3-mathieu.desnoyers@efficios.com>
+Subject: [PATCH v13 3/3] mm: Implement precise OOM killer task selection
+Date: Sun, 11 Jan 2026 14:49:58 -0500
+Message-Id: <20260111194958.1231477-4-mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260111194958.1231477-1-mathieu.desnoyers@efficios.com>
 References: <20260111194958.1231477-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1ymhnm86u3mx6sni9577497wpkwhjygj
-X-Rspamd-Queue-Id: A7AFD140002
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D5A40160003
+X-Stat-Signature: 8xjh4dxtb7fmiogsrtxmpg3we68s4kcn
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768161074-214077
-X-HE-Meta: U2FsdGVkX1++cjGjvK+5sRof6MhFT4JVE01FKwQlezix87yPJaqBoZdN62PzqQlLU/FkfJ/iBzKpd7bSlgu2RRBkQs9vsUiQgjQMvCTGuk2NDjO0g09JPcDq7p2ebfwm2+gHMls4okWHqPGX+wL7F9v0u+JmeOhTffCwT95xEsbgT0FYZci9W5EZHAKBxKpBzKqFW0+//iEHMiHo8FcWtiLTk8sI80E4ZwZCL0DpXizkYcYtqCpwL/QiURwrAd+4S1vsdZd0rfGzowosCEvEBajZzpt5OJ9a6lcuVtqzM1m6ORqbaC7IpTNcXrp4Ll48NkyidJe2LtymimDzK1IUejk0z7qjwly7xuFLkpf/Xd/YttzCGcaRj/uJ9FpVtwnVj7tZu7ZXCyukWqbJzd0jcvptauyk8oT3tLntQZBOq0+icHDRQ+y2HbvJWPE+DRH0X+CArZOinmwrPTLSThnbzg4EJUISicAiAlJQMSnEYmNjtR+2/15PZimjpO5kX+6eEEbgqvkiznxhX9GFnL0q2MigEREzYIMJpt85qgk/Yy0cEHXnQ0127Is+9x5jpSG3FWxeZfo0zY+AD9V1jDhJkB3AbmQp6+p7luERcx9JOe6EJPPL44DJKjOyY79kf0FW3oBRRMiXPFnVhO31xv3A0YblxsE9BPxiPmgSvBg4azlNuqe635nP4Ij73PkcWoQwjmSHoMRv5tss+ZH+QEl8PptirDPvQL87kuHUgpDh969jhO3Wm5edlI9FztXDXtSoUyniRAg1PkJaOJKoMneD3blaX2tz1Rm2dfYJsUuXqfDX8KNVfhzW7bl3sUW4u/3ejG4wOKOuxYHJnIc+n7qmWTdHHe9G8DB5Fc5AwpNZojJ2DGNaCxRcTzhNGwXhgL80gASgEVDZdA4uKxnYHJsJSeHupZe6ob2dZbF1x8c8E08mb3eYI0uoonRyXyvug7nSL2QsgbdiP9vGG8OvKnH
- Fx29B3Tk
- Zj5B/yia3GOenwsK10JJs5rkUmdaX4jU9LubL00j4VBm+8WQQcHCzb1QQIAqo9wOg9zT1CUC9cZhRRaeTvNlu4/oQeUfE4caexXywfE66j6JjK65C3pqfJAamFlcq2NF9WhWEvumGwWC7QGcIMtQOgKcRuHnD8Rwa0KTkmMTal0OJRhd94uXhnEbOKupQBT+b7w0zm/mindfsJR5ar2iqxramB4BnMV/K6CHYEbCpuzCC0/HZSf6ygFP3gXjuO/+hhLgAFDDovI6jGhb26PuPkB9T0IxTI3xyd28sAHyqDkINBgknFONZpXdKF+Bl8NaAa+XssMYwSGwGf9K4c0GCutKDFdYVvdLAdkxUdrog6Sa0CJ/HRqghnHvGb7bGXdYURnsrYx9BxAqnvU8NKrwfL+/gP+pliGjPb0LqtnSoHH28W/Jno4Dj546cxV7EC5HARKInDVowsTGBYzkiZez+0vLYvWF3ugdio/7Y5yxk38nw58d7AiUJemIboxJvvXuzafqp1g7a5sf/ebOjcWf5THFZgPWra0llc4674GwRI1elLDWHQWaX6LQf74ASCR3Bakf0Cj4isu0N4UVJ6hCv/0ZEE8SZ64ZsKC/xjxcsGQ7d6f77t8B1uR3LGaVVxaYDv9+5nRXE96vGuoT4uohTwEe0OtAZpvW2mmq+4FVBIOdtlDnDnss2ChAqjabipxmms4Y9fkNe2oCZn7rgv6PDhKjW42gItmO13HjNGE2aIFZqoG3h+DogC7rXwausk63NqAAcg3IZ23ZGpvHPk7F8eAEiOz1DhW9IYQ9hI+YiIRRoLL7q27FNqCI8f2xU1XLq34i3U0y3Um3gs2BvUJzjgzOhHpn6jSFJk75mULGhtyMXAHY2g92CL5U2MnOTsI6iNrD6e5WykEflA0G8cTbIAUNdJSxaZpc2MddrBqoMnG2Ct+PTWZlTOsd7UAfeBeJ8GOQ2A9BOIgMwxBG7TqQ2s7uafasB
- zIeDrrR7
- smwLZN10z1twuVHG58ZcXaZp8UtT0v/U96V9zBbWnexX3baKnTZ3wP/qXLfmC5TKS5heqbh5BOIJRaZ23hO0C8mhkCSAl4uASL8IUiA4TJQ=
+X-HE-Tag: 1768161074-86794
+X-HE-Meta: U2FsdGVkX19cFLa8CWJFZUiiF8OeM8sLEc6fd8hJBrmnrLISnjJNeMNv+Gjwfpl2EC5vXPWwf2YiW3eUDN+8Kwfc6nHxFMIhE65keNfArzhE1vTvYKR2aq0zMAeWF5H3tllQAspCFAE+/Kx9IgK3c74VX5PpTGsOIkVufZBQmeGLizsBWvmaMG5i3MBXVuIQBOv0n9k7OMzL1Vel2uCufHjdDtHGejEko81mh1FzvV1cB52TZomhKQSpQ+aJtU9F/+uv91yzo9BF7esvJBLjimRWMeMogKoLL58g7Mv/6PTmqukoQCSfloxf0hi1SR25zpOJQB+z3CiuYrcfT1wcggFUwI+N8jvPlLhs4+RIKpMb89IYrM5DbQg059qlCcwRjTraFRhpD3Y6K7AgYbNqNUMebOSoUtbyNpU6C0hMju9ERwrWW/07EMzVBvOE4SOTTGSpd3OJdk1mwrYYpEhsjantKPcayoxnVdmXGxZMJwpcfKD1VPg1YMsB40EUOjAHUkaQ0hLAUJR9LPrA/7HSBtD/A1993/sJiQ1dWsfvl+K2FfbC0BSfoRCrCaKaZVq9ozGnNvGrNyTJ77qt7+giKadGnN9pLPeUZgR18E7VH1nUs5G5YVEWETgHLwaQO+COuSh1cWqYmqC6NXRH9K3L40KNAG15bNnhbCMUsJUiBXMUEG6wFaGWz2bmSLSsGWKe1l5EtGHSeXXYBXrLf5dvQY+d7pQrZaWWVzHTjzfpqpLOm/Qmhg7kLZQG/pJEguD8j+8EafftZGRL7+fKKmoNTlL67NMDvwfP5kxjTxT6Ttw6dqLmy2YJBYgFoKtupNapgP/NbtIk6lK3ZJg+fHPry2PnaUfBC1TxIFZg9+5S8cOQBxou4cSzddkHTbplMg3dU7tsOalO+KBBekk+TBM5j+3XnJkt+7DoQ+oovjnGUcYVez8o8str2SrliqnSTXxcwh+fgrcgZJYO2IaRqo5
+ n41k69ea
+ 6XjE4MqsqT8Ac1toZt8nrTY/YB9MxA9FmfE4G1aN9s7MxiWs0ag5oFjk4ukiYRGakmhXN62zADfKO6sOhkNgAA7N3L74vduToipdyqHA5aA8dye86NbKVWSxYbsd4cqXOlQ0iwDoYUjEeHr92Mrx3aM3n+1FnLqJevCJKkM3M3yNKnGq7bru/RyyNgMFc5AoVKquVVKWVgXjvh+38w3j89Zhtr0IseQliTaQEtV6hnXE5pMn3z7c0RoZ6V8m1aByOZZ8mY1+ZYVoWHCYyL4o3iQ4Da1dXGkcCJhwmJ3ByMkVWI1ZbORVVaRN68+LSjLvtbq1Nko8vTX14zpwIaJgVyHY7/gLm418u0UqTNg7Bvuk06JsX+mK4znyUJX3SeIQV3v+3kUxyk7ahBzA4Hg+v9Y5k48GYUHKj76R8fV6a09DyL7x6jlr8wOeCEUSarf6Hoi8WYDDyHPf9l7LENM88QvhZ1kR1KUT2o39Rz5HbwxDCvKWIAfB4G2aKYOlYat1SCnlqHJJvk1dWkxcH7PIM73TGX2xn67SXdincMEhMCl2agfV3U8K2r8G9IEaMg5GJ+Oqt1ifpXJtLImLh/foZKaviqyic6dfsUhVYbiKkZhEH+kCY7XUW28BP0U4Gad3BCot0K8dUZdwqw25Db3GE/PjgwrjkIWoPk/nX/Ktqn4jO5PiyPdS5OBhTklMd27feS3ygSlELpesV3ATi66c3/p1aaKEapczCCYOhbKzf+2IKVm4jg7C8RWniP0VoSjFGhPNPIIyi+1W8/a+FaXwRpGzb5Qtof/wCc33/c5wlZ44vOOfvVo6P/bG4Op21ULPTV9PhDRHIaOkQRI6TMlQAYUqFmXwr5o2EDfT+JFBthNgwoinjZ4FgdS8P6bmCvorUKv7gWQb07Z1uRImM/9NzMEcJu/n8s/M58Z+7o6uWcspyU3iZ79ZizXjIKe7zfpA//hCMcGWHcwf/vx9CPggcmL5N3xc5
+ RV0216Kz
+ 8N8JCRH59dIL6Wa1xSYRhequLMqpLH1jB8Rz5V/0ddLacKvm4qqZz/EIFZOP2oQa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,115 +123,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use hierarchical per-cpu counters for rss tracking to fix the per-mm RSS
-tracking which has become too inaccurate for OOM killer purposes on
-large many-core systems.
+Use the hierarchical tree counter approximation to implement the OOM
+killer task selection with a 2-pass algorithm. The first pass selects
+the process that has the highest badness points approximation, and the
+second pass compares each process using the current max badness points
+approximation.
 
-The following rss tracking issues were noted by Sweet Tea Dorminy [1],
-which lead to picking wrong tasks as OOM kill target:
+The second pass uses an approximate comparison to eliminate all processes
+which are below the current max badness points approximation accuracy
+range.
 
-  Recently, several internal services had an RSS usage regression as part of a
-  kernel upgrade. Previously, they were on a pre-6.2 kernel and were able to
-  read RSS statistics in a backup watchdog process to monitor and decide if
-  they'd overrun their memory budget. Now, however, a representative service
-  with five threads, expected to use about a hundred MB of memory, on a 250-cpu
-  machine had memory usage tens of megabytes different from the expected amount
-  -- this constituted a significant percentage of inaccuracy, causing the
-  watchdog to act.
+Summing the per-CPU counters to calculate the precise badness of tasks
+is only required for tasks with an approximate badness within the
+accuracy range of the current max points value.
 
-  This was a result of commit f1a7941243c1 ("mm: convert mm's rss stats
-  into percpu_counter") [1].  Previously, the memory error was bounded by
-  64*nr_threads pages, a very livable megabyte. Now, however, as a result of
-  scheduler decisions moving the threads around the CPUs, the memory error could
-  be as large as a gigabyte.
+Limit to 16 the maximum number of badness sums allowed for an OOM killer
+task selection before falling back to the approximated comparison. This
+ensures bounded execution time for scenarios where many tasks have
+badness within the accuracy of the maximum badness approximation.
 
-  This is a really tremendous inaccuracy for any few-threaded program on a
-  large machine and impedes monitoring significantly. These stat counters are
-  also used to make OOM killing decisions, so this additional inaccuracy could
-  make a big difference in OOM situations -- either resulting in the wrong
-  process being killed, or in less memory being returned from an OOM-kill than
-  expected.
+Tested with the following script:
 
-Here is a (possibly incomplete) list of the prior approaches that were
-used or proposed, along with their downside:
+  #!/bin/sh
 
-1) Per-thread rss tracking: large error on many-thread processes.
+  for a in $(seq 1 10); do (tail /dev/zero &); done
+  sleep 5
+  for a in $(seq 1 10); do (tail /dev/zero &); done
+  sleep 2
+  for a in $(seq 1 10); do (tail /dev/zero &); done
+  echo "Waiting for tasks to finish"
+  wait
 
-2) Per-CPU counters: up to 12% slower for short-lived processes and 9%
-   increased system time in make test workloads [1]. Moreover, the
-   inaccuracy increases with O(n^2) with the number of CPUs.
+Results: OOM kill order on a 128GB memory system
+================================================
 
-3) Per-NUMA-node counters: requires atomics on fast-path (overhead),
-   error is high with systems that have lots of NUMA nodes (32 times
-   the number of NUMA nodes).
+* systemd and sd-pam are chosen first due to their oom_score_ajd:100:
 
-The approach proposed here is to replace this by the hierarchical
-per-cpu counters, which bounds the inaccuracy based on the system
-topology with O(N*logN).
+Out of memory: Killed process 3502 (systemd) total-vm:20096kB, anon-rss:0kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:72kB oom_score_adj:100
+Out of memory: Killed process 3503 ((sd-pam)) total-vm:21432kB, anon-rss:0kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:76kB oom_score_adj:100
 
-commit 82241a83cd15 ("mm: fix the inaccurate memory statistics issue for
-users") introduced get_mm_counter_sum() for precise /proc memory status
-queries.  Implement it with percpu_counter_tree_precise_sum() since it
-is not a fast path and precision is preferred over speed.
+* The first batch of 10 processes are gradually killed, consecutively
+  picking the one that uses the most memory. The fact that we are
+  freeing memory from the previous processes increases the threshold
+  at which the remaining processes of that group are killed. Processes
+  from the second and third batches of 10 processes have time to start
+  before we complete killing the first 10 processes:
 
-* Testing results:
+Out of memory: Killed process 3703 (tail) total-vm:6591280kB, anon-rss:6578176kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:12936kB oom_score_adj:0
+Out of memory: Killed process 3705 (tail) total-vm:6731716kB, anon-rss:6709248kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:13212kB oom_score_adj:0
+Out of memory: Killed process 3707 (tail) total-vm:6977216kB, anon-rss:6946816kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:13692kB oom_score_adj:0
+Out of memory: Killed process 3699 (tail) total-vm:7205640kB, anon-rss:7184384kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:14136kB oom_score_adj:0
+Out of memory: Killed process 3713 (tail) total-vm:7463204kB, anon-rss:7438336kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:14644kB oom_score_adj:0
+Out of memory: Killed process 3701 (tail) total-vm:7739204kB, anon-rss:7716864kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:15180kB oom_score_adj:0
+Out of memory: Killed process 3709 (tail) total-vm:8050176kB, anon-rss:8028160kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:15792kB oom_score_adj:0
+Out of memory: Killed process 3711 (tail) total-vm:8362236kB, anon-rss:8339456kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:16404kB oom_score_adj:0
+Out of memory: Killed process 3715 (tail) total-vm:8649360kB, anon-rss:8634368kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:16972kB oom_score_adj:0
+Out of memory: Killed process 3697 (tail) total-vm:8951788kB, anon-rss:8929280kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:17560kB oom_score_adj:0
 
-Test hardware: 2 sockets AMD EPYC 9654 96-Core Processor (384 logical CPUs total)
+* Even though there is a 2 seconds delay between the 2nd and 3rd batches
+  those appear to execute in mixed order. Therefore, let's consider them
+  as a single batch of 20 processes. We are hitting oom at a lower
+  memory threshold because at this point the 20 remaining proceses are
+  running rather than the previous 10. The process with highest memory
+  usage is selected for oom, thus making room for the remaining
+  processes so they can use more memory before they fill the available
+  memory, thus explaining why the memory use for selected processes
+  gradually increases, until all system memory is used by the last one:
 
-Methodology:
+Out of memory: Killed process 3731 (tail) total-vm:7089868kB, anon-rss:7077888kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:13912kB oom_score_adj:0
+Out of memory: Killed process 3721 (tail) total-vm:7417248kB, anon-rss:7405568kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:14556kB oom_score_adj:0
+Out of memory: Killed process 3729 (tail) total-vm:7795864kB, anon-rss:7766016kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:15300kB oom_score_adj:0
+Out of memory: Killed process 3723 (tail) total-vm:8259620kB, anon-rss:8224768kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:16208kB oom_score_adj:0
+Out of memory: Killed process 3737 (tail) total-vm:8695984kB, anon-rss:8667136kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:17060kB oom_score_adj:0
+Out of memory: Killed process 3735 (tail) total-vm:9295980kB, anon-rss:9265152kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:18240kB oom_score_adj:0
+Out of memory: Killed process 3727 (tail) total-vm:9907900kB, anon-rss:9895936kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:19428kB oom_score_adj:0
+Out of memory: Killed process 3719 (tail) total-vm:10631248kB, anon-rss:10600448kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:20844kB oom_score_adj:0
+Out of memory: Killed process 3733 (tail) total-vm:11341720kB, anon-rss:11321344kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:22232kB oom_score_adj:0
+Out of memory: Killed process 3725 (tail) total-vm:12348124kB, anon-rss:12320768kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:24204kB oom_score_adj:0
+Out of memory: Killed process 3759 (tail) total-vm:12978888kB, anon-rss:12967936kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:25440kB oom_score_adj:0
+Out of memory: Killed process 3751 (tail) total-vm:14386412kB, anon-rss:14352384kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:28196kB oom_score_adj:0
+Out of memory: Killed process 3741 (tail) total-vm:16153168kB, anon-rss:16130048kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:31652kB oom_score_adj:0
+Out of memory: Killed process 3753 (tail) total-vm:18414856kB, anon-rss:18391040kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:36076kB oom_score_adj:0
+Out of memory: Killed process 3745 (tail) total-vm:21389456kB, anon-rss:21356544kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:41904kB oom_score_adj:0
+Out of memory: Killed process 3747 (tail) total-vm:25659348kB, anon-rss:25632768kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:50260kB oom_score_adj:0
+Out of memory: Killed process 3755 (tail) total-vm:32030820kB, anon-rss:32006144kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:62720kB oom_score_adj:0
+Out of memory: Killed process 3743 (tail) total-vm:42648456kB, anon-rss:42614784kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:83504kB oom_score_adj:0
+Out of memory: Killed process 3757 (tail) total-vm:63971028kB, anon-rss:63938560kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:125228kB oom_score_adj:0
+Out of memory: Killed process 3749 (tail) total-vm:127799660kB, anon-rss:127778816kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:250140kB oom_score_adj:0
 
-Comparing the current upstream implementation with the hierarchical
-counters is done by keeping both implementations wired up in parallel,
-and running a single-process, single-threaded program which hops
-randomly across CPUs in the system, calling mmap(2) and munmap(2) on
-random CPUs, keeping track of an array of allocated mappings, randomly
-choosing entries to either map or unmap.
-
-get_mm_counter() is instrumented to compare the upstream counter
-approximation to the precise value, and print the delta when going over
-a given threshold. The delta of the hierarchical counter approximation
-to the precise value is also printed for comparison.
-
-After a few minutes running this test, the upstream implementation
-counter approximation reaches a 1GB delta from the
-precise value, compared to 80MB delta with the hierarchical counter.
-The hierarchical counter provides a guaranteed maximum approximation
-inaccuracy of 192MB on that hardware topology.
-
-* Fast path implementation comparison
-
-The new inline percpu_counter_tree_add() uses a this_cpu_add_return()
-for the fast path (under a certain allocation size threshold).  Above
-that, it calls a slow path which "trickles up" the carry to upper level
-counters with atomic_add_return.
-
-In comparison, the upstream counters implementation calls
-percpu_counter_add_batch which uses this_cpu_try_cmpxchg() on the fast
-path, and does a raw_spin_lock_irqsave above a certain threshold.
-
-The hierarchical implementation is therefore expected to have less
-contention on mid-sized allocations than the upstream counters because
-the atomic counters tracking those bits are only shared across nearby
-CPUs. In comparison, the upstream counters immediately use a global
-spinlock when reaching the threshold.
-
-* Benchmarks
-
-Using will-it-scale page_fault1 benchmarks to compare the upstream
-counters to the hierarchical counters. This is done with hyperthreading
-disabled. The speedup is within the standard deviation of the upstream
-runs, so the overhead is not significant.
-
-                                          upstream   hierarchical    speedup
-page_fault1_processes -s 100 -t 1           614783         615558      +0.1%
-page_fault1_threads -s 100 -t 1             612788         612447      -0.1%
-page_fault1_processes -s 100 -t 96        37994977       37932035      -0.2%
-page_fault1_threads -s 100 -t 96           2484130        2504860      +0.8%
-page_fault1_processes -s 100 -t 192       71262917       71118830      -0.2%
-page_fault1_threads -s 100 -t 192          2446437        2469296      +0.1%
-
-Link: https://lore.kernel.org/lkml/20250331223516.7810-2-sweettea-kernel@dorminy.me/ # [1]
-Link: https://lore.kernel.org/lkml/20250704150226.47980-1-mathieu.desnoyers@efficios.com/
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: "Paul E. McKenney" <paulmck@kernel.org>
@@ -268,284 +247,294 @@ Cc: Matthew Wilcox <willy@infradead.org>
 Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
 ---
-Changes since v10:
-- Rebase on top of mm_struct static init fixes.
-- Change the alignment of mm_struct flexible array to the alignment of
-  the rss counters items (which are cacheline aligned on SMP).
-- Move the rss counters items to first position within the flexible
-  array at the end of the mm_struct to place content in decreasing
-  alignment requirement order.
+Changes since v12:
+- The oom_task_origin case needs to set points_min rather than points
+  variable now, otherwise points_min is used without being initialized.
 
-Changes since v8:
-- Use percpu_counter_tree_init_many and
-  percpu_counter_tree_destroy_many APIs.
-- Remove percpu tree items allocation. Extend mm_struct size to include
-  rss items. Those are handled through the new helpers
-  get_rss_stat_items() and get_rss_stat_items_size() and passed
-  as parameter to percpu_counter_tree_init_many().
-
-Changes since v7:
-- Use precise sum positive API to handle a scenario where an unlucky
-  precise sum iteration would observe negative counter values due to
-  concurrent updates.
-
-Changes since v6:
-- Rebased on v6.18-rc3.
-- Implement get_mm_counter_sum as percpu_counter_tree_precise_sum for
-  /proc virtual files memory state queries.
-
-Changes since v5:
-- Use percpu_counter_tree_approximate_sum_positive.
-
-Change since v4:
-- get_mm_counter needs to return 0 or a positive value.
+Changes since v11:
+- get_mm_counter_sum() returns a precise sum.
+- Use unsigned long type rather than unsigned int for accuracy.
+- Use precise sum min/max calculation to compare the chosen vs
+  current points.
+- The first pass finds the maximum task's min points. The
+  second pass eliminates all tasks for which the max points
+  are below the currently chosen min points, and uses a precise
+  sum to validate the candidates which are possibly in range.
 ---
- include/linux/mm.h          | 19 ++++++++++----
- include/linux/mm_types.h    | 50 +++++++++++++++++++++++++++----------
- include/trace/events/kmem.h |  2 +-
- kernel/fork.c               | 24 ++++++++++--------
- 4 files changed, 66 insertions(+), 29 deletions(-)
+ fs/proc/base.c      |  2 +-
+ include/linux/mm.h  | 34 +++++++++++++++---
+ include/linux/oom.h | 11 +++++-
+ kernel/fork.c       |  2 +-
+ mm/oom_kill.c       | 84 +++++++++++++++++++++++++++++++++++++--------
+ 5 files changed, 110 insertions(+), 23 deletions(-)
 
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 4eec684baca9..d75d0ce97032 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -589,7 +589,7 @@ static int proc_oom_score(struct seq_file *m, struct pid_namespace *ns,
+ 	unsigned long points = 0;
+ 	long badness;
+ 
+-	badness = oom_badness(task, totalpages);
++	badness = oom_badness(task, totalpages, false, NULL, NULL);
+ 	/*
+ 	 * Special case OOM_SCORE_ADJ_MIN for all others scale the
+ 	 * badness value into [0, 2000] range which we have been
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 6f959d8ca4b4..6d938b3e3709 100644
+index 6d938b3e3709..680f2811702e 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -2843,38 +2843,47 @@ static inline bool get_user_page_fast_only(unsigned long addr,
- {
- 	return get_user_pages_fast_only(addr, 1, gup_flags, pagep) == 1;
- }
-+
-+static inline struct percpu_counter_tree_level_item *get_rss_stat_items(struct mm_struct *mm)
-+{
-+	unsigned long ptr = (unsigned long)mm;
-+
-+	ptr += offsetof(struct mm_struct, flexible_array);
-+	return (struct percpu_counter_tree_level_item *)ptr;
-+}
-+
+@@ -2855,14 +2855,32 @@ static inline struct percpu_counter_tree_level_item *get_rss_stat_items(struct m
  /*
   * per-process(per-mm_struct) statistics.
   */
++static inline unsigned long __get_mm_counter(struct mm_struct *mm, int member, bool approximate,
++					     unsigned long *accuracy_under, unsigned long *accuracy_over)
++{
++	if (approximate) {
++		if (accuracy_under && accuracy_over) {
++			unsigned long under, over;
++
++			percpu_counter_tree_approximate_accuracy_range(&mm->rss_stat[member], &under, &over);
++			*accuracy_under += under;
++			*accuracy_over += over;
++		}
++		return percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member]);
++	} else {
++		return percpu_counter_tree_precise_sum_positive(&mm->rss_stat[member]);
++	}
++}
++
  static inline unsigned long get_mm_counter(struct mm_struct *mm, int member)
  {
--	return percpu_counter_read_positive(&mm->rss_stat[member]);
-+	return percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member]);
+-	return percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member]);
++	return __get_mm_counter(mm, member, true, NULL, NULL);
  }
  
++
  static inline unsigned long get_mm_counter_sum(struct mm_struct *mm, int member)
  {
--	return percpu_counter_sum_positive(&mm->rss_stat[member]);
-+	return percpu_counter_tree_precise_sum_positive(&mm->rss_stat[member]);
+-	return percpu_counter_tree_precise_sum_positive(&mm->rss_stat[member]);
++	return __get_mm_counter(mm, member, false, NULL, NULL);
  }
  
  void mm_trace_rss_stat(struct mm_struct *mm, int member);
- 
- static inline void add_mm_counter(struct mm_struct *mm, int member, long value)
- {
--	percpu_counter_add(&mm->rss_stat[member], value);
-+	percpu_counter_tree_add(&mm->rss_stat[member], value);
- 
- 	mm_trace_rss_stat(mm, member);
+@@ -2903,11 +2921,17 @@ static inline int mm_counter(struct folio *folio)
+ 	return mm_counter_file(folio);
  }
  
- static inline void inc_mm_counter(struct mm_struct *mm, int member)
- {
--	percpu_counter_inc(&mm->rss_stat[member]);
-+	percpu_counter_tree_add(&mm->rss_stat[member], 1);
- 
- 	mm_trace_rss_stat(mm, member);
- }
- 
- static inline void dec_mm_counter(struct mm_struct *mm, int member)
- {
--	percpu_counter_dec(&mm->rss_stat[member]);
-+	percpu_counter_tree_add(&mm->rss_stat[member], -1);
- 
- 	mm_trace_rss_stat(mm, member);
- }
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 9f861ceabe61..c3e8f0ce3112 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -18,7 +18,7 @@
- #include <linux/page-flags-layout.h>
- #include <linux/workqueue.h>
- #include <linux/seqlock.h>
--#include <linux/percpu_counter.h>
-+#include <linux/percpu_counter_tree.h>
- #include <linux/types.h>
- #include <linux/rseq_types.h>
- #include <linux/bitmap.h>
-@@ -1070,6 +1070,19 @@ typedef struct {
- 	DECLARE_BITMAP(__mm_flags, NUM_MM_FLAG_BITS);
- } __private mm_flags_t;
- 
-+/*
-+ * The alignment of the mm_struct flexible array is based on the largest
-+ * alignment of its content:
-+ * __alignof__(struct percpu_counter_tree_level_item) provides a
-+ * cacheline aligned alignment on SMP systems, else alignment on
-+ * unsigned long on UP systems.
-+ */
-+#ifdef CONFIG_SMP
-+# define __mm_struct_flexible_array_aligned	__aligned(__alignof__(struct percpu_counter_tree_level_item))
-+#else
-+# define __mm_struct_flexible_array_aligned	__aligned(__alignof__(unsigned long))
-+#endif
-+
- struct kioctx_table;
- struct iommu_mm_data;
- struct mm_struct {
-@@ -1215,7 +1228,7 @@ struct mm_struct {
- 		unsigned long saved_e_flags;
- #endif
- 
--		struct percpu_counter rss_stat[NR_MM_COUNTERS];
-+		struct percpu_counter_tree rss_stat[NR_MM_COUNTERS];
- 
- 		struct linux_binfmt *binfmt;
- 
-@@ -1326,10 +1339,13 @@ struct mm_struct {
- 	} __randomize_layout;
- 
- 	/*
--	 * The mm_cpumask needs to be at the end of mm_struct, because it
--	 * is dynamically sized based on nr_cpu_ids.
-+	 * The rss hierarchical counter items, mm_cpumask, and mm_cid
-+	 * masks need to be at the end of mm_struct, because they are
-+	 * dynamically sized based on nr_cpu_ids.
-+	 * The content of the flexible array needs to be placed in
-+	 * decreasing alignment requirement order.
- 	 */
--	char flexible_array[] __aligned(__alignof__(unsigned long));
-+	char flexible_array[] __mm_struct_flexible_array_aligned;
- };
- 
- /* Copy value to the first system word of mm flags, non-atomically. */
-@@ -1368,22 +1384,28 @@ extern struct mm_struct init_mm;
- 
- #define MM_STRUCT_FLEXIBLE_ARRAY_INIT									\
- {													\
--	[0 ... sizeof(cpumask_t) + MM_CID_STATIC_SIZE + PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE - 1] = 0	\
-+	[0 ... PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE + sizeof(cpumask_t) + MM_CID_STATIC_SIZE - 1] = 0	\
- }
- 
--/* Pointer magic because the dynamic array size confuses some compilers. */
--static inline void mm_init_cpumask(struct mm_struct *mm)
-+static inline size_t get_rss_stat_items_size(void)
- {
--	unsigned long cpu_bitmap = (unsigned long)mm;
--
--	cpu_bitmap += offsetof(struct mm_struct, flexible_array);
--	cpumask_clear((struct cpumask *)cpu_bitmap);
-+	return percpu_counter_tree_items_size() * NR_MM_COUNTERS;
- }
- 
- /* Future-safe accessor for struct mm_struct's cpu_vm_mask. */
- static inline cpumask_t *mm_cpumask(struct mm_struct *mm)
- {
--	return (struct cpumask *)&mm->flexible_array;
-+	unsigned long ptr = (unsigned long)mm;
-+
-+	ptr += offsetof(struct mm_struct, flexible_array);
-+	/* Skip RSS stats counters. */
-+	ptr += get_rss_stat_items_size();
-+	return (struct cpumask *)ptr;
++static inline unsigned long __get_mm_rss(struct mm_struct *mm, bool approximate,
++					 unsigned long *accuracy_under, unsigned long *accuracy_over)
++{
++	return __get_mm_counter(mm, MM_FILEPAGES, approximate, accuracy_under, accuracy_over) +
++		__get_mm_counter(mm, MM_ANONPAGES, approximate, accuracy_under, accuracy_over) +
++		__get_mm_counter(mm, MM_SHMEMPAGES, approximate, accuracy_under, accuracy_over);
 +}
 +
-+static inline void mm_init_cpumask(struct mm_struct *mm)
-+{
-+	cpumask_clear((struct cpumask *)mm_cpumask(mm));
+ static inline unsigned long get_mm_rss(struct mm_struct *mm)
+ {
+-	return get_mm_counter(mm, MM_FILEPAGES) +
+-		get_mm_counter(mm, MM_ANONPAGES) +
+-		get_mm_counter(mm, MM_SHMEMPAGES);
++	return __get_mm_rss(mm, true, NULL, NULL);
  }
  
- #ifdef CONFIG_LRU_GEN
-@@ -1475,6 +1497,8 @@ static inline cpumask_t *mm_cpus_allowed(struct mm_struct *mm)
- 	unsigned long bitmap = (unsigned long)mm;
+ static inline unsigned long get_mm_hiwater_rss(struct mm_struct *mm)
+diff --git a/include/linux/oom.h b/include/linux/oom.h
+index 7b02bc1d0a7e..f8e5bfaf7b39 100644
+--- a/include/linux/oom.h
++++ b/include/linux/oom.h
+@@ -48,6 +48,12 @@ struct oom_control {
+ 	unsigned long totalpages;
+ 	struct task_struct *chosen;
+ 	long chosen_points;
++	bool approximate;
++	/*
++	 * Number of precise badness points sums performed by this task
++	 * selection.
++	 */
++	int nr_precise;
  
- 	bitmap += offsetof(struct mm_struct, flexible_array);
-+	/* Skip RSS stats counters. */
-+	bitmap += get_rss_stat_items_size();
- 	/* Skip cpu_bitmap */
- 	bitmap += cpumask_size();
- 	return (struct cpumask *)bitmap;
-diff --git a/include/trace/events/kmem.h b/include/trace/events/kmem.h
-index 7f93e754da5c..91c81c44f884 100644
---- a/include/trace/events/kmem.h
-+++ b/include/trace/events/kmem.h
-@@ -442,7 +442,7 @@ TRACE_EVENT(rss_stat,
- 		__entry->mm_id = mm_ptr_to_hash(mm);
- 		__entry->curr = !!(current->mm == mm);
- 		__entry->member = member;
--		__entry->size = (percpu_counter_sum_positive(&mm->rss_stat[member])
-+		__entry->size = (percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member])
- 							    << PAGE_SHIFT);
- 	),
+ 	/* Used to print the constraint info. */
+ 	enum oom_constraint constraint;
+@@ -97,7 +103,10 @@ static inline vm_fault_t check_stable_address_space(struct mm_struct *mm)
+ }
+ 
+ long oom_badness(struct task_struct *p,
+-		unsigned long totalpages);
++		unsigned long totalpages,
++		bool approximate,
++		unsigned long *accuracy_under,
++		unsigned long *accuracy_over);
+ 
+ extern bool out_of_memory(struct oom_control *oc);
  
 diff --git a/kernel/fork.c b/kernel/fork.c
-index b1f3915d5f8e..949ac019a7b1 100644
+index 949ac019a7b1..8b56d81af734 100644
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -133,6 +133,11 @@
-  */
- #define MAX_THREADS FUTEX_TID_MASK
- 
-+/*
-+ * Batch size of rss stat approximation
-+ */
-+#define RSS_STAT_BATCH_SIZE	32
-+
- /*
-  * Protected counters by write_lock_irq(&tasklist_lock)
-  */
-@@ -626,14 +631,12 @@ static void check_mm(struct mm_struct *mm)
- 			 "Please make sure 'struct resident_page_types[]' is updated as well");
+@@ -632,7 +632,7 @@ static void check_mm(struct mm_struct *mm)
  
  	for (i = 0; i < NR_MM_COUNTERS; i++) {
--		long x = percpu_counter_sum(&mm->rss_stat[i]);
--
--		if (unlikely(x)) {
--			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%ld Comm:%s Pid:%d\n",
--				 mm, resident_page_types[i], x,
-+		if (unlikely(percpu_counter_tree_precise_compare_value(&mm->rss_stat[i], 0) != 0))
-+			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%d Comm:%s Pid:%d\n",
-+				 mm, resident_page_types[i],
-+				 percpu_counter_tree_precise_sum(&mm->rss_stat[i]),
+ 		if (unlikely(percpu_counter_tree_precise_compare_value(&mm->rss_stat[i], 0) != 0))
+-			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%d Comm:%s Pid:%d\n",
++			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%ld Comm:%s Pid:%d\n",
+ 				 mm, resident_page_types[i],
+ 				 percpu_counter_tree_precise_sum(&mm->rss_stat[i]),
  				 current->comm,
- 				 task_pid_nr(current));
--		}
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 5eb11fbba704..12a1419f518a 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -53,6 +53,14 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/oom.h>
+ 
++/*
++ * Maximum number of badness sums allowed before using an approximated
++ * comparison. This ensures bounded execution time for scenarios where
++ * many tasks have badness within the accuracy of the maximum badness
++ * approximation.
++ */
++static int max_precise_badness_sums = 16;
++
+ static int sysctl_panic_on_oom;
+ static int sysctl_oom_kill_allocating_task;
+ static int sysctl_oom_dump_tasks = 1;
+@@ -194,12 +202,16 @@ static bool should_dump_unreclaim_slab(void)
+  * oom_badness - heuristic function to determine which candidate task to kill
+  * @p: task struct of which task we should calculate
+  * @totalpages: total present RAM allowed for page allocation
++ * @approximate: whether the value can be approximated
++ * @accuracy_under: accuracy of the badness value approximation (under value)
++ * @accuracy_over: accuracy of the badness value approximation (over value)
+  *
+  * The heuristic for determining which task to kill is made to be as simple and
+  * predictable as possible.  The goal is to return the highest value for the
+  * task consuming the most memory to avoid subsequent oom failures.
+  */
+-long oom_badness(struct task_struct *p, unsigned long totalpages)
++long oom_badness(struct task_struct *p, unsigned long totalpages, bool approximate,
++		 unsigned long *accuracy_under, unsigned long *accuracy_over)
+ {
+ 	long points;
+ 	long adj;
+@@ -228,7 +240,8 @@ long oom_badness(struct task_struct *p, unsigned long totalpages)
+ 	 * The baseline for the badness score is the proportion of RAM that each
+ 	 * task's rss, pagetable and swap space use.
+ 	 */
+-	points = get_mm_rss(p->mm) + get_mm_counter(p->mm, MM_SWAPENTS) +
++	points = __get_mm_rss(p->mm, approximate, accuracy_under, accuracy_over) +
++		__get_mm_counter(p->mm, MM_SWAPENTS, approximate, accuracy_under, accuracy_over) +
+ 		mm_pgtables_bytes(p->mm) / PAGE_SIZE;
+ 	task_unlock(p);
+ 
+@@ -309,7 +322,8 @@ static enum oom_constraint constrained_alloc(struct oom_control *oc)
+ static int oom_evaluate_task(struct task_struct *task, void *arg)
+ {
+ 	struct oom_control *oc = arg;
+-	long points;
++	unsigned long accuracy_under = 0, accuracy_over = 0;
++	long points, points_min, points_max;
+ 
+ 	if (oom_unkillable_task(task))
+ 		goto next;
+@@ -335,20 +349,47 @@ static int oom_evaluate_task(struct task_struct *task, void *arg)
+ 	 * killed first if it triggers an oom, then select it.
+ 	 */
+ 	if (oom_task_origin(task)) {
+-		points = LONG_MAX;
++		points_min = LONG_MAX;
+ 		goto select;
  	}
  
- 	if (mm_pgtables_bytes(mm))
-@@ -731,7 +734,7 @@ void __mmdrop(struct mm_struct *mm)
- 	put_user_ns(mm->user_ns);
- 	mm_pasid_drop(mm);
- 	mm_destroy_cid(mm);
--	percpu_counter_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
-+	percpu_counter_tree_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
+-	points = oom_badness(task, oc->totalpages);
+-	if (points == LONG_MIN || points < oc->chosen_points)
+-		goto next;
++	points = oom_badness(task, oc->totalpages, true, &accuracy_under, &accuracy_over);
++	if (points != LONG_MIN) {
++		percpu_counter_tree_approximate_min_max_range(points,
++				accuracy_under, accuracy_over,
++				&points_min, &points_max);
++	}
++	if (oc->approximate) {
++		/*
++		 * Keep the process which has the highest minimum
++		 * possible points value based on approximation.
++		 */
++		if (points == LONG_MIN || points_min < oc->chosen_points)
++			goto next;
++	} else {
++		/*
++		 * Eliminate processes which are certainly below the
++		 * chosen points minimum possible value with an
++		 * approximation.
++		 */
++		if (points == LONG_MIN || (long)(points_max - oc->chosen_points) < 0)
++			goto next;
++
++		if (oc->nr_precise < max_precise_badness_sums) {
++			oc->nr_precise++;
++			/* Precise evaluation. */
++			points_min = points_max = points = oom_badness(task, oc->totalpages, false, NULL, NULL);
++			if (points == LONG_MIN || (long)(points - oc->chosen_points) < 0)
++				goto next;
++		}
++	}
  
- 	free_mm(mm);
+ select:
+ 	if (oc->chosen)
+ 		put_task_struct(oc->chosen);
+ 	get_task_struct(task);
+ 	oc->chosen = task;
+-	oc->chosen_points = points;
++	oc->chosen_points = points_min;
+ next:
+ 	return 0;
+ abort:
+@@ -358,14 +399,8 @@ static int oom_evaluate_task(struct task_struct *task, void *arg)
+ 	return 1;
  }
-@@ -1123,8 +1126,9 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
- 	if (mm_alloc_cid(mm, p))
- 		goto fail_cid;
  
--	if (percpu_counter_init_many(mm->rss_stat, 0, GFP_KERNEL_ACCOUNT,
--				     NR_MM_COUNTERS))
-+	if (percpu_counter_tree_init_many(mm->rss_stat, get_rss_stat_items(mm),
-+					  NR_MM_COUNTERS, RSS_STAT_BATCH_SIZE,
-+					  GFP_KERNEL_ACCOUNT))
- 		goto fail_pcpu;
+-/*
+- * Simple selection loop. We choose the process with the highest number of
+- * 'points'. In case scan was aborted, oc->chosen is set to -1.
+- */
+-static void select_bad_process(struct oom_control *oc)
++static void select_bad_process_iter(struct oom_control *oc)
+ {
+-	oc->chosen_points = LONG_MIN;
+-
+ 	if (is_memcg_oom(oc))
+ 		mem_cgroup_scan_tasks(oc->memcg, oom_evaluate_task, oc);
+ 	else {
+@@ -379,6 +414,25 @@ static void select_bad_process(struct oom_control *oc)
+ 	}
+ }
  
- 	mm->user_ns = get_user_ns(user_ns);
-@@ -3006,7 +3010,7 @@ void __init mm_cache_init(void)
- 	 * dynamically sized based on the maximum CPU number this system
- 	 * can have, taking hotplug into account (nr_cpu_ids).
- 	 */
--	mm_size = sizeof(struct mm_struct) + cpumask_size() + mm_cid_size();
-+	mm_size = sizeof(struct mm_struct) + cpumask_size() + mm_cid_size() + get_rss_stat_items_size();
- 
- 	mm_cachep = kmem_cache_create_usercopy("mm_struct",
- 			mm_size, ARCH_MIN_MMSTRUCT_ALIGN,
++/*
++ * Simple selection loop. We choose the process with the highest number of
++ * 'points'. In case scan was aborted, oc->chosen is set to -1.
++ */
++static void select_bad_process(struct oom_control *oc)
++{
++	oc->chosen_points = LONG_MIN;
++	oc->nr_precise = 0;
++
++	/* Approximate scan. */
++	oc->approximate = true;
++	select_bad_process_iter(oc);
++	if (oc->chosen == (void *)-1UL)
++		return;
++	/* Precise scan. */
++	oc->approximate = false;
++	select_bad_process_iter(oc);
++}
++
+ static int dump_task(struct task_struct *p, void *arg)
+ {
+ 	struct oom_control *oc = arg;
 -- 
 2.39.5
 
