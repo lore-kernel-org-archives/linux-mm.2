@@ -4,127 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B393D2502E
-	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 17:55:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C48C9D2502E
+	for <linux-mm@archiver.kernel.org>; Sun, 11 Jan 2026 18:04:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE2286B0088; Sun, 11 Jan 2026 12:55:13 -0500 (EST)
+	id 1817E6B0088; Sun, 11 Jan 2026 13:04:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCD686B0089; Sun, 11 Jan 2026 12:55:13 -0500 (EST)
+	id 1421D6B0089; Sun, 11 Jan 2026 13:04:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACBF16B008A; Sun, 11 Jan 2026 12:55:13 -0500 (EST)
+	id 02D666B008A; Sun, 11 Jan 2026 13:04:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F5F66B0088
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 12:55:13 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40B538D26F
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 17:55:13 +0000 (UTC)
-X-FDA: 84320434506.03.5A62C7D
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5145F140008
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 17:55:11 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=imcWK57f;
-	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E321F6B0088
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 13:04:01 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 987478D2D2
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 18:04:01 +0000 (UTC)
+X-FDA: 84320456682.16.11F7F7C
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 53DDE120004
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 18:03:59 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GFuxqrdp;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768154111;
+	s=arc-20220608; t=1768154639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=mn2Hr5PSunu94OsN9KDSKjc7Q62FgkjIKfj/HXbAqXQ=;
-	b=JEBWr+Rqj9SEoGktxH6CrYG8DzqgVVYlf9pQWaBb9bvVtB/wdwEZWLi7N6JXksgo8X5jNQ
-	M257nqW/WDGNG96eNG/BG4nKRMWMC52WItgxe/VMeOJKfAPArBjnbANBlyQGf0qjCmMpfd
-	hmHNur7rPBJ2UdZrMfZS+IdEdNl9OAE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6u88UsEjVSnN6p8Lt8nDGjkGji6yQxSFFZBgB9gsjmo=;
+	b=qNnkfUkEix+4mezs5fdwOH+Dgf6zJOHdE40obDjwrCqRH6gwMJh/I7INkuiMVyeJEfsNKf
+	RIsvaEaZPtwuPpa7UJGwARZ4VnXGiOPnfHgpMbGn6DIhU4lZGX8/dh8jn5tYGBonKYx4s5
+	dE79PqLR8JD4tWrvSkoUynz6NkgquGc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=imcWK57f;
-	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768154111; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GFuxqrdp;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768154639; a=rsa-sha256;
 	cv=none;
-	b=psUEpFqbYMXci2qKmjPJLt/WXemuYnVJi6ypmQGqHAfAN8qDCS3hvRjRsyfhrt17DHyz16
-	U0VgR/mKD9vuBGFHke2pjvbZqjlqWuUXGH+NaTApZEhMzN61f2ZRB/3Hzwv9EHDXXAsSm+
-	cxv4zDNBNhbEKjuskqTgzfI4BDgTO/Q=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a0833b5aeeso57587215ad.1
-        for <linux-mm@kvack.org>; Sun, 11 Jan 2026 09:55:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768154110; x=1768758910; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mn2Hr5PSunu94OsN9KDSKjc7Q62FgkjIKfj/HXbAqXQ=;
-        b=imcWK57flPFby4P/eEoSx13b0J9z8jmQDKM7FGXLplqASMWEnSKQGD2CLO+iWyyLcX
-         4nEMPd54we2RqrROUrFbNrnQuS8ZUSuEmPvcySQI4XrOB6P8GmUxu5INPy25fgiM1Oef
-         ka45yyIPjag09A9VBXgSyb6OtEnNGtgH/xOpfrCqtxOPR4YwJGwZjO2KFpBc04qpbPa2
-         oYPZwVbydKaRVOE8X7AzMhUT+CUhdZEJ0tAWQ7/5fPTm+TSak7899dwllVYydfppXVHu
-         gDmEBVUN0FLpMzOjvfLJh/mF+eNuoq1gEg65DfXAv4lAX1BeTCetpEvCoVuEQB1yoaLc
-         IKIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768154110; x=1768758910;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mn2Hr5PSunu94OsN9KDSKjc7Q62FgkjIKfj/HXbAqXQ=;
-        b=M208wmtIOZeWRWPw7PuFKBxi8n0K2/TtTtVdrLH2MwN03RS6MN5ub1ZgNyvQTwvYdQ
-         RsyDewAk8Q3PW3VDMO82E0l13WRedY+GVr/vOBTcjMpz1X2YZeQtW7N4sx56HerF+gdC
-         +zNxbMh4roYJcfPlJ2vtHBWpZ963O/i99dkKiOtLNuuB/yQ72lrLDBccC9eqDe/EgR4P
-         5z+4MWzZyxj6Zaz/dA3m6hjkb0v91/ogn9PmD1pGPDu6NbCg1ajosoOsTBm7ATNBaEKA
-         3+qZXzla9Sy1k8Z/oQKFsitmxD+Tp3Y1MNhyVlXHeRvUgc8de6bS9dM800dXlACgDzBA
-         H3Kw==
-X-Gm-Message-State: AOJu0YzOOPOi+kTP4FKpRij7kVqCR29zRPtFZYeVD5LXUH8U7aNbT4mx
-	oyM0aWkvTjTCbrnAcKoxYZuaTl1mYJpwRb2hgAxQkR9DdC9ObKE4OiUm
-X-Gm-Gg: AY/fxX5frx8pbz9ox+K94TEFVQbaYzKjklBoqnzhl1Lf4dv3xX5rMutALx5/vYSMG3W
-	AAfV7jcl3oA3GOd4D27oCOiLRGKTMtyhurxjziPnFV8TMFI886rF/7awin6h05BzrAUSz9aMWQG
-	ZRY4ix9evKtWGcb1XTm6KrO/pO0gviypHI23z5H2k2NAZAHT5k3+EUh0WNcGYGpxV0nbM6WqZ+M
-	AhCf8eBuorQPPcKpEFBc05b4cA1TcIvlnsCmoIeuCE69JpvnLx2ghAx7YGOHWHom5Sq25vWzLS0
-	0kVw2luYrcf0ntKY0enGRw+o3rDttQEEraG7FJHIRZwTtWykgGPEiOr6QGsF4EPNwe8+wcNa+fa
-	dDd4K9IQbFC9Xrkl1o/UoqKRhgUm/pp05MQm6K4sWqcdJTC8CGpXRvp8e+XX/PXytbYfRe1rH5C
-	PfoFdbi6bqmF0LqQeCZSNP3jhOYZQ5tuBekMTdRb4zcV12cFfk
-X-Google-Smtp-Source: AGHT+IGRjrIuMsl7ABTtavQCHRXkK5SahpOXls7YS4dgUaOY68TrcZCDlcWyyr8kisqTY0HybKOKCA==
-X-Received: by 2002:a17:903:184:b0:29d:65ed:f481 with SMTP id d9443c01a7336-2a3ee3411bcmr170291295ad.0.1768154109952;
-        Sun, 11 Jan 2026 09:55:09 -0800 (PST)
-Received: from [127.0.0.1] ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c3ae21sm150500795ad.7.2026.01.11.09.55.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Jan 2026 09:55:09 -0800 (PST)
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 12 Jan 2026 01:53:36 +0800
-Subject: [PATCH] mm/shmem, swap: fix race of truncate and swap entry split
+	b=uNUJu+Prqtiyjmvsskj1F8YZnP77coW6heNfY5ZBIWHtJKDTHd9a7NmLXmzmEE78vRFGGM
+	JT/1zO8A/hsEmrb2pVRCJQro0SoHiB0KgN2Ej6Fv6eBlLincphuq6hR4cmCxq4ex3ATYVB
+	KfyGAVhvrrdxmrxV3HSJeykqBB6jRZs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768154639; x=1799690639;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zbTnStaZRGXqT6TfypigN7OHnqv2DHIxSoAC5Gw88yg=;
+  b=GFuxqrdpvJ4ZyDcybsZCmm4nHSyMkqJv4fdWgRXQWUPgMXRcV5C/BGHu
+   ulK4FZI3RUX0Q2Ynpo79SPd0XpljHIOSPYZaVkqh+d/sNSiIKt5XXZB5B
+   bcLmRD6WqkBWkQjuQWsbaRh0UMhHobBEEWyWwCQH6ZUTY1kgG6+6h3wbR
+   mOW8mti9HdVN59KKB0v3EWi0v2RNIEWsJquNQCf0Bu8gH7/1XB4A0CYiV
+   SmGbwkDt2779fd1jXmXNVYjaVPzRjyAePI5yb/xP4pcz+VqtQz4BJgKCK
+   NlLo+mEl+0cggAXNGaMGfBaWGSKS90ncHp7XLLUCeuwl+hUMUYMcFFYiP
+   w==;
+X-CSE-ConnectionGUID: UVJmTIhbQ5y8EIRHgjBQSA==
+X-CSE-MsgGUID: uqGe05ygRlSJKw6dGyaMOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="68452013"
+X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
+   d="scan'208";a="68452013"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 10:03:57 -0800
+X-CSE-ConnectionGUID: pCRMPKXFTZmo/M3PkCS/fg==
+X-CSE-MsgGUID: EucFxaScS++i9cFiaip57w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
+   d="scan'208";a="208441509"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 11 Jan 2026 10:03:51 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vezn1-00000000CbA-48AU;
+	Sun, 11 Jan 2026 18:03:47 +0000
+Date: Mon, 12 Jan 2026 02:03:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux-foundation.org>,
+	Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>, christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>
+Subject: Re: [PATCH v12 3/3] mm: Implement precise OOM killer task selection
+Message-ID: <202601120124.RK3AWOwu-lkp@intel.com>
+References: <20260111150249.1222944-4-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAMAzAviI9W1iHivgV8TBddT1MZQUVhn93e
- EwgyaCchBWGKkPiS1SOvQDVFSzB7Ruj+MJgje0MEaGGyBH1dieu8mDvDVvjqJlbDyU6Exf9D8f
- pfT+UL/4gYAAAAA==
-X-Change-ID: 20260111-shmem-swap-fix-8d0e20a14b5d
-To: linux-mm@kvack.org
-Cc: Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
- Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org, 
- Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768154106; l=3256;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=y8LXMuvlkDlyCTV58KsaetOE+va9ri7lv7P7G8ssw0g=;
- b=RVEa+tGwO0D/Cduu3BeHX+GntDWMUg1Lbu+Rm6zDB+3EfubeQAdCLcFf/7clzYQEZ1TYn9esm
- O65mahA2w1DASc67hy1Xh1z739U0JTywGL2xQIYerk3c9KQ0UdMBG2A
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Rspamd-Queue-Id: 5145F140008
-X-Stat-Signature: c8aj7yz54aoioo5co3xfnta68qip1gmd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260111150249.1222944-4-mathieu.desnoyers@efficios.com>
+X-Rspamd-Queue-Id: 53DDE120004
+X-Stat-Signature: x6ykbi547hw4od4gcco7676sacq4dbxj
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1768154111-31722
-X-HE-Meta: U2FsdGVkX19u4Bjw1LVrwZdEplwdNuGPZTjAqCU6/NZx0YRh2V1Ovp24eK82Vwn+uKV1+jNiQCOHVBOP+TjH4amcrOob8BpCISwBv1Opf7etPUbEGi/sGlwNTVxNofKH5GEIpPX8SfwXOsa8n38oGK4OxQYI4DbJNI1D/wWBf/PkdET60D3GH5rmTCQ6YMpv8B+Iy9hw7pYnraXNknVRl795j1h1Sn17iwVny+Ch5BQ32pK8ojRyKShMM+f7IwyelHS0qSkQnnjAfdP4ywd9cew0ABeENmuuju6JGof4VJASNtAZLsfLx8z1tBZ1899e0DjdtuXNVl1NVmSqmSn0/qa6hC2kD4OOZ5oCe1ex5omrJ2FUG4ZRa3ecmZ7NHzK+mm5UHN8JZ8zhOlBivAW7lu/znuuJT+A8Eu03TKcFRyoIRIDlNHnr2pKPAyOB4yclYFbZ7KOqOsiqspj8FgJSiHVYAnZycWSqkMAeqSO2ny6gUUtV2HkNPQyvUv48ZltnBCCaBvH7rsNrty3MGBHNeNHqVaobiz769C1LWnCku9IhoKah2k7sljGCQrHOuxHf4OQaIrwRfR+TOk3rysjc8wAu79avUQMUkbWrFTSYU0rAKHu9JqIsL/vSQ9y+RY9CV5URYn/uRhWfDP8nwkius8FdAk9h2eZERas7a7GuDNOse6/yvXW7pTbbq2H8W6kO2wZarGAoH+L+W34rMyfxKW/zejWIKKNMsU9w2zlBT3nundt6iwoXbaT2o7KrT5yQaZI61V5YXqdHo/WsO8kXyta2gkSSFA9YJPAsZI9FalGXFyFE+fOJaDKEeb4NbGXOcAMDTvf5YxMyzYlG6LsLO4P+aW6VehwavDY4GijgBaq6jtj1j9Gs4UGAUnBrsHyPyWHv3vb+z/GSTGv+M0qTSSpfHDexOE9l1CM8SKA4RlSAjsQDJdbvcWjwfqo0ndyNq7iGJyPci3vNRmTAU2a
- o/sanp0k
- iiRtqzPZpBi93gthh0FNcK78FOtQHvXMDi1cnDCuCw83LcdmQTFPqUZZAekqCKpNYEnfDvbzDuT+diGAPQDehy0bSRik0ml2PuCVfDpH1bHlVqJPLnJ7no8u7sFIICqzGTUexms8JUmh1y2LCbOLnDmMKnPNDkKbhXZCon4AZoRRBDCfP8B3KRsFejuVNHd66k0mLnyZA4cksayK9LBv4L2/O04KnQavcQThGj6oh1PsxEhK4YO9ASURfcECWFSNQJghNGRXk9LbitL96Q92oaantUffUzMUUj6XnTXyCiAKUotjV3Tka8pOxYJVhIZJinYMTlrZFjjS8kVdAqPK4KfdkOHAjP5nX8VMfvpC2hWFsZFc+sxvmEiszo7YRj37e11o6idk895072yzc+ZATmszKYw8W10ZR3zUjI5A/zfDPDb/qEkgnumtrF5+ppDaQCVJ5VQtaf+Ol6iC1Hg18NLA/P1MRl9PRS0bYM1iHSxaiUUHG0RuDrp+WIg==
+X-HE-Tag: 1768154639-149576
+X-HE-Meta: U2FsdGVkX1/euLL71WfCxBhWOZff3AQqpCOnz6PZyyuEgRz0D5mpj//1H3sftysojtW5Uaxv8koE5wX5HMPAvsAy7qEvEZhoiWXQ4zPaR75KTDHJmVTUbsGc9mGKUPcT9NUNEh4MxcEIIU7MMtXIS1WGBGY7t1KKgZVZstfP9/crmkO761HDpkkiyUbl052F1ynJQZXTYhLl7O1VzWJf/yZ2t188xDsRK6ZJttoKH93TbKz8ydDJthv/8vQVO9voyn6KWMdNvhBa32hk+BkwgipAYI7l1OmKxw2d00ROAHwhnsm0IqVari90HrtFqGmTaMulc/mfIi+ijVU1PYTgbg0mzWSScJH4XjshiplJYGd9Ptge4Ci80zA2y7AYcCkhEOIlWNEYm72VI3xHXu60Gr+4J4q38QmNgYIMb+LAQsqjdWO2SvOUEJWE9l3KLCFosGINaqac+0HgXNTHIi5iO37rXiHN/WE1OLY6axmTcbdxy6ygndItvX4cHynZb6Nh2/EROXWHRuV2HqdMuNCKEmeQGoUm8/QDkwPzqiW10QajFWQGackwteUko7PhHENqOf2h9MmPSoHWGjCt4LZzgrEgLGziTTY0mzbUMWAgT4UWjUmfmePWBG3knM4brwtQ1Vk92pbvm6eUehHm6otkUdke5JLMEBY/ghxr7Td+dzEVu64fvnv2EQmqdUPbYjKoXgBZn8hjJJ3lK3hly3Yu7Z9NHBpNn0n7fxEaq9NvAeGsNh320UwLl03TcjoO1Dsd7ozgCoLKziYvuMxP/loRsD8G4IcWx8SwhE/gdwSQvY0fxTNjqLlPASaXC3hzZk0BKtof5LxGc1x96IiNutuPWrkbXtmVyHKt6yNzJvRT13SEokFvXlEiq651xiXNAn2/MMfmDKIO65FIwyRFqZGJ9bClMzlo8KV3HSbah1dP8nDE90laUKRWUoQeNXIXm1G/scRcEVgLsddMlc+kS8p
+ qT+e1L/h
+ cLE4CW4++hqWcBSsmufYlgElwjT0DiXZHAFxChmV8dRdyWQ06EcMBW0WxmBZkLsbKlDKuYi2ae6SZhyOfoGkqn2/2ODPVKjLuR78xi+dOyvSpWvuzp8Gwn/d1FFVBFQO5j2i0ZRoHw70q5xi48Viwd9Re48Xzhv5heBiblXbpXH9OXNW0IrPKzYJmIHIGnvWcJxTayQoPmH/gvDGXbbm/vQHBMgE/ZSn9gi0wlyD+UKHo9ixTbtvf3kCgGPFxtqqk5nV2VZ3P9HYLDnzb6msWCjj9b0AFwFgRHjwJuMyQdi33bg80ChhDwDTo4tU8nC3hqPZ+1TH2ZDF36tVXltX1w2UDA4F5pAgQC8pCDDbg4OLoA3MdbiOZ+CuVWs0xVak/A0/Sh5u+KrzV7bOIyACQigNuV55+HC47B2QEZ+DuG13De0UbIFeWpn92brkMfNRtf/1fbbKBFo0urcI+CoNU80wJ9XCzgqn8oXILMU3oQcWuPUc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,100 +132,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+Hi Mathieu,
 
-The helper for shmem swap freeing is not handling the order of swap
-entries correctly. It uses xa_cmpxchg_irq to erase the swap entry,
-but it gets the entry order before that using xa_get_order
-without lock protection. As a result the order could be a stalled value
-if the entry is split after the xa_get_order and before the
-xa_cmpxchg_irq. In fact that are more way for other races to occur
-during the time window.
+kernel test robot noticed the following build warnings:
 
-To fix that, open code the Xarray cmpxchg and put the order retrivial and
-value checking in the same critical section. Also ensure the order won't
-exceed the truncate border.
+[auto build test WARNING on next-20260109]
+[cannot apply to akpm-mm/mm-everything kees/for-next/execve tip/sched/core linus/master v6.19-rc4 v6.19-rc3 v6.19-rc2 v6.19-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I observed random swapoff hangs and swap entry leaks when stress
-testing ZSWAP with shmem. After applying this patch, the problem is resolved.
+url:    https://github.com/intel-lab-lkp/linux/commits/Mathieu-Desnoyers/lib-Introduce-hierarchical-per-cpu-counters/20260111-231206
+base:   next-20260109
+patch link:    https://lore.kernel.org/r/20260111150249.1222944-4-mathieu.desnoyers%40efficios.com
+patch subject: [PATCH v12 3/3] mm: Implement precise OOM killer task selection
+config: arm-randconfig-001-20260112 (https://download.01.org/0day-ci/archive/20260112/202601120124.RK3AWOwu-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260112/202601120124.RK3AWOwu-lkp@intel.com/reproduce)
 
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- mm/shmem.c | 35 +++++++++++++++++++++++------------
- 1 file changed, 23 insertions(+), 12 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601120124.RK3AWOwu-lkp@intel.com/
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 0b4c8c70d017..e160da0cd30f 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -961,18 +961,28 @@ static void shmem_delete_from_page_cache(struct folio *folio, void *radswap)
-  * the number of pages being freed. 0 means entry not found in XArray (0 pages
-  * being freed).
-  */
--static long shmem_free_swap(struct address_space *mapping,
--			    pgoff_t index, void *radswap)
-+static long shmem_free_swap(struct address_space *mapping, pgoff_t index,
-+			    unsigned int max_nr, void *radswap)
- {
--	int order = xa_get_order(&mapping->i_pages, index);
--	void *old;
-+	XA_STATE(xas, &mapping->i_pages, index);
-+	unsigned int nr_pages = 0;
-+	void *entry;
- 
--	old = xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0);
--	if (old != radswap)
--		return 0;
--	swap_put_entries_direct(radix_to_swp_entry(radswap), 1 << order);
-+	xas_lock_irq(&xas);
-+	entry = xas_load(&xas);
-+	if (entry == radswap) {
-+		nr_pages = 1 << xas_get_order(&xas);
-+		if (index == round_down(xas.xa_index, nr_pages) && nr_pages < max_nr)
-+			xas_store(&xas, NULL);
-+		else
-+			nr_pages = 0;
-+	}
-+	xas_unlock_irq(&xas);
-+
-+	if (nr_pages)
-+		swap_put_entries_direct(radix_to_swp_entry(radswap), nr_pages);
- 
--	return 1 << order;
-+	return nr_pages;
- }
- 
- /*
-@@ -1124,8 +1134,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
- 			if (xa_is_value(folio)) {
- 				if (unfalloc)
- 					continue;
--				nr_swaps_freed += shmem_free_swap(mapping,
--							indices[i], folio);
-+				nr_swaps_freed += shmem_free_swap(mapping, indices[i],
-+								  end - indices[i], folio);
- 				continue;
- 			}
- 
-@@ -1195,7 +1205,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
- 
- 				if (unfalloc)
- 					continue;
--				swaps_freed = shmem_free_swap(mapping, indices[i], folio);
-+				swaps_freed = shmem_free_swap(mapping, indices[i],
-+							      end - indices[i], folio);
- 				if (!swaps_freed) {
- 					/* Swap was replaced by page: retry */
- 					index = indices[i];
+All warnings (new ones prefixed by >>):
 
----
-base-commit: ab3d40bdac831c67e130fda12f3011505556500f
-change-id: 20260111-shmem-swap-fix-8d0e20a14b5d
+>> kernel/fork.c:637:6: warning: format specifies type 'long' but the argument has type 'int' [-Wformat]
+     635 |                         pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%ld Comm:%s Pid:%d\n",
+         |                                                                                ~~~
+         |                                                                                %d
+     636 |                                  mm, resident_page_types[i],
+     637 |                                  percpu_counter_tree_precise_sum(&mm->rss_stat[i]),
+         |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/printk.h:534:35: note: expanded from macro 'pr_alert'
+     534 |         printk(KERN_ALERT pr_fmt(fmt), ##__VA_ARGS__)
+         |                                  ~~~     ^~~~~~~~~~~
+   include/linux/printk.h:511:60: note: expanded from macro 'printk'
+     511 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+         |                                                     ~~~    ^~~~~~~~~~~
+   include/linux/printk.h:483:19: note: expanded from macro 'printk_index_wrap'
+     483 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                         ~~~~    ^~~~~~~~~~~
+   1 warning generated.
+--
+>> mm/oom_kill.c:351:6: warning: variable 'points_min' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+     351 |         if (oom_task_origin(task)) {
+         |             ^~~~~~~~~~~~~~~~~~~~~
+   mm/oom_kill.c:392:22: note: uninitialized use occurs here
+     392 |         oc->chosen_points = points_min;
+         |                             ^~~~~~~~~~
+   mm/oom_kill.c:351:2: note: remove the 'if' if its condition is always false
+     351 |         if (oom_task_origin(task)) {
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     352 |                 points = LONG_MAX;
+         |                 ~~~~~~~~~~~~~~~~~~
+     353 |                 goto select;
+         |                 ~~~~~~~~~~~~
+     354 |         }
+         |         ~
+   mm/oom_kill.c:326:25: note: initialize the variable 'points_min' to silence this warning
+     326 |         long points, points_min, points_max;
+         |                                ^
+         |                                 = 0
+   1 warning generated.
 
-Best regards,
+
+vim +637 kernel/fork.c
+
+6af8cb80d3a9a6 David Hildenbrand    2025-03-03  625  
+d70f2a14b72a4b Andrew Morton        2018-01-31  626  static void check_mm(struct mm_struct *mm)
+d70f2a14b72a4b Andrew Morton        2018-01-31  627  {
+d70f2a14b72a4b Andrew Morton        2018-01-31  628  	int i;
+d70f2a14b72a4b Andrew Morton        2018-01-31  629  
+8495f7e6732ed2 Sai Praneeth Prakhya 2019-09-25  630  	BUILD_BUG_ON_MSG(ARRAY_SIZE(resident_page_types) != NR_MM_COUNTERS,
+8495f7e6732ed2 Sai Praneeth Prakhya 2019-09-25  631  			 "Please make sure 'struct resident_page_types[]' is updated as well");
+8495f7e6732ed2 Sai Praneeth Prakhya 2019-09-25  632  
+d70f2a14b72a4b Andrew Morton        2018-01-31  633  	for (i = 0; i < NR_MM_COUNTERS; i++) {
+25d942f31cc499 Mathieu Desnoyers    2026-01-11  634  		if (unlikely(percpu_counter_tree_precise_compare_value(&mm->rss_stat[i], 0) != 0))
+72456781289a6e Mathieu Desnoyers    2026-01-11  635  			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%ld Comm:%s Pid:%d\n",
+25d942f31cc499 Mathieu Desnoyers    2026-01-11  636  				 mm, resident_page_types[i],
+25d942f31cc499 Mathieu Desnoyers    2026-01-11 @637  				 percpu_counter_tree_precise_sum(&mm->rss_stat[i]),
+881388f3433819 Xuanye Liu           2025-07-23  638  				 current->comm,
+881388f3433819 Xuanye Liu           2025-07-23  639  				 task_pid_nr(current));
+881388f3433819 Xuanye Liu           2025-07-23  640  	}
+d70f2a14b72a4b Andrew Morton        2018-01-31  641  
+d70f2a14b72a4b Andrew Morton        2018-01-31  642  	if (mm_pgtables_bytes(mm))
+d70f2a14b72a4b Andrew Morton        2018-01-31  643  		pr_alert("BUG: non-zero pgtables_bytes on freeing mm: %ld\n",
+d70f2a14b72a4b Andrew Morton        2018-01-31  644  				mm_pgtables_bytes(mm));
+d70f2a14b72a4b Andrew Morton        2018-01-31  645  
+
 -- 
-Kairui Song <kasong@tencent.com>
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
