@@ -4,93 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26C91D232D7
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 10:16:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9041ED26D97
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 10:20:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B3946B0088; Mon, 12 Jan 2026 05:16:05 -0500 (EST)
+	id C2CD96B0088; Mon, 12 Jan 2026 05:20:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 861A96B0089; Mon, 12 Jan 2026 05:16:05 -0500 (EST)
+	id BDAE86B0089; Mon, 12 Jan 2026 05:20:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75F786B008A; Mon, 12 Jan 2026 05:16:05 -0500 (EST)
+	id ABC7C6B008A; Mon, 12 Jan 2026 05:20:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E2246B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:16:05 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 08C2813BC4C
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:16:05 +0000 (UTC)
-X-FDA: 84322906290.25.85C44E0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9642B4000A
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:16:03 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A9LIXXYO;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768212963;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CBBA6B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:20:29 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3FF8913BD91
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:20:29 +0000 (UTC)
+X-FDA: 84322917378.24.14233EE
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5D037180007
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:20:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=J7yCAcLJ;
+	spf=pass (imf24.hostedemail.com: domain of smostafa@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=smostafa@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768213227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HzjYZYBHySAp9w9krJyhV6EXGC4z6s9fB+/3IJ2l66o=;
-	b=GD93IKZ3kFidOcf66jiW3tOVm9YTK+NvWq14IsAeh5HuvGqUDqutsXtIN1nund5Plbir6K
-	Q0EC597MSp9aZPZwTZ9s00+dXXGIq2ZmPbVsUX7EbTIqwyZ3WJ3dtznNWl/yPwoaIi6zrC
-	duYvYieBrzmTPaQgg5y6sjAsrMdZZ9g=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A9LIXXYO;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768212963; a=rsa-sha256;
-	cv=none;
-	b=TK3FBCxvdb2d4W7PqgYdXHIzak04GTNTFqJxzx3QDwx6z8KZYVZltYAzBgvNWJJrmZKgMF
-	q5Z0iEEjOYSA4ndwo3i0rXv7COmeEmA6aLdkbBhqs5KNPlTMc7u1Migel3ZmojTg+nx7aW
-	GQbN8a4a+X3E9X+MiT2Kbn6roZ1HQrI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EE7B96001D;
-	Mon, 12 Jan 2026 10:16:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41188C16AAE;
-	Mon, 12 Jan 2026 10:15:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768212962;
-	bh=5H8Asd6ECAeeCJMDcewHAKiYsD49AUcZV+2Vmxk0dfo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A9LIXXYOyBQsscRZFafNFyXooBQgSq4XZd7U7HXgnan2DSrMZ3pyXjYwiOKlxvwEC
-	 DBUxb09K6BkF2mgUIEyK0lbalmnkWypZJUxB32+cvlWlX6cyEpgS7GQDcon8zhG1Rw
-	 aGLFUnQk3RUJKc8SkcC///AjvbrwkBr6jK6Ptty7ME34hBEB7+f7Pq5Irumn6+kDbJ
-	 hazFwNrxKY4O82MHYOpaHC0+MXQtM9Y7aiNnnCCg3ohYaIDzMG0k7G8OW0pnP2bxIs
-	 HGmfMrOdFYNXtzXrocGp0j3fP2POj8jb0S7t+TyusxY/SuA5sUHWDw2LxZJzwy11N3
-	 z4XyrOZ9eYVOg==
-Date: Mon, 12 Jan 2026 12:15:54 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Jason Miu <jasonmiu@google.com>
-Cc: Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
-	David Matlack <dmatlack@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 1/2] kho: Adopt radix tree for preserved memory
- tracking
-Message-ID: <aWTJ2v9J-Aa6ykBf@kernel.org>
-References: <20260109001127.2596222-1-jasonmiu@google.com>
- <20260109001127.2596222-2-jasonmiu@google.com>
+	bh=K81YAnOXZO5D4mYdCuhOxp178GZoWafY9YiJgFtn31w=;
+	b=t04cFXpWYpJlNun3FGl2hm4G8dNy1mLMKBSo0xGn+v7jt/CizShOrtvzG0bpq2bLzrqgFB
+	OyxpPQDn3wc5SrBbRGRfhVkRMX0rUcX2x6fSoE5BtIVJhZGQQ3lch5Cq0SvMtUKEuFqwyI
+	jk6AebEy1ylXO81YqGYzyBwt2or0Si0=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=J7yCAcLJ;
+	spf=pass (imf24.hostedemail.com: domain of smostafa@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=smostafa@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768213227; a=rsa-sha256;
+	cv=pass;
+	b=kp6D18P+zuUHt4uqvrpa6mx90uh5V2npWoxQgo7BIXgErUsb3FpV9ImgYFNl6djlv7UqJH
+	E5LhNQA2EayoWrQc6DOo6ReqG9BUlIS3Lc7NrX70ANEV1R4HHCnVEF28CF1yIJyCseIkhB
+	fu0mxU8DZ1zM5Fm1uAe/FA4CkdPnIHE=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4ffbaaafac4so858361cf.0
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 02:20:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768213226; cv=none;
+        d=google.com; s=arc-20240605;
+        b=J22SPqd1K0Lf1m2/gdq2zT7ymdNDNLLK4yF83pKl8/h7ND0tB1rDePEPwNJjkO7UE8
+         M515oNnTXo4SSa/L1fTB9F7iy9tpB2LsZpA3ARbHts8wKDCRRHdNJ0BRDe71W1QAAo+7
+         zLZEvpDy0oiTYLP1SZAqTvN63QtxWZ4Ie232uc+Z0ADT9a+2sYEfML2ig31p5nvX/XVY
+         1tqnFLNuZ9g8lobM/F6R9K4On1Kd52yhOTeH3NYQ7xPsBjXRRzNiY4L/3zVx6MZZaxOK
+         Cp88dpaXxhBZFXGbbkeZ0yXWKIwO8Wf+YNV2etJ4aw2MZt0jJLpBf+1cTJqGhnTq90D5
+         Aubw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=K81YAnOXZO5D4mYdCuhOxp178GZoWafY9YiJgFtn31w=;
+        fh=gmy3vim+lyLQAZHW0CtXh7r3TBmX5Emig2GMVX6Hyb8=;
+        b=WydqBPSViOHURnGFLg7Y8d/YAk8m/JmI0ytnLpBPBevfAwBQAf6j0jmYXVyEPUQQ6W
+         sVEX4keVTiN1o1gzYrPZWopebLkjohNxHhBz79UMlEMTSP+5m17+TeWdxUf4QGm5gleb
+         zl6mt27HCK5ZgwEH+076y0gasLNwAHZbwGDU5k0zRr4GaaCFX+rvUNniGt0Lmi/mu9JR
+         AUZsv/BlVomJCHsedPc6C57ppvF1Po3fvb4g+c74jxxHLaGt7jAZi/wKRppwD65uqLiw
+         xMunHq6XLRdYdYNsIwIFboGTbiTck+VqYs6OXDdtLFE6cJc7f9Pe3T7boNa7mfUOU720
+         V1zA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768213226; x=1768818026; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K81YAnOXZO5D4mYdCuhOxp178GZoWafY9YiJgFtn31w=;
+        b=J7yCAcLJOIeZ7+IEIfdk6T2vw8kRHDc9jzhDgoiQ1+nPg5o6DM5Cl8MmP33CMn3ogl
+         Fz7fknibA1kpBVQ7sdkAPFcBa2R5RPa214SOoDuvhhmKL1zbz270MgeeYYfWfaovIPZ/
+         pY9iEHRVpSwvdEZwFq/gf1nopCaa65FNkXGHnr8ASk8K84Z6YKUnNkokq7kBXSHuXmN3
+         NgGQIAHsa2pxES8Sivy4oOrJ/hyCYGI6/diHU5VNiPydbQBWnAuj8cxuDmLxHp5wveKy
+         HFqUNIg2yqvrm9z9PHFBN31iz/JmAxFZtbAT4r9R4RatCfrmTnv/mbbp4YNpAQRC/kXO
+         zKng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768213226; x=1768818026;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=K81YAnOXZO5D4mYdCuhOxp178GZoWafY9YiJgFtn31w=;
+        b=TgwEyri5L8GEj/iEJ2+hd11lq17Tb83GcH9N41IB5nWa0zzYh70qUWUFrjrFkvxe1i
+         HfuQ0rq4ajntn2rojQVZKDZOrfeN5CdzY9LAMInjxbooPm/wRDODXVh1p37slFzVLmvb
+         CNt28JOFesIoohByKYTLvCJD+FebVk7Mi2D9bC0WVZDVzW2L23+UeTyiCO2JrxRyN6iI
+         NqNk3vtwJaGOzUGfIz9v4xvlk0PqAefnB2D6/1q290Zrt1uuQ6ncSDYi5uxP8SrSqKgy
+         1s/HmzSHCAjODnox7lW+JSeX9AXrjzLsHwmMsLV3yqzSg2Q55tKZd1a0cIU6Q6wDJ62w
+         VEgg==
+X-Gm-Message-State: AOJu0Yyl2SDcAzraNGVuIu4rm4Ptid3vJSG59g2fLB/PvGU3q2EPI00o
+	SeFLm3MPvV2Muf9wZiPqZnhFSnqOxgaoT51ZJkcek3Id5BD1//rKhe67A5EWyg5ImMe9R6/ut8Z
+	33tJJmEyADGzXeiJECZu+uV+e8Jk1YXiJp3YV6fK1
+X-Gm-Gg: AY/fxX72acfMI01V9zSjBm6P3YmlFU76PoREIO9HdPouNDqIeWY9jTuGdxBXqnjFUH2
+	jufN68xRSfGZWRypq+pwY4L/6f5l8AXbiex8MyfN3k6TfoEuBZCqUWtxMma8UHL6D09d9yYEz84
+	EQ+4DuDiDo6o2xmYR7J39OpvvxS0j0v/TZNnnUA2okFMwi/+GqXHbckETR6KlsOcB8QrRooP9nG
+	7hAYClXH3b9zthS+o3FlgnFOkzGPxjqGk0HzqK0vqdzWM1g9peJ3vDSO9x5voj+uPEo9517k40a
+	pPO5RgochLqusH8WBTz1eZuUgA==
+X-Received: by 2002:a05:622a:350:b0:4ff:cb86:eec2 with SMTP id
+ d75a77b69052e-501197697e7mr18829141cf.5.1768213226233; Mon, 12 Jan 2026
+ 02:20:26 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260109001127.2596222-2-jasonmiu@google.com>
-X-Rspamd-Queue-Id: 9642B4000A
-X-Stat-Signature: oshfn4kxfucq5otyztx7fqf6f5uedqz8
+References: <20260109171805.901995-1-smostafa@google.com> <20260109171805.901995-4-smostafa@google.com>
+ <20260109195111.GQ545276@ziepe.ca>
+In-Reply-To: <20260109195111.GQ545276@ziepe.ca>
+From: Mostafa Saleh <smostafa@google.com>
+Date: Mon, 12 Jan 2026 10:20:14 +0000
+X-Gm-Features: AZwV_QhBZadnJiyUFvTjuypzRI_tAKalJjtR7zhOZQkOyHcxgKv9-680wPv8WNg
+Message-ID: <CAFgf54r_au6isA10Nrve=MHL455X=tKhNsSwH1ej-TX08J3xLA@mail.gmail.com>
+Subject: Re: [PATCH v6 3/4] iommu: debug-pagealloc: Track IOMMU pages
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org, will@kernel.org, 
+	robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz, 
+	surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, 
+	ziy@nvidia.com, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com, 
+	baolu.lu@linux.intel.com, rdunlap@infradead.org, 
+	Samiullah Khawaja <skhawaja@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5D037180007
+X-Stat-Signature: yif3zrnqj8gy5esotmdozhypjogb9htk
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768212963-866378
-X-HE-Meta: U2FsdGVkX196AbkTrxFz4YSU/eOlZT650nIsteTk5k63JlybICy3QVgiVmp6tbIGVWK3MrLcFcotEGTqL/tIT/jxbOWfWHgyjELjFsJzNRixRAJJGMd2fRWUUDSfZ0wdrI4kMX5/rj9AXZ9TP2SdQR1ZXAzW4MaHBIEw2gpyvC+s6VbnQ11DqBKM68ExUuutv/5dHNzNSbVZL1aGIvKyUQT+w31mucfc0CFElrl9Ve/OPLqu4H8EyVqW2H9qm7tlJPoTAa17ukNpBqB4Ha0bxpnp6ArUHhx7KChveZrwGNzVH8NuRX39iIJ6MGAdUojuxrhGAYhZLx4TV6PV361kK/ZzZMH4R3XqvwMKQhEo3visfHS8mnvn0Cvp8NTAsAx79J6szPzaaI4c4yf8Fe6gAbepDiLf7AKaxgIr1VDW+bFDw7AJdaJvHN1huqUKVbOVe+aHM7RJuBlDozfzRxylMzO4SerG/6N/QLrQzYSbvxNSAzXIWUEOd2m0FF0Id4mvxzR6UEFYrJG5Fv3tdCA9GUBxpMwLftY94PA13mFhXiSA/BIfZMAeHaXezsP2nWJSnM2ltnSai+t9KMS+b2DraprDgs3cifWzXYY9OLtxrCllSV38x+n64EdnqJOr/BHF/HNHQ5tWEFkZR53flnWsFIDqGZq8G5vuBXCXsSm8b9ine548SJE9+oMIkAvYcesDzUyzAQ8s52vSbMQnmCG2ElZo6ZrfHau4uBTr30bZ763cMiB/WGSUM7XcFi1m6acbtjCDVIX/+P6qhedX8dUgc44+Mz2Yv0xvLXyKVifm3JVkIB9HhdkddWdkNnyfahulVKaeHsfXSBaVJtNyqEbTB4kH5FF1iPopJZTv5Vh47WO4X0+2O+fQcKu0kRUs2OMEJ8EDRBC8j418Cj6GzE3U/ymK8tSlQ7TYF0pYZEXDAmOepfAa/6A5KQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768213227-75238
+X-HE-Meta: U2FsdGVkX1+Tnyj87YVbtDIIh3p0HjjAIMN8lYl3HsVnywfsctaQgqIWXouZie911Im2f8dep/isjaTpUWqwRJs5ogulOlXHwdYDIh4sq9G4PTBYYdmUXUqxvHNbo+KNjSHYiayy6E5zDb9/goPioV1kfrG3uPblhYx+rIoo2gL+qJoEr53HY9VL5gVCGrHfhDgg+LZMGt4DIDS2eOkMaqSgm+AHNssPkN8HnA409CJenSLY0WTLJvRSk0PsWXmmQWT55lRkeIf2wWJurXXiJW6EtCpDsIPhXTOr48KwI7ZKwCFFdO6RpFIcpap/zcTm4YmqpWmTE3TofNYbdrD8egzCnDp/ZflGMEA8T/5EjcB1tskgChSu8ZWe0hbjNkEOC/WX8Ewd67+ebOm64KEEO7Y/7lqAJQ0dciQMtp48YhyeaVOGx0jw6Uz+QO355zsnJ4dwWWguf7vw9Bt2IBWXaEX81ltWQpDARktUcG+128LunUDl8VHgKwpiICbQ006konPBNYFg7X5hN4aGWVigHfSDayWcpxeuMlooCN/YzRDysmBrFEDi7ETpX36rbbAKtJ+abGYOP47IHVtQul1F6N9gboC8yVhyQn7cNkUUUVqrL9VDrtYCuHMDR0rVXZGcoSTGsNTZfK5K2dUMs28Lgeup1G2oqpv/TvAH5obViIrNivMMLV/McoS3Kw2EXFgITa4EHgzIsMLADYUCdxU3rMNuRjieLPl7faOCfcgY2hG2WPjEv4UjVOljq8Jv9CwKKUzI+P/o6Jnvq6292pKVN5q7YoBC0ibG6yUJrVeMg9uZq+PVb6hRP8an/vk0k4ws1eyO/b9ORvn+9n/91aDWXaekvkAUAfsyhHZCNmeG86/AG6jckrJTVG4ptc8pkkw9isNJQaLOCDoJcA3IcClqGKZ/iwjVNKf2rZCaAnaZa94V1sTbdsdzn+RC8Xv5argw7hZ1abHmjOu2dTQK/xa
+ KrFDMNFf
+ mbfNrmz3pPa0jcdeilA/6H2xSU6mZNT0gG7gJ6PTseN3qmJCfroPfF/Zzwkdd/ALgErSYVvOZ9sty13u9GKs04QoShyVmCMR4q3aBXByvLFt4N2AHOkiKhEUdqPEKRKet1tmGsCHK5VtlvEv+6ln2TkiIX+vHnbe7i5QGJgpnv2KB6lI18NT1Ysq9aykQ6klk0VSMl9Tsmlf+UNStPJ1tKwUQgTucLVrcJQukqj8AmPi+EJqnlcC4Y3aU/30TDi2U5uxsuBP+jOdoiCtRuON+7XIrkvG+rERhrwMwITE1SoTWFJs=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000135, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,467 +145,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 08, 2026 at 04:11:26PM -0800, Jason Miu wrote:
-> Introduce a radix tree implementation for tracking preserved memory
-> pages and switch the KHO memory tracking mechanism to use it. This
-> lays the groundwork for a stateless KHO implementation that eliminates
-> the need for serialization and the associated "finalize" state.
-> 
-> This patch introduces the core radix tree data structures and
-> constants to the KHO ABI. It adds the radix tree node and leaf
-> structures, along with documentation for the radix tree key encoding
-> scheme that combines a page's physical address and order.
-> 
-> To support broader use by other kernel subsystems, such as hugetlb
-> preservation, the core radix tree manipulation functions are exported
-> as a public API.
-> 
-> The xarray-based memory tracking is replaced with this new radix tree
-> implementation. The core KHO preservation and unpreservation functions
-> are wired up to use the radix tree helpers. On boot, the second kernel
-> restores the preserved memory map by walking the radix tree whose root
-> physical address is passed via the FDT.
-> 
-> The ABI `compatible` version is bumped to "kho-v2" to reflect the
-> structural changes in the preserved memory map and sub-FDT property
-> names. This includes renaming "fdt" to "preserved-data" to better
-> reflect that preserved state may use formats other than FDT.
-> 
-> Signed-off-by: Jason Miu <jasonmiu@google.com>
-> ---
->  Documentation/core-api/kho/abi.rst     |   6 +
->  Documentation/core-api/kho/index.rst   |  16 +
->  include/linux/kho/abi/kexec_handover.h | 141 ++++-
->  include/linux/kho_radix_tree.h         |  72 +++
->  kernel/liveupdate/kexec_handover.c     | 722 +++++++++++++------------
->  5 files changed, 583 insertions(+), 374 deletions(-)
->  create mode 100644 include/linux/kho_radix_tree.h
- 
-...
+On Fri, Jan 9, 2026 at 7:51=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wrote=
+:
+>
+> On Fri, Jan 09, 2026 at 05:18:04PM +0000, Mostafa Saleh wrote:
+> > +static struct page_ext *get_iommu_page_ext(phys_addr_t phys)
+> > +{
+> > +     struct page *page =3D phys_to_page(phys);
+> > +     struct page_ext *page_ext =3D page_ext_get(page);
+> > +
+> > +     return page_ext;
+> > +}
+> > +
+> > +static struct iommu_debug_metadata *get_iommu_data(struct page_ext *pa=
+ge_ext)
+> > +{
+> > +     return page_ext_data(page_ext, &page_iommu_debug_ops);
+> > +}
+> > +
+> > +static void iommu_debug_inc_page(phys_addr_t phys)
+> > +{
+> > +     struct page_ext *page_ext =3D get_iommu_page_ext(phys);
+> > +     struct iommu_debug_metadata *d =3D get_iommu_data(page_ext);
+>
+> You cannot do this - phys_to_page() can only be called if we already
+> know that phys is a struct page backed item and by the time you get
+> here that information is lost.
+>
+> Probably the only way to resolve this is to somehow pass in an iommu
+> prot flag that can tell the difference between struct page and
+> non-struct page addresses.
+>
+> But I have to NAK this approach of blindly calling phys_to_page().
+>
 
-> +/**
-> + * DOC: KHO persistent memory tracker
-> + *
-> + * KHO tracks preserved memory using a radix tree data structure. Each node of
-> + * the tree is exactly a single page. The leaf nodes are bitmaps where each set
-> + * bit is a preserved page of any order. The intermediate nodes are tables of
-> + * physical addresses that point to a lower level node.
-> + *
-> + * The tree hierarchy is shown below::
-> + *
-> + *   root
-> + *   +-------------------+
-> + *   |     Level 5       | (struct kho_radix_node)
-> + *   +-------------------+
-> + *     |
-> + *     v
-> + *   +-------------------+
-> + *   |     Level 4       | (struct kho_radix_node)
-> + *   +-------------------+
-> + *     |
-> + *     | ... (intermediate levels)
-> + *     |
-> + *     v
-> + *   +-------------------+
-> + *   |      Level 0      | (struct kho_radix_leaf)
-> + *   +-------------------+
-> + *
-> + * The tree is traversed using a key that encodes the page's physical address
-> + * (pa) and its order into a single unsigned long value. The encoded key value
-> + * is composed of two parts: the 'order bit' in the upper part and the 'page
-> + * offset' in the lower part.::
-> + *
-> + *   +------------+-----------------------------+--------------------------+
-> + *   | Page Order | Order Bit                   | Page Offset              |
-> + *   +------------+-----------------------------+--------------------------+
-> + *   | 0          | ...000100 ... (at bit 52)   | pa >> (PAGE_SHIFT + 0)   |
-> + *   | 1          | ...000010 ... (at bit 51)   | pa >> (PAGE_SHIFT + 1)   |
-> + *   | 2          | ...000001 ... (at bit 50)   | pa >> (PAGE_SHIFT + 2)   |
-> + *   | ...        | ...                         | ...                      |
-> + *   +------------+-----------------------------+--------------------------+
-> + *
-> + * Page Offset:
+The callers to this, first will check "pfn_valid", which is the right
+check AFAICT (looking at similar patterns in page_owner for example).
 
-To me "page offset" reads as offset from somewhere and here it's rather pfn
-on steroids :) 
-Also in many places in the kernel "page offset" refers to the offset inside a
-page.
+Thanks,
+Mostafa
 
-Can't say I can think of a better name, but it feels that it should express
-that this is an address more explicitly.
-
-> + * The 'page offset' is the physical address normalized for its order. It
-> + * effectively represents the page offset for the given order.
-> + *
-> + * Order Bit:
-> + * The 'order bit' encodes the page order by setting a single bit at a
-> + * specific position. The position of this bit itself represents the order.
-> + *
-> + * For instance, on a 64-bit system with 4KB pages (PAGE_SHIFT = 12), the
-> + * maximum range for a page offset (for order 0) is 52 bits (64 - 12). This
-> + * offset occupies bits [0-51]. For order 0, the order bit is set at
-> + * position 52.
-> + *
-> + * The following diagram illustrates how the encoded key value is split into
-> + * indices for the tree levels, with PAGE_SIZE of 4KB::
-> + *
-> + *        63:60   59:51    50:42    41:33    32:24    23:15         14:0
-> + *   +---------+--------+--------+--------+--------+--------+-----------------+
-> + *   |    0    |  Lv 5  |  Lv 4  |  Lv 3  |  Lv 2  |  Lv 1  |  Lv 0 (bitmap)  |
-> + *   +---------+--------+--------+--------+--------+--------+-----------------+
-> + *
-> + * The radix tree stores pages of all sizes (orders) in a single 6-level
-
-"sizes" can be misleading here because "all sizes" can mean non power-of-2
-sizes as well. I'd just use "pages of all orders".
-
-> + * hierarchy. It efficiently shares lower table levels, especially due to
-
-Don't we share the higher levels? Also using "tree" instead of "table"
-seems clearer to me.
-
-> + * common zero top address bits, allowing a single, efficient algorithm to
-> + * manage all pages. This bitmap approach also offers memory efficiency; for
-> + * example, a 512KB bitmap can cover a 16GB memory range for 0-order pages with
-> + * PAGE_SIZE = 4KB.
-> + *
-> + * The data structures defined here are part of the KHO ABI. Any modification
-> + * to these structures that breaks backward compatibility must be accompanied by
-> + * an update to the "compatible" string. This ensures that a newer kernel can
-> + * correctly interpret the data passed by an older kernel.
-> + */
-> +
-> +/*
-> + * Defines constants for the KHO radix tree structure, used to track preserved
-> + * memory. These constants govern the indexing, sizing, and depth of the tree.
-> + */
-> +enum kho_radix_consts {
-> +	/*
-> +	 * The bit position of the order bit (and also the length of the
-> +	 * page offset) for an order-0 page.
-> +	 */
-> +	KHO_ORDER_0_LOG2 = 64 - PAGE_SHIFT,
-> +
-> +	/* Size of the table in kho_radix_node, in log2 */
-> +	KHO_TABLE_SIZE_LOG2 = const_ilog2(PAGE_SIZE / sizeof(phys_addr_t)),
-> +
-> +	/* Number of bits in the kho_radix_leaf bitmap, in log2 */
-> +	KHO_BITMAP_SIZE_LOG2 = PAGE_SHIFT + const_ilog2(BITS_PER_BYTE),
-> +
-> +	/*
-> +	 * The total tree depth is the number of intermediate levels
-> +	 * and 1 bitmap level.
-> +	 */
-> +	KHO_TREE_MAX_DEPTH =
-> +	DIV_ROUND_UP(KHO_ORDER_0_LOG2 - KHO_BITMAP_SIZE_LOG2,
-> +		     KHO_TABLE_SIZE_LOG2) + 1,
-
-Extra tab in indentation of DIV_ROUND_UP would make it more readable IMHO.
-
-> +};
-> +
-> +struct kho_radix_node {
-> +	u64 table[1 << KHO_TABLE_SIZE_LOG2];
-> +};
-> +
-> +struct kho_radix_leaf {
-> +	DECLARE_BITMAP(bitmap, 1 << KHO_BITMAP_SIZE_LOG2);
-> +};
-> +
->  #endif	/* _LINUX_KHO_ABI_KEXEC_HANDOVER_H */
-> diff --git a/include/linux/kho_radix_tree.h b/include/linux/kho_radix_tree.h
-> new file mode 100644
-> index 000000000000..8f03dd226dd9
-> --- /dev/null
-> +++ b/include/linux/kho_radix_tree.h
-> @@ -0,0 +1,72 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +
-> +#ifndef _LINUX_KHO_ABI_RADIX_TREE_H
-> +#define _LINUX_KHO_ABI_RADIX_TREE_H
-
-I misinterpreted the file name during v3 review, no need for _ABI here :)
-
-> +#include <linux/err.h>
-> +#include <linux/errno.h>
-> +#include <linux/mutex_types.h>
-> +#include <linux/types.h>
-
-...
-
-> +#ifdef CONFIG_KEXEC_HANDOVER
-> +
-> +int kho_radix_add_page(struct kho_radix_tree *tree, unsigned long pfn,
-> +		       unsigned int order);
-> +
-> +void kho_radix_del_page(struct kho_radix_tree *tree, unsigned long pfn,
-> +			unsigned int order);
-> +
-> +int kho_radix_walk_tree(struct kho_radix_tree *tree, unsigned int level,
-
-I think 'level' and 'start' should not be a part of public API. We don't
-want to expose walking the tree from arbitrary place.
-
-> +			unsigned long start, kho_radix_tree_walk_callback_t cb);
-> +
-> +#else  /* #ifdef CONFIG_KEXEC_HANDOVER */
-
-...
-
-> +/**
-> + * kho_radix_decode_key - Decodes a radix key back into a physical address and order.
-> + * @key: The unsigned long key to decode.
-> + * @order: An output parameter, a pointer to an unsigned int where the decoded
-> + *         page order will be stored.
-> + *
-> + * This function reverses the encoding performed by kho_radix_encode_key(),
-> + * extracting the original physical address and page order from a given key.
-> + *
-> + * Return: The decoded physical address.
-> + */
-> +static phys_addr_t kho_radix_decode_key(unsigned long key,
-> +					unsigned int *order)
-
-Nit: *order can be on the same line as key 
-
->  {
-
-...
-
-> +static unsigned long kho_radix_get_index(unsigned long key,
-> +					 unsigned int level)
-> +{
-> +	int s;
-> +
-> +	if (level == 0)
-> +		return kho_radix_get_bitmap_index(key);
-
-I'd drop this and use get_bitmap_index() explicitly for level-0.
-Maybe also rename _get_index() to _get_table_index().
-
-> +
-> +	s = ((level - 1) * KHO_TABLE_SIZE_LOG2) + KHO_BITMAP_SIZE_LOG2;
-> +	return (key >> s) % (1 << KHO_TABLE_SIZE_LOG2);
-> +}
-
-...
-
-> +void kho_radix_del_page(struct kho_radix_tree *tree, unsigned long pfn,
-> +			unsigned int order)
-> +{
-> +	unsigned long key = kho_radix_encode_key(PFN_PHYS(pfn), order);
-> +	struct kho_radix_node *node = tree->root;
-> +	struct kho_radix_leaf *leaf;
-> +	unsigned int i, idx;
-> +
-> +	if (WARN_ON_ONCE(!tree->root))
-> +		return;
-> +
-> +	might_sleep();
-> +
-> +	guard(mutex)(&tree->lock);
-> +
-> +	/* Go from high levels to low levels */
-> +	for (i = KHO_TREE_MAX_DEPTH - 1; i > 0; i--) {
-> +		idx = kho_radix_get_index(key, i);
-> +
-> +		/*
-> +		 * Attempting to delete a page that has not been preserved,
-> +		 * return with a warning.
-> +		 */
-> +		if (WARN_ON(!node->table[idx]))
-> +			return;
-> +
-> +		if (node->table[idx])
-
-There's already WARN_ON(!node->table) and return, no need for another if
-here.
-
-> +			node = phys_to_virt((phys_addr_t)node->table[idx]);
-> +	}
-> +
-> +	/* Handle the leaf level bitmap (level 0) */
-> +	leaf = (struct kho_radix_leaf *)node;
-> +	idx = kho_radix_get_index(key, 0);
-> +	__clear_bit(idx, leaf->bitmap);
-
-I think I already mentioned it in earlier reviews, but I don't remember any
-response.
-
-How do we approach freeing empty bitmaps and intermediate nodes?
-If we do a few preserve/uppreserve cycles for memory that can be allocated
-and freed in between we might get many unused bitmaps.
-
-My view is that we should free the empty bitmaps, maybe asynchronously.
-The intermediate nodes probably don't take that much memory to bother with
-them.
-
-> +}
-> +EXPORT_SYMBOL_GPL(kho_radix_del_page);
-
-...
-
-> +/**
-> + * kho_radix_walk_tree - Traverses the radix tree and calls a callback for each preserved page.
-> + * @tree: A pointer to the KHO radix tree to walk.
-> + * @level: The starting level for the walk (typically KHO_TREE_MAX_DEPTH - 1).
-> + * @start: The initial key prefix for the walk (typically 0).
-> + * @cb: A callback function of type kho_radix_tree_walk_callback_t that will be
-> + *      invoked for each preserved page found in the tree. The callback receives
-> + *      the physical address and order of the preserved page.
-> + *
-> + * This function walks the radix tree, searching from the specified top level
-> + * (@level) down to the lowest level (level 0). For each preserved page found,
-> + * it invokes the provided callback, passing the page's physical address and
-> + * order.
-> + *
-> + * Return: 0 if the walk completed the specified tree, or the non-zero return
-> + *         value from the callback that stopped the walk.
-> + */
-> +int kho_radix_walk_tree(struct kho_radix_tree *tree, unsigned int level,
-> +			unsigned long start, kho_radix_tree_walk_callback_t cb)
-> +{
-> +	if (WARN_ON_ONCE(!tree->root))
-> +		return -EINVAL;
-> +
-> +	guard(mutex)(&tree->lock);
-> +
-> +	return __kho_radix_walk_tree(tree->root, level, start, cb);
-
-Like I said, let's make it
-
-	return __kho_radix_walk_tree(tree->root, KHO_TREE_MAX_DEPTH - 1, 0, cb);
-
-and drop level and start parameters.
-
-> +}
-> +EXPORT_SYMBOL_GPL(kho_radix_walk_tree);
-
-...
-
-> @@ -260,11 +388,20 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
->  
->  	/* Clear private to make sure later restores on this page error out. */
->  	page->private = 0;
-> +	/* Head page gets refcount of 1. */
-> +	set_page_count(page, 1);
->  
-> -	if (is_folio)
-> -		kho_init_folio(page, info.order);
-> -	else
-> -		kho_init_pages(page, nr_pages);
-> +	/*
-> +	 * For higher order folios, tail pages get a page count of zero.
-> +	 * For physically contiguous order-0 pages every pages gets a page
-> +	 * count of 1
-> +	 */
-> +	ref_cnt = is_folio ? 0 : 1;
-> +	for (unsigned int i = 1; i < nr_pages; i++)
-> +		set_page_count(page + i, ref_cnt);
-> +
-> +	if (is_folio && info.order)
-> +		prep_compound_page(page, info.order);
-
-It looks like this reverts latest Pratyush's changes to kho_restore_page(),
-please rebase on a newer version of mm.git/linux-next.git.
-
->  
->  	adjust_managed_page_count(page, nr_pages);
->  	return page;
-
-...
-
-> +static int __init kho_radix_memblock_reserve(phys_addr_t phys,
-> +					     unsigned int order)
-
-I don't think _radix should be mentioned in the callback at all.
-How about 
-
-kho_preserved_memory_reserve()?
-
->  {
-
-...
-
-> +	/* Reserve the memory preserved in KHO radix tree in memblock */
-
-	/* Reserve memory preserved by KHO in memblock */
-
-What data structure is used to track the preserved memory is not important
-here.
-
-> +	memblock_reserve(phys, sz);
-> +	memblock_reserved_mark_noinit(phys, sz);
-> +	info.magic = KHO_PAGE_MAGIC;
-> +	info.order = order;
-> +	page->private = info.page_private;
->  
->  	return 0;
->  }
-
-...
-
->  static __init int kho_out_fdt_setup(void)
->  {
-> +	struct kho_radix_tree *tree = &kho_out.radix_tree;
->  	void *root = kho_out.fdt;
-> -	u64 empty_mem_map = 0;
-> +	u64 preserved_mem_tree_pa;
->  	int err;
->  
->  	err = fdt_create(root, PAGE_SIZE);
->  	err |= fdt_finish_reservemap(root);
->  	err |= fdt_begin_node(root, "");
->  	err |= fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);
-> -	err |= fdt_property(root, KHO_FDT_MEMORY_MAP_PROP_NAME, &empty_mem_map,
-> -			    sizeof(empty_mem_map));
-> +
-> +	scoped_guard(mutex, &tree->lock) {
-
-This runs exactly one time on boot and there's no place in the code that
-can concurrently change tree->root.
-
-> +		preserved_mem_tree_pa = (u64)virt_to_phys(tree->root);
-
-I don't think we should cast phys_addr_t to u64.
-
-> +	}
-> +
-> +	err |= fdt_property(root, KHO_FDT_MEMORY_MAP_PROP_NAME,
-> +			    &preserved_mem_tree_pa,
-> +			    sizeof(preserved_mem_tree_pa));
-> +
->  	err |= fdt_end_node(root);
->  	err |= fdt_finish(root);
->  
-> @@ -1332,16 +1329,26 @@ static __init int kho_out_fdt_setup(void)
->  
->  static __init int kho_init(void)
->  {
-> +	struct kho_radix_tree *tree = &kho_out.radix_tree;
->  	const void *fdt = kho_get_fdt();
->  	int err = 0;
->  
->  	if (!kho_enable)
->  		return 0;
->  
-> +	scoped_guard(mutex, &tree->lock) {
-
-No need for lock here. If anything tries to access the tree before the root
-is allocated we are anyway doomed.
-
-> +		tree->root = (struct kho_radix_node *)
-> +			kzalloc(PAGE_SIZE, GFP_KERNEL);
-
-No need for casting from void *.
-
-> +		if (!tree->root) {
-> +			err = -ENOMEM;
-> +			goto err_free_scratch;
-> +		}
-> +	}
-
--- 
-Sincerely yours,
-Mike.
+> Jason
+>
 
