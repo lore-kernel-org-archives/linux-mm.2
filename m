@@ -4,179 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D938D2503B
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 07:03:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C18FED25040
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 07:28:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD1886B008A; Mon, 12 Jan 2026 02:03:07 -0500 (EST)
+	id 271DC6B0088; Mon, 12 Jan 2026 02:28:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA9A16B008C; Mon, 12 Jan 2026 02:03:07 -0500 (EST)
+	id 21FA06B0089; Mon, 12 Jan 2026 02:28:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A7A06B0092; Mon, 12 Jan 2026 02:03:07 -0500 (EST)
+	id 0F3E26B008A; Mon, 12 Jan 2026 02:28:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 879106B008A
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 02:03:07 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2F8BB1403DB
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:03:07 +0000 (UTC)
-X-FDA: 84322420014.03.0115FE8
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C23444000B
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:03:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=FnlWHg7y;
-	spf=pass (imf01.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768201384; a=rsa-sha256;
-	cv=none;
-	b=OkVEzlywt36XUiJ6rcrTaDWIlEt16uxiqZZMFGW34teTB9lerZ/SGGuBZJoO8kFWDN4OZG
-	NHNUkmfvdM+OF71u0kuubaa7qstJ0rPvsDX+XEhZGLgBKx4HnDbQAj01+a07wljYUD8MbA
-	oslU8glPgy2szFsiucBda2z9HFBa9io=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=FnlWHg7y;
-	spf=pass (imf01.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id EE0E16B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 02:28:34 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B0AEB1AD04D
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:28:34 +0000 (UTC)
+X-FDA: 84322484148.20.67D1F1A
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6CCF3A000B
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:28:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="n2JBP/2O";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XZVDXwO4;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="n2JBP/2O";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XZVDXwO4;
+	spf=pass (imf15.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768201384;
+	s=arc-20220608; t=1768202912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DaR8QIrJoPyGAUdK2XoR50gjX3a8JtQ3y3ZpcU0sC3M=;
-	b=aevrdnGd1vqYsaK69APZeu2Hy3UY+wRtkkNAtoviNmY4qcZcsHcpSeYlJ/By7VaAS1fOCN
-	CBfTR6q+XMH3I58Y3GmjC1O4sDLTkOkupeQczgoZXb5fukZ4KasWdWChcdFmu2vtLRIdo1
-	lK5KO6JTqffThPyL3KFoAkjpYDaJjdM=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60B8SDe5007270;
-	Mon, 12 Jan 2026 07:03:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=DaR8QIrJoPyGAUdK2XoR50gjX3a8Jt
-	Q3y3ZpcU0sC3M=; b=FnlWHg7yF0EhltIiIn9ZnFKG/nvLKG/pF1swSGpJYPCijY
-	W3Rmt5GG9EndclJOkAjsYj7aziAqVbObyNXQkmpQybP1JTD40KYizrnejvBH5N0R
-	uxWhc470C1N521DLBDW/4DIyhAp6m6ddM4POUpDrVis1Hlh6nnlYKZ+MBCseQRuL
-	2/T+gL9VYGZJLh0qjYX71ULRHWwG39FOsJ/hdlnDgOBY/V7LzQa8RoX1JtXisNa8
-	CSva6dlpDA66CEU6Mn19ZO4lOZMC2xpo5csLamqkyzMu14mWfv6OS/UZ3RdAJtGZ
-	P+oSF809jDQ8YtKfRtAb1iHfsp5syvvLc4So3efA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkd6dwpng-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Jan 2026 07:03:00 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60C72xtd026579;
-	Mon, 12 Jan 2026 07:02:59 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkd6dwpne-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Jan 2026 07:02:59 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60C5F3XY014244;
-	Mon, 12 Jan 2026 07:02:58 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bm1fxvq99-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Jan 2026 07:02:58 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60C72r9n41288168
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 12 Jan 2026 07:02:53 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C7F1020040;
-	Mon, 12 Jan 2026 07:02:53 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4E39620043;
-	Mon, 12 Jan 2026 07:02:50 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.151.31])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 12 Jan 2026 07:02:50 +0000 (GMT)
-Date: Mon, 12 Jan 2026 08:02:48 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>,
-        Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
-        Brian Cain <bcain@kernel.org>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@kernel.org>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
-        Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Jonathan Corbet <corbet@lwn.net>, Klara Modin <klarasmodin@gmail.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
-        Michal Simek <monstr@monstr.eu>, Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Pratyush Yadav <pratyush@kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
-        x86@kernel.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH v3 17/29] s390: introduce arch_zone_limits_init()
-Message-ID: <b211f877-f9bb-4892-b67c-d2610048575a-agordeev@linux.ibm.com>
-References: <20260111082105.290734-1-rppt@kernel.org>
- <20260111082105.290734-18-rppt@kernel.org>
+	bh=76p1BKSyNSE6Ia9N32SzQzLhtPo9wRgYQuaf3Xhfo98=;
+	b=nZhlp1N+SP2QKgaTa4hQHF9sMpymn5x0mt+wxNL0EKz5K1+WhQ8o0U61YHr7hMmX8d3Psc
+	ZDnXukfXXqqoXEA650mwLEVH5yN3iulIZAdpQBPDQeKOYlOufLpFfdthxjWK61L0aBsPy3
+	8psAzNZ7dmckOWT3msD40gSHeDxjTAk=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="n2JBP/2O";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XZVDXwO4;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="n2JBP/2O";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XZVDXwO4;
+	spf=pass (imf15.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768202912; a=rsa-sha256;
+	cv=none;
+	b=M3oTRZBIIMHtmK/2OXotfLDaN2Hm+NfzE0fllIu/mGPFJyepwNOr2K+uUMntCGKw7bn/XE
+	wgXC3J7jqihUyUBgN+MwUtcmAyD8WZEUg7Aoqc7PG4e/sCbAnsvKgwnQk8h3qplMiX/B3s
+	mO3YgFMK5+1s+tg6GgI5vVtCM3eUEIM=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 53BB3336AE;
+	Mon, 12 Jan 2026 07:28:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1768202910; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=76p1BKSyNSE6Ia9N32SzQzLhtPo9wRgYQuaf3Xhfo98=;
+	b=n2JBP/2OtM9QK4ca43tBi2yP4+Eik3Fe2wF7bW9L1OsRAu2aeImqeIo+j/JAHOVAhOEl6O
+	F2YoAIAaRbhcrPqfpDmH+gs3E4UMwrQR0d3EJCNGLhXjv/b1TL8n/z1qKifNUecVD+iq1d
+	To+DCvUWuORNjZ7+V9yPDTi1vGDU/5w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1768202910;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=76p1BKSyNSE6Ia9N32SzQzLhtPo9wRgYQuaf3Xhfo98=;
+	b=XZVDXwO4OuqJvtL+doLnImo8TwFCB2rWqvMgPd+QO3iFiQAGLfJ5bMQNvn7uFGNslIC8lI
+	fnQ9eFyy282ZDFDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1768202910; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=76p1BKSyNSE6Ia9N32SzQzLhtPo9wRgYQuaf3Xhfo98=;
+	b=n2JBP/2OtM9QK4ca43tBi2yP4+Eik3Fe2wF7bW9L1OsRAu2aeImqeIo+j/JAHOVAhOEl6O
+	F2YoAIAaRbhcrPqfpDmH+gs3E4UMwrQR0d3EJCNGLhXjv/b1TL8n/z1qKifNUecVD+iq1d
+	To+DCvUWuORNjZ7+V9yPDTi1vGDU/5w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1768202910;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=76p1BKSyNSE6Ia9N32SzQzLhtPo9wRgYQuaf3Xhfo98=;
+	b=XZVDXwO4OuqJvtL+doLnImo8TwFCB2rWqvMgPd+QO3iFiQAGLfJ5bMQNvn7uFGNslIC8lI
+	fnQ9eFyy282ZDFDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C97833EA63;
+	Mon, 12 Jan 2026 07:28:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LBuBL52iZGljRQAAD6G6ig
+	(envelope-from <hare@suse.de>); Mon, 12 Jan 2026 07:28:29 +0000
+Message-ID: <b1b4ce23-d02c-46ec-96fe-ada6ae0948c6@suse.de>
+Date: Mon, 12 Jan 2026 08:28:29 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260111082105.290734-18-rppt@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: bCS-OSZblyIq8lvlPyjEILoO8GzzpHGN
-X-Authority-Analysis: v=2.4 cv=LLxrgZW9 c=1 sm=1 tr=0 ts=69649ca4 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7WlQhDu6A2usLaOTEWYA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA1MSBTYWx0ZWRfX59mP2KNE13j0
- a6aegnon1oN4dcuG8YaVOaJhcRG6s3uUJFEsmdkW+MZ5sZ09v9vfZ00cHaM+sNVIGfNSGFA6TA/
- amYWC8VtNTQv0JRk3gc5rBBltZHgc72KTXGu3prlXckbdY0t0zp5Lo5Yhjr8IF/vYaYhc4GEfSU
- Qn3vnNEGmBOVemoTnAoVuUgIbpnnLrr8prY2Jcsedc9458fa4aIErXN9hSBcQEeZAjafXeGIs3U
- PkSTvWywRsb27htzKZSu/lI9i25vaLSZKrrQYY6kqWC0MKkmjKSiCkMGVZp7eE7xKVafOgrDfKv
- /IgXdjJYtIVn8udUlyOpA1x4MgwEQYsjb20V4FINx3F9Zvbn5I4upMwVWMuGSRYRH4uAOicy3EX
- 58rNjYtR0Ljy4P0wI73tlEk2VHClT7wveMeVEf9wv8ox2a4bReXLiwz96iuRvRG4P5usk/SQFvy
- YK5patORVNK5OiJVC/A==
-X-Proofpoint-ORIG-GUID: Mt_xEhUTi_ZaKY8BdbSWDFf-6SwyebPB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-12_02,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 clxscore=1011 spamscore=0 impostorscore=0
- malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601120051
-X-Stat-Signature: 5js1h1fu3bhrdbmqzkondqgjy7yyf7hn
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C23444000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
+ blocks to zone movable
+To: Gregory Price <gourry@gourry.net>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
+ dakr@kernel.org, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com
+References: <20260105203611.4079743-1-gourry@gourry.net>
+ <7f053290-6b9a-4d18-936e-0f28006c79c3@kernel.org>
+ <aV0_SMq_I_R7ikF3@gourry-fedora-PF4VCD3F>
+ <9575e042-39f4-4f01-80db-34aaaa9312e6@kernel.org>
+ <aV1PQd3tyfSiH4xD@gourry-fedora-PF4VCD3F>
+ <616f97b7-24e0-4134-a08d-5abaf07a8b09@kernel.org>
+ <aV1pmeXP2pZ55g5i@gourry-fedora-PF4VCD3F>
+ <fd21ebf7-d016-4729-8d23-a7c0f2a3d8c6@kernel.org>
+ <20baab84-c8b0-4c46-a550-21b26b975d07@suse.de>
+ <65c246bc-fb10-4cef-8163-3a55bd96f326@kernel.org>
+ <aWEvuS95-7yP-Vc8@gourry-fedora-PF4VCD3F>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <aWEvuS95-7yP-Vc8@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1768201384-311011
-X-HE-Meta: U2FsdGVkX1+gd8Xpt2IS/Zi9aegt5tJv1ODzmdydmHm1V+i2G9PJo8wmJ7Ce1Ttw2IF5iAnqRtpondB/4St1Si7OaeK9Eq824EouhALhdcadW2RrU4pbMNcGJ92uslB2IKe/HmxbZ6xxw7OZ8D5R+oh8YcN8o8fhrMgvz6E0h21FVyJGyR4n7XPVf5qXlP8cEKLRWL6Yda8N4qyKVA81H/bDzYnX1bGu7ViIjk6Wim3DaXMIzoMr4od2XV7O3Cq6NDocW9sVjb5oLxiRFgqlhUolF4cXzkENWyhp5HvO59yLnHr6sQp46Ud/i/Qf2IpYRmwFzsOPijWjukyLoBrW2MprdXQ86lCZ3ZvhDNuJIOUXNwaP4N9A0vgLgfJ9HfFtLuK3oqAJiNZnPRDaQ9oMT9yYr3l+tCNwq+yo5vYgHmY80Ev3E0kXrAXhqtGExEusp0fReupSSUBGqgwPMnka2qO+cZCCawHX6wdiGxyIYd5Nb33aEwoNF/eazSseEiSwVKaXXeXatbzvD3fHlfk/jPHqWOWqXuHxJRMGV+lRuN8si4Hq50DRxWLxgXb1/bWsuBQ8GLnOTtOwkDrBBSlUK8qfSKk02XeMGOBB2XIaaz+utbEYyAU+HFN9SImy9QSZWs0OKKSUPdypVZWExk9lviWXi2dzdORy/B++0y8DYU25LeKBSMd9tcLktDLBAGqmZd6e2etjfnE0/ziwSwv8ceK6/BaYWvTTDlgI9uQg7xeh5re/TGM1quKjMh65RibFREPG4ikOwjV6s7eCqgKKbe5N13+NREfq7G6a9q7atfcmd7GBTzaQ/PSrTHH62NtuB0UvxtRCgU3J7NYxz3pnEru0bJ1xVIN6v1BC2v/aet2EfhO6FxHsldZ0FkDd95QLr6RcaoGy8iM5R4m4TWJNDObMN4S1ReDFxKSHP0ygPVQmAaKP0Q0dktcoIZMdovuz9JAYMUYtja7Rcj0Ol2W
- NfM6E/8w
- J6H+cFSB9I2JiZ8FC96FQeAPlyOS2DQpk00XOr7cifyr2s573/97MC/2hhYAup1omoyvUoDpMGl+8dxpZOESA3MFBJ8VlgSNN72AvBP1PfHJZOLvP4zQ38uraceHRkN0GvmVv2RszTE47UjexbvchjYumPb0WQyqOPGocX3GjNqFRRwCoF9Yy0Xh+bF8AZHmIT5yI9eFgsFstsI7vQpsKW9WSZigW6+XB+2cSnn5QwRrnmktkQpcIzU8SO4SsL/lUfOVnaHnAbt6R/O0FcYmV7FB3KLB9r2/C4IFTT5jzzbAvuO083JOoXnbp6yFcVyXHv0AveKy3S5JW8QsXlnM3EGjl3A==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6CCF3A000B
+X-Stat-Signature: 761x5uk6wsu81bipz4drhqjs57iyknxq
+X-HE-Tag: 1768202912-437550
+X-HE-Meta: U2FsdGVkX198H8vUaSLVzZJBHZhG6Tz0oZTb1NztfgA4KVI/LDNtc878aamD0cqYRGgFAWmWxj6V68llVEJGgM0Fe1UdYRo6l/wwaJfX7XnC51EgydbkwNgDnEfZW4D2KTk5HlrVhfMxPcq625bd59nALJwlg2nwIFP8b473gwWikUHS+dy0at8Npi1+eLrxdDeCvWJORRUmA3o8n9BMW2HwqV9/7AO2ejfUjDFZGn8FIf1El5bk1/z8/3StS1sHiKOpVwJqfD64u9TfAf8wPHPSudNSndrnCbbiygbB9IwWbvxPfYWDwmPC7E+QIlR25VuGOP6h3aDosMSp9ivErGgXgXeUOiHg39y6ZE4E089BOoCMzxhGAPEeBN/w8z+S0SGQmnR3IK4m52f0XF/30QRqqW3D2vnvmUmDQBw9c6Eit1p6pdOc6E3tDy1t8E3z8+rLgcC5N1VpQyvBuL8GuOqw5mAjDY0SdR4N1o2sPwEDnRuqBqTJlxU1pWq6uSzZqZVYZD/F5VTTpJM8Xl31JR+BWeRSjoCBJMcsV+aRGbzQB/rgZNfMWecAHyYvhx6nKh9y0XIapGEsYOz5eJl2/pcexCYuef2QxevGWQH43a8zmggvJCc5ck2ex3bJGOHzkYm5ElwzU7anB+v2FKUB4nBofwlVkNpQYqxX1oZECEgr41gI2qN3nqPSFs3AtDWjhIr0gQjYct2eMYEhp4TF9SNFVfYrIZoNXS+613zvE9xWuiUGPApuHa2og34EYGz0SyboE/M5CgT6C21SbIG2QOnnj7/qM3YlLrF6lib4CvAlhJWtTzyJRx29EUA8vXgkG5hdPNW5O+YeW9WARAotCm+o3zmb002xHJvP/9fI++/ATq32NwHeKPpROubIPqigESDEevJIY7MB+CCg73zg16cgpPoEw9XwGA5Q2Sg0pg9lew86Vx4GM/8MSxnAm8/iPkEF9sr5DY2krVR8VtA
+ OSanK06y
+ rzivJdz2qNpWE7mdfcwhMKRdSaMIipS/Q80f5fmDpf1/T1dCCa3J6d8f6LAlhCMNpv3dmI80pCKezS9DoianmzOhKbNGJ9+CqO6jVh/2S2BdHVJ/KCMwNrBWiqdn1st75vD/pT8A1BcCz3mTAAuYB8dFy/37Uq2hOnwTEnduCtTRCH7dSowWoOr3GB4Esx/drAIoSk3G2wHA80MjjQzmg5KhB0Z11msddwQkbl0wchy2pLmMkSunpaTYZMyDUXBlxxAdZsz9Cuh7gsD29nzbaxiqvje8aV1A84v23VUJtJJqiGX8T10+Y/nNAnY4q9VMoNKRN9Wz+aMLVhvXmFurfilKc5ya6QPGLateYSh6cZgH7TXWLSUSDwmnRmGHyvnEZq5Ln
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,34 +153,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jan 11, 2026 at 10:20:51AM +0200, Mike Rapoport wrote:
+On 1/9/26 17:41, Gregory Price wrote:
+> On Thu, Jan 08, 2026 at 03:16:24PM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 1/8/26 08:31, Hannes Reinecke wrote:
+>>> On 1/6/26 21:22, David Hildenbrand (Red Hat) wrote:
+>>>> On 1/6/26 20:59, Gregory Price wrote:
+>>
+>>> For hardware-based scenarios memory will always be removed in
+>>> larger entities (eg the CXL device), and it's always an 'all-or-nothing'
+>>> scenario; you cannot remove individual memory blocks on a CXL device.
+>>> So there the memory block abstraction makes less sense, and it
+>>> would be good to have a single 'knob' to remove the entire CXL
+>>> device and all memory blocks on it.
+>>> Sure, it might take some time, but one doesn't need to worry about
+>>> restoring the original state if the operation on one block fails.
+>>
+>> That's not what I was getting at:
+>>
+>> offline_and_remove_memory() can be called on large regions, and it properly
+>> handles whether we have to back out because some offlining failed.
+>>
+>> The issue arises once dax would have to call offline_and_remove_memory()
+>> multiple times, on non-contiguous areas. Of course, we could handle that by
+>> providing an interface that consumes multiple memory ranges.
+>>
+>> For the DAX use case, I thing we'd really want a way to just use
+>>
+>> * add_and_online_memory() [does not exist yet, but ppc does something
+>>    similar]
+>> * offline_and_remove_memory()
+>>
+> 
+> I'm starting to think this issue is actually the result of bad patterns
+> in the cxl driver - namely using dax as a path to hotplug sysram.
+> 
+> I suppose either we need a `cxl/dax_region/remove` that handles the
+> whole operation in one go, or
+> 
+> we want `cxl/region/commit` to handle hot(un)plug as a single action.
+> 
+> tl;dr:  Split the dax use case from the sysram use case, and make a
+>          cxl sysram driver directly manage hotplug rather than use dax.
+> 
 
-Hi Mike,
+Well ... not sure.
+We are doing fine even currently during boot up; we can align policies
+and everything to ensure the system comes up with the 'correct' setting
+Things start to get iffy if one is reconfiguring memory to move from
+daxdev to system ram and vice versa.
+Currently we can do this with a simple memory online/offline; with your
+suggestion we would need to remove the memory, too, when doing that.
+Might be getting even more awkward as this most likely involves calling
+the hotplug functions for the CXL device itself ...
 
-...
-> +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
-> +{
-> +	max_zone_pfns[ZONE_DMA] = virt_to_pfn(MAX_DMA_ADDRESS);
-> +	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
-> +}
-> +
->  /*
->   * paging_init() sets up the page tables
->   */
-> @@ -97,8 +103,7 @@ void __init paging_init(void)
->  	sparse_init();
->  	zone_dma_limit = DMA_BIT_MASK(31);
->  	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
-> -	max_zone_pfns[ZONE_DMA] = virt_to_pfn(MAX_DMA_ADDRESS);
-> -	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
-> +	arch_zone_limits_init(max_zone_pfns);
+So not sure if it's a win. But one should try and see where we end up.
 
-You move initialization of max_zone_pfns[] to a function, name the
-function arch_zone_limits_init(), but leave the initializatio of
-max_zone_pfns[] to zeroes outside. Should not it be brought along?
+Cheers,
 
->  	free_area_init(max_zone_pfns);
->  }
-
-Thanks!
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
