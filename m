@@ -4,105 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BFD0C9EC82
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 12:44:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7F2FC9EC80
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 12:46:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0A2C6B0089; Mon, 12 Jan 2026 07:44:26 -0500 (EST)
+	id 36A4A6B008A; Mon, 12 Jan 2026 07:46:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB45D6B008A; Mon, 12 Jan 2026 07:44:26 -0500 (EST)
+	id 318036B008C; Mon, 12 Jan 2026 07:46:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE1046B008C; Mon, 12 Jan 2026 07:44:26 -0500 (EST)
+	id 2169C6B0092; Mon, 12 Jan 2026 07:46:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F7DA6B0089
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:44:26 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4BCB4D07DD
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:44:26 +0000 (UTC)
-X-FDA: 84323280132.11.A93455D
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0DDC5140013
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:44:22 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Gn9sgPDM;
-	spf=pass (imf09.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D25F6B008A
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:46:50 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AB621BD7D4
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:46:49 +0000 (UTC)
+X-FDA: 84323286138.27.AA70D31
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CDA64A0012
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:46:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ceotpdgL;
+	spf=pass (imf15.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768221864;
+	s=arc-20220608; t=1768222008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s0iQagkhLJMFUg2Zx/Y6QCc3ESwUoeWsGJCdZDpKQHA=;
-	b=TSGINb2JnJjCpahWHhxE7xFVSXuVYpm2tlT6s/OzlUBgvoskxjLufjPw3t4sK2mS/5Y0+a
-	sb8Ye+b9h0nWaKX7G8ndSwcPJgLhFAX0dJCLozcxcbpKOx3XEGceizeMVcchChKbH1uIcp
-	6OP1BbZtC81mLLT6n2vuevHlYAFHG8I=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Gn9sgPDM;
-	spf=pass (imf09.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768221864; a=rsa-sha256;
+	bh=bJfksYBMf04F9YsRSch9TVJyappZDo9nWWGjONWbc7U=;
+	b=X+7nGe2WnK+uTpcv2oDBifLZXDDrXBPcUxq9K7DxDmpbAiDd1sDW1yn1ghzYlwmH9tGiTT
+	CcjbA9Mt2qc84+QMfDjF0UA4qzQaMnYrjKC6dIGxQO/QlKmPyi+0VITmYO74GCWe30gjkL
+	VJ+IU+SflHclmK2t6H4HYZyagYNuKj8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768222008; a=rsa-sha256;
 	cv=none;
-	b=ZhuX38qiCPXwrkd3qr8fVgwOERHKTjzrPSZYQVm7g32WZjd/sIdOnW1sYuL9SSdCcKoHYP
-	e8qvNQlFSJbagVniL2+D/yJLYBrbPsotSWroTrxVmQGRJfV58KDmDHaMcu1fWMcUwFfID+
-	JYNg31YRlKVqUYIR28wzM+V1VmIuO7w=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=s0iQagkhLJMFUg2Zx/Y6QCc3ESwUoeWsGJCdZDpKQHA=;
-	b=Gn9sgPDMy5jrw6VYcQISMYC0dpUMKp7RohF0dA7k3ltqZORpqFIRxvmw4GMnbm2kYZwpa5KHs
-	ViQG3ZuFrFpsNXOJbZRb5RRlDDeFyBg7NX2u8to/SzZTeBpoiCCE9Zbp0UwDKY/H70m2JxKX+hG
-	82dHj449yocmt8K8yaHUucA=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4dqX6h3Qr6z1cyPY;
-	Mon, 12 Jan 2026 20:41:00 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7137040363;
-	Mon, 12 Jan 2026 20:44:18 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 12 Jan 2026 20:44:18 +0800
-Received: from [10.173.125.37] (10.173.125.37) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 12 Jan 2026 20:44:17 +0800
-Subject: Re: [PATCH 0/3] selftests/mm: add memory failure selftests
-From: Miaohe Lin <linmiaohe@huawei.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-CC: <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<nao.horiguchi@gmail.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<akpm@linux-foundation.org>, <shuah@kernel.org>
-References: <20260107093710.3928374-1-linmiaohe@huawei.com>
- <9413a995-9182-493e-a28a-6d2d3a17236b@kernel.org>
- <2ae04380-fd60-a8a1-6217-386454fec610@huawei.com>
- <693dc9aa-cf86-48c7-be9c-ec554f9da855@kernel.org>
- <d958d80a-8412-6107-e144-975b8d545568@huawei.com>
-Message-ID: <b258b6c0-7af1-4443-bd81-2722dec610f7@huawei.com>
-Date: Mon, 12 Jan 2026 20:44:16 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	b=JW/G7M//JtCDaEX89uA08eLRLv89E3M50ammti7aG/K9oNX/3cbrzZ8PmhGW8m7Y7voIDD
+	cPw3n9g71PaVh2Yg64gJ6py/K4rNMz+ZHwy4C3g6KemhuqE4QPG8EAeMGI9ZQj+bnyFWQZ
+	DefDT2irE0hbEBAVW5BaEWeL9m/io9I=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ceotpdgL;
+	spf=pass (imf15.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-432da746749so1471001f8f.0
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 04:46:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768222006; x=1768826806; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bJfksYBMf04F9YsRSch9TVJyappZDo9nWWGjONWbc7U=;
+        b=ceotpdgLld0wEuWw4052zNb03hFYZcTunb+dJMdS+ZJmLU5oeaaVLdrhA6vWpi3Zaa
+         JfzonXxChn2RGezXTuQVw6bWN2QzQrczkKF83QisSZ7UgGvvQwT9V8ZT4HL1d9HBrGrZ
+         JFasOKT9mpg9nqvZHuRFxhmwCqkhbog997nAbeKtYUTiLQ6y+6ZpH3rP2kbrC3dh+06t
+         Rd56Wmpc55VTsoOuu8quuVju+f71KBF7vx7dE1vBDdj2ZuPK5UUToPcAZ2PD6WJid1m5
+         gRO8ThUzInzTfAV0Yi+/6mCAeClF4i2u45Se3nmMOakguA9fd9CMmPZu4jNbSp1CC/lU
+         j9OA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768222006; x=1768826806;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bJfksYBMf04F9YsRSch9TVJyappZDo9nWWGjONWbc7U=;
+        b=pPw27LzbEMmWYcHKfxGx6+sjQ5zN307sXvI7aYqkVav/HxmuBNTN/IT3zghH2/i5C5
+         z38kQlzY7wTdO0VrIT+foSmWTploAmZv7Q71nty6AX1/Dgp39IDnHmAcmVGYq1jsIXVz
+         Jn+e3wlipWQaO6MdVCFAOsHRoUt1Xi2t2YxgvCDU6+zHfCXUUXWk7WnHm75e3yXaxQnb
+         eHFkDntLxjl7XRLXN+QJn81KCDwFdyL1HvfiKBN6uwVFZzrLzIGlXePy7LOCxeeIBpr+
+         0DQZ5E8UKtljs0R0gV33M4itmA8FD87O60J/rE6S+vcczJLauwSzyLmhUPrZHsjglodh
+         LG9A==
+X-Forwarded-Encrypted: i=1; AJvYcCXAltwM6uAkYd6VrhLjojHtp5uWj8y+5O949ShiKBht7jzU0M+RINYm63yX6FRMGjH76DUnHOuKxg==@kvack.org
+X-Gm-Message-State: AOJu0YzVdBNGyLiAfqQS9M3vCeoRgxG6gc0/cmYW8jSYOqumky2mAFDC
+	8hwc69B9XyrPboG0nf2ZG/LhnxaIjwr6/mDOSkC3DvsotkK+mxTyL+qg7MnLBIXYHqg=
+X-Gm-Gg: AY/fxX6ExNw+qHt7V4OO64V+SOpE5ONF9Y3c4eS1dwjjD8ns3cOcFMLdjjs1eK7l0/g
+	5pCT3C2cf63MXdcgEKcwrOvKr1tqGGbQcSZ6dVR+WuXdY3L4NjN6h5z4efpihwZqPyiPiW1Sgu+
+	GWFGK4esOAWs8e6SOXEMv3t+P4C2V4kXKpT1PlY5cjH/KsasVSoIvYfWAfXr3isdIrD2w3oNVTC
+	hbcLeD9TFWtq4h5cyKN/O8TOTUecGP4I/Xz1e7QLmafqgbhGsSRUR80EFgH3I2/lbD3Mlsoj1ST
+	CmG2eb7P2u0ZsEIicQTSZhynT+g7MpIUWonQmLv/t5dyFBu9maNjewG9DKO+qgFeW32DQNaGY/9
+	hPWROBYMzcWLSy1q65h3PwJXncWgZSP6pLt3KsJmJaJ6TNpafSRhPELQKtJJ5T2GdV6cLYr0lo9
+	QeNNFani2HkY28Q97Zlwf8MLpD+Zn0thY=
+X-Google-Smtp-Source: AGHT+IH2IebLAKFKxY8Uvt4jUIFFT+Ij8Y6D7r7fSKRO8YCnnaSQ8GLFJdjyy1UaUIlKGcgUiTElog==
+X-Received: by 2002:a05:6000:26c4:b0:430:96bd:411b with SMTP id ffacd0b85a97d-432c3775a8cmr21299946f8f.58.1768222006097;
+        Mon, 12 Jan 2026 04:46:46 -0800 (PST)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0dacd1sm37877453f8f.4.2026.01.12.04.46.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 04:46:45 -0800 (PST)
+Date: Mon, 12 Jan 2026 13:46:44 +0100
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Andrei Vagin <avagin@google.com>
+Cc: Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, criu@lists.linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, Chen Ridong <chenridong@huawei.com>, 
+	Christian Brauner <brauner@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Eric Biederman <ebiederm@xmission.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH 2/3] exec: inherit HWCAPs from the parent process
+Message-ID: <wfl47fj3l4xhffrwuqfn5pgtrrn3s64lxxodnz5forx7d4x443@spsi3sx33lnf>
+References: <20260108050748.520792-1-avagin@google.com>
+ <20260108050748.520792-3-avagin@google.com>
 MIME-Version: 1.0
-In-Reply-To: <d958d80a-8412-6107-e144-975b8d545568@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Stat-Signature: h5o98d139nwnsnag95a8fb4w3fna3srn
-X-Rspamd-Queue-Id: 0DDC5140013
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="o7rqwh4s3kscjtie"
+Content-Disposition: inline
+In-Reply-To: <20260108050748.520792-3-avagin@google.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CDA64A0012
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768221862-431490
-X-HE-Meta: U2FsdGVkX18j1m2HOWHaECiKhUBjFH7hORHI0eTJjoCqeOL0v5haAbeK1uOTTj1HqVqs3x4dqHZM+AcAWcc0TRM+mIdMw/D8LG0vtcR+aRLiJZgJDkCk7dNkDY1vUdTJsef3rZliB5XIDgswwxy/DWl1IcS6uF9Arrz7jUWcOsx9RFlzviyl103Xod08WGq+iNz3xXLyjlHGV8oIZCI6DeeG72r9d/4vAn4uqRkcMgxxTNJFufiY974FozoRmdfCl4wMLHwNM6Wk92174PNR9mywbaUSg25HgJ1/Vi8iGkE+56n6nwZWbfHcufPpU16c1Af+St2NQ7HdM3HeC9NEl/MEfFwTq+NxEA/iraQFtCiXPJP3bycvDOeqjAOQogOfpGvnXtonCYMzetW5FXR9ZSAwcc9SAfPX2UnQHmv7yzYAEWWUpAYNELv8WcikywTJCtS9Tk/Vpb1a+oiw0seHtDMwck5cqerpfp8kHllOVyyNp3Ym4E1614tgjRF7LA7hZwB2DvHEbgCRA5XY/gKcKABKaaIVwRwznYG/Q0U6I/4HTDKnO/bJIS84Oj7uRbKfivL9CtqDt7RN6Wr27P5RmP9jwke0An3hvL16tn7nbCwMCm20jcB1l4QpEeDLuZwTsfSb+Z7Od5Rd8oodKjAvXEgog5/Ul8RHv2sPQJnZOmrWNGWtvVhIWt5AC3PftXOR911SiYQP5IREuZ/gzag9M2uWq0UT9b4yR+SkXlmiLLiUQyw+BI0TURllimvr2q+lGAfCjfzX/yoDmM6Upx6uCY74k5XNgtBahQXo7D9HzK9/P4x17RuzFRLo8xbpzKvn1oVfmZERC9oR83Lva0exZgq0ZLuyEQs31ZuvaVMantj1a2E8BbeLCCFsb0AxApfu6K2+KHvbzBQD2Gw4Wnpicfgk2XAcw9hoUUe8WvTvQUbKtsF5SK9+zHkMZPVbxMr12BQfH5vAESa72Qhegj4
- fMXMyq/T
- sxrE8GH/pF4RecCea6hrWnKk6aeefOugfh0D4zic3yECOyTqugZYSsjd1ntXcTBwCtkfesPRAshARfKNz51TYWD6Mm30QtLl09rer6dVsD7BDvtZ2E63WdTnNBJcLQBMFntGbZcApkUko+T+kQJavnHso9XV7KTzV3R26DguKOvok5JkD/V+Ks6JRHxUt+3VkmPMzUio+MHs2KqJjl4HhUUxwcf7cr5c/5qmis7ZCgIf8CHpMjiwibPa7depwOHCrPqrVg4QprFzeIs7J/6u0/+m8foU6ZokmUSb2DE0vZYFMH6umTWI8ENrKSR4QQ430auI4zVnP8tICTfGv6+KKbWT16sNDHevd9PjBNuJcq3G0eB2Wn+NV8ZCaIQ==
+X-Stat-Signature: tjqc4skkjc5g6igraecf4wmgwmno795x
+X-HE-Tag: 1768222007-56843
+X-HE-Meta: U2FsdGVkX1/NtFEkwlIXE5MRLd0iP0GaS446h2i8CUn2RYb7/0KWJtu7dbI93gSaV4kb1fM3ajm8AWUuJo60oHQ7vFd23RZirS1U9kB0sxLJcyti0fPLPzhbJOMioS+1Z46YMxkHFQvSJecPnRM8tA/FNRC52pry6tngalhINTmmE8Cyf0ygw59ld7e0cKQ4gD7KbT7xDcpJ1UplySq9yt7pIhz3XrLmecx4vNJL0slo0++D4M8yFxQzbRTgsdyFEY1HpoNo6qtwzfCJLu+m1PHyA9tc3er2pMWcavSlwa6bfJeEx712wvSaG8aKyPhDwHJcpCrnq+A8TbuNCygiOKx6NFXu2SJmUecj1GhQaI7gr+XprrQ9Fa3WSzIqNW4kQhCgDLYc9XdOP8vfspRhu+IRp3ZDa8J3/mFWNEo4bTiUhjvnIwNFPX+w9Yj7ID0XOKXjKBAPGKKoF/Ah1nbKqj5K76VKW5IdA3zv/E+dZ9zv2x/NP0v9ZW3H9X5OnTxrOaoYP+S6Nuv+cTf6jnzW9DhYta8qAZ2OLxuM867zjjuqA/bMaTpgv1MQDs+/fWGYF14pWygMwos5GMoBREieIkbLM2+jwExJhvQ9oeP+iOMzTen/C0fLEnxJ2TEO5gpDUW73l7hf5GtGMshRw3oK+bUWPwpGlxEvgSKwJrCzNm0pwEmchWazvXeaG88YPLhkST5c4abkJycgN0sDNV5q4qrT1Dl9tFdfqAU7QdogvaJN6v6yYYaPNKiIc0ZMTeMWRXiyA34YisaGp+n4cQIcjY8xHLU1jKGRJ7Z5PloENXI5T1KwShmCf0/YnzoW8X8bTOCxceF7Ul1fwf75FXmBaQVuqaitZenP5o+QYRikNXfIo+DbWQjEcksJWRgcZ+I29uvHfpZT3VyNKFyKvQbBZF2cvGlyTe1Bc3585j8pJUf5FUwejoRRX1UcTckIqPA+dYsnkQHIx04o1Ok4R6L
+ RVcCsXiY
+ cCtYsCn1wxZLIWtMb15olOkIWCSDrWnPycHzgzbfU+ZlG6jThmVmHt7ablSyMG5FNMQmKuCIzFNcTQ4w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,100 +123,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/1/12 19:33, Miaohe Lin wrote:
-> On 2026/1/12 17:40, David Hildenbrand (Red Hat) wrote:
->> On 1/12/26 10:19, Miaohe Lin wrote:
->>> On 2026/1/9 21:45, David Hildenbrand (Red Hat) wrote:
->>>> On 1/7/26 10:37, Miaohe Lin wrote:
->>>>> Introduce selftests to validate the functionality of memory failure.
->>>>> These tests help ensure that memory failure handling for anonymous
->>>>> pages, pagecaches pages works correctly, including proper SIGBUS
->>>>> delivery to user processes, page isolation, and recovery paths.
->>>>>
->>>>> Currently madvise syscall is used to inject memory failures. And only
->>>>> anonymous pages and pagecaches are tested. More test scenarios, e.g.
->>>>> hugetlb, shmem, thp, will be added. Also more memory failure injecting
->>>>> methods will be supported, e.g. APEI Error INJection, if required.
->>>>
->>>
->>> Thanks for test and report. :)
->>>
->>>> 0day reports that these tests fail:
->>>>
->>>> # # ------------------------
->>>> # # running ./memory-failure
->>>> # # ------------------------
->>>> # # TAP version 13
->>>> # # 1..6
->>>> # # # Starting 6 tests from 2 test cases.
->>>> # # #  RUN           memory_failure.madv_hard.anon ...
->>>> # # #            OK  memory_failure.madv_hard.anon
->>>> # # ok 1 memory_failure.madv_hard.anon
->>>> # # #  RUN           memory_failure.madv_hard.clean_pagecache ...
->>>> # # # memory-failure.c:166:clean_pagecache:Expected setjmp (1) == 0 (0)
->>>> # # # clean_pagecache: Test terminated by assertion
->>>> # # #          FAIL  memory_failure.madv_hard.clean_pagecache
->>>> # # not ok 2 memory_failure.madv_hard.clean_pagecache
->>>> # # #  RUN           memory_failure.madv_hard.dirty_pagecache ...
->>>> # # # memory-failure.c:207:dirty_pagecache:Expected unpoison_memory(self->pfn) (-16) == 0 (0)
->>>> # # # dirty_pagecache: Test terminated by assertion
->>>> # # #          FAIL  memory_failure.madv_hard.dirty_pagecache
->>>> # # not ok 3 memory_failure.madv_hard.dirty_pagecache
->>>> # # #  RUN           memory_failure.madv_soft.anon ...
->>>> # # #            OK  memory_failure.madv_soft.anon
->>>> # # ok 4 memory_failure.madv_soft.anon
->>>> # # #  RUN           memory_failure.madv_soft.clean_pagecache ...
->>>> # # # memory-failure.c:282:clean_pagecache:Expected variant->inject(self, addr) (-1) == 0 (0)
->>>> # # # clean_pagecache: Test terminated by assertion
->>>> # # #          FAIL  memory_failure.madv_soft.clean_pagecache
->>>> # # not ok 5 memory_failure.madv_soft.clean_pagecache
->>>> # # #  RUN           memory_failure.madv_soft.dirty_pagecache ...
->>>> # # # memory-failure.c:319:dirty_pagecache:Expected variant->inject(self, addr) (-1) == 0 (0)
->>>> # # # dirty_pagecache: Test terminated by assertion
->>>> # # #          FAIL  memory_failure.madv_soft.dirty_pagecache
->>>> # # not ok 6 memory_failure.madv_soft.dirty_pagecache
->>>> # # # FAILED: 2 / 6 tests passed.
->>>> # # # Totals: pass:2 fail:4 xfail:0 xpass:0 skip:0 error:0
->>>> # # [FAIL]
->>>> # not ok 71 memory-failure # exit=1
->>>>
->>>>
->>>> Can the test maybe not deal with running in certain environments (config options etc)?
->>>
->>> To run the test, I think there should be:
->>>    1.CONFIG_MEMORY_FAILURE and CONFIG_HWPOISON_INJECT should be enabled.
->>>    2.Root privilege is required.
->>>    3.For dirty/clean pagecache testcases, the test file "./clean-page-cache-test-file" and
->>>      "./dirty-page-cache-test-file" are assumed to be created on non-memory file systems
->>>      such as xfs, ext4, etc.
->>>
->>> Does your test environment break any of the above rules?
->>
->> It is 0day environment, so very likely yes. I suspect 1).
 
-Hi David,
+--o7rqwh4s3kscjtie
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 2/3] exec: inherit HWCAPs from the parent process
+MIME-Version: 1.0
 
-After taking a more close look, I think CONFIG_MEMORY_FAILURE and CONFIG_HWPOISON_INJECT should have been
-enabled in 0day environment or testcase memory_failure.madv_hard.anon should fail. memory_failure.madv_hard.anon
-will inject memory failure and expects seeing a SIGBUG signal.
+On Thu, Jan 08, 2026 at 05:07:47AM +0000, Andrei Vagin <avagin@google.com> =
+wrote:
+> @@ -1780,6 +1791,50 @@ static int bprm_execve(struct linux_binprm *bprm)
+>  	return retval;
+>  }
+> =20
+> +static void inherit_hwcap(struct linux_binprm *bprm)
+> +{
+> +	int i, n;
+> +
+> +#ifdef ELF_HWCAP4
+> +	n =3D 4;
+> +#elif defined(ELF_HWCAP3)
+> +	n =3D 3;
+> +#elif defined(ELF_HWCAP2)
+> +	n =3D 2;
+> +#else
+> +	n =3D 1;
+> +#endif
 
->>
->>> Am I expected to add some code to
->>> guard against this?
->>
->> Yes, at least some.
->>
->> Checking for root privileges is not required. The tests are commonly run from non-memory file systems, but, in theory, could be run from nfs etc.
->>
->> If you require special file systems, take a look at gup_longterm.o where we test for some fileystsem types.
+Is it guaranteed that HWCAP n+1 exists only when n does?
+(To make this work.)
 
-And I think the cause of failures of testcases memory_failure.madv_hard.clean_pagecache and memory_failure.madv_hard.dirty_pagecache
-is they running on memory filesystems. The error pages are kept in page cache in that case while memory_failure.madv_hard.clean_pagecache
-expects to see the error page truncated.
+> +
+> +	for (i =3D 0; n && i < AT_VECTOR_SIZE; i +=3D 2) {
+> +		long val =3D current->mm->saved_auxv[i + 1];
+> +
+> +		switch (current->mm->saved_auxv[i]) {
+> +		case AT_HWCAP:
+> +			bprm->hwcap =3D val & ELF_HWCAP;
+> +			break;
+> +#ifdef ELF_HWCAP2
+> +		case AT_HWCAP2:
+> +			bprm->hwcap2 =3D val & ELF_HWCAP2;
+> +			break;
+> +#endif
+> +#ifdef ELF_HWCAP3
+> +		case AT_HWCAP3:
+> +			bprm->hwcap3 =3D val & ELF_HWCAP3;
+> +			break;
+> +#endif
+> +#ifdef ELF_HWCAP4
+> +		case AT_HWCAP4:
+> +			bprm->hwcap4 =3D val & ELF_HWCAP4;
+> +			break;
+> +#endif
+> +		default:
+> +			continue;
+> +		}
+> +		n--;
+> +	}
+> +	mm_flags_set(MMF_USER_HWCAP, bprm->mm);
 
-But I have no idea why memory_failure.madv_soft.dirty_pagecache and memory_failure.madv_soft.clean_pagecache return -1(-EPERM?) when try
-to inject memory error through madvise syscall. It could be really helpful if more information can be provided.
+Will this work when mm->saved_auxv isn't set by the prctl (it is
+zeroes?)?
 
-Thanks!
-.
+Thanks,
+Michal
+
+--o7rqwh4s3kscjtie
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaWTtMRsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+AisSAEA3jOw1q2q7fyDcfOoeTcd
+ydeYIa3MJ59Bw5P1NbVJP0YA/0e1/9IiJ/h7y8JbPASpknLbuJY7oLSlA/zl9MUy
+MJQF
+=Iqi6
+-----END PGP SIGNATURE-----
+
+--o7rqwh4s3kscjtie--
 
