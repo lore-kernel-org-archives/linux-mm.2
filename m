@@ -4,138 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1466CD25051
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 08:42:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A872FD25050
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 08:47:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAF4F6B0088; Mon, 12 Jan 2026 03:42:18 -0500 (EST)
+	id 050C16B0088; Mon, 12 Jan 2026 03:47:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E32B66B0089; Mon, 12 Jan 2026 03:42:18 -0500 (EST)
+	id 002C36B0089; Mon, 12 Jan 2026 03:47:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D06EE6B008A; Mon, 12 Jan 2026 03:42:18 -0500 (EST)
+	id E22876B008A; Mon, 12 Jan 2026 03:47:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BDD086B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 03:42:18 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D54B1B9F5
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:42:18 +0000 (UTC)
-X-FDA: 84322669956.27.0FACFD7
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0F05A40002
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:42:15 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=VNKzHbev;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CF5DF6B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 03:47:33 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A07F1ACF15
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:47:33 +0000 (UTC)
+X-FDA: 84322683186.23.3B8142A
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C1466C0006
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:47:31 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LC6cekx1;
+	spf=pass (imf22.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768207336;
+	s=arc-20220608; t=1768207651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CDfFNoiSuTKA5KfAUoXISxuSK51bp7lujfs6vADIdxE=;
-	b=0A+nTCNM4oflBzSyDUciP9CUfR6eMvlxYTVanJXel1EoWjHeJkvf+eGe7HcUSP4kWhaD6v
-	ngoZFV7KSI8nd1DynVkB9+yARmyRK0qBDaWF4wOXK0nsyTUbgPzXYWIJOV4gPqiM0OIZpk
-	Mz7ZLvhA8B+XRM+SkINco/9PesJOTyU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=hklsKrrHIgsoCmky375DsGUrVmni2mBT3d93lWnbdtU=;
+	b=RaXbWUG9ST1N3fOWZUbJRmH6QaRs7JX5bwjyK8pKAJSl3CcEV4yUN/9Foq4b3gjQE3YzuL
+	DXPv9ZChiXR7UZ6KZLRrscuGL08NrBOxa9rP7+2MZTgN3xKGFfrTlblqcGhkQHKTNuIzNT
+	HxljyHDSWqzzOzqbuQlz8wbSCTqnjaM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=VNKzHbev;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768207336; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LC6cekx1;
+	spf=pass (imf22.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768207651; a=rsa-sha256;
 	cv=none;
-	b=IrJ48MrThR8Z8/v80ALDjORILk+GyAKmHda6pnJhE/wIn95AYU+EzCZo9YPQNpKIObNUYw
-	TMS6qSUA4L1znBSvfCbU9Ii36kveRG7pEfvACiOVeE/RMUA54h9/6jQhUvOFIM4z5khxHq
-	czYFY3/tIFqDQSXYrJMySb8Gwtf9GvU=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47774d3536dso42608985e9.0
-        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 00:42:15 -0800 (PST)
+	b=10I6U6yRUZP+X1uwzoIhQtwtKae3PDNAOPOKG/NQJjHOeVgLKhp5bRjPWclPZOV/EfVHUX
+	kbWZBe/TBJ03kXhjLvNdxCBhV95+DocCAk0ecMX/wGFpz6jwOQDb0J04t1pD28ylNygLou
+	03lE6O41DvHkXJGEgBzvHzaW6Qb+kWg=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a102494058so21833465ad.0
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 00:47:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768207334; x=1768812134; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CDfFNoiSuTKA5KfAUoXISxuSK51bp7lujfs6vADIdxE=;
-        b=VNKzHbevup3Xstomf0sXlylRg15ZHuiUd5tM+kK7RlgMrTkMrHKGIYHVtS4YQ0daCY
-         +bNnoAbt3toyyJwAXfNRy2/tT3rTQrYjZG3HsvO56PVdQe0BmNtjOsB2CXh6xDtSrxuH
-         IIniRHR+A+K0Tdi9eumot8Ds/3Vz02W+10KqbzAtgiALI/v9AFFyq0MuF8ikMHeGAGhe
-         pvyYUnymtk+HRRFvMi/LjaHY1T93iwVcnl6z7IsUFzR+llyjfcjXMdix6YoTv2WXZppL
-         Y2M6+DhVJ1DJNSFZc3FhXyto0fMACMYZ5HXIcYyxnLIuY8IqRSZoLrCyBLsoEuz2yke5
-         xRiw==
+        d=gmail.com; s=20230601; t=1768207650; x=1768812450; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hklsKrrHIgsoCmky375DsGUrVmni2mBT3d93lWnbdtU=;
+        b=LC6cekx1FfOJ67wUNjArmrDxb5mtBhldsFnMCD6F/M4/DZsSEeRq9CR9oiJxeY6o/h
+         q2mg19wrNvlCHV0H0JEjIyIsCOCfoEsSFNcjXVAlDNH2+15QIjS2ucoXL4Adt41iRRMO
+         ODJawz62g/J2xRrgjWocIHHyalk9nAgeZw02LnarlvecuMz+e/dxYD2ZjqPU8gOUsqR8
+         +kby5Y2JoSbOauqW5fT0nUcazIUDt49U0U0VUbGK7xKIZ3sUxCXStoN+QThMpAdhnNIE
+         HWKIEZhDDwTsGDF8z6Np/pYO0Z4fEvSaCPztfDS+ODupzPGxFeh0FLvN6pvo8RteSwkM
+         pqmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768207334; x=1768812134;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CDfFNoiSuTKA5KfAUoXISxuSK51bp7lujfs6vADIdxE=;
-        b=jFWqGKMOxhmkpng8XKnLpYPMVk/6DMTCelE5uxtDz5sINl+kJx5wW+ti6H6prZtlXz
-         nQcgEzw660CLU/ItGArRbrQVLbQlRnGd4rJrGmYxvsZWnEVR+aulfJm7GNltNXNNOOlK
-         BS9D70mNPbFgPqRYelMjdSG7QOqaGiUHoAo/kq9RVJcZr9z3hq2iwtNc5zvRTz/xgZ0I
-         0RQXC+bSDJ9XlnoBtIJ+0TWxaZLbxY/cFgzVylgx+PO3MVaNTjdRpeBSqYqnNFMOqA0e
-         wPDHAvM4o8IOor7/kJoIS7j26yAwo355AJvuLEsBytFn2+PfTdX440NRZIrVEEslDToH
-         Ls8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWpYzanRedJXFThzM9y6nxe2q8O03tEV8P3ud9Jw8e+ckRax0M4BEdgIsSnJU/Xx9Fm4u/MpO/TbA==@kvack.org
-X-Gm-Message-State: AOJu0Yy7Aj/fWTB/UFzM1BCu5TFHPWSb9+YBN4aJ9d701fm6X4xjVOIp
-	AenZ+PJc+Rb0Hk9S6yieErFR4KSmksUAj7rKvKWnZ+WJN1X/c1I584CGU8dg4aaQxOw=
-X-Gm-Gg: AY/fxX45xcBFwQ9M9sZq4l7ra1MM41A94y1sq0WnryVxTWGTIHbpzXzyFjlemTScxz6
-	/b1+2DGv/P7FVLZAT8LMSNdsseXjB6tHbiAXf+5eXh8YIriTUDTM4S8C2LxWlovBybHPkK/UDJA
-	o0yqeFO1JyTRTQfepTPN1DvY/3j8IOTt8CvKH5PQjrXwFm+dUEdMFKkfR1LwHGYC4l/Ltlk6o8d
-	MYbSXXB84/0G0ZcYzehOzEjaFdH4ZYz32QTEHH9VRt1ZDNV1smV0wxVsx7ngHh3jie9Ck02Vfpm
-	Sr1Eplh83iTXMJy17N4LtXslL9hOTGoeSw3v9SNOgq6ecSChVQAqjD8iQ0oB7XFpsxxvTIujv/l
-	A7aL9kx2/oh1PzlIUQqtnPM6/wGuYYEujWtqom+rVI0MjP8rhQNRdVEtM/ftzuTimoQraQGK8MN
-	0W4kZrgi1FmT1+Qnh5ZUEHYcCGUFWYQ+9p7/I=
-X-Google-Smtp-Source: AGHT+IGOZ9lkMoCzrUzWNxChXoAXhL7/lCG+k3HeWbbjlLCJz2d0Tg02k9SjW7Z9t8X4D9e1/0CcXQ==
-X-Received: by 2002:a05:600c:3b05:b0:475:ddad:c3a9 with SMTP id 5b1f17b1804b1-47d84877e51mr207488795e9.13.1768207334460;
-        Mon, 12 Jan 2026 00:42:14 -0800 (PST)
-Received: from localhost (109-81-19-111.rct.o2.cz. [109.81.19.111])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d865f84besm132725385e9.1.2026.01.12.00.42.13
+        d=1e100.net; s=20230601; t=1768207650; x=1768812450;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hklsKrrHIgsoCmky375DsGUrVmni2mBT3d93lWnbdtU=;
+        b=tJCBR/Cth9P2iZDvtC/ubvKPYX8cCgoJ61g/Ccr1v/Pj55+jQdM7bCKXuVKKn4KsPQ
+         lQAAaGLip0iaAHAFuGdSgbOh6+i07mvjBdhawFCs7tSV0omnpDP8eLA/BGUCc/I6PIAb
+         nMH8DcXtrYbAlSpMZuA6ZvhfSMSzlpoTzBY5yFQ/GBrmMLe/sjEdbccM6f37ohkA1RCv
+         MDprEE1QMpznNEPhOdUENBcXnRNsQbdlBVKyfy9MrE6HodwCJ0En6YqaDF8KfKRkVdkI
+         uGyMsvaldVQVezgYa97j55THPvMCUxmMj9Zc1737zqloW6AHP6FVMtcACKyb2L8wo8P4
+         BdUA==
+X-Gm-Message-State: AOJu0YwLr6hGUt7roPRqXLy9jkUfIyiQwDbTcFxhneIR4m9t4iA23ZZ2
+	+OjS9ae0VB2Np0Qgag6bMz+EGp4r+QOx3cBMZaPEQeFY/NcKAPBLkb/j
+X-Gm-Gg: AY/fxX6zGmZ3prbOCk3sLA5J4vvoB47NlzTOv/qfc0LDmoGgQGJ/SFskUNNvFh0WBBl
+	TDgDGmFG1jr/WUM37VDwFP655yhCg4r8+St0O2r4pAtsnXz5Jd2+AWtONarn+ptb1TJezhFdqcB
+	dlwUczI1F3teX1VDlT7SzQGLI+o0g4ODEHeuIjnV4K25HuM91oLN5qJquNryNRFXdisMWoqqPT8
+	qP6FnpOMljCgfFDUIYhC4/QImp9/EGwDhRoAAJluKxgnW7aiAsKe9SBrQJoCUyaplTSFu2gPo6L
+	gO2IWqDyu4UGf6BWBhjKpScrTpFEQc4qx3sDLNgBNLbp2ZATjor2Q+7CXm1PK1dTriME6GyjqGK
+	tHzq5wonsw6X+8E/O6sZQ9Uu0/Zz7a681vi4HUuoVs6zsrRdYP79naXQv66p0WlSLoo3VOYTJHe
+	Y8c5wKnIPquNr9QHEEejyRP31OHIGU2q3AoXI4qEhnxBsC0/Tegnk8UUCdxrq0hqLie48=
+X-Google-Smtp-Source: AGHT+IFnYxNSqiGxNAqd32y+etQrz589zxynwCAGgapm31trBYhiWdXuubNT5Yto2ExOwPbTaMgHlg==
+X-Received: by 2002:a17:903:11d0:b0:29f:1b1f:784 with SMTP id d9443c01a7336-2a3e39828f1mr207992795ad.4.1768207650502;
+        Mon, 12 Jan 2026 00:47:30 -0800 (PST)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:7751:dfe4:62a3:f9d2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c48e8esm53450075ad.37.2026.01.12.00.47.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 00:42:13 -0800 (PST)
-Date: Mon, 12 Jan 2026 09:42:12 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
-	David Rientjes <rientjes@google.com>, christian.koenig@amd.com,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	SeongJae Park <sj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: Re: [PATCH v13 2/3] mm: Fix OOM killer inaccuracy on large many-core
- systems
-Message-ID: <aWSz5OHBwtfYrruu@tiehlicka>
-References: <20260111194958.1231477-1-mathieu.desnoyers@efficios.com>
- <20260111194958.1231477-3-mathieu.desnoyers@efficios.com>
+        Mon, 12 Jan 2026 00:47:29 -0800 (PST)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: akpm@linux-foundation.org,
+	urezki@gmail.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
+Subject: [PATCH] mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
+Date: Mon, 12 Jan 2026 14:17:23 +0530
+Message-ID: <20260112084723.622910-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260111194958.1231477-3-mathieu.desnoyers@efficios.com>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: aebwa9be9aac9o9rst8itjqaro7b6e3q
 X-Rspam-User: 
-X-Stat-Signature: 6aq6ahwqi3ijf6pxqjb6tjwwt3syk33c
-X-Rspamd-Queue-Id: 0F05A40002
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768207335-655560
-X-HE-Meta: U2FsdGVkX1/Gk5ZtXqo5tPFi0eFGjocxnsuMa/pFGYiWrVTq7vux+dO06hAvu4bS8Li8C3YByQi97nkHQH3G+cTZ/UouAk5+3md8qaTJ3S+oOfBIagPYDKEcLYxWzi7Lr7bRJ0mSqXZj1EtKhWLd4cQeeGcD0jLLOfd3WgaVb9XXTfp9KU443eQp5ElEkTX4PkGJ/p2vnM2mVrmdZqAz0DETBy6Rb6v5w9D9jx/YiF3+nhEgUAFEvfKpe4zqR2Qvp3WwbDdlNNHXYTtCBz6zZXhFyr7StPtD3wvqQbJwnSm4yN+QrOKiMDPAQaeRywqJq6kTAMb6yHzu0eJ0Xk74URDOOiY9cCcnF5sgp8h/l0sGRXF192ccxXd/Qx2XApORlGJ61LqkSjZjNCD5nqQ35Io8Y+DHK2foYXo8OTVBLNCkKIz0SuIOl6CG8NBBB1WjFKjTWFplqvIkR/T+vuPFkmsTUsl+yyij74sAQ4gmoWXoMv6FqjqPVKKnlmy2nUQ6DLayvKby4y71/vDGvuLCKIJariASQq+fQDCmXK7FJPhLuhwnIWITYgnTcSHTg8z9sr7cnTipwqqJK33eQ/ywuoMZEXV/scKc9/8C1s7r/F4otp7aDpNdMtFygr6jvSKmiVvgcPIOZMS5HZJldmjVW0mCGY7zA1sSJ2gZuN3zBTVtbnPB0KfpVluwrhLBDdbjygQIfTDF/51BFyQd0rwtRj5I3LhyPUvE2d7Z2vkD6Lk+pcdZAcAWgfffu/Wn0Ol1U7Ei6zCRC34JJJS7DmE48oVm6Nam6qzQd08jkGO6PHcxAdpcLregribvzWI4ZnHI3DUo/lKYSLCerLGg0vhR576m+lyAyUVLYoDYX+1aPJXqvWQ8+H9A0RXBdoHGNUrpC9y/oeUUM4Q7joKGqaSNfTtPs2AhPjfmTyC6hp9FZrVSKnyYkZ5UCHqaNFpcUcgQwY6kXa8k7qlllc+syjJ
- BWjimXS/
- bgzwf0T6GbQGmdDjHZIUavht/glE81qpmuOjR8Wad0FPKhtg9UVVxMJTBhCglFB1d6511czPZ6miThuSoRnN+A+1xe9i9SVE2wjTc2zghGY6OHiNlwKdksgeLfPmUfQQu6WSFaDnsDiSFwSd10NAL7FXFKHjVla7RShCeys/uOZUDA4dBjUSsHoQPuOnNDi9nehC9Z0io4GWGOfs0rDlRuCtnwvLGgJXhZSJJEvaFd7c8JeaSz85HRF4vvR52gphW4V3CK8HNImwYtALqAF8VicrG+TXT5sWkVLbqMPNO8wGlf8axNQsPP2+WhFucm1jd8mGCGPaFX5ITXW6n3NumXO2uehlFNZhrS4DKf5nUNrnA7BCYV6XpvHun9F+W5jzKgecqk1rl3y1zahJcNSgK3GrMQGoSGX/jkRz1bI0ZmN03eL8=
+X-Rspamd-Queue-Id: C1466C0006
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768207651-591755
+X-HE-Meta: U2FsdGVkX1+rW97CURnbQ0bPfltVyR1U3b8xwz5iQnsVj1oK43J+R2yLJwqbBINXSViuNeb4XhozMqmaNDmhihpJmNSKL6mk9i+YCvMysxYwa6GINwHTexBBNFWf5zsxPxdumoPFDsbGyOevogV8A+uqp1gBI8UB/90qLb7D1ZZUyUTpMQIhCMVrIN3nu5qduiT69GrpEFAoBUENdkd0jCVp2sLBaIxnePwiAByWFrEwD/beV6UG0UQ3O9TrzWjz/LKGmutJCKaC9+Ttjnf13hW4ympwPbHQqmbnumOXQltIlMBt7GTzMc2tArgSHQeTcE3h+jkrffo3oWOCnqxa/K7YcDZZJDrLXwE6oAtYGWhGptMFgsJTnTdboL1+Fn+jFtexeLvTRx/VTbysozklu8WIRkLv+88QpIOhtCI5lB1bqKz2szxZ2T5/HhgdPH0NLiBgZ0Pq8l6n9ovgRnalAtMQTkVRdqG2NNh6cZhVAkBXg36ou3MsKOPr1sxbzxmejiyFjm8PyOux8Rg3VbrYQJSf5LTuj2ZC8zWi9c9LJZRdUVUBDqSymaHehX1zhorcV0ENyxpiGXbDic92NwoGCJhbZLgMJ3Kuz+2RTOTTySEE1795I+se2KczUAJGYF9Gb2vl2cUMzbOl3XCAMv6FBczaPJLLkK3dfV5w2H8/JefIxxM1bK1dGyHUn2iiFzb7VsZ+UdNZx8V7oWkamPP965/7IwEX8z8SwJ1aqA9YEhlSkun5mb02SZaDGSuehgR/uAt175kQr9IOx+P0ggYbNzpN0QCrTrPWZSYAKBcMpM+Qy8Ijtz3HJ8NzyVBExL7PFWcKO746HtWb0noZ2Qs6ClBUaPdOtQEDwgsIqKPxG2rcdOvjHLWm7QVUSN0TI4wRtCAdd4ha+Old2WBcw5JBwyWnmMRYV5xUv9Ag2Xcn+YIpbHzWAK037RnBNPQQGBek2bkTLmZNNjWpLoUGUHB
+ wkPZY8+M
+ JAl5K3N/wLFpoFLMJ3W5K9taE0SfqvfmplqqmTZiWzE3UqNWhqEbyvnUC+Ko8opkWcp1AdUUR+aL2YXmasJu2I7pKGGFMdVDFv48WtrIPZ+HUjpwASiUlcWaAOnNAOSqlnd20QjiJlifQGcf+B3vZi7Zl+S8yr4DS+rnYro8Pl+woSVUH1IS4ib/LCuR8drZUYIu6kZ9kAMlOkaQ00vRBoE7DvNaARENoIuwq307QDjsBBHfVjvvCEHKvkTseWnLjJZI3ZumadY4AFt/y9iUdMy6zrPzvcpxfox8t8wQZsKUVQx1GWRoHBfw3xVpHujHdQEItJCmg8+lbMkSEPrTr0yiyu2jslmtLvJbZDK/GyeeTjjho2OaVsKX0CZ8Pix9heiOulOK9SuYxx5MyAEfkBcE4tFN4ahuKFASzHtWjct1NXvZU16HygqNJ4jZ1wGrSh8QWi1S4PF99S8euxlXCYYz24ngcikIhPobq6pHBqSTuChg7Mdvpt4CVZxtBWgRt9sJbIfW/hq37BqAUQWQG2NeYwR3wYNTE/eCcrMsakIFTyo9NRQb1KYq2VAfepO13orfAcAAZtgcW+fL5jYqKpYMgh1BTryMJ3XD45Ah3YBRYb4Xe1zQuE6YrNwmlOmKs2b87ZYMYJ2XEIZ9HFsyaus1yJt+NwtI7oAFbyAKW5hFnjyRdXq94u6kd+O9pFZZ0ZFQw2LBpK3MCqyc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,41 +118,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-sorry to jump in this late but the timing of previous versions didn't
-really work well for me.
+When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
+vmalloc cleanup triggers expensive stack unwinding that acquires RCU
+read locks. Processing a large purge_list without rescheduling can
+cause the task to hold CPU for extended periods (10+ seconds), leading
+to RCU stalls and potential OOM conditions.
 
-On Sun 11-01-26 14:49:57, Mathieu Desnoyers wrote:
-[...]
-> Here is a (possibly incomplete) list of the prior approaches that were
-> used or proposed, along with their downside:
-> 
-> 1) Per-thread rss tracking: large error on many-thread processes.
-> 
-> 2) Per-CPU counters: up to 12% slower for short-lived processes and 9%
->    increased system time in make test workloads [1]. Moreover, the
->    inaccuracy increases with O(n^2) with the number of CPUs.
-> 
-> 3) Per-NUMA-node counters: requires atomics on fast-path (overhead),
->    error is high with systems that have lots of NUMA nodes (32 times
->    the number of NUMA nodes).
-> 
-> The approach proposed here is to replace this by the hierarchical
-> per-cpu counters, which bounds the inaccuracy based on the system
-> topology with O(N*logN).
+The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
+where iterating through hundreds or thousands of vmap_area entries and
+freeing their associated shadow pages causes:
 
-The concept of hierarchical pcp counter is interesting and I am
-definitely not opposed if there are more users that would benefit.
+  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+  rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
+  ...
+  task:kworker/0:17 state:R running task stack:28840 pid:6229
+  ...
+  kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
+  purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
 
-From the OOM POV, IIUC the primary problem is that get_mm_counter
-(percpu_counter_read_positive) is too imprecise on systems when the task
-is moving around a large number of cpus. In the list of alternative
-solutions I do not see percpu_counter_sum_positive to be mentioned.
-oom_badness() is a really slow path and taking the slow path to
-calculate a much more precise value seems acceptable. Have you
-considered that option?
+Each call to kasan_release_vmalloc() can free many pages, and with
+page_owner tracking, each free triggers save_stack() which performs
+stack unwinding under RCU read lock. Without yielding, this creates
+an unbounded RCU critical section.
 
+Add periodic cond_resched() calls within the loop to allow:
+- RCU grace periods to complete
+- Other tasks to run
+- Scheduler to preempt when needed
+
+The fix uses need_resched() for immediate response under load, with
+a batch count of 32 as a guaranteed upper bound to prevent worst-case
+stalls even under light load.
+
+Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+---
+ mm/vmalloc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 41dd01e8430c..a9161007cf02 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2273,6 +2273,7 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
+ {
+ 	struct vmap_area *va;
+ 	unsigned long start, end;
++	unsigned int batch_count = 0;
+ 
+ 	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
+ 	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
+@@ -2282,6 +2283,11 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
+ 			kasan_release_vmalloc(va->va_start, va->va_end,
+ 				va->va_start, va->va_end,
+ 				KASAN_VMALLOC_PAGE_RANGE);
++
++			if (need_resched() || (++batch_count >= 32)) {
++				cond_resched();
++				batch_count = 0;
++			}
+ 	}
+ 
+ 	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
 -- 
-Michal Hocko
-SUSE Labs
+2.43.0
+
 
