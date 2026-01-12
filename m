@@ -4,126 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08833D26D97
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 09:49:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AED18D26D97
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 09:55:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1535F6B0088; Mon, 12 Jan 2026 04:49:39 -0500 (EST)
+	id 1A1976B0088; Mon, 12 Jan 2026 04:55:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D83B6B0089; Mon, 12 Jan 2026 04:49:39 -0500 (EST)
+	id 14FED6B0089; Mon, 12 Jan 2026 04:55:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F01746B008A; Mon, 12 Jan 2026 04:49:38 -0500 (EST)
+	id 0306C6B008A; Mon, 12 Jan 2026 04:55:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DCFFD6B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 04:49:38 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7220B5B1B9
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:49:38 +0000 (UTC)
-X-FDA: 84322839636.27.530956B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CA13B100004
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:49:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kovjAz4K;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E65286B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 04:55:47 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B09431607CE
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:55:47 +0000 (UTC)
+X-FDA: 84322855134.20.553E94D
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CE9F320003
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:55:45 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jdFNX+VQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768211746; a=rsa-sha256;
+	cv=none;
+	b=FbjYUrXpmme1OGXaqW0A8SKuW1RI3FL/ukzYFcOThKE/OagBD9k23HN1KiH0ioAd3krLh8
+	fgtvDt3NJ1y++dFosHz5Ze6j+TRMH1SnQO+0/M9tznnAvFx/XCi2hqquCp0kn2evoGKpzU
+	1Qulc+ws07SugQBVo5PqB0zvscIRL8g=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jdFNX+VQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768211376;
+	s=arc-20220608; t=1768211745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MfekXN2se1alUjSsCk4xdLnYVKkV19tWJ8Jv/yRkuaU=;
-	b=vHYpA1PEzIGCwdZyOwRdZ2fKhRUEiz81VZxcrchcZDdWk5fMK3Fyi1F8sDVIGf0mKxmj98
-	xwprnjnAxHtTcQ6kgc61pEpjLzDlnYXMPV7DkTbPpP2oslZRuI4r/md/Sjf1vZIX78H3UR
-	uiZMbXohaur8Re0r+K1idwU7dc73mXQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kovjAz4K;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768211376; a=rsa-sha256;
-	cv=none;
-	b=ndT3P8ZIoqf8sJeZ+DuGQ3nFj4xXRosofpvwDwxZLJIYdbO0z8gdszEZdfS/YVDiu1yyMv
-	qNBbM94/gLRkNpEWhfu3aw5G+ZTFR4QoS1W+uhP27dvzGu9TYia0wRksKXo9xKHpikAe9F
-	VaIcsYKVLuI3bnYmx80c38iEvJCVb9o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 217D86013A;
-	Mon, 12 Jan 2026 09:49:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD38C116D0;
-	Mon, 12 Jan 2026 09:49:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768211375;
-	bh=m8zAICgnxs6xkW3AmfrwI3a0ispTdY6AQGss0vAXdME=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kovjAz4KC5mAD7YrC6t2czYMjBWRcZIetUzNRdlwl4Z1rGgyp9glYOLbnOZypWAbx
-	 YcmUJCp6E8w+KmTy2i5WzHpX9fHwe2RpJgFtTNA95cnxyqlkjOQ7JUeU62APvVqkZH
-	 Y3/3WTlqh+tsw7Ls6NjRbDo/fUnqsYd/eTTthVLhPJ/V7Q9k3YIeMunOn+RktLYgES
-	 ul3EQIBMmxhQ+r6sMjogrCPwB0I4vKTgz3PxtAbmBEyff/p4uJORPrLFe5LDSB0Hni
-	 RZIrOX4UDngsOGqfziwhf24VBmArYe5xbo5TLnA7nB4zBdXfiNr6kFAgXt4Ej7biQ5
-	 RxoAJIZnapRSw==
-Date: Mon, 12 Jan 2026 10:49:16 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
-	Nicolas Pitre <nico@fluxnic.net>, Christoph Hellwig <hch@infradead.org>, 
-	Anders Larsen <al@alarsen.net>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>, Gao Xiang <xiang@kernel.org>, 
-	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>, 
-	Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
-	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, 
-	Dave Kleikamp <shaggy@kernel.org>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
-	Viacheslav Dubeyko <slava@dubeyko.com>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall <hubcap@omnibond.com>, 
-	Martin Brandenburg <martin@omnibond.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Phillip Lougher <phillip@squashfs.org.uk>, Carlos Maiolino <cem@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Namjae Jeon <linkinjeon@kernel.org>, 
-	Sungjong Seo <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>, 
-	Chuck Lever <chuck.lever@oracle.com>, Alexander Aring <alex.aring@gmail.com>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
-	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, linux-mtd@lists.infradead.org, 
-	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev, 
-	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, linux-unionfs@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, linux-mm@kvack.org, gfs2@lists.linux.dev, 
-	linux-doc@vger.kernel.org, v9fs@lists.linux.dev, ceph-devel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, samba-technical@lists.samba.org
-Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
- lease support
-Message-ID: <20260112-gemeldet-gelitten-7d48bae7ef3f@brauner>
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
- <m3mywef74xhcakianlrovrnaadnhzhfqjfusulkcnyioforfml@j2xnk7dzkmv4>
- <8af369636c32b868f83669c49aea708ca3b894ac.camel@kernel.org>
- <CAOQ4uxgD+Sgbbg9K2U0SF9TyUOBb==Z6auShUWc4FfPaDCQ=rg@mail.gmail.com>
+	bh=hK8RvD0wg0cx8lVS3kyXyRfv713Ea0iYheTw/LCOhM0=;
+	b=Me0f5lD+l0agxVyguTGO7RFrj9y6tdNOepcp6F31SG1zoy2ABaQxv9iuFcReE23ALLge61
+	m0apsGSBEfNgFbWVgjJlVawNyRxZOfW7E/pd0oRIXLAu3NDUcx1IT9yM0zEMnzdwmcd/S/
+	+7ESewgz0zQtNNHGz64y4L/nJ2ETLB4=
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-64b9d01e473so10282236a12.2
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 01:55:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768211744; x=1768816544; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hK8RvD0wg0cx8lVS3kyXyRfv713Ea0iYheTw/LCOhM0=;
+        b=jdFNX+VQqmkYQ6dBjVYJMcisiZPzgpU/4Ox8ATlfUK+x6da26Phr2L7pOOZJ4QSM8r
+         cY5dnqKu4RYUR+NWj9piqlQz+Aei6LEDAm018qGqH7pMYNBixG+ZE1a08uuUaEoBzrN3
+         RqbwWh2U/ExwyMN0S/OdFuEHPxQGDXRUrFxYS5CL4hxjb9ZkASYatuv3yAC6nA7e3CmE
+         rEm0qvPiA+MEipuoPap4UA4f6u8rQwEACGcc1FbyN4HFtkDNcMCkMWwy0H1JyF2K4Jyr
+         qLmTWhga/NS6VX9gSJTsTOvBf+50s/0swilHFXbLrKqcKtamw9mDTyt0mhZR+EL+hGQe
+         og1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768211744; x=1768816544;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hK8RvD0wg0cx8lVS3kyXyRfv713Ea0iYheTw/LCOhM0=;
+        b=LV71FJarmRrecoB01sZ0dIuOrD2IHiHtmxeeBPpAaYWFeazNOMYvazRet7SsGprOsY
+         fTMGDYMyWjQKYsx6fAizKKBfYXSDx2UC4lglxrtVhzEZrn9ocDBV7cIcWKFq1KhZLzmS
+         r99SlhKSFH+AEIOV6GivLcYuT43EQ0VnybYHvldbrXX8jovcEO8itjic9lkEuB78BOaf
+         GOP9MYa9F+LVdrufChGBsGMA1sMWghy6TT2W19L3dBAqm65RWX4jPkSt/PuEyZI88Ccl
+         qBeOnb3HmVUVimpZhdarbqBBvCldrFfSznJEmQny2iB8PeOLDmhL5DjcxZF3A3wLL6ia
+         PSgg==
+X-Gm-Message-State: AOJu0YzXZuHbs3C1BsozkEUiz8pVi0jXUMjFOo9oY26QeRcmLGvNQEcF
+	RosqD+Pds9mULzUEf8OYB1S9/aFg+sDZCQC6UQdV+9d0T9WAsbi6rOytiiQpAhs07/uhTYuWV7r
+	KYyNN6CVygtlzK7kYMSdj+CBxGBvTvQg=
+X-Gm-Gg: AY/fxX4aTT508ruvQ/6lL1uL+XRvBDA4u1UvSpIPGUQ421qDpT88koCkUVShogy/Q1P
+	kbzY4dowA0G6r5iUXK6aYNoxsOcZlDfcvT+fMPMHSgUwM5GAHT+v6UAjplsJaxZCovDe6aIA38S
+	Hxm2xeu3vDZJkKP/8llfg8CJX3ISageykDhYj8NYxuxW+O+CDlyKok9JqAm4b55ejrGBYNzY83m
+	l82P/U2B6IlRdktskM3Lb6dzpnw7dNOZvoB9NWJoL7sVF4mQYrc5VIBNeaQxcA9gaEn1exDf9LB
+	pPrWuiWdPMXl25F8BU26o58MIBbc
+X-Google-Smtp-Source: AGHT+IHL4tD/eA41YzB9jltvfCK39D5lYU0R/uXdXlmYGdDlSTlXcrJ/8VqcjD71w0d57VLK7uMQoI2FDyF+f0gkQSM=
+X-Received: by 2002:a05:6402:1ecf:b0:640:f2cd:831 with SMTP id
+ 4fb4d7f45d1cf-65097ddd11cmr16678648a12.10.1768211743873; Mon, 12 Jan 2026
+ 01:55:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOQ4uxgD+Sgbbg9K2U0SF9TyUOBb==Z6auShUWc4FfPaDCQ=rg@mail.gmail.com>
+References: <20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com>
+ <d20f536c-edc1-42a0-9978-13918d39ecba@linux.alibaba.com> <CAMgjq7ASxBdAakd_3J3O-nPysArLruGO-j4rCHg6OFvvNq7f0g@mail.gmail.com>
+ <1dffe6b1-7a89-4468-8101-35922231f3a6@linux.alibaba.com>
+In-Reply-To: <1dffe6b1-7a89-4468-8101-35922231f3a6@linux.alibaba.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 12 Jan 2026 17:55:07 +0800
+X-Gm-Features: AZwV_QhXBjzBmhSsBlEr9V_cMtomZ7AHf_ABUPMfh__jgYGB1Qr8yYkPUcXksXo
+Message-ID: <CAMgjq7Biq9nB_waZeWW+iJUa9Pj+paSSrke-tmnB=-3uY8k2VA@mail.gmail.com>
+Subject: Re: [PATCH] mm/shmem, swap: fix race of truncate and swap entry split
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CE9F320003
+X-Stat-Signature: 4m84mkpa8bew9jo11n36hc6czt9u8jko
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CA13B100004
-X-Stat-Signature: 6u9jpb1tpxqytbu95qawq83g5cyfuggm
-X-HE-Tag: 1768211376-747034
-X-HE-Meta: U2FsdGVkX1+fR500yiSHefaauKvM5orEY3iVYVtVil+X9bV/h/z8cV1fD/+nMD5oD8uEALTzLa42vzzJ81NzBUpsEsuvWSKD/cvEe2CFMy48q5UeQql2kijoL1wcuf3mclRGP7W1Lxix7GTy3qv+LUexxgrjp8JVLvdQPZ+tInBsPdK0h11yD6P7i4LtfK4y5G7F2h4Bzfkkiyx54DTmLFnDlP6Iw3tfaKbzd4QiJOU9cxi8mR6BsofMZlE8cRWhwGN1jzduGazlTzS/GFMVTKpkP9nAmvwlQ8uD9Tz36ZU7EgNQNKmGBbQSjlDsD5nmVkVGpZTWbqZQk6itvmVkVWQws9BtXhpJ1KgIW9+oIH5xq93z7fSkfA9cTmwya3SVqicvI5nLFgrbO93KntOJiTeuyBdaOI/tjyG8Dtfv4TFd6S0q5JvpFIlg9M/1/pzshF5//EdmeSIycjuPyaatjFoOePSI+Hmhb/g44XJfVi8Len0Xub1lnGyecNGx2LB/d4S91r9jYyQHIw0PB3GvaNBt4UKTly96J/z8ybl88iJkrtGIkr9CUJUcAIQPS80TWPZA5Ijon8stETyxECxl+8teNTqy86LqLJZUsFoqSefLlrWemu9/+kU6YOgoBizKH3YQ3R/nXJHAKPfr1OpVl+syu0BsspWmRCmoqjBRJw6zBYT6dFC7RG0bzVJLzKKjix+IzQ/9YCaPuXIO4BI3UkPeTMzn/sQ0jAgSR96y0t69E1kfpnOnjqyM5b7XHF1W+aJqjZOkAAVVt8YLWBEN5FSlpNcAmo3xK4GD2/HKlPxjqvkXdsduKNSD+M1LLnSlKxJKtfcO4vTI/WYqbOCOEVg4iQ8FkYrMDIgMblPdHHk5CVeV00XL+WAA0zYdKEhZyNF44DCLsB2wwmT2CaUS4Z2UqcOVfiKjo4KLogLS5ycS05Trf734ZOLNyCI3zQGO/1/RjqhoMIXsZoL9qLs
- OjC/sUtR
- O/IWN8fWVMy3C6/HEcaZ4cwSeFHm8aHLQRGa6EfSZn/Ou/pLVNE3aq7AeQZinb7iDMci1/rcrQmmmx+3UGhPow5OjH01ot8DqhpagURP7ZDpGLLhXm6wNsR2ZOG5IDh0BrA/0Qu4ww3RcsdRvmD5NdeANTZrYDAfuZc+HW+50vjFiAV9K+w8NcvgcfBHzIkEAtbRT8ft2FONhWJDx4W+KGeAbDVQDJf8hmDBV5Fyn8bMqV/fNfuvlgoiw3NV1XSEO0ke4sVNJTtt4eVEvm2e2e5a/HNaLnLy+PPbbirnJ/iIl3R0NCpLb4VOl2VX6u7FtQYgDLCy6+clYsea42iduHv0r6P4WEc6Mz9KobArXETq36PxfwWndJpd2r2JuCkFrxKlY7gMu6S1Y0+Hgm5ThY4euXhv78KDBclkb
+X-HE-Tag: 1768211745-263404
+X-HE-Meta: U2FsdGVkX1/BVacpGhCBOBQ6cjS28tz5341YXGl2IKCsE+09cZcrlZyPZeJG4Bf20QXpm55Om/i4CCG4CePcZ2hu/E7Kk7q2nl7/++KWMEZi5bFTKUwyUaHonJcRM5EZcIcBV1expBt6IeWbDOb6nSeT0MYCGLnNkvxAyDvycFX5Mi6UC7BABWKtdTyDo3wXhdNQjl1mI0FjCZ67xydbxweMace6VP97bgSi0kvgShduvTecbN0ehLp98OrcXXBKiCTdmCnaUf8LfA0MYUT06bE5tHYw8nzArmKbGyL7+89JUlk1JeBWCnMc4zH2BJWaPWsJSRzPQWQZbWVP1uc5EKx8618MiOQ0yuVrY/4PSW25FhBzw5JJzsPooeOCEu3LzipDIzMIsrs8ViaPC8HsfvIX7SFUl28hDoZ/zh0RRYPiqJCAsV0XC/gPXYfECGpAAliG0gU6iTo3dS/jgQtcVlYvQ/Vv2/siftAScSO9oKglDvTJBQjbSLt+wia2o51U+JO5P0t1l/PSdNLMinB48wTl2qEEskBOJuwoIA2H33OHtWhG8CPft3koicRKZC/6vtUCnKcvxhi7M0+7C+hVFeMnHU6sDi9nRemtJY75P6kQZtc1S4w/OIoGRfeZLDRdr9cYWT5pAo4OBwaQALMTlu3boZbNq8fXy0vKy0s632jagMHpr0l4y3pEYmAMH4HYqTQal/8VO7mWQ8TZzqmMhGxqy67kQmX6oKjiy2g1vgDo24ajeQQsUV37FJAoUHqXZM7j26W5E2XZruQ9JrMjGbhGYBpu+zM5GCR/FA/4X96cUUEA/u3WsGkcbyL2LG/5iEJH3+LSHAeVkTgmpLBG803oexYJtguTAqn5ItGdHP42Z5J/SpBKoRg/k1GWhm2/77V03o4D207kkoLwiHxqe/gDzCyTNJKK3MSdTu7u4FL5fPM9VlVsvICB+diQ0GzRCjtxVwwpUZwxsTE6HxM
+ 8JX3k0zR
+ gjhU3qhktt3mI5XhYtZ9DdJ1eIF5CKY822XtXNnSq7tpx/OUsPC4TX/JRefrkJaToWgXunOCVMFz26qIvcLC5cV7/4N4vfmvtf7mSc7Iqte2kGmURbZbwwyt3pgHf2BkPuqJh6NEMdT+Yb6oQWClalxXE68DBffissBQI/ty2g1eE4jFGXdxSkkwqTroL9dQaDxFeAhCbGj9T8Ehav7N+qDQrD+1msMrt+MuJ4IwFR1aantEpESGPIRwXnBBrcMj2ln/8qTD1i3gFdU3xYd3LwPVHd8d8/d7Ql6pXCr3YCwCJAYMIP6wAqLfNDwuJ1nGhLb+IE6MTaa15ZxPWU0cnvT9ghLIN3PaSgT8GFuahAkzYCL7N9lQAeDJkpGAe4sEPyK2juYeyAna66OsFKtnB8gQcHJ9BN4G90BozcUxO8gIgJrNor78mzOAFRFIP9PkFgW4fF4PZSnpGXJd1GzrjV4EncnkZQazW7mtiQKtCeqPwnctiHvpjKq2T4SwQhqBHF/wb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,78 +120,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 09, 2026 at 07:52:57PM +0100, Amir Goldstein wrote:
-> On Thu, Jan 8, 2026 at 7:57 PM Jeff Layton <jlayton@kernel.org> wrote:
+On Mon, Jan 12, 2026 at 4:22=E2=80=AFPM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+> On 1/12/26 1:56 PM, Kairui Song wrote:
+> > On Mon, Jan 12, 2026 at 12:00=E2=80=AFPM Baolin Wang
+> > <baolin.wang@linux.alibaba.com> wrote:
+> >> On 1/12/26 1:53 AM, Kairui Song wrote:
+> >>> From: Kairui Song <kasong@tencent.com>
+> >>>
+> >>> The helper for shmem swap freeing is not handling the order of swap
+> >>> entries correctly. It uses xa_cmpxchg_irq to erase the swap entry,
+> >>> but it gets the entry order before that using xa_get_order
+> >>> without lock protection. As a result the order could be a stalled val=
+ue
+> >>> if the entry is split after the xa_get_order and before the
+> >>> xa_cmpxchg_irq. In fact that are more way for other races to occur
+> >>> during the time window.
+> >>>
+> >>> To fix that, open code the Xarray cmpxchg and put the order retrivial=
+ and
+> >>> value checking in the same critical section. Also ensure the order wo=
+n't
+> >>> exceed the truncate border.
+> >>>
+> >>> I observed random swapoff hangs and swap entry leaks when stress
+> >>> testing ZSWAP with shmem. After applying this patch, the problem is r=
+esolved.
+> >>>
+> >>> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+> >>> Cc: stable@vger.kernel.org
+> >>> Signed-off-by: Kairui Song <kasong@tencent.com>
+> >>> ---
+> >>>    mm/shmem.c | 35 +++++++++++++++++++++++------------
+> >>>    1 file changed, 23 insertions(+), 12 deletions(-)
+> >>>
+> >>> diff --git a/mm/shmem.c b/mm/shmem.c
+> >>> index 0b4c8c70d017..e160da0cd30f 100644
+> >>> --- a/mm/shmem.c
+> >>> +++ b/mm/shmem.c
+> >>> @@ -961,18 +961,28 @@ static void shmem_delete_from_page_cache(struct=
+ folio *folio, void *radswap)
+> >>>     * the number of pages being freed. 0 means entry not found in XAr=
+ray (0 pages
+> >>>     * being freed).
+> >>>     */
+> >>> -static long shmem_free_swap(struct address_space *mapping,
+> >>> -                         pgoff_t index, void *radswap)
+> >>> +static long shmem_free_swap(struct address_space *mapping, pgoff_t i=
+ndex,
+> >>> +                         unsigned int max_nr, void *radswap)
+> >>>    {
+> >>> -     int order =3D xa_get_order(&mapping->i_pages, index);
+> >>> -     void *old;
+> >>> +     XA_STATE(xas, &mapping->i_pages, index);
+> >>> +     unsigned int nr_pages =3D 0;
+> >>> +     void *entry;
+> >>>
+> >>> -     old =3D xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL,=
+ 0);
+> >>> -     if (old !=3D radswap)
+> >>> -             return 0;
+> >>> -     swap_put_entries_direct(radix_to_swp_entry(radswap), 1 << order=
+);
+> >>> +     xas_lock_irq(&xas);
+> >>> +     entry =3D xas_load(&xas);
+> >>> +     if (entry =3D=3D radswap) {
+> >>> +             nr_pages =3D 1 << xas_get_order(&xas);
+> >>> +             if (index =3D=3D round_down(xas.xa_index, nr_pages) && =
+nr_pages < max_nr)
+> >>> +                     xas_store(&xas, NULL);
+> >>> +             else
+> >>> +                     nr_pages =3D 0;
+> >>> +     }
+> >>> +     xas_unlock_irq(&xas);
+> >>> +
+> >>> +     if (nr_pages)
+> >>> +             swap_put_entries_direct(radix_to_swp_entry(radswap), nr=
+_pages);
+> >>>
+> >>> -     return 1 << order;
+> >>> +     return nr_pages;
+> >>>    }
+> >>
+> >> Thanks for the analysis, and it makes sense to me. Would the following
+> >> implementation be simpler and also address your issue (we will not
+> >> release the lock in __xa_cmpxchg() since gfp =3D 0)?
 > >
-> > On Thu, 2026-01-08 at 18:40 +0100, Jan Kara wrote:
-> > > On Thu 08-01-26 12:12:55, Jeff Layton wrote:
-> > > > Yesterday, I sent patches to fix how directory delegation support is
-> > > > handled on filesystems where the should be disabled [1]. That set is
-> > > > appropriate for v6.19. For v7.0, I want to make lease support be more
-> > > > opt-in, rather than opt-out:
-> > > >
-> > > > For historical reasons, when ->setlease() file_operation is set to NULL,
-> > > > the default is to use the kernel-internal lease implementation. This
-> > > > means that if you want to disable them, you need to explicitly set the
-> > > > ->setlease() file_operation to simple_nosetlease() or the equivalent.
-> > > >
-> > > > This has caused a number of problems over the years as some filesystems
-> > > > have inadvertantly allowed leases to be acquired simply by having left
-> > > > it set to NULL. It would be better if filesystems had to opt-in to lease
-> > > > support, particularly with the advent of directory delegations.
-> > > >
-> > > > This series has sets the ->setlease() operation in a pile of existing
-> > > > local filesystems to generic_setlease() and then changes
-> > > > kernel_setlease() to return -EINVAL when the setlease() operation is not
-> > > > set.
-> > > >
-> > > > With this change, new filesystems will need to explicitly set the
-> > > > ->setlease() operations in order to provide lease and delegation
-> > > > support.
-> > > >
-> > > > I mainly focused on filesystems that are NFS exportable, since NFS and
-> > > > SMB are the main users of file leases, and they tend to end up exporting
-> > > > the same filesystem types. Let me know if I've missed any.
-> > >
-> > > So, what about kernfs and fuse? They seem to be exportable and don't have
-> > > .setlease set...
-> > >
+> > Hi Baolin,
 > >
-> > Yes, FUSE needs this too. I'll add a patch for that.
+> >>
+> >> static long shmem_free_swap(struct address_space *mapping,
+> >>                               pgoff_t index, void *radswap)
+> >> {
+> >>           XA_STATE(xas, &mapping->i_pages, index);
+> >>           int order;
+> >>           void *old;
+> >>
+> >>           xas_lock_irq(&xas);
+> >>           order =3D xas_get_order(&xas);
 > >
-> > As far as kernfs goes: AIUI, that's basically what sysfs and resctrl
-> > are built on. Do we really expect people to set leases there?
+> > Thanks for the suggestion. I did consider implementing it this way,
+> > but I was worried that the order could grow upwards. For example
+> > shmem_undo_range is trying to free 0-95 and there is an entry at 64
+> > with order 5 (64 - 95). Before shmem_free_swap is called, the entry
+> > was swapped in, then the folio was freed, then an order 6 folio was
+> > allocated there and swapped out again using the same entry.
 > >
-> > I guess it's technically a regression since you could set them on those
-> > sorts of files earlier, but people don't usually export kernfs based
-> > filesystems via NFS or SMB, and that seems like something that could be
-> > used to make mischief.
-> >
-> > AFAICT, kernfs_export_ops is mostly to support open_by_handle_at(). See
-> > commit aa8188253474 ("kernfs: add exportfs operations").
-> >
-> > One idea: we could add a wrapper around generic_setlease() for
-> > filesystems like this that will do a WARN_ONCE() and then call
-> > generic_setlease(). That would keep leases working on them but we might
-> > get some reports that would tell us who's setting leases on these files
-> > and why.
-> 
-> IMO, you are being too cautious, but whatever.
-> 
-> It is not accurate that kernfs filesystems are NFS exportable in general.
-> Only cgroupfs has KERNFS_ROOT_SUPPORT_EXPORTOP.
-> 
-> If any application is using leases on cgroup files, it must be some
-> very advanced runtime (i.e. systemd), so we should know about the
-> regression sooner rather than later.
-> 
-> There are also the recently added nsfs and pidfs export_operations.
-> 
-> I have a recollection about wanting to be explicit about not allowing
-> those to be exportable to NFS (nsfs specifically), but I can't see where
-> and if that restriction was done.
-> 
-> Christian? Do you remember?
+> > Then here it will free the whole order 6 entry (64 - 127), while
+> > shmem_undo_range is only supposed to erase (0-96).
+>
+> Good point. However, this cannot happen during swapoff, because the
+> 'end' is set to -1 in shmem_evict_inode().
 
-I don't think it does.
+That's not only for swapff, shmem_truncate_range / falloc can also use it r=
+ight?
+
+>
+> Actually, the real question is how to handle the case where a large swap
+> entry happens to cross the 'end' when calling shmem_truncate_range(). If
+> the shmem mapping stores a folio, we would split that large folio by
+> truncate_inode_partial_folio(). If the shmem mapping stores a large swap
+> entry, then as you noted, the truncation range can indeed exceed the 'end=
+'.
+>
+> But with your change, that large swap entry would not be truncated, and
+> I=E2=80=99m not sure whether that might cause other issues. Perhaps the b=
+est
+> approach is to first split the large swap entry and only truncate the
+> swap entries within the 'end' boundary like the
+> truncate_inode_partial_folio() does.
+
+Right... I was thinking that the shmem_undo_range iterates the undo
+range twice IIUC, in the second try it will retry if shmem_free_swap
+returns 0:
+
+swaps_freed =3D shmem_free_swap(mapping, indices[i], end - indices[i], foli=
+o);
+if (!swaps_freed) {
+    /* Swap was replaced by page: retry */
+    index =3D indices[i];
+    break;
+}
+
+So I thought shmem_free_swap returning 0 is good enough. Which is not,
+it may cause the second loop to retry forever.
+
+>
+> Alternatively, this patch could only focus on the race on the order,
+> which seems uncontested. As for handling large swap entries that go
+> beyond the 'end', should we address that in a follow-up, for example by
+> splitting? What do you think?
+>
+
+I think a partial fix is still wrong, How about we just handle the
+split here, like this?
+
+static int shmem_free_swap(struct address_space *mapping, pgoff_t index,
+                unsigned int max_nr, void *radswap)
+{
+    XA_STATE(xas, &mapping->i_pages, index);
+    int nr_pages =3D 0, ret;
+    void *entry;
+    bool split;
+
+retry:
+    xas_lock_irq(&xas);
+    entry =3D xas_load(&xas);
+    if (entry =3D=3D radswap) {
+        nr_pages =3D 1 << xas_get_order(&xas);
+        /*
+         * Check if the order growed upwards and a larger entry is
+         * now covering the target entry. In this case caller may need to
+         * restart the iteration.
+         */
+        if (index !=3D round_down(xas.xa_index, nr_pages)) {
+            xas_unlock_irq(&xas);
+            return 0;
+        }
+
+        /* Check if we are freeing part of a large entry. */
+        if (nr_pages > max_nr) {
+            xas_unlock_irq(&xas);
+            /* Let the caller decide what to do by returning 0 if
+split failed. */
+            if (shmem_split_large_entry(mapping, index + max_nr,
+radswap, mapping_gfp(mapping)))
+                return 0;
+            goto retry;
+        }
+
+        xas_store(&xas, NULL);
+        xas_unlock_irq(&xas);
+
+        swap_put_entries_direct(radix_to_swp_entry(radswap), nr_pages);
+        return nr_pages;
+    }
+
+    xas_unlock_irq(&xas);
+    return 0;
+}
 
