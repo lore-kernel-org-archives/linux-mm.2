@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB1F0D232D7
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 09:34:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6AF7D2505E
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 09:37:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D80556B0088; Mon, 12 Jan 2026 04:34:37 -0500 (EST)
+	id 2B6566B0088; Mon, 12 Jan 2026 04:37:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2E486B0089; Mon, 12 Jan 2026 04:34:37 -0500 (EST)
+	id 276E66B0089; Mon, 12 Jan 2026 04:37:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0F6F6B008A; Mon, 12 Jan 2026 04:34:37 -0500 (EST)
+	id 1AD356B008A; Mon, 12 Jan 2026 04:37:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B1F866B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 04:34:37 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 58A0B13BA84
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:34:37 +0000 (UTC)
-X-FDA: 84322801794.11.6CA1CE7
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0ACB76B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 04:37:34 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9E985160761
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:37:33 +0000 (UTC)
+X-FDA: 84322809186.23.DADC936
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 33ED8140003
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:34:35 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id E39B6120006
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:37:31 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
 	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768210475;
+	s=arc-20220608; t=1768210652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BHjqZxq8Rxm9YJqJ/rHHHus0y6ZvLFd1PGp82VqI4Rk=;
-	b=AtE32gyg0c3T5azlRLqcP3De+89SAb+Ha+LtYIHl5Rb1fzbNFscDnsATn53qzonjn25cy6
-	2EZOy+is7d0KHhpko7AoAWgaC7b7tt7dbZmnGRM9z3DLkVVKXzsWpVbapWz0Z0o9SgS3ti
-	mNHJ4mK9qw52AMcrGk1CVO9zfPUVMkE=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768210475; a=rsa-sha256;
+	bh=LLHaptyO8Et6BX64ae2o2/w3br5H+WwMc8+MrROXYEY=;
+	b=B0jAFJ8P3XVVw4XmjbzGRn+NTJ6LCJz4dxgkguNyDV4vUrkm1dnNvl8yqKHR8lNjDv1qW/
+	7YeKBS++0lPD9qWqiyhPV5wDyhch0x8bThKvLlEiRIgpX6gRUrUW7nOkAb00BZFpQXhpYT
+	NbA7kPsGOkrjyHxoGa2zMDp4yDz75+0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768210652; a=rsa-sha256;
 	cv=none;
-	b=zx4WK7bStBFW/2BiilAR+5nmbnSEnf0EbVx20mL2YVKUQRqyo8pI16sQ8R4myG0+Q51/p9
-	616duN3ZXgvvXdm7P4mC/+QN3gt7SP4lgSrc0n4RbEbG/kYhcQJpnDbn4BsVN03XmRnceP
-	hS5pEFi7JV+bRzkib2Xfg5jicEfXELg=
+	b=UeCLRGyT7W8ENg1QV8Zv3fNKziUb2OLO7QQ7uvYq5J+Z3rHKi7J3eudabWHbQhD2yxbTxt
+	Op9nxqH0veeU8ZL/Wg+5QiKXc2n+h/kUk2j5xWeefNr2wkED7Ag+HPh3KBF81JC/rxxAFT
+	dZC+xIHqUbrx77xty7COT0/IVzIh6Gk=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=none;
+	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 56DE1339;
-	Mon, 12 Jan 2026 01:34:27 -0800 (PST)
-Received: from [10.57.95.123] (unknown [10.57.95.123])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A5C9E3F694;
-	Mon, 12 Jan 2026 01:34:32 -0800 (PST)
-Message-ID: <315a7239-f5ce-474e-bd0d-f1deca3a7b26@arm.com>
-Date: Mon, 12 Jan 2026 09:34:31 +0000
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2002E339;
+	Mon, 12 Jan 2026 01:37:24 -0800 (PST)
+Received: from [10.57.48.185] (unknown [10.57.48.185])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 663AA3F694;
+	Mon, 12 Jan 2026 01:37:28 -0800 (PST)
+Message-ID: <b785754d-ba6f-42db-9e44-66fd377aad03@arm.com>
+Date: Mon, 12 Jan 2026 10:37:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/8] selftests/mm: report SKIP in pfnmap if a check
- fails
-Content-Language: en-GB
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+Subject: Re: [PATCH v2 5/8] selftests/mm: introduce helper to read every page
+ in range
+To: SeongJae Park <sj@kernel.org>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mark Brown
- <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>
-References: <20260107164842.3289559-1-kevin.brodsky@arm.com>
- <20260107164842.3289559-9-kevin.brodsky@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260107164842.3289559-9-kevin.brodsky@arm.com>
+ <broonie@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Shuah Khan <shuah@kernel.org>
+References: <20260109013009.68474-1-sj@kernel.org>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260109013009.68474-1-sj@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: b5mnfb7395m68jaxjm7c6gmu4rmf7q7b
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E39B6120006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 33ED8140003
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768210475-489989
-X-HE-Meta: U2FsdGVkX18VRvVG4SRMWYqTdwMDWuqNMmh4TQO6s/JCanPKhh2qHmZY0yXkMSk+OoVo2OCL3RC6sSkWEwVkazdLloQfFKlp6ETsrkxiZ8UW7XWicl8EWMRq7Zhty/G1GXpr6TJEzvmq9Vhsi8bZtqyeZCMwVlCLUXXTG5BaXXKJoX9Ql5JZBWQ3GUdfrHhbkUNQBAD/5KpOB4b46HftxB4ygAd1RfOZZteVl11LroXIfJqaAMDpVVB+bRbd+qpU32B5fhxukmtB7SvkXmMlJtCrR3INtjrv0+a3kRxywfCHJcN2hg0Vms+oOHEKXS/KVtQtqOpXvLaYGZBHLzts2zXvmq0FAbXQDUTTqO5zmUAXzwXjKia2krA38DgLCPa++NPbmBoiHAB9aM5wQF4O6DBzsonBr+gIfhwe3A8uHJHft4RYbeK//EQEQt0VzdTMwGgpXGCVJHiLsN4z8JUnv3JuVrOy0eJ8GRlSd/6E0d/OKsBLaiNJXe6EWOVsK4PNJNgyPgCCiDT0L2A0FbvPeHksJM+vCw/+tces/hVzK74LbtJrGanwN0NarV4AOBwSbL/NorOTNIN16a+lCZAj8d9yE+Ht7m11tFvOMPelX7taqrOLlp1Iz2GLXU1x1AFzj70K+ZkUz5b2KWisMobfzp3bzsNjfob9RCakw2uDVS+Ps8VIOZK831Cu73NDb7Ixi10xAuUju+gjpSitpX+xpkKPafNXfAs0+pQWyu9p7ihlzipBYgtFiIsJpIEnrtlsNH+cmZukx5N4lsJREkFjP+/N2BldIMnx191AbvwFheAnVjF56KcKLbdCNzGHGf+6lzUBuh0guAIn8/Bg2awjeDOziGhuvkJwU+mbOHgK28Gfe6ujKNgFek4WnopFK+ZC26ZGcyxib4K+M5taybz4+gO9E3QwLL8B02NbQTMW4rjFM4aRsFk6ugBWKgcc4syoDBf98o86NQVT0oYSHZg
- qkdyko3D
- ncRPmNybWr2HCG+fpmaHLasVQlnHhnCLuWPJQucRvrES+/1H1wDjT8f5fWci//miQzKkmXX0rqQcPz8qXhKI7h3euHM2fqIp4YBUgBAtIorCkew2BYmIwCXmoZ02OTwZnuOb6t2jJhvMrVzK/kKHwlrXL0aEAb9FCW/lEb2otlutYhBWl00wrrs7gMzDI9JoDmsEsr4ugYYsDjI8=
+X-Stat-Signature: wnxoi6phiqpx9gup7ankdwefzrnqpk7r
+X-HE-Tag: 1768210651-694689
+X-HE-Meta: U2FsdGVkX1+NFvkyRZYScZaqvtG1D9BJ4kPhEyWCtbWCQnnmnMUsia1aY7lLB7+8y+X5G4/EXKJ9lPs7ymaeAi2YNvSCB+s+XTn3zpB2f6F1DBgvq23hzB84sSN55+TP6Fryx84h0JCnSW2tusd6cgiHLrb5ZlfY4MMhu40xSXjMCTDNlvWO8l7UnalM5TD0OXbyEAzVfDFs3M2+9rIAQXswr2RsDciiQ2ndQdzw8uCCyRoxCwsRvThBRrSPslfuGS/u68yA6Ixr/JSmO461vTFuXv1HW55s1hC4e0hNUi2qpkvedT0/FmqMX4UgUEmDkDIlscszy7MPcZybmQW+qaggcBy+RAVUC2czaGK/o4KgZj96LUTv8OBDVTJcjDJiHJ2hmwbPQylVR7a7Gpb+TeItKNujdkTWPtPigD8AudQ/ya2sTuaDdWgFwO3I6G/OUtpk9X1c6RfpyifaL/dZz/WVuOcVFg4e2lktzj+F/XoN1Sy7CblbzWlMRCbK1yiZ2fJh4aUqyRYFvW42/KsH4OMjuN2a1NrEgxJsLnYE9babNORxjT9QLHTfuLPZTXiuOAsaCvRE/RlydRjlz+PyMBGCcjFeTVOO0aPwRX6ajMzdGT5cAYA9U081K/ZkJVfETHLIJgcjnX0FBdOjGx4eujIBekKxguqRNEcqwaLylec+kj6ldQUF17it1qljbeOQlP9NjwGyiUJF+rkNmoUyMdKR3PH9eNUISKq5Ne5hlNzZeFi34Fq39EKsmOx6hzUBdidr+ENpbyCZKEpXNxb0ciG9NbhvmbE5hVjg83qfiVPEakhD9WuOIlWULjuQb/r+6SKwpv56Wwj6aaqR2jdY9pXj9DdUlHDvErkR0vP2+zVAo2rBADNDvAdhwrJKulIVzwW6ymV7V/d1v0sGmfXJnjkWepF7fxpQq/ju9stt0h3QKmzSuSQXcfAuW/znD2J2DwJrhH2hnYyb8e/5Xxe
+ P65qd/CE
+ 3DTRVEDFoeAjcYx1fPH2BSgoFWtzmEFq5yFsKlIiNbtalLpmQP1nrdRnCuTN9ArIBgjUgKsmlz2wuGtf4Er5V7/rUMMhD8v2b3yHQQgsU+lw6qmT1YMSzJnUxDu/gTOr9GyiA9YvAFG54npbgDAY0O5jBSdcNESg+FdCzMiVZTUMROYCYeEx3BkhDp10oRb9kWbdyY+6Ioz5hKKJWI+6Bj5oQI1HeDf+UJuRm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,168 +90,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/01/2026 16:48, Kevin Brodsky wrote:
-> pfnmap currently checks the target file in FIXTURE_SETUP(pfnmap),
-> meaning once for every test, and skips the test if any check fails.
-> 
-> The target file is the same for every test so this is a little
-> overkill. More importantly, this approach means that the whole suite
-> will report PASS even if all the tests are skipped because kernel
-> configuration (e.g. CONFIG_STRICT_DEVMEM=y) prevented /dev/mem from
-> being mapped, for instance.
-> 
-> Let's ensure that KSFT_SKIP is returned as exit code if any check
-> fails by performing the checks in pfnmap_init(), run once. That
-> function also takes care of finding the offset of the pages to be
-> mapped and saves it in a global. The file is still mapped/unmapped
-> for every test, as some of them modify the mapping.
-> 
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
->  tools/testing/selftests/mm/pfnmap.c | 81 ++++++++++++++++++++---------
->  1 file changed, 55 insertions(+), 26 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/pfnmap.c b/tools/testing/selftests/mm/pfnmap.c
-> index 35b0e3ed54cd..e41d5464130b 100644
-> --- a/tools/testing/selftests/mm/pfnmap.c
-> +++ b/tools/testing/selftests/mm/pfnmap.c
-> @@ -25,8 +25,11 @@
->  #include "kselftest_harness.h"
->  #include "vm_util.h"
->  
-> +#define DEV_MEM_NPAGES	2
-> +
->  static sigjmp_buf sigjmp_buf_env;
->  static char *file = "/dev/mem";
-> +static off_t file_offset;
->  
->  static void signal_handler(int sig)
->  {
-> @@ -88,7 +91,7 @@ static int find_ram_target(off_t *offset,
->  			break;
->  
->  		/* We need two pages. */
-> -		if (end > start + 2 * pagesize) {
-> +		if (end > start + DEV_MEM_NPAGES * pagesize) {
->  			fclose(file);
->  			*offset = start;
->  			return 0;
-> @@ -97,9 +100,49 @@ static int find_ram_target(off_t *offset,
->  	return -ENOENT;
->  }
->  
-> +static void pfnmap_init(void)
-> +{
-> +	size_t pagesize = getpagesize();
-> +	size_t size = DEV_MEM_NPAGES * pagesize;
-> +	int fd;
-> +	void *addr;
-> +
-> +	if (strncmp(file, "/dev/mem", strlen("/dev/mem")) == 0) {
-> +		int err = find_ram_target(&file_offset, pagesize);
-> +
-> +		if (err)
-> +			ksft_exit_skip("Cannot find ram target in '/proc/iomem': %s\n",
-> +				       strerror(-err));
-> +	} else {
-> +		file_offset = 0;
-> +	}
-> +
-> +	/*
-> +	 * Make sure we can open and map the file, and perform some basic
-> +	 * checks; skip the whole suite if anything goes wrong.
-> +	 * A fresh mapping is then created for every test case by
-> +	 * FIXTURE_SETUP(pfnmap).
-> +	 */
-> +	fd = open(file, O_RDONLY);
-> +	if (fd < 0)
-> +		ksft_exit_skip("Cannot open '%s': %s\n", file, strerror(errno));
-> +
-> +	addr = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, file_offset);
-> +	if (addr == MAP_FAILED)
-> +		ksft_exit_skip("Cannot mmap '%s': %s\n", file, strerror(errno));
-> +
-> +	if (!check_vmflag_pfnmap(addr))
-> +		ksft_exit_skip("Invalid file: '%s'. Not pfnmap'ed\n", file);
-> +
-> +	if (test_read_access(addr, size))
-> +		ksft_exit_skip("Cannot read-access mmap'ed '%s'\n", file);
-> +
-> +	munmap(addr, size);
-> +	close(fd);
-> +}
-> +
->  FIXTURE(pfnmap)
->  {
-> -	off_t offset;
->  	size_t pagesize;
->  	int dev_mem_fd;
->  	char *addr1;
-> @@ -112,31 +155,13 @@ FIXTURE_SETUP(pfnmap)
->  {
->  	self->pagesize = getpagesize();
->  
-> -	if (strncmp(file, "/dev/mem", strlen("/dev/mem")) == 0) {
-> -		/* We'll require two physical pages throughout our tests ... */
-> -		if (find_ram_target(&self->offset, self->pagesize))
-> -			SKIP(return,
-> -				   "Cannot find ram target in '/proc/iomem'\n");
-> -	} else {
-> -		self->offset = 0;
-> -	}
-> -
->  	self->dev_mem_fd = open(file, O_RDONLY);
-> -	if (self->dev_mem_fd < 0)
-> -		SKIP(return, "Cannot open '%s'\n", file);
-> +	ASSERT_GE(self->dev_mem_fd, 0);
->  
-> -	self->size1 = self->pagesize * 2;
-> +	self->size1 = DEV_MEM_NPAGES * self->pagesize;
->  	self->addr1 = mmap(NULL, self->size1, PROT_READ, MAP_SHARED,
-> -			   self->dev_mem_fd, self->offset);
-> -	if (self->addr1 == MAP_FAILED)
-> -		SKIP(return, "Cannot mmap '%s'\n", file);
-> -
-> -	if (!check_vmflag_pfnmap(self->addr1))
-> -		SKIP(return, "Invalid file: '%s'. Not pfnmap'ed\n", file);
+On 09/01/2026 02:30, SeongJae Park wrote:
+> On Wed,  7 Jan 2026 16:48:39 +0000 Kevin Brodsky <kevin.brodsky@arm.com> wrote:
+>
+>> FORCE_READ(*addr) ensures that the compiler will emit a load from
+>> addr. Several tests need to trigger such a load for every page in
+>> the range [addr, addr + len), ensuring that every page is faulted
+>> in, if it wasn't already.
+>>
+>> Introduce a new helper force_read_pages_in_range() that does exactly
+>> that and replace existing loops with a call to it.
+> Seems like a good cleanup to me.
 
-I wonder if we still want this check per-fd, but upgraded to a fail?
+Thanks for having a look at this series!
 
-Either way:
+>> Some of those
+>> loops have a different step size, but reading from every page is
+>> appropriate in all cases.
+> So the test program's behavior is slightly be changed.  I believe that
+> shouldn't be problem, but I'm not that familiar with the test code, so not very
+> sure.  I'd like to listen voices from people more familiar with those.
+>
+> Meanwhile, I'm curious what do you think about making the helper function
+> receives the step size together, and let the callers just pass their current
+> step size.
 
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+That's what I initially considered, but considering this discussion on
+v1 [1] this doesn't seem to be justified. In hugetlb-madvise, reading
+every page instead of every hugepage is unnecessary but still correct
+and the overhead should be negligible. In split_huge_page_test, I don't
+think there's any justification for reading every byte - the intention
+is to fault in pages, like all the other cases this patch touches.
 
-> -
-> -	/* ... and want to be able to read from them. */
-> -	if (test_read_access(self->addr1, self->size1))
-> -		SKIP(return, "Cannot read-access mmap'ed '%s'\n", file);
-> +			   self->dev_mem_fd, file_offset);
-> +	ASSERT_NE(self->addr1, MAP_FAILED);
->  
->  	self->size2 = 0;
->  	self->addr2 = MAP_FAILED;
-> @@ -189,7 +214,7 @@ TEST_F(pfnmap, munmap_split)
->  	 */
->  	self->size2 = self->pagesize;
->  	self->addr2 = mmap(NULL, self->pagesize, PROT_READ, MAP_SHARED,
-> -			   self->dev_mem_fd, self->offset);
-> +			   self->dev_mem_fd, file_offset);
->  	ASSERT_NE(self->addr2, MAP_FAILED);
->  }
->  
-> @@ -258,8 +283,12 @@ int main(int argc, char **argv)
->  		if (strcmp(argv[i], "--") == 0) {
->  			if (i + 1 < argc && strlen(argv[i + 1]) > 0)
->  				file = argv[i + 1];
-> -			return test_harness_run(i, argv);
-> +			argc = i;
-> +			break;
->  		}
->  	}
-> +
-> +	pfnmap_init();
-> +
->  	return test_harness_run(argc, argv);
->  }
+- Kevin
+
+[1]
+https://lore.kernel.org/all/a3ca6293-8f85-4489-a48e-eb8d0d3792c5@kernel.org/
 
 
