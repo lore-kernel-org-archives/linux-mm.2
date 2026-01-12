@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6756DC9EC8D
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 15:10:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65F39C9EC8D
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 15:10:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A00D76B0092; Mon, 12 Jan 2026 10:10:30 -0500 (EST)
+	id 345E96B0093; Mon, 12 Jan 2026 10:10:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 957616B0093; Mon, 12 Jan 2026 10:10:30 -0500 (EST)
+	id 2C2436B0095; Mon, 12 Jan 2026 10:10:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81A336B0095; Mon, 12 Jan 2026 10:10:30 -0500 (EST)
+	id 11E7C6B0096; Mon, 12 Jan 2026 10:10:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 713CC6B0092
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EB4186B0093
 	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:10:30 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 423148BB5D
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B9AE91A046D
 	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:10:30 +0000 (UTC)
-X-FDA: 84323648220.17.FFBB650
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A34164000A
+X-FDA: 84323648220.02.7AAE142
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 91A2080017
 	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:10:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=AvPdTXIv;
-	spf=pass (imf11.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="DtZ/mSWW";
+	spf=pass (imf30.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1768230628;
@@ -35,37 +35,37 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3sok3w+EKcWG8672Zt1cWgHM+04imj24Z0uUlURlgNQ=;
-	b=fMrtRejqPImuTWh+GDQuv/CR9/981fhfCF7vdRGWWMKgEYyn0rh3qoE8WsOHiEQOOC1w/9
-	zb/mmNtgebER+w9ZldWQGdLgETpyzzrz9Q8mFmA8c8mghhADE4bdOGIORehwBH0OfG4dUi
-	sSVuJZkDw4xzplP+ni0VZjGRN40tShs=
+	bh=K1eQfP+FijUo9LrgTDqPVWvFcZh/E9/+owYfxKf+08s=;
+	b=Meq+iLOjUKsEnScxrhfazr0MsuKRsaTOA56Jbt20KO3eAZtR/E9R5ZmySsTZvTc+LyME2D
+	QwAzWON4D8X2rnTV8ZoU45vcKgKFBe0GGNvZd566ubDSMWurkrd2cTYLvHtli88eVP7utj
+	QeRZhFkN5xTZg7yL0OX9RaydIaDUm9w=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="DtZ/mSWW";
+	spf=pass (imf30.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768230628; a=rsa-sha256;
 	cv=none;
-	b=PSc+XWuoh5C263Y45msNKZFLXdULge6rEuyLfQIVLkKOiorl3mhCaF8Z22MXY29HUr1L1z
-	d3H4oFfZvGF2Oy0YySdNveTNis0Zk18Lr8ZWyCgiT0vF1lWL3AqWorYQQ/z+5gfuj+pvAG
-	a/WdRqRdWZo8OPTRbzoBd3mXerdcO3k=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=AvPdTXIv;
-	spf=pass (imf11.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	b=eJnHm3URKqv9U65+lMJYJeIfwBeSAKk+i3vIqK7pZgfiN1qyLg7AMv3KFcTKmsoukSjvGH
+	IRlxlRbIeuTokqjD5mFpcH/LNT5bxV6qaegV+XSkwBCPv3uHAdHy62TPLxatFP1qR203kS
+	bHmDoq8RagAeCcjjNCdUJBGkJM9hTqM=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=3sok3w+EKcWG8672Zt1cWgHM+04imj24Z0uUlURlgNQ=;
-	b=AvPdTXIv1NJmmXXm6nadLRtyixPKm1JNWVr57QBNUtQOLY8Bom/dG2cSUbvN7weFeNmJnStYU
-	MjN4LUCgBwFjLhMOL5gxQX1MG0l8iCeg+jGUkHuz+qfSs8e4n5ggggtiAd1n5U99GLoVbwPbBY9
-	vOPJ0jf4yBxL9F/KPnvJWx4=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4dqbMD150fz1prKM;
-	Mon, 12 Jan 2026 23:07:04 +0800 (CST)
+	bh=K1eQfP+FijUo9LrgTDqPVWvFcZh/E9/+owYfxKf+08s=;
+	b=DtZ/mSWWmk+QcG6yEeSvwld1rUvUIzL3mdE+u0S40P+4YCofEPPSlPi/l5nQmLrZo6Obc0wJY
+	mckM4narb5qJ9Uvxka93AC8WzEXMQ08tlx0JoQnZXFIvTDbFDxdSLjTbDCbUqyGUmqvSrhrwj+8
+	QXPMxgezeGHPMD8LrYTfFuk=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4dqbMC0hqQzmV70;
+	Mon, 12 Jan 2026 23:07:03 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id A01872016A;
-	Mon, 12 Jan 2026 23:10:24 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 41CE44055B;
+	Mon, 12 Jan 2026 23:10:22 +0800 (CST)
 Received: from localhost.localdomain (10.50.87.83) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 12 Jan 2026 23:10:23 +0800
+ 15.2.1544.11; Mon, 12 Jan 2026 23:10:21 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Muchun Song
@@ -74,9 +74,9 @@ CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan
 	<ziy@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
 	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox
 	<willy@infradead.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH 4/5] mm: hugetlb_cma: optimize hugetlb_cma_alloc_frozen_folio()
-Date: Mon, 12 Jan 2026 23:09:53 +0800
-Message-ID: <20260112150954.1802953-5-wangkefeng.wang@huawei.com>
+Subject: [PATCH 1/5] mm: page_isolation: introduce page_is_unmovable()
+Date: Mon, 12 Jan 2026 23:09:50 +0800
+Message-ID: <20260112150954.1802953-2-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20260112150954.1802953-1-wangkefeng.wang@huawei.com>
 References: <20260112150954.1802953-1-wangkefeng.wang@huawei.com>
@@ -86,14 +86,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.50.87.83]
 X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
  dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A34164000A
 X-Rspam-User: 
-X-Stat-Signature: f3gyd6xt73474ksr6r9ws81ep64yzjtr
-X-HE-Tag: 1768230627-122861
-X-HE-Meta: U2FsdGVkX1/2WLglv9fjKTLVNdKHG/eqwEUO6Iu1NQKPkLSncGDgRSq7EZNN0Kk+SdXBXIXNbftOuleN9ih8fx3OCC7LuCIV91bBzbv5jlHrqDmIwRKdJfltM0wOmUhP8HH+rYxZ6g91ayOm5UqkWO67YhWrueNm1qFIsihu2eAnasdRoBPk0pey/vbMM58XyxPppPm7iNmt+faMpBsGi4Lz84kmqvL55+JrGdajQ4dYU6xCKYCzpo1fwSmkZJ0RAAhrrjsb/iu3Z4ONK1VZR/s9P+t+uxPLp5GYT/w+C+BUi2w5do80GuRfs+pUtwGg5PT1QTh6bspM02EfoBPj1hGTqs+fHztdFS2xpfjkqAu2TFo68PI/YtQkIaYV8CXig0haRAZ1rBtFUykXPbtDhmOisaJ4S+4iCHMR8KaRUxEhTglQRniSqjFMXYIFlS9UAOq0eIDSfAot6hb094z8GF0Ql4QtpKRHen+r4LSlkU/LHkFRBtKe3kBPusoOOKCpvHefml4/j7dLnpBVFbo1QUXDKad8mlRuBKYAi/+pgqVcFUvYksUIXl8xvrxfeZdNlcvfK+9pNF6Ow3lKCiJ6L01/gDrhHgVsaaRy9wvAhAe3pEDTx127vOAi5EgnUfgqQQQV65lGrl2wAbPxTB6Y8moVj/S0tJ6Y8c2y0bhtqIlZHvrelUkwP0Ox31FRon4KODre3ziud75bBQV2TFC9Os4kJX7F2fCWIkW4i2L9iOoAfFwEtWx1s17lePUvDJxY3v7YdBUFax1yWixOUYDXb0ql2Qyw9+S2tSvbwd/nzSD3vBl3tZa29b7Ck7evVyej6LzSEqG8Q7TPYNN4F4dASbCRdmxvAIzu4xeVNARA6P/pumyFBnhCaVox7fH5YCVhaIU5+8uQGhIxTTcYybXgsooOKL/1314GlkAoxcbdpMuolcMXVc4ZMR32qd+0CYx2SgT1RTJGtfScf3kWrbc
- IiIQnQ2m
- 3YOx0QWQjEgU4QTfLUvI4OFzxxPHztAAVF6Qpj2qdCQOiosdtSc97c6Xrft13DSgRBUNrGZ1kLtEIWFddIfgmvaI9ccRXse8hwP0XxWvGf9pN6QSqwwwWMJSoV70BR/k92LYTw412J83xI4brVAirYzsOGFZc0UW7VM2JrH64MbOWZWEIF4bSYc/N0Lf8lpLLgjkvmj7w8lrpQsNSvUjMOcSb46HndCJbG0syzqZtUrvUnC8+GSnKGBE8B/rOWCUGwajljL2ALJS9AAuM0RhFm/wRxNNVIGtm02cKnYmetds8g6oP+LUz5hX13xOR7zzvIFo8nrxLvjfUYIkhU2YgI/SxOcVld+pbUa6ncQ8k6BfRjiZ1bgKssRRLgqOXLTBFoU26H0Onqvb+4SFnqc88KRtMkzfVL3b+TexwX6T2DMkrrZTnoHDl2KZnTEfmGyCWhSeqjcD9izsD/7A=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 91A2080017
+X-Stat-Signature: zay7ht477s7dns3h97i9o3erwnc4nyte
+X-HE-Tag: 1768230627-183954
+X-HE-Meta: U2FsdGVkX18w7PjjOGuwkG+2nn8TMu+iCzUdBRM8ey2vqyh6hNg8acs4WAf2iY7BbP+iiJzNR8SwwdfBVYYZBclB63rSVE9/4lZTDPonWGmlx1MtVxX8Ps5RaU318ofwTu/DaHvBrT/wazq16ks/xjbcK/O4ZaXj9888WZ0gXhqP/vDG+1BXOhGbvz5puw6VitMaPD9L2AcM27iGTvjzk9Maww8QOZIhOzoHv8zCnsaTc2Csnl4/knKDUf96h+7CvcG/IhhtCHBIifPVqXAp07W68sdbZS74cN5OzEXq5DQIlDCOiWNwDhMZIgD3zJHoyPPJ92nkVPN2RG4n2jVFuIuuuUmBgGRRDVc27OHb5QTEimrrb9l34QmlK3UgByKMoGVrELfVUd+nNTgmB5AnrIjAaUhblCrZA/0as3KNHuWt/mpgtchme3M2D2RPmMPt6wqJYzUDQ1vXee2FLa2QQW2AvZW8u9XrwM7gcfxgftfCJt/rNKA1sq745ZySBS2B+wzHEaLBd8aeNy0GVDYzdlcuzeJT6A9/nkfVIVBVrHpqf+MdLKfxzyEZjes2KrnWpoYXc8C8nxHxJvxQTpMNawnW/JjG9TluqPzELjDSrgnlHVhl2knT5/cRnFzx9V11qGklVgv6G+3aYyeyMb9/DW0aHLHcQfnCOPExG4L6PLTh7vQ5ZBFI+JcLbt1StlV0t/kXj1y++IYoKNNMenpskEnYsXOnX0nJgaWGngbTt65k7LWx3+HzLEDIa3saTK0hpreRzeF/qzt+Qr/ZHOTCu215IebluXVb6e2JCxlrGouNB4bzKjXoIuu8SYfLg6u4lUZmYiTUS4uvTon3UX2UkGJcHGuRhw0gMLVZcpLmq6TIigFHTav9uFPht2quPn1EBLO1Q1F63saZg+tcjysOw46/VJsqm9GTEmS5rGtKyYJUdRnBYBF4NjtSbYAdnOlOKOVpLsDdLIjXcSVsLx4
+ biAyMAkh
+ LUtIpkG6SMkNePQdhaH6TlNPtescvGxG8is6Qta4IyJOE/LKJNMzb08vL/sv9BUBv3YGE3qAYI3fVJ32yU8Qj2hfyneR/nRUjdbnhqGNh5Q8UpNwtgi9+Dj/RxDdKUHotCVS7+if0f1etrkVLh0s5gWkBdsvofDWlKsX6ZYOIK4/XYDFwvhaYC1RYjeiW5eFg52j4GM9S6YYUH9VZA2xFagiw+7cBgxVP92wWa1X2RviNBWHjMzOgkMsHTBFL2bzn4eTDkdwNmpWdxO3Jo8ktmuqC3/9PBvMOboC+ZVRI9/VUPc5MNS6FwbKWiFcHAvL4PShqZUF9M529DvD2Z7d19k1Bdw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,37 +102,246 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Check hugetlb_cma_size which helps to avoid unnecessary gfp check
-or nodemask traversal.
+Factor out the check if a page is unmovable into a new helper,
+and will be reused in the following patch.
+
+No functional change intended, the minor changes are as follows,
+1) Avoid unnecessary calls by checking CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
+2) Directly call PageCompound since PageTransCompound may be dropped
+3) Using folio_test_hugetlb()
 
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- mm/hugetlb_cma.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/page-isolation.h |   2 +
+ mm/page_isolation.c            | 187 +++++++++++++++++----------------
+ 2 files changed, 101 insertions(+), 88 deletions(-)
 
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index 0ddf9755c090..d8fa93825992 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -16,7 +16,7 @@
- static struct cma *hugetlb_cma[MAX_NUMNODES];
- static unsigned long hugetlb_cma_size_in_node[MAX_NUMNODES] __initdata;
- static bool hugetlb_cma_only;
--static unsigned long hugetlb_cma_size __initdata;
-+static unsigned long hugetlb_cma_size __ro_after_init;
+diff --git a/include/linux/page-isolation.h b/include/linux/page-isolation.h
+index 3e2f960e166c..6f8638c9904f 100644
+--- a/include/linux/page-isolation.h
++++ b/include/linux/page-isolation.h
+@@ -67,4 +67,6 @@ void undo_isolate_page_range(unsigned long start_pfn, unsigned long end_pfn);
  
- void hugetlb_cma_free_frozen_folio(struct folio *folio)
- {
-@@ -31,6 +31,9 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
- 	struct folio *folio;
- 	struct page *page = NULL;
+ int test_pages_isolated(unsigned long start_pfn, unsigned long end_pfn,
+ 			enum pb_isolate_mode mode);
++bool page_is_unmovable(struct zone *zone, struct page *page,
++			enum pb_isolate_mode mode, unsigned long *step);
+ #endif
+diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+index b5924eff4f8b..c48ff5c00244 100644
+--- a/mm/page_isolation.c
++++ b/mm/page_isolation.c
+@@ -15,6 +15,100 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/page_isolation.h>
  
-+	if (!hugetlb_cma_size)
-+		return NULL;
++bool page_is_unmovable(struct zone *zone, struct page *page,
++		enum pb_isolate_mode mode, unsigned long *step)
++{
++	/*
++	 * Both, bootmem allocations and memory holes are marked
++	 * PG_reserved and are unmovable. We can even have unmovable
++	 * allocations inside ZONE_MOVABLE, for example when
++	 * specifying "movablecore".
++	 */
++	if (PageReserved(page))
++		return true;
 +
- 	if (hugetlb_cma[nid])
- 		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
++	/*
++	 * If the zone is movable and we have ruled out all reserved
++	 * pages then it should be reasonably safe to assume the rest
++	 * is movable.
++	 */
++	if (zone_idx(zone) == ZONE_MOVABLE)
++		return false;
++
++	/*
++	 * Hugepages are not in LRU lists, but they're movable.
++	 * THPs are on the LRU, but need to be counted as #small pages.
++	 * We need not scan over tail pages because we don't
++	 * handle each tail page individually in migration.
++	 */
++	if (PageHuge(page) || PageCompound(page)) {
++		struct folio *folio = page_folio(page);
++
++		if (folio_test_hugetlb(folio)) {
++			struct hstate *h;
++
++			if (!IS_ENABLED(CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION))
++				return true;
++
++			/*
++			 * The huge page may be freed so can not
++			 * use folio_hstate() directly.
++			 */
++			h = size_to_hstate(folio_size(folio));
++			if (h && !hugepage_migration_supported(h))
++				return true;
++
++		} else if (!folio_test_lru(folio)) {
++			return true;
++		}
++
++		*step = folio_nr_pages(folio) - folio_page_idx(folio, page);
++		return false;
++	}
++
++	/*
++	 * We can't use page_count without pin a page
++	 * because another CPU can free compound page.
++	 * This check already skips compound tails of THP
++	 * because their page->_refcount is zero at all time.
++	 */
++	if (!page_ref_count(page)) {
++		if (PageBuddy(page))
++			*step = (1 << buddy_order(page));
++		return false;
++	}
++
++	/*
++	 * The HWPoisoned page may be not in buddy system, and
++	 * page_count() is not 0.
++	 */
++	if ((mode == PB_ISOLATE_MODE_MEM_OFFLINE) && PageHWPoison(page))
++		return false;
++
++	/*
++	 * We treat all PageOffline() pages as movable when offlining
++	 * to give drivers a chance to decrement their reference count
++	 * in MEM_GOING_OFFLINE in order to indicate that these pages
++	 * can be offlined as there are no direct references anymore.
++	 * For actually unmovable PageOffline() where the driver does
++	 * not support this, we will fail later when trying to actually
++	 * move these pages that still have a reference count > 0.
++	 * (false negatives in this function only)
++	 */
++	if ((mode == PB_ISOLATE_MODE_MEM_OFFLINE) && PageOffline(page))
++		return false;
++
++	if (PageLRU(page) || page_has_movable_ops(page))
++		return false;
++
++	/*
++	 * If there are RECLAIMABLE pages, we need to check
++	 * it.  But now, memory offline itself doesn't call
++	 * shrink_node_slabs() and it still to be fixed.
++	 */
++	return true;
++}
++
+ /*
+  * This function checks whether the range [start_pfn, end_pfn) includes
+  * unmovable pages or not. The range must fall into a single pageblock and
+@@ -35,7 +129,6 @@ static struct page *has_unmovable_pages(unsigned long start_pfn, unsigned long e
+ {
+ 	struct page *page = pfn_to_page(start_pfn);
+ 	struct zone *zone = page_zone(page);
+-	unsigned long pfn;
  
+ 	VM_BUG_ON(pageblock_start_pfn(start_pfn) !=
+ 		  pageblock_start_pfn(end_pfn - 1));
+@@ -52,96 +145,14 @@ static struct page *has_unmovable_pages(unsigned long start_pfn, unsigned long e
+ 		return page;
+ 	}
+ 
+-	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
+-		page = pfn_to_page(pfn);
++	while (start_pfn < end_pfn) {
++		unsigned long step = 1;
+ 
+-		/*
+-		 * Both, bootmem allocations and memory holes are marked
+-		 * PG_reserved and are unmovable. We can even have unmovable
+-		 * allocations inside ZONE_MOVABLE, for example when
+-		 * specifying "movablecore".
+-		 */
+-		if (PageReserved(page))
++		page = pfn_to_page(start_pfn);
++		if (page_is_unmovable(zone, page, mode, &step))
+ 			return page;
+ 
+-		/*
+-		 * If the zone is movable and we have ruled out all reserved
+-		 * pages then it should be reasonably safe to assume the rest
+-		 * is movable.
+-		 */
+-		if (zone_idx(zone) == ZONE_MOVABLE)
+-			continue;
+-
+-		/*
+-		 * Hugepages are not in LRU lists, but they're movable.
+-		 * THPs are on the LRU, but need to be counted as #small pages.
+-		 * We need not scan over tail pages because we don't
+-		 * handle each tail page individually in migration.
+-		 */
+-		if (PageHuge(page) || PageTransCompound(page)) {
+-			struct folio *folio = page_folio(page);
+-			unsigned int skip_pages;
+-
+-			if (PageHuge(page)) {
+-				struct hstate *h;
+-
+-				/*
+-				 * The huge page may be freed so can not
+-				 * use folio_hstate() directly.
+-				 */
+-				h = size_to_hstate(folio_size(folio));
+-				if (h && !hugepage_migration_supported(h))
+-					return page;
+-			} else if (!folio_test_lru(folio)) {
+-				return page;
+-			}
+-
+-			skip_pages = folio_nr_pages(folio) - folio_page_idx(folio, page);
+-			pfn += skip_pages - 1;
+-			continue;
+-		}
+-
+-		/*
+-		 * We can't use page_count without pin a page
+-		 * because another CPU can free compound page.
+-		 * This check already skips compound tails of THP
+-		 * because their page->_refcount is zero at all time.
+-		 */
+-		if (!page_ref_count(page)) {
+-			if (PageBuddy(page))
+-				pfn += (1 << buddy_order(page)) - 1;
+-			continue;
+-		}
+-
+-		/*
+-		 * The HWPoisoned page may be not in buddy system, and
+-		 * page_count() is not 0.
+-		 */
+-		if ((mode == PB_ISOLATE_MODE_MEM_OFFLINE) && PageHWPoison(page))
+-			continue;
+-
+-		/*
+-		 * We treat all PageOffline() pages as movable when offlining
+-		 * to give drivers a chance to decrement their reference count
+-		 * in MEM_GOING_OFFLINE in order to indicate that these pages
+-		 * can be offlined as there are no direct references anymore.
+-		 * For actually unmovable PageOffline() where the driver does
+-		 * not support this, we will fail later when trying to actually
+-		 * move these pages that still have a reference count > 0.
+-		 * (false negatives in this function only)
+-		 */
+-		if ((mode == PB_ISOLATE_MODE_MEM_OFFLINE) && PageOffline(page))
+-			continue;
+-
+-		if (PageLRU(page) || page_has_movable_ops(page))
+-			continue;
+-
+-		/*
+-		 * If there are RECLAIMABLE pages, we need to check
+-		 * it.  But now, memory offline itself doesn't call
+-		 * shrink_node_slabs() and it still to be fixed.
+-		 */
+-		return page;
++		start_pfn += step;
+ 	}
+ 	return NULL;
+ }
 -- 
 2.27.0
 
