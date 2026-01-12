@@ -4,147 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C18FED25040
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 07:28:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEBFBD25042
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 07:35:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 271DC6B0088; Mon, 12 Jan 2026 02:28:35 -0500 (EST)
+	id CAAAE6B0088; Mon, 12 Jan 2026 02:35:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21FA06B0089; Mon, 12 Jan 2026 02:28:35 -0500 (EST)
+	id C8C9B6B0089; Mon, 12 Jan 2026 02:35:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F3E26B008A; Mon, 12 Jan 2026 02:28:35 -0500 (EST)
+	id B98496B008A; Mon, 12 Jan 2026 02:35:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EE0E16B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 02:28:34 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B0AEB1AD04D
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:28:34 +0000 (UTC)
-X-FDA: 84322484148.20.67D1F1A
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6CCF3A000B
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:28:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="n2JBP/2O";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XZVDXwO4;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="n2JBP/2O";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XZVDXwO4;
-	spf=pass (imf15.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A90C86B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 02:35:06 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 10447B9630
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:35:06 +0000 (UTC)
+X-FDA: 84322500612.25.A0D19A9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 578FCC0003
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:35:04 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cB9JlNOs;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768202912;
+	s=arc-20220608; t=1768203304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=76p1BKSyNSE6Ia9N32SzQzLhtPo9wRgYQuaf3Xhfo98=;
-	b=nZhlp1N+SP2QKgaTa4hQHF9sMpymn5x0mt+wxNL0EKz5K1+WhQ8o0U61YHr7hMmX8d3Psc
-	ZDnXukfXXqqoXEA650mwLEVH5yN3iulIZAdpQBPDQeKOYlOufLpFfdthxjWK61L0aBsPy3
-	8psAzNZ7dmckOWT3msD40gSHeDxjTAk=
+	bh=MpZZgA7Z9Th48hWh+uWd3ploF1QFnvsBfVrDzcsw5WM=;
+	b=W18Ez7V2/cztJP/0QoD2g7uVEaPzDXPuk1fwYDVBVMHaKsGy68EiKEj5Uf0/o3Ubzp5Mgq
+	pQragARJpQA0cD5gjqM0ghS1SQmBI8wQ9GyGIA/v4IbD/QRdOaswar0yt5kchdvpjLKOCA
+	PCilYVooqAAvuh0Oc5RYIKvLVJb53k0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="n2JBP/2O";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XZVDXwO4;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="n2JBP/2O";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XZVDXwO4;
-	spf=pass (imf15.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768202912; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cB9JlNOs;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768203304; a=rsa-sha256;
 	cv=none;
-	b=M3oTRZBIIMHtmK/2OXotfLDaN2Hm+NfzE0fllIu/mGPFJyepwNOr2K+uUMntCGKw7bn/XE
-	wgXC3J7jqihUyUBgN+MwUtcmAyD8WZEUg7Aoqc7PG4e/sCbAnsvKgwnQk8h3qplMiX/B3s
-	mO3YgFMK5+1s+tg6GgI5vVtCM3eUEIM=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 53BB3336AE;
-	Mon, 12 Jan 2026 07:28:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768202910; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=76p1BKSyNSE6Ia9N32SzQzLhtPo9wRgYQuaf3Xhfo98=;
-	b=n2JBP/2OtM9QK4ca43tBi2yP4+Eik3Fe2wF7bW9L1OsRAu2aeImqeIo+j/JAHOVAhOEl6O
-	F2YoAIAaRbhcrPqfpDmH+gs3E4UMwrQR0d3EJCNGLhXjv/b1TL8n/z1qKifNUecVD+iq1d
-	To+DCvUWuORNjZ7+V9yPDTi1vGDU/5w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768202910;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=76p1BKSyNSE6Ia9N32SzQzLhtPo9wRgYQuaf3Xhfo98=;
-	b=XZVDXwO4OuqJvtL+doLnImo8TwFCB2rWqvMgPd+QO3iFiQAGLfJ5bMQNvn7uFGNslIC8lI
-	fnQ9eFyy282ZDFDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768202910; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=76p1BKSyNSE6Ia9N32SzQzLhtPo9wRgYQuaf3Xhfo98=;
-	b=n2JBP/2OtM9QK4ca43tBi2yP4+Eik3Fe2wF7bW9L1OsRAu2aeImqeIo+j/JAHOVAhOEl6O
-	F2YoAIAaRbhcrPqfpDmH+gs3E4UMwrQR0d3EJCNGLhXjv/b1TL8n/z1qKifNUecVD+iq1d
-	To+DCvUWuORNjZ7+V9yPDTi1vGDU/5w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768202910;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=76p1BKSyNSE6Ia9N32SzQzLhtPo9wRgYQuaf3Xhfo98=;
-	b=XZVDXwO4OuqJvtL+doLnImo8TwFCB2rWqvMgPd+QO3iFiQAGLfJ5bMQNvn7uFGNslIC8lI
-	fnQ9eFyy282ZDFDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C97833EA63;
-	Mon, 12 Jan 2026 07:28:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id LBuBL52iZGljRQAAD6G6ig
-	(envelope-from <hare@suse.de>); Mon, 12 Jan 2026 07:28:29 +0000
-Message-ID: <b1b4ce23-d02c-46ec-96fe-ada6ae0948c6@suse.de>
-Date: Mon, 12 Jan 2026 08:28:29 +0100
+	b=OJMmXVjYmGvO03WOShNaluNCaRsCc32A32ymo171HyNPpKIM9hoke9y3TRXBpLfZEjax7H
+	nPjl3hlAQMTYom8dIQ9N4Ax8hQtZigSIyUblqwyWfl0XgIGofagfKvYcXJ2sRTyNn3KqZI
+	y4+kH1VhfG5BEgqPBBn9iKzAySfZZuA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1CBFE43C1F;
+	Mon, 12 Jan 2026 07:35:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61041C19422;
+	Mon, 12 Jan 2026 07:34:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768203303;
+	bh=H0wpDyU4+hGvGadEaJXaoKwU4fABU87rkRhUJIykrtE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cB9JlNOsE5ASTDSwfciaJvBRecBB1lB0Uwj+GaWwyCjgypyJQWPdkiELZQ8iVJPfz
+	 nMocJbirHN/1lk3J7Si3fdDg+XjkNRlIqWpD36vowiVH0S+GvTZEHLt/X4w6L2bjbX
+	 MW70tMpH6LtqJ9xirliNmH6ey3Jn3uobFlK0X2Mc7rV2i4ddTSmSf1HxKEBm5toCRi
+	 d46Yvu6ZlmDb9ZF7jcWZyute2z21cTSvo7YbjPFCodLjqoxUiSIWkDnwdalYjHh76y
+	 ow7pMfD3F6CiXLdHJYJqrOQj4clSEc/bsWScF8TIIT22yhLrTWzvu1RJLquyFnQ26r
+	 U5L75tv4dABXw==
+Date: Mon, 12 Jan 2026 09:34:40 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Klara Modin <klarasmodin@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Stafford Horne <shorne@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+	x86@kernel.org, linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org
+Subject: Re: [PATCH v3 17/29] s390: introduce arch_zone_limits_init()
+Message-ID: <aWSkELL7xJ04QAct@kernel.org>
+References: <20260111082105.290734-1-rppt@kernel.org>
+ <20260111082105.290734-18-rppt@kernel.org>
+ <b211f877-f9bb-4892-b67c-d2610048575a-agordeev@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] memory,memory_hotplug: allow restricting memory
- blocks to zone movable
-To: Gregory Price <gourry@gourry.net>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
- dakr@kernel.org, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com
-References: <20260105203611.4079743-1-gourry@gourry.net>
- <7f053290-6b9a-4d18-936e-0f28006c79c3@kernel.org>
- <aV0_SMq_I_R7ikF3@gourry-fedora-PF4VCD3F>
- <9575e042-39f4-4f01-80db-34aaaa9312e6@kernel.org>
- <aV1PQd3tyfSiH4xD@gourry-fedora-PF4VCD3F>
- <616f97b7-24e0-4134-a08d-5abaf07a8b09@kernel.org>
- <aV1pmeXP2pZ55g5i@gourry-fedora-PF4VCD3F>
- <fd21ebf7-d016-4729-8d23-a7c0f2a3d8c6@kernel.org>
- <20baab84-c8b0-4c46-a550-21b26b975d07@suse.de>
- <65c246bc-fb10-4cef-8163-3a55bd96f326@kernel.org>
- <aWEvuS95-7yP-Vc8@gourry-fedora-PF4VCD3F>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <aWEvuS95-7yP-Vc8@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b211f877-f9bb-4892-b67c-d2610048575a-agordeev@linux.ibm.com>
+X-Stat-Signature: wzy3karyb76q4g46deqn11qepctw6d54
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6CCF3A000B
-X-Stat-Signature: 761x5uk6wsu81bipz4drhqjs57iyknxq
-X-HE-Tag: 1768202912-437550
-X-HE-Meta: U2FsdGVkX198H8vUaSLVzZJBHZhG6Tz0oZTb1NztfgA4KVI/LDNtc878aamD0cqYRGgFAWmWxj6V68llVEJGgM0Fe1UdYRo6l/wwaJfX7XnC51EgydbkwNgDnEfZW4D2KTk5HlrVhfMxPcq625bd59nALJwlg2nwIFP8b473gwWikUHS+dy0at8Npi1+eLrxdDeCvWJORRUmA3o8n9BMW2HwqV9/7AO2ejfUjDFZGn8FIf1El5bk1/z8/3StS1sHiKOpVwJqfD64u9TfAf8wPHPSudNSndrnCbbiygbB9IwWbvxPfYWDwmPC7E+QIlR25VuGOP6h3aDosMSp9ivErGgXgXeUOiHg39y6ZE4E089BOoCMzxhGAPEeBN/w8z+S0SGQmnR3IK4m52f0XF/30QRqqW3D2vnvmUmDQBw9c6Eit1p6pdOc6E3tDy1t8E3z8+rLgcC5N1VpQyvBuL8GuOqw5mAjDY0SdR4N1o2sPwEDnRuqBqTJlxU1pWq6uSzZqZVYZD/F5VTTpJM8Xl31JR+BWeRSjoCBJMcsV+aRGbzQB/rgZNfMWecAHyYvhx6nKh9y0XIapGEsYOz5eJl2/pcexCYuef2QxevGWQH43a8zmggvJCc5ck2ex3bJGOHzkYm5ElwzU7anB+v2FKUB4nBofwlVkNpQYqxX1oZECEgr41gI2qN3nqPSFs3AtDWjhIr0gQjYct2eMYEhp4TF9SNFVfYrIZoNXS+613zvE9xWuiUGPApuHa2og34EYGz0SyboE/M5CgT6C21SbIG2QOnnj7/qM3YlLrF6lib4CvAlhJWtTzyJRx29EUA8vXgkG5hdPNW5O+YeW9WARAotCm+o3zmb002xHJvP/9fI++/ATq32NwHeKPpROubIPqigESDEevJIY7MB+CCg73zg16cgpPoEw9XwGA5Q2Sg0pg9lew86Vx4GM/8MSxnAm8/iPkEF9sr5DY2krVR8VtA
- OSanK06y
- rzivJdz2qNpWE7mdfcwhMKRdSaMIipS/Q80f5fmDpf1/T1dCCa3J6d8f6LAlhCMNpv3dmI80pCKezS9DoianmzOhKbNGJ9+CqO6jVh/2S2BdHVJ/KCMwNrBWiqdn1st75vD/pT8A1BcCz3mTAAuYB8dFy/37Uq2hOnwTEnduCtTRCH7dSowWoOr3GB4Esx/drAIoSk3G2wHA80MjjQzmg5KhB0Z11msddwQkbl0wchy2pLmMkSunpaTYZMyDUXBlxxAdZsz9Cuh7gsD29nzbaxiqvje8aV1A84v23VUJtJJqiGX8T10+Y/nNAnY4q9VMoNKRN9Wz+aMLVhvXmFurfilKc5ya6QPGLateYSh6cZgH7TXWLSUSDwmnRmGHyvnEZq5Ln
+X-Rspamd-Queue-Id: 578FCC0003
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768203304-195907
+X-HE-Meta: U2FsdGVkX19osXli80mAIrgg13NyG3svlhxBicc0l6hAVFAWB0wZSI7N3x8TCl0GTS7Zz84I8TQxWRtSvxSkgibtmzMBVBPUHofZW6hz3mlZZ6sieaeVnHnNylcaqQMqy+cYf8KB+sPLTs6XdyZhuV9U6HsxW0mLKTkuLdyeo4QmBjrJrZ91r+wqXNENmG44rVBQs0a2iaMnTVj3EOzIMoHwYksV3O6vuV7KyAlA0/zC/F1jpHCQJzUGCfPc9LrFlnfQwx9V99g1c2/YOa3LerwWnWixPDEJHDNNKs05KHJ2P3dvNoT/MyZm33Pp/fxUzT6KQkYy1WXXgZS+KvAbpvNzlkYCN3ZKculIuxA1GBNkVD9edqP+mKjck4BG4v+T7cY0JLpgoU/lK3/95EW9hRzYxsS0g8FEQLv8MuPX+LOpBY9z/6x3PJ4RPeHtraQyNlVx3Zz02NhgMC+lDEm1S5qKqx77Ndtu9sNzfmpINaDCMA/K1+mwIv/Rrzv8oaXVrJ1fg1ye/+TePtTrdn06/T/56xElAsjQAva+2W2wrbALGu/v+Xu6ZDzKen5pGBHW/2b6SQh4hwRYf56zhxz5RD5eQU2inofJfsKLSYEmp8iaZBnz2B0B3d6U4A/aFfDnDwdEwlLXrzoefOHGiikP5msyQy/CdQVJeNKgq7x9MwJx3h2cbZt5NkTh1mPpyW7vbkTSpgOYieK6rdJi8H1tdm9WJbDuma4AiiPoFy7RU8MptFR3Exn2bvs7nbZK9ixAjsYvMpJ1dMfUUt/eMU0DZZwbiG3G6iqtZZFP/1AfV4o5q/YbdkwOVPMIZBZr4DMxSnvF8hvwlfJPIeSPCpAih34bn/jRVy/kQZTHqOFOH+pHSCnjRDa6LTIrP1TQBE+vYQZgVO1qZSf3Mwabi8TWPEKZxKIhDNzBnb2FtepfOAGfmZjBVPFFg+VUZN+qZsPFoZ71TvPtE2FiVDYmhex
+ JqlsiZ+l
+ CrNvS9Lmx+ECezUfJVmjilPmEKkVLi7WJPXL/4JI0H1icLRHweORIbWF1g9bJeEJZwltPlBvOdk3wQTDSYuQQ1oSsL+MW4FCFDDNkGQtzWluqhXXOBF88vFdyVV+PLA93cbysK6kI8/Xv/21btkrxTQZ5KSyn141gle9eVr6yS+WFPJa40Nwno9kdcgUcdOHPxDGnjRKnL4+EnMo7RU3RZAKsgkwbNBBOy0sH8124Q01VCOyc1VpzpquCCadS3VcnNMNd9ihmY92bDzcU6us/wD5G50fjNLTfdUMvbPiRaS2jtBo/uTmN3TsILnzdo6b6fZeMheLblIV94DEZWWS6qSmkgixmM+HKiTd8V6IMop8k83RUMDuZZB9xMw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,67 +138,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/9/26 17:41, Gregory Price wrote:
-> On Thu, Jan 08, 2026 at 03:16:24PM +0100, David Hildenbrand (Red Hat) wrote:
->> On 1/8/26 08:31, Hannes Reinecke wrote:
->>> On 1/6/26 21:22, David Hildenbrand (Red Hat) wrote:
->>>> On 1/6/26 20:59, Gregory Price wrote:
->>
->>> For hardware-based scenarios memory will always be removed in
->>> larger entities (eg the CXL device), and it's always an 'all-or-nothing'
->>> scenario; you cannot remove individual memory blocks on a CXL device.
->>> So there the memory block abstraction makes less sense, and it
->>> would be good to have a single 'knob' to remove the entire CXL
->>> device and all memory blocks on it.
->>> Sure, it might take some time, but one doesn't need to worry about
->>> restoring the original state if the operation on one block fails.
->>
->> That's not what I was getting at:
->>
->> offline_and_remove_memory() can be called on large regions, and it properly
->> handles whether we have to back out because some offlining failed.
->>
->> The issue arises once dax would have to call offline_and_remove_memory()
->> multiple times, on non-contiguous areas. Of course, we could handle that by
->> providing an interface that consumes multiple memory ranges.
->>
->> For the DAX use case, I thing we'd really want a way to just use
->>
->> * add_and_online_memory() [does not exist yet, but ppc does something
->>    similar]
->> * offline_and_remove_memory()
->>
-> 
-> I'm starting to think this issue is actually the result of bad patterns
-> in the cxl driver - namely using dax as a path to hotplug sysram.
-> 
-> I suppose either we need a `cxl/dax_region/remove` that handles the
-> whole operation in one go, or
-> 
-> we want `cxl/region/commit` to handle hot(un)plug as a single action.
-> 
-> tl;dr:  Split the dax use case from the sysram use case, and make a
->          cxl sysram driver directly manage hotplug rather than use dax.
-> 
+Hi,
 
-Well ... not sure.
-We are doing fine even currently during boot up; we can align policies
-and everything to ensure the system comes up with the 'correct' setting
-Things start to get iffy if one is reconfiguring memory to move from
-daxdev to system ram and vice versa.
-Currently we can do this with a simple memory online/offline; with your
-suggestion we would need to remove the memory, too, when doing that.
-Might be getting even more awkward as this most likely involves calling
-the hotplug functions for the CXL device itself ...
+On Mon, Jan 12, 2026 at 08:02:48AM +0100, Alexander Gordeev wrote:
+> On Sun, Jan 11, 2026 at 10:20:51AM +0200, Mike Rapoport wrote:
+> 
+> Hi Mike,
+> 
+> ...
+> > +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+> > +{
+> > +	max_zone_pfns[ZONE_DMA] = virt_to_pfn(MAX_DMA_ADDRESS);
+> > +	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+> > +}
+> > +
+> >  /*
+> >   * paging_init() sets up the page tables
+> >   */
+> > @@ -97,8 +103,7 @@ void __init paging_init(void)
+> >  	sparse_init();
+> >  	zone_dma_limit = DMA_BIT_MASK(31);
+> >  	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
+> > -	max_zone_pfns[ZONE_DMA] = virt_to_pfn(MAX_DMA_ADDRESS);
+> > -	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+> > +	arch_zone_limits_init(max_zone_pfns);
+> 
+> You move initialization of max_zone_pfns[] to a function, name the
+> function arch_zone_limits_init(), but leave the initializatio of
+> max_zone_pfns[] to zeroes outside. Should not it be brought along?
 
-So not sure if it's a win. But one should try and see where we end up.
+The idea is that is the caller responsibility to initialize max_zone_pfns
+to zero. After patch 24: "arch, mm: consolidate initialization of
+SPARSE memory model" there is a single caller of arch_zone_limits_init()
+and having initialization of max_zone_pfns() there is more optimal than
+having 20-something of those.
+ 
+> >  	free_area_init(max_zone_pfns);
+> >  }
+> 
+> Thanks!
 
-Cheers,
-
-Hannes
 -- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+Sincerely yours,
+Mike.
 
