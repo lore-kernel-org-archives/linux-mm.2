@@ -4,205 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08332C9EC82
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 12:58:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E01BEC9EC8B
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 13:06:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 350156B0088; Mon, 12 Jan 2026 07:58:03 -0500 (EST)
+	id 4FC016B0088; Mon, 12 Jan 2026 08:06:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FCEB6B0089; Mon, 12 Jan 2026 07:58:03 -0500 (EST)
+	id 4A9366B0089; Mon, 12 Jan 2026 08:06:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DB826B008A; Mon, 12 Jan 2026 07:58:03 -0500 (EST)
+	id 38A3E6B008A; Mon, 12 Jan 2026 08:06:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 061586B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:58:03 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B3CCBBD96E
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:58:02 +0000 (UTC)
-X-FDA: 84323314404.09.E7C75F9
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011020.outbound.protection.outlook.com [40.107.208.20])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9B454C000A
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:57:59 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=v664Rnza;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of Honglei1.Huang@amd.com designates 40.107.208.20 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768222680; a=rsa-sha256;
-	cv=pass;
-	b=4r8ejKTd1MDtzBRSDSUwn6utcq41l/AX4qXOjp0RckAn/puncbo7ONQZfKwfGnRgDpuKbg
-	OQv8m7Uk1dPktHxh1Za3ZnpcG5uUSIulYWrZkXlErTKaiM8uziFdynY0Fc59+7raSQTCwK
-	bZ/WE6aGlpz7fYWLEaz0K5OigpMWrGw=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=v664Rnza;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of Honglei1.Huang@amd.com designates 40.107.208.20 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768222680;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 263936B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:06:32 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AF8D21A8D0
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:06:31 +0000 (UTC)
+X-FDA: 84323335782.22.E912545
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 3A7FFC0005
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:06:28 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KfQxrRlk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8cpFpgzW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KfQxrRlk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8cpFpgzW;
+	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768223189; a=rsa-sha256;
+	cv=none;
+	b=hgIecS2DkZ8i9yRkVc9CllCu9HrWejA3/Tso30bkMNw6DkgEmGBMX4xPwdxvglDIP+FNSf
+	6+VqAGIfzvpHT8H4Z3IWglqBf5P2RXsXhqnT5Ysy8ZJ8/fPjZ5GKEWI9rhn/rZsz7xOlIz
+	8FAbbq05REnAHXNQbyXDV6jSvmcuIaY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KfQxrRlk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8cpFpgzW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KfQxrRlk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8cpFpgzW;
+	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768223189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BuIX7SfBCr6kxYoqSBQ0+vzhL0wfgZ0M8wAtOTDoMjU=;
-	b=6VW8LytEA+EA+iMIieMC64eL6Ek7Dq+gRomHPoozwAZPd/bDpbn55+2NOdeXvn8MpQSqEO
-	hqWC/uMXriItCssT22Yr6RMypq70vajZvFL50zHwaIV+8MN5Trs72bzwc9UgombOlypwdh
-	d0IyBxydROv1eh3+Or86JwlaxB9gfh8=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cVSohjR09GOvEUTmXLxefDPBLBUqZFyPs6a2PfByWQgdDRj0AYaDzzms9bNNsfCS2tdp919NU+6M3+5JxLBIqR5v18JqLaOUgS3am1D2gu+hP3JLzQShTE5pVRrEFGT9ObgjBkcR5gZFwY/m2+KFPsFDSd9LKFwEpQh1MO7q7MSvS/Ywhy8+p3foD5VJl2NaRSwbVfMSZ0Y8ymjOGQIGvo75cfZnaSgMzEqJY/XuS17to9xR3kPav6jo1mKwQPl/7RBWG6YAuEQC3YpHN6PQ8UjolQuhVm6v1oHW8kIjfPfonlbOoXoCp2DfkKdkoTxlzhEByI1VcRivDZrldJbnww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BuIX7SfBCr6kxYoqSBQ0+vzhL0wfgZ0M8wAtOTDoMjU=;
- b=iuaEFjbXi5VzJjMQCabpJySOvTUQkKi/1k9CM2zJSxt8B93EStT/daylcReFEO+t+5y87J3GXf2cPg8SB6Ous5o+FAVDJkVxlEyk77+4FiVtqb9JLlpbqcF8As5m9Nc6vmvocBqFPbS9RVlGVt7cbuzZM9Z0GMdmQP9hCjmgggh8rozDEsERguUaRkSQCR7+mG5drRN6s+SzSKI5kQxiHbz5MuEk3/87FWI62+A1iJHaMGaqJP8gORupyq33lQ+/6P3f8A95J6b5qrMVsUUokvML4D6v4bQKqxvihIq6Uv5P2UxnCn4i+nkCk27Uv/OjWROfPPBn3faFORr6stvE0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BuIX7SfBCr6kxYoqSBQ0+vzhL0wfgZ0M8wAtOTDoMjU=;
- b=v664RnzaA46TQ5awpCWpUKKIJrdY4EhWNKx/6WKZpftL1yHQ54p3gb1sK8eGBHOmgPYG7jIoK8+JScwh7NBPPQkVoxv1bTwsBoinx+9iMO0yWpOqL3nazRZNMQBXqxZnQIeLDnWHi5VDda1upwDfZ1G7EIKooxZGdtakd9wEjys=
-Received: from IA1PR12MB6435.namprd12.prod.outlook.com (2603:10b6:208:3ad::10)
- by DS5PPF5FAA0E762.namprd12.prod.outlook.com (2603:10b6:f:fc00::651) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
- 2026 12:57:53 +0000
-Received: from IA1PR12MB6435.namprd12.prod.outlook.com
- ([fe80::8b77:7cdb:b17a:a8e2]) by IA1PR12MB6435.namprd12.prod.outlook.com
- ([fe80::8b77:7cdb:b17a:a8e2%5]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
- 12:57:53 +0000
-Message-ID: <3f9028ae-6f34-4fa9-aba6-fb2a6e223725@amd.com>
-Date: Mon, 12 Jan 2026 20:57:46 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] drm/amdkfd: Add batch userptr allocation support
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Felix Kuehling <felix.kuehling@amd.com>, dmitry.osipenko@collabora.com,
- airlied@gmail.com, daniel@ffwll.ch, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, akpm@linux-foundation.org,
- Honglei Huang <honglei1.huang@amd.com>, alexander.deucher@amd.com,
- Ray.Huang@amd.com
-References: <20260104072122.3045656-1-honglei1.huang@amd.com>
- <64f0d21c-1217-4f84-b1ce-b65c1f5c2ef1@amd.com>
- <b6004bee-ffef-48ea-ba0d-57b390cb771c@amd.com>
- <76c44385-bcf8-4820-a909-569bd2d36198@amd.com>
- <7ea29163-d6cf-4a4c-91c7-72802dd49018@amd.com>
- <d932d813-f1cf-482c-9697-80199b3b4771@amd.com>
-Content-Language: en-US
-From: Honglei Huang <honghuan@amd.com>
-In-Reply-To: <d932d813-f1cf-482c-9697-80199b3b4771@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TY4P286CA0061.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:371::15) To IA1PR12MB6435.namprd12.prod.outlook.com
- (2603:10b6:208:3ad::10)
+	bh=1O4F1mH7HItPmOqJ627Rc9BGNGj+R0e31g81fuFMM/4=;
+	b=5n/0G6pAOLFe4B7CoCLccNYkEfP2TU2o6QtTjSdFlqhiUZw7rWQVpcdDqwxCsR1y6Z6Rsv
+	g3sMzZjhCG3ebtRqgz5MKVFhUBOVVl08Osu3i9hoPGb24f0gqtSPkuUTuBsu86RQlksR8V
+	Ny5WQFytMgjsRDHn6aHA8SwfAyFUoeM=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 508C9336AE;
+	Mon, 12 Jan 2026 13:06:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768223187; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1O4F1mH7HItPmOqJ627Rc9BGNGj+R0e31g81fuFMM/4=;
+	b=KfQxrRlkpaswM4pAu/Suran5vSqEP8Uv5n6UKePya1mXrqas9x7B72WEvUP3HJZ/yaujBD
+	K9UcW/PGJ9/0Mdes5qc/0L1K9zOeCHlgSkNvwR1iz6D9JlnKpPrG7I9/TknNtLSw95OmkF
+	LqKq2s5iK3+mrXIt1a8U1D4Y94ftszI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768223187;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1O4F1mH7HItPmOqJ627Rc9BGNGj+R0e31g81fuFMM/4=;
+	b=8cpFpgzWtTV1uULcC5qhLr5DmVAyZ3iI6B5li9TvXdprn/YaRxcZSDs6Ghltj8llgmSzKi
+	9hIDam+YUNmoG+DA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768223187; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1O4F1mH7HItPmOqJ627Rc9BGNGj+R0e31g81fuFMM/4=;
+	b=KfQxrRlkpaswM4pAu/Suran5vSqEP8Uv5n6UKePya1mXrqas9x7B72WEvUP3HJZ/yaujBD
+	K9UcW/PGJ9/0Mdes5qc/0L1K9zOeCHlgSkNvwR1iz6D9JlnKpPrG7I9/TknNtLSw95OmkF
+	LqKq2s5iK3+mrXIt1a8U1D4Y94ftszI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768223187;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1O4F1mH7HItPmOqJ627Rc9BGNGj+R0e31g81fuFMM/4=;
+	b=8cpFpgzWtTV1uULcC5qhLr5DmVAyZ3iI6B5li9TvXdprn/YaRxcZSDs6Ghltj8llgmSzKi
+	9hIDam+YUNmoG+DA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 47FCD3EA63;
+	Mon, 12 Jan 2026 13:06:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ncyLEdPxZGmoFAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 12 Jan 2026 13:06:27 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id DF7DFA0A7E; Mon, 12 Jan 2026 14:06:26 +0100 (CET)
+Date: Mon, 12 Jan 2026 14:06:26 +0100
+From: Jan Kara <jack@suse.cz>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Bernd Schubert <bernd@bsbernd.com>, Jan Kara <jack@suse.cz>, 
+	Joanne Koong <joannelkoong@gmail.com>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Horst Birthelmer <hbirthelmer@ddn.com>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: __folio_end_writeback() lockdep issue
+Message-ID: <wu7mu22kgr7pmzrneq6rkivhwvpbximyrkouciktl7wf5w7wur@rsyqyczopba2>
+References: <9b845a47-9aee-43dd-99bc-1a82bea00442@bsbernd.com>
+ <b7b72183-f9e1-4e58-b40f-45a267cc6831@bsbernd.com>
+ <aWJ-pHIY8Y8sjLeC@casper.infradead.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB6435:EE_|DS5PPF5FAA0E762:EE_
-X-MS-Office365-Filtering-Correlation-Id: 08ff984c-b1d4-461c-d20d-08de51da32bd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QW0ybm5KbzZXVUl6UlMxWGgvMHpaTnRjRFNSb2c3RlBmTkZYWk9TaGpXRlRx?=
- =?utf-8?B?U1pHTEFMZWkrSnhrVE5DNFlOK1pnT29LNWNzMk1lM2drU28wMmJJc3Y4cDIv?=
- =?utf-8?B?UEpxcDF1WmVwQ0ZJbDZnNlhhQ25HOEpLT1ZJQnFHZk50Z3pQTUE5ZDZ1Y0JP?=
- =?utf-8?B?N1FQVjBZZTRhV1ZMWnBmMThBZDdza2NocEh4czl1ZHVnSWJjWnpYbnVsTnFH?=
- =?utf-8?B?MjFZNmw3akpnTzROaDMxT3hYS3J5czIzeE5HSjE0MUs4NjM0aVZZTjQrOTJI?=
- =?utf-8?B?NnltZUJpU1cva0hSWk14Tm9jVE4xN1F1T0xic2s1cStNYTVHUG8vQUVFdk1Z?=
- =?utf-8?B?WStBelBkU1cxNTRHNFMrZmpWRkUxRmRIRnNiQkd0eGcyZDNOd1ZvTEpEZFJX?=
- =?utf-8?B?ODJLZ3Z4N0N6OC94YkR0VmYxa3krdnZ1SjRpeUNLNHpTQmwwaXFxL1Z6VGJD?=
- =?utf-8?B?ZVlrV1VaVlE1dEZTekFGMEIyejdIcDdiVDFFQjdUUElzYmtDWEVxYUdqQXdu?=
- =?utf-8?B?MjAyZXo3aWRVQ2xGWTdsQTFBaFFPV1hlRDdvWkhTeVBrQXFOV3ZOdk52cTFq?=
- =?utf-8?B?cXFIeW5TUXJla1RSV3p4MnkvQ1IwbktUL0ZJakxnekJia3MreDR5a1FaTlNJ?=
- =?utf-8?B?MlA4MU55R0F3SEdGekFzaVlGUlgvSW1NWklXQnpqeFpMNmc3ZllUNWswNHI1?=
- =?utf-8?B?cU54V2JjTTJEdnh0UHROVmMxRk5GTTBGR0RtSzFzMU5MdTJnM1VIcXZMSzdO?=
- =?utf-8?B?ZnA3NG5KTG01NG5EanFPRytqQjF5UHVzcHN1UFhkZzFuUklZbHhPWEdvdjlO?=
- =?utf-8?B?eERsMlROU1RtSmpCUEpSYSt0TG5wL0dyVjdQbTRPd0E5d0NKK0JhN0t3Uitq?=
- =?utf-8?B?cnVjZjBnSXhORVl0OUthVGFPODQvRHYzdHhUKzF6TWNQYlphS1NXY0VLdmU1?=
- =?utf-8?B?ZWxQVTdtUjBRTW5BeW5Fc1JTdWdsVmZVWHZuT3h2WGZ3NTBLOENyWSs5OU1I?=
- =?utf-8?B?RlZzdU0xRWVZRHQ5a25JUUt0MjBLWW1qeVFyTlptWnRxa0E5akFPTFhqSllw?=
- =?utf-8?B?WVBtdzVRN1UxZXRVUTJaZXZIcVhMR3ZQQ2ZQTE0vSXN3aHVudXRwaXJpSjlx?=
- =?utf-8?B?czJYbFFhT2wxSXk1YTEwakhVRjJMU0RHVjBMZzBlUUNRaWxkMlhGcGhLQWtO?=
- =?utf-8?B?NFZyZE5ISXo4dkg4OHNXZU9ldGtuajdPY3dMRFNTNWtqclhISFpPR09SVTZq?=
- =?utf-8?B?SmRKdWFxcWU1SEJzeXl6ck9tRXhNT2tabWdZN0lKM1FoU2hXYktML2tiRkpF?=
- =?utf-8?B?RUIyblBOQUdHZWdLY1NnN3F6VUV5cGFua2JhOGIyTU1QV2tDNThQZDFGTEFu?=
- =?utf-8?B?WjYyTlJBSlM0ZWRrbGRJamhZdWJDN1NRVnRRSjdiTjZ3QTJOQ3o1blB0YUpN?=
- =?utf-8?B?cjBXNTNRMmtDSlIzQnhMQ0JUZzhvaWZCc0Q4U0FjQzRPTE5JK3pMRytjV25M?=
- =?utf-8?B?TjZwYjVZNkErcWQ5WHREbGE5RmMzem12UXlKOGJ5Z0oxK1BCaU9KMzNmUVJC?=
- =?utf-8?B?OFJOL0ZYWmpNTHRZNkk1THB0VHNuMmJBYjlxUHQraWczMG93S1ExWk1pYWgv?=
- =?utf-8?B?VlJIRWtaUDN5d2UxVEIzZTQrMG5TdlUxUlMxUFFmeFBRZGhDelRuSS82aHJH?=
- =?utf-8?B?ZXNOT2EwWFdBQWErajMrN2pTcU0vd3YvSStmd1ZzUmtDamVTVmNhUnd5RS9Z?=
- =?utf-8?B?dkUwRTdQMWVSRCswN3JzWkRpWVRoMEVSWlRhZWRwNFFQK2Y2NzZRdkNJODZk?=
- =?utf-8?B?RTMwZ1BWa0VlUHNBWkZuaU82SGQ4eEpIZHMyKzQzaUtvWmFId0RkZStVT3R0?=
- =?utf-8?B?aVdZTld5RkRNVDUzcE5LdHlxdXMrV3p1NnVpYm5La1hUZkQvTm9PL2ZYVzJi?=
- =?utf-8?B?WVRVa2d5QUc5Zmppbkx6bG9acnVLM1hTdkxyelN5MjdBTE5rWmJKUHhOR3Nj?=
- =?utf-8?B?dnNXZWVuMDhRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB6435.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?b3RXUkxGMGJ0T3lFbWNxRi9XbEptK3dZMWdJZ0IxRE9BSTF5M0NRaXdjSHNZ?=
- =?utf-8?B?aDZuTWprdVVITU80Ykl6dTRnak5QTVphYTU2REtqNjJ1c09lTEdBekpRaS9y?=
- =?utf-8?B?ZjU3N1N3dU10RC9SbnFJOVZxQnp6QllxaTJWczZWd3dvTFh3aEVBdXBRdmZq?=
- =?utf-8?B?R2pudndPZVZ3c3FsLzNKUEh2WDBnai85eUpkK2FVVGlNRGUxUU1iZXdONDc1?=
- =?utf-8?B?aEgwVlNqMTJaaklteHNYakhrSVJacUxkbVQxK2ZDSVlDZTQ5SXpsb0RLWnBT?=
- =?utf-8?B?Umt0TVJIQnpGdEdNWVlVSFE1MkJSUDZ4L1ZtdTdZVGk1RDk5MThGR3JCcGEw?=
- =?utf-8?B?QURrM2NTSG4wNjdEN2dEa2xNNmMyYUpKR3V4SEtoSDduRmpCdnZmTVdScHQ4?=
- =?utf-8?B?ajdhN2dXOVJGdUN3QmR0Y0Q0emNETUtGbyswTkNCUHpUTEFVWTVHTGR3SkRP?=
- =?utf-8?B?dkJwZ1BucHliMlJnMkZsZ1I4WHNLbVpZVEtockhMRXdQRnJlMi9OWjNsclND?=
- =?utf-8?B?bi96QjhKL0sxUTdwOFJqUHNqU3RBaW9aVVN5NlJYenFZNER3M2EzT2hqczFH?=
- =?utf-8?B?c1FWVVdPaGJzN3poczFJeEpmbGxrcDdHeStKOWlmY3ZLczZDY0NQYW5NeDlu?=
- =?utf-8?B?OFZMS0ExSU5JcnkzK3krdXBleDdLL0UxZGdrNTFueFp5WEZlMlh5c3ZNKys4?=
- =?utf-8?B?dENDa1lwTUFsb1kvcllldGhqTTM1aHpIZnBNdWNUdWx2dktxaUp6czdWdkY2?=
- =?utf-8?B?WXhZa0NTblZrQVd0eXB3MldkNFVEVGp3MlBXU1ZRWG1vcWVJVVovQWRGaFda?=
- =?utf-8?B?bTNyYmlpbXArbTRmWVVBbUJZQS9lSUtwZHArUjFac1E0VlpzbzdOZW10TCtw?=
- =?utf-8?B?Qk1nTkM5VUVoTk9DLzlCMmhZTzZRT09ObUpza3k1ekxuTVNGQ2p6eTNHRE91?=
- =?utf-8?B?ODBFTUhsSVJaNDNyRUIrQXJ6NjVmWUNKeVR3YTczR3lwcUR6ZVBqeUYxKzNt?=
- =?utf-8?B?VmpmY3R0amw3Smh4VE9UeUk4Z05ZNGFtaFBDQTAvZmZsRlEyWlpMZGF3N2pG?=
- =?utf-8?B?ZmppclBYTENJYnFVNC9DR2pTdUpkSTdlR1pkSUF0Z1piZEdudVpRellyMHZw?=
- =?utf-8?B?L0RsbkR0Q216MnJ2ZGJpbzFqT2xBRWlQcmIxd3RnN3lZWDNDZzYySmxpNkFL?=
- =?utf-8?B?bmhwQ2RTSm8vL292T28zTDBhOGIvZGtQNno5M3hSTHRiOXhwMHRsSDg2N0tk?=
- =?utf-8?B?Q1IvRkpta0FObG1KT05wVzVvdmpYUUNpY00vdkFWS3lESHdCQmxpMCtiSThJ?=
- =?utf-8?B?bDk0eVFlT1BFMGJPT1EzcHpjeE95MUxSOGlCK0p6YWpGV2FtbmZsMHNFbWRP?=
- =?utf-8?B?UFFFQ0lKOXZISkw0WnluT0M5MlZTMWJ0RlVnSkZPUmY3THNrbENmZG42d1hw?=
- =?utf-8?B?V3pqMWJaN0p1b21ObWN0Rmx5c3hoTDlGTEJpNGpRTlVVb2lBYlBQdzNKSENP?=
- =?utf-8?B?ekNyNW5peVpKc1J6bHUxdnVxMU9QeGlrQVQzUFFSUGF4Um5hNUJOZ1NoWGVi?=
- =?utf-8?B?UW9YQXAxeTdoeDNQNUVoVVNVVnVvU3V5ZVpZNGZJbWRpRzVUdWMwL1E4ekZq?=
- =?utf-8?B?dlpTUGg1WGdNcXBwMGpKUlV3ZURnMzNmWUQxSVNtbDVQZmg1dm9RNHZVTGsw?=
- =?utf-8?B?WEhVSy96VUJYT3A1QTY2R0s0d0FMaWIyTWJDdHAxSmVaY2FVL1BWUm5NZWxk?=
- =?utf-8?B?alRnSWxxbjVhZjltc20yMzFZZ1JWc2pIdTBOL3RiZTYwNnBsb1lLL3NQRDRR?=
- =?utf-8?B?K25xWkRJeENEdkQzeXFHNnFtUXEvU2lKSnZWZHgwUmNjNEtwRVNMR1I1THhv?=
- =?utf-8?B?RGhmYlNQdW0vMEhZbWE2bVQva2x6MnhRbDVVNk1JWFJBQUM0Z2RzWWFHT1VF?=
- =?utf-8?B?ajN6NW1Vd0xjcjJUUis5SEhqdWF0NE81RkxCTy85QWp0SmpPSHAyT3QrVnVy?=
- =?utf-8?B?QVJvWThuK1h5TUxRa3JRZ0Jka0RkMHlEZFc0eW8rMjFHVmU1by9rZ0FIZEs5?=
- =?utf-8?B?NWNOL2dIV3FRSzQ2SklNK3BBMFF4TmJpTnFNNC9nZ2I4U0F3bXBENGNNd3lZ?=
- =?utf-8?B?VUpQN3dJa1hXaEpadVR0L1RPSFB0MnpKVkc0UkpXSmpGVGI4WjU0a0dwZjdS?=
- =?utf-8?B?UVBEQnR3L0xxd0VOaEdBSUlkOHJVMjJEVTd2Ym5hbVRIblppanMxYVpVdFUx?=
- =?utf-8?B?N1R2cFB4ZDZNSUZicVg5dDJubVpwSDFmQ1hvditKT1lTMStRNS9pRVV0SDlr?=
- =?utf-8?B?WTdMcHdYNXJ2bmhPWWp4UFB4VmRzbWYySUc2M3V0amZSY01aZ2Z1UT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08ff984c-b1d4-461c-d20d-08de51da32bd
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6435.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 12:57:53.2568
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Yy8MMf3mUYb1Tq/wzMSd+1ykt5gaAutqQ5EYEEHYhPxMG7F2Mw9spRz3oNS5PLkpvF5VZ1jC3WNsAkbDX6UzBg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF5FAA0E762
-X-Rspamd-Queue-Id: 9B454C000A
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 7im8t9u4f6dkqq6dmkyhyc4fmntp6p73
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWJ-pHIY8Y8sjLeC@casper.infradead.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3A7FFC0005
+X-Stat-Signature: egitynbxnfmy4qyzkytpowm57i85zgpx
 X-Rspam-User: 
-X-HE-Tag: 1768222679-508893
-X-HE-Meta: U2FsdGVkX1+FCrFz1FYUUr7ueTlgw2WrwA4geruOu9GNI9bHNQXHRJhrxjHdEg/EN8GfeCTkmJroGPCSIZF76UrHiyItWApOwdw7qKi2Fl9NiwX/7pflggXd+oYRjn+7VeDlGBt+sxpreWHmOjGdi88/SwkJdwIFGmB+Y6AkFOelOn1i7YBSqVfC7i6B16W+EbeiQ8Iy5aB6LBjTBQbpd7d8f8D8HQOWehL28oN1QqBUwQ9tniRFGvG04zCeGub5ssuDw4o01W+AcyXSmhrkXjZB1gB0u37wnnIKXautK3+rSjab+inGdnLrAZXHn9yIjVaZYUYZBjstomNEWGLf1a1gAOqc28peZl99E92/0cc2jsDK5Mt61GwpXpi8sTcBeI5ccguwuG/n+O36IBlft9TJeuqYS1JW8tzLPHU2L8Zu1GQa9bU5sUv1FpFxbHFYfTDP9OQOzqDXTwLkicomrN2r+iy7f7sw0UVY7YujJ2hXA41Fe5478HJRXsZ0URUwXdYoLlaTKlWxZceAObFXTPxg4sLhMFvQZBbaIBfUS7Am64CLmRilPUus/u3Ad1/XUI0FoFijemRKgkjJ6CcTaWgVKp42Ymj4VT9K0/nj9Tw35/UfVvT6WaCHdtvdsllO1KLXaYgkJCbAIl+ob7Q1Icd83k2Hd0DA1pVG6Bzr8ckt4iwdSOCluRCwzrzffZJdl+bPihzQmR+3Rr/Q9SO/tFzpWMjrVE5nfsAMzT5vlY+5DX+KqJCR270wuE6IogpbqIPF7JusxykxaLtzK4xLSTk0c0WdR6FzgGtlgogw9YWV4GtELYJSYt1cEoUObemBhc+QpgWte7LEPsjrqIEu2JydXpg+DK8W1HQeEr5si7iXbuCOEXePOrg50CpKHFZvdlrqFLZzYh0uZwKT2y+WOiWBp11H7nR7K9HKexwSqSTumOWV7bRjnjCDalYvxt8uzvQrMMNZwxIxb0ya8Q3
- F3Fo6Ao/
- czfoyDQpuWxVNESw3sdYBoUjN9deN3mFJryIGpRuUqm48zTLYqD2WWCs9jaxponOGydvfhNY0KFUw+pPvn+4/LoraGdRS07jX5wwGtR6pgPtx3uEAmNEPZUFzA3+ieYPmQOfVxz7ch2+fc7z9yirE6CD7RKSpz40/z5F3a8hhHtEOBAo3J1nb0f9oRbh8DBfJoDW/8pL+ye+ywVt2cHlN8NWlsR2VBTFfkatdSynbh28M11uF92wyNpXXYundHOnTP/+z1FMEnigyCp3rIYE1b+ShX6gUsN9QSGbi1GnKlBFSYYG5Fxl4lAhbLF+k/e6e+CGksQKYXNNFkj5TdBhb5NP7KFYYessf8nyMmKcxqdnLQo2hGSUldCal/F0bkhNbhGvkz+oby1a4luxjvmF6hvnGAWIgE2PjbshxLS6EMwxIf/9ISd8YwRPFG+CP1PnW8hHxc4OfEbi9YZ7UDxbN5NigVebD+z7FzgMyYGcRhdGhQRynoYhwGT96uMU+tZxaFcGTxU20EZi1+Aff5ci99B/4cJejfCZJM3kCpYfzJt1h69w02CKZfD1Ok7EDwayDa636lbqlPGJjt1u0/gILiUBAxMpO/QSc1Ar+2xmK+N4hVP4=
+X-HE-Tag: 1768223188-761876
+X-HE-Meta: U2FsdGVkX199RlKRYhFCNuKrPQx6BCmHoU4aQVzrBzGZOcEJMdlEELJDDtKTVmief4C6WlY410a3LhXk/WmB4pqm33SASZ6UkcQZdE8SvOVCWFTp/3LGlRukDa59/TjpZW2U+QIb1/b9Oot0Y67UJqQbFZVMEJUPJ880KIDbSPdirTkuCc+IVx7sdJXw7NxXM6Axci5WWlB+BBdU5LZ+LCFhLQ0RJx3GE3wXviSla117QJi4xzHkDIX1lQ5/UqoI+xVCZWayJlKlt2vKVP2fdXXzLg78LjlyZxzfeuLHNl8t32nlwfB+RLwyIn0cceNGSflWTFo8vU/rWNUp4fLSpIeImslMPX25xu/8BrzeASQzqFiEj0WTZblUjCYSGWkTtzysZLqXToGSO/65PYR7FvpNCUa+PFH+YoprzmgHr8whIGYyTZE9DA+7TfifS7FfRnwCwWgL9RlQnrpY3oYwpAAhQvDC10O3JW3GwC0dlPpBw9xUeyP4tX3rEEG1ZBSjSdmP+pDOje1E2m7fhHOUAOwt82k8z4gTlsZn39xfRqFLJ6dZEmJjSnAZI+KstaF372WoIR7hfT4ku2PDrB74AEvGaO3rZU2Gn9itcAv+jNbuM5QCXBxT4S1gm2UonbomaRjZm0h9cJAEHs6cRxme6apHHb71VOSwFRKQpnCFFf1eyUd7njYykDemSpM0dU3Q/QlP+SJnuPELEIIA+6SYzpIVSN8GyQg80aXpoXe3x7BR7gyDZ8i0oo3xug4ZCdO6hgHvpY55yyuhPo9d5ussexoWWOxMvik81DvnAo5tX6HNBtileYPr38C4uWj2REN//7ymKz+m8mVEg/0t5bPfoB5dnwl7qtBRVygo7ud/NOO2zy+cHBo2XVga1T6IYpGd1D8W+FLs4wdglPIm+0FzYO/pvxWVdJGGxhzAHmZUTfGGQghqwV7szCVT3pBn+wV+qW3ayDpcFr+nXQmrskk
+ /pA5eSvj
+ 7ktpqNmUZyKzA65WGQXnxDGcPVvJ4Sj5rIkGQxZEWHFXfqIMrLAl9Y4m3BuCq2ygkKzinuesI9ADx929j2/cAtln9puXEgEADcm1DX21WNBOmUvka3XuJjOW5yfqKgMhMCJytmvkItESHV2yT/HtkpqUc9XoNfK1DhhYC8zjqeRRQXUvNNvlF/vA4Da1rzOAr3hLpm8tIok5UvRkUjWiijmXce5U//d52GbkNadqpT2boRWvrmHthWXf75HFDnxrua4PWgEhC4FGosdV4IKkA4Z0FXdlgPnE6OO6xukEAQkfFnpVG96T96uG+K9ltrOnI6Mj4CfUduF16Z1gME+8x9mFMfQnIh9HGmo0nPQGaYDtUlKtAPgmz2nrfeHccFn0iSp8y0KzsdUsa47rC+dD2+vz7/LDfRhqFj3rD5H59SLH8Y3s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -211,254 +137,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-Yes, you are absolutely correct. The use case is exactly userptr 
-handling in QEMU for KFD SVM support.
-
- > "What we could potentially do is to create an userptr which is not 
-backed by a range in the user space VA, but rather individual offsets."
-
-I'm very interested in understanding how to implement this "single 
-object with individual offsets" pattern properly.
-
-Since standard `mmu_interval_notifier` is designed for contiguous VA 
-ranges, my main question is how to handle invalidation for a set of 
-scattered offsets
-with a single notifier:
-
-1. Notifier Registration: Would we register a single notifier covering 
-the entire min-to-max VA span of all offsets? Or is there a way to make 
-a notifier aware of a non-contiguous list?
-
-2. Structure: Should we introduce a new `kgd_mem` variants that holds a 
-scatter-list of `(va, size)` pairs instead of `(start, size)`?
-
-
-Regards,
-Honglei
-
-On 2026/1/12 18:12, Christian König wrote:
-> Hi Honglei,
+On Sat 10-01-26 16:30:28, Matthew Wilcox wrote:
+> On Sat, Jan 10, 2026 at 04:31:28PM +0100, Bernd Schubert wrote:
+> > [  872.499480]  Possible interrupt unsafe locking scenario:
+> > [  872.499480] 
+> > [  872.500326]        CPU0                    CPU1
+> > [  872.500906]        ----                    ----
+> > [  872.501464]   lock(&p->sequence);
+> > [  872.501923]                                local_irq_disable();
+> > [  872.502615]                                lock(&xa->xa_lock#4);
+> > [  872.503327]                                lock(&p->sequence);
+> > [  872.504116]   <Interrupt>
+> > [  872.504513]     lock(&xa->xa_lock#4);
+> > 
+> > 
+> > Which is introduced by commit 2841808f35ee for all file systems. 
+> > The should be rather generic - I shouldn't be the only one seeing
+> > it?
 > 
-> as far as I can see this is only very very trickily doable.
+> Oh wow, 2841808f35ee has a very confusing commit message.  It implies
+> that _no_ filesystem uses BDI_CAP_WRITEBACK_ACCT, but what it really
+> means is that no filesystem now _clears_ BDI_CAP_WRITEBACK_ACCT, so
+> all filesystems do use this code path and therefore the flag can be
+> removed.  And that matches the code change.
 > 
-> What exactly is the use case for this? Userptr handling in QEMU?
+> So you should be able to reproduce this problem with commit 494d2f508883
+> as well?
 > 
-> What we could potentially do is to create an userptr which is not backed by a range in the user space VA, but rather individual offsets.
+> That tells me that this is something fuse-specific.  Other filesystems
+> aren't seeing this.  Wonder why ...
 > 
-> And yes in general you need a single MMU notifier for this, but the notifier mechanism is actually not really made for this use case.
+> __wb_writeout_add() or its predecessor __wb_writeout_inc() have been in
+> that spot since 2015 or earlier.  
 > 
-> Regards,
-> Christian.
+> The sequence lock itself is taken inside fprop_new_period() called from
+> writeout_period() which has been there since 2012, so that's not it.
 > 
-> On 1/10/26 03:30, Honglei Huang wrote:
->>
->> Hi Christian,
->>
->> Thank you for reviewing the patch. You mentioned the MMU notifier range
->> handling is incorrect - I'd really appreciate your guidance on what the
->> proper approach should be.
->>
->> Specifically, could you help me understand what's wrong with the current
->> implementation:
->>
->> 1. Is the per-range mmu_interval_notifier approach fundamentally flawed?
->> 2. Should multiple ranges be handled with a single notifier instead?
->> 3. Is there a different mechanism I should be using for scattered userptr ranges?
->> 4. Are there locking or synchronization issues I'm missing?
->>
->> I want to understand if this is:
->> - A fixable implementation issue where I can correct the approach and resubmit, or
->> - A fundamentally wrong direction where I should pursue a different solution entirely
->>
->> Either way, I'd value your technical guidance on the correct approach for
->> handling multiple non-contiguous userptr ranges, as the underlying performance
->> problem in virtualized environments is something I need to solve.
->>
->> Thanks for your time,
->>
->> Regards,
->> Honglei Huang
->> On 2026/1/9 17:07, Christian König wrote:
->>> Hi Honglei,
->>>
->>> I have to agree with Felix. Adding such complexity to the KFD API is a clear no-go from my side.
->>>
->>> Just skimming over the patch it's obvious that this isn't correctly implemented. You simply can't the MMU notifier ranges likes this.
->>>
->>> Regards,
->>> Christian.
->>>
->>> On 1/9/26 08:55, Honglei Huang wrote:
->>>>
->>>> Hi Felix,
->>>>
->>>> Thank you for the feedback. I understand your concern about API maintenance.
->>>>
->>>>   From what I can see, KFD is still the core driver for all GPU compute workloads. The entire compute ecosystem is built on KFD's infrastructure and continues to rely on it. While the unification work is ongoing, any transition to DRM render node APIs would naturally take considerable time, and KFD is expected to remain the primary interface for compute for the foreseeable future. This batch allocation issue is affecting performance in some specific computing scenarios.
->>>>
->>>> You're absolutely right about the API proliferation concern. Based on your feedback, I'd like to revise the approach for v3 to minimize impact by reusing the existing ioctl instead of adding a new API:
->>>>
->>>> - Reuse existing AMDKFD_IOC_ALLOC_MEMORY_OF_GPU ioctl
->>>> - Add one flag: KFD_IOC_ALLOC_MEM_FLAGS_USERPTR_BATCH
->>>> - When flag is set, mmap_offset field points to range array
->>>> - No new ioctl command, no new structure
->>>>
->>>> This changes the API surface from adding a new ioctl to adding just one flag.
->>>>
->>>> Actually the implementation modifies DRM's GPU memory management
->>>> infrastructure in amdgpu_amdkfd_gpuvm.c. If DRM render node needs similar functionality later, these functions could be directly reused.
->>>>
->>>> Would you be willing to review v3 with this approach?
->>>>
->>>> Regards,
->>>> Honglei Huang
->>>>
->>>> On 2026/1/9 03:46, Felix Kuehling wrote:
->>>>> I don't have time to review this in detail right now. I am concerned about adding new KFD API, when the trend is moving towards DRM render node APIs. This creates additional burden for ongoing support of these APIs in addition to the inevitable DRM render node duplicates we'll have in the future. Would it be possible to implement this batch userptr allocation in a render node API from the start?
->>>>>
->>>>> Regards,
->>>>>      Felix
->>>>>
->>>>>
->>>>> On 2026-01-04 02:21, Honglei Huang wrote:
->>>>>> From: Honglei Huang <honghuan@amd.com>
->>>>>>
->>>>>> Hi all,
->>>>>>
->>>>>> This is v2 of the patch series to support allocating multiple non- contiguous
->>>>>> CPU virtual address ranges that map to a single contiguous GPU virtual address.
->>>>>>
->>>>>> **Key improvements over v1:**
->>>>>> - NO memory pinning: uses HMM for page tracking, pages can be swapped/ migrated
->>>>>> - NO impact on SVM subsystem: avoids complexity during KFD/KGD unification
->>>>>> - Better approach: userptr's VA remapping design is ideal for scattered VA registration
->>>>>>
->>>>>> Based on community feedback, v2 takes a completely different implementation
->>>>>> approach by leveraging the existing userptr infrastructure rather than
->>>>>> introducing new SVM-based mechanisms that required memory pinning.
->>>>>>
->>>>>> Changes from v1
->>>>>> ===============
->>>>>>
->>>>>> v1 attempted to solve this problem through the SVM subsystem by:
->>>>>> - Adding a new AMDKFD_IOC_SVM_RANGES ioctl for batch SVM range registration
->>>>>> - Introducing KFD_IOCTL_SVM_ATTR_MAPPED attribute for special VMA handling
->>>>>> - Using pin_user_pages_fast() to pin scattered memory ranges
->>>>>> - Registering multiple SVM ranges with pinned pages
->>>>>>
->>>>>> This approach had significant drawbacks:
->>>>>> 1. Memory pinning defeated the purpose of HMM-based SVM's on-demand paging
->>>>>> 2. Added complexity to the SVM subsystem
->>>>>> 3. Prevented memory oversubscription and dynamic migration
->>>>>> 4. Could cause memory pressure due to locked pages
->>>>>> 5. Interfered with NUMA optimization and page migration
->>>>>>
->>>>>> v2 Implementation Approach
->>>>>> ==========================
->>>>>>
->>>>>> 1. **No memory pinning required**
->>>>>>       - Uses HMM (Heterogeneous Memory Management) for page tracking
->>>>>>       - Pages are NOT pinned, can be swapped/migrated when not in use
->>>>>>       - Supports dynamic page eviction and on-demand restore like standard userptr
->>>>>>
->>>>>> 2. **Zero impact on KFD SVM subsystem**
->>>>>>       - Extends ALLOC_MEMORY_OF_GPU path, not SVM
->>>>>>       - New ioctl: AMDKFD_IOC_ALLOC_MEMORY_OF_GPU_BATCH
->>>>>>       - Zero changes to SVM code, limited scope of changes
->>>>>>
->>>>>> 3. **Perfect fit for non-contiguous VA registration**
->>>>>>       - Userptr design naturally supports GPU VA != CPU VA mapping
->>>>>>       - Multiple non-contiguous CPU VA ranges -> single contiguous GPU VA
->>>>>>       - Unlike KFD SVM which maintains VA identity, userptr allows remapping,
->>>>>>         This VA remapping capability makes userptr ideal for scattered allocations
->>>>>>
->>>>>> **Implementation Details:**
->>>>>>       - Each CPU VA range gets its own mmu_interval_notifier for invalidation
->>>>>>       - All ranges validated together and mapped to contiguous GPU VA
->>>>>>       - Single kgd_mem object with array of user_range_info structures
->>>>>>       - Unified eviction/restore path for all ranges in a batch
->>>>>>
->>>>>> Patch Series Overview
->>>>>> =====================
->>>>>>
->>>>>> Patch 1/4: Add AMDKFD_IOC_ALLOC_MEMORY_OF_GPU_BATCH ioctl and data structures
->>>>>>        - New ioctl command and kfd_ioctl_userptr_range structure
->>>>>>        - UAPI for userspace to request batch userptr allocation
->>>>>>
->>>>>> Patch 2/4: Extend kgd_mem for batch userptr support
->>>>>>        - Add user_range_info and associated fields to kgd_mem
->>>>>>        - Data structures for tracking multiple ranges per allocation
->>>>>>
->>>>>> Patch 3/4: Implement batch userptr allocation and management
->>>>>>        - Core functions: init_user_pages_batch(), get_user_pages_batch()
->>>>>>        - Per-range eviction/restore handlers with unified management
->>>>>>        - Integration with existing userptr eviction/validation flows
->>>>>>
->>>>>> Patch 4/4: Wire up batch userptr ioctl handler
->>>>>>        - Ioctl handler with input validation
->>>>>>        - SVM conflict checking for GPU VA and CPU VA ranges
->>>>>>        - Integration with kfd_process and process_device infrastructure
->>>>>>
->>>>>> Performance Comparison
->>>>>> ======================
->>>>>>
->>>>>> Before implementing this patch, we attempted a userspace solution that makes
->>>>>> multiple calls to the existing AMDKFD_IOC_ALLOC_MEMORY_OF_GPU ioctl to
->>>>>> register non-contiguous VA ranges individually. This approach resulted in
->>>>>> severe performance degradation:
->>>>>>
->>>>>> **Userspace Multiple ioctl Approach:**
->>>>>> - Benchmark score: ~80,000 (down from 200,000 on bare metal)
->>>>>> - Performance loss: 60% degradation
->>>>>>
->>>>>> **This Kernel Batch ioctl Approach:**
->>>>>> - Benchmark score: 160,000 - 190,000 (80%-95% of bare metal)
->>>>>> - Performance improvement: 2x-2.4x faster than userspace approach
->>>>>> - Achieves near-native performance in virtualized environments
->>>>>>
->>>>>> The batch registration in kernel avoids the repeated syscall overhead and
->>>>>> enables efficient unified management of scattered VA ranges, recovering most
->>>>>> of the performance lost to virtualization.
->>>>>>
->>>>>> Testing Results
->>>>>> ===============
->>>>>>
->>>>>> The series has been tested with:
->>>>>> - Multiple scattered malloc() allocations (2-4000+ ranges)
->>>>>> - Various allocation sizes (4KB to 1G+ per range)
->>>>>> - GPU compute workloads using the batch-allocated ranges
->>>>>> - Memory pressure scenarios and eviction/restore cycles
->>>>>> - OpenCL CTS in KVM guest environment
->>>>>> - HIP catch tests in KVM guest environment
->>>>>> - AI workloads: Stable Diffusion, ComfyUI in virtualized environments
->>>>>> - Small LLM inference (3B-7B models) using HuggingFace transformers
->>>>>>
->>>>>> Corresponding userspace patche
->>>>>> ================================
->>>>>> Userspace ROCm changes for new ioctl:
->>>>>> - libhsakmt: https://github.com/ROCm/rocm-systems/commit/ ac21716e5d6f68ec524e50eeef10d1d6ad7eae86
->>>>>>
->>>>>> Thank you for your review and waiting for the feedback.
->>>>>>
->>>>>> Best regards,
->>>>>> Honglei Huang
->>>>>>
->>>>>> Honglei Huang (4):
->>>>>>      drm/amdkfd: Add batch userptr allocation UAPI
->>>>>>      drm/amdkfd: Extend kgd_mem for batch userptr support
->>>>>>      drm/amdkfd: Implement batch userptr allocation and management
->>>>>>      drm/amdkfd: Wire up batch userptr ioctl handler
->>>>>>
->>>>>>     drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    |  21 +
->>>>>>     .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 543 +++++++++++++++++-
->>>>>>     drivers/gpu/drm/amd/amdkfd/kfd_chardev.c      | 159 +++++
->>>>>>     include/uapi/linux/kfd_ioctl.h                |  37 +-
->>>>>>     4 files changed, 740 insertions(+), 20 deletions(-)
->>>>>>
->>>>
->>>
->>
+> Looking at fprop_new_period() is more interesting.  Commit a91befde3503
+> removed an earlier call to local_irq_save().  It was then replaced with
+> preempt_disable() in 9458e0a78c45 but maybe removing it was just
+> erroneous?
 > 
+> Anyway, that was 2022, so it doesn't answer "why is this only showing up
+> now and only for fuse?"  But maybe replacing the preempt-disable with
+> irq-disable in fprop_new_period() is the right solution, regardless.
 
+So I don't have a great explanation why it is showing up only now and only
+for FUSE. It seems the fprop code is unsafe wrt interrupts because
+fprop_new_period() grabs
+
+        write_seqcount_begin(&p->sequence);
+
+and if IO completion interrupt on this CPU comes while p->sequence is odd,
+the call to
+
+	read_seqcount_begin(&p->sequence);
+
+in __folio_end_writeback() -> __wb_writeout_add() -> wb_domain_writeout_add()
+-> __fprop_add_percpu_max() -> fprop_fraction_percpu() will loop
+indefinitely. *However* this isn't in fact possible because
+fprop_new_period() is only called from a timer code and thus in softirq
+context and thus IO completion softirq cannot really preempt it.
+
+But for the same reason I don't think what lockdep complains about is
+really possible because xa_lock gets only used from IO completion softirq as
+well. Or can we really acquire it from some hard irq context? Based on
+lockdep report at least lockdep things IO completion runs in hardirq
+context but then I don't see why we're not seeing complaints like this all
+the time and even deadlocks I've described above. I guess I'll have to do
+some experimentation to refresh how these things behave these days...
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
