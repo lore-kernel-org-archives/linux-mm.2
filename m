@@ -4,104 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5F07C9EC72
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 11:33:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15E74C9EC7C
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 11:49:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12A476B0088; Mon, 12 Jan 2026 06:33:45 -0500 (EST)
+	id 695366B0088; Mon, 12 Jan 2026 06:49:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E1C46B0089; Mon, 12 Jan 2026 06:33:45 -0500 (EST)
+	id 6424E6B0089; Mon, 12 Jan 2026 06:49:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02B556B008A; Mon, 12 Jan 2026 06:33:44 -0500 (EST)
+	id 517556B008A; Mon, 12 Jan 2026 06:49:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E7EFD6B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 06:33:44 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B1E03D1092
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 11:33:44 +0000 (UTC)
-X-FDA: 84323101968.09.B302955
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 20BDD40007
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 11:33:40 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ZxjG6U0R;
-	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 431AD6B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 06:49:57 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DFCBB1ADF22
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 11:49:56 +0000 (UTC)
+X-FDA: 84323142792.11.F9A887B
+Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
+	by imf30.hostedemail.com (Postfix) with ESMTP id EF5D08000B
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 11:49:54 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="j HBJR/C";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Q6q1FAMo;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768218595; a=rsa-sha256;
+	cv=none;
+	b=QPNzlQvhJaqn+g3qMdmb8GOUXAeMBXW4W8qJLnYBx9JXu2tH7xZO7VuaOcswQQ5UUSianA
+	pWO/baaspzZ2HKwjuZUEZrJGSmKIdwvrlMytNq4Y4vcv6ia8QfJ9q0y0VrFfM2tnBkOfv9
+	dCN/EUodH5zkzcwzP9AtROd5d8cn+qw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="j HBJR/C";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Q6q1FAMo;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768217622;
+	s=arc-20220608; t=1768218595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lMoZuLVDlUswErnQyq4SdMbwKsA1mCI8UQu4w6SIK9Y=;
-	b=YMchToDzZWqH5bWh4YBiFZyML0gI4A3e8EdWfV5aWUZCEthFqVqgq/71BY8vbrr+MMQP2/
-	K+tTOM55Bk/ZIL2/nwvvKGJkp9dw8SLk796yl1qvWsf/z9LZdiTEsdabsVIBf3b2hh4VQM
-	4KEHdYuvPJH9fB8zLYx+VGgDGi3+R9g=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ZxjG6U0R;
-	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768217622; a=rsa-sha256;
-	cv=none;
-	b=aVOmEj9YQYLsGcENE4KrjvldF541NA7z411CPqxZ8lIvUkOqtRByrDqCefwbEaai/YUpUM
-	WjFiUSF4E2PY0wB2s5HiI5hlYoAL8GKm9Cwjm/kOTkaGEq+FwZUQvUIPne0uE4WJlmj6Y7
-	gsiuuQBdiPLR+NUQLlA+ImzSfqoihYc=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=lMoZuLVDlUswErnQyq4SdMbwKsA1mCI8UQu4w6SIK9Y=;
-	b=ZxjG6U0Rgcu8X90qsdNGKi7uM5r/vviLbNGLXee2cNHITy3nqdnH+XojBw93eDN8YuOWASgDf
-	d7pUsr4zuC3nOFdOu3ck8EIOyQ3cnljv6oz9sJc+ddMI3IPVwhsyfGjtgtaZVft8NBdyRuaEKnu
-	jxlpgse25iCar+3JEejQGm8=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4dqVYP6zxkz12LJ9;
-	Mon, 12 Jan 2026 19:30:33 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 50F834056B;
-	Mon, 12 Jan 2026 19:33:35 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 12 Jan 2026 19:33:35 +0800
-Received: from [10.173.125.37] (10.173.125.37) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 12 Jan 2026 19:33:34 +0800
-Subject: Re: [PATCH 0/3] selftests/mm: add memory failure selftests
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-CC: <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<nao.horiguchi@gmail.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<akpm@linux-foundation.org>, <shuah@kernel.org>
-References: <20260107093710.3928374-1-linmiaohe@huawei.com>
- <9413a995-9182-493e-a28a-6d2d3a17236b@kernel.org>
- <2ae04380-fd60-a8a1-6217-386454fec610@huawei.com>
- <693dc9aa-cf86-48c7-be9c-ec554f9da855@kernel.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <d958d80a-8412-6107-e144-975b8d545568@huawei.com>
-Date: Mon, 12 Jan 2026 19:33:33 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=lfr7rwNeBEfNjDqxxa6871mVoe7fZyHSOBc+ry0OW2A=;
+	b=k3bkMZy/Vy3+y6w/LMumzAGUDdS2OmFt7QhnUupiT87kUDzSH5EiN/dOlTNMYpjezoWtLw
+	UqFQem+caiaqG1Fc1YrNk8v1Kv/EgTRvjhOrGhrTyoJ6qDvadQpg51sjRgfLgD5nlvIu2w
+	ygNdaYadzU1Y3peVkO9Zsf3cNbUna1k=
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailflow.phl.internal (Postfix) with ESMTP id 308C713802CD;
+	Mon, 12 Jan 2026 06:49:54 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Mon, 12 Jan 2026 06:49:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1768218594; x=
+	1768225794; bh=lfr7rwNeBEfNjDqxxa6871mVoe7fZyHSOBc+ry0OW2A=; b=j
+	HBJR/Cf+udrUA67+PqA41njitE3/YL3H6i+zFBmAhyryFgMw3BBwAsN/VR/Ckows
+	Q/0yD0WTn7oKLe1SFLfZfMOg7Q7WuhEStq0bXEthvxJLFk343cgM/fHGm1pEtEh4
+	8OKSDV9Hus2lkdR7CHXnOp65F/8Qe4JjlGgYngOgPgvFcR/SkoZ848F9t23pZGdM
+	qbgfZyGYmLJjPCgRM2ot+fe3QGo+4tKb/fXHJR6bGWaShj8Zopa/Eof3PMRPYstT
+	9ZsP7IQK0D5o9bnft3lDrMv7gmMob1Qv021HLW9YgSA0GZivuUNDEEtGkfprJd+j
+	5CK4FgGZ3pAKcxxiT2peg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1768218594; x=1768225794; bh=lfr7rwNeBEfNjDqxxa6871mVoe7fZyHSOBc
+	+ry0OW2A=; b=Q6q1FAMotpBn2pmHYRbK04OWNmFLJ7qdsiolga5T4Fe0sh8/h8L
+	hwFKOdMzb9abW5qDmq5wocy5gK+cOoyf7yps9Dl5pJoDNFVyDqFe1lCSNQrTjNnp
+	4paRMke5AVPtTmb0bLSvK0onAVweA6NjqUs0vYzIYmIvrM5QC7x5vYrPkoquf0VI
+	h7tFXI5AaBbc+TRaIqCL1qVrkxA/Hp4DUxYNH3K8zOsr28kcvrO1zMc9KEDUBM6r
+	VGN10xUFP7HBMHDJxcz2pQDhPKFp4Z6Gd7HhmiROd/v4+pgIghb5nzH/1GdXspnQ
+	1YValrA6fE9qbHzY5qwliDpuwyqqZOd1SaQ==
+X-ME-Sender: <xms:4N9kaTdYaofvnDJgUUPd_Y3RTrIYBg_Vci3iSlupR2cNnthQkQDSZQ>
+    <xme:4N9kaXoKrooVvlMSem9oVuPtGKM6p5zLDLgegYT4Q6Jcxpwb3dudeeuSZsuicvMq4
+    AMes1UBKJDitr6V1ZXbiz5R2B5ceEcp5-8EL-neVniMEJRJDSDN6Nk>
+X-ME-Received: <xmr:4N9kaTqZaN04cOUZoLWrkLOZ-7Fd5QsnNmoUvS4SAsX_ty_9B_8Q_hugPUJGGQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudejfeekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtrodttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnheptdegvdfftdehteelheetfedtjedvgeeltdeuhfdtleehgfdtjeeg
+    jeejkedujedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeh
+    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepghhlrgguhihshhgvvhdrihhlhi
+    grudeshhdqphgrrhhtnhgvrhhsrdgtohhmpdhrtghpthhtohepghhuohhhrghnjhhunhes
+    hhhurgifvghirdgtohhmpdhrtghpthhtohepfigrnhhgkhgvfhgvnhhgrdifrghngheshh
+    hurgifvghirdgtohhmpdhrtghpthhtohepfigvihihohhnghhjuhhnudeshhhurgifvghi
+    rdgtohhmpdhrtghpthhtohephihushhonhhgphhinhhgsehhuhgrfigvihdrtghomhdprh
+    gtphhtthhopehlvghijhhithgrnhhgsehhuhgrfigvihdrtghomhdprhgtphhtthhopegr
+    rhhtvghmrdhkuhiiihhnsehhuhgrfigvihdrtghomhdprhgtphhtthhopehsthgvphgrnh
+    hovhdrrghnrghtohhlhieshhhurgifvghirdgtohhmpdhrtghpthhtoheprghlvgigrghn
+    uggvrhdrghhruhgsnhhikhhovheshhhurgifvghirdgtohhm
+X-ME-Proxy: <xmx:4N9kaYgO5n6vHZVn9Yu6rfUE2yg8zQqD0EwNjOyK_Coxx9kSvWdrUQ>
+    <xmx:4N9kaTF8RjAs9WhFIqY64uHY6O6M_7zyWAXTcddThoiCYwaKraQLKA>
+    <xmx:4N9kaQmcZKfjHuqR1B76y6QzfPbW6ujSsTKEv8tTbEbtyUwyFUcdcQ>
+    <xmx:4N9kaeA4gcp2jDfh1plTeGaG4Ffqv-tajh50QPp2Kdets0EndvoeFA>
+    <xmx:4t9kac2PE3xoz9mVB2VGB5VCVT4iWEfybxiOEF70scE1Zcnnh2BN1oMd>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 12 Jan 2026 06:49:50 -0500 (EST)
+Date: Mon, 12 Jan 2026 11:49:45 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+Cc: guohanjun@huawei.com, wangkefeng.wang@huawei.com, 
+	weiyongjun1@huawei.com, yusongping@huawei.com, leijitang@huawei.com, 
+	artem.kuzin@huawei.com, stepanov.anatoly@huawei.com, alexander.grubnikov@huawei.com, 
+	gorbunov.ivan@h-partners.com, akpm@linux-foundation.org, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, harry.yoo@oracle.com, 
+	willy@infradead.org, yuzhao@google.com, baolin.wang@linux.alibaba.com, 
+	muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/2] mm: improve folio refcount scalability
+Message-ID: <aWTfduyPXjhymyzW@thinkstation>
+References: <cover.1766145604.git.gladyshev.ilya1@h-partners.com>
+ <ec023298-c26d-437b-a023-b49509f83c5a@h-partners.com>
 MIME-Version: 1.0
-In-Reply-To: <693dc9aa-cf86-48c7-be9c-ec554f9da855@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Stat-Signature: mg94ion8r759jbxftdkkhm95yoqzp14q
-X-Rspamd-Queue-Id: 20BDD40007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ec023298-c26d-437b-a023-b49509f83c5a@h-partners.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EF5D08000B
+X-Stat-Signature: epqu7yku5bgbnjg1as8d83rf75ynoi1k
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768217620-331540
-X-HE-Meta: U2FsdGVkX1/UImtH9SsPfA0Q0kMD6aEuPE1YrHZulNdW7agSRRkwBWGpzhCOzmYFzS+GscAj44iQbZvIwvhvu6F/oiQ5Vp2xo1wH1azQjnhCjXs5Pih9RcbjPzO+6Nei2XUbrbRXUBqyju+pLINmX7x8IfyPcmk/bsKYwBop5BokIwhhOdhzce+K3jVM8uhVzGClNZ0gmCnMQtFJOp3oLbnzrluHzJ2JpcKH6Rl/HyW2SNwXMPVFY2qWoZGQIND+s6Y3BcmcqqI4pSQsCJRN079ylGJe/Gpui7onM/zikia3MMSf+0zAMTE3ZFxYWzUNoGNMdicOtUUm42hfjisxK7l2SOfIR5/wTze/0Kd3X23Cc26h/BY87/SaQ+VnIIY4EwJi1wgH0zOVWZOON6JfCt4us1UFaFDyv6uxg57o1Assmfd7EpNf9UfhEpDG8GN/wjV2Xf86knQiyQfVxynowhXYHvyHHtDd2zzsAxUSccH2mAhl9qHwqdFEqOk+Swgxn2DNQtkViN5Ly+YmKZZ3ZrCtwH8pE7vz9A21vvqVMiIPedIp+VaFx5N0wCJD7UzJY+bBIC6DQyz8rL6SEgCeeBHK0xLPdigtamON7ju/9F8wVW77/zx5BptqgLD0fOug8TZ7wvyCT8OHBz16mcO6jl7HVFRUzffdNTVTLVcQTljvgSuzdLmHTuaS912XetChW9d1c5gCfeBnVykA1TcgZycLcgu8YoDf0gSD+luGLvTAytPu3sWzslyx8Heriu5lUWM1dNkgBuhsitjnEwZUBxJsbE+QvMkol2OClF2vv2jUT68XOSQs4e4RnE7qQlfn3SERmcUJyQNhvoBXHk6cJmgytdGDN+cxVOzPoYqIKvFUGQIO/bIHJO58e7aB52QljzKK9OempSm/P3IphLGcIEHK89Xj4jHOakFt+wyDoANKZ/A3olA1eSWqrq7qHMwdo9Y48uQKI3Fl5UfFN1w
- nb1PqzeJ
- IwgHg+IMznKAwGmJm+AdkH9w6Lmmh73X8cIG/0ABdtRpa71tvGCLUNX05zKCTZ//hjGP093xDU0MhJk+ON/QS9URplhLjh6M8u5g3Q/o5syiByB5il6x1TS8HibKfIIgn2eagUD7nlujnSwXs+2mhgs2n3w0V5I1hrCSq3n3nu1dv8soJelFlzIjavPy00vK+pEoZcXAR3oKfQRZZ/5Im5oni24mUiFZ4KSGDj5xniHE7v9+LsD0fT5etjNl5N3Bn9GXphQGnmMrqCHVEl3jheoYv02gs+ocOZewPN/G8Ixb8yXBGjRDUInqv6ogDKYzDmuSeMr6SYjJpFeH8oh6MhPzKr0ZZqn6b/NDkhHe9XjwJ+SuSelzdl0at6A==
+X-HE-Tag: 1768218594-24744
+X-HE-Meta: U2FsdGVkX199VpRNdEwM5bxMNw5GooL1wC8xqclTGR/yqOexDbwKDgGWHqNkU8eVMOnZKUFBgjCk/2ar52Cv4FpHLf8lWer2bJWqbpybizaJAUcqCo2McG9N6kJ904SaQZC/HMMCCiWBmpODwtUcAnAvLz3eFm7w7wIkMMgRRi2dSwwf11k3wsfs4xim81iIRckIH8KUgLa3H7j7DjH5WG5IT5MMyhkmzAk6Vo8WZiySUgXqEQrxIMWklTeT52GdS8T65PItQotZ2h33CXpY4UyGuLvWvYmKmjBYA6PunaKr4IfliupVx2u9xpeZUbtCQSaCFSvQNCCIK6dRmqPGq+pAZbf/Peq5ZyGn99ZL5WtscX78RcaDH2NkaFJpiRqiknNEwa00LShv1gNVqQTW94bQjC8Kpcweoft459ulYQxSPVvjEupX2Fudg/QaQriFhFt3tUi/54pn7b7IZZSJQdpRD+v3amFoUTjFplzMMYqpm/NkKvP9XvI9de60U2rRMnpLrpfgfiRCPS9JBD9rN7KXDk9r2+ISw4MqIu2q6LLOO1SkXGLXHNCobDFPplKl8TMwYI0/DgbX2AMI2jUT4I8D5uiEkPcRHS/tVhDxyp0sk0+JUyU7aJFdqgvS3c/0BoKLCJgyQ7RCjc3IIMKgRFXyDWNqD4togRlujWo35e0WpYkY+/w9Emff72X3CIVOmmcgcEJ/8AVgbYXml0+9diT9rBNSxr05BHeSaWfkcRYttubb9K5NcyVCYykuXQ6mjzcK9FMPS5Dv7eCM1Osjyj2AF8f4bSiqHxMqnz4Nc+2U1pKPKKYdRxin97bwpHlKOBh4CKcLZr/h61OPAliRw/6iXZrX3mAZKUAmwvRKjM73Gvi1N+2R+VCkgMiV7WPrbpfYkQOq24KenSO2TjSREkg1vH1kS0zB7bh9Aq7xzNKE5t/LcmmPtshGRYiw0K5WsEKS5CmXCjubEQPtYKc
+ MhPQYVKv
+ adcPkVmQe0bQznjm2EzzaH3glse3qfirrKLWB5CEDHA2igFsxBbAaqE3JyW/9iYPjv26kquVs6IvahaFiLgivxkUO84kz51VP8iFdA2m4UwMf4anxYxBmGXkQRVMXsd6YvAnSzC/aU21NJZuxszlYbg1T70fTV5kD1p6gJ1N90mX5PQlDUbYzSCmGx8LtGBCFDAE2xosBboe+HZWZr5/69xTgzXygvDap53FUCr56LM3I7i0SfOw80sXaTRYCXZiZwhXx/SY1v3ilSMr9CJ5aSkjvsm3Jbl7/LhU6xTU1UbDt8sKBfhWHqYBq6589s9dSvIa2OnfRUeRw253MVeR2Geb0qfyYW7WH6pAksnYVTtseEgMP+xaEVBuUm4IPRO0YczAgfDuR1tbGdeHD+3AiPJmU8lIlJASjBvLQeQf0DL0prgV7rEVsXmtqmC7olWh2Ky3J
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,89 +142,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/1/12 17:40, David Hildenbrand (Red Hat) wrote:
-> On 1/12/26 10:19, Miaohe Lin wrote:
->> On 2026/1/9 21:45, David Hildenbrand (Red Hat) wrote:
->>> On 1/7/26 10:37, Miaohe Lin wrote:
->>>> Introduce selftests to validate the functionality of memory failure.
->>>> These tests help ensure that memory failure handling for anonymous
->>>> pages, pagecaches pages works correctly, including proper SIGBUS
->>>> delivery to user processes, page isolation, and recovery paths.
->>>>
->>>> Currently madvise syscall is used to inject memory failures. And only
->>>> anonymous pages and pagecaches are tested. More test scenarios, e.g.
->>>> hugetlb, shmem, thp, will be added. Also more memory failure injecting
->>>> methods will be supported, e.g. APEI Error INJection, if required.
->>>
->>
->> Thanks for test and report. :)
->>
->>> 0day reports that these tests fail:
->>>
->>> # # ------------------------
->>> # # running ./memory-failure
->>> # # ------------------------
->>> # # TAP version 13
->>> # # 1..6
->>> # # # Starting 6 tests from 2 test cases.
->>> # # #  RUN           memory_failure.madv_hard.anon ...
->>> # # #            OK  memory_failure.madv_hard.anon
->>> # # ok 1 memory_failure.madv_hard.anon
->>> # # #  RUN           memory_failure.madv_hard.clean_pagecache ...
->>> # # # memory-failure.c:166:clean_pagecache:Expected setjmp (1) == 0 (0)
->>> # # # clean_pagecache: Test terminated by assertion
->>> # # #          FAIL  memory_failure.madv_hard.clean_pagecache
->>> # # not ok 2 memory_failure.madv_hard.clean_pagecache
->>> # # #  RUN           memory_failure.madv_hard.dirty_pagecache ...
->>> # # # memory-failure.c:207:dirty_pagecache:Expected unpoison_memory(self->pfn) (-16) == 0 (0)
->>> # # # dirty_pagecache: Test terminated by assertion
->>> # # #          FAIL  memory_failure.madv_hard.dirty_pagecache
->>> # # not ok 3 memory_failure.madv_hard.dirty_pagecache
->>> # # #  RUN           memory_failure.madv_soft.anon ...
->>> # # #            OK  memory_failure.madv_soft.anon
->>> # # ok 4 memory_failure.madv_soft.anon
->>> # # #  RUN           memory_failure.madv_soft.clean_pagecache ...
->>> # # # memory-failure.c:282:clean_pagecache:Expected variant->inject(self, addr) (-1) == 0 (0)
->>> # # # clean_pagecache: Test terminated by assertion
->>> # # #          FAIL  memory_failure.madv_soft.clean_pagecache
->>> # # not ok 5 memory_failure.madv_soft.clean_pagecache
->>> # # #  RUN           memory_failure.madv_soft.dirty_pagecache ...
->>> # # # memory-failure.c:319:dirty_pagecache:Expected variant->inject(self, addr) (-1) == 0 (0)
->>> # # # dirty_pagecache: Test terminated by assertion
->>> # # #          FAIL  memory_failure.madv_soft.dirty_pagecache
->>> # # not ok 6 memory_failure.madv_soft.dirty_pagecache
->>> # # # FAILED: 2 / 6 tests passed.
->>> # # # Totals: pass:2 fail:4 xfail:0 xpass:0 skip:0 error:0
->>> # # [FAIL]
->>> # not ok 71 memory-failure # exit=1
->>>
->>>
->>> Can the test maybe not deal with running in certain environments (config options etc)?
->>
->> To run the test, I think there should be:
->>    1.CONFIG_MEMORY_FAILURE and CONFIG_HWPOISON_INJECT should be enabled.
->>    2.Root privilege is required.
->>    3.For dirty/clean pagecache testcases, the test file "./clean-page-cache-test-file" and
->>      "./dirty-page-cache-test-file" are assumed to be created on non-memory file systems
->>      such as xfs, ext4, etc.
->>
->> Does your test environment break any of the above rules?
-> 
-> It is 0day environment, so very likely yes. I suspect 1).
-> 
->> Am I expected to add some code to
->> guard against this?
-> 
-> Yes, at least some.
-> 
-> Checking for root privileges is not required. The tests are commonly run from non-memory file systems, but, in theory, could be run from nfs etc.
-> 
-> If you require special file systems, take a look at gup_longterm.o where we test for some fileystsem types.
-> 
-> Regarding 1): tools/testing/selftests/mm/config includes the config options we expect to be set for running MM tests. Extending that might take a while until environments like 0day would pick up such changes. If you require something else, make your test SKIP tests if the relevant kernel support is not there (e.g., sense support and conditionally skip).
+On Mon, Jan 12, 2026 at 11:30:38AM +0300, Gladyshev Ilya wrote:
+> Gentle ping on this proposal
 
-Thanks for your valuable suggestion. I will take a close look.
+I generally like the idea, but I would like to hear from folks who
+actually understand serialization.
 
-Thanks!
-.
+Also, do you have number for "a full CAS loop when the counter is
+approaching overflow" thing?
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
