@@ -4,155 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2766C9EC90
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 13:45:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A231FC9EC92
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 13:52:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24D486B0088; Mon, 12 Jan 2026 08:45:16 -0500 (EST)
+	id F19966B0088; Mon, 12 Jan 2026 08:52:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2212C6B0089; Mon, 12 Jan 2026 08:45:16 -0500 (EST)
+	id EF1956B0089; Mon, 12 Jan 2026 08:52:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 123F96B008A; Mon, 12 Jan 2026 08:45:16 -0500 (EST)
+	id DD2E16B008A; Mon, 12 Jan 2026 08:52:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 044546B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:45:16 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A08BC1AC4A1
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:45:15 +0000 (UTC)
-X-FDA: 84323433390.29.F861CBC
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A0E501C0015
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:45:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=A9KE1jIP;
-	spf=pass (imf18.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.171 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CD56E6B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:52:12 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D8CDB75AF
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:52:12 +0000 (UTC)
+X-FDA: 84323450904.10.7AFF254
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8782220004
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:52:10 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=mAEtQ5WI;
+	spf=pass (imf03.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.174 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768225513;
+	s=arc-20220608; t=1768225930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oQVWjYpPCtwp4dXF89g7hQK6KDriflVp74tvOjx72Jc=;
-	b=j/WGcgVqBiAtUkR8x4rGlVcMYV7Q0IoPNOqW2FYcVOcU8F5MX3lrKv/rkQsA7qKaRzNTCU
-	Ih7n1EX8LYsFx1fi1LPBbLo3RROjehsf4Zk6Br7JjPe9hum5kNIJFMvxB0fIQC8DePnWji
-	2hGZm46Fw9BNDYxoZ/r1Vr8Hvz1D+4A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768225513; a=rsa-sha256;
-	cv=none;
-	b=saXtICT12gOv5qEbTp/2+MFFIqVGvqBIsCiIDRMJOh4uf7vTYy34jBW3yeNYuiHuDK0IWf
-	FSL9xJH0zl4XaqOcavrhfggsfElJGSq16KEbtV4uYvrI3BXCLgHT8wtv/0Gagdelgr5aB9
-	KOCrBaz7/6ISHjulJRPTMjZMIFFIArU=
+	bh=OhCKPm7VYMhHUNH30pLlSTekzRTr8ph+K4EroJm99dI=;
+	b=3eTYo+PB9m6aR4QPoKSPZSab08+izPRGZcd4qPr7d3uSgTDXSf8lvBtfm9dtCK9PLBy/0/
+	F9GOW7SBPbC5XJGMJzYpYgXK4B3LcwWtEoSrZO4hZRpsIZDmWdGHPb3LhgjMGU9et+/syX
+	t5Bh+z5UAPUakcfbBQWMEo6xNJw9/Dk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=A9KE1jIP;
-	spf=pass (imf18.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.171 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	imf03.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=mAEtQ5WI;
+	spf=pass (imf03.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.174 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
 	dmarc=none
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ffb41c1efaso39446321cf.0
-        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:45:13 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768225930; a=rsa-sha256;
+	cv=none;
+	b=rG1P2S6ULkza8zXg1ooFL96R68kSz/6SIafyiD3pGPv/8Fog0MBn4OLUdYMhRcMIGBW+sc
+	83FsaidJBBsvaEhqbM5rhzu+oy89/mZqlN1vozsafF4kB6iQSfeLHHIIa5/Rrcdq2JDykj
+	pmlG/jKI0796pegzLsdpIzGiGrTCN2Q=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ffc0ddefc4so69621991cf.3
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:52:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1768225513; x=1768830313; darn=kvack.org;
+        d=ziepe.ca; s=google; t=1768225929; x=1768830729; darn=kvack.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=oQVWjYpPCtwp4dXF89g7hQK6KDriflVp74tvOjx72Jc=;
-        b=A9KE1jIPC09kD6eaX+4xwwgeSxjp0yUAeb/3TLwv5+KH+ziCAb2QIu3FoRtr5IqmL0
-         9tz8A5FgR59zz0F6tiaMu+SmHtwOpbgqBb1B+8zJHVdEVBTspdFBIe2MhdLo8IrRcglO
-         10G+zPWELUlGgVE0U1YXUTGHetC7k6ion5G6hXVGmoxbPW5BBLzWGn+zfGofRm4aTTwa
-         oL3BryN/lm9WaC034G9xMD8YuXIKn+93y7S11wwHMolp32dz2Rh3778ux4exrtCPZJoh
-         oSgxIcKOgwWg8IGM0wcLNqCsBwuVjvQfMq+VO11drZYo+6tse1L73OBqT/l6p0g2+opB
-         6IOQ==
+        bh=OhCKPm7VYMhHUNH30pLlSTekzRTr8ph+K4EroJm99dI=;
+        b=mAEtQ5WIAUxL2rCH5pc6vkaVHyAZqRAoyaL5XyTk0Jff5j2U7ky2X5PJwNJ7Xt9crp
+         g/pj9V6Ca6HDM6kRiEGNCRJGQJU95AdPZyfxD5t5R/QpuEY5wrGCMKrrdv4ftYEduxsn
+         KDZleGV+Mkn/2WJjj8j57i8gBRKKeZXv23FJyX7hsTYdVU/9ne0rzmgcho3sqydb0Tyh
+         S8Mq2NKVjvTyVt7931Qoz0YQgZdOqfEQwDZndkOQjQKkvdZpCRyWgS1i0iTbJ4tl/lAn
+         R6NlL5Ketj+fP57WaYxUEqmDnedcZigmd43kXyujQaqBfrFZlqqf8J0EAz+ZT5j/ejFN
+         WFcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768225513; x=1768830313;
+        d=1e100.net; s=20230601; t=1768225929; x=1768830729;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oQVWjYpPCtwp4dXF89g7hQK6KDriflVp74tvOjx72Jc=;
-        b=b3zUJFcUmsKcG1bg3DwepXCFZd2MnUqT8ae2q2iBRIbTiapV1T63lOCEazounb90os
-         crOK4ygp0F7Wpp5dtlOoe1dNzZRfkxqReTTzEX8aJIOJeugX2P3kvdehbZpMI1Ix7PXh
-         g5wlRhu1/rBOT2TlkfrAPWHedEPzHiho6AHqqr0nE9yB5H+m6TM2OAK43Uu9bVaznsmk
-         7fhtL1ZAhO1cZXnY2ChGTUUDrQlVQ3c2Hgbqrk8d3mqQHhtmF/lpguXXXWnJwSmGc1J7
-         Kp8mryQpeUNqOjTjJX2ABqy6xCwyq4VYBiXL058U0qK23fwSS1uS1bmhBHh9rTnbQv4E
-         FuuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXEX4XqWCRyxynK0hpKhEMvsZmKltMYaLUa56LqvBO/ZVmg7fBbl80bUeIG2MNiWTKfbMFH+1LIzA==@kvack.org
-X-Gm-Message-State: AOJu0Yy/TeAwr1+DjwnfqGjLVVREzdzgwl6S+SSttSnEVxC83VIR+t//
-	pzOv4TBEIWOqkm8+M8C6QTKUe3pDcNc1jy5nv5nr5Bb0tZXpv3QziTY+v0J2UUNv+8g=
-X-Gm-Gg: AY/fxX7VUVC9uKKe+fTf6K9Qb4I0hzQe/x5Tosdj+cGRJC34DQjGw3wjlkBrJu4MiQl
-	e7qzemDebPLyPHuwMQI/YVhIuFCQ8ru8T4QJRmLz0yX9T5ukTiRhaiV7UAFDIogULTNel2eAlQh
-	CTESpHBQrRZTzRC770sxvnUfjA9KAXXgaaTUSHlwOFt5fAsQme+eZFC/l22Hulq1CSiE1OOWSO2
-	rt1sGGklicQ9KHSlP7hEXaJtShOkjR0lxvlg99eMLugLZoueO1xK5bmyvT0cGIub4MzL4cJ1shd
-	LJp3T9uLgIRIFGsNY+QpojrYw7SdINlg3alw0wtqi49a7e8zo0Z9833QR5Ws3wsnJBWhyJX1+TA
-	owQDroSb68LNFtNDNl9ceG06Xfa5WkLx78fMRHGQ0+lF8tMLpVJTZr4WHEoRNynniby9siuMwnX
-	09eZp1xoo1Ptzi1dOAgLxUjKJINpo16Q9lw74zH7MkYDXxnLPlb3oOw4dF/Fjsq808yrnWQplxn
-	E53nA==
-X-Google-Smtp-Source: AGHT+IG20+wZaR0cdbZzmqo1CbORIU0XkpxQP0kdASvCc3hNxGR2kbLwFGbi9bRoyfQYpJE34s/36Q==
-X-Received: by 2002:ac8:7f4e:0:b0:4ed:6803:6189 with SMTP id d75a77b69052e-4ffb49998dfmr285683391cf.53.1768225512643;
-        Mon, 12 Jan 2026 05:45:12 -0800 (PST)
+        bh=OhCKPm7VYMhHUNH30pLlSTekzRTr8ph+K4EroJm99dI=;
+        b=fqFVD7v/q6fsofE2+N/SvPcrFCUW4ITOSjhAyAKyKDrlZTEUTb9k3hcOUWBP8WPls6
+         zsk5pVs9Ch2OEmyKrQdKboHB4UKZzI3ONWLsTSCZ/quNbXHqEwuJXC5AsLDk7vFldPLQ
+         7dWpPyjCiFtOveAHeBnwEOLCgtkK2j6RVoxxxTPC5plW8yN9U95TsOMRz91LFTar7mMO
+         ZBADYo24DG9JmP/AeAie1ZD9hb2RSuhXdcGgoaZ+hRAyrko1Jh2ziZY+U7OFQW+M5HuJ
+         7E058gL9pEIXwCXmXW5H4nFzKZGXL6upzhbMgqIdukhgpWihOrFN2uv6kJwF9AJBdvKI
+         cgNw==
+X-Gm-Message-State: AOJu0YyIZydfpnFVknK/P9c2RNURsG3Oo9B9jL/vZemJ3llbzlDVb39J
+	HmepGjxkmHXmvwpH1ng4jYiLeFFMvbC7a4yFqaxmo/aucCIjK7aqRY4Pr9LxXIfc2+g=
+X-Gm-Gg: AY/fxX7uGa/yiwNRX9wCoVlnKuUDl4KwiUcUnGL340xGwP70akA/FaUaPQ/9I5FA2gd
+	MAgYl56fp6pkZaGTWADSafPVH3hkvgpifjisI6vsGy7E3+oiRQQyi/MoOhFaF207o1Kcoq9zcWK
+	WBqgpp6FwBDd3U+MjWMcoGq5OcXqEJ+IoZf6B/c7cVMJ6IW0645HgMrCh7r7cCBSTmxcfao+HIh
+	YWjLFgb5kea8whQhkWkL7SWYR2hSPX8xHqnpLTYg5HeDogbI+CilLBjtrD33CKyU0EEhpzqejWV
+	ygbql2wOzYIcpU++Fry6tj1Zj9D8NOjuaT+PO6xg/PgSJWch8eV0fGlpGtA2eSbdIO1xqPk5yED
+	ydAXDTMWWNBOKaHO+c9eG3bzrr5nLQNON1BS9PLphHiLvVgD0ozRMjInLi/HCAgY5kcOg3Its8B
+	p3nF3OxJnKinni06iemVaZFb0TmOt3mfYvCvn0jKD3eVtHUi9VJ3mz8WuXSmd2HogBRAQ=
+X-Google-Smtp-Source: AGHT+IHqj1rZAaLOtZCDsdzXVUTGgkS4VFYt/v/ed+Pf3/EF8sQyP07+6+eSH3qW3iq/2/72eoUoYQ==
+X-Received: by 2002:ac8:7f88:0:b0:4eb:a1cb:7c with SMTP id d75a77b69052e-4ffb49c7d54mr248147041cf.64.1768225929518;
+        Mon, 12 Jan 2026 05:52:09 -0800 (PST)
 Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffa8e36232sm124159891cf.22.2026.01.12.05.45.11
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770e20bcsm137210676d6.15.2026.01.12.05.52.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 05:45:11 -0800 (PST)
+        Mon, 12 Jan 2026 05:52:09 -0800 (PST)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1vfIEI-00000003Q1m-3fo1;
-	Mon, 12 Jan 2026 09:45:10 -0400
-Date: Mon, 12 Jan 2026 09:45:10 -0400
+	id 1vfIL2-00000003Q6R-221D;
+	Mon, 12 Jan 2026 09:52:08 -0400
+Date: Mon, 12 Jan 2026 09:52:08 -0400
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Balbir Singh <balbirs@nvidia.com>,
-	Francois Dugast <francois.dugast@intel.com>,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Alistair Popple <apopple@nvidia.com>, linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-	linux-pci@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org
-Subject: Re: [PATCH v4 1/7] mm/zone_device: Add order argument to folio_free
- callback
-Message-ID: <20260112134510.GC745888@ziepe.ca>
-References: <20260111205820.830410-1-francois.dugast@intel.com>
- <20260111205820.830410-2-francois.dugast@intel.com>
- <aWQlsyIVVGpCvB3y@casper.infradead.org>
- <874d29da-2008-47e6-9c27-6c00abbf404a@nvidia.com>
- <0D532F80-6C4D-4800-9473-485B828B55EC@nvidia.com>
+To: Mostafa Saleh <smostafa@google.com>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
+	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com,
+	baolu.lu@linux.intel.com, rdunlap@infradead.org,
+	Samiullah Khawaja <skhawaja@google.com>
+Subject: Re: [PATCH v6 3/4] iommu: debug-pagealloc: Track IOMMU pages
+Message-ID: <20260112135208.GD745888@ziepe.ca>
+References: <20260109171805.901995-1-smostafa@google.com>
+ <20260109171805.901995-4-smostafa@google.com>
+ <20260109195111.GQ545276@ziepe.ca>
+ <CAFgf54r_au6isA10Nrve=MHL455X=tKhNsSwH1ej-TX08J3xLA@mail.gmail.com>
+ <20260112133256.GB745888@ziepe.ca>
+ <CAFgf54psxPrsvujStPNtrzxiKOsJF+aVrN7BcNxxmAF4wDmRXA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0D532F80-6C4D-4800-9473-485B828B55EC@nvidia.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A0E501C0015
+In-Reply-To: <CAFgf54psxPrsvujStPNtrzxiKOsJF+aVrN7BcNxxmAF4wDmRXA@mail.gmail.com>
+X-Rspamd-Queue-Id: 8782220004
+X-Stat-Signature: f1ow8ndcdrrdqpid3txg1eguikx6bmn5
 X-Rspam-User: 
-X-Stat-Signature: s8hs9wz33u1gp5kfwsq88ai46bns1ukp
-X-HE-Tag: 1768225513-398280
-X-HE-Meta: U2FsdGVkX18SjeRUk09WabsmeH1wr6tG9TTjDKI3WfnSPoreXoTeg/PCk/PbBtTDUDxgZvgpgvqKy5aacTumx6+xtONF2KPqyYWcOm53EmC7esH6WloO4gjkBRtT6xvjGQiR4H/CAwCWnbxyR9lE3dWLmObE+XObJOXUdLtJz3hP6f2rmMZ1l/WcFDssggsjkUcw7REU/jBebMEFiPBZbzzsL5asfSrWXvNc5jjiHXviJWjB/09Vn1vI5xSHj34K6JSKYVRC030rfGRK4IWE94QWDseQ5bU1rf7Fgoc7sJaCoirEVdoMD9839Wyv+7qv1cKjlyT3FT0f4EgR5eMQLMUwskbX7Frkq/MAUR51hzIV59/t89I31vmK09a/nbvBMq+qIcbYMRwyDsYZGYERosqnliKvMS2chBB0ygWi5yiu82BMQwgFAZecKM4AbN3o/BmMZkeau/z1GEByxTYU3HPoec8KgwlilrZXYE3wwt74Y7m5MdhKLzhESzqsWuOOZ77uIukxY/xdFOtT8k+6c6pQIGMPQI2ERN65wgmMLdvNR8ChertQeaO8tCNRSxNkUIV5J+TcmzpFJoPIYkYYnx0DqSnAE8wCChEX10JE3tvn5pDVeNSjNLcRQbrKFW9FcExcNuSHKSyyxSofSH6UviCsMjZ3EgLspPbbaNkwoBha2KgRbts/ljKRN8/sKIHw9T9c+MNkCHEOwKdavyha6ICYe+mAx+cmGeQsf3Zzghn+6ZolzeZU4O3fFvqxhzBYB01yDMdWpIk4OiB/p6XDAZ5OVzISStuOY6jRlfPVdGNJ25J89eUmFegrhfHBIYX5pHoRPt6G585JpRknjP4jf6YSQbfWwNCmrL6TMVDSwAEd+h8ImbKrcsjvvL/rmyWHdTBQdE/u7wol0WKF2vqFu6hdQ7vWBDmVLPdDVPbRqgaSgE+tTaz6bItnNyouTmP0kWKpH/nZaG1+hZnZyMn
- lnvl3A/j
- jECk10QD1Yp6/PXDH16q2K/qzBqSHDz0PdGydSrg4Bzucbl8IE80b3QTxcql3bnHH6EQ1YL5pjoJLIBCvnufFVDepc7IJGm30at+/QBe2W1ZyTmKFiRiNhPOacCs0RT4OuKXtT8iLuzcLjQZP9hHOPInngKdZXsA6etzX2PLfJ9uDLeBPQZwiREnaNBRHcLiI1vXfmnGHFbSXunq1lQbPTlkG9Z0ttScKpAc+VfyOXEvbWO7Cn9SHTBOwuyo4k5QjhHiusov+TOBkyWwdKo62ZctBgqUw3H+K8LhAeB3aRPh2Z2ILpqkkYgXrNFTJ/W+dOjvZ+aMmFH+RT5b16VwCCY5uOUHJW5bOamyOISNXylCriMc=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768225930-759322
+X-HE-Meta: U2FsdGVkX1+ROCyW8IEmlsc2739y5WVr3OOStYEIwonv0SYdsCqSs2JJvI4s9VNY/M+San9+OI1SdB4iSkrt+Ko74zkagYizBke9PMnhjk1abccGqdL5lT1xdVQBhgmuD8bzsONjV39kAAWjZ72XTsXc7XCIB/zR/5n/i1mbsLIA+gHG0lTCbKpu46z6qm+BfRnuXHfzWgV4teZm1Krc7kANrBM27XjWHGJ2ZohQZfrUw5OaOG5VIB64gU9ZGkNXPQC/NymGFH1Qh7ZQouZwhqin/EIo+VNJ5OsJ4wJeBqLZkeWTiN0nNIyn236W0m9URadBzNPQfd/GNl1iHGd8yOBFhwKz2EW4ekpNpNYGiWufnswluQ1B/OJBr68TmrCLl37bBRamWdbZoK6Xe0VXKXF46azbBKfRW5B8J5xMYDXAorNdVJ8cJWJnnPjwCWLATWK6Fo+gfVWUS0ea7GNoLKgoW8pAxoosN/7q5rsKbbUmLje067YCT1F4BnviIvlGoogZRswx83fW+uZ00WE10nqBOUUkfxWBWtH1NWFGRW8nCz05PHGUCLLUIr5yeDM5ywakVKjDTEEKF5rd34Evlzru/x30UGEI6O288PGAze9d5PnC0Mb7AlawOamofFrZ1b4mHR7474IzJVWV4+jJLcemPlqRDLpGZ2QShp4uFS1olOV2BNVlukhXplHmzOgSVP9EZOq9DKmrUxHFIt4+G6GmpUZvz2hVbgTmKsEBa1hk4HMOpoSLepfD6M4Uxb6pMjGYlOLshjh3FI+wHtQTnUOFOL6vkv5mEAEd+rhmtCEV1qtjAtX9dRqSX6JXNAnFBbRsIX56+/2lXP7Xe/OCU3n9X6UqCUNCWBPw2RBNjZIVj6j+rY5UTiDpoNDFmIM9Xfu15YdZ6rG3JNZc4yj8nMj3PBcGW/4iYu6FRXUV2lHCb/CVyT/f8nmBlzW4HiBqw/L6u+09GX0htBqHtKY
+ OxVffOW6
+ eGXX2HuGxORdr+Kc913/2e+lNnzyzSBiPjQfFmtb3w9QYqkPzR2THhkK4qa664pa9/2vxtoY+T6fr6WdNwMEVlk+Vtz6hmt8tcYVz2YQmKSqsAshGwgKQ13kxcM02wa2Do4XaJoXKRpzwmyuwAEz90XNFX+h06Ls56F6iVqgMOql68dm3qsbkspugJdp14HsVTiiuk2kQAZJii0R65vcntmIVYVLlXOohB72BzN9vBYE31D+WJl6/WGqY4InPZiJaMIuFcyi2uqMXMLLdxWZM2zzm56HYxJq1U3bEYFOHFt0ANgG7WruXKLdg5Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -161,64 +136,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jan 11, 2026 at 07:51:01PM -0500, Zi Yan wrote:
-> On 11 Jan 2026, at 19:19, Balbir Singh wrote:
+On Mon, Jan 12, 2026 at 01:43:41PM +0000, Mostafa Saleh wrote:
+> But I don’t see why not. from the documentation:
+> /**
+>  * pfn_valid - check if there is a valid memory map entry for a PFN
+>  * @pfn: the page frame number to check
+>  *
+>  * Check if there is a valid memory map entry aka struct page for the @pfn.
+>  * Note, that availability of the memory map entry does not imply that
+>  * there is actual usable memory at that @pfn. The struct page may
+>  * represent a hole or an unusable page frame.
+> …
 > 
-> > On 1/12/26 08:35, Matthew Wilcox wrote:
-> >> On Sun, Jan 11, 2026 at 09:55:40PM +0100, Francois Dugast wrote:
-> >>> The core MM splits the folio before calling folio_free, restoring the
-> >>> zone pages associated with the folio to an initialized state (e.g.,
-> >>> non-compound, pgmap valid, etc...). The order argument represents the
-> >>> folio’s order prior to the split which can be used driver side to know
-> >>> how many pages are being freed.
-> >>
-> >> This really feels like the wrong way to fix this problem.
-> >>
-> 
-> Hi Matthew,
-> 
-> I think the wording is confusing, since the actual issue is that:
-> 
-> 1. zone_device_page_init() calls prep_compound_page() to form a large folio,
-> 2. but free_zone_device_folio() never reverse the course,
-> 3. the undo of prep_compound_page() in free_zone_device_folio() needs to
->    be done before driver callback ->folio_free(), since once ->folio_free()
->    is called, the folio can be reallocated immediately,
-> 4. after the undo of prep_compound_page(), folio_order() can no longer provide
->    the original order information, thus, folio_free() needs that for proper
->    device side ref manipulation.
+> That means that struct page exists, which is all what we need here.
 
-There is something wrong with the driver if the "folio can be
-reallocated immediately".
+A struct page that has never been initialize shouldn't ever be read. I
+don't know how that relates to page_ext, but are you really sure that
+is all you need?
 
-The flow generally expects there to be a driver allocator linked to
-folio_free()
+> I can see many places have the same pattern in the kernel already, for example:
+> - vfio_iommu_type1.c, is_invalid_reserved_pfn() which does the same
+> check which can include MMIO and then get the page struct.
 
-1) Allocator finds free memory
-2) zone_device_page_init() allocates the memory and makes refcount=1
-3) __folio_put() knows the recount 0.
-4) free_zone_device_folio() calls folio_free(), but it doesn't
-   actually need to undo prep_compound_page() because *NOTHING* can
-   use the page pointer at this point.
-5) Driver puts the memory back into the allocator and now #1 can
-   happen. It knows how much memory to put back because folio->order
-   is valid from #2
-6) #1 happens again, then #2 happens again and the folio is in the
-   right state for use. The successor #2 fully undoes the work of the
-   predecessor #2.
+This whole flow is nonsensical and wrong though, I wouldn't point to
+it as something reliable.
 
-If you have races where #1 can happen immediately after #3 then the
-driver design is fundamentally broken and passing around order isn't
-going to help anything.
+> - kvm_main.c: in __kvm_vcpu_map(), it distinguishes MMIO from memory
+> and then accesses the page struct.
 
-If the allocator is using the struct page memory then step #5 should
-also clean up the struct page with the allocator data before returning
-it to the allocator.
+That's sure looks sketchy to me.. Eg if CONFIG_WANT_PAGE_VIRTUAL is
+set and you try to feed a MMIO through through that kmap() it will
+explode.
 
-I vaugely remember talking about this before in the context of the Xe
-driver.. You can't just take an existing VRAM allocator and layer it
-on top of the folios and have it broadly ignore the folio_free
-callback.
+KVM can argue that it doesn't work with CONFIG_WANT_PAGE_VIRTUAL but
+iommu cannot.
 
-Jsaon
+So, again, IDK, we are trying not to use pfn_valid() in the DMA code.
+
+Jason
 
