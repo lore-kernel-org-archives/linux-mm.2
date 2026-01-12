@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9F7FC9EC98
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 15:17:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1825CC9EC94
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 15:17:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D293F6B00A9; Mon, 12 Jan 2026 10:17:32 -0500 (EST)
+	id 7E5F86B00AA; Mon, 12 Jan 2026 10:17:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE9E96B00AA; Mon, 12 Jan 2026 10:17:32 -0500 (EST)
+	id 751DC6B00AB; Mon, 12 Jan 2026 10:17:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B817D6B00AB; Mon, 12 Jan 2026 10:17:32 -0500 (EST)
+	id 63D996B00AC; Mon, 12 Jan 2026 10:17:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A43336B00A9
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:17:32 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6BD0E14048E
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:17:32 +0000 (UTC)
-X-FDA: 84323665944.23.DCEB32C
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 441381A000B
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:17:30 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 428286B00AA
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:17:38 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D49F68BBE4
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:17:37 +0000 (UTC)
+X-FDA: 84323666154.27.307CD0C
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A0F5D40017
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:17:35 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768231055; a=rsa-sha256;
+	cv=none;
+	b=ZHCQq/o1jCHavJHbMz/B9m143gW7H7CJ7qmLIHZTHEYSRhQOtYTNVkflUPJaWCaCgGL7Hz
+	LMTjyypnbp2HE+n/qgn3y7PsU1gcWFEh5ekTuDnPFoVH9WzvFwZv4U7+QoGXSpnsk604fp
+	uAHxZYRtJVrNzRK7kyhl/zFaVhT/toE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768231050;
+	s=arc-20220608; t=1768231055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=diP2IFc7AwGuuRdNganw2C+plBX5QxFb3pNFx4A6T6k=;
-	b=8RBJQhaJcmwlq4mfjkYrEITYkTf+5i8jK1zBufi+h/ELZ7/7Lf2nLvAX1Fz4fwF3wB9umw
-	wTC0Dt2eVcNTYymPIGA1/6iYweO5O/peXOMQlWtD3m51qc76RIpXYv+Nta/PKzU3XggZ/c
-	lIw4VULGNMLH3RJP3L0A4uSAeNPqigU=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768231050; a=rsa-sha256;
-	cv=none;
-	b=JRpvPFbDnRpXwHb9xqEA5whqWQy9m1aSmWsMMWVWqlINg4wfHbrkdAF+1jichhVsqtyodi
-	AJOu5LGG5vbnIlX7QcNeAd5Mk+1Ajci9G7E2B65YTd7YwsAbDsviZu1SS6+lGH4TF/wByx
-	BQ3bMDFEQtvBDRXQVjWya3TDT8CtWCc=
+	bh=HO3yb5/DTvOVu4gGCODslTusNQMw4vd0+MOyeq3eM4Y=;
+	b=Ojrs++W7SadPMCAyqBCjirYdmzYb9Lkcu+pq6Vin3EKy4pKsZ1ESBUhaUWO/HB5059Adc6
+	MmpGsCt6VcRFmV1vlgXbNq+G8PgPrdZqObTLE3hssECBh75SX/5ie7lAQTdOuV8FiOZTj/
+	UICXrUptUleHTk47YIJFYN9Tb57j+t4=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C4DF633695;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AA0905BCD5;
 	Mon, 12 Jan 2026 15:16:58 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A80C93EA65;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8C2473EA63;
 	Mon, 12 Jan 2026 15:16:58 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oNG6KGoQZWn7FgAAD6G6ig
+	id WDzqIWoQZWn7FgAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Mon, 12 Jan 2026 15:16:58 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Mon, 12 Jan 2026 16:17:06 +0100
-Subject: [PATCH RFC v2 12/20] slab: remove defer_deactivate_slab()
+Date: Mon, 12 Jan 2026 16:17:05 +0100
+Subject: [PATCH RFC v2 11/20] slab: remove the do_slab_free() fastpath
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260112-sheaves-for-all-v2-12-98225cfb50cf@suse.cz>
+Message-Id: <20260112-sheaves-for-all-v2-11-98225cfb50cf@suse.cz>
 References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
 In-Reply-To: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
 To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
@@ -92,14 +92,14 @@ X-Rspamd-Pre-Result: action=no action;
 	module=replies;
 	Message is reply to one we originated
 X-Rspamd-Action: no action
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A0F5D40017
+X-Stat-Signature: 87p5g4bzq6p3iqiq6bddmfq87osjtxdq
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 441381A000B
-X-Stat-Signature: z8cdjnrf7z8tnrxgnp4txzjra8eia5u8
-X-HE-Tag: 1768231050-488660
-X-HE-Meta: U2FsdGVkX18e8kfZP2SfUnGAxTjqRLRbV/yuFZ8wEL2v5qG6dys/P0Ow8xc55FlbXVXXjEoNP0s8Fb7ZY/27A7Fpx2ME/vkWjuG6zLnPtfn9KI5nQ1hlGJbkAh4e4feJ7Z3eTpY6qI119apWm+JZkFqpVl5lB+CX9H1UeHVE6cMEHJQW/lCOszKnUUvw0FcBaPZwxhA2mvW1nMP/8qh3IUSnpcszOJzZxvO7l6aIER7irKL6704Fnocing2lwbQpf/r87ah7iyAh98JkGKAVUbu1Ly0/mgicXdtDoo4GPQWP3uVWdfUbN5d36SRn4pHHg5K7qNklVSGZBlGmPSZkJYhgmycrOSGQGrcRgj/Bjw2+VvzkEChU31uLZeEStKe26xuHCcy4DChkhnKcM9n2Wc8KljU1kctLzq2yb/Nm57WXuODNtSpt5KSGe5MiV5VFRrQakn7uUxSuCH9Xvk8SaUCSsptHhds7V9D8dNolcDHYoxoTjkhgP1/JwhaFqkfrbukDE3YTobLJULFZLeuOye1pUz2RelMYpQDqDbXny9CvAj1gY13OgsjwW01H41NeN+gpGntyCqoStgk4GYy0FWuFdFfs2zs3PeIFCW4wiMZIa5jfLAY6qkhb55AgoP6IhJDdRKhZhGsPvRSITTE3Sx4kyCYk58Lr88ZkIHIGF4FrNCDvmpAcdyetApB2Mg7TcDL1PfKoQmHRDOeaoTXbf4NXeINROwkEWuFLUGMPNSp7hTugJ44+f+oLJoKmqh0mTYQuphPjgqWMyMAkjdkcfOq75z/2IbS6M5YHbgzCCyRpEhr5R/mRfw7cIAQsmkuL2IZvCcHWBWTJKdOGSOg7Rhd7/s2dd/oEjmCPyq82I6n/eXuBPPYNb7inUEwcSvK4OuV4lXl5AlDXf46MrUhfkLHcqGy5UjsXd9SJSCeSlOJiab+DS96BeTY/boVY98FL08OkHf8HNT4iJUMp1uJ
- /QHyKxKl
- 4BBCfQzcXkUaVKuZcpVBdkBhIIgB2UTKIE1LkUlWbu5nye5z087qV2MUTcQLI/jfeb4b05S8OicpmpB4nSxZmLcJqAZAzSJYG3Dbl
+X-HE-Tag: 1768231055-892922
+X-HE-Meta: U2FsdGVkX19SpP2jT1W6FNu4XGF8sWm16z7i71RrCkf4Fvfk+gBwHnGc4XaNgopm+++iYqVO9KpSMTqvAEbgpxm+uuSx9LXUpcvV+IYeor/3qsgUlVs3pyCtmGgRb2SyhNd18nOLNyF6PFhkpmxMU5C7RrnEGZ2Xrwk2CjTXe/OolhKDxlfbioKNUHaUnbe0O9wrt5wAXa41oqXAznZpaNCEBNXzbDmgDByb4oaulgT+alWRRaZln3U+sdy++zZ++VeCQGkg2LcZEJ5JHb1ym5SDANI6D6BNx+1e6OcxRz5F01Go3DbENrzpYViokeCDv8T+Gp/KGs3IM3wdt2RWAdpeuAlhXVi+pAxga6cxEaQ7D1i4MW7kSUWmlfuLB7E0T6s31mklZ2e/EFMaCnSfaQAgItnDrfFWY+mTIm5E8kI+tNXxwYQRydpV1hEp+dCthK1wEmXBbean8JFaDidyIe9QMbw6c7VaJ2RwqXqmdlQjNQK/mIj+Jjp1nziNwJtjRLZZEjussrJbSbzYoCdvdGEarx6wMtKljJkV1fqBa+CUioIntCMinVS/BJwfITq5OXZGjYDMkP7GFtLTAPiBHkVX457FGTQLCB2LRY8qBnELEvQ3gg+blF0M6unuEYmJNjBhikzWUXYUO4ZaGiYCgY6kKx+XD1D1MHI7dYyTgJR6LyAjsSXw1laTsZX9U2dEaEEdwHhK6xAjvGB5z9aF2XzyExOiGWO+PmPHLbROaW+Uq/0YKb8wfFuYPQ2AagQgQSUn5XKJ13WnCplpdWyCpzmZXeWuWM0vku/wrIQ1jYkQnb94OPii4CAr7a1y5d8Eaf2sLBsDbVrF+RnUm65YAQCehOyhF/eFWlvGzBtCFR+QqjRR6RWZTdDWPzwiEA2YQ3/iRSHd9MGi+21PsTpWCRit6aeC/IIkugVUTvv4AHCJGQYpmt9j6FxO2ob8Tu0rNgIw6Ic+7G0dC8tpfJ4
+ GrMihD37
+ JrHG5UwULEHLHMgvFO69+SkIgWpapjXO15M/ti3Q1+OEtOCjpMDw2L1f71O0hPaJsLHAnnD/P6A4lvlpj1CmnteMw9IsHtK+A3DXE+kTlIvHqqEY/exIHLs2RQxTqoK45EgmmgoBgJcydBhg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,210 +108,251 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are no more cpu slabs so we don't need their deferred
-deactivation. The function is now only used from places where we
-allocate a new slab but then can't spin on node list_lock to put it on
-the partial list. Instead of the deferred action we can free it directly
-via __free_slab(), we just need to tell it to use _nolock() freeing of
-the underlying pages and take care of the accounting.
+We have removed cpu slab usage from allocation paths. Now remove
+do_slab_free() which was freeing objects to the cpu slab when
+the object belonged to it. Instead call __slab_free() directly,
+which was previously the fallback.
 
-Since free_frozen_pages_nolock() variant does not yet exist for code
-outside of the page allocator, create it as a trivial wrapper for
-__free_frozen_pages(..., FPI_TRYLOCK).
+This simplifies kfree_nolock() - when freeing to percpu sheaf
+fails, we can call defer_free() directly.
+
+Also remove functions that became unused.
 
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/internal.h   |  1 +
- mm/page_alloc.c |  5 +++++
- mm/slab.h       |  8 +-------
- mm/slub.c       | 51 ++++++++++++++++-----------------------------------
- 4 files changed, 23 insertions(+), 42 deletions(-)
+ mm/slub.c | 149 ++++++--------------------------------------------------------
+ 1 file changed, 13 insertions(+), 136 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index e430da900430..1f44ccb4badf 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -846,6 +846,7 @@ static inline struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int ord
- struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned int order);
- #define alloc_frozen_pages_nolock(...) \
- 	alloc_hooks(alloc_frozen_pages_nolock_noprof(__VA_ARGS__))
-+void free_frozen_pages_nolock(struct page *page, unsigned int order);
- 
- extern void zone_pcp_reset(struct zone *zone);
- extern void zone_pcp_disable(struct zone *zone);
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 822e05f1a964..8a288ecfdd93 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2981,6 +2981,11 @@ void free_frozen_pages(struct page *page, unsigned int order)
- 	__free_frozen_pages(page, order, FPI_NONE);
- }
- 
-+void free_frozen_pages_nolock(struct page *page, unsigned int order)
-+{
-+	__free_frozen_pages(page, order, FPI_TRYLOCK);
-+}
-+
- /*
-  * Free a batch of folios
-  */
-diff --git a/mm/slab.h b/mm/slab.h
-index e77260720994..4efec41b6445 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -71,13 +71,7 @@ struct slab {
- 	struct kmem_cache *slab_cache;
- 	union {
- 		struct {
--			union {
--				struct list_head slab_list;
--				struct { /* For deferred deactivate_slab() */
--					struct llist_node llnode;
--					void *flush_freelist;
--				};
--			};
-+			struct list_head slab_list;
- 			/* Double-word boundary */
- 			struct freelist_counters;
- 		};
 diff --git a/mm/slub.c b/mm/slub.c
-index 522a7e671a26..0effeb3b9552 100644
+index 006f3be1a163..522a7e671a26 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -3248,7 +3248,7 @@ static struct slab *new_slab(struct kmem_cache *s, gfp_t flags, int node)
- 		flags & (GFP_RECLAIM_MASK | GFP_CONSTRAINT_MASK), node);
+@@ -3668,29 +3668,6 @@ static inline unsigned int init_tid(int cpu)
+ 	return cpu;
  }
  
--static void __free_slab(struct kmem_cache *s, struct slab *slab)
-+static void __free_slab(struct kmem_cache *s, struct slab *slab, bool allow_spin)
- {
- 	struct page *page = slab_page(slab);
- 	int order = compound_order(page);
-@@ -3262,11 +3262,20 @@ static void __free_slab(struct kmem_cache *s, struct slab *slab)
- 	free_frozen_pages(page, order);
- }
- 
-+static void free_new_slab_nolock(struct kmem_cache *s, struct slab *slab)
-+{
-+	/*
-+	 * Since it was just allocated, we can skip the actions in
-+	 * discard_slab() and free_slab().
-+	 */
-+	__free_slab(s, slab, false);
-+}
-+
- static void rcu_free_slab(struct rcu_head *h)
- {
- 	struct slab *slab = container_of(h, struct slab, rcu_head);
- 
--	__free_slab(slab->slab_cache, slab);
-+	__free_slab(slab->slab_cache, slab, true);
- }
- 
- static void free_slab(struct kmem_cache *s, struct slab *slab)
-@@ -3282,7 +3291,7 @@ static void free_slab(struct kmem_cache *s, struct slab *slab)
- 	if (unlikely(s->flags & SLAB_TYPESAFE_BY_RCU))
- 		call_rcu(&slab->rcu_head, rcu_free_slab);
- 	else
--		__free_slab(s, slab);
-+		__free_slab(s, slab, true);
- }
- 
- static void discard_slab(struct kmem_cache *s, struct slab *slab)
-@@ -3375,8 +3384,6 @@ static void *alloc_single_from_partial(struct kmem_cache *s,
- 	return object;
- }
- 
--static void defer_deactivate_slab(struct slab *slab, void *flush_freelist);
--
- /*
-  * Called only for kmem_cache_debug() caches to allocate from a freshly
-  * allocated slab. Allocate a single object instead of whole freelist
-@@ -3392,8 +3399,8 @@ static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
- 	void *object;
- 
- 	if (!allow_spin && !spin_trylock_irqsave(&n->list_lock, flags)) {
--		/* Unlucky, discard newly allocated slab */
--		defer_deactivate_slab(slab, NULL);
-+		/* Unlucky, discard newly allocated slab. */
-+		free_new_slab_nolock(s, slab);
- 		return NULL;
- 	}
- 
-@@ -4262,7 +4269,7 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
- 
- 		if (!spin_trylock_irqsave(&n->list_lock, flags)) {
- 			/* Unlucky, discard newly allocated slab */
--			defer_deactivate_slab(slab, NULL);
-+			free_new_slab_nolock(s, slab);
- 			return 0;
- 		}
- 	}
-@@ -6031,7 +6038,6 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 
- struct defer_free {
- 	struct llist_head objects;
--	struct llist_head slabs;
- 	struct irq_work work;
- };
- 
-@@ -6039,7 +6045,6 @@ static void free_deferred_objects(struct irq_work *work);
- 
- static DEFINE_PER_CPU(struct defer_free, defer_free_objects) = {
- 	.objects = LLIST_HEAD_INIT(objects),
--	.slabs = LLIST_HEAD_INIT(slabs),
- 	.work = IRQ_WORK_INIT(free_deferred_objects),
- };
- 
-@@ -6052,10 +6057,9 @@ static void free_deferred_objects(struct irq_work *work)
- {
- 	struct defer_free *df = container_of(work, struct defer_free, work);
- 	struct llist_head *objs = &df->objects;
--	struct llist_head *slabs = &df->slabs;
- 	struct llist_node *llnode, *pos, *t;
- 
--	if (llist_empty(objs) && llist_empty(slabs))
-+	if (llist_empty(objs))
- 		return;
- 
- 	llnode = llist_del_all(objs);
-@@ -6079,16 +6083,6 @@ static void free_deferred_objects(struct irq_work *work)
- 
- 		__slab_free(s, slab, x, x, 1, _THIS_IP_);
- 	}
--
--	llnode = llist_del_all(slabs);
--	llist_for_each_safe(pos, t, llnode) {
--		struct slab *slab = container_of(pos, struct slab, llnode);
--
--		if (slab->frozen)
--			deactivate_slab(slab->slab_cache, slab, slab->flush_freelist);
--		else
--			free_slab(slab->slab_cache, slab);
--	}
- }
- 
- static void defer_free(struct kmem_cache *s, void *head)
-@@ -6102,19 +6096,6 @@ static void defer_free(struct kmem_cache *s, void *head)
- 		irq_work_queue(&df->work);
- }
- 
--static void defer_deactivate_slab(struct slab *slab, void *flush_freelist)
+-static inline void note_cmpxchg_failure(const char *n,
+-		const struct kmem_cache *s, unsigned long tid)
 -{
--	struct defer_free *df;
+-#ifdef SLUB_DEBUG_CMPXCHG
+-	unsigned long actual_tid = __this_cpu_read(s->cpu_slab->tid);
 -
--	slab->flush_freelist = flush_freelist;
+-	pr_info("%s %s: cmpxchg redo ", n, s->name);
 -
--	guard(preempt)();
--
--	df = this_cpu_ptr(&defer_free_objects);
--	if (llist_add(&slab->llnode, &df->slabs))
--		irq_work_queue(&df->work);
+-	if (IS_ENABLED(CONFIG_PREEMPTION) &&
+-	    tid_to_cpu(tid) != tid_to_cpu(actual_tid)) {
+-		pr_warn("due to cpu change %d -> %d\n",
+-			tid_to_cpu(tid), tid_to_cpu(actual_tid));
+-	} else if (tid_to_event(tid) != tid_to_event(actual_tid)) {
+-		pr_warn("due to cpu running other code. Event %ld->%ld\n",
+-			tid_to_event(tid), tid_to_event(actual_tid));
+-	} else {
+-		pr_warn("for unknown reason: actual=%lx was=%lx target=%lx\n",
+-			actual_tid, tid, next_tid(tid));
+-	}
+-#endif
+-	stat(s, CMPXCHG_DOUBLE_CPU_FAIL);
 -}
 -
- void defer_free_barrier(void)
+ static void init_kmem_cache_cpus(struct kmem_cache *s)
  {
- 	int cpu;
+ #ifdef CONFIG_PREEMPT_RT
+@@ -4229,18 +4206,6 @@ static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags)
+ 	return true;
+ }
+ 
+-static inline bool
+-__update_cpu_freelist_fast(struct kmem_cache *s,
+-			   void *freelist_old, void *freelist_new,
+-			   unsigned long tid)
+-{
+-	struct freelist_tid old = { .freelist = freelist_old, .tid = tid };
+-	struct freelist_tid new = { .freelist = freelist_new, .tid = next_tid(tid) };
+-
+-	return this_cpu_try_cmpxchg_freelist(s->cpu_slab->freelist_tid,
+-					     &old.freelist_tid, new.freelist_tid);
+-}
+-
+ /*
+  * Get the slab's freelist and do not freeze it.
+  *
+@@ -6158,99 +6123,6 @@ void defer_free_barrier(void)
+ 		irq_work_sync(&per_cpu_ptr(&defer_free_objects, cpu)->work);
+ }
+ 
+-/*
+- * Fastpath with forced inlining to produce a kfree and kmem_cache_free that
+- * can perform fastpath freeing without additional function calls.
+- *
+- * The fastpath is only possible if we are freeing to the current cpu slab
+- * of this processor. This typically the case if we have just allocated
+- * the item before.
+- *
+- * If fastpath is not possible then fall back to __slab_free where we deal
+- * with all sorts of special processing.
+- *
+- * Bulk free of a freelist with several objects (all pointing to the
+- * same slab) possible by specifying head and tail ptr, plus objects
+- * count (cnt). Bulk free indicated by tail pointer being set.
+- */
+-static __always_inline void do_slab_free(struct kmem_cache *s,
+-				struct slab *slab, void *head, void *tail,
+-				int cnt, unsigned long addr)
+-{
+-	/* cnt == 0 signals that it's called from kfree_nolock() */
+-	bool allow_spin = cnt;
+-	struct kmem_cache_cpu *c;
+-	unsigned long tid;
+-	void **freelist;
+-
+-redo:
+-	/*
+-	 * Determine the currently cpus per cpu slab.
+-	 * The cpu may change afterward. However that does not matter since
+-	 * data is retrieved via this pointer. If we are on the same cpu
+-	 * during the cmpxchg then the free will succeed.
+-	 */
+-	c = raw_cpu_ptr(s->cpu_slab);
+-	tid = READ_ONCE(c->tid);
+-
+-	/* Same with comment on barrier() in __slab_alloc_node() */
+-	barrier();
+-
+-	if (unlikely(slab != c->slab)) {
+-		if (unlikely(!allow_spin)) {
+-			/*
+-			 * __slab_free() can locklessly cmpxchg16 into a slab,
+-			 * but then it might need to take spin_lock
+-			 * for further processing.
+-			 * Avoid the complexity and simply add to a deferred list.
+-			 */
+-			defer_free(s, head);
+-		} else {
+-			__slab_free(s, slab, head, tail, cnt, addr);
+-		}
+-		return;
+-	}
+-
+-	if (unlikely(!allow_spin)) {
+-		if ((in_nmi() || !USE_LOCKLESS_FAST_PATH()) &&
+-		    local_lock_is_locked(&s->cpu_slab->lock)) {
+-			defer_free(s, head);
+-			return;
+-		}
+-		cnt = 1; /* restore cnt. kfree_nolock() frees one object at a time */
+-	}
+-
+-	if (USE_LOCKLESS_FAST_PATH()) {
+-		freelist = READ_ONCE(c->freelist);
+-
+-		set_freepointer(s, tail, freelist);
+-
+-		if (unlikely(!__update_cpu_freelist_fast(s, freelist, head, tid))) {
+-			note_cmpxchg_failure("slab_free", s, tid);
+-			goto redo;
+-		}
+-	} else {
+-		__maybe_unused unsigned long flags = 0;
+-
+-		/* Update the free list under the local lock */
+-		local_lock_cpu_slab(s, flags);
+-		c = this_cpu_ptr(s->cpu_slab);
+-		if (unlikely(slab != c->slab)) {
+-			local_unlock_cpu_slab(s, flags);
+-			goto redo;
+-		}
+-		tid = c->tid;
+-		freelist = c->freelist;
+-
+-		set_freepointer(s, tail, freelist);
+-		c->freelist = head;
+-		c->tid = next_tid(tid);
+-
+-		local_unlock_cpu_slab(s, flags);
+-	}
+-	stat_add(s, FREE_FASTPATH, cnt);
+-}
+-
+ static __fastpath_inline
+ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
+ 	       unsigned long addr)
+@@ -6267,7 +6139,7 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
+ 			return;
+ 	}
+ 
+-	do_slab_free(s, slab, object, object, 1, addr);
++	__slab_free(s, slab, object, object, 1, addr);
+ }
+ 
+ #ifdef CONFIG_MEMCG
+@@ -6276,7 +6148,7 @@ static noinline
+ void memcg_alloc_abort_single(struct kmem_cache *s, void *object)
+ {
+ 	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s), false)))
+-		do_slab_free(s, virt_to_slab(object), object, object, 1, _RET_IP_);
++		__slab_free(s, virt_to_slab(object), object, object, 1, _RET_IP_);
+ }
+ #endif
+ 
+@@ -6291,7 +6163,7 @@ void slab_free_bulk(struct kmem_cache *s, struct slab *slab, void *head,
+ 	 * to remove objects, whose reuse must be delayed.
+ 	 */
+ 	if (likely(slab_free_freelist_hook(s, &head, &tail, &cnt)))
+-		do_slab_free(s, slab, head, tail, cnt, addr);
++		__slab_free(s, slab, head, tail, cnt, addr);
+ }
+ 
+ #ifdef CONFIG_SLUB_RCU_DEBUG
+@@ -6317,14 +6189,14 @@ static void slab_free_after_rcu_debug(struct rcu_head *rcu_head)
+ 
+ 	/* resume freeing */
+ 	if (slab_free_hook(s, object, slab_want_init_on_free(s), true))
+-		do_slab_free(s, slab, object, object, 1, _THIS_IP_);
++		__slab_free(s, slab, object, object, 1, _THIS_IP_);
+ }
+ #endif /* CONFIG_SLUB_RCU_DEBUG */
+ 
+ #ifdef CONFIG_KASAN_GENERIC
+ void ___cache_free(struct kmem_cache *cache, void *x, unsigned long addr)
+ {
+-	do_slab_free(cache, virt_to_slab(x), x, x, 1, addr);
++	__slab_free(cache, virt_to_slab(x), x, x, 1, addr);
+ }
+ #endif
+ 
+@@ -6524,8 +6396,13 @@ void kfree_nolock(const void *object)
+ 	 * since kasan quarantine takes locks and not supported from NMI.
+ 	 */
+ 	kasan_slab_free(s, x, false, false, /* skip quarantine */true);
++	/*
++	 * __slab_free() can locklessly cmpxchg16 into a slab, but then it might
++	 * need to take spin_lock for further processing.
++	 * Avoid the complexity and simply add to a deferred list.
++	 */
+ 	if (!free_to_pcs(s, x, false))
+-		do_slab_free(s, slab, x, x, 0, _RET_IP_);
++		defer_free(s, x);
+ }
+ EXPORT_SYMBOL_GPL(kfree_nolock);
+ 
+@@ -6951,7 +6828,7 @@ static void __kmem_cache_free_bulk(struct kmem_cache *s, size_t size, void **p)
+ 		if (kfence_free(df.freelist))
+ 			continue;
+ 
+-		do_slab_free(df.s, df.slab, df.freelist, df.tail, df.cnt,
++		__slab_free(df.s, df.slab, df.freelist, df.tail, df.cnt,
+ 			     _RET_IP_);
+ 	} while (likely(size));
+ }
+@@ -7037,7 +6914,7 @@ __refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+ 				cnt++;
+ 				object = get_freepointer(s, object);
+ 			} while (object);
+-			do_slab_free(s, slab, head, tail, cnt, _RET_IP_);
++			__slab_free(s, slab, head, tail, cnt, _RET_IP_);
+ 		}
+ 
+ 		if (refilled >= max)
 
 -- 
 2.52.0
