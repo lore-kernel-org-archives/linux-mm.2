@@ -4,205 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91870D2502E
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 01:00:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDA8CD2502E
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 01:02:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02C276B0092; Sun, 11 Jan 2026 20:00:27 -0500 (EST)
+	id 34D5E6B0088; Sun, 11 Jan 2026 20:02:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF1D86B0093; Sun, 11 Jan 2026 20:00:26 -0500 (EST)
+	id 32AAF6B008C; Sun, 11 Jan 2026 20:02:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9C206B0095; Sun, 11 Jan 2026 20:00:26 -0500 (EST)
+	id 241AD6B0092; Sun, 11 Jan 2026 20:02:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C226D6B0092
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 20:00:26 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 70F1D13CB29
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 01:00:26 +0000 (UTC)
-X-FDA: 84321506052.05.09DC3F6
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012005.outbound.protection.outlook.com [52.101.43.5])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9D3B320014
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 01:00:23 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FOWrlhCe;
-	spf=pass (imf13.hostedemail.com: domain of jniethe@nvidia.com designates 52.101.43.5 as permitted sender) smtp.mailfrom=jniethe@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768179623;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 14F306B0088
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 20:02:42 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9FFC9D24B0
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 01:02:41 +0000 (UTC)
+X-FDA: 84321511722.11.154A190
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 48B9940007
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 01:02:37 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=2GL4nCqS;
+	spf=pass (imf07.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768179759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r+meQ6zbdYPWRMSc2n+22RHDs+DG44QvVuLeQb0l3NY=;
-	b=eJ9evboulip1YJdrBEVSZAdcYRlAqt2r8/mFujshOPYn1CI+6HeWEG4cEp3UWLlny0vZ7e
-	lSI3Abt/02bVPW9k0bxrfk50yfoLZ9DWg1VpZjzyIzsspsF4voWgWW+0FU+nEsBW3ashy0
-	syDXjsI4VJrA0bncML4T1/ni6FepGpI=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FOWrlhCe;
-	spf=pass (imf13.hostedemail.com: domain of jniethe@nvidia.com designates 52.101.43.5 as permitted sender) smtp.mailfrom=jniethe@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768179623; a=rsa-sha256;
-	cv=pass;
-	b=lSubS5ageAxdmp57sLUOxg65T8Jy2jh4j7kKYEiA/ipl+gZQTI52IrE5RCJo8+MIoyiGnH
-	45uvHBtA4rHiEEe2aoqU80Xi57q6fIGiHiGmO44ZXhvpGiaUYpgyJqOZeoH7wMiRTwtStE
-	gOWShGCt1hl1k4m5pXsPkz1rx8bO/oo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EMfoF4MJD3TLgH1fHCz1Oat+LISY5SM+gvm0XdebW3yRXrsFv5f6f9XtjPmYVABOUBsncH65xgu/eGn37eCFMj1dSYc3nCSj4RXzjnD2LgvMLkmDVSapolHcrAtv+NRqZVDoBkz60u4eyHSLtWnMPsrV31AsnBh52J021+g0gacDWel4FX92AA1GFMFCJUStCjPrcIXypQmmcqv0pYO+8n9wdzDkKB3xbje/7yyk3w5nA2WBIWH+AfglbWbbEqrZiMyFaTdo1d6z89H1LOk7a/DAZUWwpfeEkL0PS+UdopwbCZIncq3q/LTm5AJMZRBEk1YXNYvdn99Ux2Bjfgrz9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r+meQ6zbdYPWRMSc2n+22RHDs+DG44QvVuLeQb0l3NY=;
- b=oya1nJy5qNlI3UV8huCKm5d2G0JRZ0nDyMQ8Gw7W0zPpXuh7aBy0VknKsglBG5uji/nh3lYfKGt5WlD50doDHxYzVMvbZ+eUmzRZ1ZKPGE+F9nQoCsSbVZAgWH4JtyANUEVDVGBYlcPpMIxef9jx2dIYxOgepg4tzw+6K24/uSC8kOwFBBaokCcu08WgSNmEvbVPKvot8VqK/W99bXa3r68gu0WHv3HSMs5bfJNNU1wzdGtK4lM6gInu5lYjG369WkIszsaPv4wQDmKwJCvkCxLjtqCuk8QhA2pioFCu21Lcsa5PiOZdYjA80LlXWj/k7MAalqtw+M5kEBUaVCnbaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r+meQ6zbdYPWRMSc2n+22RHDs+DG44QvVuLeQb0l3NY=;
- b=FOWrlhCeZLekaGr0TnY15KjY0xR5ssRpLoQqT8q5ZWFAcoFilswbb8qeKqp7YiqtF+VpQa6Ormr+8sBv4rjyuym7ZVQHuhQSF14dGF25QsLozsSfcNNX2DK/+jxKiygq95T6EubG12HDovD9RsyXT4pcydvjkd1uahkBAAY+c1UGHzLiJu1Vb2KrYHGJn5mpk2oiOixfI7n56fn00xmCjkDelKWXDmhyTKxv1aV0rHS9JSWBe350Im5GhKyFhsnFug4y0l3sZHk0ivSBnXWAhenUWxOUo7rKQ1Q0379h5ifPUe4SkqG5fA8kJEs/XOCYvmPvNkYVu37yC0gOAFCWfQ==
-Received: from DM4PR12MB9072.namprd12.prod.outlook.com (2603:10b6:8:be::6) by
- PH8PR12MB6674.namprd12.prod.outlook.com (2603:10b6:510:1c1::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
- 2026 01:00:18 +0000
-Received: from DM4PR12MB9072.namprd12.prod.outlook.com
- ([fe80::9e49:782:8e98:1ff1]) by DM4PR12MB9072.namprd12.prod.outlook.com
- ([fe80::9e49:782:8e98:1ff1%5]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
- 01:00:17 +0000
-Message-ID: <375f5d20-7c15-4f8e-a9cd-c58e3e398c62@nvidia.com>
-Date: Mon, 12 Jan 2026 12:00:07 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/11] mm: Add a new swap type for migration entries of
- device private pages
-From: Jordan Niethe <jniethe@nvidia.com>
-To: linux-mm@kvack.org
-Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- david@redhat.com, ziy@nvidia.com, apopple@nvidia.com,
- lorenzo.stoakes@oracle.com, lyude@redhat.com, dakr@kernel.org,
- airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com,
- mpenttil@redhat.com, jgg@nvidia.com, willy@infradead.org,
- linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org, jgg@ziepe.ca,
- Felix.Kuehling@amd.com
-References: <20260107091823.68974-1-jniethe@nvidia.com>
- <20260107091823.68974-8-jniethe@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <20260107091823.68974-8-jniethe@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR13CA0196.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::21) To DM4PR12MB9072.namprd12.prod.outlook.com
- (2603:10b6:8:be::6)
+	bh=aPg6vaCImr+ip55lfi4oRdXLrN6Qwtt0VRIZwuaq5lg=;
+	b=PKTv0a8ofk1dE2a3R8TwCarx5CdMnK+3a7Obde8sEE97AJwdMi0mi6sBfoWGP9jqXtWPQG
+	1HsS47P5pUPsyD7WToG16oIfE/FPU5vBUalZU3Wgql5PyLQ+FXDXF5l99EZTEUUHlsRXzo
+	crK0+weZc33DSBJBHo0v+wsZsGqcaYw=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=2GL4nCqS;
+	spf=pass (imf07.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768179759; a=rsa-sha256;
+	cv=none;
+	b=P2K6GSsa37jioWSZT6w7TMQUTmFXPFkrp93OEgNL41626qCr4MrTdNbke8FTlZF4LVNYhK
+	rYv4LCnCzGjo/SGT0MFwSFwsbiYak5kANIMAI3VInnlzEuqTWj6iu5HasxYAlVeO0s0lKx
+	iRvdUbuCDMyUbiu5Efk7hNtC35SHvdc=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=aPg6vaCImr+ip55lfi4oRdXLrN6Qwtt0VRIZwuaq5lg=;
+	b=2GL4nCqS+yevqC9rPhkgLQP9aAeDas5HZQ3bkGvB7uCA6XuRsB8W+ODC7/FiS5U+B0bHDhxqn
+	H7XZk20KUcU59W/hBpAADp7+3XBHcb7QLOjTS5p44iPOt5nYhIqVfSdIZdPXT85SRvzqO38c8xd
+	YpWHDdn7WOuMg6I270LiS2Y=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4dqDYH0tRYz12Lfl;
+	Mon, 12 Jan 2026 08:59:31 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id B25A2404AD;
+	Mon, 12 Jan 2026 09:02:32 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 12 Jan 2026 09:02:31 +0800
+Message-ID: <1f8d9e87-ffb7-4cf5-b408-90e576115402@huawei.com>
+Date: Mon, 12 Jan 2026 09:02:30 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB9072:EE_|PH8PR12MB6674:EE_
-X-MS-Office365-Filtering-Correlation-Id: 17eb325d-e198-4dca-e597-08de5175f3d1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UXRwaXZPdHhpdGxaWUt0bUkzL1grckFtd0ZZalF0UWJMM203V0g2S1pRbkFj?=
- =?utf-8?B?ZTVlK21HZ3FYSW53VHIrOG12bTJjeXpnYUQwMmpvaWJvaDRGTjVTek1KdU4x?=
- =?utf-8?B?ajAxZng5WDNHU3VZY1grVS9EVHI0a3NFRnNYSU11MDY2dmRlMFZGTGlyU2VL?=
- =?utf-8?B?b3BzRmp0a0VRczRKbG1FcGcvVVpiWm1zOTQxK3laK3J5bm1hK1FPZXJoaCta?=
- =?utf-8?B?ejhKdWJSOGpwTWtNMHJSMlFXb3o5Ym5lTG50V2xkNjMyNDhXWlhCUVRZaTJ0?=
- =?utf-8?B?ZVVGSXhSd3gwbzJCZVJDR1dCOEZHeDI2UGY0REdTb3M1OWd6QmkrTlRhL2E4?=
- =?utf-8?B?elk0YjJQTXMydVZFMWhiS3I5aHJJem9nWUJYQk1aVDZaMlZtVWRCOWUrK1F2?=
- =?utf-8?B?d0NBZ1FFc2QwWlJaQlJOMDVMVkJQdjYzak5vRVZnODVPWHNVSHBkTDlpZVF2?=
- =?utf-8?B?TWNMYUw0dEJNbEV6cjR4dkFNU3FxWXp6NksvYnpHZFFMM1lkei9lMms5OTdC?=
- =?utf-8?B?cTc2dE8vampKVDZFZUpjcjBIQ3FwU0tEeGVUR2tjS2s3OFdIbzNMeU1TemxQ?=
- =?utf-8?B?U3NBQllpSjlvVzlhWnBiZ0FMU09iWXFaVmFSZE55eWpvVXBGL0ZxcERoSkhL?=
- =?utf-8?B?MXZFMWxURHBISVM0bGQ3YmpvaUlYZmlTOTNLRVdab251VUU0VzJCeEpoTTVq?=
- =?utf-8?B?OFpkNTJIdXJQOElmNzVNd3RPRm5HRlpCMlA2MkhHajdNT3ppNERSOFVyOEZY?=
- =?utf-8?B?MnJ1azNGUFk3OGRrQTlJeGtqaVFPemNZYzVlZmRzeVJhSGVxY0M1KzNDQm5p?=
- =?utf-8?B?aU1HT1QvcVdldjJmaFh3RDNOQzRoNjVqYnlaUmFTczdPYUhNd0VSNlg4aEpF?=
- =?utf-8?B?cFVUeFRoUitYeDlOTlZHZzYzQkNDK0MwWjlVM2hVNVRzWjhrczRNRWR3ZGtx?=
- =?utf-8?B?elJ5Z25jekFtSWNTeGFRSmttaVVuQVZCS1RrUENpc0huaXo2clB2a29qRFZm?=
- =?utf-8?B?bmFkSHhySEhJdWZuTFJHNTVaSDNPNVdVVnJKK3lLWVRFMUFyWVY0UlIvUzB1?=
- =?utf-8?B?aTRpejZ0R1ZzYVZoR1dBdDFsNFpuckNueFdZYTRoOHkrcVFvYitpc2VHUWNp?=
- =?utf-8?B?QVBBRWdOSEpWZzdHdUhZb0V0cWtIK2tzRjZQU3M2TVlsOFJsMDBvQnZ2WlVI?=
- =?utf-8?B?WEVFb2poekgyQVpGbDRlaWFUdWh2bVRFcjZERlNjdlVYbUhCYlIvN2VPQlNS?=
- =?utf-8?B?M1NubEFsS05tMFBUQ3AvcHFkVFltdDZydGJKNm1xUlI3Wkp6dHMwMTlhRE1p?=
- =?utf-8?B?Nzl4Ukg4aTB2TTNSTXpmQ0Q0bzU3QUJSeUhFcGNEb29CTVZFbzJBWlMyQ0hm?=
- =?utf-8?B?TXVYNUJ6YzR5T3p0UDNWNDYzS3AzK01TYmJQdVRpb1RCU0FuOVhkRUsvNE55?=
- =?utf-8?B?K1dsck42MjlWNjd6SzBVUUc1UVJRUk9pWStreVFQS2hidWFxeTVMUStvZE5B?=
- =?utf-8?B?ZzExQVpOUDhnTXZtRi9kMG0zKy8rNGhZbFpMMDVQSExwRTk0eWNERlU5d3hW?=
- =?utf-8?B?cXJGOEtYYm5ha2M0d3o3Qy9ScTN6bXBFZVFPYTNoeU5IWHBmc3ZLZnFpc1BU?=
- =?utf-8?B?UHkvRjVFNTZGNXhLa3JINDUyVmh2aWNHdHBNdFRqQnprejlJRjdOUUNxSnhB?=
- =?utf-8?B?Y1ZwSzZEN29uVm9Cbjh1ZDU1dWZHc1hiSld6MVoxVUVPdlFrL1ZLOFM0dHBI?=
- =?utf-8?B?Q0ZDU0FQWmowM0p4VUpxdkFaZ0E5bUxoVEM3WGFqRmJ5Rnp6NTg0NWI4MmJT?=
- =?utf-8?B?R3Uyajkrd3RhL1NtYjF0MXUzSWdQUERGOXFZeVlhMjVwS3Zmd1lYNkhad1lF?=
- =?utf-8?B?cFYzUHFyMlArRldxS2tjV0xpYlY1NkNNbkVPd1dWQXJBRjUwUjZaaU12UjNB?=
- =?utf-8?B?MzR5VC96N0tLVmVyc3A5SEltc2lFaERqTUh6TjVkV25YZ0t6bkM2T01SYjkv?=
- =?utf-8?B?bjFmNHFvRFJnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB9072.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R01rZWhmK0t6SFdBckZ3dU1sNnNMZFIwN2Z6TW5KODJqNTNaT1FZNTR0azVQ?=
- =?utf-8?B?TzBWSXo4SC9DY3VYbEZCcWhoNDJSWUlpcjN3czNoaEh4QWp4aGJtZ3lIMXNW?=
- =?utf-8?B?Rmcyazk0aGxSdEttb3Nvei9WSTd5V1c0MVZHWWwzcUdLbHo2Z0NsRTVWNzRT?=
- =?utf-8?B?cjNCMjBUUVlGWG51bXU1VmRRSS85NmxtazREM0VOZnQxS1lHUlVCQWJoQmFl?=
- =?utf-8?B?bC9lSG5oVWNLR0tVVEI0U0FXcmdoQ21SdzNBbUVLK1REamt0YkVvUGhOVm8v?=
- =?utf-8?B?K1RUWVJiT1ZsNnd3ZEw2Sy9TeXVjSTh2bHp0MmxiRVdXeEpsVzRGWU1raDJC?=
- =?utf-8?B?WG81VnNwa3M1SWp5SUhEUWJ4Qk5kYURzY2t6aExONWNVemMvTndyZEpYd2RO?=
- =?utf-8?B?bUI3R1RpUG5oTUhucFUxRXFoak1hS3FLWUZPeng2MTRLZjBIV2pCdTI3dlNS?=
- =?utf-8?B?SkJEUVhtMlV0ekZNUnhZK0c4azQ2OWw1b2NuWDdJZ2xlL01HZjBmNnZUZGlE?=
- =?utf-8?B?N3RHcU11TTdJYVFzL2s1VkZsWHo5ZWhpdlpnWTFYUGVlUkNCZTNYU1UxNjEz?=
- =?utf-8?B?WEMzRmtmYlJnbkc3QllYV2tNRmNTajRqZ3d5RlVhSlNOVUVBSjhEMGJPSVdj?=
- =?utf-8?B?UmgrWDd4OVBZZEVhMEw1UDZPRGk0cHNJMHBkQ2RuOTFjdDJjQ1RLL2t4bHov?=
- =?utf-8?B?NnlOdURaaXp1aUc5dWlXYUQ1ZUxNc0tDYVFXd3JIekdWU1JZc1VucnRMK0ZQ?=
- =?utf-8?B?RXdNL3lpQjhFNi8xd2YrRXU4K0pKQzE1UmpMc0pEM0dUMmRjNGt1c1o1em9B?=
- =?utf-8?B?N1F6K2xmSnBFTEI5OG9ZY2t3UFBPbjNwZ3JyTTFZRis0b2JuY1k2ZFlwVk9B?=
- =?utf-8?B?dXpINjZLK01FNitSVUJLUmVqMTU0L0RNRnZpd01JSzhMMkJWWERLMld3allM?=
- =?utf-8?B?Um1uSzltM3JjWFlkdEtXMUFJbitvZEMwdFFFOE5uTlM5OTJwa0NBYUozcito?=
- =?utf-8?B?ei9CYTFRV0hFMVZlVmFuMXVRbG5vUU95N1V5S2tiWVhtLzl1ekx5UnBHMW5r?=
- =?utf-8?B?R3Z2VFM0bC82K0VzdzRUWGxYNXBuTnBzckdkSHFRcUxIYittU3RmdHhkR3R1?=
- =?utf-8?B?bW1jVEtjVlJyK2tyTzU2SU5aNGtUS051OENFMDlPSE9YdEVtOXNtYVhhTjQz?=
- =?utf-8?B?N0VJQnNpNnIzWm9neE9TekpQUjA5WU41MEwxMDl0RXA1WXpBekF0NjRDYURx?=
- =?utf-8?B?NXg1bjR6TWM0UmM0VG8zZUtVR0pBckhlUExjL2hXOThaY1IxVW45WEFFcXFU?=
- =?utf-8?B?czFsRzBnUGpwWDZjbHlJbXZHVWYwQlFsZHZvbVhzRjdNemZJK0srMVZlVGNi?=
- =?utf-8?B?WVNuWHlYSGJ6SFlQVzFWZmFWeDJ6K1FRa1MxSXNtSlhnSmRxNCtmVGc0TXBS?=
- =?utf-8?B?b29mQW5EeC9DVHBxbTJZSlAzU1JSanlkbWt2Vkt3ditxRTF0RHNBSHBPY2Vt?=
- =?utf-8?B?cXZ6ODFCZVAybm45UEF4WTh2emNXZHJIbWNNbXZ6UjI1YUREQXRyaFpxTStX?=
- =?utf-8?B?OTlNUWczUHJLV0JCV3lXNUczOXFXU3FkbkIzZlgrRFRWRFVYVmNXSVdXWkk2?=
- =?utf-8?B?ZjR5SmwwbGhvR2ZDaEw3ZXRscW9WT2Y3K09NNVVkR3Q4NnlmVUdGMTFkdkF6?=
- =?utf-8?B?V2UyZHZlZ3pqU3FVU0lLYmNBUUs0a0R6UjVNZC96Q08wc1hMcjNWa0ZJd2dw?=
- =?utf-8?B?ZFQ3MnpRdjZ6RW9XQnA4K2hTNHg2R2syMTNCUlZPTFM0di9UM1dUU0NUbm9S?=
- =?utf-8?B?NVIrcS9LS3k4dDgwYlgwbmhIQ09rRlpaYlF1VDAveDhtWUU5QVVadHJoTUxI?=
- =?utf-8?B?UDNWYlhDSjJPaTJTUm1nWUdRZ1dHdENXS2NkVFNZKzNUVDZGT2NrYStPY1c1?=
- =?utf-8?B?L2k3bGVFemQ5RHJQcStaT2k1Y0N0bCtnMysyWm9KUkJKSkVuZ1ZlMHA3aDFq?=
- =?utf-8?B?TmZmTGhNN1ZJUzlHTGJNbHdRSW5Tc0xPZGw0RHhkbmIwWmpSYnlhcDUreUUw?=
- =?utf-8?B?a2w2ODVtSER1NW9nZFA5Qm1id3lkQ1haNEFwQkNHUWFNcm9rWTBJMEVidU1M?=
- =?utf-8?B?eUdRMmFBOGxUL2hOZ1JENk5aL1hVTk5TNWVSblhJV0ppeDhsK3pxRjBTRlhp?=
- =?utf-8?B?Q0dGaWFnNUZScldMemltZThpejRRTGgrQlpxNEQ4MmhyKzJSMXpJaVY1Q2dF?=
- =?utf-8?B?bzArN0NvQlhWRGZUNU9rOWV4L3RoYWxldmJFTUxGQ0x0ekJNUWNPUFlpLytS?=
- =?utf-8?B?MkhwRzRDV0gveE1EMnV0MHk3TS9OVWJMYmVUMHFzZFo2WHVNYzFvQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17eb325d-e198-4dca-e597-08de5175f3d1
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB9072.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 01:00:17.8202
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rYFbfUWO29eH7n1Uyfx2wP5aGqrcS4CIMy/VQKEqGNv//Hsy/SXtsO9w0uE+pkaxBEC/9IuySeT2v469xf4vAQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6674
-X-Stat-Signature: ushou5h6hu8p4qcc5hr8d96m3uyw3fw4
-X-Rspamd-Queue-Id: 9D3B320014
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] mm: page_alloc: optimize pfn_range_valid_contig()
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+	Muchun Song <muchun.song@linux.dev>, <linux-mm@kvack.org>,
+	<sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan <ziy@nvidia.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>
+References: <20260110042111.1541894-1-wangkefeng.wang@huawei.com>
+ <20260110042111.1541894-2-wangkefeng.wang@huawei.com>
+ <20260110154327.6a723dc91c059ac219272bcb@linux-foundation.org>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <20260110154327.6a723dc91c059ac219272bcb@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Stat-Signature: k7d8ieydnc39er4atfa4fawwhecstnjo
+X-Rspamd-Queue-Id: 48B9940007
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1768179623-524978
-X-HE-Meta: U2FsdGVkX1/S47EJ6atErRg/JmP0fYkS2nDPKRlxwtTZnv9NlTbsHsp0zJe0TOh3rZar6SwO9BMlNfUMGJ86I+lkvb4SHeOyYxl5LeARpuWF8smOa6lFGr/8RS09UdED2ul0wK8RO47zuP5oSn0NIR8abiu4uPS4BYCw86ZpjxN/fRGRd49KJfDX6oe104+wxwyyiruE8OMDrmxzfW6BJg2IwNQr2o1erTyNrKGJU8CBxiO7d4V6ay0BErrzJTOO5NGqENR6dhEvMaqx5bfifim6x7vYWLMrcEPC37pTrRXRPLAW2AcDS0eErmOdZbS42oLRBjGU9atTiNxD0/pGKHYhX6/x2ekbIuorcCCGcbzkM67lv+FKDMO/S5iFsipgWfnW+DXjMpbWUmdRkK/83k3RSdI2nIf9vRglUmhhMmjWw+SwjxDAjGO5M9RYk89a6r2eJLs8S/v8vKy6zjOUShAAJb7DIXY0L9reaRSVTlAG2v3Lnh7ipMfgWcpiUS07+rLYZXeWK7+YO41KyixUapLtBBWStFXrI/CSkpV5n0X9ZzHgLfhSo00D49Y8eVW/w4x9gJtQjJRmiEQLzrNKSMZBlIrAdkz5Sn6Knky/GW6QSSov6SsRzJ8ii7BMdr1L3sea6Jfj/IZK9qpib7kmNp7h3owC7S3Im0aDMAdIo2I73266G4nsCp9BoRt6FiVxYmdsPF4sM/9dHjlak3q76b6g/+PXn5oZR+Zpq/7Ag9tVZne7/odz+qYYyVBwXiEUJlx4qY9D96qJi8FbBi63ZpWQOVu6KagebO6dU/9Cgv7XCfrv4Sm+w1H7VqUgduS3SnReLEP1SGJoiGdR28THZKQZ1g0srAj8xn2148jjZBC7aEjkq80X+NCl/djk3prwwgXKDe9dbtsI8A9unt+WMXMsDv52pfp3hxHDN5Ap3iLREXvaApBBtj9PfonMJZlCBvrUmAneaHGVVk4RT3w
- et3eZd+p
- 49D/x9wc4kxNAv4Yx1XqW+lsQ5EkIUCQy/5In/wp3WnZgh3yLBITu/FQ7zcsqUy8Jx2K/XAnq+h519RroZAQz+wEIw/Wxz7xk0hHsGBmQhtMHoJPuPth4W16EE1paJL6lKiXoECAhVqKl3VqLeUBR5F3JCcZOfPE7gmYiEKfF6EGLyUxWhCAwpV8HFVoy+id8zoTtcBCMd26VQ4fE6E1fisvM29SGi5h1wMKmU8Yj3FEqie0Pmg90DCdGV24dOTW5Hj3q5wByomD0g93gLZ9/PTxjDu3fNmtaib7CSZOVh/x1+5v5uezV9DRkVvIkbdNCdoKiPdqF8fPdE0mtWddxpNpk6uGiY126gfpcr0mcl+dDllFEMtoVWLeSLoNi5IOdVFC5T/wIRZ6motOFsHTUZBG/yd47Onea9+TCWcYczeXVGI7/l2rtJtgCb8WrDEentBSKbPiFBLYGMEsIwfWasiOQDoe4D2SGeIBMfCMIhiP+Q0Y=
+X-HE-Tag: 1768179757-46562
+X-HE-Meta: U2FsdGVkX1+AtfdS/8FwaWIlZiDb8Cwhjs/iajaepNLvsfe1IyTnxJ/clmwvRG+34vHy4OTzeKniocGXYJQNTFBCQ7FTtR/Bn7hY3Ne6+DWHJEcZWujsqqpkjXF70nbOq6bhDmfIMJ2dUa+B1XzPpkV6VOazg+7cf14NwZRBA4dJJJyniisPOW8lQhJou6eGTqJ2c82zBPvr0P0Vuna9AalwvE35qtmb4w7EiD7cyS8fiNvQHPe+bHw5cVkJrIDhsnCVISKn1sGxlkI7kWVbnNldevYQMvSIl3gOfEQ/nykaVis/5wgPqPBs6FYuLixpjYrMyoDSuNXufwqOdQhmk9uTd2ypQC6cO0G3D1zfDohc0lxv+mCOG59/M9io7flaCz3/bfE01KlfVjL0cXfD8gcbKVS6AWEvzSz8sn3Xf42mC7SL0jWvpmTvAJEzWpXT527dX8sbUu0Mh8gR144tZfhYKsmmmJn9rllmn+6spoV3pyjbl5+yJ6UqotwuzajJ7YbVoiwL5YHYKRX11qWW5TOM04FfXTTlVZh/kKXRCd8rAfq4H2XVTpBvQhW5gxSyyqF6w59h/7zu7IOZ0D++uNEKOK6qBEr9y+GpnuoHKpNbEnP8STqOpBN6OQhl0IRRiOj9MaOsmiw9Qpz3WlnqzF8w5NWpeayQtn0xB4cYZKIDKxtiU++ooATmEKSLzE0+5jriYQSBmK1nLYtvLwZD2qk5degQk4ZLPn/hWWUAAX8OckGudatqhb5ZeHfmKHmpfiY9CX/yR5ZcpnMf8cozaSTCaTVKbPM3tXD67ZHMPcbWa4hHlml5p2cFqVZcbswSntiwBnpYKnJcOjYJWbRXnJhMY6l4qxU88UEU9bFp8LQMUSlEMllxjmRV0G2JjFYggdOemkCyhEH3BUJrPju6fxR6r0WWircjkXZWoppn8l+BNBD1lX+fklOUMyJ1soad27znzm+CL1lbFt/kFuu
+ 8ipCFKSc
+ 6RZdrdn98jIfWi9G5cHKrl4uYFKoHHtF4RaLCbUH5M8fqkQpB4bxEhckPaIiQfqhM6z3kG0SpXo9IZhisrUOD9O/Yt5SIW24G20MB89sYo8Aom/EIuYtnCJsmX4+2dxB/aJDnLWL+dPDNhdI6bDJpaK8Krk3g9W7xP9M9bxSXTAnmgztWOxWx/QHIFnn3eXBenbzfFNAAmLe04ptwvI+LM4EDJKAcNlaGXPcz9lix8Nv9MzQyS0cnwuxgYOI9HjONwJUljj5AcQG0zdNUjq9qT7Xo8YzD00vvMNh2LdlwkXxq/jakfSIMZBr4Vev3s7nrevLMnzoo555F6e7e8w6tEBcD4hlrnCyPLnvLQeXbuGg+sn+WOPvciaE9E6hhqfSizjM+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -211,207 +104,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
 
-I am copying across this discussion that occurred on a resend of this 
-series on the intel-xe list for a wider audience [0].
 
-[0] 
-https://lore.kernel.org/all/8bf680f0-94ed-4614-9ace-a081a6558460@nvidia.com/
-
-On 9/1/26 06:08, Lorenzo Stoakes wrote:
-
- >> @@ -28,6 +28,9 @@ enum softleaf_type {
- >>       SOFTLEAF_DEVICE_PRIVATE_READ,
- >>       SOFTLEAF_DEVICE_PRIVATE_WRITE,
- >>       SOFTLEAF_DEVICE_EXCLUSIVE,
- >> +    SOFTLEAF_MIGRATION_DEVICE_READ,
- >> +    SOFTLEAF_MIGRATION_DEVICE_READ_EXCLUSIVE,
- >> +    SOFTLEAF_MIGRATION_DEVICE_WRITE,
- >
- > I think these should be SOFTLEAF_MIGRATION_DEVICE_PRIVATE_xxx
- >
- > And I realise that's a mouthful 🙂
- >
- > But to be consistent with other naming, including 
-SOFTLEAF_DEVICE_PRIVATE_*.
+On 2026/1/11 7:43, Andrew Morton wrote:
+> On Sat, 10 Jan 2026 12:21:09 +0800 Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+> 
+>> The alloc_contig_pages() function spends a significant amount of time
+>> within the pfn_range_valid_contig() function.
+> 
+> Trivia time: saying "the foo() function" is no more useful than simply
+> saying "foo()".  "foo() spends a significant..." is shorter and causes
+> no information loss!
 
 Sure.
 
- >
- >
- > I don't see any users of this, do you definitely use it? I mean 
-presumably you
- > might in a subsequent patch, not checked.
- >
- > Otherwise I'd wrap it into softleaf_is_migration().
+> 
+>> - set_max_huge_pages
+>>     - 99.98% alloc_pool_huge_folio
+>>          only_alloc_fresh_hugetlb_folio.isra.0
+>>        - alloc_contig_frozen_pages_noprof
+>>           - 87.00% pfn_range_valid_contig
+>>                pfn_to_online_page
+>>           - 12.91% alloc_contig_frozen_range_noprof
+>>                4.51% replace_free_hugepage_folios
+>>              - 4.02% prep_new_page
+>>                   prep_compound_page
+>>              - 2.98% undo_isolate_page_range
+>>                 - 2.79% unset_migratetype_isolate
+>>                    - 2.75% __move_freepages_block_isolate
+>>                         2.71% __move_freepages_block
+>>              - 0.98% start_isolate_page_range
+>>                   0.66% set_migratetype_isolate
+>>
+>> To optimize this process, implement a new helper page_is_unmovable(),
+>> which reuses the logic from has_unmovable_pages(). This function avoids
+>> unnecessary iterations for compound pages, such as THP, and non-compound
+>> high-order buddy pages, which significantly improving the efficiency of
+>> contiguous memory allocation.
+>>
+>> A simple test on machine with 114G free memory, allocate 120 * 1G
+>> HugeTLB folios(104 successfully returned),
+>>
+>>    time echo 120 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+>>
+>> Before: 0m3.605s
+>> After:  0m0.602s
+> 
+> Well dang,  I'm surprised that the previous code was so bad.
 
-It gets used in the final patch of the series when we begin doing things 
-like:
+I found this when testing the previous patch(frozen gigantic folio
+allocation), The efficiency of traversing each pfn is too low.
 
-static inline struct page *softleaf_to_page(softleaf_t entry)
-{
-     struct page *page;
+> 
+> The patch does a lot of code movement, which makes it hard to see
+> what it actually does.  Is it possible to split these apart?
+> move-stuff-around, then speed-stuff-up?
 
-     if (softleaf_is_migration_device_private(entry) ||
-         softleaf_is_device_private(entry))
-         page = device_private_entry_to_page(entry);
-     else
-         page = pfn_to_page(softleaf_to_pfn(entry));
+OK, will split it.
 
+> 
 
- >
- >>
- >>   /**
- >> @@ -211,7 +279,8 @@ static inline bool 
-softleaf_is_migration_write(softleaf_t entry)
- >>    */
- >>   static inline bool softleaf_is_migration_read(softleaf_t entry)
- >>   {
- >
- > For these ones that you are making sort of compound now, can you 
-please update
- > the kdoc to reflect it? You've done it for others but not this one.
- >
-
-Sure, sorry I missed this one.
-
- >> -    return softleaf_type(entry) == SOFTLEAF_MIGRATION_READ;
- >> +    return softleaf_type(entry) == SOFTLEAF_MIGRATION_READ ||
- >> +           softleaf_is_migration_device_private_read(entry);
- >>   }
- >>
- >>   /**
- >> @@ -219,12 +288,13 @@ static inline bool 
-softleaf_is_migration_read(softleaf_t entry)
- >>    * readable migration entry?
- >>    * @entry: Leaf entry.
- >>    *
- >> - * Returns: true if the leaf entry is an exclusive readable 
-migration entry,
- >> - * otherwise false.
- >> + * Returns: true if the leaf entry is an exclusive readable 
-migration entry or
- >> + * exclusive readable device private migration entry, otherwise false.
- >>    */
- >>   static inline bool softleaf_is_migration_read_exclusive(softleaf_t 
-entry)
- >>   {
- >> -    return softleaf_type(entry) == SOFTLEAF_MIGRATION_READ_EXCLUSIVE;
- >> +    return softleaf_type(entry) == SOFTLEAF_MIGRATION_READ_EXCLUSIVE ||
- >> +           softleaf_is_migration_device_private_read_exclusive(entry);
- >>   }
- >>
- >>   /**
- >> @@ -241,7 +311,7 @@ static inline bool 
-softleaf_is_migration(softleaf_t entry)
- >>       case SOFTLEAF_MIGRATION_WRITE:
- >>           return true;
- >>       default:
- >> -        return false;
- >> +        return softleaf_is_migration_device_private(entry);
- >>       }
- >>   }
- >
- > So all of these above ^^^ are making it so you can't determine if an 
-entry is
- > 'migration xxx' vs. 'migration xxx device private'. Is this ok?
- >
- > Does anything need to exclusively determine if something is a 'migration
- > xxx'?
- >
- > If not then fine, but just wanted to check.
-
-The new entry types have the following relationship:
-
-SOFTLEAF_MIGRATION_DEVICE_READ is-a SOFTLEAF_MIGRATION_READ
-SOFTLEAF_MIGRATION_READ !is-a SOFTLEAF_MIGRATION_DEVICE_READ
-
-So it is remains possible the distinguish the types using the
-softleaf_is_migration_device_private_read() check
-
-In practice, the only reason for introducing this new type is so we know 
-when
-we can not call pfn_to_page() on the swap entry offset. That is the only 
-time
-that the difference matters.
-
-Rather than introducing a new type we could accomplish this by adding a new
-flag like SWP_MIG_DIRTY, SWP_MIG_YOUNG but my concern was how we handle the
-!migration_entry_supports_ad() case.
-
-
- >
- >>
- >> diff --git a/include/linux/swap.h b/include/linux/swap.h
- >> index 38ca3df68716..c15e3b3067cd 100644
- >> --- a/include/linux/swap.h
- >> +++ b/include/linux/swap.h
- >> @@ -74,12 +74,18 @@ static inline int current_is_kswapd(void)
- >>    *
- >>    * When a page is mapped by the device for exclusive access we set 
-the CPU page
- >>    * table entries to a special SWP_DEVICE_EXCLUSIVE entry.
- >> + *
- >> + * Because device private pages do not use regular PFNs, special 
-migration
- >> + * entries are also needed.
- >>    */
- >>   #ifdef CONFIG_DEVICE_PRIVATE
- >> -#define SWP_DEVICE_NUM 3
- >> +#define SWP_DEVICE_NUM 6
- >>   #define SWP_DEVICE_WRITE 
-(MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM)
- >>   #define SWP_DEVICE_READ 
-(MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+1)
- >>   #define SWP_DEVICE_EXCLUSIVE 
-(MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+2)
- >> +#define SWP_MIGRATION_DEVICE_READ 
-(MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+3)
- >> +#define SWP_MIGRATION_DEVICE_READ_EXCLUSIVE 
-(MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+4)
- >> +#define SWP_MIGRATION_DEVICE_WRITE 
-(MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+5)
- >
- > I've lost track on how many entries we have left, have you tested 
-this with a
- > config that maximises the number?
-
-Good point - let me double check that.
-
- >
- > I really hate how we do this by the way, that's another thing to 
-fix... 🙂
- >
- >>   #else
- >>   #define SWP_DEVICE_NUM 0
- >>   #endif
- >> diff --git a/include/linux/swapops.h b/include/linux/swapops.h
- >> index a9ad997bd5ec..bae76d3831fb 100644
- >> --- a/include/linux/swapops.h
- >> +++ b/include/linux/swapops.h
- >
- > Since this is pure softleaf stuff can we please put it all in 
-leafops.h if
- > possible? I know we already have some stuff here rather than there, 
-but this
- > really doesn't seem to belong here.
-
-The reason for adding the swapops.h entries to correspond with the softleaf
-entries was it looked like the swapops were still required for making
-the entries currently.
-
-That is, there aren't softleaf equivalents to
-make_readable_device_private_entry() and friends yet.
-
-Would it be better if I introduced the swapops.h changes in a proceeding 
-patch?
-
- >
- >
- > Cheers, Lorenzo
-
-Thanks for reviewing.
-
-Jordan.
 
