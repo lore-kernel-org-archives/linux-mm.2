@@ -4,95 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27F09CF45B2
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 17:29:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B2ACF45B4
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 17:36:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C2696B0095; Mon, 12 Jan 2026 12:29:35 -0500 (EST)
+	id 9382C6B0088; Mon, 12 Jan 2026 12:36:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 889546B0098; Mon, 12 Jan 2026 12:29:35 -0500 (EST)
+	id 8E5DA6B008C; Mon, 12 Jan 2026 12:36:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B5F76B0099; Mon, 12 Jan 2026 12:29:35 -0500 (EST)
+	id 7E5646B0092; Mon, 12 Jan 2026 12:36:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C7886B0095
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:29:35 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3E6E313BCAE
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 17:29:35 +0000 (UTC)
-X-FDA: 84323998710.18.3282BA8
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A0561100004
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 17:29:33 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a+Qy5jvU;
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768238973; a=rsa-sha256;
-	cv=none;
-	b=KM73npokcCxLrVZHVN+KhPwWZN3X/6NSGnFwwpHr9rwvPHiWfJfQ20BUlIiiN2goI90+hf
-	jPmsrCrv0tE2xOjWcd3tIncDBo7e0WcfEdnFnHGjEJfFaNKUx938lmzBx/yg0jyMDGgHbN
-	UxscTeHVQk7hKKzXyQvImliXHJ7pbdg=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a+Qy5jvU;
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 6A2FE6B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:36:53 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 19A1D13BCBE
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 17:36:53 +0000 (UTC)
+X-FDA: 84324017106.03.6D89255
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2839C40007
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 17:36:50 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="Nn9/mloe";
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768238973;
+	s=arc-20220608; t=1768239411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FY0/w6SRI+2kqetzJX1LT0B9kLK/wcrXIARZ28Atleo=;
-	b=1ctwbih7ke822c/Nv/Wp7bXEVZRrV2P4i2N0j63Yi3wY3a5Db8igJGDQpxqO2RNGXXSWXL
-	vwlvXbhVxLmWdZ0NaTJMebqT8KOheqAHtKtS4ueLhPHX7D/089obNV0C1TVIGImBI7xr2B
-	9HB8mYH2aQWHDw3GOdErUDaOPQF31TY=
-Date: Mon, 12 Jan 2026 09:29:18 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768238968;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FY0/w6SRI+2kqetzJX1LT0B9kLK/wcrXIARZ28Atleo=;
-	b=a+Qy5jvUIu6rI6L3MSNDfOPnirV01SolmBzJs+91mceIcOXZWZC3DRiGClIVkVEYMi1GdT
-	9h9ns5Wa9JtBBD3zxDWc8WULASiK/qQ1nRna0ZKqI8klrqnqPBeTtbrya1DrlR1y7FFUE3
-	wB8alzoyh6v0+XmH/0J7ojnf011k2Jg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Martin Liu <liumartin@google.com>, David Rientjes <rientjes@google.com>, christian.koenig@amd.com, 
-	SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Sweet Tea Dorminy <sweettea-kernel@dorminy.me>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <liam.howlett@oracle.com>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Christian Brauner <brauner@kernel.org>, 
-	Wei Yang <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Mateusz Guzik <mjguzik@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: Re: [PATCH v13 2/3] mm: Fix OOM killer inaccuracy on large many-core
- systems
-Message-ID: <tzgfnxf3tii4s65inlzghhrzgc5gkp2stugnuzuqnjraqbp57k@khqklb37lci2>
-References: <20260111194958.1231477-1-mathieu.desnoyers@efficios.com>
- <20260111194958.1231477-3-mathieu.desnoyers@efficios.com>
+	bh=iIrzuD3V8mK4XZdD49Fp4+4pZSOoDd5AA8lqEVpgoJQ=;
+	b=77SnZGie7ac2vP/lhbSJO+t5aAIJ80RClzDi98SKJ2IVchEKdKCXUIl07Lx8f2HQF82X7X
+	1ZjycFHcbbM11bVPocWAOHgj96iJwSNqeBavnEHC4lCY2PrrEDb0zrTxVTWALNv5fj70zE
+	yJPYzcsTTnhIcvwG/pc2uAB4vb+DX4g=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="Nn9/mloe";
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768239411; a=rsa-sha256;
+	cv=none;
+	b=AeODV9ZwcC3LmSgNL8U81/CDROlm1RTPMbSh8CE9y9ow1WPEpD99HXbA3fT65fIgOQtUf7
+	qmGNj+ntbjqOqC5Y/FvCVjsNE1LuKdx7tU439s1h3mEFNFm7F3oskfhbjJZGv/YO9FGGSA
+	dTmazmwY+ptOxMQUZkap+FLXwr9iNMs=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4f4cd02f915so49301951cf.1
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:36:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1768239410; x=1768844210; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iIrzuD3V8mK4XZdD49Fp4+4pZSOoDd5AA8lqEVpgoJQ=;
+        b=Nn9/mloed+P6xa+aSLedHvqFMu+Wc8A+TM4HCPhA/4jVPbqUKyolkFmhEibKWBn6YM
+         vnpZkcvhA/2AeLiCtcxGMNaEgqn/XFOJYeNOdoo/bbyyNK22O14gWDfApj5pdgEuuvu7
+         9tRCVFR1a6xvo6tMB7bOfGob5G3r9q+wUvQNGgGXgSzPUdr0PLCCkdwFD2Ya9O6maiFr
+         mVqvZfrzc8txPsfbsjDz2tDa+FM/mnPPhrKV/gayUp18mUEVTIn4IbgqAQ5TrHEWII/H
+         QPvBnDBTyiIhJcUh9wLVEKDNIkhQ0fg/eWiZ78jLaFbVb+FuTbq80BqAunT/SBgDDnP0
+         jAXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768239410; x=1768844210;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iIrzuD3V8mK4XZdD49Fp4+4pZSOoDd5AA8lqEVpgoJQ=;
+        b=ojx7S3yNRP5X9gTXo3cYvHPf1GFH/I0/eM+9AFQVn40uKgsjmbkCgRFnWpkMvG2S0O
+         0coFcOr0FPNG423uBO1yces5M8LiUjgmKpGa4Fk25dK69IipPLXcpCpereTpYzRO6Dsj
+         H0VqeoOseYdOWeBQ1CltwYfxr1cMS6nwtd/pfiq1svHNM65nn8pc6xe6T2T8reIwmzAK
+         P+WwpQJSzikn7VgbIFMCd5SafVubk1/4A6VZxp4E+A0GxPJNqkY1ydsDnFd4BXFdJprA
+         if7h5M3HPwWlJijgtlHGOSECk7WZjT7ipC2xReblWqQfrfApE9bTT4pKs0v9wzDW+wW8
+         WhGg==
+X-Forwarded-Encrypted: i=1; AJvYcCVdca1Um8LbkBj4h71qcwZxsciqynqysHvfIVetVcjLkCD4qioJjSfmrWxkquOpw8jiCXhhtNlF4w==@kvack.org
+X-Gm-Message-State: AOJu0Yz2lX8zwbYzhVtLFX4SLGE5IB6jkFhi2PU4EbBQ1BYlAXEv/kkw
+	3efqS/HQ55BUZDA91vJueHF7SPaKLL871KFAH1mkErMsbqKZOFVkVfaH5y0d89rFI5A=
+X-Gm-Gg: AY/fxX4anbMuBnzHBkZlhp+s07sdfmix8XzRl7hcQzyDCSo3Z8RlQxw8fN57fRPn88E
+	Mp9I8Z1oqUPWiJIcbMhcEH7tH4v3J+VXl1uZIVmEGRqTs204dexO+s8ccmNgwu/bMPgEKo2dKK9
+	O55yuRtYmSet4p1lKSyLnahdZIowhKnm6huCO3QICxK2wQY/ehItXqgFNiljVDxjzFKwIXDbBNQ
+	VkKd2ov3QukCMHqAvVA6FWIRnqcsVT/56j9tpBLrwoPuaafN6xz6tiTOU36R4LCeWe9Ott70AX6
+	K18bHSUAprehZ1nZTfo9z2Mjc7VFeyUEwGbX2ypkVgETnXrOL1eSQnJXEVUyf6zK9BxmMyAjb0a
+	sFOPfoWzbMk2+xKJUBuMrzL66vXiPosM60NAeNfEpHZH/ECpZdcoe+ohk1cq1ATCcniO5eyYC6f
+	JuzRSQ1fXq7deTQlfsphuMOfYedVFkWdW+oPpCg11C7N0V4aFx1JFIHHK5BSC+fXOCNm96xQ==
+X-Google-Smtp-Source: AGHT+IFIkZj0kkQefVdB6/+qxt7dAorkKD4y+wc4fxceCP23QaEoHwxiHll6IFZYaJtBeI5hcZkdtA==
+X-Received: by 2002:a05:622a:1b8c:b0:4ec:f6d5:ee46 with SMTP id d75a77b69052e-4ffb4af497fmr238029601cf.78.1768239410022;
+        Mon, 12 Jan 2026 09:36:50 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffa8d39230sm131000681cf.6.2026.01.12.09.36.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 09:36:49 -0800 (PST)
+Date: Mon, 12 Jan 2026 12:36:15 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com,
+	longman@redhat.com, tj@kernel.org, hannes@cmpxchg.org,
+	mkoutny@suse.com, corbet@lwn.net, gregkh@linuxfoundation.org,
+	rafael@kernel.org, dakr@kernel.org, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, dan.j.williams@intel.com,
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com,
+	david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk, rientjes@google.com,
+	shakeel.butt@linux.dev, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org, yosry.ahmed@linux.dev, chengming.zhou@linux.dev,
+	roman.gushchin@linux.dev, muchun.song@linux.dev, osalvador@suse.de,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	cl@gentwo.org, harry.yoo@oracle.com, zhengqi.arch@bytedance.com
+Subject: Re: [RFC PATCH v3 0/8] mm,numa: N_PRIVATE node isolation for
+ device-managed memory
+Message-ID: <aWUxD6yPyCbUVjlw@gourry-fedora-PF4VCD3F>
+References: <20260108203755.1163107-1-gourry@gourry.net>
+ <6604d787-1744-4acf-80c0-e428fee1677e@nvidia.com>
+ <aWUHAboKw28XepWr@gourry-fedora-PF4VCD3F>
+ <aWUs8Fx2CG07F81e@yury>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260111194958.1231477-3-mathieu.desnoyers@efficios.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A0561100004
-X-Stat-Signature: dkoep49iz7mhwm9etwcko6n9863kzg8c
+In-Reply-To: <aWUs8Fx2CG07F81e@yury>
+X-Rspamd-Queue-Id: 2839C40007
+X-Stat-Signature: zcx8q4tne48smcdy7e1wtbkaox9co3nt
 X-Rspam-User: 
-X-HE-Tag: 1768238973-555804
-X-HE-Meta: U2FsdGVkX1/AhJg/L8/zIbxR65VIcEuerTqYDDZ21jIRNIYKlqQA1EKDmCiGKgW4NunAV4/5Y3exY/eetB1Sr+V5hk3Z1LUvSD08lcK1O9w+HQpEfFi7tECBGtW+aqYzar3Y9P04XDpJ2xB8euiD9mtJxTtOjfe8FkAY8uWUhJe0TJSToJPRot/r169CyvQdtaB65VmtqTnVYxI8uoJ25wBHQQVEsoaQkoJYRBVDACkmFN3aZCS4dE8ByMe6leO9We5Y0VAiSgeVkpeBr80hzOkqp2BkfEA8dYFjEg4VoGh7eo2xnXMQ3ouyw7UVai0Vp0xaKerN0LY0hP3pPavC7ibcDZTdickfSm95kNkAfdHODJQB0fLvcX1C55VDAmWYvmWDF5dTImky0KJpvyZ5wxRrvdYKOWfvWcwTUhfGR4JLgi3OqiU38n0AwFLvLpyhrakpGZQxXSpouLszDPZ78jIuKLkOnCYKXf3xp75wQ1t5DPHJ14AKgZBRwIECZ0ggngw43fyPzduR00j83ZupfFzQBPpKgVhMHr8mpSxWnUqEGbkjLHh0CoJdp9TJ/EyYAVXh4tpagTN9F0dxcFwM7qaTtdCPWtxXr0FnEbaD2hEBI21YUX+J72cOIjtaHicZXJNAfM8n90MUi9GMFUWnkN6aTp9r2lpdFxhBorMQiLTHHwRrYuOp0Zvhn8ikRAam5uWNyk+RCCyyr4KNLd4JStwFQD0LUXYrY9OaFGvkQH4csmG/l+qBe0gC9h7ew1rMyV5p4c3Dn8ISL1s1zXfD6gjurc2T7BLKXs6VqDyDWUo/Zu2TygMxE4bjPXhidtiIC/Zx/VXj6rOn1pSi1QeP8qPtanKVCveI684NwpZFcdBg5C2MozbmtAoh7H3NRtpe05JeCXxBZ/P7ej2h60jLr5KVtCUDCJJwDO+jCwZIs154fpo/NFK5p4xmvuG5E0Ow
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768239410-879075
+X-HE-Meta: U2FsdGVkX1+L5mbSe5c8cwEluKA4CjaPeRIoaIn70j11SEWImu2yQL1WGdUOf9Ygh8Tqrq0pWtiihI0wtYOjFWZNVw5vSEHx3zfBO7b2gPvPVR6xJG57/3vjpfFIqsyheFFG1P0NuufHCN8ndEVNPYVD/oUVj8hwK6WjbvMMHWq+lIMcrMIwCkolzSTzgM5VNQbMQ5JyW6OhvQXLjNO2c2Owz1dZvdIuVVJiB0HAccB3of19HazoPB6Lg2oSBDTTyxZRXoL04FcQ8vKR1fjw4MlUKKqnfrrd8f9UbFkgedZhVtjx+Mc6VC+y3fhD0u/XJkS4+t6C4Xg8TK72y2R9MO5Opd+Q32CMJp3ra4eIXOZkL8ljIDnUxrpCctfGncRXHktv9zO7ITMVERBVZ5ruwf7PrC0EGMcuoSrBWTr0tJx+HkMEj6O+h9GCFqE0YiA34d4a2UispSHw7LStT3x/seNVdWa7SnQzcRrg56uTFFeSVRSguBjeizubwyFzp74ytEmXcCQRMZREMogL4w5vOa9Kd9FuGUsT8vMOdENlAYxQ9KBN8xyQhxgX2EjFMu0QH07rTWPkLsZk2m2JevZV/TooxqFRtWLYU159HSp69dWPRRp0dJBhXtNMjAxOGJ4B/K167DEBLUPXGau4Z5oTDIepBsF0sanzK/XSFAgBZpySNiVBtZYuKM3x5p8hFpC/kBzIO7E+9CSJpwn1BMNd0KDbN1TWy0cA79KD93/hRpFLXRwzCf53OqcGAJyrTeRTpK8NkBdO0RgtpdG+FITS0BExqHeg8/jQmoJeQrIt48ZneBzXw3lHx8LJ7CZk2iBQYvqNA0TXXkHqeXg1s5wLxRsms12t5Fd/mDfGLdqug3JOHbpN+5bsQQTE/y+UzvNcwVljq22OTjDDfkbgxu1HQzHpbpq08Xwm9icPCcqN7lNfu+4l2b3zs89vgRkpSS7AzKLJHCMROq8hmPSqdBh
+ p/jAXiWd
+ fOs4XryPBUXDhtqKrzfOOfJNmBoPt52c8Gp5bfldbNoIHuL998OVdIRofMieszprKR7gz9KZnBy1PKiWiS/hYYfamDH3AxdRXBGm0bKbV0XxjAE9WNYtj5xCPXVbdrKOlA/p5XOqe4Ene1n+3a0VHUdX7h+0GuFInP6NV4PEsh2MhA/OexNCaCLeVPjHhTTqiuCUfr900h7Z59GnrJv2t+AQgqPm8P51ZfiqnoS3AvpQvIPnteq20tMUEHcpZjjUQ/OCVK7IU7sGjUYKh+XT0tbp+4l6sxiJL3FUPWx2nSxcrC3igiD+nzCxvsE1pbDvqOwAIq/75BFcKSwguy6wS+lyoqFzx8Mat2aOpJYMzwat0DDMeB0B3GxOOw3YN4G9BEdb0f75+lZ+z/NWo9URh7li5eFt7T44XNXQC93fpCUmtJfUimKbojckTqackl37Mwrq6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,24 +143,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jan 11, 2026 at 02:49:57PM -0500, Mathieu Desnoyers wrote:
-[...]
-> @@ -626,14 +631,12 @@ static void check_mm(struct mm_struct *mm)
->  			 "Please make sure 'struct resident_page_types[]' is updated as well");
+On Mon, Jan 12, 2026 at 12:18:40PM -0500, Yury Norov wrote:
+> On Mon, Jan 12, 2026 at 09:36:49AM -0500, Gregory Price wrote:
+> > 
+> > Dan Williams convinced me to go with N_PRIVATE, but this is really a
+> > bikeshed topic
+> 
+> No it's not. To me (OK, an almost random reader in this discussion),
+> N_PRIVATE is a pretty confusing name. It doesn't answer the question:
+> private what? N_PRIVATE_MEMORY is better in that department, isn't?
+> 
+> But taking into account isolcpus, maybe N_ISOLMEM?
+>
+> > - we could call it N_BOBERT until we find consensus.
+> 
+> Please give it the right name well describing the scope and purpose of
+> the new restriction policy before moving forward.
 >  
->  	for (i = 0; i < NR_MM_COUNTERS; i++) {
-> -		long x = percpu_counter_sum(&mm->rss_stat[i]);
-> -
-> -		if (unlikely(x)) {
-> -			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%ld Comm:%s Pid:%d\n",
-> -				 mm, resident_page_types[i], x,
-> +		if (unlikely(percpu_counter_tree_precise_compare_value(&mm->rss_stat[i], 0) != 0))
-> +			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%d Comm:%s Pid:%d\n",
-> +				 mm, resident_page_types[i],
-> +				 percpu_counter_tree_precise_sum(&mm->rss_stat[i]),
 
-I haven't gone through the whole series yet but this "val:%ld" to
-"val:%d" conversion seems like unintended. Next patch fixed it but it
-should be fixed here.
+"The right name" is a matter of opinion, of which there will be many.
 
+It's been through 3 naming cycles already:
+
+Protected -> SPM -> Private
+
+It'll probably go through 3 more.
+
+I originally named v3 N_PRIVATE_MEMORY, but Dan convinced me to drop to
+N_PRIVATE.  We can always %s/N_PRIVATE/N_PRIVATE_MEMORY.
+
+> > > >   enum private_memtype {
+> > > >       NODE_MEM_NOTYPE,      /* No type assigned (invalid state) */
+> > > >       NODE_MEM_ZSWAP,       /* Swap compression target */
+> > > >       NODE_MEM_COMPRESSED,  /* General compressed RAM */
+> > > >       NODE_MEM_ACCELERATOR, /* Accelerator-attached memory */
+> > > >       NODE_MEM_DEMOTE_ONLY, /* Memory-tier demotion target only */
+> > > >       NODE_MAX_MEMTYPE,
+> > > >   };
+> > > > 
+> > > > These types serve as policy hints for subsystems:
+> > > > 
+> > > 
+> > > Do these nodes have fallback(s)? Are these nodes prone to OOM when memory is exhausted
+> > > in one class of N_PRIVATE node(s)?
+> > > 
+> > 
+> > Right now, these nodes do not have fallbacks, and even if they did the
+> > use of __GFP_THISNODE would prevent this.  That's intended.
+> > 
+> > In theory you could have nodes of similar types fall back to each other,
+> > but that feels like increased complexity for questionable value.  The
+> > service requested __GFP_THISNODE should be aware that it needs to manage
+> > fallback.
+> 
+> Yeah, and most GFP_THISNODE users also pass GFP_NOWARN, which makes it
+> looking more like an emergency feature. Maybe add a symmetric GFP_PRIVATE
+> flag that would allow for more flexibility, and highlight the intention
+> better?
+> 
+
+I originally added __GFP_SPM_NODE (v2 - equivalient to your suggestion)
+and it was requested I try to use __GFP_THISNODE at LPC 2025 in December.
+
+v3 makes this attempt.
+
+This is good feedback to suggest maybe that's not the best and maybe we
+should keep __GFP_SPM_NODE -> __GFP_PRIVATE
+
+> > > What about page cache allocation form these nodes? Since default allocations
+> > > never use them, a file system would need to do additional work to allocate
+> > > on them, if there was ever a desire to use them. 
+> > 
+> > Yes, in-fact that is the intent.  Anything requesting memory from these
+> > nodes would need to be aware of how to manage them.
+> > 
+> > Similar to ZONE_DEVICE memory - which is wholly unmanaged by the page
+> 
+> This is quite opposite to what you are saying in the motivation
+> section:
+> 
+>   Several emerging memory technologies require kernel memory management
+>   services but should not be used for general allocations
+> 
+> So, is it completely unmanaged node, or only general allocation isolated?
+> 
+
+Sorry, that wording is definitely confusing. I should have said "can
+make use of kernel memory management services".
+
+It's an unmanaged node from the perspecting of any existing user (no
+existing core service user is exposed to this memory).  But this really
+means that it's general-allocation-isolated.
+
+ZONE_DEVICE is an unmanaged zone on a node, while this memory would be
+onlined in ZONE_MOVABLE or below (i.e. it otherwise looks like normal
+memory, just it can't be allocated).  In theory, we could re-use
+ZONE_DEVICE for this, but that's probably a few more RFCs away.
+
+I'm still trying to refine the language around this, thanks for pointing
+this out.
+
+~Gregory
 
