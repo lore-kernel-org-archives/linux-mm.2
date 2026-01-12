@@ -4,86 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9847FC9EC7C
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 12:16:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D193AC9EC77
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 12:25:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1A886B0088; Mon, 12 Jan 2026 07:16:38 -0500 (EST)
+	id 42E466B0088; Mon, 12 Jan 2026 07:25:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC7D66B0089; Mon, 12 Jan 2026 07:16:38 -0500 (EST)
+	id 3B1A36B0089; Mon, 12 Jan 2026 07:25:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA00C6B008A; Mon, 12 Jan 2026 07:16:38 -0500 (EST)
+	id 2BDB26B008A; Mon, 12 Jan 2026 07:25:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C8AED6B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:16:38 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 609A68CC2E
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:16:38 +0000 (UTC)
-X-FDA: 84323210076.27.7DD1E21
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8E4BC100006
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:16:36 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=imbyE6ku;
-	spf=pass (imf05.hostedemail.com: domain of yajun.deng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A1766B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:25:07 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC262BD03A
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:25:06 +0000 (UTC)
+X-FDA: 84323231412.29.281DB2F
+Received: from out28-221.mail.aliyun.com (out28-221.mail.aliyun.com [115.124.28.221])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 16F20140010
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:25:03 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=antgroup.com header.s=default header.b=D9J0ZIyl;
+	spf=pass (imf09.hostedemail.com: domain of houwenlong.hwl@antgroup.com designates 115.124.28.221 as permitted sender) smtp.mailfrom=houwenlong.hwl@antgroup.com;
+	dmarc=pass (policy=quarantine) header.from=antgroup.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768220197;
+	s=arc-20220608; t=1768220705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=OVWY/dnICKjphyKsb50bvyo0Pt8KlZMZFnV041JZSGk=;
-	b=qM0PBALWxOcfEVxXDLieuVlfLcz3Wth9vOY+zu4qvO9BlUykTq32MjcO6Aq+X3+5WGvRbO
-	9tc0PLwLzZO5c8uewotlUjtBzUM+yjonPwj3VuLodf9tR8WSl1RNY8ep8PFp5MkqhHFQ3d
-	dmQn4w2lhM8GZyVggHeWjfa24s9HRY8=
+	bh=W6q6jrVZBcY3e5Gy+REWr2FSrmxj9FY94K4NJK1jOcE=;
+	b=UMnJhQWTs7XZsOV0PCppUUjGMP/pGTUOauDTRkazH6tf03zRdqwta/xycQuAkSJtrO5SBU
+	XAFZzSHTC9iocmNiC3FGf3tPR/15olpArzcbiXeu36oAWnTgzXFc50G9XQn17gVfL66opZ
+	N2JJPjhAc/5UKsdfl+FMDjKYJ6My8cI=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=imbyE6ku;
-	spf=pass (imf05.hostedemail.com: domain of yajun.deng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768220197; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=antgroup.com header.s=default header.b=D9J0ZIyl;
+	spf=pass (imf09.hostedemail.com: domain of houwenlong.hwl@antgroup.com designates 115.124.28.221 as permitted sender) smtp.mailfrom=houwenlong.hwl@antgroup.com;
+	dmarc=pass (policy=quarantine) header.from=antgroup.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768220705; a=rsa-sha256;
 	cv=none;
-	b=HzFybkwtb9tXs/1JJ1ayIIQrkDgIgv8V4OwpTcl25j9RTcXm9RstwAtj8to5DtvkMu7FMp
-	IAxs2F/zAkbPh9E7FIbc+bYFvwTDzaSqWh/yVlW3N2f4cd5ydjqh67HorA9m8zjJsNVzyV
-	QvJTsrTBT/A5osRLvr1ertoqFfER0ek=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768220194;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=OVWY/dnICKjphyKsb50bvyo0Pt8KlZMZFnV041JZSGk=;
-	b=imbyE6ku6JxtT9B0A+vaToGO5vlqkt7Ohwuao9YbvaEPl/EPO9MnlXX/RjHp3KvezjLKO5
-	+s28Gix19dhPj49Vq35vDTkuERrNZpUSgn606YK5ppAMVqjPqqjAF2LZEzLuuqjtAfVPj2
-	kmM4kArMsouyjodp7X0v2YVxSDCOUUE=
-From: Yajun Deng <yajun.deng@linux.dev>
-To: akpm@linux-foundation.org,
-	vbabka@suse.cz,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Yajun Deng <yajun.deng@linux.dev>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: [PATCH v2] mm/page_alloc: Avoid duplicate NR_FREE_PAGES updates in move_to_free_list()
-Date: Mon, 12 Jan 2026 20:16:14 +0800
-Message-Id: <20260112121614.1840607-1-yajun.deng@linux.dev>
+	b=zDHOzgUmNtfxVMJAjVBZWON2TaMBm/k6bBujf+yJ30BjSfsB7W8d34A+2Kf3cJjKUQXlml
+	LO4+MfNG9mLKTYO3B2VKjR9pI4iD1JW6d/4xA63d4/M7qY9ltZnJ749A93Zj/Yzhv9RbpF
+	gYS4W8bON3Ghgu3PJdqvqxT9U7COj0w=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=antgroup.com; s=default;
+	t=1768220696; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=W6q6jrVZBcY3e5Gy+REWr2FSrmxj9FY94K4NJK1jOcE=;
+	b=D9J0ZIylqQwpePRrfKq9dpahycL7DEVwgQX2OfWSH1o4cm0KotRyq1NilNdJLHY6n6BljVTHX02rq04QcLO4bPmDmOLbc9M7w4mzypx6qf1u8qnWj5vMUINF1m8grt3OPSIk/CgoUGmAa/SbFX7SrtKDWAgT+PIyMIAPXgFG1cM=
+Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.g4ekSz3_1768220693 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 12 Jan 2026 20:24:54 +0800
+From: Hou Wenlong <houwenlong.hwl@antgroup.com>
+To: linux-kernel@vger.kernel.org
+Cc: Hou Wenlong <houwenlong.hwl@antgroup.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org
+Subject: [PATCH mm-new] mm/early_ioremap: Clean up the use of WARN() for debugging
+Date: Mon, 12 Jan 2026 20:24:29 +0800
+Message-Id: <d4470531ce0c03fd80f9a1be7e8d8ae1bc60fcd1.1768220636.git.houwenlong.hwl@antgroup.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: c5yi9zwn5jspxtdisbx8wdz6ah9k9zpz
-X-Rspamd-Queue-Id: 8E4BC100006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768220196-945410
-X-HE-Meta: U2FsdGVkX1/Q6/0qT0suiDgouWDJIpKEV3yBUr13l7SNRiZhcANU7/oEMZ5vnwGj0lLq31BLprhDmcLXMDKBrHb9iW5xBr8NArrLK06ssTEkdzBzC+9Z/T5HtpQrLjD40Bu8/b5v0hkmPrd6oQ+I4GsEv6FCYyN3ARd3y8lmpyOcPQAeGaqVCcLajEfexY7AmA6HOPXRDvloNVNzYyegSrBxworS7KRsC3OHIgV7P6SVNPTx1wIR351D42tJNio9Htc5DBHyZbZTi/mJW3SkoM2VE343BOQQfwzvcONhxNBoi4EBhcPP0wLxHLQVCb66wRRa2IbEPnkqrSOImEheA4rMNhULJcQXmeREg/gxPY0RAPGdwr5/+nD/dXCPifhdQi2/FnkKpaq3FJ/C/7LAAE3hwnpy3yz5UKXOwTXtx2LN3XVBMAXABkiA0rOWKNInCKsvsASEKUEglmvHRFYTsjwJRKslt75fd1uIMtc9rGMHlUgvdBXnv8xakmdXhsjODiTbbxjBOGx/1EBQabrwa/6FNpBsCnrHZ5+xu2xOLrvlM/MaQ/hQ/rsIcyBBknJgt5G99vat8aZyP18E4gf8C/hyr1el6I4DrisMYhVBw2yWAQQDvP7Zzn4OI12tk/RHd7mJ+/R1hvj7PdH0DviJpzOkoo+9N+1caWCmS4dDcz9MhwB7JHhCg5nmoOi7CP7g64JLPUAJag+LNlf26R642fvhHMrZ8CUXGxI3KvaERnXtjsKwrssMungmTo5iWq+aVMMMMF/AGJvNRE6ll9qwCcA5gzoDfcpPE4zKRcQ7wHGTI8H1c6is4NRk/S0FxnVUZHqAxdsGCznCTKMmCrxrS+I6rvL8uPzWU4uhoMky+Ups9zW55kggg6cgPNUP05qOTOgh079O5VF0C9RY8eqKV45lt9En7N36yAXwhEse+XvgY1XIGey2uQBpRCMLM32rxVLhzweApNVP2fLFJNA
- OVJB0K6c
- U5tKr2sAml24AY4cYhwdHwURderLyXQjuQYZRoe0UW/H4xCeuqH6dupvNIaEqUAiIu2ahN+visyDJgpriPeQpNK0jIm8vgCxkCq0Pa3rvttjHI850EqUvpCWuIlqZvB5FF17MypPZmV2G1UD8Q170UsWgXECA8jI476lVS2k+aFoY+JP/9ivQz4tGMk+9YsbhuJ65kckl7vTPYnffNrI6Ortin7/xYGikgp5GbtRJEZKSR89gD7SY0MInpQ2oPB+JBpDuFsFHp3ct2indQFXIH2U8WnbOSBfxJ6HQeWG788Li2O0yGd+DsoqCBR1vFlzGsrqAnJ+gThQJHOEUO3wCTZyjscLnuY9eHlZ3FSgAhHIYG0o2LuLZgsMMR5IoHbqtSwxp3Tfzwj+94qw=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 16F20140010
+X-Stat-Signature: 4q81nbftzdijeuky6ff5x4q6orhmt558
+X-HE-Tag: 1768220703-374052
+X-HE-Meta: U2FsdGVkX18lYcmh8NpFsO5viSJ9NFB6Av4MtaYoR0K/K/lfy0J9Bf+eQklkRqYTVEsLD+4CjN/6YwVtvy2ZXBwIwyQo7htd0w7AjyUGYcCsgCC/b02g8kg0tG0qxmn2uPYA8ljOMejORMXah3U2xGjCeeSXPAKeFXhxYv7D+nD4IEtpn390fKFOuiR3WQr+3t+eoj5KSaxhh8TC5koWNQqpfDWM5tfAWwZxESHYE6hpDYCQCYGjv8paWTcQmAsE8lxzY2kZuxj44K71WYavNf9nGnooYaHQa7Fa131FlerhNVK66h99XUg5aKVkdFNOJcbQ7S5rMWprfGEhjvqKIpYZ22tFAMQZSwYdP3vxxMDZ/1x8o/QyvjwhvNUwiAnX/tSbNMr0n1vEVJDsa5y0vyLDI2tAwUfXv3DXAnjP2pYqqwv/mfcLNH5Uz9ck9AaxvONCLDhvuer97dwgSbcb1VMzWlpiDWM0VSic/5iRPCsyKluuAyLL1sDIneU9g3+V9v7LihdAvjAfdI1z7c5uqiOF/iNPDpyggBXmukTn/vMIIyxS/sF7V0jYawphYxFyRUUx5ZSt2wR0EQ+bSfmM0Hz2sCNk5SU3QYOrk7cwST9DAWcBevESY2Lusn7Y9ZjLo8WMjGX0BeE6Fjyh8EhkxF8YzmCDfcSdr8TVea4QspGMUOvj0ly+ElZV0AUXM4a5yywThif1hPmbk7LAN24wEPbgZnJtHu3Feg+3aSAoVHr11zf0r0MS0aPqo8t+DRL73/Nnmn1Nctkky+bEQGAfkb4pt0inkBl+pKJwG3i6EzHPjJwAx795MZ//piNPqn3Cbn8TbURLsurN1mBkMMr0pL7K6G6JjHO4yxg/TI5WugVLiQEy3gT5aJMIw8KsgR6RgLk4Ho6A9Vi+qjePzw+4xfvoOfEb/KEUqRnUNzTj3h37waO4+zZFZjbHR9uNj83H
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,100 +88,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In move_to_free_list(), when a page block changes its migration type,
-we need to update free page counts for both the old and new types.
-Originally, this was done by two calls to account_freepages(), which
-updates NR_FREE_PAGES and also type-specific counters. However, this
-causes NR_FREE_PAGES to be updated twice, while the net change is zero
-in most cases.
+Using WARN() for debugging is strange when nothing is wrong, so replace
+WARN(early_ioremap_debug) with pr_warn() + dump_stack().
 
-This patch adds a condition that updates the NR_FREE_PAGES only if one of
-the two types is the isolate type. This avoids NR_FREE_PAGES being
-updates twice.
-
-The optimization avoid duplicate NR_FREE_PAGES updates in
-move_to_free_list().
-
-Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
-Suggested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Suggested-by: Mike Rapoport <rppt@kernel.org>
+Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
 ---
-  v2: remove account_freepages_both().
-  v1: https://lore.kernel.org/all/20260109105121.328780-1-yajun.deng@linux.dev/
----
- mm/page_alloc.c | 38 +++++++++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 13 deletions(-)
+ mm/early_ioremap.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ebfa07632995..d56e94eb4914 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -812,6 +812,16 @@ compaction_capture(struct capture_control *capc, struct page *page,
+diff --git a/mm/early_ioremap.c b/mm/early_ioremap.c
+index 3fdde074c9da..96c29b9dc85d 100644
+--- a/mm/early_ioremap.c
++++ b/mm/early_ioremap.c
+@@ -30,6 +30,14 @@ static int __init early_ioremap_debug_setup(char *str)
  }
- #endif /* CONFIG_COMPACTION */
+ early_param("early_ioremap_debug", early_ioremap_debug_setup);
  
-+static inline void account_specific_freepages(struct zone *zone, int nr_pages,
-+					      int migratetype)
-+{
-+	if (is_migrate_cma(migratetype))
-+		__mod_zone_page_state(zone, NR_FREE_CMA_PAGES, nr_pages);
-+	else if (migratetype == MIGRATE_HIGHATOMIC)
-+		WRITE_ONCE(zone->nr_free_highatomic,
-+			   zone->nr_free_highatomic + nr_pages);
-+}
++#define early_ioremap_dbg(fmt, args...)			\
++	do {						\
++		if (unlikely(early_ioremap_debug)) {	\
++			pr_warn(fmt, ##args);		\
++			dump_stack();			\
++		}					\
++	} while (0)
 +
- static inline void account_freepages(struct zone *zone, int nr_pages,
- 				     int migratetype)
- {
-@@ -822,11 +832,7 @@ static inline void account_freepages(struct zone *zone, int nr_pages,
+ static int after_paging_init __initdata;
  
- 	__mod_zone_page_state(zone, NR_FREE_PAGES, nr_pages);
+ pgprot_t __init __weak early_memremap_pgprot_adjust(resource_size_t phys_addr,
+@@ -139,8 +147,8 @@ __early_ioremap(resource_size_t phys_addr, unsigned long size, pgprot_t prot)
+ 	if (WARN_ON(nrpages > NR_FIX_BTMAPS))
+ 		return NULL;
  
--	if (is_migrate_cma(migratetype))
--		__mod_zone_page_state(zone, NR_FREE_CMA_PAGES, nr_pages);
--	else if (migratetype == MIGRATE_HIGHATOMIC)
--		WRITE_ONCE(zone->nr_free_highatomic,
--			   zone->nr_free_highatomic + nr_pages);
-+	account_specific_freepages(zone, nr_pages, migratetype);
- }
+-	WARN(early_ioremap_debug, "%s(%pa, %08lx) [%d] => %08lx + %08lx\n",
+-	     __func__, &phys_addr, size, slot, slot_virt[slot], offset);
++	early_ioremap_dbg("%s(%pa, %08lx) [%d] => %08lx + %08lx\n",
++			  __func__, &phys_addr, size, slot, slot_virt[slot], offset);
  
- /* Used for pages not on another list */
-@@ -861,6 +867,8 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
- {
- 	struct free_area *area = &zone->free_area[order];
- 	int nr_pages = 1 << order;
-+	bool old_isolated = is_migrate_isolate(old_mt);
-+	bool new_isolated = is_migrate_isolate(new_mt);
+ 	/*
+ 	 * Ok, go for it..
+@@ -185,8 +193,7 @@ void __init early_iounmap(void __iomem *addr, unsigned long size)
+ 		  __func__, addr, size, slot, prev_size[slot]))
+ 		return;
  
- 	/* Free page moving can fail, so it happens before the type update */
- 	VM_WARN_ONCE(get_pageblock_migratetype(page) != old_mt,
-@@ -869,14 +877,18 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
+-	WARN(early_ioremap_debug, "%s(%p, %08lx) [%d]\n",
+-	      __func__, addr, size, slot);
++	early_ioremap_dbg("%s(%p, %08lx) [%d]\n", __func__, addr, size, slot);
  
- 	list_move_tail(&page->buddy_list, &area->free_list[new_mt]);
- 
--	account_freepages(zone, -nr_pages, old_mt);
--	account_freepages(zone, nr_pages, new_mt);
--
--	if (order >= pageblock_order &&
--	    is_migrate_isolate(old_mt) != is_migrate_isolate(new_mt)) {
--		if (!is_migrate_isolate(old_mt))
--			nr_pages = -nr_pages;
--		__mod_zone_page_state(zone, NR_FREE_PAGES_BLOCKS, nr_pages);
-+	if (!old_isolated)
-+		account_specific_freepages(zone, -nr_pages, old_mt);
-+	if (!new_isolated)
-+		account_specific_freepages(zone, nr_pages, new_mt);
-+
-+	/* Only update NR_FREE_PAGES if one of them is isolate type */
-+	if (old_isolated != new_isolated) {
-+		nr_pages = old_isolated ? nr_pages : -nr_pages;
-+		__mod_zone_page_state(zone, NR_FREE_PAGES, nr_pages);
-+		if (order >= pageblock_order)
-+			__mod_zone_page_state(zone, NR_FREE_PAGES_BLOCKS,
-+					      nr_pages);
- 	}
- }
- 
+ 	virt_addr = (unsigned long)addr;
+ 	if (WARN_ON(virt_addr < fix_to_virt(FIX_BTMAP_BEGIN)))
+
+base-commit: ab3d40bdac831c67e130fda12f3011505556500f
 -- 
-2.34.1
+2.31.1
 
 
