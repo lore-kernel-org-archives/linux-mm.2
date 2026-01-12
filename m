@@ -4,94 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A79D25051
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 08:30:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A562BD25051
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 08:34:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15FA46B0088; Mon, 12 Jan 2026 03:30:51 -0500 (EST)
+	id E6E396B008A; Mon, 12 Jan 2026 03:34:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 117A76B0089; Mon, 12 Jan 2026 03:30:51 -0500 (EST)
+	id E1BCD6B008C; Mon, 12 Jan 2026 03:34:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03F916B008A; Mon, 12 Jan 2026 03:30:50 -0500 (EST)
+	id D1ABF6B0092; Mon, 12 Jan 2026 03:34:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E5BF46B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 03:30:50 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7FD931B87E
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:30:50 +0000 (UTC)
-X-FDA: 84322641060.28.BCFF92C
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 72FF51A0006
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:30:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BF8D06B008A
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 03:34:27 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E8EC1AD43A
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:34:27 +0000 (UTC)
+X-FDA: 84322650174.16.B1F1361
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf13.hostedemail.com (Postfix) with ESMTP id EC6A52000B
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:34:23 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jeESO6WA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cta12H05;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="o9X/K+4h";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="e23VvG/9";
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768206864; a=rsa-sha256;
+	cv=none;
+	b=HLOCgWjXBBKjkCL80aUIIa4csbNM3azNW8bMSeW7Z+thLWTn15rWeKkuPXKyVNgufOVWMu
+	GGkE/01ZHGcEUqtsVrVfs9Dros7UVnp78CbvX751f7qmiC3+97AMTkEy8qQY7JA3RzxPfw
+	im7c1+MqXpC26hO7w3gerdHYpazWu0c=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jeESO6WA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cta12H05;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="o9X/K+4h";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="e23VvG/9";
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768206648;
+	s=arc-20220608; t=1768206864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3JX1O+9LZrPvnpGh1HgvwB9ZEk5sAQSjWM6oT2xhmOs=;
-	b=dWDTtjujVu4VO/Ln58O8+s7cvA+h5La/0y3WKzZUvhPH7l1ZnxHR8CWeKAKXvL9BfqeWuf
-	Mfd8p58mHwgN63lDbxzVBQdOTSkRhS/35aKLEPaQLWCP4okoiRGJ91lideMw1BacFhEd/e
-	Q8Ap9e413PMz2HZxwG+i7Y8KIA7FC9s=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768206648; a=rsa-sha256;
-	cv=none;
-	b=IISkRbA6fX7T2dn3t/pVwJ2EpJg0/hPpxg7MYyDn9CJMiJc+jueBDwwpO/zGSAOVdD/aCt
-	6mP3TV5LaBiJu8mQ2u4j6MiYPAq1GyasVyA2G4Jq7F9CM02Ocp27nV7wjgj/3YIoqbAPWI
-	ywjKSEFoPkVmJ9QwAWHBfzzhHqU6xN0=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dqQYc2qxdzHnH78;
-	Mon, 12 Jan 2026 16:30:28 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0AE8C40572;
-	Mon, 12 Jan 2026 16:30:44 +0800 (CST)
-Received: from [10.123.123.67] (10.123.123.67) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 12 Jan 2026 11:30:40 +0300
-Message-ID: <ec023298-c26d-437b-a023-b49509f83c5a@h-partners.com>
-Date: Mon, 12 Jan 2026 11:30:38 +0300
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OwD4kApjFPZsXwhiMrMbTKQ84/M6yc6WaUVtiHu4Pmc=;
+	b=dKwDuSzfGu6Fbuwjq4rh71w2KAh9BaAGCvc2REMtbcWhhYVBij5hHrwkP2K9kyDmJXXR7x
+	jYupmiD7Wv2jbn0Je+eyHfkVSB4QM42Hw2IJUmvUoGSgnuqUjnad+rm5Ie3zzaMrbYEm01
+	qIVbj+AhW00G15UGJCt9iN2Q35Hyg7A=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8BB555BD5A;
+	Mon, 12 Jan 2026 08:34:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768206862; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OwD4kApjFPZsXwhiMrMbTKQ84/M6yc6WaUVtiHu4Pmc=;
+	b=jeESO6WADv9AgSVoHcn6NAB7ObtrcAKb4tPO7avnvaj94x60Zp9nhVg9zHzYXEhF8t23GD
+	Nh4w4VMiQGWBGvL37cfbvOwCH9X3FG5HLwLKBtCYQIyyZRVGVavoaS98s8bFv121foYmxS
+	3MCjKPEKdDXvsdw23araazugZr7Es5o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768206862;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OwD4kApjFPZsXwhiMrMbTKQ84/M6yc6WaUVtiHu4Pmc=;
+	b=cta12H05c5tqmPmhFF6z/nGqjln4lfmp2uZkQ2wZx5j3RcdvQtHVK/eAmQ234LV8t0p6RY
+	HgcfFhavB36cxgCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768206860; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OwD4kApjFPZsXwhiMrMbTKQ84/M6yc6WaUVtiHu4Pmc=;
+	b=o9X/K+4hg12a6N7Y4kXs7qpGVHcX8XxNnSz99lhiDK2wXTUqCsI8KLn1i5rnl/Sd/R8OQQ
+	BrGKxRmb0qexMZGb0mZ92kxjcm4SCYqDjXVQ1AUnXhB2L4fIJ7hThoAQK2wNNte1QaUmNx
+	SpuNPT4J+uQay72D/vTbswxKjDQflEs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768206860;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OwD4kApjFPZsXwhiMrMbTKQ84/M6yc6WaUVtiHu4Pmc=;
+	b=e23VvG/9+lixfeBZyT6ecLDPoYmSBMLD/62W/v6JBWvQ7nO2+zsJHm2bDCsYX5JmgzxACo
+	CzygbK1AguftL6Ag==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 805303EA63;
+	Mon, 12 Jan 2026 08:34:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uCIGHwyyZGlRBgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 12 Jan 2026 08:34:20 +0000
+Message-ID: <d7263d12-e6e5-48d9-85b5-0937f7c0dac9@suse.cz>
+Date: Mon, 12 Jan 2026 09:34:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/2] mm: improve folio refcount scalability
-To: <gladyshev.ilya1@h-partners.com>
-CC: <guohanjun@huawei.com>, <wangkefeng.wang@huawei.com>,
-	<weiyongjun1@huawei.com>, <yusongping@huawei.com>, <leijitang@huawei.com>,
-	<artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<alexander.grubnikov@huawei.com>, <gorbunov.ivan@h-partners.com>,
-	<akpm@linux-foundation.org>, <david@kernel.org>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <ziy@nvidia.com>,
-	<harry.yoo@oracle.com>, <willy@infradead.org>, <yuzhao@google.com>,
-	<baolin.wang@linux.alibaba.com>, <muchun.song@linux.dev>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-References: <cover.1766145604.git.gladyshev.ilya1@h-partners.com>
+Subject: Re: [vbabka:b4/sheaves-for-all-rebased] [slab] 9b0317d1c2:
+ xfstests.generic.629.fail
 Content-Language: en-US
-From: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
-In-Reply-To: <cover.1766145604.git.gladyshev.ilya1@h-partners.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To: kernel test robot <oliver.sang@intel.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-mm@kvack.org
+References: <202601121022.41666cea-lkp@intel.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <202601121022.41666cea-lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.67]
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Stat-Signature: u74rk9uno1dmz97rcmt4s6qbiswfymh6
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EC6A52000B
+X-Stat-Signature: a3ji1rtdmgqutbsbfzf4obc6cx4bjwjb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 72FF51A0006
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768206647-387210
-X-HE-Meta: U2FsdGVkX1/DoYcAQenhLJl0uKkhSXHr0H9NupxJX4i+mRqFPDKek+HsiCfwgaweVh3wubOJng39TdmTMem0osqr3THaJO4fNq9BdD+4pA4naBNwxJ/CfwcXxN4EJ3E5nKfnHnhdkqXfkcqT8COpynWfHNodxSzZWNMZekwX49lhIc+t/vl3fjeiKPqLNd52ZbrE35/v4XogALoOrLSKzpG8PIOAO6SNbai3uNoWT4lINWoNkJMjqaIFBsy7b9p6ui0A2kMQUxak4EKrnqpcwIs3kOTdRXP+txllCOFlanwBARnZNKg8b0Ym4ovC+35KmhVW9WusZHZbuMBEaMP0/fPGdSacwaGO0Juajg/9V+AvRf+jC2+bv2Jh4slgpFPM/Xc+sbU4poQ9dgENhptXp5iwDg15vLwJL5EemlYBUSuzsDmQ0a9ejK0XU9awkmfc17mSPSJ7swsZK4pUMPPPdQ94o4mbaYO1pklL4ecJ5ClAweHQAAvAfPAIp8+J0kDG4fg0Q4fORm+D0ZCC8Sfhw1lkjqJUwERffmoQeJeBXOkgvYxQBsl29awM+s8OsPnuwLa1rjkC6daXsGEMNadYPlR3BcG4tD8+rCp8aimntVP0Ujq/2tUmXEKgvcO9R18lQDpzxj/FU3qkRhABQYnBeqzQBDZlvPGzM8Led+YVygvTSvllVFbOOg6wLhylF+HF+HjaGRX6bj5sRKN2ISccuXrcXDbZud+YGp/XxzDDRaW46+0RCIyWC58XOK6lZoDwpoi/3Rjfq3GZsYD4/9UhRWE4RsYQ6Pnq2NOk883+grH4/Z+4XFKHKf/5n9wamAiKGpwQOyeLyV+ZjsQtOhuBRdpOsLxHwFG7SoVzDpp0vN2veIYYsdeH8hOfKCtAtHNg4yJUq7nGMrzH7n/e9VE0oHFHB0j5hqdnlIOCtRaDhN4u5EebGIQlHRjnA+R35mSyYQDszgVK+Ydk7rz/eFW
- iJGTwUCd
- Fl86JAYAKYxpZTtpZWzpcTu/bX3wmOeD9MJ3s9l95Xp922fL+J8oCEKHtRLdJ44QftoVxx5i/g0CPjiWjccBfc9DRviE/kCyzj+L4PfE5P4zuoq8aLjySB/hutKBqJTNOfiDK+l/jPnHWsbr0pIvy2luvP2U3igDq3SBD9IK9OnJRsyOd14ZoPT/Yi2tpWOSJSOIFGQla0IH93PsubOR3dsl1mYHVI68qRk3jM/atEqWgOKPFE0BbDSpvmOwQFM6ki3Q70D5ugX1BZQx/uDCP5gkFQ4hWevIepzyC
+X-HE-Tag: 1768206863-231103
+X-HE-Meta: U2FsdGVkX19Qst28gDBrH4FqsR4jxiPxvuDVGK6piENnds6Zm7Mtm/YBFzU5ZH4teD94HFhnRXFeKLqMXqhtdWMQrGJqWs3yJIydFRrvYiSzL7UycdiPgt412tqU4vtyOGM4D0rknC3fPDHS/PQW8uiJDNK1Lo3sepEXGLi1Z8r11v8YCIw4KjaN1OdhCl+HxuZvtMVH6RDtNuGPmccI+K8lJs3bVtf9XqxOW7jzIArre5qEwnFTZMg7jw6LrnhQSa3IEL7InNxpeQPWsxdtxn8jpuCmS0Y7H17oIEJPMOFv42ycYVq0RDV8NpO/XadFHJBY7ceoE18fj3UP+sAg2iFuuQRvWjuzN7i71z4MfUZkXhsjMGzyTDLlfRZNBDF7fcTnNCRqtDrfeXQDmZ3YJuUHP8NpvX4kO7W2VC+3B9fVc55J+CdNk/TLNkV+noQeql4XikCuc2at76nrxZAVZAJc/RbDjFcV1BMy9WqKnf8wquVFVgOAZlBiZYZmPYXd/OtnQtU9ARVFszpjtUidnHisgFFkVFROGBxC6YdNd9QV2AqzVa7UEDfjDrdqkOmovve51o5uYHOxOD57e5SGMtbbcjsDmTsmtl8R3oBPRZ5MNy2eubERBzl++2cd+UVLypBiuLg2lQjlV/V/97XaGJKRwBZ29jsaxPqlJYdV57tyDOJce8jvWm1ljWHFjW5FpSNHhBmQrPcEfV90j7rI0fH8jxvK7MPdP19unqy07C4lqgkhn/G7jmXT+8hAlLjN2vx/a2kwLOyRzMC6zgTJ3yjO+V75IL1LFjPEILLBi9enAwpcjQWxez9zwMXfDYC3hjG0QsMF+sNx9jZ/dWnJClGPRCqS+eSeJmOzyMG/TB7NRlhLZ3FQLVJuIYyT50lTrDDb7KoZxOEcMhD63RUWVHRtiEY/kExHDPP/AlZ8eoGu3Thy7pHJfFQhZzQX/ZX8AvUmOSDUW/ewjXjDUKZ
+ 3vmyP4o7
+ 8MufeYDgrpMzkDWDLwPDppFBLjpWZhWro2X8uRL+cUaZFO0X1lphMxhdGbYxmXhFRr9GHTDB3DgZuvRnLALglNDIy1XhCIaouQIhBMSybmqqv0QkMWZgxNm/nD7z7NnW2hbma3f/UTb+l7aERD2U9tIfIZtOsnncJH7rL1p0uH4r+k+Acus/VLSldt0rdd6vyDweZTcrdhqYj13df7W04uvZ062piHPdBbWEEGRSsqnibfvj8KE7GlpXo4DEkHDb33pGGwtodwVmxZDar8JOcm5BLVhsF5+RgASy4dEveWh4XAdGW5UqYKRhaPJaVNt9dwltZbQGhOUNOS+9FM4s7bYODL+IJUUnBCalIP2LJJeEddgf4rKfcQ6Bww60HSVLwlJuZAr5EzzDVkCM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,110 +177,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Gentle ping on this proposal
+On 1/12/26 03:54, kernel test robot wrote:
+> 
+> 
+> Hello,
+> 
+> kernel test robot noticed "xfstests.generic.629.fail" on:
+> 
+> commit: 9b0317d1c2ed590d69d39eba701cd3eb082ecc31 ("slab: remove cpu (partial) slabs usage from allocation paths")
+> https://git.kernel.org/cgit/linux/kernel/git/vbabka/linux.git b4/sheaves-for-all-rebased
+> 
+> in testcase: xfstests
+> version: xfstests-x86_64-df16c93a-1_20260105
+> with following parameters:
+> 
+> 	disk: 4HDD
+> 	fs: btrfs
+> 	test: generic-629
+> 
+> 
+> 
+> config: x86_64-rhel-9.4-func
+> compiler: gcc-14
+> test machine: 4 threads Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz (Skylake) with 32G memory
+> 
+> (please refer to attached dmesg/kmsg for entire log/backtrace)
+> 
+> 
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <oliver.sang@intel.com>
+> | Closes: https://lore.kernel.org/oe-lkp/202601121022.41666cea-lkp@intel.com
+> 
+> 2026-01-11 11:59:36 cd /lkp/benchmarks/xfstests
+> 2026-01-11 11:59:37 export TEST_DIR=/fs/sdb1
+> 2026-01-11 11:59:37 export TEST_DEV=/dev/sdb1
+> 2026-01-11 11:59:37 export FSTYP=btrfs
+> 2026-01-11 11:59:37 export SCRATCH_MNT=/fs/scratch
+> 2026-01-11 11:59:37 mkdir /fs/scratch -p
+> 2026-01-11 11:59:37 export SCRATCH_DEV_POOL="/dev/sdb2 /dev/sdb3 /dev/sdb4"
+> 2026-01-11 11:59:37 echo generic/629
+> 2026-01-11 11:59:37 ./check generic/629
+> FSTYP         -- btrfs
+> PLATFORM      -- Linux/x86_64 lkp-skl-d03 6.19.0-rc1-00010-g9b0317d1c2ed #1 SMP PREEMPT_DYNAMIC Sun Jan 11 19:50:05 CST 2026
+> MKFS_OPTIONS  -- /dev/sdb2
+> MOUNT_OPTIONS -- /dev/sdb2 /fs/scratch
+> 
+> generic/629        _check_dmesg: something found in dmesg (see /lkp/benchmarks/xfstests/results//generic/629.dmesg)
 
-> Intro
-> =====
-> This patch optimizes small file read performance and overall folio refcount
-> scalability by refactoring page_ref_add_unless [core of folio_try_get].
-> This is alternative approach to previous attempts to fix small read
-> performance by avoiding refcount bumps [1][2].
+Hm I didn't notice anything suspicious in dmesg.xz - any idea what this
+refers to?
+
+> Ran: generic/629
+> Failures: generic/629
+> Failed 1 of 1 tests
 > 
-> Overview
-> ========
-> Current refcount implementation is using zero counter as locked (dead/frozen)
-> state, which required CAS loop for increments to avoid temporary unlocks in
-> try_get functions. These CAS loops became a serialization point for otherwise
-> scalable and fast read side.
 > 
-> Proposed implementation separates "locked" logic from the counting, allowing
-> the use of optimistic fetch_add() instead of CAS. For more details, please
-> refer to the commit message of the patch itself.
 > 
-> Proposed logic maintains the same public API as before, including all existing
-> memory barrier guarantees.
 > 
-> Drawbacks
-> =========
-> In theory, an optimistic fetch_add can overflow the atomic_t and reset the
-> locked state. Currently, this is mitigated via a single CAS operation after
-> the "failed" fetch_add, which tries to reset the counter to a locked zero.
-> While this best-effort approach doesn't have any strong guarantees, it's
-> unrealistic that there will be 2^31 highly contended try_get calls on a locked
-> folio, and in each of these calls, the CAS operation will fail.
+> The kernel config and materials to reproduce are available at:
+> https://download.01.org/0day-ci/archive/20260112/202601121022.41666cea-lkp@intel.com
 > 
-> If this guarantee isn't sufficient, it can be improved by performing a full
-> CAS loop when the counter is approaching overflow.
 > 
-> Performance
-> ===========
-> Performance was measured using a simple custom benchmark based on
-> will-it-scale[3]. This benchmark spawns N pinned threads/processes that
-> execute the following loop:
-> ``
-> char buf[]
-> fd = open(/* same file in tmpfs */);
-> 
-> while (true) {
->      pread(fd, buf, /* read size = */ 64, /* offset = */0)
-> }
-> ``
-> While this is a synthetic load, it does highlight existing issue and
-> doesn't differ a lot from benchmarking in [2] patch.
-> 
-> This benchmark measures operations per second in the inner loop and the
-> results across all workers. Performance was tested on top of v6.15 kernel[4]
-> on two platforms. Since threads and processes showed similar performance on
-> both systems, only the thread results are provided below. The performance
-> improvement scales linearly between the CPU counts shown.
-> 
-> Platform 1: 2 x E5-2690 v3, 12C/12T each [disabled SMT]
-> 
-> #threads | vanilla | patched | boost (%)
->         1 | 1343381 | 1344401 |  +0.1
->         2 | 2186160 | 2455837 | +12.3
->         5 | 5277092 | 6108030 | +15.7
->        10 | 5858123 | 7506328 | +28.1
->        12 | 6484445 | 8137706 | +25.5
->           /* Cross socket NUMA */
->        14 | 3145860 | 4247391 | +35.0
->        16 | 2350840 | 4262707 | +81.3
->        18 | 2378825 | 4121415 | +73.2
->        20 | 2438475 | 4683548 | +92.1
->        24 | 2325998 | 4529737 | +94.7
-> 
-> Platform 2: 2 x AMD EPYC 9654, 96C/192T each [enabled SMT]
-> 
-> #threads | vanilla | patched | boost (%)
->         1 | 1077276 | 1081653 |  +0.4
->         5 | 4286838 | 4682513 |  +9.2
->        10 | 1698095 | 1902753 | +12.1
->        20 | 1662266 | 1921603 | +15.6
->        49 | 1486745 | 1828926 | +23.0
->        97 | 1617365 | 2052635 | +26.9
->           /* Cross socket NUMA */
->       105 | 1368319 | 1798862 | +31.5
->       136 | 1008071 | 1393055 | +38.2
->       168 |  879332 | 1245210 | +41.6
->                 /* SMT */
->       193 |  905432 | 1294833 | +43.0
->       289 |  851988 | 1313110 | +54.1
->       353 |  771288 | 1347165 | +74.7
-> 
-> [1] https://lore.kernel.org/linux-mm/CAHk-=wj00-nGmXEkxY=-=Z_qP6kiGUziSFvxHJ9N-cLWry5zpA@mail.gmail.com/
-> [2] https://lore.kernel.org/linux-mm/20251017141536.577466-1-kirill@shutemov.name/
-> [3] https://github.com/antonblanchard/will-it-scale
-> [4] There were no changes to page_ref.h between v6.15 and v6.18 or any
->      significant performance changes on the read side in mm/filemap.c
-> 
-> Gladyshev Ilya (2):
->    mm: make ref_unless functions unless_zero only
->    mm: implement page refcount locking via dedicated bit
-> 
->   include/linux/mm.h         |  2 +-
->   include/linux/page-flags.h |  9 ++++++---
->   include/linux/page_ref.h   | 35 ++++++++++++++++++++++++++---------
->   3 files changed, 33 insertions(+), 13 deletions(-)
 > 
 
 
