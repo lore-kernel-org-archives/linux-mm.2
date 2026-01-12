@@ -4,137 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73EDEC9EC94
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 15:26:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48ECDC9EC94
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 15:27:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8CE66B0089; Mon, 12 Jan 2026 10:26:22 -0500 (EST)
+	id B02BD6B00B1; Mon, 12 Jan 2026 10:27:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B40116B009B; Mon, 12 Jan 2026 10:26:22 -0500 (EST)
+	id AE0BC6B00B3; Mon, 12 Jan 2026 10:27:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6D776B009E; Mon, 12 Jan 2026 10:26:22 -0500 (EST)
+	id 9E2F86B00B5; Mon, 12 Jan 2026 10:27:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9474A6B0089
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:26:22 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2942EC1F5B
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:26:22 +0000 (UTC)
-X-FDA: 84323688204.16.5DB6C7C
-Received: from mail-qk1-f194.google.com (mail-qk1-f194.google.com [209.85.222.194])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 47536C0009
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:26:20 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=B6HmmAeI;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.194 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768231580; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8977B6B00B1
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:27:15 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 46F4E8BC24
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:27:15 +0000 (UTC)
+X-FDA: 84323690430.23.6891641
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2ABE84000B
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:27:12 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=ZvFB2ND0;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768231633; a=rsa-sha256;
 	cv=none;
-	b=t1fqWciizVQ5SnLg8jl49vwPycx2RvmVFNZU/P/nT1wmqsMBbtvcYwXqOUrJeIn1cjuHwJ
-	zaoe/VaLcTCwvnDxEKWQMpJsn7/jAm2krax0Co+t8M2I6H5A9T/B3nvATQa7lmYPJfT6NR
-	slGk6hTMXm895948m5FWPJIgn1oJcwU=
+	b=Eqy39krUwu7rpg57PI8zDxtOKRi8LLD56ua0higwxfOKwhdoBicmIF0oB1Kd5Jjq8iEat/
+	8aH73PtEsq5E6SRfUZ0VuC+otCS373Olv+gQFrViQi6Cx2tcWXT6xJQ3es6yiQoQ/+wbnt
+	5w/eP69LRqnHOZQwZ0VbnGcE/Xu8ZoA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=B6HmmAeI;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.194 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf27.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=ZvFB2ND0;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768231580;
+	s=arc-20220608; t=1768231633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=57UuhljdncFCr/JytocOWEZRWmlPR6Nv3ccaWVm2VXI=;
-	b=ptVxWKvw4/Fwltdirv80Kwaa7X5yQmVIrI6CLlJ2kdrI7WDpm0nzFy+U8k7kEaCLetrm0l
-	P6Dg8LD/R6IlfI/UA3CDBGDN+Lcl1++AbhwLJV5f5x8Ku8nek0VPRKs+K87+r96Pb/r/pT
-	SGGPDoZA1CU7M+R+ywfXYLFTVgHkQtU=
-Received: by mail-qk1-f194.google.com with SMTP id af79cd13be357-8b2d32b9777so985263185a.2
-        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:26:20 -0800 (PST)
+	bh=/KZrNpTOv53Hf6emFKpIDyGwi6CuZM71jTQ4Nu4PF2M=;
+	b=3jnehrDL2/HhuZmnQEy+Fgt3EDm1P8gMMGbh2jmcbeJa7Ba1521PJEUgMp3IITlGLUZC42
+	hykBpil+D4mlskQwoGjS54tU5OIdxjd6Q7vGPjOW34EtDhyQYN7Zwkrdwr+oEY77I/il4/
+	YWVIcZMJJjhL8dFuOP1ch4hixptolr4=
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8ba3ffd54dbso975957385a.1
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:27:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1768231579; x=1768836379; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=57UuhljdncFCr/JytocOWEZRWmlPR6Nv3ccaWVm2VXI=;
-        b=B6HmmAeIgmaj1K+5krKHU8oSudXsJgf5i67y85fJdOL8KLRqlf1ratrnhjNCha0jsn
-         g42xoY3a06bEvAI8zLV+5OfMvKdfrF/Ja7JeEzGRuByd3PgFzncm8R73ZF0xwPufSKPD
-         xrCYK9IgrbwYyQnnuxMBMhxtjClEqq+Hp8Ki/Z1v00BlTlHkQJroBd6LeeytDppF7qPx
-         0HSNAGZMaZJVs9JqZdAUZlJ+esL7WgZ0n4qRtBXAcciJVXQvkZJK6oroKm5Jr/rT/m9O
-         +5Z7IR8Ww3+Jlj434TiDF9DtaH1sAdEkwNsxXlf4LHPZoeO4tqeKL0mw6DymL0Avooc4
-         YzFw==
+        d=cmpxchg.org; s=google; t=1768231632; x=1768836432; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/KZrNpTOv53Hf6emFKpIDyGwi6CuZM71jTQ4Nu4PF2M=;
+        b=ZvFB2ND05D1/UotABpvhFtj7utoWlzjAWu7FgILd4YKkV5E/h+EXwignpEbHbu+sRF
+         wgC9caPALwoOxou1DaaKLAzMdkFcoyiB6aNOgh5+T2gOoqfzmeexPVUB65XLnGgl5iyO
+         4ufhGqaeLk3tE/W36FLcEKQF9OuJ6TIcQmAZKMHvilI1itOqxNf4m37D+9aMwDM7pZrP
+         qoxHqeA6PgNuctJaeMI0V+1BAx4QcpC5c18OUyQS7a2N5Br8wFzKJxn/g5qwzJcZTgmm
+         7MUm9gI3BFajnlH/i9eQ7M6PztdxjDd5k51z4MMkktFOuVgaYm3v0BO+Bg+ew0edwCAO
+         d0kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768231579; x=1768836379;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=57UuhljdncFCr/JytocOWEZRWmlPR6Nv3ccaWVm2VXI=;
-        b=MUAutLnSFtOsXe46R0NZyTbnaLC0wOIOqEsxgB4USZTe6hUxQ+BSkBYKiLY1b4O+LE
-         smSo21tpiGehL7CnvEZxAWlM83NPdDa/1QLiYE8F8rEZRSsVswUn4ul/uE4IOTtnO6+7
-         66QpTkLTuCFgHWB9ISqZug9dTLpWjUqyxBopmSeSQhMy8HRoroJu06fMyTUUnm9terU0
-         Y5SOywOnwn8Mr+0ieCsYhnydKx8fqA/HaMzecRnoR2d+NisW9A/25HTOHRyHbDbAw7ZM
-         6Xzf2Tq88sWXuzvJJY+1JRQWtzcCf5UrttO7jVhXOMWIENz+hG8LydKEkv2bFRdBiyVE
-         QD3w==
-X-Gm-Message-State: AOJu0YwW1jD14PEm42mUwbvrfLyWZ7QDD/9Hwrzn8MNWB60lOEpZuV8x
-	lHUqdcMtvnC+XK9aWt6sTJcMwv+HcVJzVAFxvQ2MCmNKn/nHu3FL5ue+yUzmGPri7Oc=
-X-Gm-Gg: AY/fxX7bjcJscSAkrG/krrI0wJAGN7NuooT44MNN/h6QwRtouVEzR0SONE9kjd0V5b+
-	xMNxQOIearZExyePCKga5S3zUR7Nbx7eiln5vxiGceM8Yv2+ALR6h+0fVR8Jb2+m1gb33XcEv7P
-	lhLNzdB8CQPA3ZNcpeinaVkctP+2+7rrtMNYrSx8LRHbgFqr73BdMOefim7zMqfAg7mtT+Lo7s8
-	bWsWjza4YlEd7g4ew1djn/rjRM4JVRp3GHOhW4hIngTE4Y5xflEsL8QnZqnVh+LQDxTjuY4tdVl
-	Hd92hCa6JjmESbu9dGD3kEqF5tA/sjrXucnBDtmzU9xDth/xX/DZOFBPFEf1zPX3TDXfrs+2OlZ
-	7xzTzWa1n5mPTcEHCqf80pz1dd+HNJhVf+FlgaTwkM/Jxq777KkMm9hOxmXfc/a378KWQJrIAJB
-	Xw2ckNfk7nmZRIcvFddstS1RamXQ8Xe/i+NCWf4aBtvr1b7ZW8+iaMwqG61TRIFKH2jngHUTgEm
-	vnSHlLN
-X-Google-Smtp-Source: AGHT+IF7YU4wyH5DCnIa1xHNwfOTUxRN3Z3UmWPqqY8/JzoeuGL9L4VducxuPGVH8SICTsnA4+h6Uw==
-X-Received: by 2002:a05:620a:318a:b0:8b4:ebbe:ae04 with SMTP id af79cd13be357-8c3893a5c0bmr2745515485a.35.1768231579175;
-        Mon, 12 Jan 2026 07:26:19 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f5439cbsm1508794985a.55.2026.01.12.07.26.17
+        d=1e100.net; s=20230601; t=1768231632; x=1768836432;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/KZrNpTOv53Hf6emFKpIDyGwi6CuZM71jTQ4Nu4PF2M=;
+        b=doG5I+scbHJ6sFbJZC2nJFX8FpsIq1ot93OyO0NKCpQ7FuC/tlQYt33tCxm5/gW3Uf
+         U5LYzdTY61WJHwFBHCRYzq94Bq8wVXt6B5meHjRS3Q6BrknzKW8ClEwGkRxnDh9APcF0
+         yvptrgZkkAA1lb6+XLALUvFH6A+ipLUyWwmEy0j5BryIXJBbXzR18bCjB68ybxSzqZJX
+         PHR51u4zc4wnVd7Hag2cEIoPR8xRLTsV6SlMXyO+4B6ZZ5w7EGX2KUhEIdQQ4GXA0ZxO
+         CYLecKI9dnDEM8lemYG06u7dP1o5trRX8+uDd0c+vZkiXJxpVxzP8zVZ+EOjlXOWAIYT
+         32FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVGO6/UihmdjjQF7+qf/R2yVPsXrnDmoOSm4W5H4NSJzpKbgvSDO3j1DvqV+AAsIUfw/w/05Emb0w==@kvack.org
+X-Gm-Message-State: AOJu0Yw4RG2IvdzyxCurejvfWUpAXPjw1+V7IYbRZW9bPV5NwGs+veOA
+	qx2AXziGx52jPVzJ7PiBZO6DuG0M1KT2QDqKxuvnwdUJlsH2bZAChBJanw5Sy9BriGs=
+X-Gm-Gg: AY/fxX5yQgKN4GLX+uuHJSs6GuHna2zCPni3va6V+ijEEdPXWe7q8FaJvdRA0iW1X1e
+	62rWLVS0xvBcoSJfVkWnNPMEk6b0py06X+uRDUZ0O2q+XqOeQEmO8UCErODdbA5V8rmBs9bsPb8
+	y4u54aUxvpCX25FEqVWsO11Nwc0dI9Cu0ZBCnnMkWhmH4u0fedB20tXWXVI86Y1HtxwiGOG9sv7
+	olc/wawhWVWsrqtb3fO4RVf/fezHoif4169A5J2ZvNwzdrMMZpIdr0pfudKyueVicaF59A446x6
+	Pqel6KTm2WaMsyliPVxeFQcUOEQuZmVR3LDgSMat3G5YqNJXUhgq0G7uGJydsHoaSVhVgSokD/t
+	OR5+wSoowN8OM/oVNMq0/n92oac5rTlEyIxrIBlHt+nBfHbrFLjCpbAnbVSwfEn1kixDfWpgjjU
+	facdTaiDBuQOnpE8EgdZl/
+X-Google-Smtp-Source: AGHT+IEMJiA/1eid9s4j9DWQmqT6T/1kpjdK8HlfZHWC5kbrB6Xvn594oXzyY6TZwshoZ0nf0OGjPg==
+X-Received: by 2002:a05:620a:7087:b0:8b2:f182:694e with SMTP id af79cd13be357-8c3893f4e8amr2476371785a.54.1768231632134;
+        Mon, 12 Jan 2026 07:27:12 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4a97fesm1512326085a.4.2026.01.12.07.27.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 07:26:18 -0800 (PST)
-Date: Mon, 12 Jan 2026 10:25:44 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
-Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, kernel-team@meta.com,
-	longman@redhat.com, tj@kernel.org, hannes@cmpxchg.org,
-	corbet@lwn.net, gregkh@linuxfoundation.org, rafael@kernel.org,
-	dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com, akpm@linux-foundation.org, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
-	ziy@nvidia.com, david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
-	linux@rasmusvillemoes.dk, rientjes@google.com,
-	shakeel.butt@linux.dev, chrisl@kernel.org, kasong@tencent.com,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org, yosry.ahmed@linux.dev, chengming.zhou@linux.dev,
-	roman.gushchin@linux.dev, muchun.song@linux.dev, osalvador@suse.de,
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	cl@gentwo.org, harry.yoo@oracle.com, zhengqi.arch@bytedance.com
-Subject: Re: [RFC PATCH v3 5/8] Documentation/admin-guide/cgroups: update
- docs for mems_allowed
-Message-ID: <aWUSeFzxouq2vwg8@gourry-fedora-PF4VCD3F>
-References: <20260108203755.1163107-1-gourry@gourry.net>
- <20260108203755.1163107-6-gourry@gourry.net>
- <o6eky3g4jyvtc2cy6lk7rjc6or6tcvwbhdarrlpn4geuibvrul@65fygkf6vg44>
+        Mon, 12 Jan 2026 07:27:11 -0800 (PST)
+Date: Mon, 12 Jan 2026 10:27:07 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, akpm@linux-foundation.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	syzbot+d97580a8cceb9b03c13e@syzkaller.appspotmail.com,
+	Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH] mm/swap_cgroup: fix kernel BUG in swap_cgroup_record
+Message-ID: <aWUSyzHcaDwEg6_c@cmpxchg.org>
+References: <20260110064613.606532-1-kartikey406@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <o6eky3g4jyvtc2cy6lk7rjc6or6tcvwbhdarrlpn4geuibvrul@65fygkf6vg44>
+In-Reply-To: <20260110064613.606532-1-kartikey406@gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2ABE84000B
+X-Stat-Signature: rfstn4aa4bkaycxsij49jk1wmw38o84g
 X-Rspam-User: 
-X-Stat-Signature: h6mh7ce6uakpywpszj1xwuqni6pqxkuk
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 47536C0009
-X-HE-Tag: 1768231580-394053
-X-HE-Meta: U2FsdGVkX194PsG25SQw2lpEHQTlTKOJ1LctB4MaNNRdUwkvC7HD6g7Q716AT4izKX+J5Tio/VUC8XMWXLpl3TMrxDXDDbVcvDdpt6RtnI1jrDXoIb4qUD83UMWKVXjGeG1LFcnKSf9jpiFlgHynvpShecK1HrmpRxxnFDadkUAga0TpDCDRByU+NglVKPr/me8FSAEt3boiiGJMZrcz2E1Rkgngt0fEoRHGYLd35lkRf5HKDRzRnNUiiPSauUyq1LNthoRSdT0y8ABh2vZx5PGgigkOl58rRpfGuHptkPJJ3DMoxbTzzitgfigOJbpe19jYkn38ViLzG4avpUHYEgqDA/hVClBK5mYJq5CJVLrxXhci6f5yVYJ2CLIyfu2k5InN0rcmkriyYMz374jW2Q7N/vUUEDGayFHIFwHus9yAcEQtQKr5GvCW1z+/TAYt3kUibCKmitRcl/1ZsbqJ2cKLlTZXd+Wwk/SGbpULKDwlI5FGSTeZBC4JR8a+MvZP8KH01Tefv90fxry1jqzuT+GkcIRj8yoJqDKw1jVRc9UAj4nYEhiR1Rw+Q62GuInWw2cpWHTe6pLMhaHTK+4ObLlReYjF1TH52kj1cZ7E0HE4wKK8cWaxZ0m5OfGJAtku3hqZ4LcEVa2iYC47u3nfcbN/gZqzZ8dRKKIjNc2qVfQADRHNkLXe4n8Y859R2EHrwRvm1YK8+nchcuTm2W+PMLxB+oXxDeI/h0CK98HLvTwf3SG8IpZAee6A2stlA2vVJl7aepgOjjTM/7Eq3ZUukUvKUUNIfHUDuqJLhMSnu94TEQmzHIO/nAh3hXawqtEvk4lrYuJtDe5v6xok58UTFAXpNv6puhpZCcDqemzN7hgwIdWzMWwpTlF8sWzEW2FJP/o+7bOQpxva1FAMezXN0U+UbXX4yKCiML6SaYZH668eUKbA0VAxIoWS94T35TXjQAijiUld8kcnWCJG7cy
- 4HapmISh
- Yx+KnyiFNGmt3l7hqbkBunIJNntLt2FBTC3TtCiKSdzggFZ4y/JMB9WiRTHQ9pNR06FnVgjqUKA2+aQWWRh6fibzMFzcb6zo+5uo/mh7GybrYwfxjwqzOERUaSvmnRsti7de25Mm09QfxfDJEfsOt3UbneDfxh1aKgdlAZk7SBrIi8L4aayujG6O8Hkab0cbOCj0z2Dsj6jY51/dxlYghWSQSzRN7IYdfDtyI9UkhWy//cDziuPfOl44170igUMMKZrYkjUzoNrTcFMSphTCZc9p+iAALsN7tDjGKyRSjRCIrFbtJqa+98HWeXp+2CAk+qdZb82YSSKQADpeMGELk3gR5O3YfnpnEMiWEredm/U+c9KWTbi0lywUL/ug5A0XEh2W7V8mgZJH6vKLqlhv61JAEFJsvqs+dequqntJ2cAoXJT9kNP5jttOJ0H/4W5PIrTskJX8j7WHQArYlnNyWMcOe4mrwwVjI3OAJujyMB4AApjZVJZ1xWsoaBBKDQ0/T3ndKmXnqVgW0+r95JucTB10s5Nq1PP5xr13UX3fyXbPjEPU289V1Nkf6PCCIuafFbrGipunNf76lPHIZQM+OyacBq/vbaOe8kCkhEGcMgRs53rgHw2l+0qoiUw==
+X-HE-Tag: 1768231632-217785
+X-HE-Meta: U2FsdGVkX1/cWl5Hfq10/+UymH1gftwgHhkFrvdpCUNOKM+vJB8D3RWL/7bRPx78Y8Q0IJrkmVus7n5skchFyFHWovsiOyEZnNKFWBu/Nl3faNuXHGcvdiOrrrUl/ZSeTOa6jrIIBgFXMu6A/W/X+CVnAAwO5gpN/Yo3cxeEy09RQ1fWGsdz7Ujrm8yCXB+4Wes/yc4vDxfI9Ki8lrRMy3oNjmX3Ok3IhenBa086iq4ar1FI7CDCxzHqZmiep+WZsMt7cx0AD1l9hoMMJNrSIZtxD4w6MK24MHPKkH/Ls5uf6ZN+1NwbTErKFpDdghFwumSUZNViXf7ZfOAeAVCgahxzt6bWZebe+k26OQLwemOV2w1vG08wL0d/lZz+pX3EjmhPluNz3ySL1qetJMUtEVjxoQ3A1twQlgM3PYo042XqEvBPM17Srmy/qsf0qI+VPtu2WyHDEXGomTjAnGj4CP5igtSbUaAFZWxKS/mcLy3KYHoyKO3z81zHDR9CvFiZMODmV19u3JOlg0nW4Uvv13qX6crmxZ6ZoiX79T2QBY0oe9FQ4AYRjIkSh2YHphTt2HWkwKnPzh/PLLZM2SMdIMmcG5hRni05bgM3wCzX/uYs3xIF092cEmS7VdPlclCtFT+ZeqNgySlftc9l3Nq8ndyvex/I+/PO2hrBtDlTfcgybYqGo8vt+gEi2nmDF4TTvez0Fc/hEUk/VuyjeJBXQn75NlJcV/GRQsCSZHNjBnJgjdclh4IIDaTOqjnBOOiGmK6zlO8g7dOB9fxbnOrS4qL9ISQ+5TpWU1pbZDv/1jRIgegjEw7KgM2pkLX7RNMExMEmWzDFlhRFCF9RE5XNIqlq/bJlDfrD0UjpN00ivkijMKkznoY7Suj1pNtniY6wyu5xRD8NZzyxKXbWDytZ/HhCmp1eu1FsIbzN7Z+aLNl7Omvh5FFgg+cbBRSQS/rm8xsXrge8byfPIPq0io8
+ tpOKmRSc
+ CoVskoQEnjkdJ0LRS9hpaW0WbmU0M+f4ZA3I0FUCZISH3VsOe/HbGipGHcRPwse5uRGvskjbVqT+rtD6DYHVVMUj7eeb2vKrQLdxSUFYXtxFAIJwLFJS/uvQMDx7+4LTaG2yPiBBc9znXBBXb8j0vDylJsEkvmSs0QNzUEqhOJQ/FaoWyJgqZIGbBZc+2z1yo+srvr3ma3C1pm+Fc+bD/MM5/P272NOAx9lx78gmEqk7mz9JXuOtVwu0SqF2xR8bX5gsaKekDsWO4ldxmaVOtWsdg5pfzneO1YLhpbqzbvU4V841E/N+NvRM2D2oJzxBrgjEuDfDiAfo4JO/c9N55di05S5CIM0YAo7IYpafVmJMLDCQjZCF+S5F3K5LyPHuL/UiXd+aV59K09zPvH2ux8b3PEHM++cw2Mhyaw/ToVeqiFJKAtQMCk8zLYGvcTlTyi1BmMZ5OiCLIbyjLj9SXCyiapO5loSu8l9mV5TNh+2g2rvKB5j7zEp/CsauAcuPocmYHKCfsjDknfxhgI0/a7daTPatql/DdaHVtglU4jhETtp0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,81 +121,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 03:30:26PM +0100, Michal Koutný wrote:
-> Hello.
-> 
-> On Thu, Jan 08, 2026 at 03:37:52PM -0500, Gregory Price <gourry@gourry.net> wrote:
-> > --- a/Documentation/admin-guide/cgroup-v2.rst
-> > +++ b/Documentation/admin-guide/cgroup-v2.rst
-> > @@ -2530,8 +2530,11 @@ Cpuset Interface Files
-> >  	cpuset-enabled cgroups.
-> >  
-> >  	It lists the onlined memory nodes that are actually granted to
-> > -	this cgroup by its parent. These memory nodes are allowed to
-> > -	be used by tasks within the current cgroup.
-> > +	this cgroup by its parent.  This includes both regular SystemRAM
-> > +	nodes (N_MEMORY) and Private Nodes (N_PRIVATE) that provide
-> > +	device-specific memory not intended for general consumption.
-> > +	Tasks within this cgroup may access Private Nodes using explicit
-> > +	__GFP_THISNODE allocations if the node is in this mask.
-> 
-> Notice that these files are exposed for userspace. Hence I'm not sure
-> they'd be able to ask for allocations like this (or even need to know
-> about this implementation detail).
->
+On Sat, Jan 10, 2026 at 12:16:13PM +0530, Deepanshu Kartikey wrote:
+> When using MADV_PAGEOUT, pages can remain in swapcache with their swap
+> entries assigned. If MADV_PAGEOUT is called again on these pages,
 
-Fair, I can drop this, the intent is actually to limit user-space
-knowledge of this at all.
+This doesn't add up to me - maybe I'm missing something.
 
-> >  
-> >  	If "cpuset.mems" is empty, it shows all the memory nodes from the
-> >  	parent cgroup that will be available to be used by this cgroup.
-> > @@ -2541,6 +2544,25 @@ Cpuset Interface Files
-> >  
-> >  	Its value will be affected by memory nodes hotplug events.
-> >  
-> > +  cpuset.mems.sysram
-> > +	A read-only multiple values file which exists on all
-> > +	cpuset-enabled cgroups.
-> > +
-> > +	It lists the SystemRAM nodes (N_MEMORY) that are available for
-> > +	general memory allocation by tasks within this cgroup.  This is
-> > +	a subset of "cpuset.mems.effective" that excludes Private Nodes.
-> > +
-> > +	Normal page allocations are restricted to nodes in this mask.
-> > +	The kernel page allocator, slab allocator, and compaction only
-> > +	consider SystemRAM nodes when allocating memory for tasks.
-> > +
-> > +	Private Nodes are excluded from this mask because their memory
-> > +	is managed by device drivers for specific purposes (e.g., CXL
-> > +	compressed memory, accelerator memory) and should not be used
-> > +	for general allocations.
-> 
-> So I wonder whether the N_PRIVATE nodes should be included in
-> cpuset.mems[.effective] at all.
+memcg1_swapout() is called at the very end of reclaim, from
+__remove_mapping(), which *removes the folio from swapcache*. At this
+point the folio is exclusive to *that* thread - there are no more
+present ptes that another madvise could even be acting on.
 
-I think it makes the control path easier (both more intuitive and easier
-to write in the cpuset code), but I can take another look at this.
+How could we reach here twice for the same swap entry?
 
-Although omitting them from .effective i think prevents the user from
-controlling whether their memory ends up on that node. 
-
-i.e. the user might be aware that they have compressed memory on node N,
-and they have a cgroup that they don't want on node N - not having it
-included in mems.allowed / mems.effective means they can't control this.
-
-> (It resembles CPU isolation to me a bit ~ cpuset.cpus.isolated.)
-> Maybe you only want to expose it on the root cpuset cg and inverted like
-> cpuset.mems.private?
->
-
-Hm, I had not considered adding the separate mask for .private as
-opposed to sysram.
-
-If all we actually need to change is the allowed() callback to check an
-additional nodemask, that might end up cleaner.
-
-Thank you, I'll take another look at this piece.
-
-~Gregory
+It seems more likely that we're missing a swapin notification, fail to
+clear the swap entry from the cgroup records, and then trip up when
+the entry is recycled to a totally different page down the line. No?
 
