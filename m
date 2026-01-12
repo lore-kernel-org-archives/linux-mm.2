@@ -4,115 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 184BFE67484
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 10:21:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9376DC9EC63
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 10:25:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A14B6B0089; Mon, 12 Jan 2026 05:21:23 -0500 (EST)
+	id DE38E6B0089; Mon, 12 Jan 2026 05:25:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64BC76B008C; Mon, 12 Jan 2026 05:21:23 -0500 (EST)
+	id D91426B008A; Mon, 12 Jan 2026 05:25:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57EB26B0089; Mon, 12 Jan 2026 05:21:23 -0500 (EST)
+	id C9D276B008C; Mon, 12 Jan 2026 05:25:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 464C96B0089
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:21:23 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B97F15B8FA
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:21:22 +0000 (UTC)
-X-FDA: 84322919604.23.CA2FC53
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BAFA120004
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:21:20 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ga984PiL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768213280; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B5C626B0089
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:25:44 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 69EDA5B8C9
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:25:44 +0000 (UTC)
+X-FDA: 84322930608.18.BAF03AE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C815014000D
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:25:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TB3TSWJy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768213542; a=rsa-sha256;
 	cv=none;
-	b=673nGJMYWnIYaMxflHu17bZLIgF4xGicflCqwIz+NsNQw8onh5vNjUlVkbzFgVeQKVq4RS
-	IPdPH0Y2TQjklx5pywi2crhA9aOAHrze4IDFOvI9iIXpyQEiNdVnEXtntxEoG7LGbF4i/8
-	nOCjFX6Gd14Snb/rJV9N1PHKpEKxBYU=
+	b=njAvMqH+gB8U53sn2RhBXjNvJKuxYBkurIU0fTiAdw4LEBsoBXpPIY0jBW64BcRb+nCLQw
+	nXSx3iKLpksK6M9fowW1uHp8FMpFCbTtBt21ykUh9GvSgrGPvNmL9YdzvExinSOGBjaHD+
+	Es2qES/4/iPfVxhCl68wZTh4IY0ZwIg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ga984PiL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TB3TSWJy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768213280;
+	s=arc-20220608; t=1768213542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MH16cCGkiKRTIwcYIk3CP93gcE4h3kBjVckxfOORWKY=;
-	b=D6rlmhpmhJDxgH2FkXsPxds6wGbtMNTIyHlIGitG8k2PSvi1kgfQU7o7bqQcbktVysKpCJ
-	BPNs1koxOWlY6tESVLArtOz8n47JpU2FmNgz26rBHbgdvP8J5M3dKu0GF7tdj6cw+vCfYX
-	T6drlcEjHSLMvYAtrBVLFBG9rkM9xTA=
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-59b79f700a1so3410580e87.0
-        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 02:21:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768213279; x=1768818079; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MH16cCGkiKRTIwcYIk3CP93gcE4h3kBjVckxfOORWKY=;
-        b=ga984PiLS9pYZmDRIW13oAXf4BpImVd2l5yr37Af5uxrmyNAwW+SOen1ivZJLgR0nv
-         0IdmWaIqhrOxpFOEjKcdbP0KOTDpwHsGs25XQfaJaf1xtP13TsIQnkovawizSuP/YH4R
-         02ydE9T3zOr0Irg5t2s72KsTRN+bAn8Pn3SycGC2F1UH77qcwn4acmeT+d8jUu2jSv0x
-         yNDd0P9mhCqZHToIhhmgljPsYh8RrgM+wR5g++uM/Wgc2XbeQSn/iFcor/hkXzJsKw2t
-         vDM1q7qQgVAnVizY/b6EE4eTUHbZZnFWLarVSTnhC2PDOkXqnuB4INZVXEpiQxh7SrZf
-         59Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768213279; x=1768818079;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MH16cCGkiKRTIwcYIk3CP93gcE4h3kBjVckxfOORWKY=;
-        b=XFRn6FMbnqYILWy7dB5fV/UZL/+BzrKCQiwauxRHPf9WcJcm0GaahAvZNx4XRylecn
-         eoaiI3Ax4ypbPNBnJjaXX+6aODRDUdQ19ZPNH9RjLN2LV+8PudFG88HrBpx9keklpn+G
-         pHsgNkc72t5obbvwkxjU84tey64E0KKKsg64t8NK/Ps8KWWF0IZsu2KWPJH2qy1dCr98
-         g1GO6ssl8kBSPRzEn2acAtBgqOzJ11nkXYfcgHWs3PHad9YTIovpbsvkm9GRDn1unpZO
-         gGxB0Kf2EyZHDOmYx7tVjpNjCfjKMeG/bUNeXXCU1UC8+mBLNYfjvNRkJmu9f1XCEYxn
-         BiMw==
-X-Forwarded-Encrypted: i=1; AJvYcCVJRB+AQBcpoJrNQWXEeSgD3/Zyh7dgTtcIW+zelbHs8p20RRBTZqRpnD+zyCB3xmFB+8Il4RUcxg==@kvack.org
-X-Gm-Message-State: AOJu0YxKTQrNCdOSET7bbDRl4eYY1KjmKL7Y0GHgcl1vttRWPuD3tHpL
-	N4X3p40sURao7bhcZCiAX7/cp3Cz2eu0+tKtVdEqu0uch4jVScA3LYfo
-X-Gm-Gg: AY/fxX7SuVEuyP/KcwKZjGoQt4007lpuOKYGKHhTeETn432BGlsLhsB+Ky5yNdNQmfJ
-	Sbbx84SURwHSOLQa9abywC1/czpOGMg696jbl6UbN+DJ/P4s1JRU8b48Nrmi521pS1JR1a0ek5N
-	4wClQMFKbudYUSmcUtfhaOZdre8jGVw6zEzZZA2DuGOBDc1fBJivFrkP9Dbqw0BIOkaEKWdes/d
-	8wcckMwMV/L83/J4zFicEyncls7dnAE4vbPkB2/V0KQ7dgWh3xNu+t6ig5Ffsk46cClxhuTItun
-	ifSGvcTiRj+VnrIUjWN9zJlnrrDkF7Zx144ImDVsQ5Snw/vGGENtdWnZtpp0Nobx9lBp1xKDnG1
-	NJaauep7ryhJXDpbmxAYkHY3iRlhOItRmwL3h3mXiICQW8ic+XQEdyCo//hxp9YulNFrFaRB906
-	kDAnsepWgUoHinH7ps8qw9p9Rt9VYD+I7K48Wo7n3Lf236xFhR
-X-Google-Smtp-Source: AGHT+IE0UtcUUd+0NPLty+/GtN4PIwioNMqlewY8nUJ0HWNNcErN36LVPtVC79QsrDnD3tS85Ukohw==
-X-Received: by 2002:a05:6512:118b:b0:594:2d64:bce9 with SMTP id 2adb3069b0e04-59b6eb0c486mr6660079e87.4.1768213278614;
-        Mon, 12 Jan 2026 02:21:18 -0800 (PST)
-Received: from pc636 (host-95-203-18-139.mobileonline.telia.com. [95.203.18.139])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b6e821f52sm4042503e87.29.2026.01.12.02.21.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 02:21:17 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Mon, 12 Jan 2026 11:21:15 +0100
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/vmalloc: prevent RCU stalls in
- kasan_release_vmalloc_node
-Message-ID: <aWTLGxeFm5BkSb4b@pc636>
-References: <20260112084723.622910-1-kartikey406@gmail.com>
+	bh=oQ+uhczkBU6ZeuZtsKRxUa8pjHCFPyNvAqTeWv5HkrM=;
+	b=VTwuEfY5+IDDhv41ROwS/MM1gkCliHzlgo6TksaCpswv9fKS00zYR1zAxKdjR6o+aErafs
+	UFi5DHGvUPuJ0zH4PAquO5BZRa5NU5pxBZeNksQO2s8cLm5pevMUgaQjWG1Ol0jmu7ZZ90
+	uIFL167Zi8oEmzZdmwNrwzWzJt3ZeAw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 345466013B;
+	Mon, 12 Jan 2026 10:25:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8994C19422;
+	Mon, 12 Jan 2026 10:25:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768213541;
+	bh=iZB8w08zTJZOeuhUYutrmZtQ2wK2v16pDgwJWhcGpSU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TB3TSWJyHUhoynAjWb06w7GIhKYoQDVMDrLeaOT0MyjqtCXWmRvgze14tZD7P/Aij
+	 oT7udaN4OUG/CI8sVA29DGFSF/v5h1VFOat9mN011g6JpkGPfSW50Kn/IqmKuckQGg
+	 L4w6njj6XBbg9UFgkKL1gks7m4swycKWV21aYcdp2FPiTRJFv6a5g7hOrV9zU6Fytr
+	 f6IqfCwKyzJ9fTSddo3Qk3g5INIYOh8v1UxrdwcElcfPv0PObPyj/klddRE3z7yxxH
+	 nH1xlOn92G7FHq3eDu2acNAfKG49EI7MwWD0/ritUdvPLFui90LZUCPn9VPt1441t9
+	 3/2xOo4VMXz1w==
+Date: Mon, 12 Jan 2026 12:25:34 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Jason Miu <jasonmiu@google.com>
+Cc: Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
+	David Matlack <dmatlack@google.com>,
+	David Rientjes <rientjes@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 2/2] kho: Remove finalize state and clients
+Message-ID: <aWTMHgHXy9Z-cKeb@kernel.org>
+References: <20260109001127.2596222-1-jasonmiu@google.com>
+ <20260109001127.2596222-3-jasonmiu@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260112084723.622910-1-kartikey406@gmail.com>
-X-Rspamd-Queue-Id: BAFA120004
+In-Reply-To: <20260109001127.2596222-3-jasonmiu@google.com>
+X-Rspamd-Queue-Id: C815014000D
 X-Rspamd-Server: rspam06
-X-Stat-Signature: ndsrfy1nbsi3cba5twj3iys76mw7mk6u
+X-Stat-Signature: tk7k9tj3o3nokjr4nghhbpwxpp7st8rr
 X-Rspam-User: 
-X-HE-Tag: 1768213280-120046
-X-HE-Meta: U2FsdGVkX19+a2IRuYO/ejD6yKgTeLC0sWzGwx79Q/oHJXqRFM2D/bCs1JBJGMtbExU/NXiRhVneEBz4VMOE0PfVMX69vTxno50k46BwJHZYyi8Jtl1e7aZwMnpSZelV8l/tzpH+mTxtDjkp3a12S2iSAv9J7jpSHmFd6Uxz4fqRKUDTIIcXRJowv0aUZePkk1/urcocfzjrhJKQaa8JXqhqYv3CeyiWaWQh+FR1T30Uvjm44ZLA/bl+iE0swQzwmxxMyVoyg+7cubUep0vZ0qTVIMXuY/O/FuU7g1hwlyaXDNPG55woU96bY1vlLtVA+1951RnZbB9NQUuwLb9SDkWpyrDi35o4fVQ6nr+yFcmm6iW3OZaYGVSYlzfTdnmbHEEdVOGegF60qTbcG26fBNEfJImXuOcILWy8o+l5ttis9rSYSGpKiTxxh6cXin91IhC8iuT4MbrziiU8/uB5uYtRE+sOKxldYLZ1TpbZlpps2Dp5CgnLZ2+l71pJ+zXfLiVoekWel4FOF74QV1A1c1mqTZU7XIWxhc6iqjjbl63WlYUOLQLxCq4y1S1o3NRXHekXbkFvH/WSSImEfKLxNBhDEsLUfKh/22ChYHCE2edtdyCH161xeobnuewq+N9HgoCt/kdaK/WgGVCG7cJ55mS5doJ19jsxRI5Dj6JByLK0q6p3XWFCxI7F0fLUVI7O/JTR+qIO3x3JKtY56XCOTSZRbuPbik6Dhc58axoVARl2sphOwN6C+xc0ndz57JiOfBiMcgNyBmvuRDgxWE8UC4KiJgFJFy83PCNL7HmHAtKJYd5q3YbeM7s86s+M0fu43pn7Bs10ALoQR1JrfpTk0F5DI5GDqer+fU6gI3+nymsGxTUBmU/VFikIsL4tA44kGqAh3794VMmh6J3EhoWF23KmBFkhsvE/FhenuyiEPXxMzexu3108xgFt3wLouZ4vPLOy3bQIdQ1OhwnTgdV
- 9YN57Gi2
- KRHi8ZaUkqi9/sFlPC6Bw6swv+0bSnKg4o/RqtPrKLAegyqZI4DS2MM4hIkBoSawlGJMwV0+kIbJrEnl56KYd06oxF8CdNSKbW0jMU/9bbK9OIVv3x3tFMNEksM8azLys6Mg7KUgPeaeEQ48kOcfCf0d02IWFH3Ayc3IrlNR2KXPFW+Otf4wDqZyzOdjK48dXOWOidSrN7Derwoa2lU7i7gp/3KvE+ssalxa3c6nMGeVKB0xXsXq7/tbCt07s5Em9vUOi2FEEt5zWsg2rat1u0y5EK4sZ7SdqE2FYA8hRdaEGVWf09LxbaV3rK8ApSmGkVImREggwqVT3HAEKOdtpIZ4ZYcAPG+DAM8200osZMMfAUp7ghhpBQB3U8cdRtOlsdPSBvuNQ4JtiBwrGQz5p86jKTQktHNR+k65ZpAmQ+HtDZOzCBvE6ucdC9I30z4k0SP4BmoUcVeMKLjzeVrmBmrIxxvfTU8G7WGsKBfcMxGdV0RYZAyQG/MIQiurKImrhGjTJ/KBxyQ/7QX82hARcjWbKieka65yLCKmNIpuOGzXovqZn2f8WaCRKnEnKAD1BYQuZSaqb/YnQAvtbcv14FutBr+gaD1WFCiBOpb0gybUJlSp9kj0H+u3yjrv8biw69yY1xJj6nbef1IB5NW9qE554ZMJWCrKtgNbHrhiKYZlFZWI=
+X-HE-Tag: 1768213542-518359
+X-HE-Meta: U2FsdGVkX1/qJDvXiDDq51gM9l8vbnby3rJvdIJNeqdzTBXWfARWqnA1BWq2JmcnRcr9YqPG44CaWzUqP1K/FclFWq9j5xKwYn59mWHK9KVjmGVXR1oxi04/pF2xw5MBu2F1bwDWfMw4drBEokxT4EhBD3gBd8oBz9FFpdzsLMPuUyGRCovpy25qUAyq6ww+9RqEm/XaS/Xmj0NYuF9AqYaYaAVldycyCwCwz2tmUOs3+MxPUbjDyGfabbnjfVDPrXnmhiKVRXLGrh9nOKJ5D8waXlnRunZtj3aJ9QXGzbC/sH564sZ1tIPswhq9NMAEGc8eNIEcUoNOAs24g8VBhFr0sTGaZnuLNFFd6vXNqEZWDo6oJEfzU1zTwHPjPidUOwa2wwAFqTFxJF95woHE0xgkpY8ziYh8vfpDrdtxSEHxf0B0Hbt3nuX9DMqClpIoqgvZnl2UpTF/AJ1C5qESVRZSlqfzotgwITFWUVnhXqn238lnvYj4iihUDrK4RfYfTzsZYbbdMhqi1kEEKqICXMMxvGVzWdXvqNkaiU+BKdYhiiuc2LgqbKJM9Cex2vS9XKQZMmtR2j9T4iUrF5oyA5jZqEdKgOC7evo7LDuioYf8A1k0hgMbFexlUAg2ekbjZURoye2M7co5upCuthnBxpiaw5OiA7+o/i6yuzipcpB36oewAi5PFfWKwaEUzWMz+sJRWzau0f85gsLvu9ZYqzWwmOlbSExIUVlWHEDAWpm0p1iV608hde6pN1tCuzBCT37AlHIEcmqxNW8xUqDUwosvLlsDs4BsvFHXHWwvM52EDSQ7fpdGpQ5egdwjf5pw1MgGeWrw6O+1foKfFPrhkp0PEEaVaJ61R8mAoX2Tje8XwyOHLxWB6M6iADvIlxPwFOd8JmAU5tswJE7tunk2z4CYpEEcaroBc610tWu4mY9VJ7T4UxQPsgRJqPa/d/2VuzPTqSZuUOtBu8UgjhL
+ qhZks+A7
+ /eQlfjflLu13ggsXyEpi0m6eCDSQ/atHY6HB09rbzkheYSqzo+yMPWu6GZ4FwXGfgT/semWmDkbg92DAFAInJtq1kLkqTkYirs01HRpSRIMi7KyJpUEa/ftF04Y66wPSqEj/ehY6RuAu2Wo4e+C02HWAIZFwo6x/3UGffZHoXP+951L/BWQaCYhGJwaUlSkspGzABnrtE97vUPRpi/bXMkQJrN5HZSAIdamExHCdjQdloeRHRMaoxIO8yt81bbH0XjSqwOOH4ppizk3lXYFODMVy1tg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,77 +99,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 02:17:23PM +0530, Deepanshu Kartikey wrote:
-> When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
-> vmalloc cleanup triggers expensive stack unwinding that acquires RCU
-> read locks. Processing a large purge_list without rescheduling can
-> cause the task to hold CPU for extended periods (10+ seconds), leading
-> to RCU stalls and potential OOM conditions.
+On Thu, Jan 08, 2026 at 04:11:27PM -0800, Jason Miu wrote:
+> Eliminate the `kho_finalize()` function and its associated state from
+> the KHO subsystem. The transition to a radix tree for memory tracking
+> makes the explicit "finalize" state and its serialization step
+> obsolete.
 > 
-> The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
-> where iterating through hundreds or thousands of vmap_area entries and
-> freeing their associated shadow pages causes:
+> Remove the `kho_finalize()` and `kho_finalized()` APIs and their stub
+> implementations. Update KHO client code and the debugfs interface to
+> no longer call or depend on the `kho_finalize()` mechanism.
 > 
->   rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
->   rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
->   ...
->   task:kworker/0:17 state:R running task stack:28840 pid:6229
->   ...
->   kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
->   purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
+> Complete the move towards a stateless KHO, simplifying the overall
+> design by removing unnecessary state management.
 > 
-> Each call to kasan_release_vmalloc() can free many pages, and with
-> page_owner tracking, each free triggers save_stack() which performs
-> stack unwinding under RCU read lock. Without yielding, this creates
-> an unbounded RCU critical section.
-> 
-> Add periodic cond_resched() calls within the loop to allow:
-> - RCU grace periods to complete
-> - Other tasks to run
-> - Scheduler to preempt when needed
-> 
-> The fix uses need_resched() for immediate response under load, with
-> a batch count of 32 as a guaranteed upper bound to prevent worst-case
-> stalls even under light load.
-> 
-> Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
-> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+> Signed-off-by: Jason Miu <jasonmiu@google.com>
 > ---
->  mm/vmalloc.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  Documentation/admin-guide/mm/kho.rst        | 52 ++++-----------------
+>  Documentation/core-api/kho/index.rst        | 17 ++-----
+>  kernel/liveupdate/kexec_handover.c          | 21 +--------
+>  kernel/liveupdate/kexec_handover_debugfs.c  | 23 ---------
+>  kernel/liveupdate/kexec_handover_internal.h |  3 --
+>  kernel/liveupdate/luo_core.c                | 12 +----
+>  kernel/liveupdate/luo_flb.c                 |  2 +-
+>  tools/testing/selftests/kho/init.c          | 20 --------
+>  8 files changed, 16 insertions(+), 134 deletions(-)
 > 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 41dd01e8430c..a9161007cf02 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -2273,6 +2273,7 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
->  {
->  	struct vmap_area *va;
->  	unsigned long start, end;
-> +	unsigned int batch_count = 0;
+> diff --git a/Documentation/admin-guide/mm/kho.rst b/Documentation/admin-guide/mm/kho.rst
+> index 6dc18ed4b886..57d5690dce77 100644
+> --- a/Documentation/admin-guide/mm/kho.rst
+> +++ b/Documentation/admin-guide/mm/kho.rst
+> @@ -28,20 +28,10 @@ per NUMA node scratch regions on boot.
+>  Perform a KHO kexec
+>  ===================
 >  
->  	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
->  	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
-> @@ -2282,6 +2283,11 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
->  			kasan_release_vmalloc(va->va_start, va->va_end,
->  				va->va_start, va->va_end,
->  				KASAN_VMALLOC_PAGE_RANGE);
-> +
-> +			if (need_resched() || (++batch_count >= 32)) {
-> +				cond_resched();
-> +				batch_count = 0;
-> +			}
->  	}
+> -First, before you perform a KHO kexec, you need to move the system into
+> -the :ref:`KHO finalization phase <kho-finalization-phase>` ::
+> -
+> -  $ echo 1 > /sys/kernel/debug/kho/out/finalize
+> -
+> -After this command, the KHO FDT is available in
+> -``/sys/kernel/debug/kho/out/fdt``. Other subsystems may also register
+> -their own preserved sub FDTs under
+> -``/sys/kernel/debug/kho/out/sub_fdts/``.
+> -
+> -Next, load the target payload and kexec into it. It is important that you
+> -use the ``-s`` parameter to use the in-kernel kexec file loader, as user
+> -space kexec tooling currently has no support for KHO with the user space
+> -based file loader ::
+> +To perform a KHO kexec, load the target payload and kexec into it. It
+> +is important that you use the ``-s`` parameter to use the in-kernel
+> +kexec file loader, as user space kexec tooling currently has no
+> +support for KHO with the user space based file loader ::
 >  
->  	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
-> -- 
-> 2.43.0
-> 
-Introduce a macro to represent an upper-bound? 
+>    # kexec -l /path/to/bzImage --initrd /path/to/initrd -s
+>    # kexec -e
+> @@ -52,40 +42,19 @@ For example, if you used ``reserve_mem`` command line parameter to create
+>  an early memory reservation, the new kernel will have that memory at the
+>  same physical address as the old kernel.
+>  
+> -Abort a KHO exec
+> -================
+> -
+> -You can move the system out of KHO finalization phase again by calling ::
+> -
+> -  $ echo 0 > /sys/kernel/debug/kho/out/active
+> -
+> -After this command, the KHO FDT is no longer available in
+> -``/sys/kernel/debug/kho/out/fdt``.
+> -
+>  debugfs Interfaces
+>  ==================
+>  
+> +These debugfs interfaces are available when the kernel is compiled with
+> +``CONFIG_KEXEC_HANDOVER_DEBUGFS`` set to y.
 
-Thanks!
+s/set to y/enabled/
 
---
-Uladzislau Rezki
+>  ``/sys/kernel/debug/kho/out/sub_fdts/``
+> -    In the KHO finalization phase, KHO producers register their own
+> -    FDT blob under this directory.
+> +    KHO producers can register their own FDT blob under this directory.
+
+"own FDT or another binary blob ..."
+
+> diff --git a/Documentation/core-api/kho/index.rst b/Documentation/core-api/kho/index.rst
+> index 7ddc4d3ecac5..286a6d0b9956 100644
+> --- a/Documentation/core-api/kho/index.rst
+> +++ b/Documentation/core-api/kho/index.rst
+> @@ -9,8 +9,9 @@ Kexec Handover Subsystem
+>  Overview
+>  ========
+>  
+> -Kexec HandOver (KHO) is a mechanism that allows Linux to preserve memory
+> -regions, which could contain serialized system states, across kexec.
+> +Kexec HandOver (KHO) is a mechanism that allows Linux to preserve
+> +memory regions, containing kernel data structures in their live,
+> +in-memory format, across kexec.
+
+I'm not sure about "live, in-memory format". memfd does preserve some
+serialized state rather than "live memfd".
+The existing phrasing is general enough and I'd leave it as is.
+  
+> diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
+> index 4c437de5c0b0..ddc9110a2b45 100644
+> --- a/kernel/liveupdate/luo_flb.c
+> +++ b/kernel/liveupdate/luo_flb.c
+> @@ -630,7 +630,7 @@ int __init luo_flb_setup_incoming(void *fdt_in)
+>   * data handle, and the final reference count. This allows the new kernel to
+>   * find the appropriate handler and reconstruct the FLB's state.
+>   *
+> - * Context: Called from liveupdate_reboot() just before kho_finalize().
+> + * Context: Called from liveupdate_reboot() just before return.
+
+Just
+
+	Called from liveupdate_reboot()
+
+is enough IMO.
+
+>   */
+
+-- 
+Sincerely yours,
+Mike.
 
