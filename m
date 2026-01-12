@@ -4,87 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10366D2502E
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 03:29:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81D91D25030
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 04:00:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 324166B0088; Sun, 11 Jan 2026 22:29:16 -0500 (EST)
+	id 2E4296B0088; Sun, 11 Jan 2026 23:00:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A7766B0089; Sun, 11 Jan 2026 22:29:16 -0500 (EST)
+	id 292396B0089; Sun, 11 Jan 2026 23:00:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A6856B008A; Sun, 11 Jan 2026 22:29:16 -0500 (EST)
+	id 1945A6B008A; Sun, 11 Jan 2026 23:00:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 04B046B0088
-	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 22:29:16 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AA56D5FB81
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 03:29:15 +0000 (UTC)
-X-FDA: 84321881070.19.498651C
-Received: from out28-73.mail.aliyun.com (out28-73.mail.aliyun.com [115.124.28.73])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 77A94A0007
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 03:29:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=antgroup.com header.s=default header.b=pg2SLIqr;
-	spf=pass (imf15.hostedemail.com: domain of houwenlong.hwl@antgroup.com designates 115.124.28.73 as permitted sender) smtp.mailfrom=houwenlong.hwl@antgroup.com;
-	dmarc=pass (policy=quarantine) header.from=antgroup.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0578A6B0088
+	for <linux-mm@kvack.org>; Sun, 11 Jan 2026 23:00:54 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 65C5D140372
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 04:00:53 +0000 (UTC)
+X-FDA: 84321960786.16.591DF08
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BC6691C0009
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 04:00:50 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FG1lJlsL;
+	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768190452; a=rsa-sha256;
+	cv=none;
+	b=TOymonaDpxS5JjunSzuElM6jXUvVO1oPM3Ebv+T9m7/g4zYpSAXB2+vAJe1kgWi6pFsYSZ
+	XXHc2AlOSdRyyx6mTEiVxRg7sbZnMO6d6dolsWAK00f1UpLCg2W4tmViZd+D6wqSaBkyJx
+	5toznw1i8/9pHzsf90U4tIMn0tBTBiM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FG1lJlsL;
+	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768188554;
+	s=arc-20220608; t=1768190452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qSGPjdxhk3/aWqe+xkuM6uIoGLfzd0PvSndY5oHIw6M=;
-	b=pRTMRVKkkDbKUriqnG4m2YGA7+wKCY1lT0X89HoH4cb6ugcmDaymrs/+wRszyiRBFf7G1W
-	9tt1np6kl18poQ3lOZjy544EDStAgZmxQKhelZJp3PlteWOBiz5VAXIMgs1XKpPcAnFB2Y
-	nEuOgDlKbwKzRebiXzx8TEw3ccKbdI8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768188554; a=rsa-sha256;
-	cv=none;
-	b=ElsxMd1WkB1b7ybcVGrmotxTjxsN5HyEgZ01X2r7vsvON1ovb9nwZbsp+DeJ9YigM6roOu
-	YTWkDoyRbwshi1H94DxdJ7vkwCi2Ussp/sseZz0PYGzWdALGDUB15PPUyMqDkCTrrLBg+g
-	p0cdmlHygXReU39ZqxhGIPBqpjJdmyk=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=antgroup.com header.s=default header.b=pg2SLIqr;
-	spf=pass (imf15.hostedemail.com: domain of houwenlong.hwl@antgroup.com designates 115.124.28.73 as permitted sender) smtp.mailfrom=houwenlong.hwl@antgroup.com;
-	dmarc=pass (policy=quarantine) header.from=antgroup.com
+	bh=PSR7XYx/rEma8e/4ZvAG4dQm3PShN52sV984ltlUVPQ=;
+	b=XAdIDT/80hEWUdYAd4ZLT7XND9YBpokuBFTz6XfemLymWzlHBnRQ4QfWFwdmORLi0P7a2z
+	f6FCcOepn7O81qGPquex8dKtPwVBNwYLFCSqKILO9y/xdPHPa+gI0VafzydrVDlUf2EpoC
+	yamKhvVl+r04f8e9L2zDYMyMQLXIpr0=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=antgroup.com; s=default;
-	t=1768188549; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=qSGPjdxhk3/aWqe+xkuM6uIoGLfzd0PvSndY5oHIw6M=;
-	b=pg2SLIqrwGKiSGHSWq6wIfzXuVnf69rqWZg/ASLozrMIE58S8BMVCK9zuT1D+GgUsc6cmmvMCwsaEdSoqjWPXU74u/7UTb4ShnOuvNaRpXf3q/5HtNyAF4iHtk7FqZtpaCz/+nTRZWc8NnOmyloIrt9O1VKUvcBYbp8o11TtMoA=
-Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.g44jfNX_1768188547 cluster:ay29)
+	d=linux.alibaba.com; s=default;
+	t=1768190446; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=PSR7XYx/rEma8e/4ZvAG4dQm3PShN52sV984ltlUVPQ=;
+	b=FG1lJlsLREj8rGByupgYa8sohwGk2yDoQwkFACBBVNvVWg+pr5hwQdD0yE5X20l5CQ2ToxnNgYq8RgBjkzyZ5zUPUffO6+gqC5kkKuljJBqnf/ECsmrY7Cgi+ik3qiS6Sw5lkORqvRbSDpyZ3gMfih9ctludg1wJPO5n4kWu93A=
+Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WwnsRvH_1768190445 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 12 Jan 2026 11:29:07 +0800
-Date: Mon, 12 Jan 2026 11:29:07 +0800
-From: Hou Wenlong <houwenlong.hwl@antgroup.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/early_ioremap: Print the starting physical address in
- __early_ioremap()
-Message-ID: <20260112032907.GA60059@k08j02272.eu95sqa>
-References: <aa2d44c34f44c31b50285b7592ed4fd78d6f59ba.1767965415.git.houwenlong.hwl@antgroup.com>
- <20260110155721.84af2e403badeeb29c7734e3@linux-foundation.org>
- <aWNqQd3CVx8Z_KFB@kernel.org>
+          Mon, 12 Jan 2026 12:00:45 +0800
+Message-ID: <d20f536c-edc1-42a0-9978-13918d39ecba@linux.alibaba.com>
+Date: Mon, 12 Jan 2026 12:00:44 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aWNqQd3CVx8Z_KFB@kernel.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 77A94A0007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/shmem, swap: fix race of truncate and swap entry split
+To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org
+Cc: Hugh Dickins <hughd@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>,
+ Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
+ stable@vger.kernel.org
+References: <20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BC6691C0009
+X-Stat-Signature: acmdh19adrggfifo7ood4k5f4s8akw9p
 X-Rspam-User: 
-X-Stat-Signature: fqcbxfn9neh7pxe5hofoi1b1basbr7jx
-X-HE-Tag: 1768188552-120766
-X-HE-Meta: U2FsdGVkX1/r2KVDjICbqR/QZj6PJhp8wyjFv0k1RGFB0Bz8qZ9iwlg6Gsm+vjwP0pMEpS7BVYWab9sfhpIUxT4Gs0Pa29hoM0C8UTA6e9ZYh2I6cZnyGvguaqF88GHrt//YkGJRITyJlK+9cgGOLd+Qj3sslqAkvhSS8SJf5Wr1u747fBAEpRsi2rqXarvSPNMjPQCrF1DV3vRUbs77Lj8WBBKQESHIkp1VHbqb+/VbyrBNlJLRHFnEdoaH3Y57/Z6G7V2PxzjRGLOuVDny5pb2el5IkPxNopNPSU9pvt6WUAIeE4A/x+h4iVFZEqapBkt6j5uXlFh2HYzF21xIl1o8KoFHhF1adBq10Z3cKQjt55XXan+WgI4+qxr5IqwxUEEvvTJ96GHMVbAqov2KofPNWENa6PKcqdXHgr0vPYmNbMe7ZbrLUlZc7c2gxxojqycEyl1XXuG+1xxa/pHX90/t05eoHMYuRV/jIjGMlv32WEPm9ie21Z9GdJddsGzazzKwHHQ+ut7JdjCobgc6sEITdxM/Is304+NGezWYj7OdmDLrFfx5uZL0dcjdr8+T0agfYwOY614eB5MXk90DdvjaFMtHbcun6/KGQBeaaf0qv/wph5s+aALj7GRQAReBuOkFLwNLtx/OmOjGopjwRVPSb+1Sl6+q80sPC5Rr4B7GpW2lPUcC0PXSIlV5fllo+cjRrmC+VDB5aDkWuDcn0huA2OG9nmLSn5nJpwr5d2WgbZDVW9IrhCggrmsKGxA4NRytl2IGCUMANOcuWPYIK8xoIS6QvjdG7lpszt359EBsILbQo1E3uyBGzPpq27tnFC08awYpi8qo/6dhhTlvHVOIKRdorgy/cbZ+9p//PjehZfbNuFg5Z+ltqbnxL3/xangg96NXvOlWQPQo2vuQEt+yUwAnahloFCbPOSO3wx18tPJW96Rm154lLyci28Sj5Ut8YFYsq/fzcZvRguL
- GmSebCM0
- UQTVtf1clZg/wiVWw3n9AO1h4hm0wiX9ERR1V3KkiCYjWsWQ8qMKeDfbxl6YzDGxB/Xw77Y1JrwKgL3qd+pp51RvAOudPAqGwVAClJdCo0ZP4JF2Y1lBj5A2/Dbzm31gJLV8v8STqQYnmfjoeCd7jG2QgvKj65n90rGoDck7CpoPcNV/Xw5pgxWChA7CWrF/hpzFp95AGmC9Dgcf/RCWxqaXXgJ6QL/OUpf3c9fmg4ZtZf/IwVmub88561hwOCM6mYS3XBBx/pIou0znAv9OzBvab61+ZhKOfmXIiZnB/fpgavnl+CSMTuqrmK3DCCE5rAY7ONTzVP5+J6JZnDfTAgngM1QXsRLAsDNrgIyT6+DLwOpzUsPXUtmtCzKjefe0uAFjA
+X-HE-Tag: 1768190450-190237
+X-HE-Meta: U2FsdGVkX1/aDvezFXifsWzXSbxJF2o/FOjfETm9lvVZKucgJSSCvzhyLshsoSKmZgifPSzbfleMb+JHfbxh4fndDdFkiHnDh+GtDM1HiCyl4wbYSg6pq1y9wkkQkQNmxUsMREHa2L5Y8Pu07P/SPdE240jDkAdqrQhhky3/815UlPC3ildyGliqykHY92bMoZQ02NseFztAM18lK5v2RTisKjLgKkR11P9gHGVmOLwtSGrN8S3iBpoi6pklSINg04i0eFC7oixR1CTdwM4i6Sn5dZLou1Ni/vpAJb5ijEQcASFVVFITWgpvmy+GPOPb84uA83Xy0OAse/5v0FsCDrjYCP6LASFHGyVWjrij2GMkM7TPkRFd8FXQ+eV49Ep9Z83nD08HsDmY/tHzWVWnyFZO8ewleP+9WOgBTGfCnBdql0b9Mtqx/TipxMrESvv/NWUZFjOdYPwBly/qZpfAPZUtfIRnNtNwfrDeE0+QUW6W1YSs7Ip2bXxjKXuKSFQSlcUmXr+jqiNxbE331/ncU5nWwqkRVjXD1Jffj1c4O+7LiUqAZOEeaRRFKhT1yGBpho+K6CNngArtvC+/k9CnE/QHHzea6SDofJEOu2SQvlZDniTIy5sHs5jBor+xIWyb49/7DGAOzPvVIeH7Li+Qk+edG/f8R6PZquwWPc68arjl6bdQKukJJytQmfco57y/AACtVcQAXpQTSzQMIeFyx6xSiMDDjluhH0sMgWPY6TJvwANqZt4HBSJ91KAVd+9tNcC5g2wWO+Rq70a1FcC9I4prB9oc8dw4osguiq1ccOGR4FcZp3qb1qPt4qtauOcvqaxQqIj0PhOyJ9Nt8rUQILN5LW7xlsycb3957+xfqXygsss73OhLYLLMVLi1SHu77b2GZ0A5yAeZDnDOdukmyHG3ozJxkFQy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,56 +88,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jan 11, 2026 at 11:15:45AM +0200, Mike Rapoport wrote:
-> On Sat, Jan 10, 2026 at 03:57:21PM -0800, Andrew Morton wrote:
-> > On Fri,  9 Jan 2026 21:31:51 +0800 Hou Wenlong <houwenlong.hwl@antgroup.com> wrote:
-> > 
-> > > The debug WARN() printing occurs after the while loop, so the
-> > > 'phys_addr' reflects the last physical address rather than the actual
-> > > starting physical address, which is not useful for debugging. To
-> > > simplify, the WARN() statement could be moved up before the loop instead
-> > > of introducing a new variable to record the original 'phys_addr' value.
-> > > Additionally, swap the print order of 'slot_virt[slot]' and 'offset', as
-> > > this will enhance output readability.
-> > > 
-> > 
-> > yep, thanks.
-> > 
-> > > --- a/mm/early_ioremap.c
-> > > +++ b/mm/early_ioremap.c
-> > > @@ -139,6 +139,9 @@ __early_ioremap(resource_size_t phys_addr, unsigned long size, pgprot_t prot)
-> > >  	if (WARN_ON(nrpages > NR_FIX_BTMAPS))
-> > >  		return NULL;
-> > >  
-> > > +	WARN(early_ioremap_debug, "%s(%pa, %08lx) [%d] => %08lx + %08lx\n",
-> > > +	     __func__, &phys_addr, size, slot, slot_virt[slot], offset);
-> > > +
-> > >  	/*
-> > >  	 * Ok, go for it..
-> > >  	 */
-> > > @@ -152,8 +155,6 @@ __early_ioremap(resource_size_t phys_addr, unsigned long size, pgprot_t prot)
-> > >  		--idx;
-> > >  		--nrpages;
-> > >  	}
-> > > -	WARN(early_ioremap_debug, "%s(%pa, %08lx) [%d] => %08lx + %08lx\n",
-> > > -	     __func__, &phys_addr, size, slot, offset, slot_virt[slot]);
-> > 
-> > It's strange that this code uses WARN when nothing is wrong.  The rest
-> > of the function uses WARN appropriately.  But that's off-topic!
-> 
-> It seems an historic thing. A nice cleanup would be to replace
-> WARN(early_ioremap_debug) with pr_warn() + dump_stack().
->
-Yes, I see that the initial code uses WARN(), so I didn't change it, as
-cleanup is a separate concern and may not be well-received. However, I
-can make the change as you suggested.
 
-Thanks!
-
-> > Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-> > 
+On 1/12/26 1:53 AM, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> -- 
-> Sincerely yours,
-> Mike.
+> The helper for shmem swap freeing is not handling the order of swap
+> entries correctly. It uses xa_cmpxchg_irq to erase the swap entry,
+> but it gets the entry order before that using xa_get_order
+> without lock protection. As a result the order could be a stalled value
+> if the entry is split after the xa_get_order and before the
+> xa_cmpxchg_irq. In fact that are more way for other races to occur
+> during the time window.
+> 
+> To fix that, open code the Xarray cmpxchg and put the order retrivial and
+> value checking in the same critical section. Also ensure the order won't
+> exceed the truncate border.
+> 
+> I observed random swapoff hangs and swap entry leaks when stress
+> testing ZSWAP with shmem. After applying this patch, the problem is resolved.
+> 
+> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>   mm/shmem.c | 35 +++++++++++++++++++++++------------
+>   1 file changed, 23 insertions(+), 12 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 0b4c8c70d017..e160da0cd30f 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -961,18 +961,28 @@ static void shmem_delete_from_page_cache(struct folio *folio, void *radswap)
+>    * the number of pages being freed. 0 means entry not found in XArray (0 pages
+>    * being freed).
+>    */
+> -static long shmem_free_swap(struct address_space *mapping,
+> -			    pgoff_t index, void *radswap)
+> +static long shmem_free_swap(struct address_space *mapping, pgoff_t index,
+> +			    unsigned int max_nr, void *radswap)
+>   {
+> -	int order = xa_get_order(&mapping->i_pages, index);
+> -	void *old;
+> +	XA_STATE(xas, &mapping->i_pages, index);
+> +	unsigned int nr_pages = 0;
+> +	void *entry;
+>   
+> -	old = xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0);
+> -	if (old != radswap)
+> -		return 0;
+> -	swap_put_entries_direct(radix_to_swp_entry(radswap), 1 << order);
+> +	xas_lock_irq(&xas);
+> +	entry = xas_load(&xas);
+> +	if (entry == radswap) {
+> +		nr_pages = 1 << xas_get_order(&xas);
+> +		if (index == round_down(xas.xa_index, nr_pages) && nr_pages < max_nr)
+> +			xas_store(&xas, NULL);
+> +		else
+> +			nr_pages = 0;
+> +	}
+> +	xas_unlock_irq(&xas);
+> +
+> +	if (nr_pages)
+> +		swap_put_entries_direct(radix_to_swp_entry(radswap), nr_pages);
+>   
+> -	return 1 << order;
+> +	return nr_pages;
+>   }
+
+Thanks for the analysis, and it makes sense to me. Would the following 
+implementation be simpler and also address your issue (we will not 
+release the lock in __xa_cmpxchg() since gfp = 0)?
+
+static long shmem_free_swap(struct address_space *mapping,
+                             pgoff_t index, void *radswap)
+{
+         XA_STATE(xas, &mapping->i_pages, index);
+         int order;
+         void *old;
+
+         xas_lock_irq(&xas);
+         order = xas_get_order(&xas);
+         old = __xa_cmpxchg(xas.xa, index, radswap, NULL, 0);
+         if (old != radswap) {
+                 xas_unlock_irq(&xas);
+                 return 0;
+         }
+         xas_lock_irq(&xas);
+
+         swap_put_entries_direct(radix_to_swp_entry(radswap), 1 << order);
+
+         return 1 << order;
+}
 
