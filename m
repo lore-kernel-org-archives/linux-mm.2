@@ -4,207 +4,216 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBFE8C9EC8D
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 14:14:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F685C9EC93
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 14:18:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1B6E6B0088; Mon, 12 Jan 2026 09:14:42 -0500 (EST)
+	id C23416B0088; Mon, 12 Jan 2026 09:18:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC9876B0089; Mon, 12 Jan 2026 09:14:42 -0500 (EST)
+	id BFA656B0089; Mon, 12 Jan 2026 09:18:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C73BE6B008A; Mon, 12 Jan 2026 09:14:42 -0500 (EST)
+	id AA4F66B008A; Mon, 12 Jan 2026 09:18:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B3E126B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:14:42 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E91CB8099
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 14:14:42 +0000 (UTC)
-X-FDA: 84323507604.21.642150B
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010015.outbound.protection.outlook.com [52.101.46.15])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2D240140004
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 14:14:38 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=fpBJJKu8;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of Honglei1.Huang@amd.com designates 52.101.46.15 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B9A96B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:18:17 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3ADA51ACD2E
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 14:18:17 +0000 (UTC)
+X-FDA: 84323516634.13.0A8C349
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E7E1A14000A
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 14:18:12 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ntFs8NOy;
+	spf=pass (imf26.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768227279;
+	s=arc-20220608; t=1768227493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KUhYH0DC1V8OixTGkkkdlhWBRLg6g4NmfOOx9yyUM4k=;
-	b=jkb08mQ8bu/S2L0Eqbz6WWTmm1l3phKgQE2K6pFe1z/vK6Ghm23lObVdNXtdTTw2sEZ3zI
-	gTnZ4lL02SmLI6DaIWv1Ib4c+j4F5t7bAdmMav6wKO1qDxG/0GoVGnHMEN4LEMOZRdM8Ey
-	g5u649Z1S6hj/lQAaiS060gbYntGWxs=
+	bh=qBWyLjr/d7u8wMFMjz5LxSl0WC0PBy5yY3aQ2C0B4Uc=;
+	b=MEwKOoqotP4TJL759uJAS4sLHc8R+oz+T77JYzaYkypO5SWsXfZBDXGbdh09q2i8nZWscM
+	13Q/l/uFSCmxgXD1lP45s69gZYHtZIzPOPU+TdTo8ZMljKWiVotJ5Rwk2PPoC7W8Nkqa58
+	5LeqEWs0G4dFj3Mj5YIl+O1qMu/zcw0=
 ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=fpBJJKu8;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of Honglei1.Huang@amd.com designates 52.101.46.15 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768227279; a=rsa-sha256;
-	cv=pass;
-	b=wHfKpkgiFEj/nBesEosBIkA4/JvLgoSgj8wlZ5rm4cZ/xWwpunZaMkASzWKcTpkiVvLF+H
-	yLFrjr31AvRD8qOrofIOXuvxV3Bv+SLBq8FMS0HJOFQeN1YlbTDQSSYY59zSMzQleF2Xys
-	XECVR6Aiq+/1oYws9gEANLBpPNAa8A8=
+	imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ntFs8NOy;
+	spf=pass (imf26.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768227493; a=rsa-sha256;
+	cv=fail;
+	b=6SQ2Z2OrSfG7A8g/Fa+/2iNuRdfLxWW1yfBXXlyo2IPz6zH5Zleka06hyQARkHU8PMUj3C
+	T9BOzu+ew9wZydl95t2hHqJTin7tn5yYgkYup0BX0YUq+9/l844/6R2DmXK8d6zuIp8MBL
+	JjoK44ounypJjNKr1VRJ0D49iUYu+Ig=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768227493; x=1799763493;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=nnCy3ZT9nb+t13BBPJzL0weXveoZhW9a27gjHMr0BUk=;
+  b=ntFs8NOyLTxoXFLtVlS6vVPZkJHIAvvxpYylFRaW28QgsuHNha/RFYHX
+   QZZQUCV7fHA47sYyEffkhIec2BMjD/cfoLF1hPSdQnJKgBCF7SjK+vXGx
+   36J3RRdq0DjJxo8+xOtRirf0dm3x0XAgYbPAjl+MqeWQY/ffvS6XO1GkS
+   WwYIValUEWHlGD/YkKg9HUiD4/dgjxyQu79GAppk+5kte9vfeOiFh6YWH
+   nE1k5OIMnuBkwJvT9Dtj72jvyuBr4InZs33Oa3yt/ScOcNuB+l4RJ82EC
+   6oN1/gfZh3kI+JBllLK1rCaIOplmZ5ErrxcJI3J3UiLYd86w0md2usNzD
+   w==;
+X-CSE-ConnectionGUID: RvGMXnKDSpuTukjrTI3+CA==
+X-CSE-MsgGUID: D7qxLq96Q7yaDZFx14MdTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="86916626"
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
+   d="scan'208";a="86916626"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 06:18:11 -0800
+X-CSE-ConnectionGUID: 8x/DYWLfSG+ke9+HlTIMBg==
+X-CSE-MsgGUID: Pl7coaHyRqCY6S4IWpNXJA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
+   d="scan'208";a="203905711"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 06:18:11 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Mon, 12 Jan 2026 06:18:10 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Mon, 12 Jan 2026 06:18:10 -0800
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.16)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Mon, 12 Jan 2026 06:18:10 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dTEV/bFBcDIsZPxJJJbiGMhPGHjYNN0X//B/T8Auzyb2JwA5WRr5RfGtabMroHptUJpFAekEnxguUHcaNM2zot/6qbbeq4kWhBxrrwK0HDHp9wEmjKDjaAEPu0C4jwLb+Mdol9S5J/FLcIZ38XQGCOusXNHMRnG7M/Ms44MjmRY9BxBaa51rwAUcJM5yFS10K6y0ewUaOMEtSRtqt4dnC7l/1MB/fNVQMJEL06IyHvoX+WSaFfNVGcmcPGM2dYb0JkNAD7VSJZFG7DYuhJw/ugJT/T/NreSsw1KDbLPXOJmdt1Ezv2j9goNVtOdJXEzzvu/dLeKT0DaEYpqunTN79A==
+ b=a+GOrE/y8dRrA0G7JW69deIfaFYAF33Soy7EZaxp5jM6RHVQ9V/0oGlVwPbVB49sL4+h31UoHBAZEV80WQaJbE8kuUHTSgCTLpxxUmkUibzoH0DPJSvqmHi4LntnegeCPZwjzFNa2a4tuIr6Y+VMaECIy9XN7rhPE4VGkynYYl4xiC+SksMnVrHBkO1oOjDqR9kRUENvKHm2iIqGuta9mX/6C3MDggs89SbuIfWyVMZ/1k1vNTZWC8em2IwRLgKZ1FnskXky9opqgbq7cre5Bd91XH9jFs1fFL9T4mczgY7FAF68vG+wNZXxaRHLP5AAwTMj7Gf8YdwjvE0sLOMotw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KUhYH0DC1V8OixTGkkkdlhWBRLg6g4NmfOOx9yyUM4k=;
- b=YhngxheEHtuodLfXz7EH0S6Oqo9pSBsayrzsiZFpvfq88tlG8v7tKlZGaZB0VyIuN+cD7ni4NyW5hee2YJrpu1FhxR8XqeFavBmY+vKRfvrLAE3KBooZuY0Gtsre1Lbqgr5rZrHf+fJZ8hHj6t59viqVQD1OaB1mL2C2KBNo5aVOPl2CekSLWXWHMDOQW5xDc4WR7HMpRjOodKNJGuqO1GBlPfDS//BZ/ehUz4c5QoEQ/hqZ2GqZiuDxOLuKQbj1+rSdw+IgnaC4PhNCrdAltgpDz9mO/q57htzB6WHFp0ry4jDpAZ8l9L5qqT2vjoYN2E0XvUIUWgGf0OGBDrmWmQ==
+ bh=qBWyLjr/d7u8wMFMjz5LxSl0WC0PBy5yY3aQ2C0B4Uc=;
+ b=cekgotxqQiye/lX9rz7FYkTwRqAZXZ0oszrOqwTS5DjuXoFsKSYAjYq6zLpXojtmX5nmRaB9pBPgxN/6j3DRayWrjg1h5wfsO8W80qMddlHhixLWieE3yLbMLWn1Huu3CB8Uf+KeXuu+URfRcBiawE2F5cZrgX1u2n9Owo/nSmMp1KeqL6Yz46KdWTYK10MTers+QC7R+NK0bhMfCOQ5IdAdz/u34FkW5C6Qu5QOR0gC+1a3BQmSjqzPaVOjniyE6m9NAAIZ60OX7Ubva5ILI8qA6DpVUs4V2/GnciKjFJpa2tEmDGp/LVEG6IkcxgTfI5jjmWjSkbBmg1dvKNGf3g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KUhYH0DC1V8OixTGkkkdlhWBRLg6g4NmfOOx9yyUM4k=;
- b=fpBJJKu8G3CN/OPd/yfh4VOJynD6Txvn0yhO0TFqVH6gYyZcEA5uHFYOtGGOpyVdxGi4eeNVfP6qZrKhgPR+MixffnFejucluhJ6V0ywtwgHCeYVXf14OYAK64KuGXZEuj8XMt05jbh8Xw5OtZ/3f+o3MceuvjNMHmj30/8IANU=
-Received: from IA1PR12MB6435.namprd12.prod.outlook.com (2603:10b6:208:3ad::10)
- by MN2PR12MB4438.namprd12.prod.outlook.com (2603:10b6:208:267::23) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CY8PR11MB7828.namprd11.prod.outlook.com (2603:10b6:930:78::8)
+ by PH7PR11MB5957.namprd11.prod.outlook.com (2603:10b6:510:1e0::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Mon, 12 Jan
- 2026 14:14:35 +0000
-Received: from IA1PR12MB6435.namprd12.prod.outlook.com
- ([fe80::8b77:7cdb:b17a:a8e2]) by IA1PR12MB6435.namprd12.prod.outlook.com
- ([fe80::8b77:7cdb:b17a:a8e2%5]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
- 14:14:35 +0000
-Message-ID: <c0fe19b7-df1a-442f-9ec9-794b14a81c28@amd.com>
-Date: Mon, 12 Jan 2026 22:14:27 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] drm/amdkfd: Add batch userptr allocation support
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Felix Kuehling <felix.kuehling@amd.com>, dmitry.osipenko@collabora.com,
- airlied@gmail.com, daniel@ffwll.ch, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, akpm@linux-foundation.org,
- Honglei Huang <honglei1.huang@amd.com>, alexander.deucher@amd.com,
- Ray.Huang@amd.com
-References: <20260104072122.3045656-1-honglei1.huang@amd.com>
- <64f0d21c-1217-4f84-b1ce-b65c1f5c2ef1@amd.com>
- <b6004bee-ffef-48ea-ba0d-57b390cb771c@amd.com>
- <76c44385-bcf8-4820-a909-569bd2d36198@amd.com>
- <7ea29163-d6cf-4a4c-91c7-72802dd49018@amd.com>
- <d932d813-f1cf-482c-9697-80199b3b4771@amd.com>
- <3f9028ae-6f34-4fa9-aba6-fb2a6e223725@amd.com>
- <57ce883c-532b-4596-97e0-cb811ecb0c8d@amd.com>
-Content-Language: en-US
-From: Honglei Huang <honghuan@amd.com>
-In-Reply-To: <57ce883c-532b-4596-97e0-cb811ecb0c8d@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TP0P295CA0034.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:4::19) To IA1PR12MB6435.namprd12.prod.outlook.com
- (2603:10b6:208:3ad::10)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
+ 2026 14:18:04 +0000
+Received: from CY8PR11MB7828.namprd11.prod.outlook.com
+ ([fe80::1171:db4d:d6ad:3277]) by CY8PR11MB7828.namprd11.prod.outlook.com
+ ([fe80::1171:db4d:d6ad:3277%3]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
+ 14:18:04 +0000
+Date: Mon, 12 Jan 2026 15:17:45 +0100
+From: Francois Dugast <francois.dugast@intel.com>
+To: <intel-xe@lists.freedesktop.org>
+CC: <dri-devel@lists.freedesktop.org>, Matthew Brost
+	<matthew.brost@intel.com>, Andrew Morton <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Zi Yan
+	<ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Balbir Singh
+	<balbirs@nvidia.com>, <linux-mm@kvack.org>
+Subject: Re: [PATCH v4 6/7] drm/pagemap: Correct cpages calculation for
+ migrate_vma_setup
+Message-ID: <aWUCiRvO25iBFP5J@fdugast-desk>
+References: <20260111205820.830410-1-francois.dugast@intel.com>
+ <20260111205820.830410-7-francois.dugast@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260111205820.830410-7-francois.dugast@intel.com>
+Organization: Intel Corporation
+X-ClientProxiedBy: DU2PR04CA0232.eurprd04.prod.outlook.com
+ (2603:10a6:10:2b1::27) To CY8PR11MB7828.namprd11.prod.outlook.com
+ (2603:10b6:930:78::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB6435:EE_|MN2PR12MB4438:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0eea66be-4d01-4a8b-99e9-08de51e4ea2b
+X-MS-TrafficTypeDiagnostic: CY8PR11MB7828:EE_|PH7PR11MB5957:EE_
+X-MS-Office365-Filtering-Correlation-Id: d677ea19-3584-47ab-aac4-08de51e5662d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TWNnVjVnQjVINVREWmFFMVBhd29Wc1l0cEx0NnVTTmhFeDJ4UU1uOHFHVW1X?=
- =?utf-8?B?S2VhOVpnZENldTFmTW5vK1krUnBuazFOdU5YY0Ywb3J3ajVKOXZ3TUVDU0Qy?=
- =?utf-8?B?dWUrdHFEaGlaYThnMnY2VkhCU21DcXI4ZUJGUnVoM1NBRnByK1hQQ0V2aDBL?=
- =?utf-8?B?Y1lhenlVTW9BZnF2VGxaaTZhZUM1MmttZWQ5VjNrTWF6VXVmQ0QzZ2NyS1Ux?=
- =?utf-8?B?cTFFeEdQOXYyK1ZEbnZvOVBGcm1ZMmJ3eTlRelRkSEk5cFZPbHNnQ0dBRnRZ?=
- =?utf-8?B?azVKRjJvMWxtTDJoL2xCaEFaRE5Kd2xuR2xSbkJ2VHowSE96Q2NNb0VaYUZw?=
- =?utf-8?B?eUVyNVpmZGlrSVZmN0U3Y3VqS2doaENYZW5DMVhMYWhrQXpZazZOMUxTU3E1?=
- =?utf-8?B?NHFYaUo4KzJXVE9oeVh4cVU0bkhLdnpJU0l6eGtsUVdwUWh6WU0zaFlSZEVN?=
- =?utf-8?B?L3NpV3ppWERhZHdyeEpmRjdWSVZRcW5WUjExZnR3dmZZTGxTS3RWYkE2K1k4?=
- =?utf-8?B?UWszZkdsKzRUSUNkaGt0WHR1WVlWSkNFOUZWT3FiRGZGZ0t2eVl2MlJydFJL?=
- =?utf-8?B?U2V0VGptb2hXT3R2NFp2Wi9xbjk2VzlrQnM4ZTk1eG5TeE03QkVIUGp5U2x5?=
- =?utf-8?B?Z0ErblBTbmVhLzZaTjRScEIxZzU2Y1NIU0UvSVNJZlVnaGwrK1RuK1lhTWV1?=
- =?utf-8?B?eWx4ckIwcnhJWmpFL2VmTjFRUDBFbHNBN3NmR1NQbEhVWFJxREJ3WmdWYXpw?=
- =?utf-8?B?aGxOOWRrU1ptRXlFQVVoeFlKcFpBZkM3bGhORTYxbm5ULy9kelpnVTVsT2pL?=
- =?utf-8?B?YlpFU0J5MnIvRi9Vb3djcFVPSTgyak5DcDlickxnY3R1b1dsVFNQR1c1N1Jr?=
- =?utf-8?B?MWJJQ0FIei8zZWdWSHhGc1NoNHJUOGlhcmlKVEM5aXNySGpaT2prNVpUcVBn?=
- =?utf-8?B?Vjh0YmdsYWF6QTBQN2hKZngxTXJuSDZiQ0YrbW9GVW4vNExkM1J0aTl0OFFi?=
- =?utf-8?B?NnF0RUp4a01yVktxK2VUUzdRc3F6U2VoWDZLK3NMcEQ4UXh2SmtBZ2ZzS01C?=
- =?utf-8?B?Ny9MN3haS1ByeDdwWVd1aU15V053b2tOUmUvZVRkM1VLbzEvU2U2RlBZcDBI?=
- =?utf-8?B?bG9CLzVRY2xDLzJwV0lGN0E2L0hxUmlac0lRZWx2Rytzc0F4WDRkR1VSb2s2?=
- =?utf-8?B?KzBKUG80SkpJWEVaUGlnTGJRYmJ3ZldLenpxVi9maXNacWVRa0RCK2s0Vi9n?=
- =?utf-8?B?ZUxCUXpBZEZVQ1V2ZGVpT3NNa3ZTNXlHZGdidG5MYk5HbXdySGh4WEtibzgv?=
- =?utf-8?B?N1FLeFVBTkg2RUc0QlV0elh6OHJreVcyRC92OTBOdkhLb2dJczlZQnRXWi9D?=
- =?utf-8?B?Y0RNbVRNTzZzZHZKUzZ4c2g2YkMyOFdPRTRQYTJ1ZlQ5WnJlMW9RNmdodkkr?=
- =?utf-8?B?UVpuVjJvWTg1YURMbUxHYU1oSHJubmhLYVZkRHFJTTMxNnIrQXFHVkJCSjJv?=
- =?utf-8?B?WUw3bUlDTGR1Wk50T3VJcWtPTXRPUnhvaUVrZEFLVE00ODlhMktkN3NKYlVY?=
- =?utf-8?B?dEVYMjV5eEhZYmllTnRmbnZlVjNzUmpXNGFnM0kxV1lEL0w4SzA2dG9rK0Rj?=
- =?utf-8?B?Y2liamxBdFZ1OG1hMUZ0ZXF1ZHlWdmRVUmNtOGRHUUpjdjBBRUJ3d0FMdkU0?=
- =?utf-8?B?RlpqNFIwT0lnQVRrd2gwKzlyZE00eG9ocnBSSk1GNmhERDViQ0cvRTZmQVY4?=
- =?utf-8?B?SW9DSGNEcFhDTFh3U2dlUmxGMklucHRrcXhYQSs2SGVFY0c1cFRDQStiZ2I5?=
- =?utf-8?B?Wm1lTzFNWEo0SllkckxSWjJUaFJEZVR0MHVMdXhxY1RNb21FYUIrWWFraG44?=
- =?utf-8?B?WWk3SUJyR05LTVZORE9JQkticXJNcEsvOEpRRUQ4VG9DdCtZcVdyQmQyb3ha?=
- =?utf-8?B?akxkUG0rU3BlVWs2YW5xQXN3ZStKQ2JUTkoxbTJZNG5QYkQ5ZFhqN3F6bU1p?=
- =?utf-8?B?a2lsU3h3aGxnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB6435.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?lu6g8OPQkkP9V0kyFwifCPPzz+LaguK4cZ9sdw8patzLmtFxEX4ZxwYUV7ij?=
+ =?us-ascii?Q?e+UYHknlF5lPotKr0wjXOazbz3e4eY9PqXuhXhhpc/5Zq2bivG+0QLRCKXxU?=
+ =?us-ascii?Q?vJY9f+we7eKHBbN/VE9qj4uxkSZFVEkf4yViRcGV0o3chnc1WZ+16nRLbG2y?=
+ =?us-ascii?Q?4LgK0kSA7uAQYtn2+LPuaZaEvoZZ3EUYEofM7J9aCKaxa/zQjGcZR1rWyJ6A?=
+ =?us-ascii?Q?10ugsJOD4ceeF8l/vJx9mUL6hbcBUzm5+CkSp8jvjHDkX46Gh5g1dKGPWfJl?=
+ =?us-ascii?Q?ii7qjJ0la7iDgtS7vUFTS0//7IE1G3cYp2RvTvsJFVkWweQQWqzoAmF59QPa?=
+ =?us-ascii?Q?Qxo0pEXIXrSEDKC5K6S7+M94SxeOgyfVTLede8sgRqC5Hf3b6SOMa6MfKjRY?=
+ =?us-ascii?Q?cHIF9ryQ6HDsiYH6p3ZN/jUypeEKnIxGKjMkfHwPDOh/U+Jje6UHTuus/dJ4?=
+ =?us-ascii?Q?yDBfm/iN4mA9w3SV1Z+L4xtEBi7VZXPE/jnhwYPS/NnnbjR9s4/VJq9sOaWN?=
+ =?us-ascii?Q?3Wm2bzHylx7H1qSjhzZUjEwQtLdP98Sr/VlL1U+JgSXKp+PaUza+L4KXv5/k?=
+ =?us-ascii?Q?wTtkpC/0kWkJRgzHLoF9VtPk19ECFqR5Bk1MqJT2UbtV3v87yjp2PBzneQ3l?=
+ =?us-ascii?Q?+KWiDkqXwysZ57CfpQ3bYtsVdgmSgpCQPPoqa9+GZ0tCCQH7bI2Nm8Old/ga?=
+ =?us-ascii?Q?VtuZ7gx3RdlQXWw3LKbLcUg/kaN161pFimYeY2UZ/kAe8tRoV6zMRcgf1V6y?=
+ =?us-ascii?Q?ln0087jdSm7MvaEqXrbvNdpvM2CeRVwUggzLnA6kNWTjIjMQgtkQrAVfeFVb?=
+ =?us-ascii?Q?lJ/a4t4k4hTHzcQK9guMoWpZbXzJv0bAHUwdgN/jYc6LjDLYeZpXmm6wwGoT?=
+ =?us-ascii?Q?rdg/N0jjK2gPEzIRDBLgvH2v3LslQPu/cDJNqg7yuYKl14cBwTkcEvJ5x4uU?=
+ =?us-ascii?Q?euNEBgBrf2p0Zx+qC7JOrohqJdZ3Ui8810bLepkvK42LRavwS8MTDOzVtUUa?=
+ =?us-ascii?Q?GcFq4GKlzCgNDrlSqtWCq2l4Nfa9fm4xnuKI3M4XGt+LVswcqW0QxRg/v8Mi?=
+ =?us-ascii?Q?e0UTHCJVQ6+C9radxZhXKoLNyFTeVtD3T5L6FuygkMcQfaruKH9kdsTd0aeF?=
+ =?us-ascii?Q?OZxz5Ex9wHLGnI8q5hZelHlbhC3ahqaH1HJT4J3tMgTo4C4qIhvzWCbryds3?=
+ =?us-ascii?Q?R5tBOjb1iOAZuG1E+6AY6YHNfu6EanoQfdrTemztFgZhnChODoDvpvX+r2/N?=
+ =?us-ascii?Q?j75soZeJYmDinmyJp8z148eCcF58cJsfvm1e54CxIubJAUbgoX7DxT76hGbo?=
+ =?us-ascii?Q?XQwWP/9QPOy1TfZ38DspKXxePCJ/3ASXC0HoqmQueAfm0rqtd4gCAWkjzcjB?=
+ =?us-ascii?Q?7zt/07PCsOndW9IWH63eZ/vPEAwI6wjhhaKZpJ6mIH00uq0O+BNjUbqnXQP8?=
+ =?us-ascii?Q?bDDflVvjwDLigAOhLr8RlDpvoBLWHLKn?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7828.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cjI5aXpGVzRjZlZ3RWNmZTJUMjZmUUFGUlBSVndzbUlIZ0pEV0Z2SnB2a3pK?=
- =?utf-8?B?Z2RwWC9xNzdHRnZMbEtEOEI2S2Jzbmp5R0Q2bi9HMUlOR05NQ1IvVkpyV3Y0?=
- =?utf-8?B?Tk1yUjBRWUJiNXMrSFY3ZCtJRkZkUHZ3cWtMQlNFcG1PZmJwa1lUb1dGRjBX?=
- =?utf-8?B?MkNtWVZ4cXdUQThyWGlMWEhSWVllQTJHem1ESFh1emdFaFlKbGlYb2daY2lU?=
- =?utf-8?B?S0diOWplcTAyRmVMalpSWkZHR2FYSkVjeXRLZ0pnMXdjSmpLcXh6T3VZM3NC?=
- =?utf-8?B?OXBmQUxabHJtcnRvZmdjcjZmZmlmcVJBSWlGN2s5MFo4cnZLaCtIR0k3K2l2?=
- =?utf-8?B?T0o1Ymo0bDc4Y1k5bkwwYjcza0VaSjFwZ3JFQ3d6MmFKZW4xMS9yNkpZbkxW?=
- =?utf-8?B?V3dVSTBWMmFHN2Vlb1R1ejF2RWhBQjg0eEtTRGRBRUMrNmJGRTFrbW5vOFlX?=
- =?utf-8?B?VlAzQ1I2eFl3MEpTbWphZmRjby9oekNlT0tpMHV0N2FnYXlVZXJQK1cvd2RS?=
- =?utf-8?B?OUdjSXcvdEU3Z2xTTW95WlhzOS9ZQ3Avd2ZhaXprVVM3c1M4V29rc1hNYXpn?=
- =?utf-8?B?dXZjcCs5UGtaelZjdlh5dUxDNVNTM3ZEUld4alRKWVpXTmJ2NjNCY2JHL0Y1?=
- =?utf-8?B?OEN6UC83aHJBUkJybnNIQzNRUWUzSytyOGJhc3lDbHpwdjlQMHljanNpeUFu?=
- =?utf-8?B?OFJGbW1Rdi9rNUNGU3BiUytWRHVvL2JIa2lkcGdpWURjQitUKzJFZ0RYNERR?=
- =?utf-8?B?a0Y0bHlOeWNYaFBOcWdOVkg0Y1M3azdZUVhZQXZ6K3ZYTndGUExqaG1tTzEv?=
- =?utf-8?B?Szc2VzcybUZmUjRJclBMWldmamtlM0N2Q3pFUWpjbTdoMnZjeHh2NzFYTkw2?=
- =?utf-8?B?bCtsZE5NVWgrMzd4ekZtQlBNcStyQ2UxMUQ4VERoTGt6Y1pYV3l3UERvNU9w?=
- =?utf-8?B?YWlyTmZtck1vRnl4NUE5SlVhelVwbm9yM204Tm5YZXJHaUdES044T3NFMGRI?=
- =?utf-8?B?SkMwV0xuU1FGTURaOC9FeVBvSFdaVFdWcDZJSS9xd2hXQ0Y0R05BZGZsSkxI?=
- =?utf-8?B?c0E0eTBDY2R3RVh3ckg1OEVVMmc0NUw1TDl5M0F3T1JhZU43enlmTVZRQ2pV?=
- =?utf-8?B?QTUwYXVwRDZmaGpwblIvY1A5VnBvbU9tYm1TZERKdU9lUVQ2VG8wMkZaRXB1?=
- =?utf-8?B?aERZU2RZeUMrbGlsUXA0elVNOHlPcVhQdm1sOCtNWmZ5L0dHOFdxRkRlK0dS?=
- =?utf-8?B?WFM4MmJLQlZhTXZTem9PalhZVmgzM3JpdlVhcHZuYTNzZ1dnWXdoQW9NV1Jw?=
- =?utf-8?B?R2p6bW1JWXBHcndRUFkwMURIZU1vTEpNV0dpWWdwd09tUlFXRFByQnlIMFlU?=
- =?utf-8?B?Zkl3K2NocVIwZ01QT05scktCQ0g2a3Y3QncyQnR1N09EbTZHVGNVNEVqREtC?=
- =?utf-8?B?d3I2UE5CdXFyVTc0UnRmRjZtbnVuVlRxa05UUmN6VVp6VEFrSzVzM1NtVzVQ?=
- =?utf-8?B?QlZkKzlWa3kzazJEWTE5UGFRL1YxSUtLazJKZGhzaWRQcThlWjBIbFdJVnFO?=
- =?utf-8?B?d3FMVGlsb283U2lmNk9nbmY3RnpQcE1XSWNxMzBrTGkwQy91REhhbVNKbGp5?=
- =?utf-8?B?ZzNkd3B6aUgvbEY2YUVhYkdMRCtFTmtBVzl3VzE4b3FkNnRnWkExVFB5TGpt?=
- =?utf-8?B?T1dxakJ1NW9Sc0prYkVJSDdaVjE1dGh3RzBnT0dWZXkvRHJrOE1MTmhtdW5X?=
- =?utf-8?B?SnJjUmZ5eWU5WDFNMWhrekZxajlUNFVNM0g0ejZXSkF3d01Pc2dKTTBrSVJC?=
- =?utf-8?B?U2N4bmJhaTJhZ0h6WVNKYThmZjhlMCthVGh4TGNENFd1TDJscDE3bkN0VWVJ?=
- =?utf-8?B?MlM3RUVxMHFrQVJOSENiY2ZsMTFDa3dYbWJvK0hwY0c2eTQxQ0hwUUV0cENx?=
- =?utf-8?B?em4xRWlCWFNHc1NnRnFnMDFxd1B6T0poVWpzdDhIYnllay8yRFFneXN2b1V5?=
- =?utf-8?B?ajlQYllDM2ZPQ2V4WUdQK29MYldJSWthQXh6KzJiZXBxZS8yVnBYZmtoQzdh?=
- =?utf-8?B?VDVQZTJubHlJdGFTTDJ4NU9tVEJyNEN2NnJCTlBTb0NmT2g3S2FPbXl0QjBq?=
- =?utf-8?B?blljK1BQNjJuR1krSHkvMnYvbzRXTFVPeTJIdGxMMnduN0prNGRTRWhOdm1J?=
- =?utf-8?B?MTFwTFVLQ3JHR3dLRlkySTFJUXlDeDVzaC9EK2xrQThvdm0rbU5tNVJmd2Mx?=
- =?utf-8?B?K1Q2V1lkU1lRQ2J1RmFFQmR1alpndC9VZGM0Sk42dDZIL0dBYVpMVWNEOEhu?=
- =?utf-8?B?SzhFbGErdldXZmtKMFoxLytwdGlhK0lpckRNYko1K3kzS0ZlRzNXZz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0eea66be-4d01-4a8b-99e9-08de51e4ea2b
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6435.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?NTBmYTEcEMTeMinhcND1WPR/oZROSlNSY907rTKosDOFPtBINV7zqoErLAPz?=
+ =?us-ascii?Q?WAKlwrsyu7AvIcwIw7jb4CYohZRYOzFGoAhQ3r8wjFWGilNRzNx44rQN67ha?=
+ =?us-ascii?Q?IJkpba9XGsvrgE/yf1NQdhddGhOhaVk0C2LQNGx1AiRIjpEQVQZwcsspOzwu?=
+ =?us-ascii?Q?8BHaiFjXGdmaMG6arjgCa75f8J+2oCfCs59aoEaqA6hQT5fwsd9j8dNS0Cf+?=
+ =?us-ascii?Q?zqAxORGc2lrVXU62gj3H6ru89dw4WoSbZgPZy+12B7aeo+bMYY9N0F136OGE?=
+ =?us-ascii?Q?Ezo4MZnLJLq5rup8dwGQvQ/P1cSJYsXIMZrISTEXzeR1hXum8EsiXKaEVCaP?=
+ =?us-ascii?Q?Wzt3A2PV1wVVn5XLfZPKLAzEd3uTxdqLgfZZf8YtjzRdbJp9Exr/5dnyYKdA?=
+ =?us-ascii?Q?+2WIO0McDOvXDmVNbJWZVAWzmKRHHn0Xux8ZIUi6NMKTjnP7HnDiy/nOmfor?=
+ =?us-ascii?Q?K/xVuOFS6T4ChltOo269al72ZXL72Rt2rx1bPEKWdWyXsB3fMefUsgRoKll6?=
+ =?us-ascii?Q?x6N8LEz4b2XxIpa9dKFwSU43Zbjjo6VY7+fnFEIH5MMGYlEUj4pXmSR2Zt6D?=
+ =?us-ascii?Q?XrOSpT3RdfmjYn/Vk+FfYSA3QJM+RB0fnj5R2NzK0LxzeJByxYXvoBaG7vwh?=
+ =?us-ascii?Q?NLlD5LKXGmChwfsQlUffo8DB4h9jPxyFprSSsyt2uZZYGbaUzYPDMRKx69sp?=
+ =?us-ascii?Q?Dbk12OFVoreE5pL3WKcloo3DsQnP5B/6TA2XqJJNRB24P3dBZ4grl8JPAqzS?=
+ =?us-ascii?Q?+CGA3LucacPWfKLuK+9vasVxfflv1sQCVFrE0z3WL6yNW8ekdOrGu8R1WxYM?=
+ =?us-ascii?Q?Z1POrf16Pr8pg+Pg+OzMV293HsU6xSpU4NXMCjZ0WLhTXC5a/SjeEhzZ1zA6?=
+ =?us-ascii?Q?BZBPIx4GT4/r6ViJcn8QCNB0Iw1QRU6iYBKlQPk1VpApuq86l4d2BvA02Iuq?=
+ =?us-ascii?Q?P1UdGevEU00dNI+5SYkHpCAV03Cy1+CAnxtuPJReeNBJNfXLJArRqTu6zpsE?=
+ =?us-ascii?Q?K+t/eQv8CacT/ceKJD8kmzw+JRj3Um9Ri2FDHk5ktoNX175DwcFlmVjA+rzW?=
+ =?us-ascii?Q?AYUYoQ5J0FDkFE1cghYNlhpiE8wjvI5P2rodYvjXD3YpqffbKmlVPNoXIcVW?=
+ =?us-ascii?Q?Siy9RFFrXykIpVqIUc722nyp7rlyV6kI+I4o03HNf33OTCZ8oXGO45hLnfFF?=
+ =?us-ascii?Q?AJJKCep38panpItimK5LTl1ju7dcoNM2x/aYe/h4JpR76jJTUQkTCrq71r81?=
+ =?us-ascii?Q?MH5VJyHmKkZu/fFIProvouvRXRIUoXRgYkhD6PjyZw/pfiUuvYtFmdW9dLDz?=
+ =?us-ascii?Q?4Q3sVDlIQ3EL/mRd6YvNbhiA8Zcqa+0OLj1S5D5UrmZPSLBPFt9i7LbTpDRz?=
+ =?us-ascii?Q?4BBIsKJHfApPHKM4HlW5CcqfoJ8jt0Nsy5Ly9iSgdVwapg2GqwKoVdqhpsVE?=
+ =?us-ascii?Q?hSZtmcPOxgjTZ8ByDBlDKjS+iv5P6VV+6ZwGFrDpQD9tVkRflV+2haF7pEJc?=
+ =?us-ascii?Q?SUhDtrTIxgywPB8Hx534NvZjHdmEsI8QMvB48PWdLivH+P3xaaQjz4dYo5j7?=
+ =?us-ascii?Q?TvnqnAhQv56XxrFF45KeP1jGw9KD6omAMNasWX8SBBMdCK+BVAAyi4WXefDY?=
+ =?us-ascii?Q?EGoXvambaaKb9hp3o2mt549FZaaLgN2uIug5AftKPeM4dkcwz1fvy4ly94RS?=
+ =?us-ascii?Q?qVKIZm8XlHXu+YZWm3lQGoZV1hVokpE644a2DFlThCTSFyCEkCgHiu3eUjCx?=
+ =?us-ascii?Q?bkWULUVbgfmBb/rjqwoj9u9dxWVk3as=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d677ea19-3584-47ab-aac4-08de51e5662d
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7828.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 14:14:35.7478
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 14:18:03.9000
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vZw/JKDPv59PW+qsC/NxK4sdnZwnTb0eeZKBZzzZf8OYPhm6WYScWK6X60MMpOAGMl6G6nYVOi6EKm+pTik58A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4438
+X-MS-Exchange-CrossTenant-UserPrincipalName: oSkr+AOFBXOSy8YHaYeqIy8xupl7q0yKJHFBrsTASn43iubOx5M0yWHRyAvWkJzi0IZjt1Mm/0BNsuLpJp+VviS/0PGNd7kBYeve5J0Meoo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5957
+X-OriginatorOrg: intel.com
+X-Rspamd-Queue-Id: E7E1A14000A
+X-Stat-Signature: wpq1zcncdbdot73p9ax9uueumcwref7p
 X-Rspam-User: 
-X-Stat-Signature: yard4ofzxhr4ir9rgjywmmquqh8tykb7
-X-Rspamd-Queue-Id: 2D240140004
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768227278-939478
-X-HE-Meta: U2FsdGVkX19283MOOAbOdL287UmunLpiKnpHAAoMzb/rOHVZ2e/EhAfCcr+cougcDqpUJept7AWDqX5Hr4GKCx9I2zT4dvTOSHHw89le3jYiQW2uvZ9jvttrPvBU4n5kKGuDXo4aKj0J+5EX8IqVcSso5huPOdvVpA5UA78iydIALAlyHNN3EXxrOx9dNOnODeag1mR0eAxXSjY7UHDkEcxA9iYZh5TjVoqlB0RRt2K3+EpCE3zZz5LZ6GuAamc1JTOGLPtkD/g8dQs3EcJGtNC8JLR/x2UTLKOCGlHawu8Qr/WlXmTlmV4NucUrdAMK2uqh2f8I2d+RQqyv6D7z51CCMzbBXTmHwFaEoteKgk0C1gts3lr0/0wcPyDFGB9nFS4KRaGQJ0OjXoLoR0D20WLIy3xZAlB4BjkVct05BS+AalEX4EEQ0rCaXbSDIYhPvB/wDisYmFM5XbON4HNOCHm+QglRmlvAYIYDCXkI5/rMOIGy6GHczp5AjSMyKKrjZ5paDJjC231KBSyr1dSdeUC3x7brWHT8q1VGBiS6ROxxZslmoD3yEZS2yVMy9ir1zdkj/AGspTnbauIn8C3Drnwy80ZdCrn9Hp0A1gm6odQBD+YPfGsawnUm6kXbWU0j/YJDY8G+qDLyjFMJ/TDyCkbdZQromhhgmugfPPaKm6PUYl1AzB/GXW9ndA/I14gRUeibdpzAWUP38nIASORZx4qq71f8UxWLsk4Cp2oeTwwCF0EvfdK/U7yr1OysY3LZHLJFwRJAKtw4uZyZlBLPvKImOnqgxkjl5gnNTsc/djLK4nJ6JnAo7HXEzlbzLZ8N5GOT197vDk5X63qDrO2vUcI79wCHnuXowe8IaEZIpDds+pgjteTujcW4iHCSedRDulsFFuAgG3/MMZXWuNMPRqwAtiLneyKvqHiWYxIgd+6DSrb/1d22oFILeq3qcF1RUmDA5UcjVPMsFg2FR1E
- ObExyzxr
- toUGaRhVBmDWhq9CwYtDvzef0vSzLZlPQQoN6J/gnwtsfTurkQt8ILS3LwH5eYMIRhzqBhUYcrCwtE0gLTTMGaRVLyh5eagistGFDOMh3FKkbxDDGJbf+kvs3/NWgaDr4BRTu62SDafq/sPtD0+DsN8tptOT0RzfQZiZR5lKny4cGE7Aw11vJAXPUNRpuzsJ3SXt0JP6w/4mpL7aoq5UfS/mkotxZGz948beAxlVj1VBUQkR10gIBRpFmYl2gwpGJoW4CeVfkdZGZ4VhgtkQHBE1WzzgAu09SPZrbF0Rq+alUqDQ25AEvuVg8FSYL20OcOiDtYb/CSDZI9CQYq9G5nwD8jZM+S1DJNjjamuYEJFsoEGdUpj4FiPSRGevGCeGQgJGrfrgiUL8C+chrrv9Hqg53G9HOJgdPYPUMtimaeCQLeMMLoyHBxfqgc2r09tbEAJ/mopoCdBC8xu+n+WIfHSwd5dJhxu9gnskCywVlWRQ8YXnckFdd4WgqnAAbH9umQqZt+ENNWoVfOFfdLqPLTBXPs3YpZTqbf2SRWCIEYhwPjfxGYklkkokfKTNvKb1B7cQi9VUvP/jhqQZwMSldDqqeC7uBkPLMU6aCIdHdAId0GchqViPVM21YpC7AYDLVHU5rdw8JqyGeLgYpGTR3XPU+yAG/8eOVUmy9LlukQOi4G3g04o/mN2j2w37xlTQx5tDK3KJhe0L0KypLXyqZW7X1/Ta3P7ZonVsx
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768227492-84216
+X-HE-Meta: U2FsdGVkX18EsqImF5CZpkrIbVtpHMXDk3w5FKkUVQbpOGgL4bPqtLk7xgCMkpywfJKkSHsCMvdi7I85vWoid/uQOQnsisrfsSKj3YWVjO0Lz8CsypXXOjIr9J4TjJ+RSvx0Ru+TdHkYypRTRiB3qY/b2IM9OzkXnBI54vRiGdyVfBraVNnDN8Y0bRdVk9ivQLmRTRrFOvrCR+j+4AjpHt8Pk7EFFqf8RouP9QDHLveT4z5MYUld96A7sIjCCahxqjNeNb7FQ24lNGduxfbWGx6j2NlZkvf6OionfYm/8AszgvT+odRduIIvigytm0dcc4HvjFSU1vVzRatmonrVHHdfrwxa3orK/s41NG0bY9zuyDKf6rl26Gs/avw10Baa+CrEnGhq9adQh97Qj0n6zCtW1n9r2agFYpb9UEvivjgUdEKO/jgaLdHPKTwphTDjUHT1KezrNaNERUq5loORtbW82xbcfHSJqcpYVHAQfch4NzStDyu5Hh+ZKp6OzkP9x2FvR5u/ksz8wowTf79MNXQ5DCTQJupffjusIk1dnN4ubSwlvjPSuwhLnm0xy2kaejhLF+ZyElXuEkCT7ss8NmhP8trgsFJAu2XfTBJ+3y2Tr6B/I3xtGxNSFZiBxTtEaqz3j9W4naW7G8R4yj+kPyp2OWvpoI+9tbaCh3XD7mB0gPj731OtoAKYaPAaGbSuzRuTE++a78qwfxiljsTlRE/2X9GLNvbKFHzVSeJQmuRMQyo3/O8tI6HLqSWWXOVMwObChfmZVuBPdWVmqFTJj5Vqrq1SjGI8bd7pzZevHaIlAdsl8ulbVKnMmmHYWtpboAwjWxofqG0KEpchjJWDFRQI1mOjp/vf2czllLT+A3eQ0sCP+v0alnggkp/POdKlzuFFze4yddFId5aoFQYHrHGln9UoGQh7cIY/XT8iix4gRgTc6en6dPyug1kInBGnRb00kfPO8LoxlB6ITIk
+ VK2LSU8F
+ mqvH5xeL7OM4EziEw/J0GvEPN9zIlgpt9qHHJ8fPJ9mJUCMhMgXDQkXg4Y7K9DpP2YuHPMNq89qEDgD2BVmuM9sP48cm/u4zw7/JkrSfv0Xh5JNCJ/iuOY7vf6xVOMo70jt9/YimPvHNIAiNuS/ZVz+LSKYoCTYeRNv0OMyo2sVE8l4QzVkc30bdTuVxREJVgvslW2I+w4MPwdVjWURBWzpJBsuOkr4hEoODEhFd3IH8kJCLVEd4LpoJBHNZczD6gMdriXr/7Q6m3M9Wgcp06JXt4IP+zluctEVAD6vgyfw7bIYN6JjwMBFWNP399Xs9iu963ytldubdkUpKelBk3E1DyK3e58U6VVwZQ1XrRd6fS5IbE7+Fi901CWbIu42Lp9tk5z6kA8T8otMsLY42Lo36aPmaoaJ5OR8e35x72a09Ir4NFX66FI3naxBVDzhAd/n9y3EmGbqb6dhEQhUX4mxMDk+xBJPfoFhLpwxwEnrdKVH92V95t9WUC12lIuih04kDuhFg4+FtS2+N/MUlCmEcpoJlixwMpSxfzKHVP4WQB4zKrRUYrHOTx8NTKXKxa9dCsuimFUBvoDe4oRGjJ3O5J95Bz+tfEnzFgtdy1815a0z3reX3LlF1AvtHFd351K95JLCZ6XCJ7D5qLf6t/Ri1w6Nms7Ww4Qwdbem+lM0Lx9QHccr1TLHKaE4xcHD+V/V6blLakOM9dRf8UiPdOcwMLW0sr1M0nP12VRkeQW8oNYHv1M5W420iHkoo/2RxUAyTugkHz44QG4yHDch87unH0s1MLU74U++UDNzpxUElKZyM+9g/d1FZkzgnMJTHzqeZzORvITxjRhs0oth1i3UgLRCYQY1Mb3zF/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -213,298 +222,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, Jan 11, 2026 at 09:55:45PM +0100, Francois Dugast wrote:
+> From: Matthew Brost <matthew.brost@intel.com>
+> 
+> cpages returned from migrate_vma_setup represents the total number of
+> individual pages found, not the number of 4K pages. The math in
+> drm_pagemap_migrate_to_devmem for npages is based on the number of 4K
+> pages, so cpages != npages can fail even if the entire memory range is
+> found in migrate_vma_setup (e.g., when a single 2M page is found).
+> Add drm_pagemap_cpages, which converts cpages to the number of 4K pages
+> found.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Balbir Singh <balbirs@nvidia.com>
+> Cc: linux-mm@kvack.org
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 
-Hi Christian,
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
 
-Thank you for the `mremap` suggestion!
-
-I have actually experimented with this approach, but it hits a 
-scalability wall.
-
-For example, a single Guest userptr can easily correspond to thousands 
-of scattered VMA chunks in QEMU. Stitching them with mremap consumes 
-thousands of map counts per allocation, quickly exhausting 
-vm.max_map_count and making the operation inefficient due to VMA 
-management overhead.
-
-After evaluating multiple options, the proposed kernel-side batching is 
-currently the most reasonable and efficient solution found as far as I 
-can see.
-
-I will continue to explore optimized implementations to address your
-concerns.
-
-Regards,
-Honglei
-
-
-On 2026/1/12 21:14, Christian König wrote:
-> Hi Honglei,
+> ---
+>  drivers/gpu/drm/drm_pagemap.c | 38 ++++++++++++++++++++++++++++++++++-
+>  1 file changed, 37 insertions(+), 1 deletion(-)
 > 
-> On 1/12/26 13:57, Honglei Huang wrote:
->>
->> Yes, you are absolutely correct. The use case is exactly userptr handling in QEMU for KFD SVM support.
+> diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
+> index 308c14291eba..af2c8f4da00e 100644
+> --- a/drivers/gpu/drm/drm_pagemap.c
+> +++ b/drivers/gpu/drm/drm_pagemap.c
+> @@ -452,6 +452,41 @@ static int drm_pagemap_migrate_range(struct drm_pagemap_devmem *devmem,
+>  	return ret;
+>  }
+>  
+> +/**
+> + * drm_pagemap_cpages() - Count collected pages
+> + * @migrate_pfn: Array of migrate_pfn entries to account
+> + * @npages: Number of entries in @migrate_pfn
+> + *
+> + * Compute the total number of minimum-sized pages represented by the
+> + * collected entries in @migrate_pfn. The total is derived from the
+> + * order encoded in each entry.
+> + *
+> + * Return: Total number of minimum-sized pages.
+> + */
+> +static int drm_pagemap_cpages(unsigned long *migrate_pfn, unsigned long npages)
+> +{
+> +	unsigned long i, cpages = 0;
+> +
+> +	for (i = 0; i < npages;) {
+> +		struct page *page = migrate_pfn_to_page(migrate_pfn[i]);
+> +		struct folio *folio;
+> +		unsigned int order = 0;
+> +
+> +		if (page) {
+> +			folio = page_folio(page);
+> +			order = folio_order(folio);
+> +			cpages += NR_PAGES(order);
+> +		} else if (migrate_pfn[i] & MIGRATE_PFN_COMPOUND) {
+> +			order = HPAGE_PMD_ORDER;
+> +			cpages += NR_PAGES(order);
+> +		}
+> +
+> +		i += NR_PAGES(order);
+> +	}
+> +
+> +	return cpages;
+> +}
+> +
+>  /**
+>   * drm_pagemap_migrate_to_devmem() - Migrate a struct mm_struct range to device memory
+>   * @devmem_allocation: The device memory allocation to migrate to.
+> @@ -564,7 +599,8 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+>  		goto err_free;
+>  	}
+>  
+> -	if (migrate.cpages != npages) {
+> +	if (migrate.cpages != npages &&
+> +	    drm_pagemap_cpages(migrate.src, npages) != npages) {
+>  		/*
+>  		 * Some pages to migrate. But we want to migrate all or
+>  		 * nothing. Raced or unknown device pages.
+> -- 
+> 2.43.0
 > 
-> Well userptr and at least HMM based SVM are two completely different things, but I think your use case is just to import selected pages from the guest as userptr into the driver instance on the host side, correct?
-> 
->>> "What we could potentially do is to create an userptr which is not backed by a range in the user space VA, but rather individual offsets."
->>
->> I'm very interested in understanding how to implement this "single object with individual offsets" pattern properly.
->>
->> Since standard `mmu_interval_notifier` is designed for contiguous VA ranges, my main question is how to handle invalidation for a set of scattered offsets
-> 
-> Yeah exactly that's the point: This is use case is not supported at all by MMU notifiers!
-> 
-> MMU notifiers are designed to have a handful of ranges to invalidate, and *not* individual pages. So even the core Linux components can't handle this use case efficiently.
-> 
-> We would need to modify the MMU notifiers to do this and that is extremely unlikely to happen.
-> 
-> What could maybe work is to avoid the problem from a complete different direction. mremap() can be used in userspace to make scattered VA addresses look linear.
-> 
-> See the MREMAP_DONTUNMAP flag to the mremap() system call here: https://www.man7.org/linux/man-pages/man2/mremap.2.html
-> 
-> So what could be done is to instead of giving the driver hundreds of different userptr VAs to map into a single buffer map them in userspace into a linear VA and then use that instead.
-> 
->> with a single notifier:
->>
->> 1. Notifier Registration: Would we register a single notifier covering the entire min-to-max VA span of all offsets? Or is there a way to make a notifier aware of a non-contiguous list?
->>
->> 2. Structure: Should we introduce a new `kgd_mem` variants that holds a scatter-list of `(va, size)` pairs instead of `(start, size)`?
-> 
-> Please drop any plan to implement this in the KFD interface. I think both Felix and I agree that this isn't feasible any more.
-> 
-> Regards,
-> Christian.
-> 
->>
->>
->> Regards,
->> Honglei
->>
->> On 2026/1/12 18:12, Christian König wrote:
->>> Hi Honglei,
->>>
->>> as far as I can see this is only very very trickily doable.
->>>
->>> What exactly is the use case for this? Userptr handling in QEMU?
->>>
->>> What we could potentially do is to create an userptr which is not backed by a range in the user space VA, but rather individual offsets.
->>>
->>> And yes in general you need a single MMU notifier for this, but the notifier mechanism is actually not really made for this use case.
->>>
->>> Regards,
->>> Christian.
->>>
->>> On 1/10/26 03:30, Honglei Huang wrote:
->>>>
->>>> Hi Christian,
->>>>
->>>> Thank you for reviewing the patch. You mentioned the MMU notifier range
->>>> handling is incorrect - I'd really appreciate your guidance on what the
->>>> proper approach should be.
->>>>
->>>> Specifically, could you help me understand what's wrong with the current
->>>> implementation:
->>>>
->>>> 1. Is the per-range mmu_interval_notifier approach fundamentally flawed?
->>>> 2. Should multiple ranges be handled with a single notifier instead?
->>>> 3. Is there a different mechanism I should be using for scattered userptr ranges?
->>>> 4. Are there locking or synchronization issues I'm missing?
->>>>
->>>> I want to understand if this is:
->>>> - A fixable implementation issue where I can correct the approach and resubmit, or
->>>> - A fundamentally wrong direction where I should pursue a different solution entirely
->>>>
->>>> Either way, I'd value your technical guidance on the correct approach for
->>>> handling multiple non-contiguous userptr ranges, as the underlying performance
->>>> problem in virtualized environments is something I need to solve.
->>>>
->>>> Thanks for your time,
->>>>
->>>> Regards,
->>>> Honglei Huang
->>>> On 2026/1/9 17:07, Christian König wrote:
->>>>> Hi Honglei,
->>>>>
->>>>> I have to agree with Felix. Adding such complexity to the KFD API is a clear no-go from my side.
->>>>>
->>>>> Just skimming over the patch it's obvious that this isn't correctly implemented. You simply can't the MMU notifier ranges likes this.
->>>>>
->>>>> Regards,
->>>>> Christian.
->>>>>
->>>>> On 1/9/26 08:55, Honglei Huang wrote:
->>>>>>
->>>>>> Hi Felix,
->>>>>>
->>>>>> Thank you for the feedback. I understand your concern about API maintenance.
->>>>>>
->>>>>>    From what I can see, KFD is still the core driver for all GPU compute workloads. The entire compute ecosystem is built on KFD's infrastructure and continues to rely on it. While the unification work is ongoing, any transition to DRM render node APIs would naturally take considerable time, and KFD is expected to remain the primary interface for compute for the foreseeable future. This batch allocation issue is affecting performance in some specific computing scenarios.
->>>>>>
->>>>>> You're absolutely right about the API proliferation concern. Based on your feedback, I'd like to revise the approach for v3 to minimize impact by reusing the existing ioctl instead of adding a new API:
->>>>>>
->>>>>> - Reuse existing AMDKFD_IOC_ALLOC_MEMORY_OF_GPU ioctl
->>>>>> - Add one flag: KFD_IOC_ALLOC_MEM_FLAGS_USERPTR_BATCH
->>>>>> - When flag is set, mmap_offset field points to range array
->>>>>> - No new ioctl command, no new structure
->>>>>>
->>>>>> This changes the API surface from adding a new ioctl to adding just one flag.
->>>>>>
->>>>>> Actually the implementation modifies DRM's GPU memory management
->>>>>> infrastructure in amdgpu_amdkfd_gpuvm.c. If DRM render node needs similar functionality later, these functions could be directly reused.
->>>>>>
->>>>>> Would you be willing to review v3 with this approach?
->>>>>>
->>>>>> Regards,
->>>>>> Honglei Huang
->>>>>>
->>>>>> On 2026/1/9 03:46, Felix Kuehling wrote:
->>>>>>> I don't have time to review this in detail right now. I am concerned about adding new KFD API, when the trend is moving towards DRM render node APIs. This creates additional burden for ongoing support of these APIs in addition to the inevitable DRM render node duplicates we'll have in the future. Would it be possible to implement this batch userptr allocation in a render node API from the start?
->>>>>>>
->>>>>>> Regards,
->>>>>>>       Felix
->>>>>>>
->>>>>>>
->>>>>>> On 2026-01-04 02:21, Honglei Huang wrote:
->>>>>>>> From: Honglei Huang <honghuan@amd.com>
->>>>>>>>
->>>>>>>> Hi all,
->>>>>>>>
->>>>>>>> This is v2 of the patch series to support allocating multiple non- contiguous
->>>>>>>> CPU virtual address ranges that map to a single contiguous GPU virtual address.
->>>>>>>>
->>>>>>>> **Key improvements over v1:**
->>>>>>>> - NO memory pinning: uses HMM for page tracking, pages can be swapped/ migrated
->>>>>>>> - NO impact on SVM subsystem: avoids complexity during KFD/KGD unification
->>>>>>>> - Better approach: userptr's VA remapping design is ideal for scattered VA registration
->>>>>>>>
->>>>>>>> Based on community feedback, v2 takes a completely different implementation
->>>>>>>> approach by leveraging the existing userptr infrastructure rather than
->>>>>>>> introducing new SVM-based mechanisms that required memory pinning.
->>>>>>>>
->>>>>>>> Changes from v1
->>>>>>>> ===============
->>>>>>>>
->>>>>>>> v1 attempted to solve this problem through the SVM subsystem by:
->>>>>>>> - Adding a new AMDKFD_IOC_SVM_RANGES ioctl for batch SVM range registration
->>>>>>>> - Introducing KFD_IOCTL_SVM_ATTR_MAPPED attribute for special VMA handling
->>>>>>>> - Using pin_user_pages_fast() to pin scattered memory ranges
->>>>>>>> - Registering multiple SVM ranges with pinned pages
->>>>>>>>
->>>>>>>> This approach had significant drawbacks:
->>>>>>>> 1. Memory pinning defeated the purpose of HMM-based SVM's on-demand paging
->>>>>>>> 2. Added complexity to the SVM subsystem
->>>>>>>> 3. Prevented memory oversubscription and dynamic migration
->>>>>>>> 4. Could cause memory pressure due to locked pages
->>>>>>>> 5. Interfered with NUMA optimization and page migration
->>>>>>>>
->>>>>>>> v2 Implementation Approach
->>>>>>>> ==========================
->>>>>>>>
->>>>>>>> 1. **No memory pinning required**
->>>>>>>>        - Uses HMM (Heterogeneous Memory Management) for page tracking
->>>>>>>>        - Pages are NOT pinned, can be swapped/migrated when not in use
->>>>>>>>        - Supports dynamic page eviction and on-demand restore like standard userptr
->>>>>>>>
->>>>>>>> 2. **Zero impact on KFD SVM subsystem**
->>>>>>>>        - Extends ALLOC_MEMORY_OF_GPU path, not SVM
->>>>>>>>        - New ioctl: AMDKFD_IOC_ALLOC_MEMORY_OF_GPU_BATCH
->>>>>>>>        - Zero changes to SVM code, limited scope of changes
->>>>>>>>
->>>>>>>> 3. **Perfect fit for non-contiguous VA registration**
->>>>>>>>        - Userptr design naturally supports GPU VA != CPU VA mapping
->>>>>>>>        - Multiple non-contiguous CPU VA ranges -> single contiguous GPU VA
->>>>>>>>        - Unlike KFD SVM which maintains VA identity, userptr allows remapping,
->>>>>>>>          This VA remapping capability makes userptr ideal for scattered allocations
->>>>>>>>
->>>>>>>> **Implementation Details:**
->>>>>>>>        - Each CPU VA range gets its own mmu_interval_notifier for invalidation
->>>>>>>>        - All ranges validated together and mapped to contiguous GPU VA
->>>>>>>>        - Single kgd_mem object with array of user_range_info structures
->>>>>>>>        - Unified eviction/restore path for all ranges in a batch
->>>>>>>>
->>>>>>>> Patch Series Overview
->>>>>>>> =====================
->>>>>>>>
->>>>>>>> Patch 1/4: Add AMDKFD_IOC_ALLOC_MEMORY_OF_GPU_BATCH ioctl and data structures
->>>>>>>>         - New ioctl command and kfd_ioctl_userptr_range structure
->>>>>>>>         - UAPI for userspace to request batch userptr allocation
->>>>>>>>
->>>>>>>> Patch 2/4: Extend kgd_mem for batch userptr support
->>>>>>>>         - Add user_range_info and associated fields to kgd_mem
->>>>>>>>         - Data structures for tracking multiple ranges per allocation
->>>>>>>>
->>>>>>>> Patch 3/4: Implement batch userptr allocation and management
->>>>>>>>         - Core functions: init_user_pages_batch(), get_user_pages_batch()
->>>>>>>>         - Per-range eviction/restore handlers with unified management
->>>>>>>>         - Integration with existing userptr eviction/validation flows
->>>>>>>>
->>>>>>>> Patch 4/4: Wire up batch userptr ioctl handler
->>>>>>>>         - Ioctl handler with input validation
->>>>>>>>         - SVM conflict checking for GPU VA and CPU VA ranges
->>>>>>>>         - Integration with kfd_process and process_device infrastructure
->>>>>>>>
->>>>>>>> Performance Comparison
->>>>>>>> ======================
->>>>>>>>
->>>>>>>> Before implementing this patch, we attempted a userspace solution that makes
->>>>>>>> multiple calls to the existing AMDKFD_IOC_ALLOC_MEMORY_OF_GPU ioctl to
->>>>>>>> register non-contiguous VA ranges individually. This approach resulted in
->>>>>>>> severe performance degradation:
->>>>>>>>
->>>>>>>> **Userspace Multiple ioctl Approach:**
->>>>>>>> - Benchmark score: ~80,000 (down from 200,000 on bare metal)
->>>>>>>> - Performance loss: 60% degradation
->>>>>>>>
->>>>>>>> **This Kernel Batch ioctl Approach:**
->>>>>>>> - Benchmark score: 160,000 - 190,000 (80%-95% of bare metal)
->>>>>>>> - Performance improvement: 2x-2.4x faster than userspace approach
->>>>>>>> - Achieves near-native performance in virtualized environments
->>>>>>>>
->>>>>>>> The batch registration in kernel avoids the repeated syscall overhead and
->>>>>>>> enables efficient unified management of scattered VA ranges, recovering most
->>>>>>>> of the performance lost to virtualization.
->>>>>>>>
->>>>>>>> Testing Results
->>>>>>>> ===============
->>>>>>>>
->>>>>>>> The series has been tested with:
->>>>>>>> - Multiple scattered malloc() allocations (2-4000+ ranges)
->>>>>>>> - Various allocation sizes (4KB to 1G+ per range)
->>>>>>>> - GPU compute workloads using the batch-allocated ranges
->>>>>>>> - Memory pressure scenarios and eviction/restore cycles
->>>>>>>> - OpenCL CTS in KVM guest environment
->>>>>>>> - HIP catch tests in KVM guest environment
->>>>>>>> - AI workloads: Stable Diffusion, ComfyUI in virtualized environments
->>>>>>>> - Small LLM inference (3B-7B models) using HuggingFace transformers
->>>>>>>>
->>>>>>>> Corresponding userspace patche
->>>>>>>> ================================
->>>>>>>> Userspace ROCm changes for new ioctl:
->>>>>>>> - libhsakmt: https://github.com/ROCm/rocm-systems/commit/ ac21716e5d6f68ec524e50eeef10d1d6ad7eae86
->>>>>>>>
->>>>>>>> Thank you for your review and waiting for the feedback.
->>>>>>>>
->>>>>>>> Best regards,
->>>>>>>> Honglei Huang
->>>>>>>>
->>>>>>>> Honglei Huang (4):
->>>>>>>>       drm/amdkfd: Add batch userptr allocation UAPI
->>>>>>>>       drm/amdkfd: Extend kgd_mem for batch userptr support
->>>>>>>>       drm/amdkfd: Implement batch userptr allocation and management
->>>>>>>>       drm/amdkfd: Wire up batch userptr ioctl handler
->>>>>>>>
->>>>>>>>      drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    |  21 +
->>>>>>>>      .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 543 +++++++++++++++++-
->>>>>>>>      drivers/gpu/drm/amd/amdkfd/kfd_chardev.c      | 159 +++++
->>>>>>>>      include/uapi/linux/kfd_ioctl.h                |  37 +-
->>>>>>>>      4 files changed, 740 insertions(+), 20 deletions(-)
->>>>>>>>
->>>>>>
->>>>>
->>>>
->>>
->>
-> 
-
 
