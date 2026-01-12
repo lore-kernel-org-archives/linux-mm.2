@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3535AC9EC7A
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 12:09:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9847FC9EC7C
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 12:16:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C0126B0088; Mon, 12 Jan 2026 07:09:23 -0500 (EST)
+	id F1A886B0088; Mon, 12 Jan 2026 07:16:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66D726B0089; Mon, 12 Jan 2026 07:09:23 -0500 (EST)
+	id EC7D66B0089; Mon, 12 Jan 2026 07:16:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54F336B008A; Mon, 12 Jan 2026 07:09:23 -0500 (EST)
+	id DA00C6B008A; Mon, 12 Jan 2026 07:16:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 433876B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:09:23 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C8AED6B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:16:38 -0500 (EST)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EA4DCC36C6
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:09:22 +0000 (UTC)
-X-FDA: 84323191764.27.64B08B8
-Received: from mail3-163.sinamail.sina.com.cn (mail3-163.sinamail.sina.com.cn [202.108.3.163])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C3F12180002
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:09:19 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=LUeYm8YZ;
-	spf=pass (imf16.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.163 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768219761; a=rsa-sha256;
-	cv=none;
-	b=N8JOsLbr717crFhuNr5gR2PbgQlMFsSF1eQeic7n7XGUd4cs3RAz11050IsXV2+NulZimX
-	P8CZBW6VT4rGv9U8Zbh3ZsG2jAwCfKcHbKIq+28zheSTX0i08YOf0BJRaOYiYNJrPiwFwA
-	W/DcLYe2LJLmtXGrEyT42usJ0W/ACIw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=LUeYm8YZ;
-	spf=pass (imf16.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.163 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 609A68CC2E
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:16:38 +0000 (UTC)
+X-FDA: 84323210076.27.7DD1E21
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8E4BC100006
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:16:36 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=imbyE6ku;
+	spf=pass (imf05.hostedemail.com: domain of yajun.deng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768219761;
+	s=arc-20220608; t=1768220197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lG1JE0U8CdbsXhCDVRa7lpjBkh8iHi0X7zDNv0cjvGQ=;
-	b=pviF9LpQag7J6J+JAcEhS54wdKSgi+iX7MYZp2Ps8CSf0wZQvEUzaX77Mmey7R/KAuGGah
-	0430CRiHSh1rLJyo3c2MPJxTUozaJkYiXKH20eNv6w7mWRUKxXy3AmIs2BjO0Gaecfs4ER
-	gbaRgDRhXYaCovOMG1W61yy1mIqNQvE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1768219760;
-	bh=lG1JE0U8CdbsXhCDVRa7lpjBkh8iHi0X7zDNv0cjvGQ=;
-	h=From:Subject:Date:Message-ID;
-	b=LUeYm8YZJ49TYJlQoy2eZ5Lda4jC23SItRcBk4PYEKNN8GRQ7UC0vspMs6oWQfdNI
-	 xVtdKeXmuExGyTxkE/eljn8oiyL9FqApNvHL9twPI3hE1nPe7JWp/QlSZCOpKFUUAq
-	 ZHgNSNPs6stL5kZrGle6IGB72C4FXzKTP1aIGlUE=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.58.160])
-	by sina.com (10.54.253.34) with ESMTP
-	id 6964E46900005249; Mon, 12 Jan 2026 20:09:14 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-X-SMAIL-MID: 7763946291959
-X-SMAIL-UIID: 0345F1A97CE046EA83CE27B384789124-20260112-200914-1
-From: Hillf Danton <hdanton@sina.com>
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
+	 in-reply-to:references:dkim-signature;
+	bh=OVWY/dnICKjphyKsb50bvyo0Pt8KlZMZFnV041JZSGk=;
+	b=qM0PBALWxOcfEVxXDLieuVlfLcz3Wth9vOY+zu4qvO9BlUykTq32MjcO6Aq+X3+5WGvRbO
+	9tc0PLwLzZO5c8uewotlUjtBzUM+yjonPwj3VuLodf9tR8WSl1RNY8ep8PFp5MkqhHFQ3d
+	dmQn4w2lhM8GZyVggHeWjfa24s9HRY8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=imbyE6ku;
+	spf=pass (imf05.hostedemail.com: domain of yajun.deng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768220197; a=rsa-sha256;
+	cv=none;
+	b=HzFybkwtb9tXs/1JJ1ayIIQrkDgIgv8V4OwpTcl25j9RTcXm9RstwAtj8to5DtvkMu7FMp
+	IAxs2F/zAkbPh9E7FIbc+bYFvwTDzaSqWh/yVlW3N2f4cd5ydjqh67HorA9m8zjJsNVzyV
+	QvJTsrTBT/A5osRLvr1ertoqFfER0ek=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768220194;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OVWY/dnICKjphyKsb50bvyo0Pt8KlZMZFnV041JZSGk=;
+	b=imbyE6ku6JxtT9B0A+vaToGO5vlqkt7Ohwuao9YbvaEPl/EPO9MnlXX/RjHp3KvezjLKO5
+	+s28Gix19dhPj49Vq35vDTkuERrNZpUSgn606YK5ppAMVqjPqqjAF2LZEzLuuqjtAfVPj2
+	kmM4kArMsouyjodp7X0v2YVxSDCOUUE=
+From: Yajun Deng <yajun.deng@linux.dev>
+To: akpm@linux-foundation.org,
+	vbabka@suse.cz,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
-Subject: Re: [PATCH v2] mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
-Date: Mon, 12 Jan 2026 20:08:42 +0800
-Message-ID: <20260112120904.2172-1-hdanton@sina.com>
-In-Reply-To: <20260112103612.627247-1-kartikey406@gmail.com>
-References: 
+	Yajun Deng <yajun.deng@linux.dev>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: [PATCH v2] mm/page_alloc: Avoid duplicate NR_FREE_PAGES updates in move_to_free_list()
+Date: Mon, 12 Jan 2026 20:16:14 +0800
+Message-Id: <20260112121614.1840607-1-yajun.deng@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C3F12180002
-X-Stat-Signature: z5r6f18mci6ssk7ar6xewywj33dndnww
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: c5yi9zwn5jspxtdisbx8wdz6ah9k9zpz
+X-Rspamd-Queue-Id: 8E4BC100006
 X-Rspam-User: 
-X-HE-Tag: 1768219759-429891
-X-HE-Meta: U2FsdGVkX192s8V/Y8zTP+s1pVevrdyUhx2Q9qgYp5Y5kKC5kJPx/kTfkncaIHe8sRkhAl/LU63LaAzTNmueN1nZ8fOI1rsWMRYE0vTOTuaWmaRWH7hI4iezic0+M5u0cnTdiyMV7kERA9WY+u6hRTzq67m5C8YB8ruIRFS4LEnnk24HG8lz2xCQ74x4tY2vUQ5sy1+AruDNeScNCdWHG/V6pVNcIKIEzRd+mWodCPjwVQTrut8RA3kLWMZNesH6ayNMaYRtf3916WM9vWAdVo7obLo8x2itbmDxfedSlnMBnqcr5lmf8+tG9x6gDlsKSOM+pFSrnL+vO0PceOQ0NjBCtcbRezwHVqjeyVn73KpkqaWnJNSKZE4nHAXcO9AHkV/r6m/3dk86dFg9ZJ0zuJQf37XbLOG83+kEz7tUzxkLTTrp/4hkK7OEO6zJTUR+nv/i4rkHD0IxTyPH3wz8iGYII3eEJ1isdfpzlKlovIAv7L86UZW73+pOncUuGYQJEv6tzWLbnaTPMkXG3dTtqFMwF8TYNQ6wPPuB1nIX5zWT5DwikEcKSt26cav0awXkjwYeaDh6W7YrOf1M3saixC0kduVhjy+AUdLO5RE/40gVEA8qFbHIJFaftMbZtk1/oW4U410D6wVK29ArkYGFteQ5SHLbJjC4dF41XJtaqDcn4TdgDJFDMXJBTNui0DsDytQ1D2S0zbX9wVdO0STtzIAqc1jdYNejByDj6bRdeZ+FGpbnTJXMvgVmtESIoPCCDcnJvTjVMwG3ij/bhP5G7vH73NquqQwJg5bN+74vO7fl5BqQtrurv27QW4pamH//pSv173RDyuxRh4DkFrjK9xwtW6QF/pOYVsMSRcjCWc6XcYGmMNy5z4HZmFU3nc5YktR6/mMIPhHtqVnvpxX+773sswAIFcVm2kaIronaTuCGXoSsqi8finX3T7T25id63VJ6CCdZdd07Jff11Ng
- ck72wbwK
- uNlBQmdrLuAjWmFbjDMjcYhICA2BRW/dcFt7IKdBJfDXLRhkA7l1FQ2oTHeeC2oCs/mUvXBzyvSX+rFxq8BNRnf1U25/sfuZpkUg5JKAefzlp3AIAuQA0prTfq2oVms53WHtgW+KmdfeLnt8blOkP7RyZSZSJLo8X+21ZLIp70WfEYsREuJwsMIMHbOJICR9XLjWZRAx3n4Srs8v/uaJRuXiuGRzqB9nyjVgyij1R0ElvGQ1Hjwy1mGO+f9FxOCYNuaGoruY9+WXkU8Kc1D58ioSw0u3H0ZDDQJgfOfxVie7rjZiUmUdzXkTrrGRUjWITSiAOyFIx9uJHu/lNHZMyoYMjdjzU1obX8Vf6b8oGEiGFxvs9QjeMsBMRVHxsnt1doRFrzX3+kBTmSzp41iPdD9zuIOCcAdvJuz59szte0IayW5arf+bi0MzeyXPN7g3W39ObWgPF5rDdUDhRAsZHNv0wD5hBzUMk6t61cJ6CzD0cF1WUFpBk8ZKCvwPfHcXOHvR7d1rpYYegIkkPeHR+lS+oZ14KQMthNu5+V8AYabBaMZMnYNN1lKPGQrdLW/UrYPG6precQGiZS5sfG9qnKlfZiiuNL57XDdBEvUYsvOy+P7UnKZCOaafgqA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768220196-945410
+X-HE-Meta: U2FsdGVkX1/Q6/0qT0suiDgouWDJIpKEV3yBUr13l7SNRiZhcANU7/oEMZ5vnwGj0lLq31BLprhDmcLXMDKBrHb9iW5xBr8NArrLK06ssTEkdzBzC+9Z/T5HtpQrLjD40Bu8/b5v0hkmPrd6oQ+I4GsEv6FCYyN3ARd3y8lmpyOcPQAeGaqVCcLajEfexY7AmA6HOPXRDvloNVNzYyegSrBxworS7KRsC3OHIgV7P6SVNPTx1wIR351D42tJNio9Htc5DBHyZbZTi/mJW3SkoM2VE343BOQQfwzvcONhxNBoi4EBhcPP0wLxHLQVCb66wRRa2IbEPnkqrSOImEheA4rMNhULJcQXmeREg/gxPY0RAPGdwr5/+nD/dXCPifhdQi2/FnkKpaq3FJ/C/7LAAE3hwnpy3yz5UKXOwTXtx2LN3XVBMAXABkiA0rOWKNInCKsvsASEKUEglmvHRFYTsjwJRKslt75fd1uIMtc9rGMHlUgvdBXnv8xakmdXhsjODiTbbxjBOGx/1EBQabrwa/6FNpBsCnrHZ5+xu2xOLrvlM/MaQ/hQ/rsIcyBBknJgt5G99vat8aZyP18E4gf8C/hyr1el6I4DrisMYhVBw2yWAQQDvP7Zzn4OI12tk/RHd7mJ+/R1hvj7PdH0DviJpzOkoo+9N+1caWCmS4dDcz9MhwB7JHhCg5nmoOi7CP7g64JLPUAJag+LNlf26R642fvhHMrZ8CUXGxI3KvaERnXtjsKwrssMungmTo5iWq+aVMMMMF/AGJvNRE6ll9qwCcA5gzoDfcpPE4zKRcQ7wHGTI8H1c6is4NRk/S0FxnVUZHqAxdsGCznCTKMmCrxrS+I6rvL8uPzWU4uhoMky+Ups9zW55kggg6cgPNUP05qOTOgh079O5VF0C9RY8eqKV45lt9En7N36yAXwhEse+XvgY1XIGey2uQBpRCMLM32rxVLhzweApNVP2fLFJNA
+ OVJB0K6c
+ U5tKr2sAml24AY4cYhwdHwURderLyXQjuQYZRoe0UW/H4xCeuqH6dupvNIaEqUAiIu2ahN+visyDJgpriPeQpNK0jIm8vgCxkCq0Pa3rvttjHI850EqUvpCWuIlqZvB5FF17MypPZmV2G1UD8Q170UsWgXECA8jI476lVS2k+aFoY+JP/9ivQz4tGMk+9YsbhuJ65kckl7vTPYnffNrI6Ortin7/xYGikgp5GbtRJEZKSR89gD7SY0MInpQ2oPB+JBpDuFsFHp3ct2indQFXIH2U8WnbOSBfxJ6HQeWG788Li2O0yGd+DsoqCBR1vFlzGsrqAnJ+gThQJHOEUO3wCTZyjscLnuY9eHlZ3FSgAhHIYG0o2LuLZgsMMR5IoHbqtSwxp3Tfzwj+94qw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,82 +92,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-#syz test
+In move_to_free_list(), when a page block changes its migration type,
+we need to update free page counts for both the old and new types.
+Originally, this was done by two calls to account_freepages(), which
+updates NR_FREE_PAGES and also type-specific counters. However, this
+causes NR_FREE_PAGES to be updated twice, while the net change is zero
+in most cases.
 
-When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
-vmalloc cleanup triggers expensive stack unwinding that acquires RCU
-read locks. Processing a large purge_list without rescheduling can
-cause the task to hold CPU for extended periods (10+ seconds), leading
-to RCU stalls and potential OOM conditions.
+This patch adds a condition that updates the NR_FREE_PAGES only if one of
+the two types is the isolate type. This avoids NR_FREE_PAGES being
+updates twice.
 
-The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
-where iterating through hundreds or thousands of vmap_area entries and
-freeing their associated shadow pages causes:
+The optimization avoid duplicate NR_FREE_PAGES updates in
+move_to_free_list().
 
-  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-  rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
-  ...
-  task:kworker/0:17 state:R running task stack:28840 pid:6229
-  ...
-  kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
-  purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
-
-Each call to kasan_release_vmalloc() can free many pages, and with
-page_owner tracking, each free triggers save_stack() which performs
-stack unwinding under RCU read lock. Without yielding, this creates
-an unbounded RCU critical section.
-
-Add periodic cond_resched() calls within the loop to allow:
-- RCU grace periods to complete
-- Other tasks to run
-- Scheduler to preempt when needed
-
-The fix uses need_resched() for immediate response under load, with
-a batch count of 32 as a guaranteed upper bound to prevent worst-case
-stalls even under light load.
-
-Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
-Link: https://lore.kernel.org/all/20260112084723.622910-1-kartikey406@gmail.com/T/ [v1]
-Suggested-by: Uladzislau Rezki <urezki@gmail.com>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+Suggested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
-v2: Use a macro for batch size (suggested by Uladzislau Rezki)
+  v2: remove account_freepages_both().
+  v1: https://lore.kernel.org/all/20260109105121.328780-1-yajun.deng@linux.dev/
 ---
- mm/vmalloc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ mm/page_alloc.c | 38 +++++++++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 13 deletions(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 41dd01e8430c..51e58701565d 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2268,11 +2268,14 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
- 	reclaim_list_global(&decay_list);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index ebfa07632995..d56e94eb4914 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -812,6 +812,16 @@ compaction_capture(struct capture_control *capc, struct page *page,
+ }
+ #endif /* CONFIG_COMPACTION */
+ 
++static inline void account_specific_freepages(struct zone *zone, int nr_pages,
++					      int migratetype)
++{
++	if (is_migrate_cma(migratetype))
++		__mod_zone_page_state(zone, NR_FREE_CMA_PAGES, nr_pages);
++	else if (migratetype == MIGRATE_HIGHATOMIC)
++		WRITE_ONCE(zone->nr_free_highatomic,
++			   zone->nr_free_highatomic + nr_pages);
++}
++
+ static inline void account_freepages(struct zone *zone, int nr_pages,
+ 				     int migratetype)
+ {
+@@ -822,11 +832,7 @@ static inline void account_freepages(struct zone *zone, int nr_pages,
+ 
+ 	__mod_zone_page_state(zone, NR_FREE_PAGES, nr_pages);
+ 
+-	if (is_migrate_cma(migratetype))
+-		__mod_zone_page_state(zone, NR_FREE_CMA_PAGES, nr_pages);
+-	else if (migratetype == MIGRATE_HIGHATOMIC)
+-		WRITE_ONCE(zone->nr_free_highatomic,
+-			   zone->nr_free_highatomic + nr_pages);
++	account_specific_freepages(zone, nr_pages, migratetype);
  }
  
-+#define KASAN_RELEASE_BATCH_SIZE 32
-+
- static void
- kasan_release_vmalloc_node(struct vmap_node *vn)
+ /* Used for pages not on another list */
+@@ -861,6 +867,8 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
  {
- 	struct vmap_area *va;
- 	unsigned long start, end;
-+	unsigned int batch_count = 0;
+ 	struct free_area *area = &zone->free_area[order];
+ 	int nr_pages = 1 << order;
++	bool old_isolated = is_migrate_isolate(old_mt);
++	bool new_isolated = is_migrate_isolate(new_mt);
  
- 	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
- 	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
-@@ -2282,6 +2285,11 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
- 			kasan_release_vmalloc(va->va_start, va->va_end,
- 				va->va_start, va->va_end,
- 				KASAN_VMALLOC_PAGE_RANGE);
+ 	/* Free page moving can fail, so it happens before the type update */
+ 	VM_WARN_ONCE(get_pageblock_migratetype(page) != old_mt,
+@@ -869,14 +877,18 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
+ 
+ 	list_move_tail(&page->buddy_list, &area->free_list[new_mt]);
+ 
+-	account_freepages(zone, -nr_pages, old_mt);
+-	account_freepages(zone, nr_pages, new_mt);
+-
+-	if (order >= pageblock_order &&
+-	    is_migrate_isolate(old_mt) != is_migrate_isolate(new_mt)) {
+-		if (!is_migrate_isolate(old_mt))
+-			nr_pages = -nr_pages;
+-		__mod_zone_page_state(zone, NR_FREE_PAGES_BLOCKS, nr_pages);
++	if (!old_isolated)
++		account_specific_freepages(zone, -nr_pages, old_mt);
++	if (!new_isolated)
++		account_specific_freepages(zone, nr_pages, new_mt);
 +
-+		if (need_resched() || (++batch_count >= KASAN_RELEASE_BATCH_SIZE)) {
-+			cond_resched();
-+			batch_count = 0;
-+		}
++	/* Only update NR_FREE_PAGES if one of them is isolate type */
++	if (old_isolated != new_isolated) {
++		nr_pages = old_isolated ? nr_pages : -nr_pages;
++		__mod_zone_page_state(zone, NR_FREE_PAGES, nr_pages);
++		if (order >= pageblock_order)
++			__mod_zone_page_state(zone, NR_FREE_PAGES_BLOCKS,
++					      nr_pages);
  	}
+ }
  
- 	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
 -- 
-2.43.0
+2.34.1
+
 
