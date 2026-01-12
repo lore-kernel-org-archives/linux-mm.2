@@ -4,130 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A231FC9EC92
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 13:52:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7EB3C9EC92
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 13:57:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F19966B0088; Mon, 12 Jan 2026 08:52:12 -0500 (EST)
+	id 377CE6B0088; Mon, 12 Jan 2026 08:57:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF1956B0089; Mon, 12 Jan 2026 08:52:12 -0500 (EST)
+	id 330446B0089; Mon, 12 Jan 2026 08:57:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD2E16B008A; Mon, 12 Jan 2026 08:52:12 -0500 (EST)
+	id 22E386B008A; Mon, 12 Jan 2026 08:57:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD56E6B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:52:12 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D8CDB75AF
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:52:12 +0000 (UTC)
-X-FDA: 84323450904.10.7AFF254
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8782220004
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:52:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=mAEtQ5WI;
-	spf=pass (imf03.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.174 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 12FE06B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:57:32 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9E332160281
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:57:31 +0000 (UTC)
+X-FDA: 84323464302.25.8A4BBB1
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6DE1114000E
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:57:29 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="Q/pDMgmV";
+	spf=pass (imf09.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768225930;
+	s=arc-20220608; t=1768226249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OhCKPm7VYMhHUNH30pLlSTekzRTr8ph+K4EroJm99dI=;
-	b=3eTYo+PB9m6aR4QPoKSPZSab08+izPRGZcd4qPr7d3uSgTDXSf8lvBtfm9dtCK9PLBy/0/
-	F9GOW7SBPbC5XJGMJzYpYgXK4B3LcwWtEoSrZO4hZRpsIZDmWdGHPb3LhgjMGU9et+/syX
-	t5Bh+z5UAPUakcfbBQWMEo6xNJw9/Dk=
+	bh=ojfjuEZT6516dXGjj7cFzWBDB5vqwECXd9Bz2SUP+mg=;
+	b=Q/y9kQGD43lMzn2a2MI8EFtQwY4sfXoUj4WcoNIqGXVqmz+nAxwDMdgiLRLCt4659/89zw
+	sqXsNg4nl8rWidykx8xwnj8JPo4n0LVl/PX73a/64OAML6Z1lFsq0BDT1ww6P05B/OiXic
+	bXIZoA1Sq8jYieGjKnEmzr8FoZhoD2Q=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=mAEtQ5WI;
-	spf=pass (imf03.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.174 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768225930; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="Q/pDMgmV";
+	spf=pass (imf09.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768226249; a=rsa-sha256;
 	cv=none;
-	b=rG1P2S6ULkza8zXg1ooFL96R68kSz/6SIafyiD3pGPv/8Fog0MBn4OLUdYMhRcMIGBW+sc
-	83FsaidJBBsvaEhqbM5rhzu+oy89/mZqlN1vozsafF4kB6iQSfeLHHIIa5/Rrcdq2JDykj
-	pmlG/jKI0796pegzLsdpIzGiGrTCN2Q=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ffc0ddefc4so69621991cf.3
-        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:52:10 -0800 (PST)
+	b=1jHyqqgy+B0reZk4eWiMx2uNknQ1ZR+sZa6fVx7Y9Z5wO+enVqxKiWabcwDKxpbZ/Ey7Ro
+	dX8frnBCVekA+JWPOgFLjYyOTt/sEZDrWi3f6bnWvPU4Ov0LeOjTkKpMC+i7hvn/JRYKoz
+	NLMzohHNSn+aBVBZpFtCmQgBKsY4egQ=
+Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-4779adb38d3so44236805e9.2
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:57:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1768225929; x=1768830729; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=OhCKPm7VYMhHUNH30pLlSTekzRTr8ph+K4EroJm99dI=;
-        b=mAEtQ5WIAUxL2rCH5pc6vkaVHyAZqRAoyaL5XyTk0Jff5j2U7ky2X5PJwNJ7Xt9crp
-         g/pj9V6Ca6HDM6kRiEGNCRJGQJU95AdPZyfxD5t5R/QpuEY5wrGCMKrrdv4ftYEduxsn
-         KDZleGV+Mkn/2WJjj8j57i8gBRKKeZXv23FJyX7hsTYdVU/9ne0rzmgcho3sqydb0Tyh
-         S8Mq2NKVjvTyVt7931Qoz0YQgZdOqfEQwDZndkOQjQKkvdZpCRyWgS1i0iTbJ4tl/lAn
-         R6NlL5Ketj+fP57WaYxUEqmDnedcZigmd43kXyujQaqBfrFZlqqf8J0EAz+ZT5j/ejFN
-         WFcg==
+        d=suse.com; s=google; t=1768226248; x=1768831048; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ojfjuEZT6516dXGjj7cFzWBDB5vqwECXd9Bz2SUP+mg=;
+        b=Q/pDMgmVbHtvuUIWhXHE1oKE4sLR4OMqDvPQCDobwbfQXveUpqsKo9rYvs08yneQRb
+         HYrn3Bc791kTMayseH/EzI46yxOVVbk54rLtHprh07wOrSsPhBxunGkrDCriGEs8hVbB
+         hfVdo+nK712QHM8qFb3l0q3UwN9lx3ktctFu4t0xAVZaVcHOB9U9XJ58ms63g7fRIb24
+         v5yNx1AYqz4GqdgxjZbQ3A56cuZ5bNrvLhVPndjM7M+XPl29f9rsBTpGtZijHhh4EsWr
+         3JyjbOfHVMPi26xxuNSXMwe3LxJ92RjMyl7f3Fq5CyYCCfZEI1vsQ+P7iO8pgUOrtS1e
+         jL3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768225929; x=1768830729;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OhCKPm7VYMhHUNH30pLlSTekzRTr8ph+K4EroJm99dI=;
-        b=fqFVD7v/q6fsofE2+N/SvPcrFCUW4ITOSjhAyAKyKDrlZTEUTb9k3hcOUWBP8WPls6
-         zsk5pVs9Ch2OEmyKrQdKboHB4UKZzI3ONWLsTSCZ/quNbXHqEwuJXC5AsLDk7vFldPLQ
-         7dWpPyjCiFtOveAHeBnwEOLCgtkK2j6RVoxxxTPC5plW8yN9U95TsOMRz91LFTar7mMO
-         ZBADYo24DG9JmP/AeAie1ZD9hb2RSuhXdcGgoaZ+hRAyrko1Jh2ziZY+U7OFQW+M5HuJ
-         7E058gL9pEIXwCXmXW5H4nFzKZGXL6upzhbMgqIdukhgpWihOrFN2uv6kJwF9AJBdvKI
-         cgNw==
-X-Gm-Message-State: AOJu0YyIZydfpnFVknK/P9c2RNURsG3Oo9B9jL/vZemJ3llbzlDVb39J
-	HmepGjxkmHXmvwpH1ng4jYiLeFFMvbC7a4yFqaxmo/aucCIjK7aqRY4Pr9LxXIfc2+g=
-X-Gm-Gg: AY/fxX7uGa/yiwNRX9wCoVlnKuUDl4KwiUcUnGL340xGwP70akA/FaUaPQ/9I5FA2gd
-	MAgYl56fp6pkZaGTWADSafPVH3hkvgpifjisI6vsGy7E3+oiRQQyi/MoOhFaF207o1Kcoq9zcWK
-	WBqgpp6FwBDd3U+MjWMcoGq5OcXqEJ+IoZf6B/c7cVMJ6IW0645HgMrCh7r7cCBSTmxcfao+HIh
-	YWjLFgb5kea8whQhkWkL7SWYR2hSPX8xHqnpLTYg5HeDogbI+CilLBjtrD33CKyU0EEhpzqejWV
-	ygbql2wOzYIcpU++Fry6tj1Zj9D8NOjuaT+PO6xg/PgSJWch8eV0fGlpGtA2eSbdIO1xqPk5yED
-	ydAXDTMWWNBOKaHO+c9eG3bzrr5nLQNON1BS9PLphHiLvVgD0ozRMjInLi/HCAgY5kcOg3Its8B
-	p3nF3OxJnKinni06iemVaZFb0TmOt3mfYvCvn0jKD3eVtHUi9VJ3mz8WuXSmd2HogBRAQ=
-X-Google-Smtp-Source: AGHT+IHqj1rZAaLOtZCDsdzXVUTGgkS4VFYt/v/ed+Pf3/EF8sQyP07+6+eSH3qW3iq/2/72eoUoYQ==
-X-Received: by 2002:ac8:7f88:0:b0:4eb:a1cb:7c with SMTP id d75a77b69052e-4ffb49c7d54mr248147041cf.64.1768225929518;
-        Mon, 12 Jan 2026 05:52:09 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770e20bcsm137210676d6.15.2026.01.12.05.52.08
+        d=1e100.net; s=20230601; t=1768226248; x=1768831048;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ojfjuEZT6516dXGjj7cFzWBDB5vqwECXd9Bz2SUP+mg=;
+        b=MEfBYmP0IjHHpJw/uMOP35Ac8zPUpXfRICWmuVHMaNnpLlQDTiueabsj/lV6KXtKur
+         pa4sQir4cIV98lDvqjUCWZuP0JZ5Ch6tZ7YwFJ5xexRK9NxXwn2bE6nYseMmmrsnHoNw
+         nCnOyek5U54O5VKyr/xBv3FlJ01CC5M2coIZzX3UdVL5EptS8EKQL2xX8Gh97NJloOvo
+         R48jesHDlrBwPEDVGZ15AJc0Q8KBj9I34qFTgDBygeNRdVzafzK7A0rAX4ayrSb39Ve/
+         eLxgKn5NLbp3OxjOBPl7Re4DePT9V9kanOe2LJKkxs6M+z7HlHoVspX0B37kK6qwtAiW
+         nArQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHmsI+QMW/d4++lxbyg4HWrlj6sMpDFuC0V1XcrIs5w2tc6cuLICXl0SU0IiUw1/x0xRoh5Vxy4g==@kvack.org
+X-Gm-Message-State: AOJu0Yx+mn7CzsdOl+Up5aS/r6USzarH3iqhyBYDvwiFjoW3A3dy+Sd6
+	6YTbinnK0NcD2tdTSENzbK6owuNGve9eDCnTWfwTC2PlFDsXvaf/o2gV2qg8NftVE/g=
+X-Gm-Gg: AY/fxX5OCkmT5sACyAdY7aB+FAKAbcylMI0iQXCDToFZoBByJs3tbW1L6d/HOp9WoIF
+	dF0QaPrVnzqB/MW/3PfzJt19ILeHZXHtxOvzpxmi5LzWw5VfBJO4rMznqG7sbcpzbPzOnwcgGMT
+	RE7KwRQmBdOtkA1K/xd+hGvqTWD1KpqkJNHCiYe+gQMsSfA34ZAO8JGs+cB5RdxC2eZA8dR6Doz
+	27GWlNePt6ZhyRvnVDgtZNUktjBHV9I3+D0Oz7RuZ/NmiW+HEfzaBXg0EI/4g/lr7dWcFYF194g
+	zUz6y6YVvk89AAciFS04x69vjxnjWZi60hSmMRPR4ZqLy99x8/8B25c4lriCTlB+pGntn1J6qBu
+	4P3aerXzmFmbXPG0ty83dB/ocmfIhtXhMIKwMPGUqEPExqGeRXpz25WyS4jc9nwcs50Y2gKLvaf
+	8+NXho18EIy6K9J4ctDHOzGKTM
+X-Google-Smtp-Source: AGHT+IH29GDIodJ0Iy57eZZOTR2mLdkX+1IGe3kPs2cJRyAcm1ljENQAhNQdsf2vi8k6BuFrEYkAGg==
+X-Received: by 2002:a05:600c:1f8c:b0:477:7d94:5d0e with SMTP id 5b1f17b1804b1-47d84b40955mr197307005e9.27.1768226247504;
+        Mon, 12 Jan 2026 05:57:27 -0800 (PST)
+Received: from localhost (109-81-19-111.rct.o2.cz. [109.81.19.111])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e199bsm38478758f8f.16.2026.01.12.05.57.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 05:52:09 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vfIL2-00000003Q6R-221D;
-	Mon, 12 Jan 2026 09:52:08 -0400
-Date: Mon, 12 Jan 2026 09:52:08 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Mostafa Saleh <smostafa@google.com>
-Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
-	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
-	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com,
-	baolu.lu@linux.intel.com, rdunlap@infradead.org,
-	Samiullah Khawaja <skhawaja@google.com>
-Subject: Re: [PATCH v6 3/4] iommu: debug-pagealloc: Track IOMMU pages
-Message-ID: <20260112135208.GD745888@ziepe.ca>
-References: <20260109171805.901995-1-smostafa@google.com>
- <20260109171805.901995-4-smostafa@google.com>
- <20260109195111.GQ545276@ziepe.ca>
- <CAFgf54r_au6isA10Nrve=MHL455X=tKhNsSwH1ej-TX08J3xLA@mail.gmail.com>
- <20260112133256.GB745888@ziepe.ca>
- <CAFgf54psxPrsvujStPNtrzxiKOsJF+aVrN7BcNxxmAF4wDmRXA@mail.gmail.com>
+        Mon, 12 Jan 2026 05:57:27 -0800 (PST)
+Date: Mon, 12 Jan 2026 14:57:26 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: hannes@cmpxchg.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, akpm@linux-foundation.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	syzbot+d97580a8cceb9b03c13e@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/swap_cgroup: fix kernel BUG in swap_cgroup_record
+Message-ID: <aWT9xnrRQsvMLVkL@tiehlicka>
+References: <20260110064613.606532-1-kartikey406@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFgf54psxPrsvujStPNtrzxiKOsJF+aVrN7BcNxxmAF4wDmRXA@mail.gmail.com>
-X-Rspamd-Queue-Id: 8782220004
-X-Stat-Signature: f1ow8ndcdrrdqpid3txg1eguikx6bmn5
+In-Reply-To: <20260110064613.606532-1-kartikey406@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768225930-759322
-X-HE-Meta: U2FsdGVkX1+ROCyW8IEmlsc2739y5WVr3OOStYEIwonv0SYdsCqSs2JJvI4s9VNY/M+San9+OI1SdB4iSkrt+Ko74zkagYizBke9PMnhjk1abccGqdL5lT1xdVQBhgmuD8bzsONjV39kAAWjZ72XTsXc7XCIB/zR/5n/i1mbsLIA+gHG0lTCbKpu46z6qm+BfRnuXHfzWgV4teZm1Krc7kANrBM27XjWHGJ2ZohQZfrUw5OaOG5VIB64gU9ZGkNXPQC/NymGFH1Qh7ZQouZwhqin/EIo+VNJ5OsJ4wJeBqLZkeWTiN0nNIyn236W0m9URadBzNPQfd/GNl1iHGd8yOBFhwKz2EW4ekpNpNYGiWufnswluQ1B/OJBr68TmrCLl37bBRamWdbZoK6Xe0VXKXF46azbBKfRW5B8J5xMYDXAorNdVJ8cJWJnnPjwCWLATWK6Fo+gfVWUS0ea7GNoLKgoW8pAxoosN/7q5rsKbbUmLje067YCT1F4BnviIvlGoogZRswx83fW+uZ00WE10nqBOUUkfxWBWtH1NWFGRW8nCz05PHGUCLLUIr5yeDM5ywakVKjDTEEKF5rd34Evlzru/x30UGEI6O288PGAze9d5PnC0Mb7AlawOamofFrZ1b4mHR7474IzJVWV4+jJLcemPlqRDLpGZ2QShp4uFS1olOV2BNVlukhXplHmzOgSVP9EZOq9DKmrUxHFIt4+G6GmpUZvz2hVbgTmKsEBa1hk4HMOpoSLepfD6M4Uxb6pMjGYlOLshjh3FI+wHtQTnUOFOL6vkv5mEAEd+rhmtCEV1qtjAtX9dRqSX6JXNAnFBbRsIX56+/2lXP7Xe/OCU3n9X6UqCUNCWBPw2RBNjZIVj6j+rY5UTiDpoNDFmIM9Xfu15YdZ6rG3JNZc4yj8nMj3PBcGW/4iYu6FRXUV2lHCb/CVyT/f8nmBlzW4HiBqw/L6u+09GX0htBqHtKY
- OxVffOW6
- eGXX2HuGxORdr+Kc913/2e+lNnzyzSBiPjQfFmtb3w9QYqkPzR2THhkK4qa664pa9/2vxtoY+T6fr6WdNwMEVlk+Vtz6hmt8tcYVz2YQmKSqsAshGwgKQ13kxcM02wa2Do4XaJoXKRpzwmyuwAEz90XNFX+h06Ls56F6iVqgMOql68dm3qsbkspugJdp14HsVTiiuk2kQAZJii0R65vcntmIVYVLlXOohB72BzN9vBYE31D+WJl6/WGqY4InPZiJaMIuFcyi2uqMXMLLdxWZM2zzm56HYxJq1U3bEYFOHFt0ANgG7WruXKLdg5Q==
+X-Stat-Signature: dc33iw4oo6qjjj8h9qymg1j5qynyk78e
+X-Rspamd-Queue-Id: 6DE1114000E
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768226249-236681
+X-HE-Meta: U2FsdGVkX1+uesz8iwVhLKpnA/a1IeDcAt/E9I0BmWsfV5GnAgtK3G0nHEfcyvTtY6+cTMxltvpLo4KvzYEotHDpXPYzY2jnrqR8BIiUO7mlNL1EQmwkpj1Xjwxo01zTh+7UFZbSrmLqyYYHM7jQrPPMPZ2MBDxqtPTYOAHa/2r/t9ws3bcWa6Ka47dd9EJBc81bwN6Iq8QeFhEGUbMBKEdCKFR5hM7IlswnogOKjwaqwuvZZcbWaUkDqg6CoVQUghyb6d8qHphZMKA8okbX5w3P63MpnEBuNtySJcDoSyM76WNMulnemMl7h2FjXuCpN2CJCob160UgeWGfmSgM4Y0zlBNaKbQHCVO9e1DgFjARlRRSNuVgP4FUzZhTEMFOZmj3Cy0gOlqJotvzCvctganuU8149w5SSz4jeLFlVd4cFSw+lbpwcMBGwsAi0BLnG0BWqe8GRnmfUIt1dc964n4PV0Vcmtt+ssY0NJhxeWcusve6rl2B9WVVf+TQzcT6I0mK7CcqJXl1nirv4isvGnOnhKYdVws4BCuG9K+57Ygpvmeo0Y0vZGPJcci/uAj0k9oyZQHJuFIBcsG9A+ozY8PKxHM4drQ/Wac1+kzVC5z1k5SdkmrpqMDoMdCoswGJZtnLq7dM91ZXs1wLqblilCPiAa4ZiS67QTGcoJA6hfHDxNksnDH3ud7bDCvO8QQ5DbEHOH2vF/KXF7KJCTSZvL3qSCdjG4y2dpl8PWUbFJEqPyPZeQfDbG5VyhvidMF/17t1cvGEbGNppzMeJ5JcsQz37KHRbYJqhFF7aYjjp0WgxkpFtOPfON5deowxxMXpXLgrOzTRqXrRErpLA211z0UBicuZM0LDVHCvtxBmi9+I/kOgijBzO+hf6c9M9UPbNf7WTAQKIU9DCK37S+K4CDD0pUWZJPrBupYoYwdWBWOM29CRCfqFUROHd7DHPW6hkYTFXgIYwn3O4BS9bPb
+ 4MjMYXHu
+ aybRnWkXFZkpwKAB+YS06WUlAGM5RoCLeQr93PuatTi+Rm9PFGvPxQgIyj5M4Sk1ndLTe+Fw1RHpm0NKXmhWnm1mQyWWIsGAAa/GBdJAb6nnQon6V91pRBeveMUQ1BRoVNulW8XpK2kR0bBpgzd82PIaXbtKKSrc1FuChM2RLWpw99esAbCPHEMbjfBC/j11K8i4u74/EEIW6HJBm8T16+lWDMndSSJXCJrn8LtnQFBzHFKs2PBCcJtKlGJEv28NTP7aD4Rrleq/Ag5HkhxFhbGaHJmZtmz7U82NxnPfpQ+2D5mgY5EMuin5h+FsPHwKXSxNtab6uByFeyQXqFB2Bv9vATVhXCwjWLeKGPiNDU+avEEyxqOSY18DfA1jmCRQgmdGtRz8GK0VikIgquwvyHQPdJVfd+skz1gI8TgH5kZ3nzSFFxQ8Rx/54rPRBL06uIlL1b9yoFmq7t7rO/G/1KSU0698pTDiEW+5gwe53+32UOjq36hqruqiLtiGKAmF4bmNmjlTIVuS/g7AYZcNPKpbRdo3OcAQBy54cuEHv+qI11y1S7fI/ei1tPo62RJ2II9HsmMHASxyGCCJ65pgsSaSW58Adx/S7ppCKr41dAJZ6UcWv8fCr+YFZRNc/lrp+XCLpSbeo8enUQ5Xbj3+KeFwFqiXEQf86d7WqvxlgcGaZcI+nSi9ulPN94aWc0PIYMhv22BxzaUjVuqL06URgnCtt1PjDNQrG+S67
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,42 +120,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 01:43:41PM +0000, Mostafa Saleh wrote:
-> But I don’t see why not. from the documentation:
-> /**
->  * pfn_valid - check if there is a valid memory map entry for a PFN
->  * @pfn: the page frame number to check
->  *
->  * Check if there is a valid memory map entry aka struct page for the @pfn.
->  * Note, that availability of the memory map entry does not imply that
->  * there is actual usable memory at that @pfn. The struct page may
->  * represent a hole or an unusable page frame.
-> …
+On Sat 10-01-26 12:16:13, Deepanshu Kartikey wrote:
+> When using MADV_PAGEOUT, pages can remain in swapcache with their swap
+> entries assigned. If MADV_PAGEOUT is called again on these pages, they
+> reuse the same swap entries, causing memcg1_swapout() to call
+> swap_cgroup_record() with an already-recorded entry.
 > 
-> That means that struct page exists, which is all what we need here.
+> The existing code assumes swap entries are always being recorded for the
+> first time (oldid == 0), triggering VM_BUG_ON when it encounters an
+> already-recorded entry:
+> 
+>   ------------[ cut here ]------------
+>   kernel BUG at mm/swap_cgroup.c:78!
+>   Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+>   CPU: 0 UID: 0 PID: 6176 Comm: syz.0.30 Not tainted
+>   RIP: 0010:swap_cgroup_record+0x19c/0x1c0 mm/swap_cgroup.c:78
+>   Call Trace:
+>    memcg1_swapout+0x2fa/0x830 mm/memcontrol-v1.c:623
+>    __remove_mapping+0xac5/0xe30 mm/vmscan.c:773
+>    shrink_folio_list+0x2786/0x4f40 mm/vmscan.c:1528
+>    reclaim_folio_list+0xeb/0x4e0 mm/vmscan.c:2208
+>    reclaim_pages+0x454/0x520 mm/vmscan.c:2245
+>    madvise_cold_or_pageout_pte_range+0x19a0/0x1ce0 mm/madvise.c:563
+>    ...
+>    do_madvise+0x1bc/0x270 mm/madvise.c:2030
+>    __do_sys_madvise mm/madvise.c:2039
+> 
+> This bug occurs because pages in swapcache can be targeted by
+> MADV_PAGEOUT multiple times without being swapped in between. Each time,
+> the same swap entry is reused, but swap_cgroup_record() expects to only
+> record new, unused entries.
 
-A struct page that has never been initialize shouldn't ever be read. I
-don't know how that relates to page_ext, but are you really sure that
-is all you need?
+Shouldn't madvise path avoid paging out swap cache pages instead? IIRC
+this is what the normal reclaim path does.
 
-> I can see many places have the same pattern in the kernel already, for example:
-> - vfio_iommu_type1.c, is_invalid_reserved_pfn() which does the same
-> check which can include MMIO and then get the page struct.
+> Fix this by checking if the swap entry already has the correct cgroup ID
+> recorded before attempting to record it. Use the existing
+> lookup_swap_cgroup_id() to read the current cgroup ID, and return early
+> from memcg1_swapout() if the entry is already correctly recorded. Only
+> call swap_cgroup_record() when the entry needs to be set or updated.
+> 
+> This approach avoids unnecessary atomic operations, reference count
+> manipulations, and statistics updates when the entry is already correct.
+> 
+> Link: https://syzkaller.appspot.com/bug?extid=d97580a8cceb9b03c13e
+> Reported-by: syzbot+d97580a8cceb9b03c13e@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=d97580a8cceb9b03c13e
+> Tested-by: syzbot+d97580a8cceb9b03c13e@syzkaller.appspotmail.com
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
 
-This whole flow is nonsensical and wrong though, I wouldn't point to
-it as something reliable.
-
-> - kvm_main.c: in __kvm_vcpu_map(), it distinguishes MMIO from memory
-> and then accesses the page struct.
-
-That's sure looks sketchy to me.. Eg if CONFIG_WANT_PAGE_VIRTUAL is
-set and you try to feed a MMIO through through that kmap() it will
-explode.
-
-KVM can argue that it doesn't work with CONFIG_WANT_PAGE_VIRTUAL but
-iommu cannot.
-
-So, again, IDK, we are trying not to use pfn_valid() in the DMA code.
-
-Jason
+I would use
+Fixes: 1a4e58cce84e ("mm: introduce MADV_PAGEOUT")
+-- 
+Michal Hocko
+SUSE Labs
 
