@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EF9DC9EC8D
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 15:36:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27722C9EC94
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 15:46:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78E8F6B0005; Mon, 12 Jan 2026 10:36:46 -0500 (EST)
+	id 78FB46B00AE; Mon, 12 Jan 2026 10:46:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73B846B0096; Mon, 12 Jan 2026 10:36:46 -0500 (EST)
+	id 734016B00AF; Mon, 12 Jan 2026 10:46:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 647EC6B00A9; Mon, 12 Jan 2026 10:36:46 -0500 (EST)
+	id 63BDB6B00B0; Mon, 12 Jan 2026 10:46:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 525BD6B0005
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:36:46 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 05E5F1A0522
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:36:46 +0000 (UTC)
-X-FDA: 84323714412.24.A270CBA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5819780011
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:36:44 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZtAGRCCo;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EEB36B00AE
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:46:49 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E73FC1A0560
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:46:48 +0000 (UTC)
+X-FDA: 84323739696.13.25A0BF3
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5CB664000F
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:46:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf01.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768232807; a=rsa-sha256;
+	cv=none;
+	b=OhoZjtNWwcswN/GSUbd/Xu0RdxGyAzEdCicJDq0UyQ1BBVMqLF09DZajmDYiX6Mtys/6rt
+	ptBp2F02nAmIVmIKFEfLEBi0crScXNF35jcTt8oXCWjy2aIW0hitJd1tvmZ2PXe2HqOz6h
+	+VM7QoAO782vZ+UerEbiXBwmNSi6JkU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf01.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768232204;
+	s=arc-20220608; t=1768232807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zx3XjcfW67X45x0UPAkrB64a7/Ro1uaQi9z3OcccVTM=;
-	b=nh02KACrz4ZLEY4rYRPUegHoRWpU5u5k6ETEBRc18MbJLKDJs+kyTX1ZgG9aZrhw0iKpoT
-	dvj3XvrPXkGZNr5dAVmdy4NxCA1ZogjkKPEcFm8d/f3fT/S/Pe6wgazzD4vgJO+QEAtAzN
-	X5pfyspDFEDfNVM0BrXSRPELlz8auXQ=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZtAGRCCo;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768232204; a=rsa-sha256;
-	cv=none;
-	b=U+PHXWl3iOoRsZnJRSszQo9EiHszuz2yp/xgEbvziOwx0PbNtO4yU2BbdRl0LIFak4DWMv
-	YMCS6F24QpI2oZTjvHSIIlToiwOcUacbRny+cu/QoKwVjKXRzet/Zhup6QNxLciKUO2PFQ
-	y3w7QnpiPb44q+GfmC6UCI7W0+d2jMs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 678F76000A;
-	Mon, 12 Jan 2026 15:36:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF16DC16AAE;
-	Mon, 12 Jan 2026 15:36:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768232203;
-	bh=1IheKnbF9KpHc+KQVqpS9yoJRX/NZTD0YAWB4rwgNT4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZtAGRCCovJdx5faE/e1P43HebX5iIoYXJqMvilM5BAuONqitLKugP4IlpPxp+RnoI
-	 Bfsx1G+cKPkG7BPaC19VOxzLYcvfFBFk1CJRXzxt8oaZREejHQapMXVaw4lm/wenFc
-	 w8McvlFckcT2H/8i7Uk2+zz0oMIwNfMCuaAcNmhZJcWPN1brOS80PGalj9uZ+bNLXS
-	 04MfUvqujte7dCPboRGrEw4bq9h75IECK50Dob22R4N0+yGd4bOolxe/7LvO2FUPjV
-	 QBX8Hrh4NwNIMI2Rvlp4MG9JKaJ5LfyPU5ZimS/BV+QpdRBiKIdkex3ljqsaLxbcbH
-	 nqbHyeczFuA5w==
-From: SeongJae Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	JaeJoon Jung <rgbi3307@gmail.com>,
+	 in-reply-to:references; bh=/2Fpx5sMln+4uvsY6IoIKQrv1w7KPnbD9F8QJS3ZSO8=;
+	b=tQfbNREJ7PBMCo8BJNe5NvTFxORQGDYjTCL55v0jy/2Jhb9dKgbJ4VdLH5Je+Qh4ykdBHd
+	Ou9rfOXE/lGCvXLGhv4ifOgXDEl/lGrPQIWYe4gbmIcbJtZa5aoVGt2nsUHN3OZrJxLy2u
+	f9lZOXe0T/767xjk49AHkfnsPjGRo1U=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 73310497;
+	Mon, 12 Jan 2026 07:46:39 -0800 (PST)
+Received: from 010265703453.arm.com (unknown [10.57.48.115])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B7BFF3F694;
+	Mon, 12 Jan 2026 07:46:43 -0800 (PST)
+From: Robin Murphy <robin.murphy@arm.com>
+To: m.szyprowski@samsung.com,
 	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
+	vbabka@suse.cz,
+	david@kernel.org
+Cc: bhe@redhat.com,
+	iommu@lists.linux-foundation.org,
 	linux-mm@kvack.org,
+	vladimir.kondratiev@mobileye.com,
+	s-adivi@ti.com,
 	linux-kernel@vger.kernel.org,
-	wangkefeng.wang@huawei.com,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com
-Subject: Re: [RFC PATCH v1] mm: improve call_controls_lock
-Date: Mon, 12 Jan 2026 07:36:40 -0800
-Message-ID: <20260112153641.98331-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <909dbaad-f0da-4372-a151-a393619da6ec@huawei-partners.com>
-References: 
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com
+Subject: [PATCH 0/3] dma-mapping: Improve atomic pool behaviour
+Date: Mon, 12 Jan 2026 15:46:35 +0000
+Message-Id: <cover.1768230104.git.robin.murphy@arm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5819780011
-X-Stat-Signature: sp8h1kxrorcrcp8d4h1xq6x1rcuspfzw
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5CB664000F
+X-Stat-Signature: xzrc18tkamp53odmkahohu5m7gmg3boe
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768232204-715935
-X-HE-Meta: U2FsdGVkX1+m4N9Mj9aFS2JwQll3P8v2QXvhpGEnynhVZLkTQLE+OKULiXpyM5h9Hu6UX0HO3jf5b7M0iWBjLM7G+wrGvJhf8pZMZ8ZOe9Z1arNg8RrKdSPqR2wWeu5jrphQ9lc7OM1OXB3ay8l7zMI+a0KnRmkxdEjneJoet2iRURvIlkejkpQyPdnuatqbrFif+gG2iwMQ/bWeRyKtDxsiuqNMOMMKJPF7SAP0FrHTRjZCdlqRoqLFUKBmycercqU26UTftRJlpob316Po4BAby3WnrjStqgsxI38HbMKxyXY1XhqA0YoeOmbQBy/vtvocc9webWMdkhuZaNUnZtFyrUkCMIl/X7HeYH6l315Ax6pkZfyslLT+15HvZFT4RR2dxh8Is/wXgPwqWkYAs4uAUky1lj1c2QfOTeII7rg2Q39CXQQP5vJNf7AAMI4Hq0XqadfwCy6A5QTcZqovzWc/uE9YROpe3GEqw6rFC+9IDvHtYWSOEM+yQYtHnB+x5J32sXWrC0oplOHIc+YNljQ3SQ1giJQ+CUVTC5lktumEynIPEqtWNNKYtzKnJrtOG8PxTJeTcdfoV9S8Xs0ksbeNF/1xp0JdetRrUHKv79xJAax2memtJ+x795OYqRkxnqXEz3sU5N04EQCJfL06UydLGsHW3bZBPvLV6i+rY1sDo0ah6lXj+u9nQa/xOlt1vYhaLIQMOBb8T51KpSVoPfeQ6jTb7hK+qIObT0crFtJyg0dxAt6XPMqahGBGIVw7bKZmGA7WYtHH7ZaypTKIVcDMUzGBAV1UGtNWLtOGoZ2vY94oD1fIEWkbtVsGyNfQsan9BfhKb+TNYqAkcJdSmHG3Bu/lncm7Ax37HXzBMfJ1liKlM0g2Pq0mwaFwHizBX9cDudgs7s4zjybNJtskniYK7XGGN0WDWAK4j0RCHdobq4sUR52L2yY2h+WAR2L+x0XxAuNZtSGQUtIRBcC
- F4BeUeVT
- +HMNjT6SaozPEEy6PP36o2C8T7DbCRypZwAx3iixsIHU2045Azv2DZ1UH2ljjqUQM4VdlcaGMPMqpeIT2eH+YWNWdQLyaDdFG+IeBQCVFwqi3jwskoH7Yg313Tnf2Lu5UCrxt6aAjEvyD28IrC7LuSsfRGH2zGsjERQ/Pqzszd/eroVJhJgEcWkzmoAPqIBbLJ8xdaWOsBGHR8Zc2LORtqDrlsjeUhobqJa5Vu2eWm36MvEQFQGr1y2ApuXe25/NgOFQnVCuCKH4Cnqx+7GZDpvbcefm73rfE8eTC3y1M+c1unhg6yc1R8MWu3g==
+X-HE-Tag: 1768232807-640323
+X-HE-Meta: U2FsdGVkX18Jq8V7iQhnoVLsaOMr0gIvUOYnzDv7uGP/wwB13+McVTaTQHXYcaHrceOCG0GvR6XyVCHy8i3VSge3qIG8wC91SJIb/jWJ/ZmveGQFLCABDosRc+w3vStXp1enX55vfqQOgyD0MEy6MJIf91SiLpMeQtLXIL4Ds2ZcDfDKc8e6PoXAda9q0xAuTYJZ0OQoRjo1xvERnT35xXUclenxTK0ZmVNCO8pJ3NOML6PpMmuQT2q8eQCmegbZuDX4L2Fp514IDKZxSwqNsHA+cr6t5NSXKlasEcerVRZTtK23hNdqpWSHo/IV+TkLxcAeoXasLOSZBDGFJd7lUpcYPAZIm3mXu0sllavwUgKm9s8IMiEoUYJwH3Pfp8eYdZ+NAHrMtQq27krAWsJqik0KxFggWKCLssQbH3W0P1C8XIXttqHlLBPU/o3Sy2Ws3cT40fbChZBgr8D9TUoHCtPEgRarOz5l++LG5KFbjEAklg+qZwIkdxYKnGx2iHBsC5N9YlhgUvccqDjt5MqnEieBe4GlnFqB6p/qspgHUUUFnKNmdtB7zCKDkEsivY7ncsqvD8EXla1/j7Z0p4Lc8LkWZnD3h9vsXFww3CYqLvjqQnNz8WUGW+o3J1LZN92FYmBPnAQV8w1wlhT1rMB2suCYETIAO3mV7L/AekjfDSQSrh+h5qSrr96a9/dcYpRW6tCTpiNh1xkuSCqwzgzBfrgAf+/MtUizHR9iE0S51zKxTjN6JgTG93Nv5ZAuJMvpP2CwkG4SJTTVlzoP++N+iujiwAubKqvMpq1kPECyC32md5VVo/PeqCDvYzeZvcnWlgpDwfsZ0awlExVTI/AW8vo2GUQ7XO19pmWXmb+E0D/MmdDN3LdQIJ4vWiAz0ResxasIeG+arzIENSVKmI3iLD8h6pcr+0ij/vwDYn+gUFdAFMTJ+DL/QiBIKyrJagkv53Oeu45aDSSK235WtwD
+ KRHY/kHR
+ pFHuX50aa+Nsy7F2/Q19K3gK6WqpEnDl68kUi1r1O2qKo++yrVJBvO2dEAZBwEaidbIBD2IDAYGSw+fdtbRXocqNwtmWTcgWrsQnYVSNvqR6TiRV8ElemMicv0RlfZMcI6gN2UM2WQl4nZdmvW+5bZZ+FYOGv+9qaRjB9kVyFIV6dKVsl6e6/tUOEAszNRNAnb3BxRyzhzXrCdqI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,18 +94,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 12 Jan 2026 13:32:59 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+Hi all,
 
-[...] 
-> I can submit a new updated patch with this small change. However,
-> I believe, as discussed before, that the improvement in general will 
-> be small and it may not be worth it.
+These days we have somewhat of a matrix of mm zones that may or may not
+exist and may or may not be empty, which the per-zone atomic pool logic
+doesn't actually handle all that well. It's not all that difficult to
+improve robustness and reduce redundancy, so that's what this series
+aims for.
 
-I agree.  I don't think we need the updated patch for now.
+I initially wrote this just because I happened to be looking through the
+boot log of one of my boards and had one of those out-of-the-blue
+realisations of "hang on, why *is* it allocating pools for zones it
+doesn't even have memory in?", but coincidentally, it seems that others
+happened to notice related aspects around the same time[1][2]. This is
+my attempt to sort it all out properly.
 
+I guess this could go via either the dma-mapping or mm tree, whichever
+maintainers prefer.
 
 Thanks,
-SJ
+Robin.
 
-[...]
+
+[1] https://lore.kernel.org/linux-iommu/20260112065857.3137331-1-vladimir.kondratiev@mobileye.com/
+[2] https://lore.kernel.org/linux-iommu/20260112104749.4132641-1-s-adivi@ti.com/
+
+Robin Murphy (3):
+  dma/pool: Improve pool lookup
+  mm_zone: Generalise has_managed_dma()
+  dma/pool: Avoid allocating redundant pools
+
+ include/linux/mmzone.h |  9 +++++----
+ kernel/dma/pool.c      | 27 ++++++++++++++++++---------
+ mm/page_alloc.c        |  8 ++------
+ 3 files changed, 25 insertions(+), 19 deletions(-)
+
+-- 
+2.34.1
+
 
