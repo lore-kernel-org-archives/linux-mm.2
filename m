@@ -4,101 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FFDBC9EC94
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 14:51:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D8F3C9EC94
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 14:53:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88F516B008C; Mon, 12 Jan 2026 09:51:58 -0500 (EST)
+	id C3F2D6B0088; Mon, 12 Jan 2026 09:53:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85A3F6B0093; Mon, 12 Jan 2026 09:51:58 -0500 (EST)
+	id BD2D16B0089; Mon, 12 Jan 2026 09:53:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7870F6B0095; Mon, 12 Jan 2026 09:51:58 -0500 (EST)
+	id AFF7F6B008A; Mon, 12 Jan 2026 09:53:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 610F86B008C
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:51:58 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2045E58CC7
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 14:51:58 +0000 (UTC)
-X-FDA: 84323601516.05.6B692B2
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5C6921A0006
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 14:51:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="V/XpdNBn";
-	spf=pass (imf19.hostedemail.com: domain of 3igplaQYKCIUpurmn0pxxpun.lxvurw36-vvt4jlt.x0p@flex--glider.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3igplaQYKCIUpurmn0pxxpun.lxvurw36-vvt4jlt.x0p@flex--glider.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D26E6B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:53:25 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4F71C58D79
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 14:53:25 +0000 (UTC)
+X-FDA: 84323605170.30.8D1424A
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9258AC000F
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 14:53:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=S7ao79aT;
+	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768229516;
+	s=arc-20220608; t=1768229603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zb8lxCUKflLPJGxewVRt/oFLWki5YH9LqEd9Zx/sLAc=;
-	b=RgQXmwdp5wxUweeaxYXUBaN5x/pM20cSKooHsbMDeDBZeUv0Uqao1eN2KCrs8KVP6FrXex
-	lMuzRM5b6EtIMfjoJXlpdGcpPi3BVS26f2ukssOIRAt2ku7EP4kaggUePgVeOMfIvtxEoA
-	hP/A3LL8ePB5i1++6VwgnZmXYtGghEE=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="V/XpdNBn";
-	spf=pass (imf19.hostedemail.com: domain of 3igplaQYKCIUpurmn0pxxpun.lxvurw36-vvt4jlt.x0p@flex--glider.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3igplaQYKCIUpurmn0pxxpun.lxvurw36-vvt4jlt.x0p@flex--glider.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768229516; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GBTkFNmBBkEQ6ceIfuMijXTnivvV3fEgY8bCnCyu/gw=;
+	b=N0CClp6Mlqqg2/wTRWC4Oeiq2w8n35bix4yz95xhH8bKTlniqxVfRQVBrvOnU1R0pLgp7D
+	sgfsJQS1bqqDIv9ig3s7XfFnf7/6UETpEsQrn9Iq9Wo36uO+SSFc9V8uifOfSdIouR4Bqq
+	OZJdRfVFTNvVycjQo79y43RA3g0ACGE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768229603; a=rsa-sha256;
 	cv=none;
-	b=Qk1DblMaSbWuu1CnzycO5BeL0fx1FDE2mBpXFlqAbGCzpgXTBeIdN14QPEmvANke0goZGO
-	GHx9+Ar2NWohqM1ZsOodsjWFyhJujM1mtkDH1YFN/xKSVd8REugmOGMCOoCO2dlz2sMaIY
-	HVEoZS6A4d/ssnfC1//1bJKl6pnzeIk=
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-64b4b64011dso10994166a12.2
-        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 06:51:56 -0800 (PST)
+	b=wzywYvRBoU9X/M2phNtUWg/6epGJjnuoN/w6R3vYqceq2Ynio35dB3fJ/z4PymUN9V9b/7
+	hB+/2jumzN6Uvv4bGlHJNVQj0IOYAaHMuEyfnd66E8oZ29SUqFKbOQQwWJwt3fcR6ED9jB
+	a4BV45nM+FhNTciQ7MTvAD6tb1DSxDs=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=S7ao79aT;
+	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-6468f0d5b1cso5744515d50.1
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 06:53:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768229515; x=1768834315; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zb8lxCUKflLPJGxewVRt/oFLWki5YH9LqEd9Zx/sLAc=;
-        b=V/XpdNBnJt6JWLNCb1tGIeWIsC1TEEScE4IT0Nh2ZG7ubvWCOsjunsb9RcTY5LXS2P
-         WpaUQtm9BRNyl1hHzqwbqvZWyonxhelvslyaPuM6hINXy52xL3AtiOMdoMr8espPUN8Y
-         60MVcAeQqArJ15+nZO4zFsuCFRVULzlHJRYk8Y40dRp1xuUmZDmiZb/LGmMfZo24PUCP
-         tyQDOLDGkRFTmycwzpyelfg5tMsIfHv0Bjto2toa5Wr1v4f6Eg2YfkuxhIVQ+2L/IzTH
-         0mEPCRw0b2yMM0/wtObVyC3rD8azZzZe+dDRVy23App2E7fxhkko3SKRl6pyOkIX639R
-         uv6Q==
+        d=gmail.com; s=20230601; t=1768229602; x=1768834402; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GBTkFNmBBkEQ6ceIfuMijXTnivvV3fEgY8bCnCyu/gw=;
+        b=S7ao79aTL8T9Ki/z/dkRYGyXXLIai9ldr+c8buV8pyLhs5CfCb9Gz9s/ungJi21DLB
+         sQwf02qITpj0cLr/RrJYWGItYqlSNI/WTFZMVc7EFh624nY4N5FTlyi+fofZJ1WmKCly
+         ZSnCOOsmP+yzFnTBHCX3QrUUVAFts5N5zvSiR6K2/ZLbbaFlcca4r8ByDrypLPLFOQ4d
+         IrtKJoUhxr0uRZ3X3+2js6WEiBMK+a1mbBw4nl7BzCBwFae1FnrA7eaba4FNMy4GMNPY
+         YiRUhYnhPZTk9hZ6kFYLthMhAPjq6vlwmfpQjWA1IUb3QUq4Wyn+dJVVC6RimXA7U91f
+         4Hsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768229515; x=1768834315;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zb8lxCUKflLPJGxewVRt/oFLWki5YH9LqEd9Zx/sLAc=;
-        b=m+UNnaomf2unarrhaKMTIj+Ej5xVy/ld4KFvykdz1Ajkl1e2Yn8R1VWiedfqBqkbl2
-         dyW2Rs6S/MR9v+XbZwTdT1ljaktYy0TD6CqsLpowzpLpcoaoa7iikgSG6nM3u+WTPAzW
-         v06PlwC9X6dUY882wFGr8zI6312bd14UYF2SOY+zUzjV3D3xYwizPzq54oaPbo+L+Jqs
-         sHl/vcda2ahB23Kw7DiVknPy/JjsYD13H9j5GSPOO36rCyUAC8BzfrKzc/u8UIT+Rpr5
-         /lMk5f83Y1ZH9hsgcmvOVtfO1dDnkC3YkP4IZn2VqdhZIsmDro/KByUaKlPQ2J0W0Qf+
-         1VKA==
-X-Forwarded-Encrypted: i=1; AJvYcCWJTcOOJns8vtL/bgW28wJVPE592F+qLfxilWsZnXU0nyWDVkW9oJa8rOYdJUZjtY2Ypk/QiKAg9w==@kvack.org
-X-Gm-Message-State: AOJu0YzoWNPzk8/2o4tLUp7oBJb+MEcmlaKCeEuMhO5ZWJllS/6hVTFH
-	P80b0UbdtSU6D2U9EMpmvN9sfBpV++UuIxJBXCDGnnW/Gzk3ZmaYn78J1DxEoQeFuX14D6Mn70E
-	QPpo4MQ==
-X-Google-Smtp-Source: AGHT+IGvtmybmEn6Uoh/uHwnBdalPGDJ6a15O2TO1I8WItVDFvaFD3uns5oSaCtlbSDdK8/QzTt42R3jc2w=
-X-Received: from edbbq21.prod.google.com ([2002:a05:6402:2155:b0:641:6f6c:f930])
- (user=glider job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:3fa3:b0:b87:253a:dd39
- with SMTP id a640c23a62f3a-b87253ae4a3mr232543166b.26.1768229514739; Mon, 12
- Jan 2026 06:51:54 -0800 (PST)
-Date: Mon, 12 Jan 2026 15:51:50 +0100
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260112145150.3259084-1-glider@google.com>
-Subject: [PATCH v1] mm: kmsan: add tests for high-order page freeing
-From: Alexander Potapenko <glider@google.com>
-To: glider@google.com
-Cc: akpm@linux-foundation.org, ryan.roberts@arm.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, elver@google.com, dvyukov@google.com, 
-	kasan-dev@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 5C6921A0006
-X-Stat-Signature: 4mq3g5r6d7usjjrkp3m9sq4317dih8wz
+        d=1e100.net; s=20230601; t=1768229602; x=1768834402;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GBTkFNmBBkEQ6ceIfuMijXTnivvV3fEgY8bCnCyu/gw=;
+        b=GOLysatbIz5tVg7ks3qeqDEMZ3MzJn9INEAaTlF9e8H7xdSZtJfqVuORPi7Yto0SKt
+         5C20kz1z7xkEbTr5IPWJX+HkINu7z8UGVtFnajTNnjEdu77iSdwdjb9dWxAlyTPI9aBX
+         2dOqFkAGOjAaC/FphzVkxdoFPl5RM03oQJWekTxrQXY19QK2RWR1whiEWfsUEtFB0pGb
+         UtCAkCk6w7KbuB2VKmkF8f2iBjuwIr+LmjJrFwjYMcWAuc3TvwNoMCXPjXgvMO5bo+nm
+         hC3i0m3VHCRAyqHZmcEyJl7c98dvcnIT0DlCs1cVD5ilzF0K7pYTxGuiV8KiQ2Cx7re7
+         8WwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVAQmhgTQ+T/J2ZkkFepXBOKyo8CgrhrJqkSkg2VStQZcv4hIxVUmM6agJbbHcqgpiksvftuvGg4Q==@kvack.org
+X-Gm-Message-State: AOJu0Yx62Qw4bhYKsEvbLTISBWqB1tIcWDge+H9ZXpGKmbQv6JsfuG+w
+	dOhEX7OQZc0PuRs06MOSIK4rvfJKRBLs8aUUVaHkLiOcKRBKGcf0BvpP
+X-Gm-Gg: AY/fxX6mPyS2B8lrk/ct4iqDngiR9Krx2IgierLFGeQkKfMXodxagnXS3+QgBeoDEDd
+	XllDnUWGzl5/7erWPMDvkoTkg2q3R2kwZBjl3hUb436mExYY32ELpjYH/K3tYBqbGZIKZqIoJZd
+	lu4P8b3C7NHXB0XSWLsMzXwIqeM0cDWyEfpXvjNdWCoNZ28F7EPF0yFvbQgqtcNldL3Z/gXYk6A
+	frGzzBIWIFMYefkYY+h2pZ1H953BoXw3aOi/87Vux4C2bvURDCydgwloWJMe+jslj4wbHVmV2ZN
+	0Sq7cTlxN6biSC3hl+4Jb0ilGNr44kH6kC+zED3ab8UeU/UqLfB2fEExMWw8mHr9Cqlvay8gY1B
+	nYV6+n0CAfoyPlyvBdDSDCfhAtxqglkKZ56WjleqbjUDoWzeoYhFm28OIQIDSvcexnWzhDMiuW0
+	ZLyEev9yBSuUXniQONNKDG
+X-Google-Smtp-Source: AGHT+IEiVkX5JSBHCP0DgJ5mM3XaCn+4iei4lNICvN+Do6alENtz3Jm/zPI+xQjk/43RjBi+/xhScw==
+X-Received: by 2002:a05:690e:1516:b0:645:5467:29e7 with SMTP id 956f58d0204a3-64716b74e68mr15365862d50.24.1768229602464;
+        Mon, 12 Jan 2026 06:53:22 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:4e::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6470d8b246fsm8044371d50.17.2026.01.12.06.53.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 06:53:22 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Yajun Deng <yajun.deng@linux.dev>
+Cc: akpm@linux-foundation.org,
+	vbabka@suse.cz,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/page_alloc: Avoid duplicate NR_FREE_PAGES updates in move_to_free_list()
+Date: Mon, 12 Jan 2026 06:53:19 -0800
+Message-ID: <20260112145320.3748979-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260112121614.1840607-1-yajun.deng@linux.dev>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9258AC000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768229516-127424
-X-HE-Meta: U2FsdGVkX18otHA7BIFYwrBISIdThgqizSynFjmQvKnZSb/kv5tEdmq6JTuOPY76AETbiujRs771O82Ucx+FhbkhsLBHZhgdQSpi7nshWbyDDGh4V9I7I6siLzZCCHG/Lhm9UDgVSGO9Tv3MqBiY/DQV/dd3eAmRQdFiShul+p1L6YHMPZZx+JXebRs633cPAZa/YPW8OTlFJNjSHb+08mW6BMgyiDdWq+SsBGgwjK8lNStbaSPv2jKbBCJDYlcKVtNmkR1wMnAhJLpzv4Q96P7fzoxxTo9q5WCZcEiNwbCvTPQUG42r7073PKMttdu+wxhxsJRHwEEJzcyJsI/IlpfcFXiKu9S0EPqBf9iHq3SOPpJnYxChmely59MvqywEPXD6J/gbr+VG3w8mKbSzr8PF28Qg2G3PZC2Ek9ATR5+weqYRW8J2upRhUYxGaLVEXGCUNenqb2v5Glu5cLoC64YoIhwE5PUiJ7mZwRU4bqa3MqxE4SzVVDX5UZ5i3R1FHi1wxyukXqNpCqJaM4cMUh3M+uBeWZ+zbugZKsnJJMady19IA19FIRSU3/U16vpjynYxSHkujxDQHof8pyIhs/rxgw5OUHzTcnVhV0a3ZDEE2osKRB271YkULfH9GjklZgPRN/oWVAtgsvrjmoKMJhi52jnRp79grcuBpaiDLzWqV+EtTfzjO5JIQb5JD4wlLPD8cgdqDJFKE52nXHDJfShkFOkiM/NshWId1mrNxsvCDMHlWsI8cbLzHNgtEykiPGRQ4DaKASGDuL0ymoR8UJbusw+CX7b1kGmHfUxBTcnYsRB6HQE42u75ZLG313xky0PZx2gtctXegVsmBVI0rovc0/lyLTQ9/7g1O/Kq/+c+cYmw0MHXuuzQOrkSHsFKwPv2bFcMlC+rIl2ImbSNWTrp+cnmwlya2Z2TEvYE+vPFe6uJNkIhL5lJMEF87+gHvhRCVNlPnwL5uiFVi6v
- FXiijDSr
- sYchDa8p/51e+ky0EZx9Lnijwo93M0FOl8v3dGQZDC7c0wUWGrJEItwGirzoVPlla3+X9hsadB9p3XyGsaIzK1KLkctAea4cD0T/ydIVbBXtb0a1Bv3MsAlmddn6I+zkaaPMclLFL9trYHbuQrI6htW+ib73A7D8uaU0RDKcTpjgcmDif6cO0rW7D+EG1JyHYkSZ0teYUm3lIrzabSAGpGCErHX3T4j0db+s8MzdAyJlAydiuqbVnmGHxJzWHmX9phZge8PvwXKhTmU2yXH9qu461dhJgHG3tHrMtZqlvIxlWQZ19YS5HrsJ8rydmf4EbNqWvvIncVnWhtJSFOjvv1mE18u/aWHEN1nopE92z6m9wBnpz5W9JM/GIkzdvS7JQnGbpY8GjAGMykO79GKpnisKdRq4BifHJSYGSu/NoeW9cpvk2ofAZdWTR0/1InrbIcv10nIusZxnGLQP1SN3Gtgaf1MgIQzWwgR3Tnf33lFJraSqQWLLY90aaGeX82+wX7GkfBHBjqaQ1krpPXc9HlEiC2zSyC/MPxIaCdXJxbUURibjNfJSznfSImsFh8BVBV3sWGbbS8JziKN1Cto6XifY2rQK1KdKcze9y9ZmGHqy+juRJlP4t1LEm1Jidq4e7x4NRLcE8qAhpw6c6mPJfu3+DFG+NOdD7MC31AqD3NKHrF1ZXdNMAav9jLGsRkA+jGhdmKxdBznut2LI=
+X-Stat-Signature: jyk3kec8363eygsefrtwexohbismc697
+X-HE-Tag: 1768229603-798693
+X-HE-Meta: U2FsdGVkX18ju9TrEdoZlZg6gA6BS2rEJVlAu41uCHDP/5KqEvk0cs7k4y4P5k6BHIQfijQ/+0gHoQVWh7NsPPp2Yl+svWcVYUQB2fx8rm6vME10gObLL7epUXgBhV450oo2rn7gdn5Su6ApjTy1sXVW7ePUr+vZkl2xENEx6gr231XsAXCsHTDjg5khemIIsddfj4PeSvRmyAKJnbZesqd9V2DQ66W+SocLQfdkafT6JphE6gIV6Hprq986Eq+oPA322thpdwY8ZRWpEqAUUp3aLVZoz1YbyNmCITPukWSK4vZSjGVvVkhkr7CZSn8wrd4tOEkcX/iYC4P7UQdy/tzM3uAdaVf64I8yudyUeZ7XvSiuBgFd/A6qfC32YDOkdtq+M7EiPw0pT8rMgouluTj/Ne/A+6RKugjXO7VDbyanZiWmnEG1s+p3c1ogxzTJmjvnOHClobJifuJqWA5ZwURZaF+NBVje2OW/4ZoUCueDDvyUgwMufh6ywEe2k/qjdvy96qDAFVtOb0wVLBWw+fQMwigd+zQLbRXQRCIvRomcLYyU76Qq4Eohuhmsb3TfFO2B/uEEYaHHGI+5E6j4dMkQdzGerOxVffrwd6YJyi3uregOvd79f34UhX7cbtmeKdLiX+Atl/lBuwJzbpUU77/Pyg0qrSWhq/aBRivL5ALHQZy0ZBrejDfj08pgFKW37LXbctthEPVM/YKIS3nrx+ftbIFILkJoOGH5M+lpG2+b6pOx/7p2WcGJfMMjxjqcSTPRH7aGnKPGWlPZhGWNyqRlOOxNyhMs8YtsWAb82uiR/m+M1rcsnR0/ff20kTZfTT4YJU/dPnFx1OPnUfaTfKH5qrktretXdeWKH6grp9NGKnvwfaKAcz3rY5r9srHqVxK+f05nj+rsA2CF3qqodCkRjzo55J3MhLZ9cDx5Hzf051su+gmUICS1HY3S3zKeli4gWIBSgb13KOuoMLV
+ 5D1Z71Sa
+ y4mbCmXNsPRwUar4FSOav/r+BVSQdvPlFu1vMBOH0NModF21+8elpo/mpCfSPiZjScm4GIn9kfgrz4cz5xFMTna6d3DbRB4sve0AHYhK5pwCGobbA4JCeKKtIf8/aigSrDJwwg7ViV1Iqpxyf18CiHDVB3CBuIu1DaN2AxfXo7oOZKDkNcFLYz2VMFA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,96 +126,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add regression tests to verify that KMSAN correctly poisons the full memory
-range when freeing pages.
+On Mon, 12 Jan 2026 20:16:14 +0800 Yajun Deng <yajun.deng@linux.dev> wrote:
 
-Specifically, verify that accessing the tail pages of a high-order
-non-compound allocation triggers a use-after-free report. This ensures
-that the fix "mm: kmsan: Fix poisoning of high-order non-compound pages"
-is working as expected.
+> In move_to_free_list(), when a page block changes its migration type,
+> we need to update free page counts for both the old and new types.
+> Originally, this was done by two calls to account_freepages(), which
+> updates NR_FREE_PAGES and also type-specific counters. However, this
+> causes NR_FREE_PAGES to be updated twice, while the net change is zero
+> in most cases.
+> 
+> This patch adds a condition that updates the NR_FREE_PAGES only if one of
+> the two types is the isolate type. This avoids NR_FREE_PAGES being
+> updates twice.
+> 
+> The optimization avoid duplicate NR_FREE_PAGES updates in
+> move_to_free_list().
+> 
+> Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+> Suggested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
-Also add a test for standard order-0 pages for completeness.
+Hello Yajun,
 
-Link: https://lore.kernel.org/all/20260104134348.3544298-1-ryan.roberts@arm.com/
-Signed-off-by: Alexander Potapenko <glider@google.com>
----
- mm/kmsan/kmsan_test.c | 48 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 47 insertions(+), 1 deletion(-)
-
-diff --git a/mm/kmsan/kmsan_test.c b/mm/kmsan/kmsan_test.c
-index 902ec48b1e3e6..25cfba0db2cfb 100644
---- a/mm/kmsan/kmsan_test.c
-+++ b/mm/kmsan/kmsan_test.c
-@@ -361,7 +361,7 @@ static void test_init_vmalloc(struct kunit *test)
- 	KUNIT_EXPECT_TRUE(test, report_matches(&expect));
- }
- 
--/* Test case: ensure that use-after-free reporting works. */
-+/* Test case: ensure that use-after-free reporting works for kmalloc. */
- static void test_uaf(struct kunit *test)
- {
- 	EXPECTATION_USE_AFTER_FREE(expect);
-@@ -378,6 +378,50 @@ static void test_uaf(struct kunit *test)
- 	KUNIT_EXPECT_TRUE(test, report_matches(&expect));
- }
- 
-+/* Test case: ensure that use-after-free reporting works for freed pages. */
-+static void test_uaf_pages(struct kunit *test)
-+{
-+	EXPECTATION_USE_AFTER_FREE(expect);
-+	const int order = 0;
-+	volatile char value;
-+	struct page *page;
-+	volatile char *var;
-+
-+	kunit_info(test, "use-after-free on a freed page (UMR report)\n");
-+
-+	/* Memory is initialized up until __free_pages() thanks to __GFP_ZERO. */
-+	page = alloc_pages(GFP_KERNEL | __GFP_ZERO, order);
-+	var = page_address(page);
-+	__free_pages(page, order);
-+
-+	/* Copy the invalid value before checking it. */
-+	value = var[3];
-+	USE(value);
-+	KUNIT_EXPECT_TRUE(test, report_matches(&expect));
-+}
-+
-+/* Test case: ensure that use-after-free reporting works for alloc_pages. */
-+static void test_uaf_high_order_pages(struct kunit *test)
-+{
-+	EXPECTATION_USE_AFTER_FREE(expect);
-+	const int order = 1;
-+	volatile char value;
-+	struct page *page;
-+	volatile char *var;
-+
-+	kunit_info(test,
-+		   "use-after-free on a freed high-order page (UMR report)\n");
-+
-+	page = alloc_pages(GFP_KERNEL | __GFP_ZERO, order);
-+	var = page_address(page) + PAGE_SIZE;
-+	__free_pages(page, order);
-+
-+	/* Copy the invalid value before checking it. */
-+	value = var[3];
-+	USE(value);
-+	KUNIT_EXPECT_TRUE(test, report_matches(&expect));
-+}
-+
- /*
-  * Test case: ensure that uninitialized values are propagated through per-CPU
-  * memory.
-@@ -683,6 +727,8 @@ static struct kunit_case kmsan_test_cases[] = {
- 	KUNIT_CASE(test_init_kmsan_vmap_vunmap),
- 	KUNIT_CASE(test_init_vmalloc),
- 	KUNIT_CASE(test_uaf),
-+	KUNIT_CASE(test_uaf_pages),
-+	KUNIT_CASE(test_uaf_high_order_pages),
- 	KUNIT_CASE(test_percpu_propagate),
- 	KUNIT_CASE(test_printk),
- 	KUNIT_CASE(test_init_memcpy),
--- 
-2.52.0.457.g6b5491de43-goog
-
+LGTM. Thank you for kindly accepting my suggestion!
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
