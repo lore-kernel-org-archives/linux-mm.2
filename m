@@ -4,135 +4,225 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96631CF45D4
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 23:33:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED795CF45D9
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 23:34:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 047F06B00B2; Mon, 12 Jan 2026 18:33:55 -0500 (EST)
+	id 5E6936B00B3; Mon, 12 Jan 2026 18:34:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 028CA6B00B3; Mon, 12 Jan 2026 18:33:54 -0500 (EST)
+	id 5C5CF6B00B5; Mon, 12 Jan 2026 18:34:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3F086B00B4; Mon, 12 Jan 2026 18:33:54 -0500 (EST)
+	id 4805E6B00B6; Mon, 12 Jan 2026 18:34:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D1A6C6B00B2
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 18:33:54 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7ACE3C80A4
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 23:33:54 +0000 (UTC)
-X-FDA: 84324916788.24.19E5F91
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 989CBC0012
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 23:33:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=JfrSfsoQ;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768260832;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 370106B00B3
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 18:34:21 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AAFF61611C7
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 23:34:20 +0000 (UTC)
+X-FDA: 84324917880.11.552C5BE
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012004.outbound.protection.outlook.com [40.107.209.4])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 069AB180002
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 23:34:17 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gBojPNwU;
+	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 40.107.209.4 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768260858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LVpfFj6hka/DJY/5ODmGKfI4Kx1XNOYSlSR7awzDNx4=;
-	b=NAY+otULoE71ueyGQwDBr2YPH5p9KSvR+ubkaD9XbRDCe6H9Fr091C+TWBngYInhDwTmcv
-	ZSRTds+pQxHux/crmk4J1Eh9Xa2xnv0vElKWNrntq69SpxCsMJ49BuNw0a4nob3AkfZWCQ
-	BZBpnlIHAFn74gPIXkdMjyKtKA5jXO4=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=JfrSfsoQ;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768260832; a=rsa-sha256;
-	cv=none;
-	b=wi5VCHRvL8tesu0PB38qOahljHCIH6gElSQ2+HHAmM9pRYO0bxo0WH63W+v5MCVqF5oGC/
-	50oT7QX5epiQhDx43B0u80qHjx+Z8GMEa6WlmAb+ADeuR6ptiuVWLXywl72P9jiNPKaF3G
-	zHy3z8Kj6RMMk2SP5LWXPG+SA1UHd9Y=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8c07bc2ad13so483739685a.2
-        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:33:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1768260832; x=1768865632; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LVpfFj6hka/DJY/5ODmGKfI4Kx1XNOYSlSR7awzDNx4=;
-        b=JfrSfsoQ1Y43c/TWPm59/FxZm5tLRW0Kgnyanq3pvBWApqxmjkGDtgZg29x2rE2NBb
-         WRhkW64GcZpjUS+6UnQT1iJhPJcrlrtsdyE+9mCuQkDII3ZKj+CRjJ7VCex7nffEqP5T
-         FlOYhyz1MksbZg1qo47/i94HIeHqF3x9tf1EeJ7w8axX19Q3Nv7XiTenzbWvr+k30l1D
-         i4/bboPmuf7i7ZBXF0ceCqfRnc/YlEvj1PVCOS/wVPUfsQJNghMbIKxQuXIGnI6dFUSD
-         U1Q6apkhoklIYGmWvQPpSHQokerjdFEySO61llw3vhCa2CwIy1Zcnf3mYomzi1RF9uP7
-         Ysxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768260832; x=1768865632;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LVpfFj6hka/DJY/5ODmGKfI4Kx1XNOYSlSR7awzDNx4=;
-        b=jcuuNQD/THShkXn6DgcQvAO8eJlv1ildhx2UBhbvpDJJx0ewJ+E8rAxqWtkIhHUkLo
-         OF3Q9Tos3syIaN5zzb3tU6rgn4FYp2M5M7rY80xdNOE56mBz+JNfw2N0WALjq7G+piKV
-         J+M1X5wlw4gjyikd8RIL+oM9aqTd3L3+QbK1g2eRwwKKUJW7P4DODX9oeWl0bIxRxaZs
-         5XD9CLxUZ6QmeP/b77e55AKkin/WNMTcWp5w3pLZIm+ywt3c6+qxEOk8IlvgXVIU1JcN
-         oHC0FcudSn7NzT6TD5eWZs5Zt7Oefd6soTm7yMPT9r8G4s1QQsoAWcZC94ZC2wRvauX1
-         GgIw==
-X-Gm-Message-State: AOJu0Yymmbe76UqxpNlzYS99H42E+/Mr9wuU0R2pKvd57FcR6qmHRe2t
-	/gnKKuYKSzFDGfwAbS9SMJYMqmNkp8N6gGJO7F5W+Q9miiqUbtnrgyY3rS9iBjoZEco=
-X-Gm-Gg: AY/fxX7AIBNs72HWCqQHnyIqO+sXwglVVLblQ7IQO/cqExhmCCKca60uR8q4fJTsta1
-	ZyNgMkXXseKzy+9Ctb05hiG0ssfwvCEZMT1p1pX0+AYloIdb/utav2bZOrpmBvQC/v0ZUFEKapW
-	l2Ut4WdnXzf5JzT6jGFTYj+ZelQMaFCyifIWCxrJuyirxcDpANRPX1fMLfmZqLHkCEFEfGcgZUG
-	YuuXTrzkDqS72CxJM80dqAJoPMHjCmvDVGZZnoA8HxcDYA1Kou96YMeb0jQgZZ7Hp6ceaireX3Z
-	jAT3auUPKOjyhWOehvOkm73Hsnc8L2byNsizXjwrBcBRZdppq8inNWlukpJAL3cJP2bHcqMNCmz
-	hEswaJE1EZtr6nm4GNvqhB16WyiIQVaY7qQ7r+VxnDc/MUjGDy3FaQR6tyHKqIssjjO+/SKg7Vt
-	8qEKOxNqDIT7cRibmJ5GvngkHldlu2uqUlh2sMnXeiewAQWwR3vN9uPexg9YrGF+OJvKzZZw==
-X-Google-Smtp-Source: AGHT+IHMBCCAecFcwqDPXZCmjtmCZLckRO4RmA0iVdHt93P2StieqUO9Nzjvt39n7Nz2NJh9b9wqbQ==
-X-Received: by 2002:a05:620a:690d:b0:8b3:83b:6e9c with SMTP id af79cd13be357-8c38940e5efmr2586340785a.90.1768260831556;
-        Mon, 12 Jan 2026 15:33:51 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4b92a0sm1574077885a.13.2026.01.12.15.33.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 15:33:50 -0800 (PST)
-Date: Mon, 12 Jan 2026 18:33:16 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, kernel-team@meta.com,
-	longman@redhat.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, corbet@lwn.net, gregkh@linuxfoundation.org,
-	rafael@kernel.org, dakr@kernel.org, dave@stgolabs.net,
-	jonathan.cameron@huawei.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, dan.j.williams@intel.com,
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com,
-	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
-	linux@rasmusvillemoes.dk, rientjes@google.com,
-	shakeel.butt@linux.dev, chrisl@kernel.org, kasong@tencent.com,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org, chengming.zhou@linux.dev,
-	roman.gushchin@linux.dev, muchun.song@linux.dev, osalvador@suse.de,
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	cl@gentwo.org, harry.yoo@oracle.com, zhengqi.arch@bytedance.com
-Subject: Re: [RFC PATCH v3 7/8] mm/zswap: compressed ram direct integration
-Message-ID: <aWWEvAaUmpA_0ERP@gourry-fedora-PF4VCD3F>
-References: <20260108203755.1163107-1-gourry@gourry.net>
- <20260108203755.1163107-8-gourry@gourry.net>
- <i6o5k4xumd5i3ehl6ifk3554sowd2qe7yul7vhaqlh2zo6y7is@z2ky4m432wd6>
- <aWF1uDdP75gOCGLm@gourry-fedora-PF4VCD3F>
- <4ftthovin57fi4blr2mardw4elwfsiv6vrkhrjqjsfvvuuugjj@uivjc5uzj5ys>
+	bh=KKtub57i+BRsgv3qgLU/1L9of+bxJ1Ybeb/l0yBEbzs=;
+	b=O/0VZ83ayn21HJ6hjW0l7QLkcrTY0tb1ulw4GzBMWIx9NjhKOq2UShmSNJjd1/vVDyquJh
+	Ty/hnnXksgBwLC45Zhz8RUK1gGT2hjETc9w5UJYWY92q1WRqy8hKsg5NeqxzFCTtgGouUd
+	JH3QTeoPF1LbSr0mg4J8eF1VkDVlC/s=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gBojPNwU;
+	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 40.107.209.4 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768260858; a=rsa-sha256;
+	cv=pass;
+	b=f2OKqZsJk7ktx20dDMcHSPuiKHcpv/FwRS8RcEdijuoEi+7YNrbJEyU6+FgVUJwWw4ajZM
+	XbFqLrreqEEaE3yQ2/fzpigcjM76nIRFMYNOQsqv9AByT8EiNERCbOA08Zrg2k8VfyFXaP
+	kjbF19HkWYXp9Syz0EgBM948CVIeWtU=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=efBSABKygeOQ+I0vet+jPIt26Tm0DS7JMlltR3Cx2rz0jCNS7U6D4zv9zgq6FNhyMOqL6kxMwlwkouE4BmIL8FUz7yY4a793Z9a9M7B+xQn5ewzhwbt+veUaM/f9gsi+GSnHtDNP7dQ/GbmdKRzS8UZMoajlc9CdM9g8RE4b7pCZ88eCvub3Gd4wOz8I9B2ANlyVzfaG8tKRvZNmRj7wQN6r77XwXT4P9+gb5JU+sCYuGyH03P06Dm4zk8qNAskFiuKCSQKAs/CosPFQLUE8Lm2p/f6FxbkQ6YIgMYE+cn1HNehWVL3SXzwLJwdYNs7zmWEoHPiILBeviBoO8zfElQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KKtub57i+BRsgv3qgLU/1L9of+bxJ1Ybeb/l0yBEbzs=;
+ b=J88han8seYTg2/vsz34mOLLfBwEhKn2kLuykXWrDY0MOwM9+SihppRl+LiK4SHKeiMX513DQwEkrEA3kgsb2/hJ0/oemGdXvAqPQrLSRZVFbK0wnt3ithXpLjroQtgSjnLfLKg2x9nShISKNS4hWj0Xe47c0aschCKRIGHDXxd5am0FVasmnRsewWYyYXcrYcUJjYMTZ7TtAr1gEOybINjNzeaYXymE9p1cq/L9Zpij36dbRApl/QmAoZ1MrhwFeQYoERDNWdNbu8vOTFCS6OFsa8+XxEW8URPRkvrbPWj8WoQpcJQBj6rKzfYtqRPVaihH467URvYxDMJ2xIZGijA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KKtub57i+BRsgv3qgLU/1L9of+bxJ1Ybeb/l0yBEbzs=;
+ b=gBojPNwURQDGCRKn6iI7OKK+M/it+qoLZo73lbK18gH5+kX35tU41IYOVrVN/AUpCNasuJI5KS1ZpO18xKoMwQjIYk30ke+X2vGUgeIMsD+TSTNGyjHwMa9KzjFzpqBVWsFGXtOmw06Md9B2vfDIP33Re+NWnIATu9pWO2kX31KyjlNdYPeMt2MELLymG/Z84w2n4Ztm2612lVoEiA8qYmYgQ7cWymXfDMqltryCiWCrCJs2TcBakOTK0cmxUY5a49LOprFsAHtX3CBs7x69j43K33ofA/7ZOgopXIaMfW93tfj8hZXXkv18So8e0D0KpLETHhyoW5WVz1yV165H0A==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ CH0PR12MB8531.namprd12.prod.outlook.com (2603:10b6:610:181::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9499.7; Mon, 12 Jan 2026 23:34:14 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
+ 23:34:14 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Matthew Wilcox <willy@infradead.org>, Balbir Singh <balbirs@nvidia.com>,
+ Francois Dugast <francois.dugast@intel.com>, intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Felix Kuehling <Felix.Kuehling@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>, Leon Romanovsky <leon@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Alistair Popple <apopple@nvidia.com>, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+ linux-pci@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH v4 1/7] mm/zone_device: Add order argument to folio_free
+ callback
+Date: Mon, 12 Jan 2026 18:34:06 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <8DB7DC41-FDBD-4739-AABC-D363A1572ADD@nvidia.com>
+In-Reply-To: <20260112192816.GL745888@ziepe.ca>
+References: <20260111205820.830410-2-francois.dugast@intel.com>
+ <aWQlsyIVVGpCvB3y@casper.infradead.org>
+ <874d29da-2008-47e6-9c27-6c00abbf404a@nvidia.com>
+ <0D532F80-6C4D-4800-9473-485B828B55EC@nvidia.com>
+ <20260112134510.GC745888@ziepe.ca>
+ <218D42B0-3E08-4ABC-9FB4-1203BB31E547@nvidia.com>
+ <20260112165001.GG745888@ziepe.ca>
+ <86D91C8B-C3EA-4836-8DC2-829499477618@nvidia.com>
+ <20260112182500.GI745888@ziepe.ca>
+ <6AFCEB51-8EE1-4AC9-8F39-FCA561BE8CB5@nvidia.com>
+ <20260112192816.GL745888@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR05CA0145.namprd05.prod.outlook.com
+ (2603:10b6:a03:33d::30) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4ftthovin57fi4blr2mardw4elwfsiv6vrkhrjqjsfvvuuugjj@uivjc5uzj5ys>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH0PR12MB8531:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb17651c-2ede-4372-52ce-08de52331859
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?alZmNVA0eDhCMDlSS09GOGdZNnNxbnU1ckQ0aXJvbTNKSHZiTzlpeW0zak1V?=
+ =?utf-8?B?QmlkbXpxcjJxZG0yaHU1L1NQNlpMZm9LemNOaUpCaTAxR3pWSGg5cUJEQ3Vw?=
+ =?utf-8?B?OWhNYTQ1VGZwbEtEcEIwWjJHempVdG4ySlV3cGJ2bUdya0tEODBXRjhvMDlE?=
+ =?utf-8?B?MmRqZTQ2TjMwL0RqRDlUL2RuS0k5LzZjVWlXWk9EWnUvaEpWQUg1UU4zdDUr?=
+ =?utf-8?B?R0RuMXZOMmZrQU5admpHRlZrYWxabFRyQ21pa2ZLbDN1endBKzNQZHROUkNm?=
+ =?utf-8?B?THRJK24vYldUK2VLcEFHbEw1bUl1Sk1Qc2ovMURkNVV1ZERCNTdlQW5UWW4z?=
+ =?utf-8?B?UThVVGtOT0NkWm1GdVBsVGNQZm4vQ0J2QWUrcXIyWUZ3SURXRHU1U1NaVmZL?=
+ =?utf-8?B?QTR0WGh3RGdTRHJvVER3RThISm02TWVFRTl4UU15RnBKODF1aFlDdzVLYU8z?=
+ =?utf-8?B?UkZ1alR2L0ZGck5ieCtJQzJFZ3RqV3pOcjRKL1F4dGxNUXhqdjViRDR3aEVR?=
+ =?utf-8?B?UEtMMVVqaldYS2JtNU9pM3FOV1l4ZTB5L0tyV3FKTHZKVGRTZGsvZ25NbDdK?=
+ =?utf-8?B?MW9la3k2ZW5FLy9pbjZnTi90OFJVSnBuemJHZlFHdlBIeEhLVW9MQzE2T3oy?=
+ =?utf-8?B?TGV1WmwzSFZaRmdKbjlKa1ppNXVuWFQ2ZXZXMWU4NFpUN2hOdzhXQjE5djRG?=
+ =?utf-8?B?dkJLV01NY2VDS1hLN2M3Qkl4WkdpVytkVjVhV1A0SmdBZlNOQ3NDMGVaL2Za?=
+ =?utf-8?B?UTZsYTlPSGloeWlqNjRRTnBuUmwzN1JKTm1CRm83VTgrUnJkYU9iOExtdW9O?=
+ =?utf-8?B?MGJ6SmN0bzE2M2ZtcHNTaHRRTWxLZFRrR0Q1dnZYRHlHc2wrelJiQWVOc2N1?=
+ =?utf-8?B?MWV6KzR0RHVRMUZBeVFkTkxUYjFiU2hlRDZzcHkyTVdpQnVPQUQ3Rk1JTEhj?=
+ =?utf-8?B?ZnJydU9tQUQzUDROanZLRzZqRXVwU3lFaTVHVHZvOE5HNnFEdnl3UyszZjI1?=
+ =?utf-8?B?Rk5YS01RMHZOdzU3Wk1TRmJFVUV2NS9ZR0VsdlhsbUMzU0hGQnJ6UmVZSFhR?=
+ =?utf-8?B?UHF4WFVORGJIU2RSSDU1a1VUQU84SmJla3FMZk52TFBNemdPQ0xxbTBtK3Nl?=
+ =?utf-8?B?eEFpREI0RGdDS1BjNE16MzlNOWhaYUdWM3NlR2U2bGtxQUxhRVBGT3llQUlX?=
+ =?utf-8?B?cXc5QkxDQitBUDdTOWpPd21xT2VibWdDRUMrVFFNQktFQUNrL1N1QmIvQUJk?=
+ =?utf-8?B?cXgvRk1tTGM5OHQ5QWswZnhGRDV6WjN4MWFwUGJlWExxTjRpU05RcmtGYnZK?=
+ =?utf-8?B?VmtDbzM0bUFOYUpNZ2l4VmlnZ2R6amRYM1Q1TzZlVXJIM1o3RXVwMnEyMDk5?=
+ =?utf-8?B?SldsUmlaVFByYXdKcnNSUlBzSXRCODU2SU9EUWZiWXNhajFuVHQrRjRLTFho?=
+ =?utf-8?B?ZVJLWGVHNjRYNUd2a3RNR0NZSisyVFBaVnY4cDNINStnaGNvR05yUzNoRndl?=
+ =?utf-8?B?WHREelRJOVRMOHZKc0ovM3BMKzY4ZDVIMUpDeWJPUjZxem95d0ZjK2MxOWZW?=
+ =?utf-8?B?Vlk4cUZieTdqNHdBZi90RUJ3OGhtTHNjM1NYMEFDbFhPMFFPUzRCZEFURDF5?=
+ =?utf-8?B?U2lNdm1HdjNrS09qc1JXOUlRNUw2TFRvZ0gxbXY5RE8zQWMrVzhYUG4ySXVw?=
+ =?utf-8?B?TkJINWR3d0l0dE1hYUNLaE5UNDZMZTVCa0pIZUd0NkNmUHFyM3Ntd1lxSWJy?=
+ =?utf-8?B?MGFzYmlaYmNtTjA5ckhOanhGRXVTazBiamxSRzJPRUpoaDZ2b2tNZ3dlak1Q?=
+ =?utf-8?B?RDgyVUpnVUttWDVZNGRoUHo1ejg5RjhDaDVaQ3NUbUdncktaRHBUVjN2NVhy?=
+ =?utf-8?B?M3RwbVJrcXlWc0dzWFRYMzY1OThyWTVJQ011cHJ5SkJaSDZCd1IrQ0JoWExs?=
+ =?utf-8?Q?p9dCT6T9+VXEhh7QFkg9kpg5XWF54UOU?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WGhhK0hxekV6UTA0bXR2alhpVFcvYTJoSllqVW5vUWdHRVNLZFdkckg3ZTZY?=
+ =?utf-8?B?MUlSWGhlUlU3RnYxa0sxTFNnYnM1TzZkQ2o5dG9sOGNDbGQvSXFiUWNPbmkv?=
+ =?utf-8?B?aDJwcXVLaVVtSHptUHBEQ3JYU05QcUtXUjJRVE1NTVJBK2EzR0t0WnVlZkJq?=
+ =?utf-8?B?V3gxVWxkb294RXpPT2lSWFZsMHVTRUxTbXQ5anVYOUlTbDlEZlBlU3BuVUF2?=
+ =?utf-8?B?U2kxWXM4MGh5MytJK1VQbFJyOUVnbXFJbmxSNWtvMHlPZ3JBUDQreWd2eGgz?=
+ =?utf-8?B?UlVWNzhFSU5SZmJ5OUE0cXFqcVJKSDBabmZoc3dPSWpGbGNYNmErZFRPT080?=
+ =?utf-8?B?dFlKWklkdUpzelVSQzFUUHg2VjlwakE2amhpSitQSnMyMUNiamZKTGdhaGxI?=
+ =?utf-8?B?MTBVaDRvM2pVMGZBWHhCbEtKTC9BZkFtSWw0WTJEV0trSm1LQzltZXNtc3g1?=
+ =?utf-8?B?ZVJkUHhMVVFTbTNKMDdReEZnYjdKK2oyQTBPTms3N2xyU3F5aEpnL0lrZFNF?=
+ =?utf-8?B?ejFycUdDUjlHc0swM25mVmN6MTEzdTNudkcvNzN2bTZuRXRIRk9ZMmpiRjJN?=
+ =?utf-8?B?ZGp0V2JtcnI1S0hidjhtMzJJcWNSb0QrMW1jRjVDWFQ1T2J1N2dJV1dBd3la?=
+ =?utf-8?B?K0wzMXBqS2N4bCtTN3ZqRkdpNlRib1h6bkd5czRqOVlmWHdpbmdFUTJLNlll?=
+ =?utf-8?B?ZTZ5NGVBU0ZHTjRxcDc1cFozTFg1UXZJZm54alhCWU9OYnU4NmxaNXNmVDBQ?=
+ =?utf-8?B?am5DUTVwV0xWelkwby8ydnRsbEE4Um5sanZramNLNlBIVGZoQ1R3YTQ0cWlq?=
+ =?utf-8?B?RFdmdE5FejRIVjQyc2RCRGxNMDUwRTJCTmtyeHZSVzZtY0tJazk0eHlUNmxM?=
+ =?utf-8?B?aGp6ZWRSVFZwUTFZenpSRTBQeTkzbk5RSUdQTTZmVzdQYWY0NjFSRzlNaFpK?=
+ =?utf-8?B?Zi8xeHovTllXYzZRVEhCaWYweDVDMkRhWlo4aDFrT3JYd2xNQUQ3cHRmMVRs?=
+ =?utf-8?B?RWNKcnRWQzgxQ2d3UTA0RjJXNloycUE5MHYwa1J2Q1EzM3JMVjAvR0k0ZktJ?=
+ =?utf-8?B?dXpONTVVc0Z6M0NmZE1SYWVHOHRFMXBvRGhWMm9UaExMN3dVaklCNjh3bHhL?=
+ =?utf-8?B?Q014aFNRbmMyeHhyY0ZFT3M2Z3RCaHVjNnpYRHFXa2NGTTVEWDdRNzNFMmZP?=
+ =?utf-8?B?R045OS9NM0x5ZW9CRFpUWmlzUGF4NUFwTTF1dDlIL3Bia2x2aXpEN1pBc0x6?=
+ =?utf-8?B?amNvbGJwd2lRZUVES2hXeVV3QU5KeDJNbnkrY3FUM0lyeVZLTnpscnQzZnFm?=
+ =?utf-8?B?SXNWbzBRTEpSYS9mVk52TytWdktJMXR0ZmV5K2dHWk01YW56WGFHMXVZV05W?=
+ =?utf-8?B?ZWlRS0IrUVlaTUw3TVhqaXhNOUlnRnFVL0MwMFNaT1E2UGwrYzZON2xvbnkw?=
+ =?utf-8?B?WkN5RklqZTNXc3VSOWtRdUUrTDFxMWVtSGZkTUpJYkJJVk1OaVd3MHIwaHFT?=
+ =?utf-8?B?SG1sSFh4d2JHcXIvQUx0ZzNMZmJ4RFQ0Q0JVdGRJZFJHekdpQkxNUG1mdm5U?=
+ =?utf-8?B?MWxPcmpmeW1XQ2NNUy9zenA5ZHdtQkwrOXBMN2FVeDVYMWxxb1VuVCt4N2hq?=
+ =?utf-8?B?dFFUNkdVaTB4d2IxeTdDQnhxb2RWS3ZZRGJ0SndlT3paTC9tRUo2SnE5RDhD?=
+ =?utf-8?B?WGsyN0E2NHRGSTc2bXVXbE5HUFZ5aitaZk9pSTBVZEdGYS85NHFhdS9iUnNq?=
+ =?utf-8?B?NUtQZXFxMjRlcmZRK2kxZGI0WUx5cGtuTkcwcmt2em8vZnNzRTBmTEZsemg0?=
+ =?utf-8?B?bW05SnVZbGp4bnMrTzlqZnB3K0NiR2dWaEhobWNGR1IzcHBxNW02azFwRjgz?=
+ =?utf-8?B?QjNoNDVwWUNNRjRxWW03U1U1ZlNJdUJWK0p6V3poa0VHNWRPMGhncFZVZUVW?=
+ =?utf-8?B?Z1BqajB4dksrVmdJK1hkVkNNVmZ2V0t1K0pLd21HS0NFLzhTbUhwS0tvR2JS?=
+ =?utf-8?B?VlJWZE81ZVJHSUpuQk91ZDBtVS81TXVKQnpDVmFIODAwTEgzR2xUdnpMazVx?=
+ =?utf-8?B?dXp0bktWekQwVHR6Y2YxM09IVVA1KzM1SFppQW14Ry84WlJMRGswSGRQN2VE?=
+ =?utf-8?B?NTc2R1pkREtiWFd0N0tEOHowK01XYTY5cUhxdEp6S1RQcUxLMElPaEsxQXpa?=
+ =?utf-8?B?NUpGd2U2NDJUTThhSnU0dEg5LzF3ek5PdDdjbzh5RDlSdXRsV002QUVLbjhV?=
+ =?utf-8?B?dEJoZ2xBdVpOMlFkcG5JV0t0V08yR3BTQ29lZ21SOW42WTZKT3R0Y1Z6MUk4?=
+ =?utf-8?B?K1JUR1NZK2QvcDJ0NnBkYVBkWXF1T1VzRU8rWDRQdVV4VlpKZGpOdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb17651c-2ede-4372-52ce-08de52331859
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 23:34:13.9952
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tmOfqo46R0+4f8Lsm6TWLSCQe/ALeWSeK2Vr/nnjrbWukxXmWusXjhHp626HyIBP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8531
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 989CBC0012
-X-Stat-Signature: rhbj6pwureqai1f6gedm4z4ctwzwjaxm
-X-HE-Tag: 1768260832-973152
-X-HE-Meta: U2FsdGVkX1+7uni2ocr4vRl+u9dyG9scPUqpUfaUgYO2PMNSDJ+Yl51sMmmEEwuHjd0npbm/Usr3TIZ0wC7BtDyMXPxrrtuM8KL4kVWvsBu/aJkgZ7AJI6xjqaC3jxRCWB5emKQc9AY7+ahfe0icN6KdU1kL9dnsPpqBz8/bU6L0JtPzaAMVZIrb9uUEb/ipMqlKBREK3tUbmhZq3HsySCaydp1x+S5AXt53Bu69bhM67PJAJyAm74PdJWQFZUAy6dLzCaSsqOzwXEYojf1ngTynK2T5Ssc2KaiqlIWS8/vXdIxywApD16wm1Kw3dbxXAmLzKoDQTH4kSxAXmCTmmcyjbh4EUMXlFR4Jw2hhsz7QmLArQt2q1Uc/HXIbqAqkAGfgNVCyGuedv9CD/AbrquhTtBMylGJUuEJpFIiclBc3bG0swU+tsO9RwWiZ/njnoQgQvmzeW/kyot9DPlCGa6zciWqoWJb7htpnhH7VYRb4JTdJ9+zl+FoO4kye+iGinXkDpAt/SDrlLBl++agxAxlBWXChcuI1HWafmGUmVxfPjw/KaJncCymzT984ZvBIzYCB5VWLF0+wR7lzsy4XIBoXfd9d1WYFLXv5T+VHotwi/DOJxjN6wqbibkymm+9aVFF30I0nyj3IryXscAoDU0Xedw9SkfLkqjBVurft0gvMiBt9H58NO9cF64+Y9u2wD8uf5aR8hhaxK+Ywvu3F2VoqP6qJpTa7w6ohOJI1pGmj0ryOneI+xzvt1WQVM4vvCfIoZ9IPeF3GN/l/+3yQ53vObS9ZpIU9l9INPXZLbRu5dScK8sJ+SmY4pvFhRUhkfXNbsA89rb/GxRalUpP9xX3YLeZ4wp6RLu6Ln3ulmeu9ADVavSz9/XFXA8LhQ3UMwTLWq9g7PE9Ip0Tfp4DsWa9RoHX2IajnwtjXlCztnuUSdl78DspfpMimIjWcf8A/03tc9XZ5AFHPlFrL4F5
- kFw3JnXr
- BPPNY7t/NiMGL5WLEODtb7+84oNhf1sGKuCcJSki2OZRYje7CjgO0+uinIV2rYU2ZZiYaHwGwREUXNgRXSnxb3gv8ha7uKoXpewCMloKGDOHIi3yqyBvsPLvR9Su0ng/ukx06n54/X2OD3ldso050TNzeDZ/+6sXnoHYDBexSCv1QdSUhH+xzyhSwjyyl6GMjC108LevDVnvzIp+lDTE+r4OTsZdPQCmWowtTLrPw0I8jQyDCeAZb2+tAtinL6+sj0Q/hCbYlqhPhvPWa+YGXQwQxGZx1uu/TaTAQkO+Suf8ou2F8z2VgKR59DJIcSJUyHmN96NKYuQ2JrqfZoVWWnbAzCdjeOSYXkK816T4H/vu5plPL7yrDuYJ76xkbL9F6wSgXXOxZVeAHdn+EQ/YnAf7N8g==
+X-Rspamd-Queue-Id: 069AB180002
+X-Stat-Signature: ijs9ak5fo38emhukz5oijmzqszsko69h
+X-HE-Tag: 1768260857-425479
+X-HE-Meta: U2FsdGVkX1/spEGzJ+WgsJ7JRxW2Vn1Hd+vdhezUuKMFINhJoOfvcD6sOdpqxZZoII5qd1tIJCutrg+FJzq9VNXek8qfmQ3l2lZ9lK4QSll9ymstw4ic9uGDRkQ9ULxU/3UYTbc0zVSiU2+uXz+w/QhtKpwXZGgII71hA0LIgNZ2L88zljdAcKU0ZMpiGrgGZvOMpRJTE8ni4g3ELRwAAi2U4uuo7DjdJYX6xjC6DiOcIH1YIC2s5rbifH4a0cWyYmC0Efrs84PkaPd8wcKjxY1W3elfxHsfR9tciLrBd/Enc+TzJCbKp8CV8b6w9Hs8Suh76PzjfvjAZKYZZO1oBV3Kwae6x6cPKDRaqcX0lLfayeL77DdYdOGJ48Sx/XdRdlmHKQZjfcmeyI58NcFemLoNlIYg1AZ3QbAU+gnGR+RYGEUGnVFqbnLMUXazvMkIwRFY4QtsWgbCPjNRD6TCeRhphcicL2G8An+D3kHcvynr19eHH1Rzkn5nA+Rt5YZIpIietXKyWxRl9tU5tSmNS78YKAVWqndCdnKg4zvECu2AcNjaRYTt7e/6rK2YHB1ZxqNUwZfAcH0mgsSgGS4Rs8LW6RUGS7gtSMy3xZBFs9JZgRTDXGz4UuMgWwZ8pillCPOenmoiVlmXiKW7P5/8mr8OcmOegCFpQCWLH0lJx2ZtEPwrLH9fdhbl846g5R/4+DzsdwH/wlK1kOGz7w4IlPiPpSbSFWno4i8pXTXVRlSpsFcBhJF9lYGQLrHShy5b02RWOW0O7Oy4drcxsOev+JSfeZb4Yer3fzIrYMZKaSdvP3U1YQPcpC1Ar9w+WFHzWNecPSBElG+BBGDrK1U9BgG9oGujwLVofpZ+4dGApQ73iOCkAIq7eb/s1yJLo130gPrt4fKZE9fgNn6isVDXLwwQHro6xjeOJqG/G13XUx+kh5KbzNcgnGQ0nXMM4/8hhxUE8PiGEJQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,170 +231,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 09:13:26PM +0000, Yosry Ahmed wrote:
-> On Fri, Jan 09, 2026 at 04:40:08PM -0500, Gregory Price wrote:
-> > On Fri, Jan 09, 2026 at 04:00:00PM +0000, Yosry Ahmed wrote:
-> > > On Thu, Jan 08, 2026 at 03:37:54PM -0500, Gregory Price wrote:
-> > 
-> > Hardware Says : 8GB
-> > Hardware Has  : 1GB
-> > Node Capacity : 8GB
-> > 
-> > The capacity numbers are static.  Even with hotplug, they must be
-> > considered static - because the runtime compression ratio can change.
-> > 
-> > If the device fails to achieve a 4:1 compression ratio, and real usage
-> > starts to exceed real capacity - the system will fail.
-> > (dropped writes, poisons, machine checks, etc).
-> > 
-> > We can mitigate this with strong write-controls and querying the device
-> > for compression ratio data prior to actually migrating a page. 
-> 
-> I am a little bit confused about this. Why do we only need to query the
-> device before migrating the page?
+On 12 Jan 2026, at 14:28, Jason Gunthorpe wrote:
+
+> On Mon, Jan 12, 2026 at 01:55:18PM -0500, Zi Yan wrote:
+>>> That's different, I am talking about reaching 0 because it has been
+>>> freed, meaning there are no external pointers to it.
+>>>
+>>> Further, when a page is frozen page_ref_freeze() takes in the number
+>>> of references the caller has ownership over and it doesn't succeed if
+>>> there are stray references elsewhere.
+>>>
+>>> This is very important because the entire operating model of split
+>>> only works if it has exclusive locks over all the valid pointers into
+>>> that page.
+>>>
+>>> Spurious refcount failures concurrent with split cannot be allowed.
+>>>
+>>> I don't see how pointing at __folio_freeze_and_split_unmapped() can
+>>> justify this series.
+>>>
+>>
+>> But from anyone looking at the folio state, refcount == 0, compound_head
+>> is set, they cannot tell the difference.
 >
-
-Because there is no other interposition point at which we could.
-Everything is memory semantic - it reduces to memcpy().
-
-The actual question you're asking is "What happens if we write the page
-and we're out of memory?"
-
-The answer is:  The page gets poisoned and the write gets dropped.
-
-That's it.  The writer does not get notified.  The next reader of that
-memory will hit POISON and the failure process will happen (MCE or
-SIGBUS, essentially).
-
-> Are we checking if the device has enough memory for the worst case
-> scenario (i.e. PAGE_SIZE)?
-> 
-> Or are we checking if the device can compress this specific page and
-> checking if it can compress it and store it? This seems like it could be
-> racy and there might be some throwaway work.
-> 
-
-We essentially need to capture the current compression ratio and
-real-usage to determine whether there's another page available.
-
-It is definitely racey, and the best we can do is set reasonable
-real-memory-usage limits to prevent ever finding ourselves in that
-scenario.  That most likely means requiring the hardware send an
-interrupt when usage and/or ratio hit some threshhold and setting a
-"NO ALLOCATION ALLOWED" bit.
-
-But in software we can also try to query/track this as well, but we may
-not be able to query the device at allocation time (or at least that
-would be horribly non-performant).
-
-So yeah, it's racy.
-
-> I guess my question is: why not just give the page to the device and get
-> either: successfully compressed and stored OR failed?
-> 
-
-Yeah this is what I meant by this whole thing being sunk into the
-callback.  I think that's reasonable.
-
-> Another question, can the device or driver be configured such that we
-> reject pages that compress poorly to avoid wasting memory and BW on the
-> device for little savings?
-> 
-
-Memory semantics :]
-
-memcpy(dst, src) -> no indication of compression ratio
-
-> > on *write* access:
-> > - promote to real page
-> > - clean up the compressed page
-> 
-> This makes sense. I am assuming the main benefit of zswap.c over cram.c
-> in this scenario is limiting read accesses as well.
+> This isn't reliable, nothing correct can be doing it :\
 >
-
-For the first go, yeah.  A cram.c would need special page table handling
-bits that will take a while to get right.  We can make use of the
-hardware differently in the meantime.
-
-> > --- assuming there isn't a way and we have to deal with fuzzy math ---
-> > 
-> > The goal should definitely be to leave the charging statistics the same
-> > from the perspective of services - i.e zswap should charge a whole page,
-> > because according to the OS it just used a whole page.
-> > 
-> > What this would mean is memcg would have to work with fuzzy data.
-> > If 1GB is charged and the compression ratio is 4:1, reclaim should
-> > operate (by way of callback) like it has used 256MB.
-> > 
-> > I think this is the best you can do without tracking individual pages.
-> 
-> This part needs more thought. Zswap cannot charge a full page because
-> then from the memcg perspective reclaim is not making any progress.
-> OTOH, as you mention, from the system perspective we just consumed a
-> full page, so not charging that would be inconsistent.
-> 
-> This is not a zswap-specific thing though, even with cram.c we have to
-> figure out how to charge memory on the compressed node to the memcg.
-> It's perhaps not as much of a problem as with zswap because we are not
-> dealing with reclaim not making progress.
+>> If what you said is true, why is free_pages_prepare() needed? No one
+>> should touch these free pages. Why bother resetting these states.
 >
-> Maybe the memcg limits need to be "enlightened" about different tiers?
-> We did have such discussions in the past outside the context of
-> compressed memory, for memory tiering in general.
-> 
-> Not sure if this is the right place to discuss this, but I see the memcg
-> folks CC'd so maybe it is :)
+> ? that function does alot of stuff, thinks like uncharging the cgroup
+> should obviously happen at free time.
 >
+> What part of it are you looking at?
 
-I will probably need some help to get the accounting right if I'm being
-honest.  I can't say I fully understanding the implications here, but
-what you describe makes sense.
+page[1].flags.f &= ~PAGE_FLAGS_SECOND. It clears folio->order.
 
-One of the assumptions you have in zswap is that there's some known
-REAL chunk of memory X-GB, and the compression ratio dictates that you
-get to cram more than X-GB of data in there.
+free_tail_page_prepare() clears ->mapping, which is TAIL_MAPPING, and
+compound_head at the end.
 
-This device flips that on its head.  It lies to the system and says
-there's X-GB, and you can only actually use a fraction of it in the
-worst case - and in the best case you use all of it.
+page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP. It clears PG_head for compound
+pages.
 
-So in that sense, zswap has "infinite upside" (if you're infinitely
-compressible), whereas this device has "limited upside" (node capacity).
+These three parts undo prep_compound_page().
 
-That changes how you account for things entirely, and that's why
-entry->length always has to be PAGE_SIZE.  Even if the device can tell
-us the real size, i'm not sure how useful that is - you still have to
-charge for an entire `struct page`.
-
-Time for a good long :think:
-
-> > 
-> > This is ignorance of zswap on my part, and yeah good point.  Will look
-> > into this accounting a little more.
-> 
-> This is similar-ish to the memcg charging problem, how do we count the
-> compressed memory usage toward the global zswap limit? Do we keep this
-> limit for the top-tier? If not, do we charge full size for pages in
-> c.zswap or compressed size?
-> 
-> Do we need a separate limit for c.zswap? Probably not if the whole node
-> is dedicated for zswap usage.
 >
+>>> You can't refcount a folio out of nothing. It has to come from a
+>>> memory location that already is holding a refcount, and then you can
+>>> incr it.
+>>
+>> Right. There is also no guarantee that all code is correct and follows
+>> this.
+>
+> Let's concretely point at things that have a problem please.
+>
+>> My point here is that calling prep_compound_page() on a compound page
+>> does not follow core MM’s conventions.
+>
+> Maybe, but that doesn't mean it isn't the right solution..
 
-Since we're accounting for entire `struct page` usage vs the hard cap of
-(device_capcity / PAGE_SIZE) - then this might actually be the answer.
+In current nouveau code, ->free_folios is used holding the freed folio.
+In nouveau_dmem_page_alloc_locked(), the freed folio is passed to
+zone_device_folio_init(). If the allocated folio order is different
+from the freed folio order, I do not know how you are going to keep
+track of the rest of the freed folio. Of course you can implement a
+buddy allocator there.
 
-> > 
-> > Thank you again for taking a look, this has been enlightening.  Good
-> > takeaways for the rest of the N_PRIVATE design.
-> 
-> Thanks for kicking off the discussion here, an interesting problem to
-> solve for sure :)
-> 
+If this still does not convince you that overwriting an existing compound
+page with a different order configuration is a bad idea, feel free to
+do whatever you think it is right.
 
-One of the more interesting ones i've had in a few years :]
-
-Cheers,
-~Gregory
+Best Regards,
+Yan, Zi
 
