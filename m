@@ -4,180 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B44E8C9EC94
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 15:20:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73EDEC9EC94
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 15:26:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 053CC6B0092; Mon, 12 Jan 2026 10:20:53 -0500 (EST)
+	id B8CE66B0089; Mon, 12 Jan 2026 10:26:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02BCE6B009B; Mon, 12 Jan 2026 10:20:52 -0500 (EST)
+	id B40116B009B; Mon, 12 Jan 2026 10:26:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E50186B00C5; Mon, 12 Jan 2026 10:20:52 -0500 (EST)
+	id A6D776B009E; Mon, 12 Jan 2026 10:26:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D3B216B0092
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:20:52 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9D2E5D0DCF
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:20:52 +0000 (UTC)
-X-FDA: 84323674344.02.54E8FEA
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 417624000E
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:20:50 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ANFGIGqM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WQN8EU13;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mlOykGbL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4HzFOFmH;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9474A6B0089
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:26:22 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2942EC1F5B
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:26:22 +0000 (UTC)
+X-FDA: 84323688204.16.5DB6C7C
+Received: from mail-qk1-f194.google.com (mail-qk1-f194.google.com [209.85.222.194])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 47536C0009
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 15:26:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=B6HmmAeI;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.194 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768231580; a=rsa-sha256;
+	cv=none;
+	b=t1fqWciizVQ5SnLg8jl49vwPycx2RvmVFNZU/P/nT1wmqsMBbtvcYwXqOUrJeIn1cjuHwJ
+	zaoe/VaLcTCwvnDxEKWQMpJsn7/jAm2krax0Co+t8M2I6H5A9T/B3nvATQa7lmYPJfT6NR
+	slGk6hTMXm895948m5FWPJIgn1oJcwU=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=B6HmmAeI;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.194 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768231250;
+	s=arc-20220608; t=1768231580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n25xYend9nOvPHOgzYEdjuhjORh5tzR0W8gWZOljgv4=;
-	b=BED4p6qIzH6lMJIntwM7Ppbds73hhNJO5RoCU3m8xIDkJzZpjFhhSrhYFlVJnkwVkQcpwf
-	zqDUFGZd88QYrTq/aNystn6sjyQm+fq0yO7rB1LeHw4P/khL/b4k0da4Gw0Y5ZQE/D+L7X
-	4CvagGringq1xKzI+cZhwLbyvg6XBkg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768231250; a=rsa-sha256;
-	cv=none;
-	b=xla0r+bUG3iaey4BfVTJV9C3mx4fW7jh2LjpO7/zcbq7ZyFwM0veupt0MyUUvvfZpBJ0MX
-	tyVjydY40g9BVn4Yxuljz8Fp1f1HOon84tUjU1MvuN8MiRtQsZBR798UZTaXfRMl+LddAU
-	ScpgU+uQC2A+wmmOcG8SezoG5VQ4I0o=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ANFGIGqM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WQN8EU13;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mlOykGbL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4HzFOFmH;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7348A33686;
-	Mon, 12 Jan 2026 15:20:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768231249; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n25xYend9nOvPHOgzYEdjuhjORh5tzR0W8gWZOljgv4=;
-	b=ANFGIGqMKZHz5kcqpolbvUF7Uj2hKmxsUUpw/Dx3aiP1QO83Tvv/KI3RH8vFceGbJEQHbj
-	3oBusBBln2wG1K58URF1bQ2aLAXBRbd8AjxT3JH5TI8dywo7IVuNpVI6v/YtRjYCoIqSWw
-	PiERMCiq4uSnwIooQSrIOGfTLuOqHYw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768231249;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n25xYend9nOvPHOgzYEdjuhjORh5tzR0W8gWZOljgv4=;
-	b=WQN8EU13EPJiH8sYNXhbLjMgtCmsCzH8BadbmBcTcRqgYjuAxnumnEiLvrO6M3wa6twr7R
-	BNAf+hKtBJWqqhBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768231248; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n25xYend9nOvPHOgzYEdjuhjORh5tzR0W8gWZOljgv4=;
-	b=mlOykGbLkkFp4qZz+orIWxysK2hjs8nJ4BdcSZ8ECTeeWx9T1DkPfCCBDfgY/DOAcRbpv9
-	AGvEhFfX4XrK2Prqi/JzdI3zsQrNnU3qiHfdQzMYBdsd5hPcqegc5//CqoTbgTdFsq0zzH
-	bwbey85NZ8+LUOrXoIXyHU85NBgpf/Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768231248;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n25xYend9nOvPHOgzYEdjuhjORh5tzR0W8gWZOljgv4=;
-	b=4HzFOFmH458/lrEJj19sfZJeTI+qne5clMJcEXBH4iN6lL8kzQVHozSMyFmYQkPCpMTlcx
-	Ip7FbFCpR2WrhxAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 50A303EA63;
-	Mon, 12 Jan 2026 15:20:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ueREE1ARZWndGgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 12 Jan 2026 15:20:48 +0000
-Message-ID: <7a0be5a1-17f5-4bba-9d42-a53fbb84abe8@suse.cz>
-Date: Mon, 12 Jan 2026 16:20:48 +0100
+	bh=57UuhljdncFCr/JytocOWEZRWmlPR6Nv3ccaWVm2VXI=;
+	b=ptVxWKvw4/Fwltdirv80Kwaa7X5yQmVIrI6CLlJ2kdrI7WDpm0nzFy+U8k7kEaCLetrm0l
+	P6Dg8LD/R6IlfI/UA3CDBGDN+Lcl1++AbhwLJV5f5x8Ku8nek0VPRKs+K87+r96Pb/r/pT
+	SGGPDoZA1CU7M+R+ywfXYLFTVgHkQtU=
+Received: by mail-qk1-f194.google.com with SMTP id af79cd13be357-8b2d32b9777so985263185a.2
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 07:26:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1768231579; x=1768836379; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=57UuhljdncFCr/JytocOWEZRWmlPR6Nv3ccaWVm2VXI=;
+        b=B6HmmAeIgmaj1K+5krKHU8oSudXsJgf5i67y85fJdOL8KLRqlf1ratrnhjNCha0jsn
+         g42xoY3a06bEvAI8zLV+5OfMvKdfrF/Ja7JeEzGRuByd3PgFzncm8R73ZF0xwPufSKPD
+         xrCYK9IgrbwYyQnnuxMBMhxtjClEqq+Hp8Ki/Z1v00BlTlHkQJroBd6LeeytDppF7qPx
+         0HSNAGZMaZJVs9JqZdAUZlJ+esL7WgZ0n4qRtBXAcciJVXQvkZJK6oroKm5Jr/rT/m9O
+         +5Z7IR8Ww3+Jlj434TiDF9DtaH1sAdEkwNsxXlf4LHPZoeO4tqeKL0mw6DymL0Avooc4
+         YzFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768231579; x=1768836379;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=57UuhljdncFCr/JytocOWEZRWmlPR6Nv3ccaWVm2VXI=;
+        b=MUAutLnSFtOsXe46R0NZyTbnaLC0wOIOqEsxgB4USZTe6hUxQ+BSkBYKiLY1b4O+LE
+         smSo21tpiGehL7CnvEZxAWlM83NPdDa/1QLiYE8F8rEZRSsVswUn4ul/uE4IOTtnO6+7
+         66QpTkLTuCFgHWB9ISqZug9dTLpWjUqyxBopmSeSQhMy8HRoroJu06fMyTUUnm9terU0
+         Y5SOywOnwn8Mr+0ieCsYhnydKx8fqA/HaMzecRnoR2d+NisW9A/25HTOHRyHbDbAw7ZM
+         6Xzf2Tq88sWXuzvJJY+1JRQWtzcCf5UrttO7jVhXOMWIENz+hG8LydKEkv2bFRdBiyVE
+         QD3w==
+X-Gm-Message-State: AOJu0YwW1jD14PEm42mUwbvrfLyWZ7QDD/9Hwrzn8MNWB60lOEpZuV8x
+	lHUqdcMtvnC+XK9aWt6sTJcMwv+HcVJzVAFxvQ2MCmNKn/nHu3FL5ue+yUzmGPri7Oc=
+X-Gm-Gg: AY/fxX7bjcJscSAkrG/krrI0wJAGN7NuooT44MNN/h6QwRtouVEzR0SONE9kjd0V5b+
+	xMNxQOIearZExyePCKga5S3zUR7Nbx7eiln5vxiGceM8Yv2+ALR6h+0fVR8Jb2+m1gb33XcEv7P
+	lhLNzdB8CQPA3ZNcpeinaVkctP+2+7rrtMNYrSx8LRHbgFqr73BdMOefim7zMqfAg7mtT+Lo7s8
+	bWsWjza4YlEd7g4ew1djn/rjRM4JVRp3GHOhW4hIngTE4Y5xflEsL8QnZqnVh+LQDxTjuY4tdVl
+	Hd92hCa6JjmESbu9dGD3kEqF5tA/sjrXucnBDtmzU9xDth/xX/DZOFBPFEf1zPX3TDXfrs+2OlZ
+	7xzTzWa1n5mPTcEHCqf80pz1dd+HNJhVf+FlgaTwkM/Jxq777KkMm9hOxmXfc/a378KWQJrIAJB
+	Xw2ckNfk7nmZRIcvFddstS1RamXQ8Xe/i+NCWf4aBtvr1b7ZW8+iaMwqG61TRIFKH2jngHUTgEm
+	vnSHlLN
+X-Google-Smtp-Source: AGHT+IF7YU4wyH5DCnIa1xHNwfOTUxRN3Z3UmWPqqY8/JzoeuGL9L4VducxuPGVH8SICTsnA4+h6Uw==
+X-Received: by 2002:a05:620a:318a:b0:8b4:ebbe:ae04 with SMTP id af79cd13be357-8c3893a5c0bmr2745515485a.35.1768231579175;
+        Mon, 12 Jan 2026 07:26:19 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f5439cbsm1508794985a.55.2026.01.12.07.26.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 07:26:18 -0800 (PST)
+Date: Mon, 12 Jan 2026 10:25:44 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com,
+	longman@redhat.com, tj@kernel.org, hannes@cmpxchg.org,
+	corbet@lwn.net, gregkh@linuxfoundation.org, rafael@kernel.org,
+	dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com,
+	dan.j.williams@intel.com, akpm@linux-foundation.org, vbabka@suse.cz,
+	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+	ziy@nvidia.com, david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk, rientjes@google.com,
+	shakeel.butt@linux.dev, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org, yosry.ahmed@linux.dev, chengming.zhou@linux.dev,
+	roman.gushchin@linux.dev, muchun.song@linux.dev, osalvador@suse.de,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	cl@gentwo.org, harry.yoo@oracle.com, zhengqi.arch@bytedance.com
+Subject: Re: [RFC PATCH v3 5/8] Documentation/admin-guide/cgroups: update
+ docs for mems_allowed
+Message-ID: <aWUSeFzxouq2vwg8@gourry-fedora-PF4VCD3F>
+References: <20260108203755.1163107-1-gourry@gourry.net>
+ <20260108203755.1163107-6-gourry@gourry.net>
+ <o6eky3g4jyvtc2cy6lk7rjc6or6tcvwbhdarrlpn4geuibvrul@65fygkf6vg44>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/20] slab: replace cpu (partial) slabs with sheaves
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com,
- kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
-References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 417624000E
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <o6eky3g4jyvtc2cy6lk7rjc6or6tcvwbhdarrlpn4geuibvrul@65fygkf6vg44>
 X-Rspam-User: 
-X-Stat-Signature: gxycgg91cfbbdyh9jf15m6gu17hh96f1
-X-HE-Tag: 1768231250-818272
-X-HE-Meta: U2FsdGVkX184hpSnOdP17eoVtQFnMmE1McahB4i0fhJJN2fZfJh/edHquhQ3z4lz96F5fRIvvWeEe18muF2W0bKLfTM9WKPDXByKP21Jk1j0JjDCFzhfDUDgeEL8kxt/BjgNyHsSqGyH7JLVpMXqZft8G+HDNS97Af9amLe+JX3UE+6x+/+u/SHj7pJrbLsEdwTANt0uaEO2Znin4fpKCiXqW1nGQzpKELhla/2GxCDd8vbyfYBelvBfUFn1tKWYBqr/b/G6bVMH9VOum7leXQaSafcwlAFGPNCFg4NaJg7F4Pi3kkUemCsyRYgmSJ7fH4EdAHtTd4AtVM696/WsHrvM0yDtDGDPOgOWai9laO05UNGZiFp8LQHHj8yIDvXIUsLtGAcWk9KZt6bQ3u2wJXtLm+rfqTNYBXPiLFxHQcfnceQ1tCdjjWtA6zh2qIx6T7vgd7a7/uV0fW4rBUoqIyip7rd3+bh08HywRdNeQetU2m+e6CybeDiEKNRZDB6v0xlJs4vG2wsQfkoa4JhUf8eeIKS16I1R0Tq7wlaGp7HOHLyi4CDXadbb+XqJiVVbsSrUoepTdviXrU0trwPoezRTLz0BYlmXbnjTW/zWcavlYSGiKUHGwRuxkyYK8RZ5KOSHF/L4qS450xgNTDBdkhAQbUYiXxD2J0XDwFgUdX2igHKSS7Dq6ntgdeEZsTwDp73VSvzH+zPdXAGNRS5W7yGwCm7z/6tFQ6jccIvpJ+2JYoAc2kpy6AbZuwzoPk7D9Z0dd03q6rsNePtyFMZEvNa/HNfSqRddJRcbxDmI+aTSPi3oV/XSUTcgjGm0dqer/ewg+DmhWo+lW7XOPkZwmdr4FhkUmdY2BMDc0HPf3dcpp83dSkHF9/mqr7cEQ7xnkcgcX2EA8lZ1DNhgmKabtJEhxRmXy/AR09w8QZq4SOCftFq632VqY6Uso2g0OwPy/XYEDw2FqeiI1HkolLi
- LIhJoVJt
- fcRFoRr7achctJ3bdpaomPj/ziaaxqMOfwC4Kt9ioio4O55mysk/KiMI9xWlRZsWXq7jgFzgvjW6wVcdfOPdYZFs8q0YcM561X9MknDN9pHSHwVOyDVrditC0GRitUpTE7dJGHtwwWXKiWtF6ZJCNOPWY/c4xypfImrW47S1fcylWmGkVwPVmcDI84qZZDUDsxgL3KfUneChSa7kdWxtL6eez76zVr6s0igNdGZ0M9fC6sYMI40PpmISZtbAjRplcB7DWMbKvfGvPy/wQDQL3mZP13m7B26Eh9YJTWeq+VVVQnLc0wlPNxhRUjVe/9n+yoo8b1/Qa/gHV5TSkrbsdnkVl4PKFAMFowpIWmNEDXxCF8pt2Dpb41VBkwE5YhNtyeUxA+Fl9smX+M7uCwNYfKdHesQ9brTBOU2fPIAmyfagEy3FSgOTsm4IQJqGPfZueEFMBx6uQcshRyaoswaDpGZwtnC7pr6ruQDvR
+X-Stat-Signature: h6mh7ce6uakpywpszj1xwuqni6pqxkuk
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 47536C0009
+X-HE-Tag: 1768231580-394053
+X-HE-Meta: U2FsdGVkX194PsG25SQw2lpEHQTlTKOJ1LctB4MaNNRdUwkvC7HD6g7Q716AT4izKX+J5Tio/VUC8XMWXLpl3TMrxDXDDbVcvDdpt6RtnI1jrDXoIb4qUD83UMWKVXjGeG1LFcnKSf9jpiFlgHynvpShecK1HrmpRxxnFDadkUAga0TpDCDRByU+NglVKPr/me8FSAEt3boiiGJMZrcz2E1Rkgngt0fEoRHGYLd35lkRf5HKDRzRnNUiiPSauUyq1LNthoRSdT0y8ABh2vZx5PGgigkOl58rRpfGuHptkPJJ3DMoxbTzzitgfigOJbpe19jYkn38ViLzG4avpUHYEgqDA/hVClBK5mYJq5CJVLrxXhci6f5yVYJ2CLIyfu2k5InN0rcmkriyYMz374jW2Q7N/vUUEDGayFHIFwHus9yAcEQtQKr5GvCW1z+/TAYt3kUibCKmitRcl/1ZsbqJ2cKLlTZXd+Wwk/SGbpULKDwlI5FGSTeZBC4JR8a+MvZP8KH01Tefv90fxry1jqzuT+GkcIRj8yoJqDKw1jVRc9UAj4nYEhiR1Rw+Q62GuInWw2cpWHTe6pLMhaHTK+4ObLlReYjF1TH52kj1cZ7E0HE4wKK8cWaxZ0m5OfGJAtku3hqZ4LcEVa2iYC47u3nfcbN/gZqzZ8dRKKIjNc2qVfQADRHNkLXe4n8Y859R2EHrwRvm1YK8+nchcuTm2W+PMLxB+oXxDeI/h0CK98HLvTwf3SG8IpZAee6A2stlA2vVJl7aepgOjjTM/7Eq3ZUukUvKUUNIfHUDuqJLhMSnu94TEQmzHIO/nAh3hXawqtEvk4lrYuJtDe5v6xok58UTFAXpNv6puhpZCcDqemzN7hgwIdWzMWwpTlF8sWzEW2FJP/o+7bOQpxva1FAMezXN0U+UbXX4yKCiML6SaYZH668eUKbA0VAxIoWS94T35TXjQAijiUld8kcnWCJG7cy
+ 4HapmISh
+ Yx+KnyiFNGmt3l7hqbkBunIJNntLt2FBTC3TtCiKSdzggFZ4y/JMB9WiRTHQ9pNR06FnVgjqUKA2+aQWWRh6fibzMFzcb6zo+5uo/mh7GybrYwfxjwqzOERUaSvmnRsti7de25Mm09QfxfDJEfsOt3UbneDfxh1aKgdlAZk7SBrIi8L4aayujG6O8Hkab0cbOCj0z2Dsj6jY51/dxlYghWSQSzRN7IYdfDtyI9UkhWy//cDziuPfOl44170igUMMKZrYkjUzoNrTcFMSphTCZc9p+iAALsN7tDjGKyRSjRCIrFbtJqa+98HWeXp+2CAk+qdZb82YSSKQADpeMGELk3gR5O3YfnpnEMiWEredm/U+c9KWTbi0lywUL/ug5A0XEh2W7V8mgZJH6vKLqlhv61JAEFJsvqs+dequqntJ2cAoXJT9kNP5jttOJ0H/4W5PIrTskJX8j7WHQArYlnNyWMcOe4mrwwVjI3OAJujyMB4AApjZVJZ1xWsoaBBKDQ0/T3ndKmXnqVgW0+r95JucTB10s5Nq1PP5xr13UX3fyXbPjEPU289V1Nkf6PCCIuafFbrGipunNf76lPHIZQM+OyacBq/vbaOe8kCkhEGcMgRs53rgHw2l+0qoiUw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,102 +143,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/12/26 16:16, Vlastimil Babka wrote:
-> Percpu sheaves caching was introduced as opt-in but the goal was to
-> eventually move all caches to them. This is the next step, enabling
-> sheaves for all caches (except the two bootstrap ones) and then removing
-> the per cpu (partial) slabs and lots of associated code.
+On Mon, Jan 12, 2026 at 03:30:26PM +0100, Michal Koutný wrote:
+> Hello.
 > 
-> Besides (hopefully) improved performance, this removes the rather
-> complicated code related to the lockless fastpaths (using
-> this_cpu_try_cmpxchg128/64) and its complications with PREEMPT_RT or
-> kmalloc_nolock().
+> On Thu, Jan 08, 2026 at 03:37:52PM -0500, Gregory Price <gourry@gourry.net> wrote:
+> > --- a/Documentation/admin-guide/cgroup-v2.rst
+> > +++ b/Documentation/admin-guide/cgroup-v2.rst
+> > @@ -2530,8 +2530,11 @@ Cpuset Interface Files
+> >  	cpuset-enabled cgroups.
+> >  
+> >  	It lists the onlined memory nodes that are actually granted to
+> > -	this cgroup by its parent. These memory nodes are allowed to
+> > -	be used by tasks within the current cgroup.
+> > +	this cgroup by its parent.  This includes both regular SystemRAM
+> > +	nodes (N_MEMORY) and Private Nodes (N_PRIVATE) that provide
+> > +	device-specific memory not intended for general consumption.
+> > +	Tasks within this cgroup may access Private Nodes using explicit
+> > +	__GFP_THISNODE allocations if the node is in this mask.
 > 
-> The lockless slab freelist+counters update operation using
-> try_cmpxchg128/64 remains and is crucial for freeing remote NUMA objects
-> without repeating the "alien" array flushing of SLUB, and to allow
-> flushing objects from sheaves to slabs mostly without the node
-> list_lock.
-> 
-> This v2 is the first non-RFC. I would consider exposing the series to
-> linux-next at this point.
+> Notice that these files are exposed for userspace. Hence I'm not sure
+> they'd be able to ask for allocations like this (or even need to know
+> about this implementation detail).
+>
 
-Well if only I didn't forget to remove the RFC prefix before sending...
+Fair, I can drop this, the intent is actually to limit user-space
+knowledge of this at all.
 
-> Git branch for the v2:
->   https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=sheaves-for-all-v2
+> >  
+> >  	If "cpuset.mems" is empty, it shows all the memory nodes from the
+> >  	parent cgroup that will be available to be used by this cgroup.
+> > @@ -2541,6 +2544,25 @@ Cpuset Interface Files
+> >  
+> >  	Its value will be affected by memory nodes hotplug events.
+> >  
+> > +  cpuset.mems.sysram
+> > +	A read-only multiple values file which exists on all
+> > +	cpuset-enabled cgroups.
+> > +
+> > +	It lists the SystemRAM nodes (N_MEMORY) that are available for
+> > +	general memory allocation by tasks within this cgroup.  This is
+> > +	a subset of "cpuset.mems.effective" that excludes Private Nodes.
+> > +
+> > +	Normal page allocations are restricted to nodes in this mask.
+> > +	The kernel page allocator, slab allocator, and compaction only
+> > +	consider SystemRAM nodes when allocating memory for tasks.
+> > +
+> > +	Private Nodes are excluded from this mask because their memory
+> > +	is managed by device drivers for specific purposes (e.g., CXL
+> > +	compressed memory, accelerator memory) and should not be used
+> > +	for general allocations.
 > 
-> Based on:
->   https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git/log/?h=slab/for-7.0/sheaves
->   - includes a sheaves optimization that seemed minor but there was lkp
->     test robot result with significant improvements:
->     https://lore.kernel.org/all/202512291555.56ce2e53-lkp@intel.com/
->     (could be an uncommon corner case workload though)
-> 
-> Significant (but not critical) remaining TODOs:
-> - Integration of rcu sheaves handling with kfree_rcu batching.
->   - Currently the kfree_rcu batching is almost completely bypassed. I'm
->     thinking it could be adjusted to handle rcu sheaves in addition to
->     individual objects, to get the best of both.
-> - Performance evaluation. Petr Tesarik has been doing that on the RFC
->   with some promising results (thanks!) and also found a memory leak.
-> 
-> Note that as many things, this caching scheme change is a tradeoff, as
-> summarized by Christoph:
-> 
->   https://lore.kernel.org/all/f7c33974-e520-387e-9e2f-1e523bfe1545@gentwo.org/
-> 
-> - Objects allocated from sheaves should have better temporal locality
->   (likely recently freed, thus cache hot) but worse spatial locality
->   (likely from many different slabs, increasing memory usage and
->   possibly TLB pressure on kernel's direct map).
-> 
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
-> Changes in v2:
-> - Rebased to v6.19-rc1+slab.git slab/for-7.0/sheaves
->   - Some of the preliminary patches from the RFC went in there.
-> - Incorporate feedback/reports from many people (thanks!), including:
->   - Make caches with sheaves mergeable.
->   - Fix a major memory leak.
-> - Cleanup of stat items.
-> - Link to v1: https://patch.msgid.link/20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz
-> 
-> ---
-> Vlastimil Babka (20):
->       mm/slab: add rcu_barrier() to kvfree_rcu_barrier_on_cache()
->       mm/slab: move and refactor __kmem_cache_alias()
->       mm/slab: make caches with sheaves mergeable
->       slab: add sheaves to most caches
->       slab: introduce percpu sheaves bootstrap
->       slab: make percpu sheaves compatible with kmalloc_nolock()/kfree_nolock()
->       slab: handle kmalloc sheaves bootstrap
->       slab: add optimized sheaf refill from partial list
->       slab: remove cpu (partial) slabs usage from allocation paths
->       slab: remove SLUB_CPU_PARTIAL
->       slab: remove the do_slab_free() fastpath
->       slab: remove defer_deactivate_slab()
->       slab: simplify kmalloc_nolock()
->       slab: remove struct kmem_cache_cpu
->       slab: remove unused PREEMPT_RT specific macros
->       slab: refill sheaves from all nodes
->       slab: update overview comments
->       slab: remove frozen slab checks from __slab_free()
->       mm/slub: remove DEACTIVATE_TO_* stat items
->       mm/slub: cleanup and repurpose some stat items
-> 
->  include/linux/slab.h |    6 -
->  mm/Kconfig           |   11 -
->  mm/internal.h        |    1 +
->  mm/page_alloc.c      |    5 +
->  mm/slab.h            |   53 +-
->  mm/slab_common.c     |   56 +-
->  mm/slub.c            | 2591 +++++++++++++++++---------------------------------
->  7 files changed, 950 insertions(+), 1773 deletions(-)
-> ---
-> base-commit: aff9fb2fffa1175bd5ae3b4630f3d4ae53af450b
-> change-id: 20251002-sheaves-for-all-86ac13dc47a5
-> 
-> Best regards,
+> So I wonder whether the N_PRIVATE nodes should be included in
+> cpuset.mems[.effective] at all.
 
+I think it makes the control path easier (both more intuitive and easier
+to write in the cpuset code), but I can take another look at this.
+
+Although omitting them from .effective i think prevents the user from
+controlling whether their memory ends up on that node. 
+
+i.e. the user might be aware that they have compressed memory on node N,
+and they have a cgroup that they don't want on node N - not having it
+included in mems.allowed / mems.effective means they can't control this.
+
+> (It resembles CPU isolation to me a bit ~ cpuset.cpus.isolated.)
+> Maybe you only want to expose it on the root cpuset cg and inverted like
+> cpuset.mems.private?
+>
+
+Hm, I had not considered adding the separate mask for .private as
+opposed to sysram.
+
+If all we actually need to change is the allowed() callback to check an
+additional nodemask, that might end up cleaner.
+
+Thank you, I'll take another look at this piece.
+
+~Gregory
 
