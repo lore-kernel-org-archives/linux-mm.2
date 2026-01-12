@@ -4,92 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F656D2502F
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 05:33:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 232FAD25030
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 05:56:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 665006B0088; Mon, 12 Jan 2026 00:33:28 -0500 (EST)
+	id 598D26B0088; Mon, 12 Jan 2026 00:56:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6124A6B0089; Mon, 12 Jan 2026 00:33:28 -0500 (EST)
+	id 546696B0089; Mon, 12 Jan 2026 00:56:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5118F6B008A; Mon, 12 Jan 2026 00:33:28 -0500 (EST)
+	id 41B476B008A; Mon, 12 Jan 2026 00:56:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BF186B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 00:33:28 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AD1F4C17A8
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:33:27 +0000 (UTC)
-X-FDA: 84322194054.21.76985F4
-Received: from mail-ot1-f80.google.com (mail-ot1-f80.google.com [209.85.210.80])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 09CA84000A
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:33:25 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf27.hostedemail.com: domain of 3pIdkaQkbAJcJPQB1CC5I1GG94.7FF7C5LJ5I3FEK5EK.3FD@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.80 as permitted sender) smtp.mailfrom=3pIdkaQkbAJcJPQB1CC5I1GG94.7FF7C5LJ5I3FEK5EK.3FD@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768196006; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 30E6C6B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 00:56:56 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C2749580F6
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:56:55 +0000 (UTC)
+X-FDA: 84322253190.09.04AF4E3
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D7A05A0009
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:56:53 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KlMHf+s+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768197414; a=rsa-sha256;
 	cv=none;
-	b=OS2YxtI8TrjB83FlrjT6FfPhu85g4bymAHMjj8BTIknmGS2n2euqwbhu0+KE4TNrkaV0SP
-	hqdjTsojaS6k+SKybt1fzeDox4Phs8VURWf2dh48Vhd5RG6+bSL/lNTbHy0bXRstfHBU04
-	ETfRe3Fns1/5QSX5osduLROMO8H8Z8k=
+	b=0ofnivCiJo0UsKnZjluBwJcewcJkgikUcVatk5BbeJENSwV4GSTxPOrS1riX6TJSGJZ3Y5
+	onI/ZZ9Wkl5kw2wC01ImyqP8h6xqWOuUpbncN7xta0miBLCtObhA+dVcDgp4tjX8HmFVyK
+	dvYDmhF+NKy3ea2IdQhGJOhfbgRRU50=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf27.hostedemail.com: domain of 3pIdkaQkbAJcJPQB1CC5I1GG94.7FF7C5LJ5I3FEK5EK.3FD@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.80 as permitted sender) smtp.mailfrom=3pIdkaQkbAJcJPQB1CC5I1GG94.7FF7C5LJ5I3FEK5EK.3FD@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KlMHf+s+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768196006;
+	s=arc-20220608; t=1768197414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=c6lV8w4gthx3tGLc0toodGt6zBVWLiHV1t64kPFcYOk=;
-	b=twMQYhmK0Slw2sRK9cqZW71Wk0/1U5c8gwLniEReuboIPWznmFUoY+d1ICsw23djD/FJWT
-	dXRRqanURagvwPwOuIRdHvY7AotUucDitDZd4AM+XzxRh9JAQ+7B5DHCoyKH7FegZiohoO
-	KfUjXCZRLzmoerQPZmfD/RTtSve1Brg=
-Received: by mail-ot1-f80.google.com with SMTP id 46e09a7af769-7c75290862cso18676190a34.2
-        for <linux-mm@kvack.org>; Sun, 11 Jan 2026 21:33:25 -0800 (PST)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MQUdO7kF0Tnp+bmM0UqigmkOuUsrJx5sPNlFABU/J6A=;
+	b=CvH9DEK8vHIe9LqgnCIg8OrUmxmccnTAVPfG5VuMflexHAxxyevfShQjDXefG/OD4qimxC
+	Khm+Bj0Um62+JOS/4BPpZv4g0tKiVybghuazVT+S6S7x/7FkdSJtzGIIg0fMiOQrtvu4ZM
+	U/sQsTpmtUCWslmE0MGHSIIja4Gxt3A=
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b86f81d8051so203609266b.1
+        for <linux-mm@kvack.org>; Sun, 11 Jan 2026 21:56:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768197412; x=1768802212; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MQUdO7kF0Tnp+bmM0UqigmkOuUsrJx5sPNlFABU/J6A=;
+        b=KlMHf+s+oQDADqWuU4hYStuMrSrNipnoWwuNTGl3I0eNJQUveG5+OYleDOg6Q0lrhP
+         udRD4oWO+g9n1DRxY2/GhkAw1T2GuEkcTUOavisZ+5S+sJib6dGkw3I6rHWEZfWYDZZw
+         0djehuUIrWVuyuwWvL5dxUAJoRJEdZoOSmmLlZE5SE66esQl94aWo8sVXRaX6aSJoE1F
+         DLgAmTQwiCrIcv+CsUtTYKLse1q9lH/On8IyNu1MufJsZdKB1AKHA5HLvFsLpt5VTYHT
+         k5SwGdcgh0QdZQg2tsNz3h+khoTYfwuELr2uSj0lmNh5onpiYFaE5SuytmyFaemO1Oay
+         bi/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768196005; x=1768800805;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=c6lV8w4gthx3tGLc0toodGt6zBVWLiHV1t64kPFcYOk=;
-        b=fwBBkrW0iNcst+yqRA/CWAbgyMNjM69s/LhF5RQ0OG05EF3zdbjgeQy1/mIZ5hC2gv
-         LdcFRr+kVQ/wZru4rQMSbllNgmHmT4zucXuFijUOguhSUE6T6R40enX8ZAtdgy1IRw5r
-         pLbcB717RBfUykAVL8KLu1OP4aRMUzKKo+PK52ac/Xk4gVTbRalnHNcwHvoLyPQmVD90
-         MDbSCEogUiufXm7UdinCIK+scRiDfrV3/QihUW6M0+VeAnk5s2RjqGr/yqEhixZJDTfa
-         tnAhRs3GFLwhMhm0UmQ9k3bM20ouuzKWycWJKJsK1KP62yc/0L6veaQjyn0Kl4ijydf4
-         +ybg==
-X-Forwarded-Encrypted: i=1; AJvYcCXP9xHRXRx2DyedOJlVa4/z0WLbhenseANNRVrDTsVHOvJSOHReq53/LBawi1ohE9JAQIEvcK5O+Q==@kvack.org
-X-Gm-Message-State: AOJu0Yz4o/7/ohSqpzwaoxepZs2W8Wm2lRwHj+FhEJHOQkcAwFv3ZwTw
-	MSvFv6v24+Zu6RgmoecOXkCD0Pst7L4CZecLnFKp/sdEmls4mieSRoGHaL/R8nsJINCHyDSg1mY
-	IF8rvP5zFG4FAEord+QsCb0Lmi9KQ9AscrpEjgVny4aXJJP15AJ6Swg9MC4Y=
-X-Google-Smtp-Source: AGHT+IFJy6QnJsk85bUVHTiEUlWzvz3pEnq3AqxA2XqMX4wCVqWmPntq3cMcFwEzQJJJSlbKiKQ7ve2Cw5M3LZWDCLhIjiaGCzto
+        d=1e100.net; s=20230601; t=1768197412; x=1768802212;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MQUdO7kF0Tnp+bmM0UqigmkOuUsrJx5sPNlFABU/J6A=;
+        b=MfmZdzXKhsXvFsubbDinXg206nk1xaokP17VPj2WruNvnSvwK+/ZJg48f4/9lmDQmA
+         Mk6F6JIRrWjhDw1VBCJXIuVINvesKMYP+TXOV4+ZobkNtCaeIzxMA1XTqK+PRCpjtrEN
+         HWZJj6k/nUxTfp2sm/4HRsScqaxEo35GB0fTJ7C9vrtl1MGjoZ0SkQajOpQWYKPtVcO5
+         xNvCvPq0ntMvGHTzhB84P3YC2tkhEBTdWmgS4ndRIfpHFs9ipuYmYQoqW3WKSoRa/Ao9
+         eavaDvVdvRpz41Q7VBPCgt3bZH8jHcMn81Nqrj0MHymds/sXmUc9+5vc/mivFqy7cD9L
+         ykqg==
+X-Gm-Message-State: AOJu0YwlNzkaWgJOSK5OkI95PKmCqooIJ6iVzzipkZnkpsfprEHUQkir
+	XO6IE2mQ8YsEJazBEPzI3T3i3u70wShPnFHRIGh+/kBY95ahOp60hKvnugvq0ICywQ1ZC0OJmyc
+	1r/ryzNPDN4d8guU4nLXfRrNm1/7+dEs=
+X-Gm-Gg: AY/fxX5nqq984untmk3Ik6GcnMu1hQHfwaj9idl4/I3lzj6jh3/WiV7ViPFtReh+sYg
+	OCC0Pr1PScbPzfPI9MVM/ZE/pIWTIapm42L30aO2GW4d/6yQxap1EyFOFHOblHp3c93cLqy+Ofj
+	skbe/Ppz0guPn5VxkC1mTefDKK6hk5flqzJz1N2RRz3DBLSiAqmIGSalwoLr9A/NaACf2UCSo/n
+	C7//vNPBSOlXKfw21Xl70+im8lNxE+6QxwCz05cWGrfAA+kD0meN1xEutwi/Kto+kfJIkaqLM34
+	ctJV0+LGp9BheRhbuoYa7AT8VFHg
+X-Google-Smtp-Source: AGHT+IF9+5Xm1x2hlaMfVdBJMXeE5xX+pUBh8s0pJhPoOJjfsYHUGhHytLEUNT9OMey+gHzXJkXW9WWRMyLYWqXhHvg=
+X-Received: by 2002:a17:907:86ac:b0:b87:2882:bf7e with SMTP id
+ a640c23a62f3a-b872882c3bamr66251366b.11.1768197411905; Sun, 11 Jan 2026
+ 21:56:51 -0800 (PST)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:828:b0:65f:7470:38bc with SMTP id
- 006d021491bc7-65f74703d0cmr2448989eaf.54.1768196004939; Sun, 11 Jan 2026
- 21:33:24 -0800 (PST)
-Date: Sun, 11 Jan 2026 21:33:24 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <696487a4.050a0220.eaf7.0085.GAE@google.com>
-Subject: [syzbot] [mm?] INFO: rcu detected stall in purge_vmap_node
-From: syzbot <syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
-	ziy@nvidia.com
+References: <20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com> <d20f536c-edc1-42a0-9978-13918d39ecba@linux.alibaba.com>
+In-Reply-To: <d20f536c-edc1-42a0-9978-13918d39ecba@linux.alibaba.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 12 Jan 2026 13:56:15 +0800
+X-Gm-Features: AZwV_Qi-Mm2ah-xczly_xAKLT7xAGHWF9XcoeRmwlQ3QVUGtCtrYpZeOA8joW4A
+Message-ID: <CAMgjq7ASxBdAakd_3J3O-nPysArLruGO-j4rCHg6OFvvNq7f0g@mail.gmail.com>
+Subject: Re: [PATCH] mm/shmem, swap: fix race of truncate and swap entry split
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D7A05A0009
+X-Rspamd-Server: rspam06
+X-Stat-Signature: nc7nnj7uo3mci3h68ujdcg1z1c59fe6d
 X-Rspam-User: 
-X-Stat-Signature: s73uuq8q1owcnhhtchpaor8h98k8xdb3
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 09CA84000A
-X-HE-Tag: 1768196005-884539
-X-HE-Meta: U2FsdGVkX18GIwdeiPcCtRQSD/tbde11ttxuIMr7jWbI0NG/Gov8Wcby/fexi0r4Pz3yf1R/KcCYx6cJ1wTX79ED3q5kxnvSXwS3AVUAKYbDbH4EXBy2VjDfJdDJhHj5lblLRGK1tdIG0zg80hntjUkpA5gNb8nGNvAYm1pD5wbRhiwXAvqF06iWSqPa6yr/juwATGkeASkmhvZJroNo4AYdFcjk//u7Vuwi/TVM4LxcxS704atgo5YjC2w4b6IwYjJlY+0Kn836np2iTmeoagHgpRmh6tIqr1y/XtiQALDYz9e4jF2U1gIaKF/MKk+if8YxFxcR5AClIdDUKJ/zH1sLj5LCZOmeok7PZF4HNzArCf+81sQume4UNg77Dat8Dlk0KcRxGL4oY+xO5mVbpuu0KoXCtf7WsJUK1w9ntmj22Dt2rr8pBGcRWpnHQBThx+Cdc52MG3wKnRm62h7F9nlv6Dlu1v5xPb/0pwRZFqrU/iMsQLKOZlsZ2n/ER9WpnORdwsb0sGlz4T6prSJKbtWntKwtYN3aqvf8/Xgf1GgvOQDs/wYmnPw/MHdHzhdTs5TfpZj4hBf2ZmnwZ1FPappK3uwShk2sI/PPkMkhUBt6shRzAqigx65CPtMPNslEhkcAamyXCmJ2Xdg7EgYvQf5NgNMIlOapYz0y62HbyWeu3MD+UVw995xNd9ERyPTLf/zwLTCSZ2pLaDS5Pbixo/O+wfmbTRAEX02kFfaQlTD6Lb8HSrKrPkkEo9H5glg2UZG1jQftwrElCR0U/cXlG2Jz97jBtFg52f9crDnvKYWL54dtMHsAzGSO4kff/Py7pGZ25l+d9u5Rb0c4XB5b5ZCkrorjlnndpfAcwfpJmbAvby5jEgipxMc0fpdny3k3X0JtYHRVdDeWlcG2r5Ti9zAIZ6nUCaFc8n+1fN2/yJFelcGdFz8ZCYNiIS+a4wVTfCEPVdHL96m99weFgp3
- C7DsvCAg
- YTilMIJl9OHN7ztvAiP/h3PbI7RJ4wyrslRQVSVhwadtcz22YcGKUh/aCYb7NXmhUnnMZ/e9uu5my9nfwFy47DneD7ocXM8AeYwo0dG3WYAWjXciZ90p2N5Afo5jtFp9xe1RlhCIG5gTSuKjSbCIoZzQJ+rxQyAN/JJcmWH2KZvUzpmwxxDn5BE+HqDV5fmSmxem2oZtgcDK3NbYteQnM0tHJuuQkm+ksZOkIcAse6MHi9NpMtlYZ5dkxOvHq3dbqlSho5RavSIPmRNMqjn+Xm8DY6MBbHXfbz8aVgYWIZ503gudO3Aip49bkYI+5iyZ/dYiIVYi4WDVphDeoontAjkCJ3PtbGhsKfqZkUC0jrBBpY2kwQLob5X6N/d5TWDMekIIqfxOBlUS4mQjiFiiPhn5XtG4ZTKOnxB71Gfmw0s71fW0SvkFL8xOWlVBYEhJTy63y/y5vrtgmU1M5s2h6N0Oed5xR9v1L8to73/QGhviGa9eG+lkZnZMl4nTy4P4diBj9PkBQpLwdDyEa/Ta1eDt6foIwPNf+rMBP11P0J2+pWUIqN+KOpSyPR6nGc3l+Z8bkKQDc5v/MeoUUJp86aRrAUNHPLZ3gXi8wccvn336ZYW5+LQl9y7uSeqERmpuQeokhKyUsiRjngL3R6rNPbA/69eg7UcbmYBm8poJoHudN/JxPMMob13osdo0CQl0Y+yB8ZJOAcDStxKxObngr61WWN0P20woluR3B5IJMd8Ilj5WqxNJlAgmgUt6VezRvjRxq3NHhFCvdIf3mOJ4Llc+oqUWB2b/p9Y7eV8HD3MBnNPVIIp2ddkXfSb8qtC5NQ9NE1spZVByVJYn8l6AnOwx0kwM/04/pmFYYroeNpzqCiHuBez0CoIC1gLTl1DjPBYCyxpeOeUAdvwe4l1ru3POHlUgep7Bf3iKQVdN8qZr6qMjFCfhefsy3Y2Km/RW7j+OzyLafehkCtk9R+AUkwEL6CwFm
- BSUzjmO3
- ULf0sX+1G60b4oZHzuML41Kzv+tDOq26x+H/g4/dvg609a1w3U/5Di0CRvb2asDEZPpTXNwMdc39BQZCfIoLPR7PqB2cg2tZpa0FCAjTj3pSn3q0v2KCMlFe3lVGP/bO0w8LEPYaNMxjQZAXAkx1xxCmhUxazM2ZRV1iWFqkmS7q+nCnOs7l56aNy+u0MA2mqZRxj6+AV8f2uxCpNIGXbSKmO61F5Bfz1gzfD0YfwNSXktPOutRJ0stJfQGUVta19hBRrtM+DZ8WTJ4WauadxKe/Yh7hTsuuJAligd8QxLLuyxAk5lFVlUx6swgt3mSa4s2W662lYRJu45+KqAJzIMqrbWBhzy1h0o+Js+/nEhTxyzWicqKFA3KIPoMMHufOLjdRh2iFwHXDc5v6Q7PDKBSkNIsMLZNCFyNSA0tQUa4=
+X-HE-Tag: 1768197413-208986
+X-HE-Meta: U2FsdGVkX1+2x+U+xjjg5AzBCDbbbqq8egp5nHW+Oe4ZPLtjiztM33pQ8lRFQ7KVXhsHjjfrsmJ6RwBTCq54HwHPUoPW49/7WEBpRxF1kxwJLxSRK+X3sD/DTnwH6xBpRpInfU+aARCOBudFw2O+U4pUx5gRsOXLZrvkVxoH8xzEqVSnnqCieqVu4V2abHTAfBBv0TWjvkqJPrV15F2jBW4Qut7T34nrahCANSUoLMlqcohXG851nlikS4BcAMdXYnAGsVep+C7YHmRLLmgMtjI59QT0zAauBl3rtk2/JGX172cJoTQDJYfSNaJH6J/m+UyRFVN8FiIfpyNUJkam+28aB1xztvfaWqRPKyGXine/7S3ceoM7KDtg29qraDq1HfX/552qxKnIVNQelUqaqSte+J9fUhQ7VzWcHOk5uhTw2Y3f41+HxeZl0D/ENmLC0UK1PiUyVmICVsPRyRUEDy8kxqlLIDVbBv6GgNXYStFVPTzWeg0OKkE80DkzUTD/Mm/USWZAG5zDsXbo7FPK8S+afy7gWUAk7Y3nBb7RaUVdP+z7yYntOJwFSxEDOfcfhNO4RKM6Lw6wcVvdF4CMdoPTK0HtApusJEPRxrCvLV9pb0NV4IeIHZwzZjkRXVCLBXZxBuATSViHDnzaPq8get9aIqHwFmNcUkKDMp8hK08pcgZ8hoRCUMkXW+IwrBQrDWQaUp9XGkYNgQamui9kV2RVOEAMt6M0zKUgIuDM/kjj3EwPJGujMFhvOy84KcjoDQ2nQ+6bg/cAx+uMG1u/jo/QoZ2Gm14+fkw4odXT500INIbma9h9gW1GRMHHHzzuehEz/c+vAY+7UOnc8JSTjm7usamU4KiLnDzJ7PBWYGHv/f7YQ2fXYSBiKJGNF+88U/eSsSPbamYB9kYwPmroR6tw72buK4N8wZYw32uS5ROwk8uKSLC+YBwWP2l5i4sEjrlIiCm+/+li23qn1lJ
+ MtTyi/Dz
+ lYO2oeZPwhBc3t9daBgOtfSLbAH+VAaV6MaYxapaE//iu/flVWRoW6o/eDMsyRDHkQAZOAYswWhSTnXtoo5Y/nqI8SbwVm/pUjpb8CNyDHLQa14i9MR3uoQkswspsoS5gToXmReh0Gc9mrNzgMGFk5W17XOwKJ9E4qazlHCNpdiGKr8qBDYsuG+QJrUrOX/ADahSm47uBZex+hBgR49ksH7IcBF1K2RUbqip7B6vk4hbdTOgsJobx0Zc1jbfxnyyLiokVrpBFXopHj9SmQc1SS1POADMkEApqQKboSH5/0ab+rHYBV8ueUwSPc/n2sNM+mTrXiD/eNPkPVOjhJ2pVRB7aDXFwTeBQzDX5TM/MCgwV9+u3N7PgDfrREzrj+hytelPdRKgixxHM/rpvlff9IQcb1RRj0wXPNNtCTp2ITHjzR2Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,143 +118,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Mon, Jan 12, 2026 at 12:00=E2=80=AFPM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+> On 1/12/26 1:53 AM, Kairui Song wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > The helper for shmem swap freeing is not handling the order of swap
+> > entries correctly. It uses xa_cmpxchg_irq to erase the swap entry,
+> > but it gets the entry order before that using xa_get_order
+> > without lock protection. As a result the order could be a stalled value
+> > if the entry is split after the xa_get_order and before the
+> > xa_cmpxchg_irq. In fact that are more way for other races to occur
+> > during the time window.
+> >
+> > To fix that, open code the Xarray cmpxchg and put the order retrivial a=
+nd
+> > value checking in the same critical section. Also ensure the order won'=
+t
+> > exceed the truncate border.
+> >
+> > I observed random swapoff hangs and swap entry leaks when stress
+> > testing ZSWAP with shmem. After applying this patch, the problem is res=
+olved.
+> >
+> > Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > ---
+> >   mm/shmem.c | 35 +++++++++++++++++++++++------------
+> >   1 file changed, 23 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/mm/shmem.c b/mm/shmem.c
+> > index 0b4c8c70d017..e160da0cd30f 100644
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> > @@ -961,18 +961,28 @@ static void shmem_delete_from_page_cache(struct f=
+olio *folio, void *radswap)
+> >    * the number of pages being freed. 0 means entry not found in XArray=
+ (0 pages
+> >    * being freed).
+> >    */
+> > -static long shmem_free_swap(struct address_space *mapping,
+> > -                         pgoff_t index, void *radswap)
+> > +static long shmem_free_swap(struct address_space *mapping, pgoff_t ind=
+ex,
+> > +                         unsigned int max_nr, void *radswap)
+> >   {
+> > -     int order =3D xa_get_order(&mapping->i_pages, index);
+> > -     void *old;
+> > +     XA_STATE(xas, &mapping->i_pages, index);
+> > +     unsigned int nr_pages =3D 0;
+> > +     void *entry;
+> >
+> > -     old =3D xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0=
+);
+> > -     if (old !=3D radswap)
+> > -             return 0;
+> > -     swap_put_entries_direct(radix_to_swp_entry(radswap), 1 << order);
+> > +     xas_lock_irq(&xas);
+> > +     entry =3D xas_load(&xas);
+> > +     if (entry =3D=3D radswap) {
+> > +             nr_pages =3D 1 << xas_get_order(&xas);
+> > +             if (index =3D=3D round_down(xas.xa_index, nr_pages) && nr=
+_pages < max_nr)
+> > +                     xas_store(&xas, NULL);
+> > +             else
+> > +                     nr_pages =3D 0;
+> > +     }
+> > +     xas_unlock_irq(&xas);
+> > +
+> > +     if (nr_pages)
+> > +             swap_put_entries_direct(radix_to_swp_entry(radswap), nr_p=
+ages);
+> >
+> > -     return 1 << order;
+> > +     return nr_pages;
+> >   }
+>
+> Thanks for the analysis, and it makes sense to me. Would the following
+> implementation be simpler and also address your issue (we will not
+> release the lock in __xa_cmpxchg() since gfp =3D 0)?
 
-syzbot found the following issue on:
+Hi Baolin,
 
-HEAD commit:    f0b9d8eb98df Merge tag 'nfsd-6.19-3' of git://git.kernel.o..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=135c11fc580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a11e0f726bfb6765
-dashboard link: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
-compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12e0c19a580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=134d1f92580000
+>
+> static long shmem_free_swap(struct address_space *mapping,
+>                              pgoff_t index, void *radswap)
+> {
+>          XA_STATE(xas, &mapping->i_pages, index);
+>          int order;
+>          void *old;
+>
+>          xas_lock_irq(&xas);
+>          order =3D xas_get_order(&xas);
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/4dbba2a806a3/disk-f0b9d8eb.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2a52c0f94de7/vmlinux-f0b9d8eb.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/5ddf9a24988b/bzImage-f0b9d8eb.xz
+Thanks for the suggestion. I did consider implementing it this way,
+but I was worried that the order could grow upwards. For example
+shmem_undo_range is trying to free 0-95 and there is an entry at 64
+with order 5 (64 - 95). Before shmem_free_swap is called, the entry
+was swapped in, then the folio was freed, then an order 6 folio was
+allocated there and swapped out again using the same entry.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
+Then here it will free the whole order 6 entry (64 - 127), while
+shmem_undo_range is only supposed to erase (0-96).
 
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
-rcu: 	(detected by 1, t=10502 jiffies, g=10385, q=373 ncpus=2)
-task:kworker/0:17    state:R  running task     stack:28840 pid:6229  tgid:6229  ppid:2      task_flags:0x4208060 flags:0x00080000
-Workqueue: events purge_vmap_node
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5256 [inline]
- __schedule+0x1139/0x6150 kernel/sched/core.c:6863
- preempt_schedule_irq+0x51/0x90 kernel/sched/core.c:7190
- irqentry_exit+0x1d8/0x8c0 kernel/entry/common.c:216
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-RIP: 0010:lock_acquire+0x62/0x330 kernel/locking/lockdep.c:5872
-Code: b4 18 12 83 f8 07 0f 87 a2 02 00 00 89 c0 48 0f a3 05 22 bd ee 0e 0f 82 74 02 00 00 8b 35 ba ed ee 0e 85 f6 0f 85 8d 00 00 00 <48> 8b 44 24 30 65 48 2b 05 39 b4 18 12 0f 85 ad 02 00 00 48 83 c4
-RSP: 0018:ffffc900035e7540 EFLAGS: 00000206
-RAX: 0000000000000046 RBX: ffffffff8e3c96a0 RCX: 0000000019a1310f
-RDX: 0000000000000000 RSI: ffffffff8daa7f9d RDI: ffffffff8bf2b380
-RBP: 0000000000000002 R08: 000000007c8d0f89 R09: 0000000097c8d0f8
-R10: 0000000000000002 R11: ffff888031598b30 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
- rcu_read_lock include/linux/rcupdate.h:867 [inline]
- class_rcu_constructor include/linux/rcupdate.h:1195 [inline]
- unwind_next_frame+0xd1/0x20b0 arch/x86/kernel/unwind_orc.c:495
- __unwind_start+0x45f/0x7f0 arch/x86/kernel/unwind_orc.c:773
- unwind_start arch/x86/include/asm/unwind.h:64 [inline]
- arch_stack_walk+0x73/0x100 arch/x86/kernel/stacktrace.c:24
- stack_trace_save+0x8e/0xc0 kernel/stacktrace.c:122
- save_stack+0x160/0x1f0 mm/page_owner.c:165
- __reset_page_owner+0x84/0x1a0 mm/page_owner.c:320
- reset_page_owner include/linux/page_owner.h:25 [inline]
- free_pages_prepare mm/page_alloc.c:1406 [inline]
- __free_frozen_pages+0x7df/0x1170 mm/page_alloc.c:2943
- kasan_depopulate_vmalloc_pte+0x5b/0x80 mm/kasan/shadow.c:484
- apply_to_pte_range mm/memory.c:3182 [inline]
- apply_to_pmd_range mm/memory.c:3226 [inline]
- apply_to_pud_range mm/memory.c:3262 [inline]
- apply_to_p4d_range mm/memory.c:3298 [inline]
- __apply_to_page_range+0xac1/0x13f0 mm/memory.c:3334
- __kasan_release_vmalloc+0xd1/0xe0 mm/kasan/shadow.c:602
- kasan_release_vmalloc include/linux/kasan.h:593 [inline]
- kasan_release_vmalloc_node mm/vmalloc.c:2282 [inline]
- purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
- process_one_work+0x9ba/0x1b20 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3421
- kthread+0x3c5/0x780 kernel/kthread.c:463
- ret_from_fork+0x983/0xb10 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-rcu: rcu_preempt kthread starved for 10534 jiffies! g10385 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=1
-rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-rcu: RCU grace-period kthread stack dump:
-task:rcu_preempt     state:R  running task     stack:28440 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5256 [inline]
- __schedule+0x1139/0x6150 kernel/sched/core.c:6863
- __schedule_loop kernel/sched/core.c:6945 [inline]
- schedule+0xe7/0x3a0 kernel/sched/core.c:6960
- schedule_timeout+0x123/0x290 kernel/time/sleep_timeout.c:99
- rcu_gp_fqs_loop+0x1ea/0xaf0 kernel/rcu/tree.c:2083
- rcu_gp_kthread+0x26d/0x380 kernel/rcu/tree.c:2285
- kthread+0x3c5/0x780 kernel/kthread.c:463
- ret_from_fork+0x983/0xb10 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-rcu: Stack dump where RCU GP kthread last ran:
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-RIP: 0010:pv_native_safe_halt+0xf/0x20 arch/x86/kernel/paravirt.c:82
-Code: b6 5f 02 c3 cc cc cc cc 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d 13 39 12 00 fb f4 <e9> cc 35 03 00 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90
-RSP: 0000:ffffc90000197de8 EFLAGS: 000002c6
-RAX: 00000000000f349b RBX: 0000000000000001 RCX: ffffffff8b7826d9
-RDX: 0000000000000000 RSI: ffffffff8dace031 RDI: ffffffff8bf2b380
-RBP: ffffed1003b58498 R08: 0000000000000001 R09: ffffed10170a673d
-R10: ffff8880b85339eb R11: ffff88801dac2ff0 R12: 0000000000000001
-R13: ffff88801dac24c0 R14: ffffffff9088b8d0 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff8881249f5000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055555f9257e0 CR3: 000000004b1c0000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- arch_safe_halt arch/x86/include/asm/paravirt.h:107 [inline]
- default_idle+0x13/0x20 arch/x86/kernel/process.c:767
- default_idle_call+0x6c/0xb0 kernel/sched/idle.c:122
- cpuidle_idle_call kernel/sched/idle.c:191 [inline]
- do_idle+0x38d/0x510 kernel/sched/idle.c:332
- cpu_startup_entry+0x4f/0x60 kernel/sched/idle.c:430
- start_secondary+0x21d/0x2d0 arch/x86/kernel/smpboot.c:312
- common_startup_64+0x13e/0x148
- </TASK>
+That's why I added a max_nr argument to the helper. The GFP =3D=3D 0 below
+looks not very clean either, that's trivial though.
 
+>          old =3D __xa_cmpxchg(xas.xa, index, radswap, NULL, 0);
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Am I overthinking it?
 
