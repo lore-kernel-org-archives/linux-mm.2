@@ -4,148 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFCBECF45C0
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 18:04:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A74ACCF45BB
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 18:20:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FEA76B0005; Mon, 12 Jan 2026 13:04:12 -0500 (EST)
+	id 923A56B0005; Mon, 12 Jan 2026 13:20:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 181B86B0088; Mon, 12 Jan 2026 13:04:12 -0500 (EST)
+	id 905E96B0088; Mon, 12 Jan 2026 13:20:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 056BF6B0089; Mon, 12 Jan 2026 13:04:12 -0500 (EST)
+	id 831D36B0089; Mon, 12 Jan 2026 13:20:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E39906B0005
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:04:11 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46B75D1984
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 18:04:11 +0000 (UTC)
-X-FDA: 84324085902.20.2958599
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A312C120015
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 18:04:08 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Bmm5xuEu;
-	spf=pass (imf29.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 708DD6B0005
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:20:54 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3D179C3264
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 18:20:54 +0000 (UTC)
+X-FDA: 84324128028.09.7FF688A
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 53B0A40010
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 18:20:52 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=v7YF24F1;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf27.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=mattbobrowski@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768242052; a=rsa-sha256;
+	cv=none;
+	b=KPB65M2/OIcWhG9kBv+YFDHCxIdpauC+8xUk0eL+U+fk3kZUiew1lsBXskHNcXgsOnGU4Z
+	/ZZfJ9TzLo+JaNkMQcUs//sUXT+Ibuqvm99yZNpm68IUiMUI09SZr1MGBNSAzD/qLPPeDR
+	lRqo46afZmTGGPgYS7wiQqoCOD63K0s=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=v7YF24F1;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf27.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=mattbobrowski@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768241049;
+	s=arc-20220608; t=1768242052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nGMJ5LbPFmGC8KsyFzZBiUpjaLMx+kfqn+JlgSdWn4Q=;
-	b=qu7SNvD753m8+DSBkiDT9T8c/TOsK0C43BakITT6uFlqYAOj+i/wIVoSxlBFDyG84/Y78N
-	UFJyizZjvZzQDVahM9tQryBHCGNEQRsBww1bCEdHnJwO4TdxQSev5VnVta+qDHkVekts3q
-	H2jGz5dVhLxk6d9VHHr0evRucVDE2X4=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Bmm5xuEu;
-	spf=pass (imf29.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768241049; a=rsa-sha256;
-	cv=none;
-	b=fIEj+UUMP95Wvv+DqWr6QZ2ZfY4NjgfVn+Zz04qKbz4RMmgh/5fXXqHKjxsN7ySfGc5BdD
-	aPy215QRUaJm0QJIO7NGFbmabFMLn2r/XVVFB49/Lee9zGbAjQrsSJDFHZ1U+lw8C2s5JJ
-	W+dYIjt5au6rGSNMvoYHN4PZNW+QhO4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768241048;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nGMJ5LbPFmGC8KsyFzZBiUpjaLMx+kfqn+JlgSdWn4Q=;
-	b=Bmm5xuEuavZq6ulGSuTXum4O1WLyQa0mjLadZsGuZE5SE37M8cvFX2d+WYZWUed4fz97Xz
-	MC9hYebQmY4iuFmKOn7EIhgnLD3G0eKlWdJrvybGh39VzPjPIVhwrk35b2rsOQioSwDVx8
-	aTXTp024YCpjEZselQmG+FJL3RjmFAg=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-575--UrcM1rlOBGIiIun8-W1eQ-1; Mon, 12 Jan 2026 13:04:06 -0500
-X-MC-Unique: -UrcM1rlOBGIiIun8-W1eQ-1
-X-Mimecast-MFC-AGG-ID: -UrcM1rlOBGIiIun8-W1eQ_1768241046
-Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-93f503aeb85so14243222241.1
-        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:04:06 -0800 (PST)
+	bh=8XHGqVtaW8x0Sh1FjZrgxZJsIoNRNYfvhtGoAiQ9Qrc=;
+	b=f/EVaYQPRLmwwqE1bF00oSrv1zX58WlRqxCLg2Z8dgpATAln8iTeBL37XoUMdlS7wgaiYG
+	IHFUpFEv+P44599QWNwf/OTAyOZsV43i1YNzChLZpW5DzwZX4iPALkP8+dz5MOsY8XLPmE
+	J3CaVrZpAVHFrEpRE15TTYWbKplFs20=
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b86f81d8051so336455566b.1
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:20:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768242051; x=1768846851; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8XHGqVtaW8x0Sh1FjZrgxZJsIoNRNYfvhtGoAiQ9Qrc=;
+        b=v7YF24F1ri1P4vsFL35QXkWoaKNjupAPwD5dyynfHZloc+n+PeDLrOeGzfq76xeOFP
+         aIYgnedNRzvWFZDe32gZWyobUg1QqTRZBb2QG7Gab1g6rgvz2fzB8dsdgLwLLPmRQIkm
+         qLbxVNhwlCYjPHI5mYeJCUyMVKKw4E0K2ZuBj0un7pely10EH1bMuPYKWyrb4iBDX+Hy
+         G9/+iQb712FzmjZA7WBbiwGWJ64owne0rG2OIYQPu48zZHEf3oMRLK/RYDIRYwLLPKNa
+         6sQGrUpOrQTiP5wCo+dLspm0+kzF+A8v2Qe4bbG/affqYjojK258hHCeCXxfX7va9Wky
+         uVAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768241046; x=1768845846;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nGMJ5LbPFmGC8KsyFzZBiUpjaLMx+kfqn+JlgSdWn4Q=;
-        b=u1GrBPSIBzJwKauXtcBuzNQQb1KxfS9ZmG+4NXf43NypX68CbGbyUnHgBrPiuWEyQH
-         1SPIJ7Rz5L6P2ArYWAk1hA3TvMk5fnkM7/GkyXtvN6FmoKbzrNBJ7NKmmXUu7AzO1FWb
-         UJl1TMyNNMvQylF0uXX4nYs8AhhaSIX+hhRZEOcbRAccBICt/V8XTRsJ67C5d0hlmG7u
-         PQSX9OkcyhUHExl0Q5qy058ceNM6TO/EQnBWdC6p60mW9RhQGOhJmGZ5DpPd8E8xNw97
-         dbQtJcvWgDo/YvdNUTkGALlYOqEw7C/+3VZNuA/Gpvu+CCJe6rERHrgxqHdDU9Yqzi5M
-         XumA==
-X-Forwarded-Encrypted: i=1; AJvYcCXp6IuG32W8IQdc+I8lZ9TBa4TZyep0/TCRZNwrkd73glEZa6rM9Jf8AzFaZVsRTvc6x+g48/5GWA==@kvack.org
-X-Gm-Message-State: AOJu0Yw0XG9ZH3Bw6Yz/l8mFHSpIHaxxSDNPyIbtpMcATUobLbPhZBsC
-	6XAMnRF9RxCkUrr1HbhDqI8aPCykTYD4pmzSMstMUayFKnB+ySVz+zA+9CekCIk6zQNd6bdv8Dl
-	R6ln17+ctu82RkmrVTo8dvWMrceibA5ISuUtSycDNx0e8Ttss/Qiu
-X-Gm-Gg: AY/fxX5j0Lwqyq9w8RFEX21xl0+Rkl0PNBiLRUidmfDlctoBuwlQXQKDi7Ri3sfvmQ0
-	2B3zKvaiyFepACJbDHnQx2Y/9AFkMBZeyvg8AjIsKaxnJWz5ySuczNWea/C735xJagZwmo2Nff6
-	uouGw9kosz7ktLPHv8YFOGHauT9eUBwBruxaLUGefCZyvbgl6/5pLR+5jQynhnA131Q1C/01jzM
-	bCeYV1L6FM12VW4IBhB3z3mgt+lInTOUl8dnHhS3LmexkpyrAI/PdNXqqCaxPGEjYAMpZLyv3sj
-	MxgbwvzXgjBePgdXlW67I0uqBAbLQ8aoWZWL1jePviDHz3tXl7V1ieOtUrzsJFArtP13ymoLnEV
-	R7+GSx+tZLnlf71mt2z/Q9nuGkoCRpV+9bhauqkVVI39NRR4/+xTzTyRz
-X-Received: by 2002:a05:6122:4897:b0:563:7886:5e7a with SMTP id 71dfb90a1353d-563788663a0mr2841991e0c.9.1768241044887;
-        Mon, 12 Jan 2026 10:04:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHM6+Ba4s/MEV+9Zbgj4Jf91uX/qo/VCXWtL6yFKP9LvZ7kJD7E9gBdpreY2pV75Zsq8xOxKw==
-X-Received: by 2002:a05:6122:4897:b0:563:7886:5e7a with SMTP id 71dfb90a1353d-563788663a0mr2841898e0c.9.1768241043068;
-        Mon, 12 Jan 2026 10:04:03 -0800 (PST)
-Received: from ?IPV6:2601:188:c102:b180:1f8b:71d0:77b1:1f6e? ([2601:188:c102:b180:1f8b:71d0:77b1:1f6e])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-563667cf148sm10043559e0c.2.2026.01.12.10.03.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jan 2026 10:04:02 -0800 (PST)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <c1cac1a6-22fe-479f-bfc5-89a5d3aabda5@redhat.com>
-Date: Mon, 12 Jan 2026 13:03:47 -0500
+        d=1e100.net; s=20230601; t=1768242051; x=1768846851;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8XHGqVtaW8x0Sh1FjZrgxZJsIoNRNYfvhtGoAiQ9Qrc=;
+        b=PC4NgQ3ns8ZgTTtAAflmq9UPmtbYxSRb4xEzl+hj0ZoZ4i4ppQ7TXaJl+5SyDmaY8W
+         mBWeVJhsLxUXX4O6PGW0MmABB2xHXp2FokwNRFA8+VOOjsGxStl5Q4VxEsxHNUHcMSru
+         fZKiAeSNXke37GwLlXvDb4X9K4EYNHXIegUIGQ63ml7kpVHa3yYFdN85M66TintjGtJm
+         3Ln8hqix0mkLXBIJULfLx9PT7ChEXXekiTgXzNP2dkzZfbKLZCWAIOs1RHP0DL3Hke4O
+         /fNSkvFGoDV8JPUmoXs8X46qxwpw27LSmwnhgfD7ufpi9VTRlLFILoO5NMAekFunVUrO
+         7QVg==
+X-Forwarded-Encrypted: i=1; AJvYcCXcWEqwxgxdzJBwQqj9LQe3NwBtvglFFFMnA42mvjXDhsYr11ZzHzZ9wlEvso68ScjOfCDpHs8qGA==@kvack.org
+X-Gm-Message-State: AOJu0YyKkeXw9SX6NpKN3ppGwccbljidQmKMWEObK2f/PvpTLNdwzccQ
+	pXsvny46hzuf3w/L81NgzUyT4zHImgm/+3396Bw6M+WEXk72FGEG9G42WP5UX3/24g==
+X-Gm-Gg: AY/fxX4ILCroMwYV64qEYf5NOrqTREFN0ILAmFVf8n5A/oRbEgW4NbXmVT34eMShNwS
+	U8MOuSQN0El9BddjBnzyWiR+CBqFLLv7/8b2LERhv8x9p54cTShtWEVYXA7/ewVODV33ZE/SEyX
+	zH/qEviCNI6HR2a3wa5+V8Xml47HDv1PXAH0jdKZAXa2D3anA5vfzc1KnMEv6Oh6MfTvw28abdE
+	Iuud7MiO5jik+cOiOFwJZcYsLY3b6BmnkEZuGYDqmqe3BC24qYoHTrNz4dWFyU7XWi25M+msJvl
+	OErqXdWu6qgJlMyq1KnExLcRKZzxT8Hf582ThkR5KZXL2bErA0ibJp2f8BRB+C8dbahziz+/FYZ
+	GHcMZk1BRpYG4lpRP2dyqvt2Db+MtppiCO75W/mdlCqPpMUbtKsZlULXm4Mpg3xNB7+o2C/gx+c
+	Hu0SJjxv1TIg3WPne27jBpSjZXw4NzlwR25w4CC8ihnYORug5Vzzj3KTxOPcRC3rh3
+X-Received: by 2002:a17:906:d553:b0:b87:29ae:2b96 with SMTP id a640c23a62f3a-b87357dbad6mr34509066b.12.1768242050430;
+        Mon, 12 Jan 2026 10:20:50 -0800 (PST)
+Received: from google.com (14.59.147.34.bc.googleusercontent.com. [34.147.59.14])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b86f1e95273sm752858966b.62.2026.01.12.10.20.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 10:20:50 -0800 (PST)
+Date: Mon, 12 Jan 2026 18:20:46 +0000
+From: Matt Bobrowski <mattbobrowski@google.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, bpf@vger.kernel.org,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH v2 06/23] mm: introduce BPF struct ops for OOM handling
+Message-ID: <aWU7fnkQ5TLbAUmk@google.com>
+References: <20251027231727.472628-1-roman.gushchin@linux.dev>
+ <20251027231727.472628-7-roman.gushchin@linux.dev>
+ <aWULOvXrN0acG97Y@google.com>
+ <87ecnusq7m.fsf@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/33] sched/isolation: Save boot defined domain flags
-To: Frederic Weisbecker <frederic@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
- Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20260101221359.22298-1-frederic@kernel.org>
- <20260101221359.22298-6-frederic@kernel.org>
-In-Reply-To: <20260101221359.22298-6-frederic@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _zR3bhSPNPU7Q2RSRgi3V-6dyhclhQtvvf0187KpKqk_1768241046
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5g96jgjztwns5iyxqwhequupgzmxhrym
-X-Rspamd-Queue-Id: A312C120015
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ecnusq7m.fsf@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768241048-466690
-X-HE-Meta: U2FsdGVkX18rOsxla4UpQW8U0yV3ooaeopuALXoo86SSyjbeMY4ssmegtv4CV+Ys3hlvAaNyVT4AWzvXPPapdx15HyB6xxMeyimlayXOurzehag/letvPhORSA01GlVIwSnsuA0qCIppCP/BvZdvC0aXKSd7SvR5hBJHty9mDfQhV+eTShZK4WxNpxRuZ9bROYIF+zE3skRUWiHbNSovt4l8Ql6SZCQse5VQKhwaa9r8aJUMxXtbHggrnaP+EllexaiJSKvqAT50GxBg94N6ujqP1KmCaY45imcv7+DGB6frF0BZXfUP8Jrh5u2sGjVdt+f5ZYjgdT8bj7F7edQf2reTHa30ZOcYM8PZDTU1jsH6bLXCXylo954te3Mb1dD3e/5Gp584/hItRtpGvDUMUH9g6GWMbS7vO0v/32YUKkF+Bo/5owgGa8tdDlgDxwVDxZSFE/X6crEgUgO0aBnuYPojSXon6thZUmp94Vr68Y76wO2u1ETs7OnJAgbOxX8wBnukU8UR0cIezu75Da00Fjg5i3e2yQARauNCbi3iO52KywfopUgSFkXJfE3Bcr7QZb4pVAne/wzmeWw1iVDs8HfYKXITFsChbmvVuGtoUMUgwQHyDQKq+QQIATi2gyUzl4luPnZpa7wdEmDA6Xi4xCG7lPrVygarBXvnuAO4774z03YaDLXL0ATmrlnVv0xpqiAxB9vfQ4gDHly9QsPrezFCII9ymGoWHAT+ODD3DLgwkjQEjrmaTsS69ty90ci6tQqIIo3/RgO5oDg90FUOEGE6UjmYYZ3f1LfbA1om//OXShbgpdBOUklFrC1yHxp5Zrn5dpNpjekxzY6bWm1rOlOpMlQIm8Mk0zG3JjTSpgV9xBoNr+WgAMCXkSraavXCSggM62EBfAH2EPcFkLwI72ekzc8e50tE3FYR1/NFEcbemmfClxyoOmw7dgIewkc02k6LZKjYG2tfKjvrjI+
- V7KIKaW/
- jkI8zn2WRyvf8rYZZzUC5GDNCpYGsqOjFAI6j/cqnOVsbwScr4e69gYw1J0WcgJ6XQDZ8ZO4WETvSvcDJkb5V8etuyBJuUZCJrZ9V8WVpAPbDHJeH+Qi+w5bHOZCi5E3tBGU9+nySFBIA811W5Y9iajuDNuOR4xXhdhZX6a/ym7arU+wFim4T5aJd5nEYkws21hRsndlxm+VPFUtYwpFob1pElmjuZvh5FxAXFOKUNeajehHqEhJdYvJkLVdpw4LDowHBfqVCf1yaWWjhtyPa+KbRFevP3qIZtIK2tLyFRbBOg9PYJfHte0Zz66yldHybVFE0Kn1pQAeJEjqCuQxXknWpp1Ri/FA5BZguXShVivaI8wG+Oyx+vG1A6JL7kIpP+tAA8JsmuRabkyEo315Q19I7IOVxHsASIBY/IzBZE+lFthMdyOfTTVahYD/cfnnQrnUWZGyISO+8DJMl1ij8UfXL1JLqecL1mSo5NY0M6g4z/hs=
+X-Stat-Signature: fbtof5zjx3fkidizhffhscuwue81jtzj
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 53B0A40010
+X-HE-Tag: 1768242052-210848
+X-HE-Meta: U2FsdGVkX1/MiQOOKQlpaE0kxW+COxCd/il3iElD5gwbZVqQBD8JCMsX6Otg9AR2v81el+Rm/lGvq3ZMworrLNve93L3VCfVMfRbC6JMCqSMXBIXe/mjkNTcqClawa5j6MP8ieRdZeFHxcTQlUZ5F0kFQjOunnuWdCFf0kb1w1LMd3Fk37k87ZGhfZcSFFXbziJxwkzX3G4DCh8Tp7Uz38wigAX1xX9DluY/jNK/rz1i6XV8EHXEubzc7vEEpiYPes6QuRFMA0nbjcEadyda84XJyXuMeVrvsPHmf8h184NSQBGwzsq0wgG3mTif4fam03JvS4uM8WDAle9Fgkvu8WtDWAqa/mdUtnNuUulW785Rd3yjgZ5DngzISaqO2rZ2YhhVfW4LcUGuHdm6ZAZznc8iFzgcqCFpz+k9Jm2wAc6dRiuAT7mo7/djMgP1NwKYDOXIZNhIlf2j1l86G40UqSAt0dI7iSOl+WF9p9kppgtQs2bzKSpyKaB0ogC9jkBTtVEPCziGv72O+dwpwovdFplgr/GN2+wYuqyBzmnyr/vj5aQ+nUJcml09NmA65fVGzRaPR8fGC89any/5t1ILx2Kob7nB+VumKYxd1TVLKlf1lHejwMONF9BguwmW8ozkE2RnTk+1rgsmJnTy1oR1cbebjj13+A9kklE8WZIOBYOJ0K+ous7ZlWDKiHLdEZdC5s6OxPfU7k7AvJLrBhNnFbNE1d/YKAKj/UKjmXzgM1F2YE16vz2DcqSxHgXNVGCd+UWWl8Og74/JljUSQM0YaUbMniJJpMFr6Pompu08/8QgnJb+5IKOzKwxLA6acl/wstbpBCqzd2e7Ya2rboMYKK6VB5jHHBR11XJElsgKDo4TG6cjlf86jXeBHkjMtOuT6AbuJ2Yf9MlfNUz2/544ap5dMWj4tggMqwkouNgJGKkPPhLUod7Srbp4/f+Jc39BnADoBl4KpfbJ8H17NEM
+ zz0exyr8
+ aF8n7y8T2fl6VcgIIIsyxDNo34eV0eUWPIahr9mxVD5RTHq27xG3fKRg+v870DkGbOWYWuFU2wrWFzNrKa9v66OGkTjVTO+1iHDuBBQjsK3p8mzK8x9eBy0+OCt1om4RsFiG+fxHv56ZCksZK5VIvx5KJbb2MYsJmGZq/mlfqaarAOcHPSu9TI/nE5zzl+EbSfnda3y/pVLTQnMqxvzz2Gzv9/p44BlrkpjTo3Ol5yIyhiINf2Pq498NlGgoe1q7k0tTx8oM3+zTVpbYiDCWeYi3+mJw/aJHAJdSOIViKFGVuhoO4UaGwCut38EFg6Uv8aO6uWOYjvrKkBUlEA/d/Mb28D/wQ+RCZ/xnkF5+SMhPzW0kTUY1YYG5ab8lvXFe5jkPWxiEC/AMrQbirEy460VgZx/s58IwoqDTiltP5sWyLZyEV9F9XTkgt/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,71 +131,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/1/26 5:13 PM, Frederic Weisbecker wrote:
-> HK_TYPE_DOMAIN will soon integrate not only boot defined isolcpus= CPUs
-> but also cpuset isolated partitions.
->
-> Housekeeping still needs a way to record what was initially passed
-> to isolcpus= in order to keep these CPUs isolated after a cpuset
-> isolated partition is modified or destroyed while containing some of
-> them.
->
-> Create a new HK_TYPE_DOMAIN_BOOT to keep track of those.
->
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> Reviewed-by: Phil Auld <pauld@redhat.com>
-> ---
->   include/linux/sched/isolation.h | 4 ++++
->   kernel/sched/isolation.c        | 5 +++--
->   2 files changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
-> index d8501f4709b5..c7cf6934489c 100644
-> --- a/include/linux/sched/isolation.h
-> +++ b/include/linux/sched/isolation.h
-> @@ -7,8 +7,12 @@
->   #include <linux/tick.h>
->   
->   enum hk_type {
-> +	/* Inverse of boot-time isolcpus= argument */
-> +	HK_TYPE_DOMAIN_BOOT,
->   	HK_TYPE_DOMAIN,
-> +	/* Inverse of boot-time isolcpus=managed_irq argument */
->   	HK_TYPE_MANAGED_IRQ,
-> +	/* Inverse of boot-time nohz_full= or isolcpus=nohz arguments */
->   	HK_TYPE_KERNEL_NOISE,
->   	HK_TYPE_MAX,
->   
-> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-> index 3ad0d6df6a0a..11a623fa6320 100644
-> --- a/kernel/sched/isolation.c
-> +++ b/kernel/sched/isolation.c
-> @@ -11,6 +11,7 @@
->   #include "sched.h"
->   
->   enum hk_flags {
-> +	HK_FLAG_DOMAIN_BOOT	= BIT(HK_TYPE_DOMAIN_BOOT),
->   	HK_FLAG_DOMAIN		= BIT(HK_TYPE_DOMAIN),
->   	HK_FLAG_MANAGED_IRQ	= BIT(HK_TYPE_MANAGED_IRQ),
->   	HK_FLAG_KERNEL_NOISE	= BIT(HK_TYPE_KERNEL_NOISE),
-> @@ -239,7 +240,7 @@ static int __init housekeeping_isolcpus_setup(char *str)
->   
->   		if (!strncmp(str, "domain,", 7)) {
->   			str += 7;
-> -			flags |= HK_FLAG_DOMAIN;
-> +			flags |= HK_FLAG_DOMAIN | HK_FLAG_DOMAIN_BOOT;
->   			continue;
->   		}
->   
-> @@ -269,7 +270,7 @@ static int __init housekeeping_isolcpus_setup(char *str)
->   
->   	/* Default behaviour for isolcpus without flags */
->   	if (!flags)
-> -		flags |= HK_FLAG_DOMAIN;
-> +		flags |= HK_FLAG_DOMAIN | HK_FLAG_DOMAIN_BOOT;
->   
->   	return housekeeping_setup(str, flags);
->   }
-Reviewed-by: Waiman Long <longman@redhat.com>
+On Mon, Jan 12, 2026 at 09:20:13AM -0800, Roman Gushchin wrote:
+> Matt Bobrowski <mattbobrowski@google.com> writes:
+> 
+> > On Mon, Oct 27, 2025 at 04:17:09PM -0700, Roman Gushchin wrote:
+> >> Introduce a bpf struct ops for implementing custom OOM handling
+> >> policies.
+> >>
+> >> ...
+> >>
+> >> +#ifdef CONFIG_MEMCG
+> >> +	/* Find the nearest bpf_oom_ops traversing the cgroup tree upwards */
+> >> +	for (memcg = oc->memcg; memcg; memcg = parent_mem_cgroup(memcg)) {
+> >> +		bpf_oom_ops = READ_ONCE(memcg->bpf_oom);
+> >> +		if (!bpf_oom_ops)
+> >> +			continue;
+> >> +
+> >> +		/* Call BPF OOM handler */
+> >> +		ret = bpf_ops_handle_oom(bpf_oom_ops, memcg, oc);
+> >> +		if (ret && oc->bpf_memory_freed)
+> >> +			goto exit;
+> >
+> > I have a question about the semantics of oc->bpf_memory_freed.
+> >
+> > Currently, it seems this flag is used to indicate that a BPF OOM
+> > program has made forward progress by freeing some memory (i.e.,
+> > bpf_oom_kill_process()), but if it's not set, it falls back to the
+> > default in-kernel OOM killer.
+> >
+> > However, what if forward progress in some contexts means not freeing
+> > memory? For example, in some bespoke container environments, the
+> > policy might be to catch the OOM event and handle it gracefully by
+> > raising the memory.limit_in_bytes on the affected memcg. In this kind
+> > of resizing scenario, no memory would be freed, but the OOM event
+> > would effectively be resolved.
+> 
+> I'd say we need to introduce a special kfunc which increases the limit
+> and sets bpf_memory_freed. I think it's important to maintain safety
+> guarantee, so that a faulty bpf program is not leading to the system
+> being deadlocked on memory.
 
+Yeah, I was thinking something along the same lines. We can always add
+this kind of new BPF kfunc in at a later point, so need to directly
+address this use case right now.
 
