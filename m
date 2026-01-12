@@ -4,84 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6AF7D2505E
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 09:37:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA056D2505E
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 09:40:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B6566B0088; Mon, 12 Jan 2026 04:37:34 -0500 (EST)
+	id 2D1D36B0088; Mon, 12 Jan 2026 04:40:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 276E66B0089; Mon, 12 Jan 2026 04:37:34 -0500 (EST)
+	id 27C276B0089; Mon, 12 Jan 2026 04:40:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AD356B008A; Mon, 12 Jan 2026 04:37:34 -0500 (EST)
+	id 161866B008A; Mon, 12 Jan 2026 04:40:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0ACB76B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 04:37:34 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9E985160761
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:37:33 +0000 (UTC)
-X-FDA: 84322809186.23.DADC936
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E39B6120006
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:37:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0167D6B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 04:40:58 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8B4F35ADC5
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:40:58 +0000 (UTC)
+X-FDA: 84322817796.26.4219F76
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A59A04000D
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 09:40:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=inetSa0z;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768210856; a=rsa-sha256;
+	cv=none;
+	b=W6h1NF5EOsrUBBZdPKKeTxD0pUqS/2F0+Pp768F4XfR7MJyobSqzXeWPoHATjddTFibiuc
+	Hgcknb+CegVD8skn2+Ow4X2udJmwQ+P3UIbde4Iz09Dgf4JzpGulBlm0nWXi4xD5u0IbCt
+	nkPShx4NosoqVcZwrn0Gp4aZ3TSU1kA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=inetSa0z;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768210652;
+	s=arc-20220608; t=1768210856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LLHaptyO8Et6BX64ae2o2/w3br5H+WwMc8+MrROXYEY=;
-	b=B0jAFJ8P3XVVw4XmjbzGRn+NTJ6LCJz4dxgkguNyDV4vUrkm1dnNvl8yqKHR8lNjDv1qW/
-	7YeKBS++0lPD9qWqiyhPV5wDyhch0x8bThKvLlEiRIgpX6gRUrUW7nOkAb00BZFpQXhpYT
-	NbA7kPsGOkrjyHxoGa2zMDp4yDz75+0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768210652; a=rsa-sha256;
-	cv=none;
-	b=UeCLRGyT7W8ENg1QV8Zv3fNKziUb2OLO7QQ7uvYq5J+Z3rHKi7J3eudabWHbQhD2yxbTxt
-	Op9nxqH0veeU8ZL/Wg+5QiKXc2n+h/kUk2j5xWeefNr2wkED7Ag+HPh3KBF81JC/rxxAFT
-	dZC+xIHqUbrx77xty7COT0/IVzIh6Gk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2002E339;
-	Mon, 12 Jan 2026 01:37:24 -0800 (PST)
-Received: from [10.57.48.185] (unknown [10.57.48.185])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 663AA3F694;
-	Mon, 12 Jan 2026 01:37:28 -0800 (PST)
-Message-ID: <b785754d-ba6f-42db-9e44-66fd377aad03@arm.com>
-Date: Mon, 12 Jan 2026 10:37:26 +0100
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TYEUKnKawPljIBp6tUdzr8/N7aMzKFxab/qqoPEvo7U=;
+	b=VqnXwE+g+kvajAue2+eADyFy9OJxWrLerdDuA78GssGeeOsDYJ4vVUYWQkXMJZ8aknGrRU
+	uSEgW7Q61TuUYfK33DXbCzEYf1RKarwW9zVJV7JKcBXwEx7ANVQLXDuA0katBAeSIhyvyF
+	03AXJLgn8Dgu7VR/T9hdEdNExvjxC3I=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 719FD40785;
+	Mon, 12 Jan 2026 09:40:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2BCC16AAE;
+	Mon, 12 Jan 2026 09:40:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768210855;
+	bh=///vLbn2F5pl8UMSUnDHr/s7p6gqOMMohsrozaR2AGs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=inetSa0zx/EwkEQO5a3lnCgqOwEs4rA0lrxs8A7rB5U+FWW9dIbdRyyVCP2G5vPoL
+	 YSZq+f2WpTPgR8NDZ/3v7OylA5p36q1PkPgCbi+94jgrLiqEg8meEkUf+XH6AEBMNw
+	 AjcxcFEzW8p5f7QvkkXbkd82t3lBTUG3jQOeLmkD6eu4Fkv1sXUpqTGsWcknuABy9a
+	 kohzS41OG5C8m3Jp1TON0pBa2aRZ0pbq4Esvn2p0Zxc2HUwAkRa/eLJAcN2mxzvUoz
+	 UX3Z8aJp2nh240o0XtSzS579jeb5rwqyXqTI4q0Q9aM0Am51Fjr4q9RoppAytAF+xf
+	 1vd3W8ZuEgUVw==
+Message-ID: <693dc9aa-cf86-48c7-be9c-ec554f9da855@kernel.org>
+Date: Mon, 12 Jan 2026 10:40:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/8] selftests/mm: introduce helper to read every page
- in range
-To: SeongJae Park <sj@kernel.org>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mark Brown
- <broonie@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>
-References: <20260109013009.68474-1-sj@kernel.org>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260109013009.68474-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E39B6120006
+Subject: Re: [PATCH 0/3] selftests/mm: add memory failure selftests
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ nao.horiguchi@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, akpm@linux-foundation.org, shuah@kernel.org
+References: <20260107093710.3928374-1-linmiaohe@huawei.com>
+ <9413a995-9182-493e-a28a-6d2d3a17236b@kernel.org>
+ <2ae04380-fd60-a8a1-6217-386454fec610@huawei.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <2ae04380-fd60-a8a1-6217-386454fec610@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A59A04000D
+X-Stat-Signature: yimfca7a6g84ngycuzzijzdy5idhjije
 X-Rspam-User: 
-X-Stat-Signature: wnxoi6phiqpx9gup7ankdwefzrnqpk7r
-X-HE-Tag: 1768210651-694689
-X-HE-Meta: U2FsdGVkX1+NFvkyRZYScZaqvtG1D9BJ4kPhEyWCtbWCQnnmnMUsia1aY7lLB7+8y+X5G4/EXKJ9lPs7ymaeAi2YNvSCB+s+XTn3zpB2f6F1DBgvq23hzB84sSN55+TP6Fryx84h0JCnSW2tusd6cgiHLrb5ZlfY4MMhu40xSXjMCTDNlvWO8l7UnalM5TD0OXbyEAzVfDFs3M2+9rIAQXswr2RsDciiQ2ndQdzw8uCCyRoxCwsRvThBRrSPslfuGS/u68yA6Ixr/JSmO461vTFuXv1HW55s1hC4e0hNUi2qpkvedT0/FmqMX4UgUEmDkDIlscszy7MPcZybmQW+qaggcBy+RAVUC2czaGK/o4KgZj96LUTv8OBDVTJcjDJiHJ2hmwbPQylVR7a7Gpb+TeItKNujdkTWPtPigD8AudQ/ya2sTuaDdWgFwO3I6G/OUtpk9X1c6RfpyifaL/dZz/WVuOcVFg4e2lktzj+F/XoN1Sy7CblbzWlMRCbK1yiZ2fJh4aUqyRYFvW42/KsH4OMjuN2a1NrEgxJsLnYE9babNORxjT9QLHTfuLPZTXiuOAsaCvRE/RlydRjlz+PyMBGCcjFeTVOO0aPwRX6ajMzdGT5cAYA9U081K/ZkJVfETHLIJgcjnX0FBdOjGx4eujIBekKxguqRNEcqwaLylec+kj6ldQUF17it1qljbeOQlP9NjwGyiUJF+rkNmoUyMdKR3PH9eNUISKq5Ne5hlNzZeFi34Fq39EKsmOx6hzUBdidr+ENpbyCZKEpXNxb0ciG9NbhvmbE5hVjg83qfiVPEakhD9WuOIlWULjuQb/r+6SKwpv56Wwj6aaqR2jdY9pXj9DdUlHDvErkR0vP2+zVAo2rBADNDvAdhwrJKulIVzwW6ymV7V/d1v0sGmfXJnjkWepF7fxpQq/ju9stt0h3QKmzSuSQXcfAuW/znD2J2DwJrhH2hnYyb8e/5Xxe
- P65qd/CE
- 3DTRVEDFoeAjcYx1fPH2BSgoFWtzmEFq5yFsKlIiNbtalLpmQP1nrdRnCuTN9ArIBgjUgKsmlz2wuGtf4Er5V7/rUMMhD8v2b3yHQQgsU+lw6qmT1YMSzJnUxDu/gTOr9GyiA9YvAFG54npbgDAY0O5jBSdcNESg+FdCzMiVZTUMROYCYeEx3BkhDp10oRb9kWbdyY+6Ioz5hKKJWI+6Bj5oQI1HeDf+UJuRm
+X-HE-Tag: 1768210856-736736
+X-HE-Meta: U2FsdGVkX18umvpyWo4fiiLz2J/bYqtPTyNJ8VYyxa5a3D/oz14Q1asLiEjZHGCpH48IWcabhjmq1kaiy3ZPKdmEKrsbHmlAXBLjWC1q6dUb37DoAG5/sO+Lwa+Iu3cVWFQzj/LJ3yWd1fCTpuwl+mbLXbwrM3cRgM2Rb1PT69R5Uaaz0HmHmUnCLttS3gMIGEoyyVHZ/4UKKVmTrNZH7IeB1Drb23icGlaDuyZDLzPg03eO3JA5EulcN8YVj4AsB8QJbYvEGX6UkPZOF512Ljkmd8oy2GudmGYdI/oM8A6AoeCI/nwGPjqJdSgoUbb4Qz7qsqoFW4PL2NWSifvLPVTZm6bSXoM67bDPTm3q/AGd0BLu3JmontQZrDfyxsbCaNJXcduAS3VnenNs7ICIe2e8/oVjqF9zy9B0TOm/tvNeoJhxfykRtPlWOuexqE5/wh+HFvDsWWcC0u7lmfSahWB6wt7GVpYnPuP8eWG4MNNIIewbcpEjEemhpy94S/FaVi4p7kCzdK3XWxUUad62GO6dvc1Ydhi7IzwQB7utxRlRVoR178Xq8bFRi7Ava+fNi5e7vbv4ddkd2asFv1BsPXzo3Soh/umVy13554FsAnxZ8qS4TJ3egjCWUo2sfxxpfUQqSthrnM7BZFHs5xHB+6avpzDKW/uMe3a2RGRsruZbKp3KdDtefvYysLBXZvdgc+MivxmBe8R2ooJw+7l3kKblxvSTIcr+ostE3SBNTotGhYfa1msFCm7FjNgYLyljhhL5r8T41aqT3pu/HfD8Zb1XHkLwgVA2N9e6UtDhbhih+GNZMoTHlOlcIlOoW0mMORT+BrhsclnaXHYAeKW5oRx02hMlHobaUj6gWbSw/kNqXsRrFsIuWTnEo0AzYiCdJ3AAI0S0e7R+0LTrSgeJ6doMxdBysGa2W+njfzsCgH6H0WxOnQg+CZnYJxV7S6F4k393ba59+ofQpBylF7q
+ JeJsrsUD
+ WxwJ5GitaiUr4iw2A/PT51cNeNoHiy8fF4vmeCIWxp9mFL1r67eMmVlurVM5wEnboW+R+AIzXZw3XU/X3cDZzPhMvYXfPa7awXG/inxXSjfzmfLNcelyj0a9Mmv5rYjevwKF+Bzb/mkRbR56YdcHEnmaO8PQKQC6TU8nxFUf86pcBVgc1AZEsKgcp2es5rVwGXpugdD6A9MadqTfl5kRqx3fZ8lI/50YEK8iRUXfIO3aD+/qCGNhqXg3TUgbrBfkSUFKNxebLR4ufMlNaWC0xWiInVQ17ub0FbPkiKoz80mfWh75b/fGHMODgtrwJe2JsRPGbxPSmo64Rn9sDzJfT5BTUsUaKOWGm1Mca
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,41 +141,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/01/2026 02:30, SeongJae Park wrote:
-> On Wed,  7 Jan 2026 16:48:39 +0000 Kevin Brodsky <kevin.brodsky@arm.com> wrote:
->
->> FORCE_READ(*addr) ensures that the compiler will emit a load from
->> addr. Several tests need to trigger such a load for every page in
->> the range [addr, addr + len), ensuring that every page is faulted
->> in, if it wasn't already.
+On 1/12/26 10:19, Miaohe Lin wrote:
+> On 2026/1/9 21:45, David Hildenbrand (Red Hat) wrote:
+>> On 1/7/26 10:37, Miaohe Lin wrote:
+>>> Introduce selftests to validate the functionality of memory failure.
+>>> These tests help ensure that memory failure handling for anonymous
+>>> pages, pagecaches pages works correctly, including proper SIGBUS
+>>> delivery to user processes, page isolation, and recovery paths.
+>>>
+>>> Currently madvise syscall is used to inject memory failures. And only
+>>> anonymous pages and pagecaches are tested. More test scenarios, e.g.
+>>> hugetlb, shmem, thp, will be added. Also more memory failure injecting
+>>> methods will be supported, e.g. APEI Error INJection, if required.
 >>
->> Introduce a new helper force_read_pages_in_range() that does exactly
->> that and replace existing loops with a call to it.
-> Seems like a good cleanup to me.
+> 
+> Thanks for test and report. :)
+> 
+>> 0day reports that these tests fail:
+>>
+>> # # ------------------------
+>> # # running ./memory-failure
+>> # # ------------------------
+>> # # TAP version 13
+>> # # 1..6
+>> # # # Starting 6 tests from 2 test cases.
+>> # # #  RUN           memory_failure.madv_hard.anon ...
+>> # # #            OK  memory_failure.madv_hard.anon
+>> # # ok 1 memory_failure.madv_hard.anon
+>> # # #  RUN           memory_failure.madv_hard.clean_pagecache ...
+>> # # # memory-failure.c:166:clean_pagecache:Expected setjmp (1) == 0 (0)
+>> # # # clean_pagecache: Test terminated by assertion
+>> # # #          FAIL  memory_failure.madv_hard.clean_pagecache
+>> # # not ok 2 memory_failure.madv_hard.clean_pagecache
+>> # # #  RUN           memory_failure.madv_hard.dirty_pagecache ...
+>> # # # memory-failure.c:207:dirty_pagecache:Expected unpoison_memory(self->pfn) (-16) == 0 (0)
+>> # # # dirty_pagecache: Test terminated by assertion
+>> # # #          FAIL  memory_failure.madv_hard.dirty_pagecache
+>> # # not ok 3 memory_failure.madv_hard.dirty_pagecache
+>> # # #  RUN           memory_failure.madv_soft.anon ...
+>> # # #            OK  memory_failure.madv_soft.anon
+>> # # ok 4 memory_failure.madv_soft.anon
+>> # # #  RUN           memory_failure.madv_soft.clean_pagecache ...
+>> # # # memory-failure.c:282:clean_pagecache:Expected variant->inject(self, addr) (-1) == 0 (0)
+>> # # # clean_pagecache: Test terminated by assertion
+>> # # #          FAIL  memory_failure.madv_soft.clean_pagecache
+>> # # not ok 5 memory_failure.madv_soft.clean_pagecache
+>> # # #  RUN           memory_failure.madv_soft.dirty_pagecache ...
+>> # # # memory-failure.c:319:dirty_pagecache:Expected variant->inject(self, addr) (-1) == 0 (0)
+>> # # # dirty_pagecache: Test terminated by assertion
+>> # # #          FAIL  memory_failure.madv_soft.dirty_pagecache
+>> # # not ok 6 memory_failure.madv_soft.dirty_pagecache
+>> # # # FAILED: 2 / 6 tests passed.
+>> # # # Totals: pass:2 fail:4 xfail:0 xpass:0 skip:0 error:0
+>> # # [FAIL]
+>> # not ok 71 memory-failure # exit=1
+>>
+>>
+>> Can the test maybe not deal with running in certain environments (config options etc)?
+> 
+> To run the test, I think there should be:
+>    1.CONFIG_MEMORY_FAILURE and CONFIG_HWPOISON_INJECT should be enabled.
+>    2.Root privilege is required.
+>    3.For dirty/clean pagecache testcases, the test file "./clean-page-cache-test-file" and
+>      "./dirty-page-cache-test-file" are assumed to be created on non-memory file systems
+>      such as xfs, ext4, etc.
+> 
+> Does your test environment break any of the above rules?
 
-Thanks for having a look at this series!
+It is 0day environment, so very likely yes. I suspect 1).
 
->> Some of those
->> loops have a different step size, but reading from every page is
->> appropriate in all cases.
-> So the test program's behavior is slightly be changed.  I believe that
-> shouldn't be problem, but I'm not that familiar with the test code, so not very
-> sure.  I'd like to listen voices from people more familiar with those.
->
-> Meanwhile, I'm curious what do you think about making the helper function
-> receives the step size together, and let the callers just pass their current
-> step size.
+> Am I expected to add some code to
+> guard against this?
 
-That's what I initially considered, but considering this discussion on
-v1 [1] this doesn't seem to be justified. In hugetlb-madvise, reading
-every page instead of every hugepage is unnecessary but still correct
-and the overhead should be negligible. In split_huge_page_test, I don't
-think there's any justification for reading every byte - the intention
-is to fault in pages, like all the other cases this patch touches.
+Yes, at least some.
 
-- Kevin
+Checking for root privileges is not required. The tests are commonly run 
+from non-memory file systems, but, in theory, could be run from nfs etc.
 
-[1]
-https://lore.kernel.org/all/a3ca6293-8f85-4489-a48e-eb8d0d3792c5@kernel.org/
+If you require special file systems, take a look at gup_longterm.o where 
+we test for some fileystsem types.
 
+Regarding 1): tools/testing/selftests/mm/config includes the config 
+options we expect to be set for running MM tests. Extending that might 
+take a while until environments like 0day would pick up such changes. If 
+you require something else, make your test SKIP tests if the relevant 
+kernel support is not there (e.g., sense support and conditionally skip).
+
+-- 
+Cheers
+
+David
 
