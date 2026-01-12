@@ -4,171 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A562BD25051
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 08:34:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1466CD25051
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 08:42:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6E396B008A; Mon, 12 Jan 2026 03:34:27 -0500 (EST)
+	id EAF4F6B0088; Mon, 12 Jan 2026 03:42:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1BCD6B008C; Mon, 12 Jan 2026 03:34:27 -0500 (EST)
+	id E32B66B0089; Mon, 12 Jan 2026 03:42:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1ABF6B0092; Mon, 12 Jan 2026 03:34:27 -0500 (EST)
+	id D06EE6B008A; Mon, 12 Jan 2026 03:42:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BF8D06B008A
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 03:34:27 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E8EC1AD43A
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:34:27 +0000 (UTC)
-X-FDA: 84322650174.16.B1F1361
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EC6A52000B
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:34:23 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jeESO6WA;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cta12H05;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="o9X/K+4h";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="e23VvG/9";
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768206864; a=rsa-sha256;
-	cv=none;
-	b=HLOCgWjXBBKjkCL80aUIIa4csbNM3azNW8bMSeW7Z+thLWTn15rWeKkuPXKyVNgufOVWMu
-	GGkE/01ZHGcEUqtsVrVfs9Dros7UVnp78CbvX751f7qmiC3+97AMTkEy8qQY7JA3RzxPfw
-	im7c1+MqXpC26hO7w3gerdHYpazWu0c=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jeESO6WA;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cta12H05;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="o9X/K+4h";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="e23VvG/9";
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BDD086B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 03:42:18 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D54B1B9F5
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:42:18 +0000 (UTC)
+X-FDA: 84322669956.27.0FACFD7
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0F05A40002
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 08:42:15 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=VNKzHbev;
+	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768206864;
+	s=arc-20220608; t=1768207336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OwD4kApjFPZsXwhiMrMbTKQ84/M6yc6WaUVtiHu4Pmc=;
-	b=dKwDuSzfGu6Fbuwjq4rh71w2KAh9BaAGCvc2REMtbcWhhYVBij5hHrwkP2K9kyDmJXXR7x
-	jYupmiD7Wv2jbn0Je+eyHfkVSB4QM42Hw2IJUmvUoGSgnuqUjnad+rm5Ie3zzaMrbYEm01
-	qIVbj+AhW00G15UGJCt9iN2Q35Hyg7A=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8BB555BD5A;
-	Mon, 12 Jan 2026 08:34:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768206862; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OwD4kApjFPZsXwhiMrMbTKQ84/M6yc6WaUVtiHu4Pmc=;
-	b=jeESO6WADv9AgSVoHcn6NAB7ObtrcAKb4tPO7avnvaj94x60Zp9nhVg9zHzYXEhF8t23GD
-	Nh4w4VMiQGWBGvL37cfbvOwCH9X3FG5HLwLKBtCYQIyyZRVGVavoaS98s8bFv121foYmxS
-	3MCjKPEKdDXvsdw23araazugZr7Es5o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768206862;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OwD4kApjFPZsXwhiMrMbTKQ84/M6yc6WaUVtiHu4Pmc=;
-	b=cta12H05c5tqmPmhFF6z/nGqjln4lfmp2uZkQ2wZx5j3RcdvQtHVK/eAmQ234LV8t0p6RY
-	HgcfFhavB36cxgCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768206860; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OwD4kApjFPZsXwhiMrMbTKQ84/M6yc6WaUVtiHu4Pmc=;
-	b=o9X/K+4hg12a6N7Y4kXs7qpGVHcX8XxNnSz99lhiDK2wXTUqCsI8KLn1i5rnl/Sd/R8OQQ
-	BrGKxRmb0qexMZGb0mZ92kxjcm4SCYqDjXVQ1AUnXhB2L4fIJ7hThoAQK2wNNte1QaUmNx
-	SpuNPT4J+uQay72D/vTbswxKjDQflEs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768206860;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OwD4kApjFPZsXwhiMrMbTKQ84/M6yc6WaUVtiHu4Pmc=;
-	b=e23VvG/9+lixfeBZyT6ecLDPoYmSBMLD/62W/v6JBWvQ7nO2+zsJHm2bDCsYX5JmgzxACo
-	CzygbK1AguftL6Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 805303EA63;
-	Mon, 12 Jan 2026 08:34:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uCIGHwyyZGlRBgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 12 Jan 2026 08:34:20 +0000
-Message-ID: <d7263d12-e6e5-48d9-85b5-0937f7c0dac9@suse.cz>
-Date: Mon, 12 Jan 2026 09:34:20 +0100
+	bh=CDfFNoiSuTKA5KfAUoXISxuSK51bp7lujfs6vADIdxE=;
+	b=0A+nTCNM4oflBzSyDUciP9CUfR6eMvlxYTVanJXel1EoWjHeJkvf+eGe7HcUSP4kWhaD6v
+	ngoZFV7KSI8nd1DynVkB9+yARmyRK0qBDaWF4wOXK0nsyTUbgPzXYWIJOV4gPqiM0OIZpk
+	Mz7ZLvhA8B+XRM+SkINco/9PesJOTyU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=VNKzHbev;
+	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768207336; a=rsa-sha256;
+	cv=none;
+	b=IrJ48MrThR8Z8/v80ALDjORILk+GyAKmHda6pnJhE/wIn95AYU+EzCZo9YPQNpKIObNUYw
+	TMS6qSUA4L1znBSvfCbU9Ii36kveRG7pEfvACiOVeE/RMUA54h9/6jQhUvOFIM4z5khxHq
+	czYFY3/tIFqDQSXYrJMySb8Gwtf9GvU=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47774d3536dso42608985e9.0
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 00:42:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768207334; x=1768812134; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CDfFNoiSuTKA5KfAUoXISxuSK51bp7lujfs6vADIdxE=;
+        b=VNKzHbevup3Xstomf0sXlylRg15ZHuiUd5tM+kK7RlgMrTkMrHKGIYHVtS4YQ0daCY
+         +bNnoAbt3toyyJwAXfNRy2/tT3rTQrYjZG3HsvO56PVdQe0BmNtjOsB2CXh6xDtSrxuH
+         IIniRHR+A+K0Tdi9eumot8Ds/3Vz02W+10KqbzAtgiALI/v9AFFyq0MuF8ikMHeGAGhe
+         pvyYUnymtk+HRRFvMi/LjaHY1T93iwVcnl6z7IsUFzR+llyjfcjXMdix6YoTv2WXZppL
+         Y2M6+DhVJ1DJNSFZc3FhXyto0fMACMYZ5HXIcYyxnLIuY8IqRSZoLrCyBLsoEuz2yke5
+         xRiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768207334; x=1768812134;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CDfFNoiSuTKA5KfAUoXISxuSK51bp7lujfs6vADIdxE=;
+        b=jFWqGKMOxhmkpng8XKnLpYPMVk/6DMTCelE5uxtDz5sINl+kJx5wW+ti6H6prZtlXz
+         nQcgEzw660CLU/ItGArRbrQVLbQlRnGd4rJrGmYxvsZWnEVR+aulfJm7GNltNXNNOOlK
+         BS9D70mNPbFgPqRYelMjdSG7QOqaGiUHoAo/kq9RVJcZr9z3hq2iwtNc5zvRTz/xgZ0I
+         0RQXC+bSDJ9XlnoBtIJ+0TWxaZLbxY/cFgzVylgx+PO3MVaNTjdRpeBSqYqnNFMOqA0e
+         wPDHAvM4o8IOor7/kJoIS7j26yAwo355AJvuLEsBytFn2+PfTdX440NRZIrVEEslDToH
+         Ls8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWpYzanRedJXFThzM9y6nxe2q8O03tEV8P3ud9Jw8e+ckRax0M4BEdgIsSnJU/Xx9Fm4u/MpO/TbA==@kvack.org
+X-Gm-Message-State: AOJu0Yy7Aj/fWTB/UFzM1BCu5TFHPWSb9+YBN4aJ9d701fm6X4xjVOIp
+	AenZ+PJc+Rb0Hk9S6yieErFR4KSmksUAj7rKvKWnZ+WJN1X/c1I584CGU8dg4aaQxOw=
+X-Gm-Gg: AY/fxX45xcBFwQ9M9sZq4l7ra1MM41A94y1sq0WnryVxTWGTIHbpzXzyFjlemTScxz6
+	/b1+2DGv/P7FVLZAT8LMSNdsseXjB6tHbiAXf+5eXh8YIriTUDTM4S8C2LxWlovBybHPkK/UDJA
+	o0yqeFO1JyTRTQfepTPN1DvY/3j8IOTt8CvKH5PQjrXwFm+dUEdMFKkfR1LwHGYC4l/Ltlk6o8d
+	MYbSXXB84/0G0ZcYzehOzEjaFdH4ZYz32QTEHH9VRt1ZDNV1smV0wxVsx7ngHh3jie9Ck02Vfpm
+	Sr1Eplh83iTXMJy17N4LtXslL9hOTGoeSw3v9SNOgq6ecSChVQAqjD8iQ0oB7XFpsxxvTIujv/l
+	A7aL9kx2/oh1PzlIUQqtnPM6/wGuYYEujWtqom+rVI0MjP8rhQNRdVEtM/ftzuTimoQraQGK8MN
+	0W4kZrgi1FmT1+Qnh5ZUEHYcCGUFWYQ+9p7/I=
+X-Google-Smtp-Source: AGHT+IGOZ9lkMoCzrUzWNxChXoAXhL7/lCG+k3HeWbbjlLCJz2d0Tg02k9SjW7Z9t8X4D9e1/0CcXQ==
+X-Received: by 2002:a05:600c:3b05:b0:475:ddad:c3a9 with SMTP id 5b1f17b1804b1-47d84877e51mr207488795e9.13.1768207334460;
+        Mon, 12 Jan 2026 00:42:14 -0800 (PST)
+Received: from localhost (109-81-19-111.rct.o2.cz. [109.81.19.111])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d865f84besm132725385e9.1.2026.01.12.00.42.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 00:42:13 -0800 (PST)
+Date: Mon, 12 Jan 2026 09:42:12 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>, christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>
+Subject: Re: [PATCH v13 2/3] mm: Fix OOM killer inaccuracy on large many-core
+ systems
+Message-ID: <aWSz5OHBwtfYrruu@tiehlicka>
+References: <20260111194958.1231477-1-mathieu.desnoyers@efficios.com>
+ <20260111194958.1231477-3-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [vbabka:b4/sheaves-for-all-rebased] [slab] 9b0317d1c2:
- xfstests.generic.629.fail
-Content-Language: en-US
-To: kernel test robot <oliver.sang@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-mm@kvack.org
-References: <202601121022.41666cea-lkp@intel.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <202601121022.41666cea-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EC6A52000B
-X-Stat-Signature: a3ji1rtdmgqutbsbfzf4obc6cx4bjwjb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260111194958.1231477-3-mathieu.desnoyers@efficios.com>
 X-Rspam-User: 
-X-HE-Tag: 1768206863-231103
-X-HE-Meta: U2FsdGVkX19Qst28gDBrH4FqsR4jxiPxvuDVGK6piENnds6Zm7Mtm/YBFzU5ZH4teD94HFhnRXFeKLqMXqhtdWMQrGJqWs3yJIydFRrvYiSzL7UycdiPgt412tqU4vtyOGM4D0rknC3fPDHS/PQW8uiJDNK1Lo3sepEXGLi1Z8r11v8YCIw4KjaN1OdhCl+HxuZvtMVH6RDtNuGPmccI+K8lJs3bVtf9XqxOW7jzIArre5qEwnFTZMg7jw6LrnhQSa3IEL7InNxpeQPWsxdtxn8jpuCmS0Y7H17oIEJPMOFv42ycYVq0RDV8NpO/XadFHJBY7ceoE18fj3UP+sAg2iFuuQRvWjuzN7i71z4MfUZkXhsjMGzyTDLlfRZNBDF7fcTnNCRqtDrfeXQDmZ3YJuUHP8NpvX4kO7W2VC+3B9fVc55J+CdNk/TLNkV+noQeql4XikCuc2at76nrxZAVZAJc/RbDjFcV1BMy9WqKnf8wquVFVgOAZlBiZYZmPYXd/OtnQtU9ARVFszpjtUidnHisgFFkVFROGBxC6YdNd9QV2AqzVa7UEDfjDrdqkOmovve51o5uYHOxOD57e5SGMtbbcjsDmTsmtl8R3oBPRZ5MNy2eubERBzl++2cd+UVLypBiuLg2lQjlV/V/97XaGJKRwBZ29jsaxPqlJYdV57tyDOJce8jvWm1ljWHFjW5FpSNHhBmQrPcEfV90j7rI0fH8jxvK7MPdP19unqy07C4lqgkhn/G7jmXT+8hAlLjN2vx/a2kwLOyRzMC6zgTJ3yjO+V75IL1LFjPEILLBi9enAwpcjQWxez9zwMXfDYC3hjG0QsMF+sNx9jZ/dWnJClGPRCqS+eSeJmOzyMG/TB7NRlhLZ3FQLVJuIYyT50lTrDDb7KoZxOEcMhD63RUWVHRtiEY/kExHDPP/AlZ8eoGu3Thy7pHJfFQhZzQX/ZX8AvUmOSDUW/ewjXjDUKZ
- 3vmyP4o7
- 8MufeYDgrpMzkDWDLwPDppFBLjpWZhWro2X8uRL+cUaZFO0X1lphMxhdGbYxmXhFRr9GHTDB3DgZuvRnLALglNDIy1XhCIaouQIhBMSybmqqv0QkMWZgxNm/nD7z7NnW2hbma3f/UTb+l7aERD2U9tIfIZtOsnncJH7rL1p0uH4r+k+Acus/VLSldt0rdd6vyDweZTcrdhqYj13df7W04uvZ062piHPdBbWEEGRSsqnibfvj8KE7GlpXo4DEkHDb33pGGwtodwVmxZDar8JOcm5BLVhsF5+RgASy4dEveWh4XAdGW5UqYKRhaPJaVNt9dwltZbQGhOUNOS+9FM4s7bYODL+IJUUnBCalIP2LJJeEddgf4rKfcQ6Bww60HSVLwlJuZAr5EzzDVkCM=
+X-Stat-Signature: 6aq6ahwqi3ijf6pxqjb6tjwwt3syk33c
+X-Rspamd-Queue-Id: 0F05A40002
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768207335-655560
+X-HE-Meta: U2FsdGVkX1/Gk5ZtXqo5tPFi0eFGjocxnsuMa/pFGYiWrVTq7vux+dO06hAvu4bS8Li8C3YByQi97nkHQH3G+cTZ/UouAk5+3md8qaTJ3S+oOfBIagPYDKEcLYxWzi7Lr7bRJ0mSqXZj1EtKhWLd4cQeeGcD0jLLOfd3WgaVb9XXTfp9KU443eQp5ElEkTX4PkGJ/p2vnM2mVrmdZqAz0DETBy6Rb6v5w9D9jx/YiF3+nhEgUAFEvfKpe4zqR2Qvp3WwbDdlNNHXYTtCBz6zZXhFyr7StPtD3wvqQbJwnSm4yN+QrOKiMDPAQaeRywqJq6kTAMb6yHzu0eJ0Xk74URDOOiY9cCcnF5sgp8h/l0sGRXF192ccxXd/Qx2XApORlGJ61LqkSjZjNCD5nqQ35Io8Y+DHK2foYXo8OTVBLNCkKIz0SuIOl6CG8NBBB1WjFKjTWFplqvIkR/T+vuPFkmsTUsl+yyij74sAQ4gmoWXoMv6FqjqPVKKnlmy2nUQ6DLayvKby4y71/vDGvuLCKIJariASQq+fQDCmXK7FJPhLuhwnIWITYgnTcSHTg8z9sr7cnTipwqqJK33eQ/ywuoMZEXV/scKc9/8C1s7r/F4otp7aDpNdMtFygr6jvSKmiVvgcPIOZMS5HZJldmjVW0mCGY7zA1sSJ2gZuN3zBTVtbnPB0KfpVluwrhLBDdbjygQIfTDF/51BFyQd0rwtRj5I3LhyPUvE2d7Z2vkD6Lk+pcdZAcAWgfffu/Wn0Ol1U7Ei6zCRC34JJJS7DmE48oVm6Nam6qzQd08jkGO6PHcxAdpcLregribvzWI4ZnHI3DUo/lKYSLCerLGg0vhR576m+lyAyUVLYoDYX+1aPJXqvWQ8+H9A0RXBdoHGNUrpC9y/oeUUM4Q7joKGqaSNfTtPs2AhPjfmTyC6hp9FZrVSKnyYkZ5UCHqaNFpcUcgQwY6kXa8k7qlllc+syjJ
+ BWjimXS/
+ bgzwf0T6GbQGmdDjHZIUavht/glE81qpmuOjR8Wad0FPKhtg9UVVxMJTBhCglFB1d6511czPZ6miThuSoRnN+A+1xe9i9SVE2wjTc2zghGY6OHiNlwKdksgeLfPmUfQQu6WSFaDnsDiSFwSd10NAL7FXFKHjVla7RShCeys/uOZUDA4dBjUSsHoQPuOnNDi9nehC9Z0io4GWGOfs0rDlRuCtnwvLGgJXhZSJJEvaFd7c8JeaSz85HRF4vvR52gphW4V3CK8HNImwYtALqAF8VicrG+TXT5sWkVLbqMPNO8wGlf8axNQsPP2+WhFucm1jd8mGCGPaFX5ITXW6n3NumXO2uehlFNZhrS4DKf5nUNrnA7BCYV6XpvHun9F+W5jzKgecqk1rl3y1zahJcNSgK3GrMQGoSGX/jkRz1bI0ZmN03eL8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,69 +144,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/12/26 03:54, kernel test robot wrote:
-> 
-> 
-> Hello,
-> 
-> kernel test robot noticed "xfstests.generic.629.fail" on:
-> 
-> commit: 9b0317d1c2ed590d69d39eba701cd3eb082ecc31 ("slab: remove cpu (partial) slabs usage from allocation paths")
-> https://git.kernel.org/cgit/linux/kernel/git/vbabka/linux.git b4/sheaves-for-all-rebased
-> 
-> in testcase: xfstests
-> version: xfstests-x86_64-df16c93a-1_20260105
-> with following parameters:
-> 
-> 	disk: 4HDD
-> 	fs: btrfs
-> 	test: generic-629
-> 
-> 
-> 
-> config: x86_64-rhel-9.4-func
-> compiler: gcc-14
-> test machine: 4 threads Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz (Skylake) with 32G memory
-> 
-> (please refer to attached dmesg/kmsg for entire log/backtrace)
-> 
-> 
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <oliver.sang@intel.com>
-> | Closes: https://lore.kernel.org/oe-lkp/202601121022.41666cea-lkp@intel.com
-> 
-> 2026-01-11 11:59:36 cd /lkp/benchmarks/xfstests
-> 2026-01-11 11:59:37 export TEST_DIR=/fs/sdb1
-> 2026-01-11 11:59:37 export TEST_DEV=/dev/sdb1
-> 2026-01-11 11:59:37 export FSTYP=btrfs
-> 2026-01-11 11:59:37 export SCRATCH_MNT=/fs/scratch
-> 2026-01-11 11:59:37 mkdir /fs/scratch -p
-> 2026-01-11 11:59:37 export SCRATCH_DEV_POOL="/dev/sdb2 /dev/sdb3 /dev/sdb4"
-> 2026-01-11 11:59:37 echo generic/629
-> 2026-01-11 11:59:37 ./check generic/629
-> FSTYP         -- btrfs
-> PLATFORM      -- Linux/x86_64 lkp-skl-d03 6.19.0-rc1-00010-g9b0317d1c2ed #1 SMP PREEMPT_DYNAMIC Sun Jan 11 19:50:05 CST 2026
-> MKFS_OPTIONS  -- /dev/sdb2
-> MOUNT_OPTIONS -- /dev/sdb2 /fs/scratch
-> 
-> generic/629        _check_dmesg: something found in dmesg (see /lkp/benchmarks/xfstests/results//generic/629.dmesg)
+Hi,
+sorry to jump in this late but the timing of previous versions didn't
+really work well for me.
 
-Hm I didn't notice anything suspicious in dmesg.xz - any idea what this
-refers to?
+On Sun 11-01-26 14:49:57, Mathieu Desnoyers wrote:
+[...]
+> Here is a (possibly incomplete) list of the prior approaches that were
+> used or proposed, along with their downside:
+> 
+> 1) Per-thread rss tracking: large error on many-thread processes.
+> 
+> 2) Per-CPU counters: up to 12% slower for short-lived processes and 9%
+>    increased system time in make test workloads [1]. Moreover, the
+>    inaccuracy increases with O(n^2) with the number of CPUs.
+> 
+> 3) Per-NUMA-node counters: requires atomics on fast-path (overhead),
+>    error is high with systems that have lots of NUMA nodes (32 times
+>    the number of NUMA nodes).
+> 
+> The approach proposed here is to replace this by the hierarchical
+> per-cpu counters, which bounds the inaccuracy based on the system
+> topology with O(N*logN).
 
-> Ran: generic/629
-> Failures: generic/629
-> Failed 1 of 1 tests
-> 
-> 
-> 
-> 
-> The kernel config and materials to reproduce are available at:
-> https://download.01.org/0day-ci/archive/20260112/202601121022.41666cea-lkp@intel.com
-> 
-> 
-> 
+The concept of hierarchical pcp counter is interesting and I am
+definitely not opposed if there are more users that would benefit.
 
+From the OOM POV, IIUC the primary problem is that get_mm_counter
+(percpu_counter_read_positive) is too imprecise on systems when the task
+is moving around a large number of cpus. In the list of alternative
+solutions I do not see percpu_counter_sum_positive to be mentioned.
+oom_badness() is a really slow path and taking the slow path to
+calculate a much more precise value seems acceptable. Have you
+considered that option?
+
+-- 
+Michal Hocko
+SUSE Labs
 
