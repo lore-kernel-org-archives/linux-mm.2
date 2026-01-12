@@ -4,181 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A824C9EC6D
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 10:55:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FCD8C9EC6D
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 10:58:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6825D6B0088; Mon, 12 Jan 2026 05:55:13 -0500 (EST)
+	id D22986B0089; Mon, 12 Jan 2026 05:58:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 643226B0089; Mon, 12 Jan 2026 05:55:13 -0500 (EST)
+	id CA6146B008A; Mon, 12 Jan 2026 05:58:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 521CD6B008A; Mon, 12 Jan 2026 05:55:13 -0500 (EST)
+	id B7AAE6B008C; Mon, 12 Jan 2026 05:58:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C3976B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:55:13 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A408C6B0089
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:58:11 -0500 (EST)
 Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 99D4BD0E92
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:55:12 +0000 (UTC)
-X-FDA: 84323004864.13.920DDEC
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 17CA28000F
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:55:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pbLM/krQ";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xMKJOGkD;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pbLM/krQ";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xMKJOGkD;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768215310; a=rsa-sha256;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F5421A09A4
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:58:11 +0000 (UTC)
+X-FDA: 84323012382.13.4CCCFB3
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3B12C100006
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:58:08 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="LBY/Azmf";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768215489; a=rsa-sha256;
 	cv=none;
-	b=bk1/MrxfzgsInCRJjLGqovj8Nj3yNzRrzq8S8zd28h3qXG/AAKNwk5OGZdR+6Ly5CmF2lP
-	LQgznrHOWTBj0stAxUX78Bxv19dB2rb+17lvIZBgxMWMcPXyyJKVWQd5Fb4+eC0Id3F4Fj
-	pG2t149LjQ6fQtgXZpW/xxYGPpLqclY=
+	b=VAPxInm1K7RAO17FAc2y3czQSj5xNI6eL5lGV8PK6cR4NaUerh9LD8VMLPwvwvGZ+8LfyM
+	f/e2Ja5bCNqcRlibKSfbdadjjDSS7R5DzrCZMp2UIkfbBm3RiIUsxBBdSqRUDPyyJO8BPV
+	m+myejIcaCG/HOBxxOpboE28FPeUWB0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pbLM/krQ";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xMKJOGkD;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pbLM/krQ";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xMKJOGkD;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="LBY/Azmf";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768215310;
+	s=arc-20220608; t=1768215489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yQnLU2w7dK6piodCTax/NpreN6qBl/Gte0TSTHMUnzk=;
-	b=FwVibFi1RhPJL0oxwBnjFe7vDyPdD/2Elv1MnZXP1TNKvoKVtk/mzxAWgtvSQ0l8AZwHYr
-	Gd8QGx1c5MJCmImjtTzQkc/uqbP2LIosPe5akpwmrYxl7rdUB9zm4xx/oe8NkVtSVyfk8X
-	t+WjDw1Dg4S8mX0HYYxCNN4X5Q9YYBA=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7138D5BD08;
-	Mon, 12 Jan 2026 10:55:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768215308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yQnLU2w7dK6piodCTax/NpreN6qBl/Gte0TSTHMUnzk=;
-	b=pbLM/krQiyS4EYDLdL5/3AWqj35K6/N9uMR1an60W2x5Asw6eBRgKbL17LL5gM50SQQbOA
-	oVDW4WY6k4FVBkW7dzYDg+7uWyosFF2Lws5nVc17I+6jTSD3zWGZxAvRxD84BweaD9Lsfq
-	fvY05kz9+AUND/z7L2jWLgrDWX0GMto=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768215308;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yQnLU2w7dK6piodCTax/NpreN6qBl/Gte0TSTHMUnzk=;
-	b=xMKJOGkD+hqy/9QkXnnjbhoIdfusqAbAuA3TiOGLdG39Ffr2nPDvacv0GWEjAKkkuGdIb4
-	JstcluC0eFdzGGDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768215308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yQnLU2w7dK6piodCTax/NpreN6qBl/Gte0TSTHMUnzk=;
-	b=pbLM/krQiyS4EYDLdL5/3AWqj35K6/N9uMR1an60W2x5Asw6eBRgKbL17LL5gM50SQQbOA
-	oVDW4WY6k4FVBkW7dzYDg+7uWyosFF2Lws5nVc17I+6jTSD3zWGZxAvRxD84BweaD9Lsfq
-	fvY05kz9+AUND/z7L2jWLgrDWX0GMto=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768215308;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yQnLU2w7dK6piodCTax/NpreN6qBl/Gte0TSTHMUnzk=;
-	b=xMKJOGkD+hqy/9QkXnnjbhoIdfusqAbAuA3TiOGLdG39Ffr2nPDvacv0GWEjAKkkuGdIb4
-	JstcluC0eFdzGGDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4DB173EA63;
-	Mon, 12 Jan 2026 10:55:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ylyeEgzTZGkPEgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 12 Jan 2026 10:55:08 +0000
-Message-ID: <3b7b610d-6482-49f0-8e46-6ae553bf8b98@suse.cz>
-Date: Mon, 12 Jan 2026 11:55:08 +0100
+	bh=adA1pfWwovY2UoWJPPih0D9Rj9g7yR5zYcd7adc9tVo=;
+	b=2lxUqp4S3+RQMO5ThkuN8FWkPc1EsNndMp9k8lLfWw4MbmNhWIfvqUW8BV4xUOrfgiAN5b
+	eepGpskzMI1rdPnniCZHZLr1Z1PYQW0R4LGDhw982iZH65TWig8Sn1+tmqaM8W44++1SJd
+	/f/apSMgkLVQfLa/GKjxGZnzp39u2Z8=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b872cf905d3so47654766b.2
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 02:58:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768215487; x=1768820287; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=adA1pfWwovY2UoWJPPih0D9Rj9g7yR5zYcd7adc9tVo=;
+        b=LBY/Azmf4GSzPnab9F4Q3xxRCWV91HFw2rAfex+KIOdGC4NjBZx37fEU5850KZxMks
+         N8uCiZg/drx3IrjCJDnAhRhHC0bLSo7TOqtnMj+h93tW/uUR+P3hiuArcX++reeSRIOC
+         f3gDXFY/Lv9wGZaUBn4eG/guhQoeQwNg9bJTmyjduBeAqIBs5+S7EqncSnsmUtwW/gwF
+         mX4cVkxc/+B2uU4Ofay7SLa75sP6z5NFZma3S3/bCG+bKDyLyofpHDhY9yuDL6Z1BJnI
+         jna8mgMQLh4+THkvrr5lhwndY5+y6i4DCVzotFk1gEzHUXxwuk1oer2QkcCJQnrIFsJ6
+         G9tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768215487; x=1768820287;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=adA1pfWwovY2UoWJPPih0D9Rj9g7yR5zYcd7adc9tVo=;
+        b=j6facO8VroiOoWLc4QvH3sIWWynB3QBd+P2b8Fd6gEUVknve/yeZAWSeXk3vnRx+IB
+         lMjPAl4omnuCJEbphNqQbslSDNzj9+j+tWyVgEr2fpA/+BUUAZr1YnC+h9asrm3vU8rj
+         LG7UgNSe2+mn9mJm8HkTOgcOkyu+KHR/aOfefpuhCiEmCSRM1KntS3sYL3dVHVlz3wg8
+         CEs77LR6NyU+nLzHGG0OKnu6Ftb+0T2jVdmfQwS+2zmoxYhcnNiEsltI2N8QmCXsov1N
+         o8WekLaXr6VWyMz1eH8B7/h10wqcdHXEYbLSp5DxfImYM3hxDX43XqZ6eh5/Gc5cogwA
+         E2yA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDzZa17WNHUkXkEhY/Tqju7vcnYup42tq8yphCWbCIdWgc0GiocMeZmBr32RcSIORk/QWTgCZmRA==@kvack.org
+X-Gm-Message-State: AOJu0YzRIjynZMvydd02UFxyM+scOV7tS4w+9c+EhJChVF8JD4TYDlqZ
+	igcw5QiZQAthUaist7fuk6u0LgPkBHLFOEsREUYpUjwgYU+xKCrSJLdSkKugOQ==
+X-Gm-Gg: AY/fxX4WDjyDfPHWQdRZMzY/tcP4jf7hGcajEA/jD2866Kf4Sn1BFxp5W0OL/DXVeyO
+	mi6TTyygdzE4SmcraLK14CTNUfc61//GAmPAYz2+adD2I6H5l9psbVtPs1dQNRQeEd31N8NKNT8
+	mvyMcIzudfR6nARUusCVEo9ehOB44Vj3A7mCdsXzZDG3V74x1mIm2cgvYD1UL96D0GCx7MtchyA
+	UYg487j+M0svgoLIcCE4m1dvMixLT3pN/WTDdFuBr/FmzjHYzNbbcK/4HohP6KkSz6y3kNfEzjS
+	iUYiHIFiiQDg9P1JasXuhSvmXk9T/FNHTq+NNpqKxYt4r729r3Ami6EH6yRMUY5aOpewi40g3fC
+	+RWbgUGIREk/qekbS5lNAsKKssT79go/C56x4+aDP5K5x9whlvo5VeRsoOTnb9y4iGtM2tpYYpx
+	93DQiwotznzvhqiK3jDl3ZHdS8ov0Pjrb+s/DX6A==
+X-Google-Smtp-Source: AGHT+IFIVt+/tdqSUiLxiFU/IaiqCnvUOdwWT9NHpHXxTczIiC5LUsjaXO1625aooqF/NTCZiKX43w==
+X-Received: by 2002:a05:6512:23a5:b0:595:76d6:26f4 with SMTP id 2adb3069b0e04-59b6ef0945amr6101844e87.5.1768214993308;
+        Mon, 12 Jan 2026 02:49:53 -0800 (PST)
+Received: from pc636 (host-95-203-18-139.mobileonline.telia.com. [95.203.18.139])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b7a0ca367sm3018309e87.38.2026.01.12.02.49.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 02:49:52 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Mon, 12 Jan 2026 11:49:50 +0100
+To: Dev Jain <dev.jain@arm.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, urezki@gmail.com,
+	akpm@linux-foundation.org, tytso@mit.edu, adilger.kernel@dilger.ca,
+	cem@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
+	shijie@os.amperecomputing.com, yang@os.amperecomputing.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, npiggin@gmail.com, willy@infradead.org,
+	david@kernel.org, ziy@nvidia.com
+Subject: Re: [RESEND RFC PATCH 0/2] Enable vmalloc huge mappings by default
+ on arm64
+Message-ID: <aWTRzpqU5yWhlV3u@pc636>
+References: <20251212042701.71993-1-dev.jain@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 00/19] slab: replace cpu (partial) slabs with sheaves
-Content-Language: en-US
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Mike Rapoport <rppt@kernel.org>
-References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
- <f7c33974-e520-387e-9e2f-1e523bfe1545@gentwo.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <f7c33974-e520-387e-9e2f-1e523bfe1545@gentwo.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251212042701.71993-1-dev.jain@arm.com>
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 17CA28000F
-X-Stat-Signature: b6dcojizdi3p6ekh3jpxryi1u316werr
+X-Rspamd-Queue-Id: 3B12C100006
+X-Stat-Signature: 1wrra8i98byxuxtzxw1bwciikzr19oc7
 X-Rspam-User: 
-X-HE-Tag: 1768215309-745820
-X-HE-Meta: U2FsdGVkX1/UpTq4lieqnDpOgevjN5wbUyrAlomWZOJauqEIny/+auHuwYnQ5+n9/TXUS8bCWCpJdNOrEf8JJUnh7WTViv/WJwqnMNwDCprmk6BZL+5HczgCxiuFOgRpaBys4VY/QS1Bx+2l2diGsSYkcgphFuSoSkDYaNbJ0XnisRVKgQpCeJMVjqUcXR1oDkkLcHApeyjIftDd3H1j4gmxfX1ATHvv/Cuea6n+icrFDLK1FBDdVefcmQh343O9vqUsAzQwLj09ghXtYVKIQBA6nUVSuOiipkrsSf9xUFCiuzFFLjf8JCwMXsHlgRYRJkt+GC8+0SYPWioAR6GZS0/ocfgIeZOWRA7/Iaa1q3TutGMmqeIfBguhSezR3DuYlIi/SABqefP/5REh1BB+eELoLcw6Ve3cEUziuHEcQKVAqU0WeIGncyKllIeFdgi0zLPwYHiSlllDWbv9GZ4mwey1zP/JBnS4NTNUdokMQRR1dmNLQxcrJDweVrh1aF5c2yUPJgzY6cTJj+QF/U2O7L4KDJvSYqySXCOIpUoRzqOa7FEPKCLzcs/DBZTkWzTbezjXJVd2QSqDug/bVR2OAFdvBP+b7W+ma/TI2NyAhYT1i97ZOk1zgYt/9Nv1KbpiN/Ihr7XNZr2rBoV+jWHF+ONOoKwQh5Yc8DmNbHOJ0ZSwzZBlbPfy4HMX98Rsihp2kuOuZu5p7lv8GZzzi1CviEYVhLS/sqA2XNvZ8nus6a8yrJr0a9CUkDeju+2pzSvlRzjAdKAPZzPLW02TBBxzjGWqHxeDFBHlPu8uOLM+R/uP4igklbGD1trmNE5Z7VeRL6TbJlash4oCcULW2A8R/xIFzMcs/nIWTL0G30tioQbLlcpIfLtU//M2plWfPtplJWjKnPN4XTdj2daaIKYY5da5VWaJFhl3N+89O9Sn72ceJFjrMt7o4ZYS4LyrWXGkCrGEEC9WAxpWjrLrQSL
- WtfRBTrn
- hyj4NQJzSqmLmra8LIB5fzgjUuqDYnAMH1t20Hxy43ZxgEPm+Upb41CSbOsDfHl5FX0xdez1kS4jkjqdIG5rTTZ9Fud7MbFkj/VW5JCZPTRoAxqE+D2t3CKqv0WqP5xDrLR+7m8eTyEwZym1Fg+54XCqe76i8MGjPmxB5NCK+yv1/hha/nzffMvaKdASUmsMRinIsCV5txpztErJYc2LpKh2+vhhryBXSkInao5GAXPxu//v/+BDNjsLjZk95/sj/OlBhdlmi4Piznx/hHeCbEdhA+k/Y3w0XDJWQ
+X-HE-Tag: 1768215488-513129
+X-HE-Meta: U2FsdGVkX1+RSOh1SsVRXJah5fV12kDek4tCimTXMQ+wbl7tnC8NvAiHXgYm6KvTxm+bG/uanFO48YWRizj0uTp0foaEJvE6rWOpitLB071qNCN8zq2NEjbPmb9z/FegcABJBLuG2AzDTBZaqAaaWPZn1eI+3odST+/giGGq4noGu7pqKd57085xbxSOvvAB2q3c7Xyg9Zmm7jeZKyN/HVbX7iG10qFEW96iSI0ipXjHfwVsoIcq4rMUO+uvJntfdy73S8PvGvbkKKZNJiD/MFqMjzRdAzthlmmKBFKPo9m9RGpKGphI6e/JVa/j+QANv+ub7D5aNrLtsDIMQcTAtqwzo9uSGIr1fzrZYW2umZ9IXJROx+Y8f/FpMlGAhfGD4oo5FDifs1Ede5o086q4zMCHQ8BjdFQULrxBDl1wmt1FU587ibEUWk1lWXfi0xMBBA6Dz2XIjmxO9DWTahTL4VHqsuL9Eilglkm3Ak4d0B9F+wfCxR2SunM0U3rsDnHXkmOahoatELam8QKtO6Eo/SsTs8wQ9D1ofoC31VaR0PmorMMdP0yutwfMlx8Lh3QBEBSpEducsO6Qes+1Lqemer24pHYhEEdd4ZzF0Ee0veI3iZ7YYe9E3gLr8v9GPsdjug369YPPv/GxnKBOO3pbFL7lMH6PvPZu3pSMt8puBoaeMCb6ClgAHWh2OkNJ9Sqm1jHUMyYQqbqfdP7eStRMcW34WaZ4JsMH8lE0pa1vT3dE4+GK+F/GKapkgZBWf7aemM+PMKeslx3zacOZFzzGXjzVGAtOjD1EikUsJ+oEaYadkdt0t0pEjAMs3+Xz3ITodXvtacof3P95IztxgbsKHAubkOpyWIiwXjNQB+GgL2KUMugfeKYtubeCnoYfp6BrmSFUZ656HpRlhOWxZD8QuYUz3GDQEKfD4ksQlPNHPZQhrw6Y+1jKuvYMYXzQeOKQeU8R02iw7kW3bLr1wmm
+ IVy8Eg3I
+ DuHo1RNKsCDl31sfAs83FymksTIOiLRU7tm7+pOv23boXdc5NAtDYOHSHG4w65IfbdNOK8FlbABXqtFsk7nfHxoPPwLZPy4ExeuVBeasPhE74qdMNnm5MmL+v3kbf8IQuBzXkhMr5dZ7rJqPUxclMTDyfjVVv7UWfz1LzQ19h3BOwgRtN/J/0pe+4rULbJFe9j7YCuU3cjUyqUhTna/Hd22RtsHLpdMOBWsaGHWUjRP2T2QrbXgUt6HPwfEzYi5+x8GcK8Xj/uP+eCsNXOMSbkj3WpehOdIyttDepTA0zZ01Mlv97hIC/EdxkX3mlEs1GGPr2A1lJAxHgSs+ttIr4mrskKCIqZungq+7G8h+NpvHzeHDyjeFjB+fAZzEuVwfmLB7jdZsOOI7OAzfv+SQCd0Uj2qJZKNx5+6DoPWhDDkGkXqDXuWLGkEnotioisPDveTNtUbTTkp+D42xbC4b/rVOKoW9TL2KaW21e/ZXeQXvPh4LkM8NTU2t23rqbQNxDP+LVmAQaTrNDNU4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,60 +125,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/4/25 23:11, Christoph Lameter (Ampere) wrote:
-> On Thu, 23 Oct 2025, Vlastimil Babka wrote:
+On Fri, Dec 12, 2025 at 09:56:59AM +0530, Dev Jain wrote:
+> In the quest for reducing TLB pressure via block mappings, enable huge
+> vmalloc by default on arm64 for BBML2-noabort systems which support kernel
+> live mapping split.
 > 
->> Besides (hopefully) improved performance, this removes the rather
->> complicated code related to the lockless fastpaths (using
->> this_cpu_try_cmpxchg128/64) and its complications with PREEMPT_RT or
->> kmalloc_nolock().
-
-Sorry for the late reply and thanks for the insights, I will incorporate
-them to the cover letter.
-
-> Going back to a strict LIFO scheme for alloc/free removes the following
-> performance features:
+> This series is an RFC, because I cannot get a performance improvement for
+> the usual benchmarks which we have. Currently, vmalloc follows an opt-in
+> approach for block mappings - the users calling vmalloc_huge() are the ones
+> which expect the most advantage from block mappings. Most users of
+> vmalloc(), kvmalloc() and kvzalloc() map a single page. After applying this
+> series, it is expected that a considerable number of users will produce
+> cont mappings, and probably none will produce PMD mappings.
 > 
-> 1. Objects are served randomly from a variety of slab pages instead of
-> serving all available objects from a single slab page and then from the
-> next. This means that the objects require a larger set of TLB entries to
-> cover. TLB pressure will increase.
-
-OK. Should be mitigated by the huge direct mappings hopefully. Also IIRC
-when Mike was evaluating patches to preserve the huge mappings better
-against splitting, the benefits were so low it was abandoned, so that
-suggests the TLB pressure on direct map isn't that bad.
-
-> 2. The number of partial slabs will increase since the free objects in a
-> partial page are not used up before moving onto the next. Instead free
-> objects from random slab pages are used.
-
-Agreed. Should be bounded by the number of cpu+barn sheaves.
-
-> Spatial object locality is reduced. Temporal object hotness increases.
-
-Ack.
-
->> The lockless slab freelist+counters update operation using
->> try_cmpxchg128/64 remains and is crucial for freeing remote NUMA objects
->> without repeating the "alien" array flushing of SLUB, and to allow
->> flushing objects from sheaves to slabs mostly without the node
->> list_lock.
+> I am asking for help from the community in testing - I believe that one of
+> the testing methods is xfstests: a lot of code uses the APIs mentioned
+> above. I am hoping that someone can jump in and run at least xfstests, and
+> probably some other tests which can take advantage of the reduced TLB
+> pressure from vmalloc cont mappings.
 > 
-> Hmm... So potential cache hot objects are lost that way and reused on
-> another node next. The role of the alien caches in SLAB was to cover that
-> case and we saw performance regressions without these caches.
+I checked how often vmalloc/vmap is triggered when i run xfstests. I think
+it also depends on env. and can be different from one setup to another.
 
-Interesting observation. I think commit e00946fe2351 ("[PATCH] slab: Bypass
-free lists for __drain_alien_cache()") is relevant?
+"echo vmalloc:alloc_vmap_area > set_event"
 
-But I wonder, wouldn't the objects tend to be cache hot on the cpu which was
-freeing them (and to which they were remote), but after that alien->shared
-array transfer then reallocated on a different cpu (to which they are
-local)? So I wouldn't expect cache hotness benefits there?
+urezki@milan:~/data/optane/xfs-test/xfstests.git$ wc -l ./vmalloc_traces/*.trace
+    2875 ./vmalloc_traces/generic_036.trace
+   30117 ./vmalloc_traces/generic_038.trace
+    8481 ./vmalloc_traces/generic_051.trace
+   16986 ./vmalloc_traces/generic_055.trace
+    6079 ./vmalloc_traces/generic_068.trace
+    2792 ./vmalloc_traces/generic_070.trace
+   26945 ./vmalloc_traces/generic_072.trace
+    2772 ./vmalloc_traces/generic_076.trace
+    2750 ./vmalloc_traces/generic_083.trace
+    3319 ./vmalloc_traces/generic_095.trace
+    2855 ./vmalloc_traces/generic_232.trace
+    3537 ./vmalloc_traces/generic_269.trace
+   21265 ./vmalloc_traces/generic_299.trace
+    3231 ./vmalloc_traces/generic_300.trace
+    3050 ./vmalloc_traces/generic_323.trace
+    2831 ./vmalloc_traces/generic_390.trace
+    4296 ./vmalloc_traces/generic_461.trace
+    4807 ./vmalloc_traces/generic_476.trace
+    3198 ./vmalloc_traces/generic_551.trace
+    3096 ./vmalloc_traces/generic_616.trace
+    6495 ./vmalloc_traces/generic_627.trace
+   11232 ./vmalloc_traces/generic_642.trace
+   11706 ./vmalloc_traces/generic_650.trace
+    3135 ./vmalloc_traces/generic_750.trace
+    5926 ./vmalloc_traces/generic_751.trace
+   77623 ./vmalloc_traces/xfs_013.trace
+    9172 ./vmalloc_traces/xfs_017.trace
+    4145 ./vmalloc_traces/xfs_068.trace
+    2982 ./vmalloc_traces/xfs_104.trace
+    7293 ./vmalloc_traces/xfs_167.trace
+   18851 ./vmalloc_traces/xfs_168.trace
+    4373 ./vmalloc_traces/xfs_442.trace
+    3550 ./vmalloc_traces/xfs_609.trace
+  321765 total
+urezki@milan:~/data/optane/xfs-test/xfstests.git$
 
-> The method of freeing still reduces the amount of remote partial slabs
-> that have to be managed and increases the locality of the objects.
+Time execution is different for each test. For example "xfs_013" test
+takes around 200 seconds on my system and is in top of number of calls:
 
-Ack.
+77623 / 200 = 388.115 calls/sec
+200 / 77623 = 0.002576 = ~each 2.5ms
+
+Please note, i have not checked impact of your patch on time execution
+or how TLB pressure is affected.
+
+--
+Uladzislau Rezki
 
