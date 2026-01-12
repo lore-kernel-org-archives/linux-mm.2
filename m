@@ -4,115 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A887C9EC6B
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 11:09:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD463C9EC72
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 11:09:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 842416B0089; Mon, 12 Jan 2026 06:09:57 -0500 (EST)
+	id 2E83B6B0088; Mon, 12 Jan 2026 06:09:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EFC76B008A; Mon, 12 Jan 2026 06:09:57 -0500 (EST)
+	id 295586B0089; Mon, 12 Jan 2026 06:09:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70F606B008C; Mon, 12 Jan 2026 06:09:57 -0500 (EST)
+	id 1A24D6B008A; Mon, 12 Jan 2026 06:09:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A5756B0089
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 06:09:57 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13C42D0E74
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 11:09:57 +0000 (UTC)
-X-FDA: 84323042034.21.CAFC08D
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 379B6180003
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 02CB86B0088
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 06:09:54 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 88D4A1609C1
 	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 11:09:54 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WcYpAnkm;
-	spf=pass (imf06.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768216195; a=rsa-sha256;
+X-FDA: 84323041908.09.0821101
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9C3ED160005
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 11:09:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WXqwJ3qj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768216192; a=rsa-sha256;
 	cv=none;
-	b=QRfzJZyvjaiXXeWSXgnsfS8XOn/IddWr/dJy+cKbChBnBDW8tK+A+a9VjagWs1NA61LNVP
-	BdjcYbeOCO2ynqc/RrxG3C5fMixhYDte2n7eq5joCsW87F1PubRzJ7bEJMKqbTr8FIREz9
-	6s7h60xomyb9Znw1YQL86Vmc/Fzt79o=
+	b=ZTWhD+2hQoMNHXB+SsJkYAz9JixYGlHFX8Wav4IV5jKCsSd/+hK1n7oT3+26D0PLfjb5qK
+	TUj4FGM5j8Mcvs3xVoyJzHUWD509urCspz0WQfu7TnpkkIxbPbboVzzawQGk2m1jg3ApWb
+	w9mDXpkKRDUQzO/rADqTL2oKCQW5lw0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WcYpAnkm;
-	spf=pass (imf06.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WXqwJ3qj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768216195;
+	s=arc-20220608; t=1768216192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hJnK/ei48zDVB0dQO8DBPDRFjRo4ADnGxtGvkG0ch+E=;
-	b=pbs8Cg3pQofCcXjuch88uV/yFbJnwGHfFlfKx/jWVfz1DLsPwoHgDTLX49IBhsimRi0i8H
-	ASRbcbqsaYQSaCllN4MXsDZcx6furkb3jVihs6lzk50vH8fa35BTVwpUvcu9f/7qpvl6nH
-	MYCkKFzf4rRyFRYH0MUoUnp5vY6oWg4=
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-59b6c13b68dso4424756e87.0
-        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 03:09:54 -0800 (PST)
+	bh=D62KH7s9ntfKdLzvtrZBDFlJUAmQrrG5hhZyFBCNFfQ=;
+	b=k2E7xPn9J0RNFDHI9L53fmXhfX9KOvdaLqgjj+Q3Pc7Q5wMGyqSXDqT3Zdvf6oGz29oZ0g
+	1/Ucdoqa35SKJr1aKZp08Lqc3/fzW+IvFSxsgO9BuKNkxlnGBAQm3EICTPJDARznMZeb23
+	+7GwjH6LhpSyQNPK5Y0ssiV/5fmP5D8=
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-383122fbc9bso33298671fa.1
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 03:09:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768216193; x=1768820993; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hJnK/ei48zDVB0dQO8DBPDRFjRo4ADnGxtGvkG0ch+E=;
-        b=WcYpAnkm467jNkANlODZvltsGIAbA+acpwNj6zK1g1b+egiAueyfHk3YB8eOpst6uC
-         zIlfte3J/Dx3PUTovvEGZKSUdPRWsd3eJxF/ljIdsRXbFcWi0Rm+8zZ4IPHFo33J26yb
-         kqUg4qRCGbpn/kgzZvXD9C1qpVT0jZExfGIOB9lljRO6nirzzXAbFXoVnAG0bBuGx9ol
-         Rls5ZrHwPCL+P/tE6meEEBtEqUsbK79JWzUUD+ODXsQcA2881WeakTYkpdh6vQYofJf0
-         ItF+Fmhj7EFMTYFkUQAEv+48tmjv2bN4MOpzzwbPyDgUpDGmAb0e+qu+DIRqKBjNEZTD
-         Zwzw==
+        d=gmail.com; s=20230601; t=1768216191; x=1768820991; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D62KH7s9ntfKdLzvtrZBDFlJUAmQrrG5hhZyFBCNFfQ=;
+        b=WXqwJ3qj9kx5CHzfxNWBERbbZ6DuC37333JX/kgt4H0Dq86BG/fGt0YncyyJvbvJji
+         MR1e9EIlxquGYmsSLgpCZduLl7hAMQ/a8b89DttcwGrKf42wdiERv+iTzBsOz1FGIrqK
+         Vridi0++ts6c7zCccVb9IJNwfgbpo4AcVUxnW4AZ2/NJdtyaCXXSatqiHxRmgvE50oCR
+         2/p3YNnwzsucHUBGDsSfg2NsqO4e2WovT0oAZmxDdyhNT0z0jlC2kbsywHIOQvhxMEHN
+         xsuTxBe5HRKpd3pEpofT2B6ztVQ7FapvictYGimQtSqzHQg6yfkkLvfoKjI52aIS/iOw
+         QjBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768216193; x=1768820993;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hJnK/ei48zDVB0dQO8DBPDRFjRo4ADnGxtGvkG0ch+E=;
-        b=m5Ut1g/dMbqqzvZrtmrnyNW2k/89QojKuLOo6cPvuA59ysCBFOhXZ+O1kznrglnqht
-         oR/8vEzdr+B9FiLxYA7jwhULU+gJdp53kRkD2RoLRXiUwqXemv/W4xd4seVoQICYe24U
-         D1Ms/agZCiBvcPVN0u7Yzr+cMN7e1KNbFqny3kSA2szHXGl1ekk0yYr/9YzgLrvRxNM1
-         TujFjrUisX8utlPOM5pnL/nUtiAUihW+gNO4HmF/RLD4W4rNJTFovhoq0O/RqtSfY+Y/
-         jr74r4T2eRtCGG4fvgMDfTlB4twrm0N7a6ZP60G79hINOmTAn4myHBdDPcb+a15NRBaG
-         DYnw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNNNrmhweK/WYq21oFQNtwZqErYuhDtTrybZiX9DRZ0ExAXCh33Mg0Q91C61Lt0Sj5P6em2tivhA==@kvack.org
-X-Gm-Message-State: AOJu0YwON4w8QbQnd+QYcORL8WtdUc0iQinnBj03Yh4vZ6OmHPJuHg4D
-	jcSl7qz47YDkueIRgKvKerQx3cJRbYpHOF5MQiXK4RTPA+3CmRuA6ZHAYTTroQ==
-X-Gm-Gg: AY/fxX5OEf+FL5BTBna+7L7AO36evPWqz9n7/MWTpMoO/peT3xQgEyOTjKQU9jGOXUQ
-	1Fltlb5UFVj5jsg/kBuZx6/5M/Q0IvgA4/illpDbonIXHv4DNRvUo4wyMLZ4hkV0yFundkN7LiM
-	UClf6rlLH1CwnBBdiudV3Pj/lKQD8JKb6p7jCnHGjwnCwdbxxmwfvPal+jKL6aQ1KKtGMxklKDF
-	cmRmo3/v7c0/tS8EHeHpDNASt/KGHepLo9avjXjquc1LFhMlRZkpliRhF16UDnoulEvlFsxfckt
-	4Jmefd0TUIr2tZbNiVruKMeMI+IKFd1FI2uPrDPZqulxzgXNYmDf49oXEQ1hc4MQyoQkHOk3AWg
-	F4yVFo5IpYSB7C6efclwkd7vDlWRdkhraV1OOOYo69++YC8DGTlpvx0aaYNfGHvIl2BOLK885By
-	z4XI+otFkuCox3OuTTYErXvdL3wVP0YE7wjLdCNw==
-X-Google-Smtp-Source: AGHT+IEp/se7xsBn5Zy5m6ezN/he+DrJVk9vJFsoad8vBJwhFX14R+WJyNjzHktCAH5Re/onvRS+Mw==
-X-Received: by 2002:a05:6512:3b06:b0:598:e985:21ef with SMTP id 2adb3069b0e04-59b6eb6b363mr5513280e87.24.1768216193127;
-        Mon, 12 Jan 2026 03:09:53 -0800 (PST)
-Received: from pc636 (host-95-203-18-139.mobileonline.telia.com. [95.203.18.139])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b732da1e7sm3696067e87.18.2026.01.12.03.09.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 03:09:52 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Mon, 12 Jan 2026 12:09:50 +0100
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
-Subject: Re: [PATCH v2] mm/vmalloc: prevent RCU stalls in
- kasan_release_vmalloc_node
-Message-ID: <aWTWfri7PTCbcu2r@pc636>
-References: <20260112103612.627247-1-kartikey406@gmail.com>
+        d=1e100.net; s=20230601; t=1768216191; x=1768820991;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=D62KH7s9ntfKdLzvtrZBDFlJUAmQrrG5hhZyFBCNFfQ=;
+        b=Jgw24Ov8lYCGfxa7XKw/qLv7QlipbYrabFUkHc0bf4eitHMba23WehleCJP0+YzM7S
+         cOZyxzfie0rSpspsjweiY8/bNJmuu14GkoDLjgKoeLGzooJeHxuOzWqTlkjEp2RA0upJ
+         FA35p8n2q+vSbx0g+YIMT9zmzcznvFWYCdzlUOGgqIHvSd/3DcqME72pZFOEfA5DsoBC
+         ob7h3Z32d4eGLekSAcLsDYp8dXt2Dk846C+JpAHHIEFR9hIrQVXgzhGG5JgYrh7bGHZU
+         1v2Ie3p95+UqkthXtG2mtIuNaZaZYUdrZvvMfUPFNDcSADuAgXck3rCFrOfHC9GESqeL
+         +mOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ+fhVZs2H+URQq3DfHoUTiK0gahC7sbxxjmvJNcLY/VDtdiy5NX7HOb1AhPgjpLQryLXSNCwBNQ==@kvack.org
+X-Gm-Message-State: AOJu0YxDdDJS7FTQLNB9XGZHZxQGBsNT2DORG4RWhfUYDqfYIGlC34Uc
+	T+hfGTKy4GXKxGIWwvLTB+sYdLE914iAbKmwKEWp6R3CXg8gF54HqPLDt2uhBhVBALy7/oxI1qo
+	IGlBO7pgGlP+W6WPov07j4IPWrCxytG8=
+X-Gm-Gg: AY/fxX5WkenYEwfJrxiB0TP9zAHPmUsGi+wJQZpBFmW68yjG1a7wDeE73Piwe4QQVGc
+	HDqYJKlfufn+8k7S0b+5HI7r7BTYv6woDyaGI/IWBrb+kVU0vVvrwK04FEl3BKmdrvVwu8okceO
+	KnqHQ3wkFaNimBp18rq9q6wXjrLJILFmvG+gdExqD/Ki9IuIFwcawfeJXA18itWxM1Bmg07eQyp
+	rJi0enWlnoETGn74iQ7qt4QdqbWHKDMcsAWe3rntbmZxUBHsUYaHi22WTnAqWfI+zdIQQaR
+X-Google-Smtp-Source: AGHT+IHSL8vBycNTvvL05BnSJELB44DXOnClZrUSB0/6pfdDXXc2lVKGO45NUHdVcscHeSKyJ3licgKu+aykAAFK19I=
+X-Received: by 2002:a05:651c:507:b0:383:20ac:fb60 with SMTP id
+ 38308e7fff4ca-38320acfcffmr32957191fa.29.1768216190396; Mon, 12 Jan 2026
+ 03:09:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260112103612.627247-1-kartikey406@gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 379B6180003
-X-Stat-Signature: o5gywk4mg4tz4a3oxcjoowxdx3ijj3ir
+References: <20260111121909.8410-1-yanglincheng@kylinos.cn>
+ <20260111121909.8410-2-yanglincheng@kylinos.cn> <8c9ea6ab-02bf-4a79-bed2-2e7a0ecdfe67@linux.dev>
+In-Reply-To: <8c9ea6ab-02bf-4a79-bed2-2e7a0ecdfe67@linux.dev>
+From: Vernon Yang <vernon2gm@gmail.com>
+Date: Mon, 12 Jan 2026 19:09:39 +0800
+X-Gm-Features: AZwV_Qju_WNTyGZwNaxuD4wfPtHjw8upOM4OR6RAJolJ3MOKpCw--6efi_tcGD0
+Message-ID: <CACZaFFNCf=bb1S78ii8i=7RbQo3eO6+4bY-c0hmgN8kCXGNSSw@mail.gmail.com>
+Subject: Re: [PATCH mm-new v4 1/6] mm: khugepaged: add trace_mm_khugepaged_scan
+ event
+To: Lance Yang <lance.yang@linux.dev>
+Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, akpm@linux-foundation.org, 
+	dev.jain@arm.com, baohua@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>, david@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9C3ED160005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: inmuefbick7aux77uinqnfufskqdsij9
 X-Rspam-User: 
-X-HE-Tag: 1768216194-169830
-X-HE-Meta: U2FsdGVkX19doHca2H5aGnIh5aW0WXL/DQL/8EqkkoZXxdKDTqKXy1mXbZZfHXvq/yQnkmY2a0YAjKTeFNBoXNV5JgwOrFmeoNgUR80BcPXratb+Ef9sOwJBEym1c3Tef5/yvLCoows8Umqn++8QXbUJ3g7Kjla2M+12LojG7hSYNHbXm2+KwIeJ3/uJ9X014AVzRUYfkp7gqDyPlfRZsgp1BN3VdxvzkfMYiiviEOjzZ8NTZntA8Vqczsl0uXYSOcVTfU2+NrMeyvLaXqwTkkqOe8x6i0Pkmt4NE9wsRsw3rYjLZ6Pr3nTbjgIuaCUPepazKQU5hcKoG+fcn4cX31fgccKB/Ty/N92GTcS+zCKhbIV2lNZDMoF9vdPtv+P33u3HdJ14D34Uqii0YGPvlhuSEhqF3VpUf6rHRHjatqR8AakT9wGYfv3z9uHJP18cbGet+x7mUifbH2TaaNlxEhK6Giur9twqCMlISqxjTmhBaMTdIT2n0oevS/jK1HnRJCfoo/jTpeKxLiPp9AsNqmF9Muhe7GOsVO5yUG23fDQ16bRE4RLoK5F3iR1iGovt8MA4Y3dNeKdyy5Kn+zs3EB3Wmai1WyH+J0vwQ8xLEqkDr3HsebUBJmKGgbTDQBGbPsUzqgWe+c4YdNhkgPRxs+5BWAZSpDPkGAPHAWsMcEPSnPXaQmSC1es9e+SXaM63zO2RXoPrQYWw9l2wVURB+za2s/usWLGZp/0YY4IBKHvdRv94bIsWo7bF7l+1dmt2x3lJTdyh8kiOeRZ2ipye3MpepgvKQi3IHoyC4oUDx20qIezV34BTxSpkMsETegAccLgFx69XCXmDgK/b+tDcT/UmK6yi5+FOUuqTT1ho396blZzs1AO6crbXxdrprnZ1EXA7MIIa5CrI8adLlLzoZxH+5PSk7BjCf1RnWG7VHxriqa7BLxglcV3NE8nEjsiZ9/rJOpjXJ/o6eoweRNi
- lP4zqdGG
- O58uWLiU/lo/LF5g7r5RtxzR6MLk5T/s3j2VYASroIo4Az83j4c2rHnES3Jv9piYg6l0UgTeZI6wFrwAzHBicXb5iUPmTnGVsDYDGT8+7fwZ/BaLa0aNZR1kOYzgqT5HxOTcVQAWy0LDUF5duyr1bSJlFCj0gOdWo8qwLFe+wTQpW67fwU0cJN2t4o7YQF2RFQEJm
+X-HE-Tag: 1768216192-653092
+X-HE-Meta: U2FsdGVkX1/IPPSDxkpGhPZ6Os8yH+94HEB8sy4FxR1MJrlg02kY4hLOkmh3yyP7XqXyxa/bnvEtqPg5oLK2faUCKDKzy6Tpd9AgF8iRcpA1zMPfaV46f7bI1WaJyY41ZEs6XsuzF5leKgZJXhQ5+2SFENpstuYiOlgd85AtO6e8AvFWAiMGjQBD0kHi+p4fOfUjeGyXvTxIUL2wmfu7ftcp++AL8zGavzj18dnDl16m666v26kcIf4DIKnLE2PbrnO7kc0DDYm49sSmlXLLTueTMFDqqKLhgTIPHn6slZJreQ9kv+Pk/QQPvkvPF3xSHEHAiVhPkuDyjafSnV4r86pNwrO48knU3i2DDdEr6IkfmfWmMB0kBNVpkw+dcocIY27CAwB8uhOIuMb5P5vmMMGoGivLLWpRWifioMUsho7gAJ8jy/sUXqv5JRxxUIASe1ht+2XY0zEI2Ag/oyK5NbMELNypzB2T9eCySxhu2jZFFNfkzU/nZXjaIMlFgQTCdnEtwNr2BtyTt/TL/wYnmOVsrauwfSwkOJSzticACETt/kMIVb8pq7Xepdb7UAyf1m2/Abva7J4y1hE7Omyvo9NzoT/X724RnUvOcwIgfpt9VrreDHlAORf6Ht2YV92+N+ZMB7hVQTkHgecZwOAlCOe/ICw5C2+fKB6/rAX3lMIwbV032HwoetBXVDD7bTLUaWAG3a+aA9ZK17hC4Q7DDrI4tFIDynbapifA28WFjw4TU5BAIk4BinKN1PlW6aaIp/hMYsbbX/p/GIBp1SeYH1ArDfWpTxRMA6hTE0hnVTgLaf5aymk//i6wOdwi2l0BVtXG8QE3f8/r/4CnrtUcAyhvVv/0jZSvSQ2P9hniD1h57Q5y5h0CP7yhJeWFTRtwVf8G85UqufqdxXS/oOEQQvwoCXbYHuHpA8VXbk14wKbDnUgxRF3LsawSax5E2T4v8wgeaEejCSag9y5mBa5
+ SYLSj3ml
+ hpXwVCJgyabpSZZOazvg7vawRSZ2mN/D+ErxvQoZNj4n/+gtLT2TfZGBZXTtobNAJqz1sGUp27ITl5UHxP3xkLuKrzBDcYLRoujvp1jcTTw0i1JB3p6cdrtDncXvz0FLUgvH6AaPFCIpTftlBOJ50h7M0M0rJS27p2pf56M1J+cJC71XdCaiVDc13AhXbnEBRRj4wU7u9F+AOhyE75kTHI4m8Q1FCILV2t54GQfOdry8S5neguJ/iRejrosgfgcTv0VE/rt3taQMeiceNwJOYRGTpTWIeuDGlH3xLD1gl0BADMkPY/J4sutzr3tWnVrzDdhDJJ5vn0/UjTNU38f4B9oIKM4C6R8APJ5JWxNEwILhfJHoNxdZRO8WZLKGP4JsV8+/zcxmm13FYTySC7TYxhwYAQwGmEKkFkpC36BRi5OsPC9225Ev0yPdEk1NcvSbBwyMsv5/Kfq1sR0BzMwiBGm62sB8Vj2tCe/qTgFKdZ1xGocM1gy8wUgMkZg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,86 +119,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 04:06:12PM +0530, Deepanshu Kartikey wrote:
-> When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
-> vmalloc cleanup triggers expensive stack unwinding that acquires RCU
-> read locks. Processing a large purge_list without rescheduling can
-> cause the task to hold CPU for extended periods (10+ seconds), leading
-> to RCU stalls and potential OOM conditions.
-> 
-> The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
-> where iterating through hundreds or thousands of vmap_area entries and
-> freeing their associated shadow pages causes:
-> 
->   rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
->   rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
->   ...
->   task:kworker/0:17 state:R running task stack:28840 pid:6229
->   ...
->   kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
->   purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
-> 
-> Each call to kasan_release_vmalloc() can free many pages, and with
-> page_owner tracking, each free triggers save_stack() which performs
-> stack unwinding under RCU read lock. Without yielding, this creates
-> an unbounded RCU critical section.
-> 
-> Add periodic cond_resched() calls within the loop to allow:
-> - RCU grace periods to complete
-> - Other tasks to run
-> - Scheduler to preempt when needed
-> 
-> The fix uses need_resched() for immediate response under load, with
-> a batch count of 32 as a guaranteed upper bound to prevent worst-case
-> stalls even under light load.
-> 
-> Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
-> Link: https://lore.kernel.org/all/20260112084723.622910-1-kartikey406@gmail.com/T/ [v1]
-> Suggested-by: Uladzislau Rezki <urezki@gmail.com>
-> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-> ---
-> v2: Use a macro for batch size (suggested by Uladzislau Rezki)
-> ---
->  mm/vmalloc.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 41dd01e8430c..51e58701565d 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -2268,11 +2268,14 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
->  	reclaim_list_global(&decay_list);
->  }
->  
-> +#define KASAN_RELEASE_BATCH_SIZE 32
-> +
->  static void
->  kasan_release_vmalloc_node(struct vmap_node *vn)
->  {
->  	struct vmap_area *va;
->  	unsigned long start, end;
-> +	unsigned int batch_count = 0;
->  
->  	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
->  	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
-> @@ -2282,6 +2285,11 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
->  			kasan_release_vmalloc(va->va_start, va->va_end,
->  				va->va_start, va->va_end,
->  				KASAN_VMALLOC_PAGE_RANGE);
-> +
-> +		if (need_resched() || (++batch_count >= KASAN_RELEASE_BATCH_SIZE)) {
-> +			cond_resched();
-> +			batch_count = 0;
-> +		}
->  	}
->  
->  	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
-> -- 
-> 2.43.0
-> 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+On Sun, Jan 11, 2026 at 9:49=E2=80=AFPM Lance Yang <lance.yang@linux.dev> w=
+rote:
+>
+> On 2026/1/11 20:19, Vernon Yang wrote:
+> > Add mm_khugepaged_scan event to track the total time for full scan
+> > and the total number of pages scanned of khugepaged.
+> >
+> > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> > Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> > Reviewed-by: Barry Song <baohua@kernel.org>
+> > ---
+> >   include/trace/events/huge_memory.h | 24 ++++++++++++++++++++++++
+> >   mm/khugepaged.c                    |  2 ++
+> >   2 files changed, 26 insertions(+)
+> >
+> > diff --git a/include/trace/events/huge_memory.h b/include/trace/events/=
+huge_memory.h
+> > index 4e41bff31888..3d1069c3f0c5 100644
+> > --- a/include/trace/events/huge_memory.h
+> > +++ b/include/trace/events/huge_memory.h
+> > @@ -237,5 +237,29 @@ TRACE_EVENT(mm_khugepaged_collapse_file,
+> >               __print_symbolic(__entry->result, SCAN_STATUS))
+> >   );
+> >
+> > +TRACE_EVENT(mm_khugepaged_scan,
+> > +
+> > +     TP_PROTO(struct mm_struct *mm, int progress, bool full_scan_finis=
+hed),
+> > +
+> > +     TP_ARGS(mm, progress, full_scan_finished),
+> > +
+> > +     TP_STRUCT__entry(
+> > +             __field(struct mm_struct *, mm)
+> > +             __field(int, progress)
+>
+> Nit: progress should be unsigned int here, not int :)
 
---
-Uladzislau Rezki
+Thank you for the review, I will fix it in the next version.
+
+> Otherwise, LGTM.
+>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>
+> > +             __field(bool, full_scan_finished)
+> > +     ),
+> > +
+> > +     TP_fast_assign(
+> > +             __entry->mm =3D mm;
+> > +             __entry->progress =3D progress;
+> > +             __entry->full_scan_finished =3D full_scan_finished;
+> > +     ),
+> > +
+> > +     TP_printk("mm=3D%p, progress=3D%d, full_scan_finished=3D%d",
+> > +             __entry->mm,
+> > +             __entry->progress,
+> > +             __entry->full_scan_finished)
+> > +);
+> > +
+> >   #endif /* __HUGE_MEMORY_H */
+> >   #include <trace/define_trace.h>
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index 9f790ec34400..2e570f83778c 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -2545,6 +2545,8 @@ static unsigned int khugepaged_scan_mm_slot(unsig=
+ned int pages, enum scan_result
+> >               collect_mm_slot(slot);
+> >       }
+> >
+> > +     trace_mm_khugepaged_scan(mm, progress, khugepaged_scan.mm_slot =
+=3D=3D NULL);
+> > +
+> >       return progress;
+> >   }
+> >
+>
 
