@@ -4,81 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84D18CF45B4
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 17:26:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF577CF45B0
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 17:27:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3F796B0005; Mon, 12 Jan 2026 12:26:42 -0500 (EST)
+	id 3F20C6B0005; Mon, 12 Jan 2026 12:27:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DED406B0088; Mon, 12 Jan 2026 12:26:42 -0500 (EST)
+	id 3BFD86B0088; Mon, 12 Jan 2026 12:27:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEB9D6B0089; Mon, 12 Jan 2026 12:26:42 -0500 (EST)
+	id 2F2AB6B0089; Mon, 12 Jan 2026 12:27:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BDD196B0005
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:26:42 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5F1A613BC84
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 17:26:42 +0000 (UTC)
-X-FDA: 84323991444.29.8F0D232
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5E74A1C0009
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 17:26:40 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=kply4xUI;
-	spf=pass (imf18.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.16 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	by kanga.kvack.org (Postfix) with ESMTP id 190B76B0005
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 12:27:32 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EA7551A0850
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 17:27:31 +0000 (UTC)
+X-FDA: 84323993502.22.36C0C06
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 10701160004
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 17:27:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=LjxjrDuC;
+	spf=pass (imf08.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.16 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
 	dmarc=pass (policy=quarantine) header.from=pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768238800;
+	s=arc-20220608; t=1768238850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=MZLHOnEOyMbQ1BnCPqw/Rl/jRpv2IPlwroWlod1BlMw=;
-	b=664cVjA/zgvyOMkCWkbC4i/+4cxA+E8aUwajMazZhuGGzb4FamlnOGS6FKRQnPnt8H/2xt
-	MP4uQFIhzsrd3POwlu2sM+fWaoFPuvbDY3XusFd+e37iEd0eh86dhWmOYuPsisgkjBm/FZ
-	+wY/1QkTytBv+WHP0rCX+K37odqvzTo=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=kply4xUI;
-	spf=pass (imf18.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.16 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768238800; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JiMOOEA6qNaiQDDGgdthf6TZH3O0GT1Wjo585EHcW4E=;
+	b=Vl73N02PDlvO5NZcstkD7sIEu+ylk0ptb8ou6boxfVD9HeYmckw3Y8sTQnlQY3sF0wm0IH
+	J6JAx9drFkJSlwaUCYbsFFlACe8dPRceGyHlZxKhymW6EpaAC/XjYXHn2E+AZqwO9cB7m7
+	6Nl51rMxmNDQNPIxQF2s09e0sq8GwCo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768238850; a=rsa-sha256;
 	cv=none;
-	b=ezLc4k+P997yIPHl7MjSr95rA2kXNJuR/azcWTL5nrILlMvYI4uwcuoQXl2tOUSvA9WbN1
-	vwqYXXFCqABMASIJSK4luj2HRmwqjVC2qBUTc1OMfJBIQGA9Z8mqdDdyKyu7Ao3zPYXOpb
-	2JuBZSaIUmnCridFbjAYunsmMWZ34CY=
+	b=SNOCYSP9p2lBuPqg0JAygTy+zsTZjHiT9nube/FIRfU5q9RzC576y866l6pHZasylTVzZ3
+	SViubNCDwz0w4C4IsLHC5c7Z6jtooQBC6/02WN/I5ng9LX0s9+ZZlI34ZBb0KHCX+uGtx+
+	4av4UijKNEE4kHoZABcyudN+bqUV+VY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=LjxjrDuC;
+	spf=pass (imf08.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.16 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1768238796; x=1768497996;
-	bh=MZLHOnEOyMbQ1BnCPqw/Rl/jRpv2IPlwroWlod1BlMw=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=kply4xUIWIJKE9qKLZzPiVBWr6K5CwxcMYvGpYmG6ThhF8F1rSlzHpj6tRIbdsWY3
-	 JAxCgzWDC+YtpHsZ40KxgqHb8dzrfNLMVSMA7xcR2uq2see9+MhLel0NiOn/OYWOwf
-	 3y1Inb3vddque1SSXqiO/Shu+CgQ9/uv/1hYsqhAsPWxpBfgYFDZ3hZ7vcXvyaOyhF
-	 P98qIYLYZdBt0+TX+gftyVoAsfnZaaO6Dhks4I7e6MsxOy7KcLlPADfvqOU/qmeS59
-	 4+9c3jYB0blRAH6qRi7guvNH7ykkLpGbQZhS9+V/jLMljmeD9jLYOBDLi9jCaAo4/4
-	 0emtNXymLoimw==
-Date: Mon, 12 Jan 2026 17:26:29 +0000
-To: corbet@lwn.net, morbo@google.com, rppt@kernel.org, lorenzo.stoakes@oracle.com, ubizjak@gmail.com, mingo@redhat.com, vincenzo.frascino@arm.com, maciej.wieczor-retman@intel.com, maz@kernel.org, catalin.marinas@arm.com, yeoreum.yun@arm.com, will@kernel.org, jackmanb@google.com, samuel.holland@sifive.com, glider@google.com, osandov@fb.com, nsc@kernel.org, luto@kernel.org, jpoimboe@kernel.org, akpm@linux-foundation.org, Liam.Howlett@oracle.com, kees@kernel.org, jan.kiszka@siemens.com, thomas.lendacky@amd.com, jeremy.linton@arm.com, dvyukov@google.com, axelrasmussen@google.com, leitao@debian.org, ryabinin.a.a@gmail.com, bigeasy@linutronix.de, peterz@infradead.org, mark.rutland@arm.com, urezki@gmail.com, brgerst@gmail.com, hpa@zytor.com, mhocko@suse.com, andreyknvl@gmail.com, weixugc@google.com, kbingham@kernel.org, vbabka@suse.cz, nathan@kernel.org, trintaeoitogc@gmail.com, samitolvanen@google.com, tglx@kernel.org, thuth@redhat.com, surenb@google.com, anshuman.khandual@arm.com,
-	smostafa@google.com, yuanchu@google.com, ada.coupriediaz@arm.com, dave.hansen@linux.intel.com, kas@kernel.org, nick.desaulniers+lkml@gmail.com, david@kernel.org, bp@alien8.de, ardb@kernel.org, justinstitt@google.com
+	s=protonmail3; t=1768238846; x=1768498046;
+	bh=JiMOOEA6qNaiQDDGgdthf6TZH3O0GT1Wjo585EHcW4E=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=LjxjrDuCoGf0G2mwtHa5/HV7S/hBCta7EcOVZERcqDUqFwE0FNnq96D8jZFg2S/fK
+	 OIygr+dLmg5ndkEUU/pCV4KSopBovq+rLu8BnJHFuSBjdWxC5E+VEKphqlx/vObzEs
+	 lWYzLRBkT+vP/B9e114ATzUgVhAqtxlx13mvk+d97a4ycPwikhexcdCjCVo3gb6yhw
+	 dKMr0iX8j6mRfpKSeO3L5kX0HaJRJPpgs/rV7U/88zDYkjOxscSNbBC/TE75sYeJ0e
+	 T8uK8+pDljbYd2VSI45c1/2Y+LEbCcMkDveADsvGSrtuwd0hAK6ngQ1PQl5qGmvsH8
+	 E4hwHdMcHDtnA==
+Date: Mon, 12 Jan 2026 17:27:22 +0000
+To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
 From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, kasan-dev@googlegroups.com, llvm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, x86@kernel.org, m.wieczorretman@pm.me
-Subject: [PATCH v8 00/14] kasan: x86: arm64: KASAN tag-based mode for x86
-Message-ID: <cover.1768233085.git.m.wieczorretman@pm.me>
+Cc: m.wieczorretman@pm.me, Samuel Holland <samuel.holland@sifive.com>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, llvm@lists.linux.dev
+Subject: [PATCH v8 01/14] kasan: sw_tags: Use arithmetic shift for shadow computation
+Message-ID: <4f31939d55d886f21c91272398fe43a32ea36b3f.1768233085.git.m.wieczorretman@pm.me>
+In-Reply-To: <cover.1768233085.git.m.wieczorretman@pm.me>
+References: <cover.1768233085.git.m.wieczorretman@pm.me>
 Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 30fd795ba3d87d5fa5bf659d16f56b67634e08f5
+X-Pm-Message-ID: 70a6fe20ee18bc60426e6e68f454786f4fa58ddd
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 46kxf8napkq5ihncgtddufbyxfh4948z
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 10701160004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5E74A1C0009
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768238800-395329
-X-HE-Meta: U2FsdGVkX19UMcwsff48ht1DpD3+QAiyPHVrOgtVKS4jpkBOV0tCWEiE9mq0BSuj5M+yqoy6ieUypdj4AgNVw8PR+Ing0UWxX0uWi3QpnYzBKspLmDcGGonTxdI3pL4q3TL5EIflnk4AYRRAcPiSFp3OBZVKjoGpp25MPBxFdFuczEhNIj0tzDBS34fakOsP832JAcr0/BlyJWBN5wkwpdQBrJAFC92Nlsk8egxInzlQU3+EXO345vgZJ/1mROyOtnkkWbmoxb6fYkTw/65BmDoWf/Umx4rnyEj7nIH8v9Wls7ZADBGQMovis1PuBY1vJlrx0+00mGyDmkQhXeYFRnH5+EpF6WATebGKjyCeAyQIF6yiH4BOuqYsDyLHQk/30I1G9XOtrttf9Yc6TqODrVp8ummePBcOQN98dVFCu8eNAPVSvBgHM57nICXTDD7savM9jMxlp8ilVMtymBKSnMwxeOLqTmv3Aiw2QZZbZhyel8c2imWJYRWkjgmsUJ7svL6ty8+mr17EufObEWf1pXOO1mQPpQuXvEZbs0CpQtyRTj1Qn/Z4KYyFoo1ABIAy4Mo1BxswvWVWkRdMDL213+8ZLkQLxuF7Dtn6aHEpUk9lxOOakh10ahRcsPid5OyMvsum5nkCTU+0OY06SwnbjpmDZ9RmqwWqiCADNYDJvk8HtB1Ny2q2JpD0/gl47aSGS1FTsD/y84UPnYxTlzDutswEnK8Jphw8tZZptXTk0acRdkvrMtFkTPu3Nut+s5ovLN8+VCSvKoIXXRyMn4tMAeY+k44dfvQZe221Qr1iN6MIE9i39szUYfa5dYXXlq+KdfjO4phsvYVU8grGIZ3fmUdaB9gUO2rkaKr2WvZ0yWDFexSYmgtQi2Rqn59/0mnolbbemrb8MJcjer9KfevXCXoZobiFi0UBcqwCaXw5ksNGqOIS8wt2Z+5tgZ9uUiY8JjY+CuyzrH425aIBWiq
- 88tTyv6j
- znalsuMv0eu7OTmACUB4m+j0SdDM7sokPVHFZM+bJdfBySniUYBaTHiBPPTJEpxgTfTAV1F5E3XI9OHLttb310vwWajftV4aCRe9+LKW53TD7tWNyBIxGpNx6vYJPp5jklwM30vNdo8t0de3R4y0u9CI8OBNDRPgMwogzQLW2A9GpbRbkMWurKm6ubhUyldyTE3L0ifuE//gQiDwKDM0Ec75TyYmc3nh9KsY2GEX0bJo3CiJRYz8F6upaRn6uO3sdifDFJ0NC2lJhP7hd9bq2hiFY3NoHU23/yzPyQpHs9DFh5Ac3Lnuws39GQCQRm/BgttL2OeoO5aeSaVrKFsz394KGLxOpfLQnJlBjC449h2hhmnU=
+X-Stat-Signature: 95ru41uf9w874iy5mazydrzejbf9o73j
+X-HE-Tag: 1768238849-346009
+X-HE-Meta: U2FsdGVkX19w0irQ94CMohA4YY+eg5nGN2Wf1098w7zhJMtCHiVRP9fQyUPu2tBuby9LJUbdFsjbU31RVw9DcUStrLA3Akr2VRSQPiaXLx5BKXzGOlZrgJVS0aX1xMHdxcyvCbc5eBWJYs0+Ef0AuJDLD+7ebdj8/r24QF8yAlewN3cES1n3IvhOeLOv+FAi+3HnvMAKqu+nqI6zjQ+cdSUQgwqULEbevii+9WJah/68riT7zKmdDg4zFAWYXhfJOWONqN9m4hA7S09F5peknWyqu7edbxyZ5VPCR2xaC3z++KFrsQoTuL71T2ZuzN6Yx9QDK/+8AHsEp83gyDzEqyTg5fotJlJFWFOfXKMkSytVQybHlYPLXPv6oOCIZDcPcXviq6nw9se1Z/WfPAiqMpvv70ThCL5kv5DDmZV90Ue6PCSAlsn4bL3luU5xnWBGKOk8PkvlZcYvwlC6HApRjRZxC1F0497MSGdvCRqoZ+l0UjPd8Ylnzw7gz2RvixNsHo4VLxAUQgOBdKvmVjbj1XQzaJtuHp803YpyK49+zr9BdvvJYdEeSnzpwSkMGybXWxl0SKQ/7lVs1nlmKggWQ72ZSMdiK0C+JiRfXckTZ7XQgib6mcRd6KJ01Cn1RnTJVR15JMR+MK05jRv2Pb4gDNJmZqmoWJ0VCrUoYX9Tpn46SZZvpj/e1Bip8Q2CZgb+LT05XKA9LkB0AayRLORes2njD0E5Av6gf8h91w55H6ycL0VkjawQTxnxbsPrzcTe0zzG+plRUn3Nf8rA4CtmvJppBQKisqDJpE5AYwnjUaLUUVqlx4t9vZO3hSFgaj3j45qrFN19TxtGTk17aDvcOa9N+R+VKh3Xl/+Ud3Y77AVa/k2J3ioYMUrPPnziDdpt6h70je4A/L3i2Cj655KCXY6E/TytND5i550Jhmxare3V2tKWmDMeRymJbks+J8TYmoSN98b3slpWbmdZTEe
+ DUII84gN
+ JFQ1MPbMfvs52sbcVYHskirD9mFtGyZVNtBZw5+OJ02EEH6xd99UFunoOJpRx790CS+6dAPBOOwsh8PPZ6yxga+JU6U0EUFJRIhJ2ZXvFNQd3U/bQ79lBN728hGvcCyxn4S5ffIAZ6JH7skQh0jdx6SPtoPXHvjEVzW3udw4PKGvC0C5xz6/tgMSXxW4Dkl8drkRBdGRcuPgMfuQtZI6BgzjOLnZELSboNIUAc03HMaBSK65Qk6AX+a24lQ6U2rE/EGrHhgsQoTCHQm+vybUaxZNietEUw3SYa+UT7MjUTJmQDm7/ubbEUampDgia3gwdwx+aOlD4/8ewUbsA8naJ2amuN9ad3TvY3HxcfD4+Co+qPvN1gMxRMiHgJDfDK3ftQBpf5DJVGZXHBSpec2qthWj6+CadUVYF28daUsFhlTyx6btz9VSgpwpxzM0dGjl/dVOGuu3l/nv6Mn766CSaOIu1Ke3UICQTdLb2s80gsFlKHf//IhIboKCRhYv14V4K+tOaRXLelXp9n5CUZjT1EiJbM5Jg+Cxa51hm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,292 +90,336 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-=3D=3D=3D=3D=3D=3D=3D Introduction
-The patchset aims to add a KASAN tag-based mode for the x86 architecture
-with the help of the new CPU feature called Linear Address Masking
-(LAM). Main improvement introduced by the series is 2x lower memory
-usage compared to KASAN's generic mode, the only currently available
-mode on x86. The tag based mode may also find errors that the generic
-mode couldn't because of differences in how these modes operate.
+From: Samuel Holland <samuel.holland@sifive.com>
 
-=3D=3D=3D=3D=3D=3D=3D How does KASAN' tag-based mode work?
-When enabled, memory accesses and allocations are augmented by the
-compiler during kernel compilation. Instrumentation functions are added
-to each memory allocation and each pointer dereference.
+Currently, kasan_mem_to_shadow() uses a logical right shift, which turns
+canonical kernel addresses into non-canonical addresses by clearing the
+high KASAN_SHADOW_SCALE_SHIFT bits. The value of KASAN_SHADOW_OFFSET is
+then chosen so that the addition results in a canonical address for the
+shadow memory.
 
-The allocation related functions generate a random tag and save it in
-two places: in shadow memory that maps to the allocated memory, and in
-the top bits of the pointer that points to the allocated memory. Storing
-the tag in the top of the pointer is possible because of Top-Byte Ignore
-(TBI) on arm64 architecture and LAM on x86.
+For KASAN_GENERIC, this shift/add combination is ABI with the compiler,
+because KASAN_SHADOW_OFFSET is used in compiler-generated inline tag
+checks[1], which must only attempt to dereference canonical addresses.
 
-The access related functions are performing a comparison between the tag
-stored in the pointer and the one stored in shadow memory. If the tags
-don't match an out of bounds error must have occurred and so an error
-report is generated.
+However, for KASAN_SW_TAGS there is some freedom to change the algorithm
+without breaking the ABI. Because TBI is enabled for kernel addresses,
+the top bits of shadow memory addresses computed during tag checks are
+irrelevant, and so likewise are the top bits of KASAN_SHADOW_OFFSET.
+This is demonstrated by the fact that LLVM uses a logical right shift in
+the tag check fast path[2] but a sbfx (signed bitfield extract)
+instruction in the slow path[3] without causing any issues.
 
-The general idea for the tag-based mode is very well explained in the
-series with the original implementation [1].
+Using an arithmetic shift in kasan_mem_to_shadow() provides a number of
+benefits:
 
-[1] https://lore.kernel.org/all/cover.1544099024.git.andreyknvl@google.com/
+1) The memory layout doesn't change but is easier to understand.
+KASAN_SHADOW_OFFSET becomes a canonical memory address, and the shifted
+pointer becomes a negative offset, so KASAN_SHADOW_OFFSET =3D=3D
+KASAN_SHADOW_END regardless of the shift amount or the size of the
+virtual address space.
 
-=3D=3D=3D=3D=3D=3D=3D Differences summary compared to the arm64 tag-based m=
-ode
-- Tag width:
-=09- Tag width influences the chance of a tag mismatch due to two
-=09  tags from different allocations having the same value. The
-=09  bigger the possible range of tag values the lower the chance
-=09  of that happening.
-=09- Shortening the tag width from 8 bits to 4, while it can help
-=09  with memory usage, it also increases the chance of not
-=09  reporting an error. 4 bit tags have a ~7% chance of a tag
-=09  mismatch.
+2) KASAN_SHADOW_OFFSET becomes a simpler constant, requiring only one
+instruction to load instead of two. Since it must be loaded in each
+function with a tag check, this decreases kernel text size by 0.5%.
 
-- Address masking mechanism
-=09- TBI in arm64 allows for storing metadata in the top 8 bits of
-=09  the virtual address.
-=09- LAM in x86 allows storing tags in bits [62:57] of the pointer.
-=09  To maximize memory savings the tag width is reduced to bits
-=09  [60:57].
+3) This shift and the sign extension from kasan_reset_tag() can be
+combined into a single sbfx instruction. When this same algorithm change
+is applied to the compiler, it removes an instruction from each inline
+tag check, further reducing kernel text size by an additional 4.6%.
 
-- Inline mode mismatch reporting
-=09- Arm64 inserts a BRK instruction to pass metadata about a tag
-=09  mismatch to the KASAN report.
-=09- Right now on x86 the INT3 instruction is used for the same
-=09  purpose. The attempt to move it over to use UD1 is already
-=09  implemented and tested but relies on another series that needs
-=09  merging first. Therefore this patch will be posted separately
-=09  once the dependency is satisfied by being merged upstream.
+These benefits extend to other architectures as well. On RISC-V, where
+the baseline ISA does not shifted addition or have an equivalent to the
+sbfx instruction, loading KASAN_SHADOW_OFFSET is reduced from 3 to 2
+instructions, and kasan_mem_to_shadow(kasan_reset_tag(addr)) similarly
+combines two consecutive right shifts.
 
-=3D=3D=3D=3D=3D=3D=3D Testing
-Checked all the kunits for both software tags and generic KASAN after
-making changes.
+Link: https://github.com/llvm/llvm-project/blob/llvmorg-20-init/llvm/lib/Tr=
+ansforms/Instrumentation/AddressSanitizer.cpp#L1316 [1]
+Link: https://github.com/llvm/llvm-project/blob/llvmorg-20-init/llvm/lib/Tr=
+ansforms/Instrumentation/HWAddressSanitizer.cpp#L895 [2]
+Link: https://github.com/llvm/llvm-project/blob/llvmorg-20-init/llvm/lib/Ta=
+rget/AArch64/AArch64AsmPrinter.cpp#L669 [3]
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Co-developed-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+---
+Changelog v7: (Maciej)
+- Change UL to ULL in report.c to fix some compilation warnings.
 
-In generic mode (both with these patches and without) the results were:
+Changelog v6: (Maciej)
+- Add Catalin's acked-by.
+- Move x86 gdb snippet here from the last patch.
 
-kasan: pass:61 fail:1 skip:14 total:76
-Totals: pass:61 fail:1 skip:14 total:76
-not ok 1 kasan
+Changelog v5: (Maciej)
+- (u64) -> (unsigned long) in report.c
 
-and for software tags:
+Changelog v4: (Maciej)
+- Revert x86 to signed mem_to_shadow mapping.
+- Remove last two paragraphs since they were just poorer duplication of
+  the comments in kasan_non_canonical_hook().
 
-kasan: pass:65 fail:1 skip:10 total:76
-Totals: pass:65 fail:1 skip:10 total:76
-not ok 1 kasan
-
-At the time of testing the one failing case is also present on generic
-mode without this patchset applied. This seems to point to something
-else being at fault for the one case not passing. The test case in
-question concerns strscpy() out of bounds error not getting caught.
-
-=3D=3D=3D=3D=3D=3D=3D Benchmarks [1]
-All tests were ran on a Sierra Forest server platform. The only
-differences between the tests were kernel options:
-=09- CONFIG_KASAN
-=09- CONFIG_KASAN_GENERIC
-=09- CONFIG_KASAN_SW_TAGS
-=09- CONFIG_KASAN_INLINE [1]
-=09- CONFIG_KASAN_OUTLINE
-
-Boot time (until login prompt):
-* 02:55 for clean kernel
-* 05:42 / 06:32 for generic KASAN (inline/outline)
-* 05:58 for tag-based KASAN (outline) [2]
-
-Total memory usage (512GB present on the system - MemAvailable just
-after boot):
-* 12.56 GB for clean kernel
-* 81.74 GB for generic KASAN
-* 44.39 GB for tag-based KASAN
-
-Kernel size:
-* 14 MB for clean kernel
-* 24.7 MB / 19.5 MB for generic KASAN (inline/outline)
-* 27.1 MB / 18.1 MB for tag-based KASAN (inline/outline)
-
-Work under load time comparison (compiling the mainline kernel) (200 cores)=
-:
-*  62s for clean kernel
-* 171s / 125s for generic KASAN (outline/inline)
-* 145s for tag-based KASAN (outline) [2]
-
-[1] Currently inline mode doesn't work on x86 due to things missing in
-the compiler. I have written a patch for clang that seems to fix the
-inline mode and I was able to boot and check that all patches regarding
-the inline mode work as expected. My hope is to post the patch to LLVM
-once this series is completed, and then make inline mode available in
-the kernel config.
-
-[2] While I was able to boot the inline tag-based kernel with my
-compiler changes in a simulated environment, due to toolchain
-difficulties I couldn't get it to boot on the machine I had access to.
-Also boot time results from the simulation seem too good to be true, and
-they're much too worse for the generic case to be believable. Therefore
-I'm posting only results from the physical server platform.
-
-=3D=3D=3D=3D=3D=3D=3D Compilation
-Clang was used to compile the series (make LLVM=3D1) since gcc doesn't
-seem to have support for KASAN tag-based compiler instrumentation on
-x86.
-
-=3D=3D=3D=3D=3D=3D=3D Dependencies
-The series is based on 6.19-rc5.
-
-=3D=3D=3D=3D=3D=3D=3D Previous versions
-v7: https://lore.kernel.org/all/cover.1765386422.git.m.wieczorretman@pm.me/
-v6: https://lore.kernel.org/all/cover.1761763681.git.m.wieczorretman@pm.me/
-v5: https://lore.kernel.org/all/cover.1756151769.git.maciej.wieczor-retman@=
-intel.com/
-v4: https://lore.kernel.org/all/cover.1755004923.git.maciej.wieczor-retman@=
-intel.com/
-v3: https://lore.kernel.org/all/cover.1743772053.git.maciej.wieczor-retman@=
-intel.com/
-v2: https://lore.kernel.org/all/cover.1739866028.git.maciej.wieczor-retman@=
-intel.com/
-v1: https://lore.kernel.org/all/cover.1738686764.git.maciej.wieczor-retman@=
-intel.com/
-
-=3D=3D=3D (two fixes patches were split off after v6) (merged into mm-unsta=
-ble)
-v1: https://lore.kernel.org/all/cover.1762267022.git.m.wieczorretman@pm.me/
-v2: https://lore.kernel.org/all/cover.1764685296.git.m.wieczorretman@pm.me/
-v3: https://lore.kernel.org/all/cover.1764874575.git.m.wieczorretman@pm.me/
-v4: https://lore.kernel.org/all/cover.1764945396.git.m.wieczorretman@pm.me/
-
-Changes v8:
-- Detached the UD1/INT3 inline patch from the series so the whole
-  patchset can be merged without waiting on other dependency series. For
-  now with lack of compiler support for the inline mode that patch
-  didn't work anyway so this delay is not an issue.
-- Rebased patches onto 6.19-rc5.
-- Added acked-by tag to "kasan: arm64: x86: Make special tags arch
-  specific".
-
-Changes v7:
-- Rebased the series onto Peter Zijlstra's "WARN() hackery" v2 patchset.
-- Fix flipped memset arguments in "x86/kasan: KASAN raw shadow memory
-  PTE init".
-- Reorder tag width defines on arm64 to avoid redefinition warnings.
-- Split off the pcpu unpoison patches into a separate fix oriented
-  series.
-- Redid the canonicality checks so it works for KVM too (didn't change
-  the __canonical_address() function previously).
-- A lot of fixes pointed out by Alexander in his great review:
-=09- Fixed "x86/mm: Physical address comparisons in fill_p*d/pte"
-=09- Merged "Support tag widths less than 8 bits" and "Make special
-=09  tags arch specific".
-=09- Added comments and extended patch messages for patches
-=09  "x86/kasan: Make software tag-based kasan available" and
-=09  "mm/execmem: Untag addresses in EXECMEM_ROX related pointer arithmetic=
-",
-=09- Fixed KASAN_TAG_MASK definition order so all patches compile
-=09  individually.
-=09- Renamed kasan_inline.c to kasan_sw_tags.c.
-
-Changes v6:
-- Initialize sw-tags only when LAM is available.
-- Move inline mode to use UD1 instead of INT3
-- Remove inline multishot patch.
-- Fix the canonical check to work for user addresses too.
-- Revise patch names and messages to align to tip tree rules.
-- Fix vdso compilation issue.
-
-Changes v5:
-- Fix a bunch of arm64 compilation errors I didn't catch earlier.
-  Thank You Ada for testing the series!
-- Simplify the usage of the tag handling x86 functions (virt_to_page,
-  phys_addr etc.).
-- Remove within() and within_range() from the EXECMEM_ROX patch.
-
-Changes v4:
-- Revert x86 kasan_mem_to_shadow() scheme to the same on used in generic
-  KASAN. Keep the arithmetic shift idea for the KASAN in general since
-  it makes more sense for arm64 and in risc-v.
-- Fix inline mode but leave it unavailable until a complementary
-  compiler patch can be merged.
-- Apply Dave Hansen's comments on series formatting, patch style and
-  code simplifications.
-
-Changes v3:
-- Remove the runtime_const patch and setup a unified offset for both 5
-  and 4 paging levels.
-- Add a fix for inline mode on x86 tag-based KASAN. Add a handler for
-  int3 that is generated on inline tag mismatches.
+Changelog v3: (Maciej)
 - Fix scripts/gdb/linux/kasan.py so the new signed mem_to_shadow() is
   reflected there.
 - Fix Documentation/arch/arm64/kasan-offsets.sh to take new offsets into
   account.
 - Made changes to the kasan_non_canonical_hook() according to upstream
-  discussion.
-- Remove patches 2 and 3 since they related to risc-v and this series
-  adds only x86 related things.
-- Reorder __tag_*() functions so they're before arch_kasan_*(). Remove
-  CONFIG_KASAN condition from __tag_set().
+  discussion. Settled on overflow on both ranges and separate checks for
+  x86 and arm.
 
-Changes v2:
-- Split the series into one adding KASAN tag-based mode (this one) and
-  another one that adds the dense mode to KASAN (will post later).
-- Removed exporting kasan_poison() and used a wrapper instead in
-  kasan_init_64.c
-- Prepended series with 4 patches from the risc-v series and applied
-  review comments to the first patch as the rest already are reviewed.
+Changelog v2: (Maciej)
+- Correct address range that's checked in kasan_non_canonical_hook().
+  Adjust the comment inside.
+- Remove part of comment from arch/arm64/include/asm/memory.h.
+- Append patch message paragraph about the overflow in
+  kasan_non_canonical_hook().
 
-Maciej Wieczor-Retman (12):
-  kasan: Fix inline mode for x86 tag-based mode
-  x86/kasan: Add arch specific kasan functions
-  x86/mm: Reset tag for virtual to physical address conversions
-  mm/execmem: Untag addresses in EXECMEM_ROX related pointer arithmetic
-  x86/mm: Physical address comparisons in fill_p*d/pte
-  x86/kasan: KASAN raw shadow memory PTE init
-  x86/mm: LAM compatible non-canonical definition
-  x86/mm: LAM initialization
-  x86: Minimal SLAB alignment
-  arm64: Unify software tag-based KASAN inline recovery path
-  x86/kasan: Logical bit shift for kasan_mem_to_shadow
-  x86/kasan: Make software tag-based kasan available
+ Documentation/arch/arm64/kasan-offsets.sh |  8 +++--
+ arch/arm64/Kconfig                        | 10 +++----
+ arch/arm64/include/asm/memory.h           | 14 ++++++++-
+ arch/arm64/mm/kasan_init.c                |  7 +++--
+ include/linux/kasan.h                     | 10 +++++--
+ mm/kasan/report.c                         | 36 ++++++++++++++++++++---
+ scripts/gdb/linux/kasan.py                |  5 +++-
+ scripts/gdb/linux/mm.py                   |  5 ++--
+ 8 files changed, 76 insertions(+), 19 deletions(-)
 
-Samuel Holland (2):
-  kasan: sw_tags: Use arithmetic shift for shadow computation
-  kasan: arm64: x86: Make special tags arch specific
-
- Documentation/arch/arm64/kasan-offsets.sh |  8 ++-
- Documentation/arch/x86/x86_64/mm.rst      |  6 ++-
- MAINTAINERS                               |  2 +-
- arch/arm64/Kconfig                        | 10 ++--
- arch/arm64/include/asm/kasan-tags.h       | 14 +++++
- arch/arm64/include/asm/kasan.h            |  2 -
- arch/arm64/include/asm/memory.h           | 14 ++++-
- arch/arm64/include/asm/uaccess.h          |  1 +
- arch/arm64/kernel/traps.c                 | 17 +------
- arch/arm64/mm/kasan_init.c                |  7 ++-
- arch/x86/Kconfig                          |  4 ++
- arch/x86/boot/compressed/misc.h           |  1 +
- arch/x86/include/asm/cache.h              |  4 ++
- arch/x86/include/asm/kasan-tags.h         |  9 ++++
- arch/x86/include/asm/kasan.h              | 62 ++++++++++++++++++++++-
- arch/x86/include/asm/page.h               | 23 ++++++++-
- arch/x86/include/asm/page_64.h            |  1 +
- arch/x86/kernel/head_64.S                 |  3 ++
- arch/x86/mm/init.c                        |  3 ++
- arch/x86/mm/init_64.c                     | 11 ++--
- arch/x86/mm/kasan_init_64.c               | 25 +++++++--
- arch/x86/mm/physaddr.c                    |  2 +
- include/linux/kasan-tags.h                | 21 ++++++--
- include/linux/kasan.h                     | 13 +++--
- include/linux/mm.h                        |  6 +--
- include/linux/mmzone.h                    |  2 +-
- include/linux/page-flags-layout.h         |  9 +---
- lib/Kconfig.kasan                         |  3 +-
- mm/execmem.c                              |  9 +++-
- mm/kasan/report.c                         | 37 ++++++++++++--
- mm/vmalloc.c                              |  7 ++-
- scripts/Makefile.kasan                    |  3 ++
- scripts/gdb/linux/kasan.py                |  5 +-
- scripts/gdb/linux/mm.py                   |  5 +-
- 34 files changed, 277 insertions(+), 72 deletions(-)
- create mode 100644 arch/arm64/include/asm/kasan-tags.h
- create mode 100644 arch/x86/include/asm/kasan-tags.h
-
+diff --git a/Documentation/arch/arm64/kasan-offsets.sh b/Documentation/arch=
+/arm64/kasan-offsets.sh
+index 2dc5f9e18039..ce777c7c7804 100644
+--- a/Documentation/arch/arm64/kasan-offsets.sh
++++ b/Documentation/arch/arm64/kasan-offsets.sh
+@@ -5,8 +5,12 @@
+=20
+ print_kasan_offset () {
+ =09printf "%02d\t" $1
+-=09printf "0x%08x00000000\n" $(( (0xffffffff & (-1 << ($1 - 1 - 32))) \
+-=09=09=09- (1 << (64 - 32 - $2)) ))
++=09if [[ $2 -ne 4 ]] then
++=09=09printf "0x%08x00000000\n" $(( (0xffffffff & (-1 << ($1 - 1 - 32))) \
++=09=09=09=09- (1 << (64 - 32 - $2)) ))
++=09else
++=09=09printf "0x%08x00000000\n" $(( (0xffffffff & (-1 << ($1 - 1 - 32))) )=
+)
++=09fi
+ }
+=20
+ echo KASAN_SHADOW_SCALE_SHIFT =3D 3
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 93173f0a09c7..c1b7261cdb96 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -434,11 +434,11 @@ config KASAN_SHADOW_OFFSET
+ =09default 0xdffffe0000000000 if ARM64_VA_BITS_42 && !KASAN_SW_TAGS
+ =09default 0xdfffffc000000000 if ARM64_VA_BITS_39 && !KASAN_SW_TAGS
+ =09default 0xdffffff800000000 if ARM64_VA_BITS_36 && !KASAN_SW_TAGS
+-=09default 0xefff800000000000 if (ARM64_VA_BITS_48 || (ARM64_VA_BITS_52 &&=
+ !ARM64_16K_PAGES)) && KASAN_SW_TAGS
+-=09default 0xefffc00000000000 if (ARM64_VA_BITS_47 || ARM64_VA_BITS_52) &&=
+ ARM64_16K_PAGES && KASAN_SW_TAGS
+-=09default 0xeffffe0000000000 if ARM64_VA_BITS_42 && KASAN_SW_TAGS
+-=09default 0xefffffc000000000 if ARM64_VA_BITS_39 && KASAN_SW_TAGS
+-=09default 0xeffffff800000000 if ARM64_VA_BITS_36 && KASAN_SW_TAGS
++=09default 0xffff800000000000 if (ARM64_VA_BITS_48 || (ARM64_VA_BITS_52 &&=
+ !ARM64_16K_PAGES)) && KASAN_SW_TAGS
++=09default 0xffffc00000000000 if (ARM64_VA_BITS_47 || ARM64_VA_BITS_52) &&=
+ ARM64_16K_PAGES && KASAN_SW_TAGS
++=09default 0xfffffe0000000000 if ARM64_VA_BITS_42 && KASAN_SW_TAGS
++=09default 0xffffffc000000000 if ARM64_VA_BITS_39 && KASAN_SW_TAGS
++=09default 0xfffffff800000000 if ARM64_VA_BITS_36 && KASAN_SW_TAGS
+ =09default 0xffffffffffffffff
+=20
+ config UNWIND_TABLES
+diff --git a/arch/arm64/include/asm/memory.h b/arch/arm64/include/asm/memor=
+y.h
+index 9d54b2ea49d6..f127fbf691ac 100644
+--- a/arch/arm64/include/asm/memory.h
++++ b/arch/arm64/include/asm/memory.h
+@@ -89,7 +89,15 @@
+  *
+  * KASAN_SHADOW_END is defined first as the shadow address that correspond=
+s to
+  * the upper bound of possible virtual kernel memory addresses UL(1) << 64
+- * according to the mapping formula.
++ * according to the mapping formula. For Generic KASAN, the address in the
++ * mapping formula is treated as unsigned (part of the compiler's ABI), so=
+ the
++ * end of the shadow memory region is at a large positive offset from
++ * KASAN_SHADOW_OFFSET. For Software Tag-Based KASAN, the address in the
++ * formula is treated as signed. Since all kernel addresses are negative, =
+they
++ * map to shadow memory below KASAN_SHADOW_OFFSET, making KASAN_SHADOW_OFF=
+SET
++ * itself the end of the shadow memory region. (User pointers are positive=
+ and
++ * would map to shadow memory above KASAN_SHADOW_OFFSET, but shadow memory=
+ is
++ * not allocated for them.)
+  *
+  * KASAN_SHADOW_START is defined second based on KASAN_SHADOW_END. The sha=
+dow
+  * memory start must map to the lowest possible kernel virtual memory addr=
+ess
+@@ -100,7 +108,11 @@
+  */
+ #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+ #define KASAN_SHADOW_OFFSET=09_AC(CONFIG_KASAN_SHADOW_OFFSET, UL)
++#ifdef CONFIG_KASAN_GENERIC
+ #define KASAN_SHADOW_END=09((UL(1) << (64 - KASAN_SHADOW_SCALE_SHIFT)) + K=
+ASAN_SHADOW_OFFSET)
++#else
++#define KASAN_SHADOW_END=09KASAN_SHADOW_OFFSET
++#endif
+ #define _KASAN_SHADOW_START(va)=09(KASAN_SHADOW_END - (UL(1) << ((va) - KA=
+SAN_SHADOW_SCALE_SHIFT)))
+ #define KASAN_SHADOW_START=09_KASAN_SHADOW_START(vabits_actual)
+ #define PAGE_END=09=09KASAN_SHADOW_START
+diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
+index abeb81bf6ebd..937f6eb8115b 100644
+--- a/arch/arm64/mm/kasan_init.c
++++ b/arch/arm64/mm/kasan_init.c
+@@ -198,8 +198,11 @@ static bool __init root_level_aligned(u64 addr)
+ /* The early shadow maps everything to a single page of zeroes */
+ asmlinkage void __init kasan_early_init(void)
+ {
+-=09BUILD_BUG_ON(KASAN_SHADOW_OFFSET !=3D
+-=09=09KASAN_SHADOW_END - (1UL << (64 - KASAN_SHADOW_SCALE_SHIFT)));
++=09if (IS_ENABLED(CONFIG_KASAN_GENERIC))
++=09=09BUILD_BUG_ON(KASAN_SHADOW_OFFSET !=3D
++=09=09=09KASAN_SHADOW_END - (1UL << (64 - KASAN_SHADOW_SCALE_SHIFT)));
++=09else
++=09=09BUILD_BUG_ON(KASAN_SHADOW_OFFSET !=3D KASAN_SHADOW_END);
+ =09BUILD_BUG_ON(!IS_ALIGNED(_KASAN_SHADOW_START(VA_BITS), SHADOW_ALIGN));
+ =09BUILD_BUG_ON(!IS_ALIGNED(_KASAN_SHADOW_START(VA_BITS_MIN), SHADOW_ALIGN=
+));
+ =09BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_END, SHADOW_ALIGN));
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index 9c6ac4b62eb9..0f65e88cc3f6 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -62,8 +62,14 @@ int kasan_populate_early_shadow(const void *shadow_start=
+,
+ #ifndef kasan_mem_to_shadow
+ static inline void *kasan_mem_to_shadow(const void *addr)
+ {
+-=09return (void *)((unsigned long)addr >> KASAN_SHADOW_SCALE_SHIFT)
+-=09=09+ KASAN_SHADOW_OFFSET;
++=09void *scaled;
++
++=09if (IS_ENABLED(CONFIG_KASAN_GENERIC))
++=09=09scaled =3D (void *)((unsigned long)addr >> KASAN_SHADOW_SCALE_SHIFT)=
+;
++=09else
++=09=09scaled =3D (void *)((long)addr >> KASAN_SHADOW_SCALE_SHIFT);
++
++=09return KASAN_SHADOW_OFFSET + scaled;
+ }
+ #endif
+=20
+diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+index 62c01b4527eb..b5beb1b10bd2 100644
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -642,11 +642,39 @@ void kasan_non_canonical_hook(unsigned long addr)
+ =09const char *bug_type;
+=20
+ =09/*
+-=09 * All addresses that came as a result of the memory-to-shadow mapping
+-=09 * (even for bogus pointers) must be >=3D KASAN_SHADOW_OFFSET.
++=09 * For Generic KASAN, kasan_mem_to_shadow() uses the logical right shif=
+t
++=09 * and never overflows with the chosen KASAN_SHADOW_OFFSET values (on
++=09 * both x86 and arm64). Thus, the possible shadow addresses (even for
++=09 * bogus pointers) belong to a single contiguous region that is the
++=09 * result of kasan_mem_to_shadow() applied to the whole address space.
+ =09 */
+-=09if (addr < KASAN_SHADOW_OFFSET)
+-=09=09return;
++=09if (IS_ENABLED(CONFIG_KASAN_GENERIC)) {
++=09=09if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0ULL)) ||
++=09=09    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
++=09=09=09return;
++=09}
++
++=09/*
++=09 * For Software Tag-Based KASAN, kasan_mem_to_shadow() uses the
++=09 * arithmetic shift. Normally, this would make checking for a possible
++=09 * shadow address complicated, as the shadow address computation
++=09 * operation would overflow only for some memory addresses. However, du=
+e
++=09 * to the chosen KASAN_SHADOW_OFFSET values and the fact the
++=09 * kasan_mem_to_shadow() only operates on pointers with the tag reset,
++=09 * the overflow always happens.
++=09 *
++=09 * For arm64, the top byte of the pointer gets reset to 0xFF. Thus, the
++=09 * possible shadow addresses belong to a region that is the result of
++=09 * kasan_mem_to_shadow() applied to the memory range
++=09 * [0xFF000000000000, 0xFFFFFFFFFFFFFFFF]. Despite the overflow, the
++=09 * resulting possible shadow region is contiguous, as the overflow
++=09 * happens for both 0xFF000000000000 and 0xFFFFFFFFFFFFFFFF.
++=09 */
++=09if (IS_ENABLED(CONFIG_KASAN_SW_TAGS) && IS_ENABLED(CONFIG_ARM64)) {
++=09=09if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0xFFULL << 56=
+)) ||
++=09=09    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
++=09=09=09return;
++=09}
+=20
+ =09orig_addr =3D (unsigned long)kasan_shadow_to_mem((void *)addr);
+=20
+diff --git a/scripts/gdb/linux/kasan.py b/scripts/gdb/linux/kasan.py
+index 56730b3fde0b..4b86202b155f 100644
+--- a/scripts/gdb/linux/kasan.py
++++ b/scripts/gdb/linux/kasan.py
+@@ -7,7 +7,8 @@
+ #
+=20
+ import gdb
+-from linux import constants, mm
++from linux import constants, utils, mm
++from ctypes import c_int64 as s64
+=20
+ def help():
+     t =3D """Usage: lx-kasan_mem_to_shadow [Hex memory addr]
+@@ -39,6 +40,8 @@ class KasanMemToShadow(gdb.Command):
+         else:
+             help()
+     def kasan_mem_to_shadow(self, addr):
++        if constants.CONFIG_KASAN_SW_TAGS and not utils.is_target_arch('x8=
+6'):
++            addr =3D s64(addr)
+         return (addr >> self.p_ops.KASAN_SHADOW_SCALE_SHIFT) + self.p_ops.=
+KASAN_SHADOW_OFFSET
+=20
+ KasanMemToShadow()
+diff --git a/scripts/gdb/linux/mm.py b/scripts/gdb/linux/mm.py
+index 7571aebbe650..2e63f3dedd53 100644
+--- a/scripts/gdb/linux/mm.py
++++ b/scripts/gdb/linux/mm.py
+@@ -110,12 +110,13 @@ class aarch64_page_ops():
+         self.KERNEL_END =3D gdb.parse_and_eval("_end")
+=20
+         if constants.LX_CONFIG_KASAN_GENERIC or constants.LX_CONFIG_KASAN_=
+SW_TAGS:
++            self.KASAN_SHADOW_OFFSET =3D constants.LX_CONFIG_KASAN_SHADOW_=
+OFFSET
+             if constants.LX_CONFIG_KASAN_GENERIC:
+                 self.KASAN_SHADOW_SCALE_SHIFT =3D 3
++                self.KASAN_SHADOW_END =3D (1 << (64 - self.KASAN_SHADOW_SC=
+ALE_SHIFT)) + self.KASAN_SHADOW_OFFSET
+             else:
+                 self.KASAN_SHADOW_SCALE_SHIFT =3D 4
+-            self.KASAN_SHADOW_OFFSET =3D constants.LX_CONFIG_KASAN_SHADOW_=
+OFFSET
+-            self.KASAN_SHADOW_END =3D (1 << (64 - self.KASAN_SHADOW_SCALE_=
+SHIFT)) + self.KASAN_SHADOW_OFFSET
++                self.KASAN_SHADOW_END =3D self.KASAN_SHADOW_OFFSET
+             self.PAGE_END =3D self.KASAN_SHADOW_END - (1 << (self.vabits_a=
+ctual - self.KASAN_SHADOW_SCALE_SHIFT))
+         else:
+             self.PAGE_END =3D self._PAGE_END(self.VA_BITS_MIN)
 --=20
 2.52.0
 
