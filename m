@@ -4,133 +4,221 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55038CF45CD
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 21:56:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59580CF45D2
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 21:58:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F9EB6B0088; Mon, 12 Jan 2026 16:56:58 -0500 (EST)
+	id BE61F6B008C; Mon, 12 Jan 2026 16:58:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CAD76B008A; Mon, 12 Jan 2026 16:56:58 -0500 (EST)
+	id BBA0F6B0092; Mon, 12 Jan 2026 16:58:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8ACF96B008C; Mon, 12 Jan 2026 16:56:58 -0500 (EST)
+	id A719F6B0093; Mon, 12 Jan 2026 16:58:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 72D886B0088
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 16:56:58 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA8925DBEA
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 21:56:57 +0000 (UTC)
-X-FDA: 84324672474.25.EBDC211
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E5CE21C0005
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 21:56:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=wWDIMgde;
-	spf=pass (imf20.hostedemail.com: domain of avagin@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=avagin@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9679B6B008C
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 16:58:11 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A5DE5DBEA
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 21:58:11 +0000 (UTC)
+X-FDA: 84324675582.26.7B34500
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010053.outbound.protection.outlook.com [52.101.193.53])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 14B7C40008
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 21:58:07 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=AWrIlGYm;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.193.53 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768255088; a=rsa-sha256;
+	cv=pass;
+	b=ixrfTROtZWQaHNSAMG68d/2nF/MWG9cvwRA+qwtVdZpcz1EW7H4qBrxg8AUz2QYFj73C99
+	A1GaMAjx0iDZ9dQCsvmSZlhvUJkhArvxNuIMR+mzqZBi37FRgoIebLGa4tvSeFm75+GRaL
+	it/0YMzv+aefz10Jrjxttlb3TZDqJkQ=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=AWrIlGYm;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.193.53 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768255015;
+	s=arc-20220608; t=1768255088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=APPjDiY27Mom+DuTB7AoGJUBts47hajus/rVrAD6gqs=;
-	b=mKHoPO9HIxSC1T2QjA0J7nx2LPVOAqdNur5TO2e79D3JxhEsVMSvHGzvcT+sAmj1iXYhKS
-	xI/Wpgxjv/LF6l9nNa26KIum5aRdDyS/LSMgUwuqnxcyM/4kmc1h08hZKDXWjp+fGsWgDC
-	rwn9plBKUmqhG/PPKJtPGMtnSQ5oMiI=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=wWDIMgde;
-	spf=pass (imf20.hostedemail.com: domain of avagin@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=avagin@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768255015; a=rsa-sha256;
-	cv=pass;
-	b=C6Y0HTp+THXorSu/od3VMBQr/SocbDp8l2MyJLUBPM9uUJ+x+FsfnKDfaxebasFWv+5BpG
-	SQ5RYuLvZbvcZSBJja1BaQFxPR7xN4nBaVRJtyghB27j7/ZoFy8vTxj4ykFUTAX2xQ89cG
-	4FHveLwitnJVthj9P6SbnwHfDdkNqTM=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ee147baf7bso40301cf.1
-        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 13:56:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768255015; cv=none;
-        d=google.com; s=arc-20240605;
-        b=h8tdElSNAF9/qjy1+ac6+IWFpqxC1MiajvhRkmwZoftQkfLTlUm0s0Iqwp3DKunN3f
-         1uStbe1i4DrsqyaRGelvShEmg6igOJEuprcGkdAqDqnrApKketDXJ9UOLH2I8egX3BRy
-         mKZj3pxSwaeNKwLLMo55HUUXs2yRZ3HHgd9NM08aOP/uVhQAAndidPgn5u26OVB5gUbX
-         0L+9SInOInrqZjgpFVFbPjXnih+C8JvKLY5B6CSEr24CtcfG2OZbvd+UgVfahyHQRs18
-         ff1HzfCyaRZDMZQcJ0QXmK24k4XVGOU+a9wwpdImAZOWCl27awpNGLTal/Q7iyndacjS
-         GoYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=APPjDiY27Mom+DuTB7AoGJUBts47hajus/rVrAD6gqs=;
-        fh=GdNG4ZeaNv6jzJVWbkQOULtwY4gQI1jEQlhHeuCPxSQ=;
-        b=DhcnymrJcMz91SQFU2FmECknUD+XRafmAkndSL7MmxrqjSwHHZbFeHjtWzw35OaSCC
-         qmm7Z1TD3/8VBF0JsKDU3JmVofYA+SBLHZmiTHlwhjIYJl4osK7zLK1EXMRwm+o1cdGG
-         l2tzH3k0xh7jGdR3/98vFIhBI/R6Z28JzAuq9UuiW/ERv583erVkkjDhjyDCbeVlMxIU
-         KTxMqAICGLidA2zW2piHTa2kjuvvxfSvef6Vgy8dbINfJpFkgqxr2I0Z24AV/Mzi7bus
-         KtH1T1z0qv4Smf9285fZFhACdFyfrLMmGIs9yHDPYyGi2M/neWfjgX8YldWBTQGHN1dl
-         eeEQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768255015; x=1768859815; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=APPjDiY27Mom+DuTB7AoGJUBts47hajus/rVrAD6gqs=;
-        b=wWDIMgdeVXvRJAi2v2ZH+1GYFCgwmD18KP+AbOPeHKDlAy2i5XUhw2Q35we5z/JQfw
-         csWNth4KNPupVlyCIDsUuRWyXZPRe0sNpVwWF+ez6wec6a+91Ze9ynxcx5zZhfawbJ5W
-         6JOWSr1k+tWrZpuFjyQsQO3k9wSvGTKh/LRcVdhs8fxwbnctEfck8l/Hk7GytkUZ9QPS
-         HIhkLo8FvtYzvv0XbO2CVzg1FjZ5dzQNJx7BUEEFOEWjDkSUEBBrsI3t/3Qm1rSJTu3j
-         jfAuqk5hhVMM2lfP/8q1M306wjmUfasN5t33dKHdtw0obCPiKqDfT8gvg/wGKAeABrbX
-         z6ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768255015; x=1768859815;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=APPjDiY27Mom+DuTB7AoGJUBts47hajus/rVrAD6gqs=;
-        b=o6QWsgNs9SvmANpSLcEPm2clSlFmp1btxvMAc/+6RBzDZ5yfOGStmMFkdXK3+gb8KI
-         k0VQsyXc9cCGOOn3IO5Kmwr+bqfD8au+1z+J1yOh4bFfTnrYzN/CzixI5v92dmWqqKJL
-         LgsCVhnWJg+UFS4uAy5neUq9KHHfN7pBYzaDOuIrVlwhNSbYuJDNqY+yjzrX5hOFMy02
-         Ju7tiXXU4gW0asnw6Ux+XS7hQd+q6qND9AWacKNwrheaeQquLfhDmCWoi9VFbycNXsT6
-         Fkf8apQ5X7BITdkAauxDv7ToHTxFWP/Qe+tTZwLFavgQo2DdqWf6MNi8kmdj3irXfp+J
-         N8Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCUXdUq+Gp21wWD20Z3wctU9d3eaivgT1AlsKyKP64vvr5maFrWa/+wWR4jaqsiJZ5NBQPFD8eKybw==@kvack.org
-X-Gm-Message-State: AOJu0YxRVrMC7IL6JXsu0ZnFsBCqIY2FAkV8AA+lM+wuVncWUEPAqWj7
-	kHEnP++TrbJ4W2ZNRMLCmD5sKbLwPVc4icMfxW4PYFON3Cewb0lRkRi48lFhmjWoJctt+87UIT5
-	+VA6P6PrRh2gaU4mmaO0CoataeLFi7aU2N36/swCT
-X-Gm-Gg: AY/fxX7YDIXucFObI2kxqgr94XO+U6ggL7Nnkf3/t6vuZ4LhVBaVCTW3beJF+3dKAbX
-	jCi1a9iA8fvnus2B7AxmX0qp0rQE6QfQCc/ixdIASjQDKk9yrrPcbKKEyS1Xw48c5mVlSVhfKR8
-	E94C9BLGmz1B8bHWRBDIm+ASCfgziIYKT+OCBYD54ATlEFEHPTw9DF4iO2HqPQyOTg9/8AcGY/i
-	AVbf/jZBDrA8IVxnikz6qTfBUwNZoFDp3aEgRDXhqr64QuU0aJPYRdKXQjvEcdiuRSXhGz2
-X-Received: by 2002:ac8:5942:0:b0:4ff:cb72:7c03 with SMTP id
- d75a77b69052e-5013af6e61amr909671cf.3.1768255014503; Mon, 12 Jan 2026
- 13:56:54 -0800 (PST)
+	bh=gfG4GKKh+BhO7S5ZbAYHYyk3ue7Sc0gsHGRFslJF99E=;
+	b=3pOdmWEQVD6txQ6apoojka4w8fDyNdgSF4Lf3CR+ehmSRBt4o/IaQ2lFOil7KnUK26KoTi
+	2S7e2boY0jsW2kj+2OTP1XzT5IkmVxSKP72LC2bqraHqgdNyaUL7Ia3jIqOo9jFawA1rYo
+	Fci3TqmtPsBwvSVVSUMEwmgsGPiqsqA=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wYzI6QvBST94/vutapFCk+Oslt8DjWLtp7oQ7puVEU9APVJdx3Sfu5C3VXUTcECknAFoe9UEJKM4RUBo8PeBlKzzM1rHYQ+Cp/xLoMLu1Ac3JaEprIzaFZgZc3npKP5ckFUfeh9CB0rtcPdZjnjIqMXFgpaTMHrk88pZJSBEuMRsFTtH0R8ivEnzrx2G5UQVkKwqtoAYOiR19Lq0eoj3IK+xwOJd7NcwbSF6FR1AdIJkquHX0wwMlYq5Pw2G0lGIsCAHQCXXN4cvuMtVVKm36tFAjluHorPO2bXbanMUn+rhJN33WuupP+zta8TGMX/kte4JOzUV7IvaQbXHvWNgww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gfG4GKKh+BhO7S5ZbAYHYyk3ue7Sc0gsHGRFslJF99E=;
+ b=vZXGklNYqqkAg6446C4LIsnb0e68bpmLv/Jj3diYzge3jKrJpM24NipHEREmzzbxDIN6L7YV4bKYElfGR5TQX7+m3iBf3Guj9dGtoTf0VKl2+faUC2p2hOCsCgBdUWC1gZusU3HBLnC1xIXxFbbydvZKlQomToqpNoMIgPFE35HLIJeumUL819JhVMC/0IB6oIEtlmKXFIVqKmmSOhnWha44lIGMJsP1FhLWHBfO1htLkmheKMOjXm+KkOUAQsRmwHfMMQh6IAKH4MyMXyuwDeA3YFiWcwBhHXv0mxrRCYrUOiPDBKfYltTv6jLLniPZS8TnHoXGOff3bbkRWao8Jg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gfG4GKKh+BhO7S5ZbAYHYyk3ue7Sc0gsHGRFslJF99E=;
+ b=AWrIlGYmKQb7YO0bicuYK3BC0jWa3lXiCEHv23EmRmHeecO9kY33v5YpF0jHy/lG+QTvUH1VIkWds3AixGBoncZ+qySSszgKocq8Myn/o9u/4oFSMYwPSjHfo06XUVFfxuYyB4CGs95n0TvNVuKVIPUxAUenT7NgUNCdebYBw7XgfRM2D57DHi+tMU2eab5MIumD+KWiDvNlA2P9wddRm+3KnPWN7a95YieU+1YzUUr6EFwRwnr5NCVSChx8i6DheVIrkix9cRa/nvlwH6hUxnKVIdiJbcln4eBkcHUkSDm2bwa45f6KhBfIXxx2aTrURvwf3psASx26BpDoZ/whDQ==
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
+ by MW3PR12MB4457.namprd12.prod.outlook.com (2603:10b6:303:2e::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Mon, 12 Jan
+ 2026 21:58:04 +0000
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
+ 21:58:04 +0000
+Message-ID: <e635e534-5aa6-485a-bd5c-7a0bc69f14f2@nvidia.com>
+Date: Tue, 13 Jan 2026 08:57:49 +1100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 0/8] mm,numa: N_PRIVATE node isolation for
+ device-managed memory
+To: dan.j.williams@intel.com, Yury Norov <ynorov@nvidia.com>,
+ Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, kernel-team@meta.com, longman@redhat.com,
+ tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, corbet@lwn.net,
+ gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+ dave@stgolabs.net, jonathan.cameron@huawei.com, dave.jiang@intel.com,
+ alison.schofield@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com,
+ akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com, david@kernel.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ yury.norov@gmail.com, linux@rasmusvillemoes.dk, rientjes@google.com,
+ shakeel.butt@linux.dev, chrisl@kernel.org, kasong@tencent.com,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+ baohua@kernel.org, yosry.ahmed@linux.dev, chengming.zhou@linux.dev,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, osalvador@suse.de,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ cl@gentwo.org, harry.yoo@oracle.com, zhengqi.arch@bytedance.com
+References: <20260108203755.1163107-1-gourry@gourry.net>
+ <6604d787-1744-4acf-80c0-e428fee1677e@nvidia.com>
+ <aWUHAboKw28XepWr@gourry-fedora-PF4VCD3F> <aWUs8Fx2CG07F81e@yury>
+ <696566a1e228d_2071810076@dwillia2-mobl4.notmuch>
+Content-Language: en-US
+From: Balbir Singh <balbirs@nvidia.com>
+In-Reply-To: <696566a1e228d_2071810076@dwillia2-mobl4.notmuch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY5PR03CA0022.namprd03.prod.outlook.com
+ (2603:10b6:a03:1e0::32) To PH8PR12MB7277.namprd12.prod.outlook.com
+ (2603:10b6:510:223::13)
 MIME-Version: 1.0
-References: <20260108050748.520792-1-avagin@google.com> <20260108050748.520792-3-avagin@google.com>
- <wfl47fj3l4xhffrwuqfn5pgtrrn3s64lxxodnz5forx7d4x443@spsi3sx33lnf>
-In-Reply-To: <wfl47fj3l4xhffrwuqfn5pgtrrn3s64lxxodnz5forx7d4x443@spsi3sx33lnf>
-From: Andrei Vagin <avagin@google.com>
-Date: Mon, 12 Jan 2026 13:56:43 -0800
-X-Gm-Features: AZwV_Qj3y2SecqwEZXS9T90QVcHw2aDfPUBTvSnTZm697NLp5ICI8RI9bzunxDQ
-Message-ID: <CAEWA0a4BW-7qsewWHTeSeRj7XtdcFX34oW47XeG3JLC+c9cExQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] exec: inherit HWCAPs from the parent process
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, criu@lists.linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, Chen Ridong <chenridong@huawei.com>, 
-	Christian Brauner <brauner@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Eric Biederman <ebiederm@xmission.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Content-Type: multipart/alternative; boundary="000000000000041313064837f498"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|MW3PR12MB4457:EE_
+X-MS-Office365-Filtering-Correlation-Id: 341b44f6-67f6-4093-133e-08de5225a916
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Q0U0S3lNWm5QTmZLaXlOeFVPZENzS0kwU05sMTlESDZQUE1QZUN0WWNQazJU?=
+ =?utf-8?B?OVdHZVk4K0x2UGRQeTZ2SXJTMXJ2Q2lqdHkvM29GRUlpc0tCeFMxK1JycEpq?=
+ =?utf-8?B?QUw0TndsSVQrdmgxNXgyTnFTUVNXOGhKcjFBaXBLMUtCTExYbnU1MFV5b0xr?=
+ =?utf-8?B?OVpIakRxWWg1OC9NY0hSVVBDK3craFVmdk11Rnp0TzBabFIrYWZIeFNuYlBI?=
+ =?utf-8?B?Ujh0aXZhcWxXUWpua0JlR2JsT0plNjNFc085ZVFncHg1ZDBiODBwOG9pQjRx?=
+ =?utf-8?B?WFJlZEt4RGRDZnF5d3VucXZ5K1p6a3JEZDZkakQ4WmNzRFlSZUpNc3VHZmlV?=
+ =?utf-8?B?ZjNZaVZzU3BSeXd6anZHdlppejV6MDdLVHowU3JNZUJTK1BmSnY1cE9WdGJt?=
+ =?utf-8?B?ZHZCZ0hIRkRIU3llV3F0V216K1NRQjQ1azZSdFdlRDZuNFBoMHBLa2o4dnJX?=
+ =?utf-8?B?NW92c2hKYmhaaTBYd050VmRPZ0lPZmg0MUFwODBuUVVXcmRLZlpOdkFOQ1hw?=
+ =?utf-8?B?L1duU0NuZVhVVVBnVVRYbXdhdTIyVmNoSHFzUGZ1S3VEOGgyWWJnK2ozbFg1?=
+ =?utf-8?B?M3lucmcxK1hUOUdxZHFYUEMwRHVndGoyWWkzMEJRRDEwZVk1Z2FWdE1POE9Z?=
+ =?utf-8?B?ZGNKeTlHb1YvdnBNNC85RXF1alRTeXBoZ1ZoVUZyVTBzQS9vRDRia1I4WVNH?=
+ =?utf-8?B?SHFiSElONDc5aVk1R0JkUTIvWjhKV01KdmthM1ljd2ZQR3F5bFlJSkhYOEF6?=
+ =?utf-8?B?bUEzTlFuRkxIY1NYUllzcTU4VnRnbE1oT2tmUUg1NlNDTGVZRFg1bjFSMFFO?=
+ =?utf-8?B?c2lEZzdPTU9VN0lTY0dvT0J1cXZzdlpWS29KMDBzNXdZQmVoaEJwanhWckoz?=
+ =?utf-8?B?bjVRZ2dreXhGZENwbnJGWVhmWmgxUUs1M1J6UXRqaG1GSVJ5ME9VdmRyN29n?=
+ =?utf-8?B?RDV1WXFlK09OaEdFUUpVeHJ5N3BlS3pWSWVHczBKbmxCSnpYYjlVczFBQVVS?=
+ =?utf-8?B?SjFoSlI0QnNaL2NKMDJuZ3kxSDZwM1hEVUM2SzRhMlBrV2kxcFBqWE80bG95?=
+ =?utf-8?B?WHA1V1VjSk5mdm5FRVgrK2o2SUlwaVQwam8vOW1kTXJ4RUVENGorWUFxRkt6?=
+ =?utf-8?B?MUdhR29RV1JRSEtNZ1F2eCtKeW5Oa0dOZnFkNTlzTWVUbmVTSkxoRGFFenpu?=
+ =?utf-8?B?V1NtdEFJK1BIRlFkNEJBTEVWK0xTUDByQmFXZmNGOVk3eW9rbEk0NktySEhI?=
+ =?utf-8?B?TUVINldReFdac3BLZjVVMXYxWE5XM2s3cCtWZFhuYklZZGtMNWtYaHFXZ3NN?=
+ =?utf-8?B?YXUzblI5R2ZQakRlS25yL2JVc0VtL3pSRzQweTRVTml5czE0cXlXOGpOcnBU?=
+ =?utf-8?B?Y1c2LzNDNUVVYW1BZDFEbHhHTEFIWXo0QmhaeThnTmZnbFROTXhXLzdybTB0?=
+ =?utf-8?B?SFJ2Q3drQmlTU0tWa3QzNFdyY3ZudjJDa0ZPT2JibG9xbWRDSkxXOVhuL0Zs?=
+ =?utf-8?B?ZXNJVnBGMHBWc2tnV3hHZjBENVFpajRKK2wyZjVIczJzb1BoY2VHd3AzRVFI?=
+ =?utf-8?B?ZG9BNmFpZ1ZSVTZCOWxkZnJqVnNxcTYxQURwU05BZyt3NWYwdHU3N0E1NEho?=
+ =?utf-8?B?cU5ncy9IZ25iaFcvKzU3aDI2aXRQdGNxNnhEM2VDcEZoTklWcE1reHlucHM4?=
+ =?utf-8?B?NG9iYXR6ODNuc2t3RW9qVEEvaWVBd21qbzJQTXlKV05PVi9NWXA3NDVXblFD?=
+ =?utf-8?B?TnpENGxnaUxEQ2hISTMxTEFZRVF0YW9WWmZtc2VpUnhOMVMzNHA0UUU5bW9O?=
+ =?utf-8?B?aXRoNjVSVm9OeklHTmNaWEVSc0l1Q09uMXBLZWwybEFJNFo1YlpsR2JiM2xt?=
+ =?utf-8?B?b205dGlEM2JBa3dUdVYxSllWUVhYWUd5aVVsUFYycFdmVVlzeFcvSlhlV0JM?=
+ =?utf-8?Q?sdewqoOeivt6HVAtFVvRfumGVysyJfD5?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MGtBM2VPRHcydldzOW9reC93NWVkbGpjRjJmU0J4MmNOZ1NjeUl0SnN3ejdK?=
+ =?utf-8?B?SDhhWnlmb09MaHlnaE5leTVXWkdZbTNKaWlqVFFWSkpOOStWWGFvbmFKc3Za?=
+ =?utf-8?B?cXlXNFB3WHV0d1k1R3BGR1VkdDdqWXRMMlR6ZmlxUDVwUGxSTGhNV3hON00w?=
+ =?utf-8?B?VUhma1lubm1oMGxwRklzR01mOUNPTHlRV0FJTUJEZ0FRWC8vWWpDd2VPUURi?=
+ =?utf-8?B?ZlhLbmtOaU9JYkFMVjFlNGZRckZtdXlHZlJjLzJ4SmVnWEk0bk9oOWQxNU9y?=
+ =?utf-8?B?Nmk4RTBiTlhZYUdMdXRpV3JDUStBeFpPc1k5bjh2Mng0azRFVFo1dExWbEpq?=
+ =?utf-8?B?SFRlU2VNV0tIZ0gxWGNzdmpmVWlqNmllYUFmSC9YMkdETTRtOWEzU25aWGRW?=
+ =?utf-8?B?Y0oyQmhOSk1aMlY3ZmJtanArOWNpaHNZNS9ScUQ3d0t1aUd2MDh4aHhuZXNE?=
+ =?utf-8?B?cDNVNi80VGxSb1JDdnZ5YWtBTDIxY1EydStacmFWZXQyRUJqSkIraXp2bDZt?=
+ =?utf-8?B?SXB5dWU4U3BkM1p0TTNoNmVVejVWTGZPNHAxSzhGUjBzK01NSXozTUFxY0Rx?=
+ =?utf-8?B?L1c4MHliOS9jUDM3Y2J4SkRGbVpqVzFmeGhZZXZNUjQvWjNIYmpMYm9UUmtO?=
+ =?utf-8?B?b3BPNHVadWQzblRjMVJpdHlvazFDeHlVVlJUVm9EMFlqVkV3WUt3bjRlbXpy?=
+ =?utf-8?B?Yk1oOWpDaGNWaVlzS3NZVW9WeXVEM3prY3BNMEVqZ0hMelFweStvWnZtWHl2?=
+ =?utf-8?B?RmF2UjRhdFlEa09vbDJUUFhkMkZuUitOYzRSTFkzaW4zRkI1TUFQLzdpS1pn?=
+ =?utf-8?B?NnJ5OTBWVkJlY3FLMHpVMEYxZFlwVHNRbWwzMkdBdHNTWkFsejJhRUhkeUZ5?=
+ =?utf-8?B?SmRKMHVWL01xdnBVWUNrYnIxYU1Oemx0TW45MGhiYnhZMkdNUTRTUnRKbno1?=
+ =?utf-8?B?a3J6ZS9EalY1Tngwbmx2NDIwVEw5ZXF0S05IN2pvQVU2OVhsL205WHpUU1hq?=
+ =?utf-8?B?TUdYZG0wYlFRMnRiclNETlhFS1hYcnFQaUplSVR5SmVyS0htbGE0aU9aS05H?=
+ =?utf-8?B?Zk9yZnZEeG5JVG53NGVuaFdqRFJsS25xWG9QREhQQzRTcHBKaEFqaldqVTV5?=
+ =?utf-8?B?SW5mcFJLUEZtTDFaK0xrc1BpT3J2ZTJ3aDN0dXRPRlp5ZGFmRlhwZ01SV2dV?=
+ =?utf-8?B?NlY4ZDFqa0VKelhNeWFHRms0YUxYOGQyNGRDd0JJeWpuOU1SSGN1d2VrN0Ev?=
+ =?utf-8?B?dlREckdscGpXNCtKbGd1bUJRMG42Rkdqb0xrUjZDSTl5SHR5bktEZUJXdTBl?=
+ =?utf-8?B?SXBMSm95eWlxMExndXdEVWdET3RBa2ZXUXZlc1I0RVNJZENsbkx5VDlseUJt?=
+ =?utf-8?B?MjZDM0hQTmhUTzdrQVIwWmVxM1ZoTnZzSWhJRm1vUUVVWkNRTTlFVWtLS1pp?=
+ =?utf-8?B?UUpxYzliRDQvR05xczlJazRrL0NKS3pVWFMzV1YxTnZ6R1RpSlpMT2FKaUZG?=
+ =?utf-8?B?U0RKcldkUngwTlFzZ3BVaVVwa2Ria0c5OTl0T3ZMSE5XWDFDd241OU9wbFVF?=
+ =?utf-8?B?ZVB4bGxhaWVOcmQvdVl4T0NJc0hnaGpzOTVralREc1F1OVFEY0pNb2NpMVRl?=
+ =?utf-8?B?MmduZ1VXNkVSd3BUaFI4dlFSYURYMnU3VmlEVU9EOW9obkhiMEs0T1lHTWdD?=
+ =?utf-8?B?S091MXNGM05NVGl1SE9pMndZWkNkU2tpZEN4ZllTZjViZ0JEckxTVGgxR3lM?=
+ =?utf-8?B?NzBuVVB6Z2NiNnJpVEQyWHdpSEJ0UjJDSDk1dU42bUtsREt5QnJDaENYcnRo?=
+ =?utf-8?B?WVhpVnFIS05jQWNNUjk1NlUwSFVvMkRBd0pZSy9MYWhocllISXBQZXNBU0Fh?=
+ =?utf-8?B?YnQ1L3JkdnRWemhLTWU4dVF4YzZCTnM0QzNST1NaRWVOKzFqTEhzek5ob09T?=
+ =?utf-8?B?Q2NrUDVWd0dGUHhBNDJEZXRLdVI2ajBvektKTnNDU0VUd3NYN2dRQUFhR3Y5?=
+ =?utf-8?B?OTM1TDR6dG5hSWxEYkZQV1ZWbEtZcitJdGFEY0MwVTAyRUQyZWpnZGZ1Zk9J?=
+ =?utf-8?B?ZzhjL2VWVm9DSGk4MHFsNlFZT3M0dzk4UEVGRTlpNTAzdld0R0g5dk5xMUQz?=
+ =?utf-8?B?NUdoaGdOZ0paTGNJTWFNcWVPeEZXMVJZWHVWZ2xJNEJkbWpucTh0bnMzd3U2?=
+ =?utf-8?B?TzJHdm8zVnZoQlYxTmpYWHV3akk0cCtPZHJjU3lDaUEvR3ovYmJBSk5KRVM4?=
+ =?utf-8?B?aWNxNFd2eHNpUk9jZWZOeldacU9lVjUrZ3V0TVZQT3V2TlVFZC9zOUlKeFlK?=
+ =?utf-8?B?a3dFQW9QK1FTRTdQQmtrY1RLcEM5ZzNqSFM2elNuWWRLK0phWlhtMmVPTlRK?=
+ =?utf-8?Q?yrnFcr6BSM2YZ5CpSn1eS/INSX8c5cQ+gx3D0ZNB4HPG3?=
+X-MS-Exchange-AntiSpam-MessageData-1: YFW7Z+kG5PVv/A==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 341b44f6-67f6-4093-133e-08de5225a916
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 21:58:03.8700
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ODcF5U3rJJPx2EyvS9RoclDTYVDzsbAD1H7dHKdbPAUH1Txnl46LzUTumvUW3s8ufraWdeOH8tnCmiTWEHYCMA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4457
+X-Rspamd-Queue-Id: 14B7C40008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: qkokijs94x46orb8g4g8wegtqto9too6
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E5CE21C0005
-X-Stat-Signature: quuwgrznfgr6p79w3s6wiijh46sk3ysh
-X-HE-Tag: 1768255015-251892
-X-HE-Meta: U2FsdGVkX19k8kHpf/7JsN/e4dhZKlP4IyXBA2W47uYhaaj9ub8AHf+MpEvHJP6i1jGx4VuNPPiXqY3/gp5HdvnALqd0JE7o1HTkYR946GT9xf8hg67H0rsErUyOhYQ3snAM+9hCRDlm0o4kkIbkPS+auRRSnO0nrIlQdDn1vrQmVpaYeRwJ3TVH1FnwmAqnrgEdewYqeWmWcVWiviT3IxQVi3GzONkc5GrpFFf8tNCZnV/p/GJ2VF5WKQ0NgsA0EZ5rRIPAePjqgTfVnwTmloFUPkzdxK6iqKseHDo/lI53QYtYs4U5JSfp/jXxlAha9SBfu4q+clKxSVtB5udbdOji1iXLpcvoXSk1HR89D9FS4d94ZnpJ6oQ4O4DwDav/Sh+EVco1tspiq4HjZB5K30DzX990AudI/kSrR755SvcOvFkbq3Kdbbu4ApGjI1oA3eAGocuUDyjN/1a+p1UDv4HmAAOdQ3s2UE5cY14mXDQLJnxJbSS16vVeTiEqh5Y/hkB4WDa6D11+QpMFH4JgpnI/quCi0+OrKNszuh/P9DQIK662oH+izBEeNs9eVE/+CqcBU5NC/gOwUIKbIhRg6GASUm0BtbF9ug26dIIsBK5Bf+CebvLPFbi7TgMsEpbi86E0G0WeHBCCp3mGLENEq6nPVMqa8uvhbdTC9ylHMlWKXBhlVC0+jLJ070CzJgdhv189kswULzTAWoBFIBeu2XRHyeiZ2GwvNlRqH5m0a7lNwyP1Ws6a2UFv+In+mEmzMHPXYQ63WYJqVlxVZn4aTj9F47NNofPe0KQUiHEknpQJvhhLORyieaOkepynU49vwO1mM8+M0bBpOO0QoFwes3B+FwQVj/Q9QWKqyV7lxgpLDMhOXr3HpxhnQ7jJNmRSx4tZGKYk2mjiYZdtjdxP6bHT6GqOaq1dnReAw3E6iq8xYrw5xtP7Vy1C3igVUTV2IelMkTfZ7pQydOz4rFL
- hnfwdAI0
- 4f1qYcM3qBH6XsCPyK5E/AkGVw1NqOmsYETjzDl9ppPw3o8iWrU3QvTehXOK6HGYCyNXFMl6T8x+hDuvFEDE5EmVQANILSDISkqr2xmtWCordulzG31blz3l6HRh4oknCmK6FX0rFCSut97da0c+9q1N1jFc0FXRX/RD+sNu3Nq8P07XA8ZlkSXzzr6ZdZxXZtw+axNJOW7PpEQrUmTDMHHCg5y+QLD77CRmi24N/mlGynl26pgV/3AdoJIMIoMDt7Jh9UPkLCruJEOqt+KmgAlBaeFa+Ho9XSLsE0bLhFkwplZ2gko8RGtNLrcGCiXFXuf9PsEuyUBPSfAA1rAhWlaCNLIUudFU8kRMmVlVjxHEG7a3ZkQ5KpypDIHSKpRei1Dh/siFRsfT+6hAjqiQDy97RIaoD+MQMkVoXsQrd6pv/JPY=
+X-HE-Tag: 1768255087-536936
+X-HE-Meta: U2FsdGVkX1/scA48XLEwiEHpdflIARJSw1GIRMaQe1GSXSKEwmDv1spaw0DUtUjL4wAgEtG+dx4uOGGnAADnEpaf+6FTRROOuk4nctwoIAst7iPA7Fl+6jXB7klZ24lrtn7rtpgcMQ+qbr9r5u2FeEwbql4t4t6TB/xUv8ZGm2PgOaEWxO8NUzhxYEswJKDy8c/GzlXLMwc6hPIwshaHZ/ptVZHKCj00Qz7Puur7oUs2NgYj+SSuQHyG5ocoH23HiA1vrGOCDSa4Z171bYgE+Y6hzWHZgjc4eS5ZdMogERpW0Ds/9TcoFQ74XmIL9P9kBb2pwbQPw0o9jnauTQ48pOfzfzyMH06CzRbA8sAXGRpq6DNFU3huqIkzLdjsbdjqMoIfgo1D2fKa7EoKSIb9PrIQ2mpP6Hh7jJXBkKhFUPXIrTp1lxlbrsdBGtZdY8Ivf+rv1ZX6HcCa+z9dJEROWETg3049fYv4eMnKCGNupYUepqvw8kh5jvckcw4A5pYbMyMr/LA3+9wLEvshu4Hkz1DC4igPuCrrzKFmmo5w9puOPwNr28S6o4Vkq4oT7OwiJeNQ4+5I4z+gi8uXSrsxd8RDSa9earZvzCyghEgxlonZhLU+xnZTotCzMxGVQ4ABudlDYqEMl1QXZplrRjN/0h7R8FM/ZGHvntplDKh18vHG8OCVwElU/yJyUJ9iBtSs9fvQtq0Il4TjJ2S6bHs/I2bf2H7gCHrngkAl4Lb8qNuOmjmDfrWt3uDXIPlGCPQ8MrI4lcs6h1Jzoy8KuAIvfMOSQyJenOaMk2Vtkzf+waf0eajGQQQvbLpv+NLETVVek22YtDaZULSK6Di17nH+pfEMcLXozXkQuTa8yKmXPTrWKyGf/pQlSU0vB0wPxWK/ZFYhj6AnPVoye6ECdNQp5smzCSGX7kOAS6FoKbuQ1/uzqn8dhkte9sPKLB3pTN/ZLfpu1eRqPlmXRJCxR56
+ grKaOMSL
+ o1EoCbEngJFvRpkjEt9411zw41DltGLGbbMUaKtjfCFhBxSLmwJak7IGZS05xfBj6yQk+FrgYT54tfaq0ZpZ8LAHxhjUgVm2A+9TZpREKE/QN2u85Y/i45s8tkr6HbRltXR9UG1jxJqK+8Ptsi9EBP0LtMVSo4MwYV1U6ASK5izzO0iJtecKMtCoPJjeTn6jI6qNoBmtIBCeLLpnHrOCAluw9CZ1H49jtXSpz/eKDd3TSAes3+O0eOxZtOivQ0t/pWucQdFxFkkBSCDqsfR5Jf3h5Z4nNLcasvGwNkcsT0BMoVcYgwHLk7EoDX2kmWjPFg9vUFKeaUpLv/9Rq4V+dY/9f+LQK2DJ0rYNsKHFMopAGJC8knxGo5Yf9d8y6ATH6el6Y3CvZ3HFLE45A9zLtF6Zqn1TgfhwXjdI3U+bWagDdlXpvFbdKuuDHAzm/ARA/EXSiDCT1PbhOtKfQ+nDaE0FysJF5WpuvkQRScfFu8s85LJST5c72DPKEuCQWVB+ArYEBqAqKYxgeXBPOqSeHAZbXRCb1Sg1Pyv+EkM/c+UayMns=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,136 +227,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000041313064837f498
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 1/13/26 07:24, dan.j.williams@intel.com wrote:
+> Yury Norov wrote:
+> [..]
+>>> Dan Williams convinced me to go with N_PRIVATE, but this is really a
+>>> bikeshed topic
+>>
+>> No it's not. To me (OK, an almost random reader in this discussion),
+>> N_PRIVATE is a pretty confusing name. It doesn't answer the question:
+>> private what? N_PRIVATE_MEMORY is better in that department, isn't?
+>>
+>> But taking into account isolcpus, maybe N_ISOLMEM?
+>>
+>>> - we could call it N_BOBERT until we find consensus.
+>>
+>> Please give it the right name well describing the scope and purpose of
+>> the new restriction policy before moving forward.
+> 
+> ...this is the definition of a bikeshed discussion, and bikeshed's are
+> important for building consensus. The argument for N_PRIVATE is with
+> respect to looking at this from the perspective of the other node_states
+> that do not have the _MEMORY designation particularly _ONLINE and the
+> fact that the other _MEMORY states implied zone implications whereas
+> N_PRIVATE can span zones.
+> 
+> I agree with Gregory the name does not matter as much as the
+> documentation explaining what the name means. I am ok if others do not
+> sign onto the rationale for why not include _MEMORY, but lets capture
+> something that tries to clarify that this is a unique node state that
+> can have "all of the above" memory types relative to the existing
+> _MEMORY states.
+> 
 
-On Mon, Jan 12, 2026 at 4:46=E2=80=AFAM Michal Koutn=C3=BD <mkoutny@suse.co=
-m> wrote:
->
-> On Thu, Jan 08, 2026 at 05:07:47AM +0000, Andrei Vagin <avagin@google.com=
->
-wrote:
-> > @@ -1780,6 +1791,50 @@ static int bprm_execve(struct linux_binprm *bprm=
-)
-> >       return retval;
-> >  }
-> >
-> > +static void inherit_hwcap(struct linux_binprm *bprm)
-> > +{
-> > +     int i, n;
-> > +
-> > +#ifdef ELF_HWCAP4
-> > +     n =3D 4;
-> > +#elif defined(ELF_HWCAP3)
-> > +     n =3D 3;
-> > +#elif defined(ELF_HWCAP2)
-> > +     n =3D 2;
-> > +#else
-> > +     n =3D 1;
-> > +#endif
->
-> Is it guaranteed that HWCAP n+1 exists only when n does?
-> (To make this work.)
+To me, N_ is a common prefix, we do have N_HIGH_MEMORY, N_NORMAL_MEMORY.
+N_PRIVATE does not tell me if it's CPU or memory related.
 
-It is just a small optimization to stop iterating after handling all
-entries.
+Balbir
 
->
-> > +
-> > +     for (i =3D 0; n && i < AT_VECTOR_SIZE; i +=3D 2) {
-> > +             long val =3D current->mm->saved_auxv[i + 1];
-> > +
-> > +             switch (current->mm->saved_auxv[i]) {
-> > +             case AT_HWCAP:
-> > +                     bprm->hwcap =3D val & ELF_HWCAP;
-> > +                     break;
-> > +#ifdef ELF_HWCAP2
-> > +             case AT_HWCAP2:
-> > +                     bprm->hwcap2 =3D val & ELF_HWCAP2;
-> > +                     break;
-> > +#endif
-> > +#ifdef ELF_HWCAP3
-> > +             case AT_HWCAP3:
-> > +                     bprm->hwcap3 =3D val & ELF_HWCAP3;
-> > +                     break;
-> > +#endif
-> > +#ifdef ELF_HWCAP4
-> > +             case AT_HWCAP4:
-> > +                     bprm->hwcap4 =3D val & ELF_HWCAP4;
-> > +                     break;
-> > +#endif
-> > +             default:
-> > +                     continue;
-> > +             }
-> > +             n--;
-> > +     }
-> > +     mm_flags_set(MMF_USER_HWCAP, bprm->mm);
->
-> Will this work when mm->saved_auxv isn't set by the prctl (it is
-> zeroes?)?
-
-The inherit_hwcap function is only called if MMF_USER_HWCAP is set (auxv wa=
-s
-modified via prctl). However, even if mm->saved_auxv hasn't been modified,
-it still
-contains valid values.
-
-Thanks,
-Andrei
-
---000000000000041313064837f498
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><br><br>On Mon, Jan 12, 2026 at 4:46=E2=80=AFAM Michal Kou=
-tn=C3=BD &lt;<a href=3D"mailto:mkoutny@suse.com">mkoutny@suse.com</a>&gt; w=
-rote:<br>&gt;<br>&gt; On Thu, Jan 08, 2026 at 05:07:47AM +0000, Andrei Vagi=
-n &lt;<a href=3D"mailto:avagin@google.com">avagin@google.com</a>&gt; wrote:=
-<br>&gt; &gt; @@ -1780,6 +1791,50 @@ static int bprm_execve(struct linux_bi=
-nprm *bprm)<br>&gt; &gt; =C2=A0 =C2=A0 =C2=A0 return retval;<br>&gt; &gt; =
-=C2=A0}<br>&gt; &gt;<br>&gt; &gt; +static void inherit_hwcap(struct linux_b=
-inprm *bprm)<br>&gt; &gt; +{<br>&gt; &gt; + =C2=A0 =C2=A0 int i, n;<br>&gt;=
- &gt; +<br>&gt; &gt; +#ifdef ELF_HWCAP4<br>&gt; &gt; + =C2=A0 =C2=A0 n =3D =
-4;<br>&gt; &gt; +#elif defined(ELF_HWCAP3)<br>&gt; &gt; + =C2=A0 =C2=A0 n =
-=3D 3;<br>&gt; &gt; +#elif defined(ELF_HWCAP2)<br>&gt; &gt; + =C2=A0 =C2=A0=
- n =3D 2;<br>&gt; &gt; +#else<br>&gt; &gt; + =C2=A0 =C2=A0 n =3D 1;<br>&gt;=
- &gt; +#endif<br>&gt;<br>&gt; Is it guaranteed that HWCAP n+1 exists only w=
-hen n does?<br>&gt; (To make this work.)<br><br>It is just a small optimiza=
-tion to stop iterating after handling all entries.<br><br>&gt;<br>&gt; &gt;=
- +<br>&gt; &gt; + =C2=A0 =C2=A0 for (i =3D 0; n &amp;&amp; i &lt; AT_VECTOR=
-_SIZE; i +=3D 2) {<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- long val =3D current-&gt;mm-&gt;saved_auxv[i + 1];<br>&gt; &gt; +<br>&gt; =
-&gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 switch (current-&gt;mm-&gt=
-;saved_auxv[i]) {<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-case AT_HWCAP:<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 bprm-&gt;hwcap =3D val &amp; ELF_HWCAP;<br>&gt; &g=
-t; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-break;<br>&gt; &gt; +#ifdef ELF_HWCAP2<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 case AT_HWCAP2:<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bprm-&gt;hwcap2 =3D val &a=
-mp; ELF_HWCAP2;<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>&gt; &gt; +#endif<br>&gt; &gt; +#ifde=
-f ELF_HWCAP3<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 case =
-AT_HWCAP3:<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 bprm-&gt;hwcap3 =3D val &amp; ELF_HWCAP3;<br>&gt; &gt;=
- + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 br=
-eak;<br>&gt; &gt; +#endif<br>&gt; &gt; +#ifdef ELF_HWCAP4<br>&gt; &gt; + =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 case AT_HWCAP4:<br>&gt; &gt; + =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bprm-=
-&gt;hwcap4 =3D val &amp; ELF_HWCAP4;<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>&gt; &gt; +#endi=
-f<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 default:<br>&gt;=
- &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 continue;<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br=
->&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 n--;<br>&gt; &gt; + =
-=C2=A0 =C2=A0 }<br>&gt; &gt; + =C2=A0 =C2=A0 mm_flags_set(MMF_USER_HWCAP, b=
-prm-&gt;mm);<br>&gt;<br>&gt; Will this work when mm-&gt;saved_auxv isn&#39;=
-t set by the prctl (it is<br>&gt; zeroes?)?<br><div><br></div><div>The inhe=
-rit_hwcap function is only called if MMF_USER_HWCAP is set (auxv was</div><=
-div>modified via prctl). However, even if mm-&gt;saved_auxv hasn&#39;t been=
- modified, it still</div><div>contains valid values.</div><div><div><br>Tha=
-nks,<br>Andrei<br><br></div></div></div>
-
---000000000000041313064837f498--
 
