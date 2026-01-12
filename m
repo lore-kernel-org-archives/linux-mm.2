@@ -4,119 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FCD8C9EC6D
-	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 10:58:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 634C2C9EC6F
+	for <linux-mm@archiver.kernel.org>; Mon, 12 Jan 2026 11:00:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D22986B0089; Mon, 12 Jan 2026 05:58:11 -0500 (EST)
+	id C2FF36B0089; Mon, 12 Jan 2026 06:00:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA6146B008A; Mon, 12 Jan 2026 05:58:11 -0500 (EST)
+	id BDDC16B008A; Mon, 12 Jan 2026 06:00:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7AAE6B008C; Mon, 12 Jan 2026 05:58:11 -0500 (EST)
+	id ADCF66B008C; Mon, 12 Jan 2026 06:00:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A408C6B0089
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 05:58:11 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F5421A09A4
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:58:11 +0000 (UTC)
-X-FDA: 84323012382.13.4CCCFB3
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3B12C100006
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:58:08 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="LBY/Azmf";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768215489; a=rsa-sha256;
-	cv=none;
-	b=VAPxInm1K7RAO17FAc2y3czQSj5xNI6eL5lGV8PK6cR4NaUerh9LD8VMLPwvwvGZ+8LfyM
-	f/e2Ja5bCNqcRlibKSfbdadjjDSS7R5DzrCZMp2UIkfbBm3RiIUsxBBdSqRUDPyyJO8BPV
-	m+myejIcaCG/HOBxxOpboE28FPeUWB0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="LBY/Azmf";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 99B166B0089
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 06:00:01 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3F26C1A09CB
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 11:00:01 +0000 (UTC)
+X-FDA: 84323017002.26.392A889
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4F5FF20004
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 10:59:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Lb+bUyRY;
+	spf=pass (imf03.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768215489;
+	s=arc-20220608; t=1768215599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=adA1pfWwovY2UoWJPPih0D9Rj9g7yR5zYcd7adc9tVo=;
-	b=2lxUqp4S3+RQMO5ThkuN8FWkPc1EsNndMp9k8lLfWw4MbmNhWIfvqUW8BV4xUOrfgiAN5b
-	eepGpskzMI1rdPnniCZHZLr1Z1PYQW0R4LGDhw982iZH65TWig8Sn1+tmqaM8W44++1SJd
-	/f/apSMgkLVQfLa/GKjxGZnzp39u2Z8=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b872cf905d3so47654766b.2
-        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 02:58:08 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=O8v3ZFPlFHD+erU8fwas9WJ8RphRIQqixRtXNSEarC0=;
+	b=H8XnrtN7rR8j6MVreicbPzYkdsmSiQcu8mA8AEEXj42M21QLCKCVvj1xaknbsBxARdfrFh
+	f2jarp+9lk6Hx9oX/S6NrPNTNjwfR5qFK2l91A9+I9rhf9x71sZFSjkZ7sNvrCJzngVGX4
+	7yjIjgMnlUT0JHfiExpeUZ3CeC0HJ3w=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Lb+bUyRY;
+	spf=pass (imf03.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768215599; a=rsa-sha256;
+	cv=none;
+	b=kQrmYeKHyhGO5wjuvbpA2JJNvZ8x3humVVmoXDWDfyAEui1O2BYg80C2n21Y/rYx2tfFth
+	JsqQ2X4Iqr1vOswUVCgAJQHYpO5ZkkkcgC+e7AiemgCFKJXoKQCKXHKACC9CwiLBVOTMYu
+	6yl9wHMuNfBlTzTozzXeTU3hfcp1BTU=
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-81f5381d168so707827b3a.2
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 02:59:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768215487; x=1768820287; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=adA1pfWwovY2UoWJPPih0D9Rj9g7yR5zYcd7adc9tVo=;
-        b=LBY/Azmf4GSzPnab9F4Q3xxRCWV91HFw2rAfex+KIOdGC4NjBZx37fEU5850KZxMks
-         N8uCiZg/drx3IrjCJDnAhRhHC0bLSo7TOqtnMj+h93tW/uUR+P3hiuArcX++reeSRIOC
-         f3gDXFY/Lv9wGZaUBn4eG/guhQoeQwNg9bJTmyjduBeAqIBs5+S7EqncSnsmUtwW/gwF
-         mX4cVkxc/+B2uU4Ofay7SLa75sP6z5NFZma3S3/bCG+bKDyLyofpHDhY9yuDL6Z1BJnI
-         jna8mgMQLh4+THkvrr5lhwndY5+y6i4DCVzotFk1gEzHUXxwuk1oer2QkcCJQnrIFsJ6
-         G9tg==
+        d=gmail.com; s=20230601; t=1768215598; x=1768820398; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=O8v3ZFPlFHD+erU8fwas9WJ8RphRIQqixRtXNSEarC0=;
+        b=Lb+bUyRYMFZFdoAUZ6BjDKwt8xFxnrCFhOafQXDN5vNOC6oLkFvIjsnvjRHYTM67oJ
+         TY1NRe6dfRfBL5GAHYWWa9cAu3KnoxZ7XOHF7/E5fJRl9X7JVoCqWylFlHAdIoLWZ6EF
+         tkH5KsU4vT7issGAvzybUhbzYuHkxLKCRc62z5YuIuExo8S2in49+//WuAi96bAAxlam
+         dZO+pGaoCioE6z23ek6n5hj5s+2HB35bK0i9XS7g5Wx1nSl7vgXCwaHZAvgrSeYyn2dO
+         1rJ4aUqerkbIGceKCDp2lwMYW0AmnssiJlfImI9RP8ZElvX/CthiGrKMUBdSE1J4Ec4L
+         arig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768215487; x=1768820287;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=adA1pfWwovY2UoWJPPih0D9Rj9g7yR5zYcd7adc9tVo=;
-        b=j6facO8VroiOoWLc4QvH3sIWWynB3QBd+P2b8Fd6gEUVknve/yeZAWSeXk3vnRx+IB
-         lMjPAl4omnuCJEbphNqQbslSDNzj9+j+tWyVgEr2fpA/+BUUAZr1YnC+h9asrm3vU8rj
-         LG7UgNSe2+mn9mJm8HkTOgcOkyu+KHR/aOfefpuhCiEmCSRM1KntS3sYL3dVHVlz3wg8
-         CEs77LR6NyU+nLzHGG0OKnu6Ftb+0T2jVdmfQwS+2zmoxYhcnNiEsltI2N8QmCXsov1N
-         o8WekLaXr6VWyMz1eH8B7/h10wqcdHXEYbLSp5DxfImYM3hxDX43XqZ6eh5/Gc5cogwA
-         E2yA==
-X-Forwarded-Encrypted: i=1; AJvYcCWDzZa17WNHUkXkEhY/Tqju7vcnYup42tq8yphCWbCIdWgc0GiocMeZmBr32RcSIORk/QWTgCZmRA==@kvack.org
-X-Gm-Message-State: AOJu0YzRIjynZMvydd02UFxyM+scOV7tS4w+9c+EhJChVF8JD4TYDlqZ
-	igcw5QiZQAthUaist7fuk6u0LgPkBHLFOEsREUYpUjwgYU+xKCrSJLdSkKugOQ==
-X-Gm-Gg: AY/fxX4WDjyDfPHWQdRZMzY/tcP4jf7hGcajEA/jD2866Kf4Sn1BFxp5W0OL/DXVeyO
-	mi6TTyygdzE4SmcraLK14CTNUfc61//GAmPAYz2+adD2I6H5l9psbVtPs1dQNRQeEd31N8NKNT8
-	mvyMcIzudfR6nARUusCVEo9ehOB44Vj3A7mCdsXzZDG3V74x1mIm2cgvYD1UL96D0GCx7MtchyA
-	UYg487j+M0svgoLIcCE4m1dvMixLT3pN/WTDdFuBr/FmzjHYzNbbcK/4HohP6KkSz6y3kNfEzjS
-	iUYiHIFiiQDg9P1JasXuhSvmXk9T/FNHTq+NNpqKxYt4r729r3Ami6EH6yRMUY5aOpewi40g3fC
-	+RWbgUGIREk/qekbS5lNAsKKssT79go/C56x4+aDP5K5x9whlvo5VeRsoOTnb9y4iGtM2tpYYpx
-	93DQiwotznzvhqiK3jDl3ZHdS8ov0Pjrb+s/DX6A==
-X-Google-Smtp-Source: AGHT+IFIVt+/tdqSUiLxiFU/IaiqCnvUOdwWT9NHpHXxTczIiC5LUsjaXO1625aooqF/NTCZiKX43w==
-X-Received: by 2002:a05:6512:23a5:b0:595:76d6:26f4 with SMTP id 2adb3069b0e04-59b6ef0945amr6101844e87.5.1768214993308;
-        Mon, 12 Jan 2026 02:49:53 -0800 (PST)
-Received: from pc636 (host-95-203-18-139.mobileonline.telia.com. [95.203.18.139])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b7a0ca367sm3018309e87.38.2026.01.12.02.49.51
+        d=1e100.net; s=20230601; t=1768215598; x=1768820398;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O8v3ZFPlFHD+erU8fwas9WJ8RphRIQqixRtXNSEarC0=;
+        b=Aj9lBbvlg6ePnJcDOEh7izKECp8GRSCa87GEsoeW9jVHtstCDts4fJ1kGbiIt8bR59
+         sNBluMvHNq5OcZeNJVuRCaY7ppXorBzx6Nt6a2B9Y6tNLWpJNgtFghIEntId7XqGExTu
+         edfBnaP/0ed7hgxoHGRBgsTbHAMN02DoRLFCgdQbcQ3YJNEhQ50y8iQGvyzxX9fCsNKk
+         +jTaCp84lrRhFYLi3NNsAwlsW9VqYCvespI9fGFNQnET3IKFY77aZc21TE/Fn8YX+uyo
+         gJTKK5C6dmrvBULasOy2AD/LDveY5C4YDYOOrUgRqFBrtXEDHovigUG0gi1u/kKkIJlv
+         2OEw==
+X-Forwarded-Encrypted: i=1; AJvYcCUZm8bKxgGL4+BWHtCHpI0ZIbgi88nVS355QJ2JH3aKWWc1H9Z81mwhJ5CSggn/E/HoINr+pXSNrg==@kvack.org
+X-Gm-Message-State: AOJu0YzvjxwT+SdzAOMl24y2chdvnXahQinyrWhDToc34lHPU6pwkB5z
+	b4YfUGUn6X8W7EXoSkwGvsaVSxqdTu/d/JzJJM9/qeMlVI+LAq9lwur3
+X-Gm-Gg: AY/fxX6G671GetbG87Nr+3tC+UyQFYA9THRizMZmLohjx/VJmkyWHky7xO27jXuqRw/
+	cNkQeiKZiOKh14S6Et43Vz81zvW3DnMyal6cTGXr8CXDEW6Ii2YH4hjipN80asjJxRcKh0ASbf5
+	NuUFimREjnGMmL/2ustgewge5KabqAliDIsy+UhYBI4jXpqYRQF1msooAHK8K821l3nrS5PagVa
+	p947bzmcPhrOHFxKtNPFnHA4XfnLXiWGNucCKuSoUVJmJxBqjd8jG8jpjOqPR1jo5ElpYhDDxpK
+	e3SyB0Ht0MdPZisB1sc1PWhm/Jw7my/uYSY7HfrCcxq7sE8bJQVVkMn1mvd/kumMs0iiz4FdCEs
+	CxjbsoqW8X8B9mwkT2X1Rak7yavd4pKZrPNyUfZsvN2gDHtgRqbJCtPPSOzOn1K2rUIeLHgTkPb
+	fWPRDw4/vTPGa6W+bvEg==
+X-Google-Smtp-Source: AGHT+IEP5kSeYYmwGfFonUyyW9zLOpNC9v+vDt7YZ56itmuMgjPEQr08pJH7cKhR3GA4FZD8JTwgsA==
+X-Received: by 2002:a05:6a00:1f0b:b0:81f:2472:5e6 with SMTP id d2e1a72fcca58-81f24720ee2mr5849833b3a.21.1768215598059;
+        Mon, 12 Jan 2026 02:59:58 -0800 (PST)
+Received: from archie.me ([210.87.74.117])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81df6b3bd16sm9137422b3a.25.2026.01.12.02.59.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 02:49:52 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Mon, 12 Jan 2026 11:49:50 +0100
-To: Dev Jain <dev.jain@arm.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, urezki@gmail.com,
-	akpm@linux-foundation.org, tytso@mit.edu, adilger.kernel@dilger.ca,
-	cem@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
-	shijie@os.amperecomputing.com, yang@os.amperecomputing.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, npiggin@gmail.com, willy@infradead.org,
-	david@kernel.org, ziy@nvidia.com
-Subject: Re: [RESEND RFC PATCH 0/2] Enable vmalloc huge mappings by default
- on arm64
-Message-ID: <aWTRzpqU5yWhlV3u@pc636>
-References: <20251212042701.71993-1-dev.jain@arm.com>
+        Mon, 12 Jan 2026 02:59:57 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id A1E83420A81F; Mon, 12 Jan 2026 17:59:54 +0700 (WIB)
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Joe Perches <joe@perches.com>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>,
+	Andy Whitcroft <apw@canonical.com>
+Subject: [PATCH mm-hotfixes] MAINTAINERS: Remove inactive checkpatch maintainers
+Date: Mon, 12 Jan 2026 17:59:33 +0700
+Message-ID: <20260112105932.21064-2-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251212042701.71993-1-dev.jain@arm.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3B12C100006
-X-Stat-Signature: 1wrra8i98byxuxtzxw1bwciikzr19oc7
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2005; i=bagasdotme@gmail.com; s=Zp7juWIhw0R1; h=from:subject; bh=1RCH6UUmIi9OxJwJ2yHsbB/jXjXUShQzAgpNpPWSzwg=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJkpl5eFFk5TEz7l21/i5uB3stm8revbzWa1j54Hsv/0P dnw58aPjlIWBjEuBlkxRZZJiXxNp3cZiVxoX+sIM4eVCWQIAxenAExkeRkjw+SyXTmbJb8/+tR+ adXLT9ZVKq3O/WoJ95YnxC8+cn1ZlBYjQ/ed+g0ZaWZ+799ITd5l+f/br9TNfs/nWDsVnxUTWWt eyQ0A
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3zzcr3eotxz381hi7cd9so3u76yrfky9
+X-Rspamd-Queue-Id: 4F5FF20004
 X-Rspam-User: 
-X-HE-Tag: 1768215488-513129
-X-HE-Meta: U2FsdGVkX1+RSOh1SsVRXJah5fV12kDek4tCimTXMQ+wbl7tnC8NvAiHXgYm6KvTxm+bG/uanFO48YWRizj0uTp0foaEJvE6rWOpitLB071qNCN8zq2NEjbPmb9z/FegcABJBLuG2AzDTBZaqAaaWPZn1eI+3odST+/giGGq4noGu7pqKd57085xbxSOvvAB2q3c7Xyg9Zmm7jeZKyN/HVbX7iG10qFEW96iSI0ipXjHfwVsoIcq4rMUO+uvJntfdy73S8PvGvbkKKZNJiD/MFqMjzRdAzthlmmKBFKPo9m9RGpKGphI6e/JVa/j+QANv+ub7D5aNrLtsDIMQcTAtqwzo9uSGIr1fzrZYW2umZ9IXJROx+Y8f/FpMlGAhfGD4oo5FDifs1Ede5o086q4zMCHQ8BjdFQULrxBDl1wmt1FU587ibEUWk1lWXfi0xMBBA6Dz2XIjmxO9DWTahTL4VHqsuL9Eilglkm3Ak4d0B9F+wfCxR2SunM0U3rsDnHXkmOahoatELam8QKtO6Eo/SsTs8wQ9D1ofoC31VaR0PmorMMdP0yutwfMlx8Lh3QBEBSpEducsO6Qes+1Lqemer24pHYhEEdd4ZzF0Ee0veI3iZ7YYe9E3gLr8v9GPsdjug369YPPv/GxnKBOO3pbFL7lMH6PvPZu3pSMt8puBoaeMCb6ClgAHWh2OkNJ9Sqm1jHUMyYQqbqfdP7eStRMcW34WaZ4JsMH8lE0pa1vT3dE4+GK+F/GKapkgZBWf7aemM+PMKeslx3zacOZFzzGXjzVGAtOjD1EikUsJ+oEaYadkdt0t0pEjAMs3+Xz3ITodXvtacof3P95IztxgbsKHAubkOpyWIiwXjNQB+GgL2KUMugfeKYtubeCnoYfp6BrmSFUZ656HpRlhOWxZD8QuYUz3GDQEKfD4ksQlPNHPZQhrw6Y+1jKuvYMYXzQeOKQeU8R02iw7kW3bLr1wmm
- IVy8Eg3I
- DuHo1RNKsCDl31sfAs83FymksTIOiLRU7tm7+pOv23boXdc5NAtDYOHSHG4w65IfbdNOK8FlbABXqtFsk7nfHxoPPwLZPy4ExeuVBeasPhE74qdMNnm5MmL+v3kbf8IQuBzXkhMr5dZ7rJqPUxclMTDyfjVVv7UWfz1LzQ19h3BOwgRtN/J/0pe+4rULbJFe9j7YCuU3cjUyqUhTna/Hd22RtsHLpdMOBWsaGHWUjRP2T2QrbXgUt6HPwfEzYi5+x8GcK8Xj/uP+eCsNXOMSbkj3WpehOdIyttDepTA0zZ01Mlv97hIC/EdxkX3mlEs1GGPr2A1lJAxHgSs+ttIr4mrskKCIqZungq+7G8h+NpvHzeHDyjeFjB+fAZzEuVwfmLB7jdZsOOI7OAzfv+SQCd0Uj2qJZKNx5+6DoPWhDDkGkXqDXuWLGkEnotioisPDveTNtUbTTkp+D42xbC4b/rVOKoW9TL2KaW21e/ZXeQXvPh4LkM8NTU2t23rqbQNxDP+LVmAQaTrNDNU4=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768215599-280319
+X-HE-Meta: U2FsdGVkX1+Vegu75PuxExYa/W9G0OYq4RMEWl6yfkeohlD5bxwpZxGRBSDR9tjghy7EBmeSqW8Sg7qlggV4fd/exZIyIp7fiwfaVaiOoS7+ZLscRB5jjzytapY8P0mmxlEMY4HBQ0PpjzNvOcY+rD64VxM+A0aPY3MCkjTIrJzu9p9Sf2aql0epQjBC9EZcyUljfg6ZTcB0LszAQ/MpC5Co5pkaljY0YCpaLk470zqoEfKiu5H3m/lSzg6AFZ+zW/K94MffJ9hZeqqCKY4mZiII4ROFU6pKwpsvJC0TV+knj9dBSEPdLhSp96XIhBMGgg8+Gn582EH/Yv69WQ1hUSVBeJyXIX4YYplZ9vMXArXineatNSxlPSyKctFaA7QxHKi1uO5ovI0RkdZTiq0kO4H33hjp08ts9DiNkt5pUrJBle7kURcX9re4DDO7yMnNg73V1pB/dMY+ewcPZx/wnCWDBGgRnHljVHEcGDO7D9e6aKdSdF6LnYFjycsaZf2dNb7ML9xANiHKt7yNbvo8qs0QRTkwFHerCo7DMP/h8x4wDQP1q+eelqhisoGYE8213WxGzC6F4Js9H6ijiBK//YaAp7G1cY6pqeeqQq4PbmHj9tZMZs8HS9hgWOCi2otKmDIYywYK+growHs6hqtG3WDOHqMhnaxmqIB6KXP+Bg2boPuCZYtS99wCb9gsbXxfoh9Dfa8lVDz/Yxj1XKVljnQn4pmd1MqimO5xhvNEFzbs+mbLTnbgTqnkhvvHSHUtVNNhXkWRvsOVYiQphus1FD1k+uhwnkbxMgpRUuI6pQjiqpd+taH0YGUoB0sCybfAVlYcMo25BZ4UAgJYX1gHP5v5QqqLcHr4FpvZs4LmpsFVsAdLalhMUwBVY/EOZ4I4Ly0Q/cP8P3ueLO2Ukhx6vJSAaUkjoFcL8PmGapzM+wNDSI2VXAz4VWrFRko1xNOiXzdYE1rOOyiQIGGuDJP
+ v+kf1IrD
+ yEOaJnr5JnD+w9QYMhmxGmcCq3wCrwo84/Zilkrc27HcPIgHhQ67qgDNckBL4QeBGnukdDcxTusxiWXknJi9fA7+FRtPBDViQwA20tW46lCP7qEvBru777IAFJ3F50+3oTXgs6N0wrpbdbmpZFJ//bUMQnBNNiCKaCYJPJr7ZNMKawCWpbYcjclXceCnejWlI38+lFndeD5P3f0XBE5PcbcZ2858q4rl9mq+uYvpPM9D9+qcDk90fK03/vGotNmNQL9ty0tsABINrZXpqAKa9hiccTbOqpCwVUlwKOH1rtvHod8gmoH8w/38L3wB7MQXyfdpLB3HqD7enE5uql2l9H2EcBuBNH9p+ARml5eh3fH16K/YXr5mcrOS2CRlG6oxriyrVE2xqdxxFJoNIsqbLmC6wXb/y4jTOYKe7Hg05CIqatNjX5tEeOV5Ckkv3LLj1SB64RIh477RR0EJD0pm8yYb0k6f18WvbIc8RgreReV4Jc1ajpz3t1kJu2U5fungi2OUnWOGtxb6KFryz6YTN3PXgzvqblLXfrYapQkiW+HLBSca2JZ2YStHHCpgHdIdSyXRUo+3EPdI4F+mMSzrjvlUs80LtiML3kQgSRh+pLoGnoXSUL4lU0TL18FbwMXmiDs/3yHNcVvloxvyWO8Yc3eu0kHcUYPrTq5iTaenW+QOnQymQyxfS44v0ykNbDf1W9y2uKqIaQHlNFevY3/MtLFM2Q3IzH2eufE3kfEXVmac1BpVBOJrbIDY/fCypPBYSfCiy81aeR1eg8BgSg5dzSuxnKpuOWmjZFk2im1R8OjkmUmIl35zbN6AqHnhE1R/ZVgvA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,76 +125,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 12, 2025 at 09:56:59AM +0530, Dev Jain wrote:
-> In the quest for reducing TLB pressure via block mappings, enable huge
-> vmalloc by default on arm64 for BBML2-noabort systems which support kernel
-> live mapping split.
-> 
-> This series is an RFC, because I cannot get a performance improvement for
-> the usual benchmarks which we have. Currently, vmalloc follows an opt-in
-> approach for block mappings - the users calling vmalloc_huge() are the ones
-> which expect the most advantage from block mappings. Most users of
-> vmalloc(), kvmalloc() and kvzalloc() map a single page. After applying this
-> series, it is expected that a considerable number of users will produce
-> cont mappings, and probably none will produce PMD mappings.
-> 
-> I am asking for help from the community in testing - I believe that one of
-> the testing methods is xfstests: a lot of code uses the APIs mentioned
-> above. I am hoping that someone can jump in and run at least xfstests, and
-> probably some other tests which can take advantage of the reduced TLB
-> pressure from vmalloc cont mappings.
-> 
-I checked how often vmalloc/vmap is triggered when i run xfstests. I think
-it also depends on env. and can be different from one setup to another.
+Both Dwaipayan Ray ([1]) and Andy Whitcroft ([2]) had not made any
+checkpatch reviews since 2022. Move them to CREDITS.
 
-"echo vmalloc:alloc_vmap_area > set_event"
+Link: https://lore.kernel.org/r/CABJPP5CjgkOf9=uv4cqjaiOgN6iiXAy7k_RZkhTXPT_vs+Ke4g@mail.gmail.com/ [1]
+Link: https://lore.kernel.org/r/CAO=4fJPTiNKvru=+qAasMZYUmsGQe+OBH4A2Dd1v-NFdQ8f-Qw@mail.gmail.com/ [2]
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+---
+Cc: Joe Perches <joe@perches.com>
+Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc: Dwaipayan Ray <dwaipayanray1@gmail.com>
+Cc: Andy Whitcroft <apw@canonical.com>
 
-urezki@milan:~/data/optane/xfs-test/xfstests.git$ wc -l ./vmalloc_traces/*.trace
-    2875 ./vmalloc_traces/generic_036.trace
-   30117 ./vmalloc_traces/generic_038.trace
-    8481 ./vmalloc_traces/generic_051.trace
-   16986 ./vmalloc_traces/generic_055.trace
-    6079 ./vmalloc_traces/generic_068.trace
-    2792 ./vmalloc_traces/generic_070.trace
-   26945 ./vmalloc_traces/generic_072.trace
-    2772 ./vmalloc_traces/generic_076.trace
-    2750 ./vmalloc_traces/generic_083.trace
-    3319 ./vmalloc_traces/generic_095.trace
-    2855 ./vmalloc_traces/generic_232.trace
-    3537 ./vmalloc_traces/generic_269.trace
-   21265 ./vmalloc_traces/generic_299.trace
-    3231 ./vmalloc_traces/generic_300.trace
-    3050 ./vmalloc_traces/generic_323.trace
-    2831 ./vmalloc_traces/generic_390.trace
-    4296 ./vmalloc_traces/generic_461.trace
-    4807 ./vmalloc_traces/generic_476.trace
-    3198 ./vmalloc_traces/generic_551.trace
-    3096 ./vmalloc_traces/generic_616.trace
-    6495 ./vmalloc_traces/generic_627.trace
-   11232 ./vmalloc_traces/generic_642.trace
-   11706 ./vmalloc_traces/generic_650.trace
-    3135 ./vmalloc_traces/generic_750.trace
-    5926 ./vmalloc_traces/generic_751.trace
-   77623 ./vmalloc_traces/xfs_013.trace
-    9172 ./vmalloc_traces/xfs_017.trace
-    4145 ./vmalloc_traces/xfs_068.trace
-    2982 ./vmalloc_traces/xfs_104.trace
-    7293 ./vmalloc_traces/xfs_167.trace
-   18851 ./vmalloc_traces/xfs_168.trace
-    4373 ./vmalloc_traces/xfs_442.trace
-    3550 ./vmalloc_traces/xfs_609.trace
-  321765 total
-urezki@milan:~/data/optane/xfs-test/xfstests.git$
+ CREDITS     | 8 ++++++++
+ MAINTAINERS | 3 ---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
-Time execution is different for each test. For example "xfs_013" test
-takes around 200 seconds on my system and is in top of number of calls:
+diff --git a/CREDITS b/CREDITS
+index ca75f110edb6f8..f3441ead4c9fa3 100644
+--- a/CREDITS
++++ b/CREDITS
+@@ -3349,6 +3349,10 @@ N: Anil Ravindranath
+ E: anil_ravindranath@pmc-sierra.com
+ D: PMC-Sierra MaxRAID driver
+ 
++N: Dwaipayan Ray
++E: dwaipayanray1@gmail.com
++D: checkpatch.pl maintainer
++
+ N: Eric S. Raymond
+ E: esr@thyrsus.com
+ W: http://www.tuxedo.org/~esr/
+@@ -4277,6 +4281,10 @@ S: 820 4th St. N.
+ S: Fargo, North Dakota 58122
+ S: USA
+ 
++N: Andy Whitcroft
++E: apw@canonical.com
++D: checkpatch.pl maintainer
++
+ N: Steven Whitehouse
+ E: steve@chygwyn.com
+ W: http://www.chygwyn.com/~steve
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 765ad2daa21831..e0c464cfda48f9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5869,15 +5869,12 @@ F:	Documentation/hwmon/powerz.rst
+ F:	drivers/hwmon/powerz.c
+ 
+ CHECKPATCH
+-M:	Andy Whitcroft <apw@canonical.com>
+ M:	Joe Perches <joe@perches.com>
+-R:	Dwaipayan Ray <dwaipayanray1@gmail.com>
+ R:	Lukas Bulwahn <lukas.bulwahn@gmail.com>
+ S:	Maintained
+ F:	scripts/checkpatch.pl
+ 
+ CHECKPATCH DOCUMENTATION
+-M:	Dwaipayan Ray <dwaipayanray1@gmail.com>
+ M:	Lukas Bulwahn <lukas.bulwahn@gmail.com>
+ R:	Joe Perches <joe@perches.com>
+ S:	Maintained
 
-77623 / 200 = 388.115 calls/sec
-200 / 77623 = 0.002576 = ~each 2.5ms
+base-commit: b60810ff0e0dd6cd8704fb7e495ef38cb8bc050d
+-- 
+An old man doll... just what I always wanted! - Clara
 
-Please note, i have not checked impact of your patch on time execution
-or how TLB pressure is affected.
-
---
-Uladzislau Rezki
 
