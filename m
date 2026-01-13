@@ -4,145 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05F77D30CC1
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 20:04:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D70AD30CC0
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 20:05:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F9DA6B0092; Tue, 13 Jan 2026 15:04:41 -0500 (EST)
+	id F3BE16B0093; Tue, 13 Jan 2026 15:05:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07DD86B0093; Tue, 13 Jan 2026 15:04:40 -0500 (EST)
+	id EE60D6B0095; Tue, 13 Jan 2026 15:05:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0F8C6B0095; Tue, 13 Jan 2026 15:04:40 -0500 (EST)
+	id DE8576B0096; Tue, 13 Jan 2026 15:05:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C85316B0092
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:04:40 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A4E61A0293
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 20:04:40 +0000 (UTC)
-X-FDA: 84328018320.02.B16CCFA
-Received: from relay.hostedemail.com (unirelay08 [10.200.18.71])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B9FAB8000D
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 20:04:38 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768334678; a=rsa-sha256;
-	cv=pass;
-	b=4+wiIUV6bYTxwhQcd32rww+cDlUTrIko9/aznNQt2c5C3Gx2bdTck6LZQ9/t3HtVrO/OM5
-	1RrhH+yCXrhWNe2tY0gLixMQhmxQhHqhoVnnYfFmAcv4KD48CXgEnlP9o3Ku76qGBo9IX0
-	B7MVK0zKzAuMo6fS151q6vuBrUv6ZJc=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C50356B0093
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:05:04 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7708088BA6
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 20:05:04 +0000 (UTC)
+X-FDA: 84328019328.05.4C40BA5
+Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3DBF3100003
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 20:05:02 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
 	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768334678;
+	s=arc-20220608; t=1768334702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=baxDXnLPq9jBBjhsf2/bGL+DnyACXuAEf1JTO7X2B2E=;
-	b=N/ipWPNipTtZDd6Z1RnPE3SZfAxx2wQprY8l2BtOMz8HT/ZO0iB+tocMoVQNcK9m3I/7DU
-	SGMegiu9n/O9qQ2YWg+1vFRcO8pR/iZb7j324MDa3/F6pACLmxLwSui2hx0AHTtUDQ3HZN
-	SY/9SEV+6u8raw9kZOFTChkipIoT1nk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0muJ4312EJ6gGXEPQdwyzyI8xQcdUomK1P5HrD6iP7k=;
+	b=ubculZwRKmkOmFgLnSLFZZaj9Jw2Rj6Ts9relOKR5uJflTqviO/Ff7ZncM9g/x6Xodteth
+	M03HgimZrTjGabZMul6LLRhQsA7sO0M4X9ubngYtoP9xJTmuLnh0obzfrbq45Xompxhw9/
+	8KKwBQfLQU8ir5na/GAcoOpk033R3mk=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768334702; a=rsa-sha256;
+	cv=pass;
+	b=S4aEd7yNhnGcgb8lQP3GrBLAQ/LjvJKQ75DE5OPCnQaZ7yo3I0lK3osGiXURHFYEC8eqqS
+	AC5gxKrBru97iKYbzEm402dHwdzKf8Fg8e4nbk0Em7+bUoaIp+4fsLMsaiEmyV+ROqKYoK
+	liUyGSRMRSqfKONdDAVgiC1pi2x3Nwo=
 Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3C954140266
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 20:04:38 +0000 (UTC)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0906BC1522
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 20:04:38 +0000 (UTC)
-X-FDA: 84328018236.13.2E57968
-Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 64D8EC000B
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 20:04:36 +0000 (UTC)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768334676; a=rsa-sha256;
-	cv=none;
-	b=EJ7kSE4jfjAV3of9+3AaPuJgkNDzHoipvKr40GAhaOUcpBfp7mO5hmr+4En50GOXdDPPAx
-	bIU21F058sDxCd+u+EfaMvCywHXwsU5IYh11ZU9sbyw09tCwFl5KUxraeMPf6cTa63QWqi
-	7IjkZSn/SV9zSUTYE0QwZ8qWNSl9pp8=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="Cc/12zmg";
-	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf28.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CCBCDC1462
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 20:05:01 +0000 (UTC)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9F3B0B7A0B
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 20:05:01 +0000 (UTC)
+X-FDA: 84328019202.18.C021E41
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A9031A0011
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 20:04:59 +0000 (UTC)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768334676;
+	s=arc-20220608; t=1768334699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=baxDXnLPq9jBBjhsf2/bGL+DnyACXuAEf1JTO7X2B2E=;
-	b=T00RRBIgd044KqVrimW+U/q1AIkTBhDhQWgQbF2+w8PPCLDBFTCJWj6ojXH7uoLvozhlDT
-	AxPPUkCEOSDCrJf01Pc/T8elzMD9CodSrCOTq0LtARhZyCb4TM/OyLbnniO2APEM3CizYu
-	LcUpYZAGs6TDlntwpaU8PlIH8Um3GAk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-	s=smtpout1; t=1768334675;
-	bh=baxDXnLPq9jBBjhsf2/bGL+DnyACXuAEf1JTO7X2B2E=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Cc/12zmg4YBzrOIs25QxA9HXW/CEntqoDHzIJhMtYIDGYHWFqmIc6UpQQ4leZjZhf
-	 AbwCCkb13zWIFTNE0RHNXKEMVJ/KCvf8R7O0U7DL94+/cktRnPr7HlpNRRu/zDInGD
-	 vFPwX+uNNoZY2FGUAYLiaW4fZadIInh+7EXNRyWB1Ec33RW/q3+BNYP9F8OUErNLQP
-	 m6GYChaSdnW4LXEnS/8qzuErNdX7DyM9b3girAUmmIgG9FOyY6SEuBCk2Vc27kqXja
-	 v14Xe6s+odE1CGMVsvp1OepSeOMYgMfB0NyunYv4HnVkSWgboIycYg6a5YHm6l8Jnj
-	 kaq86IEVyFtZg==
-Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4drKw34l6dzmFN;
-	Tue, 13 Jan 2026 15:04:35 -0500 (EST)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Martin Liu <liumartin@google.com>,
-	David Rientjes <rientjes@google.com>,
-	christian.koenig@amd.com,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	SeongJae Park <sj@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	Yu Zhao <yuzhao@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: [PATCH v15 0/3] mm: Reduce latency of OOM killer task selection
-Date: Tue, 13 Jan 2026 15:04:25 -0500
-Message-Id: <20260113200428.30614-1-mathieu.desnoyers@efficios.com>
-X-Mailer: git-send-email 2.39.5
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0muJ4312EJ6gGXEPQdwyzyI8xQcdUomK1P5HrD6iP7k=;
+	b=fi/uWs/qKmcG3I/66F6NtmzZ12FSfqEPo38xDn+7yQtEzu+Zw7nVQJka1XLQM39I990C9R
+	/YMG2SLA5silXk84LVaLGa9Cu+zIi1locFFFKT5rq95r3363IWD1iWMdzBc8eiFbD11OZ7
+	z+c323GN+41lYw6UCX5rSJ1pSDiPNvM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Y6O+mDMi;
+	spf=pass (imf15.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768334699; a=rsa-sha256;
+	cv=none;
+	b=ST+RS61hzfwkNGOEjh7Pax/lgQXkiDxCe+03ktQbP9EaYJEQYCZGezfWsZ8+kg1Y+Xlbas
+	G31OPosa7cCxBFabRWEudR49osWy/2Ji6a0dTltVVQ/ljQmMU0k99pLovR29J9IB1tdkah
+	AXwTeGgyXWZ8fu4u/9n8Eh0ZrZl0HgU=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4775e891b5eso36635085e9.2
+        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:04:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768334698; x=1768939498; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0muJ4312EJ6gGXEPQdwyzyI8xQcdUomK1P5HrD6iP7k=;
+        b=Y6O+mDMiRmG3BUthkh1BH4Qo5dVABKWjQXAx7TJwDS54kOOK7lfEPNv/ckhxI8uiXh
+         Nd6QOBjsDFffKErGu3jjv/CA12W0QXk+sGv1l5roVadwZ+k7ynH002JyF8OsRc1Xs4Hw
+         MsHOlgxF2EyZekqLdCc+R9dTJeOnfEqeZSh4p/mmGhU0ua7vigaqaYOq/CJE5eshNGmO
+         gpa3CgxUqNhlirvzY384rF203BbQFFb2+nDW8P6BPsSA1kOm8Pfy3zUq0lBcFTaD9rCg
+         XyOjkyr7puWJbjJR3rL5Lp7Vt0cXv66bHklA/Cmu1GXHZI0hTcjALu+ESLwjPJRl38Ka
+         +0Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768334698; x=1768939498;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0muJ4312EJ6gGXEPQdwyzyI8xQcdUomK1P5HrD6iP7k=;
+        b=CYnNyppnZDatsSpxeR4gAudIqO3Ra5o2wq6Rh3vFY4EY29T/pVwQUywZzWFFwPyN/O
+         LFTEvb8w3rK3mp/JBjQ+b2CtplMzkW6NeKml1IDX86CVOQMkzVsW8Gfj9QKCBSm7DV1U
+         Xs8GSH1FFD+rCPK7a65UxDH0nCcFyL4rgXN6RMUFPZIfADHeWJBhTtk/uYqZPVotBhTL
+         /k0/tmuSuSDE/XFdZ6pE/77hDW5kjch/u+hm6HHKFz8aqE8YkS7b8KZ9GshXGNDDERXG
+         M5+7cfysjqN7XWqXvjXiUs537mnxRy+wc75u3lXNJCHpCrJ7oXIVSjENfaiod33KRpPO
+         4Mpg==
+X-Forwarded-Encrypted: i=1; AJvYcCW+PReL0f00a8sy5ved7y2pM8Gv6xldQ9lv5U/TVtO7nKa07sNPq7ndrndEXA3IGnt8JPmBDMsgNg==@kvack.org
+X-Gm-Message-State: AOJu0YynSJ0GQHialLZVuCTus6+CESOf7WYyBqUh733er808vv/4fSHc
+	92mC+CP/Rb/NeYZUPusdFTMg5fcQgN+p+tCwM4/MGoMKLUuibmCNOpWL
+X-Gm-Gg: AY/fxX4UjkQFGGUU22psETA2fwXiZYKHzikSga5a/fmnEh4DEyVlrqemIFCPwyq7Tsd
+	9RSHp9X86ifYXxawu4Pr0Vj5ojI5a8+v2CBrhUqSva4JyC2m70p199lEVLNH+mb4NaliCLEqlf4
+	taBjan08q0x3Y70d3QoCVwtJXpz9HTWLtKxHYcUjrTnaYEz9X9CIagPj3cyCiHyoHLQV5iUn80S
+	hajGgdZxd2wBnn4xQMK4+f8PHzJ8Ym5iYW4iaM3+ep0CPK0KAe3nSggZUgU2gWEYQbdl89HhGWu
+	dzT5YtFo61u/d4wUREUnbio8F/i/Lqh0ZwQpq4I2b6evtIeJIBIng+eGZVafOCraMYPBiovQHf9
+	lyJtKi30b5r/hXFacZkUSQueEOsorT5Jcf9WfFNCKcQvj/SgAikFhubQbAlyNONjw4q9KEigQIm
+	Qd/8K98ZJRWobWrVijYf6sW1eUbzKt+tcZNdvdMT6gr4sTgyY239k/W6dg9nxtyvo=
+X-Received: by 2002:a05:600c:4443:b0:477:9392:8557 with SMTP id 5b1f17b1804b1-47ee338d53fmr4231585e9.18.1768334698044;
+        Tue, 13 Jan 2026 12:04:58 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0daa78sm46840666f8f.6.2026.01.13.12.04.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jan 2026 12:04:57 -0800 (PST)
+Date: Tue, 13 Jan 2026 20:04:55 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: kernel test robot <lkp@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org, Andrew
+ Morton <akpm@linux-foundation.org>, Linux Memory Management List
+ <linux-mm@kvack.org>, Nicolas Pitre <npitre@baylibre.com>,
+ linux-mips@vger.kernel.org, tsbogend@alpha.franked.de
+Subject: Re: mips64-linux-ld: div64.c:undefined reference to `__multi3'
+Message-ID: <20260113200455.3dffe121@pumpkin>
+In-Reply-To: <202601140146.hMLODc6v-lkp@intel.com>
+References: <202601140146.hMLODc6v-lkp@intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HE-Meta: U2FsdGVkX18adCRNayfqAxSq+ZUZtOD5DxpUB1A+8X84xC+UdXycyCZkheFhHNmcqPYQBi7Dy7FYynu47M6W/WYRQcP7TeO7j7zT876Fzi1o8BD2bBvX7Y0objYhh/iiAg9wp18PgxK3fawe7yEQPbCJL/ndp7LnUqYstwPBQPEdapwvjX8n1bgkqoLRiQmiIQiPhYkNw0cyWOGF01KCMQadJbPChvkzVSgaf49pv30Jt30TzMPcjNC+IwnfTeFQL9k9X81BhD7NjmfiRxjOeFXsiNG4kXWqqnT4d8kHkmuuCjoyTcKT4sDdFi1qJyAJDCw53vOc+c/A9cbb6qYbAdSbcfyKfaVt3OHuLfXd2iHlBXw9Sd0jotOZPsXbcq/AeHe3bYlOTUDhBLO9Dq9lIYXWLrXJ+AAfTqGraY+3tdDvSPl1DyzHKUVaH4T3QPHdE/047N4bKtLkEmN661LM08jhIZ3b3lOtv891RC2uJOECo7Vh2HVEjc8BQ/NUJF0t1esIFBU++sPcsmDse9m2KBbFZOBDjyidZlQ3uA3DkHhe9w2BalNJ2QLPWm7L9RkTDmAtsACJp0kFoS3ZuMGyH/vJXCWGjPL8bMaKOxZAJEdgsKpes4AXL/uPxWSqAjPr1B0z5iy6EhbW5mOTeDsa5taTNLkV2NDScKOY5GoCs6m3uemcjTD6/fjXpFw2w7oinPncjPdIHHWW0u7Ga2fzuStSS6ItxaHlmUIqb29+OoKGOgpHXoKdYoiLCx6kCLD+0Nx1dxiBswqaMt1v6NSuMo7XRvhtbm1Beqha3JCD4si5wDnQ18ajszCOU99KsYVopTR/QrL85HeBfeJQQmeXJxSblTUg1kRItLaZ5aPGal4nCTsUrCTokuCa84duzfqa4NaLt7MIx94s58JAKiPKkAgOOpTpoKrOSJNeJKIkIwFpVA7JTnPzn/g6b+NPyNKN7t2b65RbvlIF9zQklPr
- WVZcxAtf
- TxmfNkSMzYo8lo8C+mwPxg7En4gbX6rp9YXhZUl1+N3TnUSM1YnnsXulCb5faEKIgPmOXBXK52DFJQAlOZYLWx1PNbfFffbVA55/DX36LtMCvhRDF1YabECt7D10TOSowAARAzVEVRlqrOCJAi8R883Oh+5EqjL3996YXNMkYO30irkMqJukSq/gjg8RfS4Qy770FQDYeFO1UVxjfzj0F7KbSnki37xMAC37FBfeOikv0TbgAIoDuCPn/9PMg84IRxkbgsVDreOpsxgoA66KWa1EmLfuysIy8KpgTyHfa1x/H+L/lJj8YF/3DZmqqBTPwiOLQkZq94Kk8NoB4XpWXnfLVgWbqANw4zcmsQbmOnDJIxA1l48dakrsLJ4JuYVpDTJ+PPMXQUJe5oryVoRdLfjnMJwFI8N0cEdJ+husiDrhVPMVil28EXne+AP1PNWAK7f30wOmQFCwoUZXUGWhLVG96yVPvtVeuLUoPDL8xvdSNq/TLnvQmBT4ZV8J+CRs4YMx8VtCPmBobDZ4i4DHVUHo4nKzvISloqn35jBZ0ZrYR/Id9n9TL3MmRq7Y9IEpd5DK29r028s0G8GSlEONx19MOkzN02TuwZZS3uOQIaHACgw33CtvpFInhBE0sROng5stTb0fIVYhU/avis0BWbxgnPLq6RrCa/3c6Wh+cB3ZgihMoLxGdRtTIQsqUa+Xoy+YOsGvaREoyH9Oy1CSjIH7VWsfiuIWGug3eJSpMnM/9CsjKuo4vVWGGtNc/yEVVo/FrVNwm2IOMxljyRCHfuvICY1zi0+sDOIxJ9LE94oIOpVY7EhQ6NG1iziPh7+4qQz4sY9WYwdic0NH5JJ/qNUaf8eFalznxwqSoceqX+8LcPMUg1jhk9xo8xp5YVLqdO4AoOvLD6u4/ck0YndFMwRo5kTEJUqd12QdMwBbtNJerTL+Pkl0NQEAJouN9vditR0YaBbNKDFRlKnikYzIDId6BZKcz
- lxmJ7s7L
- BU9ZEnCdoYxIZLgFZjB6qZ2/SSSvb/Ca9t8RkR/wTRjQkZJglmssz9sAMn2EKmPogacJZVKGdqfjHE/rnMaDHg==
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B9FAB8000D
-X-Stat-Signature: c8f76orkxkx77ndgo5e5xocrkip6por8
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-HE-Meta: U2FsdGVkX1/4WZh3csDRkRRcuRqqST7tEr9Xlm+PE4DBFKhG96rcLvE8Lqh0s3cMrkQbap/RHNkMY47Vx1FDsbEO57ODUpjp8swPdGwcZ104T5Qii+hEpg/kOCV6hGuYI38gI3DGUco3sHGAcyGt38Gbtc14dXqN4VX2zHvaeSsjOpgtzNbJGnXmKbUKlIX0CCpr4wNb8xybnslbhE/6PBo9/faZxt84uIeYNLsenXRyZSS82Scz+B3RY4zNrXim1eedu35So1LD1rrZ+vmwseQaStLR7uXm9Nawg72/FOp/mRWawsA4Kw6AMG/VjPbtnlbtE7ykXthtIdyzEbsLb2/bs3qRkjCSO8/fq65oK1OcLPKMGqitVh8c6/AxBhWFXwL2F+3o7r3R+LEdEFLkAEDBcVECckSh5VRf9lhiA2EuBTCwLkcrutLMl0bCj6OUt64Q191dsZCRhc3+6II47+DNsRh7xEUVJwSzUZJP4AKz13CQ+O26OdEbX0v42sMbt2qWQFKUGhsU7ZxW1h9GjH2gyV4kzqc+LqNyMdY8vFPX5Qq7Xe6DWYhVcbLw2xmF8NwX4oDstKlaOxC5j2ri6Ti02wgllnP7eHEyGoe8y9wPdlyXnYvor+ra9I05EusaRx42YtSJGaYGD6FeBc3Q14AAvhJcd4M+n+T+4MqdnfL87OV6wwUCCHY7e2NQLsHVrPMf8GL+lU7uFWudWNynokkRfdbwC+rYPtfLmSKpY2s67IMMfpZyYncCIBR9VePjlpIwCas5BHwEB/++uJQ4544XHZNZw+im08pkno3PIY9TDE/Y5hl/PsGNKheiLJL2WTs+/JcU9wJpMrETMcDKsbeyeEu6HVcoUrzp8fa/Amp3hAIG2/NtI41HRWlFqig64oVQWpbUSsT1K0CqAYsQvp9aUnqGrFhLQmmkjuFTrVvSBk7rGC5GRa6xdM9yagWYCe7UV1Vd9KBPa47MSNy
+ 1rd9Iu9a
+ AowhtjSPcAgkNz3Pb0PVIuHHVp0NPiaIoYXq5iPqUMXCSPTTx24Db7NdPj1+Afis58e7ycDkUSB4E0h3Flbr11GbZ7/Sm99FlIDL3yYEGdIbMUJrLmdewflVdx0xtlDuWZUGGQsikPtpY6U8bI/8cmJOF0HovktagB9XMzumJlKSSknqZ0KD5UaCcrjY1jYQ9IVD2zZoUVLvEFWiPkRrZoV23QFnXBBsWWOFoLCUPjf9Q2YKR/YWBDQn1E2pFg3Y9x5dPKh1wBW+8MXGCOFOqG0+I6DUsQq3gBzSHDsPdMDEFMD3MYSTJalwkU2SijJ+PzHfdg1kHghdCcngqxrlfOffb2QLYRlw4zSmSoDZUEoYEOEV+Ma7zIE45o0MPhgt7ykrKPd3yNYvUqO9H0oXZbZsSK9HFXOYheOFLb2qs04cE5Tvv1KwHV9MM/DFRygk4zvj7Ka/uxSftX9uc8+lrvY11AQOOZEJ7EhLHKlTghrUX+5aqH74+KHeL/92/YeETkw/g4ApDEAs93m06I42QKOrBy7Nw7VjZrtOv8W8MSXA5Xm8VVMVqN4U7RrdFBJmcgg+Q
+X-Stat-Signature: ppfpxyxejadrf9cwj9d18oatcefoqrx3
 X-Rspam-User: 
-X-HE-Tag-Orig: 1768334676-28571
-X-HE-Tag: 1768334678-773978
-X-HE-Meta: U2FsdGVkX1/xXDsLehQ3j+lfSoqv0sI9Qt/RzNwLemA22/6m9XKCHLu6+GLLFsXNzcvLSx7rbcBi94VneK17kQAcnOc14bcRI7puSAVeJAWj0IrTwM4at6mccItF5VRuMs+jKwXDU1UcfFEfUFnuULjY0cFc3AzgUavZcD7FMScoZotUpZX+FAIgrBHENl7L7BZJztmrR+i07OaIZ9fpsRPgD72xrRjr1OU65Yx/PeYlYqiGbQFElOAww2edEmXr79BwrzZyywbRlb0YNUroPZ6RPOp0yBXgZeHVFzBGO9+lW/sqjSBSPvbxZO40DSXiFoabUbwRRTUp/ulLFHzctHBVNqKimWnDB6fVEiUQQB2CNblu8fxgUrEYbp6chWXWd3BpU4XAjzgDimx9swBJ5azletaAlX5UoROWwL2sI6Nre+4NH74UV1QQdoFD+QZsgLEtXh/cx0l4b5mDrsk2BSvG5BqW/NTahCatwDEWOzwFWs+yLkuhG27sirex4UvI7rCSBoM8AJXY8jQ4lhF9INWILKzRpmStd9OqAGcHVMHx0TNwBWqoJ6K9yPfuZ5yKkmMfVYvdjMWLluqWN++Al/xKOlK0+ZLlKkondfEz85g4Iuw+nuwkYk02b8SZsclasFf1a7qV39+Yyvo9SZ8KYtP1pmhYKr6JpySGtKuPBiPZ+hjqn1lMpo24xZMdc8EFgrQkUF2meg3oza0xifN/uv4OCrakp0f17Y7f9eRRuzk81gUwEngesFLUpc0PJbzOvSUzsCwvpBub8kkyvGN5O/6dSCsiz+hqs6AiMAGqRz8/kONxS1WdmF/9HKOFdtWth6j5mi90AKEYwn6V1VtgL0D1lUBB2gmIMPord19p+2Ajtm10Zq58jP2LklAI2lsIdl+0MnDo10lXdGFW1qsGThsp9GMvx5I9StvaDNQF1oiIbmALTmkFOqfhL3KYuaOGKPPKOfl29xHllK3fLoz
- Gk+hv0sx
- zboCRvFY6zVqG41AqGMhcXkQLnN4W6Yx7R6CUSpj3OVP6ersx1uyJWzFF4w0dcAg3iDdQWaiewVlQy94F6ZjB+QE1iXHldljFcANhx8uvBErb0+m5G7R6Fr1gam0Mb7YFmiRxJkNaBONZXOrOeozUssnLMOL15IQTe37mnTJeVnHekI1QbrU2yXmeZ2XDnSGKAdOIjiFrDh+43KODJ76XBhP69/5e0DBXWsJJqVCZuunwurRP6/QoRzXyE8bMKdVChTW99F4WUGLXVtI0WJz6I2OPo5J4e15rc+JT7eDz1QV9+mtnmBKYshjyyaZ6Fykn+xTm8Hnx9wWlsWq2LjJDCW4uzo3ERqO4/YQt2BqhI35RfTRLL1qvDEkAuFLdFyuXVxgyIpLUB1mhb42dadPy+XMsfC1eNsKjjUano2FvM185dmKUQ3j9v/2qxhVsrO+vHkzwtwUt/5nmpZYFU0wJe95gYopgKZB3aGpvBnR7PG4oVj8UwAZqZTtRczFFttIPVLCaGnu3j/hogl+Qfk5gXr5oGH/UhISZxt/Z569BL3rKuz12ZBNH/qTx/kju6HVkgdEHCJc1suZd1LvCRP/wJVb4JPu2HbN3f6INTN4RtPhBLnz9e3OHWRGmDGEfBmUG/bk4JYbsiLdLZUm9h8ismbmzEasnVYmcx3VdCZbZ3Nc63CYs3028myl/Jjxhgs25FG2qvO5RbzXauLS0Aj0H5HssGkpYkcjEPI5pHgakSl/mSOTyXQZef07pMblmO9pFJaVDl/X4cVM+6+P1VRU3U7PS1ad8H4JG5i9xeZuN6lVcuNoHEd365da7FYKRCZ1dyVDC/vPU2KJrQOFhHSiHwjYWDxO1oBekpvEq/MRQe0acoJXJV14UNeHwuZBWcssSBRGFLbhmrlXDKnJF+5YOfGdyaLMmOEHPV5YTSnVjKYwikAtkJqfvVjtSYeAeBdIrto9D93Fun2FQQYI=
+X-Rspamd-Queue-Id: 3DBF3100003
+X-HE-Tag-Orig: 1768334699-741476
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768334702-425411
+X-HE-Meta: U2FsdGVkX18mFiYFvqDB4hJ2nymXpjR8USxmqcXP3+UDIwmKPP9QKSlf0GlqntuIzDjGJHmBuEIkMmgoV4lTt84nV5CB2dUjDs7zYsdeZ9atpcnIy1qCLV/LcJMCFXxM/2+ZxbCy3eeVjX1/ceRsTk3+v2pjazGhItFcjQxtWDpOFeMppJT1cGCmF7hkE56ctVUN8NvuYISy67kHHFRh30+V0Jeabtzc0t5eBfOmNmj7+R9YTe7foX6dSEOac/m7j9SuwZKCQXLrQFd67Ofylzwrdk5kWlSf2bzPtw8RvxXcGpp5n3oYsyM+84n2MWdkPNwdPkO7xsXrKZZBlIbNxECXuajFj52SCKf9ZFjUEH4i6UuqB0H762yrKgT3LLK7wqJAv2Y9PljvLOtkIs0Z/GgGDtLkzCE88dTt8GPUsbAKeGJJgbzYWDX+4a/tRjBCIgFxswnVb7epHggnQdyVcPXVemAa8vXUIddDjgOnhB6YWMmxOfw1hNhvKiiejzh5PsRHaybjj4FfWJW6Ryk9NNo6Y0UdS8Ihwv/7yQ8jbF8i62nMjXkgYlCQqV/mwDgLoRbgA8qbeA8cIXGf1uWw4KbxFE8kdI/EzeFcRIl8MApQM6iFCmgtKVzvOtSBVj3hc2Pq7wkMEaw3AqmwZMk62V0tf6hLI4SjYJ4ZpOpcDAaQs1vbmMPTmKAntv3K0t84hFzzsCZArOdoScqsahQRw28XpRlc67Ifvuy/V0P2S5H7dcVLK+MtcJuCYJjl4VRioD/rCSPBBenjFQz6iYRkvc3VS7/xR/ZJR2dK6ZLJrrRDUzZs4KWOPNMevDg7r5bUe8dVeAKTEKq2rAiiNNPX/hEbYOsGsReqAYcE+AJf+w2g6i3gSUAzU4JLSBWTCo0vw33Nbt2etB8u3eRF5CthLpeucejqsGt3MNhYyKxT7W5USMk4uL97KK3AVlbl/E2m2LKs4BG1y8A+p70XuaN
+ ny5xqNTV
+ TL7ieDMGkmEkhhpmWElvQZMcMaeZz4FQidknxhuOpIgPL829YxaMpcqWGueXQ4XQskk169I8ZOArIGfnyA3AtiYatOBZQo9QeqdBffhioHLS0miw4XxR78Q8lNwssH+RjIpywo1RGEHsEa9cNgUawp0wRRZ61WyFaRBplVqZ9Lbon0ivlwCv93GH1eiox6s4RJ0fHJcvXMCpPyIkdQ6j2xlLjCRiZ0IDAxmYRkyfncICSu3yCtI4SEFyKaMTAGaFePaxMFuKlfJHzhoD48rFI5YpxXUmCfapc/HQnRilOTPo7pQRUJohBkfQLiaV03T5St2oV3LRrSSqrkdTBRYqEtp8S1067rPV9n6HGdwBHEX6cpgddi5kb3ipmLN7PsEEQz/MhxDJJxAFWo4xPUZ2YTvauwB1iE7MFgIWeNH46WcCzGWvvWds0reCP+0iortAXRSUKqhlR3wakkOY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,97 +153,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+On Wed, 14 Jan 2026 01:59:24 +0800
+kernel test robot <lkp@intel.com> wrote:
 
-This series use the hierarchical tree counter approximation (hpcc) to
-implement the OOM killer task selection with a 2-pass algorithm. This is
-a latency reduction improvement of the OOM killer task selection.
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> head:   b71e635feefc852405b14620a7fc58c4c80c0f73
+> commit: d10bb374c41e4c4dced04ae7d2fe2d782a5858a0 lib: mul_u64_u64_div_u64(): optimise the divide code
+> date:   8 weeks ago
+> config: mips-randconfig-r113-20260113 (https://download.01.org/0day-ci/archive/20260114/202601140146.hMLODc6v-lkp@intel.com/config)
+> compiler: mips64-linux-gcc (GCC) 8.5.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260114/202601140146.hMLODc6v-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202601140146.hMLODc6v-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    mips64-linux-ld: lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
+>    div64.c:(.text+0x84): undefined reference to `__multi3'
+> >> mips64-linux-ld: div64.c:(.text+0x11c): undefined reference to `__multi3'  
+> 
 
-Testing the execution time of select_bad_process() with a single
-tail -f /dev/zero:
+This looks like a bug in the mips 'port'.
+arch/mips/lib/multi3.c has the comment:
 
-    AMD EPYC 9654 96-Core (2 sockets)
-    Within a KVM, configured with 256 logical cpus.
+/*
+ * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
+ * that specific case only we implement that intrinsic here.
+ *
+ * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
+ */
+#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
 
-                                      | precise sum |   hpcc   |
-    ----------------------------------|-------------|----------|
-    nr_processes=40                   |    0.5 ms   |   0.3 ms |
-    nr_processes=10000                |   80.0 ms   |   7.9 ms |
+So this code is excluded for gcc 8.5 but the compiler is generating the call.
 
-Notable changes for v15: This series becomes a OOM killer latency
-improvement, rather than a bug fix.
+Looking at the git log for that file there is a comment that includes:
+	"we wouldn't expect any calls to __multi3 to be generated from
+	 kernel code".
+Not true....
+Not sure why the link didn't fail before though, something subtle must
+have changed.
 
-This series is based on v6.19-rc4, on top of the following three
-preparation series:
+I think the fix is just to remove the gcc version check.
+The code itself just adds the results of four multiply instructions together.
 
-https://lore.kernel.org/linux-mm/20251224173358.647691-1-mathieu.desnoyers@efficios.com/T/#t
-https://lore.kernel.org/linux-mm/20251224173810.648699-1-mathieu.desnoyers@efficios.com/T/#t
-https://lore.kernel.org/linux-mm/20260113194734.28983-1-mathieu.desnoyers@efficios.com/T/#t
-
-This series replaces v14, aimed at mm-new.
-
-Thanks,
-
-Matheu
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Martin Liu <liumartin@google.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: christian.koenig@amd.com
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-mm@kvack.org
-Cc: linux-trace-kernel@vger.kernel.org
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
-
-Mathieu Desnoyers (3):
-  lib: Introduce hierarchical per-cpu counters
-  mm: Use hierarchical per-cpu counters for RSS tracking
-  mm: Reduce latency of OOM killer task selection with 2-pass algorithm
-
- .../core-api/percpu-counter-tree.rst          |  75 ++
- fs/proc/base.c                                |   2 +-
- include/linux/mm.h                            |  46 +-
- include/linux/mm_types.h                      |  54 +-
- include/linux/oom.h                           |  11 +-
- include/linux/percpu_counter_tree.h           | 367 ++++++++++
- include/trace/events/kmem.h                   |   2 +-
- init/main.c                                   |   2 +
- kernel/fork.c                                 |  22 +-
- lib/Makefile                                  |   1 +
- lib/percpu_counter_tree.c                     | 679 ++++++++++++++++++
- mm/oom_kill.c                                 |  84 ++-
- 12 files changed, 1296 insertions(+), 49 deletions(-)
- create mode 100644 Documentation/core-api/percpu-counter-tree.rst
- create mode 100644 include/linux/percpu_counter_tree.h
- create mode 100644 lib/percpu_counter_tree.c
-
--- 
-2.39.5
+	David
 
 
