@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14C59D2F338
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 15:27:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9578FD2F339
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 15:27:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16BEA6B0092; Tue, 13 Jan 2026 10:27:35 -0500 (EST)
+	id 4AC426B0093; Tue, 13 Jan 2026 10:27:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A23A6B0096; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
+	id 456596B0096; Tue, 13 Jan 2026 10:27:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1D766B0092; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
+	id 31BF46B0098; Tue, 13 Jan 2026 10:27:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AF0B86B0095
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 702F4C08D5
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AFEA6B0093
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 10:27:35 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA9191AE13
 	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:27:34 +0000 (UTC)
-X-FDA: 84327320028.24.0DF8FA9
+X-FDA: 84327320028.14.FE8F8B6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C1AED1C0007
+	by imf15.hostedemail.com (Postfix) with ESMTP id 27F3DA0011
 	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:27:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TQwLD6Yq;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768318052; a=rsa-sha256;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zk2ebu7+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768318053; a=rsa-sha256;
 	cv=none;
-	b=s+yd4mtJEfWeO/8DpFLaSJwTwBj4kPpP6XNRqBWNBHzu3Tv4hgp7WsiMvx36KEsZv72opz
-	odASxLA2umf6D09HXZocUMgg534HpTvr/rfL692GpbafMH/xwSskax0aGSsOD93bhcqBAS
-	Vpv5JO/rMq3NwvvkfILIOxsPbKTlLWc=
+	b=DOM4VvZkZZNDvUKNwP0tU4/Xrw8EpOZG9uNowm1BiC+S5SM+A4JJaOknU3fcVev0039HBw
+	t36yNkhpObPE4U9v1/1o+LoMCIOg1kwmoa7miG9D23Yo33Bb+jcPLcF6doHsbmkshAFlbI
+	pCkRM0XyF38YFgSFNAdEZWfcQqaP1NA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TQwLD6Yq;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zk2ebu7+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768318052;
+	s=arc-20220608; t=1768318053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JF0IUQ068r+1d4jlHQLBlB0OX3AiXL83Tl7dFt/sDM4=;
-	b=Bsj3z7ZLnLokzmeH8v6o+tjh7AWK3nHg7dtfEgeqkoHCtLbvcuQTylhs2ht0WDkPOAiPnU
-	/EB21sLcApdM59K/Pj1D4mVZKLH0T1YwKFlquLlmY4jQeoTZeu9Q66G0MRsTzlPHtK3gIT
-	3QSF7FNt6MC54XkA4kcmsjvCkxtejkY=
+	bh=yV3CItRgDxKlCZYlJA+TdKJFXxDP5njfte/e0To9jys=;
+	b=xqaM6zPUiqdb5ZLVFZa+D6/zl8qOco5GqP42n/IxHv9hVounWALijLsz0Dqs/EAL574b8U
+	thitva6zMPInHAQUJjPOZHSw8wGT4E1+fj9rPMRsPMpIBzy+V3GDnNEtJyZ9VpCo+8jTbs
+	Q22qiwuST08BaNUkeTQtA5eNaNO6JBk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F3B5544419;
-	Tue, 13 Jan 2026 15:27:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3778C2BC87;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4D38A44442;
+	Tue, 13 Jan 2026 15:27:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01167C19422;
 	Tue, 13 Jan 2026 15:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768318051;
-	bh=u9BpClkZFdNL3P8/T2nVybp/XhQM1COhsP+bLP+TFE4=;
+	s=k20201202; t=1768318052;
+	bh=Ps1Llk1zn7k8iBguPu+c50Hh6cMt1or4lC99Uh+5urc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TQwLD6YquT6NgnNQ84Kx8u7TWgMhbpMmt3X9fEodCwRYUsC9TaiBlzVw/KmPmmtNw
-	 1uII382sK4yne5J+fP75WQWpKjrs847Il9tU6TVwhj3ZkqWDU6trZ9l3kTyh6RFVZq
-	 vbbSqe4dEk1gvxU4hzdxMa+eAzna3Z1H6u97Y4GII2PQoTkUBtfPxzGq485BQxg5v6
-	 Ega6oOwSY7lWyVFPh42UnaMj5FH8ZKnGua+4N/yiHbsxP8nVfQoHX5COyAAUeQOpr7
-	 +F6Wa14h2HHNqnQ6QnbYITbui3f1pqJa3v/SGtfPe8MpJL6zoDbGhlWgv9IwAqNkFZ
-	 SGvlIBXdiA08Q==
+	b=Zk2ebu7+GAxnV8yJ3e1uSgG0okFBS2+bpqblZ/XsSuXKo3ZOACswlTS/P2AgCE88i
+	 Tf8A1g6E1f6j0068Nqhxmr/AJhZSGngoDXYG5DI4eO92dx/edIzFSnx1UzF2uE9HCb
+	 oEyIqtftImRHgSNsTgu8n8aOFkNCiBz4oKrSDTROyi05aPZJanwziQTd/8JkjyVdTf
+	 45gWlqMgZCyL3BCLM0Z1VIqHHh+UFyhONN+y5f5hQK/iGQAk+ImdvyL7ab0QcCAHUo
+	 WkRbzVUVrQYxD5Eea8XTJA0Ax+faZMBn5uVkBI1uUiLHCbAy2JfGE3axG5voYRLye9
+	 YxnOY/FivKOHQ==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 05/11] mm/damon/lru_sort: consider age for quota prioritization
-Date: Tue, 13 Jan 2026 07:27:10 -0800
-Message-ID: <20260113152717.70459-6-sj@kernel.org>
+Subject: [PATCH 06/11] mm/damon/lru_sort: support young page filters
+Date: Tue, 13 Jan 2026 07:27:11 -0800
+Message-ID: <20260113152717.70459-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260113152717.70459-1-sj@kernel.org>
 References: <20260113152717.70459-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C1AED1C0007
-X-Stat-Signature: zk7it8ubiouctmqwgsrk37dqw5zd4bgk
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 27F3DA0011
+X-Stat-Signature: hw6ikbi1pe4wmtr8gau6y8bno38whdcs
 X-Rspam-User: 
-X-HE-Tag: 1768318052-405749
-X-HE-Meta: U2FsdGVkX1/O0TFmEUrkBT4Z1eCPDK+nFlobKrsM7WbMtxiuL86/wNMwpJpA1IK9XN72O/7nxXCoqz55U7Xz1RM0Mu6JaBjS+vllqlNqrcQ/p2hnWO9x1ZCg8iwjOsB/R/wTWygI2U4DqZZSO1w/hVcmWCe3zRij4wgPZEVrxO1IeWtHylw0uPfsAb/ngEvsHXCHySoh57dA32A7luaNTfaJKYMBMd1QORfAkpZkYHQbTK5DHc5MXQqreDhM0p88aKkrP8KBar8lJTYt8lvwXZLUf2P8GitUxWYv5kcWySgBARa04dIZjO7la7M25p2s3oUIVsdph4VRcgMPWIDYrTc+rxPgH+MaPMgMNsjmVervagWanYJ9BRVhQQQOglzYdZ+d/ZVDmQFrIE73AwXkjSqnryB/q2+rhcoRi0lYl+9kj3F64bTVZtEhBlT4GtA1SwT2ifI8Ex0BN05+nIUojI+5I6MloICrlth7UMD1R5NWpBuNGEi5sXfZDCxmCpQjxyck48zpn968IvvBaX2SXuQBVRz5JHUvr8F+2tYs4Ts8cN/SWJN+R1LVYrCXTPkSkVBrIj88w+BgT2sqwsc8u5nkxN2DUzigltyOXedSuZe+01TwerUodz5lPUytjH+nt4r0Y1c+AbMvPreh/JsGwhlkkAeFLnErG1MzbGkZ6jDEYcTtR6AAP0RlLUx+DY3F2lMX/Py9x4bXeCYaHc3/ZyecHP+D0L9ikn7TrMJ6kQyfOn3dXmy081LdVscQ9ILWj33gCKQozGJVsYlRF/Nx+buoMylxTf2YfKICjOQtANy9CrLNplBWtEwAmuDAv3qAQLuC5aLGvFlqm2y1N7aNeGwmGNvoyCnpFv8I4Fjzt/9UKZeLAuHqocj046OJQfWbYTkBv1X1tWjF9HTrUlJgQpWVbJhhXwn6dCGDldv86DSK2aMGt8wJsGBsGXRfTCk/Q/NJosG8fz0Rbfr7DGS
- 9xMBKuBp
- 0zr5FqXmZs9dawK61EJ4RmXhS1w78kskm7bdbyTTYf+wH7sn3SM5g2cOhXI43K4BiyYu87sy0AxEYGWnxr1RZJ2Tl1YUwAYo/w1AHUbTJJbUmlWJ3/MgdYflWLpvslx6eQmIazIH2xE8CHz1DlGwVmkxGIy/ul79xDeUaABtAu+XoNNgjBzzWwqTcwUlKGEeJJTU2VO8IgRVC3o0VXISgcRfyBXqaviggTUfq1w16DcasbfIKPkAQ4e7gp8NU+6bZ698QB2YMJ5m8koevahVl2rZA1YvoTyLVyhTs9mUevBb7NHI=
+X-HE-Tag: 1768318052-248166
+X-HE-Meta: U2FsdGVkX1+rhs8i0KVJh2UpT3aQjDSPli1/mjwaFI7YwqK6Hw2Vqkk9+W7aacFrG27O5Wk7YmqkQGEgK/T7N1B2oRfKPbh9HCZaZvrmtftuWz6G9ZtxI3M3tWGpWxVt7l/J8vOcYL4hVAb5Dcxd/rAQ1TO5sA96zsQEc1nuAep935PBV+V08saqDVCRDtPDx/f5uHIkddF5kT+8/2Bjw/zeTNfdcVo/DQ8SyZ7FtFG6Sl2UzvpiULWfAdyOrMmfjpNuRMa3Zua+IBRO9I3fkXKKCFuSPiX7I773uc8uUM5CkqGmCGmLz53L0AcVLmiEsLIrqeQw2DUNfuScMC0K5DsMp2W5qUyew8sgEeMTWGUxpjEtdG7lr+AS5d09SqAbTiyPtBds6wp9fmoA7XGvHe7JWZAXJXndwlmrcBbGwZmgo5Bztcj6EI95mRRzu0HKl4cW6EZvX60B2mBR2eTDZT454ECmOzYdz6pDPwtIvEQ/zhjVzvnvw3TTH6p2ZGhAMUPlkn95+pyZ+WyX7tp9V1ymkH/co1dyyiji9hnG167pCns5eqdRETy4F3aBWW3s+qRREShS3j2yt9SM8Nl9x4TzkzpbkQ/EnsuS4u4BwfbXV1yFuFzUA7pUHWAVH1ag8aa1KIvdqhfWH9tqH/PeLp/HPPjs6ioZ/pC5JltXlbB95ed6nXDxwyESSEEqbqPNKQb4UAUxysNMyrEfkYKwTVjPScZlYBYAONJAIH4bKblbsKLeggiBUpXBjheUo0erXE5HYoqbtqQw2o6xLtcJJwyQhzPcDMnURbUlJuCRpCK1BVL+xWF0hDNlWy2xb++PQ6n1To/kPau8vhoCZolNr8iK8eQf5+x3eCerxLiGT0ygr4xnWqQvtBSkOhMZXj3C6luTsZ9MasFGRJqxy3i/i1myfHrIaIKYKQ8jAxXLnWZ1ccdz2+8zdacHS9vXL4GDPOgOI0Z4kYX6BPWqwr3
+ S8O31HSF
+ EAJBX6podEiVA49TFzrHGRBQ6EdXLACHNzHdWEQ0FcjofgEY4t0KVk9bqUtzpKyMMT/abgjyLB+LLaW0JW2vD3eJ1kcRFZzOih3Rg3PosT+AOI5W5PoBy1clQs49iEV/CKbXGkg1QoNCvAI4e3rxCmlEnIZkwwgD17PMS8qJxzZ6NAyz4B29ffiaO/aJR9YgldMU1c6+efqYNyAy/EsSXOKRdb9LFTbLhoewELPcNtV/QTlDbB9CELJdDc9lrcFm6slTUDUi3/Leey4fXzczJKKa5jzeAHLWKQvJUaVsRsGMdkDoAxv4vXnjG4w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,29 +93,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_LRU_SORT is doing under-quota access pattern based regions
-prioritization using only access frequency.  Age of regions is another
-useful information for distinguishing hot and cold regions.  Use it for
-prioritization, too.
+DAMON monitors access patterns at the region level, and hence there
+could be some page level mismatches.  A few hot pages could be located
+in cold regions, and vice versa.  Young page filters can be useful for
+doing additional page level access checks before applying some DAMOS
+action.
+
+DAMON_LRU_SORT is not using young page filters, though.  Add a parameter
+for using it.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/lru_sort.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/lru_sort.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
 diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 9388b091deb7..a74c4ec170a9 100644
+index a74c4ec170a9..f1fdb37b9b47 100644
 --- a/mm/damon/lru_sort.c
 +++ b/mm/damon/lru_sort.c
-@@ -71,7 +71,7 @@ static struct damos_quota damon_lru_sort_quota = {
- 	/* Within the quota, mark hotter regions accessed first. */
- 	.weight_sz = 0,
- 	.weight_nr_accesses = 1,
--	.weight_age = 0,
-+	.weight_age = 1,
- };
- DEFINE_DAMON_MODULES_DAMOS_TIME_QUOTA(damon_lru_sort_quota);
+@@ -41,6 +41,21 @@ static bool enabled __read_mostly;
+ static bool commit_inputs __read_mostly;
+ module_param(commit_inputs, bool, 0600);
  
++/*
++ * Filter [non-]young pages accordingly for LRU [de]prioritizations.
++ *
++ * If this is set, check page level access (youngness) once again before each
++ * LRU [de]prioritization operation.  LRU prioritization operation is skipped
++ * if the page has not accessed since the last check (not young).  LRU
++ * deprioritization operation is skipped if the page has accessed since the
++ * last check (young).  The feature is enabled or disabled if this parameter is
++ * set as ``Y`` or ``N``, respectively.
++ *
++ * Disabled by default.
++ */
++static bool filter_young_pages __read_mostly;
++module_param(filter_young_pages, bool, 0600);
++
+ /*
+  * Access frequency threshold for hot memory regions identification in permil.
+  *
+@@ -193,6 +208,28 @@ static struct damos *damon_lru_sort_new_cold_scheme(unsigned int cold_thres)
+ 	return damon_lru_sort_new_scheme(&pattern, DAMOS_LRU_DEPRIO);
+ }
+ 
++static int damon_lru_sort_add_filters(struct damos *hot_scheme,
++		struct damos *cold_scheme)
++{
++	struct damos_filter *filter;
++
++	if (!filter_young_pages)
++		return 0;
++
++	/* disallow prioritizing not-young pages */
++	filter = damos_new_filter(DAMOS_FILTER_TYPE_YOUNG, false, false);
++	if (!filter)
++		return -ENOMEM;
++	damos_add_filter(hot_scheme, filter);
++
++	/* disabllow de-prioritizing young pages */
++	filter = damos_new_filter(DAMOS_FILTER_TYPE_YOUNG, true, false);
++	if (!filter)
++		return -ENOMEM;
++	damos_add_filter(cold_scheme, filter);
++	return 0;
++}
++
+ static int damon_lru_sort_apply_parameters(void)
+ {
+ 	struct damon_ctx *param_ctx;
+@@ -240,6 +277,10 @@ static int damon_lru_sort_apply_parameters(void)
+ 	damon_set_schemes(param_ctx, &hot_scheme, 1);
+ 	damon_add_scheme(param_ctx, cold_scheme);
+ 
++	err = damon_lru_sort_add_filters(hot_scheme, cold_scheme);
++	if (err)
++		goto out;
++
+ 	err = damon_set_region_biggest_system_ram_default(param_target,
+ 					&monitor_region_start,
+ 					&monitor_region_end,
 -- 
 2.47.3
 
