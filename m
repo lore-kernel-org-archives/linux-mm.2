@@ -4,116 +4,319 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3062AD2D0FD
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 14:03:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B70DAD2D108
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 14:04:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54EB76B0089; Tue, 13 Jan 2026 09:03:14 -0500 (EST)
+	id 2BCAF6B008A; Tue, 13 Jan 2026 09:04:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 530116B008A; Tue, 13 Jan 2026 09:03:14 -0500 (EST)
+	id 273776B008C; Tue, 13 Jan 2026 09:04:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 459216B008C; Tue, 13 Jan 2026 09:03:14 -0500 (EST)
+	id 0DFFD6B0092; Tue, 13 Jan 2026 09:04:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 30DB76B0089
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:03:14 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F58E1386F8
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:03:13 +0000 (UTC)
-X-FDA: 84327107466.22.06D4F4E
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0D30B100042
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:03:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=I0duCVe7;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	spf=pass (imf14.hostedemail.com: domain of "prvs=9473463a0e=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=9473463a0e=clm@meta.com"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768312991; a=rsa-sha256;
-	cv=none;
-	b=nQ1y8bkUWXkQUCGoMaptSZmmzdn8iYKIUAM2T4UVLvlZeE9IZtp5050d0C2p5Z1j03H1w3
-	oGlFPdXiaPhEBhIFslxw16gAmkVECvIIVKLzSuTJwWf/QodFf3/8UrzjxEvC4FW1RvKCNX
-	yoda1ddxBL5rnPhFA9Y3RtNPFvdxCmM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=I0duCVe7;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	spf=pass (imf14.hostedemail.com: domain of "prvs=9473463a0e=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=9473463a0e=clm@meta.com"
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768312991;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED3D56B008A
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:04:20 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF71116016E
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:04:20 +0000 (UTC)
+X-FDA: 84327110280.30.A314C83
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4D86240012
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:04:17 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=OLlMk1yk;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=BFCHmSPr;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of chuck.lever@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=chuck.lever@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768313057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fQ7j1PpGTasQAblfO8V1KwLqMUsTQm5W+M3/6xbpbQs=;
-	b=GAbmZHuChjjL06pPXt/gTqnsIEXwNhAd5I5b1eP4n3UKXaPqy82JHiWreHOVr4yjPL5vgi
-	B4CnsM4U7lDDWK7Ld+82MTlmZ9mPOeP2ELvV2pmYw1G9ptVV9Gkbft1P7VWnYhcAD1q8Nt
-	0iZqpPDpHODhuin/xuaV6rnddsvpspY=
-Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
-	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 60DC4dtS1330592;
-	Tue, 13 Jan 2026 06:02:54 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	bh=mP/g8UY32ndvOM3LKDx1ed8Dxn892wEzbwhdmJE7hTk=;
+	b=szJJr5F6/X6jEKSKpaY3t72IDs9d6Kc6/v0bFe7+c0nIWre0ll2bsPf4ctMFG5SFnhRoxg
+	7h5zjSzOZHgx/jKdlJrYt7Ps9orcORQWnoC/va1fLS0R7s5w/imiS1g8Wdh1623InLgvjV
+	qVvmM/T6i7Tr0KGceAT23xODxP2tLs0=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768313057; a=rsa-sha256;
+	cv=pass;
+	b=384ToinM7MJ0TtpinEhw8aUE4V3jBr7XJl1VaxMrQgs5ZKjs3Af0ATxWoTXUcJQwyHbyG7
+	+Oe/a2fuwrMroknKaxt2i99BJ2EXzFbdNUW8SjyE82oiLEzqF694WuKutneTcsbOQc8EWp
+	9CzkZPv/zoWothR9JWhJ6i9ABIyXGuw=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=OLlMk1yk;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=BFCHmSPr;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of chuck.lever@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=chuck.lever@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60D1gZwC2395850;
+	Tue, 13 Jan 2026 14:03:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=fQ7j1PpGTasQAblfO8V1KwLqMUsTQm5W+M3/6xbpbQs=; b=I0duCVe7seY9
-	Edk/KTttYI7pSWoYZeM0jlkHIh1rNXqTqRlrmWA5DDtmw+cyr+js5kd+YW+lAEi+
-	wyWRsOgyVP7cZXyJ521koGYuvcfbOlqxcIKZ/mtPc1La+qU1EzA1tQDAqWqzY1fy
-	WXCVvVWbyhyD6yC5Onr8rK50uhcSnEM3U83BWw94xMqoHGUVKqZkDa2Ls/4vxdnQ
-	EcO3t9e3x/msw1qWNheVYhMSk2QU6IHI+SwzmJuYGC6UgBOudhskL9S7uolAqZ5u
-	S/3xQ5eaAE1alCHjyZaDTLYG9Kpa+I+venuH2H0GgLg27XuEwq24P8K5o9mZhEwO
-	pn4EceYpjw==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by m0001303.ppops.net (PPS) with ESMTPS id 4bnnr4rsm8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 13 Jan 2026 06:02:54 -0800 (PST)
-Received: from devbig003.atn7.facebook.com (2620:10d:c085:108::150d) by
- mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Tue, 13 Jan 2026 14:02:51 +0000
-From: Chris Mason <clm@meta.com>
-To: Breno Leitao <leitao@debian.org>
-CC: Chris Mason <clm@meta.com>, Alexander Potapenko <glider@google.com>,
-        "Marco Elver" <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-        Andrew
- Morton <akpm@linux-foundation.org>,
-        <kasan-dev@googlegroups.com>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-team@meta.com>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] mm/kfence: add reboot notifier to disable KFENCE on shutdown
-Date: Tue, 13 Jan 2026 06:02:27 -0800
-Message-ID: <20260113140234.677117-1-clm@meta.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251127-kfence-v2-1-daeccb5ef9aa@debian.org>
-References:
-MIME-Version: 1.0
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=mP/g8UY32ndvOM3LKDx1ed8Dxn892wEzbwhdmJE7hTk=; b=
+	OLlMk1ykanSrmUsKXyQJSp59G8drU7fTrANqMRkfkfDQhfIkSmo7xLmNiaeRX9ZQ
+	PffYEXuKKjd4p8O4LgUEGYPvfUOXEP88/M8N6OaosL0faYlyex6PeOzHOYcelTbs
+	g9nARv5pgj0bRNEWpl++TnJpmBd0bAnXtH2D1K01XdML4Fq+Kmo15sdXjyQa7a3Q
+	L/Mp1EVuHc8hvxa/B36YJzruI5RV8ur0CCB6jmd5k3bJiz4WXBjU8EQwDrMheClE
+	5X2InQi9aeIlgisFYA9AekT9GJsty6LvGfwA8DFREGfSH8+aXdFm1+JeMilxOVS7
+	BSGAFzPWU17uxLflHV47RQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bkqq53f06-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Jan 2026 14:03:46 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60DDbCqo032777;
+	Tue, 13 Jan 2026 14:03:46 GMT
+Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013009.outbound.protection.outlook.com [40.107.201.9])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd78s9mb-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Jan 2026 14:03:46 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=waTBL9YNQ3eyQ1nK6upU4TFGAXXHkpC9jwzimvKa6AALpouovAQ8Wi2/47JQ5Z3oc/cVEZJN77q6wdBvLY5XFN4j8RWKua59PnZhxccHyeRNXU8bfXCkKA3BV+Ovw603BP5zXo2NlCHt5viz4BmNVqD8kUCJq3NFiBHhB583fz5i0ZSae7zzYpidlwkJvWWbb4nPXFro0AOrOHRvYrrr/6aZWq2FQdGoIZo8V+11H7R2gd+/WiaiHpXoTSeILN54FMxbrg9xfGkIrnANhS8lIFMJickQbpZqImD2vc4W43z3tyyX6l0Zmqi88VnvDd3RlF7UgwBXmWo9kcxEOGMX7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mP/g8UY32ndvOM3LKDx1ed8Dxn892wEzbwhdmJE7hTk=;
+ b=Hl4QjcFzGPURq4sEALrKTX8hDKNCA3lxQUfU4LTBE/cJrV1If/dM+UQiCci+EOsM/uKpqUXaGy2INtxca4kAo0oWa4XVAAmCyDG/Wv5AaRQ2Ibmvv6hKHv0pe7l23PfFrrPkJ7hk/jrVMdwLZBIpefVhgpA4iijQfo/8aziCs3pRbfWwRE5c8o7YBSvFzghtikIRJ5wusTfGlGVCEKS7P8yuc23OczN/Bomqxx4DqBXvzAd6k5zy5sgJLXXyvt5Cm/I+aqNAOi5Ws6KErlQH05MfYE7JBOcuThqgXV6ubev4/dAa8PbCJruDz3Vv4+apypER6M5w2l0oomP4RSnS4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mP/g8UY32ndvOM3LKDx1ed8Dxn892wEzbwhdmJE7hTk=;
+ b=BFCHmSPrNHFT/TaKzFSDYxSRsAPzOvCCBQeZz915ecABFjMZfc4QPF9nKpwxYMFTZ+rCiVhWysGCIxbV90QNcZYB3Yro9OYEK7UyAVp+ZfT3S1AGS0HkIUn5cJzNuHmjxvgppljl21iO2iZoyuFx836xGTQ2pxTAHofb9HZLvBc=
+Received: from BN0PR10MB5128.namprd10.prod.outlook.com (2603:10b6:408:117::24)
+ by CY5PR10MB6120.namprd10.prod.outlook.com (2603:10b6:930:34::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Tue, 13 Jan
+ 2026 14:03:40 +0000
+Received: from BN0PR10MB5128.namprd10.prod.outlook.com
+ ([fe80::4083:91ab:47a4:f244]) by BN0PR10MB5128.namprd10.prod.outlook.com
+ ([fe80::4083:91ab:47a4:f244%4]) with mapi id 15.20.9499.005; Tue, 13 Jan 2026
+ 14:03:39 +0000
+Message-ID: <5809690c-bc87-4e66-9604-3f3ee58e2902@oracle.com>
+Date: Tue, 13 Jan 2026 09:03:27 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
+ lease support
+To: Jeff Layton <jlayton@kernel.org>, Christian Brauner <brauner@kernel.org>,
+        Amir Goldstein <amir73il@gmail.com>
+Cc: Jan Kara <jack@suse.cz>, Luis de Bethencourt <luisbg@kernel.org>,
+        Salah Triki <salah.triki@gmail.com>, Nicolas Pitre <nico@fluxnic.net>,
+        Christoph Hellwig <hch@infradead.org>, Anders Larsen <al@alarsen.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
+        Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+        Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+        Sandeep Dhavale
+ <dhavale@google.com>,
+        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
+        Jan Kara <jack@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Richard Weinberger <richard@nod.at>, Dave Kleikamp <shaggy@kernel.org>,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        Viacheslav Dubeyko <slava@dubeyko.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Mike Marshall
+ <hubcap@omnibond.com>,
+        Martin Brandenburg <martin@omnibond.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Phillip Lougher
+ <phillip@squashfs.org.uk>,
+        Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>,
+        Baolin Wang
+ <baolin.wang@linux.alibaba.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Namjae Jeon <linkinjeon@kernel.org>,
+        Sungjong Seo <sj1557.seo@samsung.com>,
+        Yuezhang Mo <yuezhang.mo@sony.com>,
+        Alexander Aring <alex.aring@gmail.com>,
+        Andreas Gruenbacher <agruenba@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Eric Van Hensbergen <ericvh@kernel.org>,
+        Latchesar Ionkov
+ <lucho@ionkov.net>,
+        Dominique Martinet <asmadeus@codewreck.org>,
+        Christian Schoenebeck <linux_oss@crudebyte.com>,
+        Xiubo Li
+ <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+        Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+        Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>,
+        Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+        Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+        Bharath SM <bharathsm@microsoft.com>, Hans de Goede <hansg@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+        linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
+        ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
+        linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
+        linux-mm@kvack.org, gfs2@lists.linux.dev, linux-doc@vger.kernel.org,
+        v9fs@lists.linux.dev, ceph-devel@vger.kernel.org,
+        linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org
+References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
+ <m3mywef74xhcakianlrovrnaadnhzhfqjfusulkcnyioforfml@j2xnk7dzkmv4>
+ <8af369636c32b868f83669c49aea708ca3b894ac.camel@kernel.org>
+ <CAOQ4uxgD+Sgbbg9K2U0SF9TyUOBb==Z6auShUWc4FfPaDCQ=rg@mail.gmail.com>
+ <ec78bf021fa1f6243798945943541ba171e337e7.camel@kernel.org>
+ <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com>
+ <ce700ee20834631eceededc8cd15fc5d00fee28e.camel@kernel.org>
+ <20260113-mondlicht-raven-82fc4eb70e9d@brauner>
+ <4a38de737a64e9b32092ea1f8a25a61b33705034.camel@kernel.org>
+From: Chuck Lever <chuck.lever@oracle.com>
+Content-Language: en-US
+In-Reply-To: <4a38de737a64e9b32092ea1f8a25a61b33705034.camel@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [2620:10d:c085:108::150d]
-X-Proofpoint-GUID: -zdoFufYx-ri54AmF2W0YNzuIqDQSvvM
-X-Authority-Analysis: v=2.4 cv=Zs/g6t7G c=1 sm=1 tr=0 ts=6966508e cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=xNf9USuDAAAA:8
- a=7sR78lRsTtdWeVkM5_EA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDExNyBTYWx0ZWRfX/SH2AzbaA7MB
- fQ7SM27TcoFfggUzHtqIj9YhlO1KEvX/6zhNr8J15aiISa2bEPfqhMxaGMCXMRk7HSSy2FeKxgG
- ibIbIpNHOjRb942E+A/vtvrrW00uQh/2JJikK5QORViYber7Xv8570VWucIgV+Md40nWkQ69a/h
- ceE9JyquvWsfNEG0ymemR3nJfJdFJBhdrqkXF+G4N4dEF3wCYQe9ChjlA5DEOg/VBgeqsjnHq9+
- fDMjeZ5zQVSoy9peZ/++qafLhPPJoHlPHTq/hJ0FOwRdkNTQolGhAI5ikEhdq/6EtAbq6PscK5v
- U8+EjxbMMiTCIYMGLNF4UFv19e8DLo/fL3Mi2lZ+aEcSiIj70a/thIH9S26H8vTe2EGUs5jZ5uX
- tgvHiHwvc/8cojlBjhfmCefn7NaWbU4n/GkF4BpbvDEnVF+bsNROvOPUAnaRQjlW+R9I+QaCBm/
- M6FkDwYwMQY3kxIZ3GA==
-X-Proofpoint-ORIG-GUID: -zdoFufYx-ri54AmF2W0YNzuIqDQSvvM
+X-ClientProxiedBy: CH5P222CA0014.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:610:1ee::6) To BN0PR10MB5128.namprd10.prod.outlook.com
+ (2603:10b6:408:117::24)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN0PR10MB5128:EE_|CY5PR10MB6120:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0ec1a10f-0ee9-4e4d-92fe-08de52ac8d81
+X-LD-Processed: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|366016|3122999018|7053199007;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?dUpMV2doUnZNU1BJdVpLTm5aRVAvUUVEUCszdTVXNEYzYTRMYy9ISHF3L1Ix?=
+ =?utf-8?B?bDloaU4yai9aR0txMlVVOUxpSlRIOXd1TWt1Y1dPUFJTS295Tm1WR1UzbGFM?=
+ =?utf-8?B?c3RzSTY5bTE1dmNzMXRrenQvYytFVllkOWhKalM3TS9HZ0tCNUNtVDdyTFNh?=
+ =?utf-8?B?b0Fjb3d2R2VPbEVmUWdoMSsveTYvcDMzelFqbDlYSnFIM1NRTHQwOEdaeUdu?=
+ =?utf-8?B?MlhDRUlMRUtBM0tXa2lxcHZ1OGYvMXdMTHpNZGhCdk1QOWMzaitkSDUvcnE2?=
+ =?utf-8?B?Qkp6eVlZemd0aVhtTmZ5czFNN1Yyb2xKL2R4TjlvSVhVblhRa3hXaXB2b0h5?=
+ =?utf-8?B?Z3NpZXBrWjFVNy9tRXZVbVVscHVKdjBDaWxJVW1MSkErcS9TVXd6ZHh1aXVT?=
+ =?utf-8?B?dEg0Ni9IL1MrcG1MVStGbExwTW1EYksrcW1vQUtFQWd4RmFtaTliK3RscFpw?=
+ =?utf-8?B?dGNJcHJrSnlGUDhGRmU3cTVEZWF4S3NFVFpaSmkyVlFWSHRPa3V2OEF4VmtR?=
+ =?utf-8?B?SDZKVlg1bk5aZ3BOemYzWGwzODVlb1NNVkptM1NYd085TVNqNWNnVGFKQ3hH?=
+ =?utf-8?B?ejZhQmp0OE52TVFDblYxNVV3WVNOM1hVTnVMcjZzRHhGM2JhcThzY2NPNmpu?=
+ =?utf-8?B?byt5VnRPWk1PNVZ0elh0Qzd3aitQYkRPNkg4YjBsT0ZYZER3ZjY0UGkwVW1R?=
+ =?utf-8?B?NmdMSFFWVFpEdHlIOHNzTjhtcFlJL2ZDby91dlJ1dU1sWmZjV3BtT2JkMVhi?=
+ =?utf-8?B?cnlidG5VRWpFWTlGN0dLSmduRkY1KzNYeUFSdUVCK0N3OXpYcGthL1BmaDdp?=
+ =?utf-8?B?QkplcTcwdEhRQlAydkhIaFNidFBFR1UxNVE4dEREYkRGeFRDOHNBM0grWGIy?=
+ =?utf-8?B?bjZPOVk3RDhveTRoMzlYRHBobURQVVVGdHhYT3J4K0pLUEtVeGxmY21jeVFR?=
+ =?utf-8?B?Q0xpajRUbFZtaFdTZnVwME9OTU5QNVZFUkh3eHU1d3VwZlV6YjUzOHRGYVhh?=
+ =?utf-8?B?blZCdUhXN3Q5U1lnVUxUWmpRZFhQaFZsSXJlVXhwTVJDOW9yaDUrSEUxY0Iv?=
+ =?utf-8?B?Z256Um1lS2ZWdWZlWGRLcU0rNEFPaXVIMXh0QWlDczBjdjNObnFDcDFjZmFM?=
+ =?utf-8?B?clM2b0thNTgzT2N1UmxhU3lDUXlzN2FkTHVUWVFRdkFBcUV1TjNlWGU1Wktr?=
+ =?utf-8?B?RnJGS3hHOGMxVmpYaWJhWTF1QTNkeVVMMFdvZ2E5aUJSZVFxV3lXWHFlS0Nz?=
+ =?utf-8?B?emVZZE41ZER6bVBZdUE4di91dmoyVmpxajQrU3ZPQkN2ZmcyRmh4UnVpUmlC?=
+ =?utf-8?B?anliZnFzQ1RGREpzZjFGL1RJQ29sOGc4T0FXY3F4dlBaUi8rZTdQckprUTJ5?=
+ =?utf-8?B?ZUIvK3lDZGh5dVNxYlpSejgwZXlqSEs3WVU5QTY0bjlkQjdvZ0o3Z25ZaDN2?=
+ =?utf-8?B?SjdMSTl4ZHZ0WHdCN1Fja1dVZXU1SDVrTndrYUF4VFNHWUNXWnduL3c5ai9N?=
+ =?utf-8?B?MTJzUkJ5cWZUSWkyUDRnUWZ2cVgvWWl3Rm0vaFVkMW1wVlZGbjREaW03WU9O?=
+ =?utf-8?B?Qk1ibUhnMVRIQ3JROWZiRVhxekxIZG9FQktoOWFmRm5pUFZGUGVId21ZYWNO?=
+ =?utf-8?B?TGpmNlowK002UksxRnNsb2xtb2F3UGZ1V3JWeUp5c0J0a01ITC9JRzRPbnIr?=
+ =?utf-8?B?bkVsTzJteWhOM3ZOVC9HNEowajVXaGxTcGI1N0FoYWRWOTBVMEttR1hldHI0?=
+ =?utf-8?B?NjFaMXJPTytsZFp0ME8xUlZaRmNvWG1Wa0p1WFVES3VoYmk5U0JPVXJXREha?=
+ =?utf-8?B?MllId0Q2UkVCL3FENWk5UXFUNVlZdXQ2Y1piQmlJNDB3WXJsakZCZUtQOXdB?=
+ =?utf-8?B?MmRLeWVvSHI2eVpGZzNYTm53enNhdzYyaHlhZ01LS0NKNndZKzlsRCtwbG91?=
+ =?utf-8?Q?DzC7P+c324FkCWCbqJ0EqFBj3M/1Lt+H?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5128.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(3122999018)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?VU5LWGVwYUgzckRwZG9yeHZxVEd3WFFvZmp6WDd1T0NxNEhzSGhjd25MckZP?=
+ =?utf-8?B?M1FqMEQrVXNMaXQyQ05aK0lXY0xEbUtLN1dKeTdZMVdrYVI1M3VicWdudGI3?=
+ =?utf-8?B?MG0vV2R0VEpSM0ZINDBRTHZOVGk2NHNLd01GQ3QrejJYcWd5S25kaDN4L3dx?=
+ =?utf-8?B?UC8ra1hJV216aVdpTjl3T1Qya0xoRFRreXJwVDU4Nnc2dTR5a0M4SmRFSHRN?=
+ =?utf-8?B?WHlhbnJJMU9mRGlyNHBKNzhhaGYxR1E3SFh0MlU5SlhZSmRLWFFhV3djMTNj?=
+ =?utf-8?B?SHRPZWpOUWtzNUk1OUNXMGx5cElKazdRZzExZ2NLUWIybklxVk1Yd2Jibzh5?=
+ =?utf-8?B?NCs5SkVESGNWWTVxUm9sNmQ1dVdBaGsxRkdIcERwdDRoTUJvMWhIalVwUWUx?=
+ =?utf-8?B?ZjJVOXpKeWJidVlPbUxJNU8yMUFhN0d0a1ZFSWt2dk9WYXlyMWowN2k3aDQw?=
+ =?utf-8?B?N3pKN3ZZOWV1SlhCYlFPanQ4bzdyb1NqL0RkRWNTSkdrTzFYOFAyaUN2WXdi?=
+ =?utf-8?B?TWRGTGw3KzBGNlg1OHFoUVkwbXpJV2d1VlNDVmdQVjM4dFNoSmRTcnFRcEpB?=
+ =?utf-8?B?VmU1bklKd0NxRklxWUd3ZHJ2TzhrSWxIdit6WTZUNWVxQjIrVG0vN2Rkbmxv?=
+ =?utf-8?B?dEM3N3dtN0EvNU9IU3dUWHNoUnVwYmE2U2hieWZaVzJMV1ZGZ0FNekJhRDFl?=
+ =?utf-8?B?UFV4TjVVUmFjMWthTEhZdUkxai9reGhxWmhWRDczSnFsc2pPbEhVVVVoMURG?=
+ =?utf-8?B?dVBhb05wbmpaS2hndStVZkJlWHNhRStlV0JVOUUxN0xleE9ZQVNMOHlpVzly?=
+ =?utf-8?B?Q1k2Y1ptL0pYaG11WXFpaDZiWWlLdGZPT2tQeHRIVEJwUHFndE9LT2gvWDVw?=
+ =?utf-8?B?M1NmMUhMQlcrb1VVVDZmcVdScEJhMm5YUmZLRGh1elg4a21kcmlJeUx1SGhv?=
+ =?utf-8?B?U1E2aDVBZTM5VUo1dndMNHUwOFVJOVF5b0k2empDT3d1YjkyZ09ScXpydk9j?=
+ =?utf-8?B?ZEVrbndYbjBkNkx0SGc3Z013RGpqR3BUbThmL2h0UmNnZDZDMVlxVnBtRUFu?=
+ =?utf-8?B?TGxNbHkvNTRqTnJvS3IzRm14aEdDNmNIMUxYeUdValh0eTJySUF6eWl2bmhH?=
+ =?utf-8?B?Q3ZMQ1duUTBqZGhSUnpsejZ5bk53NkNaYnlZUi81VUtmV3VCTkFBSTJ6SVFW?=
+ =?utf-8?B?Wll4WjBWWEdFWEJDMHFNSHRBNHAwY0MvNkwzdnlOa29OUG5pY3lyeDV0UCty?=
+ =?utf-8?B?MUl4WDFqc0NqdE1Gd2FjSW13QUUwMXNvaTN3NmY0SnhiYkcwd3E1UythaWdU?=
+ =?utf-8?B?dnQwWFFseEd6OWhsRHdMRmQ3T2Qyek1JT3hSUGxOMHo0QWZTK2tnVjJZYTk4?=
+ =?utf-8?B?NUkrQU1iSkRuYWprRnNOR0REOWdrNm9RaGk3OWdzT0o3L1ZDejdIZ1BBbnFD?=
+ =?utf-8?B?NEMwN1dsVnVKcWxyREt2LzlWU045Z0JvR3lZbUVpMXVtZkpjem5nSHVON2hZ?=
+ =?utf-8?B?VmE4T2lORzZXaUg4OVN3Z0VFMEQ0MURGMU14bzFPSnNUTFNxeDE1amNBb0pW?=
+ =?utf-8?B?Z1pwdWZNbjFGWVdQTHVPbXdUYUw3Qm9WVHhVNDg0Z1JFMmtmeXE5SThIYzhs?=
+ =?utf-8?B?dUFtMGFGV0JtemlBUmFENjRvN3pFWjNhQWNOcGlSa3p1a2N4anVBRlpiUmJH?=
+ =?utf-8?B?VnFscjk0OCtjZUx2elRlaXFNa3BHdUNQT0thczBkWGExTmJCdXFQaU1YMnJP?=
+ =?utf-8?B?WTQrNzVJNGpESVBDQ1FkTHRxY1B6dW9JdG5oek5FSzYzQ3ptYVlCT2p5ejBi?=
+ =?utf-8?B?dW1hcnM2V3p5OW9CMW9LeC9PbitXWEwyd24wdVkwR05ZeUZKcm8yeWJjQ0Nv?=
+ =?utf-8?B?cFdQOUdpb0Y0bDlsTHBXMG1nbVI4ek1BQXZJKzl5RmUwazdCWUVpTS9CajZL?=
+ =?utf-8?B?V3hLZFBIUkc1bTJadUNZVytUa0o5QVU3bnBWNzRrVnVnNDAxQ0t0anF6UEda?=
+ =?utf-8?B?Mjg5ODBSRnFFR3V0TFYveGlLYzZEa1ZYVXFFeDdsK3Z5c1MvbHFqdlh2RmFH?=
+ =?utf-8?B?bTZPc0JmLy83aGl2TG8rM2lIdnlySkl1ZXV2dzdFN2RTWXd6VFZlTGRMVEtW?=
+ =?utf-8?B?NDdtenBKY3MwUHhqK292WTdVaTNia1VGais5NTQxay8wZENCWlJNQnkwUHNz?=
+ =?utf-8?B?eG8zQjNXWEIyMVRpS01DMmdYTUJBTFljdXhRRHY4aFVYeXhkQjNuQUFqVnQ3?=
+ =?utf-8?B?VnVNYWlac0RXdlFQdzFjWC81dXF1YzlucTFzYkNPSHI1V2IrRTJqZTNrOFNm?=
+ =?utf-8?B?MjRvOWc4eTRTdVFiKzd2MU9PSjBZNkRJZGU0UVl1VTVUM1dnNHNidz09?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	Gjuzn59QpT9i3tuLtakgzssJ5JFrkVRjDPf//fE/pVrRMB9QQ3mS6vE6GUe2iheyeZDXA055Xwqvy2j4Aa5NpbeBM+t4JtTQR65LeWgTHlSol3up+l5LYL2HE1TISoxDq07kEShFGJtTR5N1adRid6HZ3JCTAz9uf1UqnTOGgSa9WY/SK1KKEhkiCtThdCVTg+SGkhmV13QiW4W11ix7A4YMIsLsnw9uxXzGa8MYmARvOLtJnvnCx+4BknTFytbYlcCu8idIch1uq9y0+O4GvouqR8IAFmmQ0jYJtlOyHDnHW9Ffgj1AmwwGSW0yz3mQz4DaEt9rEMKFIiH/3pTIPGZVgX5BDgbmObuXHaBa4ySb9iQw/OL7stuf4qlK04hESFGkCsx2ek5GuYssEH2a81FWWPEyHNnmhBfk0xK5OlcCrO5SOBVzktnNQM/Si/bC7mkp5FN0FpXQtqGKOCI/np5PToTkYPD/Jww7GqU6uxgyEVxICap0xJyMCDkM5jz9xxBfjVHvLbZR/kfpIOG5OoWMjBjIz4TBASzf4uEAItdUW3GEiHXzuiP+vzhJpOYdTwFJiYWHDjl1L/9drC/2tjCXOKJVioOtdoyLND7YKO8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ec1a10f-0ee9-4e4d-92fe-08de52ac8d81
+X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5128.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 14:03:39.6750
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YGk2SXNN0FjDKmDnetA74beY9FS4bgv486Upczd4bUxd2faLluaNpjzaaTsnfE0+2g+Wax5DOjfhNiPF7L+bpA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB6120
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-13_03,2026-01-09_02,2025-10-01_01
-X-Rspamd-Queue-Id: 0D30B100042
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 3xsoygzq888iyjyd6moajh3qczae13cw
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 suspectscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
+ definitions=main-2601130118
+X-Proofpoint-ORIG-GUID: 2YNEE3Tr-BYkU9W3QqbyBTutfIfueKeK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDExOCBTYWx0ZWRfX3JSZYS9RlbVF
+ idO5zgTdYUc7eGw2FuOzKzZL7T+NIHez4Y1TabBnRpp2YVb/fDbkNIGLFJ45GRip2J0k0vRT9m7
+ s1CJzn/Ry0vIjQMoHEc6I9/vWHCMJgokJzMNaTOi4NRXvVR/h4LaRbXf7UwgWEArR7PaYx+GoO/
+ +jkuYrruMZWUnXxnyHmXlKcR3xIlzs4QERX8FvGIitIY3F4OUPV2EA3JfX6+CpEocEPXmYVclTk
+ Rs1TEsf27OQglg2T7gHMu5mqfGYEs1vmXjZe5u2xaDERL2j96y5h0cCI3dMLDGXo69P/dp3NTkl
+ V2SwuR5oQfClJp/3V52e89tcjJV1cw+4JLE2zhFwHGBlRdUyF6U/daKbKOFFb/A91PY7FckOeXE
+ tlK4w5Xpn+o21oRyrHkWYSzSpn/vCully62OLr8Oyp3x44P1Ba4lYZuzVsICjiUtivZpUGNm8rQ
+ SwlHWOMmOT1LpJMtHKQ==
+X-Authority-Analysis: v=2.4 cv=J9KnLQnS c=1 sm=1 tr=0 ts=696650c2 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=Y791ZhcX_UeUQF-99ecA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 2YNEE3Tr-BYkU9W3QqbyBTutfIfueKeK
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4D86240012
 X-Rspam-User: 
-X-HE-Tag: 1768312990-530089
-X-HE-Meta: U2FsdGVkX19+WlqqX93G2ki0LzwIkxzpFDTGk8fcQ8FFjJfGd6YB8OdpVn8l90pTZ//xA0AgpcPPmrFD8xCb4qE8LTWpB47GokgjDBOcuG3fdm6bFoAHxmLl9VpM1v0MXgNz7r4IGIK3eJ0U6nEuCX+nJ8CRCGN7kNlY1nDx5IFgvDHT+f3hdrxthfeSrgMQONxdJlI//xVwVrT51FPm+FBGFKDOohEjukVGnGRNqjiNy6HLEALYZTn/rhHvbD6jgzAiVslqaZRplSR9AEc0BABnhsUiZ5MtafkFTjh8f9bcokrpNTipdDakBdtuFXFAtVAMIgIeyYyz8rkIj3y5qKIBpN0xJePeWEAlFXzNvqd4YcEpkXv+VZZYH2xXYGb0UAW94UbKNMHDvAUwRAWG3MHKtYj+LgrhCJj07uumq0ouRarqH4OBJImd+i/PPZhX4VR4PLIOPz4opOMac18ZgHe8f/q9gjeh34hqy846Kjg39xkpSEEtlVyeDpW3c6wYsVEYIZwayyr/YticTzO+s710p3PJsfhX/2HubhQb/MU2gi9Nqn4l684K1zVM/ew3fpE0q+BwBIpd6+HmCDv70WeBdE5NsjT1GeGs+Q8oh7NKqif/Szhe1lOzaXG1UooKIfVGQtctLTh/0mZpibqhlVD/i19V9q4u5uJFBINtx5hwEln3sNVBdLtPUu83P6NpqfNYj4Z7ZGMMLBDVToj9XU8Byif+7PRO6N/8UwSSn6rwMsABuTZIUAqw0JhrlRbWVfb+K5uX03nxTOrm2pN5EvCBOyBpUvstFUJ35UKLudJsi0qqJSwbS/d9qsX0j2DJB2wKghFS2mBn0ArTrolWKKXBarszxyfvZoOW4NrjJvlb5jAOf3svAqyxRV00DfY1m7+lXRrjDi2aE4dVHfTriYTYDLuGNsRee3UDdidqCtuzTBkaWAfoR4JV2wsGnikSzn1qC5pLem9b/uA+/bB
- eF9IZtif
- BiNU2DAS6K1lSkgBijmc0zGMXUiejpwoqOrCT2PDiJp5mvMxkk5xVHLnicZmyygE/1E/qMX87UEA+ks8Uxmcd6E814+GJq95o8y8GYjSdNt8Glkg70HhLJeAObVsGbU181xFcZvdSLvuxyMA13k6/hBbmfm/eEBWx3BZ5tY+32T7oS9Hxo/VYoiEuFYI+apNOUAuZ/F9mVRwMbrR9QbzSpwOlhIgK3teHe2yVCqm0a8CcJpCllxnZ4iRikNn6t5Qq5iuphf8M6vE0/iFYHBmAInf053ZjuU7CPoAToyplJ/qo3RIdpXepZF3SDGK4EG0Im+NTRpdLOM4WSrsyC5IVjIfW28jDLhrj6itaGb5X4kaoX84=
+X-Stat-Signature: pjgo8hke848t1n8e5uje39ii8q1rx54z
+X-HE-Tag: 1768313057-673634
+X-HE-Meta: U2FsdGVkX1+rkaOXirv/XDnY6192ZX1Lzkrr994vX+dENfnVqf/iRqz0nvewhBGTtX/ry68xgDIpdz3iUI6X27zYe5YJob8PmFeI9akkkguRq//xs0BP2gdgqsWMq7KkoerwoPGazcRpmNwlPGbt6d6LM9aqjicqpApS7GI/uYLRZ21Ktx7XAY6DchzxqomqnNxY2CdVd+W2CtHre6wOO/Jh4dw6ek4A65OfAx7uOmiNwU3PkwIqaCpnLWJXfvXONBtlM0R4jWgeVpdXtvYwVjLBBtBTgXSoBQmfyFTynHSCb8m89XrWGDaKwOYhI2a123HKsqhA5njWqda20BAfe+lHLlWX9j5HKfE17tcH+tY2d4kERM/6sDZdmNhXY+tp6hYO+U0PWSEGrgJrM1wDkp1Rzphnm+i3bkd43FPuLS0rDbw5fdzAgIbsKW87K/KVsq9y6Yxr8vAe+TPKMVDHK43u7ACqdo192ro14hterDw8Lz0lIl8u+y4GMzVIGgl04PsvbaZASpZ6g3AaxTpTJaDxNY3Khy+PnsPn6LfrulnyQgMH7N3BHB3341dMC7MvOlI1L6+b2xgFA1VSHblGnQgMRFLomx2NmeaLXQUjP4+SUpXH/vJpwwAczfWZ3oR0oXnKoMUDgqkZ7ll//DWkBQx8crPhbg1uOL+1+tnv53p5ASGDZWXRFnES+ijMLcEFFdFs7JpiTP7qxqmyN7N5AdVxV1TMb7/nEqlDeTi/mdLRnPAut43qs7nYF2nbJqdAZY4a2F6vO9Y7aOKOgEILDR93d2S0gbPOduRU5q8xHANLWeJSFqVawnOay51KCpqrqaK+fi63mxGYWmILB/nw3hREhY9jibuceyKrODxf+U99wKNJtexwzB63DWRQvhYh7etN5033Vhaqay4NIhO9xXH1a48wmVRoKlfGi2zB3fznBTKS1kONMzNZ3yw4pxGHpChhewMHV3R0LD7Lcyy
+ GD6Dw0fo
+ pAza5US2NVnU6YLBKnowgfo2bbqYO5+yqKXJYCQhcaw56W8yhSL8yaRCabz9HwtYjERDmJpKG/OKrU3v4LoVpQ8+p76MHaFlgtP5B3vm1CwzN3JzoBnI7SEd4SQIIrGfspZjFVGsG8CjoL0gpunwNH91ldb91PS+jIZfM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,64 +325,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 27 Nov 2025 06:51:54 -0800 Breno Leitao <leitao@debian.org> wrote:
+On 1/13/26 6:45 AM, Jeff Layton wrote:
+> On Tue, 2026-01-13 at 09:54 +0100, Christian Brauner wrote:
+>> On Mon, Jan 12, 2026 at 09:50:20AM -0500, Jeff Layton wrote:
+>>> On Mon, 2026-01-12 at 09:31 -0500, Chuck Lever wrote:
+>>>> On 1/12/26 8:34 AM, Jeff Layton wrote:
+>>>>> On Fri, 2026-01-09 at 19:52 +0100, Amir Goldstein wrote:
+>>>>>> On Thu, Jan 8, 2026 at 7:57 PM Jeff Layton <jlayton@kernel.org> wrote:
+>>>>>>>
+>>>>>>> On Thu, 2026-01-08 at 18:40 +0100, Jan Kara wrote:
+>>>>>>>> On Thu 08-01-26 12:12:55, Jeff Layton wrote:
+>>>>>>>>> Yesterday, I sent patches to fix how directory delegation support is
+>>>>>>>>> handled on filesystems where the should be disabled [1]. That set is
+>>>>>>>>> appropriate for v6.19. For v7.0, I want to make lease support be more
+>>>>>>>>> opt-in, rather than opt-out:
+>>>>>>>>>
+>>>>>>>>> For historical reasons, when ->setlease() file_operation is set to NULL,
+>>>>>>>>> the default is to use the kernel-internal lease implementation. This
+>>>>>>>>> means that if you want to disable them, you need to explicitly set the
+>>>>>>>>> ->setlease() file_operation to simple_nosetlease() or the equivalent.
+>>>>>>>>>
+>>>>>>>>> This has caused a number of problems over the years as some filesystems
+>>>>>>>>> have inadvertantly allowed leases to be acquired simply by having left
+>>>>>>>>> it set to NULL. It would be better if filesystems had to opt-in to lease
+>>>>>>>>> support, particularly with the advent of directory delegations.
+>>>>>>>>>
+>>>>>>>>> This series has sets the ->setlease() operation in a pile of existing
+>>>>>>>>> local filesystems to generic_setlease() and then changes
+>>>>>>>>> kernel_setlease() to return -EINVAL when the setlease() operation is not
+>>>>>>>>> set.
+>>>>>>>>>
+>>>>>>>>> With this change, new filesystems will need to explicitly set the
+>>>>>>>>> ->setlease() operations in order to provide lease and delegation
+>>>>>>>>> support.
+>>>>>>>>>
+>>>>>>>>> I mainly focused on filesystems that are NFS exportable, since NFS and
+>>>>>>>>> SMB are the main users of file leases, and they tend to end up exporting
+>>>>>>>>> the same filesystem types. Let me know if I've missed any.
+>>>>>>>>
+>>>>>>>> So, what about kernfs and fuse? They seem to be exportable and don't have
+>>>>>>>> .setlease set...
+>>>>>>>>
+>>>>>>>
+>>>>>>> Yes, FUSE needs this too. I'll add a patch for that.
+>>>>>>>
+>>>>>>> As far as kernfs goes: AIUI, that's basically what sysfs and resctrl
+>>>>>>> are built on. Do we really expect people to set leases there?
+>>>>>>>
+>>>>>>> I guess it's technically a regression since you could set them on those
+>>>>>>> sorts of files earlier, but people don't usually export kernfs based
+>>>>>>> filesystems via NFS or SMB, and that seems like something that could be
+>>>>>>> used to make mischief.
+>>>>>>>
+>>>>>>> AFAICT, kernfs_export_ops is mostly to support open_by_handle_at(). See
+>>>>>>> commit aa8188253474 ("kernfs: add exportfs operations").
+>>>>>>>
+>>>>>>> One idea: we could add a wrapper around generic_setlease() for
+>>>>>>> filesystems like this that will do a WARN_ONCE() and then call
+>>>>>>> generic_setlease(). That would keep leases working on them but we might
+>>>>>>> get some reports that would tell us who's setting leases on these files
+>>>>>>> and why.
+>>>>>>
+>>>>>> IMO, you are being too cautious, but whatever.
+>>>>>>
+>>>>>> It is not accurate that kernfs filesystems are NFS exportable in general.
+>>>>>> Only cgroupfs has KERNFS_ROOT_SUPPORT_EXPORTOP.
+>>>>>>
+>>>>>> If any application is using leases on cgroup files, it must be some
+>>>>>> very advanced runtime (i.e. systemd), so we should know about the
+>>>>>> regression sooner rather than later.
+>>>>>>
+>>>>>
+>>>>> I think so too. For now, I think I'll not bother with the WARN_ONCE().
+>>>>> Let's just leave kernfs out of the set until someone presents a real
+>>>>> use-case.
+>>>>>
+>>>>>> There are also the recently added nsfs and pidfs export_operations.
+>>>>>>
+>>>>>> I have a recollection about wanting to be explicit about not allowing
+>>>>>> those to be exportable to NFS (nsfs specifically), but I can't see where
+>>>>>> and if that restriction was done.
+>>>>>>
+>>>>>> Christian? Do you remember?
+>>>>>>
+>>>>>
+>>>>> (cc'ing Chuck)
+>>>>>
+>>>>> FWIW, you can currently export and mount /sys/fs/cgroup via NFS. The
+>>>>> directory doesn't show up when you try to get to it via NFSv4, but you
+>>>>> can mount it using v3 and READDIR works. The files are all empty when
+>>>>> you try to read them. I didn't try to do any writes.
+>>>>>
+>>>>> Should we add a mechanism to prevent exporting these sorts of
+>>>>> filesystems?
+>>>>>
+>>>>> Even better would be to make nfsd exporting explicitly opt-in. What if
+>>>>> we were to add a EXPORT_OP_NFSD flag that explicitly allows filesystems
+>>>>> to opt-in to NFS exporting, and check for that in __fh_verify()? We'd
+>>>>> have to add it to a bunch of existing filesystems, but that's fairly
+>>>>> simple to do with an LLM.
+>>>>
+>>>> What's the active harm in exporting /sys/fs/cgroup ? It has to be done
+>>>> explicitly via /etc/exports, so this is under the NFS server admin's
+>>>> control. Is it an attack surface?
+>>>>
+>>>
+>>> Potentially?
+>>>
+>>> I don't see any active harm with exporting cgroupfs. It doesn't work
+>>> right via nfsd, but it's not crashing the box or anything.
+>>>
+>>> At one time, those were only defined by filesystems that wanted to
+>>> allow NFS export. Now we've grown them on filesystems that just want to
+>>> provide filehandles for open_by_handle_at() and the like. nfsd doesn't
+>>> care though: if the fs has export operations, it'll happily use them.
+>>>
+>>> Having an explicit "I want to allow nfsd" flag see ms like it might
+>>> save us some headaches in the future when other filesystems add export
+>>> ops for this sort of filehandle use.
+>>
+>> So we are re-hashing a discussion we had a few months ago (Amir was
+>> involved at least).
+>>
+> 
+> Yep, I was lurking on it, but didn't have a lot of input at the time.
+> 
+>> I don't think we want to expose cgroupfs via NFS that's super weird.
+>> It's like remote partial resource management and it would be very
+>> strange if a remote process suddenly would be able to move things around
+>> in the cgroup tree. So I would prefer to not do this.
+>>
+>> So my preference would be to really sever file handles from the export
+>> mechanism so that we can allow stuff like pidfs and nsfs and cgroupfs to
+>> use file handles via name_to_handle_at() and open_by_handle_at() without
+>> making them exportable.
+> 
+> Agreed. I think we want to make NFS export be a deliberate opt-in
+> decision that filesystem developers make.
 
-> During system shutdown, KFENCE can cause IPI synchronization issues if
-> it remains active through the reboot process. To prevent this, register
-> a reboot notifier that disables KFENCE and cancels any pending timer
-> work early in the shutdown sequence.
->
-
-Hi Breno,
-
-I'm running v6.19 MM commits through the patch review automation and this
-one was flagged.  Is this deadlock possible?
-
-Automated review output:
-
-> @@ -820,6 +821,25 @@ static struct notifier_block kfence_check_canary_notifier = {
->  static struct delayed_work kfence_timer;
->
->  #ifdef CONFIG_KFENCE_STATIC_KEYS
-> +static int kfence_reboot_callback(struct notifier_block *nb,
-> +				  unsigned long action, void *data)
-> +{
-> +	/*
-> +	 * Disable kfence to avoid static keys IPI synchronization during
-> +	 * late shutdown/kexec
-> +	 */
-> +	WRITE_ONCE(kfence_enabled, false);
-> +	/* Cancel any pending timer work */
-> +	cancel_delayed_work_sync(&kfence_timer);
-                   ^^^^^^^^^^^^^^^
-
-Can cancel_delayed_work_sync() deadlock here?
-
-If toggle_allocation_gate() is currently executing and blocked inside
-wait_event_idle() (waiting for kfence_allocation_gate > 0), then
-cancel_delayed_work_sync() will block forever waiting for the work to
-complete.
-
-The wait_event_idle() condition depends only on allocations occurring
-to increment kfence_allocation_gate - setting kfence_enabled to false
-does not wake up this wait. During shutdown when allocations may have
-stopped, the work item could remain blocked indefinitely, causing the
-reboot notifier to hang.
-
-The call chain is:
-  kfence_reboot_callback()
-    -> cancel_delayed_work_sync(&kfence_timer)
-       -> __flush_work()
-          -> wait_for_completion(&barr.done)
-             // waits forever because...
-
-  toggle_allocation_gate() [currently running]
-    -> wait_event_idle(allocation_wait, kfence_allocation_gate > 0)
-       // never wakes up if no allocations happen
-
-Would it be safer to use cancel_delayed_work() (non-sync) here, or add
-a mechanism to wake up the wait_event_idle() when kfence_enabled becomes
-false?
+No objection, what about ksmbd, AFS, or Ceph?
 
 
+> How we do that is up for
+> debate, of course.
+> 
+> An export ops flag would be fairly simple to implement, but it sounds
+> like you're thinking that we should split some export_operations into
+> struct file_handle_operations and then add a pointer for that to
+> super_block (and maybe to export_operations too)?
+> 
+> This would be a good LSF/MM topic, but I'm hoping we can come to a
+> consensus before then.
+> 
+
+
+-- 
+Chuck Lever
 
