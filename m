@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8B57D0C857
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 11:46:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65CFCD0C85F
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 11:46:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65B0A6B008C; Tue, 13 Jan 2026 06:46:49 -0500 (EST)
+	id 280E26B0092; Tue, 13 Jan 2026 06:46:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62DA76B0092; Tue, 13 Jan 2026 06:46:49 -0500 (EST)
+	id 1EB456B0093; Tue, 13 Jan 2026 06:46:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 485926B0093; Tue, 13 Jan 2026 06:46:49 -0500 (EST)
+	id 022536B0095; Tue, 13 Jan 2026 06:46:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 38EC36B008C
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E65BC6B0092
 	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 06:46:49 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DB092139D0A
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 11:46:48 +0000 (UTC)
-X-FDA: 84326763696.17.00B667D
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E67BB20003
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 11:46:46 +0000 (UTC)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2438C15DB
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 11:46:49 +0000 (UTC)
+X-FDA: 84326763738.07.80730D0
+Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B539D20004
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 11:46:47 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=J7jAIiNR;
-	spf=pass (imf13.hostedemail.com: domain of marco.crivellari@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=marco.crivellari@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	dkim=pass header.d=suse.com header.s=google header.b=W+Hs5M5y;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf13.hostedemail.com: domain of marco.crivellari@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=marco.crivellari@suse.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768304807; a=rsa-sha256;
 	cv=none;
-	b=PqaoNRIyZfSVzbki6q5Q0tHfDkUmJFk4DFJRMjBt9MaW6/DGXgHLyKReGO0q1TNLHbKYqa
-	n0aDgR5Rl46OlgaL8Xvlcy0BBHql3z63f5nJElXLbLMVv2JGLjkSeXUXMmZGXj+cIt/suN
-	1ZDFtu8Uej9rx1tiGbMrOuvyoE3UAY8=
+	b=mM0HEYmWBeWVYEU+g7GjJoDs6P3afN7JSULD/4/QyNYd8Pu61LbQnvyTTWvZVylo/exq7H
+	XY8p1y7c1nKyhMhI0t8WCqAY0oCCKNrzZ+xuKFvNNFO1kxDVAuU1kftJdE7uGsr3UbaplE
+	AOXqcIzQa7pCCntb/DDH5rbJ6Yclq7U=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=J7jAIiNR;
-	spf=pass (imf13.hostedemail.com: domain of marco.crivellari@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=marco.crivellari@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	dkim=pass header.d=suse.com header.s=google header.b=W+Hs5M5y;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf13.hostedemail.com: domain of marco.crivellari@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=marco.crivellari@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1768304807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xu2Gd9y2yQd69p5yQxI5o3t1KXuh4CilPfTzgbOnvsQ=;
-	b=aCHpPDIMc0LhbhM3OPyd9EjbVQ06OBzVaQdphA/rrHI3faKNvYXwd0nT17uJDi3ZQsGLBV
-	Z+ANKX6itWqb8hHPVtbsm4brD9X9cR0/yUb+TPohzvLOAdvJiT4oYF1+sByxfo9sJQ65jk
-	VnBnPkacBG/NZfd0eunQS+TruWzBKYs=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4779aa4f928so75106085e9.1
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 03:46:46 -0800 (PST)
+	bh=H0S/SnAeLJoRLsh1t6R81w3NJ1tQDzEXUcdPd54JMaI=;
+	b=DY0x2j7x2BITRwBS7syRaiirLaflasEQPDrFAlbyQTLJy1R8m5nylYAy7xyFqVCbuY37wM
+	+7uOOhD84bpTGn9ND1qB4q7giFBjtGiAlnRj0bcLxgsw3pRkkD1OEmFdGKuK1Gslyamwmw
+	tXYSj0dc0pWxerU2MsWmaa57VY7CahM=
+Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-47775fb6c56so71431785e9.1
+        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 03:46:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768304805; x=1768909605; darn=kvack.org;
+        d=suse.com; s=google; t=1768304806; x=1768909606; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Xu2Gd9y2yQd69p5yQxI5o3t1KXuh4CilPfTzgbOnvsQ=;
-        b=J7jAIiNRXxyS28CZU8qWoIZ8r9YCGU/exVL5kU2mw1t6ROG3J8Y8AXreel0xBcd5m7
-         TgNmXFQC9NUoPxkIstZTr+vgvRM3mu1LdpY5CtqztozFIHEe29YJaeI6kmFcFYs3e6Of
-         TD6O3cISfB7a01pR9eUt2xdVMmZGJfUS3KLBg6+zSkleW/WYUeMFZPi6Lo8Eir7MjEdM
-         qVXxJyZFzGDhJ7Z3rTkfgZk0FtcJPPZ8SP4nyL9zdDx8VW3sd1nj4rOSWMxbmQo5HhkM
-         7O0ToiS3kkDB4/pP84DSNa6iubvdWVdfZNtpCEeNwde4DmpxKRnARAC+/w0nop9AC4W7
-         v25w==
+        bh=H0S/SnAeLJoRLsh1t6R81w3NJ1tQDzEXUcdPd54JMaI=;
+        b=W+Hs5M5yBABfVrPeeaHZ9JTuNSNQcGc9+myOwbfGHMx2xcHtKYMfYarDSWVrHkLJMW
+         NP/dqdVHvmCwuCViRlArtme/RwT8Y9yrRYAnGvYNmqGvJqQvfXwmuLV3aoLNeACDthvS
+         aEABB3tAs7thExkvubgVymIeQkyuveqvy49on+r8sdRAtz4py/ZTx6TokWg4I/3/Z0mU
+         B/Qpxlk8KJCI4PV5cKzEe0ejo9gemNIVYd7Vhvivsnfsbz/qzcGOscqneD/9W34OKOS9
+         AIeojTX96SKWS7/XlGchqHzKlvYZUDsmVhFFHfjy0hRdLFZGwbfISZvTsd14sC56/ssz
+         tXXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768304805; x=1768909605;
+        d=1e100.net; s=20230601; t=1768304806; x=1768909606;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Xu2Gd9y2yQd69p5yQxI5o3t1KXuh4CilPfTzgbOnvsQ=;
-        b=qPpq+YTug+tCSpQKGVXeLwipjeazuvL8GgrNidAcQNmCzaSciqNeRA+bgU1zGRnD21
-         kuBUNrqp9x19unG9qPYfNQ/YU3v3EgS8OATvzV2IROyunFhyEW9NiT2rh1oZykdWd5N8
-         sSNpuA+BB1mDXkfdZjlydIhWPaybavQWyK7T1YDid3cmr3ThgAtpt4bpce+MkoCKVE8S
-         lum1/4h1FgIdoxpYgvJMH7NPnD8aLDnX5g6pYT6o9vo2uJpaSuN/LB+ZHdMbHLpol9bN
-         9HMldD8hkft/TYpO4eP/WMb3ECWtfsV6/9FRJtBGs+r/EdqRK9ZW4ecbRpzbeUu60Adf
-         Pqjw==
-X-Forwarded-Encrypted: i=1; AJvYcCW6R/Khi80RonCzBLX32wYBT7BmJuqgObveXpkEdeoBAcEcMNpohO8crAgWRNi4K0DbaqdC6cig6Q==@kvack.org
-X-Gm-Message-State: AOJu0YyejKTLzMGWkN1InhzAkHidRr5A3MSFkZwGSgcTodYpYmhUNfUU
-	Q1l/QTIj3s7eBXrKxLrJs5eAzpgogozRDkQnpWuOGaiowl0OvW5we1+Xy5QmSm2bRuNI52YIFHE
-	xy/3O
-X-Gm-Gg: AY/fxX6OtAQeCqQURMrrnmuCcWOgM2SfmovWLCtqNIfMvF46Iq5s3gOf2TqiNpkKSsx
-	G5D/hh51yh9MGiPhEcTK5BqaSMfyQHmrf3SdKNU47c10GGjXc68fuycIu5gywR4w6PMj3qqoLLN
-	DQxIRblkq4mKxZxbnQ+4s1jm75Vw4LjOY/NDIZU/fGXfa99cXFdMBhYavaYQzF/5XwVN8F4SHrG
-	W37GgSe15SwQqRgCdwY0EJi2CnaaGm6jeSZoDW2EgyJ8SkAKkG9L/ApdaPmUcDk4vX5zNRAj+7p
-	Tg9yDh4vj/yAj++WRCW2R4hTeDj3MiIvS9B1CAv5oktMDxKk6V09wSx1q32UaJ73ke97dLltlbf
-	01JHkih7ntKOnOt8QQu4DAYJyhgWufM7/zR3mZJ8DO53cp34mUs8AJ02zhxxqO5o5hCy/NnddhD
-	n30Mza0fzedzAt8w==
-X-Google-Smtp-Source: AGHT+IGJVKB1//BjsB27x5bhJ5UTOToFDrmanj64A2Fh/canwPClEtWxgbJynfd2lfSffDVitB+ueA==
-X-Received: by 2002:a05:600c:45ca:b0:475:e09c:960e with SMTP id 5b1f17b1804b1-47d84b38676mr247391765e9.32.1768304805515;
-        Tue, 13 Jan 2026 03:46:45 -0800 (PST)
+        bh=H0S/SnAeLJoRLsh1t6R81w3NJ1tQDzEXUcdPd54JMaI=;
+        b=OUecMrFxTDqnqypMr6vkMIhnf0UbJMZTv14gwctfEzqiWKhdfbbMm9Sh1QL2Eq1h/h
+         G98n5QtzuJKKYMYEqcFlzN5gAdLL/MG8J7+LXE0DdUhy+/I5+7dY18VKuZFEDFBchBdI
+         IXKDIvHLQnkydj78ZjEgmtTN4Pldxw4tVK0JFnWz6eyxWQWG6Zaj1lyPnFGe9bvotwLH
+         sGslk7aiXCVUurd2uzml4CYPmlR59qSfEfj0MEqcYmf0LlMwrJpvqDVqsx6ztbBOvbFB
+         kcBxEGVIAARjtozdV1Q02KScRx2fYigD5qFKGzHnckurvBlNX+qZmRCv54IAQuI/8gY8
+         dfrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXDQHEWNrNjygLHpYRdUjabIsCsRf/rsjamXxl2TC+6ncLjykGyCn7BHi7ZYIRee+Mb3ID7IRr5g==@kvack.org
+X-Gm-Message-State: AOJu0YwpN2CnX5WahFJh6SoexER3haiWoeZCwB1MXVGaKQ5jkpCIL+yD
+	5VAEpBBWoW08Zgtg7Ti6l7RSJMt3km6Hx6EVuKDh+0EWWdK8GpVWF688KaavLAxpGlo=
+X-Gm-Gg: AY/fxX4Du6zVAVAM6Z7/QEEzXYd9lR3uWjgXmXqhv4uF9H2eXa41mycb8bpA8wEXKdt
+	qu/GNd5Myk7sBUVHKKJB780OdiN1zvKKWiKHySq9tvqWbhuK5ctYjLBpDiCe5AgmHRj9TC7QpJi
+	9hDW2IQQzXhnkvvJLniJiAf6ssCGR+kt1HVkc5Go9wiodP7g8VnFLoqkJcIb4y4DpfpO/N0bwyd
+	yMHGGjZAo67Hr7LnwHItIU6XWlFpicZgJnqyhXkw72MSto1EFx+9ibVamEoDePkzodSn/yPgiui
+	n8tM+YrunkphvEb/zvrSwcJgJ2VEwpdGgnjJ0E9lpRS7ruF2PAfGdm+y7hyt3HoId5Nbes77OpV
+	t/STshjZ1eaKpcH3shECTvAvRedSlQhOBNjF15oKq8amRCpPS0ezfrRz04Bz7DPGjp2vScjj1tj
+	bklMYlhwFVS8R39w==
+X-Google-Smtp-Source: AGHT+IFfQ3vfNS1KrR5j/vlrP2qTME5cFlcr9bwTQ2CUBP5eugSGv0mozZL3cEl6WxjgzorKvMpipw==
+X-Received: by 2002:a05:600c:8b58:b0:477:89d5:fdac with SMTP id 5b1f17b1804b1-47d84b49d53mr236881675e9.31.1768304806355;
+        Tue, 13 Jan 2026 03:46:46 -0800 (PST)
 Received: from linux ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f6953fasm391850225e9.5.2026.01.13.03.46.44
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f6953fasm391850225e9.5.2026.01.13.03.46.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 03:46:45 -0800 (PST)
+        Tue, 13 Jan 2026 03:46:46 -0800 (PST)
 From: Marco Crivellari <marco.crivellari@suse.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
@@ -102,22 +102,23 @@ Cc: Tejun Heo <tj@kernel.org>,
 	Marco Crivellari <marco.crivellari@suse.com>,
 	Michal Hocko <mhocko@suse.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 2/3] mm: Replace use of system_wq with system_percpu_wq
-Date: Tue, 13 Jan 2026 12:46:29 +0100
-Message-ID: <20260113114630.152942-3-marco.crivellari@suse.com>
+Subject: [PATCH v2 3/3] mm: add WQ_PERCPU to alloc_workqueue users
+Date: Tue, 13 Jan 2026 12:46:30 +0100
+Message-ID: <20260113114630.152942-4-marco.crivellari@suse.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260113114630.152942-1-marco.crivellari@suse.com>
 References: <20260113114630.152942-1-marco.crivellari@suse.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E67BB20003
-X-Stat-Signature: mkh7qmxr79z6y56z76jzqcg95tjt8tdw
 X-Rspam-User: 
-X-HE-Tag: 1768304806-116242
-X-HE-Meta: U2FsdGVkX1/9PXFSelZNNTBoCn9OPSZkIxe0dx4+nFWpr17gLk7HROI3opSTDyY+k81qrskKOVGiVG142MdATHTpxf8r3/91mAg2sEfEKpb1fJGs/wo69IOTlxjwENtcVF6+JOov/Cq58rfj8Cw3N1pkA+cvQX1+3/CMdpgW58oCkeDNRA78Ltg4LayNy1xsN2aTOF0kYop/FVcl0ZfPCRIIZAP5vYyyZ0zBEQv5sT/2WopHB4vgB9/ddVp1qP7ZNSXXOvIn9sTkQu3nWzFxe7JNuu1/ku6M3aWjKNsPDNUVH+lJGSVvpu4JCxLcFrV1zTaT+MNvRHRTMh200JEmwLn5wptnplvkE5RHR0UbY+5hDtUnF9xdV3HxlRdeioVQI4Vs9O75wMSHO7C0KRXUGGgGp0A5HuJtIdgJkCZVUqhPtYBpTHyJHtCAvnwkqEvZCn22gY6a8kEOC249aDW0GG7ItN0YGbFkPLpmghxpMIUuKd+gJeZyiNZ47fLPu03L9ZYynNdkU7yF2jCCgu6yRBZLH1/lixUzYXMBALBtyKwQVsF8t6QSh1qSbQ80I/QlzJR8BdeNVYfVlT9ip28mqy+QHTtfbtpq0YKnPTyAye+r4V9DYyyvaWeBO39JMzsbd5s5dS/lnxE07Kwj5RuY3Sd7/UNtQk2DX+OH/t7jyrel1LwdW5/3fGZSd76ldeq8cv5jTFE8KPQtpaGxDDzVOGxIUs8P/ltqi/ZesIv+eywZHWe8EOVFDz/ugL77OhUBdEGIvikLhdRHpoNJYa7B/+6jwVfmH7Den2heBi1zu2sXV22bpEfUpynuJPSVcsQvPwOrRcoh88rHwbIbTy8tRlVsKv28fnQgDwXB5WRl/P2ZruTLJb0U4qkTdP1jp1gHexNEmd+YnclQU6PcckBV2MgE2JPa/ezxyHICyqaZo57RfrrAcBMHdA0xe6kteokDTv7hxt7HX7otp6xRtLA
- tcoryogY
- JDFAyn5l1qKnRNzNqiO8xBtkGW9wi4wBUqeRrfclzYV1DQbkH3QDB3pMfmLNe9HTBcKfnT5rV73qLag82TdjUWt7Z2GOZ8Avr06dI+txdVZqxPgh7YS7+6aoNl3z0WEIsIS3fVCo0KxkFB9wTUYLDvzn+w/2WmMFpnc5QuH+7s6qGp+gir3kVMFEwXKwk3NL7Iu0wlY65YPztK6fHeeGENzCXfPR/whRJj7Sl1UugpkEYlVI4/wTiUmb/e0aUaLJpgFMekYVbEVU5VdmdQCX+Yf26LczvLAs4SJP1fe54/GZuGtwUFWDenacOILV0to/v6uE7ZEVKDC0jYYzIw/g2WUDm16oZQFEc2UnlCximIPV+fpKg+sNZCnsnC9VVRi7qhj+XiOV5rW67sPDmu28GFGSCuQ==
+X-Stat-Signature: sahdd87temja5cizjedfqx81xroqn5cb
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B539D20004
+X-HE-Tag: 1768304807-177132
+X-HE-Meta: U2FsdGVkX1+ZvJo4W6yCSjOhotRD3krGsNcWD/UBHlVquvcBbXKeuyO5YmhSDnEKibh81LTrsO2gCaHoCdFe0QD5wq55MbJxiXd/feYhyfcKBFQvpSetkJCqDfW3lTWIGcGVETmHCudZOGZYhcMIfahfFSq2dYdgB/kJnC0SnaCqJQC5RGNPLKPB36mvl/euopp6iZKcGPD2dSfR0AXG5p7tjKTaX1K8diIMpHwb6NYFsTptlZ6LQUWm68ZM2TtM77IvUT1V2Iyss9R5z6u+kOxWma8sy1UAiH3fzdX41gek4aAFGgsvCQ1XYDnWtBTdh2xwwQxCwtvysbzgYdMLU4z0cV9y5C658eFcFbs+BgjiS2e42Yb8WOsU1Q50Ni9TNWZM/qgTbADsrDErnSUd2Zsad5Mj1qTSVdOpYCYbem0EH500pMdxYGnHPsWVzode5ZMNCtpmZUvM7XJ36gtnHYYtAxHDgytqQV9QU3kV6l7te2vKlYPEkWbS8zgZBa3CdJ6vGvcICWt+Xyam0yfx0YLjxt4uqDNw/AiLkOy4Noe6JazDMuy6QRQlzx1VcBFfwk8Y5TnhFvAaW0oU+maEzTj6S8eocI7JydOUJIvdISkNqIf3IR4O8uqcK2ZjZUlfoqk2biosFC8zY6c5xtd05kNHYcKpkuOxhtLwmHbVT3NebdaSGzkfkgPotu4sGk9aO5O2d1Ga/fPbSmhAmd/jGLXfM+S9QDCkF4RfCRcVow96LujAEUTkT0rY4F8MlyH/fBfH1ql6rEN6FQISwHG7gymhaHzhCe8fefW/rVpb1bMKbmxMBB6H+Tt9b0TPRB3eutlHSgFgvUzQFt9zWZNuWuPH8OeozKs/5S24YjTF+EJJhhIdL8B7yVJm3ssuX+628W4bJJ6vKe+9JhiFFpJvG44Gi6u7gjK/SKNclZYWHnuB7XXEAL5H9V3rMu2fA36lWzET2P7xI6DTf35kFkJ
+ xkwZ6PV7
+ AEgW0gHaigHgYnnmc+Ikb93r4IWA6okPL41ZaBfgcwx0mMcbVDHrGvSxv8wAmAD4uXm5thcL58gRQvy+0UkwVvXKSI4blkchv7+pDgijwVpZaCkA8vrgcnMOra8zmwpVFL9gIP7q0jM1REyHCxtCLalzOXTDD6uiw9F+hR4biiwrJb80DLClhqyKRZyBD4rcjC8ccNHQMJQoM4AiC1e5riZm63dnmyaB7JZ2otRYWps3NSF8GN1lxzZ7zgO4Zg3HYU77Lrx20nPvatdmKbhQ4z3Gayh/KFIKsaUPQKICZ4Lpg52Ng7egLvdIim1lAB4OYTjS1zrHKjMsejfwlTHZ2Ic98ZLKBYxd+OSuIZmwtKm9opJch+ZZhTVmr51yAGLLL8mq+Gvb+EnTXnlrMwCWvGyCDBgqOsLMGmKRKWNm2CXFqjBbWX5nMCLWWn0sHeo5kPv3xkl6xVR2ZzStjyW3OLYQ+aHZwdlsyQvYEy3/1v4P/ysDsm5oc56FvUVKOtjXzJv92gFBUYFPNAqo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,45 +127,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch continues the effort to refactor workqueue APIs, which has begun
-with the changes introducing new workqueues and a new alloc_workqueue flag:
+This continues the effort to refactor workqueue APIs, which began with
+the introduction of new workqueues and a new alloc_workqueue flag in:
 
    commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
    commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
 
-The point of the refactoring is to eventually alter the default behavior of
-workqueues to become unbound by default so that their workload placement is
-optimized by the scheduler.
+The refactoring is going to alter the default behavior of
+alloc_workqueue() to be unbound by default.
 
-Before that to happen, workqueue users must be converted to the better named
-new workqueues with no intended behaviour changes:
+With the introduction of the WQ_PERCPU flag (equivalent to !WQ_UNBOUND),
+any alloc_workqueue() caller that doesn’t explicitly specify WQ_UNBOUND
+must now use WQ_PERCPU. For more details see the Link tag below.
 
-   system_wq -> system_percpu_wq
-   system_unbound_wq -> system_dfl_wq
-
-This way the old obsolete workqueues (system_wq, system_unbound_wq) can be
-removed in the future.
+In order to keep alloc_workqueue() behavior identical, explicitly request
+WQ_PERCPU.
 
 Link: https://lore.kernel.org/all/20250221112003.1dSuoGyc@linutronix.de/
 Suggested-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
 ---
  mm/backing-dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/slub.c        | 4 +++-
+ mm/vmstat.c      | 3 ++-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-index 2f65b5416228..4c6f0b85a24e 100644
+index 4c6f0b85a24e..861fee5e48b7 100644
 --- a/mm/backing-dev.c
 +++ b/mm/backing-dev.c
-@@ -971,7 +971,7 @@ static int __init cgwb_init(void)
- {
- 	/*
- 	 * There can be many concurrent release work items overwhelming
--	 * system_wq.  Put them in a separate wq and limit concurrency.
-+	 * system_percpu_wq.  Put them in a separate wq and limit concurrency.
+@@ -974,7 +974,7 @@ static int __init cgwb_init(void)
+ 	 * system_percpu_wq.  Put them in a separate wq and limit concurrency.
  	 * There's no point in executing many of these in parallel.
  	 */
- 	cgwb_release_wq = alloc_workqueue("cgwb_release", 0, 1);
+-	cgwb_release_wq = alloc_workqueue("cgwb_release", 0, 1);
++	cgwb_release_wq = alloc_workqueue("cgwb_release", WQ_PERCPU, 1);
+ 	if (!cgwb_release_wq)
+ 		return -ENOMEM;
+ 
+diff --git a/mm/slub.c b/mm/slub.c
+index 861592ac5425..bbaa247dce2a 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -8542,7 +8542,9 @@ void __init kmem_cache_init(void)
+ 
+ void __init kmem_cache_init_late(void)
+ {
+-	flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM, 0);
++#ifndef CONFIG_SLUB_TINY
++	flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM | WQ_PERCPU,
++				  0);
+ 	WARN_ON(!flushwq);
+ }
+ 
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 65de88cdf40e..580b5ad293d6 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -2274,7 +2274,8 @@ void __init init_mm_internals(void)
+ {
+ 	int ret __maybe_unused;
+ 
+-	mm_percpu_wq = alloc_workqueue("mm_percpu_wq", WQ_MEM_RECLAIM, 0);
++	mm_percpu_wq = alloc_workqueue("mm_percpu_wq",
++				       WQ_MEM_RECLAIM | WQ_PERCPU, 0);
+ 
+ #ifdef CONFIG_SMP
+ 	ret = cpuhp_setup_state_nocalls(CPUHP_MM_VMSTAT_DEAD, "mm/vmstat:dead",
 -- 
 2.52.0
 
