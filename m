@@ -4,136 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11C00D2F33E
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 16:33:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4921FD2F345
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 16:57:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70FA56B0005; Tue, 13 Jan 2026 11:33:58 -0500 (EST)
+	id 3AC346B0005; Tue, 13 Jan 2026 11:57:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BD806B0089; Tue, 13 Jan 2026 11:33:58 -0500 (EST)
+	id 3848E6B0089; Tue, 13 Jan 2026 11:57:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59FA86B008A; Tue, 13 Jan 2026 11:33:58 -0500 (EST)
+	id 2906D6B008A; Tue, 13 Jan 2026 11:57:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 45D9D6B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 11:33:58 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC7A6B6FC8
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 16:33:57 +0000 (UTC)
-X-FDA: 84327487314.01.5A5C457
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DA997100016
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 16:33:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=uV9CwIGM;
-	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768322035;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BAC16B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 11:57:05 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A56A91AFEB
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 16:57:04 +0000 (UTC)
+X-FDA: 84327545568.05.6DF5440
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id DD35340009
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 16:57:02 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sv3mUq8d;
+	spf=pass (imf01.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768323423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qI+cXlhZ3eVz3npFQ/NimD2ZFpeK3OA3wDm9Z2GaXgk=;
-	b=KvYbm18XUAtUsvFn1IQmVabEDmvO5GiXpbYptYO+YPST7ac2grLI94kIW7ze3YbFL+g9O7
-	fEf8NVGOI3t9WIq3G2pZAtGlnAlZRFz98LlVwm4ZC+cdOSJxan6xYmVYho8n0paUZE5CzH
-	DjH2khcYJwM55noDyVK3YDK9fLKzP5g=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=uV9CwIGM;
-	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768322035; a=rsa-sha256;
-	cv=pass;
-	b=RJFO4AEr/8bfwo3aUgxMsG3r/Z6x1fBrTgYwENQ3P8u33AetVongfI497ze3ZpwrKHzFTN
-	44NOjeA2EiX8cE7uL15E4C+/cpgb+bUJuebqoOoJHCZ0Xp4zorD8JqR3wA8kROS64/MJ4K
-	Q/yLSuuxzGyPpzeNQdHkTBksjSKni4g=
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4ffbaaafac4so656551cf.0
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 08:33:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768322035; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JOCBbUoDuKYVT/VKXoyjwskulQkzcloU3beLhQORWWhmszrPnOv6McQFPOwfIUTzhK
-         dzmUuqGMqK0jkTrgUitAR0t23BISv4z4G9Ro9U/fayumISZhq/F3rcnBqSu3DmMKqqEO
-         852gohiKx6f91GLRvIQi0hk5a94T5jN+gTJFL/dcOxk+EqSLOqvozsTf2oXF64xzi9Hs
-         bU3RDzZze0JFdF8qQlFw31r8BwJWDhQRi2csIMdFN9UCqLCffsMTtFDonM+yRGOTEirh
-         dU6ZYT0vLQKY0tjz2vcFazCaIpLgqoMaxwKaEh1RKQ7mhBS6zvzmXvkbt4KAUVC7oQOh
-         m7Mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qI+cXlhZ3eVz3npFQ/NimD2ZFpeK3OA3wDm9Z2GaXgk=;
-        fh=gfIAzRYvK3ZqhJptaugZdsD2IJZyGHgKzbjqYLhXi/0=;
-        b=JLNt9kGGEeAptIh0BPkVCbtde35pkuaSCqlUKBaeF62EFS09hDWeo7x6e7FemVL1Wc
-         l5dnVseSw8GmZ2DJL4J9I9pkdlVovs0ER2l/BjsoKNeszqpcz8eciZFKvp5lsHkMjkXT
-         suwvauFmNB4WRK38Ji0neCBWAHct2btA4aur04n6oXqIWJ7ky1tnlHo34iZ2ItWFdkF6
-         7QcLtcnlYzOPvShxbOu32YBWyV+vhUGBg3d5RVgDOjihBvH1gnyJfAy0maqt8DaIcI2y
-         Cgo6nrjQhCYxBbfHLLWaYcdW+jCQGPxReSxtpbAb53lelmn7Ik6nvOvtYlhwz9Z09btv
-         MqKA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768322035; x=1768926835; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qI+cXlhZ3eVz3npFQ/NimD2ZFpeK3OA3wDm9Z2GaXgk=;
-        b=uV9CwIGMTDLHw1FC8Uy6SLdLoGlW7KzsuAoM+Rt0xwsbHJr21k9rCfcQDSLLRbbMtE
-         toSgqhk5QdkxMfsh9NRYf6ZyEuhPJVs/MM4+VSvdAfz+gAHQTLGgTM9gvqKql/NMdlm9
-         YjA2+vge+VAT/EgDfPKEFVEeMSJBTZuGL2rPgiApIbkd4wVG4rc4d1Zl40PpUxzfJgxf
-         MM7rYmHYQr7nYq1ZDGIpm/6DaKK5fo93bQlcjDMKAl0aGruFDTTOpseAn5VNuceZ5xMx
-         IplOFXBQICS614ozf7/RGxPZ6ZPrMVITalT2ir4lSItjtbwZJIFtXL0XD0aeOcW7BVCb
-         Kr5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768322035; x=1768926835;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qI+cXlhZ3eVz3npFQ/NimD2ZFpeK3OA3wDm9Z2GaXgk=;
-        b=rCEd5v4jFd1u8bKCq4KdBwMOeBpz954a1b9OkqIHZfb+Eh7oUaofSOuxRyGtULlLtD
-         oh59bT1w4JBd/zxSDoAsLDRBE1UQpPEksW3yrWlHbpWzzuo1uiZgM7GOQgTEt7JLyZ4j
-         0HDnEiwi+ELDhzPTbRXRx/wlkVPqbunbjnkio9lysKSx7RGP4PpHnrP1gexTd9d/yoVo
-         NZCYbO4dDFG/RGXoVWOYy0pgoEVx8vgWplvb8DXvm7h29+O+jOZcEB3MM+iQcAybvTPe
-         vVr6S8BSPmYXTEs9iCAeQR5sbNa+FdvwurDPXf53gnuLhagiblYyIbvZtm+ZeVkVQHHE
-         jf/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUe9r0oxxKmFAwaXmW0FZhH6vlI6rmSSGd2HKMdxxA9hh3RZq+4WHFF0ott3o3dz/vRn3k+0Z7APA==@kvack.org
-X-Gm-Message-State: AOJu0YyGp6xR262+mLYfoLLCkOx+G5Y6E+dnds+nC6M9j/WFgTaPB9cc
-	JlGFHHVitGBZFzUJPwIEfcmf6XdJBEwMSxh2FH2Dkqnjnq/VoB2fKuAkJsc5tY02yqe+olo6bK5
-	qTUdeIMwFOU+V1nnYJRZCV1j4oz9UPPObca2VJVSl
-X-Gm-Gg: AY/fxX7rccWz7cUDN2CCLax7MSlq3+j1EZTCBX44y6O8uxclk9cG5EmRcFR9uVq3lvl
-	50cPfwhau0Pz5W1nBop+3xRfOvvSg0Vv4eBbbfp29KeJEzxMqcTSwcyzITAlm6yQTPNdLFCZaKb
-	qiiRJa7MYLusmM3j7N9RiWZGLen3yMbPsGiUQmOT+yntnnzKekYJbmXA768bOpcF/+UQEngaqmi
-	yQnOgL1aHHd43tll36jaWIJPlXlZbo7gUkE21idM8bAkj6FO2MdqTgqnVbUCSh7l9VEOjMolex3
-	8SwjHBmr5HiNXu1vodHXsRAGFg==
-X-Received: by 2002:a05:622a:1aaa:b0:4e8:aa24:80ec with SMTP id
- d75a77b69052e-5013a287cb3mr12545891cf.14.1768322034517; Tue, 13 Jan 2026
- 08:33:54 -0800 (PST)
+	bh=6nlCx1Czo/tThW8qWEmSkue4Y9kkAzvQ3yldSDom184=;
+	b=8VjP6eaakVTdPLI57XrHp79t2GlSafSRZtnqF8s9aVSb7PZvMd0Sum10NboI/E+00q2KWi
+	SgKv6tVKvFbG1BuTWuk4vc16eH3HLkCDvTC0H5LH5hjJVr/BCD7pSToqZY2IOeytPvNRpN
+	WBQAwgYNLuSS9sVTstTUqq9iVfPOCgg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sv3mUq8d;
+	spf=pass (imf01.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768323423; a=rsa-sha256;
+	cv=none;
+	b=sSfzIWGrDrvjYTdN53rvPw12X2XwoaDZwmdlzZ7ieBqRpCAQykT5VMves82TbOEXVTSjq5
+	NvjcRxOUVL0dF9UpfEPWe2A3icHXhYO4K+8EzoSJQl9tl1a3W3lbkV5F4v9NEjX4Ehtn5G
+	l/AIDo/CY87DZ9h9aym8UUeKmGq2YDI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 94293416DD;
+	Tue, 13 Jan 2026 16:57:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14341C116C6;
+	Tue, 13 Jan 2026 16:56:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768323421;
+	bh=Yl0lMpNMVQ/naErct5zxjs7FtqTJZfyUzVDb81q07Mo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Sv3mUq8dQz7F/PY89TtNV9yNAowCM5dKV0dwRPMV8CJwOlUq7/hn6zfsLHc7FY+NW
+	 WIzURftHjIL9d7TEQsOOngFezDFkR44AEclc9iJM4WAGC8piBbjkl6Q5ETZlHj1qqX
+	 nX4GjGSkYC7nl4BsHKPbx2EnFQskaVm3q4VB0tdxpMJ2naqU45qRUlkvEU5TUCVRQN
+	 GgMrh4JTE/vAsiWSezGjtsmcT0IgooOPhjhiUzrRENLZhjiUPDv92Kp66iQI6RX39h
+	 c+XWMYttQeXAb+BaT6QQlZ7wmOkjHFt5micjazQZ6XUIiIVxYa77kT0OaJ5S5gHdEF
+	 PTMVu2A59YeBw==
+Date: Tue, 13 Jan 2026 16:56:56 +0000
+From: Mark Brown <broonie@kernel.org>
+To: david.laight.linux@gmail.com
+Cc: linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Theodore Ts'o <tytso@mit.edu>
+Subject: Re: [PATCH 30/44] fs: use min() or umin() instead of min_t()
+Message-ID: <62097ec5-510e-4343-b111-3afee2c7b01e@sirena.org.uk>
+References: <20251119224140.8616-1-david.laight.linux@gmail.com>
+ <20251119224140.8616-31-david.laight.linux@gmail.com>
 MIME-Version: 1.0
-References: <aWMLQkvushKidjQQ@moria.home.lan> <20260113032735.161838-1-ranxiaokai627@163.com>
- <aWXAaiLXn2tXr8nU@moria.home.lan>
-In-Reply-To: <aWXAaiLXn2tXr8nU@moria.home.lan>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 13 Jan 2026 08:33:43 -0800
-X-Gm-Features: AZwV_QhF2LNh9b5y9XH-3TUKdD9SDJ16RHoFzZRc-qtc8Hdy1LAoshy7iJbvlXE
-Message-ID: <CAJuCfpFTJUowSAjNum1zecDJYuyUi84vUNkoNNf=CnUwpsTVeg@mail.gmail.com>
-Subject: Re: [PATCH] alloc_tag: remove sysctl prefix from mem_profiling boot parameter
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: ranxiaokai627@163.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
-	corbet@lwn.net, david@kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	mhocko@suse.com, ran.xiaokai@zte.com.cn, rppt@kernel.org, vbabka@suse.cz
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 6wqk86hnnf8t63c7gkdgdzqcxn8ka4pe
-X-Rspamd-Queue-Id: DA997100016
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fwrXW7fUl9Ff/6Yg"
+Content-Disposition: inline
+In-Reply-To: <20251119224140.8616-31-david.laight.linux@gmail.com>
+X-Cookie: As seen on TV.
+X-Stat-Signature: xnub6cgqq6mzrauftuj8fmag1dcjckf9
+X-Rspamd-Queue-Id: DD35340009
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1768322035-217707
-X-HE-Meta: U2FsdGVkX1+fN2XhuEnntuX4NNltqErdfHOS/FB229utn3TEPxFy1llI8Rj2uW2Q9eu6Pai9I2H0TYAeyb4SrMoPZ2O3OzjFcwjRinLfyVQ9GAt+KFFpCsv2zHLQ9Sz4Vx4AmSYtgiLuCf/AIr27CRxVzbz1C3PKoi+GrNCzbcslwSloYAwEKNwzDHwdpdL4UOtYhpXJ9P460Or8TGpAmRlgKUIjFfja0Zt7wmg3ID3OblFOJLSfTjrSsgvrFeQrUFTfgUGDGM8aAqc46fmxRoYK/ujftNE3cqb9VqP+FdNWrWnp9Mo9Smu0XDWnlVh4DVEhi9XX78SNX9M7WPwLIrVELuR/nZEi7GwUHoIWmd4sYM7D4eoq3ZIJHqtsw5g28j2MqP1tXwwItO7Tedf7EP9+8ORyor53W3eEbOhE9vURRy1Dkr09Z3xYaY55CkhRz5FmBkddYY28QLETfyE1LV9kF2KgOTAJRXipCFCw2UYyCn1JUaroQofb8sVVnEKcmFIAzDyIXMb7cQhSX2ifB5rDqSMPEmjit7uqjRqVZBcy33uySW1SckxtJXD30AJTDYTgHxPLbMaeV8f4bnlVO1zxZ3p/AbNGHwdq1CWeijltyidLtP7QSh1AgxdbeSt5A+kGViy1EDX/G7X6IvERA8nXHp34j9VehxC09btgXDamZHwDJvsESPFdWdSPWPAwoarWpuW/fNkEXThFSplEYZb0GU4B+v91KASeIi5QU8NY+TgHWZnlgHJvMOrfohxHlYqu0iVVKqOzAJ6Hv2mSm5dqA/kJ/MJI2U0UezhkHblMR4tRJJzUxtpsfDLOH92kM8Q4w6ZK8Qmvy6y+LiNT24HZdi/Aa/0YycqybkS46uU2nh0fE5e0Xi6+kwLnb8PXh+mBHEnboSdKQ4nIfobRI6YUN8ZN8zE3ZVQzcExBoNGWPkdrmjL3ieu+JsS7QBL294OQkPIZ9y35bJuN4BN
- zrQXoonN
- 1jPGbK2kJ+lr47ooGSlTnbaY7TPguTiPVXNdLKo4kpHZuW7y2eYk2ZT01xSBGFOIE5GRNXrD3PSBgv4LU2HAXsOaMk/hRUI2Ou4/AXQZSJPgzkzWDjHWlbpaRj/Zr3xpVJlk68u4PYfhT395Lr43V+QAgbyMzRSsk2TGqvxlj3qZm3RSn/pmTGO3v6D0BQ2lqr4TEHjfkHCzXrMnzFjDtLyDhdT66gQ7c2mhPvaADxUoJuvKf/39iejGgxnWgdeyjIy6ys+A2AvvBDMELG+Rio0ADMHsQTc06smnnsq9zsn70CQmRFKhjJ2qjOo0Vgj+APEAJ/t0reS5lHZK+Z0A2V4SFvFNHGnegZKIRr4bElZypgRl7EfP2sOAqtA==
+X-HE-Tag: 1768323422-180369
+X-HE-Meta: U2FsdGVkX1/3pIWjlae+yoZOKx4JAEZZ2VZtaeu0NTJWLH69U0uwgNWcJx2gOP/WbQLop6BmgCgAhyE0gNMfmjRRJPvznaPPncXDAryh3kLnrS1uzB8nKkNnmhFV2eb3EOH/ithyoF7tZbun2Y7OqOwDttq+u16apxXz+rki7VMb0FoTm7LXrcg261j2cjlzVLs9LU9rbNluDeGoet8xI3eyC0TC/Nf/ykHPvnqh3VP83mcVOaqwp0coPpbIGnopshtcYfiv/cVqS6K03z4OMpE8tI/oKdKRmDKlXRPp1KfqVGeluS1o/3YwjYhRCbw0AWXlixCrPyUI1N5ZfQOitQo/sIhpsPJ6RTE5mE3jI7V2hy8VO8v2bSm0LRAde7OaKUOD0ap5ZY+GFDHTsQ7lCcQvSe7QQDF4IMiqPAKSO/LqiWaN2mQlscrr0+YldnLFMwcGdialVfYj6BMMwTG01Hshd7cU+MJCMAC49LFcPOTdxG6Uan12WwViS/SbCTxev9sboxzxc2QkJMU4QhelJFHk4d0/BAWOGyV+5YvRXH+tmOTTgbtFYialIgCp9lie/9F+UI7Mzb9hVLtEaKwVObEl/Zn28hVAMIs6C7R39QWI+SGgLeEZlJgO3AkiiB0yXUoqBoCSkHQdhXYCmihur0ldv5c3Jq66aEYXg4znzV1EEocQABtjHA17n4xGVU6GxgezL0ce+YKL/Z/dU4SlPTLwKgWOftRmoOezjMaAkm2t18Y818HJe0AyIALsdFH3AZET/DqP/WYg/8jpXfYyTxGga2dDt+r0Cb6D0ahbuzG3/USj0AWtWxBHIzRHPRVAVU2goOnMqSzK83G+UG+QpdIxDh147ctRBLtlz02V2f7tgAy3ghwTU360zT67JPkg/uTVl01Lnff1zFF+2aCiBjLto2+qbWehqhfixDIQAp6N2HANq61TKaczGVjc31FwYoMUCnGlcqfcZgMQAd/
+ av16J0FH
+ hWI7yBcVQKvHp7Hcm+d+XRxpu456Nnv05gRt0EqmQx3wvuKmnJxhAn8Io/RLLX8b2U6CBT8Dj5JCGJKmqYyZ2MU21IJNJW/czcgQItSMlKfc7XlebcMmveFVlo+dc14qJL8iRPmuZAOLfbsmhc7+SIgCWfNTjSt7swVZEI8ZxiGLrQjN/0c93jkjN1LV3Kstjkp4tMViBMJSW2L+US7SImPv3Nwv6GQpk6/nJ3LDn+FN7DF0OHNbY8Dmw96k1rYD4JypAjFCIYERFPgeIevdyvo3Oum6KgdVBTOS7T/jPXnSKVT7Jhgrt9K4Gj+6l93PA47okqtWyouf3onO6J7dmUKMlxDSeju6yqfWM9y0eut0Ac18cnqKW0Tnm+6vFtkvo1w+RmQtGLOo43FghsNkpYsgo1MiX6v8oQ7fL3P1RHH9cBwzUjU6hhoELjfmaWeB91GDzei7sa41M5cY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,47 +100,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 7:50=E2=80=AFPM Kent Overstreet
-<kent.overstreet@linux.dev> wrote:
->
-> On Tue, Jan 13, 2026 at 03:27:35AM +0000, ranxiaokai627@163.com wrote:
-> > >On Fri, Jan 09, 2026 at 06:24:19AM +0000, ranxiaokai627@163.com wrote:
-> > >> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> > >>
-> > >> Boot parameters prefixed with "sysctl." are processed separately
-> > >> during the final stage of system initialization via kernel_init()->
-> > >> do_sysctl_args(). Since mem_profiling support should be parsed
-> > >> in early boot stage, it is unsuitable for centralized handling
-> > >> in do_sysctl_args().
-> > >> Also, when CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled,
-> > >> the sysctl.vm.mem_profiling entry is not writable and will cause
-> > >> a warning. To prevent duplicate processing of sysctl.vm.mem_profilin=
-g,
-> > >> rename the boot parameter to "mem_profiling".
-> > >>
-> > >> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> > >
-> > >How was this observed/detected?
-> >
-> > Actually no kernel bug or funtional defect was observed through testing=
-.
-> > Via code reading, i found after commit [1],
-> > boot parameters prefixed with sysctl is processed redundantly.
 
-I was able to reproduce the warning by enabling
-CONFIG_MEM_ALLOC_PROFILING,
-CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
-CONFIG_MEM_ALLOC_PROFILING_DEBUG, CONFIG_SYSCTL and setting
-CONFIG_CMDLINE=3D"1".
-The fix I posted eliminates that warning. Ran, you can post my
-suggestion yourself with me as Suggested-by or I can post it with you
-as Reported-by. Let me know your preference.
+--fwrXW7fUl9Ff/6Yg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
-> When bcachefs was in the kernel, I spent an inordinate amount of time in
-> code reviews trying to convince people that yes, they really do need to
-> be testing their code.
->
-> Strangely enough, I have never had this issue with project contributors
-> who did not come to the project by way of the kernel community... :)
+On Wed, Nov 19, 2025 at 10:41:26PM +0000, david.laight.linux@gmail.com wrot=
+e:
+> From: David Laight <david.laight.linux@gmail.com>
+>=20
+> min_t(unsigned int, a, b) casts an 'unsigned long' to 'unsigned int'.
+> Use min(a, b) instead as it promotes any 'unsigned int' to 'unsigned long'
+> and so cannot discard significant bits.
+
+This breaks an arm imx_v6_v7_defconfig build:
+
+In file included from <command-line>:
+In function 'fuse_wr_pages',
+    inlined from 'fuse_perform_write' at /home/broonie/git/bisect/fs/fuse/f=
+ile.c:1347:27:
+/home/broonie/git/bisect/include/linux/compiler_types.h:630:45: error: call=
+ to '__compiletime_assert_434' declared with attribute error: min(((pos + l=
+en - 1) >> 12) - (pos >> 12) + 1, max_pages) signedness error
+  630 |         _compiletime_assert(condition, msg, __compiletime_assert_, =
+__COUNTER__)
+      |                                             ^
+/home/broonie/git/bisect/include/linux/compiler_types.h:611:25: note: in de=
+finition of macro '__compiletime_assert'
+  611 |                         prefix ## suffix();                        =
+     \
+      |                         ^~~~~~
+/home/broonie/git/bisect/include/linux/compiler_types.h:630:9: note: in exp=
+ansion of macro '_compiletime_assert'
+  630 |         _compiletime_assert(condition, msg, __compiletime_assert_, =
+__COUNTER__)
+      |         ^~~~~~~~~~~~~~~~~~~
+/home/broonie/git/bisect/include/linux/build_bug.h:39:37: note: in expansio=
+n of macro 'compiletime_assert'
+   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+      |                                     ^~~~~~~~~~~~~~~~~~
+/home/broonie/git/bisect/include/linux/minmax.h:93:9: note: in expansion of=
+ macro 'BUILD_BUG_ON_MSG'
+   93 |         BUILD_BUG_ON_MSG(!__types_ok(ux, uy),           \
+      |         ^~~~~~~~~~~~~~~~
+/home/broonie/git/bisect/include/linux/minmax.h:98:9: note: in expansion of=
+ macro '__careful_cmp_once'
+   98 |         __careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y=
+_))
+      |         ^~~~~~~~~~~~~~~~~~
+/home/broonie/git/bisect/include/linux/minmax.h:105:25: note: in expansion =
+of macro '__careful_cmp'
+  105 | #define min(x, y)       __careful_cmp(min, x, y)
+      |                         ^~~~~~~~~~~~~
+/home/broonie/git/bisect/fs/fuse/file.c:1326:16: note: in expansion of macr=
+o 'min'
+ 1326 |         return min(((pos + len - 1) >> PAGE_SHIFT) - (pos >> PAGE_S=
+HIFT) + 1,
+      |                ^~~
+
+--fwrXW7fUl9Ff/6Yg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlmeVcACgkQJNaLcl1U
+h9BxQAf9HGqurLEC/bAa5+GdCUPrgVdNex+JnRAXx13wodsJ//7gbnkF7ruYTjXG
+uHxd08MpP9HpJI5fAUXFGOnVc3ikYOj/ClD+HbJPrDeCIUTdVFddGzresI6lJilL
+hYLOAIKo07m87eTkKRA7HNg3XVTi007RZJFitH6OBtsXnZ159j4NkDdrOIpl9CFp
+kc6sOejpQVd6rktrhECe0R+PxjpYQIY2EBTe/MeE3ajRyyUK9ULoB476IxYgqGg9
+KxXIZD25WeoDpdOFqwy4UD/8b72twg5OQ6QvzBNrUHFU2bhC9qr5r2OpjodbeGI1
+NKW0tC0CEzSMpSsUNGuea3HdJ4HcAQ==
+=6EHM
+-----END PGP SIGNATURE-----
+
+--fwrXW7fUl9Ff/6Yg--
 
