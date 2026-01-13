@@ -4,121 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 006B6D2502E
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 11:48:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EE8ED2D0E3
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:12:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69D666B0099; Tue, 13 Jan 2026 06:48:24 -0500 (EST)
+	id 39C6D6B0005; Tue, 13 Jan 2026 07:12:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 650E56B009B; Tue, 13 Jan 2026 06:48:24 -0500 (EST)
+	id 353AF6B0089; Tue, 13 Jan 2026 07:12:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 557DE6B009D; Tue, 13 Jan 2026 06:48:24 -0500 (EST)
+	id 27CE46B008A; Tue, 13 Jan 2026 07:12:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 46E476B0099
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 06:48:24 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D334E1402D3
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 11:48:23 +0000 (UTC)
-X-FDA: 84326767686.18.AA581B2
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 88EFA4000E
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 11:48:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=Xu0+QRmj;
-	spf=pass (imf01.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+	by kanga.kvack.org (Postfix) with ESMTP id 1551E6B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:12:58 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C3E401ACD0F
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:12:57 +0000 (UTC)
+X-FDA: 84326829594.28.63BDE34
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 38BF1C0011
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:12:56 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mmvPJ1qq;
+	spf=pass (imf22.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768304902;
+	s=arc-20220608; t=1768306376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rTbY8atxjKRjBA0y7/TdrF1D3ojAC1i7Hfmy4BpGVjk=;
-	b=bJX68HIaeTFOLKXzRhpXyYe0y8gt3yagiIFj/Ryx0bzzdTFoMQEvQNKMjBD3YkJ83538oc
-	0hLgotlb4KnDCWR+qEuIhEu6nC+3RwJ8q4NY44MGlm/J69j1Vdh0Ml7Z6v9IaWcZm5PEov
-	JpTZL5Or5nC8U1AXCON2M/FjdV6p0/I=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=Xu0+QRmj;
-	spf=pass (imf01.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768304902; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QIjRrpTXF2MlYBwJ0ocSkqbjSwdZMAcaOgRZENhNgBc=;
+	b=CEsKNS9a+hiFSyp62z2JZh3hkOOxxC2WbimhCQRgCKj91uJJYPefb1YK7naEMpGLAS59kF
+	k7SnnQE70IY59X2jv48U3c9ys3zf7vXp5czM08+hNxQ1AbiB3c+b1D+Ggu4ogGqKIrVuja
+	yLKjTUgMYkiDZweG+i7uxG43G+qWXFY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768306376; a=rsa-sha256;
 	cv=none;
-	b=kDrBHcCqhSlAlynOoi/ErgV29Gdaqg7KNAPMpx0ff8LXe3+LTPmy9w7vJTr8XhYh3ziE7V
-	ELN7xsNbiA+XLPcpT4OYqwMBxFSK+mg2j3gCBKurSEwCgEUXS8kZKeAhUxx4+JsOXyOPeI
-	pZSqkkdPu0bVZRztlTGO3Ma+i4E55Gw=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A7D7E40E01BB;
-	Tue, 13 Jan 2026 11:48:15 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id w9KlwacFOika; Tue, 13 Jan 2026 11:48:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1768304892; bh=rTbY8atxjKRjBA0y7/TdrF1D3ojAC1i7Hfmy4BpGVjk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xu0+QRmjVzNBeP/SFAjZtAYJhh21/UMZZySy8yfoIPEBTM4uIy81JkjyYzMDkN+01
-	 n+8yvHO7z7BYTqramqSmlCga3GRnbhy7+aaGT9vruZ8fLyV2f6AyRnKg7EVljfIqK6
-	 lOHOIMZuDODjGpIdo4Qc2uqTKS9WoZmSXSetNTKJ/hoXL1K3f0EuVcGvghZ6XV2pje
-	 uSZa2REx13fy9H2mVCdKrJtb02uLGMEYUONgSqVGTtnI9OLu8V1NSDwPz7de71ETiO
-	 wBA9CcU/Bzp1kCBtzPupRc/pF1vb5GoIkk9j8U0lmI827DrbA0GGCKA9XqcU1poQqb
-	 uKIrf9KzbJYRxhJHXaSxcxLN52HneYEXBmDHVmSOgslImgxuumZkdJAvl4SVmu9BMy
-	 1ZNoNFr194LKYfVF+BxPzd5FSH2shoVaru+f41SJ+nEeSwAX29dBPVqqHxxnEo7Uua
-	 yy30+t1ym5n601GoZV5F76xpQhfo7AV29Y9mu3rWjfyxDPhVrHt53rWfTxzQ6bG+11
-	 UXsjKFSGRi/2UG/gm5Kh3HFtjczcjwwRG/cn6wYOMivXrevjw8nosm4zMs55sut6HD
-	 wAi/LWh0YyOYKy54CB2fW1apZheJfHlztDFVkJvkT1BYdgWEEW46JWy3RDdAcDDsHR
-	 FcYQ/RrS/jrxs8yaH2eXQqk8=
-Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 78B1A40E0194;
-	Tue, 13 Jan 2026 11:47:06 +0000 (UTC)
-Date: Tue, 13 Jan 2026 12:47:05 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Maciej Wieczor-Retman <m.wieczorretman@pm.me>, corbet@lwn.net,
-	morbo@google.com, rppt@kernel.org, lorenzo.stoakes@oracle.com,
-	ubizjak@gmail.com, mingo@redhat.com, vincenzo.frascino@arm.com,
-	maciej.wieczor-retman@intel.com, maz@kernel.org,
-	catalin.marinas@arm.com, yeoreum.yun@arm.com, will@kernel.org,
-	jackmanb@google.com, samuel.holland@sifive.com, glider@google.com,
-	osandov@fb.com, nsc@kernel.org, luto@kernel.org,
-	jpoimboe@kernel.org, Liam.Howlett@oracle.com, kees@kernel.org,
-	jan.kiszka@siemens.com, thomas.lendacky@amd.com,
-	jeremy.linton@arm.com, dvyukov@google.com, axelrasmussen@google.com,
-	leitao@debian.org, ryabinin.a.a@gmail.com, bigeasy@linutronix.de,
-	peterz@infradead.org, mark.rutland@arm.com, urezki@gmail.com,
-	brgerst@gmail.com, hpa@zytor.com, mhocko@suse.com,
-	andreyknvl@gmail.com, weixugc@google.com, kbingham@kernel.org,
-	vbabka@suse.cz, nathan@kernel.org, trintaeoitogc@gmail.com,
-	samitolvanen@google.com, tglx@kernel.org, thuth@redhat.com,
-	surenb@google.com, anshuman.khandual@arm.com, smostafa@google.com,
-	yuanchu@google.com, ada.coupriediaz@arm.com,
-	dave.hansen@linux.intel.com, kas@kernel.org,
-	nick.desaulniers+lkml@gmail.com, david@kernel.org, ardb@kernel.org,
-	justinstitt@google.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kasan-dev@googlegroups.com,
-	llvm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [PATCH v8 00/14] kasan: x86: arm64: KASAN tag-based mode for x86
-Message-ID: <20260113114705.GJaWYwubl3yCqa1POx@fat_crate.local>
-References: <cover.1768233085.git.m.wieczorretman@pm.me>
- <20260112102957.359c8de904b11dc23cffd575@linux-foundation.org>
+	b=YmOLK6Cao7URQP8m7pAT9uy3BhbhMA86X+Ipyk6zJC+OVa+4AWdGh8eDG5JR2Qm1M2hvUz
+	Ucd0LbbhH8O/VpT/C7zJQ23ozNmP1hfL+zH4lrxpmyeGFvQzuhJ6XrSRcAqAxSev3GkKS3
+	Cah7pBkZQLrGLJyJEbZSWRg0ZomHe4I=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mmvPJ1qq;
+	spf=pass (imf22.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-81e7477828bso2019128b3a.0
+        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:12:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768306375; x=1768911175; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QIjRrpTXF2MlYBwJ0ocSkqbjSwdZMAcaOgRZENhNgBc=;
+        b=mmvPJ1qq7B9LzfoBNpRMhXocNruqeRKvA+rlIcXx4d8NkqtCDXYCNYd/nLzqHrYG3c
+         p4pclNpf4EPmAQRz0iZGpXPmz8yyNeOrycmHrOM1LB0C2wyit1daZkD8Fs6KJrgwnYNc
+         GCaOJGZCjyp1sIfF80vOMr/taHQruW6RjKkFKofumucFW4b4xzDfaCcHf0ZAhloeGRcw
+         ozxvhygORZe3ZL4G5k9TkJsR/enS0COX3ojFBiAobpP8xavBCWGRta5RIU6a9GalItYb
+         q8wggFv3HoKvJx8MbfD+eLGPTsywKBzmAzKkkULJ11vZwkmX0XscrWR+8VWs/Bu82xFp
+         YifQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768306375; x=1768911175;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QIjRrpTXF2MlYBwJ0ocSkqbjSwdZMAcaOgRZENhNgBc=;
+        b=H/VaRecBVkEJlDPhrNa8OL29vf8hG7UA4ZLPFz+TtIBqOcaluIzEmGOk8bs3qN/kwO
+         Ej+mRwDHBWyJTAW37mbGmvYE1zUkBKLmWQZvxExtIkKdwTsv/A7tbvxoikaG7W/Msq54
+         9PZhsj5WlLigWxTo4vN3redeWmxYizuFBMlM9sUm+4OGqR4NEEslr7ciquEJrlRj/Hl2
+         66ZqgcqsXjt76OogmeIDVAaHlO8U4ilp+vf0jGvOI/GWPLoSQTqKrFsyLSYppzYCVEVK
+         9U+scEY4YXcp7wbGBtEbhn9VbBlDzx5er+VWaLTiJsCXn/sepISlTdL0QyfTbQ7zfJsL
+         UmZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX8HN5EABgnxdYN8yi97ooJ2BT6gznetpHcVdzNZCWyjKUayhcbOilna/LVbKZZ82BVUdIij2jlHQ==@kvack.org
+X-Gm-Message-State: AOJu0YwR2Vs6gQYhGR2oZIa8VXOzSP8VZRj3d+e3B6+Qz+gVYCo1LYBs
+	63+13muinl7hZLR9SaTZTXoJf0qd6xSkOA67ExUw2EGE21IYZS2yeVrt
+X-Gm-Gg: AY/fxX4ThVH1smZq1ywp/np1uhr0uv0J4KYL2ii1/ZJw6hKKsy6+lEBvohwDa7NEx42
+	PdWofB22wxZ6wVJn5weC4Ph5W9iUalt7xZR4LuW8O0SKAZgsNAAmAKHj31BwqpIU1/5X+ow6qND
+	MElT+S4hvSi35IiGgDtdaKstE+G1aO+wjxfvY1Tu73/V1xsYCCt3M5Z4LRnyMx1TNF5NKtf139P
+	LL0vVlYuXZ0UxUER93Escj2cunOuOkQq4IXkhDgOtJalF5x2BdDqsMA8jt2At+DWuJ6tWe7QRRt
+	ZOqUxrtBytfiE772xulTA9OL6O/oqqh2FbKPMYdCv3hnpPfIqYV4U/95CAz/1m4LbzIWikvHt55
+	QTPuprhQuDzTpcMJ5B7mGneODR1rROYeFE2Kkw2HWmIpUfUZjVo/JrVc+SP+27qJTmvfEFXsnLU
+	FXktRxktrvtxYTa/TeVQzMqVx7nMIZ/kg712PYfajsjtVoWg2YVrDqKeU=
+X-Received: by 2002:aa7:88c6:0:b0:80f:4667:a94a with SMTP id d2e1a72fcca58-81f6f74ed6amr2174765b3a.10.1768306374861;
+        Tue, 13 Jan 2026 04:12:54 -0800 (PST)
+Received: from localhost.localdomain ([2409:891f:1d24:c3f5:8074:4004:163:94af])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81e7fd708fdsm11596703b3a.65.2026.01.13.04.12.50
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 13 Jan 2026 04:12:54 -0800 (PST)
+From: Yafang Shao <laoar.shao@gmail.com>
+To: roman.gushchin@linux.dev,
+	inwardvessel@gmail.com,
+	shakeel.butt@linux.dev,
+	akpm@linux-foundation.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	mkoutny@suse.com,
+	yu.c.chen@intel.com,
+	zhao1.liu@intel.com
+Cc: bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	Yafang Shao <laoar.shao@gmail.com>
+Subject: [RFC PATCH bpf-next 0/3] BPF-based NUMA balancing 
+Date: Tue, 13 Jan 2026 20:12:35 +0800
+Message-ID: <20260113121238.11300-1-laoar.shao@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260112102957.359c8de904b11dc23cffd575@linux-foundation.org>
-X-Rspamd-Queue-Id: 88EFA4000E
-X-Stat-Signature: nehqt1167s4dicxdu1dyt1d1uwk6c9pz
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 38BF1C0011
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768304901-719106
-X-HE-Meta: U2FsdGVkX18vs9qiTXq4duN9IMH2geIywnX0jtGCECR3DMCmLlDgE7wb1vTzwBNwkVTy5W05Xg1x2BFaxBNfzOh4ymaHLWya0m7ECr9uNLipkkEkvxjMOTO8X7mkPfZv1YyS1wv+LeP2KlgLoqip1eBKpNQzD2BhGoE/7dNl152RPK8F9dycIGZV8hdLVNC2NF5VuxydtfqQvkDfF+iAcL2+xAkAf1Zs6occWSeMXDjb5tLQDP3ppT7UqDnaKzg2v/7qAbzceM84j+isk7epcQ9bCKIvuzyi/KB7DGNt3DOCbQARlybaTIKKZ1juc3ppot+1hhXMZmTqe9niIwsU2jS7mwkgQTAFPrGMYr/gQGfQHWqHAIf69rpnlpY1bofATe4gEg8UQeawPg6FnrM0EN8OIsScdNFEFjH7+a1hXrEspXcfowRvExU3Mg0W5y/C768k1pwsW57Brq6ndxUWUZqEryoopsjQcMOGWMbH5XzNfnxbjk7ogZIpzcAfSv0UuDktPFZAKRQJ8zLt2jOgkHtOw3JlUObFB6QOR6LZ8V8eKA4tOWH38fIev9yka+z7h3h2NAuCUQ1CVyikfyisyVkoQgGWaO3wJZLEELowa2DFzEcAvqRnbrlGUDTUwgKvk3RIoka74WiJJ3VbjxMRyH+lOMgCSOR5iCVaIF8GXCM9jSe2nF7cmdWMw/Lm7hcLwkyaIg1VkDFUFmkdLZzAF2Ccfmqfw90wCXm2iaZhn2oh4sg+Jd5m9ot3mjZ45+gKKQthXQt1B0vJ/o61pbl1ikaclzotmK/DirPqBZQf1yg5obaHaAINTZaIHfWKw0b83D8QHLUyfnbhPwth241CTzsPSqGrmNoI/Pq3SX4sXzr/6TW5zJpTrYOGmIGbsLQwYWXQQKZ97qP6m5GFxTc3bCvw9G8WghBrWqT5AjWyiNe1bFBlclaWgSjr4b2We0uAfiwUn3jYA3K1OeiGUaM
- N+P4nqZ6
- cK3m8qp1C8XeVYm6FU7UvADFT2mwR824CXqx+UUT29p2GbggYuvr6mFaWSjr4x3Mwo3lbkknxjz7oLkIHH5HKoNnsW7QHFYYZburZWeeS5Dqd8JJmwNA+LI3vgMBICizpyXqzkz9CA8KZZV0c10cFKscwGOYNM8E6v1vw0eVaPWUcZ4gbjN9+jrzy7W9kQto/3JLgTw3vgWIEBbXf75JjMUYF71oFZ4hld8G9y+j7yp/PliE8kJEJiNhRf8XuXbFzXq3ylJjecUj7aFnktZbNARtQfjcrxUZtNC4yS7lfUFPgkO6LGwHkz+vYHhPF/xCOMY5Szbn1T/oP4ZM=
+X-Stat-Signature: 9jrgguz7fsxes3sx5y7bu59at7kqmfi1
+X-HE-Tag: 1768306376-921580
+X-HE-Meta: U2FsdGVkX1+p4vRqiU3ktCxDVfGSjwOXFi4kPji2WX/qblUztuQnXkid8Wnrr2YehK21uzkVC8l5Rcpz/3ikptj3qAuH0qdE/IzEMH42V447FJ/n00ZR+jBpnCab34VeVMftbEtXe6XNPC0DTrbsWckWpL2/UDw287jglWoXmsYRIhoUwrsHeJ57tgzjxi7lCH6NNW4ci0wE2GsQY7p9IF70qPVuA7tcC5zLBAFikxxxDZ4XbFZZiy82HSrfvURXQfZvyRRCl4gv2tYA4fnuIrT7PnD/665dtbtmrPFRPn02dJ32DitjMeGs4Jy3myRq3uO7xbSLSOq922TW+qV0lo942jX+6EZHNW29ktxy6i20JUtD3zmJB/85DqnKHGUsa/005RsLNJvYL3ksQNs7q5fMaIxpdlgZlsCpAzWvXVc6JkVY7Z5x1MJ7EO9YPKNHBDjnSx4WMNW3JJDjXbQQIiDnyMDqwW/nGVmrY0faCqyx97Ttgb3wh34I6OL4/UbrYrN32v9ejBRNR2fhYRHzUYGo2fF1WEt8rzwlbkpXjoSNOBZyLLbB5hbGd05ne+HWbyyHt6gizUoc19gqhgOboS6402Y6ozSm8cn4c3W4rDxSD5zzq27FVu2JpZA5Jw9TD5OgaeoG+dKv77RtBTMfLCze9d8Nel7GsJXUqwUr7qBMGXjM8qvE8RzMNz+zdIrWsbQ4kdddzA8tTMmP/3tOFGDaEDaECQeZyVppBN2NmiTs9DZwcGSSKwbyhFhd2p69kBs93+lP0mKm8ssneWTiDHsT7c3MuAg33tN0Nl3WWMAs8wCfck0yKHewIDhCYXsCFzbGK3tT3QCObQ2+MK1qaJjwdgK5lkXNYY/BkpLtZxqwUN0VC2jFCPSb28rL5j8tRHPQKw787Ma+Kociy3w7NH8VZVcqcYeVIgP0x5E1Ruur/lBim9s5rP2G55Xb5fbwwUvHpz39L41+Wp6q7HI
+ pr6D2Btw
+ gvhWQxPjdNf8oviKIFd+GRdUHmrRDGaJbh9+0wPbl1sHIWOlTtSMawiSbNm2Y1l3QlR1oGeiN6d6Y8taD8cj8v011Vn6k2DW4CcUx97tMf5dPADdcLXtok8Af/Ii5AuTaWSZPVOytFPeeUeyHo0NNt1gqqCJbdw4BXWqcyY0lq1tybtmyQ/uAUKveN71RvGfpqvxfmI7XPFk9lr0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,21 +125,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 10:29:57AM -0800, Andrew Morton wrote:
-> The review process seems to be proceeding OK so I'll add this to
-> mm.git's mm-new branch, which is not included in linux-next.  I'll aim
-> to hold it there for a week while people check the patches over and
-> send out their acks (please).  Then I hope I can move it into mm.git's
-> mm-unstable branch where it will receive linux-next exposure.
+In our large fleet of Kubernetes-managed servers, NUMA balancing has been
+historically disabled globally on each server. With increasing deployment
+of AMD EPYC servers in our fleet, cross-NUMA access has become a critical
+performance issue, prompting us to consider enabling NUMA balancing to
+address it.
 
-Yah, you can drop this one and take the next revision after all comments have
-been addressed.
+However, enabling NUMA balancing globally is not acceptable as it would
+increase overall system overhead and potentially introduce latency spikes
+for latency-sensitive workloads. Instead, we aim to enable it selectively
+for workloads that can genuinely benefit from it. Even for such workloads,
+we require fine-grained per-workload tuning capabilities.
 
-Thx.
+To maximize cross-NUMA page migration while minimizing overhead, we
+propose tuning NUMA balancing per workload using BPF.
+
+This patchset introduces a new BPF hook ->numab_hook() as a memory cgroup
+based struct-ops. This enables NUMA balancing for specific workloads
+while keeping global NUMA balancing disabled. It also allows tuning
+NUMA balancing parameters per workload. Patch #3 demonstrates how to
+adjust the hot threshold per workload using BPF.
+
+Since bpf_struct_ops and cgroups integration [0] is still under
+development by Roman, this patchset temporarily embeds the cgroup ID
+into the struct-ops for review purposes. We can migrate to the new
+approach once it's available.
+
+This is still an RFC with limited testing. Any feedback is welcome.
+
+[0]. https://lore.kernel.org/bpf/CAADnVQJGiH_yF=AoFSRy4zh20uneJgBfqGshubLM6aVq069Fhg@mail.gmail.com/
+
+Yafang Shao (3):
+  sched: add helpers for numa balancing
+  mm: add support for bpf based numa balancing
+  mm: set numa balancing hot threshold with bpf
+
+ MAINTAINERS                          |   1 +
+ include/linux/memcontrol.h           |   6 +
+ include/linux/sched/numa_balancing.h |  44 +++++
+ kernel/sched/fair.c                  |  17 +-
+ kernel/sched/sched.h                 |   2 -
+ mm/Makefile                          |   5 +
+ mm/bpf_numa_balancing.c              | 252 +++++++++++++++++++++++++++
+ mm/memory-tiers.c                    |   3 +-
+ mm/mempolicy.c                       |   3 +-
+ mm/migrate.c                         |   7 +-
+ mm/vmscan.c                          |   7 +-
+ 11 files changed, 326 insertions(+), 21 deletions(-)
+ create mode 100644 mm/bpf_numa_balancing.c
 
 -- 
-Regards/Gruss,
-    Boris.
+2.43.5
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
