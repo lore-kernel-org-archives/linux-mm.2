@@ -4,130 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A297D29DC2
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 04:37:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BC97D29DC9
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 04:54:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC5986B008A; Mon, 12 Jan 2026 23:37:28 -0500 (EST)
+	id 4A42B6B0005; Mon, 12 Jan 2026 23:54:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D72FB6B008C; Mon, 12 Jan 2026 23:37:28 -0500 (EST)
+	id 4519A6B0089; Mon, 12 Jan 2026 23:54:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7F7B6B0092; Mon, 12 Jan 2026 23:37:28 -0500 (EST)
+	id 334206B008A; Mon, 12 Jan 2026 23:54:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B85356B008A
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 23:37:28 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 730F486125
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:37:28 +0000 (UTC)
-X-FDA: 84325681776.19.1B77582
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 32972140006
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:37:25 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="aLz/gxcx";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=UuelFnAZ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GDQ+xlHm;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=LKADajnP;
-	spf=pass (imf26.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 22DA16B0005
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 23:54:13 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 89CA91A011B
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:54:12 +0000 (UTC)
+X-FDA: 84325723944.22.1E4FF4F
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7DFB71C0008
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:54:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=X2KjV+3M;
+	spf=pass (imf18.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768279046;
+	s=arc-20220608; t=1768280050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ectBUs8mnN+AKlgMujzQXEve4AjBCENnkmCZtEA1mm4=;
-	b=hscv83/j87nzFfOOgT7EMP2OVKI2ch7uwQES4NNfJDeQR+izfVRVDJ4Tr4tzRBCWYGlpwJ
-	ZVBgpxgKig2C35ELY38xYwvxQfMZsDUj2KnvDy72XB0Fuc6THLTuTOZVHKazeHpSqVdfhR
-	nhh3ti1zyzYmnOLsLhtocGA47Jzu8ZA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768279046; a=rsa-sha256;
-	cv=none;
-	b=cLvZaJidijc0nNk3zMCa8c53We9L6KbxVTQwee8SQYuUgOiGXoWypPQNyIvyXJfgW9YHwr
-	wJ3kIZgtz10tZfXFaJjK+R/D/mCqsiPDHI34OxVnzyUqaIGWj5LgSLaX8dRgcG2nUecuKD
-	njx+z8jK+K3T1y0oYkhOZ5b4Lo/vuPk=
+	bh=UKtScXEwrHQrA89l3N54sxGcQUtq2SKFpHUrz7nEa60=;
+	b=u28p4hLze1tX4ZnY7BWU/djZbtlAfE/ZkEVSqNmR+PFSJRMDZNINGBcRx6nuFuZL82+sWe
+	FRE/G/ouogSBgTWY4h5f2yXoApwQeK0tZQh7OIXYpz6iABghOripUhlsBMtgmTDggKBA4u
+	9bmb9mTv3hfzlSw8c9KgxG2Q6KfZ4L0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="aLz/gxcx";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=UuelFnAZ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GDQ+xlHm;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=LKADajnP;
-	spf=pass (imf26.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E0CC03369C;
-	Tue, 13 Jan 2026 04:37:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768279044; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ectBUs8mnN+AKlgMujzQXEve4AjBCENnkmCZtEA1mm4=;
-	b=aLz/gxcxR4kFpg1O9if0fqt35djNminYd6wfkzFDgB/GU1aIvbiL+uwmkBmMs9eTbz+UMf
-	mf8jBWTyDkVGfvVbP1ujCoTKaBR5307NTvdj4Nb8jnnDgMsS7XzBloRgim7lIRgC5c684y
-	9wGVeitX+cpjxEZHgRun/eKNnrg5EtE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768279044;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ectBUs8mnN+AKlgMujzQXEve4AjBCENnkmCZtEA1mm4=;
-	b=UuelFnAZwywcJx7xPKjcDdlUB1HMT0VPYxJ0JRvNiPSBuIrl/ac5YNlbw106REGLFOV5T4
-	1l85RQDW4HvWKZAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768279043; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ectBUs8mnN+AKlgMujzQXEve4AjBCENnkmCZtEA1mm4=;
-	b=GDQ+xlHmdQEaE7VvyZ2+6ihUTu91LIT57bnTBufjPJGv+Z3Brexl43fNa4jGsDdhJvoop1
-	IrNoKdT7p0YadU1f1JL0RdRc/W6+GPVwniZg9uKwqM0QTNq6q4htaeearHpiSLkgCWlyEn
-	e+Mlsx6XpvSBXL84d1xd/sOTkGk6O18=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768279043;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ectBUs8mnN+AKlgMujzQXEve4AjBCENnkmCZtEA1mm4=;
-	b=LKADajnP/9RPKN9YHvOzLYw5VCl3P/D30H/7TvXXo5eWPWfdco2X24l06WSYyVeGTl0hL0
-	dYxJEh+vvufq1aDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 391E83EA63;
-	Tue, 13 Jan 2026 04:37:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Cb8jCwPMZWkMHAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 13 Jan 2026 04:37:23 +0000
-Date: Tue, 13 Jan 2026 05:37:17 +0100
-From: Oscar Salvador <osalvador@suse.de>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
-	sidhartha.kumar@oracle.com, jane.chu@oracle.com,
-	Zi Yan <ziy@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH 1/5] mm: page_isolation: introduce page_is_unmovable()
-Message-ID: <aWXL_ctqTCTdaJHe@localhost.localdomain>
-References: <20260112150954.1802953-1-wangkefeng.wang@huawei.com>
- <20260112150954.1802953-2-wangkefeng.wang@huawei.com>
+	imf18.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=X2KjV+3M;
+	spf=pass (imf18.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768280050; a=rsa-sha256;
+	cv=none;
+	b=kRaWz7mCAhSAn08wDD0rET+FSk4p+/kgoL6siJgHYzfVm0LpYSDKLCIHMPh4bJH/Va05tW
+	LStjEqi8/DGRRFp/CQJPHiakBTAnb7OQassJINqxlB1u84ptnzI752Qqc3UGSiNbIGZxui
+	95mHr35oRzax3CEy0m6v4V7JDPnGEow=
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-81e8b1bdf0cso1685522b3a.3
+        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 20:54:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1768280049; x=1768884849; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UKtScXEwrHQrA89l3N54sxGcQUtq2SKFpHUrz7nEa60=;
+        b=X2KjV+3MFYPbC8mw5DnGcNvtMG0llqFVcVsyI5fQT20AgxquVheYSV2quKWp0nAKzR
+         qy9lB3gNUdyjz5BxhnvgZ3S91v7rtVAjtHKeU9BD5gqmus2zngGn+q93X/WnYgTW0mG9
+         zR7YvTjLYTepbtbPY1wseYHZkBCf48aoSEcGQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768280049; x=1768884849;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UKtScXEwrHQrA89l3N54sxGcQUtq2SKFpHUrz7nEa60=;
+        b=m8gubXgnEXMdJhhGXeG0/5xYKTz/61lcQ6Qq1ybN2YNfQPatfpHQtTYpUMZIQBWSBg
+         XH6t4q+sjraHgp4H+zg/zJ8P+vffXfjEczypDwghIHWjwGktXp37LhGdatV86afdLfh9
+         EwL/2xVF+YCLlMJ8mvnZhU2k7kaevDkirxTQ2IeMQv59Q4cscmTBVxszMCzxo9FJi8pX
+         sRy+rDvsUs/Nn7OanGhU3bwdcdO4d7cphd6l/QOZ81Wp3HeoN/hhg0smZ9QNg5SmfUCR
+         SWIjQNJizawyFQnsTQ33qqSaS453h1ChSEYu/SmIoONLINTXtMwwCMcmWIWIqeXMNjoi
+         Yb0A==
+X-Forwarded-Encrypted: i=1; AJvYcCVZ6QCJoJ8VARsojtrlqmR2vZGf2j4hxxtwyQs2pOCGtdjp1qrJ2QHb/SmXgLmU4tytRwNG58XZ4Q==@kvack.org
+X-Gm-Message-State: AOJu0YxL9J/GOkVUMgZ/mciCCOhIvcahlaczc3gcs8EGnj6OTbZ+nz4K
+	A4dNgbCbV7R/SPohYifI1VrDC79pWNYtFfDLwsvAF0t5OKLuSDtwJFTEIntk9L9TUg==
+X-Gm-Gg: AY/fxX44O7Q42gui9hqaGDtLx484jgPBi3g7NQJCimFBaH9EWzOSVdgX5MCg+bK/P7I
+	F4E/4wXWIF3lm25jdExyXCOBHWezjNgP5cKu/0nJ59byEdHao4Hc0DTPYDILGcXm9kyHH0ayj26
+	VaEQ77b8BbYTHePf7TVxH8RXyzkUzqt6TNwpedZS9HDeWNLv5IlvMGiYrrHDA893Jq0ppW2wDcU
+	hTPzmZokjeRQVPeVWu+mB8vlDdEB3JVPFIu/a/AwWZEs5RYs2A5KEZSVSYsJdHiYN5dfoZuL9rZ
+	BGrw2ZWkWEIpeXJIWdhgEwvgQ4pcFXn4qzAb4yYtD3Q9OWHFyTVlVy0Zlx1TDjJvfUXVEzwqldB
+	QH5xJXLMHhWp3KmjyMrdbkUrECbsdp4mcG9KwglWQLczBDno6a0i6g/+xT7sO+wDE033Nm8uyFj
+	3IQzKCER5oq6b2axmzwWgxcjhLeXWEbmWerSU1Ih2sTHEVFgd5uH55urO/R8oZQA==
+X-Google-Smtp-Source: AGHT+IF8giJZ1cwqEfJp/6iUzbp0/TRCRwNaNcmX9U5Tj5XcALJKWgAQYkT9Emt45eu48BVTknyMpA==
+X-Received: by 2002:a05:6a20:728a:b0:366:14b2:30a with SMTP id adf61e73a8af0-3898f9cd5d0mr19601101637.61.1768280049256;
+        Mon, 12 Jan 2026 20:54:09 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:3c61:f146:e418:e233])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c59b0bf72afsm6489637a12.28.2026.01.12.20.54.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 20:54:08 -0800 (PST)
+Date: Tue, 13 Jan 2026 13:54:02 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: zhangdongdong <zhangdongdong925@sina.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Richard Chang <richardycc@google.com>, Minchan Kim <minchan@kernel.org>, 
+	Brian Geffon <bgeffon@google.com>, David Stevens <stevensd@google.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-block@vger.kernel.org, 
+	Minchan Kim <minchan@google.com>, xiongping1@xiaomi.com, huangjianan@xiaomi.com, 
+	wanghui33@xiaomi.com
+Subject: Re: [PATCHv2 1/7] zram: introduce compressed data writeback
+Message-ID: <aswaagdlczqq3sh2okdew2o5jtzmev5ghdz4ksvzmqkfsshbfw@aoxdptshkqvu>
+References: <20251201094754.4149975-1-senozhatsky@chromium.org>
+ <20251201094754.4149975-2-senozhatsky@chromium.org>
+ <40e38fa7-725b-407a-917a-59c5a76dedcb@sina.com>
+ <7bnmkuodymm33yclp6e5oir2sqnqmpwlsb5qlxqyawszb5bvlu@l63wu3ckqihc>
+ <2663a3d3-2d52-4269-970a-892d71c966bb@sina.com>
+ <z22c2qgw2al73yij2ml2hlle2p24twgpmz4jemfqhjoiekc65f@pvap7olsolfp>
+ <a527b179-263f-40ad-9d7c-bfa86731bfde@sina.com>
+ <luzn25fgin43cnbmvmxwps7isqeq2pt5kfn26jqzly6hbnedlp@ojpw52ldzmuw>
+ <731f6e5b-f678-49ef-ad8e-fe6ff85d5422@sina.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260112150954.1802953-2-wangkefeng.wang@huawei.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 32972140006
+In-Reply-To: <731f6e5b-f678-49ef-ad8e-fe6ff85d5422@sina.com>
 X-Rspam-User: 
-X-Stat-Signature: 51s1kidcxh756k1rt5xfam7sebe35s1y
-X-HE-Tag: 1768279045-410440
-X-HE-Meta: U2FsdGVkX1/tqk1K1EZy8fEVGh0SYCAioTabR+15nYBrPqakZg4F9tt26N1XcGJORoG44YOtqQXbcgyJOXCXe+j45yPL3Rp+lDjQRuoaTKiWzCpCJYis/Fvnacgdbyw9TDRwC4ZWpfAOfftqIMW2aX6EF+8aeoPxfNAElEIu1mUXkqKI11APL+mXE2Si4Z2tbLKJtGYhYPrgSepIB7INUZkUhZcHmn/wpupK+SQRCApqjfU5YvjD5TRNSqoXb6g781ghS4HEbM55mQBnvetj5d9K4Fbm+EiEfm8aHnPZIuOAJUT+JIzZNVzGnoPibma9K03hBY4SGYo9dpIB/iTI9sqKMKPFy3LfGYYltryKcgIgvpIT1ru9yj6OuAWtsX4eqmuTMA8dsMzPd0J6l5GuQC2fBlrYt5SBlRGUcT77JpMa+UEfoZ+oB7h4jWIHjAdSOIoZCyzr/6BUSv9m82Nc5uv75iLX2cKNSxo8J+d1wy/nsbsjMMp99U+5OLgyefjSWGzHqUu6oTD0RnwbzhFt6JcolUWofVY0+tyzl9gaRBUn5F3WeIEZstXPRdVDNs1p4+etT4DeloRYOXpTHJbT83CWc6qHuju+48McyvKr81RJS6RcbHmmRjdEJDP9ue8MrBsw79WNGs8bO0mDdg8NHouW1vx6kwq7j1w5Quld7q59uVuCri2XiIXP1S13fMw2CbMLXTxvIuM+C4KA3ahBZMgZQdA85wOu4eYL+JHx/fC4z9m0J5ewWLlT97NMKfR8Q2Bs4cl/Uw78z/lKSr14bqptI2mPVakrQD7fPOZQUX8R1faKYeGjttxq/YVk9KYfwpBYt/8hyDUnanRCzXiqyUk2apN0wQb3Kgjvy4b4CleFmhBAnJ67fY7W+xMsR5eCGiV8vENADtT/uxNIpLaVkpKbL7pfHONjPE9LNAax+W2zLBLEsstlN69ISnNgJZfKFBWQNFF2KwEwSVLH7oI
- mjw==
+X-Stat-Signature: hmoe6gi43s5habckoye4crkf9xj5hf48
+X-Rspamd-Queue-Id: 7DFB71C0008
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768280050-346935
+X-HE-Meta: U2FsdGVkX18TfRXcwsvhnsnnnqlAQfWIhw1+SnniEzcicMoluZBd3wvs4lJnHpQwr3NGfA9kxs/zCbpl14D+9KGhmhJxXYOXTXJONgifxM4aXBaPU35QH2gW8BTSSxnc/ue+PZ0V/HDnmvXWjGU8r3CmslBCW5GmYsGgaetdPMdfl9iLck2fhHaVtLcjM4vat/KOSBprFdOCfQiJdgb5GBE1669dBoLrdo7s1Tymt6KvEVnAWUEZM6wT+hkgmEwg8DhQFZvkJxjDCaOVMB/DVVxF0gU9zC6QzOiumVRO0rpDcf6/hN2J/blifZagfIG1EbxBl8Bi6GyGRwVYqO17A9KORFnJsklUgl20a5T5oJjBrvd/sXPoZmh+mRfmS8RhLgYsZGb4SuwNpxYW52E7wPaeaR4L24sjRDJcZh94EJUwK6Xq1xt/RHViMJIBTMdzz52QEW6qwA5RZtBZQNDuHWIruGEp2f3MDVO7iCTSFSzkxKvtojz9YHOMScPUnTcZDNx/w99QjvBKP82qA87h7qggjjnRK8TdXH8xrcTqLP5XD1M4RhEjMTi6iCekDF/t2djlriBnNZxa+wwYK8QkGN3r1Aln/FTOi90t6kLbwlr0O6nAKeY3B7zfKlHgE3j5VKy/sqhwWpK7ThEl+u/uaH3C3LFf6sE4gDZ93Zsid04HbTfYci40WxLMghOEyPYYvNCLNyYv0BlDsLSmASl3EutdLU4DPDx9+Lm6oR4FWhwDQNicousewt2XtbvWlPkhGUJzCdYstviEaVorPV2+jzMwcUVrrD107mV4Bl2aPV1AFoNlvRRHakUpdccbP1Cxd3udWEWtTDlr7VjPUgO2yDa78NKFxTRujjj3+sdCzzTtxLtoXHZ1viN5XFvyrfm8sRuQ9CcnuJpk4Tee3XzH3EaZ0dqEjPzCBVrxswagnEt36ptS2M05ir0BfllnnU1muqL7t7GfZLHbLnOLwlo
+ Ze1Quc5p
+ ZyOUxN7YVenZEcdWzjXYp+v74Ulpjdt/vlc+ltT5/1yhzodBiBQ3/+M/ekT42UmLklkARXh1M6709dwZonRfP6vH9svJ276y054mzVR2waC7OjZOoizyNPAaK6MjY/u8jSiVFlR5GmCds+5oz69ydmV+ajyZKOXDHyc9hecyswWgxm4HqgtVMuymNNujuP8ben/Fr2om6/IpjT8dhGDznUP1PBQ3O7j0K3qoyLZjMCqCKwJnwxlV/glCyZVMc7lZcwdn93sLEqfxJZQGJeffc7vKVoOPlhnPZfOrnAG45LyOYnpBKLaQyM+/F1kf+35VrzVLMyU95drvFTtRstONJ6ZznsVHO6s0WETyvqtOD7vuP0RM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,26 +128,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 11:09:50PM +0800, Kefeng Wang wrote:
-> Factor out the check if a page is unmovable into a new helper,
-> and will be reused in the following patch.
+Hi,
+
+On (26/01/08 18:36), zhangdongdong wrote:
+[..]
+> > I don't know if solving it on zram side alone is possible.  Maybe we
+> > can get some help from the block layer: some sort of two-stage bio
+> > submission.  First stage: submit chained bio-s, second stage: iterate
+> > over all submitted and completed bio-s and decompress the data.  Again,
+> > just thinking out loud.
+> > 
 > 
-> No functional change intended, the minor changes are as follows,
-> 1) Avoid unnecessary calls by checking CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
-> 2) Directly call PageCompound since PageTransCompound may be dropped
-> 3) Using folio_test_hugetlb()
+> Hi Sergey,
 > 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> My thinking is largely aligned with yours. I agree that relying on zram
+> alone is unlikely to fully solve this problem, especially without going
+> back to atomic read/write.
+> 
+> Our current mitigation approach is to introduce a hook at the swap layer
+> and move decompression there. By doing so, decompression happens in a
+> fully sleepable context, which avoids the atomic-context constraints
+> you outlined. This helps us sidestep the core issue rather than trying
+> to force decompression back into zram completion paths.
 
-Looks good to me, I was a bit confused why we cannot rely directly on
-hugepage_migration_supported() without having to check for
-CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION first, but I guess it speed up
-things.
+This approach is limited to swap use-cases only, while zram
+is a generic block device: one can mkfs on it and use it as
+a normal block device.  So, this is not a complete solution.
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+[..]
 
+> If I recall correctly, this issue first became noticeable after a block
+> layer change was merged; I can try to dig that up and share more details
+> later.
 
--- 
-Oscar Salvador
-SUSE Labs
+Interesting.
 
