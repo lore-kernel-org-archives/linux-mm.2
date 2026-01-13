@@ -4,86 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF89D29DC2
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 04:31:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A297D29DC2
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 04:37:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEC136B0005; Mon, 12 Jan 2026 23:31:36 -0500 (EST)
+	id DC5986B008A; Mon, 12 Jan 2026 23:37:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E99CD6B0089; Mon, 12 Jan 2026 23:31:36 -0500 (EST)
+	id D72FB6B008C; Mon, 12 Jan 2026 23:37:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA59F6B008A; Mon, 12 Jan 2026 23:31:36 -0500 (EST)
+	id C7F7B6B0092; Mon, 12 Jan 2026 23:37:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CAE196B0005
-	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 23:31:36 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 286D91A74D
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:31:36 +0000 (UTC)
-X-FDA: 84325666992.17.45FEABE
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9B834C0010
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:31:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=BAkTdP8q;
-	spf=pass (imf28.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768278694; a=rsa-sha256;
-	cv=none;
-	b=XhIBghRQeW8OT53pnBSYJlfF21p3rR/Ikxn/QtaKBUx7T1mdUKUNQko7QCXIjuUBrWbL8O
-	y7JHs1336hE5GXr89CFsNWnuH8VJzkT0/Kjw3D3mjKpS+9Bgun8IBnv8kBi5IE3mQfJeTD
-	GfW8p7tNQBwXjw71HREwnJUY7CB9H1k=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=BAkTdP8q;
-	spf=pass (imf28.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B85356B008A
+	for <linux-mm@kvack.org>; Mon, 12 Jan 2026 23:37:28 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 730F486125
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:37:28 +0000 (UTC)
+X-FDA: 84325681776.19.1B77582
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 32972140006
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:37:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="aLz/gxcx";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=UuelFnAZ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GDQ+xlHm;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=LKADajnP;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768278694;
+	s=arc-20220608; t=1768279046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/pp81rQAMhtIyr/Wtg2fg/qbmVYAdF7/Cz7odtkofXs=;
-	b=6JpuCfrNALZt+wMYLonuTiUG0Q2Ri5Q42MH+ArsbBCa+ZQ/w+bXr56u6V5mSr+JLYfyWjU
-	fdS8Q29Jav0/ulrdcug4wOJM+e3IG8tEzkS+uhiPAFLM9x94DigmocgY8PKjDxaUNNXWl3
-	+5Z0m19lqT/k1MLfQfCCRuExI9N5F0E=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=/pp81rQAMhtIyr/Wtg2fg/qbmVYAdF7/Cz7odtkofXs=; 
-	b=BAkTdP8qpghJLdcrfg0qrzk1VDQjiN1SUNcj+XKOLJV1UZR2nTD/vtJ25qL3/Ficf6nggqrAFRA
-	P78UjgHnZoJ063amkA26uAG5/hW/GMF6wb80xQv/neI+nPNO+MZpxHGQYJnn2wwG9Q8CG13JhLASf
-	M+YXgji5qx3H0rle2JIvZnfMakW5c/dWZ663CHt9xShu09k77ArMcPHQ+f4KUGMfidxNae57GDZ+i
-	OKSpsE/6Z/pYeAoaawIY+bqqcQYQLT5HXfV1W0BipTzOziMEhGyvSuDoskklQY4l00KEAm0zpnIuN
-	bNHBUApGlhS3zX6wHDEnLOl7y406uc8k73Yg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1vfW3V-00GH2y-1T;
-	Tue, 13 Jan 2026 12:30:58 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 13 Jan 2026 12:30:57 +0800
-Date: Tue, 13 Jan 2026 12:30:57 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
+	bh=ectBUs8mnN+AKlgMujzQXEve4AjBCENnkmCZtEA1mm4=;
+	b=hscv83/j87nzFfOOgT7EMP2OVKI2ch7uwQES4NNfJDeQR+izfVRVDJ4Tr4tzRBCWYGlpwJ
+	ZVBgpxgKig2C35ELY38xYwvxQfMZsDUj2KnvDy72XB0Fuc6THLTuTOZVHKazeHpSqVdfhR
+	nhh3ti1zyzYmnOLsLhtocGA47Jzu8ZA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768279046; a=rsa-sha256;
+	cv=none;
+	b=cLvZaJidijc0nNk3zMCa8c53We9L6KbxVTQwee8SQYuUgOiGXoWypPQNyIvyXJfgW9YHwr
+	wJ3kIZgtz10tZfXFaJjK+R/D/mCqsiPDHI34OxVnzyUqaIGWj5LgSLaX8dRgcG2nUecuKD
+	njx+z8jK+K3T1y0oYkhOZ5b4Lo/vuPk=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="aLz/gxcx";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=UuelFnAZ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GDQ+xlHm;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=LKADajnP;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E0CC03369C;
+	Tue, 13 Jan 2026 04:37:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1768279044; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ectBUs8mnN+AKlgMujzQXEve4AjBCENnkmCZtEA1mm4=;
+	b=aLz/gxcxR4kFpg1O9if0fqt35djNminYd6wfkzFDgB/GU1aIvbiL+uwmkBmMs9eTbz+UMf
+	mf8jBWTyDkVGfvVbP1ujCoTKaBR5307NTvdj4Nb8jnnDgMsS7XzBloRgim7lIRgC5c684y
+	9wGVeitX+cpjxEZHgRun/eKNnrg5EtE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1768279044;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ectBUs8mnN+AKlgMujzQXEve4AjBCENnkmCZtEA1mm4=;
+	b=UuelFnAZwywcJx7xPKjcDdlUB1HMT0VPYxJ0JRvNiPSBuIrl/ac5YNlbw106REGLFOV5T4
+	1l85RQDW4HvWKZAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1768279043; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ectBUs8mnN+AKlgMujzQXEve4AjBCENnkmCZtEA1mm4=;
+	b=GDQ+xlHmdQEaE7VvyZ2+6ihUTu91LIT57bnTBufjPJGv+Z3Brexl43fNa4jGsDdhJvoop1
+	IrNoKdT7p0YadU1f1JL0RdRc/W6+GPVwniZg9uKwqM0QTNq6q4htaeearHpiSLkgCWlyEn
+	e+Mlsx6XpvSBXL84d1xd/sOTkGk6O18=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1768279043;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ectBUs8mnN+AKlgMujzQXEve4AjBCENnkmCZtEA1mm4=;
+	b=LKADajnP/9RPKN9YHvOzLYw5VCl3P/D30H/7TvXXo5eWPWfdco2X24l06WSYyVeGTl0hL0
+	dYxJEh+vvufq1aDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 391E83EA63;
+	Tue, 13 Jan 2026 04:37:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Cb8jCwPMZWkMHAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 13 Jan 2026 04:37:23 +0000
+Date: Tue, 13 Jan 2026 05:37:17 +0100
+From: Oscar Salvador <osalvador@suse.de>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Minchan Kim <minchan@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+	sidhartha.kumar@oracle.com, jane.chu@oracle.com,
+	Zi Yan <ziy@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>,
+	Brendan Jackman <jackmanb@google.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
-	Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] zsmalloc: introduce SG-list based object read API
-Message-ID: <aWXKgU_4jZghDBuC@gondor.apana.org.au>
-References: <20260113034645.2729998-1-senozhatsky@chromium.org>
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH 1/5] mm: page_isolation: introduce page_is_unmovable()
+Message-ID: <aWXL_ctqTCTdaJHe@localhost.localdomain>
+References: <20260112150954.1802953-1-wangkefeng.wang@huawei.com>
+ <20260112150954.1802953-2-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260113034645.2729998-1-senozhatsky@chromium.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9B834C0010
-X-Stat-Signature: nfxm8633yj86nteenn3ttjzx1kapdrzn
+In-Reply-To: <20260112150954.1802953-2-wangkefeng.wang@huawei.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 32972140006
 X-Rspam-User: 
-X-HE-Tag: 1768278693-708726
-X-HE-Meta: U2FsdGVkX18gDjZC6TWN1kMWQsYEGbC0bknFTJUTgFKykp6FcBmQ/eqA7ND5iPjxzVXAkfKx1JmUVx31DCDRxvlaF7DCfG7f/1/pfqxPA7nupQhT5EHCyaV+uDhRmB6sfXdBMO4ewM3rnR0wBleTERQ4d5sw3dZuZFnWy77jxPPMZevXPXr02wsRXssIzGEGZdoCBbvS/0jyDx0yWsqslluuTtRemn2UAXrVjbnIo8SXULzcrNnaIjpRd4BcLtXZ94A5FMZQN14mx0nmnIg9K7/OMPuYIxi09+ha3t1X50IlQ69gMGMk+bzULF9Mz7TgHuWcNGrwCcSyKaXp5IOAJqC9KhkqDL++VQGO4prQdIJTphVBicZybGQrgB5LtqHa8Jyf2tHWo4pnx8Nku9rHV9iUMTyq520SwgUyZ1iijAGulU0rfLKeeN3D2Ao8Tz5BNgxnwqdXP6xNtMOxJHbDmFK6KJfSZE/PAwX99CH2r2pO0a6VqAlCmp81muBJTTOIOsugIzWcY6DgECT7tiVSdEpZVAJvzVwYzuX9HB3e13iMtwV2rRMw7LJbh40/koIbxZr2BZhXcil/UIbOBGfQ7t4tc8vvnKHyAcdMpdVUSq2PQJ/CU/xGYiqVmbVTRUuyWjOLS6McvuB3fJ3+W+TftcdoF4+8w6+z8W6ZTBz2rlGx4dLou9hiBYcvARn5Xk4a2wdq9mKII1pAntGveV5DV4i5d0h7+Jbjt/chmSgTtmXcyTPn7Da/kR58i3IslJt/1GbeqJrr0tS7/3ZKcqh/MgorNu38u2Lvn9Ye5ZTbGWYCJaUbbO58ueGr8Iu0uJVERAOYiuingb6YcyBgWyJd5W3avNzFJaSRXn8bXImCeq+nWvYJwYk7IAQNscnddotkocdUrK25Z7dqlfMIBDwKFg==
+X-Stat-Signature: 51s1kidcxh756k1rt5xfam7sebe35s1y
+X-HE-Tag: 1768279045-410440
+X-HE-Meta: U2FsdGVkX1/tqk1K1EZy8fEVGh0SYCAioTabR+15nYBrPqakZg4F9tt26N1XcGJORoG44YOtqQXbcgyJOXCXe+j45yPL3Rp+lDjQRuoaTKiWzCpCJYis/Fvnacgdbyw9TDRwC4ZWpfAOfftqIMW2aX6EF+8aeoPxfNAElEIu1mUXkqKI11APL+mXE2Si4Z2tbLKJtGYhYPrgSepIB7INUZkUhZcHmn/wpupK+SQRCApqjfU5YvjD5TRNSqoXb6g781ghS4HEbM55mQBnvetj5d9K4Fbm+EiEfm8aHnPZIuOAJUT+JIzZNVzGnoPibma9K03hBY4SGYo9dpIB/iTI9sqKMKPFy3LfGYYltryKcgIgvpIT1ru9yj6OuAWtsX4eqmuTMA8dsMzPd0J6l5GuQC2fBlrYt5SBlRGUcT77JpMa+UEfoZ+oB7h4jWIHjAdSOIoZCyzr/6BUSv9m82Nc5uv75iLX2cKNSxo8J+d1wy/nsbsjMMp99U+5OLgyefjSWGzHqUu6oTD0RnwbzhFt6JcolUWofVY0+tyzl9gaRBUn5F3WeIEZstXPRdVDNs1p4+etT4DeloRYOXpTHJbT83CWc6qHuju+48McyvKr81RJS6RcbHmmRjdEJDP9ue8MrBsw79WNGs8bO0mDdg8NHouW1vx6kwq7j1w5Quld7q59uVuCri2XiIXP1S13fMw2CbMLXTxvIuM+C4KA3ahBZMgZQdA85wOu4eYL+JHx/fC4z9m0J5ewWLlT97NMKfR8Q2Bs4cl/Uw78z/lKSr14bqptI2mPVakrQD7fPOZQUX8R1faKYeGjttxq/YVk9KYfwpBYt/8hyDUnanRCzXiqyUk2apN0wQb3Kgjvy4b4CleFmhBAnJ67fY7W+xMsR5eCGiV8vENADtT/uxNIpLaVkpKbL7pfHONjPE9LNAax+W2zLBLEsstlN69ISnNgJZfKFBWQNFF2KwEwSVLH7oI
+ mjw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,36 +136,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 13, 2026 at 12:46:45PM +0900, Sergey Senozhatsky wrote:
-> Currently, zsmalloc performs address linearization on read
-> (which sometimes requires memcpy() to a local buffer).
-> Not all zsmalloc users need a linear address. For example,
-> Crypto API supports SG-list, performing linearization under
-> the hood, if needed. In addition, some compressors can have
-> native SG-list support, completely avoiding the linearization
-> step.
+On Mon, Jan 12, 2026 at 11:09:50PM +0800, Kefeng Wang wrote:
+> Factor out the check if a page is unmovable into a new helper,
+> and will be reused in the following patch.
 > 
-> Provide an SG-list based zsmalloc read API:
-> - zs_obj_read_sg_begin()
-> - zs_obj_read_sg_end()
+> No functional change intended, the minor changes are as follows,
+> 1) Avoid unnecessary calls by checking CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
+> 2) Directly call PageCompound since PageTransCompound may be dropped
+> 3) Using folio_test_hugetlb()
 > 
-> This API allows callers to obtain an SG representation
-> of the object (one entry for objects that are contained
-> in a single page and two entries for spanning objects),
-> avoiding the need for a bounce buffer and memcpy.
-> 
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> Cc: Herbert Xu <herbert@gondor.apana.org.au>
-> ---
->  include/linux/zsmalloc.h |  4 +++
->  mm/zsmalloc.c            | 65 ++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 69 insertions(+)
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Looks good to me, I was a bit confused why we cannot rely directly on
+hugepage_migration_supported() without having to check for
+CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION first, but I guess it speed up
+things.
 
-Thanks,
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+
+
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Oscar Salvador
+SUSE Labs
 
