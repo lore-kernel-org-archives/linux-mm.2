@@ -4,87 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06DC1D29DDA
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 06:40:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB7B7D29DDA
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 06:42:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39F0D6B009E; Tue, 13 Jan 2026 01:40:00 -0500 (EST)
+	id 3F6B26B0005; Tue, 13 Jan 2026 01:42:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34D156B009F; Tue, 13 Jan 2026 01:40:00 -0500 (EST)
+	id 3CE196B008C; Tue, 13 Jan 2026 01:42:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24B806B00A0; Tue, 13 Jan 2026 01:40:00 -0500 (EST)
+	id 2F7686B0092; Tue, 13 Jan 2026 01:42:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 11BFB6B009E
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 01:40:00 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B7FB6C04E0
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 06:39:59 +0000 (UTC)
-X-FDA: 84325990518.03.CA5A356
-Received: from sg-1-103.ptr.blmpb.com (sg-1-103.ptr.blmpb.com [118.26.132.103])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 041C340008
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 06:39:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=j15ofVzV;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf12.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.103 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768286397; a=rsa-sha256;
-	cv=none;
-	b=wLGTYSKBZiU3bsuSRxagPfk4I861JD25TuOQBR3nw+fHSZnaLfVCwyVzSkwjnY+iKGjWjV
-	zTOZpWPtyd5M+12XAbI5KGklpiP/5G4BdndLagoA2yDbJ8IIE8/jdwDJbrSxmAS9khLWsd
-	+94bWZELNuv7Y134moYyuGLUuXANRQg=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=j15ofVzV;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf12.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.103 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E3A26B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 01:42:20 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B9DC1138AD2
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 06:42:19 +0000 (UTC)
+X-FDA: 84325996398.16.A076435
+Received: from sg-1-102.ptr.blmpb.com (sg-1-102.ptr.blmpb.com [118.26.132.102])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 867A420005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 06:42:17 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=YcyW8Nml;
+	spf=pass (imf13.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.102 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768286397;
+	s=arc-20220608; t=1768286538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4s2hZ7l2JA0r7A000mHzPL8R+UEPg+VTa87KxzXQ3Tk=;
-	b=xJf68wxve05YDcEUpaoHua6lpbfUj85e+PwgReHOeSQHgb4zs7zy4yYd+WQFwxyOIgE8re
-	4pmgZRHszPsDMWiujrd2EFm7TENa1KdlkRZs+oWNTrgCM0Lk0o07e1oeIUAHXewv6ayibg
-	A/rQSnA6ybYOsfl4rE5brHSn9zDimqk=
+	bh=2Qb1R4lnjaFXVEvzdYsxnVqS8DmE3lYGKOt4usy55kw=;
+	b=fwy3YC/6Xi/wiE0sFJEabJ7aFGkaiiEIO8vU5h7J5Y9mRwqwwqJy+Ts2q6M9uQdWCN2kEM
+	PEB0PXqS8jGRTBhRbl/a2sZ8HJJmLoVNCBxteEjsDp0FkCsmxdq+NtxmuzZMcHhKEWsaPn
+	tLYelchGtgpiX+EgSyplDrsFZoN2SBw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=YcyW8Nml;
+	spf=pass (imf13.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.102 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768286538; a=rsa-sha256;
+	cv=none;
+	b=erfUD/CFjILYyWjKvAzgdrl0Yb9cA0LB5gi63zF9yciCFKqxKeX6mIqJsig5UKQOx34V+z
+	I8nTvhxES2K/8Uq/sV5/+ua24shE3NG86pa80PHpBkAxJWSFh6IH+BwcC9JjHRMad8Iau1
+	OMqP8HisGFJv8tZNrT9lbOZbCdmqOx0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1768286386; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1768286530; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=4s2hZ7l2JA0r7A000mHzPL8R+UEPg+VTa87KxzXQ3Tk=;
- b=j15ofVzV+OhgiZ17PpMtGWDrzueO42EkUxImm5gTu5wDImSFLMlPifJJOmxv2Y41Vr0Mqo
- DoNV3/mU05wyB90tTGkM3tEBw6hpryQ5sGlfS73QPkSA4bCZy6lKcbmSRcWjQUl9zR7WAN
- oVVOBU28ghZd94T3ByCBQ7e3dSJfpmBtsq7+7r1bFC349+k0i4u+pP67kNcNs0p8CMtpUp
- KI42I8ZSLAL0/VAqLTUop+efaCmEYtKnP3yzqPk0qSkzYokwaN0LfMDyzTKY75sdF9ybiJ
- QDkUJuMHi5CkKCkI8bhYHlW9czInE76amDFXteunVYJb1RLc2PK+Kih4UPqK0w==
-To: <ankur.a.arora@oracle.com>
-Mime-Version: 1.0
-References: <87qzrujxu0.fsf@oracle.com>
-Content-Transfer-Encoding: quoted-printable
-Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <fvdl@google.com>, 
-	<joao.m.martins@oracle.com>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <mhocko@suse.com>, 
-	<mjguzik@gmail.com>, <muchun.song@linux.dev>, <osalvador@suse.de>, 
-	<raghavendra.kt@amd.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
+ bh=2Qb1R4lnjaFXVEvzdYsxnVqS8DmE3lYGKOt4usy55kw=;
+ b=YcyW8NmlcrOM6tM/LguKMMJyP/+8swEA9nPSC12emQH5xPOQifiP3wZsrTpkwIriIQ7mXt
+ zDTq2Qburr4aJv99EvyttjBh+sRPe56EHBKLrMizl3idFkpGsac7hl6xXf035ZpKdJUCE1
+ X7fbftjhticwWCB+ylwAXWF0TYbWEPh8IF79D26pwPfDgxcSL79zege9AUQ/QRhgAxUlSr
+ cXkec3gV849VnhaD6NmNrqZ23YONy3DKsnM6+oZF3fkOgLOYmB6UEMaAIYulWorpWVzPWx
+ Opp1PiIfNW1e/X1ICMo87MYwinyu1FxoQtxjKAXNo2dk5Fph/q7PWjv17hbK6w==
 X-Mailer: git-send-email 2.45.2
-Date: Tue, 13 Jan 2026 14:39:28 +0800
-Content-Type: text/plain; charset=UTF-8
-X-Lms-Return-Path: <lba+26965e8b0+60420b+kvack.org+lizhe.67@bytedance.com>
+In-Reply-To: <87jyxmjxs6.fsf@oracle.com>
 Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
-Message-Id: <20260113063929.29767-1-lizhe.67@bytedance.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <fvdl@google.com>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<lizhe.67@bytedance.com>, <muchun.song@linux.dev>, <osalvador@suse.de>
+Message-Id: <20260113064155.29900-1-lizhe.67@bytedance.com>
+Mime-Version: 1.0
+References: <87jyxmjxs6.fsf@oracle.com>
+To: <ankur.a.arora@oracle.com>
+Date: Tue, 13 Jan 2026 14:41:54 +0800
 X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-In-Reply-To: <87qzrujxu0.fsf@oracle.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 041C340008
-X-Stat-Signature: a5mo3o7hqomz8wrwscdjpdyydss6bnqw
+X-Lms-Return-Path: <lba+26965e940+ca8246+kvack.org+lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
 X-Rspam-User: 
-X-HE-Tag: 1768286396-554471
-X-HE-Meta: U2FsdGVkX1/GZApGWSSgbYFK83B2+bn46PjG6IZ78zvdgLVT1sX/3LZGvBIslrjLenViT9Z5i6gdXlXzZRcIrv0JIFbbgUbMvYitrAJw8ieD7PFJpfhP56U3uqbrHHQteE+nuSoYKigNnmoHWk1yTFUgZKkv7sij9g4GmkuBCo1DSpmd+Ilozrud9Niu0vyjJxSU2nYHB/wqtQx6futLFY7yCBO1UvDTSoOpjUg8D1P4N7RgN1vSny4jQIpnJNJYMz3F6zrXmKYfbb9qFOlRE6CpT2xI0tCju1ETas6m28YEes1MV3ZIVd7mzD9bHUQDGU7Wp7JLBSYl96LYr0NeN3z/H5I2aqn1jUEwjrez29urlvKfWQxWIkC5JWg//sUE+V9bShODec3zFGy1+/DzZGJXxkR3XBLPuxvgFynOpV4u++F97U/AVEXvEEIUHmHoLWiA0gAC223CNi7ZeQoYt7xvF5EIUu3LNiPrTeGejt6zejUbrtVRPdmiKo3jDy++NGslrWsWsyNwRqWZYG02gP19y+KyW0Zu3eXIdvvtwLferYKo6ixDccCkL3iZTkUbV+8Ty/zDsPpS8eM6sfDc1CafLKI3hspM7aTdxyPy/bqHilOYwwfOqot3QBztgv8pxzJaOlOMPGL8FsRG3GV2SM6nyqZay2PwcJYj26S/fxphjXWLV7gWu6hgBqQpbBxkkfEQmGinZHYgdi1uyW6CtLZwN0aafLvwnp5QMsAwDr9LtymKzDktEQtw+8vbsL6PL2v1JnPan+YEE7zogOCTfiY3z9yj30Vf3tC4q+UsyHq60A8hFzn8HyVYUIvJYGGphC8nHW/jAsLpdnOr/9BLs0A7Yv4CrzjtAqN8TbLcS0lSNj+BrQJbCjVffseYOnlJB305x0CFvUadPX5hi2PSpUDMS2znMJMpWiHbRMY6D+VW84q3/AjnVnApqmVItq0tbq2No3UtOwYvlwla0M+
- 9CeayWGC
- yr3FVq2NgbH78jNtfrEe9Z6qsUYCryl2sAXWOA0Gv0U243Kj4Sb3kNzdWZ444lttcnLH5R9up8ea9Lsm0wndYIYong01K7YVUWO+VkZBvEpzhhy1Lb0JYbA5h/8wiGIZDHqv2Ib0LDjZdzjQ0kp0jqjbfJl8z+iXzM6UIIanxfE5mGXtbFPukN7Ek3jEnqeSxmDAXbV+ytQfSl//GWflP8OIGkcO02xG5Vc+cHcxRk0Ep6kNNECXb0dL26rEltzfugf/f
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 867A420005
+X-Stat-Signature: gxmskus5e6wxs3mdqcd4msix9xw8odow
+X-HE-Tag: 1768286537-780337
+X-HE-Meta: U2FsdGVkX1+I+r7CCmNzEqplgERQ8qsEy8qmtIyaHlEXC1qGcjJb8bgVAf2uk7v1NKZTaDTWvF0+qA931Yyu0QVvaDXTW2lsDDPNX1fXnWElYViomHqaEb4NQO2LPxIyKDeq+5+/oNp2qpJ1HqLpGqRoZYExPS8Rd9YenQTJGp4ekaZtSjPcOMPJ+tCQeYA5e7gE4g5gzeEhNwykHb6RztgKXLhl6a9+cqr33KPaAciD2KPWkPUwV0KpCIpDpSMNmtL2EMEIvBQkHyrf4FPJyVlw+dtwhrV+ZKV6Fs/jywqjCBVr9OF8VoZgUx0ml1I2/5bEB6gCQWjljLJ7K2kHP1sMZWaD7y8+cNM3nwjqe/tvrHP84Uui1zRfpuqYVlllGXeZ1ARTrTRNGkpn3Uo6ap4S4sMXR4KFf5Z7IFNMjklALDnsfLLu3dQY2ttXZvKCsJbRFmcGKxsGIAZR9wPZEjb0nWw8OFKofE41vNEP2hgY1coFcIz987OESEqsH/U1ACaR6bnx9ZePM3B0dcrwIY2oQ4xmGnYLQpIHcoShMBBSj4vGHse9lZPc6TeMkFRdZS2Jdst7/Xt1/yFq2xp0Kv8Obi2iWg/pOwQtNvEltwXKFemKv7P9RNEhnL0nKThB43SvKkgSdbBBVZw0XhRc2hCiZGXI5vOOKIWZRlTD2BYDTrZwTgS3KxInfuhXiHnjWS+5KD3v7G9EnPZhdM3sasGmyvYJMreJVKUZQH1F/CkQX/txiLIxKM+xpCWWWUNNUV5JU9f4g8uNmEH/sWUaMI+YWKSjdQaybwbTScgS23T7/6IPi0BMfOjARpDQ89xYpAVQ+k1d9+Hf085w3YDZ74j98dU0dQXib3sj2DyCBsiGRB6gQh/DOXeKDcORwn825XuWQ24NLX20c/7zvOVx1yy0rlgJZ92v/++vf9jnFD82Mjwdk9AvyqIitU1z99Gs+Ey9IK3YbqOyHC2qdmK
+ NF4MfwfG
+ bRYgTrAW89AOGQ1Ym4vPOPD3smSDBLhzv56huvSP6z3kXjMsdlrdBPzCy0cJicSUxajcxJ2akeASIbNKE9Sz8sk0UGMHJN5mR50Zyor8VtHzldpuhSNj47uMOhes+JKegb1EUceDGszF3i62PfcH6c2PLGJ78XbB2eFjnfaUnP8JYI2cO6oJlztherIWVfiquF2uykSAvCtxxmB8Ip8Aea+ID+or9OeWb8LPJ2eY0qIuIHLC1o5mQJArSO5Hvsqgu7VSt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,57 +91,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 12 Jan 2026 14:00:23 -0800, ankur.a.arora@oracle.com wrote:
+On Mon, 12 Jan 2026 14:01:29 -0800, ankur.a.arora@oracle.com wrote:
 
-> > Regarding concern (3), I am aware that QEMU has implemented a parallel
-> > page-touch mechanism, which does reduce VM creation time; nevertheless,
-> > in our measurements it still consumes a non-trivial amount of time.
-> > (According to feedback from QEMU colleagues, bringing up a 2 TB VM
-> > still requires more than 40 seconds for zeroing)
+> > In user space, we can use system calls such as epoll and write to zero
+> > huge folios as they become available, and sleep when none are ready. Th=
+e
+> > following pseudocode illustrates this approach. The pseudocode spawns
+> > eight threads (each running thread_fun()) that wait for huge pages on
+> > node 0 to become eligible for zeroing; whenever such pages are availabl=
+e,
+> > the threads clear them in parallel.
 > >
-> >> > Fresh hugetlb pages are zeroed out when they are faulted in,
-> >> > just like with all other page types. This can take up a good
-> >> > amount of time for larger page sizes (e.g. around 250
-> >> > milliseconds for a 1G page on a Skylake machine).
-> >> >
-> >> > This normally isn't a problem, since hugetlb pages are typically
-> >> > mapped by the application for a long time, and the initial
-> >> > delay when touching them isn't much of an issue.
-> >> >
-> >> > However, there are some use cases where a large number of hugetlb
-> >> > pages are touched when an application starts (such as a VM backed
-> >> > by these pages), rendering the launch noticeably slow.
-> >> >
-> >> > On an Skylake platform running v6.19-rc2, faulting in 64 =C3=97 1 GB=
- huge
-> >> > pages takes about 16 seconds, roughly 250 ms per page. Even with
-> >> > Ankur's optimizations[2], the time drops only to ~13 seconds,
-> >> > ~200 ms per page, still a noticeable delay.
-> >
-> > As for concern (4), I believe it is orthogonal to this patchset, and
-> > the cover letter already contains a performance comparison that
-> > demonstrates the additional benefit.
+> >   static void thread_fun(void)
+> >   {
+> >   	epoll_create();
+> >   	epoll_ctl();
+> >   	while (1) {
+> >   		val =3D read("/sys/devices/system/node/node0/hugepages/hugepages-10=
+48576kB/zeroable_hugepages");
+> >   		if (val > 0)
+> >   			system("echo max > /sys/devices/system/node/node0/hugepages/hugepa=
+ges-1048576kB/zeroable_hugepages");
+> >   		epoll_wait();
+> >   	}
+> >   }
 >=20
-> That comparison isn't quite apples to apples though. In the fault
-> workoad above, you are looking at single threaded zeroing but
-> realistically clearing pages at VM init is multi-threaded (QEMU does
-> that as David describes).
+> Given that zeroable_hugepages is per node, anybody who writes to
+> it would need to know how much the aggregate demand would be.
 >=20
-> Also Skylake has probably one of the slowest REP; STOS implementations
-> I've tried.
+> Seems to me that the only value that might make sense would be "max".
+> And at that point this approach seems a little bit like init_on_free.
 
-Hi ankur, thanks for your reply.
+Yes, writing =E2=80=9Cmax=E2=80=9D suffices for the vast majority of worklo=
+ads.
 
-The test above merely offers a straightforward comparison of
-page-clearing speeds. Its sole purpose is to demonstrate that the
-current zeroing phase remains excessively time-consuming.
+However, once multiple mutually independent application processes each
+need huge pages, the ability to specify an exact value becomes
+essential, because the CPU time each process spends on zeroing can
+then be charged to its own cgroup. If we currently considers =E2=80=9Cmax=
+=E2=80=9D
+sufficient, we can implement support for that parameter alone and
+extend it later when necessary.
 
-Even with multi-threaded clearing(QEMU caps the number of concurrent
-zeroing threads at 16), booting a 2-TB VM still spends over 40 seconds
-on zeroing. Based on the single-threaded test results, it can be
-reasonably inferred that even after the clear_page optimization
-patches are merged, a substantial amount of time will still be spent
-on page zeroing when bringing up a large-scale VM.
+Although =E2=80=9Cmax=E2=80=9D resembles init_on_free at first glance, it l=
+eaves the
+decision of =E2=80=9Cwhen and on which CPU to zero=E2=80=9D entirely to use=
+r space,
+thereby eliminating the concern previously raised.
 
 Thanks,
 Zhe
