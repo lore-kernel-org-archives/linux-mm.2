@@ -4,199 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A6E9D2F34B
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 17:10:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8E21D2F349
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 17:32:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05B146B0005; Tue, 13 Jan 2026 12:10:33 -0500 (EST)
+	id CC0A46B0005; Tue, 13 Jan 2026 12:32:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 032936B0089; Tue, 13 Jan 2026 12:10:32 -0500 (EST)
+	id C6E3A6B0089; Tue, 13 Jan 2026 12:32:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E57306B008A; Tue, 13 Jan 2026 12:10:32 -0500 (EST)
+	id B7A246B008A; Tue, 13 Jan 2026 12:32:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D3E906B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:10:32 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 669F71AFBE
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:10:32 +0000 (UTC)
-X-FDA: 84327579504.12.1659709
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010026.outbound.protection.outlook.com [40.93.198.26])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 69CA78000D
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:10:29 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=jt5g6cIR;
-	spf=pass (imf02.hostedemail.com: domain of PratikRajesh.Sampat@amd.com designates 40.93.198.26 as permitted sender) smtp.mailfrom=PratikRajesh.Sampat@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768324229;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A5BAD6B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:32:34 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5BCBD1AD5FD
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:32:34 +0000 (UTC)
+X-FDA: 84327635028.14.DD89071
+Received: from mail-244121.protonmail.ch (mail-244121.protonmail.ch [109.224.244.121])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4F11A40010
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:32:32 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=gdXMnEdZ;
+	spf=pass (imf01.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.121 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768325552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CpCq1/N5wJAdTSrXzI3rzm37O4bxo1F0yq6rHFtsdQM=;
-	b=XLP3ibLJMhURD5EO6qt+/gHL1CvvFW8c9JKOfyIWi4C2D2tcT9CpRb3mrRt1oPZmJ4pgJM
-	2EgLCD19T9hpWvfIeCdgZCN5xOwE95z3NdtTrrdt7Ofee3H/cLYWYqUFEUasqBDccSZDEp
-	laNohzakLs52HGQ1EvbmEw6wktGW0Vc=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=jt5g6cIR;
-	spf=pass (imf02.hostedemail.com: domain of PratikRajesh.Sampat@amd.com designates 40.93.198.26 as permitted sender) smtp.mailfrom=PratikRajesh.Sampat@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768324229; a=rsa-sha256;
-	cv=pass;
-	b=ERSW9/f+9e+zVsAH2lZiDcF4mgPEqJSHOzjdqRaZFOQVr8MDkicdFDE7CkkxfausDSdEwq
-	ZclWw/7eoZP23Hwndfhhtf5dNJiE+TkgKWuULtOBv6jzXMwY8PyQ1VFP9PD4m39+Bw0iPi
-	IxJ6yv3di9iF8W2pAvSRN1IEyr2drSA=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aB7aVggR4KghPkJ4c7/4labPC+ruCpmeLEDBrhrCrDnMRzBj6GkiT7g27WQE2mZt8KsKyTQUGIa1HPncXmNYdfE2b5V7k2G9LZWFC9qngm0DSL9HEqVVvbLdt7s2JYYfXfJGv3sG/pWbz0IxBsvk9QZorlPoiZEZyWjCJqI2jIj/NSdRW8AnCOhlZQcaQa4fFOuCuZwZHuvabYal1kw6T0mIDd3Fw4DOsWB3DpBNibnieS9DvxDmVAp+U8NAPgWqQ6EUcnOsFHXaxdZYEO136CIKHOSROnNiXATG0CnB/nBK6BidbKOMZynl9QDGBaEUjlHRaUKKrZL6qLNQvEB5Bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CpCq1/N5wJAdTSrXzI3rzm37O4bxo1F0yq6rHFtsdQM=;
- b=fmMqFQB3wKzksRLbRvlnQK/2QxcH1autQm4mLFsvkWbWqGgEBnn/yd6dMoTV2ze9B+SPjEwgy6NI7TJlLhbZyaISH/0J6AZOfp9wDl71vCt/al1Q8xzLemYIkNRwT7QuSckGAjnEJ96WW+22FWRr/3tRJLd2v0Ord5U1Ujv3/HKjPPZwQZtVCqtubD3V/0xtZ/vxbxGhp80yTMPWo0+PeREZPp+94e+bA7oOjq0OXYpS0MeWv42M2l9E96YOrm6LpSjuRjQSc+ARIp/GnHpDRUGS1GAmBOGwSCHhhb+oXeYmez58JEu31xivUwbthIAUWdvDthjMQIdhjll5Xpy/hA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CpCq1/N5wJAdTSrXzI3rzm37O4bxo1F0yq6rHFtsdQM=;
- b=jt5g6cIRaRNF3ZJxqLBccN6576mGs+5gFankEd680FC3Hx7PaAQgTr2wKtJbHTSI8tSLYYXRLRRIimMtATcXUub7APgEEJd/heQ9yLCcRc3YGHxFq89xpZOF/7BimVU8PQNnlfGvbtdM6LqHq+WXF1YXs0zWHPT0QphkCkE+oJ4=
-Received: from SA1PR12MB8643.namprd12.prod.outlook.com (2603:10b6:806:387::7)
- by DS7PR12MB5814.namprd12.prod.outlook.com (2603:10b6:8:76::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9499.2; Tue, 13 Jan 2026 17:10:25 +0000
-Received: from SA1PR12MB8643.namprd12.prod.outlook.com
- ([fe80::f168:a4d1:aef0:3ed6]) by SA1PR12MB8643.namprd12.prod.outlook.com
- ([fe80::f168:a4d1:aef0:3ed6%4]) with mapi id 15.20.9520.003; Tue, 13 Jan 2026
- 17:10:23 +0000
-Message-ID: <af3bf2ef-0231-4e75-9a80-c2bd3a7e1bf1@amd.com>
-Date: Tue, 13 Jan 2026 11:10:21 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm/memory_hotplug: Add support to unaccept memory
- after hot-remove
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org,
- linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org,
- akpm@linux-foundation.org, david@kernel.org, osalvador@suse.de,
- thomas.lendacky@amd.com, michael.roth@amd.com
-References: <20260112202300.43546-1-prsampat@amd.com>
- <20260112202300.43546-3-prsampat@amd.com> <aWYctexPTf-w7QT8@thinkstation>
-Content-Language: en-US
-From: "Pratik R. Sampat" <prsampat@amd.com>
-In-Reply-To: <aWYctexPTf-w7QT8@thinkstation>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN1PR12CA0112.namprd12.prod.outlook.com
- (2603:10b6:802:21::47) To SA1PR12MB8643.namprd12.prod.outlook.com
- (2603:10b6:806:387::7)
+	bh=7QZm1CZeu8P4ksfxFy+d8iaWyvI0I3DKeA/oH7Yr3/E=;
+	b=PUhEsHr8aHLIpGGbsRzg5sE/AtZz0q6HS4W3mCQEeZIEsvr7zpKTHypaW0St/XRbiUhULV
+	9shVHr2yBeFX6hRqKmYzfHWcMLRbLgGQq73Gr+klaKBpsBy06Hi9PtEgy+4nc1J/uZvn3X
+	qkAj3w3Bp8G/YWZINHmt/WLTBjwu32M=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=gdXMnEdZ;
+	spf=pass (imf01.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.121 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768325552; a=rsa-sha256;
+	cv=none;
+	b=ks2BjHtsYu3t9LTDYvouYwE1KCR4mIrRiV9pSOzMys+7MePRXiuYrIrqfZd9iZnOpoV/VL
+	nPFrAiTdbm+ec0pVaNuJV1Pee00LgrkApxcEZB7ynYoSvwxxtefORIDJa+VJFEf815/cMj
+	dvgHZAT9rZlBNn6a1HYrW2xTuP+i/gU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1768325549; x=1768584749;
+	bh=7QZm1CZeu8P4ksfxFy+d8iaWyvI0I3DKeA/oH7Yr3/E=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=gdXMnEdZmwn+tzH1Y7xVv5t9USdU9qSUiHNLP9uBYfdXrbzyAlzYJYd3+fdOIl8FD
+	 4B1cwjyzCxH099YPM8pclhQdJIQFLPHDmdGXpFFHioTnZOh0Vhr5FMwFhvIPEgRIBg
+	 imCV25e/DmTbnG9EQkSon6a6pbHZT2E4APl5n9XXqw4a2efie1W1vRw1zvk5GoN2BB
+	 CF2NEfpy7D5somELQ6RBkORkPQVKPmlnpRyAdBSR0ORMaXUIdVdaUza5gnyA1Sz/Nl
+	 g+SAZB5ORa63g+Togs39Um3ZPXCS0CiWYkzSCzRD7PN/QZwqJO9kQ2EKunsZqH6L8D
+	 jLRIbJ2fappbQ==
+Date: Tue, 13 Jan 2026 17:32:23 +0000
+To: Andrey Konovalov <andreyknvl@gmail.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Samuel Holland <samuel.holland@sifive.com>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v8 02/14] kasan: arm64: x86: Make special tags arch specific
+Message-ID: <aWZ_aRFfWNWiqzik@wieczorr-mobl1.localdomain>
+In-Reply-To: <CA+fCnZfQmhSyF9vh3RzreY7zrQ4GbQOp5NbA0bXLHUMG6p28QQ@mail.gmail.com>
+References: <cover.1768233085.git.m.wieczorretman@pm.me> <be136bf8d1a6ae9ef98686c3ba0b6a4e2ea2e780.1768233085.git.m.wieczorretman@pm.me> <CA+fCnZfQmhSyF9vh3RzreY7zrQ4GbQOp5NbA0bXLHUMG6p28QQ@mail.gmail.com>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: 023a5d308556f78925918902544da2df5131a718
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB8643:EE_|DS7PR12MB5814:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2931dcc0-15d8-45ab-5b70-08de52c6a38c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?c0hQYkJBbFNOVTZ2b1kxU29QUE1Oc21DY09uNjRSV2h6cUdPa1NyTzZqL01E?=
- =?utf-8?B?S3ZVMDZneFFNWXZNWkQwa01XOXlvU3ZRY2l1OWNCbTZyL2k4WkZTbjZuZTJw?=
- =?utf-8?B?UUlKNDJZWGllbHc4aWF0YzI3YkozZ1VBWURLSzRVNi9TQy9qbDFvdDBEWHVX?=
- =?utf-8?B?b1R4eHJrOFcwdVVqbHc5TUZ5NU5rUC92V2xjbjBZQTJpbUtpalN3YVJWUVpO?=
- =?utf-8?B?czZHMHczUFFxaTNHUkR3eWROWVFHTENmNGFWQjJUY0JKcmlzNnU1K1ptQWFX?=
- =?utf-8?B?N2c4L1ZwaEZKdlVnMlJUMDFnRjZLSzkzVFdURXNaVDdTMGxuSWorRm9GMEVz?=
- =?utf-8?B?cG1lNkp2ZkQwa0l0dFBoVm0wQ0hiOUVxT1NjRUhIdUlheEZ4SjFLNVZzOTVS?=
- =?utf-8?B?dVg2eFJPVzl6NUFnZklUTXhCa2w1VnNybmVJcE5sQ0NOR1BkYndoZkk2ZkFP?=
- =?utf-8?B?MXhaNmdMendHYmhaN29remNxSTZQelVUa01pR2xULy85elBYd2VCTFBXMVZt?=
- =?utf-8?B?enR1aWtVbDNOcEJ2YXlPcldjZjd0aVZneXYrNXlQcEt3dEJIMG9hTmRyUmRy?=
- =?utf-8?B?bW5yWFhKQ1ROb0VMUTZLZ0pqSkhaUUpVWGNmamVDejV6V2c4VWJWbWcyN3Ay?=
- =?utf-8?B?VkhxYVNJL1lMK3RjNVl0RG9Yays3UVRiQTZXaytuYTNFVWsrZjRmVVplWDZm?=
- =?utf-8?B?Nm5nS3dsd0lQMllIRUFnc01SaGMvd2plTksvMjkzNWE2a01OTXpkaDRzRWV6?=
- =?utf-8?B?QUJLWnMvYWVFVWJxa3VLU2d0SUl1aDIzeDQ3N2NIRjNkVVlkK2JWc3RjZmVQ?=
- =?utf-8?B?WkJIVDBEbG5UYW9yOWNtMzJJVFBYTlU4N2RydUNiSFdaRVFyRG1qczNKaTZw?=
- =?utf-8?B?VTlrUGR6VFdVTlFNOVF6UFVIOHJwR1ZoWWVpVCtCay91Y2g5WTE4T3F5R2FT?=
- =?utf-8?B?RDY5RkVncHFlcERvQmRsb0dhdW5PWWJPYnJLS1FmNUVpYzYxemJ0N0dtWUFI?=
- =?utf-8?B?WUVBSkxlSE9ubDhRcWN3L0s4bUFucFAxc0o2MmFHbHE4Q1o1UGlvWHZKdklr?=
- =?utf-8?B?czY4Uk03bU5ERE9IVnhCTGg2WFp0QzA2b3FLY1hqdytCQUlPNXErSHZ1UXhy?=
- =?utf-8?B?cFdINUtxVzVXWGtTODhBUm4wbzdJcEtuQThTNmsybytSbXN6dWRnNUo0T0dy?=
- =?utf-8?B?WWlhc1I3N2RVdnNnRXpKUFMxblltcjRKV3VGZlF1NCs2aTZwRHowbUgyNUt5?=
- =?utf-8?B?RGhWZ3FOZzRTWFY5WjdQMm9DRTdKaHVVL00yaXdMZ21ySm5pSU9uYS9XMGRY?=
- =?utf-8?B?emFzRCt0eUxCeHZpT3NLQzJEdEM0ckJ6TmJlSU1QbGVIbEZaeVpCbS9xWnFM?=
- =?utf-8?B?eUdNZWF6MHhNY2lrYXRnOWt2VWhqbkg5MXFkWUlQUlRnaTlwTzM2Vy91N0Z4?=
- =?utf-8?B?aHV0d2hyUFpmSC8ybXAyYXBmQVNwMzl0QXAxRkh3YXJzQ1dEVllzczM0NDVE?=
- =?utf-8?B?VFhiNW9vbHFGRDF6MG4zZHpjSEVzTlgrNE1WWE5kRGwxSlJEN1Rmcll6c3RJ?=
- =?utf-8?B?ZWg3Vm9jc2ZTNk5YVDR4aWlCeTBHZjNINjNkb01VVXBPWTJxTlRidkl2bEp3?=
- =?utf-8?B?eG9pUHF3MGtyOG5nUG04ZGxrU3BMWDJ5elBqcndWcXNKak9oeUVBTW5XUCtV?=
- =?utf-8?B?ejNoc0V5b2VOdWdJaEVPUjBiMTFwVWRzT2E4d1VZZzBEYk1jTHRLanQwSldX?=
- =?utf-8?B?M1I5VTF2UXU1aWpqVmg1cG1PQmVMR3hxTWwxc0hyOS83VTdlMWJRMGRIdm5N?=
- =?utf-8?B?c1VaRzZNU0h3Z1RaNHp3VzEyZldDV2NNVjYxVW1NeE1oSG5pbXdKRmFEbytz?=
- =?utf-8?B?YjFEaThrNHB6UWJlUHZhZlNHd0hETUlwcHRRdGVUaFpsQXlpZTI0RTVVQVpk?=
- =?utf-8?Q?uF94/wdwvSVNEsAPiXxQBwXF4s5iZvkl?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB8643.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eGdBNmZvUUhPa3ZxZy9DMXo1dnhTN2VNWlJFYTJWbVlOZ1Q5N3ZHMDdvcEZC?=
- =?utf-8?B?ZXlNTlpMUXFmd28yNTduUllCWmtjUWUxUmp6K0xwUFlaMVdYTkdDWWpUN3lS?=
- =?utf-8?B?T0lLbjYvelZ1RmhqamFpRnpKdDdzdjYxWFRGajFqVHp4ekRPaDJjelVrK1lY?=
- =?utf-8?B?N1dTakVLb3NweU9MdXM2dFIzNDBjbDR2cStiVkhqMnViUkRxU3N2TE96K3V3?=
- =?utf-8?B?Uld1cUdtUmx5YitpUmRMWlhyUmZJNDBuNlRoZzNxNmlSSmpVc0FqWmhnK1Ez?=
- =?utf-8?B?YmxBQ09IQittemx0VFpiV2lMc3hneksvcnY4YzIxbFlwa0dGMWtWcnpjSTJx?=
- =?utf-8?B?RllIZW1maDlQd1EzN05qdk01SXIrQ1dLSVJaZTF6N05YNk9RYUFOOWNzR1F5?=
- =?utf-8?B?NmcxSmRNUWVuNDNuTWQ0KytncGtHVnFjbURiVkhNTDRmM0UrMWNOMjFMNERz?=
- =?utf-8?B?YTIzQVhzNTdRQWg0ZHkybzdNdkpHRldRbmlPdVNUN1pZZVRDTFFKb0taTnVz?=
- =?utf-8?B?WXhNOG0yUm5xU1ZhSkxWRDR2SGFyekZncUZkTENJdVBFaFpwUmNhTHBFSTNi?=
- =?utf-8?B?MEp2RVFhbk9kVEV4SGF0blhNbmRQb2xUTElOZFNWQUZmVTM5VzRhOGpVRlFw?=
- =?utf-8?B?emFDTnFGeFZ0SXRuUjNZQmVKYVFUaXBVWWhsekpaNHFSaysvbDlhNXZraGJC?=
- =?utf-8?B?bncxMitva2ZNU1JiampWSXJudFNQYjQ2WGRpQmVuWGZMWFdtZXhpY3E5N1F1?=
- =?utf-8?B?aDNwQ1ZIY09ZekJlSnU5d3IyK3c1SlFPV0ZNdFRWd04yZ3c4aGZ0V3JKOTR5?=
- =?utf-8?B?SFhRUTcxMXpyOTN5WjFoOGptQVdaSzBZOGtsbmhjVzVDS050QWlDaTNzMVBw?=
- =?utf-8?B?L2puSEh1WElkMGUyK1NjcWpOMnY0RnlINk1HNnVuVzFKNGtGOW5NUktzWC9M?=
- =?utf-8?B?WllPbE05NFVOOWRScTVjVHpONjEvcDJmNWt0M0trT25BL0xnbHN6UnNPcUZZ?=
- =?utf-8?B?eXo0cllFT2ovOHZPaFNsR1JLalV5SlMrZERmRU5HZmNXYlZtY2J2eHZCc3Jt?=
- =?utf-8?B?cm9id282RVVsdkNtWkticDUxK0Q1UlFlQnM3dHY5VDB2WDhhejVQZVdhREw5?=
- =?utf-8?B?eWtiZURFZ3VSKzAydllwQjFnNVV4OEVrcHFYMHFSSVZMdUU3bGY5WlJTTlhG?=
- =?utf-8?B?dmZFNExBbUpScGwrWEh2SHJjTmswU3FFTnI4SUNkQXR4Vk9tdjdFdkJQcnhE?=
- =?utf-8?B?WDB0WXgyZWh3VjJUWkVseVdwVEk2MytQZVNaazZOTDBkRmtSell5Yzg4SXhM?=
- =?utf-8?B?NC9BRkhFMXNSdUYyZnh0UmZyTnhMS3F3blNkK0R5d3JVMEV2M3JzS2gzSFN6?=
- =?utf-8?B?OVFQbTVxRk9GMGp5c3BRa05yVEQ0RWFDcUc5VnpjbFdGUHh2QkN2Wm9NTXpo?=
- =?utf-8?B?TllxM0dQb3JhSEFSTkxyWDFsSmk1YjgrMC9HZEtJdXAvYjh2WVBQdnREcUVi?=
- =?utf-8?B?dThsUFJrUXdJUHl5U2JXTENzKy9EVTVVU2RWRDAvTk5pbm54aVBWL2pxbFdl?=
- =?utf-8?B?cXVrODB0TlM1NmZBRFN1ZWFjdDlrdUpsaFlXMnhDQytqTExOQTRmM0hsU2k1?=
- =?utf-8?B?cFN3NHhqZkVDWERWNW5ObWZDVlk2Smh0d2dRR203dHlEUjVERFFUdi92TkFr?=
- =?utf-8?B?cUlRMmJmOUV6VUlIQ091RUtZTVIvODhRZmZtdm1ub3pYZXFBQmlrT2d6R24z?=
- =?utf-8?B?cGM1Mjd4dS9neHA5NktqZTEwRnVIa0dHV2hzMlQreE9PcHdzcGk4MjBGcDQy?=
- =?utf-8?B?MDVuV1ArUzczT0tqbXhvMUcyZjF4bXg3VWo4VXFKNTNVNDV2WEZOVjZxQlFJ?=
- =?utf-8?B?b3N1Rm9SdDFVVVlFVWJwTGJiODRudHdlNFFJMmdyVXB1R2tVeVpuYmV1cGVC?=
- =?utf-8?B?WGVtbURpU3RRSjZBNFl6VnZOeVdIVFFvR2R4a1BaYzUxTG5SY28xV2p0MjNj?=
- =?utf-8?B?NHkyQmg2SnhpdjNSYlVPWU4rVENMWVdHa09YZnFML29EYUgydVlkSEFFa041?=
- =?utf-8?B?UTZ2aUYzWTMxY3FuSmhla0Y2ZVJtOTI0eE9BbmZydlQ4NG1QOVVCN3NwNjVZ?=
- =?utf-8?B?OXVTdEFZVkZOMG4zQ3FCMjVZZkdycG1aVExZOUliTml6ZndxQU0rdVdHN3U2?=
- =?utf-8?B?cTIyMm53dW8xMjZKOGFzb0RmQ3dXb20wTDBRNk8wa0dWcTR5bWlRbXBjUEl6?=
- =?utf-8?B?YWlPL2hiWXltbzErQkhQdVcyY0R2bGhSWGpnS2g0U2ROUWU5aXg1eFBBdzZr?=
- =?utf-8?Q?PhzoJyfLU8Em6FhPFq?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2931dcc0-15d8-45ab-5b70-08de52c6a38c
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB8643.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 17:10:23.7334
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yYaS3hud+K/oemDarXimfzt8BmDARD36DBFr82jS+KeYuDT0PR/UaV2QMTeg3D4873MkiS3iwid072CYhO9BAQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5814
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 85qobz4a3yfnmhhhgxrqi46i5jci5ibx
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 69CA78000D
-X-Stat-Signature: 4qmqmhuabqo8p6t3jju9gx7zyb33miwo
-X-HE-Tag: 1768324229-148170
-X-HE-Meta: U2FsdGVkX18NFMe++/75BX3JTXK+V4PjTiNL+n/A6dFY5L6JGrwWub/HYXXb3clCTsuCi7y3A9JngrmY9cdux3MK8Hhu113dwbarThGrqFA63FJ8IbJ6+OCVF2Jrbhkk/sdZdxDpoWRBzklysXD2+SUmlytjZIxeW1K0BzCQIhkWRwgrDuh6/OeVwVxg2pusrdZAmvmqxrYBCBDCudPFYmkMadeQEgMhKPunhM/LM+OVQBGuDYwA2DVNshX5nVfwjqcHNUUICtWmT1OngKjDNMUqnlttEogQLIsVrSy2Mrr/psQfB8wJH7Lpee2cyNvFOt8VqI8eVGK7uLsWkTB/eamhuN0PpwZkDEwGFsg3RKCpJNwlR2Y7bycW5TIlMr3q92QgHTgatfmGRMhvFXyU95kQ88M7jtNm4eShmL4gFAnq7k2qnBmdqrHQCcPupeEctRyw1oSK3Yf8s3GrxVv0G8ttPBEW2WrZ4d1hIHZtPLoMxqV/fLsNs4EfUDcKDonkPgYDMk6rUxbE3JDxA92ExjZGgojRGbTpkyJO4hFrOB4Tikh/QW9GO9VycR1ET5kxqNn3KM0ppxVpbO45SJNO4wqjeVasdUvhtYzG8YR7x2wFgzTri1cKtF7+MBHHxOUpvnKPE8cyKFwtAnaQ4BNKVJ/JDkq2qnxatZOA2stm/AsMNakdNzwwa5NJn6DoqdgzxDRRgd7DdQYlAQhBDnuB+v+OzmeaDyXlp4jZmyyUIoU2BNZEmuuXwydqTe60dbCmmkoi6blAsm1Glg4fWgqPSYvcim19q41oXt70Kos1ckO7EFbB8X4CX//pjA9ObHhix5TRm30LMEevT9YDEHD/AyvN8UxPxCBcJnnKBV7LU2BaeXGtYen+fLyDiIGIjVheBVr3kttfA6q/n+FN1JV3EpUwfFaG4sa/4KW6hLFX1KOdoRjgj3LtW/mHuxndcFjgAZ19yQItR+WH9K+lpq1
- mWCEYaqY
- 8kRT/c2OXvHEpOE0nyn3IjDraPACMvTyGlxiXKXhGh8WOnuKG+MRGliyP+dgA3gF7xBHfGU+Pkn/XseMrqpXKySfMEF3wXKI/bV8SZluqPcT0t09liwkL0BFWeuP9RODOtpZuecosS2WsLUL3Mu6D9epf+TGoXiFc+FTbrQeyuCy4rqZZbKckdODEZt34iIGsQ3z3ZwxTBFJp+JQ5BpOcgNs5BsgiOVxHMBtzJ3RXvUNydUE+5Kd9GInBF+/GOWWUnAhcQiTOCuNifri9ZfV4FvIA/AiRMhbp3scVI9k/bvokNBRMZ63RfI2E0B3z6muQmmjZUIvzFY6KV6teKX8jV+I/XsgEwt/X3PCmpkniXItDRzauucJKjDP0Qpao/EoyV6UaigU17sFw57qJ0SGYI5g2/mbQo0Eu05OxT6/V9U9uIqVIx6mJgCUkRjb4m0HHJ0EL1otlIzYYsztfwwukGzxk/jHREzXOUOJAHQGAWGFG01TEWXFNr4hNQGan2/LVzcL2Q51v2GDCO3MWwgCTrSMSmT/IV0dgxG9BHckQNfPj4b+KC2onHHF6vVRSFAJMZeoeAhewk51PcVRdBY0/7kd0Pl9F8MLdsUmN
+X-Rspamd-Queue-Id: 4F11A40010
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768325552-151382
+X-HE-Meta: U2FsdGVkX19dTTFP7+Mpfct69G6rMfxEga2srueygQahIBBAm6MJwF+mFW58osWMrNxzVxUKm29lnc5HE1AozFkHHZLAre9D9vYdm/cq0n6qMGJ89KcH6cwYrerbAwTvrOdM4aDVfbg4bpgtcXZhiYkaQZlA+mEdCy6+B9Xqb0HRbbctR6e3Ai+D5pr2xJxEXLb0B3HZBzZeMBZCqfmZFXpQrSKfH529Qnk5wMwRNZqebZ9Vh46JRLpI2WARR+RQw4ix8m2vuXU9SJoLuKEo06RsPywEJsYT55/fxfkcrUOn/bihzzUc05p/Y4kKzmBr8d2iH3NkW6WL2L/0VCBsrt4Yl5OH/qxt4in1cXCIoJEbZmqNroxv77rtQ78K0EsqjM+xJWrE3xrf8aO89izMugAx6KZHIsTHlZOHrai/KSzPDI8cLNKNF6ZVKL3O3ZYhF/Uj+6b0yjIqDPHgWY9W8EYmEeYFKah63R1Z4hx50NZU6mjmwL5T1HI7SNFizoo8vF1OOPoQ+6AKqfr3WOR5iUrzaf6oHBZX7EBReiSVOte/2ujUSwEq4npx/67HuriGE/5QwOkpnzbcshxhAFpz89Z+XghjcT/+BMEoma0x1TabVj0ExSRx0E2howBZwMwylAaxmj7yZcazocosn2hlEaUdNMlBdw6WWEDSuYx+BdNzwqaoQEVQNq7AzVaYkEG3UNGy9ACr1MvFISlM3mgiACHM3hnXcQtWgQUqTurrIxzZqDztHa/iKzIbfMTom62VdbvNkEzaFiebetL7Wh48jfZ0aSkCpYA2lhMt/I2DxhkbNqec2sD3gWNBWVOnpjl/RGBcT6dPwPJb+sPV/fh9ce1P/Q6rJ2L0h8qn+8LMaTKqPV3UDDUN9ItdRfV6sRKdNgYfOMpvW0sFU4hrUj0OfD6R7Nifqgul0qzLtnA4dtxV1VJqz7V4RHrCbVAXEq8uKCs3l5I4bVMJlgrH457
+ BnoFsU4R
+ 5fouqueLArYGokMpN1CvqJbndPaFFLsfW2YmlgeZLvLfs3Z3XhXuFEJq7P1sZ2u6ywTLYEhv9ZODgBw97uuwKISGTnnBGT5A6Pdv2aWuAqgwh7qX39SWwH3VL3ZCrk34OAlvHmjh9oYxRQhwcdVXanpG0WWyYjxLzPiuS5tXkqbHkOOPbHqase8A+9d6FSb8WgQbqCWW3koo6M052pNDJiXdikFg9dsWdjm6wpratPihMmD1k04lwmV7+PU6WrotvTDgxcmAU9w+GuDk5mHpM2nD7YB/p/ZvzFzOnktZCTC42F2rcPCXlu14rFwK5oHxGJBcU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -205,47 +90,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2026-01-13 at 02:21:07 +0100, Andrey Konovalov wrote:
+>On Mon, Jan 12, 2026 at 6:27=E2=80=AFPM Maciej Wieczor-Retman
+><m.wieczorretman@pm.me> wrote:
+>>
+>> From: Samuel Holland <samuel.holland@sifive.com>
+>> diff --git a/arch/x86/include/asm/kasan-tags.h b/arch/x86/include/asm/ka=
+san-tags.h
+>> new file mode 100644
+>> index 000000000000..68ba385bc75c
+>> --- /dev/null
+>> +++ b/arch/x86/include/asm/kasan-tags.h
+>> @@ -0,0 +1,9 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +#ifndef __ASM_KASAN_TAGS_H
+>> +#define __ASM_KASAN_TAGS_H
+>> +
+>> +#define KASAN_TAG_KERNEL       0xF /* native kernel pointers tag */
+>
+>One thing that stood out to me here was that for x86, KASAN_TAG_KERNEL
+>is defined as a 4-bit value (0xF). Which makes sense, as
+>KASAN_TAG_WIDTH =3D=3D 4.
+>
+>But for arm64, KASAN_TAG_KERNEL and others are defined as 8-bit values
+>(0xFF, etc.), even though for HW_TAGS, KASAN_TAG_WIDTH is also =3D=3D 4
+>and only the lower 4 bits of these values define the tags.
+>
+>This happens to work out: for HW_TAGS, __tag_set resets the top byte
+>but then uses the given value as is, so the higher 4 bits gets set to
+>0xF and the lower set to the tag. And for saving/restoring the tag in
+>page->flags, everything also works, as we only store the meaningful
+>lower 4 bits in flags, and restore the higher 0xF when doing ^ 0xFF.
+>
+>But this is not related to this series: I think the way x86 defines
+>KASAN_TAG_KERNEL to be 0xF makes sense; we might just need to clean up
+>the arm64 implementation at some point.
+>
 
+I suppose while there is only one such mode that stands out from the other =
+two
+there is little hint as to what should be generalized. As you said so far t=
+his
+scheme we have works - altough it is somewhat convoluted.
 
-On 1/13/2026 4:28 AM, Kiryl Shutsemau wrote:
-> On Mon, Jan 12, 2026 at 02:23:00PM -0600, Pratik R. Sampat wrote:
->> Transition memory to the shared state during a hot-remove operation so
->> that it can be re-used by the hypervisor. This also applies when memory
->> is intended to be hotplugged back in later, as those pages will need to
->> be re-accepted after crossing the trust boundary.
-> 
-> Hm. What happens when we hot-remove memory that was there at the boot
-> and there's bitmap space for it?
-> 
+One thing I was thinking of was cleaning up all the #ifdefs for different m=
+odes
+into a more ordered structure. I think there are ~24 ifdefs in mm/kasan.h a=
+nd
+include/linux/kasan.h and many of them could potentially be merged.
 
-While hotplug ranges gotten from SRAT don't seem to overlap with the
-conventional ranges in the unaccepted table, EFI_MEMORY_HOT_PLUGGABLE
-attribute could indicate boot time memory that could be hot-removed. I
-could potentially unset the bitmap first, if the bit exists and then
-unaccept.
+...
+>
+>Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
 
-Similarly, I could also check if the bitmap is large enough to set the
-bit before I call arch_accept_memory() (This may not really be needed 
-though).
+Thanks :)
 
-> Also, I'm not sure why it is needed. At least in TDX case, VMM can pull
-> the memory from under guest at any time without a warning. Coverting
-> memory to shared shouldn't make a difference as along as re-adding the
-> same GPA range triggers accept.
-> 
-
-That makes sense. The only scenario where we could run into trouble on
-SNP platforms is when we redo a qemu device_add after a device_del
-without first removing the memory object entirely since same-state
-transitions result in guest termination.
-
-This means we must always follow a device_del with an object_del on
-removal. Otherwise, the onus would then be on the VMM to transition
-the memory back to shared before re-adding it to the guest.
-
-However, if this flow is not a concern to begin with then I could
-probably just drop this patch?
-
---Pratik
+--=20
+Kind regards
+Maciej Wiecz=C3=B3r-Retman
 
 
