@@ -4,138 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACE79D2D0E8
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:44:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA70AD2D0EA
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:46:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA26D6B008A; Tue, 13 Jan 2026 07:44:50 -0500 (EST)
+	id 1AE306B008A; Tue, 13 Jan 2026 07:46:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8CF06B008C; Tue, 13 Jan 2026 07:44:50 -0500 (EST)
+	id 15CB96B008C; Tue, 13 Jan 2026 07:46:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B794E6B0092; Tue, 13 Jan 2026 07:44:50 -0500 (EST)
+	id 0316F6B0092; Tue, 13 Jan 2026 07:46:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A89AA6B008A
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:44:50 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 75FC71A0117
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:44:50 +0000 (UTC)
-X-FDA: 84326909940.26.9C22F5C
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 035A6C0003
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:44:47 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K67Cdn3S;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zxU1APvI;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K67Cdn3S;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zxU1APvI;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768308288; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E16786B008A
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:46:47 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADCDBB2E40
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:46:47 +0000 (UTC)
+X-FDA: 84326914854.28.E7B2E75
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D3B341C0006
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:46:45 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ky0rmUo6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768308405; a=rsa-sha256;
 	cv=none;
-	b=7BDmePI9guP/uZ/0Up3+zhx9Uo7r5t6D6Mqn0eY37LeVuR+7fUNMHKYAwW0J3kDzPSXJJd
-	/zhsOGiGQZJjNfoL6GMqj2rqSg/C/ASWPxUEiLney2eoc95D2jejGcCrPXrETsCBcldQ//
-	CZu+9g1D5LqKCKK47uGOU7/5eyqhLJo=
+	b=foPZKLhXHxbA5nl4SwapXr8hh9/mubdBkTyW8AgZZkfGxxfryQKm5VdgmV3Zr7T3dcpBo9
+	x1bfdFo/Sk+PSBVkbkp9CUmGl927XBH0WW0q+4mMG/v9xEBiRG64BjDj+Wme+9LyUcut0g
+	/+m8AZqicMJYOee2oyyb9akbg1nmxmI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K67Cdn3S;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zxU1APvI;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K67Cdn3S;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zxU1APvI;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ky0rmUo6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768308288;
+	s=arc-20220608; t=1768308405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3BYnIltIsPKs/CGQ9ft9ry0PJhQG3lj+kfXFjWwd6nw=;
-	b=R54SB0kLq8GWmaEh8gOQEcmmk7ZIE703yxF6BPYp0XIzfiZkaNIbao2F88iwD+h9TPX7sm
-	LffpbSOeg4wyYd37jo0+FiJ+gxSdlDd2LmhC+7jzaT2qjtj4y/psd7U2MPz0mCpbjEoZpM
-	HWwwv1QFZ5zDWcbcZuSF7ibvMgVHosg=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0673433684;
-	Tue, 13 Jan 2026 12:44:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768308286; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3BYnIltIsPKs/CGQ9ft9ry0PJhQG3lj+kfXFjWwd6nw=;
-	b=K67Cdn3SOUv93HIrhrEBLx0e+jAmt+RUP97YzIXJfiMe6OR1Zscg+Bv2oc3sW7TJGVdmhx
-	xpxoaaBJvhSslfTef2nQYfmO8cjGfob6+nPw8GLzPJ9Z95ZLLcrTpmd0b+lIgvNIqsmFgu
-	39HnI9uLTyB+Syha7Lmh7gj6dcdSKGg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768308286;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3BYnIltIsPKs/CGQ9ft9ry0PJhQG3lj+kfXFjWwd6nw=;
-	b=zxU1APvIwO0MBG6S8o6DMZwyJWL1DB6GEtq8WkKNZhXWC2qQ7Y1fvrOXt5fVdsU46gdlUk
-	UWXWXL4cR10h93DQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768308286; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3BYnIltIsPKs/CGQ9ft9ry0PJhQG3lj+kfXFjWwd6nw=;
-	b=K67Cdn3SOUv93HIrhrEBLx0e+jAmt+RUP97YzIXJfiMe6OR1Zscg+Bv2oc3sW7TJGVdmhx
-	xpxoaaBJvhSslfTef2nQYfmO8cjGfob6+nPw8GLzPJ9Z95ZLLcrTpmd0b+lIgvNIqsmFgu
-	39HnI9uLTyB+Syha7Lmh7gj6dcdSKGg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768308286;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3BYnIltIsPKs/CGQ9ft9ry0PJhQG3lj+kfXFjWwd6nw=;
-	b=zxU1APvIwO0MBG6S8o6DMZwyJWL1DB6GEtq8WkKNZhXWC2qQ7Y1fvrOXt5fVdsU46gdlUk
-	UWXWXL4cR10h93DQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E3C6B3EA63;
-	Tue, 13 Jan 2026 12:44:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GX5lNz0+ZmnoZAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 13 Jan 2026 12:44:45 +0000
-Message-ID: <2cdff2ed-a45d-47e9-94ef-f8ecd178bbae@suse.cz>
-Date: Tue, 13 Jan 2026 13:44:45 +0100
+	bh=+eHj6eu8QUIhQT3379yD0LS4ETiuNh0tW9nXgScZlK4=;
+	b=5ib8D89uJCks9frqEOlciaHCQr095p5mRh8By0M50W26ClNk3jk6Oo9pq91QlvJi1wWc4U
+	33pbJoHLGLHPMm94Y4b+z3Cn6EWXVOHe+Y2R4X1C0L7FhvvEGKvP1go5uEKUZ2axlx0hwB
+	Tg2VvQexMwn3QQeaWlrqsoOybJnSj0w=
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-79088484065so75092047b3.1
+        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:46:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768308405; x=1768913205; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+eHj6eu8QUIhQT3379yD0LS4ETiuNh0tW9nXgScZlK4=;
+        b=ky0rmUo65ZhMO93b/I2I3JSm8F1BG5aDxmxmbdSLKL+PjdG4gbUkoYuFUbjU+rfLQZ
+         3TyczRnaft/RUrTsR/j6xDgoYlJt/Hu7WgoHgJuTT18eAXjwk3rammhniavZ9ZlOUfl5
+         xNYFlBJv8rRFT62Z7CaVrBJ0LF1S46SVzYS+BUZMEFXBKOrdSED5nUs9qbRb3XzJKWcG
+         ZrWDm66sMWiQwOCEvXsNUCegv+rFY9FHOWUKjpKkhVzcS6hNgP1BKjkKgomVLeQTZhds
+         hYJbDp4vyHY0aHPyHs4gxYOWYG5FLzh694EKz9Fg2R7s+QC/tuo5osmbIwVrCaXP52jO
+         BmxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768308405; x=1768913205;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+eHj6eu8QUIhQT3379yD0LS4ETiuNh0tW9nXgScZlK4=;
+        b=kz+P1NVkrEOrKtfdwFxe+frJlxHqbpxJkaQyF07/feFJ4mhEIbAEfxv82N95twof42
+         v4lEUaKCJhW4H1xYbNUatJBMjKSXZu+hSJ2D7OrlCKDzb/2v+YGqvatszSjYCbdweH12
+         vNArkrpdchR0vUFW2caoqWd59XaFeyCtDNcrwGe9ssHvG2sLgAJksE2YUVT+vanKqxaE
+         M7PNent4bxLlkY2kZl4xsy74XXyht1v+ovv3/L7qVn6hy0NzY64RaJL5rcVUm4UR7PP3
+         OHGlFmBzFjvxIUIj3ctUxyLaujdD1kYDZ0V2kK77XocjViSrSTwW3Ssi2FGYqEUEqCUb
+         Pb9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUTmwZethwuZwpr7trSDI0EQfuro9lRYB7NrSXrfxaxcrKdxnhZbg5HcsYti0JIztZCJam7JsKyZA==@kvack.org
+X-Gm-Message-State: AOJu0Yw4tjFn8bOdYIG1oDxqD/slTEYW4Ua9cUw1qposdpjXsmgGP6yy
+	Tma4Lp0bM8zVwmKgBmiTOIzzkEavx9u/yAW36ffy4boyQL9+CUZ4JaqaN2jKvrJfQvBNiP5485Y
+	/ddPbJAF9f024aCG/frRJ4ilrJo8W13A=
+X-Gm-Gg: AY/fxX4fPY8wDK6wdo2P18aScTAqDotbXaMT740OpR2imqhmEP75UrGqKeqjVF2EMYc
+	WgLgPMjHQ5vBpIwU8kla0zgHaiq9cHdJ0GkXAT4/fNMNZeMtqZ5IBwbQXR1BuzgMayvMkWMqBOY
+	BKBXyfcT2caU8DJ0z2v1I74dEgAw0P5408zBINGatW13oWDP176+mJ+i1kIugOrlRePzts2BUcb
+	qtz2j987a7xe8uIFrfmaiFY7NzNBME0CM3b7EMWNrXcr5SuqU32vasmer1UUtlXmg4RmSXO
+X-Google-Smtp-Source: AGHT+IGjXbsHaf3qaC93Qq3o81HX/9/GW9BuCGijx83kAwgsR9hZFk8J5TZfoj5N23Vb/NFJCv8eCC+OG7V6e4dx/7E=
+X-Received: by 2002:a05:690c:6209:b0:78d:6f35:bda3 with SMTP id
+ 00721157ae682-790b5829054mr422917867b3.53.1768308404771; Tue, 13 Jan 2026
+ 04:46:44 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V6 8/9] mm/slab: move [__]ksize and slab_ksize() to
- mm/slub.c
-To: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org
-Cc: andreyknvl@gmail.com, cl@gentwo.org, dvyukov@google.com,
- glider@google.com, hannes@cmpxchg.org, linux-mm@kvack.org,
- mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com,
- roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev,
- surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com,
- tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, hao.li@linux.dev
-References: <20260113061845.159790-1-harry.yoo@oracle.com>
- <20260113061845.159790-9-harry.yoo@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Content-Language: en-US
-In-Reply-To: <20260113061845.159790-9-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 035A6C0003
-X-Rspamd-Server: rspam06
-X-Stat-Signature: i67sj7uh99tccofnt5sfnizpe1xn9stt
+References: <20260113121238.11300-3-laoar.shao@gmail.com> <be08950549a97cf3a2efd077cffc767395c208807f5f65af081db9a9a9623944@mail.kernel.org>
+In-Reply-To: <be08950549a97cf3a2efd077cffc767395c208807f5f65af081db9a9a9623944@mail.kernel.org>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Tue, 13 Jan 2026 20:46:08 +0800
+X-Gm-Features: AZwV_QgV5cvSxlqXHAoUL5sRKv197J3ZXWpFD3iA2PJgz-IvQZ48HUKVYxFcyvA
+Message-ID: <CALOAHbCv7UWpPg9DK4j_xH-_DYifmjnRFyK1Cfu_Asy1L093bQ@mail.gmail.com>
+Subject: Re: [RFC PATCH bpf-next 2/3] mm: add support for bpf based numa balancing
+To: bot+bpf-ci@kernel.org
+Cc: roman.gushchin@linux.dev, inwardvessel@gmail.com, shakeel.butt@linux.dev, 
+	akpm@linux-foundation.org, ast@kernel.org, daniel@iogearbox.net, 
+	andrii@kernel.org, mkoutny@suse.com, yu.c.chen@intel.com, zhao1.liu@intel.com, 
+	bpf@vger.kernel.org, linux-mm@kvack.org, martin.lau@kernel.org, 
+	eddyz87@gmail.com, yonghong.song@linux.dev, clm@meta.com, 
+	ihor.solodrai@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D3B341C0006
+X-Stat-Signature: km9rntc3dhfphcnytjmh4sowx7pgytiw
 X-Rspam-User: 
-X-HE-Tag: 1768308287-504284
-X-HE-Meta: U2FsdGVkX1+wAfJrNd37KVxN66InQd/H9H2M5LcIkW63CYVsRwzF4uX9SomXxDfd3r+Uq4iY3dM4Bu389ysUN1MGlX4hDKPVWt9K1WbKYwlK00co6rM0hub1x7BJdqKJR8XB9MJkzwyyDggBcEnRVqk0wEBWuEPs7llrTax4V1fOTU31jigjJ3lhtXePVeVRfbLwzLOFE07GUQFvv5IgBpUEgRdnbUOufIHUBiRNgEGuiMSwGRexW+HfhA497nDfELGTdFhHQcsWkU1ykXiZ555LYTnw/FRFUTKnYWw0FEuX4PkZ5ziPHMtW6gfKlxVhqVu/kfbBQCpQ60iVxyj6+9NvjmlKU6EhG0qByReY8mRRTl83dVKSXgU9YeBicgoZrYhGDOabtaHjoiah3AEN6Tfg8tg3HvYsAzCN0J9mHQ+mruXa8O+hJb70J1rxkXk3QE4jlC9NvZk4ogqDMRKIPut8ju+PKKeDJ8T69y32idZQVS2EAI/NeUgZSrb2+U3GRYVNjSHLgqEjz2J6M/W6U8RTiQjwcLl86B3ClGMEe1KdjsGHJd3zNifammSjj9MHMquEIca7cO6XVaR+OuDGLJRNPt5L15ydH4z7+z6qPLoB0Ln9q/Q6I7tr1M8smt0Ym4QiM9EhIkoyVKhp9h0vfdCm/TApCmLMjAyilQFXF2k4w8XnCvPQd1V9MC6A0HSAXPzEgq+I5ptlksdBoQgtDr61sJ56UWLkNT9aEW/RkzhmzPXPBOxiMNWpeOcmWnMTY58WK9RxXwW3XmruijSqWDfaUOYyzcRHK5ekJAXSay2rNlXxrpKB7OeR3IMQMdvrcBs9K6iZ8gsod3Pr6/rGnYNRIyO6VuJ+c0Tz7wMCD2k2p23J2+CbbBciVDnXrL4tC7pJTNiWBVgG4r/AOyAeC4qeN5fiPeL/7VXNp2Q2wBsduUERT5YumoaGpevWRdiN0JA/lK9lwA3/8MfL8/k
- mRqsMe67
- GJffvrSA1+HgPmGhBQhrZhAx+8pP2AluOJ4SmnnoAdH8iBr67NfucDKK0byNo8owaV0yl5KBKL8NcPbn+h2ZbNRNUSNs1SpumDTFfGreA1k0HhlsPCoKgW3PBDukwoT6zkTrDk5EzolxIX/YaK7lfTfpT8dtHz+czywWsx5r1Vrps3xoFdo7LpY3Y5GSAI8epROFub4+Gh7+R0+LxB2FiaCN5U97uIQxDK+uT44PZhgQ+cFbihERRmTFi1PNpx8pA3dF31r9Ryw87Lth96CvEf2BbxiUvc8LfWICP+Ag7Yo5C+gwGR6M6yhJ8SMnOdEd+3WQ1oMw2MH0krfTl8+cQkL+s75k8qRBiEhtRQSEzO9AYsgw98LcGVX68hrJYsITDt3nh0socYGVLy60vi3r3QIdArsMJ4a8hvB06ky8BNpfk7hs=
+X-HE-Tag: 1768308405-895120
+X-HE-Meta: U2FsdGVkX19UXNCJVWK76d4ewsG9fsIIPod4fLxpUVt3xRK19G+bsT1ryAu3PbhXiWxngwc4i5JFAmD8UOPEhQcthxfAdLVAlKTrZF9q1VoeEK1Z73ZJjn8rYBexljUe20GCgBG5gYDxJrhRPheqOGFNDXgyexpfOeEO6dF97qEmQI9pEsrIOA8t6toE5cHdpDMkHF9BzTmHxfgCYsfAT33T664bEiFTr1KYR3ZRrFl52vTLPgwCn7GtVawh0CmTMM+8CCcQ5t2A5Qag3i+o2UXyrx/5qFM4leeLoCm5sXFW3dpNItiBx32DNX/PLV2fG9OjjF7J3kGxCe4GRj14nInV6JmjAcw+pfebfrn8f67CyiSMVUa4ue+ZYpegrp6gAycSdUzvn/rHSG+o5aQ9KKBYcvzKBb7dcSrQH/LB5El2cf1Gyjap70Hs2NgfRamtSNoPm0fZjkn7+H6bWVn5rem9LGvxB+FUtRn21kWlZhWEtFToGtCpvu6cvdvwg1t5tBTihh6ocYS0UGKRbd3oGKAM3YxQ1Pau9jsBYYnaVk6ChbRMj+YgJNeBTNG71ZTcCkUPuAvCEA27jAOY0lY3P7XLFs994KjdhUS5PspYQ2uZ+JcsBx7j/TaV+fqtgXciZfMxFjIkMzOs2udMBrduWrF/vDGZyVe82LOMjDFmtRW+1JsVkTzEjzJNhYl7+8B/MK7WtshP+x0Jooy5sWnD+f73AdUVvsXUxOtJnwpTI0zTKU8aMGrGMb0NTGHkLuqGXa/pJAIw2SESxZz+vx+qZa2peHW7jDVZx7qN2SBXDfgsyArF3vwkXorGvFRbZf2XYnxIlhY0v3YCZvS35JCBTGlBjPAwIJBHTllk0ThKVEDt/8F5eF6uzcPLQNvHf5bGKS019q0/p9hBlWmxCtchyTmsdZdk8TNV6qZn3GKyB0FGeL9MSl88JQ3YTmYp7lESa2Pg5ge1c8KXvd2qo9n
+ OetXIawM
+ LjlmCerboP73GBTYxeXp40e3Ukzb3jokfrEqgzLCOE91fGB7nWujaiKRDhVlVqCGYUa/9L69fOIFT1dBdqVGLCTZnh8aawy+v+3U+33V0iTfJoqdxclUM8al8d0tQYmix7heYL3Wz7GuBBJYMNb5kvNEpS6xZ5Z87+A+RDhKr/IFMd7u89+bsceuQe0wZdPeSSTiLc8F77r9s7Y84GfnP4VFmZd2YcWV88JZYn0BUQhRp+PbxVk/DuSV8lW+r/YcKWfVxdDDfvEi+j9eZKBekie4gpdw5cD1nHasKTnB9zUxk5pIfTm6p8N1FIeI8eiOa8Y+si4de1HK80ForYtPJpQw3HDs+bRIBgpuvdK+ff6MFu2upmzITBv9dGO3DT3gD5BeCFXQHP/TQa4iPIxXHUCrnGO1r6YhdSgLXfcqLAYR594eZSv3yYb5faSGcxq6xE0wVKpDHwTtrs7v5kWDNf4HzqCjqHCAOA0OXqT6yefXlesY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,76 +120,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/13/26 7:18 AM, Harry Yoo wrote:
-> To access SLUB's internal implementation details beyond cache flags in
-> ksize(), move __ksize(), ksize(), and slab_ksize() to mm/slub.c.
-> 
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  mm/slab.h        | 25 --------------
->  mm/slab_common.c | 61 ----------------------------------
->  mm/slub.c        | 86 ++++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 86 insertions(+), 86 deletions(-)
-> 
-> diff --git a/mm/slab.h b/mm/slab.h
-> index 5176c762ec7c..957586d68b3c 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -665,31 +665,6 @@ void kvfree_rcu_cb(struct rcu_head *head);
->  
->  size_t __ksize(const void *objp);
->  
-> -static inline size_t slab_ksize(const struct kmem_cache *s)
-> -{
-> -#ifdef CONFIG_SLUB_DEBUG
-> -	/*
-> -	 * Debugging requires use of the padding between object
-> -	 * and whatever may come after it.
-> -	 */
-> -	if (s->flags & (SLAB_RED_ZONE | SLAB_POISON))
-> -		return s->object_size;
-> -#endif
-> -	if (s->flags & SLAB_KASAN)
-> -		return s->object_size;
-> -	/*
-> -	 * If we have the need to store the freelist pointer
-> -	 * back there or track user information then we can
-> -	 * only use the space before that information.
-> -	 */
-> -	if (s->flags & (SLAB_TYPESAFE_BY_RCU | SLAB_STORE_USER))
-> -		return s->inuse;
-> -	/*
-> -	 * Else we can use all the padding etc for the allocation
-> -	 */
-> -	return s->size;
-> -}
-> -
->  static inline unsigned int large_kmalloc_order(const struct page *page)
->  {
->  	return page[1].flags.f & 0xff;
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index c4cf9ed2ec92..aed91fd6fd10 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -983,43 +983,6 @@ void __init create_kmalloc_caches(void)
->  						       0, SLAB_NO_MERGE, NULL);
->  }
->  
-> -/**
-> - * __ksize -- Report full size of underlying allocation
-> - * @object: pointer to the object
-> - *
-> - * This should only be used internally to query the true size of allocations.
-> - * It is not meant to be a way to discover the usable size of an allocation
-> - * after the fact. Instead, use kmalloc_size_roundup(). Using memory beyond
-> - * the originally requested allocation size may trigger KASAN, UBSAN_BOUNDS,
-> - * and/or FORTIFY_SOURCE.
-> - *
-> - * Return: size of the actual memory used by @object in bytes
-> - */
-> -size_t __ksize(const void *object)
+On Tue, Jan 13, 2026 at 8:29=E2=80=AFPM <bot+bpf-ci@kernel.org> wrote:
+>
+> > diff --git a/mm/Makefile b/mm/Makefile
+> > index bf46fe31dc14..c2b887491f09 100644
+>
+> [ ... ]
+>
+> > @@ -107,8 +107,13 @@ ifdef CONFIG_SWAP
+> >  obj-$(CONFIG_MEMCG) +=3D swap_cgroup.o
+> >  endif
+> >  ifdef CONFIG_BPF_SYSCALL
+> > +ifdef CONFIG_NUMA_BALANCING
+> >  obj-$(CONFIG_MEMCG) +=3D bpf_memcontrol.o
+> >  endif
+> > +endif
+> > +ifdef CONFIG_BPF_SYSCALL
+> > +obj-$(CONFIG_MEMCG) +=3D bpf_numa_balancing.o
+> > +endif
+>
+> Should bpf_numa_balancing.o also require CONFIG_SHRINKER_DEBUG? The code
+> calls mem_cgroup_get_from_ino() which is only defined when
+> CONFIG_SHRINKER_DEBUG is enabled. Without it, compilation will fail due t=
+o
+> an undefined reference.
 
-Think it could be also static and not in slab.h? I'll make that change
-locally.
+Yes, this functionality depends on CONFIG_SHRINKER_DEBUG.
+If this patchset is accepted, it will be merged after Roman's series
+[0] since it has additional dependencies on that work. This explains
+why CONFIG_SHRINKER_DEBUG is not added here.
 
+[0]. https://lore.kernel.org/bpf/20251027231727.472628-5-roman.gushchin@lin=
+ux.dev/
+
+>
+> Also, should it require CONFIG_NUMA_BALANCING? Without that config option=
+,
+> task_numab_enabled() returns false unconditionally, so the BPF hook would
+> never be invoked even if a program is attached.
+
+will fix it.
+
+>
+> > diff --git a/mm/bpf_numa_balancing.c b/mm/bpf_numa_balancing.c
+> > new file mode 100644
+> > index 000000000000..aac4eec7c6ba
+> > --- /dev/null
+> > +++ b/mm/bpf_numa_balancing.c
+>
+> [ ... ]
+>
+> > +static int bpf_numab_reg(void *kdata, struct bpf_link *link)
+> > +{
+> > +     struct bpf_numab_ops *ops =3D kdata;
+> > +     struct mem_cgroup *memcg;
+> > +     int err =3D 0;
+> > +
+> > +     /* Only the link mode is supported. */
+> > +     if (!link)
+> > +             return -EOPNOTSUPP;
+> > +
+> > +     /* Depends on CONFIG_SHRINKER_DEBUG */
+> > +     memcg =3D mem_cgroup_get_from_ino(ops->cgroup_id);
+> > +     if (!memcg || IS_ERR(memcg))
+> > +             return -ENOENT;
+> > +
+> > +     spin_lock(&numab_ops_lock);
+> > +     /* Each memory cgroup can have at most one attached BPF program t=
+o ensure
+> > +      * exclusive control and avoid interference between different BPF=
+ policies.
+> > +      */
+> > +     if (rcu_access_pointer(memcg->bpf_numab)) {
+> > +             err =3D -EBUSY;
+> > +             goto out;
+> > +     }
+> > +     rcu_assign_pointer(memcg->bpf_numab, ops);
+> > +     spin_unlock(&numab_ops_lock);
+> > +     static_branch_inc(&bpf_numab_enabled_key);
+> > +
+> > +out:
+> > +     mem_cgroup_put(memcg);
+> > +     return err;
+> > +}
+>
+> When rcu_access_pointer(memcg->bpf_numab) is non-NULL, the code sets err
+> to -EBUSY and jumps to out:, but this bypasses the spin_unlock(). Is the
+> spinlock left held when returning -EBUSY?
+
+Nice catch!
+
+>
+> > +static void bpf_numab_unreg(void *kdata, struct bpf_link *link)
+> > +{
+> > +     struct bpf_numab_ops *ops =3D kdata;
+> > +     struct mem_cgroup *memcg;
+> > +
+> > +     memcg =3D mem_cgroup_get_from_ino(ops->cgroup_id);
+> > +     if (!memcg)
+> > +             return;
+>
+> mem_cgroup_get_from_ino() returns ERR_PTR() on failure, not NULL. If the
+> cgroup was deleted between reg and unreg, this function would get an
+> ERR_PTR value, the if (!memcg) check would pass, and then
+> rcu_access_pointer(memcg->bpf_numab) would dereference an invalid pointer=
+.
+> Should this check be if (!memcg || IS_ERR(memcg)) like in bpf_numab_reg()=
+?
+>
+> Also, mem_cgroup_get_from_ino() takes a reference on the memcg via
+> cgroup_get_e_css(). Where is the corresponding mem_cgroup_put() call?
+> The function appears to leak the memcg reference on all paths.
+
+Nice catch.
+will fix it.
+
+>
+> > +     spin_lock(&numab_ops_lock);
+> > +     if (!rcu_access_pointer(memcg->bpf_numab)) {
+> > +             spin_unlock(&numab_ops_lock);
+> > +             return;
+> > +     }
+> > +     rcu_replace_pointer(memcg->bpf_numab, NULL, lockdep_is_held(&numa=
+b_ops_lock));
+> > +     spin_unlock(&numab_ops_lock);
+> > +     static_branch_dec(&bpf_numab_enabled_key);
+> > +     synchronize_rcu();
+> > +}
+> > +
+> > +static int bpf_numab_update(void *kdata, void *old_kdata, struct bpf_l=
+ink *link)
+> > +{
+> > +     struct bpf_numab_ops *ops =3D kdata;
+> > +     struct mem_cgroup *memcg;
+> > +
+> > +     memcg =3D mem_cgroup_get_from_ino(ops->cgroup_id);
+> > +     if (!memcg)
+> > +             return -EINVAL;
+>
+> Same two issues as bpf_numab_unreg(): the check should handle ERR_PTR()
+> values, and there appears to be no mem_cgroup_put() to release the
+> reference taken by mem_cgroup_get_from_ino().
+
+Thanks for your review.
+You are awesome!
+
+--=20
+Regards
+Yafang
 
