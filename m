@@ -4,121 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E746D29DF3
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 09:42:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B4F3D29DF3
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 09:42:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D663C6B0005; Tue, 13 Jan 2026 04:42:32 -0500 (EST)
+	id CAE7E6B0089; Tue, 13 Jan 2026 04:42:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D14366B0089; Tue, 13 Jan 2026 04:42:32 -0500 (EST)
+	id C622E6B008A; Tue, 13 Jan 2026 04:42:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C13EB6B008A; Tue, 13 Jan 2026 04:42:32 -0500 (EST)
+	id B8F8E6B008C; Tue, 13 Jan 2026 04:42:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B16D96B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:42:32 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 510ADB71F1
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:42:32 +0000 (UTC)
-X-FDA: 84326450544.02.068ECBE
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 32B881C0013
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:42:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=amaCJM7Q;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768297350; a=rsa-sha256;
-	cv=none;
-	b=Y1hzwK7751BgOWkHsKusCHsanRmR+xCoGq0Z5N9XRmAd+PH412WQcKe78N65YRkrZR8Nt2
-	3tVw/VUmXI7dUHXpC/imLG56S+4VECpvscIGfkW+5bwu0UiB+X1aCrnVcT6w61sdsCGAev
-	kpVyuGqpmKWRMpsjPoGCdoQm9nF9G4U=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=amaCJM7Q;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AAC156B0089
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:42:44 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 69AFCB7014
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:42:44 +0000 (UTC)
+X-FDA: 84326451048.14.25FE9CA
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E109C160004
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:42:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=X+tPcfdi;
+	spf=pass (imf08.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768297350;
+	s=arc-20220608; t=1768297362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qWi0gxImcfe6sPFx7hTgeNf8sv4DbP5sxUz/myXx3jk=;
-	b=0q7jwPoWyaWgFbaloy1XQsvO8Tr4SS4w0vocYBRjRK06FZHofhnj8K/EpMC+kw3EDgrT/3
-	cORipsJc6nNVL6tvER2ET7DaT0TQ7d2gXyt1niDgpJLZq+h20Wh6bjrl8U6yNKVbzAHy3E
-	9twKg+2Qbq1UaHfFMyQdLNQIQWn4emA=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42fb4eeb482so4201745f8f.0
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 01:42:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768297349; x=1768902149; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qWi0gxImcfe6sPFx7hTgeNf8sv4DbP5sxUz/myXx3jk=;
-        b=amaCJM7Q0b3qNQ6pX/JafRFTHq001IpTLvjP7Bsbyf3MY01+b5QUjqEWprAOcQ0lp7
-         sNn7APs1isUrSqfgEwLUyKB7GmKRzB1DKdpL2AgDc4f8S0lMFqQg2WYJyO39dUK+znc2
-         abPgPMck4v6LwG9LsbBSaAHZDIyzlHxrg9PFVKxz1uJ+AU0BY70FOKjDVakGviwHw2Pc
-         3+1Rnjq5dMd5dOWngcvv3wojc17Im/fp32MQwNRZMrqYZSgU8mvT0T3CJ8ebDI7si3mO
-         MQHwrBEFpT/ZZsuYgAUN24uF8BYVcqZ/jHWzEbGZdK1gHUzzLdSOcyhm1EvxPmVaIyKd
-         ILIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768297349; x=1768902149;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qWi0gxImcfe6sPFx7hTgeNf8sv4DbP5sxUz/myXx3jk=;
-        b=r3TmnsTDw7f4kWhK1OEDmltHFr50v24Bl3IUspPj0PPttDw15KUBVY3mHTtuXrgIi3
-         faseDeSZXhwyKT8g8mF5HWohPKJpsZupVO2YuZ8EtQrm2/SBiXrdaQJPZCV4203GjAMd
-         Mu4ulao1qAp11qw8brrdXxUN128baTs7Du+7+C0bBAAamQk9oRm0wwVB0YisWFY+hqkv
-         Xymduj7OVk/GfH6RYgcqNNtHlUrzHP62opw+9+miVHWfxovFSn3XeI7wX9unHfYlWLRU
-         zHsamQgU1h0TJ3mtfkV6S2SanactrCDzWEjplDC6TwAioQCpyWcFJfcHkCDekSoztStG
-         mngg==
-X-Forwarded-Encrypted: i=1; AJvYcCU9AkNjxdRgUsMK017WAxkn0lMLfGl/9TTGfC8fDfwg28KPa1dijLIypSh1iQRKPqEZjWPCKpr0AA==@kvack.org
-X-Gm-Message-State: AOJu0YyMxSqbY982Bv1M20iMi70U7ZSvWf+ebUg4UzdcgsNsUVmWglrM
-	C9Fao3Z2u0ztJwtoBY6Xq1CXSPLTgN3b7TNsXJfWu5F+hwCSi4pFUS3z
-X-Gm-Gg: AY/fxX5W3pKIvHXJMKqVlYVNkCOuBeFXjq/frlYrN183GbZl2ZIR+wppUE0L4X6Bc3c
-	WnskMjejheEWay48vXo4v9U98pzdCWqFdgOKMFELu8ZuKSwMJZZAp3JncssMUNlOF0rehuU+19Q
-	Dz7OoqGwmKIFaj1m2yDnbm0D6KvWElPQK8k0dhYWxXBf3SB2lyoV/5HQ87kxmedEog+CElABV+q
-	NR9j8Ol9GfntHW0JiCnsiPtf2YsK5WSj4cd9JSQbsBhZSzXunyM0wXL9ehwBVyxcgOV2S9evdYi
-	c9sm4nGWLEpMq4wxQBFfQxQtzv0IzFFH3LwqC+rfsfc3IumOH4LWkSoU8ZrAF7GFyzlesW3jEuY
-	4etT7yxE5BGJENGKmZQQpy/c423UPn1PRpmM3Y11y7uDuIql4gvvc7671uenWEuy/GSNDWP+LcB
-	Jztkfd9VifYJVMPx9MpcJo1mRIzJApLZGxUrJLq1F/RCFAZr+Z3QDV
-X-Google-Smtp-Source: AGHT+IGCluKpScy5UmgAEwir80+RNqkqkTWiXHqvvRnvopn9jhUBxHczRPNLOdlhz4XUibpj8zHkVw==
-X-Received: by 2002:a05:6000:178a:b0:430:f449:5f18 with SMTP id ffacd0b85a97d-432c37644b4mr26662191f8f.46.1768297348421;
-        Tue, 13 Jan 2026 01:42:28 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5dfa07sm43196646f8f.25.2026.01.13.01.42.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 01:42:28 -0800 (PST)
-Date: Tue, 13 Jan 2026 09:42:26 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Brian Masney <bmasney@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Alexander Viro
- <viro@zeniv.linux.org.uk>, Andreas Dilger <adilger.kernel@dilger.ca>,
- Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, Miklos
- Szeredi <miklos@szeredi.hu>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
- Theodore Ts'o <tytso@mit.edu>
-Subject: Re: [PATCH 30/44] fs: use min() or umin() instead of min_t()
-Message-ID: <20260113094226.144973b2@pumpkin>
-In-Reply-To: <aWVs2gVB418WiMVa@redhat.com>
-References: <20251119224140.8616-1-david.laight.linux@gmail.com>
-	<20251119224140.8616-31-david.laight.linux@gmail.com>
-	<aWVs2gVB418WiMVa@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	bh=qXnkmMg2/oAZnCbNIiqow5nAIHLg3mz3Z2alr4+kgjQ=;
+	b=iHQNxOXYBiHd+xSKJB2/udnmY6TGeKHFBbWq4fB5oiUBkL5ZaRD0Nv5VGPCGplR2LxXKup
+	g2XyHnlJc+PfhtI2h58Jk4VxUNFOoZAlHe9CqqO1dmrjhZkAzXX/ey/Xx16OQhACsP8uAN
+	WC33XLDzkVvBCf74d2yhGKYdsqnWfJQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=X+tPcfdi;
+	spf=pass (imf08.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768297362; a=rsa-sha256;
+	cv=none;
+	b=GBA5P3PU1GiVowSU1ntD/aiGAiNcWUWUciFTJxnEuItHMhpZ9XGlO2eiUsHF6kEIgbIS4r
+	olKNm0sr3fZZ6C/mYp/Zqm3CN8ITKMjD2uUE0QWlpbRcyg8H4tSgZTwtWp5+ZbvS+E1wnR
+	qapfuem2OKzh/2VL02rpQq1Wjiy9R4E=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4492C40E0028;
+	Tue, 13 Jan 2026 09:42:37 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 1WBtjryyNfLT; Tue, 13 Jan 2026 09:42:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1768297352; bh=qXnkmMg2/oAZnCbNIiqow5nAIHLg3mz3Z2alr4+kgjQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=X+tPcfdi8SlgWzUBumbgcHC+XGGU/e/u6BRcvik/G6x+zRHm8kciPgsZ46Q9aBZn+
+	 7oI+BJNxA6Fr9vUVFtuho0N1WAQWsuebDB7c4QbdLh9mc9INqXv0zdXZv7LWBPTwZz
+	 KcdJKo5l79MO71Q+kktxdJgfmCpQ3+havlLC0/P9c9TP1mwjddKsHN0djndoezW5Q6
+	 q5VsNOHVaeIfN0C1sYhMG7XllJwXsN6BSiUTdhj/q0V56VNw+Du33ChbbmppKZBuFV
+	 DKKuSKTVPgPi+Yy/YiSXJR6Wpub+Tz0hGTLQriLmrlVcCffclU72MXGQ48x2xQeLWz
+	 UTcuZ06rr/dVIMKoWB7lLTJGpnjZMTegPIhhd34SkQ/+q71CshIjnXW2uEx/mIvwB9
+	 iOuQyEfpfLqrAX334JyfyzGsHicQ1tgLtKpatzU120rymSQibs5e2653+9FOh40Afa
+	 6r0lr0d5Zaf9sPBpHaV04Nmdzfqvs8MegB4D1ghPxCgwUWzADlz3f4q9fhE5zSHFy1
+	 gz92Rg9U32PtH5Zf6Kj3gwIwyRNSDRSyatkOURjAq8aTsy8rrgjuLpPpjVQFwKlKuB
+	 +UhG6Subb7EVbop17MXvFvtoqXGW+CKT0yCMaamnNmuEKqIhYCYhwIQFdI7SRtfiO+
+	 rcD4o1ZgfNE1SLPkP6lncAHs=
+Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 37DF140E0194;
+	Tue, 13 Jan 2026 09:41:56 +0000 (UTC)
+Date: Tue, 13 Jan 2026 10:41:49 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: shiju.jose@huawei.com
+Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org,
+	jonathan.cameron@huawei.com, linuxarm@huawei.com,
+	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
+	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
+	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
+	gthelen@google.com, wschwartz@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com
+Subject: Re: [PATCH v14 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
+ table
+Message-ID: <20260113094149.GAaWYTXf6qH4zleOOQ@fat_crate.local>
+References: <20251209145742.297-1-shiju.jose@huawei.com>
+ <20251209145742.297-2-shiju.jose@huawei.com>
+ <20260112150552.GGaWUN0Ex8KgfqEEi5@fat_crate.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 32B881C0013
-X-Rspamd-Server: rspam06
-X-Stat-Signature: hkg9ob6ac4q9gkmipgbrit1rkjyb5x37
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260112150552.GGaWUN0Ex8KgfqEEi5@fat_crate.local>
+X-Stat-Signature: 8icdtbx5dapc717jzzf4tzbn4xfx98w1
+X-Rspamd-Queue-Id: E109C160004
 X-Rspam-User: 
-X-HE-Tag: 1768297349-316951
-X-HE-Meta: U2FsdGVkX18c91bqDyH6+hJeEWc9Vrg84iL47YOuE0J0IR3tltPwpZkVbXTXxQo27Zztjax/tOur31NjlMhpWz7Ss5+jP8mHNrGc9Ltq8hWhlQqPcHDqfhpX/ucvVzWKOo1LSEwHJWjl7VpiBtNQQMja5m+iy4PC2GFE/OdDLM1Dsq9Fbk2ntd70souNKJ+AQUIQOqvhmGdwkLIvBC9Y25OFD5v9n8W7NgZVra3BfJ5IRTiXxGst6L6wnvrIF/nnodbE6U1hiBU1hSKz4d1kNNSmzQgg2jB7EmdCUtMSWvjw3IGHlOien8eE2LIHV5Xmxs2n9HboutgTjGjOEcRRu7xHkQh7oO69+NKIwy2E1aXvJvs3qrYJy3+6kFo9RNLaIqXvlmUeHXtXRfHDFnbScW90FYhc1JVBvD+/ejc9pfoERw5qtnpXCt4NDbwvURGZt05qbS4k/JZbyMTP1Zpal+Yv7LGXrl9mGFS1DbIccziktnjTQ4yUeN94/yMFLZv2U6NH6pbK7oBzcI0whGH3BANH6Fnz2WT+1qLhrYiuuSVlWS97aJwI/757aDQsgGDP8KdLJiEyIauB9R1FaGG0izfsu/8y/QbdoVZc2IOYWmcLF1kS9gqQbi9Kk7WObJ2IbIceMD3j7T/ti5N/qHXe/DzBkfs2yy4zcu6zVoUKMRt/HJ5d+JfIe+vWfFYEA86aF0/FdVSg54rk1pvJPgwypBvgKg8ex/H1rwZEJt5oBLuGYiy7UeWcLv2rSxscYIp9cbWp0gRhIdFtiVYHbAT/ve/vPAhON7jPtLP2GhQhLPu6N79M9vuuTIWNMREtH+XH8Hxy/UWCJNpYSmrknZcWP87CUrkxLz5Ug7NPuZOn9ZmcO/4wCnKoga5eUhxNnTNzLdogE0bfp4xQyWGKpBsbTiKsmtLv5nabnLcZRQ2pt5/KlzLOMeg8fFSvmy8NlmpQ/SS0pQQFlRZPk73Xjvx
- Sue26yh5
- JPq8ZK9p5mk3zoW2XoYLE7XVzhKSVOP5chKdgq9tfK+zwOfYTOBj5VfVbEU9t+zDFQlkc2DUYpy654Khtcjg62Fy5hhFsStlrfdcncupq4MRNMw5rKetO/hhk0Clc1C9OI5Q9hM+biZZ4+Snlop8gBGaScgBJe6NyVWXRg9OVl9KPy8IGmRHofxVVDJoXM/1iCeyFlsk8J0M/4FAEZs3GsFrT4qEQ9WtOooJhQdupyclyg9q9Dp6FQ8ey8ydqRKXuMw7MI/lVuNgUStyTKBkeJ8FPbdRpH93O/NaS3sXJz5rYHuoXW64mdyMk12K0e4l52Bld5p5oJwtREiMpxHcYvQ2N2pt5uKF3OtEmOFJgalEFkPdJQboFKy5uf/y/gHVppIXiH9icgNl8a+Jx3KFOC8nylxTAWG7z3xwMFx0sWvSUCiksmzGMTAhlQoVpC1ZotN95upicJ18vRDxqZTW28/9ZE7EYWUETGRzvRaNdl7Ay9EiRHFSSVbtwt6a3jsvdH3at7v9Jhld485I=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768297361-346016
+X-HE-Meta: U2FsdGVkX193vYrVDUZbjInXmXAGxlm/DVXlvlMruFll1BF0Pd02WSYGcyXi4rR+dsX8GfGHRe0XP9yGKsm2BcQsEvRQu8H0Va2iqRYH1pPBW75FzRUjttOr0A4NMrfO8k4yz9Id2ixXCU1GlUUCncj3WbT9ZEDj5iDds26uehckJ3VfHs5WKwYctfghcmqlObGJmoRk2jXTGF6+o/ZDdxYEuhti26J7lYVByHk7AQE3h6mVJ9GPej5hSaaK4QK+IalnvfzBGDV+2pXKWuYWTJsVyG/CJTnKL2+CAJFU8Gr67WU3D2OjuHZtiz+1xjz0xp7LFjTTqmvafWStTaHqQPjFvbhwtQ2DQkL9/n0vyQzQ5S5SP3kW3nsQ8YNqwPl1VDxokcyJ6yn6wPrJhU6gxHHTozXMAJilMYkc8fES082E1vbdN3pAqboxEFb3w+PnMUBkKdKVzDOTFCh9gcEqJW6Fif0oVQJ7O4/jxMTq/z04/TAMj3oK6hUNOTLxrzMSoPCtj8McYiK8wrvbITaJMZ4h8bTzLbDwx/Izh2RgXAXZAWMgiwAdLCz/SppTlenAgUsZ6BDqp8mI5b9f3QJev3EeHjtvbkwmC7KEjqA7cHt6Oqtalr5t3goHn2wN6Fh5D+u9OqKBJUZ51BNGBbFOXzfDDkZhKjFpPAhjlaa29uCbPCnrqwdPCJ7HLIpj7Tj3lCiUtZFJfl5MeUeTdBLdFsV9smjRDe4aaVHTFU/546EH61UHhAeEf9iYsgHEQTO59f4S09V1DNDLaou1Q2ooINiGMcq6aK4NqEi/T/ohXYbaN7O1ek2Z1wlxg0LCyDm4BnfhdwhskQRoI/IoZJW65O4R9lKSCgBEC7jkxb1/II5jIGPqAbgqupMtHCwB+GFgs4HKwoA3wPjBjCeOlsx8SHIzrYXV1s0gpBrcBzjUeLnoCYMEQeHptn35zjUKBL6X3e8PkvFukXxTsn0g2Yy
+ m++te/Jj
+ 8RLw4IU8tZuWvXYHlb28NqsZr4UZ4ESMGou4KprjT8yMTYc1AlF10Yvilskw6nDXZxz1JsOHC3/nfirFYIJYBRYJYZEIkLwDQr7UTXqdkA5llFe5OWPU0ZjY4LsmLTrDdazl5pSW3fEqLqG9HC2A593dGZBxvdAjujnN9jsyuxaNFdCroWKkGSrW+LSC9rn+yoSvK8XNTUFRdn/0ALODzLIjxQFzEJ4FwI7xNEqGQlE1UnZZpHPmHrQTZI+TowOqlEZT7Y8LqNEmAHznd3QSr5nG6UwTkGEsFmaIS4vaLCAmYHAM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,97 +119,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 12 Jan 2026 16:51:22 -0500
-Brian Masney <bmasney@redhat.com> wrote:
+On Mon, Jan 12, 2026 at 04:05:52PM +0100, Borislav Petkov wrote:
+> Please go over all my review comments from here:
+> 
+> https://lore.kernel.org/r/20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local
+> 
+> and either incorporate them or say why you don't agree.
+> 
+> Ignoring them is NOT something you should do because this goes both ways.
+> 
+> Ignoring this submission now.
 
-> Hi David,
->=20
-> On Wed, Nov 19, 2025 at 10:41:26PM +0000, david.laight.linux@gmail.com wr=
-ote:
-> > From: David Laight <david.laight.linux@gmail.com>
-> >=20
-> > min_t(unsigned int, a, b) casts an 'unsigned long' to 'unsigned int'.
-> > Use min(a, b) instead as it promotes any 'unsigned int' to 'unsigned lo=
-ng'
-> > and so cannot discard significant bits.
-> >=20
-> > A couple of places need umin() because of loops like:
-> > 	nfolios =3D DIV_ROUND_UP(ret + start, PAGE_SIZE);
-> >=20
-> > 	for (i =3D 0; i < nfolios; i++) {
-> > 		struct folio *folio =3D page_folio(pages[i]);
-> > 		...
-> > 		unsigned int len =3D umin(ret, PAGE_SIZE - start);
-> > 		...
-> > 		ret -=3D len;
-> > 		...
-> > 	}
-> > where the compiler doesn't track things well enough to know that
-> > 'ret' is never negative.
-> >=20
-> > The alternate loop:
-> >         for (i =3D 0; ret > 0; i++) {
-> >                 struct folio *folio =3D page_folio(pages[i]);
-> >                 ...
-> >                 unsigned int len =3D min(ret, PAGE_SIZE - start);
-> >                 ...
-> >                 ret -=3D len;
-> >                 ...
-> >         }
-> > would be equivalent and doesn't need 'nfolios'.
-> >=20
-> > Most of the 'unsigned long' actually come from PAGE_SIZE.
-> >=20
-> > Detected by an extra check added to min_t().
-> >=20
-> > Signed-off-by: David Laight <david.laight.linux@gmail.com> =20
->=20
-> When doing a mips cross compile from an arm64 host
-> (via ARCH=3Dmips CROSS_COMPILE=3Dmips64-linux-gnu- make), the following
-> build error occurs in linux-next and goes away when I revert this
-> commit.
+I take that back - I forgot that there was an in-flight review when you sent
+your v14. Sorry.
 
-I've looked at this one before.
-I think there is another patch lurking to fix it.
+So please incorporate *all* feedback and send a new version so that I can take
+a look.
 
-> In file included from <command-line>:                                    =
-                                                          =20
-> In function =E2=80=98fuse_wr_pages=E2=80=99,                             =
-                                                                          =
-=20
->     inlined from =E2=80=98fuse_perform_write=E2=80=99 at fs/fuse/file.c:1=
-347:27:                                                                   =
-=20
-> ././include/linux/compiler_types.h:667:45: error: call to =E2=80=98__comp=
-iletime_assert_405=E2=80=99 declared with attribute error: min(((pos + len=
-=20
-> - 1) >> 12) - (pos >> 12) + 1, max_pages) signedness error               =
-                                                          =20
-...
-> fs/fuse/file.c:1326:16: note: in expansion of macro =E2=80=98min=E2=80=99
->  1326 |         return min(((pos + len - 1) >> PAGE_SHIFT) - (pos >> PAGE=
-_SHIFT) + 1,
-				max_pages);
+Thx.
 
-'len' is 'unsigned long' and the expression is unsigned on 64bit.
-But 'pos' is s64 so the expression is signed on 32bit.
-IIRC the final version might have been (equivalent to):
-	len +=3D pos & (PAGE_SIZE - 1);
-	return min(DIV_ROUND_UP(len, PAGE_SIZE), max_pages);
-which generates much better code as well (no 64bit maths).
-I don't think len can overflow, read/write are limited to INT_MAX - PAGE_SI=
-ZE
-bytes in the syscall interface.
+-- 
+Regards/Gruss,
+    Boris.
 
-	David
-
->=20
-> This is on a cento-stream-10 host running
-> gcc version 14.3.1 20250617 (Red Hat 14.3.1-2) (GCC). I didn't look into
-> this in detail, and I'm not entirely sure what the correct fix here
-> should be.
->=20
-> Brian
->=20
-
+https://people.kernel.org/tglx/notes-about-netiquette
 
