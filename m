@@ -4,123 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B094D2D10F
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 14:41:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15F84D2D0EB
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 14:46:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 805B76B008A; Tue, 13 Jan 2026 09:41:25 -0500 (EST)
+	id 13D6A6B0005; Tue, 13 Jan 2026 09:46:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B3946B008C; Tue, 13 Jan 2026 09:41:25 -0500 (EST)
+	id 115226B0089; Tue, 13 Jan 2026 09:46:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B56B6B0092; Tue, 13 Jan 2026 09:41:25 -0500 (EST)
+	id 04B636B008C; Tue, 13 Jan 2026 09:46:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 574FA6B008A
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:41:25 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07C3EC0110
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:41:25 +0000 (UTC)
-X-FDA: 84327203730.04.038842B
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2DA6740016
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:41:23 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="i6Ow/LX0";
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id E46366B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:46:11 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A56D7B5CA2
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:46:11 +0000 (UTC)
+X-FDA: 84327215742.26.5DB1937
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 104DD1C0010
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:46:09 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DWF2snKT;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768315283;
+	s=arc-20220608; t=1768315570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c0FlqHagQMeJGdRJ9nDuz6Meh5pThtbUe/VNTB4XIpc=;
-	b=n4WMHmNzTwQiV8D+Cvzi9Tg7iLaFPHQrE2QeQ2aUTsUFnDE7/GUNC+VNpUUzNPlGiqzmG5
-	oFMbSuVioVEaGhP9aL7Ai7k/dyIKzlqs1OUJmNWMhsZlTsY7qqB9V0NzsBFwJfARqwGIhq
-	aOTozZ8SuNPOIXH3XPwXCvGx8M5UQQo=
+	bh=jSy7jBvC9nebYOjTwgO9FutvaOd0nj9PGpV6sjReCbI=;
+	b=J6AehDJ1QV7aARcwFyJjCOoAeliLZiXnng+4xbVlsl3CduFzAK36AcWnsO+J+EZinC3Qqx
+	pycF9qiEVzMgva9YKcJmsretn7QF9iXnSifQ2qBM7drzdCUtn6VanROflP6443Ty7BdaWT
+	Q/nskhQkcaquveedAJLfrvnhWZCy0bA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="i6Ow/LX0";
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768315283; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DWF2snKT;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768315570; a=rsa-sha256;
 	cv=none;
-	b=Xz3K8Wy/6wgd5sl86LEiQaXGagZPOhcyUClCPMADqhPVcSaKhoFSKBK5VmWUCQFk70JeUr
-	wbliy9PumbUXqTl1jP1aJcknNNEnhwFCSrDYAJzW4KF2ttd8iuCCPZm2uXoKTtdMYJfCj9
-	UJ90caUbGFipGYS/AJCe0aAFqvDN1t0=
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4ffa95fc5f1so77511411cf.3
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 06:41:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1768315282; x=1768920082; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=c0FlqHagQMeJGdRJ9nDuz6Meh5pThtbUe/VNTB4XIpc=;
-        b=i6Ow/LX0+ONbb5GyLSRzjKWrkKGVXzJ28f1ZiBBGRSDQiq507r4oULtlAME/Om/nwf
-         84h7W7BCNRpJFGgpvnkE91CfWnZ0BYImu80Tv87vMfpNe8EMJGdaQmROMnGRMUpNFm7n
-         qt/HzSGIS9VNnZrBX6DWNvY25o//aelVGm8mR2Kc2OCqWq/4r54auWN+WzgUVmBJONEF
-         GgxPVvlmaG3NPxmnyDtc/BKfePxhzXP1Kb8PNvg8WwhAToTKuKLGCvA/w0NIVbF6ggRv
-         DfNeJMBmCNcKiBlVlsVuhLeE7riFkz/77VoIzc8kPlQbkn2IGotRPu4Gw3p9VrRXR6x/
-         rNjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768315282; x=1768920082;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c0FlqHagQMeJGdRJ9nDuz6Meh5pThtbUe/VNTB4XIpc=;
-        b=Uxy2Gwf3nWK5bhwQHJPg/tcls5bJ/2MyIgvxkPrfhwJkcA8gBjL3va6hXQ8n/O0oiQ
-         HMwewyZNlXkf6lkCqnDJV70fyjXyNx1A6XxvEYMANoJZE9umtCArTHuLiaCt6kPDaCXx
-         Bs9kT8lDgDf8qn3mCIgFCKG8rgYx1cviTf8X2mAcqKSVDZo6iQyMBuL/cuJv3aC8SZRm
-         YTUbH8DRx6X3gBlZbjVOiiuwL7AQiCt+IYiSiFvMr7Rl/exgAwknLtQ3cBSb5Nor89t7
-         tQRg4YnzLbShy8/SfA4K15xCPb36nOD5vpZ6c8gDzvmgvLFfdMTB3y0+Yr6UFglJne4y
-         KP5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWPoTXozT+GcDEGLGKETQlzkBkO0x372QcJPLSfdzSGowl6LY/b+nQ6nGjxTEg2wkVNkvGv+pT0zw==@kvack.org
-X-Gm-Message-State: AOJu0YwLXoqyKD4w9tnOJLT3hs5UiQTNOWOFdMxBjqRsIHWZDPYrL+DG
-	dQQmAXfMfFFS/OtU0coyCmuKeoKXi7aeTEQyTlW1VXz20AstcBuC6hq0ERMMjAYylBs=
-X-Gm-Gg: AY/fxX7sw+/FmONDFy5E9W9+cs0iSXWmLgv/fGWms88BbI2rCI26z7pc0jnoH14YjCT
-	k7CLBXL0cQ8NI1HyL1r6NpunNunFYN4wmA0toT1+C8rDL5/pepMttyEZ7QLFJ5QG/s6DdB6KkTy
-	m5srqbUosojtP/GkAHPpKzSszrN0zKLGcwWjwQKLgZHXmJDAy7thmxG8fky/ro4X0+OwIUrg2pN
-	hpMqKdnYqXeq6RX69CbEHfx6bVhA+fZq6810MqRkB9vWfbOPu1+SdUXPmjH3Tp9c1M2RaNbQ/+l
-	OET2HKAsxw+phSZgV/4rMBZNWbbK9OQt1eb7kVKz/eUcheU8cjBbqV6bcSykVRjzGKE4s+KELlB
-	oDfN35IK2TqEcesBL3ZBmQZfHr+gui74bfK4KX054tUv0ZgaU/0SJqt6jRPwtrjg8Y6wyr/Retl
-	PnH0DYAQaf3xOd9E7/33CstP53QmOIgZqADW+3vLUtBOr/oP8KaGtXZRb6ONMV6saXh6KDWw==
-X-Google-Smtp-Source: AGHT+IEW7sMBkHfjIrfSvFJJKwklqPXb27yIiyNBAvmRQDK22qTfL6fZmpNCHKGuXEukQBwbKTKjYA==
-X-Received: by 2002:a05:622a:40ce:b0:4ff:a46b:3af3 with SMTP id d75a77b69052e-4ffb484b140mr324896391cf.16.1768315282254;
-        Tue, 13 Jan 2026 06:41:22 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f51cf95sm1746353885a.33.2026.01.13.06.41.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 06:41:21 -0800 (PST)
-Date: Tue, 13 Jan 2026 09:40:48 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Bharata B Rao <bharata@amd.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Jonathan.Cameron@huawei.com, dave.hansen@intel.com,
-	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
-	raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
-	sj@kernel.org, weixugc@google.com, willy@infradead.org,
-	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
-	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
-	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
-	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
-	balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com
-Subject: Re: [RFC PATCH v4 0/9] mm: Hot page tracking and promotion
- infrastructure
-Message-ID: <aWZZcOFxhniDpuj3@gourry-fedora-PF4VCD3F>
-References: <20251206101423.5004-1-bharata@amd.com>
- <aWZVqpyzO3BikuJM@gourry-fedora-PF4VCD3F>
- <b9aafed7-f250-4ce9-b8c4-ec9053f30348@amd.com>
+	b=Pp8B+ssVpbHv8rfLUJv8cYTyMyXYdLJG2cWURHWFm54Jkjhb3a9VHrjqXHGYBJqL8Rqh7C
+	IYkOG1gAZ3GQzC9hUACw9S+auH8jmDVo8yBesckQoohx0oCd6mKtaMi3uYIcziiRLlYaRi
+	UUJMaKoxLn2tiZj9yAsvh2WT7GCSBsw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 211EE6001D;
+	Tue, 13 Jan 2026 14:46:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77F2C116C6;
+	Tue, 13 Jan 2026 14:46:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768315568;
+	bh=4uCAucSurgWYYIfTPVGMA7hAEuKLq8ADMBBO1vAY/Ts=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DWF2snKTTWME68p5bqRoDMZp5nz+HXJ3bikIf6obk6LehQbfcBB89unOKo0echBdQ
+	 FuaLneguObpC5wzEdpQ4rXKS7R+Ve5bjzkv3OLAU9ULW88251bOBr6hU6ADJ4kju8g
+	 Ow6/uz65FMFNWthx0KS95LsdmFZZ89cakQFpXsZjmBoc6LAFAoBEQ9+wOqAOQ4UcHj
+	 5J6wu98pb1caihXnGjUDkQ6+uXeDHWR1nEAKf56OwSj6TZZTGkxmse0ttEsihnjDqj
+	 6MjG+RmsooY9V3L2ZPU8Fj55ZhiqPZ64NpuhkDFoZhEoO57LJvo6aI93ajbvqAI/OW
+	 5jmKNED0nhbOw==
+Date: Tue, 13 Jan 2026 16:46:01 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jason Miu <jasonmiu@google.com>, Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
+	David Matlack <dmatlack@google.com>,
+	David Rientjes <rientjes@google.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 1/2] kho: Adopt radix tree for preserved memory
+ tracking
+Message-ID: <aWZaqcStRAK6VWLy@kernel.org>
+References: <20260109001127.2596222-1-jasonmiu@google.com>
+ <20260109001127.2596222-2-jasonmiu@google.com>
+ <aWTJ2v9J-Aa6ykBf@kernel.org>
+ <20260112143904.GA812923@nvidia.com>
+ <aWYt0gBHxDCKqj9Q@kernel.org>
+ <20260113130526.GE812923@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b9aafed7-f250-4ce9-b8c4-ec9053f30348@amd.com>
+In-Reply-To: <20260113130526.GE812923@nvidia.com>
+X-Rspamd-Queue-Id: 104DD1C0010
+X-Stat-Signature: 67spueho97ty6y9b3u3ad8caexkqyxpm
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2DA6740016
-X-Stat-Signature: wwhz7dmn8grdsaogzyj6yxg4y59536s3
-X-HE-Tag: 1768315283-37461
-X-HE-Meta: U2FsdGVkX1/+/0+/2McbSBHj4NpHH5Ey51OPt+saMrFYSzcQuyTKYRBIcGrlFFUzpARGozJaXqtdYVrOPIrlUwhQn5WbfVRy/8WvuEKUfyO9RCpIeBDYGCJXulR0zUhxoxGNo/BtKeDEKTvR7xK+x1+oJJUeKGlzplsrZQAq9LAB3X4uNQX+bXdNeqfUV5lHqu9mUTlW9uMIkVwhUGyheT2Gyk32rmaCfTDJ3a+0xSsPglga9XBCT6dZA2UUTmzjnc7/602oZGdQ+uKtAoUizR6Ga6yKrhFbAL+va5GL9dfweCmyG+dKYf+z+IwbHpxoLmCLPJSf1dKwJMd4OE5QTcphsMORR9gGMiJWisUvkSEU9FfLOcJC++JQo89JfpTSyMHK5QrLxWy4fQsdzCDU41WKAsI3pIopXJawi24Ok/uh4K3cjnTeIWhyGkr7YXQ9ww9kkcFkUiMrO6m3TDjpJQghp+ZV3OC/3ix0vFWLdidctIzpLOY8Wz5g6t854tJKxsjB14UecQC+rL5s0/4g957HlmuJNG9zOZds4mz7YoU/fYGNEAAGkzkvwCSUFw3jnj4aI/SlCxUKw5648WsCCTGK36KExfi3B2FBJywmod5HrLz3sAtzQWy0bN4sFs56/rdDHIJBY1GCTxzYqCK8gL4Yt9AF2yK696DZPpntxTlXgapIx44+BOzHxnM/c7aXHUqEwk6N+S/mi6BgU8mnNWn2gazIbT7f9zUwsceGGVHb6VZQpfxRghP+jRkD5val1wEj0WshZ2WafvEWB+b0qSExMoJCE0X+Dgxzf9cCWKfBNW6Z295e91XGVEeoVmyBqCAzwHl+a4jW8xyodPUewOJ+KnY0F459YDrmfYd+ROJl0op+YnZxwkOJG6TWxNtjrP1gJQGXLXv+f5FCdyDBQaj43VIYz+dJuaKSG6UG0Os5QwAAN0WS82uU51ca44/JSaK0zGKuv29rr83R6OF
- 5Y+1vL/M
- D+Y1BZS7wpWj5mu7iKfs95UH5AyKgdSpWw9QQq2VKdtQ0+JZJ23XvrOuejk5MHSjakcO0N+F4k4XO2xKgB3EyJn23DjTiipTh0ESGN3zob+AClH6jxZOQkGji/nR9ar3LRKjnAzgcs7DJGHHGDfbfKYFGAWtx1cm3M+VLAPP0b/HeffJOi5e5aZZ+ed4JpgFktIs3KrRTggXZGXHQx84M2sqfJjQau+UwhkDe3UfNPeqnc3l/l3wJGKXCWg7IqMX6WBWqsHCqRCc+TTZkGxEoBa/bnjnjJ2JJkBS5XYVGxQ7aulNNh2G0BbL23CMNlVQxO5e7dJS267vRewji8w8bD7d6IPUtI/3OG7ndSEMXTpXLsf8LrUJpJ21VRI8eVkviKXNJ7fgMm/q9eQMGrOEW8QsEzA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768315569-408821
+X-HE-Meta: U2FsdGVkX197AHTfq/6lWz/j9A9r/EFt6oqq8HNDAtAicv0aagcfyErW511KdDQGxCx6W7GjUAYnBAgMVXOUNwmrGBciLugDcup1XS+C/xC8ABWfJSgUA0U/YFj8mDDmkoJjORkWx1UFOQLw+KXO6S3271RIgPNxiuD0fdTWxmgHAGo95VL8Jl3R+1RaLgTRGXzgZuSu0UOrdrdtlIQ7PSas3zbBk5rjlZuhEtYlNEVFeVJDe48Rh7EaiJL01YY2h6Zr1Ry6WfPBbYNOjtu6q/o7Ph7A6G4H79HlPFiba1j1lIjjOCPxi4nuFnsrBb/g+FtNSrKC3Fta+qm1cLBNyBSc9TyLxSCVXB15eEMEVc6lzLYbW/+lnuMtrkAvefCNjTROltk8G4mIVTGy3eWEj0Kk0Pv5qBjIdsFDZAfTmSQgI3YdrmHb5EpnOXakC8N6MKK0lkMrJ3BLwmGO0sv2k/9I6bONs1+CPPqik6nJ6bTLxwKxcwb0RkQAwS3p2MdBlFq7Ld8j0AlOjDLDslmDIBHnd6APKcjDyJhEBBr58MZZIRGZYsSDJXPbgjW95GsSglJurZatXxhta8YpH9oc2JvUO5fvwMc5Bh7/8HVrNMqHYMeTlj7kXOnfLZLX10woNYH51kIihbMd7aKLUbg3ZKgkNx1mohJr8gC0Bf+66SFSvi5ob/ynhfIKzVTMCocK4JYpkAYwXrOYfB/De7uuGrFlPABWW5zO+tMQTwmJAyWfXoprENIDph75FeNgzo7wgobmMKRlHGhXGgy4t5ZE8BQtJdr6Chx+X1bq9QHBR7NjM5m1+x8GaZbc9GVeVgoVrO0BseRshtLytXhfXKZ75CZWdfrhBjoC6oT4KuijYtDuFsYOYskne8jS9f6hH6+rM9oDA9cxVcYByUd6rOMOxeKZiIZ0m+GXuqumhVBER1J9+u6lWalkJN5vEhWwCjg8mI6NhWDB3ky/sT8/nCt
+ F+69mFiV
+ XY9Rxli9LxCbIqLZ8hE8H8HcRCneA2g2BC1+lypMOHgaTZMRvnDrZcgiHAuA6jfCDPZ52N0guiUMpfGy0PnUw5lH/Ez9OVazr2DjlNK0KjvONccZjDCNfk44lFBmIkv3ta3+oXKTIZQNqdzb6qUhRaxP02mFKPGAou/3rlG/8Yuwo4uiuxL6gChDEk60qANVaCtXCiu7X4J8Va9X4HiMemBZiG5mCeMsSMKtT6Y/JGNvmoo0+L3irsqYRNOo8cCsqC0G8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,42 +103,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 13, 2026 at 08:08:34PM +0530, Bharata B Rao wrote:
-> On 13-Jan-26 7:54 PM, Gregory Price wrote:
-> > On Sat, Dec 06, 2025 at 03:44:14PM +0530, Bharata B Rao wrote:
-> >> Hi,
-> >>
-> >> This is v4 of page hotness tracking and promotion sub-system pghot.
-> >>
-> > 
-> > Just fyi, we haven't started real workload testing, but we're setting
-> > up the process soon.  Just wanted to let you know it's on the radar.
-> > 
-> > We want to test this at the same time with some fixes we've been
-> > working on for multi-tenant fairness in the demotion/reclaim path.
+On Tue, Jan 13, 2026 at 09:05:26AM -0400, Jason Gunthorpe wrote:
+> On Tue, Jan 13, 2026 at 01:34:42PM +0200, Mike Rapoport wrote:
 > 
-> Thanks Gregory for taking this up for testing.
+> > For example mshv intends to use kho_radix_tree to track the hypervisor
+> > memory and there unpreserving will be a part of the normal flow.
 > 
-> I am working on v5 with following enhancements:
-> 
-> 1. Default mode: 1 byte per PFN for storing hotness info. NID isn't stored but
-> promotion will be done to a default toptier node(specifiable via sysfs/debugs).
-> Frequency and time are stored but due to paucity of bits, I will have to use
-> some sort of bucketing scheme for storing time like how current hot page
-> promotion logic does.
-> 
-> 2. Precision mode: 4 bytes or 32bits per PFN where NID is stored in addition to
-> time and frequency.
-> 
-> 2 is completed and 1 is in the works. Once I get it working correctly, I will
-> post v5.
-> 
-> Since there were a few bugs in v4, I think it makes sense to start testing on v5
-> itself.
->
+> I do not think this is a good idea.
 
-Can do, thanks for the heads up, we'll wait for v5.
+Sorry I wasn't clear, mshv is not going to use KHO memory tracker but
+another instance of kho_radix_tree data structure. 
+I don't see a problem with that.
+ 
+> Nothing should be touching KHO until a kexec sequence is started. KHO
+> calls should WARN_ON prior to this point. If a kexec sequence aborts
+> then the entire radix tree should be discarded and it should go back
+> to WARN_ON'ing KHO calls.
 
-Cheers,
-Gregory
+The whole point of making KHO stateless was to decouple it from kexec
+sequence and let userspace control when preservation happens and to allow
+preserving as much as possible ahead of time to save cycles at
+kexec-reboot.
+
+> Jason
+
+-- 
+Sincerely yours,
+Mike.
 
