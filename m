@@ -4,102 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4034D30CF0
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 22:59:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 207F0D30CDB
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 23:00:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BE676B0088; Tue, 13 Jan 2026 17:59:15 -0500 (EST)
+	id 538DF6B0088; Tue, 13 Jan 2026 18:00:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 869226B0089; Tue, 13 Jan 2026 17:59:15 -0500 (EST)
+	id 4D0A36B0089; Tue, 13 Jan 2026 18:00:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76AE66B008A; Tue, 13 Jan 2026 17:59:15 -0500 (EST)
+	id 392666B008A; Tue, 13 Jan 2026 18:00:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 67EE96B0088
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:59:15 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CFB3D13A732
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 22:59:14 +0000 (UTC)
-X-FDA: 84328458228.01.A14AADB
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0A8D140002
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 22:59:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=IZBFjmUk;
-	spf=pass (imf27.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768345152; a=rsa-sha256;
-	cv=none;
-	b=X4LG1sgzzIQRjZraZmwiF7LBIZi0w97laUxOSL8WY96G3SZN3q3p6+UslHjVUEN6BCs25j
-	hKOY4dRdbVwNna/ZJXuAwg4pQ/RyZHeVl4gJOs84+H0tGwV6PbW1NBdZ0pshfBem/YT5yk
-	/l5Uj4gR576pkCBcvREWZWMHl4SkGFk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=IZBFjmUk;
-	spf=pass (imf27.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 27D0D6B0088
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 18:00:57 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C67AD58370
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 23:00:56 +0000 (UTC)
+X-FDA: 84328462512.21.1E89804
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E1CB318001E
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 23:00:53 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KicXc1Jt;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768345152;
+	s=arc-20220608; t=1768345254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pKj8OFgIWZYaPjLOGY0Hru5SNu94TWYuwIW6GtEw+PU=;
-	b=XXoO9R45MBl8Fm+dHdNXCZrYUnkTPOil7bPqF3owDhLpQe3ioPyP2X6t4CkrHZQH22/AVa
-	fYW/zputXHrYe5G1LbnuHGPMQjKli7EWTbCca8IJ/q8WoF0zyyyeHoI8LU4jxegEayGpFu
-	Gv1lzyXwD3WK+jN49SEu+fo3Ui+2v9g=
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260113225909euoutp016819524c50204ddbe0fec4d929ca454b~KbItkGq9z1847918479euoutp01Y
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 22:59:09 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260113225909euoutp016819524c50204ddbe0fec4d929ca454b~KbItkGq9z1847918479euoutp01Y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1768345149;
-	bh=pKj8OFgIWZYaPjLOGY0Hru5SNu94TWYuwIW6GtEw+PU=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=IZBFjmUkin+XtXk9bQ9fIqYSTGm8Btqh+QIviHYKjDKoKYs57o3MoqaB+PEFgorjj
-	 eCm+dFMWXmVaT8evuSaB4/ca9D9jHtHw8/1mnYYoOQSifc8CLrF3ePufVr1/OvKo5A
-	 dH1gkUg1/DWWCaF9qsmP0zhfIrSIXG8YZ5nd9b3Y=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260113225908eucas1p20120cc4c7ab2c17932dfb40d9f02c83a~KbIsqiN7i1638616386eucas1p2o;
-	Tue, 13 Jan 2026 22:59:08 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260113225906eusmtip2be65a6cf8cc51f597c2f777164fd7547~KbIq5jSm91614816148eusmtip2I;
-	Tue, 13 Jan 2026 22:59:06 +0000 (GMT)
-Message-ID: <643b75da-d673-4106-888f-7fe232dccf7b@samsung.com>
-Date: Tue, 13 Jan 2026 23:59:05 +0100
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 0/3] dma-mapping: Improve atomic pool behaviour
-To: Robin Murphy <robin.murphy@arm.com>, akpm@linux-foundation.org,
-	vbabka@suse.cz, david@kernel.org
-Cc: bhe@redhat.com, iommu@lists.linux-foundation.org, linux-mm@kvack.org,
-	vladimir.kondratiev@mobileye.com, s-adivi@ti.com,
-	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <cover.1768230104.git.robin.murphy@arm.com>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260113225908eucas1p20120cc4c7ab2c17932dfb40d9f02c83a
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260112154649eucas1p265e59d616343bb4c2ce80128c393f56b
-X-EPHeader: CA
-X-CMS-RootMailID: 20260112154649eucas1p265e59d616343bb4c2ce80128c393f56b
-References: <CGME20260112154649eucas1p265e59d616343bb4c2ce80128c393f56b@eucas1p2.samsung.com>
-	<cover.1768230104.git.robin.murphy@arm.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0A8D140002
-X-Stat-Signature: 7cu14k9tdwrbn7yakuxpczkjbfp87tt1
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=ph17RAhls0QzxienN/47Ko1qZYbpkO6egcHlTNcUJK0=;
+	b=chcBid8HDr0WBZoaTs9XHOngYK3asEP9UarBFSO+c3GVRfmp5eJuqFlk6P/zCKPYbkMRp1
+	Df4bY5Fvq77JHDBAChRbzRqMvOJbl2tO1s2NQJ1QGn9tGxJGkD9BZpJPvBwfPlWvRuKORB
+	C3naii9uS3VyMVrfFvT6ctap7ZQxWM8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KicXc1Jt;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768345254; a=rsa-sha256;
+	cv=none;
+	b=nDwUpR8PBYTxZ7BMWWNaiU+pN+44EveSToxbb6tAOMgZp2suihN3/olWt8yFPRjy5eesRZ
+	/dml8nXfRGth04c2hrtZ0Fw7L2Ac4bOGg2jzIOFY7F79XRhdTxUmwyWL42gcMA3nysvlfr
+	mNiz8p6yPQb8j/VyqENdGrgpEqZ51DQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768345254; x=1799881254;
+  h=date:from:to:cc:subject:message-id;
+  bh=/w1uwaUGJ02kmN6Edi+GVSlxzkTVq1B9zz0xvjg+xVw=;
+  b=KicXc1JtoQ7HlvHQp4WC6yW02pMb1TEDnXsSTuYjIcjLMy048wT0ArW9
+   Ol6hwoLjLcErn1Xp0puuwBgcyRlG2qY0WB8TZHyVPaISssR0hdWiC4gSq
+   nu0G5Ae9XeFK8sS3za6qZPjoRwDXr025R17/Cod4Q2e3XfXDtWlsjOjns
+   Oq7HE6auaxFOhJvZBE/nuWWV2ByTRMBGc4bCmeHZgB9i7UFCURjTsfa6X
+   19HvPrJ43QdpbBIr5wb7uxvu7LnOeCzq9vV0ZqQjs9i0vphrt88tZiyuq
+   +SmzigVQQis8MI/VrwCTKA4Cq7ShAwVN6VXtXNP1xAVvukFV3FWtvX8d8
+   A==;
+X-CSE-ConnectionGUID: bRX3GTuwTTCS+pY8GtxiLw==
+X-CSE-MsgGUID: H1T1TEpBRCmyeNLhZFUyLA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="92310895"
+X-IronPort-AV: E=Sophos;i="6.21,224,1763452800"; 
+   d="scan'208";a="92310895"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 15:00:52 -0800
+X-CSE-ConnectionGUID: UincIv1zSg6nz+zfLHdQ2A==
+X-CSE-MsgGUID: lX7U5I5LRningC0siRgpQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,224,1763452800"; 
+   d="scan'208";a="204399098"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 13 Jan 2026 15:00:51 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vfnNY-00000000FT2-1h5l;
+	Tue, 13 Jan 2026 23:00:48 +0000
+Date: Wed, 14 Jan 2026 07:00:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
+ Vlastimil Babka <vbabka@suse.cz>
+Subject: [vbabka-slab:slab/for-7.0/obj_metadata 9/10] Warning:
+ mm/slub.c:7013 function parameter 'objp' not described in 'ksize'
+Message-ID: <202601140605.GNpnpgLF-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: wm79nc4gho6bymxfng7bw8zykz47n6ih
+X-Rspamd-Queue-Id: E1CB318001E
 X-Rspam-User: 
-X-HE-Tag: 1768345151-198554
-X-HE-Meta: U2FsdGVkX1+yXOyyS2mYn5Qs+SyKOBL+4H4CJBsYE0A4cR7+rsbR7Dcn06SEk7phOOtwNzuLHmtfRToWWX2XiD4vszlOkVck3rGAn66KhZioKeIRB3YMsdQkkUEGBGqv1/m/Y+IEbboYor1mWWOH/FkWY3dm1pMo0ZnSeLxWu7q/OMoie3l/fxy43NK7gKUg4KTB5dw+NRxvjmy881sx2g2nrMpf3VELvYfLvaBx6wYOpEyBLMVTsxm/dUBKOOj4kwS13v6QeZPmxXYbgQxJ0zvQ5R4wOK+ZvHjKyDUBIGRO+QsVXmlDGTtZlrFhK4Nwr8RctF+ShtCEN5YqNmF6GIf5R+h51HoJw9yIrTMNOzyp0FIi4no8SdO9V0WzIZpVSjNT+i4o4bOiuASzw3beYYjqJf9TYTvD6VBPoMhIa4SV0EAYvgusFSglT/Uk6QRYAxa0Sms8F4g6lKoXQGlKfS48qp9h21/+fdA/lC4Z/PnO4TdSZ+LBfIqD85D4sfiDJ2Zx9oP+JQmMr4LyDWxhL6BR3evNIC/FhNlwuGB4etWDbbyP+v19IAqQL7GNZ3IgngQ9mXsL/RzY75V6rPgSLsijr5uvvuSzcvTqOgLto2DfLeTFa3XkAuF9FWv+mqmEPVH4VOgQz1TUxZ9ZQrR0FxuYoVGTBSy5EQ8mLU+V1XSgD+AEt7akd6e/Oett9uCOAR+8Z1dn6TVMoPB0yaaIUUqAi6luXpZJI/H7rzrU02j0hlVe5MYEtp/s3mh7aVuoSwNrySERbS2gtYsYhEau2PGdIodhnBAC6hQBY7rz+MSXPzcY7JDEow0suCx8MQ+ivSKDQdU1JbuDb9gm9QH3qkDLV+ehjOKtwzZKmjMF/3S8Qa6qMUebbZwGLNgYu5rLZd3OKpITb8dM/tRoOU1+QEu1mVRbKiPoa9FsqGzgl4xabSiK1b/ETBeWqiQkSyL7tYmLcCEpQtUFIWnBuNH
- twYUKoM7
- STPQMEEhLDUVWZilorCtXuGnjfNBATTWJ4hP/M3W1yYE5XADh4qENdCVvwqmzRdAbnjBMxrGTlDxtnG5mNuG/04OuG2jF0ZJD6Rv2ul1iqPuHcdkEpsJUOfQpbSHRoX4vS1YJ
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768345253-297375
+X-HE-Meta: U2FsdGVkX18RHzQ6um0OcAfyNKE3Yy0UraRso1K863xBkmckVUAws4vYIuQE/biisMI1z7y5qIdXbnX8JTIegp/5G6i+b0+mNqbbdxBTtBWk2wzXeE0YR+f/rnJHJgWfK/c9Z3wQr7DBlZJbKy/U/Y7cG7ZLgYPvLip5yhUjgK/cid12uTrMQFPH4EaMSrHvzLPOEm1t69T8ra13zmIvBpmRdkrezUZMoVe7YpahoeCplQqWCh1h8NOhJYXvOB2SIWMTpsJWeTzD+9HOgRfN2WYFXb1PV044gZBztsFemzKiLGVZYpDr8tNfpP5wwKsE3uiOYu82xIxkyGzFdxPGBgTYkDQhvWB/XTtXLfB3+Rxz3tnoUUU2Dg3TBqq84UIWKzYosF6YPIAuaZX3w6sjUfACs/36adIzKb2Z7Pw2BGp3xdY7pVcQvJ9YrpAJ9Z7OppYmBCI+NHVTwDF3LH6/f8+0hMz7YyamPyz2dI3ylpdJU+G35yTccSTcR3bfmg7sT6q/awH6oYfNSep5YpHy5n6sIaTNAVvyF2kNKnrmYs3GZ7YlZ4caGI1bRCdRx5/OgLEDfVja3E1gRc9PS9Djfc3gV6QUZ6mKKjxuOUIHpkMYMy1adj84KZ97bG5hbefyEDDcOtZGBbyG2uFKgy2uTHIJvAd2TYVkKqHNJ16ff4rmqCBxQW4JWRmngJtsRULQpwg1f/GobbsvzMxwyp5/rDEOXDsC+HGYNO47fs2rtb0O0ZoA/aIayID0cB7F8SEN4WDcbKnVYhghamCUzlcJOyZ3828kwU00etAppMCw6lPsZB2k4CHGgyU2mcTfZOq+F6AM3H8nEwMLikCehqKyUnAgIfC3KA29/zajh+GRyXOW13fNm8BioVoXUg7wiVQfl0yRgARMukwawTXASvAwkFObN8y7GAd/dBpRhfwXHGU3MVqfs09claHTvug7ZdbFasiEcBoIZMCVBx7exrQ
+ LzT3ab96
+ PILrcSlnF3JeyBo116f00dgGYDNQ0Ykb2m4FqqS7UfV89vzZpZblCQsBpH5HeShdbOxPxfXpuv4Zcjqoo77uhay5huiR723GQ8EQ4kJ2QEMEyYbxfqya0MmmF2LjhoCoOgD6WmxFPKAkWK84Cw/7+OgvvkUVq6BJdjbFLe9ltXqk/pPoi7EvBpBdz1y3p0Vj3d7/ur60j7MHd8Vf2SJcH6afjUbXnhloJF3ngT2+WK99+ox2X/vfB39Tqcw6XMri2aoMMgI8VjKQ+i2se09+q2tkH8s/2ZLUuR1qe/Hlleidyyvp7wb7HUQSYLclx81vyrMo568cIkqdrGzjshE2d6WZPe3YXW6/Cxyo4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,28 +102,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.01.2026 16:46, Robin Murphy wrote:
-> These days we have somewhat of a matrix of mm zones that may or may not
-> exist and may or may not be empty, which the per-zone atomic pool logic
-> doesn't actually handle all that well. It's not all that difficult to
-> improve robustness and reduce redundancy, so that's what this series
-> aims for.
->
-> I initially wrote this just because I happened to be looking through the
-> boot log of one of my boards and had one of those out-of-the-blue
-> realisations of "hang on, why *is* it allocating pools for zones it
-> doesn't even have memory in?", but coincidentally, it seems that others
-> happened to notice related aspects around the same time[1][2]. This is
-> my attempt to sort it all out properly.
->
-> I guess this could go via either the dma-mapping or mm tree, whichever
-> maintainers prefer.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git slab/for-7.0/obj_metadata
+head:   a4e5702b7bb846cf50d2917cadf2289c25720812
+commit: 1e8eb4117f27366855b192104098330a2f290f26 [9/10] mm/slab: move [__]ksize and slab_ksize() to mm/slub.c
+config: x86_64-rhel-9.4-bpf (https://download.01.org/0day-ci/archive/20260114/202601140605.GNpnpgLF-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260114/202601140605.GNpnpgLF-lkp@intel.com/reproduce)
 
-I will take this patchset to dma-mapping-fixes branch, thanks!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601140605.GNpnpgLF-lkp@intel.com/
 
-Best regards
+All warnings (new ones prefixed by >>):
+
+>> Warning: mm/slub.c:7013 function parameter 'objp' not described in 'ksize'
+>> Warning: mm/slub.c:7013 function parameter 'objp' not described in 'ksize'
+
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
