@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38467D29DC2
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 05:14:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43FAAD29DC9
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 05:28:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68E3A6B0005; Tue, 13 Jan 2026 00:14:46 -0500 (EST)
+	id 8FAE96B0005; Tue, 13 Jan 2026 00:28:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66F946B0089; Tue, 13 Jan 2026 00:14:46 -0500 (EST)
+	id 8A85E6B0089; Tue, 13 Jan 2026 00:28:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 572526B008A; Tue, 13 Jan 2026 00:14:46 -0500 (EST)
+	id 78A9D6B008A; Tue, 13 Jan 2026 00:28:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 44B046B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 00:14:46 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B98531A0127
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 05:14:45 +0000 (UTC)
-X-FDA: 84325775730.22.30F6D62
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 66AC76B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 00:28:00 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EDAB9B5B45
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 05:27:59 +0000 (UTC)
+X-FDA: 84325809078.30.457EDAC
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3DDA940005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 05:14:43 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=2BcWfYek;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7TnIlNZX;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BvmzwpDy;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aGn50j5p;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf17.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768281283; a=rsa-sha256;
-	cv=none;
-	b=L0hGdq+2KVB9txNeN+nS5OfSyQexI4+Jf0ozWpFy4k04lKOKIaSymBi8bNH9gSCRFUHwS9
-	Qd9qkiOvFopbyJUSvXGgAsgmCo4vmywEgVGuth8EGshfZHVmG2VClhT48MET6+xVJrhGRV
-	nLBCTZhOKvy13Lr6znWz5UDnlCSD7zY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=2BcWfYek;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7TnIlNZX;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BvmzwpDy;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aGn50j5p;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf17.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	by imf03.hostedemail.com (Postfix) with ESMTP id A296F20002
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 05:27:57 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hXZaPGsJ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ygRoCSPa;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=msAT118O;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2SyL6Utl;
+	spf=pass (imf03.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768281283;
+	s=arc-20220608; t=1768282078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0tnFzhdqQJ3IYm/7u7VTome2NDkaNz/5ZAY2tFGWFDU=;
-	b=T/3YIGIR2NXFHhfdfshlK6tZzPCBF9lV8whiQIoUFNZdJ1LmJx9KCxpr9v5gCAguykA6td
-	pquLn/28zBsCGPprhxhAdjC+zJ7mLzi42HsTztg/1ESguRbDbmKHH35J3hnSkx5fMmA5RP
-	QyzfHfjGFxvmGmKMqbyAeZpjlYljItY=
+	bh=Uc4OMAt03KqY5Iv7jjg8ptBtv1Sbu85jlI13Ytfl0YI=;
+	b=sD1YqE8IYBWTUJfbGW+pNcGz7mnOfPuLk7n5jhC4HcN+zcXQ2XTTibvuoj8t6CgHJ56OhU
+	G2/mIr3LLP3tPnk1HODJUhJGpQO5bp4ervzGuHx7PUoNab9uDwYzsSFtdomcQe8cxgxgPi
+	hxv2iJW8VNG1DJ1bE0sgRa7HX3jmRvs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768282078; a=rsa-sha256;
+	cv=none;
+	b=QNJcOs5NuaT9uC+15cLeB1fN95Zh3U0UI9bK/zBs3fjGQQsEeLKEq/qUmZNTQtPnePI2Fc
+	DEaCoKQHY55c///ZguK+4ZeeOjdSLm5EVck1uZPguE5BqVQ2Ssmn7tqvdtC3KXUraSUP6T
+	scLCmmb1cVakF0Z0LigpUmn82gWT94Y=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hXZaPGsJ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ygRoCSPa;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=msAT118O;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2SyL6Utl;
+	spf=pass (imf03.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 365FA33684;
-	Tue, 13 Jan 2026 05:14:40 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E829C33684;
+	Tue, 13 Jan 2026 05:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768281281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1768282076; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0tnFzhdqQJ3IYm/7u7VTome2NDkaNz/5ZAY2tFGWFDU=;
-	b=2BcWfYekZ/g6OjrY6EYJCnvirxPg26VbSEQ+7tpfqJCq8uMzy0FH4ISWXDKs2VZGAsi8sv
-	6nOK/IbCk3fCfXsUzPun3Nwk13c4mFADl7ifFMWUGMYy+VwnYBBl15fau+8ggcssm8ZT2a
-	Ry3Hj6PW/ak3gx1DBQXxuyZV0jqJRjg=
+	bh=Uc4OMAt03KqY5Iv7jjg8ptBtv1Sbu85jlI13Ytfl0YI=;
+	b=hXZaPGsJ+ypkGS6V966VYlzcda4y2ZS2gUOG7p7hpQi2qqyXSj3dJD9jeuLYlXmgxPZvpn
+	O6xGi3raF3J4zZ/y0Ok4Pk0YffelSqlECRA1DUmnDy9fpOtX6pwl2TD8ThZ9sfCrIMAvah
+	ZWSfwGxHN6VA4KZ73Xjf+s1AkpW1D8Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768281281;
+	s=susede2_ed25519; t=1768282076;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0tnFzhdqQJ3IYm/7u7VTome2NDkaNz/5ZAY2tFGWFDU=;
-	b=7TnIlNZXZP3FvEGqFM1QFxVm1fdP75/MGTgflizJ/Id4mRKtT3SjsFKUoQBpTOFq2+JCJB
-	lwSd0ZlxtrLBOTBg==
+	bh=Uc4OMAt03KqY5Iv7jjg8ptBtv1Sbu85jlI13Ytfl0YI=;
+	b=ygRoCSPaTgc6NJIEnxahKlsgizSCIkYAEyRJCqZ0GTRWD3B4jxMZxqZQiE+C5o4NJfuHva
+	9aXHEPqATDi7q8Cw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768281280; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1768282075; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0tnFzhdqQJ3IYm/7u7VTome2NDkaNz/5ZAY2tFGWFDU=;
-	b=BvmzwpDy3TIkKguijD9Blaw6/fMJywmfLysYq7G1/DOCP5O1an2GGq4+csDs9BeOfWCMKw
-	XIV9NHlFqzQqAIvECP0OaPMPEk7DpEdq9wBbAljFkvUse/iBqbR4ALIt/Qzxf3TqPba8l5
-	i4NUvoeuxzQyr6hTcbLt5L0QJvwNMRM=
+	bh=Uc4OMAt03KqY5Iv7jjg8ptBtv1Sbu85jlI13Ytfl0YI=;
+	b=msAT118OopXhqvyW7U5YesxJArqqhrq6NwNnUYSzu7357EXdQUvyqV/KkyAuSH0UOdUz9k
+	xL4GZJc1WCQESi+AJQRdCjFozj0DGett1/TbIQcK9c5FE6olbuXtFsoxQhQQ1qqkxabhk6
+	YsCYv5rhY79sI+d/Zs91W2dVwU3usb0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768281280;
+	s=susede2_ed25519; t=1768282075;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0tnFzhdqQJ3IYm/7u7VTome2NDkaNz/5ZAY2tFGWFDU=;
-	b=aGn50j5pbEJU+1CX0oI5yFNtDE8HVnlBoav/1SK3GPl6ksC8S0CyNEMZks290dc1hP7NXZ
-	RBKi1sN4iBtt7FBA==
+	bh=Uc4OMAt03KqY5Iv7jjg8ptBtv1Sbu85jlI13Ytfl0YI=;
+	b=2SyL6UtlGEZCcQ5me6DS5YbrNVzx/lrsugsj+lF2iy9OUfaoOwx8S7eu+bScCre/dOTJ5V
+	kKuioROeja8VqEDw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7CE383EA63;
-	Tue, 13 Jan 2026 05:14:39 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3927F3EA63;
+	Tue, 13 Jan 2026 05:27:55 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Tag+G7/UZWmEPgAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 13 Jan 2026 05:14:39 +0000
-Date: Tue, 13 Jan 2026 06:14:37 +0100
+	id 0JfHCtvXZWlOSwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 13 Jan 2026 05:27:55 +0000
+Date: Tue, 13 Jan 2026 06:27:53 +0100
 From: Oscar Salvador <osalvador@suse.de>
 To: Kefeng Wang <wangkefeng.wang@huawei.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -113,23 +113,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <jackmanb@google.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH 2/5] mm: page_alloc: optimize pfn_range_valid_contig()
-Message-ID: <aWXUvSIvoXVWCXBU@localhost.localdomain>
+Subject: Re: [PATCH 3/5] mm: hugetlb: optimize replace_free_hugepage_folios()
+Message-ID: <aWXX2WqZ6bEpEtee@localhost.localdomain>
 References: <20260112150954.1802953-1-wangkefeng.wang@huawei.com>
- <20260112150954.1802953-3-wangkefeng.wang@huawei.com>
+ <20260112150954.1802953-4-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260112150954.1802953-3-wangkefeng.wang@huawei.com>
+In-Reply-To: <20260112150954.1802953-4-wangkefeng.wang@huawei.com>
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3DDA940005
-X-Stat-Signature: 1d843zdqhf497a6ta1iphwscc7qbtsos
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A296F20002
 X-Rspam-User: 
-X-HE-Tag: 1768281283-149962
-X-HE-Meta: U2FsdGVkX18uOquxFAIi/tfwHg1guGPnRlq+iQXKRq+egLO6sYw6wsvi8xlE+88ZTwkL/cKIc6MzaI1HHKKUlfj0H81RPu580WbWabwD1BER+sIMQUfrMKjcgw0PT6anw1sGhd3Nqqo68vE5CiQIPmgohca80C13bPR6/CTPGSXFX4uI7p5o2BVhIgX3ztzRM1JQ2lb2zvlwceAOVycq5g1ayI8lEyMptzLQl3dk0RMrxLa13A7RdcOtqdlc9DPz2SA6qRQpP3TQ5URXdHnZUMgu6001x8r24UIkn/Y2fjSEzvfwCP8GEaV3RU18eLqyEGOkuctLPsqB6pm+JQwEN+faa3T5UuLhDhpENnht+L/RsdaKbXFR8Flc3o+qN5DnqTeOfsECTleQEZ7Udxy0E7PaBJ6GevT9NXUUHNYYwjg0nz0qeIKARPt+s59m612rg0ZaIug+SeKbJ1b7JSaAJ6uvYZiOgn/CzmwZ6QEzQFgXi72qjLK5t5VWtM4DcC58RdpMDVTIrS6jTDOps/XLcELyXgKXksgeuOiTtRE6gFAovTlsrTd+p7XUWvXYLsWcGGULPEuKvAxM4eNJtA2Lc4gSYEYngwQ3JNC84xGGloWcZWcS8Ep+Qod6d1Y+l4ov7JDxRvq3TcA3eDGQ9aIBp46a5pX7lc+fh3LpRZwqD+fXuRMSJjiPXRNHNJkieKHu9LKxo5em0FLQE01EpVmB4nR+O1XJy0s23QIHnvglvJfEFyWy2CD0nmvGZsKMCBMB7TNtJwpbHxmyrUZFxlgQGzGLwE+7Ok3UKDRi/eQnFB7b7fIpCnYb1ia/3yKbvQfRXiITCARhExxPoMLDs8sL/V6dhkhrYVQFXDLXOaXRNhCs3NhQsTY7j+faVTd1GKpmcADaX0cQaFdhnd1fpLZsnSZ0jTyU53BkFun1O/c1ht8rm/o3gJDyPp52s7LTZr+qgR2bDsQb1iuTRnjF035
- xyIrrkXm
- 7RHMiD9wxp87zgst1JOFzu3HK/1ce23EGxH8HPmXZNqYqly9N9rVKeTeMDpKxCErqTbVrtSpfU9FT35WIItJ1gbkOceH9jS6qIrHebdy14567urQ2e1VC3i1ulNOz/VeoHzemd7sXI8jAQmKbPWhJUsc+ogxUbshO/cuyC66zk4I6iF5dVQDEgAB1NMBo4FphBziGOV/qu6ibwLvmW10YiwJmcgxA0f+UTwwEWXAKiaWxYwJM8dWR287yOzVL7KwzLFmc/gMFnl3kl64PkHrQ9OxOnF329ScoVKKxX2fYFRSqzbSiJxjFscXccIXcNCTlgh9Okt6e6lkb6Kw=
+X-Stat-Signature: hs8cfonnyrfpr41zzxqg8g1754x1ou7t
+X-HE-Tag: 1768282077-125289
+X-HE-Meta: U2FsdGVkX1/BRYLHHGeJgdGzsNkkCRPQuz5OPUusnZ9poJwiFnQSKWCq2IxH/A66oX1AU/NFVCOwofPE+D3Rjv261uxB+ErHYOC9lZq9oHr0WKn3bu7p9SFVV7q5FETk0cRnr+0C4kwaq9P+yXoL4INGRU4NQUWXhic1Arsv58PS+3hf6npYRE7kmDBwQieUFX4o22oE8wI7sErt5szNW+Cy9LghSigTz3LN0Co5JypGReEeJTl0/+ZSufU6sqD667EX06b6a+kbiQ1tUzMQHnB+SJ597yjtsVZBeXULBvDJpxRqS5/z6lyUHG4WGtQ76qU3fHISHngT8h3AWUOFDcyXR4r7iluVGCELeTd0zTsWtX3DrkaJF05JGyTK1qZGKe9FAas9DJ7Gjl3W8T1OQGNW/mMAuaotw+YZocLH1TDehk2anbDu5nymuUz14WCGJgWaCl79mQyWSXrfOZ9FruOgXOBQHNSy5gGUlsCKq3JBj+PhyKRAourPSmphSyn902pDlLrJ18E2XfsJSRGK4dtHn7CP344iBxjLb9n0frCXurzG3Ioj8KkCtTSh2XOxuSi257PcHuH1E6XAQpldOnsooRS8cRpZp0++t+HENIVMRvaHkCwJK6gdHtAW7Nll4h/3IC6jAMDGsZJp19B2Kl1SBIyCj18mRVxBz/sCQZsjx3lNb/jnge7U+37GsgGlaBXuz2DKBG9KDdZ+TNeUazgYkZ4ryGpH96MEnaY39XXg2jsF1VDpkHj+3welB8/0mytDnp+TLfd5WAUVWoGd2OE9hrhorlI1IWLWQmNj/sqt6y3SYSsPlaKoFy7o1x27rFkSGpODl93Fl6KLv1RRKgzRFc2/i2LAo4FKuPOEKL23nIw0JN78Y+PVBMguAR9thzkmwjZSW4ymYTxN8AKm2OKzOGwEsojFzScOt8K/wg6QxM2XHu4M6wrQDwZMjfBZBouUIDiwrGfgp/0Xw6B
+ JRSTyHiS
+ wz/naAVuyJTIVfvQfIGMlRYLu25gcfUw/2kmAMZn/ABXXfsnyrvl9qxRt+h0Enu5r2PtvwUIpBF0H0q0582qpHEZYc5cvEY+UugfI/Ccc2QyBX2B42PrN8UdRlrO+/h0SrUx+Q8dCWd/GF0qWRjjvZzuYJiSuEKtEbWEOlmTMMNAXSro1b6t0bXyDSJFfP1Rkm4ajJDyaFJC3jz5O3M5KhvN65vwaiy4scNWVUWmmz/XNKAFnZYTqNzce5nKeUljjmdXekV3CWIwaI0bXh8S5XGuQP1pVrPuoTTJYUfq/nZt+poN1PmACQ0twhb9hhbcvszD3d4DfHYR/KuM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,70 +138,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 11:09:51PM +0800, Kefeng Wang wrote:
-> The alloc_contig_pages() spends a significant amount of time within
-> pfn_range_valid_contig().
+On Mon, Jan 12, 2026 at 11:09:52PM +0800, Kefeng Wang wrote:
+> If no free hugepage folios are available, there is no need to perform
+> any replacement operations. Additionally, gigantic folios should not
+> be replaced under any circumstances. Therefore, we only check for the
+> presence of non-gigantic folios.
 > 
-> - set_max_huge_pages
->    - 99.98% alloc_pool_huge_folio
->         only_alloc_fresh_hugetlb_folio.isra.0
->       - alloc_contig_frozen_pages_noprof
->          - 87.00% pfn_range_valid_contig
->               pfn_to_online_page
->          - 12.91% alloc_contig_frozen_range_noprof
->               4.51% replace_free_hugepage_folios
->             - 4.02% prep_new_page
->                  prep_compound_page
->             - 2.98% undo_isolate_page_range
->                - 2.79% unset_migratetype_isolate
->                   - 2.75% __move_freepages_block_isolate
->                        2.71% __move_freepages_block
->             - 0.98% start_isolate_page_range
->                  0.66% set_migratetype_isolate
+> To ensure that gigantic folios are not mistakenly replaced, we utilize
+> isolate_or_dissolve_huge_folio().
 > 
-> To optimize this process, use the new helper has_unmovable_pages()
-> to avoid more unnecessary iterations for compound pages, such as
-> THP, and high-order buddy pages, which significantly improving the
-> efficiency of contiguous memory allocation.
+> Lastly, to optimize performance, we skip unnecessary iterations over pfn
+> for compound pages and high-order buddy pages to save processing time.
 > 
 > A simple test on machine with 114G free memory, allocate 120 * 1G
 > HugeTLB folios(104 successfully returned),
 > 
 >   time echo 120 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
 > 
-> Before: 0m3.605s
-> After:  0m0.602s
+> Before: 0m0.602s
+> After:  0m0.431s
 > 
 > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-
-Looks good to me, just have a question below:
-
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-
->  mm/page_alloc.c | 25 ++++++++-----------------
->  1 file changed, 8 insertions(+), 17 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index d8d5379c44dc..813c5f57883f 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7183,9 +7185,6 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
->  		if (PageHuge(page)) {
->  			unsigned int order;
+...
+>  int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn)
+>  {
+> -	struct folio *folio;
+> -	int ret = 0;
+> +	unsigned long nr = 0;
+> +	struct page *page;
+> +	struct hstate *h;
+> +	LIST_HEAD(list);
 >  
-> -			if (!IS_ENABLED(CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION))
-> -				return false;
-> -
->  			if (skip_hugetlb) {
->  				*skipped_hugetlb = true;
->  				return false;
-> @@ -7196,17 +7195,9 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
->  			if ((order >= MAX_FOLIO_ORDER) ||
+> -	LIST_HEAD(isolate_list);
+> +	/* Avoid pfn iterations if no free non-gigantic huge pages */
+> +	for_each_hstate(h) {
+> +		if (hstate_is_gigantic(h))
+> +			continue;
+> +
+> +		nr += h->free_huge_pages;
+> +		if (nr)
+> +			break;
+> +	}
+> +
+> +	if (!nr)
+> +		return 0;
+>  
+>  	while (start_pfn < end_pfn) {
+> -		folio = pfn_folio(start_pfn);
+> +		page = pfn_to_page(start_pfn);
+> +		nr = 1;
+>  
+> -		/* Not to disrupt normal path by vainly holding hugetlb_lock */
+> -		if (folio_test_hugetlb(folio) && !folio_ref_count(folio)) {
+> -			ret = alloc_and_dissolve_hugetlb_folio(folio, &isolate_list);
+> -			if (ret)
+> -				break;
+> +		if (PageHuge(page) || PageCompound(page)) {
+> +			struct folio *folio = page_folio(page);
+> +
+> +			nr = folio_nr_pages(folio) - folio_page_idx(folio, page);
+> +
+> +			/* Not to disrupt normal path by vainly holding hugetlb_lock */
+> +			if (folio_test_hugetlb(folio) && !folio_ref_count(folio)) {
+> +				if (isolate_or_dissolve_huge_folio(folio, &list))
 
-Does this not get already covered in page_is_unmovable() somehow?
-size_to_hstate() would return no state for order >= MAX_FOLIO_ORDER
-folio sizes?
-I mean, it is subtle, and I am perfectly fine leaving as is, just asking.
+isolate_or_dissolve_huge_folio() can also return -EBUSY, but you supersed that with
+ENOMEM in case it fails. Is that alright?
+Maybe it is because down the chain we ignore the type of error as long as it is
+an error but just brining it up because the log now differs.
 
  
 
