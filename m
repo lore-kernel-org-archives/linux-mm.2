@@ -4,83 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 398E7D2D0E8
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:42:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACE79D2D0E8
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:44:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89D076B0089; Tue, 13 Jan 2026 07:42:44 -0500 (EST)
+	id CA26D6B008A; Tue, 13 Jan 2026 07:44:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 854E36B008A; Tue, 13 Jan 2026 07:42:44 -0500 (EST)
+	id C8CF06B008C; Tue, 13 Jan 2026 07:44:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76E006B008C; Tue, 13 Jan 2026 07:42:44 -0500 (EST)
+	id B794E6B0092; Tue, 13 Jan 2026 07:44:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 693F86B0089
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:42:44 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0A1E3C0127
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:42:44 +0000 (UTC)
-X-FDA: 84326904648.04.6CC6E08
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A785340013
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:42:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SsPwlrXZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768308162; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id A89AA6B008A
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:44:50 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 75FC71A0117
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:44:50 +0000 (UTC)
+X-FDA: 84326909940.26.9C22F5C
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 035A6C0003
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:44:47 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K67Cdn3S;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zxU1APvI;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K67Cdn3S;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zxU1APvI;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768308288; a=rsa-sha256;
 	cv=none;
-	b=MZ4KYKHzc59+YvZ2zOSGLNaEHHlqD95M+243ghowNWJl5AfQCOz6ZySY2r/kxHscSdK6bS
-	SGJ65kBBhA4bG0nNjyoJFwQYs/GKEqXB7nK+9WFruX3fmQ0brE+GGh1ZPlCGqG2gnrGH/a
-	LY79wSzNAAqIQ6Sf/hcRCq75UppOhR4=
+	b=7BDmePI9guP/uZ/0Up3+zhx9Uo7r5t6D6Mqn0eY37LeVuR+7fUNMHKYAwW0J3kDzPSXJJd
+	/zhsOGiGQZJjNfoL6GMqj2rqSg/C/ASWPxUEiLney2eoc95D2jejGcCrPXrETsCBcldQ//
+	CZu+9g1D5LqKCKK47uGOU7/5eyqhLJo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SsPwlrXZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K67Cdn3S;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zxU1APvI;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K67Cdn3S;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zxU1APvI;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768308162;
+	s=arc-20220608; t=1768308288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RQcacqrw9PkPTszSvJv2a8vhIENGtAbvN1PGGL1C87w=;
-	b=fYY2TxVavgf1RWV42KseESFheV/j3d6G4M7+HkFZM/YDlt3A4+xMSxexLxW26HNN30U1XB
-	52rTSoZ8pNzIHmj3xtWLJhQ7FItPyFMprKhUJjuteLIuO40si2tsYBJ/05tHdbSPQWSNr+
-	ZR43t28YrfvNAXGCVG0w9eE7IwfyCQg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B75E46000A;
-	Tue, 13 Jan 2026 12:42:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B28C116C6;
-	Tue, 13 Jan 2026 12:42:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768308161;
-	bh=/rhdd0wg985rvZA9gm6N7N3iXKw1yrmZh8uRIqjK0qo=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=SsPwlrXZcHLRfd87zRrnL+Q21oqGj51gsGYWaR52R/vOCEaLJfgENJEQiEn3DO7WS
-	 S4yQCnT/jsxWr80b+rpcgHtDmuloJ4sePU1DLwEsMllM01BVOYCpTbe4Lki9yozr+j
-	 4AhMXgP6IUBOZ7IkTIZzPErwQx1RVjGkDJZnOUKrgvesq+2u76+ejE/EFrgN9VCje3
-	 0UNXkRW+nMdY6gskOYLPYwnWn2Yt/lK9wIl4iyt0QkyW3pO/YDue3cE41R/FSNY+XC
-	 XuT9OrN3+apsA1n2ctlWm9EPeTqeVUmRpuxaJ7QAxLd/O4tdwJvpsWhc+zZiBojR8b
-	 epVhr8xC9APWg==
-Content-Type: multipart/mixed; boundary="===============4672709832961997223=="
+	bh=3BYnIltIsPKs/CGQ9ft9ry0PJhQG3lj+kfXFjWwd6nw=;
+	b=R54SB0kLq8GWmaEh8gOQEcmmk7ZIE703yxF6BPYp0XIzfiZkaNIbao2F88iwD+h9TPX7sm
+	LffpbSOeg4wyYd37jo0+FiJ+gxSdlDd2LmhC+7jzaT2qjtj4y/psd7U2MPz0mCpbjEoZpM
+	HWwwv1QFZ5zDWcbcZuSF7ibvMgVHosg=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0673433684;
+	Tue, 13 Jan 2026 12:44:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768308286; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3BYnIltIsPKs/CGQ9ft9ry0PJhQG3lj+kfXFjWwd6nw=;
+	b=K67Cdn3SOUv93HIrhrEBLx0e+jAmt+RUP97YzIXJfiMe6OR1Zscg+Bv2oc3sW7TJGVdmhx
+	xpxoaaBJvhSslfTef2nQYfmO8cjGfob6+nPw8GLzPJ9Z95ZLLcrTpmd0b+lIgvNIqsmFgu
+	39HnI9uLTyB+Syha7Lmh7gj6dcdSKGg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768308286;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3BYnIltIsPKs/CGQ9ft9ry0PJhQG3lj+kfXFjWwd6nw=;
+	b=zxU1APvIwO0MBG6S8o6DMZwyJWL1DB6GEtq8WkKNZhXWC2qQ7Y1fvrOXt5fVdsU46gdlUk
+	UWXWXL4cR10h93DQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768308286; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3BYnIltIsPKs/CGQ9ft9ry0PJhQG3lj+kfXFjWwd6nw=;
+	b=K67Cdn3SOUv93HIrhrEBLx0e+jAmt+RUP97YzIXJfiMe6OR1Zscg+Bv2oc3sW7TJGVdmhx
+	xpxoaaBJvhSslfTef2nQYfmO8cjGfob6+nPw8GLzPJ9Z95ZLLcrTpmd0b+lIgvNIqsmFgu
+	39HnI9uLTyB+Syha7Lmh7gj6dcdSKGg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768308286;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3BYnIltIsPKs/CGQ9ft9ry0PJhQG3lj+kfXFjWwd6nw=;
+	b=zxU1APvIwO0MBG6S8o6DMZwyJWL1DB6GEtq8WkKNZhXWC2qQ7Y1fvrOXt5fVdsU46gdlUk
+	UWXWXL4cR10h93DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E3C6B3EA63;
+	Tue, 13 Jan 2026 12:44:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GX5lNz0+ZmnoZAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 13 Jan 2026 12:44:45 +0000
+Message-ID: <2cdff2ed-a45d-47e9-94ef-f8ecd178bbae@suse.cz>
+Date: Tue, 13 Jan 2026 13:44:45 +0100
 MIME-Version: 1.0
-Message-Id: <8496feb711aed72644504926d9ff358550c011e3144dea088833ad723f4fe852@mail.kernel.org>
-In-Reply-To: <20260113121238.11300-2-laoar.shao@gmail.com>
-References: <20260113121238.11300-2-laoar.shao@gmail.com>
-Subject: Re: [RFC PATCH bpf-next 1/3] sched: add helpers for numa balancing
-From: bot+bpf-ci@kernel.org
-To: laoar.shao@gmail.com,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,akpm@linux-foundation.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,mkoutny@suse.com,yu.c.chen@intel.com,zhao1.liu@intel.com
-Cc: bpf@vger.kernel.org,linux-mm@kvack.org,laoar.shao@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 13 Jan 2026 12:42:41 +0000 (UTC)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V6 8/9] mm/slab: move [__]ksize and slab_ksize() to
+ mm/slub.c
+To: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org
+Cc: andreyknvl@gmail.com, cl@gentwo.org, dvyukov@google.com,
+ glider@google.com, hannes@cmpxchg.org, linux-mm@kvack.org,
+ mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com,
+ roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev,
+ surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com,
+ tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, hao.li@linux.dev
+References: <20260113061845.159790-1-harry.yoo@oracle.com>
+ <20260113061845.159790-9-harry.yoo@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Content-Language: en-US
+In-Reply-To: <20260113061845.159790-9-harry.yoo@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 035A6C0003
+X-Rspamd-Server: rspam06
+X-Stat-Signature: i67sj7uh99tccofnt5sfnizpe1xn9stt
 X-Rspam-User: 
-X-Stat-Signature: x5gm61whqfudbaedt183ddb6wjb8stqk
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A785340013
-X-HE-Tag: 1768308162-849978
-X-HE-Meta: U2FsdGVkX19Eyb2EpsIwQ7G1qACx/mw625Rvtzrf2tduF+Hfmn3+T2dvg64jJG61jSc0+NV5UMGRm8N9kiy13iK6OISr2ZrKyb+BeDBJXcGwK+WR7Yi2WbNDJGT5LSKVcxoprHTrdYXEfuuTD1azmgeImYck2W0GFvRFJcZjCTMP9XoKnyfi9kEJ8rGjv3POBfU3oO3NZ5NaYmRjq1kF0vNgn+VzolZ3+CEiH95bKjzcyPy7gADJqpn9mPSoPm9c35s0UOxXemjakhZzkKldpdsqX2mHzgkwGg0tD+lediRwzdhhzB0Q/NXlei4M7fwcTReX+wZ0BUh3kmI1ULMiHGg7KI6NeVnizVBUp3FXIalK60fKdXtQaGQmL/2TeWItxk17m+JZarJup2ZP6tqu9vYuGkUav7KwZTYk6l3FOx7+hm32Q86f2IjP1t2PJpLTu0u/91KkOsNGFz3WIWoegXun85yLtrmzH3UiOOBI6DJtrOfS7JKbXP15ysVeJ8rB6YUGM4FneZ65/6bjisEqmmMm51BztSHkNWd1aimod2uW8I7vWL8YJ+RCx+wOcK+5YNysx0+J/shtLyGjFvYVmKoNwlKNfsQ+McMeCJ3bWFP1h9KJxXZcNuRhvU5ASiXCN6MSiRTIWUFF0ItIvWsMkYUSR8d/sq4iJBbAwPsPB4CHdVEWFpSyI/cjNRD+aFOpz10TzKYtFr9oXA65VXTNEjMrpKjEdOvfIEFVRGVz0jqDOD2j+SCeP9q4uFO45bj9AIKfTReig1Cv7uPbG9L7KD/zxTmyur3gre+cZgSy5ZO+McJBfH9Erci6MCiIFOcluHnTGd3eKxUWwcn2Pb3A0g8cBq/pTpFe5PEEIDhI6u/YQ6BtVXlANO2Wqa9JjjzJP287Kc3Gsa+wsOO1iGNHNaQpp60UsK3732IxocoYWyDncdFA+dVXcGQXGvOVKEqFYWEJZdvqh59zcVMDCVA
- S8toreqY
- beTlb9FfXFTIoSgFggH6Ah1atnXWtHLDqZjoXjzY/HHNhyMPCuslkTR/akiv4H7JhmPoGpdDwBNduWjCFc8ZUzWknwgW+aryanbSs0OF/aJEt2V0ze5PjuZOkYzBLlqEzbOLZRY7VoOiiX54gfuJuJLcEuwhIHBp6YHY+0AsLXCUOp3M=
+X-HE-Tag: 1768308287-504284
+X-HE-Meta: U2FsdGVkX1+wAfJrNd37KVxN66InQd/H9H2M5LcIkW63CYVsRwzF4uX9SomXxDfd3r+Uq4iY3dM4Bu389ysUN1MGlX4hDKPVWt9K1WbKYwlK00co6rM0hub1x7BJdqKJR8XB9MJkzwyyDggBcEnRVqk0wEBWuEPs7llrTax4V1fOTU31jigjJ3lhtXePVeVRfbLwzLOFE07GUQFvv5IgBpUEgRdnbUOufIHUBiRNgEGuiMSwGRexW+HfhA497nDfELGTdFhHQcsWkU1ykXiZ555LYTnw/FRFUTKnYWw0FEuX4PkZ5ziPHMtW6gfKlxVhqVu/kfbBQCpQ60iVxyj6+9NvjmlKU6EhG0qByReY8mRRTl83dVKSXgU9YeBicgoZrYhGDOabtaHjoiah3AEN6Tfg8tg3HvYsAzCN0J9mHQ+mruXa8O+hJb70J1rxkXk3QE4jlC9NvZk4ogqDMRKIPut8ju+PKKeDJ8T69y32idZQVS2EAI/NeUgZSrb2+U3GRYVNjSHLgqEjz2J6M/W6U8RTiQjwcLl86B3ClGMEe1KdjsGHJd3zNifammSjj9MHMquEIca7cO6XVaR+OuDGLJRNPt5L15ydH4z7+z6qPLoB0Ln9q/Q6I7tr1M8smt0Ym4QiM9EhIkoyVKhp9h0vfdCm/TApCmLMjAyilQFXF2k4w8XnCvPQd1V9MC6A0HSAXPzEgq+I5ptlksdBoQgtDr61sJ56UWLkNT9aEW/RkzhmzPXPBOxiMNWpeOcmWnMTY58WK9RxXwW3XmruijSqWDfaUOYyzcRHK5ekJAXSay2rNlXxrpKB7OeR3IMQMdvrcBs9K6iZ8gsod3Pr6/rGnYNRIyO6VuJ+c0Tz7wMCD2k2p23J2+CbbBciVDnXrL4tC7pJTNiWBVgG4r/AOyAeC4qeN5fiPeL/7VXNp2Q2wBsduUERT5YumoaGpevWRdiN0JA/lK9lwA3/8MfL8/k
+ mRqsMe67
+ GJffvrSA1+HgPmGhBQhrZhAx+8pP2AluOJ4SmnnoAdH8iBr67NfucDKK0byNo8owaV0yl5KBKL8NcPbn+h2ZbNRNUSNs1SpumDTFfGreA1k0HhlsPCoKgW3PBDukwoT6zkTrDk5EzolxIX/YaK7lfTfpT8dtHz+czywWsx5r1Vrps3xoFdo7LpY3Y5GSAI8epROFub4+Gh7+R0+LxB2FiaCN5U97uIQxDK+uT44PZhgQ+cFbihERRmTFi1PNpx8pA3dF31r9Ryw87Lth96CvEf2BbxiUvc8LfWICP+Ag7Yo5C+gwGR6M6yhJ8SMnOdEd+3WQ1oMw2MH0krfTl8+cQkL+s75k8qRBiEhtRQSEzO9AYsgw98LcGVX68hrJYsITDt3nh0socYGVLy60vi3r3QIdArsMJ4a8hvB06ky8BNpfk7hs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,107 +144,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============4672709832961997223==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-> diff --git a/include/linux/sched/numa_balancing.h b/include/linux/sched/numa_balancing.h
-> index 52b22c5c396d..792b6665f476 100644
-> --- a/include/linux/sched/numa_balancing.h
-> +++ b/include/linux/sched/numa_balancing.h
-
-[ ... ]
-
-> @@ -32,6 +33,28 @@ extern void set_numabalancing_state(bool enabled);
-> extern void task_numa_free(struct task_struct *p, bool final);
-> bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
-> 				int src_nid, int dst_cpu);
-> +
-> +extern struct static_key_false sched_numa_balancing;
-> +static inline bool task_numab_enabled(struct task_struct *p)
-> +{
-> +	if (static_branch_unlikely(&sched_numa_balancing))
-> +		return true;
-> +	return false;
-> +}
-> +
-> +static inline bool task_numab_mode_normal(void)
-> +{
-> +	if (sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL)
-> +		return true;
-> +	return false;
-> +}
-> +
-> +static inline bool task_numab_mode_tiering(void)
-> +{
-> +	if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
-> +		return true;
-> +	return false;
-> +}
->  #else
->  static inline void task_numa_fault(int last_node, int node, int pages,
-> 				   int flags)
-
-[ ... ]
-
-> @@ -52,6 +75,10 @@ static inline bool should_numa_migrate_memory(struct task_struct *p,
->  {
->  	return true;
->  }
-> +static inline bool task_numab_enabled(struct task_struct *p)
-> +{
-> +	return false;
-> +}
->  #endif
-
-The #else block adds a stub for task_numab_enabled(), but task_numab_mode_normal()
-and task_numab_mode_tiering() are missing from this section. These helpers are
-defined when CONFIG_NUMA_BALANCING is enabled, but have no stubs when it is
-disabled.
-
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 670fe9fae5ba..7ee5695326e3 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-
-[ ... ]
-
-> @@ -4843,9 +4844,7 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
->  	if (!current_is_kswapd() || sc->order)
->  		return false;
->
-> -	mark = sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ?
-> -	       WMARK_PROMO : WMARK_HIGH;
+On 1/13/26 7:18 AM, Harry Yoo wrote:
+> To access SLUB's internal implementation details beyond cache flags in
+> ksize(), move __ksize(), ksize(), and slab_ksize() to mm/slub.c.
+> 
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
+>  mm/slab.h        | 25 --------------
+>  mm/slab_common.c | 61 ----------------------------------
+>  mm/slub.c        | 86 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 86 insertions(+), 86 deletions(-)
+> 
+> diff --git a/mm/slab.h b/mm/slab.h
+> index 5176c762ec7c..957586d68b3c 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -665,31 +665,6 @@ void kvfree_rcu_cb(struct rcu_head *head);
+>  
+>  size_t __ksize(const void *objp);
+>  
+> -static inline size_t slab_ksize(const struct kmem_cache *s)
+> -{
+> -#ifdef CONFIG_SLUB_DEBUG
+> -	/*
+> -	 * Debugging requires use of the padding between object
+> -	 * and whatever may come after it.
+> -	 */
+> -	if (s->flags & (SLAB_RED_ZONE | SLAB_POISON))
+> -		return s->object_size;
+> -#endif
+> -	if (s->flags & SLAB_KASAN)
+> -		return s->object_size;
+> -	/*
+> -	 * If we have the need to store the freelist pointer
+> -	 * back there or track user information then we can
+> -	 * only use the space before that information.
+> -	 */
+> -	if (s->flags & (SLAB_TYPESAFE_BY_RCU | SLAB_STORE_USER))
+> -		return s->inuse;
+> -	/*
+> -	 * Else we can use all the padding etc for the allocation
+> -	 */
+> -	return s->size;
+> -}
 > -
-> +	mark = task_numab_mode_tiering() ? WMARK_PROMO : WMARK_HIGH;
+>  static inline unsigned int large_kmalloc_order(const struct page *page)
+>  {
+>  	return page[1].flags.f & 0xff;
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index c4cf9ed2ec92..aed91fd6fd10 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -983,43 +983,6 @@ void __init create_kmalloc_caches(void)
+>  						       0, SLAB_NO_MERGE, NULL);
+>  }
+>  
+> -/**
+> - * __ksize -- Report full size of underlying allocation
+> - * @object: pointer to the object
+> - *
+> - * This should only be used internally to query the true size of allocations.
+> - * It is not meant to be a way to discover the usable size of an allocation
+> - * after the fact. Instead, use kmalloc_size_roundup(). Using memory beyond
+> - * the originally requested allocation size may trigger KASAN, UBSAN_BOUNDS,
+> - * and/or FORTIFY_SOURCE.
+> - *
+> - * Return: size of the actual memory used by @object in bytes
+> - */
+> -size_t __ksize(const void *object)
 
-[ ... ]
+Think it could be also static and not in slab.h? I'll make that change
+locally.
 
-> @@ -6774,7 +6773,7 @@ static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx)
->  		enum zone_stat_item item;
->  		unsigned long free_pages;
->
-> -		if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
-> +		if (task_numab_mode_tiering())
->  			mark = promo_wmark_pages(zone);
-
-The original sysctl_numa_balancing_mode is defined to 0 when CONFIG_NUMA_BALANCING
-is disabled (see include/linux/sched/sysctl.h), allowing this code to compile and
-work correctly in both configurations. The new task_numab_mode_tiering() helper
-lacks a stub in the #else block, so should_abort_scan() and pgdat_balanced() in
-mm/vmscan.c will fail to compile when CONFIG_NUMA_BALANCING is not enabled.
-
-Would it make sense to add stubs for task_numab_mode_normal() and
-task_numab_mode_tiering() to the #else block, returning false to match the
-original behavior when sysctl_numa_balancing_mode is defined as 0?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/20956455529
-
---===============4672709832961997223==--
 
