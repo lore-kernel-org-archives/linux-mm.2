@@ -4,117 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DB50D30CDB
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 23:27:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B46DBD30CDB
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 23:34:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78AF56B0088; Tue, 13 Jan 2026 18:27:08 -0500 (EST)
+	id F1B126B0088; Tue, 13 Jan 2026 18:34:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 738AE6B0089; Tue, 13 Jan 2026 18:27:08 -0500 (EST)
+	id EC9656B0089; Tue, 13 Jan 2026 18:34:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6372D6B008A; Tue, 13 Jan 2026 18:27:08 -0500 (EST)
+	id DBDE76B008A; Tue, 13 Jan 2026 18:34:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 516706B0088
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 18:27:08 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CCF751ACF2B
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 23:27:07 +0000 (UTC)
-X-FDA: 84328528494.08.3E0CBF6
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E8A04A0003
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 23:27:05 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TUACZXJN;
-	spf=pass (imf25.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CAC076B0088
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 18:34:19 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 74BEC1A9B81
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 23:34:19 +0000 (UTC)
+X-FDA: 84328546638.09.E67AE6B
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8CC931C0002
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 23:34:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MRM45ZBy;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768347257; a=rsa-sha256;
+	cv=none;
+	b=gBF1eF9tecvFT+mq5VPuy7gxCfH1ELmuhyBf8S/M4bE3oUvU3RY/CvGoBgVCH5UGNY2fQ5
+	F8E0J3mgK9Dk7qIiELX0syKJ4LepqaaSujqjZhD6dhxRM1NP+gpsuAVG6hOZWNytHwJkJN
+	yGE4yyl1qP3d2zuFnos4SskIEbSO9/g=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MRM45ZBy;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768346826;
+	s=arc-20220608; t=1768347257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XIxHGmAm1SZZrcYdW9mVCY8ENSWv9Idzn4C9R7aSfY4=;
-	b=T0H4dMerVx4RkydqwAPNanFiEO6efv4ylw2ttFwzIxwPNKpk/57NqJ6r3HoXpRi6uqWx6F
-	L7E6hBUod+QcQ5GzX+jhYI1BWVfqIykftD3y9iEBrbqF92LsDiF6oc6THGvVLGQE2j2uP7
-	7z6qwMOw3arIBOBGcYEtPFYuFBXWJ8s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768346826; a=rsa-sha256;
-	cv=none;
-	b=fDZUc4D+XlwpPUrw9DdEuUWnMQU626q7JR/WGgFzvqUK+mu8DTRZfWrjYH3xgdPs51ZXP4
-	0ygAOdGoMl30VStb0kXsmsgCCgku6BD1THetcX7EPQeXDNyyzDDZR0rX+FjVYELdmN+I8x
-	Dy5/lpF/J+47RbzEnd+LTcEgFzpGitg=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TUACZXJN;
-	spf=pass (imf25.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-47edffe5540so7412605e9.0
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:27:05 -0800 (PST)
+	bh=K7s9rxJWckSpPn5eremPzEyroaJb9H+mV+4Z95ehOgA=;
+	b=n27ooFvlTAWxLqL+ZSp1/SS7TxyoAmyzP68fjcSvwgvcgvfp0v2utbdlVrvfo5IOnOLpR0
+	DxKj4HtuNAi4KhOjaPrJxvZac0qrp5mk5XdjiD2qhIRlKZBSrdeEY/VLAne2AR2xwNeZJe
+	OxV235+uOJ+BYmSzqSMI6jgew0PcGJw=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42fb03c3cf2so4416328f8f.1
+        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:34:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768346824; x=1768951624; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1768347256; x=1768952056; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XIxHGmAm1SZZrcYdW9mVCY8ENSWv9Idzn4C9R7aSfY4=;
-        b=TUACZXJNKMDwGmLqve3XoQ02pvxoZjSHGwT1XFzYgpabsnycCgJ0tQcMcA5xGKYXkP
-         PBKlvL6QxuQgeJl23/3WTUJ4oS8HTgZdEspk8xNOnc9978zxhvVA76HW3oiv0VuILZ+i
-         hxPW4a7kSETkFnGd9N00eT2xPd06yRdb4HLAehueg5o40cCaeJAOO5Bansz0ou4yY8jx
-         qunbxXzzTifMmUavS2kfgTBvLqAJFOy0+ZR1tH6ZCRB66k3uaGVdZkdDPvzzjytVFV0X
-         LUlhKRf6AJ5UhyNfbitT50C12Kt85O/UabzinQz6IAxI68vDjhRYEOy8+t5Mi0+CeZjJ
-         65ZA==
+        bh=K7s9rxJWckSpPn5eremPzEyroaJb9H+mV+4Z95ehOgA=;
+        b=MRM45ZByKdqR/QOXzuQ5F0e2WrF+jg0OgGSuPN3Lt2vzXngYnHuUjLsT0/IujN/dzU
+         FZC8WRDQXnevNpso+PVwmtReUtWquAa441qaDT2hXxPuskjLcf8XrWDHDKhTPtcr8867
+         kWOxQ6uspDnhf5f8ZkiNmAqQqPMx4wMrwcx54Q4J68IhISavtgUbz128DNegrMGb5J/S
+         eTrVBXlNYPcPq/RVzvsD7xJtm/ZZr1xwohxiE+WsaU9p0MGOkUYcsJnPVa+b1k5VzUda
+         ZWUo+JeppV7fkRf1fTtawtIcRRvSORCYncguAN9YDHZTq2VHoCo+bf/iJ2zVMGY6W1AW
+         DKTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768346824; x=1768951624;
+        d=1e100.net; s=20230601; t=1768347256; x=1768952056;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=XIxHGmAm1SZZrcYdW9mVCY8ENSWv9Idzn4C9R7aSfY4=;
-        b=txrDKK8HbXcPUwDftGEeC/dLnjRs/QcRB1hCg/EZ4ajSAZI9LMYbKni1PCze28dNnc
-         PfGRIgqzkDmQvtUUSr9rV7zL45uUQ5rGfj9UCDZ/PeHZ5T1gT0uYesBVwMpeEqfuDLTT
-         I7fhBNiwsSrWYjAQjwF4tcwn9RFZWOjMdaJiTw/t/2ZM+uHTZXGXHM4jOQheHadZNA5C
-         z6Ytjlf50QLb7g5NfomCJSKm+GYTi3qrvS6vQI42BOj1ds9k5h83RsUdZYnC9NSdOT/D
-         krgPLgSdw73dgLz2IgAhj/uKQISF+JWQOnxgVF5vwWNx2/thOpbt4oK5KRq4JVJrgQWU
-         lTeg==
-X-Forwarded-Encrypted: i=1; AJvYcCXoMVtQP0JrPYe392kHWiU5m3yY83w67kDZooxiv1KVDRUNfmBU+puzH+8FWMkiT6QgCDczHOzytg==@kvack.org
-X-Gm-Message-State: AOJu0Yz9Ik01QY2+EQJjo6uElfK6b1NwZDWCFXDbA5WUVeY1iT0kLJ4u
-	ffBrjDnSzmP4Y1dwD5pPw+dAr+3jZErMU+0oHATmR+AxM2b3LxAi23kykt0UZKSXqjhXfC+a2ip
-	0T7web0vlD7rw/ptq8mHHbqlfqvQXr80=
-X-Gm-Gg: AY/fxX71CRseJLvHvxoKVZZpTiNEScFNRJyjYqtaMbZuTZsoGggeCFYqqAYnLEMJ6y/
-	D5uAMr+4G5oE2RwbBD99zkB7UxQ7gMlP/OlrL29RPhpEKlzcTmEaO2GpXbKCFThNRbQglKFQ0l1
-	N12G4VH8f2DbKZxqmK49NFnw80aj5rC2E2jjp0XV2Sod4UUcVwWCaukO6E74c7+fPvjyNFgZ2+T
-	T8ANny+HaTNi0OnF/3WpQddkhCON139TITTYFdnF6YdmoK/T2vQP5Fe72A5lqi8qj2EliyWwS6G
-	fsXPEo9XQVOt5fNYIBG/Qe4bB5om
-X-Received: by 2002:a5d:64c5:0:b0:430:fd0f:2910 with SMTP id
- ffacd0b85a97d-4342c501a57mr685880f8f.26.1768346824132; Tue, 13 Jan 2026
- 15:27:04 -0800 (PST)
+        bh=K7s9rxJWckSpPn5eremPzEyroaJb9H+mV+4Z95ehOgA=;
+        b=TZX6nRLgiXUocE8y1DyfmtkEbJVdQsCETn0/TRlgyOaeo7i+7eqf0jFGOz71rlkfmq
+         sjqPd/B6NypMAkhYmxJFHAtRpS5sGrlYLrCnCNNP7LiuIO1BA22HifK+qUDvYnkZYLZK
+         qrSu3j9+E3rkXTTUk/mfjdoMAG2ICpV/C5BuC8GPR/Uud8eVcQHlKF9paKmH+Qzl0JfL
+         1AIsrLQpLQen2ving4vrONfQwHXednw+mYIHI47s5CZLON8LzsNP8yIr2CrM/YTV+NQM
+         wSjX09alHG8PEYuM68yV7hEZlPgyrDyvm+ESsyOMJT+QJospZ86aq1Kzzxi0Re0oOrL6
+         EvHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU2fLR5zePHwqMcY2a8oYofsX37BlpxddLPFN6huXFWwU0/VEBg+gKMQvpl1V+htMrxsfy+F+By7w==@kvack.org
+X-Gm-Message-State: AOJu0YwD4OFIS+bp54lUU8eHJy6AEB/YOh8g8PrGa32acyx9oqB8098m
+	7r9S39z95CwqZk3QbHJDqC1pRzF4b7XcJB0hJAP87Jm0eQVrsbjufdCROaxypyRc2rNOlxRlrtR
+	l1cl0xc3dXRFggPzoaaeMG693KjQ3c1s=
+X-Gm-Gg: AY/fxX6rCXYu4m5WPGKK/c3+uhK43qyLLKR6csRto9KMaD+fKMGM0ncCWU9eLym2M1E
+	e9/YMaDbcDaLbEPROUZl8Hc+n82BXBRepC5JPqIu757bcd7Ynv9i3ohYJXc9aOOOGKN5xoYGkS7
+	ztA1xoW1LIOsqSq08uMJ+Oyjb8IalVKbNcP/LaL8Q06ZfMrb7kMI7mOWE+/VA9XFDOFROHDK80V
+	ocDaM68yLBPMEmLn76RZWOkNn7X3TZv66U6Hd0EKbmbEmQQceqWLOnWHfZudJAqz1QvG6gu+bD2
+	XA7kJZxfGu6wMa35BFKgSEPpT8Cv
+X-Received: by 2002:a05:6000:4284:b0:431:9b2:61c1 with SMTP id
+ ffacd0b85a97d-4342c4f40dfmr471528f8f.6.1768347255789; Tue, 13 Jan 2026
+ 15:34:15 -0800 (PST)
 MIME-Version: 1.0
-References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
- <20260112-sheaves-for-all-v2-6-98225cfb50cf@suse.cz> <20260113183604.ykHFYvV2@linutronix.de>
-In-Reply-To: <20260113183604.ykHFYvV2@linutronix.de>
+References: <20260113150639.48407-1-swarajgaikwad1925@gmail.com> <20260113180036.Zl8j3vIY@linutronix.de>
+In-Reply-To: <20260113180036.Zl8j3vIY@linutronix.de>
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 13 Jan 2026 15:26:53 -0800
-X-Gm-Features: AZwV_Qg0xd2SuSeZtzkfObEmnG4DkzskoYODoJFcrxj4bx-h7Wvm-bafCffVqCQ
-Message-ID: <CAADnVQK0Y2ha--EndLUfk_7n8na9CfnTpvqPMYbH07+MTJ9UpA@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 06/20] slab: make percpu sheaves compatible with kmalloc_nolock()/kfree_nolock()
+Date: Tue, 13 Jan 2026 15:34:04 -0800
+X-Gm-Features: AZwV_QjYt435EovaX3Vefewc_Yb9AEHtH7N6cRpOO2cyq9Oe5XpDAMX_LWYuCTo
+Message-ID: <CAADnVQ+no23M8x-00yZXHo=0BqwwR0kyq8Z=oE9OK8G71PO5Yw@mail.gmail.com>
+Subject: Re: [PATCH v2] slab: fix kmalloc_nolock() context check for PREEMPT_RT
 To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>, 
-	Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
-	linux-rt-devel@lists.linux.dev, bpf <bpf@vger.kernel.org>, 
-	kasan-dev <kasan-dev@googlegroups.com>
+Cc: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Alexei Starovoitov <ast@kernel.org>, 
+	"open list:SLAB ALLOCATOR" <linux-mm@kvack.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:Real-time Linux (PREEMPT_RT):Keyword:PREEMPT_RT" <linux-rt-devel@lists.linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
+	david.hunter.linux@gmail.com, 
+	syzbot+b1546ad4a95331b2101e@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E8A04A0003
+X-Rspamd-Queue-Id: 8CC931C0002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 98dedjmip9rbu9ug3tgaf4hxj73hox8g
 X-Rspam-User: 
-X-Stat-Signature: n8ucatqnbqbcj7aym67ytm91cagc4be7
-X-HE-Tag: 1768346825-242567
-X-HE-Meta: U2FsdGVkX1886xgTbu7TzjAzJstknauqqoW+vF1Fo/wxgeyiH8nX/k45yC4Fj20Z0DwC7T3vJ4vw7HjbUE615F5nZcsYHwVEufInnsKCnPOyh0H2XpARA//LCUoCPJm/VPTnt7qd+a8fqrMoylVy60aBkreB9uYDR+JfgPR5O3/DS7+f3est3D9Old4xOCNL7ze8zeJuPq8aMOE7+UpkNScuKTCulKApD24+i4LYkuJ/8/KNJlvNpPq2Gy884bHmaKCanMTp5peT/yku/H/ktoXVrSq7bSoQCEAVKUUR92KNwp1i2mDKDy1Uh21pHkW3UB8pr0amti7c8DRttQR8785S5H7YDrdcL/02GqoE8O5leAJr3qto1z8Z0aurP185qIuyec0D3NlV+rn0iDyILVGYWYvQup5i8Gn6JzQQDUTCd5OBCnKFp5UUtZwkEMtLwz5oK8UOHjVSpTSbDQVATvlT2X2G5/mmG1QClfDTtsMISLsDFo9Zq4H5he/Dz0LFkGs8X2MF/O4KV0yJyQwDqx0vLwbtmz2IyavwWwHFyvQ7TxH4vXwYSJJACQts/RbxTkjvc5sv/c9dQUP8A9utcQhlt3guKSIuPnPJ2W04YRuJJLVWjKal8YHvCTvyfPFXepGuxbI1KPAwY35Fnkr7KoffZYZe++1AEOd8lZA+xj2et4Fl1mat9GY8/Oou63hHgm/Eq2drE4Zi7+HeVNZzQFwlplhqj8yMkdpVhUBFkf1bOzarYUljl2G9W9GCQ3UJlDmGlECq7gdxfUnkcaKKox+dqlIy7szeJPoRrrSKYxG1GzZzSSOsJ4H2uRyoysrrWofmC2VU6N7j2d2ihq5FlSkkBQGO13F8z5aBoRU/S8owcwbikuXYqRHHgyf7YPyXk/MhcQfKtzuhGU/Sjrxz1YXaAqkoNvmCsq2D1TdAzPHFwa5JsFfqLwESTKkW2IoDSClw1wbSwkQkecE+4WN
- SbXHTo12
- H4r6glMadFGN+6G8aGA68tU2+YFSCR4nVzehcMwuCWg3h6XkmNc52rZcoDlbgE41GS0j4qCGyWimCKvagLj15vQLWdsoKAJfKkm8Hb/Snzcll3SBR3FbZCIYCadRbxQlVwsD+IPMkS0FTqqa00VeQxvlLs/3gs/J0YIaHkfFtiFYlrUom8CAde3Di5J1VtV4qnndxnrQYRxpYlInz3vy7a6xBaFY1J7OT/pSst4p4GvSbmh/xdCkWOouwgvqvDxLKq6Yko64NI6rOAt2fPqy1Odsbuv3s9Kio702xqb6gkCAU8tYDyZ2bORJt2mjutmQZWrP5KSJpNxRBd7sGmyDBToYh6GnMhvVKw/F83XwHEzzCmEdoq00BxNqJFxA/mImbNf9HKMAtLyz4QRVslaA6ccIiy0IsvQ+r7Ikn38H6Fr+6mAF2NhtDkAiSKMfsdm12YBf9+RgSNXdAyPkuwbEdmd7vm5pepIk0Wihih3AmEtnhWts=
+X-HE-Tag: 1768347257-457103
+X-HE-Meta: U2FsdGVkX1+ieWO36K/K/RZr5iL2lsC3qPY286mzATDDRHltJF01YPQaJs+RMBPxxmG3VWvZQxW043uzI+wGEysh3iH8vZXJg66fOtlGzCi/Eu9KQnE3hK9X0fvSbTjq75o20Q4YlFSyp+17aDRv05ewwezkiSg5j5Goa7NfLdTuuyej8zWBWAzTag9+IaBPRcVToz/KVuCkAf2Fmv9nj0rwwTzn5BUQnmY/TjuJEjpWDYgwUSH+6EYvtk3C978WrOAWowQX89oA6z0TrL1KiMi4qO9J85r9A3w6B3aFLFYEO8PXnk8NOgILCoMHDVJxuSHN6cCvsvLUamU8a9LA//Wv7SoZ9KaJMAEGOgymLaNZJgfmoEYUjk5dk1hYqG2e6jJG4RLoHCbLzCXO268m4UZzomE3rGRQuqtaYWz7SlY7WKFTUR0aLB5hBwIhJayKuhuMffiP8oaB63MJmwTuyyFW1+3+LaVJeBbzjmS4RFBW/qL/xQzigPtAQXHY1xuMpy5X6fNGvgq5iQFzl9nCZg4jzksvB5WgCT8zWaGHh0Ib13vu9kQKFKMcQSMSIk8lasugcSG5ugtc5E81wCk+J81+5aO+tS9cUWzDteFk+ykzc4Pyg+J2SbwbeKRHFEltr9Y57pbUGsTq19IuX3tD2G3VgtYDJVSHdI9AqTUkhCkVBOUrXIcyoNB48Aoa1GDVlkwf4DVr9HbJJ3AvkniTOA0H8aKV/dwQlaM5/mLRuGoTIk15RjtCleRBQASW+EYkLVJdcGsmlNpSyxU7FA+V44nydTXI/KYjs/WS3573XZqTUn2UnCqbW+Ln5gu3WUic8+q3vSGfqs/OWz6Z+XH9hxr9bc/NmQziaFAn1VKAmoguZx0/ZM9Ek/M4yrAAaJGiSAkpWiXgiehAJHb5DheGthcO20SpaUM9MYShAhqCnduvOcbE+C1Esunefaa+TvfveJ0bK7P6qollDk4R+8q
+ PnG0zslx
+ KuJR3w1elziClNIutFH2W77OrUJGbA7Yu7O6cCYGTk7wQl/4xxrRJzDhWjEpteu6fJDzeJIQQLoKyCFLpkxkptTt1NBiAqe+j62+BZmEbBJmd8a7LFlDaU+BjuihTxvGNPRiutLzDnhIM5p05L/Jqpju5Vv+rnyZkEY/+8V1aFQlxSTBQrVJuGgAio98F+RA4KVDcvDamoyqDKJ6tpqvMzTNpzujHuPcY3/Ja7WCdK7ADQ73ni0cSkHGIH9Y3uCMsRkeMOAjmWPClYA9TsaS805y4CIetbyHeuB1fSO8D5BBcu126cNXP4cCSH/OB5FGc4Pq1nrY4Kj8icvnzB+4bHgOBGRiY8SUohbagm4tfRLm1U94w8N5ejItgU004NpqYG9/alYRrF670FZ8hSKcWGAES8JN7qfr1dpBs234F+SHN7iB6jNJT0XvKEqY9I+kv4Vh7RuC/zifeX71GG/fuyi/F+0a4xFSytulfAJVcNOHZsh+6mJdDM/kJYvGYc3vDRexUUzZpuGTFQsTWxUWZCLstAlTL4gxOdBmhZnYcvYVvMAUNkpDkwjRGJ6/qP/rbxDskJtRrYUBHbZCLeJlyn0Y883dax9M0uSnAaQD6mtUnG1VIVEGYnEc6yb2lHCm20YO7gPC/3P/5Q8BI1H9jQHNw2oPeo7mqzGB23wqj3nVeJLkSkALW3ax3gisp0DkO3Zn7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,26 +123,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 13, 2026 at 10:36=E2=80=AFAM Sebastian Andrzej Siewior
+On Tue, Jan 13, 2026 at 10:00=E2=80=AFAM Sebastian Andrzej Siewior
 <bigeasy@linutronix.de> wrote:
 >
-> On 2026-01-12 16:17:00 [+0100], Vlastimil Babka wrote:
+> On 2026-01-13 20:36:39 [+0530], Swaraj Gaikwad wrote:
+> > On PREEMPT_RT kernels, local_lock becomes a sleeping lock. The current
+> > check in kmalloc_nolock() only verifies we're not in NMI or hard IRQ
+> > context, but misses the case where preemption is disabled.
+>
+> The reasoning was different back then.
+>
+> > When a BPF program runs from a tracepoint with preemption disabled
+> > (preempt_count > 0), kmalloc_nolock() proceeds to call
+> > local_lock_irqsave() which attempts to acquire a sleeping lock,
+> > triggering:
+> >
+> >   BUG: sleeping function called from invalid context
+> >   in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 6128
+> >   preempt_count: 2, expected: 0
+> >
+> > Fix this by checking !preemptible() on PREEMPT_RT, which directly
+> > expresses the constraint that we cannot take a sleeping lock when
+> > preemption is disabled. This encompasses the previous checks for NMI
+> > and hard IRQ contexts while also catching cases where preemption is
+> > disabled.
+> >
+> > Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock=
+().")
+> > Reported-by: syzbot+b1546ad4a95331b2101e@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=3Db1546ad4a95331b2101e
+> > Signed-off-by: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
+> > ---
+>
+> Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+>
+> for now.
+>
+> > Changes in v2:
+> > - Simplified condition from (in_nmi() || in_hardirq() || preempt_count(=
+))
+> >   to !preemptible() as suggested by Luis Claudio R. Goncalves and agree=
+d
+> >   by Vlastimil Babka
+> > - Updated comment to reflect the more descriptive check
+> >
+> > Tested by building with syz config and running the syzbot
+> > reproducer - kernel no longer crashes.
+> >
+> >  mm/slub.c | 8 ++++++--
+> >  1 file changed, 6 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 2acce22590f8..642f4744d5c6 100644
 > > --- a/mm/slub.c
 > > +++ b/mm/slub.c
-> > @@ -5727,6 +5742,12 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t g=
+> > @@ -5689,8 +5689,12 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t g=
 fp_flags, int node)
-> >                */
-> >               return NULL;
+> >       if (unlikely(!size))
+> >               return ZERO_SIZE_PTR;
 > >
-> > +     ret =3D alloc_from_pcs(s, alloc_gfp, node);
-> > +     if (ret)
-> > +             goto success;
+> > -     if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
+> > -             /* kmalloc_nolock() in PREEMPT_RT is not supported from i=
+rq */
+> > +     if (IS_ENABLED(CONFIG_PREEMPT_RT) && !preemptible())
+> > +             /*
+> > +              * kmalloc_nolock() in PREEMPT_RT is not supported from
+> > +              * non-preemptible context because local_lock becomes a
+> > +              * sleeping lock on RT.
 >
-> I'm sorry if I am slow but this actually should actually allow
-> kmalloc_nolock() allocations on PREEMPT_RT from atomic context. I am
-> mentioning this because of the patch which removes the nmi+hardirq
-> condtion (https://lore.kernel.org/all/20260113150639.48407-1-swarajgaikwa=
-d1925@gmail.com)
+> I would say that despite the _nolock() suffix a local_lock() is still
+> acquired. The !PREEMPT_RT does a trylock.
+>
+> As I noticed this myself today while looking at other patches, was the
+> trylock removed on RT by accident, was it there only in an earlier
+> version which was never merged and will it ever come back so we can go
+> back to !nmi || !hardirq?
 
-Right. With sheaves kmalloc_nolock() on RT will be more reliable.
+The root cause of this syzbot splat is preempt_disable() in
+trace_virtio_transport_alloc_pkt() that is being fixed separately.
+I guess this patch doesn't hurt, but I suspect with tracepoints
+moving to srcu_fast syzbot won't be able to find
+preempt_disable() + kmalloc_nolock() case
+
+Acked-by: Alexei Starovoitov <ast@kernel.org>
+
+for now :)
+until shaves come.
 
