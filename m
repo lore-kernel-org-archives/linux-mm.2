@@ -4,98 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68575D29DF7
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 09:40:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E746D29DF3
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 09:42:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFB076B0005; Tue, 13 Jan 2026 04:40:56 -0500 (EST)
+	id D663C6B0005; Tue, 13 Jan 2026 04:42:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA8C66B0089; Tue, 13 Jan 2026 04:40:56 -0500 (EST)
+	id D14366B0089; Tue, 13 Jan 2026 04:42:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA7D06B008A; Tue, 13 Jan 2026 04:40:56 -0500 (EST)
+	id C13EB6B008A; Tue, 13 Jan 2026 04:42:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A46D76B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:40:56 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A434C04EE
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:40:56 +0000 (UTC)
-X-FDA: 84326446512.26.3BC2F48
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DA37B20005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:40:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TUBZ7Rki;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768297254; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B16D96B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:42:32 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 510ADB71F1
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:42:32 +0000 (UTC)
+X-FDA: 84326450544.02.068ECBE
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 32B881C0013
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:42:29 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=amaCJM7Q;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768297350; a=rsa-sha256;
 	cv=none;
-	b=cU2U7YT97MKsZNPwqHmoiBYHiAfU4J56J/vqtnoVaKmS4KTLEToTiqLaVCPP9kN1fm6IlK
-	idOD9XaeLciWVbcj7QDBTM9awPsGJd3/503Bxz7oCKRXtJaUEp5r5SDYkYjmekZNzvSFAP
-	oL80+Xfly75HEZT6G40JQ3NrL5MJfR0=
+	b=Y1hzwK7751BgOWkHsKusCHsanRmR+xCoGq0Z5N9XRmAd+PH412WQcKe78N65YRkrZR8Nt2
+	3tVw/VUmXI7dUHXpC/imLG56S+4VECpvscIGfkW+5bwu0UiB+X1aCrnVcT6w61sdsCGAev
+	kpVyuGqpmKWRMpsjPoGCdoQm9nF9G4U=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TUBZ7Rki;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=amaCJM7Q;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768297254;
+	s=arc-20220608; t=1768297350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=pDgTzqLTSyKP1tsdp96od7LtCDRced+eXF8PuSdTelo=;
-	b=BYWVPDkGDjSJfLVg/m9hSCRSzp+rPuk2udxRsiUOHp6zL+VqHILa00Re2xKTQ7mwKwvEoe
-	V0yWBjLq1YFfCpYUUTib6YNSkSSkktKaEFbahk3g56I3YWEM47NbVtfBUCmaPdeNY8BY65
-	kBuSyusmaGs191UGAKUNzZQ6nrs4seE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768297254; x=1799833254;
-  h=date:from:to:cc:subject:message-id;
-  bh=UDNaW7Sn4obq4whRUbXRQozD33l0Xm4m3Sj/R6DL/rs=;
-  b=TUBZ7RkijVITWYQN95V1kR+bIAjQIMQ/IPHa+yjNprtsvFtgV2UiVro3
-   7TYWA8y5/KBpHdj9S1Nxh7pTaFZPypoXgcEHC2gJkBmUedKgH4wHWJmQY
-   yfkn77bmsT2KpezbHC367Zo8GzKd2/5gDrhfOxlX39pzaR/dPo+5sI2LC
-   PlOv6zJPyoauLDw0ECxrQuxOZTwjMw82nafGN4tqo8EhbaFH2KkdpijlZ
-   IJjBgEsL2DL88Haq7IdUanJG0czEfU5O4UotmTvp49fqDItRZgeAW00FD
-   6feIAgxbnAehWrxEr5+6c2i2HDobAPHLnA//jgeGCRjPuVat9xSzzkRJA
-   Q==;
-X-CSE-ConnectionGUID: q04CIK8eS2K/uWkda5EvGw==
-X-CSE-MsgGUID: TJIyGaV0SYOoFdGAllnvwQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="80944380"
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
-   d="scan'208";a="80944380"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 01:40:52 -0800
-X-CSE-ConnectionGUID: 3facd3uCQAK5rlyj7ZiwjA==
-X-CSE-MsgGUID: ccwhKksfQC+RIInLyIw0Sw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
-   d="scan'208";a="208808986"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 13 Jan 2026 01:40:51 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vfatM-00000000EYa-1s9T;
-	Tue, 13 Jan 2026 09:40:48 +0000
-Date: Tue, 13 Jan 2026 17:40:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Samuel Holland <samuel.holland@sifive.com>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- "Maciej Wieczor-Retman" <maciej.wieczor-retman@intel.com>
-Subject: [akpm-mm:mm-new 283/303] mm/kasan/report.c:674:80: sparse:
- sparse: cast truncates bits from constant value (ff00000000000000 becomes 0)
-Message-ID: <202601131757.U5JRrwbH-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: DA37B20005
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qWi0gxImcfe6sPFx7hTgeNf8sv4DbP5sxUz/myXx3jk=;
+	b=0q7jwPoWyaWgFbaloy1XQsvO8Tr4SS4w0vocYBRjRK06FZHofhnj8K/EpMC+kw3EDgrT/3
+	cORipsJc6nNVL6tvER2ET7DaT0TQ7d2gXyt1niDgpJLZq+h20Wh6bjrl8U6yNKVbzAHy3E
+	9twKg+2Qbq1UaHfFMyQdLNQIQWn4emA=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42fb4eeb482so4201745f8f.0
+        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 01:42:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768297349; x=1768902149; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qWi0gxImcfe6sPFx7hTgeNf8sv4DbP5sxUz/myXx3jk=;
+        b=amaCJM7Q0b3qNQ6pX/JafRFTHq001IpTLvjP7Bsbyf3MY01+b5QUjqEWprAOcQ0lp7
+         sNn7APs1isUrSqfgEwLUyKB7GmKRzB1DKdpL2AgDc4f8S0lMFqQg2WYJyO39dUK+znc2
+         abPgPMck4v6LwG9LsbBSaAHZDIyzlHxrg9PFVKxz1uJ+AU0BY70FOKjDVakGviwHw2Pc
+         3+1Rnjq5dMd5dOWngcvv3wojc17Im/fp32MQwNRZMrqYZSgU8mvT0T3CJ8ebDI7si3mO
+         MQHwrBEFpT/ZZsuYgAUN24uF8BYVcqZ/jHWzEbGZdK1gHUzzLdSOcyhm1EvxPmVaIyKd
+         ILIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768297349; x=1768902149;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qWi0gxImcfe6sPFx7hTgeNf8sv4DbP5sxUz/myXx3jk=;
+        b=r3TmnsTDw7f4kWhK1OEDmltHFr50v24Bl3IUspPj0PPttDw15KUBVY3mHTtuXrgIi3
+         faseDeSZXhwyKT8g8mF5HWohPKJpsZupVO2YuZ8EtQrm2/SBiXrdaQJPZCV4203GjAMd
+         Mu4ulao1qAp11qw8brrdXxUN128baTs7Du+7+C0bBAAamQk9oRm0wwVB0YisWFY+hqkv
+         Xymduj7OVk/GfH6RYgcqNNtHlUrzHP62opw+9+miVHWfxovFSn3XeI7wX9unHfYlWLRU
+         zHsamQgU1h0TJ3mtfkV6S2SanactrCDzWEjplDC6TwAioQCpyWcFJfcHkCDekSoztStG
+         mngg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9AkNjxdRgUsMK017WAxkn0lMLfGl/9TTGfC8fDfwg28KPa1dijLIypSh1iQRKPqEZjWPCKpr0AA==@kvack.org
+X-Gm-Message-State: AOJu0YyMxSqbY982Bv1M20iMi70U7ZSvWf+ebUg4UzdcgsNsUVmWglrM
+	C9Fao3Z2u0ztJwtoBY6Xq1CXSPLTgN3b7TNsXJfWu5F+hwCSi4pFUS3z
+X-Gm-Gg: AY/fxX5W3pKIvHXJMKqVlYVNkCOuBeFXjq/frlYrN183GbZl2ZIR+wppUE0L4X6Bc3c
+	WnskMjejheEWay48vXo4v9U98pzdCWqFdgOKMFELu8ZuKSwMJZZAp3JncssMUNlOF0rehuU+19Q
+	Dz7OoqGwmKIFaj1m2yDnbm0D6KvWElPQK8k0dhYWxXBf3SB2lyoV/5HQ87kxmedEog+CElABV+q
+	NR9j8Ol9GfntHW0JiCnsiPtf2YsK5WSj4cd9JSQbsBhZSzXunyM0wXL9ehwBVyxcgOV2S9evdYi
+	c9sm4nGWLEpMq4wxQBFfQxQtzv0IzFFH3LwqC+rfsfc3IumOH4LWkSoU8ZrAF7GFyzlesW3jEuY
+	4etT7yxE5BGJENGKmZQQpy/c423UPn1PRpmM3Y11y7uDuIql4gvvc7671uenWEuy/GSNDWP+LcB
+	Jztkfd9VifYJVMPx9MpcJo1mRIzJApLZGxUrJLq1F/RCFAZr+Z3QDV
+X-Google-Smtp-Source: AGHT+IGCluKpScy5UmgAEwir80+RNqkqkTWiXHqvvRnvopn9jhUBxHczRPNLOdlhz4XUibpj8zHkVw==
+X-Received: by 2002:a05:6000:178a:b0:430:f449:5f18 with SMTP id ffacd0b85a97d-432c37644b4mr26662191f8f.46.1768297348421;
+        Tue, 13 Jan 2026 01:42:28 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5dfa07sm43196646f8f.25.2026.01.13.01.42.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jan 2026 01:42:28 -0800 (PST)
+Date: Tue, 13 Jan 2026 09:42:26 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Brian Masney <bmasney@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Andreas Dilger <adilger.kernel@dilger.ca>,
+ Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, Miklos
+ Szeredi <miklos@szeredi.hu>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+ Theodore Ts'o <tytso@mit.edu>
+Subject: Re: [PATCH 30/44] fs: use min() or umin() instead of min_t()
+Message-ID: <20260113094226.144973b2@pumpkin>
+In-Reply-To: <aWVs2gVB418WiMVa@redhat.com>
+References: <20251119224140.8616-1-david.laight.linux@gmail.com>
+	<20251119224140.8616-31-david.laight.linux@gmail.com>
+	<aWVs2gVB418WiMVa@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 32B881C0013
 X-Rspamd-Server: rspam06
-X-Stat-Signature: 4p7s16rst6u5s9s4j6pow63p9dssoe9i
+X-Stat-Signature: hkg9ob6ac4q9gkmipgbrit1rkjyb5x37
 X-Rspam-User: 
-X-HE-Tag: 1768297253-386384
-X-HE-Meta: U2FsdGVkX1/wt9Pvo7Y2UsnCOz5miUvejUjZ8YAMI4lz/9eiuPl7OvbMomwu3rB6GJg2MRCEWbnIY4lKN7o2kYhAFGLCSLU6ubIRXbJuemXRWwvLft7bSbg8vhdBcYlO/1byMeY+OoM2dt7znGvFDjRLAZJUgvMBFmPeb4yCSbk5so9sonZD0xSKyIHyLVd/vncnYH1+w3AmHRsJOuyzl8124mnl9NShV3pW5qlNgrFFbuBKYoRdgipN/cqli9HyAWPGwlF+uxE/MzLdQzshI7VUrAfHF1NWpsXmR4HepF/VzRoi6tTv1wXmH/nd2N0+6KeqkYNMQ7n+JHWyig4Apb/bZUlFuN7IgHRVu2YY/dwqu1ruqzMrydbonDZIBsryb0bVQm54g+S4HruwNxr6oR1nh9v/hHRkrxU5jDanggd81IfquUHQEnRvr4W+jrVWdTkGAgHxLEPf7gwKI907AUEqWh62BxxegIDu7rE1gWia5etceibMXfla0WSo57NSA1FCEyLHfP9KttLvCfvBu+I6Z0EYJEcfqrHvmGeYfsh3/ytf3ldIjf69WJAPOS2fkxEJqLQ+aeUfzqUZx+0rWH1npuBtGdjIBUXpoKLDwnDy5VZOq+OF3Wtq05rgqe/9EZkgQLejXm0duiD8j+Ig+uoZ18N2dnRMksxrMcceoOl8ydu0tFtkPozQd4f5n+oXfqOLrSkPKhXQ6nUprks694z9ZS/XwQlzEZiNE4AifDqbTbFPcmCwazfP3cA+yJFckirF2n0oA+KtpPVPDs1+Lzxyw5r3hvJ0xmqHQikD7qfgtarSHKMp+NaN3YUOespDadk8dJ/kg0/sJfEzx4Ovqarsdfzd2H7NlOzgMq9KO1PzR5rZyxiHlmbHZ37Ze3YDimtFVhwqMuaruwkezAbNsX7Pn1Lyg4wpZCzJx+JFUA977xmRlWUG38Dx0TLgIXDXJfGARekvIEP7RuYbi+j
- cnwMGi51
- LhBfgzzIVumdP74ie4AQD6MQMd5joJtc33hPRKq/asZpIUjZAcuIVCsxc5jcM2tL17Qe0lNtxTBueedk5NNOlymIQPf5bRi71fRM1bEpSlFPYyHqelzqtpZ79ulmHilEFyrUoQ8Usugvksprui6DQFuAFReD3gJ2o0J0wXSRFPaNwE5eNr7CgKwpozevFBfoBVebrRVH2E8XL2FKpKDp8Ju6W1Jasr9b1ONEoFT2tjnZTFMhJGKundPPDXg==
+X-HE-Tag: 1768297349-316951
+X-HE-Meta: U2FsdGVkX18c91bqDyH6+hJeEWc9Vrg84iL47YOuE0J0IR3tltPwpZkVbXTXxQo27Zztjax/tOur31NjlMhpWz7Ss5+jP8mHNrGc9Ltq8hWhlQqPcHDqfhpX/ucvVzWKOo1LSEwHJWjl7VpiBtNQQMja5m+iy4PC2GFE/OdDLM1Dsq9Fbk2ntd70souNKJ+AQUIQOqvhmGdwkLIvBC9Y25OFD5v9n8W7NgZVra3BfJ5IRTiXxGst6L6wnvrIF/nnodbE6U1hiBU1hSKz4d1kNNSmzQgg2jB7EmdCUtMSWvjw3IGHlOien8eE2LIHV5Xmxs2n9HboutgTjGjOEcRRu7xHkQh7oO69+NKIwy2E1aXvJvs3qrYJy3+6kFo9RNLaIqXvlmUeHXtXRfHDFnbScW90FYhc1JVBvD+/ejc9pfoERw5qtnpXCt4NDbwvURGZt05qbS4k/JZbyMTP1Zpal+Yv7LGXrl9mGFS1DbIccziktnjTQ4yUeN94/yMFLZv2U6NH6pbK7oBzcI0whGH3BANH6Fnz2WT+1qLhrYiuuSVlWS97aJwI/757aDQsgGDP8KdLJiEyIauB9R1FaGG0izfsu/8y/QbdoVZc2IOYWmcLF1kS9gqQbi9Kk7WObJ2IbIceMD3j7T/ti5N/qHXe/DzBkfs2yy4zcu6zVoUKMRt/HJ5d+JfIe+vWfFYEA86aF0/FdVSg54rk1pvJPgwypBvgKg8ex/H1rwZEJt5oBLuGYiy7UeWcLv2rSxscYIp9cbWp0gRhIdFtiVYHbAT/ve/vPAhON7jPtLP2GhQhLPu6N79M9vuuTIWNMREtH+XH8Hxy/UWCJNpYSmrknZcWP87CUrkxLz5Ug7NPuZOn9ZmcO/4wCnKoga5eUhxNnTNzLdogE0bfp4xQyWGKpBsbTiKsmtLv5nabnLcZRQ2pt5/KlzLOMeg8fFSvmy8NlmpQ/SS0pQQFlRZPk73Xjvx
+ Sue26yh5
+ JPq8ZK9p5mk3zoW2XoYLE7XVzhKSVOP5chKdgq9tfK+zwOfYTOBj5VfVbEU9t+zDFQlkc2DUYpy654Khtcjg62Fy5hhFsStlrfdcncupq4MRNMw5rKetO/hhk0Clc1C9OI5Q9hM+biZZ4+Snlop8gBGaScgBJe6NyVWXRg9OVl9KPy8IGmRHofxVVDJoXM/1iCeyFlsk8J0M/4FAEZs3GsFrT4qEQ9WtOooJhQdupyclyg9q9Dp6FQ8ey8ydqRKXuMw7MI/lVuNgUStyTKBkeJ8FPbdRpH93O/NaS3sXJz5rYHuoXW64mdyMk12K0e4l52Bld5p5oJwtREiMpxHcYvQ2N2pt5uKF3OtEmOFJgalEFkPdJQboFKy5uf/y/gHVppIXiH9icgNl8a+Jx3KFOC8nylxTAWG7z3xwMFx0sWvSUCiksmzGMTAhlQoVpC1ZotN95upicJ18vRDxqZTW28/9ZE7EYWUETGRzvRaNdl7Ay9EiRHFSSVbtwt6a3jsvdH3at7v9Jhld485I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,72 +127,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   abb8eb84b7bb668d982e556b2b19f0e3ac42c591
-commit: a63f13759f21f65c96a77ad92773d94162380948 [283/303] kasan: sw_tags: use arithmetic shift for shadow computation
-config: powerpc-randconfig-r132-20260113 (https://download.01.org/0day-ci/archive/20260113/202601131757.U5JRrwbH-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260113/202601131757.U5JRrwbH-lkp@intel.com/reproduce)
+On Mon, 12 Jan 2026 16:51:22 -0500
+Brian Masney <bmasney@redhat.com> wrote:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601131757.U5JRrwbH-lkp@intel.com/
+> Hi David,
+>=20
+> On Wed, Nov 19, 2025 at 10:41:26PM +0000, david.laight.linux@gmail.com wr=
+ote:
+> > From: David Laight <david.laight.linux@gmail.com>
+> >=20
+> > min_t(unsigned int, a, b) casts an 'unsigned long' to 'unsigned int'.
+> > Use min(a, b) instead as it promotes any 'unsigned int' to 'unsigned lo=
+ng'
+> > and so cannot discard significant bits.
+> >=20
+> > A couple of places need umin() because of loops like:
+> > 	nfolios =3D DIV_ROUND_UP(ret + start, PAGE_SIZE);
+> >=20
+> > 	for (i =3D 0; i < nfolios; i++) {
+> > 		struct folio *folio =3D page_folio(pages[i]);
+> > 		...
+> > 		unsigned int len =3D umin(ret, PAGE_SIZE - start);
+> > 		...
+> > 		ret -=3D len;
+> > 		...
+> > 	}
+> > where the compiler doesn't track things well enough to know that
+> > 'ret' is never negative.
+> >=20
+> > The alternate loop:
+> >         for (i =3D 0; ret > 0; i++) {
+> >                 struct folio *folio =3D page_folio(pages[i]);
+> >                 ...
+> >                 unsigned int len =3D min(ret, PAGE_SIZE - start);
+> >                 ...
+> >                 ret -=3D len;
+> >                 ...
+> >         }
+> > would be equivalent and doesn't need 'nfolios'.
+> >=20
+> > Most of the 'unsigned long' actually come from PAGE_SIZE.
+> >=20
+> > Detected by an extra check added to min_t().
+> >=20
+> > Signed-off-by: David Laight <david.laight.linux@gmail.com> =20
+>=20
+> When doing a mips cross compile from an arm64 host
+> (via ARCH=3Dmips CROSS_COMPILE=3Dmips64-linux-gnu- make), the following
+> build error occurs in linux-next and goes away when I revert this
+> commit.
 
-sparse warnings: (new ones prefixed by >>)
-   mm/kasan/report.c:206:13: sparse: sparse: context imbalance in 'start_report' - wrong count at exit
-   mm/kasan/report.c:225:9: sparse: sparse: context imbalance in 'end_report' - unexpected unlock
->> mm/kasan/report.c:674:80: sparse: sparse: cast truncates bits from constant value (ff00000000000000 becomes 0)
+I've looked at this one before.
+I think there is another patch lurking to fix it.
 
-vim +674 mm/kasan/report.c
+> In file included from <command-line>:                                    =
+                                                          =20
+> In function =E2=80=98fuse_wr_pages=E2=80=99,                             =
+                                                                          =
+=20
+>     inlined from =E2=80=98fuse_perform_write=E2=80=99 at fs/fuse/file.c:1=
+347:27:                                                                   =
+=20
+> ././include/linux/compiler_types.h:667:45: error: call to =E2=80=98__comp=
+iletime_assert_405=E2=80=99 declared with attribute error: min(((pos + len=
+=20
+> - 1) >> 12) - (pos >> 12) + 1, max_pages) signedness error               =
+                                                          =20
+...
+> fs/fuse/file.c:1326:16: note: in expansion of macro =E2=80=98min=E2=80=99
+>  1326 |         return min(((pos + len - 1) >> PAGE_SHIFT) - (pos >> PAGE=
+_SHIFT) + 1,
+				max_pages);
 
-   630	
-   631	#if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
-   632	/*
-   633	 * With compiler-based KASAN modes, accesses to bogus pointers (outside of the
-   634	 * mapped kernel address space regions) cause faults when KASAN tries to check
-   635	 * the shadow memory before the actual memory access. This results in cryptic
-   636	 * GPF reports, which are hard for users to interpret. This hook helps users to
-   637	 * figure out what the original bogus pointer was.
-   638	 */
-   639	void kasan_non_canonical_hook(unsigned long addr)
-   640	{
-   641		unsigned long orig_addr;
-   642		const char *bug_type;
-   643	
-   644		/*
-   645		 * For Generic KASAN, kasan_mem_to_shadow() uses the logical right shift
-   646		 * and never overflows with the chosen KASAN_SHADOW_OFFSET values (on
-   647		 * both x86 and arm64). Thus, the possible shadow addresses (even for
-   648		 * bogus pointers) belong to a single contiguous region that is the
-   649		 * result of kasan_mem_to_shadow() applied to the whole address space.
-   650		 */
-   651		if (IS_ENABLED(CONFIG_KASAN_GENERIC)) {
-   652			if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0ULL)) ||
-   653			    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
-   654				return;
-   655		}
-   656	
-   657		/*
-   658		 * For Software Tag-Based KASAN, kasan_mem_to_shadow() uses the
-   659		 * arithmetic shift. Normally, this would make checking for a possible
-   660		 * shadow address complicated, as the shadow address computation
-   661		 * operation would overflow only for some memory addresses. However, due
-   662		 * to the chosen KASAN_SHADOW_OFFSET values and the fact the
-   663		 * kasan_mem_to_shadow() only operates on pointers with the tag reset,
-   664		 * the overflow always happens.
-   665		 *
-   666		 * For arm64, the top byte of the pointer gets reset to 0xFF. Thus, the
-   667		 * possible shadow addresses belong to a region that is the result of
-   668		 * kasan_mem_to_shadow() applied to the memory range
-   669		 * [0xFF000000000000, 0xFFFFFFFFFFFFFFFF]. Despite the overflow, the
-   670		 * resulting possible shadow region is contiguous, as the overflow
-   671		 * happens for both 0xFF000000000000 and 0xFFFFFFFFFFFFFFFF.
-   672		 */
-   673		if (IS_ENABLED(CONFIG_KASAN_SW_TAGS) && IS_ENABLED(CONFIG_ARM64)) {
- > 674			if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0xFFULL << 56)) ||
+'len' is 'unsigned long' and the expression is unsigned on 64bit.
+But 'pos' is s64 so the expression is signed on 32bit.
+IIRC the final version might have been (equivalent to):
+	len +=3D pos & (PAGE_SIZE - 1);
+	return min(DIV_ROUND_UP(len, PAGE_SIZE), max_pages);
+which generates much better code as well (no 64bit maths).
+I don't think len can overflow, read/write are limited to INT_MAX - PAGE_SI=
+ZE
+bytes in the syscall interface.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+	David
+
+>=20
+> This is on a cento-stream-10 host running
+> gcc version 14.3.1 20250617 (Red Hat 14.3.1-2) (GCC). I didn't look into
+> this in detail, and I'm not entirely sure what the correct fix here
+> should be.
+>=20
+> Brian
+>=20
+
 
