@@ -4,84 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8E21D2F349
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 17:32:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01A9BD2F34B
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 17:34:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC0A46B0005; Tue, 13 Jan 2026 12:32:34 -0500 (EST)
+	id 223FA6B0005; Tue, 13 Jan 2026 12:34:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6E3A6B0089; Tue, 13 Jan 2026 12:32:34 -0500 (EST)
+	id 1DA416B0089; Tue, 13 Jan 2026 12:34:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7A246B008A; Tue, 13 Jan 2026 12:32:34 -0500 (EST)
+	id 110A76B008A; Tue, 13 Jan 2026 12:34:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A5BAD6B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:32:34 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5BCBD1AD5FD
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:32:34 +0000 (UTC)
-X-FDA: 84327635028.14.DD89071
-Received: from mail-244121.protonmail.ch (mail-244121.protonmail.ch [109.224.244.121])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4F11A40010
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:32:32 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=gdXMnEdZ;
-	spf=pass (imf01.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.121 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 00D406B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:34:05 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9788B139C4E
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:34:05 +0000 (UTC)
+X-FDA: 84327638850.15.E7EE571
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B8B1740005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:34:03 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WbyA3+Fz;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768325552;
+	s=arc-20220608; t=1768325643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7QZm1CZeu8P4ksfxFy+d8iaWyvI0I3DKeA/oH7Yr3/E=;
-	b=PUhEsHr8aHLIpGGbsRzg5sE/AtZz0q6HS4W3mCQEeZIEsvr7zpKTHypaW0St/XRbiUhULV
-	9shVHr2yBeFX6hRqKmYzfHWcMLRbLgGQq73Gr+klaKBpsBy06Hi9PtEgy+4nc1J/uZvn3X
-	qkAj3w3Bp8G/YWZINHmt/WLTBjwu32M=
+	bh=0kn45G2Gwx7itxvt4tA3iBGO8Mgl7hnoy6Lgc+69p8w=;
+	b=ygVMMi6mOsejdmFO5+3e74o7jAcv3XCQggX+glT5kj5sPlRiaHEjTEYdT2geQASV/hD/z8
+	M5fKAxUg9bBdBYnjmr3DuG3Gd0AF79BxLIoBqV+o4kv4216y027mh6O+P55oF3DZKAXY2C
+	daw671RJVLrz3r3qptjTOqHRmR7qwAE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=gdXMnEdZ;
-	spf=pass (imf01.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.121 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768325552; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WbyA3+Fz;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768325643; a=rsa-sha256;
 	cv=none;
-	b=ks2BjHtsYu3t9LTDYvouYwE1KCR4mIrRiV9pSOzMys+7MePRXiuYrIrqfZd9iZnOpoV/VL
-	nPFrAiTdbm+ec0pVaNuJV1Pee00LgrkApxcEZB7ynYoSvwxxtefORIDJa+VJFEf815/cMj
-	dvgHZAT9rZlBNn6a1HYrW2xTuP+i/gU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1768325549; x=1768584749;
-	bh=7QZm1CZeu8P4ksfxFy+d8iaWyvI0I3DKeA/oH7Yr3/E=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=gdXMnEdZmwn+tzH1Y7xVv5t9USdU9qSUiHNLP9uBYfdXrbzyAlzYJYd3+fdOIl8FD
-	 4B1cwjyzCxH099YPM8pclhQdJIQFLPHDmdGXpFFHioTnZOh0Vhr5FMwFhvIPEgRIBg
-	 imCV25e/DmTbnG9EQkSon6a6pbHZT2E4APl5n9XXqw4a2efie1W1vRw1zvk5GoN2BB
-	 CF2NEfpy7D5somELQ6RBkORkPQVKPmlnpRyAdBSR0ORMaXUIdVdaUza5gnyA1Sz/Nl
-	 g+SAZB5ORa63g+Togs39Um3ZPXCS0CiWYkzSCzRD7PN/QZwqJO9kQ2EKunsZqH6L8D
-	 jLRIbJ2fappbQ==
-Date: Tue, 13 Jan 2026 17:32:23 +0000
-To: Andrey Konovalov <andreyknvl@gmail.com>
-From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Samuel Holland <samuel.holland@sifive.com>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH v8 02/14] kasan: arm64: x86: Make special tags arch specific
-Message-ID: <aWZ_aRFfWNWiqzik@wieczorr-mobl1.localdomain>
-In-Reply-To: <CA+fCnZfQmhSyF9vh3RzreY7zrQ4GbQOp5NbA0bXLHUMG6p28QQ@mail.gmail.com>
-References: <cover.1768233085.git.m.wieczorretman@pm.me> <be136bf8d1a6ae9ef98686c3ba0b6a4e2ea2e780.1768233085.git.m.wieczorretman@pm.me> <CA+fCnZfQmhSyF9vh3RzreY7zrQ4GbQOp5NbA0bXLHUMG6p28QQ@mail.gmail.com>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 023a5d308556f78925918902544da2df5131a718
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 85qobz4a3yfnmhhhgxrqi46i5jci5ibx
+	b=HdHzkhEvYVrxBYD9kHiPkd1oHjQJd61VcZAxYaIN1KaZJ+5c9giAPh2DrxqcphX33ieWzi
+	UMDaVTN5wFUy5kH2Grl6bIBCjiahMNVKYEOPW1z0WlfFLeoGyV7Vqw79SWP4krFRw75iqK
+	I1wAr9gdcvD64ZJNt3k8IT1gp5g69aI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9E204437EB;
+	Tue, 13 Jan 2026 17:34:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7658C116C6;
+	Tue, 13 Jan 2026 17:34:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768325642;
+	bh=YZwbcRRPs13mP8+rij8yZTXdw99Dd9eLfldfmPqX6MI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=WbyA3+FzTYTAmHvwVlZfLUe40KQDNlYCOwODqmT24UnodE6me2UXyfdkbMRcgiM2A
+	 Ie7nNf0bhgBJqvjW6G7/jpya3q2bjnOxZm4JHG8oFsLRnvEoKeoDSzoMF0+3t4TFR5
+	 ZgzaiDm3pu+lQM1rrx41GzTtPJgJ5q3yEJ2FLXuA=
+Date: Tue, 13 Jan 2026 09:34:00 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Maciej Wieczor-Retman <m.wieczorretman@pm.me>, corbet@lwn.net,
+ morbo@google.com, rppt@kernel.org, lorenzo.stoakes@oracle.com,
+ ubizjak@gmail.com, mingo@redhat.com, vincenzo.frascino@arm.com,
+ maciej.wieczor-retman@intel.com, maz@kernel.org, catalin.marinas@arm.com,
+ yeoreum.yun@arm.com, will@kernel.org, jackmanb@google.com,
+ samuel.holland@sifive.com, glider@google.com, osandov@fb.com,
+ nsc@kernel.org, luto@kernel.org, jpoimboe@kernel.org,
+ Liam.Howlett@oracle.com, kees@kernel.org, jan.kiszka@siemens.com,
+ thomas.lendacky@amd.com, jeremy.linton@arm.com, dvyukov@google.com,
+ axelrasmussen@google.com, leitao@debian.org, ryabinin.a.a@gmail.com,
+ bigeasy@linutronix.de, peterz@infradead.org, mark.rutland@arm.com,
+ urezki@gmail.com, brgerst@gmail.com, hpa@zytor.com, mhocko@suse.com,
+ andreyknvl@gmail.com, weixugc@google.com, kbingham@kernel.org,
+ vbabka@suse.cz, nathan@kernel.org, trintaeoitogc@gmail.com,
+ samitolvanen@google.com, tglx@kernel.org, thuth@redhat.com,
+ surenb@google.com, anshuman.khandual@arm.com, smostafa@google.com,
+ yuanchu@google.com, ada.coupriediaz@arm.com, dave.hansen@linux.intel.com,
+ kas@kernel.org, nick.desaulniers+lkml@gmail.com, david@kernel.org,
+ ardb@kernel.org, justinstitt@google.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kasan-dev@googlegroups.com, llvm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v8 00/14] kasan: x86: arm64: KASAN tag-based mode for
+ x86
+Message-Id: <20260113093400.412cb4c5596ff3336ac803fb@linux-foundation.org>
+In-Reply-To: <20260113114705.GJaWYwubl3yCqa1POx@fat_crate.local>
+References: <cover.1768233085.git.m.wieczorretman@pm.me>
+	<20260112102957.359c8de904b11dc23cffd575@linux-foundation.org>
+	<20260113114705.GJaWYwubl3yCqa1POx@fat_crate.local>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: d914u9c55rrqnfknaxmkbjetc65ejm6m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4F11A40010
+X-Rspamd-Queue-Id: B8B1740005
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1768325552-151382
-X-HE-Meta: U2FsdGVkX19dTTFP7+Mpfct69G6rMfxEga2srueygQahIBBAm6MJwF+mFW58osWMrNxzVxUKm29lnc5HE1AozFkHHZLAre9D9vYdm/cq0n6qMGJ89KcH6cwYrerbAwTvrOdM4aDVfbg4bpgtcXZhiYkaQZlA+mEdCy6+B9Xqb0HRbbctR6e3Ai+D5pr2xJxEXLb0B3HZBzZeMBZCqfmZFXpQrSKfH529Qnk5wMwRNZqebZ9Vh46JRLpI2WARR+RQw4ix8m2vuXU9SJoLuKEo06RsPywEJsYT55/fxfkcrUOn/bihzzUc05p/Y4kKzmBr8d2iH3NkW6WL2L/0VCBsrt4Yl5OH/qxt4in1cXCIoJEbZmqNroxv77rtQ78K0EsqjM+xJWrE3xrf8aO89izMugAx6KZHIsTHlZOHrai/KSzPDI8cLNKNF6ZVKL3O3ZYhF/Uj+6b0yjIqDPHgWY9W8EYmEeYFKah63R1Z4hx50NZU6mjmwL5T1HI7SNFizoo8vF1OOPoQ+6AKqfr3WOR5iUrzaf6oHBZX7EBReiSVOte/2ujUSwEq4npx/67HuriGE/5QwOkpnzbcshxhAFpz89Z+XghjcT/+BMEoma0x1TabVj0ExSRx0E2howBZwMwylAaxmj7yZcazocosn2hlEaUdNMlBdw6WWEDSuYx+BdNzwqaoQEVQNq7AzVaYkEG3UNGy9ACr1MvFISlM3mgiACHM3hnXcQtWgQUqTurrIxzZqDztHa/iKzIbfMTom62VdbvNkEzaFiebetL7Wh48jfZ0aSkCpYA2lhMt/I2DxhkbNqec2sD3gWNBWVOnpjl/RGBcT6dPwPJb+sPV/fh9ce1P/Q6rJ2L0h8qn+8LMaTKqPV3UDDUN9ItdRfV6sRKdNgYfOMpvW0sFU4hrUj0OfD6R7Nifqgul0qzLtnA4dtxV1VJqz7V4RHrCbVAXEq8uKCs3l5I4bVMJlgrH457
- BnoFsU4R
- 5fouqueLArYGokMpN1CvqJbndPaFFLsfW2YmlgeZLvLfs3Z3XhXuFEJq7P1sZ2u6ywTLYEhv9ZODgBw97uuwKISGTnnBGT5A6Pdv2aWuAqgwh7qX39SWwH3VL3ZCrk34OAlvHmjh9oYxRQhwcdVXanpG0WWyYjxLzPiuS5tXkqbHkOOPbHqase8A+9d6FSb8WgQbqCWW3koo6M052pNDJiXdikFg9dsWdjm6wpratPihMmD1k04lwmV7+PU6WrotvTDgxcmAU9w+GuDk5mHpM2nD7YB/p/ZvzFzOnktZCTC42F2rcPCXlu14rFwK5oHxGJBcU
+X-HE-Tag: 1768325643-234014
+X-HE-Meta: U2FsdGVkX198F3jZDt+0kHZ4sEjK1/it2MIwMCKsBLRq8YSYViVExjXMhb+dKpYeMoClZPk1h+FJCj7eBhtqtgbVqQ6HJKSasWvsG8RerhIzbQiD/FLLJ9Une7Cl8ajDGYBZ2iSSepum/ihjDhOqfJPR2GUtSebfEHAtTxaAdSqfStjS34Of0ZNa3oP5Wa1/VYxAEShSOOULPDMR/MrltNG2aLbI3VP0tWsb+uLmiSw8+9HfTXKrBZea9wAIlHzFonMYUweknsJpWNqKujbx9af6lhRi5mUXWHOHla/JGqErgJcr83nweRLoslktOzqVVDDcMqV2yQkmvqDPW1tHTIszQYa6yXQTxk6opAqAkv+J5W2Mz/JtO2nDwlNGLuyuZkLiIvQlJTq3HqBzgHDX5JuDWZJHIenSag5qH5Pwc1SbEWVcPHdDn55CxMALoUSszOrFjPJDJ2g83kyL6fnRkwcTh1lRen1ho31eNvwtxrdqwsQaIke0rxB2mwrI1icE797MVAs6VcSMMsRKG7i0DlgI8SJB1l0IU3205NUgFUMmU20Qtc69GcFv2F06uKPKn02hgLyXeqkTA5OyqYIHqTGVwBDgoiqpgYVeBE7VeI0My52B8EBfoCFF3n92ak67Bb0cAHBsbzNP6HYjAzyYxJCFNmozyq9MZfCD2MlSmheHpavIdYrIrNZQY7g0mIC/y8P8RdRUBF6Zhsk1Ju2DLT3L7Lyy2d0wd3KQG5BqaB67gidQSIMrIRez2yKZp0I847DI2fdfdO2pDQ3yPyXKeu5zmDO3bsUtE7vEGZYi33Fgo9SIHCSA6aC1apXvjkh7z2UZJTZB6jyU4eRkegS9vJDz6y0xfIaCNok+A3XT6tqgqgUcERK7ZXxKrMdfdlNdLrhwVA0Lbd7lHwmuj6WRi1++maTyrhAycTe6FpqXio9V2Tno4Eygd2K5ZoSicl21NhtFxjeV8WLU8FcGwwi
+ 2OLlrOQo
+ hoR1pRs0yClMhaBsLQdOXrh7x2hYXD2p9qM/7GEggpqND/IiGaE4JRz6/2qfFsnf3lGpTDvmbRzXVU73+6pxYh8MtHxEfZEKO/J/WcNsqIorwd/Je+RVWUiIV2r0RvLdOZ4GTMKKx8Jxyln15frsx/gcQmo12/AwAAG/1nwjRJVJ0qi+TTcsZv6QRpq7OADpWu9xHn449mnQ5gz/Gu90iylgo9/5JtJhKgbtU6QLkKBNs5bVzd2EUa+tIM3Pg8UMH3dePCo/vzVov3qGbsC5/DK+6oOC/U+SsAADEfHFKW61/WcIOPc2G2ZfZLEZgir3TuPrhrbt5s9B2Y+g7/sAuwX+YLV4LuE5edao9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,63 +113,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-01-13 at 02:21:07 +0100, Andrey Konovalov wrote:
->On Mon, Jan 12, 2026 at 6:27=E2=80=AFPM Maciej Wieczor-Retman
-><m.wieczorretman@pm.me> wrote:
->>
->> From: Samuel Holland <samuel.holland@sifive.com>
->> diff --git a/arch/x86/include/asm/kasan-tags.h b/arch/x86/include/asm/ka=
-san-tags.h
->> new file mode 100644
->> index 000000000000..68ba385bc75c
->> --- /dev/null
->> +++ b/arch/x86/include/asm/kasan-tags.h
->> @@ -0,0 +1,9 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +#ifndef __ASM_KASAN_TAGS_H
->> +#define __ASM_KASAN_TAGS_H
->> +
->> +#define KASAN_TAG_KERNEL       0xF /* native kernel pointers tag */
->
->One thing that stood out to me here was that for x86, KASAN_TAG_KERNEL
->is defined as a 4-bit value (0xF). Which makes sense, as
->KASAN_TAG_WIDTH =3D=3D 4.
->
->But for arm64, KASAN_TAG_KERNEL and others are defined as 8-bit values
->(0xFF, etc.), even though for HW_TAGS, KASAN_TAG_WIDTH is also =3D=3D 4
->and only the lower 4 bits of these values define the tags.
->
->This happens to work out: for HW_TAGS, __tag_set resets the top byte
->but then uses the given value as is, so the higher 4 bits gets set to
->0xF and the lower set to the tag. And for saving/restoring the tag in
->page->flags, everything also works, as we only store the meaningful
->lower 4 bits in flags, and restore the higher 0xF when doing ^ 0xFF.
->
->But this is not related to this series: I think the way x86 defines
->KASAN_TAG_KERNEL to be 0xF makes sense; we might just need to clean up
->the arm64 implementation at some point.
->
+On Tue, 13 Jan 2026 12:47:05 +0100 Borislav Petkov <bp@alien8.de> wrote:
 
-I suppose while there is only one such mode that stands out from the other =
-two
-there is little hint as to what should be generalized. As you said so far t=
-his
-scheme we have works - altough it is somewhat convoluted.
+> On Mon, Jan 12, 2026 at 10:29:57AM -0800, Andrew Morton wrote:
+> > The review process seems to be proceeding OK so I'll add this to
+> > mm.git's mm-new branch, which is not included in linux-next.  I'll aim
+> > to hold it there for a week while people check the patches over and
+> > send out their acks (please).  Then I hope I can move it into mm.git's
+> > mm-unstable branch where it will receive linux-next exposure.
+> 
+> Yah, you can drop this one and take the next revision after all comments have
+> been addressed.
 
-One thing I was thinking of was cleaning up all the #ifdefs for different m=
-odes
-into a more ordered structure. I think there are ~24 ifdefs in mm/kasan.h a=
-nd
-include/linux/kasan.h and many of them could potentially be merged.
-
-...
->
->Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-
-Thanks :)
-
---=20
-Kind regards
-Maciej Wiecz=C3=B3r-Retman
-
+Cool, I removed the series.
 
