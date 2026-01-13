@@ -4,128 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E467D2D0E6
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:28:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95959D2D0E6
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:29:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DC536B0089; Tue, 13 Jan 2026 07:28:18 -0500 (EST)
+	id EB4906B0005; Tue, 13 Jan 2026 07:29:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BDF36B008A; Tue, 13 Jan 2026 07:28:18 -0500 (EST)
+	id E3E1D6B008C; Tue, 13 Jan 2026 07:29:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B3826B008C; Tue, 13 Jan 2026 07:28:18 -0500 (EST)
+	id D6A626B0092; Tue, 13 Jan 2026 07:29:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 796AC6B0089
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:28:18 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 19C501AD54B
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:28:18 +0000 (UTC)
-X-FDA: 84326868276.10.766E272
-Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
-	by imf16.hostedemail.com (Postfix) with ESMTP id ED262180003
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:28:15 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C1FBC6B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:29:45 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 54748585A4
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:29:45 +0000 (UTC)
+X-FDA: 84326871930.03.F88AB8D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AAB2818000D
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:29:43 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=NC76RtxI;
-	spf=pass (imf16.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
-	dmarc=pass (policy=none) header.from=gaisler.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768307296;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=guD8ZDnRvesT5KvXlXi5P5IpxaFCA5kIle2X5/2VdEk=;
-	b=YcVAxCr+KCOTIZMIFdG/fESMmjSP7r26Mw3/Dbe7NdKHLi8AbgL/Emo08fX4WPpVXPCd5K
-	ZKtI7s6c1TY9vUeA9/d4qgcjU6nXRFxwOOcoXepIT8fpvCHi9V+YuQ7I2lGkxlqg9HabjH
-	WU40j0dq96lcuedF0DpsjRrlUH+suBc=
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FGTlrd6A;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768307383; a=rsa-sha256;
+	cv=none;
+	b=8K6ZZj6wu7jk1Hxw24oXBflE88OBmYrTR5Ndso2bYxB98ZMPPFfLySZEEvoGbgAzIT1H2Z
+	mVfl+RnDsUFzaPXRFoFHDugZ8F8zqhwxF42aYtSzKRMEQ6isePtWqnXZd93XUdU7lEQ8Q5
+	tw4Y5J8OpZfdkmjNlj8F/cF5q67Fx+g=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=NC76RtxI;
-	spf=pass (imf16.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
-	dmarc=pass (policy=none) header.from=gaisler.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768307296; a=rsa-sha256;
-	cv=none;
-	b=FmwCIgb7eM6WHe1Qqh0NkU29i3yI35149hZqrM3MNw/5WI5MUDONlsYQWipp5sRHqcRqlC
-	TwexsJm1Konom1b/CcPdBi7p6/vudH6c4mDR8vKm97rR2sZF/wEwA7ifYwQLIyW7fdrsSq
-	G3K+bwIA6tn1TQJ21GeSKsVUjW1V79s=
-Received: from localhost (localhost [127.0.0.1])
-	by smtp.simply.com (Simply.com) with ESMTP id 4dr7nT4yQ4z1FDXl;
-	Tue, 13 Jan 2026 13:28:13 +0100 (CET)
-Received: from [192.168.0.25] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by smtp.simply.com (Simply.com) with ESMTPSA id 4dr7nQ25vMz1DDgf;
-	Tue, 13 Jan 2026 13:28:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
-	s=simplycom2; t=1768307293;
-	bh=guD8ZDnRvesT5KvXlXi5P5IpxaFCA5kIle2X5/2VdEk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NC76RtxIq9CvKMBZ8e8fqDdeh4TXwyvNkvf30sHXNOLOnEVZmRBj+bHCDi8FufU/c
-	 kWfZWHOIxSWOKL03enthax76m8YsczdRizVAQDjKjHPFRaRl/L5Y0iqK2UA8boHs2h
-	 YUuM9qT6Ba/QEyyAn4GTFzIGpGi10RKIEp9TlTeLGd8zC+Hr/coq6gBL6LosZXZTF1
-	 gt8Mie1XHzB/bpnFnld9TZavLmhYmlgBWFsXaCVZw4vobFyvtSEkURaEmNJU94ewFm
-	 w3pY4SkxqHFB/QXGBXfUllqNu8tQIWuZ/XTNBQs4TvEhLsgrM+Wzf2b59+1+UOXxo8
-	 bJQ987lvmGGqA==
-Message-ID: <7566eef3-bce4-4100-8a11-d88ef1e887a9@gaisler.com>
-Date: Tue, 13 Jan 2026 13:28:09 +0100
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FGTlrd6A;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768307383;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Fz+dQ9jMi3/ZVcK2pKZ7XRKXGAluH09KnppIO+cKKdk=;
+	b=2s8ZoVllKyk9mr6D6Zf9H4igTMDuBG/L4nxf5u89EwAeFtlMWi0V9GQ1AcvtglPt8jUvBc
+	aQOcnIU9KhxtU4Ge5OrURAeo8tmy0/mEGGehG4SrEazlWgG1O9D5vX2JCIm7Hb0+RiLUar
+	Cqgmx8R7nK3H+KnMVWucWIcgagRoZVE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 771164384C;
+	Tue, 13 Jan 2026 12:29:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B1EC116C6;
+	Tue, 13 Jan 2026 12:29:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768307382;
+	bh=kC3MjEISpEzsYvzzprWTIDLtUFgYrWXfBkjrFKiQZYM=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=FGTlrd6AiRMNXJkJkMRvDLXsTAbNJr/+rq1Wkd9hb7Ood0dmsmk97ZsSEgl+A+V60
+	 pyBLKtgSYTZuz6b2yatgVMN9tvckhhs4ayGsONVHEhEdgbNQW7AjigIJk3dc1RVdId
+	 r027mPsspOoHHacKxwrPr58tAEJGBm/QMMVKFTs4Mnxs+DV3xpfL/fW2Ukg5SwGlBg
+	 CR3E0gX1DIJiSuXytU7+f13iYZZBdqw5Xs2c6V2MVSkMoqTTdmg8tcDvdNNgxxgfeQ
+	 mvFGGOsSQNEurEa8rTI6hVvRtkkNEmDvG2Lhgg/Ms/mzapuDtKg5ggoLiWJtWGhwnz
+	 XDWTtqGn6VLwA==
+Content-Type: multipart/mixed; boundary="===============8699615455370949168=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 19/29] sparc: introduce arch_zone_limits_init()
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Alex Shi <alexs@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- "David S. Miller" <davem@davemloft.net>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
- Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
- Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Jonathan Corbet <corbet@lwn.net>, Klara Modin <klarasmodin@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Palmer Dabbelt <palmer@dabbelt.com>, Pratyush Yadav <pratyush@kernel.org>,
- Richard Weinberger <richard@nod.at>, Ritesh Harjani <ritesh.list@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>,
- Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, x86@kernel.org, linux-alpha@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
- sparclinux@vger.kernel.org
-References: <20260111082105.290734-1-rppt@kernel.org>
- <20260111082105.290734-20-rppt@kernel.org>
-Content-Language: en-US
-From: Andreas Larsson <andreas@gaisler.com>
-In-Reply-To: <20260111082105.290734-20-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zd5shqyxeuitfdkifqu5aw9ii79ope88
-X-Rspamd-Queue-Id: ED262180003
+Message-Id: <be08950549a97cf3a2efd077cffc767395c208807f5f65af081db9a9a9623944@mail.kernel.org>
+In-Reply-To: <20260113121238.11300-3-laoar.shao@gmail.com>
+References: <20260113121238.11300-3-laoar.shao@gmail.com>
+Subject: Re: [RFC PATCH bpf-next 2/3] mm: add support for bpf based numa balancing
+From: bot+bpf-ci@kernel.org
+To: laoar.shao@gmail.com,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,akpm@linux-foundation.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,mkoutny@suse.com,yu.c.chen@intel.com,zhao1.liu@intel.com
+Cc: bpf@vger.kernel.org,linux-mm@kvack.org,laoar.shao@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 13 Jan 2026 12:29:42 +0000 (UTC)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AAB2818000D
+X-Stat-Signature: ez3bik5p84gpf9iegypqg498mq6q6wmy
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768307295-661341
-X-HE-Meta: U2FsdGVkX1+WCja5BgU6nLrhzmOjkfT52d1LVB+omWCGfdKO0IZWNzeI1lWJNtw2rHurzofaXoa4Wd/hljxdhsYHMuyMFyCEOMpYtr4mXtDHygeCNKU48HMtv21WNPkgqUrNpDEnW2l8r4RAdzWwFeLMMa7vRJ4aug/mMfukPDUKPazffDKm3WRIswk+17WmUcwyq76M7UoyOZYeaqlxn2Wsu8/dwsVDYKISlVZ1bS5a5d7gFsBaQlcRsKZwwf8otxE6Q7OziK2Rs3z2KdOLVWiAy4RmbTFCIWWe7E6Y2y458ckLtjp3tMX+4HChQmgF7/t0BCP4DK9YhbAcXApvCLeKDqM3QK98HG4/kuVAXPRdpzMSvofOZ2OkcnUUPCKU1mJpcVSnctSn8ygyZn08iu4YYNFi4LMZ5MB9+qxYsKHvUHBRl+qvMqr00E+k6xMr2kTgz7xHogGZ2u7FBSPh7MoTa36xP90z4vBVG1wot2JxyiYj9Zmg2oCL7XhqhUGFQIuCGTuTmKUpdxRMSRpq2gWZYG5t9PQdtnXrBfMRRQgo+ck3x1bS6aR1S5GyLE/wMHPZn/rOOBYQvVv1lvScgoF/idKF4ovLVMelFFtjh2A1WdM9S4dgvyfwonVaTgaBcRnYjurSig8sSyVcv9H7XkgnFPp6x7j+YdDd4E9FgOSVc6wehmCM89G3iIQD0x2lfL/V5fPYzWuj/r/pVuQZ6hldIZ4GufAjPFeGNcPOmuUc2Ob9rXasOnq7wDmiKi1NeqCQTukiQN8JY8Zzm7zsOnCyY0gl1bnjeyuaNzHRZ2uVYd6OMImiO1YPIlwL/8jRRoJ1e02VAjO+C+zuDcgXkNbTkqdklUcOyvt2m0c/7Kxlp6ofeFNqkXg9IvZ1VIMGUdydpO9C+XblpfKqCZIVRhX+g7Pn0J2/X8401+hAmcLnZY0KuOW78R0kOEX5L8dTtUYNwgA2tCKWYyW5QvN
- /RTT2FZ3
- TdbpMdNf1Erdf5F963fXNTP1TUdYh8KTEmjsq6BY5dzmKEihGHX+hobAwsEg9lJKmL2tZRaiCIIYr0vSQHzs/iDTVJPQAbO9HHYirhfq1V6O6AclP9FJ37YbrWVMl/ytw9CApF2X9GzXmz1GkX1p1O0zsMd/tpioAzt0i2XD7qWw5PXJO2i5L8VVg9Mz+lO1zRLREvAhfsESgN0+u+YsH8zT8ehqlATUWjzCK9qQRLXIJsyWDpjqn0huTxls2hCtNfiXzCQ1XgloDzSz4S2Y/mMMEnUjINAnoh0rWZKNxKUAOJH40bX+wU5eEoLVDozYUwWTsgHtNjtwB6Ha6DF6XbbLSwkVtYKHPtjUOmPAJG7rvdMZ8lzENkK2aSbytLmu1WUGyxkC4OntmYs27XKcmb5KaerEEeJt7GvXWre3YSwhu4T+J0w/POUWr/21i9laZ5CArSA3T1zapSpldTGA1xVHHBgxwjPbqFXb3jUJGHGNMN4oC5NxZsvvhJ/4qaQSyhyj2
+X-HE-Tag: 1768307383-742579
+X-HE-Meta: U2FsdGVkX19vYDEqsg8ZARNdWpRoUC39b+/Sot+hL40O72l8Rt61PVlaxz5966dgGHUGd3Cgzv6+k9lwep/vayO96QEZPteUfqhxVyQ61NAFf1PW5Y6PGyXpiVxt3+F9Bfav6dSELJihT/Ds4M8OkBpV4W0sActkGFZJmVnKrosaddhVyCXnQBiIJ+2fg+p520NTQREwikgLMDDKhvNZo8EGFN8eCh6cRUQzh6KIncoCrO9yCG7czY2tcpNeG4bJSQ72/u2fn/eT+4FCF/bnSad+5LPeRG7sDSguy6iVq6XL1ydV8lnwFUmzXob7GKxLzBzbAlQ+kbIQzSHa9efwJVwacQqdIM+c6bDDZPEcsl9V4fi1Gw5+iEoquMR550BMtggUuRB+7wAUJkmaVBNkYPQXLTZG/3DaL8N6wjfdh1Bx0/+3ZXDonAQKJ0g4Sz2uXidiPHlKnQF3dr63Qc34PyX78aBEy9Ial9sHl2EZF8iZPbwy/fnZ4wNiRRhlyN1oayuF/ODGR10BgZIj3tcGXRqpeaUAw4QKCKEU3EwKq7x2t4osBu864DFx1WfQALHlTWtKPaayxZowJehonuAJNSm2IG7ijQpRsobT5sD3a0L97IXSVavDIDkCu+B/cV+TkKR2j9+fd++UJhDH2N6tcU8GOdfx0ce1iF4huDxooj+lIxAob9Wnq5Q8cus+PHHENYVXyQklfmjoQevUD6dCrrtODjufbTPS+3vPm0GVJ0Vs3DxvuSBx3AyBoM4dF7JRdkmFWFGQmgyUiGpewxRMEmzyYaB3TIoejLvxL3yoL5HJ80Jnib2iIcCJeT//d6B+pc8x8yjja7nenB1p6/BDSD3rPjGL2brgSk6UxfNVlHuK0EveSex+7TTPoog+d2aIt4kIFfQ4SAIOS2UElqG5bbkXJsI3eR0ATsU3RpzoOxM18xxcWgM8oiknCZ6BbyABzaIVFR/mViH6dpmDBTH
+ k5lHFSIr
+ ZQY3nMDZj3uNvFazkrcb4WPpTE+SeVPMzWcaxVc6IuiqeHj/YxNpjSIohuNmLkfcJIR6sTXfSAmQdx/ELBGZbxU+mekJ2HGviiiBNZOLkoasoLKWBUtIhHu7+j6Rg95p6rf8eT1FCIq19a4jQWwZ44Dx4Lykcr8xSWtX9hqdf6TeVyI+mwW9BCueZn82+pNlCiF0XjT7xHItq40E0Zqv74bB9ux7q1RTQaYjcZBlOUPDqVcs0wP9e7+7+ix9drwf8FN1End0RzoFQ2gUSvpEOv852x5risV10aSHDQrdkBGTIThVzVkGjsV+1JW6ry7+0zRd49+orBmruklCV6Z7gGGjpFLFkCzpzWzc+T+6M6SYS0jMFNxPvxrv7DUrFRM5EvKCjT6UwKrvAKy3Wo/VqooGeQzSkxtIsL1QIW82O7dDkQ/znMDkIc98bKcR8mRQgXRqqWvmisFpmfzgJ/w6AS/NRMzWCEr5L4WaiYjG+dErjE5s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,96 +89,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-01-11 09:20, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Move calculations of zone limits to a dedicated arch_zone_limits_init()
-> function.
-> 
-> Later MM core will use this function as an architecture specific callback
-> during nodes and zones initialization and thus there won't be a need to
-> call free_area_init() from every architecture.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  arch/sparc/mm/init_64.c |  6 ++++++
->  arch/sparc/mm/srmmu.c   | 12 ++++++++----
->  2 files changed, 14 insertions(+), 4 deletions(-)
+--===============8699615455370949168==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Hi Mike,
+> diff --git a/mm/Makefile b/mm/Makefile
+> index bf46fe31dc14..c2b887491f09 100644
 
-Thanks for this nice cleanup series.
+[ ... ]
 
+> @@ -107,8 +107,13 @@ ifdef CONFIG_SWAP
+>  obj-$(CONFIG_MEMCG) += swap_cgroup.o
+>  endif
+>  ifdef CONFIG_BPF_SYSCALL
+> +ifdef CONFIG_NUMA_BALANCING
+>  obj-$(CONFIG_MEMCG) += bpf_memcontrol.o
+>  endif
+> +endif
+> +ifdef CONFIG_BPF_SYSCALL
+> +obj-$(CONFIG_MEMCG) += bpf_numa_balancing.o
+> +endif
 
-> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> index df9f7c444c39..fbaad449dfc9 100644
-> --- a/arch/sparc/mm/init_64.c
-> +++ b/arch/sparc/mm/init_64.c
-> @@ -2279,6 +2279,11 @@ static void __init reduce_memory(phys_addr_t limit_ram)
->  	memblock_enforce_memory_limit(limit_ram);
->  }
->  
-> +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+Should bpf_numa_balancing.o also require CONFIG_SHRINKER_DEBUG? The code
+calls mem_cgroup_get_from_ino() which is only defined when
+CONFIG_SHRINKER_DEBUG is enabled. Without it, compilation will fail due to
+an undefined reference.
+
+Also, should it require CONFIG_NUMA_BALANCING? Without that config option,
+task_numab_enabled() returns false unconditionally, so the BPF hook would
+never be invoked even if a program is attached.
+
+> diff --git a/mm/bpf_numa_balancing.c b/mm/bpf_numa_balancing.c
+> new file mode 100644
+> index 000000000000..aac4eec7c6ba
+> --- /dev/null
+> +++ b/mm/bpf_numa_balancing.c
+
+[ ... ]
+
+> +static int bpf_numab_reg(void *kdata, struct bpf_link *link)
 > +{
-> +	max_zone_pfns[ZONE_NORMAL] = last_valid_pfn;
+> +	struct bpf_numab_ops *ops = kdata;
+> +	struct mem_cgroup *memcg;
+> +	int err = 0;
+> +
+> +	/* Only the link mode is supported. */
+> +	if (!link)
+> +		return -EOPNOTSUPP;
+> +
+> +	/* Depends on CONFIG_SHRINKER_DEBUG */
+> +	memcg = mem_cgroup_get_from_ino(ops->cgroup_id);
+> +	if (!memcg || IS_ERR(memcg))
+> +		return -ENOENT;
+> +
+> +	spin_lock(&numab_ops_lock);
+> +	/* Each memory cgroup can have at most one attached BPF program to ensure
+> +	 * exclusive control and avoid interference between different BPF policies.
+> +	 */
+> +	if (rcu_access_pointer(memcg->bpf_numab)) {
+> +		err = -EBUSY;
+> +		goto out;
+> +	}
+> +	rcu_assign_pointer(memcg->bpf_numab, ops);
+> +	spin_unlock(&numab_ops_lock);
+> +	static_branch_inc(&bpf_numab_enabled_key);
+> +
+> +out:
+> +	mem_cgroup_put(memcg);
+> +	return err;
+> +}
+
+When rcu_access_pointer(memcg->bpf_numab) is non-NULL, the code sets err
+to -EBUSY and jumps to out:, but this bypasses the spin_unlock(). Is the
+spinlock left held when returning -EBUSY?
+
+> +static void bpf_numab_unreg(void *kdata, struct bpf_link *link)
+> +{
+> +	struct bpf_numab_ops *ops = kdata;
+> +	struct mem_cgroup *memcg;
+> +
+> +	memcg = mem_cgroup_get_from_ino(ops->cgroup_id);
+> +	if (!memcg)
+> +		return;
+
+mem_cgroup_get_from_ino() returns ERR_PTR() on failure, not NULL. If the
+cgroup was deleted between reg and unreg, this function would get an
+ERR_PTR value, the if (!memcg) check would pass, and then
+rcu_access_pointer(memcg->bpf_numab) would dereference an invalid pointer.
+Should this check be if (!memcg || IS_ERR(memcg)) like in bpf_numab_reg()?
+
+Also, mem_cgroup_get_from_ino() takes a reference on the memcg via
+cgroup_get_e_css(). Where is the corresponding mem_cgroup_put() call?
+The function appears to leak the memcg reference on all paths.
+
+> +	spin_lock(&numab_ops_lock);
+> +	if (!rcu_access_pointer(memcg->bpf_numab)) {
+> +		spin_unlock(&numab_ops_lock);
+> +		return;
+> +	}
+> +	rcu_replace_pointer(memcg->bpf_numab, NULL, lockdep_is_held(&numab_ops_lock));
+> +	spin_unlock(&numab_ops_lock);
+> +	static_branch_dec(&bpf_numab_enabled_key);
+> +	synchronize_rcu();
 > +}
 > +
->  void __init paging_init(void)
->  {
->  	unsigned long end_pfn, shift, phys_base;
-> @@ -2461,6 +2466,7 @@ void __init paging_init(void)
->  
->  		max_zone_pfns[ZONE_NORMAL] = end_pfn;
-
-This old initialization of max_zone_pfns[ZONE_NORMAL] should also be
-removed, right? With that removed it makes the local end_pfn variable
-set but unused, so could you please also remove that one?
-
-I know that this whole code block gets removed later, but the cleanup
-max_zone_pfns[ZONE_NORMAL] and the removal of end_pfn (that is not done
-later in this version of the series) fits logically in this patch.
-
->  
-> +		arch_zone_limits_init(max_zone_pfns);
->  		free_area_init(max_zone_pfns);
->  	}
->  
-> diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
-> index f8fb4911d360..81e90151db90 100644
-> --- a/arch/sparc/mm/srmmu.c
-> +++ b/arch/sparc/mm/srmmu.c
-> @@ -884,6 +884,13 @@ static void __init map_kernel(void)
->  
->  void (*poke_srmmu)(void) = NULL;
->  
-> +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+> +static int bpf_numab_update(void *kdata, void *old_kdata, struct bpf_link *link)
 > +{
-> +	max_zone_pfns[ZONE_DMA] = max_low_pfn;
-> +	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
-> +	max_zone_pfns[ZONE_HIGHMEM] = highend_pfn;
-> +}
+> +	struct bpf_numab_ops *ops = kdata;
+> +	struct mem_cgroup *memcg;
 > +
->  void __init srmmu_paging_init(void)
->  {
->  	int i;
-> @@ -967,10 +974,7 @@ void __init srmmu_paging_init(void)
->  	{
->  		unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
->  
-> -		max_zone_pfn[ZONE_DMA] = max_low_pfn;
-> -		max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
-> -		max_zone_pfn[ZONE_HIGHMEM] = highend_pfn;
-> -
-> +		arch_zone_limits_init(max_zone_pfn);
->  		free_area_init(max_zone_pfn);
->  	}
->  }
+> +	memcg = mem_cgroup_get_from_ino(ops->cgroup_id);
+> +	if (!memcg)
+> +		return -EINVAL;
 
-With the feedback for arch/sparc/mm/init_64.c addressed:
+Same two issues as bpf_numab_unreg(): the check should handle ERR_PTR()
+values, and there appears to be no mem_cgroup_put() to release the
+reference taken by mem_cgroup_get_from_ino().
 
-Acked-by: Andreas Larsson <andreas@gaisler.com>
+> +	spin_lock(&numab_ops_lock);
+> +	/* The update can proceed regardless of whether memcg->bpf_numab has been previously set. */
+> +	rcu_replace_pointer(memcg->bpf_numab, ops, lockdep_is_held(&numab_ops_lock));
+> +	spin_unlock(&numab_ops_lock);
+> +	synchronize_rcu();
+> +	return 0;
+> +}
 
-Cheers,
-Andreas
 
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/20956455529
+
+--===============8699615455370949168==--
 
