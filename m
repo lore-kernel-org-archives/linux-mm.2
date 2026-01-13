@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDD1CD2F339
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 15:27:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1431D2F339
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 15:27:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 713E06B0089; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
+	id 8D2656B008A; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B4D86B008C; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
+	id 81A5A6B0096; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 539826B0093; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
+	id 5EDBD6B008A; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 28A736B0089
+	by kanga.kvack.org (Postfix) with ESMTP id 3DE2C6B008C
 	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CBE7C1A01A9
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ECD591A01CB
 	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:27:33 +0000 (UTC)
-X-FDA: 84327319986.05.076B421
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4CB6C1C0002
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:27:31 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CNkBCAAu;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+X-FDA: 84327319986.07.01B57A5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5372618000F
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:27:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VXmaPVkG;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768318052; a=rsa-sha256;
+	cv=none;
+	b=xGDj8kBDkQm60oUn+nQI5gskDm/QGvvCCKAxhbqkFJ9FyIBtB9OMuzSPu7nsLfhoM02BzG
+	G7bNWC/F9qTME+EgRh6G7UJmZpq8bM+1nZihh6pA4uvPmU/9U/Koqn0JFMvChY+/vKux4e
+	WHvYG0UvLXvcpNv+izs+diikSMRQAsE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VXmaPVkG;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768318051;
+	s=arc-20220608; t=1768318052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=exopNKgwfEFAmWeKrFQXfPiB9vdU+UhvQm9FyWM1RsM=;
-	b=Ti4cMBtk0a21qxirtlYGm843EW9cwwt4LVeN7JwT3JXcQr2O67uchi37bGwRpIUgobmPrd
-	nlfBWPnM6DZkNPgAA+TUX1ZXTjcwh78lNpx6d6WXArUtQevZ/MKMP526WyUHv+wII0kpSX
-	ZOnvPDNrXsL7mLq3l0ArO2Ty6BuQTVg=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CNkBCAAu;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768318051; a=rsa-sha256;
-	cv=none;
-	b=dIJ+4K3h/RFzEIh7OshFhskCiE7R7+NK+RaVC05x2UcTc+21aUkQ+bdGVbQcK14tJG1AZL
-	pontP9v2LrD7lszsF002unFR4hDhwQIAyB5Djsd2yIRy/KtcgfR9CxTU2OqhBz4SnFZKLV
-	4+e2EmYMNcgtcD9zoTBrkbZ7lWthqZE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6FTKVC0Vw+V7At/WYQ6sSPW0pQ5YC3SXXgca7F7aQzM=;
+	b=KZrBaeGiTBH+7oazZ4a+Aa0P3ht0Sp+ui4wOi8flo3vplDwNgK9g+O/9FST+Y6CD6fTcZx
+	DIrgzmrB8fwpG9VcLTxYO34gcH1fBuHQot+wRRbTVGjJk7OPhfbC9A3g+PPm2QGkkCCO+X
+	dTiVCwtsBodJBJFjqZ+ZzIlgZdUX0Cg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 93B8560018;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7022F44367;
+	Tue, 13 Jan 2026 15:27:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E992CC19424;
 	Tue, 13 Jan 2026 15:27:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A412C116C6;
-	Tue, 13 Jan 2026 15:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768318050;
-	bh=9B4uMGFwloAk5ZAEn3IBwWCzYGd064BJjvrO/dS6ItQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=CNkBCAAudUv4/3USgBu/lTnxxryOMiV6WwUq/uGyfscdpNEgyE3cCYRMIpRisUv+x
-	 nqC/IishGpRJ2VNhWc1T2ba1KSoHxv2RjWc7JTaVNYMRg3bi+fyENeylR3WlKTeKwH
-	 PV/g11CNxfMyh3qLtbroljLGm7xMlru9UGMoFJkefj4Cekr21WgPUUUzd9dd1PRK72
-	 Lw/ChIay2KTD/fciRkKC+jjSqrTYwR4mDuxYUQvM5tuZNgugf/SA2KBf/Ml7u8PYta
-	 bdTnCk5MrBWh6LwHNfWzRq8+JhCqNog3Tbown+vhGy8Su5/3/q2Al+KVijWVQ5LcKg
-	 uNcMvRe07LzbQ==
+	s=k20201202; t=1768318051;
+	bh=PXBZmxIShUHTOj68WkS5j6Xr3CS96XOQ/oFi936N2Rk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VXmaPVkGiyyRuTCvCnLqVaThvQ3h+a38mIaYB+PZFZhn4IN/Cn60g6ooaw7JH5I2V
+	 cGzQEFzxre6EdaYJ5uLKTVM3rhM2cPexg1CduyuSQERI0g7VL5auvOcPErCcgx92Hk
+	 ySNH3Xod/O0xh4WWbzvdc+uwm9XXsX7hpeH3PJ8QnXZ38JL+hLr/k1qd1tnJ9AAXrS
+	 uT/E2mPhJMOKx33qEG2A3G8wmNGQKkEBWFhNbJI4xy4ybABdAORyBFTuAb2yNLUzBO
+	 YQdRuKS6YytGN+NiRpCmOwQSdNvZLgHJX8NnfrIlUfPEdogwGz8pg3N6MUeJI1T0Xb
+	 6YTEI9pUCLKvg==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -78,20 +78,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 00/11] mm/damon: advance DAMOS-based LRU sorting
-Date: Tue, 13 Jan 2026 07:27:05 -0800
-Message-ID: <20260113152717.70459-1-sj@kernel.org>
+Subject: [PATCH 03/11] Docs/mm/damon/design: document DAMOS_QUOTA_[IN]ACTIVE_MEM_BP
+Date: Tue, 13 Jan 2026 07:27:08 -0800
+Message-ID: <20260113152717.70459-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260113152717.70459-1-sj@kernel.org>
+References: <20260113152717.70459-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3yemoxgtrgmcc4x7k3e4syknjwncqcni
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5372618000F
 X-Rspam-User: 
-X-Stat-Signature: 8xyjfiy6cewhdmfszyoxfnpgqjswo7bm
-X-Rspamd-Queue-Id: 4CB6C1C0002
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768318051-481775
-X-HE-Meta: U2FsdGVkX1+2CcOe8bfpnr5lasVcLgKEE8Amu5YDz6//kyjBakXceWFSr4P0TIwM00XZQ24GsxP4F/6a2+rmX/RlKcz1LF9+AbM0jaxO3XE0im0CoTWPnJJqIzAUQb6SbBwMDn+UhSp9qgr7akOONrH/66rnk4VB7c7D1sBGkrilJeUDNtFG5ITyYHBjvGK4uJZt6I0SLEs4Ez2seyHduiDGW17ryLpyDgav7q25AQdo8488UZipOu35Ks8YRXPDzvQY0n3XES1M+O0p0/iUTIO5PckqiETCTTlR83QxBvgZS4zR6TsFcgkfWr0XI9sJ/9u4soyGHLDwoHZ85Xgu8uIyDAAfvxIF/uAteDA1IvPx12CrLTHNCMPF1e0sENWkrfbQPPD3ke85vf075pQF+xMZuqZqnI82M/7ovEvAol9c/seoxApzz4pmkMtFt76mDSAcpzs0z5Bk5tG78K73SjDHTfwcJITcxswEVdI1gMwfsquzBAzQwE2hquWdYBKMR2BWzTOWgn3udgHWSAlFihv0nFi7nqB/cKzMSslc4OpNDi+FXW/p50vj0XE0qPuquYALhaIh7vgEcYzBm6tO6LWf7/jzEkJBPYPMyja1Rff3CFkL5Ct28mBlFPiSrQ4ttObYQq4lT1CHI6M6Vb31Y/To9WwtdVJp7VYyxbFxUEqlr42mEVrIXclPYLcVNVN1O5DoOud/JGr3v6Z7FOou+XSl5jgShH5pVEB85HMI2vxPSoNhCXCyREVnBpVl4O/+bcN7dUwVqpSbGXGt9h3kLtXGZz5++NPvzsLr2hxWSoXvG+7LrT9VaQ+bCeAv9IS2ApmgdSXAC3ZPR8OZFaPqG38ZBG2uaa9CtX0ooo5WwwDzyYhVw0jl/AKO8Av2blA+B0LsDCqn7wufXkf+zJyy2ix5+WlRNwaa7mqQJkd3cDja+nzehWjeRC0gWImMBbTqgR784nVyxx0MFTBnT5o
- 4vUYGGlJ
- OQpKQ/f5fklHRdCxC/PHvokxhQt2akTgFT8ztBipiR3PK+JklWi5txr8kVOcSeq24Fd0t+pwOp9+J7ZvzJpXqPM85LNAVizKKYvlH5bcTMxdje5u/8IYU0Ex5Rp/gQjqsBq+guW9cSjJ07sX1Zv2Jzb/J0uMhSPTeRhZQqjpQdkgZGcloa7oSs7o1QSqyXjZwEaW1FW0XKJ3avDv+oycKAazuQ7KEyDUONwcc4kUBVDYWQ+8=
+X-HE-Tag: 1768318052-666988
+X-HE-Meta: U2FsdGVkX1/Eyg1YYmE7+KulYgZH+ku/hzADEKUngA+x3Jgob2gDskEDFN6cQLxbKli0vgIsCRJtceMcdcidnoj1g5EpnhhdWauWLqofHvLTHhtuE4Uu1dVEe2ETjWE7pqzW2VEM3JAhQjpLWU93KFyUScy0PO6ZBpF3imeyOeLIcO4rRqw+OsDb6f1dB+jO9cJQCDatYBu8t3q///1L5y7FYNiatYl2W6bPKdo0w0wZsvbwn8zyAhZ5xPUMMJuisMHsSEX8eBLnUb2GT4aclgqOTYhXUib7W35yD4spdiSjKQ1kl+sy6KKK0CQ30vhlnTGo+i5Kfg+n5+MMvoOWP58we1IuwWNPKRe8rRYT/5onpd2dK7oaGPEM9E5LNQc5YTF9NnPScm7or8hhzSQ3SPNlc8HOi/ZBsJFPVFb5kWdkVBKYaQMolSm3RY7NoyVOyazKaKvLrjNMN5cbxC3xdEGUlM3eHO64nEnY3qXIdhrBccSnPScWoWKb/YKYgd6Nz/YTd3LSB834lZyziA5c3MlvSOI3u9vERfRy7l1DYhUrBtZNtu7Pz/bVVfhxmm7vTUVN1OQBwyfCMvT05A8ysIjgByQ5tXs7NxO0wIChbP0Oe1XjvMCSQDCyVHI3uvcyhUfAsIGkZgxdyVJ1sDaIcJT4AEj8nkmYiaAy+WR5RqyAPFscFqA46cJuWdKLKY/HKdHSEFeLI4mGWfndNAQ/vpdyHpovAoc4N4iU0H6YB3M49L0x1JPilMOvHWNF32+gQBFN0vEccWJNGiKytynlGzyhR9KKaoFxVKRKjzPXSiLpywI6VHYis83AGNl0wFoYwlLoP3v6a/SrEXHH5zgmLrz2448RYNyD67NDN3jn57GmHr1Ci6CIvxRUPHHJgvC4DpDdjl2Xj61xKwr2FngczVzJh6wqFugeQM4LgWm/I48fm4IIuh/zhecZTFXw7BjMHFSwm/JeoZ0w1iRrujr
+ EO4lUI/2
+ LcahTZ8tkrqQkI9I/cPIq4Wv7/HjAMDzz5Iv1PBTTjYcHkHRDdOMrdkanoJLKEhQVRiFFLyzx7XL9h5Q+wEKUP8sQ+s/FVkJGAWC3BDRjSDABLnqQDHpmSwjrU65u7P285ooMN7iF4H8i9AB5J1ECFK8Ony3XZBiQwZpyw0UKUxgSyV9TVBA9B7BhAEScFRFpGrjZKJf8CBrdm21AfhKE07lPE6vweRtNXHXQv4Gfe7o1KJpvJCiHFj9CZJgKPAiIbyV5S20kBEUneSFFC7U/uZO3qvk94qVQQNIk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,112 +102,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMOS_LRU_[DE]PRIO actions were added to DAMOS for more access-aware LRU
-lists sorting.  For simple usage, a specialized kernel module, namely
-DAMON_LRU_SORT, has also been introduced.  After the introduction of the
-module, DAMON got a few important new features, including the aim-based
-quota auto-tuning, age tracking, young page filter, and monitoring
-intervals auto-tuning.  Meanwhile, DAMOS-based LRU sorting had no direct
-updates.  Now we show some rooms to advance for DAMOS-based LRU sorting.
+Update design document for newly added DAMOS_QUOTA_[IN]ACTIVE_MEM_BP
+metrics.  Note that API document is automatically updated by kernel-doc
+comment, and the usage document points to the design document which uses
+keywords same to that for sysfs inputs.  Hence updating only design
+document is sufficient.
 
-Firstly, the aim-oriented quota auto-tuning can simplify the LRU
-sorting parameters tuning.  But there is no good auto-tuning target
-metric for LRU sorting use case.  Secondly, the behavior of
-DAMOS_LRU_[DE]PRIO are not very symmetric.  DAMOS_LRU_DEPRIO directly
-moves the pages to inactive LRU list, while DAMOS_LRU_PRIO only marks
-the page as accessed, so that the page can not directly but only
-eventually moved to the active LRU list.  Finally, DAMON_LRU_SORT users
-cannot utilize the modern features that can be useful for them, too.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ Documentation/mm/damon/design.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Improve the situation with the following changes.  First, introduce a
-new DAMOS quota auto-tuning target metric for active:inactive memory
-size ratio.  Since LRU sorting is a kind of balancing of active and
-inactive pages, the active:inactive memory size ratio can be intuitively
-set.  Second, update DAMOS_LRU_[DE]PRIO behaviors to be more intuitive
-and symmetric, by letting them directly move the pages to [in]active LRU
-list.  Third, update the DAMON_LRU_SORT module user interface to be able
-to fully utilize the modern features including the [in]active memory
-size ratio-based quota auto-tuning, young page filter, and monitoring
-intervals auto-tuning.
-
-With these changes, for example, users can now ask DAMON to "find
-hot/cold memory regions with auto-tuned monitoring intervals, do one
-more page level access check for found hot/cold memory, and move pages
-of those to active or inactive LRU lists accordingly, aiming X:Y active
-to inactive memory ratio."  For example, if they know 30% of the memory
-is better to be protected from reclamation, 30:70 can be set as the
-target ratio.
-
-Test Results
-------------
-
-I ran DAMON_LRU_SORT with the features introduced by this series, on a
-real world server workload.  For the active:inactive ratio goal, I set
-50:50.  I confirmed it achieves the target active:inactive ratio,
-without manual tuning of the monitoring intervals and the hot/coldness
-thresholds.  The baseline system that was not running the DAMON_LRU_SORT
-was keeping active:inactive ratio of about 1:10.
-
-Note that the test didn't show a clear performance difference, though.  I
-believe that was mainly because the workload was not very memory
-intensive.  Also, whether the 50:50 target ratio was optimum is unclear.
-Nonetheless, the positive performance impact of the basic LRU sorting
-idea is already confirmed with the initial DAMON_LRU_SORT introduction
-patch series.  The goal of this patch series is simplifying the
-parameters tuning of DAMOS-based LRU sorting, and the test confirmed the
-aimed goals are achieved.
-
-Patches Sequence
-----------------
-
-First three patches extend DAMOS quota auto-tuning to support [in]active
-memory ratio target metric type.  Those (patches 1-3) introduce new
-metrics, implement DAMON sysfs support, and update the documentation,
-respectively.
-
-Following patch (patch 4) makes DAMOS_LRU_PRIO action to directly move
-target pages to active LRU list, instead of only marking them accessed.
-
-Following seven patches (patches 5-11) updates DAMON_LRU_SORT to support
-modern DAMON features.  Patch 5 makes it uses not only access
-frequency but also age at under-quota regions prioritization.  Patches
-6-11 add the support for young page filtering, active:inactive memory
-ratio based quota auto-tuning, and monitoring intervals auto-tuning,
-with appropriate document updates.
-
-Changes from RFC
-(https://lore.kernel.org/20250628165144.55528-1-sj@kernel.org)
-- rebase to latest mm-new
-- add test results on the cover letter
-- minor wordsmithing and typo fixes
-
-SeongJae Park (11):
-  mm/damon/core: introduce [in]active memory ratio damos quota goal
-    metric
-  mm/damon/sysfs-schemes: support DAMOS_QUOTA_[IN]ACTIVE_MEM_BP
-  Docs/mm/damon/design: document DAMOS_QUOTA_[IN]ACTIVE_MEM_BP
-  mm/damon/paddr: activate DAMOS_LRU_PRIO targets instead of marking
-    accessed
-  mm/damon/lru_sort: consider age for quota prioritization
-  mm/damon/lru_sort: support young page filters
-  Docs/admin-guide/mm/damon/lru_sort: document filter_young_pages
-  mm/damon/lru_sort: support active:inactive memory ratio based
-    auto-tuning
-  Docs/admin-guide/mm/damon/lru_sort: document active_mem_bp parameter
-  mm/damon/lru_sort: add monitoring intervals auto-tuning parameter
-  Docs/admin-guide/mm/damon/lru_sort: document intervals autotuning
-
- .../admin-guide/mm/damon/lru_sort.rst         |  37 ++++++
- Documentation/mm/damon/design.rst             |   4 +
- include/linux/damon.h                         |   4 +
- mm/damon/core.c                               |  22 ++++
- mm/damon/lru_sort.c                           | 110 +++++++++++++++++-
- mm/damon/paddr.c                              |  18 ++-
- mm/damon/sysfs-schemes.c                      |   8 ++
- 7 files changed, 189 insertions(+), 14 deletions(-)
-
-
-base-commit: 7a1491b1b0a461872951e8fdf885fc243f67f5e4
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 7fd819b8bbf7..0cfd4c25e92d 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -585,6 +585,10 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
+   specific NUMA node, in bp (1/10,000).
+ - ``node_memcg_free_bp``: Specific cgroup's node unused memory ratio for a
+   specific NUMA node, in bp (1/10,000).
++- ``active_mem_bp``: Active to active + inactive (LRU) memory size ratio in bp
++  (1/10,000).
++- ``inactive_mem_bp``: Inactive to active + inactive (LRU) memory size ratio in
++  bp (1/10,000).
+ 
+ ``nid`` is optionally required for only ``node_mem_used_bp``,
+ ``node_mem_free_bp``, ``node_memcg_used_bp`` and ``node_memcg_free_bp`` to
 -- 
 2.47.3
 
