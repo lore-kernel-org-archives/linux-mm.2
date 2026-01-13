@@ -4,97 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5CFDD2F352
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 17:59:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB74AD2F353
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 18:00:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DD7B6B0005; Tue, 13 Jan 2026 12:59:40 -0500 (EST)
+	id 226C56B0089; Tue, 13 Jan 2026 13:00:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28B266B0089; Tue, 13 Jan 2026 12:59:40 -0500 (EST)
+	id 1F1706B008A; Tue, 13 Jan 2026 13:00:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 198966B008A; Tue, 13 Jan 2026 12:59:40 -0500 (EST)
+	id 0EA3C6B008C; Tue, 13 Jan 2026 13:00:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 05D876B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:59:40 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A6CB31A0266
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:59:39 +0000 (UTC)
-X-FDA: 84327703278.13.FAF8D04
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 41889140005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:59:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="KpRr3/RL";
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 00F596B0089
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 13:00:42 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6659314021E
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 18:00:42 +0000 (UTC)
+X-FDA: 84327705924.27.144B75F
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 74720100012
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 18:00:40 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=pI3ZQqtN;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=dDnO6eOL;
+	spf=pass (imf05.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768327177;
+	s=arc-20220608; t=1768327240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=EUGSFjZSiyF/fyf21FKxsB74FdISWVgVYPE1wZrqS3E=;
-	b=Jo4f0b35ZhMq+5alCGgqqsr+fBe0mV709QSYqg0NTvDejlH4/DYnRnpcT0slSRqEhC0N/x
-	QwiQYGQzn0uoJYOBOGt5EIp0oWkvhWcC/NAs8ArJ5TdF/QtoVyjmakz+uTStlZqfrDjaLW
-	+y5TjWBe5xl2c5WzKcJxEi2ehOjXZdA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768327177; a=rsa-sha256;
-	cv=none;
-	b=ganzgXJAwk/s2nTrD1FOCkPv8kJ649EWXRfuF3lO5TvtHHmRQxaC7+VHdkGDIoMAGnAXmL
-	dWHve1KGzih8hTTfuyJy1ezY8RFdJhiRY/mslL+CSCo+cWP64Cqq7W0GeMjrkkoIfIqqsX
-	vkoiISLKS4lVI4MaGr/j8QEcAbcBiJo=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IFFoJkjOAyFFmecghCApByGzs6pGushJZ1nfzPMOzgE=;
+	b=JuuzSMrC6gOpgi25PVrubB6nqK2hChETaP5ZfxTC+XYOc/52/xL4qnMxIz8X56IyAtoOul
+	5pk0U12gnLh9p6I9ohwk1fyq467Wx9Lv42uXqOxvzp+/xL5CfR4OIy6hN2uwmLfmWW2R1F
+	4oEI0KOWuBndJUWG8Ss1KSl9JaBbA7A=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="KpRr3/RL";
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768327178; x=1799863178;
-  h=date:from:to:cc:subject:message-id;
-  bh=rhIZYEAl+JRIQvDcuAP0PNpNBp/AW54b8oE4VbiUYyE=;
-  b=KpRr3/RLgg2uZMarRjVsF3yy5f+lNPGwa9jasxlTiII423ZU1/Mw0lrx
-   zumTjS+Luh/Fq1mW0pK6d4s9tvWUueprCtvpSYjI5yISDectjg88rFy/0
-   r+dJ8k1OZN6j19/J5bm4CNn74mH1bcKiDtQreAY9YXLJFJkuUd8Oo+VAl
-   Ky1n5uvajwAJw0A0l4aKCn67KJ7eD860vVrWQMNs7wufi3M9viG+mBCgB
-   688lFTVuquxCXWx25p7lBKHXXnCfmgBDGUbdRKN+X+rMltdOU83zBCnIv
-   Yc9tLLK4tOMh8EK8m5j3X1BOgWKN2mgJu8wsSUJyCMOuPctXpgfoD6jrB
-   g==;
-X-CSE-ConnectionGUID: +Jw8RwavTTmqdHNkbI675A==
-X-CSE-MsgGUID: tnsfqW/zTYaI+sCXwzw5ww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="69674745"
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
-   d="scan'208";a="69674745"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 09:59:36 -0800
-X-CSE-ConnectionGUID: RdTw7pP7TaiRWPvyE9g9Ug==
-X-CSE-MsgGUID: V0tJ+HjBSzC+MGzaTBRt/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
-   d="scan'208";a="235168979"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 13 Jan 2026 09:59:33 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vfifz-00000000FCk-0r3R;
-	Tue, 13 Jan 2026 17:59:31 +0000
-Date: Wed, 14 Jan 2026 01:59:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Nicolas Pitre <npitre@baylibre.com>
-Subject: mips64-linux-ld: div64.c:undefined reference to `__multi3'
-Message-ID: <202601140146.hMLODc6v-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 41889140005
+	imf05.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=pI3ZQqtN;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=dDnO6eOL;
+	spf=pass (imf05.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768327240; a=rsa-sha256;
+	cv=none;
+	b=ithSlBWlZO6ZhyJjBibFYnk896mQ426UAE1mEw6TlHIxtmLpT9Qwsgf/QWjRMtu+WPuNii
+	+pjxTQoZOSRTHl0jlJqSVTA8VE3mT2CD/O5sezj/Cz2s1VogJhQbtzg9c/+XrDCEANXX07
+	n3w6Siymdl5Z9wSscyaahbTwrB2AM20=
+Date: Tue, 13 Jan 2026 19:00:36 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1768327238;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IFFoJkjOAyFFmecghCApByGzs6pGushJZ1nfzPMOzgE=;
+	b=pI3ZQqtNwhGVlf484c5AkD7qTRkHi/TUYAHB8Vh4Qt151WknNm4aoW36v9i4Mr30+TH8Ts
+	v0EBmEP6gTwmVotqcEhNDBUAgK+8Lsj1JdlQnD+ndX9awpvu7sm4ljtKJJqHf7JgmD9zeF
+	TdrKlt6OmpNCDI4nUrzVdvWEFn04Z9Dn6VH3O5SKgVDFbuiS8C9NVnEj5ACuxcjbGfUKXK
+	yYjIQxUOPycO4s2pLf++uFohdMfyZgYx9EqtGi+c4h2Gcr17cwv3kRrRe6POVsXXCfujPK
+	KUHtnB4iYRkcKEyxeJ0BEehxEY07pY/uHMxrQsKno10A8BIHAQ1tTmORywv6zw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1768327238;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IFFoJkjOAyFFmecghCApByGzs6pGushJZ1nfzPMOzgE=;
+	b=dDnO6eOLuM0mK7DEU/yMAO+gD3P7qBwfrsWnBTOjaeSTV4mK8Ud5llvfE2uSaKoTAycLpf
+	LmU3sS8Q2aF2rfCw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	"open list:SLAB ALLOCATOR" <linux-mm@kvack.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:Real-time Linux (PREEMPT_RT):Keyword:PREEMPT_RT" <linux-rt-devel@lists.linux.dev>,
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
+	syzbot+b1546ad4a95331b2101e@syzkaller.appspotmail.com
+Subject: Re: [PATCH v2] slab: fix kmalloc_nolock() context check for
+ PREEMPT_RT
+Message-ID: <20260113180036.Zl8j3vIY@linutronix.de>
+References: <20260113150639.48407-1-swarajgaikwad1925@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260113150639.48407-1-swarajgaikwad1925@gmail.com>
+X-Rspamd-Queue-Id: 74720100012
+X-Stat-Signature: 4b3e35gduqh1pz7jat3cj1e159ef59du
 X-Rspam-User: 
-X-Stat-Signature: pio67jz73o3hgdbd9qk4sg5bwqgdrdz1
-X-HE-Tag: 1768327177-855502
-X-HE-Meta: U2FsdGVkX199BDJWb24zKWmK0OcC/By1skXMp96nCHhnxkYfvmKTbE8SxwOnTNNTxwEAwuAxGANZ8W8bEuLSYKfRUYJTcAg6dDzYABZusT9N+0V3i6/LB+2RyuUWoTzGskTyo4lRjn9lrj1Ler98HamHa/CnQnR93RTd+WJEHhlVcaSfefcQmXyoM4uasC9UNvxEJRM9n09o6/OL9R2eaC19s7TS3UJThVMBgjIbmKwYrvfoQ0vfQzXgeMaQftmByMf8ifUMl/vIQqoHzTUTliUkzyRup/93wId5C0/k2Akg6lKkt7E68uIfbbL+scvE+OSXFEhQeg1QfuotK3Rw/WpYlLAf1tOOOKS3MasTuXz1oh+nMkaMAI1wBnDB2ZpBrG+1nRO+UYt805pFfrA8/1Hu+Gy4pvZsDr6OVOkGlA6Q3+6MYEfOUV/MhfjdMkU5ShvwJ0bHAoY3B1qbgkPrveLWC+bgGTfK10QlC9ybvFqSgiKWhU6bFyA/OtXidFQKMvBuO9IIbTwCyph5SoJkwGGjpWWDPE3m2kCLk2OIlgWVuOc0K6y1XMJQszS0wpcO15Wbm9PGUiwTEBEERm1Pka85Aj1yB2AEJtAqmddUqX8eVudvipAe3WFPnoAWYb5jaRhESCpObAvZMV7abKIgi/GNvOd6LP2lGC+epg2lQ+Q2DUtTPTqSiPE5RJOzcAkPRcyzebSbGINWRCtZ8feLQ09P+LOI0ywXFVuUPgvn7CBRYOfZXiA832R7bFqresXYokdiVhW0gnMGoZ2iz95jcA4nIOJp+R2DwO62PePULjMCAIJTaiQ6QDpGDHHaiGC6vIdhV62UrzvUovpBVn+lxteXXuMB4HIwsn51hMk8qd9navp1UihpasW4biY4GMh9zhKHCS+pyHqxN3OXz1TIN35VZZ4A93TB8gqtSbx2KP1wOfJd9Sbxu7v7yK73HCUDsZKFHI0zqdtHHCIb5km
- i62E5Wug
- FLloMMjZ7BbgF2+bVJIpCtYsGbL1tZnYHdJNX5I92xMbjE9P+hXetob5dhY7kyyShwVC/8qybPaTHoMhNoHNTWP24dtBA4JnbYk80+XNW6lADtVyHflmzp1lQkXJI01nFofzrqvg4kkm7WkJphZhI28vwvw/r2sh2ymbZRbX4LpkaR7YKoDPy8yyXOMz/zPrxK8Fxy7iTvEIB9BaGcqE5jICoo8KIPnVlQY6LOe+/qjsKb5MaA+oymW8TPYZR7m9/t/zmamdqd+iTUkrcamPeaETj2OMkeofPJunk808zDpXMGkMIXGBOvkE7Q3tKGMh+kRPs+iTS8K0Q1ppK82AlUq+LvEeXgix1W4sZx2bcxp2fiQY=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768327240-62412
+X-HE-Meta: U2FsdGVkX1+RK2JThZeq2cEgFr3H9YisQgstST8Wtr2Xat6XOQv1xvrT6kBmb5HLMRvEmIe95k883yBPQG7gvIKeukWiTU2cYOeZAvNIgkKKWMw8GFYr3xwXh/ORC0um8bFN9/quEcJ+8ZvzZVu4F1I6JYvbTSwvDzc0uLaReoSe6ByJRk97FyBenlQBTgc0cM2IihMOz3oir5CdC5FjBjSz5V4DHLmW6x8UwfVAuzNyAloEdPK3NHpHZZWYvqEV2OMxecrqI8+xN1YKXLD3EJv7ctUEwGHVrg/BIzdf25EIiE3tvxqlXsjzKbDA0ucdIVRrLpXNljTGW5zGwiZvQE4qzL7MYdqR4AttvaBbNFvdwR1F+DeZtHd+ZrqeNYjAkQlMKB6saJYy6p3bJCpIvk1Kax0/dsRlwMFpxW23pDEx0c4pwpJlT6rqd0q7mcnFNqZExRjTKeRFqUSc8Dx843NLrVPEjvejXxG0tu/44dyDB4ICkzlLA5MYwM56LcvfWHzRw/fO3OlEO47mnw/03hLEO/mC2Edam+2Hmwqtb3dSpnfWdo4mrFfPne5IwBtGMzZ6LeYfWLudzrG4M/FCDckcKby2qiOR08akyzmMaBvJZu5wNSDgftYRCjp8ZIrN+Cz7TT+IClc/VawuhmoptR73hs4XuDP8buBOONb+p1BuUX9OnoX2wPcgzbGyQlA9eZdk2sKpF3tLxB+kvMwhlxuCbGwP5iD5x9bmR2Vjx5J3X0E2131cDBsT5WY4XcLG/V7+R2pCjvsDDPD0Vxqf1gDhMFh1IRcQoVeV34yks8z6LrkKoFc6C1ryBrEozO6qPT+T81KSWBjtHJKQ3fTPusXtl3Tet/PbmqKjIx2VqW/Z8cRGJ2q+kN5wLBZRAhkLF/gOQrgj+9FkV7kMFp7a3hC30xnSQwLbScQCs4mz6MnHbQ7kp7+anJivlHa2NvKFuapoE88VnGV2LovJOSt
+ tZ37QPoJ
+ 3N9JmbunS/il+2RyeSPzSgxAyw7kMRDtzazZ6y3apXzqJ0TKibM+JmhZD6+7EOd7RPXs/drUYOe9ED0hHxPKTLNjz80hg2Y+wmQ7Tugyr2+6tEs8POKbhN1t2RBbrJ6IWxBHvbc/ysBLqn7oJprFMByK4b1d93OaEEL+LcFpP3L0uDxemz/NqcTBn+l4ypjP+aWt6Kp5lCEwfgzvoOkmSoCnGT7a+wSw3U5zbcirMx1wBub60yE6cBEuww0iB6DX0krSIE+1G29Zm6HGkSPSb5XhYw+nBV/KWxvjq0P2+ekhGZ1R414J7OCYPxg8O9SCCZ5MT2cvtfpu+vQYI1jHfLG1LbluoV/TK5p4+LxhHsGe9Csmtx+I/w4tfaZILLgjc6I+24xiBA305uc96d++H2Sv1j6RH0n9d6mylo61ZiVqhRYk8FDvl+2wbqyOXfHDeYSO+43oF5V5s33jhInorHrPrZiNMzwKdaLtw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,26 +110,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   b71e635feefc852405b14620a7fc58c4c80c0f73
-commit: d10bb374c41e4c4dced04ae7d2fe2d782a5858a0 lib: mul_u64_u64_div_u64(): optimise the divide code
-date:   8 weeks ago
-config: mips-randconfig-r113-20260113 (https://download.01.org/0day-ci/archive/20260114/202601140146.hMLODc6v-lkp@intel.com/config)
-compiler: mips64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260114/202601140146.hMLODc6v-lkp@intel.com/reproduce)
+On 2026-01-13 20:36:39 [+0530], Swaraj Gaikwad wrote:
+> On PREEMPT_RT kernels, local_lock becomes a sleeping lock. The current
+> check in kmalloc_nolock() only verifies we're not in NMI or hard IRQ
+> context, but misses the case where preemption is disabled.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601140146.hMLODc6v-lkp@intel.com/
+The reasoning was different back then.
 
-All errors (new ones prefixed by >>):
+> When a BPF program runs from a tracepoint with preemption disabled
+> (preempt_count > 0), kmalloc_nolock() proceeds to call
+> local_lock_irqsave() which attempts to acquire a sleeping lock,
+> triggering:
+> 
+>   BUG: sleeping function called from invalid context
+>   in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 6128
+>   preempt_count: 2, expected: 0
+> 
+> Fix this by checking !preemptible() on PREEMPT_RT, which directly
+> expresses the constraint that we cannot take a sleeping lock when
+> preemption is disabled. This encompasses the previous checks for NMI
+> and hard IRQ contexts while also catching cases where preemption is
+> disabled.
+> 
+> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
+> Reported-by: syzbot+b1546ad4a95331b2101e@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=b1546ad4a95331b2101e
+> Signed-off-by: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
+> ---
 
-   mips64-linux-ld: lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
-   div64.c:(.text+0x84): undefined reference to `__multi3'
->> mips64-linux-ld: div64.c:(.text+0x11c): undefined reference to `__multi3'
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+for now.
+
+> Changes in v2:
+> - Simplified condition from (in_nmi() || in_hardirq() || preempt_count())
+>   to !preemptible() as suggested by Luis Claudio R. Goncalves and agreed
+>   by Vlastimil Babka
+> - Updated comment to reflect the more descriptive check
+> 
+> Tested by building with syz config and running the syzbot
+> reproducer - kernel no longer crashes.
+> 
+>  mm/slub.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 2acce22590f8..642f4744d5c6 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -5689,8 +5689,12 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node)
+>  	if (unlikely(!size))
+>  		return ZERO_SIZE_PTR;
+> 
+> -	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
+> -		/* kmalloc_nolock() in PREEMPT_RT is not supported from irq */
+> +	if (IS_ENABLED(CONFIG_PREEMPT_RT) && !preemptible())
+> +		/*
+> +		 * kmalloc_nolock() in PREEMPT_RT is not supported from
+> +		 * non-preemptible context because local_lock becomes a
+> +		 * sleeping lock on RT.
+
+I would say that despite the _nolock() suffix a local_lock() is still
+acquired. The !PREEMPT_RT does a trylock.
+
+As I noticed this myself today while looking at other patches, was the
+trylock removed on RT by accident, was it there only in an earlier
+version which was never merged and will it ever come back so we can go
+back to !nmi || !hardirq?
+
+> +		 */
+>  		return NULL;
+>  retry:
+>  	if (unlikely(size > KMALLOC_MAX_CACHE_SIZE))
+> 
+
+Sebastian
 
