@@ -4,96 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAFE0D29DF3
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 09:25:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A623D29DF4
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 09:26:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E5546B0005; Tue, 13 Jan 2026 04:25:14 -0500 (EST)
+	id AC0A26B0005; Tue, 13 Jan 2026 04:26:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39CE96B0089; Tue, 13 Jan 2026 04:25:14 -0500 (EST)
+	id AA1CA6B0089; Tue, 13 Jan 2026 04:26:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 292BC6B008A; Tue, 13 Jan 2026 04:25:14 -0500 (EST)
+	id 9C1BD6B008A; Tue, 13 Jan 2026 04:26:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1884C6B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:25:14 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1514C08F9
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:25:13 +0000 (UTC)
-X-FDA: 84326406906.29.EE5BF98
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1C6F3C0008
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:25:11 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qzw+nhTW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768296312; a=rsa-sha256;
-	cv=none;
-	b=lxJ18pyB+JyggaanugbWDvz3rA4DixPvWHNYzpIQMjlGinNYbQSOk1MafmhXbJk7B82mij
-	Cd7Q5O6TP6zeeeV1QFsfePNFqEKCp0AsvAS9UZfbLBmRupa2YIhW43rskCwPT9AGEhdt4Q
-	oUaYzl5X7Qh6Tm0L4FgF9MtaTEb4+Go=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qzw+nhTW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B9F56B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:26:47 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 547C8575BF
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:26:47 +0000 (UTC)
+X-FDA: 84326410854.12.967A0F7
+Received: from imap4.hz.codethink.co.uk (imap4.hz.codethink.co.uk [188.40.203.114])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 49A90A0008
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:26:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=codethink.co.uk header.s=imap4-20230908 header.b=vHmCKgwv;
+	spf=pass (imf25.hostedemail.com: domain of ben.dooks@codethink.co.uk designates 188.40.203.114 as permitted sender) smtp.mailfrom=ben.dooks@codethink.co.uk;
+	dmarc=pass (policy=reject) header.from=codethink.co.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768296312;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1768296405;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L97MRU3zXSX4+a/JpGKE1wwpnWvOBhMojukWJyafDmQ=;
-	b=J9QDQ/yhqqGV+9jA0YPnlZ6LbBmSZSeplI7c6u3XPfIifmMPYlG6wIWoHf6OsyTEx/df47
-	pS+b13g15pulrvmPfKp+w/vEld57eb5YImuViKOgl8NidunCpTok7xEuIHGhFfQza6+nXV
-	4MnTUIDsIRVkC+g8l6QNKZB3O0+UUpo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E840043CD8;
-	Tue, 13 Jan 2026 09:25:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1994C116C6;
-	Tue, 13 Jan 2026 09:25:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768296310;
-	bh=5WcDfOtEjk2CZ85KBhVtVus8q8w9KHZIwPMUEvSME1s=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=Qzw+nhTWNXpxN2P2pyNSziV4x3a65LBSG9ra/AjxaG+vmZC3LvrsdgYFjilsd0PWq
-	 78OK65dQW/pLg5ROTawBuuLxwF/mSd8/Ii82NWpXFhREbPoYBrppXv0ZdgWxra4Bxl
-	 7t70BTER+DRhEuO81b3GlTLiOrVn/rual86e4f/T3IJQXCXWywXeKiHlIY7+pPe5u2
-	 ZV7iV8/vAQsKB6h1Uj5Uzip2/jKuLPPUr7WUW/sfF8EC73PRg5IAHk99jU3of1B0LI
-	 oGZ/2knzQTdGaQ7KF/Y7oJseWpH8ITEJcD59UJvy5UttNWZ8Ropg2aAu5zt8kykGFN
-	 IVNZJHiN0NH0w==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 13 Jan 2026 10:25:05 +0100
-Message-Id: <DFNCQ48YFMOM.3MX8XIT2I7UET@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v5] io: add io_pgtable abstraction
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Will Deacon" <will@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Boris Brezillon"
- <boris.brezillon@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
- "Jason Gunthorpe" <jgg@ziepe.ca>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Joerg Roedel" <joro@8bytes.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Asahi Lina" <lina+kernel@asahilina.net>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <iommu@lists.linux.dev>,
- <linux-mm@kvack.org>
-References: <20260113-io-pgtable-v5-1-7ed771bc3d8d@google.com>
-In-Reply-To: <20260113-io-pgtable-v5-1-7ed771bc3d8d@google.com>
+	bh=iwhRz1qvbi1/fe/0umje0amzQnKdrgwi6Ba7ekT00jc=;
+	b=XwkIMi/AMtAgZj/LAfPVMBRuuL4gOcH9O/wD1NyjFucSVJDWvuDDQeuhN9Fvh0/ENy/PBM
+	jU08vrxlVznJKjFx7BpNudhaIGlCkBe/fqiNnUKlMu8HTB6BoqDkRUD82O7s5V5Yc5Umxq
+	3Vu5bm5UOE0KVM8/mnw7mDPYG3v5kew=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=codethink.co.uk header.s=imap4-20230908 header.b=vHmCKgwv;
+	spf=pass (imf25.hostedemail.com: domain of ben.dooks@codethink.co.uk designates 188.40.203.114 as permitted sender) smtp.mailfrom=ben.dooks@codethink.co.uk;
+	dmarc=pass (policy=reject) header.from=codethink.co.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768296405; a=rsa-sha256;
+	cv=none;
+	b=PWFPp6mY6C/pUxujJxWsk/F6sddZHUQyf6JhSUlMU+PTgEHPWSeGznBgYBE0Ma6COzK1Nd
+	hlni42ag/yPuMxhW12gyGMLCzM/4k1ltZqHFs3HSeI++Ss50YWjBpieYbEWuWocebpNc3w
+	T0qw8R98dMNXZ/5XpYWZYcW3SJDzszE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
+	Reply-To; bh=iwhRz1qvbi1/fe/0umje0amzQnKdrgwi6Ba7ekT00jc=; b=vHmCKgwvdh4dx1Iv
+	kGr3yHQ4o2bZUoYuCUk3Gj5PGdY0MqoJnxNIH/rnfkhvofRMZl0P44RYu0zToMxEPRuhARc9YsMkY
+	NfWWYyAVRs7+cC2q03ckTT82jGkUoOdLdW06CUTFgndQ4lAXRdOS1FLkfIM4ikQV8fuzQLs30H+RP
+	4OT0/KbfcrzJNasHZV13j4fOxva71j6lK59chDTj/uLt5O97yDmHHNopz2XsrbcPkKPWf3LsZafLw
+	U3RzmVSRuHVkvQHmyulcxFr3T6fTgRFy8mZpf/OCL4rrjBG0ffvtx+s4HYND0Drf2qvPRajDIOyM0
+	0TNCK0AaCsUNcmfyVA==;
+Received: from [63.135.74.212] (helo=[192.168.1.241])
+	by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
+	id 1vfafh-00GFza-Au; Tue, 13 Jan 2026 09:26:41 +0000
+Message-ID: <2a289c18-b5b7-497c-bd6d-a25602706b23@codethink.co.uk>
+Date: Tue, 13 Jan 2026 09:26:37 +0000
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/khugepaged: make khugepaged_collapse_control static
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, david@kernel.org
+References: <20260112161820.604669-1-ben.dooks@codethink.co.uk>
+ <49229782-acf5-4e33-b317-63399deb6f6d@lucifer.local>
+Content-Language: en-GB
+From: Ben Dooks <ben.dooks@codethink.co.uk>
+Organization: Codethink Limited.
+In-Reply-To: <49229782-acf5-4e33-b317-63399deb6f6d@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 59nuued71e7w5rw5w1e9rp99hhcefp4a
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1C6F3C0008
-X-HE-Tag: 1768296311-128452
-X-HE-Meta: U2FsdGVkX19tQDioJzSXVpwgN2EkWYU5fnIwLf7eA3jRNtFRiURKasRG5EuFyU4FsDZBzghhd91cC4q2NF7lMxeF2i6wY3oTRaArqty99Ufj/Ze590IGrlwUk2v3rnPRx9xY2IyL0O9AYB64P392guZH6WsEr8ifL9w08MN5iIp3l3HGv+kCyA4tuwaxhO0T702hlS2q5o0hFHfBtvgqbDsKVw5e+bkWPexZgCTxU6VAT/vevprm3boEOSAzMJbW6lGLgZFKcmitkDp8U0ICibSLSUlpO/ucZbM76vQ6GslnpbYizX6xpE68+riFZHfjmIe1zvm0wSgRtVLFEUNoAJHCftVk40GacNvAzK6KtZybg9yQXBTwkBnpxIxepYzMD9ZmZPrpeY8EjdBxbiJTyqDxJEWgnfHz+AONIehkBC+dcj4+r8LdKZQRBqJQ7Nx0nw3hasSorxYWfkqUnJRe/Sk0Aoe3izFSfya1z67566lUWVWwDoI9v123xT9y81lv89FDTUPXQRnEcFUHs9axEqTu9dsoOM1JImsx8nPEihntISQPIkZI9UxyQ1/PBSfEqS4JOTlBuOcgiFcP3gZiubcHuFZoZhchvHb0rFRZAxKM7b8JzhMZ9TxAXEYqNnNT834RUXbW8QkO+V/ltLSkEKkrCqBa7zvJPHgmVphQe4aCVuwY42ROI3tvp6axDMpQ6go2UcWHdS4wKj2yNLDPnkwcf4iCGxxxbaLjipDu58HftH1XNoYC+gfWru+n6Mh7kK5xsjzMYEIWX29uud7BtuNRt608LD8ZO47zH+Y1HkRBuKZp10lEYnK8S03o1KIow1O2mLmJwDZnESUKHFmT94D3TqAAWtMIvDdUS8uOyAUoy91nQkN+VeUVl6tlsI3q3YC4vP+cZzYbY4syI12uYU+ndAvr/3S1vPWZT142qQy/LXHmD7gIJjmagdTCiiHTTFLDSPr2dkSkpdAdhW8
- 5YNVNCcq
- X7vLJAXmYe+FoKwDZUvmOZjDZrkuCNVQhOtJyE8S+wRktyN6aW3LmfUzxfhvuANmBkww1vs7/vnux93dyYRksCtMNki0hNW452TzEUZxsT3/xDxYJf9eQfGZE6En60xjtkv/YRPzCWy0h0ModfKHCuEGgbtvwuGsRpSHkzeD3rSa56EwbZg8QqMlBfzGBABPmhGiqM1xM9RsE0PuNe0XPV6jHuSVJiY2ccpl3Ju6Bs7RJ+6YvnxX1H/VYIhBKOx4TaGhqacY8r238BlXHfqhAldAlGgYEl+hLKflbN13xtDPKLG5aNBnqjb4Pv3ibTASBdE8ScK8Qe9KhXKPfRvtGnCiuO/yxEJMpKMdcRPDskfQBp5djR8QT5y/bhxRt/d1XnuuDew6RJUfg0thtRm5+m04BllGVNUnlPrVzS+CmLUHP8fWP3RfeL9ghQtBd1oDeEV4J
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 49A90A0008
+X-Stat-Signature: myyfequqq9auqyn3r9nr7x9gss3uf6hs
+X-HE-Tag: 1768296405-518834
+X-HE-Meta: U2FsdGVkX186QK/X8k0SlyT9MmPMfEpoZFUjJhsS1dKFa94gxvx5rocCSomLY7sJ49UZ/YN5IMXPY2IeGuXjVMsJeuecMu9yG9t2r3GupBKI++lhZkq0NVZo2en1k1IcscrgNJ7YmkLM+8xg5TjZZxpRMJVD6SVj59DvYp/GNs/Wq2xum5Jl3QG/p5sbm9A2P4RNSZsv8dw0lZfwK4ELwsNGHKXPT2zNK4+Jbvf+nq6f4BxM9vlu8SdJKYAh7zFX37FiHGUmQPARW4ekw7CieuZj5oR4Dd2lq0LtQ7Jliw+gAz9bhUgjNraAma9b6Wta8AOc+zBrkpPgeDdMouRzlwv4iDLi7AWrodsDELwxLxVY2fYHtZZpbMVG4j69/0t6xn9Kutxm+jkIGqX7/In6SNTXV8fTmk2dQLVmQVr69c/XzYcNn4HnlUn6DsDfA6riS7tA22eqNI+OeqFOJ7cEhXM43lf2m48Ts23UtRDXltTqZks72lS7J1rHeRi8hhy1M4MQ+MS6CqA9AVQYD2gBTvISTKzoAdizzaNPkKK/Ie+9RpPJSyBr3/Wr3fXzdaybinPe08sUnt/ylsyIe0PrRg8M5RpgtHebjLPUYeBcHUMms0PhOg5uuynSVOBkh0UZTTllqSsLfnU4o7UdKuIPHKhE7Y2yFdLbJmsvZHzGB2QXuXftLy13dFz7lnI+J25DwxhIhRHENIuy63NQR37pejOUsy20TEVF/Df+5JKBAeSTVI9zbvF85v6dJZ1ysAvmz9ry4VLAqaXwgCskUdTs7bdrMNEJjtBwEWhN5l7D8hP1d8HjwZOVVGAFvgh/X68lDtbOgb6PMmoto388G9KVV2YQYgnqqM0y7nkSdC55KVxC9qScXL5jMX1vzdkPDFtEMEE7SrkhoDEbmB0XRi2zrGJCYWP69sQmNZe7jdMChvQNyJ5a5iDz6HHWDAu1iMX9sn16D0yKRfDLLbiwXIt
+ iASXLXG1
+ +6kjnEqfIDHivww2hhZqIIJ1NlyrhN8k1YB8biHAvhmeJLICSgxHREfMlkYlWEKLkhFhk6WWroEeG7gBT63jlbdMq5m65GaDRL6hiJjyxzpXUGfV2W6fTBlvA0rnhdvJhpSczXficRK9ypn6ozfr+1awUYgtb8UQwQnRZzJYpEPWbcOOAqGXbAiOvvSHJvdvoEKPE9IGmfx0fj+7Hx2Io872U6S+o6TnBOoxpGe6NsX6PJG7BTnxG/P2hhhwzE8SBeWmf32EtsOkI1MHET/+lo8lXOn7jAnS60YdoELS81uS782UuODaPsYv4RXhs3FSEExOEgz5lFIB6mMKrq4Ja+b1X8gC3/4pL5NeeNx9uI7Kio/YBaQ+ugT1Zo2jkuCQ1zcJ0XNOxWu5y3FlcAS3l0te943mHwXzB30Qjfd1ubG6uUcWxmWcWTDoMoj/NLzf3J733RkJwq5/uMriNjEZuc7EhxTGR4B+CRC3AGZWOxOaJgzJEzfIDil4H79biEmeq6G3spw2dezUCGfQo5Eq3A6O90F+GfIGGclPdQrEHw2LtwXc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,26 +93,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Jan 13, 2026 at 9:49 AM CET, Alice Ryhl wrote:
-> We did not discuss where this should go in the MAINTAINERS file yet. As
-> an initial suggestion I added it under IOMMU SUBSYSTEM, but please let
-> me know what you prefer. There is also a DEVICE I/O & IRQ [RUST]
-> subsystem that it could fall under.
+On 12/01/2026 16:33, Lorenzo Stoakes wrote:
+> On Mon, Jan 12, 2026 at 04:18:20PM +0000, Ben Dooks wrote:
+>> Make khugepaged_collapse_control as it is not exported.
+>> Fixes the following sparse warning:
+>>
+>> mm/khugepaged.c:829:25: warning: symbol 'khugepaged_collapse_control' was not declared. Should it be static?
+> 
+> Thanks for the patch, but sorry to say that this has already been addressed in
+> [0].
+> 
+> [0]: https://lore.kernel.org/all/20251224111351.41042-14-shivankg@amd.com/
+> 
+>>
+>> Fixes: 34d6b470ab9cf ("mm/khugepaged: add struct collapse_control")
+> 
+> (Small note: for something like this that isn't fixing an actual bug we don't
+> use a fixes like this).
 
-Either sounds good to me.
+Is this a subsystem preference because I was told I needed it for other
+patches.
 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 5b11839cba9de1e9e43f63787578edd8c429ca39..eccdb937762a7545fcd5db019=
-4ab7c1b6dfdfde6 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -13241,6 +13241,7 @@ F:	drivers/iommu/
->  F:	include/linux/iommu.h
->  F:	include/linux/iova.h
->  F:	include/linux/of_iommu.h
-> +F:	rust/kernel/io/pgtable.rs
+-- 
+Ben Dooks				http://www.codethink.co.uk/
+Senior Engineer				Codethink - Providing Genius
 
-If it's going to be IOMMU, let's move the file to rust/kernel/iommu/, other=
-wise
-it gets picked up by both entries.
+https://www.codethink.co.uk/privacy.html
 
