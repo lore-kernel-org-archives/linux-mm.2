@@ -4,106 +4,237 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91DC3D29DCC
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 05:35:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3705FD29DCB
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 05:40:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A87E86B008C; Tue, 13 Jan 2026 00:35:35 -0500 (EST)
+	id 9DE086B0092; Tue, 13 Jan 2026 00:40:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5C5D6B0092; Tue, 13 Jan 2026 00:35:35 -0500 (EST)
+	id 988086B0093; Tue, 13 Jan 2026 00:40:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D61D6B0093; Tue, 13 Jan 2026 00:35:35 -0500 (EST)
+	id 836486B0095; Tue, 13 Jan 2026 00:40:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 784D76B008C
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 00:35:35 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B53B13850E
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 05:35:35 +0000 (UTC)
-X-FDA: 84325828230.29.5BF1666
-Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6EDB5C0011
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 05:35:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=V2cLz5eC;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of 3pNllaQgKCEEmdvrqplxjrrjoh.frpolqx0-ppnydfn.ruj@flex--jasonmiu.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3pNllaQgKCEEmdvrqplxjrrjoh.frpolqx0-ppnydfn.ruj@flex--jasonmiu.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768282533; a=rsa-sha256;
-	cv=none;
-	b=p+tF+UlxqwJJLNGaRFwHQJV5sqeG5lI+civ3YNPs6TYOOGTKNK/EMy8yujsIPA7JR40Wkk
-	NtRQW8QRsp9tVaFlm8yl1lJRJVaO5YKtc8B6DJ/kJtBZNNoOG6G9qNT4SMn7bOCjJ7zYAL
-	GIjUFDphZGQjcvOcMBNIvRCohKSe17E=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=V2cLz5eC;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of 3pNllaQgKCEEmdvrqplxjrrjoh.frpolqx0-ppnydfn.ruj@flex--jasonmiu.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3pNllaQgKCEEmdvrqplxjrrjoh.frpolqx0-ppnydfn.ruj@flex--jasonmiu.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768282533;
+	by kanga.kvack.org (Postfix) with ESMTP id 6F29C6B0092
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 00:40:17 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1FCAA1AC172
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 05:40:17 +0000 (UTC)
+X-FDA: 84325840074.04.0278D21
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AD44DC0007
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 05:40:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=BEwPZBBt;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=YC78kN4W;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf22.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768282814; a=rsa-sha256;
+	cv=pass;
+	b=sEYXEghv8JVrxj/xE8bo2yLv9sVUrbX/w8XoN7EKgo0taInLlcrRORRvqJHw7uJmNyCU4W
+	YOpe/oLGWYBN7YV/DcjFcR/0RezhwMfVclReI/Y7HYGnrPc2g4hjL+JOWeIdujMvyR1a3c
+	ZArufyUIF8g9HK2FxOp7Sy4ZkQUssi4=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=BEwPZBBt;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=YC78kN4W;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf22.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768282814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7ZdzwmCXe3gMoHyDDRR+IMK5xDno+0lJCEG1fStGGwY=;
-	b=aRrpwg6T6N+MQyqAMJcGxvEFnx+5L46f9vDMfM5/2k+bA1IXFWyTkLeehAhE2CtzdjsgPM
-	QUucRacGtUnGr5i9zv9eM+HclrQWDdQL8MJubIXCdVbV+hf0p+99mFlbouRhBwf+QDtNmR
-	xORomaAGgE18X7JYjvQDshICHJFWiPM=
-Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2b1766192e6so5866936eec.1
-        for <linux-mm@kvack.org>; Mon, 12 Jan 2026 21:35:33 -0800 (PST)
+	bh=aEN2Fl9q7yTdTtBFq77q8wU/3bjfnKueXrGWAZLJRN4=;
+	b=yp7uboc1qhucjC9aZoGm4KYy9MJJN8EpiRo6xu6YaLYxPiXTsS4bRNFUOoh1OMsQ3ddLYx
+	EwtWgf1aH6HXzNFnI1lHzbuFp5STTZ92zTHzcSmte2+t8W4dWcW+io9XUa8im+optrtCM4
+	BVHBILuqsnrSs4GyW6kG+wf2N70p9hs=
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60D1hJRN2677774;
+	Tue, 13 Jan 2026 05:39:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=aEN2Fl9q7yTdTtBFq7
+	7q8wU/3bjfnKueXrGWAZLJRN4=; b=BEwPZBBtkbcONWmB7+PAVk2PZHA7MYqz0y
+	b1KENzNFmfd4Ob1qWET6emKbivWO7B4YBG4OASeJfTgn+ZHYDqaExatZaR86CghG
+	S8mUjErmZUkjgivCeDu7C6gUYgVKAAP2sjyxuPOgJOixs25pu6XWS/+sEdi5kBdC
+	Lrcdja9iUV5K98os84ZbwnZIWJ2CCuRU6pryFCGBRcG69jDVKcWAjr2UJkg31TeJ
+	0s84wE3oHE8Ddnn57MKio1ndWtbkPRX1TMZEFJrxCcpkBc2ewFaHoq0co721hG/l
+	YzUeXgg8NUV/Nz6a3QWYrCfOhR/PDlNfTZU4+Mu/VKo3gUWYE/cQ==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bkrgntv5e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Jan 2026 05:39:38 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60D3tlAt008289;
+	Tue, 13 Jan 2026 05:39:38 GMT
+Received: from ph7pr06cu001.outbound.protection.outlook.com (mail-westus3azon11010036.outbound.protection.outlook.com [52.101.201.36])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd782e8e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Jan 2026 05:39:37 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CRARzMJlK/DuIY0p+fjI2SIAy1DGlHxX07N7a8hqvDcyUXU+qbpse4mj/4CtACT1SbM+X4+N4+23F0t0lQiUJxWdMenSS3zLwIwHgmHwzbpu+sZCyPsYV+KSQCaIF+e5qFUAx054/j04xrei4nqagT1suFt26cRkkL0hpB7J2wVVX2wx7KUJ0xvpkjTJwdefvMrgr3eABMaa2UZn5bFtI4HSvc4+9+T5ajrT/7IVX8Y1RvOvx760R66bplMekHTikjPawjgLc3ft3Bx6rdeXbT1BXkh310Fr3lGL44IS9y8tPUoocH11BjrFOJ8xM/BJbq0FMv27o93qwCAwpFjdyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aEN2Fl9q7yTdTtBFq77q8wU/3bjfnKueXrGWAZLJRN4=;
+ b=tEwecTIt9rH4ngrxF/1PVI83PEh50j3QOdNlCDZ+oMOATs6tuZSKvrs13K1jH9h5zoZlv8TbXop0nHVc8UGLCS5btd/ILnKStB6FrnjguAfr6nyt0a7x5nzrgi6djB1+4wM48/dLUX9wABP95+C/nwuOVLMg/U8Tmvu1cA89HSIfJISP71pP5vlFOhRl9c82djuckVhld/3aeqBCBzsHqTeJ/eGPe+M2dxE8tTf1qglxIs2F4JdzgKCsNOP51Vtu7VyWNplStBw3T+FEHk4sRaKK2gAzSz+y4vmbl+9YXmGMtymWMFF+cPbXsl14vAu8CH5CvBBzOVOxi96tujXkFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768282532; x=1768887332; darn=kvack.org;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7ZdzwmCXe3gMoHyDDRR+IMK5xDno+0lJCEG1fStGGwY=;
-        b=V2cLz5eCN+9uTdTKdOCiVosc1Ptv9RICYuoIX9Ct29Wcwh20ZjDGWoJBKmeIf0BEip
-         SQNruoyXUaJEzaQoLZVsKh6fiHHGWtcYoicKC9BYimqU1LwM80vHeEhytkFqmCpcLxmU
-         YYc9RZitlUPTtFIIyguocsx2pz7y/O2W61hj5GnzgRQFk7L5Ook7uYTbnBsRy4EyfEh2
-         ibtNguqIihlGI41jQtfHoHdq6vNCqJX93uWWJLOk7oSbWRvx7bZ/smbHGRmCxqwOnu5i
-         ibaV2MneFQDncE1N5PxdVA80HcLV01YdbV4wuz8whMo+8z3lG4xOx3vUY0cimf/ar+gx
-         okjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768282532; x=1768887332;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7ZdzwmCXe3gMoHyDDRR+IMK5xDno+0lJCEG1fStGGwY=;
-        b=vVhY0Hr4b/ersucd8U0zOH935OTuo6sTtZYWIWL52fbV6OhWTk9Y8qki7qs56o5XG2
-         JjP4g51H/1ztGm3Y1lP9cxZlPF7mKeAbJO15SWNFgHW2F/zG1Tpy0enaHrpYY269Hyk6
-         07Ba4xoTOLUSm3OxGu7EOdhrYHkabG9Qx/bNZV0zeVdJdBfAOmfh11bKuEEtnMmK8q5H
-         0FxG/PSvAILWwGRyYi3SoWfrRoZqcC8JgjK85hcPjSlWs3yKAIAw9dDyuhcI9BcTZa1g
-         i+IaPbnKS5YvKHWwcBqP1OnD9Ypu0x9yR9IdP1SqWSJQ38b4adROBbAr1pcgjUdxscrm
-         8iYw==
-X-Forwarded-Encrypted: i=1; AJvYcCV8JOUTH76hTfzcSFb5/vnjMQwE95jkk3++GKHVisCQ8HWTDQFv8ZqOAnGAzjECqyGf4Q/p9XR6Zg==@kvack.org
-X-Gm-Message-State: AOJu0YzENsSLyZqiwJGRWtI3WjqzH3IVXlH54iAahxiPcNE4rjz5e8Yo
-	oyrjRKPk6fCOBmum2dLYXPCln5HCZNbIs1awBAwQT47SklkiZdlfOO79jA5AkymGnxDhsvoHJ5N
-	gIXJhmyOOxSowpg==
-X-Google-Smtp-Source: AGHT+IHQKmij8n+nGpsHN7+O5LBztfLAEM8Fv+Jj9CZ6VEsfpurzRy3SztANuDZc53cc5UcB+fuJCx6tqK2Jpw==
-X-Received: from dlbrf6.prod.google.com ([2002:a05:7022:f206:b0:11d:ccc4:4c98])
- (user=jasonmiu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7023:b14:b0:11f:391c:d01f with SMTP id a92af1059eb24-121f8b8d709mr17436261c88.38.1768282532012;
- Mon, 12 Jan 2026 21:35:32 -0800 (PST)
-Date: Mon, 12 Jan 2026 21:35:23 -0800
-In-Reply-To: <20260113053524.84186-1-jasonmiu@google.com>
-Mime-Version: 1.0
-References: <20260113053524.84186-1-jasonmiu@google.com>
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260113053524.84186-3-jasonmiu@google.com>
-Subject: [PATCH v5 2/2] kho: Remove finalize state and clients
-From: Jason Miu <jasonmiu@google.com>
-To: Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>, 
-	David Matlack <dmatlack@google.com>, David Rientjes <rientjes@google.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Miu <jasonmiu@google.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 6EDB5C0011
-X-Rspamd-Server: rspam06
-X-Stat-Signature: wzshkfe3qt7u93utaub4gjgh6hoe1egm
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aEN2Fl9q7yTdTtBFq77q8wU/3bjfnKueXrGWAZLJRN4=;
+ b=YC78kN4WX93Yc1pNm/sLLGPtv3iCt4aZhDATnQeu5xsVzI2n1oMO9k+O2NTUSeJwAy0IrWfpTJN7ifW/e6/PpVew/4h02TtG9c+RyTlnFuUJSj8bJLXDrblRMlvWg85rPi68YBGWdEkn1JEx09FbpJkQSVFCj3ebdEGrNmashTs=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by DS4PR10MB997671.namprd10.prod.outlook.com (2603:10b6:8:317::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Tue, 13 Jan
+ 2026 05:39:34 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9499.005; Tue, 13 Jan 2026
+ 05:39:34 +0000
+Date: Tue, 13 Jan 2026 14:39:21 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Jiaqi Yan <jiaqiyan@google.com>
+Cc: jackmanb@google.com, hannes@cmpxchg.org, linmiaohe@huawei.com,
+        ziy@nvidia.com, willy@infradead.org, nao.horiguchi@gmail.com,
+        david@redhat.com, lorenzo.stoakes@oracle.com, william.roche@oracle.com,
+        tony.luck@intel.com, wangkefeng.wang@huawei.com, jane.chu@oracle.com,
+        akpm@linux-foundation.org, osalvador@suse.de, muchun.song@linux.dev,
+        rientjes@google.com, duenwen@google.com, jthoughton@google.com,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+        surenb@google.com, mhocko@suse.com
+Subject: Re: [PATCH v3 2/3] mm/page_alloc: only free healthy pages in
+ high-order has_hwpoisoned folio
+Message-ID: <aWXaiWI3v_PJOKDL@hyeyoo>
+References: <20260112004923.888429-1-jiaqiyan@google.com>
+ <20260112004923.888429-3-jiaqiyan@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260112004923.888429-3-jiaqiyan@google.com>
+X-ClientProxiedBy: SL2PR03CA0010.apcprd03.prod.outlook.com
+ (2603:1096:100:55::22) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|DS4PR10MB997671:EE_
+X-MS-Office365-Filtering-Correlation-Id: fddc47e1-93b2-4245-5b5e-08de526621e6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Lmd6C9H0jaiAiIpBFSt0jnmJTD0l420Y3NNhHFDaDALx6crCnwo4CtD1BNkp?=
+ =?us-ascii?Q?3YZ3ANSo5WeKNpmTBW8xP7HX6TXLdcejPttDySxCYsSwKcH94rRSl/kEr0DR?=
+ =?us-ascii?Q?MxFIiE6gjmue/udYPfjkQFkNUr7ebgwi9yc0HyuF/HpKjPShDJa76bZ2G338?=
+ =?us-ascii?Q?Tjhsv0ZINrsLKG1OiiCQ3gf3JDJKeu/V/WspcZvC/9GgHupqttQYCS41FQXi?=
+ =?us-ascii?Q?kFNvJDawEQUNhimaOnW3xpdigcUuqBYZF0pdGzNBxQKCcH2m8cJhkxUIsm5X?=
+ =?us-ascii?Q?5zG6J1NuihJZE4J3PVV7P37nINO1ix5RbaTxJaLtxYQqOEAFDx2Pc5DoH8Hm?=
+ =?us-ascii?Q?W+AUma7Luv8M1VJdVImtDrDM8XR1HbAOGcIrn+/xS2y9zHN1PWJlSl91qOx6?=
+ =?us-ascii?Q?SXUJe8X+lWJz+Fi6DEpK8GfU5VTAkjeWrrry4kLprOXxGtPVmS6dcdRr1mDN?=
+ =?us-ascii?Q?PiLpMZQx1LwJzFkvvqyXT5P8SguAS5oQ/VeYy2Q6sS6SKmcqfETfijtimUpK?=
+ =?us-ascii?Q?51/cWHn643N8MBBa0aapYG2KLqYw6QaHoBMsmaSSuQV+NmtPe6OWV+3QNtcL?=
+ =?us-ascii?Q?gR04hnshBfdiqX0EnSFPpKax+7vfcCIuo4Nr9y7iXyeNoa0ustD5NowPDeb3?=
+ =?us-ascii?Q?vEdK9BEd6Oo/5qVAiyoVclBcmOWs7BHcMUtxo9+r+F7Bm9tURVmgvK6dC6KD?=
+ =?us-ascii?Q?whuRoEDCpAk1vvMQZtffmTMKvraGpiitA3FeUfWmIWXGBvXQmwjNTpnV2GbP?=
+ =?us-ascii?Q?6fir9kJY2MMA3rYJwfo9y830ssfvYg/jg030PGUL/RB1J8bEy1thsiYKLH6v?=
+ =?us-ascii?Q?eb16EoeBkLInUzuD2Du6O6Z+FzGLPhE8FanyF76UVhW/RJdbanVG5U6Z1/0s?=
+ =?us-ascii?Q?VazmEhl2S/at0TgoGNmdS7O0Ce61xgXJ9e3QVqPpEzLrGKx+I7wfF/ZJCE5X?=
+ =?us-ascii?Q?/7RhPd0IOW2/Ghr+7MZIh18H6peRTH3Yv3qSFtatpITMaUUCR/cLoO+ZGvSq?=
+ =?us-ascii?Q?a2toIBlZCxZ9CQv0Pribl7GY0gvejVKl0XxytlTBYRfDgumBwEhcoKDkU9Mp?=
+ =?us-ascii?Q?wvenqQYMEHl3Xhb3lSxjos3k49vaxMOJh96ulDrozwyqA7k1Nl/TBUhzurZu?=
+ =?us-ascii?Q?6onmSIbRwTdJdROolaZiH7CIGbbtaF2b3kPg/wMY5a3fVbkP2GuoorCbQovJ?=
+ =?us-ascii?Q?miJ+Wke3g14pi3RpAuPSdTqPEbekl/f+kCEbhX4ENpjageUc40IYqvq0IUhI?=
+ =?us-ascii?Q?2xZk01/6e3AV45c3mNq9wuDV2N1F7pX5mrZwjK9eRckkK10wNfXFNgpKObqS?=
+ =?us-ascii?Q?A4pDNGsyERaS7RB1+WvPg48tvOx/bCV1C0Np1Q6MucVVmxUFro3XF8xEb6fB?=
+ =?us-ascii?Q?73N3s4JZgd57xwzS8+VBTL7edeHINzfeV4yJQe6A1NSmOAzDJ5m4bPIELFyp?=
+ =?us-ascii?Q?Edxe3wmloP5Q7EOHxLDuuJLLIyAGHy6X3W3V2F7dGD3LUMo8fcfkHw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?HlDj3uvGAKjMP5U+Ws8Yy4KI+WyISvfVNLvIJUIw6V/eWRRxdzA9buaqlLhR?=
+ =?us-ascii?Q?3YT+uJf9MRJwa1wQaYZIuLF/wiOmuemGSczLyNzlAarY+5MdmCCSR4O4hU3e?=
+ =?us-ascii?Q?+9Q1S0PG4pCmbFHEVnRa0wmguh+0idEub7nheRb9/2wiRrCyNaclLH9U5sFY?=
+ =?us-ascii?Q?I5R0undBaCSFF2XWGWkwd8S/J0p8h50q1CIWTfELFEoJQVALzZ+qsSWKucLA?=
+ =?us-ascii?Q?1IGvVQZkpPEyteWyrCxSdm0WjozolGYrturi+D5Q21x2Jqql4vYlUXFRRxsn?=
+ =?us-ascii?Q?jJYlfCNoP/Aj0v9llHNehtVU6WzfDIF5Kjm87O+CRBSRZNDkJt8lRceyBKXO?=
+ =?us-ascii?Q?49iQUqkhZ74V1JxnpX1RDFkKF8h0Vfu8Gj2LCxKASOrCMRRqmIhWl3xLS0OS?=
+ =?us-ascii?Q?/yTgV8RTX4yH2+B2itxvjhOW6rXfseGuG7y3jacgT5oT/VoeazvlibdwynWV?=
+ =?us-ascii?Q?f3y7rX1ziaj+yIGUh52hVDigPlr3SKnaXyi1EmuyK092N3XvMwLrQeacV1x2?=
+ =?us-ascii?Q?8dfDzUMrrMMQCHnJ4SFU9SYs3G9haganL8lRRjT2VOPH4fc0UtWqrFMoAAFY?=
+ =?us-ascii?Q?Suiwl/wSYjKkpAV/Re1+/YTeo1lNGxNglip62BziPmHtRyjP0kEvkvxV9txo?=
+ =?us-ascii?Q?grM+dREGTXQ0OaajxowP3VCeWOglIOUiWFAZa7ua7GfsoMjtL0NGgLNX8hyu?=
+ =?us-ascii?Q?VaxzjgYzxaaMRXOlDlKN6iyWe83mbRwKT/6fKTDF7NLTeKjWVIcbnpesriXp?=
+ =?us-ascii?Q?j70pR/8th99JBjCdx1Zt5wWIG8vnaBo/unoKsdv3drIQPhU0z1k0O2hRmmuG?=
+ =?us-ascii?Q?+qMV41APoA00nPsJ25i5HD1NDfL9kVY2VwdVuq8JGbD+8CVGYiJvPkJ1vsuB?=
+ =?us-ascii?Q?F6+Bp2Xfwnm/QSLJ2dzRWSf1w8YxoiOWU6EXQGLaaR9vH6vhWbhOP946Ymjw?=
+ =?us-ascii?Q?ReQ1hdikEduVlkNJlH7n0go64waw1FqCKLhV6beoCDSu6awy1CKrLtE7ZorA?=
+ =?us-ascii?Q?lNly7MaafgnkCMIjnidrnX6zNr1PY7Sq0i/gEnf6aRVF3wQ42eI0OBZ8GFHh?=
+ =?us-ascii?Q?jgZZPfK4/AxHhxQfFAStxompQOO9nv3HOhojEftXvYhxlhLgYdqscJSTGj6o?=
+ =?us-ascii?Q?eljWNJs1/QCcUreVpKjrI1Q/NE/uEHSXoysMVPDHui+QFyFVzKFePe5EYq80?=
+ =?us-ascii?Q?TJxhdq2IczrkGcqdRay6Kw5MqCFRu1iZemcenBlIMAUdtIVsQGdfdh2mLpWI?=
+ =?us-ascii?Q?f2WBrI555Z6piZp9PrXsBDa0ncCqBG23RQc9HlH7bmB0DoJ8RBAIBPvlA9HH?=
+ =?us-ascii?Q?SXGA79ukA3YXk0qIJQQte20MnrYs16N+jzaEbaecsYw/DiEPWg7LeMOiwO7c?=
+ =?us-ascii?Q?GIjiDwAxHWTBASL1SEVBUiTPlTZUoVnVOIk74L1zIE4ESIm3JGEk1KvtAVra?=
+ =?us-ascii?Q?NNc/U5AndE/kEISISSWm6RxLmeJw23Yr6i5PI5bgClv7OLau7Tt1Axs9uLTc?=
+ =?us-ascii?Q?7oHmsaYFoA3zcB5JAgUmqWsTXGyerKkvIe+mEKU/Qr5Qxi65jX06NbgD92ar?=
+ =?us-ascii?Q?EgE2v2qLX1F4ygSWj1tuM2qxdLvB7j13R9jUECjQYccOCclVFJlEaLXAdEsl?=
+ =?us-ascii?Q?7LuLGJ/wV/PePnMoabOU8XcM1nBLi8KVgRRrR0Y14vfqqAt26YI5becRUkY7?=
+ =?us-ascii?Q?8hzQL9nfuHMYOv6jZ6UCW5DtTo6jlocjMYdd31RIXsbhcPpvaOWw19+7NoSK?=
+ =?us-ascii?Q?pwG5kIhOFw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	Ks0cQajcB7Anuzu+8IhBguZnb7L+3ddk/zPLzZ/6ppkkN9DC16pQ/Sk1LjeEYao4Y9mPy3ok3U3VpqeoIk38HbGpcZhwTFIpMWpKsYTLR+WuyZXOBnhK6+p3zNgJoY4vpoGgXi4+tGYROeA7kJn1dGhsacROJMTO6KcZrPbb8N3pKJqVJUTxQZ7bFdXQpBuc5Cra21TnuCL3jNW2lUvsqZiDTJs98fBli7DtF6t63q0Sm8MoxfZLgMtfgLTEUmBVThY0mPGcqt2KpJGDmEWP7YmU5sDKXpqyPqeZovqYhWi2AyHSLlHpU3cexTwfD49/NcwyeQOrdiR/MtXaJWMh4Dar6JrMOjdP9PPTQJCZTwmf7St0pPwH5b+/B60mNaJ7eO5OOKsCmBJf5XD1+jWOkqsZCsMyobZnBU7mHSkYRDl9J6U56rXYRFH/243oqQC0fZtW+V5ruzSGafjvQP5CMAThktJ6HbwVjK/sAv9KUmgXXuFeixNi3e+thwtO/FeZR2i/6HwHETeDTH8MSA+GF6t9B7Ci6g563jX6bhezcqJdCfyZ8SVWTKzW+IUVbLLn3QqGczL9ggVH4HIPqlU/X+4So/cfzPXRl24w/C/Kft8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fddc47e1-93b2-4245-5b5e-08de526621e6
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 05:39:34.5608
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8gYT/IudjR+HnVugILNykRFviMdlKpatxd3ErHwlnP3sJNhCFvc2X3X8B/C9H6AkbPestDpBy2Ba/RepXnl6hQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR10MB997671
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-12_07,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
+ mlxscore=0 adultscore=0 phishscore=0 malwarescore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2512120000 definitions=main-2601130044
+X-Authority-Analysis: v=2.4 cv=B/G0EetM c=1 sm=1 tr=0 ts=6965da9a cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=R_Myd5XaAAAA:8 a=1XWaLZrsAAAA:8 a=HNhGhO4dleL4Q1WbMiIA:9
+ a=CjuIK1q_8ugA:10 a=L2g4Dz8VuBQ37YGmWQah:22
+X-Proofpoint-GUID: 1emzlSnCFZ8EgWaRSEOZnJox-roSX-jd
+X-Proofpoint-ORIG-GUID: 1emzlSnCFZ8EgWaRSEOZnJox-roSX-jd
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDA0NCBTYWx0ZWRfXz1F+Ibghj/jR
+ 5eQT+iJ8EN8JDGJKYPnS7kANj/MUacjVReCpXweozJRui9GAvTDeujnIGBrkv9crwUnnocHpZ3j
+ pQSPt34yETm49EcD/B+NSJAtbBe6x3S2uRjYTwtBnsVUFDEmZqWTb4VPHoDFOLHgHc+ngOxXjPl
+ /p+vZJgepFKiMTA8dETlkzA9Dkvz8VYP/WnjmHyHik31xLlcUJzjI2boDylHfqL8PRIv/0i45bl
+ NXSsBbjBEtUk61bniVLwNHt3OKeXAALtXDujuFPhO4tJaDxehqnmHE3eeZUt9BHa6UZr3fE+ZJC
+ 4+FrMzdzvE1KScUmVOcVclOa4FgcLd0bTlRhQL/QEbXIT+vXktxYXMQlcWdEUVLUXneahOUcQFS
+ YxFmygNjnqDsnz3GJLYDMwYFj/wX2oHWM1CbslSC05VJ+c8kSpyc+fwMTwvrurMR2BPwnxorX9/
+ fRjMTQdAW5AmZf42MAw==
 X-Rspam-User: 
-X-HE-Tag: 1768282533-930035
-X-HE-Meta: U2FsdGVkX19Pl6be0sK4+Kcrl8KMbaCR6eH5900aIzjn403wiwQ6jR+O92mKrCp9NoC3f2E09b1Hc2oF1cQKDW71LTZbdWYZslko+6ZkanAIa6O0TrXHHDfX9N40FKiT3Fiu6Pb0p3cEXhHpzHmxpac9Ilgdg64blMvKYSi5pO+ZI6X1fPRFUpxyTANkYdR/8j2dXpeqRxu/mtT1kFBNbYrKq7x3Bf6gLNfghzM38QhAY3q2tFtkc7stbPOM4ZzcDoNRrGZeBl4u59UHaVmAVRt7slPiZHikFnC1eqrg9EsjWb/KLJYjXszyVqF/NRCv6q77Xos4xACByUvER8JZyjHXA4RzdSUNdii5g3srluc74TAAtrIlya7MhYZDfzpCoVb41CLeYJhn2BVEr+5jbKk3aPOYM33Gu9K8drg3qfmZOVimPOg2mUAMbKctq6LX04jSYAyWBPGSH3cAKRjVstKN8qHCSL+cSxNLwNBQ0nZecyw7kOJq6v1jWmLFeIe2kcaGEQk67Ypv2F8WCGw/lbi2I3gtyV89+4+kFAKzRzieyty2ZHfS+DVCbya22w4j5tDGZp7CVDOF1hEouYA9SawLylXV7TB9Kvtcf5WM/2RRqczJakpY3ynq1P6ggGFmTK+4Ala/haQoUuAlrs4gLTngalYLoSUn4mls/t55uo6uHmyK/r8AU5elvtn0XN3ErzWDAUviVnf7E+b6YMyPxcuSmNQndXBYidlkJ/R3YvV7D2QysyBnUOfsM0vIWQY9C3krHIdIQvUeKyT/5VFZvHWqX5RWVKtLK/Q0Qg/x12fP8DJSl3yp4NX4CivuyLjYP1G+TFsb0W9LzdXuv6FBaAYMl682cewYzHRCbQUzNB8Yqr6z/FP2zFkmCg8B10L7c6VxOlhxRZpn+UimfE2lgcLjgvpBFtLhXed0pSNRxN8gb0U2EoMs+wkunYyU2jaz49XkC94LKhz0jSXJ9jK
- T+l09sFa
- 7QLwWMVyMZfHspr4AA/i2bwW/7GpL/Jb3mGqNnnzE8s09rcQtom2dHFTLNrGehARc/wKMRvYgjWKCPcHewaJr+f5re6zKuv2by8KIFw+8ANKSFVeZgEZbFVsaYEAzmJVlrkFS9TzTMPI+0OH9EGB4m/rBaaBfFnY+LqMYFQ4SMoCRqWoBYJZhNZxDkPbALrhQXU2oCGeoQOZK2rt/jdi6B9JO2prxDnOiTSJMUpLl122/3DjLmH0aKVoOycBclb1usH24KplRwdPvxFFhE4M8PGCxF81sJNVzYJYZIRbyRd5IeCKUUO427W6q9roNxyo+yMXYvGilQCF8hsBv46p+hTdpdIxgtUGpFMV5SNWZOpOlleKDkRbsopi5uB4bR1KM5JRzYHCt7oUWS0tnOVJTAWjK4LvoTcBVtI34NdUabbnmCLtRmL1k3tb3yJtNzbVJR0tL1ZdT0T3oS4iHoLn46dZYTZZAv9vc3/NxPbTYuLDcoRzpbOmkHjIbzEjrU1XXfyGhwg553zTri6AKCb8oPt5Ri2SwMqOeP5EVG73ixUJlbgx0DNH70W9tHw==
+X-Stat-Signature: sjda4s3n37chres3864f6pqg5zniz8or
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AD44DC0007
+X-HE-Tag: 1768282813-774743
+X-HE-Meta: U2FsdGVkX1/mPw5XsI+7fEIKr0B4+2BWMVb54sDNKFXzJA1ESP4zjBxnHb21ASkWPkQdzJqXV+Aj6a66OMYc7YVLeP8wsSdICqb1i0iPuD/T/pxfEadQARRTTnfuYcgOrZq8zp/G2hho2miPRKgCzM0bLfiZxnJakRqBOlDoT4a1M02+HIIxunOvsJZDU9mzUWSUrAxblATAmN/uIbA72BUdiJbcyP6jJcptQeIyAiRn/uBwysw5qARiVIfuweYuILu3fgGtiLGNYymUOGrWba+CfmlF/K8eN65GLmsYpcLfx4Z5/v+K4sWB2exGbn+7BjbUha313s4AjXKFwv5oRHELHtgfxPZ7FjrgGYPvDRYMdYcww2uKn2wxNXdZsB9eQ+uFWCz0XqpJYg+fJMYX3+fp/Ldi5S2eCc+mp4b+Sb+sjkkCCeQb1xrXrDRYd7juEXL3ZpmSluuwEwIbRkVq2R6fF1aCizUkYo3Ngdjfyf8nI0EmO7epXTrb2+vmW8FxIMmpDfoi9lGE6qgVhh/nWZs7WAYsPVNZzov9PNOax/e79xGmo8OKiKOV/lc8H8nDwr6MjesRhJXJrDr7H8qgYY+h/rlSqcywKZkhmCGJezj5cqgvudaI1RTJIcAVUcT0xG+w6bndBJQ9oV+NPON96yFsffD+50a41NRamRK1y4SiKzsJy+pjSxniH+1CcoplBmEnhmsedreY4qYwQa9IH14yOlkbI1Wbxa33QXDTm670pfcQvfErYQPT313brZhpadBV0iSV2M4+lLzFAMJvAtqRV2HxEw4T2oBhjVN85/EHeTyGrn7A0ACLgRG9//zcoWuHciYFn/Ld+SMI6KSh8QsnZhi2MNhFXJSexjkTNSXD6lwKuL0W403wL2Qh+QHZ/d+tcXz/IstIghDWbR1Lmq+Q+PFzqUZW4EI1W3PO6tuNFs2Zf+C6S3z/oD5+YOo3irUMzsVWmGoEODKQcni
+ irSJ71Rw
+ 3m8J0rZAPvWnQCEIH+sdOV5D18wYAOa47H+t+P7VzBpJhCsUlaZ351HoySZ+n2KY6PsNv7iwUvKQXVw5r8ANI1MDO2a5lUZwe4iO9jejDbLGhOHz9Xojiv0LjYwj6iQGzdma9TsVPRfRsvPP4nxIikqy+pKjxeO034ZwD49l2L+Iifrdzv1ZVsCcN7Vylx2M6l6swk2GgKwtMcwq7Y+QKZICdb5J+lULuxPqMCnQ9Bx3JfA3A8GyjqXWyZT25onz61wmUGJ/R/wTlr1L9B93tiOha/BhCU0RzLV8uRh9DDq+DfZJT2GuV4MSnUJScKbr/I+yJK5qyd+ICwPeM2BewOP2AiJOUrKvlJPdTjdl+NLZ9spufuk9sBg/Yh/vuUeuwnopZPpfS0sjJyNl0G2RPH/RGqa+FQwKjOh79tp/a/PsUgA1UkAu98suqyQ9BiSEZX4IVzV/A75ZIOzgak6kBU3ysGkYFrQpn7ZUzDV/sgIyksby9pIn2E/NpPIvmI9xbpfTWoD3POqLNi4x/iWnPxkU0SzKmvDpJg12Zhv2wFKvFfW2rkuZbLaw1mUU0SNmt2q+7cM/+VW4vd/wsLiKJH6lMGlrZ1nI2ducNpEdvQAacvzAhSHfY/syyGGoRfTKHmVRKX1dF/GOxkfpHS9TugDJqVjei5X2qo4ob5SzyRvfTv53cgPzwv6c/fq6qNrEoGXplnpX6nsmvbkx46WUh3SJsKegRaKl3SAVX3fadSG9ETPYnoakuyFeNXrmRceX0UB1qs8HwedXY3wqjKznlpECfyf7SmD9Tx/gbJJkd39NEPOyBGtuWg+5IftpQNbfASHK6AyK7aNGFs69WRJo4jOC8Ig==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,322 +243,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Eliminate the `kho_finalize()` function and its associated state from
-the KHO subsystem. The transition to a radix tree for memory tracking
-makes the explicit "finalize" state and its serialization step
-obsolete.
+On Mon, Jan 12, 2026 at 12:49:22AM +0000, Jiaqi Yan wrote:
+> At the end of dissolve_free_hugetlb_folio(), a free HugeTLB folio
+> becomes non-HugeTLB, and it is released to buddy allocator
+> as a high-order folio, e.g. a folio that contains 262144 pages
+> if the folio was a 1G HugeTLB hugepage.
+> 
+> This is problematic if the HugeTLB hugepage contained HWPoison
+> subpages. In that case, since buddy allocator does not check
+> HWPoison for non-zero-order folio, the raw HWPoison page can
+> be given out with its buddy page and be re-used by either
+> kernel or userspace.
+> 
+> Memory failure recovery (MFR) in kernel does attempt to take
+> raw HWPoison page off buddy allocator after
+> dissolve_free_hugetlb_folio(). However, there is always a time
+> window between dissolve_free_hugetlb_folio() frees a HWPoison
+> high-order folio to buddy allocator and MFR takes HWPoison
+> raw page off buddy allocator.
 
-Remove the `kho_finalize()` and `kho_finalized()` APIs and their stub
-implementations. Update KHO client code and the debugfs interface to
-no longer call or depend on the `kho_finalize()` mechanism.
+I wonder if this is something we want to backport to -stable.
 
-Complete the move towards a stateless KHO, simplifying the overall
-design by removing unnecessary state management.
+> One obvious way to avoid this problem is to add page sanity
+> checks in page allocate or free path. However, it is against
+> the past efforts to reduce sanity check overhead [1,2,3].
+> 
+> Introduce free_has_hwpoisoned() to only free the healthy pages
+> and to exclude the HWPoison ones in the high-order folio.
+> The idea is to iterate through the sub-pages of the folio to
+> identify contiguous ranges of healthy pages. Instead of freeing
+> pages one by one, decompose healthy ranges into the largest
+> possible blocks having different orders. Every block meets the
+> requirements to be freed via __free_one_page().
+> 
+> free_has_hwpoisoned() has linear time complexity wrt the number
+> of pages in the folio. While the power-of-two decomposition
+> ensures that the number of calls to the buddy allocator is
+> logarithmic for each contiguous healthy range, the mandatory
+> linear scan of pages to identify PageHWPoison() defines the
+> overall time complexity. For a 1G hugepage having several
+> HWPoison pages, free_has_hwpoisoned() takes around 2ms on
+> average.
+> 
+> Since free_has_hwpoisoned() has nontrivial overhead, it is
+> wrapped inside free_pages_prepare_has_hwpoisoned() and done
+> only PG_has_hwpoisoned indicates HWPoison page exists and
+> after free_pages_prepare() succeeded.
+> 
+> [1] https://lore.kernel.org/linux-mm/1460711275-1130-15-git-send-email-mgorman@techsingularity.net
+> [2] https://lore.kernel.org/linux-mm/1460711275-1130-16-git-send-email-mgorman@techsingularity.net
+> [3] https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
+> 
+> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+>
+> ---
+>  mm/page_alloc.c | 157 +++++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 154 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 822e05f1a9646..9393589118604 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -2923,6 +2928,152 @@ static bool free_frozen_page_commit(struct zone *zone,
+>  	return ret;
+>  }
 
-Signed-off-by: Jason Miu <jasonmiu@google.com>
----
- Documentation/admin-guide/mm/kho.rst        | 53 +++++----------------
- Documentation/core-api/kho/index.rst        | 12 -----
- kernel/liveupdate/kexec_handover.c          | 21 +-------
- kernel/liveupdate/kexec_handover_debugfs.c  | 23 ---------
- kernel/liveupdate/kexec_handover_internal.h |  3 --
- kernel/liveupdate/luo_core.c                | 12 +----
- kernel/liveupdate/luo_flb.c                 |  2 +-
- tools/testing/selftests/kho/init.c          | 20 --------
- 8 files changed, 14 insertions(+), 132 deletions(-)
+From correctness point of view I think it looks good to me.
+Let's see what the page allocator folks say.
 
-diff --git a/Documentation/admin-guide/mm/kho.rst b/Documentation/admin-guide/mm/kho.rst
-index 6dc18ed4b886..454b378cf239 100644
---- a/Documentation/admin-guide/mm/kho.rst
-+++ b/Documentation/admin-guide/mm/kho.rst
-@@ -28,20 +28,10 @@ per NUMA node scratch regions on boot.
- Perform a KHO kexec
- ===================
- 
--First, before you perform a KHO kexec, you need to move the system into
--the :ref:`KHO finalization phase <kho-finalization-phase>` ::
--
--  $ echo 1 > /sys/kernel/debug/kho/out/finalize
--
--After this command, the KHO FDT is available in
--``/sys/kernel/debug/kho/out/fdt``. Other subsystems may also register
--their own preserved sub FDTs under
--``/sys/kernel/debug/kho/out/sub_fdts/``.
--
--Next, load the target payload and kexec into it. It is important that you
--use the ``-s`` parameter to use the in-kernel kexec file loader, as user
--space kexec tooling currently has no support for KHO with the user space
--based file loader ::
-+To perform a KHO kexec, load the target payload and kexec into it. It
-+is important that you use the ``-s`` parameter to use the in-kernel
-+kexec file loader, as user space kexec tooling currently has no
-+support for KHO with the user space based file loader ::
- 
-   # kexec -l /path/to/bzImage --initrd /path/to/initrd -s
-   # kexec -e
-@@ -52,40 +42,19 @@ For example, if you used ``reserve_mem`` command line parameter to create
- an early memory reservation, the new kernel will have that memory at the
- same physical address as the old kernel.
- 
--Abort a KHO exec
--================
--
--You can move the system out of KHO finalization phase again by calling ::
--
--  $ echo 0 > /sys/kernel/debug/kho/out/active
--
--After this command, the KHO FDT is no longer available in
--``/sys/kernel/debug/kho/out/fdt``.
--
- debugfs Interfaces
- ==================
- 
-+These debugfs interfaces are available when the kernel is compiled with
-+``CONFIG_KEXEC_HANDOVER_DEBUGFS`` enabled.
-+
- Currently KHO creates the following debugfs interfaces. Notice that these
- interfaces may change in the future. They will be moved to sysfs once KHO is
- stabilized.
- 
--``/sys/kernel/debug/kho/out/finalize``
--    Kexec HandOver (KHO) allows Linux to transition the state of
--    compatible drivers into the next kexec'ed kernel. To do so,
--    device drivers will instruct KHO to preserve memory regions,
--    which could contain serialized kernel state.
--    While the state is serialized, they are unable to perform
--    any modifications to state that was serialized, such as
--    handed over memory allocations.
--
--    When this file contains "1", the system is in the transition
--    state. When contains "0", it is not. To switch between the
--    two states, echo the respective number into this file.
--
- ``/sys/kernel/debug/kho/out/fdt``
--    When KHO state tree is finalized, the kernel exposes the
--    flattened device tree blob that carries its current KHO
--    state in this file. Kexec user space tooling can use this
-+    The kernel exposes the flattened device tree blob that carries its
-+    current KHO state in this file. Kexec user space tooling can use this
-     as input file for the KHO payload image.
- 
- ``/sys/kernel/debug/kho/out/scratch_len``
-@@ -100,8 +69,8 @@ stabilized.
-     it should place its payload images.
- 
- ``/sys/kernel/debug/kho/out/sub_fdts/``
--    In the KHO finalization phase, KHO producers register their own
--    FDT blob under this directory.
-+    KHO producers can register their own FDT blob another binary blob under
-+    this directory.
- 
- ``/sys/kernel/debug/kho/in/fdt``
-     When the kernel was booted with Kexec HandOver (KHO),
-diff --git a/Documentation/core-api/kho/index.rst b/Documentation/core-api/kho/index.rst
-index 002bdf0beb2e..0a2dee4f8e7d 100644
---- a/Documentation/core-api/kho/index.rst
-+++ b/Documentation/core-api/kho/index.rst
-@@ -71,18 +71,6 @@ for boot memory allocations and as target memory for kexec blobs, some parts
- of that memory region may be reserved. These reservations are irrelevant for
- the next KHO, because kexec can overwrite even the original kernel.
- 
--.. _kho-finalization-phase:
--
--KHO finalization phase
--======================
--
--To enable user space based kexec file loader, the kernel needs to be able to
--provide the FDT that describes the current kernel's state before
--performing the actual kexec. The process of generating that FDT is
--called serialization. When the FDT is generated, some properties
--of the system may become immutable because they are already written down
--in the FDT. That state is called the KHO finalization phase.
--
- Kexec Handover Radix Tree
- =========================
- 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 2b5d91f66cd8..1c9fc91e6fcc 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -69,8 +69,7 @@ early_param("kho", kho_parse_enable);
- 
- struct kho_out {
- 	void *fdt;
--	bool finalized;
--	struct mutex lock; /* protects KHO FDT finalization */
-+	struct mutex lock; /* protects KHO FDT */
- 
- 	struct kho_radix_tree radix_tree;
- 	struct kho_debugfs dbg;
-@@ -81,7 +80,6 @@ static struct kho_out kho_out = {
- 	.radix_tree = {
- 		.lock = __MUTEX_INITIALIZER(kho_out.radix_tree.lock),
- 	},
--	.finalized = false,
- };
- 
- /**
-@@ -1196,23 +1194,6 @@ void kho_restore_free(void *mem)
- }
- EXPORT_SYMBOL_GPL(kho_restore_free);
- 
--int kho_finalize(void)
--{
--	if (!kho_enable)
--		return -EOPNOTSUPP;
--
--	guard(mutex)(&kho_out.lock);
--	kho_out.finalized = true;
--
--	return 0;
--}
--
--bool kho_finalized(void)
--{
--	guard(mutex)(&kho_out.lock);
--	return kho_out.finalized;
--}
--
- struct kho_in {
- 	phys_addr_t fdt_phys;
- 	phys_addr_t scratch_phys;
-diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
-index 2abbf62ba942..430c9521d59c 100644
---- a/kernel/liveupdate/kexec_handover_debugfs.c
-+++ b/kernel/liveupdate/kexec_handover_debugfs.c
-@@ -75,24 +75,6 @@ void kho_debugfs_fdt_remove(struct kho_debugfs *dbg, void *fdt)
- 	}
- }
- 
--static int kho_out_finalize_get(void *data, u64 *val)
--{
--	*val = kho_finalized();
--
--	return 0;
--}
--
--static int kho_out_finalize_set(void *data, u64 val)
--{
--	if (val)
--		return kho_finalize();
--	else
--		return -EINVAL;
--}
--
--DEFINE_DEBUGFS_ATTRIBUTE(kho_out_finalize_fops, kho_out_finalize_get,
--			 kho_out_finalize_set, "%llu\n");
--
- static int scratch_phys_show(struct seq_file *m, void *v)
- {
- 	for (int i = 0; i < kho_scratch_cnt; i++)
-@@ -198,11 +180,6 @@ __init int kho_out_debugfs_init(struct kho_debugfs *dbg)
- 	if (IS_ERR(f))
- 		goto err_rmdir;
- 
--	f = debugfs_create_file("finalize", 0600, dir, NULL,
--				&kho_out_finalize_fops);
--	if (IS_ERR(f))
--		goto err_rmdir;
--
- 	dbg->dir = dir;
- 	dbg->sub_fdt_dir = sub_fdt_dir;
- 	return 0;
-diff --git a/kernel/liveupdate/kexec_handover_internal.h b/kernel/liveupdate/kexec_handover_internal.h
-index 0202c85ad14f..9a832a35254c 100644
---- a/kernel/liveupdate/kexec_handover_internal.h
-+++ b/kernel/liveupdate/kexec_handover_internal.h
-@@ -22,9 +22,6 @@ struct kho_debugfs {};
- extern struct kho_scratch *kho_scratch;
- extern unsigned int kho_scratch_cnt;
- 
--bool kho_finalized(void);
--int kho_finalize(void);
--
- #ifdef CONFIG_KEXEC_HANDOVER_DEBUGFS
- int kho_debugfs_init(void);
- void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt);
-diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
-index dda7bb57d421..84ac728d63ba 100644
---- a/kernel/liveupdate/luo_core.c
-+++ b/kernel/liveupdate/luo_core.c
-@@ -230,17 +230,7 @@ int liveupdate_reboot(void)
- 
- 	luo_flb_serialize();
- 
--	err = kho_finalize();
--	if (err) {
--		pr_err("kho_finalize failed %d\n", err);
--		/*
--		 * kho_finalize() may return libfdt errors, to aboid passing to
--		 * userspace unknown errors, change this to EAGAIN.
--		 */
--		err = -EAGAIN;
--	}
--
--	return err;
-+	return 0;
- }
- 
- /**
-diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
-index 4c437de5c0b0..22f6409875c9 100644
---- a/kernel/liveupdate/luo_flb.c
-+++ b/kernel/liveupdate/luo_flb.c
-@@ -630,7 +630,7 @@ int __init luo_flb_setup_incoming(void *fdt_in)
-  * data handle, and the final reference count. This allows the new kernel to
-  * find the appropriate handler and reconstruct the FLB's state.
-  *
-- * Context: Called from liveupdate_reboot() just before kho_finalize().
-+ * Context: Called from liveupdate_reboot().
-  */
- void luo_flb_serialize(void)
- {
-diff --git a/tools/testing/selftests/kho/init.c b/tools/testing/selftests/kho/init.c
-index 6d9e91d55d68..88a41b6eba95 100644
---- a/tools/testing/selftests/kho/init.c
-+++ b/tools/testing/selftests/kho/init.c
-@@ -11,7 +11,6 @@
- /* from arch/x86/include/asm/setup.h */
- #define COMMAND_LINE_SIZE	2048
- 
--#define KHO_FINALIZE "/debugfs/kho/out/finalize"
- #define KERNEL_IMAGE "/kernel"
- 
- static int mount_filesystems(void)
-@@ -22,22 +21,6 @@ static int mount_filesystems(void)
- 	return mount("proc", "/proc", "proc", 0, NULL);
- }
- 
--static int kho_enable(void)
--{
--	const char enable[] = "1";
--	int fd;
--
--	fd = open(KHO_FINALIZE, O_RDWR);
--	if (fd < 0)
--		return -1;
--
--	if (write(fd, enable, sizeof(enable)) != sizeof(enable))
--		return 1;
--
--	close(fd);
--	return 0;
--}
--
- static long kexec_file_load(int kernel_fd, int initrd_fd,
- 			    unsigned long cmdline_len, const char *cmdline,
- 			    unsigned long flags)
-@@ -78,9 +61,6 @@ int main(int argc, char *argv[])
- 	if (mount_filesystems())
- 		goto err_reboot;
- 
--	if (kho_enable())
--		goto err_reboot;
--
- 	if (kexec_load())
- 		goto err_reboot;
- 
+A few nits below.
+
+> +static bool compound_has_hwpoisoned(struct page *page, unsigned int order)
+> +{
+> +	if (order == 0 || !PageCompound(page))
+> +		return false;
+
+nit: since order-0 compound page is not a thing,
+!PageCompound(page) check should cover order == 0 case.
+
+> +	return folio_test_has_hwpoisoned(page_folio(page));
+> +}
+> +
+> +/*
+> + * Do free_has_hwpoisoned() when needed after free_pages_prepare().
+> + * Returns
+> + * - true: free_pages_prepare() is good and caller can proceed freeing.
+> + * - false: caller should not free pages for one of the two reasons:
+> + *   1. free_pages_prepare() failed so it is not safe to proceed freeing.
+> + *   2. this is a compound page having some HWPoison pages, and healthy
+> + *      pages are already safely freed.
+> + */
+> +static bool free_pages_prepare_has_hwpoisoned(struct page *page,
+> +					      unsigned int order,
+> +					      fpi_t fpi_flags)
+
+nit: Hope we'll come up with a better name than
+free_pages_prepare_has_poisoned(), but I don't have any better
+suggestion... :)
+
+And I hope somebody familiar with compaction (as compaction_free() calls
+free_pages_prepare() and ignores its return value) could confirm that
+it is safe to do a compound_has_hwpoisoned() check and, when it returns
+true, call free_has_hwpoisoned() in free_pages_prepare(),
+so that we won't need a separate function to do this.
+
 -- 
-2.52.0.457.g6b5491de43-goog
-
+Cheers,
+Harry / Hyeonggon
 
