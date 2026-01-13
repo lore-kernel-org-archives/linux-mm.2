@@ -4,105 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 836FDD30CC2
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 21:50:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8486D30CDB
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 21:58:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E14566B0005; Tue, 13 Jan 2026 16:50:44 -0500 (EST)
+	id 3A8416B0088; Tue, 13 Jan 2026 16:58:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC1316B0088; Tue, 13 Jan 2026 16:50:44 -0500 (EST)
+	id 3569F6B0089; Tue, 13 Jan 2026 16:58:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA33C6B0089; Tue, 13 Jan 2026 16:50:44 -0500 (EST)
+	id 24C076B008A; Tue, 13 Jan 2026 16:58:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B4AED6B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 16:50:44 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4E14F1A02CA
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:50:44 +0000 (UTC)
-X-FDA: 84328285608.19.FC9A52D
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5FFD3C0006
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:50:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=IbYU7DmI;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf22.hostedemail.com: domain of deborah.brouwer@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=deborah.brouwer@collabora.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768341042; a=rsa-sha256;
-	cv=pass;
-	b=6SNph/703BwP+YKfdrLcNqjm7oJL4MIx39YuHC6u6N0GxTwy9JxDVQQ8KdMjXr44ySmk7W
-	9PlA7m2BgHhM056jtu2NcCMZC6CeDWRkSqvy+fl0fWdvWejiSJvg69GgBy+gw8fLmtipSG
-	Pst0GykfA5x6Qi1N3MUfMHTdERPZkvQ=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=IbYU7DmI;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf22.hostedemail.com: domain of deborah.brouwer@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=deborah.brouwer@collabora.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768341042;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1403F6B0088
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 16:58:14 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B079A1602C8
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:58:13 +0000 (UTC)
+X-FDA: 84328304466.14.36719F3
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E24EF180002
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:58:11 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VHlB25wL;
+	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768341492; a=rsa-sha256;
+	cv=none;
+	b=tbdvfiH1S56C+Et/I4+KQt5GUCXCU/8WNzxz39I5BLd5ZIBT2KO3gAfvsc73cqNG+Bd2xF
+	OveE6LJNe7t8n+6Df6PC3ak64RNPocPHpDRjlkm1GNMTZ7IAR4K2uWsohXEXRd9/Cw6cVU
+	sRshNmyhzikw+B/n5vyW5cmoCfQYSfs=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VHlB25wL;
+	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768341492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DPLmlARrAcdXGkqRjXYNOZR541qNKastiV4OAPsNBiI=;
-	b=wCjlPOl0t7xsgrJvJg+R5GkJuBe1fKiewD5FBSrVgeh4rXT7+PcYh6HQcBoYWxwHckyf7j
-	HZ68+93DTC/08ecKWataWfGvB5GBYjlz+yO2igoHve4jfd+y/FE/BHykakkqVgRJVz1jXz
-	Silps3BRwLjFPiN8S1LDTi5ysHRXqe4=
-ARC-Seal: i=1; a=rsa-sha256; t=1768341035; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=hVhzh7AUHTdxJu6JvU4kLmFazeYoDzKotMzv/D0+4u5XOphxRjl7dZTbxQS4N5Mkz3d/eIx3IvpTS931MdBemgUkwZATmz3d1Ag1d/KfBBEFCXSBOzAQteKzUS97haUtC+K3Yy4IKG078ZDvzWmTWcDVJfiJQXhFJCr6MYk2V+8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1768341035; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=DPLmlARrAcdXGkqRjXYNOZR541qNKastiV4OAPsNBiI=; 
-	b=EZj3yMH0q9j4X6ixHTZ3mt+M3ALvq0gNqc/kJlCT0VrQ1bkUJakxrFuUkyq0bfXRm0HedxzFGlGbfWhmUmmrQEfzXdtzULlZGQyzhNAN5eTtKTJlsIQMu1PLT0lJk258gPp7GviAR61IDWtfUXBAJFf5FuTibTMiQ6H/IjvQHzs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768341035;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=DPLmlARrAcdXGkqRjXYNOZR541qNKastiV4OAPsNBiI=;
-	b=IbYU7DmIuRb+kX+hMyLBkx3DFwew+5h+AoOpYREVU3b0zeTRpjIkL+MS1wX0zerY
-	v+XtqpaEwvaanAklDZfQVtzj6ZSmfxod8CenGAi8MzmDUF9SUmZGBREfF+kkkP2/kby
-	bX2qewW7GYMa40KjmoW4SN+/T0+lwxaZgfBkpE7E=
-Received: by mx.zohomail.com with SMTPS id 1768341034234779.9306294454532;
-	Tue, 13 Jan 2026 13:50:34 -0800 (PST)
-Date: Tue, 13 Jan 2026 13:50:33 -0800
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	iommu@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v5] io: add io_pgtable abstraction
-Message-ID: <aWa-KVC8CVvn8GGs@um790>
-References: <20260113-io-pgtable-v5-1-7ed771bc3d8d@google.com>
+	bh=VjQpoKoi4pzTkbGscUXDmca2AVl+LBzlv/bdYvtEAK0=;
+	b=ot7pBkseSWSyXNp2l1ifbA+KX1PLUFFbPrxMxKzAbqJIhg02b/71vATjqIYzEqfUJ4FIgP
+	bEKgOCUK8syppdVw0IVYnMk8bbCZlmu4BPnfLtK7rkwDkWI+0/GlkqDFklR8OLqu1Dse1c
+	aXOUirnN31XB6AgoP/mXLPZSk67QFJQ=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47bdbc90dcaso55340585e9.1
+        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 13:58:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768341490; x=1768946290; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VjQpoKoi4pzTkbGscUXDmca2AVl+LBzlv/bdYvtEAK0=;
+        b=VHlB25wLgBCuTwtYu0/6JqmnqYF8NWaUFDsmvG01D4kfbhavGky0bhIDduKgzlVfOI
+         Y1tuPbB/y4aUXFlDJCNPbqThun8PBPqXJp+KGreAsYsP7BwUfebBkmLswnpZvdNHAuCZ
+         rp2EO92x3dlojUBgramUUBgQUGAVc2ptvKV70YkcmltEVAdZ86cj+t9jEIT8GRoVCO2H
+         dR73+7zmrf3ti1kRuvD4zgJLVX29XnTkTZ+mhgTgR5t6WSib5oAS821NKs0MoHjEuow8
+         +wlnYbtQUJBQvV0syIFCfxDy2jOmcvofcsU8UO3rNwaNJlN+nuFA40eB/aYZ/69CRHGo
+         S6kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768341490; x=1768946290;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VjQpoKoi4pzTkbGscUXDmca2AVl+LBzlv/bdYvtEAK0=;
+        b=pIy+y5M/xPlQypNeWkfL8V9PxjfaJaoQIQZpPP1AcRFXkilAxmecLtR/sh3TCpBCmt
+         MNO0JXkgDBCMjdAzky2vCWjKxwYdug4sPDdfEvHwnRQY9Zv54ZbWOBQF7OOgmnjajyH7
+         YxmI4Gcd+45GPXfK+rinxrINAWp1nlDdUx+u5cFN5OIt8ywnjmH0WQ+S/8YPQLafh8gX
+         0Ly0QAHyJPe2BOhKEeD7e/JUC9DIVbO3fPDAPCHOFCr4qcaDikaT/T4gO2xTuUzjs4xm
+         NJ4qI/Pig1PV8mEDfNpyr7rVhKkyT27JrMpdypZ6zShi/ZXCaqbp/zueCbBsUui9DHxe
+         N4kQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUcqJAjOTtNI6Kgku8xeZacj7OMpOdzYfZob4p0JmXRn1iBwtXiSlG389tz77fd5XLJkfpyx6UsLQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz3REM2WNtLNri8TQLQx4itfsPyrq095RzqEXRtTMKaA8DsS8xb
+	kR1M816h/KGCcO+GBeXeteGm1CNqRBadqB495G6LBvIrxHwXwHa5tuC6
+X-Gm-Gg: AY/fxX72oRzb27PmDKTDtpzl+tOglMLyT5llDjHNzrWj0wtFc9QNWBcsx1B1UvKJ6SU
+	M9ynmDEqFQ+sS6zzdz19cnrmE7cDr+sEs+biMNd0kK6SolaZq3i7h+8f+MvS2vZPsBM9E2imTAz
+	3nWhuAEjwVVxP/LI3mJ0ZemVej+CIG9FxcEAvdi0ifzneJlBlyycpqJSYxPspmjkRbtf8+kqI/p
+	OAFgbcR3QSvcrSIW0Wbr9JaP4ZkZAkYkLyjA15S7raAc0vXuujTcmwLLcfQp+YSS5H1ld8nO/I7
+	80c97Qm82uTNbm9pBxY87+Vo2p0mDoj1q0bngpPeSiqmT7f9r3g8GcWXp1tk430OyjceXeX7HHW
+	dHVEclOdcf7sRDCjoLNIo07A0aT0dWcWc7zlifc47vtFS5hBHE2KBWRA/Cze29fa4QJwx4f3krs
+	IT2noc6rl99DJJWbwivX90eTheTBfcWodP17re6/BuqtcjdmsfpB3r
+X-Received: by 2002:a05:600c:3487:b0:477:9f34:17b8 with SMTP id 5b1f17b1804b1-47ee47bbe36mr467055e9.1.1768341489984;
+        Tue, 13 Jan 2026 13:58:09 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47ee0bb3383sm8819575e9.2.2026.01.13.13.58.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jan 2026 13:58:09 -0800 (PST)
+Date: Tue, 13 Jan 2026 21:58:08 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: kernel test robot <lkp@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org, Andrew
+ Morton <akpm@linux-foundation.org>, Linux Memory Management List
+ <linux-mm@kvack.org>, Nicolas Pitre <npitre@baylibre.com>,
+ linux-mips@vger.kernel.org, tsbogend@alpha.franken.de
+Subject: Re: mips64-linux-ld: div64.c:undefined reference to `__multi3'
+Message-ID: <20260113215808.135dc8b6@pumpkin>
+In-Reply-To: <20260113200455.3dffe121@pumpkin>
+References: <202601140146.hMLODc6v-lkp@intel.com>
+	<20260113200455.3dffe121@pumpkin>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260113-io-pgtable-v5-1-7ed771bc3d8d@google.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E24EF180002
+X-Stat-Signature: bphjjfipkc585se1a3gzkiy4dzqam63m
 X-Rspam-User: 
-X-Stat-Signature: gf11yisnh7nntqo6mjknrpramftz9yro
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5FFD3C0006
-X-HE-Tag: 1768341042-127009
-X-HE-Meta: U2FsdGVkX18oWZa7nlxnyMcjbFPFzxrShgUoySExRQmqpQIMG46cGYv5NxjC5rfFs4hc7UQVnQooxIee+B+qJtPfyR6bi39br9LVcBo+EboJ+KawNv0+N5UWhCKbCf2cnqSte7szWOzwy9CpkDZ5aQhWMe8MeABRrykh6l+kfuFmjCpbeCjK+R+4EiYCEybozbIIo4Iltia02JpJzG4re8Czr0s1vp8ATiPWICM9CjnjwZ8G+kznB2H46qd5gk53SwO9JDydMfVFgkP0h594Y2GMwGuBoxtGl+VaFgLfJmlU4jmeZ3x4JJYSSeGrDEZznznMyr/J1lS5WWcxVDhlriCX+E5iih9kX1lCwcFAx3Cg4ZDqkKNI4jyVw2r+55Y08Fh1fu4MBnfARLaRKnyXFfazASRKseBrRcLtdhGLI4ouYhVqmgZhFIKtF/9QkdPaUJR99Kz69AMGZh+GD5vi1Slo197y35BjIsimSqVVRoHSRjs6+jrsjkP0B7szJGIQWpE5SmKpgbdaPEkEYyIEg2JxoNftRSZSZYystTDcSiRIzm5v9Z+9F32Yu+C1/IlN+fYFBdhTWyvblQCc/rsXXQzrDEyGOiyNfEWnrkIVAoRfNqzUQKsFK9pgjQrN7V1O6wr8A/j7gBy5geBpI0POfH88Zb3satPopNOt32fBeO28TpZ7dI7C0YkLY/97112LXS1MC1QN9mDUhRK+eIHNtA4KK59RPJgwi64OuagakP4a7a4duMZ59Q/JrSd7fr6gAc8YsBDnba22UC4AJVTC0V/TXds6URHxVfbUF61HA4b2nKwNB2UDDe0artreQG5JG7P7dIhVNQWrGJ9TIGgkBxcw5+E10+Wbi3R0UD6CclFdKenxgsgtN2OCVGCcg5YObZKL4LbskIjX8Bb5LMQU6ixJJDMR2RKJJm2lvX3WanORMtpwPgXxStMbsa6wa2/ZbSa4wvxUfSfL9VtLRln
- V8UHZGeq
- ngmgqGuGdUJwfPjW8lH8KDrA381NnHNQLPks6awI70MzXU4KfexRacIRc1mdGIBvTHxcXYvQ9bdNaHtGrvkAPyMhCyTO+LnBk3XwwFGIbu3VmKPGUC68dusrPTL8R/vgNFgRFeTpVXNvs9ql0lTLv505Z4cdE664fOpiTCUSSybv45g72zcgeb8TNWW66xX43aJ0W1Ng/Y+So5oXoV/zK73UDAycsrnlX9b2zGZygftFcUykJwGImwx5yJcicCmN2SLUWM3fbyUocMa/adHn3PTDvSwADKgBPTFZ3ZIPxizHs0/t2pzOkxiy76LAutRHJvB99uPiq4Xqu0MHT3THRpue85VaI0/405P+I96G1olk2N8BoMoAdAyv/tcPwqfn6CjT+9BMhMe+IbEmOpINONc5AN1ZYa0VMBTimIMLH78JLka9In/HpuF9EJSzz0k2lzPvnSdkJVoQN+kYP4GBFyiyDpknJDgBsS4lXH/0J9vN3Y+qY/Ey6vHe8EvOWsFKH18assa1aFGz9T1w4G4GzEYYZ6oHP6qYwRTdFJrf/DrE/VoDn/Cv0mNrPCdK4d0FSNH/6fA0SSvc5ozrMWD8Uj48dVLdUw4rcgn0F
+X-HE-Tag: 1768341491-950669
+X-HE-Meta: U2FsdGVkX1++ksm44aay7oJAVF1Y2CtW53xDbN7166QzVTmK1DmrnGSKEiLFvqRUmELhQ/f8v9s6GoO4OPjpy5OGK4gPKfmai44XVglkpanhAUW7q1UkEOeyVsksbSJAvNKj4fXm9k6n+RU+1ATw46qKO8lLacL6jEAYQCc/woVitPZVShNIoLiQOQqKYcj9x0AqlQrtzd4zfXaxI/BKkVb4SIJD/90R9WUkRrA9O9NoGXHkH00+Jg7163mqjAeioqO/BM/yTAOYVxqNK7kU3IXKoZgdnRUpORcX+svSPoNNv85qdP94fdFgcaiaq+fMU5ZevppXcxc8tTWtWGrOpjAUhiGSBWeLJ9H532gr7bVEWobz7ejTBIkHP/u8pmA6bI1TPwCKIngz4zXMApG+BmJAbwbccLxrDWZkSmvDDGkpPN1HOdR2N3GWdw4p8ke2/oCskAJa3Nf1Wf6IeaHf9wrfbOyUvez0C0BOfb3NI4x++CXabx5natHHa4yC3JPhqHwCJhK3i2/ni5QLRZay7gQS+CQD3M5LVCq5bVHvoidD429+eroW0Xun4uMV8Z5gi0eS887NBh3Eevs+wiYPsMhnsxpYIWLV2YevSgcmBHXs1l/+df1FPuuB97bdV+1mTvv62PE82Bv2ltE72RJt3viGYMAirs0QBQuk7KPo1RIKm+oG8VhjRtnPj/sJcZ57c/mQIPxj+zgbPE6UEgxUgjtnOol2gF9K9Ftimmr+kJofDtrPDZvNHPqjXOV36LQZuwc3G8QZHx4ma+TXUJx+ytU5wSbZLst+YXv60WFrGTrw8RrqpaqD5dGpvnunceOjnTf1yH9pxN7q7qvll1W3pli9/rqJ8kNpZyTeOaLXB5LTEgzNT+mcobN7gwy+DEHPGUVR+iJ2/ELAfZYpWeKEdv/VrqqLQs3rYyA0WqKfQlvl+W20QCma1Eoz+MhU0Cw/cK2NHgd1xqujfHJw4Pf
+ U6p3rpAd
+ vnE6NGBiydxN6XrUj6ztCU40GfeEsmoF73hSxSySiF9KuGXC++gCdKlvP9ehX7yvDoWwtPdGoC/2AkB04CC2bsSAe7NwrtAB6Hwvz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,33 +123,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 13, 2026 at 08:49:27AM +0000, Alice Ryhl wrote:
-> From: Asahi Lina <lina+kernel@asahilina.net>
-> 
-> This will be used by the Tyr driver to create and modify the page table
-> of each address space on the GPU. Each time a mapping gets created or
-> removed by userspace, Tyr will call into GPUVM, which will figure out
-> which calls to map_pages and unmap_pages are required to map the data in
-> question in the page table so that the GPU may access those pages when
-> using that address space.
-> 
-> The Rust type wraps the struct using a raw pointer rather than the usual
-> Opaque+ARef approach because Opaque+ARef requires the target type to be
-> refcounted.
-> 
-> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-> Acked-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->
+On Tue, 13 Jan 2026 20:04:55 +0000
+David Laight <david.laight.linux@gmail.com> wrote:
 
-As part of the wip for booting Tyr firmware, I have been using this
-io_pgtable abstraction including v5.
+Resend fixing Thomas's email
 
-Built and tested on arm64 with rustc 1.91.0 and bindgen 0.72.1.
-
-Tested-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> On Wed, 14 Jan 2026 01:59:24 +0800
+> kernel test robot <lkp@intel.com> wrote:
+> 
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> > head:   b71e635feefc852405b14620a7fc58c4c80c0f73
+> > commit: d10bb374c41e4c4dced04ae7d2fe2d782a5858a0 lib: mul_u64_u64_div_u64(): optimise the divide code
+> > date:   8 weeks ago
+> > config: mips-randconfig-r113-20260113 (https://download.01.org/0day-ci/archive/20260114/202601140146.hMLODc6v-lkp@intel.com/config)
+> > compiler: mips64-linux-gcc (GCC) 8.5.0
+> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260114/202601140146.hMLODc6v-lkp@intel.com/reproduce)
+> > 
+> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202601140146.hMLODc6v-lkp@intel.com/
+> > 
+> > All errors (new ones prefixed by >>):
+> > 
+> >    mips64-linux-ld: lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
+> >    div64.c:(.text+0x84): undefined reference to `__multi3'  
+> > >> mips64-linux-ld: div64.c:(.text+0x11c): undefined reference to `__multi3'    
+> >   
+> 
+> This looks like a bug in the mips 'port'.
+> arch/mips/lib/multi3.c has the comment:
+> 
+> /*
+>  * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
+>  * that specific case only we implement that intrinsic here.
+>  *
+>  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
+>  */
+> #if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
+> 
+> So this code is excluded for gcc 8.5 but the compiler is generating the call.
+> 
+> Looking at the git log for that file there is a comment that includes:
+> 	"we wouldn't expect any calls to __multi3 to be generated from
+> 	 kernel code".
+> Not true....
+> Not sure why the link didn't fail before though, something subtle must
+> have changed.
+> 
+> I think the fix is just to remove the gcc version check.
+> The code itself just adds the results of four multiply instructions together.
+> 
+> 	David
 
 
