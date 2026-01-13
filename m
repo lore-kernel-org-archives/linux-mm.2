@@ -4,132 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEC83D2502E
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 15:08:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CA89D2F338
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 15:27:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FD936B0005; Tue, 13 Jan 2026 10:08:33 -0500 (EST)
+	id B4C796B0005; Tue, 13 Jan 2026 10:27:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B45A6B0089; Tue, 13 Jan 2026 10:08:33 -0500 (EST)
+	id AFA3C6B0089; Tue, 13 Jan 2026 10:27:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C0816B008A; Tue, 13 Jan 2026 10:08:33 -0500 (EST)
+	id 9F8D26B008A; Tue, 13 Jan 2026 10:27:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D2E26B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 10:08:33 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BF20B1A72E
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:08:32 +0000 (UTC)
-X-FDA: 84327272064.29.5184061
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BE0FA1C0017
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:08:30 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=OB5JUsuE;
-	spf=pass (imf18.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.177 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9072D6B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 10:27:33 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ECBA3B6C1E
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:27:32 +0000 (UTC)
+X-FDA: 84327319944.13.F085BD2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5373480006
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:27:31 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jVbA/nvA";
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768318051; a=rsa-sha256;
+	cv=none;
+	b=JyqQ0uBnyQY2/yJ3xY5oVrL5ildDFk+91xIvmmZ8seY/wLd8OU+DRsXstR29BL9wcBqAXP
+	Gp1kLIq4NJV6SizVJr3ycopfFBc3DLnLuHQVS5rRR/xK7HOvBReATsTPBCEp5jQdgzOb+Z
+	XUP/EaITiN8mhbbNtscB9EMxHRqgS9M=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jVbA/nvA";
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768316910;
+	s=arc-20220608; t=1768318051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zby18NWIZd9LikNKagpy2NdD5nLGxACKPIZ2QhLKgIE=;
-	b=MTS8me829NUbF78WKyC35wbj+l55efmTpn60vrM+sa6x8FvGUTpBIBOXZY3IMZIN3+kOv1
-	x1qFTWsXYLPQ8vBG6b7Pyf6KulEhsCTs6b2VOu5Bb808CdvTB+gn5pxnO3/4V/HzP+yxCT
-	9IidYufldnFLKR3XcU4Dvu46O1FQj8Y=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=OB5JUsuE;
-	spf=pass (imf18.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.177 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768316910; a=rsa-sha256;
-	cv=none;
-	b=h+d1lubNnzqwZ+vma17Ry9vTkex9T/5cJMinbP9hDJSSOQClZQEvInRPhwsBalcdDqCLDc
-	jYRqgofVsodzOm9nN3xSptiKCOQekOHoWxIntb+eXZ/i/HDktTctW5j5JW5xK2Um4+6T2t
-	+QLLnJryWSEgEacOE50ZnQceEcXH3yE=
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8b2d32b9777so1152471685a.2
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:08:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1768316910; x=1768921710; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zby18NWIZd9LikNKagpy2NdD5nLGxACKPIZ2QhLKgIE=;
-        b=OB5JUsuEqaJH0vlpRfW9U/3jnCZYxdBA9YhJKaYIR6dbZ6kFp49lyMmMwJgkp8OaU4
-         UU69VohDAfmc5Agg1F/rHWVyN403R+2iTRx2g8R5mE4jWeQaezUzKiVF+Yd4lQMZBTW+
-         uCCTjB5whUx9M57/eWz0BdEfiKxVZb0HWqGSWUPfCQVKwTXjK9RpSeLlVDpLAtmXrH/J
-         FTDNbeoBYArvX6oC2Fbi7FSfqTuHAZ7bl77KcovUb1/bA8Vi7EeeAIGqkx+V1NIMTwzw
-         LloGd368o29x5VDgNi2anvHJuJWpbLHL79AlbSt60uQCvVJd4jLyEnpVuU/LTxabHHOg
-         ZdWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768316910; x=1768921710;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Zby18NWIZd9LikNKagpy2NdD5nLGxACKPIZ2QhLKgIE=;
-        b=Dg4n+SW48PFuPKM3kuKt+24LQEDexjOmt5RyIWmAy7StlcghZL0TPfFk0xK24euZgK
-         qFrE1CoDjtEg5HkAOcZFA11g1qCp2TplvViAiTWwZq8vIjh+hJxqxL9kr1/arTynFTfK
-         vWxDYRQyCyj3+95mr/shUJwNvGXWHzLWuAZNi8VbvjzuVzYHsb8l9Qb1QXkhq6wPZ1qZ
-         K3WLuE6IEwUAjjRHv3Uj9UyNvtUB7edkanCdC4k7GHU2+1sYAYss/vltXHVNU42aB+wV
-         VRnmeHxSJBQVrkJTFfv3ZcSuJv9f5Nv8UrOWG8gBvFOsIf6EB5DEuKU2ZGdPuZvPKjC2
-         sLow==
-X-Forwarded-Encrypted: i=1; AJvYcCXYD+/XpS0VZYLAcsr2HdxG2v6wNxsoTAauHi2jEM2eqUX572Sf2M22S6hdjhoUzWmbrcauPmGEbQ==@kvack.org
-X-Gm-Message-State: AOJu0YyA9U/bcoAhU6tabaS+IrFH2ljNBJ+5mZCuXL9g7IMpQ5+VWndv
-	J1nv2vGokxDJPRiS5lAiAx5k+O5Yyms1Xj9/EzCD19C48kcnt550V0z9HpJK708+ciY=
-X-Gm-Gg: AY/fxX5tiHKHOTrQ8aHUMNAg/LykE57cVMWYWUtkhyYKvDJji+6rPENBNC5KFWnhzQo
-	9OAUjhIT9SpkjHUzh3OcCdegFpjQUsHGrdrc3WpUDqLoKpM+qijmL0jDFMJXcnr9Esg8m55HSlC
-	KvXTlS5ch//wRtGDpZX6nkkHnl8EoZ6gzU+YXfIovse7+KjGoQisjUasRVsOJqbzAaUhfJdsM+F
-	TrQPI9Da6XXcMCV+19jwNemhprmrxivUf7xFyGqGuSty33awT+ydg5PKzTk0lU085jiLZiKLrKa
-	bmrymDXIe+uTDaR6TXeU5USkIz6Q2fWk7qfxbWyR0H5qofNif8kLk0HuFaY5m95VDnqJqzb+tcF
-	lGDATbcYptYWUe6TQMcJDqGpmFO6DgCQxXmPxx6SULuHaJ1RTzj6HziXiU6YKQHZD5lpD8T35VI
-	2mZoxkxg2sY4hhS0ovbqguYjjXRAr5YMQt2jWZhstySR1IubMofdG7VXhhQaHXZHHf45U=
-X-Google-Smtp-Source: AGHT+IEXQELOkUASiIG47wGrsPIeAZgzyEl1xKDO2iVvMsRIfq+sXO7FgFplrL2YHUPM6Jt0YgNMYQ==
-X-Received: by 2002:a05:620a:44cf:b0:8b2:74e5:b3e with SMTP id af79cd13be357-8c3893a9e9fmr3015531385a.36.1768316909508;
-        Tue, 13 Jan 2026 07:08:29 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f51b732sm1696908185a.25.2026.01.13.07.08.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 07:08:29 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vfg0S-00000003udw-1o8a;
-	Tue, 13 Jan 2026 11:08:28 -0400
-Date: Tue, 13 Jan 2026 11:08:28 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Mostafa Saleh <smostafa@google.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, linux-mm@kvack.org,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
-	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
-	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, xiaqinxin@huawei.com, baolu.lu@linux.intel.com,
-	rdunlap@infradead.org, Samiullah Khawaja <skhawaja@google.com>
-Subject: Re: [PATCH v6 3/4] iommu: debug-pagealloc: Track IOMMU pages
-Message-ID: <20260113150828.GP745888@ziepe.ca>
-References: <20260109195111.GQ545276@ziepe.ca>
- <CAFgf54r_au6isA10Nrve=MHL455X=tKhNsSwH1ej-TX08J3xLA@mail.gmail.com>
- <20260112133256.GB745888@ziepe.ca>
- <CAFgf54psxPrsvujStPNtrzxiKOsJF+aVrN7BcNxxmAF4wDmRXA@mail.gmail.com>
- <20260112135208.GD745888@ziepe.ca>
- <CAFgf54q+9Y5TtGJDB=8q_BW-0F=TM7zBbCcMzvtvr_N2WMnd-w@mail.gmail.com>
- <746f5adb-1d91-4ca2-8ae0-a2d171203b66@kernel.org>
- <CAFgf54pbkfdFr6biE8BiNKBnTBFWxXGmvxsZ0E+C1C44c9AW_g@mail.gmail.com>
- <482f2f36-e906-492a-a80c-987bf7359d83@kernel.org>
- <CAFgf54ovfnTHmMuZGk73SEEKsP3k-_exR1wqUE4W9tLYKv_iDw@mail.gmail.com>
+	bh=b7xvhn2TPlz5VWFMiFxwpIUDtbjJdgo0JV7hKaMWraU=;
+	b=Wz/v3RfHwuWDQCtIHrL1d4PapiaXViTUf56I/d7jc/BXFor4qfKaXWe+dtRvoeerESf+Ez
+	Wjh3VcYVuwNhPqEcE/ewcsq3d7SYjS/MuI8TEXlnaNSG70NgRSMLL8wdlr3Fyuc0T4V+pn
+	jTXIgypkr5+uxvZNBunF729SxyWK9WQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id CF84F6001D;
+	Tue, 13 Jan 2026 15:27:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689D4C19421;
+	Tue, 13 Jan 2026 15:27:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768318050;
+	bh=7NAyhkfQbcxTPtt6Wuep4buJLBzXp37MO61JEyiUHsU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jVbA/nvADP0cj5hfiuCwC6TlLON6/t/yO31DIlKvYC1iFdH9LbvsxLk0sjAUDvqDG
+	 voTJWWNodHb86PVFPoavd1lCpIB0J7IMmdcHEsfShFogBolKJ1i8AbX8MAvxsJsgmI
+	 3n6qC6Uhn5NllSe4LEWSJwdnlIsUiFGpyiTFOUsGnSDF/GpJUYMt5ZfyCW5p6ACa4s
+	 jBz7BYffQ4d7O4qC5bKvKEV8fey4j/onYserdl1kxQNlzAWwrfRH5h0HW6Ru6CEWhd
+	 hDLhNkwwuqd0e2rRonjmvZ4ACNbFK9rM+2nVRxadDRz5s55s3dAyMIrsaYYthhtK3L
+	 nePNsyWQz9rww==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 01/11] mm/damon/core: introduce [in]active memory ratio damos quota goal metric
+Date: Tue, 13 Jan 2026 07:27:06 -0800
+Message-ID: <20260113152717.70459-2-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260113152717.70459-1-sj@kernel.org>
+References: <20260113152717.70459-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFgf54ovfnTHmMuZGk73SEEKsP3k-_exR1wqUE4W9tLYKv_iDw@mail.gmail.com>
-X-Stat-Signature: 95fnwkpokwa3awemynqg8k69oyx81tbo
-X-Rspamd-Queue-Id: BE0FA1C0017
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: urzfqt94gukfyxgn45xf7sy89ea5fp7d
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5373480006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768316910-567744
-X-HE-Meta: U2FsdGVkX19q1F4lj3UgFV7OBJhSatx53NtR6+4Vx4q2vpcda382OCgIVrLJSBw6lAPDw+WOBooNwxLXpofKyY9creT3uxfOAm+548M2xB7fdBXer1tJU4dKjpx03tMkMH9BbHzia20gz0uvui8cdU48QBLddg2cBqiQWndiBjE3LDGU+4v8BTNuV0h1qrdkSbWqTLI7WdU6LEHWTub8by33mcMwCeh7U1gI2oWnkK/ZEUOzMtrxatlI52JIQsdBzAQLED3G3NoKG6jEeTs+NU4BRvPn3n4i4QUalv/chB7bTpP74z3TQ7y+YpDOl6TGXMHALGgsx5MDQcMFfRsKy27HVD/+HBHa7B+qDwHGoxEVK1j1Jng9HA+uz6QJGkQTKmTWvlwCWfzyAWOEnmAETnOO6OTq+dAKDR/+x9WQ0Ug2SNbZzW79dOqoncQ5D0Y1jqsJLNZFv03a8oGnOwLurI7sOuLD/NPXIloTYzG2B2GQvfQ3BdiIts4DNH5K3d3POwUASmZ737o5Fx9eb2GTZ0PcyTXcUicsOOtKV6Dv++nR7YfGYvIpHuykhriKNWMSZS6cFLbBCsb2SNlSdd3RNFn5SG8i+eXgEiirzbh9thYCHZUxJ6BFSgvq1K6ST6J5Qi+ukJeeF07XKBCD0A2BWTrYr2QCRkcMwW9B59XO1VxQ4IEFirJVnUFdoTD4jUOmxOWqqOp9eHvZ69uJvC1GOn8p0bSufB3+XB2b0fJH1MxgTVogrydinjywu7YB9/7SUnaWTWd53gWqcnOU2p2K/IC4uTChS/AFR2JHVv0VEAJZSQYpb0UN4OwKyK++80MjHwirHqLIYKb4qHSgcDWSkRk57QAJL3w/n7NeB6eHZ9v8tBpbgFfC22PxdJwXuuQkKC26FKcYGw5at1jdmqn/NA8WCGJ+mK4YssL5zOGyEkwIESZgXykq0remjS68IEnpo8eZT72WFq56fW3qU2A
- 6mxf80IJ
- sWd9r9W2lVubJbFvzluiV1UGRaUoh0KBc136ufCEJybwJbPpK+C4atNXqT6ElnFEl5+YTBMIKKgwdd3apVxbkgWFuPzir+QbOusHSwRnnj3ONtxplghXYMfISq4i1iQpAM667zMFrBizCGfL9X7Je8X+vD+AwQGOXSPayW6ig8VboYnIQ8NaZV4E1YCZXJvbTdR47akI93qmVWY0tqOa0Zzwnmls5DHjP/djg8+egXJ17Qf5hsB/1gIlVSIvvxXWTgHuMPEYqgPKF8Gj604+G0qbA1MFV0eo7b1rS
+X-HE-Tag: 1768318051-726497
+X-HE-Meta: U2FsdGVkX18UpoXx/TKQST4kreHUmz4xcwQrY10qQg3Sq+c4avUQHUL25omUbTYpaPC68ocorrDmFCwCqKYA1lUR0Y2ox6Z7iDT8osz4PeBQge0AdGgTvG6tBQlDR3+oelvQaFdtMAKbkWhXs2AvqmGwBj5eJ15MAfnNHgmmLu9AXLkuTGQfIOHjvMn0UCxBDWulbe3PiYhZ7s9YSNrscmdFjkGjW2rmK1OemV/OPN94AB4G0MgPsSa+SRmKbvPlhLwVoiC8Io6RUmRSo867HDI6HaoQBuVsct+XlPySzD4TPZpXhJQ6jZEkqyzXcvTLZB29lBJhz8f0OgSZXiHV1Ag6uEr10JuAUvU85BrbY0eYyuZi+t1/uvPfVvPFtYwAxctY7fUfURPf5hfphvUswTJ5sfJwU1Yfh1rDTW7NjOeeTfJWW2jWeswLCPMe1HdKMTENMMHtm0xQtQrZPn7JexZMMBz8WI9kESnwoeEK3QgnCfjKceNbgVJCeE+4i14nF0Z9pEzkIVK2rc5Mz5f68YytY6kXFWloc9L0vZj0+KcWiIwy0WcXeBx7ZL6dya6P/szsf0dq39vrc8oLxIMs3+hSvWyKwexsr0waci42WOx1gRbtMVUCvFPJIfKGShTrPopjHshbhNi9a/AmVA+qD6znRmTS6yIu9B+gnacQGSITAYLzoEog1rxtaXzppKqLADcbQZZfpQCG9slyrCEV083MLplGfQZVyDKuA+SCEujQ8IJ4rZUTXhURq80Cbns9Ms4Tr09WGFqHMWapy3tN7dAYKQhDfY0tU4d8/hUHVjDjSjH2M50y9ekjm8P+a1hSoLAyFsh+S+Z5UIilDFbQQAVVFqTTYv8WzrJJ2jyENqsUT9La2JVAF7eD6et9VH4n6jcoTSXeQXzgWcKXXc9M6zjJUtW7TDlVwI3CSOOWJIds9SGYheN4s5J3oVlk0v1bv/CGFNCm40ngi/PIGCK
+ dK0ZYNaO
+ lZBr0OEfOeuyci3pDWb74pTYdGBZIDqCofolzg5HybyJJnoozhimk6vi5eRdBLr6oo7WOdA4qHrgEzy/Un6qF6eT1a70kuykoHKEyfq5cCLiLqjoqhTvHObGKkSNboykTq+Q766XW5vFOPiRC1go8K/0ayQ+Kq2LXlLnyJjHLhE1lEBZRf5YfZo1YIXu1R3Qo04pvy3S0NTPwcEw8uw4ZLnDaxRPw8VgTSX/1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,15 +93,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 13, 2026 at 10:49:28AM +0000, Mostafa Saleh wrote:
-> Would you have a problem if we added a new function in page_ext
-> "page_ext_from_phys()" as Jason suggested?
+DAMOS_LRU_[DE]PRIO are DAMOS actions for making balance of active and
+inactive memory size.  There is no appropriate DAMOS quota auto-tuning
+target metric for the use case.  Add two new DAMOS quota goal metrics
+for the purpose, namely DAMOS_QUOTA_[IN]ACTIVE_MEM_BP.  Those will
+represent the ratio of [in]active memory to total (inactive + active)
+memory.  Hence, users will be able to ask DAMON to, for example, "find
+hot and cold memory, and move pages of those to active and inactive LRU
+lists, adjusting the hot/cold thresholds aiming 50:50 active:inactive
+memory ratio."
 
-Given the hidden complexity that David just pointed out I think this
-is essential to encapsulate it in a function.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ include/linux/damon.h |  4 ++++
+ mm/damon/core.c       | 22 ++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
-The function must be able to accept any phys_addr_t and safely returns
-NULL if page_ext cannot be used for some reason.
-
-Jason
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 650e7ecfa32b..26fb8e90dff6 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -155,6 +155,8 @@ enum damos_action {
+  * @DAMOS_QUOTA_NODE_MEM_FREE_BP:	MemFree ratio of a node.
+  * @DAMOS_QUOTA_NODE_MEMCG_USED_BP:	MemUsed ratio of a node for a cgroup.
+  * @DAMOS_QUOTA_NODE_MEMCG_FREE_BP:	MemFree ratio of a node for a cgroup.
++ * @DAMOS_QUOTA_ACTIVE_MEM_BP:		Active to total LRU memory ratio.
++ * @DAMOS_QUOTA_INACTIVE_MEM_BP:	Inactive to total LRU memory ratio.
+  * @NR_DAMOS_QUOTA_GOAL_METRICS:	Number of DAMOS quota goal metrics.
+  *
+  * Metrics equal to larger than @NR_DAMOS_QUOTA_GOAL_METRICS are unsupported.
+@@ -166,6 +168,8 @@ enum damos_quota_goal_metric {
+ 	DAMOS_QUOTA_NODE_MEM_FREE_BP,
+ 	DAMOS_QUOTA_NODE_MEMCG_USED_BP,
+ 	DAMOS_QUOTA_NODE_MEMCG_FREE_BP,
++	DAMOS_QUOTA_ACTIVE_MEM_BP,
++	DAMOS_QUOTA_INACTIVE_MEM_BP,
+ 	NR_DAMOS_QUOTA_GOAL_METRICS,
+ };
+ 
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index abda850c28c0..d2ed75e521bd 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2132,6 +2132,23 @@ static unsigned long damos_get_node_memcg_used_bp(
+ }
+ #endif
+ 
++/*
++ * Returns LRU-active or inactive memory to total LRU memory size ratio.
++ */
++static unsigned int damos_get_in_active_mem_bp(bool active_ratio)
++{
++	unsigned long active, inactive, total;
++
++	/* This should align with /proc/meminfo output */
++	active = global_node_page_state(NR_LRU_BASE + LRU_ACTIVE_ANON) +
++		global_node_page_state(NR_LRU_BASE + LRU_ACTIVE_FILE);
++	inactive = global_node_page_state(NR_LRU_BASE + LRU_INACTIVE_ANON) +
++		global_node_page_state(NR_LRU_BASE + LRU_INACTIVE_FILE);
++	total = active + inactive;
++	if (active_ratio)
++		return active * 10000 / total;
++	return inactive * 10000 / total;
++}
+ 
+ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
+ {
+@@ -2154,6 +2171,11 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
+ 	case DAMOS_QUOTA_NODE_MEMCG_FREE_BP:
+ 		goal->current_value = damos_get_node_memcg_used_bp(goal);
+ 		break;
++	case DAMOS_QUOTA_ACTIVE_MEM_BP:
++	case DAMOS_QUOTA_INACTIVE_MEM_BP:
++		goal->current_value = damos_get_in_active_mem_bp(
++				goal->metric == DAMOS_QUOTA_ACTIVE_MEM_BP);
++		break;
+ 	default:
+ 		break;
+ 	}
+-- 
+2.47.3
 
