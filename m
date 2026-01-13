@@ -4,130 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48206D2D0E5
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:24:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E467D2D0E6
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:28:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A41846B0005; Tue, 13 Jan 2026 07:24:26 -0500 (EST)
+	id 9DC536B0089; Tue, 13 Jan 2026 07:28:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EF226B0089; Tue, 13 Jan 2026 07:24:26 -0500 (EST)
+	id 9BDF36B008A; Tue, 13 Jan 2026 07:28:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D0796B008A; Tue, 13 Jan 2026 07:24:26 -0500 (EST)
+	id 8B3826B008C; Tue, 13 Jan 2026 07:28:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BEB76B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:24:26 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1AF2CC1677
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:24:26 +0000 (UTC)
-X-FDA: 84326858532.28.690F0FC
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9D8E61C0002
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:24:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VdgyNy8M;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hSt4CMZN;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MwX0zJhU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7OBoEB0T;
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 796AC6B0089
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:28:18 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 19C501AD54B
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:28:18 +0000 (UTC)
+X-FDA: 84326868276.10.766E272
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+	by imf16.hostedemail.com (Postfix) with ESMTP id ED262180003
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:28:15 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=NC76RtxI;
+	spf=pass (imf16.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
+	dmarc=pass (policy=none) header.from=gaisler.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768307064;
+	s=arc-20220608; t=1768307296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4VIREq6KcfFEqYToZSs1rcoXYYB9B9DenDKR0lGfaUg=;
-	b=GM+GlImitLU9Q56InVunRex7uuP2DLXfnQffjVARmmVA0MVn5sNVeGUjh4R3uG1OrrQUi5
-	AtGyL0QNQtJh9NzADWkHMDM53FCHe19eicUMXu2u5kdCfZQ4ZDa7ontSME269wDz8uniYV
-	78FmCc14KeHpVs/kyj5iZxIZO20afJE=
+	bh=guD8ZDnRvesT5KvXlXi5P5IpxaFCA5kIle2X5/2VdEk=;
+	b=YcVAxCr+KCOTIZMIFdG/fESMmjSP7r26Mw3/Dbe7NdKHLi8AbgL/Emo08fX4WPpVXPCd5K
+	ZKtI7s6c1TY9vUeA9/d4qgcjU6nXRFxwOOcoXepIT8fpvCHi9V+YuQ7I2lGkxlqg9HabjH
+	WU40j0dq96lcuedF0DpsjRrlUH+suBc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VdgyNy8M;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hSt4CMZN;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MwX0zJhU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7OBoEB0T;
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768307064; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=NC76RtxI;
+	spf=pass (imf16.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
+	dmarc=pass (policy=none) header.from=gaisler.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768307296; a=rsa-sha256;
 	cv=none;
-	b=gBlhxiLipyTvNNJ7qZcvVWLrmYjgr3X2+7487C/xF7X06t2NjCoKxYq2JHCzGzv6vHFLVo
-	ArutlJMImHcxwD8mjrTyrjAPgMDkz2mEd1EElWEzAkIkp6t0R/2rZfjFmT4ssNCZq/NgpV
-	7TDFtT8ngFwanfy0t0PFx392ORJqfBE=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 93FCC33684;
-	Tue, 13 Jan 2026 12:24:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768307061; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4VIREq6KcfFEqYToZSs1rcoXYYB9B9DenDKR0lGfaUg=;
-	b=VdgyNy8M1/cM9/fXaeF9wajTIaQ/Xp/iUbQylO3k9E0wO529LCOKyPOPId63l/2cDlI/ZI
-	ZweKn//WYVVC2NwsfBzh+7Em6cnohBxIK4TH4x4yzRu/Jo1q6JMnW8EORiTCcTyBTId6FD
-	YSUPvGB9fSdd8ymeF32tJXRy7Bf/l+4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768307061;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4VIREq6KcfFEqYToZSs1rcoXYYB9B9DenDKR0lGfaUg=;
-	b=hSt4CMZNkuG2lUSWPL4AKxbM2Z+KtR5t99rvk3EGsNk9SHH0ufAlxo8z7T8Db9FmOs/FuT
-	HubkgGphNGa+s1Dg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768307060; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4VIREq6KcfFEqYToZSs1rcoXYYB9B9DenDKR0lGfaUg=;
-	b=MwX0zJhU6VREU5zdOR5cKxeGFkB8zi5R09otc0ZT7h9sc7jG1bD2RT8l0ncMREESNL/TxH
-	B0+ucA7tilGghbTP2NSeLAhWhPLFWr9RoTW6Po2ZWRc0h4CmpGfIj/g/CB5kPz6Rd0/Nt/
-	IIjdnfWmI30YD5Td/uIDAp1T3Xw+LY8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768307060;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4VIREq6KcfFEqYToZSs1rcoXYYB9B9DenDKR0lGfaUg=;
-	b=7OBoEB0TZYVGqebUmFP+wmOAV43mhWtkMLsJjKrdSGi2XJt/HRjTZXGyZiG+resWyua0t7
-	o6dibttJahzzPxBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7FC973EA63;
-	Tue, 13 Jan 2026 12:24:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id O58sH3Q5ZmlYUAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 13 Jan 2026 12:24:20 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 4307AA08CF; Tue, 13 Jan 2026 13:24:20 +0100 (CET)
-Date: Tue, 13 Jan 2026 13:24:20 +0100
-From: Jan Kara <jack@suse.cz>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: oe-kbuild@lists.linux.dev, Roman Gushchin <roman.gushchin@linux.dev>, 
-	lkp@intel.com, oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Dev Jain <dev.jain@arm.com>, Jan Kara <jack@suse.cz>
-Subject: Re: mm/filemap.c:3307 do_sync_mmap_readahead() warn: assigning (-12)
- to unsigned variable 'ra->order'
-Message-ID: <s47y6ysj4c2z5c5axtxbeset4divigctg4s3p7gbgmvfkoizeu@malcpodvrm46>
-References: <202601131311.g3lyUAks-lkp@intel.com>
+	b=FmwCIgb7eM6WHe1Qqh0NkU29i3yI35149hZqrM3MNw/5WI5MUDONlsYQWipp5sRHqcRqlC
+	TwexsJm1Konom1b/CcPdBi7p6/vudH6c4mDR8vKm97rR2sZF/wEwA7ifYwQLIyW7fdrsSq
+	G3K+bwIA6tn1TQJ21GeSKsVUjW1V79s=
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4dr7nT4yQ4z1FDXl;
+	Tue, 13 Jan 2026 13:28:13 +0100 (CET)
+Received: from [192.168.0.25] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4dr7nQ25vMz1DDgf;
+	Tue, 13 Jan 2026 13:28:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1768307293;
+	bh=guD8ZDnRvesT5KvXlXi5P5IpxaFCA5kIle2X5/2VdEk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NC76RtxIq9CvKMBZ8e8fqDdeh4TXwyvNkvf30sHXNOLOnEVZmRBj+bHCDi8FufU/c
+	 kWfZWHOIxSWOKL03enthax76m8YsczdRizVAQDjKjHPFRaRl/L5Y0iqK2UA8boHs2h
+	 YUuM9qT6Ba/QEyyAn4GTFzIGpGi10RKIEp9TlTeLGd8zC+Hr/coq6gBL6LosZXZTF1
+	 gt8Mie1XHzB/bpnFnld9TZavLmhYmlgBWFsXaCVZw4vobFyvtSEkURaEmNJU94ewFm
+	 w3pY4SkxqHFB/QXGBXfUllqNu8tQIWuZ/XTNBQs4TvEhLsgrM+Wzf2b59+1+UOXxo8
+	 bJQ987lvmGGqA==
+Message-ID: <7566eef3-bce4-4100-8a11-d88ef1e887a9@gaisler.com>
+Date: Tue, 13 Jan 2026 13:28:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202601131311.g3lyUAks-lkp@intel.com>
-X-Rspamd-Action: no action
-X-Stat-Signature: 6gsimknkt4s4yqy1q97brcpbsubwtbi9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 19/29] sparc: introduce arch_zone_limits_init()
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Shi <alexs@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
+ Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+ Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Jonathan Corbet <corbet@lwn.net>, Klara Modin <klarasmodin@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Pratyush Yadav <pratyush@kernel.org>,
+ Richard Weinberger <richard@nod.at>, Ritesh Harjani <ritesh.list@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>,
+ Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, x86@kernel.org, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ sparclinux@vger.kernel.org
+References: <20260111082105.290734-1-rppt@kernel.org>
+ <20260111082105.290734-20-rppt@kernel.org>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <20260111082105.290734-20-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zd5shqyxeuitfdkifqu5aw9ii79ope88
+X-Rspamd-Queue-Id: ED262180003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9D8E61C0002
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768307063-350732
-X-HE-Meta: U2FsdGVkX19T6mhTI7BQHKf4UolzSBd869+raG/SfgHObR6qY/RJXXc79cTvxjvmc5F/jgKhBdQCHE1BqozUURVF5vm6HSuo7YF5oGCFIYedy8/ynGC6oMpEz7jC8REYXIctMRGh9IRFgIGxIKj/cD5rkr0HKpgaVZ8S+ZVDYHmT3D+3rpPUYRji/rd7J7CTpK8zL7CMnFA9ho4ryisywofAOM9eLAj303nycbWpbijyVZsBJXeJr72HoemTS6TfUt1MIUdEfZ0QxmACuOBtpEzG2uN3ngy0Pt7hVD0DpANSWZfg49eN94WLBQr9xw2glVZ++bwF8v44jWUG/qDNdtUl4lEQMgoub4dYutn+p8PWlUsMv6zs26wx6Y31CfsB7qhtZtJn9ldM1Zav5S4PgEOLnlvjGX38/lZZXimGx6ghbLVpDG+9wWg0tT5c1jKYt3Q39Zniz6BTviA++bxWD1NQPmDfHNtgZOCcOLYP4SHbLRqTH8mP47Sos/xstbnmTDxR4Dx/4msAlN3wacYlqHm7Oqwz5ViRJM2JpG/HPcDBiKDboZL73vxpoubbgCcIAjNFiX3dESIei8PcT5+123cddn5v/+MNYaoW5X1XWLYvh/EV29oA9mc0X1dysiXoSiYMcLh8bozfuktnlLI3es7vKWswSgLU4C/KTJC2p28CgsYiUJc+iKZGmKLcaDfAaNoMdEHuiZYFuKgB57p2fG0/V9SErBMch0eJHO7Mden1uFEY97v5ggtgxsucXGoJnsdJi/By51WGbthm1yiRXPqGgx07bL3b0JzKSSPnqC53MHk6tVA40QRRSTRldVNF0+IoLuMmWuRuhMON6u4lS836dl1vt1GLyBb1+ePcmy06/WuVAXs/ur4cKh8swuh+yiRjdRSdSxoRC81TsKQ+fT9yLl+Log7EN6Bz1DLraANi/dhOze1ISI0WPZRBIsP4S5dvbS8uJVyxDypWbPd
- SSDMFRTM
- 4tV/LYz9FEKjtjaWBPnI28kau2VqR8y2sAN2psgGUyEU4AZKkPIi3wUzitksgAMs378vqqCCWa+U9rksDDsWxNR00Mkdi6cCRKsaLiKWqY97NlSPsOp0VGLMKR6DLyD1t3PVSkExKIUgi/EfqyPgrIoBTT6avAvlm/GU4CGTGTrWyTbAAsM/WnS0cobmXnJvypGs9QbrN2W1XSQyOM7nxm4Os2mtK4Pmme/AnNEC6eFx9m2JV05y7KRRLYkSXDJqHohtqlUfHUP3XJTDQbQWcJEQM3m5LG0ksbB2BYSvivHeWlBiPUm5xqQl26qYGNb81dh21TFyaMIsgUWu9hHuZsFYHTBk18leDq86L6cGciLVbHYSW/b6CHVTKFNrrhAeeCrD0jHC2bmdbjnYGfA9X97HMuhGiYKbXNvK/JCQgVJPK1FHie28ndM5OQBt1g5S2dQ4EaDDo6t/CLjK1DMr8V0/9AtZ9l8+C/l7Z0+CzZP1ealU07e5KHo99Ei4lUOk9D5A8hSwHarlz6o9szB8zRQ1BVeb6NEeuKcneTyGmul7sUu3L651RH/M/eYCKHYBCsZ6/
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768307295-661341
+X-HE-Meta: U2FsdGVkX1+WCja5BgU6nLrhzmOjkfT52d1LVB+omWCGfdKO0IZWNzeI1lWJNtw2rHurzofaXoa4Wd/hljxdhsYHMuyMFyCEOMpYtr4mXtDHygeCNKU48HMtv21WNPkgqUrNpDEnW2l8r4RAdzWwFeLMMa7vRJ4aug/mMfukPDUKPazffDKm3WRIswk+17WmUcwyq76M7UoyOZYeaqlxn2Wsu8/dwsVDYKISlVZ1bS5a5d7gFsBaQlcRsKZwwf8otxE6Q7OziK2Rs3z2KdOLVWiAy4RmbTFCIWWe7E6Y2y458ckLtjp3tMX+4HChQmgF7/t0BCP4DK9YhbAcXApvCLeKDqM3QK98HG4/kuVAXPRdpzMSvofOZ2OkcnUUPCKU1mJpcVSnctSn8ygyZn08iu4YYNFi4LMZ5MB9+qxYsKHvUHBRl+qvMqr00E+k6xMr2kTgz7xHogGZ2u7FBSPh7MoTa36xP90z4vBVG1wot2JxyiYj9Zmg2oCL7XhqhUGFQIuCGTuTmKUpdxRMSRpq2gWZYG5t9PQdtnXrBfMRRQgo+ck3x1bS6aR1S5GyLE/wMHPZn/rOOBYQvVv1lvScgoF/idKF4ovLVMelFFtjh2A1WdM9S4dgvyfwonVaTgaBcRnYjurSig8sSyVcv9H7XkgnFPp6x7j+YdDd4E9FgOSVc6wehmCM89G3iIQD0x2lfL/V5fPYzWuj/r/pVuQZ6hldIZ4GufAjPFeGNcPOmuUc2Ob9rXasOnq7wDmiKi1NeqCQTukiQN8JY8Zzm7zsOnCyY0gl1bnjeyuaNzHRZ2uVYd6OMImiO1YPIlwL/8jRRoJ1e02VAjO+C+zuDcgXkNbTkqdklUcOyvt2m0c/7Kxlp6ofeFNqkXg9IvZ1VIMGUdydpO9C+XblpfKqCZIVRhX+g7Pn0J2/X8401+hAmcLnZY0KuOW78R0kOEX5L8dTtUYNwgA2tCKWYyW5QvN
+ /RTT2FZ3
+ TdbpMdNf1Erdf5F963fXNTP1TUdYh8KTEmjsq6BY5dzmKEihGHX+hobAwsEg9lJKmL2tZRaiCIIYr0vSQHzs/iDTVJPQAbO9HHYirhfq1V6O6AclP9FJ37YbrWVMl/ytw9CApF2X9GzXmz1GkX1p1O0zsMd/tpioAzt0i2XD7qWw5PXJO2i5L8VVg9Mz+lO1zRLREvAhfsESgN0+u+YsH8zT8ehqlATUWjzCK9qQRLXIJsyWDpjqn0huTxls2hCtNfiXzCQ1XgloDzSz4S2Y/mMMEnUjINAnoh0rWZKNxKUAOJH40bX+wU5eEoLVDozYUwWTsgHtNjtwB6Ha6DF6XbbLSwkVtYKHPtjUOmPAJG7rvdMZ8lzENkK2aSbytLmu1WUGyxkC4OntmYs27XKcmb5KaerEEeJt7GvXWre3YSwhu4T+J0w/POUWr/21i9laZ5CArSA3T1zapSpldTGA1xVHHBgxwjPbqFXb3jUJGHGNMN4oC5NxZsvvhJ/4qaQSyhyj2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,36 +134,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 13-01-26 14:12:28, Dan Carpenter wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-> head:   b71e635feefc852405b14620a7fc58c4c80c0f73
-> commit: 9f1edf1aedac1b287355f63f768ba4275de72dca mm: readahead: make thp readahead conditional to mmap_miss logic
-> config: x86_64-randconfig-161-20260113 (https://download.01.org/0day-ci/archive/20260113/202601131311.g3lyUAks-lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> smatch version: v0.5.0-8985-g2614ff1a
+On 2026-01-11 09:20, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> | Closes: https://lore.kernel.org/r/202601131311.g3lyUAks-lkp@intel.com/
+> Move calculations of zone limits to a dedicated arch_zone_limits_init()
+> function.
 > 
-> smatch warnings:
-> mm/filemap.c:3307 do_sync_mmap_readahead() warn: assigning (-12) to unsigned variable 'ra->order'
-...
-> 9f1edf1aedac1b2 Roman Gushchin          2025-10-06  3306  		ra->async_size = HPAGE_PMD_NR;
-> 9f1edf1aedac1b2 Roman Gushchin          2025-10-06 @3307  		ra->order = HPAGE_PMD_ORDER;
+> Later MM core will use this function as an architecture specific callback
+> during nodes and zones initialization and thus there won't be a need to
+> call free_area_init() from every architecture.
 > 
-> HPAGE_PMD_SHIFT is zero in this config?
-> ra->order is a u16.
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  arch/sparc/mm/init_64.c |  6 ++++++
+>  arch/sparc/mm/srmmu.c   | 12 ++++++++----
+>  2 files changed, 14 insertions(+), 4 deletions(-)
 
-What's the config exactly? I suppose CONFIG_TRANSPARENT_HUGEPAGE is
-disabled in this case, isn't it? In that case force_thp_readahead will
-never be true and thus the branch with the assignment can never be reached
-AFAICT...
+Hi Mike,
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Thanks for this nice cleanup series.
+
+
+> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> index df9f7c444c39..fbaad449dfc9 100644
+> --- a/arch/sparc/mm/init_64.c
+> +++ b/arch/sparc/mm/init_64.c
+> @@ -2279,6 +2279,11 @@ static void __init reduce_memory(phys_addr_t limit_ram)
+>  	memblock_enforce_memory_limit(limit_ram);
+>  }
+>  
+> +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+> +{
+> +	max_zone_pfns[ZONE_NORMAL] = last_valid_pfn;
+> +}
+> +
+>  void __init paging_init(void)
+>  {
+>  	unsigned long end_pfn, shift, phys_base;
+> @@ -2461,6 +2466,7 @@ void __init paging_init(void)
+>  
+>  		max_zone_pfns[ZONE_NORMAL] = end_pfn;
+
+This old initialization of max_zone_pfns[ZONE_NORMAL] should also be
+removed, right? With that removed it makes the local end_pfn variable
+set but unused, so could you please also remove that one?
+
+I know that this whole code block gets removed later, but the cleanup
+max_zone_pfns[ZONE_NORMAL] and the removal of end_pfn (that is not done
+later in this version of the series) fits logically in this patch.
+
+>  
+> +		arch_zone_limits_init(max_zone_pfns);
+>  		free_area_init(max_zone_pfns);
+>  	}
+>  
+> diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
+> index f8fb4911d360..81e90151db90 100644
+> --- a/arch/sparc/mm/srmmu.c
+> +++ b/arch/sparc/mm/srmmu.c
+> @@ -884,6 +884,13 @@ static void __init map_kernel(void)
+>  
+>  void (*poke_srmmu)(void) = NULL;
+>  
+> +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+> +{
+> +	max_zone_pfns[ZONE_DMA] = max_low_pfn;
+> +	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+> +	max_zone_pfns[ZONE_HIGHMEM] = highend_pfn;
+> +}
+> +
+>  void __init srmmu_paging_init(void)
+>  {
+>  	int i;
+> @@ -967,10 +974,7 @@ void __init srmmu_paging_init(void)
+>  	{
+>  		unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+>  
+> -		max_zone_pfn[ZONE_DMA] = max_low_pfn;
+> -		max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
+> -		max_zone_pfn[ZONE_HIGHMEM] = highend_pfn;
+> -
+> +		arch_zone_limits_init(max_zone_pfn);
+>  		free_area_init(max_zone_pfn);
+>  	}
+>  }
+
+With the feedback for arch/sparc/mm/init_64.c addressed:
+
+Acked-by: Andreas Larsson <andreas@gaisler.com>
+
+Cheers,
+Andreas
+
 
