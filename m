@@ -4,114 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 273D7D2D0E2
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:17:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48206D2D0E5
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:24:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E95A6B008C; Tue, 13 Jan 2026 07:17:52 -0500 (EST)
+	id A41846B0005; Tue, 13 Jan 2026 07:24:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C1406B0095; Tue, 13 Jan 2026 07:17:52 -0500 (EST)
+	id 9EF226B0089; Tue, 13 Jan 2026 07:24:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BF956B0096; Tue, 13 Jan 2026 07:17:52 -0500 (EST)
+	id 8D0796B008A; Tue, 13 Jan 2026 07:24:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 698786B008C
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:17:52 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1277BC1339
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:17:52 +0000 (UTC)
-X-FDA: 84326841984.29.7828E0A
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 392561C000E
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:17:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KCbaWUxm;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768306670; a=rsa-sha256;
-	cv=none;
-	b=GgWM/2VcvauMfZKTaWaBJR3XBFhLehOPLPaeYRXKiUBDhAiOKVQ//XacOok6W3STn39nsO
-	AV7OiXpWAHD8QPjUgbIMlZhJkJrv/eyxQZOQLIyo0YFCcuDUoVUCGRuPj4koEMEoyytS34
-	hVNpYKslVFo5pPMrwNVEUTtZI61DmbI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KCbaWUxm;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7BEB76B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:24:26 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1AF2CC1677
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:24:26 +0000 (UTC)
+X-FDA: 84326858532.28.690F0FC
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9D8E61C0002
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:24:23 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VdgyNy8M;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hSt4CMZN;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MwX0zJhU;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7OBoEB0T;
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768306670;
+	s=arc-20220608; t=1768307064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=z1BJ19WpqYD1cGrRNJBkGK7rANN3Ll2fyIgG6DV0n9k=;
-	b=gkiviMiix9AF58L0EgBLBeLxK+hEMVz/Kv3k3DZDoQnheWdvffDtCcbdBDYO4XUiyOUlXe
-	D/b41cFYM4BKAjwjoDII0SprsowOuvk6qtfm2dziIQQXjG2LE5F1kaPNANaBv3oqq5ZeWx
-	Ua1Q1shW0olej269X04zomyEOvgZuLc=
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c2af7d09533so4805990a12.1
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:17:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768306669; x=1768911469; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=z1BJ19WpqYD1cGrRNJBkGK7rANN3Ll2fyIgG6DV0n9k=;
-        b=KCbaWUxmu+eElMXkPIDvPMLx7tl0bHO0QKxXnMuiLs53vUPBqD7jff88w1UHUEER9L
-         pEOCUJAVApzL4wHhKMHOK67/33hGXV6i3EgDbom8MrcnjFuSEb1JekPJ9LTih8G6VfOn
-         WjHEpGJQq3kuFsqpiLO9uTpzRGLfWdhFrBDXQscKYHXhwBPpWCYlQlnfHAoB3Ai0Mg+7
-         ZZJ/vdouURGHDRXtsKzR4DwdCyig1cM5g26Ff32H67v7BFsJ3zqr/70Ixj2nK4HsuP5d
-         v6fAHGG3nKcuWaRF84/QG2MD2CPwjQ6F0pay/XD8rxlgtoGqoep6XIG2ANa4lNTQK9mO
-         XdZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768306669; x=1768911469;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z1BJ19WpqYD1cGrRNJBkGK7rANN3Ll2fyIgG6DV0n9k=;
-        b=E2+z7Je+OPevGGX7RFu7cV7+X7wdssBZMIAmWEH2sSj9na3bjqjYFx0koljOBa2dUr
-         mvlEK7Xud0SekDuKTiOuSD9wUJcjSHl1/wTwCgxtybtULZ2z8tcl3atcj5rInYryUBDz
-         coHV5kXjf/W4pbTr8ISkepTcYzG7nVp7Zlg+PewAnqD14nwtn8EAo7DVwo6mHezn9PRN
-         gbid4nXbu5F7flzv8UHDZOhJcLtuX3iI8mas4FGjJM+BR5c80BAfo7qzA3nV9WIRiDOG
-         aTmHgjAnYot9SBDuZymQt2yD0coh4cS4AFF3bC8jkgawQz/hqM/1crXzfkln0CAHwe1s
-         NB/A==
-X-Forwarded-Encrypted: i=1; AJvYcCU0EHvFRR3TfrcwaQg4P8s3SPuq0sJ8cxuCbJt+dEmFddjxsol0DAWz0Z7VkhpgYLi3OaB4C0ELlw==@kvack.org
-X-Gm-Message-State: AOJu0YyxfT6DdqtglNdW0DZ4JGb95w2CDL6IRMc/SFaXmTjxZ9qsZJsx
-	QME5nE8nVDwB/5Y+7Br6pojeylmbMUlJGqZc3c0bwmgGIBIo324z/xle
-X-Gm-Gg: AY/fxX524lhU14muPi18GEGpj5Z7agOjkNLViq24Rq5Wk+hjuGtKJa7J6IlKUUndO0J
-	MLILrp57HnkrC2DnIhqdnRwaPoTxihi3QNwwRhbWEv9R+UbhoPGxMgj9E2aYAzOkqRU4Mm4IEPc
-	4ZL239mfEVAwLDRA2X6fA5YuP918zMYPN9IFcATNV3u+tGwTVgU79AzrU4zXE2u58oikRuTP54W
-	yftefDWooVEvaEaG55iM69emByumxQvIrUoekuIvY3uIqigXBs4h9KitYlFH145bpXTJynTfwWO
-	vLj1hXk6qErF4QDJ5JearuVkW2rsU6rGAzEGPGB07D7pj+vXqyOqhMlLhtTLY71qNVdHoaP2aet
-	EJjrHv+16Lst1xiSZk/Q0iZChmMLfQf0kHvducKaGueobrm8CUPlpGFpRkJ16yjEFR+bc0gRFgF
-	stU7lYJ7T70j7f
-X-Google-Smtp-Source: AGHT+IFDGHuU1rsktMeitRsEmdv6U9Stp+W9ykpOAe+ucIUMOfFbW5X58S530CoeThhNa7Kz/23a7A==
-X-Received: by 2002:a17:902:f652:b0:2a0:7fa0:7b5c with SMTP id d9443c01a7336-2a3ee4b8e3amr213100705ad.55.1768306668961;
-        Tue, 13 Jan 2026 04:17:48 -0800 (PST)
-Received: from HP-Note-Host.. ([222.234.91.137])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2a3e3c48be5sm202341695ad.30.2026.01.13.04.17.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 04:17:48 -0800 (PST)
-From: JaeJoon Jung <rgbi3307@gmail.com>
-To: sj@kernel.org
-Cc: JaeJoon Jung <rgbi3307@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	rgbi3307@nate.com
-Subject: [PATCH 2/2] mm/damon/core: tunning nr_subregions at the kdamond_split_regions()
-Date: Tue, 13 Jan 2026 21:17:30 +0900
-Message-ID: <20260113121731.31468-1-rgbi3307@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4VIREq6KcfFEqYToZSs1rcoXYYB9B9DenDKR0lGfaUg=;
+	b=GM+GlImitLU9Q56InVunRex7uuP2DLXfnQffjVARmmVA0MVn5sNVeGUjh4R3uG1OrrQUi5
+	AtGyL0QNQtJh9NzADWkHMDM53FCHe19eicUMXu2u5kdCfZQ4ZDa7ontSME269wDz8uniYV
+	78FmCc14KeHpVs/kyj5iZxIZO20afJE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VdgyNy8M;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hSt4CMZN;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MwX0zJhU;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7OBoEB0T;
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768307064; a=rsa-sha256;
+	cv=none;
+	b=gBlhxiLipyTvNNJ7qZcvVWLrmYjgr3X2+7487C/xF7X06t2NjCoKxYq2JHCzGzv6vHFLVo
+	ArutlJMImHcxwD8mjrTyrjAPgMDkz2mEd1EElWEzAkIkp6t0R/2rZfjFmT4ssNCZq/NgpV
+	7TDFtT8ngFwanfy0t0PFx392ORJqfBE=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 93FCC33684;
+	Tue, 13 Jan 2026 12:24:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768307061; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4VIREq6KcfFEqYToZSs1rcoXYYB9B9DenDKR0lGfaUg=;
+	b=VdgyNy8M1/cM9/fXaeF9wajTIaQ/Xp/iUbQylO3k9E0wO529LCOKyPOPId63l/2cDlI/ZI
+	ZweKn//WYVVC2NwsfBzh+7Em6cnohBxIK4TH4x4yzRu/Jo1q6JMnW8EORiTCcTyBTId6FD
+	YSUPvGB9fSdd8ymeF32tJXRy7Bf/l+4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768307061;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4VIREq6KcfFEqYToZSs1rcoXYYB9B9DenDKR0lGfaUg=;
+	b=hSt4CMZNkuG2lUSWPL4AKxbM2Z+KtR5t99rvk3EGsNk9SHH0ufAlxo8z7T8Db9FmOs/FuT
+	HubkgGphNGa+s1Dg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768307060; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4VIREq6KcfFEqYToZSs1rcoXYYB9B9DenDKR0lGfaUg=;
+	b=MwX0zJhU6VREU5zdOR5cKxeGFkB8zi5R09otc0ZT7h9sc7jG1bD2RT8l0ncMREESNL/TxH
+	B0+ucA7tilGghbTP2NSeLAhWhPLFWr9RoTW6Po2ZWRc0h4CmpGfIj/g/CB5kPz6Rd0/Nt/
+	IIjdnfWmI30YD5Td/uIDAp1T3Xw+LY8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768307060;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4VIREq6KcfFEqYToZSs1rcoXYYB9B9DenDKR0lGfaUg=;
+	b=7OBoEB0TZYVGqebUmFP+wmOAV43mhWtkMLsJjKrdSGi2XJt/HRjTZXGyZiG+resWyua0t7
+	o6dibttJahzzPxBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7FC973EA63;
+	Tue, 13 Jan 2026 12:24:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id O58sH3Q5ZmlYUAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 13 Jan 2026 12:24:20 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 4307AA08CF; Tue, 13 Jan 2026 13:24:20 +0100 (CET)
+Date: Tue, 13 Jan 2026 13:24:20 +0100
+From: Jan Kara <jack@suse.cz>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: oe-kbuild@lists.linux.dev, Roman Gushchin <roman.gushchin@linux.dev>, 
+	lkp@intel.com, oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Dev Jain <dev.jain@arm.com>, Jan Kara <jack@suse.cz>
+Subject: Re: mm/filemap.c:3307 do_sync_mmap_readahead() warn: assigning (-12)
+ to unsigned variable 'ra->order'
+Message-ID: <s47y6ysj4c2z5c5axtxbeset4divigctg4s3p7gbgmvfkoizeu@malcpodvrm46>
+References: <202601131311.g3lyUAks-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 392561C000E
-X-Stat-Signature: a558kwbpo9t6s9k1pf3gyhko44mnx7a1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202601131311.g3lyUAks-lkp@intel.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: 6gsimknkt4s4yqy1q97brcpbsubwtbi9
 X-Rspam-User: 
-X-HE-Tag: 1768306669-904436
-X-HE-Meta: U2FsdGVkX1/Fy4ad4xmeNvnwxCi4yKF3h5LCkEINmYhD4gvSCNRqVNxYIkhxvQGnikbdpAEa4PecxgConnJmSpGRrXCExEnMJZF6SeNvowNdnUzHJKjBwDeF0zcsXXlqVw/kv4Wz86hWbFhJzL5wR9gojkU91QCPxMKHR9q0GiiAaa86JKsXzlg19D+fjYO1Y4QZKR6Si6pdZ7iAgbu011oOiq/MEiwO7Aqw8tj0f/TMNxY46AI6itXJpb0JSS4paOZripbsAqx8RnWB+kRF4YVlku+L4Xx/uhMZqW8+36TimKYn+pFT4L575onqs8kTiUKyh/sjuviTLr7dDif+dQZbwfKwEfVr0vVuiHjakptJoRA7ZEDHInmARML6GL16Wt48crfXU/6erhKKei1XyYeOOSfMJWGFTlfpt0iptw9RhnYLvLHcq7IAIpg9nY9ongJ12f8qi20QrSUPDz77ECAj4p8LGO53J2oGhMFaO5tRpTEm+u9Au4H5cfo0pcZLELvpJ5k+69RQK6bw6067Vam++4GzlTqFQhjuSHiv3QfaQP4z6r8ti+VT6lhXU2P1Gc8l2xWdHD7atcaDditTSX6nNHct98ooz6rmBxyLOloxoUxE6O8ILGIaRFDK6/zyBS1XxUaXSgRfOE6yD1SCO+t9VjRpmpJLsZabeDqFL5gXhZApi8Cs6CIgMsqZM3j9UVBqPWvaB2A031a5ueH9XCw85UmvCGVxQbv4gda5jSznTdqMfF8TDVPD4S07+VG6OIHYNV7/IrQhPJMdpc7NFKWwHL4bIDiv//BQEhJrjuAc33hNRB0uwzAxOiho4KaqZ8tOzlNwEMPh+5jhUOXAs4gTnOckvmkEicHauo/1pfm757MEuTCx8T3CoZL1iIwQn7m6YvnZO4wHuA0eHf2Y5Sf4XUha7yzfX/fKxzKF4BsVtl0SONmJ3Qc5SB5Uv+nY34I0xY2Et2ilJVf93sg
- XPrkGKr9
- cDTsTCiY2XzJDHMrge1dhFqbfLHATRVAC7xbIqYqqyWZ88wEpl42GneB6KlIDr0JlyDbFD1QA81TFOkSyZWFwlguYaAq5Oew2wMLu55xMxJs3hrIGcXrrL9mVdzCmAGft+Y0dAtQpWtfh7Ax2lzS8EuF2PH4yDn/NIbFy+lmk/YENSm9Lzb09S1NeIvV7VpPLaoYtXaJiZ/OUTOXUEmYrrPlSexnrLl0AgSvVtu+esVeGTIGr4rZy+Q2nZkUn45NGbJaFbsNae6XdEtehvyyGq8P9FYtJhRPwt52hmS48peWjIpUtAPG9rxtBeBDg1QGJ1SKbtdMNgXWUkn3LLNfbOr0y1SGCCAcz84HiGRHg8jrajb5MYzNx5q03IHha6RPgeYiUpsYeQJPJawc6580KfH0U55s0kWhqvbBMA3QaOwx8cjtITuhOWsrqx0vxfr1Meo45MpgxpZ0VgpE=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.003816, version=1.2.4
+X-Rspamd-Queue-Id: 9D8E61C0002
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768307063-350732
+X-HE-Meta: U2FsdGVkX19T6mhTI7BQHKf4UolzSBd869+raG/SfgHObR6qY/RJXXc79cTvxjvmc5F/jgKhBdQCHE1BqozUURVF5vm6HSuo7YF5oGCFIYedy8/ynGC6oMpEz7jC8REYXIctMRGh9IRFgIGxIKj/cD5rkr0HKpgaVZ8S+ZVDYHmT3D+3rpPUYRji/rd7J7CTpK8zL7CMnFA9ho4ryisywofAOM9eLAj303nycbWpbijyVZsBJXeJr72HoemTS6TfUt1MIUdEfZ0QxmACuOBtpEzG2uN3ngy0Pt7hVD0DpANSWZfg49eN94WLBQr9xw2glVZ++bwF8v44jWUG/qDNdtUl4lEQMgoub4dYutn+p8PWlUsMv6zs26wx6Y31CfsB7qhtZtJn9ldM1Zav5S4PgEOLnlvjGX38/lZZXimGx6ghbLVpDG+9wWg0tT5c1jKYt3Q39Zniz6BTviA++bxWD1NQPmDfHNtgZOCcOLYP4SHbLRqTH8mP47Sos/xstbnmTDxR4Dx/4msAlN3wacYlqHm7Oqwz5ViRJM2JpG/HPcDBiKDboZL73vxpoubbgCcIAjNFiX3dESIei8PcT5+123cddn5v/+MNYaoW5X1XWLYvh/EV29oA9mc0X1dysiXoSiYMcLh8bozfuktnlLI3es7vKWswSgLU4C/KTJC2p28CgsYiUJc+iKZGmKLcaDfAaNoMdEHuiZYFuKgB57p2fG0/V9SErBMch0eJHO7Mden1uFEY97v5ggtgxsucXGoJnsdJi/By51WGbthm1yiRXPqGgx07bL3b0JzKSSPnqC53MHk6tVA40QRRSTRldVNF0+IoLuMmWuRuhMON6u4lS836dl1vt1GLyBb1+ePcmy06/WuVAXs/ur4cKh8swuh+yiRjdRSdSxoRC81TsKQ+fT9yLl+Log7EN6Bz1DLraANi/dhOze1ISI0WPZRBIsP4S5dvbS8uJVyxDypWbPd
+ SSDMFRTM
+ 4tV/LYz9FEKjtjaWBPnI28kau2VqR8y2sAN2psgGUyEU4AZKkPIi3wUzitksgAMs378vqqCCWa+U9rksDDsWxNR00Mkdi6cCRKsaLiKWqY97NlSPsOp0VGLMKR6DLyD1t3PVSkExKIUgi/EfqyPgrIoBTT6avAvlm/GU4CGTGTrWyTbAAsM/WnS0cobmXnJvypGs9QbrN2W1XSQyOM7nxm4Os2mtK4Pmme/AnNEC6eFx9m2JV05y7KRRLYkSXDJqHohtqlUfHUP3XJTDQbQWcJEQM3m5LG0ksbB2BYSvivHeWlBiPUm5xqQl26qYGNb81dh21TFyaMIsgUWu9hHuZsFYHTBk18leDq86L6cGciLVbHYSW/b6CHVTKFNrrhAeeCrD0jHC2bmdbjnYGfA9X97HMuhGiYKbXNvK/JCQgVJPK1FHie28ndM5OQBt1g5S2dQ4EaDDo6t/CLjK1DMr8V0/9AtZ9l8+C/l7Z0+CzZP1ealU07e5KHo99Ei4lUOk9D5A8hSwHarlz6o9szB8zRQ1BVeb6NEeuKcneTyGmul7sUu3L651RH/M/eYCKHYBCsZ6/
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,125 +136,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, DAMON is designed to allow the number of nr_subregions to be
-set from minimum of 10 to maximum of 1000.  kdamond_split_regions() splits
-the region by setting nr_subregions to 2 or 3.  This splits the region too
-narrowly, resulting in an overly wide address sampling range and increased
-access determination failures.
+On Tue 13-01-26 14:12:28, Dan Carpenter wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> head:   b71e635feefc852405b14620a7fc58c4c80c0f73
+> commit: 9f1edf1aedac1b287355f63f768ba4275de72dca mm: readahead: make thp readahead conditional to mmap_miss logic
+> config: x86_64-randconfig-161-20260113 (https://download.01.org/0day-ci/archive/20260113/202601131311.g3lyUAks-lkp@intel.com/config)
+> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+> smatch version: v0.5.0-8985-g2614ff1a
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> | Closes: https://lore.kernel.org/r/202601131311.g3lyUAks-lkp@intel.com/
+> 
+> smatch warnings:
+> mm/filemap.c:3307 do_sync_mmap_readahead() warn: assigning (-12) to unsigned variable 'ra->order'
+...
+> 9f1edf1aedac1b2 Roman Gushchin          2025-10-06  3306  		ra->async_size = HPAGE_PMD_NR;
+> 9f1edf1aedac1b2 Roman Gushchin          2025-10-06 @3307  		ra->order = HPAGE_PMD_ORDER;
+> 
+> HPAGE_PMD_SHIFT is zero in this config?
+> ra->order is a u16.
 
-Below are the test results for a case where address access determination
-succeeded only in the first half of the address region, while failure
-occurred in the latter half, when the address region was set to the
-[1G, 4G] range.
+What's the config exactly? I suppose CONFIG_TRANSPARENT_HUGEPAGE is
+disabled in this case, isn't it? In that case force_thp_readahead will
+never be true and thus the branch with the assignment can never be reached
+AFAICT...
 
-When there are few nr_regions: (8)
-
-    |--------|--------|---------|-------|-------|-------|-------|
-    0        1        2         3       4       5       6       7
-
-   target, nr_regions, addr region [1G, (sample_addr), 4G] nr  age
- --------------------- ----------------------------------- --- ---
-TRACE [ 1] t=0, nr=8, [1073741824,(1073742349),1075138560] 20   0
-TRACE [ 2] t=0, nr=8, [1075138560,(1075142341),1233899520]  0   0
-TRACE [ 3] t=0, nr=8, [1233899520,(1360224040),1515687936]  0   0
-TRACE [ 4] t=0, nr=8, [1515687936,(1872615549),2246262784]  0   0
-TRACE [ 5] t=0, nr=8, [2246262784,(2294436960),2536173568]  0   0
-TRACE [ 6] t=0, nr=8, [2536173568,(2577497080),2748776448]  0   0
-TRACE [ 7] t=0, nr=8, [2748776448,(2818332252),3328598016]  0   0
-TRACE [ 8] t=0, nr=8, [3328598016,(3553053181),4294967296]  0   0
-
-When determining nr_subregions in kdamond_split_regions(), the number of
-nr_subregions is not fixed at 2 or 3, but can be adjusted based on the
-number of nr_regions and the sample_interval.
-
-If the number of nr_regions is small, the number of nr_subregions is
-increased, and conversely, if the number of nr_regions is large, the
-number of nr_subregions is decreased. (Reducing access failures)
-
-As the sample_interval increases, the number of nr_subregions is
-increased.  As the sample_interval decreases, the number of
-nr_subregions is also reduced. (Reducing system load)
-
-Below is a test result showing that increasing nr_subregions increases
-the access determination success rate when the address range is set to
-[1G, 4G].
-
-When there are many nr_regions: (16)
-
-    |----|---|----|---|----|----|---|---|---|---|---|---|---|---|
-    0    1   2    3   4    5    6   7   8   9                   15
-
-   target, nr_regions, addr region [1G, (sample_addr), 4G] nr  age
- --------------------- ----------------------------------- --- ---
-TRACE [ 1] t=0, nr=16, [1073741824,(1073742496),1074819072] 20   4
-TRACE [ 2] t=0, nr=16, [1074819072,(1086087568),1396940800]  0   2
-TRACE [ 3] t=0, nr=16, [1396940800,(1408406119),1709060096]  0   0
-TRACE [ 4] t=0, nr=16, [1709060096,(1718634828),2029752320]  0   0
-TRACE [ 5] t=0, nr=16, [2029752320,(2033076942),2147844096]  0   0
-TRACE [ 6] t=0, nr=16, [2147844096,(2147870592),2148532224] 20   5
-TRACE [ 7] t=0, nr=16, [2148532224,(2163851851),2466242560]  0   0
-TRACE [ 8] t=0, nr=16, [2466242560,(2466983182),2786467840]  0   1
-TRACE [ 9] t=0, nr=16, [2786467840,(2794755756),3105136640]  0   0
-TRACE [10] t=0, nr=16, [3105136640,(3108065434),3221405696]  0   0
-TRACE [11] t=0, nr=16, [3221405696,(3221424712),3222261760] 20   4
-TRACE [12] t=0, nr=16, [3222261760,(3222269016),3222290432] 13   0
-TRACE [13] t=0, nr=16, [3222290432,(3234589365),3542605824]  0   0
-TRACE [14] t=0, nr=16, [3542605824,(3551138058),3859030016]  0   0
-TRACE [15] t=0, nr=16, [3859030016,(3866123754),4178018304]  0   1
-TRACE [16] t=0, nr=16, [4178018304,(4179564176),4294967296]  0   0
-
-Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
----
- mm/damon/core.c | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index ff9af9d6a788..4bc44c6545a2 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2423,24 +2423,30 @@ static void kdamond_split_regions(struct damon_ctx *ctx)
- {
- 	struct damon_target *t;
- 	unsigned int nr_regions = 0;
--	static unsigned int last_nr_regions;
--	int nr_subregions = 2;
-+	const unsigned int nr_min = ctx->attrs.min_nr_regions;	/*   10 */
-+	const unsigned int nr_max = ctx->attrs.max_nr_regions;	/* 1000 */
-+	const unsigned long si_min = ctx->attrs.intervals_goal.min_sample_us;
-+	unsigned long si = ctx->attrs.sample_interval;
-+	int nr_subregions;
-
- 	damon_for_each_target(t, ctx)
- 		nr_regions += damon_nr_regions(t);
-
--	if (nr_regions > ctx->attrs.max_nr_regions / 2)
--		return;
--
--	/* Maybe the middle of the region has different access frequency */
--	if (last_nr_regions == nr_regions &&
--			nr_regions < ctx->attrs.max_nr_regions / 3)
--		nr_subregions = 3;
-+	nr_subregions = (nr_regions > nr_min) ?
-+			((si > si_min * 100) ? nr_max / 10 : nr_max / 20)
-+			: nr_max;
-+	/*
-+	 * nr_subregions is maximized within the range not exceeding nr_max.
-+	 * Increasing nr_subregions minimizes missed address detection.
-+	 */
-+	while (nr_subregions * nr_regions > nr_max) {
-+		nr_subregions -= 4;
-+		if (nr_subregions < 2)
-+			return;
-+	}
-
- 	damon_for_each_target(t, ctx)
- 		damon_split_regions_of(t, nr_subregions, ctx->min_sz_region);
--
--	last_nr_regions = nr_regions;
- }
-
- /*
---
-2.43.0
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
