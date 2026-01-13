@@ -4,171 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D825CD30CC9
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 21:36:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36940D30CDB
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 21:46:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 069236B0005; Tue, 13 Jan 2026 16:36:29 -0500 (EST)
+	id 8967F6B0005; Tue, 13 Jan 2026 16:46:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0178A6B0088; Tue, 13 Jan 2026 16:36:28 -0500 (EST)
+	id 8452F6B0088; Tue, 13 Jan 2026 16:46:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3AE16B0089; Tue, 13 Jan 2026 16:36:28 -0500 (EST)
+	id 751126B0089; Tue, 13 Jan 2026 16:46:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D26F26B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 16:36:28 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7269DB7C91
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:36:28 +0000 (UTC)
-X-FDA: 84328249656.11.230C261
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011007.outbound.protection.outlook.com [40.107.208.7])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5FF15180009
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:36:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=O4GMVwKN;
-	spf=pass (imf06.hostedemail.com: domain of Michael.Roth@amd.com designates 40.107.208.7 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768340185;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 605FB6B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 16:46:50 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EE9A213A36E
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:46:49 +0000 (UTC)
+X-FDA: 84328275738.03.A1E8FF8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 15AE380015
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:46:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zSX9a75q;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768340808; a=rsa-sha256;
+	cv=none;
+	b=jlWRRz8uwOM2gdi1pLX5IeGELp4TGW4BhIrB2u1tFOL1f/On+a9hAswIrYFHtEJ5q10CbA
+	R8mvKduwAWzp3EYgrqhtt5qn5HEQYgrCE6NnXL9o0t1He+IP9VCJ/3gl5R9eG5b6fOUQSL
+	UJrj4RzQvST0sk7TvdYu/pZ9/S9x4ck=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zSX9a75q;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768340808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+tkTuR9aQ+86bU8typGk1j9ny7LHoHvWVBk7wjA4suo=;
-	b=sEG1nm+PQ1SnbvWColCFi/pUznNjSSdo63z2bsuXRzwB/E/uIV2GkoP7dlnh46IBzZuWpm
-	TSADLz4lb5ivZll5bDEkFZuIzRQ6Eb7l3LCLfUrQorCXedFbqiWC85E3nepIPk03DjZmok
-	dawKS9lSmMZeKWoYQTh44yiEmSuZ/kc=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=O4GMVwKN;
-	spf=pass (imf06.hostedemail.com: domain of Michael.Roth@amd.com designates 40.107.208.7 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768340185; a=rsa-sha256;
-	cv=pass;
-	b=WPQyDjsarYAq/T+yFyKOlWCzrEFnOl3eobYqiIsNTdOEivG5KPCdKT5VGM1HOp2TAYg2S1
-	UB4dZo7VfEKchpiDuoJ/9DwnPhk7ZE8z2HdDZBf7Aso+mXX/dHrJUSeHy6TQHRGFt8HtVW
-	Ql8rYAkHbzkqQaYTl4lcCRgVX58tBQI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ARJWvTxtNv9fW2J0smKWCywEv4inGfyj0QPxD83L1os60B9iVhfz1Myg1pynbNISp+Zin3cLDdpOiDK81UbYSPRJqWHhwJ9c2yDkiZA2D9SZtf2b6Ez5OTiUaNWbpGMjmLqcPdpkS4MFsUDFkOgzK1V08nzzrxqXpqcA7/MLWQ6Er7Q6c9HvHh5QZnkbjAVX82aGQLfQcOT1sQSNcGRwfvyxWxagXaeleJJoV5BcTn+EYfs1O4wJ4cDdG3ThMSx1vVcMnb52B02jxsW4nbtTx167hKsEgBA01RexNg+vjOSCb0GvBSCOmwxOvLBq2rszKiLEbgJVFvjFdW4Xd27fEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+tkTuR9aQ+86bU8typGk1j9ny7LHoHvWVBk7wjA4suo=;
- b=NCNf0LxrVhTvOSVc8ODkdkML7YD7Md8KTbXjCIinfSk0uOj6D8tSm69skGhR9rAOOHjO578B2mv1SJ8lt9RQBLDV13vUF/q5+/zLhY+904Dta+ErUOl4ogRTFXNJmIm6NgdF4TWGYkjWn/SPu4iW1fCLG6aBadtGLjmbdtRAMaHYz4Ktj4MnGLzH0FMsTm5/7zE6cTdvTgcbPN37IF1nw4Z2h+fvtxSyEWeNe8/W1gla4xXiyqoECFZrXDlY3jCb87KBKfZRvD1qewwfNUfzfCDlbTssJ26OYJu1LWoTzcPfUfhjwsYZf36xy/WIWnv6M3k7/UXOyI0Y4VEmQoXgDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+tkTuR9aQ+86bU8typGk1j9ny7LHoHvWVBk7wjA4suo=;
- b=O4GMVwKN5Aflu12ZF5X6+xfkTA4WHOE46Dfya4I/DpE4K0l6CVQlW+bEhhQNZ3p89skHqEZIfInm/IPRhSr/8qdaXya47bD32Ac69DDxEtRewHiX1zqqavkzP6dJHmcwzis2u5tP8dXKO4lAe2R50XQ4YEuIFihwtHrpsn9ipdU=
-Received: from BN0PR02CA0031.namprd02.prod.outlook.com (2603:10b6:408:e5::6)
- by CH1PPFF5B95D789.namprd12.prod.outlook.com (2603:10b6:61f:fc00::62a) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Tue, 13 Jan
- 2026 21:36:18 +0000
-Received: from BN2PEPF0000449E.namprd02.prod.outlook.com
- (2603:10b6:408:e5:cafe::e7) by BN0PR02CA0031.outlook.office365.com
- (2603:10b6:408:e5::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.7 via Frontend Transport; Tue,
- 13 Jan 2026 21:36:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF0000449E.mail.protection.outlook.com (10.167.243.149) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Tue, 13 Jan 2026 21:36:12 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 13 Jan
- 2026 15:36:11 -0600
-Date: Tue, 13 Jan 2026 15:35:56 -0600
-From: Michael Roth <michael.roth@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <thomas.lendacky@amd.com>,
-	<pbonzini@redhat.com>, <vbabka@suse.cz>, <ashish.kalra@amd.com>,
-	<liam.merwick@oracle.com>, <david@redhat.com>, <vannapurve@google.com>,
-	<ackerleytng@google.com>, <aik@amd.com>, <ira.weiny@intel.com>,
-	<yan.y.zhao@intel.com>, <pankaj.gupta@amd.com>, Kai Huang
-	<kai.huang@intel.com>
-Subject: Re: [PATCH v3 6/6] KVM: guest_memfd: GUP source pages prior to
- populating guest memory
-Message-ID: <20260113213556.rwihf3v3ek3c5kwl@amd.com>
-References: <20260108214622.1084057-1-michael.roth@amd.com>
- <20260108214622.1084057-7-michael.roth@amd.com>
- <aWabORpkzEJygYNQ@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aWabORpkzEJygYNQ@google.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF0000449E:EE_|CH1PPFF5B95D789:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2abfdd1b-d14e-4c68-8a1e-08de52ebc5dd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+dCJg6BgYvL/sIyGBCzUe4swuko53py6nr0SkV1bn1HDCF20lR+p6kNXB50n?=
- =?us-ascii?Q?sEq2NYvbhqp94/J3PsY0CDjvPCdC2IBeZIKa8soicVwbfVjQVsjBsV+E3FkD?=
- =?us-ascii?Q?lQcQNmYKAe4rgu1de6OzT/bIOFij1tV3dH/1zeASRCpA0znbVN2ho5yKfIKm?=
- =?us-ascii?Q?afzwI156z4caJLgK8AmfQjAmDU9lMvfADNWdSOx1v5J9dnNkiNFYSDoSTRYT?=
- =?us-ascii?Q?QPrd0QA+LMWDtY41h3zhyy+MbnW3vCcCnDFwnAp+BFa+2Tl3fM6UHG+/EkzE?=
- =?us-ascii?Q?iUa9GT3cPvvU9vxI0xXD5HHDthBimkqHO7TNbvzucb3MWsqlFapbXM4y8Ech?=
- =?us-ascii?Q?chiYWkRmnYiFeyjbMCZ/9K0INNULyqmeLlTVdVK1ueUrfbo/3IxWJqvSqQwF?=
- =?us-ascii?Q?32qzt/8DScKrYlDgMOg1/vbsL9ASD+2CVaQXJdJVhw51omrJ+EILEaiz6HO1?=
- =?us-ascii?Q?fe097LImqN2Di/wy+J83YsxcOAePSPiR3Fu7a9b9Q+qVDmrNEQ6Q1QJ+svWs?=
- =?us-ascii?Q?zvXkNmg+LejUKmVkuSGiMwEhVhvvQcntbfFdEYylqKu84FJkHAoY4+GYl6Jx?=
- =?us-ascii?Q?qfyvBgBdowbWC1M5OVyvTrOp91M3GN/6lD0az7qnzGunlfvV+wo78KaVZohz?=
- =?us-ascii?Q?2hxxMBhpUuo9oK0JPxzP/KAYp1Y1MgXJrbmFawcxzG58eSmhyGpv3RI8QibY?=
- =?us-ascii?Q?VIKODQqLKX+emr+6l3uSkrvU7x+mgU7VK8DngFdau+0HolrnuVRBIOz/gZKB?=
- =?us-ascii?Q?uiTtPzyzJRaFZUNXMev5+qsAq1Y8EaAm36ZkFKybZnCCJy4ADP0nvwtaozLz?=
- =?us-ascii?Q?H46HB3m/DdvZq2cFeSrZ/D3eoAbHuDAq4x3+VRYtKkXduD2L/IuEk5IRM21t?=
- =?us-ascii?Q?QPvLnJBPbwhYuzqqbzRTzo5pmkbE+3igmTbjpq8IF9NMJ4LmLOOyfIfhWhoh?=
- =?us-ascii?Q?AnAxxwNSRfi33KUkmPL976apCIYBdOWM8HbvNMA8dp6kfSlAIzNmnYAM2v9P?=
- =?us-ascii?Q?OCvd+TljmfKNrsGZ2qVwR9OoMxCAgnKG2dBNWhEpa57MxJWtYB6iCxfHRlR3?=
- =?us-ascii?Q?AIn1wO8g/cOLKi5gD6J72xM2SkckeimEq4y3Lt0fXvPlnQi/vf1JoKz24eda?=
- =?us-ascii?Q?nnNQO1YOUvDu9ZzOsN+Bi9TFEiv6kw3bdtWwyv6zQCLH0+e+8Fg+sSmKioqt?=
- =?us-ascii?Q?88I6K2tSATKwt9TY3EMorNv6dzMQ3ysBtKfVMeC7RlfZQIxZQd5vG0piEK1T?=
- =?us-ascii?Q?ay820IZnNua1FWVQMLXjrwCYm2T/O583HGc4oxGYh/y/k77tcn9bbmuLmPJg?=
- =?us-ascii?Q?30v8Y89mNkLiFLTVr4yQ6acmrfdvWOnjRxxkL7hrbbN7lGN/u08n2+l1gFnT?=
- =?us-ascii?Q?/c+ZW1Yutjq4VPavc2xc+/fvWZWLXjE9m7u0y4lbhQqboPuKdZuavPmeObGV?=
- =?us-ascii?Q?t+dcLDIkgECTopIWALyjKtwgZoVLIGyFwf7vSVjsh3vEnaFt4Y1CL5pDk43C?=
- =?us-ascii?Q?1Z431sFOcVL5fV020YeRU0NXGzgUupeIjVxOmgoErR4nXGaoqSKSrWAf9Mij?=
- =?us-ascii?Q?wXi5vs7zeY3zi+k7KTQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 21:36:12.3188
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2abfdd1b-d14e-4c68-8a1e-08de52ebc5dd
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF0000449E.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPFF5B95D789
-X-Stat-Signature: 8xrfxno3a8fb8goz9zdsu1dhmc846hwi
+	bh=77jbnNjGvttgRBstNEis+d0nxEaoUqq2VcZJgtc6MLI=;
+	b=Evd+29eRfNUCLLcq4fjM3Dg5P5ntOpllBvqO70vTw17i2oEENAP8mdo+qhES+YdgdANOFq
+	lvNQBmcwSrFM8atpfKsDHczTQGYuYc8VuWxtvsoNozpqTdvhjyprjYmqhbjdXTltduJo7X
+	5vDMfeOepg/7D/frlf9NsBV1Vzw5Qi0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9867A44253;
+	Tue, 13 Jan 2026 21:46:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748C7C2BC87;
+	Tue, 13 Jan 2026 21:46:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768340806;
+	bh=ZTDjIe3A3F2nwPPzv8C55wTsqbHPvVf8qFMA2lKaf0s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=zSX9a75qVNuIkBH/sYml4picIhPSQHuMbZop2DBHmr9o0xuFX/P5JgVNgGPCjXyoB
+	 rfyFfGwus4dUzPUnyLTE5G0QKL/QnrNbrCSV/Vs/2cTGSgzDZJTReh/S8r6XkmzG4G
+	 LzEzuNrJT+DQT/c+j1ff7t8y5JMT3e/+pO2Gmxyk=
+Date: Tue, 13 Jan 2026 13:46:44 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo
+ <tj@kernel.org>, Christoph Lameter <cl@linux.com>, Martin Liu
+ <liumartin@google.com>, David Rientjes <rientjes@google.com>,
+ christian.koenig@amd.com, Shakeel Butt <shakeel.butt@linux.dev>, SeongJae
+ Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett"
+ <liam.howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Christian Brauner <brauner@kernel.org>, Wei Yang
+ <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>, Miaohe
+ Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>,
+ linux-mm@kvack.org, stable@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Roman
+ Gushchin <roman.gushchin@linux.dev>, Mateusz Guzik <mjguzik@gmail.com>,
+ Matthew Wilcox <willy@infradead.org>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Aboorva Devarajan <aboorvad@linux.ibm.com>
+Subject: Re: [PATCH v1 1/1] mm: Fix OOM killer and proc stats inaccuracy on
+ large many-core systems
+Message-Id: <20260113134644.9030ba1504b8ea41ec91a3be@linux-foundation.org>
+In-Reply-To: <20260113194734.28983-2-mathieu.desnoyers@efficios.com>
+References: <20260113194734.28983-1-mathieu.desnoyers@efficios.com>
+	<20260113194734.28983-2-mathieu.desnoyers@efficios.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 15AE380015
+X-Stat-Signature: ijeowbs5onjj5doqs4myt5mabahdbduk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5FF15180009
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768340184-822208
-X-HE-Meta: U2FsdGVkX1+aCTzepPFOFB3Okqbmb44zIlPobaO+XhYrV7QytAG1dMngHGLidjtQ9L9D8Ct/KcqhK1vDd+ZKwJ70LdDWKGYYpHdtdJyNply3SPu8HLRjSnKV4lX4ejMc5yHET+vHrdsNynY0K5mOkEyaeE203ey2r+SkeHjY2nEll6m3X1x9cJ/OiAq9A3q+SQWbA5VR9zquTcfWQLv0MukPKEDHAJT6z+jKbIbEL0Wf60v8BsHyWZZDpR4AoYtiy1pO0rSMCNbP410+HY6vYtv8vwW2+rH7ZDtebcAAJeBTV68AnQsA2wDhCudrxLi1whGxziyjx2R2jTjmJuyGmcKeM2J/cBPvbzsurq6HtvvMmPnC/LLXqywZe1S6i7uG5RanIp/yyRCoX9fJWloab8kysKjeXOYYQKACILnZiLS1sGH7BMs/8/JD7f36kXeIFCX3fSULqPzwbIIv82R5ac0DVUsqDK7Je01jBbspk1LPjtFUBz3+CigyInPw7E7L8z4LpFsw9L/i/wupcmO9SZNCvLYgx8jA3O/lEAs1rqDtffv1ANV9DdB+s6YSzh1ilbtuom/IYZXxdt17pQdvB20SylUIpwFLH7Az7mktGJN1Me8FxTgXfG27iQS1hzCTYPCXXEtHRuF+ceu5+4Qd8ROvj/AzLbKIVS7Du1JZE/t1kGndJKm3CjG9LCb+29MgDYy6EhLxfoDgmzF+WdaGfrdXMTorWtaO9cCxAsFZ2hn6HcuMoRfcUWk5/steqFlvVkDoCWKSHynT10RItENy7+dBKGuYURjj0mmkjQio/en9nHGYAkMWQauu60YVY6iLFYFSZSo0jJJRUDhqk0P7xfqrBWIY0HA7/yELf0vAwTcTvmEsKCA7GQfNhy1hsT8uN7iJd/03evWQ+d93KzdgTJURwtIXGWIe4fciLa1/17tbU4IwsxL8UpBdcRk1vyO6frhpiTf1CMeWvzfNEf7
- KITB0WGw
- 5+ixo6JQ+tBc6Jwc6DyCzo0ybIi0y2r5C820cWW94UJ8x0rGrHoglpKa/K7GgebgauSMjL1ZLPSR6zwJ0ghs3arHEqz003tcA8kFBhMcgUAMcLumi0sQlkRE6/+v2DFV6S2Coo1LkcVc2L+hTF7VOVACGUJlg1MhY1HOed3GNGqADzPFsSCqIO3/B9n5dm6rc14KfBHHwGIvSprInIWf+cqaMKDefBZaA4gngxrNypxXFFIjG/S35cxQqe4kwQVe654iQLbmabarnGsj612+Gybxh1YLFmgBdqYKiPyfDxY/BjY5Vv083oLI/lq4bjejScrY849AhZb+AkdKvYM2nKGFZ+CAPN9iuJvbUm1v0j1B0oftdqMBthHjoJRDisF8te58stBlMILmfWgR+mMO/y4xbtQmk3uEG6u6lH3OiUOMhUVWLm3npfRqof9dab8Jos8rA0FYd5A31AfP/7kPuc6RkW0V9a5k4KkqNC14tvUyYur1sMVcSJqKRvxXmIKYMMBF2JYNP/cP9kP2feAOzTdrQlr2TkfFn3Qu1fw+euyx4Cy3bH/aM5aTD1n6q25C4UwY6F7fen55WCn0cV5Ut+ZYQyla70QnV0/Fz
+X-HE-Tag: 1768340807-930317
+X-HE-Meta: U2FsdGVkX1+qr+TXvw99cNR+tODBQUjSpz8kZ9MCfoyGBVFXyG4InuLYfchFNAmjwwhyjM/2bPcf7qykS6l+0E6y6hmhrxypVcI5soNhLMqixX49cwz+v9gGZ9YvAtDyXv2H4B+baN4f2YzLT39m0OUAnn8Oi6SidFF9w25bnlPtuFTvE7vWeR45kIxJUuiJxJGfhkbLOqztX2lLl5ymgleFSEWV7hG1ORfALFo/WNDrel5S0qp8oTMJE7gWeb97CDa7NL1ru4OsoJtU2CByhH499dlYdiPcDYoXn1O7XS6h+GIzElpxS0lnBqF1jGC7l9HWKlJmGXEFlXof8qpUXUw/yvuyVRhEHH9L3qzi3mdeRDqphcTwf09aTWLb8fECXMPv5e/FLXRsZE3RBO4K7nhGWFAGehvKddtdXw0iCDM/8SLTGbh2hUeb+tZUyRLhxp1R9ycIAIW8ZoDQ7ZZj/UHAF9YrNKQ/D5Ccrulu03xzLhH5HTR6gNuS+6AZybA0x9pPQtTx2I9Gz7Sk14CJeh70KhNfcL7aUmOI1fSjL8u9stdA5ljfmcEjMWiPlqMkraeJWDFZuJi6fup6y5RpiQnhsqzjWPQYzFWI5sdB9RtQKX9bumKIEknfXZcfMnM1ii+evHfv5EbFwFq9MhMx0wxuoKoxX84yXIKDvZk89VpSMoZjsXX+f0IMx4npeZNfA7A7+x+H05fAoZxCL8GcDPvplJbXr2usLHpwlfBHneEt3r/WzHzz0bxk42eFNiepUWVOTz7flu9Wm9dstbcaZ07cU2rzY6KjevrRaHmDtToyguSE6w2Dy/glmN7lRpH1c1ryxvMo0oxyHWt0w3jkIJ2StaCYjilCtAkn+gImVE7XaunTZCv2FK0KnpO+gm+80ChDN2iREWvxvJ3K2STHgmdU8VMGJq+/UgfjUoE5QjCmFl/6akek9Cmt9aqktOpUkzfk6fTRQR7TJd8KzMB
+ rtFS/gws
+ ufRaxmf+MzpdiQiMAI95k5bNrglRMKspywoF3DA/gCn06vDReWiLYxw8Hrh0xDLF8t8AZQ/7XIeXZlArwZhMz07hyLUh56ZYVNgWNT9K7UAoCjC13JAinoj+rCNlN+tlJqaJfOXhJgoa1b4c1ZPSKGzBRTKcAzkG6jYxqM8TPggWDqgUwGXsd/ixrg0XmOwE4omEt3kdOy3IfxLDmBUBqJrlCiZnrQDV7PaxacSZuc2LiAHXTroJPWtKFkBW+eINzUpNfCOhwpY6IqUPqoFOh1EI0zilvrTqTPlVt+0A2PuxggcGyTFmsx1ni9pl4ggsoCCCrjX8rsW8T7hgWmprSdeXy0o5tV1LfQOTvWhFLwdi9PHK2RIk2sCJLy6KAHveycm5G
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,97 +109,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 13, 2026 at 11:21:29AM -0800, Sean Christopherson wrote:
-> On Thu, Jan 08, 2026, Michael Roth wrote:
-> > @@ -842,47 +881,38 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
-> >  	if (!file)
-> >  		return -EFAULT;
-> >  
-> > -	filemap_invalidate_lock(file->f_mapping);
-> > -
-> >  	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
-> >  	for (i = 0; i < npages; i++) {
-> > -		struct folio *folio;
-> > -		gfn_t gfn = start_gfn + i;
-> > -		pgoff_t index = kvm_gmem_get_index(slot, gfn);
-> > -		kvm_pfn_t pfn;
-> > +		struct page *src_page = NULL;
-> > +		void __user *p;
-> >  
-> >  		if (signal_pending(current)) {
-> >  			ret = -EINTR;
-> >  			break;
-> >  		}
-> >  
-> > -		folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, NULL);
-> > -		if (IS_ERR(folio)) {
-> > -			ret = PTR_ERR(folio);
-> > -			break;
-> > -		}
-> > +		p = src ? src + i * PAGE_SIZE : NULL;
-> >  
-> > -		folio_unlock(folio);
-> > +		if (p) {
-> 
-> Computing 'p' when src==NULL is unnecessary and makes it hard to see that gup()
-> is done if and only if src!=NULL.
-> 
-> Anyone object to this fixup?
+On Tue, 13 Jan 2026 14:47:34 -0500 Mathieu Desnoyers <mathieu.desnoyers@efficios.com> wrote:
 
-No objections here, and it does seem a bit more readable. Will include
-this if a new version is needed.
+> Use the precise, albeit slower, precise RSS counter sums for the OOM
+> killer task selection and proc statistics. The approximated value is
+> too imprecise on large many-core systems.
 
-Thanks,
+Thanks.
 
-Mike
+Problem: if I also queue your "mm: Reduce latency of OOM killer task
+selection" series then this single patch won't get tested, because the
+larger series erases this patch, yes?
 
+Obvious solution: aim this patch at next-merge-window and let's look at
+the larger series for the next -rc cycle.  Thoughts?
+
+> The following rss tracking issues were noted by Sweet Tea Dorminy [1],
+> which lead to picking wrong tasks as OOM kill target:
 > 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 18ae59b92257..66afab8f08a3 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -884,17 +884,16 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
->         npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
->         for (i = 0; i < npages; i++) {
->                 struct page *src_page = NULL;
-> -               void __user *p;
->  
->                 if (signal_pending(current)) {
->                         ret = -EINTR;
->                         break;
->                 }
->  
-> -               p = src ? src + i * PAGE_SIZE : NULL;
-> +               if (src) {
-> +                       unsigned long uaddr = (unsigned long)src + i * PAGE_SIZE;
->  
-> -               if (p) {
-> -                       ret = get_user_pages_fast((unsigned long)p, 1, 0, &src_page);
-> +                       ret = get_user_pages_fast(uaddr, 1, 0, &src_page);
->                         if (ret < 0)
->                                 break;
->                         if (ret != 1) {
+>   Recently, several internal services had an RSS usage regression as part of a
+>   kernel upgrade. Previously, they were on a pre-6.2 kernel and were able to
+>   read RSS statistics in a backup watchdog process to monitor and decide if
+>   they'd overrun their memory budget. Now, however, a representative service
+>   with five threads, expected to use about a hundred MB of memory, on a 250-cpu
+>   machine had memory usage tens of megabytes different from the expected amount
+>   -- this constituted a significant percentage of inaccuracy, causing the
+>   watchdog to act.
 > 
-> To end up with:
+>   This was a result of commit f1a7941243c1 ("mm: convert mm's rss stats
+>   into percpu_counter") [1].  Previously, the memory error was bounded by
+>   64*nr_threads pages, a very livable megabyte. Now, however, as a result of
+>   scheduler decisions moving the threads around the CPUs, the memory error could
+>   be as large as a gigabyte.
 > 
-> 		struct page *src_page = NULL;
+>   This is a really tremendous inaccuracy for any few-threaded program on a
+>   large machine and impedes monitoring significantly. These stat counters are
+>   also used to make OOM killing decisions, so this additional inaccuracy could
+>   make a big difference in OOM situations -- either resulting in the wrong
+>   process being killed, or in less memory being returned from an OOM-kill than
+>   expected.
 > 
-> 		if (signal_pending(current)) {
-> 			ret = -EINTR;
-> 			break;
-> 		}
+> Here is a (possibly incomplete) list of the prior approaches that were
+> used or proposed, along with their downside:
 > 
-> 		if (src) {
-> 			unsigned long uaddr = (unsigned long)src + i * PAGE_SIZE;
+> 1) Per-thread rss tracking: large error on many-thread processes.
 > 
-> 			ret = get_user_pages_fast(uaddr, 1, 0, &src_page);
-> 			if (ret < 0)
-> 				break;
-> 			if (ret != 1) {
-> 				ret = -ENOMEM;
-> 				break;
-> 			}
-> 		}
+> 2) Per-CPU counters: up to 12% slower for short-lived processes and 9%
+>    increased system time in make test workloads [1]. Moreover, the
+>    inaccuracy increases with O(n^2) with the number of CPUs.
 > 
-> 		...
+> 3) Per-NUMA-node counters: requires atomics on fast-path (overhead),
+>    error is high with systems that have lots of NUMA nodes (32 times
+>    the number of NUMA nodes).
+> 
+> The simple fix proposed here is to do the precise per-cpu counters sum
+> every time a counter value needs to be read. This applies to the OOM
+> killer task selection, to the /proc statistics, and to the oom mark_victim
+> trace event.
+> 
+> Note that commit 82241a83cd15 ("mm: fix the inaccurate memory statistics
+> issue for users") introduced get_mm_counter_sum() for precise proc
+> memory status queries for _some_ proc files. This change renames
+> get_mm_counter_sum() to get_mm_counter(), thus moving the rest of the
+> proc files to the precise sum.
+
+Please confirm - switching /proc functions from get_mm_counter_sum() to
+get_mm_counter_sum() doesn't actually change anything, right?  It would
+be concerning to add possible overhead to things like task_statm().
+
+> This change effectively increases the latency introduced when the OOM
+> killer executes in favor of doing a more precise OOM target task
+> selection. Effectively, the OOM killer iterates on all tasks, for all
+> relevant page types, for which the precise sum iterates on all possible
+> CPUs.
+> 
+> As a reference, here is the execution time of the OOM killer
+> before/after the change:
+> 
+> AMD EPYC 9654 96-Core (2 sockets)
+> Within a KVM, configured with 256 logical cpus.
+> 
+>                                   |  before  |  after   |
+> ----------------------------------|----------|----------|
+> nr_processes=40                   |  0.3 ms  |   0.5 ms |
+> nr_processes=10000                |  3.0 ms  |  80.0 ms |
+
+That seems acceptable.
+
+
 
