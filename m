@@ -4,107 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8F57D30CEF
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 22:06:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7F1DD30CDB
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 22:09:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03B1D6B0088; Tue, 13 Jan 2026 17:06:58 -0500 (EST)
+	id 280566B0088; Tue, 13 Jan 2026 17:09:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F03A86B0089; Tue, 13 Jan 2026 17:06:57 -0500 (EST)
+	id 230286B0089; Tue, 13 Jan 2026 17:09:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFF276B008A; Tue, 13 Jan 2026 17:06:57 -0500 (EST)
+	id 13C4B6B008A; Tue, 13 Jan 2026 17:09:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CE0D26B0088
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:06:57 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7BFD21602BC
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 22:06:57 +0000 (UTC)
-X-FDA: 84328326474.19.0A3F17C
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C039D4000C
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 22:06:55 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=1ajgFsrb;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 3_sFmaQYKCG8fRNaWPTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3_sFmaQYKCG8fRNaWPTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--seanjc.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768342015; a=rsa-sha256;
-	cv=none;
-	b=FfIRryk6hhB4MQe97RwnutHPPfsJ9ZOVle38ZS68siy0FGNxsX/OcAzf/SUNQEuzqxieYC
-	/OO42fjXNrEqw75CtJ2FEEDl58k41CrafKe+wHDjVqSgj4YdKjjg70JmSLC0Ug+YT4WAWu
-	XJlcZ5DTpAd4KLm2v/ghqogsKLF8GmM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=1ajgFsrb;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 3_sFmaQYKCG8fRNaWPTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3_sFmaQYKCG8fRNaWPTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--seanjc.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F3D636B0088
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 17:09:18 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 76E551A02C2
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 22:09:18 +0000 (UTC)
+X-FDA: 84328332396.11.EBBDEFB
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 70F1B1C000E
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 22:09:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b="UeFR/cmf";
+	spf=pass (imf21.hostedemail.com: domain of "prvs=9473463a0e=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=9473463a0e=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768342015;
+	s=arc-20220608; t=1768342156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H47TubffnoB3LJi9WbWx6JWYlmT0g/2zrK7ql8Qwt/s=;
-	b=aSMT38X9agthzxSEBQj3aEOvlJDde5P22UZMlIp7wg+RnB4D/n4HNhKTKLI7OO5tfc3eE+
-	iZzbn72yveUhGNWocNFnuicXe+erjyEMhuHKkOZK2I2ERx7JCF6CKMI3wt7JqqVXjEOs5m
-	geHhYrFUazpUFfjOxl3pZmiyFkevYMc=
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-29f1f69eec6so83111635ad.1
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:06:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768342015; x=1768946815; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=H47TubffnoB3LJi9WbWx6JWYlmT0g/2zrK7ql8Qwt/s=;
-        b=1ajgFsrbJJ1heCRR7cRyB/gfW4r82WwTtTVB425xKGgVAX+9mBlHwa48wftBmR/j1q
-         6bHsa3//JlHaOlhmCh8Bgek6lgEzSPFHGvekeDjtRboTFSD9C2d3AFobSPoC6iFtPRs3
-         Mww/VbK+r8GsXnCbw8fGFaMxtVWaQb6UcoOFGrZxjGliOCXogalHYTEhu/Ix2A/L2lpk
-         IIIhq5LEpXciOlE32aFf1nvJt/mSAjcaEi/YvLu4wzzago9Mv94TFmM+FX2phiJ1+Ww+
-         3qyvdnvO7mCIditDsmT/U8bCymgUkS9nHz4ANXlSyOEwzbwGe7ulvS7kTtiPAorkMnlA
-         t0Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768342015; x=1768946815;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H47TubffnoB3LJi9WbWx6JWYlmT0g/2zrK7ql8Qwt/s=;
-        b=nDd6LBZT4JeHG9HejCgZgutW4qOzlylfP96Zg9+lB7JKXlqlFK+q/1hb2CZRKdqRde
-         CdMykEgGHg7mL3Ih+lhAV5rFqhMsZ4oAnGYNvAwF3+Ygbz6B3J+v2BCLMckVudzQkrZ7
-         SxKPeSsMDajmYpy2TF4cqWqaMibA5BLWKrcrG3vYAt3rM41DiTrbz/FMcZvWE/VgliV8
-         vDRJSUymu9zUKgQSVAz0d0lXE/Gw5/yGpOdZ0t/gHNOt7Tj9ElZlCFKKutll5R2ydrhu
-         mieiOxLosN300oQwMGkBA8gWWLgCVQhSyhS+yqA4QBQZyHbOVsDlKuLQfKFNKWyDL2+9
-         eUzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUnltgpc+9n3pRKKfpD7dEDO13t80BxoRlfxjtrioudpcqVkYcs3VbFMglDMh3+f4LS9G6rPEvZTg==@kvack.org
-X-Gm-Message-State: AOJu0YxbdN5qaA0zhsBzzJZGmfYtH+ptIEw6Ot5DG8VmKSWctm7YlVih
-	RrVcV0pWdc2J1uHjGmwTd4a2LwLMtP+SZBmzQGyKazVGySxrpRfW47hFmsJdHbHX/HBKfzUTmUk
-	cbg/JkA==
-X-Received: from pllj12.prod.google.com ([2002:a17:902:758c:b0:29f:22e:147c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1c2:b0:2a0:b461:c883
- with SMTP id d9443c01a7336-2a599e2ed67mr4408825ad.45.1768342014462; Tue, 13
- Jan 2026 14:06:54 -0800 (PST)
-Date: Tue, 13 Jan 2026 14:06:52 -0800
-In-Reply-To: <20260113213556.rwihf3v3ek3c5kwl@amd.com>
-Mime-Version: 1.0
-References: <20260108214622.1084057-1-michael.roth@amd.com>
- <20260108214622.1084057-7-michael.roth@amd.com> <aWabORpkzEJygYNQ@google.com> <20260113213556.rwihf3v3ek3c5kwl@amd.com>
-Message-ID: <aWbB_Dd94rngPfgm@google.com>
-Subject: Re: [PATCH v3 6/6] KVM: guest_memfd: GUP source pages prior to
- populating guest memory
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, pbonzini@redhat.com, 
-	vbabka@suse.cz, ashish.kalra@amd.com, liam.merwick@oracle.com, 
-	david@redhat.com, vannapurve@google.com, ackerleytng@google.com, aik@amd.com, 
-	ira.weiny@intel.com, yan.y.zhao@intel.com, pankaj.gupta@amd.com, 
-	Kai Huang <kai.huang@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C039D4000C
-X-Stat-Signature: 33ygjxfh9u5ja881d4awixgqwo9ycx11
+	bh=HbKNjJaO1cGUCeRepTM0eTzzK48zgICKB6rrGrUwt9E=;
+	b=H9Yk9a3tciLC+iR7ZJjLkNYLV5T4SiGzOK5cpa0G3tM3NgGKWO+WRsweTy7TbifYYZcjEg
+	BBmRT8SpyxQ21YrKmdL5T1Ra6KUmTmjN99b+MCa3HMtJzZVjZGHxVgfuMDxo6gNKWtn7w6
+	qo6lOAfUkmrqcYSfB3Z6UQtjGW2GoCI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b="UeFR/cmf";
+	spf=pass (imf21.hostedemail.com: domain of "prvs=9473463a0e=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=9473463a0e=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768342156; a=rsa-sha256;
+	cv=none;
+	b=fc6F3XgmVV58zHr3rn87MM/WcY5v0+yUYx/9KrCRIOPJdZxEq6gf7KxUHl+SrwxsuWKOIY
+	XWXWBqvxG3S4cosQ3SX8JQZRyNzZsJEuQOL2k7bjmcm9pA+eNV80Shv91CST2YPRVmjfty
+	P5VLN8ili9Ys3WTb9mqLHXz5UjBVKgU=
+Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
+	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 60DLXVAV2738866;
+	Tue, 13 Jan 2026 14:09:11 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=HbKNjJaO1cGUCeRepTM0eTzzK48zgICKB6rrGrUwt9E=; b=UeFR/cmf9T+o
+	iP5iXBbEUMomk1D46SRSu7KKO9LC87SrzkqbuZIkwKIzguargCRgVRUPvPAh6pkU
+	K1ACfW+dxGNDwzuRLkSxl6oUU2oTuz3oNIntCKjHSmPW5bwCb98OKuCx9GKOuWSr
+	EyhDOZNfFQ/OHijEC89oMzyk8ufoS+hcNnbX7Fnc86JYENYjZvzVrn4glAdF0D+8
+	68S7aeklgstqNi/2UCLcUnTlBqtPdjklIxXlsH+wnoatZayHxTlUm9o71DrFDCY9
+	5WQJzVQWg9nrv7Rghke84sULb+/ZvQ0OexZHb6RLmfjfJXXsTru2ztTg7BNfO25E
+	2rok1Huk6g==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by m0001303.ppops.net (PPS) with ESMTPS id 4bnx2qg8sn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 13 Jan 2026 14:09:11 -0800 (PST)
+Received: from devbig003.atn7.facebook.com (2620:10d:c0a8:1b::30) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.29; Tue, 13 Jan 2026 22:09:09 +0000
+From: Chris Mason <clm@meta.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+CC: Chris Mason <clm@meta.com>, Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>,
+        "Liam R . Howlett"
+	<Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+	<rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Michal Hocko
+	<mhocko@suse.com>, Jann Horn <jannh@google.com>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] mm/madvise: allow guard page install/remove under VMA lock
+Date: Tue, 13 Jan 2026 14:08:51 -0800
+Message-ID: <20260113220856.2358195-1-clm@meta.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cca1edbd99cd1386ad20556d08ebdb356c45ef91.1762795245.git.lorenzo.stoakes@oracle.com>
+References:
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [2620:10d:c0a8:1b::30]
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDE4MCBTYWx0ZWRfX3HTgfC1bFz+W
+ XaSrb78bYD/J2y9w9eM2ZWlDZDSXVnTIHExA+8M3dTx72waMbnQ/h53G4vj90rJwJzP3Z1SV/HF
+ qlj4/m3I/yXD4IBQCg5D1O8Eq+762RNmXKpec6Qdjb1jLA+EdBNaaVMMKSBLsrgexKi9bgs7CzY
+ VBFIAjR7se87rYe3hYy/yVjklNPdzgCIWO0Rue3ZiB+fCuM6M8UinwKRxhJirQM9via+JxYHXdX
+ BNGFuOj3X3jTECniKAgVlJfRng3fQprsMYKQUiEHbk6Qy6sLF6dr7NSVU8kRNLGRLUo5dg/rHuw
+ suTcDcwsNr6VE+9HbHeFPfrYwq+VuhQ0+xqU35nxbyFVS/LbXzAhVUK9SYhlzrmi3O3B3uGKtm3
+ DnVGzWOn3ui3Ig0cgM71qBUxnDrhYoP9gu1aiudlXDh6qxwEYqkq7CztS/x6PLkKe2RIdAPYPfx
+ 0dl1Q2xCMuK+GSPPEuw==
+X-Authority-Analysis: v=2.4 cv=S+bUAYsP c=1 sm=1 tr=0 ts=6966c287 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
+ a=eayTNkxmwnh0hqTbl_MA:9
+X-Proofpoint-ORIG-GUID: 9wuHkkCUaWIdRwetfIQUywQLUMkXutII
+X-Proofpoint-GUID: 9wuHkkCUaWIdRwetfIQUywQLUMkXutII
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-13_04,2026-01-09_02,2025-10-01_01
 X-Rspam-User: 
-X-HE-Tag: 1768342015-604615
-X-HE-Meta: U2FsdGVkX18AiGlPmKMaCwrzZa4EHbt8R5vBguHwMjOMFTAjsuR/MGhz6oKvk2+J699Q1loUhnXHZNvxIKROVixWapsa+ADK+7+KhEejLS1iTIfhx2EcxwXiR/ncldlAw1dBgOBCax1gdgKeV7s8lkgSJJ9t95iH0+HPOehFs7cXzIKFbeXZ7m1PiD4DQV/vQJI6nbp0g83A9PGYZlf/kLxV/aIPPcx5epBeQrFyxzVcacoGzta1qf2VyChUsYTcyujfCCqEdm6feMgijLXtO6UE1XRWTf8WeVXFgkU/3cnfVAwbR/f1xkF55jckTsMMXGIYJej7mLe6bU5o22H+tDfWu/aNWAOQmdlW0wK1Mhw3EJ8ks1kC6YN2sQaUAkq1JmyTBwvg2mepKzojy+FNkaHAPYKeN5O0vMcxq3mkQzUj/UDYDAXnmx0oNU0mq+vK6Xtie815+h+PU9V47W0Z0CEBmIMF16fUefjfkqS6Z7E6wbgdjiLphvHcGNWjEcuJ7HqXtk7foCNzI1lIl6OKuHhQ7Lfj6gggzSqjIAxI0XrlQ0vz83gQ9JvA9GeHaxqdW+jTWtOMruoPYxE0iWptLVzgo3tbKVa9kZBLhtrfEDKZfXuOtUxL3QIb/LtOZ8GPMPyPFtprTvFqdnh2XbeIUwY81+eE5c9eLjDoAbMeqovIludwPpGZKSZPDag9UMRcYi5/Qblegtu93urW/jVw61N7k3A3hiR+4MvvBnO7CxKmljkfxDg7nnESJk46Y54DeQKzJ3dnqssc1PiGvqxEZu0oc4K1oNMjVGup+m5lPfyevOLtMkxRnI+Q/OSaegdAzDL7jxDNPLwHNeh105wPfZ/L6eDTdRwC19HsIypqwibMHw7oliIFMY0GQaVAApS5w3JYPNMz6TWhSaxXFIiBonkxILvS9oysG9haaoD8erMw67mikiXE1gLOoroprbY7w+TnGZuoI6tDWnRXT6W
- UmuUJ6rO
- QGRie9wAuRVvJ43AtcDT0ryXBxzfR9bCZGj4wRNfeMuzGjnC3AaUZlz1IyF0ZBoWi3XSooFMxtsixkCML+ce34eM6fGzYIaaFkFGG0MDg/b/3LUvNgN7/xcCbS8zlAyseEQCByfBgDhgFA3iF66UjOeCWpDvdbYXMr5E84Hes6rHRDy/9nTs0xxpWgT9gt9C3oIPdl+5A4Q4x1nMW13+g+RpTDtNim3ABd3/X1ruOXsZ2P8mwwGWXy5jASdbIXhrjivOQl9kz6XbJ1UwGYIhmF8JS9V9HgibPVAVh2Y7fntX5ul6x+RmtonNxldKGBAxnXH1O+9sU3aQNGsJhshh7DU5WhEcwpSqXtzQsq3dc5B37e9Ry65rgVaI+GTzowu09O15XhCWJI7dMZVjRePctCWjpRtAxDgmPW1QiK+XuUdeT2cZkEp6QSyLB8Gl1fmItqa7FTfFCwYwiXz9wAnx22rFfOoI5r5FtonZsxAVs9zY1RXPMZkPB94UmAXB32toCr9PTy7X1rWAFQrHyF/RDAthsU9/XpGknnOsJTRWBgX/ePDOenOdNkxzhNSoorKUUd5AT8Z5fRmuln0mrvMBB+Rbb+Bz2e874r2cnpL2dSqDat56W31E8JLd3R8ri5rGUilhHXqNz93fzE3Q=
+X-Stat-Signature: s9us4jkzqfphomtkizupwg5qum8q9y7r
+X-Rspamd-Queue-Id: 70F1B1C000E
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768342156-123672
+X-HE-Meta: U2FsdGVkX18RKgias82y4O2cwGxc4hKWzoscD+i9RSRuHI0n0AZt5Ss9pt3kanAO15dSYQ48G8p1RY566h3GyuqBzej5/k0Hz98pw9FOSyEXX9wwLEpEyEUm3QPq4Cbpt1CMTWzYzaMXxkS5E1MOtCCF+D0/MMVHBNUVmakOrbQTwe7CaDd/QJKxmhqI6+ONZltYRmss1bzaiIeht0Sm8KQyniSssmwFTmmbo36ItRgMo0XB6ZuCVoRlnhzVFJH6g6uh8zLw9gwX6A2kk7RG3Xb0UQv6++WdoAdskLu5wCJonXwi5uz76cEQ70t7xMRRr9PG6qc7E52MUVG/iQONUsAqIOrQLiSH+ACImTiDr/Tpd+AjRVbo8W0jAuJb4/HjxLlSMXFnWA9dh/9GwkuNlxynD2wTQlx9LCKFeEn5OXL7KpiFQ9WBf6/h4RR7531pqlwjzkoH0cNjbm7YD6ocLgB9PHRcY2EyRnvPjWyUMsFBT2Ha0cUd+ABVekAsKGLbj7yuvEWbG2fVDOI9Zd1654tOS3TStYzY+AYF2cGaYy6lMqTt2GdprQMjOQjy2ztBa0jBKLFW2s4U/HKa2xYS+4MA26B9LiHVejr/ANIg7sSZDqHr7E6alwSdcoTP+YJ+RRjbl4fTsi4CaZyPfw1Xbkh7c0MSjX0sq4BFGW0ZFubmkZoE5HHMVSe+4t9lz/JV9PB7KxjeZ2nrNJqHm19eGEWEsppjXZgNtcKB8Nq+haW9uV6z2fGAmaly1Bc8ws7Qd4nC08nTz3GOgvOWqLOWSQ4BFwiYE8tL8e1rGeKTLHgN7TMNqckDIX8gxFL4c4X5MQLirXws0UCoQgCF+bcp4idKCER/m0brjEEp4razAJx+uMEqPylKjYkHrsNEJlvdQv5cwSr6MugH+AbgrM/wMu5jiMYQWXpubnuwDVYptWA6v165GbKwdVxqnPUlVZ7tQnCPfvt7Oth/W/wqC2j
+ OyIljeEa
+ oZ0OOH35t8uApO1p/MTJ1doPdJqDsxVYanC8jEkBWn7KACQA9mRnX4yLW0lnGDx8SD17iDuSFXte+pZp8NNbboGJ2qjY2/d8W1MQHr8kWZ1fenKgROvkdyIFfDnYgr36Q16YHjZhVoRxmThFKb9cTWaAHz/+JHyrKQwShc3f/I1g9HV2qZSnoaiFU2IPtUUJC2iwsgI7QbVqRMYpaTvzjx3M4p43AL/IpN7vOuHSuufcJt2UMj1+eoJIW69O5adO2qAmy1Zv12FNByd9Q+dSrOSkX/e5rTz9y1uXC9ArDzgi/dleflEVKxbf3h0pqv710LjX1JLgSnZqTl4TT+GLjxEiz4wZegwpsqAN2S0J3ENu3hbc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,49 +125,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 13, 2026, Michael Roth wrote:
-> On Tue, Jan 13, 2026 at 11:21:29AM -0800, Sean Christopherson wrote:
-> > On Thu, Jan 08, 2026, Michael Roth wrote:
-> > > @@ -842,47 +881,38 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
-> > >  	if (!file)
-> > >  		return -EFAULT;
-> > >  
-> > > -	filemap_invalidate_lock(file->f_mapping);
-> > > -
-> > >  	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
-> > >  	for (i = 0; i < npages; i++) {
-> > > -		struct folio *folio;
-> > > -		gfn_t gfn = start_gfn + i;
-> > > -		pgoff_t index = kvm_gmem_get_index(slot, gfn);
-> > > -		kvm_pfn_t pfn;
-> > > +		struct page *src_page = NULL;
-> > > +		void __user *p;
-> > >  
-> > >  		if (signal_pending(current)) {
-> > >  			ret = -EINTR;
-> > >  			break;
-> > >  		}
-> > >  
-> > > -		folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, NULL);
-> > > -		if (IS_ERR(folio)) {
-> > > -			ret = PTR_ERR(folio);
-> > > -			break;
-> > > -		}
-> > > +		p = src ? src + i * PAGE_SIZE : NULL;
-> > >  
-> > > -		folio_unlock(folio);
-> > > +		if (p) {
-> > 
-> > Computing 'p' when src==NULL is unnecessary and makes it hard to see that gup()
-> > is done if and only if src!=NULL.
-> > 
-> > Anyone object to this fixup?
+On Mon, 10 Nov 2025 17:22:58 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+
+> We only need to keep the page table stable so we can perform this operation
+> under the VMA lock. PTE installation is stabilised via the PTE lock.
 > 
-> No objections here, and it does seem a bit more readable. Will include
-> this if a new version is needed.
+> One caveat is that, if we prepare vma->anon_vma we must hold the mmap read
+> lock. We can account for this by adapting the VMA locking logic to
+> explicitly check for this case and prevent a VMA lock from being acquired
+> should it be the case.
+> 
+> This check is safe, as while we might be raced on anon_vma installation,
+> this would simply make the check conservative, there's no way for us to see
+> an anon_vma and then for it to be cleared, as doing so requires the
+> mmap/VMA write lock.
+> 
+> We abstract the VMA lock validity logic to is_vma_lock_sufficient() for
+> this purpose, and add prepares_anon_vma() to abstract the anon_vma logic.
+> 
+> In order to do this we need to have a way of installing page tables
+> explicitly for an identified VMA, so we export walk_page_range_vma() in an
+> unsafe variant - walk_page_range_vma_unsafe() and use this should the VMA
+> read lock be taken.
+> 
+> We additionally update the comments in madvise_guard_install() to more
+> accurately reflect the cases in which the logic may be reattempted,
+> specifically THP huge pages being present.
+> 
 
-No need, I'll fixup when applying (already have, actually).  If you want to double
-check that I didn't fat finger anything, the patches are in kvm-x86/gmem.
+Hi Lorenzo, one more flagged by AI:
 
-Thanks!
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 7ed5bedb8f8ef..2a165e9beb5bb 100644
+
+[ ... ]
+
+> @@ -1173,8 +1180,13 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
+>  		unsigned long nr_pages = 0;
+>
+>  		/* Returns < 0 on error, == 0 if success, > 0 if zap needed. */
+> -		err = walk_page_range_mm_unsafe(vma->vm_mm, range->start,
+> -				range->end, &guard_install_walk_ops, &nr_pages);
+> +		if (madv_behavior->lock_mode == MADVISE_VMA_READ_LOCK)
+> +			err = walk_page_range_vma_unsafe(madv_behavior->vma,
+> +					range->start, range->end, &walk_ops,
+> +					&nr_pages);
+> +		else
+> +			err = walk_page_range_mm_unsafe(vma->vm_mm, range->start,
+> +					range->end, &walk_ops, &nr_pages);
+>  		if (err < 0)
+>  			return err;
+>
+> @@ -1195,8 +1207,7 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
+>  	}
+
+When err > 0 (zap needed), zap_page_range_single() is called below
+regardless of lock_mode.  If lock_mode == MADVISE_VMA_READ_LOCK (only VMA
+lock is held), and the zap range contains a THP PUD mapping that requires
+splitting, the call chain:
+
+  madvise_guard_install()
+    -> zap_page_range_single()
+      -> zap_page_range_single_batched()
+        -> unmap_single_vma()
+          -> unmap_page_range()
+            -> zap_p4d_range()
+              -> zap_pud_range()
+
+will hit mmap_assert_locked() in zap_pud_range() (mm/memory.c) when
+pud_trans_huge() is true and partial PUD splitting is required.
+
+The assertion will trigger a WARN_ON because only the VMA lock is held,
+not the mmap lock.
+
+Is there an additional check needed before calling zap_page_range_single()
+when in VMA lock mode, or should this path fall back to mmap lock when THP
+is possible?
+
+> @@ -1715,9 +1763,9 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
+>  	case MADV_POPULATE_READ:
+>  	case MADV_POPULATE_WRITE:
+>  	case MADV_COLLAPSE:
+> +		return MADVISE_MMAP_READ_LOCK;
+>  	case MADV_GUARD_INSTALL:
+>  	case MADV_GUARD_REMOVE:
+> -		return MADVISE_MMAP_READ_LOCK;
+>  	case MADV_DONTNEED:
+>  	case MADV_DONTNEED_LOCKED:
+>  	case MADV_FREE:
+
+This change moves MADV_GUARD_INSTALL to use MADVISE_VMA_READ_LOCK, but
+zap_page_range_single() called later in madvise_guard_install() may
+require the mmap lock for THP PUD splitting as noted above.
+
+
 
