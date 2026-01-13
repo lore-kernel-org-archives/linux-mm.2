@@ -4,136 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 962C3D29DFE
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 09:54:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6EDAD29DFE
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 09:55:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0391E6B0005; Tue, 13 Jan 2026 04:54:28 -0500 (EST)
+	id 04FD56B0005; Tue, 13 Jan 2026 04:55:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFB576B0089; Tue, 13 Jan 2026 04:54:27 -0500 (EST)
+	id 010216B0089; Tue, 13 Jan 2026 04:55:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC6206B008A; Tue, 13 Jan 2026 04:54:27 -0500 (EST)
+	id E54AA6B008A; Tue, 13 Jan 2026 04:55:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C84166B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:54:27 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B4F31ABAC
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:54:27 +0000 (UTC)
-X-FDA: 84326480574.19.750BDBB
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 89B2880004
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:54:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CIXBPzOZ;
-	spf=pass (imf30.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D99B36B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:55:53 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7A88616022D
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:55:53 +0000 (UTC)
+X-FDA: 84326484186.18.1D9C998
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D6533A0003
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:55:50 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=JnPPs1sk;
+	spf=pass (imf25.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768298065;
+	s=arc-20220608; t=1768298151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=I5kwq28ArtsUeWAWQkRHAJMD/obs9sOzlfds4wEk8PI=;
-	b=q3Wv7DOM1tQyobbPvFSrhqxPag7BINw0Kq7A4BAzparCfjtfTZsDEDgf0kUSrruVpGpCPl
-	twjH6oxBFS1lJwCqIDna4Kj6S8YXHGwuK4vJKQ+jySpcUEmH60+zSMtEl6SCC8nsGATEln
-	h+nJ/XgO6Izd7RFJGg7EMto1Ym2CgQk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CIXBPzOZ;
-	spf=pass (imf30.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768298065; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Fhtgw3zCh4IN3NcaL58aW7PjNk7s9V2wTddOthEN+rs=;
+	b=tYKw82nf0YwyoNh+zJftt8FniLpaOkd/7ua+aXYc3lYXiLQiYHyUdzHZq3jNRrglXksW6O
+	adsv/0j5GKZW+g8O6Imj5NJZLOpvZSn1J3abKXYlQXaj8d1oP2gqiA9xN7h+3sitU3xL9R
+	z3/pTpCOfFiA/o4Zxio3HxZZWxnOslE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768298151; a=rsa-sha256;
 	cv=none;
-	b=Q8JBeUInHCCHyo2ic32/Soo2vJRmBndJeNGswLLcL8e70RPjkgEV1/5ncwInIuCnKgP3U0
-	/e4zUFOZcnuuBKIh8Hh4h0NDEWgcgDNAy/AFKTySndNgYO4XPSadj4edFckZyJOwOKQdEA
-	b+IU1letCVpGH3KriMohFf90PAwys00=
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4ffc5f35b54so57367061cf.0
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 01:54:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768298065; x=1768902865; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=I5kwq28ArtsUeWAWQkRHAJMD/obs9sOzlfds4wEk8PI=;
-        b=CIXBPzOZcPZP5AP8vEh/p8F1KPQ387K8mB2BbW2IWCD2t75HaVBMvX/E1ZmenqQWsP
-         QCLBSyc8ajFYpLK6uod14graNxSIsFJQh8xdPkN5mQAmBhsL37fjcUGsp4V9KxsC/o+P
-         c6aXEznnRte4sDosRltLQuxfInpRo2PBH4bfeEu38Lup88QUDfyLZQqf7Ky9pFzcYbrd
-         th2ZzJYfn5djPS2kM5pj0NoJlCNZjDz0rlE40SacKRgoSIjJHuSz9uYvBztgxz2wqVUa
-         l7t9qa0MXs537izpdjFjB+V1o0vbcIK9B4f8YZqHesy7g4mmguJwVgJhwnUzed1MlBoU
-         voKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768298065; x=1768902865;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I5kwq28ArtsUeWAWQkRHAJMD/obs9sOzlfds4wEk8PI=;
-        b=c20RrWknyrVVLU50RNjteBGvZbw1mXejkEoYUbMOGsr1o8dyPavV5MqJwBYgUvnWm+
-         9W78gOkft7F17wboPLu/PE1stgoch+STzJkiR2HI5DEozgup//h1i/1ShnH9/HGF4zav
-         jK0luxpRWMjdnq7X17h6Oo9pw6/NO8EE967oLbp3atdbIDWjRgsqn6nqfzxdZYVVPOYe
-         yYhBGV4Sp22rhZ52BeAK2V6Hg1+4blA3vwLZgmRnQSOMazA/OtvtI6O/QLUq9jO2fUq4
-         vNs01S8vdSTpkGozGWk24iPkb4WWHUwqdoLT0/NbjZ1+S6kYaVr+zPI+GEmMTyB5QVdn
-         sOCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXTgE/fusTlOZi4UItKexC39c1po+TU1cDXnYmufjRIlFXlMJqeV8Aun4Q5xuESG9J+v4uxMOsw+A==@kvack.org
-X-Gm-Message-State: AOJu0Yx1eqbgBiuMIvrOjFzTTCpK06WWk4G7vZnSuLdg559cCklaUnUe
-	teHv+pNzHAzMb0mpKKC0dCgMXP5ercF8dbs1R8DnifLjg7kxVfqfm1e0Zph9Lg==
-X-Gm-Gg: AY/fxX6iELdS4CBqfr2Ky7QRTJHYm5ZUO/HPdzeD19rf6nhuT+i5W5O6uphLahPGAGD
-	8i+idpTrPyzwbJ2NV9az7sEBJa36V2sulKUevowRnvdQOXMDmvDDUhE5FLFohR9q0Yhq7AwtXNv
-	8hS3ejKCBZSAvbvIAmx99MGer9ZX883EMA+IYAkgXn38ar3j70DDnEXmT0/oM03TOTnCwXKItfv
-	NH0kCcYWOBO6/xSU3L07jDwtWwzhrCaRVbvKBJSGWSPXZVVDN2tDsmO6ozTmaVDQh993qerx3Oi
-	bUBkc3J7tnWkxyOvxVkNRjYPzKoUbtw8V3sn2Pj7xvOWZrEacbiNpT3FJLojemj5Qi7o5ijyfin
-	TNlGJbpuWC2auUJBMUfTnuKMXoYjnU6Ur6JnCnAqRyvhkTchzH7X8IIFttXCNx/BOd2HoKiyN0P
-	4GDXnAwjkIXAOHTPlECFm1+erQ5A==
-X-Google-Smtp-Source: AGHT+IFBVrtk5u4rKzzBFDXzEra8FkgmNs+pG1NptAdeAUj8xnck47+E/LevyB+t2O7vXfNt+W6mJg==
-X-Received: by 2002:a17:90b:528e:b0:349:5b1b:78bf with SMTP id 98e67ed59e1d1-34f68d0bc85mr20289632a91.23.1768292123859;
-        Tue, 13 Jan 2026 00:15:23 -0800 (PST)
-Received: from localhost.localdomain ([240f:34:212d:1:180a:3788:c683:2f64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-350ff05492dsm657199a91.3.2026.01.13.00.15.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 00:15:23 -0800 (PST)
-From: Akinobu Mita <akinobu.mita@gmail.com>
-To: akinobu.mita@gmail.com
-Cc: linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	hannes@cmpxchg.org,
-	david@kernel.org,
-	mhocko@kernel.org,
-	zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	bingjiao@google.com,
-	jonathan.cameron@huawei.com,
-	pratyush.brahma@oss.qualcomm.com
-Subject: [PATCH v4 0/3] mm: fix oom-killer not being invoked when demotion is enabled
-Date: Tue, 13 Jan 2026 17:14:50 +0900
-Message-ID: <20260113081453.8293-1-akinobu.mita@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	b=hosJGN7GOyQJyOK01lzJJQFHf5VM/a57l3FRlIAtT3in7wRX8GCWekckB2zbyXSH8p7LYC
+	T1ZZ+ny5fF9ENp6VoJFcGxUqMFrHeF7uO5InhLqav17iFnPIteW4g1Xdb8kXMWEJ24Ao4/
+	09fM3RpYgYeJWqCCXbCfeV22k8MQOHQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=JnPPs1sk;
+	spf=pass (imf25.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Fhtgw3zCh4IN3NcaL58aW7PjNk7s9V2wTddOthEN+rs=;
+	b=JnPPs1sk16PJ8/zCuxcR76im2Us2eOxvv62S2n2xYMZ3VyKRKYsN70D3sM6OsnZjMnq6lGLN/
+	+1aZfuSv/73uLk4nnptN48TJ7pNzNK7m81GnCKuG+ZUy9e/y8Hi1AXklRfVyMznRWTILVzxaHyh
+	g6lK65lQVEy/+CGdXZSngaY=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dr4Kk1rHHzKm5n;
+	Tue, 13 Jan 2026 17:52:26 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id E652A402AB;
+	Tue, 13 Jan 2026 17:55:45 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 13 Jan 2026 17:55:44 +0800
+Message-ID: <500811d3-67e9-44d3-bb67-095b23728aaa@huawei.com>
+Date: Tue, 13 Jan 2026 17:55:43 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/5] mm: page_alloc: optimize pfn_range_valid_contig()
+To: Zi Yan <ziy@nvidia.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Muchun Song
+	<muchun.song@linux.dev>, <linux-mm@kvack.org>, <sidhartha.kumar@oracle.com>,
+	<jane.chu@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
+	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox
+	<willy@infradead.org>
+References: <20260112150954.1802953-1-wangkefeng.wang@huawei.com>
+ <20260112150954.1802953-3-wangkefeng.wang@huawei.com>
+ <926A149E-FE2F-4F88-92D6-FA607398605F@nvidia.com>
+ <db7a38dd-77c5-4adc-b0b1-ceee45fb1f51@huawei.com>
+ <9FC904C5-1C5A-45BE-BE0F-556AF573AD4A@nvidia.com>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <9FC904C5-1C5A-45BE-BE0F-556AF573AD4A@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 89B2880004
-X-Stat-Signature: 9hmjothta7mxwepar9sm1m8uqpndqy5k
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D6533A0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768298065-973334
-X-HE-Meta: U2FsdGVkX18VCnyJSRxN4G3UAI6LGrVmZBZiu9G0uOl3m8fPp4cvatoaEurSy2wXqfuetQvFviBd+yLZLkoXKW9iADjoSWmYSm85tDUv3YSctX63saKwKsR6ofUBIFKglhe98IdJHANYkPxjea/1/HVOHI97X3kVis9/LCEwFHd8drv+3UWommuU+eVeWSgrJMGWMxNdmIarwzd5jo3l106CfsGtIXLm9kwXmX7y8zEuczRZR2L6oOWpD4EXB2nn8LoSZ6xBapkuxa07i3Y7To13d6pyAo9LADKXxhlvLn24d+SVbwEohTPbh3ifouc3AktyUKydHvaa1ivGJRZtWrar582MU7aYx9yiriDQL8IvQHnj2i5bQeH08sT/4osGSh5lxs2oLRUQQ6bJU+PnZ5vc9DRoOrnmsNZ9RaG6AU8zq82RQs8EYqOFin0AFv/gQ8+CVcBWNKa0KEgSuHvTiHpljxi7vjcXzirt6B+RsvXtzNy0ktKYrx7XGufEFLjoXHPUopFwCdHRCz/1wbZiD3qfCPbd22GdujIoaHD5XwXgurhfs0BJsIp95r6C0A6Zfd6uc8/zT1gRNlX7Smj1jF7eJ1x5VKru37zkLnJqsDOFKOd/861lfoaf40656OC6MZXvQh0i4PaJePX5R3x9hS/lNYIX773mdgp5SPPnJPUDI/LjO/9mRZX1Ymnn+Aosl64x+8bJpzk0Nznz5XmmkpYiWfXFOJrUcdKqGxCybnE4KndKBeUUf8ZjivvpokLSr1hEokqZ26HhoeREl9pVTstA762zWz9PSNIMlQMB7IbAmyR39tq9QFlS+ecu8AEBdljN4sk+sMEvXHzat20iWJ+XRPV5pGxjCxu3W4H6lEUlzBuI+2R+5lm7Q7WOIDhSJt8y6e0eyWWs5NJDdwVnBtUurwO4SBkIhWpWMFKRckT9WAc01/rPqQcLB4Up/c6MYhLfiXsPkAtY0aTYf68
- dXvTwpaT
- 3mHARtKDcvl4UAh6oWDKVghu2BOn+kc+6LGaqX2vGUlq5lyTQx+I27DDQtP5qfRAUV5QpV+d0Abso7VBe3lSPS/+OSuYAsPnpBJH/B+Vtq6vdXMd9/RqQ5rcOgXjNlExUGfFSAm2/27Z3tyngIBvIMZIYVESJJiv4kyERhL3vksztrI2ir2G1LqmK5KJLzZq+7j+r/hdD5Z0XLvBoEWaJSCuSGA21OphXzktMuPSZBMcvhUQQGQovjeAGMr6FrtEyUv0Yf5LbvCicZH2S2NPMI4bVw8KHHd1PA0d7z6M+usk3YB8M56OghpQ+UYAFuVZPQAeb0NzOtECJTZ66Cm6k1FZDtbd9WZ1Bim4QtawVlQ+A5kzdaJbI0pnH1isucbPw/kWJQ9JZNU5u02yjwZjU6OpK3dFqDPeFWE4Dl7jaPNiNC4WOnvGNkSFMfwdkdM0Fnxmjou48pgEXwmgXKeVVD7/itWvsrpPAKGEdFxaXAm8aHYUXIzFAd7Stjz0fOgsqyjPz
+X-Stat-Signature: o5u1ykfnu8i7w1zsdndqnshyfua4csid
+X-HE-Tag: 1768298150-405589
+X-HE-Meta: U2FsdGVkX18oqa4DwETSkFLuAxA79fcVU7Taly7gDvtsM1VMISsF42BzqTJy4W4Qx4tQen0uF9XpNuKPpXaO1raO+iG9VLqibMjc1+5uycj/dLuhIq0IFMVUxXHbmU4TRrDVoADrrPGHi89olt+aUJh4sc+XV5vcGA+Qawl0BGPN2VWA3gYponZg2cj8tHSTt8xz0ZiM5eGusgraVIYPI2tdC1ZuWe0HO9GtPyTrNrP8JCobT+c8xl3cAiOWo7B5STGJ98CnNLUeJ+Tb2lGWPqbZ/eA+iCwJTPyeJXyHyTmViuX+4LvHq2b8ekhAZtYwBYTUPqnGGxT/Xjr2+bBSsk7HPpA8C7DiB08sI7U+q+4eJnjWebo5TxiaJTpeI96X2UDEUa7SR8fgn6szqyZaN7AXYr6Y6HWnwZx60YngpuPAV8yeqfzHGMB3NQKC8Gy6O+ys5uh/UrpLMqO5wrpIoN0j+N9C23KvXDGtl+Tpv9cxyNTVDJVWriB3NuXhuG+2h+TgUhXC/wukOkIf15RmNnUnQRIWukrdamFSYarlOaJ1AHOEtPqVvrOkLqC9+iS2rrcc9ikP7QUcwKxVMke9K+jZh907LcwcByybzNdKfvXFcwHZLcavoir4IIyivnlvx45VmTYz+tDk6pv/REi/tJZfT59znsj3krTHy7lPbCFBMmAPRaizPtg8YkG7AvETaE7QKJuazNVU76VHamaOkgAnY7lH3dgWU6OrAiNXxrie2deCSzMpZskNKJIioivHW0zeHh9KXaLqhZWrpI9G8D+klIcKptikcOMJWZGKbWXZ3q903vGMYeEbXR+CC8dt7v5o/rxA1C/uJTyJQ8WZPc+d4VZ02V+q1+llZp5RAvloUlAhfl9Or+TQgl9TumHHA85K566MhTlA2mlO8hROvx0LmOPF4bJY+1SOby+XBGWSJ+a8Dz5yQMcQDjdv20t8B4jZ432jxjN965bQtzn
+ EtIfOuki
+ R6JNjaE8wysdzIBmGw8Ft8hY9AoYbr9xCAnRvDgQirCynkBU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,49 +107,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On systems with multiple memory-tiers consisting of DRAM and CXL memory,
-the OOM killer is not invoked properly.
 
-This patchset includes a fix for the issue and an enhancement that makes
-the issue reproducible with numa emulation.
 
-v4:
-- remove unnecessary include of linux/node.h, suggested by Jonathan Cameron
-- include linux/notifier.h for the notifier_block, suggested by Jonathan Cameron
-- typo in abstruct distance value in the commit log and document
-- add information about supported architectures in numa_emulation.rst
-- add a code comment in can_demote()
+On 2026/1/13 9:27, Zi Yan wrote:
+> On 12 Jan 2026, at 20:24, Kefeng Wang wrote:
+> 
+>> On 2026/1/13 1:02, Zi Yan wrote:
+>>> On 12 Jan 2026, at 10:09, Kefeng Wang wrote:
+>>>
+>>>> The alloc_contig_pages() spends a significant amount of time within
+>>>> pfn_range_valid_contig().
+>>>>
+>>>> - set_max_huge_pages
+>>>>      - 99.98% alloc_pool_huge_folio
+>>>>           only_alloc_fresh_hugetlb_folio.isra.0
+>>>>         - alloc_contig_frozen_pages_noprof
+>>>>            - 87.00% pfn_range_valid_contig
+>>>>                 pfn_to_online_page
+>>>>            - 12.91% alloc_contig_frozen_range_noprof
+>>>>                 4.51% replace_free_hugepage_folios
+>>>>               - 4.02% prep_new_page
+>>>>                    prep_compound_page
+>>>>               - 2.98% undo_isolate_page_range
+>>>>                  - 2.79% unset_migratetype_isolate
+>>>>                     - 2.75% __move_freepages_block_isolate
+>>>>                          2.71% __move_freepages_block
+>>>>               - 0.98% start_isolate_page_range
+>>>>                    0.66% set_migratetype_isolate
+>>>>
+>>>> To optimize this process, use the new helper has_unmovable_pages()
+>>>
+>>> s/has_unmovable_pages/page_is_unmovable
+>>
+>> Indeed.
+>>
+>>>
+>>>> to avoid more unnecessary iterations for compound pages, such as
+>>>> THP, and high-order buddy pages, which significantly improving the
+>>>
+>>> s/THP/THP not on LRU/
+>>
+>> Sure
+>>
+>>>
+>>>> efficiency of contiguous memory allocation.
+>>>>
+>>>> A simple test on machine with 114G free memory, allocate 120 * 1G
+>>>> HugeTLB folios(104 successfully returned),
+>>>>
+>>>>     time echo 120 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+>>>>
+>>>> Before: 0m3.605s
+>>>> After:  0m0.602s
+>>>>
+>>>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>>>> ---
+>>>>    mm/page_alloc.c | 25 ++++++++-----------------
+>>>>    1 file changed, 8 insertions(+), 17 deletions(-)
+>>>>
+>>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>>>> index d8d5379c44dc..813c5f57883f 100644
+>>>> --- a/mm/page_alloc.c
+>>>> +++ b/mm/page_alloc.c
+>>>> @@ -7157,18 +7157,20 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
+>>>>    				   unsigned long nr_pages, bool skip_hugetlb,
+>>>>    				   bool *skipped_hugetlb)
+>>>>    {
+>>>> -	unsigned long i, end_pfn = start_pfn + nr_pages;
+>>>> +	unsigned long end_pfn = start_pfn + nr_pages;
+>>>>    	struct page *page;
+>>>>
+>>>> -	for (i = start_pfn; i < end_pfn; i++) {
+>>>> -		page = pfn_to_online_page(i);
+>>>> +	while (start_pfn < end_pfn) {
+>>>> +		unsigned long step = 1;
+>>>> +
+>>>> +		page = pfn_to_online_page(start_pfn);
+>>>>    		if (!page)
+>>>>    			return false;
+>>>>
+>>>>    		if (page_zone(page) != z)
+>>>>    			return false;
+>>>>
+>>>> -		if (PageReserved(page))
+>>>> +		if (page_is_unmovable(z, page, PB_ISOLATE_MODE_OTHER, &step))
+>>>>    			return false;
+>>>>
+>>>>    		/*
+>>>> @@ -7183,9 +7185,6 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
+>>>>    		if (PageHuge(page)) {
+>>>>    			unsigned int order;
+>>>>
+>>>> -			if (!IS_ENABLED(CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION))
+>>>> -				return false;
+>>>> -
+>>>>    			if (skip_hugetlb) {
+>>>>    				*skipped_hugetlb = true;
+>>>>    				return false;
+>>>> @@ -7196,17 +7195,9 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
+>>>>    			if ((order >= MAX_FOLIO_ORDER) ||
+>>>>    			    (nr_pages <= (1 << order)))
+>>>>    				return false;
+>>>
+>>> How does page_is_unmovable() interact with the code inside “if (PageHuge(page))”?
+>>> page_is_unmovable() only identify 1GB hugetlb as unmovable, so skip_hugetlb still
+>>> works?
+>>
+>> Initially, I wanted to move the skip_hugetlb processing into a new
+>> page_is_unmovable() by introducing a new PB_ISOLATE_MODE, passing the
+>> skip_hugetlb/skipped_hugetlb/nr_pages to page_is_unmovable(), it looks
+>> very complicated/ugly.
+>>
+>> if (PageHuage()) {
+>> 	if(page is unmovable)
+>> 		return;
+>> 	skip_hugetlb processing
+>> }
+>>
+>> Back to the current code before I made any changes, skip_hugetlb logical
+>> only works for movable huge pages by checking
+>> CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION, the checking is not incomplete
+>> since no runtime check, but the new helper made a better judgment.
+>>
+>>
+>>
+>> And after changes,
+>>
+>> if (page_is_unmovale())
+>> 	return
+>>
+>> if (PageHuge())
+>> 	skip_hugetlb processing
+>> 	
+>> I don' change the skip hugetlb logical, the only drawback is the
+>> PageHuge is checked twice, Maybe I miss something?
+> 
+> Sounds good to me. Thanks. I just want to double check with you.
+> 
+> With the changes to the commit message, feel free to add
 
-v3: https://lore.kernel.org/linux-mm/20260108101535.50696-1-akinobu.mita@gmail.com/T
-- rebase to linux-next (next-20260108), where demotion target has changed
-  from node id to node mask.
+OK, I will update it.
 
-v2: https://lore.kernel.org/linux-mm/20251222004834.10539-1-akinobu.mita@gmail.com/T
-- fix the explanation about cmdline parameter in the commit log
-- add document for NUMA emulation
-- describe reproducibility with !mglru in the commit log
-- removed unnecessary consideration for scan control when checking demotion_nid watermarks
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> 
 
-v1: https://lore.kernel.org/linux-mm/20251208094028.214949-1-akinobu.mita@gmail.com/T/
-
-original report:
-- https://lore.kernel.org/lkml/20251022135735.246203-1-akinobu.mita@gmail.com/T
-
-Akinobu Mita (3):
-  mm: memory-tiers, numa_emu: enable to create memory tiers using fake
-    numa nodes
-  mm: numa_emu: add document for NUMA emulation
-  mm/vmscan: don't demote if there is not enough free memory in the
-    lower memory tier
-
- Documentation/mm/index.rst          |  1 +
- Documentation/mm/numa_emulation.rst | 31 +++++++++++++++++++++++++++++
- mm/numa_emulation.c                 | 26 ++++++++++++++++++++++++
- mm/vmscan.c                         | 17 +++++++++++++++-
- 4 files changed, 74 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/mm/numa_emulation.rst
-
--- 
-2.43.0
-
+Thanks.
 
