@@ -4,87 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E01F9D2D0EA
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:49:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FE6BD2D0EA
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:50:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F82F6B0089; Tue, 13 Jan 2026 07:49:50 -0500 (EST)
+	id 045766B008C; Tue, 13 Jan 2026 07:50:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A29A6B008C; Tue, 13 Jan 2026 07:49:50 -0500 (EST)
+	id 023756B0092; Tue, 13 Jan 2026 07:50:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AFD76B0092; Tue, 13 Jan 2026 07:49:50 -0500 (EST)
+	id E725A6B0093; Tue, 13 Jan 2026 07:50:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 293C66B0089
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:49:50 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AED75137873
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:49:49 +0000 (UTC)
-X-FDA: 84326922498.30.E3A5E62
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C9CC5100005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:49:47 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jLU6Ree+;
-	spf=pass (imf05.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D78BE6B008C
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:50:37 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A677B16012C
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:50:37 +0000 (UTC)
+X-FDA: 84326924514.14.C964540
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4688C4000B
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:50:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PtKODF2C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PT3EfSwo;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZSqy1HgV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EG7JhaQ4;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768308588;
+	s=arc-20220608; t=1768308635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sXIxaaUrGFoA3E6hwhyauqFe+XDhkHXUkgt2L3qneUY=;
-	b=A1mWebXR3PdVHEYhWP8aPKBW0OEcWWgjsGaNYQoe2gq8uaScOGS2A65DtbJB0gehOmCu+r
-	xk3EJwiK/R7llTL8tozuU0Eig70wGr/V9fcdKF1IEeepFXMFlJDlA6C/HoiUK/GaPdeo9G
-	apVeMa4LNKmX3KLd3sq5PYjW9oj0jGQ=
+	bh=2njxT4444vBXRDjwl5oV8xG18I9Zx+u69QZ0TThv5yQ=;
+	b=rxRwt3ClHBR+6NLFUOzjUPkF5i98meiqXn2nDRlKUczB8bIjnoNZPLdXkQF/e6nbbZl73Q
+	WkZID4eDg2OS7GacpaiGWs4BmzPs9xKS0QQf7GqluKtOaV7fEgahKX7p9q3bzMqagfPWo2
+	klRITuO6OSvazR5IZovnehcWk0sTFHs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jLU6Ree+;
-	spf=pass (imf05.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768308588; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PtKODF2C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PT3EfSwo;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZSqy1HgV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EG7JhaQ4;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768308635; a=rsa-sha256;
 	cv=none;
-	b=txco6CqdCJHCwApR3EjQ5a9xcePUZoMxyqk1yhmnPkV9iPN3eFVmvf4jJD4A6ljBXQkyhN
-	ISTKpvUx+QumFHadS9pudTPSHvDHiQemEuMSbdjqZIVAs/i2Cw2sortvaT9ma3jhInr9ow
-	USrvLSjldUv1rjh5prcTq3iDl02C3+I=
-Date: Tue, 13 Jan 2026 20:49:33 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768308585;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	b=RBSgtum/jGiKp3cP3PsIKEjCvXVtO5XKoJLQEB+WrxQdr2YSsQ9MU2TwmVKopfO7FU2UTF
+	J7YE+E9uwE/E3TKBoa602yUFpmV7YKRGcwjFM5LozMOYE8RULmx3UXBH/juvFGkXSeQcFK
+	M+zSfZ1V6/LXTG3F4I08n3ntsGCRTkM=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B86A45BCDD;
+	Tue, 13 Jan 2026 12:50:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768308633; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sXIxaaUrGFoA3E6hwhyauqFe+XDhkHXUkgt2L3qneUY=;
-	b=jLU6Ree+r24DyTvStABI0J3kzJMvugG/W65z/zvvIraHAhGCMhkhqhANfLFqn5X+eY2SiZ
-	Cbo19z5LofX7nxip9ep2nFeZwcYbs5JKCnUMFdxWfEFLBNSrhb4ifcFNL5iUv7VWcTFMX8
-	N87hBg6WI/1NbfFcNDKKgdibHEDwG2E=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH RFC v2 05/20] slab: introduce percpu sheaves bootstrap
-Message-ID: <leaboap7yhlnvuxnxvqtl5kazbseimfq3efwfhaon74glfmmc3@paib6qlfee3i>
-References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
- <20260112-sheaves-for-all-v2-5-98225cfb50cf@suse.cz>
+	bh=2njxT4444vBXRDjwl5oV8xG18I9Zx+u69QZ0TThv5yQ=;
+	b=PtKODF2C89mNQqZDnNW2Ix+E9RLbAX94raLi8h+W9Y1olJTvTw0oa/89eqwUySXclG1WBW
+	95G9xw46Y7qgGlCVcEZHRvbSaStEd48FmkoXPKREfZSz/EWbmGkkm7qgCSi0icYohGOa32
+	c7hJm/eHvi7soMeADZNFEmsoVYLRLs0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768308633;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2njxT4444vBXRDjwl5oV8xG18I9Zx+u69QZ0TThv5yQ=;
+	b=PT3EfSwoctTCsX9vB1Ictmh6xkEmd0eEmdzyC0Jr2biwYKQCtE8Q44XvRPgSkP5fP5bkPb
+	Klk3Cc+i/j3wyADg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768308632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2njxT4444vBXRDjwl5oV8xG18I9Zx+u69QZ0TThv5yQ=;
+	b=ZSqy1HgVgimt5AtDjjv8i7a1DInik/wFsJk9b01D5CW4aY7HKqj+ofIOJmYnmdTGo3C/wP
+	OMBE4bITRvIaFw3JaDIF7MvHEqBV+5Vg+2NQXDBinpjGsHpXAJ7euc9fc6AXt06y0Y9wJv
+	w0cr5u1+rpleAm9sQ0OdrIV4imqElB4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768308632;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2njxT4444vBXRDjwl5oV8xG18I9Zx+u69QZ0TThv5yQ=;
+	b=EG7JhaQ4NfhIbtJG05pU1lrvSj3BJrfB5/DXov0pm1cTgI+VHZxvL3YqbPo8oLov1Ue4+6
+	RAOVPfao0Q82/KAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6D3B93EA63;
+	Tue, 13 Jan 2026 12:50:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id kTzPGZg/ZmlzagAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 13 Jan 2026 12:50:32 +0000
+Message-ID: <fecd4166-618d-4d69-be02-d9b3e8f0f271@suse.cz>
+Date: Tue, 13 Jan 2026 13:50:31 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260112-sheaves-for-all-v2-5-98225cfb50cf@suse.cz>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 5f7h6xgfy1dzd37obr3z71nsef7t4zgo
-X-Rspamd-Queue-Id: C9CC5100005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V6 9/9] mm/slab: place slabobj_ext metadata in unused
+ space within s->size
+To: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org
+Cc: andreyknvl@gmail.com, cl@gentwo.org, dvyukov@google.com,
+ glider@google.com, hannes@cmpxchg.org, linux-mm@kvack.org,
+ mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com,
+ roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev,
+ surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com,
+ tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, hao.li@linux.dev
+References: <20260113061845.159790-1-harry.yoo@oracle.com>
+ <20260113061845.159790-10-harry.yoo@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Content-Language: en-US
+In-Reply-To: <20260113061845.159790-10-harry.yoo@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: xb8z6og6hospq4a778b7aawe1ucj7mkj
+X-Rspamd-Queue-Id: 4688C4000B
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1768308587-156896
-X-HE-Meta: U2FsdGVkX1/mq3x+qT1Jyp1R2mvcb6HI99qW/yUHEoa0MREyRYF5wSS91eG+beAH+SYedhn7+Ac+//kWbLmdruSQyLSObqZ39KZu5WoBd9taT+rTVdlom0tFdVKDv/juC98xhEA9oDY2j9sOdCo6kAP24IHlZSgUQoC0AKfIwLzw1UDBxfMomfvFxSOQtpVzhAEVeAOeqP/mzk/Ch+3s7HhfGpBsNHInKdxg222ksGO2DVzQiJ/03oc2WP6ZkB9z5H5vTK6DQW8x6yqRHpKrwxw6DW8yjxNoFcxCQzV7EESCnqp01LCxUDO5KG2aFLQk6QpaIADbFr7lNzULf1Noh0hjfrHoN1OY/n/aTN54eH+DP7I1QRa50sNYL4cMCwEXJ/KaNpdmQ6APMRhsZ9PFbFMx9UTcNhevUtUbjxg2pl9KyxlfuPC+E4I6fq4vDrV0bIcb2E69pDS16oNG5epS84NJKNgSe+eSpkotfOY71YrsorcY644xqZrtiOOZ35HQ6gEdHYYUDSidGBSx0tPjfU3m7QLw3+RVccRgHFL7nKLcFBVra8pOjeRBgI+gOTV3mUs8um+9IygP1fzEhvEK7dgQFtkrOd0BfTBRvCE57G8AycqIh/rI4AyiiaVGRjU59z0y23XspbArEWxTGJGc8Q2JNMxRxr7TD4GEhmvbp1PHqaOD081qx0fB+sfecRXePhH+9MvziIAGDJr/BwpgC418mc234rWW7KYGishij6X+hxE33NfLJNyleS/1NTvkr+I6RYayfOXwVOf9HomXKpdvHSFMAgDLIwjIzTj+WYHzF2bvXHazaJDW77gtEwI/TS6sC/stjU7PXaKIt9EfttT3mxfaobBaO3dtO3UAZuJ3ZqcqhSW8BrMLe03JhI9B53vdt6CwxF9GykCI9RwipBhee1BNDWD5et5msYCICK+MqXzQJft5AR9r+SpdWJyeKW6Rf1Ie8WTYYLRCUjX
- Uo8Px0t+
- +BmVOvlF4yp74Ehispb3/Ws4OvpK1pjlpem+lwMCC78DBWN8gJ36ScAHQqWNMZO8fn6KTAzxtC84ceJblZYnAzidfFiT30g3rRxUmKFT0ytzlhcgV9OBaPnH1yU/75htJnPvunxOr0vUeMzeqgSnQfaUc1Y6fchpmtj9tbdPnYKfRPpVMkXNlVpV2q1GMTuRbo1Q0kWvggzublkD1Bza4cFziMw==
+X-HE-Tag: 1768308635-300804
+X-HE-Meta: U2FsdGVkX19Yfk3wK8wkqNhUJKskdWDTqPFdZTU7KQtilZmMr78YHntsnuy5u+ebW/kMXcOsHhPA2YObzihQ0hqI+bC5QaekN6qR/y91U7ZiM/eiFluExJ0i6X2RAluaRnlqEJ5dW+dPzVi5PitCant3MWWY/d2gav8E6CSAMNl7WzXAFnNW3se2PM4HK+konQTJ0T0xBQk1I51oqOSmPG+SUKYXr2kdgF5cZ7Smfyftc/w5LTbMqFlSzgD3kj3GgEyhUmq3rTTi0BqWrtH2nZmat2AHfjd2M53eciEM5VjHA6LlXe2VyDNbONVuZWFHggbXynkgpU/OrTmWXc/UH1QMO1uXNtTR+yVxx08Ol9EA+G+uUv8YgXe7x4HRlpZ3vgss5f+aUBglVfTt4aO4Z2ez57lBUYxUi8gdvskJEkVx4IgsDn2SbdONa1UMYSntUGuXI0r9+oYqjtVFSn/sHhdyFf3o9vd0Ap3D06EfZZCD6OYIqOZ1Eiqq597MaD1Cm81aQrl+iTMkr3xsiMFZfZTNGyd2CVg1vw7iLoumT7VFX8PpEs6snyHlUxYnmVhtsQAPSupcdHmAWfhBWge/lfqPgT2dL6hGNaMGfoK7tbAL/b8A9Er41abAGrMqJbONjrp/BzBVzt5DzepF+77TmFnTEWEejVMB1UvUGoDv8tAk8eG9z+7A7tLV8oBqA1qmm+oLj3czoN8PmD2hpT5uzJRKvNxK1OL8k3T5Y+dL3TJDmFqAJZnQdYPQ3hbV6CKLbhIoiZrInzgUPFU487o6oKZ/jNK3qb9RPx4uYMAGx1XjHunfBaYHj72YTD6tv7ot1OiXF4Rn1NQQXl6St0DYC+LLdAWy7838tOW+D5qm/p/QDB6dWG41sgJVY/E8/homynYCeidsKIxf+Ipv6ccZNWIrfUddZ1tn0yoaTJB+3vi4HT1beJkH5RfKNBtMG2m/EGFPWU6SCBVLsnUajVu
+ 1KjA6fGp
+ nBeXnfOFfX0b5/ATLGcj8KDkVwu+x+Qj4d2RCHD6Z4wj9MDR04AutrPKH5N52Zx5114G9L7UUzxOqLZ1WD+JB2DX5G9xYPAs17l2o177qcLYfrRXUvraAUvwDDQZXT0AaLfjDYjvV814dKT75rLkLjKXyHER/M0RZCpViJIWhB3BCfliaRr6xJWWMR9SaJGi/fee9XDh+eXiSqYzq+t1wULme52V4ZKziM6zC2gIYYonXyeBpW+yGVcHc8FaCwNara6Web3G2acslMBF53P6JOM2a40103rdbOnd/FGo2UkP9GpyHJplN916ZBThzDhdX0hciDd/4jzi8S/ZsjklF/9LGZFYHpgQGh2yNpb/2MjexXHvHkuK0ph4y8/ELYmu0xQfelkDYMz3xo27Gj0viLl/ZjqBXugedJdCBK3EgM6RIJjU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,275 +144,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 04:16:59PM +0100, Vlastimil Babka wrote:
-> Until now, kmem_cache->cpu_sheaves was !NULL only for caches with
-> sheaves enabled. Since we want to enable them for almost all caches,
-> it's suboptimal to test the pointer in the fast paths, so instead
-> allocate it for all caches in do_kmem_cache_create(). Instead of testing
-> the cpu_sheaves pointer to recognize caches (yet) without sheaves, test
-> kmem_cache->sheaf_capacity for being 0, where needed.
+On 1/13/26 7:18 AM, Harry Yoo wrote:
+> When a cache has high s->align value and s->object_size is not aligned
+> to it, each object ends up with some unused space because of alignment.
+> If this wasted space is big enough, we can use it to store the
+> slabobj_ext metadata instead of wasting it.
 > 
-> However, for the fast paths sake we also assume that the main sheaf
-> always exists (pcs->main is !NULL), and during bootstrap we cannot
-> allocate sheaves yet.
+> On my system, this happens with caches like kmem_cache, mm_struct, pid,
+> task_struct, sighand_cache, xfs_inode, and others.
 > 
-> Solve this by introducing a single static bootstrap_sheaf that's
-> assigned as pcs->main during bootstrap. It has a size of 0, so during
-> allocations, the fast path will find it's empty. Since the size of 0
-> matches sheaf_capacity of 0, the freeing fast paths will find it's
-> "full". In the slow path handlers, we check sheaf_capacity to recognize
-> that the cache doesn't (yet) have real sheaves, and fall back. Thus
-> sharing the single bootstrap sheaf like this for multiple caches and
-> cpus is safe.
+> To place the slabobj_ext metadata within each object, the existing
+> slab_obj_ext() logic can still be used by setting:
 > 
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  mm/slub.c | 93 ++++++++++++++++++++++++++++++++++++++++++++++-----------------
->  1 file changed, 69 insertions(+), 24 deletions(-)
+>   - slab->obj_exts = slab_address(slab) + (slabobj_ext offset)
+>   - stride = s->size
 > 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 6e05e3cc5c49..06d5cf794403 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2855,6 +2855,10 @@ static void pcs_destroy(struct kmem_cache *s)
->  		if (!pcs->main)
->  			continue;
->  
-> +		/* bootstrap or debug caches, it's the bootstrap_sheaf */
-> +		if (!pcs->main->cache)
-> +			continue;
-> +
->  		/*
->  		 * We have already passed __kmem_cache_shutdown() so everything
->  		 * was flushed and there should be no objects allocated from
-> @@ -4052,7 +4056,7 @@ static void flush_cpu_slab(struct work_struct *w)
->  
->  	s = sfw->s;
->  
-> -	if (s->cpu_sheaves)
-> +	if (s->sheaf_capacity)
->  		pcs_flush_all(s);
->  
->  	flush_this_cpu_slab(s);
-> @@ -4179,7 +4183,7 @@ static int slub_cpu_dead(unsigned int cpu)
->  	mutex_lock(&slab_mutex);
->  	list_for_each_entry(s, &slab_caches, list) {
->  		__flush_cpu_slab(s, cpu);
-> -		if (s->cpu_sheaves)
-> +		if (s->sheaf_capacity)
->  			__pcs_flush_all_cpu(s, cpu);
->  	}
->  	mutex_unlock(&slab_mutex);
-> @@ -4979,6 +4983,12 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
->  
->  	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
->  
-> +	/* Bootstrap or debug cache, back off */
-> +	if (unlikely(!s->sheaf_capacity)) {
-> +		local_unlock(&s->cpu_sheaves->lock);
-> +		return NULL;
-> +	}
-> +
->  	if (pcs->spare && pcs->spare->size > 0) {
->  		swap(pcs->main, pcs->spare);
->  		return pcs;
-> @@ -5165,6 +5175,11 @@ unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
->  		struct slab_sheaf *full;
->  		struct node_barn *barn;
->  
-> +		if (unlikely(!s->sheaf_capacity)) {
-> +			local_unlock(&s->cpu_sheaves->lock);
-> +			return allocated;
-> +		}
-> +
->  		if (pcs->spare && pcs->spare->size > 0) {
->  			swap(pcs->main, pcs->spare);
->  			goto do_alloc;
-> @@ -5244,8 +5259,7 @@ static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s, struct list
->  	if (unlikely(object))
->  		goto out;
->  
-> -	if (s->cpu_sheaves)
-> -		object = alloc_from_pcs(s, gfpflags, node);
-> +	object = alloc_from_pcs(s, gfpflags, node);
->  
->  	if (!object)
->  		object = __slab_alloc_node(s, gfpflags, node, addr, orig_size);
-> @@ -6078,6 +6092,12 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
->  restart:
->  	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
->  
-> +	/* Bootstrap or debug cache, back off */
-> +	if (unlikely(!s->sheaf_capacity)) {
-> +		local_unlock(&s->cpu_sheaves->lock);
-> +		return NULL;
-> +	}
-> +
->  	barn = get_barn(s);
->  	if (!barn) {
->  		local_unlock(&s->cpu_sheaves->lock);
-> @@ -6276,6 +6296,12 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
->  		struct slab_sheaf *empty;
->  		struct node_barn *barn;
->  
-> +		/* Bootstrap or debug cache, fall back */
-> +		if (!unlikely(s->sheaf_capacity)) {
-> +			local_unlock(&s->cpu_sheaves->lock);
-> +			goto fail;
-> +		}
-> +
->  		if (pcs->spare && pcs->spare->size == 0) {
->  			pcs->rcu_free = pcs->spare;
->  			pcs->spare = NULL;
-> @@ -6401,6 +6427,9 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
->  	if (likely(pcs->main->size < s->sheaf_capacity))
->  		goto do_free;
->  
-> +	if (unlikely(!s->sheaf_capacity))
-> +		goto no_empty;
-> +
->  	barn = get_barn(s);
->  	if (!barn)
->  		goto no_empty;
-> @@ -6668,9 +6697,8 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
->  	if (unlikely(!slab_free_hook(s, object, slab_want_init_on_free(s), false)))
->  		return;
->  
-> -	if (s->cpu_sheaves && likely(!IS_ENABLED(CONFIG_NUMA) ||
-> -				     slab_nid(slab) == numa_mem_id())
-> -			   && likely(!slab_test_pfmemalloc(slab))) {
-> +	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id())
-> +	    && likely(!slab_test_pfmemalloc(slab))) {
->  		if (likely(free_to_pcs(s, object)))
->  			return;
->  	}
-> @@ -7484,8 +7512,7 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
->  		size--;
->  	}
->  
-> -	if (s->cpu_sheaves)
-> -		i = alloc_from_pcs_bulk(s, size, p);
-> +	i = alloc_from_pcs_bulk(s, size, p);
->  
->  	if (i < size) {
->  		/*
-> @@ -7696,6 +7723,7 @@ static inline int alloc_kmem_cache_cpus(struct kmem_cache *s)
->  
->  static int init_percpu_sheaves(struct kmem_cache *s)
->  {
-> +	static struct slab_sheaf bootstrap_sheaf = {};
->  	int cpu;
->  
->  	for_each_possible_cpu(cpu) {
-> @@ -7705,7 +7733,28 @@ static int init_percpu_sheaves(struct kmem_cache *s)
->  
->  		local_trylock_init(&pcs->lock);
->  
-> -		pcs->main = alloc_empty_sheaf(s, GFP_KERNEL);
-> +		/*
-> +		 * Bootstrap sheaf has zero size so fast-path allocation fails.
-> +		 * It has also size == s->sheaf_capacity, so fast-path free
-> +		 * fails. In the slow paths we recognize the situation by
-> +		 * checking s->sheaf_capacity. This allows fast paths to assume
-> +		 * s->pcs_sheaves and pcs->main always exists and is valid.
-> +		 * It's also safe to share the single static bootstrap_sheaf
-> +		 * with zero-sized objects array as it's never modified.
-> +		 *
-> +		 * bootstrap_sheaf also has NULL pointer to kmem_cache so we
-> +		 * recognize it and not attempt to free it when destroying the
-> +		 * cache
-> +		 *
-> +		 * We keep bootstrap_sheaf for kmem_cache and kmem_cache_node,
-> +		 * caches with debug enabled, and all caches with SLUB_TINY.
-> +		 * For kmalloc caches it's used temporarily during the initial
-> +		 * bootstrap.
-> +		 */
-> +		if (!s->sheaf_capacity)
-> +			pcs->main = &bootstrap_sheaf;
-> +		else
-> +			pcs->main = alloc_empty_sheaf(s, GFP_KERNEL);
->  
->  		if (!pcs->main)
->  			return -ENOMEM;
-> @@ -7803,7 +7852,7 @@ static int init_kmem_cache_nodes(struct kmem_cache *s)
->  			continue;
->  		}
->  
-> -		if (s->cpu_sheaves) {
-> +		if (s->sheaf_capacity) {
->  			barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, node);
->  
->  			if (!barn)
-> @@ -8121,7 +8170,7 @@ int __kmem_cache_shutdown(struct kmem_cache *s)
->  	flush_all_cpus_locked(s);
->  
->  	/* we might have rcu sheaves in flight */
-> -	if (s->cpu_sheaves)
-> +	if (s->sheaf_capacity)
->  		rcu_barrier();
->  
->  	/* Attempt to free all objects */
-> @@ -8433,7 +8482,7 @@ static int slab_mem_going_online_callback(int nid)
->  		if (get_node(s, nid))
->  			continue;
->  
-> -		if (s->cpu_sheaves) {
-> +		if (s->sheaf_capacity) {
->  			barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, nid);
->  
->  			if (!barn) {
-> @@ -8641,12 +8690,10 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
->  
->  	set_cpu_partial(s);
->  
-> -	if (s->sheaf_capacity) {
-> -		s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
-> -		if (!s->cpu_sheaves) {
-> -			err = -ENOMEM;
-> -			goto out;
-> -		}
-> +	s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
+> slab_obj_ext() doesn't need know where the metadata is stored,
+> so this method works without adding extra overhead to slab_obj_ext().
+> 
+> A good example benefiting from this optimization is xfs_inode
+> (object_size: 992, align: 64). To measure memory savings, 2 millions of
+> files were created on XFS.
+> 
+> [ MEMCG=y, MEM_ALLOC_PROFILING=n ]
+> 
+> Before patch (creating ~2.64M directories on xfs):
+>   Slab:            5175976 kB
+>   SReclaimable:    3837524 kB
+>   SUnreclaim:      1338452 kB
+> 
+> After patch (creating ~2.64M directories on xfs):
+>   Slab:            5152912 kB
+>   SReclaimable:    3838568 kB
+>   SUnreclaim:      1314344 kB (-23.54 MiB)
+> 
+> Enjoy the memory savings!
+> 
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 
-Since we allocate cpu_sheaves for all SLUB caches, the "if (!s->cpu_sheaves)"
-condition in has_pcs_used() should be always false in practice (unless I'm
-misunderstanding something). Would it make sense to change it to "if
-(!s->sheaf_capacity)" instead?
+Does this look OK to you or was there a reason you didn't do it? :)
 
-Also, while trying to understand the difference between checking s->cpu_sheaves
-vs s->sheaf_capacity, I noticed that most occurrences of "if (s->cpu_sheaves)"
-(except the one in __kmem_cache_release) could be expressed as "if
-(s->sheaf_capacity)" as well.
+diff --git a/mm/slub.c b/mm/slub.c
+index ba15df4ca417..deb69bd9646a 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -981,8 +981,7 @@ static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
+ #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+ static bool obj_exts_in_object(struct kmem_cache *s, struct slab *slab)
+ {
+-       return obj_exts_in_slab(s, slab) &&
+-              (slab_get_stride(slab) == s->size);
++       return obj_exts_in_slab(s, slab) && (s->flags & SLAB_OBJ_EXT_IN_OBJ);
+ }
+ 
+ static unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
 
-And Perhaps we could introduce a small helper around "if (s->sheaf_capacity)" to
-make the intent a bit more explicit.
-
--- 
-Thanks,
-Hao
-
-> +	if (!s->cpu_sheaves) {
-> +		err = -ENOMEM;
-> +		goto out;
->  	}
->  
->  #ifdef CONFIG_NUMA
-> @@ -8665,11 +8712,9 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
->  	if (!alloc_kmem_cache_cpus(s))
->  		goto out;
->  
-> -	if (s->cpu_sheaves) {
-> -		err = init_percpu_sheaves(s);
-> -		if (err)
-> -			goto out;
-> -	}
-> +	err = init_percpu_sheaves(s);
-> +	if (err)
-> +		goto out;
->  
->  	err = 0;
->  
-> 
-> -- 
-> 2.52.0
-> 
 
