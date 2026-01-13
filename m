@@ -4,97 +4,267 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA753D2F352
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 18:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC35CD2F35E
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 18:51:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BF8D6B0005; Tue, 13 Jan 2026 13:42:44 -0500 (EST)
+	id 240D76B0005; Tue, 13 Jan 2026 13:51:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 242B66B0089; Tue, 13 Jan 2026 13:42:44 -0500 (EST)
+	id 1C4E66B0089; Tue, 13 Jan 2026 13:51:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 117516B008A; Tue, 13 Jan 2026 13:42:44 -0500 (EST)
+	id 044666B008A; Tue, 13 Jan 2026 13:51:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED9EC6B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 13:42:43 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9A5DEB6FAD
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 18:42:43 +0000 (UTC)
-X-FDA: 84327811806.01.C69821B
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0BFDA40016
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 18:42:40 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=G1L3sJ7V;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768329761;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E12946B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 13:51:31 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 861718ABA8
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 18:51:31 +0000 (UTC)
+X-FDA: 84327833982.25.EC81948
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0D47E40011
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 18:51:27 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=oyzVOQ4Q;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=BiDjuLWq;
+	spf=pass (imf07.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768330288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=Ic7NOksOwkwzwNdzR+Wx0flh5qOxJC1coTlnwd/zzLk=;
-	b=pCZC+jPQxZIY/69SNoaobF/xc1euEGyxlFhvTtrGDL7tvIRatf+GUA23Nt5bQY7Cojevbu
-	dJPbeuwAGaKuxQ9GvA+EqsnJ2QP1XZz85uNjgrZ8bUvnBn0Ye1dtW2M4H9QTtgHfDZYj5U
-	r3+BEojcsvTOlYZi4mjsnFEUFgbssMc=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=G1L3sJ7V;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768329761; a=rsa-sha256;
-	cv=none;
-	b=uXhe5fdFsJakBF8ILriYTerwHvOEeoNt3mV/cbQ4XA9+YF67M0oeoheY9RCOPngoXH6ZdM
-	bxAPB8Ryuw3kS2BjTKqmdW4CrbfvdAWX5aZxzKFuvGq98AIa2XpUa3hUohm2S9+4W9NEjy
-	WoMGgqv0hZ7XuZT+YhSyCx7/ZNb9iKg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768329761; x=1799865761;
-  h=date:from:to:cc:subject:message-id;
-  bh=Ik4g6mLqrHkdwQaEMqp7TcPt1uoS3L+6/ZTow13x/XI=;
-  b=G1L3sJ7VKZLKoNG2HrRb4mhi9VGEd1GPPXe/6JFg/wVONb1gd5rEVJs4
-   xm/tZaLT+MFp82A4nSrbSJvdaTKl7vRn4bcbQbCC8cIjBjUT/axHyjaaH
-   eu2sKXEVsj5t5r9qX/Iq0aHc+Kz5/CBrVc1kYG/t0jVDz6Zty21H0+9mS
-   AJwCUyBMHsY5buiuPXbAGSKZ4raEPEcDFogPI5eBvh5Edkke1tIUkYi0i
-   z0xvmLzrPunDkTb9Q0ryG1JdzgCkToOk+RrDjIiqSonXlXuEeLnG1WMyl
-   Cr6We8UgFV93jCBUAJnNy/C4c4FQnnUjX7UuIFzokfQH+Hi9RB3JfdAFZ
-   Q==;
-X-CSE-ConnectionGUID: PzZL7/wqQi2HtL+uGCgKoQ==
-X-CSE-MsgGUID: ehCqJNZLTeGhna72GOotQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="73466304"
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
-   d="scan'208";a="73466304"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 10:42:40 -0800
-X-CSE-ConnectionGUID: tHzGxifzStaVa5ZgEQM8bw==
-X-CSE-MsgGUID: x1GuZZMCQ4ytUc4Tu8H4Hg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
-   d="scan'208";a="203596451"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 13 Jan 2026 10:42:37 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vfjLe-00000000FEu-3vnx;
-	Tue, 13 Jan 2026 18:42:34 +0000
-Date: Wed, 14 Jan 2026 02:41:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Maciej Wieczor-Retman" <maciej.wieczor-retman@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-new 294/303] arch/arm64/kernel/traps.c:1074:9:
- error: implicit declaration of function 'kasan_die_unless_recover'
-Message-ID: <202601140248.D9Oj5lCh-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: 0BFDA40016
-X-Stat-Signature: ca38pnf4367ojainswimf9gndjopkd9s
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mdlup/f+YIR1dO09xvEGWxgBX0f0AjvEMdu4/Obai6A=;
+	b=Kclk+z8HUZjZHbywbXCTSJ9YueDd7LPt+MvIWFfki32S9hUr8NJYUl4g5vCWEKQyuwXGT9
+	nct0DKKpWOM6RXobToDnHbF0JLybdDUnd7zj0QaL7cPnjQRmsjKFvkbnafgK+gx4m+/xht
+	0OHJnpTQXeXb0KJqL5yloqcZduB57i8=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=oyzVOQ4Q;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=BiDjuLWq;
+	spf=pass (imf07.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768330288; a=rsa-sha256;
+	cv=pass;
+	b=G6MRNHGuiSd2VS7bQyHNZOc3WMbUsflgjTE7InSMzEmwMcDC3i4p6OMQtkSj/nOKEl76od
+	GFcawXJF0qLJlOs+KqlY/HSrLPer8SF0meEaoqpxHA53dshSbZEck6lEBUFNDN2ltL+/X5
+	As1/AUO48B2C+TIIDnoOUHnjBDpPkVU=
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60DG68ge2811661;
+	Tue, 13 Jan 2026 18:51:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=mdlup/f+YIR1dO09xvEGWxgBX0f0AjvEMdu4/Obai6A=; b=
+	oyzVOQ4Q2v7j5fPbbMsbdJWt5qSBg9eAbJrFUGCjPvcp4J133bu6MfYyMBXXVeyF
+	DBVGU1Eu0lgzOBmwIfcAqLoT03ZFZmjIY2HnTuqZWvRvZBWmGGC/tjQLfEDGHvFi
+	KSrDNu/QiOTpbc/8LKGDhJ+kD4lLGXnbXtEEip0POSEyRs/WL5LWSLJaDjP/mYPu
+	Umhi4r+sQSk4J6aDz5FeVGF3+K4cCLhSJwnqHaiWhOkzq+K0ImlN0sOn0UfYsvVv
+	svXGLPyyASSmgayo5CZFsm+1oUgmayEYnF8bUudqX+7Dui8EqO7taH2jN5PDIvo6
+	TPtvaLC2RnUIQuq+SAZkoA==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bkh7nm5ac-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Jan 2026 18:51:04 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60DHUntR004570;
+	Tue, 13 Jan 2026 18:51:03 GMT
+Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010015.outbound.protection.outlook.com [52.101.61.15])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd792wrd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Jan 2026 18:51:03 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=o3NZ67h5ZJQPI/3YYleVPUdm4nx03kYD+l/or2NzSP0AhSAV34WUe9zY8zjhzkn9TgFGYT0dwXpx9Fb2+hSu16JqvJ4VK5ZE1B5JokbXdlNzhtnwkzYzKBhnlUsUZcJeNZmA3nyVf7KhUuLYl7WDcjLNLbFNW98ukEMkobeDQjDjI2cft37RQMzAEbhp+g1Ij2DvKpx/d7QuxuuyfzTuftwXIbFvLafy6/HiHV67+WhdxgcVKRJsy4V5otRN2Yfha3d6EpRlLpwR/xXdpCj4enw9Wi/YHdwmnEiSe1I/fhBTkopYPtcEBi2d+GT9MapEi4LsZTvA/8BKHbtkbDAEJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mdlup/f+YIR1dO09xvEGWxgBX0f0AjvEMdu4/Obai6A=;
+ b=NMn5Siy2tivjt4z+wPYseoW+g3SlXGHOiRgwnL94GLLhEJ/2QmEtP6bitayoR6/hRla/bqxZbZe6l/cjjfa8lcfmjZLXH7VDcN34oh6hoxGafOt6tCMynd+gfpMW8qnI+nOr1XMcD3JtN8W6JKsL58N940/BKtgK56VS5mwJzYXQi3o1kD25tXct4hLkWfaPiYRVpQHjyOpts5NxeLiUyx7XftgGvYp2t3drcqAj8tmFxvr4YbFmIa9OLeDjt6ANy/Ifrw287UFjw4u+h7yXdyIGvi3ofzJregchN9cBMBSSlXE85hFc+qkx68nvABWpB7Dn6i4QobX4TZogzCw/jg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mdlup/f+YIR1dO09xvEGWxgBX0f0AjvEMdu4/Obai6A=;
+ b=BiDjuLWq6Px3WsEaG+WfZDOJCpIZ6nY8Dea9ggHnEvqTAMc/fU0ULMOPoteJ5jfrJWxRvQ0C6aSwaQz0NMBO9EYrez8tCh+t5atQbHUBzASW6eiSEuqot8ecRl5brzBPJabFl8PfgEuyVlfFZMGnTh9MleHonrYyH4rwQOuqmY4=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by SA2PR10MB4810.namprd10.prod.outlook.com (2603:10b6:806:11c::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.4; Tue, 13 Jan
+ 2026 18:51:00 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9520.003; Tue, 13 Jan 2026
+ 18:51:00 +0000
+Date: Tue, 13 Jan 2026 13:50:46 -0500
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, maple-tree@lists.infradead.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        David Hildenbrand <david@redhat.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>,
+        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+        Charan Teja Kalla <quic_charante@quicinc.com>,
+        shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com,
+        bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org,
+        Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v1 2/9] mm/mmap: Abstract vma clean up from exit_mmap()
+Message-ID: <7m5jsmwxr3cfjyivmq55uz22iqclugklsyokvipfwbcsl4eujn@xu55xp2cullj>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	maple-tree@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Charan Teja Kalla <quic_charante@quicinc.com>, 
+	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com, 
+	baohua@kernel.org, chrisl@kernel.org, Matthew Wilcox <willy@infradead.org>
+References: <20250909190945.1030905-1-Liam.Howlett@oracle.com>
+ <20250909190945.1030905-3-Liam.Howlett@oracle.com>
+ <CAJuCfpFOt3_W+YQNy+xPzY_R6JUM3EOsbaZh+uznSNpF1RKX0Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAJuCfpFOt3_W+YQNy+xPzY_R6JUM3EOsbaZh+uznSNpF1RKX0Q@mail.gmail.com>
+User-Agent: NeoMutt/20250905
+X-ClientProxiedBy: YT4P288CA0007.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d4::8) To PH0PR10MB5777.namprd10.prod.outlook.com
+ (2603:10b6:510:128::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|SA2PR10MB4810:EE_
+X-MS-Office365-Filtering-Correlation-Id: dc2ae104-f6c3-4d7a-108b-08de52d4b1f9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cHpSY08vaFJNcGE3MTViVVorYWZ5NzFQRVpOMURYYTRIVWtVdWcrYktydWpm?=
+ =?utf-8?B?RWpOaFB0Z0MvS1B3ckdyMTlZSUpsamJzTS8wMWN1YzU5aittS3VQRjkvOTBw?=
+ =?utf-8?B?V1d3cEJhYW1tbUlDRWJDc3BIS09lQUVtczZvcStWU3NDYkNOK05lUFNwQW9H?=
+ =?utf-8?B?R1RsWEx0c3dSdUI3MENWUC9RdU9sd3Zhc1BLdHY1dm9EcTdQcVR4WXhCczg5?=
+ =?utf-8?B?WFJIS1VLYTkxSzNuL0lnczgxcm5RZGpIcm5mQU5ZY0txVWFJL2VrTzVzM2py?=
+ =?utf-8?B?aDVSNytYK2E4dko1Sy9lQ1ozYVl5a0JCYlE3ajFvODc1UW1RVmViMkNmYVZP?=
+ =?utf-8?B?cTFWdzdBQ0ZZc3FIdVM5NjNrZFEwQURJa1BTVmo1KzFFNjJjdnJsZkJUMStj?=
+ =?utf-8?B?SXNFTmZaTDRucFhja0F2TmtCa0ZuM3NxSjRMYUtmSTZnSFV6QlpJUWJkUk1B?=
+ =?utf-8?B?aXV3amJSRWtnc2lWLzdONENobnJqMUJTWjN3MmM4WkRRNnRDWllXMkMzbHNv?=
+ =?utf-8?B?elBEKytpcHBqODJGVk85RHkrT0NmUC9NUUw2Y29PVjMyb0FTNzg4aVJnZXUw?=
+ =?utf-8?B?Z01ZWFdlSVhoeWpyYzJscmZlZmpGTGhHZWRjMytkbk95OU5yaW9DUlFPR1Vl?=
+ =?utf-8?B?ZlBYK3dvWFhrU1BOczJsejhXQ3FjMDBsaWNLM2x2aDlSZE1UdWIzbWJ3MVFw?=
+ =?utf-8?B?bldkTDVBTFpnbVRzK3hnSGtUQWNnbjNnSjFTZHRldTlzMW1EU3VoODBhQzF0?=
+ =?utf-8?B?OUx3SmsraUJWaGU4aDNlbGxqODNoMm9iYWJVRllLbjVWUzFoTXJ4eDc3Q1li?=
+ =?utf-8?B?bm1QVmlsbmdHNzZiSEM5OEZpcXd2UENZa09YOUw1L05XRFFRT2MrRnZONmFC?=
+ =?utf-8?B?UGs5TDE3aEhROE9NeUZ0WmIwNEtESGE1Z0lVYXM5eVZRdGQxOG5qMG1ZL1Vn?=
+ =?utf-8?B?aEg4ZktMVDBtd2xERUdtblQ3NzZrVFhrV1lDQ1cwQWV4azNTSE1Ca2lBS0Fk?=
+ =?utf-8?B?bEM0L1BFZXFwbWxBV3U2YmZUenNxdm9JenJRYjdQN0hJMzZoSGtyL1MrUHho?=
+ =?utf-8?B?enZ3WjdaQ1I1bVpWMm5wQ0RNZjBsQzRZUS85TlRiK3VpeFpubVFKSVhEL3RZ?=
+ =?utf-8?B?eUxJOWFGWXVBbHlWTFNleHl4SEFFbnFubElCWnFDeWVnb0NteG9FOVA0SElP?=
+ =?utf-8?B?bVhDazd4Y2o2S2djalVXNE9GNHUya1JlZkN4bVN2N3ZxZHZPcjc3QWs0VHc1?=
+ =?utf-8?B?T0FmV2tocloycGJUZW1TcFZMbEtDZXNFaVRlM0c4c0crZWNtYjZZazBBV0sx?=
+ =?utf-8?B?NG5sTVVxODR1QlJMUWg0UExFNGdIYWQ3azRiZVh5bDdCWStscFB0ZlFWZFNE?=
+ =?utf-8?B?WXQzSTdqbVNZR3JIaGNTOHF3QmxtcVczS3RYdnovOXNpNzdKQzU2d3ROVTVE?=
+ =?utf-8?B?Vk8zb1RsY2tXK3R0NnZxZ3hoUDkyeWVRMHNSK1FENGtKZGE1cUxwWDlIbXBK?=
+ =?utf-8?B?eGNSbm9BbzBxZllxMnBnKzBIa3IwcERhUzhDYUQ0WmFZeWtIT2FJTkpoa3FI?=
+ =?utf-8?B?YU8vYUxOK2dHNDdvSDQzV2wvQ0dZdnB1eXlRYWpKdHVYSCs2VmRrTG5ZRmhH?=
+ =?utf-8?B?N1RKTnhnNnFHMkIxdWoyZGZvaHlpUjJaVFQ2dmNiWDRacTNNUGptUlEzVzBl?=
+ =?utf-8?B?MFVxSmQ4UVZhRlIwU3h5bEpERnFUZWVUZjQrSkhzTUw4NlhHK2V0MVNYT0ZQ?=
+ =?utf-8?B?OEQ2bk1GMVRNM1pjbnFLMGpkREhBaXF4dE9oSVJobE9mbjg5WG54RlEreW5Y?=
+ =?utf-8?B?eFhSZ1JuUXcwUHRCbXc1SElxcjVha2RzTlNhbXg2ck1DMzliT3hGTWNuMjcz?=
+ =?utf-8?B?YUd6N29kdUdyaHBYeEZZNDFVNU5aMTVLSlVwM05iSUlVZC9jZ3NpdHkwWVJh?=
+ =?utf-8?Q?7R2ZMxATDybst2ndlAJmdMq81blET/gI?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VFZjd2ZKeW0vTGVqdzJZNzM5YzBYTis3Z2NWR0Jxa1hhMVFEc21GNFgvWkJq?=
+ =?utf-8?B?UVVRT3ZiS2p2ZXFuazB5N0YzNUNNNHk4byt5MWN0WkxkZ2gwbTJyZ1RtN3pV?=
+ =?utf-8?B?clRvSGdZeWFJaWoxSEpaeWpWQ3N6bjVTUmJEam5DRG1rTXI1MVJMQlBWVFpH?=
+ =?utf-8?B?NDFLNWdHcEFzYlVkNkFzZ0t2azhvNWUyV3lVZU9ZZzVlOGJ0c0xHTGpXbi9p?=
+ =?utf-8?B?ZjJGUit6UVU0VnF4eG1adFFjdXpTTmpDY2s3RGJ6OTcrUlE5YU1yWVdYSDhx?=
+ =?utf-8?B?UHZ3cTNjNEN5Ym8xOThoTVBGQjcycjI0M21DWko5VVhSbFlvUTJOUGRDeHY0?=
+ =?utf-8?B?WVkyYmd5Wm5wZW00dEFyaGUxUjVEc3UvN0ZLNXZvN3Jta1VGekRHSTZlU1h0?=
+ =?utf-8?B?cUl3NjJ6eEg5Q0M5RGxiSlVBZ1V4USt4UXNhQ3lXQVVXM1RlalFQSFNsVFNI?=
+ =?utf-8?B?VnVpUHJ4QjIrbnVibmVEZkJWYS9wUVk5VkdOdVEvbWJ4VEZxOFd5TmlNNjhI?=
+ =?utf-8?B?ZWdKNGY0bjA5THo1WkQ5QUxLbzdaekl3UXB5UzVXQ3FXK0xuRVlGTFVuVzFm?=
+ =?utf-8?B?ZnZBa2JhU3kyUW5IRHZqUWowcm4zTEpGU0s4b2tuNldsOTBSeTZsY1VIMzNB?=
+ =?utf-8?B?dDlJK04vRnhJeVdqc0djVVkwbyszVmJrbFBNNjdJYjBaTk56c0w1UmJoa2NE?=
+ =?utf-8?B?UnNTenhONG9NaDJUZGlTQitIY3l6YnVkaU1MYWgxRkpxRFA2a0dkZndjK3hk?=
+ =?utf-8?B?VThmWkt2cUxEaTlyRnEvTUdsdnZJRUV5ckw4a0p1NndHVXN3UGduby9pZ2lM?=
+ =?utf-8?B?dHVSWlhZV0FwNGV6b0daRTlYVDZ2Qk93SC9kMnpHWEM5VWtGTm5pMnRjNkFn?=
+ =?utf-8?B?bHVDVmNrTk1RT09XQWFHdThWaVlMU3JSczVWQnBkbWoxYnpwSElESkxnWUk3?=
+ =?utf-8?B?THdjaTZIaGI5ZzE1bEw3MkNjWFdKK1lucXlmVk9WWVUrYzVnR2Rza1I5SDBZ?=
+ =?utf-8?B?ekkxR050U0tSM1pSbEdxWFZkWndVQ2FhbGo3ZjNmWncwTjdPR0R3NVZUU1hq?=
+ =?utf-8?B?TU5vbE5hMVR6N0tDZFFQVk4xOER6NWtiUjdDeGVmWDRKQUEzWElhM0hUTmRD?=
+ =?utf-8?B?U3gzTUsxM2creVYxNzJuQWUvYUdlMDlnY212SWMyVVVhR2tWZGsxNTdJakJ5?=
+ =?utf-8?B?S0RLTzZWOTYvcGFQNDVmUERpNG1mc0Vic2lNVmNMMTZnK2toVUN3eHpOVkQr?=
+ =?utf-8?B?TWVHYmd0QkJ3Qm1XRnVzUnloWUNheHhLdFRPYVd1Y1dCQmhsR2VjVGQzQnV6?=
+ =?utf-8?B?VDlxT3JsS2FLZUVBY0tHbmJRMFg2ZURuZDg4NTRmVU9vSmdIREVaTlpmdFRM?=
+ =?utf-8?B?aWFkRGgzVnFjdWFHbzRxbTQvMDRwNUl5emJIVXQzVTFhUHpiTDZJSENwYzN5?=
+ =?utf-8?B?eEFCd3lUQ2ZWUkRDa0FsOURPZWIrdVNZNjZQWnV3QmZBSGw1UWFRWDVUWGtl?=
+ =?utf-8?B?L3A4d01Nc0ticDZzbzR2R3BKaFIxR2dqTVFqbTEwK290WU5KUnRuM0FjVWo3?=
+ =?utf-8?B?ckJocVEybWMyd25MRWdCemY3b29NOUdFdVMybm5weGs5L2YrK01XRnZCUy9v?=
+ =?utf-8?B?Q0hlY1RaVDBaL3RzODFYbGNWZXh5d3o2OVdkZ29raDhpUmFLb1JvRDVMMEhq?=
+ =?utf-8?B?SFBncmt4bmYwOXg1UGtoWTRrS0ZsS3owWlNBT04xOW9hbkdOYW15U29tcHJI?=
+ =?utf-8?B?WnhLTm9CcTVzVzB5ZmROUUIxME9iNHpwZzI4NzVJNi9QUGRTb1liZjB1anhJ?=
+ =?utf-8?B?cWdtbC9wMmZiYUJXOCtCTlhCc0pTOC9Tb0JFRlJaOWtqL0V0TlFPTHVob3Rk?=
+ =?utf-8?B?dXlKd2Z5eTJzV2JnNmlaekMxb2UvRjZFeTdRU2dJc0djd0JxaFFlNG5wM1Jr?=
+ =?utf-8?B?cHVmSXhiSlhVVFZzNGdLVVN1ZXdpMDFzK3V1SkxUc1R1YWdoYkpqZkJETm56?=
+ =?utf-8?B?bW1TSzJSUFgxak95NlBsTlVrUTB2WnVucllaWURsbmhNM0ROZ1grT3piUEF4?=
+ =?utf-8?B?emdlSDlCTHI1S0tOczFkRThhcERyOXZtNGRVeVdYNlluZVRSNnhNc3NwNFBp?=
+ =?utf-8?B?WkZlOXFzdk9ZVk84M0tOSlBkdDdNdTQzUHZoWm1BWXZqTnNuSW5iWElOTWls?=
+ =?utf-8?B?WU45cWxPcEZZK0F6dEZrWkx4YmdIeFcxWGpWbUFpOFpFNWk5V2FMM2tWbC8z?=
+ =?utf-8?B?clVVN0dsTDlFTTlFK2xIZ3o0ZWtEUVVSVnY1YmVvenNvWWtFMHYycFNsT3JH?=
+ =?utf-8?B?eS9mU24vdnVVdzBSYTVCY1BZNytRbWE2TUpmdVh2VXFVaTRxMGRYdz09?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	qPDQIk6lrlSHJHOgShvGZ7H35Un97miuhyg5cVhMlfJNvrjklvftakDLEsVzOPSNsOO7XEiHbr8v1ea44Aub2WY+23XQFOgZxkNGtyyrJJDEMfGip17rsnuPQlo5+78wqOfkDNAhF1JoAMm5Y+TAqWGf3he8nNxbznKymrvpVkgMY/e1gy4rJ+l+u5w4KDj4HZ1Vks45SUu1m89s5LG4tIbZd0IwZ3WHKw+4PwGpjz9SDpN2p9jWUOaTcIo7p7+8DVik5XL29Pf9YeZuA0Tl72ndARS78CwHgf8WF9XWLrxLMqlPXylCtdHQ8q6yBYfF0ojVAL+bWIGsDbNfgRp1Tbmk64ci7Am+NcPZ2VChIgFMPGeDOhQS5v9SCyHkaWGztjKi7TOlusREVwrhR4cjKVQjijPY7vN6Kwpt0NCZFxkicHSbNgFpt1lekP0m+zJ8jAWNTd5RjgtY0+EYoj4EluhKObQVdaVTHU46cubWOruKIehOh/4O9i1QVV/OYJyc+9FXbxN2O6r05ZX3+Go0LcEreWPdVNUSgnwbfmU3QVyXygLH0J0nGlFaPckJ91JLVjCMQyGO4v9quAUVK6HevC2zLJKTEviW7EpF5L+aUrE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc2ae104-f6c3-4d7a-108b-08de52d4b1f9
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 18:51:00.7581
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /QFhR49DX3dDXBOT2jrXPCE9OE1r8WucAEcrcFSuhjHYDDUDVkF90P4//ZKoUlrPfc20VbCkPJ9A6imq4kxt1Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4810
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-13_04,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 phishscore=0
+ mlxlogscore=999 adultscore=0 suspectscore=0 spamscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
+ definitions=main-2601130157
+X-Proofpoint-GUID: u1p0DCMP4DWaZ7N8_Ya3cQpiIj9xdCB5
+X-Authority-Analysis: v=2.4 cv=X7Bf6WTe c=1 sm=1 tr=0 ts=69669418 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=1XWaLZrsAAAA:8 a=yPCof4ZbAAAA:8 a=GfI7W31lyZoJVn3rpl4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDE1NyBTYWx0ZWRfX2nd6OS+9TK40
+ /brGsbrkL0RPLv5bBP61IJMyog26fbXp2u9lbPT1UrsoFTf0IBeGTaFcIpqA1u3rLC0mm++QV5u
+ wjgks1loC0107QLqCkm0MDcOfXIykfNZ07J0Nen+wT2Eh3XxLBZwl75g9N2ZPJNNl8rQpffnLFb
+ LiVmTtMuWZvzadfKtfgK6A8qULP7K9I0oqCin/ST55iPwppzI+MAdAtPhITiMP3XnBk//lWBG3J
+ O7+qm1tk82l1+kI7dAgYomtjCvzFvzzSfSHyaMaBj8rrx+cjy+SSOAg/1wv644euXe5Vb372ggz
+ NAwFaHBsxy1kEO1Nkun7EpbRIhRefJ5gAxCeI+V+8bMXP1+2kVHLvkNhZIWvi91FOHXxFru+2gc
+ lm1DFaL17BWqjRAUCQE5yZeCfBKjsyR88nonB3z65VdNrHYCg+/C4x4/G9wfYMVNq/GQpKLqpSd
+ Ufv22cZT1pT0ojoXj+A==
+X-Proofpoint-ORIG-GUID: u1p0DCMP4DWaZ7N8_Ya3cQpiIj9xdCB5
+X-Stat-Signature: bkc3ew8gosh5rybjs8bap45754rfh3eq
+X-Rspamd-Queue-Id: 0D47E40011
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768329760-350502
-X-HE-Meta: U2FsdGVkX1+EmsFhED3JSGRCMP6jPDivcQes+qnPb5dDuKZ039YecDmvody1NfmYqOqN1z/tzV4oTCY0fnx0ZTSRmmaak9o9yQH8I/geXfaW5EBiMG0IrEfuin+l6WbZ8PyVqcar95OSWe17GSXoRfljkK0FpsqidRhmeUp8gV+DAW2Wga1AasxPQmL15mqkaS+jpu3RC23Mt5Wx+UvD677q/5x+Obhfl3X3XSBKFaBPe35r9BAge1ixZeZU5zW2LPuafAWjaZqyrAg7Dd/h6ztG3QEqxh5E7hxRM4fdnHRMs0tzgkEnNOrMWTWCQVMth81LxI//6SjmMCFsLgriFKfivEBRKIq9UKN2u8ay7hDLsLlRfvrzYvCWfOCIcOUPeIRas9g3d9VtxClzeT8kW0r5m1DoNORKXAlw3O/qg6hx8lEEZWnEbVYfMVS+Czxy3Oqsm+xwpjkjZTLcu2UDUXeyXFG7UI7K9LQPWx81dDXlz+Tt6LOtoa/9/3q+KtPjFTTaoPokRVrP5inhaWBmKhxyzL/b5i0RGN2XmHxfyPV6D9ESgy7okszoIUTCsUceFo3HsqVezirDyUZDR8uyJtklwIJzx4jASo1NqHa1bFyJ/qj61z2dXEEmcHUihVE5dn0ctj5mYe21OYI+80T3a7F9rc6obHt9RxZuF880GCsAkvOnaSgrroL325jrWT4Ow1DfKpf9Men7/KRkqaOGDdxqPiBvMXzVRRUCkaDRBABKrv1AUa6DAVEtp8eogGpX/IcmW7l86F7wNxZybepnSiZLJGqC+QXtqLkzL1583slc/kI4BA3Buqj9LQLDXuvM/b1D2de7lnC1g3iHEhkV85ogiS3hz9D1NypEjSxBjDxsvhJv0QWv6CPppTixncf4OigVMobzg7ikk3njLHQsvIc1PhAFOSjEDBnAZCRkTfWltyK29kFf0zJJ/6P3BAaqvlzrvBBUJ6IhksFp7+r
- ZpSqS6Yh
- 8lAeLNE+wVDY04LqoZ/yY6/GBiqkqRS0dAb+p3fciP4eNabDMt5h+60SXinXjzO814PV3hi2ZVWa3P0/LUs7VAjT1VR3cWU/8EoHt6TbgOaP2OlurQ5MBXL63xwfznpvihip+YxPM335coJRqGMjdwJi7o8wrjLxHxr99V/An6RV1hvL19coGvIO/W2ChGIkyiFZwFkq+mwMnYEi9JlhIP9ulYYdFu84BsyBoOyUGQzi+XLeHs2YQAvNt/X5si9as1gf/MDfnXYOKA3cz6iS6U5xES75pTsu5yyxT
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768330287-44993
+X-HE-Meta: U2FsdGVkX18xN3rG1iCFlEVBjQcCQfEDqGYn4LwtuVxyPa09O8UjhALeLNONsqdqGPUDRFwqtBwEvIwTruh5Fjy/VH5NONkX43jWUOWqh810x9R7sPFUNhmykKRXJMRGxbGpdgmn8ZmIyCDWZ5tjTgBf4SMzGw46KcSXrsSozmqKfS6fCAyW1EaDSDRpxErWQJuSC10wkLrj8OKzzVh/rThbpDjDrQ1VOwHZXaSlPAafwnTPgKsWw7ZZd7B3uKfXJrFAFgxFmQwA0N7NNUOO5DzgHvA27bJIyTobGKLxJhWyUqymJ6+WxKRI9wqZldOvIACRRRcPu0Fe6R8fIPZOEWxqd+qcloUJ8hEXk91saBqFhoHl/lT5n/zAl1CgNBM1nX2DNKH9qm1HYLHEba/VuRzb2k0qxGPiO6hDOz/nvFX5HB1hQYoAyiK5D7e6Qc/oUT/a8jnmf8yPIvPnpz9NM47voURqB6wWJpDhWyXEP5aSFsSr2BzkhaLW1G/ZD8aEbQYcwfogm4Bu/gcm0D31GnYHoV1w+rs6HcUBovewgBe9JPrKjTQAvlOjYYl8IR/tJBjNfq4zgk34JdSbGeHsIGhZY0zsaT82T5/09DOSKw2AJA/u50NJFRJ+nrByXdzVngdx2GWB2UDxKooXVIj3AERVlDan0Qp6FxSslXkStFq6oRYNMrTn8GIBxZf/sX/iJ5StKuQGvQNuRfQ7wEvgtqHBX0wzgGhvx2NGiSutSAKtqqjLVhS/p+geu+2nke5j+Stq8ft7MjyXjyEqUIjpp7XFXrmB1s5omjQVrzo/FKOMFxcWOJA4GXInSjujAzlipTUnPlXsBltwI4HxHdEHTWT4klyh4rH6qgd8k1sx5BZ5mGoH9rbwMAXvNZaDIwencfv2xM4UmuekNe1q1vKJ+Y/3wAaoY28ZRJ1dgWicLcwMcy50UuRL+bIjTn5Hy7w+i6aOLmkvTckplwJDvF4
+ wIdGGyrp
+ QP/jRZIz4QggbHh02keywD5y0/O3GrvBpz27RG4gMvxAR3CI1ZQ1lh/mzD+nHA4PHvzcNSy8t28iQKveEGVGaYNW5y/r8XTGkHDze0p9omu2Eq+R47IzgHKHbvHaJHZeGjgn0lI/SJW4hGqqeP/5or6uFotMz8dPuWH6dV2Q1Ziq7h5oNfst/GJOKtMGVAjhDdk/QSZFrxawQwCqVVkoN4OvBX/tBvxqvmbaqejlmXRuuT7hvv3JcadPaHBIlWSrvsTb1deTxf3+cnYMhgUZQ50Y2CbA06d51aX9dEe3irmpZrGO4kF/nJLhcGg6eOilmfd6ZyACgd48WOSEznvGw8Ok/sUYD9OQeBqu0hmeuYqqt9puRFsl2kepDstvz8cHdkD4/fxCV1sALnfG9HMDNxK4M8Adz2b/Z2R4bH6gX2pLspcbDkubU9cExzM1//yQFPZw2J9NYzhz5AXH5QqQYGxPyJFR58NbBpxLvt/0+hJBLy3mg0sv5JO8OQ4T+a3wtw7wFrH6CY1ha7mhgfeLsprLPYcoMsk4C+OGnDT64ChaMCp/Zi4j63eTycIb0u6ASThxq6UyDFMeiy8d/qIvRovgU0d/O9oJKkcwwwgEhitwx0nvAH9bEbu6zW87JIbE6ANQHecvLrChANrZZelaFYzbr317UFRYKHPwg6yJwIgvkLsErudg4xXpnkg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,381 +273,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   abb8eb84b7bb668d982e556b2b19f0e3ac42c591
-commit: c22668ddeabded18adfebc428e99d20d59bc6d9d [294/303] arm64: unify software tag-based KASAN inline recovery path
-config: arm64-randconfig-r064-20260113 (https://download.01.org/0day-ci/archive/20260114/202601140248.D9Oj5lCh-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 13.4.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260114/202601140248.D9Oj5lCh-lkp@intel.com/reproduce)
+* Suren Baghdasaryan <surenb@google.com> [250909 16:09]:
+> On Tue, Sep 9, 2025 at 12:09=E2=80=AFPM Liam R. Howlett <Liam.Howlett@ora=
+cle.com> wrote:
+> >
+> > Create the new function tear_down_vmas() to remove a range of vmas.
+> > exit_mmap() will be removing all the vmas.
+> >
+> > This is necessary for future patches.
+> >
+> > No functional changes intended.
+> >
+> > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+>=20
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>=20
+> > ---
+> >  mm/mmap.c | 37 ++++++++++++++++++++++++-------------
+> >  1 file changed, 24 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/mm/mmap.c b/mm/mmap.c
+> > index b07b3ec5e28f5..a290448a53bb2 100644
+> > --- a/mm/mmap.c
+> > +++ b/mm/mmap.c
+> > @@ -1250,6 +1250,29 @@ int vm_brk_flags(unsigned long addr, unsigned lo=
+ng request, vm_flags_t vm_flags)
+> >  }
+> >  EXPORT_SYMBOL(vm_brk_flags);
+> >
+> > +static inline
+>=20
+> nit: Maybe let the compiler decide whether to inline this one?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601140248.D9Oj5lCh-lkp@intel.com/
+Sure, I'll remove the inline here.
 
-All errors (new ones prefixed by >>):
+>=20
+> > +unsigned long tear_down_vmas(struct mm_struct *mm, struct vma_iterator=
+ *vmi,
+> > +               struct vm_area_struct *vma, unsigned long max)
+...
 
-     853 |         [ESR_ELx_EC_SVE]                = "SVE",
-         |                                           ^~~~~
-   arch/arm64/kernel/traps.c:853:43: note: (near initialization for 'esr_class_str[25]')
-   arch/arm64/kernel/traps.c:854:43: warning: initialized field overwritten [-Woverride-init]
-     854 |         [ESR_ELx_EC_ERET]               = "ERET/ERETAA/ERETAB",
-         |                                           ^~~~~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:854:43: note: (near initialization for 'esr_class_str[26]')
-   arch/arm64/kernel/traps.c:855:43: warning: initialized field overwritten [-Woverride-init]
-     855 |         [ESR_ELx_EC_FPAC]               = "FPAC",
-         |                                           ^~~~~~
-   arch/arm64/kernel/traps.c:855:43: note: (near initialization for 'esr_class_str[28]')
-   arch/arm64/kernel/traps.c:856:43: warning: initialized field overwritten [-Woverride-init]
-     856 |         [ESR_ELx_EC_SME]                = "SME",
-         |                                           ^~~~~
-   arch/arm64/kernel/traps.c:856:43: note: (near initialization for 'esr_class_str[29]')
-   arch/arm64/kernel/traps.c:857:43: warning: initialized field overwritten [-Woverride-init]
-     857 |         [ESR_ELx_EC_IMP_DEF]            = "EL3 IMP DEF",
-         |                                           ^~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:857:43: note: (near initialization for 'esr_class_str[31]')
-   arch/arm64/kernel/traps.c:858:43: warning: initialized field overwritten [-Woverride-init]
-     858 |         [ESR_ELx_EC_IABT_LOW]           = "IABT (lower EL)",
-         |                                           ^~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:858:43: note: (near initialization for 'esr_class_str[32]')
-   arch/arm64/kernel/traps.c:859:43: warning: initialized field overwritten [-Woverride-init]
-     859 |         [ESR_ELx_EC_IABT_CUR]           = "IABT (current EL)",
-         |                                           ^~~~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:859:43: note: (near initialization for 'esr_class_str[33]')
-   arch/arm64/kernel/traps.c:860:43: warning: initialized field overwritten [-Woverride-init]
-     860 |         [ESR_ELx_EC_PC_ALIGN]           = "PC Alignment",
-         |                                           ^~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:860:43: note: (near initialization for 'esr_class_str[34]')
-   arch/arm64/kernel/traps.c:861:43: warning: initialized field overwritten [-Woverride-init]
-     861 |         [ESR_ELx_EC_DABT_LOW]           = "DABT (lower EL)",
-         |                                           ^~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:861:43: note: (near initialization for 'esr_class_str[36]')
-   arch/arm64/kernel/traps.c:862:43: warning: initialized field overwritten [-Woverride-init]
-     862 |         [ESR_ELx_EC_DABT_CUR]           = "DABT (current EL)",
-         |                                           ^~~~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:862:43: note: (near initialization for 'esr_class_str[37]')
-   arch/arm64/kernel/traps.c:863:43: warning: initialized field overwritten [-Woverride-init]
-     863 |         [ESR_ELx_EC_SP_ALIGN]           = "SP Alignment",
-         |                                           ^~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:863:43: note: (near initialization for 'esr_class_str[38]')
-   arch/arm64/kernel/traps.c:864:43: warning: initialized field overwritten [-Woverride-init]
-     864 |         [ESR_ELx_EC_MOPS]               = "MOPS",
-         |                                           ^~~~~~
-   arch/arm64/kernel/traps.c:864:43: note: (near initialization for 'esr_class_str[39]')
-   arch/arm64/kernel/traps.c:865:43: warning: initialized field overwritten [-Woverride-init]
-     865 |         [ESR_ELx_EC_FP_EXC32]           = "FP (AArch32)",
-         |                                           ^~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:865:43: note: (near initialization for 'esr_class_str[40]')
-   arch/arm64/kernel/traps.c:866:43: warning: initialized field overwritten [-Woverride-init]
-     866 |         [ESR_ELx_EC_FP_EXC64]           = "FP (AArch64)",
-         |                                           ^~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:866:43: note: (near initialization for 'esr_class_str[44]')
-   arch/arm64/kernel/traps.c:867:43: warning: initialized field overwritten [-Woverride-init]
-     867 |         [ESR_ELx_EC_GCS]                = "Guarded Control Stack",
-         |                                           ^~~~~~~~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:867:43: note: (near initialization for 'esr_class_str[45]')
-   arch/arm64/kernel/traps.c:868:43: warning: initialized field overwritten [-Woverride-init]
-     868 |         [ESR_ELx_EC_SERROR]             = "SError",
-         |                                           ^~~~~~~~
-   arch/arm64/kernel/traps.c:868:43: note: (near initialization for 'esr_class_str[47]')
-   arch/arm64/kernel/traps.c:869:43: warning: initialized field overwritten [-Woverride-init]
-     869 |         [ESR_ELx_EC_BREAKPT_LOW]        = "Breakpoint (lower EL)",
-         |                                           ^~~~~~~~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:869:43: note: (near initialization for 'esr_class_str[48]')
-   arch/arm64/kernel/traps.c:870:43: warning: initialized field overwritten [-Woverride-init]
-     870 |         [ESR_ELx_EC_BREAKPT_CUR]        = "Breakpoint (current EL)",
-         |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:870:43: note: (near initialization for 'esr_class_str[49]')
-   arch/arm64/kernel/traps.c:871:43: warning: initialized field overwritten [-Woverride-init]
-     871 |         [ESR_ELx_EC_SOFTSTP_LOW]        = "Software Step (lower EL)",
-         |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:871:43: note: (near initialization for 'esr_class_str[50]')
-   arch/arm64/kernel/traps.c:872:43: warning: initialized field overwritten [-Woverride-init]
-     872 |         [ESR_ELx_EC_SOFTSTP_CUR]        = "Software Step (current EL)",
-         |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:872:43: note: (near initialization for 'esr_class_str[51]')
-   arch/arm64/kernel/traps.c:873:43: warning: initialized field overwritten [-Woverride-init]
-     873 |         [ESR_ELx_EC_WATCHPT_LOW]        = "Watchpoint (lower EL)",
-         |                                           ^~~~~~~~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:873:43: note: (near initialization for 'esr_class_str[52]')
-   arch/arm64/kernel/traps.c:874:43: warning: initialized field overwritten [-Woverride-init]
-     874 |         [ESR_ELx_EC_WATCHPT_CUR]        = "Watchpoint (current EL)",
-         |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:874:43: note: (near initialization for 'esr_class_str[53]')
-   arch/arm64/kernel/traps.c:875:43: warning: initialized field overwritten [-Woverride-init]
-     875 |         [ESR_ELx_EC_BKPT32]             = "BKPT (AArch32)",
-         |                                           ^~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:875:43: note: (near initialization for 'esr_class_str[56]')
-   arch/arm64/kernel/traps.c:876:43: warning: initialized field overwritten [-Woverride-init]
-     876 |         [ESR_ELx_EC_VECTOR32]           = "Vector catch (AArch32)",
-         |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:876:43: note: (near initialization for 'esr_class_str[58]')
-   arch/arm64/kernel/traps.c:877:43: warning: initialized field overwritten [-Woverride-init]
-     877 |         [ESR_ELx_EC_BRK64]              = "BRK (AArch64)",
-         |                                           ^~~~~~~~~~~~~~~
-   arch/arm64/kernel/traps.c:877:43: note: (near initialization for 'esr_class_str[60]')
-   arch/arm64/kernel/traps.c: In function 'kasan_brk_handler':
->> arch/arm64/kernel/traps.c:1074:9: error: implicit declaration of function 'kasan_die_unless_recover' [-Werror=implicit-function-declaration]
-    1074 |         kasan_die_unless_recover(recover, "Oops - KASAN", regs, esr, die);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
-
-
-vim +/kasan_die_unless_recover +1074 arch/arm64/kernel/traps.c
-
-   831	
-   832	static const char *esr_class_str[] = {
-   833		[0 ... ESR_ELx_EC_MAX]		= "UNRECOGNIZED EC",
-   834		[ESR_ELx_EC_UNKNOWN]		= "Unknown/Uncategorized",
-   835		[ESR_ELx_EC_WFx]		= "WFI/WFE",
-   836		[ESR_ELx_EC_CP15_32]		= "CP15 MCR/MRC",
-   837		[ESR_ELx_EC_CP15_64]		= "CP15 MCRR/MRRC",
-   838		[ESR_ELx_EC_CP14_MR]		= "CP14 MCR/MRC",
-   839		[ESR_ELx_EC_CP14_LS]		= "CP14 LDC/STC",
-   840		[ESR_ELx_EC_FP_ASIMD]		= "ASIMD",
-   841		[ESR_ELx_EC_CP10_ID]		= "CP10 MRC/VMRS",
-   842		[ESR_ELx_EC_PAC]		= "PAC",
-   843		[ESR_ELx_EC_CP14_64]		= "CP14 MCRR/MRRC",
-   844		[ESR_ELx_EC_BTI]		= "BTI",
-   845		[ESR_ELx_EC_ILL]		= "PSTATE.IL",
-   846		[ESR_ELx_EC_SVC32]		= "SVC (AArch32)",
-   847		[ESR_ELx_EC_HVC32]		= "HVC (AArch32)",
-   848		[ESR_ELx_EC_SMC32]		= "SMC (AArch32)",
-   849		[ESR_ELx_EC_SVC64]		= "SVC (AArch64)",
-   850		[ESR_ELx_EC_HVC64]		= "HVC (AArch64)",
-   851		[ESR_ELx_EC_SMC64]		= "SMC (AArch64)",
-   852		[ESR_ELx_EC_SYS64]		= "MSR/MRS (AArch64)",
-   853		[ESR_ELx_EC_SVE]		= "SVE",
-   854		[ESR_ELx_EC_ERET]		= "ERET/ERETAA/ERETAB",
-   855		[ESR_ELx_EC_FPAC]		= "FPAC",
-   856		[ESR_ELx_EC_SME]		= "SME",
-   857		[ESR_ELx_EC_IMP_DEF]		= "EL3 IMP DEF",
-   858		[ESR_ELx_EC_IABT_LOW]		= "IABT (lower EL)",
-   859		[ESR_ELx_EC_IABT_CUR]		= "IABT (current EL)",
-   860		[ESR_ELx_EC_PC_ALIGN]		= "PC Alignment",
-   861		[ESR_ELx_EC_DABT_LOW]		= "DABT (lower EL)",
-   862		[ESR_ELx_EC_DABT_CUR]		= "DABT (current EL)",
-   863		[ESR_ELx_EC_SP_ALIGN]		= "SP Alignment",
-   864		[ESR_ELx_EC_MOPS]		= "MOPS",
-   865		[ESR_ELx_EC_FP_EXC32]		= "FP (AArch32)",
-   866		[ESR_ELx_EC_FP_EXC64]		= "FP (AArch64)",
-   867		[ESR_ELx_EC_GCS]		= "Guarded Control Stack",
-   868		[ESR_ELx_EC_SERROR]		= "SError",
-   869		[ESR_ELx_EC_BREAKPT_LOW]	= "Breakpoint (lower EL)",
-   870		[ESR_ELx_EC_BREAKPT_CUR]	= "Breakpoint (current EL)",
-   871		[ESR_ELx_EC_SOFTSTP_LOW]	= "Software Step (lower EL)",
-   872		[ESR_ELx_EC_SOFTSTP_CUR]	= "Software Step (current EL)",
-   873		[ESR_ELx_EC_WATCHPT_LOW]	= "Watchpoint (lower EL)",
-   874		[ESR_ELx_EC_WATCHPT_CUR]	= "Watchpoint (current EL)",
-   875		[ESR_ELx_EC_BKPT32]		= "BKPT (AArch32)",
- > 876		[ESR_ELx_EC_VECTOR32]		= "Vector catch (AArch32)",
-   877		[ESR_ELx_EC_BRK64]		= "BRK (AArch64)",
-   878	};
-   879	
-   880	const char *esr_get_class_string(unsigned long esr)
-   881	{
-   882		return esr_class_str[ESR_ELx_EC(esr)];
-   883	}
-   884	
-   885	/*
-   886	 * bad_el0_sync handles unexpected, but potentially recoverable synchronous
-   887	 * exceptions taken from EL0.
-   888	 */
-   889	void bad_el0_sync(struct pt_regs *regs, int reason, unsigned long esr)
-   890	{
-   891		unsigned long pc = instruction_pointer(regs);
-   892	
-   893		current->thread.fault_address = 0;
-   894		current->thread.fault_code = esr;
-   895	
-   896		arm64_force_sig_fault(SIGILL, ILL_ILLOPC, pc,
-   897				      "Bad EL0 synchronous exception");
-   898	}
-   899	
-   900	DEFINE_PER_CPU(unsigned long [OVERFLOW_STACK_SIZE/sizeof(long)], overflow_stack)
-   901		__aligned(16);
-   902	
-   903	void __noreturn panic_bad_stack(struct pt_regs *regs, unsigned long esr, unsigned long far)
-   904	{
-   905		unsigned long tsk_stk = (unsigned long)current->stack;
-   906		unsigned long irq_stk = (unsigned long)this_cpu_read(irq_stack_ptr);
-   907		unsigned long ovf_stk = (unsigned long)this_cpu_ptr(overflow_stack);
-   908	
-   909		console_verbose();
-   910		pr_emerg("Insufficient stack space to handle exception!");
-   911	
-   912		pr_emerg("ESR: 0x%016lx -- %s\n", esr, esr_get_class_string(esr));
-   913		pr_emerg("FAR: 0x%016lx\n", far);
-   914	
-   915		pr_emerg("Task stack:     [0x%016lx..0x%016lx]\n",
-   916			 tsk_stk, tsk_stk + THREAD_SIZE);
-   917		pr_emerg("IRQ stack:      [0x%016lx..0x%016lx]\n",
-   918			 irq_stk, irq_stk + IRQ_STACK_SIZE);
-   919		pr_emerg("Overflow stack: [0x%016lx..0x%016lx]\n",
-   920			 ovf_stk, ovf_stk + OVERFLOW_STACK_SIZE);
-   921	
-   922		__show_regs(regs);
-   923	
-   924		/*
-   925		 * We use nmi_panic to limit the potential for recursive overflows, and
-   926		 * to get a better stack trace.
-   927		 */
-   928		nmi_panic(NULL, "kernel stack overflow");
-   929		cpu_park_loop();
-   930	}
-   931	
-   932	void __noreturn arm64_serror_panic(struct pt_regs *regs, unsigned long esr)
-   933	{
-   934		add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
-   935		console_verbose();
-   936	
-   937		pr_crit("SError Interrupt on CPU%d, code 0x%016lx -- %s\n",
-   938			smp_processor_id(), esr, esr_get_class_string(esr));
-   939		if (regs)
-   940			__show_regs(regs);
-   941	
-   942		nmi_panic(regs, "Asynchronous SError Interrupt");
-   943	
-   944		cpu_park_loop();
-   945	}
-   946	
-   947	bool arm64_is_fatal_ras_serror(struct pt_regs *regs, unsigned long esr)
-   948	{
-   949		unsigned long aet = arm64_ras_serror_get_severity(esr);
-   950	
-   951		switch (aet) {
-   952		case ESR_ELx_AET_CE:	/* corrected error */
-   953		case ESR_ELx_AET_UEO:	/* restartable, not yet consumed */
-   954			/*
-   955			 * The CPU can make progress. We may take UEO again as
-   956			 * a more severe error.
-   957			 */
-   958			return false;
-   959	
-   960		case ESR_ELx_AET_UEU:	/* Uncorrected Unrecoverable */
-   961		case ESR_ELx_AET_UER:	/* Uncorrected Recoverable */
-   962			/*
-   963			 * The CPU can't make progress. The exception may have
-   964			 * been imprecise.
-   965			 *
-   966			 * Neoverse-N1 #1349291 means a non-KVM SError reported as
-   967			 * Unrecoverable should be treated as Uncontainable. We
-   968			 * call arm64_serror_panic() in both cases.
-   969			 */
-   970			return true;
-   971	
-   972		case ESR_ELx_AET_UC:	/* Uncontainable or Uncategorized error */
-   973		default:
-   974			/* Error has been silently propagated */
-   975			arm64_serror_panic(regs, esr);
-   976		}
-   977	}
-   978	
-   979	void do_serror(struct pt_regs *regs, unsigned long esr)
-   980	{
-   981		/* non-RAS errors are not containable */
-   982		if (!arm64_is_ras_serror(esr) || arm64_is_fatal_ras_serror(regs, esr))
-   983			arm64_serror_panic(regs, esr);
-   984	}
-   985	
-   986	/* GENERIC_BUG traps */
-   987	#ifdef CONFIG_GENERIC_BUG
-   988	int is_valid_bugaddr(unsigned long addr)
-   989	{
-   990		/*
-   991		 * bug_brk_handler() only called for BRK #BUG_BRK_IMM.
-   992		 * So the answer is trivial -- any spurious instances with no
-   993		 * bug table entry will be rejected by report_bug() and passed
-   994		 * back to the debug-monitors code and handled as a fatal
-   995		 * unexpected debug exception.
-   996		 */
-   997		return 1;
-   998	}
-   999	#endif
-  1000	
-  1001	int bug_brk_handler(struct pt_regs *regs, unsigned long esr)
-  1002	{
-  1003		switch (report_bug(regs->pc, regs)) {
-  1004		case BUG_TRAP_TYPE_BUG:
-  1005			die("Oops - BUG", regs, esr);
-  1006			break;
-  1007	
-  1008		case BUG_TRAP_TYPE_WARN:
-  1009			break;
-  1010	
-  1011		default:
-  1012			/* unknown/unrecognised bug trap type */
-  1013			return DBG_HOOK_ERROR;
-  1014		}
-  1015	
-  1016		/* If thread survives, skip over the BUG instruction and continue: */
-  1017		arm64_skip_faulting_instruction(regs, AARCH64_INSN_SIZE);
-  1018		return DBG_HOOK_HANDLED;
-  1019	}
-  1020	
-  1021	#ifdef CONFIG_CFI
-  1022	int cfi_brk_handler(struct pt_regs *regs, unsigned long esr)
-  1023	{
-  1024		unsigned long target;
-  1025		u32 type;
-  1026	
-  1027		target = pt_regs_read_reg(regs, FIELD_GET(CFI_BRK_IMM_TARGET, esr));
-  1028		type = (u32)pt_regs_read_reg(regs, FIELD_GET(CFI_BRK_IMM_TYPE, esr));
-  1029	
-  1030		switch (report_cfi_failure(regs, regs->pc, &target, type)) {
-  1031		case BUG_TRAP_TYPE_BUG:
-  1032			die("Oops - CFI", regs, esr);
-  1033			break;
-  1034	
-  1035		case BUG_TRAP_TYPE_WARN:
-  1036			break;
-  1037	
-  1038		default:
-  1039			return DBG_HOOK_ERROR;
-  1040		}
-  1041	
-  1042		arm64_skip_faulting_instruction(regs, AARCH64_INSN_SIZE);
-  1043		return DBG_HOOK_HANDLED;
-  1044	}
-  1045	#endif /* CONFIG_CFI */
-  1046	
-  1047	int reserved_fault_brk_handler(struct pt_regs *regs, unsigned long esr)
-  1048	{
-  1049		pr_err("%s generated an invalid instruction at %pS!\n",
-  1050			"Kernel text patching",
-  1051			(void *)instruction_pointer(regs));
-  1052	
-  1053		/* We cannot handle this */
-  1054		return DBG_HOOK_ERROR;
-  1055	}
-  1056	
-  1057	#ifdef CONFIG_KASAN_SW_TAGS
-  1058	
-  1059	#define KASAN_ESR_RECOVER	0x20
-  1060	#define KASAN_ESR_WRITE	0x10
-  1061	#define KASAN_ESR_SIZE_MASK	0x0f
-  1062	#define KASAN_ESR_SIZE(esr)	(1 << ((esr) & KASAN_ESR_SIZE_MASK))
-  1063	
-  1064	int kasan_brk_handler(struct pt_regs *regs, unsigned long esr)
-  1065	{
-  1066		bool recover = esr & KASAN_ESR_RECOVER;
-  1067		bool write = esr & KASAN_ESR_WRITE;
-  1068		size_t size = KASAN_ESR_SIZE(esr);
-  1069		void *addr = (void *)regs->regs[0];
-  1070		u64 pc = regs->pc;
-  1071	
-  1072		kasan_report(addr, size, write, pc);
-  1073	
-> 1074		kasan_die_unless_recover(recover, "Oops - KASAN", regs, esr, die);
-  1075	
-  1076		/* If thread survives, skip over the brk instruction and continue: */
-  1077		arm64_skip_faulting_instruction(regs, AARCH64_INSN_SIZE);
-  1078		return DBG_HOOK_HANDLED;
-  1079	}
-  1080	#endif
-  1081	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Liam
 
