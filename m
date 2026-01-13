@@ -4,29 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73C36D2F339
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 15:27:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14C59D2F338
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 15:27:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1F326B0095; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
+	id 16BEA6B0092; Tue, 13 Jan 2026 10:27:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE99B6B0096; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
+	id 0A23A6B0096; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B37BA6B0098; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
+	id D1D766B0092; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 96BDE6B0092
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF0B86B0095
 	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 10:27:34 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6752FB6AC1
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 702F4C08D5
 	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:27:34 +0000 (UTC)
-X-FDA: 84327320028.26.A454E15
+X-FDA: 84327320028.24.0DF8FA9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9CD72100009
+	by imf18.hostedemail.com (Postfix) with ESMTP id C1AED1C0007
 	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 15:27:32 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LYeyIAc0;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TQwLD6Yq;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768318052; a=rsa-sha256;
+	cv=none;
+	b=s+yd4mtJEfWeO/8DpFLaSJwTwBj4kPpP6XNRqBWNBHzu3Tv4hgp7WsiMvx36KEsZv72opz
+	odASxLA2umf6D09HXZocUMgg534HpTvr/rfL692GpbafMH/xwSskax0aGSsOD93bhcqBAS
+	Vpv5JO/rMq3NwvvkfILIOxsPbKTlLWc=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TQwLD6Yq;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1768318052;
@@ -34,57 +44,47 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nnBRSlbJMGAL4L4PuDSqVevARFNVRN+2okxO+GB2hc4=;
-	b=PWonHMwYjAnkVR43/tU2xa0PaF71foCXDoFpv8KFvOGM96IYbtYDrCaO6Q0PhWC1Bso5rP
-	nb8MLOV+kbTuOVFrheKMWpSwM2FNooBwJW5plgSZFEFvYol4285clZh/13zTy19m/NryY5
-	dSPfNV5EesJV4mljPFFj/SFDnaQFXLg=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LYeyIAc0;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768318052; a=rsa-sha256;
-	cv=none;
-	b=VWWPntHJdCGgAIDEqeP69lY61N0cPUKI5TVqOrT8YHI/nPdidWvGny9Ay6ZuHfNlK8R0zA
-	EQHzHiotbfePQx1T0KOj2dv4h18rggfOgDl38NbCm03+7BEwxXln16dE67F8bF7WOODVne
-	ySI29ue3LliNVotG5UAfThSLF/EzuGY=
+	bh=JF0IUQ068r+1d4jlHQLBlB0OX3AiXL83Tl7dFt/sDM4=;
+	b=Bsj3z7ZLnLokzmeH8v6o+tjh7AWK3nHg7dtfEgeqkoHCtLbvcuQTylhs2ht0WDkPOAiPnU
+	/EB21sLcApdM59K/Pj1D4mVZKLH0T1YwKFlquLlmY4jQeoTZeu9Q66G0MRsTzlPHtK3gIT
+	3QSF7FNt6MC54XkA4kcmsjvCkxtejkY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C515744400;
+	by sea.source.kernel.org (Postfix) with ESMTP id F3B5544419;
 	Tue, 13 Jan 2026 15:27:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812C2C116C6;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3778C2BC87;
 	Tue, 13 Jan 2026 15:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1768318051;
-	bh=F7+1XG5LjId9vgDKAd+pvaqjxO2poIILsvjkJM5g+64=;
+	bh=u9BpClkZFdNL3P8/T2nVybp/XhQM1COhsP+bLP+TFE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LYeyIAc0DPPpy3z1Rl+8ig1Nyu0ySouQKyf6phjuEuB3RGheVTYUKbsvTHuTPDbmz
-	 8aXf2v1J9bYSbGQyX3xR/g3cZIr4+ecuI3pAVK9JB2E19hYEVwytMRHmT7jadC4lZh
-	 le0SJ31b3yfaNdvUhND+LOseKXPoiSYG29BonPklsL78TldIy1YGleHzemv41TvCmq
-	 I/7Z1bcyf+tggipDawjvytAsszupZBKu6jrTedzFAub5n97J8xrc1h8M6ZM5ex7GT5
-	 jI0Y8b709XpJCHtIalPaY18mdwJV1D4wSjkN77ZSd7DXKwYePkiYAO14j9X2d0LiT4
-	 BXWifBme6kvGg==
+	b=TQwLD6YquT6NgnNQ84Kx8u7TWgMhbpMmt3X9fEodCwRYUsC9TaiBlzVw/KmPmmtNw
+	 1uII382sK4yne5J+fP75WQWpKjrs847Il9tU6TVwhj3ZkqWDU6trZ9l3kTyh6RFVZq
+	 vbbSqe4dEk1gvxU4hzdxMa+eAzna3Z1H6u97Y4GII2PQoTkUBtfPxzGq485BQxg5v6
+	 Ega6oOwSY7lWyVFPh42UnaMj5FH8ZKnGua+4N/yiHbsxP8nVfQoHX5COyAAUeQOpr7
+	 +F6Wa14h2HHNqnQ6QnbYITbui3f1pqJa3v/SGtfPe8MpJL6zoDbGhlWgv9IwAqNkFZ
+	 SGvlIBXdiA08Q==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 04/11] mm/damon/paddr: activate DAMOS_LRU_PRIO targets instead of marking accessed
-Date: Tue, 13 Jan 2026 07:27:09 -0800
-Message-ID: <20260113152717.70459-5-sj@kernel.org>
+Subject: [PATCH 05/11] mm/damon/lru_sort: consider age for quota prioritization
+Date: Tue, 13 Jan 2026 07:27:10 -0800
+Message-ID: <20260113152717.70459-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260113152717.70459-1-sj@kernel.org>
 References: <20260113152717.70459-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C1AED1C0007
+X-Stat-Signature: zk7it8ubiouctmqwgsrk37dqw5zd4bgk
 X-Rspam-User: 
-X-Stat-Signature: 4kqk3te64twh85o8s5xw6qarhaz1cpem
-X-Rspamd-Queue-Id: 9CD72100009
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768318052-221352
-X-HE-Meta: U2FsdGVkX1+SbjiWe3bc1uk/Uqj4C0E1ZTOanJnNkd3GJtHqqS12dVPejSavo+1C33nIRFm6mnCOTpxRHHjyIa3HMP60Ra/eIB5rWMQmUgUeuOwEhRq3rUSZLQ/b79kixW9jjVDi1Eov9wAwFyP1wszPnPOpbcR7o0PQHWkxkoqN57xRFLWv65zsqMVJLpYxBlBOJ+fhk4uhTQhA8G4hyZoPpq4h+ULTVIpPZICperL43+9L3ZDsrjx0W5uaz0XDcDtSF+n99kMT4SD0srgtJaEN+9fD8HcoUm3WSTm5Vo3+VoceMBxPTlTQNYOmckCkhg476DioP/h5I4qBdq4/vNRBBhvVPIJXzpIKQGerpdSVomFpqA0JiPPK06EZEajsdzySyz1uEFkhChA6LGoKkbrCM2WDyTQ4akgqU8ua2EJGtaJBHyuRCGsecmnne6A+FGBmfHc/8q9/9EPzGG7ef8VN74UUFUdWbiXweBILEzoQZXkEMu40JM6Q2luAYpec/1EUEf23IjxYcojbhuqi2X5cAcuQdG0C8VKJDP7QcXzF8aa7g23ZsrtqvpwbxDseTx4C/PoXgExPdG4J7KMTtunXCaQnnsF7layeu5SQLaeTQfTlT+YrsQF9Uu3Yfb11dlpL9iNADvZj8ri1UAL5x5RhrRmKUsK1Rkcqsb4GQyrPcUdz8liemELGFpSS4diUX40YZUc4yVecUY6I2WclB1HyA4zXRqQg6qeaNThUQhRqldMwM5aIpFz9GiVnz6qLt8m3xjDc/HxFy9912/4oU+qxSnV9dJWTiKDWNBgd3WPwsgoviKdBmu/atWAQcjDr7uWmRnOXPAXpXThTdFvGjrVpzERDBMGyxjkXg96PRxX5w7hV0r2PKomFNs/jZ9JqS78PlRK2jZ+RuKrDIz8aNpOQ1MMRdjHoqyDiW1bfJtnFsxYjGfsDV0jnRSlgKajJQy8GBSvbGJYKcV8VB7n
- Lh5CBeIB
- x+B2XEYvTul7Q5HVthq/ObDyUwYyfzCXd5uop5Oh8C7gzM7HLAy/oV611KJ6Fmb00dZEA+6qkEYmQwrapZcaG/MLlhuyftkFvANKfKk2lwvff9SSD4pxcAe8PCq6fTFz/i+W05MRpfUWMCsQOcxWIpYtRttDYfuTKAXQDor3Vox/AoqmFIH9Gl1BO8+5pI990sz2P8hyD0gx6egKk/6uWKzgOSWECk9V3K9F1Vw/oYmVI/7dCCwZ9aSylHdh+Sn9eZ1TqNvgfc52Jdj2fGVxGrUTU1/9RV40XciNq8IZWkl3zfVA9SYDQzbxdbJdZ04KyESPn
+X-HE-Tag: 1768318052-405749
+X-HE-Meta: U2FsdGVkX1/O0TFmEUrkBT4Z1eCPDK+nFlobKrsM7WbMtxiuL86/wNMwpJpA1IK9XN72O/7nxXCoqz55U7Xz1RM0Mu6JaBjS+vllqlNqrcQ/p2hnWO9x1ZCg8iwjOsB/R/wTWygI2U4DqZZSO1w/hVcmWCe3zRij4wgPZEVrxO1IeWtHylw0uPfsAb/ngEvsHXCHySoh57dA32A7luaNTfaJKYMBMd1QORfAkpZkYHQbTK5DHc5MXQqreDhM0p88aKkrP8KBar8lJTYt8lvwXZLUf2P8GitUxWYv5kcWySgBARa04dIZjO7la7M25p2s3oUIVsdph4VRcgMPWIDYrTc+rxPgH+MaPMgMNsjmVervagWanYJ9BRVhQQQOglzYdZ+d/ZVDmQFrIE73AwXkjSqnryB/q2+rhcoRi0lYl+9kj3F64bTVZtEhBlT4GtA1SwT2ifI8Ex0BN05+nIUojI+5I6MloICrlth7UMD1R5NWpBuNGEi5sXfZDCxmCpQjxyck48zpn968IvvBaX2SXuQBVRz5JHUvr8F+2tYs4Ts8cN/SWJN+R1LVYrCXTPkSkVBrIj88w+BgT2sqwsc8u5nkxN2DUzigltyOXedSuZe+01TwerUodz5lPUytjH+nt4r0Y1c+AbMvPreh/JsGwhlkkAeFLnErG1MzbGkZ6jDEYcTtR6AAP0RlLUx+DY3F2lMX/Py9x4bXeCYaHc3/ZyecHP+D0L9ikn7TrMJ6kQyfOn3dXmy081LdVscQ9ILWj33gCKQozGJVsYlRF/Nx+buoMylxTf2YfKICjOQtANy9CrLNplBWtEwAmuDAv3qAQLuC5aLGvFlqm2y1N7aNeGwmGNvoyCnpFv8I4Fjzt/9UKZeLAuHqocj046OJQfWbYTkBv1X1tWjF9HTrUlJgQpWVbJhhXwn6dCGDldv86DSK2aMGt8wJsGBsGXRfTCk/Q/NJosG8fz0Rbfr7DGS
+ 9xMBKuBp
+ 0zr5FqXmZs9dawK61EJ4RmXhS1w78kskm7bdbyTTYf+wH7sn3SM5g2cOhXI43K4BiyYu87sy0AxEYGWnxr1RZJ2Tl1YUwAYo/w1AHUbTJJbUmlWJ3/MgdYflWLpvslx6eQmIazIH2xE8CHz1DlGwVmkxGIy/ul79xDeUaABtAu+XoNNgjBzzWwqTcwUlKGEeJJTU2VO8IgRVC3o0VXISgcRfyBXqaviggTUfq1w16DcasbfIKPkAQ4e7gp8NU+6bZ698QB2YMJ5m8koevahVl2rZA1YvoTyLVyhTs9mUevBb7NHI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,84 +93,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMOS_LRU_DEPRIOD directly deactivates the pages, while DAMOS_LRU_PRIO
-calls folio_mark_accessed(), which does incremental activation.  The
-incremental activation was assumed to be useful for making sure the
-pages of the hot memory region are really hot.  After the introduction
-of DAMOS_LRU_PRIO, the young page filter has added.  Users can use the
-young page filter to make sure the page is eligible to be activated.
-Meanwhile, the asymmetric behavior of DAMOS_LRU_[DE]PRIO can confuse
-users.
-
-Directly activate given pages for DAMOS_LRU_PRIO, to eliminate the
-unnecessary incremental activation steps, and be symmetric with
-DAMOS_LRU_DEPRIO for easier usages.
+DAMON_LRU_SORT is doing under-quota access pattern based regions
+prioritization using only access frequency.  Age of regions is another
+useful information for distinguishing hot and cold regions.  Use it for
+prioritization, too.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/paddr.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ mm/damon/lru_sort.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 7d887a3c0866..4c2c935d82d6 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -206,9 +206,9 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
- 	return damon_pa_core_addr(applied * PAGE_SIZE, addr_unit);
- }
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 9388b091deb7..a74c4ec170a9 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -71,7 +71,7 @@ static struct damos_quota damon_lru_sort_quota = {
+ 	/* Within the quota, mark hotter regions accessed first. */
+ 	.weight_sz = 0,
+ 	.weight_nr_accesses = 1,
+-	.weight_age = 0,
++	.weight_age = 1,
+ };
+ DEFINE_DAMON_MODULES_DAMOS_TIME_QUOTA(damon_lru_sort_quota);
  
--static inline unsigned long damon_pa_mark_accessed_or_deactivate(
-+static inline unsigned long damon_pa_de_activate(
- 		struct damon_region *r, unsigned long addr_unit,
--		struct damos *s, bool mark_accessed,
-+		struct damos *s, bool activate,
- 		unsigned long *sz_filter_passed)
- {
- 	phys_addr_t addr, applied = 0;
-@@ -227,8 +227,8 @@ static inline unsigned long damon_pa_mark_accessed_or_deactivate(
- 		else
- 			*sz_filter_passed += folio_size(folio) / addr_unit;
- 
--		if (mark_accessed)
--			folio_mark_accessed(folio);
-+		if (activate)
-+			folio_activate(folio);
- 		else
- 			folio_deactivate(folio);
- 		applied += folio_nr_pages(folio);
-@@ -240,20 +240,18 @@ static inline unsigned long damon_pa_mark_accessed_or_deactivate(
- 	return damon_pa_core_addr(applied * PAGE_SIZE, addr_unit);
- }
- 
--static unsigned long damon_pa_mark_accessed(struct damon_region *r,
-+static unsigned long damon_pa_activate_pages(struct damon_region *r,
- 		unsigned long addr_unit, struct damos *s,
- 		unsigned long *sz_filter_passed)
- {
--	return damon_pa_mark_accessed_or_deactivate(r, addr_unit, s, true,
--			sz_filter_passed);
-+	return damon_pa_de_activate(r, addr_unit, s, true, sz_filter_passed);
- }
- 
- static unsigned long damon_pa_deactivate_pages(struct damon_region *r,
- 		unsigned long addr_unit, struct damos *s,
- 		unsigned long *sz_filter_passed)
- {
--	return damon_pa_mark_accessed_or_deactivate(r, addr_unit, s, false,
--			sz_filter_passed);
-+	return damon_pa_de_activate(r, addr_unit, s, false, sz_filter_passed);
- }
- 
- static unsigned long damon_pa_migrate(struct damon_region *r,
-@@ -327,7 +325,7 @@ static unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
- 	case DAMOS_PAGEOUT:
- 		return damon_pa_pageout(r, aunit, scheme, sz_filter_passed);
- 	case DAMOS_LRU_PRIO:
--		return damon_pa_mark_accessed(r, aunit, scheme,
-+		return damon_pa_activate_pages(r, aunit, scheme,
- 				sz_filter_passed);
- 	case DAMOS_LRU_DEPRIO:
- 		return damon_pa_deactivate_pages(r, aunit, scheme,
 -- 
 2.47.3
 
