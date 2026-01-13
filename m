@@ -4,139 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE9A8D2D0E4
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:33:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2287D2D0E4
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 12:42:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20BDE6B008C; Tue, 13 Jan 2026 07:33:31 -0500 (EST)
+	id 0A4516B0005; Tue, 13 Jan 2026 07:42:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D6246B0092; Tue, 13 Jan 2026 07:33:31 -0500 (EST)
+	id 03A216B0089; Tue, 13 Jan 2026 07:42:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F65C6B0093; Tue, 13 Jan 2026 07:33:31 -0500 (EST)
+	id E7EF86B008A; Tue, 13 Jan 2026 07:42:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F386E6B008C
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:33:30 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A453957AF4
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:33:30 +0000 (UTC)
-X-FDA: 84326881380.16.2471C6D
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BADFE14000B
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:33:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=a4oUAQ9q;
-	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DA4776B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 07:42:21 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7406E1A609
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:42:21 +0000 (UTC)
+X-FDA: 84326903682.01.8A537F5
+Received: from sg-1-102.ptr.blmpb.com (sg-1-102.ptr.blmpb.com [118.26.132.102])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2D64B20008
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 12:42:16 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=eF4Sw4pw;
+	spf=pass (imf13.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.102 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768307608;
+	s=arc-20220608; t=1768308139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j4BCb4tuwUydlXX/lekB/MWAbo5xTWmBY98lhxIZgCk=;
-	b=nkyxAaeGaP6ed6C84pefB5QtCwx/4LiktT3ZwTs0pNQjedLSs8zLfDIVTE1+lIwMZQegWY
-	NZZsKF0y1qgvDf/pHy81PQBbB+NB38qbH1YxlZQCgjVGXNEvS7mgTxVu29VCtgm01YFXpS
-	/NdX1FBuPCL2Z8DDR+SLkvhqpKL1iSQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=a4oUAQ9q;
-	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768307608; a=rsa-sha256;
+	bh=fU1qogXZNH/lRutT1CKQyIeRvV+WY6BgoX9FINuGm/E=;
+	b=z/r/0FKvazjS7gj6JzJH8y8vzHTM6L4/0Qm0Y7mRYECvVqcp5Y720UefpOCsS2KPebDuYj
+	N0piNJ2E1fVYlO7WmE/lwpWIf8QyoOLmy9mCrwmlVAcgs2mJTGvBP1Ihx/Y1+MvwLgoEkc
+	Nk+bGESa1Mu5Qm0m8w/vq9FX4H70c+E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768308139; a=rsa-sha256;
 	cv=none;
-	b=01BHCHzktJ6SRLPYOFAu/eFeT/ctB+4EH0R6LDyBqRylVB+dyM1tJA8nWNc8+2/PKdx+/r
-	u02qc/LfqQsmQ0aDHgdoaXUADqgAyTGlHaKZlGntE3vcUnnZUHL4UCdfu05UuJ6XdGIDqH
-	nzJsPYhxRHxBVgAFVB7HO27v66C4LFM=
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c0ec27cad8cso3172091a12.1
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 04:33:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768307607; x=1768912407; darn=kvack.org;
-        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j4BCb4tuwUydlXX/lekB/MWAbo5xTWmBY98lhxIZgCk=;
-        b=a4oUAQ9q4vBZkmbXsQl7pVFOTt0UxGh0V3LZnVxXdWONm6v97dFExO3qvAVlSljB8r
-         9TfPvcrRfo4BQdlN+0e8PWjDiZOY2UpFjvnlbWF1FXeU/qIHwn84FmZvYXUoj4dNK+Dy
-         WtbuIN8p29s+VMx9SzXBlREyI/hJA59JoNHMLvGIRujero5QUjeIqE3NYadh+2mNpUB4
-         gE36OF9HgouJKxEwP1uq60Pnfe1M/7CIBtMvHR5N9poWHZe3laYMVmE0QibFSVCUzR0P
-         shqfDSKh1myPhWstaFz5mhaGPQQ+0MMuwG3xi2GHUuoodfybunPJBvaoweYVpsIOCnmw
-         Fqaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768307607; x=1768912407;
-        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j4BCb4tuwUydlXX/lekB/MWAbo5xTWmBY98lhxIZgCk=;
-        b=k3jaEIj1mbmDmUkqMYWn0xucfWMN3jCHKoUcxsWDJKByxEDO2XMyLy21ge0zUq7fwM
-         ZiCTbC661tLmmfoze6AH4gkGnRolgiGA2hACWz0LnvCex3wd3JpU9ApegCXAaKeB81TL
-         kKrSoifJYTSoTYcYj8SDVMfWb19uBQUaX2Vwqf4CXJ7IPmK9Sk7g22hgpXzaKAwbq6PO
-         PYzSgXlieke7Q/lYmsLkz4UhTWUui7Uq6sMTo8XzUeZse/5YknIFjj2lgpnjxs3xwaJb
-         fTVQsJeIxq2fCGYWz7ug71o+O87R5nXM9CTEuZUN6pOxgt77JAQqLK4dsBOdCoL+y+W5
-         tAOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUPItFyo6dfpUjOh/h//Xa44EZkX0vQNrY5IvotB+r3vhvG1I5VJRQthTAsHZUgqsBjX5lmjXoULg==@kvack.org
-X-Gm-Message-State: AOJu0Yx56t0bAZL6cpD6O0F/3AzAECO/8wm4FTuVkZh5sTeoLeYc4/A7
-	XW/41CRLzY9ka1UePM+fTMxt5u7AM2ZQ+lzHTA8ytajB4Ee9qHUDx4tl
-X-Gm-Gg: AY/fxX7WuEImGJjEeqVFXTOBmCVVAmvd+dPqAMOIc9Q5q9yVInqbqgBvbYtvJzEdhfV
-	aLkHIglyx47FdxmDvcgdCNwMEc4rGGyko6DZgbldLj0IdzBG+zPEtEWAl0zMk17DXbSSI8L1G1B
-	E/CdtDWSCAQq5qN6BcWkKL4X/5Q46f7AhjxKFwChM7466+CWRygm78SzgU8rQmlfg9yMvPatrBB
-	R/Le+Gl0tMioP2sE05ud8jEfkpCbd7JZnoFQaVLnkXp/S9hgaZsD6cX+dYRiWrd1K9aLNFJUBoo
-	DLJLiq9a3e1SpqLwpSJ77SbGeEOBZsvqEz0IPQ+3QZ3IjKD3ph8kSI9oJt5ny78BlkzTyguxq9A
-	ibd5rF6tfQ/9GWMSH8HA+ZtxVADHhWiLs91p7/4aMv6HGg9q27BQ3fEr8zAPpPNrX8aMgfxiXzF
-	ay1Xpy
-X-Google-Smtp-Source: AGHT+IFw8NQUhXWsNFLNcy9VnhtaeqSccMp4bageDierszWlx1Kxyih6osyfD1+uAcqTN4o2oK4SYQ==
-X-Received: by 2002:a17:90b:3ccc:b0:340:9ba6:8af4 with SMTP id 98e67ed59e1d1-34f68c47f0amr18570023a91.35.1768307607428;
-        Tue, 13 Jan 2026 04:33:27 -0800 (PST)
-Received: from dw-tp ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-350fd6e343bsm1428958a91.1.2026.01.13.04.33.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 04:33:26 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Alex Shi <alexs@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	"David S. Miller" <davem@davemloft.net>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Jonathan Corbet <corbet@lwn.net>, 
-	Klara Modin <klarasmodin@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Magnus Lindholm <linmag7@gmail.com>, 
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>, 
-	Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Richard Weinberger <richard@nod.at>, 
-	Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>, x86@kernel.org, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-mm@kvack.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	loongarch@lists.linux.dev, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v3 15/29] powerpc: introduce arch_zone_limits_init()
-In-Reply-To: <20260111082105.290734-16-rppt@kernel.org>
-Date: Tue, 13 Jan 2026 17:59:49 +0530
-Message-ID: <87zf6hu24i.ritesh.list@gmail.com>
-References: <20260111082105.290734-1-rppt@kernel.org> <20260111082105.290734-16-rppt@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: BADFE14000B
-X-Stat-Signature: qs8p55ee384x4cxo75whco1df7ioa1xt
+	b=mBRVbv4BDNYb365SGGqrRxwFtGhAyrk3a/ywu6FAEPnYO3OTgBpXoS4LQ+4MGD1FvOIGbh
+	xOV6/oLQgLrcT/uW+hwh1FkhfO8D5XPjysdG6mgfopDDGSoiqaQ7uOKiSV5OTdu/kTlqc8
+	cfMoWRa5BUDGeghBmk715YRg2saenyc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=eF4Sw4pw;
+	spf=pass (imf13.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.102 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1768308124; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=fU1qogXZNH/lRutT1CKQyIeRvV+WY6BgoX9FINuGm/E=;
+ b=eF4Sw4pwXFoBvDZYE6u698oNdgW+NHlQnZxlEQ5BAkv4HGAN6KsjGI4j4lvQWy6BrEA81D
+ wh/OkgQzod7ppcXLS2h4v8vwG03WYziEXNZyArny08Oi9TwCn7h0u8u2atCEGB2HopNRVG
+ 0ifHRs/TDXEFHElSOZROBSttWbaSYS2cpoupdlRQu0cOHWbxfjaNSM48mdbDSARIEu9bz/
+ YBN3KdaQ2/m5PM0/qXWPtMNoIducszgGo+k8TRymSfqgm7PBt1s7R0QC08rIo0BhtwKRbd
+ KK5euRDVmvJEGJ3FM2MvUWt7a0I3yifEplqk2ru4rWEonTgaud6Q3iwANfaDjA==
+X-Mailer: git-send-email 2.45.2
+Cc: <akpm@linux-foundation.org>, <ankur.a.arora@oracle.com>, 
+	<fvdl@google.com>, <joao.m.martins@oracle.com>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<lizhe.67@bytedance.com>, <mhocko@suse.com>, <mjguzik@gmail.com>, 
+	<muchun.song@linux.dev>, <osalvador@suse.de>, <raghavendra.kt@amd.com>
+In-Reply-To: <7963534f-cce8-4330-8a67-3f31bd6b2166@kernel.org>
+Message-Id: <20260113124147.48460-1-lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
+References: <7963534f-cce8-4330-8a67-3f31bd6b2166@kernel.org>
+X-Lms-Return-Path: <lba+269663d9a+4069a2+kvack.org+lizhe.67@bytedance.com>
+To: <david@kernel.org>
+Date: Tue, 13 Jan 2026 20:41:47 +0800
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Mime-Version: 1.0
+Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2D64B20008
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768307608-45426
-X-HE-Meta: U2FsdGVkX1+8mV5am8GNJKkkom9rrUgGuTjK/OAKm6caR6blhavUcOps4GZrahEuQRvRgs792xCo4iVgl6wCU2OxMBperb6+bw4+HzaA8hPgoUoPsDNAeNlAngdnnJIWiUb6i+8/R8hpntUk0VrgudipT+yeNrXN26Kw1YrWrn/NNOrLRv0QYiilcCBdwsKYfFH+CEq9O5lYBA8YRxpDVMHZNaPnN6dAmRm+I9nGnrxJ86/hrZfX5PoFcVaGZ9nRO9Fhr0NUfuQB8I5eAhA10M+IGD+30zRs3O90hjbdSNYkkkS3qagDDEi+o7OjSp96jfttKY3mvX02SJnkQ+NxRbrZ+zayz5R0Gir164XS8FJwb1Vaw+ntMV40yDpfIgSahaZ1R1N1zHHX/kc8lB4ji/5nhhl010wvocnr/p859QgFEjruY13jLrfU8OT2UNzBvFpDoxlEbq+zbdMG0Pz2eSSoX5jP3aFQq00QNyYMZiRSfcu3BcMTgDCQzjGRcXdXXIZH9zxkn+VmyNQYrxfzAbovYv+ZTFT+wKoFP3Beraro4zc91bsEdZ4v2eoVbGwLiiKlOrBnIJ/hnyy4TTbLy1Q8hVY9bbCzL11W1EWXyibIEnlDTEJgiocmr+a5VnN+DqX5pdaRMLU21gFKKuL+SDnzEFa7mvL/J7a3YcO/2T/u9wwdOHkECkyXH+a/ltp2+0O9SmlEhMQ3n3f/THGwtCSdTQookDeEUFPh3QSeBcoQyHYyhdcDpGET/i6HwX0vSB2z4jsprpt2JMljA2mRdM+D96bP6S1ZOkarINfd6LxBN8C7e/6X7AonWoBDvIeh8POfgnT+oPnyU69nejUP3l12w/RP2PyhFL7yn8/0oF/hgOkaHaoGrFJ7Q+KeNFa3wHnvAA9v+pre+R2Rh0UFFbI9+474t0eYZHxu0E816BsHTPFWMy5PAjtKlkM+hw5320/wYc8zIF7XV1O4Eqk
- YPl2E9Sp
- GqAhmEN6IPgOJ+rC/0MFmtwQm4GEtIZl9Hty4w566uPvUG+gpNT7nFyJ+M0WA/gC3qKR1sECPoDHvmVGPlR4wyX9RATbCs8hcwlz6qblNPfr0C7u7CLO7gMMTWBTqkqr+sXzgeyfrI/3vWFFz46rVeKkPptfTeppIKNEtQRFFoRo0nUh/dUFrq+pl++ecrEu/R5i2LXFy1coGtKioT6b8u2d0hlZ6asnj7iSwl8dwWzg13QG8eH5YrdiqARCiF8kTxZnpNLTdR99FQj2ckXk3ltvdcuYTwmaDuKM35opmFxlhIJZH6paLUKFWLlltZtiJFtI+HNSQRR7NYvRppZuh1qtIpfqkyOz13YV2XuYvLDMBvZrbG/AQUlhSsZgs5KUdqLPXQA9DD6l8qeE2HE6s9iP/FoRA9inbH5yTRpsX9RyC8C/9/Mrvqcbzr0DiRks3jS14c/SjRLHep+FBpcOvXT28ZPF5toL9m81Bc85E0vJw/kU4Ert/qj5izVeZlumUgUEb
+X-Stat-Signature: 7rd7zsu4n46848cenyztx5k1jkj9uz5g
+X-HE-Tag: 1768308136-142712
+X-HE-Meta: U2FsdGVkX1/Vs8BKvL1573CDpHKLhyfSAxb9qUqXeOiEXI6KX7hWSsgPIHcQCsqdJ4+n2E2MJmHH/tOyGfQxGZkVNKyH301PFVFvYb9Imd2pmaUm8XEZXv3OY2BVd86VskrhzAswr4Knn+ccmeVgCORcKx7sz/XEQLF0fdpX85pbfqzXr5pJpypd66aNt81Go8wir2DCXo1OCxZ/xcgK+rb7QB6brlmO0C9rbQ4g0dENG0dusk0qYhk0N8LQqKsgy7NE1lh/OJb7S7IIYS3vddBuV73NJS73I7q/Z9ubOqMloWm1Xh8ONEYhOH1IJVV1UeadF/A3a3o21wabDBYPSuQN5X/yCk6CN/UOdQ7Tj8E9NlcoBHSA2lUWvQBksW7jDBhssKTICw9vCtqGF9jHK9ZPS10XDEW0AxCd3FS3UgsMghdWYxkE91+e3whyQzM3jgaY/eTPLvPVwkmSWrKj/92tXFESorHFi/1dBZti7ziF1FR24G9uSgjcuJ5xWbZbpqlklyx2OBS2Sl/wf933S6Rt3h2yFrDx/IAmc/6XhQnG6DXn7Fq4X2U+YwPuPb2pOeUIvsdij7yY7wblHNa+MY5TGfOU4CJR8uNd+4/fS+OEQaKm6uiiRj7NdMA3q62l+JdnhPQ597YGT9irsVsUIzF3ywrnx2MjwSTRCr968rCLtNbZePsFSOTrtmvezi0IF3bCBrPmFzc8Zp5fyOVhXjOABQJLFvbXKt97K/kBaUb8E9qpvMKhz9KnjOnpGlbb7vPpolsVF2G7+wzp9/CPwZyZ2fFh1IOxh5dzQfMaU4vizvc41ASaY7ZNrinek+Ni/yRLKFoNVe6kXskKRAC95JNI/s88GEIEJ9oHZAt3vODoNM3fiefG+Kgo581g2WStdQSAnM8mWi0c9KGfwDps+hOifva5MCgxGm28QzcWbqhVMjHowU+NH8MLjziBaQUZnr+hgwL9yfZB5TsmpQt
+ AoJoDrZq
+ E0GXG2WmG8QTLPQ2TTVxKrPxSuQvSpy9o8DMXYQEBLu9LRcJcQLEia4dKnAwKffNzV0MYg5VzUpFeubhuZroutcGiVs7RhTtC92i6OQ6ZrMfI4lnpVWvYqMu2UpnCYjqQjFQb8YQnYJJp1hX4YGgh+Srq/0O7SdiuM85+o5pCaAbu+2UgCJa1D3TExpnMMeCwadBV4KcxYCNLDLkaFrMKdGaQX8Oqbcrt4bUrfBzB9HBKx/PZMxfwrcYXVaE+GhpOmAdR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,26 +93,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mike Rapoport <rppt@kernel.org> writes:
+On Tue, 13 Jan 2026 11:15:29 +0100, david@kernel.org wrote:
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> Move calculations of zone limits to a dedicated arch_zone_limits_init()
-> function.
->
-> Later MM core will use this function as an architecture specific callback
-> during nodes and zones initialization and thus there won't be a need to
-> call free_area_init() from every architecture.
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  arch/powerpc/mm/mem.c | 22 ++++++++++++----------
->  1 file changed, 12 insertions(+), 10 deletions(-)
+> On 1/13/26 07:37, Li Zhe wrote:
+> > On Mon, 12 Jan 2026 20:52:12 +0100, david@kernel.org wrote:
+> > 
+> >>> As for concern (4), I believe it is orthogonal to this patchset, and
+> >>> the cover letter already contains a performance comparison that
+> >>> demonstrates the additional benefit.
+> >>>
+> >>>> I did see some comments in [1] about QEMU supporting user-mode
+> >>>> parallel zero-page operations; I'm just not sure what the current
+> >>>> state of that support looks like, or what the corresponding benchmark
+> >>>> numbers are.
+> >>>
+> >>> As noted above, QEMU already employs a parallel page-touch mechanism,
+> >>> yet the elapsed time remains noticeable. I am not deeply familiar with
+> >>> QEMU; please correct me if I am mistaken.
+> >>
+> >> I implemented some part of the parallel preallocation support in QEMU.
+> >>
+> >> With QEMU, you can specify the number of threads and even specify the
+> >> NUMA-placement of these threads. So you can pretty much fine-tune that
+> >> for an environment.
+> >>
+> >> You still pre-zero all hugetlb pages at VM startup time, just in
+> >> parallel though. So you pay some price at APP startup time.
+> > 
+> > Hi David,
+> > 
+> > Thank you for the comprehensive explanation.
+> > 
+> > You are absolutely correct: QEMU's parallel preallocation is performed
+> > only during VM start-up. We submitted this patch series mainly
+> > because we observed that, even with the existing parallel mechanism,
+> > launching large-size VMs still incurs prohibitive delays. (Bringing up
+> > a 2 TB VM still requires more than 40 seconds for zeroing)
+> > 
+> >> If you know that you will run such a VM (or something else) later, you
+> >> could pre-zero the memory from user space by using a hugetlb-backed file
+> >> and supplying that to QEMU as memory backend for the VM. Then, you can
+> >> start your VM without any pre-zeroing.
+> >>
+> >> I guess that approach should work universally. Of course, there are
+> >> limitations, as you would have to know how much memory an app needs, and
+> >> have a way to supply that memory in form of a file to that app.
+> > 
+> > Regarding user-space pre-zeroing, I agree that it is feasible once the
+> > VM's memory footprint is known. We evaluated this approach internally;
+> > however, in production environments, it is almost impossible to predict
+> > the exact amount of memory a VM will require.
+> 
+> Of course, you could preallocate to the expected maximum and then 
+> truncate the file to the size you need :)
 
-This v2 looks good to me. 
-I have also done a basic bootup testing using Linux PPC CI.
+The solution you described seems similar to delegating hugepage
+management to a userspace daemon. I haven't explored this approach
+before, but it appears quite complex. Beyond ensuring secure memory
+isolation between VMs, we would also need to handle scenarios where
+the management daemon or the QEMU process crashes, which implies
+implementing robust recovery and memory reclamation mechanisms. Do
+you happen to have any documentation or references regarding
+userspace hugepage management that I could look into? Compared to
+the userspace approach, I wonder if implementing hugepage
+pre-zeroing directly within the kernel would be a simpler and more
+direct way to accelerate VM creation.
 
-Please feel free to add:
-
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Thanks,
+Zhe
 
