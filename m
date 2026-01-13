@@ -4,153 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58115D2D11E
-	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 14:55:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9724CD2D11F
+	for <linux-mm@archiver.kernel.org>; Tue, 13 Jan 2026 14:58:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFA826B0005; Tue, 13 Jan 2026 09:55:29 -0500 (EST)
+	id 056546B0005; Tue, 13 Jan 2026 09:58:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB1AE6B0089; Tue, 13 Jan 2026 09:55:29 -0500 (EST)
+	id 017506B0089; Tue, 13 Jan 2026 09:58:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B0616B008A; Tue, 13 Jan 2026 09:55:29 -0500 (EST)
+	id E86036B008A; Tue, 13 Jan 2026 09:58:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B06F6B0005
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:55:29 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3659E160142
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:55:29 +0000 (UTC)
-X-FDA: 84327239178.10.AA37B32
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A2043180003
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:55:26 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=4Xu9MpV1;
-	spf=none (imf06.hostedemail.com: domain of BATV+b9745b0d722f245fd565+8178+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b9745b0d722f245fd565+8178+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768316127; a=rsa-sha256;
-	cv=none;
-	b=fNAwCTKN1w/Gda+HcPVOwuMuIpOnFq8dgEmwpf/yScGmmjquVilkrPt70aUd8kTs0g+K+E
-	OBQnifNedQCW8fL3nvGKo3KUvddPerjqj8wphl4tpndqshGvs/2Fa3Z/E+RdI1hsk8MntA
-	z9aYBuPNNnVhGys582X8R82QJ34M2Jw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=4Xu9MpV1;
-	spf=none (imf06.hostedemail.com: domain of BATV+b9745b0d722f245fd565+8178+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b9745b0d722f245fd565+8178+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768316127;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D98066B0005
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 09:58:09 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 84633C05BD
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:58:09 +0000 (UTC)
+X-FDA: 84327245898.25.7812C95
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010007.outbound.protection.outlook.com [52.101.56.7])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B9242180004
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 14:58:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=VGOC0FUT;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf16.hostedemail.com: domain of jgg@nvidia.com designates 52.101.56.7 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768316286; a=rsa-sha256;
+	cv=pass;
+	b=wk5FqghCdnlHwFo6vjh2su4S2TAnFT7/vjgPy6CDPihjaMKQfUY+AcJFBFFBkTywnIg1NG
+	fUMNwXG86WZGUVqSPHyQ32jjcbw4ZzedDDvdxj8KqGDcWfcPfYhbmdp0wByPFFW2jIgzzE
+	sOLkDzsudeul6R9+NJDGEuIHltdEmDI=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=VGOC0FUT;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf16.hostedemail.com: domain of jgg@nvidia.com designates 52.101.56.7 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768316286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P2AuSB3q0O5lkw/gF1nY/Lrh9I92MUD/Wumu9860GzA=;
-	b=68HLw9BqhJO4fc0+uWx4jTwSSgKVOqIyAbsdm1AjzesY4P8dM0UbR4mrfqRDgsM9fYYx8a
-	9ma+c+ifBmjqSZ6uj6/Mr38Gu/0DcDxj9fJ3HocCqMg+/HN5mEisiXvmyLJWnU63+08mZ3
-	+KPLKqUNvaV/BGMabfbhQK3BmLMfpfg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=P2AuSB3q0O5lkw/gF1nY/Lrh9I92MUD/Wumu9860GzA=; b=4Xu9MpV1fb36nk+xLVqjw50voP
-	zN/I3Mf0fobYWLAtyiFh6eeo2iNKSQjTeeoaA3AO23SzK+/Vk2xX9VLh/6wcQuPfbSCvUOgDwyZYy
-	tXshgL07k3R6MJgxwiaacOrzdFKqY26ilV+3ph2n3cLlcyEKXdyvGWC1WCSx/3BvnFpOaXNp0hUlA
-	LOdIhx3h0ffALf9ACVX13Eu4Iz33hZNDOWMQjukRFeiggJlDl5sQ6RHc1RZf9BGxevbcm69L9/VYf
-	CAJ9bUHsn3reBoeGpHTySi5zkROuhZhDghCw4gv3aAP/DG1boh0ciWwdyMBlKp1WmN0ZP9AS9/Kc/
-	9BtfzNuw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vffmt-00000007IYZ-1cGp;
-	Tue, 13 Jan 2026 14:54:27 +0000
-Date: Tue, 13 Jan 2026 06:54:27 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jeff Layton <jlayton@kernel.org>, Amir Goldstein <amir73il@gmail.com>,
-	Chuck Lever <chuck.lever@oracle.com>, Jan Kara <jack@suse.cz>,
-	Luis de Bethencourt <luisbg@kernel.org>,
-	Salah Triki <salah.triki@gmail.com>,
-	Nicolas Pitre <nico@fluxnic.net>,
-	Christoph Hellwig <hch@infradead.org>,
-	Anders Larsen <al@alarsen.net>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	bh=paRhG5IbqWyei/JqRYN4GWO/v0Ue03oBbO6AY33ob8c=;
+	b=qMn0AFE23j+z2/uB/doiDx1re29zIl2ltCLAh/hQvSyqoMq9JFetXGp40KRyoEB+XiYL4o
+	LaIeH3/MCvUPbMFsmdddIty3xZAC7IhHljhd7dmnTiJppIwf/a8/xY8mqdmHewJfjgqluP
+	Ak4k/lz7h9gbzJ2/fLRlw3Onpr7QpEo=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V9EzgPDJllZVLe9Ms6yIe9QPlo3zXrCsFm47B5Wh9sQ0mM03Azmz+POF2/J8fSJVW9nT7NAoXM05pwQtjEiFSh50ATesLhpbL2k4f9xxujzt4lIfbSMp6g7Qd85VxXxDD+NoYFFTMxz4uSwj5YdhToFbWV+3xs0Cev/oPuZ9hw0L36audOcYbGcBrZfgIRgVy2ATDEw7E1q0qpVh8Gtf5Rw1ag/8Z2uOBvOd1VWDts75oszJldT96e3bcYddzT2/3gREnn595FbFb3Dz+mhDygN8FfqOrDlqJwKx0F/3kHrfxLYh+WXvW1tTjKesC5rlmWmjSwiPLerIla0hkbSbpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=paRhG5IbqWyei/JqRYN4GWO/v0Ue03oBbO6AY33ob8c=;
+ b=S8vV8NLni7lZ43/EQBiyq/aCtGV+PwfAoRFkohfZgwfFM2BkSMEHRn7zW9PtAz7soDsludY7Wmp7MI3SxJMTP4mxiNAqr3Z7OVojh6iSpx+9+/XAwy3xpKgnfqEBR5vH2fIjjUOUF0QXHboWmK5rCBuoAiXda7BooRQHYFfsfZGUG6mIb/SkTQUSrlHSjxdT1Ppdjfn6/qTHDl1Kcp5eMxy0r7d5ddK0bDLiuLopdxNv7eR78aW2IgssFRo5DI88lYPFfZxkWLKQQULPTDhChWvW4ibGICmQg+Q8Feaj7L76UOM3W8OiyEOx1f6UYeJz3WtbqmQN5455QFb0WDZD5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=paRhG5IbqWyei/JqRYN4GWO/v0Ue03oBbO6AY33ob8c=;
+ b=VGOC0FUTfxM6wuWFEdxsEsIk5011RkPT5g1k+OvhYr3CTEdpMsn+S2C9Qv8nOBxNv4yXzodmT+jcLVMj+RvOqCBW6YySPocqo4QF2wW0yrWx7VrPRwR3ugKA+YB3dOMBasLhBEPU764yfHQwTMAK+HP50HF1hPeiwfasqYp+ARQAC/Lxod/b/vKEWFZ9Mw5xEjKI7/XdKc5eFqgcIK78moxv5gZgeJ3V1iLoYeCbnWby+cDYQl+KS2BOoZ7EOX6F0+4d+l7/a7VUTnhOQCCobDm65YU2N0bl/OCWTDvxBi4NI3cVZqZ3bik9LSQBaq8IgU7Oe9XTru1fCtWNSB/4wQ==
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by DS7PR12MB6285.namprd12.prod.outlook.com (2603:10b6:8:96::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9499.7; Tue, 13 Jan 2026 14:58:03 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::1b59:c8a2:4c00:8a2c]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::1b59:c8a2:4c00:8a2c%3]) with mapi id 15.20.9499.005; Tue, 13 Jan 2026
+ 14:58:03 +0000
+Date: Tue, 13 Jan 2026 10:58:02 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Jason Miu <jasonmiu@google.com>, Alexander Graf <graf@amazon.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
-	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
-	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-mm@kvack.org, gfs2@lists.linux.dev, linux-doc@vger.kernel.org,
-	v9fs@lists.linux.dev, ceph-devel@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
- lease support
-Message-ID: <aWZcoyQLvbJKUxDU@infradead.org>
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
- <m3mywef74xhcakianlrovrnaadnhzhfqjfusulkcnyioforfml@j2xnk7dzkmv4>
- <8af369636c32b868f83669c49aea708ca3b894ac.camel@kernel.org>
- <CAOQ4uxgD+Sgbbg9K2U0SF9TyUOBb==Z6auShUWc4FfPaDCQ=rg@mail.gmail.com>
- <ec78bf021fa1f6243798945943541ba171e337e7.camel@kernel.org>
- <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com>
- <ce700ee20834631eceededc8cd15fc5d00fee28e.camel@kernel.org>
- <20260113-mondlicht-raven-82fc4eb70e9d@brauner>
-MIME-Version: 1.0
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
+	David Matlack <dmatlack@google.com>,
+	David Rientjes <rientjes@google.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 1/2] kho: Adopt radix tree for preserved memory
+ tracking
+Message-ID: <20260113145802.GA900112@nvidia.com>
+References: <20260109001127.2596222-1-jasonmiu@google.com>
+ <20260109001127.2596222-2-jasonmiu@google.com>
+ <aWTJ2v9J-Aa6ykBf@kernel.org>
+ <20260112143904.GA812923@nvidia.com>
+ <aWYt0gBHxDCKqj9Q@kernel.org>
+ <20260113130526.GE812923@nvidia.com>
+ <aWZaqcStRAK6VWLy@kernel.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260113-mondlicht-raven-82fc4eb70e9d@brauner>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A2043180003
-X-Stat-Signature: ytzz5q5jdy8ej6azkj3wj3neinjrxjkw
+In-Reply-To: <aWZaqcStRAK6VWLy@kernel.org>
+X-ClientProxiedBy: MN0P222CA0025.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:208:531::33) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|DS7PR12MB6285:EE_
+X-MS-Office365-Filtering-Correlation-Id: 02bf933e-1a5a-4e55-c280-08de52b4269d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?F1YN00qVN0bleVQ9L8FSRFOmKwSM7fvuUBVDGjFV8F/1WTHkhKo/A2/rYPaQ?=
+ =?us-ascii?Q?yURpDBml4DfJ+Rai1lcKCK25HMpo0KWdNrKocFfKaujGmnPVsY8KkQIxV5ks?=
+ =?us-ascii?Q?sCGIoNK+JziUAhv1g2M+FV+fAC1qeaUi78RP6HLe846R3Hq6VWbLnct3cp5i?=
+ =?us-ascii?Q?g6V6t0K34FQXXt8MqWrf/sbvepa6RO+V989SWPeXms5KqhhZF8tDkkndhtT2?=
+ =?us-ascii?Q?Xll3bS5oE4YEStWLwU0LZTXxor9AazTBXq3VozMQa1MGHekQSKSWSdOhBXIY?=
+ =?us-ascii?Q?W3BlOiZRi2moZ2bfmgBEwuMBh9y8BdxifOGTUdrpkTDUCFOv4NbDrL5ZXpcw?=
+ =?us-ascii?Q?iWaE2Vv+bvnhijTtYsdDOYVOUrzRVp8XAE4zyQasia5W1jYQV125a3ZJUXs5?=
+ =?us-ascii?Q?gbVIXmmjuN7LcIxXp7r0C7AU2XGrG8NVfMQFpKE6c3KLEwossqo7ST+fKKRQ?=
+ =?us-ascii?Q?imoIdTmmMT2Lhuglp71J6+BS2BEuGCUHVvjwR2bj3ruCl4gR1/sotjGqLqfM?=
+ =?us-ascii?Q?xqGfibqR2EEl0ySo0C6DboDUvUR4Lciq5hR0fnOeSqdPGR3X+x+jCYAg82PT?=
+ =?us-ascii?Q?+ZMXXSuHq5S/8NJj4RT9j/V25pG/j+z3w/qJsyGGDp8Ha89/4eKV18QX+Ias?=
+ =?us-ascii?Q?7e1IDP9u1y7MEWnU0rnVFQFKZhTwDxJr31NQcwiAQjQJ60bC86o/IQzcn8gd?=
+ =?us-ascii?Q?OpL6F3O5MBJUl2k73usYSFP1gCbUH58dqpkWFPjPwMsE/CJECCOH68rKFCna?=
+ =?us-ascii?Q?hLoQxXvrSwqHpFe9qc8Bin7EqlZc48mkQrAbgEf3u0eN4YOvQMl/iBefneGL?=
+ =?us-ascii?Q?L7qvEy4Kuy2VWTLMRCfy3c1YCuNfZe1EqeU2uvhydRKB9mLG1d/JZ0yOJVxk?=
+ =?us-ascii?Q?Laf/fnTVOJibJ8L50q17ILDSc4CqPQyyQYQXnxBc8VQDYdX5WBVYFARTxvDl?=
+ =?us-ascii?Q?m7CrS1+zXk2sTGWtxFx6IVfz59sED15tgjRTbOXPQTuAnVvAP6Aeks+s4Qq9?=
+ =?us-ascii?Q?ykPcPKML4ohQFv7n8zioySnFoY5dvo0XMz/6+H4IfWPA7XQjskIqJL2uUIoj?=
+ =?us-ascii?Q?rFs+sZFnaqY43YEtB7EtYPbQf+UjnH8tZ4UB/hkN6n0BMDVrKQfNcFltwb3f?=
+ =?us-ascii?Q?yL4JsPoJNeQOdJfVz4LdLOdEDIhxJqHHA/n+A3j/TUIPPoW/2OizbB6+zKWu?=
+ =?us-ascii?Q?sDBoRTReb8fzbe8Ar4/8W/wEbv3ytJgODxudPh2SYxkcVXPox3l5eJjk7r2v?=
+ =?us-ascii?Q?Gnk8jFxEgLtyNFsw8vJ3kL8OeU4PNRkDTS8fvVNrvt9F1Su9I5uhPvDfg63f?=
+ =?us-ascii?Q?RSIvbEmdLMO57kYVQnQd0vn0Xnor8hNBD2NI4MQ8uNmNK6OUt4VjAE5I/yt1?=
+ =?us-ascii?Q?29P71jupxJdsXOQX7uqMDTIxIoM4KzxPr3YyK1XEmp2wXp2fZ7U3/6rSlRLa?=
+ =?us-ascii?Q?LopcoAHlZV55xnTmQ0xGWHTiUK30nOxv?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zSSkrTtC0Z4DDqx+CpLQQAuJEo5DeXixTSVRElGDnDmkKjcZG8kCFJRkNsDk?=
+ =?us-ascii?Q?pIR/QJFHdTCmJ+aOG+PTK/Zl8s7zmVEy8dF2kNsB3eSk4CdTPUTOuVyeJZ67?=
+ =?us-ascii?Q?2z6jIwTXiwKoo6F9qj+NcdJK06Fvcn22pVqDQ1w1yuD5Q3nTyXNmyCZjvqyz?=
+ =?us-ascii?Q?S67D1OxDVC6WWl8ZCxqgvb1m9tr2Fh+ZVFBFpgOcE2vzyuIBC01iDjaK8hoh?=
+ =?us-ascii?Q?toXJYwGrjpo/KobE/ieUgDrG+j/DYO3JZa8hEGMAnDC8O4zFHHpxI9miTTwo?=
+ =?us-ascii?Q?66e+lbYoXC7waIncRQzohUypch9jXQ1ktTia0kv8cIfLPRZUGZZs+TECVJyb?=
+ =?us-ascii?Q?Urn+v3K/P2qGvc7IjGfjwRGT3SZ94f8gtQSnnG66oZGB93Q/kYNbZOYgs6g1?=
+ =?us-ascii?Q?17PEmRhb2kY4BWqNOsTItvSO07wVIGh7O7N6kEVauhBOJallJF46orbdFSFE?=
+ =?us-ascii?Q?77hx3WZoL2wtZL4IT0V3o34b7QYw6eIMX6cLd6qWxHCHVo2Vlwkw5x0zVqec?=
+ =?us-ascii?Q?ZxeDrvwIgbULgTHpJKU5o8e9mpR6tT1CMyMrlr0Y30byBoH3/2nbS6DLqgeT?=
+ =?us-ascii?Q?t0Gq2+H2r4gYnL7xFCfSejF6W9qaN12LQcFvBTSYbMmSOQtX39zRx387QieJ?=
+ =?us-ascii?Q?CH4r629eH3bLGO83GKfxvrNRtPPZe/YTDEdU8/uFWMHYTC67pVPLaOKN2Q8w?=
+ =?us-ascii?Q?m76O57AzP+yC3R2rnu++3q7NqWaDdg3JjUoMoGjDuuz/uc8zuDGlN+BZH1c7?=
+ =?us-ascii?Q?lt+8bIcGOfclPncfC1npP3CS3MncW6nHFvLAQ637us3B7QdFSsdc/6CotzSj?=
+ =?us-ascii?Q?jmAIm/Rtg7lSHdT4SkVv4K4UGbMex6zNoC0lkPCKPmKUcSw6I31Xhe0sn8C+?=
+ =?us-ascii?Q?GVBCcHKMg8Y4KkpANoZiwSApevarOZnFLgD30TUkCjGZkc6Oq1g0oeDlPrU7?=
+ =?us-ascii?Q?11lWmWaT+ErH6alEE7obkg1W0adRAK1CoUM4dKros1Re0P8YWwQvGgFTcuFs?=
+ =?us-ascii?Q?1YUJjOGC2QBiRL59F3VOQiIhGWm4wlefkTtyyakqZHUpFsvYRO3TUiaDNvlF?=
+ =?us-ascii?Q?tCXH3bakYZ6m0NQEt2awnWDisqLNxfhgsn+xmD5yvODAxyo2K9M0lbIlc1X/?=
+ =?us-ascii?Q?GLHVeWdQ4sXRsJmTu402iFndRvVtcJRSA8wbfodgqE3l0324Y7YDqByFoRyY?=
+ =?us-ascii?Q?rZuujyNCTPh5shtKbiBfpByAXfmsjMhCs3gfhcEgEN4KSWRXe5P+vF2bDl8U?=
+ =?us-ascii?Q?99ZoSoabJj+gWiBUbo/o5rkOwRHUbLkPzo8GgOrS+RYaj7JSbch4JK2dlcsW?=
+ =?us-ascii?Q?QJGqNIpihSYVqMn9rs8L3ziE5JonSsJQXVGNaHlSJt8ONisXXKnsbIfbCZl6?=
+ =?us-ascii?Q?XBI3quCL/quO6PHsViVzuPW7h5h1VxZgpxs0HRKg1dUUx278CgxnWS8sCjfc?=
+ =?us-ascii?Q?Qww7APWZJt6l6a6UC1/DWEHWa3lrGcOY9U1ckFmGvUCtsJnuVkIenNmrX53f?=
+ =?us-ascii?Q?SG0+4RjCsJIbaSHstcSCROU4VAksekWG/dOpg8n2030XdZofhPUxN0DjC8Bv?=
+ =?us-ascii?Q?eQsmZPv0HofKcsicbRyHvwyUyjDXnOXQPRT6DtfstaZJALKxb97noXUKpowd?=
+ =?us-ascii?Q?DIENjhvSnfXVZUV8uL3QUBvDED3XDKu+U24b6jUFK3t4hc+M1rqmjIEmuzCZ?=
+ =?us-ascii?Q?YgxaY5/06RJqC6BFlDvsHuuynX4x/re96zoQ2G7CHg2J7d1gMtl1g83gmuqu?=
+ =?us-ascii?Q?21I3KhBDFw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02bf933e-1a5a-4e55-c280-08de52b4269d
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 14:58:03.0043
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2kwwSWB+2FKB4iL32Cd/7p7G0pRgbqAbPKtxIxXKGU6FSl87nReM/Nau7C+HluC0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6285
+X-Stat-Signature: rt5hmakddrbm5yqc3ch87aeo4th5tzfu
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B9242180004
 X-Rspam-User: 
-X-HE-Tag: 1768316126-636403
-X-HE-Meta: U2FsdGVkX19QcLEJUHpL32nHenyvuOQ2juWl4YsuhLjABXCRK7pvXQFwbe2C5EuuZbSIAnPR62LJEvOUWGlfEiR5ooUuk8xWwJ4cu2JvBrWvrlYdsjOYBOxAGZb9bVA/btub4mg1W8F+5tAIvfhOFQ0bTiDD41jQ3p0Y94zka2iqvtmfcVQaQ0QdtGldxUrTtpmOZDY7rwcE905/AIXCXWtN+0gsx0UZ6Wmbq1aAuyOevERAx+B2AVQGe7Gl9uyYwuB43e/Y+MGd1tdVxuuOU1WtJjPIg8P7m4J0FktXs7Nkx6k7pVMLAcSwGoFdp+AOMjG9eUs9yXQkkS2DC/4xU7Cey/WUqpVAqXBFZz9RAunvB572f+f07Sdf6i7LRSNyC6Gs+bguc7lv8vm1CHC2y9Qa4ouxy3+cLwllttO8/CX/VSzaQPH4unS9SjS+MkTI2mHGRtiJhSnRNwsz27G3XcnL1bKyHqzyQB+gP4hj9FNBrSUxX2jKmONR1sRKC1ra/hhIwKC8CMR+AKm1K1QZz927QqRXTcffUOCa02DQruOryn04rWavyIjGCSG1icWy8qB3SfNQpCixZzWuLgngPXlKbf4h7+EJUmOGWxhAuyB+Y4ufoERH1rgEQTxmi9E2sDITmn4Bm85bkvig1vKd81j2sC3R65+mbILrg1VHbk7EbV5o43mgpFAAPV9YWZ4EfeiDLGONK6Y/KMN8Rww1QRQZnPfjxpZUd5a7tkx/5hzd92fPmpbdB80quiCYjchhXlqwS3tLC+ZjFAl6vg5pLIYP6IWX+FokbkjYcgV7vIh8B20LPHpziQGMEsdWIGHUDLKVO0LyKhUKGLBvat8vDLrqDGOQL1wfDHRqJSS/X1yGnEWYIPDQJpqdwcD4xeGqbhbXLaAUMxUD3Dx/TWSFqLdgjgWRBiuYZFV8ciwGYz/HPVhRDKNH3DzM4QsrpIiKOZNY5dlPhn2CkJtgAlF
- aJSvCAi1
- PmNl96CXg2a9w97bn1wGffil8fgsXEW+W8L+VgpFac4hjvqfWzTQHpod00kwSB7SV+4+lWU4gs4w+h9S5VL8eK+L5Tjm4IPQt6EdVTR2QrbNg6jA2eKEhX39TddSz8dJNRkTuQWWsijaQYZOHenOK1MDG2R1fLBbzAXtDQfvb2dCSYLQemKUztZh8QecrvWBBPixaqhLJvVgnS9+Auj8+jKIBA2QtAMPFDEsHS4kd4earOKIRryDuFirwK7nKddcH8I9FFIXewBnl7zbQzJlhclD2Wjcp9uGcIUQJNJjElLXgoGL0QYtGxtcAjzXgCxNTc9Bj2qJ1OP8wPGUhO2jzkySCxsHkFs7ke+STZFDisN16YaM4kTh109ZgVXkbhqVjJfC0s+XjJT2YgQu4zl09JT9q7Np+bFOpKeCTRwdXI/chZl+gIubBx7kCAuCRDtLiGJkmqmgvgzrO1PLEyA1s/4zVnO8UKQikVly4qjklQS5Lar4ekhRE19DTnqdYObHallyIWmZ7G3i/ADVN6kFuOSslkKVq4nrK2kyUiVd+75/FQ9uFTXX9ymHnxAIthZtc8kkj
+X-HE-Tag: 1768316286-326371
+X-HE-Meta: U2FsdGVkX18IOu319R05B30RTbMoafXnaWlw6CmFE4rR/+uQ3+LeiD9pOHPXV8/UFhjgmDrGUrOBJ5nuDvo4tulN050Pebgz0YwE1lUVaFPz8krjrD32IPEYkhlo8Ye7vtvcqu5x52WhMlOPNZ/URnHLc0IihkJCrOru+XtFlpIr5etKGUx466T/7CInWm/fM0x+/6puUpd1W8JSV6bbpnnbIKW7PBzvgl8CCV8FP5f2ipCbQ6sxRdNK141Tue48H9xQugubvtcD5WqRujCW9WxyTps8sA767pg6q3pxNyp/9u7hEc4QGFwjPiKEzCJSEsFOiaESbcHMGBsjwSU4NUzEs+RQTWZCCH8y4XKmIIvTcmfL+ZFMpfxhxQ3UVOS1ezUZChxx67EeMPY7ayMnRuNrDOla0cfaAgNbVB8ESAYDph491diHR4KY7n7loHhE1hGMdz5w24oI2mPtS+nXxnNXkMJ6hA0IPjVkNJBzbomlWVxis+nDNoEFN+pcphlD1Ksoun9KvMUcGOlMP/oigYPlsaB1o1fFbmixziGOHoV2B8fDeaXshIbhtNZdayFqMHKCNE8VnGgd+V9zVJ64fpfQhfffY23hwynw0Tw6FZ+jSfJX4SncoMx2NubneQhCy8TD0o4qSzKlMh3oMM3e/JJPLlQ1mSWmMZCfrcqOKi2TMOoU34YbK1XC6GZ+5YErCROjH6anpxXqAZ/xNq8ybf2xrXrZXd8q6bfW6hMx2ha1sFNcOFK3SzWRrr6H+HieprK+Gf5cLPgmRbqygDCaqwcGcEkG5EtSmhtwnKUKr+chP/87NRaljFtnuCdVohDPrubM1O5mxSzAAHkAXAtRpzfr/+QMsrKIDTa5ocNFXpgaB+u2ULMpfMxl0zjnjNgRNx2o6q8sZWZXTpTUf8/M9XZvcTF6SYeV+ao/xMRznHDPNpR4/gm+acacqBGtkIwLxt9EQbpoK0oECR3KvPU
+ XjLQTpQe
+ dQE2UnTq/hStcNbeayoa/y61XJh0TKr4UocNuUau9qSLPVulcgA7znX3/pIW8ESk5pb00/L3ypaCD+xpRkE2v13FM6/XP3E4/MIMOF8YP+UxQurNvwRR/ImazbayWnVB8Zcp+i7pf3DMVxzHh5XVmXns+tkh3Jf6Wb3he13/wyu2PruaDuU0bNnhfUDodQMW4rbG2VPTjco1SS+anE5eGSutVe9amPq6v2+PjFXsozqwvPiw5j3T2TedVR+x0W4AHrkK0gyXusNKghKYnRzOnSuUh4mKxx6fVK0z0CZVStZU4Fc2QeH5w0O2uU+a50S2eAaGN/Qk0miIEdK6qr8dqn51Tz1mdnMsPYDMN7QlTigXou2ZIJ525X3TDXRLXK/4ab2uWsNWuqI/FiE7o5wTjNQFBhA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,21 +194,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 13, 2026 at 09:54:15AM +0100, Christian Brauner wrote:
-> I don't think we want to expose cgroupfs via NFS that's super weird.
-> It's like remote partial resource management and it would be very
-> strange if a remote process suddenly would be able to move things around
-> in the cgroup tree. So I would prefer to not do this.
+On Tue, Jan 13, 2026 at 04:46:01PM +0200, Mike Rapoport wrote:
+> On Tue, Jan 13, 2026 at 09:05:26AM -0400, Jason Gunthorpe wrote:
+> > On Tue, Jan 13, 2026 at 01:34:42PM +0200, Mike Rapoport wrote:
+> > 
+> > > For example mshv intends to use kho_radix_tree to track the hypervisor
+> > > memory and there unpreserving will be a part of the normal flow.
+> > 
+> > I do not think this is a good idea.
 > 
-> So my preference would be to really sever file handles from the export
-> mechanism so that we can allow stuff like pidfs and nsfs and cgroupfs to
-> use file handles via name_to_handle_at() and open_by_handle_at() without
-> making them exportable.
+> Sorry I wasn't clear, mshv is not going to use KHO memory tracker but
+> another instance of kho_radix_tree data structure. 
+> I don't see a problem with that.
 
-I don't understand this discussion.  If someone really wants to
-expose say cgroupfs to the network they'll find a way, be that using
-a userspace nfs server, samba, 9p or a custom fuse thing.  What's the
-benefit of explicitly prohibiting a knfsd export?
+Oh.. That's.. Interesting but sure if it is made into a library then
+it makes some sense that it would need freeing support somehow.
 
-(not that I think any of this makes much sense to start with)
+I'm surprised there isn't a better data structure for what mshv needs
+though?
+
+> > Nothing should be touching KHO until a kexec sequence is started. KHO
+> > calls should WARN_ON prior to this point. If a kexec sequence aborts
+> > then the entire radix tree should be discarded and it should go back
+> > to WARN_ON'ing KHO calls.
+> 
+> The whole point of making KHO stateless was to decouple it from kexec
+> sequence and let userspace control when preservation happens and to allow
+> preserving as much as possible ahead of time to save cycles at
+> kexec-reboot.
+
+Sure, but also the data structures should not have a life of their
+own, it needs to start from an empty slate every time luo starts the
+sequence. There cannot be cruft left over from previous failed
+attempts or something
+
+Jason
 
