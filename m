@@ -4,128 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B90ACD29FF1
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 11:35:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5268BD29FF1
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 11:35:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F67A6B00B5; Wed, 14 Jan 2026 06:35:16 -0500 (EST)
+	id BB00F6B00B7; Wed, 14 Jan 2026 06:35:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29B0C6B00B7; Wed, 14 Jan 2026 06:35:16 -0500 (EST)
+	id B29346B00B9; Wed, 14 Jan 2026 06:35:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A39E6B00B8; Wed, 14 Jan 2026 06:35:16 -0500 (EST)
+	id A48DE6B00BA; Wed, 14 Jan 2026 06:35:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F36F56B00B5
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:35:15 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B7EB21A0442
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:35:15 +0000 (UTC)
-X-FDA: 84330363390.23.58EAC1D
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 637B0180008
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:35:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=joISx2o1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IiVeDDKD;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=q5zHwuGF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hwRkntOo;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768390513; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9257D6B00B7
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:35:20 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6043D13B117
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:35:20 +0000 (UTC)
+X-FDA: 84330363600.28.6797D73
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9DA4AA0003
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:35:18 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BCBEdXVl;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768390518; a=rsa-sha256;
 	cv=none;
-	b=781Id7jGbWaEXEsIuX+YqjzKmwG2P4aJL8MYJgpttaanmNE6YvV8jGHQwMwd7THb1poF8n
-	888y7HFkW04XO5k7ldlc6K9S81+k73va9LtG4DIEWYmOQ2zeVYNcjFwSDGu/Xd/3u00SLm
-	pDAXhIc1c1TilgbdBXhn4zz/N4cdIFA=
+	b=2lH+dcIyNs0GomVh5i4vJoMABcMwf9tYUnrdxkNXDKQOKbA1F7xt0OG8I+Wmp0tNBldnvJ
+	YVaawxtm0Nugojna7QFSZxsd3MvpksJSaoboAzY/k5bsByyR16dZ8VcLbNcs03R4JMzVcu
+	3Z0pOGxCewECEJknRD4IcTJveIBKWAM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=joISx2o1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IiVeDDKD;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=q5zHwuGF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hwRkntOo;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BCBEdXVl;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768390513;
+	s=arc-20220608; t=1768390518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+vtFGwlvwFcJdd9kx3i/3SK8Y/po3O5eHXGJwIGw57s=;
-	b=x2gV0fmdfmpYzgYpLPrCeC31BwoAiLnlOl8ovSff3aKUuCS76jfebk54IOLfxxYPAdHmWR
-	9gR9m6xU7XrSUOGZc82CAJ4UvWWhCkvGoGRVFENg35iE7+3IEDZcn5ZB7GFfaMFE4XSpdz
-	cNRvJNcy2vsaRYcWOaD3sxnv3x2uJFY=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 750B05C368;
-	Wed, 14 Jan 2026 11:35:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768390511; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=9FlmauyfzMJ30WpiQCMliVOAMipux2gAWQ7/AZwbz08=;
+	b=N7eS22aXVYqUZqNDZGtuDyTUi+iDu7aHgfUKGCiEHE93G3JH737C6KZ6iN3MKBGoEWu2sy
+	kM1vU44m6RUEEXW+H73Gk7rOxpjW9G3d1ETDSFGP1Mhw7JvAYv6C/jHK83+Muk6XH6Ns6D
+	Mu3jl5l7Zv/p4fvO0tpC10ZXjDZfXAE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768390516;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+vtFGwlvwFcJdd9kx3i/3SK8Y/po3O5eHXGJwIGw57s=;
-	b=joISx2o1xY5F99LNjDVaBD1OAyHB2fl1BryxzdduPV2Qdi6MHuns9QbvbVo+resqvWKTlB
-	tmzvLyNQB8Vv5mWOqRvGBy7oogxbaTtrRLiR/cV/CeLog6esiF783tmc79bp/iqrpetR6A
-	KHIax2Cn2wmukFbTHW7S7wg0E9AFqOs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768390511;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+vtFGwlvwFcJdd9kx3i/3SK8Y/po3O5eHXGJwIGw57s=;
-	b=IiVeDDKDKF3/HkFiRuB56yUietAwRRi5ZzzRAL7J6bXWRTHljoXex6K34Vx488yLxDxqZT
-	2tGKjKgi0dJfJIBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768390510; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+vtFGwlvwFcJdd9kx3i/3SK8Y/po3O5eHXGJwIGw57s=;
-	b=q5zHwuGF0z8dzEcpcJH3ZIQfs74QuN8CHlN9igKJGhmq69zgr+RWCnUAFAktaC/DlCJ7Rq
-	ST66wmCmxdgVtk7tuA9xsADYHtpmatwEITZDE5Qf3bDT5cg/ctkFGZQ7wq0N2U3T0JCp+L
-	PSpC0zC0RdlRfV+LBboAvTnzXgP4FQY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768390510;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+vtFGwlvwFcJdd9kx3i/3SK8Y/po3O5eHXGJwIGw57s=;
-	b=hwRkntOo9d3hqSW5VzjYd7RfzsGToj93szPIjWOLrXFdzhMImhpU0FCfROmLSTaMNvDcfz
-	rIAsSMc/bAVSuaDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B700A3EA63;
-	Wed, 14 Jan 2026 11:35:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id y4F1KW1/Z2n7EwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 14 Jan 2026 11:35:09 +0000
-Date: Wed, 14 Jan 2026 11:35:08 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Chris Mason <clm@meta.com>
-Subject: Re: [PATCH mm-hotfixes] mm: do not copy page tables unnecessarily
- for VM_UFFD_WP
-Message-ID: <2cfknurph2lkbfht6nqajt74fujwompjgmkhr3muiiv3snylhr@ufijpjud2rac>
-References: <20260114110006.1047071-1-lorenzo.stoakes@oracle.com>
+	bh=9FlmauyfzMJ30WpiQCMliVOAMipux2gAWQ7/AZwbz08=;
+	b=BCBEdXVlLqQkp46ysfV3oumStNfgTGk2xCFjGUXhfJr7hPbVLCfcUx0ooPvCE079FQEBjQ
+	d5mYDx4hvC/B5S3BE7Mg7thsNh3e5eQYUgGmRZoJLaOS3ACuXv15yRP/EIq9etX+UZWwQN
+	ilKNF2+Mnh/m0rfu7RNltXiX2KqJc8o=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	yosry.ahmed@linux.dev,
+	imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chenridong@huaweicloud.com,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v3 21/30] mm: swap: prevent lruvec release in lru_gen_clear_refs()
+Date: Wed, 14 Jan 2026 19:32:48 +0800
+Message-ID: <80e4240d06e51ec90245accbe7bd038994a35dbd.1768389889.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <cover.1768389889.git.zhengqi.arch@bytedance.com>
+References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260114110006.1047071-1-lorenzo.stoakes@oracle.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 637B0180008
-X-Stat-Signature: hq4f9bqeujyhhrh5r13fzx34wcycrzw6
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 9DA4AA0003
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 8d4w8b7h3ab3e8ttzzpfr7tg41ixxpkh
 X-Rspam-User: 
-X-HE-Tag: 1768390513-600719
-X-HE-Meta: U2FsdGVkX1+/dzzATeKJPkAYlIihsm9a5Fmw3OyVp71x+UgGjDNlWUBptr7yOpwyT0tl0Foqi61WDAtJDr8YtWL3yiwynGuPyxwJMagl6yUPmEpt41HGJD5Sw0k8jWuXuSD7AGY8dlMot14/NOt0caHYKcjurcqRnhxp/XXEr5WTRulNt21ty1Keu+J6CDMtKaLKeQZneHmOsQBe7z8R+PbJG0zdPrTLtCyrtAqUq5WaDJMX0e4kwPkB9qGO84EFbnnq2nmF1kfOHOQjP9bCUQ1OILmIwbGWAzVLfkdWE0RU8/UhlWd0shQcJbrRQuq5d/sAymt5MBYTZnKpJPc7FRWI/mSCn50Dqrhfre+vG2n06lqmJaD1EJye//FODx1VCI0O3MOyRNkHp07ZXxBPLP/2tX7sIdrIWFB5UivBDGZ3XfXJT+M958prA0WSaAwLAzzZ6tPH56Pprf4Tzl6tpFvccLTxtCoEpkHhmP75QSMswBjV8DuC9duYnH81ouVHfauIMOFhhe+ImHf5du5Sbvr3OiSNy5D1zJyHktU35SbF2XKXgMR1DiAR0/N9WToHfFNCWHUbjRM+bCWER59DLi+mX3e15uC3riY7w6s4YaqAHieOpzdcOzaddQ//BAvWDD7BhObU+Ivr6Mv2om48fCqbdgTlC31QfUXYf4RmSoViuNPq8mgnUq9GXx6KhKkpBdNRgZ1OowaE/3dPW9XA4io/TALEu5hJGljH7b052BGUNxYIvCsCuJa9D4wYXZtnwISwTG365ZqWBEts7SPm4BZapErDUceelZg6v1tmiDJXvSG5q2jTDv7FpaIKa3nWC5y49sf7bhTZpJ4k8f+cqAgQdl5Op0sONpc/U9oa6aO4YbZdy7FhqC7Nty3mtZ77PI0z2Ne7ZlxKaXMngqWjaFWXJBUXEdOh+DspO81OWlQqyySu3RMJtzwGaP9g3hSYT8CbWZyNRs5d2hRw+t/
- h91rCQ0C
- IMXgRcxeN0/WAPz9E0tEhlPw6aGRHw6rdMkbSvb78w6yZYNq1Kyxo2ktOxqAO5Uo76ed9iQSmTbMEBpNygC3IE8Mrjt/sdCoM3CXHiIibw3EY7whBEECx8EdTu6FIqvrI+xA0GjTynljgTBsb9oWWrYfjkoNuarjPoFX2kqGcxn8Up7/Cp+l9L8x7lqVfjf7YfOEkXAd4N0ale/uQgcKR7N7SQxqK56x8eZijVanwr25OGM6UXctpsw+WxZUh7XY2of+OUuFCOII55SpI8fjT4L+QqIrxiHit6Bar02EkQ5Er6pfbDi0QNehFTg0aNO1IOR5XT6UHkaqgX+53iYz9K18xjLd5Uc9GPlyJSggLI0vfNji/1wS8ij0K+5HChnZ77zx3+NroG50rgcAmywsFUAtp+hqPMvTHAApcd1pfVjmk9oCjqLwwyYm3mo6oVZv6Jq3wsPl6eXwmtDE=
+X-HE-Tag: 1768390518-123187
+X-HE-Meta: U2FsdGVkX1/bXonoQ+gz/w0UhBbyNr08n4OAdUDnC+8SNktUcQaxULfonXZmm8D+/mBGEqnvrGvZmDFjtYzL1fWEZlSPD+n741+JfZwhpEC/8O+glyZJ6qtUu2qDo7H5KrmxojORZ17jajgG0Rtzv9h71X93P+s685lOpl+Q4O4IeVGbSoEs0ZjfUuyeSJ44Ook72jhHYpK8fJ/SWTc9ICBcdLrYzjcDpPAf1xTPh4HcEWGAU/FE6NEw3/+LqKRAnw06wqiPRaQvVSgYD++OEw/FJLKsPG4JjKqdxwTfCQuZnA1jzAdvvtbac/kYvc7jsonzH26X6bIhS/UFKqDJNT0vQiSLX9UJE7yCSETrLqfmqA0EG1eXsoV/QUZTVRTWFYaISuumX8bpkOPjRL2f/ToOk1jBJ92nL/hm0JNJIBfo+YkRkkQMVQLX/cKwczu7aoIYz6zXsFKXhU4wwe1kQjrLoAzTwVzIFoM8Zxzs7danjjqWTRot2n9xeN1zcT9E2qjiiUn39JGZutnswK4ZBvFktCqgZ3WjILWrbgeBs9jjvOckk8acFDFx9RuGVqbYvK0+SlK+9J99RgtN0N4HGZdewVCFrbY5kRYJdrDYGUgEvSwspIBfVFNuSvRqlYMtKULVq7AZVW5IdW9cW/HNSwjU3FLZL9TOSecHsw4QL1Xiw+Y6FavLXTa+YuNZiFLXVHefABmcJfTh662hXGsUh0x+YbCee2DBeJKLacP0afZQ3FEl4+ghUUinifUUlsULnicEj9FMuMnQ75JpHhVBloz9LSjCd+ReAqz/PR7IjJ7Kvcc1D5CfkUU/eifXLj7n/iByzZJfE1tWHjXRFFz+l1Xl509VFDTgHAoW1xFuLjW3vo3iompbxfpBkxKjDCwoo/UuaU+/oKE6HUmfki7uSRe1rmmk3WE8IbQpPE2ct4SDT+tMBHnTmvvawtKmyrRhfBqSmslwcYs5gmKIqEd
+ 1xkIDHYi
+ xywZyvMOr6Af8LHVkRfzXOS7WuQ5/fP+sn9GffO1/tWpWAJ9HqLI8bN+F2AWX3n/MCEpzDAOZwnsum133eSFPnf6KjRTgWsM6WYtD1ERFrn2GYqBHBJoVt9opI0EhZZdAMZRnKynf6NRx96GGHdj9ml/7KPjb36bQ/SsJfDZX2Oyy6uPV6q4wCI+PklJGKP+ABTSJq60UiShLQt6TzsHmo0y9sbBzK/9Gx6b+BSyDldn38JUcAyK1gd4NAhssLW8bQ1Z41iziEsUiiuy2fxLY7YWiyPaPWS3V19X+morfGlZteJwhM3rGw9kGgteJqITy4Y7I
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,84 +111,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 11:00:06AM +0000, Lorenzo Stoakes wrote:
-> Commit ab04b530e7e8 ("mm: introduce copy-on-fork VMAs and make
-> VM_MAYBE_GUARD one") aggregates flags checks in vma_needs_copy(), including
-> VM_UFFD_WP.
-> 
-> However in doing so, it incorrectly performed this check against
-> src_vma. This check was done on the assumption that all relevant flags are
-> copied upon fork.
-> 
-> However the userfaultfd logic is very innovative in that it implements
-> custom logic on fork in dup_userfaultfd(), including a rather well hidden
-> case where lacking UFFD_FEATURE_EVENT_FORK causes VM_UFFD_WP to not be
-> propagated to the destination VMA.
-> 
-> And indeed, vma_needs_copy(), prior to this patch, did check this property
-> on dst_vma, not src_vma.
-> 
-> Since all the other relevant flags are copied on fork, we can simply fix
-> this by checking against dst_vma.
-> 
-> While we're here, we fix a comment against VM_COPY_ON_FORK (noting that it
-> did indeed already reference dst_vma) to make it abundantly clear that we
-> must check against the destination VMA.
-> 
-> Reported-by: Chris Mason <clm@meta.com>
-> Closes: https://lore.kernel.org/all/20260113231257.3002271-1-clm@meta.com/
-> Fixes: ab04b530e7e8 ("mm: introduce copy-on-fork VMAs and make VM_MAYBE_GUARD one")
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Muchun Song <songmuchun@bytedance.com>
 
-Acked-by: Pedro Falcato <pfalcato@suse.de>
+In the near future, a folio will no longer pin its corresponding
+memory cgroup. So an lruvec returned by folio_lruvec() could be
+released without the rcu read lock or a reference to its memory
+cgroup.
 
-> ---
->  include/linux/mm.h | 6 +++++-
->  mm/memory.c        | 6 +++++-
->  2 files changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index cb3de0c73d03..44a2a9c0a92f 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -609,7 +609,11 @@ enum {
->  /*
->   * Flags which should result in page tables being copied on fork. These are
->   * flags which indicate that the VMA maps page tables which cannot be
-> - * reconsistuted upon page fault, so necessitate page table copying upon
-> + * reconsistuted upon page fault, so necessitate page table copying upon fork.
-> + *
-> + * Note that these flags should be compared with the DESTINATION VMA not the
-> + * source, as VM_UFFD_WP may not be propagated to destination, while all other
-> + * flags will be.
->   *
->   * VM_PFNMAP / VM_MIXEDMAP - These contain kernel-mapped data which cannot be
->   *                           reasonably reconstructed on page fault.
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 4b0790c8fa48..2839000cd26f 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -1465,7 +1465,11 @@ copy_p4d_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  static bool
->  vma_needs_copy(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
->  {
-> -	if (src_vma->vm_flags & VM_COPY_ON_FORK)
-> +	/*
-> +	 * We check against dst_vma as while sane VMA flags will have been
+In the current patch, the rcu read lock is employed to safeguard
+against the release of the lruvec in lru_gen_clear_refs().
 
-s/sane/most/?
-I understand you're annoyed but perhaps we should leave this out of the code
-comments themselves :)
+This serves as a preparatory measure for the reparenting of the
+LRU pages.
 
-> +	 * copied, VM_UFFD_WP may be set only on dst_vma.
-> +	 */
-> +	if (dst_vma->vm_flags & VM_COPY_ON_FORK)
->  		return true;
->  	/*
->  	 * The presence of an anon_vma indicates an anonymous VMA has page
-> --
-> 2.52.0
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ mm/swap.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
+diff --git a/mm/swap.c b/mm/swap.c
+index 245ba159e01d7..cb1148a92d8ec 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -412,18 +412,20 @@ static void lru_gen_inc_refs(struct folio *folio)
+ 
+ static bool lru_gen_clear_refs(struct folio *folio)
+ {
+-	struct lru_gen_folio *lrugen;
+ 	int gen = folio_lru_gen(folio);
+ 	int type = folio_is_file_lru(folio);
++	unsigned long seq;
+ 
+ 	if (gen < 0)
+ 		return true;
+ 
+ 	set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS | BIT(PG_workingset), 0);
+ 
+-	lrugen = &folio_lruvec(folio)->lrugen;
++	rcu_read_lock();
++	seq = READ_ONCE(folio_lruvec(folio)->lrugen.min_seq[type]);
++	rcu_read_unlock();
+ 	/* whether can do without shuffling under the LRU lock */
+-	return gen == lru_gen_from_seq(READ_ONCE(lrugen->min_seq[type]));
++	return gen == lru_gen_from_seq(seq);
+ }
+ 
+ #else /* !CONFIG_LRU_GEN */
 -- 
-Pedro
+2.20.1
+
 
