@@ -4,154 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD624D31A3A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 09:34:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B5B0D31A29
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 09:34:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BEEF6B0005; Wed, 14 Jan 2026 04:34:21 -0500 (EST)
+	id A0CB56B0088; Wed, 14 Jan 2026 04:34:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16D486B0088; Wed, 14 Jan 2026 04:34:21 -0500 (EST)
+	id 9CE126B0089; Wed, 14 Jan 2026 04:34:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 023D56B0089; Wed, 14 Jan 2026 04:34:20 -0500 (EST)
+	id 8E4816B008C; Wed, 14 Jan 2026 04:34:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E46216B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 04:34:20 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 90E6E1A03EF
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:34:20 +0000 (UTC)
-X-FDA: 84330058680.09.7D09828
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B1560140006
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:34:18 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UNub95R9;
-	spf=pass (imf09.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768383258; a=rsa-sha256;
-	cv=none;
-	b=52H3XAlhOwTPS7SznlLuJDGCRJZ47hsm1bM5DoUyModTHpNP6h6DxAn9qEH/f8xnvqKsmC
-	7XIL8uzf3c0HvppcifzPEBqqfCaBrURl/f2z7iuqSFSZCXig2aZpHzxqDKlRBKqT4FMhS5
-	eNU/VnUcj6ec5hdJUWBhOiIhoL+UzPo=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UNub95R9;
-	spf=pass (imf09.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7F6536B0088
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 04:34:30 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4A8881B850
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:34:30 +0000 (UTC)
+X-FDA: 84330059100.02.27A2939
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9BC2A1C0007
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:34:28 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dCAcobZU;
+	spf=pass (imf20.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768383258;
+	s=arc-20220608; t=1768383268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cV5qgJhr5qbvOPleJHxrmxwzjsLTEkwpqcVKyAw90ng=;
-	b=6BFtloeIifDrJ16COggu1cRNjgyVEYdQQ2UWnJiru3f0eu4ESBz52uV4Qm1d+Med4AgKGc
-	aubDMTOCdrjhaGOxPil5SZOZQeSfWSZX9Bed4ZMoJqDQLF6NMssbOCY3nrbjAgT5d/yp/C
-	7gmkrismSsnaty7daROTla4xs5z0bZk=
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b8719aeebc8so505765066b.3
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 01:34:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768383257; x=1768988057; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cV5qgJhr5qbvOPleJHxrmxwzjsLTEkwpqcVKyAw90ng=;
-        b=UNub95R9D4kbldPQJAJfawKji7NqJrrOkqU8KYDJW1ctUit89JTsEzE7lpOyFsUVbc
-         AbwftFVxGJHbGOepc+GWkfVXaGX6nOWW9Jn2DQhRrwSIjMxg5odGOIlPUGz3c+a03hpk
-         N66fnIdeADR44/eVsxDd5qBoZuYYq/4ziRy/H/BsLK68tLKHZcpiw4M1f9Z7dCciPdA5
-         hEg9l0yBIAJcHKuhlvtMrmaziZ5rGHcajZG+WFCC73hfj1qO633qVPRpx9xENXx4IlBM
-         7lMpoYIOLbYQDNMDBwM4l4YlqJ3zm71FE/PPTuMYo11y+rPE1cS+ysWATC09YnYAbTod
-         AeKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768383257; x=1768988057;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cV5qgJhr5qbvOPleJHxrmxwzjsLTEkwpqcVKyAw90ng=;
-        b=i0XsjxYkqczAdo0aP7gOYG/M+nqA/7Nw8y6pelfHdnyWV76TvW9TtTAhUaWKNSuIM1
-         Kj/em9a55Jr4GiWqp34ec+CeafgUf/hCKSiKS3MTgEb9wOyaHyp/IeIhIMtoY1C7T9Lw
-         ptXvaRhZv6CDpfldTnabB6mJhWym0FzhWnfMEr+zL8zV40DEknWrKc4azLx1AlpzfmB6
-         RIGdCGqFRW/jv6cpM4P1xi+JlFY1mWi03jF67w5orHQNQ+dmlYlC5YXZpo8icNJwCUDj
-         /knmHozKVQ5aaFvT7YsRAwMmzjkLqT1fkCoksP5Dm2QrJ5ZaDGsQ3tcGVgfafDmKIxdZ
-         W9eA==
-X-Forwarded-Encrypted: i=1; AJvYcCXGqRK99kg0v6PQlxUqD+YqMdbye7Y4RemteJwUPjexbewHfOsTV1LbeV44EzrrBqSgsLIZ0tw91g==@kvack.org
-X-Gm-Message-State: AOJu0Yxiz3HygO46W/BgZSViRfEfWGei/zEczrSa+a9TBiEGOrTNZAKb
-	2JQC3wlBKVkLUOvle3IntoCaCSjXmzlC0NaNdXWlBbfriF8wQIJ41xslX9w1RmyfGAIAhZOd8nN
-	RMGyzyFnTLkJLmBeA1TJrWfgWNgpHmxU=
-X-Gm-Gg: AY/fxX4rcWSHdDzr2eQIKaCKhjbcw3mHchMgQVhbC9r88WWhUvgSpHLaVrrhx3aMT1r
-	RH2hRlN8QaQtZTq+u1xWnfkbi5rFjTK+BGuJR13c7dpdWJZKENJMgrFjSQYljduZ9Ey4icBl/VA
-	2vZizZvQWvKx9BGzIO78UgNTaSDMh/DQ+45F9xqEoeAlR3ZANgp2v8fms22Xyi6WMiyKuEpDNfX
-	lpIMpQQ6wLC4kNJWZJTCY7RDGNFQcot5nozgSxkQeU4PnLrvFKtg4tHB39yJUvyv19AwiCF06Ji
-	PVmr4u0wrn2UgX5AF/tAtUacLZlIk49DMNeBp2Hp
-X-Received: by 2002:a17:906:6a02:b0:b87:25a6:a906 with SMTP id
- a640c23a62f3a-b87677e0680mr108491266b.46.1768383255915; Wed, 14 Jan 2026
- 01:34:15 -0800 (PST)
+	bh=RiDCyIt20CzxUvCCc7yr/C6hAGxEwAzu+F3NvxFHJzk=;
+	b=eCAWCob52Ihc0y7Y8gotyF1D+Sap2awRNFfuIto1R29nKoPth17WNfT0PZ+QITmoXcDFKe
+	1qRtUMvrLJBLzodYKduVqyrIbT24dhTZ6jka+zp/qsa5dS3UnpIuDX60XMEY0NHWtUUeSC
+	ej6+NADqpgFUU1+3cZnGVQ8xJFRnlwE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dCAcobZU;
+	spf=pass (imf20.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768383268; a=rsa-sha256;
+	cv=none;
+	b=eEh3j8CSUAJZ/6BY2Oj5DR47+StZuNY+7wjrlz2IDdz6OBEbxL/YzsxnQK+pnoGklBKHN+
+	b66w2kmxawPIJVschaLmH5jJ/a2J52rq1vn4plE7+OtE7LwCKt03+mt+lRA3mkm+pNs6wk
+	CLnjj4BDW95/sIE4qtoaSCplAcKLwfg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id BA5FE60051;
+	Wed, 14 Jan 2026 09:34:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6688DC16AAE;
+	Wed, 14 Jan 2026 09:34:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768383267;
+	bh=QCqYpWqKWHECS6LyWQkRM/br5oR6fqyVbwR9TGBPsQQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dCAcobZU3its6pMbxAKLPlKnf/wW0ogAAk03gUzk3dw8FRsPXZFpmmIy7+o9BGUqD
+	 J+ceWtm4YMlCe/qaxRhCRyHBnnAOmA/7+Gl3a8m2JY+a7jlbNtc2RTGbZEB74eJTUM
+	 vrGuVLxUsxv/M7iH+cN8YOBwrGC+QdMGu/P5PKHt2QpgIIMlY/lFfHwECZWtY5xdO4
+	 lKXaDrfvePUhs9pDAT4K54pWT3LSyfER9DAAzq2k9hZaymAZODYzMq3VJCwcOltetO
+	 A1nX0qkMR5rZ7cTmg/kDcKnkJmYZuHNfJLLzTPQ8Z2oqNbAGs7nmoNYu1+xLpTSnO2
+	 Y74paLEWIYJFQ==
+Message-ID: <b6c39059-faed-41a8-80b2-addaa229c143@kernel.org>
+Date: Wed, 14 Jan 2026 10:34:22 +0100
 MIME-Version: 1.0
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
- <m3mywef74xhcakianlrovrnaadnhzhfqjfusulkcnyioforfml@j2xnk7dzkmv4>
- <8af369636c32b868f83669c49aea708ca3b894ac.camel@kernel.org>
- <CAOQ4uxgD+Sgbbg9K2U0SF9TyUOBb==Z6auShUWc4FfPaDCQ=rg@mail.gmail.com>
- <ec78bf021fa1f6243798945943541ba171e337e7.camel@kernel.org>
- <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com> <ce700ee20834631eceededc8cd15fc5d00fee28e.camel@kernel.org>
- <20260113-mondlicht-raven-82fc4eb70e9d@brauner> <aWZcoyQLvbJKUxDU@infradead.org>
- <ce418800f06aa61a7f47f0d19394988f87a3da07.camel@kernel.org> <aWc3mwBNs8LNFN4W@infradead.org>
-In-Reply-To: <aWc3mwBNs8LNFN4W@infradead.org>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Wed, 14 Jan 2026 10:34:04 +0100
-X-Gm-Features: AZwV_QjTKvsgUAM6BTw2rpBHAs0ymZXhE-dNbh6dt2ll27JlZs1InITXkkYC5Xs
-Message-ID: <CAOQ4uxhMjitW_DC9WK9eku51gE1Ft+ENhD=qq3uehwrHO=RByA@mail.gmail.com>
-Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
- lease support
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Jeff Layton <jlayton@kernel.org>, Christian Brauner <brauner@kernel.org>, 
-	Chuck Lever <chuck.lever@oracle.com>, Jan Kara <jack@suse.cz>, 
-	Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
-	Nicolas Pitre <nico@fluxnic.net>, Anders Larsen <al@alarsen.net>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>, 
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>, 
-	"Theodore Ts'o" <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
-	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Dave Kleikamp <shaggy@kernel.org>, 
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>, Viacheslav Dubeyko <slava@dubeyko.com>, 
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>, 
-	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Phillip Lougher <phillip@squashfs.org.uk>, 
-	Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>, 
-	Yuezhang Mo <yuezhang.mo@sony.com>, Alexander Aring <alex.aring@gmail.com>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, Xiubo Li <xiubli@redhat.com>, 
-	Ilya Dryomov <idryomov@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
-	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, linux-mtd@lists.infradead.org, 
-	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, 
-	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
-	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
-	gfs2@lists.linux.dev, linux-doc@vger.kernel.org, v9fs@lists.linux.dev, 
-	ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B1560140006
-X-Stat-Signature: fcgykyatxf9rrrm3wnn1j68y1bre1je9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 00/12] Support page table check on PowerPC
+To: Andrew Donnellan <ajd@linux.ibm.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Rohan McLure <rmclure@nvidia.com>,
+ Alexandre Ghiti <alex@ghiti.fr>, x86@kernel.org,
+ Nicholas Miehlbradt <nicholas@linux.ibm.com>,
+ Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+ Andrew Donnellan <andrew+kernel@donnellan.id.au>,
+ Srish Srinivasan <ssrish@linux.ibm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org
+References: <20251219-pgtable_check_v18rebase-v18-0-755bc151a50b@linux.ibm.com>
+ <CA+CK2bBjoQmheEstv1MacGev_srdx=m5v=hwxdyfAKogbpG3FA@mail.gmail.com>
+ <bf0def77b07a34c00928cedb46030ea17be4fceb.camel@linux.ibm.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <bf0def77b07a34c00928cedb46030ea17be4fceb.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9BC2A1C0007
+X-Stat-Signature: b1mecfy5d1iyezfyiygeboppxbx7g5wp
 X-Rspam-User: 
-X-HE-Tag: 1768383258-628692
-X-HE-Meta: U2FsdGVkX19AZCfRY9ot/I8Yuruqsnva34JYbORSUA3DdaeEyKwJihy+rVM31jg65WGUjHm2b5AvBxumzx5phVhZCECAu1tGWGtp3jXDZYbIIEpj+z8eOSKYgM4G4zYeZCZrgfAfD1ULLGHqubBZJJoCnbXyQbT49tqwkK/fpO941Ew2ToHvnpVuhhf1MZxHYXyiGQuS7KT51sowiCsVJuv9vQCI89efunjLvsXTsHfvC9gnZ7C4C457Bvh8IapVu9mXgpb9KVYgV0rNtv5ipCnu6HYdGS4kTxVf3O60DDzy9EnSc/4xEmRFeupVEAIBP6pMRd2FYcH8X/jOLCLQqWq/oT+B09c3jf8jn8NoEKPD0XbCv0FrUZX4UdXLo218jWo3EzhDFr0BaTDShykSlt0VnoMItiq+YtXplWJsXYj67vD4yq0+GQZ2icBFEe/0UvBKgwBe4JoFBnQUN8+/7jOZJY8QI8Z8ncYXrLOvrmOFNIVJ2BuKbOKFlqcRTMA01i6bjGaWW87rghGs0hB07PqKb1Zf/+mkMEZngh44NS5jrrBPm1GSgr40YHKA0spjV4a7vNkhxhTpwa4PQVop3YrmYPYgJzPGYc2OmR4PxBeUvB1/zDP1j9npUTv7dS+CbdtdMoTEnqih6AlMkuvCca0gqpl8E+CVDPoK9m9bGd4x679KsWi6JFSuCEpi03oLR862a6zvxwpL91FIt+2DVasyBCPvD+h0g36ubX5aLxmgGdPzs/HBrKhDfukhsDatesfBm92dnYSiOl55PXAUtYr6bqO4UQRDCEqynNoxIAj3nlim8ArKDfBrlZtoGjiDVYMlLw3HGe/kzZXlNzGmnK5TDrW5oZSTI93Uz97xdtlCuONMnNnM5hSnsduF9q8w589Mm8JUZfE5aU9CRXUtce5E3tmfx8azwtuuYA52ZPPEwHpnvGQ1APowtcaZAwO965LN8JQO17fYpud8123
- 0XAB4hjD
- TrHaB9OqYGTeHuSm1xWwP+NFoCEXW+9AkEd7kKeBKjY8XEBCoeVfR99bu9sLxC3RVTSPDbzHhfWgm685UnIeXKbKLcYhqhVis8Tf5xQNC+cRtTXjiTtbSLrKfqqnkcJrISGx2hZh6Rx834QG02WM5DJChMkQz/WuLOUMoTTP+raDFYf/LdlRcIIrJoAmnNtcZ+JsfZLs8UddQ3bGcfll1dIOsqrRbWCLSpeX7M0OBTfcH7l+QLH8OUcJCkhAWTQS0/764H2U2jxumc2lwafG/uklXfuIcd/8D45syBDEywJuOT69+CYnmAfxNJwEbXndghIdDUY2JaG7arPxCShTm7N5DoQys3FXTBxQfT7pMqT4WX//T50VfdSBq5VYWhe2EVaf+ijqiMvPlSrYHK980eOXzP5E+A/OuwT0by0p2sxOPM6qSy/Q7TjnnvNgaj3KardYivEmQ0Bq3L9TYaTOkgELfELWuL2/eqI5IL0uZjacEUqk=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768383268-227451
+X-HE-Meta: U2FsdGVkX1+c9dMBuIb5Uh/btsZJo5pl7McmyGts1T9BZN3dqAol8SCt/DS29EJ3af0ZpgUVHnt+TfFgqecTFoT5aTRlNoN7h+hHd9mQKIm54JD4AdIKrhex7LYIc3BoWcC9vzRgqrdHPxSCn40xCrf1T9uRArTqxkmWoz/tMKLnnH9PjDL/kWcpecc78plOTZPaijLQtYNAKL3ELwkK2iptwh/D4zZYlra33arCibrQm7UmKcSv060EE/+SuJcQbwfjDr2TqU8VgaiLRa5DDACTnacJDjk49l8UR2lYvQww4crGQUwjRUPEvUhg+X2ELn+0DPWJBJPHJSryFmR4Y/bHWr7BKGjHURN/wtXhaMpa0Fm/Sk3UqFFC7+068J+xT4LlOcGLZ6ogQ+rRUGXYlHT4fpbskOhVMNLyU+BfNTchGx/HPqsknj2fQhdYQnSG4RilzGD0qdc0mCsG5YGeduYtSsyq1LBP9nBkvrIFvAyL3lCIt6GBwi3rGkThDc+G+meG/+WwpSo/ufu456rqHfcg0Er9u4XKaAMm7o+gUXv1bv4GMwfR7XTl5v1ZDwfQiX/QcB2rcv9SgrkFRVL2v7AvetSHEFzggphZHTElByCSV7Yq2bPDk2f6QGMNYYk2k+M0RtDboDnwO3azFs7FblkC3OkCu8SGUWgI09Xpx448RHAdYYtqmy+6F7qn5FM9eGrquXUpfPJChSFa+5oBbpUGi7lgvrz3X4k6k6bTE+v2K7OPqmlVkwJ/XvltorGJ0ZcKL5bSfu4+hAd3lZgHH19lG6Fx6wcn8a4kqx85ZMKsLjr1U0IHRgcfO7Al50yNRI4Qw9ezTb9KVcHK+5HfYpirV8smjic2wA9cZAswof9axpN30thVjq97G92FotT9/FIVt4y2pJC3BsJQ5XHG2lTDccqUWzO73PSFEIRE+1eBQde6Bwex+oqkOWvYb9Xj1DIrhAOAxcV06NhYYj1
+ 6XwW43Wm
+ sYE83BC15VyMv2rYgbgYkiBo6V9ug5wLbc26rKfq9/rq+LoEmxqX5gDUTQKXWNsbvWcDR3b3zmxr2HjWZg91BHqz8YlOhpVx8tpUgoKQTDtStlol5eMYNfaWw4JkorYTAPtsPY/bxa40rGV1sFFw29W2GbF5TjqhrIRc+yB85PIVNx2c5FqUR4fCFwo8SWvsR56fdbM/qpdjc1AeYZNo8FFxrfCplpnYn8iLXfIWsZLdYsUfPXb+BF8wrjbmxiKqWauUqa6xE+5mnrbDeV6ybZf2Ovgo1COOSMMIEmcSpnQ/GRtLLBJk9Ssh0Og9suJjPaTYU7NOTYLY02OP2RqeFt2whoohaMUcvbOtGqb4c2FyU/vu6/oouCn1oLqBOhSniB4ox3vgBn/k1ak6bAmVQ051dMvmUHjNS+7oc337sMU5FRCw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -160,52 +106,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 7:28=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
-g> wrote:
->
-> On Tue, Jan 13, 2026 at 12:06:42PM -0500, Jeff Layton wrote:
-> > Fair point, but it's not that hard to conceive of a situation where
-> > someone inadvertantly exports cgroupfs or some similar filesystem:
->
-> Sure.  But how is this worse than accidentally exporting private data
-> or any other misconfiguration?
->
 
-My POV is that it is less about security (as your question implies), and
-more about correctness.
 
-The special thing about NFS export, as opposed to, say, ksmbd, is
-open by file handle, IOW, the export_operations.
+Le 14/01/2026 à 06:00, Andrew Donnellan a écrit :
+> On Thu, 2025-12-18 at 12:55 -0500, Pasha Tatashin wrote:
+>> Thank you. This series looks good to me.
+> 
+> Thanks for the review!
+> 
+> Maddy, Christophe: any further comments from the PPC side?
 
-I perceive this as a very strange and undesired situation when NFS
-file handles do not behave as persistent file handles.
+No further comments from my side.
 
-FUSE will gladly open a completely different object, sometimes
-a different object type from an NFS client request after server restart.
+> 
+> Do we think we can get this in in the current cycle? My last day at IBM is this
+> Friday, if a further respin is needed then Srish will need to handle it as I
+> don't have any access to powerpc hardware outside of work (happy to provide what
+> help I can from the outside though).
+> 
 
-I suppose that the same could happen with tmpfs and probably some
-other fs.
+What is the merge plan ? I see all powerpc commits are acked by Maddy, 
+will the series be merged by Andrew into the mm tree ?
 
-This problem is old and welded into the system, but IMO adding more
-kernel filesystems, which consciously export file handles that do not
-survive server reboot does not serve users interests well.
+By the way it doesn't apply on top of powerpc/merge branch:
 
-One could claim that this is a bug that can be fixed by adding boot_id
-to said file handles, but why fix something that nobody asked for?
+$ b4 shazam bf0def77b07a34c00928cedb46030ea17be4fceb.camel@linux.ibm.com
+Grabbing thread from 
+lore.kernel.org/all/bf0def77b07a34c00928cedb46030ea17be4fceb.camel@linux.ibm.com/t.mbox.gz
+Checking for newer revisions
+Grabbing search results from lore.kernel.org
+Analyzing 17 messages in the thread
+Looking for additional code-review trailers on lore.kernel.org
+Analyzing 86 code-review messages
+Checking attestation on all messages, may take a moment...
+---
+   ✓ [PATCH v18 1/12] arm64/mm: Add addr parameter to __set_ptes_anysz()
+     + Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> (✗ 
+DKIM/soleen.com)
+   ✓ [PATCH v18 2/12] arm64/mm: Add addr parameter to 
+__ptep_get_and_clear_anysz()
+     + Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> (✗ 
+DKIM/soleen.com)
+   ✓ [PATCH v18 3/12] mm/page_table_check: Reinstate address parameter 
+in [__]page_table_check_pud[s]_set()
+   ✓ [PATCH v18 4/12] mm/page_table_check: Reinstate address parameter 
+in [__]page_table_check_pmd[s]_set()
+   ✓ [PATCH v18 5/12] mm/page_table_check: Provide addr parameter to 
+page_table_check_ptes_set()
+   ✓ [PATCH v18 6/12] mm/page_table_check: Reinstate address parameter 
+in [__]page_table_check_pud_clear()
+   ✓ [PATCH v18 7/12] mm/page_table_check: Reinstate address parameter 
+in [__]page_table_check_pmd_clear()
+   ✓ [PATCH v18 8/12] mm/page_table_check: Reinstate address parameter 
+in [__]page_table_check_pte_clear()
+   ✓ [PATCH v18 9/12] mm: Provide address parameter to 
+p{te,md,ud}_user_accessible_page()
+   ✓ [PATCH v18 10/12] powerpc/mm: Implement *_user_accessible_page() 
+for ptes
+   ✓ [PATCH v18 11/12] powerpc/mm: Use set_pte_at_unchecked() for 
+internal usages
+   ✓ [PATCH v18 12/12] powerpc/mm: Support page table check
+   ---
+   ✓ Signed: DKIM/ibm.com (From: ajd@linux.ibm.com)
+---
+Total patches: 12
+---
+  Base: base-commit c224625ec6f8a0476ffffc09807f4d717ba9cc93 not known, 
+ignoring
+Application de  arm64/mm: Add addr parameter to __set_ptes_anysz()
+Application de  arm64/mm: Add addr parameter to __ptep_get_and_clear_anysz()
+Application de  mm/page_table_check: Reinstate address parameter in 
+[__]page_table_check_pud[s]_set()
+Application de  mm/page_table_check: Reinstate address parameter in 
+[__]page_table_check_pmd[s]_set()
+Application de  mm/page_table_check: Provide addr parameter to 
+page_table_check_ptes_set()
+Application de  mm/page_table_check: Reinstate address parameter in 
+[__]page_table_check_pud_clear()
+Application de  mm/page_table_check: Reinstate address parameter in 
+[__]page_table_check_pmd_clear()
+l'application de la rustine a échoué à 0007 mm/page_table_check: 
+Reinstate address parameter in [__]page_table_check_pmd_clear()
+erreur : l'application de la rustine a échoué : 
+arch/riscv/include/asm/pgtable.h:999
+erreur : arch/riscv/include/asm/pgtable.h : la rustine ne s'applique pas
+astuce : Utilisez 'git am --show-current-patch=diff' pour visualiser la 
+rustine en échec
+astuce : Quand vous avez résolu ce problème, lancez "git am --continue".
+astuce : Si vous préférez plutôt sauter cette rustine, lancez "git am 
+--skip".
+astuce : Pour restaurer la branche originale et arrêter d'appliquer des 
+rustines, lancez "git am --abort".
+astuce : Disable this message with "git config set advice.mergeConflict 
+false"
 
-cgroupfs, pidfs, nsfs, all gained open_by_handle_at() capability for
-a known reason, which was NOT NFS export.
-
-If the author of open_by_handle_at() support (i.e. brauner) does not
-wish to imply that those fs should be exported to NFS, why object?
-
-We could have the opt-in/out of NFS export fixes per EXPORT_OP_
-flags and we could even think of allowing admin to make this decision
-per vfsmount (e.g. for cgroupfs).
-
-In any case, I fail to see how objecting to the possibility of NFS export
-opt-out serves anyone.
-
-Thanks,
-Amir.
+Christophe
 
