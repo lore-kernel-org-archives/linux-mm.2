@@ -4,102 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42D22D37E42
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 15:21:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D169CD37E4C
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 15:26:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF6966B008C; Wed, 14 Jan 2026 10:21:38 -0500 (EST)
+	id 43D856B0005; Wed, 14 Jan 2026 10:26:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8FEA6B0092; Wed, 14 Jan 2026 10:21:38 -0500 (EST)
+	id 411A76B0088; Wed, 14 Jan 2026 10:26:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C66B6B0093; Wed, 14 Jan 2026 10:21:38 -0500 (EST)
+	id 314876B0089; Wed, 14 Jan 2026 10:26:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C3CF6B008C
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:21:38 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2EACA5917E
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:21:38 +0000 (UTC)
-X-FDA: 84330933876.04.691E3ED
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 545C7140002
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:21:36 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.167.170 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F4F86B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:26:25 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DCD5B140548
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:26:24 +0000 (UTC)
+X-FDA: 84330945888.30.8E0D2CE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 49A0F10000C
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:26:23 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UuxL49Up;
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768404383; a=rsa-sha256;
+	cv=none;
+	b=mIXBAfFUjsZJkner4XW/GR2B2GKMK0ICh5Pi2dh+9tcP/KAWzarC0fGov5WvZh8USe7vqm
+	PMBlTaukdU5kTkVZ4t0WjEImiLpeJg5SmT/kAu1QZf9X8Up/9fq/Ys4C1Fb7OyRfF36IhA
+	MC+WXyZb1d3QrThM9v9tRTp+2G5e+rw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UuxL49Up;
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768404096;
+	s=arc-20220608; t=1768404383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dI9Phsj/nSMNdFp89o7zHIAUGa2rQCyWo79deKjR47o=;
-	b=7U1nHP166JiTekpMxZ6ai6QSfqES0lQm9R39pzYH39GdagazAt6/wfQOR08pFZzlv1lYIn
-	zCLYCNc3exYwWYcKbxXDhUIRqRaHRY8stp1QsDQx+X2OjSPjZUXNFop+aV22AuFnjl2IwR
-	okC+IhTK1hdWXz7ehhMh2pWAHN4rioc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.167.170 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768404096; a=rsa-sha256;
-	cv=none;
-	b=St+k9kcbT0eYJQ6+DQTe1s4BzaKm4SZjUI/iVuhQDSapF+tclVJZeZo5gdrdnqZZDJBMm0
-	94skRfd12TJ5ICiEEfeinwGRLiEl64FbDj7kR8uXPfng/AHpvko39QsnQzzDKPO8/Pdn7t
-	xp9AgpKJ2BuxUY10th+ohTjiglJcVm4=
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-45c7400259bso281519b6e.3
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:21:36 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768404095; x=1769008895;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dI9Phsj/nSMNdFp89o7zHIAUGa2rQCyWo79deKjR47o=;
-        b=nrB04uKUlP+hVBxR/KJlqx5Ul1H47/N/YFQZ0ldxYOGbVtwr2jAxotpJ6HDp1ifBDK
-         43LvQlLAe8reJh5P+YMl/p4qMltn7IrXNv/dznRZWqfq/Df3yAT9TEpun5CrXO7ADlJs
-         QO+Osanqn2KLAkWND9+bhrwD9mlva6tSJQUAf6BUEUNLWupr5auTShRHI3cE9/WPyNbe
-         eGpYAeyUDgmOXVK2RQNe9AmdnLQ4DYEeYuBsyii+I/IYUtDoqGOAcA54zG1F0JUhScx5
-         u98ThixXWlBHiPJnEIYZ8Nr3J66gxa5FW3i/puEjw8UsGga5P4MfPfWlr4cEaEbJTfQ7
-         FZkw==
-X-Forwarded-Encrypted: i=1; AJvYcCUgOxQ3w2ThBulJZStHFg8pQkMClFT/KdGAeJ4kK2YIjNa2DwP7/c4yi0w1H5Vl/70481RmDGI+4g==@kvack.org
-X-Gm-Message-State: AOJu0YzIPokFJmBxB/PCLhiQEMBK4kMCo9tITi926zDmFDBTgHUFzHpM
-	5A8epUHyYjfyCm4C3JHvT6KNevk62E5xzbw61pq8PQ6zwrWwHSXnC0jv
-X-Gm-Gg: AY/fxX5oj75hqBY9NwEWPgSlSoLMcRzefJfP2M9fFi6OJ9Au8lZsJtfuKpwayzCzagS
-	bldYzYdWuPwCs6FEuGGK7QaVAyd4tT4uXcvrg66ux/AxZ5FuuMLrsvFN6STJ8STvDMVD3JySohy
-	CrEJxGEt/RQ6jEFH2GFwa7cJYErRLKCABP6GSOj/oB3vhdNjpl4pIOCtOu5thVRzC+Ll+Z/Qnet
-	vfhzwQoJGGX8mNSIpDiEPCX24HBUnmkmFUjzN5iVVDZ6k2zrYGQ90EKuVTuGhvQvFi3kG6gcCMB
-	bin1vqn5Aqv2gDoJl7EWFYPJKCaAwB01WcwTxGI3icVqKCWfA8AwFLX1jSdwuemCBoKv7D45c45
-	KYy/6dXBmxc3fedC4HnXM3i73oeog1/XNOQyg+IGLqZQwvPiMNDJPv5uy1bk3HaqzIwsDi5wNEM
-	hfsUjgSrEjZ2iw
-X-Received: by 2002:a05:6808:528e:b0:45a:5584:9bf5 with SMTP id 5614622812f47-45c714331e3mr1702212b6e.4.1768404095351;
-        Wed, 14 Jan 2026 07:21:35 -0800 (PST)
-Received: from gmail.com ([2a03:2880:10ff:40::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-45a5e288bc7sm11600518b6e.12.2026.01.14.07.21.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 07:21:34 -0800 (PST)
-Date: Wed, 14 Jan 2026 07:21:33 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Chris Mason <clm@meta.com>
-Cc: Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/kfence: add reboot notifier to disable KFENCE on
- shutdown
-Message-ID: <p7gi44yt26bpjbjkvuhd54tqp3vn7z6wq346gmvazg5t3kir4p@gdf64eax44rm>
-References: <20251127-kfence-v2-1-daeccb5ef9aa@debian.org>
- <20260113140234.677117-1-clm@meta.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kvsikAIbl+cEhR2X3kc5+cU8s2nM+gaqydUds7eRyR4=;
+	b=5PI/GOEq9OhitgtmOOcH1FjA3uUz6YCpc081ZxWvD9j5VufzvKGWL726hFQedDhtzmoX9/
+	U4ZfnVvl87sXmZQnr2MMiXE6x0ZL4ZxnZ0WpLESKlWh0DibNM4k3x+g51GloRsA3kAGbvI
+	vLjKA4ZOGXZZ2wE/j6k79iuDgQMhr8Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4DA7E6000A;
+	Wed, 14 Jan 2026 15:26:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C84C4CEF7;
+	Wed, 14 Jan 2026 15:26:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768404382;
+	bh=TJ8HYpqwvKEu5WPBUCmrbZTfwhtmNo45dUDkhLnlTis=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UuxL49UpINmE3bPn9I7g1qy3O1U7lEuEQBs6NY4FtevlZRrg+jir4TUf2JL5Et6S/
+	 Wo3Rq7erhsD0wDrAjS0fAwtu2sdM1Ly6eiM6YJ56Efjw7Aqq9ho5u2uVmIb6CLm0qm
+	 DbkRjtkwVuzFS/3LLXXupO+XD87WN1YxMglF8PVz6z7zZF37PIEsEJLTAjeNY90c2+
+	 Is57pvmqsqoUYUcAtHG3VWlWJm+iZsfwi7Dpki4E16iuG5isE531rPd5Kr9GSqblBC
+	 cmcig5bet6G0LrdDdcPVQ26rluu7tPoRJcI1jAeMRFhOX4YrFqzlg3FxIBJw/nlkLZ
+	 OyWqiHYjHhBJQ==
+Date: Wed, 14 Jan 2026 16:26:03 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>, 
+	Amir Goldstein <amir73il@gmail.com>, Chuck Lever <chuck.lever@oracle.com>, Jan Kara <jack@suse.cz>, 
+	Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
+	Nicolas Pitre <nico@fluxnic.net>, Anders Larsen <al@alarsen.net>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>, 
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>, 
+	Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, 
+	Dave Kleikamp <shaggy@kernel.org>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall <hubcap@omnibond.com>, 
+	Martin Brandenburg <martin@omnibond.com>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Phillip Lougher <phillip@squashfs.org.uk>, Carlos Maiolino <cem@kernel.org>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Sungjong Seo <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>, 
+	Alexander Aring <alex.aring@gmail.com>, Andreas Gruenbacher <agruenba@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
+	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
+	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
+	linux-f2fs-devel@lists.sourceforge.net, linux-mtd@lists.infradead.org, 
+	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev, 
+	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, linux-unionfs@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, linux-mm@kvack.org, gfs2@lists.linux.dev, 
+	linux-doc@vger.kernel.org, v9fs@lists.linux.dev, ceph-devel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, samba-technical@lists.samba.org
+Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
+ lease support
+Message-ID: <20260114-blamabel-hanfernte-ea1345885b46@brauner>
+References: <ec78bf021fa1f6243798945943541ba171e337e7.camel@kernel.org>
+ <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com>
+ <ce700ee20834631eceededc8cd15fc5d00fee28e.camel@kernel.org>
+ <20260113-mondlicht-raven-82fc4eb70e9d@brauner>
+ <aWZcoyQLvbJKUxDU@infradead.org>
+ <ce418800f06aa61a7f47f0d19394988f87a3da07.camel@kernel.org>
+ <aWc3mwBNs8LNFN4W@infradead.org>
+ <CAOQ4uxhMjitW_DC9WK9eku51gE1Ft+ENhD=qq3uehwrHO=RByA@mail.gmail.com>
+ <aWeUv2UUJ_NdgozS@infradead.org>
+ <c40862cd65a059ad45fa88f5473722ea5c5f70a5.camel@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260113140234.677117-1-clm@meta.com>
-X-Stat-Signature: e4gq117fnascmmfxayfmchzrfgwnfu1i
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c40862cd65a059ad45fa88f5473722ea5c5f70a5.camel@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 49A0F10000C
+X-Stat-Signature: 1zzp6tfb6jp6imhz6ghh9gfkzmw9ezs4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 545C7140002
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768404096-695989
-X-HE-Meta: U2FsdGVkX19jQWTjb48qBG+V1YrVicXhSkJy6MUQpsW6Ep++lJdzJxm9L/8iDl6QK5ysUKJO5g3yyzL8+Zbur5ePaSvfVBMxsPlBHBzGw1I9q6EzmCKk0mUbcTXYPkx4jnLIJ7uRAZxY5FlTenqITLMa8BM8Kvk3JSLWyzaLTEIIOlLc8EaugHoSDhWLiMdQjHHR4PPAcSFLfyzOdLf4YCgNB7pTvxWYu5UdMhnq56Ey0urTsmB8c7iJi3DucSuy/xVwkfc+WVsqOxtkbyzP9AxnjJs2Dap3FZplEyXcm04o5ildRwNIS/5vXdXRzpy8RMwaAwHKc5auzg61zFFCQuH3WNjp4xy+E6iiUSRxgx6Fv+5IVxjTMi8f8HRB3IK2g6nEniMqg/N9c+GNDrlHFz01aiYwEi8QrA+UmnjQFKUVW1cD7G5HD3ZD+VSp7WWaltnp2YBrThEvkJD7EDogxfAtMee6/wd//VrdTEoGsXMSQ09TWi8mC5ucARlp2QHJ18fkcLEPGXWUaFJmOr3gpTaJRUbiyD56hJr03Jfr+6RnBVFb5bzgYe4M6nrNDCCoHUoENk0NkUngrWQlP2NluEcJ6nSHOlvoaupYfShAJ3CPh275AZ7x8eZa8nwQvZI9ydJmJDYxsKLjF4k5+SSQa5owNB1hHbYYOcbTZArkb1tW6CmHMVcPg07S5vE3J7l+dU1/oCx5L4mMhEVdNrNADlfPrO7zlQvuewlFVf2//okyyYjMy4J2rNwKV2geydpv9hDwUsX48AtExAvpc0Xkn7fL0OXSWSvITGDKtjAnezgKetkEdUFhONSYTOseoJDtTO1N60pIb/rHZqgI8p2jmmezP0yblM5GDupDgr1jcAInf8doC/Eh4XqZT8u6tm2iycK0LHPq8MtGW/6rdfz1mgdqyOkGG3pOi+zSNUchZ2v+s8z5WSdAWY7pY8OEqv6c/hyqWt0iECy7Em30tPt
- dROoIcuI
- E6I24I5SkpgbOcd5Sj874uLfl28aPs7INjoXpAFV9AHIBLkrPb/B8NgT5/Sdb/IzB1kcI89YGaYOJMzjgSxnZ5u60cRpWkNi1wiD744f0PtvYNJ/BmSeKpLBM958WPH8qE5U5lxgw7QzomDN/bevRvgLSckrMaF6OG0fEDTU8FCOcq7hNoGjr2NL5Pisq2ztYhBtBy1tNNVykRZQRcCYibBUoLpszPb8ZNUk8Zn/yafvix79krAQFbc+uy8NK5XTZZPWLppocJMyWQr06STjy2vYoUU8yn8lmFx5oUh6uGVXxK2jwGMYyVSa4GpIXHhiN8ENL7la3XiAfzFdwnltT5GrBBRcAfnhovntCDcmVvJaa4Ixhwb+ZG3HmBAQogrKWE62GSvzpIbcXu6M=
+X-HE-Tag: 1768404383-832834
+X-HE-Meta: U2FsdGVkX1/l8DqWAuSM1dAegZyJYBBA6JVoJnd9QDPQEvaUhazZuXGyKGyoiXfyUMesrm/QTp4s261a+H1JA3T+7YXfaba0SHj7mOW7LPy3+Bdt8VcrA6tYZCCsJT1AewE50/cg473gGYuANi5z1PQGnzI+ksQ6ckr5IQ8EbEHLlkKVYWJwmLg8qzBWMhFcgjaD2jxTUlb6GMi89fcHG/reBVUbDPbxL01TznsWWRwaBjLCkK75wKwwX0LyhEGT6vzUM4iByaAfMTsTJC1/OZeTbP6+XpDrZ7INR2nLCUVtOx0n4VymV6hISBi0PEolvtEYeWQdL5blTEEeJX8PqIdNUb3cfJOPRI7RSaH14bAtfRYD6uJ0wz2HWShuyGPCBqoBHZNu6gZUUkOoqz3jjOCm/oE7D8uieI2Nrd28yH4SyA+e4ktFZz/FfY2i9/J6e/jPQ/jo4hXtUncGlPnfgX7B/DxM82k99oLMbIOarCLVS7yDHgaYlJ4mrs42hFCj1EVVrxaERUqLhgs9ZTM2mb7dDeJUjFfFuZ0tpQD2FJS3JUUhP/qw2RgwOK342EN8O8D1Eur1cYDW00WgyTdkgygrOQwTz415jtx6CxsxoNsC4ntjoA8iFGJnYfDAkWivf3D+oM0x55P44fk35FYTzdZKj82AyJwcolkBeSWqcYReAsX4qT8SzCNPjMedTdpHQ6NHWV+/LDzQbSv4MpvGBE9oaK/nhxO4NVEtjejfiFHLLZwazwqpV2fJLNplXu61zJ93TVN4Z+tdjINzgRyYEvcNEHB+JjanSHVwQjdmUj340gdrB3USSUzyRpsGmA6CcynRXXIT06TR0a0O6NZOHyDOa4N23Cz0zlGhLNnuPqBX2uXp6TnCpoV1+MKQ2kRZOEWlmFnW255LEtUuj0SogAx9jiOHlyeTCL+OdZlGTzrH5ka4vFi3esd/4TQzl6ZLez26ywBXJQY62iA15Sr
+ e0Fuu3l4
+ 0Z6NVNDX91LVyI7y4MiNQ8aKQ6qAjP/dnBzA6E0B95CQeJcUnT4hxjozC9RgVHA4zulP6BNAaWbCGmPxx0BjygD+1LhT65pUJfis7wmw5kfv4O+7qVKoREXqm1C+FKxUECJFZY/ZKvfPyJfDhN9iQJMBz+YaYOBJlMdqLjXYGI4aqo7WJrxnAMCIuUzeWxUcmWZahj2uRdwk5d2+Rk8twsAPRj9PKq9ALSdcn8remz4swcqksf5LCG2Gze3Gex4cbdHvNgBiva0OA1mrjw2W+cX9EBp1KOWTirW7LxEm7Q5TiHwX+CGphzFT16pSNf/Usg1vnHgIYxNw8OD39iAJUAQBRSUnf7/ki27IxjZlSGNL++OpNqMOX3KcvRzMsIazn4LSSbWBvlxLT06wI/byhLGxlpkf+/Yk/DcZP47TkI7iDbaGG9yT/GZRb3ptRryf3xkusnJWpH4Ekgns=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,93 +138,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Chris,
-
-On Tue, Jan 13, 2026 at 06:02:27AM -0800, Chris Mason wrote:
-> On Thu, 27 Nov 2025 06:51:54 -0800 Breno Leitao <leitao@debian.org> wrote:
-> > @@ -820,6 +821,25 @@ static struct notifier_block kfence_check_canary_notifier = {
-> >  static struct delayed_work kfence_timer;
-> >
-> >  #ifdef CONFIG_KFENCE_STATIC_KEYS
-> > +static int kfence_reboot_callback(struct notifier_block *nb,
-> > +				  unsigned long action, void *data)
-> > +{
-> > +	/*
-> > +	 * Disable kfence to avoid static keys IPI synchronization during
-> > +	 * late shutdown/kexec
-> > +	 */
-> > +	WRITE_ONCE(kfence_enabled, false);
-> > +	/* Cancel any pending timer work */
-> > +	cancel_delayed_work_sync(&kfence_timer);
->                    ^^^^^^^^^^^^^^^
+On Wed, Jan 14, 2026 at 08:41:16AM -0500, Jeff Layton wrote:
+> On Wed, 2026-01-14 at 05:06 -0800, Christoph Hellwig wrote:
+> > On Wed, Jan 14, 2026 at 10:34:04AM +0100, Amir Goldstein wrote:
+> > > On Wed, Jan 14, 2026 at 7:28 AM Christoph Hellwig <hch@infradead.org> wrote:
+> > > > 
+> > > > On Tue, Jan 13, 2026 at 12:06:42PM -0500, Jeff Layton wrote:
+> > > > > Fair point, but it's not that hard to conceive of a situation where
+> > > > > someone inadvertantly exports cgroupfs or some similar filesystem:
+> > > > 
+> > > > Sure.  But how is this worse than accidentally exporting private data
+> > > > or any other misconfiguration?
+> > > > 
+> > > 
+> > > My POV is that it is less about security (as your question implies), and
+> > > more about correctness.
+> > 
+> > I was just replying to Jeff.
+> > 
+> > > The special thing about NFS export, as opposed to, say, ksmbd, is
+> > > open by file handle, IOW, the export_operations.
+> > > 
+> > > I perceive this as a very strange and undesired situation when NFS
+> > > file handles do not behave as persistent file handles.
+> > 
+> > That is not just very strange, but actually broken (discounting the
+> > obscure volatile file handles features not implemented in Linux NFS
+> > and NFSD).  And the export ops always worked under the assumption
+> > that these file handles are indeed persistent.  If they're not we
+> > do have a problem.
+> > 
+> > > 
+> > > cgroupfs, pidfs, nsfs, all gained open_by_handle_at() capability for
+> > > a known reason, which was NOT NFS export.
+> > > 
+> > > If the author of open_by_handle_at() support (i.e. brauner) does not
+> > > wish to imply that those fs should be exported to NFS, why object?
+> > 
+> > Because "want to export" is a stupid category.
+> > 
+> > OTOH "NFS exporting doesn't actually properly work because someone
+> > overloaded export_ops with different semantics" is a valid category.
+> > 
 > 
-> Can cancel_delayed_work_sync() deadlock here?
-> 
-> If toggle_allocation_gate() is currently executing and blocked inside
-> wait_event_idle() (waiting for kfence_allocation_gate > 0), then
-> cancel_delayed_work_sync() will block forever waiting for the work to
-> complete.
-> 
-> The wait_event_idle() condition depends only on allocations occurring
-> to increment kfence_allocation_gate - setting kfence_enabled to false
-> does not wake up this wait. During shutdown when allocations may have
-> stopped, the work item could remain blocked indefinitely, causing the
-> reboot notifier to hang.
-> 
-> The call chain is:
->   kfence_reboot_callback()
->     -> cancel_delayed_work_sync(&kfence_timer)
->        -> __flush_work()
->           -> wait_for_completion(&barr.done)
->              // waits forever because...
-> 
->   toggle_allocation_gate() [currently running]
->     -> wait_event_idle(allocation_wait, kfence_allocation_gate > 0)
->        // never wakes up if no allocations happen
+> cgroupfs definitely doesn't behave as expected when exported via NFS.
+> The files aren't readable, at least. I'd also be surprised if the
+> filehandles were stable across a reboot, which is sort of necessary for
 
-This is spot on, I think this is a real case if the following happen:
-
-
-1) toggle_allocation_gate() passed beyond kfence_enabled and is waiting
-   for kfence_allocation_gate to be > 0.
-   a) kfence_allocation_gate is increased on allocation time
-
-2) There is no more kernel allocation, thus, kfence_allocation_gate is
-   not incremented
-
-3) cancel_delayed_work_sync() is for kfence_allocation_gate > 0, but
-   given there is no more allocation, this will never happen.
-
-> Would it be safer to use cancel_delayed_work() (non-sync) here.
-
-In this case toggle_allocation_gate() task will continue to be idle,
-waiting for to be kfence_allocation_gate > 0 forever, but it will not
-block the notifiers, unless we wake them up.
-
-Is this a problem?
-
-Maybe a more robust solution would include:
-
-1) s/cancel_delayed_work_sync()/cancel_delayed_work().
-  - This would unblock the notifier
-
-or/and some of the followings
-
-2) Return from wait_event_idle() if kfence_enabled got disabled.
-  - Remove the waiters once kfence got disabled
-  - Cons: kfence_allocation_gate will continue to be negative
-
-3) Wake up everyone in the allocation_wait() list
-  - This might not be necessary if we got 2, since they will wake
-    themselves once kfence_enabled got to 0
-  - Cons: kfence_allocation_gate will continue to be negative
-
-4) bump kfence_allocation_gate > 1 on the notifier
-  - Avoid kfence allocation completely after it got disabled.
-  - Cons: it is unclear if we I cant set kfence_allocation_gate = 1 from
-    the notifier.
-
-
-Thanks for the report, 
---breno
+They aren't and it's not desirable.
 
