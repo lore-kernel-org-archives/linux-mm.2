@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BDF3D31A09
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 05:20:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4AF8D31A0F
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 05:25:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BBF66B0089; Wed, 14 Jan 2026 00:20:29 -0500 (EST)
+	id 384A76B0089; Wed, 14 Jan 2026 00:25:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 438B56B008C; Wed, 14 Jan 2026 00:20:29 -0500 (EST)
+	id 35EBA6B008C; Wed, 14 Jan 2026 00:25:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 337D26B0092; Wed, 14 Jan 2026 00:20:29 -0500 (EST)
+	id 28B946B0092; Wed, 14 Jan 2026 00:25:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 23BEB6B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 00:20:29 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACA4814038E
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:20:28 +0000 (UTC)
-X-FDA: 84329418936.28.FF508FA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 161D86B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 00:25:49 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A1EBA14038D
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:25:48 +0000 (UTC)
+X-FDA: 84329432376.17.92BEA1F
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A21AC80004
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:20:26 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
+	by imf20.hostedemail.com (Postfix) with ESMTP id CC6CA1C0007
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:25:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768368027; a=rsa-sha256;
-	cv=none;
-	b=sp2pX11pboYd7i1cSGSYIaCPXgRB/5lQcw2F0R+QxSMYeNAljOKfHLOb8S1eOUo3yAMknQ
-	CfYacfIEqxp27hRkN2RYsqUUQqsg4M++2ujUJbNKRdK5+mKMf9p+YAbAf3VKadxcxuydxS
-	5Ara58Qvzb8Bi5yK6xyPKd6eoZ6OoTQ=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768368027;
+	s=arc-20220608; t=1768368346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tSNeGpwd34DmBai/YwZpBEPj3/7kUWhLybAbF+P5BR0=;
-	b=pcy8KlK/37gcCpZY5ITZw4QFCyQiO4UkWoAAPc/ex+hP3SrnPbHVOCmK02utL9LBrrsuxX
-	xLWVSXJS4MFRLSTr8K/gbfXPt0esmDlh/L2kCj9Y4oPQHSu7q3YQC4U3iokai7O+IN0zRS
-	QayQZciofUKt+nUsNlIv2M+N5I86iq0=
+	bh=OGlyYUgVaB1W0/kFNT3vjDdvP8F6UKqrq6cvtNfqGuA=;
+	b=qhnhORBuXAlNOF/5EIMNGPc2FuWyyCaaR9ps2S5x1Rey4XlMWfJME9skjEJwJGwBzK03uf
+	6nItvfuEoeapfqtNLv6nl7xjlUYPV1OJnST2wd2Mh+oK0JOCtpM30VjKmsGViSIzFzJaBz
+	uwicBMhZsqln7QZWZ9fMiG+RH72kV9k=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768368346; a=rsa-sha256;
+	cv=none;
+	b=kf7rP4SuTrS9EScy7haKM5wJ76QbQ5SXmbB/tcoVRzZRxRRk/GNmHxqKOqD++Spoo1X6n4
+	ixWiWkuSFeIPx3Uu93kWfBonAeylirXLw22DSSIriRgXLGs1oVEBzr14xoR4pEDfUMsg+R
+	6oYqrPpcSvuG2T6hatIvcCtU7Vc6hXc=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BEB4C497;
-	Tue, 13 Jan 2026 21:20:18 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 345FA497;
+	Tue, 13 Jan 2026 21:25:39 -0800 (PST)
 Received: from [10.163.161.65] (unknown [10.163.161.65])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8EEF03F694;
-	Tue, 13 Jan 2026 21:20:23 -0800 (PST)
-Message-ID: <10ebbce4-1b83-4eb2-99f3-738a0e613958@arm.com>
-Date: Wed, 14 Jan 2026 10:50:19 +0530
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 323C33F694;
+	Tue, 13 Jan 2026 21:25:43 -0800 (PST)
+Message-ID: <0e57c78a-d3e5-44bf-9930-8842e4f791b5@arm.com>
+Date: Wed, 14 Jan 2026 10:55:36 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/khugepaged: make khugepaged_collapse_control static
-To: Ben Dooks <ben.dooks@codethink.co.uk>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- david@kernel.org, lorenzo.stoakes@oracle.com
-References: <20260112161818.604651-1-ben.dooks@codethink.co.uk>
+Subject: Re: [PATCH] mm: numa,memblock: include <asm/numa.h> for
+ 'numa_nodes_parsed'
+To: Ben Dooks <ben.dooks@codethink.co.uk>, akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.or, linux-mm@kvack.org
+Cc: rppt@kernel.org
+References: <20260108101539.229192-1-ben.dooks@codethink.co.uk>
 Content-Language: en-US
 From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20260112161818.604651-1-ben.dooks@codethink.co.uk>
+In-Reply-To: <20260108101539.229192-1-ben.dooks@codethink.co.uk>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 1frh1sukx8urqxmh8e9maxpfzicey1no
+X-Rspamd-Queue-Id: CC6CA1C0007
 X-Rspam-User: 
-X-Stat-Signature: 8kjp1oyh61r8oeeyo5gezsad7iwcgb3t
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A21AC80004
-X-HE-Tag: 1768368026-677611
-X-HE-Meta: U2FsdGVkX1/+FMCpKyUn3CMj6HIVIKOuEodQl/UtJ1XAPA+2UHLWnByUln2a2Hww2XgEStBBcm7r7ImQHeaYYzXJtcD6i4t6sd1h6qG2nhRBinTaQV5ZE95wEMcdDcZVdh82A832Z9b0oc+T3jePnLDWQs4eBJda5EaWrNbGxAKMGYTD7pnsC+NZ1+Ayw3TnVVhjFP1Gce7yM7QRzmel0KBa1SO4SwL9BMxvSOv1T6cfEFd2Ho4V/1gLVWi1ouB8+7+RKl4BvLi//GYfi8n/VJK5EiYO7xHAUohu6ku72PSejMhJXR3TQYL0OOSPJbSk7sqwd05QVNf5qysO1sF80opqO/Hice4JaTLj0JYPiI30m5DUGN8LAd2OIyQ18LhVM2TCKJgHhvBLsemb35spkyRHuPm4nLqIxJoPhjOtT4shQprcEEnw7+293VhVkh47rPe6Fky8olX1ayfZ9iwaMaWMeVz5iQe40HW3RdIAsOTSaNfwcL19noHmc5Qx82nAJGgJJDYqyqSSxNko/InOOn2FvS7kuodBKgRgQJNpW4uby4eNOc/Lz0WEpesKcOqr9UJ/svUu2jH10Jvu7AslTUAaB4nuNSERfeIqq2YEkoUAtpoQfR4Hv/paX+BoOli87sHdVdNOObHW3mqakBJloV1QSpTZ6SVFzXmXmROEtGC2UOyb874SbFCu5AlR7/ic0KrZ8tHmBZwf0EPe7n/iMCBbxy5L0h5j+yBuYfdNnhpJN9nnt3OoHf5qm1fVi5luAPWe/2VfzO0o1j4rKjbxV2wOl4UlgqPzzQOIZG9e8Kznsc6kM4oS7LXyUrn9N1THkz20AKK/Q0HttjXcTpabnS0Ry/YGsgjGnV7mXvDNv59sipMeEI0QHu/G4+aZZ9EtVqkNawqejJHbEcgthf1tkZ0FXL5TKUDHntXcceadVLGy8/eDrsNe3NuuCaJJN/ha/49BQR2W9IC9zno634u
- GXhDTCgI
- jLFWLxYncU3Q5hayTUkOAuhB/iMxOYmQrnUOqOdMSw7NB8A49bA6jqaogUBBRIL2sI7gEo7OjI1HaUUUnoa7IU4Khfi2ZCMBcOHpmK5F3qjz7j1UH3gtG6qwBZEgz5GrwduxQi4QIrz3LDVsiWLOSWRt9vVsLyIZpwFfEbEYvrwK/8xPD3FmBf4FxlUWz0P6DxuMA2V29ZZ5wWhDvZimk0OoeITVOHSIIduogdQ2YrzPIIhD8gl5R73dCWbdsBAUXWg9dUe0XleAp5rSTIf1GvD3Y9qfLu/0mrBcLlTpgHNtfYJeOtKLfEB7T3CEIMy0KKgjwKdp7mXuaF/Jgx6CBgRE3Ow==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768368346-166211
+X-HE-Meta: U2FsdGVkX194KfV81B6n+FJ9QyHNUdwME6arm34f5HkwR9X9GgUFQHAxMvOP+U/NyVI77hT7Zwfr8JOxXyauvOwNp49N2B5JVIJGOVB31vVwCpto41aNSCqYt6UMxi5fgcqGyqgH8CCh6fVfj64AuL7QfHWGFnR+FCMaGkBCAteIoF63zQtIZR/4gkLVcPZ1IAXI2fQsUHEmXR3H0jCQHGNw7k1RJtWcpXAXoOMBhVBBB7TbkWL+3Jlv4krnf7nVJ03XiXJdlyubgkqTQNQd+Z6jpjzfECKyl8AoeZh+E/t1nIPA3sHHt7OcvSlfx14T6HpY3Rrm/ZyWOEHE87JlicbDYZIX0AcOzTiTTyiKB3+xre5rsdFh44DFKMMcMCBw9ELJBzxQxTsA+XTQhsWojdOP2ckoMNpIM7p6MMchVVjI+fRbW186LlhOmgPZJuIgD4D2PIhD0i/AvahXRu74lEkX4E9GEl+rFs6VG7k6yI6iXA0NEXYLbWVUf902dF+7+/+cj2LxYUUUzFG4V/8g9n/SxeGd72vpzRpG0HYa6bILJgoqXS6zXir4k1fT2trRlmtgQAl6p55k78/9fOxViN7ysivjr8BQohaIZCD0/VDDLo+eYwPbZ1/3MfJ/74c18tEVLmvXORYms7wE9J3pFhj39QN4YNvFh40PuxXZoFXLWOF1OuNS2TZlQ5jF9ZJ48gi5rgEa9DItqxVoJ50OtgGEl9r97o33+p5wcej9G3FibK6yxKHKb7NiNFAXzSEsMgDBtxXGCMgOsWkNlKChiCCNHHTFI3X0CcuXdRshcfPPAeT5vorca/NMRIKGQQOII0vRsjy1DcnteTxzsJXkK9WNkTOSH86ce+a2vki42knO0UgzGlCc/K0buOY5650q9Vpgq+PhmWg8xiF/U+kmWH6vDG0DvZvspC1o5Ea6DgSw8NEg08wRv+TbjrNH0LItalSCzZrjv++eDHgmyMr
+ VZOaebIW
+ eiB/t8oRmNrvp/xW9ccD65fXAFvMFOnalyTwz+rrG1jCdyum67z+4VQr0U6l1OfkKtpY0HuMRwvbHRzsFWHw7mdCZS/oL9i+nk9SSuJoTNHVpENOjNrijq4+L5UIxdysbs5Wwt71Po75KVrsJtBsjXD1o4Ofp3j5/AOnpUv/02IAeM/sQ5esQtK65ffN5fZWnlWReiz9SHb5+N/lgGXKFpaZ1+yOg3CezUQh4pnJdIYKF1mV0pwIOc+Fy2c5YqdlMPGzdlSWEk+Bnl0vkp4TcuXnqKRtUyKbpH+NcaCcps5gASGXmXZajKwfLPQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -85,30 +86,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/01/26 9:48 PM, Ben Dooks wrote:
-> Make khugepaged_collapse_control as it is not exported.
-> Fixes the following sparse warning:
+
+
+On 08/01/26 3:45 PM, Ben Dooks wrote:
+> The 'numa_nodes_parsed' is defined in <asm/numa.h> but this file
+> is not included in mm/numa_memblks.c (build x86_64) so add this
+> to the incldues to fix the following sparse warning:
 > 
-> mm/khugepaged.c:829:25: warning: symbol 'khugepaged_collapse_control' was not declared. Should it be static?
+> mm/numa_memblks.c:13:12: warning: symbol 'numa_nodes_parsed' was not declared. Should it be static?
 > 
-> Fixes: 34d6b470ab9cf ("mm/khugepaged: add struct collapse_control")
 > Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
 > ---
->  mm/khugepaged.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  mm/numa_memblks.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 97d1b2824386..c9bd0df632bd 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -826,7 +826,7 @@ static void khugepaged_alloc_sleep(void)
->  	remove_wait_queue(&khugepaged_wait, &wait);
->  }
+> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+> index 5b009a9cd8b4..8f5735fda0a2 100644
+> --- a/mm/numa_memblks.c
+> +++ b/mm/numa_memblks.c
+> @@ -7,6 +7,8 @@
+>  #include <linux/numa.h>
+>  #include <linux/numa_memblks.h>
 >  
-> -struct collapse_control khugepaged_collapse_control = {
-> +static struct collapse_control khugepaged_collapse_control = {
->  	.is_khugepaged = true,
->  };
+> +#include <asm/numa.h>
+> +
+>  int numa_distance_cnt;
+>  static u8 *numa_distance;
 >  
 
 Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
