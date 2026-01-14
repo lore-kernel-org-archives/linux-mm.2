@@ -4,136 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2948D39000
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:59:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 919F1D39000
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 18:01:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 253B56B008A; Wed, 14 Jan 2026 12:59:26 -0500 (EST)
+	id 05C456B0088; Wed, 14 Jan 2026 13:01:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23C0F6B008C; Wed, 14 Jan 2026 12:59:26 -0500 (EST)
+	id 033CC6B0089; Wed, 14 Jan 2026 13:01:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13E506B0092; Wed, 14 Jan 2026 12:59:26 -0500 (EST)
+	id E9F856B008A; Wed, 14 Jan 2026 13:01:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 015476B008A
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:59:25 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C2FBA1605AA
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:59:25 +0000 (UTC)
-X-FDA: 84331331490.03.D6B2B43
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D2AFBC000F
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:59:23 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D71BC6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:01:17 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 92BB516059E
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:01:17 +0000 (UTC)
+X-FDA: 84331336194.17.A0C31AF
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6AF57C0018
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:01:15 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=CZcNdhXS;
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=mN+uJ7wi;
+	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768413563;
+	s=arc-20220608; t=1768413675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l16mAKGChN2PX3pOsEUpJwNSJXDy5Uc5IHVR3AfNsDg=;
-	b=vVVp2qn2azxEG1k5Eyz9AE1UHV105gIEbE3wcLWwJwDOkTyH61q/MuvcOA5F9pSvq2z53F
-	YBQ2qFNiAvuRgx4IFrPrNvosYKCFKocGyWS6+4vVibMhTFNwAXrTes5+kJc/hw7beL2Lcb
-	0jb+N1xnfWOrW936hcwf0cTA+nyU6mI=
+	bh=KDTsqchLttwh0cFXuiS3EpXCzVEnKRStuaHR3bDL9sU=;
+	b=r2eRSsOPiXjYfiDaqSP+KQVNfObB9dYBhe4flda2kRKaJF/T6/BAnk0TDpktoKkO0LcRNp
+	FAcVRt9zGv9P4N030z0o9MADwU5OPhfxKCAI/J4K0mpEaSEUflhl8Zm76msx1V5WZxNSrp
+	51lr1Wq/RmhmabMhMBYj/zm3YB/q8Nw=
 ARC-Authentication-Results: i=2;
 	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=CZcNdhXS;
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=mN+uJ7wi;
+	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768413563; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768413675; a=rsa-sha256;
 	cv=pass;
-	b=NoBdqWUXeuZkVnTDFZZTIffoZ3YCW/JhFiYmio9xWg/t/UCw9CgRKOVndtWsCHMmOTlOpK
-	X/SOsRUFBGTKSO0akSDkSkxK/Zx+f97KRrOzcckynmFsDGyvUnqPHJaMITNz5oqvVRh1Z2
-	+kHh3tqbbhsseSDRxAuKwBP3njqf8T4=
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5014b5d8551so14481cf.0
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:59:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768413563; cv=none;
+	b=5D9Ga3AIV7VGrtmQJvGrdzp+69ZYovIpgZWBpQLZXYSwLy9lcPCxDsCRdjJ/+jWg/S433H
+	RSIf8ztH2TVbPI0AGP2XNoKWaLbUXfdUv7TRvivQRUljR6CRFRFLij+qBeaquGRU/4Wdsl
+	pfADS+QP37JVZSiWNNKsEX2bhYIUUpc=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5014acad6f2so6261cf.1
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:01:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768413674; cv=none;
         d=google.com; s=arc-20240605;
-        b=h87zCMU0Awoqx4Wx1KDgcou/JH5OIU2v2z+8ueI/lxZEV4zN8G4LW+n3TLEZVIbcdC
-         TM397RonSSkzeryU/8EbWq4FBycxTAwnT0hzZzVQAf0EzGTf7ZAMDDR5GaP6JyNu8NYf
-         q/LojV/F1awlUS3aPehNCPpIQVOtZrzcabvn/0HpNmPQex+RIw+H744zRQ6N7TCesUKh
-         sEkxmd7dGFuU2kj7VtQ//2e71vVxq92gfGVzjMdwb6+ccteN8WgHQi+S1CQKjMjM5On0
-         UhM54W1q4b/j99GwZa55bB9JYv5ldmLgJZFwtJjaeM3BoUS9D3as/3gbO6vklasNJ789
-         uUwg==
+        b=H+5ipuY2KzcY9mfBfYzWV8I2jVCHWW8mjPDKETzEsyExeQfyG/l7RB26oeBoY5uJB3
+         E8fPptt6tx+ejoQFEd402doAUePAVM7P+VBRxv872MNopePrraI3wW+YBUd66uvgoXQl
+         Q/ssdYvo24VAqKBIYzUWPbCUa9QPW3U23S6L17LLCNHPaE6OuxfTehpwo7SLBaQEhPcs
+         8VFXzFx049kxpkKPNsNt3Pr089mzLGooQ8nD75bURRWf54IC7kHCt+mVP5+oh5qq6CAd
+         uAtTqDbRNi5KoHPqVLwkB70nqCjpCcq/Y375NFiQ2uT77LscGYik0FKBmGAsoLlgU0dN
+         Rv2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=l16mAKGChN2PX3pOsEUpJwNSJXDy5Uc5IHVR3AfNsDg=;
-        fh=jGx9Vs9P9+R2YT7BHCKprcWGhwTxTS4RqxPXFwubkjI=;
-        b=b3sOX9EW4qktvMUivFdlVRApHHcW1M4IyGcM+VHl0Unit7/nLsIza87VRg3bcmlGvH
-         26a+vQnyuqPAXB8fAtNpkL3okc+ZMJtf61L06I5AojwrUKXO22DcExYeSEBca1z1mIUe
-         ME+4QMBJjhVwosMmxmcj6oCdtjpc6Umitkh5sJIdNfVrv59+gxHyhsO74gLDVPDDmGfn
-         G7FDlI/ALjZES3GsoNwzUj7wn+hgKTvTHNwgpBC1rW3SH89qwEppRo3I79RO6fpFTxHK
-         yW0c0FZgfA5mprVtMifj8ekuF66MuMbUoLAG9vQBkKB0pI3wnxJjWMQ8qO8D5u+63MLs
-         WocA==;
+        bh=KDTsqchLttwh0cFXuiS3EpXCzVEnKRStuaHR3bDL9sU=;
+        fh=6eQVREuS/ju3xW0nTne3uMCGWCedKLESYcaBCOa9EgE=;
+        b=dlwY3MiDJyKh6jbMmWBP1H87s0n2ULUOwRF0ga/7VtbsrWJ3rHWfMt57ZfCNS+VDIq
+         roxFHNDEoTUNpXhzUKLAYDDgofWxNGinCJkJ87o9TGdVx/5GAZZJb766yqAErW+55FSX
+         RUdSYhVReRm/zu8B6csrF2q4CTIQSdJEmVkqA6l2ThMx/hQ45XDCQUCC2WOetFbPy4W+
+         QnRP8y6v0I3Cl5U/e+ynvsFTKYTM0TDRluKA7sjxd7I+em/UL4KF3MX0ct8A6D1sjJdq
+         /JGlfKFmgCYbG38HdeBO9B3xWZhr4apS2lsyq8MSK2wROREd015LR6Wq++v9CzUkmADv
+         bYZg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768413563; x=1769018363; darn=kvack.org;
+        d=google.com; s=20230601; t=1768413674; x=1769018474; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=l16mAKGChN2PX3pOsEUpJwNSJXDy5Uc5IHVR3AfNsDg=;
-        b=CZcNdhXSNjXL84npkS4S7VXuZ+dgUkkW4x60FVDDK8mt+lHVkqM4GQT57EtDj/0Xnu
-         FIVaQ+CnztutV60SxI8aR1yr6RUwdkIVCBHvNJkf2o1lSoGyx7SCDsoy5AAJGkg5FBvh
-         FTtoeGmQrHXyLBxAg7fBbM00Ixu+K0/GURoJX4jsI4M6Wqw1fp/q+LZN7Ao9WxZXKcBu
-         GYu69CuaKNVn1pcpz1BHadEepY6sVy2rgMbpSeEwjmSOL7zMhk29mT9Mf0Ciw/8wodhW
-         MgI+YQduudaqtIiRJypVuE137bCBLvxLti8mBfsdxOOYtrzHQzPA02tTl83f6X+08icL
-         KtqA==
+        bh=KDTsqchLttwh0cFXuiS3EpXCzVEnKRStuaHR3bDL9sU=;
+        b=mN+uJ7wi2aNDh8fWGY3bCBGPFdQgdZy+aA0KCHKSZvJL1FQxgUrd3lCbJs3LJ39Pyp
+         HR6+L3fZ221Iwj4/JABIeqJRFuUi13ZV3ohqG8TWD52XVe3+r2G9I+4BrHm63CRbqMJu
+         3lkV0UgL5GNQ8PY0j0eJPID/ZlXJC3z1opCTdQyFyXmGuzP7nk/ckbHksuW6iZeKVQij
+         PVioGAT96JHNm/98J5qCFbFIkmbaJy4gbQosWdD+u92Vi4ViLjXkr3sYqoyYNABi497U
+         iJ5tEAxszvx84lx89c7IomqeYsj0+NDddSGQ7O56g90DKkkSGPwcSLS4ZywnS+oI7qZK
+         ZtkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768413563; x=1769018363;
+        d=1e100.net; s=20230601; t=1768413674; x=1769018474;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=l16mAKGChN2PX3pOsEUpJwNSJXDy5Uc5IHVR3AfNsDg=;
-        b=PT8PTtyapwG6ZRP+g243Aqve5aC23+kwmd8qyvDFZBBJJoyXmvkJ9Y4+iGGbuewTri
-         Cy/GqF+Nr58cX4SE6z7lxfsxUY25ni1daBxLyKAk+BBh6I/Jfe7mqeLFR6lN+F32uB54
-         TNUfu/1DjIb/DTXM3hWE+oRDB7ye431wtfuX5gIz/WeSMrpHR1YCAzy3NRkOEWsEjHSl
-         I/ItFsyIRLx/nPg9UabB7YaldX0rraTv3+QhPWylszcTz/g7RMOgGqvtPRnN+SjbJeas
-         X4fdf+i7DHbPIWbn45OiLD7mxZ92oWPr8xqEJsfpMwxRFq01D2ATV/19ESjwr14+nAV0
-         zrtw==
-X-Forwarded-Encrypted: i=1; AJvYcCVxQDfGH/IV8txpiyLu3W68CQOS7ElR8gyTvencoIESbeyys3r/przAa0FZKvsr29TW3RqCY9UWLw==@kvack.org
-X-Gm-Message-State: AOJu0YzoQS7Tw3yhXyN3xNwpOtR1pVLRj84Jl0gwFs4RKvxSyDSZrku9
-	M9RgZnFZuOILU1cV0h9PWBJS4rhoaG3l0tNBZYdUcZZnisRIfwpniRPSximqKP7UIZOSebeibwo
-	K1Pzrn6QgBGtl6Cob0rx51WkbHwXcREniJ+Y+YMZ/
-X-Gm-Gg: AY/fxX70bqkEb+b5jxdcztd7oHs/+p57twxD0NiBfZrnlX0Ut8/L9xna54UpT8IOZxh
-	lb+UNQ/ofwMAgHomaQnS9S+Vs7ntmxEyvk6TA9/sVGFW/uIDp/sIqyFQpowxIobiwRFNNeQYIEC
-	Gc6fFmi5URODcgSi2AKiu7FOG3sV0zaQz5SsnOSHkuorGtqURF1xet3epYel2twGnTBOVvHDLM8
-	a6JrL4LyrGhkw2wltHvt+BzpjB5rv83a7nvzqGYwzrsZtm4Tqzd0DUt7aYSgC/VLIycZruQOup6
-	18p6EGgIHGg3yTi5xeIMU77B4Q==
-X-Received: by 2002:a05:622a:1187:b0:4ff:cb25:998b with SMTP id
- d75a77b69052e-5014821f599mr13933411cf.12.1768413562436; Wed, 14 Jan 2026
- 09:59:22 -0800 (PST)
+        bh=KDTsqchLttwh0cFXuiS3EpXCzVEnKRStuaHR3bDL9sU=;
+        b=UmyfkZhxPRIMJeq04s2jJKXuRQa0Sa56bCoG5OdeXh/1Hb1ULZ8nYLL6GerSFIAkLV
+         8Rs93a5Fdzd4YvPwiu0KV70K2KubigncFysJEtjd2/vQle0LeaXpaV0bBH3U7mmB3zpt
+         rwt/EtTijBtR1/XVVt6M0sQPnJBlkBpwtkSP7vo3mZkDzluuJOo+xyb66Aoeec+5Tuar
+         O+Z9cxD13RwdjcynlG0771ggK9KWd0hETWFzk9K1sXELoFaqMDDta9LhLKwcC3XP2lyk
+         og06Gp0tIJFqm4iqXpBRwxV6mwDwFVcBTkWRdo4lkBVr/4KCoggnqNEqsqSZSogB2qPN
+         kmzw==
+X-Forwarded-Encrypted: i=1; AJvYcCV4eEoUd1LJx23YhwqbsfZFKDS0uUx0qWpLLV/MozfW1lvPzX/AZFr7XNB6zF7JzjsroOf2Kmhemw==@kvack.org
+X-Gm-Message-State: AOJu0YyGvfyei/Ctnwp/RPUUII/kiT+Sd/mvbQBvOFd0sPp16+LxfLIS
+	v9gi4Sbe1xvqG2/Pr6MFisxt6raY57xJvuGxa9p5p3xm77kuFHi+iT4WblcEc7uC0lOJWHfmnB0
+	rzWqa3jGFhKHZJIHGQeyx4Q/F5D3vLLN+NMyYgb9I
+X-Gm-Gg: AY/fxX7Bm8NvMsjNsxFBhKmi4aCUu4ewknV/Jro57nbKHnw2bPse1UW5Xkfnr2CJTeK
+	txTaAwup/XwTpzRNT8SFif7QQf9t39B0MFffmV3ruYR9sihFYrclvFeivXSF1NTxx9gr2eS8erw
+	fjQ49bPfG6ImFHjpkg2DKLNv/sUC72glWFjXto6+GsZejkfa5mr5bIRhFwjb6S9gH4FBFdYf9n7
+	SWnJrnn/EJujrahJnbR9RQJ2gDfD6uuNv0bU2DigCTxlllz5oYWyMY4KzBIsNZzcG487WpNvIGx
+	uuVsWocry+OniGMGXVzXLfEAGw==
+X-Received: by 2002:a05:622a:190b:b0:4ed:8103:8c37 with SMTP id
+ d75a77b69052e-50148257b6fmr15030931cf.12.1768413673859; Wed, 14 Jan 2026
+ 10:01:13 -0800 (PST)
 MIME-Version: 1.0
-References: <20260113033403.161869-1-ranxiaokai627@163.com> <2vxztswoi16k.fsf@kernel.org>
-In-Reply-To: <2vxztswoi16k.fsf@kernel.org>
+References: <cover.1767711638.git.lorenzo.stoakes@oracle.com>
+ <9b5a438237e4ea3b19a986a4f8fddb8848cba54a.1767711638.git.lorenzo.stoakes@oracle.com>
+ <CAJuCfpGcdZE_Qnm4c7MgyZfZr7fepXuJkc=6ucwUNwUo_JjU0Q@mail.gmail.com> <2808d8d8-e772-4210-ada4-2b39d30c7029@lucifer.local>
+In-Reply-To: <2808d8d8-e772-4210-ada4-2b39d30c7029@lucifer.local>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 14 Jan 2026 09:59:10 -0800
-X-Gm-Features: AZwV_Qghg4-9vnb6fryrTxvM74mMBwrbkqD9jDrCoYrfZdn-SMnNF6tTLNYP5B4
-Message-ID: <CAJuCfpEwa=_fubhf5wBnFKrKpOgjyXRy94f2BDx38x_NALE_OQ@mail.gmail.com>
-Subject: Re: [PATCH v2] kho: init alloc tags when restoring pages from
- reserved memory
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: ranxiaokai627@163.com, graf@amazon.com, rppt@kernel.org, 
-	pasha.tatashin@soleen.com, akpm@linux-foundation.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	ran.xiaokai@zte.com.cn
+Date: Wed, 14 Jan 2026 10:01:02 -0800
+X-Gm-Features: AZwV_QhtRRztUvUhMt6-Y_uG10BKbcB2fxnrgvhz6T6kogsSj3PTiIy7Dr58sro
+Message-ID: <CAJuCfpHN18or=x2jxUpEO+3XkfFo+NUB4DCB2SPk722uwLOAQA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/8] mm/rmap: remove unnecessary root lock dance in
+ anon_vma clone, unmap
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ie7hcf64789m5x7aiipmjho6nrm4meny
-X-Rspamd-Queue-Id: D2AFBC000F
+X-Rspamd-Queue-Id: 6AF57C0018
+X-Stat-Signature: 5aknmhm59t1un941xz7hbm1cadznxwp5
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768413563-885906
-X-HE-Meta: U2FsdGVkX18MTkJnsNqjMQfQv4ab4EF0yZ3oFlMHmC84BKpr8H68aBXgvO9QFkqVRNu3AHCZkGxHF+kmqChv63Qz0cBBR1KYxW2ri2LJaSS1+HUCsedqzIm6B5ta6KkmhoM70uxPBPY8TfAGekdom0sKD3iH32I4fDE5ugsvgU+zoQIUnb1SvxL1Y7mFQYh7Urmxmf0nbShdTO1ZAGf++uK06Ya9eEWxiwZHOhHqV5nzLpM2dEfK//6TnIJ4AeYj2fP3b8KT4gbxXavY43/Of6Km3OjXC2EnBnEc7mqqh2m17xArfvB+i2d06TMKRhVeMi8CQFKUn0fW1jbL6GCEiumiq6o/ymCOCelRUfBv+2/qJ6D40u063GGQjZoi/qebn1RlQisW3DdmJsBFogCgBhtDFM8ZOHFAjfjNquIrTxU0rjr+0iNGSGPvdIRJ9eSSgCmxyMnpuBIv4k+8azPlv6eKa9tQ0eXUP6IIDPhEi5JyFcsxxamtRtOP2YFAR72EFW5MA9SjXjYz1izOXf6ABXj+u5F1J2jdm878fEdQ5BXJmg+PySAtE8kT3KxPwY6U4abKXoL5bWEkTztpnGi9FEsP9vyBs2pGwRVF5aG2Tyf9qb8Nm1WrBCJDyJFm6fW5ijyyGxeECNyTJMRv6LgNz0xhG21cUi+HActX6E36/J+gW/SILmGblTSQ+rWGgbZ+gqoXGPQal2S1WyVbq7ZMK+HWiSWSqDGMIuvlI6vG6LZR3pgBKlm7FVoh6rY1VIbhcN3ZfbBgXqBcBQZqZ5SobeN0SN1YW6X1pGNuONWVygNV3YoH45GFh75BnMthF//rzU5sJpW7vwDASvxzwHJyQWaH+4khF2WnBjPNZ5yQe9lUaHkd2PCFw2c2N2mltUfk3E7SGfnch3n2fqr4c8Mo4YIvc3pWIGL01wAaf+GvxlBqd+IXgegqNPhuytB/c8y6KgkuV1rqKvPmu0n9rST
- KVuhkyBH
- bEcpIppuYonR36COMpe04L6+JhfsdhDdm81Af1S5xtVJVOfG3wPxc4KDCxL9gtfPw6TWlEtO4xQ+KJK1BOe0rBvCcHCZB3pEjkQ5ljZWuSIlYDxCLiaChnqBtBk/sguoCMSADdghgIRsFYog5dWI1kR2figlf6I8/7b1jP0YwFhDsanHTKrKvNQK5ot8LdA5/3xZ0OAEGbEYBdb4HeC+j1rn9XVgzSaMsDzXrffIx+ptH+kkr16KtMs6L+PZg1cbw/oVKFu+WND5lOukoJb/fn98YBtg5kUIVmUBxs/aEArb6F9HACadDHEpPZP2xuTpUn2do4oCHpMUgzN8IoRuPvhlaRTsk78Nagizyv8t8jhpgUvrPRl0DrruavA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768413675-923189
+X-HE-Meta: U2FsdGVkX18eYKsWO617VV0vqzLwNaGrXuTCmLKCFXr1a6CEr5g6LxObvo+nZ2z0PTCAmd676cas19rTXxIQC9jwRKDEZ/qkz34nvDifH9s9DoNKjU6DEBHGg29Xt3L4PP4rE3MWTCUm8kKpRgrbYKxcV3E7z04jdShceOXRwbojcOuGdhKUqteUmWYfSM0N0JP1NDAFP/dxNBRrMHyVVQ4CChaV2PANH8Jym6a3r705McQTbo6OsM6E6VSgACLlT66LSeNY+8C7Td1JHEXFGHWdSW1PqeaIAMo7MdpvWDtFHuKA7Ra3VevPzFpHnuA5pEN13TsxWajmhg5zfDRCqPLmTzN0uTgV5/uw+1RLlOuDl8V+Y8V8y3EqyFcr8QmMsAgRzd7RM71Kctt9Cf268PXny3XMS4AJ0PFf5JuodwqEvKKIiBezWgYLR62OBz9MpVy9pkC3q4F4tOampUDyfqSf9h4BZNWyJRjqnI2emviCZkUHggzb8caBCRc9tD2OTkzPFjp6b93fdCq6et7AEFl9aN8/T+yq37eaB8oGOBRJfc0FS4dbDvb7nx7CdC1kjlWmEIL+uN7BGFGDbZh5v9pFMj8wZevBnCWF+oh2Tp122VGGT4pt8jKXvq3RUXvPc/Wiu3PUJ9ZldydVEMUzNpGOIXxa3HB3slzu0zPbWK4Npj6mEgzM6Cjo4bbiSdPdyLD5yxNLqoPHLdbUiFZ3+ZnQIsazNswccXG6tg9HAMgf1h3cDbOh9ihknNMvYWzFLFJKZio0m2vxL2GWkjczu/hBrxlglpsuvsKDupW+nH0dK8yUBaUHIcblfIrkSn0b+IIY0WPTrgYIGgTFHSrOGKJPU49hFoUBJh91YMfmUU+3O8OVMiz7hty+umsa0jiNhLIaX2712ifMeS9Jl01TBR+m8Y3lR/Ad/2TTuRsCQTRmhSbjxZ7x7D9Z15IdgVsKxRA9CZ9n0Z7Mor2kXD8
+ JpCuBGlX
+ fExTwt7tolh2EuvPBnvXALMkocGoVWfFaZTUqiWoRieLOB+7iiFhj8JymagIHl0TGoYy+y6xL8ygjPaC/pis4/oBPV4Myr86ZfwxT5wjxRklFP+PdKLEf3/U941XEWKd+onNVKJW1WLcDXBPjlUcrq49yF95Q4japbaj/pDLnExKX2yODy1wwt4GzyAy1G128Jeo4fP2kuC913cR59Di4OufwonhivyQJGTz5Et5mKuc7Yimn7e45YCGvWvzpTGsbsolrSpMvof6qWJXIgf2aD5GfIr6AO+gxN+IqejtladHFzM08GCvMFdFBzg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,81 +146,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 8:55=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
+On Wed, Jan 14, 2026 at 9:54=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
 >
-> Hi Ran,
->
-> On Tue, Jan 13 2026, ranxiaokai627@163.com wrote:
->
-> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> On Wed, Jan 14, 2026 at 08:55:58AM -0800, Suren Baghdasaryan wrote:
+> > On Tue, Jan 6, 2026 at 7:04=E2=80=AFAM Lorenzo Stoakes
+> > <lorenzo.stoakes@oracle.com> wrote:
+> > >
+> > > The root anon_vma of all anon_vma's linked to a VMA must by definitio=
+n be
+> > > the same - a VMA and all of its descendants/ancestors must exist in t=
+he
+> > > same CoW chain.
+> > >
+> > > Commit bb4aa39676f7 ("mm: avoid repeated anon_vma lock/unlock sequenc=
+es in
+> > > anon_vma_clone()") introduced paranoid checking of the root anon_vma
+> > > remaining the same throughout all AVC's in 2011.
+> > >
+> > > I think 15 years later we can safely assume that this is always the c=
+ase.
+> > >
+> > > Additionally, since unfaulted VMAs being cloned from or unlinked are
+> > > no-op's, we can simply lock the anon_vma's associated with this rathe=
+r than
+> > > doing any specific dance around this.
+> > >
+> > > This removes unnecessary checks and makes it clear that the root anon=
+_vma
+> > > is shared between all anon_vma's in a given VMA's anon_vma_chain.
+> > >
+> > > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > > ---
+> > >  mm/rmap.c | 51 +++++++++++++++------------------------------------
+> > >  1 file changed, 15 insertions(+), 36 deletions(-)
+> > >
+> > > diff --git a/mm/rmap.c b/mm/rmap.c
+> > > index de2cbe860566..6ac42671bedd 100644
+> > > --- a/mm/rmap.c
+> > > +++ b/mm/rmap.c
+> > > @@ -232,32 +232,6 @@ int __anon_vma_prepare(struct vm_area_struct *vm=
+a)
+> > >         return -ENOMEM;
+> > >  }
+> > >
+> > > -/*
+> > > - * This is a useful helper function for locking the anon_vma root as
+> > > - * we traverse the vma->anon_vma_chain, looping over anon_vma's that
+> > > - * have the same vma.
+> > > - *
+> > > - * Such anon_vma's should have the same root, so you'd expect to see
+> > > - * just a single mutex_lock for the whole traversal.
+> > > - */
+> > > -static inline struct anon_vma *lock_anon_vma_root(struct anon_vma *r=
+oot, struct anon_vma *anon_vma)
+> > > -{
+> > > -       struct anon_vma *new_root =3D anon_vma->root;
+> > > -       if (new_root !=3D root) {
+> > > -               if (WARN_ON_ONCE(root))
+> > > -                       up_write(&root->rwsem);
+> > > -               root =3D new_root;
+> > > -               down_write(&root->rwsem);
+> > > -       }
+> > > -       return root;
+> > > -}
+> > > -
+> > > -static inline void unlock_anon_vma_root(struct anon_vma *root)
+> > > -{
+> > > -       if (root)
+> > > -               up_write(&root->rwsem);
+> > > -}
+> > > -
+> > >  static void check_anon_vma_clone(struct vm_area_struct *dst,
+> > >                                  struct vm_area_struct *src)
+> > >  {
+> > > @@ -310,26 +284,28 @@ static void cleanup_partial_anon_vmas(struct vm=
+_area_struct *vma);
+> > >  int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct=
+ *src)
+> > >  {
+> > >         struct anon_vma_chain *avc, *pavc;
+> > > -       struct anon_vma *root =3D NULL;
+> > >
+> > >         check_anon_vma_clone(dst, src);
+> > >
+> > >         if (!src->anon_vma)
+> > >                 return 0;
+> > >
+> > > +       check_anon_vma_clone(dst, src);
 > >
-> > Memblock pages (including reserved memory) should have their allocation
-> > tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-> > released to the page allocator. When kho restores pages through
-> > kho_restore_page(), missing this call causes mismatched
-> > allocation/deallocation tracking and below warning message:
-> > alloc_tag was not set
-> > WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU=
-#1: swapper/0/1
-> > RIP: 0010:___free_pages+0xb8/0x260
-> >  kho_restore_vmalloc+0x187/0x2e0
-> >  kho_test_init+0x3c4/0xa30
-> >  do_one_initcall+0x62/0x2b0
-> >  kernel_init_freeable+0x25b/0x480
-> >  kernel_init+0x1a/0x1c0
-> >  ret_from_fork+0x2d1/0x360
+> > check_anon_vma_clone() was already called 4 lines above. I'm guessing
+> > this was accidentally carried over from the previous version?
 > >
-> > Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-> > fix this.
-> >
-> > Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation=
-")
-> > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  kernel/liveupdate/kexec_handover.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kex=
-ec_handover.c
-> > index cd6b3fb9dcae..2d47f2c50bd8 100644
-> > --- a/kernel/liveupdate/kexec_handover.c
-> > +++ b/kernel/liveupdate/kexec_handover.c
-> > @@ -268,6 +268,7 @@ static struct page *kho_restore_page(phys_addr_t ph=
-ys, bool is_folio)
-> >       else
-> >               kho_init_pages(page, nr_pages);
-> >
-> > +     clear_page_tag_ref(page);
 >
-> You are only clearing the tag for the head page. The tail pages are
-> still un-initialized. Is that intentional?
+> Yeah I don't know why this is here, in the tree it isn't, maybe Andrew no=
+ticed
+> and elided? :)
 
-In the case of a compound page we set the tag only on the head page,
-so this is correct.
+I noticed when reviewing later patches that you remove this extra call
+in one of them. That's why the current tree is fine.
 
 >
-> What about non-compound pages (the ones you get from
-> kho_restore_pages(), aka when is_folio is false)? Do we need to clear
-> the tag on all pages in that case?
-
-In the case of kho_restore_pages() we call split_page() which calls
-pgalloc_tag_split() and that propagates the tag from the head page to
-all the tail pages being split from it. However now that I'm looking
-at it, I'm not sure pgalloc_tag_split() works correctly if the tag
-reference of the head page is CODETAG_EMPTY. In summary, this patch is
-fine but there might be a bug inside pgalloc_tag_split() if the tag
-reference is CODETAG_EMPTY.
-
-I'll analyze and reproduce that case. If it indeed has the issue I
-think it's easy to fix it by creating a specialized alloc_tag object
-with alloc_tag->ct=3DCODETAG_EMPTY and  make __pgalloc_tag_get() return
-it if the page's tag reference is CODETAG_EMPTY.
-
+> But yeah the check above is correct so current in-tree state is correct.
 >
-> >       adjust_managed_page_count(page, nr_pages);
-> >       return page;
-> >  }
+> Thanks, Lorenzo
 
