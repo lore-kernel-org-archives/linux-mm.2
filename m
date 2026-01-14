@@ -4,91 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FE0BD31A16
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 07:19:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FEAAD31A15
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 07:20:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 944EC6B0089; Wed, 14 Jan 2026 02:19:09 -0500 (EST)
+	id BBB756B008C; Wed, 14 Jan 2026 02:20:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F2646B008C; Wed, 14 Jan 2026 02:19:09 -0500 (EST)
+	id B45EA6B0092; Wed, 14 Jan 2026 02:20:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8244E6B0092; Wed, 14 Jan 2026 02:19:09 -0500 (EST)
+	id A6F286B0093; Wed, 14 Jan 2026 02:20:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F6586B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:19:09 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03A7C1B921
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:19:08 +0000 (UTC)
-X-FDA: 84329718018.09.189F671
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4034EC0004
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:19:07 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PH4+1cFm;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 91A1B6B008C
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:20:14 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5F8A0C1AC2
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:20:14 +0000 (UTC)
+X-FDA: 84329720748.18.253ACEE
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4A110100004
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:20:12 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="M/7FT5Lk";
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768375212; a=rsa-sha256;
+	cv=none;
+	b=ZIVXUHQIBouBCErt3lBSR2zOXhIsCpd642tG3F6OG25hW8NFBNKESW1cvSkYQ8nRuHsWag
+	YEwniKSHysjQXXZWriiOxqF4qR4rgHnefFRcH8lpsJzDpMAcfb2NqFMQuqEqe43Jl0V7zw
+	BNlBYseD+xqAI3qst2+bMbY2FO/ad3c=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="M/7FT5Lk";
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768375147;
+	s=arc-20220608; t=1768375212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FP4dwboDHq4cBs/tBe9qEA5HOUnAOHiZweMLLzmvIIY=;
-	b=xjoOVgeSPGd2PqoRqB2ItmmPQiBfELebnMdk1yL89zx5DzqPItlWHSWMYKqivpbVJdFpQM
-	e9vU8yTSOmLkrEjR+9/ohlQ51axRrzpnkocV4VRzBdsL1iafgJeYHwm4Jd2WwQCEqNj2lm
-	A0OgzOgfocGKkgDzhocqUcwkmv7UOoU=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PH4+1cFm;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768375147; a=rsa-sha256;
-	cv=none;
-	b=Ygos0NOs2Ln7xUbswrxn9BLVIYB3n6yG1+1DNAe2AC9ulm7YmRPWFKRkppeCwXwiJkP4fB
-	FvzuRm6BPqiri4h4b1MvhTBnLGQvDMNCwXpBTzvoI1WnPIa3HTP8SapAvqGpmHb29/Ngmd
-	DNVFvR99TUZHDk/HJqQqPEK68wiQNnM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 225D643E4B;
-	Wed, 14 Jan 2026 07:19:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383E8C4CEF7;
-	Wed, 14 Jan 2026 07:18:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768375146;
-	bh=hVqqVaXS0GeC6kx6LwQASUNzGa6n/+1fT3TSbae2KTk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PH4+1cFmqZ/jJP7uMNmA5XJANrv6IfwGkL1odjcuxuUkQH9mSNFKVFN0GFtw+IZzG
-	 wUxxpTxKqddekHhX1oGIfA0PqGMsDz/HIRRQf7DVPy8ESy1k9Tsb+5c0D6deWnCtTh
-	 /fNTtBtldbwUQ+3KIYsoJOV9AHo7mILOA29PwyD2GM2MyZVMDv/4vF38bqBfJCe6i8
-	 UtI9kLeHLKePSFRKLB21jcvoItIYLKWGXQWvWISsGJtrJiLNxtyYGwWZcGT77xJIhW
-	 NDl/3azjt90J7Gaiw22jkjmdLyDZunupBZMIeQLkb12D3L6DV6T5XfGA1HsFRDbimY
-	 RSq5bunYFIMyg==
-Date: Wed, 14 Jan 2026 09:18:56 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: m.szyprowski@samsung.com, akpm@linux-foundation.org, vbabka@suse.cz,
-	david@kernel.org, bhe@redhat.com, iommu@lists.linux-foundation.org,
-	linux-mm@kvack.org, vladimir.kondratiev@mobileye.com,
-	s-adivi@ti.com, linux-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
-	hannes@cmpxchg.org, ziy@nvidia.com
-Subject: Re: [PATCH 2/3] mm_zone: Generalise has_managed_dma()
-Message-ID: <aWdDYFkTeOqOnbWD@kernel.org>
-References: <cover.1768230104.git.robin.murphy@arm.com>
- <bd002d2351074e57be1ca08f03f333debac658fb.1768230104.git.robin.murphy@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bd002d2351074e57be1ca08f03f333debac658fb.1768230104.git.robin.murphy@arm.com>
-X-Rspamd-Queue-Id: 4034EC0004
-X-Stat-Signature: o5ux7nkz4dbkf8paurwagysrb56etqbz
+	bh=bZhuQ4Kj6PEI3Wh95q/aQ/X7uFCtTD8uLx3UOMlw/Og=;
+	b=zF1NRYKolAHybGYB0rCZr0zmUZzOHtjMjk+kYEb8nc7yeUNShlEt/n6GdUDMNA1U4VACpI
+	JAmw3S7sj+TjmZ1uJsnU4++ELqvj2iKzp5JM1uDDb1wwrWAX3vIWpA4YYCsXBluGcesa08
+	BxQmOajvUjaWeEMP9EuklA5oVxhGrEk=
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768375209;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bZhuQ4Kj6PEI3Wh95q/aQ/X7uFCtTD8uLx3UOMlw/Og=;
+	b=M/7FT5LkHJfTtlvj1MpmkPypLWsVSfMh7dQpCKJjFQQakzEied/8pKbIeQ/Bpy1ujuzlwv
+	JCdzG8dWTDZ+rGCkA0WZDuhKEk5JxI2WzjjYtOJYW8ZqXXQzTDpqPu7pZ5IrygKsLN0ELm
+	4vz+i99TpW10TuJoCzUWRN9bF8ROlt4=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH v6 4/4] mm: thp: reparent the split queue during memcg
+ offline
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <3d8dd14c-d3a7-4cae-99e3-10ebe4ad52aa@linux.dev>
+Date: Wed, 14 Jan 2026 15:19:25 +0800
+Cc: Harry Yoo <harry.yoo@oracle.com>,
+ Chris Mason <clm@meta.com>,
+ hannes@cmpxchg.org,
+ hughd@google.com,
+ mhocko@suse.com,
+ roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev,
+ david@redhat.com,
+ lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com,
+ npache@redhat.com,
+ ryan.roberts@arm.com,
+ dev.jain@arm.com,
+ baohua@kernel.org,
+ lance.yang@linux.dev,
+ akpm@linux-foundation.org,
+ richard.weiyang@gmail.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C5A78F53-47F6-4A98-AB66-0CBD3D8B10B4@linux.dev>
+References: <8703f907c4d1f7e8a2ef2bfed3036a84fa53028b.1762762324.git.zhengqi.arch@bytedance.com>
+ <20260113220046.2274684-1-clm@meta.com> <aWcrVRT_RjxdjoN7@hyeyoo>
+ <3d8dd14c-d3a7-4cae-99e3-10ebe4ad52aa@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4A110100004
+X-Stat-Signature: yh56dchepuwb4e5hfe4eaqab5ijwmcdn
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768375147-485831
-X-HE-Meta: U2FsdGVkX1/o+DirjQmHTPtTjlrRNstwqFBdE8TcjAVAMAR9VuGM2swz7Y/J7H7k9zKequJrxVETpSUy5OQZRTCJVFhD7bSmhQTLQv0suY/UgfHY9OceaenFP4/lApPJo9lZS1k8CqHE8soIqcq23/v6phySSgPjBkU0+0zyYf7/MwCoo75stC3wuU6XnWmgWWgpIKLJ1Uaw2mVWdAg1ocYvO0VBI/HxasiIv36g+0ycP/SiiM6nxQ3z72vDpBk1/Xt1xGN3yNdagQ+DTdLeLtYuY/tZAZWQWCVRB7oEITX/y4m71s+KK1Yhzd98Mc7afPgDpBDjdgc9DXz9DG7LQO+TVnOtKTujKRIQGxrY6ZCumzcxf6Q0Tv3D42PN3AlKnBxg05t+wlkZw8ungT1gwrb3Y2GRm2vBOCtazCTUj+mUIr9md8aBrmb5t7gVLwyeGjreeMOiHFtrtGr2b6SANBzfaIylqNjdu9NttjG6PSx5g3tmPQeKO3OnBw0OmZF24FKHXDl+fcm3GkgDpC2jzEI0AHeWU6pA7gKESwQ4xcKYk79pNEubpCvVxgNgeyq2TDeH/t/jB9/StJXFWAPwE79hbnyFBgywg9SJ8e7wZaCB4p4r4LL8rzGlmcvI4EJsaX244oFSYHOgeT38TYycE+tCpeh67tolXk9IZ4R0H2UmapGs/OtU7SN94it+VtyRJfKuKLr9AWQjYBOjj0OqiVAnCIF/kMNoiJl5+uJyD5uBKGwmDWAfK3AgF8SFu5eDrLrPV15Fe3AFE7v5h8O2OayEgCpXiWNBQa5QbL9JWSBkb2YNCmLzVLvNsw3RMI6Lldt//p3w0u+dHtBuBe2YoBU2ZoS1MkiJbU0xw/Ta0jf5/PNxA6Gkz8EJZdGDI744U57S8Wz6qBID26+1Bz9nSdjbVHpz+E3SQ2n4dgsmQgr6QOJZ1QauKV2RpYpEowr9E1BMV5MkKghdYXGEzuM
- aQRlQ5TF
- M8F8iYueJuI90YiD3W0ctTC3zX49hIytrXGxo13Nptt3hEDRKoifwUkZBVd3Ctp/oSZDnkPlGZFpCLSyfgrYF8bgpLrcDhqB6Kn0z4P+wyA30hFkgYW405DgX8U3FDPQK3nOOH68aOI3cbo7MRBLWXTSC8nt0YVvFBYKQdKgCK8p4qgFXdJ6I3jvbGUqV9QAJ9o3Pm4TxUJkBjWCSo0eCT5wwjTy8zzRtYp+3cBsWYyAq1dMNnOp12oUdr0FYjGBCVLpsTPpFY6w6a03cUdA0/uECscFQnk+W0HHwem2QkmGLamKCjchkM3jJshJVf4udooHb5OLemr9lyVU3o4FzwejhKMWJ/NSSzC5BykK3ONArvZWAPFwQm1mwx9dZ9G4mpnSD
+X-HE-Tag: 1768375212-291244
+X-HE-Meta: U2FsdGVkX1/Nh14LymqJiXDm2ay4asMI3CIkC1mHBlsrW1r1bvhCEGPMj/o9gK9ZRykHWxJ4gcbwVYbEtJflZfw87cZhy9tzcREpog8Om5OwCsstXHgEzDJwN3TSLRV4mS4qoj28TjAlEQhhsx2dLPhcHfgIkUPQW9NoP/MYg/1hEQW/aDAMVxZvGudxiLZulAbAm+5bF3Pq27qUkabypSA3QTe2a3gr35+KzP9ALlAP4buOBIhpTivrny5VlCpSczoMr6+mixguin3hR/g1lKNvi2J50C8LzNZvkkL2pM+KAMzcpJBeT9isFqTXkfMligeoivF/EmgznjtDRmYJ0G5B1uQxHyFLGDCDiNxsD0HKPgSKmq6J7rDGJNpuvJkcQXC+2jH5rSxSCoBf4HHsxJ/8nI0ItxyLt447wPLO1kOSLT1kTHBAFZGWpgvy2vAVF0fCff7HX/S99QrpzydN/ZLGO4W1RBNRoq7c70XJ2Z2KaKXV2pjHXN+4v020GbKTB9fHQFtrWUaoHQKCtiO+6ZcFlJ1HtkCNpyUPlG77sIqxGEPwB/ZUxjoQFN29tSvUgo6WC4DtglIcoY9DFYWJ1uyX2Ig/SXnOgk0m5cp+8/tfDhhvLQhIOw9n80whgrRTXZplz9pZeymuMxVslEn6krtNnx4n7g5vtTkhKbGEAvqJUOjzZCs9lhDV7em/bsmdHmsakCKEfhrnzFhQy6T7+ogmujjy1KNvDm+ru8FZwhpbMPxdMAtL8T1C5xiZ17D3XZV5pg5r3Ivc3jbAuh+oxzbUjRQANUaTtKlXMjmUGGWftgZdx40umW/+6YeUW0ArqMGVJU9mPYyh8TOldCuvt2jUdA6tu+WwnsliWExy9wpgjI5/xpfaB6Fn1Dm/t3I9JNBmEAYmt+AuWBMl8DeSDV0RtU8sv7VvpOLKsFn99uppGNuSFdKu3ZgVfYP5o3U3Pymzo/3RY3ykCoXanRc
+ 10/iEs4A
+ W+UyaCB8luyEFykwuLUZ4DtbF2+RPQ6fOlaCXuy8CybqHRqtJkU12/BNk2wt6Z6PAiuFoc+W0tN+N1TrC93WFmy/Y/qn9M4/YaZmLsAQwqnibw5TlPTszFURsrGPwSw+JwI81EqL3Gksz6XI/rbVYErL1MfIbeJCstpywjGjP96+ZJ5i+umvqA6LiCFoCxSrYkAUXbMs46yMphyUxNpPuQOOVqESrCmP0cuaO90DldFtxYgp9OmN2X6eenvGY/JUDaR3AKmDkPa418x0bThUQdta4ypXnpg8kcjbhiGjDTYJQprF++5lWSWZsiuAy+5X/jGY0zOYW9x11nLACDeFP5C8k0SqXpPC1W0bj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,76 +114,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 03:46:37PM +0000, Robin Murphy wrote:
-> It would be useful to be able to check for potential DMA pages beyond
-> just ZONE_DMA - generalise the existing has_managed_dma() function to
-> allow checking other zones too.
-> 
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> ---
->  include/linux/mmzone.h | 9 +++++----
->  mm/page_alloc.c        | 8 ++------
->  2 files changed, 7 insertions(+), 10 deletions(-)
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 75ef7c9f9307..fc5d6c88d2f0 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -1648,14 +1648,15 @@ static inline int is_highmem(const struct zone *zone)
->  	return is_highmem_idx(zone_idx(zone));
->  }
->  
-> -#ifdef CONFIG_ZONE_DMA
-> -bool has_managed_dma(void);
-> -#else
-> +bool has_managed_zone(enum zone_type zone);
->  static inline bool has_managed_dma(void)
->  {
-> +#ifdef CONFIG_ZONE_DMA
-> +	return has_managed_zone(ZONE_DMA);
-> +#else
->  	return false;
-> -}
->  #endif
-> +}
->  
->  
->  #ifndef CONFIG_NUMA
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 822e05f1a964..36ccc85c5073 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7418,20 +7418,16 @@ bool put_page_back_buddy(struct page *page)
->  }
->  #endif
->  
-> -#ifdef CONFIG_ZONE_DMA
-> -bool has_managed_dma(void)
-> +bool has_managed_zone(enum zone_type zone)
->  {
->  	struct pglist_data *pgdat;
->  
->  	for_each_online_pgdat(pgdat) {
-> -		struct zone *zone = &pgdat->node_zones[ZONE_DMA];
-> -
-> -		if (managed_zone(zone))
-> +		if (managed_zone(&pgdat->node_zones[zone]))
->  			return true;
->  	}
->  	return false;
->  }
-> -#endif /* CONFIG_ZONE_DMA */
->  
->  #ifdef CONFIG_UNACCEPTED_MEMORY
->  
-> -- 
-> 2.34.1
-> 
+> On Jan 14, 2026, at 14:25, Qi Zheng <qi.zheng@linux.dev> wrote:
+>=20
+>=20
+>=20
+> On 1/14/26 1:36 PM, Harry Yoo wrote:
+>> On Tue, Jan 13, 2026 at 02:00:43PM -0800, Chris Mason wrote:
+>>> On Mon, 10 Nov 2025 16:17:58 +0800 Qi Zheng <qi.zheng@linux.dev> =
+wrote:
+>>>=20
+>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>=20
+>>>> Similar to list_lru, the split queue is relatively independent and =
+does
+>>>> not need to be reparented along with objcg and LRU folios (holding
+>>>> objcg lock and lru lock). So let's apply the similar mechanism as =
+list_lru
+>>>> to reparent the split queue separately when memcg is offine.
+>>>>=20
+>>>=20
+>>> Hi everyone,
+>>>=20
+>>> I'm running all of the MM commits since v6.18 through the AI patch =
+review
+>>> tools, and this one was flagged.  I'm much less confident in this =
+report,
+>>> AI tends to get these races wrong:
+>>>=20
+>>> [AI review output]
+>>>=20
+>>>> diff --git a/include/linux/memcontrol.h =
+b/include/linux/memcontrol.h
+>>>> index b0c6a4635c67b..cc6db20d7dca0 100644
+>>>> --- a/include/linux/memcontrol.h
+>>>> +++ b/include/linux/memcontrol.h
+>>>> @@ -1775,6 +1775,12 @@ static inline void count_objcg_events(struct =
+obj_cgroup *objcg,
+>>>>  bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid);
+>>>>=20
+>>>>  void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg);
+>>>> +
+>>>> +static inline bool memcg_is_dying(struct mem_cgroup *memcg)
+>>>> +{
+>>>> + return memcg ? css_is_dying(&memcg->css) : false;
+>>>> +}
+>>>=20
+>>> [ ... ]
+>>>=20
+>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>>> index 13684e5376e82..d17d3810a882c 100644
+>>>=20
+>>> [ ... ]
+>>>=20
+>>>> @@ -1129,8 +1140,14 @@ split_queue_lock_irqsave(int nid, struct =
+mem_cgroup *memcg, unsigned long *flags
+>>>>  {
+>>>>   struct deferred_split *queue;
+>>>>=20
+>>>> +retry:
+>>>>   queue =3D memcg_split_queue(nid, memcg);
+>>>>   spin_lock_irqsave(&queue->split_queue_lock, *flags);
+>>>> + if (unlikely(memcg_is_dying(memcg))) {
+>>>> + spin_unlock_irqrestore(&queue->split_queue_lock, *flags);
+>>>> + memcg =3D parent_mem_cgroup(memcg);
+>>>> + goto retry;
+>>>> + }
+>>>>=20
+>>>>   return queue;
+>>>>  }
+>>>=20
+>>> There appears to be a race window that can cause split_queue_len =
+counter
+>>> mismatch. Between the time CSS_DYING is set (in kill_css()) and when
+>>> reparent_deferred_split_queue() actually runs (asynchronously in
+>>> css_offline), folios can be unqueued via =
+__folio_unqueue_deferred_split().
+>>>=20
+>>> In this scenario:
+>>>   __folio_unqueue_deferred_split()
+>>>     -> folio_split_queue_lock_irqsave()
+>>>        -> split_queue_lock_irqsave() sees memcg_is_dying() =3D=3D =
+true
+>>>        -> returns parent's queue (locked)
+>>>     -> ds_queue->split_queue_len-- decrements parent's counter
+>>>     -> list_del_init() removes folio from child's list
+>>>=20
+>>> The folio is correctly removed from the child's list (list_del_init =
+is
+>>> self-referential), but the wrong queue's counter is decremented.
+>> Good point. Sounds pretty possible to me?
+>> I don't think there's anything that prevents it from unqueued
+>> before it's reparented.
+>>> If the parent queue was empty (split_queue_len =3D=3D 0), this would =
+cause an
+>>> unsigned long underflow to ULONG_MAX.
+>> Although the accounting mismatch will only persist until
+>> reparent_deferred_split_queue() reparents the deferred split queue.
+>=20
+> This period is very short, and the only thing affected should be
+> deferred_split_count(), but it does not cause a system error.
+>=20
+> So I think maybe we can leave it unrepaired.
 
--- 
-Sincerely yours,
-Mike.
+I didn=E2=80=99t look closely at the specific issue, but based on Qi=E2=80=
+=99s point,
+we can actually take a cue from list_lru_count_one and provide a similar
+workaround to keep deferred_split_count from returning an enormous
+value=E2=80=94see commit 41d17431df4aa.
+
+>=20
+>> Ideally this should be fixed by checking if the folio has been
+>> reparented after acquiring the split queue lock, but since we don't =
+reparent
+>> LRU pages yet ... do we need a band-aid before then?
+>> Do we want to have is_dying property in the split queue as it was in =
+v2? [1]
+>> [1] =
+https://lore.kernel.org/linux-mm/55370bda7b2df617033ac12116c1712144bb7591.=
+1758618527.git.zhengqi.arch@bytedance.com
+>>> Could this be addressed by checking that the folio is actually in =
+the
+>>> queue being unlocked, perhaps by verifying the list head matches =
+before
+>>> decrementing split_queue_len?
+>>> [ ... ]
+>>>=20
+>>>> @@ -3920,6 +3920,7 @@ static void mem_cgroup_css_offline(struct =
+cgroup_subsys_state *css)
+>>>>   zswap_memcg_offline_cleanup(memcg);
+>>>>=20
+>>>>   memcg_offline_kmem(memcg);
+>>>> + reparent_deferred_split_queue(memcg);
+>>>=20
+>>> The race window exists because CSS_DYING is set in kill_css() before
+>>> css_offline() callbacks run asynchronously. The comment in =
+split_queue_lock
+>>> mentions that THPs will be "hidden from the shrinker side" during =
+this
+>>> period, but does not address the counter accounting issue when =
+folios
+>>> are unqueued.
+>=20
+
 
