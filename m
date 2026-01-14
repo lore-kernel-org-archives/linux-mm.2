@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52A10D29FEE
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 11:14:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DD3BD29FEE
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 11:18:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBF316B0089; Wed, 14 Jan 2026 06:14:50 -0500 (EST)
+	id 0010F6B0005; Wed, 14 Jan 2026 06:18:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA0276B008C; Wed, 14 Jan 2026 06:14:50 -0500 (EST)
+	id F1AEE6B0088; Wed, 14 Jan 2026 06:18:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAC6F6B0092; Wed, 14 Jan 2026 06:14:50 -0500 (EST)
+	id E1D166B0089; Wed, 14 Jan 2026 06:18:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 998F46B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:14:50 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5712BC1D85
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:14:50 +0000 (UTC)
-X-FDA: 84330311940.15.482069C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D54EC6B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:18:34 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C0C38BAE2
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:18:34 +0000 (UTC)
+X-FDA: 84330321348.26.9564B73
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B6950A000E
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:14:48 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dcnZFRw+;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id AA315100012
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:18:32 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GM3XGH6q;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768389288;
+	s=arc-20220608; t=1768389512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VQN3TbbaoG5AGNaGLOpHUO2qtjj/Nq61z53cDOs+0Mg=;
-	b=FU/dQDvGZjhYAze7RzlXiEuNqyAQe4a+GxVaNJDNCkX8aUY7jLEeRUhivMoWJk/ZlbU6RR
-	Jon+iZ0IPwayDCEQiPVkRZF5sDGdQAmf6NVxXB5EvflGyMIu/KrAadkOQaTXwRTBfsirMP
-	zm3b+XtZ/OPwcDkXFTdqmvAQSHuoTkI=
+	bh=LzyrBmqSAAqFr9ClVLULfIRefi9jEcNxTmuRT9lwr2M=;
+	b=TU9tTOehw602B0htlzirQijyshp0//YxJsl766+v2e6OonyM+p73rE8DQ3oPrPqBXNy3Wb
+	imLVjxCeTAT6BZuGxLOEF6pdlg0Zp3Zf89kJVoQh6blw5+Iu2Cziuu3I5hnk0MahToiyBT
+	OfcWzBAXHsxSnesOlDEtFbpc8SpBLm8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dcnZFRw+;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GM3XGH6q;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768389288; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768389512; a=rsa-sha256;
 	cv=none;
-	b=hU2BMTi97sGC+N3aD4EZv6mDdhnezUlxvCrDTUEOb/MqDFHabrgNFhSdTS+IMqZfzHaLE2
-	bbRy/U/zNtI2ca2zNGkADMi0CwgTpKlJNDzTApr2k9SLKu69Ragt/+UjmQBuit38/gCxk2
-	ASopc3JfpI3uvC6gPVOAPLS6CPF0oc4=
+	b=D3Mn8XivYLHmldPpi0/UcLVO63pFtzt7XJjHKeBxzknzARDL4ojBXxnkY25F8vwqxtjHzQ
+	2nyErTCA0+9OEZQcKZpBaYlM7J10yamc9dwjrIYLDPYoClYGt/Dba9p2fugt8ta1m4SkJ3
+	unIRaOw0sELDYPm4WhMrAdhoROEjUCU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4BB8D6001D;
-	Wed, 14 Jan 2026 11:14:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C92FC4CEF7;
-	Wed, 14 Jan 2026 11:14:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1FEC16001D;
+	Wed, 14 Jan 2026 11:18:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36431C4CEF7;
+	Wed, 14 Jan 2026 11:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768389288;
-	bh=l+5wlrp0jYxNQOqBaU6nlefHrlSNjYjWSsYitXtpAv4=;
+	s=k20201202; t=1768389511;
+	bh=GXzJ+yUfp9XANjqi1yZT8WBcSpKtfiye6aaL8wZUsR4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dcnZFRw+cbJrDxYJFMr5mgj8kXqvSSa1VIr5LTnBjZQEy0DVHrN/4VWgX4+NfgEjG
-	 +cL+7K4tRYZu2W0QsbNiDJAZ44zaSQv/FQJsc8f2yaTduI5xb1VcjLb9MXmE9AlUAf
-	 dkUBkj5QOqoK2suJkmymaGeJcazZQUTh31uVZCfU0jOgp0m/Ls+q3qAyBBdqd0tCCi
-	 Ggk/cFZ3/FBcTBig+blaqW/vgD27pe6mE0mukRh6NlF7NKlQMY1BzxpkcnXcXRpV3L
-	 JsJlUPOLmyzGD8Lvf6koD9M6fvYaOVurf9vyLlQ6B9zRFTvNq1CLD1BSd8Wcl0RLk1
-	 z3KmgLiQqI0YQ==
-Message-ID: <9b43a8ca-e6fb-49f2-9a95-b5088c6d3352@kernel.org>
-Date: Wed, 14 Jan 2026 12:14:43 +0100
+	b=GM3XGH6qaq0giaJbLi7IiZASEJJdj4aadn89uMm1v1Gb2HffgqLrfYU2Tewjn1DC9
+	 qpHfCGeVi2bSqU1N2994EKZdplfN7vdg0dM5SwxJNjeDXRJipkBJpFqlU80bfUsg/y
+	 5RQhhIdT/l2+8BjJdjv0jMbGNt6SG85w+wyEtv+WLjoh6qJdjt/3IQiz6WZq03WLgZ
+	 BWb9w4azxFML4P+NeOiPr1US0/8zZwpkqt1ay7+WWMZW4xAfENWwnIP3yR0lw0k63Q
+	 9DfKg0ouGb2kmfhQypNFbx2KSA89+8O47L5exU9SE8W9AaMxXwTFw7Cf4iqsj5hQx8
+	 ZBbJF5MFDIGsg==
+Message-ID: <512dab18-483a-4cf0-976b-d37806d3da35@kernel.org>
+Date: Wed, 14 Jan 2026 12:18:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-hotfixes] mm: do not copy page tables unnecessarily for
- VM_UFFD_WP
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Chris Mason <clm@meta.com>
-References: <20260114110006.1047071-1-lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH v3 2/6] mm: khugepaged: refine scan progress number
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ richard.weiyang@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260104054112.4541-1-yanglincheng@kylinos.cn>
+ <20260104054112.4541-3-yanglincheng@kylinos.cn>
+ <69c9ac59-4fb2-42fc-a8ae-32f583e47de4@kernel.org>
+ <zc4yspu5rq4he64std2f6l7mnyua36tudnwj7fgqmk4aioevzw@ungu66emhlgf>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260114110006.1047071-1-lorenzo.stoakes@oracle.com>
+In-Reply-To: <zc4yspu5rq4he64std2f6l7mnyua36tudnwj7fgqmk4aioevzw@ungu66emhlgf>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B6950A000E
-X-Stat-Signature: jr6mhqt4bghz4cmi76eiz5m7qnhgunsm
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768389288-688597
-X-HE-Meta: U2FsdGVkX1+SnvW3MB+xtrMYYtpbaWqk0eOTVm+akShUQyOBYSB9q4B+G0/oDKDdEq7F7JfjikXusUq7rLXu/Je389DWqUgbtvkpWj5nIkhMouZbVUUne3aM+lfUFB3NEQZb3R0cZVSzH2PGns7mw7nQJ6LyC0sHi8alNPS5l+ZfaFMtfTNnczP86Gwv8xKNpSX3wecOmEcKGjn10o8V/srNuE+D7cfFfd4wX5ofrJjqBQ6sWoFk94VVEiMTElfiX5Q2mTLMSGlXHdVyc5VRmuNfMBRmzLa8PTMWvfzVPcL0krkL52koGM6k08NM24dru5fsKRrGXwlQ5e0bJAJKQAT3geMHVbeQk0Jmct6Dr+yhwiwvaw0m5jS8kWdtKR/uENcotev52DjhIH3yZC/u6vVdVR/FuxkX6p1umr3jGzUdyv01tv++4LOKUTcpRiKateKhC8rF0YIRj6ncJpsHUIPO5H5v/Rw0jEOcBppQ87acEN6zO9Gc4uOhitB1rMJJVbzOwdD5OdZwy2KGi7Rla1QqWuAU3jJPmmimhW56FH4pLCt3kiSDPrivsTQwDwItV+7YErDQfMuCvmho2QsQjq2aZ+f7DiItRztsJWAQBaB2dG2b5EVIXl0MG+mA/UTXszi80AKYZ5MtGsVLoQawP+dK8J5gGcESX0RM1lJXFi5q3ExP6ffhBx7+aTQRKfkUfiThQFBhb9JjZeeVDA3JEGa3gZq86WlIsta4q1Un2qJ1D2LsSWUlKFrwhjCMrTO3eHNkDXQPyCqY5naCk4P54ypyHePL9LZtYmT9XiPR+fuKakOa2WL0s4tyhK2HZ/TPEkHACm/DnTnqnUqZb4UiIjJ8PpZRwSvD4R5P17Z/Inu3Fjzfz0muaZktjZncukTDOI3octAfaJKEou95H9A0+pKBCKjH3wEmoRUpFuZhEGhWfKNRFUXrTAxVhz/FDYhCs8dJ3wo3kf9DjtqeGBd
- WhN7Mmb+
- ee2CD
+X-Stat-Signature: mdr951hcwuuog4h9wp6owchwfgfutcnf
+X-Rspamd-Queue-Id: AA315100012
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768389512-563885
+X-HE-Meta: U2FsdGVkX19RKqn3I9a3vF0mi8Y2ehPAjCLtxNI88LGxX/p85EFXfNJFX/QULx09XZ6k05o9dYmFbJd0G9jpEcwAIxN7RJHReMsGDKim15xykMg0i6+Tu/8cLzh95/eoAEF2v7xixDwqYumZCfh353MJFa0tbSiVakfYa93g+2FyRy7Y3mcWfDTohjFL61pDCSp/fsP9anKrSj6ThP4Loi3A33TFHKh1w+f1Z2RHbpyqo9QRoCpYnmYdgUCwFcGAtKIhsaezR84cIjpFP4SGMe45R+v+9sHLiLYLqk3dkApnXZKkQoV+vInB+3AhXTVIzeO2mWcQ2/8R66EgMkhsnBOs0MM63vW0/UCWopIvo14JvMcwY+J6A0XUId/K6gQ81zdvtEfKzF3qQ6ZFw2zb8am8rfEUslqh+tUhlCBEdC2ydIL5VqBUFoiligBhqymJAu+ng8rcxjtbuSWcBa8S5A32KSXjphqXemfVUE89KAYqifl4Eldnqwp/nYnQG53jHmLM1yd33ZCp72OTiegpkUDUdfG+LNaph1ZBoq3RoQ99UIF39HqD+bkDTi62bxdED3uAu0obo9quCACfP/0mBIF7VhW7Uf3ML/M9gt+7m1wvxyfu2Z2dg482We74NHOrreCLOqycIi/qBfgp0mqzv7AiRo5rKP4X2yCKas2LorolCtFYEgSf84u2iZFsz/aOcV3EOgP8SC2rBNNHYMsbTLGf3cDi/icije8zmRRLsajdjKefv51s8ZLXvEyF3R6AeJHpFeNO1k331ogdxRbGZLR1Wx0Lor9NbIrwk+LE1uLLHUK+w6YkIoNcCB1gsL7Ic6JE6806ZcVcOFWQRl7invKXX42nO7xHF747kKbEDwVLOdQ3KH9uhny7Yi7VSLS59d7ZhUuIkJlAU0S+7pIfv57gVR/pY2wo5hrU4BFL5t/Dg7z3f5Q+Ys5cD9ncxuXB9bK2eQBDXQ5OXd+R6lw
+ To1yFWTr
+ nFZdePDB+oRMTcB8gtT2Tj/nhefYLV1aFIxPjGrWilDt8F8fv/sUIvYIRDvRxx+Em1Np/IhHGpOHGxFr05EnhgTOaeJdamiTu0bQhxg1I8RAwVvBt5h8ymdC02Zbhz8/lKaAp+3e6C6Vdt/Sw/98By2iI4zYkS1zySZg3adCO4gh+imm4c1oS+n111csx8ji5z4pm6qmFcrYmBvTmun5J6fDpxG/7OgrW6yp+hNduE4NucYXdihONEtQR8Wwe5vtBV2GMuzPRwjr+5Pp8W10VQLjsTWAMXm1Hvosv9Ob/FE+tIwoZAydIX5KvAdBXXEMNgKo2LDs3ikde6Hn/98w/4Njv5qn5+VTLEcvTNr7euohPY7oKwP62X37jtPtui2WjvWn90BW9ml7CXVjQiQb4J1G1+51kZK4P0kx+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,36 +142,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/14/26 12:00, Lorenzo Stoakes wrote:
-> Commit ab04b530e7e8 ("mm: introduce copy-on-fork VMAs and make
-> VM_MAYBE_GUARD one") aggregates flags checks in vma_needs_copy(), including
-> VM_UFFD_WP.
+On 1/6/26 06:55, Vernon Yang wrote:
+> On Mon, Jan 05, 2026 at 05:49:22PM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 1/4/26 06:41, Vernon Yang wrote:
+>>> Currently, each PMD scan always increases `progress` by HPAGE_PMD_NR,
+>>> even if only scanning a single page. By counting the actual number of
+>>
+>> "... a single pmd" ?
+>>
+>>> pages scanned, the `progress` is tracked accurately.
+>>
+>> "page table entries / pages scanned" ?
 > 
-> However in doing so, it incorrectly performed this check against
-> src_vma. This check was done on the assumption that all relevant flags are
-> copied upon fork.
-> 
-> However the userfaultfd logic is very innovative in that it implements
-> custom logic on fork in dup_userfaultfd(), including a rather well hidden
-> case where lacking UFFD_FEATURE_EVENT_FORK causes VM_UFFD_WP to not be
-> propagated to the destination VMA.
-> 
-> And indeed, vma_needs_copy(), prior to this patch, did check this property
-> on dst_vma, not src_vma.
-> 
-> Since all the other relevant flags are copied on fork, we can simply fix
-> this by checking against dst_vma.
-> 
-> While we're here, we fix a comment against VM_COPY_ON_FORK (noting that it
-> did indeed already reference dst_vma) to make it abundantly clear that we
-> must check against the destination VMA.
-> 
-> Reported-by: Chris Mason <clm@meta.com>
-> Closes: https://lore.kernel.org/all/20260113231257.3002271-1-clm@meta.com/
-> Fixes: ab04b530e7e8 ("mm: introduce copy-on-fork VMAs and make VM_MAYBE_GUARD one")
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> The single page is pte-4KB only. This patch does not change the original
+> semantics of "progress", it simply uses the exact number of PTEs counted
+> to replace HPAGE_PMD_NR.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+You used the right terminology: "PTEs" counted.
+
+It could be either a page or a PTE, depending on whether we collapse an 
+anon THP or an file thp.
+
+You make it sound like we always scan pages.
+
+[...]
+
+> 
+>>>
+>>> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+>>> ---
+>>>    mm/khugepaged.c | 31 +++++++++++++++++++++++--------
+>>>    1 file changed, 23 insertions(+), 8 deletions(-)
+>>>
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index 9f99f61689f8..4b124e854e2e 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -1247,7 +1247,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+>>>    static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>>    				   struct vm_area_struct *vma,
+>>>    				   unsigned long start_addr, bool *mmap_locked,
+>>> -				   struct collapse_control *cc)
+>>> +				   int *progress, struct collapse_control *cc)
+>>>    {
+>>>    	pmd_t *pmd;
+>>>    	pte_t *pte, *_pte;
+>>> @@ -1258,23 +1258,28 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>>    	unsigned long addr;
+>>>    	spinlock_t *ptl;
+>>>    	int node = NUMA_NO_NODE, unmapped = 0;
+>>> +	int _progress = 0;
+>>
+>> "cur_progress" ?
+> 
+> Yes.
+> 
+>>>    	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+>>>    	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+>>> -	if (result != SCAN_SUCCEED)
+>>> +	if (result != SCAN_SUCCEED) {
+>>> +		_progress = HPAGE_PMD_NR;
+>>>    		goto out;
+>>> +	}
+>>>    	memset(cc->node_load, 0, sizeof(cc->node_load));
+>>>    	nodes_clear(cc->alloc_nmask);
+>>>    	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
+>>>    	if (!pte) {
+>>> +		_progress = HPAGE_PMD_NR;
+>>>    		result = SCAN_NO_PTE_TABLE;
+>>>    		goto out;
+>>>    	}
+>>>    	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>>>    	     _pte++, addr += PAGE_SIZE) {
+>>> +		_progress++;
+>>>    		pte_t pteval = ptep_get(_pte);
+>>>    		if (pte_none_or_zero(pteval)) {
+>>>    			++none_or_zero;
+>>> @@ -1410,6 +1415,9 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>>    		*mmap_locked = false;
+>>>    	}
+>>>    out:
+>>> +	if (progress)
+>>> +		*progress += _progress;
+>>> +
+>>>    	trace_mm_khugepaged_scan_pmd(mm, folio, referenced,
+>>>    				     none_or_zero, result, unmapped);
+>>>    	return result;
+>>> @@ -2287,7 +2295,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+>>>    static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+>>>    				    struct file *file, pgoff_t start,
+>>> -				    struct collapse_control *cc)
+>>> +				    int *progress, struct collapse_control *cc)
+>>>    {
+>>>    	struct folio *folio = NULL;
+>>>    	struct address_space *mapping = file->f_mapping;
+>>> @@ -2295,6 +2303,7 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+>>>    	int present, swap;
+>>>    	int node = NUMA_NO_NODE;
+>>>    	int result = SCAN_SUCCEED;
+>>> +	int _progress = 0;
+>>
+>> Same here.
+>>
+>>
+>> Not sure if it would be cleaner to just let the parent increment its counter
+>> and returning instead the "cur_progress" from the function.
+> 
+> Both are good for me, I have implemented one version as follows, please
+> see if it is cleaner.
+
+ From a quick glimpse looks good.
 
 -- 
 Cheers
