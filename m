@@ -4,154 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFDDDD37E3E
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 15:06:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 579D8D37E3B
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 15:07:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30A3B6B0089; Wed, 14 Jan 2026 10:06:05 -0500 (EST)
+	id 95B4D6B0005; Wed, 14 Jan 2026 10:07:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B78C6B0093; Wed, 14 Jan 2026 10:06:05 -0500 (EST)
+	id 92E8F6B0092; Wed, 14 Jan 2026 10:07:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1996A6B0095; Wed, 14 Jan 2026 10:06:05 -0500 (EST)
+	id 84D296B0095; Wed, 14 Jan 2026 10:07:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 08BCC6B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:06:05 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC62D1404BB
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:06:04 +0000 (UTC)
-X-FDA: 84330894648.15.248A34D
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0319E1C000D
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:06:01 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=2aGkR9+G;
-	spf=none (imf18.hostedemail.com: domain of BATV+26d5290b15125d0fae64+8179+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+26d5290b15125d0fae64+8179+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 71EA16B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:07:53 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 17F3BC1F8F
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:07:53 +0000 (UTC)
+X-FDA: 84330899226.06.739BDCF
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 613FD2000B
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:07:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=DpI+2DhX;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=XVZv71+I;
+	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768403163;
+	s=arc-20220608; t=1768403271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p/1eVpMenCIWXkmi+LWs4qBDeJZQRhQ1Mo2xBG1d6m0=;
-	b=nlwBseHkV4qL6TyFNDGuLPohL09QENhcUS4pbavtKfbN02qQYFJmdvQuXQ7DF2glKTfew2
-	wrjDC5PfIkDe0LSv1/Zk80vPhFo7IZHXWp9mZQVufzcW1bqyy6vc25MgB0RA+f0+2lPHMQ
-	CbiG3eEYZm9lefoeUbt6E851gyw/z2E=
+	bh=4C72mCKj6g75hWi4SDABu63k1LKvcFbsA+RvmMJke0I=;
+	b=2HdVtxOE2HZqZIyxou2THVn2o2+OYB1XY/tpijjUR/hhur85EWo2fRSHBt7/btmOO5EoT4
+	0UDj/xJWhN5UrSBTmyxxDMsDzQxHvbbiXdUNaOxcUdE01upQFlUdy8/L0yKdgdUiI6LQBx
+	iPmEPEt/tKayOfbhxmNdYIqM9QREkxI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=2aGkR9+G;
-	spf=none (imf18.hostedemail.com: domain of BATV+26d5290b15125d0fae64+8179+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+26d5290b15125d0fae64+8179+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768403163; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=DpI+2DhX;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=XVZv71+I;
+	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768403271; a=rsa-sha256;
 	cv=none;
-	b=aROLKWNzTOGe3UePbv3eVVwKJ0b/Q5oeiM0WGX3ie85bQ9FD66KdV0JLfNCqhDAlbJtHUV
-	cCOPQga37aF3SMWPiTVH+3KM1rf4t69aVTWSCvmBbQRHrcf7igrvc+63Z3SsU+DKvHtVQN
-	0yBsYTPQufdzIg91sf+U2cx1qCA9l8I=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=p/1eVpMenCIWXkmi+LWs4qBDeJZQRhQ1Mo2xBG1d6m0=; b=2aGkR9+Gq07Pqsr81YJxBM46lt
-	pC2tFopI1k2CQN/EQyBvUMbN685on8x5U4CpdjMpkFZFWeBtSU1OM84Ciw+y3szFcelfmqTyyg3Vm
-	y2DbB7FtxibRk5XBq6sH9x7jaP/v3yPQ2Ob6mTE3lbJs+jMPsrwoZFGtqfkkexkKI90sVyqCbvrKN
-	zpFbi2ZET+fTj2fii5dhkiKqKWNVPeKcG3n8jccbhPTVNNeRCqGKQRlyNUdLbE0ua8zYfilMENTNi
-	ksLGJd1DFd0SiHbXxA8bZhed6Je0ZmYu3Fr0+QZKywruGLSgXGNe8uS3svWfCZcAVQ+74djzH6mhe
-	QKhXyQqw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vg2Qx-00000009cKq-2YJq;
-	Wed, 14 Jan 2026 15:05:19 +0000
-Date: Wed, 14 Jan 2026 07:05:19 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Jeff Layton <jlayton@kernel.org>, Christoph Hellwig <hch@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>, Jan Kara <jack@suse.cz>,
-	Luis de Bethencourt <luisbg@kernel.org>,
-	Salah Triki <salah.triki@gmail.com>,
-	Nicolas Pitre <nico@fluxnic.net>, Anders Larsen <al@alarsen.net>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	b=x8OcTwRq5GskWnG3SJQggiiqsuj0eLXmbpHVuXLao3hhc28TKUIcede8j5OkfvlIG6Wrzq
+	UywmZYmEZoaccX8xoqTdkC5BiGpvmXUxaBCY1BPJDJgZiQ1Y+87JMKTRgOnAKilhm59W+2
+	AUBXfIU3skiplLzwhLQ6fdJ8Tr0veB8=
+Date: Wed, 14 Jan 2026 16:07:47 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1768403269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4C72mCKj6g75hWi4SDABu63k1LKvcFbsA+RvmMJke0I=;
+	b=DpI+2DhXGNoB3K9LoI1svHbcKbv3kxb2YyFFdspbE5qXTTBPF+9h8s+FkerT3INURZk5p/
+	kBC4L+PoGogVnYmWhgwtvG9+TCDDITAdJYtste182B6otosAomrdWroG5Tbv5B6Yc2uTQ+
+	GJQFj6T9tnxuLbW1XUpoqfqjq0CpAV1W4jvu1ogkvswQPrE/c+QHamLYa+ZiRKeKtc294b
+	psHNbgTT91lHQklnZcMYINuG1AtadMiWoojmUNN/TJd4ET2c0Qy5/mfpwRF+3VCRm8rnCG
+	VZmF0F8rXveRojhDwnXI4kf8N6X2BFd5voVKrZT9HMRi3bv38Q+SGQg7TlZtLg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1768403269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4C72mCKj6g75hWi4SDABu63k1LKvcFbsA+RvmMJke0I=;
+	b=XVZv71+IElwl1uhi03hZmyhqfq9kC8+MP1iK9rfNstyKTMmeHAzHgb7zHvRiRzgdQqo5vQ
+	AO99yxFvYK6TmyBg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hao Li <hao.li@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
-	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
-	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-mm@kvack.org, gfs2@lists.linux.dev, linux-doc@vger.kernel.org,
-	v9fs@lists.linux.dev, ceph-devel@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
- lease support
-Message-ID: <aWewryHrESHgXGoL@infradead.org>
-References: <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com>
- <ce700ee20834631eceededc8cd15fc5d00fee28e.camel@kernel.org>
- <20260113-mondlicht-raven-82fc4eb70e9d@brauner>
- <aWZcoyQLvbJKUxDU@infradead.org>
- <ce418800f06aa61a7f47f0d19394988f87a3da07.camel@kernel.org>
- <aWc3mwBNs8LNFN4W@infradead.org>
- <CAOQ4uxhMjitW_DC9WK9eku51gE1Ft+ENhD=qq3uehwrHO=RByA@mail.gmail.com>
- <aWeUv2UUJ_NdgozS@infradead.org>
- <c40862cd65a059ad45fa88f5473722ea5c5f70a5.camel@kernel.org>
- <CAOQ4uxhDwR7dteLaqURX+9CooGM1hA7PL6KnVmSwX11ZdKxZTA@mail.gmail.com>
+	Uladzislau Rezki <urezki@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Alexei Starovoitov <ast@kernel.org>, linux-mm <linux-mm@kvack.org>,
+	LKML <linux-kernel@vger.kernel.org>, linux-rt-devel@lists.linux.dev,
+	bpf <bpf@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>
+Subject: Re: [PATCH RFC v2 06/20] slab: make percpu sheaves compatible with
+ kmalloc_nolock()/kfree_nolock()
+Message-ID: <20260114150747.ziWhVVQM@linutronix.de>
+References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
+ <20260112-sheaves-for-all-v2-6-98225cfb50cf@suse.cz>
+ <20260113183604.ykHFYvV2@linutronix.de>
+ <CAADnVQK0Y2ha--EndLUfk_7n8na9CfnTpvqPMYbH07+MTJ9UpA@mail.gmail.com>
+ <596a5461-eb50-40e5-88ca-d5dbe1fc6a67@suse.cz>
+ <d8d25eb3-63c4-4449-ae9c-a7e4f207a2bc@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAOQ4uxhDwR7dteLaqURX+9CooGM1hA7PL6KnVmSwX11ZdKxZTA@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Queue-Id: 0319E1C000D
-X-Stat-Signature: ed8t5ag5ezqc6k91fckjze4xzub3dms3
+In-Reply-To: <d8d25eb3-63c4-4449-ae9c-a7e4f207a2bc@suse.cz>
+X-Rspamd-Queue-Id: 613FD2000B
+X-Stat-Signature: wm7ia5pdppok8akziskq5etskze95mb3
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768403161-297028
-X-HE-Meta: U2FsdGVkX19MGTmSlN1DzrTick9iR5WX1+XxJwOS7emYNUamqIh+1WDwLC5sHC4eHmUAZvb2rDTUvy96wB5UcqIEaz1/8JczNiGN1wRtr4/YRs3eTYyI6wHmLdR+GkNCIrVPDqsiFTg9O4ZbVKBLrNAzSJa5z/9vx5EOtxGtM68CpIj3IXs0jLZRX9w40hJX8niT7WLw2uAgtgXB4p5cgf4CqMHRWEEW0h2ku6eggzW8sGh3KotxJC5JWNzhYkH+EN8AxpwBjvuyBlWRv7Nex6UclLgaBCtsp/deGiJdS44cMBiJK7IzP9gdlInM5tlUfNKMPKHxNiA7fzYe/Y8J+9ZmMsNDFT2QszQxPwdL7ikTmoc0z65dKnMOnspdq/GbLIBXd4u0Zbt3GY6dd1PkFfbjUuVsvxWQSQkUGl50fWry5+94od1naQy8uo8lgk07nEFBbOkkrkP8w3eWCvWcnaRje/0vsI0iCNnzrIRVhOy41rW09opE5ihAPH2gpCbguv/NlIX4wZRWIbbRXRwvfa/82oUbo64kqi3/1NjuQlxY/QSR4hog95QVBD2lv+2TeES//KGBaNtIpgjbTXu8+Y10wD+0a19dUuiun5VpTJIPZFP8fxMofLQ4XR4YL3H9JMlfnXOJz+v1OGSO0Lm8Xhp6jY8KYCfpSDHYL+n/KMRYTtPCGUkIUVz2CGoXFOqd+FwiQPuPsFrlnu+V16Yw760BWNEn51N9ePnyyhGND8XmROfnAKtRAbaTcmV2uoMlZVnpOSCsY69TxfEFzlqlN0nTHSaEuaX3o6eVsGTvpbQyv2bRLS2F/V4yuzcbkvotj0HpZHGCYeAVQTddH46MoJ7vMmIUhvr9a+iwoyHf2gO7aO7zIVDM31gX8vMgPGcYYVWmZOirWf+hiT+K4aFgXCGG8t3h4/6xkf4FbE39dGf+B3cS57t/rj/fwQl1d2z1e2vMkvgCdXxv9XiHjFy
- fZ+qHKVO
- BSyym88nx/LxtLGbbbdn9DlUTGt076XvSf8ffm1YMr/7umGLpaKNuM47D67YBswAdmdpSKVPBlka4ODUcuhtIpQ192ImtOb+yeUEITxLgJ7Dtbmbrt2oeASMi90PEOmGn5nf9zAivdC/9HfSn+2MjoTujN8/z0fpNwXYS2vgrMa23l125qHeBkQpdXn9JJLiG0bwIX4rw89ZHqLxNVCYLW/k+J1fXSnFgq5e49FV71zXj6MFfJMhDyIvyVpipPYg2uEEyEKE2xYIbePdb7lvjwr1KvTMANrM+RW6byJ7f1LfTibJpC18NFZk1hAqRHyO4BJ/jRE6M4fU0d8Aea1e+VQfhgBLQA13Jk2iKqG2P21wm5nykuom8t+SI40h7FfHi5JiQDDO+HquR/hzgvCRCuP0Utg7ovLfC08RzgrPo/+oo7O/KpNqn+bgs9+P/HdJ6meLzuIgrY/QtMeQh0jIghkxFEZ12QtzSLSrkQadkCkOl8GLg6AzQPP2CPtX4nrEYBbZPAtqUpuLUUt0v24/iRawPOJFPuY+NdAq8YHsljKbti52M2Jg3Dw4qWSrs0ZqL9qlJ
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768403271-671740
+X-HE-Meta: U2FsdGVkX19CCfTxb8u8x2eIy92ok2GmXcXeahxhlRSjt6iJ0AzllTW9LppTqEEiB+kSQg9ag8yYc2WPMVPIJPjTOsS1n+MjSyC+6Xqpbh0PvDUEjDlUdmbSM0ZYAasSO9WBCt/VfcoLCH1po84MrkWtBeq7KgP+PYL5G11uIHUUanQql3T6/YOek8DL830Amkjn5iksBbqdpOJIxSu2n3RGDOhCRZ2A+oxZDApka4rOfEYu0YH1IEkRaKJsGVshwtr9+dIcXGNScNLiZOcG9ndkPBQXS7TveQwBNsaF2vgIFt6u9NYDTCofzTYg3S7HMVmzoTeRVrmVz9Hj7Zf2A1cDcLN47N4QIZDI6saU2CHyzfYHnBFfq3vlImYdVfVWpol8p7pBQui6J7cF5PPpyhQHj3Gy6gwtzRK1YSeZo4OL022+NZu29Kco9L1p+UQQEUvl8Et3/Poe3l/odAVBbU/04AuyEmW4YuCfWt/5dhnHV+S7conwVFvn+yPpG7lawuUBxSWOH7BmyUaz+lBUlMJ9V8oc41v9gLgig1pK6r6qXrUm9PdrIXQ+6PgH6QI2qfaFxomeEKYvsR1JocZwMKJ0647EUGtWqr/UIelS2+i8z74QauiAkU+sqjyJdhXE0d4Wk5LtIwIh0eE74Twyzaokz+ymKGzTH3ItlOaQhJo/QIdmJvGn9kXCt4d7fbxDUIFKOT8x8NivryYtx+Tk42LVdx/MWjvRdfm4aEeNZRAyQ5+JzBpbHO5RPJAQZW3+57zQaGiakhve2rpY0BMVGHqj5G969Av8RC/svo/lA+75Tige/yR2jb9oWX8WdMgMeJpf8869aHTJ9CccQ8Tlii8pOOV+zEpBJP3wqphjq0+A3ktnns4v9psBwTmBzeyUrfF0Ar4XrOKiMW2tFbLHv1WHt2Oi2PpYoKc4/766XDN/x4lKRQ6lIBZszi3gHGlHsbC0GEgwUB45B1MWULw
+ xt7UlPL3
+ Yr1JcQf9ZEvM7PDdP8uxicQKKTC/3wK2hphjc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -160,21 +114,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 03:14:13PM +0100, Amir Goldstein wrote:
-> Very well then.
-> How about EXPORT_OP_PERSISTENT_HANDLES?
-
-Sure.
-
-> > The problem there is that we very much do want to keep tmpfs
-> > exportable, but it doesn't have stable handles (per-se).
+On 2026-01-14 15:05:34 [+0100], Vlastimil Babka wrote:
+> > Yes IIRC Hao Li pointed that out before. We'll be able to remove that
+> > !preemptible() check that we area about to add by the patch above.
+> > 
+> > But I'm not sure we can remove (or "not put back") the "in_nmi() ||
+> > in_hardirq()" too, because as you said it was added with different reasoning
+> > initially?
 > 
-> Thinking out loud -
-> It would be misguided to declare tmpfs as
-> EXPORT_OP_PERSISTENT_HANDLES
-> and regressing exports of tmpfs will surely not go unnoticed.
+> Ah right, it was "copied" from alloc_frozen_pages_nolock_noprof() where it's
+> explained more, and AFAICS will be still applicable with sheaves. We should
+> add a comment to kmalloc_nolock() referring to the
+> alloc_frozen_pages_nolock_noprof() comment...
 
-tmpfs handles are stable.  It's the tmpfs files that don't survive an
-unmount or reboot..
+Right. This looks halfway what I remember. And this was works in atomic
+context on RT because of rmqueue_pcplist()/ pcp_spin_trylock() usage.
 
+Sebastian
 
