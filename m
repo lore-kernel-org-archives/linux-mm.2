@@ -4,144 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5296BD39000
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:42:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08ACFD39000
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:49:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 856636B0005; Wed, 14 Jan 2026 12:42:13 -0500 (EST)
+	id 6FB4A6B0088; Wed, 14 Jan 2026 12:49:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 804786B0088; Wed, 14 Jan 2026 12:42:13 -0500 (EST)
+	id 6A10F6B0089; Wed, 14 Jan 2026 12:49:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EC726B0089; Wed, 14 Jan 2026 12:42:13 -0500 (EST)
+	id 577466B008A; Wed, 14 Jan 2026 12:49:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E3586B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:42:13 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9BC87596C3
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:42:12 +0000 (UTC)
-X-FDA: 84331288104.10.F296E5D
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 81F21140010
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:42:10 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=B+tw2sJq;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf09.hostedemail.com: domain of smostafa@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 461356B0088
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:49:18 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DCFB81605B3
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:49:17 +0000 (UTC)
+X-FDA: 84331305954.03.E830EEC
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 012314000E
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:49:15 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ayFTofdl;
+	spf=pass (imf12.hostedemail.com: domain of jannh@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768412530;
+	s=arc-20220608; t=1768412956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/LvZuiuu1YEsxAfp5fNtmPk7deYxJACc8HafvMN6PKo=;
-	b=1tgrDtv5kjrG1M5gfP5zLmb4Y7mz4BH0umAMtccOl1ZojcmcII5Ijo7g5RjtgSrrfX7JBl
-	KenYR2xOkhxTWmGKAchleOLhQtKHwCQO5V3CJEsFnNSWGijYFViQ5NJIsYcVpyFwPyPIIf
-	FMrGpt81Su4owtZUboJX8nVZ0l+4x9I=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768412530; a=rsa-sha256;
-	cv=pass;
-	b=aMloTctr3xaSwP92llL6oKDrc2Iz2kdYF1obHFNWOup5+UlklQmfSo7mxd0iHz5/4T/ds9
-	zdzprYYNIPGF5q4VxzmnDhDhy74uCnjiTuTTFc27kJUJYXzrRdhv+Pnk22cLxDqjZTM5eG
-	26nGSIHFyh7P5EHPXnx3/ElwMajrp2k=
+	bh=QfAHwf9akDs9TjuCmKld5ogxaBWdNsL5NTrF0XlDW/E=;
+	b=maPE1fWoTDAs8CY45DaJhCSthYKCD4Qc/ojCsVEuc8MNG/p2AY2De545j2otj/JPFrscr2
+	kxb7Qq8Gwb1NtpqVaJqC2uL5OhNyM/8Mhdn6vkrFspl6b32ZDw+7FTGH1CTimOePmYRRBR
+	tFRy/GQhsJ49II9u2+Vz5fQhKMdSzhQ=
 ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=B+tw2sJq;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf09.hostedemail.com: domain of smostafa@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6505d147ce4so223a12.0
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:42:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768412529; cv=none;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ayFTofdl;
+	spf=pass (imf12.hostedemail.com: domain of jannh@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768412956; a=rsa-sha256;
+	cv=pass;
+	b=NY8MDAwSXOKKydyOrjYoYlmXfZ9XTkD/47dAxJQC0KgOvHyDKyJbHoicbr7lHPZ8+6VWv+
+	Dj97rGnzdGzxV43Ad98KhJKMISsCC5XUoFgGDkWqBAQd70CEmhWyuf6bzxbpFuOIewluc3
+	6dYlOh9ElfaiP9e/w3JM70F7CrkHCGk=
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-64b66d427e9so50a12.1
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:49:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768412954; cv=none;
         d=google.com; s=arc-20240605;
-        b=BJD6bxkTB5r0XaVRhtrM1YrVIOhMKJZz08WtZiRymly8s+a/I79GqGnjGYTw8rVTqn
-         lcpNzv5HYxvX5b043re2i72DeiyjQohVZ1cs2sPiGWnDbIAY8i7+vtGXwbWW/oDaxXJb
-         sV+pQZtM1RzSUopPztR67iKWVFEw77CYzTo9zi7ufpjdJozLddLiiZqcqEFz24S952Lu
-         FV27Z53pkFSxyGuqPzMGGXLSJPLr7Yne4japYFtpNGFE4b6y7Jbmwe2w84VQxNh13ZkN
-         VSbITL5Rgt9mz1jqODc8D7KyKw7Iz8RLy2RbsIAfUvx5M+rEiIxCqEK6HBJJyTH05TcU
-         Epug==
+        b=fKseNvYZeePt2CJQoPYWSkwP9EilS5qmMAOikIQ0sqn668PIUHQoM1Ko+UUtdpRc8z
+         ua+lgIC0iwdyeQNXqWb8Qdww9LkQKf8P0W/iWf+tXO/xHpPt+AHrN39hgEXvp/elbqhP
+         1P0219zk/qoaHMXOfxpkRGJWc2+OZFngPqyC2cf5BTheE6xDzb0rDMJxg1ni7RlxPkBM
+         rSc5UT4LtsC1ti96gRSBiTrqFaK0jE92e32A3h0bSuZUlpwN9jYA4sC5Ugd+Ov2804gv
+         lFMa/sP13HqmS6kNNMJf5He4SwiQ+pawPMUlSRPGvbkY5q0p0Fms17GPSRNJSAd08XiX
+         sw/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=/LvZuiuu1YEsxAfp5fNtmPk7deYxJACc8HafvMN6PKo=;
-        fh=ZO+g5MdcQMKOKlkyYYg+pa7i+Ap2hcfTAY+4QFTeZT0=;
-        b=b/ePUndXF2asO0T/LoBr9ixGo3IUIPGFuuT6oOuyqdg5CqsGCZVavJkp5qTAUf7kwW
-         uini10YAffE0z5aNzjvYjUHEmf9voQHiXXRAwen26zm9BN7JZ3EEHXS6Q3T8d8SLlUX2
-         xx39x7gP2CUzrdiHIOIqvVR3s/rAXQ9kjjZ9/Up8F/E4Mutz9avn4YZFyQvPDIIWvYdx
-         BYS7F6e4etI5azpqSGjMlaWHD7zGiO3GdHIBnrNRS3OL5qrx+1VDmcpbpHZHPAucve6z
-         oEfHKUq3MewQPeYIv2RvIGPciZKz+kaedP9M5jm8bzcLb69zGINY+kobyklwa8GE7vbC
-         udig==;
+        bh=QfAHwf9akDs9TjuCmKld5ogxaBWdNsL5NTrF0XlDW/E=;
+        fh=bOimRvwUETravWBHh+Qu9H7XOPfa/+sURMPUb3hFrEU=;
+        b=NQvE7mzA4UZortpPL8+VnyqZMLddafTzdpt96YvWTFhOPhXvYgCbRVcZnlysZO7Z2Z
+         Ke8XwxvulI9oDHGNmRjW4JSO4zkCOTzLzlZM/NbJL1a7aeb4GXm8Lhgeix+qjg/4X+MQ
+         Xe2I6aIHv3qP/QyzSa4PgQA0knQbqmi84oR5qm6sc9oHj/0aKoTzT0Rtn5F2EuA3IsT0
+         YwyUMQEjtuHTNtVfSTYZT8BMCvfkl2d1mRk6yIJeqP8whtMUMnQCcwzB7jdHCe0OYQhP
+         ScrV9DS6HxiM7lbUJl7GU4wSE8GonZE/bE6P74L847cg4lt0wD20zUiH03aCT6LY096E
+         RDFQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768412529; x=1769017329; darn=kvack.org;
+        d=google.com; s=20230601; t=1768412954; x=1769017754; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/LvZuiuu1YEsxAfp5fNtmPk7deYxJACc8HafvMN6PKo=;
-        b=B+tw2sJqm7c941N+DEIGIVLUksgHlpH6oZ7wzsP+f5rStelUF+UKjsodG9CHve9lnt
-         DJdr9+OE5OD45B3nbs/McKa+rdtE8Ixg06iPtZttCDt4pKQid1+Nhs+nRJBUrx+pRaQX
-         bwuqzWW2gsBYP6P9WACLThzYMxterM5+rp+BsHPrMSggF4cemhemeruQ7f/AGtohqdrp
-         nkx8f3IPFPTRl5i2CJ88Hz23k/1Ob3bsACVeXzNrREF/PATHhdExu/zV7qIu+sztMrNl
-         sCXTdbnPK/6vwlMFHzjs7uDQUiDzqFrjJDft5Q2MfAq3DyiGeHoTdgc1O92+Z4XWMMP/
-         pV1Q==
+        bh=QfAHwf9akDs9TjuCmKld5ogxaBWdNsL5NTrF0XlDW/E=;
+        b=ayFTofdlFaT/93ol9T/eSoWp2oMBHI/goL0iVKWpoHEqr8K9jGhA7Xttg5pKtC85uk
+         UDq29Dmcb3q4Q2z6WwpNKajpcH28MZqzW8DpyEdTPkh4lJxKIz2kENwDgrVkSjjgjaYj
+         tX4iUGWSeM9J4ZviKjdLlKZepHHmRqyHK76gSFFXwuVIWd3DbkHB8pjI8Bu6THFGwl2u
+         0b0fJcJ+qwtPpE4kcYrNZhK8fpxO9lpdSiyHiTbsRfqZHTsENfBsW1+zpFTqHdbrts7/
+         QAiY1+qymWHLpECHjGsXDG/VMpcfRJHVvUY+lT3qesj6DIrmXQ238gfoX+2O2hmlA9dQ
+         WU4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768412529; x=1769017329;
+        d=1e100.net; s=20230601; t=1768412954; x=1769017754;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/LvZuiuu1YEsxAfp5fNtmPk7deYxJACc8HafvMN6PKo=;
-        b=l2x0C9lzhZsyS+htaz96KLw0ennTeSKxPG4KD36FepFvJEAgqyN6tyOHa0J5BYds7S
-         F9ydbt6MEaEwxl0FPCORSXwXz1FmpZ2s3tSb2nEkhIcipMxDNRmvh0R6xyqSLl3SPI6O
-         OK4MaBkbPYU3bZ3yJq8UvlVATSiOb5tW9s0SjAly+5qZHQiyYTL7lrT3xj+1I7Puhzf8
-         ySF8eb67EKbtzZE0EXjtXFwL/ntJk8IYNCY2sOhGj5MM3XYWP5vblEEgtJ5LHtAVbLbh
-         Vy+Ypv9UU1chwt7qzMj6l9/+bN9cOlRpc8c5KP0HVfokDH5GNANwl9C4iXcfNnn7A7Da
-         bPCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSSUt+yl0ThM4stY1GOXRXmemubwpeuLnj7mT8DGT3iNn8SqtpqPvJzzfiushkPbUXEaPgjpya6Q==@kvack.org
-X-Gm-Message-State: AOJu0Yxagt8K1XW6cOM08+bk2scTAL4nG6qVWsPQYfjHrQCWzhhQcdrN
-	1Ntol0IDxrr4HBP/qb+ta0vh7U1ZSF+3cWXiLDQl1mB9ZDJDZprzbS5JOXeYCaQGXsIHtEwgS81
-	2meLb27LmPpRr+IR5JZLAYeP+IceVP1GF9i58pRgQ
-X-Gm-Gg: AY/fxX6Eni0cERMLynUD3tRFfR9yZIduRotjEHcbcHRcdgug5PoipDyA2DeQnmuNBdj
-	UVqLVgFtceVfOS2HMneDNYx85FGmwMmEy2Ryf+anuhKzQxWdXt8ndFcjqFQx3gx4B54PnQhGTLM
-	yXo6KbYsN0KKMjC+GHvvVP+oZsQVBILLXsXusnwKMa2GRySSmFgSlA4B1A9kJZ5v12bZJvRLPth
-	tOgO4UBXePgFPY8ShnE2r9Q4zBsV0dDCHIQ/PwZIeyeYbw78KF84s3g9msgZ97diYALrsf5pawk
-	AnEzAu6+DS78wzVsc6Qy85Au
-X-Received: by 2002:aa7:dd15:0:b0:63c:1167:3a96 with SMTP id
- 4fb4d7f45d1cf-653edfab5b7mr33769a12.5.1768412528683; Wed, 14 Jan 2026
- 09:42:08 -0800 (PST)
+        bh=QfAHwf9akDs9TjuCmKld5ogxaBWdNsL5NTrF0XlDW/E=;
+        b=GhJKZ9blI38NS+uzaroxwiei/giHONkDw6G1xcn8C+ZeEK9RtmtncG5u4XQdDh/91d
+         0NwiLOMOrz3SlmMJpmwXSiVygNfnTwIkfV6cIApBLKMHLMVva0Q7FRu3puu4fFvqx5fJ
+         n1uL/yfDf27QbyzGHOtqt11L7b/u4MNbLpqynl5o8phXYAnURlncpLWDyOFG2fEqFCTN
+         IouA+kiRH7sjfFkue7BWIFZNm/A9mxApXYGnwdbHnNdVW2RwEjBxbSYaNcaL7fajE/hH
+         08n/5vM+wpqHQXIdo1zTyK89TTcOmGabeWAt830LqA+ouascoFXba5HjCaAQu33HdQGm
+         XzQg==
+X-Forwarded-Encrypted: i=1; AJvYcCXpJhsilsf+TpWHEtsNU6sodkKUehGy2B2efvBC2jUuCFFYFIRWllp0ziOW3krlVWIPdKdrSBfy2w==@kvack.org
+X-Gm-Message-State: AOJu0YyfOX3HsdtH5mjXBEZNlPFO8XUSss2IawIf4y8NAjw05o5naYiR
+	/Mbq6UYvmtOhNuV4PRAaQfpbCj5QtC6U8azeGAy2Pns1E3mhRA6ie/W0h6EpfCP3wFFbrJFni5G
+	6PtP/Oz8f2bNrJegvrAgIRXRnw8nbGA9QoPirx0Rf
+X-Gm-Gg: AY/fxX5K1EKLCuCyC9iY9OVyUDSqkWcN+wU1CQANdRiERxB2Ym5G0wc63o1OxB49Ltr
+	VMu3mvAIRdr+f+sZcRgxxYLdGA7zwhF4eqdz4IJgu3SksD+4YfKJkBALs2A4jafPncmlRpkTYqx
+	6wrFU2LYnxiwdas2I18xZQp0X9+S5J5LW6wIWKTmmNXXaL2BdGWdrvcpQce34q2Ecb7ZVnD2NZu
+	IfOq2mBXrZgQ9zr4xERGybpnlq3a9YOKez6scgSzlLce4DIXVMq8o4i5BZrv/rpCZWw3/jCbsDm
+	D28Iy/od6fbuwmEue8pJoN4etQ==
+X-Received: by 2002:a05:6402:a252:20b0:640:914c:ab91 with SMTP id
+ 4fb4d7f45d1cf-653edfa4867mr40223a12.3.1768412954114; Wed, 14 Jan 2026
+ 09:49:14 -0800 (PST)
 MIME-Version: 1.0
-References: <20260109195111.GQ545276@ziepe.ca> <CAFgf54r_au6isA10Nrve=MHL455X=tKhNsSwH1ej-TX08J3xLA@mail.gmail.com>
- <20260112133256.GB745888@ziepe.ca> <CAFgf54psxPrsvujStPNtrzxiKOsJF+aVrN7BcNxxmAF4wDmRXA@mail.gmail.com>
- <20260112135208.GD745888@ziepe.ca> <CAFgf54q+9Y5TtGJDB=8q_BW-0F=TM7zBbCcMzvtvr_N2WMnd-w@mail.gmail.com>
- <746f5adb-1d91-4ca2-8ae0-a2d171203b66@kernel.org> <CAFgf54pbkfdFr6biE8BiNKBnTBFWxXGmvxsZ0E+C1C44c9AW_g@mail.gmail.com>
- <482f2f36-e906-492a-a80c-987bf7359d83@kernel.org> <CAFgf54ovfnTHmMuZGk73SEEKsP3k-_exR1wqUE4W9tLYKv_iDw@mail.gmail.com>
- <20260113150828.GP745888@ziepe.ca> <f239e391-ac7c-4d26-ab82-4024a77ec3d3@kernel.org>
-In-Reply-To: <f239e391-ac7c-4d26-ab82-4024a77ec3d3@kernel.org>
-From: Mostafa Saleh <smostafa@google.com>
-Date: Wed, 14 Jan 2026 17:41:55 +0000
-X-Gm-Features: AZwV_QhTl513jAwSvXOQMjGLcpJF9UrikiS1WWDBCfp2vS9vKyi4pvniNQM3cAg
-Message-ID: <CAFgf54pBAUm3ao-UJksiuGKtvv4wzRyFq_uKwLe0H1ettO4DLQ@mail.gmail.com>
-Subject: Re: [PATCH v6 3/4] iommu: debug-pagealloc: Track IOMMU pages
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, corbet@lwn.net, 
-	joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
-	xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org, 
-	Samiullah Khawaja <skhawaja@google.com>
+References: <6967c517.050a0220.150504.0007.GAE@google.com> <CACT4Y+aFaijS_CvzTnHB+ecg5nzYW1-MWPSp-Ad_0ax85=DvCQ@mail.gmail.com>
+ <CAG48ez0iyjjZn1U7LeG4SBXjRGo3PR-a0MWEhAJZ02vHOUA6BA@mail.gmail.com>
+ <CACT4Y+Z24oSCssMnYwtCkGHpCKTOX2J4x+8HNoGovVxeZ5_TzQ@mail.gmail.com> <CAG48ez0q6ZXAk8D3frvXyeMsFDYfmY0sc=PkE6bRM8QP0gEVfg@mail.gmail.com>
+In-Reply-To: <CAG48ez0q6ZXAk8D3frvXyeMsFDYfmY0sc=PkE6bRM8QP0gEVfg@mail.gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Wed, 14 Jan 2026 18:48:37 +0100
+X-Gm-Features: AZwV_QgQrCMj7rVFwcEIYN2XaYrMiNOVYOr_gFPb_eDYR7jjssOW1CyNII9XLhY
+Message-ID: <CAG48ez3+t-uv88cUhG6=YfMyRVW5REi3-aaW3a_yXSZDK38_ow@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] KCSAN: data-race in __anon_vma_prepare / __vmf_anon_prepare
+To: Dmitry Vyukov <dvyukov@google.com>
+Cc: syzbot <syzbot+f5d897f5194d92aa1769@syzkaller.appspotmail.com>, 
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
+	harry.yoo@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	lorenzo.stoakes@oracle.com, riel@surriel.com, syzkaller-bugs@googlegroups.com, 
+	vbabka@suse.cz
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 81F21140010
+X-Stat-Signature: fdoj6srkgeb6iqttnjfwyz9jcs8euaqx
 X-Rspam-User: 
-X-Stat-Signature: cmjkrk98x4mitemczr3cwqzj3g5k8695
-X-HE-Tag: 1768412530-684833
-X-HE-Meta: U2FsdGVkX18k4JOQvW7M0UQtc9DZho/eYsbQb6c1fJ98kGbCgA21N25qSDxgRv0b7Ko67jgFMUONi4G3QrkipRHBADfQkiyUJi4vDcY8MLS93/cofpzN+NEpTcjEtfM2l7ucbrM9WH4nKH9dUQmIeWQs1QyJhWfkfHNICaeiX7SsvIo5Pew/fgaHP6gOZGSxPJ4utBHFNZ9oNw7ZBWiYv465IN35qhyuEVeeWbqeF6ATt/ysalodxidTyoJposIpznPGOZiwyhe9IC5Zkt2Poy7g/WGtZ7pttxpOwqr+G4JkDS6csnnXpPwPs/Tfnb5NMWjF3dWtTmMDzadKim4E0wk2x/dKacgyoSgKffEGG2RI06pmwSdWcJeT2w9kxdeiXGiAW6OczuN3f13XAYa6U/ubyuYuGcUN/inwDhiDRRNso3TcY1q2noxdDewBusXk71CDE3v4kJyG33bQ6nbWyod3jgNv1aKK15YpM7u7rr7awoD6BHAH8eyZMQLe4Nux2Y2U4G0BSpDTw4zx8rxpnjaASHdCpA/kM9ZFJlySQuMi/0+9d5b7Nve1xazG2OZKd5h2EWtve4N8rvqWyO4XO5/4z3L/mdVvjidkcMx2mz7NE7UYaLcRAZbZifjx8sNOQOUXPU2ZDx2VTGi+xbHdiTOeAxCBjfh59/qic7kly0MPDbM7IBEDm5Cqs675JrPSkVQbk9bq9iZkm7pcjd5vvA2fp9ZwR6molIEpuehXgLXna2E4MtAVZPKtlw9bmbzt/Ib/oiqA9SLACS7ZeDajn8YbIpZ/21hgr/+xVifv2+12XlCKI3G+RcqgHONOMjKOHZAtmFsgm9Vlu8IOT3CXFJB84e12W1Ern8XfGxe5KfFItj+7DRiNisXLL6W6Y5bVkrAKA/JSJjjqGvjicxFFQMm+Rd1bLEMzaIN+0Vsf/9yb0Br42H5yi4kbHcYl0xXCBusUGu3wdm4Km+M9I9C
- SlcuNR1G
- KtGiSoXSKd+KfwTvDmfIZb6fV6D9UrNAYRUJ000FsY1wo4q7eKevgbNEnUeYB0Pumhv7NQq6SsS+HYN3I0I6Su1sedEuMovNNe6wRQVvTyatGp0TT1HUB9Vhm4Fk4qzTZuMaaiww3biedGLWisFBRVgpg1JE71fTpBb7E1+aHOAPJDl5DswGWKGGg/qFJ30nwK/rB4RETJJUjQT/dI389iWXIlIhbiX3evv+8CQarycchT0fu6lfG9uj1dsAxTEP7mzbT2lA1k23xbBHXuhKnJs/myxsdtDYhI5jwz003ziodH0xdOYVnQA4EAoktuBZBDAp7YK/zKkW56No8P9/2LjQtE+2k3Peh+4QY
+X-Rspamd-Queue-Id: 012314000E
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768412955-426296
+X-HE-Meta: U2FsdGVkX1+1Iur3GTz6wu93qBkg51AH94MkJai8oQspow/u4DXzjnHhxyZmXOgxADlPhZea1dcxAtGig4XhhSE5LHv5CqhDMEMYqAg3VRYXard2qC0pc8zRXbaWlhS2gt4mBDX2Jx58hJ7tED75xCxLzgVrJ3/j71Hd52uu7ccaZd1ul6e7X+5u48Nlt13D5rBHKV7sIZ9lceP96YikXD/FwGTcjIyKCxZ0UCTZqDArFaVNHDY/mAmU13KT77KLbBtIbd2Y+4gaJJSqjq7kzddV49vJcGo5HRHjhIMPKEp/gzZdU8KioU2YKk+9Y6YYucbbSF5yR0fEAtfWJRLa99m39MDV7qFCJ0JIdtMcB9AoG4a8f8N5pKqFmPpzfV5C6u4TUVNa7nTXt2C6NqdtY/f2gQqOAYhz9AxcpFfHJBKPxegU4KMkvWhjuv9Ys6t6FHyP8OI9kZ/d9OPTxUGPHhYZgJe4mJeZy8vO9cJ+KyBMJ40/riFPsJQxRzOjDrJ3QFG7pwL65AGpm3nq0eP/D7uiydil5aP3Xa9KxvWJFHSWQgsxrryhJ+8A5f4sc7jBP7YBDIG1Xm1WlrxlrkEqd4srhkrd514bvJNjBAIxY5hBjuHfpTZZ/H3tg+ApddvUJwq8Sy2pYmNAPg5kREzcRv+1Sdr7QlZFJ/g17rz7lHv6sts12rh927lPSBUbuesVaqMYKtkEEEIPnxY4uV7VYD1XJSGkOFecO83nywMsIEaA8DRJm5PRDZnA+nJkR4IyuDrI5hrh1yqFAX1Rs0Z0PrZFghzO3imXc1NZwN+kyN08K85ciqjb+U5HbKjkSf1d0cM8FGMp5vo1H18nPyuUpW0GOkNeOIzJKtoMmTOh5shqFo/y/KxZ6gDRDtXWHXWWnXWvniKhk/7cBXFHc8PtfwrbZ1KGP22l/gU1possGamzKz/gfnlouALbf/2OYPOGReep9uRJCP09iGc5y2g
+ A1F0X8Zo
+ QUiqLMjW7P/OZPO7QXCDap/RWtCjtbG34OcwE6fGhKH7cMXuGeGAxf8QNChTtW/Oa+htORxrrSza5nTMHf01zITNbsxz3381NPutFz3fWkyT02muvgxrfDb2L/FNmmyj3J7MN+smrZ3tIWHpBY2i6blp+g7nt5f55pkMhwyU20LUb/L3y2GhRyqCDgBkdwLo8No1NpVA+5X3BNdzdEOc7Xd++x2SDbwlNViA3WTyZxcxFDTTz96z3W1+SKuHo8VVH3KE1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,34 +144,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 5:30=E2=80=AFPM David Hildenbrand (Red Hat)
-<david@kernel.org> wrote:
->
-> On 1/13/26 16:08, Jason Gunthorpe wrote:
-> > On Tue, Jan 13, 2026 at 10:49:28AM +0000, Mostafa Saleh wrote:
-> >> Would you have a problem if we added a new function in page_ext
-> >> "page_ext_from_phys()" as Jason suggested?
+On Wed, Jan 14, 2026 at 6:29=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+> On Wed, Jan 14, 2026 at 6:06=E2=80=AFPM Dmitry Vyukov <dvyukov@google.com=
+> wrote:
+> > On Wed, 14 Jan 2026 at 18:00, Jann Horn <jannh@google.com> wrote:
+> > > On Wed, Jan 14, 2026 at 5:43=E2=80=AFPM Dmitry Vyukov <dvyukov@google=
+.com> wrote:
+> > > > On Wed, 14 Jan 2026 at 17:32, syzbot
+> > > > <syzbot+f5d897f5194d92aa1769@syzkaller.appspotmail.com> wrote:
+> > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > > > BUG: KCSAN: data-race in __anon_vma_prepare / __vmf_anon_prepare
+> > > > >
+> > > > > write to 0xffff88811c751e80 of 8 bytes by task 13471 on cpu 1:
+> > > > >  __anon_vma_prepare+0x172/0x2f0 mm/rmap.c:212
+> > > > >  __vmf_anon_prepare+0x91/0x100 mm/memory.c:3673
+> > > > >  hugetlb_no_page+0x1c4/0x10d0 mm/hugetlb.c:5782
+> > > > >  hugetlb_fault+0x4cf/0xce0 mm/hugetlb.c:-1
+> > > > >  handle_mm_fault+0x1894/0x2c60 mm/memory.c:6578
+> > > [...]
+> > > > > read to 0xffff88811c751e80 of 8 bytes by task 13473 on cpu 0:
+> > > > >  __vmf_anon_prepare+0x26/0x100 mm/memory.c:3667
+> > > > >  hugetlb_no_page+0x1c4/0x10d0 mm/hugetlb.c:5782
+> > > > >  hugetlb_fault+0x4cf/0xce0 mm/hugetlb.c:-1
+> > > > >  handle_mm_fault+0x1894/0x2c60 mm/memory.c:6578
+> > > [...]
+> > > > >
+> > > > > value changed: 0x0000000000000000 -> 0xffff888104ecca28
+> > > > >
+> > > > > Reported by Kernel Concurrency Sanitizer on:
+> > > > > CPU: 0 UID: 0 PID: 13473 Comm: syz.2.3219 Tainted: G        W    =
+       syzkaller #0 PREEMPT(voluntary)
+> > > > > Tainted: [W]=3DWARN
+> > > > > Hardware name: Google Google Compute Engine/Google Compute Engine=
+, BIOS Google 10/25/2025
+> > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > >
+> > > > Hi Harry,
+> > > >
+> > > > I see you've been debugging:
+> > > > KASAN: slab-use-after-free Read in folio_remove_rmap_ptes
+> > > > https://lore.kernel.org/all/694e3dc6.050a0220.35954c.0066.GAE@googl=
+e.com/T/
+> > > >
+> > > > Can that bug be caused by this data race?
+> > > > Below is an explanation by Gemini LLM as to why this race is harmfu=
+l.
+> > > > Obviously take it with a grain of salt, but with my limited mm
+> > > > knowledge it does not look immediately wrong (re rmap invariant).
+> > > >
+> > > > However, now digging into details I see that this Lorenzo's patch
+> > > > also marked as fixing "KASAN: slab-use-after-free Read in
+> > > > folio_remove_rmap_ptes":
+> > > >
+> > > > mm/vma: fix anon_vma UAF on mremap() faulted, unfaulted merge
+> > > > https://lore.kernel.org/all/b7930ad2b1503a657e29fe928eb33061d7eadf5=
+b.1767638272.git.lorenzo.stoakes@oracle.com/T/
+> > > >
+> > > > So perhaps the race is still benign (or points to another issue?)
+> > > >
+> > > > Here is what LLM said about the race:
+> > > > -----
+> > > >
+> > > > The bug report is actionable and points to a harmful data race in t=
+he Linux
+> > > > kernel's memory management subsystem, specifically in the handling =
+of
+> > > > anonymous `hugetlb` mappings.
+> > >
+> > > This data race is not specific to hugetlb at all, and it isn't caused
+> > > by any recent changes. It's a longstanding thing in core MM, but it's
+> > > pretty benign as far as I know.
+> > >
+> > > Fundamentally, the field vma->anon_vma can be read while only holding
+> > > the mmap lock in read mode; and it can concurrently be changed from
+> > > NULL to non-NULL.
+> > >
+> > > One scenario to cause such a data race is to create a new anonymous
+> > > VMA, then trigger two concurrent page faults inside this VMA. Assume =
+a
+> > > configuration with VMA locking disabled for simplicity, so that both
+> > > faults happen under the mmap lock in read mode. This will lead to two
+> > > concurrent calls to __vmf_anon_prepare()
+> > > (https://elixir.bootlin.com/linux/v6.18.5/source/mm/memory.c#L3623),
+> > > both threads only holding the mmap_lock in read mode.
+> > > __vmf_anon_prepare() is essentially this (from
+> > > https://elixir.bootlin.com/linux/v6.18.5/source/mm/memory.c#L3623,
+> > > with VMA locking code removed):
+> > >
+> > > vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
+> > > {
+> > >         struct vm_area_struct *vma =3D vmf->vma;
+> > >         vm_fault_t ret =3D 0;
+> > >
+> > >         if (likely(vma->anon_vma))
+> > >                 return 0;
+> > >         [...]
+> > >         if (__anon_vma_prepare(vma))
+> > >                 ret =3D VM_FAULT_OOM;
+> > >         [...]
+> > >         return ret;
+> > > }
+> > >
+> > > int __anon_vma_prepare(struct vm_area_struct *vma)
+> > > {
+> > >         struct mm_struct *mm =3D vma->vm_mm;
+> > >         struct anon_vma *anon_vma, *allocated;
+> > >         struct anon_vma_chain *avc;
+> > >
+> > >         [...]
+> > >
+> > >         [... allocate stuff ...]
+> > >
+> > >         anon_vma_lock_write(anon_vma);
+> > >         /* page_table_lock to protect against threads */
+> > >         spin_lock(&mm->page_table_lock);
+> > >         if (likely(!vma->anon_vma)) {
+> > >                 vma->anon_vma =3D anon_vma;
+> > >                 [...]
+> > >         }
+> > >         spin_unlock(&mm->page_table_lock);
+> > >         anon_vma_unlock_write(anon_vma);
+> > >
+> > >         [... cleanup ...]
+> > >
+> > >         return 0;
+> > >
+> > >         [... error handling ...]
+> > > }
+> > >
+> > > So if one thread reaches the "vma->anon_vma =3D anon_vma" assignment
+> > > while the other thread is running the "if (likely(vma->anon_vma))"
+> > > check, you get a (AFAIK benign) data race.
 > >
-> > Given the hidden complexity that David just pointed out I think this
-> > is essential to encapsulate it in a function.
+> > Thanks for checking, Jann.
 > >
-> > The function must be able to accept any phys_addr_t and safely returns
-> > NULL if page_ext cannot be used for some reason.
+> > To double check"
+> >
+> > "vma->anon_vma =3D anon_vma" is done w/o store-release, so the lockless
+> > readers can't read anon_vma contents, is it correct? So none of them
+> > really reading anon_vma, right?
 >
-> Right. I think pfn_to_online_page() is the appropriate check.
+> I think you are right that this should be using store-release;
+> searching around, I also mentioned this in
+> <https://lore.kernel.org/all/CAG48ez0qsAM-dkOUDetmNBSK4typ5t_FvMvtGiB7wQs=
+P-G1jVg@mail.gmail.com/>:
 >
-> @Mostafa, I saw you already sent a v7, is the pfn_to_online_page() stuff
-> handled in there?
+> | > +Note that there are some exceptions to this - the `anon_vma`
+> field is permitted
+> | > +to be written to under mmap read lock and is instead serialised
+> by the `struct
+> | > +mm_struct` field `page_table_lock`. In addition the `vm_mm` and all
+> |
+> | Hm, we really ought to add some smp_store_release() and READ_ONCE(),
+> | or something along those lines, around our ->anon_vma accesses...
+> | especially the "vma->anon_vma =3D anon_vma" assignment in
+> | __anon_vma_prepare() looks to me like, on architectures like arm64
+> | with write-write reordering, we could theoretically end up making a
+> | new anon_vma pointer visible to a concurrent page fault before the
+> | anon_vma has been initialized? Though I have no idea if that is
+> | practically possible, stuff would have to be reordered quite a bit for
+> | that to happen...
 >
+> I just noticed that I tried fixing this back in 2023, I don't
+> remember why that didn't end up landing; the memory ordering was kind
+> of messy to think about:
+> <https://lore.kernel.org/all/20230726214103.3261108-4-jannh@google.com/>
+>
+> > Also, anon_vma_chain_link and num_active_vmas++ indeed happen after
+> > assignment to anon_vma:
+> >
+> >     /* page_table_lock to protect against threads */
+> >     spin_lock(&mm->page_table_lock);
+> >     if (likely(!vma->anon_vma)) {
+> >         vma->anon_vma =3D anon_vma;
+> >         anon_vma_chain_link(vma, avc, anon_vma);
+> >         anon_vma->num_active_vmas++;
+> >         allocated =3D NULL;
+> >         avc =3D NULL;
+> >     }
+> >     spin_unlock(&mm->page_table_lock);
+> >
+> > So the lockless readers that observe anon_vma!=3DNULL won't rely on
+> > these invariants, right?
+>
+> Yeah, that stuff should be sufficiently protected because of the anon_vma=
+ lock.
 
-Yes, it's in the first patch in function page_ext_get_phys().  After
-spending some time looking into it, that was my conclusion also.
+Er, except it actually isn't entirely, as I noticed in that old patch I lin=
+ked:
 
-Thanks,
-Mostafa
+@@ -1072,7 +1071,15 @@ static int anon_vma_compatible(struct
+vm_area_struct *a, struct vm_area_struct *
+ static struct anon_vma *reusable_anon_vma(struct vm_area_struct *old,
+struct vm_area_struct *a, struct vm_area_struct *b)
+ {
+        if (anon_vma_compatible(a, b)) {
+-               struct anon_vma *anon_vma =3D READ_ONCE(old->anon_vma);
++               /*
++                * Pairs with smp_store_release() in __anon_vma_prepare().
++                *
++                * We could get away with a READ_ONCE() here, but
++                * smp_load_acquire() ensures that the following
++                * list_is_singular() check on old->anon_vma_chain doesn't =
+race
++                * with __anon_vma_prepare().
++                */
++               struct anon_vma *anon_vma =3D smp_load_acquire(&old->anon_v=
+ma);
 
-> --
-> Cheers
->
-> David
+                if (anon_vma && list_is_singular(&old->anon_vma_chain))
+                        return anon_vma;
+
+That list_is_singular(&old->anon_vma_chain) does plain loads on the
+list_head, which can concurrently be modified by anon_vma_chain_link()
+(which is called from __anon_vma_prepare()). I think that... probably
+shouldn't cause any functional problems, but it is ugly.
 
