@@ -4,130 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F195D38FFF
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:57:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 228ABD39004
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:58:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7562E6B0088; Wed, 14 Jan 2026 12:57:31 -0500 (EST)
+	id 8977A6B0088; Wed, 14 Jan 2026 12:58:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7405F6B0089; Wed, 14 Jan 2026 12:57:31 -0500 (EST)
+	id 87F326B0089; Wed, 14 Jan 2026 12:58:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63FAB6B008A; Wed, 14 Jan 2026 12:57:31 -0500 (EST)
+	id 7ABE16B008A; Wed, 14 Jan 2026 12:58:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 53B6A6B0088
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:57:31 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 142491405C8
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:57:31 +0000 (UTC)
-X-FDA: 84331326702.25.70742D1
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 618A2180003
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:57:29 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dJzagWnQ;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768413449; a=rsa-sha256;
-	cv=none;
-	b=iw6IaF7g2SJoEpO+TBfz+G7KOO77LhCaw4EY6zKOY8ybqMXNJXyeflZOqJnESeguwNlZAZ
-	9hmrAS0F4f7dnWeUz7j40auti1UdZPTdWDTEbNiJYNSiB+tEJLlcpPxlE9uTQVpr0q/ksm
-	x+g600htbI16OyeFXX91pQazOJnK8Fc=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dJzagWnQ;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D9976B0088
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:58:44 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3B391AE2DB
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:58:43 +0000 (UTC)
+X-FDA: 84331329726.11.6E28486
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2D8A610000C
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:58:42 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=b3csv+P8;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768413449;
+	s=arc-20220608; t=1768413522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m08Yl7EtzwefnAMN6c+XsJuXztPdRxM3+g7qCQe9UyA=;
-	b=p1NPH1IYn5qjzmNLDeEVoLYHTguBcwfNq+N5w7qiqmr5X0qc7oYLBJqoq7ruf/gij1peuf
-	gb+ZZdsRh7tAyY5EDRnmhvWP2LMW6hSp6+v8eYOtWvkunzQQo+Q31bN4hftCui9YdnqAWq
-	6laWDVZwjy2lT9+9WcuCuPMVV0SXbbs=
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8c52c67f64cso9616085a.0
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:57:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1768413448; x=1769018248; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=m08Yl7EtzwefnAMN6c+XsJuXztPdRxM3+g7qCQe9UyA=;
-        b=dJzagWnQbY5tanTmNDp5RsJTvwx3DJ4qFTIcayI4zY8Q+CR+RYojDRa1DkDOqGC/KG
-         dN4cz9kCOJC3lO0e1O37ITKrqLa0f0/45OBfQ5MAXvhejQewVHY0/FDiVKJoIY58oP95
-         va41nc4zB+4siDcmIjmky9jQX1HSwYvCHl13l5BW7R1jD/hxv9D1p77Sz+wpUdezF8hT
-         hS+Im4ZDweTkzFTmj1czrar6QQuIO0O6/EI3MjHHJVlFCn26/HKGZnRY9N0tvHwE6/RF
-         8+W3f7jUsI0+xRULA/fdbCv9KKkTXaT0q6nx1qduFJ2WJK8lG2iYyo5GRe8A6SiXW291
-         1sAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768413448; x=1769018248;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m08Yl7EtzwefnAMN6c+XsJuXztPdRxM3+g7qCQe9UyA=;
-        b=Tsbk6US7kS2lXIxY1F1uHuxvgzcnu5h4Foiz32TXSXYLDuvx/z9i0BjhHR3NgbO6qN
-         Z7OHbrwiM/wI4YGF7c+CdojfmZOxJHWGa1wvjNzRnUSsYj8moXBZBOlzrQlwVZD5aw31
-         ZP1nBXQGTcsOXgD1dJ2CwQQFqyixiABAK/lGhRpXQVQvnIftxeLunEMa3DGPHbE3fztO
-         R2wBahrvSyTRhSvSCx1tczVGyn8xzLPj2Z0jTiMRzLDXWXsmnwdDnIsELX5KER1Rmpz4
-         K2Kn3UZApUlVJ42KWXMzjC/iqFLfQaimRrPo8RbVQeowfpvUM3WL2YMqr0uTB/j/MTwn
-         cryQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU61FjuoWnTPgYJQyuRykyzzk5ZpYWHdihXcaekVmCyLcjNUmBr4CIZEb74F81gZF6P5cx2VktYdQ==@kvack.org
-X-Gm-Message-State: AOJu0YxxwTJLYt+2b50+xODslLTeJILsUHvoQuvzjy1fn0BW6ewsZCut
-	DbgyUWkJ1986kp8CBj7YkFLZBJgBjktF0BAHDaGYdcsPSFAZEwQHhXxPvPZj6w/T8N0=
-X-Gm-Gg: AY/fxX5/HPu/T+NDYerfMAguaTR0LgkR1uwV4w1kTMQo51vRvelupq1Js18k74EsnYj
-	HdvRib9wNQiUaZpZqtAyLNe6Ox4/v+3XwR3WdRuanT2a1HEBnOZ7j4QBRzYCNhXBtYZrLXgUiUz
-	/GEmkg8lDf1Ldzo2Ra/KzW8s6tb/6qt5mCo18kb0GI8TuTzspO3BO7p91+TMFNx/qbR7yV0q+Ei
-	9w+wRbAkeqU//vVYYxi9ClZqCj+VLIQkL8Gg4v5S9pAd0BghHlQ6mcpna3Xi8L82hGjQesTy5bO
-	e3HiBwpvLZW/5lQCdLi2fLZPHJQ9bGnFMljfqmodGa4RiOuy6buXHGgOYULhZBVtXveH8tPJdW1
-	JYdWXS2krg1/4fBBCiPC6C50ZSIHGcKSTKTqfimKY4j8dki9R8n+wZ7yC/15QrLOe1N99pOlxP0
-	4CKtUKSmaboZmcWfskFykPWlrYQu5Bpuc+N1YW6Fku9Z4NvBeZUOUlJAHjEC03B6uaiCzKuik8D
-	Bku7QWJ
-X-Received: by 2002:a05:620a:3942:b0:8b2:eb79:d380 with SMTP id af79cd13be357-8c52fb2f623mr544823485a.5.1768413448323;
-        Wed, 14 Jan 2026 09:57:28 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c530a6bdbdsm204232785a.10.2026.01.14.09.57.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 09:57:27 -0800 (PST)
-Date: Wed, 14 Jan 2026 12:56:54 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Alistair Popple <apopple@nvidia.com>,
-	Byungchul Park <byungchul@sk.com>,
-	David Hildenbrand <david@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Mike Rapoport <rppt@kernel.org>, Rakie Kim <rakie.kim@sk.com>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
-	cgroups@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mm: use nodes_and() return value to simplify client
- code
-Message-ID: <aWfY5pUPCD3mOou7@gourry-fedora-PF4VCD3F>
-References: <20260114172217.861204-1-ynorov@nvidia.com>
- <20260114172217.861204-3-ynorov@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260114172217.861204-3-ynorov@nvidia.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 618A2180003
-X-Stat-Signature: jgoum6wcc4n5zpntjqcwkufci1xpee15
+	bh=DPUuLEm7UXsulGVZFtKN5eZVJzFddxxHXCKNZIrAZCk=;
+	b=kMY3L7a0H4DvEXcOD+vg5j8lcUONkDKS7mGx0Z8tlMS+qwePBIfEEaKnVdkIdgBv3X7AP/
+	PDTT5BBnyKbNCCdVyj0CU95/OoXUxCg+G6dt9ipc3fG+r6wqOpbjACWaAiGaurpLxL2+9H
+	rDLCYoW1Su/0+OC3mQQ/KE/5FGqucCo=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=b3csv+P8;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768413522; a=rsa-sha256;
+	cv=none;
+	b=pRkTqPc04MEqMS6FlCRv1Vqy0WjpiagaWq4QsIMD4HPXll9EtAJ8ztvGtPQhP2VKl6cFLX
+	O/Cf1/IeB8ERm4S6fMFc395YBzo/s1hSacFnbmo2kDb1frMP6qt91Ezt0GWvtJ5hJnOZH7
+	DQlUSPleRkS708i5GtnQRWCSMJEasYU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0110343B64;
+	Wed, 14 Jan 2026 17:58:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063F4C19422;
+	Wed, 14 Jan 2026 17:58:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768413520;
+	bh=9Fv9tS9uQrGFTi2th9Xoxxzo7Y0x6OhXx+Sy3T2KfuA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=b3csv+P8615OFxJg1bifahfXhNgrmDvfbhd018ZXmvO7eitG2MqdJPXyle+rSrcrM
+	 EQmQSa68tG9p0SMJRibZEokmbdKPpNvodTJ0padh7NBvNIZOaqq6Urq/vFtarrxC5P
+	 Vof00TTQn2UmtBLJUXzzleywj758yixQmP37bPjk=
+Date: Wed, 14 Jan 2026 09:58:39 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
+ kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
+ hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v3 00/30] Eliminate Dying Memory Cgroup
+Message-Id: <20260114095839.eabf8106e97bf3bcf0917341@linux-foundation.org>
+In-Reply-To: <cover.1768389889.git.zhengqi.arch@bytedance.com>
+References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2D8A610000C
+X-Stat-Signature: pxjkcw6jcwmh1nx3abfgcnhfpdzkdoit
 X-Rspam-User: 
-X-HE-Tag: 1768413449-869714
-X-HE-Meta: U2FsdGVkX18tP87noWrLpELHdqNuwjFC5WOUY2/rupCcnLze7LEz9iUPdzdTx/f0SKtVjRzWZy2n2X/mXuyscMAwN/j1an46IiiYsV94TMo3MJixszhG+2Z7KWrVqp4ye8nsHdp8Zea8TjkKoxilWIYjsNX0BTUlp5m6WBWIV+d6+xFsZdwwY6Cg+CGUCXpYG9NSoU5lYq7/MhUST4ff4rSPiCWTucMnvrhYZJaP5JTManilmC9LeKeHGzgXCZd6DSOx5xJV3SLdAIO1TfilolTVpiu/edJlaN+TBIPk4eCMQMYWjZsrPrEl/C2lVKNVajPCDYnHe0v6qJVRim4xtkY7kLsZy5lrfeiYHupNMsPy/VmEsjggclEH3o0pqIEZbZ6u7UFUI7kCQ67qvlEtdz7dYW3w+V9fKrnAtpghghXfpruoPI91fpBjdnN7fXuUAnNd4qGWbLyfvNMPcsNVMsBDb31VFljwE/Xfvkisn5o45riuEIopY1YYajmx7XuKhZGRl+OR+HU11HVAI5msptAB8qinLhBY4W7vMTINWyb8MPj3HYd2lDreiHMxQ0p/qfjXs4YuTkyRxJUnkk5T8+oQQmzEyX/4578YuKysUeb8COEFzviDEiNMCKvizc8fqGKNdH5EwV5dQ8aKQKppiuFnXGnSuhdMhInRaznH3GWQtrrexCdvylOG/ZxXsEqUaxdQrXEmbia2lkbCfD9eUdJY9VbxQhH/0ZwAG6f1Wuixp9U/Or/VqkgKVFnXpQzgQtSWqsnqdNZsHgiCsU41QfbyloTp3cDkoN8a9xV+cE2HCwc4ZX3ufXaIKAS1oVlkOfVZApibKRiW2xmh3UtRRSKsBe20wWIdp6ualh1TbzfQRnupJVolulRQMCAKmxv+7iNCBNNEfuAuLrrs3QNEI4a+PLsFk2aewiTdSvGB4oxA9V9LgXydNJdQJIIqwE+HM80NQyJo1qpaz4G/9mt
- rLpipim6
- WfEM3i4notZ0hu4LyETHaZN7uKcl685V2sxrOY8uc9LD0PHFER/P7u/UxEScund8WMWjI+a4xJKfHTcp612cwEwJSiRCatq316zSSWylG0zp2vw3XLH4qJUYNNP2e5AY1OWGGlVvDEaL2Wwo83d1w40d2bw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768413521-56725
+X-HE-Meta: U2FsdGVkX1962ACXe240rivHND2I4O5NX0XPwZRf1jtyiKG8CStboD4S1Q4AllSs32QGFf/zTBhQG5Z2zY7iDKFr7FvSJzzBLglK9NseN41HzDeXBMnw1HGFf60/1lLIhemty6a6he5ooWaHYE13q6uO75e0NH+afnev8ow+6ROe3yxD6LNVtRH6MGHZwkxYtKUPGFDuPqZGSnvPyE+56latJXcCgV0bA/FIWKQyCIEg+0it7K8kS+7vyi36qwVliYqxXfFDtlep5R7AJppYOOVAQPLlpYtHriQJV5SRjn/8er05DGKQ0XtYNDnDPHzvv7swJcEUr+2cgX6mR4cNdWrWFJkfGKD3TepRTKdjNVcS82nEq6UzT5cGX4CxOZoGMlvSstztfUTZWN3i9aHaOV6ZbdRGKx19D7s5abU13qC+k1KxJj6cgdcAn4zKVIlcWruZtqCCAyYNTDZ0sAQ60lYq3GZLExNjXoLgkqmTpGJ93dwkdfvh6wfp1xwtxGv3n2IlqojufOUu4n0LrXfnYHN9ZQ7AtyRxrmmvC8ro0NYGkY50obBtnuKKCWhIfg8XvHo6XlA2q4paDYWXXtRz43usk1QYdy2zEDvQKADGxlCFqwDhfv1kbEabZCvO5hOa/GNkOHF2ayf9K9H5gKCAheKi+uIjV1qzMFrPmaNOFX2ZIoctUrNwWX9hczlXWQ85Mo3ieKlLjBYioSllFbeZwRrZ39xo7ccWzBD8m05qQRwRqQpFB7YVPJb6qOhT6g93OUMqqrEPlWT6htMD50vzDVy/46I/B8aaJZNusg1I2PLHFqUNqsR2TAnyHRjQfDt/i0YteeTtLHJ0xGrHIsoEKPfcjM1ksf38D/1LJvPO+B7bVnmFrfdGE8BW6kLTgvKD286lZiyPKD62vHGPH/zkccPGz0Y0gg+/SA73nyh63GVtLPHk6sECE16n66jsp5oaXBlRCn2eYbgWEUMU/vP
+ zPXtNqxO
+ cMdTfr3ImOWMrNME6FsCvgtwJWGVGQNmFqblwR5nBKeZbVCLS0ORCoZCU6+RRjdtL2744hAaKjI2xFZfqtOzcmAGFwDU+tLezfTKpyRwT0klEL65GxBnjeWgSNaoNtUSnjW4uc787GAXCbaZik3IoHsbCqcwZyvKiBtQSFISMgeHT+a9Sdz2EphU/fAyaIPY8IG2itOdqs71pHhH0r231oAFCDltW4RR251VuguLF2DfE4nqy6o35l3XM2oc9oBzQG9/BrRAFOJl3zsyEaWCeWEWDRw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,13 +97,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 12:22:14PM -0500, Yury Norov wrote:
-> establish_demotion_targets() and kernel_migrate_pages() call
-> node_empty() immediately after calling nodes_and(). Now that
-> nodes_and() return false if nodemask is empty, drop the latter.
-> 
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+On Wed, 14 Jan 2026 19:26:43 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+> This patchset is intended to transfer the LRU pages to the object cgroup
+> without holding a reference to the original memory cgroup in order to
+> address the issue of the dying memory cgroup. 
 
+Thanks.  I'll add this to mm.git for testing.  A patchset of this
+magnitude at -rc5 is a little ambitious, but Linus is giving us an rc8
+so let's see.
+
+I'll suppress the usual added-to-mm email spray.
 
