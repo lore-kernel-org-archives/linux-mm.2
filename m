@@ -4,108 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C76E2D31A06
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 02:26:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1E67D31A05
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 02:39:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B3506B008A; Tue, 13 Jan 2026 21:26:10 -0500 (EST)
+	id BD9276B008A; Tue, 13 Jan 2026 21:39:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 061156B008C; Tue, 13 Jan 2026 21:26:10 -0500 (EST)
+	id B86126B008C; Tue, 13 Jan 2026 21:39:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E84856B0092; Tue, 13 Jan 2026 21:26:09 -0500 (EST)
+	id A8C276B0092; Tue, 13 Jan 2026 21:39:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D57A36B008A
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:26:09 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8A63C13A932
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:26:09 +0000 (UTC)
-X-FDA: 84328979658.09.B5E5951
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C145C40003
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:26:06 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NGhYKPki;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 98F6D6B008A
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:39:11 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 160638B500
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:39:11 +0000 (UTC)
+X-FDA: 84329012502.02.5B5EDE2
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A68BB140007
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:39:08 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HVlavPBt;
+	spf=pass (imf09.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768357567;
+	s=arc-20220608; t=1768358348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mpasUW5efjHKW/7P2YJIXMH+i1/CaB12ixI92yNTx9M=;
-	b=HElOvgYCw41vzzZVP/LqXqolinT1KzQ9Z3X6TXRdIGcbkLcyzxLeTM4GusPi9tS/4fSnCJ
-	Hukxq6Yf72aP/mpaMx8mkVyD0GDbRrXjdp86e6eFCfNN93p77lhZ1LqyPH3FiSDJhGQvB4
-	ZEoeOTfXS4RKZheZC3SVy1HSNI0rNXk=
+	bh=GsaYDMAkcB1oPv2ajw72CMxvsVxtZEIcouIazzEAlDI=;
+	b=E9iC1qVOFLL7mWPXKnCwfh5rzD7y4GfejDOLbWRZ7XbH0SUIKYM1wBKR3f+5Wwj244u8dk
+	j/N6QYBCaF2woJGPUU0E+GoREoqmTCcHsbbInF1HbrSqC67yWIlJr4rnHXlxv7a9REqr+W
+	VoYmhaP+uy8K0zya1nt0nT8oo+JYcDw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NGhYKPki;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768357567; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HVlavPBt;
+	spf=pass (imf09.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768358348; a=rsa-sha256;
 	cv=none;
-	b=0QjLaePZCB9u8LxJ0MNl8sL633jnoEDKJFwQPEBiyJnWfhcTeJDldy4NNbkc/XsYqGt/hP
-	heDxvo4/oSNuUts1oPeNg1tF0o7VIOjq/FztBpf5TkMjXglFzB5S5ds3uEjdvo/burF0G2
-	5eEi5Wj90KBrBOm444nKtdnogR0BdQo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768357567; x=1799893567;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6FGNX7SUC1hVI0mJ4eI4bbSwWtwvzYUDN6Xf105OGeg=;
-  b=NGhYKPkiaeObX635pYYzdBbItxst4k70imLg3V8a1X3Tzk5AHhRk9z3z
-   vX/MCiDnRBUG1JEFBlQCqum13WBHSQGQL8Il76GgyQUYzrLPsYsLxaITA
-   W0lUgqnMHgy1SmM9jfw5m2IrjMkMyq5gsJKsFcfplxcmnDD7dUo6WwdHP
-   vnyyVSdWm7gEKzM6gN2sbyJfvpSztbml1KBQI11+gPc0QM4F7clJvY95b
-   010aKmm5SVEaKfr9wyBHAUr8MqcwUONePqYDXV9r5AGNLI6fzKWbr54Co
-   4VddSxMyKW53KDLuYONAHC+8hf+2/bE/wfJJhvL3tru9GLw08MVC2///y
-   A==;
-X-CSE-ConnectionGUID: 7LorZZcOTbO8yRoL15Ou+w==
-X-CSE-MsgGUID: 7BMAJ1rNQ++pNEMwNHIxNw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="81103227"
-X-IronPort-AV: E=Sophos;i="6.21,224,1763452800"; 
-   d="scan'208";a="81103227"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 18:26:05 -0800
-X-CSE-ConnectionGUID: lIj9MRarSHWCSWdMeHN5Fw==
-X-CSE-MsgGUID: 9EF3wqrhRvyGQuw+dOtm2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,224,1763452800"; 
-   d="scan'208";a="235799047"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 13 Jan 2026 18:26:03 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vfqa8-00000000Ffk-2PQU;
-	Wed, 14 Jan 2026 02:26:00 +0000
-Date: Wed, 14 Jan 2026 10:25:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marco Crivellari <marco.crivellari@suse.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev, Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 3/3] mm: add WQ_PERCPU to alloc_workqueue users
-Message-ID: <202601141042.qJuTeEP0-lkp@intel.com>
-References: <20260113114630.152942-4-marco.crivellari@suse.com>
+	b=NoaAycH29vOjBwNG4/WT0TKS5X+EI1WqPioeJoTy465pf0m0KtKTpqFwbrdLGDNvPzNqZo
+	nSei+000UqDxX2MsbR/TWITN35R8IiBQb3Nya5i3nkxezPd6b60JHbq3JXnU8pl1SgB75n
+	b9+ZS8C22H7rQKC3Y1WyxUd03GyKvBA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768358348;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GsaYDMAkcB1oPv2ajw72CMxvsVxtZEIcouIazzEAlDI=;
+	b=HVlavPBtHTCqrvKaVa8Dc5qqCb5GHVRANSyprDH12RmbIsBfB21zzgI6kOgaVxyVgs5tDQ
+	036iPpVKhtxAgSJ3512V+vmxEg1iEAR5ltbuNk+P3AslaBXLVwbIfoZ06SMU+m/3dsvNFu
+	hWKB+lthr3/yZKvX3zH24oQOyGIdIvU=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-423-gvmSNH41OXq0IQ7RzGYwgw-1; Tue, 13 Jan 2026 21:39:06 -0500
+X-MC-Unique: gvmSNH41OXq0IQ7RzGYwgw-1
+X-Mimecast-MFC-AGG-ID: gvmSNH41OXq0IQ7RzGYwgw_1768358346
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-789535a89aeso134904847b3.2
+        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 18:39:06 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768358346; x=1768963146;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GsaYDMAkcB1oPv2ajw72CMxvsVxtZEIcouIazzEAlDI=;
+        b=RHTRGB4iz7xFiBcsNaeJXFyO6+W+PrYlaYvqG4tnU5S0Q3xo7KEmqHURJpAcdukirG
+         WOdtIMcAA4J1r9JJfhxfrtKzn8cegCpcY+iNgkcPZ6poojj9VJGwO77wGD+34IpJ7EsE
+         tmq61DqGIuuDgowegYICXLvUj4/Weav50NR8EDYDx36Xg7mlkpz8IUGxZOawEzb7KDQ4
+         envXKryFOMnoZsY6Kq9gAVrKifNQ17kO9P7bFpe1ckuXoZOySO2Tu0O7fmpByMAi4qB6
+         3OlLIRr+ESMS491Km+SQshAkHc4i68eSlVbJqIhv90KsjTqoeH9gwZAGIwASnbirNGyG
+         XHEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUfPZrBrDaMagHMeKR7fta4EFgPPHhGK8MhQ7SMHDiLr8VVTzi2UUiO3nnQMfeUxHPR24thqN5ELQ==@kvack.org
+X-Gm-Message-State: AOJu0YzOydBjfFPlNmvpIYKfSbMwvIfRkYhggOOLTxxR2Ia8OaPgWm6w
+	8uHU1tLAWOES79bxrG6yzx69cBdZnQquQsQtDFKqDezfhOM+qep1Prvn/CEMcMIbHYdF/NrhP7D
+	RD6WFFQf434O2T7dBnxcYiJJFmfnncX/tTj9c/4+SKxu8dYiW8OOoBc8SiNKmQEafhIamowx9Uj
+	JJ1GanHGH2/mxlH+7TPwkZckuaZh4=
+X-Gm-Gg: AY/fxX6IigstjB0MG9jZho1fz3l29cPjd/kNxsBnuaFCgX1R6+Nf1xuNcai2miOhqzm
+	upqFNGcCUUOwcHLg0WkNpHnM2YUo+rQ3q97CVo0f4yDEQCjRqZbSe19sG77QckRLjbYwfHO72dH
+	/BU7IieUiujqVEV7Ddt2pfcBXF8KRFJzpPYIf1Txgsjle1QYFy11wtlHmhY2GRgCuHWp96zPo8y
+	ZpKDyBF
+X-Received: by 2002:a53:b199:0:b0:63f:9928:3f85 with SMTP id 956f58d0204a3-64901b01ee2mr778921d50.62.1768358346211;
+        Tue, 13 Jan 2026 18:39:06 -0800 (PST)
+X-Received: by 2002:a53:b199:0:b0:63f:9928:3f85 with SMTP id
+ 956f58d0204a3-64901b01ee2mr778884d50.62.1768358345750; Tue, 13 Jan 2026
+ 18:39:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260113114630.152942-4-marco.crivellari@suse.com>
-X-Stat-Signature: xyfedcnmh93qggngsd6fcxnwkrznp1od
-X-Rspamd-Queue-Id: C145C40003
+References: <20251201174627.23295-1-npache@redhat.com> <20251201174627.23295-6-npache@redhat.com>
+ <CCE3840A-A46A-4F33-8412-FC55161A6D6C@nvidia.com>
+In-Reply-To: <CCE3840A-A46A-4F33-8412-FC55161A6D6C@nvidia.com>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 13 Jan 2026 19:38:39 -0700
+X-Gm-Features: AZwV_Qg4QcCHsWf9Yf2aqPxUCcKE6236uDrcuWobRoGZDAiQfOTpw9hN9JUYA5U
+Message-ID: <CAA1CXcC9YsOKbsvyZpgOwLdE938VBcPUrLyF97uN024uM2uiPA@mail.gmail.com>
+Subject: Re: [PATCH v13 mm-new 05/16] khugepaged: introduce is_mthp_order helper
+To: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org, 
+	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org, baohua@kernel.org, 
+	willy@infradead.org, peterx@redhat.com, wangkefeng.wang@huawei.com, 
+	usamaarif642@gmail.com, sunnanyong@huawei.com, vishal.moola@gmail.com, 
+	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, kas@kernel.org, 
+	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
+	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
+	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
+	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
+	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com, 
+	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz, 
+	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: IsY082FIaortfI9NQq7voSDr9v52rJtSIiEXCgxnIFA_1768358346
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A68BB140007
+X-Stat-Signature: wf9kdsgg3n6ekfie5p3633ck5i71swir
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768357566-930133
-X-HE-Meta: U2FsdGVkX1/EZaGnEV8+2Okd4pvGWsdQ03n06ZMlx5FrasHrZNp7rKEjumSEaHBB6wkrpoGqbW6VWvXZurweIHFayvF+dbVzp1VtengU9OhYByzVQt8Rgw8KJ1A1qFJqVkXcYHM2QdtaCC3S8beyk2Tcee9dfmSz1VdZ6S74Q/Gqke0dypN29QYUb66m1Z8+u3ehDXuaSCbkEy+4PjiUbGLJRjVFy5jfbEHfExqG8bVGmJsLmkXu3U2taJVXcwyQpwMKTEjaqzI7+Q+1gnFlQY5C/5dERb9uO8si3kUWWjuqVDFWsN/qWvNMiiZTVJUsfjtqMDEQR8wJJbZFckWOrHuV0OUmhxRCrQwIcVoXpg9ZGVsJt03ZmtNN6dmBFV8i/HuEFgCfBzIiK5JoCCHXIj0IeSU6Ku27xNzMY/3kCIPO8Njgjfb/Wn8aGPG2TxxjdBlzYnuCjMkjxFl8RJvhVSgOjq4jRYE8QHzOdgZqoq4JT07bpzNXPyT+A6NGCMAAoco3uhJk2PiPaU+pPZc15oTqr1pp5+jTOqsCY+0TOA8CyNjIoXEm/TWF+/xc/1UA9UZdcFvZ0PrvZpZAYjY60/okVyBk+i9ci5GR/oUr6ps7Y3vwv4bwsv2aDCueyvZQDeS+8SyTQHSqHXNrys6WBd7qyx4EVywvnAOmNL2NO7xkYovqttNoVBhEu5yxf9ZM36a0nKvJBrR/Nt4dJlo7IBKSN/2nMJpPlwwZauwZ2gRCJnVp/291Eu64BuWxT/jpTv5OPijfrttViuQwsYlsWEvKDIGOjvirM8f1eBb0AwnyrYnY7lUxotlyVEvtM65uH12pYrtzPd+QE0EnbV+4Vu5krbLKfTeWsUKFQnweSDqB5nuQIdLOvX6EBuVs1WogsINqO1hK7YWfrWtRYkUdTMn+Xuiyppm3HNeY1kCb/tUoJymfHbgOvHILsKmrZ0/LBkqpYrZtGAwghKi1Coj
- tCjdlGQn
- 9twWlxX0C5Q3C/pByJUmEMyMMjEglD/JoNiTkh/XD9eFkwvIUGO8KiZvnHTzR4xyP8Um2kv2X+leV7K32HmD/aQjBNFs4yBvBVGjg6GbE771upgyXeGrnGwqyQxi0VJ+gNzVDc53tO5AI9OR4dG5LQdMVrKbUGv4l0R4qg+B4+WkMlAdxj+nNTY7IIf/o3Z8aBbTJMXZ0xW4dX1zliID9NJ7NCekChrLCbWb08t9jQ5bIUNKK7BxA2EOm+JQ8YsydoLTJsQwqByGCWMOsvCWmoy8w6ROmXdn5voY9wwOoYhiqIV1/nKWHGomLl2hyVHryvT65gbjkj09YRI8cNLpnEyQR9/VFxHS5qrGhFafcoI8z53pB0w6vrxeauY5qZUofVSn2Pk41Z2aXWTK8MHPN/zrufhi+XBXupAiskrNMALTiE9LZkSgamGUWgPUoYzlJbYzgPTCHH2oI0sNctKjOxoAZ7KBhiK6l2jswu18PJKSy/xG+N3OWB2B5gA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768358348-285690
+X-HE-Meta: U2FsdGVkX1+J5j4T0Lz6HskRSz97a0QPqPsFz9zhjZLe0men8iNKdvJUes99ZjgcATOQ2OaAPLBNreRE4YyX+q39nVPoJHqsqnHxyUR9GCFWPcCxeQBIIMUiuWnFFKMiAZIQx8sQKXqUcd1uDeWihsIOiXS1wfc2LPK59eA6l6QZ2IQbd37jZgfevZAnc7ECIv4BXLHqpXCH6erWs++V6rIdvBzonceWTm+lXtuuMqxsxVylhPyTmTRY4+ep4TRINwHyXTf5GhyQlPVZjHzUoO6/KBL9v5VrZ8hpFfy0iGfli6fhJQOEtZeJufIeJyHkJacuBtHjKgtS0j64VlQTN0bNFheV9SCinv2O1YB6473WIHTGiCvhmurJks4ddsqjPyLuffKU88QY9OQgG1YXr+wA/btSgzUl3JlvJq38DWJg1A8CS2Bd/IPfmiAl8WcPZYMpZqVpiL2gA1PkNHvGwSXRAR4ln+AnGslfOMjcQ8i/2XNLDo7jes2Ih98069iTSod9wt+HK5YPbrT5YtKBa/I75vqmZzLIMlnHC+OHMFwv6vSVaDlsCaAwVRh/p48Ev20eTN4GB6eghTJdLDl+MxajFJx67ZWDVbvt2CFPeWptjMFoNalKx2aPu+4qgQurK3ialnGTog067BT73V58kyT1z15VcsUZ4lTwPQL9ccylcsiiTPknyt9WxJxFDm8WwFrPX11oCiqqk5ofDc+DV4vE/Q6knaMXbZ+MEbZCnqqGurPwuqpYoMoumgYo/wbT6p5VhvUaUhVKCWXzmMv9YylhaDaNFG5hbSkLIAHODt0xVYmdE2buAFFJ8BP45ah45XXSpTiDyGrq1pQlOTsAqnHPFku5MeqmGor/kZLqxsqafnmvfjYiU91lhX6D5unDFraml9lT1itsRKHReNNSeiZOcUNxQNDK1BuBTvSGBRn15/wCUd9/UxD5wusnHg+UF9c03elnfapFL6/Yfgz
+ x0GW/BY8
+ /IFcLOpuHZrvV6wyA8r0Y+74OCmWDOaj6zGBcVg00aKNL90utrnsg8yOGLW9Rqa7kFn7CkAPaVPcvGVcHZrpj/gm8LyX1YUNRXLej5/8P0PC6g8astBVvmAklQaDiP6vjy+h7FTzYV8KJcBlOggFnCoVijFqcIS1WbCvw19zwvmzNttHKbYhX4q0PqGLgob8fYohQLX9ZpB5CWND0o9ZQ15VnDd0rbnqpyxxoi18tjQjf1LRjRju/XDsAx8bWYjZjI9m7GB3tsog7ye49kRDp+jMzvNcpCkTPXVIbbq10u+2/mSYW1R7dJHO+r3olA0rxUUmozjdY6F/I7PWratIXaFTIXIixwZjgTRpWtDC1srJrBMRba8VKMvbpmMAo4F7XCGMwZP+jM1c039X0SPHAuA7G40pbb9zCkQ005iwNLSphNZu875dHW/k5b4q+qKdRoVEkRaGksQPP8W4fWADFT9nTcZLyoSHysA2moXPe0mmwAnI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,50 +139,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Marco,
+On Tue, Dec 2, 2025 at 8:13=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+>
+> On 1 Dec 2025, at 12:46, Nico Pache wrote:
+>
+> > In order to add mTHP support, we will often be checking if a given orde=
+r
+> > is a mTHP or PMD order. Lets create a simple helper function to keep th=
+e
+> > code clean and readable.
+> >
+> > Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Signed-off-by: Nico Pache <npache@redhat.com>
+> > ---
+> >  mm/khugepaged.c | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index 8599c7fa112e..9c041141b2e3 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -338,6 +338,11 @@ static bool pte_none_or_zero(pte_t pte)
+> >       return pte_present(pte) && is_zero_pfn(pte_pfn(pte));
+> >  }
+> >
+> > +static bool is_mthp_order(unsigned int order)
+> > +{
+> > +     return order !=3D HPAGE_PMD_ORDER;
+> > +}
+> > +
+>
+> The code at the bottom of __folio_split() in mm/huge_memory.c
+> can use this helper.
+>
+> The code in deferred_split_folio() uses folio_test_pmd_mappable()
+> instead of order =3D=3D HPAGE_PMD_ORDER, but the code can be changed
+> to use the helper.
 
-kernel test robot noticed the following build errors:
+static inline bool folio_test_pmd_mappable(struct folio *folio)
+{
+return folio_order(folio) >=3D HPAGE_PMD_ORDER;
+}
 
-[auto build test ERROR on akpm-mm/mm-everything]
-[also build test ERROR on linus/master v6.19-rc5 next-20260113]
-[cannot apply to vbabka-slab/for-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Should we make the is_mthp_order() check all orders that are less than
+HPAGE_PMD_ORDER.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marco-Crivellari/mm-Replace-use-of-system_unbound_wq-with-system_dfl_wq/20260113-195017
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260113114630.152942-4-marco.crivellari%40suse.com
-patch subject: [PATCH v2 3/3] mm: add WQ_PERCPU to alloc_workqueue users
-config: riscv-randconfig-002-20260114 (https://download.01.org/0day-ci/archive/20260114/202601141042.qJuTeEP0-lkp@intel.com/config)
-compiler: riscv64-linux-gcc (GCC) 9.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260114/202601141042.qJuTeEP0-lkp@intel.com/reproduce)
+ie)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601141042.qJuTeEP0-lkp@intel.com/
++static bool is_mthp_order(unsigned int order)
++{
++     return order < HPAGE_PMD_ORDER;
+}
 
-All errors (new ones prefixed by >>):
+This way it's true to its mTHP nature being smaller than the PMD.
 
->> mm/slub.c:8545: error: unterminated #ifndef
-    8545 | #ifndef CONFIG_SLUB_TINY
-         | 
+Cheers,
+-- Nico
 
+>
+> >  int hugepage_madvise(struct vm_area_struct *vma,
+> >                    vm_flags_t *vm_flags, int advice)
+> >  {
+> > @@ -1071,13 +1076,13 @@ static int alloc_charge_folio(struct folio **fo=
+liop, struct mm_struct *mm,
+> >       folio =3D __folio_alloc(gfp, order, node, &cc->alloc_nmask);
+> >       if (!folio) {
+> >               *foliop =3D NULL;
+> > -             if (order =3D=3D HPAGE_PMD_ORDER)
+> > +             if (!is_mthp_order(order))
+> >                       count_vm_event(THP_COLLAPSE_ALLOC_FAILED);
+> >               count_mthp_stat(order, MTHP_STAT_COLLAPSE_ALLOC_FAILED);
+> >               return SCAN_ALLOC_HUGE_PAGE_FAIL;
+> >       }
+> >
+> > -     if (order =3D=3D HPAGE_PMD_ORDER)
+> > +     if (!is_mthp_order(order))
+> >               count_vm_event(THP_COLLAPSE_ALLOC);
+> >       count_mthp_stat(order, MTHP_STAT_COLLAPSE_ALLOC);
+> >
+> > --
+> > 2.51.1
+>
+>
+> Best Regards,
+> Yan, Zi
+>
 
-vim +8545 mm/slub.c
-
-  8542	
-  8543	void __init kmem_cache_init_late(void)
-  8544	{
-> 8545	#ifndef CONFIG_SLUB_TINY
-  8546		flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM | WQ_PERCPU,
-  8547					  0);
-  8548		WARN_ON(!flushwq);
-  8549	}
-  8550	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
