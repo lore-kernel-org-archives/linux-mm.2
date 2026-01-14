@@ -4,111 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C8AD3CC92
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 00:53:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16389D3CC92
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 00:54:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A539D6B0005; Wed, 14 Jan 2026 19:53:05 -0500 (EST)
+	id 615706B0005; Wed, 14 Jan 2026 19:54:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D6816B0089; Wed, 14 Jan 2026 19:53:05 -0500 (EST)
+	id 5EC8C6B0089; Wed, 14 Jan 2026 19:54:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E2FB6B008A; Wed, 14 Jan 2026 19:53:05 -0500 (EST)
+	id 4EB7D6B008A; Wed, 14 Jan 2026 19:54:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B9AF6B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 19:53:05 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19A1AB6514
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:53:05 +0000 (UTC)
-X-FDA: 84332373930.14.9A2F2FD
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 944F2100009
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:52:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D1586B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 19:54:32 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C4739138F32
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:54:31 +0000 (UTC)
+X-FDA: 84332377542.21.77C491F
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 670DF80004
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:54:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=ispras.ru header.s=default header.b=CuH1fcnd;
+	dmarc=pass (policy=none) header.from=ispras.ru;
+	spf=pass (imf30.hostedemail.com: domain of pchelkin@ispras.ru designates 83.149.199.84 as permitted sender) smtp.mailfrom=pchelkin@ispras.ru
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768438470; a=rsa-sha256;
+	cv=none;
+	b=FNQk/NuyZ+cFqkXzv2JbAEl3xjRh2Lf/vb1VaYQMTK/F2lKkiwSWVlwBFk22hlN8kFWklb
+	GoYeUEMItf870SEmRM3uXJXvmOLF3UBE3lsvLF7SkB7LjPeCcBDK2Cqfk1Zm7PEWEzp/VA
+	1H9WtI8NoDX/P4IQuYgiJWIFnsAj66w=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=ispras.ru header.s=default header.b=CuH1fcnd;
+	dmarc=pass (policy=none) header.from=ispras.ru;
+	spf=pass (imf30.hostedemail.com: domain of pchelkin@ispras.ru designates 83.149.199.84 as permitted sender) smtp.mailfrom=pchelkin@ispras.ru
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768438383;
+	s=arc-20220608; t=1768438470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5Z9TTCdEGcAz3/MMv5gcSG5giGOZ78QNNfGsG4RLadc=;
-	b=TAa1vhMynNRB10fc5UNgguKDVgpR01AmjrpJ1TVQe1H2ikxzKvXZkCaZ+Z9V+lZXnMamk6
-	EthEo2TBuK1ZpKMuWWirggEwZ5g6s/03RDa0Q8E71Dlw0DcSB1Z7UcKpjK0n0jRVZwaDvG
-	cROxAQ/MU2hNYvqLco3e/LCaVjgXr/0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768438383; a=rsa-sha256;
-	cv=none;
-	b=TaGSF9a1QJqvsa1OLd3yZ0FlAUojSsZoalOx/Udg6RpAwjj24bAfSI94qx6DW8bdeb9xBP
-	IdWepKTT83H1S9U+kAcvAkMvDhUDF9g1tk4zP5POkptTSxgbktW3+vt9FJeIAOmPDmWb54
-	9rxEvlT6Vg0FJ6D8+XSmUjtc/nxBh3w=
-Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4ds4FC6jxRzKHMdL
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 08:51:59 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id BCA634056E
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 08:52:52 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgBH9vZjOmhpd_JZDw--.10605S2;
-	Thu, 15 Jan 2026 08:52:52 +0800 (CST)
-Message-ID: <2e8bf48a-b819-40b9-bb9b-f6ac6672059a@huaweicloud.com>
-Date: Thu, 15 Jan 2026 08:52:50 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=07dpiY8kEY0GFcUy8qFirliZcsifX5zb7aQFpXv8mdk=;
+	b=CY8LuNDPNtO9cZki34FJ3pWC8qnXW30kw7nU7lNntf+RU4XJjRx3jo2xqkT4k4SWytNoum
+	7IlvG7OgLEfI7ZdgwLpRKhwFSDvfkvAbuViM6ksz0HGGhYJPWmeiWUaWEhel9pw6MGS1Jg
+	47lU9p2BZhwLiYL4hWqR0zcyhoobYMo=
+Received: from debian.intra.ispras.ru (unknown [10.10.165.10])
+	by mail.ispras.ru (Postfix) with ESMTPSA id C4BB7407795F;
+	Wed, 14 Jan 2026 18:58:02 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru C4BB7407795F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1768417082;
+	bh=07dpiY8kEY0GFcUy8qFirliZcsifX5zb7aQFpXv8mdk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CuH1fcndh0lXvPTo0rn/Y+U9pKgds0YKQya6T2gKdmRU504AtbeSOI+LLGyuzkvxE
+	 +Te0rfQCvkIdEaanOsp/J3qcq+k70Wk/CeJK1rC88V041b+zzksrd+zYI5rtf2taGP
+	 KSa2aQt+LJXlrca5a/OwnZ1LE8O4GB9CkBHlyMXo=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Harry Yoo <harry.yoo@oracle.com>,
+	David Hildenbrand <david@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hugh Dickins <hughd@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH 6.1] mm/mprotect: restore pmd stability check in change_pte_range()
+Date: Wed, 14 Jan 2026 21:57:45 +0300
+Message-ID: <20260114185746.816527-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] cgroup: use nodes_and() output where appropriate
-To: Waiman Long <llong@redhat.com>, Yury Norov <ynorov@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Alistair Popple <apopple@nvidia.com>, Byungchul Park <byungchul@sk.com>,
- David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>,
- Johannes Weiner <hannes@cmpxchg.org>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Matthew Brost <matthew.brost@intel.com>, Michal Hocko <mhocko@suse.com>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Rakie Kim <rakie.kim@sk.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, Ying Huang <ying.huang@linux.alibaba.com>,
- Zi Yan <ziy@nvidia.com>, cgroups@vger.kernel.org
-Cc: Yury Norov <yury.norov@gmail.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260114172217.861204-1-ynorov@nvidia.com>
- <20260114172217.861204-4-ynorov@nvidia.com>
- <51675d7c-5c9d-4596-8e5c-692c90b79e06@redhat.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <51675d7c-5c9d-4596-8e5c-692c90b79e06@redhat.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgBH9vZjOmhpd_JZDw--.10605S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZF45KFyxArWkKFykGw4xCrg_yoW8tFy8pF
-	1kCry7Gay5AF1xGrWxXFyDW3s5Ja18Ja1UJr1UAF93JFnrJr10vF1UX34YgrWDCrW8Gr15
-	Jrn0vw1IvFy3Jr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
-	s2-5UUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Queue-Id: 944F2100009
-X-Stat-Signature: ir8p6kb5udiywnhnhxj9oh7m8psk87uz
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 670DF80004
+X-Stat-Signature: oois8qn3t9535houhrz5uec5rikn1eqc
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768438379-368820
-X-HE-Meta: U2FsdGVkX1+YoIRylinkyw4XUCTX4D47UtgwJy0Ik2lJEmjnEnYICI+LO2MdfbBPfwpTe5BDqEKcZJnijCp0PKHHouzkiS/lwFGJvmS1+qP+5SucFOTOrVJHWNDYJsLqCHvpcoeQuYEg2uxs5uurqrRu5BKfRs4XjdsUfxCI4wTDkaKiW5baD1uJ4bJ/hVuFld1Y3C6/IAiZZxCQ7J3WtZtmJv+I079ygQOOH5Y8GPoiG2NQ9I0uid+NgXB6cyRey3mfbWrRL6kwnpR0gU4IECBEJTSTWmLx3qetD0VY1pxOZiD1j0I2P7xKsu7Z9gfsob0EKFgK0aB9WyRgeXygFZ6KJcz/LAA2xuksQVsNGK81GZ6Tr8ZRpGRbSyimsL+d4BAbLWe73rP9YjL5pz8wTXySxjy2rMcBwQezL7EY9z1l0jUUkxH5cWbQxE6ToC7FFbFM55kUEb717i+EnYrc6OL1yG3x3bpWmk0ZOchEappdKxwBOLcP8Uv2sqCAAI5AXtdib5EIjMN/Mb+cuKWxec0nTrSab531+oL42KwuVDMWsg41HdaCwDXw0JdLfnqnj42yrMW7BAjyknUDf7EjOSw6ZPpbYxox+Rp0etx8oKDdH+j946PmNUZCi8OZ0j/eZGZ5SiEceK22aQ/2s3U3crYUhTn+GaG0pxc1Dj+vimiJe8ScvtOMuBQXjkKXjFFEV7RZ7ewcuWfXgTNXFZ4faR9R1ixHPFw8go3l6LfNB5paxXrU/62/VFY9nhn2BGkA2DnaibRQkPAiSLeHuQVkgb9kv2GnIFj/Dc+Yah82GR0jjTCx/tZ306RBc/aTrs7XFK0zMEaOq7p8yEz1ysWADeTTX7X4nJxViqTCMGGi+aJFmu3TzfmXRs4ze26S660BJ2jkn6mktptxIUyeWxSt0ggUc6jYi2/qutYIGdgZ0QUvswxlTbtBoKr//hE90q3f
+X-HE-Tag: 1768438469-46181
+X-HE-Meta: U2FsdGVkX1+O47rDnWxl6Nec1Ae4ar4WHH9S0Fwfa036h4Wjo97WXMhGEJZMHrf5g4PyDT4OBypBeO2WEV0KIF1jmqITqHcdO1WbT3Ty3VJfSL1HxV4WCsgGDt5RGHeBvbQIRB1aDme9+WHuirzVzKrWk4BSWfnrPm/KNNi8LUjrZTFBflSCtnb11Sb9OZzG8iI2/VQavMFtKHPntygsuBDpYGuHCjUJCI/xMyYqMa3kwSjgohNiAt/7mvEmYq6Nc+VamaLzyapgeHrdnx7/E5WK7c2EHPjcdjD/sC0WBKytmBwphuLJSnn/DRbyBP3KKnfV/qRvnh3oLOXoNKwvaosGr91UESWfHT9HyQh/KLTFABeiE0MLPnIwmMXccT74ZDE0fq3NfSeu/tzx1CVdM/991VYi9px6u2GzguiZjvDPNiEz2hjlFCRfk9W1ihBWoWZ7HLItZ0Rs9sn0k3ao2ZQQFO12NzNNh8YEUt9gJ8eE+jw6TTA5n5TmLD5mWvU0bUejUWtoRxiFUOcygvXYTMjjHxvx8TAFmbZUse60rSxA5BGK4KOtMyr5dcTLy7ZTkbwaaLPoY9Zhh7bB8S0LF6DmtX+UtbDPrUuGFwOvX/LRAUOVTrUBq5sZhQFn6bkzo+8sDZ2RGe0JqfvQJX8erqX7u7ebwLpWEpk82v+bCOmxZI/DF2Mivc2XNQGF3iPuxwYXXU2QCLhWh+bcH/3g1PfCyzK8/dS3ANCek741BH/JBpCAvh/Yjf0DJI1hyzCWQcf7Gi0QzgPZr/ZRd0JOzRsHqgVUWPKg9ezN8A7EPq0a6nK5TlGCeJnlXHJB3uj73N+IHmjyxcIrpiWkLKJ4v2uNLM6kdsu5+GeTqekE1ZWt92JjCpijGRpTTolNRMUnWTUj0ROOg5T1zXftA+gSD80V8C53godSQ2homj5NX1EUu6GZgfzzvi9NAY41QxgIIb2kvFm7tk7OI7t1AoE
+ ETXBkcAG
+ QLi6g3/jf0b67ZNkymMTAp6VSHBgzUFD3QR5Hjxy2U5GGHAE1lYRQMe21MH2jMs8/ClDDYi0Wp1enrqYOhZ1UrzkvLHYnzEftuKipdO/xwgDs1Y/BmvXqYSsQa5LbJvhnG9Em0JCNzOHgjQiBtCf3IFYpjRfNqIIr2LqoUjrZcz19BXd4ZgzVXXyyUCB1hg9YzPHWrWT2bOEWIM2ROxLGlqLDPa1YqjzdYtmgkK7Qe3C9GTkOW3Jfx8eLkg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,53 +92,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+No upstream commit exists for this patch.
 
+There is a crash which started to be observed on 6.1.y kernel after
+backporting a modified version of commit 670ddd8cdcbd ("mm/mprotect:
+delete pmd_none_or_clear_bad_unless_trans_huge()").
 
-On 2026/1/15 6:33, Waiman Long wrote:
-> On 1/14/26 12:22 PM, Yury Norov wrote:
->> Now that nodes_and() returns true if the result nodemask is not empty,
->> drop useless nodes_intersects() in guarantee_online_mems() and
->> nodes_empty() in update_nodemasks_hier(), which both are O(N).
->>
->> Signed-off-by: Yury Norov <ynorov@nvidia.com>
->> ---
->>   kernel/cgroup/cpuset.c | 7 +++----
->>   1 file changed, 3 insertions(+), 4 deletions(-)
->>
->> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
->> index 3e8cc34d8d50..e962efbb300d 100644
->> --- a/kernel/cgroup/cpuset.c
->> +++ b/kernel/cgroup/cpuset.c
->> @@ -456,9 +456,8 @@ static void guarantee_active_cpus(struct task_struct *tsk,
->>    */
->>   static void guarantee_online_mems(struct cpuset *cs, nodemask_t *pmask)
->>   {
->> -    while (!nodes_intersects(cs->effective_mems, node_states[N_MEMORY]))
->> +    while (!nodes_and(*pmask, cs->effective_mems, node_states[N_MEMORY]))
->>           cs = parent_cs(cs);
->> -    nodes_and(*pmask, cs->effective_mems, node_states[N_MEMORY]);
->>   }
->>     /**
->> @@ -2862,13 +2861,13 @@ static void update_nodemasks_hier(struct cpuset *cs, nodemask_t *new_mems)
->>       cpuset_for_each_descendant_pre(cp, pos_css, cs) {
->>           struct cpuset *parent = parent_cs(cp);
->>   -        nodes_and(*new_mems, cp->mems_allowed, parent->effective_mems);
->> +        bool has_mems = nodes_and(*new_mems, cp->mems_allowed, parent->effective_mems);
->>             /*
->>            * If it becomes empty, inherit the effective mask of the
->>            * parent, which is guaranteed to have some MEMs.
->>            */
->> -        if (is_in_v2_mode() && nodes_empty(*new_mems))
->> +        if (is_in_v2_mode() && !has_mems)
->>               *new_mems = parent->effective_mems;
->>             /* Skip the whole subtree if the nodemask remains the same. */
-> Reviewed-by: Waiman Long <longman@redhat.com>
-> 
+general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+CPU: 0 PID: 23316 Comm: syz-executor.6 Not tainted 6.1.160-syzkaller-00409-g94ae58088937 #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:__lock_acquire+0xdc2/0x5320 kernel/locking/lockdep.c:4919
+Call Trace:
+ <TASK>
+ lock_acquire kernel/locking/lockdep.c:5662 [inline]
+ lock_acquire+0x194/0x4b0 kernel/locking/lockdep.c:5627
+ __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
+ _raw_spin_lock+0x27/0x40 kernel/locking/spinlock.c:154
+ spin_lock include/linux/spinlock.h:351 [inline]
+ change_pte_range mm/mprotect.c:91 [inline]
+ change_pmd_range mm/mprotect.c:401 [inline]
+ change_pud_range mm/mprotect.c:432 [inline]
+ change_p4d_range mm/mprotect.c:453 [inline]
+ change_protection_range mm/mprotect.c:477 [inline]
+ change_protection+0xa1f/0x35e0 mm/mprotect.c:499
+ uffd_wp_range+0xf8/0x190 mm/userfaultfd.c:748
+ userfaultfd_unregister fs/userfaultfd.c:1646 [inline]
+ userfaultfd_ioctl+0x38a7/0x46d0 fs/userfaultfd.c:2037
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:46 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
 
-Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+The reason is that a pmd_none entry made its way into
+pte_offset_map_lock().  It crashes when USE_SPLIT_PTE_PTLOCKS is set.
 
+It seems that pmd_trans_unstable() check shouldn't have been removed from
+the 6.1.y version of the patch, restore it.  Upstream code, starting with
+commit 0d940a9b270b ("mm/pgtable: allow pte_offset_map[_lock]() to fail"),
+has internal checks for that inside pte_offset_map_lock() itself.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 670ddd8cdcbd ("mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+
+I've tried to follow the original discussion [1] regarding the problem
+this backport is supposed to solve and how it was tweaked for stable
+inclusion but failed to find whether the pmd_trans_unstable() check was
+dropped accidentaly (because upstream commit does remove it as well) or
+there was some reasoning behind it.
+
+The backport patch is already in 6.1.160 release so I guess the fix should
+be added to 6.1.y branch directly.  Looking forward for your review and
+comments on the problem, thanks!  I can provide .config and reproducer if
+needed.
+
+The backport patches are currently in queue for 5.10 and 5.15 kernels
+inclusion so they still may be dropped from there and reworked accordingly.
+
+[1]: https://lore.kernel.org/linux-mm/20250921232709.1608699-1-harry.yoo@oracle.com/
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/
+
+ mm/mprotect.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index f09229fbcf6c..ef6a360ec088 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -88,6 +88,15 @@ static long change_pte_range(struct mmu_gather *tlb,
+ 
+ 	tlb_change_page_size(tlb, PAGE_SIZE);
+ 
++	/*
++	 * Can be called with only the mmap_lock for reading by
++	 * prot_numa so we must check the pmd isn't constantly
++	 * changing from under us from pmd_none to pmd_trans_huge
++	 * and/or the other way around.
++	 */
++	if (pmd_trans_unstable(pmd))
++		return 0;
++
+ 	pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
+ 	/* Make sure pmd didn't change after acquiring ptl */
+ 	_pmd = pmd_read_atomic(pmd);
 -- 
-Best regards,
-Ridong
+2.51.0
 
 
