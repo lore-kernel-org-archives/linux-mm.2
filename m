@@ -4,137 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F422DD38FEF
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:07:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D976BD38FEF
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:07:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 674C86B0089; Wed, 14 Jan 2026 12:07:02 -0500 (EST)
+	id 4FEEF6B008A; Wed, 14 Jan 2026 12:07:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 615166B008A; Wed, 14 Jan 2026 12:07:02 -0500 (EST)
+	id 4D6166B008C; Wed, 14 Jan 2026 12:07:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F7C66B008C; Wed, 14 Jan 2026 12:07:02 -0500 (EST)
+	id 4001D6B0092; Wed, 14 Jan 2026 12:07:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 40CE46B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:07:02 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 087761405CE
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:07:02 +0000 (UTC)
-X-FDA: 84331199484.27.5ADD82D
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E899614000E
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:06:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="Mtm3/X2b";
-	spf=pass (imf09.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.67 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3057C6B008A
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:07:08 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B7F611AB41
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:07:07 +0000 (UTC)
+X-FDA: 84331199694.09.1C401CE
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D3D0A40011
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:07:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of 3OM1naQkbAMM178tjuun0jyyrm.pxxpun31n0lxw2nw2.lxv@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.69 as permitted sender) smtp.mailfrom=3OM1naQkbAMM178tjuun0jyyrm.pxxpun31n0lxw2nw2.lxv@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768410420;
+	s=arc-20220608; t=1768410425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W8rPwjfzU+1ry2RQl+0zGZMNXdxcPKW2Gfu/u1uR+Mw=;
-	b=m1+4X1gP1aRNeexNkzu9hT6M0/eUe3KKWIoctAcrrxFQRRVsbM3CSC2l6tJLtRsr8b32Kq
-	BSQTZVKIN5IiPwhzSS0HyLyDyTOiOjWGb0Zr/HCo4N4m2B53RSI332FjFlPtsGSU9svc0m
-	+s368QAU0wJwikmZuRpE+4m8ckSbWWs=
+	 in-reply-to:in-reply-to:references;
+	bh=K95I3kAYG1M0KaNSEjeNm5wWa6plLYQ5qvacwmoIgN4=;
+	b=jajQcf33r1Z+OAQRzeN3NWNWm2uAhycr+uiZo6jiJpJIyRCxfa1gcrrRkNmxrwkwX+iOiA
+	NkyjdziuGxEbBs3b7JQqG0I2OBuR/8lWxsuyGLxzdMe56V4rrkC26aojtwHrEDrc1ZE5k8
+	4D+jzm4asgOkxjxCJ2F/tQUfM6ZqSnc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="Mtm3/X2b";
-	spf=pass (imf09.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.67 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768410420; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of 3OM1naQkbAMM178tjuun0jyyrm.pxxpun31n0lxw2nw2.lxv@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.69 as permitted sender) smtp.mailfrom=3OM1naQkbAMM178tjuun0jyyrm.pxxpun31n0lxw2nw2.lxv@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768410425; a=rsa-sha256;
 	cv=none;
-	b=68zjfrzyg6rTxYu1DsKweiwbqUQiANEAGAynNLQaoMgyGsyUvozCGW4CXs7Iqlo/cFLDVQ
-	FMRtLQmVqpRl/RBNijhFm09c7V88kN5hbr4Ej6dptGppkCZZudh7+YILSrvbFCTkKs3O8R
-	P8DGtMkxCBIjQACx79o68sp2D/jm2m8=
-Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-47f3b7ef761so311695e9.0
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:06:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768410418; x=1769015218; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=W8rPwjfzU+1ry2RQl+0zGZMNXdxcPKW2Gfu/u1uR+Mw=;
-        b=Mtm3/X2bgQ8+kfiXNpk3TrCWijIjfFa790pIPQE4o/LSCy/qfqvgi96HTv5wNnBniW
-         DqCyu7aRiTG/ElNJnyUNvIdWvwe+ffATxynnD4D8AQbkyjhjiohH6snYAGrg/KOmRqm8
-         XhUd4XykzGxwSPoSGhm5pEU8EL/YBY+LD9IpaAAQnMEsJhwcGP8wyUtbtkIbxtD345YQ
-         zjo77/CGOmF7enKEnZHzWIH1eQF1d+aCc5Zj9ZDUNkEHZTdBbSnwkIicwPnmCva7Gonc
-         BLJGdOJ2e9gbaN/18om31E6/lQzMsFfaiuvkQn/dVBuyG3mzOJ101tE+9aVibAvAnMjA
-         cZIg==
+	b=ekpb6DkysZranNWwpry/P/MLTBJT6nSFHjc2yTxw8520KWUc45pv/p1eoiVyIoq9z80Awe
+	cU5GB3eQNki/ByMDP/S4lQ7dFQIxajMiJuH/jTHYLvhnRD+fPsBonjUBV326UmHB6fg5Dt
+	Y86CNokIJllPXU3bheShNw5lgG0VZiU=
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-6610d90a391so97212eaf.2
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:07:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768410418; x=1769015218;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W8rPwjfzU+1ry2RQl+0zGZMNXdxcPKW2Gfu/u1uR+Mw=;
-        b=tDBuoUMbErjjBEv9ViI1h2gk1OnCl4pO0436913NthwB4T7tRBawBjM345UPwpea9Z
-         7KJwgtYUw1WDzqURP9hLZKXKFJWu+EB7TOlkRQ7e0G3FaPP4KaT+3T0m2o9RG/sAtb70
-         WNqSzUVF25FMW7W3hVFoq91WT0rphOQElimRXURJG8+NhkQ2QDsAbO8u4afQfzcmyWp8
-         Qek74JNBNY5ewLXQs8WCjUgosZ8/ve21Il1FIHEvbBc8dlQqoxDpxzor0xHSWs9BL5wD
-         Q/Em7rLNhUy44vFLAVJM3obs+bcBurDf0YnM2RJSufhuUEnpx35tUiiOV6Qt9QDwkzze
-         dxeA==
-X-Forwarded-Encrypted: i=1; AJvYcCUiH1a9tjVrHsg/t2XrdL5kn2QJpBThHlbMPPQq988j3cZGuuuEDL4fG+Ss0kQWk0hecmH1yDcT9w==@kvack.org
-X-Gm-Message-State: AOJu0Ywd7+zsVqJhOrbAZhiIkvTOBwJKM2KBXWD/7+hy9jRTLMAGMMDx
-	qzDizLeyqGZRvxd7JWcQG3t/+/fSqkddQS1QqGq7EYSMuGlaC6sPUuWQcTcIbIs5i/M=
-X-Gm-Gg: AY/fxX6StYPHPu2jcCkEXmVDVbWaJlcDMpZo+O4VmSEcObGFW14Mm13kVZdbncEXOBp
-	DlHm1Ece12p3Pa/VFXtPTnhohFSk7SDGb6HtlK/pBmsODwJv8wmNhKAJln/khgV4G2JzrdpVX9H
-	mZ+pr9ocb/PRYijxVQMb3yHsxNsVz7yKNvyNYu+B+QouYLcUsVtqnSJ/eJC+sqSVASmq/+TSsmf
-	/ZPWlpCGlQT4a4LYjxlm198SxAWLS0xB+LP3GW4kDb5IIG59LwuJa/U0vhAaSPfzxRVN7Il1YLd
-	whGgbESTwN66p/x1RcJb7TW0puaOTtxwxTmW/6ftyQjbOhea2yP58nrO9gW1bRHkP10SZdF8bt8
-	fvDYCW1E3f9G/yW9AKYo5u5ZJXfiNZ4eLjTqXyG8gZjUxEBIJ5OwmlqTKg/uAd0Vzx790s3hwH/
-	7Gt3InTAEloCA8GIbYVJBHAEfi
-X-Received: by 2002:a05:600c:4f4d:b0:477:b48d:ba7a with SMTP id 5b1f17b1804b1-47ee338a84cmr41858385e9.32.1768410418292;
-        Wed, 14 Jan 2026 09:06:58 -0800 (PST)
-Received: from localhost (109-81-19-111.rct.o2.cz. [109.81.19.111])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47f428cc338sm1933365e9.11.2026.01.14.09.06.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 09:06:57 -0800 (PST)
-Date: Wed, 14 Jan 2026 18:06:56 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
-	David Rientjes <rientjes@google.com>, christian.koenig@amd.com,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	SeongJae Park <sj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: Re: [PATCH v16 3/3] mm: Reduce latency of OOM killer task selection
- with 2-pass algorithm
-Message-ID: <aWfNMKCoEp2LuA2v@tiehlicka>
-References: <20260114145915.49926-1-mathieu.desnoyers@efficios.com>
- <20260114145915.49926-4-mathieu.desnoyers@efficios.com>
+        d=1e100.net; s=20230601; t=1768410425; x=1769015225;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K95I3kAYG1M0KaNSEjeNm5wWa6plLYQ5qvacwmoIgN4=;
+        b=AOBBFOKV1S1SkFKqI2g7bue0Bd6kdWttCQESeFlAHxqi5147RyWI1ONyaDvtdQmHBf
+         R3pV5lQ9ogKe/umAVMc93IeJUt0ZgWDmF16A9yXwotxEAQG6Cr57ebBGatjP89QzIKah
+         wjKA9uyqNMFhmXn1phY2wi6tasoyezwXewzFulQDAESd7wQo/JeZzL4J8JG/5hYqD1y3
+         oJ6EIRg0GGDJM8dFM1Bfgcve6OR6hNFHp9/M6o30IW8Alj3f3lZtj1S52zjjG8M81EPP
+         6JJnH8H17UjwfE2PWHXQl0mWyQpbDVLh0gV6Ajm2yeWMiwnaOHIXLydaM8laExaC+/mg
+         MASw==
+X-Forwarded-Encrypted: i=1; AJvYcCV0dgAsaSxk+LWd0tyYHH+0s0+E4VW2wyS67HqqElw8zkrc9Y4oTwoG9lNfaNfoB7n2J7AoYqJyww==@kvack.org
+X-Gm-Message-State: AOJu0YytQ5t5ohPWjD1q70hzV2P+EcHTSFGZxA0aAh0qbsv0hpbnMSxq
+	F3EHBBI8Cq4u85T4F1kgzHI8dptRT37WpLx0GZ8veyGviPbQRAfXktM64GFBbzy1AHc/4SfcAXm
+	kMddJjoOhSC9MyHJOEcR3CRa3ip0ZQ7+IBKnF6No6haVtKfLydlV6+RIXpcc=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260114145915.49926-4-mathieu.desnoyers@efficios.com>
-X-Stat-Signature: 4g1bumsnndgx9w5s3gxkh438qrx3qjf3
-X-Rspamd-Queue-Id: E899614000E
+X-Received: by 2002:a05:6820:221d:b0:65f:fee:f7cc with SMTP id
+ 006d021491bc7-6610072cac5mr2420280eaf.49.1768410424835; Wed, 14 Jan 2026
+ 09:07:04 -0800 (PST)
+Date: Wed, 14 Jan 2026 09:07:04 -0800
+In-Reply-To: <cover.1768389889.git.zhengqi.arch@bytedance.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6967cd38.050a0220.58bed.0001.GAE@google.com>
+Subject: [syzbot ci] Re: Eliminate Dying Memory Cgroup
+From: syzbot ci <syzbot+ci7d2110b831be06f6@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, apais@linux.microsoft.com, 
+	axelrasmussen@google.com, cgroups@vger.kernel.org, chengming.zhou@linux.dev, 
+	chenridong@huawei.com, chenridong@huaweicloud.com, david@kernel.org, 
+	hamzamahfooz@linux.microsoft.com, hannes@cmpxchg.org, harry.yoo@oracle.com, 
+	hughd@google.com, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, 
+	lance.yang@linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	lorenzo.stoakes@oracle.com, mhocko@suse.com, mkoutny@suse.com, 
+	muchun.song@linux.dev, nphamcs@gmail.com, qi.zheng@linux.dev, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, songmuchun@bytedance.com, 
+	weixugc@google.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
+	zhengqi.arch@bytedance.com, ziy@nvidia.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768410419-44019
-X-HE-Meta: U2FsdGVkX18R/ZvUwu4FtvtGmLCIgXDoTOQg/DIdS1SYzmJDkm7Bj6/rOWI7lKSmheX/5uZ/Vbuy+fofcgXsy7AA5ILB5LYnR7pwP5DDW1vJEk1EcniDkIO9RbW2lxq6LlhK3XlzKCEEdffgiC/SnW+8KjmSVM2N4VQsLDZoPDJWqsqvlFw5sm5RF3AtVOpK+e//kCWmQY++mgTXNDbsJrMkKdJlCyx+WFVcOWxeZgshx9Mr6vEye0mYHCzU5V/4/CXBnZGBVv2FZAbkUx4CUaNzPl1XOQg/nVyQnbN33fIJqpCeBxb5FCz5fyQi7cjM3tAd43T14K/2OT057+QhBHar+W0OaIOAfgA0bvFgs4xlBHTKWesfoMJ8tnPq63UWsR5oCZuQC6N8NIqKALo9PXiBG0lR3cn/jDjFe7ixcJDKGtm72N3Wi0cvjuy8TAJmAdX8OY0DOzFjX8X/PMYV5/cmH1lAsWUX26Lw6Bq22PoRxEH8/130R79N+6d3D42bLRbu+k411I+EuiPLptQWCj/5w2FKgXTRXKqRCKjpZWb52xuztAz5G2tCL4il2yeu0rqy0VhafUqaNidOzVWDoXmP2za0eMGK/c5J3d73evCiV6GA94pbhD5HsnIe3zZFgKNl1g70rBf9WvlYfrmFn7qnoPkV2YBRSt3j+JTVvaXxiJMGn0KjixmijciMkn7nJr2FOFz9SIdLkmRrwKpXtUdkZ2635ENRWAxyKn/RMez/qPs9uY8xEBDKMLHTtGTJxH06sMfpOU3gS3KBYsoogKUTkIWWGKhAdxi9hp3F+1/U39ddSmeB1vHwvm9EOkRnUzgTSlD0s+RaRAd0tSH3QHPA8zAEIsRNGOrhTK8Q9+gY4rLBLCz6cW3haPdDTW3+7vJ9eoE1FMlQrHN2ArV0FHMMygx3H3ktZcMeuEMvxL2gZeL8EDZcGuRQbhD2T3DJQhgbfdYHWJLXtF9eHlf
- Zr6l3FxO
- GWeJt5vFf1TR2aAOJBX7JnLPHB2VaaASuEDdQT7+pT6Cbaa0RmosSOEOWuajJIJIsDLiBHmgdTYpcMtPD8Cq9jWM+gH/Oa7TYM1RV1hfhGSmm0Al13RJ18XcizifYhJHtLxSqkgsweBvenWw5alJMhH/Az06n3Xi7bxcJ3N4TypKbJZjYxQksnyrvki9dxNcYlrcm+ZrlEPDUd6QnhbXakeXDYqWocuI6wf6SGWEJrgs8mRMfq7Yx5qA4DTgtzTC10HlzElZd0ZfDk2T2AvsvFO6DhULN8Pv75ViWpMWfdfNBQYrU2jaHMoXbD+X1ELRV4CGoyPaCzEMYzx6AhTxGLQi8Tkhoag3gAKJQT90aqIJNBXMRsXUisSfYDb7YlgTh0ONalrC9uQSjn9wFm8LSH6BqAqnXyfXbyCyd6iLVWlwRquGSR9GoQjzsNuDjNd84GPLY0GtSyKcfK8l3X5qdDXIJO8tG9w6wS0c7dgb07KkZtBa+Qt+j6lNjCV1X8m3rT0B12anuKC4Pi3c=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D3D0A40011
+X-Stat-Signature: kx7jqwf1d5nb4u9bgg8fyoegr3qrkdgi
+X-HE-Tag: 1768410425-13534
+X-HE-Meta: U2FsdGVkX1/oGAkoBGyPvyuJUBkotbXPz0tbv9iyMkiie1XfGW0rZulusoMceKjOh93dbip3EZThPf2tF7LfHVxXmMInQqmkT7Hikvlrg3HBrbqH5nmk6TNVncxChwwKNYjtAr7+lAfZEiSFlOEpGRjg92mE/OajgMF//kMHWISRYRoXznJLeZiBr8b3lf76gWRsDTFNTPi4Cq7uJOyipCK1uT6BMsRZ230M51no7pS4h59fifBKBAKOdtlm8NqOnUh/hKNoqDx5z1+v1TG/jfg09+gZkLZetUu2UNxSf7hF5/tdwgMIm7gDbYcijyurmPkRhA+YDbC6+D8HYOl4AMzKIpHZBUJQbGzBtESKZ27PIlRa0xGA1k428lsFfoNw8rbVMKt0oHM7OQn5e4dXV9rvwrav+3CCBUh8uRA/7SCEGP8HoaVE42TXucrdac0T4GVMM8Sb4w/dLg6M6imjfTbCB0HowsMi0o896SlT6LEWSicP08K0WhZc9IUJB7j2q/SKn2sjdhubp5XQcarAIc7zpof3mD0zoW/irYDgdKrEz6TeDjYwOnhZ/p214Ahw+YPTKqRF8G8LusH9+s84pbm7voTIwMknWh6qwvfRUUsyj4kDdQL6CVEtdMk7fwtynJ6wyjQR3V1bPSMH1BskFPdfyv0PpfkQfB/FwSwgsCW5AlXnUWNyNSrA7mCJ3D2mpetpX+fRugmyrv4nTs1fK+mo2p4/HUeMKJk5PzcONXJNwwzA6kCVuXt25O0yLPqL48WlTBJmytOo872Z0K2y5rUuPDx3xc+gJBiALlB3PrJmUZUxGewHLHAM7SwvbWwW8gfcOXgEi1adql1TAPF57qlPZiQhvyxTUhe76wh1uraOPq4I5szoTYGz3RvrU/eo4qCfUxGRx8wnqLGcO6wDIO3b11ZlQOXsd26btJ0LGN+k4yPmEE+nV9wasGBrhVFeozGPKwDQAMbJr/Z/mJr
+ yLz6uKOw
+ vmqv9kR7J4yZ161GRdEe2gNW8COl+zFOZjGoZ3WorJc3CMj/qXypaIWrrKTT6T2JZir7T2+MCZgUqkJMXbQh0kBg+1jqXz0SeDF8O6vWMec/X4ab0OMTfrJZNk5iNBAchw5I1zJFP1ck/C5Qe/rr9Dgcq5wf12ZakOIJ1LUk2WlopAGz+GuGxGZeP13hDMArYmxgq9Z7jzau8JXgaKZEXWyNIO2S02RQgVZDzQN+AH+LOgcOSNXc712BAlC43YQQUU67Ln6ZjxzMUv6NZsNi6fikJLvYufyz43fmZA9hQP3AEwvD6EYV6uiMjEj/cF+GVLI3KKPvBLy9i/qVMt3Pez48RhEcOMIfYfsnHD36KfhMxoPRKOu9L5jalHV9f+u2a+iVW5rcD5o0BfjDPKuYwN9ZqVrv5Pkia9CI+yG1xdaGyyTMdjSyepuyWxLH1rReQTzE20Bd77EX2jTAltuefGXuC2Eolgl9+LseqpFjCxJNBziLSl4lXZ99eI4MFzRYXV2LZEx1VpZ/3V/CeJwHj+MikfhLiGCW2K8NnuMJ0vGcKBrz6qRNaWmlW0RgdEXaZBYGF1MgHfmwrg4Odt4Vc4/j/B0ok4leq2VipH1TXO+foufabHvy1R5KQrwtrTGyFH1gn+W+XxvW8K29kg59Bh6WgdnkBJDF0hT5Wt0HnjKWuJaYX7SFphN8gWAGMKq4RGGS3gkT9tKaTifXnd93G56QtYjdXnyfHQZNJpULELjUCsSSf7Gf9nXq6L8C/srlRsFzRGuTd1YuKQKuhdERhJOdSGbXQ3qh4UPBMGtrPde9RKe8OuDXLCO/u0p20UaKckUZ4YeNqW62J+uxCDne734wiwZJSNMxodZJWKl0957W8cI69QMNOD4EAf3bgPvrT2kSzcWFROW8+d2eK0ND7PDGWm8OYMYnsIOfA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,75 +105,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 14-01-26 09:59:15, Mathieu Desnoyers wrote:
-> Use the hierarchical tree counter approximation (hpcc) to implement the
-> OOM killer task selection with a 2-pass algorithm. The first pass
-> selects the process that has the highest badness points approximation,
-> and the second pass compares each process using the current max badness
-> points approximation.
-> 
-> The second pass uses an approximate comparison to eliminate all processes
-> which are below the current max badness points approximation accuracy
-> range.
-> 
-> Summing the per-CPU counters to calculate the precise badness of tasks
-> is only required for tasks with an approximate badness within the
-> accuracy range of the current max points value.
-> 
-> Limit to 16 the maximum number of badness sums allowed for an OOM killer
-> task selection before falling back to the approximated comparison. This
-> ensures bounded execution time for scenarios where many tasks have
-> badness within the accuracy of the maximum badness approximation.
-> 
-> Testing the execution time of select_bad_process() with a single
-> tail -f /dev/zero:
-> 
->     AMD EPYC 9654 96-Core (2 sockets)
->     Within a KVM, configured with 256 logical cpus.
-> 
->                                       | precise sum |   hpcc   |
->     ----------------------------------|-------------|----------|
->     nr_processes=40                   |    0.5 ms   |   0.3 ms |
->     nr_processes=10000                |   80.0 ms   |   7.9 ms |
-> 
-> Tested with the following script:
+syzbot ci has tested the following series
 
-I am confused by these numbers. Are you saying that 2 pass over all
-tasks and evaluating all of them is 10 times faster than a single pass
-with exact sum of pcp counters?
+[v3] Eliminate Dying Memory Cgroup
+https://lore.kernel.org/all/cover.1768389889.git.zhengqi.arch@bytedance.com
+* [PATCH v3 01/30] mm: memcontrol: remove dead code of checking parent memory cgroup
+* [PATCH v3 02/30] mm: workingset: use folio_lruvec() in workingset_refault()
+* [PATCH v3 03/30] mm: rename unlock_page_lruvec_irq and its variants
+* [PATCH v3 04/30] mm: vmscan: prepare for the refactoring the move_folios_to_lru()
+* [PATCH v3 05/30] mm: vmscan: refactor move_folios_to_lru()
+* [PATCH v3 06/30] mm: memcontrol: allocate object cgroup for non-kmem case
+* [PATCH v3 07/30] mm: memcontrol: return root object cgroup for root memory cgroup
+* [PATCH v3 08/30] mm: memcontrol: prevent memory cgroup release in get_mem_cgroup_from_folio()
+* [PATCH v3 09/30] buffer: prevent memory cgroup release in folio_alloc_buffers()
+* [PATCH v3 10/30] writeback: prevent memory cgroup release in writeback module
+* [PATCH v3 11/30] mm: memcontrol: prevent memory cgroup release in count_memcg_folio_events()
+* [PATCH v3 12/30] mm: page_io: prevent memory cgroup release in page_io module
+* [PATCH v3 13/30] mm: migrate: prevent memory cgroup release in folio_migrate_mapping()
+* [PATCH v3 14/30] mm: mglru: prevent memory cgroup release in mglru
+* [PATCH v3 15/30] mm: memcontrol: prevent memory cgroup release in mem_cgroup_swap_full()
+* [PATCH v3 16/30] mm: workingset: prevent memory cgroup release in lru_gen_eviction()
+* [PATCH v3 17/30] mm: thp: prevent memory cgroup release in folio_split_queue_lock{_irqsave}()
+* [PATCH v3 18/30] mm: zswap: prevent memory cgroup release in zswap_compress()
+* [PATCH v3 19/30] mm: workingset: prevent lruvec release in workingset_refault()
+* [PATCH v3 20/30] mm: zswap: prevent lruvec release in zswap_folio_swapin()
+* [PATCH v3 21/30] mm: swap: prevent lruvec release in lru_gen_clear_refs()
+* [PATCH v3 22/30] mm: workingset: prevent lruvec release in workingset_activation()
+* [PATCH v3 23/30] mm: do not open-code lruvec lock
+* [PATCH v3 24/30] mm: memcontrol: prepare for reparenting LRU pages for lruvec lock
+* [PATCH v3 25/30] mm: vmscan: prepare for reparenting traditional LRU folios
+* [PATCH v3 26/30] mm: vmscan: prepare for reparenting MGLRU folios
+* [PATCH v3 27/30] mm: memcontrol: refactor memcg_reparent_objcgs()
+* [PATCH v3 28/30] mm: memcontrol: prepare for reparenting state_local
+* [PATCH v3 29/30] mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios
+* [PATCH v3 30/30] mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru maintenance helpers
 
-> 
->   #!/bin/sh
-> 
->   for a in $(seq 1 10); do (tail /dev/zero &); done
->   sleep 5
->   for a in $(seq 1 10); do (tail /dev/zero &); done
->   sleep 2
->   for a in $(seq 1 10); do (tail /dev/zero &); done
->   echo "Waiting for tasks to finish"
->   wait
-> 
-> Results: OOM kill order on a 128GB memory system
-> ================================================
+and found the following issue:
+UBSAN: array-index-out-of-bounds in reparent_memcg_lruvec_state_local
 
-I find this section confusing as well. Is that before/after comparision.
-If yes it would be great to call out explicit behavior before and after.
+Full report is available here:
+https://ci.syzbot.org/series/45c0b58d-255a-4579-9880-497bdbd4fb99
 
-My overall impression is that the implementation is really involved and
-at this moment I do not really see a big benefit of all the complexity.
+***
 
-It would help to explicitly mention what is the the overall imprecision
-of the oom victim selection with the new data structure (maybe this is
-good enough[*]). What if we go with exact precision with the new data
-structure comparing to the original pcp counters.
+UBSAN: array-index-out-of-bounds in reparent_memcg_lruvec_state_local
+
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      b775e489bec70895b7ef6b66927886bbac79598f
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/4d8819ab-0f94-42e8-bd70-87c7e83c37d2/config
+syz repro: https://ci.syzbot.org/findings/7850f5dd-4ac7-4b74-85ff-a75ddddebbee/syz_repro
+
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in mm/memcontrol.c:530:3
+index 33 is out of range for type 'long[33]'
+CPU: 1 UID: 0 PID: 31 Comm: kworker/1:1 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Workqueue: cgroup_offline css_killed_work_fn
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ ubsan_epilogue+0xa/0x30 lib/ubsan.c:233
+ __ubsan_handle_out_of_bounds+0xe8/0xf0 lib/ubsan.c:455
+ reparent_memcg_lruvec_state_local+0x34f/0x460 mm/memcontrol.c:530
+ reparent_memcg1_lruvec_state_local+0xa7/0xc0 mm/memcontrol-v1.c:1917
+ reparent_state_local mm/memcontrol.c:242 [inline]
+ memcg_reparent_objcgs mm/memcontrol.c:299 [inline]
+ mem_cgroup_css_offline+0xc7c/0xc90 mm/memcontrol.c:4054
+ offline_css kernel/cgroup/cgroup.c:5760 [inline]
+ css_killed_work_fn+0x12f/0x570 kernel/cgroup/cgroup.c:6055
+ process_one_work+0x949/0x15a0 kernel/workqueue.c:3279
+ process_scheduled_works kernel/workqueue.c:3362 [inline]
+ worker_thread+0x9af/0xee0 kernel/workqueue.c:3443
+ kthread+0x388/0x470 kernel/kthread.c:467
+ ret_from_fork+0x51b/0xa40 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+---[ end trace ]---
+Kernel panic - not syncing: UBSAN: panic_on_warn set ...
+CPU: 1 UID: 0 PID: 31 Comm: kworker/1:1 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Workqueue: cgroup_offline css_killed_work_fn
+Call Trace:
+ <TASK>
+ vpanic+0x1e0/0x670 kernel/panic.c:490
+ panic+0xc5/0xd0 kernel/panic.c:627
+ check_panic_on_warn+0x89/0xb0 kernel/panic.c:377
+ __ubsan_handle_out_of_bounds+0xe8/0xf0 lib/ubsan.c:455
+ reparent_memcg_lruvec_state_local+0x34f/0x460 mm/memcontrol.c:530
+ reparent_memcg1_lruvec_state_local+0xa7/0xc0 mm/memcontrol-v1.c:1917
+ reparent_state_local mm/memcontrol.c:242 [inline]
+ memcg_reparent_objcgs mm/memcontrol.c:299 [inline]
+ mem_cgroup_css_offline+0xc7c/0xc90 mm/memcontrol.c:4054
+ offline_css kernel/cgroup/cgroup.c:5760 [inline]
+ css_killed_work_fn+0x12f/0x570 kernel/cgroup/cgroup.c:6055
+ process_one_work+0x949/0x15a0 kernel/workqueue.c:3279
+ process_scheduled_works kernel/workqueue.c:3362 [inline]
+ worker_thread+0x9af/0xee0 kernel/workqueue.c:3443
+ kthread+0x388/0x470 kernel/kthread.c:467
+ ret_from_fork+0x51b/0xa40 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
 
 
-[*] please keep in mind that oom victim selection is by no means an
-exact science, we try to pick up a task that is likely to free up some
-memory to unlock the system from memory depletion. We want that to be a
-big memory consumer to reduce number of tasks to kill and we want to
-roughly apply oom_score_adj.
--- 
-Michal Hocko
-SUSE Labs
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
