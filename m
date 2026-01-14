@@ -4,90 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B601D31A02
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 01:46:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9571D31A02
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 01:47:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 706996B008A; Tue, 13 Jan 2026 20:46:13 -0500 (EST)
+	id 5DABE6B0092; Tue, 13 Jan 2026 20:47:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B3F06B008C; Tue, 13 Jan 2026 20:46:13 -0500 (EST)
+	id 584F26B0093; Tue, 13 Jan 2026 20:47:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B35A6B0092; Tue, 13 Jan 2026 20:46:13 -0500 (EST)
+	id 4878D6B0095; Tue, 13 Jan 2026 20:47:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 485616B008A
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 20:46:13 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D4C151B89F
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 01:46:12 +0000 (UTC)
-X-FDA: 84328878984.03.0B1E6EC
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C991740005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 01:46:09 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=F06ZJOvl;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 35E536B0092
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 20:47:25 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F33C81AD85E
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 01:47:24 +0000 (UTC)
+X-FDA: 84328882008.02.09CC7CF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4714B1C0008
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 01:47:23 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nMUZetUG;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768355243; a=rsa-sha256;
+	cv=none;
+	b=W6GEHwkk103ujuaB1a43S1qqciZ7FDYl4d9qmf8MStxspOW8UN2eZB9AvWweU9Rxpr0FFF
+	WGSQ4RGmX/TZOo5Qo1Fcd0gJ0UkMoDL3tpIn1UOqZyrdn1Q8di90HM58GCtw4gfMVHhauB
+	o+kCdAbpkPwS3Yn9aFn+A7FQ+CqldQI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nMUZetUG;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768355171;
+	s=arc-20220608; t=1768355243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IydMD8wuNWInSOgTJupkde9o7rJXQ38wPrSFh8AMmlM=;
-	b=53PCWDWgtjYXcJAAfVxYcGmV1v3p/YhdYTltMDPowuulB7bFaRf48OzSG/LafArD0ncYTj
-	9hWDpaN8+C1izLNOeiTrMz2QqeM66XebANwdxuBXqNV+8AZNOD0I273almptYPHfv20C7M
-	SrNyKV97KKKCDQ81zkveOOlCyymssC4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=F06ZJOvl;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768355171; a=rsa-sha256;
-	cv=none;
-	b=A3zE7ckz8YfGK4LuirWnVRe87anHTKl5RNv3lyl4WzYDNUmJLPhMt45dBa7DGwEdZWBCWq
-	jsMXH1/0zcshjw9hLfwRaaqmgUoZ8aJ/QB/2DlLd/ovi9798MjZPZcltF+kLrc+40geBqV
-	vewbQhZIXoCXHSFAUFrmS92xMiM4GWU=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1768355166; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=IydMD8wuNWInSOgTJupkde9o7rJXQ38wPrSFh8AMmlM=;
-	b=F06ZJOvl2AxXfzzfceaVrU/5G9sTyZHHV/8N64vgvgEN05C5L8f7SudR3aDlTjwpExLUGKxghMQKRdX4If0YfYNYXQKynQIftekKkU7u6eUTPPs8K+RP7WbR4UndgMfAXG0HlGrvmfrHXbVUqYZFlqThgrVNZOkGhghxxZ9uoE8=
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wx0Sq4r_1768355164 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 14 Jan 2026 09:46:05 +0800
-Message-ID: <2b87338f-d68d-4742-8b5d-c807b206830b@linux.alibaba.com>
-Date: Wed, 14 Jan 2026 09:46:04 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem, swap: fix race of truncate and swap entry split
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com>
- <d20f536c-edc1-42a0-9978-13918d39ecba@linux.alibaba.com>
- <CAMgjq7ASxBdAakd_3J3O-nPysArLruGO-j4rCHg6OFvvNq7f0g@mail.gmail.com>
- <1dffe6b1-7a89-4468-8101-35922231f3a6@linux.alibaba.com>
- <CAMgjq7Biq9nB_waZeWW+iJUa9Pj+paSSrke-tmnB=-3uY8k2VA@mail.gmail.com>
- <d95f9ea4-aa47-4d85-9b76-11afd0fb3ee7@linux.alibaba.com>
- <CAMgjq7DrrCx78K3uccsfpGeQfC-_+LuONSefJ+Vd+aCjyncwKw@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAMgjq7DrrCx78K3uccsfpGeQfC-_+LuONSefJ+Vd+aCjyncwKw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mksho74wcrn8xi6pjy5rj9mhwrksfhs9
+	bh=CbQfZQIIOpzsrWPdxd8hqvH/53pZdu9JbkLMGzh3GNo=;
+	b=ku3m2z6hmv2F0Ch9HWiT7Ba0RfALbqbc5q5tU6e0DPlPO7WYektNXnaFLK5BczxAP8A3Kd
+	PqjZ12Ky+aQquJyxDrYCZhOQl+qyvyd0nK+TU7NJbfysISt2pK0djBayuWNHlESKFRgo9f
+	rMaMlXlQkND8tEIRW5YVPtT6KMkxMas=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 91CF36001D;
+	Wed, 14 Jan 2026 01:47:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E385FC116C6;
+	Wed, 14 Jan 2026 01:47:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768355242;
+	bh=FRPsnoiRkODgwynUNMuiriUhpdUW/a1TX7VO4CmrSgY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nMUZetUGq5t9FXORjBux3ic7ipCkK15b/0aIlPYXyzT3LjGiBNtw46yfVpPvq9gJW
+	 cCcsSL08rzEc/0uqeXKvfLPRlGr3DySymdxhtN5GVD9kXM3SOmDrlteUDE7J6MYvsP
+	 5auIGPRnxjviXOJtvEb89I0FxT8fX0ibQE2hDtAA=
+Date: Tue, 13 Jan 2026 17:47:21 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>, Oscar
+ Salvador <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>,
+ <linux-mm@kvack.org>, <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH 2/5] mm: page_alloc: optimize pfn_range_valid_contig()
+Message-Id: <20260113174721.1252583ed3b30c309dd91a4b@linux-foundation.org>
+In-Reply-To: <500811d3-67e9-44d3-bb67-095b23728aaa@huawei.com>
+References: <20260112150954.1802953-1-wangkefeng.wang@huawei.com>
+	<20260112150954.1802953-3-wangkefeng.wang@huawei.com>
+	<926A149E-FE2F-4F88-92D6-FA607398605F@nvidia.com>
+	<db7a38dd-77c5-4adc-b0b1-ceee45fb1f51@huawei.com>
+	<9FC904C5-1C5A-45BE-BE0F-556AF573AD4A@nvidia.com>
+	<500811d3-67e9-44d3-bb67-095b23728aaa@huawei.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C991740005
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768355169-805446
-X-HE-Meta: U2FsdGVkX19hQxKq5u3WCeY3BosJnWSx2XpYAzksTB4K/JSDIq9uy1HEWnPi9dS6FbM8jiTTbJputMi4+k/5CidPXtrWf114kQW2vpf051XAqC3/DMVUxGr4acYubqHpg8JfPZ6JbExa/71FCq8bUYZLkvcMjkkPQOh4nMIrh7SEhXPQvSIGYnkPerO8LSM9hMbjF3HhHFZuAugVWccwl4BtcnDR5IDqMQvMAVDG/6AVEAmSdFEDxq7qordrZ157AvUBv2pKZ6+oUagBLq4SlUyQLWaluisT4wiw5VdFgwjnbgoP1Mb+/KeqVSPYdJIw1/0hHo30XyHzBwsY63PKNGWdFeSxu/PLBp+SV1JfyNIz/vcLzyuv15uArHIduieHHzMhUEc2qdj93xCfLIE0tIOjEVd49xO4kl+zEiuctnOoQmB206+odKfidX3Jhu4Qalk6XrbonN+sUe8OxdS/jlWKoqjBwioPnQM3kaFJTCw3NPw9cu91NdC4lbFljAXnHxjtp64q+uGdWHvdhPd4mHB3p6EBJy/euZY+zGxWbaX2jAAAeCqWH9TSAGGh+8qCATjr7XGqUFOanlE8BfkTP4WGvZZnk7ejrRDfU0M4m/jhPs3tdOomrYhSL+cN85sVxk2xJmFEk9+JD/ABQpVzs+JTx1VwRbq/25U93vItjD6Ey/fA8ZbvW3H4yqzXUL3A9iSlYpngKDBbqXpnIVIrtmCD0S9eLYqMEDJnJkJWDSwj4QIzEPPvOcDnwaANF3ezGXbPX//NnsXVtJJV59Dt+IcB09oQ45Rt/BEif+gCh9gELjqxjo/q0JCY3dy8O71irhYBZjbP/mis5kfUO0FlT+V+O2AvyedyGJg8LfUEXDDdyXMdvsMS/Qeh/q0eCYJES/MY3a6qpp39Hc/4k7PrQCuGReguAJWjhV2ZN1OSqNkayfs53ZNt2pjCNWsEc9Tc554Kq2qpxdUQnZzf4Bd
- axOeleKa
- ejTQIVGRGboriW+qG70cjvz80Iq6tdYJcY6FXi4ECLwcoioubBdbpkbkUPMYWsc+qf1K9ZiBmVh4frPlT6ZzUa3S0XLTghpPGFHWf3gBE0eIIeRsgWBuC4QStVls0snEy4BZRSgDfYq/xxD/YRFPzus/7g8VL4mUCyvGX0TUAsum8ikFR+TQzgxyF1w1oP9cEEUrtP6E/ldy1wVRskOhPMc/FUaZ5cPqsW/BWRRf4qX3qEY7Wfpbh5qfKmEoX6i3HEn73nAMp7tjq9Dd6CYh7mm7Jmp5lZ/6eLuHGJHnDXG/tLtLEQk7GYgWtfcezW/hMadIbM1XHbdPAxWE=
+X-Stat-Signature: nctt1pk67kwreujnqp1objdawyca7a8y
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4714B1C0008
+X-HE-Tag: 1768355243-696592
+X-HE-Meta: U2FsdGVkX1+oFQPJKzgqAA9cfsec6nCR9i3+pLhCM+iCzt++y+RuQuKlS0ybIoCqeQK2Lgmacwo6JwZmRKOs27VW6qNH/tCvlKbdI7GrViTIuS/iV0MnoJOlO1ebxDGj4jcNdZe5Wk3bHJq+L/2WZjyFBb7/7VP/VmH8Qzu8Ic4RsYaX5HeH81TwHlXIA2iQYoT/MDPEjk0WwUdwGNMu+P34J8X8MMTNQHf+IeAkUz/wVaTmRfc5+Wg8cNw236k6b1z2NOCnSXQcwKOQSUWgIpcrOtiS05Fj+p9fHNa67U3DxWIVOsyh+pjTuCbpriY+s/eouafu759VfoBP6DVDOxKwF/viDw3+xnorQca6/bkj7d5t4U7szO/Kx2UOF63UODCVOUNznaJ5wzh7QWu7xwDwz6m+eGKResAeRxXu9h+JRyYDN+tSuk4lPNl4c4SYLnjCYeKPMx/hubx5HhATCQpwRE81iBrQQlcs8O4BVKD+lK9HTgqNB8/ZJDsWw+pOZXjqlOpuj9vtQFROrL/lTA0NXahfW6z5XE+cxq1AKWnIyr+JE5E98teo+tVC+/YJuqertyspF4zoFiUROJwFxjMpxX/9DKfaFkqFVBFHnlfZ3hgtI7S7jhKr/OCPFqMqoK5dUQbhm2XfaARCjBlusiUUT6JTJIIKfWtgMOIAWkC4f8ab7wyTUFbLWPX/exfTTdyT/HO53YeHpZXuXo3zIsZA4K8jw0+hXFSlJW9iwbcdmDOJ/5rLFls/3WdyjIW7NJDJmUgNTEw2EVmjkX2X3iltHQ7/LAwmOLvukADL8tgZxQ16RKyX/fAMpD/A5qmacGE/pqsaaPnEp9sEs3l82U4nEz4dX/ZuoXALEHOMAc2/fj8u/iNTv5cw0e1++fUbdsMWRMZBZLRrhjrQzlSdVsxpB9rgsccbTH0Q3Ft87kJxeevXZ9JJZARS1p0nen16dNO6hTYkifILK0l8fJ2
+ aE8KCvTX
+ rtjQcaJ5a8VCYPY0Z0OwjPrA0NtTc9Fe+Y8f4VbdGDxYCE9kATlRu+nDQ0dviwQlnJv1A9Ivg78juA66Sg/WKzNj+LC7A8HMmkix+Ogz43S8R3F0rpq8B2izRgy4rDeEPwxamAHof/G/3t3UjEh3F9P1GIdRZEKe+1ZPlR+WlbiJRh2wgvS40cvVbUB1ZExGYka8BCoh+H4XEf3o4VQIzhJXBOAORIZLMSH6kk55KOKfwY+xv2/ZGeFDTmTVpuQbNWfMPyiqNnE7kYenO2moQqp79r7nnPz156Qewk3gKrzYgqPKKGNR+18oYFdwswAU0Cur/TydgIn5tDjzSH8Q/ZFGDUKZh4JQ+IJ8b/Ib04hJTgwNOmUJtouH+1Jr9COzOGVtdJT5/Pc77EuMdqU25NlqBmTxg90EoUsbNfoA9s2XdyfMP1S/HMz0rZGMpvFC1e54fOwSxUs6HTEMwmjhURCF3Wn9De2En+2i8GSx+j54EIMD1LawtfKRqz6IjzQ3gkekkfr9Ys66drDfYokNLiRp/h2d3QXzEQ8RP1yljETnj4eKslwI8YOluV7NecDNmlWXT5iCBqlyUZ9YzOX3HNtiutg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,89 +98,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 13 Jan 2026 17:55:43 +0800 Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
 
-
-On 1/13/26 6:10 PM, Kairui Song wrote:
-> On Tue, Jan 13, 2026 at 3:16 PM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
->>
->> Hi Kairui,
->>
->> Sorry for late reply.
 > 
-> No problem, I was also quite busy with other works :)
+> > 
+> > With the changes to the commit message, feel free to add
 > 
->>
->> Yes, so I just mentioned your swapoff case.
->>
->>>> Actually, the real question is how to handle the case where a large swap
->>>> entry happens to cross the 'end' when calling shmem_truncate_range(). If
->>>> the shmem mapping stores a folio, we would split that large folio by
->>>> truncate_inode_partial_folio(). If the shmem mapping stores a large swap
->>>> entry, then as you noted, the truncation range can indeed exceed the 'end'.
->>>>
->>>> But with your change, that large swap entry would not be truncated, and
->>>> I’m not sure whether that might cause other issues. Perhaps the best
->>>> approach is to first split the large swap entry and only truncate the
->>>> swap entries within the 'end' boundary like the
->>>> truncate_inode_partial_folio() does.
->>>
->>> Right... I was thinking that the shmem_undo_range iterates the undo
->>> range twice IIUC, in the second try it will retry if shmem_free_swap
->>> returns 0:
->>>
->>> swaps_freed = shmem_free_swap(mapping, indices[i], end - indices[i], folio);
->>> if (!swaps_freed) {
->>>       /* Swap was replaced by page: retry */
->>>       index = indices[i];
->>>       break;
->>> }
->>>
->>> So I thought shmem_free_swap returning 0 is good enough. Which is not,
->>> it may cause the second loop to retry forever.
->>
->> After further investigation, I think your original fix seems to be the
->> right direction, as the second loop’s find_lock_entries() will filter
->> out large swap entries crossing the 'end' boundary. Sorry for noise.
->>
->> See the code in find_lock_entries() (Thanks to Hugh:))
->>
->>          } else {
->>                  nr = 1 << xas_get_order(&xas);
->>                  base = xas.xa_index & ~(nr - 1);
->>                  /* Omit order>0 value which begins before the start */
->>                  if (base < *start)
->>                          continue;
->>                  /* Omit order>0 value which extends beyond the end */
->>                  if (base + nr - 1 > end)
->>                          break;
->>          }
->>
->> Then the shmem_get_partial_folio() will swap-in the large swap entry and
->> split the large folio which crosses the 'end' boundary.
-> 
-> Right, thanks for the info.
-> 
-> But what about find_get_entries under whole_folios? Even though a
-> large entry is splitted before that, a new large entry that crosses
-> `end` could appear after that and before find_get_entries, and return
-> by find_get_entries.
+> OK, I will update it.
 
-Yes, another corner case:(
+akpmbot already did that.
 
-> I think we could just skip large entries that cross `end` in the
-> second loop, since if the entry exists before truncate, it must have
-> been split. We can ignore newly appeared entries.
+> > 
+> > Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-Sounds reasonable to me. Just as we don’t discard the entire folio when 
-a large folio split fails by updating the 'end':
+Thanks both.
 
-if (!truncate_inode_partial_folio(folio, lstart, lend))
-	end = folio->index;
 
-> If that's OK I can send two patches, one to ignore the large entries
-> in the second loop, one to fix shmem_free_swap following your
-> suggestion in this reply.
 
-Please do. Thanks.
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: mm: page_alloc: optimize pfn_range_valid_contig()
+Date: Mon, 12 Jan 2026 23:09:51 +0800
+
+The alloc_contig_pages() spends a significant amount of time within
+pfn_range_valid_contig().
+
+- set_max_huge_pages
+   - 99.98% alloc_pool_huge_folio
+        only_alloc_fresh_hugetlb_folio.isra.0
+      - alloc_contig_frozen_pages_noprof
+         - 87.00% pfn_range_valid_contig
+              pfn_to_online_page
+         - 12.91% alloc_contig_frozen_range_noprof
+              4.51% replace_free_hugepage_folios
+            - 4.02% prep_new_page
+                 prep_compound_page
+            - 2.98% undo_isolate_page_range
+               - 2.79% unset_migratetype_isolate
+                  - 2.75% __move_freepages_block_isolate
+                       2.71% __move_freepages_block
+            - 0.98% start_isolate_page_range
+                 0.66% set_migratetype_isolate
+
+To optimize this process, use the new helper page_is_unmovable() to avoid
+more unnecessary iterations for compound pages, such as THP not on LRU,
+and high-order buddy pages, which significantly improving the efficiency
+of contiguous memory allocation.
+
+A simple test on machine with 114G free memory, allocate 120 * 1G
+HugeTLB folios(104 successfully returned),
+
+  time echo 120 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+
+Before: 0m3.605s
+After:  0m0.602s
+
+Link: https://lkml.kernel.org/r/20260112150954.1802953-3-wangkefeng.wang@huawei.com
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/page_alloc.c |   25 ++++++++-----------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
+
+--- a/mm/page_alloc.c~mm-page_alloc-optimize-pfn_range_valid_contig
++++ a/mm/page_alloc.c
+@@ -7157,18 +7157,20 @@ static bool pfn_range_valid_contig(struc
+ 				   unsigned long nr_pages, bool skip_hugetlb,
+ 				   bool *skipped_hugetlb)
+ {
+-	unsigned long i, end_pfn = start_pfn + nr_pages;
++	unsigned long end_pfn = start_pfn + nr_pages;
+ 	struct page *page;
+ 
+-	for (i = start_pfn; i < end_pfn; i++) {
+-		page = pfn_to_online_page(i);
++	while (start_pfn < end_pfn) {
++		unsigned long step = 1;
++
++		page = pfn_to_online_page(start_pfn);
+ 		if (!page)
+ 			return false;
+ 
+ 		if (page_zone(page) != z)
+ 			return false;
+ 
+-		if (PageReserved(page))
++		if (page_is_unmovable(z, page, PB_ISOLATE_MODE_OTHER, &step))
+ 			return false;
+ 
+ 		/*
+@@ -7183,9 +7185,6 @@ static bool pfn_range_valid_contig(struc
+ 		if (PageHuge(page)) {
+ 			unsigned int order;
+ 
+-			if (!IS_ENABLED(CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION))
+-				return false;
+-
+ 			if (skip_hugetlb) {
+ 				*skipped_hugetlb = true;
+ 				return false;
+@@ -7196,17 +7195,9 @@ static bool pfn_range_valid_contig(struc
+ 			if ((order >= MAX_FOLIO_ORDER) ||
+ 			    (nr_pages <= (1 << order)))
+ 				return false;
+-
+-			/*
+-			 * Reaching this point means we've encounted a huge page
+-			 * smaller than nr_pages, skip all pfn's for that page.
+-			 *
+-			 * We can't get here from a tail-PageHuge, as it implies
+-			 * we started a scan in the middle of a hugepage larger
+-			 * than nr_pages - which the prior check filters for.
+-			 */
+-			i += (1 << order) - 1;
+ 		}
++
++		start_pfn += step;
+ 	}
+ 	return true;
+ }
+_
+
 
