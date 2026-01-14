@@ -4,108 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1508D31A03
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 02:04:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA21D31A03
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 02:05:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 111B06B008A; Tue, 13 Jan 2026 21:04:09 -0500 (EST)
+	id DBED26B008A; Tue, 13 Jan 2026 21:05:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BEF86B008C; Tue, 13 Jan 2026 21:04:09 -0500 (EST)
+	id D8F106B008C; Tue, 13 Jan 2026 21:05:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F362F6B0092; Tue, 13 Jan 2026 21:04:08 -0500 (EST)
+	id CBC5E6B0092; Tue, 13 Jan 2026 21:05:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E1BDB6B008A
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:04:08 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9FE69586C8
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:04:08 +0000 (UTC)
-X-FDA: 84328924176.02.D9A7FDF
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BB5CE16000A
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:04:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YiIGzTT8;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768356246; a=rsa-sha256;
-	cv=none;
-	b=UfZUG2IAaFq1zhlIKhOWO+ZnIfxXB/IUxO4TF04Is6Vur+zmQTyPAWh1XQanLdzKVWlOOS
-	5jfmWZ4baImYrCgaHaW5+SXBlIjBw5Nr+um8Nb6uNnKPwA4nO6qGYO8hjmiiF3oqoT/5zN
-	oiuhnLsm3iEs1FlV7T7CdAKrxWbHLOw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YiIGzTT8;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BCB666B008A
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:05:32 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69893C186E
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:05:32 +0000 (UTC)
+X-FDA: 84328927704.26.4F6CE9D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9ED9F180003
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:05:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AO0RLTb3;
+	spf=pass (imf06.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768356246;
+	s=arc-20220608; t=1768356330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rZ+G69ZUPDP1wjW8zGZctdexQneChj3kkJxkOwOXZls=;
-	b=XB67UhLZ4nzxOg3L5K0GNk7Uf+G9DuhY5ZCWGPQdk+t01N9K5BUbl9MUnMEyuJy0JvK6nS
-	NbaqMXpsmzycB3/OYKs+zkKFZO1C6AQPtx7np82kVL/+/0D9ICqvKD4XwOynOSPqVaQlRT
-	cOBW8GsHUbwWfXSojhndLi8TEllZkmw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768356246; x=1799892246;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bx1odVcIsFTuNbU+nOZRxpPhkHzBMU0U7zpCDJpaVXo=;
-  b=YiIGzTT8geQQAax78t4plAVK1rzLhLs+qT1MbNxeu7vhboKtA6WhavVo
-   kRHUCthiz6+z8E5J8sSGxVIDv72djBDA68E0W214ZWnfXlMKF/zodk8Oa
-   mr7l6eyN3vtlDMX8iUhSzU5Bj/ONBwxNIdqMv/WJxgkXL7keG/tMz6LfD
-   tvHzWRGbNFIegxo31Zn7+nF3k09wCWpcEu21MFjsDe8Lman7jQpMlbXbH
-   D21zpc7NIy4+Gb4WJlrrQ7+EniXTEVRSWih+XugyMaPLfDN+SxVYaL+/e
-   cg80jxIINLmQQ+5Bt10Lknw8KryU4TMp02ntmCctohMFrRIB7+RsqKxQo
-   w==;
-X-CSE-ConnectionGUID: iOhk6G1kRViSO7vsRNeybg==
-X-CSE-MsgGUID: QPk/krDJS2+AsqcKByYthg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="57206898"
-X-IronPort-AV: E=Sophos;i="6.21,224,1763452800"; 
-   d="scan'208";a="57206898"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 18:04:04 -0800
-X-CSE-ConnectionGUID: YYGdVVPzRZyibvUSb2jL2w==
-X-CSE-MsgGUID: CodrH4jVSyeJjtLQfMFHJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,224,1763452800"; 
-   d="scan'208";a="242077760"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 13 Jan 2026 18:04:01 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vfqEo-00000000Fee-3WLC;
-	Wed, 14 Jan 2026 02:03:58 +0000
-Date: Wed, 14 Jan 2026 10:03:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marco Crivellari <marco.crivellari@suse.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 3/3] mm: add WQ_PERCPU to alloc_workqueue users
-Message-ID: <202601140922.x7qD91JV-lkp@intel.com>
-References: <20260113114630.152942-4-marco.crivellari@suse.com>
+	bh=5jrzCY4RhpuK7plFMFlkVNnwXkq9N4udgNExDYEdqkM=;
+	b=tbEZof4b/V0/bjAo/AHFq6aC+YdeT1l9jm1JlOclIUaolQ2Fz+KGKr729JuGVobNNvYQWn
+	5nQIEyCNjJJYUql8Hp3E0DoZB63bXK2u8Bu2qvwFMzasiVBVbVxhO+mTHzZSukEWVozdDW
+	VTRFMOvBMe5APWXrSgq6IZO6LaaG2qc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AO0RLTb3;
+	spf=pass (imf06.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768356330; a=rsa-sha256;
+	cv=none;
+	b=bHKZ+6O7QZZ2J/FaWHbdXvbuKQN5TUkFT9zqAymd58YfcvRhwJCEZAFXpzh9Il3JvjJ5YO
+	RFnLzXBywWMVFdzYf0VzIrGOIyVH2CxK443MoATUqgsOTgcjjsFie6nHNT92X19khGR4XK
+	seD3zVFlUPMcpNKEZ9ELrZJVHpwWPeQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768356328;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5jrzCY4RhpuK7plFMFlkVNnwXkq9N4udgNExDYEdqkM=;
+	b=AO0RLTb3IOkWBP0yTC7H95HkShHmsUN9EZNOvlJgdqt3O2LSUm0Mcj0nRF3PQcqnt9h7r3
+	ScbSte5EkC7q428Z+cFt2yDXX8zVzeZ2RPEQK+GJ8fNq+dZysnORWyHI6AxUcUre9dUX7v
+	ndq7lpmIoNqEqlaOIomtm4vApfEauRo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-173-I-UtY7Y4MUaHIAbGIClX1g-1; Tue,
+ 13 Jan 2026 21:05:25 -0500
+X-MC-Unique: I-UtY7Y4MUaHIAbGIClX1g-1
+X-Mimecast-MFC-AGG-ID: I-UtY7Y4MUaHIAbGIClX1g_1768356322
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D822518003FC;
+	Wed, 14 Jan 2026 02:05:21 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.63])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 03A0B19560A2;
+	Wed, 14 Jan 2026 02:05:19 +0000 (UTC)
+Date: Wed, 14 Jan 2026 10:05:10 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: m.szyprowski@samsung.com, akpm@linux-foundation.org, vbabka@suse.cz,
+	david@kernel.org, iommu@lists.linux-foundation.org,
+	linux-mm@kvack.org, vladimir.kondratiev@mobileye.com,
+	s-adivi@ti.com, linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com
+Subject: Re: [PATCH 3/3] dma/pool: Avoid allocating redundant pools
+Message-ID: <aWb51ntBtrJCwO6I@MiWiFi-R3L-srv>
+References: <cover.1768230104.git.robin.murphy@arm.com>
+ <8ab8d8a620dee0109f33f5cb63d6bfeed35aac37.1768230104.git.robin.murphy@arm.com>
+ <aWYbcnglF5P/WhL4@MiWiFi-R3L-srv>
+ <8d0c7b1c-fc12-4498-acbb-eaf6cab9ef3f@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260113114630.152942-4-marco.crivellari@suse.com>
-X-Rspamd-Queue-Id: BB5CE16000A
-X-Rspamd-Server: rspam06
-X-Stat-Signature: g3863sbtbyyqq9c75bktcaibumu3hwq4
+In-Reply-To: <8d0c7b1c-fc12-4498-acbb-eaf6cab9ef3f@arm.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Stat-Signature: 54jy99di5bt95cbzbewu4epqgshmn9u1
 X-Rspam-User: 
-X-HE-Tag: 1768356245-939341
-X-HE-Meta: U2FsdGVkX186hzj5FPbHd/thuM4DPRBnsbtbS/q5sjUQVkPKT7NUfP4q3jaR+LwVphB1JKgvW0sJUIC3dHhRpgN/x563u4m4GeckDDPF4+1Uq1E9If2gS0NtTGXVIeb8uRs/GT8JOyE6f3DmZjfS29jwSCqvoZLxo/Izr9HRwDtcUvKseCUvt04RpNWd4XxDXNCgUe3bzr3qZ+yi1GePl+z22AREXGkR0Jp8gmgzUcRqv0WAsqnvPMrw37Hw3y0awk12Xef/pF49MJ3rquJYEm5acpvFeu9aYm5fuX1T4BgqV36UpAjbJd50XyHJErZ1GtlihzEk2rY2GEkJf+UEgIJeOND5rJp3xspLPwx8np8UiCGFdSrm4prVrxR83xbMz8ts3PasrrfzcSQr9Hpw9quPLkWudkhd1jqt8FFSz3dLDaMDCphDqAPksKD4/wdn70BhTEFuE/hoEHZDgbAJ6hV++CsfaB854JFMQI1JOa2Q2azLqCN/j23tRvJf8WY8mHDE3wenOiHzBd7iPQJ+Te9ojk5+CzujT1KVmS8tcYZ8tee/8QYJq2d/OMKmwYU/TglBtTd2gzJQZYhe3okLz0ytH+SF8R2WYm1RfS1+ifMPG86I2JK/WJoMZx4mQT8LAO2R1gXNudSqUeqnLj9OL0iacOEbsiJcN/Ad/9yj1ij+5U0HAMRzlyd5182BQID2Tr7vb3ejeCH85Y6mPIVDKwH5vAPUgMagbQTm98b2yg8Kr1zI+KIazrlT7Z0ojJ+wwZx13yioJ8sICl8UjR68OzW9sPtYqqWHpMzJx0MEmaVOPW7GC+WOJDEGNd9PhBLiQxODUPBBOz41ovJLyYqcfq7czdQBLlTKtxMus/ZPr/JhVhBsc+GZ3/wABk1UmiOzquZrkhT3+JHvUU7aV3gjFHBzq+ow3Ka+hYIa9r7bNyv72VGCE43zgr+9X34kwgyH3u9izuCOzHLex1wXHTB
- teOkO7bc
- LRIQFX8KsGK29YXAJ9lG9uhKL2lvd2S2Gz8spzjLKuva+nZrhrMyuMcH6R3X8Gj2QeFOIf/xFA8DX81WkhfqP+ZxHp7TmaUTHkR1fq9HpCo80RV5SbEMhdmdaAt1Fmgwyl3/H6HmLW29Ngvk8lYCFZSx5NWsbEPuFf1E1oLrnzPJxGHAb6p7VNiX4CYHPoGxkB1cNS4sHFUn6qe/QdTQ1YXMMcDbWYmd6Hfd+wXkeCgIHO9uTFv5bzAOxCrbJFwHnLbU8k6s479xG4odf/PgBkW+hbJGfZlXf+n/Y24cnTvI6Aik77xp7quBTsuvqe+gfn45jjSMBsIaBUiPnKVyeWuhYXy/lrV8OOeXEwgPizidAiZmmkzXDLmdo148E2v7UTvibHEu2/JAppR331OP11t9fwjnfPa/GI1CAvuy98yHw+CXju3Fi497sXRISWJ7jpeZzY6oiEQx4ciFo7Zt0a/VH8pXJ3pIBB7I4xJHOKtV5cBBiSbY85E0I8w==
+X-Rspamd-Queue-Id: 9ED9F180003
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768356329-495115
+X-HE-Meta: U2FsdGVkX1/psL3PuRd79iBP96OCrxcduf20GS+LnBeRV1c9enhMr+5c8z5uuFpo6uTlTG6S0mKg3Zw6bx2RKskXExUf7cpRYslhKhFb8YAslnP6DotZduu4MCBmdr93N7dijYYEdAI9K1BRj6DNyU9omWk7bjC4GAvLLpFuuXUK3mQ+yPeCBFnsqeze6tgSTyuQqgefMbqJyZz8eKfma1bMuzdlpDIMMsNpVXX8+jlodu9R6pHwgLbA7wv6W1WDqpNc8ZHxU3xVFJn+Qjn8LYlr8XFaVaEWoU9koFOXguCS9BjvgvB9eLJgtapVnyqPYVaosTOU59NKIJPJfQgNyOo9ieX/ZBE5kaD3R+PjtpgT9iTBzmaqkMTdr2NGzjVqFaLW/KVPverFUV1rKUnSNZaDTrL7KURo00joarZILGxFUduOf0V2f66Sbg6TxImLGSU+3mntBrB6/eGBYka1q2kHU6sPGNgYgKrUmPoZ2lyj0k4Qq8U6yzCmBnc5f9hkOX5XHfbkPUML/Yb6BQH59/vz+EfhhsmqLcPLZtUnoO3xC9A6bhcu8zT8ApVjqlnjB5QgMOgJrsMqsal5gzmqONFj9MkDznwShIrUgMOTfQ+stOE8icBXMkh5gnocI6+cK+15xr+uW8Xyc08qGYgJEA4TOU0UJpaFIBPOwa6tee+z92g8DPFpvSp+XsnFLfnHDw47oJByBONDNPhBI2E0t8cXQoYRTy1dizkw2yWO25SbV3ZkFRjz+VeLJtDmf6znSpp650r+dwMOuZoHt26+CWA3HnmUiZzxl0XGZ4BiLUYmu1fbUjZU1fswxQN6VEmH1lGXVfjGMrIGgk/zo94veW6VJ3kAyMQDE2cH87Y2g9LUk7AuDM+aIYKF6FYISIhXt5GMUqO/h23UuzAL4olhaoXnqbyBOzASz1eKEHaFQJgIqE4vQiVV0fd+kfHwE5ese64R00An2JiVjDZ1B42
+ NA8UjFM0
+ vneCsF36Zp6fSoey5WK2PKDSQci4bjQF1TCBPWB+j+BBlRKi/2zuBlfTyICk6DeMTLBCM40n3QIW84+Tt4fteDvHD8F839F0+KkJHNgiJRHNgRcFiyQViS9rIKbDhu6/w2pYkLx+HpigyYj2C1brh2ziEdKaQX+s7A+lWu0AaKygw3LrRGCs11vEQY3xK5TA9x1H6QFR0vVhTgZ7gTenWUk5OkrM8SETldtnP35md3XO/mZSVBEkU9lyvsEHDteF3zul9YWwmIPLoYKh68ep/gCulTtabetGj2OLsEVwvGQl0ERzLFtFrYbAFilhLuLi+ws0uXmb+cNWLWtQuIXBEKCbhVww+hg2JITzsBr5h54Mzv5LqdxI2j067GXZVz1iMrwKYAEiJ5bkFoiEFDQHD3ElsGg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,51 +110,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Marco,
+On 01/13/26 at 04:14pm, Robin Murphy wrote:
+> On 2026-01-13 10:16 am, Baoquan He wrote:
+> > On 01/12/26 at 03:46pm, Robin Murphy wrote:
+> > > On smaller systems, e.g. embedded arm64, it is common for all memory
+> > > to end up in ZONE_DMA32 or even ZONE_DMA. In such cases it is redundant
+> > 
+> > This is true and the whole series looks great to me. Do we need adjust
+> > warn_alloc() to handle empty DMA32 zone too like empty DMA zone case?
+> 
+> Hmm, I'd be inclined to think that if nobody's complaining already then we
+> can probably just leave it as-is. A GFP_DMA32 allocation won't OOM unless
+> *both* ZONE_DMA32 and ZONE_DMA are empty, right? At that point I'd imagine
+> it's a bit more significant if someone who wants DMA32 memory can't have any
+> - don't we have a mechanism for reserving some "low" memory for kdump for
+> pretty much this exact reason?
+> 
+> A special case for when ZONE_DMA is tiny such that GFP_DMA can be expected
+> to fail often seems fair, but in general I'd expect that if GFP_DMA32 starts
+> failing then it's more a sign of a genuine mismatch between the kernel's
+> expectations and the system configuration.
 
-kernel test robot noticed the following build errors:
+Makes sense to me. I remember someone plans to take off both DMA and DMA32 zone
+in linux kernel, but that might not happen soon.
 
-[auto build test ERROR on akpm-mm/mm-everything]
-[also build test ERROR on linus/master v6.19-rc5 next-20260113]
-[cannot apply to vbabka-slab/for-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Marco-Crivellari/mm-Replace-use-of-system_unbound_wq-with-system_dfl_wq/20260113-195017
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260113114630.152942-4-marco.crivellari%40suse.com
-patch subject: [PATCH v2 3/3] mm: add WQ_PERCPU to alloc_workqueue users
-config: arm-randconfig-002-20260114 (https://download.01.org/0day-ci/archive/20260114/202601140922.x7qD91JV-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260114/202601140922.x7qD91JV-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601140922.x7qD91JV-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> mm/slub.c:8545:2: error: unterminated conditional directive
-    8545 | #ifndef CONFIG_SLUB_TINY
-         |  ^
-   1 error generated.
-
-
-vim +8545 mm/slub.c
-
-  8542	
-  8543	void __init kmem_cache_init_late(void)
-  8544	{
-> 8545	#ifndef CONFIG_SLUB_TINY
-  8546		flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM | WQ_PERCPU,
-  8547					  0);
-  8548		WARN_ON(!flushwq);
-  8549	}
-  8550	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
