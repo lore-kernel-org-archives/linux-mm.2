@@ -4,115 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9782D37E25
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 13:07:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37652D37E2E
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 13:14:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D0576B00A3; Wed, 14 Jan 2026 08:07:11 -0500 (EST)
+	id 720266B00A1; Wed, 14 Jan 2026 08:14:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A3476B00A5; Wed, 14 Jan 2026 08:07:11 -0500 (EST)
+	id 6FD126B00A2; Wed, 14 Jan 2026 08:14:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BA016B00A7; Wed, 14 Jan 2026 08:07:11 -0500 (EST)
+	id 5CC276B00A4; Wed, 14 Jan 2026 08:14:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 27AAE6B00A3
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:07:11 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C841359276
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:07:10 +0000 (UTC)
-X-FDA: 84330595020.27.67C5B5C
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D90F620002
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:07:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NEjx0P0Q;
-	spf=pass (imf13.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 46E3E6B00A1
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:14:34 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F18E7B9B61
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:14:33 +0000 (UTC)
+X-FDA: 84330613626.12.A5A9C3A
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 46C25100010
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:14:31 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0hhvUfpL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kg0VZ14t;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0hhvUfpL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kg0VZ14t;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768396471; a=rsa-sha256;
+	cv=none;
+	b=xr1Yvsb80uFa1CHY0VyNrbxwdtYFf7/q0vcQClwgXjHLypaxaTmCE8qaEMVSnJ0AQUJZIO
+	CFxv96f7uTRtFSzlIf51SvJ4fDDtz5BR0rpzT41xzZqQuIrFw9DWLBRv1yr984DKWHvP8A
+	DAdBwS2JS50jIE2pS00jsSsCAs/cDck=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0hhvUfpL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kg0VZ14t;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0hhvUfpL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kg0VZ14t;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768396029;
+	s=arc-20220608; t=1768396471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xSspBM8EaxGFzihjOax4j8BH2eLMLR9IBJtyij5U9Gc=;
-	b=RI1Np4RB8CuT2hqIs1zcHt7GMFVFZrP9oo8KYKb3rU40/qzfZyxHWno9waLwGIerORvnEt
-	dcHYQh8ppxkqKgZcNaxwLRLl9CvXZyYCjY3BcicNKAlzmuKgnonE+8eL4KG08916KBrFSL
-	i7c7i/6cOdK1ZM4xSBg120Y/Z1+LEhQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NEjx0P0Q;
-	spf=pass (imf13.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768396029; a=rsa-sha256;
-	cv=none;
-	b=BRzP7PfcqR/1eIpN6LbKz70JLAtFb+wycCQyeraQChitWGjQOv4ofwYhU0UoQQ+INnP9Uz
-	bCxn9q4Otq2c1EVeNr/jMTJUMREdgr9Yiz7otNfgZ25rMDFuSe27ke64op30Q5EMlwrHbk
-	ESuI9hzwdmO0k5f11ITuSecObMzF568=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-64dfb22c7e4so1556863a12.1
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:07:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768396027; x=1769000827; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xSspBM8EaxGFzihjOax4j8BH2eLMLR9IBJtyij5U9Gc=;
-        b=NEjx0P0QDpPWC4pY7j5H4FtlIU9u/hxhCndChhYk/WawOXCJWAI0uhw1fmvXJSBSOU
-         wE/ywvZ6rmvSrPQpcKJjHavUH5wroRO8riW1n/iJ6EAPytmdbp8vxSMSBnM+FYnO2DFl
-         5gVgNZ4QKneSOkq+1Nc8Q9wIAL0cBNM7/TnM5wly1QF5Kqta/5CxSoKAXcqFG2xhUPlE
-         gmaxNC+7Biq4rMt2pBw9p9AVGi9KoO856vtOaXNfCs0ZkXyUqvp/0i/JCEY7T0ou2ORv
-         pAJpQXaxMMZwy69L8lAlNPljv/drd6wTqo/KKLanvItCvBNfsuhsjYoSfcJe1uCwydHj
-         vefg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768396027; x=1769000827;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xSspBM8EaxGFzihjOax4j8BH2eLMLR9IBJtyij5U9Gc=;
-        b=YQWN3MF++H7fwaQWvFeyBWoOPUOhi9m8JHPaqdaYJLxlwmcF++cYiC7xWWBgXVNG9J
-         cyNWOkScuu0XDqcoDUwq6thHSLnOVwn1mrM5OJVVdEXZaUejQraC/h4ItIbEExkpG2ki
-         ZxnmoMQ1T9MYtiNuHwC26qk1E2I1wl4J+a5ZwA3bEI5Pu8TnF4j4xlRNXsSwJM7aRLyq
-         kNXlp9Ixxh2wRCHc9ngVX9gX/3Dxz+FQucoBm6bb81aYTfPNNlh8ST7D/+iSwXDihqZ5
-         5LgTOd1ZQI04Lfm3z971hxE4ftcg2nBjjBGbpGhTrjzua8f6WC1banY+F/WI9gBUL4j6
-         TfBA==
-X-Forwarded-Encrypted: i=1; AJvYcCUL41c+H8HEjVp1TL7RVHxX4yMnmI00WHOS88aMXtVeFc7RMnKSvsoDHi752pd0B3v4v7NRF64zrQ==@kvack.org
-X-Gm-Message-State: AOJu0YxsNHfgtiVJvWT3kZpGhpRR+8Jxutu8OzzLn7VfrKAu63JfQzDQ
-	BdjT/EPxWsg767f9vpuzPbeY+hRNr3Mvd+FFFb2HyImscrluJ/Dvz5E4TMyBRmJLBiZmCynvhbX
-	yVVQtfP/kGAQSy6ividjrn8hJrsZ5LvQ=
-X-Gm-Gg: AY/fxX7eWZSmYZ2y3LPOxJc+KyiGG/QPUsQWrXl/oCeKcLw3ErtzfJUVFCjy2uzPz4E
-	PfKB53TjRG7REfAzC9x3xaw7G+jslwSxddT22DYmXkT606YH7zF6a1bQr99qJNlfV+9uONaKGa/
-	lEvI0kjdYs8z6GI202Sy1KMtO6BGd5yBpywpXV7PWrlvThUWeol9RuNi03BO/RwnyEba3xhcC7f
-	uSqaO5CE8hrw1KwWNAcdB1XfSZnmQp/PX/2octyW3U/jZfYz9qiEOmn/lQfQE0CdIWLUJEeOwW6
-	0nwmirgKeDPvefxwAdZtTmxPcw==
-X-Received: by 2002:a17:906:31c7:b0:b87:113b:d63b with SMTP id
- a640c23a62f3a-b87359b6b66mr376283666b.27.1768396026693; Wed, 14 Jan 2026
- 05:07:06 -0800 (PST)
+	bh=FsTG5iVeM/SDmd5f2bL2EZ5iVc5vb5sMbUUarUjEyRY=;
+	b=sCf1kF19huLEHy8eb8CeMtdKXDh48qg4a5mLDa0aTyE0EmiBV9YyvysCtubjvbRVcP0E8z
+	Md8s3InJqVG4UGmwokXrTeE8hdLmJWtSBKGTSyhdX73mazEhARlJ/IWseDduH8tzRMQ3fo
+	2gVSOsktLtWUTc0UkJ8oEIwz1ofSlBE=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 55BD03402B;
+	Wed, 14 Jan 2026 13:14:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768396469; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=FsTG5iVeM/SDmd5f2bL2EZ5iVc5vb5sMbUUarUjEyRY=;
+	b=0hhvUfpLf9D05/9CTU6aSEENOoKkyCOCKWSVL6wFyaZe4cYREGkq6JaI7olAj3VUDtFhNV
+	u4iksMIyM5bnn8ovN+sTZTifvJaaFmbBdefqlv6rGPghGeuFhj1nOahwF+IVQajNk16lmS
+	p5guWt8XbwZwVBmYSaNxb7H0khjEylQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768396469;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=FsTG5iVeM/SDmd5f2bL2EZ5iVc5vb5sMbUUarUjEyRY=;
+	b=kg0VZ14tKCBNG9hn1SQQ/+S1iZXh2JmVMyFUz1fTYA29aKuEPwJOkVm/vFhkBycmACbC3T
+	qhR8Oz/QGjnfHcBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768396469; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=FsTG5iVeM/SDmd5f2bL2EZ5iVc5vb5sMbUUarUjEyRY=;
+	b=0hhvUfpLf9D05/9CTU6aSEENOoKkyCOCKWSVL6wFyaZe4cYREGkq6JaI7olAj3VUDtFhNV
+	u4iksMIyM5bnn8ovN+sTZTifvJaaFmbBdefqlv6rGPghGeuFhj1nOahwF+IVQajNk16lmS
+	p5guWt8XbwZwVBmYSaNxb7H0khjEylQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768396469;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=FsTG5iVeM/SDmd5f2bL2EZ5iVc5vb5sMbUUarUjEyRY=;
+	b=kg0VZ14tKCBNG9hn1SQQ/+S1iZXh2JmVMyFUz1fTYA29aKuEPwJOkVm/vFhkBycmACbC3T
+	qhR8Oz/QGjnfHcBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 27FCA3EA63;
+	Wed, 14 Jan 2026 13:14:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 8+l2CbWWZ2kDfQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 14 Jan 2026 13:14:29 +0000
+Message-ID: <f5cc5a84-57fc-4fd4-aa74-fc89fdcbb042@suse.cz>
+Date: Wed, 14 Jan 2026 14:14:28 +0100
 MIME-Version: 1.0
-References: <3d8398f1-0130-4d3b-ac54-d23877811747@kernel.org>
- <20260114113635.97621-1-lizhe.67@bytedance.com> <97413239-2bdc-456f-8511-65fb9f1e301c@kernel.org>
- <CAGudoHGb1w92gn89BBuMQOmvcVZkwvt8CK8hFtGg3xmHphmiEw@mail.gmail.com>
- <d9fbc00d-182b-4463-b718-73c2f0eef3a0@kernel.org> <1edfe356-8334-42d2-9d68-7c5bf21a01db@kernel.org>
-In-Reply-To: <1edfe356-8334-42d2-9d68-7c5bf21a01db@kernel.org>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Wed, 14 Jan 2026 14:06:54 +0100
-X-Gm-Features: AZwV_QgStGGgdGZJwipL8s0JB8braZ3cD-WwqXt2daeumLC2PI4hepcGAVk6Es4
-Message-ID: <CAGudoHEyxsPnJ2M+LWkPEb94L2Xp0iqH6O==hCUZE1woLzZB0Q@mail.gmail.com>
-Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org, 
-	ankur.a.arora@oracle.com, fvdl@google.com, joao.m.martins@oracle.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, 
-	muchun.song@linux.dev, osalvador@suse.de, raghavendra.kt@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] slab: fix kmalloc_nolock() context check for
+ PREEMPT_RT
+Content-Language: en-US
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Alexei Starovoitov <ast@kernel.org>,
+ "open list:SLAB ALLOCATOR" <linux-mm@kvack.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:Real-time Linux (PREEMPT_RT):Keyword:PREEMPT_RT"
+ <linux-rt-devel@lists.linux.dev>, skhan@linuxfoundation.org,
+ david.hunter.linux@gmail.com,
+ syzbot+b1546ad4a95331b2101e@syzkaller.appspotmail.com
+References: <20260113150639.48407-1-swarajgaikwad1925@gmail.com>
+ <20260113180036.Zl8j3vIY@linutronix.de>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260113180036.Zl8j3vIY@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D90F620002
-X-Stat-Signature: kkx1u9nfokdiebz8au9p9q6iuobnxfes
-X-HE-Tag: 1768396028-935141
-X-HE-Meta: U2FsdGVkX19W/dh50hJ5yZ5BUL8XTrP6exvjC1e3hFrZX4pZOAZMO4yMyWMsR/jI2BhDnTEbf+x5zkfN8+Z5hKnL1wy6WdAeIgjMsSb7bC1Dif/K3AOCUUhuceHsbCJPFHoAut70kECbndPn+EsDq0w4mAQGhrwlRi8CYse+T7VCYTXJIeUNN6sP/hHUsDo+1+rayTUaEZztXM0XbDDixpeuD0FRThmp9IrbJnvmtCb+3//DJkOLdp9ZEtX+obC6HrJl9KevzM+TJi1mxqJQkVz4ERBDeUxDeBWjxCgG4NgsQ719s7TKM0B023P3g4ANJmXaGT+rbcqu70WHPkB0ZkdCX+K3unA1AHl1+11ogLXQ4vrO3e8/dW2up4kEPxXQuOwBOlGcDVdNlqzzT29MHe6/MrwxJAqHJZHqL74E1vcDTIT4v8iw+s2Mv1+kJMasDrwD3s/1N0Vz8dFZbHlbpS9FrFqNahs3TAHC4vUpfsZPg2GCQm7aciVsR8ID7Uta7HdiFU1rVKzOfULX+m0nTFVOigkFnXA6aJIT4/VlPTUdfeTyDE/96ia8ia0WGTs2IJXAZI8v928UM2z8wI8s7i+wyjnB4g5RXviPrW2+by3VaDcDdjEQmJ0avQ8qkVGRqEtq5AQ7Q+fJ6HSDcV6hLTeiQggOQCzrZmPmL74rSxzRrkisZP5cVivrvZZ3HYU61X2XCqrhwwukRuxh94olxDBzLg65rQhSMwEk2G0QHfcs5MRl8RONlXm0l4L4fiqlktf0QNSM1zT7KO9uBsC791NGINbMgXUTdsjkK82do/5DyhaRMhS5ykN9pXSu62pMFQMgQxCWToV3NNyHjAPAq6iL2TldqxizWQHJCnzj04Pl/exuWJhu6LfCQRht6Vj1vI7MyfzqqxpfwtV1onvXVUFlUPdS3F1AKSLd7C1wyMH0v8AyU2P6T3OjCpVxu3bLRa6Wxsy8T1OpNjp0KGK
- /gL0NpD0
- /V5SfdO6XW4vE4vqngyO105eFCeT+RKi/72BJYoVff5+wbeHVwMauVLag9fwPY9nAaCjJIAe3pvwZVBNrIvg3di/qcPgmvm3Mpbn+cENzUyYdEQaif7JdkbEEyr77uhp4HxRXc7jciblGp6xMeM8MxW0NE1ms/8idCMrLWMVAmKWYUw0MMABoirYDfPEcKWSmz9UXrlca4ETcTCOMEkp4U8yT+bcpxKgmTjVZlUXOLKW9dQbMVvKxTVTptR5q1BRQqumbOw8u5UejxNX+RnUnfm+7cWfK5AdVDFue2z7SrSy+1HZL2oHqt9TI3yqgE1bdT+Ffu8q6sIfSnU18elkAwULqSUhHtbgPkJHtITUI+Lobuv13Uvlw7jV88/7z0usZoqfV
+X-Stat-Signature: 9k4aezaw8ywn55bjo5aph6kheakjhkd1
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 46C25100010
+X-HE-Tag: 1768396471-610848
+X-HE-Meta: U2FsdGVkX19BjlEl4x8BS4za/6Wj4LkPSH/9w1brpe3xM1M2IRNn7A61cXUgnarT1tRRxf//0YqCb/CEHmTxmGDkzAmu5drrxR5qQvUvu2qIW57JgVN6b6kXgGn+t4ChNOBcC1mPCeoV7sSUApwgnUzdo53KD6yMRlx96yaXLsmJmMkXyHkgt48GdqfEI1wVv4w80NERApNqD/YwqHP2Ul4mcjiliBX3f6KbYbkye2aus9myNdEZAU7lmqvJYnrNHdBHVcrz2UOAKvslecg4bgGM6qsNqoigW6kudC18pgbo6jKJKhgXcDHXKEoKm7U+oj9T90rMscTzzFzf3AZiH9BIeBTOyVLdTkNtaonuDxvCHvGsr2p9wF0VKLgzccda71/h+9+AT/vtto9qy2g1sHJ3MMFR9bgZNXTn+9fSKnUzp3df1QyaRIRj78MlX3brNqO5QNKbIi+TA5vx5DoqVMToW0kSyauNNqTDbLEr911zMe2gHQzw4+pi3n8pjTexvsxo7XSWNiWoo3+I/cq9kY/jMVKxxcGECYOFKtB+pkXAp5fbe7JQhw2TEsknkGlSsPJe1rkiEkKAZmWUbwAwGV83smIwdmjoBfqchOJ7M7HG6OAB33bducq3URfOeUZoert49c471DRi5XRPYIFTmeNHjOeo9wDlIhFUaHL+eyqF6NNz3rImOgktSDG9wIfaYGX7DeNGBp2YLxyMgb7s/v0gcwLSOkTcKXT2Kj3JkQpGW3pIyzYPsR9HbgAu24vMJ9OUDP5QQ2qmUqKARSAZpK9c5nYX0VurBJwCX0i0dbQ7V0IeM/bfQ9NKl5uD6DUntUYCPZFJU8x65lllBX6dLFvwI47P0PsV21O27o1lrXtwehiFK//V5wmBRGGqbfHz2gGn7GK56zGM8JWsuxi3ptcw6Sq3nOnkxvmJ96kWimA/gBQAwP0x9t87lB6Ze4Xp3l5V1/xp38zT7Hf1xQs
+ YJfe8ini
+ XrB+ga6ucPm/xmMeJvcHcp0JQ2HISwkj2JxZxBRXSmFbkJ64gFa2PEqi/swLud7j7OJ0DES5M4ApanTWTIhVUjrK1+lyI3NilqBwdIF3OobwJE4p+C4vjii97uYKBPXZpVYI31HC6ymdfoO7tVLuiHJ2rxJqDYeUlc2RC+Y+/+tInD6xjWMpsrhv1O/kEZU/aVWXZU7j+DLtq4eQH2HQ+h5CeGkDndzjHywpMKnb0wWTBg/8RJWZr1Pp6ysoOsfCIKiwKQb24WTTDWc/NriD2LzD2qfUnu6+gxayoFiKNkKZZeU32KIDKJ8mb1zXhDGNctCu3v57sJsHwiLlmXAWjiNZrMSO9/3jZOV2+ocRA/B+IBb62t8rgo0ppfmSApj9b/BP8fq9CrlG6D6Us/fc4FEECPz5ntV6AxI9enr5ft0476d6aCMpQQzDhdA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,85 +189,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 1:41=E2=80=AFPM David Hildenbrand (Red Hat)
-<david@kernel.org> wrote:
->
-> On 1/14/26 13:33, David Hildenbrand (Red Hat) wrote:
-> > On 1/14/26 13:11, Mateusz Guzik wrote:
-> >> On Wed, Jan 14, 2026 at 12:55=E2=80=AFPM David Hildenbrand (Red Hat)
-> >> <david@kernel.org> wrote:
-> >>> You said "I wonder if implementing hugepage pre-zeroing directly with=
-in
-> >>> the kernel would be a simpler and more direct way to accelerate VM
-> >>> creation".
-> >>>
-> >>> And I agree. But to make that fly (no user space polling interface), =
-I
-> >>> was wondering whether we could do it like "init_on_free" and let whoe=
-ver
-> >>> frees a hugetlb folio just reinitialize it with 0.
-> >>>
-> >>> No kernel thread, no user space thread involved.
-> >>>
-> >>
-> >> i don't see how this is supposed to address the stated problem of
-> >> zeroing being incredibly expensive.
-> >
-> > The price of zeroing has to be paid somewhere.
-> >
+On 1/13/26 19:00, Sebastian Andrzej Siewior wrote:
+> 
+> I would say that despite the _nolock() suffix a local_lock() is still
+> acquired. The !PREEMPT_RT does a trylock.
+> 
+> As I noticed this myself today while looking at other patches, was the
+> trylock removed on RT by accident, was it there only in an earlier
+> version which was never merged and will it ever come back so we can go
+> back to !nmi || !hardirq?
 
-Of course.
+IIRC there was no version that would do always a trylock on RT (or maybe
+there was some early one but run into trouble quickly?). The problem was
+converting the slub code to deal with situations where initially trylock
+suceeds in the given context, but then it's dropped and later needed again,
+and failing that later trylock would be too complex to unwind. So instead we
+do the local_lock_is_locked() check upfront and then trust that all nested
+local_lock_cpu_slab()'s can't fail. And unfortunately this doesn't very play
+well with RT semantics.
 
-I'm stating that with dedicated threads for zeroing, provided there is
-some memory available along with cpu time, it can be paid while
-nothing actively needs these pages.
+> 
+>> +		 */
+>>  		return NULL;
+>>  retry:
+>>  	if (unlikely(size > KMALLOC_MAX_CACHE_SIZE))
+>> 
+> 
+> Sebastian
 
-> > Currently it's done at allocation time, we could move it to freeing tim=
-e.
-> >
-> > That would make application startup faster and application shutdown slo=
-wer.
-> >
-> > And we're aware that application shutdown can be expensive, which is wh=
-y
-> > e.g., QEMU implements an async shutdown operation, where the MM gets
-> > torn down from another process.
->
-> Also, just to mention it, assuming a VM is backed by a hugetlb file, the
-> user space thread destroying that file (or parts of it by punshing holes
-> and freeing hugetlb folios) would be paying that price.
->
-> That could be done whenever there is a CPU to spare to perform some freei=
-ng.
->
-> But again, I think the main motivation here is "increase application
-> startup", not optimize that the zeroing happens at specific points in
-> time during system operation (e.g., when idle etc).
->
-
-Framing this as "increase application startup" and merely shifting the
-overhead to shutdown seems like gaming the problem statement to me.
-The real problem is total real time spent on it while pages are
-needed.
-
-Support for background zeroing can give you more usable pages provided
-it has the cpu + ram to do it. If it does not, you are in the worst
-case in the same spot as with zeroing on free.
-
-Let's take a look at some examples.
-
-Say there are no free huge pages and you kill a vm + start a new one.
-On top of that all CPUs are pegged as is. In this case total time is
-the same for "zero on free" as it is for background zeroing.
-
-Say the system is freshly booted and you start up a vm. There are no
-pre-zeroed pages available so it suffers at start time no matter what.
-However, with some support for background zeroing, the machinery could
-respond to demand and do it in parallel in some capacity, shortening
-the real time needed.
-
-Say a little bit of real time passes and you start another vm. With
-merely zeroing on free there are still no pre-zeroed pages available
-so it again suffers the overhead. With background zeroing some of the
-that memory would be already sorted out, speeding up said startup.
 
