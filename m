@@ -4,110 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D658D39013
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 20:53:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9821D3901A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 20:59:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFFF66B008A; Wed, 14 Jan 2026 15:53:12 -0500 (EST)
+	id 4781F6B0005; Wed, 14 Jan 2026 15:59:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAE2A6B008C; Wed, 14 Jan 2026 15:53:12 -0500 (EST)
+	id 44F8A6B0089; Wed, 14 Jan 2026 15:59:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD7916B0092; Wed, 14 Jan 2026 15:53:12 -0500 (EST)
+	id 34E966B0092; Wed, 14 Jan 2026 15:59:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ABA9A6B008A
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:53:12 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6142413B310
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 20:53:12 +0000 (UTC)
-X-FDA: 84331769424.16.6088A13
-Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 92503C000B
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 20:53:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=BWc3ldmV;
-	spf=pass (imf22.hostedemail.com: domain of 3NQJoaQgKCCwJQVORQIWOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--bingjiao.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3NQJoaQgKCCwJQVORQIWOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--bingjiao.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768423990; a=rsa-sha256;
-	cv=none;
-	b=cRgCX7DJd55gTLZ2lBVqD7MQGtEYLMjz2jul0RrSGdrXRD+29YSSutpZGTF6RzMb1finJ5
-	VhvJMKAw3CU6nKxCY9qV5zmTJcj7yuHKfXiKc7CTGiw9clKeXig44dGYrA3L54cnDTaN9s
-	+IHNl3rTDVmI9yUCdUEFjA/lMWwdeXI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=BWc3ldmV;
-	spf=pass (imf22.hostedemail.com: domain of 3NQJoaQgKCCwJQVORQIWOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--bingjiao.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3NQJoaQgKCCwJQVORQIWOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--bingjiao.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 24D3A6B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:59:59 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A55D159AEE
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 20:59:58 +0000 (UTC)
+X-FDA: 84331786476.23.E8C241D
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 74C452000D
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 20:59:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	spf=none (imf03.hostedemail.com: domain of macro@orcam.me.uk has no SPF policy when checking 78.133.224.34) smtp.mailfrom=macro@orcam.me.uk;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768423990;
+	s=arc-20220608; t=1768424397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CCsRJ41+Ggq8G+xRjLn+/BFhG0UFmGF8M8WZhyAL+Ls=;
-	b=BZN9FRJ8YkoYBfDRWBEBu3s3dzY35xZwMBTLTMPpJqZR309StzJUJJaRogtrMZa5LtRu2O
-	885IWhQM85EfX+rKWsRKWCGL+8f1oySJD8dxnTch0puKFu9I+x2XuA4yWTgiyx/gRVWXV7
-	k5xo0SUsygQssb4R7SK/aT3B43i8yXE=
-Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-12338749ea9so319248c88.0
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:53:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768423989; x=1769028789; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CCsRJ41+Ggq8G+xRjLn+/BFhG0UFmGF8M8WZhyAL+Ls=;
-        b=BWc3ldmVHXkMIg194z2FaAEpouq7WPCpjeKu8+4cNq2lRiM7JUkWHE364zVt+27J5E
-         8PTRKTLMD+Rxji+Du1e/rI+HCh7pz4dLyMFW+Gl6M26VOa1HbHH8HWm7JTyxOjqE3zap
-         6Np0kJ1Oae6pPdebzr9nRFaI7B34BPUdonV/S4nhboSAE/Vt9mXOqZxfwc2nSlX3o5NM
-         Iyn4gMvwpq+I/EcOrUuqhl9+tlY2/iXk/hiwDWNJawqKurkL5pTXPjo2NIss8mCAqay6
-         sDxb/eDDbPzt7zdwSVMqAss1gfBZzs7vBD1QhPGP3aHej/+XrzRiBcTyeamDeb1QnSLR
-         YJ3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768423989; x=1769028789;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CCsRJ41+Ggq8G+xRjLn+/BFhG0UFmGF8M8WZhyAL+Ls=;
-        b=AZLl+a64duuo8rvZYVfOKAAofWANvWJMXfe+TAPbS9Gu1NeVOcELRtiqSRcPVPCZg6
-         8bRFmRh6bHqpGkgopph9rEXYksRu1HSZryol2NlEjty5+muURbk0ACNy/8kgjfC0hPe9
-         yQmBWDlFsqFpI28DzxUZ12Sp2I0WdcdHJzXtCYjuK4wE1WU6Dn6c16927CukdPrNcMkd
-         y8onCY1zzqvLJm+I1qbI1OF27fG9zRUD3Hf2G/ulDC9l+vYuedXSGoPdW1txhm4Ds5wq
-         p5jzsMitWoMz1VVz03u9ZtyFfffdSThwBk/8Yw6MG0T9sFx6q3dbOJVpamk8Lrl9xuOf
-         6qzA==
-X-Forwarded-Encrypted: i=1; AJvYcCWvInCtuIxMSYpqW6MzvFvW9RX625Y4MlREBZBSPM8AGYX0Z3SpAopq4+uvs3m8CBY9BrXOvYZgdA==@kvack.org
-X-Gm-Message-State: AOJu0Yx4W66EbHLNUj/TdlTrlgV96f/KuyhQhurXwdNaCYloiTKzz+YZ
-	UrlwVqtpxEYFjzoSy5GHVNrgfmDcbh9LMCe+o6SVGz/8wSrre2Rh5h1PveAaIbTRQ6ihx86SnNo
-	t9ZU95hJCE6DqkA==
-X-Received: from dybic39.prod.google.com ([2002:a05:7300:c727:b0:2a4:612e:b41f])
- (user=bingjiao job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:701a:ca03:b0:11b:923d:7753 with SMTP id a92af1059eb24-12336a12704mr4017500c88.3.1768423989308;
- Wed, 14 Jan 2026 12:53:09 -0800 (PST)
-Date: Wed, 14 Jan 2026 20:53:03 +0000
-In-Reply-To: <20260114205305.2869796-1-bingjiao@google.com>
-Mime-Version: 1.0
-References: <20260114070053.2446770-1-bingjiao@google.com> <20260114205305.2869796-1-bingjiao@google.com>
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260114205305.2869796-3-bingjiao@google.com>
-Subject: [PATCH v9 2/2] mm/vmscan: select the closest perferred node in demote_folio_list()
-From: Bing Jiao <bingjiao@google.com>
-To: bingjiao@google.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Gregory Price <gourry@gourry.net>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, muchun.song@linux.dev, roman.gushchin@linux.dev, 
-	tj@kernel.org, longman@redhat.com, chenridong@huaweicloud.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 92503C000B
-X-Stat-Signature: mcxjmkj8de1rdd1qasshfnm1n515ninw
+	 in-reply-to:in-reply-to:references:references;
+	bh=lkolwiPwgsF4A/5SQSCwZ7V7qx+nHaPnoPb0elL6zdY=;
+	b=rMzfl9Cn42V3Alwjk1rg6Sc7Qz1QB5vAMcMU6MhQAj+ROS0hUQN+kF5zx0BmjAk7FvnUPa
+	2pMpSHiUob7tItMFsP2OVyHYyv5RKQGCfpInN+Xlyh18q6GioWpzA364dYD7ItXkbGTyq/
+	YCGq7/e4/gFXfp608Q4zmLlxs6SUlsg=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	spf=none (imf03.hostedemail.com: domain of macro@orcam.me.uk has no SPF policy when checking 78.133.224.34) smtp.mailfrom=macro@orcam.me.uk;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768424397; a=rsa-sha256;
+	cv=none;
+	b=e7OZiGlNG/DYHg32uA6xtqwX5k4HDOgz9jaLFduxz3jeH2cG9vy0Vg9mqJG5lP6rm1D2l5
+	zohnC40n+LNREimwPBT2/nCj2Eff59EztyXz1Y8sfPon6lg/6c2LCoTgbtvoRpIql3OqFI
+	lAvrfiHUozd6+4AiDGk7gBJzgQ3LdDY=
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id CBABC92009C; Wed, 14 Jan 2026 21:59:52 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id C90FC92009B;
+	Wed, 14 Jan 2026 20:59:52 +0000 (GMT)
+Date: Wed, 14 Jan 2026 20:59:52 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: David Laight <david.laight.linux@gmail.com>
+cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev, 
+    linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+    Linux Memory Management List <linux-mm@kvack.org>, 
+    Nicolas Pitre <npitre@baylibre.com>, linux-mips@vger.kernel.org, 
+    Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: Re: mips64-linux-ld: div64.c:undefined reference to `__multi3'
+In-Reply-To: <20260114173435.51cf556d@pumpkin>
+Message-ID: <alpine.DEB.2.21.2601141950110.6421@angie.orcam.me.uk>
+References: <202601140146.hMLODc6v-lkp@intel.com> <20260113200455.3dffe121@pumpkin> <alpine.DEB.2.21.2601140453090.6421@angie.orcam.me.uk> <20260114103103.216aa122@pumpkin> <alpine.DEB.2.21.2601141530510.6421@angie.orcam.me.uk>
+ <20260114173435.51cf556d@pumpkin>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-HE-Tag: 1768423990-398865
-X-HE-Meta: U2FsdGVkX1+CKl/KjnDTDUHGqW9PJ6hlb7PgwUYMFhbdKBXipji37nOQRFVFkxNBLmOCBYdHqOfq4lmfetqOav3Zi0P8MFFhOKmVmxFO8dioXXhzl9M2ccCy+xOb3c10WjCsfA3tda0At7e88DSF4YaCaYRREPApXUDIwa7xYEubNOJvTF0LS1+XbhhvAU5kjTyv8XT0JGKnIXKS5Bi+0G64dEX0HaDO06VfRA0tPUBpDI7cKkV4vbWYACupFkxNTauabC194QWOqQv/mvdFhLFjy+NW/QFSqmtOgQ+F3CxkOzHpoQ0n63gDeFahtuQ4Wszp0gWvNFTyiGD1qZfUpQDOdVHLVZBiySQqkc3fPX3+pPTFdQPbx0zbijrBt8XINY9Ovuzu15rp8oEPQD7XI/mg/AowvWB3J3vcgzKfI44mNfKsA9QcwB+wPP7E/wpjKhhTtov44p353Jmri7CXoOxXctyZ9Xt9UfXlp9qlYnthlUKnmzoPJBZZ0D1iNJY1U1Q8BfM/O2oEjxjPpBbXtN/mwsGRiPopmz+7PlbYBBbvYglyQUwZpQi9bYG9NI5T+nzuK6uTkHn6ipawsCBxCCDQdsLflBh2nh91gq62O4AIn5Tt4S5+Qaxr0DQeOycej75bE2OzQCQDDBzYJAJH00RDoKAxw3KKq5dAwWWjKQys86UXewxqah5rFMwkaIX3jeAcwDXX7ubLivRWzdNO0sycrSNBCX+uBUN37hHRNASOPebGwz2LDCVhSIo0XPyVS0T2Of1vQhm/ooFugEli14Dz4ZwAKa+/nWm64eg9J8SNGOFFQdnxKiTC0Gu6DjjXSqZghGebbhm8Whj4ICFETeYir8LzzydeEw2lg7JqJXHrS9U5x1DqFKl9TDHjlJjvrP0c9+DBFnF4I5Oe+Jrykznb5glamo1SXZWT6U0C91EG804afkgYQYAH1PV7z+9sRHwLs/hwk+K2wwb3EhU
- goBg4GtD
- +6smyYzetdHt7tPm2OwdEXgt+QN3mYkSEZf7F29PUssW2kwNZxZOp7EMF1nBpizndcEu62+juViRXWvrAxPdeJMHgzDMF8LlIgOlGIG2+/VGamnpgCbMmnwikvQTFoHfLJ5zE4CDResOw5v6BZulQY2m2AUCMD1DSEDGxYux04Vko0KgMaRUtduM5bvoWcDC1OdTkY1mBaH2ZcvXTfAkBIaM1ms+mKncwduh4rbBAblwx7DcI4/QftvHl6eFWy8k1yhThjkKNFjffImoOhY5uV6Q0Byj2bR5kMng9jZC1N2FP6j37CuEKO67dYyevXu8Ar9l0R3F61n2g9DU0EQfptR3mVA2OZxovJMWYQ9F2oJq+/8ZRgNkXlY1NFyepNnTVFUcOcyub8cCdx5lsekKlIZAEqD1pBVL6K1DVC41fOyAnr5nFGkXMvpvUFWXdJ5K2WIO0ibFjKTNkQSkVsqXMa1I52mtfAAwUHL6NsU1pBriNqXQNGVlTNd0qskptryJ1dYq3kvbxDCTSQSt+15Kp6pzht2bmHcAnf/i2QJhvTL12IXERpp1mJXd7OKsuVOdq9hVPr5uJ/bnbUSV4YX31AU1n9f+02+oma5G9cz+Ey8dL0wa+F2/G4S2699hyiPlETwupPey6lRS78GfOoeVEfvsMkM5smGLQMjM6TfnazUA11ApcAq2qYQezcJLr1ZhAJ23ESXHTNhk99JA=
+X-Stat-Signature: 6ndiinbrgyq68dhp5qpqtrcmxzrmxuxf
+X-Rspamd-Queue-Id: 74C452000D
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768424396-640958
+X-HE-Meta: U2FsdGVkX19p7YDgQ3wUbeZSc169X6Y9iyRXyjCg9DeyTMy/Tp2TQOswG38WJ4sAgZmvpxYaO1zwcvg/Q31gdtY0a/xHDy2OAnzz8Y8SUig/hH8qRZl7OR18dkjc7fqc3b4/nfSFxMbyReU5sNuGKEtWr316RRVX8ai0gFP8dRm98n/2XppRzE2N149Rdmfc3yQJgD0CXzTSDXfjSzvL7X++L9lOnxtQNS9PU+f6OpwTVxSYg+hvzbqRfgOujCG2ffLrJGlsRu8mQVIXBwL9eo+QNbIloJeGl/wAnKNSQ+v5teAaYbqFxJ5PT3lPSkuzG82IFIJOx9OgRrcBjoV4T24AIEOt4zDLnhqPgcNWs8dKZVO03ipCinR2wLwGm2WgJq7jZNtt8+CH3Gyvg7rVX4o/X5A2ihmJcMtkp9/aDTyGnXNmUsH0JVy2Wns2emNGXzm7AKGXesyI2A/nhxicMGqtkgiPwXQI8HM98ouHqX3PB+EX2arj802jx1PXgu6U4FZGttDik1AMD6YeXsQ7xdw3Gtetsyx3ERjffrzmX0gkHv6j/wmHl6z+h/K77l6y/qqZffFVLVvEGa6GZ+ZTsJKsHc/+beAJpGS6OgtR3qi+X0z5LhqpOV+l1/Jj6Wc7hqHBB7thEAdO2R6DOUKOuBN3XAcOy3etOhUQMGfVmuVDLYT2obWvz0leHSdHs6/s7iiXjUevLdquy4G+EAetNkynT65umTuq9Fh6MR1hSKaAI7OhgVlOeWmRX0OIiQiaKhLXSVA3PrQUQzNMROA+XPNDCU71NGU/qefTaqjC84ZrDeHX7C6fCjocabVs5PrWaERQbsCTxGhxugiD/i2teBYDTNCd/J1bZ/LzNxonVL2cyyJgCIdSuLfd3vbHapkOQtHfpOWT60UQtugAx9vQnrOR6m11TSQIfM28UvPZ1dGBxuLiwywn2kNZgz8H/C/9Hw9BAZi3syU7TRXr4SF
+ aUqYB4s4
+ r5UotTOT5FNO4BbC9NlzR7Swj/4Or40NS1BeIn+bK2fFmMo0fcEVJMF/IRKLnN6CUAnpC4GsDoyBFL6JmTln/y4+OI8hWNLiyrdt03v+/Ek+wi5H/n+8aurZykzvfB3tnecvkRGz7A6UjCPNih/YOezC55dGWUA2nYdYZX3qlRFUk58gqLxJIHkWFzroCXfCTt9SIIW/QL4B6jfQmqlkR1xmIF5959tpJ+EQxfpU1FW7ixMm3zF/Ap5evrYSXPHKbO367YPdq7mqtPqF7WPyBM2gn5g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,138 +85,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The preferred demotion node (migration_target_control.nid) should be the
-one closest to the source node to minimize migration latency.  Currently,
-a discrepancy exists where demote_folio_list() randomly selects an allowed
-node if the preferred node from next_demotion_node() is not set in
-mems_effective.
+On Wed, 14 Jan 2026, David Laight wrote:
 
-To address it, update next_demotion_node() to select a preferred target
-against allowed nodes; and to return the closest demotion target if all
-preferred nodes are not in mems_effective via next_demotion_node().
+> > 	dmul	$2,$5,$6	 # 9	[c=20 l=4]  muldi3_mul3_nohilo
+> > 	dmuhu	$5,$5,$6	 # 10	[c=44 l=4]  umuldi3_highpart_r6
+> > 	daddu	$7,$2,$7	 # 14	[c=4 l=4]  *adddi3/1
+> > 	sltu	$2,$7,$2	 # 16	[c=4 l=4]  *sltu_didi
+> > 	sd	$7,0($4)	 # 21	[c=4 l=4]  *movdi_64bit/4
+> > 	jr	$31	 # 44	[c=0 l=4]  *simple_return
+> > 	daddu	$2,$2,$5	 # 29	[c=4 l=4]  *adddi3/1
+> > 
+> > (hmm, I wonder why the cost for the high-part RTX is over twice that for 
+> > the low-part one; this seems outright wrong, also taking the possibility 
+> > of fusing into account).
+> 
+> They might be different, if the wide multiply is implemented with multiple
+> narrow ones then the high result bits don't need to be generated if only
+> the low result bits are needed.
 
-It ensures that the preferred demotion target is consistently the closest
-available node to the source node.
+ Well, it's GCC that has DImode multiplication in `muldi3_mul3_nohilo' RTX 
+but then TImode one combined with a shift and a truncation operation in 
+`umuldi3_highpart_r6' RTX, and then applies some generic cost figures to 
+the respective complete expression.  Instead the MIPS backend ought to 
+provide the correct cost in both cases.
 
-Signed-off-by: Bing Jiao <bingjiao@google.com>
----
-v7 -> v8:
-Fix bugs in v7.
-Remove the while loop of getting the preferred node via
-next_demotion_node().
-Use find_next_best_node() to find the closest demotion target.
+ Given the technology involved with MIPS MDUs I'd expect the same latency 
+for both operations (DMULT/U used to produce both parts in one operation, 
+but required a dedicated MDU accumulator register, which complicated both 
+the pipeline and instruction scheduling in the compiler), and indeed e.g. 
+the figures for the MIPS I6500 CPU give the latency of 4 for both DMUL/U 
+and DMUH/U each.  That would be 16 in terms of GCC insn costs, as that's 
+cycles multplied by 4 so as to allow "fractional" costs in special cases, 
+and while using 20 instead is not too bad, the value of 44 is way off as 
+it's almost triple the actual cost.
 
-v8 -> v9:
-Move allowed node checks and identification of the closest demotion
-target into next_demotion_node() for better function splitting.
+ Incidentally, the repeat rate is 1 for all these instructions, so the 
+multiplier is fully pipelined in the I6500 implementation.  No fusion is 
+mentioned though.
 
- include/linux/memory-tiers.h |  6 +++---
- mm/memory-tiers.c            | 21 ++++++++++++++++-----
- mm/vmscan.c                  |  5 ++---
- 3 files changed, 21 insertions(+), 11 deletions(-)
+> If those are gcc's costs I suspect they may not match reality, after all they
+> usually only have to be 'good enough' or 'reasonable'.
 
-diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
-index 7a805796fcfd..96987d9d95a8 100644
---- a/include/linux/memory-tiers.h
-+++ b/include/linux/memory-tiers.h
-@@ -53,11 +53,11 @@ struct memory_dev_type *mt_find_alloc_memory_type(int adist,
- 						  struct list_head *memory_types);
- void mt_put_memory_types(struct list_head *memory_types);
- #ifdef CONFIG_MIGRATION
--int next_demotion_node(int node);
-+int next_demotion_node(int node, const nodemask_t *allowed_mask);
- void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
- bool node_is_toptier(int node);
- #else
--static inline int next_demotion_node(int node)
-+static inline int next_demotion_node(int node, const nodemask_t *allowed_mask)
- {
- 	return NUMA_NO_NODE;
- }
-@@ -101,7 +101,7 @@ static inline void clear_node_memory_type(int node, struct memory_dev_type *memt
+ Well, they need to be good enough for the compiler not to come up with a 
+worse alternative, such as e.g. with repeated addition when one of the 
+operands is immediate.
 
- }
-
--static inline int next_demotion_node(int node)
-+static inline int next_demotion_node(int node, const nodemask_t *allowed_mask)
- {
- 	return NUMA_NO_NODE;
- }
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index 864811fff409..2d6c3754e6a8 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -320,16 +320,17 @@ void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
- /**
-  * next_demotion_node() - Get the next node in the demotion path
-  * @node: The starting node to lookup the next node
-+ * @allowed_mask: The pointer to allowed node mask
-  *
-  * Return: node id for next memory node in the demotion path hierarchy
-  * from @node; NUMA_NO_NODE if @node is terminal.  This does not keep
-  * @node online or guarantee that it *continues* to be the next demotion
-  * target.
-  */
--int next_demotion_node(int node)
-+int next_demotion_node(int node, const nodemask_t *allowed_mask)
- {
- 	struct demotion_nodes *nd;
--	int target;
-+	nodemask_t mask;
-
- 	if (!node_demotion)
- 		return NUMA_NO_NODE;
-@@ -344,6 +345,10 @@ int next_demotion_node(int node)
- 	 * node_demotion[] reads need to be consistent.
- 	 */
- 	rcu_read_lock();
-+	/* Filter out nodes that are not in allowed_mask. */
-+	nodes_and(mask, nd->preferred, *allowed_mask);
-+	rcu_read_unlock();
-+
- 	/*
- 	 * If there are multiple target nodes, just select one
- 	 * target node randomly.
-@@ -356,10 +361,16 @@ int next_demotion_node(int node)
- 	 * caching issue, which seems more complicated. So selecting
- 	 * target node randomly seems better until now.
- 	 */
--	target = node_random(&nd->preferred);
--	rcu_read_unlock();
-+	if (!nodes_empty(mask))
-+		return node_random(&mask);
-
--	return target;
-+	/*
-+	 * Preferred nodes are not in allowed_mask. Filp bits in
-+	 * allowed_mask as used node mask. Then, use it to get the
-+	 * closest demotion target.
-+	 */
-+	nodes_complement(mask, *allowed_mask);
-+	return find_next_best_node(node, &mask);
- }
-
- static void disable_all_demotion_targets(void)
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 5ea1dd2b8cce..7a631de46064 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1048,12 +1048,11 @@ static unsigned int demote_folio_list(struct list_head *demote_folios,
- 	if (nodes_empty(allowed_mask))
- 		return 0;
-
--	target_nid = next_demotion_node(pgdat->node_id);
-+	target_nid = next_demotion_node(pgdat->node_id, &allowed_mask);
- 	if (target_nid == NUMA_NO_NODE)
- 		/* No lower-tier nodes or nodes were hot-unplugged. */
- 		return 0;
--	if (!node_isset(target_nid, allowed_mask))
--		target_nid = node_random(&allowed_mask);
-+
- 	mtc.nid = target_nid;
-
- 	/* Demotion ignores all cpuset and mempolicy settings */
---
-2.52.0.457.g6b5491de43-goog
-
+  Maciej
 
