@@ -4,111 +4,250 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00290D3CC87
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 23:33:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10646D3CC88
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 23:35:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 125876B0005; Wed, 14 Jan 2026 18:33:02 -0500 (EST)
+	id 737DD6B0005; Wed, 14 Jan 2026 18:35:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D3446B0089; Wed, 14 Jan 2026 18:33:02 -0500 (EST)
+	id 6E5D36B0089; Wed, 14 Jan 2026 18:35:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF7196B008A; Wed, 14 Jan 2026 18:33:01 -0500 (EST)
+	id 59CFD6B008A; Wed, 14 Jan 2026 18:35:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DF2D26B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:33:01 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 695B9160150
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 23:33:01 +0000 (UTC)
-X-FDA: 84332172162.24.6126DBD
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 902D61C0007
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 23:32:59 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="eY+bqi/2";
-	spf=pass (imf20.hostedemail.com: domain of nroycea@gmail.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=nroycea@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768433579;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4438E6B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:35:10 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3CE0C03EF
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 23:35:09 +0000 (UTC)
+X-FDA: 84332177538.21.0319A5B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 61FFD18000E
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 23:35:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=g3RYlIB4;
+	spf=pass (imf24.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768433706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0567rqepLL5XsPD+si1Pj9mYEX8MG0FAhzMdrDzq0/U=;
-	b=OmVnQSwAi8eosPdi7EyiNz1fZcQcthbBtevtEB3wZj/ukBiN6KG48EtopZnSKNQSIwKK6N
-	Isqo9bh3LrJCAKHy2hE3O4gXMIO8qgXUA6eoncIiJcrRDYiCy7t37nzZ3spgA+4z+ExuFM
-	zdyn9ethwW7a8zsrDyx7hVoRjqymb9s=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="eY+bqi/2";
-	spf=pass (imf20.hostedemail.com: domain of nroycea@gmail.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=nroycea@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768433579; a=rsa-sha256;
-	cv=none;
-	b=Qp40tcY8xHXr0uBhNiqtrGdhImS5EaT3n7iFC44jN7QGdt23ELldQZSAhzylP7VaJaeF3X
-	wG4lHgkPOX3UCfOs2MLLKXi21dtOmmoJEBVVlGL2/QChbBJA2iUknFHBkewQZc/ZnWqGb5
-	5uKSUhdxVmGe0S1tsuc6ZOPMMidV1p8=
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-121a0bcd364so453901c88.0
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:32:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768433578; x=1769038378; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0567rqepLL5XsPD+si1Pj9mYEX8MG0FAhzMdrDzq0/U=;
-        b=eY+bqi/2NCDeF9D8sW4BlIwpQyHAIeklqhFxypFY0DbpY6DEiU4KgCO4vr7M9NjL5/
-         3Iyl8h1dJ6SIqhSZkuXq8Jy108Dr2mUA9zrcFNKxuEOT0zQAls98jE+H70eDVah7dtW6
-         CKUM8SU5P+KTOicixcfUrSm3HyIc7jdwOUQZzogpKBiEQCXUL1rqR4PX3SBjyvirnMCf
-         WHWi6RszZoZTNXKTUVotMxjZhZq2eXTZj+WLLXQMahTdtfLcL9wfdYSEq9BJt7xJFrQD
-         b3jnQkQNY0RMhvaVrn4Xzb9BfdH252EPnyi+H8XKHeC4ppZQT/UCVL9hqBhx+aGIRFHC
-         QYLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768433578; x=1769038378;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0567rqepLL5XsPD+si1Pj9mYEX8MG0FAhzMdrDzq0/U=;
-        b=BfQgpC0E8Zn8ZvbdsrlTxFnnV1sxkFrZ3T2Ac5/zzC5+RxOSiAwN3DmJfg4WaDRYRQ
-         zLH4+QBqr8o7xtNi5FjDON1L5oTk//KJdx1P9hTlphkCZQtTV6eCmsZVZrS/1h9a6ced
-         xyh0rtQEkuPA2/6QbQZqwpXuPvJ814GBds02XzB7kC3d/J7g16TRhwdDExuW3obTlYKX
-         WbDf+KRrLPeOEEPrLHSk2b/lTB2r+yPPIX78QqiTHDKAl8W8OBhLt4lwi4mG14+Ru5/l
-         C1cjRm32rRxmqEGo6d/9pwwtv4fori1cXBtv36mcmGItOkhsmBVwXUgPrI4gDvZsIiys
-         bWuA==
-X-Forwarded-Encrypted: i=1; AJvYcCXe7IYaW0f6zLF5RBGHXyT8i5+WcsHVLJMIc3zKSO8xWvBugUu6S25R3HmmhtcLPLcyzMaUAgHtKw==@kvack.org
-X-Gm-Message-State: AOJu0Yz1GZVEa+/MvVeQgSo8aWIfibL9IOgYPuYWM5tOD8uUTKUomCE0
-	5hqrG3Sjxl+IalnwZVL8N99AEBDpZzTCuMojrpLX+Km7n6NDTfOQHT8GFAw4kye8kE6V8yrFMiJ
-	ZoCV+gyv2fZE+Vh1MVwhBKAVtDngqIkE=
-X-Gm-Gg: AY/fxX4GbNhjvst8Fl0D/mJ5HgWjfvFyG9/iJ4hB934u/UavU42km4O6+bdmdr6pgFq
-	WxmdbW4/MTHctSxhoBvFSEY718wraKTvxGtyz0HbEiljB1zb+EtuJg2H7+Mdq70+wcEpGUNfHE1
-	7Xzkd/ltA+4WQqlAkkQNigQdL8lee+/oiamG9BEmskc5nIpe5pZ4di0RUWVax8sAH2oj+4VqqCB
-	MNxFWyHaRNTNc7hTYYo3AotTmOCypNRMBi8BDG5bFyPnIe1tP0LWp1iqcFC/9uIDgcmWKsjCMX2
-	x+7XOvg=
-X-Received: by 2002:a05:701a:c964:b0:119:e56c:18ae with SMTP id
- a92af1059eb24-123376fcad1mr3078976c88.22.1768433578218; Wed, 14 Jan 2026
- 15:32:58 -0800 (PST)
+	bh=ovaDhem9RfUk3RAV5bk7tNTaHBHZ7a7a21ExXE14uvg=;
+	b=usYA3QatZbDgq5V+fNoUWOxaFOUetwORb58cuOICfRy/2T2wDnOa0gpekGHVYBQbXI9Qhc
+	sA2r822AAqgAsKhHKeH6aE+hg+OjON3uSnlbAhazor6muNqjddS1kvmSZz21MiJaYWJExj
+	N9fHkLf+gJWy6yRSA/gSS3W1h+8hp30=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=g3RYlIB4;
+	spf=pass (imf24.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768433706; a=rsa-sha256;
+	cv=fail;
+	b=0zwrxAaAd0I7Y1mktjSDlrxEZi6QW1KklRayMPiMCFFkBeawLkJZZtqxreBPLJMTVb1Yf1
+	86gHiCc2NNP+S5ZcVfdRDnEgB8vYoG694FoM/8LrIOaY/bw2EP9Fc2m0GCVu1dUy5fHRCZ
+	rXgJ3jdEivO22Jy48k1o8S7y0ESvOUA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768433706; x=1799969706;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=RyYbB2uq7zAceRge+5vonDlsmjYwFL56nlxHnzDbdy4=;
+  b=g3RYlIB4uCPhVhq3FkgiOIix47pcz0U6Q+tGYqxXGggIUr+cj9S8uN2P
+   /d150dpsyKIjcIHjFkDwX0woiH7UDhkcZUZLs18J330EZkRmrR+mNO4R6
+   ctFk3gATZHLAjUV2RtpegLZE/O9/CYG3GHOMD6VolcUiB4D0U+JgMFCJU
+   2BXnyfV2elBUY7VOeA3RNm8hQgafY0qWyQkjKxo+19m5zIfaAV59+8n0l
+   TwLhP8pt1kIVGScnz9rgddCjNetqUJv9kb1BFtDkylrV47XkbOt+W34hX
+   E3AqKAwMs1ghGhTUUbZ1F5l9beMkp1CgkpVn5c8zkkUZ+g5dRyqO9Xyp1
+   w==;
+X-CSE-ConnectionGUID: SryhZ49SQvCIIlD4hW5jnA==
+X-CSE-MsgGUID: 0yU2OQrFSXCKoEwywBCTlQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="87320832"
+X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
+   d="scan'208";a="87320832"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 15:34:55 -0800
+X-CSE-ConnectionGUID: CmCjwDc2TL28+yBMJhejNg==
+X-CSE-MsgGUID: 2W17jTd2T0GdRRG/+0YxoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
+   d="scan'208";a="209664990"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 15:34:53 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 14 Jan 2026 15:34:28 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Wed, 14 Jan 2026 15:34:28 -0800
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.6) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 14 Jan 2026 15:34:27 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GCYrXZpmOJLs/n8xKjSuPZQXvQYg95Ib53UlZDYd5em79fZYhTJD8HDyxnws1rTvsXn/iPaUmF9i3JM1vCm99w56r/F+FkCgCymg2hPvDKUPfev0VcGTKoDj0rcdUGTdu9t4ERhyZWidSLgBglbuJBf4UU7Hjmyfyb69GJKrOfP3akT3J6sELScw7475sJydz6Yr8qc8JaRQLxNQRWaGtT/Tc9RRPySycy9uqXhBkPYKQmRhCsR9/GJPC5b0Ve14VOnZS9YTaH7vl0ZRhKySFoM7G99boC+SsEh++b1Lg6ka3TU5SgGWjV0ZeJmg2PQnOVt1qsrNzZ73C2nluLzIyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ovaDhem9RfUk3RAV5bk7tNTaHBHZ7a7a21ExXE14uvg=;
+ b=dfuqZzUuQ1SFJeNVLSjeeEouD11ymGSE88pw1bUSymmI8rfjT15tIBdqmELYFbQRmMD+dXmf6vyjzADajw+XYQlB+VZR6I6W5OkOE3infTywW57gwaWxDQatQfMW7hvS8cOEVMKQfv4YCPhwukuVa3eu+hqVcr135v6qOa2LepBkJvbC2YQ6hr9tyz7vW9NAf27Zs6qV2PuP369qRWwGbWBuJCAQSLAsj5+EspvKk7G8k4eJbpJlAN1PIv2cOKNU9XeCKw2AAb6iWlGH4Ci+/PL2eM3kuA0TRKNzRpNwlpezaUHeRG8BhpZ92+wHN+Z+3lPHOo4kOm3pP3bsSBj8MQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by DS7PR11MB7782.namprd11.prod.outlook.com (2603:10b6:8:e0::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9520.4; Wed, 14 Jan 2026 23:34:25 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9456.015; Wed, 14 Jan 2026
+ 23:34:25 +0000
+Date: Wed, 14 Jan 2026 15:34:21 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: Francois Dugast <francois.dugast@intel.com>,
+	<intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, Zi Yan
+	<ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>, adhavan Srinivasan
+	<maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman
+	<mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher
+	<alexander.deucher@amd.com>, Christian =?iso-8859-1?Q?K=F6nig?=
+	<christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+	<simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, "Jason
+ Gunthorpe" <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, "Balbir
+ Singh" <balbirs@nvidia.com>, <linuxppc-dev@lists.ozlabs.org>,
+	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<amd-gfx@lists.freedesktop.org>, <nouveau@lists.freedesktop.org>,
+	<linux-mm@kvack.org>, <linux-cxl@vger.kernel.org>
+Subject: Re: [PATCH v5 1/5] mm/zone_device: Reinitialize large zone device
+ private folios
+Message-ID: <aWgn/THidvOQf9n2@lstrano-desk.jf.intel.com>
+References: <20260114192111.1267147-1-francois.dugast@intel.com>
+ <20260114192111.1267147-2-francois.dugast@intel.com>
+ <20260114134825.8bf1cb3e897c8e41c73dc8ae@linux-foundation.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260114134825.8bf1cb3e897c8e41c73dc8ae@linux-foundation.org>
+X-ClientProxiedBy: BYAPR02CA0044.namprd02.prod.outlook.com
+ (2603:10b6:a03:54::21) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 MIME-Version: 1.0
-References: <CALaQ_ho-dx9CTee_-R1VFreX=jB3Zbdjo68fdnnwC1cPoPcjVg@mail.gmail.com>
- <20260114204352.GA19200@macsyma.local>
-In-Reply-To: <20260114204352.GA19200@macsyma.local>
-From: Nathan Royce <nroycea+kernel@gmail.com>
-Date: Wed, 14 Jan 2026 17:32:22 -0600
-X-Gm-Features: AZwV_QgYuyVBMu-sOWBdKU5I_Zz4rYxFPJsfGVSZHOkjEDfKpfwo5bJ7U2pT9jo
-Message-ID: <CALaQ_hq==FY64FcLedWnpgOXf_aT9g2eNyM6BgWwvTv8r0FR7w@mail.gmail.com>
-Subject: Re: TmpFs Incorporation Of FsCrypt?
-To: Theodore Tso <tytso@mit.edu>
-Cc: LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 57gcgo3yjx3ghrjh6xqo7ibkaje4ht7s
-X-Rspamd-Queue-Id: 902D61C0007
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|DS7PR11MB7782:EE_
+X-MS-Office365-Filtering-Correlation-Id: aa94c84f-066e-41c1-5a23-08de53c573d1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YkJQSU44cXNvSnIvLzJGUUhzSW1RdmFkSGorUEtuaWxDQ0hLOWl3VTc4cGww?=
+ =?utf-8?B?VGlxczc2ayt1MHU0Y005czZTb05UeFFYNTJ0a3ZJanMrdVhZNWFsVFVxOWRS?=
+ =?utf-8?B?aGF4WTE4c1RORmlKUGx3TzYrc29LUytiL2lPTjMxTTFVMUhMeG5JTFRMWXln?=
+ =?utf-8?B?bWppQ1g3SDhVelZPaFdGKzNzdWt4NkY3b0t2ZnVyMlJyTE5YTDV2S1JaOFlL?=
+ =?utf-8?B?QlBaek9pSzE2YTVSS1ZGUFduL2FDZ1RVcFVaNytYZ2k0U2xIb2sydzM5MjJm?=
+ =?utf-8?B?bndUYVhZZTZzbHhzNkltbVJ0VFNQelgvU2pHRmZqNHpTeTF0TWNXQWI4bnYv?=
+ =?utf-8?B?VnA2WkNEa1RzR01jcHhaK2lLQkIrTjZTeGNXNEJvVjNMSEdNWTZBNUltR0dZ?=
+ =?utf-8?B?ZFFNcC85OFVEOThtM0Rmb0tpcnVueSsvTk9MT21QR3FuVFNONzQ3OVMxcUxH?=
+ =?utf-8?B?UFExNUFVU3R6RW82TjJZblg1MDc4YzFhSGhzRWZUaEs4bVFKR25HZVZJbXlZ?=
+ =?utf-8?B?aDdLc3daelNoL013OHFZallZUTJ5UDlYbERQVisvZHBkems0U3JSZENaZmN2?=
+ =?utf-8?B?UnVPQmxQYmJUZEIzRklMR2ZZWURhS1VaMzJaV3RFUisvSUt4anVqVmhGQldn?=
+ =?utf-8?B?MjdDVjF2V2t2VU1XK1BvWm5nQmxLUUZsQ0YzUkM4aXRvWFRtM1NuUlA3M3dk?=
+ =?utf-8?B?bURvbnNHSC8vWk56aGtJUENLSXVmR0JPSkZEd05vb0ZRNGRkUEM5U2cwRVU3?=
+ =?utf-8?B?N3g5cHM3NFVsNWJWcUo0eXBEeVF6WU1mRkhUeGUvNjJBQmpsbFhxOEl6Zldx?=
+ =?utf-8?B?bEVlcUxoSmplNVdDbmlhbTYxbHRYZlpYWktPNDlZZHRtNnFNeGJXSVNQN0pq?=
+ =?utf-8?B?SGowK1RrQWJJdTF4Ui9ONXBUc2tXcXo1ZWZtRXRkaXJhbWJKNU1LUnhjNW5Q?=
+ =?utf-8?B?OVU1dVI0VWVCalVRRXNFREpZL0ozdzJUcGJCRlVnbHZHNHhQcmpmVDZtRS9Y?=
+ =?utf-8?B?WXQwQlhkUjhuNkpXZFVLcDJvdE9UNzR5Rm1nUlBxWDU5RUgrb2ZXQVUrZEpm?=
+ =?utf-8?B?UnNmaCtzYkNMS0lCcytVZUE5Q0I1MTNKMEdmMzZma0pqcnRSbEdWZUwxWWtv?=
+ =?utf-8?B?SFFSS0ViRXdsUkhsU2Y2Y1lGTXV3K3N5SzEzRlVhQURpRThka1dQQXMzMUZv?=
+ =?utf-8?B?YTF1VWhkVFZPVlN1SU1vL2UwQkhsZGJTNkgybnV0alVwZ0NRQ1ZkU1JkNEJE?=
+ =?utf-8?B?WWdqeitsTnRKRGZ6akxJcTNnaXh4MVhEanRabWhjb0h4WW12VUpJMHdrN1pY?=
+ =?utf-8?B?QVRvYjBRR0ZnSVBaUFdqS3JCQnlJWUFnN2R3dm80S09lcFMycndCMVhqSHQv?=
+ =?utf-8?B?bDZ2cjkzVFJlQ2lZMmxTNS81cDRJTjJXa1lXUElGNTg0ZHl6TDZaWG40anl4?=
+ =?utf-8?B?MGlkVXNIV29IdzI1a0xYek1IUlhUeDVPa3M2OCtBNmpsRTdtU0F5V2ZzOG1U?=
+ =?utf-8?B?dHA5Y3h5Smx1YTAvZU9XQUNpYlUrVE9yQmxJMjhXR202bXcyTGM1YVMybURs?=
+ =?utf-8?B?S05QK1lmQTlSY2FQZ0FzTVlkUHFRdU1jOCtkNzFoMkFFMU5ZbyswN2NRM1pw?=
+ =?utf-8?B?T3poRkF6dk5zSm10TmEvU1cyK3ZBZTNWVmtldG1DWWpqTVJZSUgyZElwc1lr?=
+ =?utf-8?B?SnVmMGZqWC90OHVOcENXWjdTY1ZzTTRVU1FDcWpPd2J0Q1pHV3kwNkkzamF0?=
+ =?utf-8?B?UXJNdHB4RzFlMUR3Yi9SU1RWaWlXaFF6TE5OVHhkK2FYeWV4V09ZWVJvTTE3?=
+ =?utf-8?B?dllLTE5NTExkU08wR3dXcW9tOVhoMUwrdUFXeDhZTVB0ZHRUd1JvQzdRRG03?=
+ =?utf-8?B?RDVINGhUZGxSUzRSTDJ5d2ZQWnZabWhNVlJGV0RtY0pQUHNjbDZxeGo1OFdX?=
+ =?utf-8?B?b1JBNS90TkNwV3dZaVFJZE85UXdCNXFSbXZJWGwxdnpQbnpqS2JzWVh5MmxI?=
+ =?utf-8?B?T3FnTHFPMmkwb1J5YkpKdEc2eDFTSTRSS0JsK1lqVFNiZktXRUVENXY5bEFF?=
+ =?utf-8?B?UC9wWW1QTDVNc3lFejR2OXpDTWZ4dnUxRlBJZ2xab1FBQVFxcDBHdW5ROUUz?=
+ =?utf-8?Q?q+DA=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cG9XbmFoR0NHc28rTmUzL0tPMFNWdUkrQzhuTURObjJVWHFJTFF3UytLU3JQ?=
+ =?utf-8?B?bDVwTElmU3dCZU5lWWk0OFNyZm1IT1czNmtqUHZVQkdaUjhZbnNBeDBjMW14?=
+ =?utf-8?B?RDRCMzBmbWNWNnA1SU9CZUFtQUVJS3FYazQyVGp2MnFUckRzazhMbk5XbC8x?=
+ =?utf-8?B?OGRnZmNueHRHOThGczFVR2NjSzJSU2Y5M1NJSUhJS0dvNTJmRGlMM0Q0VFBV?=
+ =?utf-8?B?V2g3alBzWS9pcnU5TzZTMUpBVG4vMWsvWUNiei9NWW5RME9QZW5KQlVXZ0NF?=
+ =?utf-8?B?Z2dtT0tVRk90ay85a0N6bDNXcDhWUU0wa1NtNTZzUXArTnd4WGhBYk5JRHFP?=
+ =?utf-8?B?eDhsT0tuVzBzUkh2dUpOL0ZiQlNZVFhXclFUc2VGbGpUNnhCSlAyMUN3L1hH?=
+ =?utf-8?B?QzVQWXFkd20zYmc1QlU2eWN1b0Y0MzlCU0hRN2s0VGhpcjhqSnlOL2x6RUNB?=
+ =?utf-8?B?bm9GU01tTWJoUytlQWxGbUNUOUJ6VmxIczRTV2YyK0hMOEMvS0lkS01QdUxt?=
+ =?utf-8?B?U0UwNzFGbnJJU1BPZHdMRFRzSzFCYnRuNUVNM1dQV2FBeGtoSlFNSTZDTVE0?=
+ =?utf-8?B?Y0hmRi9FUHFkRXJwVitCK1ZXeFpmbjNORkpFMlJOcDdWT2o0dzhiZTExMlha?=
+ =?utf-8?B?eEdocWlTWVBnQkYwdXYzaVNYa1JiZk56enlwd092UG9uZ2lXbkYrM2k5MnBa?=
+ =?utf-8?B?TEZJYTN1Qk5KZTd6S0I0UVRwQ2Zaa0pGT3Y5ekFGTmp2RGk3M2FnajFuejdB?=
+ =?utf-8?B?T2dNT2FNNUNxS0pRUWoxVnJ6citpZFdUT0VvbFpHbGladk96WkhpMmEwVFQy?=
+ =?utf-8?B?MURmTll4d3lPaGtHUW9KSUZLZVNpbDNPK2NuNW5xaEN1U0E4T25GcHRsZ0hv?=
+ =?utf-8?B?cDFOMElFWWZSWkZHOFNOUVZxNXVYRWV2MENOd0ZsakdMVTFhTHJ2ZFhXU1M0?=
+ =?utf-8?B?TnF2eUI1ZU5jeEljWis1UnFscDFQclhLTUh2YXJCYmpJNVNTMjJBSk0vR0kw?=
+ =?utf-8?B?OE5jYXA0N1F0QlRJYWxPdFlXdGZnMnJiZkJyMkhyeHEvcEpoWUFWT3F2K0sx?=
+ =?utf-8?B?WFpMUjdRall0MDNBYUJLenh1UmVWb2pBS3hDSHA3M3BVUTFQaGp6bDdqQmNh?=
+ =?utf-8?B?c245SW5kdHJwT2htOHloVWRIeDNMT3BkbEloU2tKLytrRmFqdW85Q3NmWFZJ?=
+ =?utf-8?B?VmlEZERteUsxYmh0eXhCN21RS2k1cS9XSnJXMEFjNDlZN0x6UUJHMU1hOXNM?=
+ =?utf-8?B?UkVmUnQwbzErbkNLNkMwRG9QbjZUTmlMVUxpb1p2YjhFZDlVK1lWRVJlbHA1?=
+ =?utf-8?B?cldVYUgvOTFVblJaZ0k0Qkt1Yy92VEtCRldNTGdKb2Y4TDNObDVENFRsbFJw?=
+ =?utf-8?B?YUtiUkdtVDNhQnp6R2o2T1hRZmY0d2xCbWxHSlM0M0hCK2p5UGpLbnY0d1p3?=
+ =?utf-8?B?WHI4eEYyd1BtY2NtcFliZitrU1pRRlpBSW9JclZPS3N5K0lOckxxbFIvSVRJ?=
+ =?utf-8?B?ZTUrV0ZiWEtLRndqczZra0lNT255UXUra2lqTjFUTUNiOFdjSm9zU24rNTZ0?=
+ =?utf-8?B?d2Y5T3hSNGwySjdxek9yY2s2UE81cERKWjJTQkRDMzc4UGlxWHRLV2cvS2xN?=
+ =?utf-8?B?OE9Fakl4bWRQcTM1NjBUSGRGWnZVd09qZmw3Wk5DVFZYWkV3OXlTUWxRTVND?=
+ =?utf-8?B?VERYbmY2OW1aNkJZdi8yVHhMbWw0aHZwNFBwZVJHZldoTWdQNURNMmJxMFFx?=
+ =?utf-8?B?S2FnREwyRWp0Ty9jYmZRckFUbSs5K1FmdkVLR2Z3Z2tuU1h1YXZNRGdvUGFI?=
+ =?utf-8?B?TFFTYldub1JGNDl2Zi9ac2xucEFLOWtWMmZ4M3h1SkVZRVRuT0tvaTljQ2xO?=
+ =?utf-8?B?Nk82Mlh1aWQ3czAzRThRL0JjVjVMQkhYOXhMenpkejRCaFFEN0x4OGxGMUc5?=
+ =?utf-8?B?ZmdMOXpGdGVsdlVIR2h2bzVENFFmMlQvN2xiWWN5cTZTdHVxVlJONFpkMDhu?=
+ =?utf-8?B?SmVzUTR2YjAyTjNwb2JVSjkyVU9XeTIxVWo3b3VvVkJxVVZzWnNpdUpkYUR3?=
+ =?utf-8?B?cmliSzdRTXZPZ0FxZ3lPZm85RmZrckxSWTlJY1hpWXlPZnFIM0tFQVh2b3pK?=
+ =?utf-8?B?ZEErK1g5ZmxublIyK0Z5UEhTZTlab0hyY0cwd1VHYmRHb0NYZ09OLzBUU0J6?=
+ =?utf-8?B?ZnBaLzJRN1VpTGlSajJpU2FaUFdiZ0JSNlVEYjRkbDQzV1hPWGtaSmdNTG93?=
+ =?utf-8?B?UEExbCtadThNbURtWEFZRkJHRlJ3WnBqS2ZtN2FQSmlHRk12MEppdVR1NkJZ?=
+ =?utf-8?B?SUNqeVd0ZnRUZmxEZEZQaUhLT0IxSm4yOVdrbmlwMTVmdklJeEZEbE9yeUd2?=
+ =?utf-8?Q?wzMFe5FE+rjl/IaQ=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: aa94c84f-066e-41c1-5a23-08de53c573d1
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 23:34:25.2029
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KyDMEZB73ndGm1F4looedSCsL3EqSokjyCzKvOKye+nFQdyNLHz9G/bLiBTV00oi0Wvc64VfYMtkyp0Bs3YqMQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7782
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768433579-944593
-X-HE-Meta: U2FsdGVkX1/tT0pO8OrCCEGJMfbg3Nf/4YB1gKbprCp6peL/GVAvWCEppAmwIvk0Ys7zVuEm0MX6zB/ypCY0G2QZCTjGJZOtMVx0shqSd9rRPC2M1NgZKT0XBlcxnKaS5BJEzLMS0LIuiTsqg8fhlWOcnQF+dNUYpyY7oalCJyDbf2swae2GzTbOmIN5iPmwbl+EOdQQnlqZaeLZrHy/SxRkhPeWVOhukqF8SL7fyB3TUOohMXuRHQwMG8C3OcoD9DcNJdN7ShlR/c/4Fi4sL7eFzfD4HMNGmTtCvc7nmZlpTodfMtnRgYTPlSpKNHFicwRg1PI94zabuTtt2Oad0a8CJy6szhxYFfJ2UIBq4QuLh+qVkP9aSNJacQhX71mLn5UZ4ZDSZnrKCh+j2Tka4CwxyOZjpYHrdVZCZ+8M6SRMbs5/CXwjvD5b2sP8eZkNCncrjBb6EqITpJ5X4IVxi88Nl57hQatMEJRP9sVIbgc3Vp7uz4QCNjcJSZjUmjbIJinmqGp17zk4ZMdC8k0ZRfS003i1RKk7oV6xMjDb1ru8bebAn+D0HqwvPZLFLjkiRr1osxSMSjMZ10tzPxIssFaRoeS7nf2/JDhdCRLmlVtPvo7TqYVWsuIbN9Sw6WyLE5EBQchAxPBtXUuhNBs1UO76kXy3qqoh2nxGy//tQ1zbyksrqzyaHdF/RrWcHVJ/2acb8UGTetxkwpUqKoZCCGTJ1JMRvmv1Z6siOfsfZ5vl0LHgGy99XswkXDQ+i2Fe+2iB/QXnbKpYLhxbx0hsc88pdJuYxs1Gd/rklU4CMBxvhqJzaZyTeXEIW4wOYsBJzEYShBPJ5FH7uhKAV1QmXRUas7Bez4SMUPToSZeEocYVtX9uPu0pv7/dSgwhe6nW1QLWa5cBAdFRxMAwQSRfYHO/HtcyXYiR9C+sD7mjCRhfb6Q/N+pXslapGJpsiB4Qhjyhwv8Sn9dwHXpIkr4
- BFqzG4MD
- IG8ftHoF2pu+zSdkwdF/PRVI+1bmVHylVhXjHw/25kdjLD19zcPNNffk7btedqtCXh04uEYTnQ4xgp9RbXeVRnE0VQbtgKyNbWyH/D+7CT77H2jCimwcpV9eLPv7AkMelqnz+35BFlZwqjo/p/WRTYTweLRF6k8wFApKMefP8SmMiS6zSWkGAuTMblcSvxb1PtHBwOMPKi3bnWI/NmUBMjMqI+w+PXaRNQBovgFqahD4mxXSOEVgE98dKaZwagTOFSFJTAgyGJQJU0ac4gQVUGIrARuuybtq3DsgNdDimzVaOe3nxQB7INiusfjYgkURW74Jcld0LqzvQLk54D+Voi+efQlk/zlxjz7lBK377PBqHMBNJyFUAgDh/2n8wxI6EgpdGVQcBPmVMYOaNbMJAPW9g6DqFutMFgM6+8rS82u50d3lDOnePEhse+A==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 61FFD18000E
+X-Stat-Signature: inqbn49wd6jbccmstzdxpr5nfyqa5f65
+X-HE-Tag: 1768433705-40162
+X-HE-Meta: U2FsdGVkX19COkw+bHCG9lQO0xtsOuPz4z8JGvL3Gb8dwNH9BF4Ht+Lma0MR/teGt5+lcek2YASn+UsraDnnOTh8uobpDtnAZyfVz6YStmSKmfAwDsa03txUfEyfrBdXs0qy3JJVxkiQj/hBeEkhLcUP8LEpOhz1rmuoKo5MN0Rd353wXF94Q52iBWxE4q4loavtbISW1KEI8tIBGday/CSzal+BErOM/dEquWeaAbDPcV2nZliRKCSM/RRR0mOmp/KtyWNCxynz1SCXApMZZEnI0mOcCrxNOstBt4FqZy7PUOab2hXhKaoet9QT8vaxU0ye5VREj63hR0sTsCQsvVifMhJWgaVtP/MpiBbitz3sCo+o53P86elIsmw8xR+5uNeBS0/UWydCExbGDtyB1e9NcmWyu1nfYqrm/Vt20VofrMiUcQ8r7z7BTcl2wrwBTMOE/8ynVh9WCkafMDhYUVG+iF4X0nwhfomSxxu38876klbDp6e9DQPsT9ddjfd6BXL8TJZpMcsXk0ct/hx63+DYKbqxkPDHQEG82jJHnlkE0aH7EuC6qlL5tFltMHMhg3mWM1uHbvRZRspSjPPzxyxn3f0614mePQRnn67pCcICCy6iOAiVT2az1q0aNglydZM5GSZou+/5P7yLDQorO81z5VtM+34hEe53QaQueNUCKaURzqOi8SAkhbsmdDLk44fqZRhTWC44ezjH1d5iaQL2yr7QZBM/ATAwYO17jP/QUBu6W4ma1ErZ5UlrYiq+Kwhyu4lcutLebcJVyfgTzGT1MjhP10NlJyHYWFcFH4NDt3FwefHez+1CzgMR/09Eo+Vgxm8nKRfFghM9rAHrEbpafBUyZN2QMhAvT2/Y96Lgsjd1WwUw4NPyLRGDA2EoNVqqgx3e/cg+A8Rjs2HQ1dFHQtRVbK6X2mymn4L9d/UD4yvArIgmiYk0nOAOBfSRlgmQV9s0zWHA2PnKBpI
+ lhUvYGQi
+ w/Az2VIUGCTS3XCu9cng1wSNzF63+Hjms4AiDiT9EKVghIlB+hun9GrGaHi4G5/Zps2vvBcDPbv54/F8jek/U0bAP0R6jzBo7oKWIqSOt0pYgPGqtJu/1kQdCHbsTsEZEnGlkir6LHaobzSAFsKXuoY00NRhuw+TIM6FmJ+m39pcodi0D64QFTGojZituiyFslQXp8LCwt9u1a7hQlknUTtdA1BX2p7c7ffsKfoImiuKxfxR03ErvRZYwwAcmYehP572usR7EbGLG8zJFEmqMgcUrWkpRJ8QnTJpoUcoqNWCdOcvlaYnhJ8vk/l4MEshalI1dNS+Gra6Ws/fS6I+gHK+rADZVFW2cGVfm9lI6eI/nEeY+wG/PjU3TI98GVQUs6MbNybeMzXDHWxhBL0gSyeaznCVHjvQx8/f/D1/MKs1TTrXticfUazqabKgr3wxDs6/OcaRf57faR+dcT3K6m8391HS6sOl9w/ZG89qqX3mrRwfqY5yOKvufBeMMOwI14cUfKV9c9ocpAMkzS+EDa1SGucqdGjmTPk7taLebfTo+9qgD6g8SUFb/+uX0Z6G59dnd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,59 +256,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Yeah, I believe I had read that once root has been compromised, it's
-game-over. They'd have access to the entire keyring for all sessions.
-I think I also understand that if one were to counter kernel
-corruption attempts, signed kernels, using a BL key, would be the way
-to go.
+On Wed, Jan 14, 2026 at 01:48:25PM -0800, Andrew Morton wrote:
+> On Wed, 14 Jan 2026 20:19:52 +0100 Francois Dugast <francois.dugast@intel.com> wrote:
+> 
+> > Reinitialize metadata for large zone device private folios in
+> > zone_device_page_init prior to creating a higher-order zone device
+> > private folio. This step is necessary when the folio’s order changes
+> > dynamically between zone_device_page_init calls to avoid building a
+> > corrupt folio. As part of the metadata reinitialization, the dev_pagemap
+> > must be passed in from the caller because the pgmap stored in the folio
+> > page may have been overwritten with a compound head.
+> 
+> Thanks.  What are the worst-case userspace-visible effects of the bug?
 
-What I like about fscrypt is it does appear to be session-based, so
-compared to LUKS, which just needs a key once to unlock it for
-everyone, fscrypt looks like it remains encrypted for everyone except
-the user that unlocked the path for that session.
-So if a user account maybe shares a path within their user path, with
-another user/group, a misconfiguration would supposedly keep an
-encrypted path still encrypted to the other shared user, even if the
-originating user has it unlocked for themselves.
+If you reallocate a subset of pages from what was originally a large
+device folio, the pgmap mapping becomes invalid because it was
+overwritten by the compound head, and this can crash the kernel.
 
-It was just a mere curiosity, and sounds like I got my answer. I'm
-really anxious for BTRFS to implement it, as I expect I may transition
-to fscrypt from luks. I'm just not really seeing the issue with not
-having metadata encrypted. My view may flip-flop as I try it. I could
-always use both I guess, though luks would be limited to 32 key slots.
+Alternatively, consider the case where the original folio had an order
+of 9 and _nr_pages was set. If you then reallocate the folio plus one as
+an individual page, the flags would still have PG_locked set, causing a
+hang the next time you try to lock the page.
 
-On Wed, Jan 14, 2026 at 2:43=E2=80=AFPM Theodore Tso <tytso@mit.edu> wrote:
-> I'm not aware of anyone considering adding fscrypt to tmpfs.  One
-> reason why it might not make sense is that the primary value that
-> fscrypt add is encryption at rest.  For example, if you are using
-> fscrypt to protect user files on a mobile phone, the file system level
-> encryption protects the data from being accessible immediately after
-> the phone is rebooted or power cycled.  Many of the attacks which
-> require direct access to the flash storage, or attempts to replace the
-> kernel with one special "enhancements" courtesy of the NSA, KGB,
-> Mossad, or MSS.
->
-> However, if there is a zero day vulnerability which allows the
-> attacker to compromise the currently running kernel without requiring
-> a reboot, and while the encryption keys are in memory because the user
-> is logged in --- fscrypt will likely not provide much protection.
-> That's because if the keys are loaded, and the decrypted file contents
-> are in the page cache, the only thing that prevents the attacker from
-> gaining access to the file contents is the Unix permissions, and the
-> system's discretionary access controls are very likely going to be
-> compromised if the kernel has been compromised.
->
-> This is why fscrypt for tmpfs might not be that useful.  Tmpfs is not
-> applicable for storage at rest.  So when you copy the encrypted files
-> from the persistent storage to the tmpfs, if you use fscrypt with
-> tmpfs, the only way it would add value is if you want to remove the
-> encryption keys from memory, without actually deleting the files from
-> tmpfs.  Otherwise, why not just zero the files and deleting the files
-> from tmpfs, and when the user logs back in, just copy the files from
-> the persistent storage into tmpfs?
->
-> Cheers,
->
->                                         - Ted
->
+This is pretty bad if drivers implement a buddy allocator for device
+pages (Xe does; Nouveau doesn’t, which is why they haven’t hit this
+issue). Only Nouveau enables large device pages in 6.19 but probably
+best to have kernel flying around with known issues.
+
+Matt
 
