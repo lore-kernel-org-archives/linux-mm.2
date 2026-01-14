@@ -4,117 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EBD4D37E4F
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 15:39:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4956D37E44
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 15:46:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6397D6B0005; Wed, 14 Jan 2026 10:39:06 -0500 (EST)
+	id 468EC6B0005; Wed, 14 Jan 2026 10:46:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 611C16B0088; Wed, 14 Jan 2026 10:39:06 -0500 (EST)
+	id 40FAC6B0088; Wed, 14 Jan 2026 10:46:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F3476B0089; Wed, 14 Jan 2026 10:39:06 -0500 (EST)
+	id 31C7D6B0089; Wed, 14 Jan 2026 10:46:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 40BA56B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:39:06 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F29A6140586
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:39:05 +0000 (UTC)
-X-FDA: 84330977850.01.03F41E6
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 25B5BA0018
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:39:02 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=T7fVHLaJ;
-	spf=pass (imf25.hostedemail.com: domain of "prvs=94744532ae=clm@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=94744532ae=clm@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
+	by kanga.kvack.org (Postfix) with ESMTP id 205346B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:46:33 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B8C2113B41B
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:46:32 +0000 (UTC)
+X-FDA: 84330996624.18.E18F66E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 51BC94000D
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:46:31 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rs9IGEnt;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768405591; a=rsa-sha256;
+	cv=none;
+	b=zlKgkYBoZ7iqpeLYOofL1BCauZHu7lDDbfWmhgDYBqZinl9s5J7VBAvWCGuasJKjy4ADMk
+	VkugE3Kv9e//NtJyOyxRg4xwXRxIGUxaR2xVi/tOoQn7QVlBn5/GIp+BTaBuoPCPNSsZoF
+	cooSFB8JQHVSDzABI8O0CmZQOgZMWMM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rs9IGEnt;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768405143;
+	s=arc-20220608; t=1768405591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pAL5cu5jPGbLJVgoDHq3JNHxEt+U9LIWKPFnXJkix+s=;
-	b=ngqb2YQePpfVkFXBDm2Uh3nPI8uWDZiEKFPD0nSU6bOmxp8ahDRS6m9WtiHWf73cX7aK/W
-	MYBlXSdoUVgzJQwM9ZJjkRz5BfdGysJ+zfQ8+FTAxx3xgdyuZZSrSHFSKs8Kh6kS88PCLx
-	8sQ103LuANmiYAahqPGgrD7DBFXZsWM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=T7fVHLaJ;
-	spf=pass (imf25.hostedemail.com: domain of "prvs=94744532ae=clm@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=94744532ae=clm@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768405143; a=rsa-sha256;
-	cv=none;
-	b=l9CR7K+Bh2NVR0gGMCXNm09Bdg0LOYng7QRBkZjLTQ6hiiA+GUaoRczQZiJ6VJguMVQ/5Y
-	iCENA/d4+5+BMHRtZc5MjN+OoHzCZsMIriVqmYWYrbCD9qL6ibMiwc/3IEedAHDiQEIgTZ
-	G/SOgji7Diwsd9XqWnsVVTHxcWhsU6Q=
-Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60EETBUs2381891;
-	Wed, 14 Jan 2026 07:38:41 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=pAL5cu5jPGbLJVgoDHq3JNHxEt+U9LIWKPFnXJkix+s=; b=T7fVHLaJqFWb
-	qNp7T3jGnrH5DaOOZo8/WmdNic9a8xNKfY4+lZqVUP2EOh874OsP8CDYOPtknVJj
-	intIllHZObsNcomFNdFlw5kpYZsaoJ5B+eSPwJsJ0mYB3VDKGTQzFqaGr5YAR4t7
-	5m0OtJTBDgRJoCkQxr3CwDi64iOUCzOlJmkc4pnr2oYEtRhA3r7T680KLEjXdSJk
-	3Sy4LbKlEDw5yiPJ8VrNx8ptYQT8T/A2z+boNSwgZcDEUgs16k4H18tSmgwlPycA
-	V3zizZnga+kwHDe9DJpILu9iL6/Tx7dqMIXhti7xpeLJJN8eQMRrDGJ0rofQOP9C
-	aYRIURueJA==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4bp0fywpv9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 14 Jan 2026 07:38:40 -0800 (PST)
-Received: from devbig003.atn7.facebook.com (2620:10d:c0a8:1b::8e35) by
- mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Wed, 14 Jan 2026 15:38:04 +0000
-From: Chris Mason <clm@meta.com>
-To: Jane Chu <jane.chu@oracle.com>
-CC: Chris Mason <clm@meta.com>, <linux-kernel@vger.kernel.org>,
-        <linux-mm@kvack.org>, <stable@vger.kernel.org>,
-        <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>,
-        <linmiaohe@huawei.com>, <jiaqiyan@google.com>,
-        <william.roche@oracle.com>, <rientjes@google.com>,
-        <akpm@linux-foundation.org>, <lorenzo.stoakes@oracle.com>,
-        <Liam.Howlett@Oracle.com>, <rppt@kernel.org>, <surenb@google.com>,
-        <mhocko@suse.com>, <willy@infradead.org>
-Subject: Re: [PATCH v4 1/2] mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
-Date: Wed, 14 Jan 2026 07:37:47 -0800
-Message-ID: <20260114153749.3004663-1-clm@meta.com>
+	bh=KIT4BLkFfLRhaZKjfa9PuMhoLY/dRz2awcqlRxIqRkw=;
+	b=L185Q0wS7zhmUmbvwbRL2IRbvu1ItTKNRIAkxYQlevw/7o0cluG8VTSBkV4aOK6Xygx6YO
+	FBXZRK5I4ekaGthQVwYHR8ktBU9BVqcx7YyH+m0Kq8YfjlQJzp3HXuJhqiX+BR8yqL1xon
+	dP8BUkYQTMUBub0DRKoSGvfWkk5uY40=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9CC036000A;
+	Wed, 14 Jan 2026 15:46:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391DFC19422;
+	Wed, 14 Jan 2026 15:46:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768405590;
+	bh=j2ky40jno61TnJrLoMTlC2emFFzgQJSeqNa7tzJbpMY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rs9IGEnt0mEVXhJIpYAUo7LYNmJHYh8psDGVHFS+qmbNyYzpR12tFbsIYwBVBmoeE
+	 JtKjTxlne79AnOLUPHJypfdsBK2FR70A8gZsytebi5Rugv1w1pIpGz1Ykuaz9BN0zx
+	 TrACdWA6osRN+Wv93M+3nMR8iQy96ubYHUB+u6IMvGJdZF0p1mjHsdJuNA94HUbzaX
+	 zjo6iFbABsrnLIt3dA3F04LeTKl3yGlhNv9H6qLWEOn/3drVyFnjhEmmUpn0L/Zk23
+	 yChV/wTh76m6m4+ywO11qtnmYiWvwDP33ktWZFG6vbz8JxIk3U5+x5onqrlM0Z/MWW
+	 FO4ejJZBtxhxw==
+From: SeongJae Park <sj@kernel.org>
+To: JaeJoon Jung <rgbi3307@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	rgbi3307@nate.com
+Subject: Re: [PATCH 1/2] mm/damon/core: modified and tunning damon_split_regions_of()
+Date: Wed, 14 Jan 2026 07:46:21 -0800
+Message-ID: <20260114154622.100466-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260113080751.2173497-1-jane.chu@oracle.com>
-References:
+In-Reply-To: <20260113121646.31441-1-rgbi3307@gmail.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [2620:10d:c0a8:1b::8e35]
-X-Proofpoint-ORIG-GUID: 0eQgpU3jhXliYXyCog7oiydOA_WFBhGB
-X-Authority-Analysis: v=2.4 cv=QKplhwLL c=1 sm=1 tr=0 ts=6967b881 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
- a=TZCTYgXrSeyIqYBwcG0A:9
-X-Proofpoint-GUID: 0eQgpU3jhXliYXyCog7oiydOA_WFBhGB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDEzMSBTYWx0ZWRfXwribbCof2dL+
- wsCpW9qYgWRbKngq9oNe1iNWe9pEa+q7VC1ZstItuI7wUB3PeWdiZEskNkHFWm0LyKlFrvFtUt3
- 0W8V/QmrFUjLq0C2ymCa9xcH0dI/QVS9QLVCW8Fsf4uX5FBDRYZIVG0I1fg/GQRsCOm3RonKtqq
- vm060xEGZs3F8wMSbJrisrwWPGn5SWG8i9mSEQb/cgjE5aUyqJy/kaYr/ePWA7P+qX7m1zr7otd
- msQ0vq/25VMXTn3KSKGtnByMGayThaXUySPA0Npeyrm1MWz9b7ThWEbTkUH9xjBj371HczlufFJ
- g8mk1H0zWk6F9n0iXczj7vZqfxsDsvZMW4hCDi2Pn30dmg3jQyMHY+lQGQDUkNCoMf+Y//VKItb
- AoCIgdENAkfJDIiH8E3ucH84eHQ6HnPPMNwWSxbozAVLaleBWZWLccW7gbNQfTBnPjx3A5exEpe
- fHWkduDXAdWDpLdABtA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-14_04,2026-01-14_01,2025-10-01_01
-X-Stat-Signature: qa9hiwi968ra6q8s85sxead1apx3k7bx
+X-Stat-Signature: 8yert9hd7hua4qqoxr1u3jin3ydrx65a
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 51BC94000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 25B5BA0018
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768405142-897813
-X-HE-Meta: U2FsdGVkX18UDPSABESpXQlwOjBVzaXgQJfORQpd/ben5WBsddJVin62AcLCTrGnfxmPheZ1y2lsCmCsW5FaAJFBx2HapMlC7MM9klCikxiAGoTmEOrHH0fcMQbFHWprK2pI72L7YFJ30QUUzSHF+ZAHkgTtgxnMJLU/o4gmf6iCc0ytN6cbEC5UDUQa28yNLbXcMsgOarJGws6+KSLaFJK0/zB5JbVf4Djad4Xgv7zZUR9ENipMFpMA6fvczLcY4XBQPyhwiB6i6uiRmeClNqvQshePXHrOTCx/IGjmKouVknqdL0lv4HZGDTMBXEmHznAqIulfv61W7/G3akRiKa3mhHOnND7obdrPAIVvrrS0dlg1V5bM3wE70dASfHcCAGjIyFT1tzeRox5XQZdpPvbo+djWsE/CRKct/XDIPlym1TrZ4JEpMg06tPY3TS5wuSWMYMBfjWbZLsLbrZCqZ+AUzV4JWqJ5IPPXbVAAtW6rdFqIHMZkra6VTY+Bv/lIphOchab1aTgZ9gG3+LG8h7gUqDe3BLne0d40ysOrEaPXZmEK0eJsSnOwlycs+5tF7nidDnoPAxT+YER2oPm6fMFOQLhGIBn/K73IQOQAjJdfy/O2Com3FNVMam8lgs04WuHZe1B2LzcE/pIj+ysICqQF7awNFibJwuStOBEjDbpcIk6sgWlWDFWSdobdWMfc1aVZm4x9aJo1U9cBgo0x6oP6FgJtdAlAgl8VrZfzLRsMdBvkjkqc1D0jZ71e0NIOuJI2wZ3krYJOwpEdrGNkDvd45eDYdmof+bWL05Ha57IujzgJjAa3K673z2tzChgy/uGW0vr6mLQcXWdNhpVlnfU784JZBL3BJjCk3xx5reGPBIAjQFJi/l5cLp/4AcDsUgqROzvsiUtxtc5h9hLKd/cU+h9HvNLvryai7lYldE7Gdlv3lfKmailw1KBBXMYeOJFTQS/HB/VYbWbGU6l
- vzwn/CXE
- g743xVas+p9x0kxXz/AZIdydry1WlKJygi/IXfHnob0jiaIM1pxBHwmrlQFTpkYVucndeY1kbBGmmCyueWcfjgXWHNGLlRt9orIAw0wUgFu6OETMynI5tCYZMV3Tgt9dZhE5h/2MGaIdkJprgwEMQhzxqGApjjSQPdhJ/U+3IWJmNWuGurVBBnW7y7gjgZT/KeO2zlRb311SduxfG7LJVGfoQV8mz4T8d75iZO6PQocObjN1sn+ej1z7Ren0TswQWUviZ71/y+nydI4Xe8BETgha3aZgtK7LoIPFlxUu6n7G3q42gpiG/Ht0bsJ9wuHAVmXMNM6ky4lFjlQYyqVk0VWxux/9H4YVwaQI2LJJMh7EA1Fmxi4tgPRCM3vkQNYXxH/tk/V+F7beRczFK5uY6AReg5kn6FULS6qDXaAvld96P4HRJoy0JyG/Zf3wyeWjiFT/r
+X-HE-Tag: 1768405591-257315
+X-HE-Meta: U2FsdGVkX18WA2eBwtn1PmJMRyWGDeQubHeHPQHbIbKF4xdXsABfOjPcmu8ufcX11aMmg/Lxl0q6w/yf4ncYbtmbjESGdJUYnktK59Y2usNiTIL2duU3a6jNFGGjXPm7m/Gxf2cwMYInL8PNby0+8eC0GWxJypN/TpScxvlZlPBpobyMqlo8z9DUZVMWz7keDCr0fW2pyGzmj6IjeN8uQ7bOxVWEj7aW/bnqGlsDiaM19jHgyudG4XapALP1DtTYx/vtzJA4WiIXaCxaMDKfNZb6zNNMhhoTmeB5x2/drAkS1l/qWzvQ9GVpK8kZxCJRaZzuuTcGp4Xlso7/RzbSSNhBiag/e7b73MqBL1z8xbAVBONPZ3vVRjLlTlxeC5EnLkr7qLHmJTO+Hw+y7S9SkHtZwGwuaHTG6KHPIF6PpWkwoAx02PXsVsnoT+Zv8G9i/J9bAeXXueAOTDO2VcqmDms+ig1oDg2dTdhLxNr5g+sEaTAkLISjfOtv2hDeTmTj1X6HvbwP8tCKrCqRiApnREZqr7/50UkeOWOFmIWozyvENTFJw5hcKJdQ2UW5Z9A2yomHuCZEmnNGnt6oPaUIENEQnMOA10EJjt5S3z1Jr93y31bsiYzX6X9al6jifIB5aWT5Fm9GtLWz1iMCO2cTHt4OVDFGBOz+s861NrcQ5+sAYhw19tHdrV4uu+wMZOINdJWYby0xHOYOQybcZy5BDzdYeSBCSKiEZ7zV30px5bhTErsd7/vkXivSnB3aMDNaRPK+79JOUKQz7cx/fPtvGtNvfTgef4Df9cpE9MDPT1TCax40F/9veEZv1a69UDAqPpuOQrxzVrEBrdLatGCmJws990j8Icr1RkFMaJArHwWSkOCCzyfjYpLVRORjPvMpR0lggYvssrpN+DTb16RgGmfjQUVF1sI904MEFhFggesIVlifcWzRMIGroZNnOz1F90DBI02bdlLgKLlenZ/
+ WqpYGOaV
+ tk/Do
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,87 +94,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 13 Jan 2026 01:07:50 -0700 Jane Chu <jane.chu@oracle.com> wrote:
+Hello JaeJoon, thank you for continued interest in DAMON.
 
-> When a newly poisoned subpage ends up in an already poisoned hugetlb
-> folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
-> is not. Fix the inconsistency by designating action_result() to update
-> them both.
+On Tue, 13 Jan 2026 21:16:42 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
+
+> Before modification:
+>                                                              sz_region
+>     |--------|--------|--------||--------|--------|--------|--------|
+> nr_subs:     1        2        3        4        5                  9
+> split random:    <----------- (*] randmon        LOST -------------->
 > 
-> While at it, define __get_huge_page_for_hwpoison() return values in terms
-> of symbol names for better readibility. Also rename
-> folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
-> function does more than the conventional bit setting and the fact
-> three possible return values are expected.
+> When dividing sz_region at rand, the random value may be small, such as
+> 1 or 2.  At this time, there is a problem that only the front areas
+> corresponding to 1 and 2 are divided, and the remaining back area
+> becomes too wide.  If the area is too wide, there will be many missed
+> address access judgments.
 > 
+> After modification:
+>                                                              sz_region
+>     |--------|--------|--------|--------|--------|--------|--------||
+> nr_subs:     1        2        3        4        5                  9
+> split from   <------------ (sz_region / nr_subs) ------------------>
+> 
+> It is recommended to divide sz_region evenly in the ratio (sz_region /
+> nr_subs) rather than using rand.  In this way, if you decide nr_subs well,
+> you can logically match the number of divisions and their sizes.
 
-Hi everyone,
+I was thinking about how to reply to this patch.  Since it is taking unusually
+long time, let me add short comments for direct future of this patch.
 
-I ran mm-new through the AI patch review prompts, and this commit was flagged.
-The review below looks right to me:
+The existing code uses random() for a reason.  This change might break it.  Can
+you further explain what was the point of the use of random(), and why this
+change is not breaking it?
 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
+> 
+> Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
 
-[ ... ]
+Unless you can give me a convincing answer to my above question,
 
-> @@ -2029,22 +2037,29 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
->  	*hugetlb = 1;
->  retry:
->  	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
-> -	if (res == 2) { /* fallback to normal page handling */
-> +	switch (res) {
-> +	case -EINVAL:	/* fallback to normal page handling */
->  		*hugetlb = 0;
->  		return 0;
-> -	} else if (res == -EHWPOISON) {
-> -		if (flags & MF_ACTION_REQUIRED) {
-> -			folio = page_folio(p);
-> -			res = kill_accessing_process(current, folio_pfn(folio), flags);
-> -		}
-> -		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
-> -		return res;
-> -	} else if (res == -EBUSY) {
-> +	case -EBUSY:
->  		if (!(flags & MF_NO_RETRY)) {
->  			flags |= MF_NO_RETRY;
->  			goto retry;
->  		}
->  		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
-> +	case MF_HUGETLB_FOLIO_PRE_POISONED:
-> +	case MF_HUGETLB_PAGE_PRE_POISON:
-> +		if (flags & MF_ACTION_REQUIRED) {
-> +			folio = page_folio(p);
-> +			res = kill_accessing_process(current, folio_pfn(folio), flags);
-> +		}
-> +		if (res == MF_HUGETLB_FOLIO_PRE_POISONED)
+Nacked-by: SeongJae Park <sj@kernel.org>
 
-When MF_ACTION_REQUIRED is set, kill_accessing_process() overwrites res
-before this check. kill_accessing_process() returns either 0 or
--EHWPOISON, so the check for MF_HUGETLB_FOLIO_PRE_POISONED (which is 3)
-will always be false in that path.
+Same for your followup patch [1].  Btw, please send patches of same series as
+one thread from next time.
 
-This means action_result() will be called with MF_MSG_HUGE instead of
-MF_MSG_ALREADY_POISONED. Looking at action_result():
-
-    if (type != MF_MSG_ALREADY_POISONED && type != MF_MSG_PFN_MAP) {
-        num_poisoned_pages_inc(pfn);
-        update_per_node_mf_stats(pfn, result);
-    }
-
-Does this cause incorrect counter increments for already-poisoned pages
-when MF_ACTION_REQUIRED is set? The original code called action_result()
-unconditionally with MF_MSG_ALREADY_POISONED regardless of whether
-kill_accessing_process() was called.
-
-Should a separate variable preserve the original res value before the
-call to kill_accessing_process()?
-
-> +			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
-> +		else
-> +			action_result(pfn, MF_MSG_HUGE, MF_FAILED);
-> +		return res;
+[1] https://lore.kernel.org/20260113121731.31468-1-rgbi3307@gmail.com
 
 
+Thanks,
+SJ
+
+[...]
 
