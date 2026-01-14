@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01362D39008
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 19:05:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E411FD3900B
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 19:08:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 620D26B008A; Wed, 14 Jan 2026 14:05:15 -0500 (EST)
+	id 4DE106B0005; Wed, 14 Jan 2026 14:08:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CE056B008C; Wed, 14 Jan 2026 14:05:15 -0500 (EST)
+	id 4625F6B0089; Wed, 14 Jan 2026 14:08:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DA556B0092; Wed, 14 Jan 2026 14:05:15 -0500 (EST)
+	id 360366B008A; Wed, 14 Jan 2026 14:08:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 39DA56B008A
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:05:15 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0359D5991C
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 19:05:14 +0000 (UTC)
-X-FDA: 84331497390.20.35991B1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 452CF80012
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 19:05:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TBE16hKH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768417513; a=rsa-sha256;
-	cv=none;
-	b=42m6UEQnR6s5GfOv2MH1xFaMdk2Oihhedtt0IEHAWBQin7Eqmx7T+lDxPfk1bmMtT+5Mx1
-	j19byQ+0YXHEtOIdahBS3mGN/yQlrA6hc4X9LGerSgG6XM/l89Za5kqO0ZHXj0xJrlvx0A
-	E2h82YypprB7sqasz6KZjMOUnHvnWLk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TBE16hKH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 27DD26B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:08:26 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C058A140314
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 19:08:25 +0000 (UTC)
+X-FDA: 84331505370.25.6C058FF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 35E5E100003
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 19:08:24 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PbyEkIU5;
+	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768417513;
+	s=arc-20220608; t=1768417704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+EXMu8fVYrjqzrdjaSOI10qKA87dcHyKFOPIbUS4EPg=;
-	b=ZJipa5fp1Fe8u3LHS4ETzuegdM7kr52qQBHYvAanafVH3MD3bn4u3MF3e1sNeAb+LffouP
-	abHtxfjFR+BlkEWVBckQnhAOpfHHB+e7OBIeW+rx0hMcCy110gtHL4PfIX8iAyR3vTYt1Y
-	bLh89F97vuDyYdSULqRQJN1DpM1UE8k=
+	bh=ONpShYkx4yde+rOSHm2uXRVSmGRuF3aUNB0l05in+RQ=;
+	b=VUga2rdQ6gvL2OrgVPDn36G7TaZgVhubUigEtc5XPkvRFAV/TK6JKRCZ5fVyYxHQwvZHLx
+	/ZtVSYmRROL/NWbUq7JHqui4JrPtmOAs8ANRJfIxZZYMMGvejFhj9g29+E7bTeTvZnF3hw
+	d+ZMrErnaxyE6V16EZ9RAiaYLSUryYI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768417704; a=rsa-sha256;
+	cv=none;
+	b=BedrsAOlfU+K94oHG8qMtXGmHHWGd6nlpIZyE4J1HcXj1IXZCHuctsM8bnrHHuDjxjojf4
+	1Tedy9wZ2cFPJYUMLg58Ti8C4KROLtJPoz4oxrpU0jh0lQGCooYmLFfGl2OQwySHz91hJz
+	6gmpnE0xuCPJMibg0D4atu6FDuBhaCI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PbyEkIU5;
+	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 512A24407C;
-	Wed, 14 Jan 2026 19:05:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10075C4CEF7;
-	Wed, 14 Jan 2026 19:05:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 63ECC6001D;
+	Wed, 14 Jan 2026 19:08:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7E0C4CEF7;
+	Wed, 14 Jan 2026 19:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768417512;
-	bh=2QKYOyEjrfuxHKVNPGX4pgerNIQSPvRZMBbE7X+COHs=;
+	s=k20201202; t=1768417703;
+	bh=rL1mKtzqQfzbgIbEAmKDaAOtTmTs/5Lg60KQErpr7tg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TBE16hKH5B1htBPywslXb3uE1G9s3+1zukbdGdlVTRKU9+GHpwxCGNVyD1rJDG1sM
-	 ypztzWs0yTDPqUuo7+Okx21fYvpOZtelOEspY4N6lXkNszYpELSMVN38Q1hHI8MSlq
-	 FWHgj/wokP9nwQNMeJQ63AH6rS9qTMdQjX6jVx0AybrqYwcB7BIuXADDiJ7tPTDnuW
-	 LD2sI+eUuTnrqfONFyvw7KdIaO48b21ooICSQyR5GtdjgqDLPDB7z9CMO4L4pV9iVS
-	 ob5xMRHaDy6gwcsXgZYz/BGOHmAhKuXjDI6lXx7WxrfA2J8nUuvjDRp69QFrjmNZ4g
-	 Otpd4WLe8rG2A==
+	b=PbyEkIU5tPZh9NXRoJ4l5vH2mFRF3E4ehAdw7jhsFC7QOhdS7yYmGZlmbSy7/hKbV
+	 1OcecXFZpT1MofeCqmKlG0NLG4qA8cQBkWvHkWijm1nr5FqFEOYOCNqu8IvaaI06Ia
+	 4gungsE66v0kv/gk9jMYpMRdvwnkzlu3zl7OED5FJ3E9iBJR9d4Iq5dGXe6RYNUxRa
+	 pgxATN4mio0oo6PiHqQATGkatX4gwDtzcdyNZovSV1tKTT7+7RUugEuDUOk9T9duRq
+	 4ZloYoCfiAnlfVVL0ZE08dAGMsROZasHnuiaXSMNpX8G6XvdG12M4JUNswd5+JYQl8
+	 VYenKl2uMNqnA==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Breno Leitao <leitao@debian.org>
 Cc: Pratyush Yadav <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,
@@ -70,25 +70,25 @@ Cc: Pratyush Yadav <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,
  <pasha.tatashin@soleen.com>,  linux-kernel@vger.kernel.org,
   kexec@lists.infradead.org,  linux-mm@kvack.org,  usamaarif642@gmail.com,
   rmikey@meta.com,  clm@fb.com,  riel@surriel.com,  kernel-team@meta.com
-Subject: Re: [PATCH v2 2/2] kexec: history: track kexec boot counter
-In-Reply-To: <w542cckfixvgo6pvepdg6itaera6qlq75pemqvpah7us6c7yxa@6vm7ebxd6ala>
-	(Breno Leitao's message of "Tue, 6 Jan 2026 03:04:28 -0800")
+Subject: Re: [PATCH v2 1/2] kexec: history: track previous kernel version
+In-Reply-To: <josgeh3zd55a5sjmclidj53v7hoekzvb63ah45aocvgwh6ajxk@rnzjabyqkojz>
+	(Breno Leitao's message of "Mon, 5 Jan 2026 02:47:39 -0800")
 References: <20260102-kho-v2-0-1747b1a3a1d6@debian.org>
-	<20260102-kho-v2-2-1747b1a3a1d6@debian.org> <86o6nb7oi1.fsf@kernel.org>
-	<w542cckfixvgo6pvepdg6itaera6qlq75pemqvpah7us6c7yxa@6vm7ebxd6ala>
-Date: Wed, 14 Jan 2026 19:05:08 +0000
-Message-ID: <2vxza4yghv6j.fsf@kernel.org>
+	<20260102-kho-v2-1-1747b1a3a1d6@debian.org> <86secn7ors.fsf@kernel.org>
+	<josgeh3zd55a5sjmclidj53v7hoekzvb63ah45aocvgwh6ajxk@rnzjabyqkojz>
+Date: Wed, 14 Jan 2026 19:08:19 +0000
+Message-ID: <2vxz5x94hv18.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 452CF80012
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ct6c7bkpjaoieehqdr1t8acrjszsw4qi
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 35E5E100003
 X-Rspam-User: 
-X-HE-Tag: 1768417513-870143
-X-HE-Meta: U2FsdGVkX1+5dRBzGXk/bRcy4DIsm3OKrF+Q5pa4FeyUPojGPSnWf0RIN2qn2cJfnNGi8CKC4o+1r8LdDjRScXRW0JfY11bWXxtqD59DreHgX6jx60HEp2bCWUtYLy3X11mFgKe07hED8kZ0YsqJ/ltnvMyxOCFTu8fOyEIzjxk2bHyUsf3yz/soR7eZdyBuUjoUs64H4uNfedj5nAcCapfGcybX3d/03/sxW+50pNG9enzozOkDcqwB1aJfjymT9w+O1ken0T+36kJlxbvPiV98jSF44Gj00TzQLjcvp8VGdOv5XIFXisUhUuIjjotbDMp/iQmo2szQU3c3WdxQ5uBjhD371nVkNVdlszUeSHryN7QqqflZVj7RVWSPnzEyQvCYrtMOMqV47D+PsW9iWtsi6634O+vngPPkW8R2iRPazdTFvZeCAqBFl4SpHmv8opzngtOBikW2caeZeheib8jn97YiMxOWhlkrVE2sgxuj2gEYQkJly26Bjqoi2loaF2mqYS3UGxxuDp1QH4tXihfk16+9coT+muunjd+RmleS3oW3CwyWzJUhzuJJvFd8BKLMzqlkL5fDu5yKpmxNQjLBTc0TtTmhVrV3HReniPuGhz+aKbxf9FNeyckjj99tz3pjAhlMoUt+OHV6/zwlLmiLTtC2BKt3SM3a3gXY5UvSyavlfgSSPmSvsynQy8GGaZPz7y4WIWHaZl6jfG9Rj6QkqABK0DnpSfpF+QgLDGnJXbn0bTbpDkIbnnNlxwZb1L7pzAEAFyYq39JBrXtt6SZ/23Hz+R16M0P926y6hUIjY+dLLQCK6VXzyJcZNdnOiHlx5U4zY3sPZTC3g9SSXy5Uxd775zHZLveRoWpRscQkO++qQja2zmvhf8eE9u3gXv3jKeb46pKS0LbtLreh/7AQPGVlNxL10tblGj+CqAqiAujELhYqb2XPadAiksUw4rx6gdXUeGkMPWsjtRp
- W0baZ8Kp
- W5LtF5Vo7KFrbjrv0Vswjh4rqGeRrbDGHU06e/V0WqqyGfsRGvwvp8MzBqZxjeLZBLY67k5djAjvdKonT42HcOlrjXVjrofOze4GfooLnab78iDIqsWFSghzQ9wLX84Lnkyj9eDJxgEAyvipb5rmUVIspzV9aZBjbbXak0Ajxy2yE/MI=
+X-Stat-Signature: 3msfsrtzmnnw74k56c9e3zjay3z8b9dz
+X-HE-Tag: 1768417704-9555
+X-HE-Meta: U2FsdGVkX19VAR5F7R9XlZmKESKhCoEG8YYOG0txyg+nKZbIzj4CwALZyHyJInxHjY9Lnq+s2OZsp2j/yorcauFXxPNIWkuNCfO2L75bJUOMOS3A7TyIADcbPumxhZxIkQMFWmm6WxCg15AXmZ2OOOiAxanjK0gNM9UiFWK00kCTPM8IBL0pH3bMExYRfycapbNUNVPgPjcvMVwjdemOznkK2yVBKqhFOFLXHj6yF55AkG/h04fmJuyQjGyqgq0Yqvhr7qaNlxiPYPnZY+CK4RWN7hTv1gK0tfBuyGtv2Gjvi3jYSFxOTjiAi5+9qaqj1nk6XjnUR0juRNnrYBBDp0wDxJeKodcfsqFkob6eeV3tZO2Xzgw0pxFJUlckLImaTTDCS6f9u2Bz0ZZUVzmrd0K3UX37E2R0GVmQL8G7WFkm2qGHOyVCwugtnogWo405+I91+hs1w0PCi8Uh6orFCcKQjfUlFpksaCNptsqQbcEZFWXgUKg+T1uCQfByCihXA1zvcxt28ZJNPiqnkZ6lW0Ncbg90bu/JLg4Ncy9tGXt8b5isTD4+9YqEeocBCoD6QFkFESeXSF9B1liqTbA/Wvyr3DiiW/zZ5PkWOYL6zFXLL+MVWv/HjqeSBRN4hiv9coQqFXqCwoR0/zCx1mXX2/dftVZrL4i63m/cRWgx+YxwYXdlKlf81Iy/jywFrnZZzOdooeKZ9BLPvegPFJtqQ70vUkfiIpHHZ+6t9e9430YTvOpEZpT/FsCYHv/ruj6mKICWCGBTp59YGPyG4Dk3Xv+wxbI1Iabo5/GugcX2yySk98kwUOCJ1rdMj1muzpL24e40vfkHDr1DOmaL29JsW3KXQW5jeJD62E6Acg/lStFLj12rY/Rn+mEEhY5UOhdhVCSeMNolOAbstk97PkCpPg1kqdApo0zrIfmteIy4jTqv2gQSfxJYtuobkYoGT5Emb3fMDsbxFCmSvvFcX0M
+ FXsHF5dx
+ bffyJEDSBfFcesmxX/1i2gl3j3xCMBU4YI/2f8uBmznCOatbvpIaJ5Fj3OcKRMF7FRvcOu2+kuEL7jx+47OOwGnTGxvZt642o7y6nHjYZYcC9ZD1tmAiWQjciUfjsqx0OqNmJesee40OoqnE9fCw/8NZwHcyiOav6mznoKhNfx82NoPM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,61 +97,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 06 2026, Breno Leitao wrote:
+On Mon, Jan 05 2026, Breno Leitao wrote:
 
-> On Fri, Jan 02, 2026 at 09:23:18PM +0100, Pratyush Yadav wrote:
+> Hello Pratyush,
+>
+> On Fri, Jan 02, 2026 at 09:17:27PM +0100, Pratyush Yadav wrote:
+>> > Subject: [PATCH v2 1/2] kexec: history: track previous kernel version
+>> 
+>> Nit: please use the prefix "kho: " for KHO patches.
+>
+> ack.
+>
 >> On Fri, Jan 02 2026, Breno Leitao wrote:
->> 
->> > Track and display the number of kexec boots since the last cold reboot
->> 
->> Nit: this does not track kexec boots, it tracks KHO boots. None of this
->> can work on normal kexec boots. Can you please update the wording to
->> make that clear?
->> 
->> > when CONFIG_KEXEC_HISTORY is enabled.
+>> > Add CONFIG_KEXEC_HISTORY to store and display the kernel version from
+>> > the previous kexec boot.
 >> >
->> > This extends the previous kernel release tracking feature by adding
->> > a counter that increments with each kexec boot. The counter provides
->> > visibility into the kexec chain depth, which is useful for understanding
->> > boot history in production environments.
+>> > When enabled, the current kernel's release string is saved to the
+>> > "previous-release" property in the KHO device tree before kexec. On
+>> > the next boot, if this property exists, the previous kernel version
+>> > is retrieved and printed during early boot.
 >> >
->> > Add a new property, "kexec-count" in KHO FDT alongside the existing
->> > "previous-release" property. The counter is:
->> >
->> >  - Initialized to 0 when kho_in is instantiated.
->> >  - Incremented by 1 on each subsequent kexec.
->> >  - Printed alongside the previous kernel release version.
->> >
->> > The counter is stored as a 32-bit unsigned integer in FDT format and is
->> > only active when CONFIG_KEXEC_HISTORY is enabled.
+>> > This helps diagnose bugs that only manifest when kexecing from
+>> > specific kernel versions, making it easier to correlate crashes with
+>> > the kernel that initiated the kexec.
 >> 
->> We have such a counter for LUO as well from the properly
->> "liveupdate-number". If you're using LUO, why can't you use that counter
->> directly?
->> 
->> If you're not using LUO, I'm curious, what's your use case? Right now
->> KHO only supports reserve-mem outside of LUO. Is that what you plan to
->> use?
->> 
->> Also, do we want to keep both counters independently? Or do we have one
->> and drop the other? Pasha, what do you think?
+>> Why can't you use journalctl to figure out which kernel was running
+>> previously?
 >
-> In fact, I do not have plan to use LUO right now. My goal is to pass the
-> kexec release from kernel to another, and for that I am using KHO to
-> pass this information.
-
-Oh, cool. Nice to see other use cases for KHO.
-
+> This is a good question, this is why this doesn't work for me:
 >
-> That said, I am planning to use KHO as the infrastructure to pass the
-> kernel version from one kernel to another.
+> 1) in some cases you cannot rely on systemd infrastructure.
+>    - This is very common when you have linux as the boot loader, which
+>      basically boot linux (UEFI -> Bootloader/linux -> kexec -> target linux)
+>    - In these cases, the bootloader doesn't have write access to the
+>      filesyste/journal
+>    - This is becoming more and more common. For instance, at Meta, Linux
+>      is the default bootloader.
 >
-> Given that I don't think this "feature" should depend on LUO, maybe the
-> counters should be independent (?!)
+> 2) in some of the bugs I've listed earlier, the machine doesn't even get
+>    to userspace before the crash. For instance, in the bug fixed by
+>    commit 77d48d39e991 ("efistub/tpm: Use ACPI reclaim memory for event
+>    log to avoid corruption"), the kernel was not reach userspace/init,
+>    thus, it would not be possible to run journalctl.
 
-If you aren't using LUO then you certainly can't use its counter. But
-LUo users are all KHO users. So perhaps we can get away with removing
-the LUO one and moving it to KHO?
+Ideally, you should have external ways to track the kernel history of
+each machine in your fleet.
+
+But I can see that it might not always exist so I can understand the use
+case.
+
+I have some comments on the implementation though. I'll reply on the
+latest posting.
 
 -- 
 Regards,
