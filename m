@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8D1BD38FF1
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:07:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12C11D38FF1
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:12:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A5B36B0095; Wed, 14 Jan 2026 12:07:41 -0500 (EST)
+	id 737686B0005; Wed, 14 Jan 2026 12:12:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4901A6B0096; Wed, 14 Jan 2026 12:07:41 -0500 (EST)
+	id 6E51F6B008A; Wed, 14 Jan 2026 12:12:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37C616B0098; Wed, 14 Jan 2026 12:07:41 -0500 (EST)
+	id 617356B0005; Wed, 14 Jan 2026 12:12:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 24DE96B0095
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:07:41 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F024C1AE2EE
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:07:40 +0000 (UTC)
-X-FDA: 84331201080.26.6FECD9B
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EB4AE140011
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:07:38 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="qbujS/ET";
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768410459; a=rsa-sha256;
-	cv=none;
-	b=XI2C8YgBoJDFZj+5IR5C2PaN+V27azyV108n+9KJ4CIMkgEOeswhV5zJP/CrVT4AvTfLxm
-	Ymi1MQKlK+KHNUa97iaZ1EwaScfKiVzmXde4D/uS1a7Gv80W1pVR1+OYVV58y5AaUL4fuV
-	KTvlzQRNNk5JAnOOZugimsnSQjDOEGI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="qbujS/ET";
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	by kanga.kvack.org (Postfix) with ESMTP id 51D0B6B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:12:26 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 00832C21A3
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:12:25 +0000 (UTC)
+X-FDA: 84331213092.10.63CFC3E
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2F70C40012
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:12:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=pWC4Qjkl;
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768410459;
+	s=arc-20220608; t=1768410744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8RFOwDQBVEpg9rej94TvEUAdCP3OvqZFUczDhVsj6Jg=;
-	b=4V7TjTOm6rOlxMQlGCvkwQ6s2KSsyb7Ax8ipepP6HvqmSNMPxcJ7VT9EGxg8OwkgmKwpZh
-	irba+BrpbvkIJvvP1U87K6/THHjATaj5JRvWRcobwCIdjeoyHBQpvkgxAEzyyLVrWg2MKF
-	vZuoIfJ4V+Osvh8F10TGEYvHLInmnNg=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ed82ee9e57so167871cf.0
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:07:38 -0800 (PST)
+	bh=cLZK+PqSn6nIdPCyk8+Al7PM0O31XRvufO9b7gKXcTo=;
+	b=kkspTmBamaHi2I6xvGP5C2suHgDPkgz044g3OA3IKy6VH9rWtC2SVZDwTlz9I5jxXBOf0O
+	/A9zMvAcCfjJKPx3VqXY2lU+SYaoo88e++z5ZgJYUTi2whbfV/7yNIoshTeh0al5g1F92y
+	vMN9sqYNIWG5tE+2+nLiUwWDL8dotj4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=pWC4Qjkl;
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768410744; a=rsa-sha256;
+	cv=none;
+	b=2po/8V5/mWhBxCvyNI3YF79ekDZTLhm7sw7ZRE9/7jL7offpTSfVeu2ITweP5DnQjAWuoK
+	AlrqinLa5fhgPM+tHrs35jclaFpylzqwe8W/kEPiX3qO9pDiGt5tc34T+QoulG2Dxht2wp
+	OH8G3GV7shqH9DbPK8XdZIR/vkLhHuQ=
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8b29ff9d18cso2865385a.3
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:12:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1768410458; x=1769015258; darn=kvack.org;
+        d=gourry.net; s=google; t=1768410743; x=1769015543; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8RFOwDQBVEpg9rej94TvEUAdCP3OvqZFUczDhVsj6Jg=;
-        b=qbujS/ETtPT199I0kdf9oqJ+WXB6XZ5R6NIa2M5oxLI96ODbClIe4p2nP1Qw8vf8Vh
-         Vw/euuw1fsLHFkkBVthUpoBnZbLX31jhS2dewqXO5Vmoy8ax32kWi7Gy4qe6XsLFArK2
-         EMvtAAEDFx/6xU8qRpi9gfoDUJFlyQ5JgnHSeOpMjSJOVCQtiwrxWABP1xpOZLmazBaa
-         V86SJ9QAB0sGo5jxrfkSCUdpgeR4YKsMt5odaEyLe+gYyiIxuRCzKyGrV3BfAOd/3tGo
-         Pvfxhhst9PMaZ5Et5s8lUGgca1KYlhrpgfHDd4BNjj2o4vCkknWwPLBW+R/rdCWLBmfY
-         Pf+Q==
+        bh=cLZK+PqSn6nIdPCyk8+Al7PM0O31XRvufO9b7gKXcTo=;
+        b=pWC4QjklAXhWbRqzeumEoAvVOuABILXFFEeLUEgrt4R1u74t2m/qqj9dkygnoHw9Nj
+         6z8Carny8KI9lR7VmmYMsvaELEUyhc0R9yx6APV66ZZVAVeXW+UZc5A+5e98fO7yVu6g
+         KksjbniCZ0XTuhl5AC3wJlKhBDXsVme1dddGlGl6KkkTyNjOt49Kk3RIJ0I0xvSnwjUM
+         jf14IqmHjX+Bg5OPo95Y8RnuVg296wBUmIERKU7Fteg9j908aBnst1OArbKqq9U2r8h6
+         WUIdnEbFO4Wfwx7J+MTDPYQoqv5EIkvJvY2c3nWMjNLu399i7NTby4u22i6yx7EiE0Xh
+         e4/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768410458; x=1769015258;
+        d=1e100.net; s=20230601; t=1768410743; x=1769015543;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8RFOwDQBVEpg9rej94TvEUAdCP3OvqZFUczDhVsj6Jg=;
-        b=w9hqqeQG5MU4CATRnAfvNd+j+vUg/OBuCSc7rzFx3NlNfoCvXCrgOn5Jxu9e682J3B
-         0mOZ6J/i0LQABjO3ZayruXbd9ocRg+QzSPMpqs2J0t1j9iOi+/8vlu3Ucl6gpBHEj5xd
-         KVxK6jDa6nmyamHfLOA4K7DG0ZlHuOsuq/UIgr16emFyHm/YGGUrghCA2k66Bbh4Iu8d
-         tFzQBdsyCWQeaiOZnlQNYQkwceYOKNloSPn84n9FhZaSn/0ufP3Rpnzk3z+c8UoHcGva
-         cJnLmWQiwiKMKcM391Waf25+x+z2/HRAGcRbjaz0Ti21d4YYTnvLMrSaUaFIk+HyyxSH
-         tliA==
-X-Gm-Message-State: AOJu0YxM04JWf2VuI8jzl3kqBBUBYFivgY9lUUqvZi9yxJ+AhwRfu1Fc
-	9lpDfp6qaRXzZSVkDJmV7XtTF6XyTO4ULtDUV9UFCB1+I95QYbK6YLXVY00SUUs8hoI=
-X-Gm-Gg: AY/fxX5d2tZ8THXMpG+JSgyGaNjGht/b5+AwvfKMaDu4eZryKTE0LvsnMPz0hg0Atj7
-	u5X5d6cpvQTOgsPlKrCvPy6WjS0SKoAbSuMIlP38aHLQ0SwRPpVBus7F9Q1XMBbI/1wDn3KxmBy
-	y6mPRMo9VU8R1Lkn2AEYgwynUJrQdHvpSEsMnOUc2jHwgEm61pzKNg67Ue8t52UVBV46DDjhXkR
-	WwjzuAkgQ4OjFJY5cuagDY0TVY9tP2lpvEUw87HZeNyB4tmdufXnQBfVY4EKQnD2Ipqs78zj1Gm
-	cPdrm4jLRetjRwtXFuiloHPBzSDXVP5yciLOibsgPNkLQZL5o0IUYktMuaPPUmGIfiLe0/1W+3P
-	7u2C49oaKxGj5Q2VgEtGynxjmtSvk2eZyo33gR3cXhNy7LQ12hq+4PwyPlNLoSC74pqDcFmrJh7
-	7qYa7jk0AP0ws27jl9cG7v2x3nR/BJXuxlfamUSIVKzt48klIaxzeaK2H7AspKk1bbru43Ww==
-X-Received: by 2002:a05:622a:4203:b0:501:3c88:131 with SMTP id d75a77b69052e-501481f8ff5mr39550561cf.22.1768410456999;
-        Wed, 14 Jan 2026 09:07:36 -0800 (PST)
+        bh=cLZK+PqSn6nIdPCyk8+Al7PM0O31XRvufO9b7gKXcTo=;
+        b=As4LWCM2wqBxNsaV/RhbNpT2KJ7DxQqa+xC/uDvJOGe/cCAkj7edt6E0FeupNM3BiL
+         9/SOYLeW2uspMly4ezrwP4Gh7bsSiL2+5R55XFB+rAQfCyx4qSnibccWgv1xX+WEXixK
+         DKK2Rx30YmckzhV4ctOLD9BiEmoybkhN4UbCS0OuKABCMzgNWfJfr9jLqaPqlp4VbMM4
+         UYia16fpOWvQ7mTqipaJP85gxloxQUfkzf72kaZU6cQrr3C30bgyjTnctxoAcuq3P5yZ
+         XCnXElsCaX4ZgwOhQvtPHqiGyTRigD4VCm4ObXChlQoEqoz+wqoj+NEZpPNmzgsbHjgr
+         YP2Q==
+X-Gm-Message-State: AOJu0YyqRL1tSizO+9UXV/Nif3aK51ac1fr9E/nShZDlxhAX/uTN0syQ
+	RSPwXNW23a6xr6D+bVz3SuGrgrDqrQmNLKnn7SuXS/+/IvRc7e0j9cBEQbAB84rdfBs=
+X-Gm-Gg: AY/fxX6/H9/ipra2nJ3+DZXyO7Jb1ZF27ugahUjx01pJUzQheHWHA9UbW4RKJAJb3RG
+	Axlz2cfrI/FqRo2Jf69o5uuSHkhPBE747Nw72t/GETbaCsMx5H7silGYgYgQNVxAhlOOaa7+SUr
+	89XP1X4Q4LTmnT3HDrZRwoRCzkShvAOMfrWKTpgCVtnqJoTGH1VEjgQ4z+20Tjlk781EeDq8Qfp
+	G0qhiJ2IZnC02i806ogi4YTlmao488lDj2wRnEmHocvveLiyWeAbfwspiykGLOpO3pP2e6u4YPP
+	eSYwQvNL8L+4ZOpm7pzCO6CqkA4qgXqm+Tuqb/fIHYasncpOO/N3KqCi9Ms+l6cggh67RbT6drq
+	vRCgfh3DtBS6hsBIxRfilFb3nQwsmOQ70gvlVdrwtl129mR19s8fJ1X5KklxQUsMtFw+LVlsmlC
+	PL7myjJe2LP6cnLgcl6VLZ/lQzA6aM66KV9uytPRImv7+x//zwPc0tf0vmbZveHOYPnFy8joYr3
+	mSITiFT
+X-Received: by 2002:a05:620a:f03:b0:8b2:d6eb:8203 with SMTP id af79cd13be357-8c531808de8mr358190785a.69.1768410743009;
+        Wed, 14 Jan 2026 09:12:23 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50148eccd7fsm17076341cf.25.2026.01.14.09.07.36
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c530be76d1sm201549285a.48.2026.01.14.09.12.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 09:07:36 -0800 (PST)
-Date: Wed, 14 Jan 2026 12:07:03 -0500
+        Wed, 14 Jan 2026 09:12:22 -0800 (PST)
+Date: Wed, 14 Jan 2026 12:11:49 -0500
 From: Gregory Price <gourry@gourry.net>
 To: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
@@ -96,26 +97,25 @@ Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
 	kernel-team@meta.com, dan.j.williams@intel.com,
 	vishal.l.verma@intel.com, dave.jiang@intel.com, mst@redhat.com,
 	jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com, osalvador@suse.de, akpm@linux-foundation.org,
-	Hannes Reinecke <hare@suse.de>
-Subject: Re: [PATCH 8/8] dax/kmem: add memory notifier to block external
- state changes
-Message-ID: <aWfNN-hy64bGw6p2@gourry-fedora-PF4VCD3F>
+	eperezma@redhat.com, osalvador@suse.de, akpm@linux-foundation.org
+Subject: Re: [PATCH 2/8] mm/memory_hotplug: extract __add_memory_resource()
+ and __offline_memory()
+Message-ID: <aWfOVd3_GGTNHKNt@gourry-fedora-PF4VCD3F>
 References: <20260114085201.3222597-1-gourry@gourry.net>
- <20260114085201.3222597-9-gourry@gourry.net>
- <d1938a63-839b-44a5-a68f-34ad290fef21@kernel.org>
+ <20260114085201.3222597-3-gourry@gourry.net>
+ <c4ed9675-269c-4764-86d5-87f4f83fc74d@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d1938a63-839b-44a5-a68f-34ad290fef21@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EB4AE140011
-X-Stat-Signature: 6t1q7r3u1q8zqmj7h3oboo4bokfbq3c7
+In-Reply-To: <c4ed9675-269c-4764-86d5-87f4f83fc74d@kernel.org>
+X-Stat-Signature: m6o4d53sya88srm8fchpog11tjbwsk6c
+X-Rspamd-Queue-Id: 2F70C40012
 X-Rspam-User: 
-X-HE-Tag: 1768410458-215710
-X-HE-Meta: U2FsdGVkX1+Z+LkqGNFgGAUGLAvYl6Ar0swR/YUwJI7DionHBa1LkOM71PyAahBVCWTcC9qwSHKperEjqLgWr+ljrRIXBZ0ptyVjFMXD9w3I4R2av5flophwkWkHGdIcI7v+yf896DsueeOCFnQbl1O+5tbaW6yCgol1nz+feNV4F7qmFhg/qhRbzx0KZ2g1UMWWfHiQ7IRgtPz9k4YvW8QXcdwZNEC3hqR32xQCoZpoWsE7XEeKcmRFcsfjYmB5bNfKEMm+QOex2Joqs/DxX9HNnKESVB9RrU60I2f2CIrJoKJhVy/5izClsP5jBHMJ4/6EBCZm0zoCaaIcSVbmE1v2Kw3VatahoEpQEH2HxN8xRf4O1WYLt/2ZM61igZFxC9s0Q/Pd60yZ1KjCYwHxkslUEmAOhSQ92h3AFu8BTEKNwnYfgv2HtpC3N2UXG6kI6hGDHnNzYBw42HDEKcHxXewICIMZo5cKvHlOOHNRFw6lJ4bqju4z8i+dJPuDd/i4SMi2MAMpMtpUJWxT4Po5uo/4tSVWsByMYvkXs9TP4TXc4TYFoQLWwtJSFfbnFF4Ohu2Zuhxf8oGeiSo4mSahj/7iX0r5iO2sjHKHLz0GbMZbtMoKXa1OyOdIuoyp+pyXAPoPD9XCPVUjVl3jOFBcQoTJNPJMmB6s4Ck5F7gwlT/G2vciz6S897NmNf+rHMKA6Z3TAevOIWAh/we04QMKB/NtL3rSM6t2CwRBCOYAo0BvWtPbl2/tHaTHWdRjkn/fM82GswyRalvLiUFXmd/u+Vj53Ilp2U5LI1y/0jLbKUQKVWoWlNovH4aKaOCzT93igarc6MA7pBJ88s+iOnN4Z4q3tAA/sQvfpV+HplrYpUFWYwOcFYw3P+i/0P4EXoAqi2hDlHEFFzJslBGWq2ZW3OmxGw1ElUf/2NMlRVkSsi8Gp6ExqK7IEfcPWjDu+bCI/YP2oFLtnE32XaSi/7T
- Iw8awCT7
- 3Q3qt0mGX4SCb+94ZEhAgsk12LS/zRSP7/zshSdXCS983XcxPVy8vDoi0Sb88h2JNGU0gE/jnbmNtX1MTljndmEtVOE1GM3QWmJzMqwerOZi4x3FRbYXXAM4pCFAlMU6etetKFPudOXtn6ztUGXF7UlDCF414R+zhmg3OLW+WRPXd7Ywgp/ZnDMBFrd667VHYQzLsELMResKLNKIjGhHrW2DJRyx6ogckR+OryDVGllbqBUu/Rdpw71LqmpOHpxdADS6xnQcpsmo1sGvMprEdxXaVcYZPjuBPdFa1FOvdwhelCHua0zSCEBZd5ZYTLBrZbmiJdIqhGKWbAPY=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768410744-435798
+X-HE-Meta: U2FsdGVkX1/C5b8uT4V8HNDcVjXqbHe/fv9j2kelozUlpo4c9ER0KnZpMSuJFXNeQSuUbkuKp12odm0aKrmNwBCvKv9t8CYRg8Ycrab/9cQUVrL8xEgf8VGIMtxefniIxDmiLLepmQDFfJJjLdPkAz/BYHSlM8wBLA3noqWootl8W2KiF0icZ4Stjdnp19dz5SQgnyiVZLcpswL+ilEq7ZA1Om5erwOBoKqPhiiPZEe31Yj2YnuDqlszRK9CfYN5WA8UYBM8dntkL07xYakdjkUrB2gCG76kcUFkB80Jul4uG9GCNkQ1+WTf4/DmvJaXoVx+DjlqI0KAlAqgDRFbqlIve66TZH0Q7krKwY8I+7cclKbiIpdS0C+tTR1s7lOOQqYQCxYe++v4DZ5WO1up4Nxhfl00uT6tEozWKsXG7vEbLy7bLcV71NkQeH3LETSwkUdp297i7SFNHHttf9Um0caS3+hVIJPOuYvk/sRZ1Ms/g/Y+ImTy+5TrVWAlnkaRI3wvYLLIuPPV7AGKQkQ/RfNzOK/Ll517BlOXNl24i7fy89HyHFpsQ3RM3LazQEgupKUwuRb1wJdvHBmvhL37eVYSxIyrIBLICkdOFbg/n5F93mW05xrbaMhDyIeT8xSFx5mQNVzFLeA1T5GMoLt1c/vnDIwaHRLwkuciRyGOvxDUjCKGxre1yWClBdqV9l9cnRiq9n+3Vd/v79R1O+8R5EXMvHJa9IGh88kBeZIhU2K72cCTpqjpIjVwzgPbhcjir+fkZ+P7bxpOdIcBDoFs4F1won1jLp53ROBhODt0o8YZ+S4D3TvXgp8mKp7hiwztUFxDKr0oRnh8ti8Fkn+WhKz8EdcVelO/JFSUSRpaBEucuUCq1mTB5Z/tr70ujwL8d7wVZQshxHD2W3OuD4nb9rFvQd+DbOwgUEsNWCV+gqTbAuZrjJodrVyj6FBQl/aVJ+v1s+o7Ev6BiFezQyN
+ e8R9C0Jx
+ j+J0M6J8E9nkqrck8ZHaoaC89rykuYIGdouP/qy5g15mU6SdN24M41l0F7b8TeDuPL/SWE7VUbP2qNaz1gp4CSCOSn5+XdbnPjA+dmXE3v2Rur+hjk+/v1j+yCF6Xs//hWanfPJRKh1ozP9b9g4UWZRE8OZpUS+hoQ9wV20BA8j3jM8674IiTYoGQVV1i/nUAHdkq1mOkdRvxHRgovhd+tUGZIz10/WsiqxzH4l1Y9Bgn6OSjT9RJP5Es56S/HNLyikWcuTt0480/4CPD2o4zNF6hfTx28xscVYgBUjsdnFlvRf5uIt7KRP004gB5X0KBsGB3/szUV0xAEjbHkbDBtCgxBUrtfHla0anOKYDByjw3oESirwQ50qGa+g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,56 +124,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 10:44:08AM +0100, David Hildenbrand (Red Hat) wrote:
-> On 1/14/26 09:52, Gregory Price wrote:
-> > Add a memory notifier to prevent external operations from changing the
-> > online/offline state of memory blocks managed by dax_kmem. This ensures
-> > state changes only occur through the driver's hotplug sysfs interface,
-> > providing consistent state tracking and preventing races with auto-online
-> > policies or direct memory block sysfs manipulation.
+On Wed, Jan 14, 2026 at 11:14:21AM +0100, David Hildenbrand (Red Hat) wrote:
+> On 1/14/26 09:51, Gregory Price wrote:
+> > Extract internal helper functions with explicit parameters to prepare
+> > for adding new APIs that allow explicit online type control:
 > > 
-> > The notifier uses a transition protocol with memory barriers:
-> >    - Before initiating a state change, set target_state then in_transition
-> >    - Use a barrier to ensure target_state is visible before in_transition
-> >    - The notifier checks in_transition, then uses barrier before reading
-> >      target_state to ensure proper ordering on weakly-ordered architectures
+> >    - __add_memory_resource(): accepts an explicit online_type parameter.
+> >      Add MMOP_SYSTEM_DEFAULT as a new value that instructs the function
+> >      to use mhp_get_default_online_type() for the actual online type.
+> >      The existing add_memory_resource() becomes a thin wrapper that
+> >      passes MMOP_SYSTEM_DEFAULT to preserve existing behavior.
 > > 
-> > The notifier callback:
-> >    - Returns NOTIFY_DONE for non-overlapping memory (not our concern)
-> >    - Returns NOTIFY_BAD if in_transition is false (block external ops)
-> >    - Validates the memory event matches target_state (MEM_GOING_ONLINE
-> >      for online operations, MEM_GOING_OFFLINE for offline/unplug)
-> >    - Returns NOTIFY_OK only for driver-initiated operations with matching
-> >      target_state
-> > 
-> > This prevents scenarios where:
-> >    - Auto-online policies re-online memory the driver is trying to offline
+> >    - __offline_memory(): extracted from offline_and_remove_memory() to
+> >      handle the offline operation with rollback support. The caller
+> >      now handles locking and the remove step separately.
 > 
-> Is this still a problem when using offline_and_remove_memory() ?
+> 
+> I don't understand why this change is even part of this patch, can you
+> elaborate? You don't add any "explicit parameters to prepare for adding new
+> APIs that allow explicit online type control" there.
+> 
+> So likely you squeezed two independent things into a single patch? :)
 >
-
-I suppose this commit more than the others is actually an RFC.
-
-DAX might not want it.  Other drivers might.  Now at least I have the
-code to do that.
-
-> >    - Users manually change memory state via /sys/devices/system/memory/
-> 
-> I don't see why we would want to care about that :)
+> Likely you should pair the __add_memory_resource() change with the
+> add_memory_driver_managed() changed and vice versa.
 > 
 
-Absolutely critical if we have something like a CXL DCD region that
-wants to try to protect hot-unplug.  But that is probably an argument
-for implementing this in a cxl region driver than DAX.
+I tried to keep the refactor work and the new feature work separate.
 
-> >    - Other kernel subsystems interfere with driver-managed memory state
-> What do you have in mind?
+But yeah that's fair i can just add them to the respective path.
+
+> > +	/* Use system default online type from mhp_get_default_online_type(). */
+> > +	MMOP_SYSTEM_DEFAULT,
 > 
-> Not sure if this functionality here is really needed when the driver does
-> add+online and offline+remove in a single operation. So please elaborate :)
+> I don't like having fake options as part of this interface.
+> 
+> Why can't we let selected users use mhp_get_default_online_type() instead?
+> Like add_memory_resource(). We can export that function.
+> 
 
-See above - so yeah I'll probably drop this and come back to it in the
-sysram_region driver in CXL.
+Wasn't sure if that was preferred, I can do that.
+
+I think i eventually ended up doing that in DAX anyway, I just never
+came back around to clean it up.
+
+ack.
 
 ~Gregory
 
