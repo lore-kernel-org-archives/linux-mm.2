@@ -4,205 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0E8FD38FF3
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:22:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA4C4D38FF9
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:27:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAC816B0092; Wed, 14 Jan 2026 12:22:42 -0500 (EST)
+	id 3B3A46B0088; Wed, 14 Jan 2026 12:27:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C57416B0093; Wed, 14 Jan 2026 12:22:42 -0500 (EST)
+	id 338B86B008C; Wed, 14 Jan 2026 12:27:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAFD96B0096; Wed, 14 Jan 2026 12:22:42 -0500 (EST)
+	id 20C1C6B0093; Wed, 14 Jan 2026 12:27:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 923FC6B0092
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:22:42 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3BE841AE2B5
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:22:42 +0000 (UTC)
-X-FDA: 84331238964.27.2D2B2FB
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010033.outbound.protection.outlook.com [52.101.61.33])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 74D1E1C0017
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:22:39 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=DZCRjem6;
-	spf=pass (imf18.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.61.33 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 096406B0088
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:27:07 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5ED0BA2DC
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:27:06 +0000 (UTC)
+X-FDA: 84331250052.30.21B201F
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D58A51A0006
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:27:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=XWNNcgqT;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768411624; a=rsa-sha256;
+	cv=pass;
+	b=hnnaw+fCztbBO/aSu0pJlPlyxPP4tEA8UqXWt2O3YCuM78ayAlgR5fRvkC+wqOSrPCbZnm
+	MYw3DzfsG06cBCxeVdzJEEefpjE5BMY54Pc/onHzqUBoVdSTDmwLdW84FmtWUNE8KWwj17
+	gcOURWEVZwsY3Mv9CC8R+G+KuoOHAU4=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=XWNNcgqT;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768411359;
+	s=arc-20220608; t=1768411624;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6wGb+7iE7BFky/1tmbVHouPmTdJ7Yp/2EIGUT4ugu90=;
-	b=DWefdiSoz8S6oynUJqGt3e/VusYf9QO2rAYzNjWOD5kDKUgYmez5z23zRKsxo1F3NuyX1q
-	nKuZWQXHnyqM2rZnHPpbUA4O8FLnahrZJbbKHomyoHu5Gh/K/vm962YwQS+51MN41uobMA
-	DmQzorrG9xahrNWmSXXgYznD9KEGO9Q=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=DZCRjem6;
-	spf=pass (imf18.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.61.33 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768411359; a=rsa-sha256;
-	cv=pass;
-	b=lJ0OO28jHEEUBxqHvrrUD/AXpwhrbQV6cLUepzqrSkkcLy02UXcR1GQemHN+4Bo89T3Kg7
-	zXaDBEZA6GpuQShSsedSEZeAnQ3VTrw0cbRws5gB3DIUUsXw/oz0u0xbqcNePMjHQfJUEO
-	j7PzlyC4y1pn5i+lHmRKgspTgVGpWM0=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FMzux0FVQ/JYIIZM/9GlbnzTT8uBtqTw5LrNbm7AKynoS9ZefkF0eWY6AohJOTOSPm7SfcUJrSFQQHSfG9Q9fPk+JM/CUXsvuGiabHBLHw/frbW82bk3u+kSZSCcS3PCFtIRDM/3ZBlzJvvuMbDk00ti3/zKN40PYlNoxo1opDKN7fKpvx0CjpFJGDNJ5xHrnrKPHUam7WIoNqrO6ETP+mglbWcQLzOf23org50oy+HMQf8oH0eXNXAwD908QPxlMvtPgzaObq8Jbe7jOLUIhCOUeh6+B5O9/5VdjXEGntJfIXzNSYUriFDXzTnkB2g08wgAaDZCRpOhzguTh+5JhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6wGb+7iE7BFky/1tmbVHouPmTdJ7Yp/2EIGUT4ugu90=;
- b=V/L1GLtX0UgOCZpKfgda8REpzqJAA8mpIwYTpjcsEUdyqtmiwgdPUM5M0gzm/npmWxSseiWm60g+i81FwMNUjisEDUczw968Jm0LGO6Q3Vx6CpH5FI6eClxnSuIOxjTlDD1B0H1aCh7NYQENZtLj802EYA55gExziTZDR77blOJoD4BVB5Rk0WtFmmL1kM5p+hp3AKA+ntpq7JZoPLQAD8cB2gOLvUIzvnTLbwqziSEhS5UHtAptW4bYOR5PaDLvZo/qjYFfHIKHc4sWaEjO+Yt2aY0aCWEGJ3sESYvNJQfVWGxu36lNZ05B32Cu7Qaj+vVexS2iD/pziXezz7dAJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6wGb+7iE7BFky/1tmbVHouPmTdJ7Yp/2EIGUT4ugu90=;
- b=DZCRjem6lmhZQj1z2bF/+BsWb5swg9Pn8OWzt9DsPBG0i0qZQSdtMCK+IOKo2wD/sole8jwqLf0oQ8RzyRGtbh9KEj7uiFvUEnR6ddw15LGqhaEXGPz6ck7PtZDdaFP+HWrd1gScmVph2BZiXMdUYr6qWFcOxtLwjCe4ptBTe38UYt+eqpaU01LlaVUKgQSi4SDTlilAKy6mRou8vNLhj3zuQ4qHqRPZycfUirorC1xEdzXbKJ+uy0Rc43e49niTFEnZMTOiRo1J15D2ZHTYg/HHoUv6Web2Cp342HCXHfDR1i0qMSkVsuVDnqoO4eKNUeS8NR+EFsfydOnKMb+Nag==
-Received: from PH0PR12MB8800.namprd12.prod.outlook.com (2603:10b6:510:26f::12)
- by SA0PR12MB7002.namprd12.prod.outlook.com (2603:10b6:806:2c0::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Wed, 14 Jan
- 2026 17:22:23 +0000
-Received: from PH0PR12MB8800.namprd12.prod.outlook.com
- ([fe80::f79d:ddc5:2ad7:762d]) by PH0PR12MB8800.namprd12.prod.outlook.com
- ([fe80::f79d:ddc5:2ad7:762d%4]) with mapi id 15.20.9520.003; Wed, 14 Jan 2026
- 17:22:22 +0000
-From: Yury Norov <ynorov@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Alistair Popple <apopple@nvidia.com>,
-	Byungchul Park <byungchul@sk.com>,
-	David Hildenbrand <david@kernel.org>,
-	Gregory Price <gourry@gourry.net>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Michal Hocko <mhocko@suse.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Waiman Long <longman@redhat.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Zi Yan <ziy@nvidia.com>,
-	cgroups@vger.kernel.org
-Cc: Yury Norov <ynorov@nvidia.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/3] nodemask: propagate boolean for nodes_and{,not}
-Date: Wed, 14 Jan 2026 12:22:13 -0500
-Message-ID: <20260114172217.861204-2-ynorov@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260114172217.861204-1-ynorov@nvidia.com>
-References: <20260114172217.861204-1-ynorov@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BN9PR03CA0080.namprd03.prod.outlook.com
- (2603:10b6:408:fc::25) To PH0PR12MB8800.namprd12.prod.outlook.com
- (2603:10b6:510:26f::12)
+	bh=sLeDyMmDUW/xg++BEnT1ybIr33HsfXJU0o1N9rdRuV4=;
+	b=XemXBpfXqweymlY8CyEALc0BMreZNmGOzsadq6bFwvKB7Yg1V9MwDDVDPrzyJcUTIU81eU
+	OqetPicXM8zNTX2xcrSawQdL/BaAllyeLA8+ceosD6wrKvrpR+aEIeCwfPeqezTbIq9UR/
+	TzHKKqPXxIrWLOzpjwjexgc26mTL2rY=
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5014b5d8551so377081cf.0
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:27:04 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768411624; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JCBfrGbPDNWV4lNENg2DCOu2kQQc2f+Jm46dODzZPrL57avTbIMS4w2SUdP1bd7aww
+         hmAP9gEuFSZP2U2q3+yMaHExnMl/TTdb0HsTddBzBs4e75YC2hUp3oVPovmuFQJ1Q10j
+         H5dNhw5qRb3gaw8mndFuBP2PfFoiKkgKiYGjYxJBdgIbT1sD6+uru4Z/9Ulya2dgFNkq
+         tLahoQADi6ZlSkrbyfA/l0FmC9xF59EN1oW9jD3TndkfoidJjcsIyywoDX9d4SAuyCJk
+         z4vjMrEa3mUyY64UF6CjYWd2h8GQhckLdyQPbyj99/OvomiXHMOLEBSPbnLexPESGYOs
+         dT8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sLeDyMmDUW/xg++BEnT1ybIr33HsfXJU0o1N9rdRuV4=;
+        fh=7MGxmDDh6XpNXpfauA4fKUITsoTSMvJw+pr35CONvTs=;
+        b=ZbTHyOvwSSUolpvt3ysQNBgnGZrUdX5ghaNPTm734VqSDvj4o7LR1rZO1IRWiTRoD9
+         4EF9uw6QZs4G7vIheX6gNBIpR8Ie0G6DyccdtrQosB/yzZQ25fI+yaP7u+xtf9rtdMK/
+         kB6eYgNWwtEGFOMWGlDL9aLZ99ViccL0w0I9sqQGxd7zHlYM2j5yDhzZYICKQ7V6Nh3n
+         82nUqQXgrBjkO/rj+xvLRk7X0dNmYsHDs/CXZ0Ep3H7sm8bG4HvQSAwOh+bxVmOc6xzG
+         vM1eZhz7LaOolrxBMhWHD5EvDQW3ZDbRMLtztMzaS+a6ARZ+UjwoWTelviP7bFhB6HQo
+         uFTw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768411624; x=1769016424; darn=kvack.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sLeDyMmDUW/xg++BEnT1ybIr33HsfXJU0o1N9rdRuV4=;
+        b=XWNNcgqTcqoKvTnMlIAGX0qV8z233l/F0eVcT64bUZ0ZW0BaK8ONfqOZADcMpFROlX
+         1umyxVqndGwEaKC193fD0pz+EZmezSL2/Hz6dyD1rdeX/qqlnQHgPQJf7thXnR5QcebV
+         p3mSkOpnYRzW6mFYsvWvp50T/a61Ko/GynThQihRfjccFho8ONRkFUw9ZMy4qhIdK+4t
+         DeeklovhoQ8Gv41GRyZCULUEKs+N4Bh69xAg+qAUZ5lVZqW73tL4Y+LOCq5qgT00CDtg
+         J5li/HQnC9JYkusO61Ud0CGu3OboPrsfQ+i3AXcDcVC3glGHAsfFJmGD4rf2A6VBbxnp
+         yVfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768411624; x=1769016424;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sLeDyMmDUW/xg++BEnT1ybIr33HsfXJU0o1N9rdRuV4=;
+        b=KsBgefPhxG4ds1Suo4QJxkjGIQJfHkevegzCnm0f1ri4IlDgVHU/oRCQ5IuQYCClfM
+         hz1nUcjnSxp3S/DSTIkCrFL8kEHjfq3ID5hXz2MQoHkHjfnf17rH1YXFNsM4eNJNILut
+         VZXoJqGYc5Wx47PnnZHaYl2xeWqgNvt6ajWKiOY+HA1n1imGO1ZGvSj6Kkb/fJfG3HVG
+         FAXWyUpp9yPiZYmDST5u1epMKJKUsmvNErdy8rMMgz/mlwDfSZulEPko7JJiWWx/d4XN
+         Z0f5y/zF27euDZH5aPWzRfLmvnOhc2wgjrM1eYl3swQJGWXNWy2rnsRElkTGYED7XfS7
+         KCeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXVhrrf9c4NlIcnGdiQyBGrINiN8WzYV184K8EFDBsv9QuL83Nn3pJTBa9T/sfblw4uFTEyHHAXcw==@kvack.org
+X-Gm-Message-State: AOJu0YyapQTzRGzK5cZbeVnag7YjCVonBbTtnaBsA9D+ndRSSFSaHeQ9
+	g8iAisgZqXOKlq3YZJqmXQBasQTLdEbBVcBHpesbVicE09JvU7Nx1uykDVifC1bK7wkUoGwekIl
+	YbtpjItEWpYTtZ9Zl0P5JJXfdNlpADbGFiXHCRsQd
+X-Gm-Gg: AY/fxX7vcztQvQa8snnCFCgT0oxIAfA7gCRK4hD08fM0hGNUdAhfgQfQm0KPRwkRa/m
+	T9DRCzVng4kuB17KygnVklJHZp/nYzb4tFev9XByMS3KSBIa1AqwbhMNgwHws8F4CJr573wzhmx
+	00HVkJVIDo+9at+r6vexf2chIL0CNDHW+LgXxf/txjLzxzzSZP0ZBEeY851AKX9LK6hrrFTs2YJ
+	egI3p/3yMKqafFh+kgIAlOgcrJlrKCCdIAZTT4XrvNZl/sgzQ68BqqbCNoSXKOMYeClT6PqGxTt
+	oXTch0Mv/Pa+ILPoiHpc63Khzw==
+X-Received: by 2002:a05:622a:1105:b0:4ff:c0be:f966 with SMTP id
+ d75a77b69052e-50149347321mr11983171cf.9.1768411623329; Wed, 14 Jan 2026
+ 09:27:03 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB8800:EE_|SA0PR12MB7002:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd38c74a-f6e8-4676-4e11-08de53917a5f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|1800799024|7416014|376014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hN7NGBJML5gohvyt++DtW25eBciM4nsixAKbELx6BIvI13aCqqdM3xXlJkJT?=
- =?us-ascii?Q?wgnlSJ7bwRzTa/pPAF5sTBY/hii1vMTWAm3VSKkx+6JUxDdMFc7ppSGiKapo?=
- =?us-ascii?Q?+i1+wyrrBvWHRTRsnr7FMw3NWXxQs0aDn6QDoNcYZH83IM2H5QjBg5PKDDLa?=
- =?us-ascii?Q?j5vuBh8iT1LMx2DjpiQV8N+Rx3sjD22VVs/1Y6CoFR9p4aVPu35y08m9cbIG?=
- =?us-ascii?Q?zIfeW8hElVcqUnSBHcqdw76U55yLRcPkMZT6YIMaNJdNKSdbBf60sd4jLTNj?=
- =?us-ascii?Q?8PxScMK4V1H9TJBpaQhwuGmoPn5RV82B1LunnxvEuJkIAiIGVnD5Wp0mtXVs?=
- =?us-ascii?Q?i/I2lKeuvEptdLmor840MQUjoa3w1jDgI/eSlz62d4iIQlMON1oV+FB83YIX?=
- =?us-ascii?Q?O2dwVJi63GoVQfh3mjweVNlnHYKZbCbW4psD/RXtzr0JmahvDX4MNmQTsmYZ?=
- =?us-ascii?Q?XbRtDYPrvB1eTQQPfeeDc6Rgyy+ZtE2lJYkT1tN4hbyfJliJ/5PcuUfhU3ae?=
- =?us-ascii?Q?dGTMB+Cyxg+mptDNzxkpcWfh9L41qw5h2uFWh+xYAfsn1roR4veULhfcJweL?=
- =?us-ascii?Q?Y8+1WxbXaxyuEZbCMUG6YpBuMHdgzu5JKffg92gPC/eASapfWiOZPXpRY3uU?=
- =?us-ascii?Q?v8tknsMru4or8MShRB5QwkpMQz9E91o3qzDuV3IRJetk0L/1cMRvVp5/EBJr?=
- =?us-ascii?Q?gpBuaGte3g0Nba9FxHUQMwrm9TtO94gBaye16M0fgZ9uazwKs37rdFu0Wo7e?=
- =?us-ascii?Q?nypEJOSGTJeRIy56GwrdIv/bqwDGjbX8edah+8CvE0ytJfiMnvsLyG6KpU1U?=
- =?us-ascii?Q?v4HiX3gGBaR7P/gaciHj4jAiIBnh5q1nueLwF8zVrN3I0CV/Qd20HgoAMn4m?=
- =?us-ascii?Q?+ErXNBylSoZVfcB54i6oLppfAqQ0SFdHU6IkZ/CTjvgeXnYi35swH/g/EM7B?=
- =?us-ascii?Q?Q3V9RP09stFSsH6h9EwYSfGN1qPk90A0Y+0OHSzRpsjcpFvrv0nGl3dFvKVp?=
- =?us-ascii?Q?MoYjTlNNy+2DhdrvTgnRuLnFpWXh8e5S6aheFP9NGxKt1zgqxYpJzt7wbzf9?=
- =?us-ascii?Q?+260T1ydy0qcXr5yDJbdxFgP6uW68CJt26Oa64pu9F09krcqLTyPYD2rrpe4?=
- =?us-ascii?Q?bWIgAY/ROAcrt4wRCn5RuBxrPtFGXCIcj0wC92GGKiB2IESWooGcAjhZJJ4f?=
- =?us-ascii?Q?GtsEOPUpy3L/mqspTwCVgIE06nx301N1xFP0CoHS+Lsdju8RNt8hmdmeFVTK?=
- =?us-ascii?Q?zOh/APhSZtyR3PRNKpGkri/0DHyAvhm3rZ94DDLIHt4YTYPFyLBMCX9BZZD3?=
- =?us-ascii?Q?GuLp36HBLkBcZ9cQ2ZIcJsSaZQD5W5EVq57Fbjljtm56StMYqM6DmtGWT72e?=
- =?us-ascii?Q?/69jG/fSi9ry6hyg5UozJe4QHlZ6YGeUPIMFrcLwxpNVTwAU3Q6euQpo8+ve?=
- =?us-ascii?Q?3BKPSuWlDF1MHhECTWs7TB4J+MkTlhPDybkwLljp4fScI0PFNOXBRvqElbyq?=
- =?us-ascii?Q?KT4eAyHt9VEUi/EFblwnhXOcn0n6YVPtBVr+mHRcS7GFBUOw28IheF6IzbCJ?=
- =?us-ascii?Q?OFZg/TmohgCGLph+G3tdTj4O6AvG/IFe3Kk1i11vvdiORYXA5r3RRo+OBz5b?=
- =?us-ascii?Q?xA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB8800.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?K5+RqNhrtgsfPBSAQ1ZyvkPRyWlts1/uYSZRcplIBqYnXNzoBKtTosgZnnrI?=
- =?us-ascii?Q?/WocYSSODOJYpZcYPt+16KWv9mSVz4hyNLamHNiK7lIBboIXHUqx1FbG8OK9?=
- =?us-ascii?Q?vKBbvMW0Dd2fWwUKmjEvjDCAVuxOhCI+4/qNJBPca5Ps6gclctYlQew1p17a?=
- =?us-ascii?Q?g27GluOXtuxkvA2gY4TbCowh9MW0Z3qtsdN3j6A1K3p8ZmfEZGGVxqXFY93M?=
- =?us-ascii?Q?3gGHZx35BsdatGU7v+HyT82xIPWdtqJ7THRit17FYD9yqYYt7GK8QXjg85sC?=
- =?us-ascii?Q?lX+ksWeYkq/iv5Ba5/UGauMQfolqoy4V74tShS555PfV654O2RSbQxYAbZ29?=
- =?us-ascii?Q?pnYXNkCGtTgkoZJMI/7aVsZn6QnY/i7b0HOEvuhoI7nfGj61COS8Oihth7/u?=
- =?us-ascii?Q?V5P/o5F15T/057KsMM6SXB8qYLrPOtvhUA0VI1A7F1ijsh/weKOvP9uuvs38?=
- =?us-ascii?Q?pN1b6pDPsKIPGYpRAIFQ7x5d3Rgp3gaVhRC/cOZmohU+QmMPor3gU/yRpGpg?=
- =?us-ascii?Q?MaTWcNnjIbISr1l7PBgN/9JMynsXK7UqD2HzJsxf9S9HONEu03FAdUG1hHlN?=
- =?us-ascii?Q?40R17P5Q1EdcSpiLzkOKR+P1IG8fb7cYTyygZg6D1bo0WRaCShHRkoSdb5SM?=
- =?us-ascii?Q?ALy8xucgPAP/CUsytmjdONlUkqYXUu0qk3bxERz0MW+pQPlFsMuuxNuBR8rA?=
- =?us-ascii?Q?97SBgjWGE61N1NdZN2UJCMQ+W06j7GKc2NZ0cBhMNmVFZQATn3y5YiPejiW4?=
- =?us-ascii?Q?7tCB8LctUwmdFURi2SacHd79smbYcj1+rbWjU3nuL0D3BeZwtXv/jdqsNiEd?=
- =?us-ascii?Q?XolO7NTV4Y4lXiZ21kfBGkwvFPz65XsU3/nBbbEHLrFGWm2vqqa6ixMED5+y?=
- =?us-ascii?Q?E54nehaRL46QIjp/XmA9n20pNuympIveDuANSo/caPQTnYArCWNDsyXpcPtK?=
- =?us-ascii?Q?+Veo8zUhHZNuT4PXdum4Gd96t72+2+acPfxYqztHoUrAMd1O8oEV/4+PiCAs?=
- =?us-ascii?Q?GheienmknKY9df92iDtUIDDp0aI8eH0ZGV4iswojKfklH9Jci0zyP7yJ7e1A?=
- =?us-ascii?Q?QxRrQ4AgrEnyT75bLucegxBPZmxuTwYTyeuEfRFy3Ic2zyhRwktVMjKdBElT?=
- =?us-ascii?Q?7DMMrvFtuUhAWGhAGEFgw1cFt9snn+EPUDh2DraGBfZFjVll2Euyc5ehiTDN?=
- =?us-ascii?Q?hRT8id20N6X8zrUn1iPpUoJmqf37r/jRmETaQWxgFCsDuey6wetiKzBlgM/H?=
- =?us-ascii?Q?DCXFHMnd/mF2dx8qn3Z/A2LfyH19QKxChvBdegWzONPZ0KgDoFT3p+9oXu7i?=
- =?us-ascii?Q?6pZYDDC39cMARKCHN6XKUCA7NC8RrOIGfCciRI9mOY5M7KT7hpGQI9m5otNP?=
- =?us-ascii?Q?RqD/c0UcXEUY8RBli+cl1kdFD3ZgdHIg6rbBZSK/+ix119bQaYAZYIOBKx86?=
- =?us-ascii?Q?WKXPrYGL8fNtRCCNAbd9r7wTZl9SkOGgPALcKKPYDzzy30UID01zXnWoiM08?=
- =?us-ascii?Q?g6PuhDSRPtokqKxY9czOyhqRO5cSxLVzhxVUYRN6Aw0vdflW9hVPMBpyF0j3?=
- =?us-ascii?Q?BzkZUZNlp7RV/EEVVIcq4+loxwdbSiGBtSpjs6Um7gh8T3IDUyipQIJSaPoC?=
- =?us-ascii?Q?OCbuWzSGH8ChWsAMqDYctsnwcO/4Q+oMNplkHyVr6m3jcVWgucvhWsEunqZu?=
- =?us-ascii?Q?erbkS/PT4q8AeX97Zobf4L8dtVZyYmoyXu1AHAUGx9ZJlPycmtm7e7dB2RW8?=
- =?us-ascii?Q?whZ9hB1ICBZDt9WPKlmskuZgfWVH+YOxYwlkjTLshfCB+KCmoPaa?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd38c74a-f6e8-4676-4e11-08de53917a5f
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB8800.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 17:22:22.3386
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Rvdll/HsjZP1LQb8mL4EAT8F4nkk8DYCEyUPO3kMHxeijwA+WTu3uKGgB6TupBFeAn/a4IwXe/sO7qbe6S7GlQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7002
-X-Rspamd-Queue-Id: 74D1E1C0017
-X-Stat-Signature: 4y7qzpr65nr7eobad3mry8i18kww3gfm
+References: <cover.1767711638.git.lorenzo.stoakes@oracle.com>
+ <a4f87ba914697a47419f12901a995759fd977fdd.1767711638.git.lorenzo.stoakes@oracle.com>
+ <oecut2v62gxlisp24gxgzwzxm3y3kiqcbkrheuxwkwyrb45apl@qtyhfsv34wi7>
+In-Reply-To: <oecut2v62gxlisp24gxgzwzxm3y3kiqcbkrheuxwkwyrb45apl@qtyhfsv34wi7>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 14 Jan 2026 09:26:52 -0800
+X-Gm-Features: AZwV_Qhs_oeZvSr6RSXK-nXDJyLWpxuOxda7ulGCeJjrS4nSNeuxokwph2K2yl4
+Message-ID: <CAJuCfpHOJqrUw_rH6=-ykWGJvpGw-4_YyPgvTfhf2_2vpthVvQ@mail.gmail.com>
+Subject: Re: [PATCH v2 8/8] mm/rmap: separate out fork-only logic on anon_vma_clone()
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D58A51A0006
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 44zxjw43i3be5mszag7751m7fhmomxxe
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768411359-599758
-X-HE-Meta: U2FsdGVkX1+3PZLriKZAazNFxMFnlycJ59Ya1v9kimIB5u+nwqtkccnkxwIh3XFH/FeENSpT1cqWhVkBdo43qxeJiFdweTAe39WNkirYSYqqiYEBeoK4PMMm5b8UVDAH819BnVHRes4TAVsKBEENgyGikTme2L8BpCuR1WDWB1IpU9hF9BYncEc9hwqBn1y6AaFYe1k4gEy1uXU386FfgBm2SjjfCdR0pzuBlEmVorWvQTaHpFol7XQQ7t+u20T51SIDRXLwSB5+V3L/eDDK6Vp4Mv+ettyNrjf22tlyA1AHG61Nb7/Msr6yw3Ou6wYh9jnah+KvwxTEQamtoQWL3be5BTRBnqY5ceiWVtOyy5fCZXtuPqF7Cxfux3zIh92M9mYLiWWGGo1BvrBMXq/E4dVpNN8bfvswt0zeTWNEV2TzrhvF/noBHIIyPO17DRY+N5uPmGC/gT6APBmgVQYwLgyeI0kWLQ6Ydmbs+SnDigeUrC63I658jEncT+CcnpfLO5PNiHpsWnUTVhZmBxKHT3M6sZy464I4/m4RozuJR2r9sdYEI8QPqBH5+NcWdEVbU6CJ0cl7So1hq8TdHysWl1Ih0i9Og5tgLEF3i9/G1JyBzWABbpfuOQvmEXCppcppCtzDRpTzYoSg+fVHNObLM91VhES1BzJNhA9JjwPS0/0xP2+2oLoAl524I1G0h4cn7A9N3k0omiwZ+49vP48KDPbO7AVfFojw3j4bqwvhpAyIc2fYnXgbjwgfENg5NpPm4+cNVgVKCxpibw8nylmsb95Zy3i4eFFLgjed/JCNd0VZDTq0istRM1W9t+a44umJUw2AUOLUDLJWP0zIphwUkShUj2m4kZfgg0FBpge10tIF8cLUTqxv+DlGF1sO8Yjar8JkXeOTmNfONxhbLmWfW89fjwIt45M+NcTlMkcGNEkIF8rZNbM0qwmnzkjpRx+bPZ1PtyoqJFxcvS3BHEB
- Iyt8r7LV
- NDBNFnAkbn/EPiC9E+pcPg5puJMhqxAtNw3JtvW0ZlfOjWIL6hNQMjRek8UNFkW9QqtCp8NyVD3STJ8kXa11snFYaz68DRIQ3gXEIYm/6tY4nnnu20jbA/UZROQ==
+X-HE-Tag: 1768411624-438563
+X-HE-Meta: U2FsdGVkX19HfT+VUOVLizhcJSLB6kVyNQnrZS+Pth6I6rYlqCn1WhpVettE4HMRPCcaxlC6z2L+ZLuv1TafuHVGseQhrpTtWoMQZQVkWtOTxPUN8yz05d6AqKj5zyj/XuPC06/m5F/YBc+0ifyOXSTLaRPpICINTeDV+z0tmzN4emV3TaAPPknpaSicAdyVV6DIKA3aVBuMIDtB5YF2YzLUCgs69jBWq2Yt1ejH4ZrG5tpgAfk1MKZjQplvvA5sNTtmRAXD0rxGR1hAdylNkohM5gV7rRaJaDWOnWnZ0fgBlrUt1eyONh6yU7/9SrW7dv9hjnLYG7ShqyWaxQ0Fk8C+qhd+LVyfaXqeuZ4JVB1WW1sspbPGYy9VJ3Sa++VrlHdih/5ZXGIPhxWAu8kiDFLSplAwLrUJr3d9zKkVdWNsY65ml0D5mBO8D4R3EHeMfX2RuQEAfW58hKQWQ5uzt986Lc62jffH0vai+mvimb3uy/tqUuUM2jbrUkbu8n4AwdRAsiHPA2aXimdVLkaqsdvb77FCOphl+Ga1CX7j0a68ooNH5+HmftwQe1u6gaGz1MpxD3mCrY+ZrQH13wN3fKZxNcaHeSUkvM7NCQpsL+U3oUqfBDXF9drkO+pcz+BqbzQmZ5qCAbdBKdxwycS3Apxesu/r7cRQqqq1uWZixE18kZqm681VSFIpdkUPU+vn7gvkMZiGhArtUj2ygh/XSkvIVl+GDjSlJkEJLnrELN9QG1e5RxA052zJFgonxxaVzyIDNSeVmOqfr5GuewTPDSukL6xbHT2YCUEBqZwZ+N4MCn3jx7zftiDg3UvRy0y2NShFaUrhYG5jVTRFq05qzPmWmwGZEPIiOmvYSWyrjoUiiElkEmHan+cngKcCf9eh9leEJ2tOq1YFBGNq44wJex++VwuUHv1Z21ux1n0TIl5B0lJb2JzfRpUfgTWQnQ5RRRyHpDMN+Yx/XUX4bfb
+ WYLGGfu1
+ SoSDkOfxnW/yRlW+h77CEo/5SKL7QccaUwB4tWnYdr5QkatpVotMEWfx+tIpIBEJhCl97NR91QvZWKpEvAhVk5vy9KPOfJjCjfd6/Uk8YGIYDo8t/PAxsHJoeIDG/So9ygeOIfQsaVX6HemXNg8Yi9QycyaYXfJ0h2LyF35bpo3Z3foy7AkB+q9Bd/69j5JB/XLQJnEUVh7kdSNPZXzVrGfdksGX0mp5lnZWZT/jfV7wKS2ayVFdcyF7UnpXEe4kZWn4GzPvu8mZvaZ++C9LB/qV96EuMgfHACYoviYmWJ2Rr6Cg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -211,49 +145,293 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Bitmap functions bitmap_and{,not} return boolean depending on emptiness
-of the result bitmap. The corresponding nodemask helpers ignore the
-returned value.
+On Tue, Jan 6, 2026 at 11:27=E2=80=AFAM Liam R. Howlett <Liam.Howlett@oracl=
+e.com> wrote:
+>
+> * Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [260106 10:05]:
+> > Specify which operation is being performed to anon_vma_clone(), which
+> > allows us to do checks specific to each operation type, as well as to
+> > separate out and make clear that the anon_vma reuse logic is absolutely
+> > specific to fork only.
+> >
+> > This opens the door to further refactorings and refinements later as we
+> > have more information to work with.
+> >
+> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>
+> A few minor things, but this looks correct.
+>
+> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-Propagate the underlying bitmaps result to nodemasks users, as it
-simplifies user code.
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-Signed-off-by: Yury Norov <ynorov@nvidia.com>
----
- include/linux/nodemask.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
-index bd38648c998d..204c92462f3c 100644
---- a/include/linux/nodemask.h
-+++ b/include/linux/nodemask.h
-@@ -157,10 +157,10 @@ static __always_inline bool __node_test_and_set(int node, nodemask_t *addr)
- 
- #define nodes_and(dst, src1, src2) \
- 			__nodes_and(&(dst), &(src1), &(src2), MAX_NUMNODES)
--static __always_inline void __nodes_and(nodemask_t *dstp, const nodemask_t *src1p,
-+static __always_inline bool __nodes_and(nodemask_t *dstp, const nodemask_t *src1p,
- 					const nodemask_t *src2p, unsigned int nbits)
- {
--	bitmap_and(dstp->bits, src1p->bits, src2p->bits, nbits);
-+	return bitmap_and(dstp->bits, src1p->bits, src2p->bits, nbits);
- }
- 
- #define nodes_or(dst, src1, src2) \
-@@ -181,10 +181,10 @@ static __always_inline void __nodes_xor(nodemask_t *dstp, const nodemask_t *src1
- 
- #define nodes_andnot(dst, src1, src2) \
- 			__nodes_andnot(&(dst), &(src1), &(src2), MAX_NUMNODES)
--static __always_inline void __nodes_andnot(nodemask_t *dstp, const nodemask_t *src1p,
-+static __always_inline bool __nodes_andnot(nodemask_t *dstp, const nodemask_t *src1p,
- 					const nodemask_t *src2p, unsigned int nbits)
- {
--	bitmap_andnot(dstp->bits, src1p->bits, src2p->bits, nbits);
-+	return bitmap_andnot(dstp->bits, src1p->bits, src2p->bits, nbits);
- }
- 
- #define nodes_copy(dst, src) __nodes_copy(&(dst), &(src), MAX_NUMNODES)
--- 
-2.43.0
-
+>
+> > ---
+> >  mm/internal.h                    | 11 ++++-
+> >  mm/rmap.c                        | 74 ++++++++++++++++++++++----------
+> >  mm/vma.c                         |  6 +--
+> >  tools/testing/vma/vma_internal.h | 11 ++++-
+> >  4 files changed, 74 insertions(+), 28 deletions(-)
+> >
+> > diff --git a/mm/internal.h b/mm/internal.h
+> > index 4ba784023a9f..8baa7bd2b8f7 100644
+> > --- a/mm/internal.h
+> > +++ b/mm/internal.h
+> > @@ -244,7 +244,16 @@ static inline void anon_vma_unlock_read(struct ano=
+n_vma *anon_vma)
+> >
+> >  struct anon_vma *folio_get_anon_vma(const struct folio *folio);
+> >
+> > -int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *=
+src);
+> > +/* Operations which modify VMAs. */
+> > +enum vma_operation {
+> > +     VMA_OP_SPLIT,
+> > +     VMA_OP_MERGE_UNFAULTED,
+> > +     VMA_OP_REMAP,
+> > +     VMA_OP_FORK,
+> > +};
+> > +
+> > +int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *=
+src,
+> > +     enum vma_operation operation);
+> >  int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *p=
+vma);
+> >  int  __anon_vma_prepare(struct vm_area_struct *vma);
+> >  void unlink_anon_vmas(struct vm_area_struct *vma);
+> > diff --git a/mm/rmap.c b/mm/rmap.c
+> > index 8f4393546bce..336b27e00238 100644
+> > --- a/mm/rmap.c
+> > +++ b/mm/rmap.c
+> > @@ -233,12 +233,13 @@ int __anon_vma_prepare(struct vm_area_struct *vma=
+)
+> >  }
+> >
+> >  static void check_anon_vma_clone(struct vm_area_struct *dst,
+> > -                              struct vm_area_struct *src)
+> > +                              struct vm_area_struct *src,
+> > +                              enum vma_operation operation)
+>
+> You could save a line here by putting src and operation on the same line
+> and tabbing only twice, but sure.  This is true in earlier patches as
+> well.
+>
+> >  {
+> >       /* The write lock must be held. */
+> >       mmap_assert_write_locked(src->vm_mm);
+> > -     /* If not a fork (implied by dst->anon_vma) then must be on same =
+mm. */
+> > -     VM_WARN_ON_ONCE(dst->anon_vma && dst->vm_mm !=3D src->vm_mm);
+> > +     /* If not a fork then must be on same mm. */
+> > +     VM_WARN_ON_ONCE(operation !=3D VMA_OP_FORK && dst->vm_mm !=3D src=
+->vm_mm);
+> >
+> >       /* If we have anything to do src->anon_vma must be provided. */
+> >       VM_WARN_ON_ONCE(!src->anon_vma && !list_empty(&src->anon_vma_chai=
+n));
+> > @@ -250,6 +251,40 @@ static void check_anon_vma_clone(struct vm_area_st=
+ruct *dst,
+> >        * must be the same across dst and src.
+> >        */
+> >       VM_WARN_ON_ONCE(dst->anon_vma && dst->anon_vma !=3D src->anon_vma=
+);
+> > +     /*
+> > +      * Essentially equivalent to above - if not a no-op, we should ex=
+pect
+> > +      * dst->anon_vma to be set for everything except a fork.
+> > +      */
+> > +     VM_WARN_ON_ONCE(operation !=3D VMA_OP_FORK && src->anon_vma &&
+> > +                     !dst->anon_vma);
+> > +     /* For the anon_vma to be compatible, it can only be singular. */
+> > +     VM_WARN_ON_ONCE(operation =3D=3D VMA_OP_MERGE_UNFAULTED &&
+> > +                     !list_is_singular(&src->anon_vma_chain));
+> > +#ifdef CONFIG_PER_VMA_LOCK
+> > +     /* Only merging an unfaulted VMA leaves the destination attached.=
+ */
+> > +     VM_WARN_ON_ONCE(operation !=3D VMA_OP_MERGE_UNFAULTED &&
+> > +                     vma_is_attached(dst));
+> > +#endif
+> > +}
+> > +
+>
+> try seems to imply we can return something saying it didn't work out,
+> but this is void.  Naming is hard.  reuse_anon_vma_if_necessary seems
+> insane, so I don't really have anything better.
+>
+> > +static void try_to_reuse_anon_vma(struct vm_area_struct *dst,
+> > +                               struct anon_vma *anon_vma)
+> > +{
+> > +     /* If already populated, nothing to do.*/
+> > +     if (dst->anon_vma)
+> > +             return;
+>
+> This is only used on VMA_OP_FORK, how is it populated?
+>
+> I assume this is a later refinement?
+>
+> > +
+> > +     /*
+> > +      * We reuse an anon_vma if any linking VMAs were unmapped and it =
+has
+> > +      * only a single child at most.
+> > +      */
+> > +     if (anon_vma->num_active_vmas > 0)
+> > +             return;
+> > +     if (anon_vma->num_children > 1)
+> > +             return;
+> > +
+> > +     dst->anon_vma =3D anon_vma;
+> > +     anon_vma->num_active_vmas++;
+> >  }
+> >
+> >  static void cleanup_partial_anon_vmas(struct vm_area_struct *vma);
+> > @@ -259,6 +294,7 @@ static void cleanup_partial_anon_vmas(struct vm_are=
+a_struct *vma);
+> >   * all of the anon_vma objects contained within @src anon_vma_chain's.
+> >   * @dst: The destination VMA with an empty anon_vma_chain.
+> >   * @src: The source VMA we wish to duplicate.
+> > + * @operation: The type of operation which resulted in the clone.
+> >   *
+> >   * This is the heart of the VMA side of the anon_vma implementation - =
+we invoke
+> >   * this function whenever we need to set up a new VMA's anon_vma state=
+.
+> > @@ -281,17 +317,17 @@ static void cleanup_partial_anon_vmas(struct vm_a=
+rea_struct *vma);
+> >   *
+> >   * Returns: 0 on success, -ENOMEM on failure.
+> >   */
+> > -int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *=
+src)
+> > +int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *=
+src,
+> > +                enum vma_operation operation)
+> >  {
+> >       struct anon_vma_chain *avc, *pavc;
+> > +     struct anon_vma *active_anon_vma =3D src->anon_vma;
+> >
+> > -     check_anon_vma_clone(dst, src);
+> > +     check_anon_vma_clone(dst, src, operation);
+> >
+> > -     if (!src->anon_vma)
+> > +     if (!active_anon_vma)
+> >               return 0;
+> >
+> > -     check_anon_vma_clone(dst, src);
+> > -
+> >       /*
+> >        * Allocate AVCs. We don't need an anon_vma lock for this as we
+> >        * are not updating the anon_vma rbtree nor are we changing
+> > @@ -317,22 +353,14 @@ int anon_vma_clone(struct vm_area_struct *dst, st=
+ruct vm_area_struct *src)
+> >               struct anon_vma *anon_vma =3D avc->anon_vma;
+> >
+> >               anon_vma_interval_tree_insert(avc, &anon_vma->rb_root);
+> > -
+> > -             /*
+> > -              * Reuse existing anon_vma if it has no vma and only one
+> > -              * anon_vma child.
+> > -              *
+> > -              * Root anon_vma is never reused:
+> > -              * it has self-parent reference and at least one child.
+> > -              */
+> > -             if (!dst->anon_vma && src->anon_vma &&
+> > -                 anon_vma->num_children < 2 &&
+> > -                 anon_vma->num_active_vmas =3D=3D 0)
+> > -                     dst->anon_vma =3D anon_vma;
+> > +             if (operation =3D=3D VMA_OP_FORK)
+> > +                     try_to_reuse_anon_vma(dst, anon_vma);
+> >       }
+> > -     if (dst->anon_vma)
+> > +
+> > +     if (operation !=3D VMA_OP_FORK)
+> >               dst->anon_vma->num_active_vmas++;
+> > -     anon_vma_unlock_write(src->anon_vma);
+> > +
+> > +     anon_vma_unlock_write(active_anon_vma);
+> >       return 0;
+> >
+> >   enomem_failure:
+> > @@ -362,7 +390,7 @@ int anon_vma_fork(struct vm_area_struct *vma, struc=
+t vm_area_struct *pvma)
+> >        * First, attach the new VMA to the parent VMA's anon_vmas,
+> >        * so rmap can find non-COWed pages in child processes.
+> >        */
+> > -     error =3D anon_vma_clone(vma, pvma);
+> > +     error =3D anon_vma_clone(vma, pvma, VMA_OP_FORK);
+> >       if (error)
+> >               return error;
+> >
+> > diff --git a/mm/vma.c b/mm/vma.c
+> > index 4294ecdc23a5..2a063d6568d9 100644
+> > --- a/mm/vma.c
+> > +++ b/mm/vma.c
+> > @@ -528,7 +528,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_are=
+a_struct *vma,
+> >       if (err)
+> >               goto out_free_vmi;
+> >
+> > -     err =3D anon_vma_clone(new, vma);
+> > +     err =3D anon_vma_clone(new, vma, VMA_OP_SPLIT);
+> >       if (err)
+> >               goto out_free_mpol;
+> >
+> > @@ -626,7 +626,7 @@ static int dup_anon_vma(struct vm_area_struct *dst,
+> >
+> >               vma_assert_write_locked(dst);
+> >               dst->anon_vma =3D src->anon_vma;
+> > -             ret =3D anon_vma_clone(dst, src);
+> > +             ret =3D anon_vma_clone(dst, src, VMA_OP_MERGE_UNFAULTED);
+> >               if (ret)
+> >                       return ret;
+> >
+> > @@ -1899,7 +1899,7 @@ struct vm_area_struct *copy_vma(struct vm_area_st=
+ruct **vmap,
+> >               vma_set_range(new_vma, addr, addr + len, pgoff);
+> >               if (vma_dup_policy(vma, new_vma))
+> >                       goto out_free_vma;
+> > -             if (anon_vma_clone(new_vma, vma))
+> > +             if (anon_vma_clone(new_vma, vma, VMA_OP_REMAP))
+> >                       goto out_free_mempol;
+> >               if (new_vma->vm_file)
+> >                       get_file(new_vma->vm_file);
+> > diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_i=
+nternal.h
+> > index 93e5792306d9..7fa56dcc53a6 100644
+> > --- a/tools/testing/vma/vma_internal.h
+> > +++ b/tools/testing/vma/vma_internal.h
+> > @@ -600,6 +600,14 @@ struct mmap_action {
+> >       bool hide_from_rmap_until_complete :1;
+> >  };
+> >
+> > +/* Operations which modify VMAs. */
+> > +enum vma_operation {
+> > +     VMA_OP_SPLIT,
+> > +     VMA_OP_MERGE_UNFAULTED,
+> > +     VMA_OP_REMAP,
+> > +     VMA_OP_FORK,
+> > +};
+> > +
+> >  /*
+> >   * Describes a VMA that is about to be mmap()'ed. Drivers may choose t=
+o
+> >   * manipulate mutable fields which will cause those fields to be updat=
+ed in the
+> > @@ -1157,7 +1165,8 @@ static inline int vma_dup_policy(struct vm_area_s=
+truct *src, struct vm_area_stru
+> >       return 0;
+> >  }
+> >
+> > -static inline int anon_vma_clone(struct vm_area_struct *dst, struct vm=
+_area_struct *src)
+> > +static inline int anon_vma_clone(struct vm_area_struct *dst, struct vm=
+_area_struct *src,
+> > +                              enum vma_operation operation)
+> >  {
+> >       /* For testing purposes. We indicate that an anon_vma has been cl=
+oned. */
+> >       if (src->anon_vma !=3D NULL) {
+> > --
+> > 2.52.0
+> >
 
