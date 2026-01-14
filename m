@@ -4,102 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7D7DD31A1E
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 07:41:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C101AD31A23
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 08:03:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2AA996B008C; Wed, 14 Jan 2026 02:41:32 -0500 (EST)
+	id D3A206B0005; Wed, 14 Jan 2026 03:03:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 282C86B0092; Wed, 14 Jan 2026 02:41:32 -0500 (EST)
+	id CE7F46B0088; Wed, 14 Jan 2026 03:03:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1821D6B0093; Wed, 14 Jan 2026 02:41:32 -0500 (EST)
+	id BC9336B0089; Wed, 14 Jan 2026 03:03:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 078486B008C
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:41:32 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B48271BA12
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:41:31 +0000 (UTC)
-X-FDA: 84329774382.29.214B375
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C8355180004
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:41:29 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EwIKnBY0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768376490; a=rsa-sha256;
-	cv=none;
-	b=Rlv5p9lA5gqbXCjOMJ2yOCa1/CCWPV2Rh55VRaPz+Dh5sI0II0R459Bz1BjIKCQA+xHBtk
-	WSxT6u8pe/lO3WODCFk32fl7Ot/LOjHzs0MueCFYB1pvRHGjob9J/nQBdO/FW+B/j7JUls
-	OGNCpEN2OTTLPqoy4Ct7KEySTXG5nIA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EwIKnBY0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id AD64F6B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 03:03:13 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 455121B904
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:03:13 +0000 (UTC)
+X-FDA: 84329829066.12.62CB6DA
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 7414EA0011
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:03:11 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of 3vU1naQkbAEg289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3vU1naQkbAEg289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768376490;
+	s=arc-20220608; t=1768377791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8x3YqP9ZG6FyL2JK7Cc+pkWrJriDPOZs61tUnMuCISM=;
-	b=SULdnDAnx9IchAzZSYAz7EcPJqRY6ECg0rRnzqXedzhmZKala0idajgEVBlWMENhcrgba1
-	KIEj/e54z/RnWZKOssDaOri3fszfbMNOLetlzGoPsaZEP51gkr+zUSZwHICwJ3s5E8dAAZ
-	48ukrVsoiMpjjRDBW72X0lQWkuPQFJA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768376488;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8x3YqP9ZG6FyL2JK7Cc+pkWrJriDPOZs61tUnMuCISM=;
-	b=EwIKnBY0ptJt79ezcxQtB+XpWywMpIAhrAHe/965yMbyYfj/AB6iOJvD0YLPcAWnpaGVYn
-	l66Gxdy+0N1R+XFSDbjz5JWdK7Ki2JexfGflIoyCyuwprwpCp0UCIqd4CR/GmwGRvOVK1e
-	M+iUSM9aWzMnwm043wnCZkMuRFMmgf0=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: linux-mm@kvack.org,
-	shakeel.butt@linux.dev
-Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] mm/vmscan: add tracepoint and reason for kswapd_failures reset
-Date: Wed, 14 Jan 2026 15:40:36 +0800
-Message-ID: <20260114074049.229935-3-jiayuan.chen@linux.dev>
-In-Reply-To: <20260114074049.229935-1-jiayuan.chen@linux.dev>
-References: <20260114074049.229935-1-jiayuan.chen@linux.dev>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=rcTFTVUfgIv6fePqgRlWifkE2Bf9gTSIdoVbPHzB2Jk=;
+	b=pvNSw5K++YYNbdKW8DUkEfXVzZU63ViS138Cak8O9C/lr+Rmt19tPLzFCM0Qg/H0ZyDLPm
+	9q34p02t3ZzADJfK/LMc4FyFZC07FVYkuyudNmJ+bhayb1B4CvKROsO2278amPUv08a8vP
+	4OiZ9x34sm2RuWQq10546jEcjtOT3Kg=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of 3vU1naQkbAEg289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3vU1naQkbAEg289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768377791; a=rsa-sha256;
+	cv=none;
+	b=e0b0FzF8xyOuv1Lxdra8BQ+Gk0YWBYhsh/Oq5+w/H4qeezE4ZkyFu035eVYHHzLJ3DHml8
+	4EE/it5kIBspt2a/OIZ5XiYEYq3XCmoBSAThCrEucYy9haatsoqx990peDtCcVvT/qoXh6
+	Jny7hut+xxdHPFdQ8liusnJJqEyQoOo=
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7c766d79592so24638762a34.0
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 00:03:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768377790; x=1768982590;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rcTFTVUfgIv6fePqgRlWifkE2Bf9gTSIdoVbPHzB2Jk=;
+        b=MRy7e7mwV9WFWDM8/Exgnbn6Sp5RqZ1ayrxFM64TiEWjc+/c9hRywdtQ7xUPHJXOhd
+         DK6B2ou1vj66fQhdChvVJiPo56sOVXj95A57TPnDm00Mikg/QAultKCBBeXY0+Xb8t1z
+         n3oG/LiYW7U94JY5nRpVjoUlZe9Q3FihBlOTppqUhESKwFaSgPtfcQwR/9ApW82UwTY8
+         zFd44hMHpvr1FOwzdgqncFllv4XkEMGg6OSRnZI0b/dUrRokiIiPXFWjl9gr/iU99UZE
+         DpWJB2byuEIDXpQkad0RAlekZYRX4ZqA8AgFb9A0Igb4k7A4jn5XzzSlkx+/byiHvQqO
+         WHmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWdnxnMovHY4cVgsnEDIZTcAo7xzLgHwNc5HpgCSwcqKGISuBx1klo4Lp33N9CCuqVHu1jkNtfDJw==@kvack.org
+X-Gm-Message-State: AOJu0YxcPE4bHhOZdNCPLMQ6brcEN7K2eGoxP6EaZaEwofTUA6mR1dPb
+	rZ+CGg4AKFA3sG0eNGoP9naZvU7JYhPQLmOBCVyxUtlzhScFjFnQEembWjeWbx+UMqCU1c7bcGs
+	DiBJIkz+OwbhpUnblckVzlR03QdIpn0j6cTiSSQG3M85EBWq8Ko0lAMpkOsQ=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: C8355180004
-X-Rspamd-Server: rspam06
-X-Stat-Signature: knzsug87h1841oy4buz5qm1asfxzt7dq
+X-Received: by 2002:a05:6820:61c:b0:65f:65cc:ad84 with SMTP id
+ 006d021491bc7-661006cd6a6mr1403116eaf.40.1768377789795; Wed, 14 Jan 2026
+ 00:03:09 -0800 (PST)
+Date: Wed, 14 Jan 2026 00:03:09 -0800
+In-Reply-To: <202601141124178748cM66DJW2fzNea7Uym1mG@zte.com.cn>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69674dbd.050a0220.ac870.0007.GAE@google.com>
+Subject: [syzbot ci] Re: mm/madvise: prefer VMA lock for MADV_REMOVE
+From: syzbot ci <syzbot+ci5295199f57663826@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@kernel.org, fan.yu9@zte.com.cn, 
+	he.peilin@zte.com.cn, jannh@google.com, jiang.kun2@zte.com.cn, 
+	liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	lorenzo.stoakes@oracle.com, lu.zhongjun@zte.com.cn, qiu.yutan@zte.com.cn, 
+	tu.qiang35@zte.com.cn, vbabka@suse.cz, wang.yaxin@zte.com.cn, 
+	xu.xin16@zte.com.cn, yang.yang29@zte.com.cn
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 7414EA0011
+X-Stat-Signature: cjym57djm79ym16513r6sne4jc7se813
 X-Rspam-User: 
-X-HE-Tag: 1768376489-637069
-X-HE-Meta: U2FsdGVkX19BJa4OiAE1KLyzqSpLu0lkRi3/Rp/1vRtVmGhIeo0dihYaUOH4rOW4+FMgU65WiD+O5u/rnuA/h9lFiUyfbsC9dX4DV+9xsSLbhX7s9yVSbf0wHME321PCbxwplvs0rdSW2z8CzRBh29kjWe1J/n984mrXmf+mCC03xPxB51Lbe0Hd72USUz5pI6ymUUg6IoiWDirZWcrC2hcSlNw0ZNAyOyCkX+Wbyf3GHRulEq5DyTIycuJmOVIihJfUN0AP58qTYYALS80388bzZHb7qmSB+fb8Wj9wlwSDiFGq+hI/N+tDDmyPNVutiub8f3ro/Ey6M4rYsFW0FeTiOsubyBPsQs6a5ch9YKZeLHN5FVgnC23s5ZBXEDdAHpMX2xHLC2P3jfdLZi+twRs7q5G71wMfy5AnuPhw0i6LMKCoShrdDf/03zGkXTtKduMICFNAYfLDlTh64f2igS1+Ax4jC8FgMvs2NUONd1UbNl44db7VzZ7wmZU9WPnKXYT7RYtnXh1ZjL66BeToJfi3H7t9Je8RSPKQkOlC3NSMWUl3AEG5u/U+F+qQbbvCzQAtvqy2vqjkTuqRLGC+W5qfOQp+vW4NCvycOKj2zgejJkqHn3iiGu0o293Klr4GWzCsd4E/PcLlkZYh6pt8tHzIqDR4ACpICUImKF2I0lmB/MJm5b9kYdg+gPVvD7LNVfFVfyPCFmaIGzOKQoRXbbpAu+74ytLOwF477DuHWuJf19UA/aNjg7Yov6K6+X3ioU8ZybEzWt8hunMj/sGoASeENh33EjlZh+Y6+4S0u6ziLOcatlRRka4IGP/FQE3249TYRYlQIe+8MlTSHtd4NT0xXxH1VmidnUiN8atwxw+o0sppMHqhQhsbL84JfBMDSZUAQi6deG2DzLwEgyWY5+xg8fL7MNVrVyP6ZhIPpihpGEDWy2SGZbEqA2VNlDaioiQniA3a+MErj4N7Jz4
- G6HfRygo
- PJdztq4SzKz70Ef8s3YP+QaroPbEeDxRFHnJMoAB/M1aCEFiJlOJ5Wq6/sM6Vg51Gx6H10a1556mtI9Stb1WK9VcRjNSuW2DgFhLaTRJnGj/PTaM1fiqLGcUA10fBfSlSJwLxl2YJa/TJxGSMa7KtDdWkWiOokaq3bVSpAtDTA9FEUuPO6TzW3RhdYzobUkbBRhgECyBmxYYIDtTivR/IcBFjhDt95jHddePZvfTERgLSLevUzRlKCqR6CFneXJ/um4jlABHd38qwpkcQlS47PD24HbODUgnmfR87Mbs0YGdaMw+lNShnGS3f/g==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768377791-644626
+X-HE-Meta: U2FsdGVkX191OVejeYdJz4fnOwof2AKUxE1hKw2Giig4resTRDHyJxEtHj9vQvtHG7BXG/LRNTjVjhoOe2Bf0CqYbt6yxljzyrEwOOSnyEk9JCBWfjDNk8jS6l9WgAkaamKETa4LuYqQhQkDnLTzZS22GOxxQms/CSjWP0tagnt96geMd1w5UAkMx7Vhb1zGynRC7kPzILq/pqwHvpyjn4/FBuFEVrY8D3XPBQhJ7R/4lQqidCOXTzLxgMOYBphiNg0cKcX9Sa22KUZ7iBAkJkrPDdzQM+q/ACWAaX5Srkn8qgQgXDnmsKT3vx2+G+t56i2r74ih3KKr3WDToBlKdCLXURRL1f3au6ohlotwtMEOiNmtn3GeJK1yWplaj/cVJULZ8o3hS7DGpdZOzgCH6m4IQ3mlYYb5qwz7Y1BYF9VagZYcrun7ZNsU8kTKWu1aI+zLWkGNIX2qi2e7ltbn4fWOSVPZHeyi8+U/xsVNNbGvGei2sae4yYKzuFOX4IJvabedEafBLZ7mEL+0M/X+p8wya1vmB6Ij1GzFKo10CpINWi6DUOpH6+jk37xznwwZq83XCUgfcx6UCfPLyFrHDOKCsEvMONOdbRyjRTN+vnxvfvqEmAFANy+Y8dgqlcpllzO8IGjGVQWW7WUER0gzpJzXTrl+ooWuw7WSJ3DwgxDNSR8OGKL9ueVoxLWSqtgaWL7hFDYHkjuzRZTs9oub10ANnkEqw0giGPMWJRpzWt0i+D1U1jSVGDrWCZ4/wAmrZV5pbFJdIhsXT/d6/u5/fi/4XL2S7sU83T0nV778ykuuPrC5GGITBHiv9kf3QmoowFFUaD7TL4v8A+ff1bE34PBa7FR/S1gU8wxLK8tMxWmoC7ewUcIYqF/kdcFukQA4SYV3rfAJgveK12UdaiOJ+yAQy7azItSswphQfNNrc+GlsmMClW3lO82mEki5hCOI4FxoKrlCcF2wk+n0vnM
+ 544EUSow
+ rOQDtPMqTIw0D1r6teQBt9txbz6Es51ctAAkqP/B+dzZLX95OyY/dKx/Q0sw5mbydXegkGM5i5RZnnJT3RFuq6A3tUm74bTsIDNbKNi5dyxykp5f0WSvZrl7IAsl0dQaWaRWPLBueshCcprm467e/IiW+c875a+Jc/UeDKGntD7T1dM18xwZoN6QluG3BJC5R0bAR4fCBqMs6/OP5c5tQvv6Lx1Xq/HmJt0bEqz5qqP8bW/TNbqADnpZHeVde0lB3PkxPZlE1a5pX3zXQLWGZWfMM9EAAjFUWgPGZHAGjtQlThpxlZnE/5+kyoszzYBiyrIyAR9eYPtXWhGgCpZhINja67wArYrWVqTXwooZIM+eFw8JMBRxeuVYa7nGXbskABJkW4603kEpu/WqaWLm8xdI0edUOt8X94FUH47XXf6PT9t+YljtYc5ycUyj5nUzc56CHWzTIJbEEQwGKhPOR4Iz+qcL2hs+Dp61GBGeSMRn4pFtnz9Jw+shtcJBLzSaKHr6802YnJzPyN6XZe/al1SEamAfEII68Ff7PsHsRvldOqb7LgA8vFgqF9RuuZAhT4Wh/yobMn4XYRnfa5bCQBE0pAK2RDdu1p6y4V2rZJpshSj/cz/8DNqgeuWDfiMfX6hPMUKHGNNIEB7/IxsgGXILXW3Z2p7iu/eQipndCMsZwUZhjntritdgVECGytpG+bBsXRCEjjNVmcsyDvDj84fDxFss/AtaaakbSA42s21ExE+4Po9GDftOaVwoeYMg/LWRZoNzN7risfDkiyg5o0wS2z77ZFCmIQcWCxMFlTFGxsm16+1MqHBi9T8jY9JOfq8JB7g2qEx91ebsPcSN40LtBFLpltbC2GNCTDbuT4wo+zEQSwb+I9L6TzI/SLwVogiSWB4MKpwxCG1sPUBwVFxyERSkJrpuywUyhAe2w6B455OSwm9W3bVXjanVOgLkKSxLL/8gwbwEo6zuUO1IwuddyJ2gD
+ ZSwYZfwy
+ Up03jI1HB2E2MNjR8lKnC3VGtnE19ujulmS7wd6+VOZ/BSIjgcAZbvx1/6RlP9drSKcPngZUVpZiYa6F0YoJvjKYjOulefFFs1JLllN+rQf35KkLByFKqQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,238 +102,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+syzbot ci has tested the following series
 
-Currently, kswapd_failures is reset in multiple places (kswapd,
-direct reclaim, PCP freeing, memory-tiers), but there's no way to
-trace when and why it was reset, making it difficult to debug
-memory reclaim issues.
+[v1] mm/madvise: prefer VMA lock for MADV_REMOVE
+https://lore.kernel.org/all/202601141124178748cM66DJW2fzNea7Uym1mG@zte.com.cn
+* [PATCH linux-next] mm/madvise: prefer VMA lock for MADV_REMOVE
 
-This patch:
+and found the following issue:
+possible deadlock in blkdev_fallocate
 
-1. Introduce pgdat_reset_kswapd_failures() as a wrapper function to
-   centralize kswapd_failures reset logic.
+Full report is available here:
+https://ci.syzbot.org/series/30acb9df-ca55-4cbf-81ed-89b84da8edc1
 
-2. Add reset_kswapd_failures_reason enum to distinguish reset sources:
-   - RESET_KSWAPD_FAILURES_KSWAPD: reset from kswapd context
-   - RESET_KSWAPD_FAILURES_DIRECT: reset from direct reclaim
-   - RESET_KSWAPD_FAILURES_PCP: reset from PCP page freeing
-   - RESET_KSWAPD_FAILURES_OTHER: reset from other paths
+***
 
-3. Add tracepoints for better observability:
-   - mm_vmscan_reset_kswapd_failures: traces each reset with reason
-   - mm_vmscan_kswapd_reclaim_fail: traces each kswapd reclaim failure
+possible deadlock in blkdev_fallocate
+
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      4c81c9dc03a068745eeb56984ea9836d86fa3eb2
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/eaa5a44b-5d87-4428-b098-72b46efdb983/config
+C repro:   https://ci.syzbot.org/findings/e3240f02-6d2c-4c6d-bc6e-e7f4be22e433/c_repro
+syz repro: https://ci.syzbot.org/findings/e3240f02-6d2c-4c6d-bc6e-e7f4be22e433/syz_repro
+
+======================================================
+WARNING: possible circular locking dependency detected
+syzkaller #0 Not tainted
+------------------------------------------------------
+syz.0.17/5976 is trying to acquire lock:
+ffff888167a287a8 (&sb->s_type->i_mutex_key#10){++++}-{4:4}, at: inode_lock include/linux/fs.h:1027 [inline]
+ffff888167a287a8 (&sb->s_type->i_mutex_key#10){++++}-{4:4}, at: blkdev_fallocate+0x260/0x530 block/fops.c:908
+
+but task is already holding lock:
+ffff8881043c3b88 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0x1d1/0x500 mm/mmap_lock.c:259
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #2 (vm_lock){++++}-{0:0}:
+       __vma_enter_locked+0x243/0x710 mm/mmap_lock.c:72
+       __vma_start_write+0x23/0x140 mm/mmap_lock.c:104
+       vma_start_write include/linux/mmap_lock.h:213 [inline]
+       mprotect_fixup+0x5e1/0xa50 mm/mprotect.c:768
+       setup_arg_pages+0x565/0xae0 fs/exec.c:670
+       load_elf_binary+0xc5e/0x2980 fs/binfmt_elf.c:1028
+       search_binary_handler fs/exec.c:1669 [inline]
+       exec_binprm fs/exec.c:1701 [inline]
+       bprm_execve+0x93d/0x1410 fs/exec.c:1753
+       kernel_execve+0x8ef/0x9e0 fs/exec.c:1919
+       try_to_run_init_process+0x13/0x60 init/main.c:1506
+       kernel_init+0xad/0x1d0 init/main.c:1634
+       ret_from_fork+0x51b/0xa40 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+-> #1 (&mm->mmap_lock){++++}-{4:4}:
+       __might_fault+0xcb/0x130 mm/memory.c:7174
+       _copy_to_iter+0xf9/0x17d0 lib/iov_iter.c:196
+       copy_page_to_iter+0x10c/0x1c0 lib/iov_iter.c:374
+       copy_folio_to_iter include/linux/uio.h:204 [inline]
+       filemap_read+0x811/0x1230 mm/filemap.c:2851
+       blkdev_read_iter+0x30a/0x440 block/fops.c:856
+       new_sync_read fs/read_write.c:491 [inline]
+       vfs_read+0x582/0xa70 fs/read_write.c:572
+       ksys_read+0x150/0x270 fs/read_write.c:715
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #0 (&sb->s_type->i_mutex_key#10){++++}-{4:4}:
+       check_prev_add kernel/locking/lockdep.c:3165 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+       validate_chain kernel/locking/lockdep.c:3908 [inline]
+       __lock_acquire+0x15a5/0x2cf0 kernel/locking/lockdep.c:5237
+       lock_acquire+0x106/0x330 kernel/locking/lockdep.c:5868
+       down_write+0x96/0x200 kernel/locking/rwsem.c:1590
+       inode_lock include/linux/fs.h:1027 [inline]
+       blkdev_fallocate+0x260/0x530 block/fops.c:908
+       vfs_fallocate+0x669/0x7e0 fs/open.c:339
+       madvise_remove mm/madvise.c:1055 [inline]
+       madvise_vma_behavior+0x120d/0x4460 mm/madvise.c:1379
+       madvise_walk_vmas+0x90e/0xaf0 mm/madvise.c:1706
+       madvise_do_behavior+0x386/0x540 mm/madvise.c:1956
+       do_madvise+0x1fa/0x2e0 mm/madvise.c:2049
+       __do_sys_madvise mm/madvise.c:2058 [inline]
+       __se_sys_madvise mm/madvise.c:2056 [inline]
+       __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2056
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+Chain exists of:
+  &sb->s_type->i_mutex_key#10 --> &mm->mmap_lock --> vm_lock
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  rlock(vm_lock);
+                               lock(&mm->mmap_lock);
+                               lock(vm_lock);
+  lock(&sb->s_type->i_mutex_key#10);
+
+ *** DEADLOCK ***
+
+1 lock held by syz.0.17/5976:
+ #0: ffff8881043c3b88 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0x1d1/0x500 mm/mmap_lock.c:259
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 5976 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_circular_bug+0x2e1/0x300 kernel/locking/lockdep.c:2043
+ check_noncircular+0x12e/0x150 kernel/locking/lockdep.c:2175
+ check_prev_add kernel/locking/lockdep.c:3165 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+ validate_chain kernel/locking/lockdep.c:3908 [inline]
+ __lock_acquire+0x15a5/0x2cf0 kernel/locking/lockdep.c:5237
+ lock_acquire+0x106/0x330 kernel/locking/lockdep.c:5868
+ down_write+0x96/0x200 kernel/locking/rwsem.c:1590
+ inode_lock include/linux/fs.h:1027 [inline]
+ blkdev_fallocate+0x260/0x530 block/fops.c:908
+ vfs_fallocate+0x669/0x7e0 fs/open.c:339
+ madvise_remove mm/madvise.c:1055 [inline]
+ madvise_vma_behavior+0x120d/0x4460 mm/madvise.c:1379
+ madvise_walk_vmas+0x90e/0xaf0 mm/madvise.c:1706
+ madvise_do_behavior+0x386/0x540 mm/madvise.c:1956
+ do_madvise+0x1fa/0x2e0 mm/madvise.c:2049
+ __do_sys_madvise mm/madvise.c:2058 [inline]
+ __se_sys_madvise mm/madvise.c:2056 [inline]
+ __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2056
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f5ceb59acb9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffd12a05518 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
+RAX: ffffffffffffffda RBX: 00007f5ceb815fa0 RCX: 00007f5ceb59acb9
+RDX: 0000000000000009 RSI: 0000000000004000 RDI: 0000200000119000
+RBP: 00007f5ceb608bf7 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f5ceb815fac R14: 00007f5ceb815fa0 R15: 00007f5ceb815fa0
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
 ---
-Test results:
-
-$ trace-cmd record -e vmscan:mm_vmscan_reset_kswapd_failures -e vmscan:mm_vmscan_kswapd_reclaim_fail
-$ # generate memory pressure
-$ trace-cmd report
-cpus=4
-kswapd1-73  [002]  24.863112: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=1
-kswapd1-73  [002]  24.863472: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=2
-kswapd1-73  [002]  24.863813: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=3
-kswapd1-73  [002]  24.864141: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=4
-kswapd1-73  [002]  24.864462: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=5
-kswapd1-73  [002]  24.864779: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=6
-kswapd1-73  [002]  24.865103: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=7
-kswapd1-73  [002]  24.865421: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=8
-kswapd1-73  [002]  24.865737: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=9
-kswapd1-73  [002]  24.866070: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=10
-kswapd1-73  [002]  24.866385: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=11
-kswapd1-73  [002]  24.866701: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=12
-kswapd1-73  [002]  24.867016: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=13
-kswapd1-73  [002]  24.867333: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=14
-kswapd1-73  [002]  24.867649: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=15
-kswapd1-73  [002]  24.867965: mm_vmscan_kswapd_reclaim_fail: nid=1 failures=16
-kswapd0-72  [001]  25.020464: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=1
-kswapd0-72  [001]  25.021054: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=2
-kswapd0-72  [001]  25.021628: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=3
-kswapd0-72  [001]  25.022217: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=4
-kswapd0-72  [001]  25.022790: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=5
-kswapd0-72  [001]  25.023366: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=6
-kswapd0-72  [001]  25.023937: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=7
-kswapd0-72  [001]  25.024511: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=8
-kswapd0-72  [001]  25.025092: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=9
-kswapd0-72  [001]  25.025665: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=10
-kswapd0-72  [001]  25.026249: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=11
-kswapd0-72  [001]  25.026824: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=12
-kswapd0-72  [001]  25.027398: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=13
-kswapd0-72  [001]  25.027976: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=14
-kswapd0-72  [001]  25.028554: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=15
-kswapd0-72  [001]  25.029140: mm_vmscan_kswapd_reclaim_fail: nid=0 failures=16
-ann-416     [002]  25.577925: mm_vmscan_reset_kswapd_failures: nid=0 reason=PCP
-dd-417      [002]  35.111721: mm_vmscan_reset_kswapd_failures: nid=1 reason=DIRECT
-
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- include/linux/mmzone.h        |  9 +++++++
- include/trace/events/vmscan.h | 51 +++++++++++++++++++++++++++++++++++
- mm/memory-tiers.c             |  2 +-
- mm/page_alloc.c               |  2 +-
- mm/vmscan.c                   | 16 +++++++----
- 5 files changed, 73 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 75ef7c9f9307..3f4d2928d8dc 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1531,6 +1531,15 @@ static inline unsigned long pgdat_end_pfn(pg_data_t *pgdat)
- 	return pgdat->node_start_pfn + pgdat->node_spanned_pages;
- }
- 
-+enum reset_kswapd_failures_reason {
-+	RESET_KSWAPD_FAILURES_OTHER = 0,
-+	RESET_KSWAPD_FAILURES_KSWAPD,
-+	RESET_KSWAPD_FAILURES_DIRECT,
-+	RESET_KSWAPD_FAILURES_PCP,
-+};
-+
-+void pgdat_reset_kswapd_failures(pg_data_t *pgdat, enum reset_kswapd_failures_reason reason);
-+
- #include <linux/memory_hotplug.h>
- 
- void build_all_zonelists(pg_data_t *pgdat);
-diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
-index 490958fa10de..0747ad2f7932 100644
---- a/include/trace/events/vmscan.h
-+++ b/include/trace/events/vmscan.h
-@@ -40,6 +40,16 @@
- 		{_VMSCAN_THROTTLE_CONGESTED,	"VMSCAN_THROTTLE_CONGESTED"}	\
- 		) : "VMSCAN_THROTTLE_NONE"
- 
-+TRACE_DEFINE_ENUM(RESET_KSWAPD_FAILURES_OTHER);
-+TRACE_DEFINE_ENUM(RESET_KSWAPD_FAILURES_KSWAPD);
-+TRACE_DEFINE_ENUM(RESET_KSWAPD_FAILURES_DIRECT);
-+TRACE_DEFINE_ENUM(RESET_KSWAPD_FAILURES_PCP);
-+
-+#define reset_kswapd_src				\
-+	{RESET_KSWAPD_FAILURES_KSWAPD,	"KSWAPD"},	\
-+	{RESET_KSWAPD_FAILURES_DIRECT,	"DIRECT"},	\
-+	{RESET_KSWAPD_FAILURES_PCP,	"PCP"},		\
-+	{RESET_KSWAPD_FAILURES_OTHER,	"OTHER"}
- 
- #define trace_reclaim_flags(file) ( \
- 	(file ? RECLAIM_WB_FILE : RECLAIM_WB_ANON) | \
-@@ -535,6 +545,47 @@ TRACE_EVENT(mm_vmscan_throttled,
- 		__entry->usec_delayed,
- 		show_throttle_flags(__entry->reason))
- );
-+
-+TRACE_EVENT(mm_vmscan_kswapd_reclaim_fail,
-+
-+	TP_PROTO(int nid, int failures),
-+
-+	TP_ARGS(nid, failures),
-+
-+	TP_STRUCT__entry(
-+		__field(int, nid)
-+		__field(int, failures)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->nid = nid;
-+		__entry->failures = failures;
-+	),
-+
-+	TP_printk("nid=%d failures=%d",
-+		__entry->nid, __entry->failures)
-+);
-+
-+TRACE_EVENT(mm_vmscan_reset_kswapd_failures,
-+
-+	TP_PROTO(int nid, int reason),
-+
-+	TP_ARGS(nid, reason),
-+
-+	TP_STRUCT__entry(
-+		__field(int, nid)
-+		__field(int, reason)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->nid = nid;
-+		__entry->reason = reason;
-+	),
-+
-+	TP_printk("nid=%d reason=%s",
-+		__entry->nid,
-+		__print_symbolic(__entry->reason, reset_kswapd_src))
-+);
- #endif /* _TRACE_VMSCAN_H */
- 
- /* This part must be outside protection */
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index 864811fff409..8188f341bd77 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -956,7 +956,7 @@ static ssize_t demotion_enabled_store(struct kobject *kobj,
- 		struct pglist_data *pgdat;
- 
- 		for_each_online_pgdat(pgdat)
--			atomic_set(&pgdat->kswapd_failures, 0);
-+			pgdat_reset_kswapd_failures(pgdat, RESET_KSWAPD_FAILURES_OTHER);
- 	}
- 
- 	return count;
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index c380f063e8b7..cadf2c8b06a5 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2918,7 +2918,7 @@ static bool free_frozen_page_commit(struct zone *zone,
- 		 */
- 		if (atomic_read(&pgdat->kswapd_failures) >= MAX_RECLAIM_RETRIES &&
- 		    next_memory_node(pgdat->node_id) < MAX_NUMNODES)
--			atomic_set(&pgdat->kswapd_failures, 0);
-+			pgdat_reset_kswapd_failures(pgdat, RESET_KSWAPD_FAILURES_PCP);
- 	}
- 	return ret;
- }
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 6fd100130987..8d9f3d29fe3b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2650,9 +2650,11 @@ static bool can_age_anon_pages(struct lruvec *lruvec,
- 			  lruvec_memcg(lruvec));
- }
- 
--static void pgdat_reset_kswapd_failures(pg_data_t *pgdat)
-+void pgdat_reset_kswapd_failures(pg_data_t *pgdat, enum reset_kswapd_failures_reason reason)
- {
--	atomic_set(&pgdat->kswapd_failures, 0);
-+	/* Only trace actual resets, not redundant zero-to-zero */
-+	if (atomic_xchg(&pgdat->kswapd_failures, 0))
-+		trace_mm_vmscan_reset_kswapd_failures(pgdat->node_id, reason);
- }
- 
- /*
-@@ -2666,7 +2668,8 @@ static inline void pgdat_try_reset_kswapd_failures(struct pglist_data *pgdat,
- 						   struct scan_control *sc)
- {
- 	if (pgdat_balanced(pgdat, sc->order, sc->reclaim_idx))
--		pgdat_reset_kswapd_failures(pgdat);
-+		pgdat_reset_kswapd_failures(pgdat, current_is_kswapd() ?
-+			RESET_KSWAPD_FAILURES_KSWAPD : RESET_KSWAPD_FAILURES_DIRECT);
- }
- 
- #ifdef CONFIG_LRU_GEN
-@@ -7153,8 +7156,11 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
- 	 * watermark_high at this point. We need to avoid increasing the
- 	 * failure count to prevent the kswapd thread from stopping.
- 	 */
--	if (!sc.nr_reclaimed && !boosted)
--		atomic_inc(&pgdat->kswapd_failures);
-+	if (!sc.nr_reclaimed && !boosted) {
-+		int fail_cnt = atomic_inc_return(&pgdat->kswapd_failures);
-+		/* kswapd context, low overhead to trace every failure */
-+		trace_mm_vmscan_kswapd_reclaim_fail(pgdat->node_id, fail_cnt);
-+	}
- 
- out:
- 	clear_reclaim_active(pgdat, highest_zoneidx);
--- 
-2.43.0
-
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
