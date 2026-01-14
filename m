@@ -4,124 +4,194 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBD73D37E3A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 14:48:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F6B8D37E3D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 14:53:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31D7E6B0005; Wed, 14 Jan 2026 09:48:34 -0500 (EST)
+	id CDE726B0089; Wed, 14 Jan 2026 09:53:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C9B26B0088; Wed, 14 Jan 2026 09:48:34 -0500 (EST)
+	id C84CB6B008C; Wed, 14 Jan 2026 09:53:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ACD36B0089; Wed, 14 Jan 2026 09:48:34 -0500 (EST)
+	id B6AA96B0092; Wed, 14 Jan 2026 09:53:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 08DA86B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:48:34 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A18E41A0544
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:48:33 +0000 (UTC)
-X-FDA: 84330850506.19.CAC3481
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C0B4D1C0008
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:48:31 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=delta-utec-com.20230601.gappssmtp.com header.s=20230601 header.b=U2o4S6vX
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768402111; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A438E6B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:53:08 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 384291A053C
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:53:08 +0000 (UTC)
+X-FDA: 84330862056.01.5092ACE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 15D744000A
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:53:05 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DZ4y7792;
+	spf=pass (imf07.hostedemail.com: domain of cel@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cel@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768402386; a=rsa-sha256;
 	cv=none;
-	b=jAyD25yuhP4ue3boO247hpDml02ptSVuEVVyrsPBb8LHCLwp1FxFvT58HBFW6QXJYJgXOt
-	N58MJekKSAIroy2gqSaaXfhvzjSOz09yK5GMg+mVE1ofOlhFXPBa9TimnU+YDCxZVv7OSy
-	3JLOKUx4/jKpbzQOVdBMDhcLud6JRVU=
+	b=0E3ROoN7n0P28JD2mvOOkU2l1fIOtkLOItFZ8RpAMt6iNrxesxFqBDf0ANCcMDGJ/VuaY4
+	f7NuALE/AWUMpAyWdCDBiFMWMSSRt9XiXhRuP7DPRuhHCQ1XBq5eBppMFoui/kPTWjrfqT
+	j7CAlJE8xLFQCj3Yn4w0hwUjEd/rkss=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=delta-utec-com.20230601.gappssmtp.com header.s=20230601 header.b=U2o4S6vX;
-	spf=none (imf18.hostedemail.com: domain of boudewijn@delta-utec.com has no SPF policy when checking 209.85.218.45) smtp.mailfrom=boudewijn@delta-utec.com;
-	dmarc=none
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DZ4y7792;
+	spf=pass (imf07.hostedemail.com: domain of cel@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cel@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768402111;
+	s=arc-20220608; t=1768402386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Eti2jnWjJ/3cvre+2VBJiNqFzyCXhnTtCeagxJqKsCQ=;
-	b=1kSG+4UDzKABWmJm7ahBXjnsopx8hRAjXpyj97Kx1yVwOt5DfMMDwowKlMg7D3iCkClSWD
-	W5tX8ahdYRij4Ixro0KB0qJeTIWRRZjs+Ih6yntMaQ1XAYEJch8yVAtd/ihwpw84fi53ep
-	gsilLTWjeJUlewSPC9ESf75fT23KuDY=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b86f3e88d4dso579081366b.0
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:48:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=delta-utec-com.20230601.gappssmtp.com; s=20230601; t=1768402110; x=1769006910; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Eti2jnWjJ/3cvre+2VBJiNqFzyCXhnTtCeagxJqKsCQ=;
-        b=U2o4S6vXyurCcyhn2sGcCMjoMoha6zN/rfWWDtSMLeWE5qmFqLy7VY2qLXLgVY835D
-         xyg5Q+q50ZfZDbcs7HxrcbC8aGlARpSSZWeNpsbSUkP/e68jO3Nqy4Vk6aXCXwx99gak
-         mXIE2feJA6sQjGmd22n3oOobqE4uvkFSn0AkhJ+f8NAEiJj0IAR6RWNPe/8yfafnadpI
-         opAkOwBwtBGhGBKp8nTTpY9wplN72S69TkM40K2n7hMfSFuZJK0/jeXKtQyErEJ/Sndd
-         vp7E/q74TTpcL4ks89u16yP1EaL3wNLks5xnu01TIVsFOxWHrEXtrjbNCnt8JM+aNKAw
-         g5dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768402110; x=1769006910;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Eti2jnWjJ/3cvre+2VBJiNqFzyCXhnTtCeagxJqKsCQ=;
-        b=bCzYLUoyXQUs9/uuZDM8L8+6cWoy7Opfo6eyjVW2MR8+1WxdkJHzR6P2qr+FCsOM88
-         ToIVTg37xbc1PX5AjJltcKMhobi/ZXmwEwkd0MDAlzybsdeYFlOkcJhH+A1GYaqjQ2fk
-         izwooutaut9jY46/N/oM1VqXePOmAwSL2e7p2r6EhgjygiIL0pG6sls0Zi4HpKur7BSs
-         HeAC+xbf8FYGGWtcaLbiQrsyf3i0l456mshZ/cT+jYNKkST17RkJYVWr/BR5e/sAbFSc
-         VbWTH+yAiAcuJGl7CyBVxg3+W73PfmfMSGpV0YgteubOp/L27pEOgumVyA9l2qJ3g13N
-         JPIg==
-X-Forwarded-Encrypted: i=1; AJvYcCXQoq7Dicw7tOpoTkCm/Z9RxboxfRL79alNHjO2Sj9fgA/T3tk+7QEGJVBfSUhr1TolfkXj1un9cw==@kvack.org
-X-Gm-Message-State: AOJu0Yz8Fh0L3uoQv2o6o9yaYcFwxq0xyb226329ksPzIIdjWyzimzMW
-	u4R+FILeoOHRA9MogVL7/heqi50I2h2EfeIMWoOgc74yvB5yfCcya7faQmXWp/cJ9w==
-X-Gm-Gg: AY/fxX6F1i4hPkQiRkRPvv+LHP/kvRBJczbtpUg7FUZchviw8BUmNuzpeW1BdxxlDKm
-	iPIotFrBWZbAnIbdLpEDt50JKCefcilqcWBaKt0FNiiTpHoR2RAQSVLvQki85sXSXBvAIqOH7xq
-	sEQF2Pz+i7nzAVRG8AEUqvtDwcov66Q08QoMxJ1xNVvBWLIgxVHibxX/7itK/B3eTjj1/gUz3LD
-	3cge7fAPOXrPp1ogVr5J4huk/5KAkgbEwBJo/nhkns3vfpziZYxe9aNrnUpoEl+Q1NCvxpUvP+I
-	0wzOGLhCN1KqdPn2OSHow+BHDrye/bEPdlGFOu07gealrDsCKY9WCFLbsxo/VjKg8OrAKyhzeRK
-	RPVeHYpkSEvvuvUEGzlj3lNnqBWPZCWnN9bBk8bPHVYYBGaK3EkGCvWgLoyUw/KntDEzR/zWWsc
-	97lw6OxKMhtR997fOrpFpiMBBZXLE9szmsoejrwGky3PhyAq+GOKNqhHQt98BKhY22eoz6PZYXP
-	qw48QQoMaDNOfdlxBPipF+J9+rtHLG7dOueuAj4N1cRL3enxRw=
-X-Received: by 2002:a17:907:6e86:b0:b80:42cf:1157 with SMTP id a640c23a62f3a-b87677a81aemr176504766b.36.1768402109968;
-        Wed, 14 Jan 2026 06:48:29 -0800 (PST)
-Received: from localhost.localdomain (2001-1c00-3405-d100-3dcf-422a-3166-cbb7.cable.dynamic.v6.ziggo.nl. [2001:1c00:3405:d100:3dcf:422a:3166:cbb7])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8715952fc3sm962438766b.50.2026.01.14.06.48.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 06:48:29 -0800 (PST)
-From: Boudewijn van der Heide <boudewijn@delta-utec.com>
-To: ziy@nvidia.com
-Cc: akpm@linux-foundation.org,
-	boudewijn@delta-utec.com,
-	hannes@cmpxchg.org,
-	jackmanb@google.com,
-	linmiaohe@huawei.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mhocko@suse.com,
-	nao.horiguchi@gmail.com,
-	osalvador@suse.de,
-	surenb@google.com,
-	vbabka@suse.cz
-Subject: Re: [PATCH] mm/page_alloc: Fix freeing of failed-split poisoned compound pages
-Date: Wed, 14 Jan 2026 15:48:23 +0100
-Message-ID: <20260114144824.69960-1-boudewijn@delta-utec.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <54CB622C-0BB0-4772-A939-162D63433A00@nvidia.com>
-References: <54CB622C-0BB0-4772-A939-162D63433A00@nvidia.com>
+	bh=xKp2mRX639Xrl1hAH25cMUgzI8E+8kaOkrWTmDZ9gJI=;
+	b=0uUoa9s1Wk2iTuad4ovnP66fCs+43qC4XXs0LYaWB+P4eKAblL1OY+bvDXfvlsVS+pbTvk
+	oBW4TevWpBVMyBOKsreFGmYvAmAKxhNO9OQ+irHmZoK9+t6qZ9QoDYQaGIicQN+4KnwQ5s
+	teDXp6YIapt7mm4ssfIbhXHeo+cSLxQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BBFEC44110;
+	Wed, 14 Jan 2026 14:53:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C50AC19423;
+	Wed, 14 Jan 2026 14:53:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768402384;
+	bh=xKp2mRX639Xrl1hAH25cMUgzI8E+8kaOkrWTmDZ9gJI=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=DZ4y7792kI2/4eE5VVTlEy1lwDXzIzeNr2iEGyaqqLMYTsvcSbwt8Bo54fNz4FJrn
+	 0CjwDI0jj4BZuie48fZ7X8+pogo2m9xuuz5ZkTKqUIWIWMb2aIahe3YDQ1OihTAsyY
+	 /kSWP/W66gnEfc8gA/3bKKHjBBbzoJWIQmXxEVECLl86oIEVeZwN3rPLewdZXpBLNQ
+	 4fSATB6J5Q9DEK8WPOow5IHJKdW2q5kckZv1zfwvc/Rackn2AgyYEGYSEHyTHq4m0k
+	 xzDo6EcWHnQhpPR7xCjV8fvC1tdohxaCsjAOcYPGoYZ1/+HzD4MzDToJBxFdCh/tru
+	 OSjQsEWq0CzTg==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 336F2F4006C;
+	Wed, 14 Jan 2026 09:53:02 -0500 (EST)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Wed, 14 Jan 2026 09:53:02 -0500
+X-ME-Sender: <xms:zq1naTL1verRbjv_OWxa5Qc-mm-FLSmJA57qMcDcmimTH1ZvOzAH8Q>
+    <xme:zq1naR8m09634GxEfslbvAHAt_pWKVnj5KMHoclqQy7tbEop4pkDoeOLzOlsxhgNB
+    mfBJSAWYD5Pvqo039VVHWSbWWy3lMiNKfBSo92wfzMrsG2olMOvAg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdefgeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedfvehhuhgt
+    khcunfgvvhgvrhdfuceotggvlheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpefghfeguedtieeiveeugfevtdejfedukeevgfeggfeugfetgfeltdetueelleelteen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegthhhutg
+    hklhgvvhgvrhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeifeegleel
+    leehledqfedvleekgeegvdefqdgtvghlpeepkhgvrhhnvghlrdhorhhgsehfrghsthhmrg
+    hilhdrtghomhdpnhgspghrtghpthhtohephedtpdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopegrlhesrghlrghrshgvnhdrnhgvthdprhgtphhtthhopegrshhmrgguvghush
+    estghouggvfihrvggtkhdrohhrghdprhgtphhtthhopehlihhnuhigpghoshhssegtrhhu
+    uggvsgihthgvrdgtohhmpdhrtghpthhtoheprgguihhlghgvrhdrkhgvrhhnvghlseguih
+    hlghgvrhdrtggrpdhrtghpthhtohepshhlrghvrgesughusggvhihkohdrtghomhdprhgt
+    phhtthhopehjlhgsvggtsegvvhhilhhplhgrnhdrohhrghdprhgtphhtthhopehmrghrkh
+    esfhgrshhhvghhrdgtohhmpdhrtghpthhtoheptghlmhesfhgsrdgtohhmpdhrtghpthht
+    ohepnhhitghosehflhhugihnihgtrdhnvght
+X-ME-Proxy: <xmx:zq1naR4y4iRWBYp2xNnePgUOv-GP1DKdFBDtDf2IC92YRobPvv4XvQ>
+    <xmx:zq1nabUvbFcuW5qmkDCHdiOne_rDLza_EAZnBtIjXTs4zRVj0oLKWg>
+    <xmx:zq1naXWzKUDfqjQXjvlbqUXobr95Hj_DLjvdFTe0pPxUPWiy4igVFQ>
+    <xmx:zq1naQSTIJTSkNqnVd_7fRCRq8sinXvVVU9WAT0_5jXT_tt716hBhQ>
+    <xmx:zq1naeeXm4Q-EAh1xMCT3MnzrdKd7lPZzpjsKoHgYV0ycvEqIoQrdgKM>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id F2C75780070; Wed, 14 Jan 2026 09:53:01 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: d66jo34mgx5rmx4gnzkodsojsf3awjjk
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C0B4D1C0008
+X-ThreadId: ArEQL-Tet5yZ
+Date: Wed, 14 Jan 2026 09:52:34 -0500
+From: "Chuck Lever" <cel@kernel.org>
+To: "Amir Goldstein" <amir73il@gmail.com>, "Jeff Layton" <jlayton@kernel.org>
+Cc: "Christoph Hellwig" <hch@infradead.org>,
+ "Christian Brauner" <brauner@kernel.org>,
+ "Chuck Lever" <chuck.lever@oracle.com>, "Jan Kara" <jack@suse.cz>,
+ "Luis de Bethencourt" <luisbg@kernel.org>,
+ "Salah Triki" <salah.triki@gmail.com>,
+ "Nicolas Pitre" <nico@fluxnic.net>, "Anders Larsen" <al@alarsen.net>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "David Sterba" <dsterba@suse.com>, "Chris Mason" <clm@fb.com>,
+ "Gao Xiang" <xiang@kernel.org>, "Chao Yu" <chao@kernel.org>,
+ "Yue Hu" <zbestahu@gmail.com>, "Jeffle Xu" <jefflexu@linux.alibaba.com>,
+ "Sandeep Dhavale" <dhavale@google.com>,
+ "Hongbo Li" <lihongbo22@huawei.com>, "Chunhai Guo" <guochunhai@vivo.com>,
+ "Jan Kara" <jack@suse.com>, "Theodore Tso" <tytso@mit.edu>,
+ "Andreas Dilger" <adilger.kernel@dilger.ca>,
+ "Jaegeuk Kim" <jaegeuk@kernel.org>,
+ "OGAWA Hirofumi" <hirofumi@mail.parknet.co.jp>,
+ "David Woodhouse" <dwmw2@infradead.org>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Dave Kleikamp" <shaggy@kernel.org>,
+ "Ryusuke Konishi" <konishi.ryusuke@gmail.com>,
+ "Viacheslav Dubeyko" <slava@dubeyko.com>,
+ "Konstantin Komarov" <almaz.alexandrovich@paragon-software.com>,
+ "Mark Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>,
+ "Joseph Qi" <joseph.qi@linux.alibaba.com>,
+ "Mike Marshall" <hubcap@omnibond.com>,
+ "Martin Brandenburg" <martin@omnibond.com>,
+ "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Phillip Lougher" <phillip@squashfs.org.uk>,
+ "Carlos Maiolino" <cem@kernel.org>, "Hugh Dickins" <hughd@google.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Namjae Jeon" <linkinjeon@kernel.org>,
+ "Sungjong Seo" <sj1557.seo@samsung.com>,
+ "Yuezhang Mo" <yuezhang.mo@sony.com>,
+ "Alexander Aring" <alex.aring@gmail.com>,
+ "Andreas Gruenbacher" <agruenba@redhat.com>,
+ "Jonathan Corbet" <corbet@lwn.net>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ "Eric Van Hensbergen" <ericvh@kernel.org>,
+ "Latchesar Ionkov" <lucho@ionkov.net>,
+ "Dominique Martinet" <asmadeus@codewreck.org>,
+ "Christian Schoenebeck" <linux_oss@crudebyte.com>,
+ "Xiubo Li" <xiubli@redhat.com>, "Ilya Dryomov" <idryomov@gmail.com>,
+ "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Steve French" <sfrench@samba.org>,
+ "Paulo Alcantara" <pc@manguebit.org>,
+ "Ronnie Sahlberg" <ronniesahlberg@gmail.com>,
+ "Shyam Prasad N" <sprasad@microsoft.com>, "Tom Talpey" <tom@talpey.com>,
+ "Bharath SM" <bharathsm@microsoft.com>,
+ "Hans de Goede" <hansg@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, linux-mtd@lists.infradead.org,
+ jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org,
+ ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+ devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
+ linux-xfs@vger.kernel.org, linux-mm@kvack.org, gfs2@lists.linux.dev,
+ linux-doc@vger.kernel.org, v9fs@lists.linux.dev,
+ ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org,
+ linux-cifs@vger.kernel.org, samba-technical@lists.samba.org
+Message-Id: <5a1730f3-30ff-403c-a460-09a81f9616c5@app.fastmail.com>
+In-Reply-To: 
+ <CAOQ4uxhDwR7dteLaqURX+9CooGM1hA7PL6KnVmSwX11ZdKxZTA@mail.gmail.com>
+References: <8af369636c32b868f83669c49aea708ca3b894ac.camel@kernel.org>
+ <CAOQ4uxgD+Sgbbg9K2U0SF9TyUOBb==Z6auShUWc4FfPaDCQ=rg@mail.gmail.com>
+ <ec78bf021fa1f6243798945943541ba171e337e7.camel@kernel.org>
+ <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com>
+ <ce700ee20834631eceededc8cd15fc5d00fee28e.camel@kernel.org>
+ <20260113-mondlicht-raven-82fc4eb70e9d@brauner>
+ <aWZcoyQLvbJKUxDU@infradead.org>
+ <ce418800f06aa61a7f47f0d19394988f87a3da07.camel@kernel.org>
+ <aWc3mwBNs8LNFN4W@infradead.org>
+ <CAOQ4uxhMjitW_DC9WK9eku51gE1Ft+ENhD=qq3uehwrHO=RByA@mail.gmail.com>
+ <aWeUv2UUJ_NdgozS@infradead.org>
+ <c40862cd65a059ad45fa88f5473722ea5c5f70a5.camel@kernel.org>
+ <CAOQ4uxhDwR7dteLaqURX+9CooGM1hA7PL6KnVmSwX11ZdKxZTA@mail.gmail.com>
+Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to lease
+ support
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 15D744000A
+X-Stat-Signature: kd9u5byx1rfczopw93t3wg4zkig3iy1n
 X-Rspam-User: 
-X-HE-Tag: 1768402111-550813
-X-HE-Meta: U2FsdGVkX188/28X2/snuPuovBA081ADKitd6zZzOkSmv/NNuBmnaMRr++T3pyyL8GEuGeBqxBLhqbdwSxKRu3NLDU9hgrdsFOsu/wyD9D77lh9L6Eqfa2YGZvq9Rt9H/cMVHdMNaUP8YptG/Hseqy+YmLH2YQrWKptgx7uqKRVAK8L4zE2dMlJRANi4aqwq2Btq388MrjV3S065JMfPuA0lf/KkIKyJdg5GMwV94Ox/ZiKXYgoChQY2q/5fYHZVu6CVpEjXXZxrvq7iPB6mioQELPlD/beNzOtSHx77i0PBBPhcf6e4Wq3KuY9puaQvlTEHllGxkjRxK8Iv1qN+xbdk3MxiCSjVha2GQceWTxsFKQLzBM601oehLPmBpNd2MJYfTL/5XOeQ/52jYLCgqSNK0xfMf6Puxve8R91oKlegmKQGLvxAsGJn4uuopRjA8lKKDz0NYPOqVOl4+a1SFWyrYbJUBEG4gdoEzohBIBTlbBt9KR3IAZ3JzSHycB66l1HOjRueMPl1Ko6IUCnGLQR21HySXZLTwx8sKY+Lb/sTbMI4JDD8YXjdi80AuLoXZqGmMSpaX40pKAuntbM+fEKfHUExKguDlKYxeFxXVM1ojPEW8hvV7brJBcx7+wsQ8jp6BcJDBNf9erQ3Nbx4htdKuTjaHD6YgvMWzdGcF8hXf+/X180Mpfl4FYcNz0rT6Y5K07n3Tef5NaRHmEKZ1avAx44KZhiQLurHsC71gKPbw40BxHSY/vRT+BRLdrp12JdqquWxMMr5tqL2pppXPOPxBJQizqC9DeBfKeYjWyWzzF3EpbteNY/mkszGqLVqIUbtKTerI3jm4XqIMKDXvRAzHHnlrfcLPoUMTh2NpS/Z4CNKhleZpSgy0JKkeaoIyttcl4+fHIO4is+Sp0SS1NI88VzcoY8MvKULZ3yC1K9B9vFwO0HIT4ym9tk7D2X5wPSMNGCIKhzbeAnyxYZ
- jVHtYodA
- bEyLRRj633J45z0/mwVqqh2Ufc1sYiMxp9khqWVgZBBbnPgBIV37VFULiQhRUWd6VzGEOAyw7wCQLg9BCS7AHCGkqffpn3tKXe1ZVaaIqTCq+tHyVLpslOl19vynvJaAiMnsXkF5aRZd612D1ndKfWJNuaXJutuUXTMeOf/x4qMchFj6Gfl2qVTCMFg==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000002, version=1.2.4
+X-HE-Tag: 1768402385-733322
+X-HE-Meta: U2FsdGVkX18wrDqGrv1g2T8KOknSITyW2g26aXeYp8xBcPdwLHH0RTemWUAFxVm105AxnHCKRIvc/zYETZRPyKkHTbFH+EKELYlAvCKrQ+4X6V00LLLfk5DvB7dCuIgK/OIJ93GJDiOKTSUi6B/VtzTYgL5dndBUjd4VQZC4HiJ1kFQwoYGuBWMVT6TQubb0aiTnY4gGJKknNyBivDW/iokkdSrCzukmgM+Dur4D+t/dwgMQEGmrm+xfPS+I/HGn0C5C8Kp5nG0b/NaRLR3NZKXePPDWc/dfsFUo0VRRNWDxWptVkhnVPMXq4NhhwJ+7ntgDQ5w/7E7rfAl4k0SMjY0pFsCE23YE92dW0GoqznnCizuo9Tg7H3Yr7vhHlyPGdGPADnP8BRkiO7TmY9jVFcG62eHysHlxIL/1z7WzujDnOt5S6ca9SG/u88jxM1YiUOCW+JtbPH8g0nN19bvBZkhtlvcX+pdAz1ly6SlnMt4Im0VuEVxbyE3pNr/whv7lhiikfFm9PO5CGbd9Czbd019CuUYnMTUyiD/MI8qI9ju8TpIP8yo9W+RHyK1O907UOP9LpWnFLpAIKpf6ywDW19bzuctgrdg9EklRpzOooExfdaRhePsiMfpNgnT0iHfhpRyHBSzkK4aJfp70wUZFHO6O1s6DFUIt2lEktnUnHZWhURFArSYQT1Pm4exLe6pOBm4hjN+odsUjOfqKbRtlhMVe/7vU1eI4PiDLNPRYdNH14RTWahLauwO0jQNAsLQ/Lnaqyqhl98h1bzxXiu84UNDxEjB2kENY+A6OcOhwqaM7oLmXs7gPG5sX665QYfvdG6lh9i8n1ajcO4XjgdYYWCBSc3p16OhZsERYja+5IVZVX+Ytpsq4DfLiEHrUXiUKEcn67cflEXI9yqmg6siYyO0iplucIx6AajRh0cMC/BZfK5Q9U6Ng6dC/fZzrBs1bWbtBwxYyc+fzjp8s61t
+ VCwWKaUv
+ w9UavDG3w/BAaz15UVbhrpBdul9ziD3TVtKVhcXsvy7gNNFCDfeW29Sr1jWXIugJmno62QRKQsrTVltaZvo5vn5Tjp9QwluFupbPDnqCa18Vd3kZqR3YIY1ScJZ3frF0kUca0rrLROtD+VVJ+59V9b3kBM2h9Si8dC0Xp9cWlz6sG9dSoCgJNGvlVsGhr3APKNCkWfqnItrCegpmya34yoNY8p4XDOGPQCnmBpHmfVsc/xAM835ndstNeQV1cwEVb6LfOazWGsoZRxdhC+5IZaIqewKYKcM4CqzqDj9mJNnAvN0gFbfjDdU3IGDUIxniu//BK0Lx0UwD+k/B0SzXL5nYluw==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,52 +199,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > free_pages_prepare() only handles poisoned order-0 pages.
-> > In memory_failure() (hard offline), pages
-> > are poisoned before attempting to split huge pages. If the split fails,
-> > the page remains a compound (order > 0) but is already poisoned. However,
-> > Soft-offline pages are always poisoned as order-0 after migration, so
-> > they are unaffected.
-> >
-> > The '!order' check causes these poisoned compound pages to skip
-> > poison handling, leaving them in the buddy allocator.
-> >
-> > Worst case, a poisoned compound page could be reallocated,
-> > potentially leading to crashes, silent data corruption,
-> > or unwanted memory containment actions before the poison bit is detected.
-> >
-> > This patch removes the '&& !order' restriction. Cleanup functions in the
-> > poison-handling block correctly handle non-zero order pages, making
-> > this change safe.
 
-> This is not a fix. IIUC, for >0 order free pages, memory failure uses
-> take_page_off_buddy() in a different code path.
+
+On Wed, Jan 14, 2026, at 9:14 AM, Amir Goldstein wrote:
+> On Wed, Jan 14, 2026 at 2:41=E2=80=AFPM Jeff Layton <jlayton@kernel.or=
+g> wrote:
+
+> Very well then.
+> How about EXPORT_OP_PERSISTENT_HANDLES?
 >
+> This terminology is from the NFS protocol spec and it is also used
+> to describe the same trait in SMB protocol.
+>
+>> The problem there is that we very much do want to keep tmpfs
+>> exportable, but it doesn't have stable handles (per-se).
+>
+> Thinking out loud -
+> It would be misguided to declare tmpfs as
+> EXPORT_OP_PERSISTENT_HANDLES
+> and regressing exports of tmpfs will surely not go unnoticed.
+>
+> How about adding an exportfs option "persistent_handles",
+> use it as default IFF neither options fsid=3D, uuid=3D are used,
+> so that at least when exporting tmpfs, exportfs -v will show
+> "no_persistent_handles" explicitly?
 
-Thanks again for the quick response and clarification! 
-From my understanding, 
-you correctly noted that take_page_off_buddy() handles already-free pages, 
-removing them from the buddy lists and setting SetPageHWPoisonTakenOff(). 
-This prevents those pages from re-entering the buddy allocator.
+I think we need to be careful. tmpfs filehandles align quite
+well with the traditional definition of persistent filehandles.
+tmpfs filehandles live as long as tmpfs files do, and that is
+all that is required to be considered "persistent".
 
-My concern is about in-use THP-backed compound pages:
-1. A compound page is in use. 
-2. memory_failure() marks it poisoned (TestSetPageHWPoison).
-3. try_to_split_thp_page() fails.
-4. The process using the THP may be killed; 
-        the page remains compound and poisoned.
-5. Later, when the page is finally freed, it reaches free_pages_prepare();
-        'take_page_off_buddy()' is not invoked in this path.
 
-At this point, the current check:
-
-'if (unlikely(PageHWPoison(page)) && !order)'
-
-will not trigger, because the order > 0.
-
-> Miaohe (cc’d) should be able to elaborate more on it.
-Thanks for Cc'ing Miaohe, hopefully Miaohe can provide some more insights!
-
-Thanks,
-Boudewijn
+--=20
+Chuck Lever
 
